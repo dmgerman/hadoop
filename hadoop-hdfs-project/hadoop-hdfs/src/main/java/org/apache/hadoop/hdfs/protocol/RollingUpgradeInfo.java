@@ -78,41 +78,31 @@ name|RollingUpgradeStatus
 block|{
 DECL|field|startTime
 specifier|private
+specifier|final
 name|long
 name|startTime
 decl_stmt|;
 DECL|field|finalizeTime
 specifier|private
+specifier|final
 name|long
 name|finalizeTime
 decl_stmt|;
-DECL|method|RollingUpgradeInfo (String blockPoolId, long startTime)
+DECL|field|createdRollbackImages
+specifier|private
+specifier|final
+name|boolean
+name|createdRollbackImages
+decl_stmt|;
+DECL|method|RollingUpgradeInfo (String blockPoolId, boolean createdRollbackImages, long startTime, long finalizeTime)
 specifier|public
 name|RollingUpgradeInfo
 parameter_list|(
 name|String
 name|blockPoolId
 parameter_list|,
-name|long
-name|startTime
-parameter_list|)
-block|{
-name|this
-argument_list|(
-name|blockPoolId
-argument_list|,
-name|startTime
-argument_list|,
-literal|0L
-argument_list|)
-expr_stmt|;
-block|}
-DECL|method|RollingUpgradeInfo (String blockPoolId, long startTime, long finalizeTime)
-specifier|public
-name|RollingUpgradeInfo
-parameter_list|(
-name|String
-name|blockPoolId
+name|boolean
+name|createdRollbackImages
 parameter_list|,
 name|long
 name|startTime
@@ -128,6 +118,12 @@ argument_list|)
 expr_stmt|;
 name|this
 operator|.
+name|createdRollbackImages
+operator|=
+name|createdRollbackImages
+expr_stmt|;
+name|this
+operator|.
 name|startTime
 operator|=
 name|startTime
@@ -138,6 +134,16 @@ name|finalizeTime
 operator|=
 name|finalizeTime
 expr_stmt|;
+block|}
+DECL|method|createdRollbackImages ()
+specifier|public
+name|boolean
+name|createdRollbackImages
+parameter_list|()
+block|{
+return|return
+name|createdRollbackImages
+return|;
 block|}
 DECL|method|isStarted ()
 specifier|public

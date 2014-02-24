@@ -379,11 +379,11 @@ enum|enum
 name|RollingUpgradeAction
 block|{
 DECL|enumConstant|QUERY
-DECL|enumConstant|START
+DECL|enumConstant|PREPARE
 DECL|enumConstant|FINALIZE
 name|QUERY
 block|,
-name|START
+name|PREPARE
 block|,
 name|FINALIZE
 block|;

@@ -660,7 +660,7 @@ index|[]
 block|{
 literal|"-rollingUpgrade"
 block|,
-literal|"start"
+literal|"prepare"
 block|}
 argument_list|)
 argument_list|)
@@ -994,7 +994,7 @@ index|[]
 block|{
 literal|"-rollingUpgrade"
 block|,
-literal|"start"
+literal|"prepare"
 block|}
 argument_list|)
 argument_list|)
@@ -1255,7 +1255,7 @@ name|rollingUpgrade
 argument_list|(
 name|RollingUpgradeAction
 operator|.
-name|START
+name|PREPARE
 argument_list|)
 decl_stmt|;
 name|Assert

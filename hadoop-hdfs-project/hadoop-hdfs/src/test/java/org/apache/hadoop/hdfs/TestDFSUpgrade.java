@@ -1371,7 +1371,7 @@ name|rollingUpgrade
 argument_list|(
 name|RollingUpgradeAction
 operator|.
-name|START
+name|PREPARE
 argument_list|)
 expr_stmt|;
 name|fail
@@ -2297,7 +2297,7 @@ name|rollingUpgrade
 argument_list|(
 name|RollingUpgradeAction
 operator|.
-name|START
+name|PREPARE
 argument_list|)
 expr_stmt|;
 name|fail

@@ -1740,6 +1740,8 @@ name|fsn
 operator|.
 name|setRollingUpgradeInfo
 argument_list|(
+literal|true
+argument_list|,
 name|s
 operator|.
 name|getRollingUpgradeStartTime

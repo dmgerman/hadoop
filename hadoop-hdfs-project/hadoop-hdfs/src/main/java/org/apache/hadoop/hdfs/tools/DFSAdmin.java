@@ -42,6 +42,16 @@ begin_import
 import|import
 name|java
 operator|.
+name|io
+operator|.
+name|PrintStream
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
 name|net
 operator|.
 name|InetSocketAddress
@@ -1672,7 +1682,7 @@ literal|"-"
 operator|+
 name|NAME
 operator|+
-literal|" [<query|start|finalize>]"
+literal|" [<query|prepare|finalize>]"
 decl_stmt|;
 DECL|field|DESCRIPTION
 specifier|static
@@ -1684,11 +1694,11 @@ name|USAGE
 operator|+
 literal|":\n"
 operator|+
-literal|"     query: query current rolling upgrade status.\n"
+literal|"     query: query the current rolling upgrade status.\n"
 operator|+
-literal|"     start: start rolling upgrade."
+literal|"   prepare: prepare a new rolling upgrade."
 operator|+
-literal|"  finalize: finalize rolling upgrade."
+literal|"  finalize: finalize the current rolling upgrade."
 decl_stmt|;
 comment|/** Check if a command is the rollingUpgrade command      *       * @param cmd A string representation of a command starting with "-"      * @return true if this is a clrQuota command; false otherwise      */
 DECL|method|matches (String cmd)
@@ -1712,6 +1722,113 @@ argument_list|(
 name|cmd
 argument_list|)
 return|;
+block|}
+DECL|method|printMessage (RollingUpgradeInfo info, PrintStream out)
+specifier|private
+specifier|static
+name|void
+name|printMessage
+parameter_list|(
+name|RollingUpgradeInfo
+name|info
+parameter_list|,
+name|PrintStream
+name|out
+parameter_list|)
+block|{
+if|if
+condition|(
+name|info
+operator|!=
+literal|null
+operator|&&
+name|info
+operator|.
+name|isStarted
+argument_list|()
+condition|)
+block|{
+if|if
+condition|(
+operator|!
+name|info
+operator|.
+name|createdRollbackImages
+argument_list|()
+condition|)
+block|{
+name|out
+operator|.
+name|println
+argument_list|(
+literal|"Preparing for upgrade. Data is being saved for rollback."
+operator|+
+literal|"\nRun \"dfsadmin -rollingUpgrade query\" to check the status"
+operator|+
+literal|"\nfor proceeding with rolling upgrade"
+argument_list|)
+expr_stmt|;
+name|out
+operator|.
+name|println
+argument_list|(
+name|info
+argument_list|)
+expr_stmt|;
+block|}
+elseif|else
+if|if
+condition|(
+operator|!
+name|info
+operator|.
+name|isFinalized
+argument_list|()
+condition|)
+block|{
+name|out
+operator|.
+name|println
+argument_list|(
+literal|"Proceed with rolling upgrade:"
+argument_list|)
+expr_stmt|;
+name|out
+operator|.
+name|println
+argument_list|(
+name|info
+argument_list|)
+expr_stmt|;
+block|}
+else|else
+block|{
+name|out
+operator|.
+name|println
+argument_list|(
+literal|"Rolling upgrade is finalized."
+argument_list|)
+expr_stmt|;
+name|out
+operator|.
+name|println
+argument_list|(
+name|info
+argument_list|)
+expr_stmt|;
+block|}
+block|}
+else|else
+block|{
+name|out
+operator|.
+name|println
+argument_list|(
+literal|"There is no rolling upgrade in progress."
+argument_list|)
+expr_stmt|;
+block|}
 block|}
 DECL|method|run (DistributedFileSystem dfs, String[] argv, int idx)
 specifier|static
@@ -1812,52 +1929,9 @@ block|{
 case|case
 name|QUERY
 case|:
-if|if
-condition|(
-name|info
-operator|!=
-literal|null
-operator|&&
-name|info
-operator|.
-name|isStarted
-argument_list|()
-condition|)
-block|{
-name|System
-operator|.
-name|out
-operator|.
-name|println
-argument_list|(
-literal|"Rolling upgrade is in progress:"
-argument_list|)
-expr_stmt|;
-name|System
-operator|.
-name|out
-operator|.
-name|println
-argument_list|(
-name|info
-argument_list|)
-expr_stmt|;
-block|}
-else|else
-block|{
-name|System
-operator|.
-name|out
-operator|.
-name|println
-argument_list|(
-literal|"There is no rolling upgrade in progress."
-argument_list|)
-expr_stmt|;
-block|}
 break|break;
 case|case
-name|START
+name|PREPARE
 case|:
 name|Preconditions
 operator|.
@@ -1867,24 +1941,6 @@ name|info
 operator|.
 name|isStarted
 argument_list|()
-argument_list|)
-expr_stmt|;
-name|System
-operator|.
-name|out
-operator|.
-name|println
-argument_list|(
-literal|"Rolling upgrade is started:"
-argument_list|)
-expr_stmt|;
-name|System
-operator|.
-name|out
-operator|.
-name|println
-argument_list|(
-name|info
 argument_list|)
 expr_stmt|;
 break|break;
@@ -1901,26 +1957,17 @@ name|isFinalized
 argument_list|()
 argument_list|)
 expr_stmt|;
-name|System
-operator|.
-name|out
-operator|.
-name|println
-argument_list|(
-literal|"Rolling upgrade is finalized:"
-argument_list|)
-expr_stmt|;
-name|System
-operator|.
-name|out
-operator|.
-name|println
-argument_list|(
-name|info
-argument_list|)
-expr_stmt|;
 break|break;
 block|}
+name|printMessage
+argument_list|(
+name|info
+argument_list|,
+name|System
+operator|.
+name|out
+argument_list|)
+expr_stmt|;
 return|return
 literal|0
 return|;
@@ -3541,26 +3588,26 @@ name|shutdownDatanode
 init|=
 literal|"-shutdownDatanode<datanode_host:ipc_port> [upgrade]\n"
 operator|+
-literal|"\tShut down the datanode. If an optional argument \"upgrade\" is\n"
+literal|"\tSubmit a shutdown request for the given datanode. If an optional\n"
 operator|+
-literal|"\tpassed, the clients will be advised to wait for the datanode to\n"
+literal|"\t\"upgrade\" argument is specified, clients accessing the datanode\n"
 operator|+
-literal|"\trestart and the fast start-up mode will be enabled. Clients will\n"
+literal|"\twill be advised to wait for it to restart and the fast start-up\n"
 operator|+
-literal|"\ttimeout and ignore the datanode, if the restart does not happen\n"
+literal|"\tmode will be enabled. When the restart does not happen in time,\n"
 operator|+
-literal|"\tin time. The fast start-up mode will also be disabled, if restart\n"
+literal|"\tclients will timeout and ignore the datanode. In such case, the\n"
 operator|+
-literal|"\tis delayed too much.\n"
+literal|"\tfast start-up mode will also be disabled.\n"
 decl_stmt|;
 name|String
 name|getDatanodeInfo
 init|=
 literal|"-getDatanodeInfo<datanode_host:ipc_port>\n"
 operator|+
-literal|"\tCheck the datanode for liveness. If the datanode responds,\n"
+literal|"\tGet the information about the given datanode. This command can\n"
 operator|+
-literal|"\timore information about the datanode is printed.\n"
+literal|"\tbe used for checking if a datanode is alive.\n"
 decl_stmt|;
 name|String
 name|help
@@ -7675,15 +7722,21 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
+specifier|final
+name|String
+name|dn
+init|=
+name|argv
+index|[
+name|i
+index|]
+decl_stmt|;
 name|ClientDatanodeProtocol
 name|dnProxy
 init|=
 name|getDataNodeProxy
 argument_list|(
-name|argv
-index|[
-name|i
-index|]
+name|dn
 argument_list|)
 decl_stmt|;
 name|boolean
@@ -7708,7 +7761,7 @@ if|if
 condition|(
 literal|"upgrade"
 operator|.
-name|equals
+name|equalsIgnoreCase
 argument_list|(
 name|argv
 index|[
@@ -7742,6 +7795,17 @@ operator|.
 name|shutdownDatanode
 argument_list|(
 name|upgrade
+argument_list|)
+expr_stmt|;
+name|System
+operator|.
+name|out
+operator|.
+name|println
+argument_list|(
+literal|"Submitted a shutdown request to datanode "
+operator|+
+name|dn
 argument_list|)
 expr_stmt|;
 return|return

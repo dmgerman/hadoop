@@ -527,7 +527,7 @@ literal|true
 argument_list|,
 literal|"-rollingUpgrade"
 argument_list|,
-literal|"start"
+literal|"prepare"
 argument_list|)
 expr_stmt|;
 comment|//query rolling upgrade
@@ -1054,7 +1054,7 @@ name|rollingUpgrade
 argument_list|(
 name|RollingUpgradeAction
 operator|.
-name|START
+name|PREPARE
 argument_list|)
 expr_stmt|;
 name|LOG
@@ -1756,7 +1756,7 @@ name|rollingUpgrade
 argument_list|(
 name|RollingUpgradeAction
 operator|.
-name|START
+name|PREPARE
 argument_list|)
 expr_stmt|;
 name|dfs
@@ -2149,7 +2149,7 @@ name|rollingUpgrade
 argument_list|(
 name|RollingUpgradeAction
 operator|.
-name|START
+name|PREPARE
 argument_list|)
 decl_stmt|;
 name|Assert
@@ -2487,7 +2487,7 @@ name|rollingUpgrade
 argument_list|(
 name|RollingUpgradeAction
 operator|.
-name|START
+name|PREPARE
 argument_list|)
 decl_stmt|;
 name|Assert

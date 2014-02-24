@@ -11324,7 +11324,7 @@ operator|.
 name|QUERY
 return|;
 case|case
-name|START
+name|PREPARE
 case|:
 return|return
 name|RollingUpgradeActionProto
@@ -11380,7 +11380,7 @@ case|:
 return|return
 name|RollingUpgradeAction
 operator|.
-name|START
+name|PREPARE
 return|;
 case|case
 name|FINALIZE
@@ -11475,6 +11475,14 @@ name|info
 argument_list|)
 argument_list|)
 operator|.
+name|setCreatedRollbackImages
+argument_list|(
+name|info
+operator|.
+name|createdRollbackImages
+argument_list|()
+argument_list|)
+operator|.
 name|setStartTime
 argument_list|(
 name|info
@@ -11520,6 +11528,11 @@ argument_list|(
 name|status
 operator|.
 name|getBlockPoolId
+argument_list|()
+argument_list|,
+name|proto
+operator|.
+name|getCreatedRollbackImages
 argument_list|()
 argument_list|,
 name|proto

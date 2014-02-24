@@ -5527,7 +5527,7 @@ name|queryRollingUpgrade
 argument_list|()
 return|;
 case|case
-name|START
+name|PREPARE
 case|:
 return|return
 name|namesystem

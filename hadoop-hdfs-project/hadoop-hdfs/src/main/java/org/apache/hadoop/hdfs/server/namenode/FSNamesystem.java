@@ -33411,14 +33411,19 @@ expr_stmt|;
 block|}
 name|setRollingUpgradeInfo
 argument_list|(
+literal|true
+argument_list|,
 name|startTime
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|setRollingUpgradeInfo (long startTime)
+DECL|method|setRollingUpgradeInfo (boolean createdRollbackImages, long startTime)
 name|void
 name|setRollingUpgradeInfo
 parameter_list|(
+name|boolean
+name|createdRollbackImages
+parameter_list|,
 name|long
 name|startTime
 parameter_list|)
@@ -33430,7 +33435,11 @@ name|RollingUpgradeInfo
 argument_list|(
 name|blockPoolId
 argument_list|,
+name|createdRollbackImages
+argument_list|,
 name|startTime
+argument_list|,
+literal|0L
 argument_list|)
 expr_stmt|;
 block|}
@@ -33644,6 +33653,8 @@ operator|new
 name|RollingUpgradeInfo
 argument_list|(
 name|blockPoolId
+argument_list|,
+literal|true
 argument_list|,
 name|startTime
 argument_list|,
