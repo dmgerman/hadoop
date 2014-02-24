@@ -1751,6 +1751,25 @@ name|DFS_DATANODE_SOCKET_REUSE_KEEPALIVE_DEFAULT
 init|=
 literal|4000
 decl_stmt|;
+DECL|field|DFS_DATANODE_OOB_TIMEOUT_KEY
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|DFS_DATANODE_OOB_TIMEOUT_KEY
+init|=
+literal|"dfs.datanode.oob.timeout-ms"
+decl_stmt|;
+DECL|field|DFS_DATANODE_OOB_TIMEOUT_DEFAULT
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|DFS_DATANODE_OOB_TIMEOUT_DEFAULT
+init|=
+literal|"1500,0,0,0"
+decl_stmt|;
+comment|// OOB_TYPE1, OOB_TYPE2, OOB_TYPE3, OOB_TYPE4
 DECL|field|DFS_NAMENODE_DATANODE_REGISTRATION_IP_HOSTNAME_CHECK_KEY
 specifier|public
 specifier|static

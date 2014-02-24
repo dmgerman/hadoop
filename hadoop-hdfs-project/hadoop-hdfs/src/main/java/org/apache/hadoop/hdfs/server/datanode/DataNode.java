@@ -1436,6 +1436,20 @@ name|shouldRun
 init|=
 literal|true
 decl_stmt|;
+DECL|field|shutdownForUpgrade
+specifier|volatile
+name|boolean
+name|shutdownForUpgrade
+init|=
+literal|false
+decl_stmt|;
+DECL|field|shutdownInProgress
+specifier|private
+name|boolean
+name|shutdownInProgress
+init|=
+literal|false
+decl_stmt|;
 DECL|field|blockPoolManager
 specifier|private
 name|BlockPoolManager
@@ -5888,15 +5902,95 @@ operator|.
 name|getAllNamenodeThreads
 argument_list|()
 decl_stmt|;
-name|this
-operator|.
+comment|// If shutdown is not for restart, set shouldRun to false early.
+if|if
+condition|(
+operator|!
+name|shutdownForUpgrade
+condition|)
+block|{
 name|shouldRun
 operator|=
 literal|false
 expr_stmt|;
+block|}
+comment|// When shutting down for restart, DataXceiverServer is interrupted
+comment|// in order to avoid any further acceptance of requests, but the peers
+comment|// for block writes are not closed until the clients are notified.
+if|if
+condition|(
+name|dataXceiverServer
+operator|!=
+literal|null
+condition|)
+block|{
+operator|(
+operator|(
+name|DataXceiverServer
+operator|)
+name|this
+operator|.
+name|dataXceiverServer
+operator|.
+name|getRunnable
+argument_list|()
+operator|)
+operator|.
+name|kill
+argument_list|()
+expr_stmt|;
+name|this
+operator|.
+name|dataXceiverServer
+operator|.
+name|interrupt
+argument_list|()
+expr_stmt|;
+block|}
+comment|// Record the time of initial notification
+name|long
+name|timeNotified
+init|=
+name|Time
+operator|.
+name|now
+argument_list|()
+decl_stmt|;
+if|if
+condition|(
+name|localDataXceiverServer
+operator|!=
+literal|null
+condition|)
+block|{
+operator|(
+operator|(
+name|DataXceiverServer
+operator|)
+name|this
+operator|.
+name|localDataXceiverServer
+operator|.
+name|getRunnable
+argument_list|()
+operator|)
+operator|.
+name|kill
+argument_list|()
+expr_stmt|;
+name|this
+operator|.
+name|localDataXceiverServer
+operator|.
+name|interrupt
+argument_list|()
+expr_stmt|;
+block|}
+comment|// Terminate directory scanner and block scanner
 name|shutdownPeriodicScanners
 argument_list|()
 expr_stmt|;
+comment|// Stop the web server
 if|if
 condition|(
 name|infoServer
@@ -5931,19 +6025,6 @@ block|}
 block|}
 if|if
 condition|(
-name|ipcServer
-operator|!=
-literal|null
-condition|)
-block|{
-name|ipcServer
-operator|.
-name|stop
-argument_list|()
-expr_stmt|;
-block|}
-if|if
-condition|(
 name|pauseMonitor
 operator|!=
 literal|null
@@ -5955,66 +6036,14 @@ name|stop
 argument_list|()
 expr_stmt|;
 block|}
-if|if
-condition|(
-name|dataXceiverServer
-operator|!=
-literal|null
-condition|)
-block|{
-operator|(
-operator|(
-name|DataXceiverServer
-operator|)
+comment|// shouldRun is set to false here to prevent certain threads from exiting
+comment|// before the restart prep is done.
 name|this
 operator|.
-name|dataXceiverServer
-operator|.
-name|getRunnable
-argument_list|()
-operator|)
-operator|.
-name|kill
-argument_list|()
+name|shouldRun
+operator|=
+literal|false
 expr_stmt|;
-name|this
-operator|.
-name|dataXceiverServer
-operator|.
-name|interrupt
-argument_list|()
-expr_stmt|;
-block|}
-if|if
-condition|(
-name|localDataXceiverServer
-operator|!=
-literal|null
-condition|)
-block|{
-operator|(
-operator|(
-name|DataXceiverServer
-operator|)
-name|this
-operator|.
-name|localDataXceiverServer
-operator|.
-name|getRunnable
-argument_list|()
-operator|)
-operator|.
-name|kill
-argument_list|()
-expr_stmt|;
-name|this
-operator|.
-name|localDataXceiverServer
-operator|.
-name|interrupt
-argument_list|()
-expr_stmt|;
-block|}
 comment|// wait for all data receiver threads to exit
 if|if
 condition|(
@@ -6035,6 +6064,33 @@ condition|(
 literal|true
 condition|)
 block|{
+comment|// When shutting down for restart, wait 2.5 seconds before forcing
+comment|// termination of receiver threads.
+if|if
+condition|(
+operator|!
+name|this
+operator|.
+name|shutdownForUpgrade
+operator|||
+operator|(
+name|this
+operator|.
+name|shutdownForUpgrade
+operator|&&
+operator|(
+name|Time
+operator|.
+name|now
+argument_list|()
+operator|-
+name|timeNotified
+operator|>
+literal|2500
+operator|)
+operator|)
+condition|)
+block|{
 name|this
 operator|.
 name|threadGroup
@@ -6042,6 +6098,7 @@ operator|.
 name|interrupt
 argument_list|()
 expr_stmt|;
+block|}
 name|LOG
 operator|.
 name|info
@@ -6169,6 +6226,21 @@ name|ie
 parameter_list|)
 block|{       }
 block|}
+comment|// IPC server needs to be shutdown late in the process, otherwise
+comment|// shutdown command response won't get sent.
+if|if
+condition|(
+name|ipcServer
+operator|!=
+literal|null
+condition|)
+block|{
+name|ipcServer
+operator|.
+name|stop
+argument_list|()
+expr_stmt|;
+block|}
 if|if
 condition|(
 name|blockPoolManager
@@ -6284,6 +6356,23 @@ expr_stmt|;
 name|dataNodeInfoBeanName
 operator|=
 literal|null
+expr_stmt|;
+block|}
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"Shutdown complete."
+argument_list|)
+expr_stmt|;
+synchronized|synchronized
+init|(
+name|this
+init|)
+block|{
+comment|// Notify the main thread.
+name|notifyAll
+argument_list|()
 expr_stmt|;
 block|}
 block|}
@@ -8204,13 +8293,19 @@ operator|=
 literal|false
 expr_stmt|;
 block|}
-name|Thread
-operator|.
-name|sleep
+comment|// Terminate if shutdown is complete or 2 seconds after all BPs
+comment|// are shutdown.
+synchronized|synchronized
+init|(
+name|this
+init|)
+block|{
+name|wait
 argument_list|(
 literal|2000
 argument_list|)
 expr_stmt|;
+block|}
 block|}
 catch|catch
 parameter_list|(
@@ -11210,6 +11305,7 @@ name|Override
 comment|// ClientDatanodeProtocol
 DECL|method|shutdownDatanode (boolean forUpgrade)
 specifier|public
+specifier|synchronized
 name|void
 name|shutdownDatanode
 parameter_list|(
@@ -11230,7 +11326,29 @@ operator|+
 literal|"). Shutting down Datanode..."
 argument_list|)
 expr_stmt|;
-comment|// Delay start the shutdown process so that the rpc response can be
+comment|// Shutdown can be called only once.
+if|if
+condition|(
+name|shutdownInProgress
+condition|)
+block|{
+throw|throw
+operator|new
+name|IOException
+argument_list|(
+literal|"Shutdown already in progress."
+argument_list|)
+throw|;
+block|}
+name|shutdownInProgress
+operator|=
+literal|true
+expr_stmt|;
+name|shutdownForUpgrade
+operator|=
+name|forUpgrade
+expr_stmt|;
+comment|// Asynchronously start the shutdown process so that the rpc response can be
 comment|// sent back.
 name|Thread
 name|shutdownThread
@@ -11246,6 +11364,13 @@ name|void
 name|run
 parameter_list|()
 block|{
+if|if
+condition|(
+operator|!
+name|shutdownForUpgrade
+condition|)
+block|{
+comment|// Delay the shutdown a bit if not doing for restart.
 try|try
 block|{
 name|Thread
@@ -11262,6 +11387,7 @@ name|InterruptedException
 name|ie
 parameter_list|)
 block|{ }
+block|}
 name|shutdown
 argument_list|()
 expr_stmt|;
@@ -11405,6 +11531,15 @@ name|isAlive
 argument_list|()
 else|:
 literal|false
+return|;
+block|}
+DECL|method|isRestarting ()
+name|boolean
+name|isRestarting
+parameter_list|()
+block|{
+return|return
+name|shutdownForUpgrade
 return|;
 block|}
 comment|/**    * A datanode is considered to be fully started if all the BP threads are    * alive and all the block pools are initialized.    *     * @return true - if the data node is fully started    */

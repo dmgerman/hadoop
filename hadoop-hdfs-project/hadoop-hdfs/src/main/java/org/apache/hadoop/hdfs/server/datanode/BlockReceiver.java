@@ -3490,6 +3490,30 @@ name|IOException
 name|ioe
 parameter_list|)
 block|{
+if|if
+condition|(
+name|datanode
+operator|.
+name|isRestarting
+argument_list|()
+condition|)
+block|{
+comment|// Do not throw if shutting down for restart. Otherwise, it will cause
+comment|// premature termination of responder.
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"Shutting down for restart ("
+operator|+
+name|block
+operator|+
+literal|")."
+argument_list|)
+expr_stmt|;
+block|}
+else|else
+block|{
 name|LOG
 operator|.
 name|info
@@ -3505,22 +3529,25 @@ throw|throw
 name|ioe
 throw|;
 block|}
+block|}
 finally|finally
 block|{
+comment|// Clear the previous interrupt state of this thread.
+name|Thread
+operator|.
+name|interrupted
+argument_list|()
+expr_stmt|;
+comment|// If a shutdown for restart was initiated, upstream needs to be notified.
+comment|// There is no need to do anything special if the responder was closed
+comment|// normally.
 if|if
 condition|(
 operator|!
 name|responderClosed
 condition|)
 block|{
-comment|// Abnormal termination of the flow above
-name|IOUtils
-operator|.
-name|closeStream
-argument_list|(
-name|this
-argument_list|)
-expr_stmt|;
+comment|// Data transfer was not complete.
 if|if
 condition|(
 name|responder
@@ -3528,12 +3555,77 @@ operator|!=
 literal|null
 condition|)
 block|{
+comment|// In case this datanode is shutting down for quick restart,
+comment|// send a special ack upstream.
+if|if
+condition|(
+name|datanode
+operator|.
+name|isRestarting
+argument_list|()
+condition|)
+block|{
+try|try
+block|{
+operator|(
+operator|(
+name|PacketResponder
+operator|)
+name|responder
+operator|.
+name|getRunnable
+argument_list|()
+operator|)
+operator|.
+name|sendOOBResponse
+argument_list|(
+name|PipelineAck
+operator|.
+name|getRestartOOBStatus
+argument_list|()
+argument_list|)
+expr_stmt|;
+block|}
+catch|catch
+parameter_list|(
+name|InterruptedException
+name|ie
+parameter_list|)
+block|{
+comment|// It is already going down. Ignore this.
+block|}
+catch|catch
+parameter_list|(
+name|IOException
+name|ioe
+parameter_list|)
+block|{
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"Error sending OOB Ack."
+argument_list|,
+name|ioe
+argument_list|)
+expr_stmt|;
+comment|// The OOB ack could not be sent. Since the datanode is going
+comment|// down, this is ignored.
+block|}
+block|}
 name|responder
 operator|.
 name|interrupt
 argument_list|()
 expr_stmt|;
 block|}
+name|IOUtils
+operator|.
+name|closeStream
+argument_list|(
+name|this
+argument_list|)
+expr_stmt|;
 name|cleanupBlock
 argument_list|()
 expr_stmt|;
@@ -3613,6 +3705,16 @@ operator|.
 name|interrupt
 argument_list|()
 expr_stmt|;
+comment|// do not throw if shutting down for restart.
+if|if
+condition|(
+operator|!
+name|datanode
+operator|.
+name|isRestarting
+argument_list|()
+condition|)
+block|{
 throw|throw
 operator|new
 name|IOException
@@ -3620,6 +3722,7 @@ argument_list|(
 literal|"Interrupted receiveBlock"
 argument_list|)
 throw|;
+block|}
 block|}
 name|responder
 operator|=
@@ -4113,6 +4216,13 @@ specifier|final
 name|String
 name|myString
 decl_stmt|;
+DECL|field|sending
+specifier|private
+name|boolean
+name|sending
+init|=
+literal|false
+decl_stmt|;
 annotation|@
 name|Override
 DECL|method|toString ()
@@ -4269,12 +4379,21 @@ name|boolean
 name|isRunning
 parameter_list|()
 block|{
+comment|// When preparing for a restart, it should continue to run until
+comment|// interrupted by the receiver thread.
 return|return
 name|running
 operator|&&
+operator|(
 name|datanode
 operator|.
 name|shouldRun
+operator|||
+name|datanode
+operator|.
+name|isRestarting
+argument_list|()
+operator|)
 return|;
 block|}
 comment|/**      * enqueue the seqno that is still be to acked by the downstream datanode.      * @param seqno      * @param lastPacketInBlock      * @param offsetInBlock      */
@@ -4342,7 +4461,7 @@ expr_stmt|;
 block|}
 synchronized|synchronized
 init|(
-name|this
+name|ackQueue
 init|)
 block|{
 if|if
@@ -4357,7 +4476,131 @@ argument_list|(
 name|p
 argument_list|)
 expr_stmt|;
+name|ackQueue
+operator|.
 name|notifyAll
+argument_list|()
+expr_stmt|;
+block|}
+block|}
+block|}
+comment|/**      * Send an OOB response. If all acks have been sent already for the block      * and the responder is about to close, the delivery is not guaranteed.      * This is because the other end can close the connection independently.      * An OOB coming from downstream will be automatically relayed upstream      * by the responder. This method is used only by originating datanode.      *      * @param ackStatus the type of ack to be sent      */
+DECL|method|sendOOBResponse (final Status ackStatus)
+name|void
+name|sendOOBResponse
+parameter_list|(
+specifier|final
+name|Status
+name|ackStatus
+parameter_list|)
+throws|throws
+name|IOException
+throws|,
+name|InterruptedException
+block|{
+if|if
+condition|(
+operator|!
+name|running
+condition|)
+block|{
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"Cannot send OOB response "
+operator|+
+name|ackStatus
+operator|+
+literal|". Responder not running."
+argument_list|)
+expr_stmt|;
+return|return;
+block|}
+synchronized|synchronized
+init|(
+name|this
+init|)
+block|{
+if|if
+condition|(
+name|sending
+condition|)
+block|{
+name|wait
+argument_list|(
+name|PipelineAck
+operator|.
+name|getOOBTimeout
+argument_list|(
+name|ackStatus
+argument_list|)
+argument_list|)
+expr_stmt|;
+comment|// Didn't get my turn in time. Give up.
+if|if
+condition|(
+name|sending
+condition|)
+block|{
+throw|throw
+operator|new
+name|IOException
+argument_list|(
+literal|"Could not send OOB reponse in time: "
+operator|+
+name|ackStatus
+argument_list|)
+throw|;
+block|}
+block|}
+name|sending
+operator|=
+literal|true
+expr_stmt|;
+block|}
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"Sending an out of band ack of type "
+operator|+
+name|ackStatus
+argument_list|)
+expr_stmt|;
+try|try
+block|{
+name|sendAckUpstreamUnprotected
+argument_list|(
+literal|null
+argument_list|,
+name|PipelineAck
+operator|.
+name|UNKOWN_SEQNO
+argument_list|,
+literal|0L
+argument_list|,
+literal|0L
+argument_list|,
+name|ackStatus
+argument_list|)
+expr_stmt|;
+block|}
+finally|finally
+block|{
+comment|// Let others send ack. Unless there are miltiple OOB send
+comment|// calls, there can be only one waiter, the responder thread.
+comment|// In any case, only one needs to be notified.
+synchronized|synchronized
+init|(
+name|this
+init|)
+block|{
+name|sending
+operator|=
+literal|false
+expr_stmt|;
+name|notify
 argument_list|()
 expr_stmt|;
 block|}
@@ -4365,7 +4608,6 @@ block|}
 block|}
 comment|/** Wait for a packet with given {@code seqno} to be enqueued to ackQueue */
 DECL|method|waitForAckHead (long seqno)
-specifier|synchronized
 name|Packet
 name|waitForAckHead
 parameter_list|(
@@ -4374,6 +4616,11 @@ name|seqno
 parameter_list|)
 throws|throws
 name|InterruptedException
+block|{
+synchronized|synchronized
+init|(
+name|ackQueue
+init|)
 block|{
 while|while
 condition|(
@@ -4410,6 +4657,8 @@ literal|" waiting for local datanode to finish write."
 argument_list|)
 expr_stmt|;
 block|}
+name|ackQueue
+operator|.
 name|wait
 argument_list|()
 expr_stmt|;
@@ -4426,15 +4675,20 @@ else|:
 literal|null
 return|;
 block|}
+block|}
 comment|/**      * wait for all pending packets to be acked. Then shutdown thread.      */
 annotation|@
 name|Override
 DECL|method|close ()
 specifier|public
-specifier|synchronized
 name|void
 name|close
 parameter_list|()
+block|{
+synchronized|synchronized
+init|(
+name|ackQueue
+init|)
 block|{
 while|while
 condition|(
@@ -4451,6 +4705,8 @@ condition|)
 block|{
 try|try
 block|{
+name|ackQueue
+operator|.
 name|wait
 argument_list|()
 expr_stmt|;
@@ -4497,9 +4753,21 @@ name|running
 operator|=
 literal|false
 expr_stmt|;
+name|ackQueue
+operator|.
 name|notifyAll
 argument_list|()
 expr_stmt|;
+block|}
+synchronized|synchronized
+init|(
+name|this
+init|)
+block|{
+name|notifyAll
+argument_list|()
+expr_stmt|;
+block|}
 block|}
 comment|/**      * Thread to process incoming acks.      * @see java.lang.Runnable#run()      */
 annotation|@
@@ -4630,6 +4898,50 @@ operator|+
 name|ack
 argument_list|)
 expr_stmt|;
+block|}
+comment|// Process an OOB ACK.
+name|Status
+name|oobStatus
+init|=
+name|ack
+operator|.
+name|getOOBStatus
+argument_list|()
+decl_stmt|;
+if|if
+condition|(
+name|oobStatus
+operator|!=
+literal|null
+condition|)
+block|{
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"Relaying an out of band ack of type "
+operator|+
+name|oobStatus
+argument_list|)
+expr_stmt|;
+name|sendAckUpstream
+argument_list|(
+name|ack
+argument_list|,
+name|PipelineAck
+operator|.
+name|UNKOWN_SEQNO
+argument_list|,
+literal|0L
+argument_list|,
+literal|0L
+argument_list|,
+name|Status
+operator|.
+name|SUCCESS
+argument_list|)
+expr_stmt|;
+continue|continue;
 block|}
 name|seqno
 operator|=
@@ -4847,7 +5159,7 @@ operator|||
 name|isInterrupted
 condition|)
 block|{
-comment|/*              * The receiver thread cancelled this thread. We could also check              * any other status updates from the receiver thread (e.g. if it is              * ok to write to replyOut). It is prudent to not send any more              * status back to the client because this datanode has a problem.              * The upstream datanode will detect that this datanode is bad, and              * rightly so.              */
+comment|/*              * The receiver thread cancelled this thread. We could also check              * any other status updates from the receiver thread (e.g. if it is              * ok to write to replyOut). It is prudent to not send any more              * status back to the client because this datanode has a problem.              * The upstream datanode will detect that this datanode is bad, and              * rightly so.              *              * The receiver thread can also interrupt this thread for sending              * an out-of-band response upstream.              */
 name|LOG
 operator|.
 name|info
@@ -5204,11 +5516,111 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-comment|/**      * @param ack Ack received from downstream      * @param seqno sequence number of ack to be sent upstream      * @param totalAckTimeNanos total ack time including all the downstream      *          nodes      * @param offsetInBlock offset in block for the data in packet      */
+comment|/**      * The wrapper for the unprotected version. This is only called by      * the responder's run() method.      *      * @param ack Ack received from downstream      * @param seqno sequence number of ack to be sent upstream      * @param totalAckTimeNanos total ack time including all the downstream      *          nodes      * @param offsetInBlock offset in block for the data in packet      * @param myStatus the local ack status      */
 DECL|method|sendAckUpstream (PipelineAck ack, long seqno, long totalAckTimeNanos, long offsetInBlock, Status myStatus)
 specifier|private
 name|void
 name|sendAckUpstream
+parameter_list|(
+name|PipelineAck
+name|ack
+parameter_list|,
+name|long
+name|seqno
+parameter_list|,
+name|long
+name|totalAckTimeNanos
+parameter_list|,
+name|long
+name|offsetInBlock
+parameter_list|,
+name|Status
+name|myStatus
+parameter_list|)
+throws|throws
+name|IOException
+block|{
+try|try
+block|{
+comment|// Wait for other sender to finish. Unless there is an OOB being sent,
+comment|// the responder won't have to wait.
+synchronized|synchronized
+init|(
+name|this
+init|)
+block|{
+while|while
+condition|(
+name|sending
+condition|)
+block|{
+name|wait
+argument_list|()
+expr_stmt|;
+block|}
+name|sending
+operator|=
+literal|true
+expr_stmt|;
+block|}
+try|try
+block|{
+if|if
+condition|(
+operator|!
+name|running
+condition|)
+return|return;
+name|sendAckUpstreamUnprotected
+argument_list|(
+name|ack
+argument_list|,
+name|seqno
+argument_list|,
+name|totalAckTimeNanos
+argument_list|,
+name|offsetInBlock
+argument_list|,
+name|myStatus
+argument_list|)
+expr_stmt|;
+block|}
+finally|finally
+block|{
+synchronized|synchronized
+init|(
+name|this
+init|)
+block|{
+name|sending
+operator|=
+literal|false
+expr_stmt|;
+name|notify
+argument_list|()
+expr_stmt|;
+block|}
+block|}
+block|}
+catch|catch
+parameter_list|(
+name|InterruptedException
+name|ie
+parameter_list|)
+block|{
+comment|// The responder was interrupted. Make it go down without
+comment|// interrupting the receiver(writer) thread.
+name|running
+operator|=
+literal|false
+expr_stmt|;
+block|}
+block|}
+comment|/**      * @param ack Ack received from downstream      * @param seqno sequence number of ack to be sent upstream      * @param totalAckTimeNanos total ack time including all the downstream      *          nodes      * @param offsetInBlock offset in block for the data in packet      * @param myStatus the local ack status      */
+DECL|method|sendAckUpstreamUnprotected (PipelineAck ack, long seqno, long totalAckTimeNanos, long offsetInBlock, Status myStatus)
+specifier|private
+name|void
+name|sendAckUpstreamUnprotected
 parameter_list|(
 name|PipelineAck
 name|ack
@@ -5234,6 +5646,32 @@ name|replies
 init|=
 literal|null
 decl_stmt|;
+if|if
+condition|(
+name|ack
+operator|==
+literal|null
+condition|)
+block|{
+comment|// A new OOB response is being sent from this node. Regardless of
+comment|// downstream nodes, reply should contain one reply.
+name|replies
+operator|=
+operator|new
+name|Status
+index|[
+literal|1
+index|]
+expr_stmt|;
+name|replies
+index|[
+literal|0
+index|]
+operator|=
+name|myStatus
+expr_stmt|;
+block|}
+elseif|else
 if|if
 condition|(
 name|mirrorError
@@ -5439,19 +5877,26 @@ block|}
 comment|/**      * Remove a packet from the head of the ack queue      *       * This should be called only when the ack queue is not empty      */
 DECL|method|removeAckHead ()
 specifier|private
-specifier|synchronized
 name|void
 name|removeAckHead
 parameter_list|()
+block|{
+synchronized|synchronized
+init|(
+name|ackQueue
+init|)
 block|{
 name|ackQueue
 operator|.
 name|removeFirst
 argument_list|()
 expr_stmt|;
+name|ackQueue
+operator|.
 name|notifyAll
 argument_list|()
 expr_stmt|;
+block|}
 block|}
 block|}
 comment|/**    * This information is cached by the Datanode in the ackQueue.    */
