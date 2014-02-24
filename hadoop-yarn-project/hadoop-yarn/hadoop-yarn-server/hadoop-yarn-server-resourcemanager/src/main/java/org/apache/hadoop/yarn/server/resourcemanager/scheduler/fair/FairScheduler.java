@@ -5775,9 +5775,17 @@ block|}
 else|else
 block|{
 comment|// Reservation exists; try to fulfill the reservation
+if|if
+condition|(
 name|LOG
 operator|.
-name|info
+name|isDebugEnabled
+argument_list|()
+condition|)
+block|{
+name|LOG
+operator|.
+name|debug
 argument_list|(
 literal|"Trying to fulfill reservation for application "
 operator|+
@@ -5794,6 +5802,7 @@ operator|+
 name|node
 argument_list|)
 expr_stmt|;
+block|}
 name|node
 operator|.
 name|getReservedAppSchedulable
