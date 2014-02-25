@@ -18159,27 +18159,6 @@ operator|.
 name|READ
 argument_list|)
 expr_stmt|;
-if|if
-condition|(
-operator|!
-name|DFSUtil
-operator|.
-name|isValidName
-argument_list|(
-name|src
-argument_list|)
-condition|)
-block|{
-throw|throw
-operator|new
-name|InvalidPathException
-argument_list|(
-literal|"Invalid file name: "
-operator|+
-name|src
-argument_list|)
-throw|;
-block|}
 name|byte
 index|[]
 index|[]
