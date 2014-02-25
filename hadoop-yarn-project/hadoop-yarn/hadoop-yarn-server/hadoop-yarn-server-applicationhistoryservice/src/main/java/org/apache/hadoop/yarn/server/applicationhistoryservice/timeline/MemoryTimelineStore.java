@@ -4,7 +4,7 @@ comment|/**  * Licensed to the Apache Software Foundation (ASF) under one  * or 
 end_comment
 
 begin_package
-DECL|package|org.apache.hadoop.yarn.server.applicationhistoryservice.apptimeline
+DECL|package|org.apache.hadoop.yarn.server.applicationhistoryservice.timeline
 package|package
 name|org
 operator|.
@@ -18,7 +18,7 @@ name|server
 operator|.
 name|applicationhistoryservice
 operator|.
-name|apptimeline
+name|timeline
 package|;
 end_package
 
@@ -192,9 +192,9 @@ name|api
 operator|.
 name|records
 operator|.
-name|apptimeline
+name|timeline
 operator|.
-name|ATSEntities
+name|TimelineEntities
 import|;
 end_import
 
@@ -212,9 +212,9 @@ name|api
 operator|.
 name|records
 operator|.
-name|apptimeline
+name|timeline
 operator|.
-name|ATSEntity
+name|TimelineEntity
 import|;
 end_import
 
@@ -232,9 +232,9 @@ name|api
 operator|.
 name|records
 operator|.
-name|apptimeline
+name|timeline
 operator|.
-name|ATSEvent
+name|TimelineEvent
 import|;
 end_import
 
@@ -252,9 +252,9 @@ name|api
 operator|.
 name|records
 operator|.
-name|apptimeline
+name|timeline
 operator|.
-name|ATSEvents
+name|TimelineEvents
 import|;
 end_import
 
@@ -272,11 +272,9 @@ name|api
 operator|.
 name|records
 operator|.
-name|apptimeline
+name|timeline
 operator|.
-name|ATSEvents
-operator|.
-name|ATSEventsOfOneEntity
+name|TimelinePutResponse
 import|;
 end_import
 
@@ -294,9 +292,11 @@ name|api
 operator|.
 name|records
 operator|.
-name|apptimeline
+name|timeline
 operator|.
-name|ATSPutErrors
+name|TimelineEvents
+operator|.
+name|EventsOfOneEntity
 import|;
 end_import
 
@@ -314,16 +314,16 @@ name|api
 operator|.
 name|records
 operator|.
-name|apptimeline
+name|timeline
 operator|.
-name|ATSPutErrors
+name|TimelinePutResponse
 operator|.
-name|ATSPutError
+name|TimelinePutError
 import|;
 end_import
 
 begin_comment
-comment|/**  * In-memory implementation of {@link ApplicationTimelineStore}. This  * implementation is for test purpose only. If users improperly instantiate it,  * they may encounter reading and writing history data in different memory  * store.  *   */
+comment|/**  * In-memory implementation of {@link TimelineStore}. This  * implementation is for test purpose only. If users improperly instantiate it,  * they may encounter reading and writing history data in different memory  * store.  *   */
 end_comment
 
 begin_class
@@ -331,14 +331,14 @@ annotation|@
 name|Private
 annotation|@
 name|Unstable
-DECL|class|MemoryApplicationTimelineStore
+DECL|class|MemoryTimelineStore
 specifier|public
 class|class
-name|MemoryApplicationTimelineStore
+name|MemoryTimelineStore
 extends|extends
 name|AbstractService
 implements|implements
-name|ApplicationTimelineStore
+name|TimelineStore
 block|{
 DECL|field|entities
 specifier|private
@@ -346,7 +346,7 @@ name|Map
 argument_list|<
 name|EntityIdentifier
 argument_list|,
-name|ATSEntity
+name|TimelineEntity
 argument_list|>
 name|entities
 init|=
@@ -355,18 +355,18 @@ name|HashMap
 argument_list|<
 name|EntityIdentifier
 argument_list|,
-name|ATSEntity
+name|TimelineEntity
 argument_list|>
 argument_list|()
 decl_stmt|;
-DECL|method|MemoryApplicationTimelineStore ()
+DECL|method|MemoryTimelineStore ()
 specifier|public
-name|MemoryApplicationTimelineStore
+name|MemoryTimelineStore
 parameter_list|()
 block|{
 name|super
 argument_list|(
-name|MemoryApplicationTimelineStore
+name|MemoryTimelineStore
 operator|.
 name|class
 operator|.
@@ -379,7 +379,7 @@ annotation|@
 name|Override
 DECL|method|getEntities (String entityType, Long limit, Long windowStart, Long windowEnd, NameValuePair primaryFilter, Collection<NameValuePair> secondaryFilters, EnumSet<Field> fields)
 specifier|public
-name|ATSEntities
+name|TimelineEntities
 name|getEntities
 parameter_list|(
 name|String
@@ -471,26 +471,26 @@ expr_stmt|;
 block|}
 name|List
 argument_list|<
-name|ATSEntity
+name|TimelineEntity
 argument_list|>
 name|entitiesSelected
 init|=
 operator|new
 name|ArrayList
 argument_list|<
-name|ATSEntity
+name|TimelineEntity
 argument_list|>
 argument_list|()
 decl_stmt|;
 for|for
 control|(
-name|ATSEntity
+name|TimelineEntity
 name|entity
 range|:
 operator|new
 name|PriorityQueue
 argument_list|<
-name|ATSEntity
+name|TimelineEntity
 argument_list|>
 argument_list|(
 name|entities
@@ -559,7 +559,7 @@ operator|!=
 literal|null
 operator|&&
 operator|!
-name|matchFilter
+name|matchPrimaryFilter
 argument_list|(
 name|entity
 operator|.
@@ -636,20 +636,20 @@ expr_stmt|;
 block|}
 name|List
 argument_list|<
-name|ATSEntity
+name|TimelineEntity
 argument_list|>
 name|entitiesToReturn
 init|=
 operator|new
 name|ArrayList
 argument_list|<
-name|ATSEntity
+name|TimelineEntity
 argument_list|>
 argument_list|()
 decl_stmt|;
 for|for
 control|(
-name|ATSEntity
+name|TimelineEntity
 name|entitySelected
 range|:
 name|entitiesSelected
@@ -675,11 +675,11 @@ argument_list|(
 name|entitiesToReturn
 argument_list|)
 expr_stmt|;
-name|ATSEntities
+name|TimelineEntities
 name|entitiesWrapper
 init|=
 operator|new
-name|ATSEntities
+name|TimelineEntities
 argument_list|()
 decl_stmt|;
 name|entitiesWrapper
@@ -697,7 +697,7 @@ annotation|@
 name|Override
 DECL|method|getEntity (String entityId, String entityType, EnumSet<Field> fieldsToRetrieve)
 specifier|public
-name|ATSEntity
+name|TimelineEntity
 name|getEntity
 parameter_list|(
 name|String
@@ -732,7 +732,7 @@ name|class
 argument_list|)
 expr_stmt|;
 block|}
-name|ATSEntity
+name|TimelineEntity
 name|entity
 init|=
 name|entities
@@ -775,7 +775,7 @@ annotation|@
 name|Override
 DECL|method|getEntityTimelines (String entityType, SortedSet<String> entityIds, Long limit, Long windowStart, Long windowEnd, Set<String> eventTypes)
 specifier|public
-name|ATSEvents
+name|TimelineEvents
 name|getEntityTimelines
 parameter_list|(
 name|String
@@ -803,11 +803,11 @@ argument_list|>
 name|eventTypes
 parameter_list|)
 block|{
-name|ATSEvents
+name|TimelineEvents
 name|allEvents
 init|=
 operator|new
-name|ATSEvents
+name|TimelineEvents
 argument_list|()
 decl_stmt|;
 if|if
@@ -880,7 +880,7 @@ argument_list|,
 name|entityType
 argument_list|)
 decl_stmt|;
-name|ATSEntity
+name|TimelineEntity
 name|entity
 init|=
 name|entities
@@ -899,11 +899,11 @@ condition|)
 block|{
 continue|continue;
 block|}
-name|ATSEventsOfOneEntity
+name|EventsOfOneEntity
 name|events
 init|=
 operator|new
-name|ATSEventsOfOneEntity
+name|EventsOfOneEntity
 argument_list|()
 decl_stmt|;
 name|events
@@ -922,7 +922,7 @@ argument_list|)
 expr_stmt|;
 for|for
 control|(
-name|ATSEvent
+name|TimelineEvent
 name|event
 range|:
 name|entity
@@ -1012,25 +1012,25 @@ return|;
 block|}
 annotation|@
 name|Override
-DECL|method|put (ATSEntities data)
+DECL|method|put (TimelineEntities data)
 specifier|public
-name|ATSPutErrors
+name|TimelinePutResponse
 name|put
 parameter_list|(
-name|ATSEntities
+name|TimelineEntities
 name|data
 parameter_list|)
 block|{
-name|ATSPutErrors
-name|errors
+name|TimelinePutResponse
+name|response
 init|=
 operator|new
-name|ATSPutErrors
+name|TimelinePutResponse
 argument_list|()
 decl_stmt|;
 for|for
 control|(
-name|ATSEntity
+name|TimelineEntity
 name|entity
 range|:
 name|data
@@ -1057,7 +1057,7 @@ argument_list|()
 argument_list|)
 decl_stmt|;
 comment|// store entity info in memory
-name|ATSEntity
+name|TimelineEntity
 name|existingEntity
 init|=
 name|entities
@@ -1077,7 +1077,7 @@ block|{
 name|existingEntity
 operator|=
 operator|new
-name|ATSEntity
+name|TimelineEntity
 argument_list|()
 expr_stmt|;
 name|existingEntity
@@ -1204,11 +1204,11 @@ name|isEmpty
 argument_list|()
 condition|)
 block|{
-name|ATSPutError
+name|TimelinePutError
 name|error
 init|=
 operator|new
-name|ATSPutError
+name|TimelinePutError
 argument_list|()
 decl_stmt|;
 name|error
@@ -1235,12 +1235,12 @@ name|error
 operator|.
 name|setErrorCode
 argument_list|(
-name|ATSPutError
+name|TimelinePutError
 operator|.
 name|NO_START_TIME
 argument_list|)
 expr_stmt|;
-name|errors
+name|response
 operator|.
 name|addError
 argument_list|(
@@ -1389,7 +1389,7 @@ name|Entry
 argument_list|<
 name|String
 argument_list|,
-name|List
+name|Set
 argument_list|<
 name|String
 argument_list|>
@@ -1439,7 +1439,7 @@ name|getKey
 argument_list|()
 argument_list|)
 decl_stmt|;
-name|ATSEntity
+name|TimelineEntity
 name|relatedEntity
 init|=
 name|entities
@@ -1477,7 +1477,7 @@ block|{
 name|relatedEntity
 operator|=
 operator|new
-name|ATSEntity
+name|TimelineEntity
 argument_list|()
 expr_stmt|;
 name|relatedEntity
@@ -1539,16 +1539,16 @@ block|}
 block|}
 block|}
 return|return
-name|errors
+name|response
 return|;
 block|}
-DECL|method|maskFields ( ATSEntity entity, EnumSet<Field> fields)
+DECL|method|maskFields ( TimelineEntity entity, EnumSet<Field> fields)
 specifier|private
 specifier|static
-name|ATSEntity
+name|TimelineEntity
 name|maskFields
 parameter_list|(
-name|ATSEntity
+name|TimelineEntity
 name|entity
 parameter_list|,
 name|EnumSet
@@ -1559,11 +1559,11 @@ name|fields
 parameter_list|)
 block|{
 comment|// Conceal the fields that are not going to be exposed
-name|ATSEntity
+name|TimelineEntity
 name|entityToReturn
 init|=
 operator|new
-name|ATSEntity
+name|TimelineEntity
 argument_list|()
 decl_stmt|;
 name|entityToReturn
@@ -1774,6 +1774,70 @@ block|}
 return|return
 literal|true
 return|;
+block|}
+DECL|method|matchPrimaryFilter (Map<String, Set<Object>> tags, NameValuePair filter)
+specifier|private
+specifier|static
+name|boolean
+name|matchPrimaryFilter
+parameter_list|(
+name|Map
+argument_list|<
+name|String
+argument_list|,
+name|Set
+argument_list|<
+name|Object
+argument_list|>
+argument_list|>
+name|tags
+parameter_list|,
+name|NameValuePair
+name|filter
+parameter_list|)
+block|{
+name|Set
+argument_list|<
+name|Object
+argument_list|>
+name|value
+init|=
+name|tags
+operator|.
+name|get
+argument_list|(
+name|filter
+operator|.
+name|getName
+argument_list|()
+argument_list|)
+decl_stmt|;
+if|if
+condition|(
+name|value
+operator|==
+literal|null
+condition|)
+block|{
+comment|// doesn't have the filter
+return|return
+literal|false
+return|;
+block|}
+else|else
+block|{
+return|return
+name|value
+operator|.
+name|contains
+argument_list|(
+name|filter
+operator|.
+name|getValue
+argument_list|()
+argument_list|)
+return|;
+block|}
 block|}
 block|}
 end_class

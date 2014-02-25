@@ -4,7 +4,7 @@ comment|/**  * Licensed to the Apache Software Foundation (ASF) under one  * or 
 end_comment
 
 begin_package
-DECL|package|org.apache.hadoop.yarn.api.records.apptimeline
+DECL|package|org.apache.hadoop.yarn.api.records.timeline
 package|package
 name|org
 operator|.
@@ -18,7 +18,7 @@ name|api
 operator|.
 name|records
 operator|.
-name|apptimeline
+name|timeline
 package|;
 end_package
 
@@ -39,6 +39,16 @@ operator|.
 name|util
 operator|.
 name|HashMap
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
+name|HashSet
 import|;
 end_import
 
@@ -71,6 +81,16 @@ operator|.
 name|Map
 operator|.
 name|Entry
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
+name|Set
 import|;
 end_import
 
@@ -163,7 +183,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  *<p>  * The class that contains the the meta information of some conceptual entity of  * an application and its related events. The entity can be an application, an  * application attempt, a container or whatever the user-defined object.  *</p>  *   *<p>  * Primary filters will be used to index the entities in  *<code>ApplicationTimelineStore</code>, such that users should carefully  * choose the information they want to store as the primary filters. The  * remaining can be stored as other information.  *</p>  */
+comment|/**  *<p>  * The class that contains the the meta information of some conceptual entity  * and its related events. The entity can be an application, an application  * attempt, a container or whatever the user-defined object.  *</p>  *   *<p>  * Primary filters will be used to index the entities in  *<code>TimelineStore</code>, such that users should carefully choose the  * information they want to store as the primary filters. The remaining can be  * stored as other information.  *</p>  */
 end_comment
 
 begin_class
@@ -185,14 +205,14 @@ annotation|@
 name|Public
 annotation|@
 name|Unstable
-DECL|class|ATSEntity
+DECL|class|TimelineEntity
 specifier|public
 class|class
-name|ATSEntity
+name|TimelineEntity
 implements|implements
 name|Comparable
 argument_list|<
-name|ATSEntity
+name|TimelineEntity
 argument_list|>
 block|{
 DECL|field|entityType
@@ -214,14 +234,14 @@ DECL|field|events
 specifier|private
 name|List
 argument_list|<
-name|ATSEvent
+name|TimelineEvent
 argument_list|>
 name|events
 init|=
 operator|new
 name|ArrayList
 argument_list|<
-name|ATSEvent
+name|TimelineEvent
 argument_list|>
 argument_list|()
 decl_stmt|;
@@ -231,7 +251,7 @@ name|Map
 argument_list|<
 name|String
 argument_list|,
-name|List
+name|Set
 argument_list|<
 name|String
 argument_list|>
@@ -243,7 +263,7 @@ name|HashMap
 argument_list|<
 name|String
 argument_list|,
-name|List
+name|Set
 argument_list|<
 name|String
 argument_list|>
@@ -256,7 +276,10 @@ name|Map
 argument_list|<
 name|String
 argument_list|,
+name|Set
+argument_list|<
 name|Object
+argument_list|>
 argument_list|>
 name|primaryFilters
 init|=
@@ -265,7 +288,10 @@ name|HashMap
 argument_list|<
 name|String
 argument_list|,
+name|Set
+argument_list|<
 name|Object
+argument_list|>
 argument_list|>
 argument_list|()
 decl_stmt|;
@@ -288,9 +314,9 @@ name|Object
 argument_list|>
 argument_list|()
 decl_stmt|;
-DECL|method|ATSEntity ()
+DECL|method|TimelineEntity ()
 specifier|public
-name|ATSEntity
+name|TimelineEntity
 parameter_list|()
 block|{    }
 comment|/**    * Get the entity type    *     * @return the entity type    */
@@ -410,7 +436,7 @@ DECL|method|getEvents ()
 specifier|public
 name|List
 argument_list|<
-name|ATSEvent
+name|TimelineEvent
 argument_list|>
 name|getEvents
 parameter_list|()
@@ -420,12 +446,12 @@ name|events
 return|;
 block|}
 comment|/**    * Add a single event related to the entity to the existing event list    *     * @param event    *          a single event related to the entity    */
-DECL|method|addEvent (ATSEvent event)
+DECL|method|addEvent (TimelineEvent event)
 specifier|public
 name|void
 name|addEvent
 parameter_list|(
-name|ATSEvent
+name|TimelineEvent
 name|event
 parameter_list|)
 block|{
@@ -438,14 +464,14 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|/**    * Add a list of events related to the entity to the existing event list    *     * @param events    *          a list of events related to the entity    */
-DECL|method|addEvents (List<ATSEvent> events)
+DECL|method|addEvents (List<TimelineEvent> events)
 specifier|public
 name|void
 name|addEvents
 parameter_list|(
 name|List
 argument_list|<
-name|ATSEvent
+name|TimelineEvent
 argument_list|>
 name|events
 parameter_list|)
@@ -461,14 +487,14 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|/**    * Set the event list to the given list of events related to the entity    *     * @param events    *          events a list of events related to the entity    */
-DECL|method|setEvents (List<ATSEvent> events)
+DECL|method|setEvents (List<TimelineEvent> events)
 specifier|public
 name|void
 name|setEvents
 parameter_list|(
 name|List
 argument_list|<
-name|ATSEvent
+name|TimelineEvent
 argument_list|>
 name|events
 parameter_list|)
@@ -494,7 +520,7 @@ name|Map
 argument_list|<
 name|String
 argument_list|,
-name|List
+name|Set
 argument_list|<
 name|String
 argument_list|>
@@ -519,7 +545,7 @@ name|String
 name|entityId
 parameter_list|)
 block|{
-name|List
+name|Set
 argument_list|<
 name|String
 argument_list|>
@@ -542,7 +568,7 @@ block|{
 name|thisRelatedEntity
 operator|=
 operator|new
-name|ArrayList
+name|HashSet
 argument_list|<
 name|String
 argument_list|>
@@ -567,7 +593,7 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|/**    * Add a map of related entities to the existing related entity map    *     * @param relatedEntities    *          a map of related entities    */
-DECL|method|addRelatedEntities (Map<String, List<String>> relatedEntities)
+DECL|method|addRelatedEntities (Map<String, Set<String>> relatedEntities)
 specifier|public
 name|void
 name|addRelatedEntities
@@ -576,7 +602,7 @@ name|Map
 argument_list|<
 name|String
 argument_list|,
-name|List
+name|Set
 argument_list|<
 name|String
 argument_list|>
@@ -590,7 +616,7 @@ name|Entry
 argument_list|<
 name|String
 argument_list|,
-name|List
+name|Set
 argument_list|<
 name|String
 argument_list|>
@@ -603,7 +629,7 @@ name|entrySet
 argument_list|()
 control|)
 block|{
-name|List
+name|Set
 argument_list|<
 name|String
 argument_list|>
@@ -662,7 +688,7 @@ block|}
 block|}
 block|}
 comment|/**    * Set the related entity map to the given map of related entities    *     * @param relatedEntities    *          a map of related entities    */
-DECL|method|setRelatedEntities ( Map<String, List<String>> relatedEntities)
+DECL|method|setRelatedEntities ( Map<String, Set<String>> relatedEntities)
 specifier|public
 name|void
 name|setRelatedEntities
@@ -671,7 +697,7 @@ name|Map
 argument_list|<
 name|String
 argument_list|,
-name|List
+name|Set
 argument_list|<
 name|String
 argument_list|>
@@ -700,7 +726,10 @@ name|Map
 argument_list|<
 name|String
 argument_list|,
+name|Set
+argument_list|<
 name|Object
+argument_list|>
 argument_list|>
 name|getPrimaryFilters
 parameter_list|()
@@ -722,18 +751,55 @@ name|Object
 name|value
 parameter_list|)
 block|{
+name|Set
+argument_list|<
+name|Object
+argument_list|>
+name|thisPrimaryFilter
+init|=
+name|primaryFilters
+operator|.
+name|get
+argument_list|(
+name|key
+argument_list|)
+decl_stmt|;
+if|if
+condition|(
+name|thisPrimaryFilter
+operator|==
+literal|null
+condition|)
+block|{
+name|thisPrimaryFilter
+operator|=
+operator|new
+name|HashSet
+argument_list|<
+name|Object
+argument_list|>
+argument_list|()
+expr_stmt|;
 name|primaryFilters
 operator|.
 name|put
 argument_list|(
 name|key
 argument_list|,
+name|thisPrimaryFilter
+argument_list|)
+expr_stmt|;
+block|}
+name|thisPrimaryFilter
+operator|.
+name|add
+argument_list|(
 name|value
 argument_list|)
 expr_stmt|;
 block|}
 comment|/**    * Add a map of primary filters to the existing primary filter map    *     * @param primaryFilters    *          a map of primary filters    */
-DECL|method|addPrimaryFilters (Map<String, Object> primaryFilters)
+DECL|method|addPrimaryFilters (Map<String, Set<Object>> primaryFilters)
 specifier|public
 name|void
 name|addPrimaryFilters
@@ -742,23 +808,93 @@ name|Map
 argument_list|<
 name|String
 argument_list|,
+name|Set
+argument_list|<
 name|Object
+argument_list|>
 argument_list|>
 name|primaryFilters
 parameter_list|)
+block|{
+for|for
+control|(
+name|Entry
+argument_list|<
+name|String
+argument_list|,
+name|Set
+argument_list|<
+name|Object
+argument_list|>
+argument_list|>
+name|primaryFilter
+range|:
+name|primaryFilters
+operator|.
+name|entrySet
+argument_list|()
+control|)
+block|{
+name|Set
+argument_list|<
+name|Object
+argument_list|>
+name|thisPrimaryFilter
+init|=
+name|this
+operator|.
+name|primaryFilters
+operator|.
+name|get
+argument_list|(
+name|primaryFilter
+operator|.
+name|getKey
+argument_list|()
+argument_list|)
+decl_stmt|;
+if|if
+condition|(
+name|thisPrimaryFilter
+operator|==
+literal|null
+condition|)
 block|{
 name|this
 operator|.
 name|primaryFilters
 operator|.
-name|putAll
+name|put
 argument_list|(
-name|primaryFilters
+name|primaryFilter
+operator|.
+name|getKey
+argument_list|()
+argument_list|,
+name|primaryFilter
+operator|.
+name|getValue
+argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
+else|else
+block|{
+name|thisPrimaryFilter
+operator|.
+name|addAll
+argument_list|(
+name|primaryFilter
+operator|.
+name|getValue
+argument_list|()
+argument_list|)
+expr_stmt|;
+block|}
+block|}
+block|}
 comment|/**    * Set the primary filter map to the given map of primary filters    *     * @param primaryFilters    *          a map of primary filters    */
-DECL|method|setPrimaryFilters (Map<String, Object> primaryFilters)
+DECL|method|setPrimaryFilters (Map<String, Set<Object>> primaryFilters)
 specifier|public
 name|void
 name|setPrimaryFilters
@@ -767,7 +903,10 @@ name|Map
 argument_list|<
 name|String
 argument_list|,
+name|Set
+argument_list|<
 name|Object
+argument_list|>
 argument_list|>
 name|primaryFilters
 parameter_list|)
@@ -1088,11 +1227,11 @@ condition|)
 return|return
 literal|false
 return|;
-name|ATSEntity
+name|TimelineEntity
 name|other
 init|=
 operator|(
-name|ATSEntity
+name|TimelineEntity
 operator|)
 name|obj
 decl_stmt|;
@@ -1347,12 +1486,12 @@ return|;
 block|}
 annotation|@
 name|Override
-DECL|method|compareTo (ATSEntity other)
+DECL|method|compareTo (TimelineEntity other)
 specifier|public
 name|int
 name|compareTo
 parameter_list|(
-name|ATSEntity
+name|TimelineEntity
 name|other
 parameter_list|)
 block|{

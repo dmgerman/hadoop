@@ -4,7 +4,7 @@ comment|/**  * Licensed to the Apache Software Foundation (ASF) under one  * or 
 end_comment
 
 begin_package
-DECL|package|org.apache.hadoop.yarn.util
+DECL|package|org.apache.hadoop.yarn.util.timeline
 package|package
 name|org
 operator|.
@@ -15,6 +15,8 @@ operator|.
 name|yarn
 operator|.
 name|util
+operator|.
+name|timeline
 package|;
 end_package
 

@@ -4,7 +4,7 @@ comment|/**  * Licensed to the Apache Software Foundation (ASF) under one  * or 
 end_comment
 
 begin_package
-DECL|package|org.apache.hadoop.yarn.server.applicationhistoryservice.apptimeline
+DECL|package|org.apache.hadoop.yarn.server.applicationhistoryservice.timeline
 package|package
 name|org
 operator|.
@@ -18,7 +18,7 @@ name|server
 operator|.
 name|applicationhistoryservice
 operator|.
-name|apptimeline
+name|timeline
 package|;
 end_package
 
@@ -51,7 +51,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * A class holding a name and value pair, used for specifying filters in  * {@link ApplicationTimelineReader}.  */
+comment|/**  * A class holding a name and value pair, used for specifying filters in  * {@link TimelineReader}.  */
 end_comment
 
 begin_class

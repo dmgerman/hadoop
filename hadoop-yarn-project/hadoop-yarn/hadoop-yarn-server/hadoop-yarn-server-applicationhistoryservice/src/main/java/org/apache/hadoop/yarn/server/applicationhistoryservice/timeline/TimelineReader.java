@@ -4,7 +4,7 @@ comment|/**  * Licensed to the Apache Software Foundation (ASF) under one  * or 
 end_comment
 
 begin_package
-DECL|package|org.apache.hadoop.yarn.server.applicationhistoryservice.apptimeline
+DECL|package|org.apache.hadoop.yarn.server.applicationhistoryservice.timeline
 package|package
 name|org
 operator|.
@@ -18,7 +18,7 @@ name|server
 operator|.
 name|applicationhistoryservice
 operator|.
-name|apptimeline
+name|timeline
 package|;
 end_package
 
@@ -114,9 +114,9 @@ name|api
 operator|.
 name|records
 operator|.
-name|apptimeline
+name|timeline
 operator|.
-name|ATSEntities
+name|TimelineEntities
 import|;
 end_import
 
@@ -134,9 +134,9 @@ name|api
 operator|.
 name|records
 operator|.
-name|apptimeline
+name|timeline
 operator|.
-name|ATSEntity
+name|TimelineEntity
 import|;
 end_import
 
@@ -154,14 +154,14 @@ name|api
 operator|.
 name|records
 operator|.
-name|apptimeline
+name|timeline
 operator|.
-name|ATSEvents
+name|TimelineEvents
 import|;
 end_import
 
 begin_comment
-comment|/**  * This interface is for retrieving application timeline information.  */
+comment|/**  * This interface is for retrieving timeline information.  */
 end_comment
 
 begin_interface
@@ -173,12 +173,12 @@ annotation|@
 name|InterfaceStability
 operator|.
 name|Unstable
-DECL|interface|ApplicationTimelineReader
+DECL|interface|TimelineReader
 specifier|public
 interface|interface
-name|ApplicationTimelineReader
+name|TimelineReader
 block|{
-comment|/**    * Possible fields to retrieve for {@link #getEntities} and {@link    * #getEntity}.    */
+comment|/**    * Possible fields to retrieve for {@link #getEntities} and {@link #getEntity}    * .    */
 DECL|enum|Field
 enum|enum
 name|Field
@@ -206,9 +206,9 @@ name|DEFAULT_LIMIT
 init|=
 literal|100
 decl_stmt|;
-comment|/**    * This method retrieves a list of entity information, {@link ATSEntity},    * sorted by the starting timestamp for the entity, descending.    *    * @param entityType The type of entities to return (required).    * @param limit A limit on the number of entities to return. If null,    *              defaults to {@link #DEFAULT_LIMIT}.    * @param windowStart The earliest start timestamp to retrieve (exclusive).    *                    If null, defaults to retrieving all entities until the    *                    limit is reached.    * @param windowEnd The latest start timestamp to retrieve (inclusive).    *                  If null, defaults to {@link Long#MAX_VALUE}    * @param primaryFilter Retrieves only entities that have the specified    *                      primary filter. If null, retrieves all entities.    *                      This is an indexed retrieval, and no entities that    *                      do not match the filter are scanned.    * @param secondaryFilters Retrieves only entities that have exact matches    *                         for all the specified filters in their primary    *                         filters or other info. This is not an indexed    *                         retrieval, so all entities are scanned but only    *                         those matching the filters are returned.    * @param fieldsToRetrieve Specifies which fields of the entity object to    *                         retrieve (see {@link Field}). If the set of fields    *                         contains {@link Field#LAST_EVENT_ONLY} and not    *                         {@link Field#EVENTS}, the most recent event for    *                         each entity is retrieved. If null, retrieves all    *                         fields.    * @return An {@link ATSEntities} object.    * @throws IOException    */
+comment|/**    * This method retrieves a list of entity information, {@link TimelineEntity}, sorted    * by the starting timestamp for the entity, descending.    *     * @param entityType    *          The type of entities to return (required).    * @param limit    *          A limit on the number of entities to return. If null, defaults to    *          {@link #DEFAULT_LIMIT}.    * @param windowStart    *          The earliest start timestamp to retrieve (exclusive). If null,    *          defaults to retrieving all entities until the limit is reached.    * @param windowEnd    *          The latest start timestamp to retrieve (inclusive). If null,    *          defaults to {@link Long#MAX_VALUE}    * @param primaryFilter    *          Retrieves only entities that have the specified primary filter. If    *          null, retrieves all entities. This is an indexed retrieval, and no    *          entities that do not match the filter are scanned.    * @param secondaryFilters    *          Retrieves only entities that have exact matches for all the    *          specified filters in their primary filters or other info. This is    *          not an indexed retrieval, so all entities are scanned but only    *          those matching the filters are returned.    * @param fieldsToRetrieve    *          Specifies which fields of the entity object to retrieve (see    *          {@link Field}). If the set of fields contains    *          {@link Field#LAST_EVENT_ONLY} and not {@link Field#EVENTS}, the    *          most recent event for each entity is retrieved. If null, retrieves    *          all fields.    * @return An {@link TimelineEntities} object.    * @throws IOException    */
 DECL|method|getEntities (String entityType, Long limit, Long windowStart, Long windowEnd, NameValuePair primaryFilter, Collection<NameValuePair> secondaryFilters, EnumSet<Field> fieldsToRetrieve)
-name|ATSEntities
+name|TimelineEntities
 name|getEntities
 parameter_list|(
 name|String
@@ -241,13 +241,13 @@ parameter_list|)
 throws|throws
 name|IOException
 function_decl|;
-comment|/**    * This method retrieves the entity information for a given entity.    *    * @param entity The entity whose information will be retrieved.    * @param entityType The type of the entity.    * @param fieldsToRetrieve Specifies which fields of the entity object to    *                         retrieve (see {@link Field}). If the set of    *                         fields contains {@link Field#LAST_EVENT_ONLY} and    *                         not {@link Field#EVENTS}, the most recent event    *                         for each entity is retrieved. If null, retrieves    *                         all fields.    * @return An {@link ATSEntity} object.    * @throws IOException    */
-DECL|method|getEntity (String entity, String entityType, EnumSet<Field> fieldsToRetrieve)
-name|ATSEntity
+comment|/**    * This method retrieves the entity information for a given entity.    *     * @param entityId    *          The entity whose information will be retrieved.    * @param entityType    *          The type of the entity.    * @param fieldsToRetrieve    *          Specifies which fields of the entity object to retrieve (see    *          {@link Field}). If the set of fields contains    *          {@link Field#LAST_EVENT_ONLY} and not {@link Field#EVENTS}, the    *          most recent event for each entity is retrieved. If null, retrieves    *          all fields.    * @return An {@link TimelineEntity} object.    * @throws IOException    */
+DECL|method|getEntity (String entityId, String entityType, EnumSet<Field> fieldsToRetrieve)
+name|TimelineEntity
 name|getEntity
 parameter_list|(
 name|String
-name|entity
+name|entityId
 parameter_list|,
 name|String
 name|entityType
@@ -261,9 +261,9 @@ parameter_list|)
 throws|throws
 name|IOException
 function_decl|;
-comment|/**    * This method retrieves the events for a list of entities all of the same    * entity type. The events for each entity are sorted in order of their    * timestamps, descending.    *    * @param entityType The type of entities to retrieve events for.    * @param entityIds The entity IDs to retrieve events for.    * @param limit A limit on the number of events to return for each entity.    *              If null, defaults to  {@link #DEFAULT_LIMIT} events per    *              entity.    * @param windowStart If not null, retrieves only events later than the    *                    given time (exclusive)    * @param windowEnd If not null, retrieves only events earlier than the    *                  given time (inclusive)    * @param eventTypes Restricts the events returned to the given types. If    *                   null, events of all types will be returned.    * @return An {@link ATSEvents} object.    * @throws IOException    */
+comment|/**    * This method retrieves the events for a list of entities all of the same    * entity type. The events for each entity are sorted in order of their    * timestamps, descending.    *     * @param entityType    *          The type of entities to retrieve events for.    * @param entityIds    *          The entity IDs to retrieve events for.    * @param limit    *          A limit on the number of events to return for each entity. If    *          null, defaults to {@link #DEFAULT_LIMIT} events per entity.    * @param windowStart    *          If not null, retrieves only events later than the given time    *          (exclusive)    * @param windowEnd    *          If not null, retrieves only events earlier than the given time    *          (inclusive)    * @param eventTypes    *          Restricts the events returned to the given types. If null, events    *          of all types will be returned.    * @return An {@link TimelineEvents} object.    * @throws IOException    */
 DECL|method|getEntityTimelines (String entityType, SortedSet<String> entityIds, Long limit, Long windowStart, Long windowEnd, Set<String> eventTypes)
-name|ATSEvents
+name|TimelineEvents
 name|getEntityTimelines
 parameter_list|(
 name|String

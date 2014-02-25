@@ -11,7 +11,7 @@ name|Public
 end_annotation
 
 begin_package
-DECL|package|org.apache.hadoop.yarn.api.records.apptimeline
+DECL|package|org.apache.hadoop.yarn.api.records.timeline
 package|package
 name|org
 operator|.
@@ -25,7 +25,7 @@ name|api
 operator|.
 name|records
 operator|.
-name|apptimeline
+name|timeline
 package|;
 end_package
 

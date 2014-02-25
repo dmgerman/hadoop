@@ -770,7 +770,7 @@ name|setBoolean
 argument_list|(
 name|YarnConfiguration
 operator|.
-name|YARN_HISTORY_SERVICE_ENABLED
+name|APPLICATION_HISTORY_ENABLED
 argument_list|,
 literal|true
 argument_list|)

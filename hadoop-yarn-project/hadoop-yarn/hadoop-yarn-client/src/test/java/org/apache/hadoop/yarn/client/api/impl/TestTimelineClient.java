@@ -106,9 +106,9 @@ name|api
 operator|.
 name|records
 operator|.
-name|apptimeline
+name|timeline
 operator|.
-name|ATSEntities
+name|TimelineEntities
 import|;
 end_import
 
@@ -126,9 +126,9 @@ name|api
 operator|.
 name|records
 operator|.
-name|apptimeline
+name|timeline
 operator|.
-name|ATSEntity
+name|TimelineEntity
 import|;
 end_import
 
@@ -146,9 +146,9 @@ name|api
 operator|.
 name|records
 operator|.
-name|apptimeline
+name|timeline
 operator|.
-name|ATSEvent
+name|TimelineEvent
 import|;
 end_import
 
@@ -166,9 +166,9 @@ name|api
 operator|.
 name|records
 operator|.
-name|apptimeline
+name|timeline
 operator|.
-name|ATSPutErrors
+name|TimelinePutResponse
 import|;
 end_import
 
@@ -352,14 +352,14 @@ argument_list|)
 expr_stmt|;
 try|try
 block|{
-name|ATSPutErrors
-name|errors
+name|TimelinePutResponse
+name|response
 init|=
 name|client
 operator|.
-name|postEntities
+name|putEntities
 argument_list|(
-name|generateATSEntity
+name|generateEntity
 argument_list|()
 argument_list|)
 decl_stmt|;
@@ -369,7 +369,7 @@ name|assertEquals
 argument_list|(
 literal|0
 argument_list|,
-name|errors
+name|response
 operator|.
 name|getErrors
 argument_list|()
@@ -417,14 +417,14 @@ argument_list|)
 expr_stmt|;
 try|try
 block|{
-name|ATSPutErrors
-name|errors
+name|TimelinePutResponse
+name|response
 init|=
 name|client
 operator|.
-name|postEntities
+name|putEntities
 argument_list|(
-name|generateATSEntity
+name|generateEntity
 argument_list|()
 argument_list|)
 decl_stmt|;
@@ -434,7 +434,7 @@ name|assertEquals
 argument_list|(
 literal|1
 argument_list|,
-name|errors
+name|response
 operator|.
 name|getErrors
 argument_list|()
@@ -449,7 +449,7 @@ name|assertEquals
 argument_list|(
 literal|"test entity id"
 argument_list|,
-name|errors
+name|response
 operator|.
 name|getErrors
 argument_list|()
@@ -469,7 +469,7 @@ name|assertEquals
 argument_list|(
 literal|"test entity type"
 argument_list|,
-name|errors
+name|response
 operator|.
 name|getErrors
 argument_list|()
@@ -487,13 +487,13 @@ name|Assert
 operator|.
 name|assertEquals
 argument_list|(
-name|ATSPutErrors
+name|TimelinePutResponse
 operator|.
-name|ATSPutError
+name|TimelinePutError
 operator|.
 name|IO_EXCEPTION
 argument_list|,
-name|errors
+name|response
 operator|.
 name|getErrors
 argument_list|()
@@ -548,9 +548,9 @@ try|try
 block|{
 name|client
 operator|.
-name|postEntities
+name|putEntities
 argument_list|(
-name|generateATSEntity
+name|generateEntity
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -623,7 +623,7 @@ name|doPostingEntities
 argument_list|(
 name|any
 argument_list|(
-name|ATSEntities
+name|TimelineEntities
 operator|.
 name|class
 argument_list|)
@@ -642,15 +642,15 @@ argument_list|(
 name|status
 argument_list|)
 expr_stmt|;
-name|ATSPutErrors
+name|TimelinePutResponse
 operator|.
-name|ATSPutError
+name|TimelinePutError
 name|error
 init|=
 operator|new
-name|ATSPutErrors
+name|TimelinePutResponse
 operator|.
-name|ATSPutError
+name|TimelinePutError
 argument_list|()
 decl_stmt|;
 name|error
@@ -671,18 +671,18 @@ name|error
 operator|.
 name|setErrorCode
 argument_list|(
-name|ATSPutErrors
+name|TimelinePutResponse
 operator|.
-name|ATSPutError
+name|TimelinePutError
 operator|.
 name|IO_EXCEPTION
 argument_list|)
 expr_stmt|;
-name|ATSPutErrors
-name|errors
+name|TimelinePutResponse
+name|putResponse
 init|=
 operator|new
-name|ATSPutErrors
+name|TimelinePutResponse
 argument_list|()
 decl_stmt|;
 if|if
@@ -690,7 +690,7 @@ condition|(
 name|hasError
 condition|)
 block|{
-name|errors
+name|putResponse
 operator|.
 name|addError
 argument_list|(
@@ -704,7 +704,7 @@ name|response
 operator|.
 name|getEntity
 argument_list|(
-name|ATSPutErrors
+name|TimelinePutResponse
 operator|.
 name|class
 argument_list|)
@@ -712,25 +712,25 @@ argument_list|)
 operator|.
 name|thenReturn
 argument_list|(
-name|errors
+name|putResponse
 argument_list|)
 expr_stmt|;
 return|return
 name|response
 return|;
 block|}
-DECL|method|generateATSEntity ()
+DECL|method|generateEntity ()
 specifier|private
 specifier|static
-name|ATSEntity
-name|generateATSEntity
+name|TimelineEntity
+name|generateEntity
 parameter_list|()
 block|{
-name|ATSEntity
+name|TimelineEntity
 name|entity
 init|=
 operator|new
-name|ATSEntity
+name|TimelineEntity
 argument_list|()
 decl_stmt|;
 name|entity
@@ -772,11 +772,11 @@ operator|++
 name|i
 control|)
 block|{
-name|ATSEvent
+name|TimelineEvent
 name|event
 init|=
 operator|new
-name|ATSEvent
+name|TimelineEvent
 argument_list|()
 decl_stmt|;
 name|event

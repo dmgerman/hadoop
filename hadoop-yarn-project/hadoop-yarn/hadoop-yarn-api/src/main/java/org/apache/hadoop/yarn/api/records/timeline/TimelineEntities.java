@@ -4,7 +4,7 @@ comment|/**  * Licensed to the Apache Software Foundation (ASF) under one  * or 
 end_comment
 
 begin_package
-DECL|package|org.apache.hadoop.yarn.api.records.apptimeline
+DECL|package|org.apache.hadoop.yarn.api.records.timeline
 package|package
 name|org
 operator|.
@@ -18,7 +18,7 @@ name|api
 operator|.
 name|records
 operator|.
-name|apptimeline
+name|timeline
 package|;
 end_package
 
@@ -131,7 +131,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * The class that hosts a list of application timeline entities.  */
+comment|/**  * The class that hosts a list of timeline entities.  */
 end_comment
 
 begin_class
@@ -153,29 +153,29 @@ annotation|@
 name|Public
 annotation|@
 name|Unstable
-DECL|class|ATSEntities
+DECL|class|TimelineEntities
 specifier|public
 class|class
-name|ATSEntities
+name|TimelineEntities
 block|{
 DECL|field|entities
 specifier|private
 name|List
 argument_list|<
-name|ATSEntity
+name|TimelineEntity
 argument_list|>
 name|entities
 init|=
 operator|new
 name|ArrayList
 argument_list|<
-name|ATSEntity
+name|TimelineEntity
 argument_list|>
 argument_list|()
 decl_stmt|;
-DECL|method|ATSEntities ()
+DECL|method|TimelineEntities ()
 specifier|public
-name|ATSEntities
+name|TimelineEntities
 parameter_list|()
 block|{    }
 comment|/**    * Get a list of entities    *     * @return a list of entities    */
@@ -190,7 +190,7 @@ DECL|method|getEntities ()
 specifier|public
 name|List
 argument_list|<
-name|ATSEntity
+name|TimelineEntity
 argument_list|>
 name|getEntities
 parameter_list|()
@@ -200,12 +200,12 @@ name|entities
 return|;
 block|}
 comment|/**    * Add a single entity into the existing entity list    *     * @param entity    *          a single entity    */
-DECL|method|addEntity (ATSEntity entity)
+DECL|method|addEntity (TimelineEntity entity)
 specifier|public
 name|void
 name|addEntity
 parameter_list|(
-name|ATSEntity
+name|TimelineEntity
 name|entity
 parameter_list|)
 block|{
@@ -218,14 +218,14 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|/**    * All a list of entities into the existing entity list    *     * @param entities    *          a list of entities    */
-DECL|method|addEntities (List<ATSEntity> entities)
+DECL|method|addEntities (List<TimelineEntity> entities)
 specifier|public
 name|void
 name|addEntities
 parameter_list|(
 name|List
 argument_list|<
-name|ATSEntity
+name|TimelineEntity
 argument_list|>
 name|entities
 parameter_list|)
@@ -241,14 +241,14 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|/**    * Set the entity list to the given list of entities    *     * @param entities    *          a list of entities    */
-DECL|method|setEntities (List<ATSEntity> entities)
+DECL|method|setEntities (List<TimelineEntity> entities)
 specifier|public
 name|void
 name|setEntities
 parameter_list|(
 name|List
 argument_list|<
-name|ATSEntity
+name|TimelineEntity
 argument_list|>
 name|entities
 parameter_list|)

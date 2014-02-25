@@ -836,11 +836,11 @@ name|get
 argument_list|(
 name|YarnConfiguration
 operator|.
-name|AHS_WEBAPP_HTTPS_ADDRESS
+name|TIMELINE_SERVICE_WEBAPP_HTTPS_ADDRESS
 argument_list|,
 name|YarnConfiguration
 operator|.
-name|DEFAULT_AHS_WEBAPP_HTTPS_ADDRESS
+name|DEFAULT_TIMELINE_SERVICE_WEBAPP_HTTPS_ADDRESS
 argument_list|)
 return|;
 block|}
@@ -853,11 +853,11 @@ name|get
 argument_list|(
 name|YarnConfiguration
 operator|.
-name|AHS_WEBAPP_ADDRESS
+name|TIMELINE_SERVICE_WEBAPP_ADDRESS
 argument_list|,
 name|YarnConfiguration
 operator|.
-name|DEFAULT_AHS_WEBAPP_ADDRESS
+name|DEFAULT_TIMELINE_SERVICE_WEBAPP_ADDRESS
 argument_list|)
 return|;
 block|}

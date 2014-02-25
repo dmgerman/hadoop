@@ -1331,6 +1331,8 @@ name|void
 name|run
 parameter_list|()
 block|{
+try|try
+block|{
 name|LOG
 operator|.
 name|info
@@ -1367,6 +1369,26 @@ operator|.
 name|rebootNodeStatusUpdater
 argument_list|()
 expr_stmt|;
+block|}
+catch|catch
+parameter_list|(
+name|YarnRuntimeException
+name|e
+parameter_list|)
+block|{
+name|LOG
+operator|.
+name|fatal
+argument_list|(
+literal|"Error while rebooting NodeStatusUpdater."
+argument_list|,
+name|e
+argument_list|)
+expr_stmt|;
+name|shutDown
+argument_list|()
+expr_stmt|;
+block|}
 block|}
 block|}
 operator|.

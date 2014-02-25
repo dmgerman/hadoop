@@ -4,7 +4,7 @@ comment|/**  * Licensed to the Apache Software Foundation (ASF) under one  * or 
 end_comment
 
 begin_package
-DECL|package|org.apache.hadoop.yarn.api.records.apptimeline
+DECL|package|org.apache.hadoop.yarn.api.records.timeline
 package|package
 name|org
 operator|.
@@ -18,7 +18,7 @@ name|api
 operator|.
 name|records
 operator|.
-name|apptimeline
+name|timeline
 package|;
 end_package
 
@@ -153,14 +153,14 @@ annotation|@
 name|Public
 annotation|@
 name|Unstable
-DECL|class|ATSEvent
+DECL|class|TimelineEvent
 specifier|public
 class|class
-name|ATSEvent
+name|TimelineEvent
 implements|implements
 name|Comparable
 argument_list|<
-name|ATSEvent
+name|TimelineEvent
 argument_list|>
 block|{
 DECL|field|timestamp
@@ -192,9 +192,9 @@ name|Object
 argument_list|>
 argument_list|()
 decl_stmt|;
-DECL|method|ATSEvent ()
+DECL|method|TimelineEvent ()
 specifier|public
-name|ATSEvent
+name|TimelineEvent
 parameter_list|()
 block|{   }
 comment|/**    * Get the timestamp of the event    *     * @return the timestamp of the event    */
@@ -364,12 +364,12 @@ expr_stmt|;
 block|}
 annotation|@
 name|Override
-DECL|method|compareTo (ATSEvent other)
+DECL|method|compareTo (TimelineEvent other)
 specifier|public
 name|int
 name|compareTo
 parameter_list|(
-name|ATSEvent
+name|TimelineEvent
 name|other
 parameter_list|)
 block|{
@@ -452,11 +452,11 @@ condition|)
 return|return
 literal|false
 return|;
-name|ATSEvent
-name|atsEvent
+name|TimelineEvent
+name|event
 init|=
 operator|(
-name|ATSEvent
+name|TimelineEvent
 operator|)
 name|o
 decl_stmt|;
@@ -464,7 +464,7 @@ if|if
 condition|(
 name|timestamp
 operator|!=
-name|atsEvent
+name|event
 operator|.
 name|timestamp
 condition|)
@@ -478,7 +478,7 @@ name|eventType
 operator|.
 name|equals
 argument_list|(
-name|atsEvent
+name|event
 operator|.
 name|eventType
 argument_list|)
@@ -497,12 +497,12 @@ name|eventInfo
 operator|.
 name|equals
 argument_list|(
-name|atsEvent
+name|event
 operator|.
 name|eventInfo
 argument_list|)
 else|:
-name|atsEvent
+name|event
 operator|.
 name|eventInfo
 operator|!=

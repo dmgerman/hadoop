@@ -90,9 +90,9 @@ name|server
 operator|.
 name|applicationhistoryservice
 operator|.
-name|apptimeline
+name|timeline
 operator|.
-name|ApplicationTimelineStore
+name|TimelineStore
 import|;
 end_import
 
@@ -176,21 +176,21 @@ specifier|final
 name|ApplicationHistoryManager
 name|applicationHistoryManager
 decl_stmt|;
-DECL|field|applicationTimelineStore
+DECL|field|timelineStore
 specifier|private
 specifier|final
-name|ApplicationTimelineStore
-name|applicationTimelineStore
+name|TimelineStore
+name|timelineStore
 decl_stmt|;
-DECL|method|AHSWebApp (ApplicationHistoryManager applicationHistoryManager, ApplicationTimelineStore applicationTimelineStore)
+DECL|method|AHSWebApp (ApplicationHistoryManager applicationHistoryManager, TimelineStore timelineStore)
 specifier|public
 name|AHSWebApp
 parameter_list|(
 name|ApplicationHistoryManager
 name|applicationHistoryManager
 parameter_list|,
-name|ApplicationTimelineStore
-name|applicationTimelineStore
+name|TimelineStore
+name|timelineStore
 parameter_list|)
 block|{
 name|this
@@ -201,9 +201,9 @@ name|applicationHistoryManager
 expr_stmt|;
 name|this
 operator|.
-name|applicationTimelineStore
+name|timelineStore
 operator|=
-name|applicationTimelineStore
+name|timelineStore
 expr_stmt|;
 block|}
 annotation|@
@@ -230,7 +230,7 @@ argument_list|)
 expr_stmt|;
 name|bind
 argument_list|(
-name|ATSWebServices
+name|TimelineWebServices
 operator|.
 name|class
 argument_list|)
@@ -256,14 +256,14 @@ argument_list|)
 expr_stmt|;
 name|bind
 argument_list|(
-name|ApplicationTimelineStore
+name|TimelineStore
 operator|.
 name|class
 argument_list|)
 operator|.
 name|toInstance
 argument_list|(
-name|applicationTimelineStore
+name|timelineStore
 argument_list|)
 expr_stmt|;
 name|route

@@ -4,7 +4,7 @@ comment|/**  * Licensed to the Apache Software Foundation (ASF) under one  * or 
 end_comment
 
 begin_package
-DECL|package|org.apache.hadoop.yarn.server.applicationhistoryservice.apptimeline
+DECL|package|org.apache.hadoop.yarn.server.applicationhistoryservice.timeline
 package|package
 name|org
 operator|.
@@ -18,7 +18,7 @@ name|server
 operator|.
 name|applicationhistoryservice
 operator|.
-name|apptimeline
+name|timeline
 package|;
 end_package
 
@@ -330,9 +330,9 @@ name|api
 operator|.
 name|records
 operator|.
-name|apptimeline
+name|timeline
 operator|.
-name|ATSEntities
+name|TimelineEntities
 import|;
 end_import
 
@@ -350,9 +350,9 @@ name|api
 operator|.
 name|records
 operator|.
-name|apptimeline
+name|timeline
 operator|.
-name|ATSEntity
+name|TimelineEntity
 import|;
 end_import
 
@@ -370,9 +370,9 @@ name|api
 operator|.
 name|records
 operator|.
-name|apptimeline
+name|timeline
 operator|.
-name|ATSEvent
+name|TimelineEvent
 import|;
 end_import
 
@@ -390,9 +390,9 @@ name|api
 operator|.
 name|records
 operator|.
-name|apptimeline
+name|timeline
 operator|.
-name|ATSEvents
+name|TimelineEvents
 import|;
 end_import
 
@@ -410,11 +410,9 @@ name|api
 operator|.
 name|records
 operator|.
-name|apptimeline
+name|timeline
 operator|.
-name|ATSEvents
-operator|.
-name|ATSEventsOfOneEntity
+name|TimelinePutResponse
 import|;
 end_import
 
@@ -432,9 +430,11 @@ name|api
 operator|.
 name|records
 operator|.
-name|apptimeline
+name|timeline
 operator|.
-name|ATSPutErrors
+name|TimelineEvents
+operator|.
+name|EventsOfOneEntity
 import|;
 end_import
 
@@ -452,11 +452,11 @@ name|api
 operator|.
 name|records
 operator|.
-name|apptimeline
+name|timeline
 operator|.
-name|ATSPutErrors
+name|TimelinePutResponse
 operator|.
-name|ATSPutError
+name|TimelinePutError
 import|;
 end_import
 
@@ -550,7 +550,7 @@ name|server
 operator|.
 name|applicationhistoryservice
 operator|.
-name|apptimeline
+name|timeline
 operator|.
 name|GenericObjectMapper
 operator|.
@@ -572,7 +572,7 @@ name|server
 operator|.
 name|applicationhistoryservice
 operator|.
-name|apptimeline
+name|timeline
 operator|.
 name|GenericObjectMapper
 operator|.
@@ -581,7 +581,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * An implementation of an application timeline store backed by leveldb.  */
+comment|/**  * An implementation of a timeline store backed by leveldb.  */
 end_comment
 
 begin_class
@@ -593,14 +593,14 @@ annotation|@
 name|InterfaceStability
 operator|.
 name|Unstable
-DECL|class|LeveldbApplicationTimelineStore
+DECL|class|LeveldbTimelineStore
 specifier|public
 class|class
-name|LeveldbApplicationTimelineStore
+name|LeveldbTimelineStore
 extends|extends
 name|AbstractService
 implements|implements
-name|ApplicationTimelineStore
+name|TimelineStore
 block|{
 DECL|field|LOG
 specifier|private
@@ -613,7 +613,7 @@ name|LogFactory
 operator|.
 name|getLog
 argument_list|(
-name|LeveldbApplicationTimelineStore
+name|LeveldbTimelineStore
 operator|.
 name|class
 argument_list|)
@@ -625,7 +625,7 @@ specifier|final
 name|String
 name|FILENAME
 init|=
-literal|"leveldb-apptimeline-store.ldb"
+literal|"leveldb-timeline-store.ldb"
 decl_stmt|;
 DECL|field|START_TIME_LOOKUP_PREFIX
 specifier|private
@@ -773,14 +773,14 @@ specifier|private
 name|DB
 name|db
 decl_stmt|;
-DECL|method|LeveldbApplicationTimelineStore ()
+DECL|method|LeveldbTimelineStore ()
 specifier|public
-name|LeveldbApplicationTimelineStore
+name|LeveldbTimelineStore
 parameter_list|()
 block|{
 name|super
 argument_list|(
-name|LeveldbApplicationTimelineStore
+name|LeveldbTimelineStore
 operator|.
 name|class
 operator|.
@@ -832,7 +832,7 @@ name|get
 argument_list|(
 name|YarnConfiguration
 operator|.
-name|ATS_LEVELDB_PATH_PROPERTY
+name|TIMELINE_SERVICE_LEVELDB_PATH
 argument_list|)
 decl_stmt|;
 name|File
@@ -866,7 +866,7 @@ name|IOException
 argument_list|(
 literal|"Couldn't create directory for leveldb "
 operator|+
-literal|"application timeline store "
+literal|"timeline store "
 operator|+
 name|path
 argument_list|)
@@ -1415,13 +1415,13 @@ block|}
 block|}
 annotation|@
 name|Override
-DECL|method|getEntity (String entity, String entityType, EnumSet<Field> fields)
+DECL|method|getEntity (String entityId, String entityType, EnumSet<Field> fields)
 specifier|public
-name|ATSEntity
+name|TimelineEntity
 name|getEntity
 parameter_list|(
 name|String
-name|entity
+name|entityId
 parameter_list|,
 name|String
 name|entityType
@@ -1448,7 +1448,7 @@ name|revStartTime
 init|=
 name|getStartTime
 argument_list|(
-name|entity
+name|entityId
 argument_list|,
 name|entityType
 argument_list|,
@@ -1494,7 +1494,7 @@ argument_list|)
 operator|.
 name|add
 argument_list|(
-name|entity
+name|entityId
 argument_list|)
 operator|.
 name|getBytesForLookup
@@ -1517,7 +1517,7 @@ expr_stmt|;
 return|return
 name|getEntity
 argument_list|(
-name|entity
+name|entityId
 argument_list|,
 name|entityType
 argument_list|,
@@ -1554,14 +1554,14 @@ expr_stmt|;
 block|}
 block|}
 comment|/**    * Read entity from a db iterator.  If no information is found in the    * specified fields for this entity, return null.    */
-DECL|method|getEntity (String entity, String entityType, Long startTime, EnumSet<Field> fields, DBIterator iterator, byte[] prefix, int prefixlen)
+DECL|method|getEntity (String entityId, String entityType, Long startTime, EnumSet<Field> fields, DBIterator iterator, byte[] prefix, int prefixlen)
 specifier|private
 specifier|static
-name|ATSEntity
+name|TimelineEntity
 name|getEntity
 parameter_list|(
 name|String
-name|entity
+name|entityId
 parameter_list|,
 name|String
 name|entityType
@@ -1605,11 +1605,11 @@ operator|.
 name|class
 argument_list|)
 expr_stmt|;
-name|ATSEntity
-name|atsEntity
+name|TimelineEntity
+name|entity
 init|=
 operator|new
-name|ATSEntity
+name|TimelineEntity
 argument_list|()
 decl_stmt|;
 name|boolean
@@ -1638,14 +1638,14 @@ name|events
 operator|=
 literal|true
 expr_stmt|;
-name|atsEntity
+name|entity
 operator|.
 name|setEvents
 argument_list|(
 operator|new
 name|ArrayList
 argument_list|<
-name|ATSEvent
+name|TimelineEvent
 argument_list|>
 argument_list|()
 argument_list|)
@@ -1668,14 +1668,14 @@ name|lastEvent
 operator|=
 literal|true
 expr_stmt|;
-name|atsEntity
+name|entity
 operator|.
 name|setEvents
 argument_list|(
 operator|new
 name|ArrayList
 argument_list|<
-name|ATSEvent
+name|TimelineEvent
 argument_list|>
 argument_list|()
 argument_list|)
@@ -1683,7 +1683,7 @@ expr_stmt|;
 block|}
 else|else
 block|{
-name|atsEntity
+name|entity
 operator|.
 name|setEvents
 argument_list|(
@@ -1712,27 +1712,10 @@ name|relatedEntities
 operator|=
 literal|true
 expr_stmt|;
-name|atsEntity
-operator|.
-name|setRelatedEntities
-argument_list|(
-operator|new
-name|HashMap
-argument_list|<
-name|String
-argument_list|,
-name|List
-argument_list|<
-name|String
-argument_list|>
-argument_list|>
-argument_list|()
-argument_list|)
-expr_stmt|;
 block|}
 else|else
 block|{
-name|atsEntity
+name|entity
 operator|.
 name|setRelatedEntities
 argument_list|(
@@ -1761,24 +1744,10 @@ name|primaryFilters
 operator|=
 literal|true
 expr_stmt|;
-name|atsEntity
-operator|.
-name|setPrimaryFilters
-argument_list|(
-operator|new
-name|HashMap
-argument_list|<
-name|String
-argument_list|,
-name|Object
-argument_list|>
-argument_list|()
-argument_list|)
-expr_stmt|;
 block|}
 else|else
 block|{
-name|atsEntity
+name|entity
 operator|.
 name|setPrimaryFilters
 argument_list|(
@@ -1807,7 +1776,7 @@ name|otherInfo
 operator|=
 literal|true
 expr_stmt|;
-name|atsEntity
+name|entity
 operator|.
 name|setOtherInfo
 argument_list|(
@@ -1824,7 +1793,7 @@ expr_stmt|;
 block|}
 else|else
 block|{
-name|atsEntity
+name|entity
 operator|.
 name|setOtherInfo
 argument_list|(
@@ -1891,12 +1860,10 @@ condition|(
 name|primaryFilters
 condition|)
 block|{
-name|atsEntity
-operator|.
 name|addPrimaryFilter
 argument_list|(
-name|parseRemainingKey
-argument_list|(
+name|entity
+argument_list|,
 name|key
 argument_list|,
 name|prefixlen
@@ -1904,20 +1871,6 @@ operator|+
 name|PRIMARY_FILTER_COLUMN
 operator|.
 name|length
-argument_list|)
-argument_list|,
-name|GenericObjectMapper
-operator|.
-name|read
-argument_list|(
-name|iterator
-operator|.
-name|peekNext
-argument_list|()
-operator|.
-name|getValue
-argument_list|()
-argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
@@ -1941,7 +1894,7 @@ condition|(
 name|otherInfo
 condition|)
 block|{
-name|atsEntity
+name|entity
 operator|.
 name|addOtherInfo
 argument_list|(
@@ -1993,7 +1946,7 @@ condition|)
 block|{
 name|addRelatedEntity
 argument_list|(
-name|atsEntity
+name|entity
 argument_list|,
 name|key
 argument_list|,
@@ -2027,7 +1980,7 @@ operator|||
 operator|(
 name|lastEvent
 operator|&&
-name|atsEntity
+name|entity
 operator|.
 name|getEvents
 argument_list|()
@@ -2039,7 +1992,7 @@ literal|0
 operator|)
 condition|)
 block|{
-name|ATSEvent
+name|TimelineEvent
 name|event
 init|=
 name|getEntityEvent
@@ -2070,7 +2023,7 @@ operator|!=
 literal|null
 condition|)
 block|{
-name|atsEntity
+name|entity
 operator|.
 name|addEvent
 argument_list|(
@@ -2094,7 +2047,7 @@ literal|"Found unexpected column for entity %s of "
 operator|+
 literal|"type %s (0x%02x)"
 argument_list|,
-name|entity
+name|entityId
 argument_list|,
 name|entityType
 argument_list|,
@@ -2107,21 +2060,21 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-name|atsEntity
+name|entity
 operator|.
 name|setEntityId
 argument_list|(
-name|entity
+name|entityId
 argument_list|)
 expr_stmt|;
-name|atsEntity
+name|entity
 operator|.
 name|setEntityType
 argument_list|(
 name|entityType
 argument_list|)
 expr_stmt|;
-name|atsEntity
+name|entity
 operator|.
 name|setStartTime
 argument_list|(
@@ -2129,14 +2082,14 @@ name|startTime
 argument_list|)
 expr_stmt|;
 return|return
-name|atsEntity
+name|entity
 return|;
 block|}
 annotation|@
 name|Override
 DECL|method|getEntityTimelines (String entityType, SortedSet<String> entityIds, Long limit, Long windowStart, Long windowEnd, Set<String> eventType)
 specifier|public
-name|ATSEvents
+name|TimelineEvents
 name|getEntityTimelines
 parameter_list|(
 name|String
@@ -2166,11 +2119,11 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
-name|ATSEvents
-name|atsEvents
+name|TimelineEvents
+name|events
 init|=
 operator|new
-name|ATSEvents
+name|TimelineEvents
 argument_list|()
 decl_stmt|;
 if|if
@@ -2185,7 +2138,7 @@ name|isEmpty
 argument_list|()
 condition|)
 return|return
-name|atsEvents
+name|events
 return|;
 comment|// create a lexicographically-ordered map from start time to entities
 name|Map
@@ -2391,7 +2344,7 @@ decl_stmt|;
 for|for
 control|(
 name|EntityIdentifier
-name|entity
+name|entityID
 range|:
 name|entry
 operator|.
@@ -2399,35 +2352,35 @@ name|getValue
 argument_list|()
 control|)
 block|{
-name|ATSEventsOfOneEntity
-name|atsEntity
+name|EventsOfOneEntity
+name|entity
 init|=
 operator|new
-name|ATSEventsOfOneEntity
+name|EventsOfOneEntity
 argument_list|()
 decl_stmt|;
-name|atsEntity
+name|entity
 operator|.
 name|setEntityId
 argument_list|(
-name|entity
+name|entityID
 operator|.
 name|getId
 argument_list|()
 argument_list|)
 expr_stmt|;
-name|atsEntity
+name|entity
 operator|.
 name|setEntityType
 argument_list|(
 name|entityType
 argument_list|)
 expr_stmt|;
-name|atsEvents
+name|events
 operator|.
 name|addEvent
 argument_list|(
-name|atsEntity
+name|entity
 argument_list|)
 expr_stmt|;
 name|KeyBuilder
@@ -2455,7 +2408,7 @@ argument_list|)
 operator|.
 name|add
 argument_list|(
-name|entity
+name|entityID
 operator|.
 name|getId
 argument_list|()
@@ -2579,7 +2532,7 @@ argument_list|(
 name|first
 argument_list|)
 init|;
-name|atsEntity
+name|entity
 operator|.
 name|getEvents
 argument_list|()
@@ -2656,7 +2609,7 @@ literal|0
 operator|)
 condition|)
 break|break;
-name|ATSEvent
+name|TimelineEvent
 name|event
 init|=
 name|getEntityEvent
@@ -2684,7 +2637,7 @@ name|event
 operator|!=
 literal|null
 condition|)
-name|atsEntity
+name|entity
 operator|.
 name|addEvent
 argument_list|(
@@ -2708,7 +2661,7 @@ argument_list|)
 expr_stmt|;
 block|}
 return|return
-name|atsEvents
+name|events
 return|;
 block|}
 comment|/**    * Returns true if the byte array begins with the specified prefix.    */
@@ -2766,7 +2719,7 @@ annotation|@
 name|Override
 DECL|method|getEntities (String entityType, Long limit, Long windowStart, Long windowEnd, NameValuePair primaryFilter, Collection<NameValuePair> secondaryFilters, EnumSet<Field> fields)
 specifier|public
-name|ATSEntities
+name|TimelineEntities
 name|getEntities
 parameter_list|(
 name|String
@@ -2900,7 +2853,7 @@ block|}
 comment|/**    * Retrieves a list of entities satisfying given parameters.    *    * @param base A byte array prefix for the lookup    * @param entityType The type of the entity    * @param limit A limit on the number of entities to return    * @param starttime The earliest entity start time to retrieve (exclusive)    * @param endtime The latest entity start time to retrieve (inclusive)    * @param secondaryFilters Filter pairs that the entities should match    * @param fields The set of fields to retrieve    * @return A list of entities    * @throws IOException    */
 DECL|method|getEntityByTime (byte[] base, String entityType, Long limit, Long starttime, Long endtime, Collection<NameValuePair> secondaryFilters, EnumSet<Field> fields)
 specifier|private
-name|ATSEntities
+name|TimelineEntities
 name|getEntityByTime
 parameter_list|(
 name|byte
@@ -3067,11 +3020,11 @@ operator|=
 name|DEFAULT_LIMIT
 expr_stmt|;
 block|}
-name|ATSEntities
-name|atsEntities
+name|TimelineEntities
+name|entities
 init|=
 operator|new
-name|ATSEntities
+name|TimelineEntities
 argument_list|()
 decl_stmt|;
 name|iterator
@@ -3093,7 +3046,7 @@ comment|// reached, there are no more keys, the key prefix no longer matches,
 comment|// or a start time has been specified and reached/exceeded
 while|while
 condition|(
-name|atsEntities
+name|entities
 operator|.
 name|getEntities
 argument_list|()
@@ -3165,7 +3118,7 @@ literal|0
 operator|)
 condition|)
 break|break;
-comment|// read the start time and entity from the current key
+comment|// read the start time and entityId from the current key
 name|KeyParser
 name|kp
 init|=
@@ -3188,7 +3141,7 @@ name|getNextLong
 argument_list|()
 decl_stmt|;
 name|String
-name|entity
+name|entityId
 init|=
 name|kp
 operator|.
@@ -3197,12 +3150,12 @@ argument_list|()
 decl_stmt|;
 comment|// parse the entity that owns this key, iterating over all keys for
 comment|// the entity
-name|ATSEntity
-name|atsEntity
+name|TimelineEntity
+name|entity
 init|=
 name|getEntity
 argument_list|(
-name|entity
+name|entityId
 argument_list|,
 name|entityType
 argument_list|,
@@ -3222,7 +3175,7 @@ argument_list|)
 decl_stmt|;
 if|if
 condition|(
-name|atsEntity
+name|entity
 operator|==
 literal|null
 condition|)
@@ -3252,7 +3205,7 @@ block|{
 name|Object
 name|v
 init|=
-name|atsEntity
+name|entity
 operator|.
 name|getOtherInfo
 argument_list|()
@@ -3271,9 +3224,14 @@ name|v
 operator|==
 literal|null
 condition|)
-name|v
-operator|=
-name|atsEntity
+block|{
+name|Set
+argument_list|<
+name|Object
+argument_list|>
+name|vs
+init|=
+name|entity
 operator|.
 name|getPrimaryFilters
 argument_list|()
@@ -3285,13 +3243,35 @@ operator|.
 name|getName
 argument_list|()
 argument_list|)
-expr_stmt|;
+decl_stmt|;
 if|if
 condition|(
-name|v
-operator|==
+name|vs
+operator|!=
 literal|null
-operator|||
+operator|&&
+operator|!
+name|vs
+operator|.
+name|contains
+argument_list|(
+name|filter
+operator|.
+name|getValue
+argument_list|()
+argument_list|)
+condition|)
+block|{
+name|filterPassed
+operator|=
+literal|false
+expr_stmt|;
+break|break;
+block|}
+block|}
+elseif|else
+if|if
+condition|(
 operator|!
 name|v
 operator|.
@@ -3316,16 +3296,16 @@ if|if
 condition|(
 name|filterPassed
 condition|)
-name|atsEntities
+name|entities
 operator|.
 name|addEntity
 argument_list|(
-name|atsEntity
+name|entity
 argument_list|)
 expr_stmt|;
 block|}
 return|return
-name|atsEntities
+name|entities
 return|;
 block|}
 finally|finally
@@ -3341,16 +3321,16 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-comment|/**    * Put a single entity.  If there is an error, add a PutError to the given    * response.    */
-DECL|method|put (ATSEntity atsEntity, ATSPutErrors response)
+comment|/**    * Put a single entity.  If there is an error, add a TimelinePutError to the given    * response.    */
+DECL|method|put (TimelineEntity entity, TimelinePutResponse response)
 specifier|private
 name|void
 name|put
 parameter_list|(
-name|ATSEntity
-name|atsEntity
+name|TimelineEntity
+name|entity
 parameter_list|,
-name|ATSPutErrors
+name|TimelinePutResponse
 name|response
 parameter_list|)
 block|{
@@ -3370,11 +3350,11 @@ argument_list|()
 expr_stmt|;
 name|List
 argument_list|<
-name|ATSEvent
+name|TimelineEvent
 argument_list|>
 name|events
 init|=
-name|atsEntity
+name|entity
 operator|.
 name|getEvents
 argument_list|()
@@ -3386,17 +3366,17 @@ name|revStartTime
 init|=
 name|getStartTime
 argument_list|(
-name|atsEntity
+name|entity
 operator|.
 name|getEntityId
 argument_list|()
 argument_list|,
-name|atsEntity
+name|entity
 operator|.
 name|getEntityType
 argument_list|()
 argument_list|,
-name|atsEntity
+name|entity
 operator|.
 name|getStartTime
 argument_list|()
@@ -3414,18 +3394,18 @@ literal|null
 condition|)
 block|{
 comment|// if no start time is found, add an error and return
-name|ATSPutError
+name|TimelinePutError
 name|error
 init|=
 operator|new
-name|ATSPutError
+name|TimelinePutError
 argument_list|()
 decl_stmt|;
 name|error
 operator|.
 name|setEntityId
 argument_list|(
-name|atsEntity
+name|entity
 operator|.
 name|getEntityId
 argument_list|()
@@ -3435,7 +3415,7 @@ name|error
 operator|.
 name|setEntityType
 argument_list|(
-name|atsEntity
+name|entity
 operator|.
 name|getEntityType
 argument_list|()
@@ -3445,7 +3425,7 @@ name|error
 operator|.
 name|setErrorCode
 argument_list|(
-name|ATSPutError
+name|TimelinePutError
 operator|.
 name|NO_START_TIME
 argument_list|)
@@ -3473,11 +3453,14 @@ name|Map
 argument_list|<
 name|String
 argument_list|,
+name|Set
+argument_list|<
 name|Object
+argument_list|>
 argument_list|>
 name|primaryFilters
 init|=
-name|atsEntity
+name|entity
 operator|.
 name|getPrimaryFilters
 argument_list|()
@@ -3498,7 +3481,7 @@ condition|)
 block|{
 for|for
 control|(
-name|ATSEvent
+name|TimelineEvent
 name|event
 range|:
 name|events
@@ -3522,12 +3505,12 @@ name|key
 init|=
 name|createEntityEventKey
 argument_list|(
-name|atsEntity
+name|entity
 operator|.
 name|getEntityId
 argument_list|()
 argument_list|,
-name|atsEntity
+name|entity
 operator|.
 name|getEntityType
 argument_list|()
@@ -3583,14 +3566,14 @@ name|Map
 argument_list|<
 name|String
 argument_list|,
-name|List
+name|Set
 argument_list|<
 name|String
 argument_list|>
 argument_list|>
 name|relatedEntities
 init|=
-name|atsEntity
+name|entity
 operator|.
 name|getRelatedEntities
 argument_list|()
@@ -3614,7 +3597,7 @@ name|Entry
 argument_list|<
 name|String
 argument_list|,
-name|List
+name|Set
 argument_list|<
 name|String
 argument_list|>
@@ -3721,12 +3704,12 @@ name|relatedEntityType
 argument_list|,
 name|relatedEntityStartTime
 argument_list|,
-name|atsEntity
+name|entity
 operator|.
 name|getEntityId
 argument_list|()
 argument_list|,
-name|atsEntity
+name|entity
 operator|.
 name|getEntityType
 argument_list|()
@@ -3765,7 +3748,10 @@ name|Entry
 argument_list|<
 name|String
 argument_list|,
+name|Set
+argument_list|<
 name|Object
+argument_list|>
 argument_list|>
 name|primaryFilter
 range|:
@@ -3775,18 +3761,29 @@ name|entrySet
 argument_list|()
 control|)
 block|{
+for|for
+control|(
+name|Object
+name|primaryFilterValue
+range|:
+name|primaryFilter
+operator|.
+name|getValue
+argument_list|()
+control|)
+block|{
 name|byte
 index|[]
 name|key
 init|=
 name|createPrimaryFilterKey
 argument_list|(
-name|atsEntity
+name|entity
 operator|.
 name|getEntityId
 argument_list|()
 argument_list|,
-name|atsEntity
+name|entity
 operator|.
 name|getEntityType
 argument_list|()
@@ -3797,20 +3794,8 @@ name|primaryFilter
 operator|.
 name|getKey
 argument_list|()
-argument_list|)
-decl_stmt|;
-name|byte
-index|[]
-name|value
-init|=
-name|GenericObjectMapper
-operator|.
-name|write
-argument_list|(
-name|primaryFilter
-operator|.
-name|getValue
-argument_list|()
+argument_list|,
+name|primaryFilterValue
 argument_list|)
 decl_stmt|;
 name|writeBatch
@@ -3819,7 +3804,7 @@ name|put
 argument_list|(
 name|key
 argument_list|,
-name|value
+name|EMPTY_BYTES
 argument_list|)
 expr_stmt|;
 name|writePrimaryFilterEntries
@@ -3830,9 +3815,10 @@ name|primaryFilters
 argument_list|,
 name|key
 argument_list|,
-name|value
+name|EMPTY_BYTES
 argument_list|)
 expr_stmt|;
+block|}
 block|}
 block|}
 comment|// write other info entries
@@ -3844,7 +3830,7 @@ name|Object
 argument_list|>
 name|otherInfo
 init|=
-name|atsEntity
+name|entity
 operator|.
 name|getOtherInfo
 argument_list|()
@@ -3884,12 +3870,12 @@ name|key
 init|=
 name|createOtherInfoKey
 argument_list|(
-name|atsEntity
+name|entity
 operator|.
 name|getEntityId
 argument_list|()
 argument_list|,
-name|atsEntity
+name|entity
 operator|.
 name|getEntityType
 argument_list|()
@@ -3958,14 +3944,14 @@ name|error
 argument_list|(
 literal|"Error putting entity "
 operator|+
-name|atsEntity
+name|entity
 operator|.
 name|getEntityId
 argument_list|()
 operator|+
 literal|" of type "
 operator|+
-name|atsEntity
+name|entity
 operator|.
 name|getEntityType
 argument_list|()
@@ -3973,18 +3959,18 @@ argument_list|,
 name|e
 argument_list|)
 expr_stmt|;
-name|ATSPutError
+name|TimelinePutError
 name|error
 init|=
 operator|new
-name|ATSPutError
+name|TimelinePutError
 argument_list|()
 decl_stmt|;
 name|error
 operator|.
 name|setEntityId
 argument_list|(
-name|atsEntity
+name|entity
 operator|.
 name|getEntityId
 argument_list|()
@@ -3994,7 +3980,7 @@ name|error
 operator|.
 name|setEntityType
 argument_list|(
-name|atsEntity
+name|entity
 operator|.
 name|getEntityType
 argument_list|()
@@ -4004,7 +3990,7 @@ name|error
 operator|.
 name|setErrorCode
 argument_list|(
-name|ATSPutError
+name|TimelinePutError
 operator|.
 name|IO_EXCEPTION
 argument_list|)
@@ -4031,7 +4017,7 @@ expr_stmt|;
 block|}
 block|}
 comment|/**    * For a given key / value pair that has been written to the db,    * write additional entries to the db for each primary filter.    */
-DECL|method|writePrimaryFilterEntries (WriteBatch writeBatch, Map<String, Object> primaryFilters, byte[] key, byte[] value)
+DECL|method|writePrimaryFilterEntries (WriteBatch writeBatch, Map<String, Set<Object>> primaryFilters, byte[] key, byte[] value)
 specifier|private
 specifier|static
 name|void
@@ -4044,7 +4030,10 @@ name|Map
 argument_list|<
 name|String
 argument_list|,
+name|Set
+argument_list|<
 name|Object
+argument_list|>
 argument_list|>
 name|primaryFilters
 parameter_list|,
@@ -4078,13 +4067,27 @@ name|Entry
 argument_list|<
 name|String
 argument_list|,
+name|Set
+argument_list|<
 name|Object
 argument_list|>
-name|p
+argument_list|>
+name|pf
 range|:
 name|primaryFilters
 operator|.
 name|entrySet
+argument_list|()
+control|)
+block|{
+for|for
+control|(
+name|Object
+name|pfval
+range|:
+name|pf
+operator|.
+name|getValue
 argument_list|()
 control|)
 block|{
@@ -4094,15 +4097,12 @@ name|put
 argument_list|(
 name|addPrimaryFilterToKey
 argument_list|(
-name|p
+name|pf
 operator|.
 name|getKey
 argument_list|()
 argument_list|,
-name|p
-operator|.
-name|getValue
-argument_list|()
+name|pfval
 argument_list|,
 name|key
 argument_list|)
@@ -4113,30 +4113,31 @@ expr_stmt|;
 block|}
 block|}
 block|}
+block|}
 annotation|@
 name|Override
-DECL|method|put (ATSEntities atsEntities)
+DECL|method|put (TimelineEntities entities)
 specifier|public
-name|ATSPutErrors
+name|TimelinePutResponse
 name|put
 parameter_list|(
-name|ATSEntities
-name|atsEntities
+name|TimelineEntities
+name|entities
 parameter_list|)
 block|{
-name|ATSPutErrors
+name|TimelinePutResponse
 name|response
 init|=
 operator|new
-name|ATSPutErrors
+name|TimelinePutResponse
 argument_list|()
 decl_stmt|;
 for|for
 control|(
-name|ATSEntity
-name|atsEntity
+name|TimelineEntity
+name|entity
 range|:
-name|atsEntities
+name|entities
 operator|.
 name|getEntities
 argument_list|()
@@ -4144,7 +4145,7 @@ control|)
 block|{
 name|put
 argument_list|(
-name|atsEntity
+name|entity
 argument_list|,
 name|response
 argument_list|)
@@ -4155,7 +4156,7 @@ name|response
 return|;
 block|}
 comment|/**    * Get the unique start time for a given entity as a byte array that sorts    * the timestamps in reverse order (see {@link    * GenericObjectMapper#writeReverseOrderedLong(long)}).    *    * @param entityId The id of the entity    * @param entityType The type of the entity    * @param startTime The start time of the entity, or null    * @param events A list of events for the entity, or null    * @param writeBatch A leveldb write batch, if the method is called by a    *                   put as opposed to a get    * @return A byte array    * @throws IOException    */
-DECL|method|getStartTime (String entityId, String entityType, Long startTime, List<ATSEvent> events, WriteBatch writeBatch)
+DECL|method|getStartTime (String entityId, String entityType, Long startTime, List<TimelineEvent> events, WriteBatch writeBatch)
 specifier|private
 name|byte
 index|[]
@@ -4172,7 +4173,7 @@ name|startTime
 parameter_list|,
 name|List
 argument_list|<
-name|ATSEvent
+name|TimelineEvent
 argument_list|>
 name|events
 parameter_list|,
@@ -4287,7 +4288,7 @@ name|MAX_VALUE
 decl_stmt|;
 for|for
 control|(
-name|ATSEvent
+name|TimelineEvent
 name|e
 range|:
 name|events
@@ -4645,7 +4646,7 @@ comment|/**    * Creates an event object from the given key, offset, and value. 
 DECL|method|getEntityEvent (Set<String> eventTypes, byte[] key, int offset, byte[] value)
 specifier|private
 specifier|static
-name|ATSEvent
+name|TimelineEvent
 name|getEntityEvent
 parameter_list|(
 name|Set
@@ -4709,11 +4710,11 @@ name|tstype
 argument_list|)
 condition|)
 block|{
-name|ATSEvent
+name|TimelineEvent
 name|event
 init|=
 operator|new
-name|ATSEvent
+name|TimelineEvent
 argument_list|()
 decl_stmt|;
 name|event
@@ -4812,8 +4813,8 @@ return|return
 literal|null
 return|;
 block|}
-comment|/**    * Creates a primary filter key, serializing ENTITY_ENTRY_PREFIX +    * entitytype + revstarttime + entity + PRIMARY_FILTER_COLUMN + name.    */
-DECL|method|createPrimaryFilterKey (String entity, String entitytype, byte[] revStartTime, String name)
+comment|/**    * Creates a primary filter key, serializing ENTITY_ENTRY_PREFIX +    * entitytype + revstarttime + entity + PRIMARY_FILTER_COLUMN + name + value.    */
+DECL|method|createPrimaryFilterKey (String entity, String entitytype, byte[] revStartTime, String name, Object value)
 specifier|private
 specifier|static
 name|byte
@@ -4832,6 +4833,9 @@ name|revStartTime
 parameter_list|,
 name|String
 name|name
+parameter_list|,
+name|Object
+name|value
 parameter_list|)
 throws|throws
 name|IOException
@@ -4872,9 +4876,83 @@ argument_list|(
 name|name
 argument_list|)
 operator|.
+name|add
+argument_list|(
+name|GenericObjectMapper
+operator|.
+name|write
+argument_list|(
+name|value
+argument_list|)
+argument_list|)
+operator|.
 name|getBytes
 argument_list|()
 return|;
+block|}
+comment|/**    * Parses the primary filter from the given key at the given offset and    * adds it to the given entity.    */
+DECL|method|addPrimaryFilter (TimelineEntity entity, byte[] key, int offset)
+specifier|private
+specifier|static
+name|void
+name|addPrimaryFilter
+parameter_list|(
+name|TimelineEntity
+name|entity
+parameter_list|,
+name|byte
+index|[]
+name|key
+parameter_list|,
+name|int
+name|offset
+parameter_list|)
+throws|throws
+name|IOException
+block|{
+name|KeyParser
+name|kp
+init|=
+operator|new
+name|KeyParser
+argument_list|(
+name|key
+argument_list|,
+name|offset
+argument_list|)
+decl_stmt|;
+name|String
+name|name
+init|=
+name|kp
+operator|.
+name|getNextString
+argument_list|()
+decl_stmt|;
+name|Object
+name|value
+init|=
+name|GenericObjectMapper
+operator|.
+name|read
+argument_list|(
+name|key
+argument_list|,
+name|kp
+operator|.
+name|getOffset
+argument_list|()
+argument_list|)
+decl_stmt|;
+name|entity
+operator|.
+name|addPrimaryFilter
+argument_list|(
+name|name
+argument_list|,
+name|value
+argument_list|)
+expr_stmt|;
 block|}
 comment|/**    * Creates an other info key, serializing ENTITY_ENTRY_PREFIX + entitytype +    * revstarttime + entity + OTHER_INFO_COLUMN + name.    */
 DECL|method|createOtherInfoKey (String entity, String entitytype, byte[] revStartTime, String name)
@@ -5044,14 +5122,14 @@ argument_list|()
 return|;
 block|}
 comment|/**    * Parses the related entity from the given key at the given offset and    * adds it to the given entity.    */
-DECL|method|addRelatedEntity (ATSEntity atsEntity, byte[] key, int offset)
+DECL|method|addRelatedEntity (TimelineEntity entity, byte[] key, int offset)
 specifier|private
 specifier|static
 name|void
 name|addRelatedEntity
 parameter_list|(
-name|ATSEntity
-name|atsEntity
+name|TimelineEntity
+name|entity
 parameter_list|,
 name|byte
 index|[]
@@ -5090,7 +5168,7 @@ operator|.
 name|getNextString
 argument_list|()
 decl_stmt|;
-name|atsEntity
+name|entity
 operator|.
 name|addRelatedEntity
 argument_list|(
