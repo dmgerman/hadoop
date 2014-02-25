@@ -7543,6 +7543,10 @@ name|getImageFile
 argument_list|(
 name|sd
 argument_list|,
+name|NameNodeFile
+operator|.
+name|IMAGE
+argument_list|,
 name|expectedTxIdToDownload
 operator|+
 literal|5
@@ -9835,6 +9839,10 @@ name|downloadImageToStorage
 argument_list|(
 name|fsName
 argument_list|,
+name|NameNodeFile
+operator|.
+name|IMAGE
+argument_list|,
 literal|0
 argument_list|,
 name|dstImage
@@ -9940,6 +9948,10 @@ literal|"http://localhost:1234"
 argument_list|)
 argument_list|,
 name|dstImage
+argument_list|,
+name|NameNodeFile
+operator|.
+name|IMAGE
 argument_list|,
 literal|0
 argument_list|)

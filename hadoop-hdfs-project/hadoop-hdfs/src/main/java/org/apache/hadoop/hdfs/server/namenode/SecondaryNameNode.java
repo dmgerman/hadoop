@@ -2424,6 +2424,10 @@ name|downloadImageToStorage
 argument_list|(
 name|nnHostPort
 argument_list|,
+name|NameNodeFile
+operator|.
+name|IMAGE
+argument_list|,
 name|sig
 operator|.
 name|mostRecentCheckpointTxId
@@ -2440,6 +2444,10 @@ name|dstImage
 operator|.
 name|saveDigestAndRenameCheckpointImage
 argument_list|(
+name|NameNodeFile
+operator|.
+name|IMAGE
+argument_list|,
 name|sig
 operator|.
 name|mostRecentCheckpointTxId
@@ -2875,6 +2883,10 @@ name|getImageListenAddress
 argument_list|()
 argument_list|,
 name|dstStorage
+argument_list|,
+name|NameNodeFile
+operator|.
+name|IMAGE
 argument_list|,
 name|txid
 argument_list|)
@@ -4755,6 +4767,10 @@ name|dstStorage
 operator|.
 name|findImageFile
 argument_list|(
+name|NameNodeFile
+operator|.
+name|IMAGE
+argument_list|,
 name|sig
 operator|.
 name|mostRecentCheckpointTxId

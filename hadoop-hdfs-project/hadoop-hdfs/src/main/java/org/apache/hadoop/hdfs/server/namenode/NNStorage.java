@@ -106,6 +106,16 @@ name|java
 operator|.
 name|util
 operator|.
+name|EnumSet
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
 name|HashMap
 import|;
 end_import
@@ -446,9 +456,9 @@ name|google
 operator|.
 name|common
 operator|.
-name|base
+name|annotations
 operator|.
-name|Preconditions
+name|VisibleForTesting
 import|;
 end_import
 
@@ -460,9 +470,9 @@ name|google
 operator|.
 name|common
 operator|.
-name|annotations
+name|base
 operator|.
-name|VisibleForTesting
+name|Preconditions
 import|;
 end_import
 
@@ -2045,21 +2055,19 @@ index|]
 argument_list|)
 return|;
 block|}
-comment|/**    * Return the name of the image file.    * @return The name of the first image file.    */
-DECL|method|getFsImageName (long txid)
+comment|/**    * @return The first image file with the given txid and image type.    */
+DECL|method|getFsImageName (long txid, NameNodeFile nnf)
 specifier|public
 name|File
 name|getFsImageName
 parameter_list|(
 name|long
 name|txid
+parameter_list|,
+name|NameNodeFile
+name|nnf
 parameter_list|)
 block|{
-name|StorageDirectory
-name|sd
-init|=
-literal|null
-decl_stmt|;
 for|for
 control|(
 name|Iterator
@@ -2082,13 +2090,14 @@ argument_list|()
 condition|;
 control|)
 block|{
+name|StorageDirectory
 name|sd
-operator|=
+init|=
 name|it
 operator|.
 name|next
 argument_list|()
-expr_stmt|;
+decl_stmt|;
 name|File
 name|fsImage
 init|=
@@ -2096,9 +2105,7 @@ name|getStorageFile
 argument_list|(
 name|sd
 argument_list|,
-name|NameNodeFile
-operator|.
-name|IMAGE
+name|nnf
 argument_list|,
 name|txid
 argument_list|)
@@ -2120,12 +2127,34 @@ operator|.
 name|exists
 argument_list|()
 condition|)
+block|{
 return|return
 name|fsImage
 return|;
 block|}
+block|}
 return|return
 literal|null
+return|;
+block|}
+DECL|method|getFsImageName (long txid)
+specifier|public
+name|File
+name|getFsImageName
+parameter_list|(
+name|long
+name|txid
+parameter_list|)
+block|{
+return|return
+name|getFsImageName
+argument_list|(
+name|txid
+argument_list|,
+name|NameNodeFile
+operator|.
+name|IMAGE
+argument_list|)
 return|;
 block|}
 DECL|method|getHighestFsImageName ()
@@ -2906,13 +2935,16 @@ argument_list|)
 argument_list|)
 return|;
 block|}
-DECL|method|getImageFile (StorageDirectory sd, long txid)
+DECL|method|getImageFile (StorageDirectory sd, NameNodeFile nnf, long txid)
 specifier|static
 name|File
 name|getImageFile
 parameter_list|(
 name|StorageDirectory
 name|sd
+parameter_list|,
+name|NameNodeFile
+name|nnf
 parameter_list|,
 name|long
 name|txid
@@ -2927,8 +2959,10 @@ operator|.
 name|getCurrentDir
 argument_list|()
 argument_list|,
-name|getImageFileName
+name|getNameNodeFileName
 argument_list|(
+name|nnf
+argument_list|,
 name|txid
 argument_list|)
 argument_list|)
@@ -3065,11 +3099,14 @@ return|return
 name|ret
 return|;
 block|}
-comment|/**    * Return the first readable image file for the given txid, or null    * if no such image can be found    */
-DECL|method|findImageFile (long txid)
+comment|/**    * Return the first readable image file for the given txid and image type, or    * null if no such image can be found    */
+DECL|method|findImageFile (NameNodeFile nnf, long txid)
 name|File
 name|findImageFile
 parameter_list|(
+name|NameNodeFile
+name|nnf
+parameter_list|,
 name|long
 name|txid
 parameter_list|)
@@ -3081,8 +3118,10 @@ name|NameNodeDirType
 operator|.
 name|IMAGE
 argument_list|,
-name|getImageFileName
+name|getNameNodeFileName
 argument_list|(
+name|nnf
+argument_list|,
 name|txid
 argument_list|)
 argument_list|)
@@ -3935,12 +3974,15 @@ expr_stmt|;
 block|}
 block|}
 comment|/**    * Iterate over all of the storage dirs, reading their contents to determine    * their layout versions. Returns an FSImageStorageInspector which has    * inspected each directory.    *     *<b>Note:</b> this can mutate the storage info fields (ctime, version, etc).    * @throws IOException if no valid storage dirs are found or no valid layout version    */
-DECL|method|readAndInspectDirs (NameNodeFile nnf)
+DECL|method|readAndInspectDirs (EnumSet<NameNodeFile> fileTypes)
 name|FSImageStorageInspector
 name|readAndInspectDirs
 parameter_list|(
+name|EnumSet
+argument_list|<
 name|NameNodeFile
-name|nnf
+argument_list|>
+name|fileTypes
 parameter_list|)
 throws|throws
 name|IOException
@@ -4153,7 +4195,7 @@ operator|=
 operator|new
 name|FSImageTransactionalStorageInspector
 argument_list|(
-name|nnf
+name|fileTypes
 argument_list|)
 expr_stmt|;
 block|}

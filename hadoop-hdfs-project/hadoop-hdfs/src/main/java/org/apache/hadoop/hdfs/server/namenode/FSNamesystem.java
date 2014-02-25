@@ -6516,6 +6516,21 @@ argument_list|,
 name|recovery
 argument_list|)
 decl_stmt|;
+if|if
+condition|(
+name|StartupOption
+operator|.
+name|isRollingUpgradeRollback
+argument_list|(
+name|startOpt
+argument_list|)
+condition|)
+block|{
+name|rollingUpgradeInfo
+operator|=
+literal|null
+expr_stmt|;
+block|}
 specifier|final
 name|boolean
 name|needToSave
@@ -7498,6 +7513,26 @@ expr_stmt|;
 name|standbyCheckpointer
 operator|.
 name|start
+argument_list|()
+expr_stmt|;
+block|}
+block|}
+comment|/**    * Called when the NN is in Standby state and the editlog tailer tails the    * OP_ROLLING_UPGRADE_START.    */
+DECL|method|triggerRollbackCheckpoint ()
+name|void
+name|triggerRollbackCheckpoint
+parameter_list|()
+block|{
+if|if
+condition|(
+name|standbyCheckpointer
+operator|!=
+literal|null
+condition|)
+block|{
+name|standbyCheckpointer
+operator|.
+name|triggerRollbackCheckpoint
 argument_list|()
 expr_stmt|;
 block|}
@@ -33215,6 +33250,32 @@ argument_list|()
 expr_stmt|;
 try|try
 block|{
+if|if
+condition|(
+name|rollingUpgradeInfo
+operator|!=
+literal|null
+condition|)
+block|{
+name|boolean
+name|hasRollbackImage
+init|=
+name|this
+operator|.
+name|getFSImage
+argument_list|()
+operator|.
+name|hasRollbackFSImage
+argument_list|()
+decl_stmt|;
+name|rollingUpgradeInfo
+operator|.
+name|setCreatedRollbackImages
+argument_list|(
+name|hasRollbackImage
+argument_list|)
+expr_stmt|;
+block|}
 return|return
 name|rollingUpgradeInfo
 return|;
@@ -33255,6 +33316,28 @@ operator|.
 name|WRITE
 argument_list|)
 expr_stmt|;
+name|long
+name|startTime
+init|=
+name|now
+argument_list|()
+decl_stmt|;
+if|if
+condition|(
+operator|!
+name|haEnabled
+condition|)
+block|{
+comment|// for non-HA, we require NN to be in safemode
+name|startRollingUpgradeInternalForNonHA
+argument_list|(
+name|startTime
+argument_list|)
+expr_stmt|;
+block|}
+else|else
+block|{
+comment|// for HA, NN cannot be in safemode
 name|checkNameNodeSafeMode
 argument_list|(
 literal|"Failed to start rolling upgrade"
@@ -33262,13 +33345,10 @@ argument_list|)
 expr_stmt|;
 name|startRollingUpgradeInternal
 argument_list|(
-name|now
-argument_list|()
-argument_list|,
-operator|-
-literal|1
+name|startTime
 argument_list|)
 expr_stmt|;
+block|}
 name|getEditLog
 argument_list|()
 operator|.
@@ -33280,6 +33360,19 @@ name|getStartTime
 argument_list|()
 argument_list|)
 expr_stmt|;
+if|if
+condition|(
+name|haEnabled
+condition|)
+block|{
+comment|// roll the edit log to make sure the standby NameNode can tail
+name|getFSImage
+argument_list|()
+operator|.
+name|rollEditLog
+argument_list|()
+expr_stmt|;
+block|}
 block|}
 finally|finally
 block|{
@@ -33322,16 +33415,13 @@ return|return
 name|rollingUpgradeInfo
 return|;
 block|}
-comment|/**    * Update internal state to indicate that a rolling upgrade is in progress.    * Ootionally create a checkpoint before starting the RU.    * @param startTime    */
-DECL|method|startRollingUpgradeInternal (long startTime, long txid)
+comment|/**    * Update internal state to indicate that a rolling upgrade is in progress.    * @param startTime    */
+DECL|method|startRollingUpgradeInternal (long startTime)
 name|void
 name|startRollingUpgradeInternal
 parameter_list|(
 name|long
 name|startTime
-parameter_list|,
-name|long
-name|txid
 parameter_list|)
 throws|throws
 name|IOException
@@ -33349,23 +33439,65 @@ argument_list|(
 name|this
 argument_list|)
 expr_stmt|;
-comment|// if we have not made a rollback image, do it
+name|setRollingUpgradeInfo
+argument_list|(
+literal|false
+argument_list|,
+name|startTime
+argument_list|)
+expr_stmt|;
+block|}
+comment|/**    * Update internal state to indicate that a rolling upgrade is in progress for    * non-HA setup. This requires the namesystem is in SafeMode and after doing a    * checkpoint for rollback the namesystem will quit the safemode automatically     */
+DECL|method|startRollingUpgradeInternalForNonHA (long startTime)
+specifier|private
+name|void
+name|startRollingUpgradeInternalForNonHA
+parameter_list|(
+name|long
+name|startTime
+parameter_list|)
+throws|throws
+name|IOException
+block|{
+name|Preconditions
+operator|.
+name|checkState
+argument_list|(
+operator|!
+name|haEnabled
+argument_list|)
+expr_stmt|;
 if|if
 condition|(
-name|txid
-operator|<
-literal|0
-operator|||
 operator|!
+name|isInSafeMode
+argument_list|()
+condition|)
+block|{
+throw|throw
+operator|new
+name|IOException
+argument_list|(
+literal|"Safe mode should be turned ON "
+operator|+
+literal|"in order to create namespace image."
+argument_list|)
+throw|;
+block|}
+name|checkRollingUpgrade
+argument_list|(
+literal|"start rolling upgrade"
+argument_list|)
+expr_stmt|;
 name|getFSImage
 argument_list|()
 operator|.
-name|hasRollbackFSImage
+name|checkUpgrade
 argument_list|(
-name|txid
+name|this
 argument_list|)
-condition|)
-block|{
+expr_stmt|;
+comment|// in non-HA setup, we do an extra ckpt to generate a rollback image
 name|getFSImage
 argument_list|()
 operator|.
@@ -33387,7 +33519,14 @@ argument_list|(
 literal|"Successfully saved namespace for preparing rolling upgrade."
 argument_list|)
 expr_stmt|;
-block|}
+comment|// leave SafeMode automatically
+name|setSafeMode
+argument_list|(
+name|SafeModeAction
+operator|.
+name|SAFEMODE_LEAVE
+argument_list|)
+expr_stmt|;
 name|setRollingUpgradeInfo
 argument_list|(
 literal|true
@@ -33422,7 +33561,33 @@ literal|0L
 argument_list|)
 expr_stmt|;
 block|}
+DECL|method|setCreatedRollbackImages (boolean created)
+specifier|public
+name|void
+name|setCreatedRollbackImages
+parameter_list|(
+name|boolean
+name|created
+parameter_list|)
+block|{
+if|if
+condition|(
+name|rollingUpgradeInfo
+operator|!=
+literal|null
+condition|)
+block|{
+name|rollingUpgradeInfo
+operator|.
+name|setCreatedRollbackImages
+argument_list|(
+name|created
+argument_list|)
+expr_stmt|;
+block|}
+block|}
 DECL|method|getRollingUpgradeInfo ()
+specifier|public
 name|RollingUpgradeInfo
 name|getRollingUpgradeInfo
 parameter_list|()
@@ -33633,7 +33798,7 @@ name|RollingUpgradeInfo
 argument_list|(
 name|blockPoolId
 argument_list|,
-literal|true
+literal|false
 argument_list|,
 name|startTime
 argument_list|,

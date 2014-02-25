@@ -90,7 +90,6 @@ name|finalizeTime
 decl_stmt|;
 DECL|field|createdRollbackImages
 specifier|private
-specifier|final
 name|boolean
 name|createdRollbackImages
 decl_stmt|;
@@ -144,6 +143,22 @@ block|{
 return|return
 name|createdRollbackImages
 return|;
+block|}
+DECL|method|setCreatedRollbackImages (boolean created)
+specifier|public
+name|void
+name|setCreatedRollbackImages
+parameter_list|(
+name|boolean
+name|created
+parameter_list|)
+block|{
+name|this
+operator|.
+name|createdRollbackImages
+operator|=
+name|created
+expr_stmt|;
 block|}
 DECL|method|isStarted ()
 specifier|public

@@ -1734,8 +1734,18 @@ name|s
 operator|.
 name|hasRollingUpgradeStartTime
 argument_list|()
+operator|&&
+name|fsn
+operator|.
+name|getFSImage
+argument_list|()
+operator|.
+name|hasRollbackFSImage
+argument_list|()
 condition|)
 block|{
+comment|// we set the rollingUpgradeInfo only when we make sure we have the
+comment|// rollback image
 name|fsn
 operator|.
 name|setRollingUpgradeInfo

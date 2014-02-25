@@ -864,6 +864,25 @@ argument_list|)
 throw|;
 block|}
 block|}
+DECL|method|triggerRollbackCheckpoint ()
+specifier|public
+name|void
+name|triggerRollbackCheckpoint
+parameter_list|()
+block|{
+name|thread
+operator|.
+name|setNeedRollbackCheckpoint
+argument_list|(
+literal|true
+argument_list|)
+expr_stmt|;
+name|thread
+operator|.
+name|interrupt
+argument_list|()
+expr_stmt|;
+block|}
 DECL|method|doCheckpoint ()
 specifier|private
 name|void
@@ -882,6 +901,10 @@ assert|;
 specifier|final
 name|long
 name|txid
+decl_stmt|;
+specifier|final
+name|NameNodeFile
+name|imageType
 decl_stmt|;
 name|namesystem
 operator|.
@@ -957,15 +980,48 @@ argument_list|)
 expr_stmt|;
 return|return;
 block|}
+if|if
+condition|(
+name|namesystem
+operator|.
+name|isRollingUpgrade
+argument_list|()
+operator|&&
+operator|!
+name|namesystem
+operator|.
+name|getFSImage
+argument_list|()
+operator|.
+name|hasRollbackFSImage
+argument_list|()
+condition|)
+block|{
+comment|// if we will do rolling upgrade but have not created the rollback image
+comment|// yet, name this checkpoint as fsimage_rollback
+name|imageType
+operator|=
+name|NameNodeFile
+operator|.
+name|IMAGE_ROLLBACK
+expr_stmt|;
+block|}
+else|else
+block|{
+name|imageType
+operator|=
+name|NameNodeFile
+operator|.
+name|IMAGE
+expr_stmt|;
+block|}
 name|img
 operator|.
 name|saveNamespace
 argument_list|(
 name|namesystem
 argument_list|,
-name|NameNodeFile
-operator|.
-name|IMAGE
+name|imageType
 argument_list|,
 name|canceler
 argument_list|)
@@ -1056,6 +1112,8 @@ argument_list|()
 operator|.
 name|getStorage
 argument_list|()
+argument_list|,
+name|imageType
 argument_list|,
 name|txid
 argument_list|)
@@ -1216,6 +1274,16 @@ name|preventCheckpointsUntil
 init|=
 literal|0
 decl_stmt|;
+comment|// Indicate that a rollback checkpoint is required immediately. It will be
+comment|// reset to false after the checkpoint is done
+DECL|field|needRollbackCheckpoint
+specifier|private
+specifier|volatile
+name|boolean
+name|needRollbackCheckpoint
+init|=
+literal|false
+decl_stmt|;
 DECL|method|CheckpointerThread ()
 specifier|private
 name|CheckpointerThread
@@ -1241,6 +1309,22 @@ operator|.
 name|shouldRun
 operator|=
 name|shouldRun
+expr_stmt|;
+block|}
+DECL|method|setNeedRollbackCheckpoint (boolean need)
+specifier|private
+name|void
+name|setNeedRollbackCheckpoint
+parameter_list|(
+name|boolean
+name|need
+parameter_list|)
+block|{
+name|this
+operator|.
+name|needRollbackCheckpoint
+operator|=
+name|need
 expr_stmt|;
 block|}
 annotation|@
@@ -1306,6 +1390,17 @@ name|void
 name|doWork
 parameter_list|()
 block|{
+specifier|final
+name|long
+name|checkPeriod
+init|=
+literal|1000
+operator|*
+name|checkpointConf
+operator|.
+name|getCheckPeriod
+argument_list|()
+decl_stmt|;
 comment|// Reset checkpoint time so that we don't always checkpoint
 comment|// on startup.
 name|lastCheckpointTime
@@ -1318,18 +1413,19 @@ condition|(
 name|shouldRun
 condition|)
 block|{
+if|if
+condition|(
+operator|!
+name|needRollbackCheckpoint
+condition|)
+block|{
 try|try
 block|{
 name|Thread
 operator|.
 name|sleep
 argument_list|(
-literal|1000
-operator|*
-name|checkpointConf
-operator|.
-name|getCheckPeriod
-argument_list|()
+name|checkPeriod
 argument_list|)
 expr_stmt|;
 block|}
@@ -1338,7 +1434,7 @@ parameter_list|(
 name|InterruptedException
 name|ie
 parameter_list|)
-block|{         }
+block|{           }
 if|if
 condition|(
 operator|!
@@ -1346,6 +1442,7 @@ name|shouldRun
 condition|)
 block|{
 break|break;
+block|}
 block|}
 try|try
 block|{
@@ -1393,8 +1490,22 @@ decl_stmt|;
 name|boolean
 name|needCheckpoint
 init|=
-literal|false
+name|needRollbackCheckpoint
 decl_stmt|;
+if|if
+condition|(
+name|needCheckpoint
+condition|)
+block|{
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"Triggering a rollback fsimage for rolling upgrade."
+argument_list|)
+expr_stmt|;
+block|}
+elseif|else
 if|if
 condition|(
 name|uncheckpointed
@@ -1506,6 +1617,33 @@ block|{
 name|doCheckpoint
 argument_list|()
 expr_stmt|;
+comment|// reset needRollbackCheckpoint to false only when we finish a ckpt
+comment|// for rollback image
+if|if
+condition|(
+name|needRollbackCheckpoint
+operator|&&
+name|namesystem
+operator|.
+name|getFSImage
+argument_list|()
+operator|.
+name|hasRollbackFSImage
+argument_list|()
+condition|)
+block|{
+name|namesystem
+operator|.
+name|setCreatedRollbackImages
+argument_list|(
+literal|true
+argument_list|)
+expr_stmt|;
+name|needRollbackCheckpoint
+operator|=
+literal|false
+expr_stmt|;
+block|}
 name|lastCheckpointTime
 operator|=
 name|now

@@ -94,6 +94,24 @@ name|hdfs
 operator|.
 name|protocol
 operator|.
+name|HdfsConstants
+operator|.
+name|SafeModeAction
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|protocol
+operator|.
 name|RollingUpgradeInfo
 import|;
 end_import
@@ -644,6 +662,15 @@ name|foo
 argument_list|)
 expr_stmt|;
 comment|// start rolling upgrade
+name|dfs
+operator|.
+name|setSafeMode
+argument_list|(
+name|SafeModeAction
+operator|.
+name|SAFEMODE_ENTER
+argument_list|)
+expr_stmt|;
 name|Assert
 operator|.
 name|assertEquals
@@ -663,6 +690,15 @@ block|,
 literal|"prepare"
 block|}
 argument_list|)
+argument_list|)
+expr_stmt|;
+name|dfs
+operator|.
+name|setSafeMode
+argument_list|(
+name|SafeModeAction
+operator|.
+name|SAFEMODE_LEAVE
 argument_list|)
 expr_stmt|;
 comment|// create new directory
@@ -978,6 +1014,15 @@ name|foo
 argument_list|)
 expr_stmt|;
 comment|// start rolling upgrade
+name|dfs
+operator|.
+name|setSafeMode
+argument_list|(
+name|SafeModeAction
+operator|.
+name|SAFEMODE_ENTER
+argument_list|)
+expr_stmt|;
 name|Assert
 operator|.
 name|assertEquals
@@ -997,6 +1042,15 @@ block|,
 literal|"prepare"
 block|}
 argument_list|)
+argument_list|)
+expr_stmt|;
+name|dfs
+operator|.
+name|setSafeMode
+argument_list|(
+name|SafeModeAction
+operator|.
+name|SAFEMODE_LEAVE
 argument_list|)
 expr_stmt|;
 comment|// create new directory
@@ -1197,7 +1251,7 @@ operator|.
 name|waitActive
 argument_list|()
 expr_stmt|;
-comment|// let NN1 do checkpoints as fast as possible
+comment|// let NN1 tail editlog every 1s
 name|dfsCluster
 operator|.
 name|getConfiguration
@@ -1209,9 +1263,9 @@ name|setInt
 argument_list|(
 name|DFSConfigKeys
 operator|.
-name|DFS_NAMENODE_CHECKPOINT_PERIOD_KEY
+name|DFS_HA_TAILEDITS_PERIOD_KEY
 argument_list|,
-literal|0
+literal|1
 argument_list|)
 expr_stmt|;
 name|dfsCluster
@@ -1280,6 +1334,62 @@ name|dfs
 operator|.
 name|close
 argument_list|()
+expr_stmt|;
+name|NNStorage
+name|storage0
+init|=
+name|dfsCluster
+operator|.
+name|getNameNode
+argument_list|(
+literal|0
+argument_list|)
+operator|.
+name|getFSImage
+argument_list|()
+operator|.
+name|getStorage
+argument_list|()
+decl_stmt|;
+name|NNStorage
+name|storage1
+init|=
+name|dfsCluster
+operator|.
+name|getNameNode
+argument_list|(
+literal|1
+argument_list|)
+operator|.
+name|getFSImage
+argument_list|()
+operator|.
+name|getStorage
+argument_list|()
+decl_stmt|;
+name|Assert
+operator|.
+name|assertTrue
+argument_list|(
+name|TestRollingUpgrade
+operator|.
+name|existRollbackFsImage
+argument_list|(
+name|storage0
+argument_list|)
+argument_list|)
+expr_stmt|;
+name|Assert
+operator|.
+name|assertTrue
+argument_list|(
+name|TestRollingUpgrade
+operator|.
+name|existRollbackFsImage
+argument_list|(
+name|storage1
+argument_list|)
+argument_list|)
 expr_stmt|;
 comment|// rollback NN0
 name|dfsCluster
@@ -1361,12 +1471,13 @@ operator|.
 name|getStorage
 argument_list|()
 decl_stmt|;
-comment|// (startSegment, upgrade marker, mkdir, endSegment)
+comment|// segments:(startSegment, mkdir, start upgrade endSegment),
+comment|// (startSegment, mkdir, endSegment)
 name|checkNNStorage
 argument_list|(
 name|storage
 argument_list|,
-literal|3
+literal|4
 argument_list|,
 literal|7
 argument_list|)
@@ -1404,13 +1515,11 @@ operator|.
 name|NAMESERVICE
 argument_list|)
 decl_stmt|;
-comment|// segments:(startSegment, mkdir, endSegment), (startSegment, upgrade
-comment|// marker, mkdir, endSegment)
 name|checkJNStorage
 argument_list|(
 name|dir
 argument_list|,
-literal|4
+literal|5
 argument_list|,
 literal|7
 argument_list|)
@@ -1423,6 +1532,24 @@ operator|.
 name|restartNameNode
 argument_list|(
 literal|0
+argument_list|)
+expr_stmt|;
+comment|// start the rolling upgrade again to make sure we do not load upgrade
+comment|// status after the rollback
+name|dfsCluster
+operator|.
+name|transitionToActive
+argument_list|(
+literal|0
+argument_list|)
+expr_stmt|;
+name|dfs
+operator|.
+name|rollingUpgrade
+argument_list|(
+name|RollingUpgradeAction
+operator|.
+name|PREPARE
 argument_list|)
 expr_stmt|;
 block|}

@@ -4693,7 +4693,7 @@ comment|//ignore upgrade marker
 break|break;
 block|}
 block|}
-comment|// save namespace if there is no rollback image existing
+comment|// start rolling upgrade
 specifier|final
 name|long
 name|startTime
@@ -4713,13 +4713,12 @@ operator|.
 name|startRollingUpgradeInternal
 argument_list|(
 name|startTime
-argument_list|,
-name|op
-operator|.
-name|txid
-operator|-
-literal|2
 argument_list|)
+expr_stmt|;
+name|fsNamesys
+operator|.
+name|triggerRollbackCheckpoint
+argument_list|()
 expr_stmt|;
 break|break;
 block|}
