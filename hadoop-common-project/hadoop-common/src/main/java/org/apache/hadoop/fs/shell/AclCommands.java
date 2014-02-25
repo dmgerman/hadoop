@@ -915,7 +915,7 @@ name|String
 operator|.
 name|format
 argument_list|(
-literal|"%-31s #effective:%s"
+literal|"%s\t#effective:%s"
 argument_list|,
 name|entry
 argument_list|,

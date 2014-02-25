@@ -21,18 +21,6 @@ package|;
 end_package
 
 begin_import
-import|import static
-name|org
-operator|.
-name|junit
-operator|.
-name|Assert
-operator|.
-name|*
-import|;
-end_import
-
-begin_import
 import|import
 name|org
 operator|.
@@ -57,20 +45,6 @@ operator|.
 name|hdfs
 operator|.
 name|DFSConfigKeys
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|hdfs
-operator|.
-name|DistributedFileSystem
 import|;
 end_import
 
@@ -121,13 +95,12 @@ parameter_list|()
 throws|throws
 name|Exception
 block|{
-name|Configuration
 name|conf
-init|=
+operator|=
 operator|new
 name|Configuration
 argument_list|()
-decl_stmt|;
+expr_stmt|;
 name|conf
 operator|.
 name|setBoolean
@@ -161,20 +134,6 @@ name|cluster
 operator|.
 name|waitActive
 argument_list|()
-expr_stmt|;
-name|fs
-operator|=
-name|cluster
-operator|.
-name|getFileSystem
-argument_list|()
-expr_stmt|;
-name|assertTrue
-argument_list|(
-name|fs
-operator|instanceof
-name|DistributedFileSystem
-argument_list|)
 expr_stmt|;
 block|}
 block|}

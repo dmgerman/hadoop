@@ -134,6 +134,48 @@ name|FsAction
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|DFSTestUtil
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|security
+operator|.
+name|AccessControlException
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|security
+operator|.
+name|UserGroupInformation
+import|;
+end_import
+
 begin_comment
 comment|/**  * Helper methods useful for writing ACL tests.  */
 end_comment
@@ -316,6 +358,107 @@ operator|.
 name|build
 argument_list|()
 return|;
+block|}
+comment|/**    * Asserts that permission is denied to the given fs/user for the given file.    *    * @param fs FileSystem to check    * @param user UserGroupInformation owner of fs    * @param pathToCheck Path file to check    * @throws Exception if there is an unexpected error    */
+DECL|method|assertFilePermissionDenied (FileSystem fs, UserGroupInformation user, Path pathToCheck)
+specifier|public
+specifier|static
+name|void
+name|assertFilePermissionDenied
+parameter_list|(
+name|FileSystem
+name|fs
+parameter_list|,
+name|UserGroupInformation
+name|user
+parameter_list|,
+name|Path
+name|pathToCheck
+parameter_list|)
+throws|throws
+name|Exception
+block|{
+try|try
+block|{
+name|DFSTestUtil
+operator|.
+name|readFileBuffer
+argument_list|(
+name|fs
+argument_list|,
+name|pathToCheck
+argument_list|)
+expr_stmt|;
+name|fail
+argument_list|(
+literal|"expected AccessControlException for user "
+operator|+
+name|user
+operator|+
+literal|", path = "
+operator|+
+name|pathToCheck
+argument_list|)
+expr_stmt|;
+block|}
+catch|catch
+parameter_list|(
+name|AccessControlException
+name|e
+parameter_list|)
+block|{
+comment|// expected
+block|}
+block|}
+comment|/**    * Asserts that permission is granted to the given fs/user for the given file.    *    * @param fs FileSystem to check    * @param user UserGroupInformation owner of fs    * @param pathToCheck Path file to check    * @throws Exception if there is an unexpected error    */
+DECL|method|assertFilePermissionGranted (FileSystem fs, UserGroupInformation user, Path pathToCheck)
+specifier|public
+specifier|static
+name|void
+name|assertFilePermissionGranted
+parameter_list|(
+name|FileSystem
+name|fs
+parameter_list|,
+name|UserGroupInformation
+name|user
+parameter_list|,
+name|Path
+name|pathToCheck
+parameter_list|)
+throws|throws
+name|Exception
+block|{
+try|try
+block|{
+name|DFSTestUtil
+operator|.
+name|readFileBuffer
+argument_list|(
+name|fs
+argument_list|,
+name|pathToCheck
+argument_list|)
+expr_stmt|;
+block|}
+catch|catch
+parameter_list|(
+name|AccessControlException
+name|e
+parameter_list|)
+block|{
+name|fail
+argument_list|(
+literal|"expected permission granted for user "
+operator|+
+name|user
+operator|+
+literal|", path = "
+operator|+
+name|pathToCheck
+argument_list|)
+expr_stmt|;
+block|}
 block|}
 comment|/**    * Asserts the value of the FsPermission bits on the inode of a specific path.    *    * @param fs FileSystem to use for check    * @param pathToCheck Path inode to check    * @param perm short expected permission bits    * @throws IOException thrown if there is an I/O error    */
 DECL|method|assertPermission (FileSystem fs, Path pathToCheck, short perm)
