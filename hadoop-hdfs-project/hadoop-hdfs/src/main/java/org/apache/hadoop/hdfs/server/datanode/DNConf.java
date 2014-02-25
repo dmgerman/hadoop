@@ -467,6 +467,38 @@ import|;
 end_import
 
 begin_import
+import|import static
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|DFSConfigKeys
+operator|.
+name|DFS_DATANODE_RESTART_REPLICA_EXPIRY_KEY
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|DFSConfigKeys
+operator|.
+name|DFS_DATANODE_RESTART_REPLICA_EXPIRY_DEFAULT
+import|;
+end_import
+
+begin_import
 import|import
 name|org
 operator|.
@@ -630,6 +662,11 @@ DECL|field|xceiverStopTimeout
 specifier|final
 name|long
 name|xceiverStopTimeout
+decl_stmt|;
+DECL|field|restartReplicaExpiry
+specifier|final
+name|long
+name|restartReplicaExpiry
 decl_stmt|;
 DECL|field|maxLockedMemory
 specifier|final
@@ -962,6 +999,21 @@ name|DFS_DATANODE_MAX_LOCKED_MEMORY_KEY
 argument_list|,
 name|DFS_DATANODE_MAX_LOCKED_MEMORY_DEFAULT
 argument_list|)
+expr_stmt|;
+name|this
+operator|.
+name|restartReplicaExpiry
+operator|=
+name|conf
+operator|.
+name|getLong
+argument_list|(
+name|DFS_DATANODE_RESTART_REPLICA_EXPIRY_KEY
+argument_list|,
+name|DFS_DATANODE_RESTART_REPLICA_EXPIRY_DEFAULT
+argument_list|)
+operator|*
+literal|1000L
 expr_stmt|;
 block|}
 comment|// We get minimumNameNodeVersion via a method so it can be mocked out in tests.
