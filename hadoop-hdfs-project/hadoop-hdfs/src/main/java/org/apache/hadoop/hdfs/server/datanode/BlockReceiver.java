@@ -4764,6 +4764,10 @@ init|(
 name|this
 init|)
 block|{
+name|running
+operator|=
+literal|false
+expr_stmt|;
 name|notifyAll
 argument_list|()
 expr_stmt|;

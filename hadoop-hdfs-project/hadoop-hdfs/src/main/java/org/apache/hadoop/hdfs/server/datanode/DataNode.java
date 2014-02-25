@@ -6370,6 +6370,13 @@ init|(
 name|this
 init|)
 block|{
+comment|// it is already false, but setting it again to avoid a findbug warning.
+name|this
+operator|.
+name|shouldRun
+operator|=
+literal|false
+expr_stmt|;
 comment|// Notify the main thread.
 name|notifyAll
 argument_list|()
