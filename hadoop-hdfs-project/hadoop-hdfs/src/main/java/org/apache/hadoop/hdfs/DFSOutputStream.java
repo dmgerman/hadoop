@@ -5488,6 +5488,10 @@ argument_list|(
 literal|0
 argument_list|)
 expr_stmt|;
+name|bytesSent
+operator|=
+literal|0
+expr_stmt|;
 name|accessToken
 operator|=
 name|lb

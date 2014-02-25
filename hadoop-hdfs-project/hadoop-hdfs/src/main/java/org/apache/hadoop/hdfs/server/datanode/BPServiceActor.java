@@ -698,13 +698,16 @@ operator|.
 name|newHashMap
 argument_list|()
 decl_stmt|;
-DECL|field|pendingReceivedRequests
+comment|// IBR = Incremental Block Report. If this flag is set then an IBR will be
+comment|// sent immediately by the actor thread without waiting for the IBR timer
+comment|// to elapse.
+DECL|field|sendImmediateIBR
 specifier|private
 specifier|volatile
-name|int
-name|pendingReceivedRequests
+name|boolean
+name|sendImmediateIBR
 init|=
-literal|0
+literal|false
 decl_stmt|;
 DECL|field|shouldServiceRun
 specifier|private
@@ -1417,26 +1420,6 @@ operator|.
 name|dequeueBlockInfos
 argument_list|()
 decl_stmt|;
-name|pendingReceivedRequests
-operator|=
-operator|(
-name|pendingReceivedRequests
-operator|>
-name|rdbi
-operator|.
-name|length
-condition|?
-operator|(
-name|pendingReceivedRequests
-operator|-
-name|rdbi
-operator|.
-name|length
-operator|)
-else|:
-literal|0
-operator|)
-expr_stmt|;
 name|reports
 operator|.
 name|add
@@ -1452,6 +1435,10 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
+name|sendImmediateIBR
+operator|=
+literal|false
+expr_stmt|;
 block|}
 if|if
 condition|(
@@ -1542,8 +1529,6 @@ name|getStorageID
 argument_list|()
 argument_list|)
 decl_stmt|;
-name|pendingReceivedRequests
-operator|+=
 name|perStorageMap
 operator|.
 name|putMissingBlockInfos
@@ -1553,6 +1538,10 @@ operator|.
 name|getBlocks
 argument_list|()
 argument_list|)
+expr_stmt|;
+name|sendImmediateIBR
+operator|=
+literal|true
 expr_stmt|;
 block|}
 block|}
@@ -1692,8 +1681,9 @@ argument_list|,
 name|storageUuid
 argument_list|)
 expr_stmt|;
-name|pendingReceivedRequests
-operator|++
+name|sendImmediateIBR
+operator|=
+literal|true
 expr_stmt|;
 name|pendingIncrementalBRperStorage
 operator|.
@@ -1878,6 +1868,17 @@ return|return;
 block|}
 block|}
 block|}
+block|}
+annotation|@
+name|VisibleForTesting
+DECL|method|hasPendingIBR ()
+name|boolean
+name|hasPendingIBR
+parameter_list|()
+block|{
+return|return
+name|sendImmediateIBR
+return|;
 block|}
 comment|/**    * Report the list blocks to the Namenode    * @return DatanodeCommands returned by the NN. May be null.    * @throws IOException    */
 DECL|method|blockReport ()
@@ -2975,9 +2976,7 @@ block|}
 block|}
 if|if
 condition|(
-name|pendingReceivedRequests
-operator|>
-literal|0
+name|sendImmediateIBR
 operator|||
 operator|(
 name|startTime
@@ -3101,9 +3100,8 @@ name|waitTime
 operator|>
 literal|0
 operator|&&
-name|pendingReceivedRequests
-operator|==
-literal|0
+operator|!
+name|sendImmediateIBR
 condition|)
 block|{
 try|try
