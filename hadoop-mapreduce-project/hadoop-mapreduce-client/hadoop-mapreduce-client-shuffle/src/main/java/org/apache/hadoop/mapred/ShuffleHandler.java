@@ -2651,6 +2651,13 @@ name|SHUFFLE_SSL_ENABLED_DEFAULT
 argument_list|)
 condition|)
 block|{
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"Encrypted shuffle is enabled."
+argument_list|)
+expr_stmt|;
 name|sslFactory
 operator|=
 operator|new
