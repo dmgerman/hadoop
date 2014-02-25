@@ -8637,7 +8637,6 @@ annotation|@
 name|Override
 DECL|method|addBlockPool (String bpid, Configuration conf)
 specifier|public
-specifier|synchronized
 name|void
 name|addBlockPool
 parameter_list|(
@@ -8659,6 +8658,11 @@ operator|+
 name|bpid
 argument_list|)
 expr_stmt|;
+synchronized|synchronized
+init|(
+name|this
+init|)
+block|{
 name|volumes
 operator|.
 name|addBlockPool
@@ -8675,6 +8679,7 @@ argument_list|(
 name|bpid
 argument_list|)
 expr_stmt|;
+block|}
 name|volumes
 operator|.
 name|getAllVolumesMap

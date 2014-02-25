@@ -1588,13 +1588,14 @@ condition|)
 block|{
 continue|continue;
 block|}
-comment|// skip VERSION file for DataNodes
+comment|// skip VERSION and dfsUsed file for DataNodes
 if|if
 condition|(
 name|nodeType
 operator|==
 name|DATA_NODE
 operator|&&
+operator|(
 name|list
 index|[
 name|i
@@ -1607,6 +1608,20 @@ name|equals
 argument_list|(
 literal|"VERSION"
 argument_list|)
+operator|||
+name|list
+index|[
+name|i
+index|]
+operator|.
+name|getName
+argument_list|()
+operator|.
+name|equals
+argument_list|(
+literal|"dfsUsed"
+argument_list|)
+operator|)
 condition|)
 block|{
 continue|continue;
