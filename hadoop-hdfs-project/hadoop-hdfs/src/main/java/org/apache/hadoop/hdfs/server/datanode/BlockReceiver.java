@@ -3641,8 +3641,15 @@ try|try
 block|{
 name|responder
 operator|.
-name|join
-argument_list|(
+name|interrupt
+argument_list|()
+expr_stmt|;
+comment|// join() on the responder should timeout a bit earlier than the
+comment|// configured deadline. Otherwise, the join() on this thread will
+comment|// likely timeout as well.
+name|long
+name|joinTimeout
+init|=
 name|datanode
 operator|.
 name|getDnConf
@@ -3650,6 +3657,26 @@ argument_list|()
 operator|.
 name|getXceiverStopTimeout
 argument_list|()
+decl_stmt|;
+name|joinTimeout
+operator|=
+name|joinTimeout
+operator|>
+literal|1
+condition|?
+name|joinTimeout
+operator|*
+literal|8
+operator|/
+literal|10
+else|:
+name|joinTimeout
+expr_stmt|;
+name|responder
+operator|.
+name|join
+argument_list|(
+name|joinTimeout
 argument_list|)
 expr_stmt|;
 if|if
