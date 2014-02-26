@@ -180,6 +180,24 @@ name|api
 operator|.
 name|records
 operator|.
+name|NMToken
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|api
+operator|.
+name|records
+operator|.
 name|Resource
 import|;
 end_import
@@ -219,7 +237,7 @@ annotation|@
 name|Private
 annotation|@
 name|Unstable
-DECL|method|newInstance ( Resource minCapability, Resource maxCapability, Map<ApplicationAccessType, String> acls, ByteBuffer key, List<Container> containersFromPreviousAttempt, String queue)
+DECL|method|newInstance ( Resource minCapability, Resource maxCapability, Map<ApplicationAccessType, String> acls, ByteBuffer key, List<Container> containersFromPreviousAttempt, String queue, List<NMToken> nmTokensFromPreviousAttempts)
 specifier|public
 specifier|static
 name|RegisterApplicationMasterResponse
@@ -250,6 +268,12 @@ name|containersFromPreviousAttempt
 parameter_list|,
 name|String
 name|queue
+parameter_list|,
+name|List
+argument_list|<
+name|NMToken
+argument_list|>
+name|nmTokensFromPreviousAttempts
 parameter_list|)
 block|{
 name|RegisterApplicationMasterResponse
@@ -287,9 +311,16 @@ argument_list|)
 expr_stmt|;
 name|response
 operator|.
-name|setContainersFromPreviousAttempt
+name|setContainersFromPreviousAttempts
 argument_list|(
 name|containersFromPreviousAttempt
+argument_list|)
+expr_stmt|;
+name|response
+operator|.
+name|setNMTokensFromPreviousAttempts
+argument_list|(
+name|nmTokensFromPreviousAttempts
 argument_list|)
 expr_stmt|;
 name|response
@@ -420,37 +451,70 @@ name|String
 name|queue
 parameter_list|)
 function_decl|;
-comment|/**    *<p>    * Get the list of running containers as viewed by    *<code>ResourceManager</code> from previous application attempt.    *</p>    *     * @return the list of running containers as viewed by    *<code>ResourceManager</code> from previous application attempt    */
+comment|/**    *<p>    * Get the list of running containers as viewed by    *<code>ResourceManager</code> from previous application attempts.    *</p>    *     * @return the list of running containers as viewed by    *<code>ResourceManager</code> from previous application attempts    * @see RegisterApplicationMasterResponse#getNMTokensFromPreviousAttempts()    */
 annotation|@
 name|Public
 annotation|@
 name|Unstable
-DECL|method|getContainersFromPreviousAttempt ()
+DECL|method|getContainersFromPreviousAttempts ()
 specifier|public
 specifier|abstract
 name|List
 argument_list|<
 name|Container
 argument_list|>
-name|getContainersFromPreviousAttempt
+name|getContainersFromPreviousAttempts
 parameter_list|()
 function_decl|;
-comment|/**    * Set the list of running containers as viewed by    *<code>ResourceManager</code> from previous application attempt.    *     * @param containersFromPreviousAttempt    *          the list of running containers as viewed by    *<code>ResourceManager</code> from previous application attempt.    */
+comment|/**    * Set the list of running containers as viewed by    *<code>ResourceManager</code> from previous application attempts.    *     * @param containersFromPreviousAttempt    *          the list of running containers as viewed by    *<code>ResourceManager</code> from previous application attempts.    */
 annotation|@
 name|Private
 annotation|@
 name|Unstable
-DECL|method|setContainersFromPreviousAttempt ( List<Container> containersFromPreviousAttempt)
+DECL|method|setContainersFromPreviousAttempts ( List<Container> containersFromPreviousAttempt)
 specifier|public
 specifier|abstract
 name|void
-name|setContainersFromPreviousAttempt
+name|setContainersFromPreviousAttempts
 parameter_list|(
 name|List
 argument_list|<
 name|Container
 argument_list|>
 name|containersFromPreviousAttempt
+parameter_list|)
+function_decl|;
+comment|/**    * Get the list of NMTokens for communicating with the NMs where the    * containers of previous application attempts are running.    *     * @return the list of NMTokens for communicating with the NMs where the    *         containers of previous application attempts are running.    *     * @see RegisterApplicationMasterResponse#getContainersFromPreviousAttempts()    */
+annotation|@
+name|Public
+annotation|@
+name|Stable
+DECL|method|getNMTokensFromPreviousAttempts ()
+specifier|public
+specifier|abstract
+name|List
+argument_list|<
+name|NMToken
+argument_list|>
+name|getNMTokensFromPreviousAttempts
+parameter_list|()
+function_decl|;
+comment|/**    * Set the list of NMTokens for communicating with the NMs where the the    * containers of previous application attempts are running.    *     * @param nmTokens    *          the list of NMTokens for communicating with the NMs where the    *          containers of previous application attempts are running.    */
+annotation|@
+name|Private
+annotation|@
+name|Unstable
+DECL|method|setNMTokensFromPreviousAttempts (List<NMToken> nmTokens)
+specifier|public
+specifier|abstract
+name|void
+name|setNMTokensFromPreviousAttempts
+parameter_list|(
+name|List
+argument_list|<
+name|NMToken
+argument_list|>
+name|nmTokens
 parameter_list|)
 function_decl|;
 block|}
