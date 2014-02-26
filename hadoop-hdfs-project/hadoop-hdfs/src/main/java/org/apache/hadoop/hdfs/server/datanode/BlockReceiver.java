@@ -3682,12 +3682,25 @@ name|restartMeta
 operator|.
 name|exists
 argument_list|()
-condition|)
-block|{
+operator|&&
+operator|!
 name|restartMeta
 operator|.
 name|delete
 argument_list|()
+condition|)
+block|{
+name|LOG
+operator|.
+name|warn
+argument_list|(
+literal|"Failed to delete restart meta file: "
+operator|+
+name|restartMeta
+operator|.
+name|getPath
+argument_list|()
+argument_list|)
 expr_stmt|;
 block|}
 try|try
