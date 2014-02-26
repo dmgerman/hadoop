@@ -1399,9 +1399,9 @@ return|return
 operator|new
 name|AclFeature
 argument_list|(
-name|Collections
+name|ImmutableList
 operator|.
-name|unmodifiableList
+name|copyOf
 argument_list|(
 name|featureEntries
 argument_list|)

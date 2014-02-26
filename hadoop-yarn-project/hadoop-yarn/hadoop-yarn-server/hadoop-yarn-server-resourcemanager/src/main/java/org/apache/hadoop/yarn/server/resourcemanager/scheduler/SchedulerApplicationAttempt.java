@@ -2008,7 +2008,9 @@ name|LOG
 operator|.
 name|error
 argument_list|(
-literal|"Error trying to assign container token to allocated container "
+literal|"Error trying to assign container token and NM token to"
+operator|+
+literal|" an allocated container "
 operator|+
 name|container
 operator|.

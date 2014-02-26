@@ -1062,19 +1062,6 @@ name|void
 name|close
 parameter_list|()
 block|{
-name|QuorumJournalManager
-operator|.
-name|LOG
-operator|.
-name|info
-argument_list|(
-literal|"Closing"
-argument_list|,
-operator|new
-name|Exception
-argument_list|()
-argument_list|)
-expr_stmt|;
 comment|// No more tasks may be submitted after this point.
 name|executor
 operator|.

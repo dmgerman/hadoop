@@ -142,6 +142,20 @@ name|Properties
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|io
+operator|.
+name|IOUtils
+import|;
+end_import
+
 begin_comment
 comment|/**  * This class returns build information about Hadoop components.  */
 end_comment
@@ -202,11 +216,15 @@ name|component
 operator|+
 literal|"-version-info.properties"
 decl_stmt|;
-try|try
-block|{
 name|InputStream
 name|is
 init|=
+literal|null
+decl_stmt|;
+try|try
+block|{
+name|is
+operator|=
 name|Thread
 operator|.
 name|currentThread
@@ -219,7 +237,7 @@ name|getResourceAsStream
 argument_list|(
 name|versionInfoFile
 argument_list|)
-decl_stmt|;
+expr_stmt|;
 if|if
 condition|(
 name|is
@@ -271,6 +289,16 @@ name|toString
 argument_list|()
 argument_list|,
 name|ex
+argument_list|)
+expr_stmt|;
+block|}
+finally|finally
+block|{
+name|IOUtils
+operator|.
+name|closeStream
+argument_list|(
+name|is
 argument_list|)
 expr_stmt|;
 block|}

@@ -22,26 +22,6 @@ end_package
 
 begin_import
 import|import
-name|java
-operator|.
-name|util
-operator|.
-name|Collections
-import|;
-end_import
-
-begin_import
-import|import
-name|java
-operator|.
-name|util
-operator|.
-name|List
-import|;
-end_import
-
-begin_import
-import|import
 name|org
 operator|.
 name|apache
@@ -70,6 +50,20 @@ name|AclEntry
 import|;
 end_import
 
+begin_import
+import|import
+name|com
+operator|.
+name|google
+operator|.
+name|common
+operator|.
+name|collect
+operator|.
+name|ImmutableList
+import|;
+end_import
+
 begin_comment
 comment|/**  * Feature that represents the ACLs of the inode.  */
 end_comment
@@ -92,31 +86,31 @@ DECL|field|EMPTY_ENTRY_LIST
 specifier|public
 specifier|static
 specifier|final
-name|List
+name|ImmutableList
 argument_list|<
 name|AclEntry
 argument_list|>
 name|EMPTY_ENTRY_LIST
 init|=
-name|Collections
+name|ImmutableList
 operator|.
-name|emptyList
+name|of
 argument_list|()
 decl_stmt|;
 DECL|field|entries
 specifier|private
 specifier|final
-name|List
+name|ImmutableList
 argument_list|<
 name|AclEntry
 argument_list|>
 name|entries
 decl_stmt|;
-DECL|method|AclFeature (List<AclEntry> entries)
+DECL|method|AclFeature (ImmutableList<AclEntry> entries)
 specifier|public
 name|AclFeature
 parameter_list|(
-name|List
+name|ImmutableList
 argument_list|<
 name|AclEntry
 argument_list|>
@@ -132,7 +126,7 @@ expr_stmt|;
 block|}
 DECL|method|getEntries ()
 specifier|public
-name|List
+name|ImmutableList
 argument_list|<
 name|AclEntry
 argument_list|>
