@@ -4480,6 +4480,13 @@ name|rollingUpgradeInfo
 init|=
 literal|null
 decl_stmt|;
+comment|/**    * A flag that indicates whether the checkpointer should checkpoint a rollback    * fsimage. The edit log tailer sets this flag. The checkpoint will create a    * rollback fsimage if the flag is true, and then change the flag to false.    */
+DECL|field|needRollbackFsImage
+specifier|private
+specifier|volatile
+name|boolean
+name|needRollbackFsImage
+decl_stmt|;
 comment|// Block pool ID used by this namenode
 DECL|field|blockPoolId
 specifier|private
@@ -7523,6 +7530,11 @@ name|void
 name|triggerRollbackCheckpoint
 parameter_list|()
 block|{
+name|setNeedRollbackFsImage
+argument_list|(
+literal|true
+argument_list|)
+expr_stmt|;
 if|if
 condition|(
 name|standbyCheckpointer
@@ -33595,6 +33607,32 @@ block|{
 return|return
 name|rollingUpgradeInfo
 return|;
+block|}
+DECL|method|isNeedRollbackFsImage ()
+specifier|public
+name|boolean
+name|isNeedRollbackFsImage
+parameter_list|()
+block|{
+return|return
+name|needRollbackFsImage
+return|;
+block|}
+DECL|method|setNeedRollbackFsImage (boolean needRollbackFsImage)
+specifier|public
+name|void
+name|setNeedRollbackFsImage
+parameter_list|(
+name|boolean
+name|needRollbackFsImage
+parameter_list|)
+block|{
+name|this
+operator|.
+name|needRollbackFsImage
+operator|=
+name|needRollbackFsImage
+expr_stmt|;
 block|}
 comment|/** Is rolling upgrade in progress? */
 DECL|method|isRollingUpgrade ()

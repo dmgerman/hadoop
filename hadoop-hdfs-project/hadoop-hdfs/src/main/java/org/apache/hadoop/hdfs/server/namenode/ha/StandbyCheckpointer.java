@@ -872,13 +872,6 @@ parameter_list|()
 block|{
 name|thread
 operator|.
-name|setNeedRollbackCheckpoint
-argument_list|(
-literal|true
-argument_list|)
-expr_stmt|;
-name|thread
-operator|.
 name|interrupt
 argument_list|()
 expr_stmt|;
@@ -1274,16 +1267,6 @@ name|preventCheckpointsUntil
 init|=
 literal|0
 decl_stmt|;
-comment|// Indicate that a rollback checkpoint is required immediately. It will be
-comment|// reset to false after the checkpoint is done
-DECL|field|needRollbackCheckpoint
-specifier|private
-specifier|volatile
-name|boolean
-name|needRollbackCheckpoint
-init|=
-literal|false
-decl_stmt|;
 DECL|method|CheckpointerThread ()
 specifier|private
 name|CheckpointerThread
@@ -1309,22 +1292,6 @@ operator|.
 name|shouldRun
 operator|=
 name|shouldRun
-expr_stmt|;
-block|}
-DECL|method|setNeedRollbackCheckpoint (boolean need)
-specifier|private
-name|void
-name|setNeedRollbackCheckpoint
-parameter_list|(
-name|boolean
-name|need
-parameter_list|)
-block|{
-name|this
-operator|.
-name|needRollbackCheckpoint
-operator|=
-name|need
 expr_stmt|;
 block|}
 annotation|@
@@ -1413,6 +1380,14 @@ condition|(
 name|shouldRun
 condition|)
 block|{
+name|boolean
+name|needRollbackCheckpoint
+init|=
+name|namesystem
+operator|.
+name|isNeedRollbackFsImage
+argument_list|()
+decl_stmt|;
 if|if
 condition|(
 operator|!
@@ -1639,9 +1614,12 @@ argument_list|(
 literal|true
 argument_list|)
 expr_stmt|;
-name|needRollbackCheckpoint
-operator|=
+name|namesystem
+operator|.
+name|setNeedRollbackFsImage
+argument_list|(
 literal|false
+argument_list|)
 expr_stmt|;
 block|}
 name|lastCheckpointTime
