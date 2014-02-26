@@ -412,6 +412,20 @@ name|common
 operator|.
 name|collect
 operator|.
+name|ImmutableList
+import|;
+end_import
+
+begin_import
+import|import
+name|com
+operator|.
+name|google
+operator|.
+name|common
+operator|.
+name|collect
+operator|.
 name|Lists
 import|;
 end_import
@@ -10371,6 +10385,33 @@ block|{
 name|assertNotNull
 argument_list|(
 name|aclFeature
+argument_list|)
+expr_stmt|;
+comment|// Intentionally capturing a reference to the entries, not using nested
+comment|// calls.  This way, we get compile-time enforcement that the entries are
+comment|// stored in an ImmutableList.
+name|ImmutableList
+argument_list|<
+name|AclEntry
+argument_list|>
+name|entries
+init|=
+name|aclFeature
+operator|.
+name|getEntries
+argument_list|()
+decl_stmt|;
+name|assertNotNull
+argument_list|(
+name|entries
+argument_list|)
+expr_stmt|;
+name|assertFalse
+argument_list|(
+name|entries
+operator|.
+name|isEmpty
+argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
