@@ -1650,6 +1650,9 @@ comment|// Sleep time for each pass in continuous scheduling
 DECL|field|nodeAvailableResourceComparator
 specifier|private
 name|Comparator
+argument_list|<
+name|NodeId
+argument_list|>
 name|nodeAvailableResourceComparator
 init|=
 operator|new
