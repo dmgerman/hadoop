@@ -2782,8 +2782,6 @@ name|txid
 argument_list|)
 return|;
 block|}
-annotation|@
-name|VisibleForTesting
 DECL|method|getNameNodeFileName (NameNodeFile nnf, long txid)
 specifier|private
 specifier|static
