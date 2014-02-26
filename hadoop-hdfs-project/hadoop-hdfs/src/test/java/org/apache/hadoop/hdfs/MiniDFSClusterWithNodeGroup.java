@@ -1222,6 +1222,11 @@ argument_list|,
 name|dnArgs
 argument_list|,
 name|secureResources
+argument_list|,
+name|dn
+operator|.
+name|getIpcPort
+argument_list|()
 argument_list|)
 argument_list|)
 expr_stmt|;

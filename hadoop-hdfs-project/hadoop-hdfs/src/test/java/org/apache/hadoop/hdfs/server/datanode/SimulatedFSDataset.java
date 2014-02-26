@@ -5115,16 +5115,17 @@ throw|;
 block|}
 annotation|@
 name|Override
-DECL|method|getHdfsBlocksMetadata (List<ExtendedBlock> blocks)
+DECL|method|getHdfsBlocksMetadata (String bpid, long[] blockIds)
 specifier|public
 name|HdfsBlocksMetadata
 name|getHdfsBlocksMetadata
 parameter_list|(
-name|List
-argument_list|<
-name|ExtendedBlock
-argument_list|>
-name|blocks
+name|String
+name|bpid
+parameter_list|,
+name|long
+index|[]
+name|blockIds
 parameter_list|)
 throws|throws
 name|IOException

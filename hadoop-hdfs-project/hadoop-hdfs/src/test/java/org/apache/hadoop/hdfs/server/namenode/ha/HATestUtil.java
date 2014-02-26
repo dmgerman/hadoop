@@ -596,6 +596,7 @@ expr_stmt|;
 block|}
 comment|/**    * Wait for the NameNode to issue any deletions that are already    * pending (i.e. for the pendingDeletionBlocksCount to go to 0)    */
 DECL|method|waitForNNToIssueDeletions (final NameNode nn)
+specifier|public
 specifier|static
 name|void
 name|waitForNNToIssueDeletions

@@ -56,6 +56,48 @@ name|InterfaceStability
 import|;
 end_import
 
+begin_import
+import|import
+name|com
+operator|.
+name|google
+operator|.
+name|common
+operator|.
+name|base
+operator|.
+name|Joiner
+import|;
+end_import
+
+begin_import
+import|import
+name|com
+operator|.
+name|google
+operator|.
+name|common
+operator|.
+name|base
+operator|.
+name|Preconditions
+import|;
+end_import
+
+begin_import
+import|import
+name|com
+operator|.
+name|google
+operator|.
+name|common
+operator|.
+name|primitives
+operator|.
+name|Longs
+import|;
+end_import
+
 begin_comment
 comment|/**  * Augments an array of blocks on a datanode with additional information about  * where the block is stored.  */
 end_comment
@@ -74,13 +116,20 @@ specifier|public
 class|class
 name|HdfsBlocksMetadata
 block|{
-comment|/**    * List of blocks    */
-DECL|field|blocks
+comment|/** The block pool that was queried */
+DECL|field|blockPoolId
 specifier|private
 specifier|final
-name|ExtendedBlock
+name|String
+name|blockPoolId
+decl_stmt|;
+comment|/**    * List of blocks    */
+DECL|field|blockIds
+specifier|private
+specifier|final
+name|long
 index|[]
-name|blocks
+name|blockIds
 decl_stmt|;
 comment|/**    * List of volumes    */
 DECL|field|volumeIds
@@ -103,14 +152,17 @@ name|Integer
 argument_list|>
 name|volumeIndexes
 decl_stmt|;
-comment|/**    * Constructs HdfsBlocksMetadata.    *     * @param blocks    *          List of blocks described    * @param volumeIds    *          List of potential volume identifiers, specifying volumes where     *          blocks may be stored    * @param volumeIndexes    *          Indexes into the list of volume identifiers, one per block    */
-DECL|method|HdfsBlocksMetadata (ExtendedBlock[] blocks, List<byte[]> volumeIds, List<Integer> volumeIndexes)
+comment|/**    * Constructs HdfsBlocksMetadata.    *     * @param blockIds    *          List of blocks described    * @param volumeIds    *          List of potential volume identifiers, specifying volumes where     *          blocks may be stored    * @param volumeIndexes    *          Indexes into the list of volume identifiers, one per block    */
+DECL|method|HdfsBlocksMetadata (String blockPoolId, long[] blockIds, List<byte[]> volumeIds, List<Integer> volumeIndexes)
 specifier|public
 name|HdfsBlocksMetadata
 parameter_list|(
-name|ExtendedBlock
+name|String
+name|blockPoolId
+parameter_list|,
+name|long
 index|[]
-name|blocks
+name|blockIds
 parameter_list|,
 name|List
 argument_list|<
@@ -126,11 +178,33 @@ argument_list|>
 name|volumeIndexes
 parameter_list|)
 block|{
+name|Preconditions
+operator|.
+name|checkArgument
+argument_list|(
+name|blockIds
+operator|.
+name|length
+operator|==
+name|volumeIndexes
+operator|.
+name|size
+argument_list|()
+argument_list|,
+literal|"Argument lengths should match"
+argument_list|)
+expr_stmt|;
 name|this
 operator|.
-name|blocks
+name|blockPoolId
 operator|=
-name|blocks
+name|blockPoolId
+expr_stmt|;
+name|this
+operator|.
+name|blockIds
+operator|=
+name|blockIds
 expr_stmt|;
 name|this
 operator|.
@@ -146,15 +220,15 @@ name|volumeIndexes
 expr_stmt|;
 block|}
 comment|/**    * Get the array of blocks.    *     * @return array of blocks    */
-DECL|method|getBlocks ()
+DECL|method|getBlockIds ()
 specifier|public
-name|ExtendedBlock
+name|long
 index|[]
-name|getBlocks
+name|getBlockIds
 parameter_list|()
 block|{
 return|return
-name|blocks
+name|blockIds
 return|;
 block|}
 comment|/**    * Get the list of volume identifiers in raw byte form.    *     * @return list of ids    */
@@ -184,6 +258,45 @@ parameter_list|()
 block|{
 return|return
 name|volumeIndexes
+return|;
+block|}
+annotation|@
+name|Override
+DECL|method|toString ()
+specifier|public
+name|String
+name|toString
+parameter_list|()
+block|{
+return|return
+literal|"Metadata for "
+operator|+
+name|blockIds
+operator|.
+name|length
+operator|+
+literal|" blocks in "
+operator|+
+name|blockPoolId
+operator|+
+literal|": "
+operator|+
+name|Joiner
+operator|.
+name|on
+argument_list|(
+literal|","
+argument_list|)
+operator|.
+name|join
+argument_list|(
+name|Longs
+operator|.
+name|asList
+argument_list|(
+name|blockIds
+argument_list|)
+argument_list|)
 return|;
 block|}
 block|}
