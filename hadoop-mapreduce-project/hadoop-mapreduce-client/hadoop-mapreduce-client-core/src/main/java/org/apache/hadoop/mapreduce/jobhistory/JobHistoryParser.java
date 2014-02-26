@@ -1900,38 +1900,6 @@ operator|.
 name|getCounters
 argument_list|()
 expr_stmt|;
-if|if
-condition|(
-name|info
-operator|.
-name|errorInfo
-operator|.
-name|isEmpty
-argument_list|()
-condition|)
-block|{
-name|info
-operator|.
-name|errorInfo
-operator|=
-literal|"Task "
-operator|+
-name|taskInfo
-operator|.
-name|taskId
-operator|+
-literal|" failed "
-operator|+
-name|taskInfo
-operator|.
-name|attemptsMap
-operator|.
-name|size
-argument_list|()
-operator|+
-literal|" times "
-expr_stmt|;
-block|}
 block|}
 DECL|method|handleTaskStartedEvent (TaskStartedEvent event)
 specifier|private
@@ -2047,6 +2015,20 @@ argument_list|(
 name|event
 operator|.
 name|getStatus
+argument_list|()
+argument_list|)
+expr_stmt|;
+name|info
+operator|.
+name|errorInfo
+operator|=
+name|StringInterner
+operator|.
+name|weakIntern
+argument_list|(
+name|event
+operator|.
+name|getDiagnostics
 argument_list|()
 argument_list|)
 expr_stmt|;
