@@ -2039,9 +2039,17 @@ literal|null
 condition|)
 block|{
 comment|//We are using statusUpdate only as a simple ping
+if|if
+condition|(
 name|LOG
 operator|.
-name|info
+name|isDebugEnabled
+argument_list|()
+condition|)
+block|{
+name|LOG
+operator|.
+name|debug
 argument_list|(
 literal|"Ping from "
 operator|+
@@ -2051,23 +2059,12 @@ name|toString
 argument_list|()
 argument_list|)
 expr_stmt|;
+block|}
 return|return
 name|feedback
 return|;
 block|}
 comment|// if we are here there is an actual status update to be processed
-name|LOG
-operator|.
-name|info
-argument_list|(
-literal|"Status update from "
-operator|+
-name|taskAttemptID
-operator|.
-name|toString
-argument_list|()
-argument_list|)
-expr_stmt|;
 name|taskHeartbeatHandler
 operator|.
 name|progressing
