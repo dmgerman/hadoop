@@ -1960,6 +1960,15 @@ name|MAX_FETCH_FAILURES_NOTIFICATIONS
 init|=
 literal|3
 decl_stmt|;
+DECL|field|JOB_KILLED_DIAG
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|JOB_KILLED_DIAG
+init|=
+literal|"Job received Kill while in RUNNING state."
+decl_stmt|;
 comment|//final fields
 DECL|field|applicationAttemptId
 specifier|private
@@ -9381,6 +9390,8 @@ name|finalState
 operator|.
 name|toString
 argument_list|()
+argument_list|,
+name|diagnostics
 argument_list|)
 decl_stmt|;
 name|eventHandler
@@ -9941,6 +9952,10 @@ name|KILLED
 operator|.
 name|toString
 argument_list|()
+argument_list|,
+name|job
+operator|.
+name|diagnostics
 argument_list|)
 decl_stmt|;
 name|job
@@ -10149,7 +10164,7 @@ name|job
 operator|.
 name|addDiagnostic
 argument_list|(
-literal|"Job received Kill while in RUNNING state."
+name|JOB_KILLED_DIAG
 argument_list|)
 expr_stmt|;
 for|for
@@ -12164,6 +12179,10 @@ argument_list|,
 literal|0
 argument_list|,
 name|jobHistoryString
+argument_list|,
+name|job
+operator|.
+name|diagnostics
 argument_list|)
 decl_stmt|;
 name|job

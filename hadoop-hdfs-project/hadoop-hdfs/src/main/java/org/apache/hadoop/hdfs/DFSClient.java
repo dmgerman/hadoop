@@ -2891,10 +2891,10 @@ specifier|final
 name|int
 name|getFileBlockStorageLocationsNumThreads
 decl_stmt|;
-DECL|field|getFileBlockStorageLocationsTimeout
+DECL|field|getFileBlockStorageLocationsTimeoutMs
 specifier|final
 name|int
-name|getFileBlockStorageLocationsTimeout
+name|getFileBlockStorageLocationsTimeoutMs
 decl_stmt|;
 DECL|field|retryTimesForGetLastBlockLength
 specifier|final
@@ -3285,7 +3285,7 @@ operator|.
 name|DFS_CLIENT_FILE_BLOCK_STORAGE_LOCATIONS_NUM_THREADS_DEFAULT
 argument_list|)
 expr_stmt|;
-name|getFileBlockStorageLocationsTimeout
+name|getFileBlockStorageLocationsTimeoutMs
 operator|=
 name|conf
 operator|.
@@ -3293,11 +3293,11 @@ name|getInt
 argument_list|(
 name|DFSConfigKeys
 operator|.
-name|DFS_CLIENT_FILE_BLOCK_STORAGE_LOCATIONS_TIMEOUT
+name|DFS_CLIENT_FILE_BLOCK_STORAGE_LOCATIONS_TIMEOUT_MS
 argument_list|,
 name|DFSConfigKeys
 operator|.
-name|DFS_CLIENT_FILE_BLOCK_STORAGE_LOCATIONS_TIMEOUT_DEFAULT
+name|DFS_CLIENT_FILE_BLOCK_STORAGE_LOCATIONS_TIMEOUT_MS_DEFAULT
 argument_list|)
 expr_stmt|;
 name|retryTimesForGetLastBlockLength
@@ -6821,8 +6821,10 @@ expr_stmt|;
 block|}
 block|}
 comment|// Make RPCs to the datanodes to get volume locations for its replicas
-name|List
+name|Map
 argument_list|<
+name|DatanodeInfo
+argument_list|,
 name|HdfsBlocksMetadata
 argument_list|>
 name|metadatas
@@ -6843,7 +6845,7 @@ argument_list|,
 name|getConf
 argument_list|()
 operator|.
-name|getFileBlockStorageLocationsTimeout
+name|getFileBlockStorageLocationsTimeoutMs
 argument_list|,
 name|getConf
 argument_list|()
@@ -6851,6 +6853,39 @@ operator|.
 name|connectToDnViaHostname
 argument_list|)
 decl_stmt|;
+if|if
+condition|(
+name|LOG
+operator|.
+name|isTraceEnabled
+argument_list|()
+condition|)
+block|{
+name|LOG
+operator|.
+name|trace
+argument_list|(
+literal|"metadata returned: "
+operator|+
+name|Joiner
+operator|.
+name|on
+argument_list|(
+literal|"\n"
+argument_list|)
+operator|.
+name|withKeyValueSeparator
+argument_list|(
+literal|"="
+argument_list|)
+operator|.
+name|join
+argument_list|(
+name|metadatas
+argument_list|)
+argument_list|)
+expr_stmt|;
+block|}
 comment|// Regroup the returned VolumeId metadata to again be grouped by
 comment|// LocatedBlock rather than by datanode
 name|Map
@@ -6869,8 +6904,6 @@ operator|.
 name|associateVolumeIdsWithBlocks
 argument_list|(
 name|blocks
-argument_list|,
-name|datanodeBlocks
 argument_list|,
 name|metadatas
 argument_list|)

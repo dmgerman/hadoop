@@ -24,22 +24,6 @@ name|apache
 operator|.
 name|commons
 operator|.
-name|codec
-operator|.
-name|binary
-operator|.
-name|Base64
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|commons
-operator|.
 name|lang
 operator|.
 name|builder
@@ -92,8 +76,36 @@ name|InterfaceStability
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|util
+operator|.
+name|StringUtils
+import|;
+end_import
+
+begin_import
+import|import
+name|com
+operator|.
+name|google
+operator|.
+name|common
+operator|.
+name|base
+operator|.
+name|Preconditions
+import|;
+end_import
+
 begin_comment
-comment|/**  * HDFS-specific volume identifier which implements {@link VolumeId}. Can be  * used to differentiate between the data directories on a single datanode. This  * identifier is only unique on a per-datanode basis.  *   * Note that invalid IDs are represented by {@link VolumeId#INVALID_VOLUME_ID}.  */
+comment|/**  * HDFS-specific volume identifier which implements {@link VolumeId}. Can be  * used to differentiate between the data directories on a single datanode. This  * identifier is only unique on a per-datanode basis.  */
 end_comment
 
 begin_class
@@ -128,42 +140,21 @@ index|[]
 name|id
 parameter_list|)
 block|{
-if|if
-condition|(
-name|id
-operator|==
-literal|null
-condition|)
-block|{
-throw|throw
-operator|new
-name|NullPointerException
+name|Preconditions
+operator|.
+name|checkNotNull
 argument_list|(
-literal|"A valid Id can only be constructed "
-operator|+
-literal|"with a non-null byte array."
+name|id
+argument_list|,
+literal|"id cannot be null"
 argument_list|)
-throw|;
-block|}
+expr_stmt|;
 name|this
 operator|.
 name|id
 operator|=
 name|id
 expr_stmt|;
-block|}
-annotation|@
-name|Override
-DECL|method|isValid ()
-specifier|public
-specifier|final
-name|boolean
-name|isValid
-parameter_list|()
-block|{
-return|return
-literal|true
-return|;
 block|}
 annotation|@
 name|Override
@@ -183,21 +174,6 @@ operator|==
 literal|null
 condition|)
 block|{
-return|return
-literal|1
-return|;
-block|}
-if|if
-condition|(
-operator|!
-name|arg0
-operator|.
-name|isValid
-argument_list|()
-condition|)
-block|{
-comment|// any valid ID is greater
-comment|// than any invalid ID:
 return|return
 literal|1
 return|;
@@ -283,9 +259,6 @@ name|HdfsVolumeId
 operator|)
 name|obj
 decl_stmt|;
-comment|// NB: if (!obj.isValid()) { return false; } check is not necessary
-comment|// because we have class identity checking above, and for this class
-comment|// isValid() is always true.
 return|return
 operator|new
 name|EqualsBuilder
@@ -315,9 +288,9 @@ name|toString
 parameter_list|()
 block|{
 return|return
-name|Base64
+name|StringUtils
 operator|.
-name|encodeBase64String
+name|byteToHexString
 argument_list|(
 name|id
 argument_list|)

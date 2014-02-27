@@ -1121,17 +1121,18 @@ parameter_list|)
 throws|throws
 name|IOException
 function_decl|;
-comment|/**    * Get a {@link HdfsBlocksMetadata} corresponding to the list of blocks in     *<code>blocks</code>.    *     * @param blocks List of blocks for which to return metadata    * @return metadata Metadata for the list of blocks    * @throws IOException    */
-DECL|method|getHdfsBlocksMetadata (List<ExtendedBlock> blocks)
+comment|/**    * Get a {@link HdfsBlocksMetadata} corresponding to the list of blocks in     *<code>blocks</code>.    *     * @param bpid pool to query    * @param blockIds List of block ids for which to return metadata    * @return metadata Metadata for the list of blocks    * @throws IOException    */
+DECL|method|getHdfsBlocksMetadata (String bpid, long[] blockIds)
 specifier|public
 name|HdfsBlocksMetadata
 name|getHdfsBlocksMetadata
 parameter_list|(
-name|List
-argument_list|<
-name|ExtendedBlock
-argument_list|>
-name|blocks
+name|String
+name|bpid
+parameter_list|,
+name|long
+index|[]
+name|blockIds
 parameter_list|)
 throws|throws
 name|IOException
