@@ -7632,33 +7632,11 @@ name|JOB_CONF_FILE
 argument_list|)
 argument_list|)
 expr_stmt|;
-comment|// Explicitly disabling SSL for map reduce task as we can't allow MR users
-comment|// to gain access to keystore file for opening SSL listener. We can trust
-comment|// RM/NM to issue SSL certificates but definitely not MR-AM as it is
-comment|// running in user-land.
 name|MRWebAppUtil
 operator|.
 name|initialize
 argument_list|(
 name|conf
-argument_list|)
-expr_stmt|;
-name|conf
-operator|.
-name|set
-argument_list|(
-name|YarnConfiguration
-operator|.
-name|YARN_HTTP_POLICY_KEY
-argument_list|,
-name|HttpConfig
-operator|.
-name|Policy
-operator|.
-name|HTTP_ONLY
-operator|.
-name|name
-argument_list|()
 argument_list|)
 expr_stmt|;
 comment|// log the system properties
@@ -8150,6 +8128,16 @@ operator|.
 name|shutdown
 argument_list|()
 expr_stmt|;
+block|}
+DECL|method|getClientService ()
+specifier|public
+name|ClientService
+name|getClientService
+parameter_list|()
+block|{
+return|return
+name|clientService
+return|;
 block|}
 block|}
 end_class
