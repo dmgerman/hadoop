@@ -28,6 +28,30 @@ name|Documented
 import|;
 end_import
 
+begin_import
+import|import
+name|java
+operator|.
+name|lang
+operator|.
+name|annotation
+operator|.
+name|Retention
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|lang
+operator|.
+name|annotation
+operator|.
+name|RetentionPolicy
+import|;
+end_import
+
 begin_comment
 comment|/**  * Annotation to inform users of a package, class or method's intended audience.  * Currently the audience can be {@link Public}, {@link LimitedPrivate} or  * {@link Private}.<br>  * All public classes must have InterfaceAudience annotation.<br>  *<ul>  *<li>Public classes that are not marked with this annotation must be  * considered by default as {@link Private}.</li>   *   *<li>External applications must only use classes that are marked  * {@link Public}. Avoid using non public classes as these classes  * could be removed or change in incompatible ways.</li>  *   *<li>Hadoop projects must only use classes that are marked  * {@link LimitedPrivate} or {@link Public}</li>  *   *<li> Methods may have a different annotation that it is more restrictive  * compared to the audience classification of the class. Example: A class   * might be {@link Public}, but a method may be {@link LimitedPrivate}  *</li></ul>  */
 end_comment
@@ -47,18 +71,32 @@ class|class
 name|InterfaceAudience
 block|{
 comment|/**    * Intended for use by any project or application.    */
-DECL|annotation|Public
 annotation|@
 name|Documented
+annotation|@
+name|Retention
+argument_list|(
+name|RetentionPolicy
+operator|.
+name|RUNTIME
+argument_list|)
+DECL|annotation|Public
 specifier|public
 annotation_defn|@interface
 name|Public
 block|{}
 empty_stmt|;
 comment|/**    * Intended only for the project(s) specified in the annotation.    * For example, "Common", "HDFS", "MapReduce", "ZooKeeper", "HBase".    */
-DECL|annotation|LimitedPrivate
 annotation|@
 name|Documented
+annotation|@
+name|Retention
+argument_list|(
+name|RetentionPolicy
+operator|.
+name|RUNTIME
+argument_list|)
+DECL|annotation|LimitedPrivate
 specifier|public
 annotation_defn|@interface
 name|LimitedPrivate
@@ -72,9 +110,16 @@ function_decl|;
 block|}
 empty_stmt|;
 comment|/**    * Intended for use only within Hadoop itself.    */
-DECL|annotation|Private
 annotation|@
 name|Documented
+annotation|@
+name|Retention
+argument_list|(
+name|RetentionPolicy
+operator|.
+name|RUNTIME
+argument_list|)
+DECL|annotation|Private
 specifier|public
 annotation_defn|@interface
 name|Private
