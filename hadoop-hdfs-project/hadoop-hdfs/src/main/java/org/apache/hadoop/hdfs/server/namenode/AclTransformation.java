@@ -1807,7 +1807,7 @@ throw|throw
 operator|new
 name|AclException
 argument_list|(
-literal|"Invalid ACL: mask is required, but it was deleted."
+literal|"Invalid ACL: mask is required and cannot be deleted."
 argument_list|)
 throw|;
 block|}
