@@ -66,6 +66,16 @@ name|java
 operator|.
 name|util
 operator|.
+name|Collections
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
 name|HashSet
 import|;
 end_import
@@ -2914,7 +2924,9 @@ operator|.
 name|getBlacklistAdditions
 argument_list|()
 else|:
-literal|null
+name|Collections
+operator|.
+name|EMPTY_LIST
 decl_stmt|;
 name|List
 argument_list|<
@@ -2933,7 +2945,9 @@ operator|.
 name|getBlacklistRemovals
 argument_list|()
 else|:
-literal|null
+name|Collections
+operator|.
+name|EMPTY_LIST
 decl_stmt|;
 comment|// sanity check
 try|try
@@ -3090,6 +3104,39 @@ argument_list|,
 name|blacklistRemovals
 argument_list|)
 decl_stmt|;
+if|if
+condition|(
+operator|!
+name|blacklistAdditions
+operator|.
+name|isEmpty
+argument_list|()
+operator|||
+operator|!
+name|blacklistRemovals
+operator|.
+name|isEmpty
+argument_list|()
+condition|)
+block|{
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"blacklist are updated in Scheduler."
+operator|+
+literal|"blacklistAdditions: "
+operator|+
+name|blacklistAdditions
+operator|+
+literal|", "
+operator|+
+literal|"blacklistRemovals: "
+operator|+
+name|blacklistRemovals
+argument_list|)
+expr_stmt|;
+block|}
 name|RMAppAttempt
 name|appAttempt
 init|=
