@@ -126,6 +126,22 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|http
+operator|.
+name|HttpConfig
+operator|.
+name|Policy
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|ipc
 operator|.
 name|Server
@@ -1495,6 +1511,10 @@ argument_list|)
 expr_stmt|;
 try|try
 block|{
+comment|// Explicitly disabling SSL for map reduce task as we can't allow MR users
+comment|// to gain access to keystore file for opening SSL listener. We can trust
+comment|// RM/NM to issue SSL certificates but definitely not MR-AM as it is
+comment|// running in user-land.
 name|webApp
 operator|=
 name|WebApps
@@ -1512,9 +1532,13 @@ argument_list|,
 literal|"ws"
 argument_list|)
 operator|.
-name|with
+name|withHttpPolicy
 argument_list|(
 name|conf
+argument_list|,
+name|Policy
+operator|.
+name|HTTP_ONLY
 argument_list|)
 operator|.
 name|start
@@ -2891,6 +2915,16 @@ literal|" token"
 argument_list|)
 throw|;
 block|}
+block|}
+DECL|method|getWebApp ()
+specifier|public
+name|WebApp
+name|getWebApp
+parameter_list|()
+block|{
+return|return
+name|webApp
+return|;
 block|}
 block|}
 end_class

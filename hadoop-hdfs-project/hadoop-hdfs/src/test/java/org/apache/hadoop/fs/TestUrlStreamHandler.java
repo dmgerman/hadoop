@@ -177,7 +177,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * Test of the URL stream handler factory.  */
+comment|/**  * Test of the URL stream handler.  */
 end_comment
 
 begin_class

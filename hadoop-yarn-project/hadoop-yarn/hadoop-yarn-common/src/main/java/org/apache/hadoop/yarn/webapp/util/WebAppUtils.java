@@ -218,6 +218,24 @@ specifier|public
 class|class
 name|WebAppUtils
 block|{
+DECL|field|HTTPS_PREFIX
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|HTTPS_PREFIX
+init|=
+literal|"https://"
+decl_stmt|;
+DECL|field|HTTP_PREFIX
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|HTTP_PREFIX
+init|=
+literal|"http://"
+decl_stmt|;
 DECL|method|setRMWebAppPort (Configuration conf, int port)
 specifier|public
 specifier|static
@@ -977,9 +995,9 @@ argument_list|(
 name|conf
 argument_list|)
 condition|?
-literal|"https://"
+name|HTTPS_PREFIX
 else|:
-literal|"http://"
+name|HTTP_PREFIX
 return|;
 block|}
 comment|/**    * Load the SSL keystore / truststore into the HttpServer builder.    */
