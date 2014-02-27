@@ -1362,7 +1362,7 @@ name|setSafeMode
 argument_list|(
 name|SafeModeAction
 operator|.
-name|SAFEMODE_LEAVE
+name|SAFEMODE_ENTER
 argument_list|)
 expr_stmt|;
 name|dfs
@@ -2288,7 +2288,7 @@ name|setSafeMode
 argument_list|(
 name|SafeModeAction
 operator|.
-name|SAFEMODE_LEAVE
+name|SAFEMODE_ENTER
 argument_list|)
 expr_stmt|;
 name|dfs
