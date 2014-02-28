@@ -745,6 +745,8 @@ DECL|field|tokenAspect
 specifier|protected
 name|TokenAspect
 argument_list|<
+name|?
+extends|extends
 name|HftpFileSystem
 argument_list|>
 name|tokenAspect
@@ -764,6 +766,11 @@ argument_list|<
 name|?
 argument_list|>
 name|renewToken
+decl_stmt|;
+DECL|field|tokenServiceName
+specifier|protected
+name|Text
+name|tokenServiceName
 decl_stmt|;
 annotation|@
 name|Override
@@ -977,16 +984,11 @@ name|SCHEME
 return|;
 block|}
 comment|/**    * Initialize connectionFactory and tokenAspect. This function is intended to    * be overridden by HsFtpFileSystem.    */
-DECL|method|initTokenAspect (Configuration conf)
+DECL|method|initTokenAspect ()
 specifier|protected
 name|void
 name|initTokenAspect
-parameter_list|(
-name|Configuration
-name|conf
-parameter_list|)
-throws|throws
-name|IOException
+parameter_list|()
 block|{
 name|tokenAspect
 operator|=
@@ -997,6 +999,8 @@ name|HftpFileSystem
 argument_list|>
 argument_list|(
 name|this
+argument_list|,
+name|tokenServiceName
 argument_list|,
 name|TOKEN_KIND
 argument_list|)
@@ -1063,6 +1067,17 @@ argument_list|(
 name|name
 argument_list|)
 expr_stmt|;
+name|this
+operator|.
+name|tokenServiceName
+operator|=
+name|SecurityUtil
+operator|.
+name|buildTokenService
+argument_list|(
+name|nnUri
+argument_list|)
+expr_stmt|;
 try|try
 block|{
 name|this
@@ -1105,9 +1120,7 @@ argument_list|)
 throw|;
 block|}
 name|initTokenAspect
-argument_list|(
-name|conf
-argument_list|)
+argument_list|()
 expr_stmt|;
 if|if
 condition|(
