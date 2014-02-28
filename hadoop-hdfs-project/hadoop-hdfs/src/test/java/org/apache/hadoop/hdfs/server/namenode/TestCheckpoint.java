@@ -9839,10 +9839,6 @@ name|downloadImageToStorage
 argument_list|(
 name|fsName
 argument_list|,
-name|NameNodeFile
-operator|.
-name|IMAGE
-argument_list|,
 literal|0
 argument_list|,
 name|dstImage

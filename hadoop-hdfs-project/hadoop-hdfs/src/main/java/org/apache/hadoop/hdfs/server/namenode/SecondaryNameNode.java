@@ -2424,10 +2424,6 @@ name|downloadImageToStorage
 argument_list|(
 name|nnHostPort
 argument_list|,
-name|NameNodeFile
-operator|.
-name|IMAGE
-argument_list|,
 name|sig
 operator|.
 name|mostRecentCheckpointTxId

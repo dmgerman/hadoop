@@ -1288,10 +1288,6 @@ name|downloadImageToStorage
 argument_list|(
 name|otherHttpAddr
 argument_list|,
-name|NameNodeFile
-operator|.
-name|IMAGE
-argument_list|,
 name|imageTxId
 argument_list|,
 name|storage

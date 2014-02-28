@@ -647,7 +647,7 @@ literal|false
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|downloadImageToStorage (URL fsName, NameNodeFile nnf, long imageTxId, Storage dstStorage, boolean needDigest)
+DECL|method|downloadImageToStorage (URL fsName, long imageTxId, Storage dstStorage, boolean needDigest)
 specifier|public
 specifier|static
 name|MD5Hash
@@ -655,9 +655,6 @@ name|downloadImageToStorage
 parameter_list|(
 name|URL
 name|fsName
-parameter_list|,
-name|NameNodeFile
-name|nnf
 parameter_list|,
 name|long
 name|imageTxId
@@ -678,7 +675,7 @@ name|GetImageServlet
 operator|.
 name|getParamStringForImage
 argument_list|(
-name|nnf
+literal|null
 argument_list|,
 name|imageTxId
 argument_list|,
