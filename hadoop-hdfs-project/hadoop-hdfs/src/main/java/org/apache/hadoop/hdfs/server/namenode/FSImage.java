@@ -1348,6 +1348,14 @@ name|StartupOption
 operator|.
 name|UPGRADE
 operator|&&
+operator|!
+name|StartupOption
+operator|.
+name|isRollingUpgradeStarted
+argument_list|(
+name|startOpt
+argument_list|)
+operator|&&
 name|layoutVersion
 operator|<
 name|Storage
