@@ -1162,7 +1162,7 @@ name|i
 operator|<
 name|s
 operator|.
-name|getNumPools
+name|getNumDirectives
 argument_list|()
 condition|;
 operator|++
