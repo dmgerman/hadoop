@@ -630,6 +630,20 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|ipc
+operator|.
+name|RefreshCallQueueProtocol
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|util
 operator|.
 name|StringUtils
@@ -2960,6 +2974,8 @@ literal|"\t[-refreshUserToGroupsMappings]\n"
 operator|+
 literal|"\t[refreshSuperUserGroupsConfiguration]\n"
 operator|+
+literal|"\t[-refreshCallQueue]\n"
+operator|+
 literal|"\t[-printTopology]\n"
 operator|+
 literal|"\t[-refreshNamenodes datanodehost:port]\n"
@@ -3102,6 +3118,11 @@ name|String
 name|refreshSuperUserGroupsConfiguration
 init|=
 literal|"-refreshSuperUserGroupsConfiguration: Refresh superuser proxy groups mappings\n"
+decl_stmt|;
+name|String
+name|refreshCallQueue
+init|=
+literal|"-refreshCallQueue: Reload the call queue from config\n"
 decl_stmt|;
 name|String
 name|printTopology
@@ -3520,6 +3541,27 @@ block|}
 elseif|else
 if|if
 condition|(
+literal|"refreshCallQueue"
+operator|.
+name|equals
+argument_list|(
+name|cmd
+argument_list|)
+condition|)
+block|{
+name|System
+operator|.
+name|out
+operator|.
+name|println
+argument_list|(
+name|refreshCallQueue
+argument_list|)
+expr_stmt|;
+block|}
+elseif|else
+if|if
+condition|(
 literal|"printTopology"
 operator|.
 name|equals
@@ -3837,6 +3879,15 @@ operator|.
 name|println
 argument_list|(
 name|refreshSuperUserGroupsConfiguration
+argument_list|)
+expr_stmt|;
+name|System
+operator|.
+name|out
+operator|.
+name|println
+argument_list|(
+name|refreshCallQueue
 argument_list|)
 expr_stmt|;
 name|System
@@ -4584,6 +4635,79 @@ return|return
 literal|0
 return|;
 block|}
+DECL|method|refreshCallQueue ()
+specifier|public
+name|int
+name|refreshCallQueue
+parameter_list|()
+throws|throws
+name|IOException
+block|{
+comment|// Get the current configuration
+name|Configuration
+name|conf
+init|=
+name|getConf
+argument_list|()
+decl_stmt|;
+comment|// for security authorization
+comment|// server principal for this call
+comment|// should be NN's one.
+name|conf
+operator|.
+name|set
+argument_list|(
+name|CommonConfigurationKeys
+operator|.
+name|HADOOP_SECURITY_SERVICE_USER_NAME_KEY
+argument_list|,
+name|conf
+operator|.
+name|get
+argument_list|(
+name|DFSConfigKeys
+operator|.
+name|DFS_NAMENODE_USER_NAME_KEY
+argument_list|,
+literal|""
+argument_list|)
+argument_list|)
+expr_stmt|;
+comment|// Create the client
+name|RefreshCallQueueProtocol
+name|refreshProtocol
+init|=
+name|NameNodeProxies
+operator|.
+name|createProxy
+argument_list|(
+name|conf
+argument_list|,
+name|FileSystem
+operator|.
+name|getDefaultUri
+argument_list|(
+name|conf
+argument_list|)
+argument_list|,
+name|RefreshCallQueueProtocol
+operator|.
+name|class
+argument_list|)
+operator|.
+name|getProxy
+argument_list|()
+decl_stmt|;
+comment|// Refresh the user-to-groups mappings
+name|refreshProtocol
+operator|.
+name|refreshCallQueue
+argument_list|()
+expr_stmt|;
+return|return
+literal|0
+return|;
+block|}
 comment|/**    * Displays format of commands.    * @param cmd The command that is being executed.    */
 DECL|method|printUsage (String cmd)
 specifier|private
@@ -5012,6 +5136,29 @@ block|}
 elseif|else
 if|if
 condition|(
+literal|"-refreshCallQueue"
+operator|.
+name|equals
+argument_list|(
+name|cmd
+argument_list|)
+condition|)
+block|{
+name|System
+operator|.
+name|err
+operator|.
+name|println
+argument_list|(
+literal|"Usage: java DFSAdmin"
+operator|+
+literal|" [-refreshCallQueue]"
+argument_list|)
+expr_stmt|;
+block|}
+elseif|else
+if|if
+condition|(
 literal|"-printTopology"
 operator|.
 name|equals
@@ -5259,6 +5406,15 @@ operator|.
 name|println
 argument_list|(
 literal|"           [-refreshSuperUserGroupsConfiguration]"
+argument_list|)
+expr_stmt|;
+name|System
+operator|.
+name|err
+operator|.
+name|println
+argument_list|(
+literal|"           [-refreshCallQueue]"
 argument_list|)
 expr_stmt|;
 name|System
@@ -6367,6 +6523,23 @@ block|{
 name|exitCode
 operator|=
 name|refreshSuperUserGroupsConfiguration
+argument_list|()
+expr_stmt|;
+block|}
+elseif|else
+if|if
+condition|(
+literal|"-refreshCallQueue"
+operator|.
+name|equals
+argument_list|(
+name|cmd
+argument_list|)
+condition|)
+block|{
+name|exitCode
+operator|=
+name|refreshCallQueue
 argument_list|()
 expr_stmt|;
 block|}
