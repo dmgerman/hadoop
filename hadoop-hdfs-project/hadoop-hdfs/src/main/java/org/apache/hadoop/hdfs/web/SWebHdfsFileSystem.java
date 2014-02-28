@@ -114,10 +114,12 @@ operator|=
 operator|new
 name|TokenAspect
 argument_list|<
-name|WebHdfsFileSystem
+name|SWebHdfsFileSystem
 argument_list|>
 argument_list|(
 name|this
+argument_list|,
+name|tokenServiceName
 argument_list|,
 name|TOKEN_KIND
 argument_list|)

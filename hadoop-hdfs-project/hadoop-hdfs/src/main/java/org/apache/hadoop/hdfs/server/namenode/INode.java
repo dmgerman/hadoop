@@ -2520,35 +2520,6 @@ name|Block
 argument_list|>
 name|toDeleteList
 decl_stmt|;
-DECL|method|BlocksMapUpdateInfo (List<Block> toDeleteList)
-specifier|public
-name|BlocksMapUpdateInfo
-parameter_list|(
-name|List
-argument_list|<
-name|Block
-argument_list|>
-name|toDeleteList
-parameter_list|)
-block|{
-name|this
-operator|.
-name|toDeleteList
-operator|=
-name|toDeleteList
-operator|==
-literal|null
-condition|?
-operator|new
-name|ArrayList
-argument_list|<
-name|Block
-argument_list|>
-argument_list|()
-else|:
-name|toDeleteList
-expr_stmt|;
-block|}
 DECL|method|BlocksMapUpdateInfo ()
 specifier|public
 name|BlocksMapUpdateInfo

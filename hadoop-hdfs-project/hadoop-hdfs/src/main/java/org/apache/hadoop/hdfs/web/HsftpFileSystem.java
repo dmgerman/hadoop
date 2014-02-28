@@ -20,16 +20,6 @@ end_package
 
 begin_import
 import|import
-name|java
-operator|.
-name|io
-operator|.
-name|IOException
-import|;
-end_import
-
-begin_import
-import|import
 name|org
 operator|.
 name|apache
@@ -53,20 +43,6 @@ operator|.
 name|classification
 operator|.
 name|InterfaceStability
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|conf
-operator|.
-name|Configuration
 import|;
 end_import
 
@@ -168,26 +144,23 @@ return|;
 block|}
 annotation|@
 name|Override
-DECL|method|initTokenAspect (Configuration conf)
+DECL|method|initTokenAspect ()
 specifier|protected
 name|void
 name|initTokenAspect
-parameter_list|(
-name|Configuration
-name|conf
-parameter_list|)
-throws|throws
-name|IOException
+parameter_list|()
 block|{
 name|tokenAspect
 operator|=
 operator|new
 name|TokenAspect
 argument_list|<
-name|HftpFileSystem
+name|HsftpFileSystem
 argument_list|>
 argument_list|(
 name|this
+argument_list|,
+name|tokenServiceName
 argument_list|,
 name|TOKEN_KIND
 argument_list|)

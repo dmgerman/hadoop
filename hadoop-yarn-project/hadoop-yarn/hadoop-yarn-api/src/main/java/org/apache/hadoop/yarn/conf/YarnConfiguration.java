@@ -1405,6 +1405,17 @@ name|DEFAULT_RM_ZK_ACL
 init|=
 literal|"world:anyone:rwcda"
 decl_stmt|;
+DECL|field|RM_ZK_AUTH
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|RM_ZK_AUTH
+init|=
+name|RM_ZK_PREFIX
+operator|+
+literal|"auth"
+decl_stmt|;
 DECL|field|ZK_STATE_STORE_PREFIX
 specifier|public
 specifier|static
