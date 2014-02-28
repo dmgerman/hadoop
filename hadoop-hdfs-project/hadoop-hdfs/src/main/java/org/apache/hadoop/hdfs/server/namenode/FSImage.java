@@ -4513,6 +4513,18 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
+comment|// BlockPoolId is required when the FsImageLoader loads the rolling upgrade
+comment|// information. Make sure the ID is properly set.
+name|target
+operator|.
+name|setBlockPoolId
+argument_list|(
+name|this
+operator|.
+name|getBlockPoolID
+argument_list|()
+argument_list|)
+expr_stmt|;
 name|FSImageFormat
 operator|.
 name|LoaderDelegator
@@ -4532,16 +4544,6 @@ operator|.
 name|load
 argument_list|(
 name|curFile
-argument_list|)
-expr_stmt|;
-name|target
-operator|.
-name|setBlockPoolId
-argument_list|(
-name|this
-operator|.
-name|getBlockPoolID
-argument_list|()
 argument_list|)
 expr_stmt|;
 comment|// Check that the image digest we loaded matches up with what
