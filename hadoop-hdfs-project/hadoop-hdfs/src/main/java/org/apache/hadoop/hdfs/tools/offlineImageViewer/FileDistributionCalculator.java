@@ -679,11 +679,6 @@ name|b
 operator|.
 name|getNumBytes
 argument_list|()
-operator|*
-name|f
-operator|.
-name|getReplication
-argument_list|()
 expr_stmt|;
 block|}
 name|maxFileSize
@@ -700,6 +695,11 @@ expr_stmt|;
 name|totalSpace
 operator|+=
 name|fileSize
+operator|*
+name|f
+operator|.
+name|getReplication
+argument_list|()
 expr_stmt|;
 name|int
 name|bucket
