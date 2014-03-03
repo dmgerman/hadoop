@@ -264,6 +264,16 @@ init|=
 literal|0x200000
 decl_stmt|;
 comment|// 2 MB = 2^21
+DECL|field|MAX_INTERVALS
+specifier|private
+specifier|final
+specifier|static
+name|int
+name|MAX_INTERVALS
+init|=
+literal|0x8000000
+decl_stmt|;
+comment|// 128 M = 2^27
 DECL|field|conf
 specifier|private
 specifier|final
@@ -382,6 +392,30 @@ name|this
 operator|.
 name|steps
 decl_stmt|;
+comment|// avoid OutOfMemoryError when allocating an array
+name|Preconditions
+operator|.
+name|checkState
+argument_list|(
+name|numIntervals
+operator|<=
+name|MAX_INTERVALS
+argument_list|,
+literal|"Too many distribution intervals (maxSize/step): "
+operator|+
+name|numIntervals
+operator|+
+literal|", should be less than "
+operator|+
+operator|(
+name|MAX_INTERVALS
+operator|+
+literal|1
+operator|)
+operator|+
+literal|"."
+argument_list|)
+expr_stmt|;
 name|this
 operator|.
 name|distribution
@@ -398,19 +432,6 @@ argument_list|(
 name|numIntervals
 argument_list|)
 index|]
-expr_stmt|;
-name|Preconditions
-operator|.
-name|checkState
-argument_list|(
-name|numIntervals
-operator|<
-name|Integer
-operator|.
-name|MAX_VALUE
-argument_list|,
-literal|"Too many distribution intervals"
-argument_list|)
 expr_stmt|;
 block|}
 DECL|method|visit (RandomAccessFile file)
