@@ -96,6 +96,22 @@ name|hadoop
 operator|.
 name|hdfs
 operator|.
+name|ShortCircuitShm
+operator|.
+name|SlotId
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
 name|protocol
 operator|.
 name|DatanodeInfo
@@ -361,8 +377,8 @@ parameter_list|)
 throws|throws
 name|IOException
 function_decl|;
-comment|/**    * Request short circuit access file descriptors from a DataNode.    *    * @param blk             The block to get file descriptors for.    * @param blockToken      Security token for accessing the block.    * @param maxVersion      Maximum version of the block data the client     *                        can understand.    */
-DECL|method|requestShortCircuitFds (final ExtendedBlock blk, final Token<BlockTokenIdentifier> blockToken, int maxVersion)
+comment|/**    * Request short circuit access file descriptors from a DataNode.    *    * @param blk             The block to get file descriptors for.    * @param blockToken      Security token for accessing the block.    * @param slotId          The shared memory slot id to use, or null     *                          to use no slot id.    * @param maxVersion      Maximum version of the block data the client     *                          can understand.    */
+DECL|method|requestShortCircuitFds (final ExtendedBlock blk, final Token<BlockTokenIdentifier> blockToken, SlotId slotId, int maxVersion)
 specifier|public
 name|void
 name|requestShortCircuitFds
@@ -378,8 +394,36 @@ name|BlockTokenIdentifier
 argument_list|>
 name|blockToken
 parameter_list|,
+name|SlotId
+name|slotId
+parameter_list|,
 name|int
 name|maxVersion
+parameter_list|)
+throws|throws
+name|IOException
+function_decl|;
+comment|/**    * Release a pair of short-circuit FDs requested earlier.    *    * @param slotId          SlotID used by the earlier file descriptors.    */
+DECL|method|releaseShortCircuitFds (final SlotId slotId)
+specifier|public
+name|void
+name|releaseShortCircuitFds
+parameter_list|(
+specifier|final
+name|SlotId
+name|slotId
+parameter_list|)
+throws|throws
+name|IOException
+function_decl|;
+comment|/**    * Request a short circuit shared memory area from a DataNode.    *     * @pram clientName       The name of the client.    */
+DECL|method|requestShortCircuitShm (String clientName)
+specifier|public
+name|void
+name|requestShortCircuitShm
+parameter_list|(
+name|String
+name|clientName
 parameter_list|)
 throws|throws
 name|IOException

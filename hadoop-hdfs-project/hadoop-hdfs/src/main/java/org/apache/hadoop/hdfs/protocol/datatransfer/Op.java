@@ -167,6 +167,24 @@ name|byte
 operator|)
 literal|87
 argument_list|)
+block|,
+DECL|enumConstant|RELEASE_SHORT_CIRCUIT_FDS
+name|RELEASE_SHORT_CIRCUIT_FDS
+argument_list|(
+operator|(
+name|byte
+operator|)
+literal|88
+argument_list|)
+block|,
+DECL|enumConstant|REQUEST_SHORT_CIRCUIT_SHM
+name|REQUEST_SHORT_CIRCUIT_SHM
+argument_list|(
+operator|(
+name|byte
+operator|)
+literal|89
+argument_list|)
 block|;
 comment|/** The code for this operation. */
 DECL|field|code

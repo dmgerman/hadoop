@@ -309,6 +309,10 @@ argument_list|,
 name|conf
 operator|.
 name|shortCircuitCacheStaleThresholdMs
+argument_list|,
+name|conf
+operator|.
+name|shortCircuitSharedMemoryWatcherInterruptCheckMs
 argument_list|)
 expr_stmt|;
 name|this
@@ -495,6 +499,18 @@ argument_list|(
 name|conf
 operator|.
 name|domainSocketDataTraffic
+argument_list|)
+operator|.
+name|append
+argument_list|(
+literal|", shortCircuitSharedMemoryWatcherInterruptCheckMs = "
+argument_list|)
+operator|.
+name|append
+argument_list|(
+name|conf
+operator|.
+name|shortCircuitSharedMemoryWatcherInterruptCheckMs
 argument_list|)
 expr_stmt|;
 return|return

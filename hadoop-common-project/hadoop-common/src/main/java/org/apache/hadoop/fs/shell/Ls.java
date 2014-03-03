@@ -287,15 +287,11 @@ literal|"path is not specified, the contents of /user/<currentUser>\n"
 operator|+
 literal|"will be listed. Directory entries are of the form \n"
 operator|+
-literal|"\tdirName (full path)<dir> \n"
+literal|"\tpermissions - userid groupid size_of_directory(in bytes) modification_date(yyyy-MM-dd HH:mm) directoryName \n"
 operator|+
 literal|"and file entries are of the form \n"
 operator|+
-literal|"\tfileName(full path)<r n> size \n"
-operator|+
-literal|"where n is the number of replicas specified for the file \n"
-operator|+
-literal|"and size is the size of the file, in bytes.\n"
+literal|"\tpermissions number_of_replicas userid groupid size_of_file(in bytes) modification_date(yyyy-MM-dd HH:mm) fileName \n"
 operator|+
 literal|"  -d  Directories are listed as plain files.\n"
 operator|+

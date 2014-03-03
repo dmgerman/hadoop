@@ -999,6 +999,23 @@ name|size
 argument_list|()
 return|;
 block|}
+DECL|method|releasePeer (Peer peer)
+specifier|synchronized
+name|void
+name|releasePeer
+parameter_list|(
+name|Peer
+name|peer
+parameter_list|)
+block|{
+name|peers
+operator|.
+name|remove
+argument_list|(
+name|peer
+argument_list|)
+expr_stmt|;
+block|}
 block|}
 end_class
 

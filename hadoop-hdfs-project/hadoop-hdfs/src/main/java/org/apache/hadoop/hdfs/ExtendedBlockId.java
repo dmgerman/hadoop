@@ -48,6 +48,22 @@ name|HashCodeBuilder
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|protocol
+operator|.
+name|ExtendedBlock
+import|;
+end_import
+
 begin_comment
 comment|/**  * An immutable key which identifies a block.  */
 end_comment
@@ -73,6 +89,32 @@ specifier|final
 name|String
 name|bpId
 decl_stmt|;
+DECL|method|fromExtendedBlock (ExtendedBlock block)
+specifier|public
+specifier|static
+name|ExtendedBlockId
+name|fromExtendedBlock
+parameter_list|(
+name|ExtendedBlock
+name|block
+parameter_list|)
+block|{
+return|return
+operator|new
+name|ExtendedBlockId
+argument_list|(
+name|block
+operator|.
+name|getBlockId
+argument_list|()
+argument_list|,
+name|block
+operator|.
+name|getBlockPoolId
+argument_list|()
+argument_list|)
+return|;
+block|}
 DECL|method|ExtendedBlockId (long blockId, String bpId)
 specifier|public
 name|ExtendedBlockId

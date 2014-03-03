@@ -301,19 +301,18 @@ name|filePath
 argument_list|)
 condition|)
 block|{
-throw|throw
-operator|new
-name|YarnException
+name|LOG
+operator|.
+name|info
 argument_list|(
-literal|"Can not find Configuration: "
+name|filePath
 operator|+
-name|name
-operator|+
-literal|" in "
-operator|+
-name|configDir
+literal|" not found"
 argument_list|)
-throw|;
+expr_stmt|;
+return|return
+literal|null
+return|;
 block|}
 block|}
 else|else
@@ -337,15 +336,18 @@ name|filePath
 argument_list|)
 condition|)
 block|{
-throw|throw
-operator|new
-name|YarnException
+name|LOG
+operator|.
+name|info
 argument_list|(
-literal|"Can not find file: "
+name|filePath
 operator|+
-name|name
+literal|" not found"
 argument_list|)
-throw|;
+expr_stmt|;
+return|return
+literal|null
+return|;
 block|}
 block|}
 return|return

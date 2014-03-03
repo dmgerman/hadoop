@@ -36,9 +36,9 @@ begin_import
 import|import
 name|java
 operator|.
-name|nio
+name|io
 operator|.
-name|MappedByteBuffer
+name|Closeable
 import|;
 end_import
 
@@ -46,13 +46,9 @@ begin_import
 import|import
 name|java
 operator|.
-name|util
+name|nio
 operator|.
-name|concurrent
-operator|.
-name|atomic
-operator|.
-name|AtomicInteger
+name|MappedByteBuffer
 import|;
 end_import
 
@@ -85,7 +81,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * A memory-mapped region used by an HDFS client.  *   * This class includes a reference count and some other information used by  * ClientMmapManager to track and cache mmaps.  */
+comment|/**  * A reference to a memory-mapped region used by an HDFS client.  */
 end_comment
 
 begin_class
@@ -97,6 +93,8 @@ DECL|class|ClientMmap
 specifier|public
 class|class
 name|ClientMmap
+implements|implements
+name|Closeable
 block|{
 DECL|field|LOG
 specifier|static
@@ -116,7 +114,6 @@ decl_stmt|;
 comment|/**    * A reference to the block replica which this mmap relates to.    */
 DECL|field|replica
 specifier|private
-specifier|final
 name|ShortCircuitReplica
 name|replica
 decl_stmt|;
@@ -127,20 +124,14 @@ specifier|final
 name|MappedByteBuffer
 name|map
 decl_stmt|;
-comment|/**    * Reference count of this ClientMmap object.    */
-DECL|field|refCount
+comment|/**    * Whether or not this ClientMmap anchors the replica into memory while    * it exists.  Closing an anchored ClientMmap unanchors the replica.    */
+DECL|field|anchored
 specifier|private
 specifier|final
-name|AtomicInteger
-name|refCount
-init|=
-operator|new
-name|AtomicInteger
-argument_list|(
-literal|1
-argument_list|)
+name|boolean
+name|anchored
 decl_stmt|;
-DECL|method|ClientMmap (ShortCircuitReplica replica, MappedByteBuffer map)
+DECL|method|ClientMmap (ShortCircuitReplica replica, MappedByteBuffer map, boolean anchored)
 name|ClientMmap
 parameter_list|(
 name|ShortCircuitReplica
@@ -148,6 +139,9 @@ name|replica
 parameter_list|,
 name|MappedByteBuffer
 name|map
+parameter_list|,
+name|boolean
+name|anchored
 parameter_list|)
 block|{
 name|this
@@ -162,40 +156,49 @@ name|map
 operator|=
 name|map
 expr_stmt|;
-block|}
-comment|/**    * Increment the reference count.    *    * @return   The new reference count.    */
-DECL|method|ref ()
-name|void
-name|ref
-parameter_list|()
-block|{
-name|refCount
+name|this
 operator|.
-name|addAndGet
-argument_list|(
-literal|1
-argument_list|)
+name|anchored
+operator|=
+name|anchored
 expr_stmt|;
 block|}
-comment|/**    * Decrement the reference count.    *    * The parent replica gets unreferenced each time the reference count     * of this object goes to 0.    */
-DECL|method|unref ()
+comment|/**    * Close the ClientMmap object.    */
+annotation|@
+name|Override
+DECL|method|close ()
 specifier|public
 name|void
-name|unref
+name|close
 parameter_list|()
 block|{
-name|refCount
+if|if
+condition|(
+name|replica
+operator|!=
+literal|null
+condition|)
+block|{
+if|if
+condition|(
+name|anchored
+condition|)
+block|{
+name|replica
 operator|.
-name|addAndGet
-argument_list|(
-operator|-
-literal|1
-argument_list|)
+name|removeNoChecksumAnchor
+argument_list|()
 expr_stmt|;
+block|}
 name|replica
 operator|.
 name|unref
 argument_list|()
+expr_stmt|;
+block|}
+name|replica
+operator|=
+literal|null
 expr_stmt|;
 block|}
 DECL|method|getMappedByteBuffer ()

@@ -192,7 +192,7 @@ literal|"that match the specified file pattern.  The output columns are:\n"
 operator|+
 literal|"DIR_COUNT FILE_COUNT CONTENT_SIZE FILE_NAME or\n"
 operator|+
-literal|"QUOTA REMAINING_QUATA SPACE_QUOTA REMAINING_SPACE_QUOTA \n"
+literal|"QUOTA REMAINING_QUOTA SPACE_QUOTA REMAINING_SPACE_QUOTA \n"
 operator|+
 literal|"      DIR_COUNT FILE_COUNT CONTENT_SIZE FILE_NAME"
 decl_stmt|;
