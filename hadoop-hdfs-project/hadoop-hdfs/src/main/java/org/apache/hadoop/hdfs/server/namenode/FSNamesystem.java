@@ -33634,6 +33634,56 @@ operator|=
 name|needRollbackFsImage
 expr_stmt|;
 block|}
+annotation|@
+name|Override
+comment|// NameNodeMXBean
+DECL|method|getRollingUpgradeStatus ()
+specifier|public
+name|RollingUpgradeInfo
+operator|.
+name|Bean
+name|getRollingUpgradeStatus
+parameter_list|()
+block|{
+name|readLock
+argument_list|()
+expr_stmt|;
+try|try
+block|{
+name|RollingUpgradeInfo
+name|upgradeInfo
+init|=
+name|getRollingUpgradeInfo
+argument_list|()
+decl_stmt|;
+if|if
+condition|(
+name|upgradeInfo
+operator|!=
+literal|null
+condition|)
+block|{
+return|return
+operator|new
+name|RollingUpgradeInfo
+operator|.
+name|Bean
+argument_list|(
+name|upgradeInfo
+argument_list|)
+return|;
+block|}
+return|return
+literal|null
+return|;
+block|}
+finally|finally
+block|{
+name|readUnlock
+argument_list|()
+expr_stmt|;
+block|}
+block|}
 comment|/** Is rolling upgrade in progress? */
 DECL|method|isRollingUpgrade ()
 specifier|public

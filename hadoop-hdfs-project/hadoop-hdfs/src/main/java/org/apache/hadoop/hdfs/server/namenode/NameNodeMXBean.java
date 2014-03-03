@@ -58,6 +58,22 @@ name|InterfaceStability
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|protocol
+operator|.
+name|RollingUpgradeInfo
+import|;
+end_import
+
 begin_comment
 comment|/**  * This is the JMX management interface for namenode information  */
 end_comment
@@ -123,6 +139,15 @@ DECL|method|isUpgradeFinalized ()
 specifier|public
 name|boolean
 name|isUpgradeFinalized
+parameter_list|()
+function_decl|;
+comment|/**    * Gets the RollingUpgrade information    *    * @return Rolling upgrade information    */
+DECL|method|getRollingUpgradeStatus ()
+specifier|public
+name|RollingUpgradeInfo
+operator|.
+name|Bean
+name|getRollingUpgradeStatus
 parameter_list|()
 function_decl|;
 comment|/**    * Gets total used space by data nodes for non DFS purposes such as storing    * temporary files on the local file system    *     * @return the non dfs space of the cluster    */
