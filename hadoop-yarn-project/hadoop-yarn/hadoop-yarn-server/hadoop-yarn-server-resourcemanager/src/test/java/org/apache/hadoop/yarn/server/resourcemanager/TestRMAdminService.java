@@ -919,42 +919,6 @@ argument_list|,
 literal|"org.apache.hadoop.yarn.FileSystemBasedConfigurationProvider"
 argument_list|)
 expr_stmt|;
-try|try
-block|{
-name|rm
-operator|=
-operator|new
-name|MockRM
-argument_list|(
-name|configuration
-argument_list|)
-expr_stmt|;
-name|rm
-operator|.
-name|init
-argument_list|(
-name|configuration
-argument_list|)
-expr_stmt|;
-name|rm
-operator|.
-name|start
-argument_list|()
-expr_stmt|;
-name|fail
-argument_list|(
-literal|"Should throw an exception"
-argument_list|)
-expr_stmt|;
-block|}
-catch|catch
-parameter_list|(
-name|Exception
-name|ex
-parameter_list|)
-block|{
-comment|// Expect exception here
-block|}
 comment|//upload default configurations
 name|uploadDefaultConfiguration
 argument_list|()
@@ -1163,42 +1127,6 @@ argument_list|,
 literal|"org.apache.hadoop.yarn.FileSystemBasedConfigurationProvider"
 argument_list|)
 expr_stmt|;
-try|try
-block|{
-name|rm
-operator|=
-operator|new
-name|MockRM
-argument_list|(
-name|configuration
-argument_list|)
-expr_stmt|;
-name|rm
-operator|.
-name|init
-argument_list|(
-name|configuration
-argument_list|)
-expr_stmt|;
-name|rm
-operator|.
-name|start
-argument_list|()
-expr_stmt|;
-name|fail
-argument_list|(
-literal|"Should throw an exception"
-argument_list|)
-expr_stmt|;
-block|}
-catch|catch
-parameter_list|(
-name|Exception
-name|ex
-parameter_list|)
-block|{
-comment|// Expect exception here
-block|}
 comment|//upload default configurations
 name|uploadDefaultConfiguration
 argument_list|()
@@ -1457,40 +1385,6 @@ literal|null
 decl_stmt|;
 try|try
 block|{
-try|try
-block|{
-name|resourceManager
-operator|=
-operator|new
-name|ResourceManager
-argument_list|()
-expr_stmt|;
-name|resourceManager
-operator|.
-name|init
-argument_list|(
-name|configuration
-argument_list|)
-expr_stmt|;
-name|resourceManager
-operator|.
-name|start
-argument_list|()
-expr_stmt|;
-name|fail
-argument_list|(
-literal|"Should throw an exception"
-argument_list|)
-expr_stmt|;
-block|}
-catch|catch
-parameter_list|(
-name|Exception
-name|ex
-parameter_list|)
-block|{
-comment|// expect to get an exception here
-block|}
 comment|//upload default configurations
 name|uploadDefaultConfiguration
 argument_list|()
@@ -1921,42 +1815,6 @@ argument_list|,
 literal|"org.apache.hadoop.yarn.FileSystemBasedConfigurationProvider"
 argument_list|)
 expr_stmt|;
-try|try
-block|{
-name|rm
-operator|=
-operator|new
-name|MockRM
-argument_list|(
-name|configuration
-argument_list|)
-expr_stmt|;
-name|rm
-operator|.
-name|init
-argument_list|(
-name|configuration
-argument_list|)
-expr_stmt|;
-name|rm
-operator|.
-name|start
-argument_list|()
-expr_stmt|;
-name|fail
-argument_list|(
-literal|"Should throw an exception"
-argument_list|)
-expr_stmt|;
-block|}
-catch|catch
-parameter_list|(
-name|Exception
-name|ex
-parameter_list|)
-block|{
-comment|// Expect exception here
-block|}
 comment|//upload default configurations
 name|uploadDefaultConfiguration
 argument_list|()
@@ -2202,42 +2060,6 @@ argument_list|,
 literal|"org.apache.hadoop.yarn.FileSystemBasedConfigurationProvider"
 argument_list|)
 expr_stmt|;
-try|try
-block|{
-name|rm
-operator|=
-operator|new
-name|MockRM
-argument_list|(
-name|configuration
-argument_list|)
-expr_stmt|;
-name|rm
-operator|.
-name|init
-argument_list|(
-name|configuration
-argument_list|)
-expr_stmt|;
-name|rm
-operator|.
-name|start
-argument_list|()
-expr_stmt|;
-name|fail
-argument_list|(
-literal|"Should throw an exception"
-argument_list|)
-expr_stmt|;
-block|}
-catch|catch
-parameter_list|(
-name|Exception
-name|ex
-parameter_list|)
-block|{
-comment|// Expect exception here
-block|}
 name|String
 name|user
 init|=
@@ -2594,42 +2416,6 @@ argument_list|,
 literal|"org.apache.hadoop.yarn.FileSystemBasedConfigurationProvider"
 argument_list|)
 expr_stmt|;
-try|try
-block|{
-name|rm
-operator|=
-operator|new
-name|MockRM
-argument_list|(
-name|configuration
-argument_list|)
-expr_stmt|;
-name|rm
-operator|.
-name|init
-argument_list|(
-name|configuration
-argument_list|)
-expr_stmt|;
-name|rm
-operator|.
-name|start
-argument_list|()
-expr_stmt|;
-name|fail
-argument_list|(
-literal|"Should throw an exception"
-argument_list|)
-expr_stmt|;
-block|}
-catch|catch
-parameter_list|(
-name|Exception
-name|ex
-parameter_list|)
-block|{
-comment|// Expect exception here
-block|}
 comment|// upload default configurations
 name|uploadDefaultConfiguration
 argument_list|()
@@ -3341,6 +3127,67 @@ name|stop
 argument_list|()
 expr_stmt|;
 block|}
+block|}
+block|}
+annotation|@
+name|Test
+DECL|method|testRMStartsWithoutConfigurationFilesProvided ()
+specifier|public
+name|void
+name|testRMStartsWithoutConfigurationFilesProvided
+parameter_list|()
+block|{
+comment|// enable FileSystemBasedConfigurationProvider without uploading
+comment|// any configuration files into Remote File System.
+name|configuration
+operator|.
+name|set
+argument_list|(
+name|YarnConfiguration
+operator|.
+name|RM_CONFIGURATION_PROVIDER_CLASS
+argument_list|,
+literal|"org.apache.hadoop.yarn.FileSystemBasedConfigurationProvider"
+argument_list|)
+expr_stmt|;
+comment|// The configurationProvider will return NULL instead of
+comment|// throwing out Exceptions, if there are no configuration files provided.
+comment|// RM will not load the remote Configuration files,
+comment|// and should start successfully.
+try|try
+block|{
+name|rm
+operator|=
+operator|new
+name|MockRM
+argument_list|(
+name|configuration
+argument_list|)
+expr_stmt|;
+name|rm
+operator|.
+name|init
+argument_list|(
+name|configuration
+argument_list|)
+expr_stmt|;
+name|rm
+operator|.
+name|start
+argument_list|()
+expr_stmt|;
+block|}
+catch|catch
+parameter_list|(
+name|Exception
+name|ex
+parameter_list|)
+block|{
+name|fail
+argument_list|(
+literal|"Should not get any exceptions"
+argument_list|)
+expr_stmt|;
 block|}
 block|}
 DECL|method|writeConfigurationXML (Configuration conf, String confXMLName)
