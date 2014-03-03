@@ -80,22 +80,6 @@ name|ClientMmap
 import|;
 end_import
 
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|hdfs
-operator|.
-name|protocol
-operator|.
-name|LocatedBlock
-import|;
-end_import
-
 begin_comment
 comment|/**  * A BlockReader is responsible for reading a single block  * from a single datanode.  */
 end_comment

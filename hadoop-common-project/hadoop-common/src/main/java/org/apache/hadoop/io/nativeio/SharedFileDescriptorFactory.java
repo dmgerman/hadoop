@@ -187,12 +187,15 @@ name|path
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Create a shared file descriptor which will be both readable and writable.    *    * @param length         The starting file length.    *    * @return               The file descriptor, wrapped in a FileInputStream.    * @throws IOException   If there was an I/O or configuration error creating    *                       the descriptor.    */
-DECL|method|createDescriptor (int length)
+comment|/**    * Create a shared file descriptor which will be both readable and writable.    *    * @param info           Information to include in the path of the     *                         generated descriptor.    * @param length         The starting file length.    *    * @return               The file descriptor, wrapped in a FileInputStream.    * @throws IOException   If there was an I/O or configuration error creating    *                         the descriptor.    */
+DECL|method|createDescriptor (String info, int length)
 specifier|public
 name|FileInputStream
 name|createDescriptor
 parameter_list|(
+name|String
+name|info
+parameter_list|,
 name|int
 name|length
 parameter_list|)
@@ -206,6 +209,8 @@ argument_list|(
 name|createDescriptor0
 argument_list|(
 name|prefix
+operator|+
+name|info
 argument_list|,
 name|path
 argument_list|,

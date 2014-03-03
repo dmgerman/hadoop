@@ -2209,6 +2209,12 @@ name|localDataXceiverServer
 init|=
 literal|null
 decl_stmt|;
+DECL|field|shortCircuitRegistry
+name|ShortCircuitRegistry
+name|shortCircuitRegistry
+init|=
+literal|null
+decl_stmt|;
 DECL|field|threadGroup
 name|ThreadGroup
 name|threadGroup
@@ -3885,6 +3891,16 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
+name|this
+operator|.
+name|shortCircuitRegistry
+operator|=
+operator|new
+name|ShortCircuitRegistry
+argument_list|(
+name|conf
+argument_list|)
+expr_stmt|;
 block|}
 DECL|method|getDomainPeerServer (Configuration conf, int port)
 specifier|static
@@ -6982,6 +6998,17 @@ operator|=
 literal|null
 expr_stmt|;
 block|}
+if|if
+condition|(
+name|shortCircuitRegistry
+operator|!=
+literal|null
+condition|)
+name|shortCircuitRegistry
+operator|.
+name|shutdown
+argument_list|()
+expr_stmt|;
 block|}
 comment|/** Check if there is no space in disk     *  @param e that caused this checkDiskError call    **/
 DECL|method|checkDiskError (Exception e )
@@ -9524,7 +9551,10 @@ expr_stmt|;
 block|}
 block|}
 comment|/**    * Examples are adding and deleting blocks directly.    * The most common usage will be when the data node's storage is simulated.    *     * @return the fsdataset that stores the blocks    */
+annotation|@
+name|VisibleForTesting
 DECL|method|getFSDataset ()
+specifier|public
 name|FsDatasetSpi
 argument_list|<
 name|?
@@ -12089,6 +12119,16 @@ parameter_list|()
 block|{
 return|return
 name|shouldRun
+return|;
+block|}
+DECL|method|getShortCircuitRegistry ()
+specifier|public
+name|ShortCircuitRegistry
+name|getShortCircuitRegistry
+parameter_list|()
+block|{
+return|return
+name|shortCircuitRegistry
 return|;
 block|}
 block|}

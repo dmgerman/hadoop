@@ -140,6 +140,22 @@ name|hadoop
 operator|.
 name|hdfs
 operator|.
+name|ShortCircuitShm
+operator|.
+name|Slot
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
 name|server
 operator|.
 name|datanode
@@ -291,6 +307,13 @@ specifier|final
 name|long
 name|creationTimeMs
 decl_stmt|;
+comment|/**    * If non-null, the shared memory slot associated with this replica.    */
+DECL|field|slot
+specifier|private
+specifier|final
+name|Slot
+name|slot
+decl_stmt|;
 comment|/**    * Current mmap state.    *    * Protected by the cache lock.    */
 DECL|field|mmapData
 name|Object
@@ -318,7 +341,7 @@ name|evictableTimeNs
 init|=
 literal|null
 decl_stmt|;
-DECL|method|ShortCircuitReplica (ExtendedBlockId key, FileInputStream dataStream, FileInputStream metaStream, ShortCircuitCache cache, long creationTimeMs)
+DECL|method|ShortCircuitReplica (ExtendedBlockId key, FileInputStream dataStream, FileInputStream metaStream, ShortCircuitCache cache, long creationTimeMs, Slot slot)
 specifier|public
 name|ShortCircuitReplica
 parameter_list|(
@@ -336,6 +359,9 @@ name|cache
 parameter_list|,
 name|long
 name|creationTimeMs
+parameter_list|,
+name|Slot
+name|slot
 parameter_list|)
 throws|throws
 name|IOException
@@ -409,6 +435,12 @@ name|creationTimeMs
 operator|=
 name|creationTimeMs
 expr_stmt|;
+name|this
+operator|.
+name|slot
+operator|=
+name|slot
+expr_stmt|;
 block|}
 comment|/**    * Decrement the reference count.    */
 DECL|method|unref ()
@@ -431,6 +463,51 @@ name|boolean
 name|isStale
 parameter_list|()
 block|{
+if|if
+condition|(
+name|slot
+operator|!=
+literal|null
+condition|)
+block|{
+comment|// Check staleness by looking at the shared memory area we use to
+comment|// communicate with the DataNode.
+name|boolean
+name|stale
+init|=
+operator|!
+name|slot
+operator|.
+name|isValid
+argument_list|()
+decl_stmt|;
+if|if
+condition|(
+name|LOG
+operator|.
+name|isTraceEnabled
+argument_list|()
+condition|)
+block|{
+name|LOG
+operator|.
+name|trace
+argument_list|(
+name|this
+operator|+
+literal|": checked shared memory segment.  isStale="
+operator|+
+name|stale
+argument_list|)
+expr_stmt|;
+block|}
+return|return
+name|stale
+return|;
+block|}
+else|else
+block|{
+comment|// Fall back to old, time-based staleness method.
 name|long
 name|deltaMs
 init|=
@@ -515,6 +592,53 @@ literal|false
 return|;
 block|}
 block|}
+block|}
+comment|/**    * Try to add a no-checksum anchor to our shared memory slot.    *    * It is only possible to add this anchor when the block is mlocked on the Datanode.    * The DataNode will not munlock the block until the number of no-checksum anchors    * for the block reaches zero.    *     * This method does not require any synchronization.    *    * @return     True if we successfully added a no-checksum anchor.    */
+DECL|method|addNoChecksumAnchor ()
+specifier|public
+name|boolean
+name|addNoChecksumAnchor
+parameter_list|()
+block|{
+if|if
+condition|(
+name|slot
+operator|==
+literal|null
+condition|)
+block|{
+return|return
+literal|false
+return|;
+block|}
+return|return
+name|slot
+operator|.
+name|addAnchor
+argument_list|()
+return|;
+block|}
+comment|/**    * Remove a no-checksum anchor for our shared memory slot.    *    * This method does not require any synchronization.    */
+DECL|method|removeNoChecksumAnchor ()
+specifier|public
+name|void
+name|removeNoChecksumAnchor
+parameter_list|()
+block|{
+if|if
+condition|(
+name|slot
+operator|!=
+literal|null
+condition|)
+block|{
+name|slot
+operator|.
+name|removeAnchor
+argument_list|()
+expr_stmt|;
+block|}
+block|}
 comment|/**    * Check if the replica has an associated mmap that has been fully loaded.    *    * Must be called with the cache lock held.    */
 annotation|@
 name|VisibleForTesting
@@ -535,7 +659,7 @@ operator|&&
 operator|(
 name|mmapData
 operator|instanceof
-name|ClientMmap
+name|MappedByteBuffer
 operator|)
 operator|)
 return|;
@@ -546,11 +670,11 @@ name|void
 name|munmap
 parameter_list|()
 block|{
-name|ClientMmap
-name|clientMmap
+name|MappedByteBuffer
+name|mmap
 init|=
 operator|(
-name|ClientMmap
+name|MappedByteBuffer
 operator|)
 name|mmapData
 decl_stmt|;
@@ -560,10 +684,7 @@ name|POSIX
 operator|.
 name|munmap
 argument_list|(
-name|clientMmap
-operator|.
-name|getMappedByteBuffer
-argument_list|()
+name|mmap
 argument_list|)
 expr_stmt|;
 name|mmapData
@@ -577,6 +698,11 @@ name|void
 name|close
 parameter_list|()
 block|{
+name|String
+name|suffix
+init|=
+literal|""
+decl_stmt|;
 name|Preconditions
 operator|.
 name|checkState
@@ -594,6 +720,11 @@ operator|+
 name|this
 argument_list|)
 expr_stmt|;
+name|refCount
+operator|=
+operator|-
+literal|1
+expr_stmt|;
 name|Preconditions
 operator|.
 name|checkState
@@ -610,9 +741,15 @@ condition|(
 name|hasMmap
 argument_list|()
 condition|)
+block|{
 name|munmap
 argument_list|()
 expr_stmt|;
+name|suffix
+operator|+=
+literal|"  munmapped."
+expr_stmt|;
+block|}
 name|IOUtils
 operator|.
 name|cleanup
@@ -624,6 +761,49 @@ argument_list|,
 name|metaStream
 argument_list|)
 expr_stmt|;
+if|if
+condition|(
+name|slot
+operator|!=
+literal|null
+condition|)
+block|{
+name|cache
+operator|.
+name|scheduleSlotReleaser
+argument_list|(
+name|slot
+argument_list|)
+expr_stmt|;
+name|suffix
+operator|+=
+literal|"  scheduling "
+operator|+
+name|slot
+operator|+
+literal|" for later release."
+expr_stmt|;
+block|}
+if|if
+condition|(
+name|LOG
+operator|.
+name|isTraceEnabled
+argument_list|()
+condition|)
+block|{
+name|LOG
+operator|.
+name|trace
+argument_list|(
+literal|"closed "
+operator|+
+name|this
+operator|+
+name|suffix
+argument_list|)
+expr_stmt|;
+block|}
 block|}
 DECL|method|getDataStream ()
 specifier|public
@@ -665,11 +845,14 @@ return|return
 name|key
 return|;
 block|}
-DECL|method|getOrCreateClientMmap ()
+DECL|method|getOrCreateClientMmap (boolean anchor)
 specifier|public
 name|ClientMmap
 name|getOrCreateClientMmap
-parameter_list|()
+parameter_list|(
+name|boolean
+name|anchor
+parameter_list|)
 block|{
 return|return
 name|cache
@@ -677,6 +860,8 @@ operator|.
 name|getOrCreateClientMmap
 argument_list|(
 name|this
+argument_list|,
+name|anchor
 argument_list|)
 return|;
 block|}
@@ -782,6 +967,18 @@ name|evictableTimeNs
 operator|=
 name|evictableTimeNs
 expr_stmt|;
+block|}
+annotation|@
+name|VisibleForTesting
+DECL|method|getSlot ()
+specifier|public
+name|Slot
+name|getSlot
+parameter_list|()
+block|{
+return|return
+name|slot
+return|;
 block|}
 comment|/**    * Convert the replica to a string for debugging purposes.    * Note that we can't take the lock here.    */
 annotation|@

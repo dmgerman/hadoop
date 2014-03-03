@@ -260,6 +260,8 @@ name|factory
 operator|.
 name|createDescriptor
 argument_list|(
+literal|"testReadAndWrite"
+argument_list|,
 literal|4096
 argument_list|)
 decl_stmt|;

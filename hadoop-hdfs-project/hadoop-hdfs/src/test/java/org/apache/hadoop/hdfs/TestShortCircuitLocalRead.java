@@ -2714,6 +2714,11 @@ block|}
 block|}
 annotation|@
 name|Test
+argument_list|(
+name|timeout
+operator|=
+literal|120000
+argument_list|)
 DECL|method|testHandleTruncatedBlockFile ()
 specifier|public
 name|void
