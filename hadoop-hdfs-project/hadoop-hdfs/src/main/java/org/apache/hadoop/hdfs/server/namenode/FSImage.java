@@ -346,6 +346,26 @@ name|common
 operator|.
 name|HdfsServerConstants
 operator|.
+name|RollingUpgradeStartupOption
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|server
+operator|.
+name|common
+operator|.
+name|HdfsServerConstants
+operator|.
 name|StartupOption
 import|;
 end_import
@@ -1349,9 +1369,11 @@ operator|.
 name|UPGRADE
 operator|&&
 operator|!
-name|StartupOption
+name|RollingUpgradeStartupOption
 operator|.
-name|isRollingUpgradeStarted
+name|STARTED
+operator|.
+name|matches
 argument_list|(
 name|startOpt
 argument_list|)
@@ -1388,7 +1410,24 @@ name|NAMENODE_LAYOUT_VERSION
 operator|+
 literal|" is required.\n"
 operator|+
-literal|"Please restart NameNode with -upgrade option."
+literal|"Please restart NameNode with the \""
+operator|+
+name|RollingUpgradeStartupOption
+operator|.
+name|STARTED
+operator|.
+name|getOptionString
+argument_list|()
+operator|+
+literal|"\" option if a rolling upgraded is already started;"
+operator|+
+literal|" or restart NameNode with the \""
+operator|+
+name|StartupOption
+operator|.
+name|UPGRADE
+operator|+
+literal|"\" to start a new upgrade."
 argument_list|)
 throw|;
 block|}
@@ -2918,9 +2957,11 @@ specifier|final
 name|boolean
 name|rollingRollback
 init|=
-name|StartupOption
+name|RollingUpgradeStartupOption
 operator|.
-name|isRollingUpgradeRollback
+name|ROLLBACK
+operator|.
+name|matches
 argument_list|(
 name|startOpt
 argument_list|)
@@ -3385,9 +3426,11 @@ argument_list|)
 expr_stmt|;
 if|if
 condition|(
-name|StartupOption
+name|RollingUpgradeStartupOption
 operator|.
-name|isRollingUpgradeDowngrade
+name|DOWNGRADE
+operator|.
+name|matches
 argument_list|(
 name|startOpt
 argument_list|)
@@ -3785,9 +3828,11 @@ name|StartupOption
 operator|.
 name|UPGRADE
 operator|||
-name|StartupOption
+name|RollingUpgradeStartupOption
 operator|.
-name|isRollingUpgradeRollback
+name|ROLLBACK
+operator|.
+name|matches
 argument_list|(
 name|startOpt
 argument_list|)
