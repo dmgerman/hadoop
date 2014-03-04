@@ -172,20 +172,6 @@ name|hadoop
 operator|.
 name|io
 operator|.
-name|IOUtils
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|io
-operator|.
 name|nativeio
 operator|.
 name|NativeIO
@@ -1920,16 +1906,21 @@ name|int
 name|slotIdx
 parameter_list|)
 block|{
+name|long
+name|offset
+init|=
+name|slotIdx
+decl_stmt|;
+name|offset
+operator|*=
+name|BYTES_PER_SLOT
+expr_stmt|;
 return|return
 name|this
 operator|.
 name|baseAddress
 operator|+
-operator|(
-name|slotIdx
-operator|*
-name|BYTES_PER_SLOT
-operator|)
+name|offset
 return|;
 block|}
 comment|/**    * Allocate a new slot and register it.    *    * This function chooses an empty slot, initializes it, and then returns    * the relevant Slot object.    *    * @return    The new slot.    */
@@ -2016,7 +2007,6 @@ name|isTraceEnabled
 argument_list|()
 condition|)
 block|{
-comment|//LOG.trace(this + ": allocAndRegisterSlot " + idx);
 name|LOG
 operator|.
 name|trace
@@ -2111,6 +2101,50 @@ name|InvalidRequestException
 block|{
 if|if
 condition|(
+name|slotIdx
+operator|<
+literal|0
+condition|)
+block|{
+throw|throw
+operator|new
+name|InvalidRequestException
+argument_list|(
+name|this
+operator|+
+literal|": invalid negative slot "
+operator|+
+literal|"index "
+operator|+
+name|slotIdx
+argument_list|)
+throw|;
+block|}
+if|if
+condition|(
+name|slotIdx
+operator|>=
+name|slots
+operator|.
+name|length
+condition|)
+block|{
+throw|throw
+operator|new
+name|InvalidRequestException
+argument_list|(
+name|this
+operator|+
+literal|": invalid slot "
+operator|+
+literal|"index "
+operator|+
+name|slotIdx
+argument_list|)
+throw|;
+block|}
+if|if
+condition|(
 name|allocatedSlots
 operator|.
 name|get
@@ -2194,7 +2228,6 @@ name|isTraceEnabled
 argument_list|()
 condition|)
 block|{
-comment|//LOG.trace(this + ": registerSlot " + slotIdx);
 name|LOG
 operator|.
 name|trace
