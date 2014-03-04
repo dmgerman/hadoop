@@ -5820,7 +5820,21 @@ block|{
 comment|// exception already handled in the call method. getFirstToComplete
 comment|// will remove the failing future from the list. nothing more to do.
 block|}
-comment|// We got here if exception.  Ignore this node on next go around.
+comment|// We got here if exception.  Ignore this node on next go around IFF
+comment|// we found a chosenNode to hedge read against.
+if|if
+condition|(
+name|chosenNode
+operator|!=
+literal|null
+operator|&&
+name|chosenNode
+operator|.
+name|info
+operator|!=
+literal|null
+condition|)
+block|{
 name|ignored
 operator|.
 name|add
@@ -5830,6 +5844,7 @@ operator|.
 name|info
 argument_list|)
 expr_stmt|;
+block|}
 block|}
 comment|// executed if we get an error from a data node
 name|block
