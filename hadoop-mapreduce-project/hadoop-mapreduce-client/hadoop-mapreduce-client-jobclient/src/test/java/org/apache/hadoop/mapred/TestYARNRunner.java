@@ -2657,7 +2657,7 @@ argument_list|)
 decl_stmt|;
 name|doReturn
 argument_list|(
-name|mockRmAddress
+name|rmTokenSevice
 argument_list|)
 operator|.
 name|when
@@ -2665,7 +2665,7 @@ argument_list|(
 name|rmDelegate
 argument_list|)
 operator|.
-name|getConnectAddress
+name|getRMDelegationTokenService
 argument_list|()
 expr_stmt|;
 name|ClientCache

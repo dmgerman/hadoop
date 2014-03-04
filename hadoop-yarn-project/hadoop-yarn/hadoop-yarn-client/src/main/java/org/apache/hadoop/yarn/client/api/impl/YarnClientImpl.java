@@ -1928,6 +1928,9 @@ name|convertFromYarn
 argument_list|(
 name|token
 argument_list|,
+operator|(
+name|Text
+operator|)
 literal|null
 argument_list|)
 expr_stmt|;

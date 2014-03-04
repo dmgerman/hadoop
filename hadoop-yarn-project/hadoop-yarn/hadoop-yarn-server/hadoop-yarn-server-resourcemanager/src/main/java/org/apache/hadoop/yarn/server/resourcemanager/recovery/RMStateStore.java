@@ -2373,7 +2373,7 @@ throws|throws
 name|Exception
 function_decl|;
 comment|// TODO: This should eventually become cluster-Id + "AM_RM_TOKEN_SERVICE". See
-comment|// YARN-986
+comment|// YARN-1779
 DECL|field|AM_RM_TOKEN_SERVICE
 specifier|public
 specifier|static

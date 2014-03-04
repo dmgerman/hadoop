@@ -4208,7 +4208,7 @@ else|:
 name|RM_SERVICES_ADDRESS_CONF_KEYS_HTTP
 return|;
 block|}
-comment|/**    * Get the socket address for<code>name</code> property as a    *<code>InetSocketAddress</code>.    * @param name property name.    * @param defaultAddress the default value    * @param defaultPort the default port    * @return InetSocketAddress    */
+comment|/**    * Get the socket address for<code>name</code> property as a    *<code>InetSocketAddress</code>. On a HA cluster,    * this fetches the address corresponding to the RM identified by    * {@link #RM_HA_ID}.    * @param name property name.    * @param defaultAddress the default value    * @param defaultPort the default port    * @return InetSocketAddress    */
 annotation|@
 name|Override
 DECL|method|getSocketAddr ( String name, String defaultAddress, int defaultPort)
@@ -4525,6 +4525,53 @@ argument_list|,
 name|YARN_HTTP_POLICY_DEFAULT
 argument_list|)
 argument_list|)
+return|;
+block|}
+annotation|@
+name|Private
+DECL|method|getClusterId (Configuration conf)
+specifier|public
+specifier|static
+name|String
+name|getClusterId
+parameter_list|(
+name|Configuration
+name|conf
+parameter_list|)
+block|{
+name|String
+name|clusterId
+init|=
+name|conf
+operator|.
+name|get
+argument_list|(
+name|YarnConfiguration
+operator|.
+name|RM_CLUSTER_ID
+argument_list|)
+decl_stmt|;
+if|if
+condition|(
+name|clusterId
+operator|==
+literal|null
+condition|)
+block|{
+throw|throw
+operator|new
+name|HadoopIllegalArgumentException
+argument_list|(
+literal|"Configuration doesn't specify"
+operator|+
+name|YarnConfiguration
+operator|.
+name|RM_CLUSTER_ID
+argument_list|)
+throw|;
+block|}
+return|return
+name|clusterId
 return|;
 block|}
 block|}

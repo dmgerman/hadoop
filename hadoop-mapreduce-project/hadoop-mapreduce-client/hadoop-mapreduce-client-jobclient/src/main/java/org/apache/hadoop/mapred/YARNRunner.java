@@ -1378,15 +1378,10 @@ decl_stmt|;
 name|Text
 name|service
 init|=
-name|SecurityUtil
-operator|.
-name|buildTokenService
-argument_list|(
 name|resMgrDelegate
 operator|.
-name|getConnectAddress
+name|getRMDelegationTokenService
 argument_list|()
-argument_list|)
 decl_stmt|;
 if|if
 condition|(
