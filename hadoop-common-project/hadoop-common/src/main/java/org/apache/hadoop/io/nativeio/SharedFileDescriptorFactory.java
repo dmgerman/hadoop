@@ -134,6 +134,42 @@ specifier|final
 name|String
 name|path
 decl_stmt|;
+DECL|method|getLoadingFailureReason ()
+specifier|public
+specifier|static
+name|String
+name|getLoadingFailureReason
+parameter_list|()
+block|{
+if|if
+condition|(
+operator|!
+name|NativeIO
+operator|.
+name|isAvailable
+argument_list|()
+condition|)
+block|{
+return|return
+literal|"NativeIO is not available."
+return|;
+block|}
+if|if
+condition|(
+operator|!
+name|SystemUtils
+operator|.
+name|IS_OS_UNIX
+condition|)
+block|{
+return|return
+literal|"The OS is not UNIX."
+return|;
+block|}
+return|return
+literal|null
+return|;
+block|}
 comment|/**    * Create a SharedFileDescriptorFactory.    *    * @param prefix    Prefix to add to all file names we use.    * @param path      Path to use.    */
 DECL|method|SharedFileDescriptorFactory (String prefix, String path)
 specifier|public
@@ -150,21 +186,12 @@ name|IOException
 block|{
 name|Preconditions
 operator|.
-name|checkArgument
+name|checkState
 argument_list|(
-name|NativeIO
-operator|.
-name|isAvailable
+name|getLoadingFailureReason
 argument_list|()
-argument_list|)
-expr_stmt|;
-name|Preconditions
-operator|.
-name|checkArgument
-argument_list|(
-name|SystemUtils
-operator|.
-name|IS_OS_UNIX
+operator|==
+literal|null
 argument_list|)
 expr_stmt|;
 name|this

@@ -710,12 +710,26 @@ literal|null
 decl_stmt|;
 try|try
 block|{
+name|String
+name|loadingFailureReason
+init|=
+name|SharedFileDescriptorFactory
+operator|.
+name|getLoadingFailureReason
+argument_list|()
+decl_stmt|;
 if|if
 condition|(
-operator|!
-name|NativeIO
+name|loadingFailureReason
+operator|!=
+literal|null
+condition|)
+block|{
+if|if
+condition|(
+name|LOG
 operator|.
-name|isAvailable
+name|isDebugEnabled
 argument_list|()
 condition|)
 block|{
@@ -723,11 +737,12 @@ name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"Disabling ShortCircuitRegistry because NativeIO is "
+literal|"Disabling ShortCircuitRegistry because "
 operator|+
-literal|"not available."
+name|loadingFailureReason
 argument_list|)
 expr_stmt|;
+block|}
 return|return;
 block|}
 name|String
@@ -752,7 +767,7 @@ condition|)
 block|{
 name|LOG
 operator|.
-name|info
+name|debug
 argument_list|(
 literal|"Disabling ShortCircuitRegistry because shmPath was not set."
 argument_list|)
@@ -778,17 +793,26 @@ operator|<=
 literal|0
 condition|)
 block|{
+if|if
+condition|(
 name|LOG
 operator|.
-name|info
+name|isDebugEnabled
+argument_list|()
+condition|)
+block|{
+name|LOG
+operator|.
+name|debug
 argument_list|(
-literal|"Disabling ShortCircuitRegistry because interruptCheckMs "
+literal|"Disabling ShortCircuitRegistry because "
 operator|+
-literal|"was set to "
+literal|"interruptCheckMs was set to "
 operator|+
 name|interruptCheck
 argument_list|)
 expr_stmt|;
+block|}
 return|return;
 block|}
 name|shmFactory
