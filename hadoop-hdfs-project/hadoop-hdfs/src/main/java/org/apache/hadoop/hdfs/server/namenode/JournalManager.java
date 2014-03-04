@@ -271,6 +271,17 @@ parameter_list|()
 throws|throws
 name|IOException
 function_decl|;
+comment|/**    * Discard the segments whose first txid is>= the given txid.    * @param startTxId The given txid should be right at the segment boundary,     * i.e., it should be the first txid of some segment, if segment corresponding    * to the txid exists.    */
+DECL|method|discardSegments (long startTxId)
+name|void
+name|discardSegments
+parameter_list|(
+name|long
+name|startTxId
+parameter_list|)
+throws|throws
+name|IOException
+function_decl|;
 comment|/**    * @return the CTime of the journal manager.    */
 DECL|method|getJournalCTime ()
 name|long

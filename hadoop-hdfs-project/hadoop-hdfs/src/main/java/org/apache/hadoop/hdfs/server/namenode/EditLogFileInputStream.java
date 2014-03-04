@@ -234,24 +234,6 @@ name|hadoop
 operator|.
 name|hdfs
 operator|.
-name|protocol
-operator|.
-name|LayoutVersion
-operator|.
-name|Feature
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|hdfs
-operator|.
 name|server
 operator|.
 name|common
@@ -763,10 +745,12 @@ throw|;
 block|}
 if|if
 condition|(
-name|LayoutVersion
+name|NameNodeLayoutVersion
 operator|.
 name|supports
 argument_list|(
+name|LayoutVersion
+operator|.
 name|Feature
 operator|.
 name|ADD_LAYOUT_FLAGS
@@ -1464,7 +1448,7 @@ name|logVersion
 argument_list|<
 name|HdfsConstants
 operator|.
-name|LAYOUT_VERSION
+name|NAMENODE_LAYOUT_VERSION
 operator|||
 comment|// future version
 name|logVersion
@@ -1487,7 +1471,7 @@ literal|". Current version = "
 operator|+
 name|HdfsConstants
 operator|.
-name|LAYOUT_VERSION
+name|NAMENODE_LAYOUT_VERSION
 operator|+
 literal|"."
 argument_list|)

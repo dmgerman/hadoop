@@ -2127,7 +2127,7 @@ name|znodePath
 argument_list|,
 name|HdfsConstants
 operator|.
-name|LAYOUT_VERSION
+name|NAMENODE_LAYOUT_VERSION
 argument_list|,
 name|currentLedger
 operator|.
@@ -3543,6 +3543,25 @@ specifier|public
 name|void
 name|doRollback
 parameter_list|()
+throws|throws
+name|IOException
+block|{
+throw|throw
+operator|new
+name|UnsupportedOperationException
+argument_list|()
+throw|;
+block|}
+annotation|@
+name|Override
+DECL|method|discardSegments (long startTxId)
+specifier|public
+name|void
+name|discardSegments
+parameter_list|(
+name|long
+name|startTxId
+parameter_list|)
 throws|throws
 name|IOException
 block|{

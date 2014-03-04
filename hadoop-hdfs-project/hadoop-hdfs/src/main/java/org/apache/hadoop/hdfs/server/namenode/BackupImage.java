@@ -704,6 +704,8 @@ operator|+
 literal|1
 argument_list|,
 literal|null
+argument_list|,
+literal|null
 argument_list|)
 decl_stmt|;
 if|if
@@ -943,8 +945,6 @@ argument_list|(
 name|editStreams
 argument_list|,
 name|namesystem
-argument_list|,
-literal|null
 argument_list|)
 expr_stmt|;
 block|}
@@ -1107,8 +1107,6 @@ argument_list|,
 name|lastAppliedTxId
 operator|+
 literal|1
-argument_list|,
-literal|null
 argument_list|)
 expr_stmt|;
 name|lastAppliedTxId

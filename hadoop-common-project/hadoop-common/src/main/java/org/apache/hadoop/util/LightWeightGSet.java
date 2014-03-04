@@ -1014,7 +1014,7 @@ argument_list|)
 expr_stmt|;
 block|}
 DECL|class|SetIterator
-specifier|private
+specifier|public
 class|class
 name|SetIterator
 implements|implements
@@ -1054,6 +1054,13 @@ name|next
 init|=
 name|nextNonemptyEntry
 argument_list|()
+decl_stmt|;
+DECL|field|trackModification
+specifier|private
+name|boolean
+name|trackModification
+init|=
+literal|true
 decl_stmt|;
 comment|/** Find the next nonempty entry starting at (index + 1). */
 DECL|method|nextNonemptyEntry ()
@@ -1107,6 +1114,8 @@ parameter_list|()
 block|{
 if|if
 condition|(
+name|trackModification
+operator|&&
 name|modification
 operator|!=
 name|iterModification
@@ -1274,6 +1283,22 @@ expr_stmt|;
 name|cur
 operator|=
 literal|null
+expr_stmt|;
+block|}
+DECL|method|setTrackModification (boolean trackModification)
+specifier|public
+name|void
+name|setTrackModification
+parameter_list|(
+name|boolean
+name|trackModification
+parameter_list|)
+block|{
+name|this
+operator|.
+name|trackModification
+operator|=
+name|trackModification
 expr_stmt|;
 block|}
 block|}

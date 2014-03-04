@@ -990,7 +990,7 @@ name|doReturn
 argument_list|(
 name|HdfsConstants
 operator|.
-name|LAYOUT_VERSION
+name|DATANODE_LAYOUT_VERSION
 argument_list|)
 operator|.
 name|when
@@ -1261,7 +1261,7 @@ name|doReturn
 argument_list|(
 name|HdfsConstants
 operator|.
-name|LAYOUT_VERSION
+name|DATANODE_LAYOUT_VERSION
 argument_list|)
 operator|.
 name|when
@@ -1540,7 +1540,7 @@ name|doReturn
 argument_list|(
 name|HdfsConstants
 operator|.
-name|LAYOUT_VERSION
+name|DATANODE_LAYOUT_VERSION
 argument_list|)
 operator|.
 name|when

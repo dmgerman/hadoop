@@ -58,17 +58,7 @@ name|java
 operator|.
 name|util
 operator|.
-name|HashSet
-import|;
-end_import
-
-begin_import
-import|import
-name|java
-operator|.
-name|util
-operator|.
-name|Set
+name|HashMap
 import|;
 end_import
 
@@ -245,18 +235,29 @@ decl_stmt|;
 DECL|field|peers
 specifier|private
 specifier|final
-name|Set
+name|HashMap
 argument_list|<
 name|Peer
+argument_list|,
+name|Thread
 argument_list|>
 name|peers
 init|=
 operator|new
-name|HashSet
+name|HashMap
 argument_list|<
 name|Peer
+argument_list|,
+name|Thread
 argument_list|>
 argument_list|()
+decl_stmt|;
+DECL|field|closed
+specifier|private
+name|boolean
+name|closed
+init|=
+literal|false
 decl_stmt|;
 comment|/**    * Maximal number of concurrent xceivers per node.    * Enforcing the limit is required in order to avoid data-node    * running out of memory.    */
 DECL|field|maxXceiverCount
@@ -454,6 +455,11 @@ condition|(
 name|datanode
 operator|.
 name|shouldRun
+operator|&&
+operator|!
+name|datanode
+operator|.
+name|shutdownForUpgrade
 condition|)
 block|{
 try|try
@@ -539,6 +545,11 @@ condition|(
 name|datanode
 operator|.
 name|shouldRun
+operator|&&
+operator|!
+name|datanode
+operator|.
+name|shutdownForUpgrade
 condition|)
 block|{
 name|LOG
@@ -663,36 +674,17 @@ literal|false
 expr_stmt|;
 block|}
 block|}
-synchronized|synchronized
-init|(
-name|this
-init|)
-block|{
-for|for
-control|(
-name|Peer
-name|p
-range|:
-name|peers
-control|)
-block|{
-name|IOUtils
-operator|.
-name|cleanup
-argument_list|(
-name|LOG
-argument_list|,
-name|p
-argument_list|)
-expr_stmt|;
-block|}
-block|}
+comment|// Close the server to stop reception of more requests.
 try|try
 block|{
 name|peerServer
 operator|.
 name|close
 argument_list|()
+expr_stmt|;
+name|closed
+operator|=
+literal|true
 expr_stmt|;
 block|}
 catch|catch
@@ -716,6 +708,72 @@ name|ie
 argument_list|)
 expr_stmt|;
 block|}
+comment|// if in restart prep stage, notify peers before closing them.
+if|if
+condition|(
+name|datanode
+operator|.
+name|shutdownForUpgrade
+condition|)
+block|{
+name|restartNotifyPeers
+argument_list|()
+expr_stmt|;
+comment|// Each thread needs some time to process it. If a thread needs
+comment|// to send an OOB message to the client, but blocked on network for
+comment|// long time, we need to force its termination.
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"Shutting down DataXceiverServer before restart"
+argument_list|)
+expr_stmt|;
+comment|// Allow roughly up to 2 seconds.
+for|for
+control|(
+name|int
+name|i
+init|=
+literal|0
+init|;
+name|getNumPeers
+argument_list|()
+operator|>
+literal|0
+operator|&&
+name|i
+operator|<
+literal|10
+condition|;
+name|i
+operator|++
+control|)
+block|{
+try|try
+block|{
+name|Thread
+operator|.
+name|sleep
+argument_list|(
+literal|200
+argument_list|)
+expr_stmt|;
+block|}
+catch|catch
+parameter_list|(
+name|InterruptedException
+name|e
+parameter_list|)
+block|{
+comment|// ignore
+block|}
+block|}
+block|}
+comment|// Close all peers.
+name|closeAllPeers
+argument_list|()
+expr_stmt|;
 block|}
 DECL|method|kill ()
 name|void
@@ -723,13 +781,21 @@ name|kill
 parameter_list|()
 block|{
 assert|assert
+operator|(
 name|datanode
 operator|.
 name|shouldRun
 operator|==
 literal|false
+operator|||
+name|datanode
+operator|.
+name|shutdownForUpgrade
+operator|)
 operator|:
-literal|"shoudRun should be set to false before killing"
+literal|"shoudRun should be set to false or restarting should be true"
+operator|+
+literal|" before killing"
 assert|;
 try|try
 block|{
@@ -739,6 +805,12 @@ name|peerServer
 operator|.
 name|close
 argument_list|()
+expr_stmt|;
+name|this
+operator|.
+name|closed
+operator|=
+literal|true
 expr_stmt|;
 block|}
 catch|catch
@@ -763,20 +835,40 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-DECL|method|addPeer (Peer peer)
+DECL|method|addPeer (Peer peer, Thread t)
 specifier|synchronized
 name|void
 name|addPeer
 parameter_list|(
 name|Peer
 name|peer
+parameter_list|,
+name|Thread
+name|t
 parameter_list|)
+throws|throws
+name|IOException
 block|{
+if|if
+condition|(
+name|closed
+condition|)
+block|{
+throw|throw
+operator|new
+name|IOException
+argument_list|(
+literal|"Server closed."
+argument_list|)
+throw|;
+block|}
 name|peers
 operator|.
-name|add
+name|put
 argument_list|(
 name|peer
+argument_list|,
+name|t
 argument_list|)
 expr_stmt|;
 block|}
@@ -805,6 +897,107 @@ argument_list|,
 name|peer
 argument_list|)
 expr_stmt|;
+block|}
+comment|// Notify all peers of the shutdown and restart.
+comment|// datanode.shouldRun should still be true and datanode.restarting should
+comment|// be set true before calling this method.
+DECL|method|restartNotifyPeers ()
+specifier|synchronized
+name|void
+name|restartNotifyPeers
+parameter_list|()
+block|{
+assert|assert
+operator|(
+name|datanode
+operator|.
+name|shouldRun
+operator|==
+literal|true
+operator|&&
+name|datanode
+operator|.
+name|shutdownForUpgrade
+operator|)
+assert|;
+for|for
+control|(
+name|Peer
+name|p
+range|:
+name|peers
+operator|.
+name|keySet
+argument_list|()
+control|)
+block|{
+comment|// interrupt each and every DataXceiver thread.
+name|peers
+operator|.
+name|get
+argument_list|(
+name|p
+argument_list|)
+operator|.
+name|interrupt
+argument_list|()
+expr_stmt|;
+block|}
+block|}
+comment|// Close all peers and clear the map.
+DECL|method|closeAllPeers ()
+specifier|synchronized
+name|void
+name|closeAllPeers
+parameter_list|()
+block|{
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"Closing all peers."
+argument_list|)
+expr_stmt|;
+for|for
+control|(
+name|Peer
+name|p
+range|:
+name|peers
+operator|.
+name|keySet
+argument_list|()
+control|)
+block|{
+name|IOUtils
+operator|.
+name|cleanup
+argument_list|(
+name|LOG
+argument_list|,
+name|p
+argument_list|)
+expr_stmt|;
+block|}
+name|peers
+operator|.
+name|clear
+argument_list|()
+expr_stmt|;
+block|}
+comment|// Return the number of peers.
+DECL|method|getNumPeers ()
+specifier|synchronized
+name|int
+name|getNumPeers
+parameter_list|()
+block|{
+return|return
+name|peers
+operator|.
+name|size
+argument_list|()
+return|;
 block|}
 DECL|method|releasePeer (Peer peer)
 specifier|synchronized

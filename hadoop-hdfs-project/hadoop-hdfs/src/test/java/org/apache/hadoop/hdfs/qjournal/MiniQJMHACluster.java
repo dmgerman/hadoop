@@ -237,7 +237,7 @@ name|Configuration
 name|conf
 decl_stmt|;
 DECL|field|NAMESERVICE
-specifier|private
+specifier|public
 specifier|static
 name|String
 name|NAMESERVICE

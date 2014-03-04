@@ -166,10 +166,13 @@ literal|"'"
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|IncorrectVersionException (int versionReported, String ofWhat)
+DECL|method|IncorrectVersionException (int currentLayoutVersion, int versionReported, String ofWhat)
 specifier|public
 name|IncorrectVersionException
 parameter_list|(
+name|int
+name|currentLayoutVersion
+parameter_list|,
 name|int
 name|versionReported
 parameter_list|,
@@ -183,9 +186,7 @@ name|versionReported
 argument_list|,
 name|ofWhat
 argument_list|,
-name|HdfsConstants
-operator|.
-name|LAYOUT_VERSION
+name|currentLayoutVersion
 argument_list|)
 expr_stmt|;
 block|}

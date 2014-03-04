@@ -578,7 +578,7 @@ name|writeInt
 argument_list|(
 name|HdfsConstants
 operator|.
-name|LAYOUT_VERSION
+name|NAMENODE_LAYOUT_VERSION
 argument_list|)
 expr_stmt|;
 name|LayoutFlags

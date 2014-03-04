@@ -48,6 +48,22 @@ name|InterfaceStability
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|protocol
+operator|.
+name|RollingUpgradeStatus
+import|;
+end_import
+
 begin_class
 annotation|@
 name|InterfaceAudience
@@ -76,7 +92,12 @@ specifier|private
 name|NNHAStatusHeartbeat
 name|haStatus
 decl_stmt|;
-DECL|method|HeartbeatResponse (DatanodeCommand[] cmds, NNHAStatusHeartbeat haStatus)
+DECL|field|rollingUpdateStatus
+specifier|private
+name|RollingUpgradeStatus
+name|rollingUpdateStatus
+decl_stmt|;
+DECL|method|HeartbeatResponse (DatanodeCommand[] cmds, NNHAStatusHeartbeat haStatus, RollingUpgradeStatus rollingUpdateStatus)
 specifier|public
 name|HeartbeatResponse
 parameter_list|(
@@ -86,6 +107,9 @@ name|cmds
 parameter_list|,
 name|NNHAStatusHeartbeat
 name|haStatus
+parameter_list|,
+name|RollingUpgradeStatus
+name|rollingUpdateStatus
 parameter_list|)
 block|{
 name|commands
@@ -97,6 +121,12 @@ operator|.
 name|haStatus
 operator|=
 name|haStatus
+expr_stmt|;
+name|this
+operator|.
+name|rollingUpdateStatus
+operator|=
+name|rollingUpdateStatus
 expr_stmt|;
 block|}
 DECL|method|getCommands ()
@@ -118,6 +148,16 @@ parameter_list|()
 block|{
 return|return
 name|haStatus
+return|;
+block|}
+DECL|method|getRollingUpdateStatus ()
+specifier|public
+name|RollingUpgradeStatus
+name|getRollingUpdateStatus
+parameter_list|()
+block|{
+return|return
+name|rollingUpdateStatus
 return|;
 block|}
 block|}

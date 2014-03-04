@@ -279,6 +279,9 @@ name|Feature
 operator|.
 name|RESERVED_REL20_204
 operator|.
+name|getInfo
+argument_list|()
+operator|.
 name|getLayoutVersion
 argument_list|()
 expr_stmt|;
@@ -331,6 +334,9 @@ name|Feature
 operator|.
 name|RESERVED_REL22
 operator|.
+name|getInfo
+argument_list|()
+operator|.
 name|getLayoutVersion
 argument_list|()
 expr_stmt|;
@@ -380,6 +386,9 @@ operator|=
 name|Feature
 operator|.
 name|FEDERATION
+operator|.
+name|getInfo
+argument_list|()
 operator|.
 name|getLayoutVersion
 argument_list|()
@@ -437,6 +446,9 @@ name|Feature
 operator|.
 name|FEDERATION
 operator|.
+name|getInfo
+argument_list|()
+operator|.
 name|getLayoutVersion
 argument_list|()
 expr_stmt|;
@@ -492,6 +504,9 @@ operator|=
 name|Feature
 operator|.
 name|FEDERATION
+operator|.
+name|getInfo
+argument_list|()
 operator|.
 name|getLayoutVersion
 argument_list|()

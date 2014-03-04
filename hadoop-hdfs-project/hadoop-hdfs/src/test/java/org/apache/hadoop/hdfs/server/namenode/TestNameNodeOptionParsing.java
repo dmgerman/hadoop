@@ -84,7 +84,7 @@ name|hdfs
 operator|.
 name|protocol
 operator|.
-name|LayoutVersion
+name|HdfsConstants
 import|;
 end_import
 
@@ -410,10 +410,9 @@ name|assertEquals
 argument_list|(
 literal|".snapshot."
 operator|+
-name|LayoutVersion
+name|HdfsConstants
 operator|.
-name|getCurrentLayoutVersion
-argument_list|()
+name|NAMENODE_LAYOUT_VERSION
 operator|+
 literal|".UPGRADE_RENAMED"
 argument_list|,
@@ -431,10 +430,9 @@ name|assertEquals
 argument_list|(
 literal|".reserved."
 operator|+
-name|LayoutVersion
+name|HdfsConstants
 operator|.
-name|getCurrentLayoutVersion
-argument_list|()
+name|NAMENODE_LAYOUT_VERSION
 operator|+
 literal|".UPGRADE_RENAMED"
 argument_list|,

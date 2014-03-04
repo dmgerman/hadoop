@@ -430,7 +430,7 @@ name|doReturn
 argument_list|(
 name|HdfsConstants
 operator|.
-name|LAYOUT_VERSION
+name|DATANODE_LAYOUT_VERSION
 argument_list|)
 operator|.
 name|when
@@ -621,7 +621,7 @@ name|assertEquals
 argument_list|(
 name|HdfsConstants
 operator|.
-name|LAYOUT_VERSION
+name|NAMENODE_LAYOUT_VERSION
 argument_list|,
 name|actor
 operator|.
@@ -638,7 +638,7 @@ name|doReturn
 argument_list|(
 name|HdfsConstants
 operator|.
-name|LAYOUT_VERSION
+name|NAMENODE_LAYOUT_VERSION
 operator|*
 literal|1000
 argument_list|)
@@ -658,34 +658,16 @@ operator|.
 name|retrieveNamespaceInfo
 argument_list|()
 expr_stmt|;
-name|fail
-argument_list|(
-literal|"Should have failed to retrieve NS info from DN with bad layout version"
-argument_list|)
-expr_stmt|;
 block|}
 catch|catch
 parameter_list|(
-name|IncorrectVersionException
-name|ive
+name|IOException
+name|e
 parameter_list|)
 block|{
-name|GenericTestUtils
-operator|.
-name|assertExceptionContains
+name|fail
 argument_list|(
-literal|"Unexpected version of namenode"
-argument_list|,
-name|ive
-argument_list|)
-expr_stmt|;
-name|LOG
-operator|.
-name|info
-argument_list|(
-literal|"Got expected exception"
-argument_list|,
-name|ive
+literal|"Should not fail to retrieve NS info from DN with different layout version"
 argument_list|)
 expr_stmt|;
 block|}

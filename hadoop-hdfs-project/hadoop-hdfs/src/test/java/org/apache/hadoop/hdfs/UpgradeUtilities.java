@@ -272,24 +272,6 @@ name|hadoop
 operator|.
 name|hdfs
 operator|.
-name|protocol
-operator|.
-name|LayoutVersion
-operator|.
-name|Feature
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|hdfs
-operator|.
 name|server
 operator|.
 name|common
@@ -391,6 +373,24 @@ operator|.
 name|datanode
 operator|.
 name|BlockPoolSliceStorage
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|server
+operator|.
+name|datanode
+operator|.
+name|DataNodeLayoutVersion
 import|;
 end_import
 
@@ -1588,13 +1588,14 @@ condition|)
 block|{
 continue|continue;
 block|}
-comment|// skip VERSION file for DataNodes
+comment|// skip VERSION and dfsUsed file for DataNodes
 if|if
 condition|(
 name|nodeType
 operator|==
 name|DATA_NODE
 operator|&&
+operator|(
 name|list
 index|[
 name|i
@@ -1607,6 +1608,20 @@ name|equals
 argument_list|(
 literal|"VERSION"
 argument_list|)
+operator|||
+name|list
+index|[
+name|i
+index|]
+operator|.
+name|getName
+argument_list|()
+operator|.
+name|equals
+argument_list|(
+literal|"dfsUsed"
+argument_list|)
+operator|)
 condition|)
 block|{
 continue|continue;
@@ -2421,10 +2436,12 @@ block|{
 comment|// Create block pool version files
 if|if
 condition|(
-name|LayoutVersion
+name|DataNodeLayoutVersion
 operator|.
 name|supports
 argument_list|(
+name|LayoutVersion
+operator|.
 name|Feature
 operator|.
 name|FEDERATION
@@ -2633,17 +2650,17 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|/**    * Return the layout version inherent in the current version    * of the Namenode, whether it is running or not.    */
-DECL|method|getCurrentLayoutVersion ()
+DECL|method|getCurrentNameNodeLayoutVersion ()
 specifier|public
 specifier|static
 name|int
-name|getCurrentLayoutVersion
+name|getCurrentNameNodeLayoutVersion
 parameter_list|()
 block|{
 return|return
 name|HdfsConstants
 operator|.
-name|LAYOUT_VERSION
+name|NAMENODE_LAYOUT_VERSION
 return|;
 block|}
 comment|/**    * Return the namespace ID inherent in the currently running    * Namenode.  If no Namenode is running, return the namespace ID of    * the master Namenode storage directory.    *    * The UpgradeUtilities.initialize() method must be called once before    * calling this method.    */

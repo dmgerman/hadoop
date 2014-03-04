@@ -1492,6 +1492,8 @@ name|ACTIVE
 argument_list|,
 literal|1
 argument_list|)
+argument_list|,
+literal|null
 argument_list|)
 argument_list|)
 expr_stmt|;
@@ -3938,6 +3940,17 @@ operator|new
 name|HdfsConfiguration
 argument_list|()
 decl_stmt|;
+name|conf
+operator|.
+name|set
+argument_list|(
+name|DFSConfigKeys
+operator|.
+name|DFS_DATANODE_XCEIVER_STOP_TIMEOUT_MILLIS_KEY
+argument_list|,
+literal|"1000"
+argument_list|)
+expr_stmt|;
 name|MiniDFSCluster
 name|cluster
 init|=

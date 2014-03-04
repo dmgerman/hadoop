@@ -1437,8 +1437,6 @@ name|data
 argument_list|)
 argument_list|,
 literal|1
-argument_list|,
-literal|null
 argument_list|)
 return|;
 block|}
@@ -2166,8 +2164,6 @@ name|editFile
 argument_list|)
 argument_list|,
 literal|3
-argument_list|,
-literal|null
 argument_list|)
 decl_stmt|;
 name|int

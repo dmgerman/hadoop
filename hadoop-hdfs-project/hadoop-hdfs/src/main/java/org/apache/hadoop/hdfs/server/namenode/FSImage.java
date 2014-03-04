@@ -62,6 +62,16 @@ name|java
 operator|.
 name|io
 operator|.
+name|FileNotFoundException
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|io
+operator|.
 name|IOException
 import|;
 end_import
@@ -103,6 +113,16 @@ operator|.
 name|util
 operator|.
 name|Collections
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
+name|EnumSet
 import|;
 end_import
 
@@ -300,11 +320,13 @@ name|hadoop
 operator|.
 name|hdfs
 operator|.
-name|protocol
+name|server
 operator|.
-name|LayoutVersion
+name|common
 operator|.
-name|Feature
+name|HdfsServerConstants
+operator|.
+name|NamenodeRole
 import|;
 end_import
 
@@ -324,7 +346,7 @@ name|common
 operator|.
 name|HdfsServerConstants
 operator|.
-name|NamenodeRole
+name|RollingUpgradeStartupOption
 import|;
 end_import
 
@@ -1346,6 +1368,16 @@ name|StartupOption
 operator|.
 name|UPGRADE
 operator|&&
+operator|!
+name|RollingUpgradeStartupOption
+operator|.
+name|STARTED
+operator|.
+name|matches
+argument_list|(
+name|startOpt
+argument_list|)
+operator|&&
 name|layoutVersion
 operator|<
 name|Storage
@@ -1356,7 +1388,7 @@ name|layoutVersion
 operator|!=
 name|HdfsConstants
 operator|.
-name|LAYOUT_VERSION
+name|NAMENODE_LAYOUT_VERSION
 condition|)
 block|{
 throw|throw
@@ -1374,11 +1406,28 @@ literal|".\nAn upgrade to version "
 operator|+
 name|HdfsConstants
 operator|.
-name|LAYOUT_VERSION
+name|NAMENODE_LAYOUT_VERSION
 operator|+
 literal|" is required.\n"
 operator|+
-literal|"Please restart NameNode with -upgrade option."
+literal|"Please restart NameNode with the \""
+operator|+
+name|RollingUpgradeStartupOption
+operator|.
+name|STARTED
+operator|.
+name|getOptionString
+argument_list|()
+operator|+
+literal|"\" option if a rolling upgraded is already started;"
+operator|+
+literal|" or restart NameNode with the \""
+operator|+
+name|StartupOption
+operator|.
+name|UPGRADE
+operator|+
+literal|"\" to start a new upgrade."
 argument_list|)
 throw|;
 block|}
@@ -1537,9 +1586,9 @@ name|loadFSImage
 argument_list|(
 name|target
 argument_list|,
-name|recovery
-argument_list|,
 name|startOpt
+argument_list|,
+name|recovery
 argument_list|)
 return|;
 block|}
@@ -1738,9 +1787,10 @@ return|return
 name|isFormatted
 return|;
 block|}
-DECL|method|doUpgrade (FSNamesystem target)
+comment|/** Check if upgrade is in progress. */
+DECL|method|checkUpgrade (FSNamesystem target)
 name|void
-name|doUpgrade
+name|checkUpgrade
 parameter_list|(
 name|FSNamesystem
 name|target
@@ -1748,7 +1798,7 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
-comment|// Upgrade is allowed only if there are
+comment|// Upgrade or rolling upgrade is allowed only if there are
 comment|// no previous fs states in any of the local directories
 for|for
 control|(
@@ -1805,6 +1855,91 @@ literal|"Finalize or rollback first."
 argument_list|)
 throw|;
 block|}
+block|}
+comment|/**    * @return true if there is rollback fsimage (for rolling upgrade) in NameNode    * directory.    */
+DECL|method|hasRollbackFSImage ()
+specifier|public
+name|boolean
+name|hasRollbackFSImage
+parameter_list|()
+throws|throws
+name|IOException
+block|{
+specifier|final
+name|FSImageStorageInspector
+name|inspector
+init|=
+operator|new
+name|FSImageTransactionalStorageInspector
+argument_list|(
+name|EnumSet
+operator|.
+name|of
+argument_list|(
+name|NameNodeFile
+operator|.
+name|IMAGE_ROLLBACK
+argument_list|)
+argument_list|)
+decl_stmt|;
+name|storage
+operator|.
+name|inspectStorageDirs
+argument_list|(
+name|inspector
+argument_list|)
+expr_stmt|;
+try|try
+block|{
+name|List
+argument_list|<
+name|FSImageFile
+argument_list|>
+name|images
+init|=
+name|inspector
+operator|.
+name|getLatestImages
+argument_list|()
+decl_stmt|;
+return|return
+name|images
+operator|!=
+literal|null
+operator|&&
+operator|!
+name|images
+operator|.
+name|isEmpty
+argument_list|()
+return|;
+block|}
+catch|catch
+parameter_list|(
+name|FileNotFoundException
+name|e
+parameter_list|)
+block|{
+return|return
+literal|false
+return|;
+block|}
+block|}
+DECL|method|doUpgrade (FSNamesystem target)
+name|void
+name|doUpgrade
+parameter_list|(
+name|FSNamesystem
+name|target
+parameter_list|)
+throws|throws
+name|IOException
+block|{
+name|checkUpgrade
+argument_list|(
+name|target
+argument_list|)
+expr_stmt|;
 comment|// load the latest image
 comment|// Do upgrade for each directory
 name|this
@@ -1813,11 +1948,18 @@ name|loadFSImage
 argument_list|(
 name|target
 argument_list|,
-literal|null
-argument_list|,
 name|StartupOption
 operator|.
 name|UPGRADE
+argument_list|,
+literal|null
+argument_list|)
+expr_stmt|;
+name|target
+operator|.
+name|checkRollingUpgrade
+argument_list|(
+literal|"upgrade namenode"
 argument_list|)
 expr_stmt|;
 name|long
@@ -1850,7 +1992,7 @@ name|layoutVersion
 operator|=
 name|HdfsConstants
 operator|.
-name|LAYOUT_VERSION
+name|NAMENODE_LAYOUT_VERSION
 expr_stmt|;
 name|List
 argument_list|<
@@ -2170,7 +2312,7 @@ name|layoutVersion
 operator|=
 name|HdfsConstants
 operator|.
-name|LAYOUT_VERSION
+name|NAMENODE_LAYOUT_VERSION
 expr_stmt|;
 for|for
 control|(
@@ -2220,7 +2362,7 @@ argument_list|()
 argument_list|,
 name|HdfsConstants
 operator|.
-name|LAYOUT_VERSION
+name|NAMENODE_LAYOUT_VERSION
 argument_list|)
 condition|)
 block|{
@@ -2258,7 +2400,7 @@ argument_list|()
 argument_list|,
 name|HdfsConstants
 operator|.
-name|LAYOUT_VERSION
+name|NAMENODE_LAYOUT_VERSION
 argument_list|)
 expr_stmt|;
 block|}
@@ -2794,34 +2936,90 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|/**    * Choose latest image from one of the directories,    * load it and merge with the edits.    *     * Saving and loading fsimage should never trigger symlink resolution.     * The paths that are persisted do not have *intermediate* symlinks     * because intermediate symlinks are resolved at the time files,     * directories, and symlinks are created. All paths accessed while     * loading or saving fsimage should therefore only see symlinks as     * the final path component, and the functions called below do not    * resolve symlinks that are the final path component.    *    * @return whether the image should be saved    * @throws IOException    */
-DECL|method|loadFSImage (FSNamesystem target, MetaRecoveryContext recovery, StartupOption startOpt)
+DECL|method|loadFSImage (FSNamesystem target, StartupOption startOpt, MetaRecoveryContext recovery)
+specifier|private
 name|boolean
 name|loadFSImage
 parameter_list|(
 name|FSNamesystem
 name|target
 parameter_list|,
-name|MetaRecoveryContext
-name|recovery
-parameter_list|,
 name|StartupOption
 name|startOpt
+parameter_list|,
+name|MetaRecoveryContext
+name|recovery
 parameter_list|)
 throws|throws
 name|IOException
 block|{
+specifier|final
+name|boolean
+name|rollingRollback
+init|=
+name|RollingUpgradeStartupOption
+operator|.
+name|ROLLBACK
+operator|.
+name|matches
+argument_list|(
+name|startOpt
+argument_list|)
+decl_stmt|;
+specifier|final
+name|EnumSet
+argument_list|<
+name|NameNodeFile
+argument_list|>
+name|nnfs
+decl_stmt|;
+if|if
+condition|(
+name|rollingRollback
+condition|)
+block|{
+comment|// if it is rollback of rolling upgrade, only load from the rollback image
+name|nnfs
+operator|=
+name|EnumSet
+operator|.
+name|of
+argument_list|(
+name|NameNodeFile
+operator|.
+name|IMAGE_ROLLBACK
+argument_list|)
+expr_stmt|;
+block|}
+else|else
+block|{
+comment|// otherwise we can load from both IMAGE and IMAGE_ROLLBACK
+name|nnfs
+operator|=
+name|EnumSet
+operator|.
+name|of
+argument_list|(
+name|NameNodeFile
+operator|.
+name|IMAGE
+argument_list|,
+name|NameNodeFile
+operator|.
+name|IMAGE_ROLLBACK
+argument_list|)
+expr_stmt|;
+block|}
+specifier|final
 name|FSImageStorageInspector
 name|inspector
 init|=
 name|storage
 operator|.
 name|readAndInspectDirs
-argument_list|()
-decl_stmt|;
-name|FSImageFile
-name|imageFile
-init|=
-literal|null
+argument_list|(
+name|nnfs
+argument_list|)
 decl_stmt|;
 name|isUpgradeFinalized
 operator|=
@@ -2922,10 +3120,12 @@ argument_list|)
 expr_stmt|;
 if|if
 condition|(
-name|LayoutVersion
+name|NameNodeLayoutVersion
 operator|.
 name|supports
 argument_list|(
+name|LayoutVersion
+operator|.
 name|Feature
 operator|.
 name|TXID_BASED_LAYOUT
@@ -2938,6 +3138,10 @@ block|{
 comment|// If we're open for write, we're either non-HA or we're the active NN, so
 comment|// we better be able to load all the edits. If we're the standby NN, it's
 comment|// OK to not be able to read all of edits right now.
+comment|// In the meanwhile, for HA upgrade, we will still write editlog thus need
+comment|// this toAtLeastTxId to be set to the max-seen txid
+comment|// For rollback in rolling upgrade, we need to set the toAtLeastTxId to
+comment|// the txid right before the upgrade marker.
 name|long
 name|toAtLeastTxId
 init|=
@@ -2953,6 +3157,28 @@ argument_list|()
 else|:
 literal|0
 decl_stmt|;
+if|if
+condition|(
+name|rollingRollback
+condition|)
+block|{
+comment|// note that the first image in imageFiles is the special checkpoint
+comment|// for the rolling upgrade
+name|toAtLeastTxId
+operator|=
+name|imageFiles
+operator|.
+name|get
+argument_list|(
+literal|0
+argument_list|)
+operator|.
+name|getCheckpointTxId
+argument_list|()
+operator|+
+literal|2
+expr_stmt|;
+block|}
 name|editStreams
 operator|=
 name|editLog
@@ -3061,6 +3287,11 @@ literal|"No edit log streams selected."
 argument_list|)
 expr_stmt|;
 block|}
+name|FSImageFile
+name|imageFile
+init|=
+literal|null
+decl_stmt|;
 for|for
 control|(
 name|int
@@ -3161,6 +3392,12 @@ operator|.
 name|LOADING_FSIMAGE
 argument_list|)
 expr_stmt|;
+if|if
+condition|(
+operator|!
+name|rollingRollback
+condition|)
+block|{
 name|long
 name|txnsAdvanced
 init|=
@@ -3169,6 +3406,8 @@ argument_list|(
 name|editStreams
 argument_list|,
 name|target
+argument_list|,
+name|startOpt
 argument_list|,
 name|recovery
 argument_list|)
@@ -3185,6 +3424,58 @@ argument_list|,
 name|txnsAdvanced
 argument_list|)
 expr_stmt|;
+if|if
+condition|(
+name|RollingUpgradeStartupOption
+operator|.
+name|DOWNGRADE
+operator|.
+name|matches
+argument_list|(
+name|startOpt
+argument_list|)
+condition|)
+block|{
+comment|// rename rollback image if it is downgrade
+name|renameCheckpoint
+argument_list|(
+name|NameNodeFile
+operator|.
+name|IMAGE_ROLLBACK
+argument_list|,
+name|NameNodeFile
+operator|.
+name|IMAGE
+argument_list|)
+expr_stmt|;
+block|}
+block|}
+else|else
+block|{
+comment|// Trigger the rollback for rolling upgrade. Here lastAppliedTxId equals
+comment|// to the last txid in rollback fsimage.
+name|rollingRollback
+argument_list|(
+name|lastAppliedTxId
+operator|+
+literal|1
+argument_list|,
+name|imageFiles
+operator|.
+name|get
+argument_list|(
+literal|0
+argument_list|)
+operator|.
+name|getCheckpointTxId
+argument_list|()
+argument_list|)
+expr_stmt|;
+name|needToSave
+operator|=
+literal|false
+expr_stmt|;
+block|}
 name|editLog
 operator|.
 name|setNextTxId
@@ -3197,6 +3488,99 @@ expr_stmt|;
 return|return
 name|needToSave
 return|;
+block|}
+comment|/** rollback for rolling upgrade. */
+DECL|method|rollingRollback (long discardSegmentTxId, long ckptId)
+specifier|private
+name|void
+name|rollingRollback
+parameter_list|(
+name|long
+name|discardSegmentTxId
+parameter_list|,
+name|long
+name|ckptId
+parameter_list|)
+throws|throws
+name|IOException
+block|{
+comment|// discard discard unnecessary editlog segments starting from the given id
+name|this
+operator|.
+name|editLog
+operator|.
+name|discardSegments
+argument_list|(
+name|discardSegmentTxId
+argument_list|)
+expr_stmt|;
+comment|// rename the special checkpoint
+name|renameCheckpoint
+argument_list|(
+name|ckptId
+argument_list|,
+name|NameNodeFile
+operator|.
+name|IMAGE_ROLLBACK
+argument_list|,
+name|NameNodeFile
+operator|.
+name|IMAGE
+argument_list|,
+literal|true
+argument_list|)
+expr_stmt|;
+comment|// purge all the checkpoints after the marker
+name|archivalManager
+operator|.
+name|purgeCheckpoinsAfter
+argument_list|(
+name|NameNodeFile
+operator|.
+name|IMAGE
+argument_list|,
+name|ckptId
+argument_list|)
+expr_stmt|;
+name|String
+name|nameserviceId
+init|=
+name|DFSUtil
+operator|.
+name|getNamenodeNameServiceId
+argument_list|(
+name|conf
+argument_list|)
+decl_stmt|;
+if|if
+condition|(
+name|HAUtil
+operator|.
+name|isHAEnabled
+argument_list|(
+name|conf
+argument_list|,
+name|nameserviceId
+argument_list|)
+condition|)
+block|{
+comment|// close the editlog since it is currently open for write
+name|this
+operator|.
+name|editLog
+operator|.
+name|close
+argument_list|()
+expr_stmt|;
+comment|// reopen the editlog for read
+name|this
+operator|.
+name|editLog
+operator|.
+name|initSharedJournalsForRead
+argument_list|()
+expr_stmt|;
+block|}
 block|}
 DECL|method|loadFSImageFile (FSNamesystem target, MetaRecoveryContext recovery, FSImageFile imageFile)
 name|void
@@ -3239,10 +3623,12 @@ argument_list|)
 expr_stmt|;
 if|if
 condition|(
-name|LayoutVersion
+name|NameNodeLayoutVersion
 operator|.
 name|supports
 argument_list|(
+name|LayoutVersion
+operator|.
 name|Feature
 operator|.
 name|TXID_BASED_LAYOUT
@@ -3270,10 +3656,12 @@ block|}
 elseif|else
 if|if
 condition|(
-name|LayoutVersion
+name|NameNodeLayoutVersion
 operator|.
 name|supports
 argument_list|(
+name|LayoutVersion
+operator|.
 name|Feature
 operator|.
 name|FSIMAGE_CHECKSUM
@@ -3435,6 +3823,33 @@ argument_list|,
 name|nameserviceId
 argument_list|)
 operator|&&
+operator|(
+name|startOpt
+operator|==
+name|StartupOption
+operator|.
+name|UPGRADE
+operator|||
+name|RollingUpgradeStartupOption
+operator|.
+name|ROLLBACK
+operator|.
+name|matches
+argument_list|(
+name|startOpt
+argument_list|)
+operator|)
+condition|)
+block|{
+comment|// This NN is HA, but we're doing an upgrade or a rollback of rolling
+comment|// upgrade so init the edit log for write.
+name|editLog
+operator|.
+name|initJournalsForWrite
+argument_list|()
+expr_stmt|;
+if|if
+condition|(
 name|startOpt
 operator|==
 name|StartupOption
@@ -3442,13 +3857,6 @@ operator|.
 name|UPGRADE
 condition|)
 block|{
-comment|// This NN is HA, but we're doing an upgrade so init the edit log for
-comment|// write.
-name|editLog
-operator|.
-name|initJournalsForWrite
-argument_list|()
-expr_stmt|;
 name|long
 name|sharedLogCTime
 init|=
@@ -3491,6 +3899,7 @@ operator|+
 literal|"this NN in sync with the other."
 argument_list|)
 throw|;
+block|}
 block|}
 name|editLog
 operator|.
@@ -3585,7 +3994,7 @@ operator|)
 return|;
 block|}
 comment|/**    * Load the specified list of edit files into the image.    */
-DECL|method|loadEdits (Iterable<EditLogInputStream> editStreams, FSNamesystem target, MetaRecoveryContext recovery)
+DECL|method|loadEdits (Iterable<EditLogInputStream> editStreams, FSNamesystem target)
 specifier|public
 name|long
 name|loadEdits
@@ -3598,6 +4007,39 @@ name|editStreams
 parameter_list|,
 name|FSNamesystem
 name|target
+parameter_list|)
+throws|throws
+name|IOException
+block|{
+return|return
+name|loadEdits
+argument_list|(
+name|editStreams
+argument_list|,
+name|target
+argument_list|,
+literal|null
+argument_list|,
+literal|null
+argument_list|)
+return|;
+block|}
+DECL|method|loadEdits (Iterable<EditLogInputStream> editStreams, FSNamesystem target, StartupOption startOpt, MetaRecoveryContext recovery)
+specifier|private
+name|long
+name|loadEdits
+parameter_list|(
+name|Iterable
+argument_list|<
+name|EditLogInputStream
+argument_list|>
+name|editStreams
+parameter_list|,
+name|FSNamesystem
+name|target
+parameter_list|,
+name|StartupOption
+name|startOpt
 parameter_list|,
 name|MetaRecoveryContext
 name|recovery
@@ -3696,6 +4138,8 @@ argument_list|,
 name|lastAppliedTxId
 operator|+
 literal|1
+argument_list|,
+name|startOpt
 argument_list|,
 name|recovery
 argument_list|)
@@ -4124,6 +4568,18 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
+comment|// BlockPoolId is required when the FsImageLoader loads the rolling upgrade
+comment|// information. Make sure the ID is properly set.
+name|target
+operator|.
+name|setBlockPoolId
+argument_list|(
+name|this
+operator|.
+name|getBlockPoolID
+argument_list|()
+argument_list|)
+expr_stmt|;
 name|FSImageFormat
 operator|.
 name|LoaderDelegator
@@ -4143,16 +4599,6 @@ operator|.
 name|load
 argument_list|(
 name|curFile
-argument_list|)
-expr_stmt|;
-name|target
-operator|.
-name|setBlockPoolId
-argument_list|(
-name|this
-operator|.
-name|getBlockPoolID
-argument_list|()
 argument_list|)
 expr_stmt|;
 comment|// Check that the image digest we loaded matches up with what
@@ -4237,7 +4683,7 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|/**    * Save the contents of the FS image to the file.    */
-DECL|method|saveFSImage (SaveNamespaceContext context, StorageDirectory sd)
+DECL|method|saveFSImage (SaveNamespaceContext context, StorageDirectory sd, NameNodeFile dstType)
 name|void
 name|saveFSImage
 parameter_list|(
@@ -4246,6 +4692,9 @@ name|context
 parameter_list|,
 name|StorageDirectory
 name|sd
+parameter_list|,
+name|NameNodeFile
+name|dstType
 parameter_list|)
 throws|throws
 name|IOException
@@ -4283,9 +4732,7 @@ name|getStorageFile
 argument_list|(
 name|sd
 argument_list|,
-name|NameNodeFile
-operator|.
-name|IMAGE
+name|dstType
 argument_list|,
 name|txid
 argument_list|)
@@ -4366,7 +4813,13 @@ specifier|private
 name|StorageDirectory
 name|sd
 decl_stmt|;
-DECL|method|FSImageSaver (SaveNamespaceContext context, StorageDirectory sd)
+DECL|field|nnf
+specifier|private
+specifier|final
+name|NameNodeFile
+name|nnf
+decl_stmt|;
+DECL|method|FSImageSaver (SaveNamespaceContext context, StorageDirectory sd, NameNodeFile nnf)
 specifier|public
 name|FSImageSaver
 parameter_list|(
@@ -4375,6 +4828,9 @@ name|context
 parameter_list|,
 name|StorageDirectory
 name|sd
+parameter_list|,
+name|NameNodeFile
+name|nnf
 parameter_list|)
 block|{
 name|this
@@ -4388,6 +4844,12 @@ operator|.
 name|sd
 operator|=
 name|sd
+expr_stmt|;
+name|this
+operator|.
+name|nnf
+operator|=
+name|nnf
 expr_stmt|;
 block|}
 annotation|@
@@ -4405,6 +4867,8 @@ argument_list|(
 name|context
 argument_list|,
 name|sd
+argument_list|,
+name|nnf
 argument_list|)
 expr_stmt|;
 block|}
@@ -4566,12 +5030,16 @@ name|saveNamespace
 argument_list|(
 name|source
 argument_list|,
+name|NameNodeFile
+operator|.
+name|IMAGE
+argument_list|,
 literal|null
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Save the contents of the FS image to a new image file in each of the    * current storage directories.    * @param canceler     */
-DECL|method|saveNamespace (FSNamesystem source, Canceler canceler)
+comment|/**    * Save the contents of the FS image to a new image file in each of the    * current storage directories.    * @param canceler    */
+DECL|method|saveNamespace (FSNamesystem source, NameNodeFile nnf, Canceler canceler)
 specifier|public
 specifier|synchronized
 name|void
@@ -4579,6 +5047,9 @@ name|saveNamespace
 parameter_list|(
 name|FSNamesystem
 name|source
+parameter_list|,
+name|NameNodeFile
+name|nnf
 parameter_list|,
 name|Canceler
 name|canceler
@@ -4593,6 +5064,13 @@ literal|null
 operator|:
 literal|"editLog must be initialized"
 assert|;
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"Save namespace ..."
+argument_list|)
+expr_stmt|;
 name|storage
 operator|.
 name|attemptRestoreRemovedStorage
@@ -4630,6 +5108,8 @@ block|{
 name|saveFSImageInAllDirs
 argument_list|(
 name|source
+argument_list|,
+name|nnf
 argument_list|,
 name|imageTxId
 argument_list|,
@@ -4694,20 +5174,27 @@ name|saveFSImageInAllDirs
 argument_list|(
 name|source
 argument_list|,
+name|NameNodeFile
+operator|.
+name|IMAGE
+argument_list|,
 name|txid
 argument_list|,
 literal|null
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|saveFSImageInAllDirs (FSNamesystem source, long txid, Canceler canceler)
-specifier|protected
+DECL|method|saveFSImageInAllDirs (FSNamesystem source, NameNodeFile nnf, long txid, Canceler canceler)
+specifier|private
 specifier|synchronized
 name|void
 name|saveFSImageInAllDirs
 parameter_list|(
 name|FSNamesystem
 name|source
+parameter_list|,
+name|NameNodeFile
+name|nnf
 parameter_list|,
 name|long
 name|txid
@@ -4841,6 +5328,8 @@ argument_list|(
 name|ctx
 argument_list|,
 name|sd
+argument_list|,
+name|nnf
 argument_list|)
 decl_stmt|;
 name|Thread
@@ -4940,12 +5429,22 @@ block|}
 name|renameCheckpoint
 argument_list|(
 name|txid
+argument_list|,
+name|NameNodeFile
+operator|.
+name|IMAGE_NEW
+argument_list|,
+name|nnf
+argument_list|,
+literal|false
 argument_list|)
 expr_stmt|;
 comment|// Since we now have a new checkpoint, we can clean up some
 comment|// old edit logs and checkpoints.
 name|purgeOldStorage
-argument_list|()
+argument_list|(
+name|nnf
+argument_list|)
 expr_stmt|;
 block|}
 finally|finally
@@ -4973,18 +5472,22 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|/**    * Purge any files in the storage directories that are no longer    * necessary.    */
-DECL|method|purgeOldStorage ()
-specifier|public
+DECL|method|purgeOldStorage (NameNodeFile nnf)
 name|void
 name|purgeOldStorage
-parameter_list|()
+parameter_list|(
+name|NameNodeFile
+name|nnf
+parameter_list|)
 block|{
 try|try
 block|{
 name|archivalManager
 operator|.
 name|purgeOldStorage
-argument_list|()
+argument_list|(
+name|nnf
+argument_list|)
 expr_stmt|;
 block|}
 catch|catch
@@ -4997,21 +5500,35 @@ name|LOG
 operator|.
 name|warn
 argument_list|(
-literal|"Unable to purge old storage"
+literal|"Unable to purge old storage "
+operator|+
+name|nnf
+operator|.
+name|getName
+argument_list|()
 argument_list|,
 name|e
 argument_list|)
 expr_stmt|;
 block|}
 block|}
-comment|/**    * Renames new image    */
-DECL|method|renameCheckpoint (long txid)
+comment|/**    * Rename FSImage with the specific txid    */
+DECL|method|renameCheckpoint (long txid, NameNodeFile fromNnf, NameNodeFile toNnf, boolean renameMD5)
 specifier|private
 name|void
 name|renameCheckpoint
 parameter_list|(
 name|long
 name|txid
+parameter_list|,
+name|NameNodeFile
+name|fromNnf
+parameter_list|,
+name|NameNodeFile
+name|toNnf
+parameter_list|,
+name|boolean
+name|renameMD5
 parameter_list|)
 throws|throws
 name|IOException
@@ -5041,11 +5558,17 @@ control|)
 block|{
 try|try
 block|{
-name|renameCheckpointInDir
+name|renameImageFileInDir
 argument_list|(
 name|sd
 argument_list|,
+name|fromNnf
+argument_list|,
+name|toNnf
+argument_list|,
 name|txid
+argument_list|,
+name|renameMD5
 argument_list|)
 expr_stmt|;
 block|}
@@ -5103,6 +5626,141 @@ argument_list|(
 name|al
 argument_list|)
 expr_stmt|;
+block|}
+comment|/**    * Rename all the fsimage files with the specific NameNodeFile type. The    * associated checksum files will also be renamed.    */
+DECL|method|renameCheckpoint (NameNodeFile fromNnf, NameNodeFile toNnf)
+name|void
+name|renameCheckpoint
+parameter_list|(
+name|NameNodeFile
+name|fromNnf
+parameter_list|,
+name|NameNodeFile
+name|toNnf
+parameter_list|)
+throws|throws
+name|IOException
+block|{
+name|ArrayList
+argument_list|<
+name|StorageDirectory
+argument_list|>
+name|al
+init|=
+literal|null
+decl_stmt|;
+name|FSImageTransactionalStorageInspector
+name|inspector
+init|=
+operator|new
+name|FSImageTransactionalStorageInspector
+argument_list|(
+name|EnumSet
+operator|.
+name|of
+argument_list|(
+name|fromNnf
+argument_list|)
+argument_list|)
+decl_stmt|;
+name|storage
+operator|.
+name|inspectStorageDirs
+argument_list|(
+name|inspector
+argument_list|)
+expr_stmt|;
+for|for
+control|(
+name|FSImageFile
+name|image
+range|:
+name|inspector
+operator|.
+name|getFoundImages
+argument_list|()
+control|)
+block|{
+try|try
+block|{
+name|renameImageFileInDir
+argument_list|(
+name|image
+operator|.
+name|sd
+argument_list|,
+name|fromNnf
+argument_list|,
+name|toNnf
+argument_list|,
+name|image
+operator|.
+name|txId
+argument_list|,
+literal|true
+argument_list|)
+expr_stmt|;
+block|}
+catch|catch
+parameter_list|(
+name|IOException
+name|ioe
+parameter_list|)
+block|{
+name|LOG
+operator|.
+name|warn
+argument_list|(
+literal|"Unable to rename checkpoint in "
+operator|+
+name|image
+operator|.
+name|sd
+argument_list|,
+name|ioe
+argument_list|)
+expr_stmt|;
+if|if
+condition|(
+name|al
+operator|==
+literal|null
+condition|)
+block|{
+name|al
+operator|=
+name|Lists
+operator|.
+name|newArrayList
+argument_list|()
+expr_stmt|;
+block|}
+name|al
+operator|.
+name|add
+argument_list|(
+name|image
+operator|.
+name|sd
+argument_list|)
+expr_stmt|;
+block|}
+block|}
+if|if
+condition|(
+name|al
+operator|!=
+literal|null
+condition|)
+block|{
+name|storage
+operator|.
+name|reportErrorsOnDirectories
+argument_list|(
+name|al
+argument_list|)
+expr_stmt|;
+block|}
 block|}
 comment|/**    * Deletes the checkpoint file in every storage directory,    * since the checkpoint was cancelled.    */
 DECL|method|deleteCancelledCheckpoint (long txid)
@@ -5198,22 +5856,32 @@ name|al
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|renameCheckpointInDir (StorageDirectory sd, long txid)
+DECL|method|renameImageFileInDir (StorageDirectory sd, NameNodeFile fromNnf, NameNodeFile toNnf, long txid, boolean renameMD5)
 specifier|private
 name|void
-name|renameCheckpointInDir
+name|renameImageFileInDir
 parameter_list|(
 name|StorageDirectory
 name|sd
 parameter_list|,
+name|NameNodeFile
+name|fromNnf
+parameter_list|,
+name|NameNodeFile
+name|toNnf
+parameter_list|,
 name|long
 name|txid
+parameter_list|,
+name|boolean
+name|renameMD5
 parameter_list|)
 throws|throws
 name|IOException
 block|{
+specifier|final
 name|File
-name|ckpt
+name|fromFile
 init|=
 name|NNStorage
 operator|.
@@ -5221,15 +5889,14 @@ name|getStorageFile
 argument_list|(
 name|sd
 argument_list|,
-name|NameNodeFile
-operator|.
-name|IMAGE_NEW
+name|fromNnf
 argument_list|,
 name|txid
 argument_list|)
 decl_stmt|;
+specifier|final
 name|File
-name|curFile
+name|toFile
 init|=
 name|NNStorage
 operator|.
@@ -5237,15 +5904,12 @@ name|getStorageFile
 argument_list|(
 name|sd
 argument_list|,
-name|NameNodeFile
-operator|.
-name|IMAGE
+name|toNnf
 argument_list|,
 name|txid
 argument_list|)
 decl_stmt|;
-comment|// renameTo fails on Windows if the destination file
-comment|// already exists.
+comment|// renameTo fails on Windows if the destination file already exists.
 if|if
 condition|(
 name|LOG
@@ -5260,14 +5924,14 @@ name|debug
 argument_list|(
 literal|"renaming  "
 operator|+
-name|ckpt
+name|fromFile
 operator|.
 name|getAbsolutePath
 argument_list|()
 operator|+
 literal|" to "
 operator|+
-name|curFile
+name|toFile
 operator|.
 name|getAbsolutePath
 argument_list|()
@@ -5277,28 +5941,28 @@ block|}
 if|if
 condition|(
 operator|!
-name|ckpt
+name|fromFile
 operator|.
 name|renameTo
 argument_list|(
-name|curFile
+name|toFile
 argument_list|)
 condition|)
 block|{
 if|if
 condition|(
 operator|!
-name|curFile
+name|toFile
 operator|.
 name|delete
 argument_list|()
 operator|||
 operator|!
-name|ckpt
+name|fromFile
 operator|.
 name|renameTo
 argument_list|(
-name|curFile
+name|toFile
 argument_list|)
 condition|)
 block|{
@@ -5308,14 +5972,14 @@ name|IOException
 argument_list|(
 literal|"renaming  "
 operator|+
-name|ckpt
+name|fromFile
 operator|.
 name|getAbsolutePath
 argument_list|()
 operator|+
 literal|" to "
 operator|+
-name|curFile
+name|toFile
 operator|.
 name|getAbsolutePath
 argument_list|()
@@ -5324,6 +5988,21 @@ literal|" FAILED"
 argument_list|)
 throw|;
 block|}
+block|}
+if|if
+condition|(
+name|renameMD5
+condition|)
+block|{
+name|MD5FileUtils
+operator|.
+name|renameMD5File
+argument_list|(
+name|fromFile
+argument_list|,
+name|toFile
+argument_list|)
+expr_stmt|;
 block|}
 block|}
 DECL|method|rollEditLog ()
@@ -5630,12 +6309,15 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|/**    * This is called by the 2NN after having downloaded an image, and by    * the NN after having received a new image from the 2NN. It    * renames the image from fsimage_N.ckpt to fsimage_N and also    * saves the related .md5 file into place.    */
-DECL|method|saveDigestAndRenameCheckpointImage ( long txid, MD5Hash digest)
+DECL|method|saveDigestAndRenameCheckpointImage (NameNodeFile nnf, long txid, MD5Hash digest)
 specifier|public
 specifier|synchronized
 name|void
 name|saveDigestAndRenameCheckpointImage
 parameter_list|(
+name|NameNodeFile
+name|nnf
+parameter_list|,
 name|long
 name|txid
 parameter_list|,
@@ -5680,6 +6362,8 @@ operator|.
 name|getImageFile
 argument_list|(
 name|sd
+argument_list|,
+name|nnf
 argument_list|,
 name|txid
 argument_list|)
@@ -5730,6 +6414,14 @@ comment|// Rename image from tmp file
 name|renameCheckpoint
 argument_list|(
 name|txid
+argument_list|,
+name|NameNodeFile
+operator|.
+name|IMAGE_NEW
+argument_list|,
+name|nnf
+argument_list|,
+literal|false
 argument_list|)
 expr_stmt|;
 comment|// So long as this is the newest image available,

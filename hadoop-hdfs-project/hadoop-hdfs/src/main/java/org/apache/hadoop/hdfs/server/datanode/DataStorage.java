@@ -22,78 +22,6 @@ end_package
 
 begin_import
 import|import
-name|java
-operator|.
-name|io
-operator|.
-name|File
-import|;
-end_import
-
-begin_import
-import|import
-name|java
-operator|.
-name|io
-operator|.
-name|FileInputStream
-import|;
-end_import
-
-begin_import
-import|import
-name|java
-operator|.
-name|io
-operator|.
-name|FileOutputStream
-import|;
-end_import
-
-begin_import
-import|import
-name|java
-operator|.
-name|io
-operator|.
-name|IOException
-import|;
-end_import
-
-begin_import
-import|import
-name|java
-operator|.
-name|io
-operator|.
-name|RandomAccessFile
-import|;
-end_import
-
-begin_import
-import|import
-name|java
-operator|.
-name|nio
-operator|.
-name|channels
-operator|.
-name|FileLock
-import|;
-end_import
-
-begin_import
-import|import
-name|java
-operator|.
-name|util
-operator|.
-name|*
-import|;
-end_import
-
-begin_import
-import|import
 name|org
 operator|.
 name|apache
@@ -144,49 +72,7 @@ name|hadoop
 operator|.
 name|fs
 operator|.
-name|FileUtil
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|fs
-operator|.
-name|HardLink
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|fs
-operator|.
-name|LocalFileSystem
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|fs
-operator|.
-name|Path
+name|*
 import|;
 end_import
 
@@ -263,24 +149,6 @@ operator|.
 name|protocol
 operator|.
 name|LayoutVersion
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|hdfs
-operator|.
-name|protocol
-operator|.
-name|LayoutVersion
-operator|.
-name|Feature
 import|;
 end_import
 
@@ -456,6 +324,50 @@ name|DiskChecker
 import|;
 end_import
 
+begin_import
+import|import
+name|java
+operator|.
+name|io
+operator|.
+name|*
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|nio
+operator|.
+name|channels
+operator|.
+name|FileLock
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
+name|*
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
+name|concurrent
+operator|.
+name|ConcurrentHashMap
+import|;
+end_import
+
 begin_comment
 comment|/**   * Data storage information file.  *<p>  * @see Storage  */
 end_comment
@@ -532,6 +444,19 @@ name|STORAGE_DIR_TMP
 init|=
 literal|"tmp"
 decl_stmt|;
+comment|// Set of bpids for which 'trash' is currently enabled.
+comment|// When trash is enabled block files are moved under a separate
+comment|// 'trash' folder instead of being deleted right away. This can
+comment|// be useful during rolling upgrades, for example.
+comment|// The set is backed by a concurrent HashMap.
+DECL|field|trashEnabledBpids
+specifier|private
+name|Set
+argument_list|<
+name|String
+argument_list|>
+name|trashEnabledBpids
+decl_stmt|;
 comment|/**    * Datanode UUID that this storage is currently attached to. This    *  is the same as the legacy StorageID for datanodes that were    *  upgraded from a pre-UUID version. For compatibility with prior    *  versions of Datanodes we cannot make this field a UUID.    */
 DECL|field|datanodeUuid
 specifier|private
@@ -584,10 +509,26 @@ operator|.
 name|DATA_NODE
 argument_list|)
 expr_stmt|;
+name|trashEnabledBpids
+operator|=
+name|Collections
+operator|.
+name|newSetFromMap
+argument_list|(
+operator|new
+name|ConcurrentHashMap
+argument_list|<
+name|String
+argument_list|,
+name|Boolean
+argument_list|>
+argument_list|()
+argument_list|)
+expr_stmt|;
 block|}
 DECL|method|getBPStorage (String bpid)
 specifier|public
-name|StorageInfo
+name|BlockPoolSliceStorage
 name|getBPStorage
 parameter_list|(
 name|String
@@ -613,10 +554,6 @@ parameter_list|)
 block|{
 name|super
 argument_list|(
-name|NodeType
-operator|.
-name|DATA_NODE
-argument_list|,
 name|storageInfo
 argument_list|)
 expr_stmt|;
@@ -682,6 +619,144 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
+comment|/**    * Enable trash for the specified block pool storage.    */
+DECL|method|enableTrash (String bpid)
+specifier|public
+name|void
+name|enableTrash
+parameter_list|(
+name|String
+name|bpid
+parameter_list|)
+block|{
+if|if
+condition|(
+name|trashEnabledBpids
+operator|.
+name|add
+argument_list|(
+name|bpid
+argument_list|)
+condition|)
+block|{
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"Enabled trash for bpid "
+operator|+
+name|bpid
+argument_list|)
+expr_stmt|;
+block|}
+block|}
+DECL|method|restoreTrash (String bpid)
+specifier|public
+name|void
+name|restoreTrash
+parameter_list|(
+name|String
+name|bpid
+parameter_list|)
+block|{
+if|if
+condition|(
+name|trashEnabledBpids
+operator|.
+name|contains
+argument_list|(
+name|bpid
+argument_list|)
+condition|)
+block|{
+name|getBPStorage
+argument_list|(
+name|bpid
+argument_list|)
+operator|.
+name|restoreTrash
+argument_list|()
+expr_stmt|;
+name|trashEnabledBpids
+operator|.
+name|remove
+argument_list|(
+name|bpid
+argument_list|)
+expr_stmt|;
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"Restored trash for bpid "
+operator|+
+name|bpid
+argument_list|)
+expr_stmt|;
+block|}
+block|}
+DECL|method|trashEnabled (String bpid)
+specifier|public
+name|boolean
+name|trashEnabled
+parameter_list|(
+name|String
+name|bpid
+parameter_list|)
+block|{
+return|return
+name|trashEnabledBpids
+operator|.
+name|contains
+argument_list|(
+name|bpid
+argument_list|)
+return|;
+block|}
+comment|/**    * If rolling upgrades are in progress then do not delete block files    * immediately. Instead we move the block files to an intermediate    * 'trash' directory. If there is a subsequent rollback, then the block    * files will be restored from trash.    *    * @return trash directory if rolling upgrade is in progress, null    *         otherwise.    */
+DECL|method|getTrashDirectoryForBlockFile (String bpid, File blockFile)
+specifier|public
+name|String
+name|getTrashDirectoryForBlockFile
+parameter_list|(
+name|String
+name|bpid
+parameter_list|,
+name|File
+name|blockFile
+parameter_list|)
+block|{
+if|if
+condition|(
+name|trashEnabledBpids
+operator|.
+name|contains
+argument_list|(
+name|bpid
+argument_list|)
+condition|)
+block|{
+return|return
+operator|(
+operator|(
+name|BlockPoolSliceStorage
+operator|)
+name|getBPStorage
+argument_list|(
+name|bpid
+argument_list|)
+operator|)
+operator|.
+name|getTrashDirectory
+argument_list|(
+name|blockFile
+argument_list|)
+return|;
+block|}
+return|return
+literal|null
+return|;
+block|}
 comment|/**    * Analyze storage directories.    * Recover from previous transitions if required.     * Perform fs state transition if necessary depending on the namespace info.    * Read storage info.    *<br>    * This method should be synchronized between multiple DN threads.  Only the     * first DN thread does DN level storage dir recoverTransitionRead.    *     * @param nsInfo namespace information    * @param dataDirs array of data storage directories    * @param startOpt startup option    * @throws IOException    */
 DECL|method|recoverTransitionRead (DataNode datanode, NamespaceInfo nsInfo, Collection<StorageLocation> dataDirs, StartupOption startOpt)
 specifier|synchronized
@@ -714,31 +789,24 @@ block|{
 comment|// DN storage has been initialized, no need to do anything
 return|return;
 block|}
-assert|assert
-name|HdfsConstants
+name|LOG
 operator|.
-name|LAYOUT_VERSION
-operator|==
-name|nsInfo
-operator|.
-name|getLayoutVersion
-argument_list|()
-operator|:
-literal|"Data-node version "
+name|info
+argument_list|(
+literal|"Data-node version: "
 operator|+
 name|HdfsConstants
 operator|.
-name|LAYOUT_VERSION
+name|DATANODE_LAYOUT_VERSION
 operator|+
-literal|" and name-node layout version "
+literal|" and name-node layout version: "
 operator|+
 name|nsInfo
 operator|.
 name|getLayoutVersion
 argument_list|()
-operator|+
-literal|" must be the same."
-assert|;
+argument_list|)
+expr_stmt|;
 comment|// 1. For each data directory calculate its state and
 comment|// check whether all is consistent before transitioning.
 comment|// Format and recover.
@@ -1008,19 +1076,6 @@ argument_list|,
 name|startOpt
 argument_list|)
 expr_stmt|;
-assert|assert
-name|this
-operator|.
-name|getLayoutVersion
-argument_list|()
-operator|==
-name|nsInfo
-operator|.
-name|getLayoutVersion
-argument_list|()
-operator|:
-literal|"Data-node and name-node layout versions must be the same."
-assert|;
 name|createStorageID
 argument_list|(
 name|getStorageDir
@@ -1036,7 +1091,7 @@ operator|.
 name|writeAll
 argument_list|()
 expr_stmt|;
-comment|// 4. mark DN storage is initilized
+comment|// 4. mark DN storage is initialized
 name|this
 operator|.
 name|initialized
@@ -1336,7 +1391,7 @@ name|layoutVersion
 operator|=
 name|HdfsConstants
 operator|.
-name|LAYOUT_VERSION
+name|DATANODE_LAYOUT_VERSION
 expr_stmt|;
 name|this
 operator|.
@@ -1501,10 +1556,12 @@ comment|// Set NamespaceID in version before federation
 if|if
 condition|(
 operator|!
-name|LayoutVersion
+name|DataNodeLayoutVersion
 operator|.
 name|supports
 argument_list|(
+name|LayoutVersion
+operator|.
 name|Feature
 operator|.
 name|FEDERATION
@@ -1607,7 +1664,7 @@ argument_list|,
 name|sd
 argument_list|)
 expr_stmt|;
-name|setStorageType
+name|checkStorageType
 argument_list|(
 name|props
 argument_list|,
@@ -1627,10 +1684,12 @@ comment|// Read NamespaceID in version before federation
 if|if
 condition|(
 operator|!
-name|LayoutVersion
+name|DataNodeLayoutVersion
 operator|.
 name|supports
 argument_list|(
+name|LayoutVersion
+operator|.
 name|Feature
 operator|.
 name|FEDERATION
@@ -2035,17 +2094,19 @@ name|layoutVersion
 operator|>=
 name|HdfsConstants
 operator|.
-name|LAYOUT_VERSION
+name|DATANODE_LAYOUT_VERSION
 operator|:
 literal|"Future version is not allowed"
 assert|;
 name|boolean
 name|federationSupported
 init|=
-name|LayoutVersion
+name|DataNodeLayoutVersion
 operator|.
 name|supports
 argument_list|(
+name|LayoutVersion
+operator|.
 name|Feature
 operator|.
 name|FEDERATION
@@ -2153,7 +2214,7 @@ name|layoutVersion
 operator|==
 name|HdfsConstants
 operator|.
-name|LAYOUT_VERSION
+name|DATANODE_LAYOUT_VERSION
 condition|)
 return|return;
 comment|// regular startup
@@ -2166,7 +2227,7 @@ name|layoutVersion
 operator|>
 name|HdfsConstants
 operator|.
-name|LAYOUT_VERSION
+name|DATANODE_LAYOUT_VERSION
 condition|)
 block|{
 name|doUpgrade
@@ -2179,7 +2240,7 @@ expr_stmt|;
 comment|// upgrade
 return|return;
 block|}
-comment|// layoutVersion< LAYOUT_VERSION. I.e. stored layout version is newer
+comment|// layoutVersion< DATANODE_LAYOUT_VERSION. I.e. stored layout version is newer
 comment|// than the version supported by datanode. This should have been caught
 comment|// in readProperties(), even if rollback was not carried out or somehow
 comment|// failed.
@@ -2198,14 +2259,7 @@ literal|" is newer than the supported LV = "
 operator|+
 name|HdfsConstants
 operator|.
-name|LAYOUT_VERSION
-operator|+
-literal|" or name node LV = "
-operator|+
-name|nsInfo
-operator|.
-name|getLayoutVersion
-argument_list|()
+name|DATANODE_LAYOUT_VERSION
 argument_list|)
 throw|;
 block|}
@@ -2227,10 +2281,12 @@ comment|// If the existing on-disk layout version supportes federation, simply
 comment|// update its layout version.
 if|if
 condition|(
-name|LayoutVersion
+name|DataNodeLayoutVersion
 operator|.
 name|supports
 argument_list|(
+name|LayoutVersion
+operator|.
 name|Feature
 operator|.
 name|FEDERATION
@@ -2251,10 +2307,9 @@ name|layoutVersion
 operator|+
 literal|" to "
 operator|+
-name|nsInfo
+name|HdfsConstants
 operator|.
-name|getLayoutVersion
-argument_list|()
+name|DATANODE_LAYOUT_VERSION
 operator|+
 literal|" for storage "
 operator|+
@@ -2266,10 +2321,9 @@ argument_list|)
 expr_stmt|;
 name|layoutVersion
 operator|=
-name|nsInfo
+name|HdfsConstants
 operator|.
-name|getLayoutVersion
-argument_list|()
+name|DATANODE_LAYOUT_VERSION
 expr_stmt|;
 name|writeProperties
 argument_list|(
@@ -2305,10 +2359,9 @@ argument_list|()
 operator|+
 literal|".\n   new LV = "
 operator|+
-name|nsInfo
+name|HdfsConstants
 operator|.
-name|getLayoutVersion
-argument_list|()
+name|DATANODE_LAYOUT_VERSION
 operator|+
 literal|"; new CTime = "
 operator|+
@@ -2481,7 +2534,7 @@ name|layoutVersion
 operator|=
 name|HdfsConstants
 operator|.
-name|LAYOUT_VERSION
+name|DATANODE_LAYOUT_VERSION
 expr_stmt|;
 name|clusterID
 operator|=
@@ -2543,10 +2596,12 @@ block|{
 if|if
 condition|(
 operator|!
-name|LayoutVersion
+name|DataNodeLayoutVersion
 operator|.
 name|supports
 argument_list|(
+name|LayoutVersion
+operator|.
 name|Feature
 operator|.
 name|APPEND_RBW_DIR
@@ -2649,45 +2704,31 @@ name|exists
 argument_list|()
 condition|)
 block|{
-comment|// The current datanode version supports federation and the layout
-comment|// version from namenode matches what the datanode supports. An invalid
-comment|// rollback may happen if namenode didn't rollback and datanode is
-comment|// running a wrong version.  But this will be detected in block pool
-comment|// level and the invalid VERSION content will be overwritten when
-comment|// the error is corrected and rollback is retried.
 if|if
 condition|(
-name|LayoutVersion
+name|DataNodeLayoutVersion
 operator|.
 name|supports
 argument_list|(
+name|LayoutVersion
+operator|.
 name|Feature
 operator|.
 name|FEDERATION
 argument_list|,
 name|HdfsConstants
 operator|.
-name|LAYOUT_VERSION
+name|DATANODE_LAYOUT_VERSION
 argument_list|)
-operator|&&
-name|HdfsConstants
-operator|.
-name|LAYOUT_VERSION
-operator|==
-name|nsInfo
-operator|.
-name|getLayoutVersion
-argument_list|()
 condition|)
 block|{
 name|readProperties
 argument_list|(
 name|sd
 argument_list|,
-name|nsInfo
+name|HdfsConstants
 operator|.
-name|getLayoutVersion
-argument_list|()
+name|DATANODE_LAYOUT_VERSION
 argument_list|)
 expr_stmt|;
 name|writeProperties
@@ -2701,10 +2742,9 @@ name|info
 argument_list|(
 literal|"Layout version rolled back to "
 operator|+
-name|nsInfo
+name|HdfsConstants
 operator|.
-name|getLayoutVersion
-argument_list|()
+name|DATANODE_LAYOUT_VERSION
 operator|+
 literal|" for storage "
 operator|+
@@ -2744,7 +2784,7 @@ argument_list|()
 operator|>=
 name|HdfsConstants
 operator|.
-name|LAYOUT_VERSION
+name|DATANODE_LAYOUT_VERSION
 operator|&&
 name|prevInfo
 operator|.
@@ -2783,10 +2823,9 @@ argument_list|()
 operator|+
 literal|" is newer than the namespace state: LV = "
 operator|+
-name|nsInfo
+name|HdfsConstants
 operator|.
-name|getLayoutVersion
-argument_list|()
+name|DATANODE_LAYOUT_VERSION
 operator|+
 literal|" CTime = "
 operator|+
@@ -2809,10 +2848,9 @@ argument_list|()
 operator|+
 literal|".\n   target LV = "
 operator|+
-name|nsInfo
+name|HdfsConstants
 operator|.
-name|getLayoutVersion
-argument_list|()
+name|DATANODE_LAYOUT_VERSION
 operator|+
 literal|"; target CTime = "
 operator|+
@@ -3093,7 +3131,7 @@ name|start
 argument_list|()
 expr_stmt|;
 block|}
-comment|/*    * Finalize the upgrade for a block pool    */
+comment|/*    * Finalize the upgrade for a block pool    * This also empties trash created during rolling upgrade and disables    * trash functionality.    */
 DECL|method|finalizeUpgrade (String bpID)
 name|void
 name|finalizeUpgrade
@@ -3200,10 +3238,12 @@ argument_list|()
 decl_stmt|;
 if|if
 condition|(
-name|LayoutVersion
+name|DataNodeLayoutVersion
 operator|.
 name|supports
 argument_list|(
+name|LayoutVersion
+operator|.
 name|Feature
 operator|.
 name|APPEND_RBW_DIR

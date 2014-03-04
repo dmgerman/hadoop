@@ -268,7 +268,7 @@ name|hdfs
 operator|.
 name|DFSConfigKeys
 operator|.
-name|DFS_NAMENODE_HTTP_ADDRESS_KEY
+name|DFS_NAMENODE_HTTPS_ADDRESS_KEY
 import|;
 end_import
 
@@ -284,7 +284,7 @@ name|hdfs
 operator|.
 name|DFSConfigKeys
 operator|.
-name|DFS_NAMENODE_HTTPS_ADDRESS_KEY
+name|DFS_NAMENODE_HTTP_ADDRESS_KEY
 import|;
 end_import
 
@@ -2329,6 +2329,21 @@ operator|.
 name|ipcPort
 operator|=
 name|ipcPort
+expr_stmt|;
+block|}
+DECL|method|setDnArgs (String .... args)
+specifier|public
+name|void
+name|setDnArgs
+parameter_list|(
+name|String
+modifier|...
+name|args
+parameter_list|)
+block|{
+name|dnArgs
+operator|=
+name|args
 expr_stmt|;
 block|}
 block|}
@@ -4648,6 +4663,35 @@ name|StartupOption
 name|operation
 parameter_list|)
 block|{
+if|if
+condition|(
+name|operation
+operator|==
+name|StartupOption
+operator|.
+name|ROLLINGUPGRADE
+condition|)
+block|{
+return|return
+operator|new
+name|String
+index|[]
+block|{
+name|operation
+operator|.
+name|getName
+argument_list|()
+block|,
+name|operation
+operator|.
+name|getRollingUpgradeStartupOption
+argument_list|()
+operator|.
+name|name
+argument_list|()
+block|}
+return|;
+block|}
 name|String
 index|[]
 name|args
@@ -7087,12 +7131,16 @@ argument_list|()
 expr_stmt|;
 block|}
 comment|/**    * Restart the namenode.    */
-DECL|method|restartNameNode ()
+DECL|method|restartNameNode (String... args)
 specifier|public
 specifier|synchronized
 name|void
 name|restartNameNode
-parameter_list|()
+parameter_list|(
+name|String
+modifier|...
+name|args
+parameter_list|)
 throws|throws
 name|IOException
 block|{
@@ -7101,7 +7149,11 @@ argument_list|()
 expr_stmt|;
 name|restartNameNode
 argument_list|(
+literal|0
+argument_list|,
 literal|true
+argument_list|,
+name|args
 argument_list|)
 expr_stmt|;
 block|}
@@ -7151,7 +7203,7 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|/**    * Restart the namenode at a given index. Optionally wait for the cluster    * to become active.    */
-DECL|method|restartNameNode (int nnIndex, boolean waitActive)
+DECL|method|restartNameNode (int nnIndex, boolean waitActive, String... args)
 specifier|public
 specifier|synchronized
 name|void
@@ -7162,6 +7214,10 @@ name|nnIndex
 parameter_list|,
 name|boolean
 name|waitActive
+parameter_list|,
+name|String
+modifier|...
+name|args
 parameter_list|)
 throws|throws
 name|IOException
@@ -7211,6 +7267,30 @@ argument_list|(
 name|nnIndex
 argument_list|)
 expr_stmt|;
+if|if
+condition|(
+name|args
+operator|.
+name|length
+operator|!=
+literal|0
+condition|)
+block|{
+name|startOpt
+operator|=
+literal|null
+expr_stmt|;
+block|}
+else|else
+block|{
+name|args
+operator|=
+name|createArgs
+argument_list|(
+name|startOpt
+argument_list|)
+expr_stmt|;
+block|}
 name|NameNode
 name|nn
 init|=
@@ -7218,10 +7298,7 @@ name|NameNode
 operator|.
 name|createNameNode
 argument_list|(
-name|createArgs
-argument_list|(
-name|startOpt
-argument_list|)
+name|args
 argument_list|,
 name|conf
 argument_list|)
@@ -8669,6 +8746,15 @@ name|nameNodes
 index|[
 name|nnIndex
 index|]
+operator|==
+literal|null
+operator|||
+name|nameNodes
+index|[
+name|nnIndex
+index|]
+operator|.
+name|nameNode
 operator|==
 literal|null
 condition|)

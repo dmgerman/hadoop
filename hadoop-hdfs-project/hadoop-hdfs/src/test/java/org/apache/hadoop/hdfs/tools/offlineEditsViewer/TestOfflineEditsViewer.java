@@ -505,6 +505,15 @@ operator|.
 name|generateEdits
 argument_list|()
 decl_stmt|;
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"Generated edits="
+operator|+
+name|edits
+argument_list|)
+expr_stmt|;
 name|String
 name|editsParsedXml
 init|=
