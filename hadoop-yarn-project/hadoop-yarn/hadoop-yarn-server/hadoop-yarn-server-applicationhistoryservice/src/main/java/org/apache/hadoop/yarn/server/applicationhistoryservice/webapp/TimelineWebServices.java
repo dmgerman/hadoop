@@ -486,6 +486,26 @@ name|applicationhistoryservice
 operator|.
 name|timeline
 operator|.
+name|GenericObjectMapper
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|server
+operator|.
+name|applicationhistoryservice
+operator|.
+name|timeline
+operator|.
 name|TimelineStore
 import|;
 end_import
@@ -1552,6 +1572,44 @@ argument_list|,
 literal|2
 argument_list|)
 decl_stmt|;
+try|try
+block|{
+return|return
+operator|new
+name|NameValuePair
+argument_list|(
+name|strs
+index|[
+literal|0
+index|]
+operator|.
+name|trim
+argument_list|()
+argument_list|,
+name|GenericObjectMapper
+operator|.
+name|OBJECT_READER
+operator|.
+name|readValue
+argument_list|(
+name|strs
+index|[
+literal|1
+index|]
+operator|.
+name|trim
+argument_list|()
+argument_list|)
+argument_list|)
+return|;
+block|}
+catch|catch
+parameter_list|(
+name|Exception
+name|e
+parameter_list|)
+block|{
+comment|// didn't work as an Object, keep it as a String
 return|return
 operator|new
 name|NameValuePair
@@ -1573,6 +1631,7 @@ name|trim
 argument_list|()
 argument_list|)
 return|;
+block|}
 block|}
 DECL|method|parsePairsStr ( String str, String aDelimiter, String pDelimiter)
 specifier|private
@@ -1731,6 +1790,7 @@ argument_list|(
 literal|"EVENTS"
 argument_list|)
 condition|)
+block|{
 name|fieldList
 operator|.
 name|add
@@ -1740,6 +1800,7 @@ operator|.
 name|EVENTS
 argument_list|)
 expr_stmt|;
+block|}
 elseif|else
 if|if
 condition|(
@@ -1750,6 +1811,7 @@ argument_list|(
 literal|"LASTEVENTONLY"
 argument_list|)
 condition|)
+block|{
 name|fieldList
 operator|.
 name|add
@@ -1759,6 +1821,7 @@ operator|.
 name|LAST_EVENT_ONLY
 argument_list|)
 expr_stmt|;
+block|}
 elseif|else
 if|if
 condition|(
@@ -1769,6 +1832,7 @@ argument_list|(
 literal|"RELATEDENTITIES"
 argument_list|)
 condition|)
+block|{
 name|fieldList
 operator|.
 name|add
@@ -1778,6 +1842,7 @@ operator|.
 name|RELATED_ENTITIES
 argument_list|)
 expr_stmt|;
+block|}
 elseif|else
 if|if
 condition|(
@@ -1788,6 +1853,7 @@ argument_list|(
 literal|"PRIMARYFILTERS"
 argument_list|)
 condition|)
+block|{
 name|fieldList
 operator|.
 name|add
@@ -1797,6 +1863,7 @@ operator|.
 name|PRIMARY_FILTERS
 argument_list|)
 expr_stmt|;
+block|}
 elseif|else
 if|if
 condition|(
@@ -1807,6 +1874,7 @@ argument_list|(
 literal|"OTHERINFO"
 argument_list|)
 condition|)
+block|{
 name|fieldList
 operator|.
 name|add
@@ -1817,6 +1885,19 @@ name|OTHER_INFO
 argument_list|)
 expr_stmt|;
 block|}
+else|else
+block|{
+throw|throw
+operator|new
+name|IllegalArgumentException
+argument_list|(
+literal|"Requested nonexistent field "
+operator|+
+name|s
+argument_list|)
+throw|;
+block|}
+block|}
 if|if
 condition|(
 name|fieldList
@@ -1826,9 +1907,11 @@ argument_list|()
 operator|==
 literal|0
 condition|)
+block|{
 return|return
 literal|null
 return|;
+block|}
 name|Field
 name|f1
 init|=
@@ -1853,6 +1936,7 @@ argument_list|()
 operator|==
 literal|0
 condition|)
+block|{
 return|return
 name|EnumSet
 operator|.
@@ -1861,7 +1945,9 @@ argument_list|(
 name|f1
 argument_list|)
 return|;
+block|}
 else|else
+block|{
 return|return
 name|EnumSet
 operator|.
@@ -1884,6 +1970,7 @@ index|]
 argument_list|)
 argument_list|)
 return|;
+block|}
 block|}
 DECL|method|parseLongStr (String str)
 specifier|private

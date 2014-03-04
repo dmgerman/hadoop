@@ -373,6 +373,17 @@ name|void
 name|anchorNative
 parameter_list|()
 function_decl|;
+DECL|method|getLoadingFailureReason ()
+specifier|public
+specifier|static
+name|String
+name|getLoadingFailureReason
+parameter_list|()
+block|{
+return|return
+name|loadingFailureReason
+return|;
+block|}
 DECL|interface|Handler
 specifier|public
 interface|interface
@@ -821,15 +832,24 @@ condition|(
 name|closed
 condition|)
 return|return;
+if|if
+condition|(
 name|LOG
 operator|.
-name|info
+name|isDebugEnabled
+argument_list|()
+condition|)
+block|{
+name|LOG
+operator|.
+name|debug
 argument_list|(
 name|this
 operator|+
 literal|": closing"
 argument_list|)
 expr_stmt|;
+block|}
 name|closed
 operator|=
 literal|true
@@ -1431,9 +1451,17 @@ name|void
 name|run
 parameter_list|()
 block|{
+if|if
+condition|(
 name|LOG
 operator|.
-name|info
+name|isDebugEnabled
+argument_list|()
+condition|)
+block|{
+name|LOG
+operator|.
+name|debug
 argument_list|(
 name|this
 operator|+
@@ -1442,6 +1470,7 @@ operator|+
 name|interruptCheckPeriodMs
 argument_list|)
 expr_stmt|;
+block|}
 specifier|final
 name|TreeMap
 argument_list|<
@@ -1692,9 +1721,17 @@ condition|(
 name|closed
 condition|)
 block|{
+if|if
+condition|(
 name|LOG
 operator|.
-name|info
+name|isDebugEnabled
+argument_list|()
+condition|)
+block|{
+name|LOG
+operator|.
+name|debug
 argument_list|(
 name|toString
 argument_list|()
@@ -1702,6 +1739,7 @@ operator|+
 literal|" thread terminating."
 argument_list|)
 expr_stmt|;
+block|}
 return|return;
 block|}
 comment|// Check if someone sent our thread an InterruptedException while we

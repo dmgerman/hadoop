@@ -3967,6 +3967,17 @@ name|TIMELINE_SERVICE_PREFIX
 operator|+
 literal|"store-class"
 decl_stmt|;
+DECL|field|TIMELINE_SERVICE_LEVELDB_PREFIX
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|TIMELINE_SERVICE_LEVELDB_PREFIX
+init|=
+name|TIMELINE_SERVICE_PREFIX
+operator|+
+literal|"leveldb-timeline-store."
+decl_stmt|;
 comment|/** Timeline service leveldb path */
 DECL|field|TIMELINE_SERVICE_LEVELDB_PATH
 specifier|public
@@ -3975,9 +3986,33 @@ specifier|final
 name|String
 name|TIMELINE_SERVICE_LEVELDB_PATH
 init|=
-name|TIMELINE_SERVICE_PREFIX
+name|TIMELINE_SERVICE_LEVELDB_PREFIX
 operator|+
-literal|"leveldb-timeline-store.path"
+literal|"path"
+decl_stmt|;
+comment|/** Timeline service leveldb start time read cache (number of entities) */
+specifier|public
+specifier|static
+specifier|final
+name|String
+DECL|field|TIMELINE_SERVICE_LEVELDB_START_TIME_READ_CACHE_SIZE
+name|TIMELINE_SERVICE_LEVELDB_START_TIME_READ_CACHE_SIZE
+init|=
+name|TIMELINE_SERVICE_LEVELDB_PREFIX
+operator|+
+literal|"start-time-read-cache-size"
+decl_stmt|;
+comment|/** Timeline service leveldb start time write cache (number of entities) */
+specifier|public
+specifier|static
+specifier|final
+name|String
+DECL|field|TIMELINE_SERVICE_LEVELDB_START_TIME_WRITE_CACHE_SIZE
+name|TIMELINE_SERVICE_LEVELDB_START_TIME_WRITE_CACHE_SIZE
+init|=
+name|TIMELINE_SERVICE_LEVELDB_PREFIX
+operator|+
+literal|"start-time-write-cache-size"
 decl_stmt|;
 comment|////////////////////////////////
 comment|// Other Configs
