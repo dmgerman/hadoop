@@ -33820,11 +33820,15 @@ expr_stmt|;
 name|getFSImage
 argument_list|()
 operator|.
-name|purgeCheckpoints
+name|renameCheckpoint
 argument_list|(
 name|NameNodeFile
 operator|.
 name|IMAGE_ROLLBACK
+argument_list|,
+name|NameNodeFile
+operator|.
+name|IMAGE
 argument_list|)
 expr_stmt|;
 block|}
