@@ -6279,7 +6279,7 @@ return|return
 operator|new
 name|RetryCache
 argument_list|(
-literal|"Namenode Retry Cache"
+literal|"NameNodeRetryCache"
 argument_list|,
 name|heapPercent
 argument_list|,

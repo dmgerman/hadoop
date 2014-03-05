@@ -86,6 +86,22 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|ipc
+operator|.
+name|metrics
+operator|.
+name|RetryCacheMetrics
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|util
 operator|.
 name|LightWeightCache
@@ -179,6 +195,12 @@ name|RetryCache
 operator|.
 name|class
 argument_list|)
+decl_stmt|;
+DECL|field|retryCacheMetrics
+specifier|private
+specifier|final
+name|RetryCacheMetrics
+name|retryCacheMetrics
 decl_stmt|;
 comment|/**    * CacheEntry is tracked using unique client ID and callId of the RPC request    */
 DECL|class|CacheEntry
@@ -764,6 +786,11 @@ specifier|final
 name|long
 name|expirationTime
 decl_stmt|;
+DECL|field|cacheName
+specifier|private
+name|String
+name|cacheName
+decl_stmt|;
 comment|/**    * Constructor    * @param cacheName name to identify the cache by    * @param percentage percentage of total java heap space used by this cache    * @param expirationTime time for an entry to expire in nanoseconds    */
 DECL|method|RetryCache (String cacheName, double percentage, long expirationTime)
 specifier|public
@@ -828,6 +855,23 @@ name|expirationTime
 operator|=
 name|expirationTime
 expr_stmt|;
+name|this
+operator|.
+name|cacheName
+operator|=
+name|cacheName
+expr_stmt|;
+name|this
+operator|.
+name|retryCacheMetrics
+operator|=
+name|RetryCacheMetrics
+operator|.
+name|create
+argument_list|(
+name|this
+argument_list|)
+expr_stmt|;
 block|}
 DECL|method|skipRetryCache ()
 specifier|private
@@ -867,6 +911,18 @@ name|DUMMY_CLIENT_ID
 argument_list|)
 return|;
 block|}
+DECL|method|incrCacheClearedCounter ()
+specifier|private
+name|void
+name|incrCacheClearedCounter
+parameter_list|()
+block|{
+name|retryCacheMetrics
+operator|.
+name|incrCacheCleared
+argument_list|()
+expr_stmt|;
+block|}
 annotation|@
 name|VisibleForTesting
 DECL|method|getCacheSet ()
@@ -882,6 +938,29 @@ parameter_list|()
 block|{
 return|return
 name|set
+return|;
+block|}
+annotation|@
+name|VisibleForTesting
+DECL|method|getMetricsForTests ()
+specifier|public
+name|RetryCacheMetrics
+name|getMetricsForTests
+parameter_list|()
+block|{
+return|return
+name|retryCacheMetrics
+return|;
+block|}
+comment|/**    * This method returns cache name for metrics.    */
+DECL|method|getCacheName ()
+specifier|public
+name|String
+name|getCacheName
+parameter_list|()
+block|{
+return|return
+name|cacheName
 return|;
 block|}
 comment|/**    * This method handles the following conditions:    *<ul>    *<li>If retry is not to be processed, return null</li>    *<li>If there is no cache entry, add a new entry {@code newEntry} and return    * it.</li>    *<li>If there is an existing entry, wait for its completion. If the    * completion state is {@link CacheEntry#FAILED}, the expectation is that the    * thread that waited for completion, retries the request. the    * {@link CacheEntry} state is set to {@link CacheEntry#INPROGRESS} again.    *<li>If the completion state is {@link CacheEntry#SUCCESS}, the entry is    * returned so that the thread that waits for it can can return previous    * response.</li>    *<ul>    *     * @return {@link CacheEntry}.    */
@@ -960,9 +1039,22 @@ argument_list|(
 name|newEntry
 argument_list|)
 expr_stmt|;
+name|retryCacheMetrics
+operator|.
+name|incrCacheUpdated
+argument_list|()
+expr_stmt|;
 return|return
 name|newEntry
 return|;
+block|}
+else|else
+block|{
+name|retryCacheMetrics
+operator|.
+name|incrCacheHit
+argument_list|()
+expr_stmt|;
 block|}
 block|}
 comment|// Entry already exists in cache. Wait for completion and return its state
@@ -1091,6 +1183,11 @@ name|newEntry
 argument_list|)
 expr_stmt|;
 block|}
+name|retryCacheMetrics
+operator|.
+name|incrCacheUpdated
+argument_list|()
+expr_stmt|;
 block|}
 DECL|method|addCacheEntryWithPayload (byte[] clientId, int callId, Object payload)
 specifier|public
@@ -1144,6 +1241,11 @@ name|newEntry
 argument_list|)
 expr_stmt|;
 block|}
+name|retryCacheMetrics
+operator|.
+name|incrCacheUpdated
+argument_list|()
+expr_stmt|;
 block|}
 DECL|method|newEntry (long expirationTime)
 specifier|private
@@ -1399,6 +1501,11 @@ operator|.
 name|set
 operator|.
 name|clear
+argument_list|()
+expr_stmt|;
+name|cache
+operator|.
+name|incrCacheClearedCounter
 argument_list|()
 expr_stmt|;
 block|}
