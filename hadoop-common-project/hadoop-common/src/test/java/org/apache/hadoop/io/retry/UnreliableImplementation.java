@@ -58,7 +58,6 @@ end_import
 
 begin_class
 DECL|class|UnreliableImplementation
-specifier|public
 class|class
 name|UnreliableImplementation
 implements|implements
@@ -548,6 +547,28 @@ name|message
 argument_list|)
 expr_stmt|;
 block|}
+block|}
+annotation|@
+name|Override
+DECL|method|toString ()
+specifier|public
+name|String
+name|toString
+parameter_list|()
+block|{
+return|return
+name|getClass
+argument_list|()
+operator|.
+name|getSimpleName
+argument_list|()
+operator|+
+literal|"["
+operator|+
+name|identifier
+operator|+
+literal|"]"
+return|;
 block|}
 DECL|method|throwAppropriateException (TypeOfExceptionToFailWith eType, String message)
 specifier|private

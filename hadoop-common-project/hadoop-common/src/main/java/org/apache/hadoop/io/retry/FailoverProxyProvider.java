@@ -61,14 +61,65 @@ parameter_list|>
 extends|extends
 name|Closeable
 block|{
+DECL|class|ProxyInfo
+specifier|public
+specifier|static
+specifier|final
+class|class
+name|ProxyInfo
+parameter_list|<
+name|T
+parameter_list|>
+block|{
+DECL|field|proxy
+specifier|public
+specifier|final
+name|T
+name|proxy
+decl_stmt|;
+comment|/*      * The information (e.g., the IP address) of the current proxy object. It      * provides information for debugging purposes.      */
+DECL|field|proxyInfo
+specifier|public
+specifier|final
+name|String
+name|proxyInfo
+decl_stmt|;
+DECL|method|ProxyInfo (T proxy, String proxyInfo)
+specifier|public
+name|ProxyInfo
+parameter_list|(
+name|T
+name|proxy
+parameter_list|,
+name|String
+name|proxyInfo
+parameter_list|)
+block|{
+name|this
+operator|.
+name|proxy
+operator|=
+name|proxy
+expr_stmt|;
+name|this
+operator|.
+name|proxyInfo
+operator|=
+name|proxyInfo
+expr_stmt|;
+block|}
+block|}
 comment|/**    * Get the proxy object which should be used until the next failover event    * occurs.    *     * @return the proxy object to invoke methods upon    */
 DECL|method|getProxy ()
 specifier|public
+name|ProxyInfo
+argument_list|<
 name|T
+argument_list|>
 name|getProxy
 parameter_list|()
 function_decl|;
-comment|/**    * Called whenever the associated {@link RetryPolicy} determines that an error    * warrants failing over.    *     * @param currentProxy the proxy object which was being used before this    *        failover event    */
+comment|/**    * Called whenever the associated {@link RetryPolicy} determines that an error    * warrants failing over.    *     * @param currentProxy    *          the proxy object which was being used before this failover event    */
 DECL|method|performFailover (T currentProxy)
 specifier|public
 name|void

@@ -508,7 +508,10 @@ name|Override
 DECL|method|getProxy ()
 specifier|public
 specifier|synchronized
+name|ProxyInfo
+argument_list|<
 name|T
+argument_list|>
 name|getProxy
 parameter_list|()
 block|{
@@ -553,7 +556,16 @@ argument_list|)
 expr_stmt|;
 block|}
 return|return
+operator|new
+name|ProxyInfo
+argument_list|<
+name|T
+argument_list|>
+argument_list|(
 name|current
+argument_list|,
+name|rmId
+argument_list|)
 return|;
 block|}
 annotation|@

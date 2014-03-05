@@ -220,12 +220,27 @@ annotation|@
 name|Override
 DECL|method|getProxy ()
 specifier|public
+name|ProxyInfo
+argument_list|<
 name|T
+argument_list|>
 name|getProxy
 parameter_list|()
 block|{
 return|return
+operator|new
+name|ProxyInfo
+argument_list|<
+name|T
+argument_list|>
+argument_list|(
 name|currentlyActive
+argument_list|,
+name|currentlyActive
+operator|.
+name|toString
+argument_list|()
+argument_list|)
 return|;
 block|}
 annotation|@

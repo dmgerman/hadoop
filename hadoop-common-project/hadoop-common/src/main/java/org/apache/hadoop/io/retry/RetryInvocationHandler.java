@@ -150,6 +150,24 @@ name|io
 operator|.
 name|retry
 operator|.
+name|FailoverProxyProvider
+operator|.
+name|ProxyInfo
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|io
+operator|.
+name|retry
+operator|.
 name|RetryPolicy
 operator|.
 name|RetryAction
@@ -349,7 +367,10 @@ name|methodNameToPolicyMap
 decl_stmt|;
 DECL|field|currentProxy
 specifier|private
+name|ProxyInfo
+argument_list|<
 name|T
+argument_list|>
 name|currentProxy
 decl_stmt|;
 DECL|method|RetryInvocationHandler (FailoverProxyProvider<T> proxyProvider, RetryPolicy retryPolicy)
@@ -492,6 +513,8 @@ init|=
 name|isRpcInvocation
 argument_list|(
 name|currentProxy
+operator|.
+name|proxy
 argument_list|)
 decl_stmt|;
 specifier|final
@@ -685,6 +708,8 @@ literal|"Exception while invoking "
 operator|+
 name|currentProxy
 operator|.
+name|proxy
+operator|.
 name|getClass
 argument_list|()
 operator|+
@@ -694,6 +719,12 @@ name|method
 operator|.
 name|getName
 argument_list|()
+operator|+
+literal|" over "
+operator|+
+name|currentProxy
+operator|.
+name|proxyInfo
 operator|+
 literal|". Not retrying because "
 operator|+
@@ -764,11 +795,19 @@ literal|" of class "
 operator|+
 name|currentProxy
 operator|.
+name|proxy
+operator|.
 name|getClass
 argument_list|()
 operator|.
 name|getSimpleName
 argument_list|()
+operator|+
+literal|" over "
+operator|+
+name|currentProxy
+operator|.
+name|proxyInfo
 decl_stmt|;
 if|if
 condition|(
@@ -841,11 +880,19 @@ literal|" of class "
 operator|+
 name|currentProxy
 operator|.
+name|proxy
+operator|.
 name|getClass
 argument_list|()
 operator|.
 name|getSimpleName
 argument_list|()
+operator|+
+literal|" over "
+operator|+
+name|currentProxy
+operator|.
+name|proxyInfo
 operator|+
 literal|". Retrying "
 operator|+
@@ -912,6 +959,8 @@ operator|.
 name|performFailover
 argument_list|(
 name|currentProxy
+operator|.
+name|proxy
 argument_list|)
 expr_stmt|;
 name|proxyProviderFailoverCount
@@ -1018,6 +1067,8 @@ operator|.
 name|invoke
 argument_list|(
 name|currentProxy
+operator|.
+name|proxy
 argument_list|,
 name|args
 argument_list|)
@@ -1134,6 +1185,8 @@ operator|.
 name|getConnectionIdForProxy
 argument_list|(
 name|currentProxy
+operator|.
+name|proxy
 argument_list|)
 return|;
 block|}
