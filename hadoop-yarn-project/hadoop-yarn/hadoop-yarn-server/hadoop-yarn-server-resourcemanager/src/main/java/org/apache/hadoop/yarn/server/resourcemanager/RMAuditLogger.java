@@ -288,6 +288,15 @@ name|REGISTER_AM
 init|=
 literal|"Register App Master"
 decl_stmt|;
+DECL|field|UNREGISTER_AM
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|UNREGISTER_AM
+init|=
+literal|"Unregister App Master"
+decl_stmt|;
 DECL|field|ALLOC_CONTAINER
 specifier|public
 specifier|static

@@ -1487,10 +1487,12 @@ decl_stmt|;
 name|unregisterAppAttempt
 argument_list|(
 name|req
+argument_list|,
+literal|true
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|unregisterAppAttempt (final FinishApplicationMasterRequest req)
+DECL|method|unregisterAppAttempt (final FinishApplicationMasterRequest req, boolean waitForStateRunning)
 specifier|public
 name|void
 name|unregisterAppAttempt
@@ -1498,9 +1500,17 @@ parameter_list|(
 specifier|final
 name|FinishApplicationMasterRequest
 name|req
+parameter_list|,
+name|boolean
+name|waitForStateRunning
 parameter_list|)
 throws|throws
 name|Exception
+block|{
+if|if
+condition|(
+name|waitForStateRunning
+condition|)
 block|{
 name|waitForState
 argument_list|(
@@ -1509,6 +1519,7 @@ operator|.
 name|RUNNING
 argument_list|)
 expr_stmt|;
+block|}
 name|UserGroupInformation
 name|ugi
 init|=

@@ -3210,6 +3210,8 @@ operator|.
 name|unregisterAppAttempt
 argument_list|(
 name|req
+argument_list|,
+literal|true
 argument_list|)
 expr_stmt|;
 name|am
