@@ -22,6 +22,20 @@ end_package
 
 begin_import
 import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|commons
+operator|.
+name|logging
+operator|.
+name|LogFactory
+import|;
+end_import
+
+begin_import
+import|import
 name|java
 operator|.
 name|io
@@ -133,20 +147,6 @@ operator|.
 name|logging
 operator|.
 name|Log
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|commons
-operator|.
-name|logging
-operator|.
-name|LogFactory
 import|;
 end_import
 
@@ -948,6 +948,11 @@ name|checkNotNull
 argument_list|(
 name|realUser
 argument_list|)
+expr_stmt|;
+name|realUser
+operator|.
+name|checkTGTAndReloginFromKeytab
+argument_list|()
 expr_stmt|;
 name|UserGroupInformation
 name|ugi

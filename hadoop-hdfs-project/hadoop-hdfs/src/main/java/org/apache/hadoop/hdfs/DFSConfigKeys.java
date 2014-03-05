@@ -4752,6 +4752,24 @@ name|DEFAULT_DFSCLIENT_HEDGED_READ_THREADPOOL_SIZE
 init|=
 literal|0
 decl_stmt|;
+DECL|field|DFS_NFS_KEYTAB_FILE_KEY
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|DFS_NFS_KEYTAB_FILE_KEY
+init|=
+literal|"dfs.nfs.keytab.file"
+decl_stmt|;
+DECL|field|DFS_NFS_USER_NAME_KEY
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|DFS_NFS_USER_NAME_KEY
+init|=
+literal|"dfs.nfs.kerberos.principal"
+decl_stmt|;
 block|}
 end_class
 
