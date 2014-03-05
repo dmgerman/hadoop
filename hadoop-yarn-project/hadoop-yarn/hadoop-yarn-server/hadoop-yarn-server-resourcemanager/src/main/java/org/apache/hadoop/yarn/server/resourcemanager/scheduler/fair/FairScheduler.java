@@ -6024,15 +6024,24 @@ operator|==
 literal|null
 condition|)
 block|{
+if|if
+condition|(
 name|LOG
 operator|.
-name|error
+name|isDebugEnabled
+argument_list|()
+condition|)
+block|{
+name|LOG
+operator|.
+name|debug
 argument_list|(
-literal|"Request for appInfo of unknown attempt"
+literal|"Request for appInfo of unknown attempt "
 operator|+
 name|appAttemptId
 argument_list|)
 expr_stmt|;
+block|}
 return|return
 literal|null
 return|;
@@ -6071,15 +6080,24 @@ operator|==
 literal|null
 condition|)
 block|{
+if|if
+condition|(
 name|LOG
 operator|.
-name|error
+name|isDebugEnabled
+argument_list|()
+condition|)
+block|{
+name|LOG
+operator|.
+name|debug
 argument_list|(
-literal|"Request for appInfo of unknown attempt"
+literal|"Request for appInfo of unknown attempt "
 operator|+
 name|appAttemptId
 argument_list|)
 expr_stmt|;
+block|}
 return|return
 literal|null
 return|;
