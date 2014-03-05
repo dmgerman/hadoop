@@ -78,6 +78,20 @@ end_import
 
 begin_import
 import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|conf
+operator|.
+name|Configuration
+import|;
+end_import
+
+begin_import
+import|import
 name|com
 operator|.
 name|google
@@ -190,12 +204,12 @@ name|MAC_GET_ALL_GROUPS_CMD
 init|=
 literal|"dscl . -list /Groups PrimaryGroupID"
 decl_stmt|;
-comment|// Do update every 15 minutes
-DECL|field|TIMEOUT
+comment|// Do update every 15 minutes by default
+DECL|field|TIMEOUT_DEFAULT
 specifier|final
 specifier|static
 name|long
-name|TIMEOUT
+name|TIMEOUT_DEFAULT
 init|=
 literal|15
 operator|*
@@ -204,6 +218,33 @@ operator|*
 literal|1000
 decl_stmt|;
 comment|// ms
+DECL|field|TIMEOUT_MIN
+specifier|final
+specifier|static
+name|long
+name|TIMEOUT_MIN
+init|=
+literal|1
+operator|*
+literal|60
+operator|*
+literal|1000
+decl_stmt|;
+comment|// ms
+DECL|field|timeout
+specifier|final
+specifier|private
+name|long
+name|timeout
+decl_stmt|;
+DECL|field|NFS_USERUPDATE_MILLY
+specifier|final
+specifier|static
+name|String
+name|NFS_USERUPDATE_MILLY
+init|=
+literal|"hadoop.nfs.userupdate.milly"
+decl_stmt|;
 comment|// Maps for id to name map. Guarded by this object monitor lock
 DECL|field|uidNameMap
 specifier|private
@@ -250,11 +291,83 @@ parameter_list|()
 throws|throws
 name|IOException
 block|{
+name|timeout
+operator|=
+name|TIMEOUT_DEFAULT
+expr_stmt|;
 name|updateMaps
 argument_list|()
 expr_stmt|;
 block|}
+DECL|method|IdUserGroup (Configuration conf)
+specifier|public
+name|IdUserGroup
+parameter_list|(
+name|Configuration
+name|conf
+parameter_list|)
+throws|throws
+name|IOException
+block|{
+name|long
+name|updateTime
+init|=
+name|conf
+operator|.
+name|getLong
+argument_list|(
+name|NFS_USERUPDATE_MILLY
+argument_list|,
+name|TIMEOUT_DEFAULT
+argument_list|)
+decl_stmt|;
+comment|// Minimal interval is 1 minute
+if|if
+condition|(
+name|updateTime
+operator|<
+name|TIMEOUT_MIN
+condition|)
+block|{
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"User configured user account update time is less"
+operator|+
+literal|" than 1 minute. Use 1 minute instead."
+argument_list|)
+expr_stmt|;
+name|timeout
+operator|=
+name|TIMEOUT_MIN
+expr_stmt|;
+block|}
+else|else
+block|{
+name|timeout
+operator|=
+name|updateTime
+expr_stmt|;
+block|}
+name|updateMaps
+argument_list|()
+expr_stmt|;
+block|}
+annotation|@
+name|VisibleForTesting
+DECL|method|getTimeout ()
+specifier|public
+name|long
+name|getTimeout
+parameter_list|()
+block|{
+return|return
+name|timeout
+return|;
+block|}
 DECL|method|isExpired ()
+specifier|synchronized
 specifier|private
 name|boolean
 name|isExpired
@@ -268,7 +381,7 @@ operator|.
 name|currentTimeMillis
 argument_list|()
 operator|>
-name|TIMEOUT
+name|timeout
 return|;
 block|}
 comment|// If can't update the maps, will keep using the old ones
