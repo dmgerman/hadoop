@@ -127,6 +127,18 @@ import|;
 end_import
 
 begin_import
+import|import static
+name|org
+operator|.
+name|mockito
+operator|.
+name|Mockito
+operator|.
+name|never
+import|;
+end_import
+
+begin_import
 import|import
 name|java
 operator|.
@@ -435,6 +447,11 @@ specifier|private
 name|RMAdminCLI
 name|rmAdminCLI
 decl_stmt|;
+DECL|field|rmAdminCLIWithHAEnabled
+specifier|private
+name|RMAdminCLI
+name|rmAdminCLIWithHAEnabled
+decl_stmt|;
 annotation|@
 name|Before
 DECL|method|configure ()
@@ -522,7 +539,66 @@ name|rmAdminCLI
 operator|=
 operator|new
 name|RMAdminCLI
+argument_list|(
+operator|new
+name|Configuration
 argument_list|()
+argument_list|)
+block|{
+annotation|@
+name|Override
+specifier|protected
+name|ResourceManagerAdministrationProtocol
+name|createAdminProtocol
+parameter_list|()
+throws|throws
+name|IOException
+block|{
+return|return
+name|admin
+return|;
+block|}
+annotation|@
+name|Override
+specifier|protected
+name|HAServiceTarget
+name|resolveTarget
+parameter_list|(
+name|String
+name|rmId
+parameter_list|)
+block|{
+return|return
+name|haServiceTarget
+return|;
+block|}
+block|}
+expr_stmt|;
+name|YarnConfiguration
+name|conf
+init|=
+operator|new
+name|YarnConfiguration
+argument_list|()
+decl_stmt|;
+name|conf
+operator|.
+name|setBoolean
+argument_list|(
+name|YarnConfiguration
+operator|.
+name|RM_HA_ENABLED
+argument_list|,
+literal|true
+argument_list|)
+expr_stmt|;
+name|rmAdminCLIWithHAEnabled
+operator|=
+operator|new
+name|RMAdminCLI
+argument_list|(
+name|conf
+argument_list|)
 block|{
 annotation|@
 name|Override
@@ -1041,11 +1117,48 @@ block|,
 literal|"rm1"
 block|}
 decl_stmt|;
+comment|// RM HA is disabled.
+comment|// transitionToActive should not be executed
+name|assertEquals
+argument_list|(
+operator|-
+literal|1
+argument_list|,
+name|rmAdminCLI
+operator|.
+name|run
+argument_list|(
+name|args
+argument_list|)
+argument_list|)
+expr_stmt|;
+name|verify
+argument_list|(
+name|haadmin
+argument_list|,
+name|never
+argument_list|()
+argument_list|)
+operator|.
+name|transitionToActive
+argument_list|(
+name|any
+argument_list|(
+name|HAServiceProtocol
+operator|.
+name|StateChangeRequestInfo
+operator|.
+name|class
+argument_list|)
+argument_list|)
+expr_stmt|;
+comment|// Now RM HA is enabled.
+comment|// transitionToActive should be executed
 name|assertEquals
 argument_list|(
 literal|0
 argument_list|,
-name|rmAdminCLI
+name|rmAdminCLIWithHAEnabled
 operator|.
 name|run
 argument_list|(
@@ -1096,11 +1209,48 @@ block|,
 literal|"rm1"
 block|}
 decl_stmt|;
+comment|// RM HA is disabled.
+comment|// transitionToStandby should not be executed
+name|assertEquals
+argument_list|(
+operator|-
+literal|1
+argument_list|,
+name|rmAdminCLI
+operator|.
+name|run
+argument_list|(
+name|args
+argument_list|)
+argument_list|)
+expr_stmt|;
+name|verify
+argument_list|(
+name|haadmin
+argument_list|,
+name|never
+argument_list|()
+argument_list|)
+operator|.
+name|transitionToStandby
+argument_list|(
+name|any
+argument_list|(
+name|HAServiceProtocol
+operator|.
+name|StateChangeRequestInfo
+operator|.
+name|class
+argument_list|)
+argument_list|)
+expr_stmt|;
+comment|// Now RM HA is enabled.
+comment|// transitionToActive should be executed
 name|assertEquals
 argument_list|(
 literal|0
 argument_list|,
-name|rmAdminCLI
+name|rmAdminCLIWithHAEnabled
 operator|.
 name|run
 argument_list|(
@@ -1151,11 +1301,39 @@ block|,
 literal|"rm1"
 block|}
 decl_stmt|;
+comment|// RM HA is disabled.
+comment|// getServiceState should not be executed
+name|assertEquals
+argument_list|(
+operator|-
+literal|1
+argument_list|,
+name|rmAdminCLI
+operator|.
+name|run
+argument_list|(
+name|args
+argument_list|)
+argument_list|)
+expr_stmt|;
+name|verify
+argument_list|(
+name|haadmin
+argument_list|,
+name|never
+argument_list|()
+argument_list|)
+operator|.
+name|getServiceStatus
+argument_list|()
+expr_stmt|;
+comment|// Now RM HA is enabled.
+comment|// getServiceState should be executed
 name|assertEquals
 argument_list|(
 literal|0
 argument_list|,
-name|rmAdminCLI
+name|rmAdminCLIWithHAEnabled
 operator|.
 name|run
 argument_list|(
@@ -1197,11 +1375,39 @@ block|,
 literal|"rm1"
 block|}
 decl_stmt|;
+comment|// RM HA is disabled.
+comment|// getServiceState should not be executed
+name|assertEquals
+argument_list|(
+operator|-
+literal|1
+argument_list|,
+name|rmAdminCLI
+operator|.
+name|run
+argument_list|(
+name|args
+argument_list|)
+argument_list|)
+expr_stmt|;
+name|verify
+argument_list|(
+name|haadmin
+argument_list|,
+name|never
+argument_list|()
+argument_list|)
+operator|.
+name|monitorHealth
+argument_list|()
+expr_stmt|;
+comment|// Now RM HA is enabled.
+comment|// getServiceState should be executed
 name|assertEquals
 argument_list|(
 literal|0
 argument_list|,
-name|rmAdminCLI
+name|rmAdminCLIWithHAEnabled
 operator|.
 name|run
 argument_list|(
@@ -1341,13 +1547,7 @@ literal|"UserGroupsConfiguration] [-refreshUserToGroupsMappings] "
 operator|+
 literal|"[-refreshAdminAcls] [-refreshServiceAcl] [-getGroup"
 operator|+
-literal|" [username]] [-help [cmd]] [-transitionToActive<serviceId>]"
-operator|+
-literal|" [-transitionToStandby<serviceId>] [-failover [--forcefence] "
-operator|+
-literal|"[--forceactive]<serviceId><serviceId>] "
-operator|+
-literal|"[-getServiceState<serviceId>] [-checkHealth<serviceId>]"
+literal|" [username]] [-help [cmd]]"
 argument_list|)
 argument_list|)
 expr_stmt|;
@@ -1707,6 +1907,51 @@ name|dataErr
 argument_list|,
 operator|-
 literal|1
+argument_list|)
+expr_stmt|;
+comment|// Test -help when RM HA is enabled
+name|assertEquals
+argument_list|(
+literal|0
+argument_list|,
+name|rmAdminCLIWithHAEnabled
+operator|.
+name|run
+argument_list|(
+name|args
+argument_list|)
+argument_list|)
+expr_stmt|;
+name|oldOutPrintStream
+operator|.
+name|println
+argument_list|(
+name|dataOut
+argument_list|)
+expr_stmt|;
+name|assertTrue
+argument_list|(
+name|dataOut
+operator|.
+name|toString
+argument_list|()
+operator|.
+name|contains
+argument_list|(
+literal|"yarn rmadmin [-refreshQueues] [-refreshNodes] [-refreshSuper"
+operator|+
+literal|"UserGroupsConfiguration] [-refreshUserToGroupsMappings] "
+operator|+
+literal|"[-refreshAdminAcls] [-refreshServiceAcl] [-getGroup"
+operator|+
+literal|" [username]] [-help [cmd]] [-transitionToActive<serviceId>]"
+operator|+
+literal|" [-transitionToStandby<serviceId>] [-failover [--forcefence]"
+operator|+
+literal|" [--forceactive]<serviceId><serviceId>] "
+operator|+
+literal|"[-getServiceState<serviceId>] [-checkHealth<serviceId>]"
+argument_list|)
 argument_list|)
 expr_stmt|;
 block|}

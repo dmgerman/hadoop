@@ -128,20 +128,6 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|conf
-operator|.
-name|Configured
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
 name|fs
 operator|.
 name|CommonConfigurationKeys
@@ -201,20 +187,6 @@ operator|.
 name|security
 operator|.
 name|UserGroupInformation
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|util
-operator|.
-name|Tool
 import|;
 end_import
 
@@ -847,6 +819,11 @@ name|StringBuilder
 name|builder
 parameter_list|)
 block|{
+name|boolean
+name|isHACommand
+init|=
+literal|false
+decl_stmt|;
 name|UsageInfo
 name|usageInfo
 init|=
@@ -882,6 +859,10 @@ condition|)
 block|{
 return|return;
 block|}
+name|isHACommand
+operator|=
+literal|true
+expr_stmt|;
 block|}
 name|String
 name|space
@@ -915,8 +896,23 @@ operator|+
 literal|"]\n"
 argument_list|)
 expr_stmt|;
+if|if
+condition|(
+name|isHACommand
+condition|)
+block|{
+name|builder
+operator|.
+name|append
+argument_list|(
+name|cmd
+operator|+
+literal|" can only be used when RM HA is enabled"
+argument_list|)
+expr_stmt|;
 block|}
-DECL|method|buildUsageMsg (StringBuilder builder)
+block|}
+DECL|method|buildUsageMsg (StringBuilder builder, boolean isHAEnabled)
 specifier|private
 specifier|static
 name|void
@@ -924,6 +920,9 @@ name|buildUsageMsg
 parameter_list|(
 name|StringBuilder
 name|builder
+parameter_list|,
+name|boolean
+name|isHAEnabled
 parameter_list|)
 block|{
 name|builder
@@ -972,6 +971,11 @@ literal|"\n"
 argument_list|)
 expr_stmt|;
 block|}
+if|if
+condition|(
+name|isHAEnabled
+condition|)
+block|{
 for|for
 control|(
 name|String
@@ -1024,7 +1028,8 @@ expr_stmt|;
 block|}
 block|}
 block|}
-DECL|method|printHelp (String cmd)
+block|}
+DECL|method|printHelp (String cmd, boolean isHAEnabled)
 specifier|private
 specifier|static
 name|void
@@ -1032,6 +1037,9 @@ name|printHelp
 parameter_list|(
 name|String
 name|cmd
+parameter_list|,
+name|boolean
+name|isHAEnabled
 parameter_list|)
 block|{
 name|StringBuilder
@@ -1075,11 +1083,17 @@ operator|+
 literal|" [-help [cmd]]"
 argument_list|)
 expr_stmt|;
+if|if
+condition|(
+name|isHAEnabled
+condition|)
+block|{
 name|appendHAUsage
 argument_list|(
 name|summary
 argument_list|)
 expr_stmt|;
+block|}
 name|summary
 operator|.
 name|append
@@ -1129,6 +1143,11 @@ literal|"\n"
 argument_list|)
 expr_stmt|;
 block|}
+if|if
+condition|(
+name|isHAEnabled
+condition|)
+block|{
 for|for
 control|(
 name|String
@@ -1167,6 +1186,7 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
+block|}
 name|System
 operator|.
 name|out
@@ -1194,7 +1214,7 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|/**    * Displays format of commands.    * @param cmd The command that is being executed.    */
-DECL|method|printUsage (String cmd)
+DECL|method|printUsage (String cmd, boolean isHAEnabled)
 specifier|private
 specifier|static
 name|void
@@ -1202,6 +1222,9 @@ name|printUsage
 parameter_list|(
 name|String
 name|cmd
+parameter_list|,
+name|boolean
+name|isHAEnabled
 parameter_list|)
 block|{
 name|StringBuilder
@@ -1241,6 +1264,8 @@ block|{
 name|buildUsageMsg
 argument_list|(
 name|usageBuilder
+argument_list|,
+name|isHAEnabled
 argument_list|)
 expr_stmt|;
 block|}
@@ -1660,6 +1685,41 @@ parameter_list|)
 throws|throws
 name|Exception
 block|{
+name|YarnConfiguration
+name|yarnConf
+init|=
+name|getConf
+argument_list|()
+operator|==
+literal|null
+condition|?
+operator|new
+name|YarnConfiguration
+argument_list|()
+else|:
+operator|new
+name|YarnConfiguration
+argument_list|(
+name|getConf
+argument_list|()
+argument_list|)
+decl_stmt|;
+name|boolean
+name|isHAEnabled
+init|=
+name|yarnConf
+operator|.
+name|getBoolean
+argument_list|(
+name|YarnConfiguration
+operator|.
+name|RM_HA_ENABLED
+argument_list|,
+name|YarnConfiguration
+operator|.
+name|DEFAULT_RM_HA_ENABLED
+argument_list|)
+decl_stmt|;
 if|if
 condition|(
 name|args
@@ -1672,6 +1732,8 @@ block|{
 name|printUsage
 argument_list|(
 literal|""
+argument_list|,
+name|isHAEnabled
 argument_list|)
 expr_stmt|;
 return|return
@@ -1728,6 +1790,8 @@ name|args
 index|[
 name|i
 index|]
+argument_list|,
+name|isHAEnabled
 argument_list|)
 expr_stmt|;
 block|}
@@ -1736,6 +1800,8 @@ block|{
 name|printHelp
 argument_list|(
 literal|""
+argument_list|,
+name|isHAEnabled
 argument_list|)
 expr_stmt|;
 block|}
@@ -1753,6 +1819,11 @@ name|cmd
 argument_list|)
 condition|)
 block|{
+if|if
+condition|(
+name|isHAEnabled
+condition|)
+block|{
 return|return
 name|super
 operator|.
@@ -1760,6 +1831,24 @@ name|run
 argument_list|(
 name|args
 argument_list|)
+return|;
+block|}
+name|System
+operator|.
+name|out
+operator|.
+name|println
+argument_list|(
+literal|"Cannot run "
+operator|+
+name|cmd
+operator|+
+literal|" when ResourceManager HA is not enabled"
+argument_list|)
+expr_stmt|;
+return|return
+operator|-
+literal|1
 return|;
 block|}
 comment|//
@@ -1822,6 +1911,8 @@ block|{
 name|printUsage
 argument_list|(
 name|cmd
+argument_list|,
+name|isHAEnabled
 argument_list|)
 expr_stmt|;
 return|return
@@ -1994,11 +2085,8 @@ expr_stmt|;
 name|printUsage
 argument_list|(
 literal|""
-argument_list|)
-expr_stmt|;
-name|printUsage
-argument_list|(
-literal|""
+argument_list|,
+name|isHAEnabled
 argument_list|)
 expr_stmt|;
 block|}
@@ -2038,6 +2126,8 @@ expr_stmt|;
 name|printUsage
 argument_list|(
 name|cmd
+argument_list|,
+name|isHAEnabled
 argument_list|)
 expr_stmt|;
 block|}
