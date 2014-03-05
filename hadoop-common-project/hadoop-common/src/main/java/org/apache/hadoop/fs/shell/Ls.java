@@ -551,6 +551,10 @@ name|IOException
 block|{
 if|if
 condition|(
+name|parent
+operator|!=
+literal|null
+operator|&&
 operator|!
 name|isRecursive
 argument_list|()
