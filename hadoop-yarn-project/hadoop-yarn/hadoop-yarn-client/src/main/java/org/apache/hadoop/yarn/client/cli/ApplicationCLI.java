@@ -332,6 +332,22 @@ name|yarn
 operator|.
 name|exceptions
 operator|.
+name|ApplicationNotFoundException
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|exceptions
+operator|.
 name|YarnException
 import|;
 end_import
@@ -1436,6 +1452,8 @@ return|return
 name|exitCode
 return|;
 block|}
+try|try
+block|{
 name|killApplication
 argument_list|(
 name|cliParser
@@ -1446,6 +1464,17 @@ name|KILL_CMD
 argument_list|)
 argument_list|)
 expr_stmt|;
+block|}
+catch|catch
+parameter_list|(
+name|ApplicationNotFoundException
+name|e
+parameter_list|)
+block|{
+return|return
+name|exitCode
+return|;
+block|}
 block|}
 elseif|else
 if|if
@@ -2258,13 +2287,41 @@ decl_stmt|;
 name|ApplicationReport
 name|appReport
 init|=
+literal|null
+decl_stmt|;
+try|try
+block|{
+name|appReport
+operator|=
 name|client
 operator|.
 name|getApplicationReport
 argument_list|(
 name|appId
 argument_list|)
-decl_stmt|;
+expr_stmt|;
+block|}
+catch|catch
+parameter_list|(
+name|ApplicationNotFoundException
+name|e
+parameter_list|)
+block|{
+name|sysout
+operator|.
+name|println
+argument_list|(
+literal|"Application with id '"
+operator|+
+name|applicationId
+operator|+
+literal|"' doesn't exist in RM."
+argument_list|)
+expr_stmt|;
+throw|throw
+name|e
+throw|;
+block|}
 if|if
 condition|(
 name|appReport
@@ -2866,13 +2923,13 @@ argument_list|)
 return|;
 block|}
 comment|/**    * Lists the application attempts matching the given applicationid    *     * @param applicationId    * @throws YarnException    * @throws IOException    */
-DECL|method|listApplicationAttempts (String appId)
+DECL|method|listApplicationAttempts (String applicationId)
 specifier|private
 name|void
 name|listApplicationAttempts
 parameter_list|(
 name|String
-name|appId
+name|applicationId
 parameter_list|)
 throws|throws
 name|YarnException
@@ -2902,7 +2959,7 @@ name|ConverterUtils
 operator|.
 name|toApplicationId
 argument_list|(
-name|appId
+name|applicationId
 argument_list|)
 argument_list|)
 decl_stmt|;
