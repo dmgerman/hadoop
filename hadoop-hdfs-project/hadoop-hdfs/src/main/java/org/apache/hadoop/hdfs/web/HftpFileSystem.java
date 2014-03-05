@@ -861,19 +861,9 @@ name|getDefaultPort
 parameter_list|()
 block|{
 return|return
-name|getConf
-argument_list|()
-operator|.
-name|getInt
-argument_list|(
-name|DFSConfigKeys
-operator|.
-name|DFS_NAMENODE_HTTP_PORT_KEY
-argument_list|,
 name|DFSConfigKeys
 operator|.
 name|DFS_NAMENODE_HTTP_PORT_DEFAULT
-argument_list|)
 return|;
 block|}
 comment|/**    *  We generate the address with one of the following ports, in    *  order of preference.    *  1. Port from the hftp URI e.g. hftp://namenode:4000/ will return 4000.    *  2. Port configured via DFS_NAMENODE_HTTP_PORT_KEY    *  3. DFS_NAMENODE_HTTP_PORT_DEFAULT i.e. 50070.    *    * @param uri    * @return    */
