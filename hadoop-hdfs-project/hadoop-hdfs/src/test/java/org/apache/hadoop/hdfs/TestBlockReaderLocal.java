@@ -378,6 +378,18 @@ name|Test
 import|;
 end_import
 
+begin_import
+import|import static
+name|org
+operator|.
+name|hamcrest
+operator|.
+name|CoreMatchers
+operator|.
+name|equalTo
+import|;
+end_import
+
 begin_class
 DECL|class|TestBlockReaderLocal
 specifier|public
@@ -701,6 +713,21 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
+name|Assume
+operator|.
+name|assumeThat
+argument_list|(
+name|DomainSocket
+operator|.
+name|getLoadingFailureReason
+argument_list|()
+argument_list|,
+name|equalTo
+argument_list|(
+literal|null
+argument_list|)
+argument_list|)
+expr_stmt|;
 name|MiniDFSCluster
 name|cluster
 init|=
