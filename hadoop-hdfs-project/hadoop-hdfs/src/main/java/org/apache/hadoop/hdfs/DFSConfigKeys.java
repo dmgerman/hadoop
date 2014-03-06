@@ -3235,6 +3235,8 @@ specifier|final
 name|long
 name|DFS_BLOCKREPORT_INTERVAL_MSEC_DEFAULT
 init|=
+literal|6
+operator|*
 literal|60
 operator|*
 literal|60
