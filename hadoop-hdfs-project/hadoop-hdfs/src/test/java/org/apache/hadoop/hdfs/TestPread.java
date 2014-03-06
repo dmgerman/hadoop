@@ -1626,7 +1626,7 @@ specifier|final
 name|int
 name|initialHedgedReadTimeoutMillis
 init|=
-literal|500
+literal|50000
 decl_stmt|;
 specifier|final
 name|int
