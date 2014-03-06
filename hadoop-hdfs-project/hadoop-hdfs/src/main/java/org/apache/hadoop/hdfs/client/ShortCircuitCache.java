@@ -3989,6 +3989,8 @@ expr_stmt|;
 block|}
 block|}
 comment|/**    * Close the cache and free all associated resources.    */
+annotation|@
+name|Override
 DECL|method|close ()
 specifier|public
 name|void
@@ -4116,6 +4118,15 @@ name|unlock
 argument_list|()
 expr_stmt|;
 block|}
+name|IOUtils
+operator|.
+name|cleanup
+argument_list|(
+name|LOG
+argument_list|,
+name|shmManager
+argument_list|)
+expr_stmt|;
 block|}
 annotation|@
 name|VisibleForTesting
