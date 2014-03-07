@@ -399,7 +399,7 @@ name|String
 argument_list|>
 argument_list|()
 decl_stmt|;
-comment|// path to redirect to if user goes to "/"
+comment|// path to redirect to
 DECL|field|redirectPath
 specifier|private
 specifier|volatile
@@ -781,6 +781,7 @@ return|;
 block|}
 comment|/**    * Set a path to redirect the user to if they just go to "/". For    * instance "/" goes to "/yarn/apps". This allows the filters to    * more easily differentiate the different webapps.    * @param path  the path to redirect to    */
 DECL|method|setRedirectPath (String path)
+specifier|protected
 name|void
 name|setRedirectPath
 parameter_list|(
@@ -902,6 +903,16 @@ name|class
 argument_list|)
 expr_stmt|;
 block|}
+name|configureRSServlets
+argument_list|()
+expr_stmt|;
+block|}
+DECL|method|configureRSServlets ()
+specifier|protected
+name|void
+name|configureRSServlets
+parameter_list|()
+block|{
 comment|// Add in the web services filters/serves if app has them.
 comment|// Using Jersey/guice integration module. If user has web services
 comment|// they must have also bound a default one in their webapp code.
