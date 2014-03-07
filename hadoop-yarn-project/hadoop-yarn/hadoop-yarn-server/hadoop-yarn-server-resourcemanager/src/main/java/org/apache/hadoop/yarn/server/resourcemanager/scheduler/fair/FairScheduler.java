@@ -3633,25 +3633,6 @@ operator|==
 literal|null
 condition|)
 block|{
-name|rmContext
-operator|.
-name|getDispatcher
-argument_list|()
-operator|.
-name|getEventHandler
-argument_list|()
-operator|.
-name|handle
-argument_list|(
-operator|new
-name|RMAppRejectedEvent
-argument_list|(
-name|applicationId
-argument_list|,
-literal|"Application rejected by queue placement policy"
-argument_list|)
-argument_list|)
-expr_stmt|;
 return|return;
 block|}
 comment|// Enforce ACLs
@@ -3993,6 +3974,7 @@ argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
+comment|/**    * Helper method that attempts to assign the app to a queue. The method is    * responsible to call the appropriate event-handler if the app is rejected.    */
 annotation|@
 name|VisibleForTesting
 DECL|method|assignToQueue (RMApp rmApp, String queueName, String user)
@@ -4011,6 +3993,11 @@ parameter_list|)
 block|{
 name|FSLeafQueue
 name|queue
+init|=
+literal|null
+decl_stmt|;
+name|String
+name|appRejectMsg
 init|=
 literal|null
 decl_stmt|;
@@ -4042,10 +4029,13 @@ operator|==
 literal|null
 condition|)
 block|{
-return|return
-literal|null
-return|;
+name|appRejectMsg
+operator|=
+literal|"Application rejected by queue placement policy"
+expr_stmt|;
 block|}
+else|else
+block|{
 name|queue
 operator|=
 name|queueMgr
@@ -4057,22 +4047,78 @@ argument_list|,
 literal|true
 argument_list|)
 expr_stmt|;
+if|if
+condition|(
+name|queue
+operator|==
+literal|null
+condition|)
+block|{
+name|appRejectMsg
+operator|=
+name|queueName
+operator|+
+literal|" is not a leaf queue"
+expr_stmt|;
+block|}
+block|}
 block|}
 catch|catch
 parameter_list|(
 name|IOException
-name|ex
+name|ioe
 parameter_list|)
+block|{
+name|appRejectMsg
+operator|=
+literal|"Error assigning app to queue "
+operator|+
+name|queueName
+expr_stmt|;
+block|}
+if|if
+condition|(
+name|appRejectMsg
+operator|!=
+literal|null
+operator|&&
+name|rmApp
+operator|!=
+literal|null
+condition|)
 block|{
 name|LOG
 operator|.
 name|error
 argument_list|(
-literal|"Error assigning app to queue, rejecting"
-argument_list|,
-name|ex
+name|appRejectMsg
 argument_list|)
 expr_stmt|;
+name|rmContext
+operator|.
+name|getDispatcher
+argument_list|()
+operator|.
+name|getEventHandler
+argument_list|()
+operator|.
+name|handle
+argument_list|(
+operator|new
+name|RMAppRejectedEvent
+argument_list|(
+name|rmApp
+operator|.
+name|getApplicationId
+argument_list|()
+argument_list|,
+name|appRejectMsg
+argument_list|)
+argument_list|)
+expr_stmt|;
+return|return
+literal|null
+return|;
 block|}
 if|if
 condition|(
@@ -4096,7 +4142,7 @@ else|else
 block|{
 name|LOG
 operator|.
-name|warn
+name|error
 argument_list|(
 literal|"Couldn't find RM app to set queue name on"
 argument_list|)
