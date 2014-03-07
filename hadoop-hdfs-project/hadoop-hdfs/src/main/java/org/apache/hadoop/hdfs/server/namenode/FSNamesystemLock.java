@@ -58,6 +58,20 @@ name|concurrent
 operator|.
 name|locks
 operator|.
+name|ReentrantLock
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
+name|concurrent
+operator|.
+name|locks
+operator|.
 name|ReentrantReadWriteLock
 import|;
 end_import
@@ -93,6 +107,20 @@ DECL|field|coarseLock
 specifier|protected
 name|ReentrantReadWriteLock
 name|coarseLock
+decl_stmt|;
+comment|/**    * When locking the FSNS for a read that may take a long time, we take this    * lock before taking the regular FSNS read lock. All writers also take this    * lock before taking the FSNS write lock. Regular (short) readers do not    * take this lock at all, instead relying solely on the synchronization of the    * regular FSNS lock.    *     * This scheme ensures that:    * 1) In the case of normal (fast) ops, readers proceed concurrently and    *    writers are not starved.    * 2) In the case of long read ops, short reads are allowed to proceed    *    concurrently during the duration of the long read.    *     * See HDFS-5064 for more context.    */
+annotation|@
+name|VisibleForTesting
+DECL|field|longReadLock
+specifier|protected
+name|ReentrantLock
+name|longReadLock
+init|=
+operator|new
+name|ReentrantLock
+argument_list|(
+literal|true
+argument_list|)
 decl_stmt|;
 DECL|method|FSNamesystemLock (boolean fair)
 name|FSNamesystemLock
@@ -140,6 +168,16 @@ name|coarseLock
 operator|.
 name|writeLock
 argument_list|()
+return|;
+block|}
+DECL|method|longReadLock ()
+specifier|public
+name|Lock
+name|longReadLock
+parameter_list|()
+block|{
+return|return
+name|longReadLock
 return|;
 block|}
 DECL|method|getReadHoldCount ()

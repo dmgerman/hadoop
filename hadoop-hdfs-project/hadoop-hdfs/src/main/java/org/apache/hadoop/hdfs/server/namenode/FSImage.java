@@ -6721,9 +6721,12 @@ name|getLastWrittenTxId
 argument_list|()
 expr_stmt|;
 block|}
+comment|// Should be OK for this to not be synchronized since all of the places which
+comment|// mutate this value are themselves synchronized so it shouldn't be possible
+comment|// to see this flop back and forth. In the worst case this will just return an
+comment|// old value.
 DECL|method|getMostRecentCheckpointTxId ()
 specifier|public
-specifier|synchronized
 name|long
 name|getMostRecentCheckpointTxId
 parameter_list|()

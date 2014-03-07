@@ -901,7 +901,7 @@ name|imageType
 decl_stmt|;
 name|namesystem
 operator|.
-name|writeLockInterruptibly
+name|longReadLockInterruptibly
 argument_list|()
 expr_stmt|;
 try|try
@@ -1047,7 +1047,7 @@ finally|finally
 block|{
 name|namesystem
 operator|.
-name|writeUnlock
+name|longReadUnlock
 argument_list|()
 expr_stmt|;
 block|}

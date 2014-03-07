@@ -734,6 +734,7 @@ decl_stmt|;
 comment|/**    * TxId of the last transaction that was included in the most    * recent fsimage file. This does not include any transactions    * that have since been written to the edit log.    */
 DECL|field|mostRecentCheckpointTxId
 specifier|protected
+specifier|volatile
 name|long
 name|mostRecentCheckpointTxId
 init|=
