@@ -1314,8 +1314,6 @@ specifier|synchronized
 name|DatanodeRegistration
 name|createRegistration
 parameter_list|()
-throws|throws
-name|IOException
 block|{
 name|Preconditions
 operator|.
