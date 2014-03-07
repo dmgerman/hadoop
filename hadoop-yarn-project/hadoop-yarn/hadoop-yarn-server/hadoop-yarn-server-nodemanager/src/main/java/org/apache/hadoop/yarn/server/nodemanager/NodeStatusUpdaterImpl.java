@@ -76,6 +76,16 @@ name|java
 operator|.
 name|util
 operator|.
+name|HashSet
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
 name|Iterator
 import|;
 end_import
@@ -129,6 +139,16 @@ operator|.
 name|util
 operator|.
 name|Random
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
+name|Set
 import|;
 end_import
 
@@ -865,7 +885,10 @@ operator|new
 name|Random
 argument_list|()
 decl_stmt|;
-comment|// It will be used to track recently stopped containers on node manager.
+comment|// It will be used to track recently stopped containers on node manager, this
+comment|// is to avoid the misleading no-such-container exception messages on NM, when
+comment|// the AM finishes it informs the RM to stop the may-be-already-completed
+comment|// containers.
 DECL|field|recentlyStoppedContainers
 specifier|private
 specifier|final
@@ -882,6 +905,19 @@ DECL|field|durationToTrackStoppedContainers
 specifier|private
 name|long
 name|durationToTrackStoppedContainers
+decl_stmt|;
+comment|// This is used to track the current completed containers when nodeheartBeat
+comment|// is called. These completed containers will be removed from NM context after
+comment|// nodeHeartBeat succeeds and the response from the nodeHeartBeat is
+comment|// processed.
+DECL|field|previousCompletedContainers
+specifier|private
+specifier|final
+name|Set
+argument_list|<
+name|ContainerId
+argument_list|>
+name|previousCompletedContainers
 decl_stmt|;
 DECL|field|healthChecker
 specifier|private
@@ -975,6 +1011,17 @@ argument_list|<
 name|ContainerId
 argument_list|,
 name|Long
+argument_list|>
+argument_list|()
+expr_stmt|;
+name|this
+operator|.
+name|previousCompletedContainers
+operator|=
+operator|new
+name|HashSet
+argument_list|<
+name|ContainerId
 argument_list|>
 argument_list|()
 expr_stmt|;
@@ -1336,10 +1383,10 @@ name|serviceStop
 argument_list|()
 expr_stmt|;
 block|}
-DECL|method|rebootNodeStatusUpdater ()
+DECL|method|rebootNodeStatusUpdaterAndRegisterWithRM ()
 specifier|protected
 name|void
-name|rebootNodeStatusUpdater
+name|rebootNodeStatusUpdaterAndRegisterWithRM
 parameter_list|()
 block|{
 comment|// Interrupt the updater.
@@ -1523,9 +1570,7 @@ name|ContainerStatus
 argument_list|>
 name|containerStatuses
 init|=
-name|this
-operator|.
-name|updateAndGetContainerStatuses
+name|getContainerStatuses
 argument_list|()
 decl_stmt|;
 name|RegisterNodeManagerRequest
@@ -1965,12 +2010,10 @@ return|return
 name|appList
 return|;
 block|}
-annotation|@
-name|Override
-DECL|method|getNodeStatusAndUpdateContainersInContext ( int responseId)
-specifier|public
+DECL|method|getNodeStatus (int responseId)
+specifier|private
 name|NodeStatus
-name|getNodeStatusAndUpdateContainersInContext
+name|getNodeStatus
 parameter_list|(
 name|int
 name|responseId
@@ -2050,9 +2093,17 @@ name|ContainerStatus
 argument_list|>
 name|containersStatuses
 init|=
-name|updateAndGetContainerStatuses
+name|getContainerStatuses
 argument_list|()
 decl_stmt|;
+if|if
+condition|(
+name|LOG
+operator|.
+name|isDebugEnabled
+argument_list|()
+condition|)
+block|{
 name|LOG
 operator|.
 name|debug
@@ -2071,6 +2122,7 @@ operator|+
 literal|" containers"
 argument_list|)
 expr_stmt|;
+block|}
 name|NodeStatus
 name|nodeStatus
 init|=
@@ -2094,14 +2146,18 @@ return|return
 name|nodeStatus
 return|;
 block|}
-comment|/*    * It will return current container statuses. If any container has    * COMPLETED then it will be removed from context.     */
-DECL|method|updateAndGetContainerStatuses ()
-specifier|private
+comment|// Iterate through the NMContext and clone and get all the containers'
+comment|// statuses. If it's a completed container, add into the
+comment|// recentlyStoppedContainers and previousCompletedContainers collections.
+annotation|@
+name|VisibleForTesting
+DECL|method|getContainerStatuses ()
+specifier|protected
 name|List
 argument_list|<
 name|ContainerStatus
 argument_list|>
-name|updateAndGetContainerStatuses
+name|getContainerStatuses
 parameter_list|()
 block|{
 name|List
@@ -2119,17 +2175,9 @@ argument_list|()
 decl_stmt|;
 for|for
 control|(
-name|Iterator
-argument_list|<
-name|Entry
-argument_list|<
-name|ContainerId
-argument_list|,
 name|Container
-argument_list|>
-argument_list|>
-name|i
-init|=
+name|container
+range|:
 name|this
 operator|.
 name|context
@@ -2137,49 +2185,10 @@ operator|.
 name|getContainers
 argument_list|()
 operator|.
-name|entrySet
+name|values
 argument_list|()
-operator|.
-name|iterator
-argument_list|()
-init|;
-name|i
-operator|.
-name|hasNext
-argument_list|()
-condition|;
 control|)
 block|{
-name|Entry
-argument_list|<
-name|ContainerId
-argument_list|,
-name|Container
-argument_list|>
-name|e
-init|=
-name|i
-operator|.
-name|next
-argument_list|()
-decl_stmt|;
-name|ContainerId
-name|containerId
-init|=
-name|e
-operator|.
-name|getKey
-argument_list|()
-decl_stmt|;
-name|Container
-name|container
-init|=
-name|e
-operator|.
-name|getValue
-argument_list|()
-decl_stmt|;
-comment|// Clone the container to send it to the RM
 name|org
 operator|.
 name|apache
@@ -2209,6 +2218,39 @@ argument_list|)
 expr_stmt|;
 if|if
 condition|(
+name|containerStatus
+operator|.
+name|getState
+argument_list|()
+operator|.
+name|equals
+argument_list|(
+name|ContainerState
+operator|.
+name|COMPLETE
+argument_list|)
+condition|)
+block|{
+comment|// Adding to finished containers cache. Cache will keep it around at
+comment|// least for #durationToTrackStoppedContainers duration. In the
+comment|// subsequent call to stop container it will get removed from cache.
+name|updateStoppedContainersInCache
+argument_list|(
+name|container
+operator|.
+name|getContainerId
+argument_list|()
+argument_list|)
+expr_stmt|;
+name|addCompletedContainer
+argument_list|(
+name|container
+argument_list|)
+expr_stmt|;
+block|}
+block|}
+if|if
+condition|(
 name|LOG
 operator|.
 name|isDebugEnabled
@@ -2219,52 +2261,99 @@ name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"Sending out status for container: "
+literal|"Sending out container statuses: "
 operator|+
-name|containerStatus
+name|containerStatuses
 argument_list|)
 expr_stmt|;
-block|}
-if|if
-condition|(
-name|containerStatus
-operator|.
-name|getState
-argument_list|()
-operator|==
-name|ContainerState
-operator|.
-name|COMPLETE
-condition|)
-block|{
-comment|// Remove
-name|i
-operator|.
-name|remove
-argument_list|()
-expr_stmt|;
-comment|// Adding to finished containers cache. Cache will keep it around at
-comment|// least for #durationToTrackStoppedContainers duration. In the
-comment|// subsequent call to stop container it will get removed from cache.
-name|addStoppedContainersToCache
-argument_list|(
-name|containerId
-argument_list|)
-expr_stmt|;
-name|LOG
-operator|.
-name|info
-argument_list|(
-literal|"Removed completed container "
-operator|+
-name|containerId
-argument_list|)
-expr_stmt|;
-block|}
 block|}
 return|return
 name|containerStatuses
 return|;
+block|}
+DECL|method|addCompletedContainer (Container container)
+specifier|private
+name|void
+name|addCompletedContainer
+parameter_list|(
+name|Container
+name|container
+parameter_list|)
+block|{
+synchronized|synchronized
+init|(
+name|previousCompletedContainers
+init|)
+block|{
+name|previousCompletedContainers
+operator|.
+name|add
+argument_list|(
+name|container
+operator|.
+name|getContainerId
+argument_list|()
+argument_list|)
+expr_stmt|;
+block|}
+block|}
+DECL|method|removeCompletedContainersFromContext ()
+specifier|private
+name|void
+name|removeCompletedContainersFromContext
+parameter_list|()
+block|{
+synchronized|synchronized
+init|(
+name|previousCompletedContainers
+init|)
+block|{
+if|if
+condition|(
+operator|!
+name|previousCompletedContainers
+operator|.
+name|isEmpty
+argument_list|()
+condition|)
+block|{
+for|for
+control|(
+name|ContainerId
+name|containerId
+range|:
+name|previousCompletedContainers
+control|)
+block|{
+name|this
+operator|.
+name|context
+operator|.
+name|getContainers
+argument_list|()
+operator|.
+name|remove
+argument_list|(
+name|containerId
+argument_list|)
+expr_stmt|;
+block|}
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"Removed completed containers from NM context: "
+operator|+
+name|previousCompletedContainers
+argument_list|)
+expr_stmt|;
+name|previousCompletedContainers
+operator|.
+name|clear
+argument_list|()
+expr_stmt|;
+block|}
+block|}
 block|}
 DECL|method|trackAppsForKeepAlive (List<ApplicationId> appIds)
 specifier|private
@@ -2415,10 +2504,10 @@ annotation|@
 name|Private
 annotation|@
 name|VisibleForTesting
-DECL|method|addStoppedContainersToCache (ContainerId containerId)
+DECL|method|updateStoppedContainersInCache (ContainerId containerId)
 specifier|public
 name|void
-name|addStoppedContainersToCache
+name|updateStoppedContainersInCache
 parameter_list|(
 name|ContainerId
 name|containerId
@@ -2601,7 +2690,7 @@ decl_stmt|;
 name|NodeStatus
 name|nodeStatus
 init|=
-name|getNodeStatusAndUpdateContainersInContext
+name|getNodeStatus
 argument_list|(
 name|lastHeartBeatID
 argument_list|)
@@ -2775,6 +2864,13 @@ argument_list|)
 expr_stmt|;
 break|break;
 block|}
+comment|// Explicitly put this method after checking the resync response. We
+comment|// don't want to remove the completed containers before resync
+comment|// because these completed containers will be reported back to RM
+comment|// when NM re-registers with RM.
+name|removeCompletedContainersFromContext
+argument_list|()
+expr_stmt|;
 name|lastHeartBeatID
 operator|=
 name|response

@@ -410,10 +410,21 @@ argument_list|)
 expr_stmt|;
 name|resourceTracker
 operator|=
+name|createResourceTracker
+argument_list|()
+expr_stmt|;
+block|}
+DECL|method|createResourceTracker ()
+specifier|protected
+name|ResourceTracker
+name|createResourceTracker
+parameter_list|()
+block|{
+return|return
 operator|new
 name|MockResourceTracker
 argument_list|()
-expr_stmt|;
+return|;
 block|}
 annotation|@
 name|Override
@@ -438,7 +449,7 @@ block|{
 return|return;
 block|}
 DECL|class|MockResourceTracker
-specifier|private
+specifier|protected
 specifier|static
 class|class
 name|MockResourceTracker

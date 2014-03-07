@@ -1366,7 +1366,7 @@ operator|)
 name|nodeStatusUpdater
 operator|)
 operator|.
-name|rebootNodeStatusUpdater
+name|rebootNodeStatusUpdaterAndRegisterWithRM
 argument_list|()
 expr_stmt|;
 block|}
@@ -1432,7 +1432,7 @@ argument_list|>
 argument_list|()
 decl_stmt|;
 DECL|field|containers
-specifier|private
+specifier|protected
 specifier|final
 name|ConcurrentMap
 argument_list|<

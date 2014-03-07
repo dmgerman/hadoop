@@ -52,26 +52,6 @@ name|ContainerId
 import|;
 end_import
 
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|yarn
-operator|.
-name|server
-operator|.
-name|api
-operator|.
-name|records
-operator|.
-name|NodeStatus
-import|;
-end_import
-
 begin_interface
 DECL|interface|NodeStatusUpdater
 specifier|public
@@ -84,14 +64,6 @@ DECL|method|sendOutofBandHeartBeat ()
 name|void
 name|sendOutofBandHeartBeat
 parameter_list|()
-function_decl|;
-DECL|method|getNodeStatusAndUpdateContainersInContext (int responseId)
-name|NodeStatus
-name|getNodeStatusAndUpdateContainersInContext
-parameter_list|(
-name|int
-name|responseId
-parameter_list|)
 function_decl|;
 DECL|method|getRMIdentifier ()
 name|long
