@@ -176,6 +176,12 @@ name|long
 name|getMaxObjects
 parameter_list|()
 function_decl|;
+comment|/**    * Number of blocks pending deletion    * @return number of blocks pending deletion    */
+DECL|method|getPendingDeletionBlocks ()
+name|long
+name|getPendingDeletionBlocks
+parameter_list|()
+function_decl|;
 block|}
 end_interface
 
