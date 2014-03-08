@@ -1606,7 +1606,7 @@ argument_list|)
 operator|.
 name|append
 argument_list|(
-literal|"\n, {'sType':'numeric', 'aTargets': [5, 6]"
+literal|"\n, {'sType':'numeric', 'aTargets': [6, 7]"
 argument_list|)
 operator|.
 name|append
