@@ -1294,8 +1294,7 @@ name|backupNode
 operator|.
 name|nnHttpAddress
 argument_list|,
-name|getImageListenAddress
-argument_list|()
+name|conf
 argument_list|,
 name|bnStorage
 argument_list|,

@@ -513,6 +513,12 @@ specifier|final
 name|CheckpointConf
 name|checkpointConf
 decl_stmt|;
+DECL|field|conf
+specifier|private
+specifier|final
+name|Configuration
+name|conf
+decl_stmt|;
 DECL|field|namesystem
 specifier|private
 specifier|final
@@ -588,6 +594,12 @@ operator|.
 name|namesystem
 operator|=
 name|ns
+expr_stmt|;
+name|this
+operator|.
+name|conf
+operator|=
+name|conf
 expr_stmt|;
 name|this
 operator|.
@@ -1096,7 +1108,7 @@ name|uploadImageFromStorage
 argument_list|(
 name|activeNNAddress
 argument_list|,
-name|myNNAddress
+name|conf
 argument_list|,
 name|namesystem
 operator|.

@@ -1218,11 +1218,13 @@ name|httpServer
 operator|.
 name|addInternalServlet
 argument_list|(
-literal|"getimage"
+literal|"imagetransfer"
 argument_list|,
-literal|"/getimage"
+name|ImageServlet
+operator|.
+name|PATH_SPEC
 argument_list|,
-name|GetImageServlet
+name|ImageServlet
 operator|.
 name|class
 argument_list|,
