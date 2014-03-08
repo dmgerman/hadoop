@@ -64,6 +64,18 @@ name|mockito
 operator|.
 name|Mockito
 operator|.
+name|atLeastOnce
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|mockito
+operator|.
+name|Mockito
+operator|.
 name|times
 import|;
 end_import
@@ -881,10 +893,8 @@ name|verify
 argument_list|(
 name|nnSpy
 argument_list|,
-name|times
-argument_list|(
-literal|1
-argument_list|)
+name|atLeastOnce
+argument_list|()
 argument_list|)
 operator|.
 name|blockReceivedAndDeleted
