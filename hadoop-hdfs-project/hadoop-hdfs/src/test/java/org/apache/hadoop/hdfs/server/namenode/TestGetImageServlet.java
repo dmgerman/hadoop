@@ -435,7 +435,7 @@ expr_stmt|;
 comment|// Make sure that NN2 is considered a valid fsimage/edits requestor.
 name|assertTrue
 argument_list|(
-name|ImageServlet
+name|GetImageServlet
 operator|.
 name|isValidRequestor
 argument_list|(
@@ -507,7 +507,7 @@ expr_stmt|;
 comment|// Make sure that NN2 is still considered a valid requestor.
 name|assertTrue
 argument_list|(
-name|ImageServlet
+name|GetImageServlet
 operator|.
 name|isValidRequestor
 argument_list|(
@@ -522,7 +522,7 @@ expr_stmt|;
 comment|// Make sure an admin is considered a valid requestor.
 name|assertTrue
 argument_list|(
-name|ImageServlet
+name|GetImageServlet
 operator|.
 name|isValidRequestor
 argument_list|(
@@ -537,7 +537,7 @@ expr_stmt|;
 comment|// Make sure other users are *not* considered valid requestors.
 name|assertFalse
 argument_list|(
-name|ImageServlet
+name|GetImageServlet
 operator|.
 name|isValidRequestor
 argument_list|(

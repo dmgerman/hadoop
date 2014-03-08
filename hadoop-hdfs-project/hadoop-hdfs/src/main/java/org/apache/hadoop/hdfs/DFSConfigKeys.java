@@ -3645,30 +3645,11 @@ specifier|final
 name|int
 name|DFS_IMAGE_TRANSFER_TIMEOUT_DEFAULT
 init|=
+literal|10
+operator|*
 literal|60
 operator|*
 literal|1000
-decl_stmt|;
-comment|// Image transfer chunksize
-DECL|field|DFS_IMAGE_TRANSFER_CHUNKSIZE_KEY
-specifier|public
-specifier|static
-specifier|final
-name|String
-name|DFS_IMAGE_TRANSFER_CHUNKSIZE_KEY
-init|=
-literal|"dfs.image.transfer.chunksize"
-decl_stmt|;
-DECL|field|DFS_IMAGE_TRANSFER_CHUNKSIZE_DEFAULT
-specifier|public
-specifier|static
-specifier|final
-name|int
-name|DFS_IMAGE_TRANSFER_CHUNKSIZE_DEFAULT
-init|=
-literal|64
-operator|*
-literal|1024
 decl_stmt|;
 comment|//Keys with no defaults
 DECL|field|DFS_DATANODE_PLUGINS_KEY
