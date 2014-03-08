@@ -2900,7 +2900,17 @@ name|NM_PREFIX
 operator|+
 literal|"container-monitor.process-tree.class"
 decl_stmt|;
-comment|/**    * Enable/Disable disks' health checker. Default is true.    * An expert level configuration property.    */
+comment|/** Prefix for all node manager disk health checker configs. */
+DECL|field|NM_DISK_HEALTH_CHECK_PREFIX
+specifier|private
+specifier|static
+specifier|final
+name|String
+name|NM_DISK_HEALTH_CHECK_PREFIX
+init|=
+literal|"yarn.nodemanager.disk-health-checker."
+decl_stmt|;
+comment|/**    * Enable/Disable disks' health checker. Default is true. An expert level    * configuration property.    */
 DECL|field|NM_DISK_HEALTH_CHECK_ENABLE
 specifier|public
 specifier|static
@@ -2908,11 +2918,11 @@ specifier|final
 name|String
 name|NM_DISK_HEALTH_CHECK_ENABLE
 init|=
-name|NM_PREFIX
+name|NM_DISK_HEALTH_CHECK_PREFIX
 operator|+
-literal|"disk-health-checker.enable"
+literal|"enable"
 decl_stmt|;
-comment|/** Frequency of running disks' health checker.*/
+comment|/** Frequency of running disks' health checker. */
 DECL|field|NM_DISK_HEALTH_CHECK_INTERVAL_MS
 specifier|public
 specifier|static
@@ -2920,9 +2930,9 @@ specifier|final
 name|String
 name|NM_DISK_HEALTH_CHECK_INTERVAL_MS
 init|=
-name|NM_PREFIX
+name|NM_DISK_HEALTH_CHECK_PREFIX
 operator|+
-literal|"disk-health-checker.interval-ms"
+literal|"interval-ms"
 decl_stmt|;
 comment|/** By default, disks' health is checked every 2 minutes. */
 DECL|field|DEFAULT_NM_DISK_HEALTH_CHECK_INTERVAL_MS
@@ -2946,11 +2956,11 @@ specifier|final
 name|String
 name|NM_MIN_HEALTHY_DISKS_FRACTION
 init|=
-name|NM_PREFIX
+name|NM_DISK_HEALTH_CHECK_PREFIX
 operator|+
-literal|"disk-health-checker.min-healthy-disks"
+literal|"min-healthy-disks"
 decl_stmt|;
-comment|/**    * By default, at least 25% of disks are to be healthy to say that the node    * is healthy in terms of disks.    */
+comment|/**    * By default, at least 25% of disks are to be healthy to say that the node is    * healthy in terms of disks.    */
 DECL|field|DEFAULT_NM_MIN_HEALTHY_DISKS_FRACTION
 specifier|public
 specifier|static
@@ -2959,6 +2969,50 @@ name|float
 name|DEFAULT_NM_MIN_HEALTHY_DISKS_FRACTION
 init|=
 literal|0.25F
+decl_stmt|;
+comment|/**    * The maximum percentage of disk space that can be used after which a disk is    * marked as offline. Values can range from 0.0 to 100.0. If the value is    * greater than or equal to 100, NM will check for full disk. This applies to    * nm-local-dirs and nm-log-dirs.    */
+DECL|field|NM_MAX_PER_DISK_UTILIZATION_PERCENTAGE
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|NM_MAX_PER_DISK_UTILIZATION_PERCENTAGE
+init|=
+name|NM_DISK_HEALTH_CHECK_PREFIX
+operator|+
+literal|"max-disk-utilization-per-disk-percentage"
+decl_stmt|;
+comment|/**    * By default, 100% of the disk can be used before it is marked as offline.    */
+DECL|field|DEFAULT_NM_MAX_PER_DISK_UTILIZATION_PERCENTAGE
+specifier|public
+specifier|static
+specifier|final
+name|float
+name|DEFAULT_NM_MAX_PER_DISK_UTILIZATION_PERCENTAGE
+init|=
+literal|100.0F
+decl_stmt|;
+comment|/**    * The minimum space that must be available on a local dir for it to be used.    * This applies to nm-local-dirs and nm-log-dirs.    */
+DECL|field|NM_MIN_PER_DISK_FREE_SPACE_MB
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|NM_MIN_PER_DISK_FREE_SPACE_MB
+init|=
+name|NM_DISK_HEALTH_CHECK_PREFIX
+operator|+
+literal|"min-free-space-per-disk-mb"
+decl_stmt|;
+comment|/**    * By default, all of the disk can be used before it is marked as offline.    */
+DECL|field|DEFAULT_NM_MIN_PER_DISK_FREE_SPACE_MB
+specifier|public
+specifier|static
+specifier|final
+name|long
+name|DEFAULT_NM_MIN_PER_DISK_FREE_SPACE_MB
+init|=
+literal|0
 decl_stmt|;
 comment|/** Frequency of running node health script.*/
 DECL|field|NM_HEALTH_CHECK_INTERVAL_MS
