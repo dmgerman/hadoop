@@ -864,6 +864,22 @@ name|yarn
 operator|.
 name|exceptions
 operator|.
+name|ApplicationIdNotProvidedException
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|exceptions
+operator|.
 name|ApplicationNotFoundException
 import|;
 end_import
@@ -1384,13 +1400,21 @@ operator|.
 name|getApplicationId
 argument_list|()
 decl_stmt|;
-name|appContext
-operator|.
-name|setApplicationId
-argument_list|(
+if|if
+condition|(
 name|applicationId
+operator|==
+literal|null
+condition|)
+block|{
+throw|throw
+operator|new
+name|ApplicationIdNotProvidedException
+argument_list|(
+literal|"ApplicationId is not provided in ApplicationSubmissionContext"
 argument_list|)
-expr_stmt|;
+throw|;
+block|}
 name|SubmitApplicationRequest
 name|request
 init|=
@@ -1410,6 +1434,7 @@ argument_list|(
 name|appContext
 argument_list|)
 expr_stmt|;
+comment|//TODO: YARN-1763:Handle RM failovers during the submitApplication call.
 name|rmClient
 operator|.
 name|submitApplication
@@ -1430,6 +1455,7 @@ operator|.
 name|currentTimeMillis
 argument_list|()
 decl_stmt|;
+comment|//TODO: YARN-1764:Handle RM fail overs after the submitApplication call.
 while|while
 condition|(
 literal|true

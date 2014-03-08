@@ -432,6 +432,22 @@ name|yarn
 operator|.
 name|exceptions
 operator|.
+name|ApplicationIdNotProvidedException
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|exceptions
+operator|.
 name|ContainerNotFoundException
 import|;
 end_import
@@ -534,7 +550,7 @@ name|YarnException
 throws|,
 name|IOException
 function_decl|;
-comment|/**    *<p>    * Submit a new application to<code>YARN.</code> It is a blocking call, such    * that it will not return {@link ApplicationId} until the submitted    * application has been submitted and accepted by the ResourceManager.    *</p>    *     * @param appContext    *          {@link ApplicationSubmissionContext} containing all the details    *          needed to submit a new application    * @return {@link ApplicationId} of the accepted application    * @throws YarnException    * @throws IOException    * @see #createApplication()    */
+comment|/**    *<p>    * Submit a new application to<code>YARN.</code> It is a blocking call, such    * that it will not return {@link ApplicationId} until the submitted    * application has been submitted and accepted by the ResourceManager.    *</p>    *     *<p>    * Should provide an {@link ApplicationId} when submits a new application,    * otherwise, it will throw the {@link ApplicationIdNotProvidedException}    *</p>    *    * @param appContext    *          {@link ApplicationSubmissionContext} containing all the details    *          needed to submit a new application    * @return {@link ApplicationId} of the accepted application    * @throws YarnException    * @throws IOException    * @see #createApplication()    */
 DECL|method|submitApplication (ApplicationSubmissionContext appContext)
 specifier|public
 specifier|abstract

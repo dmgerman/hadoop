@@ -153,7 +153,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  *<p>The response sent by the<code>ResourceManager</code> to the client for   * a request to get a new {@link ApplicationId} for submitting applications.</p>  *   * @see ApplicationClientProtocol#getNewApplication(GetNewApplicationRequest)  */
+comment|/**  *<p>The response sent by the<code>ResourceManager</code> to the client for   * a request to get a new {@link ApplicationId} for submitting applications.</p>  *   *<p>Clients can submit an application with the returned  * {@link ApplicationId}.</p>  *  * @see ApplicationClientProtocol#getNewApplication(GetNewApplicationRequest)  */
 end_comment
 
 begin_class
