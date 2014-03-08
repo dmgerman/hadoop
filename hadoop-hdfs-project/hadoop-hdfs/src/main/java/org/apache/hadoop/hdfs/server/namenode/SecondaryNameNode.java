@@ -976,11 +976,6 @@ specifier|private
 name|HttpServer2
 name|infoServer
 decl_stmt|;
-DECL|field|imageListenURL
-specifier|private
-name|URL
-name|imageListenURL
-decl_stmt|;
 DECL|field|checkpointDirs
 specifier|private
 name|Collection
@@ -1661,11 +1656,13 @@ name|infoServer
 operator|.
 name|addInternalServlet
 argument_list|(
-literal|"getimage"
+literal|"imagetransfer"
 argument_list|,
-literal|"/getimage"
+name|ImageServlet
+operator|.
+name|PATH_SPEC
 argument_list|,
-name|GetImageServlet
+name|ImageServlet
 operator|.
 name|class
 argument_list|,
@@ -1682,33 +1679,6 @@ operator|.
 name|info
 argument_list|(
 literal|"Web server init done"
-argument_list|)
-expr_stmt|;
-name|imageListenURL
-operator|=
-operator|new
-name|URL
-argument_list|(
-name|DFSUtil
-operator|.
-name|getHttpClientScheme
-argument_list|(
-name|conf
-argument_list|)
-operator|+
-literal|"://"
-operator|+
-name|NetUtils
-operator|.
-name|getHostPortString
-argument_list|(
-name|infoServer
-operator|.
-name|getConnectorAddress
-argument_list|(
-literal|0
-argument_list|)
-argument_list|)
 argument_list|)
 expr_stmt|;
 name|HttpConfig
@@ -2613,17 +2583,6 @@ name|toURL
 argument_list|()
 return|;
 block|}
-comment|/**    * Return the host:port of where this SecondaryNameNode is listening    * for image transfers    */
-DECL|method|getImageListenAddress ()
-specifier|private
-name|URL
-name|getImageListenAddress
-parameter_list|()
-block|{
-return|return
-name|imageListenURL
-return|;
-block|}
 comment|/**    * Create a new checkpoint    * @return if the image is fetched from primary or not    */
 annotation|@
 name|VisibleForTesting
@@ -2875,8 +2834,7 @@ name|uploadImageFromStorage
 argument_list|(
 name|fsName
 argument_list|,
-name|getImageListenAddress
-argument_list|()
+name|conf
 argument_list|,
 name|dstStorage
 argument_list|,

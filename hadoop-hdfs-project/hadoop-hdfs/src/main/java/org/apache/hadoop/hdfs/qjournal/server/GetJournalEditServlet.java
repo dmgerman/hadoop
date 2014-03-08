@@ -350,7 +350,7 @@ name|server
 operator|.
 name|namenode
 operator|.
-name|GetImageServlet
+name|ImageServlet
 import|;
 end_import
 
@@ -1214,16 +1214,16 @@ operator|.
 name|getFile
 argument_list|()
 expr_stmt|;
-name|GetImageServlet
+name|ImageServlet
 operator|.
-name|setVerificationHeaders
+name|setVerificationHeadersForGet
 argument_list|(
 name|response
 argument_list|,
 name|editFile
 argument_list|)
 expr_stmt|;
-name|GetImageServlet
+name|ImageServlet
 operator|.
 name|setFileNameHeaders
 argument_list|(
@@ -1244,7 +1244,7 @@ block|}
 name|DataTransferThrottler
 name|throttler
 init|=
-name|GetImageServlet
+name|ImageServlet
 operator|.
 name|getThrottler
 argument_list|(
@@ -1254,9 +1254,12 @@ decl_stmt|;
 comment|// send edits
 name|TransferFsImage
 operator|.
-name|getFileServer
+name|copyFileToStream
 argument_list|(
 name|response
+operator|.
+name|getOutputStream
+argument_list|()
 argument_list|,
 name|editFile
 argument_list|,
