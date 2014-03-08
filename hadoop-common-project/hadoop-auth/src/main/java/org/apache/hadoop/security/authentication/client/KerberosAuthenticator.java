@@ -1376,8 +1376,6 @@ name|outToken
 parameter_list|)
 throws|throws
 name|IOException
-throws|,
-name|AuthenticationException
 block|{
 name|String
 name|token

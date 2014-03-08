@@ -403,7 +403,7 @@ argument_list|,
 literal|"false"
 argument_list|)
 expr_stmt|;
-name|auth
+name|AuthenticatorTestCase
 operator|.
 name|setAuthenticationHandlerConfig
 argument_list|(
@@ -473,7 +473,7 @@ argument_list|,
 literal|"true"
 argument_list|)
 expr_stmt|;
-name|auth
+name|AuthenticatorTestCase
 operator|.
 name|setAuthenticationHandlerConfig
 argument_list|(
@@ -514,7 +514,7 @@ operator|new
 name|AuthenticatorTestCase
 argument_list|()
 decl_stmt|;
-name|auth
+name|AuthenticatorTestCase
 operator|.
 name|setAuthenticationHandlerConfig
 argument_list|(
@@ -620,7 +620,7 @@ operator|new
 name|AuthenticatorTestCase
 argument_list|()
 decl_stmt|;
-name|auth
+name|AuthenticatorTestCase
 operator|.
 name|setAuthenticationHandlerConfig
 argument_list|(
@@ -690,7 +690,7 @@ operator|new
 name|AuthenticatorTestCase
 argument_list|()
 decl_stmt|;
-name|auth
+name|AuthenticatorTestCase
 operator|.
 name|setAuthenticationHandlerConfig
 argument_list|(
