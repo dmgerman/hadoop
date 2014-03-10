@@ -497,6 +497,17 @@ argument_list|,
 literal|"000"
 argument_list|)
 expr_stmt|;
+name|conf
+operator|.
+name|setInt
+argument_list|(
+name|DFSConfigKeys
+operator|.
+name|DFS_NAMENODE_MAX_COMPONENT_LENGTH_KEY
+argument_list|,
+literal|0
+argument_list|)
+expr_stmt|;
 name|cluster
 operator|=
 operator|new
