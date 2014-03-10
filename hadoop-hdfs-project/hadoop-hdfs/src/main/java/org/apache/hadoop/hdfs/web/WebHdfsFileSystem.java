@@ -6692,6 +6692,30 @@ name|r
 argument_list|)
 return|;
 block|}
+annotation|@
+name|Override
+DECL|method|getCanonicalServiceName ()
+specifier|public
+name|String
+name|getCanonicalServiceName
+parameter_list|()
+block|{
+return|return
+name|tokenServiceName
+operator|==
+literal|null
+condition|?
+name|super
+operator|.
+name|getCanonicalServiceName
+argument_list|()
+else|:
+name|tokenServiceName
+operator|.
+name|toString
+argument_list|()
+return|;
+block|}
 block|}
 end_class
 
