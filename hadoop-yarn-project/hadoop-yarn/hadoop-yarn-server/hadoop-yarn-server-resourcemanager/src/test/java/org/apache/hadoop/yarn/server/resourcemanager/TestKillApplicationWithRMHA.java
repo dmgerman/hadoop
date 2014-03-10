@@ -1283,7 +1283,7 @@ if|if
 condition|(
 name|application
 operator|.
-name|isAppSafeToTerminate
+name|isAppFinalStateStored
 argument_list|()
 condition|)
 block|{

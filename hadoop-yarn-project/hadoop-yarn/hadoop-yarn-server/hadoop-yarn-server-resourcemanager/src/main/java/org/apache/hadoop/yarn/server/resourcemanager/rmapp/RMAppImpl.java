@@ -6032,10 +6032,10 @@ return|;
 block|}
 annotation|@
 name|Override
-DECL|method|isAppSafeToTerminate ()
+DECL|method|isAppFinalStateStored ()
 specifier|public
 name|boolean
-name|isAppSafeToTerminate
+name|isAppFinalStateStored
 parameter_list|()
 block|{
 name|RMAppState
@@ -6080,14 +6080,6 @@ name|RMAppState
 operator|.
 name|KILLED
 argument_list|)
-operator|||
-comment|// If this is an unmanaged AM, we are safe to unregister since unmanaged
-comment|// AM will immediately go to FINISHED state on AM unregistration
-name|getApplicationSubmissionContext
-argument_list|()
-operator|.
-name|getUnmanagedAM
-argument_list|()
 return|;
 block|}
 annotation|@

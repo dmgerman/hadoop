@@ -409,10 +409,10 @@ argument_list|>
 name|getApplicationTags
 parameter_list|()
 function_decl|;
-comment|/**    * Check whether this application is safe to terminate.    * An application is deemed to be safe to terminate if it is an unmanaged    * AM or its state has been saved in state store.    * @return the flag which indicates whether this application is safe to    *         terminate.    */
-DECL|method|isAppSafeToTerminate ()
+comment|/**    * Check whether this application's state has been saved to the state store.    * @return the flag indicating whether the applications's state is stored.    */
+DECL|method|isAppFinalStateStored ()
 name|boolean
-name|isAppSafeToTerminate
+name|isAppFinalStateStored
 parameter_list|()
 function_decl|;
 comment|/**    * Create the external user-facing state of ApplicationMaster from the    * current state of the {@link RMApp}.    * @return the external user-facing state of ApplicationMaster.    */

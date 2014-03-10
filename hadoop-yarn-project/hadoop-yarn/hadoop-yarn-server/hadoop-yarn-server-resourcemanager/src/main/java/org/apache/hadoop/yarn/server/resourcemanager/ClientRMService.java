@@ -2865,7 +2865,7 @@ if|if
 condition|(
 name|application
 operator|.
-name|isAppSafeToTerminate
+name|isAppFinalStateStored
 argument_list|()
 condition|)
 block|{
@@ -2896,8 +2896,6 @@ literal|true
 argument_list|)
 return|;
 block|}
-else|else
-block|{
 name|this
 operator|.
 name|rmContext
@@ -2921,15 +2919,21 @@ name|KILL
 argument_list|)
 argument_list|)
 expr_stmt|;
+comment|// For UnmanagedAMs, return true so they don't retry
 return|return
 name|KillApplicationResponse
 operator|.
 name|newInstance
 argument_list|(
-literal|false
+name|application
+operator|.
+name|getApplicationSubmissionContext
+argument_list|()
+operator|.
+name|getUnmanagedAM
+argument_list|()
 argument_list|)
 return|;
-block|}
 block|}
 annotation|@
 name|Override

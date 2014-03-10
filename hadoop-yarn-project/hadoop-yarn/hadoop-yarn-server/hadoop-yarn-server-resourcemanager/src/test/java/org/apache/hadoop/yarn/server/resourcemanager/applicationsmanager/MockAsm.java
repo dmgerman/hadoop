@@ -802,10 +802,10 @@ throw|;
 block|}
 annotation|@
 name|Override
-DECL|method|isAppSafeToTerminate ()
+DECL|method|isAppFinalStateStored ()
 specifier|public
 name|boolean
-name|isAppSafeToTerminate
+name|isAppFinalStateStored
 parameter_list|()
 block|{
 throw|throw
