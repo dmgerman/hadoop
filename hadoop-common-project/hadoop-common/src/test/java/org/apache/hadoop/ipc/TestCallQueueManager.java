@@ -947,16 +947,6 @@ argument_list|(
 literal|10
 argument_list|)
 expr_stmt|;
-name|assertTrue
-argument_list|(
-name|manager
-operator|.
-name|size
-argument_list|()
-operator|>
-literal|0
-argument_list|)
-expr_stmt|;
 for|for
 control|(
 name|int
