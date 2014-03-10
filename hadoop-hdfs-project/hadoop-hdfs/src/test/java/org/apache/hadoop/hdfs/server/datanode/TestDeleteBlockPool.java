@@ -274,7 +274,14 @@ name|MiniDFSNNTopology
 operator|.
 name|simpleFederatedTopology
 argument_list|(
-literal|2
+name|conf
+operator|.
+name|get
+argument_list|(
+name|DFSConfigKeys
+operator|.
+name|DFS_NAMESERVICES
+argument_list|)
 argument_list|)
 argument_list|)
 operator|.
