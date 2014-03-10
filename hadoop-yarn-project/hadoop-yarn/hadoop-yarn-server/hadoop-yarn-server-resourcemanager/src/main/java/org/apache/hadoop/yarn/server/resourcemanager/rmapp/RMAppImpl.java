@@ -5792,10 +5792,7 @@ name|app
 operator|.
 name|applicationId
 argument_list|,
-name|app
-operator|.
-name|getState
-argument_list|()
+name|finalState
 argument_list|)
 argument_list|)
 expr_stmt|;
