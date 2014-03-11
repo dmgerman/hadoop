@@ -160,6 +160,58 @@ name|yarn
 operator|.
 name|api
 operator|.
+name|ApplicationClientProtocol
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|api
+operator|.
+name|protocolrecords
+operator|.
+name|GetApplicationReportRequest
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|api
+operator|.
+name|protocolrecords
+operator|.
+name|SubmitApplicationRequest
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|api
+operator|.
 name|records
 operator|.
 name|ApplicationAttemptId
@@ -448,7 +500,7 @@ name|yarn
 operator|.
 name|exceptions
 operator|.
-name|ContainerNotFoundException
+name|ApplicationNotFoundException
 import|;
 end_import
 
@@ -550,8 +602,8 @@ name|YarnException
 throws|,
 name|IOException
 function_decl|;
-comment|/**    *<p>    * Submit a new application to<code>YARN.</code> It is a blocking call, such    * that it will not return {@link ApplicationId} until the submitted    * application has been submitted and accepted by the ResourceManager.    *</p>    *     *<p>    * Should provide an {@link ApplicationId} when submits a new application,    * otherwise, it will throw the {@link ApplicationIdNotProvidedException}    *</p>    *    * @param appContext    *          {@link ApplicationSubmissionContext} containing all the details    *          needed to submit a new application    * @return {@link ApplicationId} of the accepted application    * @throws YarnException    * @throws IOException    * @see #createApplication()    */
-DECL|method|submitApplication (ApplicationSubmissionContext appContext)
+comment|/**    *<p>    * Submit a new application to<code>YARN.</code> It is a blocking call - it    * will not return {@link ApplicationId} until the submitted application is    * submitted successfully and accepted by the ResourceManager.    *</p>    *     *<p>    * Users should provide an {@link ApplicationId} as part of the parameter    * {@link ApplicationSubmissionContext} when submitting a new application,    * otherwise it will throw the {@link ApplicationIdNotProvidedException}.    *</p>    *    *<p>This internally calls {@link ApplicationClientProtocol#submitApplication    * (SubmitApplicationRequest)}, and after that, it internally invokes    * {@link ApplicationClientProtocol#getApplicationReport    * (GetApplicationReportRequest)} and waits till it can make sure that the    * application gets properly submitted. If RM fails over or RM restart    * happens before ResourceManager saves the application's state,    * {@link ApplicationClientProtocol    * #getApplicationReport(GetApplicationReportRequest)} will throw    * the {@link ApplicationNotFoundException}. This API automatically resubmits    * the application with the same {@link ApplicationSubmissionContext} when it    * catches the {@link ApplicationNotFoundException}</p>    *    * @param appContext    *          {@link ApplicationSubmissionContext} containing all the details    *          needed to submit a new application    * @return {@link ApplicationId} of the accepted application    * @throws YarnException    * @throws IOException    * @see #createApplication()    */
+DECL|method|submitApplication ( ApplicationSubmissionContext appContext)
 specifier|public
 specifier|abstract
 name|ApplicationId

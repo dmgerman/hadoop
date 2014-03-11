@@ -1455,11 +1455,12 @@ operator|.
 name|currentTimeMillis
 argument_list|()
 decl_stmt|;
-comment|//TODO: YARN-1764:Handle RM fail overs after the submitApplication call.
 while|while
 condition|(
 literal|true
 condition|)
+block|{
+try|try
 block|{
 name|YarnApplicationState
 name|state
@@ -1591,6 +1592,36 @@ operator|+
 name|applicationId
 operator|+
 literal|" to be successfully submitted."
+argument_list|)
+expr_stmt|;
+block|}
+block|}
+catch|catch
+parameter_list|(
+name|ApplicationNotFoundException
+name|ex
+parameter_list|)
+block|{
+comment|// FailOver or RM restart happens before RMStateStore saves
+comment|// ApplicationState
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"Re-submit application "
+operator|+
+name|applicationId
+operator|+
+literal|"with the "
+operator|+
+literal|"same ApplicationSubmissionContext"
+argument_list|)
+expr_stmt|;
+name|rmClient
+operator|.
+name|submitApplication
+argument_list|(
+name|request
 argument_list|)
 expr_stmt|;
 block|}
