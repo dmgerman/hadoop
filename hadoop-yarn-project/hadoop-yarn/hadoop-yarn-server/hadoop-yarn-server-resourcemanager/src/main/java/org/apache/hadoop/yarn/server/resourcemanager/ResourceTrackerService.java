@@ -1546,6 +1546,13 @@ decl_stmt|;
 if|if
 condition|(
 name|rmAppAttempt
+operator|!=
+literal|null
+condition|)
+block|{
+if|if
+condition|(
+name|rmAppAttempt
 operator|.
 name|getMasterContainer
 argument_list|()
@@ -1596,6 +1603,7 @@ argument_list|(
 name|evt
 argument_list|)
 expr_stmt|;
+block|}
 block|}
 block|}
 else|else
