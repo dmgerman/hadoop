@@ -12096,6 +12096,7 @@ name|clientContext
 return|;
 block|}
 DECL|method|modifyAclEntries (String src, List<AclEntry> aclSpec)
+specifier|public
 name|void
 name|modifyAclEntries
 parameter_list|(
@@ -12169,6 +12170,7 @@ throw|;
 block|}
 block|}
 DECL|method|removeAclEntries (String src, List<AclEntry> aclSpec)
+specifier|public
 name|void
 name|removeAclEntries
 parameter_list|(
@@ -12242,6 +12244,7 @@ throw|;
 block|}
 block|}
 DECL|method|removeDefaultAcl (String src)
+specifier|public
 name|void
 name|removeDefaultAcl
 parameter_list|(
@@ -12307,6 +12310,7 @@ throw|;
 block|}
 block|}
 DECL|method|removeAcl (String src)
+specifier|public
 name|void
 name|removeAcl
 parameter_list|(
@@ -12372,6 +12376,7 @@ throw|;
 block|}
 block|}
 DECL|method|setAcl (String src, List<AclEntry> aclSpec)
+specifier|public
 name|void
 name|setAcl
 parameter_list|(
@@ -12445,6 +12450,7 @@ throw|;
 block|}
 block|}
 DECL|method|getAclStatus (String src)
+specifier|public
 name|AclStatus
 name|getAclStatus
 parameter_list|(
