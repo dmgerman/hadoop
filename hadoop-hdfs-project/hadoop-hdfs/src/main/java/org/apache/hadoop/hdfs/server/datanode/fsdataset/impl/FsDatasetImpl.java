@@ -6576,6 +6576,29 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
+DECL|method|isCached (String bpid, long blockId)
+specifier|public
+name|boolean
+name|isCached
+parameter_list|(
+name|String
+name|bpid
+parameter_list|,
+name|long
+name|blockId
+parameter_list|)
+block|{
+return|return
+name|cacheManager
+operator|.
+name|isCached
+argument_list|(
+name|bpid
+argument_list|,
+name|blockId
+argument_list|)
+return|;
+block|}
 annotation|@
 name|Override
 comment|// FsDatasetSpi

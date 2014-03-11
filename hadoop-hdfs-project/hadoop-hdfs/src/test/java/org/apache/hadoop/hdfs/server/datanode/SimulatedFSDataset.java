@@ -3258,6 +3258,25 @@ literal|"SimulatedFSDataset does not support uncache operation!"
 argument_list|)
 throw|;
 block|}
+annotation|@
+name|Override
+comment|// FSDatasetSpi
+DECL|method|isCached (String bpid, long blockId)
+specifier|public
+name|boolean
+name|isCached
+parameter_list|(
+name|String
+name|bpid
+parameter_list|,
+name|long
+name|blockId
+parameter_list|)
+block|{
+return|return
+literal|false
+return|;
+block|}
 DECL|method|getBInfo (final ExtendedBlock b)
 specifier|private
 name|BInfo

@@ -986,6 +986,19 @@ index|[]
 name|blockIds
 parameter_list|)
 function_decl|;
+comment|/**    * Determine if the specified block is cached.    * @param bpid Block pool id    * @param blockIds - block id    * @returns true if the block is cached    */
+DECL|method|isCached (String bpid, long blockId)
+specifier|public
+name|boolean
+name|isCached
+parameter_list|(
+name|String
+name|bpid
+parameter_list|,
+name|long
+name|blockId
+parameter_list|)
+function_decl|;
 comment|/**      * Check if all the data directories are healthy      * @throws DiskErrorException      */
 DECL|method|checkDataDir ()
 specifier|public

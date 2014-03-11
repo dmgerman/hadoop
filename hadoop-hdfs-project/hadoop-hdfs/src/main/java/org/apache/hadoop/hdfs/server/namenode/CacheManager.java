@@ -4972,9 +4972,17 @@ argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
+if|if
+condition|(
 name|LOG
 operator|.
-name|info
+name|isDebugEnabled
+argument_list|()
+condition|)
+block|{
+name|LOG
+operator|.
+name|debug
 argument_list|(
 literal|"Processed cache report from "
 operator|+
@@ -4998,6 +5006,7 @@ operator|+
 literal|" msecs"
 argument_list|)
 expr_stmt|;
+block|}
 block|}
 DECL|method|processCacheReportImpl (final DatanodeDescriptor datanode, final List<Long> blockIds)
 specifier|private

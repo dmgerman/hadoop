@@ -1290,7 +1290,7 @@ return|return
 name|info
 return|;
 block|}
-DECL|method|registerSlot (ExtendedBlockId blockId, SlotId slotId)
+DECL|method|registerSlot (ExtendedBlockId blockId, SlotId slotId, boolean isCached)
 specifier|public
 specifier|synchronized
 name|void
@@ -1301,6 +1301,9 @@ name|blockId
 parameter_list|,
 name|SlotId
 name|slotId
+parameter_list|,
+name|boolean
+name|isCached
 parameter_list|)
 throws|throws
 name|InvalidRequestException
@@ -1323,9 +1326,11 @@ name|LOG
 operator|.
 name|trace
 argument_list|(
-literal|"registerSlot: ShortCircuitRegistry is "
+name|this
 operator|+
-literal|"not enabled."
+literal|" can't register a slot because the "
+operator|+
+literal|"ShortCircuitRegistry is not enabled."
 argument_list|)
 expr_stmt|;
 block|}
@@ -1387,6 +1392,25 @@ argument_list|,
 name|blockId
 argument_list|)
 decl_stmt|;
+if|if
+condition|(
+name|isCached
+condition|)
+block|{
+name|slot
+operator|.
+name|makeAnchorable
+argument_list|()
+expr_stmt|;
+block|}
+else|else
+block|{
+name|slot
+operator|.
+name|makeUnanchorable
+argument_list|()
+expr_stmt|;
+block|}
 name|boolean
 name|added
 init|=
@@ -1406,6 +1430,36 @@ argument_list|(
 name|added
 argument_list|)
 expr_stmt|;
+if|if
+condition|(
+name|LOG
+operator|.
+name|isTraceEnabled
+argument_list|()
+condition|)
+block|{
+name|LOG
+operator|.
+name|trace
+argument_list|(
+name|this
+operator|+
+literal|": registered "
+operator|+
+name|blockId
+operator|+
+literal|" with slot "
+operator|+
+name|slotId
+operator|+
+literal|" (isCached="
+operator|+
+name|isCached
+operator|+
+literal|")"
+argument_list|)
+expr_stmt|;
+block|}
 block|}
 DECL|method|unregisterSlot (SlotId slotId)
 specifier|public
