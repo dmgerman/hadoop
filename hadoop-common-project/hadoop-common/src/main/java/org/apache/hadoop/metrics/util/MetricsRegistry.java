@@ -34,17 +34,9 @@ name|java
 operator|.
 name|util
 operator|.
-name|HashMap
-import|;
-end_import
-
-begin_import
-import|import
-name|java
+name|concurrent
 operator|.
-name|util
-operator|.
-name|Map
+name|ConcurrentHashMap
 import|;
 end_import
 
@@ -85,7 +77,7 @@ name|MetricsRegistry
 block|{
 DECL|field|metricsList
 specifier|private
-name|Map
+name|ConcurrentHashMap
 argument_list|<
 name|String
 argument_list|,
@@ -94,7 +86,7 @@ argument_list|>
 name|metricsList
 init|=
 operator|new
-name|HashMap
+name|ConcurrentHashMap
 argument_list|<
 name|String
 argument_list|,
@@ -124,7 +116,6 @@ block|}
 comment|/**    * Add a new metrics to the registry    * @param metricsName - the name    * @param theMetricsObj - the metrics    * @throws IllegalArgumentException if a name is already registered    */
 DECL|method|add (final String metricsName, final MetricsBase theMetricsObj)
 specifier|public
-specifier|synchronized
 name|void
 name|add
 parameter_list|(
@@ -141,10 +132,14 @@ if|if
 condition|(
 name|metricsList
 operator|.
-name|containsKey
+name|putIfAbsent
 argument_list|(
 name|metricsName
+argument_list|,
+name|theMetricsObj
 argument_list|)
+operator|!=
+literal|null
 condition|)
 block|{
 throw|throw
@@ -157,20 +152,10 @@ name|metricsName
 argument_list|)
 throw|;
 block|}
-name|metricsList
-operator|.
-name|put
-argument_list|(
-name|metricsName
-argument_list|,
-name|theMetricsObj
-argument_list|)
-expr_stmt|;
 block|}
 comment|/**    *     * @param metricsName    * @return the metrics if there is one registered by the supplied name.    *         Returns null if none is registered    */
 DECL|method|get (final String metricsName)
 specifier|public
-specifier|synchronized
 name|MetricsBase
 name|get
 parameter_list|(
@@ -191,7 +176,6 @@ block|}
 comment|/**    *     * @return the list of metrics names    */
 DECL|method|getKeyList ()
 specifier|public
-specifier|synchronized
 name|Collection
 argument_list|<
 name|String
@@ -209,7 +193,6 @@ block|}
 comment|/**    *     * @return the list of metrics    */
 DECL|method|getMetricsList ()
 specifier|public
-specifier|synchronized
 name|Collection
 argument_list|<
 name|MetricsBase
