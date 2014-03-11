@@ -180,6 +180,20 @@ name|hadoop
 operator|.
 name|mapreduce
 operator|.
+name|LargeSorter
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|mapreduce
+operator|.
 name|MiniHadoopClusterManager
 import|;
 end_import
@@ -670,6 +684,19 @@ operator|.
 name|class
 argument_list|,
 literal|"Single process HDFS and MR cluster."
+argument_list|)
+expr_stmt|;
+name|pgd
+operator|.
+name|addClass
+argument_list|(
+literal|"largesorter"
+argument_list|,
+name|LargeSorter
+operator|.
+name|class
+argument_list|,
+literal|"Large-Sort tester"
 argument_list|)
 expr_stmt|;
 block|}

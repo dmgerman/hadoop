@@ -184,6 +184,8 @@ argument_list|>
 name|merger
 decl_stmt|;
 DECL|field|memDataIn
+specifier|private
+specifier|final
 name|DataInputBuffer
 name|memDataIn
 init|=
@@ -193,11 +195,13 @@ argument_list|()
 decl_stmt|;
 DECL|field|start
 specifier|private
+specifier|final
 name|int
 name|start
 decl_stmt|;
 DECL|field|length
 specifier|private
+specifier|final
 name|int
 name|length
 decl_stmt|;
@@ -279,6 +283,8 @@ argument_list|,
 name|start
 argument_list|,
 name|length
+operator|-
+name|start
 argument_list|)
 expr_stmt|;
 name|this
@@ -316,6 +322,10 @@ operator|+
 name|offset
 argument_list|,
 name|length
+operator|-
+name|start
+operator|-
+name|offset
 argument_list|)
 expr_stmt|;
 name|bytesRead

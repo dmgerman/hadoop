@@ -300,7 +300,7 @@ name|getPosition
 argument_list|()
 return|;
 block|}
-comment|/** Returns the length of the input. */
+comment|/**    * Returns the index one greater than the last valid character in the input    * stream buffer.    */
 DECL|method|getLength ()
 specifier|public
 name|int

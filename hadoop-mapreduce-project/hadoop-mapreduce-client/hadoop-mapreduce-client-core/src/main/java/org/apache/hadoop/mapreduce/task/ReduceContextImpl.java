@@ -917,6 +917,11 @@ name|nextVal
 operator|.
 name|getLength
 argument_list|()
+operator|-
+name|nextVal
+operator|.
+name|getPosition
+argument_list|()
 argument_list|)
 expr_stmt|;
 name|value
@@ -1213,6 +1218,11 @@ argument_list|,
 name|next
 operator|.
 name|getLength
+argument_list|()
+operator|-
+name|next
+operator|.
+name|getPosition
 argument_list|()
 argument_list|)
 expr_stmt|;
