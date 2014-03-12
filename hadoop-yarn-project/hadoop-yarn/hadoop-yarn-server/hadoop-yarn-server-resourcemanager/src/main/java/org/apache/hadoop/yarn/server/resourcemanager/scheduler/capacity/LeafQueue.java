@@ -4129,9 +4129,8 @@ name|getPriorities
 argument_list|()
 control|)
 block|{
-comment|// Required resource
-name|Resource
-name|required
+name|ResourceRequest
+name|anyRequest
 init|=
 name|application
 operator|.
@@ -4143,6 +4142,21 @@ name|ResourceRequest
 operator|.
 name|ANY
 argument_list|)
+decl_stmt|;
+if|if
+condition|(
+literal|null
+operator|==
+name|anyRequest
+condition|)
+block|{
+continue|continue;
+block|}
+comment|// Required resource
+name|Resource
+name|required
+init|=
+name|anyRequest
 operator|.
 name|getCapability
 argument_list|()
