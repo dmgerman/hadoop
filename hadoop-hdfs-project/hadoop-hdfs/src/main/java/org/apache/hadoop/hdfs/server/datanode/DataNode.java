@@ -5770,6 +5770,14 @@ name|READ
 argument_list|)
 expr_stmt|;
 block|}
+name|DataNodeFaultInjector
+operator|.
+name|get
+argument_list|()
+operator|.
+name|getHdfsBlocksMetadata
+argument_list|()
+expr_stmt|;
 return|return
 name|data
 operator|.
