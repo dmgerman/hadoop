@@ -803,6 +803,14 @@ name|DelegationTokenRenewerEvent
 argument_list|>
 argument_list|()
 expr_stmt|;
+name|renewalTimer
+operator|=
+operator|new
+name|Timer
+argument_list|(
+literal|true
+argument_list|)
+expr_stmt|;
 name|super
 operator|.
 name|serviceInit
@@ -916,14 +924,6 @@ operator|.
 name|start
 argument_list|()
 expr_stmt|;
-name|renewalTimer
-operator|=
-operator|new
-name|Timer
-argument_list|(
-literal|true
-argument_list|)
-expr_stmt|;
 if|if
 condition|(
 name|tokenKeepAliveEnabled
@@ -1000,7 +1000,7 @@ name|isEmpty
 argument_list|()
 condition|)
 block|{
-name|processDelegationTokenRewewerEvent
+name|processDelegationTokenRenewerEvent
 argument_list|(
 name|pendingEventQueue
 operator|.
@@ -1015,10 +1015,10 @@ name|serviceStart
 argument_list|()
 expr_stmt|;
 block|}
-DECL|method|processDelegationTokenRewewerEvent ( DelegationTokenRenewerEvent evt)
+DECL|method|processDelegationTokenRenewerEvent ( DelegationTokenRenewerEvent evt)
 specifier|private
 name|void
-name|processDelegationTokenRewewerEvent
+name|processDelegationTokenRenewerEvent
 parameter_list|(
 name|DelegationTokenRenewerEvent
 name|evt
@@ -1831,11 +1831,11 @@ return|return
 name|tokens
 return|;
 block|}
-comment|/**    * Add application tokens for renewal.    * @param applicationId added application    * @param ts tokens    * @param shouldCancelAtEnd true if tokens should be canceled when the app is    * done else false.     * @throws IOException    */
-DECL|method|addApplication ( ApplicationId applicationId, Credentials ts, boolean shouldCancelAtEnd, boolean isApplicationRecovered)
+comment|/**    * Asynchronously add application tokens for renewal.    * @param applicationId added application    * @param ts tokens    * @param shouldCancelAtEnd true if tokens should be canceled when the app is    * done else false.     * @throws IOException    */
+DECL|method|addApplicationAsync (ApplicationId applicationId, Credentials ts, boolean shouldCancelAtEnd)
 specifier|public
 name|void
-name|addApplication
+name|addApplicationAsync
 parameter_list|(
 name|ApplicationId
 name|applicationId
@@ -1845,12 +1845,9 @@ name|ts
 parameter_list|,
 name|boolean
 name|shouldCancelAtEnd
-parameter_list|,
-name|boolean
-name|isApplicationRecovered
 parameter_list|)
 block|{
-name|processDelegationTokenRewewerEvent
+name|processDelegationTokenRenewerEvent
 argument_list|(
 operator|new
 name|DelegationTokenRenewerAppSubmitEvent
@@ -1860,8 +1857,38 @@ argument_list|,
 name|ts
 argument_list|,
 name|shouldCancelAtEnd
+argument_list|)
+argument_list|)
+expr_stmt|;
+block|}
+comment|/**    * Synchronously renew delegation tokens.    */
+DECL|method|addApplicationSync (ApplicationId applicationId, Credentials ts, boolean shouldCancelAtEnd)
+specifier|public
+name|void
+name|addApplicationSync
+parameter_list|(
+name|ApplicationId
+name|applicationId
+parameter_list|,
+name|Credentials
+name|ts
+parameter_list|,
+name|boolean
+name|shouldCancelAtEnd
+parameter_list|)
+throws|throws
+name|IOException
+block|{
+name|handleAppSubmitEvent
+argument_list|(
+operator|new
+name|DelegationTokenRenewerAppSubmitEvent
+argument_list|(
+name|applicationId
 argument_list|,
-name|isApplicationRecovered
+name|ts
+argument_list|,
+name|shouldCancelAtEnd
 argument_list|)
 argument_list|)
 expr_stmt|;
@@ -2508,7 +2535,7 @@ name|ApplicationId
 name|applicationId
 parameter_list|)
 block|{
-name|processDelegationTokenRewewerEvent
+name|processDelegationTokenRenewerEvent
 argument_list|(
 operator|new
 name|DelegationTokenRenewerEvent
@@ -3070,15 +3097,6 @@ operator|.
 name|getApplicationId
 argument_list|()
 argument_list|,
-name|event
-operator|.
-name|isApplicationRecovered
-argument_list|()
-condition|?
-name|RMAppEventType
-operator|.
-name|RECOVER
-else|:
 name|RMAppEventType
 operator|.
 name|START
@@ -3133,6 +3151,8 @@ block|}
 block|}
 block|}
 DECL|class|DelegationTokenRenewerAppSubmitEvent
+specifier|private
+specifier|static
 class|class
 name|DelegationTokenRenewerAppSubmitEvent
 extends|extends
@@ -3148,12 +3168,7 @@ specifier|private
 name|boolean
 name|shouldCancelAtEnd
 decl_stmt|;
-DECL|field|isAppRecovered
-specifier|private
-name|boolean
-name|isAppRecovered
-decl_stmt|;
-DECL|method|DelegationTokenRenewerAppSubmitEvent (ApplicationId appId, Credentials credentails, boolean shouldCancelAtEnd, boolean isApplicationRecovered)
+DECL|method|DelegationTokenRenewerAppSubmitEvent (ApplicationId appId, Credentials credentails, boolean shouldCancelAtEnd)
 specifier|public
 name|DelegationTokenRenewerAppSubmitEvent
 parameter_list|(
@@ -3165,9 +3180,6 @@ name|credentails
 parameter_list|,
 name|boolean
 name|shouldCancelAtEnd
-parameter_list|,
-name|boolean
-name|isApplicationRecovered
 parameter_list|)
 block|{
 name|super
@@ -3191,12 +3203,6 @@ name|shouldCancelAtEnd
 operator|=
 name|shouldCancelAtEnd
 expr_stmt|;
-name|this
-operator|.
-name|isAppRecovered
-operator|=
-name|isApplicationRecovered
-expr_stmt|;
 block|}
 DECL|method|getCredentials ()
 specifier|public
@@ -3218,16 +3224,6 @@ return|return
 name|shouldCancelAtEnd
 return|;
 block|}
-DECL|method|isApplicationRecovered ()
-specifier|public
-name|boolean
-name|isApplicationRecovered
-parameter_list|()
-block|{
-return|return
-name|isAppRecovered
-return|;
-block|}
 block|}
 DECL|enum|DelegationTokenRenewerEventType
 enum|enum
@@ -3240,6 +3236,8 @@ DECL|enumConstant|FINISH_APPLICATION
 name|FINISH_APPLICATION
 block|}
 DECL|class|DelegationTokenRenewerEvent
+specifier|private
+specifier|static
 class|class
 name|DelegationTokenRenewerEvent
 extends|extends

@@ -204,28 +204,6 @@ name|server
 operator|.
 name|resourcemanager
 operator|.
-name|recovery
-operator|.
-name|RMStateStore
-operator|.
-name|RMState
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|yarn
-operator|.
-name|server
-operator|.
-name|resourcemanager
-operator|.
 name|rmapp
 operator|.
 name|RMApp
@@ -960,7 +938,7 @@ expr_stmt|;
 block|}
 annotation|@
 name|Override
-DECL|method|submitApplication ( ApplicationSubmissionContext submissionContext, long submitTime, String user, boolean isRecovered, RMState state)
+DECL|method|submitApplication ( ApplicationSubmissionContext submissionContext, long submitTime, String user)
 specifier|protected
 name|void
 name|submitApplication
@@ -973,12 +951,6 @@ name|submitTime
 parameter_list|,
 name|String
 name|user
-parameter_list|,
-name|boolean
-name|isRecovered
-parameter_list|,
-name|RMState
-name|state
 parameter_list|)
 throws|throws
 name|YarnException

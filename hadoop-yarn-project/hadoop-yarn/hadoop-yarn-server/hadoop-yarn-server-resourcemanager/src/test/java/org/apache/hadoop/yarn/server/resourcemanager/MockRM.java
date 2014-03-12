@@ -3378,11 +3378,11 @@ parameter_list|()
 block|{
 comment|// override to disable webapp
 block|}
-DECL|method|finishApplicationMaster (RMApp rmApp, MockRM rm, MockNM nm, MockAM am)
+DECL|method|finishAMAndVerifyAppState (RMApp rmApp, MockRM rm, MockNM nm, MockAM am)
 specifier|public
 specifier|static
 name|void
-name|finishApplicationMaster
+name|finishAMAndVerifyAppState
 parameter_list|(
 name|RMApp
 name|rmApp

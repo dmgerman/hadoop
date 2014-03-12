@@ -4264,12 +4264,9 @@ name|values
 argument_list|()
 control|)
 block|{
-name|app
-operator|.
-name|dispatcher
-operator|.
-name|getEventHandler
-argument_list|()
+comment|// synchronously recover attempt to ensure any incoming external events
+comment|// to be processed after the attempt processes the recover event.
+name|attempt
 operator|.
 name|handle
 argument_list|(

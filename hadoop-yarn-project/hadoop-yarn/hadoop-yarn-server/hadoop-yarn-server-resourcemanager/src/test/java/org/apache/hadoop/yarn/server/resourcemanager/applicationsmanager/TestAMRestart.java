@@ -1506,7 +1506,7 @@ decl_stmt|;
 comment|// finish this application
 name|MockRM
 operator|.
-name|finishApplicationMaster
+name|finishAMAndVerifyAppState
 argument_list|(
 name|app1
 argument_list|,
