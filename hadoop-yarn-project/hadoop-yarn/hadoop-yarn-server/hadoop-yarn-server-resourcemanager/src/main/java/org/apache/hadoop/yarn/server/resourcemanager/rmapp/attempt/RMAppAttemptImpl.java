@@ -4943,6 +4943,7 @@ name|RMAppAttemptEvent
 name|event
 parameter_list|)
 block|{
+comment|/*        * If last attempt recovered final state is null .. it means attempt was        * started but AM container may or may not have started / finished.        * Therefore we should wait for it to finish.        */
 if|if
 condition|(
 name|appAttempt

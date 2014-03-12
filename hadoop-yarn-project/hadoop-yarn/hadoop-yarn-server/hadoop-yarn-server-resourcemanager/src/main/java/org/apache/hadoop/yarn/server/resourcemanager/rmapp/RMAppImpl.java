@@ -1720,9 +1720,9 @@ operator|.
 name|FINAL_SAVING
 argument_list|)
 argument_list|,
-comment|// ACCEPTED state is possible to receive ATTEMPT_FAILED event because
-comment|// RMAppRecoveredTransition is returning ACCEPTED state directly and
-comment|// waiting for the previous AM to exit.
+comment|// ACCEPTED state is possible to receive ATTEMPT_FAILED/ATTEMPT_FINISHED
+comment|// event because RMAppRecoveredTransition is returning ACCEPTED state
+comment|// directly and waiting for the previous AM to exit.
 name|RMAppEventType
 operator|.
 name|ATTEMPT_FAILED
@@ -1733,6 +1733,31 @@ argument_list|(
 name|RMAppState
 operator|.
 name|ACCEPTED
+argument_list|)
+argument_list|)
+operator|.
+name|addTransition
+argument_list|(
+name|RMAppState
+operator|.
+name|ACCEPTED
+argument_list|,
+name|RMAppState
+operator|.
+name|FINAL_SAVING
+argument_list|,
+name|RMAppEventType
+operator|.
+name|ATTEMPT_FINISHED
+argument_list|,
+operator|new
+name|FinalSavingTransition
+argument_list|(
+name|FINISHED_TRANSITION
+argument_list|,
+name|RMAppState
+operator|.
+name|FINISHED
 argument_list|)
 argument_list|)
 operator|.
@@ -4249,7 +4274,6 @@ name|RMAppEvent
 name|event
 parameter_list|)
 block|{
-comment|/*        * If last attempt recovered final state is null .. it means attempt was        * started but AM container may or may not have started / finished.        * Therefore we should wait for it to finish.        */
 for|for
 control|(
 name|RMAppAttempt
@@ -4314,6 +4338,72 @@ return|return
 name|app
 operator|.
 name|recoveredFinalState
+return|;
+block|}
+comment|// Last attempt is in final state, do not add to scheduler and just return
+comment|// ACCEPTED waiting for last RMAppAttempt to send finished or failed event
+comment|// back.
+if|if
+condition|(
+name|app
+operator|.
+name|currentAttempt
+operator|!=
+literal|null
+operator|&&
+operator|(
+name|app
+operator|.
+name|currentAttempt
+operator|.
+name|getState
+argument_list|()
+operator|==
+name|RMAppAttemptState
+operator|.
+name|KILLED
+operator|||
+name|app
+operator|.
+name|currentAttempt
+operator|.
+name|getState
+argument_list|()
+operator|==
+name|RMAppAttemptState
+operator|.
+name|FINISHED
+operator|||
+operator|(
+name|app
+operator|.
+name|currentAttempt
+operator|.
+name|getState
+argument_list|()
+operator|==
+name|RMAppAttemptState
+operator|.
+name|FAILED
+operator|&&
+name|app
+operator|.
+name|attempts
+operator|.
+name|size
+argument_list|()
+operator|==
+name|app
+operator|.
+name|maxAppAttempts
+operator|)
+operator|)
+condition|)
+block|{
+return|return
+name|RMAppState
+operator|.
+name|ACCEPTED
 return|;
 block|}
 comment|// Notify scheduler about the app on recovery
