@@ -72,6 +72,14 @@ name|TASK_TYPE
 init|=
 literal|"task.type"
 decl_stmt|;
+DECL|field|TASK_STATE
+specifier|static
+specifier|final
+name|String
+name|TASK_STATE
+init|=
+literal|"task.state"
+decl_stmt|;
 DECL|field|ATTEMPT_STATE
 specifier|static
 specifier|final

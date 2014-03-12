@@ -210,6 +210,8 @@ argument_list|,
 name|JOB_ID
 argument_list|,
 name|TASK_TYPE
+argument_list|,
+name|TASK_STATE
 argument_list|)
 argument_list|,
 name|AppController
