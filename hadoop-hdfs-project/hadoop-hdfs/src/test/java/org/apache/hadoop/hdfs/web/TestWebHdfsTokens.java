@@ -188,26 +188,6 @@ name|hadoop
 operator|.
 name|hdfs
 operator|.
-name|security
-operator|.
-name|token
-operator|.
-name|delegation
-operator|.
-name|DelegationTokenIdentifier
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|hdfs
-operator|.
 name|web
 operator|.
 name|resources
@@ -467,16 +447,11 @@ name|fs
 return|;
 block|}
 annotation|@
-name|SuppressWarnings
-argument_list|(
-literal|"unchecked"
-argument_list|)
-annotation|@
 name|Test
 argument_list|(
 name|timeout
 operator|=
-literal|1000
+literal|5000
 argument_list|)
 DECL|method|testTokenForNonTokenOp ()
 specifier|public
@@ -494,7 +469,7 @@ argument_list|()
 decl_stmt|;
 name|Token
 argument_list|<
-name|DelegationTokenIdentifier
+name|?
 argument_list|>
 name|token
 init|=
@@ -621,7 +596,7 @@ name|Test
 argument_list|(
 name|timeout
 operator|=
-literal|1000
+literal|5000
 argument_list|)
 DECL|method|testNoTokenForGetToken ()
 specifier|public
@@ -646,7 +621,7 @@ name|Test
 argument_list|(
 name|timeout
 operator|=
-literal|1000
+literal|5000
 argument_list|)
 DECL|method|testNoTokenForCanclToken ()
 specifier|public
@@ -671,7 +646,7 @@ name|Test
 argument_list|(
 name|timeout
 operator|=
-literal|1000
+literal|5000
 argument_list|)
 DECL|method|testNoTokenForCancelToken ()
 specifier|public
@@ -691,11 +666,6 @@ name|CANCELDELEGATIONTOKEN
 argument_list|)
 expr_stmt|;
 block|}
-annotation|@
-name|SuppressWarnings
-argument_list|(
-literal|"unchecked"
-argument_list|)
 DECL|method|checkNoTokenForOperation (HttpOpParam.Op op)
 specifier|private
 name|void
@@ -788,6 +758,12 @@ argument_list|)
 operator|.
 name|setDelegationToken
 argument_list|(
+operator|(
+name|Token
+argument_list|<
+name|?
+argument_list|>
+operator|)
 name|any
 argument_list|(
 name|Token
