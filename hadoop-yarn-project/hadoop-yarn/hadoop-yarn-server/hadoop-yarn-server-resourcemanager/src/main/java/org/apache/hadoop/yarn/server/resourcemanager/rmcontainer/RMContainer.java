@@ -90,6 +90,24 @@ name|api
 operator|.
 name|records
 operator|.
+name|ContainerReport
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|api
+operator|.
+name|records
+operator|.
 name|ContainerState
 import|;
 end_import
@@ -257,6 +275,11 @@ function_decl|;
 DECL|method|getContainerState ()
 name|ContainerState
 name|getContainerState
+parameter_list|()
+function_decl|;
+DECL|method|createContainerReport ()
+name|ContainerReport
+name|createContainerReport
 parameter_list|()
 function_decl|;
 block|}

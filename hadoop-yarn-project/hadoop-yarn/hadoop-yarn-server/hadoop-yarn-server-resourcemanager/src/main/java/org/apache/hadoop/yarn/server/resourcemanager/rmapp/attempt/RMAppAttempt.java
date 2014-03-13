@@ -118,6 +118,24 @@ name|api
 operator|.
 name|records
 operator|.
+name|ApplicationAttemptReport
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|api
+operator|.
+name|records
+operator|.
 name|ApplicationResourceUsageReport
 import|;
 end_import
@@ -484,6 +502,12 @@ comment|/**    * Create the external user-facing state of the attempt of Applica
 DECL|method|createApplicationAttemptState ()
 name|YarnApplicationAttemptState
 name|createApplicationAttemptState
+parameter_list|()
+function_decl|;
+comment|/**    * Create the Application attempt report from the {@link RMAppAttempt}    *     * @return {@link ApplicationAttemptReport}    */
+DECL|method|createApplicationAttemptReport ()
+name|ApplicationAttemptReport
+name|createApplicationAttemptReport
 parameter_list|()
 function_decl|;
 block|}
