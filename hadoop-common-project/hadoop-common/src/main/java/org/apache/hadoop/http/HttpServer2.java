@@ -2130,9 +2130,9 @@ operator|new
 name|Handler
 index|[]
 block|{
-name|requestLogHandler
-block|,
 name|contexts
+block|,
+name|requestLogHandler
 block|}
 argument_list|)
 expr_stmt|;
