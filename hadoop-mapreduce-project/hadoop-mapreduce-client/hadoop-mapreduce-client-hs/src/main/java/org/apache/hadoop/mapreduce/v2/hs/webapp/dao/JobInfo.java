@@ -1476,7 +1476,7 @@ argument_list|()
 operator|-
 name|attempt
 operator|.
-name|getShuffleFinishTime
+name|getSortFinishTime
 argument_list|()
 operator|)
 expr_stmt|;
