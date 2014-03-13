@@ -7604,42 +7604,74 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
-comment|// Java ByteBuffers can't be longer than 2 GB, because they use
-comment|// 4-byte signed integers to represent capacity, etc.
-comment|// So we can't mmap the parts of the block higher than the 2 GB offset.
-comment|// FIXME: we could work around this with multiple memory maps.
-comment|// See HDFS-5101.
-name|long
-name|blockEnd32
-init|=
-name|Math
-operator|.
-name|min
-argument_list|(
-name|Integer
-operator|.
-name|MAX_VALUE
-argument_list|,
-name|blockEnd
-argument_list|)
-decl_stmt|;
+comment|// Copy 'pos' and 'blockEnd' to local variables to make it easier for the
+comment|// JVM to optimize this function.
+specifier|final
 name|long
 name|curPos
 init|=
 name|pos
 decl_stmt|;
+specifier|final
 name|long
-name|blockLeft
+name|curEnd
 init|=
-name|blockEnd32
-operator|-
+name|blockEnd
+decl_stmt|;
+specifier|final
+name|long
+name|blockStartInFile
+init|=
+name|currentLocatedBlock
+operator|.
+name|getStartOffset
+argument_list|()
+decl_stmt|;
+specifier|final
+name|long
+name|blockPos
+init|=
 name|curPos
-operator|+
-literal|1
+operator|-
+name|blockStartInFile
+decl_stmt|;
+comment|// Shorten this read if the end of the block is nearby.
+name|long
+name|length63
 decl_stmt|;
 if|if
 condition|(
-name|blockLeft
+operator|(
+name|curPos
+operator|+
+name|maxLength
+operator|)
+operator|<=
+operator|(
+name|curEnd
+operator|+
+literal|1
+operator|)
+condition|)
+block|{
+name|length63
+operator|=
+name|maxLength
+expr_stmt|;
+block|}
+else|else
+block|{
+name|length63
+operator|=
+literal|1
+operator|+
+name|curEnd
+operator|-
+name|curPos
+expr_stmt|;
+if|if
+condition|(
+name|length63
 operator|<=
 literal|0
 condition|)
@@ -7660,7 +7692,7 @@ name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"unable to perform a zero-copy read from offset "
+literal|"Unable to perform a zero-copy read from offset "
 operator|+
 name|curPos
 operator|+
@@ -7668,21 +7700,23 @@ literal|" of "
 operator|+
 name|src
 operator|+
-literal|"; blockLeft = "
+literal|"; "
 operator|+
-name|blockLeft
+name|length63
 operator|+
-literal|"; blockEnd32 = "
+literal|" bytes left in block.  "
 operator|+
-name|blockEnd32
+literal|"blockPos="
 operator|+
-literal|", blockEnd = "
+name|blockPos
 operator|+
-name|blockEnd
+literal|"; curPos="
 operator|+
-literal|"; maxLength = "
+name|curPos
 operator|+
-name|maxLength
+literal|"; curEnd="
+operator|+
+name|curEnd
 argument_list|)
 expr_stmt|;
 block|}
@@ -7690,43 +7724,182 @@ return|return
 literal|null
 return|;
 block|}
+if|if
+condition|(
+name|DFSClient
+operator|.
+name|LOG
+operator|.
+name|isDebugEnabled
+argument_list|()
+condition|)
+block|{
+name|DFSClient
+operator|.
+name|LOG
+operator|.
+name|debug
+argument_list|(
+literal|"Reducing read length from "
+operator|+
+name|maxLength
+operator|+
+literal|" to "
+operator|+
+name|length63
+operator|+
+literal|" to avoid going more than one byte "
+operator|+
+literal|"past the end of the block.  blockPos="
+operator|+
+name|blockPos
+operator|+
+literal|"; curPos="
+operator|+
+name|curPos
+operator|+
+literal|"; curEnd="
+operator|+
+name|curEnd
+argument_list|)
+expr_stmt|;
+block|}
+block|}
+comment|// Make sure that don't go beyond 31-bit offsets in the MappedByteBuffer.
 name|int
 name|length
-init|=
-name|Math
+decl_stmt|;
+if|if
+condition|(
+name|blockPos
+operator|+
+name|length63
+operator|<=
+name|Integer
 operator|.
-name|min
-argument_list|(
+name|MAX_VALUE
+condition|)
+block|{
+name|length
+operator|=
 operator|(
 name|int
 operator|)
-name|blockLeft
-argument_list|,
-name|maxLength
-argument_list|)
-decl_stmt|;
+name|length63
+expr_stmt|;
+block|}
+else|else
+block|{
 name|long
-name|blockStartInFile
+name|length31
 init|=
-name|currentLocatedBlock
+name|Integer
 operator|.
-name|getStartOffset
-argument_list|()
-decl_stmt|;
-name|long
-name|blockPos
-init|=
-name|curPos
+name|MAX_VALUE
 operator|-
-name|blockStartInFile
+name|blockPos
 decl_stmt|;
-name|long
-name|limit
-init|=
+if|if
+condition|(
+name|length31
+operator|<=
+literal|0
+condition|)
+block|{
+comment|// Java ByteBuffers can't be longer than 2 GB, because they use
+comment|// 4-byte signed integers to represent capacity, etc.
+comment|// So we can't mmap the parts of the block higher than the 2 GB offset.
+comment|// FIXME: we could work around this with multiple memory maps.
+comment|// See HDFS-5101.
+if|if
+condition|(
+name|DFSClient
+operator|.
+name|LOG
+operator|.
+name|isDebugEnabled
+argument_list|()
+condition|)
+block|{
+name|DFSClient
+operator|.
+name|LOG
+operator|.
+name|debug
+argument_list|(
+literal|"Unable to perform a zero-copy read from offset "
+operator|+
+name|curPos
+operator|+
+literal|" of "
+operator|+
+name|src
+operator|+
+literal|"; 31-bit MappedByteBuffer limit "
+operator|+
+literal|"exceeded.  blockPos="
+operator|+
 name|blockPos
 operator|+
+literal|", curEnd="
+operator|+
+name|curEnd
+argument_list|)
+expr_stmt|;
+block|}
+return|return
+literal|null
+return|;
+block|}
 name|length
-decl_stmt|;
+operator|=
+operator|(
+name|int
+operator|)
+name|length31
+expr_stmt|;
+if|if
+condition|(
+name|DFSClient
+operator|.
+name|LOG
+operator|.
+name|isDebugEnabled
+argument_list|()
+condition|)
+block|{
+name|DFSClient
+operator|.
+name|LOG
+operator|.
+name|debug
+argument_list|(
+literal|"Reducing read length from "
+operator|+
+name|maxLength
+operator|+
+literal|" to "
+operator|+
+name|length
+operator|+
+literal|" to avoid 31-bit limit.  "
+operator|+
+literal|"blockPos="
+operator|+
+name|blockPos
+operator|+
+literal|"; curPos="
+operator|+
+name|curPos
+operator|+
+literal|"; curEnd="
+operator|+
+name|curEnd
+argument_list|)
+expr_stmt|;
+block|}
+block|}
+specifier|final
 name|ClientMmap
 name|clientMmap
 init|=
@@ -7790,7 +7963,7 @@ try|try
 block|{
 name|seek
 argument_list|(
-name|pos
+name|curPos
 operator|+
 name|length
 argument_list|)
@@ -7819,10 +7992,14 @@ name|buffer
 operator|.
 name|limit
 argument_list|(
-operator|(
+call|(
 name|int
-operator|)
-name|limit
+call|)
+argument_list|(
+name|blockPos
+operator|+
+name|length
+argument_list|)
 argument_list|)
 expr_stmt|;
 name|extendedReadBuffers
@@ -7859,17 +8036,15 @@ name|debug
 argument_list|(
 literal|"readZeroCopy read "
 operator|+
-name|maxLength
+name|length
 operator|+
-literal|" bytes from "
-operator|+
-literal|"offset "
+literal|" bytes from offset "
 operator|+
 name|curPos
 operator|+
-literal|" via the zero-copy read path.  "
+literal|" via the zero-copy read "
 operator|+
-literal|"blockEnd = "
+literal|"path.  blockEnd = "
 operator|+
 name|blockEnd
 argument_list|)
