@@ -65,11 +65,6 @@ comment|/**  * The partitioner partitions the map output according to the operat
 end_comment
 
 begin_class
-annotation|@
-name|SuppressWarnings
-argument_list|(
-literal|"deprecation"
-argument_list|)
 DECL|class|SlivePartitioner
 specifier|public
 class|class

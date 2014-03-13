@@ -169,11 +169,6 @@ comment|/**  * The slive reducer which iterates over the given input values and 
 end_comment
 
 begin_class
-annotation|@
-name|SuppressWarnings
-argument_list|(
-literal|"deprecation"
-argument_list|)
 DECL|class|SliveReducer
 specifier|public
 class|class

@@ -123,11 +123,6 @@ comment|/**  * A input format which returns one dummy key and value  */
 end_comment
 
 begin_class
-annotation|@
-name|SuppressWarnings
-argument_list|(
-literal|"deprecation"
-argument_list|)
 DECL|class|DummyInputFormat
 class|class
 name|DummyInputFormat
