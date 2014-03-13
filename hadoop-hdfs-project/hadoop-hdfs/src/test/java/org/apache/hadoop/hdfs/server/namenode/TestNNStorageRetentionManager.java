@@ -2073,7 +2073,7 @@ name|dirRoots
 init|=
 name|Maps
 operator|.
-name|newHashMap
+name|newLinkedHashMap
 argument_list|()
 decl_stmt|;
 DECL|field|expectedPurgedLogs
