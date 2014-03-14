@@ -1453,7 +1453,7 @@ return|;
 block|}
 comment|/** Copy files between FileSystems. */
 DECL|method|copy (FileSystem srcFS, FileStatus srcStatus, FileSystem dstFS, Path dst, boolean deleteSource, boolean overwrite, Configuration conf)
-specifier|private
+specifier|public
 specifier|static
 name|boolean
 name|copy
