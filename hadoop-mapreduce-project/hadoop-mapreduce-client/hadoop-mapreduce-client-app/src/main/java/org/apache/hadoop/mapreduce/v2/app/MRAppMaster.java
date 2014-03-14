@@ -6097,6 +6097,15 @@ operator|.
 name|serviceStart
 argument_list|()
 expr_stmt|;
+comment|// set job classloader if configured
+name|MRApps
+operator|.
+name|setJobClassLoader
+argument_list|(
+name|getConfig
+argument_list|()
+argument_list|)
+expr_stmt|;
 comment|// All components have started, start the job.
 name|startJobs
 argument_list|()
@@ -7703,14 +7712,6 @@ argument_list|(
 literal|"fs.automatic.close"
 argument_list|,
 literal|false
-argument_list|)
-expr_stmt|;
-comment|// set job classloader if configured
-name|MRApps
-operator|.
-name|setJobClassLoader
-argument_list|(
-name|conf
 argument_list|)
 expr_stmt|;
 name|initAndStartAppMaster
