@@ -10191,12 +10191,6 @@ argument_list|(
 literal|"Too Many fetch failures.Failing the attempt"
 argument_list|)
 expr_stmt|;
-comment|//set the finish time
-name|taskAttempt
-operator|.
-name|setFinishTime
-argument_list|()
-expr_stmt|;
 if|if
 condition|(
 name|taskAttempt
