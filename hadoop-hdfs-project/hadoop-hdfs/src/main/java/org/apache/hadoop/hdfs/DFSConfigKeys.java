@@ -2121,9 +2121,8 @@ specifier|final
 name|int
 name|DFS_NAMENODE_MAX_COMPONENT_LENGTH_DEFAULT
 init|=
-literal|0
+literal|255
 decl_stmt|;
-comment|// no limit
 DECL|field|DFS_NAMENODE_MAX_DIRECTORY_ITEMS_KEY
 specifier|public
 specifier|static
@@ -2140,9 +2139,10 @@ specifier|final
 name|int
 name|DFS_NAMENODE_MAX_DIRECTORY_ITEMS_DEFAULT
 init|=
-literal|0
+literal|1024
+operator|*
+literal|1024
 decl_stmt|;
-comment|// no limit
 DECL|field|DFS_NAMENODE_MIN_BLOCK_SIZE_KEY
 specifier|public
 specifier|static

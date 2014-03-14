@@ -1421,6 +1421,42 @@ operator|.
 name|DFS_NAMENODE_MAX_DIRECTORY_ITEMS_DEFAULT
 argument_list|)
 expr_stmt|;
+comment|// We need a maximum maximum because by default, PB limits message sizes
+comment|// to 64MB. This means we can only store approximately 6.7 million entries
+comment|// per directory, but let's use 6.4 million for some safety.
+specifier|final
+name|int
+name|MAX_DIR_ITEMS
+init|=
+literal|64
+operator|*
+literal|100
+operator|*
+literal|1000
+decl_stmt|;
+name|Preconditions
+operator|.
+name|checkArgument
+argument_list|(
+name|maxDirItems
+operator|>
+literal|0
+operator|&&
+name|maxDirItems
+operator|<=
+name|MAX_DIR_ITEMS
+argument_list|,
+literal|"Cannot set "
+operator|+
+name|DFSConfigKeys
+operator|.
+name|DFS_NAMENODE_MAX_DIRECTORY_ITEMS_KEY
+operator|+
+literal|" to a value less than 0 or greater than "
+operator|+
+name|MAX_DIR_ITEMS
+argument_list|)
+expr_stmt|;
 name|int
 name|threshold
 init|=
@@ -10734,15 +10770,6 @@ parameter_list|)
 throws|throws
 name|MaxDirectoryItemsExceededException
 block|{
-if|if
-condition|(
-name|maxDirItems
-operator|==
-literal|0
-condition|)
-block|{
-return|return;
-block|}
 specifier|final
 name|INodeDirectory
 name|parent
