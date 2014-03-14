@@ -779,6 +779,13 @@ name|shouldUnregister
 init|=
 literal|true
 decl_stmt|;
+DECL|field|isApplicationMasterRegistered
+specifier|private
+name|boolean
+name|isApplicationMasterRegistered
+init|=
+literal|false
+decl_stmt|;
 DECL|method|RMCommunicator (ClientService clientService, AppContext context)
 specifier|public
 name|RMCommunicator
@@ -1083,6 +1090,10 @@ argument_list|(
 name|request
 argument_list|)
 decl_stmt|;
+name|isApplicationMasterRegistered
+operator|=
+literal|true
+expr_stmt|;
 name|maxContainerCapability
 operator|=
 name|response
@@ -1587,6 +1598,8 @@ block|}
 block|}
 if|if
 condition|(
+name|isApplicationMasterRegistered
+operator|&&
 name|shouldUnregister
 condition|)
 block|{
@@ -1916,6 +1929,18 @@ operator|+
 name|isSignalled
 argument_list|)
 expr_stmt|;
+block|}
+annotation|@
+name|VisibleForTesting
+DECL|method|isApplicationMasterRegistered ()
+specifier|protected
+name|boolean
+name|isApplicationMasterRegistered
+parameter_list|()
+block|{
+return|return
+name|isApplicationMasterRegistered
+return|;
 block|}
 block|}
 end_class
