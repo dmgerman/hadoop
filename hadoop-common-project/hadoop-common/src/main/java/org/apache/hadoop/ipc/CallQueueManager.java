@@ -20,11 +20,11 @@ begin_import
 import|import
 name|java
 operator|.
-name|util
+name|lang
 operator|.
-name|concurrent
+name|reflect
 operator|.
-name|BlockingQueue
+name|Constructor
 import|;
 end_import
 
@@ -36,9 +36,7 @@ name|util
 operator|.
 name|concurrent
 operator|.
-name|atomic
-operator|.
-name|AtomicReference
+name|BlockingQueue
 import|;
 end_import
 
@@ -58,11 +56,13 @@ begin_import
 import|import
 name|java
 operator|.
-name|lang
+name|util
 operator|.
-name|reflect
+name|concurrent
 operator|.
-name|Constructor
+name|atomic
+operator|.
+name|AtomicReference
 import|;
 end_import
 
@@ -137,6 +137,55 @@ operator|.
 name|class
 argument_list|)
 decl_stmt|;
+annotation|@
+name|SuppressWarnings
+argument_list|(
+literal|"unchecked"
+argument_list|)
+DECL|method|convertQueueClass ( Class<?> queneClass, Class<E> elementClass)
+specifier|static
+parameter_list|<
+name|E
+parameter_list|>
+name|Class
+argument_list|<
+name|?
+extends|extends
+name|BlockingQueue
+argument_list|<
+name|E
+argument_list|>
+argument_list|>
+name|convertQueueClass
+parameter_list|(
+name|Class
+argument_list|<
+name|?
+argument_list|>
+name|queneClass
+parameter_list|,
+name|Class
+argument_list|<
+name|E
+argument_list|>
+name|elementClass
+parameter_list|)
+block|{
+return|return
+operator|(
+name|Class
+argument_list|<
+name|?
+extends|extends
+name|BlockingQueue
+argument_list|<
+name|E
+argument_list|>
+argument_list|>
+operator|)
+name|queneClass
+return|;
+block|}
 comment|// Atomic refs point to active callQueue
 comment|// We have two so we can better control swapping
 DECL|field|putRef
@@ -163,11 +212,19 @@ argument_list|>
 argument_list|>
 name|takeRef
 decl_stmt|;
-DECL|method|CallQueueManager (Class backingClass, int maxQueueSize, String namespace, Configuration conf)
+DECL|method|CallQueueManager (Class<? extends BlockingQueue<E>> backingClass, int maxQueueSize, String namespace, Configuration conf)
 specifier|public
 name|CallQueueManager
 parameter_list|(
 name|Class
+argument_list|<
+name|?
+extends|extends
+name|BlockingQueue
+argument_list|<
+name|E
+argument_list|>
+argument_list|>
 name|backingClass
 parameter_list|,
 name|int
@@ -239,20 +296,23 @@ name|backingClass
 argument_list|)
 expr_stmt|;
 block|}
-annotation|@
-name|SuppressWarnings
-argument_list|(
-literal|"unchecked"
-argument_list|)
-DECL|method|createCallQueueInstance (Class theClass, int maxLen, String ns, Configuration conf)
+DECL|method|createCallQueueInstance ( Class<T> theClass, int maxLen, String ns, Configuration conf)
 specifier|private
+parameter_list|<
+name|T
+extends|extends
 name|BlockingQueue
 argument_list|<
 name|E
 argument_list|>
+parameter_list|>
+name|T
 name|createCallQueueInstance
 parameter_list|(
 name|Class
+argument_list|<
+name|T
+argument_list|>
 name|theClass
 parameter_list|,
 name|int
@@ -269,6 +329,9 @@ comment|// Used for custom, configurable callqueues
 try|try
 block|{
 name|Constructor
+argument_list|<
+name|T
+argument_list|>
 name|ctor
 init|=
 name|theClass
@@ -289,12 +352,6 @@ name|class
 argument_list|)
 decl_stmt|;
 return|return
-operator|(
-name|BlockingQueue
-argument_list|<
-name|E
-argument_list|>
-operator|)
 name|ctor
 operator|.
 name|newInstance
@@ -327,6 +384,9 @@ comment|// Used for LinkedBlockingQueue, ArrayBlockingQueue, etc
 try|try
 block|{
 name|Constructor
+argument_list|<
+name|T
+argument_list|>
 name|ctor
 init|=
 name|theClass
@@ -339,12 +399,6 @@ name|class
 argument_list|)
 decl_stmt|;
 return|return
-operator|(
-name|BlockingQueue
-argument_list|<
-name|E
-argument_list|>
-operator|)
 name|ctor
 operator|.
 name|newInstance
@@ -373,6 +427,9 @@ comment|// Last attempt
 try|try
 block|{
 name|Constructor
+argument_list|<
+name|T
+argument_list|>
 name|ctor
 init|=
 name|theClass
@@ -381,12 +438,6 @@ name|getDeclaredConstructor
 argument_list|()
 decl_stmt|;
 return|return
-operator|(
-name|BlockingQueue
-argument_list|<
-name|E
-argument_list|>
-operator|)
 name|ctor
 operator|.
 name|newInstance
@@ -505,13 +556,21 @@ argument_list|()
 return|;
 block|}
 comment|/**    * Replaces active queue with the newly requested one and transfers    * all calls to the newQ before returning.    */
-DECL|method|swapQueue (Class queueClassToUse, int maxSize, String ns, Configuration conf)
+DECL|method|swapQueue ( Class<? extends BlockingQueue<E>> queueClassToUse, int maxSize, String ns, Configuration conf)
 specifier|public
 specifier|synchronized
 name|void
 name|swapQueue
 parameter_list|(
 name|Class
+argument_list|<
+name|?
+extends|extends
+name|BlockingQueue
+argument_list|<
+name|E
+argument_list|>
+argument_list|>
 name|queueClassToUse
 parameter_list|,
 name|int
@@ -602,12 +661,15 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|/**    * Checks if queue is empty by checking at two points in time.    * This doesn't mean the queue might not fill up at some point later, but    * it should decrease the probability that we lose a call this way.    */
-DECL|method|queueIsReallyEmpty (BlockingQueue q)
+DECL|method|queueIsReallyEmpty (BlockingQueue<?> q)
 specifier|private
 name|boolean
 name|queueIsReallyEmpty
 parameter_list|(
 name|BlockingQueue
+argument_list|<
+name|?
+argument_list|>
 name|q
 parameter_list|)
 block|{

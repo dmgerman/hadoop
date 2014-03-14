@@ -2663,8 +2663,6 @@ name|out2
 parameter_list|)
 throws|throws
 name|IOException
-throws|,
-name|InterruptedException
 block|{
 comment|// Do not use Client.conf here! We must use ConnectionId.conf, since the
 comment|// Client object is cached and shared between all RPC clients, even those
