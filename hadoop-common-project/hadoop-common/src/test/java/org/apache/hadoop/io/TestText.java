@@ -1141,21 +1141,26 @@ argument_list|,
 name|ret2
 argument_list|)
 expr_stmt|;
-comment|// test equal
 name|assertEquals
 argument_list|(
+literal|"Equivalence of different txt objects, same content"
+argument_list|,
+literal|0
+argument_list|,
 name|txt1
 operator|.
 name|compareTo
 argument_list|(
 name|txt3
 argument_list|)
-argument_list|,
-literal|0
 argument_list|)
 expr_stmt|;
 name|assertEquals
 argument_list|(
+literal|"Equvalence of data output buffers"
+argument_list|,
+literal|0
+argument_list|,
 name|comparator
 operator|.
 name|compare
@@ -1184,8 +1189,6 @@ operator|.
 name|getLength
 argument_list|()
 argument_list|)
-argument_list|,
-literal|0
 argument_list|)
 expr_stmt|;
 block|}
@@ -1636,6 +1639,7 @@ name|void
 name|run
 parameter_list|()
 block|{
+specifier|final
 name|String
 name|name
 init|=
@@ -1716,6 +1720,10 @@ argument_list|)
 decl_stmt|;
 name|assertEquals
 argument_list|(
+literal|"input buffer reset contents = "
+operator|+
+name|name
+argument_list|,
 name|name
 argument_list|,
 name|s

@@ -139,12 +139,14 @@ name|Assert
 operator|.
 name|assertEquals
 argument_list|(
+literal|"Failed: Assert 1024 is id "
+argument_list|,
+literal|1024
+argument_list|,
 name|handle
 operator|.
 name|getFileId
 argument_list|()
-argument_list|,
-literal|1024
 argument_list|)
 expr_stmt|;
 block|}

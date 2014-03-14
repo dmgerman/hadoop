@@ -42,6 +42,14 @@ specifier|public
 class|class
 name|TestXDR
 block|{
+DECL|field|WRITE_VALUE
+specifier|static
+specifier|final
+name|int
+name|WRITE_VALUE
+init|=
+literal|23
+decl_stmt|;
 DECL|method|serializeInt (int times)
 specifier|private
 name|void
@@ -76,7 +84,7 @@ name|w
 operator|.
 name|writeInt
 argument_list|(
-literal|23
+name|WRITE_VALUE
 argument_list|)
 expr_stmt|;
 name|XDR
@@ -105,12 +113,12 @@ name|Assert
 operator|.
 name|assertEquals
 argument_list|(
+name|WRITE_VALUE
+argument_list|,
 name|r
 operator|.
 name|readInt
 argument_list|()
-argument_list|,
-literal|23
 argument_list|)
 expr_stmt|;
 block|}
@@ -148,7 +156,7 @@ name|w
 operator|.
 name|writeLongAsHyper
 argument_list|(
-literal|23
+name|WRITE_VALUE
 argument_list|)
 expr_stmt|;
 name|XDR
@@ -177,12 +185,12 @@ name|Assert
 operator|.
 name|assertEquals
 argument_list|(
+name|WRITE_VALUE
+argument_list|,
 name|r
 operator|.
 name|readHyper
 argument_list|()
-argument_list|,
-literal|23
 argument_list|)
 expr_stmt|;
 block|}

@@ -2323,6 +2323,8 @@ block|{
 comment|// Path differs from URI in that it ignores the query part..
 name|assertEquals
 argument_list|(
+literal|"? mark char in to URI"
+argument_list|,
 operator|new
 name|URI
 argument_list|(
@@ -2349,6 +2351,8 @@ argument_list|)
 expr_stmt|;
 name|assertEquals
 argument_list|(
+literal|"escape slashes chars in to URI"
+argument_list|,
 operator|new
 name|URI
 argument_list|(
@@ -2375,6 +2379,8 @@ argument_list|)
 expr_stmt|;
 name|assertEquals
 argument_list|(
+literal|"spaces in chars to URI"
+argument_list|,
 operator|new
 name|URI
 argument_list|(
@@ -2399,8 +2405,8 @@ name|toUri
 argument_list|()
 argument_list|)
 expr_stmt|;
-comment|// therefore "foo?bar" is a valid Path, so a URI created from a Path has path "foo?bar"
-comment|// where in a straight URI the path part is just "foo"
+comment|// therefore "foo?bar" is a valid Path, so a URI created from a Path
+comment|// has path "foo?bar" where in a straight URI the path part is just "foo"
 name|assertEquals
 argument_list|(
 literal|"/foo?bar"

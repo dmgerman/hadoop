@@ -1650,14 +1650,14 @@ parameter_list|)
 block|{
 name|assertEquals
 argument_list|(
+literal|"Premature EOF from inputStream "
+operator|+
+literal|"after skipping 1 byte(s)."
+argument_list|,
 name|e
 operator|.
 name|getMessage
 argument_list|()
-argument_list|,
-literal|"Premature EOF from inputStream "
-operator|+
-literal|"after skipping 1 byte(s)."
 argument_list|)
 expr_stmt|;
 block|}
@@ -1691,14 +1691,14 @@ parameter_list|)
 block|{
 name|assertEquals
 argument_list|(
+literal|"Premature EOF from inputStream "
+operator|+
+literal|"after skipping 5 byte(s)."
+argument_list|,
 name|e
 operator|.
 name|getMessage
 argument_list|()
-argument_list|,
-literal|"Premature EOF from inputStream "
-operator|+
-literal|"after skipping 5 byte(s)."
 argument_list|)
 expr_stmt|;
 block|}
@@ -1741,14 +1741,14 @@ parameter_list|)
 block|{
 name|assertEquals
 argument_list|(
+literal|"Premature EOF from inputStream "
+operator|+
+literal|"after skipping 0 byte(s)."
+argument_list|,
 name|e
 operator|.
 name|getMessage
 argument_list|()
-argument_list|,
-literal|"Premature EOF from inputStream "
-operator|+
-literal|"after skipping 0 byte(s)."
 argument_list|)
 expr_stmt|;
 block|}

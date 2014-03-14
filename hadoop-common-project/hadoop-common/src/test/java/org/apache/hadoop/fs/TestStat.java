@@ -601,14 +601,14 @@ name|Exception
 block|{
 name|assertEquals
 argument_list|(
+literal|"C"
+argument_list|,
 name|stat
 operator|.
 name|getEnvironment
 argument_list|(
 literal|"LANG"
 argument_list|)
-argument_list|,
-literal|"C"
 argument_list|)
 expr_stmt|;
 block|}

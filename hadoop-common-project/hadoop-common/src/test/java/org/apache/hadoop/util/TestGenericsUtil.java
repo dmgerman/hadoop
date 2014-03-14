@@ -141,6 +141,8 @@ control|)
 block|{
 name|assertEquals
 argument_list|(
+literal|"Array has identical elements as input list"
+argument_list|,
 name|list
 operator|.
 name|get
@@ -253,6 +255,8 @@ argument_list|)
 decl_stmt|;
 name|assertEquals
 argument_list|(
+literal|"Assert list creation w/ no elements results in length 0"
+argument_list|,
 literal|0
 argument_list|,
 name|arr
@@ -434,14 +438,14 @@ argument_list|)
 decl_stmt|;
 name|assertEquals
 argument_list|(
+literal|0
+argument_list|,
 name|parser
 operator|.
 name|getRemainingArgs
 argument_list|()
 operator|.
 name|length
-argument_list|,
-literal|0
 argument_list|)
 expr_stmt|;
 comment|//  test if -D accepts -Dx=y=z
@@ -464,6 +468,10 @@ argument_list|)
 expr_stmt|;
 name|assertEquals
 argument_list|(
+literal|"Options parser gets entire ='s expresion"
+argument_list|,
+literal|"y=z"
+argument_list|,
 name|parser
 operator|.
 name|getConfiguration
@@ -473,8 +481,6 @@ name|get
 argument_list|(
 literal|"x"
 argument_list|)
-argument_list|,
-literal|"y=z"
 argument_list|)
 expr_stmt|;
 block|}
@@ -509,6 +515,8 @@ argument_list|)
 decl_stmt|;
 name|assertEquals
 argument_list|(
+literal|"Correct generic type is acquired from object"
+argument_list|,
 name|Integer
 operator|.
 name|class
@@ -548,6 +556,8 @@ argument_list|)
 decl_stmt|;
 name|assertEquals
 argument_list|(
+literal|"Inner generics are acquired from object."
+argument_list|,
 name|GenericClass
 operator|.
 name|class
