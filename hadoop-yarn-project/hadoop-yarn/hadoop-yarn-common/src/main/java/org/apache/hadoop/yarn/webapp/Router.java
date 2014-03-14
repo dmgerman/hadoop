@@ -275,7 +275,6 @@ literal|"MapReduce"
 block|}
 argument_list|)
 DECL|class|Router
-specifier|public
 class|class
 name|Router
 block|{

@@ -734,6 +734,18 @@ operator|.
 name|name
 return|;
 block|}
+DECL|method|wsName ()
+specifier|public
+name|String
+name|wsName
+parameter_list|()
+block|{
+return|return
+name|this
+operator|.
+name|wsName
+return|;
+block|}
 DECL|method|addServePathSpec (String path)
 name|void
 name|addServePathSpec
@@ -781,7 +793,6 @@ return|;
 block|}
 comment|/**    * Set a path to redirect the user to if they just go to "/". For    * instance "/" goes to "/yarn/apps". This allows the filters to    * more easily differentiate the different webapps.    * @param path  the path to redirect to    */
 DECL|method|setRedirectPath (String path)
-specifier|protected
 name|void
 name|setRedirectPath
 parameter_list|(
@@ -903,14 +914,14 @@ name|class
 argument_list|)
 expr_stmt|;
 block|}
-name|configureRSServlets
+name|configureWebAppServlets
 argument_list|()
 expr_stmt|;
 block|}
-DECL|method|configureRSServlets ()
+DECL|method|configureWebAppServlets ()
 specifier|protected
 name|void
-name|configureRSServlets
+name|configureWebAppServlets
 parameter_list|()
 block|{
 comment|// Add in the web services filters/serves if app has them.
@@ -1042,14 +1053,30 @@ argument_list|)
 operator|.
 name|through
 argument_list|(
-name|GuiceContainer
-operator|.
-name|class
+name|getWebAppFilterClass
+argument_list|()
 argument_list|,
 name|params
 argument_list|)
 expr_stmt|;
 block|}
+block|}
+DECL|method|getWebAppFilterClass ()
+specifier|protected
+name|Class
+argument_list|<
+name|?
+extends|extends
+name|GuiceContainer
+argument_list|>
+name|getWebAppFilterClass
+parameter_list|()
+block|{
+return|return
+name|GuiceContainer
+operator|.
+name|class
+return|;
 block|}
 comment|/**    * Setup of a webapp serving route.    * @param method  the http method for the route    * @param pathSpec  the path spec in the form of /controller/action/:args etc.    * @param cls the controller class    * @param action the controller method    */
 DECL|method|route (HTTP method, String pathSpec, Class<? extends Controller> cls, String action)

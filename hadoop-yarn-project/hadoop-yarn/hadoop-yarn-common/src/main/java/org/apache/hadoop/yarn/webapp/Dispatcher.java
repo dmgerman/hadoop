@@ -354,7 +354,7 @@ name|Router
 name|router
 decl_stmt|;
 DECL|field|webApp
-specifier|protected
+specifier|private
 specifier|transient
 specifier|final
 name|WebApp
@@ -371,7 +371,6 @@ decl_stmt|;
 annotation|@
 name|Inject
 DECL|method|Dispatcher (WebApp webApp, Injector injector, Router router)
-specifier|protected
 name|Dispatcher
 parameter_list|(
 name|WebApp
