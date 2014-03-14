@@ -176,7 +176,7 @@ name|writer
 argument_list|()
 expr_stmt|;
 block|}
-comment|/**    * Serializes an Object into a byte array. Along with {@link #read(byte[])},    * can be used to serialize an Object and deserialize it into an Object of    * the same type without needing to specify the Object's type,    * as long as it is one of the JSON-compatible objects understood by    * ObjectMapper.    *    * @param o An Object    * @return A byte array representation of the Object    * @throws IOException    */
+comment|/**    * Serializes an Object into a byte array. Along with {@link #read(byte[])},    * can be used to serialize an Object and deserialize it into an Object of    * the same type without needing to specify the Object's type,    * as long as it is one of the JSON-compatible objects understood by    * ObjectMapper.    *    * @param o An Object    * @return A byte array representation of the Object    * @throws IOException if there is a write error    */
 DECL|method|write (Object o)
 specifier|public
 specifier|static
@@ -210,7 +210,7 @@ name|o
 argument_list|)
 return|;
 block|}
-comment|/**    * Deserializes an Object from a byte array created with    * {@link #write(Object)}.    *    * @param b A byte array    * @return An Object    * @throws IOException    */
+comment|/**    * Deserializes an Object from a byte array created with    * {@link #write(Object)}.    *    * @param b A byte array    * @return An Object    * @throws IOException if there is a read error    */
 DECL|method|read (byte[] b)
 specifier|public
 specifier|static
@@ -233,7 +233,7 @@ literal|0
 argument_list|)
 return|;
 block|}
-comment|/**    * Deserializes an Object from a byte array at a specified offset, assuming    * the bytes were created with {@link #write(Object)}.    *    * @param b A byte array    * @param offset Offset into the array    * @return An Object    * @throws IOException    */
+comment|/**    * Deserializes an Object from a byte array at a specified offset, assuming    * the bytes were created with {@link #write(Object)}.    *    * @param b A byte array    * @param offset Offset into the array    * @return An Object    * @throws IOException if there is a read error    */
 DECL|method|read (byte[] b, int offset)
 specifier|public
 specifier|static

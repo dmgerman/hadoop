@@ -1537,9 +1537,17 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
+if|if
+condition|(
 name|LOG
 operator|.
-name|info
+name|isDebugEnabled
+argument_list|()
+condition|)
+block|{
+name|LOG
+operator|.
+name|debug
 argument_list|(
 literal|"Storing entities: "
 operator|+
@@ -1551,6 +1559,7 @@ name|entityIDs
 argument_list|)
 argument_list|)
 expr_stmt|;
+block|}
 return|return
 name|store
 operator|.
