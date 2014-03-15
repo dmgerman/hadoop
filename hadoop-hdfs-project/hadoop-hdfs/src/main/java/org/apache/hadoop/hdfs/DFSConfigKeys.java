@@ -1867,7 +1867,7 @@ specifier|final
 name|long
 name|DFS_NAMENODE_PATH_BASED_CACHE_REFRESH_INTERVAL_MS_DEFAULT
 init|=
-literal|300000L
+literal|30000L
 decl_stmt|;
 comment|// Whether to enable datanode's stale state detection and usage for reads
 DECL|field|DFS_NAMENODE_AVOID_STALE_DATANODE_FOR_READ_KEY
@@ -2884,7 +2884,7 @@ specifier|final
 name|long
 name|DFS_NAMENODE_PATH_BASED_CACHE_RETRY_INTERVAL_MS_DEFAULT
 init|=
-literal|60000L
+literal|30000L
 decl_stmt|;
 DECL|field|DFS_NAMENODE_DECOMMISSION_INTERVAL_KEY
 specifier|public
