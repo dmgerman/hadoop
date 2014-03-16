@@ -214,6 +214,22 @@ name|yarn
 operator|.
 name|api
 operator|.
+name|ApplicationConstants
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|api
+operator|.
 name|records
 operator|.
 name|ApplicationId
@@ -466,7 +482,7 @@ argument_list|)
 argument_list|)
 throw|;
 block|}
-DECL|method|setEnvFromInputString (Map<String, String> env, String envString)
+DECL|method|setEnvFromInputString (Map<String, String> env, String envString, String classPathSeparator)
 specifier|public
 specifier|static
 name|void
@@ -482,6 +498,9 @@ name|env
 parameter_list|,
 name|String
 name|envString
+parameter_list|,
+name|String
+name|classPathSeparator
 parameter_list|)
 block|{
 if|if
@@ -654,6 +673,8 @@ name|sb
 operator|.
 name|toString
 argument_list|()
+argument_list|,
+name|classPathSeparator
 argument_list|)
 expr_stmt|;
 block|}
@@ -663,7 +684,7 @@ annotation|@
 name|Public
 annotation|@
 name|Unstable
-DECL|method|addToEnvironment ( Map<String, String> environment, String variable, String value)
+DECL|method|addToEnvironment ( Map<String, String> environment, String variable, String value, String classPathSeparator)
 specifier|public
 specifier|static
 name|void
@@ -682,6 +703,9 @@ name|variable
 parameter_list|,
 name|String
 name|value
+parameter_list|,
+name|String
+name|classPathSeparator
 parameter_list|)
 block|{
 name|String
@@ -712,9 +736,7 @@ name|val
 operator|=
 name|val
 operator|+
-name|File
-operator|.
-name|pathSeparator
+name|classPathSeparator
 operator|+
 name|value
 expr_stmt|;
@@ -738,6 +760,28 @@ name|val
 argument_list|)
 argument_list|)
 expr_stmt|;
+block|}
+DECL|method|crossPlatformify (String var)
+specifier|public
+specifier|static
+name|String
+name|crossPlatformify
+parameter_list|(
+name|String
+name|var
+parameter_list|)
+block|{
+return|return
+name|ApplicationConstants
+operator|.
+name|PARAMETER_EXPANSION_LEFT
+operator|+
+name|var
+operator|+
+name|ApplicationConstants
+operator|.
+name|PARAMETER_EXPANSION_RIGHT
+return|;
 block|}
 block|}
 end_class

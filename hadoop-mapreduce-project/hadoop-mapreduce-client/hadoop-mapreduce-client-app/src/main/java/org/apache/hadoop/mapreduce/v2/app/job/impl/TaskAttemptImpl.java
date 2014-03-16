@@ -90,6 +90,16 @@ name|java
 operator|.
 name|util
 operator|.
+name|Collection
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
 name|EnumSet
 import|;
 end_import
@@ -153,16 +163,6 @@ operator|.
 name|util
 operator|.
 name|Set
-import|;
-end_import
-
-begin_import
-import|import
-name|java
-operator|.
-name|util
-operator|.
-name|Collection
 import|;
 end_import
 
@@ -1879,22 +1879,6 @@ operator|.
 name|state
 operator|.
 name|StateMachineFactory
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|yarn
-operator|.
-name|util
-operator|.
-name|Apps
 import|;
 end_import
 
@@ -4989,7 +4973,7 @@ throw|;
 block|}
 block|}
 block|}
-name|Apps
+name|MRApps
 operator|.
 name|addToEnvironment
 argument_list|(
@@ -5006,6 +4990,8 @@ name|getInitialClasspath
 argument_list|(
 name|conf
 argument_list|)
+argument_list|,
+name|conf
 argument_list|)
 expr_stmt|;
 if|if
@@ -5015,7 +5001,7 @@ operator|!=
 literal|null
 condition|)
 block|{
-name|Apps
+name|MRApps
 operator|.
 name|addToEnvironment
 argument_list|(
@@ -5029,6 +5015,8 @@ name|name
 argument_list|()
 argument_list|,
 name|initialAppClasspath
+argument_list|,
+name|conf
 argument_list|)
 expr_stmt|;
 block|}
@@ -5074,7 +5062,7 @@ argument_list|)
 argument_list|)
 expr_stmt|;
 comment|// Add pwd to LD_LIBRARY_PATH, add this before adding anything else
-name|Apps
+name|MRApps
 operator|.
 name|addToEnvironment
 argument_list|(
@@ -5087,16 +5075,22 @@ operator|.
 name|name
 argument_list|()
 argument_list|,
+name|MRApps
+operator|.
+name|crossPlatformifyMREnv
+argument_list|(
+name|conf
+argument_list|,
 name|Environment
 operator|.
 name|PWD
-operator|.
-name|$
-argument_list|()
+argument_list|)
+argument_list|,
+name|conf
 argument_list|)
 expr_stmt|;
 comment|// Add the env variables passed by the admin
-name|Apps
+name|MRApps
 operator|.
 name|setEnvFromInputString
 argument_list|(
@@ -5114,6 +5108,8 @@ name|MRJobConfig
 operator|.
 name|DEFAULT_MAPRED_ADMIN_USER_ENV
 argument_list|)
+argument_list|,
+name|conf
 argument_list|)
 expr_stmt|;
 comment|// Construct the actual Container

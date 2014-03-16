@@ -2372,12 +2372,16 @@ name|vargs
 operator|.
 name|add
 argument_list|(
+name|MRApps
+operator|.
+name|crossPlatformifyMREnv
+argument_list|(
+name|jobConf
+argument_list|,
 name|Environment
 operator|.
 name|JAVA_HOME
-operator|.
-name|$
-argument_list|()
+argument_list|)
 operator|+
 literal|"/bin/java"
 argument_list|)
@@ -2775,6 +2779,8 @@ name|MRJobConfig
 operator|.
 name|MR_AM_ADMIN_USER_ENV
 argument_list|)
+argument_list|,
+name|conf
 argument_list|)
 expr_stmt|;
 comment|// Setup the environment variables (LD_LIBRARY_PATH, etc)
@@ -2792,6 +2798,8 @@ name|MRJobConfig
 operator|.
 name|MR_AM_ENV
 argument_list|)
+argument_list|,
+name|conf
 argument_list|)
 expr_stmt|;
 comment|// Parse distributed cache

@@ -58,6 +58,22 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|classification
+operator|.
+name|InterfaceStability
+operator|.
+name|Unstable
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|security
 operator|.
 name|UserGroupInformation
@@ -133,6 +149,48 @@ name|String
 name|LOG_DIR_EXPANSION_VAR
 init|=
 literal|"<LOG_DIR>"
+decl_stmt|;
+comment|/**    * This constant is used to construct class path and it will be replaced with    * real class path separator(':' for Linux and ';' for Windows) by    * NodeManager on container launch. User has to use this constant to construct    * class path if user wants cross-platform practice i.e. submit an application    * from a Windows client to a Linux/Unix server or vice versa.    */
+annotation|@
+name|Public
+annotation|@
+name|Unstable
+DECL|field|CLASS_PATH_SEPARATOR
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|CLASS_PATH_SEPARATOR
+init|=
+literal|"<CPS>"
+decl_stmt|;
+comment|/**    * The following two constants are used to expand parameter and it will be    * replaced with real parameter expansion marker ('%' for Windows and '$' for    * Linux) by NodeManager on container launch. For example: {{VAR}} will be    * replaced as $VAR on Linux, and %VAR% on Windows. User has to use this    * constant to construct class path if user wants cross-platform practice i.e.    * submit an application from a Windows client to a Linux/Unix server or vice    * versa.    */
+annotation|@
+name|Public
+annotation|@
+name|Unstable
+DECL|field|PARAMETER_EXPANSION_LEFT
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|PARAMETER_EXPANSION_LEFT
+init|=
+literal|"{{"
+decl_stmt|;
+comment|/**    * User has to use this constant to construct class path if user wants    * cross-platform practice i.e. submit an application from a Windows client to    * a Linux/Unix server or vice versa.    */
+annotation|@
+name|Public
+annotation|@
+name|Unstable
+DECL|field|PARAMETER_EXPANSION_RIGHT
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|PARAMETER_EXPANSION_RIGHT
+init|=
+literal|"}}"
 decl_stmt|;
 DECL|field|STDERR
 specifier|public
@@ -356,6 +414,7 @@ return|return
 name|variable
 return|;
 block|}
+comment|/**      * Expand the environment variable based on client OS environment variable      * expansion syntax (e.g. $VAR for Linux and %VAR% for Windows).      *<p>      * Note: Use $$() method for cross-platform practice i.e. submit an      * application from a Windows client to a Linux/Unix server or vice versa.      *</p>      */
 DECL|method|$ ()
 specifier|public
 name|String
@@ -385,6 +444,25 @@ operator|+
 name|variable
 return|;
 block|}
+block|}
+comment|/**      * Expand the environment variable in platform-agnostic syntax. The      * parameter expansion marker "{{VAR}}" will be replaced with real parameter      * expansion marker ('%' for Windows and '$' for Linux) by NodeManager on      * container launch. For example: {{VAR}} will be replaced as $VAR on Linux,      * and %VAR% on Windows.      */
+annotation|@
+name|Public
+annotation|@
+name|Unstable
+DECL|method|$$ ()
+specifier|public
+name|String
+name|$$
+parameter_list|()
+block|{
+return|return
+name|PARAMETER_EXPANSION_LEFT
+operator|+
+name|variable
+operator|+
+name|PARAMETER_EXPANSION_RIGHT
+return|;
 block|}
 block|}
 block|}

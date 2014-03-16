@@ -614,7 +614,7 @@ literal|","
 argument_list|,
 name|YarnConfiguration
 operator|.
-name|DEFAULT_YARN_APPLICATION_CLASSPATH
+name|DEFAULT_YARN_CROSS_PLATFORM_APPLICATION_CLASSPATH
 argument_list|)
 argument_list|)
 operator|+
