@@ -441,21 +441,6 @@ argument_list|(
 name|containerId
 argument_list|)
 decl_stmt|;
-if|if
-condition|(
-name|container
-operator|==
-literal|null
-condition|)
-block|{
-throw|throw
-operator|new
-name|YarnException
-argument_list|(
-literal|"Container does not exist."
-argument_list|)
-throw|;
-block|}
 name|Application
 name|application
 init|=
@@ -475,6 +460,19 @@ argument_list|,
 name|context
 argument_list|)
 expr_stmt|;
+comment|// It is not required to have null check for container ( container == null )
+comment|// and throw back exception.Because when container is completed, NodeManager
+comment|// remove container information from its NMContext.Configuring log
+comment|// aggregation to false, container log view request is forwarded to NM. NM
+comment|// does not have completed container information,but still NM serve request for
+comment|// reading container logs.
+if|if
+condition|(
+name|container
+operator|!=
+literal|null
+condition|)
+block|{
 name|checkState
 argument_list|(
 name|container
@@ -483,6 +481,7 @@ name|getContainerState
 argument_list|()
 argument_list|)
 expr_stmt|;
+block|}
 return|return
 name|getContainerLogDirs
 argument_list|(
@@ -662,25 +661,6 @@ argument_list|(
 name|containerId
 argument_list|)
 decl_stmt|;
-if|if
-condition|(
-name|container
-operator|==
-literal|null
-condition|)
-block|{
-throw|throw
-operator|new
-name|NotFoundException
-argument_list|(
-literal|"Container with id "
-operator|+
-name|containerId
-operator|+
-literal|" not found."
-argument_list|)
-throw|;
-block|}
 name|Application
 name|application
 init|=
@@ -700,6 +680,13 @@ argument_list|,
 name|context
 argument_list|)
 expr_stmt|;
+if|if
+condition|(
+name|container
+operator|!=
+literal|null
+condition|)
+block|{
 name|checkState
 argument_list|(
 name|container
@@ -708,6 +695,7 @@ name|getContainerState
 argument_list|()
 argument_list|)
 expr_stmt|;
+block|}
 try|try
 block|{
 name|LocalDirsHandlerService
