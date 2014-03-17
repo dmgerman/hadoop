@@ -1385,8 +1385,6 @@ name|MAX_VALUE
 argument_list|,
 literal|null
 argument_list|,
-literal|null
-argument_list|,
 name|Integer
 operator|.
 name|MAX_VALUE
@@ -1531,16 +1529,6 @@ argument_list|(
 name|containerFinish
 operator|.
 name|getDiagnosticsInfo
-argument_list|()
-argument_list|)
-expr_stmt|;
-name|data
-operator|.
-name|setLogURL
-argument_list|(
-name|containerFinish
-operator|.
-name|getLogURL
 argument_list|()
 argument_list|)
 expr_stmt|;

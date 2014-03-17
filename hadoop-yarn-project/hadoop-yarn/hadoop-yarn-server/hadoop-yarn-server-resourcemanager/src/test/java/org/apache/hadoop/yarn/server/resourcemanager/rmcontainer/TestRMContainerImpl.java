@@ -938,7 +938,7 @@ argument_list|)
 expr_stmt|;
 name|assertEquals
 argument_list|(
-literal|"//host:3465/logs/host:3425/container_1_0001_01_000001/container_1_0001_01_000001/user"
+literal|"//host:3465/node/containerlogs/container_1_0001_01_000001/user"
 argument_list|,
 name|rmContainer
 operator|.
@@ -1562,7 +1562,7 @@ argument_list|)
 expr_stmt|;
 name|assertEquals
 argument_list|(
-literal|"//host:3465/logs/host:3425/container_1_0001_01_000001/container_1_0001_01_000001/user"
+literal|"//host:3465/node/containerlogs/container_1_0001_01_000001/user"
 argument_list|,
 name|rmContainer
 operator|.

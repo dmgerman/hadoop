@@ -2251,18 +2251,6 @@ name|Assert
 operator|.
 name|assertEquals
 argument_list|(
-literal|"test log url"
-argument_list|,
-name|containerHD
-operator|.
-name|getLogURL
-argument_list|()
-argument_list|)
-expr_stmt|;
-name|Assert
-operator|.
-name|assertEquals
-argument_list|(
 operator|-
 literal|1
 argument_list|,

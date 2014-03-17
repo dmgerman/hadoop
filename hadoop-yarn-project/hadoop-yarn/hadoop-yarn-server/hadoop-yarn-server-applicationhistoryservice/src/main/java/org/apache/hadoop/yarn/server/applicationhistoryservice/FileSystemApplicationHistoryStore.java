@@ -2187,8 +2187,6 @@ name|MAX_VALUE
 argument_list|,
 literal|null
 argument_list|,
-literal|null
-argument_list|,
 name|Integer
 operator|.
 name|MAX_VALUE
@@ -2596,8 +2594,6 @@ argument_list|,
 name|Long
 operator|.
 name|MAX_VALUE
-argument_list|,
-literal|null
 argument_list|,
 literal|null
 argument_list|,
@@ -3924,16 +3920,6 @@ argument_list|(
 name|finishData
 operator|.
 name|getDiagnosticsInfo
-argument_list|()
-argument_list|)
-expr_stmt|;
-name|historyData
-operator|.
-name|setLogURL
-argument_list|(
-name|finishData
-operator|.
-name|getLogURL
 argument_list|()
 argument_list|)
 expr_stmt|;

@@ -580,8 +580,6 @@ operator|.
 name|toString
 argument_list|()
 argument_list|,
-literal|"http://localhost:0/log"
-argument_list|,
 literal|0
 argument_list|,
 name|ContainerState

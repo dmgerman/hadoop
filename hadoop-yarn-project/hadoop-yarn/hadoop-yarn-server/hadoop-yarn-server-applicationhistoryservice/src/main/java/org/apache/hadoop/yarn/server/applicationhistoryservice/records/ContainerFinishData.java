@@ -125,7 +125,7 @@ annotation|@
 name|Public
 annotation|@
 name|Unstable
-DECL|method|newInstance (ContainerId containerId, long finishTime, String diagnosticsInfo, String logURL, int containerExitCode, ContainerState containerState)
+DECL|method|newInstance (ContainerId containerId, long finishTime, String diagnosticsInfo, int containerExitCode, ContainerState containerState)
 specifier|public
 specifier|static
 name|ContainerFinishData
@@ -139,9 +139,6 @@ name|finishTime
 parameter_list|,
 name|String
 name|diagnosticsInfo
-parameter_list|,
-name|String
-name|logURL
 parameter_list|,
 name|int
 name|containerExitCode
@@ -181,13 +178,6 @@ operator|.
 name|setDiagnosticsInfo
 argument_list|(
 name|diagnosticsInfo
-argument_list|)
-expr_stmt|;
-name|containerFD
-operator|.
-name|setLogURL
-argument_list|(
-name|logURL
 argument_list|)
 expr_stmt|;
 name|containerFD
@@ -281,31 +271,6 @@ name|setDiagnosticsInfo
 parameter_list|(
 name|String
 name|diagnosticsInfo
-parameter_list|)
-function_decl|;
-annotation|@
-name|Public
-annotation|@
-name|Unstable
-DECL|method|getLogURL ()
-specifier|public
-specifier|abstract
-name|String
-name|getLogURL
-parameter_list|()
-function_decl|;
-annotation|@
-name|Public
-annotation|@
-name|Unstable
-DECL|method|setLogURL (String logURL)
-specifier|public
-specifier|abstract
-name|void
-name|setLogURL
-parameter_list|(
-name|String
-name|logURL
 parameter_list|)
 function_decl|;
 annotation|@

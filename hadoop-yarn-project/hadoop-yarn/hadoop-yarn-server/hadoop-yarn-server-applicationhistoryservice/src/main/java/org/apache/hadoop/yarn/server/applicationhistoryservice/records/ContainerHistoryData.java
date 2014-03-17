@@ -193,11 +193,6 @@ specifier|private
 name|String
 name|diagnosticsInfo
 decl_stmt|;
-DECL|field|logURL
-specifier|private
-name|String
-name|logURL
-decl_stmt|;
 DECL|field|containerExitStatus
 specifier|private
 name|int
@@ -212,7 +207,7 @@ annotation|@
 name|Public
 annotation|@
 name|Unstable
-DECL|method|newInstance (ContainerId containerId, Resource allocatedResource, NodeId assignedNode, Priority priority, long startTime, long finishTime, String diagnosticsInfo, String logURL, int containerExitCode, ContainerState containerState)
+DECL|method|newInstance (ContainerId containerId, Resource allocatedResource, NodeId assignedNode, Priority priority, long startTime, long finishTime, String diagnosticsInfo, int containerExitCode, ContainerState containerState)
 specifier|public
 specifier|static
 name|ContainerHistoryData
@@ -238,9 +233,6 @@ name|finishTime
 parameter_list|,
 name|String
 name|diagnosticsInfo
-parameter_list|,
-name|String
-name|logURL
 parameter_list|,
 name|int
 name|containerExitCode
@@ -303,13 +295,6 @@ operator|.
 name|setDiagnosticsInfo
 argument_list|(
 name|diagnosticsInfo
-argument_list|)
-expr_stmt|;
-name|containerHD
-operator|.
-name|setLogURL
-argument_list|(
-name|logURL
 argument_list|)
 expr_stmt|;
 name|containerHD
@@ -566,40 +551,6 @@ operator|.
 name|diagnosticsInfo
 operator|=
 name|diagnosticsInfo
-expr_stmt|;
-block|}
-annotation|@
-name|Public
-annotation|@
-name|Unstable
-DECL|method|getLogURL ()
-specifier|public
-name|String
-name|getLogURL
-parameter_list|()
-block|{
-return|return
-name|logURL
-return|;
-block|}
-annotation|@
-name|Public
-annotation|@
-name|Unstable
-DECL|method|setLogURL (String logURL)
-specifier|public
-name|void
-name|setLogURL
-parameter_list|(
-name|String
-name|logURL
-parameter_list|)
-block|{
-name|this
-operator|.
-name|logURL
-operator|=
-name|logURL
 expr_stmt|;
 block|}
 annotation|@

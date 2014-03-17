@@ -468,6 +468,22 @@ name|hadoop
 operator|.
 name|yarn
 operator|.
+name|util
+operator|.
+name|ConverterUtils
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
 name|webapp
 operator|.
 name|util
@@ -1116,11 +1132,6 @@ specifier|private
 name|long
 name|finishTime
 decl_stmt|;
-DECL|field|logURL
-specifier|private
-name|String
-name|logURL
-decl_stmt|;
 DECL|field|finishedStatus
 specifier|private
 name|ContainerStatus
@@ -1525,7 +1536,26 @@ name|lock
 argument_list|()
 expr_stmt|;
 return|return
-name|logURL
+name|WebAppUtils
+operator|.
+name|getRunningLogURL
+argument_list|(
+literal|"//"
+operator|+
+name|container
+operator|.
+name|getNodeHttpAddress
+argument_list|()
+argument_list|,
+name|ConverterUtils
+operator|.
+name|toString
+argument_list|(
+name|containerId
+argument_list|)
+argument_list|,
+name|user
+argument_list|)
 return|;
 block|}
 finally|finally
@@ -1999,40 +2029,6 @@ name|RMContainerEvent
 name|event
 parameter_list|)
 block|{
-comment|// The logs of running containers should be found on NM webUI
-comment|// The logs should be accessible after the container is launched
-name|container
-operator|.
-name|logURL
-operator|=
-name|WebAppUtils
-operator|.
-name|getLogUrl
-argument_list|(
-name|container
-operator|.
-name|container
-operator|.
-name|getNodeHttpAddress
-argument_list|()
-argument_list|,
-name|container
-operator|.
-name|getAllocatedNode
-argument_list|()
-operator|.
-name|toString
-argument_list|()
-argument_list|,
-name|container
-operator|.
-name|containerId
-argument_list|,
-name|container
-operator|.
-name|user
-argument_list|)
-expr_stmt|;
 comment|// Unregister from containerAllocationExpirer.
 name|container
 operator|.
@@ -2096,8 +2092,6 @@ operator|.
 name|getRemoteContainerStatus
 argument_list|()
 expr_stmt|;
-comment|// TODO: when AHS webUI is ready, logURL should be updated to point to
-comment|// the web page that will show the aggregated logs
 comment|// Inform AppAttempt
 name|container
 operator|.

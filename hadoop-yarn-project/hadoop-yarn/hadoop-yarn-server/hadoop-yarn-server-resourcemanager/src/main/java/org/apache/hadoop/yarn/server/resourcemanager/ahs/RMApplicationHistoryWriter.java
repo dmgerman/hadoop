@@ -1636,11 +1636,6 @@ argument_list|()
 argument_list|,
 name|container
 operator|.
-name|getLogURL
-argument_list|()
-argument_list|,
-name|container
-operator|.
 name|getContainerExitStatus
 argument_list|()
 argument_list|,
