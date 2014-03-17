@@ -4797,6 +4797,26 @@ literal|0
 argument_list|)
 argument_list|)
 expr_stmt|;
+comment|// The node set in NMTokenSecrentManager is used for marking whether the
+comment|// NMToken has been issued for this node to the AM.
+comment|// When AM container was allocated to RM itself, the node which allocates
+comment|// this AM container was marked as the NMToken already sent. Thus,
+comment|// clear this node set so that the following allocate requests from AM are
+comment|// able to retrieve the corresponding NMToken.
+name|appAttempt
+operator|.
+name|rmContext
+operator|.
+name|getNMTokenSecretManager
+argument_list|()
+operator|.
+name|clearNodeSetForAttempt
+argument_list|(
+name|appAttempt
+operator|.
+name|applicationAttemptId
+argument_list|)
+expr_stmt|;
 name|appAttempt
 operator|.
 name|getSubmissionContext

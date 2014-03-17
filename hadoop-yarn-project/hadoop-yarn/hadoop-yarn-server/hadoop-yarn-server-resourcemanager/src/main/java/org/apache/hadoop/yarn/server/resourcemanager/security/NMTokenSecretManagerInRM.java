@@ -725,6 +725,73 @@ argument_list|()
 expr_stmt|;
 block|}
 block|}
+DECL|method|clearNodeSetForAttempt (ApplicationAttemptId attemptId)
+specifier|public
+name|void
+name|clearNodeSetForAttempt
+parameter_list|(
+name|ApplicationAttemptId
+name|attemptId
+parameter_list|)
+block|{
+name|super
+operator|.
+name|writeLock
+operator|.
+name|lock
+argument_list|()
+expr_stmt|;
+try|try
+block|{
+name|HashSet
+argument_list|<
+name|NodeId
+argument_list|>
+name|nodeSet
+init|=
+name|this
+operator|.
+name|appAttemptToNodeKeyMap
+operator|.
+name|get
+argument_list|(
+name|attemptId
+argument_list|)
+decl_stmt|;
+if|if
+condition|(
+name|nodeSet
+operator|!=
+literal|null
+condition|)
+block|{
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"Clear node set for "
+operator|+
+name|attemptId
+argument_list|)
+expr_stmt|;
+name|nodeSet
+operator|.
+name|clear
+argument_list|()
+expr_stmt|;
+block|}
+block|}
+finally|finally
+block|{
+name|super
+operator|.
+name|writeLock
+operator|.
+name|unlock
+argument_list|()
+expr_stmt|;
+block|}
+block|}
 DECL|method|clearApplicationNMTokenKeys ()
 specifier|private
 name|void
@@ -918,17 +985,9 @@ argument_list|()
 argument_list|)
 condition|)
 block|{
-if|if
-condition|(
 name|LOG
 operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
-name|LOG
-operator|.
-name|debug
+name|info
 argument_list|(
 literal|"Sending NMToken for nodeId : "
 operator|+
@@ -936,19 +995,15 @@ name|container
 operator|.
 name|getNodeId
 argument_list|()
-operator|.
-name|toString
-argument_list|()
 operator|+
-literal|" for application attempt : "
+literal|" for container : "
 operator|+
-name|appAttemptId
+name|container
 operator|.
-name|toString
+name|getId
 argument_list|()
 argument_list|)
 expr_stmt|;
-block|}
 name|Token
 name|token
 init|=
@@ -984,23 +1039,6 @@ argument_list|,
 name|token
 argument_list|)
 expr_stmt|;
-comment|// The node set here is used for differentiating whether the NMToken
-comment|// has been issued for this node from the client's perspective. If
-comment|// this is an AM container, the NMToken is issued only for RM and so
-comment|// we should not update the node set.
-if|if
-condition|(
-name|container
-operator|.
-name|getId
-argument_list|()
-operator|.
-name|getId
-argument_list|()
-operator|!=
-literal|1
-condition|)
-block|{
 name|nodeSet
 operator|.
 name|add
@@ -1011,7 +1049,6 @@ name|getNodeId
 argument_list|()
 argument_list|)
 expr_stmt|;
-block|}
 block|}
 block|}
 return|return

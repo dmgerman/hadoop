@@ -1788,17 +1788,9 @@ name|nodeId
 argument_list|)
 condition|)
 block|{
-if|if
-condition|(
 name|LOG
 operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
-name|LOG
-operator|.
-name|debug
+name|info
 argument_list|(
 literal|"Replacing token for : "
 operator|+
@@ -1806,27 +1798,17 @@ name|nodeId
 argument_list|)
 expr_stmt|;
 block|}
-block|}
 else|else
 block|{
-if|if
-condition|(
 name|LOG
 operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
-name|LOG
-operator|.
-name|debug
+name|info
 argument_list|(
 literal|"Received new token for : "
 operator|+
 name|nodeId
 argument_list|)
 expr_stmt|;
-block|}
 block|}
 name|getNMTokenCache
 argument_list|()

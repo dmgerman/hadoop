@@ -5185,7 +5185,10 @@ name|NoLock
 operator|.
 name|class
 argument_list|)
+annotation|@
+name|VisibleForTesting
 DECL|method|getApplicationAttempt ( ApplicationAttemptId applicationAttemptId)
+specifier|public
 name|FiCaSchedulerApp
 name|getApplicationAttempt
 parameter_list|(
