@@ -25816,8 +25816,6 @@ name|processIncrementalBlockReport
 argument_list|(
 name|nodeID
 argument_list|,
-name|poolId
-argument_list|,
 name|srdb
 argument_list|)
 expr_stmt|;

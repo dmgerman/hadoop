@@ -686,7 +686,7 @@ specifier|private
 specifier|final
 name|Map
 argument_list|<
-name|String
+name|DatanodeStorage
 argument_list|,
 name|PerStoragePendingIncrementalBR
 argument_list|>
@@ -1325,7 +1325,7 @@ name|Map
 operator|.
 name|Entry
 argument_list|<
-name|String
+name|DatanodeStorage
 argument_list|,
 name|PerStoragePendingIncrementalBR
 argument_list|>
@@ -1338,8 +1338,8 @@ argument_list|()
 control|)
 block|{
 specifier|final
-name|String
-name|storageUuid
+name|DatanodeStorage
+name|storage
 init|=
 name|entry
 operator|.
@@ -1382,7 +1382,7 @@ argument_list|(
 operator|new
 name|StorageReceivedDeletedBlocks
 argument_list|(
-name|storageUuid
+name|storage
 argument_list|,
 name|rdbi
 argument_list|)
@@ -1480,7 +1480,7 @@ name|get
 argument_list|(
 name|report
 operator|.
-name|getStorageID
+name|getStorage
 argument_list|()
 argument_list|)
 decl_stmt|;
@@ -1504,13 +1504,13 @@ block|}
 block|}
 block|}
 comment|/**    * Retrieve the incremental BR state for a given storage UUID    * @param storageUuid    * @return    */
-DECL|method|getIncrementalBRMapForStorage ( String storageUuid)
+DECL|method|getIncrementalBRMapForStorage ( DatanodeStorage storage)
 specifier|private
 name|PerStoragePendingIncrementalBR
 name|getIncrementalBRMapForStorage
 parameter_list|(
-name|String
-name|storageUuid
+name|DatanodeStorage
+name|storage
 parameter_list|)
 block|{
 name|PerStoragePendingIncrementalBR
@@ -1520,7 +1520,7 @@ name|pendingIncrementalBRperStorage
 operator|.
 name|get
 argument_list|(
-name|storageUuid
+name|storage
 argument_list|)
 decl_stmt|;
 if|if
@@ -1543,7 +1543,7 @@ name|pendingIncrementalBRperStorage
 operator|.
 name|put
 argument_list|(
-name|storageUuid
+name|storage
 argument_list|,
 name|mapForStorage
 argument_list|)
@@ -1554,15 +1554,15 @@ name|mapForStorage
 return|;
 block|}
 comment|/**    * Add a blockInfo for notification to NameNode. If another entry    * exists for the same block it is removed.    *    * Caller must synchronize access using pendingIncrementalBRperStorage.    * @param bInfo    * @param storageUuid    */
-DECL|method|addPendingReplicationBlockInfo (ReceivedDeletedBlockInfo bInfo, String storageUuid)
+DECL|method|addPendingReplicationBlockInfo (ReceivedDeletedBlockInfo bInfo, DatanodeStorage storage)
 name|void
 name|addPendingReplicationBlockInfo
 parameter_list|(
 name|ReceivedDeletedBlockInfo
 name|bInfo
 parameter_list|,
-name|String
-name|storageUuid
+name|DatanodeStorage
+name|storage
 parameter_list|)
 block|{
 comment|// Make sure another entry for the same block is first removed.
@@ -1573,7 +1573,7 @@ name|Map
 operator|.
 name|Entry
 argument_list|<
-name|String
+name|DatanodeStorage
 argument_list|,
 name|PerStoragePendingIncrementalBR
 argument_list|>
@@ -1603,7 +1603,7 @@ block|}
 block|}
 name|getIncrementalBRMapForStorage
 argument_list|(
-name|storageUuid
+name|storage
 argument_list|)
 operator|.
 name|putBlockInfo
@@ -1633,7 +1633,15 @@ name|addPendingReplicationBlockInfo
 argument_list|(
 name|bInfo
 argument_list|,
+name|dn
+operator|.
+name|getFSDataset
+argument_list|()
+operator|.
+name|getStorage
+argument_list|(
 name|storageUuid
+argument_list|)
 argument_list|)
 expr_stmt|;
 name|sendImmediateIBR
@@ -1667,7 +1675,15 @@ name|addPendingReplicationBlockInfo
 argument_list|(
 name|bInfo
 argument_list|,
+name|dn
+operator|.
+name|getFSDataset
+argument_list|()
+operator|.
+name|getStorage
+argument_list|(
 name|storageUuid
+argument_list|)
 argument_list|)
 expr_stmt|;
 block|}

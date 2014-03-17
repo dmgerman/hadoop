@@ -8097,22 +8097,6 @@ argument_list|(
 name|storage
 argument_list|)
 expr_stmt|;
-name|LOG
-operator|.
-name|warn
-argument_list|(
-literal|"Unknown storageId "
-operator|+
-name|storage
-operator|.
-name|getStorageID
-argument_list|()
-operator|+
-literal|", updating storageMap. This indicates a buggy "
-operator|+
-literal|"DataNode that isn't heartbeating correctly."
-argument_list|)
-expr_stmt|;
 block|}
 if|if
 condition|(
@@ -10732,6 +10716,8 @@ name|storedBlock
 operator|.
 name|isComplete
 argument_list|()
+operator|&&
+name|added
 condition|)
 block|{
 comment|// check whether safe replication is reached for the block
@@ -13252,7 +13238,7 @@ expr_stmt|;
 block|}
 block|}
 comment|/**    * The given node is reporting incremental information about some blocks.    * This includes blocks that are starting to be received, completed being    * received, or deleted.    *     * This method must be called with FSNamesystem lock held.    */
-DECL|method|processIncrementalBlockReport (final DatanodeID nodeID, final String poolId, final StorageReceivedDeletedBlocks srdb)
+DECL|method|processIncrementalBlockReport (final DatanodeID nodeID, final StorageReceivedDeletedBlocks srdb)
 specifier|public
 name|void
 name|processIncrementalBlockReport
@@ -13260,10 +13246,6 @@ parameter_list|(
 specifier|final
 name|DatanodeID
 name|nodeID
-parameter_list|,
-specifier|final
-name|String
-name|poolId
 parameter_list|,
 specifier|final
 name|StorageReceivedDeletedBlocks
@@ -13335,6 +13317,40 @@ literal|"Got incremental block report from unregistered or dead node"
 argument_list|)
 throw|;
 block|}
+if|if
+condition|(
+name|node
+operator|.
+name|getStorageInfo
+argument_list|(
+name|srdb
+operator|.
+name|getStorage
+argument_list|()
+operator|.
+name|getStorageID
+argument_list|()
+argument_list|)
+operator|==
+literal|null
+condition|)
+block|{
+comment|// The DataNode is reporting an unknown storage. Usually the NN learns
+comment|// about new storages from heartbeats but during NN restart we may
+comment|// receive a block report or incremental report before the heartbeat.
+comment|// We must handle this for protocol compatibility. This issue was
+comment|// uncovered by HDFS-6904.
+name|node
+operator|.
+name|updateStorage
+argument_list|(
+name|srdb
+operator|.
+name|getStorage
+argument_list|()
+argument_list|)
+expr_stmt|;
+block|}
 for|for
 control|(
 name|ReceivedDeletedBlockInfo
@@ -13380,6 +13396,9 @@ name|node
 argument_list|,
 name|srdb
 operator|.
+name|getStorage
+argument_list|()
+operator|.
 name|getStorageID
 argument_list|()
 argument_list|,
@@ -13409,6 +13428,9 @@ argument_list|(
 name|node
 argument_list|,
 name|srdb
+operator|.
+name|getStorage
+argument_list|()
 operator|.
 name|getStorageID
 argument_list|()

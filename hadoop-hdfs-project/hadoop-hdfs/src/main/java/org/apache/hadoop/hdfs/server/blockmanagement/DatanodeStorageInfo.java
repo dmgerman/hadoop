@@ -435,6 +435,30 @@ return|return
 name|storageTypes
 return|;
 block|}
+DECL|method|updateFromStorage (DatanodeStorage storage)
+specifier|public
+name|void
+name|updateFromStorage
+parameter_list|(
+name|DatanodeStorage
+name|storage
+parameter_list|)
+block|{
+name|state
+operator|=
+name|storage
+operator|.
+name|getState
+argument_list|()
+expr_stmt|;
+name|storageType
+operator|=
+name|storage
+operator|.
+name|getStorageType
+argument_list|()
+expr_stmt|;
+block|}
 comment|/**    * Iterates over the list of blocks belonging to the data-node.    */
 DECL|class|BlockIterator
 class|class
@@ -536,13 +560,11 @@ name|storageID
 decl_stmt|;
 DECL|field|storageType
 specifier|private
-specifier|final
 name|StorageType
 name|storageType
 decl_stmt|;
 DECL|field|state
 specifier|private
-specifier|final
 name|State
 name|state
 decl_stmt|;

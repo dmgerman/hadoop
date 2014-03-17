@@ -1978,8 +1978,27 @@ name|setStorageUuid
 argument_list|(
 name|storageBlock
 operator|.
+name|getStorage
+argument_list|()
+operator|.
 name|getStorageID
 argument_list|()
+argument_list|)
+expr_stmt|;
+comment|// Set for wire compatibility.
+name|repBuilder
+operator|.
+name|setStorage
+argument_list|(
+name|PBHelper
+operator|.
+name|convert
+argument_list|(
+name|storageBlock
+operator|.
+name|getStorage
+argument_list|()
+argument_list|)
 argument_list|)
 expr_stmt|;
 for|for

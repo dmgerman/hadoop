@@ -30,11 +30,9 @@ specifier|public
 class|class
 name|StorageReceivedDeletedBlocks
 block|{
-DECL|field|storageID
-specifier|private
-specifier|final
-name|String
-name|storageID
+DECL|field|storage
+name|DatanodeStorage
+name|storage
 decl_stmt|;
 DECL|field|blocks
 specifier|private
@@ -43,6 +41,8 @@ name|ReceivedDeletedBlockInfo
 index|[]
 name|blocks
 decl_stmt|;
+annotation|@
+name|Deprecated
 DECL|method|getStorageID ()
 specifier|public
 name|String
@@ -50,7 +50,20 @@ name|getStorageID
 parameter_list|()
 block|{
 return|return
-name|storageID
+name|storage
+operator|.
+name|getStorageID
+argument_list|()
+return|;
+block|}
+DECL|method|getStorage ()
+specifier|public
+name|DatanodeStorage
+name|getStorage
+parameter_list|()
+block|{
+return|return
+name|storage
 return|;
 block|}
 DECL|method|getBlocks ()
@@ -64,6 +77,8 @@ return|return
 name|blocks
 return|;
 block|}
+annotation|@
+name|Deprecated
 DECL|method|StorageReceivedDeletedBlocks (final String storageID, final ReceivedDeletedBlockInfo[] blocks)
 specifier|public
 name|StorageReceivedDeletedBlocks
@@ -80,9 +95,40 @@ parameter_list|)
 block|{
 name|this
 operator|.
-name|storageID
+name|storage
 operator|=
+operator|new
+name|DatanodeStorage
+argument_list|(
 name|storageID
+argument_list|)
+expr_stmt|;
+name|this
+operator|.
+name|blocks
+operator|=
+name|blocks
+expr_stmt|;
+block|}
+DECL|method|StorageReceivedDeletedBlocks (final DatanodeStorage storage, final ReceivedDeletedBlockInfo[] blocks)
+specifier|public
+name|StorageReceivedDeletedBlocks
+parameter_list|(
+specifier|final
+name|DatanodeStorage
+name|storage
+parameter_list|,
+specifier|final
+name|ReceivedDeletedBlockInfo
+index|[]
+name|blocks
+parameter_list|)
+block|{
+name|this
+operator|.
+name|storage
+operator|=
+name|storage
 expr_stmt|;
 name|this
 operator|.

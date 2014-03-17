@@ -5246,6 +5246,36 @@ throw|;
 block|}
 annotation|@
 name|Override
+DECL|method|getStorage (final String storageUuid)
+specifier|public
+name|DatanodeStorage
+name|getStorage
+parameter_list|(
+specifier|final
+name|String
+name|storageUuid
+parameter_list|)
+block|{
+return|return
+name|storageUuid
+operator|.
+name|equals
+argument_list|(
+name|storage
+operator|.
+name|getStorageUuid
+argument_list|()
+argument_list|)
+condition|?
+name|storage
+operator|.
+name|dnStorage
+else|:
+literal|null
+return|;
+block|}
+annotation|@
+name|Override
 DECL|method|getStorageReports (String bpid)
 specifier|public
 name|StorageReport

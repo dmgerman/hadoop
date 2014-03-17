@@ -112,6 +112,20 @@ end_import
 
 begin_import
 import|import
+name|com
+operator|.
+name|google
+operator|.
+name|common
+operator|.
+name|annotations
+operator|.
+name|VisibleForTesting
+import|;
+end_import
+
+begin_import
+import|import
 name|org
 operator|.
 name|apache
@@ -1011,7 +1025,10 @@ return|return
 literal|false
 return|;
 block|}
+annotation|@
+name|VisibleForTesting
 DECL|method|getStorageInfo (String storageID)
+specifier|public
 name|DatanodeStorageInfo
 name|getStorageInfo
 parameter_list|(
@@ -1517,30 +1534,6 @@ block|{
 name|DatanodeStorageInfo
 name|storage
 init|=
-name|storageMap
-operator|.
-name|get
-argument_list|(
-name|report
-operator|.
-name|getStorage
-argument_list|()
-operator|.
-name|getStorageID
-argument_list|()
-argument_list|)
-decl_stmt|;
-if|if
-condition|(
-name|storage
-operator|==
-literal|null
-condition|)
-block|{
-comment|// This is seen during cluster initialization when the heartbeat
-comment|// is received before the initial block reports from each storage.
-name|storage
-operator|=
 name|updateStorage
 argument_list|(
 name|report
@@ -1548,8 +1541,7 @@ operator|.
 name|getStorage
 argument_list|()
 argument_list|)
-expr_stmt|;
-block|}
+decl_stmt|;
 name|storage
 operator|.
 name|receivedHeartbeat
@@ -2741,6 +2733,55 @@ operator|.
 name|put
 argument_list|(
 name|s
+operator|.
+name|getStorageID
+argument_list|()
+argument_list|,
+name|storage
+argument_list|)
+expr_stmt|;
+block|}
+elseif|else
+if|if
+condition|(
+name|storage
+operator|.
+name|getState
+argument_list|()
+operator|!=
+name|s
+operator|.
+name|getState
+argument_list|()
+operator|||
+name|storage
+operator|.
+name|getStorageType
+argument_list|()
+operator|!=
+name|s
+operator|.
+name|getStorageType
+argument_list|()
+condition|)
+block|{
+comment|// For backwards compatibility, make sure that the type and
+comment|// state are updated. Some reports from older datanodes do
+comment|// not include these fields so we may have assumed defaults.
+comment|// This check can be removed in the next major release after
+comment|// 2.4.
+name|storage
+operator|.
+name|updateFromStorage
+argument_list|(
+name|s
+argument_list|)
+expr_stmt|;
+name|storageMap
+operator|.
+name|put
+argument_list|(
+name|storage
 operator|.
 name|getStorageID
 argument_list|()

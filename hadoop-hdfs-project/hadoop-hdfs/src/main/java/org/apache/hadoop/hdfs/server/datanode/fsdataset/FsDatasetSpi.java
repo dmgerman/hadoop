@@ -554,7 +554,7 @@ literal|false
 return|;
 block|}
 block|}
-comment|/**    * Create rolling logs.    *     * @param prefix the prefix of the log names.    * @return rolling logs    */
+comment|/**    * Create rolling logs.    *    * @param prefix the prefix of the log names.    * @return rolling logs    */
 DECL|method|createRollingLogs (String bpid, String prefix )
 specifier|public
 name|RollingLogs
@@ -578,6 +578,17 @@ name|V
 argument_list|>
 name|getVolumes
 parameter_list|()
+function_decl|;
+comment|/** @return a storage with the given storage ID */
+DECL|method|getStorage (final String storageUuid)
+specifier|public
+name|DatanodeStorage
+name|getStorage
+parameter_list|(
+specifier|final
+name|String
+name|storageUuid
+parameter_list|)
 function_decl|;
 comment|/** @return one or more storage reports for attached volumes. */
 DECL|method|getStorageReports (String bpid)
