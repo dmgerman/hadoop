@@ -3682,13 +3682,13 @@ name|InterruptedException
 name|e
 parameter_list|)
 block|{
-throw|throw
-operator|new
-name|YarnRuntimeException
+name|LOG
+operator|.
+name|info
 argument_list|(
-name|e
+literal|"Interrupted. Trying to exit gracefully."
 argument_list|)
-throw|;
+expr_stmt|;
 block|}
 block|}
 block|}

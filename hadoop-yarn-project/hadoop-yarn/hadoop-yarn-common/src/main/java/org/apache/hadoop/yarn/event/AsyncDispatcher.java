@@ -817,6 +817,7 @@ argument_list|,
 name|t
 argument_list|)
 expr_stmt|;
+comment|// If serviceStop is called, we should exit this thread gracefully.
 if|if
 condition|(
 name|exitOnDispatchException
@@ -830,6 +831,10 @@ operator|.
 name|isShutdownInProgress
 argument_list|()
 operator|)
+operator|==
+literal|false
+operator|&&
+name|stopped
 operator|==
 literal|false
 condition|)
