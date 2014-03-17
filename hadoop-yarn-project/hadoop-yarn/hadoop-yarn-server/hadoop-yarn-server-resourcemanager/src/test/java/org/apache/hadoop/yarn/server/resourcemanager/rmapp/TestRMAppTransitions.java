@@ -114,9 +114,9 @@ end_import
 
 begin_import
 import|import
-name|junit
+name|org
 operator|.
-name|framework
+name|junit
 operator|.
 name|Assert
 import|;
@@ -1807,6 +1807,11 @@ name|application
 operator|.
 name|getProgress
 argument_list|()
+argument_list|,
+operator|(
+name|float
+operator|)
+literal|0.0
 argument_list|)
 expr_stmt|;
 name|Assert
