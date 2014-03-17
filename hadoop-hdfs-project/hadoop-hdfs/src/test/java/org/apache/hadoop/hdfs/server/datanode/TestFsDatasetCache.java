@@ -3830,7 +3830,7 @@ argument_list|)
 argument_list|)
 expr_stmt|;
 comment|// Uncache the big file and verify that the small file can now be
-comment|// cached (regression test for HDFS-XXXX)
+comment|// cached (regression test for HDFS-6107)
 name|dfs
 operator|.
 name|removeCacheDirective
