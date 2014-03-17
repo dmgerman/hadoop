@@ -6682,6 +6682,41 @@ return|return
 literal|false
 return|;
 block|}
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"verifyExpectedCacheUsage: got "
+operator|+
+name|curCacheUsed
+operator|+
+literal|"/"
+operator|+
+name|expectedCacheUsed
+operator|+
+literal|" bytes cached; "
+operator|+
+name|curBlocks
+operator|+
+literal|"/"
+operator|+
+name|expectedBlocks
+operator|+
+literal|" blocks cached. "
+operator|+
+literal|"memlock limit = "
+operator|+
+name|NativeIO
+operator|.
+name|POSIX
+operator|.
+name|getCacheManipulator
+argument_list|()
+operator|.
+name|getMemlockLimit
+argument_list|()
+argument_list|)
+expr_stmt|;
 return|return
 literal|true
 return|;

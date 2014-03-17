@@ -5172,6 +5172,7 @@ throw|;
 block|}
 block|}
 DECL|method|getMetrics ()
+specifier|public
 name|DataNodeMetrics
 name|getMetrics
 parameter_list|()
