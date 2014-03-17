@@ -3998,6 +3998,15 @@ name|DFS_NAMENODE_CHECKED_VOLUMES_MINIMUM_DEFAULT
 init|=
 literal|1
 decl_stmt|;
+DECL|field|DFS_WEB_AUTHENTICATION_SIMPLE_ANONYMOUS_ALLOWED
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|DFS_WEB_AUTHENTICATION_SIMPLE_ANONYMOUS_ALLOWED
+init|=
+literal|"dfs.web.authentication.simple.anonymous.allowed"
+decl_stmt|;
 DECL|field|DFS_WEB_AUTHENTICATION_KERBEROS_PRINCIPAL_KEY
 specifier|public
 specifier|static

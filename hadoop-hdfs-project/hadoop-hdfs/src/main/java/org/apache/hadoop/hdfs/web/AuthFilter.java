@@ -330,7 +330,21 @@ operator|.
 name|TYPE
 argument_list|)
 expr_stmt|;
-comment|//For Pseudo Authentication, allow anonymous.
+comment|// if not set, enable anonymous for pseudo authentication
+if|if
+condition|(
+name|p
+operator|.
+name|getProperty
+argument_list|(
+name|PseudoAuthenticationHandler
+operator|.
+name|ANONYMOUS_ALLOWED
+argument_list|)
+operator|==
+literal|null
+condition|)
+block|{
 name|p
 operator|.
 name|setProperty
@@ -342,6 +356,7 @@ argument_list|,
 literal|"true"
 argument_list|)
 expr_stmt|;
+block|}
 comment|//set cookie path
 name|p
 operator|.
