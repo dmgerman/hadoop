@@ -142,6 +142,10 @@ condition|(
 name|finished
 operator|>
 literal|0
+operator|&&
+name|started
+operator|>
+literal|0
 condition|)
 block|{
 return|return
