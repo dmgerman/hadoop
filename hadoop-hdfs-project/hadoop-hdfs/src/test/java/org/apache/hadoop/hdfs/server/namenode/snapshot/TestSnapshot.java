@@ -2042,13 +2042,9 @@ block|{
 name|String
 name|errorMsg
 init|=
-literal|"\""
+literal|"Invalid path name Invalid snapshot name: "
 operator|+
-name|HdfsConstants
-operator|.
-name|DOT_SNAPSHOT_DIR
-operator|+
-literal|"\" is a reserved name."
+name|name1
 decl_stmt|;
 name|GenericTestUtils
 operator|.
@@ -2060,17 +2056,6 @@ name|e
 argument_list|)
 expr_stmt|;
 block|}
-name|String
-name|errorMsg
-init|=
-literal|"Snapshot name cannot contain \""
-operator|+
-name|Path
-operator|.
-name|SEPARATOR
-operator|+
-literal|"\""
-decl_stmt|;
 specifier|final
 name|String
 index|[]
@@ -2136,6 +2121,13 @@ name|RemoteException
 name|e
 parameter_list|)
 block|{
+name|String
+name|errorMsg
+init|=
+literal|"Invalid path name Invalid snapshot name: "
+operator|+
+name|badName
+decl_stmt|;
 name|GenericTestUtils
 operator|.
 name|assertExceptionContains
