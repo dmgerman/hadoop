@@ -973,7 +973,7 @@ name|conf
 argument_list|)
 return|;
 block|}
-comment|/**    * Helper method to clear cache - used only for unit tests.    */
+comment|/**    * Helper method to clear cache.    */
 annotation|@
 name|Private
 DECL|method|clearQueueMetrics ()
