@@ -30,6 +30,30 @@ end_import
 
 begin_import
 import|import
+name|java
+operator|.
+name|lang
+operator|.
+name|annotation
+operator|.
+name|Retention
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|lang
+operator|.
+name|annotation
+operator|.
+name|RetentionPolicy
+import|;
+end_import
+
+begin_import
+import|import
 name|org
 operator|.
 name|apache
@@ -97,6 +121,13 @@ block|{
 comment|/**    * Can evolve while retaining compatibility for minor release boundaries.;     * can break compatibility only at major release (ie. at m.0).    */
 annotation|@
 name|Documented
+annotation|@
+name|Retention
+argument_list|(
+name|RetentionPolicy
+operator|.
+name|RUNTIME
+argument_list|)
 DECL|annotation|Stable
 specifier|public
 annotation_defn|@interface
@@ -106,6 +137,13 @@ empty_stmt|;
 comment|/**    * Evolving, but can break compatibility at minor release (i.e. m.x)    */
 annotation|@
 name|Documented
+annotation|@
+name|Retention
+argument_list|(
+name|RetentionPolicy
+operator|.
+name|RUNTIME
+argument_list|)
 DECL|annotation|Evolving
 specifier|public
 annotation_defn|@interface
@@ -115,6 +153,13 @@ empty_stmt|;
 comment|/**    * No guarantee is provided as to reliability or stability across any    * level of release granularity.    */
 annotation|@
 name|Documented
+annotation|@
+name|Retention
+argument_list|(
+name|RetentionPolicy
+operator|.
+name|RUNTIME
+argument_list|)
 DECL|annotation|Unstable
 specifier|public
 annotation_defn|@interface
