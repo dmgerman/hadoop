@@ -909,6 +909,21 @@ argument_list|)
 throw|;
 block|}
 block|}
+comment|/**    * @return ApplicationTimelineStore    */
+annotation|@
+name|Private
+annotation|@
+name|VisibleForTesting
+DECL|method|getTimelineStore ()
+specifier|public
+name|TimelineStore
+name|getTimelineStore
+parameter_list|()
+block|{
+return|return
+name|timelineStore
+return|;
+block|}
 block|}
 end_class
 
