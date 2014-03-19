@@ -153,6 +153,13 @@ name|inode
 operator|.
 name|getId
 argument_list|()
+operator|+
+literal|" for file "
+operator|+
+name|inode
+operator|.
+name|getFullPathName
+argument_list|()
 argument_list|)
 throw|;
 block|}
