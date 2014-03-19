@@ -1589,6 +1589,12 @@ specifier|private
 name|ObjectName
 name|nameNodeStatusBeanName
 decl_stmt|;
+comment|/**    * The service name of the delegation token issued by the namenode. It is    * the name service id in HA mode, or the rpc address in non-HA mode.    */
+DECL|field|tokenServiceName
+specifier|private
+name|String
+name|tokenServiceName
+decl_stmt|;
 comment|/** Format a new filesystem.  Destroys any filesystem that may already    * exist at this location.  **/
 DECL|method|format (Configuration conf)
 specifier|public
@@ -1694,6 +1700,17 @@ parameter_list|()
 block|{
 return|return
 name|startupProgress
+return|;
+block|}
+comment|/**    * Return the service name of the issued delegation token.    *    * @return The name service id in HA-mode, or the rpc address in non-HA mode    */
+DECL|method|getTokenServiceName ()
+specifier|public
+name|String
+name|getTokenServiceName
+parameter_list|()
+block|{
+return|return
+name|tokenServiceName
 return|;
 block|}
 DECL|method|getAddress (String address)
@@ -2473,6 +2490,38 @@ operator|=
 name|createRpcServer
 argument_list|(
 name|conf
+argument_list|)
+expr_stmt|;
+specifier|final
+name|String
+name|nsId
+init|=
+name|getNameServiceId
+argument_list|(
+name|conf
+argument_list|)
+decl_stmt|;
+name|tokenServiceName
+operator|=
+name|HAUtil
+operator|.
+name|isHAEnabled
+argument_list|(
+name|conf
+argument_list|,
+name|nsId
+argument_list|)
+condition|?
+name|nsId
+else|:
+name|NetUtils
+operator|.
+name|getHostPortString
+argument_list|(
+name|rpcServer
+operator|.
+name|getRpcAddress
+argument_list|()
 argument_list|)
 expr_stmt|;
 if|if

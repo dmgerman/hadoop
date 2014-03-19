@@ -1018,7 +1018,7 @@ name|web
 operator|.
 name|resources
 operator|.
-name|NamenodeRpcAddressParam
+name|NamenodeAddressParam
 import|;
 end_import
 
@@ -2432,7 +2432,7 @@ operator|+
 literal|"&"
 operator|+
 operator|new
-name|NamenodeRpcAddressParam
+name|NamenodeAddressParam
 argument_list|(
 name|namenode
 argument_list|)

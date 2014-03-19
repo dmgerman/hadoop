@@ -43,12 +43,12 @@ comment|/** Namenode RPC address parameter. */
 end_comment
 
 begin_class
-DECL|class|NamenodeRpcAddressParam
+DECL|class|NamenodeAddressParam
 specifier|public
 class|class
-name|NamenodeRpcAddressParam
+name|NamenodeAddressParam
 extends|extends
-name|InetSocketAddressParam
+name|StringParam
 block|{
 comment|/** Parameter name. */
 DECL|field|NAME
@@ -81,12 +81,14 @@ operator|new
 name|Domain
 argument_list|(
 name|NAME
+argument_list|,
+literal|null
 argument_list|)
 decl_stmt|;
 comment|/**    * Constructor.    * @param str a string representation of the parameter value.    */
-DECL|method|NamenodeRpcAddressParam (final String str)
+DECL|method|NamenodeAddressParam (final String str)
 specifier|public
-name|NamenodeRpcAddressParam
+name|NamenodeAddressParam
 parameter_list|(
 specifier|final
 name|String
@@ -120,9 +122,9 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|/**    * Construct an object using the RPC address of the given namenode.    */
-DECL|method|NamenodeRpcAddressParam (final NameNode namenode)
+DECL|method|NamenodeAddressParam (final NameNode namenode)
 specifier|public
-name|NamenodeRpcAddressParam
+name|NamenodeAddressParam
 parameter_list|(
 specifier|final
 name|NameNode
@@ -135,7 +137,7 @@ name|DOMAIN
 argument_list|,
 name|namenode
 operator|.
-name|getNameNodeAddress
+name|getTokenServiceName
 argument_list|()
 argument_list|)
 expr_stmt|;
