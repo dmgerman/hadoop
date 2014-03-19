@@ -3280,6 +3280,13 @@ literal|false
 return|;
 block|}
 comment|// Ensure dst has quota to accommodate rename
+name|verifyFsLimitsForRename
+argument_list|(
+name|srcIIP
+argument_list|,
+name|dstIIP
+argument_list|)
+expr_stmt|;
 name|verifyQuotaForRename
 argument_list|(
 name|srcIIP
@@ -4601,6 +4608,13 @@ argument_list|)
 throw|;
 block|}
 comment|// Ensure dst has quota to accommodate rename
+name|verifyFsLimitsForRename
+argument_list|(
+name|srcIIP
+argument_list|,
+name|dstIIP
+argument_list|)
+expr_stmt|;
 name|verifyQuotaForRename
 argument_list|(
 name|srcIIP
@@ -10515,6 +10529,88 @@ index|]
 argument_list|)
 expr_stmt|;
 block|}
+comment|/**    * Checks file system limits (max component length and max directory items)    * during a rename operation.    *    * @param srcIIP INodesInPath containing every inode in the rename source    * @param dstIIP INodesInPath containing every inode in the rename destination    * @throws PathComponentTooLongException child's name is too long.    * @throws MaxDirectoryItemsExceededException too many children.    */
+DECL|method|verifyFsLimitsForRename (INodesInPath srcIIP, INodesInPath dstIIP)
+specifier|private
+name|void
+name|verifyFsLimitsForRename
+parameter_list|(
+name|INodesInPath
+name|srcIIP
+parameter_list|,
+name|INodesInPath
+name|dstIIP
+parameter_list|)
+throws|throws
+name|PathComponentTooLongException
+throws|,
+name|MaxDirectoryItemsExceededException
+block|{
+name|byte
+index|[]
+name|dstChildName
+init|=
+name|dstIIP
+operator|.
+name|getLastLocalName
+argument_list|()
+decl_stmt|;
+name|INode
+index|[]
+name|dstInodes
+init|=
+name|dstIIP
+operator|.
+name|getINodes
+argument_list|()
+decl_stmt|;
+name|int
+name|pos
+init|=
+name|dstInodes
+operator|.
+name|length
+operator|-
+literal|1
+decl_stmt|;
+name|verifyMaxComponentLength
+argument_list|(
+name|dstChildName
+argument_list|,
+name|dstInodes
+argument_list|,
+name|pos
+argument_list|)
+expr_stmt|;
+comment|// Do not enforce max directory items if renaming within same directory.
+if|if
+condition|(
+name|srcIIP
+operator|.
+name|getINode
+argument_list|(
+operator|-
+literal|2
+argument_list|)
+operator|!=
+name|dstIIP
+operator|.
+name|getINode
+argument_list|(
+operator|-
+literal|2
+argument_list|)
+condition|)
+block|{
+name|verifyMaxDirItems
+argument_list|(
+name|dstInodes
+argument_list|,
+name|pos
+argument_list|)
+expr_stmt|;
+block|}
+block|}
 comment|/** Verify if the snapshot name is legal. */
 DECL|method|verifySnapshotName (String snapshotName, String path)
 name|void
@@ -10639,8 +10735,9 @@ argument_list|)
 throw|;
 block|}
 block|}
-comment|/**    * Verify child's name for fs limit.    * @throws PathComponentTooLongException child's name is too long.    */
+comment|/**    * Verify child's name for fs limit.    *    * @param childName byte[] containing new child name    * @param parentPath Object either INode[] or String containing parent path    * @param pos int position of new child in path    * @throws PathComponentTooLongException child's name is too long.    */
 DECL|method|verifyMaxComponentLength (byte[] childName, Object parentPath, int pos)
+specifier|private
 name|void
 name|verifyMaxComponentLength
 parameter_list|(
@@ -10755,8 +10852,9 @@ expr_stmt|;
 block|}
 block|}
 block|}
-comment|/**    * Verify children size for fs limit.    * @throws MaxDirectoryItemsExceededException too many children.    */
+comment|/**    * Verify children size for fs limit.    *    * @param pathComponents INode[] containing full path of inodes to new child    * @param pos int position of new child in pathComponents    * @throws MaxDirectoryItemsExceededException too many children.    */
 DECL|method|verifyMaxDirItems (INode[] pathComponents, int pos)
+specifier|private
 name|void
 name|verifyMaxDirItems
 parameter_list|(
