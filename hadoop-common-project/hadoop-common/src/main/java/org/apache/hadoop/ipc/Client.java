@@ -3532,6 +3532,17 @@ operator|.
 name|QOP
 argument_list|)
 expr_stmt|;
+name|LOG
+operator|.
+name|debug
+argument_list|(
+literal|"Negotiated QOP is :"
+operator|+
+name|remoteId
+operator|.
+name|saslQop
+argument_list|)
+expr_stmt|;
 block|}
 elseif|else
 if|if

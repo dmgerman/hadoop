@@ -952,6 +952,26 @@ name|HADOOP_KERBEROS_MIN_SECONDS_BEFORE_RELOGIN_DEFAULT
 init|=
 literal|60
 decl_stmt|;
+comment|/** See<a href="{@docRoot}/../core-default.html">core-default.xml</a> */
+DECL|field|HADOOP_RPC_PROTECTION
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|HADOOP_RPC_PROTECTION
+init|=
+literal|"hadoop.rpc.protection"
+decl_stmt|;
+comment|/** Class to override Sasl Properties for a connection */
+DECL|field|HADOOP_SECURITY_SASL_PROPS_RESOLVER_CLASS
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|HADOOP_SECURITY_SASL_PROPS_RESOLVER_CLASS
+init|=
+literal|"hadoop.security.saslproperties.resolver.class"
+decl_stmt|;
 block|}
 end_class
 
