@@ -54,6 +54,16 @@ begin_import
 import|import
 name|java
 operator|.
+name|security
+operator|.
+name|PrivilegedExceptionAction
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
 name|util
 operator|.
 name|List
@@ -1652,6 +1662,11 @@ specifier|private
 name|Configuration
 name|conf
 decl_stmt|;
+DECL|field|rmLoginUGI
+specifier|private
+name|UserGroupInformation
+name|rmLoginUGI
+decl_stmt|;
 DECL|method|ResourceManager ()
 specifier|public
 name|ResourceManager
@@ -1945,6 +1960,15 @@ name|this
 operator|.
 name|conf
 argument_list|)
+expr_stmt|;
+name|this
+operator|.
+name|rmLoginUGI
+operator|=
+name|UserGroupInformation
+operator|.
+name|getCurrentUser
+argument_list|()
 expr_stmt|;
 name|super
 operator|.
@@ -4712,8 +4736,40 @@ argument_list|(
 literal|"Transitioning to active state"
 argument_list|)
 expr_stmt|;
+comment|// use rmLoginUGI to startActiveServices.
+comment|// in non-secure model, rmLoginUGI will be current UGI
+comment|// in secure model, rmLoginUGI will be LoginUser UGI
+name|this
+operator|.
+name|rmLoginUGI
+operator|.
+name|doAs
+argument_list|(
+operator|new
+name|PrivilegedExceptionAction
+argument_list|<
+name|Void
+argument_list|>
+argument_list|()
+block|{
+annotation|@
+name|Override
+specifier|public
+name|Void
+name|run
+parameter_list|()
+throws|throws
+name|Exception
+block|{
 name|startActiveServices
 argument_list|()
+expr_stmt|;
+return|return
+literal|null
+return|;
+block|}
+block|}
+argument_list|)
 expr_stmt|;
 name|rmContext
 operator|.
@@ -4958,6 +5014,25 @@ name|getHostName
 argument_list|()
 argument_list|)
 expr_stmt|;
+comment|// if security is enable, set rmLoginUGI as UGI of loginUser
+if|if
+condition|(
+name|UserGroupInformation
+operator|.
+name|isSecurityEnabled
+argument_list|()
+condition|)
+block|{
+name|this
+operator|.
+name|rmLoginUGI
+operator|=
+name|UserGroupInformation
+operator|.
+name|getLoginUser
+argument_list|()
+expr_stmt|;
+block|}
 block|}
 annotation|@
 name|Override
