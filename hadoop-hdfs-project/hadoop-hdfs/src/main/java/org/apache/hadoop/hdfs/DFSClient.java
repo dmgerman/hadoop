@@ -6233,6 +6233,10 @@ name|HAUtil
 operator|.
 name|getServiceUriFromToken
 argument_list|(
+name|HdfsConstants
+operator|.
+name|HDFS_URI_SCHEME
+argument_list|,
 name|token
 argument_list|)
 decl_stmt|;
