@@ -654,7 +654,7 @@ throw|;
 block|}
 annotation|@
 name|Override
-DECL|method|startLogSegment (long txid)
+DECL|method|startLogSegment (long txid, int layoutVersion)
 specifier|synchronized
 specifier|public
 name|EditLogOutputStream
@@ -662,6 +662,9 @@ name|startLogSegment
 parameter_list|(
 name|long
 name|txid
+parameter_list|,
+name|int
+name|layoutVersion
 parameter_list|)
 throws|throws
 name|IOException
@@ -695,7 +698,9 @@ decl_stmt|;
 name|stm
 operator|.
 name|create
-argument_list|()
+argument_list|(
+name|layoutVersion
+argument_list|)
 expr_stmt|;
 return|return
 name|stm
@@ -2511,6 +2516,43 @@ init|=
 name|EditLogFileInputStream
 operator|.
 name|validateEditLog
+argument_list|(
+name|file
+argument_list|)
+decl_stmt|;
+name|this
+operator|.
+name|lastTxId
+operator|=
+name|val
+operator|.
+name|getEndTxId
+argument_list|()
+expr_stmt|;
+name|this
+operator|.
+name|hasCorruptHeader
+operator|=
+name|val
+operator|.
+name|hasCorruptHeader
+argument_list|()
+expr_stmt|;
+block|}
+DECL|method|scanLog ()
+specifier|public
+name|void
+name|scanLog
+parameter_list|()
+throws|throws
+name|IOException
+block|{
+name|EditLogValidation
+name|val
+init|=
+name|EditLogFileInputStream
+operator|.
+name|scanEditLog
 argument_list|(
 name|file
 argument_list|)

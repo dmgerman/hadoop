@@ -105,18 +105,6 @@ import|;
 end_import
 
 begin_import
-import|import static
-name|org
-operator|.
-name|junit
-operator|.
-name|Assert
-operator|.
-name|fail
-import|;
-end_import
-
-begin_import
 import|import
 name|java
 operator|.
@@ -353,20 +341,6 @@ operator|.
 name|io
 operator|.
 name|IOUtils
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|test
-operator|.
-name|GenericTestUtils
 import|;
 end_import
 
@@ -1415,7 +1389,7 @@ name|raf
 operator|.
 name|seek
 argument_list|(
-literal|0x16
+literal|0x20
 argument_list|)
 expr_stmt|;
 comment|// skip version and first tranaction and a bit of next transaction

@@ -430,7 +430,7 @@ name|doReturn
 argument_list|(
 name|HdfsConstants
 operator|.
-name|DATANODE_LAYOUT_VERSION
+name|NAMENODE_LAYOUT_VERSION
 argument_list|)
 operator|.
 name|when

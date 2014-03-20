@@ -538,13 +538,16 @@ operator|=
 name|shared
 expr_stmt|;
 block|}
-DECL|method|startLogSegment (long txId)
+DECL|method|startLogSegment (long txId, int layoutVersion)
 specifier|public
 name|void
 name|startLogSegment
 parameter_list|(
 name|long
 name|txId
+parameter_list|,
+name|int
+name|layoutVersion
 parameter_list|)
 throws|throws
 name|IOException
@@ -569,6 +572,8 @@ operator|.
 name|startLogSegment
 argument_list|(
 name|txId
+argument_list|,
+name|layoutVersion
 argument_list|)
 expr_stmt|;
 block|}
@@ -869,7 +874,7 @@ throw|;
 block|}
 annotation|@
 name|Override
-DECL|method|startLogSegment (final long txId)
+DECL|method|startLogSegment (final long txId, final int layoutVersion)
 specifier|public
 name|EditLogOutputStream
 name|startLogSegment
@@ -877,6 +882,10 @@ parameter_list|(
 specifier|final
 name|long
 name|txId
+parameter_list|,
+specifier|final
+name|int
+name|layoutVersion
 parameter_list|)
 throws|throws
 name|IOException
@@ -904,6 +913,8 @@ operator|.
 name|startLogSegment
 argument_list|(
 name|txId
+argument_list|,
+name|layoutVersion
 argument_list|)
 expr_stmt|;
 block|}
@@ -1808,11 +1819,15 @@ expr_stmt|;
 block|}
 annotation|@
 name|Override
-DECL|method|create ()
+DECL|method|create (final int layoutVersion)
 specifier|public
 name|void
 name|create
-parameter_list|()
+parameter_list|(
+specifier|final
+name|int
+name|layoutVersion
+parameter_list|)
 throws|throws
 name|IOException
 block|{
@@ -1848,7 +1863,9 @@ name|getCurrentStream
 argument_list|()
 operator|.
 name|create
-argument_list|()
+argument_list|(
+name|layoutVersion
+argument_list|)
 expr_stmt|;
 block|}
 block|}

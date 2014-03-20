@@ -5581,6 +5581,10 @@ operator|.
 name|startLogSegment
 argument_list|(
 name|segmentTxId
+argument_list|,
+name|NameNodeLayoutVersion
+operator|.
+name|CURRENT_LAYOUT_VERSION
 argument_list|)
 expr_stmt|;
 block|}

@@ -420,8 +420,8 @@ parameter_list|)
 throws|throws
 name|IOException
 function_decl|;
-comment|/**    * Start writing to a new log segment on the JournalNode.    * Before calling this, one should finalize the previous segment    * using {@link #finalizeLogSegment(RequestInfo, long, long)}.    *     * @param txid the first txid in the new log    */
-DECL|method|startLogSegment (RequestInfo reqInfo, long txid)
+comment|/**    * Start writing to a new log segment on the JournalNode.    * Before calling this, one should finalize the previous segment    * using {@link #finalizeLogSegment(RequestInfo, long, long)}.    *     * @param txid the first txid in the new log    * @param layoutVersion the LayoutVersion of the new log    */
+DECL|method|startLogSegment (RequestInfo reqInfo, long txid, int layoutVersion)
 specifier|public
 name|void
 name|startLogSegment
@@ -431,6 +431,9 @@ name|reqInfo
 parameter_list|,
 name|long
 name|txid
+parameter_list|,
+name|int
+name|layoutVersion
 parameter_list|)
 throws|throws
 name|IOException

@@ -969,7 +969,7 @@ expr_stmt|;
 block|}
 annotation|@
 name|Override
-DECL|method|startLogSegment (RequestInfo reqInfo, long txid)
+DECL|method|startLogSegment (RequestInfo reqInfo, long txid, int layoutVersion)
 specifier|public
 name|void
 name|startLogSegment
@@ -979,6 +979,9 @@ name|reqInfo
 parameter_list|,
 name|long
 name|txid
+parameter_list|,
+name|int
+name|layoutVersion
 parameter_list|)
 throws|throws
 name|IOException
@@ -998,6 +1001,8 @@ argument_list|(
 name|reqInfo
 argument_list|,
 name|txid
+argument_list|,
+name|layoutVersion
 argument_list|)
 expr_stmt|;
 block|}

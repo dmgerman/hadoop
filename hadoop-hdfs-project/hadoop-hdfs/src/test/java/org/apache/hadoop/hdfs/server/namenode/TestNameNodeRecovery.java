@@ -567,7 +567,11 @@ expr_stmt|;
 name|elfos
 operator|.
 name|create
-argument_list|()
+argument_list|(
+name|NameNodeLayoutVersion
+operator|.
+name|CURRENT_LAYOUT_VERSION
+argument_list|)
 expr_stmt|;
 name|elts
 operator|.
@@ -1381,7 +1385,7 @@ name|getMaxOpSize
 parameter_list|()
 block|{
 return|return
-literal|36
+literal|40
 return|;
 block|}
 block|}

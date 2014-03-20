@@ -165,13 +165,16 @@ parameter_list|)
 throws|throws
 name|IOException
 function_decl|;
-comment|/**    * Create and initialize underlying persistent edits log storage.    *     * @throws IOException    */
-DECL|method|create ()
+comment|/**    * Create and initialize underlying persistent edits log storage.    *     * @param layoutVersion The LayoutVersion of the journal    * @throws IOException    */
+DECL|method|create (int layoutVersion)
 specifier|abstract
 specifier|public
 name|void
 name|create
-parameter_list|()
+parameter_list|(
+name|int
+name|layoutVersion
+parameter_list|)
 throws|throws
 name|IOException
 function_decl|;

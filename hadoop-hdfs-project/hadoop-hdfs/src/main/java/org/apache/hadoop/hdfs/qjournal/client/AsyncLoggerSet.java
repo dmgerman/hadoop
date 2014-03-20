@@ -1034,7 +1034,7 @@ name|calls
 argument_list|)
 return|;
 block|}
-DECL|method|startLogSegment ( long txid)
+DECL|method|startLogSegment ( long txid, int layoutVersion)
 specifier|public
 name|QuorumCall
 argument_list|<
@@ -1046,6 +1046,9 @@ name|startLogSegment
 parameter_list|(
 name|long
 name|txid
+parameter_list|,
+name|int
+name|layoutVersion
 parameter_list|)
 block|{
 name|Map
@@ -1083,6 +1086,8 @@ operator|.
 name|startLogSegment
 argument_list|(
 name|txid
+argument_list|,
+name|layoutVersion
 argument_list|)
 argument_list|)
 expr_stmt|;

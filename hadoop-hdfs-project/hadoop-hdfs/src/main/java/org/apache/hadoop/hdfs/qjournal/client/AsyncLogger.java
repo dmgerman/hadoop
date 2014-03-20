@@ -298,8 +298,8 @@ index|[]
 name|data
 parameter_list|)
 function_decl|;
-comment|/**    * Begin writing a new log segment.    *     * @param txid the first txid to be written to the new log    */
-DECL|method|startLogSegment (long txid)
+comment|/**    * Begin writing a new log segment.    *     * @param txid the first txid to be written to the new log    * @param layoutVersion the LayoutVersion of the log    */
+DECL|method|startLogSegment (long txid, int layoutVersion)
 specifier|public
 name|ListenableFuture
 argument_list|<
@@ -309,6 +309,9 @@ name|startLogSegment
 parameter_list|(
 name|long
 name|txid
+parameter_list|,
+name|int
+name|layoutVersion
 parameter_list|)
 function_decl|;
 comment|/**    * Finalize a log segment.    *     * @param startTxId the first txid that was written to the segment    * @param endTxId the last txid that was written to the segment    */

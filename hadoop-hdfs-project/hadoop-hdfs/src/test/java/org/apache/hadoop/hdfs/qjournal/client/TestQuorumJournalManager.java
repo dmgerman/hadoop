@@ -24,11 +24,17 @@ begin_import
 import|import static
 name|org
 operator|.
-name|junit
+name|apache
 operator|.
-name|Assert
+name|hadoop
 operator|.
-name|*
+name|hdfs
+operator|.
+name|qjournal
+operator|.
+name|QJMTestUtil
+operator|.
+name|FAKE_NSINFO
 import|;
 end_import
 
@@ -64,7 +70,7 @@ name|qjournal
 operator|.
 name|QJMTestUtil
 operator|.
-name|FAKE_NSINFO
+name|verifyEdits
 import|;
 end_import
 
@@ -116,9 +122,11 @@ name|hdfs
 operator|.
 name|qjournal
 operator|.
-name|QJMTestUtil
+name|client
 operator|.
-name|verifyEdits
+name|TestQuorumJournalManagerUnit
+operator|.
+name|futureThrows
 import|;
 end_import
 
@@ -126,19 +134,59 @@ begin_import
 import|import static
 name|org
 operator|.
-name|apache
+name|junit
 operator|.
-name|hadoop
+name|Assert
 operator|.
-name|hdfs
+name|assertEquals
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
 operator|.
-name|qjournal
+name|junit
 operator|.
-name|client
+name|Assert
 operator|.
-name|TestQuorumJournalManagerUnit
+name|assertFalse
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
 operator|.
-name|futureThrows
+name|junit
+operator|.
+name|Assert
+operator|.
+name|assertNull
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|junit
+operator|.
+name|Assert
+operator|.
+name|assertTrue
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|junit
+operator|.
+name|Assert
+operator|.
+name|fail
 import|;
 end_import
 
@@ -465,6 +513,24 @@ operator|.
 name|namenode
 operator|.
 name|NNStorage
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|server
+operator|.
+name|namenode
+operator|.
+name|NameNodeLayoutVersion
 import|;
 end_import
 
@@ -1628,6 +1694,10 @@ operator|.
 name|startLogSegment
 argument_list|(
 literal|4
+argument_list|,
+name|NameNodeLayoutVersion
+operator|.
+name|CURRENT_LAYOUT_VERSION
 argument_list|)
 decl_stmt|;
 try|try
@@ -1822,6 +1892,10 @@ operator|.
 name|startLogSegment
 argument_list|(
 literal|4
+argument_list|,
+name|NameNodeLayoutVersion
+operator|.
+name|CURRENT_LAYOUT_VERSION
 argument_list|)
 decl_stmt|;
 try|try
@@ -2418,6 +2492,15 @@ name|eq
 argument_list|(
 literal|4L
 argument_list|)
+argument_list|,
+name|Mockito
+operator|.
+name|eq
+argument_list|(
+name|NameNodeLayoutVersion
+operator|.
+name|CURRENT_LAYOUT_VERSION
+argument_list|)
 argument_list|)
 expr_stmt|;
 comment|// Logger 1: fail at txn id 4
@@ -2454,6 +2537,10 @@ operator|.
 name|startLogSegment
 argument_list|(
 literal|4
+argument_list|,
+name|NameNodeLayoutVersion
+operator|.
+name|CURRENT_LAYOUT_VERSION
 argument_list|)
 decl_stmt|;
 try|try
@@ -2726,6 +2813,10 @@ operator|.
 name|startLogSegment
 argument_list|(
 literal|1
+argument_list|,
+name|NameNodeLayoutVersion
+operator|.
+name|CURRENT_LAYOUT_VERSION
 argument_list|)
 decl_stmt|;
 name|failLoggerAtTxn

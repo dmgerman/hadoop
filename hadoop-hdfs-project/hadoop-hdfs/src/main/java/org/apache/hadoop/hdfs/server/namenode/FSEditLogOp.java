@@ -1636,6 +1636,20 @@ name|google
 operator|.
 name|common
 operator|.
+name|annotations
+operator|.
+name|VisibleForTesting
+import|;
+end_import
+
+begin_import
+import|import
+name|com
+operator|.
+name|google
+operator|.
+name|common
+operator|.
 name|base
 operator|.
 name|Joiner
@@ -2323,8 +2337,10 @@ name|fsActionMap
 argument_list|()
 decl_stmt|;
 comment|/**    * Constructor for an EditLog Op. EditLog ops cannot be constructed    * directly, but only through Reader#readOp.    */
+annotation|@
+name|VisibleForTesting
 DECL|method|FSEditLogOp (FSEditLogOpCodes opCode)
-specifier|private
+specifier|protected
 name|FSEditLogOp
 parameter_list|(
 name|FSEditLogOpCodes
@@ -19615,6 +19631,21 @@ operator|)
 name|in
 argument_list|)
 decl_stmt|;
+if|if
+condition|(
+name|p
+operator|==
+literal|null
+condition|)
+block|{
+throw|throw
+operator|new
+name|IOException
+argument_list|(
+literal|"Failed to read fields from SetAclOp"
+argument_list|)
+throw|;
+block|}
 name|src
 operator|=
 name|p
@@ -20294,6 +20325,8 @@ operator|.
 name|getLength
 argument_list|()
 decl_stmt|;
+comment|// write the op code first to make padding and terminator verification
+comment|// work
 name|buf
 operator|.
 name|writeByte
@@ -20306,6 +20339,14 @@ name|getOpCode
 argument_list|()
 argument_list|)
 expr_stmt|;
+name|buf
+operator|.
+name|writeInt
+argument_list|(
+literal|0
+argument_list|)
+expr_stmt|;
+comment|// write 0 for the length first
 name|buf
 operator|.
 name|writeLong
@@ -20330,6 +20371,27 @@ operator|.
 name|getLength
 argument_list|()
 decl_stmt|;
+comment|// write the length back: content of the op + 4 bytes checksum - op_code
+name|int
+name|length
+init|=
+name|end
+operator|-
+name|start
+operator|-
+literal|1
+decl_stmt|;
+name|buf
+operator|.
+name|writeInt
+argument_list|(
+name|length
+argument_list|,
+name|start
+operator|+
+literal|1
+argument_list|)
+expr_stmt|;
 name|checksum
 operator|.
 name|reset
@@ -20413,6 +20475,12 @@ specifier|private
 name|int
 name|maxOpSize
 decl_stmt|;
+DECL|field|supportEditLogLength
+specifier|private
+specifier|final
+name|boolean
+name|supportEditLogLength
+decl_stmt|;
 comment|/**      * Construct the reader      * @param in The stream to read from.      * @param logVersion The version of the data coming from the stream.      */
 DECL|method|Reader (DataInputStream in, StreamLimiter limiter, int logVersion)
 specifier|public
@@ -20468,6 +20536,32 @@ operator|=
 literal|null
 expr_stmt|;
 block|}
+comment|// It is possible that the logVersion is actually a future layoutversion
+comment|// during the rolling upgrade (e.g., the NN gets upgraded first). We
+comment|// assume future layout will also support length of editlog op.
+name|this
+operator|.
+name|supportEditLogLength
+operator|=
+name|NameNodeLayoutVersion
+operator|.
+name|supports
+argument_list|(
+name|NameNodeLayoutVersion
+operator|.
+name|Feature
+operator|.
+name|EDITLOG_LENGTH
+argument_list|,
+name|logVersion
+argument_list|)
+operator|||
+name|logVersion
+operator|<
+name|NameNodeLayoutVersion
+operator|.
+name|CURRENT_LAYOUT_VERSION
+expr_stmt|;
 if|if
 condition|(
 name|this
@@ -20950,6 +21044,17 @@ throw|;
 block|}
 if|if
 condition|(
+name|supportEditLogLength
+condition|)
+block|{
+name|in
+operator|.
+name|readInt
+argument_list|()
+expr_stmt|;
+block|}
+if|if
+condition|(
 name|NameNodeLayoutVersion
 operator|.
 name|supports
@@ -21011,6 +21116,146 @@ expr_stmt|;
 return|return
 name|op
 return|;
+block|}
+comment|/**      * Similar with decodeOp(), but instead of doing the real decoding, we skip      * the content of the op if the length of the editlog is supported.      * @return the last txid of the segment, or INVALID_TXID on exception      */
+DECL|method|scanOp ()
+specifier|public
+name|long
+name|scanOp
+parameter_list|()
+throws|throws
+name|IOException
+block|{
+if|if
+condition|(
+name|supportEditLogLength
+condition|)
+block|{
+name|limiter
+operator|.
+name|setLimit
+argument_list|(
+name|maxOpSize
+argument_list|)
+expr_stmt|;
+name|in
+operator|.
+name|mark
+argument_list|(
+name|maxOpSize
+argument_list|)
+expr_stmt|;
+specifier|final
+name|byte
+name|opCodeByte
+decl_stmt|;
+try|try
+block|{
+name|opCodeByte
+operator|=
+name|in
+operator|.
+name|readByte
+argument_list|()
+expr_stmt|;
+comment|// op code
+block|}
+catch|catch
+parameter_list|(
+name|EOFException
+name|e
+parameter_list|)
+block|{
+return|return
+name|HdfsConstants
+operator|.
+name|INVALID_TXID
+return|;
+block|}
+name|FSEditLogOpCodes
+name|opCode
+init|=
+name|FSEditLogOpCodes
+operator|.
+name|fromByte
+argument_list|(
+name|opCodeByte
+argument_list|)
+decl_stmt|;
+if|if
+condition|(
+name|opCode
+operator|==
+name|OP_INVALID
+condition|)
+block|{
+name|verifyTerminator
+argument_list|()
+expr_stmt|;
+return|return
+name|HdfsConstants
+operator|.
+name|INVALID_TXID
+return|;
+block|}
+name|int
+name|length
+init|=
+name|in
+operator|.
+name|readInt
+argument_list|()
+decl_stmt|;
+comment|// read the length of the op
+name|long
+name|txid
+init|=
+name|in
+operator|.
+name|readLong
+argument_list|()
+decl_stmt|;
+comment|// read the txid
+comment|// skip the remaining content
+name|IOUtils
+operator|.
+name|skipFully
+argument_list|(
+name|in
+argument_list|,
+name|length
+operator|-
+literal|8
+argument_list|)
+expr_stmt|;
+comment|// TODO: do we want to verify checksum for JN? For now we don't.
+return|return
+name|txid
+return|;
+block|}
+else|else
+block|{
+name|FSEditLogOp
+name|op
+init|=
+name|decodeOp
+argument_list|()
+decl_stmt|;
+return|return
+name|op
+operator|==
+literal|null
+condition|?
+name|HdfsConstants
+operator|.
+name|INVALID_TXID
+else|:
+name|op
+operator|.
+name|getTransactionId
+argument_list|()
+return|;
+block|}
 block|}
 comment|/**      * Validate a transaction's checksum      */
 DECL|method|validateChecksum (DataInputStream in, Checksum checksum, long txid)

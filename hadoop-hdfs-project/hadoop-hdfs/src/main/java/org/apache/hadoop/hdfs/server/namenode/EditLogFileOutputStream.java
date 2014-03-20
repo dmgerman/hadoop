@@ -174,22 +174,6 @@ name|hdfs
 operator|.
 name|protocol
 operator|.
-name|HdfsConstants
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|hdfs
-operator|.
-name|protocol
-operator|.
 name|LayoutFlags
 import|;
 end_import
@@ -520,11 +504,14 @@ block|}
 comment|/**    * Create empty edits logs file.    */
 annotation|@
 name|Override
-DECL|method|create ()
+DECL|method|create (int layoutVersion)
 specifier|public
 name|void
 name|create
-parameter_list|()
+parameter_list|(
+name|int
+name|layoutVersion
+parameter_list|)
 throws|throws
 name|IOException
 block|{
@@ -544,6 +531,8 @@ argument_list|)
 expr_stmt|;
 name|writeHeader
 argument_list|(
+name|layoutVersion
+argument_list|,
 name|doubleBuf
 operator|.
 name|getCurrentBuf
@@ -557,15 +546,18 @@ name|flush
 argument_list|()
 expr_stmt|;
 block|}
-comment|/**    * Write header information for this EditLogFileOutputStream to the provided    * DataOutputSream.    *     * @param out the output stream to write the header to.    * @throws IOException in the event of error writing to the stream.    */
+comment|/**    * Write header information for this EditLogFileOutputStream to the provided    * DataOutputSream.    *     * @param layoutVersion the LayoutVersion of the EditLog    * @param out the output stream to write the header to.    * @throws IOException in the event of error writing to the stream.    */
 annotation|@
 name|VisibleForTesting
-DECL|method|writeHeader (DataOutputStream out)
+DECL|method|writeHeader (int layoutVersion, DataOutputStream out)
 specifier|public
 specifier|static
 name|void
 name|writeHeader
 parameter_list|(
+name|int
+name|layoutVersion
+parameter_list|,
 name|DataOutputStream
 name|out
 parameter_list|)
@@ -576,9 +568,7 @@ name|out
 operator|.
 name|writeInt
 argument_list|(
-name|HdfsConstants
-operator|.
-name|NAMENODE_LAYOUT_VERSION
+name|layoutVersion
 argument_list|)
 expr_stmt|;
 name|LayoutFlags

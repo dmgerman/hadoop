@@ -294,7 +294,9 @@ argument_list|(
 name|inputStream
 operator|.
 name|getVersion
-argument_list|()
+argument_list|(
+literal|true
+argument_list|)
 argument_list|)
 expr_stmt|;
 while|while

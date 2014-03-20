@@ -365,7 +365,11 @@ decl_stmt|;
 name|elos
 operator|.
 name|create
-argument_list|()
+argument_list|(
+name|NameNodeLayoutVersion
+operator|.
+name|CURRENT_LAYOUT_VERSION
+argument_list|)
 expr_stmt|;
 comment|// The first (small) write we make extends the file by 1 MB due to
 comment|// preallocation.

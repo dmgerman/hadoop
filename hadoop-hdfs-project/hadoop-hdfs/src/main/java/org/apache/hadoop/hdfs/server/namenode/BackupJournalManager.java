@@ -228,13 +228,16 @@ throw|;
 block|}
 annotation|@
 name|Override
-DECL|method|startLogSegment (long txId)
+DECL|method|startLogSegment (long txId, int layoutVersion)
 specifier|public
 name|EditLogOutputStream
 name|startLogSegment
 parameter_list|(
 name|long
 name|txId
+parameter_list|,
+name|int
+name|layoutVersion
 parameter_list|)
 throws|throws
 name|IOException

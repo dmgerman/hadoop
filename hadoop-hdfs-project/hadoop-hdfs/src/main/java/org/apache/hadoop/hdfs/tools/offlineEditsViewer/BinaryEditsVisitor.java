@@ -118,6 +118,24 @@ name|EditLogFileOutputStream
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|server
+operator|.
+name|namenode
+operator|.
+name|NameNodeLayoutVersion
+import|;
+end_import
+
 begin_comment
 comment|/**  * BinaryEditsVisitor implements a binary EditsVisitor  */
 end_comment
@@ -178,7 +196,11 @@ expr_stmt|;
 name|elfos
 operator|.
 name|create
-argument_list|()
+argument_list|(
+name|NameNodeLayoutVersion
+operator|.
+name|CURRENT_LAYOUT_VERSION
+argument_list|)
 expr_stmt|;
 block|}
 comment|/**    * Start the visitor (initialization)    */

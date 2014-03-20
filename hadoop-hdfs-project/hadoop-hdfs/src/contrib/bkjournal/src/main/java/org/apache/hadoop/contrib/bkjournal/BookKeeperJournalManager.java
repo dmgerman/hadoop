@@ -1942,13 +1942,16 @@ block|}
 comment|/**    * Start a new log segment in a BookKeeper ledger.    * First ensure that we have the write lock for this journal.    * Then create a ledger and stream based on that ledger.    * The ledger id is written to the inprogress znode, so that in the    * case of a crash, a recovery process can find the ledger we were writing    * to when we crashed.    * @param txId First transaction id to be written to the stream    */
 annotation|@
 name|Override
-DECL|method|startLogSegment (long txId)
+DECL|method|startLogSegment (long txId, int layoutVersion)
 specifier|public
 name|EditLogOutputStream
 name|startLogSegment
 parameter_list|(
 name|long
 name|txId
+parameter_list|,
+name|int
+name|layoutVersion
 parameter_list|)
 throws|throws
 name|IOException
@@ -2125,9 +2128,7 @@ name|EditLogLedgerMetadata
 argument_list|(
 name|znodePath
 argument_list|,
-name|HdfsConstants
-operator|.
-name|NAMENODE_LAYOUT_VERSION
+name|layoutVersion
 argument_list|,
 name|currentLedger
 operator|.

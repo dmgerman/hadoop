@@ -314,11 +314,14 @@ block|}
 block|}
 annotation|@
 name|Override
-DECL|method|getVersion ()
+DECL|method|getVersion (boolean verifyVersion)
 specifier|public
 name|int
 name|getVersion
-parameter_list|()
+parameter_list|(
+name|boolean
+name|verifyVersion
+parameter_list|)
 throws|throws
 name|IOException
 block|{

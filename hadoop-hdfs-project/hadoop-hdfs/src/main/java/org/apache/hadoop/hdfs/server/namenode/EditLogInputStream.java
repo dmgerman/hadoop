@@ -50,6 +50,22 @@ end_import
 
 begin_import
 import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|protocol
+operator|.
+name|HdfsConstants
+import|;
+end_import
+
+begin_import
+import|import
 name|java
 operator|.
 name|io
@@ -212,6 +228,35 @@ parameter_list|()
 throws|throws
 name|IOException
 function_decl|;
+comment|/**    * Go through the next operation from the stream storage.    * @return the txid of the next operation.    */
+DECL|method|scanNextOp ()
+specifier|protected
+name|long
+name|scanNextOp
+parameter_list|()
+throws|throws
+name|IOException
+block|{
+name|FSEditLogOp
+name|next
+init|=
+name|readOp
+argument_list|()
+decl_stmt|;
+return|return
+name|next
+operator|!=
+literal|null
+condition|?
+name|next
+operator|.
+name|txid
+else|:
+name|HdfsConstants
+operator|.
+name|INVALID_TXID
+return|;
+block|}
 comment|/**     * Get the next valid operation from the stream storage.    *     * This is exactly like nextOp, except that we attempt to skip over damaged    * parts of the edit log    *     * @return an operation from the stream or null if at end of stream    */
 DECL|method|nextValidOp ()
 specifier|protected
@@ -294,13 +339,37 @@ return|;
 block|}
 block|}
 block|}
+comment|/**    * return the cachedOp, and reset it to null.     */
+DECL|method|getCachedOp ()
+name|FSEditLogOp
+name|getCachedOp
+parameter_list|()
+block|{
+name|FSEditLogOp
+name|op
+init|=
+name|this
+operator|.
+name|cachedOp
+decl_stmt|;
+name|cachedOp
+operator|=
+literal|null
+expr_stmt|;
+return|return
+name|op
+return|;
+block|}
 comment|/**     * Get the layout version of the data in the stream.    * @return the layout version of the ops in the stream.    * @throws IOException if there is an error reading the version    */
-DECL|method|getVersion ()
+DECL|method|getVersion (boolean verifyVersion)
 specifier|public
 specifier|abstract
 name|int
 name|getVersion
-parameter_list|()
+parameter_list|(
+name|boolean
+name|verifyVersion
+parameter_list|)
 throws|throws
 name|IOException
 function_decl|;

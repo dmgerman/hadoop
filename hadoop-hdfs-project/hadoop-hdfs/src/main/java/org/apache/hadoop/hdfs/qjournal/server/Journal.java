@@ -1157,7 +1157,7 @@ argument_list|)
 decl_stmt|;
 name|latestLog
 operator|.
-name|validateLog
+name|scanLog
 argument_list|()
 expr_stmt|;
 name|LOG
@@ -2262,7 +2262,7 @@ throw|;
 block|}
 block|}
 comment|/**    * Start a new segment at the given txid. The previous segment    * must have already been finalized.    */
-DECL|method|startLogSegment (RequestInfo reqInfo, long txid)
+DECL|method|startLogSegment (RequestInfo reqInfo, long txid, int layoutVersion)
 specifier|public
 specifier|synchronized
 name|void
@@ -2273,6 +2273,9 @@ name|reqInfo
 parameter_list|,
 name|long
 name|txid
+parameter_list|,
+name|int
+name|layoutVersion
 parameter_list|)
 throws|throws
 name|IOException
@@ -2369,7 +2372,7 @@ comment|// because the "startLogSegment" transaction is written alone at the
 comment|// start of each segment.
 name|existing
 operator|.
-name|validateLog
+name|scanLog
 argument_list|()
 expr_stmt|;
 if|if
@@ -2466,6 +2469,8 @@ operator|.
 name|startLogSegment
 argument_list|(
 name|txid
+argument_list|,
+name|layoutVersion
 argument_list|)
 expr_stmt|;
 name|curSegmentTxId
@@ -2630,7 +2635,7 @@ argument_list|)
 expr_stmt|;
 name|elf
 operator|.
-name|validateLog
+name|scanLog
 argument_list|()
 expr_stmt|;
 name|checkSync
@@ -2919,8 +2924,9 @@ argument_list|)
 return|;
 block|}
 comment|/**    * @return the current state of the given segment, or null if the    * segment does not exist.    */
+annotation|@
+name|VisibleForTesting
 DECL|method|getSegmentInfo (long segmentTxId)
-specifier|private
 name|SegmentStateProto
 name|getSegmentInfo
 parameter_list|(
@@ -2961,7 +2967,7 @@ condition|)
 block|{
 name|elf
 operator|.
-name|validateLog
+name|scanLog
 argument_list|()
 expr_stmt|;
 block|}

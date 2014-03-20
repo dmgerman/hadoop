@@ -2242,7 +2242,7 @@ return|;
 block|}
 annotation|@
 name|Override
-DECL|method|startLogSegment (final long txid)
+DECL|method|startLogSegment (final long txid, final int layoutVersion)
 specifier|public
 name|ListenableFuture
 argument_list|<
@@ -2253,6 +2253,10 @@ parameter_list|(
 specifier|final
 name|long
 name|txid
+parameter_list|,
+specifier|final
+name|int
+name|layoutVersion
 parameter_list|)
 block|{
 return|return
@@ -2285,6 +2289,8 @@ name|createReqInfo
 argument_list|()
 argument_list|,
 name|txid
+argument_list|,
+name|layoutVersion
 argument_list|)
 expr_stmt|;
 synchronized|synchronized

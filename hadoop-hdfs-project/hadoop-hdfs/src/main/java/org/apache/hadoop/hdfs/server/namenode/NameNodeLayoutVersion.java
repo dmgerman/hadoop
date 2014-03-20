@@ -274,6 +274,15 @@ literal|"Support rolling upgrade"
 argument_list|,
 literal|false
 argument_list|)
+block|,
+DECL|enumConstant|EDITLOG_LENGTH
+name|EDITLOG_LENGTH
+argument_list|(
+operator|-
+literal|56
+argument_list|,
+literal|"Add length field to every edit log op"
+argument_list|)
 block|;
 DECL|field|info
 specifier|private
