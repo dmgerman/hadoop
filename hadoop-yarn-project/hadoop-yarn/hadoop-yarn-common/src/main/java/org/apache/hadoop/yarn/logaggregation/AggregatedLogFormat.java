@@ -1129,6 +1129,11 @@ range|:
 name|logFiles
 control|)
 block|{
+name|long
+name|fileLength
+init|=
+literal|0
+decl_stmt|;
 comment|// Write the logFile Type
 name|out
 operator|.
@@ -1149,6 +1154,8 @@ name|String
 operator|.
 name|valueOf
 argument_list|(
+name|fileLength
+operator|=
 name|logFile
 operator|.
 name|length
@@ -1188,6 +1195,11 @@ index|[
 literal|65535
 index|]
 decl_stmt|;
+name|long
+name|curRead
+init|=
+literal|0
+decl_stmt|;
 name|int
 name|len
 init|=
@@ -1195,6 +1207,7 @@ literal|0
 decl_stmt|;
 while|while
 condition|(
+operator|(
 operator|(
 name|len
 operator|=
@@ -1208,6 +1221,13 @@ operator|)
 operator|!=
 operator|-
 literal|1
+operator|)
+operator|&&
+operator|(
+name|curRead
+operator|<
+name|fileLength
+operator|)
 condition|)
 block|{
 name|out
@@ -1219,6 +1239,41 @@ argument_list|,
 literal|0
 argument_list|,
 name|len
+argument_list|)
+expr_stmt|;
+name|curRead
+operator|+=
+name|len
+expr_stmt|;
+block|}
+name|long
+name|newLength
+init|=
+name|logFile
+operator|.
+name|length
+argument_list|()
+decl_stmt|;
+if|if
+condition|(
+name|fileLength
+operator|<
+name|newLength
+condition|)
+block|{
+name|LOG
+operator|.
+name|warn
+argument_list|(
+literal|"Aggregated Logs Truncated by "
+operator|+
+operator|(
+name|newLength
+operator|-
+name|fileLength
+operator|)
+operator|+
+literal|" bytes."
 argument_list|)
 expr_stmt|;
 block|}
@@ -2726,7 +2781,7 @@ argument_list|(
 literal|"Log Contents:"
 argument_list|)
 expr_stmt|;
-name|int
+name|long
 name|curRead
 init|=
 literal|0
