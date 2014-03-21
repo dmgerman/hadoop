@@ -622,7 +622,7 @@ name|Test
 argument_list|(
 name|timeout
 operator|=
-literal|120000
+literal|150000
 argument_list|)
 DECL|method|testProfiler ()
 specifier|public
