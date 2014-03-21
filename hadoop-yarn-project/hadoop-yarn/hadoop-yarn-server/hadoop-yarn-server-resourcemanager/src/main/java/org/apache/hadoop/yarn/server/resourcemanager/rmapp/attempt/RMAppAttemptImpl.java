@@ -190,6 +190,20 @@ end_import
 
 begin_import
 import|import
+name|com
+operator|.
+name|google
+operator|.
+name|common
+operator|.
+name|annotations
+operator|.
+name|VisibleForTesting
+import|;
+end_import
+
+begin_import
+import|import
 name|org
 operator|.
 name|apache
@@ -227,6 +241,20 @@ operator|.
 name|logging
 operator|.
 name|LogFactory
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|classification
+operator|.
+name|InterfaceAudience
 import|;
 end_import
 
@@ -3859,8 +3887,14 @@ argument_list|()
 expr_stmt|;
 block|}
 block|}
+annotation|@
+name|InterfaceAudience
+operator|.
+name|Private
+annotation|@
+name|VisibleForTesting
 DECL|method|setMasterContainer (Container container)
-specifier|private
+specifier|public
 name|void
 name|setMasterContainer
 parameter_list|(
