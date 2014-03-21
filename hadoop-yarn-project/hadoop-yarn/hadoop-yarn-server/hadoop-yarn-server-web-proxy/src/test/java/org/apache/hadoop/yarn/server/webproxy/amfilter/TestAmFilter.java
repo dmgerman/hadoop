@@ -367,6 +367,11 @@ name|timeout
 operator|=
 literal|5000
 argument_list|)
+annotation|@
+name|SuppressWarnings
+argument_list|(
+literal|"deprecation"
+argument_list|)
 DECL|method|filterNullCookies ()
 specifier|public
 name|void
@@ -565,6 +570,11 @@ argument_list|(
 name|timeout
 operator|=
 literal|1000
+argument_list|)
+annotation|@
+name|SuppressWarnings
+argument_list|(
+literal|"deprecation"
 argument_list|)
 DECL|method|testFilter ()
 specifier|public
