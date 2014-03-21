@@ -1033,7 +1033,11 @@ literal|"Safe mode is ON. The reported blocks 0 needs additional "
 operator|+
 literal|"15 blocks to reach the threshold 0.9990 of total blocks 15.\n"
 operator|+
-literal|"Safe mode will be turned off automatically"
+literal|"The number of live datanodes 0 has reached the minimum number 0. "
+operator|+
+literal|"Safe mode will be turned off automatically once the thresholds "
+operator|+
+literal|"have been reached."
 argument_list|,
 name|status
 argument_list|)

@@ -1170,16 +1170,6 @@ name|java
 operator|.
 name|io
 operator|.
-name|DataOutputStream
-import|;
-end_import
-
-begin_import
-import|import
-name|java
-operator|.
-name|io
-operator|.
 name|File
 import|;
 end_import
@@ -23709,9 +23699,11 @@ name|reached
 operator|==
 literal|0
 condition|)
+block|{
 return|return
 literal|false
 return|;
+block|}
 if|if
 condition|(
 name|now
@@ -23724,7 +23716,24 @@ condition|)
 block|{
 name|reportStatus
 argument_list|(
-literal|"STATE* Safe mode ON."
+literal|"STATE* Safe mode ON, in safe mode extension."
+argument_list|,
+literal|false
+argument_list|)
+expr_stmt|;
+return|return
+literal|false
+return|;
+block|}
+if|if
+condition|(
+name|needEnter
+argument_list|()
+condition|)
+block|{
+name|reportStatus
+argument_list|(
+literal|"STATE* Safe mode ON, thresholds not met."
 argument_list|,
 literal|false
 argument_list|)
@@ -23734,9 +23743,7 @@ literal|false
 return|;
 block|}
 return|return
-operator|!
-name|needEnter
-argument_list|()
+literal|true
 return|;
 block|}
 comment|/**       * There is no need to enter safe mode       * if DFS is empty or {@link #threshold} == 0      */
@@ -24195,12 +24202,14 @@ operator|!
 name|isOn
 argument_list|()
 condition|)
+block|{
 return|return
 literal|"Safe mode is OFF."
 return|;
+block|}
 comment|//Manual OR low-resource safemode. (Admin intervention required)
 name|String
-name|leaveMsg
+name|adminMsg
 init|=
 literal|"It was turned on manually. "
 decl_stmt|;
@@ -24210,7 +24219,7 @@ name|areResourcesLow
 argument_list|()
 condition|)
 block|{
-name|leaveMsg
+name|adminMsg
 operator|=
 literal|"Resources are low on NN. Please add or free up more "
 operator|+
@@ -24231,16 +24240,16 @@ argument_list|()
 condition|)
 block|{
 return|return
-name|leaveMsg
+name|adminMsg
 operator|+
 literal|"Use \"hdfs dfsadmin -safemode leave\" to turn safe mode off."
 return|;
 block|}
-comment|//Automatic safemode. System will come out of safemode automatically.
-name|leaveMsg
-operator|=
-literal|"Safe mode will be turned off automatically"
-expr_stmt|;
+name|boolean
+name|thresholdsMet
+init|=
+literal|true
+decl_stmt|;
 name|int
 name|numLive
 init|=
@@ -24252,13 +24261,6 @@ name|msg
 init|=
 literal|""
 decl_stmt|;
-if|if
-condition|(
-name|reached
-operator|==
-literal|0
-condition|)
-block|{
 if|if
 condition|(
 name|blockSafe
@@ -24285,6 +24287,30 @@ name|blockSafe
 operator|)
 operator|+
 literal|1
+argument_list|,
+name|threshold
+argument_list|,
+name|blockTotal
+argument_list|)
+expr_stmt|;
+name|thresholdsMet
+operator|=
+literal|false
+expr_stmt|;
+block|}
+else|else
+block|{
+name|msg
+operator|+=
+name|String
+operator|.
+name|format
+argument_list|(
+literal|"The reported blocks %d has reached the threshold"
+operator|+
+literal|" %.4f of total blocks %d. "
+argument_list|,
+name|blockSafe
 argument_list|,
 name|threshold
 argument_list|,
@@ -24320,27 +24346,13 @@ argument_list|,
 name|datanodeThreshold
 argument_list|)
 expr_stmt|;
-block|}
+name|thresholdsMet
+operator|=
+literal|false
+expr_stmt|;
 block|}
 else|else
 block|{
-name|msg
-operator|=
-name|String
-operator|.
-name|format
-argument_list|(
-literal|"The reported blocks %d has reached the threshold"
-operator|+
-literal|" %.4f of total blocks %d. "
-argument_list|,
-name|blockSafe
-argument_list|,
-name|threshold
-argument_list|,
-name|blockTotal
-argument_list|)
-expr_stmt|;
 name|msg
 operator|+=
 name|String
@@ -24359,34 +24371,34 @@ expr_stmt|;
 block|}
 name|msg
 operator|+=
-name|leaveMsg
+operator|(
+name|reached
+operator|>
+literal|0
+operator|)
+condition|?
+literal|"In safe mode extension. "
+else|:
+literal|""
 expr_stmt|;
-comment|// threshold is not reached or manual or resources low
+name|msg
+operator|+=
+literal|"Safe mode will be turned off automatically "
+expr_stmt|;
 if|if
 condition|(
-name|reached
-operator|==
-literal|0
-operator|||
-operator|(
-name|isManual
-argument_list|()
-operator|&&
 operator|!
-name|areResourcesLow
-argument_list|()
-operator|)
+name|thresholdsMet
 condition|)
 block|{
-return|return
 name|msg
-return|;
+operator|+=
+literal|"once the thresholds have been reached."
+expr_stmt|;
 block|}
-comment|// extension period is in progress
-return|return
-name|msg
-operator|+
-operator|(
+elseif|else
+if|if
+condition|(
 name|reached
 operator|+
 name|extension
@@ -24395,8 +24407,12 @@ name|now
 argument_list|()
 operator|>
 literal|0
-condition|?
-literal|" in "
+condition|)
+block|{
+name|msg
+operator|+=
+operator|(
+literal|"in "
 operator|+
 operator|(
 name|reached
@@ -24410,9 +24426,18 @@ operator|/
 literal|1000
 operator|+
 literal|" seconds."
-else|:
-literal|" soon."
 operator|)
+expr_stmt|;
+block|}
+else|else
+block|{
+name|msg
+operator|+=
+literal|"soon."
+expr_stmt|;
+block|}
+return|return
+name|msg
 return|;
 block|}
 comment|/**      * Print status every 20 seconds.      */

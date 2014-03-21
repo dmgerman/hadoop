@@ -2663,7 +2663,9 @@ literal|" has reached the minimum number "
 operator|+
 name|nodeThresh
 operator|+
-literal|". Safe mode will be turned off automatically"
+literal|". In safe mode extension. "
+operator|+
+literal|"Safe mode will be turned off automatically"
 argument_list|)
 argument_list|)
 expr_stmt|;
@@ -2945,9 +2947,9 @@ literal|"Safe mode is ON. The reported blocks 10 has reached the threshold "
 operator|+
 literal|"0.9990 of total blocks 10. The number of live datanodes 3 has "
 operator|+
-literal|"reached the minimum number 0. Safe mode will be turned off "
+literal|"reached the minimum number 0. In safe mode extension. "
 operator|+
-literal|"automatically"
+literal|"Safe mode will be turned off automatically"
 argument_list|)
 argument_list|)
 expr_stmt|;
