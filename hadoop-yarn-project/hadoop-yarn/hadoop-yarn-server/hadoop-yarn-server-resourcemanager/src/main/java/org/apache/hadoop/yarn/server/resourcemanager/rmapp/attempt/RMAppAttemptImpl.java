@@ -7924,6 +7924,22 @@ literal|null
 decl_stmt|;
 try|try
 block|{
+comment|// AM container maybe not yet allocated. and also unmangedAM doesn't have
+comment|// am container.
+name|ContainerId
+name|amId
+init|=
+name|masterContainer
+operator|==
+literal|null
+condition|?
+literal|null
+else|:
+name|masterContainer
+operator|.
+name|getId
+argument_list|()
+decl_stmt|;
 name|attemptReport
 operator|=
 name|ApplicationAttemptReport
@@ -7968,13 +7984,7 @@ name|toString
 argument_list|()
 argument_list|)
 argument_list|,
-name|this
-operator|.
-name|getMasterContainer
-argument_list|()
-operator|.
-name|getId
-argument_list|()
+name|amId
 argument_list|)
 expr_stmt|;
 block|}
