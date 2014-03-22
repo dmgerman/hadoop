@@ -282,22 +282,6 @@ name|yarn
 operator|.
 name|exceptions
 operator|.
-name|ApplicationNotFoundException
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|yarn
-operator|.
-name|exceptions
-operator|.
 name|YarnException
 import|;
 end_import
@@ -1330,6 +1314,8 @@ name|getServiceState
 argument_list|()
 argument_list|)
 expr_stmt|;
+comment|// send httpRequest with fakeApplicationId
+comment|// expect to get "Not Found" response and 404 response code
 name|URL
 name|wrongUrl
 init|=
@@ -1357,12 +1343,9 @@ operator|.
 name|connect
 argument_list|()
 expr_stmt|;
-name|verifyExpectedException
+name|verifyResponse
 argument_list|(
 name|proxyConn
-operator|.
-name|getResponseMessage
-argument_list|()
 argument_list|)
 expr_stmt|;
 name|explicitFailover
@@ -1376,12 +1359,9 @@ operator|.
 name|connect
 argument_list|()
 expr_stmt|;
-name|verifyExpectedException
+name|verifyResponse
 argument_list|(
 name|proxyConn
-operator|.
-name|getResponseMessage
-argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
@@ -1457,6 +1437,8 @@ expr_stmt|;
 name|verifyConnections
 argument_list|()
 expr_stmt|;
+comment|// send httpRequest with fakeApplicationId
+comment|// expect to get "Not Found" response and 404 response code
 name|URL
 name|wrongUrl
 init|=
@@ -1484,12 +1466,9 @@ operator|.
 name|connect
 argument_list|()
 expr_stmt|;
-name|verifyExpectedException
+name|verifyResponse
 argument_list|(
 name|proxyConn
-operator|.
-name|getResponseMessage
-argument_list|()
 argument_list|)
 expr_stmt|;
 name|explicitFailover
@@ -1503,53 +1482,41 @@ operator|.
 name|connect
 argument_list|()
 expr_stmt|;
-name|verifyExpectedException
+name|verifyResponse
 argument_list|(
 name|proxyConn
+argument_list|)
+expr_stmt|;
+block|}
+DECL|method|verifyResponse (HttpURLConnection response)
+specifier|private
+name|void
+name|verifyResponse
+parameter_list|(
+name|HttpURLConnection
+name|response
+parameter_list|)
+throws|throws
+name|IOException
+block|{
+name|assertEquals
+argument_list|(
+literal|"Not Found"
+argument_list|,
+name|response
 operator|.
 name|getResponseMessage
 argument_list|()
 argument_list|)
 expr_stmt|;
-block|}
-DECL|method|verifyExpectedException (String exceptionMessage)
-specifier|private
-name|void
-name|verifyExpectedException
-parameter_list|(
-name|String
-name|exceptionMessage
-parameter_list|)
-block|{
-name|assertTrue
+name|assertEquals
 argument_list|(
-name|exceptionMessage
+literal|404
+argument_list|,
+name|response
 operator|.
-name|contains
-argument_list|(
-name|ApplicationNotFoundException
-operator|.
-name|class
-operator|.
-name|getName
+name|getResponseCode
 argument_list|()
-argument_list|)
-argument_list|)
-expr_stmt|;
-name|assertTrue
-argument_list|(
-name|exceptionMessage
-operator|.
-name|contains
-argument_list|(
-literal|"Application with id '"
-operator|+
-name|fakeAppId
-operator|+
-literal|"' "
-operator|+
-literal|"doesn't exist in RM."
-argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
