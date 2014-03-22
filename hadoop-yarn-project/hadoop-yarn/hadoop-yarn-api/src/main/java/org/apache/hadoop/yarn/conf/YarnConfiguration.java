@@ -2916,6 +2916,26 @@ name|NM_PREFIX
 operator|+
 literal|"container-monitor.process-tree.class"
 decl_stmt|;
+DECL|field|PROCFS_USE_SMAPS_BASED_RSS_ENABLED
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|PROCFS_USE_SMAPS_BASED_RSS_ENABLED
+init|=
+name|NM_PREFIX
+operator|+
+literal|".container-monitor.procfs-tree.smaps-based-rss.enabled"
+decl_stmt|;
+DECL|field|DEFAULT_PROCFS_USE_SMAPS_BASED_RSS_ENABLED
+specifier|public
+specifier|static
+specifier|final
+name|boolean
+name|DEFAULT_PROCFS_USE_SMAPS_BASED_RSS_ENABLED
+init|=
+literal|false
+decl_stmt|;
 comment|/** Prefix for all node manager disk health checker configs. */
 DECL|field|NM_DISK_HEALTH_CHECK_PREFIX
 specifier|private
