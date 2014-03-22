@@ -2150,6 +2150,67 @@ parameter_list|)
 throws|throws
 name|Exception
 function_decl|;
+comment|/**    * RMDTSecretManager call this to update the state of a delegation token    * and sequence number    */
+DECL|method|updateRMDelegationTokenAndSequenceNumber ( RMDelegationTokenIdentifier rmDTIdentifier, Long renewDate, int latestSequenceNumber)
+specifier|public
+specifier|synchronized
+name|void
+name|updateRMDelegationTokenAndSequenceNumber
+parameter_list|(
+name|RMDelegationTokenIdentifier
+name|rmDTIdentifier
+parameter_list|,
+name|Long
+name|renewDate
+parameter_list|,
+name|int
+name|latestSequenceNumber
+parameter_list|)
+block|{
+try|try
+block|{
+name|updateRMDelegationTokenAndSequenceNumberInternal
+argument_list|(
+name|rmDTIdentifier
+argument_list|,
+name|renewDate
+argument_list|,
+name|latestSequenceNumber
+argument_list|)
+expr_stmt|;
+block|}
+catch|catch
+parameter_list|(
+name|Exception
+name|e
+parameter_list|)
+block|{
+name|notifyStoreOperationFailed
+argument_list|(
+name|e
+argument_list|)
+expr_stmt|;
+block|}
+block|}
+comment|/**    * Blocking API    * Derived classes must implement this method to update the state of    * RMDelegationToken and sequence number    */
+DECL|method|updateRMDelegationTokenAndSequenceNumberInternal ( RMDelegationTokenIdentifier rmDTIdentifier, Long renewDate, int latestSequenceNumber)
+specifier|protected
+specifier|abstract
+name|void
+name|updateRMDelegationTokenAndSequenceNumberInternal
+parameter_list|(
+name|RMDelegationTokenIdentifier
+name|rmDTIdentifier
+parameter_list|,
+name|Long
+name|renewDate
+parameter_list|,
+name|int
+name|latestSequenceNumber
+parameter_list|)
+throws|throws
+name|Exception
+function_decl|;
 comment|/**    * RMDTSecretManager call this to store the state of a master key    */
 DECL|method|storeRMDTMasterKey (DelegationKey delegationKey)
 specifier|public

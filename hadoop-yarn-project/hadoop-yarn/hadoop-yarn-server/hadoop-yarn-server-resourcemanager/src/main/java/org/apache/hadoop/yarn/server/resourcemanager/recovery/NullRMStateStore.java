@@ -354,6 +354,27 @@ comment|// Do nothing
 block|}
 annotation|@
 name|Override
+DECL|method|updateRMDelegationTokenAndSequenceNumberInternal ( RMDelegationTokenIdentifier rmDTIdentifier, Long renewDate, int latestSequenceNumber)
+specifier|protected
+name|void
+name|updateRMDelegationTokenAndSequenceNumberInternal
+parameter_list|(
+name|RMDelegationTokenIdentifier
+name|rmDTIdentifier
+parameter_list|,
+name|Long
+name|renewDate
+parameter_list|,
+name|int
+name|latestSequenceNumber
+parameter_list|)
+throws|throws
+name|Exception
+block|{
+comment|// Do nothing
+block|}
+annotation|@
+name|Override
 DECL|method|storeRMDTMasterKeyState (DelegationKey delegationKey)
 specifier|public
 name|void
