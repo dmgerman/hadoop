@@ -118,12 +118,12 @@ name|CONFIG_VIEWFS_LINK_MERGE_SLASH
 init|=
 literal|"linkMergeSlash"
 decl_stmt|;
-DECL|field|PERMISSION_RRR
+DECL|field|PERMISSION_555
 specifier|static
 specifier|public
 specifier|final
 name|FsPermission
-name|PERMISSION_RRR
+name|PERMISSION_555
 init|=
 operator|new
 name|FsPermission
@@ -131,7 +131,7 @@ argument_list|(
 operator|(
 name|short
 operator|)
-literal|0444
+literal|0555
 argument_list|)
 decl_stmt|;
 block|}

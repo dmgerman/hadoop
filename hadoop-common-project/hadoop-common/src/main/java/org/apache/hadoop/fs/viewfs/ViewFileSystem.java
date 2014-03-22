@@ -32,7 +32,7 @@ name|viewfs
 operator|.
 name|Constants
 operator|.
-name|PERMISSION_RRR
+name|PERMISSION_555
 import|;
 end_import
 
@@ -3764,7 +3764,7 @@ name|creationTime
 argument_list|,
 name|creationTime
 argument_list|,
-name|PERMISSION_RRR
+name|PERMISSION_555
 argument_list|,
 name|ugi
 operator|.
@@ -3913,7 +3913,7 @@ name|creationTime
 argument_list|,
 name|creationTime
 argument_list|,
-name|PERMISSION_RRR
+name|PERMISSION_555
 argument_list|,
 name|ugi
 operator|.
@@ -3973,7 +3973,7 @@ name|creationTime
 argument_list|,
 name|creationTime
 argument_list|,
-name|PERMISSION_RRR
+name|PERMISSION_555
 argument_list|,
 name|ugi
 operator|.
