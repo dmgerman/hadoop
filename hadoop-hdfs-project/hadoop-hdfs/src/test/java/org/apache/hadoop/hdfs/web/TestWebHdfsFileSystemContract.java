@@ -3298,7 +3298,7 @@ init|=
 operator|new
 name|Path
 argument_list|(
-literal|"/test/path%20with%20spaces"
+literal|"/test/path with spaces"
 argument_list|)
 decl_stmt|;
 name|URL
