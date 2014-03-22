@@ -1480,7 +1480,10 @@ expr_stmt|;
 comment|// to initialize the master key
 name|resourceManager
 operator|.
-name|getRMContainerTokenSecretManager
+name|getRMContext
+argument_list|()
+operator|.
+name|getContainerTokenSecretManager
 argument_list|()
 operator|.
 name|rollMasterKey

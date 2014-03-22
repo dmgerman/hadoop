@@ -396,7 +396,10 @@ argument_list|)
 expr_stmt|;
 name|resourceManager
 operator|.
-name|getRMContainerTokenSecretManager
+name|getRMContext
+argument_list|()
+operator|.
+name|getContainerTokenSecretManager
 argument_list|()
 operator|.
 name|rollMasterKey
@@ -404,7 +407,10 @@ argument_list|()
 expr_stmt|;
 name|resourceManager
 operator|.
-name|getRMNMTokenSecretManager
+name|getRMContext
+argument_list|()
+operator|.
+name|getNMTokenSecretManager
 argument_list|()
 operator|.
 name|rollMasterKey

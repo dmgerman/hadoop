@@ -695,7 +695,10 @@ name|this
 operator|.
 name|queueACLsManager
 argument_list|,
-name|getRMDTSecretManager
+name|getRMContext
+argument_list|()
+operator|.
+name|getRMDelegationTokenSecretManager
 argument_list|()
 argument_list|)
 return|;

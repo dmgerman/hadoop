@@ -3089,7 +3089,10 @@ name|applicationACLsManager
 argument_list|,
 name|queueACLsManager
 argument_list|,
-name|getRMDTSecretManager
+name|getRMContext
+argument_list|()
+operator|.
+name|getRMDelegationTokenSecretManager
 argument_list|()
 argument_list|)
 block|{
@@ -3132,7 +3135,10 @@ decl_stmt|;
 name|RMContainerTokenSecretManager
 name|containerTokenSecretManager
 init|=
-name|getRMContainerTokenSecretManager
+name|getRMContext
+argument_list|()
+operator|.
+name|getContainerTokenSecretManager
 argument_list|()
 decl_stmt|;
 name|containerTokenSecretManager
@@ -3143,7 +3149,10 @@ expr_stmt|;
 name|NMTokenSecretManagerInRM
 name|nmTokenSecretManager
 init|=
-name|getRMNMTokenSecretManager
+name|getRMContext
+argument_list|()
+operator|.
+name|getNMTokenSecretManager
 argument_list|()
 decl_stmt|;
 name|nmTokenSecretManager

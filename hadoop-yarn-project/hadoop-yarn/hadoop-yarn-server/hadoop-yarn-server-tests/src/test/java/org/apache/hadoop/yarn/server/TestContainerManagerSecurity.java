@@ -1261,7 +1261,10 @@ operator|.
 name|getResourceManager
 argument_list|()
 operator|.
-name|getRMContainerTokenSecretManager
+name|getRMContext
+argument_list|()
+operator|.
+name|getContainerTokenSecretManager
 argument_list|()
 decl_stmt|;
 name|NodeManager
@@ -3380,7 +3383,10 @@ operator|.
 name|getResourceManager
 argument_list|()
 operator|.
-name|getRMContainerTokenSecretManager
+name|getRMContext
+argument_list|()
+operator|.
+name|getContainerTokenSecretManager
 argument_list|()
 decl_stmt|;
 name|RMContainerTokenSecretManager

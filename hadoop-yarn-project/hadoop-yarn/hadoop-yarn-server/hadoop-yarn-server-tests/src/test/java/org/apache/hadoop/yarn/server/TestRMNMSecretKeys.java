@@ -518,7 +518,10 @@ expr_stmt|;
 comment|// Let's force a roll-over
 name|rm
 operator|.
-name|getRMContainerTokenSecretManager
+name|getRMContext
+argument_list|()
+operator|.
+name|getContainerTokenSecretManager
 argument_list|()
 operator|.
 name|rollMasterKey
@@ -526,7 +529,10 @@ argument_list|()
 expr_stmt|;
 name|rm
 operator|.
-name|getRMNMTokenSecretManager
+name|getRMContext
+argument_list|()
+operator|.
+name|getNMTokenSecretManager
 argument_list|()
 operator|.
 name|rollMasterKey
@@ -668,7 +674,10 @@ expr_stmt|;
 comment|// Let's force activation
 name|rm
 operator|.
-name|getRMContainerTokenSecretManager
+name|getRMContext
+argument_list|()
+operator|.
+name|getContainerTokenSecretManager
 argument_list|()
 operator|.
 name|activateNextMasterKey
@@ -676,7 +685,10 @@ argument_list|()
 expr_stmt|;
 name|rm
 operator|.
-name|getRMNMTokenSecretManager
+name|getRMContext
+argument_list|()
+operator|.
+name|getNMTokenSecretManager
 argument_list|()
 operator|.
 name|activateNextMasterKey

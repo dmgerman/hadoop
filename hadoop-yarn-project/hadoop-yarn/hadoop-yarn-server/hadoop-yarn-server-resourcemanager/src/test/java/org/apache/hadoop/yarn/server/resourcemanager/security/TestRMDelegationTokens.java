@@ -669,7 +669,10 @@ name|dtSecretManager
 init|=
 name|rm1
 operator|.
-name|getRMDTSecretManager
+name|getRMContext
+argument_list|()
+operator|.
+name|getRMDelegationTokenSecretManager
 argument_list|()
 decl_stmt|;
 comment|// assert all master keys are saved
@@ -986,7 +989,10 @@ name|dtSecretManager
 init|=
 name|rm1
 operator|.
-name|getRMDTSecretManager
+name|getRMContext
+argument_list|()
+operator|.
+name|getRMDelegationTokenSecretManager
 argument_list|()
 decl_stmt|;
 comment|// assert all master keys are saved

@@ -1655,7 +1655,10 @@ name|assertFalse
 argument_list|(
 name|rm
 operator|.
-name|getRMNMTokenSecretManager
+name|getRMContext
+argument_list|()
+operator|.
+name|getNMTokenSecretManager
 argument_list|()
 operator|.
 name|isApplicationAttemptNMTokenPresent
