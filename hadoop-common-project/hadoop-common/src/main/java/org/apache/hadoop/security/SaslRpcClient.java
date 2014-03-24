@@ -1725,6 +1725,10 @@ name|authType
 operator|.
 name|getServerId
 argument_list|()
+argument_list|,
+name|KerberosPrincipal
+operator|.
+name|KRB_NT_SRV_HST
 argument_list|)
 operator|.
 name|getName
