@@ -133,10 +133,10 @@ specifier|private
 name|long
 name|fsid
 decl_stmt|;
-DECL|field|fileid
+DECL|field|fileId
 specifier|private
 name|long
-name|fileid
+name|fileId
 decl_stmt|;
 DECL|field|atime
 specifier|private
@@ -251,7 +251,7 @@ literal|0
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|Nfs3FileAttributes (NfsFileType nfsType, int nlink, short mode, int uid, int gid, long size, long fsid, long fileid, long mtime, long atime)
+DECL|method|Nfs3FileAttributes (NfsFileType nfsType, int nlink, short mode, int uid, int gid, long size, long fsid, long fileId, long mtime, long atime)
 specifier|public
 name|Nfs3FileAttributes
 parameter_list|(
@@ -277,7 +277,7 @@ name|long
 name|fsid
 parameter_list|,
 name|long
-name|fileid
+name|fileId
 parameter_list|,
 name|long
 name|mtime
@@ -388,9 +388,9 @@ name|fsid
 expr_stmt|;
 name|this
 operator|.
-name|fileid
+name|fileId
 operator|=
-name|fileid
+name|fileId
 expr_stmt|;
 name|this
 operator|.
@@ -519,11 +519,11 @@ argument_list|()
 expr_stmt|;
 name|this
 operator|.
-name|fileid
+name|fileId
 operator|=
 name|other
 operator|.
-name|getFileid
+name|getFileId
 argument_list|()
 expr_stmt|;
 name|this
@@ -655,7 +655,7 @@ name|xdr
 operator|.
 name|writeLongAsHyper
 argument_list|(
-name|fileid
+name|fileId
 argument_list|)
 expr_stmt|;
 name|atime
@@ -790,7 +790,7 @@ argument_list|()
 expr_stmt|;
 name|attr
 operator|.
-name|fileid
+name|fileId
 operator|=
 name|xdr
 operator|.
@@ -871,7 +871,7 @@ name|rdev
 argument_list|,
 name|fsid
 argument_list|,
-name|fileid
+name|fileId
 argument_list|,
 name|atime
 argument_list|,
@@ -911,14 +911,14 @@ return|return
 name|fsid
 return|;
 block|}
-DECL|method|getFileid ()
+DECL|method|getFileId ()
 specifier|public
 name|long
-name|getFileid
+name|getFileId
 parameter_list|()
 block|{
 return|return
-name|fileid
+name|fileId
 return|;
 block|}
 DECL|method|getAtime ()
@@ -977,16 +977,6 @@ name|mtime
 argument_list|,
 name|ctime
 argument_list|)
-return|;
-block|}
-DECL|method|getFileId ()
-specifier|public
-name|long
-name|getFileId
-parameter_list|()
-block|{
-return|return
-name|fileid
 return|;
 block|}
 DECL|method|getSize ()

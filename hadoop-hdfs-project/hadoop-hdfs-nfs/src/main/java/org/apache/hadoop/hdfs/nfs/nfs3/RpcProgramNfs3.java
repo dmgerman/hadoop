@@ -2500,6 +2500,8 @@ name|handle
 operator|.
 name|getFileId
 argument_list|()
+argument_list|,
+name|e
 argument_list|)
 expr_stmt|;
 name|response
@@ -3267,6 +3269,8 @@ argument_list|(
 literal|"Can't get postOpAttr for fileIdPath: "
 operator|+
 name|fileIdPath
+argument_list|,
+name|e1
 argument_list|)
 expr_stmt|;
 block|}
@@ -4598,6 +4602,8 @@ name|handle
 operator|.
 name|getFileId
 argument_list|()
+argument_list|,
+name|e
 argument_list|)
 expr_stmt|;
 block|}
@@ -5472,6 +5478,8 @@ name|handle
 operator|.
 name|getFileId
 argument_list|()
+argument_list|,
+name|e1
 argument_list|)
 expr_stmt|;
 block|}
@@ -6240,6 +6248,8 @@ operator|+
 literal|" filename: "
 operator|+
 name|fileName
+argument_list|,
+name|e1
 argument_list|)
 expr_stmt|;
 block|}
@@ -6290,6 +6300,8 @@ name|dirHandle
 operator|.
 name|getFileId
 argument_list|()
+argument_list|,
+name|e1
 argument_list|)
 expr_stmt|;
 block|}
@@ -6901,6 +6913,8 @@ argument_list|(
 literal|"Can't get postOpDirAttr for "
 operator|+
 name|dirFileIdPath
+argument_list|,
+name|e
 argument_list|)
 expr_stmt|;
 block|}
@@ -7401,6 +7415,8 @@ argument_list|(
 literal|"Can't get postOpDirAttr for "
 operator|+
 name|dirFileIdPath
+argument_list|,
+name|e1
 argument_list|)
 expr_stmt|;
 block|}
@@ -7900,6 +7916,8 @@ argument_list|(
 literal|"Can't get postOpDirAttr for "
 operator|+
 name|dirFileIdPath
+argument_list|,
+name|e1
 argument_list|)
 expr_stmt|;
 block|}
@@ -8472,6 +8490,8 @@ operator|+
 literal|" or"
 operator|+
 name|toDirFileIdPath
+argument_list|,
+name|e1
 argument_list|)
 expr_stmt|;
 block|}
@@ -8802,7 +8822,7 @@ name|FileHandle
 argument_list|(
 name|objAttr
 operator|.
-name|getFileid
+name|getFileId
 argument_list|()
 argument_list|)
 argument_list|,
@@ -10456,7 +10476,7 @@ name|FileHandle
 argument_list|(
 name|postOpDirAttr
 operator|.
-name|getFileid
+name|getFileId
 argument_list|()
 argument_list|)
 argument_list|)
@@ -10557,9 +10577,7 @@ argument_list|(
 literal|"Can't get file attributes for fileId:"
 operator|+
 name|fileId
-operator|+
-literal|" error:"
-operator|+
+argument_list|,
 name|e
 argument_list|)
 expr_stmt|;
@@ -10677,9 +10695,7 @@ argument_list|(
 literal|"Can't get file attributes for fileId:"
 operator|+
 name|fileId
-operator|+
-literal|" error:"
-operator|+
+argument_list|,
 name|e
 argument_list|)
 expr_stmt|;
@@ -11990,6 +12006,8 @@ name|handle
 operator|.
 name|getFileId
 argument_list|()
+argument_list|,
+name|e1
 argument_list|)
 expr_stmt|;
 block|}
@@ -11999,12 +12017,6 @@ init|=
 operator|new
 name|WccData
 argument_list|(
-name|preOpAttr
-operator|==
-literal|null
-condition|?
-literal|null
-else|:
 name|Nfs3Utils
 operator|.
 name|getWccAttr

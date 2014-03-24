@@ -474,11 +474,8 @@ operator|.
 name|fatal
 argument_list|(
 literal|"Failed to start the server. Cause:"
-operator|+
+argument_list|,
 name|e
-operator|.
-name|getMessage
-argument_list|()
 argument_list|)
 expr_stmt|;
 name|pm

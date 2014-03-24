@@ -519,13 +519,8 @@ operator|.
 name|error
 argument_list|(
 literal|"Asyn data service got error:"
-operator|+
-name|ExceptionUtils
-operator|.
-name|getFullStackTrace
-argument_list|(
+argument_list|,
 name|t
-argument_list|)
 argument_list|)
 expr_stmt|;
 block|}

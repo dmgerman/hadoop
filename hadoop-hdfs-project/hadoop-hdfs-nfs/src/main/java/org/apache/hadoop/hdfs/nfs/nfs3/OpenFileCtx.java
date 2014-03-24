@@ -1813,6 +1813,8 @@ operator|.
 name|this
 operator|.
 name|dumpFilePath
+argument_list|,
+name|t
 argument_list|)
 expr_stmt|;
 block|}
@@ -3480,9 +3482,7 @@ argument_list|(
 literal|"Read failed when processing possible perfect overwrite, path="
 operator|+
 name|path
-operator|+
-literal|" error:"
-operator|+
+argument_list|,
 name|e
 argument_list|)
 expr_stmt|;
@@ -4569,7 +4569,7 @@ literal|"openFileCtx has false asyncStatus, fileId:"
 operator|+
 name|latestAttr
 operator|.
-name|getFileid
+name|getFileId
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -4672,7 +4672,7 @@ literal|" is finalized. fileId:"
 operator|+
 name|latestAttr
 operator|.
-name|getFileid
+name|getFileId
 argument_list|()
 operator|+
 literal|" asyncStatus:"
@@ -4807,7 +4807,9 @@ operator|.
 name|getFileId
 argument_list|()
 operator|+
-literal|". Channel closed with writes pending"
+literal|". Channel closed with writes pending."
+argument_list|,
+name|cce
 argument_list|)
 expr_stmt|;
 block|}
@@ -4829,7 +4831,7 @@ operator|.
 name|error
 argument_list|(
 literal|"Got stream error during data sync:"
-operator|+
+argument_list|,
 name|e
 argument_list|)
 expr_stmt|;
@@ -4876,12 +4878,14 @@ name|LOG
 operator|.
 name|error
 argument_list|(
-literal|"Can't get new file attr for fileId: "
+literal|"Can't get new file attr, fileId: "
 operator|+
 name|latestAttr
 operator|.
 name|getFileId
 argument_list|()
+argument_list|,
+name|e
 argument_list|)
 expr_stmt|;
 name|status
@@ -5039,7 +5043,7 @@ literal|"FileId: "
 operator|+
 name|latestAttr
 operator|.
-name|getFileid
+name|getFileId
 argument_list|()
 operator|+
 literal|" Service time:"
@@ -5388,9 +5392,7 @@ argument_list|(
 literal|"hsync failed with writeCtx:"
 operator|+
 name|writeCtx
-operator|+
-literal|" error:"
-operator|+
+argument_list|,
 name|e
 argument_list|)
 expr_stmt|;
@@ -5597,7 +5599,7 @@ literal|"Clean up open file context for fileId: "
 operator|+
 name|latestAttr
 operator|.
-name|getFileid
+name|getFileId
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -5697,7 +5699,7 @@ literal|"Can't close stream for fileId:"
 operator|+
 name|latestAttr
 operator|.
-name|getFileid
+name|getFileId
 argument_list|()
 operator|+
 literal|", error:"
@@ -5883,10 +5885,16 @@ name|IOException
 name|e
 parameter_list|)
 block|{
-name|e
+name|LOG
 operator|.
-name|printStackTrace
-argument_list|()
+name|error
+argument_list|(
+literal|"Failed to close outputstream of dump file"
+operator|+
+name|dumpFilePath
+argument_list|,
+name|e
+argument_list|)
 expr_stmt|;
 block|}
 name|File
@@ -5944,10 +5952,14 @@ name|IOException
 name|e
 parameter_list|)
 block|{
-name|e
+name|LOG
 operator|.
-name|printStackTrace
-argument_list|()
+name|error
+argument_list|(
+literal|"Got exception when closing input stream of dump file."
+argument_list|,
+name|e
+argument_list|)
 expr_stmt|;
 block|}
 block|}

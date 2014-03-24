@@ -852,12 +852,9 @@ operator|.
 name|error
 argument_list|(
 literal|"Can't close BufferedReader of command result"
-argument_list|)
-expr_stmt|;
+argument_list|,
 name|e1
-operator|.
-name|printStackTrace
-argument_list|()
+argument_list|)
 expr_stmt|;
 block|}
 block|}
@@ -1271,6 +1268,8 @@ operator|+
 literal|". Use its string hashcode:"
 operator|+
 name|uid
+argument_list|,
+name|e
 argument_list|)
 expr_stmt|;
 block|}
@@ -1319,7 +1318,7 @@ argument_list|()
 expr_stmt|;
 name|LOG
 operator|.
-name|debug
+name|info
 argument_list|(
 literal|"Can't map group "
 operator|+
@@ -1328,6 +1327,8 @@ operator|+
 literal|". Use its string hashcode:"
 operator|+
 name|gid
+argument_list|,
+name|e
 argument_list|)
 expr_stmt|;
 block|}

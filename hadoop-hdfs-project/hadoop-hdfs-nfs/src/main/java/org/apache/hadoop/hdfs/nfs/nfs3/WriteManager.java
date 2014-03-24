@@ -962,9 +962,7 @@ argument_list|(
 literal|"Can't apapend to file:"
 operator|+
 name|fileIdPath
-operator|+
-literal|", error:"
-operator|+
+argument_list|,
 name|e
 argument_list|)
 expr_stmt|;
@@ -1129,6 +1127,8 @@ name|handle
 operator|.
 name|getFileId
 argument_list|()
+argument_list|,
+name|e
 argument_list|)
 expr_stmt|;
 block|}
@@ -1574,7 +1574,7 @@ name|getFileIdPath
 argument_list|(
 name|preOpAttr
 operator|.
-name|getFileid
+name|getFileId
 argument_list|()
 argument_list|)
 decl_stmt|;
@@ -1606,8 +1606,10 @@ literal|"Can't get postOpAttr for fileId: "
 operator|+
 name|preOpAttr
 operator|.
-name|getFileid
+name|getFileId
 argument_list|()
+argument_list|,
+name|e1
 argument_list|)
 expr_stmt|;
 block|}

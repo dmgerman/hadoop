@@ -591,6 +591,14 @@ name|attr
 parameter_list|)
 block|{
 return|return
+name|attr
+operator|==
+literal|null
+condition|?
+operator|new
+name|WccAttr
+argument_list|()
+else|:
 operator|new
 name|WccAttr
 argument_list|(

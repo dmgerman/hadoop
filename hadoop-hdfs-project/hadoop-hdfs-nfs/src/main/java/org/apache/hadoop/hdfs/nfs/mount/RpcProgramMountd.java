@@ -1003,9 +1003,7 @@ argument_list|(
 literal|"Can't get handle for export:"
 operator|+
 name|path
-operator|+
-literal|", exception:"
-operator|+
+argument_list|,
 name|e
 argument_list|)
 expr_stmt|;
