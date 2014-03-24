@@ -1129,10 +1129,14 @@ range|:
 name|logFiles
 control|)
 block|{
+specifier|final
 name|long
 name|fileLength
 init|=
-literal|0
+name|logFile
+operator|.
+name|length
+argument_list|()
 decl_stmt|;
 comment|// Write the logFile Type
 name|out
@@ -1155,11 +1159,6 @@ operator|.
 name|valueOf
 argument_list|(
 name|fileLength
-operator|=
-name|logFile
-operator|.
-name|length
-argument_list|()
 argument_list|)
 argument_list|)
 expr_stmt|;
@@ -1195,19 +1194,18 @@ index|[
 literal|65535
 index|]
 decl_stmt|;
-name|long
-name|curRead
-init|=
-literal|0
-decl_stmt|;
 name|int
 name|len
 init|=
 literal|0
 decl_stmt|;
+name|long
+name|bytesLeft
+init|=
+name|fileLength
+decl_stmt|;
 while|while
 condition|(
-operator|(
 operator|(
 name|len
 operator|=
@@ -1221,13 +1219,14 @@ operator|)
 operator|!=
 operator|-
 literal|1
-operator|)
-operator|&&
-operator|(
-name|curRead
+condition|)
+block|{
+comment|//If buffer contents within fileLength, write
+if|if
+condition|(
+name|len
 operator|<
-name|fileLength
-operator|)
+name|bytesLeft
 condition|)
 block|{
 name|out
@@ -1241,10 +1240,30 @@ argument_list|,
 name|len
 argument_list|)
 expr_stmt|;
-name|curRead
-operator|+=
+name|bytesLeft
+operator|-=
 name|len
 expr_stmt|;
+block|}
+comment|//else only write contents within fileLength, then exit early
+else|else
+block|{
+name|out
+operator|.
+name|write
+argument_list|(
+name|buf
+argument_list|,
+literal|0
+argument_list|,
+operator|(
+name|int
+operator|)
+name|bytesLeft
+argument_list|)
+expr_stmt|;
+break|break;
+block|}
 block|}
 name|long
 name|newLength
@@ -1265,7 +1284,7 @@ name|LOG
 operator|.
 name|warn
 argument_list|(
-literal|"Aggregated Logs Truncated by "
+literal|"Aggregated logs truncated by approximately "
 operator|+
 operator|(
 name|newLength
