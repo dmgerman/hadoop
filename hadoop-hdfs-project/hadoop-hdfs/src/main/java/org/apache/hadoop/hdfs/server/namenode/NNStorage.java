@@ -717,6 +717,7 @@ literal|false
 decl_stmt|;
 DECL|field|restorationLock
 specifier|private
+specifier|final
 name|Object
 name|restorationLock
 init|=

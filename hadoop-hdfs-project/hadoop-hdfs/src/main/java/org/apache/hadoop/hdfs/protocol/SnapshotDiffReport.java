@@ -156,6 +156,7 @@ argument_list|)
 block|;
 DECL|field|label
 specifier|private
+specifier|final
 name|String
 name|label
 decl_stmt|;

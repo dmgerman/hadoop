@@ -179,6 +179,7 @@ block|{
 DECL|field|WAIT_TIME_IN_MILLIS
 specifier|private
 specifier|static
+specifier|final
 name|long
 name|WAIT_TIME_IN_MILLIS
 init|=

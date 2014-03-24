@@ -436,6 +436,7 @@ argument_list|)
 decl_stmt|;
 DECL|field|adminAcl
 specifier|private
+specifier|final
 name|AccessControlList
 name|adminAcl
 decl_stmt|;

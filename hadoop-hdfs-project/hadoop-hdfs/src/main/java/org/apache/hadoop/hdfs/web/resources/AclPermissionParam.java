@@ -123,6 +123,7 @@ decl_stmt|;
 DECL|field|DOMAIN
 specifier|private
 specifier|static
+specifier|final
 name|Domain
 name|DOMAIN
 init|=

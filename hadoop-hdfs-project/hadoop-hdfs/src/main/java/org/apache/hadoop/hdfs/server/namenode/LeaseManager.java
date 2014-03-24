@@ -342,6 +342,7 @@ comment|// Mapping: leaseHolder -> Lease
 comment|//
 DECL|field|leases
 specifier|private
+specifier|final
 name|SortedMap
 argument_list|<
 name|String
@@ -362,6 +363,7 @@ decl_stmt|;
 comment|// Set of: Lease
 DECL|field|sortedLeases
 specifier|private
+specifier|final
 name|SortedSet
 argument_list|<
 name|Lease
@@ -381,6 +383,7 @@ comment|// The map stores pathnames in lexicographical order.
 comment|//
 DECL|field|sortedLeasesByPath
 specifier|private
+specifier|final
 name|SortedMap
 argument_list|<
 name|String

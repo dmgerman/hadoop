@@ -412,6 +412,7 @@ name|tool
 decl_stmt|;
 DECL|field|errOutBytes
 specifier|private
+specifier|final
 name|ByteArrayOutputStream
 name|errOutBytes
 init|=

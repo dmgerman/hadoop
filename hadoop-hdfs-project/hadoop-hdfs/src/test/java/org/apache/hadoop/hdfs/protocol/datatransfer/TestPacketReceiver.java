@@ -125,6 +125,7 @@ block|{
 DECL|field|OFFSET_IN_BLOCK
 specifier|private
 specifier|static
+specifier|final
 name|long
 name|OFFSET_IN_BLOCK
 init|=
@@ -133,6 +134,7 @@ decl_stmt|;
 DECL|field|SEQNO
 specifier|private
 specifier|static
+specifier|final
 name|int
 name|SEQNO
 init|=

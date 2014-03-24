@@ -159,6 +159,7 @@ name|class
 argument_list|)
 decl_stmt|;
 DECL|field|rand
+specifier|final
 name|Random
 name|rand
 init|=

@@ -151,6 +151,7 @@ extends|extends
 name|DatanodeCommand
 block|{
 DECL|field|recoveringBlocks
+specifier|final
 name|Collection
 argument_list|<
 name|RecoveringBlock
@@ -176,6 +177,7 @@ name|LocatedBlock
 block|{
 DECL|field|newGenerationStamp
 specifier|private
+specifier|final
 name|long
 name|newGenerationStamp
 decl_stmt|;

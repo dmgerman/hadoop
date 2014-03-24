@@ -50,12 +50,14 @@ literal|16777619
 decl_stmt|;
 DECL|field|files
 specifier|private
+specifier|final
 name|String
 index|[]
 name|files
 decl_stmt|;
 DECL|field|cookie
 specifier|private
+specifier|final
 name|String
 name|cookie
 decl_stmt|;

@@ -435,6 +435,7 @@ decl_stmt|;
 DECL|field|TEST_ROOT_DIR
 specifier|private
 specifier|static
+specifier|final
 name|File
 name|TEST_ROOT_DIR
 init|=
@@ -551,6 +552,7 @@ expr_stmt|;
 block|}
 block|}
 DECL|field|refList
+specifier|final
 name|LinkedList
 argument_list|<
 name|ReferenceFileInfo

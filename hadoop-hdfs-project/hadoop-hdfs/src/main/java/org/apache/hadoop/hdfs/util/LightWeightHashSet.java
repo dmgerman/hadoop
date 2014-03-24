@@ -321,6 +321,7 @@ name|minLoadFactor
 decl_stmt|;
 DECL|field|expandMultiplier
 specifier|private
+specifier|final
 name|int
 name|expandMultiplier
 init|=

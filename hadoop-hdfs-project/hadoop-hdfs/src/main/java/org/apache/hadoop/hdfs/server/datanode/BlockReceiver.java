@@ -660,6 +660,7 @@ name|checksumSize
 decl_stmt|;
 DECL|field|packetReceiver
 specifier|private
+specifier|final
 name|PacketReceiver
 name|packetReceiver
 init|=
@@ -4350,6 +4351,7 @@ block|}
 DECL|field|MIRROR_ERROR_STATUS
 specifier|private
 specifier|static
+specifier|final
 name|Status
 index|[]
 name|MIRROR_ERROR_STATUS

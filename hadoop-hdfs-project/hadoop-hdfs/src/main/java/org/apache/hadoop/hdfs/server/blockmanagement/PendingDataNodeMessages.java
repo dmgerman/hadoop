@@ -124,6 +124,7 @@ class|class
 name|PendingDataNodeMessages
 block|{
 DECL|field|queueByBlockId
+specifier|final
 name|Map
 argument_list|<
 name|Block

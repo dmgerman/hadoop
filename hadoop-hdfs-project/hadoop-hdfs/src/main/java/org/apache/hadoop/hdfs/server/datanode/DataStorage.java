@@ -476,6 +476,7 @@ decl_stmt|;
 comment|// Maps block pool IDs to block pool storage
 DECL|field|bpStorageMap
 specifier|private
+specifier|final
 name|Map
 argument_list|<
 name|String

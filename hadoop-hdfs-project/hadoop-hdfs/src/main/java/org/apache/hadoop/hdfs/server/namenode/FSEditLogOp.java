@@ -1757,6 +1757,7 @@ name|OpInstanceCache
 block|{
 DECL|field|inst
 specifier|private
+specifier|final
 name|EnumMap
 argument_list|<
 name|FSEditLogOpCodes

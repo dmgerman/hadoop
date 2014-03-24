@@ -455,6 +455,7 @@ decl_stmt|;
 DECL|field|numDataNodes
 specifier|private
 specifier|static
+specifier|final
 name|int
 name|numDataNodes
 init|=

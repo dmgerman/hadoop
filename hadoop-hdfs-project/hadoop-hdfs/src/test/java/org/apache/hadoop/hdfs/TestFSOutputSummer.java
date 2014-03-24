@@ -230,6 +230,7 @@ literal|2
 decl_stmt|;
 DECL|field|expected
 specifier|private
+specifier|final
 name|byte
 index|[]
 name|expected
@@ -242,6 +243,7 @@ index|]
 decl_stmt|;
 DECL|field|actual
 specifier|private
+specifier|final
 name|byte
 index|[]
 name|actual

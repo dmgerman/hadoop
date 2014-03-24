@@ -113,6 +113,7 @@ class|class
 name|TestLeaseManager
 block|{
 DECL|field|conf
+specifier|final
 name|Configuration
 name|conf
 init|=

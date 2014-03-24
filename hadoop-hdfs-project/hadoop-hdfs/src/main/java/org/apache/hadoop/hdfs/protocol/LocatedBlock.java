@@ -172,6 +172,7 @@ name|LocatedBlock
 block|{
 DECL|field|b
 specifier|private
+specifier|final
 name|ExtendedBlock
 name|b
 decl_stmt|;
@@ -183,6 +184,7 @@ decl_stmt|;
 comment|// offset of the first byte of the block in the file
 DECL|field|locs
 specifier|private
+specifier|final
 name|DatanodeInfo
 index|[]
 name|locs
@@ -190,6 +192,7 @@ decl_stmt|;
 comment|/** Storage ID for each replica */
 DECL|field|storageIDs
 specifier|private
+specifier|final
 name|String
 index|[]
 name|storageIDs
@@ -197,6 +200,7 @@ decl_stmt|;
 comment|// Storage type for each replica, if reported.
 DECL|field|storageTypes
 specifier|private
+specifier|final
 name|StorageType
 index|[]
 name|storageTypes

@@ -475,6 +475,7 @@ literal|null
 decl_stmt|;
 DECL|field|rand
 specifier|private
+specifier|final
 name|Random
 name|rand
 init|=
@@ -484,6 +485,7 @@ argument_list|()
 decl_stmt|;
 DECL|field|r
 specifier|private
+specifier|final
 name|Random
 name|r
 init|=

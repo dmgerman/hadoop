@@ -337,6 +337,7 @@ class|class
 name|TestFileAppend
 block|{
 DECL|field|simulatedStorage
+specifier|final
 name|boolean
 name|simulatedStorage
 init|=

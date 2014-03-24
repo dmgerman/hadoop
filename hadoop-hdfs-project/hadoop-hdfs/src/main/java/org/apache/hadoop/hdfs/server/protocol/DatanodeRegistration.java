@@ -144,6 +144,7 @@ name|NodeRegistration
 block|{
 DECL|field|storageInfo
 specifier|private
+specifier|final
 name|StorageInfo
 name|storageInfo
 decl_stmt|;
@@ -154,6 +155,7 @@ name|exportedKeys
 decl_stmt|;
 DECL|field|softwareVersion
 specifier|private
+specifier|final
 name|String
 name|softwareVersion
 decl_stmt|;

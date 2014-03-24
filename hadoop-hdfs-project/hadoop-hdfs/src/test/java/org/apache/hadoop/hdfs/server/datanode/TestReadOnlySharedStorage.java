@@ -483,6 +483,7 @@ decl_stmt|;
 DECL|field|NUM_DATANODES
 specifier|private
 specifier|static
+specifier|final
 name|short
 name|NUM_DATANODES
 init|=
@@ -491,6 +492,7 @@ decl_stmt|;
 DECL|field|RO_NODE_INDEX
 specifier|private
 specifier|static
+specifier|final
 name|int
 name|RO_NODE_INDEX
 init|=

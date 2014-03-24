@@ -478,6 +478,7 @@ name|MutableRate
 name|syncs
 decl_stmt|;
 DECL|field|syncsQuantiles
+specifier|final
 name|MutableQuantiles
 index|[]
 name|syncsQuantiles
@@ -501,6 +502,7 @@ name|MutableRate
 name|blockReport
 decl_stmt|;
 DECL|field|blockReportQuantiles
+specifier|final
 name|MutableQuantiles
 index|[]
 name|blockReportQuantiles
@@ -515,6 +517,7 @@ name|MutableRate
 name|cacheReport
 decl_stmt|;
 DECL|field|cacheReportQuantiles
+specifier|final
 name|MutableQuantiles
 index|[]
 name|cacheReportQuantiles

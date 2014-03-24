@@ -71,6 +71,7 @@ block|;
 DECL|field|DEFAULT
 specifier|public
 specifier|static
+specifier|final
 name|StorageType
 name|DEFAULT
 init|=

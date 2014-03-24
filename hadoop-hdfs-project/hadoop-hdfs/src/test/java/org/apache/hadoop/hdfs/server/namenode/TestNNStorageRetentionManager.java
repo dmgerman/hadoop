@@ -425,6 +425,7 @@ class|class
 name|TestNNStorageRetentionManager
 block|{
 DECL|field|conf
+specifier|final
 name|Configuration
 name|conf
 init|=
@@ -2063,6 +2064,7 @@ name|TestCaseDescription
 block|{
 DECL|field|dirRoots
 specifier|private
+specifier|final
 name|Map
 argument_list|<
 name|File
@@ -2078,6 +2080,7 @@ argument_list|()
 decl_stmt|;
 DECL|field|expectedPurgedLogs
 specifier|private
+specifier|final
 name|Set
 argument_list|<
 name|File
@@ -2091,6 +2094,7 @@ argument_list|()
 decl_stmt|;
 DECL|field|expectedPurgedImages
 specifier|private
+specifier|final
 name|Set
 argument_list|<
 name|File
@@ -2108,10 +2112,12 @@ class|class
 name|FakeRoot
 block|{
 DECL|field|type
+specifier|final
 name|NameNodeDirType
 name|type
 decl_stmt|;
 DECL|field|files
+specifier|final
 name|List
 argument_list|<
 name|File

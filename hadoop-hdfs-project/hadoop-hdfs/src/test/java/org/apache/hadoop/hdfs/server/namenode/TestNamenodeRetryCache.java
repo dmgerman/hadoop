@@ -582,6 +582,7 @@ decl_stmt|;
 DECL|field|perm
 specifier|private
 specifier|static
+specifier|final
 name|PermissionStatus
 name|perm
 init|=

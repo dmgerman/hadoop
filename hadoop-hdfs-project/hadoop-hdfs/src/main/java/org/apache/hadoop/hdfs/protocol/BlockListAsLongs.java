@@ -247,6 +247,7 @@ return|;
 block|}
 DECL|field|blockList
 specifier|private
+specifier|final
 name|long
 index|[]
 name|blockList
@@ -489,6 +490,7 @@ name|currentBlockIndex
 decl_stmt|;
 DECL|field|block
 specifier|private
+specifier|final
 name|Block
 name|block
 decl_stmt|;

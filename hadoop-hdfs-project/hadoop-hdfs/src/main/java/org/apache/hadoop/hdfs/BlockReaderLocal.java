@@ -287,6 +287,7 @@ decl_stmt|;
 DECL|field|bufferPool
 specifier|private
 specifier|static
+specifier|final
 name|DirectBufferPool
 name|bufferPool
 init|=
@@ -302,6 +303,7 @@ name|Builder
 block|{
 DECL|field|bufferSize
 specifier|private
+specifier|final
 name|int
 name|bufferSize
 decl_stmt|;
@@ -608,12 +610,14 @@ decl_stmt|;
 comment|/**    * Cache of Checksum#bytesPerChecksum.    */
 DECL|field|bytesPerChecksum
 specifier|private
+specifier|final
 name|int
 name|bytesPerChecksum
 decl_stmt|;
 comment|/**    * Cache of Checksum#checksumSize.    */
 DECL|field|checksumSize
 specifier|private
+specifier|final
 name|int
 name|checksumSize
 decl_stmt|;
@@ -634,6 +638,7 @@ decl_stmt|;
 comment|/**    * Maximum amount of readahead we'll do.  This will always be at least the,    * size of a single chunk, even if {@link zeroReadaheadRequested} is true.    * The reason is because we need to do a certain amount of buffering in order    * to do checksumming.    *     * This determines how many bytes we'll use out of dataBuf and checksumBuf.    * Why do we allocate buffers, and then (potentially) only use part of them?    * The rationale is that allocating a lot of buffers of different sizes would    * make it very difficult for the DirectBufferPool to re-use buffers.     */
 DECL|field|maxReadaheadLength
 specifier|private
+specifier|final
 name|int
 name|maxReadaheadLength
 decl_stmt|;

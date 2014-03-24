@@ -198,6 +198,7 @@ name|TestRefreshNamenodes
 block|{
 DECL|field|nnPort1
 specifier|private
+specifier|final
 name|int
 name|nnPort1
 init|=
@@ -205,6 +206,7 @@ literal|2221
 decl_stmt|;
 DECL|field|nnPort2
 specifier|private
+specifier|final
 name|int
 name|nnPort2
 init|=
@@ -212,6 +214,7 @@ literal|2224
 decl_stmt|;
 DECL|field|nnPort3
 specifier|private
+specifier|final
 name|int
 name|nnPort3
 init|=
@@ -219,6 +222,7 @@ literal|2227
 decl_stmt|;
 DECL|field|nnPort4
 specifier|private
+specifier|final
 name|int
 name|nnPort4
 init|=

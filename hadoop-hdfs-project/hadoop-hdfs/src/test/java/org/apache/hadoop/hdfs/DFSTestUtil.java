@@ -951,6 +951,7 @@ decl_stmt|;
 DECL|field|gen
 specifier|private
 specifier|static
+specifier|final
 name|Random
 name|gen
 init|=
@@ -961,6 +962,7 @@ decl_stmt|;
 DECL|field|dirNames
 specifier|private
 specifier|static
+specifier|final
 name|String
 index|[]
 name|dirNames
@@ -1257,11 +1259,13 @@ literal|""
 decl_stmt|;
 DECL|field|size
 specifier|private
+specifier|final
 name|int
 name|size
 decl_stmt|;
 DECL|field|seed
 specifier|private
+specifier|final
 name|long
 name|seed
 decl_stmt|;
@@ -6923,6 +6927,7 @@ literal|false
 decl_stmt|;
 DECL|field|formerTcpReadsDisabled
 specifier|private
+specifier|final
 name|boolean
 name|formerTcpReadsDisabled
 decl_stmt|;

@@ -325,6 +325,7 @@ argument_list|>
 block|{
 DECL|field|cachePool
 specifier|private
+specifier|final
 name|CachePool
 name|cachePool
 decl_stmt|;

@@ -7211,10 +7211,12 @@ class|class
 name|DNAddrPair
 block|{
 DECL|field|info
+specifier|final
 name|DatanodeInfo
 name|info
 decl_stmt|;
 DECL|field|addr
+specifier|final
 name|InetSocketAddress
 name|addr
 decl_stmt|;

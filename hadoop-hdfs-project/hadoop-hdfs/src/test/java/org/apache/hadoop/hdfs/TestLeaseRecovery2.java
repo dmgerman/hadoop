@@ -610,6 +610,7 @@ literal|3
 decl_stmt|;
 DECL|field|buffer
 specifier|static
+specifier|final
 name|byte
 index|[]
 name|buffer
@@ -623,6 +624,7 @@ decl_stmt|;
 DECL|field|fakeUsername
 specifier|static
 specifier|private
+specifier|final
 name|String
 name|fakeUsername
 init|=
@@ -631,6 +633,7 @@ decl_stmt|;
 DECL|field|fakeGroup
 specifier|static
 specifier|private
+specifier|final
 name|String
 name|fakeGroup
 init|=

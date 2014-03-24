@@ -113,6 +113,7 @@ annotation|@
 name|VisibleForTesting
 DECL|field|longReadLock
 specifier|protected
+specifier|final
 name|ReentrantLock
 name|longReadLock
 init|=

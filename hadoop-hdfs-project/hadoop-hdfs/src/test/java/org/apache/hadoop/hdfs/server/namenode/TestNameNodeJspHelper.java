@@ -1767,6 +1767,7 @@ argument_list|)
 block|;
 DECL|field|pattern
 specifier|private
+specifier|final
 name|Pattern
 name|pattern
 decl_stmt|;

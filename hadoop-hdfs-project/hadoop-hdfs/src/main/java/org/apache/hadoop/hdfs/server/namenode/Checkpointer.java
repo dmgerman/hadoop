@@ -388,6 +388,7 @@ argument_list|)
 decl_stmt|;
 DECL|field|backupNode
 specifier|private
+specifier|final
 name|BackupNode
 name|backupNode
 decl_stmt|;

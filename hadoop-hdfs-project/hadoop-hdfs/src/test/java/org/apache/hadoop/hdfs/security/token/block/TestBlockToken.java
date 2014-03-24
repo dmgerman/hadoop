@@ -988,6 +988,7 @@ block|}
 comment|/** Directory where we can count our open file descriptors under Linux */
 DECL|field|FD_DIR
 specifier|static
+specifier|final
 name|File
 name|FD_DIR
 init|=
@@ -998,6 +999,7 @@ literal|"/proc/self/fd/"
 argument_list|)
 decl_stmt|;
 DECL|field|blockKeyUpdateInterval
+specifier|final
 name|long
 name|blockKeyUpdateInterval
 init|=
@@ -1009,6 +1011,7 @@ literal|1000
 decl_stmt|;
 comment|// 10 mins
 DECL|field|blockTokenLifetime
+specifier|final
 name|long
 name|blockTokenLifetime
 init|=
@@ -1020,6 +1023,7 @@ literal|1000
 decl_stmt|;
 comment|// 2 mins
 DECL|field|block1
+specifier|final
 name|ExtendedBlock
 name|block1
 init|=
@@ -1032,6 +1036,7 @@ literal|0L
 argument_list|)
 decl_stmt|;
 DECL|field|block2
+specifier|final
 name|ExtendedBlock
 name|block2
 init|=
@@ -1044,6 +1049,7 @@ literal|10L
 argument_list|)
 decl_stmt|;
 DECL|field|block3
+specifier|final
 name|ExtendedBlock
 name|block3
 init|=
@@ -1100,10 +1106,12 @@ name|GetReplicaVisibleLengthResponseProto
 argument_list|>
 block|{
 DECL|field|sm
+specifier|final
 name|BlockTokenSecretManager
 name|sm
 decl_stmt|;
 DECL|field|ident
+specifier|final
 name|BlockTokenIdentifier
 name|ident
 decl_stmt|;

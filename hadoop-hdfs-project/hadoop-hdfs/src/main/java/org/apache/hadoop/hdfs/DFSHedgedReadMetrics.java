@@ -42,6 +42,7 @@ name|DFSHedgedReadMetrics
 block|{
 DECL|field|hedgedReadOps
 specifier|public
+specifier|final
 name|AtomicLong
 name|hedgedReadOps
 init|=
@@ -51,6 +52,7 @@ argument_list|()
 decl_stmt|;
 DECL|field|hedgedReadOpsWin
 specifier|public
+specifier|final
 name|AtomicLong
 name|hedgedReadOpsWin
 init|=
@@ -60,6 +62,7 @@ argument_list|()
 decl_stmt|;
 DECL|field|hedgedReadOpsInCurThread
 specifier|public
+specifier|final
 name|AtomicLong
 name|hedgedReadOpsInCurThread
 init|=

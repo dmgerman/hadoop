@@ -668,6 +668,7 @@ decl_stmt|;
 DECL|field|conf
 specifier|private
 specifier|static
+specifier|final
 name|Configuration
 name|conf
 init|=

@@ -739,6 +739,7 @@ name|spies
 decl_stmt|;
 DECL|field|toClose
 specifier|private
+specifier|final
 name|List
 argument_list|<
 name|QuorumJournalManager

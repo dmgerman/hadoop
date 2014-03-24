@@ -66,6 +66,7 @@ name|RollingUpgradeStatus
 block|{
 DECL|field|blockPoolId
 specifier|private
+specifier|final
 name|String
 name|blockPoolId
 decl_stmt|;

@@ -373,6 +373,7 @@ literal|null
 decl_stmt|;
 comment|/** Set to determine if all of storageDirectories share the same checkpoint */
 DECL|field|checkpointTimes
+specifier|final
 name|Set
 argument_list|<
 name|Long
@@ -388,6 +389,7 @@ argument_list|()
 decl_stmt|;
 DECL|field|imageDirs
 specifier|private
+specifier|final
 name|List
 argument_list|<
 name|String
@@ -403,6 +405,7 @@ argument_list|()
 decl_stmt|;
 DECL|field|editsDirs
 specifier|private
+specifier|final
 name|List
 argument_list|<
 name|String

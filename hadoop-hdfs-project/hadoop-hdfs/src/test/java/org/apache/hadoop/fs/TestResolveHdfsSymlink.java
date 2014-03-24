@@ -321,6 +321,7 @@ block|{
 DECL|field|helper
 specifier|private
 specifier|static
+specifier|final
 name|FileContextTestHelper
 name|helper
 init|=

@@ -485,6 +485,7 @@ init|=
 literal|false
 decl_stmt|;
 DECL|field|diffs
+specifier|final
 name|ScanInfoPerBlockPool
 name|diffs
 init|=
@@ -493,6 +494,7 @@ name|ScanInfoPerBlockPool
 argument_list|()
 decl_stmt|;
 DECL|field|stats
+specifier|final
 name|Map
 argument_list|<
 name|String
@@ -531,6 +533,7 @@ class|class
 name|Stats
 block|{
 DECL|field|bpid
+specifier|final
 name|String
 name|bpid
 decl_stmt|;
@@ -2798,6 +2801,7 @@ argument_list|>
 block|{
 DECL|field|volume
 specifier|private
+specifier|final
 name|FsVolumeSpi
 name|volume
 decl_stmt|;

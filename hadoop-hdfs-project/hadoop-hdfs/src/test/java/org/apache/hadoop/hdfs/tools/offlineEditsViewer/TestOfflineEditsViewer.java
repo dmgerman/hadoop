@@ -289,6 +289,7 @@ decl_stmt|;
 DECL|field|buildDir
 specifier|private
 specifier|static
+specifier|final
 name|String
 name|buildDir
 init|=

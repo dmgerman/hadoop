@@ -393,6 +393,7 @@ class|class
 name|TestDataTransferKeepalive
 block|{
 DECL|field|conf
+specifier|final
 name|Configuration
 name|conf
 init|=
@@ -413,6 +414,7 @@ decl_stmt|;
 DECL|field|TEST_FILE
 specifier|private
 specifier|static
+specifier|final
 name|Path
 name|TEST_FILE
 init|=

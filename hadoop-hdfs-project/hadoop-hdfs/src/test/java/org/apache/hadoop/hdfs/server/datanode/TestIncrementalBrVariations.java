@@ -483,6 +483,7 @@ decl_stmt|;
 DECL|field|NUM_DATANODES
 specifier|private
 specifier|static
+specifier|final
 name|short
 name|NUM_DATANODES
 init|=

@@ -86,6 +86,7 @@ name|DatanodeCommand
 block|{
 DECL|field|keys
 specifier|private
+specifier|final
 name|ExportedBlockKeys
 name|keys
 decl_stmt|;

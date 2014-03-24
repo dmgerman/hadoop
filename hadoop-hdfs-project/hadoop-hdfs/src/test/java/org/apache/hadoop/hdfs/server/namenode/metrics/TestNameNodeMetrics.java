@@ -740,6 +740,7 @@ name|fs
 decl_stmt|;
 DECL|field|rand
 specifier|private
+specifier|final
 name|Random
 name|rand
 init|=

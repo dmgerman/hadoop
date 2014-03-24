@@ -368,6 +368,7 @@ decl_stmt|;
 comment|/**    * The test case table.  Each row represents a test case.  This table is    * taken from the table in Apendix A of the HDFS Upgrade Test Plan    * (TestPlan-HdfsUpgrade.html) attached to    * http://issues.apache.org/jira/browse/HADOOP-702    *     * It has been slightly modified since previouscheckpoint.tmp no longer    * exists.    *     * The column meanings are:    *  0) current directory exists    *  1) previous directory exists    *  2) previous.tmp directory exists    *  3) removed.tmp directory exists    *  4) node should recover and startup    *  5) current directory should exist after recovery but before startup    *  6) previous directory should exist after recovery but before startup    */
 DECL|field|testCases
 specifier|static
+specifier|final
 name|boolean
 index|[]
 index|[]

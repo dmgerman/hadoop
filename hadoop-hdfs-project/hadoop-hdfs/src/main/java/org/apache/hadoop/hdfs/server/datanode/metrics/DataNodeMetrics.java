@@ -420,6 +420,7 @@ name|MutableRate
 name|packetAckRoundTripTimeNanos
 decl_stmt|;
 DECL|field|packetAckRoundTripTimeNanosQuantiles
+specifier|final
 name|MutableQuantiles
 index|[]
 name|packetAckRoundTripTimeNanosQuantiles
@@ -431,6 +432,7 @@ name|MutableRate
 name|flushNanos
 decl_stmt|;
 DECL|field|flushNanosQuantiles
+specifier|final
 name|MutableQuantiles
 index|[]
 name|flushNanosQuantiles
@@ -442,6 +444,7 @@ name|MutableRate
 name|fsyncNanos
 decl_stmt|;
 DECL|field|fsyncNanosQuantiles
+specifier|final
 name|MutableQuantiles
 index|[]
 name|fsyncNanosQuantiles
@@ -453,6 +456,7 @@ name|MutableRate
 name|sendDataPacketBlockedOnNetworkNanos
 decl_stmt|;
 DECL|field|sendDataPacketBlockedOnNetworkNanosQuantiles
+specifier|final
 name|MutableQuantiles
 index|[]
 name|sendDataPacketBlockedOnNetworkNanosQuantiles
@@ -464,6 +468,7 @@ name|MutableRate
 name|sendDataPacketTransferNanos
 decl_stmt|;
 DECL|field|sendDataPacketTransferNanosQuantiles
+specifier|final
 name|MutableQuantiles
 index|[]
 name|sendDataPacketTransferNanosQuantiles

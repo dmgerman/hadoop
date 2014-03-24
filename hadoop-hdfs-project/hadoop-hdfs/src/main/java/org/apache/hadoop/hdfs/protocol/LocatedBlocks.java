@@ -96,11 +96,13 @@ name|LocatedBlocks
 block|{
 DECL|field|fileLength
 specifier|private
+specifier|final
 name|long
 name|fileLength
 decl_stmt|;
 DECL|field|blocks
 specifier|private
+specifier|final
 name|List
 argument_list|<
 name|LocatedBlock
@@ -110,6 +112,7 @@ decl_stmt|;
 comment|// array of blocks with prioritized locations
 DECL|field|underConstruction
 specifier|private
+specifier|final
 name|boolean
 name|underConstruction
 decl_stmt|;

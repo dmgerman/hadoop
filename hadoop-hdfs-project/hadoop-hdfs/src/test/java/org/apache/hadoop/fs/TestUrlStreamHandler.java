@@ -189,6 +189,7 @@ block|{
 DECL|field|TEST_ROOT_DIR
 specifier|private
 specifier|static
+specifier|final
 name|File
 name|TEST_ROOT_DIR
 init|=

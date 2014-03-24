@@ -323,6 +323,7 @@ block|}
 block|}
 DECL|field|blocks
 specifier|private
+specifier|final
 name|BlockWithLocations
 index|[]
 name|blocks

@@ -215,6 +215,7 @@ decl_stmt|;
 DECL|field|CONF
 specifier|private
 specifier|static
+specifier|final
 name|HdfsConfiguration
 name|CONF
 init|=

@@ -814,6 +814,7 @@ decl_stmt|;
 DECL|field|testDir
 specifier|private
 specifier|static
+specifier|final
 name|String
 name|testDir
 init|=
@@ -842,6 +843,7 @@ comment|/**    * The list recording all previous snapshots. Each element in the 
 DECL|field|snapshotList
 specifier|protected
 specifier|static
+specifier|final
 name|ArrayList
 argument_list|<
 name|Path

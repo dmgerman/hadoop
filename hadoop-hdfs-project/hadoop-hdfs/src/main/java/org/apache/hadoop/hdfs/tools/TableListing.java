@@ -734,11 +734,13 @@ name|numRows
 decl_stmt|;
 DECL|field|showHeader
 specifier|private
+specifier|final
 name|boolean
 name|showHeader
 decl_stmt|;
 DECL|field|wrapWidth
 specifier|private
+specifier|final
 name|int
 name|wrapWidth
 decl_stmt|;

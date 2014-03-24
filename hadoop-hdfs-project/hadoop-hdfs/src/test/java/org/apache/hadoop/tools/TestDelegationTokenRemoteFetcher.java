@@ -1970,6 +1970,7 @@ name|serviceUrl
 decl_stmt|;
 DECL|field|routes
 specifier|private
+specifier|final
 name|ImmutableMap
 argument_list|<
 name|String

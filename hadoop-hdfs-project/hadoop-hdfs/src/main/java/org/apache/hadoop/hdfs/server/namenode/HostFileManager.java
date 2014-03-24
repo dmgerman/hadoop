@@ -540,6 +540,7 @@ argument_list|>
 block|{
 comment|/**      * The index.  Each Entry appears in here exactly once.      *      * It may be indexed by one of:      *     ipAddress:port      *     ipAddress      *     registeredHostname:port      *     registeredHostname      *           * The different indexing strategies reflect the fact that we may or may      * not have a port or IP address for each entry.      */
 DECL|field|index
+specifier|final
 name|TreeMap
 argument_list|<
 name|String

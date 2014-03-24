@@ -300,6 +300,7 @@ name|out
 decl_stmt|;
 DECL|field|distribution
 specifier|private
+specifier|final
 name|int
 index|[]
 name|distribution

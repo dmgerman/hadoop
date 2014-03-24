@@ -646,18 +646,21 @@ name|Configuration
 name|conf
 decl_stmt|;
 DECL|field|dn_num
+specifier|final
 name|int
 name|dn_num
 init|=
 literal|2
 decl_stmt|;
 DECL|field|blocks_num
+specifier|final
 name|int
 name|blocks_num
 init|=
 literal|30
 decl_stmt|;
 DECL|field|repl
+specifier|final
 name|short
 name|repl
 init|=
@@ -704,6 +707,7 @@ decl_stmt|;
 block|}
 comment|// block id to BlockLocs
 DECL|field|block_map
+specifier|final
 name|Map
 argument_list|<
 name|String

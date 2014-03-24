@@ -493,6 +493,7 @@ name|numTxns
 decl_stmt|;
 DECL|field|writer
 specifier|private
+specifier|final
 name|Writer
 name|writer
 decl_stmt|;

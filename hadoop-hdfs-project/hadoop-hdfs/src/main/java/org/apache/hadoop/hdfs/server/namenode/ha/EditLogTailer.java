@@ -530,12 +530,14 @@ decl_stmt|;
 comment|/**    * How often the Standby should roll edit logs. Since the Standby only reads    * from finalized log segments, the Standby will only be as up-to-date as how    * often the logs are rolled.    */
 DECL|field|logRollPeriodMs
 specifier|private
+specifier|final
 name|long
 name|logRollPeriodMs
 decl_stmt|;
 comment|/**    * How often the Standby should check if there are new finalized segment(s)    * available to be read from.    */
 DECL|field|sleepTimeMs
 specifier|private
+specifier|final
 name|long
 name|sleepTimeMs
 decl_stmt|;

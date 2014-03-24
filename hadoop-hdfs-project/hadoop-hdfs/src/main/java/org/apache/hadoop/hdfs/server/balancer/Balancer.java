@@ -996,6 +996,7 @@ decl_stmt|;
 comment|// all data node lists
 DECL|field|overUtilizedDatanodes
 specifier|private
+specifier|final
 name|Collection
 argument_list|<
 name|Source
@@ -1011,6 +1012,7 @@ argument_list|()
 decl_stmt|;
 DECL|field|aboveAvgUtilizedDatanodes
 specifier|private
+specifier|final
 name|Collection
 argument_list|<
 name|Source
@@ -1026,6 +1028,7 @@ argument_list|()
 decl_stmt|;
 DECL|field|belowAvgUtilizedDatanodes
 specifier|private
+specifier|final
 name|Collection
 argument_list|<
 name|BalancerDatanode
@@ -1041,6 +1044,7 @@ argument_list|()
 decl_stmt|;
 DECL|field|underUtilizedDatanodes
 specifier|private
+specifier|final
 name|Collection
 argument_list|<
 name|BalancerDatanode
@@ -1056,6 +1060,7 @@ argument_list|()
 decl_stmt|;
 DECL|field|sources
 specifier|private
+specifier|final
 name|Collection
 argument_list|<
 name|Source
@@ -1071,6 +1076,7 @@ argument_list|()
 decl_stmt|;
 DECL|field|targets
 specifier|private
+specifier|final
 name|Collection
 argument_list|<
 name|BalancerDatanode
@@ -1086,6 +1092,7 @@ argument_list|()
 decl_stmt|;
 DECL|field|globalBlockList
 specifier|private
+specifier|final
 name|Map
 argument_list|<
 name|Block
@@ -1105,6 +1112,7 @@ argument_list|()
 decl_stmt|;
 DECL|field|movedBlocks
 specifier|private
+specifier|final
 name|MovedBlocks
 name|movedBlocks
 init|=
@@ -2011,12 +2019,14 @@ name|BalancerBlock
 block|{
 DECL|field|block
 specifier|private
+specifier|final
 name|Block
 name|block
 decl_stmt|;
 comment|// the block
 DECL|field|locations
 specifier|private
+specifier|final
 name|List
 argument_list|<
 name|BalancerDatanode
@@ -2164,6 +2174,7 @@ name|NodeTask
 block|{
 DECL|field|datanode
 specifier|private
+specifier|final
 name|BalancerDatanode
 name|datanode
 decl_stmt|;
@@ -2270,6 +2281,7 @@ decl_stmt|;
 comment|//  blocks being moved but not confirmed yet
 DECL|field|pendingBlocks
 specifier|private
+specifier|final
 name|List
 argument_list|<
 name|PendingBlockMove
@@ -2695,6 +2707,7 @@ block|}
 block|}
 DECL|field|nodeTasks
 specifier|private
+specifier|final
 name|ArrayList
 argument_list|<
 name|NodeTask
@@ -2720,6 +2733,7 @@ decl_stmt|;
 comment|/* source blocks point to balancerBlocks in the global list because      * we want to keep one copy of a block in balancer and be aware that      * the locations are changing over time.      */
 DECL|field|srcBlockList
 specifier|private
+specifier|final
 name|List
 argument_list|<
 name|BalancerBlock
@@ -4786,6 +4800,7 @@ block|}
 empty_stmt|;
 DECL|field|bytesMoved
 specifier|private
+specifier|final
 name|BytesMoved
 name|bytesMoved
 init|=

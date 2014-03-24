@@ -273,6 +273,7 @@ name|hftpFs
 decl_stmt|;
 DECL|field|r
 specifier|private
+specifier|final
 name|Random
 name|r
 init|=
@@ -282,6 +283,7 @@ argument_list|()
 decl_stmt|;
 DECL|field|filelist
 specifier|private
+specifier|final
 name|List
 argument_list|<
 name|String

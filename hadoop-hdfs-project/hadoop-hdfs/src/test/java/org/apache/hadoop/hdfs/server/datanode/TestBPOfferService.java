@@ -761,6 +761,7 @@ name|mockNN2
 decl_stmt|;
 DECL|field|mockHaStatuses
 specifier|private
+specifier|final
 name|NNHAStatusHeartbeat
 index|[]
 name|mockHaStatuses
@@ -773,9 +774,10 @@ index|]
 decl_stmt|;
 DECL|field|heartbeatCounts
 specifier|private
+specifier|final
 name|int
-name|heartbeatCounts
 index|[]
+name|heartbeatCounts
 init|=
 operator|new
 name|int

@@ -674,6 +674,7 @@ class|class
 name|TestFileDescriptorPair
 block|{
 DECL|field|dir
+specifier|final
 name|TemporarySocketDirectory
 name|dir
 init|=
@@ -682,9 +683,10 @@ name|TemporarySocketDirectory
 argument_list|()
 decl_stmt|;
 DECL|field|fis
+specifier|final
 name|FileInputStream
-name|fis
 index|[]
+name|fis
 decl_stmt|;
 DECL|method|TestFileDescriptorPair ()
 specifier|public

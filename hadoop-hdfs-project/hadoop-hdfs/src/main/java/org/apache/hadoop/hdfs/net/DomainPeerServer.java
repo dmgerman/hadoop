@@ -140,6 +140,7 @@ name|PeerServer
 block|{
 DECL|field|LOG
 specifier|static
+specifier|final
 name|Log
 name|LOG
 init|=

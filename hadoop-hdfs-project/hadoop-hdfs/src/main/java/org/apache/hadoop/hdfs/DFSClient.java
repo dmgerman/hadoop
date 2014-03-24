@@ -2671,6 +2671,7 @@ name|String
 name|clientName
 decl_stmt|;
 DECL|field|socketFactory
+specifier|final
 name|SocketFactory
 name|socketFactory
 decl_stmt|;
@@ -2694,6 +2695,7 @@ name|authority
 decl_stmt|;
 DECL|field|r
 specifier|private
+specifier|final
 name|Random
 name|r
 init|=
@@ -2739,6 +2741,7 @@ decl_stmt|;
 DECL|field|HEDGED_READ_METRIC
 specifier|private
 specifier|static
+specifier|final
 name|DFSHedgedReadMetrics
 name|HEDGED_READ_METRIC
 init|=
@@ -5767,6 +5770,7 @@ block|}
 DECL|field|localAddrMap
 specifier|private
 specifier|static
+specifier|final
 name|Map
 argument_list|<
 name|String

@@ -175,11 +175,13 @@ name|OfflineEditsLoader
 block|{
 DECL|field|visitor
 specifier|private
+specifier|final
 name|OfflineEditsVisitor
 name|visitor
 decl_stmt|;
 DECL|field|inputStream
 specifier|private
+specifier|final
 name|EditLogInputStream
 name|inputStream
 decl_stmt|;

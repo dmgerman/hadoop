@@ -632,6 +632,7 @@ expr_stmt|;
 block|}
 DECL|field|usage
 specifier|static
+specifier|final
 name|String
 name|usage
 init|=

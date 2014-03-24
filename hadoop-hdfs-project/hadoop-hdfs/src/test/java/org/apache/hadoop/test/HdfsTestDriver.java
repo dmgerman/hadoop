@@ -56,6 +56,7 @@ name|HdfsTestDriver
 block|{
 DECL|field|pgd
 specifier|private
+specifier|final
 name|ProgramDriver
 name|pgd
 decl_stmt|;

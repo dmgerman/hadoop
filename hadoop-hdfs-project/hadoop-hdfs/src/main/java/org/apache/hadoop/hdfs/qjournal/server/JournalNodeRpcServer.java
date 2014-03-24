@@ -470,6 +470,7 @@ literal|5
 decl_stmt|;
 DECL|field|jn
 specifier|private
+specifier|final
 name|JournalNode
 name|jn
 decl_stmt|;

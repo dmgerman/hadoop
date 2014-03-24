@@ -500,6 +500,7 @@ decl_stmt|;
 DECL|field|TEST_PATHS
 specifier|private
 specifier|static
+specifier|final
 name|Path
 index|[]
 name|TEST_PATHS

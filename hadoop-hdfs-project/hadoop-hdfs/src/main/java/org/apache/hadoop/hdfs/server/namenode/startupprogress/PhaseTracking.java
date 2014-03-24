@@ -99,6 +99,7 @@ operator|.
 name|MIN_VALUE
 decl_stmt|;
 DECL|field|steps
+specifier|final
 name|ConcurrentMap
 argument_list|<
 name|Step

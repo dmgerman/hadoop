@@ -183,6 +183,7 @@ extends|extends
 name|StorageInfo
 block|{
 DECL|field|buildVersion
+specifier|final
 name|String
 name|buildVersion
 decl_stmt|;

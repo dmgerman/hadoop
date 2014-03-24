@@ -255,6 +255,7 @@ literal|true
 decl_stmt|;
 DECL|field|conf
 specifier|private
+specifier|final
 name|Configuration
 name|conf
 decl_stmt|;
@@ -361,11 +362,13 @@ name|node
 decl_stmt|;
 DECL|field|ipcAddr
 specifier|private
+specifier|final
 name|InetSocketAddress
 name|ipcAddr
 decl_stmt|;
 DECL|field|httpServerURI
 specifier|private
+specifier|final
 name|String
 name|httpServerURI
 decl_stmt|;
@@ -421,14 +424,16 @@ argument_list|)
 decl_stmt|;
 DECL|field|baseDir
 specifier|private
+specifier|final
 name|File
 name|baseDir
 decl_stmt|;
 DECL|field|nodes
 specifier|private
+specifier|final
 name|JNInfo
-name|nodes
 index|[]
+name|nodes
 decl_stmt|;
 DECL|method|MiniJournalCluster (Builder b)
 specifier|private

@@ -265,6 +265,7 @@ decl_stmt|;
 comment|//require synchronized access
 DECL|field|appender
 specifier|private
+specifier|final
 name|Appender
 name|appender
 init|=

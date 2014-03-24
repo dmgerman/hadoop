@@ -317,6 +317,7 @@ name|USER_DIR
 decl_stmt|;
 DECL|field|path
 specifier|private
+specifier|final
 name|Path
 index|[]
 name|path

@@ -427,6 +427,7 @@ name|Path
 name|dir
 decl_stmt|;
 DECL|field|decommissionedNodes
+specifier|final
 name|ArrayList
 argument_list|<
 name|String

@@ -96,6 +96,7 @@ name|NNHAStatusHeartbeat
 block|{
 DECL|field|state
 specifier|private
+specifier|final
 name|HAServiceState
 name|state
 decl_stmt|;

@@ -2514,6 +2514,7 @@ block|{
 comment|/**      * The list of blocks that need to be removed from blocksMap      */
 DECL|field|toDeleteList
 specifier|private
+specifier|final
 name|List
 argument_list|<
 name|Block

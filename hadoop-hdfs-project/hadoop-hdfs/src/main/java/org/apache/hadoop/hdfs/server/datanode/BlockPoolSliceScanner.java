@@ -1854,6 +1854,7 @@ comment|/**      * The format consists of single line with multiple entries. eac
 DECL|field|entryPattern
 specifier|private
 specifier|static
+specifier|final
 name|Pattern
 name|entryPattern
 init|=

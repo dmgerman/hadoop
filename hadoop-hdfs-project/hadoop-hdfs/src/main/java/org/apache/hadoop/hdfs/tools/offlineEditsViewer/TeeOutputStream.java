@@ -54,9 +54,10 @@ name|OutputStream
 block|{
 DECL|field|outs
 specifier|private
+specifier|final
 name|OutputStream
-name|outs
 index|[]
+name|outs
 decl_stmt|;
 DECL|method|TeeOutputStream (OutputStream outs[])
 specifier|public

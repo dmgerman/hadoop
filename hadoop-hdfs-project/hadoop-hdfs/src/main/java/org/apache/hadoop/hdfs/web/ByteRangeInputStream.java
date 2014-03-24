@@ -248,11 +248,13 @@ name|in
 decl_stmt|;
 DECL|field|originalURL
 specifier|protected
+specifier|final
 name|URLOpener
 name|originalURL
 decl_stmt|;
 DECL|field|resolvedURL
 specifier|protected
+specifier|final
 name|URLOpener
 name|resolvedURL
 decl_stmt|;

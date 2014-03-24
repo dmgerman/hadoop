@@ -318,6 +318,7 @@ decl_stmt|;
 DECL|field|groupRefreshTimeoutSec
 specifier|private
 specifier|static
+specifier|final
 name|long
 name|groupRefreshTimeoutSec
 init|=

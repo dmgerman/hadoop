@@ -503,6 +503,7 @@ name|FSDataOutputStream
 name|stm
 decl_stmt|;
 DECL|field|simulatedStorage
+specifier|final
 name|boolean
 name|simulatedStorage
 init|=

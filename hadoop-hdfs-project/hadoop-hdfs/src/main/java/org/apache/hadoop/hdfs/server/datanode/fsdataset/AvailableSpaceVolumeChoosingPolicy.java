@@ -371,6 +371,7 @@ return|;
 block|}
 DECL|field|roundRobinPolicyBalanced
 specifier|private
+specifier|final
 name|VolumeChoosingPolicy
 argument_list|<
 name|V
@@ -386,6 +387,7 @@ argument_list|()
 decl_stmt|;
 DECL|field|roundRobinPolicyHighAvailable
 specifier|private
+specifier|final
 name|VolumeChoosingPolicy
 argument_list|<
 name|V
@@ -401,6 +403,7 @@ argument_list|()
 decl_stmt|;
 DECL|field|roundRobinPolicyLowAvailable
 specifier|private
+specifier|final
 name|VolumeChoosingPolicy
 argument_list|<
 name|V

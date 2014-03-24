@@ -3934,11 +3934,13 @@ name|LogsPurgeable
 block|{
 DECL|field|storage
 specifier|private
+specifier|final
 name|NNStorage
 name|storage
 decl_stmt|;
 DECL|field|purger
 specifier|private
+specifier|final
 name|StoragePurger
 name|purger
 init|=

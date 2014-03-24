@@ -171,6 +171,7 @@ decl_stmt|;
 comment|/** the queues themselves */
 DECL|field|priorityQueues
 specifier|private
+specifier|final
 name|List
 argument_list|<
 name|LightWeightLinkedSet
@@ -1266,6 +1267,7 @@ literal|false
 decl_stmt|;
 DECL|field|iterators
 specifier|private
+specifier|final
 name|List
 argument_list|<
 name|Iterator

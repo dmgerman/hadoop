@@ -355,6 +355,7 @@ decl_stmt|;
 DECL|field|tokenFile
 specifier|private
 specifier|static
+specifier|final
 name|String
 name|tokenFile
 init|=

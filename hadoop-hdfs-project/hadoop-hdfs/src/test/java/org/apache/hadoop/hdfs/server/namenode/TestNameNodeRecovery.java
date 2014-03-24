@@ -465,6 +465,7 @@ decl_stmt|;
 DECL|field|recoverStartOpt
 specifier|private
 specifier|static
+specifier|final
 name|StartupOption
 name|recoverStartOpt
 init|=
@@ -1133,6 +1134,7 @@ name|EditLogTestSetup
 block|{
 DECL|field|paddingLength
 specifier|private
+specifier|final
 name|int
 name|paddingLength
 decl_stmt|;
@@ -1424,6 +1426,7 @@ name|EditLogTestSetup
 block|{
 DECL|field|paddingLength
 specifier|private
+specifier|final
 name|int
 name|paddingLength
 decl_stmt|;
@@ -2038,6 +2041,7 @@ name|Corruptor
 block|{
 DECL|field|padByte
 specifier|private
+specifier|final
 name|byte
 name|padByte
 decl_stmt|;

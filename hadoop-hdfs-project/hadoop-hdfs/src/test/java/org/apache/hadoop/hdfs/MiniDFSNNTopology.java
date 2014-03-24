@@ -841,6 +841,7 @@ name|NNConf
 block|{
 DECL|field|nnId
 specifier|private
+specifier|final
 name|String
 name|nnId
 decl_stmt|;

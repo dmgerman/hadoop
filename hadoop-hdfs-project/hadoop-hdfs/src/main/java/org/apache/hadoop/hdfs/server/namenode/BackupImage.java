@@ -225,6 +225,7 @@ block|{
 comment|/** Backup input stream for loading edits into memory */
 DECL|field|backupInputStream
 specifier|private
+specifier|final
 name|EditLogBackupInputStream
 name|backupInputStream
 init|=

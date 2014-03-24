@@ -4718,6 +4718,7 @@ name|VisibleForTesting
 DECL|field|renameReservedMap
 specifier|public
 specifier|static
+specifier|final
 name|TreeMap
 argument_list|<
 name|String

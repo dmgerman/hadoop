@@ -376,6 +376,7 @@ comment|// Stores status of decommissioning.
 comment|// If node is not decommissioning, do not use this object for anything.
 DECL|field|decommissioningStatus
 specifier|public
+specifier|final
 name|DecommissioningStatus
 name|decommissioningStatus
 init|=
@@ -825,6 +826,7 @@ decl_stmt|;
 comment|/** A queue of blocks to be replicated by this datanode */
 DECL|field|replicateBlocks
 specifier|private
+specifier|final
 name|BlockQueue
 argument_list|<
 name|BlockTargetPair
@@ -841,6 +843,7 @@ decl_stmt|;
 comment|/** A queue of blocks to be recovered by this datanode */
 DECL|field|recoverBlocks
 specifier|private
+specifier|final
 name|BlockQueue
 argument_list|<
 name|BlockInfoUnderConstruction
@@ -857,6 +860,7 @@ decl_stmt|;
 comment|/** A set of blocks to be invalidated by this datanode */
 DECL|field|invalidateBlocks
 specifier|private
+specifier|final
 name|LightWeightHashSet
 argument_list|<
 name|Block

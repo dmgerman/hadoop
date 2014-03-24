@@ -69,6 +69,7 @@ name|ServerCommand
 block|{
 DECL|field|action
 specifier|private
+specifier|final
 name|int
 name|action
 decl_stmt|;

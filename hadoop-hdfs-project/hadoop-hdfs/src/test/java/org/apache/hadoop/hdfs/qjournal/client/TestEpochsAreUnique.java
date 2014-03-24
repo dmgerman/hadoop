@@ -312,6 +312,7 @@ argument_list|)
 decl_stmt|;
 DECL|field|r
 specifier|private
+specifier|final
 name|Random
 name|r
 init|=
@@ -708,6 +709,7 @@ argument_list|>
 block|{
 DECL|field|faultProbability
 specifier|private
+specifier|final
 name|float
 name|faultProbability
 decl_stmt|;

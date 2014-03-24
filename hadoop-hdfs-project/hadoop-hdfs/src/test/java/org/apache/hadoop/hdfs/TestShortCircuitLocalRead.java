@@ -641,6 +641,7 @@ init|=
 literal|5120
 decl_stmt|;
 DECL|field|simulatedStorage
+specifier|final
 name|boolean
 name|simulatedStorage
 init|=

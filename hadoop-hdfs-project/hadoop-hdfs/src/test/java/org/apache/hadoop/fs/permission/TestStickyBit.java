@@ -390,6 +390,7 @@ name|TestStickyBit
 block|{
 DECL|field|user1
 specifier|static
+specifier|final
 name|UserGroupInformation
 name|user1
 init|=
@@ -409,6 +410,7 @@ argument_list|)
 decl_stmt|;
 DECL|field|user2
 specifier|static
+specifier|final
 name|UserGroupInformation
 name|user2
 init|=

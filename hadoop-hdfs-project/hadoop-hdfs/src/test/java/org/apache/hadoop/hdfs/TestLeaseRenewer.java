@@ -180,6 +180,7 @@ name|TestLeaseRenewer
 block|{
 DECL|field|FAKE_AUTHORITY
 specifier|private
+specifier|final
 name|String
 name|FAKE_AUTHORITY
 init|=
@@ -187,6 +188,7 @@ literal|"hdfs://nn1/"
 decl_stmt|;
 DECL|field|FAKE_UGI_A
 specifier|private
+specifier|final
 name|UserGroupInformation
 name|FAKE_UGI_A
 init|=
@@ -206,6 +208,7 @@ argument_list|)
 decl_stmt|;
 DECL|field|FAKE_UGI_B
 specifier|private
+specifier|final
 name|UserGroupInformation
 name|FAKE_UGI_B
 init|=

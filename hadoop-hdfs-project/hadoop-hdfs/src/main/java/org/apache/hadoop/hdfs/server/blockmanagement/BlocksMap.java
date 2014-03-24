@@ -158,6 +158,7 @@ argument_list|>
 block|{
 DECL|field|blockInfo
 specifier|private
+specifier|final
 name|BlockInfo
 name|blockInfo
 decl_stmt|;

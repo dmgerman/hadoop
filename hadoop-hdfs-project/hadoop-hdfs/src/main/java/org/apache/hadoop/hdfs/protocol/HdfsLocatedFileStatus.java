@@ -136,6 +136,7 @@ name|HdfsFileStatus
 block|{
 DECL|field|locations
 specifier|private
+specifier|final
 name|LocatedBlocks
 name|locations
 decl_stmt|;

@@ -106,6 +106,7 @@ name|Block
 block|{
 DECL|field|originalState
 specifier|private
+specifier|final
 name|ReplicaState
 name|originalState
 decl_stmt|;

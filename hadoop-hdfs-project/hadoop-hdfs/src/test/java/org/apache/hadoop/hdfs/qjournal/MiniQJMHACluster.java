@@ -239,6 +239,7 @@ decl_stmt|;
 DECL|field|NAMESERVICE
 specifier|public
 specifier|static
+specifier|final
 name|String
 name|NAMESERVICE
 init|=

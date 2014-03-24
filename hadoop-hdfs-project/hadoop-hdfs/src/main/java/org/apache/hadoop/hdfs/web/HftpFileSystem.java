@@ -2105,6 +2105,7 @@ extends|extends
 name|DefaultHandler
 block|{
 DECL|field|fslist
+specifier|final
 name|ArrayList
 argument_list|<
 name|FileStatus

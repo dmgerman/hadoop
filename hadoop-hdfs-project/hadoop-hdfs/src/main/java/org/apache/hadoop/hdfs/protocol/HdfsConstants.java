@@ -204,6 +204,7 @@ decl_stmt|;
 DECL|field|MIN_BLOCKS_FOR_WRITE
 specifier|public
 specifier|static
+specifier|final
 name|int
 name|MIN_BLOCKS_FOR_WRITE
 init|=
@@ -275,6 +276,7 @@ comment|// to 1k.
 DECL|field|MAX_PATH_LENGTH
 specifier|public
 specifier|static
+specifier|final
 name|int
 name|MAX_PATH_LENGTH
 init|=
@@ -283,6 +285,7 @@ decl_stmt|;
 DECL|field|MAX_PATH_DEPTH
 specifier|public
 specifier|static
+specifier|final
 name|int
 name|MAX_PATH_DEPTH
 init|=

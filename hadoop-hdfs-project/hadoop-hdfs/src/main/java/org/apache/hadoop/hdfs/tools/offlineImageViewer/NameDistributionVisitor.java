@@ -83,6 +83,7 @@ extends|extends
 name|TextWriterImageVisitor
 block|{
 DECL|field|counts
+specifier|final
 name|HashMap
 argument_list|<
 name|String

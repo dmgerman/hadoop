@@ -357,6 +357,7 @@ init|=
 literal|2
 decl_stmt|;
 DECL|field|expected
+specifier|final
 name|byte
 index|[]
 name|expected
@@ -377,6 +378,7 @@ name|FSDataInputStream
 name|stm
 decl_stmt|;
 DECL|field|rand
+specifier|final
 name|Random
 name|rand
 init|=

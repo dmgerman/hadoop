@@ -214,6 +214,7 @@ literal|1024
 decl_stmt|;
 DECL|field|LOG
 specifier|static
+specifier|final
 name|Log
 name|LOG
 init|=

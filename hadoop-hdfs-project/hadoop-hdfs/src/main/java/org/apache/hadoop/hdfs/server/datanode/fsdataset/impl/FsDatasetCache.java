@@ -608,6 +608,7 @@ argument_list|)
 decl_stmt|;
 DECL|field|rounder
 specifier|private
+specifier|final
 name|PageRounder
 name|rounder
 init|=
@@ -733,6 +734,7 @@ name|maxBytes
 decl_stmt|;
 comment|/**    * Number of cache commands that could not be completed successfully    */
 DECL|field|numBlocksFailedToCache
+specifier|final
 name|AtomicLong
 name|numBlocksFailedToCache
 init|=
@@ -744,6 +746,7 @@ argument_list|)
 decl_stmt|;
 comment|/**    * Number of uncache commands that could not be completed successfully    */
 DECL|field|numBlocksFailedToUncache
+specifier|final
 name|AtomicLong
 name|numBlocksFailedToUncache
 init|=

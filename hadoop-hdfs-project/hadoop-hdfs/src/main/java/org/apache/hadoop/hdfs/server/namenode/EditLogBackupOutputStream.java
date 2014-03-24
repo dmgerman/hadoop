@@ -248,6 +248,7 @@ block|{
 DECL|field|LOG
 specifier|private
 specifier|static
+specifier|final
 name|Log
 name|LOG
 init|=
@@ -262,6 +263,7 @@ argument_list|)
 decl_stmt|;
 DECL|field|DEFAULT_BUFFER_SIZE
 specifier|static
+specifier|final
 name|int
 name|DEFAULT_BUFFER_SIZE
 init|=

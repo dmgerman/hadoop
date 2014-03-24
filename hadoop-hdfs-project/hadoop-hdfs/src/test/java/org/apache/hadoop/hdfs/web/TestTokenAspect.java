@@ -542,6 +542,7 @@ name|tokenAspect
 decl_stmt|;
 DECL|field|ugi
 specifier|private
+specifier|final
 name|UserGroupInformation
 name|ugi
 init|=

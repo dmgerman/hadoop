@@ -555,10 +555,12 @@ name|StorageDirectory
 argument_list|>
 block|{
 DECL|field|dirType
+specifier|final
 name|StorageDirType
 name|dirType
 decl_stmt|;
 DECL|field|includeShared
+specifier|final
 name|boolean
 name|includeShared
 decl_stmt|;

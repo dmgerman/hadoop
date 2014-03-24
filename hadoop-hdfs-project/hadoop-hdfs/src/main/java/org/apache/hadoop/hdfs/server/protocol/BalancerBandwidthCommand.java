@@ -47,6 +47,7 @@ literal|0L
 decl_stmt|;
 DECL|field|bandwidth
 specifier|private
+specifier|final
 name|long
 name|bandwidth
 decl_stmt|;

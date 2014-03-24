@@ -105,6 +105,7 @@ class|class
 name|TestDirectBufferPool
 block|{
 DECL|field|pool
+specifier|final
 name|DirectBufferPool
 name|pool
 init|=

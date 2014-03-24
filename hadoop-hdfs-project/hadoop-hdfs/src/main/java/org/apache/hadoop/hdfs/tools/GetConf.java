@@ -330,6 +330,7 @@ block|;
 DECL|field|map
 specifier|private
 specifier|static
+specifier|final
 name|Map
 argument_list|<
 name|String

@@ -62,6 +62,7 @@ name|RequestInfo
 block|{
 DECL|field|jid
 specifier|private
+specifier|final
 name|String
 name|jid
 decl_stmt|;
@@ -77,6 +78,7 @@ name|ipcSerialNumber
 decl_stmt|;
 DECL|field|committedTxId
 specifier|private
+specifier|final
 name|long
 name|committedTxId
 decl_stmt|;

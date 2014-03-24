@@ -182,6 +182,7 @@ name|LOG
 decl_stmt|;
 DECL|field|pendingReplications
 specifier|private
+specifier|final
 name|Map
 argument_list|<
 name|Block
@@ -192,6 +193,7 @@ name|pendingReplications
 decl_stmt|;
 DECL|field|timedOutItems
 specifier|private
+specifier|final
 name|ArrayList
 argument_list|<
 name|Block
@@ -227,10 +229,12 @@ literal|60
 operator|*
 literal|1000
 decl_stmt|;
-DECL|field|defaultRecheckInterval
+DECL|field|DEFAULT_RECHECK_INTERVAL
 specifier|private
+specifier|final
+specifier|static
 name|long
-name|defaultRecheckInterval
+name|DEFAULT_RECHECK_INTERVAL
 init|=
 literal|5
 operator|*
@@ -778,7 +782,7 @@ name|Math
 operator|.
 name|min
 argument_list|(
-name|defaultRecheckInterval
+name|DEFAULT_RECHECK_INTERVAL
 argument_list|,
 name|timeout
 argument_list|)

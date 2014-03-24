@@ -119,6 +119,7 @@ decl_stmt|;
 comment|// Map of block pool Id to another map of block Id to ReplicaInfo.
 DECL|field|map
 specifier|private
+specifier|final
 name|Map
 argument_list|<
 name|String

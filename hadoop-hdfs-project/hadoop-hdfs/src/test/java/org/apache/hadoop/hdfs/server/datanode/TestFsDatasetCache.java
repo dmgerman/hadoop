@@ -1070,6 +1070,7 @@ decl_stmt|;
 DECL|field|rounder
 specifier|private
 specifier|static
+specifier|final
 name|PageRounder
 name|rounder
 init|=

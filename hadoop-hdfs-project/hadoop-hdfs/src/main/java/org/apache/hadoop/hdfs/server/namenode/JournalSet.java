@@ -800,6 +800,7 @@ comment|// getAllJournalStreams() and then iterate. Since this is rarely
 comment|// mutated, there is no performance concern.
 DECL|field|journals
 specifier|private
+specifier|final
 name|List
 argument_list|<
 name|JournalAndStream

@@ -402,6 +402,7 @@ literal|3
 decl_stmt|;
 DECL|field|base_dir
 specifier|private
+specifier|final
 name|File
 name|base_dir
 init|=

@@ -223,6 +223,7 @@ name|blockId
 decl_stmt|;
 DECL|field|modes
 specifier|private
+specifier|final
 name|EnumSet
 argument_list|<
 name|AccessMode

@@ -66,6 +66,7 @@ name|BlockLocalPathInfo
 block|{
 DECL|field|block
 specifier|private
+specifier|final
 name|ExtendedBlock
 name|block
 decl_stmt|;

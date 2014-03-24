@@ -356,6 +356,7 @@ name|hdfs
 decl_stmt|;
 DECL|field|snapshotNumberMap
 specifier|private
+specifier|final
 name|HashMap
 argument_list|<
 name|Path

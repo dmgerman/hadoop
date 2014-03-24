@@ -784,6 +784,7 @@ decl_stmt|;
 DECL|field|rand
 specifier|private
 specifier|static
+specifier|final
 name|Random
 name|rand
 init|=
@@ -4834,6 +4835,7 @@ extends|extends
 name|Thread
 block|{
 DECL|field|filePath
+specifier|final
 name|Path
 name|filePath
 decl_stmt|;

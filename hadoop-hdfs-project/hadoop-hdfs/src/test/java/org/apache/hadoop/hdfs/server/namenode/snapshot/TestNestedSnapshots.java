@@ -433,6 +433,7 @@ decl_stmt|;
 DECL|field|RANDOM
 specifier|private
 specifier|static
+specifier|final
 name|Random
 name|RANDOM
 init|=
@@ -463,6 +464,7 @@ decl_stmt|;
 DECL|field|conf
 specifier|private
 specifier|static
+specifier|final
 name|Configuration
 name|conf
 init|=

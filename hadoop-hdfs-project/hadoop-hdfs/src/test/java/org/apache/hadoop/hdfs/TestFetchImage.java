@@ -197,6 +197,7 @@ block|{
 DECL|field|FETCHED_IMAGE_FILE
 specifier|private
 specifier|static
+specifier|final
 name|File
 name|FETCHED_IMAGE_FILE
 init|=

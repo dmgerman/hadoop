@@ -188,6 +188,7 @@ literal|null
 decl_stmt|;
 DECL|field|buf
 specifier|private
+specifier|final
 name|ByteBuffer
 name|buf
 init|=

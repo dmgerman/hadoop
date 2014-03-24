@@ -127,16 +127,19 @@ implements|implements
 name|NodeRegistration
 block|{
 DECL|field|rpcAddress
+specifier|final
 name|String
 name|rpcAddress
 decl_stmt|;
 comment|// RPC address of the node
 DECL|field|httpAddress
+specifier|final
 name|String
 name|httpAddress
 decl_stmt|;
 comment|// HTTP address of the node
 DECL|field|role
+specifier|final
 name|NamenodeRole
 name|role
 decl_stmt|;

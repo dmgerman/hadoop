@@ -351,6 +351,7 @@ name|httpsAddress
 decl_stmt|;
 DECL|field|bindAddress
 specifier|private
+specifier|final
 name|InetSocketAddress
 name|bindAddress
 decl_stmt|;

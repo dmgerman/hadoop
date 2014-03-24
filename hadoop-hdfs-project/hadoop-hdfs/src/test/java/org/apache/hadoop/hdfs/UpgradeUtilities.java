@@ -504,6 +504,7 @@ comment|// Root scratch directory on local filesystem
 DECL|field|TEST_ROOT_DIR
 specifier|private
 specifier|static
+specifier|final
 name|File
 name|TEST_ROOT_DIR
 init|=
@@ -520,6 +521,7 @@ comment|// The singleton master storage directory for Namenode
 DECL|field|namenodeStorage
 specifier|private
 specifier|static
+specifier|final
 name|File
 name|namenodeStorage
 init|=
@@ -570,6 +572,7 @@ comment|// The singleton master storage directory for Datanode
 DECL|field|datanodeStorage
 specifier|private
 specifier|static
+specifier|final
 name|File
 name|datanodeStorage
 init|=

@@ -477,6 +477,7 @@ comment|// directory store Temporary replica
 DECL|field|DU_CACHE_FILE
 specifier|private
 specifier|static
+specifier|final
 name|String
 name|DU_CACHE_FILE
 init|=

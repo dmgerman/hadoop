@@ -565,6 +565,7 @@ operator|+
 literal|"/TestAuditLogs-audit.log"
 decl_stmt|;
 DECL|field|useAsyncLog
+specifier|final
 name|boolean
 name|useAsyncLog
 decl_stmt|;

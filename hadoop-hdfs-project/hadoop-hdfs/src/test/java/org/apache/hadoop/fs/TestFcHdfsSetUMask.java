@@ -263,6 +263,7 @@ block|{
 DECL|field|fileContextTestHelper
 specifier|private
 specifier|static
+specifier|final
 name|FileContextTestHelper
 name|fileContextTestHelper
 init|=

@@ -110,6 +110,7 @@ name|TestHost2NodesMap
 block|{
 DECL|field|map
 specifier|private
+specifier|final
 name|Host2NodesMap
 name|map
 init|=

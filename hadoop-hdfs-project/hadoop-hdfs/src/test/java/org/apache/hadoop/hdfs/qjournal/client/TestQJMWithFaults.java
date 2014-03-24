@@ -664,6 +664,7 @@ decl_stmt|;
 DECL|field|conf
 specifier|private
 specifier|static
+specifier|final
 name|Configuration
 name|conf
 init|=
@@ -698,6 +699,7 @@ comment|// Set up fault injection mock.
 DECL|field|faultInjector
 specifier|private
 specifier|static
+specifier|final
 name|JournalFaultInjector
 name|faultInjector
 init|=
@@ -1795,6 +1797,7 @@ name|random
 decl_stmt|;
 DECL|field|injectionProbability
 specifier|private
+specifier|final
 name|float
 name|injectionProbability
 init|=
@@ -2076,6 +2079,7 @@ literal|0
 decl_stmt|;
 DECL|field|injections
 specifier|private
+specifier|final
 name|Map
 argument_list|<
 name|Integer

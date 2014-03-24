@@ -514,6 +514,7 @@ block|}
 DECL|field|VALUES
 specifier|private
 specifier|static
+specifier|final
 name|FSEditLogOpCodes
 index|[]
 name|VALUES

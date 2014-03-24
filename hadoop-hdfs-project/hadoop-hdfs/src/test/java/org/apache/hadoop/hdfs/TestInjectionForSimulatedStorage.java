@@ -296,6 +296,7 @@ name|TestInjectionForSimulatedStorage
 block|{
 DECL|field|checksumSize
 specifier|private
+specifier|final
 name|int
 name|checksumSize
 init|=
@@ -303,6 +304,7 @@ literal|16
 decl_stmt|;
 DECL|field|blockSize
 specifier|private
+specifier|final
 name|int
 name|blockSize
 init|=
@@ -312,6 +314,7 @@ literal|2
 decl_stmt|;
 DECL|field|numBlocks
 specifier|private
+specifier|final
 name|int
 name|numBlocks
 init|=
@@ -319,6 +322,7 @@ literal|4
 decl_stmt|;
 DECL|field|filesize
 specifier|private
+specifier|final
 name|int
 name|filesize
 init|=
@@ -328,6 +332,7 @@ name|numBlocks
 decl_stmt|;
 DECL|field|numDataNodes
 specifier|private
+specifier|final
 name|int
 name|numDataNodes
 init|=

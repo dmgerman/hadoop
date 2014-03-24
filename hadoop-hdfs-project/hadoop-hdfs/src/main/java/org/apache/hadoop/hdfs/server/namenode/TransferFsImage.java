@@ -655,12 +655,14 @@ decl_stmt|;
 DECL|field|connectionFactory
 specifier|private
 specifier|static
+specifier|final
 name|URLConnectionFactory
 name|connectionFactory
 decl_stmt|;
 DECL|field|isSpnegoEnabled
 specifier|private
 specifier|static
+specifier|final
 name|boolean
 name|isSpnegoEnabled
 decl_stmt|;

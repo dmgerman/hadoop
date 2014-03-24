@@ -1471,6 +1471,7 @@ argument_list|>
 block|{
 DECL|field|staleInterval
 specifier|private
+specifier|final
 name|long
 name|staleInterval
 decl_stmt|;
@@ -6640,6 +6641,7 @@ block|}
 DECL|field|helpOptions
 specifier|public
 specifier|static
+specifier|final
 name|Options
 name|helpOptions
 init|=
@@ -6650,6 +6652,7 @@ decl_stmt|;
 DECL|field|helpOpt
 specifier|public
 specifier|static
+specifier|final
 name|Option
 name|helpOpt
 init|=

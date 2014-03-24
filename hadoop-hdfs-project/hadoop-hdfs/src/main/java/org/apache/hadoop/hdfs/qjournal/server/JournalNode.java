@@ -469,6 +469,7 @@ name|httpServer
 decl_stmt|;
 DECL|field|journalsById
 specifier|private
+specifier|final
 name|Map
 argument_list|<
 name|String

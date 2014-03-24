@@ -4699,6 +4699,7 @@ decl_stmt|;
 comment|/** Lock to protect FSNamesystem. */
 DECL|field|fsLock
 specifier|private
+specifier|final
 name|FSNamesystemLock
 name|fsLock
 decl_stmt|;
@@ -23125,12 +23126,14 @@ comment|// configuration fields
 comment|/** Safe mode threshold condition %.*/
 DECL|field|threshold
 specifier|private
+specifier|final
 name|double
 name|threshold
 decl_stmt|;
 comment|/** Safe mode minimum number of datanodes alive */
 DECL|field|datanodeThreshold
 specifier|private
+specifier|final
 name|int
 name|datanodeThreshold
 decl_stmt|;
@@ -23143,12 +23146,14 @@ decl_stmt|;
 comment|/** Min replication required by safe mode. */
 DECL|field|safeReplication
 specifier|private
+specifier|final
 name|int
 name|safeReplication
 decl_stmt|;
 comment|/** threshold for populating needed replication queues */
 DECL|field|replQueueThreshold
 specifier|private
+specifier|final
 name|double
 name|replQueueThreshold
 decl_stmt|;
@@ -28412,10 +28417,12 @@ class|class
 name|CorruptFileBlockInfo
 block|{
 DECL|field|path
+specifier|final
 name|String
 name|path
 decl_stmt|;
 DECL|field|block
+specifier|final
 name|Block
 name|block
 decl_stmt|;

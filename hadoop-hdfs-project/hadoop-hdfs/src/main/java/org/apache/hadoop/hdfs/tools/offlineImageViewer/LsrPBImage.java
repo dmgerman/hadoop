@@ -562,6 +562,7 @@ name|stringTable
 decl_stmt|;
 DECL|field|inodes
 specifier|private
+specifier|final
 name|HashMap
 argument_list|<
 name|Long
@@ -579,6 +580,7 @@ argument_list|()
 decl_stmt|;
 DECL|field|dirmap
 specifier|private
+specifier|final
 name|HashMap
 argument_list|<
 name|Long
@@ -595,6 +597,7 @@ argument_list|()
 decl_stmt|;
 DECL|field|refList
 specifier|private
+specifier|final
 name|ArrayList
 argument_list|<
 name|INodeReferenceSection

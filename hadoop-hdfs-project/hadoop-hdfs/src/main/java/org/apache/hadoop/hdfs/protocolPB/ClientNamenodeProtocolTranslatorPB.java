@@ -7416,6 +7416,7 @@ argument_list|>
 block|{
 DECL|field|response
 specifier|private
+specifier|final
 name|ListCacheDirectivesResponseProto
 name|response
 decl_stmt|;

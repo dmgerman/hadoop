@@ -85,11 +85,13 @@ literal|1L
 decl_stmt|;
 DECL|field|filename
 specifier|private
+specifier|final
 name|String
 name|filename
 decl_stmt|;
 DECL|field|offset
 specifier|private
+specifier|final
 name|long
 name|offset
 decl_stmt|;

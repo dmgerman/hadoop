@@ -46,12 +46,14 @@ name|DataTransferThrottler
 block|{
 DECL|field|period
 specifier|private
+specifier|final
 name|long
 name|period
 decl_stmt|;
 comment|// period over which bw is imposed
 DECL|field|periodExtension
 specifier|private
+specifier|final
 name|long
 name|periodExtension
 decl_stmt|;

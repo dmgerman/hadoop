@@ -5784,6 +5784,7 @@ block|}
 DECL|field|COMMANDS
 specifier|private
 specifier|static
+specifier|final
 name|Command
 index|[]
 name|COMMANDS

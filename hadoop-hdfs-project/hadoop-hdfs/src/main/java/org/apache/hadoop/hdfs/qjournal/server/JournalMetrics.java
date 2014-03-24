@@ -221,6 +221,7 @@ comment|// 1h
 block|}
 decl_stmt|;
 DECL|field|syncsQuantiles
+specifier|final
 name|MutableQuantiles
 index|[]
 name|syncsQuantiles

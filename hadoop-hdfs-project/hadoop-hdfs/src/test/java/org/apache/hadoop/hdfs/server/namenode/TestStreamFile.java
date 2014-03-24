@@ -451,6 +451,7 @@ name|TestStreamFile
 block|{
 DECL|field|CONF
 specifier|private
+specifier|final
 name|HdfsConfiguration
 name|CONF
 init|=
@@ -460,6 +461,7 @@ argument_list|()
 decl_stmt|;
 DECL|field|clientMock
 specifier|private
+specifier|final
 name|DFSClient
 name|clientMock
 init|=
@@ -474,6 +476,7 @@ argument_list|)
 decl_stmt|;
 DECL|field|mockHttpServletRequest
 specifier|private
+specifier|final
 name|HttpServletRequest
 name|mockHttpServletRequest
 init|=
@@ -488,6 +491,7 @@ argument_list|)
 decl_stmt|;
 DECL|field|mockHttpServletResponse
 specifier|private
+specifier|final
 name|HttpServletResponse
 name|mockHttpServletResponse
 init|=
@@ -516,6 +520,7 @@ name|class
 argument_list|)
 decl_stmt|;
 DECL|field|sfile
+specifier|final
 name|StreamFile
 name|sfile
 init|=
@@ -1602,6 +1607,7 @@ name|ServletOutputStream
 block|{
 DECL|field|buffer
 specifier|private
+specifier|final
 name|StringBuffer
 name|buffer
 init|=

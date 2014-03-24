@@ -202,6 +202,7 @@ name|OfflineEditsVisitor
 block|{
 DECL|field|out
 specifier|private
+specifier|final
 name|OutputStream
 name|out
 decl_stmt|;

@@ -155,6 +155,7 @@ class|class
 name|TestPendingDataNodeMessages
 block|{
 DECL|field|msgs
+specifier|final
 name|PendingDataNodeMessages
 name|msgs
 init|=

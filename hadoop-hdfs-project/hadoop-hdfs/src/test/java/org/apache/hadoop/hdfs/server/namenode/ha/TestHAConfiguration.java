@@ -260,6 +260,7 @@ name|TestHAConfiguration
 block|{
 DECL|field|fsn
 specifier|private
+specifier|final
 name|FSNamesystem
 name|fsn
 init|=

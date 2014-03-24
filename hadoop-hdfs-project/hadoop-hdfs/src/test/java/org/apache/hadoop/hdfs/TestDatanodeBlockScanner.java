@@ -457,6 +457,7 @@ comment|// 20 sec.
 DECL|field|pattern
 specifier|private
 specifier|static
+specifier|final
 name|Pattern
 name|pattern
 init|=
@@ -470,6 +471,7 @@ decl_stmt|;
 DECL|field|pattern_blockVerify
 specifier|private
 specifier|static
+specifier|final
 name|Pattern
 name|pattern_blockVerify
 init|=

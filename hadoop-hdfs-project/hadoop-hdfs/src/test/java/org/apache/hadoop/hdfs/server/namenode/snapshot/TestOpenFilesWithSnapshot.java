@@ -282,6 +282,7 @@ name|TestOpenFilesWithSnapshot
 block|{
 DECL|field|conf
 specifier|private
+specifier|final
 name|Configuration
 name|conf
 init|=

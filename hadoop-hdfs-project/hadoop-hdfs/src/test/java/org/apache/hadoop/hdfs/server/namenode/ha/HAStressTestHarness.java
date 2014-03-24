@@ -227,6 +227,7 @@ class|class
 name|HAStressTestHarness
 block|{
 DECL|field|conf
+specifier|final
 name|Configuration
 name|conf
 decl_stmt|;
@@ -244,6 +245,7 @@ init|=
 literal|1024
 decl_stmt|;
 DECL|field|testCtx
+specifier|final
 name|TestContext
 name|testCtx
 init|=

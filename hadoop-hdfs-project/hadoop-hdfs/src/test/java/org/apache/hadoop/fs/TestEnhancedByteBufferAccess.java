@@ -981,6 +981,7 @@ block|}
 DECL|field|BLOCK_SIZE
 specifier|private
 specifier|static
+specifier|final
 name|int
 name|BLOCK_SIZE
 init|=

@@ -626,6 +626,7 @@ decl_stmt|;
 DECL|field|currentlyDownloadingCheckpoints
 specifier|private
 specifier|static
+specifier|final
 name|Set
 argument_list|<
 name|Long

@@ -270,6 +270,7 @@ decl_stmt|;
 comment|// Space (in bytes) reserved per volume.
 DECL|field|duReserved
 specifier|private
+specifier|final
 name|long
 name|duReserved
 decl_stmt|;

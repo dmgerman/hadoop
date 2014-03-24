@@ -80,6 +80,7 @@ argument_list|()
 decl_stmt|;
 DECL|field|usermap
 specifier|private
+specifier|final
 name|SerialNumberMap
 argument_list|<
 name|String
@@ -95,6 +96,7 @@ argument_list|()
 decl_stmt|;
 DECL|field|groupmap
 specifier|private
+specifier|final
 name|SerialNumberMap
 argument_list|<
 name|String
@@ -204,6 +206,7 @@ parameter_list|>
 block|{
 DECL|field|max
 specifier|private
+specifier|final
 name|AtomicInteger
 name|max
 init|=
@@ -215,6 +218,7 @@ argument_list|)
 decl_stmt|;
 DECL|field|t2i
 specifier|private
+specifier|final
 name|ConcurrentMap
 argument_list|<
 name|T
@@ -234,6 +238,7 @@ argument_list|()
 decl_stmt|;
 DECL|field|i2t
 specifier|private
+specifier|final
 name|ConcurrentMap
 argument_list|<
 name|Integer

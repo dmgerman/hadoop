@@ -1504,6 +1504,7 @@ init|=
 literal|""
 decl_stmt|;
 DECL|field|xmitsInProgress
+specifier|final
 name|AtomicInteger
 name|xmitsInProgress
 init|=
@@ -1670,6 +1671,7 @@ name|conf
 decl_stmt|;
 DECL|field|confVersion
 specifier|private
+specifier|final
 name|String
 name|confVersion
 decl_stmt|;
@@ -1690,6 +1692,7 @@ name|usersWithLocalPathAccess
 decl_stmt|;
 DECL|field|connectToDnViaHostname
 specifier|private
+specifier|final
 name|boolean
 name|connectToDnViaHostname
 decl_stmt|;
@@ -8420,6 +8423,7 @@ name|DataNodeDiskChecker
 block|{
 DECL|field|expectedPermission
 specifier|private
+specifier|final
 name|FsPermission
 name|expectedPermission
 decl_stmt|;

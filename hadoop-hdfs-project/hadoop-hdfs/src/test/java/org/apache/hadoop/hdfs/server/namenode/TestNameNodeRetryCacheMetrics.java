@@ -265,6 +265,7 @@ name|filesystem
 decl_stmt|;
 DECL|field|namenodeId
 specifier|private
+specifier|final
 name|int
 name|namenodeId
 init|=

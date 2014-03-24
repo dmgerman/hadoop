@@ -4810,6 +4810,7 @@ name|context
 decl_stmt|;
 DECL|field|sd
 specifier|private
+specifier|final
 name|StorageDirectory
 name|sd
 decl_stmt|;

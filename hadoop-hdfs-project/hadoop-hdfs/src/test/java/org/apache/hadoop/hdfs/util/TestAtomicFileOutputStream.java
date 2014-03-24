@@ -219,6 +219,7 @@ decl_stmt|;
 DECL|field|TEST_DIR
 specifier|private
 specifier|static
+specifier|final
 name|File
 name|TEST_DIR
 init|=
@@ -234,6 +235,7 @@ decl_stmt|;
 DECL|field|DST_FILE
 specifier|private
 specifier|static
+specifier|final
 name|File
 name|DST_FILE
 init|=

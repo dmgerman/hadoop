@@ -139,6 +139,7 @@ name|Host2NodesMap
 block|{
 DECL|field|map
 specifier|private
+specifier|final
 name|HashMap
 argument_list|<
 name|String
@@ -160,6 +161,7 @@ argument_list|()
 decl_stmt|;
 DECL|field|hostmapLock
 specifier|private
+specifier|final
 name|ReadWriteLock
 name|hostmapLock
 init|=

@@ -1412,6 +1412,7 @@ decl_stmt|;
 comment|/**    * Maximum total size of the cache, including both mmapped and    * no$-mmapped elements.    */
 DECL|field|maxTotalSize
 specifier|private
+specifier|final
 name|int
 name|maxTotalSize
 decl_stmt|;

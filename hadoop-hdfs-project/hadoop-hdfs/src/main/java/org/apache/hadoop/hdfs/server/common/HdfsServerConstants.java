@@ -816,6 +816,7 @@ comment|// Timeouts for communicating with DataNode for streaming writes/reads
 DECL|field|READ_TIMEOUT
 specifier|public
 specifier|static
+specifier|final
 name|int
 name|READ_TIMEOUT
 init|=
@@ -826,6 +827,7 @@ decl_stmt|;
 DECL|field|READ_TIMEOUT_EXTENSION
 specifier|public
 specifier|static
+specifier|final
 name|int
 name|READ_TIMEOUT_EXTENSION
 init|=
@@ -836,6 +838,7 @@ decl_stmt|;
 DECL|field|WRITE_TIMEOUT
 specifier|public
 specifier|static
+specifier|final
 name|int
 name|WRITE_TIMEOUT
 init|=
@@ -848,6 +851,7 @@ decl_stmt|;
 DECL|field|WRITE_TIMEOUT_EXTENSION
 specifier|public
 specifier|static
+specifier|final
 name|int
 name|WRITE_TIMEOUT_EXTENSION
 init|=
@@ -960,6 +964,7 @@ argument_list|)
 block|;
 DECL|field|value
 specifier|private
+specifier|final
 name|int
 name|value
 decl_stmt|;

@@ -224,6 +224,7 @@ argument_list|)
 decl_stmt|;
 DECL|field|block_map
 specifier|private
+specifier|final
 name|Map
 argument_list|<
 name|Long

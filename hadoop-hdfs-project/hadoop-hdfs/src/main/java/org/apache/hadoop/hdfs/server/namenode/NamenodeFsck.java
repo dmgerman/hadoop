@@ -921,6 +921,7 @@ comment|// ordered by block id; to allow continuation support, pass in the last 
 comment|// # from previous call
 DECL|field|currentCookie
 specifier|private
+specifier|final
 name|String
 index|[]
 name|currentCookie
@@ -956,6 +957,7 @@ literal|null
 decl_stmt|;
 DECL|field|bpPolicy
 specifier|private
+specifier|final
 name|BlockPlacementPolicy
 name|bpPolicy
 decl_stmt|;
@@ -4233,6 +4235,7 @@ class|class
 name|Result
 block|{
 DECL|field|missingIds
+specifier|final
 name|List
 argument_list|<
 name|String

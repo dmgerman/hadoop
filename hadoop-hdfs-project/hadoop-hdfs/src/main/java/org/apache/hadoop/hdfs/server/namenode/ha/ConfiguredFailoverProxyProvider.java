@@ -784,6 +784,7 @@ parameter_list|>
 block|{
 DECL|field|address
 specifier|public
+specifier|final
 name|InetSocketAddress
 name|address
 decl_stmt|;

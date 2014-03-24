@@ -297,9 +297,10 @@ init|=
 literal|null
 decl_stmt|;
 DECL|field|bpids
+specifier|final
 name|String
-name|bpids
 index|[]
+name|bpids
 init|=
 operator|new
 name|String
@@ -308,9 +309,10 @@ literal|3
 index|]
 decl_stmt|;
 DECL|field|fs
+specifier|final
 name|FileSystem
-name|fs
 index|[]
+name|fs
 init|=
 operator|new
 name|FileSystem

@@ -248,6 +248,7 @@ name|hasDomain
 decl_stmt|;
 DECL|field|dnId
 specifier|private
+specifier|final
 name|DatanodeID
 name|dnId
 decl_stmt|;

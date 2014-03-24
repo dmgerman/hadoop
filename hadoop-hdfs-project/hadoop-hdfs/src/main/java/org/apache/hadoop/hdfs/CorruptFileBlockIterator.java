@@ -103,6 +103,7 @@ name|dfs
 decl_stmt|;
 DECL|field|path
 specifier|private
+specifier|final
 name|String
 name|path
 decl_stmt|;

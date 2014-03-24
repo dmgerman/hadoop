@@ -2260,10 +2260,12 @@ class|class
 name|DataNodeProperties
 block|{
 DECL|field|datanode
+specifier|final
 name|DataNode
 name|datanode
 decl_stmt|;
 DECL|field|conf
+specifier|final
 name|Configuration
 name|conf
 decl_stmt|;
@@ -2273,10 +2275,12 @@ index|[]
 name|dnArgs
 decl_stmt|;
 DECL|field|secureResources
+specifier|final
 name|SecureResources
 name|secureResources
 decl_stmt|;
 DECL|field|ipcPort
+specifier|final
 name|int
 name|ipcPort
 decl_stmt|;
@@ -2365,6 +2369,7 @@ name|numDataNodes
 decl_stmt|;
 DECL|field|dataNodes
 specifier|protected
+specifier|final
 name|List
 argument_list|<
 name|DataNodeProperties

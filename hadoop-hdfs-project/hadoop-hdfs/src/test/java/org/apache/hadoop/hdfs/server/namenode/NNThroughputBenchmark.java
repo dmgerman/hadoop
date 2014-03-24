@@ -1134,6 +1134,7 @@ literal|"-op all<other ops options>"
 decl_stmt|;
 DECL|field|baseDir
 specifier|protected
+specifier|final
 name|String
 name|baseDir
 decl_stmt|;
@@ -2082,6 +2083,7 @@ name|Thread
 block|{
 DECL|field|daemonId
 specifier|private
+specifier|final
 name|int
 name|daemonId
 decl_stmt|;
@@ -2114,6 +2116,7 @@ literal|0
 decl_stmt|;
 DECL|field|statsOp
 specifier|private
+specifier|final
 name|OperationStatsBase
 name|statsOp
 decl_stmt|;
@@ -4588,6 +4591,7 @@ name|storage
 decl_stmt|;
 comment|//only one storage
 DECL|field|blocks
+specifier|final
 name|ArrayList
 argument_list|<
 name|Block
@@ -4605,6 +4609,7 @@ index|[]
 name|blockReportList
 decl_stmt|;
 DECL|field|dnIdx
+specifier|final
 name|int
 name|dnIdx
 decl_stmt|;
@@ -6513,6 +6518,7 @@ literal|"[-nodeReplicationLimit C] [-totalBlocks B] [-replication R]"
 decl_stmt|;
 DECL|field|blockReportObject
 specifier|private
+specifier|final
 name|BlockReportStats
 name|blockReportObject
 decl_stmt|;

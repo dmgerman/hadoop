@@ -92,12 +92,14 @@ extends|extends
 name|EditLogInputStream
 block|{
 DECL|field|address
+specifier|final
 name|String
 name|address
 decl_stmt|;
 comment|// sender address
 DECL|field|inner
 specifier|private
+specifier|final
 name|ByteBufferInputStream
 name|inner
 decl_stmt|;

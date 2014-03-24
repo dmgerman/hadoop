@@ -323,6 +323,7 @@ decl_stmt|;
 DECL|field|REPL_FACTOR
 specifier|private
 specifier|static
+specifier|final
 name|short
 name|REPL_FACTOR
 init|=

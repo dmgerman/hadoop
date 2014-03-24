@@ -328,6 +328,7 @@ block|}
 DECL|field|NUM_SLASH_POSITIONS
 specifier|private
 specifier|static
+specifier|final
 name|int
 name|NUM_SLASH_POSITIONS
 init|=
@@ -764,6 +765,7 @@ name|Stanza
 block|{
 DECL|field|subtrees
 specifier|private
+specifier|final
 name|TreeMap
 argument_list|<
 name|String

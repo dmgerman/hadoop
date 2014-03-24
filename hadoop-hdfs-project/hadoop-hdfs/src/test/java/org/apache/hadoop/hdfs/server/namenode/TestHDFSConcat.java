@@ -399,6 +399,7 @@ decl_stmt|;
 DECL|field|blockSize
 specifier|private
 specifier|static
+specifier|final
 name|long
 name|blockSize
 init|=
@@ -407,6 +408,7 @@ decl_stmt|;
 DECL|field|conf
 specifier|private
 specifier|static
+specifier|final
 name|Configuration
 name|conf
 decl_stmt|;

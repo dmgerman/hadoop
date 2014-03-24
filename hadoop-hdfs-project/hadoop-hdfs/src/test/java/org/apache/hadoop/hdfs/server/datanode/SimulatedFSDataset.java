@@ -840,6 +840,7 @@ implements|implements
 name|ReplicaInPipelineInterface
 block|{
 DECL|field|theBlock
+specifier|final
 name|Block
 name|theBlock
 decl_stmt|;
@@ -1653,6 +1654,7 @@ name|SimulatedStorage
 block|{
 DECL|field|map
 specifier|private
+specifier|final
 name|Map
 argument_list|<
 name|String
@@ -4298,6 +4300,7 @@ init|=
 literal|7
 decl_stmt|;
 DECL|field|length
+specifier|final
 name|long
 name|length
 decl_stmt|;

@@ -1450,6 +1450,7 @@ name|CallbackHandler
 block|{
 DECL|field|blockPoolTokenSecretManager
 specifier|private
+specifier|final
 name|BlockPoolTokenSecretManager
 name|blockPoolTokenSecretManager
 decl_stmt|;
@@ -1650,12 +1651,14 @@ name|CallbackHandler
 block|{
 DECL|field|encryptionKey
 specifier|private
+specifier|final
 name|byte
 index|[]
 name|encryptionKey
 decl_stmt|;
 DECL|field|userName
 specifier|private
+specifier|final
 name|String
 name|userName
 decl_stmt|;

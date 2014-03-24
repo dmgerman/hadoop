@@ -112,6 +112,7 @@ name|StartupProgress
 block|{
 comment|// package-private for access by StartupProgressView
 DECL|field|phases
+specifier|final
 name|Map
 argument_list|<
 name|Phase

@@ -361,6 +361,7 @@ name|fsIsReady
 decl_stmt|;
 DECL|field|perms
 specifier|static
+specifier|final
 name|PermissionStatus
 name|perms
 init|=

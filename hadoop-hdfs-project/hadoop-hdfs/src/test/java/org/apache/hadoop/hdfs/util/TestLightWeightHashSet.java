@@ -224,6 +224,7 @@ argument_list|)
 decl_stmt|;
 DECL|field|list
 specifier|private
+specifier|final
 name|ArrayList
 argument_list|<
 name|Integer

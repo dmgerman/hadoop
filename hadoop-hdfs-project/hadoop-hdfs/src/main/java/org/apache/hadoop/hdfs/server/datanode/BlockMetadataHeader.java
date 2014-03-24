@@ -232,6 +232,7 @@ decl_stmt|;
 comment|/**    * Header includes everything except the checksum(s) themselves.    * Version is two bytes. Following it is the DataChecksum    * that occupies 5 bytes.     */
 DECL|field|version
 specifier|private
+specifier|final
 name|short
 name|version
 decl_stmt|;

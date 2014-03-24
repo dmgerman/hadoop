@@ -421,6 +421,7 @@ name|tool
 decl_stmt|;
 DECL|field|errOutBytes
 specifier|private
+specifier|final
 name|ByteArrayOutputStream
 name|errOutBytes
 init|=
@@ -430,6 +431,7 @@ argument_list|()
 decl_stmt|;
 DECL|field|outBytes
 specifier|private
+specifier|final
 name|ByteArrayOutputStream
 name|outBytes
 init|=
@@ -486,6 +488,7 @@ argument_list|()
 decl_stmt|;
 DECL|field|reqInfoCaptor
 specifier|private
+specifier|final
 name|ArgumentCaptor
 argument_list|<
 name|StateChangeRequestInfo
@@ -504,6 +507,7 @@ decl_stmt|;
 DECL|field|HOST_A
 specifier|private
 specifier|static
+specifier|final
 name|String
 name|HOST_A
 init|=
@@ -512,6 +516,7 @@ decl_stmt|;
 DECL|field|HOST_B
 specifier|private
 specifier|static
+specifier|final
 name|String
 name|HOST_B
 init|=
@@ -522,6 +527,7 @@ comment|// on Unix.
 DECL|field|FENCER_TRUE_COMMAND_UNIX
 specifier|private
 specifier|static
+specifier|final
 name|String
 name|FENCER_TRUE_COMMAND_UNIX
 init|=
@@ -530,6 +536,7 @@ decl_stmt|;
 DECL|field|FENCER_FALSE_COMMAND_UNIX
 specifier|private
 specifier|static
+specifier|final
 name|String
 name|FENCER_FALSE_COMMAND_UNIX
 init|=
@@ -541,6 +548,7 @@ comment|// commands 'rem' and 'help.exe'.
 DECL|field|FENCER_TRUE_COMMAND_WINDOWS
 specifier|private
 specifier|static
+specifier|final
 name|String
 name|FENCER_TRUE_COMMAND_WINDOWS
 init|=
@@ -549,6 +557,7 @@ decl_stmt|;
 DECL|field|FENCER_FALSE_COMMAND_WINDOWS
 specifier|private
 specifier|static
+specifier|final
 name|String
 name|FENCER_FALSE_COMMAND_WINDOWS
 init|=

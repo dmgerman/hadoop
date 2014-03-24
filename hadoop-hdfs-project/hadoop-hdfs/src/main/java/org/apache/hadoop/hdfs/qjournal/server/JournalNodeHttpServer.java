@@ -192,6 +192,7 @@ name|httpServer
 decl_stmt|;
 DECL|field|localJournalNode
 specifier|private
+specifier|final
 name|JournalNode
 name|localJournalNode
 decl_stmt|;

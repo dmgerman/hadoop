@@ -295,6 +295,7 @@ class|class
 name|TestNNWithQJM
 block|{
 DECL|field|conf
+specifier|final
 name|Configuration
 name|conf
 init|=
@@ -311,6 +312,7 @@ literal|null
 decl_stmt|;
 DECL|field|TEST_PATH
 specifier|private
+specifier|final
 name|Path
 name|TEST_PATH
 init|=
@@ -322,6 +324,7 @@ argument_list|)
 decl_stmt|;
 DECL|field|TEST_PATH_2
 specifier|private
+specifier|final
 name|Path
 name|TEST_PATH_2
 init|=

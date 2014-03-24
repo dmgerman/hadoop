@@ -553,6 +553,7 @@ decl_stmt|;
 DECL|field|counter
 specifier|private
 specifier|static
+specifier|final
 name|AtomicInteger
 name|counter
 init|=
@@ -9816,6 +9817,7 @@ init|=
 literal|0
 decl_stmt|;
 specifier|private
+specifier|final
 name|FsShell
 name|shell
 init|=

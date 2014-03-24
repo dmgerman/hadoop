@@ -1514,6 +1514,7 @@ name|conf
 decl_stmt|;
 DECL|field|role
 specifier|protected
+specifier|final
 name|NamenodeRole
 name|role
 decl_stmt|;
@@ -1537,6 +1538,7 @@ name|haContext
 decl_stmt|;
 DECL|field|allowStaleStandbyReads
 specifier|protected
+specifier|final
 name|boolean
 name|allowStaleStandbyReads
 decl_stmt|;

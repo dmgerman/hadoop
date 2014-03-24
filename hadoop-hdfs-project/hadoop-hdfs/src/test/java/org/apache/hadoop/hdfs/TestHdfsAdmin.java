@@ -179,6 +179,7 @@ argument_list|)
 decl_stmt|;
 DECL|field|conf
 specifier|private
+specifier|final
 name|Configuration
 name|conf
 init|=

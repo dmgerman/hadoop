@@ -365,6 +365,7 @@ decl_stmt|;
 DECL|field|MAX_TEST_FILE_LEN
 specifier|private
 specifier|static
+specifier|final
 name|int
 name|MAX_TEST_FILE_LEN
 init|=
@@ -375,6 +376,7 @@ decl_stmt|;
 DECL|field|WRITE_PACKET_SIZE
 specifier|private
 specifier|static
+specifier|final
 name|int
 name|WRITE_PACKET_SIZE
 init|=

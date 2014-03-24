@@ -31,6 +31,7 @@ class|class
 name|StorageReceivedDeletedBlocks
 block|{
 DECL|field|storage
+specifier|final
 name|DatanodeStorage
 name|storage
 decl_stmt|;

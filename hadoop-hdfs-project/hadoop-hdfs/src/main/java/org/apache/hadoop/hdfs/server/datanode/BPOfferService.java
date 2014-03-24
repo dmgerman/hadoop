@@ -349,6 +349,7 @@ decl_stmt|;
 comment|/**    * The list of all actors for namenodes in this nameservice, regardless    * of their active or standby states.    */
 DECL|field|bpServices
 specifier|private
+specifier|final
 name|List
 argument_list|<
 name|BPServiceActor

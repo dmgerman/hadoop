@@ -297,6 +297,7 @@ name|class
 argument_list|)
 decl_stmt|;
 DECL|field|blockSize
+specifier|final
 name|long
 name|blockSize
 init|=
@@ -309,6 +310,7 @@ init|=
 literal|null
 decl_stmt|;
 DECL|field|config
+specifier|final
 name|Configuration
 name|config
 init|=

@@ -368,6 +368,7 @@ decl_stmt|;
 DECL|field|versions
 specifier|private
 specifier|static
+specifier|final
 name|int
 index|[]
 name|versions

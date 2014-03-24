@@ -556,6 +556,7 @@ literal|30
 decl_stmt|;
 DECL|field|workers
 specifier|private
+specifier|final
 name|List
 argument_list|<
 name|Transactions
@@ -599,6 +600,7 @@ implements|implements
 name|Runnable
 block|{
 DECL|field|namesystem
+specifier|final
 name|FSNamesystem
 name|namesystem
 decl_stmt|;
@@ -627,6 +629,7 @@ name|Thread
 name|thr
 decl_stmt|;
 DECL|field|caught
+specifier|final
 name|AtomicReference
 argument_list|<
 name|Throwable

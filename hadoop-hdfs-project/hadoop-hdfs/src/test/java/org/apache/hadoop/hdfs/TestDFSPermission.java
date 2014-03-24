@@ -409,24 +409,28 @@ decl_stmt|;
 DECL|field|SUPERUSER
 specifier|private
 specifier|static
+specifier|final
 name|UserGroupInformation
 name|SUPERUSER
 decl_stmt|;
 DECL|field|USER1
 specifier|private
 specifier|static
+specifier|final
 name|UserGroupInformation
 name|USER1
 decl_stmt|;
 DECL|field|USER2
 specifier|private
 specifier|static
+specifier|final
 name|UserGroupInformation
 name|USER2
 decl_stmt|;
 DECL|field|USER3
 specifier|private
 specifier|static
+specifier|final
 name|UserGroupInformation
 name|USER3
 decl_stmt|;
@@ -554,6 +558,7 @@ decl_stmt|;
 DECL|field|r
 specifier|private
 specifier|static
+specifier|final
 name|Random
 name|r
 decl_stmt|;
@@ -2890,14 +2895,16 @@ name|PermissionGenerator
 block|{
 DECL|field|r
 specifier|private
+specifier|final
 name|Random
 name|r
 decl_stmt|;
 DECL|field|permissions
 specifier|private
+specifier|final
 name|short
-name|permissions
 index|[]
+name|permissions
 init|=
 operator|new
 name|short
@@ -3754,6 +3761,7 @@ block|}
 block|}
 DECL|field|createVerifier
 specifier|private
+specifier|final
 name|CreatePermissionVerifier
 name|createVerifier
 init|=
@@ -3899,6 +3907,7 @@ block|}
 block|}
 DECL|field|openVerifier
 specifier|private
+specifier|final
 name|OpenPermissionVerifier
 name|openVerifier
 init|=
@@ -4004,6 +4013,7 @@ block|}
 block|}
 DECL|field|replicatorVerifier
 specifier|private
+specifier|final
 name|SetReplicationPermissionVerifier
 name|replicatorVerifier
 init|=
@@ -4132,6 +4142,7 @@ block|}
 block|}
 DECL|field|timesVerifier
 specifier|private
+specifier|final
 name|SetTimesPermissionVerifier
 name|timesVerifier
 init|=
@@ -4339,6 +4350,7 @@ block|}
 block|}
 DECL|field|statsVerifier
 specifier|private
+specifier|final
 name|StatsPermissionVerifier
 name|statsVerifier
 init|=
@@ -4609,6 +4621,7 @@ expr_stmt|;
 block|}
 block|}
 DECL|field|listVerifier
+specifier|final
 name|ListPermissionVerifier
 name|listVerifier
 init|=
@@ -4873,6 +4886,7 @@ expr_stmt|;
 block|}
 block|}
 DECL|field|renameVerifier
+specifier|final
 name|RenamePermissionVerifier
 name|renameVerifier
 init|=
@@ -5148,6 +5162,7 @@ block|}
 block|}
 block|}
 DECL|field|fileDeletionVerifier
+specifier|final
 name|DeletePermissionVerifier
 name|fileDeletionVerifier
 init|=
@@ -5196,6 +5211,7 @@ argument_list|)
 expr_stmt|;
 block|}
 DECL|field|dirDeletionVerifier
+specifier|final
 name|DeleteDirPermissionVerifier
 name|dirDeletionVerifier
 init|=

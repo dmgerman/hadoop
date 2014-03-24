@@ -412,6 +412,7 @@ name|serverThread
 decl_stmt|;
 DECL|field|connectionFactory
 specifier|private
+specifier|final
 name|URLConnectionFactory
 name|connectionFactory
 init|=

@@ -361,6 +361,7 @@ decl_stmt|;
 DECL|field|REPL_FACTOR
 specifier|private
 specifier|static
+specifier|final
 name|short
 name|REPL_FACTOR
 init|=
@@ -402,6 +403,7 @@ name|conf
 decl_stmt|;
 DECL|field|rand
 specifier|static
+specifier|final
 name|Random
 name|rand
 init|=

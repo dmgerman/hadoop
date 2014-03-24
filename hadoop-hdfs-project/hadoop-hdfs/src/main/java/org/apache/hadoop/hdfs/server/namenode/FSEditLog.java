@@ -1551,6 +1551,7 @@ name|editsDirs
 decl_stmt|;
 DECL|field|cache
 specifier|private
+specifier|final
 name|ThreadLocal
 argument_list|<
 name|OpInstanceCache

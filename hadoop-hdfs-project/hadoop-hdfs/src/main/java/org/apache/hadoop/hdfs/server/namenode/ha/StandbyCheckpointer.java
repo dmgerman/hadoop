@@ -554,6 +554,7 @@ name|myNNAddress
 decl_stmt|;
 DECL|field|cancelLock
 specifier|private
+specifier|final
 name|Object
 name|cancelLock
 init|=

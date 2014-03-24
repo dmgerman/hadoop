@@ -51,6 +51,7 @@ literal|32
 decl_stmt|;
 DECL|field|pathIndecies
 specifier|private
+specifier|final
 name|int
 index|[]
 name|pathIndecies
@@ -64,6 +65,7 @@ decl_stmt|;
 comment|// this will support up to 32**20 = 2**100 = 10**30 files
 DECL|field|baseDir
 specifier|private
+specifier|final
 name|String
 name|baseDir
 decl_stmt|;
@@ -74,6 +76,7 @@ name|currentDir
 decl_stmt|;
 DECL|field|filesPerDirectory
 specifier|private
+specifier|final
 name|int
 name|filesPerDirectory
 decl_stmt|;

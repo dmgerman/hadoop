@@ -1265,6 +1265,7 @@ literal|3
 decl_stmt|;
 DECL|field|tmpEditsFilter
 specifier|static
+specifier|final
 name|FilenameFilter
 name|tmpEditsFilter
 init|=

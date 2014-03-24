@@ -885,6 +885,7 @@ decl_stmt|;
 DECL|field|conf
 specifier|private
 specifier|static
+specifier|final
 name|Configuration
 name|conf
 init|=
@@ -919,6 +920,7 @@ decl_stmt|;
 DECL|field|testDir
 specifier|private
 specifier|static
+specifier|final
 name|String
 name|testDir
 init|=

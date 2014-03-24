@@ -571,6 +571,7 @@ name|class
 argument_list|)
 decl_stmt|;
 DECL|field|conf
+specifier|final
 name|Configuration
 name|conf
 init|=

@@ -623,6 +623,7 @@ name|HAServiceState
 name|state
 decl_stmt|;
 DECL|field|bpos
+specifier|final
 name|BPOfferService
 name|bpos
 decl_stmt|;
@@ -3806,6 +3807,7 @@ name|PerStoragePendingIncrementalBR
 block|{
 DECL|field|pendingIncrementalBR
 specifier|private
+specifier|final
 name|Map
 argument_list|<
 name|Long

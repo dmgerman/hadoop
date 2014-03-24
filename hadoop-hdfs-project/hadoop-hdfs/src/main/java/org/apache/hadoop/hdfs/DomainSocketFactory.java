@@ -386,6 +386,7 @@ block|}
 block|}
 comment|/**    * Information about domain socket paths.    */
 DECL|field|pathMap
+specifier|final
 name|Cache
 argument_list|<
 name|String

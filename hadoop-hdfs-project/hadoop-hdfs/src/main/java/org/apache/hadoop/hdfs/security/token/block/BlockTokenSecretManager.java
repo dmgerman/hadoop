@@ -398,6 +398,7 @@ name|nextKey
 decl_stmt|;
 DECL|field|allKeys
 specifier|private
+specifier|final
 name|Map
 argument_list|<
 name|Integer
@@ -413,11 +414,13 @@ name|blockPoolId
 decl_stmt|;
 DECL|field|encryptionAlgorithm
 specifier|private
+specifier|final
 name|String
 name|encryptionAlgorithm
 decl_stmt|;
 DECL|field|nonceGenerator
 specifier|private
+specifier|final
 name|SecureRandom
 name|nonceGenerator
 init|=

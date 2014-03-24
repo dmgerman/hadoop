@@ -532,6 +532,7 @@ literal|1
 decl_stmt|;
 comment|//replication interval
 DECL|field|myrand
+specifier|final
 name|Random
 name|myrand
 init|=

@@ -204,6 +204,7 @@ name|TestBlockPoolManager
 block|{
 DECL|field|LOG
 specifier|private
+specifier|final
 name|Log
 name|LOG
 init|=
@@ -218,6 +219,7 @@ argument_list|)
 decl_stmt|;
 DECL|field|mockDN
 specifier|private
+specifier|final
 name|DataNode
 name|mockDN
 init|=
@@ -237,6 +239,7 @@ name|bpm
 decl_stmt|;
 DECL|field|log
 specifier|private
+specifier|final
 name|StringBuilder
 name|log
 init|=

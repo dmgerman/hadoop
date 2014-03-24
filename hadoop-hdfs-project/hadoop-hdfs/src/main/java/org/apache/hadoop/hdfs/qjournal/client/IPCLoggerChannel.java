@@ -836,6 +836,7 @@ decl_stmt|;
 comment|/**    * Stopwatch which starts counting on each heartbeat that is sent    */
 DECL|field|lastHeartbeatStopwatch
 specifier|private
+specifier|final
 name|Stopwatch
 name|lastHeartbeatStopwatch
 init|=

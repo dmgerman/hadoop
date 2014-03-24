@@ -1156,6 +1156,7 @@ literal|0L
 decl_stmt|;
 DECL|field|excessBlocksCount
 specifier|private
+specifier|final
 name|AtomicLong
 name|excessBlocksCount
 init|=
@@ -1167,6 +1168,7 @@ argument_list|)
 decl_stmt|;
 DECL|field|postponedMisreplicatedBlocksCount
 specifier|private
+specifier|final
 name|AtomicLong
 name|postponedMisreplicatedBlocksCount
 init|=
@@ -15693,21 +15695,25 @@ name|ReplicationWork
 block|{
 DECL|field|block
 specifier|private
+specifier|final
 name|Block
 name|block
 decl_stmt|;
 DECL|field|bc
 specifier|private
+specifier|final
 name|BlockCollection
 name|bc
 decl_stmt|;
 DECL|field|srcNode
 specifier|private
+specifier|final
 name|DatanodeDescriptor
 name|srcNode
 decl_stmt|;
 DECL|field|containingNodes
 specifier|private
+specifier|final
 name|List
 argument_list|<
 name|DatanodeDescriptor
@@ -15716,6 +15722,7 @@ name|containingNodes
 decl_stmt|;
 DECL|field|liveReplicaStorages
 specifier|private
+specifier|final
 name|List
 argument_list|<
 name|DatanodeStorageInfo
@@ -15724,6 +15731,7 @@ name|liveReplicaStorages
 decl_stmt|;
 DECL|field|additionalReplRequired
 specifier|private
+specifier|final
 name|int
 name|additionalReplRequired
 decl_stmt|;
@@ -15735,6 +15743,7 @@ index|[]
 decl_stmt|;
 DECL|field|priority
 specifier|private
+specifier|final
 name|int
 name|priority
 decl_stmt|;

@@ -704,6 +704,7 @@ name|TestJspHelper
 block|{
 DECL|field|conf
 specifier|private
+specifier|final
 name|Configuration
 name|conf
 init|=

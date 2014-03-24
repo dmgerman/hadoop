@@ -725,6 +725,7 @@ expr_stmt|;
 block|}
 DECL|field|random
 specifier|private
+specifier|final
 name|Random
 name|random
 init|=
@@ -796,6 +797,7 @@ comment|// The interval for marking a datanode as stale,
 DECL|field|staleInterval
 specifier|private
 specifier|static
+specifier|final
 name|long
 name|staleInterval
 init|=

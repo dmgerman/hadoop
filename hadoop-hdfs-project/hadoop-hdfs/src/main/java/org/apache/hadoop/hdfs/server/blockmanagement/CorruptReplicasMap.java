@@ -139,6 +139,7 @@ comment|// client or datanode reported the corruption
 block|}
 DECL|field|corruptReplicasMap
 specifier|private
+specifier|final
 name|SortedMap
 argument_list|<
 name|Block

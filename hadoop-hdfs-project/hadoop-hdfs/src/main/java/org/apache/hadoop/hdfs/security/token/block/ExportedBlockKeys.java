@@ -152,6 +152,7 @@ name|tokenLifetime
 decl_stmt|;
 DECL|field|currentKey
 specifier|private
+specifier|final
 name|BlockKey
 name|currentKey
 decl_stmt|;

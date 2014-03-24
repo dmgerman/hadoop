@@ -554,6 +554,7 @@ decl_stmt|;
 DECL|field|TEST_BUILD_DATA
 specifier|private
 specifier|static
+specifier|final
 name|File
 name|TEST_BUILD_DATA
 init|=
@@ -578,6 +579,7 @@ name|journal
 decl_stmt|;
 DECL|field|conf
 specifier|private
+specifier|final
 name|Configuration
 name|conf
 init|=

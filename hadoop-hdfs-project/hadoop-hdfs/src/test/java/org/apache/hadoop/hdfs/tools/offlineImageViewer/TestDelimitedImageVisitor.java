@@ -153,6 +153,7 @@ block|{
 DECL|field|ROOT
 specifier|private
 specifier|static
+specifier|final
 name|String
 name|ROOT
 init|=

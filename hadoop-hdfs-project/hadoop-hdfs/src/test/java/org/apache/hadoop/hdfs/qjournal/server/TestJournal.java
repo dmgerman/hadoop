@@ -499,6 +499,7 @@ argument_list|)
 decl_stmt|;
 DECL|field|mockErrorReporter
 specifier|private
+specifier|final
 name|StorageErrorReporter
 name|mockErrorReporter
 init|=

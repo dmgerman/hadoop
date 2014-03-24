@@ -569,6 +569,7 @@ decl_stmt|;
 DECL|field|testDir
 specifier|private
 specifier|static
+specifier|final
 name|String
 name|testDir
 init|=

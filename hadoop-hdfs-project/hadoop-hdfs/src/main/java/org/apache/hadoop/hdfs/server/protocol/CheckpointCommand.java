@@ -88,11 +88,13 @@ name|NamenodeCommand
 block|{
 DECL|field|cSig
 specifier|private
+specifier|final
 name|CheckpointSignature
 name|cSig
 decl_stmt|;
 DECL|field|needToReturnImage
 specifier|private
+specifier|final
 name|boolean
 name|needToReturnImage
 decl_stmt|;

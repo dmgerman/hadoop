@@ -590,6 +590,7 @@ name|checksum
 decl_stmt|;
 DECL|field|packetReceiver
 specifier|private
+specifier|final
 name|PacketReceiver
 name|packetReceiver
 init|=

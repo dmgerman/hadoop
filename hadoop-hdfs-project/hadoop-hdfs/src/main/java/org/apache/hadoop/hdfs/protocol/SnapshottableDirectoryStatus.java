@@ -191,24 +191,28 @@ decl_stmt|;
 comment|/** Basic information of the snapshottable directory */
 DECL|field|dirStatus
 specifier|private
+specifier|final
 name|HdfsFileStatus
 name|dirStatus
 decl_stmt|;
 comment|/** Number of snapshots that have been taken*/
 DECL|field|snapshotNumber
 specifier|private
+specifier|final
 name|int
 name|snapshotNumber
 decl_stmt|;
 comment|/** Number of snapshots allowed. */
 DECL|field|snapshotQuota
 specifier|private
+specifier|final
 name|int
 name|snapshotQuota
 decl_stmt|;
 comment|/** Full path of the parent. */
 DECL|field|parentFullPath
 specifier|private
+specifier|final
 name|byte
 index|[]
 name|parentFullPath

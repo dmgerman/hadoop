@@ -1138,11 +1138,13 @@ comment|// keep track of lock yield count.
 comment|// lock to protect the directory and BlockMap
 DECL|field|dirLock
 specifier|private
+specifier|final
 name|ReentrantReadWriteLock
 name|dirLock
 decl_stmt|;
 DECL|field|cond
 specifier|private
+specifier|final
 name|Condition
 name|cond
 decl_stmt|;

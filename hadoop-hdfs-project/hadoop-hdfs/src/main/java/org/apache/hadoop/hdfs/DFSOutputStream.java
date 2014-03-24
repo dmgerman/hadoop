@@ -1299,6 +1299,7 @@ decl_stmt|;
 comment|// at time of file open
 DECL|field|progress
 specifier|private
+specifier|final
 name|Progressable
 name|progress
 decl_stmt|;
@@ -1319,6 +1320,7 @@ decl_stmt|;
 comment|// force blocks to disk upon close
 DECL|field|cachingStrategy
 specifier|private
+specifier|final
 name|AtomicReference
 argument_list|<
 name|CachingStrategy
@@ -1349,6 +1351,7 @@ operator|-
 literal|1L
 decl_stmt|;
 DECL|field|seqno
+specifier|final
 name|long
 name|seqno
 decl_stmt|;
@@ -1376,6 +1379,7 @@ name|maxChunks
 decl_stmt|;
 comment|// max chunks in packet
 DECL|field|buf
+specifier|final
 name|byte
 index|[]
 name|buf
@@ -1991,6 +1995,7 @@ literal|null
 decl_stmt|;
 DECL|field|excludedNodes
 specifier|private
+specifier|final
 name|LoadingCache
 argument_list|<
 name|DatanodeInfo

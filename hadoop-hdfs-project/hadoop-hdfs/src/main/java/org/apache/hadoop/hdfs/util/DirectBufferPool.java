@@ -130,6 +130,7 @@ name|DirectBufferPool
 block|{
 comment|// Essentially implement a multimap with weak values.
 DECL|field|buffersBySize
+specifier|final
 name|ConcurrentMap
 argument_list|<
 name|Integer

@@ -225,6 +225,7 @@ block|{
 DECL|field|LOG
 specifier|private
 specifier|static
+specifier|final
 name|Log
 name|LOG
 init|=
@@ -272,6 +273,7 @@ name|doubleBuf
 decl_stmt|;
 DECL|field|fill
 specifier|static
+specifier|final
 name|ByteBuffer
 name|fill
 init|=

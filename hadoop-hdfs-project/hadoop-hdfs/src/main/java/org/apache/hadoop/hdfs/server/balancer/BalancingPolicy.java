@@ -247,6 +247,7 @@ name|BalancingPolicy
 block|{
 DECL|field|INSTANCE
 specifier|static
+specifier|final
 name|Node
 name|INSTANCE
 init|=
@@ -330,6 +331,7 @@ name|BalancingPolicy
 block|{
 DECL|field|INSTANCE
 specifier|static
+specifier|final
 name|Pool
 name|INSTANCE
 init|=

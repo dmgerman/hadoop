@@ -723,6 +723,7 @@ name|InetSocketAddress
 name|dnAddr
 decl_stmt|;
 DECL|field|sendBuf
+specifier|final
 name|ByteArrayOutputStream
 name|sendBuf
 init|=
@@ -755,6 +756,7 @@ name|sendOut
 argument_list|)
 decl_stmt|;
 DECL|field|recvBuf
+specifier|final
 name|ByteArrayOutputStream
 name|recvBuf
 init|=
@@ -765,6 +767,7 @@ literal|128
 argument_list|)
 decl_stmt|;
 DECL|field|recvOut
+specifier|final
 name|DataOutputStream
 name|recvOut
 init|=

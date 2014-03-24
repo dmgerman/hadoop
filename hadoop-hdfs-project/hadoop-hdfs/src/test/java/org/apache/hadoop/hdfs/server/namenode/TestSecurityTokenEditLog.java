@@ -371,10 +371,12 @@ implements|implements
 name|Runnable
 block|{
 DECL|field|namesystem
+specifier|final
 name|FSNamesystem
 name|namesystem
 decl_stmt|;
 DECL|field|numTransactions
+specifier|final
 name|int
 name|numTransactions
 decl_stmt|;

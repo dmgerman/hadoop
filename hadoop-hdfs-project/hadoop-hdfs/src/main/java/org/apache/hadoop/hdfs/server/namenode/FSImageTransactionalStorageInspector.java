@@ -282,6 +282,7 @@ init|=
 literal|true
 decl_stmt|;
 DECL|field|foundImages
+specifier|final
 name|List
 argument_list|<
 name|FSImageFile

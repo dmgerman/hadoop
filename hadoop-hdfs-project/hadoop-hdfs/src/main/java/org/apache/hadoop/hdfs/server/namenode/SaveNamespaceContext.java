@@ -181,6 +181,7 @@ name|canceller
 decl_stmt|;
 DECL|field|completionLatch
 specifier|private
+specifier|final
 name|CountDownLatch
 name|completionLatch
 init|=

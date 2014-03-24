@@ -526,6 +526,7 @@ literal|100
 decl_stmt|;
 DECL|field|conf
 specifier|private
+specifier|final
 name|Configuration
 name|conf
 init|=
@@ -841,6 +842,7 @@ name|StandardSocketFactory
 block|{
 DECL|field|defaultFactory
 specifier|static
+specifier|final
 name|SocketFactory
 name|defaultFactory
 init|=

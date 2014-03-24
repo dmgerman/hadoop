@@ -82,6 +82,7 @@ block|{
 comment|/** Commands returned from the namenode to the datanode */
 DECL|field|commands
 specifier|private
+specifier|final
 name|DatanodeCommand
 index|[]
 name|commands
@@ -89,11 +90,13 @@ decl_stmt|;
 comment|/** Information about the current HA-related state of the NN */
 DECL|field|haStatus
 specifier|private
+specifier|final
 name|NNHAStatusHeartbeat
 name|haStatus
 decl_stmt|;
 DECL|field|rollingUpdateStatus
 specifier|private
+specifier|final
 name|RollingUpgradeStatus
 name|rollingUpdateStatus
 decl_stmt|;

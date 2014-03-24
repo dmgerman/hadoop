@@ -364,6 +364,7 @@ literal|false
 decl_stmt|;
 DECL|field|abortTestOnFailure
 specifier|private
+specifier|final
 name|boolean
 name|abortTestOnFailure
 init|=

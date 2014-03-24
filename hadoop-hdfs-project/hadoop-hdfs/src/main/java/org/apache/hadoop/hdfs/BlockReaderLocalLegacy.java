@@ -735,6 +735,7 @@ comment|// a map keyed by the ipc port of the datanode.
 DECL|field|localDatanodeInfoMap
 specifier|private
 specifier|static
+specifier|final
 name|Map
 argument_list|<
 name|Integer
@@ -809,6 +810,7 @@ decl_stmt|;
 DECL|field|bufferPool
 specifier|private
 specifier|static
+specifier|final
 name|DirectBufferPool
 name|bufferPool
 init|=
