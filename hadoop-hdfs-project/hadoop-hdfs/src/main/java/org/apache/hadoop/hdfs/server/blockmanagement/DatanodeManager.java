@@ -3314,6 +3314,11 @@ name|node
 operator|.
 name|isDecommissionInProgress
 argument_list|()
+operator|&&
+name|node
+operator|.
+name|checkBlockReportReceived
+argument_list|()
 condition|)
 block|{
 if|if
