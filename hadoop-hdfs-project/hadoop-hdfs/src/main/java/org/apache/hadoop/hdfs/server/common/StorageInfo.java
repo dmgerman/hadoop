@@ -1160,6 +1160,7 @@ name|FEATURES
 return|;
 block|}
 DECL|method|getProperty (Properties props, StorageDirectory sd, String name)
+specifier|protected
 specifier|static
 name|String
 name|getProperty
