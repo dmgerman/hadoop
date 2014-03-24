@@ -4764,6 +4764,25 @@ name|DFS_HTTP_CLIENT_FAILOVER_SLEEPTIME_MAX_DEFAULT
 init|=
 literal|15000
 decl_stmt|;
+comment|// Handling unresolved DN topology mapping
+DECL|field|DFS_REJECT_UNRESOLVED_DN_TOPOLOGY_MAPPING_KEY
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|DFS_REJECT_UNRESOLVED_DN_TOPOLOGY_MAPPING_KEY
+init|=
+literal|"dfs.namenode.reject-unresolved-dn-topology-mapping"
+decl_stmt|;
+DECL|field|DFS_REJECT_UNRESOLVED_DN_TOPOLOGY_MAPPING_DEFAULT
+specifier|public
+specifier|static
+specifier|final
+name|boolean
+name|DFS_REJECT_UNRESOLVED_DN_TOPOLOGY_MAPPING_DEFAULT
+init|=
+literal|false
+decl_stmt|;
 comment|// hedged read properties
 DECL|field|DFS_DFSCLIENT_HEDGED_READ_THRESHOLD_MILLIS
 specifier|public

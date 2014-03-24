@@ -701,6 +701,12 @@ specifier|final
 name|DNSToSwitchMapping
 name|dnsToSwitchMapping
 decl_stmt|;
+DECL|field|rejectUnresolvedTopologyDN
+specifier|private
+specifier|final
+name|boolean
+name|rejectUnresolvedTopologyDN
+decl_stmt|;
 DECL|field|defaultXferPort
 specifier|private
 specifier|final
@@ -1064,6 +1070,23 @@ name|class
 argument_list|)
 argument_list|,
 name|conf
+argument_list|)
+expr_stmt|;
+name|this
+operator|.
+name|rejectUnresolvedTopologyDN
+operator|=
+name|conf
+operator|.
+name|getBoolean
+argument_list|(
+name|DFSConfigKeys
+operator|.
+name|DFS_REJECT_UNRESOLVED_DN_TOPOLOGY_MAPPING_KEY
+argument_list|,
+name|DFSConfigKeys
+operator|.
+name|DFS_REJECT_UNRESOLVED_DN_TOPOLOGY_MAPPING_DEFAULT
 argument_list|)
 expr_stmt|;
 comment|// If the dns to switch mapping supports cache, resolve network
@@ -1962,7 +1985,7 @@ block|{
 name|String
 name|networkLocation
 init|=
-name|resolveNetworkLocation
+name|resolveNetworkLocationWithFallBackToDefaultLocation
 argument_list|(
 name|dnId
 argument_list|)
@@ -3057,7 +3080,65 @@ argument_list|)
 return|;
 block|}
 block|}
-comment|/* Resolve a node's network location */
+comment|/**    *  Resolve a node's network location. If the DNS to switch mapping fails     *  then this method guarantees default rack location.     *  @param node to resolve to network location    *  @return network location path    */
+DECL|method|resolveNetworkLocationWithFallBackToDefaultLocation ( DatanodeID node)
+specifier|private
+name|String
+name|resolveNetworkLocationWithFallBackToDefaultLocation
+parameter_list|(
+name|DatanodeID
+name|node
+parameter_list|)
+block|{
+name|String
+name|networkLocation
+decl_stmt|;
+try|try
+block|{
+name|networkLocation
+operator|=
+name|resolveNetworkLocation
+argument_list|(
+name|node
+argument_list|)
+expr_stmt|;
+block|}
+catch|catch
+parameter_list|(
+name|UnresolvedTopologyException
+name|e
+parameter_list|)
+block|{
+name|LOG
+operator|.
+name|error
+argument_list|(
+literal|"Unresolved topology mapping. Using "
+operator|+
+name|NetworkTopology
+operator|.
+name|DEFAULT_RACK
+operator|+
+literal|" for host "
+operator|+
+name|node
+operator|.
+name|getHostName
+argument_list|()
+argument_list|)
+expr_stmt|;
+name|networkLocation
+operator|=
+name|NetworkTopology
+operator|.
+name|DEFAULT_RACK
+expr_stmt|;
+block|}
+return|return
+name|networkLocation
+return|;
+block|}
+comment|/**    * Resolve a node's network location. If the DNS to switch mapping fails,     * then this method throws UnresolvedTopologyException.     * @param node to resolve to network location    * @return network location path.    * @throws UnresolvedTopologyException if the DNS to switch mapping fails     *    to resolve network location.    */
 DECL|method|resolveNetworkLocation (DatanodeID node)
 specifier|private
 name|String
@@ -3066,6 +3147,8 @@ parameter_list|(
 name|DatanodeID
 name|node
 parameter_list|)
+throws|throws
+name|UnresolvedTopologyException
 block|{
 name|List
 argument_list|<
@@ -3141,23 +3224,21 @@ name|LOG
 operator|.
 name|error
 argument_list|(
-literal|"The resolve call returned null! Using "
-operator|+
-name|NetworkTopology
-operator|.
-name|DEFAULT_RACK
-operator|+
-literal|" for host "
-operator|+
-name|names
+literal|"The resolve call returned null!"
 argument_list|)
 expr_stmt|;
-name|networkLocation
-operator|=
-name|NetworkTopology
+throw|throw
+operator|new
+name|UnresolvedTopologyException
+argument_list|(
+literal|"Unresolved topology mapping for host "
+operator|+
+name|node
 operator|.
-name|DEFAULT_RACK
-expr_stmt|;
+name|getHostName
+argument_list|()
+argument_list|)
+throw|;
 block|}
 else|else
 block|{
@@ -3496,7 +3577,7 @@ expr_stmt|;
 block|}
 block|}
 block|}
-comment|/**    * Register the given datanode with the namenode. NB: the given    * registration is mutated and given back to the datanode.    *    * @param nodeReg the datanode registration    * @throws DisallowedDatanodeException if the registration request is    *    denied because the datanode does not match includes/excludes    */
+comment|/**    * Register the given datanode with the namenode. NB: the given    * registration is mutated and given back to the datanode.    *    * @param nodeReg the datanode registration    * @throws DisallowedDatanodeException if the registration request is    *    denied because the datanode does not match includes/excludes    * @throws UnresolvedTopologyException if the registration request is     *    denied because resolving datanode network location fails.    */
 DECL|method|registerDatanode (DatanodeRegistration nodeReg)
 specifier|public
 name|void
@@ -3507,6 +3588,8 @@ name|nodeReg
 parameter_list|)
 throws|throws
 name|DisallowedDatanodeException
+throws|,
+name|UnresolvedTopologyException
 block|{
 name|InetAddress
 name|dnAddress
@@ -3848,6 +3931,13 @@ argument_list|)
 expr_stmt|;
 comment|// Node is in the include list
 comment|// resolve network location
+if|if
+condition|(
+name|this
+operator|.
+name|rejectUnresolvedTopologyDN
+condition|)
+block|{
 name|nodeS
 operator|.
 name|setNetworkLocation
@@ -3858,6 +3948,20 @@ name|nodeS
 argument_list|)
 argument_list|)
 expr_stmt|;
+block|}
+else|else
+block|{
+name|nodeS
+operator|.
+name|setNetworkLocation
+argument_list|(
+name|resolveNetworkLocationWithFallBackToDefaultLocation
+argument_list|(
+name|nodeS
+argument_list|)
+argument_list|)
+expr_stmt|;
+block|}
 name|getNetworkTopology
 argument_list|()
 operator|.
@@ -3937,6 +4041,14 @@ literal|false
 decl_stmt|;
 try|try
 block|{
+comment|// resolve network location
+if|if
+condition|(
+name|this
+operator|.
+name|rejectUnresolvedTopologyDN
+condition|)
+block|{
 name|nodeDescr
 operator|.
 name|setNetworkLocation
@@ -3947,6 +4059,20 @@ name|nodeDescr
 argument_list|)
 argument_list|)
 expr_stmt|;
+block|}
+else|else
+block|{
+name|nodeDescr
+operator|.
+name|setNetworkLocation
+argument_list|(
+name|resolveNetworkLocationWithFallBackToDefaultLocation
+argument_list|(
+name|nodeDescr
+argument_list|)
+argument_list|)
+expr_stmt|;
+block|}
 name|networktopology
 operator|.
 name|add
