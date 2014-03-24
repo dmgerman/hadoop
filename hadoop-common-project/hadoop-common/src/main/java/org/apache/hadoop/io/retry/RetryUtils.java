@@ -366,29 +366,6 @@ name|e
 argument_list|)
 expr_stmt|;
 block|}
-name|LOG
-operator|.
-name|info
-argument_list|(
-literal|"RETRY "
-operator|+
-name|retries
-operator|+
-literal|") policy="
-operator|+
-name|p
-operator|.
-name|getClass
-argument_list|()
-operator|.
-name|getSimpleName
-argument_list|()
-operator|+
-literal|", exception="
-operator|+
-name|e
-argument_list|)
-expr_stmt|;
 return|return
 name|p
 operator|.
