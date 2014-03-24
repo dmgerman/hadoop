@@ -7032,11 +7032,19 @@ operator|.
 name|getCause
 argument_list|()
 decl_stmt|;
+if|if
+condition|(
 name|LOG
 operator|.
-name|warn
+name|isDebugEnabled
+argument_list|()
+condition|)
+block|{
+name|LOG
+operator|.
+name|debug
 argument_list|(
-literal|"PriviledgedActionException as:"
+literal|"PrivilegedActionException as:"
 operator|+
 name|this
 operator|+
@@ -7045,6 +7053,7 @@ operator|+
 name|cause
 argument_list|)
 expr_stmt|;
+block|}
 if|if
 condition|(
 name|cause
