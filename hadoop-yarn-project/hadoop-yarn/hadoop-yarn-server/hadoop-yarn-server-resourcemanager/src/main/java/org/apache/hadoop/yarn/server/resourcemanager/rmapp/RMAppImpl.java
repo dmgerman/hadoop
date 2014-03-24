@@ -6237,9 +6237,14 @@ block|{
 name|RMAppState
 name|appState
 init|=
+operator|(
+operator|(
+name|RMAppImpl
+operator|)
 name|rmApp
+operator|)
 operator|.
-name|getState
+name|getRecoveredFinalState
 argument_list|()
 decl_stmt|;
 return|return
@@ -6260,6 +6265,18 @@ operator|==
 name|RMAppState
 operator|.
 name|KILLED
+return|;
+block|}
+DECL|method|getRecoveredFinalState ()
+specifier|private
+name|RMAppState
+name|getRecoveredFinalState
+parameter_list|()
+block|{
+return|return
+name|this
+operator|.
+name|recoveredFinalState
 return|;
 block|}
 block|}
