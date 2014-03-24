@@ -843,7 +843,7 @@ name|APPLICATION_JSON
 comment|/* , MediaType.APPLICATION_XML */
 block|}
 argument_list|)
-DECL|method|getEntities ( @ontext HttpServletRequest req, @Context HttpServletResponse res, @PathParam(R) String entityType, @QueryParam(R) String primaryFilter, @QueryParam(R) String secondaryFilter, @QueryParam(R) String windowStart, @QueryParam(R) String windowEnd, @QueryParam(R) String limit, @QueryParam(R) String fields)
+DECL|method|getEntities ( @ontext HttpServletRequest req, @Context HttpServletResponse res, @PathParam(R) String entityType, @QueryParam(R) String primaryFilter, @QueryParam(R) String secondaryFilter, @QueryParam(R) String windowStart, @QueryParam(R) String windowEnd, @QueryParam(R) String fromId, @QueryParam(R) String fromTs, @QueryParam(R) String limit, @QueryParam(R) String fields)
 specifier|public
 name|TimelineEntities
 name|getEntities
@@ -901,6 +901,22 @@ parameter_list|,
 annotation|@
 name|QueryParam
 argument_list|(
+literal|"fromId"
+argument_list|)
+name|String
+name|fromId
+parameter_list|,
+annotation|@
+name|QueryParam
+argument_list|(
+literal|"fromTs"
+argument_list|)
+name|String
+name|fromTs
+parameter_list|,
+annotation|@
+name|QueryParam
+argument_list|(
 literal|"limit"
 argument_list|)
 name|String
@@ -951,6 +967,16 @@ argument_list|,
 name|parseLongStr
 argument_list|(
 name|windowEnd
+argument_list|)
+argument_list|,
+name|parseStr
+argument_list|(
+name|fromId
+argument_list|)
+argument_list|,
+name|parseLongStr
+argument_list|(
+name|fromTs
 argument_list|)
 argument_list|,
 name|parsePairStr
