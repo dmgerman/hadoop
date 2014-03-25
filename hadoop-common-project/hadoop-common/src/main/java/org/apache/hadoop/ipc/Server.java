@@ -2880,6 +2880,8 @@ specifier|public
 specifier|static
 class|class
 name|Call
+implements|implements
+name|Schedulable
 block|{
 DECL|field|callId
 specifier|private
@@ -3093,6 +3095,21 @@ name|rpcResponse
 operator|=
 name|response
 expr_stmt|;
+block|}
+comment|// For Schedulable
+annotation|@
+name|Override
+DECL|method|getUserGroupInformation ()
+specifier|public
+name|UserGroupInformation
+name|getUserGroupInformation
+parameter_list|()
+block|{
+return|return
+name|connection
+operator|.
+name|user
+return|;
 block|}
 block|}
 comment|/** Listens on the socket. Creates jobs for the handler threads*/

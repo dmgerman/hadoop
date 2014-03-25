@@ -284,6 +284,15 @@ name|IPC_CALLQUEUE_IMPL_KEY
 init|=
 literal|"callqueue.impl"
 decl_stmt|;
+DECL|field|IPC_CALLQUEUE_IDENTITY_PROVIDER_KEY
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|IPC_CALLQUEUE_IDENTITY_PROVIDER_KEY
+init|=
+literal|"identity-provider.impl"
+decl_stmt|;
 comment|/** Internal buffer size for Lzo compressor/decompressors */
 DECL|field|IO_COMPRESSION_CODEC_LZO_BUFFERSIZE_KEY
 specifier|public
