@@ -22,28 +22,43 @@ name|snapshot
 package|;
 end_package
 
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|server
+operator|.
+name|namenode
+operator|.
+name|snapshot
+operator|.
+name|SnapshotManager
+operator|.
+name|SnapshotDirectoryMXBean
+import|;
+end_import
+
 begin_comment
 comment|/**  * This is an interface used to retrieve statistic information related to  * snapshots  */
 end_comment
 
 begin_interface
-DECL|interface|SnapshotStats
+DECL|interface|SnapshotStatsMXBean
 specifier|public
 interface|interface
-name|SnapshotStats
+name|SnapshotStatsMXBean
 block|{
-comment|/**    * @return The number of snapshottale directories in the system     */
-DECL|method|getNumSnapshottableDirs ()
+comment|/**    * Return the list of snapshottable directories    *    * @return the list of snapshottable directories    */
+DECL|method|getSnapshotStats ()
 specifier|public
-name|int
-name|getNumSnapshottableDirs
-parameter_list|()
-function_decl|;
-comment|/**    * @return The number of directories that have been snapshotted    */
-DECL|method|getNumSnapshots ()
-specifier|public
-name|int
-name|getNumSnapshots
+name|SnapshotDirectoryMXBean
+name|getSnapshotStats
 parameter_list|()
 function_decl|;
 block|}

@@ -6912,6 +6912,11 @@ argument_list|(
 name|this
 argument_list|)
 expr_stmt|;
+name|snapshotManager
+operator|.
+name|registerMXBean
+argument_list|()
+expr_stmt|;
 block|}
 comment|/**     * Stop services common to both active and standby states    * @throws IOException    */
 DECL|method|stopCommonServices ()
@@ -26718,6 +26723,19 @@ name|void
 name|shutdown
 parameter_list|()
 block|{
+if|if
+condition|(
+name|snapshotManager
+operator|!=
+literal|null
+condition|)
+block|{
+name|snapshotManager
+operator|.
+name|shutdown
+argument_list|()
+expr_stmt|;
+block|}
 if|if
 condition|(
 name|mbeanName
