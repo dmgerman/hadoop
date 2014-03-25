@@ -3120,6 +3120,8 @@ expr_stmt|;
 block|}
 comment|// Either they all return the same thing or this call fails, so we can
 comment|// just return the first result.
+try|try
+block|{
 name|DFSUtil
 operator|.
 name|assertAllResultsEqual
@@ -3133,6 +3135,23 @@ name|values
 argument_list|()
 argument_list|)
 expr_stmt|;
+block|}
+catch|catch
+parameter_list|(
+name|AssertionError
+name|ae
+parameter_list|)
+block|{
+throw|throw
+operator|new
+name|IOException
+argument_list|(
+literal|"Results differed for canRollBack"
+argument_list|,
+name|ae
+argument_list|)
+throw|;
+block|}
 for|for
 control|(
 name|Boolean
@@ -3453,6 +3472,8 @@ expr_stmt|;
 block|}
 comment|// Either they all return the same thing or this call fails, so we can
 comment|// just return the first result.
+try|try
+block|{
 name|DFSUtil
 operator|.
 name|assertAllResultsEqual
@@ -3466,6 +3487,23 @@ name|values
 argument_list|()
 argument_list|)
 expr_stmt|;
+block|}
+catch|catch
+parameter_list|(
+name|AssertionError
+name|ae
+parameter_list|)
+block|{
+throw|throw
+operator|new
+name|IOException
+argument_list|(
+literal|"Results differed for getJournalCTime"
+argument_list|,
+name|ae
+argument_list|)
+throw|;
+block|}
 for|for
 control|(
 name|Long

@@ -124,6 +124,20 @@ name|StorageInfo
 import|;
 end_import
 
+begin_import
+import|import
+name|com
+operator|.
+name|google
+operator|.
+name|common
+operator|.
+name|base
+operator|.
+name|Preconditions
+import|;
+end_import
+
 begin_class
 DECL|class|NNUpgradeUtil
 specifier|abstract
@@ -323,7 +337,10 @@ name|getRoot
 argument_list|()
 argument_list|)
 expr_stmt|;
-assert|assert
+name|Preconditions
+operator|.
+name|checkState
+argument_list|(
 name|sd
 operator|.
 name|getCurrentDir
@@ -331,9 +348,10 @@ argument_list|()
 operator|.
 name|exists
 argument_list|()
-operator|:
+argument_list|,
 literal|"Current directory must exist."
-assert|;
+argument_list|)
+expr_stmt|;
 specifier|final
 name|File
 name|tmpDir
@@ -423,32 +441,46 @@ operator|.
 name|getPreviousTmp
 argument_list|()
 decl_stmt|;
-assert|assert
+name|Preconditions
+operator|.
+name|checkState
+argument_list|(
 name|curDir
 operator|.
 name|exists
 argument_list|()
-operator|:
-literal|"Current directory must exist."
-assert|;
-assert|assert
+argument_list|,
+literal|"Current directory must exist for preupgrade."
+argument_list|)
+expr_stmt|;
+name|Preconditions
+operator|.
+name|checkState
+argument_list|(
 operator|!
 name|prevDir
 operator|.
 name|exists
 argument_list|()
-operator|:
-literal|"previous directory must not exist."
-assert|;
-assert|assert
+argument_list|,
+literal|"Previous directory must not exist for preupgrade."
+argument_list|)
+expr_stmt|;
+name|Preconditions
+operator|.
+name|checkState
+argument_list|(
 operator|!
 name|tmpDir
 operator|.
 name|exists
 argument_list|()
-operator|:
-literal|"previous.tmp directory must not exist."
-assert|;
+argument_list|,
+literal|"Previous.tmp directory must not exist for preupgrade."
+operator|+
+literal|"Consider restarting for recovery."
+argument_list|)
+expr_stmt|;
 comment|// rename current to tmp
 name|NNStorage
 operator|.
@@ -533,6 +565,31 @@ operator|.
 name|getPreviousTmp
 argument_list|()
 decl_stmt|;
+name|Preconditions
+operator|.
+name|checkState
+argument_list|(
+operator|!
+name|prevDir
+operator|.
+name|exists
+argument_list|()
+argument_list|,
+literal|"previous directory must not exist for upgrade."
+argument_list|)
+expr_stmt|;
+name|Preconditions
+operator|.
+name|checkState
+argument_list|(
+name|tmpDir
+operator|.
+name|exists
+argument_list|()
+argument_list|,
+literal|"previous.tmp directory must exist for upgrade."
+argument_list|)
+expr_stmt|;
 comment|// rename tmp to previous
 name|NNStorage
 operator|.
@@ -597,7 +654,9 @@ operator|.
 name|exists
 argument_list|()
 condition|)
+block|{
 return|return;
+block|}
 name|File
 name|tmpDir
 init|=
@@ -606,15 +665,21 @@ operator|.
 name|getRemovedTmp
 argument_list|()
 decl_stmt|;
-assert|assert
+name|Preconditions
+operator|.
+name|checkState
+argument_list|(
 operator|!
 name|tmpDir
 operator|.
 name|exists
 argument_list|()
-operator|:
-literal|"removed.tmp directory must not exist."
-assert|;
+argument_list|,
+literal|"removed.tmp directory must not exist for rollback."
+operator|+
+literal|"Consider restarting for recovery."
+argument_list|)
+expr_stmt|;
 comment|// rename current to tmp
 name|File
 name|curDir
@@ -624,14 +689,18 @@ operator|.
 name|getCurrentDir
 argument_list|()
 decl_stmt|;
-assert|assert
+name|Preconditions
+operator|.
+name|checkState
+argument_list|(
 name|curDir
 operator|.
 name|exists
 argument_list|()
-operator|:
-literal|"Current directory must exist."
-assert|;
+argument_list|,
+literal|"Current directory must exist for rollback."
+argument_list|)
+expr_stmt|;
 name|NNStorage
 operator|.
 name|rename

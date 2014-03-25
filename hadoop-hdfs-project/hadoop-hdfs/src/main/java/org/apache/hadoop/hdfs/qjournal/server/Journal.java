@@ -388,6 +388,26 @@ name|server
 operator|.
 name|common
 operator|.
+name|HdfsServerConstants
+operator|.
+name|StartupOption
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|server
+operator|.
+name|common
+operator|.
 name|StorageErrorReporter
 import|;
 end_import
@@ -916,7 +936,7 @@ name|WARN_SYNC_MILLIS_THRESHOLD
 init|=
 literal|1000
 decl_stmt|;
-DECL|method|Journal (Configuration conf, File logDir, String journalId, StorageErrorReporter errorReporter)
+DECL|method|Journal (Configuration conf, File logDir, String journalId, StartupOption startOpt, StorageErrorReporter errorReporter)
 name|Journal
 parameter_list|(
 name|Configuration
@@ -927,6 +947,9 @@ name|logDir
 parameter_list|,
 name|String
 name|journalId
+parameter_list|,
+name|StartupOption
+name|startOpt
 parameter_list|,
 name|StorageErrorReporter
 name|errorReporter
@@ -942,6 +965,8 @@ argument_list|(
 name|conf
 argument_list|,
 name|logDir
+argument_list|,
+name|startOpt
 argument_list|,
 name|errorReporter
 argument_list|)

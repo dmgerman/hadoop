@@ -391,24 +391,6 @@ operator|.
 name|common
 operator|.
 name|Storage
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|hdfs
-operator|.
-name|server
-operator|.
-name|common
-operator|.
-name|Storage
 operator|.
 name|FormatConfirmable
 import|;
@@ -431,6 +413,24 @@ operator|.
 name|Storage
 operator|.
 name|StorageDirectory
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|server
+operator|.
+name|common
+operator|.
+name|StorageInfo
 import|;
 end_import
 
@@ -6450,13 +6450,13 @@ expr_stmt|;
 block|}
 block|}
 block|}
-DECL|method|canRollBackSharedLog (Storage prevStorage, int targetLayoutVersion)
+DECL|method|canRollBackSharedLog (StorageInfo prevStorage, int targetLayoutVersion)
 specifier|public
 specifier|synchronized
 name|boolean
 name|canRollBackSharedLog
 parameter_list|(
-name|Storage
+name|StorageInfo
 name|prevStorage
 parameter_list|,
 name|int
