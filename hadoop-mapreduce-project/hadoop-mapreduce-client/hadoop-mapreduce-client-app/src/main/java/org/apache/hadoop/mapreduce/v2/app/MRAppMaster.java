@@ -5876,13 +5876,6 @@ argument_list|,
 name|nmHttpPort
 argument_list|)
 decl_stmt|;
-name|amInfos
-operator|.
-name|add
-argument_list|(
-name|amInfo
-argument_list|)
-expr_stmt|;
 comment|// /////////////////// Create the job itself.
 name|job
 operator|=
@@ -5897,7 +5890,7 @@ name|shutDownMessage
 argument_list|)
 expr_stmt|;
 comment|// End of creating the job.
-comment|// Send out an MR AM inited event for this AM and all previous AMs.
+comment|// Send out an MR AM inited event for all previous AMs.
 for|for
 control|(
 name|AMInfo
@@ -5958,6 +5951,80 @@ argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
+comment|// Send out an MR AM inited event for this AM.
+name|dispatcher
+operator|.
+name|getEventHandler
+argument_list|()
+operator|.
+name|handle
+argument_list|(
+operator|new
+name|JobHistoryEvent
+argument_list|(
+name|job
+operator|.
+name|getID
+argument_list|()
+argument_list|,
+operator|new
+name|AMStartedEvent
+argument_list|(
+name|amInfo
+operator|.
+name|getAppAttemptId
+argument_list|()
+argument_list|,
+name|amInfo
+operator|.
+name|getStartTime
+argument_list|()
+argument_list|,
+name|amInfo
+operator|.
+name|getContainerId
+argument_list|()
+argument_list|,
+name|amInfo
+operator|.
+name|getNodeManagerHost
+argument_list|()
+argument_list|,
+name|amInfo
+operator|.
+name|getNodeManagerPort
+argument_list|()
+argument_list|,
+name|amInfo
+operator|.
+name|getNodeManagerHttpPort
+argument_list|()
+argument_list|,
+name|this
+operator|.
+name|forcedState
+operator|==
+literal|null
+condition|?
+literal|null
+else|:
+name|this
+operator|.
+name|forcedState
+operator|.
+name|toString
+argument_list|()
+argument_list|)
+argument_list|)
+argument_list|)
+expr_stmt|;
+name|amInfos
+operator|.
+name|add
+argument_list|(
+name|amInfo
+argument_list|)
+expr_stmt|;
 comment|// metrics system init is really init& start.
 comment|// It's more test friendly to put it here.
 name|DefaultMetricsSystem

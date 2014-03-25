@@ -3547,7 +3547,7 @@ decl_stmt|;
 annotation|@
 name|Override
 DECL|method|handleEvent (JobHistoryEvent event)
-specifier|protected
+specifier|public
 name|void
 name|handleEvent
 parameter_list|(
