@@ -3994,6 +3994,27 @@ name|DEFAULT_FS_APPLICATION_HISTORY_STORE_COMPRESSION_TYPE
 init|=
 literal|"none"
 decl_stmt|;
+comment|/** The setting that controls whether timeline service is enabled or not. */
+DECL|field|TIMELINE_SERVICE_ENABLED
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|TIMELINE_SERVICE_ENABLED
+init|=
+name|TIMELINE_SERVICE_PREFIX
+operator|+
+literal|"enabled"
+decl_stmt|;
+DECL|field|DEFAULT_TIMELINE_SERVICE_ENABLED
+specifier|public
+specifier|static
+specifier|final
+name|boolean
+name|DEFAULT_TIMELINE_SERVICE_ENABLED
+init|=
+literal|true
+decl_stmt|;
 comment|/** host:port address for timeline service RPC APIs. */
 DECL|field|TIMELINE_SERVICE_ADDRESS
 specifier|public
