@@ -787,6 +787,9 @@ operator|.
 name|DEFAULT_RM_NM_EXPIRY_INTERVAL_MS
 argument_list|)
 expr_stmt|;
+name|setLocalSecretManagerAndServiceAddr
+argument_list|()
+expr_stmt|;
 name|renewerService
 operator|=
 name|createNewThreadPoolService
@@ -909,6 +912,34 @@ return|return
 name|pool
 return|;
 block|}
+comment|// enable RM to short-circuit token operations directly to itself
+DECL|method|setLocalSecretManagerAndServiceAddr ()
+specifier|private
+name|void
+name|setLocalSecretManagerAndServiceAddr
+parameter_list|()
+block|{
+name|RMDelegationTokenIdentifier
+operator|.
+name|Renewer
+operator|.
+name|setSecretManager
+argument_list|(
+name|rmContext
+operator|.
+name|getRMDelegationTokenSecretManager
+argument_list|()
+argument_list|,
+name|rmContext
+operator|.
+name|getClientRMService
+argument_list|()
+operator|.
+name|getBindAddress
+argument_list|()
+argument_list|)
+expr_stmt|;
+block|}
 annotation|@
 name|Override
 DECL|method|serviceStart ()
@@ -950,26 +981,8 @@ name|start
 argument_list|()
 expr_stmt|;
 block|}
-comment|// enable RM to short-circuit token operations directly to itself
-name|RMDelegationTokenIdentifier
-operator|.
-name|Renewer
-operator|.
-name|setSecretManager
-argument_list|(
-name|rmContext
-operator|.
-name|getRMDelegationTokenSecretManager
+name|setLocalSecretManagerAndServiceAddr
 argument_list|()
-argument_list|,
-name|rmContext
-operator|.
-name|getClientRMService
-argument_list|()
-operator|.
-name|getBindAddress
-argument_list|()
-argument_list|)
 expr_stmt|;
 name|serviceStateLock
 operator|.

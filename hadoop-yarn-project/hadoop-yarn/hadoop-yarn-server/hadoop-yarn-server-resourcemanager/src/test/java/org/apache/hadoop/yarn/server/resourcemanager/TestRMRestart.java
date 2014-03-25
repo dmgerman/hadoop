@@ -3066,6 +3066,11 @@ expr_stmt|;
 block|}
 annotation|@
 name|Test
+argument_list|(
+name|timeout
+operator|=
+literal|60000
+argument_list|)
 DECL|method|testRMRestartAppRunningAMFailed ()
 specifier|public
 name|void
@@ -3324,6 +3329,11 @@ expr_stmt|;
 block|}
 annotation|@
 name|Test
+argument_list|(
+name|timeout
+operator|=
+literal|60000
+argument_list|)
 DECL|method|testRMRestartWaitForPreviousAMToFinish ()
 specifier|public
 name|void
@@ -4498,6 +4508,11 @@ comment|// recovery, RMAppAttempt should send the AttemptFinished event to RMApp
 comment|// that RMApp can recover its state.
 annotation|@
 name|Test
+argument_list|(
+name|timeout
+operator|=
+literal|60000
+argument_list|)
 DECL|method|testRMRestartWaitForPreviousSucceededAttempt ()
 specifier|public
 name|void
@@ -4800,6 +4815,11 @@ expr_stmt|;
 block|}
 annotation|@
 name|Test
+argument_list|(
+name|timeout
+operator|=
+literal|60000
+argument_list|)
 DECL|method|testRMRestartFailedApp ()
 specifier|public
 name|void
@@ -5125,6 +5145,11 @@ expr_stmt|;
 block|}
 annotation|@
 name|Test
+argument_list|(
+name|timeout
+operator|=
+literal|60000
+argument_list|)
 DECL|method|testRMRestartKilledApp ()
 specifier|public
 name|void
@@ -5452,6 +5477,11 @@ expr_stmt|;
 block|}
 annotation|@
 name|Test
+argument_list|(
+name|timeout
+operator|=
+literal|60000
+argument_list|)
 DECL|method|testRMRestartKilledAppWithNoAttempts ()
 specifier|public
 name|void
@@ -5659,6 +5689,11 @@ expr_stmt|;
 block|}
 annotation|@
 name|Test
+argument_list|(
+name|timeout
+operator|=
+literal|60000
+argument_list|)
 DECL|method|testRMRestartSucceededApp ()
 specifier|public
 name|void
@@ -5954,6 +5989,11 @@ expr_stmt|;
 block|}
 annotation|@
 name|Test
+argument_list|(
+name|timeout
+operator|=
+literal|60000
+argument_list|)
 DECL|method|testRMRestartGetApplicationList ()
 specifier|public
 name|void
@@ -6955,6 +6995,11 @@ expr_stmt|;
 block|}
 annotation|@
 name|Test
+argument_list|(
+name|timeout
+operator|=
+literal|60000
+argument_list|)
 DECL|method|testRMRestartOnMaxAppAttempts ()
 specifier|public
 name|void
@@ -7413,6 +7458,11 @@ expr_stmt|;
 block|}
 annotation|@
 name|Test
+argument_list|(
+name|timeout
+operator|=
+literal|60000
+argument_list|)
 DECL|method|testDelegationTokenRestoredInDelegationTokenRenewer ()
 specifier|public
 name|void
@@ -7944,6 +7994,11 @@ block|}
 block|}
 annotation|@
 name|Test
+argument_list|(
+name|timeout
+operator|=
+literal|60000
+argument_list|)
 DECL|method|testAppAttemptTokensRestoredOnRMRestart ()
 specifier|public
 name|void
@@ -8452,6 +8507,11 @@ expr_stmt|;
 block|}
 annotation|@
 name|Test
+argument_list|(
+name|timeout
+operator|=
+literal|60000
+argument_list|)
 DECL|method|testRMDelegationTokenRestoredOnRMRestart ()
 specifier|public
 name|void
@@ -9286,6 +9346,11 @@ comment|// This is to test submit an application to the new RM with the old dele
 comment|// token got from previous RM.
 annotation|@
 name|Test
+argument_list|(
+name|timeout
+operator|=
+literal|60000
+argument_list|)
 DECL|method|testAppSubmissionWithOldDelegationTokenAfterRMRestart ()
 specifier|public
 name|void
@@ -9502,6 +9567,11 @@ expr_stmt|;
 block|}
 annotation|@
 name|Test
+argument_list|(
+name|timeout
+operator|=
+literal|60000
+argument_list|)
 DECL|method|testRMStateStoreDispatcherDrainedOnRMStop ()
 specifier|public
 name|void
@@ -9804,6 +9874,11 @@ expr_stmt|;
 block|}
 annotation|@
 name|Test
+argument_list|(
+name|timeout
+operator|=
+literal|60000
+argument_list|)
 DECL|method|testFinishedAppRemovalAfterRMRestart ()
 specifier|public
 name|void
@@ -10207,6 +10282,11 @@ comment|// reaches killed state and also check that attempt state is saved befor
 comment|// state is saved.
 annotation|@
 name|Test
+argument_list|(
+name|timeout
+operator|=
+literal|60000
+argument_list|)
 DECL|method|testClientRetryOnKillingApplication ()
 specifier|public
 name|void
@@ -11312,6 +11392,11 @@ expr_stmt|;
 block|}
 annotation|@
 name|Test
+argument_list|(
+name|timeout
+operator|=
+literal|60000
+argument_list|)
 DECL|method|testDecomissionedNMsMetricsOnRMRestart ()
 specifier|public
 name|void
@@ -12047,6 +12132,37 @@ argument_list|(
 name|conf
 argument_list|,
 name|store
+argument_list|)
+expr_stmt|;
+block|}
+annotation|@
+name|Override
+DECL|method|init (Configuration conf)
+specifier|public
+name|void
+name|init
+parameter_list|(
+name|Configuration
+name|conf
+parameter_list|)
+block|{
+comment|// reset localServiceAddress.
+name|RMDelegationTokenIdentifier
+operator|.
+name|Renewer
+operator|.
+name|setSecretManager
+argument_list|(
+literal|null
+argument_list|,
+literal|null
+argument_list|)
+expr_stmt|;
+name|super
+operator|.
+name|init
+argument_list|(
+name|conf
 argument_list|)
 expr_stmt|;
 block|}
