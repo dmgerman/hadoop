@@ -1575,7 +1575,7 @@ throws|throws
 name|IOException
 block|{
 return|return
-name|super
+name|fs
 operator|.
 name|getContentSummary
 argument_list|(

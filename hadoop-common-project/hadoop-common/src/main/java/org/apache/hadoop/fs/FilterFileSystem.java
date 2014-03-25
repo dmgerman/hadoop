@@ -1300,28 +1300,6 @@ block|}
 comment|// path variants delegate to underlying filesystem
 annotation|@
 name|Override
-DECL|method|getContentSummary (Path f)
-specifier|public
-name|ContentSummary
-name|getContentSummary
-parameter_list|(
-name|Path
-name|f
-parameter_list|)
-throws|throws
-name|IOException
-block|{
-return|return
-name|fs
-operator|.
-name|getContentSummary
-argument_list|(
-name|f
-argument_list|)
-return|;
-block|}
-annotation|@
-name|Override
 DECL|method|getDefaultBlockSize (Path f)
 specifier|public
 name|long
