@@ -532,9 +532,6 @@ literal|0
 init|;
 name|i
 operator|<
-operator|(
-name|int
-operator|)
 name|len
 condition|;
 name|i
@@ -543,14 +540,11 @@ control|)
 block|{
 name|dropped
 index|[
-call|(
-name|int
-call|)
-argument_list|(
+operator|(
 name|offset
 operator|+
 name|i
-argument_list|)
+operator|)
 index|]
 operator|=
 literal|true
@@ -1047,9 +1041,6 @@ operator|.
 name|length
 operator|)
 condition|?
-operator|(
-name|int
-operator|)
 name|buf
 operator|.
 name|length
@@ -1193,9 +1184,6 @@ operator|.
 name|length
 operator|)
 condition|?
-operator|(
-name|int
-operator|)
 name|buf
 operator|.
 name|length

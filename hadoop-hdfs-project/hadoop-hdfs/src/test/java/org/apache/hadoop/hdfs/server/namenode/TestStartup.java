@@ -1366,12 +1366,6 @@ name|URI
 argument_list|>
 name|nameEditsDirs
 init|=
-operator|(
-name|List
-argument_list|<
-name|URI
-argument_list|>
-operator|)
 name|FSNamesystem
 operator|.
 name|getNamespaceEditsDirs

@@ -1472,9 +1472,6 @@ index|[
 literal|0
 index|]
 argument_list|,
-operator|(
-name|DatanodeInfo
-operator|)
 name|dd1
 argument_list|)
 expr_stmt|;
@@ -1485,9 +1482,6 @@ index|[
 literal|1
 index|]
 argument_list|,
-operator|(
-name|DatanodeInfo
-operator|)
 name|dd2
 argument_list|)
 expr_stmt|;
@@ -1498,9 +1492,6 @@ index|[
 literal|2
 index|]
 argument_list|,
-operator|(
-name|DatanodeInfo
-operator|)
 name|dd3
 argument_list|)
 expr_stmt|;
@@ -1677,9 +1668,6 @@ index|[
 literal|0
 index|]
 argument_list|,
-operator|(
-name|DatanodeInfo
-operator|)
 name|dd1
 argument_list|)
 expr_stmt|;
@@ -1690,9 +1678,6 @@ index|[
 literal|1
 index|]
 argument_list|,
-operator|(
-name|DatanodeInfo
-operator|)
 name|dd3
 argument_list|)
 expr_stmt|;
@@ -1878,9 +1863,6 @@ index|[
 literal|0
 index|]
 argument_list|,
-operator|(
-name|DatanodeInfo
-operator|)
 name|dd1
 argument_list|)
 expr_stmt|;
@@ -1891,9 +1873,6 @@ index|[
 literal|1
 index|]
 argument_list|,
-operator|(
-name|DatanodeInfo
-operator|)
 name|dd2
 argument_list|)
 expr_stmt|;
@@ -1904,9 +1883,6 @@ index|[
 literal|2
 index|]
 argument_list|,
-operator|(
-name|DatanodeInfo
-operator|)
 name|dd3
 argument_list|)
 expr_stmt|;

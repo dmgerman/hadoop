@@ -3346,12 +3346,7 @@ argument_list|)
 decl_stmt|;
 try|try
 block|{
-operator|(
-operator|(
-name|DistributedFileSystem
-operator|)
 name|hdfs
-operator|)
 operator|.
 name|getFileChecksum
 argument_list|(
@@ -3408,12 +3403,7 @@ argument_list|(
 name|path
 argument_list|)
 expr_stmt|;
-operator|(
-operator|(
-name|DistributedFileSystem
-operator|)
 name|hdfs
-operator|)
 operator|.
 name|getFileChecksum
 argument_list|(

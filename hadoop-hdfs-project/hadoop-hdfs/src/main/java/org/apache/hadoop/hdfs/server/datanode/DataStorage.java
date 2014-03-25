@@ -738,15 +738,10 @@ argument_list|)
 condition|)
 block|{
 return|return
-operator|(
-operator|(
-name|BlockPoolSliceStorage
-operator|)
 name|getBPStorage
 argument_list|(
 name|bpid
 argument_list|)
-operator|)
 operator|.
 name|getTrashDirectory
 argument_list|(

@@ -4982,9 +4982,6 @@ comment|// Bzip2 cause its non-native.
 name|CompressionCodec
 name|codec
 init|=
-operator|(
-name|CompressionCodec
-operator|)
 name|ReflectionUtils
 operator|.
 name|newInstance
@@ -5939,9 +5936,6 @@ decl_stmt|;
 name|DistributedFileSystem
 name|dfs
 init|=
-operator|(
-name|DistributedFileSystem
-operator|)
 name|cluster
 operator|.
 name|getFileSystem
@@ -10047,9 +10041,6 @@ argument_list|()
 expr_stmt|;
 name|dfs
 operator|=
-operator|(
-name|DistributedFileSystem
-operator|)
 name|cluster
 operator|.
 name|getFileSystem
@@ -10186,9 +10177,6 @@ argument_list|()
 expr_stmt|;
 name|dfs
 operator|=
-operator|(
-name|DistributedFileSystem
-operator|)
 name|cluster
 operator|.
 name|getFileSystem
@@ -10344,9 +10332,6 @@ decl_stmt|;
 name|DistributedFileSystem
 name|dfs
 init|=
-operator|(
-name|DistributedFileSystem
-operator|)
 name|cluster
 operator|.
 name|getFileSystem

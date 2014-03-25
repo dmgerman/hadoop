@@ -2814,9 +2814,6 @@ name|AclStorage
 operator|.
 name|updateINodeAcl
 argument_list|(
-operator|(
-name|INodeWithAdditionalFields
-operator|)
 name|inode
 argument_list|,
 name|Arrays

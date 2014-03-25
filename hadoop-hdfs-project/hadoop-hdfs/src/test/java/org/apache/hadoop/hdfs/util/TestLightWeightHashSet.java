@@ -2417,9 +2417,6 @@ name|sub2
 operator|.
 name|contains
 argument_list|(
-operator|(
-name|Integer
-operator|)
 name|array2
 index|[
 name|i

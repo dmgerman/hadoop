@@ -306,9 +306,6 @@ argument_list|()
 expr_stmt|;
 name|fileSys
 operator|=
-operator|(
-name|DistributedFileSystem
-operator|)
 name|dfs
 operator|.
 name|getFileSystem

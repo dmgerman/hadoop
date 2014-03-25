@@ -449,15 +449,10 @@ argument_list|()
 expr_stmt|;
 name|fs
 operator|=
-call|(
-name|DistributedFileSystem
-call|)
-argument_list|(
 name|cluster
 operator|.
 name|getFileSystem
 argument_list|()
-argument_list|)
 expr_stmt|;
 name|FSNamesystem
 name|namesystem

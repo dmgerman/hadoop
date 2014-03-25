@@ -1112,9 +1112,6 @@ name|FILE_SIZE
 argument_list|,
 name|BLOCK_SIZE
 argument_list|,
-operator|(
-name|short
-operator|)
 name|replication
 argument_list|,
 name|SEED
@@ -1366,9 +1363,6 @@ name|FILE_SIZE
 argument_list|,
 name|BLOCK_SIZE
 argument_list|,
-operator|(
-name|short
-operator|)
 name|replication
 argument_list|,
 name|SEED
@@ -1608,9 +1602,6 @@ name|FILE_SIZE
 argument_list|,
 name|BLOCK_SIZE
 argument_list|,
-operator|(
-name|short
-operator|)
 name|replication
 argument_list|,
 name|SEED
@@ -2577,9 +2568,6 @@ name|FILE_SIZE
 argument_list|,
 name|BLOCK_SIZE
 argument_list|,
-operator|(
-name|short
-operator|)
 name|replication
 argument_list|,
 name|SEED
@@ -2816,9 +2804,6 @@ name|FILE_SIZE
 argument_list|,
 name|BLOCK_SIZE
 argument_list|,
-operator|(
-name|short
-operator|)
 name|replication
 argument_list|,
 name|SEED
@@ -2992,9 +2977,6 @@ name|FILE_SIZE
 argument_list|,
 name|BLOCK_SIZE
 argument_list|,
-operator|(
-name|short
-operator|)
 name|replication
 argument_list|,
 name|SEED
@@ -3315,9 +3297,6 @@ name|FILE_SIZE
 argument_list|,
 name|BLOCK_SIZE
 argument_list|,
-operator|(
-name|short
-operator|)
 name|replication
 argument_list|,
 name|SEED

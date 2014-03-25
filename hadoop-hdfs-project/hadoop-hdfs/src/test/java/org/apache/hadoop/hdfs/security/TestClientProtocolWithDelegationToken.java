@@ -794,9 +794,6 @@ try|try
 block|{
 name|proxy
 operator|=
-operator|(
-name|ClientProtocol
-operator|)
 name|RPC
 operator|.
 name|getProxy

@@ -2909,9 +2909,6 @@ argument_list|)
 argument_list|,
 name|hdfs
 argument_list|,
-operator|(
-name|int
-operator|)
 name|BLOCKSIZE
 argument_list|)
 decl_stmt|;

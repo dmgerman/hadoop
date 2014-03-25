@@ -605,9 +605,6 @@ comment|// no check, if it's not it throws an exception which is what we want
 name|DistributedFileSystem
 name|dfs
 init|=
-operator|(
-name|DistributedFileSystem
-operator|)
 name|cluster
 operator|.
 name|getFileSystem

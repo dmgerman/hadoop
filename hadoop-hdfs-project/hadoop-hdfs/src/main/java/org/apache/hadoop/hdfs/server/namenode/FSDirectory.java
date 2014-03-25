@@ -11739,9 +11739,6 @@ name|inodeMap
 operator|.
 name|put
 argument_list|(
-operator|(
-name|INodeWithAdditionalFields
-operator|)
 name|inode
 argument_list|)
 expr_stmt|;

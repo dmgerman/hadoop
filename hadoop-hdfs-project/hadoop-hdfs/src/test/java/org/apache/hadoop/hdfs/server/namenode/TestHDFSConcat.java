@@ -474,9 +474,6 @@ argument_list|()
 expr_stmt|;
 name|dfs
 operator|=
-operator|(
-name|DistributedFileSystem
-operator|)
 name|cluster
 operator|.
 name|getFileSystem

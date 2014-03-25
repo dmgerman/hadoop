@@ -577,9 +577,6 @@ block|{
 name|DistributedFileSystem
 name|dfs
 init|=
-operator|(
-name|DistributedFileSystem
-operator|)
 name|cluster4
 operator|.
 name|getFileSystem

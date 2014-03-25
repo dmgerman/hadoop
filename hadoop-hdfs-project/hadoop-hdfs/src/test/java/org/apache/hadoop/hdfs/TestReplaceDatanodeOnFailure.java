@@ -821,9 +821,6 @@ specifier|final
 name|DistributedFileSystem
 name|fs
 init|=
-operator|(
-name|DistributedFileSystem
-operator|)
 name|cluster
 operator|.
 name|getFileSystem
@@ -1500,9 +1497,6 @@ specifier|final
 name|DistributedFileSystem
 name|fs
 init|=
-operator|(
-name|DistributedFileSystem
-operator|)
 name|cluster
 operator|.
 name|getFileSystem

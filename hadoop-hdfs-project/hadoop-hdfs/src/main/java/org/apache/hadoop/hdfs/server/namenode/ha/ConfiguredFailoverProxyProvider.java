@@ -730,9 +730,6 @@ argument_list|<
 name|T
 argument_list|>
 argument_list|(
-operator|(
-name|T
-operator|)
 name|current
 operator|.
 name|namenode

@@ -1026,9 +1026,6 @@ name|assertEquals
 argument_list|(
 name|name
 argument_list|,
-operator|(
-name|String
-operator|)
 name|r
 operator|.
 name|get
@@ -1043,9 +1040,6 @@ name|assertEquals
 argument_list|(
 literal|"127.0.0.1"
 argument_list|,
-operator|(
-name|String
-operator|)
 name|r
 operator|.
 name|get

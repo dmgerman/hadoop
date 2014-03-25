@@ -370,12 +370,7 @@ name|host
 operator|instanceof
 name|DatanodeInfo
 condition|?
-operator|(
-operator|(
-name|DatanodeInfo
-operator|)
 name|host
-operator|)
 operator|.
 name|getHostName
 argument_list|()

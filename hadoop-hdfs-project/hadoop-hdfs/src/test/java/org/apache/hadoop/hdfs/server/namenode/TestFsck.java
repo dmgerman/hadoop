@@ -3356,9 +3356,6 @@ name|blockBuffer
 argument_list|,
 literal|0
 argument_list|,
-operator|(
-name|int
-operator|)
 name|len
 argument_list|)
 expr_stmt|;
@@ -5917,9 +5914,6 @@ argument_list|()
 expr_stmt|;
 name|dfs
 operator|=
-operator|(
-name|DistributedFileSystem
-operator|)
 name|cluster
 operator|.
 name|getFileSystem
@@ -6317,9 +6311,6 @@ argument_list|()
 expr_stmt|;
 name|dfs
 operator|=
-operator|(
-name|DistributedFileSystem
-operator|)
 name|cluster
 operator|.
 name|getFileSystem
@@ -6483,9 +6474,6 @@ name|out
 argument_list|,
 name|NUM_DN
 argument_list|,
-operator|(
-name|short
-operator|)
 name|REPL_FACTOR
 argument_list|,
 name|remoteAddress

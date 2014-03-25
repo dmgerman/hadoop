@@ -20322,12 +20322,7 @@ name|INodeFile
 operator|)
 operator|||
 operator|!
-operator|(
-operator|(
-name|INodeFile
-operator|)
 name|bc
-operator|)
 operator|.
 name|isUnderConstruction
 argument_list|()

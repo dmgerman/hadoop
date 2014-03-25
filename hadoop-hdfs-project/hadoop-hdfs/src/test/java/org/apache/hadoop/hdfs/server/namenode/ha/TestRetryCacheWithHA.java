@@ -5405,9 +5405,6 @@ operator|.
 name|hasNext
 argument_list|()
 operator|&&
-operator|(
-name|long
-operator|)
 name|iter
 operator|.
 name|next

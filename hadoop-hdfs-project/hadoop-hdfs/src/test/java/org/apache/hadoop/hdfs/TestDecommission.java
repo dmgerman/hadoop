@@ -1046,15 +1046,10 @@ expr_stmt|;
 name|HdfsDataInputStream
 name|dis
 init|=
-call|(
-name|HdfsDataInputStream
-call|)
-argument_list|(
 operator|(
-name|DistributedFileSystem
+name|HdfsDataInputStream
 operator|)
 name|fileSys
-argument_list|)
 operator|.
 name|open
 argument_list|(

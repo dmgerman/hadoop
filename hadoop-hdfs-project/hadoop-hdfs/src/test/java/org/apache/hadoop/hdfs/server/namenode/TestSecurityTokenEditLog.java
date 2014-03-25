@@ -1092,9 +1092,6 @@ decl_stmt|;
 name|DelegationTokenIdentifier
 name|ident1
 init|=
-operator|(
-name|DelegationTokenIdentifier
-operator|)
 name|token1
 operator|.
 name|decodeIdentifier
@@ -1103,9 +1100,6 @@ decl_stmt|;
 name|DelegationTokenIdentifier
 name|ident2
 init|=
-operator|(
-name|DelegationTokenIdentifier
-operator|)
 name|token2
 operator|.
 name|decodeIdentifier

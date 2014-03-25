@@ -1702,17 +1702,12 @@ condition|)
 block|{
 if|if
 condition|(
-operator|(
-operator|(
-name|String
-operator|)
 name|innerMap
 operator|.
 name|get
 argument_list|(
 literal|"adminState"
 argument_list|)
-operator|)
 operator|.
 name|equals
 argument_list|(

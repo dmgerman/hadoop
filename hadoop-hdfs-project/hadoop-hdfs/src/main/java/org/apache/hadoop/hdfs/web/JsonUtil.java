@@ -2496,12 +2496,9 @@ name|defaultValue
 return|;
 block|}
 return|return
-call|(
-name|long
-call|)
-argument_list|(
+operator|(
 name|Long
-argument_list|)
+operator|)
 name|value
 return|;
 block|}

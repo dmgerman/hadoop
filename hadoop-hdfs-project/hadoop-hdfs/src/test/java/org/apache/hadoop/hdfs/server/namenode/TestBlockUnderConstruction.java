@@ -429,9 +429,6 @@ argument_list|()
 expr_stmt|;
 name|hdfs
 operator|=
-operator|(
-name|DistributedFileSystem
-operator|)
 name|cluster
 operator|.
 name|getFileSystem

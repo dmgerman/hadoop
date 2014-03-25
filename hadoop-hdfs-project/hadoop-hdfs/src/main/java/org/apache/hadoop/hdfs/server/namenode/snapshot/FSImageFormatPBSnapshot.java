@@ -2971,12 +2971,7 @@ name|rb
 operator|.
 name|setDstSnapshotId
 argument_list|(
-operator|(
-operator|(
-name|DstReference
-operator|)
 name|ref
-operator|)
 operator|.
 name|getDstSnapshotId
 argument_list|()

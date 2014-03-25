@@ -509,9 +509,6 @@ decl_stmt|;
 name|DistributedFileSystem
 name|fileSystem
 init|=
-operator|(
-name|DistributedFileSystem
-operator|)
 name|cluster
 operator|.
 name|getFileSystem
@@ -902,9 +899,6 @@ comment|// Make sure we work with DFS in order to utilize all its functionality
 name|DistributedFileSystem
 name|fileSystem
 init|=
-operator|(
-name|DistributedFileSystem
-operator|)
 name|cluster
 operator|.
 name|getFileSystem
@@ -1512,9 +1506,6 @@ block|{
 name|DistributedFileSystem
 name|fs
 init|=
-operator|(
-name|DistributedFileSystem
-operator|)
 name|cluster
 operator|.
 name|getFileSystem
@@ -1795,9 +1786,6 @@ block|{
 name|DistributedFileSystem
 name|fs
 init|=
-operator|(
-name|DistributedFileSystem
-operator|)
 name|cluster
 operator|.
 name|getFileSystem

@@ -217,9 +217,6 @@ expr_stmt|;
 name|DistributedFileSystem
 name|fs
 init|=
-operator|(
-name|DistributedFileSystem
-operator|)
 name|cluster
 operator|.
 name|getFileSystem

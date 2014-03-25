@@ -19626,9 +19626,6 @@ name|AclEditLogProto
 operator|.
 name|parseDelimitedFrom
 argument_list|(
-operator|(
-name|DataInputStream
-operator|)
 name|in
 argument_list|)
 decl_stmt|;

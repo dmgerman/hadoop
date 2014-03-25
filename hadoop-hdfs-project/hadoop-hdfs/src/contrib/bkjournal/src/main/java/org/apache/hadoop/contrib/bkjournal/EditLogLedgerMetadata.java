@@ -1081,9 +1081,6 @@ name|hash
 operator|*
 literal|31
 operator|+
-operator|(
-name|int
-operator|)
 name|dataLayoutVersion
 expr_stmt|;
 return|return

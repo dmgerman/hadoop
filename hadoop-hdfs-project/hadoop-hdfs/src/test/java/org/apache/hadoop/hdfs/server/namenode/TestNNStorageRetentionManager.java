@@ -2649,10 +2649,6 @@ index|[
 literal|0
 index|]
 argument_list|,
-call|(
-name|long
-call|)
-argument_list|(
 operator|(
 name|Long
 operator|)
@@ -2660,12 +2656,7 @@ name|args
 index|[
 literal|1
 index|]
-argument_list|)
 argument_list|,
-call|(
-name|boolean
-call|)
-argument_list|(
 operator|(
 name|Boolean
 operator|)
@@ -2673,7 +2664,6 @@ name|args
 index|[
 literal|2
 index|]
-argument_list|)
 argument_list|)
 expr_stmt|;
 return|return

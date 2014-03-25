@@ -12114,12 +12114,7 @@ name|DirectoryDiff
 argument_list|>
 name|diffList
 init|=
-operator|(
-operator|(
-name|INodeDirectorySnapshottable
-operator|)
 name|dir1Node
-operator|)
 operator|.
 name|getDiffs
 argument_list|()
@@ -12671,12 +12666,7 @@ name|DirectoryDiff
 argument_list|>
 name|diffList
 init|=
-operator|(
-operator|(
-name|INodeDirectorySnapshottable
-operator|)
 name|dir1Node
-operator|)
 operator|.
 name|getDiffs
 argument_list|()

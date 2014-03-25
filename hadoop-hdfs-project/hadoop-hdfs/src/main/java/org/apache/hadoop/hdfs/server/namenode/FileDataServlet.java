@@ -374,12 +374,7 @@ condition|)
 block|{
 name|hostname
 operator|=
-operator|(
-operator|(
-name|DatanodeInfo
-operator|)
 name|host
-operator|)
 operator|.
 name|getHostName
 argument_list|()

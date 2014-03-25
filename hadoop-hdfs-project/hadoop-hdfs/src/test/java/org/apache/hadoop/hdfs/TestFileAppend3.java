@@ -653,9 +653,6 @@ argument_list|()
 expr_stmt|;
 name|fs
 operator|=
-operator|(
-name|DistributedFileSystem
-operator|)
 name|cluster
 operator|.
 name|getFileSystem

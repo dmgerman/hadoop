@@ -507,9 +507,6 @@ name|RangeHeaderUrlOpener
 argument_list|(
 name|factory
 argument_list|,
-operator|(
-name|URL
-operator|)
 literal|null
 argument_list|)
 argument_list|)
