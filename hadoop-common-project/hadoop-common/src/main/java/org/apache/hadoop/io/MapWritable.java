@@ -314,11 +314,11 @@ operator|instanceof
 name|MapWritable
 condition|)
 block|{
-name|Map
+name|MapWritable
 name|map
 init|=
 operator|(
-name|Map
+name|MapWritable
 operator|)
 name|obj
 decl_stmt|;
@@ -428,11 +428,6 @@ return|;
 block|}
 annotation|@
 name|Override
-annotation|@
-name|SuppressWarnings
-argument_list|(
-literal|"unchecked"
-argument_list|)
 DECL|method|put (Writable key, Writable value)
 specifier|public
 name|Writable
@@ -687,11 +682,6 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-annotation|@
-name|SuppressWarnings
-argument_list|(
-literal|"unchecked"
-argument_list|)
 annotation|@
 name|Override
 DECL|method|readFields (DataInput in)

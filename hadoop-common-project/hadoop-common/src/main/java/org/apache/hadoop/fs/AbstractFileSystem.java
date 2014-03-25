@@ -3138,7 +3138,7 @@ literal|"File system does not support symlinks"
 argument_list|)
 throw|;
 block|}
-comment|/**    * Partially resolves the path. This is used during symlink resolution in    * {@link FSLinkResolver}, and differs from the similarly named method    * {@link FileContext#getLinkTarget(Path)}.    */
+comment|/**    * Partially resolves the path. This is used during symlink resolution in    * {@link FSLinkResolver}, and differs from the similarly named method    * {@link FileContext#getLinkTarget(Path)}.    * @throws IOException subclass implementations may throw IOException     */
 DECL|method|getLinkTarget (final Path f)
 specifier|public
 name|Path
@@ -3151,11 +3151,19 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
-comment|/* We should never get here. Any file system that threw an      * UnresolvedLinkException, causing this function to be called,      * needs to override this method.      */
 throw|throw
 operator|new
 name|AssertionError
+argument_list|(
+literal|"Implementation Error: "
+operator|+
+name|getClass
 argument_list|()
+operator|+
+literal|" that threw an UnresolvedLinkException, causing this method to be"
+operator|+
+literal|" called, needs to override this method."
+argument_list|)
 throw|;
 block|}
 comment|/**    * The specification of this method matches that of    * {@link FileContext#setPermission(Path, FsPermission)} except that Path f    * must be for this file system.    */

@@ -2465,8 +2465,6 @@ parameter_list|(
 name|Configuration
 name|conf
 parameter_list|)
-throws|throws
-name|IOException
 block|{
 return|return
 name|HttpServer2
@@ -2964,8 +2962,6 @@ parameter_list|,
 name|boolean
 name|isFiltered
 parameter_list|)
-throws|throws
-name|IOException
 block|{
 name|webServer
 operator|.

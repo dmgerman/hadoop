@@ -274,8 +274,6 @@ name|AbstractFileSystem
 name|fs
 parameter_list|)
 throws|throws
-name|IOException
-throws|,
 name|URISyntaxException
 block|{
 name|super

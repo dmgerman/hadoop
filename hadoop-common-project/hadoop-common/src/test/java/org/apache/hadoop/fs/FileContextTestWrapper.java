@@ -297,9 +297,6 @@ block|{
 name|BlockSize
 name|blockSizeOpt
 init|=
-operator|(
-name|BlockSize
-operator|)
 name|CreateOpts
 operator|.
 name|getOpt
@@ -544,9 +541,6 @@ block|{
 name|BlockSize
 name|blockSizeOpt
 init|=
-operator|(
-name|BlockSize
-operator|)
 name|CreateOpts
 operator|.
 name|getOpt

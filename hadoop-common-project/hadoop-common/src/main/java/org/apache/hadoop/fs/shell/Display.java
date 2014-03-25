@@ -34,7 +34,7 @@ name|java
 operator|.
 name|io
 operator|.
-name|File
+name|IOException
 import|;
 end_import
 
@@ -45,16 +45,6 @@ operator|.
 name|io
 operator|.
 name|InputStream
-import|;
-end_import
-
-begin_import
-import|import
-name|java
-operator|.
-name|io
-operator|.
-name|IOException
 import|;
 end_import
 
@@ -77,6 +67,18 @@ operator|.
 name|zip
 operator|.
 name|GZIPInputStream
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|avro
+operator|.
+name|Schema
 import|;
 end_import
 
@@ -175,18 +177,6 @@ operator|.
 name|io
 operator|.
 name|JsonEncoder
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|avro
-operator|.
-name|Schema
 import|;
 end_import
 
@@ -1486,6 +1476,9 @@ decl_stmt|;
 DECL|field|fileReader
 specifier|private
 name|FileReader
+argument_list|<
+name|?
+argument_list|>
 name|fileReader
 decl_stmt|;
 DECL|field|writer

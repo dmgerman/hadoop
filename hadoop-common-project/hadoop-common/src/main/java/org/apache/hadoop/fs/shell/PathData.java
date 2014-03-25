@@ -2426,12 +2426,7 @@ name|path
 operator|.
 name|compareTo
 argument_list|(
-operator|(
-operator|(
-name|PathData
-operator|)
 name|o
-operator|)
 operator|.
 name|path
 argument_list|)

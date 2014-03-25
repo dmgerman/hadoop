@@ -351,8 +351,6 @@ parameter_list|(
 name|FileContext
 name|fc
 parameter_list|)
-throws|throws
-name|IOException
 block|{
 if|if
 condition|(
@@ -408,8 +406,6 @@ parameter_list|(
 name|FileContext
 name|fc
 parameter_list|)
-throws|throws
-name|IOException
 block|{
 return|return
 name|fc
@@ -435,8 +431,6 @@ parameter_list|(
 name|FileContext
 name|fc
 parameter_list|)
-throws|throws
-name|IOException
 block|{
 return|return
 name|getTestRootPath
@@ -496,9 +490,6 @@ block|{
 name|BlockSize
 name|blockSizeOpt
 init|=
-operator|(
-name|BlockSize
-operator|)
 name|CreateOpts
 operator|.
 name|getOpt
@@ -779,9 +770,6 @@ block|{
 name|BlockSize
 name|blockSizeOpt
 init|=
-operator|(
-name|BlockSize
-operator|)
 name|CreateOpts
 operator|.
 name|getOpt
@@ -1139,8 +1127,6 @@ name|FileStatus
 index|[]
 name|dirList
 parameter_list|)
-throws|throws
-name|IOException
 block|{
 return|return
 name|containsPath
@@ -1172,8 +1158,6 @@ name|FileStatus
 index|[]
 name|dirList
 parameter_list|)
-throws|throws
-name|IOException
 block|{
 for|for
 control|(
@@ -1233,8 +1217,6 @@ name|FileStatus
 index|[]
 name|dirList
 parameter_list|)
-throws|throws
-name|IOException
 block|{
 return|return
 name|containsPath

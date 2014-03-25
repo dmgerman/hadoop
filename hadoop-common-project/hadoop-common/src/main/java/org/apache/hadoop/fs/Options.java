@@ -653,20 +653,22 @@ name|createParent
 return|;
 block|}
 block|}
-comment|/**      * Get an option of desired type      * @param theClass is the desired class of the opt      * @param opts - not null - at least one opt must be passed      * @return an opt from one of the opts of type theClass.      *   returns null if there isn't any      */
-DECL|method|getOpt (Class<? extends CreateOpts> theClass, CreateOpts ...opts)
-specifier|protected
+comment|/**      * Get an option of desired type      * @param clazz is the desired class of the opt      * @param opts - not null - at least one opt must be passed      * @return an opt from one of the opts of type theClass.      *   returns null if there isn't any      */
+DECL|method|getOpt (Class<T> clazz, CreateOpts... opts)
 specifier|static
+parameter_list|<
+name|T
+extends|extends
 name|CreateOpts
+parameter_list|>
+name|T
 name|getOpt
 parameter_list|(
 name|Class
 argument_list|<
-name|?
-extends|extends
-name|CreateOpts
+name|T
 argument_list|>
-name|theClass
+name|clazz
 parameter_list|,
 name|CreateOpts
 modifier|...
@@ -688,7 +690,7 @@ literal|"Null opt"
 argument_list|)
 throw|;
 block|}
-name|CreateOpts
+name|T
 name|result
 init|=
 literal|null
@@ -720,7 +722,7 @@ operator|.
 name|getClass
 argument_list|()
 operator|==
-name|theClass
+name|clazz
 condition|)
 block|{
 if|if
@@ -729,19 +731,36 @@ name|result
 operator|!=
 literal|null
 condition|)
+block|{
 throw|throw
 operator|new
 name|IllegalArgumentException
 argument_list|(
-literal|"multiple blocksize varargs"
+literal|"multiple opts varargs: "
+operator|+
+name|clazz
 argument_list|)
 throw|;
-name|result
-operator|=
+block|}
+annotation|@
+name|SuppressWarnings
+argument_list|(
+literal|"unchecked"
+argument_list|)
+name|T
+name|t
+init|=
+operator|(
+name|T
+operator|)
 name|opts
 index|[
 name|i
 index|]
+decl_stmt|;
+name|result
+operator|=
+name|t
 expr_stmt|;
 block|}
 block|}
@@ -750,8 +769,7 @@ name|result
 return|;
 block|}
 comment|/**      * set an option      * @param newValue  the option to be set      * @param opts  - the option is set into this array of opts      * @return updated CreateOpts[] == opts + newValue      */
-DECL|method|setOpt (T newValue, CreateOpts ...opts)
-specifier|protected
+DECL|method|setOpt (final T newValue, final CreateOpts... opts)
 specifier|static
 parameter_list|<
 name|T
@@ -762,14 +780,28 @@ name|CreateOpts
 index|[]
 name|setOpt
 parameter_list|(
+specifier|final
 name|T
 name|newValue
 parameter_list|,
+specifier|final
 name|CreateOpts
 modifier|...
 name|opts
 parameter_list|)
 block|{
+specifier|final
+name|Class
+argument_list|<
+name|?
+argument_list|>
+name|clazz
+init|=
+name|newValue
+operator|.
+name|getClass
+argument_list|()
+decl_stmt|;
 name|boolean
 name|alreadyInOpts
 init|=
@@ -809,23 +841,24 @@ operator|.
 name|getClass
 argument_list|()
 operator|==
-name|newValue
-operator|.
-name|getClass
-argument_list|()
+name|clazz
 condition|)
 block|{
 if|if
 condition|(
 name|alreadyInOpts
 condition|)
+block|{
 throw|throw
 operator|new
 name|IllegalArgumentException
 argument_list|(
-literal|"multiple opts varargs"
+literal|"multiple opts varargs: "
+operator|+
+name|clazz
 argument_list|)
 throw|;
+block|}
 name|alreadyInOpts
 operator|=
 literal|true
@@ -853,6 +886,20 @@ name|alreadyInOpts
 condition|)
 block|{
 comment|// no newValue in opt
+specifier|final
+name|int
+name|oldLength
+init|=
+name|opts
+operator|==
+literal|null
+condition|?
+literal|0
+else|:
+name|opts
+operator|.
+name|length
+decl_stmt|;
 name|CreateOpts
 index|[]
 name|newOpts
@@ -860,13 +907,18 @@ init|=
 operator|new
 name|CreateOpts
 index|[
-name|opts
-operator|.
-name|length
+name|oldLength
 operator|+
 literal|1
 index|]
 decl_stmt|;
+if|if
+condition|(
+name|oldLength
+operator|>
+literal|0
+condition|)
+block|{
 name|System
 operator|.
 name|arraycopy
@@ -879,16 +931,13 @@ name|newOpts
 argument_list|,
 literal|0
 argument_list|,
-name|opts
-operator|.
-name|length
+name|oldLength
 argument_list|)
 expr_stmt|;
+block|}
 name|newOpts
 index|[
-name|opts
-operator|.
-name|length
+name|oldLength
 index|]
 operator|=
 name|newValue
@@ -1119,64 +1168,16 @@ name|int
 name|userBytesPerChecksum
 parameter_list|)
 block|{
-comment|// The following is done to avoid unnecessary creation of new objects.
-comment|// tri-state variable: 0 default, 1 userBytesPerChecksum, 2 userOpt
-name|short
-name|whichSize
-decl_stmt|;
-comment|// true default, false userOpt
+specifier|final
 name|boolean
 name|useDefaultType
 decl_stmt|;
-comment|//  bytesPerChecksum - order of preference
-comment|//    user specified value in bytesPerChecksum
-comment|//    user specified value in checksumOpt
-comment|//    default.
-if|if
-condition|(
-name|userBytesPerChecksum
-operator|>
-literal|0
-condition|)
-block|{
-name|whichSize
-operator|=
-literal|1
-expr_stmt|;
-comment|// userBytesPerChecksum
-block|}
-elseif|else
-if|if
-condition|(
-name|userOpt
-operator|!=
-literal|null
-operator|&&
-name|userOpt
+specifier|final
+name|DataChecksum
 operator|.
-name|getBytesPerChecksum
-argument_list|()
-operator|>
-literal|0
-condition|)
-block|{
-name|whichSize
-operator|=
-literal|2
-expr_stmt|;
-comment|// userOpt
-block|}
-else|else
-block|{
-name|whichSize
-operator|=
-literal|0
-expr_stmt|;
-comment|// default
-block|}
-comment|// checksum type - order of preference
-comment|//   user specified value in checksumOpt
-comment|//   default.
+name|Type
+name|type
+decl_stmt|;
 if|if
 condition|(
 name|userOpt
@@ -1199,6 +1200,13 @@ name|useDefaultType
 operator|=
 literal|false
 expr_stmt|;
+name|type
+operator|=
+name|userOpt
+operator|.
+name|getChecksumType
+argument_list|()
+expr_stmt|;
 block|}
 else|else
 block|{
@@ -1206,80 +1214,23 @@ name|useDefaultType
 operator|=
 literal|true
 expr_stmt|;
-block|}
-comment|// Short out the common and easy cases
-if|if
-condition|(
-name|whichSize
-operator|==
-literal|0
-operator|&&
-name|useDefaultType
-condition|)
-block|{
-return|return
-name|defaultOpt
-return|;
-block|}
-elseif|else
-if|if
-condition|(
-name|whichSize
-operator|==
-literal|2
-operator|&&
-operator|!
-name|useDefaultType
-condition|)
-block|{
-return|return
-name|userOpt
-return|;
-block|}
-comment|// Take care of the rest of combinations
-name|DataChecksum
-operator|.
-name|Type
 name|type
-init|=
-name|useDefaultType
-condition|?
+operator|=
 name|defaultOpt
 operator|.
 name|getChecksumType
 argument_list|()
-else|:
-name|userOpt
-operator|.
-name|getChecksumType
-argument_list|()
-decl_stmt|;
-if|if
-condition|(
-name|whichSize
-operator|==
-literal|0
-condition|)
-block|{
-return|return
-operator|new
-name|ChecksumOpt
-argument_list|(
-name|type
-argument_list|,
-name|defaultOpt
-operator|.
-name|getBytesPerChecksum
-argument_list|()
-argument_list|)
-return|;
+expr_stmt|;
 block|}
-elseif|else
+comment|//  bytesPerChecksum - order of preference
+comment|//    user specified value in bytesPerChecksum
+comment|//    user specified value in checksumOpt
+comment|//    default.
 if|if
 condition|(
-name|whichSize
-operator|==
-literal|1
+name|userBytesPerChecksum
+operator|>
+literal|0
 condition|)
 block|{
 return|return
@@ -1292,15 +1243,52 @@ name|userBytesPerChecksum
 argument_list|)
 return|;
 block|}
-else|else
+elseif|else
+if|if
+condition|(
+name|userOpt
+operator|!=
+literal|null
+operator|&&
+name|userOpt
+operator|.
+name|getBytesPerChecksum
+argument_list|()
+operator|>
+literal|0
+condition|)
 block|{
 return|return
+operator|!
+name|useDefaultType
+condition|?
+name|userOpt
+else|:
 operator|new
 name|ChecksumOpt
 argument_list|(
 name|type
 argument_list|,
 name|userOpt
+operator|.
+name|getBytesPerChecksum
+argument_list|()
+argument_list|)
+return|;
+block|}
+else|else
+block|{
+return|return
+name|useDefaultType
+condition|?
+name|defaultOpt
+else|:
+operator|new
+name|ChecksumOpt
+argument_list|(
+name|type
+argument_list|,
+name|defaultOpt
 operator|.
 name|getBytesPerChecksum
 argument_list|()

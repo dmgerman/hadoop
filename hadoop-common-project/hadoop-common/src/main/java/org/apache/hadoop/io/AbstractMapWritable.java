@@ -190,6 +190,9 @@ DECL|field|classToIdMap
 name|Map
 argument_list|<
 name|Class
+argument_list|<
+name|?
+argument_list|>
 argument_list|,
 name|Byte
 argument_list|>
@@ -199,6 +202,9 @@ operator|new
 name|ConcurrentHashMap
 argument_list|<
 name|Class
+argument_list|<
+name|?
+argument_list|>
 argument_list|,
 name|Byte
 argument_list|>
@@ -213,6 +219,9 @@ argument_list|<
 name|Byte
 argument_list|,
 name|Class
+argument_list|<
+name|?
+argument_list|>
 argument_list|>
 name|idToClassMap
 init|=
@@ -222,6 +231,9 @@ argument_list|<
 name|Byte
 argument_list|,
 name|Class
+argument_list|<
+name|?
+argument_list|>
 argument_list|>
 argument_list|()
 decl_stmt|;
@@ -245,13 +257,16 @@ name|newClasses
 return|;
 block|}
 comment|/**    * Used to add "predefined" classes and by Writable to copy "new" classes.    */
-DECL|method|addToMap (Class clazz, byte id)
+DECL|method|addToMap (Class<?> clazz, byte id)
 specifier|private
 specifier|synchronized
 name|void
 name|addToMap
 parameter_list|(
 name|Class
+argument_list|<
+name|?
+argument_list|>
 name|clazz
 parameter_list|,
 name|byte
@@ -318,6 +333,9 @@ argument_list|)
 condition|)
 block|{
 name|Class
+argument_list|<
+name|?
+argument_list|>
 name|c
 init|=
 name|idToClassMap
@@ -383,13 +401,16 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|/** Add a Class to the maps if it is not already present. */
-DECL|method|addToMap (Class clazz)
+DECL|method|addToMap (Class<?> clazz)
 specifier|protected
 specifier|synchronized
 name|void
 name|addToMap
 parameter_list|(
 name|Class
+argument_list|<
+name|?
+argument_list|>
 name|clazz
 parameter_list|)
 block|{
@@ -444,6 +465,9 @@ comment|/** @return the Class class for the specified id */
 DECL|method|getClass (byte id)
 specifier|protected
 name|Class
+argument_list|<
+name|?
+argument_list|>
 name|getClass
 parameter_list|(
 name|byte
@@ -460,12 +484,15 @@ argument_list|)
 return|;
 block|}
 comment|/** @return the id for the specified Class */
-DECL|method|getId (Class clazz)
+DECL|method|getId (Class<?> clazz)
 specifier|protected
 name|byte
 name|getId
 parameter_list|(
 name|Class
+argument_list|<
+name|?
+argument_list|>
 name|clazz
 parameter_list|)
 block|{
