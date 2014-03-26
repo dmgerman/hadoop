@@ -3049,7 +3049,6 @@ literal|0
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Test that the number of safe blocks is accounted correctly even when    * blocks move between under-construction state and completed state.    * If a FINALIZED report arrives at the SBN before the block is marked    * COMPLETE, then when we get the OP_CLOSE we need to count it as "safe"    * at that point. This is a regression test for HDFS-2742.    */
 annotation|@
 name|Test
 DECL|method|testSafeBlockTracking ()
@@ -3057,6 +3056,40 @@ specifier|public
 name|void
 name|testSafeBlockTracking
 parameter_list|()
+throws|throws
+name|Exception
+block|{
+name|testSafeBlockTracking
+argument_list|(
+literal|false
+argument_list|)
+expr_stmt|;
+block|}
+annotation|@
+name|Test
+DECL|method|testSafeBlockTracking2 ()
+specifier|public
+name|void
+name|testSafeBlockTracking2
+parameter_list|()
+throws|throws
+name|Exception
+block|{
+name|testSafeBlockTracking
+argument_list|(
+literal|true
+argument_list|)
+expr_stmt|;
+block|}
+comment|/**    * Test that the number of safe blocks is accounted correctly even when    * blocks move between under-construction state and completed state.    * If a FINALIZED report arrives at the SBN before the block is marked    * COMPLETE, then when we get the OP_CLOSE we need to count it as "safe"    * at that point. This is a regression test for HDFS-2742.    *     * @param noFirstBlockReport If this is set to true, we shutdown NN1 before    * closing the writing streams. In this way, when NN1 restarts, all DNs will    * first send it incremental block report before the first full block report.    * And NN1 will not treat the full block report as the first block report    * in BlockManager#processReport.     */
+DECL|method|testSafeBlockTracking (boolean noFirstBlockReport)
+specifier|private
+name|void
+name|testSafeBlockTracking
+parameter_list|(
+name|boolean
+name|noFirstBlockReport
+parameter_list|)
 throws|throws
 name|Exception
 block|{
@@ -3168,6 +3201,19 @@ expr_stmt|;
 block|}
 finally|finally
 block|{
+if|if
+condition|(
+name|noFirstBlockReport
+condition|)
+block|{
+name|cluster
+operator|.
+name|shutdownNameNode
+argument_list|(
+literal|1
+argument_list|)
+expr_stmt|;
+block|}
 for|for
 control|(
 name|FSDataOutputStream

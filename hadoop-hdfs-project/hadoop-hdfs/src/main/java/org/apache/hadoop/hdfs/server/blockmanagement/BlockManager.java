@@ -9110,12 +9110,14 @@ name|newReport
 operator|==
 literal|null
 condition|)
+block|{
 name|newReport
 operator|=
 operator|new
 name|BlockListAsLongs
 argument_list|()
 expr_stmt|;
+block|}
 comment|// scan the report and process newly reported blocks
 name|BlockReportIterator
 name|itBR
@@ -9447,7 +9449,7 @@ name|block
 argument_list|)
 condition|)
 block|{
-comment|/*  TODO: following assertion is incorrect, see HDFS-2668 assert storedBlock.findDatanode(dn)< 0 : "Block " + block         + " in recentInvalidatesSet should not appear in DN " + dn; */
+comment|/*        * TODO: following assertion is incorrect, see HDFS-2668 assert        * storedBlock.findDatanode(dn)< 0 : "Block " + block +        * " in recentInvalidatesSet should not appear in DN " + dn;        */
 return|return
 name|storedBlock
 return|;
@@ -9535,7 +9537,11 @@ name|BlockInfoUnderConstruction
 operator|)
 name|storedBlock
 argument_list|,
+operator|new
+name|Block
+argument_list|(
 name|block
+argument_list|)
 argument_list|,
 name|reportedState
 argument_list|)
@@ -13341,7 +13347,7 @@ comment|// The DataNode is reporting an unknown storage. Usually the NN learns
 comment|// about new storages from heartbeats but during NN restart we may
 comment|// receive a block report or incremental report before the heartbeat.
 comment|// We must handle this for protocol compatibility. This issue was
-comment|// uncovered by HDFS-6904.
+comment|// uncovered by HDFS-6094.
 name|node
 operator|.
 name|updateStorage
