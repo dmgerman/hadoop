@@ -316,6 +316,11 @@ argument_list|(
 name|csq
 argument_list|)
 expr_stmt|;
+name|out
+operator|.
+name|flush
+argument_list|()
+expr_stmt|;
 block|}
 return|return
 name|this
