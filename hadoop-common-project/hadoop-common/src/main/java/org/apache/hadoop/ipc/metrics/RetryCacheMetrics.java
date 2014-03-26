@@ -213,7 +213,7 @@ parameter_list|)
 block|{
 name|name
 operator|=
-literal|"RetryCache/"
+literal|"RetryCache."
 operator|+
 name|retryCache
 operator|.

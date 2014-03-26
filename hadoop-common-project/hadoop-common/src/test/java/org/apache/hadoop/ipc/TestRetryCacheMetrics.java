@@ -219,7 +219,7 @@ name|rb
 init|=
 name|getMetrics
 argument_list|(
-literal|"RetryCache/"
+literal|"RetryCache."
 operator|+
 name|cacheName
 argument_list|)
