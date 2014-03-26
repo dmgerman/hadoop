@@ -458,7 +458,7 @@ name|org
 operator|.
 name|junit
 operator|.
-name|AfterClass
+name|After
 import|;
 end_import
 
@@ -468,7 +468,7 @@ name|org
 operator|.
 name|junit
 operator|.
-name|BeforeClass
+name|Before
 import|;
 end_import
 
@@ -506,7 +506,6 @@ argument_list|)
 decl_stmt|;
 DECL|field|yarnCluster
 specifier|protected
-specifier|static
 name|MiniYARNCluster
 name|yarnCluster
 init|=
@@ -514,7 +513,6 @@ literal|null
 decl_stmt|;
 DECL|field|conf
 specifier|protected
-specifier|static
 name|Configuration
 name|conf
 init|=
@@ -524,6 +522,7 @@ argument_list|()
 decl_stmt|;
 DECL|field|APPMASTER_JAR
 specifier|protected
+specifier|final
 specifier|static
 name|String
 name|APPMASTER_JAR
@@ -538,10 +537,9 @@ name|class
 argument_list|)
 decl_stmt|;
 annotation|@
-name|BeforeClass
+name|Before
 DECL|method|setup ()
 specifier|public
-specifier|static
 name|void
 name|setup
 parameter_list|()
@@ -818,10 +816,9 @@ expr_stmt|;
 block|}
 block|}
 annotation|@
-name|AfterClass
+name|After
 DECL|method|tearDown ()
 specifier|public
-specifier|static
 name|void
 name|tearDown
 parameter_list|()
