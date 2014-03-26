@@ -297,7 +297,7 @@ name|port
 operator|=
 name|Integer
 operator|.
-name|valueOf
+name|parseInt
 argument_list|(
 name|portStr
 argument_list|)

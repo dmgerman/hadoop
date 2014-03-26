@@ -1259,7 +1259,7 @@ literal|"testRenewTokenFromHttp error"
 argument_list|,
 name|Long
 operator|.
-name|valueOf
+name|parseLong
 argument_list|(
 name|EXP_DATE
 argument_list|)

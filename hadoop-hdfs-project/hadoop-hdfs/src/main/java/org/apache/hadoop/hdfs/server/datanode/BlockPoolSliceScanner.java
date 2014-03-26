@@ -1984,7 +1984,7 @@ name|blockId
 operator|=
 name|Long
 operator|.
-name|valueOf
+name|parseLong
 argument_list|(
 name|value
 argument_list|)
@@ -2007,7 +2007,7 @@ name|verificationTime
 operator|=
 name|Long
 operator|.
-name|valueOf
+name|parseLong
 argument_list|(
 name|value
 argument_list|)
@@ -2030,7 +2030,7 @@ name|genStamp
 operator|=
 name|Long
 operator|.
-name|valueOf
+name|parseLong
 argument_list|(
 name|value
 argument_list|)

@@ -120,12 +120,7 @@ parameter_list|)
 block|{
 name|super
 argument_list|(
-name|Long
-operator|.
-name|valueOf
-argument_list|(
-literal|0
-argument_list|)
+literal|0L
 argument_list|)
 expr_stmt|;
 name|this

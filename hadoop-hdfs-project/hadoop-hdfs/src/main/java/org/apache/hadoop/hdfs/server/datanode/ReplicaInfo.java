@@ -646,13 +646,9 @@ init|=
 operator|new
 name|File
 argument_list|(
-operator|new
-name|String
-argument_list|(
 name|replicaDirInfo
 operator|.
 name|baseDirPath
-argument_list|)
 argument_list|)
 decl_stmt|;
 name|internedBaseDirs

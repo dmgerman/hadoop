@@ -756,7 +756,7 @@ name|txid
 init|=
 name|Long
 operator|.
-name|valueOf
+name|parseLong
 argument_list|(
 name|matcher
 operator|.

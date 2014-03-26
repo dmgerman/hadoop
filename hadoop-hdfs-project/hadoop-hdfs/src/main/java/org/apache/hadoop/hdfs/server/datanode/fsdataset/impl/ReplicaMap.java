@@ -582,7 +582,7 @@ return|return
 literal|null
 return|;
 block|}
-comment|/**    * Remove the replica's meta information from the map if present    * @param bpid block pool id    * @param the block id of the replica to be removed    * @return the removed replica's meta information    */
+comment|/**    * Remove the replica's meta information from the map if present    * @param bpid block pool id    * @param blockId block id of the replica to be removed    * @return the removed replica's meta information    */
 DECL|method|remove (String bpid, long blockId)
 name|ReplicaInfo
 name|remove

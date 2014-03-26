@@ -3300,7 +3300,7 @@ operator|=
 name|val
 expr_stmt|;
 block|}
-comment|/**    * Marks a list of directories as having experienced an error.    *    * @param sds A list of storage directories to mark as errored.    * @throws IOException    */
+comment|/**    * Marks a list of directories as having experienced an error.    *    * @param sds A list of storage directories to mark as errored.    */
 DECL|method|reportErrorsOnDirectories (List<StorageDirectory> sds)
 name|void
 name|reportErrorsOnDirectories
@@ -3327,7 +3327,7 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-comment|/**    * Reports that a directory has experienced an error.    * Notifies listeners that the directory is no longer    * available.    *    * @param sd A storage directory to mark as errored.    * @throws IOException    */
+comment|/**    * Reports that a directory has experienced an error.    * Notifies listeners that the directory is no longer    * available.    *    * @param sd A storage directory to mark as errored.    */
 DECL|method|reportErrorsOnDirectory (StorageDirectory sd)
 specifier|private
 name|void

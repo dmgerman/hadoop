@@ -866,7 +866,7 @@ operator|.
 name|DFS_NAMENODE_HTTP_PORT_DEFAULT
 return|;
 block|}
-comment|/**    *  We generate the address with one of the following ports, in    *  order of preference.    *  1. Port from the hftp URI e.g. hftp://namenode:4000/ will return 4000.    *  2. Port configured via DFS_NAMENODE_HTTP_PORT_KEY    *  3. DFS_NAMENODE_HTTP_PORT_DEFAULT i.e. 50070.    *    * @param uri    * @return    */
+comment|/**    *  We generate the address with one of the following ports, in    *  order of preference.    *  1. Port from the hftp URI e.g. hftp://namenode:4000/ will return 4000.    *  2. Port configured via DFS_NAMENODE_HTTP_PORT_KEY    *  3. DFS_NAMENODE_HTTP_PORT_DEFAULT i.e. 50070.    *    * @param uri    */
 DECL|method|getNamenodeAddr (URI uri)
 specifier|protected
 name|InetSocketAddress
@@ -2304,7 +2304,7 @@ name|FileStatus
 argument_list|(
 name|Long
 operator|.
-name|valueOf
+name|parseLong
 argument_list|(
 name|attrs
 operator|.
@@ -2313,9 +2313,6 @@ argument_list|(
 literal|"size"
 argument_list|)
 argument_list|)
-operator|.
-name|longValue
-argument_list|()
 argument_list|,
 literal|false
 argument_list|,
@@ -2336,7 +2333,7 @@ argument_list|()
 argument_list|,
 name|Long
 operator|.
-name|valueOf
+name|parseLong
 argument_list|(
 name|attrs
 operator|.
@@ -2345,9 +2342,6 @@ argument_list|(
 literal|"blocksize"
 argument_list|)
 argument_list|)
-operator|.
-name|longValue
-argument_list|()
 argument_list|,
 name|modif
 argument_list|,

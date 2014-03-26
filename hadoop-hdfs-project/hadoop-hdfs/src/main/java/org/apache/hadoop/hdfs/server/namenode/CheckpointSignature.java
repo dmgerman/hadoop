@@ -84,24 +84,6 @@ end_import
 
 begin_import
 import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|hdfs
-operator|.
-name|server
-operator|.
-name|namenode
-operator|.
-name|FSImage
-import|;
-end_import
-
-begin_import
-import|import
 name|com
 operator|.
 name|google
@@ -257,7 +239,7 @@ name|layoutVersion
 operator|=
 name|Integer
 operator|.
-name|valueOf
+name|parseInt
 argument_list|(
 name|fields
 index|[
@@ -270,7 +252,7 @@ name|namespaceID
 operator|=
 name|Integer
 operator|.
-name|valueOf
+name|parseInt
 argument_list|(
 name|fields
 index|[
@@ -283,7 +265,7 @@ name|cTime
 operator|=
 name|Long
 operator|.
-name|valueOf
+name|parseLong
 argument_list|(
 name|fields
 index|[
@@ -296,7 +278,7 @@ name|mostRecentCheckpointTxId
 operator|=
 name|Long
 operator|.
-name|valueOf
+name|parseLong
 argument_list|(
 name|fields
 index|[
@@ -309,7 +291,7 @@ name|curSegmentTxId
 operator|=
 name|Long
 operator|.
-name|valueOf
+name|parseLong
 argument_list|(
 name|fields
 index|[
@@ -331,7 +313,6 @@ operator|=
 name|fields
 index|[
 name|i
-operator|++
 index|]
 expr_stmt|;
 block|}

@@ -1353,7 +1353,7 @@ name|startTxId
 init|=
 name|Long
 operator|.
-name|valueOf
+name|parseLong
 argument_list|(
 name|editsMatch
 operator|.
@@ -1368,7 +1368,7 @@ name|endTxId
 init|=
 name|Long
 operator|.
-name|valueOf
+name|parseLong
 argument_list|(
 name|editsMatch
 operator|.
@@ -1442,7 +1442,7 @@ name|startTxId
 init|=
 name|Long
 operator|.
-name|valueOf
+name|parseLong
 argument_list|(
 name|inProgressEditsMatch
 operator|.

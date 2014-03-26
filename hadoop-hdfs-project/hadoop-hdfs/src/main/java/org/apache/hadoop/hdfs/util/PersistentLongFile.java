@@ -54,16 +54,6 @@ name|java
 operator|.
 name|io
 operator|.
-name|FileReader
-import|;
-end_import
-
-begin_import
-import|import
-name|java
-operator|.
-name|io
-operator|.
 name|IOException
 import|;
 end_import
@@ -431,7 +421,7 @@ name|val
 operator|=
 name|Long
 operator|.
-name|valueOf
+name|parseLong
 argument_list|(
 name|br
 operator|.

@@ -165,7 +165,7 @@ name|totalFileSize
 operator|+=
 name|Long
 operator|.
-name|valueOf
+name|parseLong
 argument_list|(
 name|value
 argument_list|)
@@ -185,7 +185,7 @@ name|totalReplications
 operator|+=
 name|Long
 operator|.
-name|valueOf
+name|parseLong
 argument_list|(
 name|value
 argument_list|)
@@ -257,7 +257,7 @@ name|totalNumBlocks
 operator|+=
 name|Long
 operator|.
-name|valueOf
+name|parseLong
 argument_list|(
 name|value
 argument_list|)

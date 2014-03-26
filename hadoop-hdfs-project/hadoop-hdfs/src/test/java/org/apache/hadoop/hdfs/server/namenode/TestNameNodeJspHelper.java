@@ -2087,7 +2087,7 @@ literal|"assertCounts error. actual != expected"
 argument_list|,
 name|Integer
 operator|.
-name|valueOf
+name|parseInt
 argument_list|(
 name|digitLine
 argument_list|)
