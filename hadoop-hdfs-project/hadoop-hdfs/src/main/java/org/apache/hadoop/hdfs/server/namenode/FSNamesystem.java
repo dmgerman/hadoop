@@ -5134,7 +5134,7 @@ literal|"Only one image storage directory ("
 operator|+
 name|DFS_NAMENODE_NAME_DIR_KEY
 operator|+
-literal|") configured. Beware of dataloss"
+literal|") configured. Beware of data loss"
 operator|+
 literal|" due to lack of redundant storage directories!"
 argument_list|)
@@ -5158,7 +5158,7 @@ literal|"Only one namespace edits storage directory ("
 operator|+
 name|DFS_NAMENODE_EDITS_DIR_KEY
 operator|+
-literal|") configured. Beware of dataloss"
+literal|") configured. Beware of data loss"
 operator|+
 literal|" due to lack of redundant storage directories!"
 argument_list|)
@@ -6800,7 +6800,7 @@ argument_list|()
 expr_stmt|;
 block|}
 block|}
-comment|/**     * Start services common to both active and standby states    * @param haContext     * @throws IOException    */
+comment|/**     * Start services common to both active and standby states    */
 DECL|method|startCommonServices (Configuration conf, HAContext haContext)
 name|void
 name|startCommonServices
@@ -6918,7 +6918,7 @@ name|registerMXBean
 argument_list|()
 expr_stmt|;
 block|}
-comment|/**     * Stop services common to both active and standby states    * @throws IOException    */
+comment|/**     * Stop services common to both active and standby states    */
 DECL|method|stopCommonServices ()
 name|void
 name|stopCommonServices
@@ -7293,7 +7293,7 @@ operator|||
 name|alwaysUseDelegationTokensForTests
 return|;
 block|}
-comment|/**     * Stop services required in active state    * @throws InterruptedException    */
+comment|/**     * Stop services required in active state    */
 DECL|method|stopActiveServices ()
 name|void
 name|stopActiveServices
@@ -8273,7 +8273,7 @@ argument_list|)
 return|;
 block|}
 block|}
-comment|/**    * Returns edit directories that are shared between primary and secondary.    * @param conf    * @return Collection of edit directories.    */
+comment|/**    * Returns edit directories that are shared between primary and secondary.    * @param conf configuration    * @return Collection of edit directories.    */
 DECL|method|getSharedEditsDirs (Configuration conf)
 specifier|public
 specifier|static
@@ -10285,7 +10285,7 @@ literal|null
 return|;
 comment|// can never reach here
 block|}
-comment|/**    * Moves all the blocks from srcs and appends them to trg    * To avoid rollbacks we will verify validitity of ALL of the args    * before we start actual move.    *     * This does not support ".inodes" relative path    * @param target    * @param srcs    * @throws IOException    */
+comment|/**    * Moves all the blocks from {@code srcs} and appends them to {@code target}    * To avoid rollbacks we will verify validity of ALL of the args    * before we start actual move.    *     * This does not support ".inodes" relative path    * @param target target file path to concatenate into    * @param srcs files that are concatenated    * @throws IOException    */
 DECL|method|concat (String target, String [] srcs)
 name|void
 name|concat
@@ -10327,7 +10327,7 @@ block|{
 return|return;
 comment|// Return previous response
 block|}
-comment|// Either there is no previous request in progres or it has failed
+comment|// Either there is no previous request in progress or it has failed
 if|if
 condition|(
 name|FSNamesystem
@@ -10991,7 +10991,7 @@ throw|throw
 operator|new
 name|HadoopIllegalArgumentException
 argument_list|(
-literal|"concat: the soruce file "
+literal|"concat: the source file "
 operator|+
 name|src
 operator|+
@@ -11068,7 +11068,7 @@ throw|throw
 operator|new
 name|HadoopIllegalArgumentException
 argument_list|(
-literal|"concat: the soruce file "
+literal|"concat: the source file "
 operator|+
 name|src
 operator|+
@@ -11172,7 +11172,7 @@ name|logRetryCache
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * stores the modification and access time for this inode.     * The access time is precise upto an hour. The transaction, if needed, is    * written to the edits log but is not flushed.    */
+comment|/**    * stores the modification and access time for this inode.     * The access time is precise up to an hour. The transaction, if needed, is    * written to the edits log but is not flushed.    */
 DECL|method|setTimes (String src, long mtime, long atime)
 name|void
 name|setTimes
@@ -12243,7 +12243,7 @@ throw|;
 block|}
 block|}
 block|}
-comment|/**    * Create a new file entry in the namespace.    *     * For description of parameters and exceptions thrown see    * {@link ClientProtocol#create()}, except it returns valid file status upon    * success    *     * For retryCache handling details see -    * {@link #getFileStatus(boolean, CacheEntryWithPayload)}    *     */
+comment|/**    * Create a new file entry in the namespace.    *     * For description of parameters and exceptions thrown see    * {@link ClientProtocol#create}, except it returns valid file status upon    * success    */
 DECL|method|startFile (String src, PermissionStatus permissions, String holder, String clientMachine, EnumSet<CreateFlag> flag, boolean createParent, short replication, long blockSize)
 name|HdfsFileStatus
 name|startFile
@@ -12730,7 +12730,7 @@ return|return
 name|stat
 return|;
 block|}
-comment|/**    * Create a new file or overwrite an existing file<br>    *     * Once the file is create the client then allocates a new block with the next    * call using {@link NameNode#addBlock()}.    *<p>    * For description of parameters and exceptions thrown see    * {@link ClientProtocol#create()}    */
+comment|/**    * Create a new file or overwrite an existing file<br>    *     * Once the file is create the client then allocates a new block with the next    * call using {@link ClientProtocol#addBlock}.    *<p>    * For description of parameters and exceptions thrown see    * {@link ClientProtocol#create}    */
 DECL|method|startFileInternal (FSPermissionChecker pc, String src, PermissionStatus permissions, String holder, String clientMachine, boolean create, boolean overwrite, boolean createParent, short replication, long blockSize, boolean logRetryEntry)
 specifier|private
 name|void
@@ -13147,7 +13147,7 @@ name|ie
 throw|;
 block|}
 block|}
-comment|/**    * Append to an existing file for append.    *<p>    *     * The method returns the last block of the file if this is a partial block,    * which can still be used for writing more data. The client uses the returned    * block locations to form the data pipeline for this block.<br>    * The method returns null if the last block is full. The client then    * allocates a new block with the next call using {@link NameNode#addBlock()}.    *<p>    *     * For description of parameters and exceptions thrown see    * {@link ClientProtocol#append(String, String)}    *     * @return the last block locations if the block is partial or null otherwise    */
+comment|/**    * Append to an existing file for append.    *<p>    *     * The method returns the last block of the file if this is a partial block,    * which can still be used for writing more data. The client uses the returned    * block locations to form the data pipeline for this block.<br>    * The method returns null if the last block is full. The client then    * allocates a new block with the next call using    * {@link ClientProtocol#addBlock}.    *<p>    *     * For description of parameters and exceptions thrown see    * {@link ClientProtocol#append(String, String)}    *     * @return the last block locations if the block is partial or null otherwise    */
 DECL|method|appendFileInternal (FSPermissionChecker pc, String src, String holder, String clientMachine, boolean logRetryCache)
 specifier|private
 name|LocatedBlock
@@ -15427,7 +15427,7 @@ return|return
 name|lBlk
 return|;
 block|}
-comment|/** @see NameNode#getAdditionalDatanode(String, ExtendedBlock, DatanodeInfo[], DatanodeInfo[], int, String) */
+comment|/** @see ClientProtocol#getAdditionalDatanode */
 DECL|method|getAdditionalDatanode (String src, final ExtendedBlock blk, final DatanodeInfo[] existings, final String[] storageIDs, final Set<Node> excludes, final int numAdditionalNodes, final String clientName )
 name|LocatedBlock
 name|getAdditionalDatanode
@@ -16480,7 +16480,7 @@ return|return
 literal|true
 return|;
 block|}
-comment|/**    * Save allocated block at the given pending filename    *     * @param src path to the file    * @param inodesInPath representing each of the components of src.     *                     The last INode is the INode for the file.    * @throws QuotaExceededException If addition of block exceeds space quota    */
+comment|/**    * Save allocated block at the given pending filename    *     * @param src path to the file    * @param inodesInPath representing each of the components of src.    *                     The last INode is the INode for {@code src} file.    * @param newBlock newly allocated block to be save    * @param targets target datanodes where replicas of the new block is placed    * @throws QuotaExceededException If addition of block exceeds space quota    */
 DECL|method|saveAllocatedBlock (String src, INodesInPath inodesInPath, Block newBlock, DatanodeStorageInfo[] targets)
 name|BlockInfo
 name|saveAllocatedBlock
@@ -26206,7 +26206,7 @@ argument_list|()
 expr_stmt|;
 block|}
 block|}
-comment|/**    * Check whether current user have permissions to access the path. For more    * details of the parameters, see    * {@link FSPermissionChecker#checkPermission()}.    */
+comment|/**    * Check whether current user have permissions to access the path. For more    * details of the parameters, see    * {@link FSPermissionChecker#checkPermission}.    */
 DECL|method|checkPermission (FSPermissionChecker pc, String path, boolean doCheckOwner, FsAction ancestorAccess, FsAction parentAccess, FsAction access, FsAction subAccess)
 specifier|private
 name|void
@@ -26258,7 +26258,7 @@ literal|true
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Check whether current user have permissions to access the path. For more    * details of the parameters, see    * {@link FSPermissionChecker#checkPermission()}.    */
+comment|/**    * Check whether current user have permissions to access the path. For more    * details of the parameters, see    * {@link FSPermissionChecker#checkPermission}.    */
 DECL|method|checkPermission (FSPermissionChecker pc, String path, boolean doCheckOwner, FsAction ancestorAccess, FsAction parentAccess, FsAction access, FsAction subAccess, boolean resolveLink)
 specifier|private
 name|void
@@ -28000,7 +28000,7 @@ name|newBlock
 argument_list|)
 expr_stmt|;
 block|}
-comment|/** @see #updatePipeline(String, ExtendedBlock, ExtendedBlock, DatanodeID[]) */
+comment|/**    * @see #updatePipeline(String,  ExtendedBlock, ExtendedBlock, DatanodeID[], String[])    */
 DECL|method|updatePipelineInternal (String clientName, ExtendedBlock oldBlock, ExtendedBlock newBlock, DatanodeID[] newNodes, String[] newStorageIDs, boolean logRetryCache)
 specifier|private
 name|void
@@ -28490,7 +28490,7 @@ name|path
 return|;
 block|}
 block|}
-comment|/**    * @param path Restrict corrupt files to this portion of namespace.    * @param startBlockAfter Support for continuation; the set of files we return    *  back is ordered by blockid; startBlockAfter tells where to start from    * @return a list in which each entry describes a corrupt file/block    * @throws AccessControlException    * @throws IOException    */
+comment|/**    * @param path Restrict corrupt files to this portion of namespace.    * @param cookieTab Support for continuation; cookieTab  tells where    *                  to start from    * @return a list in which each entry describes a corrupt file/block    * @throws IOException    */
 DECL|method|listCorruptFileBlocks (String path, String[] cookieTab)
 name|Collection
 argument_list|<
@@ -28895,7 +28895,7 @@ return|return
 name|dtSecretManager
 return|;
 block|}
-comment|/**    * @param renewer    * @return Token<DelegationTokenIdentifier>    * @throws IOException    */
+comment|/**    * @param renewer Renewer information    * @return Token<DelegationTokenIdentifier>    * @throws IOException    */
 DECL|method|getDelegationToken (Text renewer)
 name|Token
 argument_list|<
@@ -29094,7 +29094,7 @@ return|return
 name|token
 return|;
 block|}
-comment|/**    *     * @param token    * @return New expiryTime of the token    * @throws InvalidToken    * @throws IOException    */
+comment|/**    *     * @param token delegation token    * @return New expiryTime of the token    * @throws InvalidToken    * @throws IOException    */
 DECL|method|renewDelegationToken (Token<DelegationTokenIdentifier> token)
 name|long
 name|renewDelegationToken
@@ -29234,7 +29234,7 @@ return|return
 name|expiryTime
 return|;
 block|}
-comment|/**    *     * @param token    * @throws IOException    */
+comment|/**    *     * @param token delegation token that needs to be canceled    * @throws IOException    */
 DECL|method|cancelDelegationToken (Token<DelegationTokenIdentifier> token)
 name|void
 name|cancelDelegationToken
@@ -30443,7 +30443,7 @@ name|info
 argument_list|)
 return|;
 block|}
-comment|/**    * Returned information is a JSON representation of map with host name as the    * key and value is a map of decomisioning node attribute keys to its values    */
+comment|/**    * Returned information is a JSON representation of map with host name as the    * key and value is a map of decommissioning node attribute keys to its    * values    */
 annotation|@
 name|Override
 comment|// NameNodeMXBean
@@ -32007,7 +32007,7 @@ return|return
 name|snapshotManager
 return|;
 block|}
-comment|/** Allow snapshot on a directroy. */
+comment|/** Allow snapshot on a directory. */
 DECL|method|allowSnapshot (String path)
 name|void
 name|allowSnapshot
@@ -33463,7 +33463,7 @@ return|return
 name|rollingUpgradeInfo
 return|;
 block|}
-comment|/**    * Update internal state to indicate that a rolling upgrade is in progress.    * @param startTime    */
+comment|/**    * Update internal state to indicate that a rolling upgrade is in progress.    * @param startTime start time of the rolling upgrade    */
 DECL|method|startRollingUpgradeInternal (long startTime)
 name|void
 name|startRollingUpgradeInternal
@@ -33545,7 +33545,7 @@ argument_list|(
 name|this
 argument_list|)
 expr_stmt|;
-comment|// in non-HA setup, we do an extra ckpt to generate a rollback image
+comment|// in non-HA setup, we do an extra checkpoint to generate a rollback image
 name|getFSImage
 argument_list|()
 operator|.
