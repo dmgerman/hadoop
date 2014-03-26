@@ -30,19 +30,9 @@ begin_import
 import|import
 name|java
 operator|.
-name|net
+name|io
 operator|.
-name|URL
-import|;
-end_import
-
-begin_import
-import|import
-name|java
-operator|.
-name|net
-operator|.
-name|URLDecoder
+name|InputStream
 import|;
 end_import
 
@@ -52,7 +42,7 @@ name|java
 operator|.
 name|util
 operator|.
-name|Enumeration
+name|Properties
 import|;
 end_import
 
@@ -109,36 +99,6 @@ operator|.
 name|classification
 operator|.
 name|InterfaceStability
-import|;
-end_import
-
-begin_import
-import|import
-name|java
-operator|.
-name|io
-operator|.
-name|IOException
-import|;
-end_import
-
-begin_import
-import|import
-name|java
-operator|.
-name|io
-operator|.
-name|InputStream
-import|;
-end_import
-
-begin_import
-import|import
-name|java
-operator|.
-name|util
-operator|.
-name|Properties
 import|;
 end_import
 

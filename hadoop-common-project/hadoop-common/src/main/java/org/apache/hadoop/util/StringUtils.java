@@ -1810,9 +1810,6 @@ name|str
 operator|.
 name|indexOf
 argument_list|(
-operator|(
-name|int
-operator|)
 name|separator
 argument_list|,
 name|startIndex

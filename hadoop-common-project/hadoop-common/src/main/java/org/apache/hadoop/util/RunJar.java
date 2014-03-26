@@ -388,12 +388,10 @@ name|hasMoreElements
 argument_list|()
 condition|)
 block|{
+specifier|final
 name|JarEntry
 name|entry
 init|=
-operator|(
-name|JarEntry
-operator|)
 name|entries
 operator|.
 name|nextElement

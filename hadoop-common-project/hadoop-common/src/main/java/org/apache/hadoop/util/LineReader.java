@@ -777,9 +777,6 @@ if|if
 condition|(
 name|bytesConsumed
 operator|>
-operator|(
-name|long
-operator|)
 name|Integer
 operator|.
 name|MAX_VALUE
@@ -1097,9 +1094,6 @@ if|if
 condition|(
 name|bytesConsumed
 operator|>
-operator|(
-name|long
-operator|)
 name|Integer
 operator|.
 name|MAX_VALUE

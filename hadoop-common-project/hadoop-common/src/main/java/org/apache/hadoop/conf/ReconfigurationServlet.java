@@ -627,12 +627,6 @@ name|req
 parameter_list|)
 block|{
 return|return
-operator|(
-name|Enumeration
-argument_list|<
-name|String
-argument_list|>
-operator|)
 name|req
 operator|.
 name|getParameterNames
@@ -655,8 +649,6 @@ name|HttpServletRequest
 name|req
 parameter_list|)
 throws|throws
-name|IOException
-throws|,
 name|ReconfigurationException
 block|{
 name|Configuration

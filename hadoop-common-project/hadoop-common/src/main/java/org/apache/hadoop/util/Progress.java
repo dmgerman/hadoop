@@ -245,9 +245,6 @@ name|progressPerPhase
 operator|=
 literal|1.0f
 operator|/
-operator|(
-name|float
-operator|)
 name|phases
 operator|.
 name|size
@@ -455,9 +452,6 @@ name|progressPerPhase
 operator|=
 literal|1.0f
 operator|/
-operator|(
-name|float
-operator|)
 name|phases
 operator|.
 name|size

@@ -203,7 +203,7 @@ parameter_list|()
 block|{}
 comment|// no public ctor
 comment|/** Set the name that a class should be known as to something other than the    * class name. */
-DECL|method|setName (Class writableClass, String name)
+DECL|method|setName (Class<?> writableClass, String name)
 specifier|public
 specifier|static
 specifier|synchronized
@@ -211,6 +211,9 @@ name|void
 name|setName
 parameter_list|(
 name|Class
+argument_list|<
+name|?
+argument_list|>
 name|writableClass
 parameter_list|,
 name|String
@@ -237,7 +240,7 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|/** Add an alternate name for a class. */
-DECL|method|addName (Class writableClass, String name)
+DECL|method|addName (Class<?> writableClass, String name)
 specifier|public
 specifier|static
 specifier|synchronized
@@ -245,6 +248,9 @@ name|void
 name|addName
 parameter_list|(
 name|Class
+argument_list|<
+name|?
+argument_list|>
 name|writableClass
 parameter_list|,
 name|String
@@ -262,7 +268,7 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|/** Return the name for a class.  Default is {@link Class#getName()}. */
-DECL|method|getName (Class writableClass)
+DECL|method|getName (Class<?> writableClass)
 specifier|public
 specifier|static
 specifier|synchronized
@@ -270,6 +276,9 @@ name|String
 name|getName
 parameter_list|(
 name|Class
+argument_list|<
+name|?
+argument_list|>
 name|writableClass
 parameter_list|)
 block|{

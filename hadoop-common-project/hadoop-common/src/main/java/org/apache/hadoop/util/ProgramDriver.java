@@ -342,7 +342,7 @@ expr_stmt|;
 block|}
 block|}
 comment|/**    * This is the method that adds the classed to the repository    * @param name The name of the string you want the class instance to be called with    * @param mainClass The class that you want to add to the repository    * @param description The description of the class    * @throws NoSuchMethodException     * @throws SecurityException     */
-DECL|method|addClass (String name, Class mainClass, String description)
+DECL|method|addClass (String name, Class<?> mainClass, String description)
 specifier|public
 name|void
 name|addClass
@@ -351,6 +351,9 @@ name|String
 name|name
 parameter_list|,
 name|Class
+argument_list|<
+name|?
+argument_list|>
 name|mainClass
 parameter_list|,
 name|String

@@ -81,13 +81,16 @@ class|class
 name|ClassUtil
 block|{
 comment|/**     * Find a jar that contains a class of the same name, if any.    * It will return a jar file, even if that is not the first thing    * on the class path that has a class with the same name.    *     * @param clazz the class to find.    * @return a jar file that contains the class, or null.    * @throws IOException    */
-DECL|method|findContainingJar (Class clazz)
+DECL|method|findContainingJar (Class<?> clazz)
 specifier|public
 specifier|static
 name|String
 name|findContainingJar
 parameter_list|(
 name|Class
+argument_list|<
+name|?
+argument_list|>
 name|clazz
 parameter_list|)
 block|{
@@ -120,7 +123,11 @@ try|try
 block|{
 for|for
 control|(
+specifier|final
 name|Enumeration
+argument_list|<
+name|URL
+argument_list|>
 name|itr
 init|=
 name|loader
@@ -137,12 +144,10 @@ argument_list|()
 condition|;
 control|)
 block|{
+specifier|final
 name|URL
 name|url
 init|=
-operator|(
-name|URL
-operator|)
 name|itr
 operator|.
 name|nextElement

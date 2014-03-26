@@ -122,20 +122,6 @@ name|FsPermission
 import|;
 end_import
 
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|util
-operator|.
-name|Shell
-import|;
-end_import
-
 begin_comment
 comment|/**  * Class that provides utility functions for checking disk problem  */
 end_comment
@@ -154,17 +140,6 @@ specifier|public
 class|class
 name|DiskChecker
 block|{
-DECL|field|SHELL_TIMEOUT
-specifier|private
-specifier|static
-specifier|final
-name|long
-name|SHELL_TIMEOUT
-init|=
-literal|10
-operator|*
-literal|1000
-decl_stmt|;
 DECL|class|DiskErrorException
 specifier|public
 specifier|static

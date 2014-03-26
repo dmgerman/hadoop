@@ -869,8 +869,6 @@ parameter_list|,
 name|String
 name|excludesFile
 parameter_list|)
-throws|throws
-name|IOException
 block|{
 name|setIncludesFile
 argument_list|(
