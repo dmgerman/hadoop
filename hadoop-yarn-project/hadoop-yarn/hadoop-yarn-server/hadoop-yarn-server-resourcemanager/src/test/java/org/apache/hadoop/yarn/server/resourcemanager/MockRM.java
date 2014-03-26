@@ -1009,6 +1009,14 @@ name|MockRM
 extends|extends
 name|ResourceManager
 block|{
+DECL|field|ENABLE_WEBAPP
+specifier|static
+specifier|final
+name|String
+name|ENABLE_WEBAPP
+init|=
+literal|"mockrm.webapp.enabled"
+decl_stmt|;
 DECL|method|MockRM ()
 specifier|public
 name|MockRM
@@ -3385,7 +3393,27 @@ name|void
 name|startWepApp
 parameter_list|()
 block|{
-comment|// override to disable webapp
+if|if
+condition|(
+name|getConfig
+argument_list|()
+operator|.
+name|getBoolean
+argument_list|(
+name|ENABLE_WEBAPP
+argument_list|,
+literal|false
+argument_list|)
+condition|)
+block|{
+name|super
+operator|.
+name|startWepApp
+argument_list|()
+expr_stmt|;
+return|return;
+block|}
+comment|// Disable webapp
 block|}
 DECL|method|finishAMAndVerifyAppState (RMApp rmApp, MockRM rm, MockNM nm, MockAM am)
 specifier|public

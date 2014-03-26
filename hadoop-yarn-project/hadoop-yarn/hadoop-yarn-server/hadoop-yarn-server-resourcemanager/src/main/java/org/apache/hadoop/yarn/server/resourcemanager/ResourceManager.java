@@ -1494,16 +1494,6 @@ specifier|protected
 name|ApplicationMasterService
 name|masterService
 decl_stmt|;
-DECL|field|applicationMasterLauncher
-specifier|private
-name|ApplicationMasterLauncher
-name|applicationMasterLauncher
-decl_stmt|;
-DECL|field|containerAllocationExpirer
-specifier|private
-name|ContainerAllocationExpirer
-name|containerAllocationExpirer
-decl_stmt|;
 DECL|field|nmLivelinessMonitor
 specifier|protected
 name|NMLivelinessMonitor
@@ -1513,14 +1503,6 @@ DECL|field|nodesListManager
 specifier|protected
 name|NodesListManager
 name|nodesListManager
-decl_stmt|;
-DECL|field|schedulerDispatcher
-specifier|private
-name|EventHandler
-argument_list|<
-name|SchedulerEvent
-argument_list|>
-name|schedulerDispatcher
 decl_stmt|;
 DECL|field|rmAppManager
 specifier|protected
@@ -1536,11 +1518,6 @@ DECL|field|queueACLsManager
 specifier|protected
 name|QueueACLsManager
 name|queueACLsManager
-decl_stmt|;
-DECL|field|delegationTokenRenewer
-specifier|private
-name|DelegationTokenRenewer
-name|delegationTokenRenewer
 decl_stmt|;
 DECL|field|webApp
 specifier|private
@@ -1558,11 +1535,6 @@ DECL|field|resourceTracker
 specifier|protected
 name|ResourceTrackerService
 name|resourceTracker
-decl_stmt|;
-DECL|field|recoveryEnabled
-specifier|private
-name|boolean
-name|recoveryEnabled
 decl_stmt|;
 DECL|field|webAppAddress
 specifier|private
@@ -2334,6 +2306,34 @@ name|RMActiveServices
 extends|extends
 name|CompositeService
 block|{
+DECL|field|delegationTokenRenewer
+specifier|private
+name|DelegationTokenRenewer
+name|delegationTokenRenewer
+decl_stmt|;
+DECL|field|schedulerDispatcher
+specifier|private
+name|EventHandler
+argument_list|<
+name|SchedulerEvent
+argument_list|>
+name|schedulerDispatcher
+decl_stmt|;
+DECL|field|applicationMasterLauncher
+specifier|private
+name|ApplicationMasterLauncher
+name|applicationMasterLauncher
+decl_stmt|;
+DECL|field|containerAllocationExpirer
+specifier|private
+name|ContainerAllocationExpirer
+name|containerAllocationExpirer
+decl_stmt|;
+DECL|field|recoveryEnabled
+specifier|private
+name|boolean
+name|recoveryEnabled
+decl_stmt|;
 DECL|method|RMActiveServices ()
 name|RMActiveServices
 parameter_list|()
@@ -5235,6 +5235,19 @@ name|queueACLsManager
 return|;
 block|}
 annotation|@
+name|Private
+DECL|method|getWebapp ()
+name|WebApp
+name|getWebapp
+parameter_list|()
+block|{
+return|return
+name|this
+operator|.
+name|webApp
+return|;
+block|}
+annotation|@
 name|Override
 DECL|method|recover (RMState state)
 specifier|public
@@ -5469,7 +5482,7 @@ name|rmDispatcher
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Retrieve RM bind address from configuration    *    * @param conf    * @return InetSocketAddress    */
+comment|/**    * Retrieve RM bind address from configuration    *     * @param conf    * @return InetSocketAddress    */
 DECL|method|getBindAddress (Configuration conf)
 specifier|public
 specifier|static
