@@ -2633,6 +2633,15 @@ argument_list|)
 expr_stmt|;
 continue|continue;
 block|}
+name|namesystem
+operator|.
+name|dir
+operator|.
+name|addToInodeMap
+argument_list|(
+name|newNode
+argument_list|)
+expr_stmt|;
 comment|// check if the new inode belongs to the same parent
 if|if
 condition|(
