@@ -4232,6 +4232,7 @@ expr_stmt|;
 return|return;
 block|}
 comment|// TODO: Write out change to state store (YARN-1558)
+comment|// Also take care of RM failover
 name|moveEvent
 operator|.
 name|getResult

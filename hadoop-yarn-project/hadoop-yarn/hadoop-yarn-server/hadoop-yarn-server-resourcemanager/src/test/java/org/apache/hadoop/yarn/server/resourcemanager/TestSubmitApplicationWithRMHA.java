@@ -897,6 +897,337 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
+comment|// There are two scenarios when RM failover happens
+comment|// during SubmitApplication Call:
+comment|// 1) RMStateStore already saved the ApplicationState when failover happens
+comment|// 2) RMStateStore did not save the ApplicationState when failover happens
+annotation|@
+name|Test
+argument_list|(
+name|timeout
+operator|=
+literal|5000
+argument_list|)
+specifier|public
+name|void
+DECL|method|testHandleRMHADuringSubmitApplicationCallWithSavedApplicationState ()
+name|testHandleRMHADuringSubmitApplicationCallWithSavedApplicationState
+parameter_list|()
+throws|throws
+name|Exception
+block|{
+comment|// Test scenario 1 when RM failover happens
+comment|// druing SubmitApplication Call:
+comment|// RMStateStore already saved the ApplicationState when failover happens
+name|startRMs
+argument_list|()
+expr_stmt|;
+comment|// Submit Application
+comment|// After submission, the applicationState will be saved in RMStateStore.
+name|RMApp
+name|app0
+init|=
+name|rm1
+operator|.
+name|submitApp
+argument_list|(
+literal|200
+argument_list|)
+decl_stmt|;
+comment|// Do the failover
+name|explicitFailover
+argument_list|()
+expr_stmt|;
+comment|// Since the applicationState has already been saved in RMStateStore
+comment|// before failover happens, the current active rm can load the previous
+comment|// applicationState.
+comment|// This RMApp should exist in the RMContext of current active RM
+name|Assert
+operator|.
+name|assertTrue
+argument_list|(
+name|rm2
+operator|.
+name|getRMContext
+argument_list|()
+operator|.
+name|getRMApps
+argument_list|()
+operator|.
+name|containsKey
+argument_list|(
+name|app0
+operator|.
+name|getApplicationId
+argument_list|()
+argument_list|)
+argument_list|)
+expr_stmt|;
+comment|// When we re-submit the application with same applicationId, it will
+comment|// check whether this application has been exist. If yes, just simply
+comment|// return submitApplicationResponse.
+name|RMApp
+name|app1
+init|=
+name|rm2
+operator|.
+name|submitApp
+argument_list|(
+literal|200
+argument_list|,
+literal|""
+argument_list|,
+name|UserGroupInformation
+operator|.
+name|getCurrentUser
+argument_list|()
+operator|.
+name|getShortUserName
+argument_list|()
+argument_list|,
+literal|null
+argument_list|,
+literal|false
+argument_list|,
+literal|null
+argument_list|,
+name|configuration
+operator|.
+name|getInt
+argument_list|(
+name|YarnConfiguration
+operator|.
+name|RM_AM_MAX_ATTEMPTS
+argument_list|,
+name|YarnConfiguration
+operator|.
+name|DEFAULT_RM_AM_MAX_ATTEMPTS
+argument_list|)
+argument_list|,
+literal|null
+argument_list|,
+literal|null
+argument_list|,
+literal|false
+argument_list|,
+literal|false
+argument_list|,
+literal|true
+argument_list|,
+name|app0
+operator|.
+name|getApplicationId
+argument_list|()
+argument_list|)
+decl_stmt|;
+name|Assert
+operator|.
+name|assertEquals
+argument_list|(
+name|app1
+operator|.
+name|getApplicationId
+argument_list|()
+argument_list|,
+name|app0
+operator|.
+name|getApplicationId
+argument_list|()
+argument_list|)
+expr_stmt|;
+block|}
+annotation|@
+name|Test
+argument_list|(
+name|timeout
+operator|=
+literal|5000
+argument_list|)
+specifier|public
+name|void
+DECL|method|testHandleRMHADuringSubmitApplicationCallWithoutSavedApplicationState ()
+name|testHandleRMHADuringSubmitApplicationCallWithoutSavedApplicationState
+parameter_list|()
+throws|throws
+name|Exception
+block|{
+comment|// Test scenario 2 when RM failover happens
+comment|// during SubmitApplication Call:
+comment|// RMStateStore did not save the ApplicationState when failover happens.
+comment|// Using customized RMAppManager.
+name|startRMsWithCustomizedRMAppManager
+argument_list|()
+expr_stmt|;
+comment|// Submit Application
+comment|// After submission, the applicationState will
+comment|// not be saved in RMStateStore
+name|RMApp
+name|app0
+init|=
+name|rm1
+operator|.
+name|submitApp
+argument_list|(
+literal|200
+argument_list|,
+literal|""
+argument_list|,
+name|UserGroupInformation
+operator|.
+name|getCurrentUser
+argument_list|()
+operator|.
+name|getShortUserName
+argument_list|()
+argument_list|,
+literal|null
+argument_list|,
+literal|false
+argument_list|,
+literal|null
+argument_list|,
+name|configuration
+operator|.
+name|getInt
+argument_list|(
+name|YarnConfiguration
+operator|.
+name|RM_AM_MAX_ATTEMPTS
+argument_list|,
+name|YarnConfiguration
+operator|.
+name|DEFAULT_RM_AM_MAX_ATTEMPTS
+argument_list|)
+argument_list|,
+literal|null
+argument_list|,
+literal|null
+argument_list|,
+literal|false
+argument_list|,
+literal|false
+argument_list|)
+decl_stmt|;
+comment|// Do the failover
+name|explicitFailover
+argument_list|()
+expr_stmt|;
+comment|// When failover happens, the RMStateStore has not saved applicationState.
+comment|// The applicationState of this RMApp is lost.
+comment|// We should not find the RMApp in the RMContext of current active rm.
+name|Assert
+operator|.
+name|assertFalse
+argument_list|(
+name|rm2
+operator|.
+name|getRMContext
+argument_list|()
+operator|.
+name|getRMApps
+argument_list|()
+operator|.
+name|containsKey
+argument_list|(
+name|app0
+operator|.
+name|getApplicationId
+argument_list|()
+argument_list|)
+argument_list|)
+expr_stmt|;
+comment|// Submit the application with previous ApplicationId to current active RM
+comment|// This will mimic the similar behavior of ApplicationClientProtocol#
+comment|// submitApplication() when failover happens during the submission process
+comment|// because the submitApplication api is marked as idempotent
+name|RMApp
+name|app1
+init|=
+name|rm2
+operator|.
+name|submitApp
+argument_list|(
+literal|200
+argument_list|,
+literal|""
+argument_list|,
+name|UserGroupInformation
+operator|.
+name|getCurrentUser
+argument_list|()
+operator|.
+name|getShortUserName
+argument_list|()
+argument_list|,
+literal|null
+argument_list|,
+literal|false
+argument_list|,
+literal|null
+argument_list|,
+name|configuration
+operator|.
+name|getInt
+argument_list|(
+name|YarnConfiguration
+operator|.
+name|RM_AM_MAX_ATTEMPTS
+argument_list|,
+name|YarnConfiguration
+operator|.
+name|DEFAULT_RM_AM_MAX_ATTEMPTS
+argument_list|)
+argument_list|,
+literal|null
+argument_list|,
+literal|null
+argument_list|,
+literal|false
+argument_list|,
+literal|false
+argument_list|,
+literal|true
+argument_list|,
+name|app0
+operator|.
+name|getApplicationId
+argument_list|()
+argument_list|)
+decl_stmt|;
+name|verifySubmitApp
+argument_list|(
+name|rm2
+argument_list|,
+name|app1
+argument_list|,
+name|app0
+operator|.
+name|getApplicationId
+argument_list|()
+argument_list|)
+expr_stmt|;
+name|Assert
+operator|.
+name|assertTrue
+argument_list|(
+name|rm2
+operator|.
+name|getRMContext
+argument_list|()
+operator|.
+name|getRMApps
+argument_list|()
+operator|.
+name|containsKey
+argument_list|(
+name|app0
+operator|.
+name|getApplicationId
+argument_list|()
+argument_list|)
+argument_list|)
+expr_stmt|;
+block|}
 block|}
 end_class
 

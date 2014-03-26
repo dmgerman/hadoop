@@ -38,6 +38,38 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|io
+operator|.
+name|retry
+operator|.
+name|AtMostOnce
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|io
+operator|.
+name|retry
+operator|.
+name|Idempotent
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|yarn
 operator|.
 name|exceptions
@@ -132,6 +164,8 @@ specifier|public
 interface|interface
 name|ResourceTracker
 block|{
+annotation|@
+name|Idempotent
 DECL|method|registerNodeManager ( RegisterNodeManagerRequest request)
 specifier|public
 name|RegisterNodeManagerResponse
@@ -145,6 +179,8 @@ name|YarnException
 throws|,
 name|IOException
 function_decl|;
+annotation|@
+name|AtMostOnce
 DECL|method|nodeHeartbeat (NodeHeartbeatRequest request)
 specifier|public
 name|NodeHeartbeatResponse

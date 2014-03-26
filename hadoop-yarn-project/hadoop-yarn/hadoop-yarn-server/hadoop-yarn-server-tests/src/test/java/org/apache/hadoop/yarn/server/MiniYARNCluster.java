@@ -1634,22 +1634,8 @@ index|[
 name|i
 index|]
 operator|=
-operator|new
-name|ResourceManager
+name|createResourceManager
 argument_list|()
-block|{
-annotation|@
-name|Override
-specifier|protected
-name|void
-name|doSecureLogin
-parameter_list|()
-throws|throws
-name|IOException
-block|{
-comment|// Don't try to login using keytab in the testcases.
-block|}
-block|}
 expr_stmt|;
 if|if
 condition|(
@@ -4035,6 +4021,31 @@ return|return
 name|this
 operator|.
 name|appHistoryServer
+return|;
+block|}
+DECL|method|createResourceManager ()
+specifier|protected
+name|ResourceManager
+name|createResourceManager
+parameter_list|()
+block|{
+return|return
+operator|new
+name|ResourceManager
+argument_list|()
+block|{
+annotation|@
+name|Override
+specifier|protected
+name|void
+name|doSecureLogin
+parameter_list|()
+throws|throws
+name|IOException
+block|{
+comment|// Don't try to login using keytab in the testcases.
+block|}
+block|}
 return|;
 block|}
 block|}

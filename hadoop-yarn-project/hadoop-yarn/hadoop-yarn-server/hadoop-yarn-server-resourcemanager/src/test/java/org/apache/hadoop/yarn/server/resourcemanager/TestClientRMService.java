@@ -4510,13 +4510,6 @@ argument_list|(
 name|submitRequest2
 argument_list|)
 expr_stmt|;
-name|Assert
-operator|.
-name|fail
-argument_list|(
-literal|"Exception is expected."
-argument_list|)
-expr_stmt|;
 block|}
 catch|catch
 parameter_list|(
@@ -4526,19 +4519,9 @@ parameter_list|)
 block|{
 name|Assert
 operator|.
-name|assertTrue
+name|fail
 argument_list|(
-literal|"The thrown exception is not expected."
-argument_list|,
-name|e
-operator|.
-name|getMessage
-argument_list|()
-operator|.
-name|contains
-argument_list|(
-literal|"Cannot add a duplicate!"
-argument_list|)
+literal|"Exception is not expected."
 argument_list|)
 expr_stmt|;
 block|}

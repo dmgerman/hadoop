@@ -102,6 +102,22 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|io
+operator|.
+name|retry
+operator|.
+name|Idempotent
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|ipc
 operator|.
 name|StandbyException
@@ -470,6 +486,8 @@ annotation|@
 name|Public
 annotation|@
 name|Stable
+annotation|@
+name|Idempotent
 DECL|method|refreshQueues (RefreshQueuesRequest request)
 specifier|public
 name|RefreshQueuesResponse
@@ -489,6 +507,8 @@ annotation|@
 name|Public
 annotation|@
 name|Stable
+annotation|@
+name|Idempotent
 DECL|method|refreshNodes (RefreshNodesRequest request)
 specifier|public
 name|RefreshNodesResponse
@@ -508,6 +528,8 @@ annotation|@
 name|Public
 annotation|@
 name|Stable
+annotation|@
+name|Idempotent
 specifier|public
 name|RefreshSuperUserGroupsConfigurationResponse
 DECL|method|refreshSuperUserGroupsConfiguration ( RefreshSuperUserGroupsConfigurationRequest request)
@@ -527,6 +549,8 @@ annotation|@
 name|Public
 annotation|@
 name|Stable
+annotation|@
+name|Idempotent
 DECL|method|refreshUserToGroupsMappings ( RefreshUserToGroupsMappingsRequest request)
 specifier|public
 name|RefreshUserToGroupsMappingsResponse
@@ -546,6 +570,8 @@ annotation|@
 name|Public
 annotation|@
 name|Stable
+annotation|@
+name|Idempotent
 DECL|method|refreshAdminAcls ( RefreshAdminAclsRequest request)
 specifier|public
 name|RefreshAdminAclsResponse
@@ -563,6 +589,8 @@ annotation|@
 name|Public
 annotation|@
 name|Stable
+annotation|@
+name|Idempotent
 DECL|method|refreshServiceAcls ( RefreshServiceAclsRequest request)
 specifier|public
 name|RefreshServiceAclsResponse
@@ -581,6 +609,8 @@ annotation|@
 name|Public
 annotation|@
 name|Evolving
+annotation|@
+name|Idempotent
 DECL|method|updateNodeResource ( UpdateNodeResourceRequest request)
 specifier|public
 name|UpdateNodeResourceResponse

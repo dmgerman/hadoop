@@ -3622,8 +3622,8 @@ name|ie
 argument_list|)
 throw|;
 block|}
-comment|// Though duplication will checked again when app is put into rmContext,
-comment|// but it is good to fail the invalid submission as early as possible.
+comment|// Check whether app has already been put into rmContext,
+comment|// If it is, simply return the response
 if|if
 condition|(
 name|rmContext
@@ -3639,49 +3639,21 @@ operator|!=
 literal|null
 condition|)
 block|{
-name|String
-name|message
-init|=
-literal|"Application with id "
-operator|+
-name|applicationId
-operator|+
-literal|" is already present! Cannot add a duplicate!"
-decl_stmt|;
 name|LOG
 operator|.
-name|warn
+name|info
 argument_list|(
-name|message
-argument_list|)
-expr_stmt|;
-name|RMAuditLogger
-operator|.
-name|logFailure
-argument_list|(
-name|user
-argument_list|,
-name|AuditConstants
-operator|.
-name|SUBMIT_APP_REQUEST
-argument_list|,
-name|message
-argument_list|,
-literal|"ClientRMService"
-argument_list|,
-literal|"Exception in submitting application"
-argument_list|,
+literal|"This is an earlier submitted application: "
+operator|+
 name|applicationId
 argument_list|)
 expr_stmt|;
-throw|throw
-name|RPCUtil
+return|return
+name|SubmitApplicationResponse
 operator|.
-name|getRemoteException
-argument_list|(
-name|message
-argument_list|)
-throw|;
+name|newInstance
+argument_list|()
+return|;
 block|}
 if|if
 condition|(

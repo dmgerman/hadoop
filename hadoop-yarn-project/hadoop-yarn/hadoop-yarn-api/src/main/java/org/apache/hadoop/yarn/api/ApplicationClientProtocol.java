@@ -1005,6 +1005,8 @@ annotation|@
 name|Public
 annotation|@
 name|Stable
+annotation|@
+name|Idempotent
 DECL|method|getNewApplication ( GetNewApplicationRequest request)
 specifier|public
 name|GetNewApplicationResponse
@@ -1018,11 +1020,13 @@ name|YarnException
 throws|,
 name|IOException
 function_decl|;
-comment|/**    *<p>The interface used by clients to submit a new application to the    *<code>ResourceManager.</code></p>    *     *<p>The client is required to provide details such as queue,     * {@link Resource} required to run the<code>ApplicationMaster</code>,     * the equivalent of {@link ContainerLaunchContext} for launching    * the<code>ApplicationMaster</code> etc. via the     * {@link SubmitApplicationRequest}.</p>    *     *<p>Currently the<code>ResourceManager</code> sends an immediate (empty)     * {@link SubmitApplicationResponse} on accepting the submission and throws     * an exception if it rejects the submission. However, this call needs to be    * followed by {@link #getApplicationReport(GetApplicationReportRequest)}    * to make sure that the application gets properly submitted - obtaining a    * {@link SubmitApplicationResponse} from ResourceManager doesn't guarantee    * that RM 'remembers' this application beyond failover or restart. If RM    * failover or RM restart happens before ResourceManager saves the    * application's state successfully, the subsequent    * {@link #getApplicationReport(GetApplicationReportRequest)} will throw    * a {@link ApplicationNotFoundException}. The Clients need to re-submit    * the application with the same {@link ApplicationSubmissionContext} when    * it encounters the {@link ApplicationNotFoundException} on the    * {@link #getApplicationReport(GetApplicationReportRequest)} call.</p>    *     *<p> In secure mode,the<code>ResourceManager</code> verifies access to    * queues etc. before accepting the application submission.</p>    *     * @param request request to submit a new application    * @return (empty) response on accepting the submission    * @throws YarnException    * @throws IOException    * @throws InvalidResourceRequestException    *           The exception is thrown when a {@link ResourceRequest} is out of    *           the range of the configured lower and upper resource boundaries.    * @see #getNewApplication(GetNewApplicationRequest)    */
+comment|/**    *<p>The interface used by clients to submit a new application to the    *<code>ResourceManager.</code></p>    *     *<p>The client is required to provide details such as queue,     * {@link Resource} required to run the<code>ApplicationMaster</code>,     * the equivalent of {@link ContainerLaunchContext} for launching    * the<code>ApplicationMaster</code> etc. via the     * {@link SubmitApplicationRequest}.</p>    *     *<p>Currently the<code>ResourceManager</code> sends an immediate (empty)     * {@link SubmitApplicationResponse} on accepting the submission and throws     * an exception if it rejects the submission. However, this call needs to be    * followed by {@link #getApplicationReport(GetApplicationReportRequest)}    * to make sure that the application gets properly submitted - obtaining a    * {@link SubmitApplicationResponse} from ResourceManager doesn't guarantee    * that RM 'remembers' this application beyond failover or restart. If RM    * failover or RM restart happens before ResourceManager saves the    * application's state successfully, the subsequent    * {@link #getApplicationReport(GetApplicationReportRequest)} will throw    * a {@link ApplicationNotFoundException}. The Clients need to re-submit    * the application with the same {@link ApplicationSubmissionContext} when    * it encounters the {@link ApplicationNotFoundException} on the    * {@link #getApplicationReport(GetApplicationReportRequest)} call.</p>    *     *<p>During the submission process, it checks whether the application    * already exists. If the application exists, it will simply return    * SubmitApplicationResponse</p>    *    *<p> In secure mode,the<code>ResourceManager</code> verifies access to    * queues etc. before accepting the application submission.</p>    *     * @param request request to submit a new application    * @return (empty) response on accepting the submission    * @throws YarnException    * @throws IOException    * @throws InvalidResourceRequestException    *           The exception is thrown when a {@link ResourceRequest} is out of    *           the range of the configured lower and upper resource boundaries.    * @see #getNewApplication(GetNewApplicationRequest)    */
 annotation|@
 name|Public
 annotation|@
 name|Stable
+annotation|@
+name|Idempotent
 DECL|method|submitApplication ( SubmitApplicationRequest request)
 specifier|public
 name|SubmitApplicationResponse
@@ -1041,6 +1045,8 @@ annotation|@
 name|Public
 annotation|@
 name|Stable
+annotation|@
+name|Idempotent
 DECL|method|forceKillApplication ( KillApplicationRequest request)
 specifier|public
 name|KillApplicationResponse
@@ -1079,6 +1085,8 @@ annotation|@
 name|Public
 annotation|@
 name|Stable
+annotation|@
+name|Idempotent
 DECL|method|getClusterMetrics ( GetClusterMetricsRequest request)
 specifier|public
 name|GetClusterMetricsResponse
@@ -1097,6 +1105,8 @@ annotation|@
 name|Public
 annotation|@
 name|Stable
+annotation|@
+name|Idempotent
 DECL|method|getApplications ( GetApplicationsRequest request)
 specifier|public
 name|GetApplicationsResponse
@@ -1115,6 +1125,8 @@ annotation|@
 name|Public
 annotation|@
 name|Stable
+annotation|@
+name|Idempotent
 DECL|method|getClusterNodes ( GetClusterNodesRequest request)
 specifier|public
 name|GetClusterNodesResponse
@@ -1133,6 +1145,8 @@ annotation|@
 name|Public
 annotation|@
 name|Stable
+annotation|@
+name|Idempotent
 DECL|method|getQueueInfo ( GetQueueInfoRequest request)
 specifier|public
 name|GetQueueInfoResponse
@@ -1151,6 +1165,8 @@ annotation|@
 name|Public
 annotation|@
 name|Stable
+annotation|@
+name|Idempotent
 DECL|method|getQueueUserAcls ( GetQueueUserAclsInfoRequest request)
 specifier|public
 name|GetQueueUserAclsInfoResponse
@@ -1169,6 +1185,8 @@ annotation|@
 name|Public
 annotation|@
 name|Stable
+annotation|@
+name|Idempotent
 DECL|method|getDelegationToken ( GetDelegationTokenRequest request)
 specifier|public
 name|GetDelegationTokenResponse
@@ -1187,6 +1205,8 @@ annotation|@
 name|Private
 annotation|@
 name|Unstable
+annotation|@
+name|Idempotent
 DECL|method|renewDelegationToken ( RenewDelegationTokenRequest request)
 specifier|public
 name|RenewDelegationTokenResponse
@@ -1205,6 +1225,8 @@ annotation|@
 name|Private
 annotation|@
 name|Unstable
+annotation|@
+name|Idempotent
 DECL|method|cancelDelegationToken ( CancelDelegationTokenRequest request)
 specifier|public
 name|CancelDelegationTokenResponse
@@ -1223,6 +1245,8 @@ annotation|@
 name|Public
 annotation|@
 name|Unstable
+annotation|@
+name|Idempotent
 DECL|method|moveApplicationAcrossQueues ( MoveApplicationAcrossQueuesRequest request)
 specifier|public
 name|MoveApplicationAcrossQueuesResponse
@@ -1241,6 +1265,8 @@ annotation|@
 name|Public
 annotation|@
 name|Unstable
+annotation|@
+name|Idempotent
 DECL|method|getApplicationAttemptReport ( GetApplicationAttemptReportRequest request)
 specifier|public
 name|GetApplicationAttemptReportResponse
@@ -1259,6 +1285,8 @@ annotation|@
 name|Public
 annotation|@
 name|Unstable
+annotation|@
+name|Idempotent
 DECL|method|getApplicationAttempts ( GetApplicationAttemptsRequest request)
 specifier|public
 name|GetApplicationAttemptsResponse
@@ -1277,6 +1305,8 @@ annotation|@
 name|Public
 annotation|@
 name|Unstable
+annotation|@
+name|Idempotent
 DECL|method|getContainerReport ( GetContainerReportRequest request)
 specifier|public
 name|GetContainerReportResponse
@@ -1295,6 +1325,8 @@ annotation|@
 name|Public
 annotation|@
 name|Unstable
+annotation|@
+name|Idempotent
 DECL|method|getContainers (GetContainersRequest request)
 specifier|public
 name|GetContainersResponse
