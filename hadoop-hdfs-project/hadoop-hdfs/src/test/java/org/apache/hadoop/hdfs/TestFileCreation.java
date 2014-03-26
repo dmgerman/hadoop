@@ -498,6 +498,20 @@ name|hadoop
 operator|.
 name|fs
 operator|.
+name|FileAlreadyExistsException
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|fs
+operator|.
 name|FileSystem
 import|;
 end_import
@@ -1803,27 +1817,13 @@ expr_stmt|;
 block|}
 catch|catch
 parameter_list|(
-name|IOException
-name|ie
+name|FileAlreadyExistsException
+name|e
 parameter_list|)
 block|{
-if|if
-condition|(
-operator|!
-name|ie
-operator|.
-name|getMessage
-argument_list|()
-operator|.
-name|contains
-argument_list|(
-literal|"already exists as a directory."
-argument_list|)
-condition|)
-throw|throw
-name|ie
-throw|;
+comment|// expected
 block|}
+comment|//
 comment|// create a new file in home directory. Do not close it.
 comment|//
 name|Path

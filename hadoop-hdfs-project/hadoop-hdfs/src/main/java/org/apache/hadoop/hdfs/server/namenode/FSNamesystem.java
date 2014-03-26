@@ -12823,11 +12823,9 @@ throw|throw
 operator|new
 name|FileAlreadyExistsException
 argument_list|(
-literal|"Cannot create file "
-operator|+
 name|src
 operator|+
-literal|"; already exists as a directory."
+literal|" already exists as a directory"
 argument_list|)
 throw|;
 block|}
@@ -12918,11 +12916,11 @@ throw|throw
 operator|new
 name|FileNotFoundException
 argument_list|(
-literal|"failed to overwrite non-existent file "
+literal|"Can't overwrite non-existent "
 operator|+
 name|src
 operator|+
-literal|" on client "
+literal|" for client "
 operator|+
 name|clientMachine
 argument_list|)
@@ -12989,15 +12987,13 @@ throw|throw
 operator|new
 name|FileAlreadyExistsException
 argument_list|(
-literal|"failed to create file "
-operator|+
 name|src
 operator|+
-literal|" on client "
+literal|" for client "
 operator|+
 name|clientMachine
 operator|+
-literal|" because the file exists"
+literal|" already exists"
 argument_list|)
 throw|;
 block|}
@@ -13052,9 +13048,11 @@ throw|throw
 operator|new
 name|IOException
 argument_list|(
-literal|"DIR* NameSystem.startFile: "
+literal|"Unable to add "
 operator|+
-literal|"Unable to add file to namespace."
+name|src
+operator|+
+literal|" to namespace"
 argument_list|)
 throw|;
 block|}
@@ -13102,13 +13100,18 @@ name|stateChangeLog
 operator|.
 name|debug
 argument_list|(
-literal|"DIR* NameSystem.startFile: "
-operator|+
-literal|"add "
+literal|"DIR* NameSystem.startFile: added "
 operator|+
 name|src
 operator|+
-literal|" to namespace for "
+literal|" inode "
+operator|+
+name|newNode
+operator|.
+name|getId
+argument_list|()
+operator|+
+literal|" "
 operator|+
 name|holder
 argument_list|)
@@ -13128,6 +13131,10 @@ operator|.
 name|warn
 argument_list|(
 literal|"DIR* NameSystem.startFile: "
+operator|+
+name|src
+operator|+
+literal|" "
 operator|+
 name|ie
 operator|.
@@ -13253,7 +13260,7 @@ literal|"failed to append to non-existent file "
 operator|+
 name|src
 operator|+
-literal|" on client "
+literal|" for client "
 operator|+
 name|clientMachine
 argument_list|)
@@ -13790,7 +13797,7 @@ literal|" for "
 operator|+
 name|holder
 operator|+
-literal|" on client "
+literal|" for client "
 operator|+
 name|clientMachine
 operator|+
@@ -13846,7 +13853,7 @@ literal|" for "
 operator|+
 name|holder
 operator|+
-literal|" on client "
+literal|" for client "
 operator|+
 name|clientMachine
 operator|+
@@ -14032,7 +14039,7 @@ literal|"] for ["
 operator|+
 name|holder
 operator|+
-literal|"] on client ["
+literal|"] for client ["
 operator|+
 name|clientMachine
 operator|+
@@ -14556,9 +14563,13 @@ name|stateChangeLog
 operator|.
 name|debug
 argument_list|(
-literal|"BLOCK* NameSystem.getAdditionalBlock: file "
+literal|"BLOCK* NameSystem.getAdditionalBlock: "
 operator|+
 name|src
+operator|+
+literal|" inodeId "
+operator|+
+name|fileId
 operator|+
 literal|" for "
 operator|+
