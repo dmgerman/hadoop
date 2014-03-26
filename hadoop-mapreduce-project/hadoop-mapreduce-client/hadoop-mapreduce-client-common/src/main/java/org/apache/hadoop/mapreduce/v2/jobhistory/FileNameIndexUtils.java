@@ -464,10 +464,13 @@ name|sb
 operator|.
 name|append
 argument_list|(
+name|escapeDelimiters
+argument_list|(
 name|indexInfo
 operator|.
 name|getQueueName
 argument_list|()
+argument_list|)
 argument_list|)
 expr_stmt|;
 name|sb
