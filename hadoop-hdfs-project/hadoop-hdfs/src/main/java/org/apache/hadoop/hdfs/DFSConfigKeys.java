@@ -4243,6 +4243,15 @@ name|DFS_DATA_ENCRYPTION_ALGORITHM_KEY
 init|=
 literal|"dfs.encrypt.data.transfer.algorithm"
 decl_stmt|;
+DECL|field|DFS_TRUSTEDCHANNEL_RESOLVER_CLASS
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|DFS_TRUSTEDCHANNEL_RESOLVER_CLASS
+init|=
+literal|"dfs.trustedchannel.resolver.class"
+decl_stmt|;
 comment|// Journal-node related configs. These are read on the JN side.
 DECL|field|DFS_JOURNALNODE_EDITS_DIR_KEY
 specifier|public
