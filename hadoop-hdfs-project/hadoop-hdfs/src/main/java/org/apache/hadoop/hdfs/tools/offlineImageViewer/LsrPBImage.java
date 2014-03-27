@@ -1120,7 +1120,7 @@ name|String
 operator|.
 name|format
 argument_list|(
-literal|"-%s %2s %8s %10s %10s %10d %s%s\n"
+literal|"-%s %2s %8s %10s %10s %10d %s%s%n"
 argument_list|,
 name|p
 operator|.
@@ -1206,7 +1206,7 @@ name|String
 operator|.
 name|format
 argument_list|(
-literal|"d%s  - %8s %10s %10s %10d %s%s\n"
+literal|"d%s  - %8s %10s %10s %10d %s%s%n"
 argument_list|,
 name|p
 operator|.
@@ -1284,7 +1284,7 @@ name|String
 operator|.
 name|format
 argument_list|(
-literal|"-%s  - %8s %10s %10s %10d %s%s -> %s\n"
+literal|"-%s  - %8s %10s %10s %10d %s%s -> %s%n"
 argument_list|,
 name|p
 operator|.

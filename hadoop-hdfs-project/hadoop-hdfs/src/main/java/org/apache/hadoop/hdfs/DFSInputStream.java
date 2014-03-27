@@ -3827,11 +3827,6 @@ operator|.
 name|stats
 operator|!=
 literal|null
-operator|&&
-name|result
-operator|!=
-operator|-
-literal|1
 condition|)
 block|{
 name|dfsClient

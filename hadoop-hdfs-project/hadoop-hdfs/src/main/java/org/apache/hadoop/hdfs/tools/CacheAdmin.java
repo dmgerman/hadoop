@@ -3263,7 +3263,7 @@ name|String
 operator|.
 name|format
 argument_list|(
-literal|"Found %d entr%s\n"
+literal|"Found %d entr%s%n"
 argument_list|,
 name|numEntries
 argument_list|,
@@ -5475,7 +5475,7 @@ name|String
 operator|.
 name|format
 argument_list|(
-literal|"Found %d result%s.\n"
+literal|"Found %d result%s.%n"
 argument_list|,
 name|numResults
 argument_list|,

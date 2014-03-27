@@ -24292,7 +24292,7 @@ name|format
 argument_list|(
 literal|"The reported blocks %d needs additional %d"
 operator|+
-literal|" blocks to reach the threshold %.4f of total blocks %d.\n"
+literal|" blocks to reach the threshold %.4f of total blocks %d.%n"
 argument_list|,
 name|blockSafe
 argument_list|,
@@ -24349,7 +24349,7 @@ name|format
 argument_list|(
 literal|"The number of live datanodes %d needs an additional %d live "
 operator|+
-literal|"datanodes to reach the minimum number %d.\n"
+literal|"datanodes to reach the minimum number %d.%n"
 argument_list|,
 name|numLive
 argument_list|,
