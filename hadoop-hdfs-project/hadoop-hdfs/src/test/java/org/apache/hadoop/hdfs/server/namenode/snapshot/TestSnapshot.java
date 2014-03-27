@@ -1483,7 +1483,7 @@ name|t
 throw|;
 block|}
 block|}
-comment|/**    * Test if the OfflineImageViewer can correctly parse a fsimage containing    * snapshots    */
+comment|/**    * Test if the OfflineImageViewerPB can correctly parse a fsimage containing    * snapshots    */
 annotation|@
 name|Test
 DECL|method|testOfflineImageViewer ()

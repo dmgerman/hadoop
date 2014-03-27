@@ -538,10 +538,6 @@ name|Maps
 import|;
 end_import
 
-begin_comment
-comment|/**  * Test function of OfflineImageViewer by: * confirming it can correctly process  * a valid fsimage file and that the processing generates a correct  * representation of the namespace * confirming it correctly fails to process an  * fsimage file with a layout version it shouldn't be able to handle * confirm  * it correctly bails on malformed image files, in particular, a file that ends  * suddenly.  */
-end_comment
-
 begin_class
 DECL|class|TestOfflineImageViewer
 specifier|public
@@ -559,7 +555,7 @@ name|LogFactory
 operator|.
 name|getLog
 argument_list|(
-name|OfflineImageViewer
+name|OfflineImageViewerPB
 operator|.
 name|class
 argument_list|)
