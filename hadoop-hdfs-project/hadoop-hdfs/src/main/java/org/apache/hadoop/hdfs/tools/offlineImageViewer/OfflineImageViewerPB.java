@@ -299,16 +299,6 @@ literal|"\n"
 operator|+
 literal|"The following image processors are available:\n"
 operator|+
-literal|"  * Ls: The default image processor generates an lsr-style listing\n"
-operator|+
-literal|"    of the files in the namespace, with the same fields in the same\n"
-operator|+
-literal|"    order.  Note that in order to correctly determine file sizes,\n"
-operator|+
-literal|"    this formatter cannot skip blocks and will override the\n"
-operator|+
-literal|"    -skipBlocks option.\n"
-operator|+
 literal|"  * XML: This processor creates an XML document with all elements of\n"
 operator|+
 literal|"    the fsimage enumerated, suitable for further analysis by XML\n"
@@ -830,28 +820,6 @@ operator|.
 name|initServerAndWait
 argument_list|(
 name|inputFile
-argument_list|)
-expr_stmt|;
-block|}
-else|else
-block|{
-operator|new
-name|LsrPBImage
-argument_list|(
-name|conf
-argument_list|,
-name|out
-argument_list|)
-operator|.
-name|visit
-argument_list|(
-operator|new
-name|RandomAccessFile
-argument_list|(
-name|inputFile
-argument_list|,
-literal|"r"
-argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
