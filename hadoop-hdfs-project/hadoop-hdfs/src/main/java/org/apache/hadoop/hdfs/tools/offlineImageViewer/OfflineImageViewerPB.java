@@ -224,6 +224,20 @@ name|IOUtils
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|net
+operator|.
+name|NetUtils
+import|;
+end_import
+
 begin_comment
 comment|/**  * OfflineImageViewerPB to dump the contents of an Hadoop image file to XML or  * the console. Main entry point into utility, either via the command line or  * programatically.  */
 end_comment
@@ -310,6 +324,10 @@ operator|+
 literal|"     analyzed (128GB by default).\n"
 operator|+
 literal|"    -step defines the granularity of the distribution. (2MB by default)\n"
+operator|+
+literal|"  * Web: Run a viewer to expose read-only WebHDFS API.\n"
+operator|+
+literal|"    -addr specifies the address to listen. (localhost:5978 by default)\n"
 operator|+
 literal|"\n"
 operator|+
@@ -450,6 +468,17 @@ operator|.
 name|addOption
 argument_list|(
 literal|"step"
+argument_list|,
+literal|true
+argument_list|,
+literal|""
+argument_list|)
+expr_stmt|;
+name|options
+operator|.
+name|addOption
+argument_list|(
+literal|"addr"
 argument_list|,
 literal|true
 argument_list|,
@@ -761,6 +790,46 @@ name|inputFile
 argument_list|,
 literal|"r"
 argument_list|)
+argument_list|)
+expr_stmt|;
+block|}
+elseif|else
+if|if
+condition|(
+name|processor
+operator|.
+name|equals
+argument_list|(
+literal|"Web"
+argument_list|)
+condition|)
+block|{
+name|String
+name|addr
+init|=
+name|cmd
+operator|.
+name|getOptionValue
+argument_list|(
+literal|"addr"
+argument_list|,
+literal|"localhost:5978"
+argument_list|)
+decl_stmt|;
+operator|new
+name|WebImageViewer
+argument_list|(
+name|NetUtils
+operator|.
+name|createSocketAddr
+argument_list|(
+name|addr
+argument_list|)
+argument_list|)
+operator|.
+name|initServerAndWait
+argument_list|(
+name|inputFile
 argument_list|)
 expr_stmt|;
 block|}
