@@ -348,11 +348,23 @@ name|assertEquals
 argument_list|(
 name|HttpURLConnection
 operator|.
-name|HTTP_UNAUTHORIZED
+name|HTTP_FORBIDDEN
 argument_list|,
 name|conn
 operator|.
 name|getResponseCode
+argument_list|()
+argument_list|)
+expr_stmt|;
+name|Assert
+operator|.
+name|assertEquals
+argument_list|(
+literal|"Anonymous requests are disallowed"
+argument_list|,
+name|conn
+operator|.
+name|getResponseMessage
 argument_list|()
 argument_list|)
 expr_stmt|;
