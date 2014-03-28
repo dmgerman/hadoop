@@ -32,15 +32,25 @@ name|hadoop
 operator|.
 name|hdfs
 operator|.
-name|server
+name|protocol
 operator|.
-name|namenode
+name|SnapshotInfo
+import|;
+end_import
+
+begin_import
+import|import
+name|org
 operator|.
-name|snapshot
+name|apache
 operator|.
-name|SnapshotManager
+name|hadoop
 operator|.
-name|SnapshotDirectoryMXBean
+name|hdfs
+operator|.
+name|protocol
+operator|.
+name|SnapshottableDirectoryStatus
 import|;
 end_import
 
@@ -55,10 +65,23 @@ interface|interface
 name|SnapshotStatsMXBean
 block|{
 comment|/**    * Return the list of snapshottable directories    *    * @return the list of snapshottable directories    */
-DECL|method|getSnapshotStats ()
+DECL|method|getSnapshottableDirectories ()
 specifier|public
-name|SnapshotDirectoryMXBean
-name|getSnapshotStats
+name|SnapshottableDirectoryStatus
+operator|.
+name|Bean
+index|[]
+name|getSnapshottableDirectories
+parameter_list|()
+function_decl|;
+comment|/**    * Return the list of snapshots    *    * @return the list of snapshots    */
+DECL|method|getSnapshots ()
+specifier|public
+name|SnapshotInfo
+operator|.
+name|Bean
+index|[]
+name|getSnapshots
 parameter_list|()
 function_decl|;
 block|}
