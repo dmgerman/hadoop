@@ -1858,12 +1858,12 @@ name|IOException
 block|{}
 annotation|@
 name|Override
-DECL|method|getDelegationToken (Text renewer)
+DECL|method|getDelegationToken (String renewer)
 specifier|public
 name|MyToken
 name|getDelegationToken
 parameter_list|(
-name|Text
+name|String
 name|renewer
 parameter_list|)
 throws|throws
@@ -1874,7 +1874,11 @@ name|result
 init|=
 name|createTokens
 argument_list|(
+operator|new
+name|Text
+argument_list|(
 name|renewer
+argument_list|)
 argument_list|)
 decl_stmt|;
 name|LOG
@@ -2045,11 +2049,7 @@ name|dfs
 operator|.
 name|getDelegationToken
 argument_list|(
-operator|new
-name|Text
-argument_list|(
 literal|"user1"
-argument_list|)
 argument_list|)
 expr_stmt|;
 name|token2
@@ -2058,11 +2058,7 @@ name|dfs
 operator|.
 name|getDelegationToken
 argument_list|(
-operator|new
-name|Text
-argument_list|(
 literal|"user2"
-argument_list|)
 argument_list|)
 expr_stmt|;
 name|token3
@@ -2071,11 +2067,7 @@ name|dfs
 operator|.
 name|getDelegationToken
 argument_list|(
-operator|new
-name|Text
-argument_list|(
 literal|"user3"
-argument_list|)
 argument_list|)
 expr_stmt|;
 comment|//to cause this one to be set for renew in 2 secs
@@ -2314,11 +2306,7 @@ name|dfs
 operator|.
 name|getDelegationToken
 argument_list|(
-operator|new
-name|Text
-argument_list|(
 literal|"user4"
-argument_list|)
 argument_list|)
 decl_stmt|;
 comment|//to cause this one to be set for renew in 2 secs
@@ -2538,11 +2526,7 @@ name|dfs
 operator|.
 name|getDelegationToken
 argument_list|(
-operator|new
-name|Text
-argument_list|(
 literal|"user1"
-argument_list|)
 argument_list|)
 decl_stmt|;
 name|token
@@ -2740,11 +2724,7 @@ name|dfs
 operator|.
 name|getDelegationToken
 argument_list|(
-operator|new
-name|Text
-argument_list|(
 literal|"user1"
-argument_list|)
 argument_list|)
 decl_stmt|;
 comment|//to cause this one to be set for renew in 2 secs
@@ -3116,11 +3096,7 @@ name|dfs
 operator|.
 name|getDelegationToken
 argument_list|(
-operator|new
-name|Text
-argument_list|(
 literal|"user1"
-argument_list|)
 argument_list|)
 decl_stmt|;
 name|String
@@ -3501,11 +3477,7 @@ name|dfs
 operator|.
 name|getDelegationToken
 argument_list|(
-operator|new
-name|Text
-argument_list|(
 literal|"user1"
-argument_list|)
 argument_list|)
 decl_stmt|;
 name|String

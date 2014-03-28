@@ -412,11 +412,6 @@ expr_stmt|;
 block|}
 comment|/**    * Verify that when the DelegationTokenFetcher runs, it talks to the Namenode,    * pulls out the correct user's token and successfully serializes it to disk.    */
 annotation|@
-name|SuppressWarnings
-argument_list|(
-literal|"deprecation"
-argument_list|)
-annotation|@
 name|Test
 DECL|method|expectedTokenIsRetrievedFromDFS ()
 specifier|public
@@ -595,24 +590,6 @@ block|}
 block|}
 block|)
 function|;
-name|when
-argument_list|(
-name|dfs
-operator|.
-name|renewDelegationToken
-argument_list|(
-name|eq
-argument_list|(
-name|t
-argument_list|)
-argument_list|)
-argument_list|)
-operator|.
-name|thenReturn
-argument_list|(
-literal|1000L
-argument_list|)
-expr_stmt|;
 name|when
 argument_list|(
 name|dfs
