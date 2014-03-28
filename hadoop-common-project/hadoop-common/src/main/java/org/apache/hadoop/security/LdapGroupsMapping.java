@@ -1011,11 +1011,6 @@ return|return
 name|groups
 return|;
 block|}
-annotation|@
-name|SuppressWarnings
-argument_list|(
-literal|"deprecation"
-argument_list|)
 DECL|method|getDirContext ()
 name|DirContext
 name|getDirContext

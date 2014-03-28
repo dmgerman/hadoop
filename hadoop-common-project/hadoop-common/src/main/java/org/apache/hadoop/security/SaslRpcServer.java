@@ -482,20 +482,6 @@ name|TokenIdentifier
 import|;
 end_import
 
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|util
-operator|.
-name|StringUtils
-import|;
-end_import
-
 begin_comment
 comment|/**  * A utility class for dealing with SASL on RPC server  */
 end_comment
@@ -572,12 +558,6 @@ specifier|private
 specifier|static
 name|SaslServerFactory
 name|saslFactory
-decl_stmt|;
-DECL|field|resolver
-specifier|private
-specifier|static
-name|SaslPropertiesResolver
-name|resolver
 decl_stmt|;
 DECL|enum|QualityOfProtection
 specifier|public
