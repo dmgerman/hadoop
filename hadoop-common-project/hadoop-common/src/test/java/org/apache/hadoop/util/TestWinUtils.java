@@ -1490,6 +1490,324 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
+comment|/** Validate behavior of chmod commands on directories on Windows. */
+annotation|@
+name|Test
+argument_list|(
+name|timeout
+operator|=
+literal|30000
+argument_list|)
+DECL|method|testBasicChmodOnDir ()
+specifier|public
+name|void
+name|testBasicChmodOnDir
+parameter_list|()
+throws|throws
+name|IOException
+block|{
+comment|// Validate that listing a directory with no read permission fails
+name|File
+name|a
+init|=
+operator|new
+name|File
+argument_list|(
+name|TEST_DIR
+argument_list|,
+literal|"a"
+argument_list|)
+decl_stmt|;
+name|File
+name|b
+init|=
+operator|new
+name|File
+argument_list|(
+name|a
+argument_list|,
+literal|"b"
+argument_list|)
+decl_stmt|;
+name|a
+operator|.
+name|mkdirs
+argument_list|()
+expr_stmt|;
+name|assertTrue
+argument_list|(
+name|b
+operator|.
+name|createNewFile
+argument_list|()
+argument_list|)
+expr_stmt|;
+comment|// Remove read permissions on directory a
+name|chmod
+argument_list|(
+literal|"300"
+argument_list|,
+name|a
+argument_list|)
+expr_stmt|;
+name|String
+index|[]
+name|files
+init|=
+name|a
+operator|.
+name|list
+argument_list|()
+decl_stmt|;
+name|assertTrue
+argument_list|(
+literal|"Listing a directory without read permission should fail"
+argument_list|,
+literal|null
+operator|==
+name|files
+argument_list|)
+expr_stmt|;
+comment|// restore permissions
+name|chmod
+argument_list|(
+literal|"700"
+argument_list|,
+name|a
+argument_list|)
+expr_stmt|;
+comment|// validate that the directory can be listed now
+name|files
+operator|=
+name|a
+operator|.
+name|list
+argument_list|()
+expr_stmt|;
+name|assertEquals
+argument_list|(
+literal|"b"
+argument_list|,
+name|files
+index|[
+literal|0
+index|]
+argument_list|)
+expr_stmt|;
+comment|// Remove write permissions on the directory and validate the
+comment|// behavior for adding, deleting and renaming files
+name|chmod
+argument_list|(
+literal|"500"
+argument_list|,
+name|a
+argument_list|)
+expr_stmt|;
+name|File
+name|c
+init|=
+operator|new
+name|File
+argument_list|(
+name|a
+argument_list|,
+literal|"c"
+argument_list|)
+decl_stmt|;
+try|try
+block|{
+comment|// Adding a new file will fail as expected because the
+comment|// FILE_WRITE_DATA/FILE_ADD_FILE privilege is denied on
+comment|// the dir.
+name|c
+operator|.
+name|createNewFile
+argument_list|()
+expr_stmt|;
+name|assertFalse
+argument_list|(
+literal|"writeFile should have failed!"
+argument_list|,
+literal|true
+argument_list|)
+expr_stmt|;
+block|}
+catch|catch
+parameter_list|(
+name|IOException
+name|ex
+parameter_list|)
+block|{
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"Expected: Failed to create a file when directory "
+operator|+
+literal|"permissions are 577"
+argument_list|)
+expr_stmt|;
+block|}
+comment|// Deleting a file will succeed even if write permissions are not present
+comment|// on the parent dir. Check the following link for additional details:
+comment|// http://support.microsoft.com/kb/238018
+name|assertTrue
+argument_list|(
+literal|"Special behavior: deleting a file will succeed on Windows "
+operator|+
+literal|"even if a user does not have write permissions on the parent dir"
+argument_list|,
+name|b
+operator|.
+name|delete
+argument_list|()
+argument_list|)
+expr_stmt|;
+name|assertFalse
+argument_list|(
+literal|"Renaming a file should fail on the dir where a user does "
+operator|+
+literal|"not have write permissions"
+argument_list|,
+name|b
+operator|.
+name|renameTo
+argument_list|(
+operator|new
+name|File
+argument_list|(
+name|a
+argument_list|,
+literal|"d"
+argument_list|)
+argument_list|)
+argument_list|)
+expr_stmt|;
+comment|// restore permissions
+name|chmod
+argument_list|(
+literal|"700"
+argument_list|,
+name|a
+argument_list|)
+expr_stmt|;
+comment|// Make sure adding new files and rename succeeds now
+name|assertTrue
+argument_list|(
+name|c
+operator|.
+name|createNewFile
+argument_list|()
+argument_list|)
+expr_stmt|;
+name|File
+name|d
+init|=
+operator|new
+name|File
+argument_list|(
+name|a
+argument_list|,
+literal|"d"
+argument_list|)
+decl_stmt|;
+name|assertTrue
+argument_list|(
+name|c
+operator|.
+name|renameTo
+argument_list|(
+name|d
+argument_list|)
+argument_list|)
+expr_stmt|;
+comment|// at this point in the test, d is the only remaining file in directory a
+comment|// Removing execute permissions does not have the same behavior on
+comment|// Windows as on Linux. Adding, renaming, deleting and listing files
+comment|// will still succeed. Windows default behavior is to bypass directory
+comment|// traverse checking (BYPASS_TRAVERSE_CHECKING privilege) for all users.
+comment|// See the following link for additional details:
+comment|// http://msdn.microsoft.com/en-us/library/windows/desktop/aa364399(v=vs.85).aspx
+name|chmod
+argument_list|(
+literal|"600"
+argument_list|,
+name|a
+argument_list|)
+expr_stmt|;
+comment|// validate directory listing
+name|files
+operator|=
+name|a
+operator|.
+name|list
+argument_list|()
+expr_stmt|;
+name|assertEquals
+argument_list|(
+literal|"d"
+argument_list|,
+name|files
+index|[
+literal|0
+index|]
+argument_list|)
+expr_stmt|;
+comment|// validate delete
+name|assertTrue
+argument_list|(
+name|d
+operator|.
+name|delete
+argument_list|()
+argument_list|)
+expr_stmt|;
+comment|// validate add
+name|File
+name|e
+init|=
+operator|new
+name|File
+argument_list|(
+name|a
+argument_list|,
+literal|"e"
+argument_list|)
+decl_stmt|;
+name|assertTrue
+argument_list|(
+name|e
+operator|.
+name|createNewFile
+argument_list|()
+argument_list|)
+expr_stmt|;
+comment|// validate rename
+name|assertTrue
+argument_list|(
+name|e
+operator|.
+name|renameTo
+argument_list|(
+operator|new
+name|File
+argument_list|(
+name|a
+argument_list|,
+literal|"f"
+argument_list|)
+argument_list|)
+argument_list|)
+expr_stmt|;
+comment|// restore permissions
+name|chmod
+argument_list|(
+literal|"700"
+argument_list|,
+name|a
+argument_list|)
+expr_stmt|;
+block|}
 annotation|@
 name|Test
 argument_list|(
