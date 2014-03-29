@@ -935,6 +935,32 @@ name|MAX_NO_PENDING_BLOCK_ITERATIONS
 init|=
 literal|5
 decl_stmt|;
+DECL|field|DELAY_AFTER_ERROR
+specifier|public
+specifier|static
+specifier|final
+name|long
+name|DELAY_AFTER_ERROR
+init|=
+literal|10
+operator|*
+literal|1000L
+decl_stmt|;
+comment|//10 seconds
+DECL|field|BLOCK_MOVE_READ_TIMEOUT
+specifier|public
+specifier|static
+specifier|final
+name|int
+name|BLOCK_MOVE_READ_TIMEOUT
+init|=
+literal|20
+operator|*
+literal|60
+operator|*
+literal|1000
+decl_stmt|;
+comment|// 20 minutes
 DECL|field|USAGE
 specifier|private
 specifier|static
@@ -1579,13 +1605,12 @@ operator|.
 name|READ_TIMEOUT
 argument_list|)
 expr_stmt|;
+comment|/* Unfortunately we don't have a good way to know if the Datanode is          * taking a really long time to move a block, OR something has          * gone wrong and it's never going to finish. To deal with this           * scenario, we set a long timeout (20 minutes) to avoid hanging          * the balancer indefinitely.          */
 name|sock
 operator|.
 name|setSoTimeout
 argument_list|(
-name|HdfsServerConstants
-operator|.
-name|READ_TIMEOUT
+name|BLOCK_MOVE_READ_TIMEOUT
 argument_list|)
 expr_stmt|;
 name|sock
@@ -1733,6 +1758,21 @@ name|e
 operator|.
 name|getMessage
 argument_list|()
+argument_list|)
+expr_stmt|;
+comment|/* proxy or target may have an issue, insert a small delay          * before using these nodes further. This avoids a potential storm          * of "threads quota exceeded" Warnings when the balancer          * gets out of sync with work going on in datanode.          */
+name|proxySource
+operator|.
+name|activateDelay
+argument_list|(
+name|DELAY_AFTER_ERROR
+argument_list|)
+expr_stmt|;
+name|target
+operator|.
+name|activateDelay
+argument_list|(
+name|DELAY_AFTER_ERROR
 argument_list|)
 expr_stmt|;
 block|}
@@ -2278,6 +2318,13 @@ name|scheduledSize
 init|=
 literal|0L
 decl_stmt|;
+DECL|field|delayUntil
+specifier|protected
+name|long
+name|delayUntil
+init|=
+literal|0L
+decl_stmt|;
 comment|//  blocks being moved but not confirmed yet
 DECL|field|pendingBlocks
 specifier|private
@@ -2584,6 +2631,59 @@ operator|=
 name|size
 expr_stmt|;
 block|}
+DECL|method|activateDelay (long delta)
+specifier|synchronized
+specifier|private
+name|void
+name|activateDelay
+parameter_list|(
+name|long
+name|delta
+parameter_list|)
+block|{
+name|delayUntil
+operator|=
+name|Time
+operator|.
+name|now
+argument_list|()
+operator|+
+name|delta
+expr_stmt|;
+block|}
+DECL|method|isDelayActive ()
+specifier|synchronized
+specifier|private
+name|boolean
+name|isDelayActive
+parameter_list|()
+block|{
+if|if
+condition|(
+name|delayUntil
+operator|==
+literal|0
+operator|||
+name|Time
+operator|.
+name|now
+argument_list|()
+operator|>
+name|delayUntil
+condition|)
+block|{
+name|delayUntil
+operator|=
+literal|0
+expr_stmt|;
+return|return
+literal|false
+return|;
+block|}
+return|return
+literal|true
+return|;
+block|}
 comment|/* Check if the node can schedule more blocks to move */
 DECL|method|isPendingQNotFull ()
 specifier|synchronized
@@ -2638,6 +2738,10 @@ parameter_list|)
 block|{
 if|if
 condition|(
+operator|!
+name|isDelayActive
+argument_list|()
+operator|&&
 name|isPendingQNotFull
 argument_list|()
 condition|)
