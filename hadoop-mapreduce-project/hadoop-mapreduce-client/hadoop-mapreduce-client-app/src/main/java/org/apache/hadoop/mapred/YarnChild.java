@@ -682,7 +682,11 @@ name|job
 init|=
 operator|new
 name|JobConf
-argument_list|()
+argument_list|(
+name|MRJobConfig
+operator|.
+name|JOB_CONF_FILE
+argument_list|)
 decl_stmt|;
 comment|// Initing with our JobConf allows us to avoid loading confs twice
 name|Limits
@@ -690,15 +694,6 @@ operator|.
 name|init
 argument_list|(
 name|job
-argument_list|)
-expr_stmt|;
-name|job
-operator|.
-name|addResource
-argument_list|(
-name|MRJobConfig
-operator|.
-name|JOB_CONF_FILE
 argument_list|)
 expr_stmt|;
 name|UserGroupInformation
