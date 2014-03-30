@@ -68,6 +68,22 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|io
+operator|.
+name|retry
+operator|.
+name|AtMostOnce
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|yarn
 operator|.
 name|api
@@ -339,6 +355,8 @@ annotation|@
 name|Public
 annotation|@
 name|Stable
+annotation|@
+name|AtMostOnce
 DECL|method|allocate (AllocateRequest request)
 specifier|public
 name|AllocateResponse

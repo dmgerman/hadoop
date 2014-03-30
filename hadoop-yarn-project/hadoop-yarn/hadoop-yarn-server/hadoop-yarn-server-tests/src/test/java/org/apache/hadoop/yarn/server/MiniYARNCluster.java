@@ -4048,6 +4048,20 @@ block|}
 block|}
 return|;
 block|}
+DECL|method|getNumOfResourceManager ()
+specifier|public
+name|int
+name|getNumOfResourceManager
+parameter_list|()
+block|{
+return|return
+name|this
+operator|.
+name|resourceManagers
+operator|.
+name|length
+return|;
+block|}
 block|}
 end_class
 
