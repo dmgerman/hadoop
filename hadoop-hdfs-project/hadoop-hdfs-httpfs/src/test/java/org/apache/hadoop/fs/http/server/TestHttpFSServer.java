@@ -2426,7 +2426,7 @@ name|assertEquals
 argument_list|(
 name|HttpURLConnection
 operator|.
-name|HTTP_UNAUTHORIZED
+name|HTTP_FORBIDDEN
 argument_list|,
 name|conn
 operator|.

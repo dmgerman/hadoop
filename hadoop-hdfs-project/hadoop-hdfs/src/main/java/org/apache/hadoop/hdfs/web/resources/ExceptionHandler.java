@@ -446,7 +446,7 @@ name|Response
 operator|.
 name|Status
 operator|.
-name|UNAUTHORIZED
+name|FORBIDDEN
 expr_stmt|;
 block|}
 elseif|else
@@ -463,7 +463,7 @@ name|Response
 operator|.
 name|Status
 operator|.
-name|UNAUTHORIZED
+name|FORBIDDEN
 expr_stmt|;
 block|}
 elseif|else
