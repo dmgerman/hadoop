@@ -325,19 +325,21 @@ literal|"Required command line arguments:\n"
 operator|+
 literal|"-i,--inputFile<arg>   FSImage file to process.\n"
 operator|+
-literal|"-o,--outputFile<arg>  Name of output file. If the specified\n"
-operator|+
-literal|"                       file exists, it will be overwritten.\n"
-operator|+
 literal|"\n"
 operator|+
 literal|"Optional command line arguments:\n"
 operator|+
+literal|"-o,--outputFile<arg>  Name of output file. If the specified\n"
+operator|+
+literal|"                       file exists, it will be overwritten.\n"
+operator|+
+literal|"                       (output to stdout by default)\n"
+operator|+
 literal|"-p,--processor<arg>   Select which type of processor to apply\n"
 operator|+
-literal|"                       against image file."
+literal|"                       against image file. (XML|FileDistribution|Web)\n"
 operator|+
-literal|" (Ls|XML|FileDistribution).\n"
+literal|"                       (Web by default)\n"
 operator|+
 literal|"-h,--help              Display usage information and exit\n"
 decl_stmt|;
@@ -372,35 +374,6 @@ name|OptionBuilder
 operator|.
 name|withLongOpt
 argument_list|(
-literal|"outputFile"
-argument_list|)
-expr_stmt|;
-name|options
-operator|.
-name|addOption
-argument_list|(
-name|OptionBuilder
-operator|.
-name|create
-argument_list|(
-literal|"o"
-argument_list|)
-argument_list|)
-expr_stmt|;
-name|OptionBuilder
-operator|.
-name|isRequired
-argument_list|()
-expr_stmt|;
-name|OptionBuilder
-operator|.
-name|hasArgs
-argument_list|()
-expr_stmt|;
-name|OptionBuilder
-operator|.
-name|withLongOpt
-argument_list|(
 literal|"inputFile"
 argument_list|)
 expr_stmt|;
@@ -414,6 +387,19 @@ name|create
 argument_list|(
 literal|"i"
 argument_list|)
+argument_list|)
+expr_stmt|;
+name|options
+operator|.
+name|addOption
+argument_list|(
+literal|"o"
+argument_list|,
+literal|"outputFile"
+argument_list|,
+literal|true
+argument_list|,
+literal|""
 argument_list|)
 expr_stmt|;
 name|options
@@ -628,7 +614,7 @@ name|getOptionValue
 argument_list|(
 literal|"p"
 argument_list|,
-literal|"Ls"
+literal|"Web"
 argument_list|)
 decl_stmt|;
 name|String
@@ -639,23 +625,19 @@ operator|.
 name|getOptionValue
 argument_list|(
 literal|"o"
+argument_list|,
+literal|"-"
 argument_list|)
 decl_stmt|;
 name|PrintWriter
 name|out
 init|=
-operator|(
-name|outputFile
-operator|==
-literal|null
-operator|||
 name|outputFile
 operator|.
 name|equals
 argument_list|(
 literal|"-"
 argument_list|)
-operator|)
 condition|?
 operator|new
 name|PrintWriter
