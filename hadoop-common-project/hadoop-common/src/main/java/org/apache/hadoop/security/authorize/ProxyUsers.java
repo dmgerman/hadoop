@@ -370,7 +370,7 @@ name|groups
 init|=
 name|StringUtils
 operator|.
-name|getStringCollection
+name|getTrimmedStringCollection
 argument_list|(
 name|entry
 operator|.
@@ -456,7 +456,7 @@ argument_list|()
 argument_list|,
 name|StringUtils
 operator|.
-name|getStringCollection
+name|getTrimmedStringCollection
 argument_list|(
 name|entry
 operator|.

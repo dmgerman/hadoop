@@ -122,6 +122,16 @@ name|java
 operator|.
 name|util
 operator|.
+name|LinkedHashSet
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
 name|List
 import|;
 end_import
@@ -143,6 +153,16 @@ operator|.
 name|util
 operator|.
 name|Map
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
+name|Set
 import|;
 end_import
 
@@ -1445,7 +1465,7 @@ return|return
 name|values
 return|;
 block|}
-comment|/**    * Splits a comma separated value<code>String</code>, trimming leading and trailing whitespace on each value.    * @param str a comma separated<String> with values    * @return a<code>Collection</code> of<code>String</code> values    */
+comment|/**    * Splits a comma separated value<code>String</code>, trimming leading and trailing whitespace on each value.    * Duplicate and empty values are removed.    * @param str a comma separated<String> with values    * @return a<code>Collection</code> of<code>String</code> values    */
 DECL|method|getTrimmedStringCollection (String str)
 specifier|public
 specifier|static
@@ -1459,9 +1479,14 @@ name|String
 name|str
 parameter_list|)
 block|{
-return|return
+name|Set
+argument_list|<
+name|String
+argument_list|>
+name|set
+init|=
 operator|new
-name|ArrayList
+name|LinkedHashSet
 argument_list|<
 name|String
 argument_list|>
@@ -1476,6 +1501,16 @@ name|str
 argument_list|)
 argument_list|)
 argument_list|)
+decl_stmt|;
+name|set
+operator|.
+name|remove
+argument_list|(
+literal|""
+argument_list|)
+expr_stmt|;
+return|return
+name|set
 return|;
 block|}
 comment|/**    * Splits a comma separated value<code>String</code>, trimming leading and trailing whitespace on each value.    * @param str a comma separated<String> with values    * @return an array of<code>String</code> values    */
