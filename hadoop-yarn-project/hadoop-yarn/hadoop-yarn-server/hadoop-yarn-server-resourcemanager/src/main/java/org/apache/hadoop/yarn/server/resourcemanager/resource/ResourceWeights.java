@@ -138,6 +138,26 @@ name|float
 name|weight
 parameter_list|)
 block|{
+name|setWeight
+argument_list|(
+name|weight
+argument_list|)
+expr_stmt|;
+block|}
+DECL|method|ResourceWeights ()
+specifier|public
+name|ResourceWeights
+parameter_list|()
+block|{ }
+DECL|method|setWeight (float weight)
+specifier|public
+name|void
+name|setWeight
+parameter_list|(
+name|float
+name|weight
+parameter_list|)
+block|{
 for|for
 control|(
 name|int
@@ -164,11 +184,6 @@ name|weight
 expr_stmt|;
 block|}
 block|}
-DECL|method|ResourceWeights ()
-specifier|public
-name|ResourceWeights
-parameter_list|()
-block|{ }
 DECL|method|setWeight (ResourceType resourceType, float weight)
 specifier|public
 name|void
