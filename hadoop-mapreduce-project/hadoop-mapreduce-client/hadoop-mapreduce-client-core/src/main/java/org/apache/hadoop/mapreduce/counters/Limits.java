@@ -86,16 +86,6 @@ specifier|public
 class|class
 name|Limits
 block|{
-DECL|field|conf
-specifier|static
-specifier|final
-name|Configuration
-name|conf
-init|=
-operator|new
-name|JobConf
-argument_list|()
-decl_stmt|;
 DECL|field|totalCounters
 specifier|private
 name|int
