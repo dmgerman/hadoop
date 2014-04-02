@@ -4,7 +4,7 @@ comment|/**  * Licensed to the Apache Software Foundation (ASF) under one  * or 
 end_comment
 
 begin_package
-DECL|package|org.apache.hadoop.hdfs.client
+DECL|package|org.apache.hadoop.hdfs.shortcircuit
 package|package
 name|org
 operator|.
@@ -14,23 +14,9 @@ name|hadoop
 operator|.
 name|hdfs
 operator|.
-name|client
+name|shortcircuit
 package|;
 end_package
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|classification
-operator|.
-name|InterfaceAudience
-import|;
-end_import
 
 begin_import
 import|import
@@ -124,9 +110,9 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|hdfs
+name|classification
 operator|.
-name|ExtendedBlockId
+name|InterfaceAudience
 import|;
 end_import
 
@@ -140,9 +126,7 @@ name|hadoop
 operator|.
 name|hdfs
 operator|.
-name|ShortCircuitShm
-operator|.
-name|Slot
+name|ExtendedBlockId
 import|;
 end_import
 
@@ -161,6 +145,24 @@ operator|.
 name|datanode
 operator|.
 name|BlockMetadataHeader
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|shortcircuit
+operator|.
+name|ShortCircuitShm
+operator|.
+name|Slot
 import|;
 end_import
 

@@ -5742,6 +5742,7 @@ return|;
 block|}
 comment|/** Create {@link ClientDatanodeProtocol} proxy using kerberos ticket */
 DECL|method|createClientDatanodeProtocolProxy ( DatanodeID datanodeid, Configuration conf, int socketTimeout, boolean connectToDnViaHostname)
+specifier|public
 specifier|static
 name|ClientDatanodeProtocol
 name|createClientDatanodeProtocolProxy

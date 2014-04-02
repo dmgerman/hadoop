@@ -3676,6 +3676,46 @@ operator|*
 literal|1000
 expr_stmt|;
 block|}
+DECL|method|isUseLegacyBlockReaderLocal ()
+specifier|public
+name|boolean
+name|isUseLegacyBlockReaderLocal
+parameter_list|()
+block|{
+return|return
+name|useLegacyBlockReaderLocal
+return|;
+block|}
+DECL|method|getDomainSocketPath ()
+specifier|public
+name|String
+name|getDomainSocketPath
+parameter_list|()
+block|{
+return|return
+name|domainSocketPath
+return|;
+block|}
+DECL|method|isShortCircuitLocalReads ()
+specifier|public
+name|boolean
+name|isShortCircuitLocalReads
+parameter_list|()
+block|{
+return|return
+name|shortCircuitLocalReads
+return|;
+block|}
+DECL|method|isDomainSocketDataTraffic ()
+specifier|public
+name|boolean
+name|isDomainSocketDataTraffic
+parameter_list|()
+block|{
+return|return
+name|domainSocketDataTraffic
+return|;
+block|}
 DECL|method|getChecksumType (Configuration conf)
 specifier|private
 name|DataChecksum
@@ -5829,6 +5869,7 @@ argument_list|()
 argument_list|)
 decl_stmt|;
 DECL|method|isLocalAddress (InetSocketAddress targetAddr)
+specifier|public
 specifier|static
 name|boolean
 name|isLocalAddress

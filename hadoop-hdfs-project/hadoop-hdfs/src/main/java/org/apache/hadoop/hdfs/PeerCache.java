@@ -767,7 +767,7 @@ return|return
 literal|null
 return|;
 block|}
-comment|/**    * Give an unused socket to the cache.    * @param sock socket not used by anyone.    */
+comment|/**    * Give an unused socket to the cache.    */
 DECL|method|put (DatanodeID dnId, Peer peer)
 specifier|public
 specifier|synchronized

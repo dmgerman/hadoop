@@ -444,6 +444,7 @@ argument_list|()
 return|;
 block|}
 DECL|method|randomBytes (long seed, int size)
+specifier|public
 specifier|static
 name|byte
 index|[]

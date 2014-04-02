@@ -4,7 +4,7 @@ comment|/**  * Licensed to the Apache Software Foundation (ASF) under one  * or 
 end_comment
 
 begin_package
-DECL|package|org.apache.hadoop.hdfs.client
+DECL|package|org.apache.hadoop.hdfs.shortcircuit
 package|package
 name|org
 operator|.
@@ -14,7 +14,7 @@ name|hadoop
 operator|.
 name|hdfs
 operator|.
-name|client
+name|shortcircuit
 package|;
 end_package
 
@@ -108,22 +108,6 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|io
-operator|.
-name|nativeio
-operator|.
-name|SharedFileDescriptorFactory
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
 name|hdfs
 operator|.
 name|ExtendedBlockId
@@ -140,6 +124,8 @@ name|hadoop
 operator|.
 name|hdfs
 operator|.
+name|shortcircuit
+operator|.
 name|ShortCircuitShm
 import|;
 end_import
@@ -153,6 +139,8 @@ operator|.
 name|hadoop
 operator|.
 name|hdfs
+operator|.
+name|shortcircuit
 operator|.
 name|ShortCircuitShm
 operator|.
@@ -170,9 +158,37 @@ name|hadoop
 operator|.
 name|hdfs
 operator|.
+name|shortcircuit
+operator|.
 name|ShortCircuitShm
 operator|.
 name|Slot
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|io
+operator|.
+name|nativeio
+operator|.
+name|SharedFileDescriptorFactory
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|junit
+operator|.
+name|Assert
 import|;
 end_import
 
@@ -203,16 +219,6 @@ operator|.
 name|junit
 operator|.
 name|Test
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|junit
-operator|.
-name|Assert
 import|;
 end_import
 

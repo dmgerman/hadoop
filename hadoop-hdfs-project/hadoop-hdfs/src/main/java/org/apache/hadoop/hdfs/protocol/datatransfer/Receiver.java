@@ -30,11 +30,13 @@ name|hadoop
 operator|.
 name|hdfs
 operator|.
-name|protocolPB
+name|protocol
 operator|.
-name|PBHelper
+name|datatransfer
 operator|.
-name|vintPrefixed
+name|DataTransferProtoUtil
+operator|.
+name|fromProto
 import|;
 end_import
 
@@ -48,13 +50,11 @@ name|hadoop
 operator|.
 name|hdfs
 operator|.
-name|protocol
+name|protocolPB
 operator|.
-name|datatransfer
+name|PBHelper
 operator|.
-name|DataTransferProtoUtil
-operator|.
-name|fromProto
+name|vintPrefixed
 import|;
 end_import
 
@@ -116,9 +116,13 @@ name|hadoop
 operator|.
 name|hdfs
 operator|.
-name|ShortCircuitShm
+name|protocol
 operator|.
-name|SlotId
+name|proto
+operator|.
+name|DataTransferProtos
+operator|.
+name|CachingStrategyProto
 import|;
 end_import
 
@@ -218,26 +222,6 @@ name|proto
 operator|.
 name|DataTransferProtos
 operator|.
-name|OpTransferBlockProto
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|hdfs
-operator|.
-name|protocol
-operator|.
-name|proto
-operator|.
-name|DataTransferProtos
-operator|.
 name|OpRequestShortCircuitAccessProto
 import|;
 end_import
@@ -258,7 +242,7 @@ name|proto
 operator|.
 name|DataTransferProtos
 operator|.
-name|CachingStrategyProto
+name|OpTransferBlockProto
 import|;
 end_import
 
@@ -353,6 +337,24 @@ operator|.
 name|datanode
 operator|.
 name|CachingStrategy
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|shortcircuit
+operator|.
+name|ShortCircuitShm
+operator|.
+name|SlotId
 import|;
 end_import
 

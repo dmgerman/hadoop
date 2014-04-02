@@ -74,7 +74,7 @@ name|hadoop
 operator|.
 name|hdfs
 operator|.
-name|client
+name|shortcircuit
 operator|.
 name|ClientMmap
 import|;

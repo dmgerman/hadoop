@@ -4,7 +4,7 @@ comment|/**  * Licensed to the Apache Software Foundation (ASF) under one  * or 
 end_comment
 
 begin_package
-DECL|package|org.apache.hadoop.hdfs
+DECL|package|org.apache.hadoop.hdfs.shortcircuit
 package|package
 name|org
 operator|.
@@ -13,6 +13,8 @@ operator|.
 name|hadoop
 operator|.
 name|hdfs
+operator|.
+name|shortcircuit
 package|;
 end_package
 
@@ -170,6 +172,20 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|hdfs
+operator|.
+name|ExtendedBlockId
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|io
 operator|.
 name|nativeio
@@ -226,6 +242,16 @@ end_import
 
 begin_import
 import|import
+name|sun
+operator|.
+name|misc
+operator|.
+name|Unsafe
+import|;
+end_import
+
+begin_import
+import|import
 name|com
 operator|.
 name|google
@@ -263,16 +289,6 @@ operator|.
 name|primitives
 operator|.
 name|Ints
-import|;
-end_import
-
-begin_import
-import|import
-name|sun
-operator|.
-name|misc
-operator|.
-name|Unsafe
 import|;
 end_import
 
