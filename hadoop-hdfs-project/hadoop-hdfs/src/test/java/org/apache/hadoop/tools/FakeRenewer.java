@@ -115,6 +115,7 @@ init|=
 literal|null
 decl_stmt|;
 DECL|field|KIND
+specifier|public
 specifier|static
 specifier|final
 name|Text
@@ -230,6 +231,34 @@ name|lastCanceled
 operator|=
 literal|null
 expr_stmt|;
+block|}
+DECL|method|getLastRenewed ()
+specifier|public
+specifier|static
+name|Token
+argument_list|<
+name|?
+argument_list|>
+name|getLastRenewed
+parameter_list|()
+block|{
+return|return
+name|lastRenewed
+return|;
+block|}
+DECL|method|getLastCanceled ()
+specifier|public
+specifier|static
+name|Token
+argument_list|<
+name|?
+argument_list|>
+name|getLastCanceled
+parameter_list|()
+block|{
+return|return
+name|lastCanceled
+return|;
 block|}
 block|}
 end_class

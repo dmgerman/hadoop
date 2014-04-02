@@ -3541,7 +3541,7 @@ else|:
 name|serviceAddr
 return|;
 block|}
-comment|/**    * @return NameNode HTTP address, used by the Web UI, image transfer,    *    and HTTP-based file system clients like Hftp and WebHDFS    */
+comment|/**    * @return NameNode HTTP address, used by the Web UI, image transfer,    *    and HTTP-based file system clients like WebHDFS    */
 DECL|method|getHttpAddress ()
 specifier|public
 name|InetSocketAddress
@@ -3555,7 +3555,7 @@ name|getHttpAddress
 argument_list|()
 return|;
 block|}
-comment|/**    * @return NameNode HTTPS address, used by the Web UI, image transfer,    *    and HTTP-based file system clients like Hftp and WebHDFS    */
+comment|/**    * @return NameNode HTTPS address, used by the Web UI, image transfer,    *    and HTTP-based file system clients like WebHDFS    */
 DECL|method|getHttpsAddress ()
 specifier|public
 name|InetSocketAddress

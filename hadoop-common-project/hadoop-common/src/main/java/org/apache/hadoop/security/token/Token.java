@@ -683,7 +683,7 @@ return|return
 name|kind
 return|;
 block|}
-comment|/**    * Set the token kind. This is only intended to be used by services that    * wrap another service's token, such as HFTP wrapping HDFS.    * @param newKind    */
+comment|/**    * Set the token kind. This is only intended to be used by services that    * wrap another service's token.    * @param newKind    */
 annotation|@
 name|InterfaceAudience
 operator|.

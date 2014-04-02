@@ -2110,7 +2110,7 @@ init|=
 operator|new
 name|Path
 argument_list|(
-literal|"hftp://localhost:1234/*/*/*/?/"
+literal|"webhdfs://localhost:1234/*/*/*/?/"
 argument_list|)
 operator|.
 name|makeQualified
