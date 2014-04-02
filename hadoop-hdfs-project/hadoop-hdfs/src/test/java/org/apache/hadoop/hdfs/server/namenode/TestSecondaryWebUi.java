@@ -305,11 +305,13 @@ argument_list|)
 decl_stmt|;
 name|assertTrue
 argument_list|(
+literal|"Didn't find \"Last Checkpoint\""
+argument_list|,
 name|pageContents
 operator|.
 name|contains
 argument_list|(
-literal|"Last Checkpoint Time"
+literal|"Last Checkpoint"
 argument_list|)
 argument_list|)
 expr_stmt|;

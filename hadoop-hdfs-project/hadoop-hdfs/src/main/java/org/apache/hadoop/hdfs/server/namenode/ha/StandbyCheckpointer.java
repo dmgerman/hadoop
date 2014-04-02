@@ -34,7 +34,7 @@ name|util
 operator|.
 name|Time
 operator|.
-name|now
+name|monotonicNow
 import|;
 end_import
 
@@ -1358,7 +1358,7 @@ parameter_list|)
 block|{
 name|preventCheckpointsUntil
 operator|=
-name|now
+name|monotonicNow
 argument_list|()
 operator|+
 name|delayMs
@@ -1385,7 +1385,7 @@ comment|// Reset checkpoint time so that we don't always checkpoint
 comment|// on startup.
 name|lastCheckpointTime
 operator|=
-name|now
+name|monotonicNow
 argument_list|()
 expr_stmt|;
 while|while
@@ -1452,18 +1452,21 @@ name|checkTGTAndReloginFromKeytab
 argument_list|()
 expr_stmt|;
 block|}
+specifier|final
 name|long
 name|now
 init|=
-name|now
+name|monotonicNow
 argument_list|()
 decl_stmt|;
+specifier|final
 name|long
 name|uncheckpointed
 init|=
 name|countUncheckpointedTxns
 argument_list|()
 decl_stmt|;
+specifier|final
 name|long
 name|secsSinceLast
 init|=

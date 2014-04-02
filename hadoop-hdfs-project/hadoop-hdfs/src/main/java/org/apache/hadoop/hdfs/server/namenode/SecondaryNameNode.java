@@ -1036,7 +1036,7 @@ argument_list|(
 name|starttime
 argument_list|)
 operator|+
-literal|"\nLast Checkpoint Time : "
+literal|"\nLast Checkpoint      : "
 operator|+
 operator|(
 name|lastCheckpointTime
@@ -1045,12 +1045,21 @@ literal|0
 condition|?
 literal|"--"
 else|:
-operator|new
-name|Date
-argument_list|(
+operator|(
+operator|(
+name|Time
+operator|.
+name|monotonicNow
+argument_list|()
+operator|-
 name|lastCheckpointTime
-argument_list|)
 operator|)
+operator|/
+literal|1000
+operator|)
+operator|)
+operator|+
+literal|" seconds ago"
 operator|+
 literal|"\nCheckpoint Period    : "
 operator|+
@@ -2105,12 +2114,13 @@ operator|.
 name|checkTGTAndReloginFromKeytab
 argument_list|()
 expr_stmt|;
+specifier|final
 name|long
 name|now
 init|=
 name|Time
 operator|.
-name|now
+name|monotonicNow
 argument_list|()
 decl_stmt|;
 if|if
