@@ -10044,11 +10044,34 @@ operator|+
 literal|", call "
 operator|+
 name|call
+decl_stmt|;
+if|if
+condition|(
+name|exceptionsHandler
+operator|.
+name|isTerse
+argument_list|(
+name|e
+operator|.
+name|getClass
+argument_list|()
+argument_list|)
+condition|)
+block|{
+comment|// Don't log the whole stack trace. Way too noisy!
+name|LOG
+operator|.
+name|info
+argument_list|(
+name|logMsg
 operator|+
-literal|": error: "
+literal|": "
 operator|+
 name|e
-decl_stmt|;
+argument_list|)
+expr_stmt|;
+block|}
+elseif|else
 if|if
 condition|(
 name|e
@@ -10070,30 +10093,6 @@ argument_list|(
 name|logMsg
 argument_list|,
 name|e
-argument_list|)
-expr_stmt|;
-block|}
-elseif|else
-if|if
-condition|(
-name|exceptionsHandler
-operator|.
-name|isTerse
-argument_list|(
-name|e
-operator|.
-name|getClass
-argument_list|()
-argument_list|)
-condition|)
-block|{
-comment|// Don't log the whole stack trace of these exceptions.
-comment|// Way too noisy!
-name|LOG
-operator|.
-name|info
-argument_list|(
-name|logMsg
 argument_list|)
 expr_stmt|;
 block|}
