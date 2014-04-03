@@ -952,6 +952,13 @@ argument_list|(
 name|conf
 argument_list|)
 expr_stmt|;
+name|options
+operator|.
+name|setTargetPathExists
+argument_list|(
+literal|false
+argument_list|)
+expr_stmt|;
 name|CopyListing
 name|listing
 init|=

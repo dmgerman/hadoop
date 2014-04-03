@@ -1544,7 +1544,7 @@ literal|"DistCpOptions{atomicCommit=false, syncFolder=false, deleteMissing=false
 operator|+
 literal|"ignoreFailures=false, maxMaps=20, sslConfigurationFile='null', copyStrategy='uniformsize', "
 operator|+
-literal|"sourceFileListing=abc, sourcePaths=null, targetPath=xyz}"
+literal|"sourceFileListing=abc, sourcePaths=null, targetPath=xyz, targetPathExists=true}"
 decl_stmt|;
 name|Assert
 operator|.

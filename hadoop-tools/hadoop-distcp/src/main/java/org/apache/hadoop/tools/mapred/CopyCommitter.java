@@ -296,6 +296,27 @@ specifier|final
 name|TaskAttemptContext
 name|taskAttemptContext
 decl_stmt|;
+DECL|field|syncFolder
+specifier|private
+name|boolean
+name|syncFolder
+init|=
+literal|false
+decl_stmt|;
+DECL|field|overwrite
+specifier|private
+name|boolean
+name|overwrite
+init|=
+literal|false
+decl_stmt|;
+DECL|field|targetPathExists
+specifier|private
+name|boolean
+name|targetPathExists
+init|=
+literal|true
+decl_stmt|;
 comment|/**    * Create a output committer    *    * @param outputPath the job's output path    * @param context    the task's context    * @throws IOException - Exception if any    */
 DECL|method|CopyCommitter (Path outputPath, TaskAttemptContext context)
 specifier|public
@@ -346,6 +367,45 @@ operator|.
 name|getConfiguration
 argument_list|()
 decl_stmt|;
+name|syncFolder
+operator|=
+name|conf
+operator|.
+name|getBoolean
+argument_list|(
+name|DistCpConstants
+operator|.
+name|CONF_LABEL_SYNC_FOLDERS
+argument_list|,
+literal|false
+argument_list|)
+expr_stmt|;
+name|overwrite
+operator|=
+name|conf
+operator|.
+name|getBoolean
+argument_list|(
+name|DistCpConstants
+operator|.
+name|CONF_LABEL_OVERWRITE
+argument_list|,
+literal|false
+argument_list|)
+expr_stmt|;
+name|targetPathExists
+operator|=
+name|conf
+operator|.
+name|getBoolean
+argument_list|(
+name|DistCpConstants
+operator|.
+name|CONF_LABEL_TARGET_PATH_EXISTS
+argument_list|,
+literal|true
+argument_list|)
+expr_stmt|;
 name|super
 operator|.
 name|commitJob
@@ -784,6 +844,14 @@ operator|.
 name|CONF_LABEL_PRESERVE_STATUS
 argument_list|)
 decl_stmt|;
+specifier|final
+name|boolean
+name|syncOrOverwrite
+init|=
+name|syncFolder
+operator|||
+name|overwrite
+decl_stmt|;
 name|LOG
 operator|.
 name|info
@@ -944,10 +1012,9 @@ operator|+
 name|srcRelPath
 argument_list|)
 decl_stmt|;
-comment|// Skip the root folder.
-comment|// Status can't be preserved on root-folder. (E.g. multiple paths may
-comment|// be copied to a single target folder. Which source-attributes to use
-comment|// on the target is undefined.)
+comment|//
+comment|// Skip the root folder when syncOrOverwrite is true.
+comment|//
 if|if
 condition|(
 name|targetRoot
@@ -956,6 +1023,8 @@ name|equals
 argument_list|(
 name|targetFile
 argument_list|)
+operator|&&
+name|syncOrOverwrite
 condition|)
 continue|continue;
 name|FileSystem
@@ -1174,6 +1243,31 @@ literal|"/NONE"
 argument_list|)
 argument_list|)
 decl_stmt|;
+comment|//
+comment|// Set up options to be the same from the CopyListing.buildListing's perspective,
+comment|// so to collect similar listings as when doing the copy
+comment|//
+name|options
+operator|.
+name|setOverwrite
+argument_list|(
+name|overwrite
+argument_list|)
+expr_stmt|;
+name|options
+operator|.
+name|setSyncFolder
+argument_list|(
+name|syncFolder
+argument_list|)
+expr_stmt|;
+name|options
+operator|.
+name|setTargetPathExists
+argument_list|(
+name|targetPathExists
+argument_list|)
+expr_stmt|;
 name|target
 operator|.
 name|buildListing

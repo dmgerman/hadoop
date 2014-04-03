@@ -296,6 +296,20 @@ name|Random
 import|;
 end_import
 
+begin_import
+import|import
+name|com
+operator|.
+name|google
+operator|.
+name|common
+operator|.
+name|annotations
+operator|.
+name|VisibleForTesting
+import|;
+end_import
+
 begin_comment
 comment|/**  * DistCp is the main driver-class for DistCpV2.  * For command-line use, DistCp::main() orchestrates the parsing of command-line  * parameters and the launch of the DistCp job.  * For programmatic use, a DistCp object can be constructed by specifying  * options (in a DistCpOptions object), and DistCp::execute() may be used to  * launch the copy-job. DistCp may alternatively be sub-classed to fine-tune  * behaviour.  */
 end_comment
@@ -444,8 +458,10 @@ argument_list|()
 expr_stmt|;
 block|}
 comment|/**    * To be used with the ToolRunner. Not for public consumption.    */
+annotation|@
+name|VisibleForTesting
 DECL|method|DistCp ()
-specifier|private
+specifier|public
 name|DistCp
 parameter_list|()
 block|{}
@@ -492,6 +508,9 @@ argument_list|(
 name|argv
 argument_list|)
 operator|)
+expr_stmt|;
+name|setTargetPathExists
+argument_list|()
 expr_stmt|;
 name|LOG
 operator|.
@@ -773,6 +792,64 @@ block|}
 return|return
 name|job
 return|;
+block|}
+comment|/**    * Set targetPathExists in both inputOptions and job config,    * for the benefit of CopyCommitter    */
+DECL|method|setTargetPathExists ()
+specifier|private
+name|void
+name|setTargetPathExists
+parameter_list|()
+throws|throws
+name|IOException
+block|{
+name|Path
+name|target
+init|=
+name|inputOptions
+operator|.
+name|getTargetPath
+argument_list|()
+decl_stmt|;
+name|FileSystem
+name|targetFS
+init|=
+name|target
+operator|.
+name|getFileSystem
+argument_list|(
+name|getConf
+argument_list|()
+argument_list|)
+decl_stmt|;
+name|boolean
+name|targetExists
+init|=
+name|targetFS
+operator|.
+name|exists
+argument_list|(
+name|target
+argument_list|)
+decl_stmt|;
+name|inputOptions
+operator|.
+name|setTargetPathExists
+argument_list|(
+name|targetExists
+argument_list|)
+expr_stmt|;
+name|getConf
+argument_list|()
+operator|.
+name|setBoolean
+argument_list|(
+name|DistCpConstants
+operator|.
+name|CONF_LABEL_TARGET_PATH_EXISTS
+argument_list|,
+name|targetExists
+argument_list|)
+expr_stmt|;
 block|}
 comment|/**    * Create Job object for submitting it, with all the configuration    *    * @return Reference to job object.    * @throws IOException - Exception if any    */
 DECL|method|createJob ()

@@ -675,6 +675,13 @@ argument_list|,
 name|target
 argument_list|)
 decl_stmt|;
+name|options
+operator|.
+name|setTargetPathExists
+argument_list|(
+literal|false
+argument_list|)
+expr_stmt|;
 operator|new
 name|GlobbedCopyListing
 argument_list|(
@@ -774,6 +781,28 @@ name|value
 argument_list|)
 condition|)
 block|{
+if|if
+condition|(
+name|value
+operator|.
+name|isDirectory
+argument_list|()
+operator|&&
+name|key
+operator|.
+name|toString
+argument_list|()
+operator|.
+name|equals
+argument_list|(
+literal|""
+argument_list|)
+condition|)
+block|{
+comment|// ignore root with empty relPath, which is an entry to be
+comment|// used for preserving root attributes etc.
+continue|continue;
+block|}
 name|actualValues
 operator|.
 name|put

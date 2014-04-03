@@ -236,6 +236,15 @@ specifier|private
 name|Path
 name|targetPath
 decl_stmt|;
+comment|// targetPathExist is a derived field, it's initialized in the
+comment|// beginning of distcp.
+DECL|field|targetPathExists
+specifier|private
+name|boolean
+name|targetPathExists
+init|=
+literal|true
+decl_stmt|;
 DECL|enum|FileAttribute
 specifier|public
 specifier|static
@@ -562,6 +571,15 @@ operator|=
 name|that
 operator|.
 name|getTargetPath
+argument_list|()
+expr_stmt|;
+name|this
+operator|.
+name|targetPathExists
+operator|=
+name|that
+operator|.
+name|getTargetPathExists
 argument_list|()
 expr_stmt|;
 block|}
@@ -1136,6 +1154,35 @@ return|return
 name|targetPath
 return|;
 block|}
+comment|/**    * Getter for the targetPathExists.    * @return The target-path.    */
+DECL|method|getTargetPathExists ()
+specifier|public
+name|boolean
+name|getTargetPathExists
+parameter_list|()
+block|{
+return|return
+name|targetPathExists
+return|;
+block|}
+comment|/**    * Set targetPathExists.    * @param targetPathExists Whether the target path of distcp exists.    */
+DECL|method|setTargetPathExists (boolean targetPathExists)
+specifier|public
+name|boolean
+name|setTargetPathExists
+parameter_list|(
+name|boolean
+name|targetPathExists
+parameter_list|)
+block|{
+return|return
+name|this
+operator|.
+name|targetPathExists
+operator|=
+name|targetPathExists
+return|;
+block|}
 DECL|method|validate (DistCpOptionSwitch option, boolean value)
 specifier|public
 name|void
@@ -1516,6 +1563,10 @@ operator|+
 literal|", targetPath="
 operator|+
 name|targetPath
+operator|+
+literal|", targetPathExists="
+operator|+
+name|targetPathExists
 operator|+
 literal|'}'
 return|;

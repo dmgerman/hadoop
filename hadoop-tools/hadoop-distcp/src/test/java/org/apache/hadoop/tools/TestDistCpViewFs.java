@@ -506,6 +506,8 @@ name|listFile
 argument_list|,
 name|target
 argument_list|,
+literal|false
+argument_list|,
 name|sync
 argument_list|)
 expr_stmt|;
@@ -605,6 +607,8 @@ argument_list|(
 name|listFile
 argument_list|,
 name|target
+argument_list|,
+literal|false
 argument_list|,
 name|sync
 argument_list|)
@@ -709,6 +713,8 @@ name|listFile
 argument_list|,
 name|target
 argument_list|,
+literal|true
+argument_list|,
 name|sync
 argument_list|)
 expr_stmt|;
@@ -808,6 +814,8 @@ name|listFile
 argument_list|,
 name|target
 argument_list|,
+literal|false
+argument_list|,
 name|sync
 argument_list|)
 expr_stmt|;
@@ -895,6 +903,8 @@ name|listFile
 argument_list|,
 name|target
 argument_list|,
+literal|true
+argument_list|,
 literal|false
 argument_list|)
 expr_stmt|;
@@ -981,6 +991,8 @@ argument_list|(
 name|listFile
 argument_list|,
 name|target
+argument_list|,
+literal|true
 argument_list|,
 literal|true
 argument_list|)
@@ -1095,6 +1107,8 @@ name|listFile
 argument_list|,
 name|target
 argument_list|,
+literal|true
+argument_list|,
 name|sync
 argument_list|)
 expr_stmt|;
@@ -1204,6 +1218,8 @@ name|listFile
 argument_list|,
 name|target
 argument_list|,
+literal|false
+argument_list|,
 name|sync
 argument_list|)
 expr_stmt|;
@@ -1302,6 +1318,8 @@ argument_list|(
 name|listFile
 argument_list|,
 name|target
+argument_list|,
+literal|true
 argument_list|,
 literal|false
 argument_list|)
@@ -1405,6 +1423,8 @@ argument_list|,
 name|target
 argument_list|,
 literal|true
+argument_list|,
+literal|true
 argument_list|)
 expr_stmt|;
 name|checkResult
@@ -1501,6 +1521,8 @@ argument_list|,
 name|target
 argument_list|,
 literal|false
+argument_list|,
+literal|false
 argument_list|)
 expr_stmt|;
 name|checkResult
@@ -1595,6 +1617,8 @@ argument_list|(
 name|listFile
 argument_list|,
 name|target
+argument_list|,
+literal|false
 argument_list|,
 literal|true
 argument_list|)
@@ -1709,6 +1733,8 @@ argument_list|(
 name|listFile
 argument_list|,
 name|target
+argument_list|,
+literal|false
 argument_list|,
 literal|false
 argument_list|)
@@ -1832,6 +1858,8 @@ argument_list|(
 name|listFile
 argument_list|,
 name|target
+argument_list|,
+literal|false
 argument_list|,
 literal|true
 argument_list|)
@@ -1959,6 +1987,8 @@ argument_list|(
 name|listFile
 argument_list|,
 name|target
+argument_list|,
+literal|false
 argument_list|,
 literal|false
 argument_list|)
@@ -2090,6 +2120,8 @@ argument_list|(
 name|listFile
 argument_list|,
 name|target
+argument_list|,
+literal|false
 argument_list|,
 literal|true
 argument_list|)
@@ -2366,7 +2398,7 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-DECL|method|runTest (Path listFile, Path target, boolean sync)
+DECL|method|runTest (Path listFile, Path target, boolean targetExists, boolean sync)
 specifier|private
 name|void
 name|runTest
@@ -2376,6 +2408,9 @@ name|listFile
 parameter_list|,
 name|Path
 name|target
+parameter_list|,
+name|boolean
+name|targetExists
 parameter_list|,
 name|boolean
 name|sync
@@ -2399,6 +2434,13 @@ operator|.
 name|setSyncFolder
 argument_list|(
 name|sync
+argument_list|)
+expr_stmt|;
+name|options
+operator|.
+name|setTargetPathExists
+argument_list|(
+name|targetExists
 argument_list|)
 expr_stmt|;
 try|try

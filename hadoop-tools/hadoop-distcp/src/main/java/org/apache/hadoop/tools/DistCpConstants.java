@@ -243,6 +243,16 @@ name|CONF_LABEL_TARGET_FINAL_PATH
 init|=
 literal|"distcp.target.final.path"
 decl_stmt|;
+comment|/* Boolean to indicate whether the target of distcp exists. */
+DECL|field|CONF_LABEL_TARGET_PATH_EXISTS
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|CONF_LABEL_TARGET_PATH_EXISTS
+init|=
+literal|"distcp.target.path.exists"
+decl_stmt|;
 comment|/**    * DistCp job id for consumers of the Disctp     */
 DECL|field|CONF_LABEL_DISTCP_JOB_ID
 specifier|public

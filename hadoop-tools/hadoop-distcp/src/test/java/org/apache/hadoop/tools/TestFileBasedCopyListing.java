@@ -736,6 +736,8 @@ name|listFile
 argument_list|,
 name|target
 argument_list|,
+literal|false
+argument_list|,
 name|sync
 argument_list|)
 expr_stmt|;
@@ -853,6 +855,8 @@ argument_list|(
 name|listFile
 argument_list|,
 name|target
+argument_list|,
+literal|false
 argument_list|,
 name|sync
 argument_list|)
@@ -975,6 +979,8 @@ name|listFile
 argument_list|,
 name|target
 argument_list|,
+literal|true
+argument_list|,
 name|sync
 argument_list|)
 expr_stmt|;
@@ -1088,6 +1094,8 @@ name|listFile
 argument_list|,
 name|target
 argument_list|,
+literal|false
+argument_list|,
 name|sync
 argument_list|)
 expr_stmt|;
@@ -1188,6 +1196,8 @@ argument_list|(
 name|listFile
 argument_list|,
 name|target
+argument_list|,
+literal|true
 argument_list|)
 expr_stmt|;
 name|checkResult
@@ -1287,6 +1297,8 @@ argument_list|(
 name|listFile
 argument_list|,
 name|target
+argument_list|,
+literal|true
 argument_list|,
 literal|true
 argument_list|)
@@ -1417,6 +1429,8 @@ name|listFile
 argument_list|,
 name|target
 argument_list|,
+literal|true
+argument_list|,
 name|sync
 argument_list|)
 expr_stmt|;
@@ -1538,6 +1552,8 @@ name|listFile
 argument_list|,
 name|target
 argument_list|,
+literal|false
+argument_list|,
 name|sync
 argument_list|)
 expr_stmt|;
@@ -1646,6 +1662,8 @@ argument_list|(
 name|listFile
 argument_list|,
 name|target
+argument_list|,
+literal|true
 argument_list|)
 expr_stmt|;
 name|checkResult
@@ -2257,6 +2275,8 @@ argument_list|(
 name|listFile
 argument_list|,
 name|target
+argument_list|,
+literal|true
 argument_list|)
 expr_stmt|;
 name|checkResult
@@ -2601,7 +2621,7 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-DECL|method|runTest (Path listFile, Path target)
+DECL|method|runTest (Path listFile, Path target, boolean targetExists)
 specifier|private
 name|void
 name|runTest
@@ -2611,6 +2631,9 @@ name|listFile
 parameter_list|,
 name|Path
 name|target
+parameter_list|,
+name|boolean
+name|targetExists
 parameter_list|)
 throws|throws
 name|IOException
@@ -2621,11 +2644,13 @@ name|listFile
 argument_list|,
 name|target
 argument_list|,
+name|targetExists
+argument_list|,
 literal|true
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|runTest (Path listFile, Path target, boolean sync)
+DECL|method|runTest (Path listFile, Path target, boolean targetExists, boolean sync)
 specifier|private
 name|void
 name|runTest
@@ -2635,6 +2660,9 @@ name|listFile
 parameter_list|,
 name|Path
 name|target
+parameter_list|,
+name|boolean
+name|targetExists
 parameter_list|,
 name|boolean
 name|sync
@@ -2669,6 +2697,13 @@ operator|.
 name|setSyncFolder
 argument_list|(
 name|sync
+argument_list|)
+expr_stmt|;
+name|options
+operator|.
+name|setTargetPathExists
+argument_list|(
+name|targetExists
 argument_list|)
 expr_stmt|;
 name|listing
@@ -2759,6 +2794,28 @@ name|fileStatus
 argument_list|)
 condition|)
 block|{
+if|if
+condition|(
+name|fileStatus
+operator|.
+name|isDirectory
+argument_list|()
+operator|&&
+name|relPath
+operator|.
+name|toString
+argument_list|()
+operator|.
+name|equals
+argument_list|(
+literal|""
+argument_list|)
+condition|)
+block|{
+comment|// ignore root with empty relPath, which is an entry to be
+comment|// used for preserving root attributes etc.
+continue|continue;
+block|}
 name|Assert
 operator|.
 name|assertEquals
