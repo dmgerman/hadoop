@@ -1478,7 +1478,7 @@ literal|"\t\tThe extra space required for replication is also counted. E.g.\n"
 operator|+
 literal|"\t\ta 1GB file with replication of 3 consumes 3GB of the quota.\n\n"
 operator|+
-literal|"\t\tQuota can also be speciefied with a binary prefix for terabytes,\n"
+literal|"\t\tQuota can also be specified with a binary prefix for terabytes,\n"
 operator|+
 literal|"\t\tpetabytes etc (e.g. 50t is 50TB, 5m is 5MB, 3p is 3PB).\n"
 operator|+
@@ -3311,7 +3311,7 @@ block|{
 name|String
 name|summary
 init|=
-literal|"hadoop dfsadmin is the command to execute DFS administrative commands.\n"
+literal|"hadoop dfsadmin performs DFS administrative commands.\n"
 operator|+
 literal|"The full syntax is: \n\n"
 operator|+
