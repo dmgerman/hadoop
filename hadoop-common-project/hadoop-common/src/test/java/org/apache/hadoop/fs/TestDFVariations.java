@@ -96,16 +96,6 @@ name|java
 operator|.
 name|util
 operator|.
-name|EnumSet
-import|;
-end_import
-
-begin_import
-import|import
-name|java
-operator|.
-name|util
-operator|.
 name|Random
 import|;
 end_import
@@ -240,10 +230,10 @@ name|timeout
 operator|=
 literal|5000
 argument_list|)
-DECL|method|testMountAndFileSystem ()
+DECL|method|testMount ()
 specifier|public
 name|void
-name|testMountAndFileSystem
+name|testMount
 parameter_list|()
 throws|throws
 name|Exception
@@ -276,6 +266,41 @@ argument_list|)
 else|:
 literal|"/foo/bar"
 decl_stmt|;
+name|assertEquals
+argument_list|(
+literal|"Invalid mount point"
+argument_list|,
+name|expectedMount
+argument_list|,
+name|df
+operator|.
+name|getMount
+argument_list|()
+argument_list|)
+expr_stmt|;
+block|}
+annotation|@
+name|Test
+argument_list|(
+name|timeout
+operator|=
+literal|5000
+argument_list|)
+DECL|method|testFileSystem ()
+specifier|public
+name|void
+name|testFileSystem
+parameter_list|()
+throws|throws
+name|Exception
+block|{
+name|XXDF
+name|df
+init|=
+operator|new
+name|XXDF
+argument_list|()
+decl_stmt|;
 name|String
 name|expectedFileSystem
 init|=
@@ -297,18 +322,6 @@ argument_list|)
 else|:
 literal|"/dev/sda3"
 decl_stmt|;
-name|assertEquals
-argument_list|(
-literal|"Invalid mount point"
-argument_list|,
-name|expectedMount
-argument_list|,
-name|df
-operator|.
-name|getMount
-argument_list|()
-argument_list|)
-expr_stmt|;
 name|assertEquals
 argument_list|(
 literal|"Invalid filesystem"
