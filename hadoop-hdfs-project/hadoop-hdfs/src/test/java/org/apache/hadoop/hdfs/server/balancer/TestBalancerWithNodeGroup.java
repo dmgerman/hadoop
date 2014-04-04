@@ -395,7 +395,7 @@ specifier|static
 name|long
 name|CAPACITY
 init|=
-literal|500L
+literal|6000L
 decl_stmt|;
 DECL|field|RACK0
 specifier|final
@@ -505,7 +505,7 @@ specifier|final
 name|int
 name|DEFAULT_BLOCK_SIZE
 init|=
-literal|10
+literal|100
 decl_stmt|;
 static|static
 block|{
