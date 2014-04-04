@@ -2684,7 +2684,6 @@ operator|.
 name|updatingResource
 argument_list|)
 expr_stmt|;
-block|}
 name|this
 operator|.
 name|finalParameters
@@ -2700,6 +2699,7 @@ operator|.
 name|finalParameters
 argument_list|)
 expr_stmt|;
+block|}
 synchronized|synchronized
 init|(
 name|Configuration
