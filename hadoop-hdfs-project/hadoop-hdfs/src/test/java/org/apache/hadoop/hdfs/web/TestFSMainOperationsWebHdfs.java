@@ -386,7 +386,9 @@ name|TestFSMainOperationsWebHdfs
 parameter_list|()
 block|{
 name|super
-argument_list|()
+argument_list|(
+literal|"/tmp/TestFSMainOperationsWebHdfs"
+argument_list|)
 expr_stmt|;
 block|}
 annotation|@
