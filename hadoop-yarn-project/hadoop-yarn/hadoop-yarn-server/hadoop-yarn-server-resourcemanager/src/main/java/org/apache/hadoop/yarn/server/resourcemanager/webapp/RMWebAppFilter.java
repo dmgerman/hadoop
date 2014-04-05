@@ -222,10 +222,6 @@ literal|"/stacks"
 argument_list|,
 literal|"/logLevel"
 argument_list|,
-literal|"/metrics"
-argument_list|,
-literal|"/jmx"
-argument_list|,
 literal|"/logs"
 argument_list|)
 decl_stmt|;
