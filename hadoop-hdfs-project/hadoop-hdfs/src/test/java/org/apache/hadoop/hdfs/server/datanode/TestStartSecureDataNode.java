@@ -323,7 +323,7 @@ name|set
 argument_list|(
 name|DFSConfigKeys
 operator|.
-name|DFS_NAMENODE_USER_NAME_KEY
+name|DFS_NAMENODE_KERBEROS_PRINCIPAL_KEY
 argument_list|,
 name|nnPrincipal
 argument_list|)
@@ -334,7 +334,7 @@ name|set
 argument_list|(
 name|DFSConfigKeys
 operator|.
-name|DFS_NAMENODE_INTERNAL_SPNEGO_USER_NAME_KEY
+name|DFS_NAMENODE_KERBEROS_INTERNAL_SPNEGO_PRINCIPAL_KEY
 argument_list|,
 name|nnSpnegoPrincipal
 argument_list|)
@@ -356,7 +356,7 @@ name|set
 argument_list|(
 name|DFSConfigKeys
 operator|.
-name|DFS_DATANODE_USER_NAME_KEY
+name|DFS_DATANODE_KERBEROS_PRINCIPAL_KEY
 argument_list|,
 name|dnPrincipal
 argument_list|)

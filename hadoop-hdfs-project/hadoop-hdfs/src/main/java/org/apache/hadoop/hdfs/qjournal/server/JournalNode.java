@@ -834,7 +834,7 @@ name|DFS_JOURNALNODE_KEYTAB_FILE_KEY
 argument_list|,
 name|DFSConfigKeys
 operator|.
-name|DFS_JOURNALNODE_USER_NAME_KEY
+name|DFS_JOURNALNODE_KERBEROS_PRINCIPAL_KEY
 argument_list|,
 name|socAddr
 operator|.

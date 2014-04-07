@@ -303,7 +303,7 @@ name|addKeySuffixes
 argument_list|(
 name|DFSConfigKeys
 operator|.
-name|DFS_NAMENODE_USER_NAME_KEY
+name|DFS_NAMENODE_KERBEROS_PRINCIPAL_KEY
 argument_list|,
 literal|"ns1"
 argument_list|,
@@ -344,7 +344,7 @@ name|addKeySuffixes
 argument_list|(
 name|DFSConfigKeys
 operator|.
-name|DFS_NAMENODE_USER_NAME_KEY
+name|DFS_NAMENODE_KERBEROS_PRINCIPAL_KEY
 argument_list|,
 literal|"ns1"
 argument_list|,

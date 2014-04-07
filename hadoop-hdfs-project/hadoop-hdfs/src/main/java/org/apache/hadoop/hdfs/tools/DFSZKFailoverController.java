@@ -46,7 +46,7 @@ name|hdfs
 operator|.
 name|DFSConfigKeys
 operator|.
-name|DFS_NAMENODE_USER_NAME_KEY
+name|DFS_NAMENODE_KERBEROS_PRINCIPAL_KEY
 import|;
 end_import
 
@@ -947,7 +947,7 @@ name|conf
 argument_list|,
 name|DFS_NAMENODE_KEYTAB_FILE_KEY
 argument_list|,
-name|DFS_NAMENODE_USER_NAME_KEY
+name|DFS_NAMENODE_KERBEROS_PRINCIPAL_KEY
 argument_list|,
 name|socAddr
 operator|.

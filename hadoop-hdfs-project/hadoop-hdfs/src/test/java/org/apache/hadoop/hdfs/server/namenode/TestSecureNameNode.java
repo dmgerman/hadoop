@@ -368,7 +368,7 @@ name|set
 argument_list|(
 name|DFSConfigKeys
 operator|.
-name|DFS_NAMENODE_USER_NAME_KEY
+name|DFS_NAMENODE_KERBEROS_PRINCIPAL_KEY
 argument_list|,
 literal|"nn1/localhost@EXAMPLE.COM"
 argument_list|)

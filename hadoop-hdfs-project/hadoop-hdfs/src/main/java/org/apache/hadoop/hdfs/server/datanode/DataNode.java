@@ -8085,7 +8085,7 @@ name|conf
 argument_list|,
 name|DFS_DATANODE_KEYTAB_FILE_KEY
 argument_list|,
-name|DFS_DATANODE_USER_NAME_KEY
+name|DFS_DATANODE_KERBEROS_PRINCIPAL_KEY
 argument_list|)
 expr_stmt|;
 return|return

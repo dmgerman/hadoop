@@ -148,13 +148,13 @@ name|serverPrincipal
 operator|=
 name|DFSConfigKeys
 operator|.
-name|DFS_DATANODE_USER_NAME_KEY
+name|DFS_DATANODE_KERBEROS_PRINCIPAL_KEY
 argument_list|,
 name|clientPrincipal
 operator|=
 name|DFSConfigKeys
 operator|.
-name|DFS_DATANODE_USER_NAME_KEY
+name|DFS_DATANODE_KERBEROS_PRINCIPAL_KEY
 argument_list|)
 annotation|@
 name|InterfaceAudience

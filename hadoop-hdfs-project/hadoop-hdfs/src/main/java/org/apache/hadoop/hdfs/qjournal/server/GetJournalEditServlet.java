@@ -682,7 +682,7 @@ name|get
 argument_list|(
 name|DFSConfigKeys
 operator|.
-name|DFS_SECONDARY_NAMENODE_USER_NAME_KEY
+name|DFS_SECONDARY_NAMENODE_KERBEROS_PRINCIPAL_KEY
 argument_list|)
 argument_list|,
 name|SecondaryNameNode

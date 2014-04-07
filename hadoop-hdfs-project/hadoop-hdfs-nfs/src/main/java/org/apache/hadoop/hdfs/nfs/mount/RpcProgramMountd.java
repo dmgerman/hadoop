@@ -48,7 +48,7 @@ name|hdfs
 operator|.
 name|DFSConfigKeys
 operator|.
-name|DFS_NFS_USER_NAME_KEY
+name|DFS_NFS_KERBEROS_PRINCIPAL_KEY
 import|;
 end_import
 
@@ -728,7 +728,7 @@ name|config
 argument_list|,
 name|DFS_NFS_KEYTAB_FILE_KEY
 argument_list|,
-name|DFS_NFS_USER_NAME_KEY
+name|DFS_NFS_KERBEROS_PRINCIPAL_KEY
 argument_list|)
 expr_stmt|;
 name|this

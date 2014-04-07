@@ -560,7 +560,7 @@ name|serverPrincipal
 operator|=
 name|DFSConfigKeys
 operator|.
-name|DFS_NAMENODE_USER_NAME_KEY
+name|DFS_NAMENODE_KERBEROS_PRINCIPAL_KEY
 argument_list|)
 annotation|@
 name|TokenInfo

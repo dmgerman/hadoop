@@ -287,7 +287,7 @@ literal|"journal"
 argument_list|,
 name|DFSConfigKeys
 operator|.
-name|DFS_JOURNALNODE_INTERNAL_SPNEGO_USER_NAME_KEY
+name|DFS_JOURNALNODE_KERBEROS_INTERNAL_SPNEGO_PRINCIPAL_KEY
 argument_list|,
 name|DFSConfigKeys
 operator|.

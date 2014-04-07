@@ -1031,9 +1031,9 @@ name|DFS_NAMENODE_BACKUP_HTTP_ADDRESS_KEY
 block|,
 name|DFS_NAMENODE_BACKUP_SERVICE_RPC_ADDRESS_KEY
 block|,
-name|DFS_NAMENODE_USER_NAME_KEY
+name|DFS_NAMENODE_KERBEROS_PRINCIPAL_KEY
 block|,
-name|DFS_NAMENODE_INTERNAL_SPNEGO_USER_NAME_KEY
+name|DFS_NAMENODE_KERBEROS_INTERNAL_SPNEGO_PRINCIPAL_KEY
 block|,
 name|DFS_HA_FENCE_METHODS_KEY
 block|,
@@ -2375,7 +2375,7 @@ name|conf
 argument_list|,
 name|DFS_NAMENODE_KEYTAB_FILE_KEY
 argument_list|,
-name|DFS_NAMENODE_USER_NAME_KEY
+name|DFS_NAMENODE_KERBEROS_PRINCIPAL_KEY
 argument_list|,
 name|socAddr
 operator|.
@@ -3648,7 +3648,7 @@ name|conf
 argument_list|,
 name|DFS_NAMENODE_KEYTAB_FILE_KEY
 argument_list|,
-name|DFS_NAMENODE_USER_NAME_KEY
+name|DFS_NAMENODE_KERBEROS_PRINCIPAL_KEY
 argument_list|,
 name|socAddr
 operator|.
@@ -4136,7 +4136,7 @@ name|conf
 argument_list|,
 name|DFS_NAMENODE_KEYTAB_FILE_KEY
 argument_list|,
-name|DFS_NAMENODE_USER_NAME_KEY
+name|DFS_NAMENODE_KERBEROS_PRINCIPAL_KEY
 argument_list|,
 name|socAddr
 operator|.

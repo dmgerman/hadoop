@@ -667,7 +667,7 @@ literal|"hdfs"
 argument_list|,
 name|DFSConfigKeys
 operator|.
-name|DFS_NAMENODE_INTERNAL_SPNEGO_USER_NAME_KEY
+name|DFS_NAMENODE_KERBEROS_INTERNAL_SPNEGO_PRINCIPAL_KEY
 argument_list|,
 name|DFSConfigKeys
 operator|.

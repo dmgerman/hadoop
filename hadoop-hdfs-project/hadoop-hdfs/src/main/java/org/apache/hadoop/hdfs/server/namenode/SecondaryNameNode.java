@@ -1406,7 +1406,7 @@ name|DFS_SECONDARY_NAMENODE_KEYTAB_FILE_KEY
 argument_list|,
 name|DFSConfigKeys
 operator|.
-name|DFS_SECONDARY_NAMENODE_USER_NAME_KEY
+name|DFS_SECONDARY_NAMENODE_KERBEROS_PRINCIPAL_KEY
 argument_list|,
 name|infoBindAddress
 argument_list|)
@@ -1626,7 +1626,7 @@ literal|"secondary"
 argument_list|,
 name|DFSConfigKeys
 operator|.
-name|DFS_SECONDARY_NAMENODE_INTERNAL_SPNEGO_USER_NAME_KEY
+name|DFS_SECONDARY_NAMENODE_KERBEROS_INTERNAL_SPNEGO_PRINCIPAL_KEY
 argument_list|,
 name|DFSConfigKeys
 operator|.
