@@ -1557,6 +1557,14 @@ argument_list|,
 literal|true
 argument_list|)
 expr_stmt|;
+comment|// Disable quota checks
+name|namesystem
+operator|.
+name|dir
+operator|.
+name|disableQuotaChecks
+argument_list|()
+expr_stmt|;
 comment|// Initialize other scheduling parameters from the configuration
 name|checkpointConf
 operator|=

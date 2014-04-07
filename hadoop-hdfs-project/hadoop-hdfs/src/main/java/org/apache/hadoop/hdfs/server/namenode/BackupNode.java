@@ -899,6 +899,13 @@ argument_list|,
 name|bnImage
 argument_list|)
 expr_stmt|;
+name|namesystem
+operator|.
+name|dir
+operator|.
+name|disableQuotaChecks
+argument_list|()
+expr_stmt|;
 name|bnImage
 operator|.
 name|setNamesystem

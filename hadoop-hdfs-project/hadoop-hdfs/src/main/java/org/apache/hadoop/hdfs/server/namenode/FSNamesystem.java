@@ -7127,6 +7127,12 @@ name|openForWrite
 argument_list|()
 expr_stmt|;
 block|}
+comment|// Enable quota checks.
+name|dir
+operator|.
+name|enableQuotaChecks
+argument_list|()
+expr_stmt|;
 if|if
 condition|(
 name|haEnabled
@@ -7518,6 +7524,12 @@ name|setPostponeBlocksFromFuture
 argument_list|(
 literal|true
 argument_list|)
+expr_stmt|;
+comment|// Disable quota checks while in standby.
+name|dir
+operator|.
+name|disableQuotaChecks
+argument_list|()
 expr_stmt|;
 name|editLogTailer
 operator|=

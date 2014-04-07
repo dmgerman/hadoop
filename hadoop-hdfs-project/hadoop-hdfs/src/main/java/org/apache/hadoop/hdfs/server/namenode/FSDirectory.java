@@ -1094,6 +1094,15 @@ name|ready
 init|=
 literal|false
 decl_stmt|;
+DECL|field|skipQuotaCheck
+specifier|private
+specifier|volatile
+name|boolean
+name|skipQuotaCheck
+init|=
+literal|false
+decl_stmt|;
+comment|//skip while consuming edits
 DECL|field|maxComponentLength
 specifier|private
 specifier|final
@@ -1722,6 +1731,28 @@ argument_list|()
 expr_stmt|;
 block|}
 block|}
+block|}
+comment|/** Enable quota verification */
+DECL|method|enableQuotaChecks ()
+name|void
+name|enableQuotaChecks
+parameter_list|()
+block|{
+name|skipQuotaCheck
+operator|=
+literal|false
+expr_stmt|;
+block|}
+comment|/** Disable quota verification */
+DECL|method|disableQuotaChecks ()
+name|void
+name|disableQuotaChecks
+parameter_list|()
+block|{
+name|skipQuotaCheck
+operator|=
+literal|true
+expr_stmt|;
 block|}
 comment|/**    * Add the given filename to the fs.    * @throws FileAlreadyExistsException    * @throws QuotaExceededException    * @throws UnresolvedLinkException    * @throws SnapshotAccessControlException     */
 DECL|method|addFile (String path, PermissionStatus permissions, short replication, long preferredBlockSize, String clientName, String clientMachine, DatanodeDescriptor clientNode)
@@ -9061,6 +9092,9 @@ block|}
 if|if
 condition|(
 name|checkQuota
+operator|&&
+operator|!
+name|skipQuotaCheck
 condition|)
 block|{
 name|verifyQuota
@@ -10417,6 +10451,8 @@ if|if
 condition|(
 operator|!
 name|ready
+operator|||
+name|skipQuotaCheck
 condition|)
 block|{
 comment|// Do not check quota if edits log is still being processed
