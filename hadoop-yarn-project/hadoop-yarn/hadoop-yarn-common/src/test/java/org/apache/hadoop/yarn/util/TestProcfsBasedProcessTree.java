@@ -49,6 +49,18 @@ import|;
 end_import
 
 begin_import
+import|import static
+name|org
+operator|.
+name|junit
+operator|.
+name|Assume
+operator|.
+name|assumeTrue
+import|;
+end_import
+
+begin_import
 import|import
 name|java
 operator|.
@@ -705,6 +717,13 @@ parameter_list|()
 throws|throws
 name|IOException
 block|{
+name|assumeTrue
+argument_list|(
+name|Shell
+operator|.
+name|LINUX
+argument_list|)
+expr_stmt|;
 name|FileContext
 operator|.
 name|getLocalFSFileContext
@@ -740,25 +759,6 @@ parameter_list|()
 throws|throws
 name|Exception
 block|{
-if|if
-condition|(
-operator|!
-name|Shell
-operator|.
-name|LINUX
-condition|)
-block|{
-name|System
-operator|.
-name|out
-operator|.
-name|println
-argument_list|(
-literal|"ProcfsBasedProcessTree is not available on this system. Not testing"
-argument_list|)
-expr_stmt|;
-return|return;
-block|}
 try|try
 block|{
 name|Assert
