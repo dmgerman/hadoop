@@ -92,6 +92,20 @@ end_import
 
 begin_import
 import|import
+name|com
+operator|.
+name|google
+operator|.
+name|common
+operator|.
+name|base
+operator|.
+name|Preconditions
+import|;
+end_import
+
+begin_import
+import|import
 name|org
 operator|.
 name|apache
@@ -4613,7 +4627,6 @@ specifier|final
 name|int
 name|dnIdx
 decl_stmt|;
-comment|/**      * Return a a 6 digit integer port.      * This is necessary in order to provide lexocographic ordering.      * Host names are all the same, the ordering goes by port numbers.      */
 DECL|method|getNodePort (int num)
 specifier|private
 specifier|static
@@ -4629,33 +4642,21 @@ block|{
 name|int
 name|port
 init|=
-literal|100000
+literal|1
 operator|+
 name|num
 decl_stmt|;
-if|if
-condition|(
-name|String
+name|Preconditions
 operator|.
-name|valueOf
+name|checkState
 argument_list|(
 name|port
-argument_list|)
+operator|<
+name|Short
 operator|.
-name|length
-argument_list|()
-operator|>
-literal|6
-condition|)
-block|{
-throw|throw
-operator|new
-name|IOException
-argument_list|(
-literal|"Too many data-nodes"
+name|MAX_VALUE
 argument_list|)
-throw|;
-block|}
+expr_stmt|;
 return|return
 name|port
 return|;
