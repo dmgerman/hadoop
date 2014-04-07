@@ -4674,9 +4674,17 @@ argument_list|)
 expr_stmt|;
 try|try
 block|{
+if|if
+condition|(
 name|LOG
 operator|.
-name|info
+name|isDebugEnabled
+argument_list|()
+condition|)
+block|{
+name|LOG
+operator|.
+name|debug
 argument_list|(
 literal|"Initiating logout for "
 operator|+
@@ -4684,6 +4692,7 @@ name|getUserName
 argument_list|()
 argument_list|)
 expr_stmt|;
+block|}
 synchronized|synchronized
 init|(
 name|UserGroupInformation
@@ -4717,15 +4726,24 @@ name|HadoopConfiguration
 argument_list|()
 argument_list|)
 expr_stmt|;
+if|if
+condition|(
 name|LOG
 operator|.
-name|info
+name|isDebugEnabled
+argument_list|()
+condition|)
+block|{
+name|LOG
+operator|.
+name|debug
 argument_list|(
 literal|"Initiating re-login for "
 operator|+
 name|keytabPrincipal
 argument_list|)
 expr_stmt|;
+block|}
 name|start
 operator|=
 name|Time
@@ -4891,9 +4909,17 @@ argument_list|)
 expr_stmt|;
 try|try
 block|{
+if|if
+condition|(
 name|LOG
 operator|.
-name|info
+name|isDebugEnabled
+argument_list|()
+condition|)
+block|{
+name|LOG
+operator|.
+name|debug
 argument_list|(
 literal|"Initiating logout for "
 operator|+
@@ -4901,6 +4927,7 @@ name|getUserName
 argument_list|()
 argument_list|)
 expr_stmt|;
+block|}
 comment|//clear up the kerberos state. But the tokens are not cleared! As per
 comment|//the Java kerberos login module code, only the kerberos credentials
 comment|//are cleared
@@ -4927,9 +4954,17 @@ name|HadoopConfiguration
 argument_list|()
 argument_list|)
 expr_stmt|;
+if|if
+condition|(
 name|LOG
 operator|.
-name|info
+name|isDebugEnabled
+argument_list|()
+condition|)
+block|{
+name|LOG
+operator|.
+name|debug
 argument_list|(
 literal|"Initiating re-login for "
 operator|+
@@ -4937,6 +4972,7 @@ name|getUserName
 argument_list|()
 argument_list|)
 expr_stmt|;
+block|}
 name|login
 operator|.
 name|login
