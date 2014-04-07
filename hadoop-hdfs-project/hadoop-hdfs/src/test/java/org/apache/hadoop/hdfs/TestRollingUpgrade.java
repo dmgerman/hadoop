@@ -1166,6 +1166,11 @@ argument_list|(
 name|bar
 argument_list|)
 expr_stmt|;
+name|cluster
+operator|.
+name|shutdown
+argument_list|()
+expr_stmt|;
 block|}
 comment|// cluster2 takes over QJM
 specifier|final
