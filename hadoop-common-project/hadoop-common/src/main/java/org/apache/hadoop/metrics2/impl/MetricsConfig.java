@@ -580,13 +580,6 @@ argument_list|(
 name|c
 argument_list|,
 name|prefix
-operator|.
-name|toLowerCase
-argument_list|(
-name|Locale
-operator|.
-name|US
-argument_list|)
 argument_list|,
 literal|"."
 argument_list|)
