@@ -375,7 +375,9 @@ name|sb
 operator|.
 name|append
 argument_list|(
-literal|"/"
+name|File
+operator|.
+name|separator
 argument_list|)
 expr_stmt|;
 for|for
@@ -406,7 +408,9 @@ argument_list|(
 literal|64
 argument_list|)
 operator|+
-literal|"/"
+name|File
+operator|.
+name|separator
 argument_list|)
 expr_stmt|;
 block|}
@@ -456,7 +460,9 @@ operator|.
 name|getRoot
 argument_list|()
 operator|+
-literal|"/"
+name|File
+operator|.
+name|separator
 operator|+
 name|Storage
 operator|.
@@ -477,7 +483,9 @@ operator|.
 name|getRoot
 argument_list|()
 operator|+
-literal|"/"
+name|File
+operator|.
+name|separator
 operator|+
 name|BlockPoolSliceStorage
 operator|.
@@ -580,7 +588,9 @@ operator|.
 name|getRoot
 argument_list|()
 operator|+
-literal|"/"
+name|File
+operator|.
+name|separator
 operator|+
 name|BlockPoolSliceStorage
 operator|.
@@ -601,7 +611,9 @@ operator|.
 name|getRoot
 argument_list|()
 operator|+
-literal|"/"
+name|File
+operator|.
+name|separator
 operator|+
 name|Storage
 operator|.
