@@ -70,6 +70,20 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|fs
+operator|.
+name|Path
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|service
 operator|.
 name|AbstractService
@@ -161,6 +175,13 @@ name|AuxiliaryService
 extends|extends
 name|AbstractService
 block|{
+DECL|field|recoveryPath
+specifier|private
+name|Path
+name|recoveryPath
+init|=
+literal|null
+decl_stmt|;
 DECL|method|AuxiliaryService (String name)
 specifier|protected
 name|AuxiliaryService
@@ -174,6 +195,17 @@ argument_list|(
 name|name
 argument_list|)
 expr_stmt|;
+block|}
+comment|/**    * Get the path specific to this auxiliary service to use for recovery.    *    * @return state storage path or null if recovery is not enabled    */
+DECL|method|getRecoveryPath ()
+specifier|protected
+name|Path
+name|getRecoveryPath
+parameter_list|()
+block|{
+return|return
+name|recoveryPath
+return|;
 block|}
 comment|/**    * A new application is started on this NodeManager. This is a signal to    * this {@link AuxiliaryService} about the application initialization.    *     * @param initAppContext context for the application's initialization    */
 DECL|method|initializeApplication ( ApplicationInitializationContext initAppContext)
@@ -225,6 +257,23 @@ name|ContainerTerminationContext
 name|stopContainerContext
 parameter_list|)
 block|{   }
+comment|/**    * Set the path for this auxiliary service to use for storing state    * that will be used during recovery.    *    * @param recoveryPath where recoverable state should be stored    */
+DECL|method|setRecoveryPath (Path recoveryPath)
+specifier|public
+name|void
+name|setRecoveryPath
+parameter_list|(
+name|Path
+name|recoveryPath
+parameter_list|)
+block|{
+name|this
+operator|.
+name|recoveryPath
+operator|=
+name|recoveryPath
+expr_stmt|;
+block|}
 block|}
 end_class
 
