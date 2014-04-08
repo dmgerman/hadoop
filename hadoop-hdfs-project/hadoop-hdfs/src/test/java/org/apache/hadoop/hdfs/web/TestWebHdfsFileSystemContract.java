@@ -1173,24 +1173,17 @@ decl_stmt|;
 comment|//open it as a file, should get FileNotFoundException
 try|try
 block|{
-specifier|final
-name|FSDataInputStream
-name|in
-init|=
 name|fs
 operator|.
 name|open
 argument_list|(
 name|p
 argument_list|)
-decl_stmt|;
-name|in
-operator|.
-name|read
-argument_list|()
 expr_stmt|;
 name|fail
-argument_list|()
+argument_list|(
+literal|"Expected FileNotFoundException was not thrown"
+argument_list|)
 expr_stmt|;
 block|}
 catch|catch

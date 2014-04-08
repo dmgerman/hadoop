@@ -5772,6 +5772,8 @@ parameter_list|,
 name|OffsetUrlOpener
 name|r
 parameter_list|)
+throws|throws
+name|IOException
 block|{
 name|super
 argument_list|(

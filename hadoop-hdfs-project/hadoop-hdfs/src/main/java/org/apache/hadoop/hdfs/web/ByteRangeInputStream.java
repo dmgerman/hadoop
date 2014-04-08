@@ -298,6 +298,8 @@ parameter_list|,
 name|URLOpener
 name|r
 parameter_list|)
+throws|throws
+name|IOException
 block|{
 name|this
 operator|.
@@ -310,6 +312,9 @@ operator|.
 name|resolvedURL
 operator|=
 name|r
+expr_stmt|;
+name|getInputStream
+argument_list|()
 expr_stmt|;
 block|}
 DECL|method|getResolvedUrl (final HttpURLConnection connection )
