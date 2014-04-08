@@ -1799,7 +1799,7 @@ name|checkNotNull
 argument_list|(
 name|children
 argument_list|,
-literal|"The specified path: "
+literal|"File: "
 operator|+
 name|strPath
 operator|+
@@ -1865,7 +1865,7 @@ name|checkArgument
 argument_list|(
 name|findChildren
 argument_list|,
-literal|"The specified path: "
+literal|"File: "
 operator|+
 name|strPath
 operator|+
