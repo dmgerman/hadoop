@@ -2029,7 +2029,7 @@ argument_list|,
 literal|"LiveNodes"
 argument_list|)
 operator|.
-name|getValueAsText
+name|asText
 argument_list|()
 argument_list|,
 name|nn
@@ -2044,7 +2044,7 @@ argument_list|,
 literal|"DeadNodes"
 argument_list|)
 operator|.
-name|getValueAsText
+name|asText
 argument_list|()
 argument_list|,
 name|nn
@@ -2108,7 +2108,7 @@ argument_list|,
 literal|"LiveNodes"
 argument_list|)
 operator|.
-name|getValueAsText
+name|asText
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -2125,7 +2125,7 @@ argument_list|,
 literal|"DeadNodes"
 argument_list|)
 operator|.
-name|getValueAsText
+name|asText
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -2142,7 +2142,7 @@ argument_list|,
 literal|"DecomNodes"
 argument_list|)
 operator|.
-name|getValueAsText
+name|asText
 argument_list|()
 argument_list|)
 expr_stmt|;

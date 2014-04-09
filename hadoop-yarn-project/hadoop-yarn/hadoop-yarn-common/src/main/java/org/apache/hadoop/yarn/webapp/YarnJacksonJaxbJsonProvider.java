@@ -238,9 +238,6 @@ argument_list|)
 expr_stmt|;
 name|mapper
 operator|.
-name|getSerializationConfig
-argument_list|()
-operator|.
 name|setSerializationInclusion
 argument_list|(
 name|Inclusion

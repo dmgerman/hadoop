@@ -114,6 +114,8 @@ name|map
 operator|.
 name|deser
 operator|.
+name|std
+operator|.
 name|StdDeserializer
 import|;
 end_import

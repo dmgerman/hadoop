@@ -804,7 +804,7 @@ name|writer
 init|=
 name|mapper
 operator|.
-name|defaultPrettyPrintingWriter
+name|writerWithDefaultPrettyPrinter
 argument_list|()
 decl_stmt|;
 name|Iterator
@@ -924,7 +924,7 @@ name|writer
 init|=
 name|mapper
 operator|.
-name|defaultPrettyPrintingWriter
+name|writerWithDefaultPrettyPrinter
 argument_list|()
 decl_stmt|;
 for|for

@@ -808,7 +808,7 @@ argument_list|(
 literal|"State"
 argument_list|)
 operator|.
-name|getValueAsText
+name|asText
 argument_list|()
 operator|.
 name|contains
@@ -899,7 +899,7 @@ argument_list|(
 literal|"NumContainers"
 argument_list|)
 operator|.
-name|getValueAsInt
+name|asInt
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -925,7 +925,7 @@ argument_list|(
 literal|"UsedMemoryMB"
 argument_list|)
 operator|.
-name|getValueAsInt
+name|asInt
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -1157,7 +1157,7 @@ argument_list|(
 literal|"State"
 argument_list|)
 operator|.
-name|getValueAsText
+name|asText
 argument_list|()
 operator|.
 name|contains
