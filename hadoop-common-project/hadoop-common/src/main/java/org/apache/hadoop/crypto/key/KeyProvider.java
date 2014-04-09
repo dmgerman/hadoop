@@ -183,7 +183,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * A provider of secret key material for Hadoop applications. Provides an  * abstraction to separate key storage from users of encryption. It  * is intended to support getting or storing keys in a variety of ways,  * including third party bindings.  */
+comment|/**  * A provider of secret key material for Hadoop applications. Provides an  * abstraction to separate key storage from users of encryption. It  * is intended to support getting or storing keys in a variety of ways,  * including third party bindings.  *<P/>  *<code>KeyProvider</code> implementations must be thread safe.  */
 end_comment
 
 begin_class

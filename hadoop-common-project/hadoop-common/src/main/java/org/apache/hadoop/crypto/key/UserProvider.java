@@ -253,6 +253,7 @@ annotation|@
 name|Override
 DECL|method|getKeyVersion (String versionName)
 specifier|public
+specifier|synchronized
 name|KeyVersion
 name|getKeyVersion
 parameter_list|(
@@ -300,6 +301,7 @@ annotation|@
 name|Override
 DECL|method|getMetadata (String name)
 specifier|public
+specifier|synchronized
 name|Metadata
 name|getMetadata
 parameter_list|(
@@ -380,6 +382,7 @@ annotation|@
 name|Override
 DECL|method|createKey (String name, byte[] material, Options options)
 specifier|public
+specifier|synchronized
 name|KeyVersion
 name|createKey
 parameter_list|(
@@ -549,6 +552,7 @@ annotation|@
 name|Override
 DECL|method|deleteKey (String name)
 specifier|public
+specifier|synchronized
 name|void
 name|deleteKey
 parameter_list|(
@@ -645,6 +649,7 @@ annotation|@
 name|Override
 DECL|method|rollNewVersion (String name, byte[] material)
 specifier|public
+specifier|synchronized
 name|KeyVersion
 name|rollNewVersion
 parameter_list|(
@@ -797,6 +802,7 @@ annotation|@
 name|Override
 DECL|method|flush ()
 specifier|public
+specifier|synchronized
 name|void
 name|flush
 parameter_list|()
@@ -861,6 +867,7 @@ annotation|@
 name|Override
 DECL|method|getKeys ()
 specifier|public
+specifier|synchronized
 name|List
 argument_list|<
 name|String
@@ -935,6 +942,7 @@ annotation|@
 name|Override
 DECL|method|getKeyVersions (String name)
 specifier|public
+specifier|synchronized
 name|List
 argument_list|<
 name|KeyVersion
