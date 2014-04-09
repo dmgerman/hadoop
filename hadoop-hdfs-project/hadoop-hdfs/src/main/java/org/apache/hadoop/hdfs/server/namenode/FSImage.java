@@ -1426,8 +1426,13 @@ operator|+
 name|StartupOption
 operator|.
 name|UPGRADE
+operator|.
+name|getName
+argument_list|()
 operator|+
-literal|"\" to start a new upgrade."
+literal|"\" option to start"
+operator|+
+literal|" a new upgrade."
 argument_list|)
 throw|;
 block|}
