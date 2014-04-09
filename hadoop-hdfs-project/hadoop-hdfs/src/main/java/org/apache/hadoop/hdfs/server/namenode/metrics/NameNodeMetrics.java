@@ -459,6 +459,15 @@ DECL|field|blockReceivedAndDeletedOps
 name|MutableCounterLong
 name|blockReceivedAndDeletedOps
 decl_stmt|;
+annotation|@
+name|Metric
+argument_list|(
+literal|"Number of blockReports from individual storages"
+argument_list|)
+DECL|field|storageBlockReportOps
+name|MutableCounterLong
+name|storageBlockReportOps
+decl_stmt|;
 DECL|field|transactions
 annotation|@
 name|Metric
@@ -1090,6 +1099,18 @@ name|incrBlockReceivedAndDeletedOps
 parameter_list|()
 block|{
 name|blockReceivedAndDeletedOps
+operator|.
+name|incr
+argument_list|()
+expr_stmt|;
+block|}
+DECL|method|incrStorageBlockReportOps ()
+specifier|public
+name|void
+name|incrStorageBlockReportOps
+parameter_list|()
+block|{
+name|storageBlockReportOps
 operator|.
 name|incr
 argument_list|()

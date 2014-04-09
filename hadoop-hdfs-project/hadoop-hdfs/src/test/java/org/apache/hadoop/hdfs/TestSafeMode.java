@@ -20,6 +20,38 @@ begin_import
 import|import static
 name|org
 operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|test
+operator|.
+name|MetricsAsserts
+operator|.
+name|getLongCounter
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|test
+operator|.
+name|MetricsAsserts
+operator|.
+name|getMetrics
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
 name|junit
 operator|.
 name|Assert
@@ -81,6 +113,34 @@ operator|.
 name|util
 operator|.
 name|List
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|commons
+operator|.
+name|logging
+operator|.
+name|Log
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|commons
+operator|.
+name|logging
+operator|.
+name|LogFactory
 import|;
 end_import
 
@@ -440,6 +500,22 @@ specifier|public
 class|class
 name|TestSafeMode
 block|{
+DECL|field|LOG
+specifier|public
+specifier|static
+specifier|final
+name|Log
+name|LOG
+init|=
+name|LogFactory
+operator|.
+name|getLog
+argument_list|(
+name|TestSafeMode
+operator|.
+name|class
+argument_list|)
+decl_stmt|;
 DECL|field|TEST_PATH
 specifier|private
 specifier|static
@@ -477,6 +553,15 @@ decl_stmt|;
 DECL|field|dfs
 name|DistributedFileSystem
 name|dfs
+decl_stmt|;
+DECL|field|NN_METRICS
+specifier|private
+specifier|static
+specifier|final
+name|String
+name|NN_METRICS
+init|=
+literal|"NameNodeActivity"
 decl_stmt|;
 annotation|@
 name|Before
@@ -878,6 +963,13 @@ parameter_list|()
 throws|throws
 name|Exception
 block|{
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"Starting testInitializeReplQueuesEarly"
+argument_list|)
+expr_stmt|;
 comment|// Spray the blocks around the cluster when we add DNs instead of
 comment|// concentrating all blocks on the first node.
 name|BlockManagerTestUtil
@@ -917,6 +1009,13 @@ operator|.
 name|waitActive
 argument_list|()
 expr_stmt|;
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"Creating files"
+argument_list|)
+expr_stmt|;
 name|DFSTestUtil
 operator|.
 name|createFile
@@ -935,6 +1034,13 @@ operator|)
 literal|1
 argument_list|,
 literal|1L
+argument_list|)
+expr_stmt|;
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"Stopping all DataNodes"
 argument_list|)
 expr_stmt|;
 name|List
@@ -1002,6 +1108,13 @@ operator|/
 literal|15f
 argument_list|)
 expr_stmt|;
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"Restarting NameNode"
+argument_list|)
+expr_stmt|;
 name|cluster
 operator|.
 name|restartNameNode
@@ -1056,6 +1169,13 @@ name|nn
 argument_list|)
 argument_list|)
 expr_stmt|;
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"Restarting one DataNode"
+argument_list|)
+expr_stmt|;
 name|cluster
 operator|.
 name|restartDataNode
@@ -1068,7 +1188,8 @@ literal|0
 argument_list|)
 argument_list|)
 expr_stmt|;
-comment|// Wait for the block report from the restarted DN to come in.
+comment|// Wait for block reports from all attached storages of
+comment|// the restarted DN to come in.
 name|GenericTestUtils
 operator|.
 name|waitFor
@@ -1088,14 +1209,19 @@ name|get
 parameter_list|()
 block|{
 return|return
-name|NameNodeAdapter
-operator|.
-name|getSafeModeSafeBlocks
+name|getLongCounter
 argument_list|(
-name|nn
+literal|"StorageBlockReportOps"
+argument_list|,
+name|getMetrics
+argument_list|(
+name|NN_METRICS
 argument_list|)
-operator|>
-literal|0
+argument_list|)
+operator|==
+name|MiniDFSCluster
+operator|.
+name|DIRS_PER_DATANODE
 return|;
 block|}
 block|}
@@ -1105,25 +1231,7 @@ argument_list|,
 literal|10000
 argument_list|)
 expr_stmt|;
-comment|// SafeMode is fine-grain synchronized, so the processMisReplicatedBlocks
-comment|// call is still going on at this point - wait until it's done by grabbing
-comment|// the lock.
-name|nn
-operator|.
-name|getNamesystem
-argument_list|()
-operator|.
-name|writeLock
-argument_list|()
-expr_stmt|;
-name|nn
-operator|.
-name|getNamesystem
-argument_list|()
-operator|.
-name|writeUnlock
-argument_list|()
-expr_stmt|;
+specifier|final
 name|int
 name|safe
 init|=
@@ -1136,19 +1244,92 @@ argument_list|)
 decl_stmt|;
 name|assertTrue
 argument_list|(
-literal|"Expected first block report to make some but not all blocks "
-operator|+
-literal|"safe. Got: "
-operator|+
-name|safe
+literal|"Expected first block report to make some blocks safe."
 argument_list|,
 name|safe
-operator|>=
-literal|1
-operator|&&
+operator|>
+literal|0
+argument_list|)
+expr_stmt|;
+name|assertTrue
+argument_list|(
+literal|"Did not expect first block report to make all blocks safe."
+argument_list|,
 name|safe
 operator|<
 literal|15
+argument_list|)
+expr_stmt|;
+name|assertTrue
+argument_list|(
+name|NameNodeAdapter
+operator|.
+name|safeModeInitializedReplQueues
+argument_list|(
+name|nn
+argument_list|)
+argument_list|)
+expr_stmt|;
+comment|// Ensure that UnderReplicatedBlocks goes up to 15 - safe. Misreplicated
+comment|// blocks are processed asynchronously so this may take a few seconds.
+comment|// Failure here will manifest as a test timeout.
+name|BlockManagerTestUtil
+operator|.
+name|updateState
+argument_list|(
+name|nn
+operator|.
+name|getNamesystem
+argument_list|()
+operator|.
+name|getBlockManager
+argument_list|()
+argument_list|)
+expr_stmt|;
+name|long
+name|underReplicatedBlocks
+init|=
+name|nn
+operator|.
+name|getNamesystem
+argument_list|()
+operator|.
+name|getUnderReplicatedBlocks
+argument_list|()
+decl_stmt|;
+while|while
+condition|(
+name|underReplicatedBlocks
+operator|!=
+operator|(
+literal|15
+operator|-
+name|safe
+operator|)
+condition|)
+block|{
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"UnderReplicatedBlocks expected="
+operator|+
+operator|(
+literal|15
+operator|-
+name|safe
+operator|)
+operator|+
+literal|", actual="
+operator|+
+name|underReplicatedBlocks
+argument_list|)
+expr_stmt|;
+name|Thread
+operator|.
+name|sleep
+argument_list|(
+literal|100
 argument_list|)
 expr_stmt|;
 name|BlockManagerTestUtil
@@ -1164,22 +1345,8 @@ name|getBlockManager
 argument_list|()
 argument_list|)
 expr_stmt|;
-name|assertTrue
-argument_list|(
-name|NameNodeAdapter
-operator|.
-name|safeModeInitializedReplQueues
-argument_list|(
-name|nn
-argument_list|)
-argument_list|)
-expr_stmt|;
-name|assertEquals
-argument_list|(
-literal|15
-operator|-
-name|safe
-argument_list|,
+name|underReplicatedBlocks
+operator|=
 name|nn
 operator|.
 name|getNamesystem
@@ -1187,8 +1354,8 @@ argument_list|()
 operator|.
 name|getUnderReplicatedBlocks
 argument_list|()
-argument_list|)
 expr_stmt|;
+block|}
 name|cluster
 operator|.
 name|restartDataNodes

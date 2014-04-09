@@ -6374,6 +6374,11 @@ argument_list|,
 name|blocks
 argument_list|)
 expr_stmt|;
+name|metrics
+operator|.
+name|incrStorageBlockReportOps
+argument_list|()
+expr_stmt|;
 block|}
 if|if
 condition|(
