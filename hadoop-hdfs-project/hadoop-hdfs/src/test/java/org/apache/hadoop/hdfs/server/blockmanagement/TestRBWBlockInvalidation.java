@@ -860,22 +860,20 @@ argument_list|,
 name|liveReplicas
 argument_list|)
 expr_stmt|;
-comment|// sleep for 2 seconds, so that by this time datanode reports the corrupt
-comment|// block after a live replica of block got replicated.
+while|while
+condition|(
+literal|true
+condition|)
+block|{
 name|Thread
 operator|.
 name|sleep
 argument_list|(
-literal|2000
+literal|100
 argument_list|)
 expr_stmt|;
-comment|// Check that there is no corrupt block in the corruptReplicasMap.
-name|assertEquals
-argument_list|(
-literal|"There should not be any replica in the corruptReplicasMap"
-argument_list|,
-literal|0
-argument_list|,
+if|if
+condition|(
 name|countReplicas
 argument_list|(
 name|namesystem
@@ -885,8 +883,20 @@ argument_list|)
 operator|.
 name|corruptReplicas
 argument_list|()
+operator|==
+literal|0
+condition|)
+block|{
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"Corrupt Replicas becomes 0"
 argument_list|)
 expr_stmt|;
+break|break;
+block|}
+block|}
 block|}
 finally|finally
 block|{
