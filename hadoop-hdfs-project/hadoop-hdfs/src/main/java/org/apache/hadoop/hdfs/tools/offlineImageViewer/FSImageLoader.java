@@ -392,7 +392,6 @@ end_comment
 
 begin_class
 DECL|class|FSImageLoader
-specifier|public
 class|class
 name|FSImageLoader
 block|{
@@ -481,7 +480,6 @@ parameter_list|()
 block|{}
 comment|/**    * Load fsimage into the memory.    * @param inputFile the filepath of the fsimage to load.    * @return FSImageLoader    * @throws IOException if failed to load fsimage.    */
 DECL|method|load (String inputFile)
-specifier|public
 specifier|static
 name|FSImageLoader
 name|load
@@ -1459,9 +1457,61 @@ expr_stmt|;
 block|}
 block|}
 block|}
+comment|/**    * Return the JSON formatted FileStatus of the specified file.    * @param path a path specifies a file    * @return JSON formatted FileStatus    * @throws IOException if failed to serialize fileStatus to JSON.    */
+DECL|method|getFileStatus (String path)
+name|String
+name|getFileStatus
+parameter_list|(
+name|String
+name|path
+parameter_list|)
+throws|throws
+name|IOException
+block|{
+name|ObjectMapper
+name|mapper
+init|=
+operator|new
+name|ObjectMapper
+argument_list|()
+decl_stmt|;
+name|FsImageProto
+operator|.
+name|INodeSection
+operator|.
+name|INode
+name|inode
+init|=
+name|inodes
+operator|.
+name|get
+argument_list|(
+name|getINodeId
+argument_list|(
+name|path
+argument_list|)
+argument_list|)
+decl_stmt|;
+return|return
+literal|"{\"FileStatus\":\n"
+operator|+
+name|mapper
+operator|.
+name|writeValueAsString
+argument_list|(
+name|getFileStatus
+argument_list|(
+name|inode
+argument_list|,
+literal|false
+argument_list|)
+argument_list|)
+operator|+
+literal|"\n}\n"
+return|;
+block|}
 comment|/**    * Return the JSON formatted list of the files in the specified directory.    * @param path a path specifies a directory to list    * @return JSON formatted file list in the directory    * @throws IOException if failed to serialize fileStatus to JSON.    */
 DECL|method|listStatus (String path)
-specifier|public
 name|String
 name|listStatus
 parameter_list|(
