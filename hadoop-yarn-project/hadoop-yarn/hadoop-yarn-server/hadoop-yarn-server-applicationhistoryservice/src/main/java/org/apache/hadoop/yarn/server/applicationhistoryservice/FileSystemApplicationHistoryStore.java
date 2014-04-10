@@ -1460,6 +1460,8 @@ argument_list|(
 literal|"Error when reading history file of application "
 operator|+
 name|appId
+argument_list|,
+name|e
 argument_list|)
 expr_stmt|;
 throw|throw
@@ -2108,6 +2110,8 @@ argument_list|(
 literal|"Error when reading history file of application attempt"
 operator|+
 name|appAttemptId
+argument_list|,
+name|e
 argument_list|)
 expr_stmt|;
 throw|throw
@@ -2383,6 +2387,8 @@ argument_list|(
 literal|"Error when reading history file of container "
 operator|+
 name|containerId
+argument_list|,
+name|e
 argument_list|)
 expr_stmt|;
 throw|throw
@@ -2803,6 +2809,8 @@ name|appStart
 operator|.
 name|getApplicationId
 argument_list|()
+argument_list|,
+name|e
 argument_list|)
 expr_stmt|;
 throw|throw
@@ -2909,6 +2917,8 @@ name|appStart
 operator|.
 name|getApplicationId
 argument_list|()
+argument_list|,
+name|e
 argument_list|)
 expr_stmt|;
 throw|throw
@@ -3010,6 +3020,8 @@ name|appFinish
 operator|.
 name|getApplicationId
 argument_list|()
+argument_list|,
+name|e
 argument_list|)
 expr_stmt|;
 throw|throw
@@ -3132,6 +3144,8 @@ name|appAttemptStart
 operator|.
 name|getApplicationAttemptId
 argument_list|()
+argument_list|,
+name|e
 argument_list|)
 expr_stmt|;
 throw|throw
@@ -3236,6 +3250,8 @@ name|appAttemptFinish
 operator|.
 name|getApplicationAttemptId
 argument_list|()
+argument_list|,
+name|e
 argument_list|)
 expr_stmt|;
 throw|throw
@@ -3343,6 +3359,8 @@ name|containerStart
 operator|.
 name|getContainerId
 argument_list|()
+argument_list|,
+name|e
 argument_list|)
 expr_stmt|;
 throw|throw
@@ -3450,6 +3468,8 @@ name|containerFinish
 operator|.
 name|getContainerId
 argument_list|()
+argument_list|,
+name|e
 argument_list|)
 expr_stmt|;
 block|}
@@ -4130,6 +4150,10 @@ operator|.
 name|Scanner
 name|scanner
 decl_stmt|;
+DECL|field|fsdis
+name|FSDataInputStream
+name|fsdis
+decl_stmt|;
 DECL|method|HistoryFileReader (Path historyFile)
 specifier|public
 name|HistoryFileReader
@@ -4140,16 +4164,15 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
-name|FSDataInputStream
 name|fsdis
-init|=
+operator|=
 name|fs
 operator|.
 name|open
 argument_list|(
 name|historyFile
 argument_list|)
-decl_stmt|;
+expr_stmt|;
 name|reader
 operator|=
 operator|new
@@ -4317,6 +4340,8 @@ argument_list|,
 name|scanner
 argument_list|,
 name|reader
+argument_list|,
+name|fsdis
 argument_list|)
 expr_stmt|;
 block|}
