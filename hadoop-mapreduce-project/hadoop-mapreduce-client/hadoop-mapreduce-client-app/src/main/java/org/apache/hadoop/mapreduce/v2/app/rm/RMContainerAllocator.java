@@ -993,6 +993,19 @@ specifier|final
 name|Priority
 name|PRIORITY_MAP
 decl_stmt|;
+annotation|@
+name|VisibleForTesting
+DECL|field|RAMPDOWN_DIAGNOSTIC
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|RAMPDOWN_DIAGNOSTIC
+init|=
+literal|"Reducer preempted "
+operator|+
+literal|"to make room for pending map attempts"
+decl_stmt|;
 DECL|field|eventHandlingThread
 specifier|private
 name|Thread
@@ -6661,13 +6674,11 @@ operator|.
 name|handle
 argument_list|(
 operator|new
-name|TaskAttemptEvent
+name|TaskAttemptKillEvent
 argument_list|(
 name|id
 argument_list|,
-name|TaskAttemptEventType
-operator|.
-name|TA_KILL
+name|RAMPDOWN_DIAGNOSTIC
 argument_list|)
 argument_list|)
 expr_stmt|;
