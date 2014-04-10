@@ -2929,7 +2929,7 @@ argument_list|()
 argument_list|)
 return|;
 block|}
-comment|/** Append to a finalized replica    * Change a finalized replica to be a RBW replica and     * bump its generation stamp to be the newGS    *     * @param bpid block pool Id    * @param replicaInfo a finalized replica    * @param newGS new generation stamp    * @param estimateBlockLen estimate generation stamp    * @return a RBW replica    * @throws IOException if moving the replica from finalized directory     *         to rbw directory fails    */
+comment|/** Append to a finalized replica    * Change a finalized replica to be a RBW replica and     * bump its generation stamp to be the newGS    *     * @param bpid block pool Id    * @param replicaInfo a finalized replica    * @param newGS new generation stamp    * @param estimateBlockLen estimate block length    * @return a RBW replica    * @throws IOException if moving the replica from finalized directory     *         to rbw directory fails    */
 DECL|method|append (String bpid, FinalizedReplica replicaInfo, long newGS, long estimateBlockLen)
 specifier|private
 specifier|synchronized
