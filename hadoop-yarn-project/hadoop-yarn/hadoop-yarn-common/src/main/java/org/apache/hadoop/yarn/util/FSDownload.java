@@ -240,6 +240,20 @@ name|hadoop
 operator|.
 name|fs
 operator|.
+name|LocalFileSystem
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|fs
+operator|.
 name|Options
 operator|.
 name|Rename
@@ -317,6 +331,20 @@ operator|.
 name|util
 operator|.
 name|RunJar
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|util
+operator|.
+name|Shell
 import|;
 end_import
 
@@ -891,6 +919,27 @@ condition|)
 block|{
 return|return
 literal|false
+return|;
+block|}
+if|if
+condition|(
+name|Shell
+operator|.
+name|WINDOWS
+operator|&&
+name|fs
+operator|instanceof
+name|LocalFileSystem
+condition|)
+block|{
+comment|// Relax the requirement for public cache on LFS on Windows since default
+comment|// permissions are "700" all the way up to the drive letter. In this
+comment|// model, the only requirement for a user is to give EVERYONE group
+comment|// permission on the file and the file will be considered public.
+comment|// This code path is only hit when fs.default.name is file:/// (mainly
+comment|// in tests).
+return|return
+literal|true
 return|;
 block|}
 return|return
