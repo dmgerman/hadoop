@@ -2385,6 +2385,11 @@ name|newLock
 expr_stmt|;
 block|}
 comment|/**      * Attempts to acquire an exclusive lock on the storage.      *       * @return A lock object representing the newly-acquired lock or      *<code>null</code> if storage is already locked.      * @throws IOException if locking fails.      */
+annotation|@
+name|SuppressWarnings
+argument_list|(
+literal|"resource"
+argument_list|)
 DECL|method|tryLock ()
 name|FileLock
 name|tryLock
@@ -2466,6 +2471,19 @@ operator|.
 name|tryLock
 argument_list|()
 expr_stmt|;
+if|if
+condition|(
+literal|null
+operator|==
+name|res
+condition|)
+block|{
+throw|throw
+operator|new
+name|OverlappingFileLockException
+argument_list|()
+throw|;
+block|}
 name|file
 operator|.
 name|write
