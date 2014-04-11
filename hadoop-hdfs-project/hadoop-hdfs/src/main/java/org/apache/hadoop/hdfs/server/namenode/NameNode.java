@@ -7403,6 +7403,11 @@ operator|.
 name|writeLock
 argument_list|()
 expr_stmt|;
+name|namesystem
+operator|.
+name|lockRetryCache
+argument_list|()
+expr_stmt|;
 block|}
 annotation|@
 name|Override
@@ -7412,6 +7417,11 @@ name|void
 name|writeUnlock
 parameter_list|()
 block|{
+name|namesystem
+operator|.
+name|unlockRetryCache
+argument_list|()
+expr_stmt|;
 name|namesystem
 operator|.
 name|writeUnlock

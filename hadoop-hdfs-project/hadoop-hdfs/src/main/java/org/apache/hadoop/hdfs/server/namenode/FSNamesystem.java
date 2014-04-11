@@ -6112,6 +6112,44 @@ return|return
 name|retryCache
 return|;
 block|}
+DECL|method|lockRetryCache ()
+name|void
+name|lockRetryCache
+parameter_list|()
+block|{
+if|if
+condition|(
+name|retryCache
+operator|!=
+literal|null
+condition|)
+block|{
+name|retryCache
+operator|.
+name|lock
+argument_list|()
+expr_stmt|;
+block|}
+block|}
+DECL|method|unlockRetryCache ()
+name|void
+name|unlockRetryCache
+parameter_list|()
+block|{
+if|if
+condition|(
+name|retryCache
+operator|!=
+literal|null
+condition|)
+block|{
+name|retryCache
+operator|.
+name|unlock
+argument_list|()
+expr_stmt|;
+block|}
+block|}
 comment|/** Whether or not retry cache is enabled */
 DECL|method|hasRetryCache ()
 name|boolean
@@ -32309,14 +32347,14 @@ name|getPayload
 argument_list|()
 return|;
 block|}
-name|writeLock
-argument_list|()
-expr_stmt|;
 name|String
 name|snapshotPath
 init|=
 literal|null
 decl_stmt|;
+name|writeLock
+argument_list|()
+expr_stmt|;
 try|try
 block|{
 name|checkOperation
