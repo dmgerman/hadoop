@@ -28,6 +28,20 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|mapred
+operator|.
+name|JobConf
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|mapreduce
 operator|.
 name|v2
@@ -41,7 +55,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * Maintains information which may be used by the jobHistroy indexing  * system.  */
+comment|/**  * Maintains information which may be used by the jobHistory indexing  * system.  */
 end_comment
 
 begin_class
@@ -135,6 +149,62 @@ name|jobStatus
 parameter_list|)
 block|{
 name|this
+argument_list|(
+name|submitTime
+argument_list|,
+name|finishTime
+argument_list|,
+name|user
+argument_list|,
+name|jobName
+argument_list|,
+name|jobId
+argument_list|,
+name|numMaps
+argument_list|,
+name|numReduces
+argument_list|,
+name|jobStatus
+argument_list|,
+name|JobConf
+operator|.
+name|DEFAULT_QUEUE_NAME
+argument_list|)
+expr_stmt|;
+block|}
+DECL|method|JobIndexInfo (long submitTime, long finishTime, String user, String jobName, JobId jobId, int numMaps, int numReduces, String jobStatus, String queueName)
+specifier|public
+name|JobIndexInfo
+parameter_list|(
+name|long
+name|submitTime
+parameter_list|,
+name|long
+name|finishTime
+parameter_list|,
+name|String
+name|user
+parameter_list|,
+name|String
+name|jobName
+parameter_list|,
+name|JobId
+name|jobId
+parameter_list|,
+name|int
+name|numMaps
+parameter_list|,
+name|int
+name|numReduces
+parameter_list|,
+name|String
+name|jobStatus
+parameter_list|,
+name|String
+name|queueName
+parameter_list|)
+block|{
+name|this
 operator|.
 name|submitTime
 operator|=
@@ -188,6 +258,12 @@ name|jobStartTime
 operator|=
 operator|-
 literal|1
+expr_stmt|;
+name|this
+operator|.
+name|queueName
+operator|=
+name|queueName
 expr_stmt|;
 block|}
 DECL|method|getSubmitTime ()
