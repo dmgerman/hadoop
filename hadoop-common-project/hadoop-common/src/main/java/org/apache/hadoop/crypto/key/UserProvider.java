@@ -487,6 +487,11 @@ operator|.
 name|getBitLength
 argument_list|()
 argument_list|,
+name|options
+operator|.
+name|getDescription
+argument_list|()
+argument_list|,
 operator|new
 name|Date
 argument_list|()
