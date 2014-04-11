@@ -808,7 +808,7 @@ name|TestEditLog
 operator|.
 name|TEST_DIR
 operator|+
-literal|"/filejournaltest0"
+literal|"/inprogressrecovery"
 argument_list|)
 decl_stmt|;
 comment|// abort after the 5th roll
@@ -1595,7 +1595,7 @@ name|TestEditLog
 operator|.
 name|TEST_DIR
 operator|+
-literal|"/filejournaltest1"
+literal|"/readfromstream"
 argument_list|)
 decl_stmt|;
 comment|// abort after 10th roll
@@ -1743,7 +1743,7 @@ name|TestEditLog
 operator|.
 name|TEST_DIR
 operator|+
-literal|"/filejournaltest2"
+literal|"/askfortransactionsmidfile"
 argument_list|)
 decl_stmt|;
 name|NNStorage
@@ -1864,7 +1864,7 @@ name|TestEditLog
 operator|.
 name|TEST_DIR
 operator|+
-literal|"/filejournaltest3"
+literal|"/manylogswithgaps"
 argument_list|)
 decl_stmt|;
 name|NNStorage
@@ -2092,7 +2092,7 @@ name|TestEditLog
 operator|.
 name|TEST_DIR
 operator|+
-literal|"/filejournaltest5"
+literal|"/manylogswithcorruptinprogress"
 argument_list|)
 decl_stmt|;
 name|NNStorage
@@ -2590,7 +2590,7 @@ name|TestEditLog
 operator|.
 name|TEST_DIR
 operator|+
-literal|"/filejournaltest2"
+literal|"/readfrommiddleofeditlog"
 argument_list|)
 decl_stmt|;
 name|NNStorage
@@ -2713,7 +2713,7 @@ name|TestEditLog
 operator|.
 name|TEST_DIR
 operator|+
-literal|"/filejournaltest2"
+literal|"/excludeinprogressstreams"
 argument_list|)
 decl_stmt|;
 comment|// Don't close the edit log once the files have been set up.
