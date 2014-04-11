@@ -22511,6 +22511,16 @@ name|name
 argument_list|()
 argument_list|)
 expr_stmt|;
+if|if
+condition|(
+name|e
+operator|.
+name|getName
+argument_list|()
+operator|!=
+literal|null
+condition|)
+block|{
 name|XMLUtils
 operator|.
 name|addSaxString
@@ -22525,6 +22535,7 @@ name|getName
 argument_list|()
 argument_list|)
 expr_stmt|;
+block|}
 name|fsActionToXml
 argument_list|(
 name|contentHandler
@@ -22649,7 +22660,7 @@ name|setName
 argument_list|(
 name|s
 operator|.
-name|getValue
+name|getValueOrNull
 argument_list|(
 literal|"NAME"
 argument_list|)
