@@ -1193,7 +1193,7 @@ name|this
 return|;
 block|}
 DECL|method|getCipher ()
-specifier|protected
+specifier|public
 name|String
 name|getCipher
 parameter_list|()
@@ -1203,7 +1203,7 @@ name|cipher
 return|;
 block|}
 DECL|method|getBitLength ()
-specifier|protected
+specifier|public
 name|int
 name|getBitLength
 parameter_list|()
@@ -1213,7 +1213,7 @@ name|bitLength
 return|;
 block|}
 DECL|method|getDescription ()
-specifier|protected
+specifier|public
 name|String
 name|getDescription
 parameter_list|()
