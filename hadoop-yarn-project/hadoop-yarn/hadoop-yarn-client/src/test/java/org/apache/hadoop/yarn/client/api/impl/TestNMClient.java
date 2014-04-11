@@ -2226,6 +2226,7 @@ comment|// getContainerStatus can be called after stopContainer
 try|try
 block|{
 comment|// O is possible if CLEANUP_CONTAINER is executed too late
+comment|// 137 is possible if the container is not terminated but killed
 name|testGetContainerStatus
 argument_list|(
 name|container
@@ -2246,6 +2247,8 @@ operator|new
 name|Integer
 index|[]
 block|{
+literal|137
+block|,
 literal|143
 block|,
 literal|0
