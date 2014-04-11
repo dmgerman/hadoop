@@ -1429,12 +1429,6 @@ literal|"1"
 block|,
 literal|"--shell_command"
 block|,
-name|Shell
-operator|.
-name|WINDOWS
-operator|?
-literal|"timeout 8"
-operator|:
 literal|"sleep 8"
 block|,
 literal|"--master_memory"

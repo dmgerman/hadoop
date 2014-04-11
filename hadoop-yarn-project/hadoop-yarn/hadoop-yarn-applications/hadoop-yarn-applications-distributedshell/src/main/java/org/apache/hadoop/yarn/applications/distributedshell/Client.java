@@ -2742,7 +2742,7 @@ name|appMasterJarPath
 argument_list|,
 name|appId
 operator|.
-name|getId
+name|toString
 argument_list|()
 argument_list|,
 name|localResources
@@ -2770,7 +2770,7 @@ name|log4jPath
 argument_list|,
 name|appId
 operator|.
-name|getId
+name|toString
 argument_list|()
 argument_list|,
 name|localResources
@@ -2827,7 +2827,7 @@ literal|"/"
 operator|+
 name|appId
 operator|.
-name|getId
+name|toString
 argument_list|()
 operator|+
 literal|"/"
@@ -2915,7 +2915,7 @@ name|shellCommandPath
 argument_list|,
 name|appId
 operator|.
-name|getId
+name|toString
 argument_list|()
 argument_list|,
 name|localResources
@@ -2943,7 +2943,7 @@ name|shellArgsPath
 argument_list|,
 name|appId
 operator|.
-name|getId
+name|toString
 argument_list|()
 argument_list|,
 name|localResources
@@ -4021,7 +4021,7 @@ name|appId
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|addToLocalResources (FileSystem fs, String fileSrcPath, String fileDstPath, int appId, Map<String, LocalResource> localResources, String resources)
+DECL|method|addToLocalResources (FileSystem fs, String fileSrcPath, String fileDstPath, String appId, Map<String, LocalResource> localResources, String resources)
 specifier|private
 name|void
 name|addToLocalResources
@@ -4035,7 +4035,7 @@ parameter_list|,
 name|String
 name|fileDstPath
 parameter_list|,
-name|int
+name|String
 name|appId
 parameter_list|,
 name|Map
