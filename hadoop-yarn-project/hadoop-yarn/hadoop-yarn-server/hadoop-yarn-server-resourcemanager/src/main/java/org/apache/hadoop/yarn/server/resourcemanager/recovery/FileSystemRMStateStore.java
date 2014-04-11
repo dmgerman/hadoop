@@ -3088,6 +3088,18 @@ name|dstPath
 argument_list|)
 expr_stmt|;
 block|}
+else|else
+block|{
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"File doesn't exist. Skip deleting the file "
+operator|+
+name|dstPath
+argument_list|)
+expr_stmt|;
+block|}
 name|fs
 operator|.
 name|rename

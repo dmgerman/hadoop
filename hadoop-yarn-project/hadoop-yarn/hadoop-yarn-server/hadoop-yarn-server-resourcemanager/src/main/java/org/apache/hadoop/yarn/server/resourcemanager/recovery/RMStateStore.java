@@ -2779,7 +2779,7 @@ name|LOG
 operator|.
 name|error
 argument_list|(
-literal|"Error storing app: "
+literal|"Error storing/updating app: "
 operator|+
 name|appId
 argument_list|,
@@ -3095,7 +3095,7 @@ name|LOG
 operator|.
 name|error
 argument_list|(
-literal|"Error storing appAttempt: "
+literal|"Error storing/updating appAttempt: "
 operator|+
 name|attemptState
 operator|.
