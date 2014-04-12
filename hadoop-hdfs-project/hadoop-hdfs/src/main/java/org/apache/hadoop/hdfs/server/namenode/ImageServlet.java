@@ -32,7 +32,7 @@ name|util
 operator|.
 name|Time
 operator|.
-name|now
+name|monotonicNow
 import|;
 end_import
 
@@ -871,7 +871,7 @@ expr_stmt|;
 name|long
 name|start
 init|=
-name|now
+name|monotonicNow
 argument_list|()
 decl_stmt|;
 name|serveFile
@@ -890,7 +890,7 @@ comment|// Metrics non-null only when used inside name node
 name|long
 name|elapsed
 init|=
-name|now
+name|monotonicNow
 argument_list|()
 operator|-
 name|start
@@ -947,7 +947,7 @@ decl_stmt|;
 name|long
 name|start
 init|=
-name|now
+name|monotonicNow
 argument_list|()
 decl_stmt|;
 name|serveFile
@@ -966,7 +966,7 @@ comment|// Metrics non-null only when used inside name node
 name|long
 name|elapsed
 init|=
-name|now
+name|monotonicNow
 argument_list|()
 operator|-
 name|start
@@ -2622,7 +2622,7 @@ block|{
 name|long
 name|start
 init|=
-name|now
+name|monotonicNow
 argument_list|()
 decl_stmt|;
 name|MD5Hash
@@ -2676,7 +2676,7 @@ block|{
 name|long
 name|elapsed
 init|=
-name|now
+name|monotonicNow
 argument_list|()
 operator|-
 name|start
