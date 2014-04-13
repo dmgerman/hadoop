@@ -5182,7 +5182,7 @@ continue|continue;
 block|}
 name|LOG
 operator|.
-name|error
+name|debug
 argument_list|(
 literal|"Error while doing ZK operation."
 argument_list|,
