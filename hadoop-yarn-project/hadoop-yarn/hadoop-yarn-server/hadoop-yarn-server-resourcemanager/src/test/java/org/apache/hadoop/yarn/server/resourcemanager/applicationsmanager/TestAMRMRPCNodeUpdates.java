@@ -770,6 +770,11 @@ argument_list|,
 literal|10000
 argument_list|)
 decl_stmt|;
+name|dispatcher
+operator|.
+name|await
+argument_list|()
+expr_stmt|;
 name|RMApp
 name|app1
 init|=
