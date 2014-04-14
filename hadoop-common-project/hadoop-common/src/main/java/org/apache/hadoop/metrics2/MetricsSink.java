@@ -18,6 +18,16 @@ end_package
 
 begin_import
 import|import
+name|java
+operator|.
+name|io
+operator|.
+name|Closeable
+import|;
+end_import
+
+begin_import
+import|import
 name|org
 operator|.
 name|apache
@@ -45,7 +55,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * The metrics sink interface.<p>  * Implementations of this interface consume the {@link MetricsRecord} generated  * from {@link MetricsSource}. It registers with {@link MetricsSystem} which  * periodically pushes the {@link MetricsRecord} to the sink using  * {@link #putMetrics(MetricsRecord)} method.  */
+comment|/**  * The metrics sink interface.<p>  * Implementations of this interface consume the {@link MetricsRecord} generated  * from {@link MetricsSource}. It registers with {@link MetricsSystem} which  * periodically pushes the {@link MetricsRecord} to the sink using  * {@link #putMetrics(MetricsRecord)} method.  If the implementing class also  * implements {@link Closeable}, then the MetricsSystem will close the sink when  * it is stopped.  */
 end_comment
 
 begin_interface

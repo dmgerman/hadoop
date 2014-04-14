@@ -682,15 +682,30 @@ expr_stmt|;
 name|InputStream
 name|is
 init|=
+literal|null
+decl_stmt|;
+name|ByteArrayOutputStream
+name|baos
+init|=
+literal|null
+decl_stmt|;
+name|String
+name|outFileContent
+init|=
+literal|null
+decl_stmt|;
+try|try
+block|{
+name|is
+operator|=
 operator|new
 name|FileInputStream
 argument_list|(
 name|outFile
 argument_list|)
-decl_stmt|;
-name|ByteArrayOutputStream
+expr_stmt|;
 name|baos
-init|=
+operator|=
 operator|new
 name|ByteArrayOutputStream
 argument_list|(
@@ -702,7 +717,7 @@ operator|.
 name|length
 argument_list|()
 argument_list|)
-decl_stmt|;
+expr_stmt|;
 name|IOUtils
 operator|.
 name|copyBytes
@@ -716,9 +731,8 @@ argument_list|,
 literal|true
 argument_list|)
 expr_stmt|;
-name|String
 name|outFileContent
-init|=
+operator|=
 operator|new
 name|String
 argument_list|(
@@ -729,7 +743,22 @@ argument_list|()
 argument_list|,
 literal|"UTF-8"
 argument_list|)
-decl_stmt|;
+expr_stmt|;
+block|}
+finally|finally
+block|{
+name|IOUtils
+operator|.
+name|cleanup
+argument_list|(
+literal|null
+argument_list|,
+name|baos
+argument_list|,
+name|is
+argument_list|)
+expr_stmt|;
+block|}
 comment|// Check the out file content. Should be something like the following:
 comment|//1360244820087 test1.testRecord1: Context=test1, testTag1=testTagValue1, testTag2=testTagValue2, Hostname=myhost, testMetric1=1, testMetric2=2
 comment|//1360244820089 test1.testRecord2: Context=test1, testTag22=testTagValue22, Hostname=myhost

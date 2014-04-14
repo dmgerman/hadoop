@@ -24,6 +24,16 @@ name|java
 operator|.
 name|io
 operator|.
+name|Closeable
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|io
+operator|.
 name|File
 import|;
 end_import
@@ -35,6 +45,16 @@ operator|.
 name|io
 operator|.
 name|FileWriter
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|io
+operator|.
+name|IOException
 import|;
 end_import
 
@@ -179,6 +199,8 @@ class|class
 name|FileSink
 implements|implements
 name|MetricsSink
+implements|,
+name|Closeable
 block|{
 DECL|field|FILENAME_KEY
 specifier|private
@@ -444,6 +466,22 @@ block|{
 name|writer
 operator|.
 name|flush
+argument_list|()
+expr_stmt|;
+block|}
+annotation|@
+name|Override
+DECL|method|close ()
+specifier|public
+name|void
+name|close
+parameter_list|()
+throws|throws
+name|IOException
+block|{
+name|writer
+operator|.
+name|close
 argument_list|()
 expr_stmt|;
 block|}
