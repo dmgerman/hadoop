@@ -1122,6 +1122,8 @@ argument_list|,
 name|imageType
 argument_list|,
 name|txid
+argument_list|,
+name|canceler
 argument_list|)
 expr_stmt|;
 return|return
@@ -1143,6 +1145,25 @@ operator|.
 name|get
 argument_list|()
 expr_stmt|;
+block|}
+catch|catch
+parameter_list|(
+name|InterruptedException
+name|e
+parameter_list|)
+block|{
+comment|// The background thread may be blocked waiting in the throttler, so
+comment|// interrupt it.
+name|upload
+operator|.
+name|cancel
+argument_list|(
+literal|true
+argument_list|)
+expr_stmt|;
+throw|throw
+name|e
+throw|;
 block|}
 catch|catch
 parameter_list|(

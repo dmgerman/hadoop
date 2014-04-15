@@ -446,6 +446,22 @@ name|hdfs
 operator|.
 name|util
 operator|.
+name|Canceler
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|util
+operator|.
 name|DataTransferThrottler
 import|;
 end_import
@@ -1374,7 +1390,7 @@ expr_stmt|;
 block|}
 block|}
 block|}
-comment|/**    * Requests that the NameNode download an image from this node.    *    * @param fsName the http address for the remote NN    * @param conf Configuration    * @param storage the storage directory to transfer the image from    * @param nnf the NameNodeFile type of the image    * @param txid the transaction ID of the image to be uploaded    */
+comment|/**    * Requests that the NameNode download an image from this node.    *    * @param fsName the http address for the remote NN    * @param conf Configuration    * @param storage the storage directory to transfer the image from    * @param nnf the NameNodeFile type of the image    * @param txid the transaction ID of the image to be uploaded    * @throws IOException if there is an I/O error    */
 DECL|method|uploadImageFromStorage (URL fsName, Configuration conf, NNStorage storage, NameNodeFile nnf, long txid)
 specifier|public
 specifier|static
@@ -1395,6 +1411,50 @@ name|nnf
 parameter_list|,
 name|long
 name|txid
+parameter_list|)
+throws|throws
+name|IOException
+block|{
+name|uploadImageFromStorage
+argument_list|(
+name|fsName
+argument_list|,
+name|conf
+argument_list|,
+name|storage
+argument_list|,
+name|nnf
+argument_list|,
+name|txid
+argument_list|,
+literal|null
+argument_list|)
+expr_stmt|;
+block|}
+comment|/**    * Requests that the NameNode download an image from this node.  Allows for    * optional external cancelation.    *    * @param fsName the http address for the remote NN    * @param conf Configuration    * @param storage the storage directory to transfer the image from    * @param nnf the NameNodeFile type of the image    * @param txid the transaction ID of the image to be uploaded    * @param canceler optional canceler to check for abort of upload    * @throws IOException if there is an I/O error or cancellation    */
+DECL|method|uploadImageFromStorage (URL fsName, Configuration conf, NNStorage storage, NameNodeFile nnf, long txid, Canceler canceler)
+specifier|public
+specifier|static
+name|void
+name|uploadImageFromStorage
+parameter_list|(
+name|URL
+name|fsName
+parameter_list|,
+name|Configuration
+name|conf
+parameter_list|,
+name|NNStorage
+name|storage
+parameter_list|,
+name|NameNodeFile
+name|nnf
+parameter_list|,
+name|long
+name|txid
+parameter_list|,
+name|Canceler
+name|canceler
 parameter_list|)
 throws|throws
 name|IOException
@@ -1433,6 +1493,8 @@ argument_list|,
 name|nnf
 argument_list|,
 name|txid
+argument_list|,
+name|canceler
 argument_list|)
 expr_stmt|;
 block|}
@@ -1527,7 +1589,7 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|/*    * Uploads the imagefile using HTTP PUT method    */
-DECL|method|uploadImage (URL url, Configuration conf, NNStorage storage, NameNodeFile nnf, long txId)
+DECL|method|uploadImage (URL url, Configuration conf, NNStorage storage, NameNodeFile nnf, long txId, Canceler canceler)
 specifier|private
 specifier|static
 name|void
@@ -1547,6 +1609,9 @@ name|nnf
 parameter_list|,
 name|long
 name|txId
+parameter_list|,
+name|Canceler
+name|canceler
 parameter_list|)
 throws|throws
 name|IOException
@@ -1761,6 +1826,8 @@ argument_list|,
 name|connection
 argument_list|,
 name|imageFile
+argument_list|,
+name|canceler
 argument_list|)
 expr_stmt|;
 name|int
@@ -1839,7 +1906,7 @@ expr_stmt|;
 block|}
 block|}
 block|}
-DECL|method|writeFileToPutRequest (Configuration conf, HttpURLConnection connection, File imageFile)
+DECL|method|writeFileToPutRequest (Configuration conf, HttpURLConnection connection, File imageFile, Canceler canceler)
 specifier|private
 specifier|static
 name|void
@@ -1853,6 +1920,9 @@ name|connection
 parameter_list|,
 name|File
 name|imageFile
+parameter_list|,
+name|Canceler
+name|canceler
 parameter_list|)
 throws|throws
 name|FileNotFoundException
@@ -1910,6 +1980,8 @@ name|getThrottler
 argument_list|(
 name|conf
 argument_list|)
+argument_list|,
+name|canceler
 argument_list|)
 expr_stmt|;
 block|}
@@ -1949,6 +2021,44 @@ name|infile
 parameter_list|,
 name|DataTransferThrottler
 name|throttler
+parameter_list|)
+throws|throws
+name|IOException
+block|{
+name|copyFileToStream
+argument_list|(
+name|out
+argument_list|,
+name|localfile
+argument_list|,
+name|infile
+argument_list|,
+name|throttler
+argument_list|,
+literal|null
+argument_list|)
+expr_stmt|;
+block|}
+DECL|method|copyFileToStream (OutputStream out, File localfile, FileInputStream infile, DataTransferThrottler throttler, Canceler canceler)
+specifier|private
+specifier|static
+name|void
+name|copyFileToStream
+parameter_list|(
+name|OutputStream
+name|out
+parameter_list|,
+name|File
+name|localfile
+parameter_list|,
+name|FileInputStream
+name|infile
+parameter_list|,
+name|DataTransferThrottler
+name|throttler
+parameter_list|,
+name|Canceler
+name|canceler
 parameter_list|)
 throws|throws
 name|IOException
@@ -2043,6 +2153,29 @@ operator|>
 literal|0
 condition|)
 block|{
+if|if
+condition|(
+name|canceler
+operator|!=
+literal|null
+operator|&&
+name|canceler
+operator|.
+name|isCancelled
+argument_list|()
+condition|)
+block|{
+throw|throw
+operator|new
+name|SaveNamespaceCancelledException
+argument_list|(
+name|canceler
+operator|.
+name|getCancellationReason
+argument_list|()
+argument_list|)
+throw|;
+block|}
 name|num
 operator|=
 name|infile
@@ -2112,6 +2245,8 @@ operator|.
 name|throttle
 argument_list|(
 name|num
+argument_list|,
+name|canceler
 argument_list|)
 expr_stmt|;
 block|}
