@@ -2096,33 +2096,6 @@ init|=
 name|getContainerStatuses
 argument_list|()
 decl_stmt|;
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
-name|LOG
-operator|.
-name|debug
-argument_list|(
-name|this
-operator|.
-name|nodeId
-operator|+
-literal|" sending out status for "
-operator|+
-name|containersStatuses
-operator|.
-name|size
-argument_list|()
-operator|+
-literal|" containers"
-argument_list|)
-expr_stmt|;
-block|}
 name|NodeStatus
 name|nodeStatus
 init|=
@@ -2261,7 +2234,14 @@ name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"Sending out container statuses: "
+literal|"Sending out "
+operator|+
+name|containerStatuses
+operator|.
+name|size
+argument_list|()
+operator|+
+literal|" container statuses: "
 operator|+
 name|containerStatuses
 argument_list|)

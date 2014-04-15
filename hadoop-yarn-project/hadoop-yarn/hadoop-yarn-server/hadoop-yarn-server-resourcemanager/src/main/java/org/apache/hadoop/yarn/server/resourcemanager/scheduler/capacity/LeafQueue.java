@@ -996,11 +996,6 @@ specifier|final
 name|float
 name|minimumAllocationFactor
 decl_stmt|;
-DECL|field|containerTokenSecretManager
-specifier|private
-name|RMContainerTokenSecretManager
-name|containerTokenSecretManager
-decl_stmt|;
 DECL|field|users
 specifier|private
 name|Map
@@ -1215,15 +1210,6 @@ argument_list|)
 argument_list|,
 name|maximumAllocation
 argument_list|)
-expr_stmt|;
-name|this
-operator|.
-name|containerTokenSecretManager
-operator|=
-name|cs
-operator|.
-name|getContainerTokenSecretManager
-argument_list|()
 expr_stmt|;
 name|float
 name|capacity
@@ -2819,6 +2805,8 @@ operator|+
 literal|"usedResources="
 operator|+
 name|usedResources
+operator|+
+literal|", "
 operator|+
 literal|"usedCapacity="
 operator|+
@@ -4504,9 +4492,17 @@ operator|>
 name|absoluteMaxCapacity
 condition|)
 block|{
+if|if
+condition|(
 name|LOG
 operator|.
-name|info
+name|isDebugEnabled
+argument_list|()
+condition|)
+block|{
+name|LOG
+operator|.
+name|debug
 argument_list|(
 name|getQueueName
 argument_list|()
@@ -4551,6 +4547,7 @@ operator|+
 literal|")"
 argument_list|)
 expr_stmt|;
+block|}
 return|return
 literal|false
 return|;
@@ -6067,9 +6064,6 @@ name|application
 operator|.
 name|getApplicationId
 argument_list|()
-operator|.
-name|getId
-argument_list|()
 operator|+
 literal|" priority="
 operator|+
@@ -6305,43 +6299,22 @@ name|info
 argument_list|(
 literal|"assignedContainer"
 operator|+
-literal|" application="
+literal|" application attempt="
 operator|+
 name|application
 operator|.
-name|getApplicationId
+name|getApplicationAttemptId
 argument_list|()
 operator|+
 literal|" container="
 operator|+
 name|container
 operator|+
-literal|" containerId="
-operator|+
-name|container
-operator|.
-name|getId
-argument_list|()
-operator|+
 literal|" queue="
 operator|+
 name|this
 operator|+
-literal|" usedCapacity="
-operator|+
-name|getUsedCapacity
-argument_list|()
-operator|+
-literal|" absoluteUsedCapacity="
-operator|+
-name|getAbsoluteUsedCapacity
-argument_list|()
-operator|+
-literal|" used="
-operator|+
-name|usedResources
-operator|+
-literal|" cluster="
+literal|" clusterResource="
 operator|+
 name|clusterResource
 argument_list|)
@@ -6375,11 +6348,11 @@ name|info
 argument_list|(
 literal|"Reserved container "
 operator|+
-literal|" application="
+literal|" application attempt="
 operator|+
 name|application
 operator|.
-name|getApplicationId
+name|getApplicationAttemptId
 argument_list|()
 operator|+
 literal|" resource="
@@ -6396,21 +6369,11 @@ operator|.
 name|toString
 argument_list|()
 operator|+
-literal|" usedCapacity="
+literal|" node="
 operator|+
-name|getUsedCapacity
-argument_list|()
+name|node
 operator|+
-literal|" absoluteUsedCapacity="
-operator|+
-name|getAbsoluteUsedCapacity
-argument_list|()
-operator|+
-literal|" used="
-operator|+
-name|usedResources
-operator|+
-literal|" cluster="
+literal|" clusterResource="
 operator|+
 name|clusterResource
 argument_list|)
@@ -6703,30 +6666,9 @@ literal|" container="
 operator|+
 name|container
 operator|+
-literal|" resource="
-operator|+
-name|container
-operator|.
-name|getResource
-argument_list|()
-operator|+
 literal|" queue="
 operator|+
 name|this
-operator|+
-literal|" usedCapacity="
-operator|+
-name|getUsedCapacity
-argument_list|()
-operator|+
-literal|" absoluteUsedCapacity="
-operator|+
-name|getAbsoluteUsedCapacity
-argument_list|()
-operator|+
-literal|" used="
-operator|+
-name|usedResources
 operator|+
 literal|" cluster="
 operator|+

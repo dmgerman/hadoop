@@ -1408,13 +1408,21 @@ argument_list|,
 name|rmContainer
 argument_list|)
 expr_stmt|;
+if|if
+condition|(
 name|LOG
 operator|.
-name|info
+name|isDebugEnabled
+argument_list|()
+condition|)
+block|{
+name|LOG
+operator|.
+name|debug
 argument_list|(
-literal|"Application "
+literal|"Application attempt "
 operator|+
-name|getApplicationId
+name|getApplicationAttemptId
 argument_list|()
 operator|+
 literal|" reserved container "
@@ -1425,14 +1433,14 @@ literal|" on node "
 operator|+
 name|node
 operator|+
-literal|", currently has "
+literal|". This attempt currently has "
 operator|+
 name|reservedContainers
 operator|.
 name|size
 argument_list|()
 operator|+
-literal|" at priority "
+literal|" reserved containers at priority "
 operator|+
 name|priority
 operator|+
@@ -1444,6 +1452,7 @@ name|getMemory
 argument_list|()
 argument_list|)
 expr_stmt|;
+block|}
 return|return
 name|rmContainer
 return|;

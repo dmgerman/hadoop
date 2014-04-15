@@ -1244,9 +1244,17 @@ name|this
 argument_list|)
 throw|;
 block|}
+if|if
+condition|(
 name|LOG
 operator|.
-name|info
+name|isDebugEnabled
+argument_list|()
+condition|)
+block|{
+name|LOG
+operator|.
+name|debug
 argument_list|(
 literal|"Updated reserved container "
 operator|+
@@ -1262,17 +1270,29 @@ literal|" on node "
 operator|+
 name|this
 operator|+
-literal|" for application "
+literal|" for application attempt "
 operator|+
 name|application
+operator|.
+name|getApplicationAttemptId
+argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
+block|}
 else|else
+block|{
+if|if
+condition|(
+name|LOG
+operator|.
+name|isDebugEnabled
+argument_list|()
+condition|)
 block|{
 name|LOG
 operator|.
-name|info
+name|debug
 argument_list|(
 literal|"Reserved container "
 operator|+
@@ -1288,11 +1308,15 @@ literal|" on node "
 operator|+
 name|this
 operator|+
-literal|" for application "
+literal|" for application attempt "
 operator|+
 name|application
+operator|.
+name|getApplicationAttemptId
+argument_list|()
 argument_list|)
 expr_stmt|;
+block|}
 block|}
 name|this
 operator|.
