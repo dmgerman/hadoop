@@ -1269,7 +1269,7 @@ name|res
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * A random list of 100 words from /usr/share/dict/words    */
+comment|/**    * A random list of 1000 words from /usr/share/dict/words    */
 DECL|field|words
 specifier|private
 specifier|static
