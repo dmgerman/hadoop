@@ -3215,6 +3215,32 @@ operator|.
 name|getValue
 argument_list|()
 decl_stmt|;
+comment|// jetty 6 reserves 12 bytes in the out buffer for chunked responses
+comment|// (file length> 2GB) which causes extremely poor performance when
+comment|// 12 bytes of the output spill into another buffer which results
+comment|// in a big and little write
+name|int
+name|outBufferSize
+init|=
+name|response
+operator|.
+name|getBufferSize
+argument_list|()
+decl_stmt|;
+if|if
+condition|(
+name|n
+operator|>
+name|Integer
+operator|.
+name|MAX_VALUE
+condition|)
+block|{
+name|outBufferSize
+operator|-=
+literal|12
+expr_stmt|;
+block|}
 comment|/**        * Allow the Web UI to perform an AJAX request to get the data.        */
 return|return
 name|Response
@@ -3227,6 +3253,8 @@ argument_list|(
 name|in
 argument_list|,
 name|n
+argument_list|,
+name|outBufferSize
 argument_list|,
 name|dfsclient
 argument_list|)
