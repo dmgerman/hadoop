@@ -1384,13 +1384,6 @@ argument_list|)
 expr_stmt|;
 name|job
 operator|.
-name|setNumReduceTasks
-argument_list|(
-name|numReducer
-argument_list|)
-expr_stmt|;
-name|job
-operator|.
 name|setMapperClass
 argument_list|(
 name|SleepMapper
