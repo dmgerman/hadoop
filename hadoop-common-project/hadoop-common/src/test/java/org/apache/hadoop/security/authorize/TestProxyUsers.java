@@ -1199,8 +1199,6 @@ argument_list|(
 name|proxyUgi
 argument_list|,
 name|host
-argument_list|,
-literal|null
 argument_list|)
 expr_stmt|;
 name|fail
@@ -1245,8 +1243,6 @@ argument_list|(
 name|proxyUgi
 argument_list|,
 name|host
-argument_list|,
-literal|null
 argument_list|)
 expr_stmt|;
 block|}

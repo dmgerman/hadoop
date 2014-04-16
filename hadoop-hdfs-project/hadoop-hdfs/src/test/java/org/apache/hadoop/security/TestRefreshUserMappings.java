@@ -1251,8 +1251,6 @@ argument_list|(
 name|ugi1
 argument_list|,
 literal|"127.0.0.1"
-argument_list|,
-name|config
 argument_list|)
 expr_stmt|;
 name|fail
@@ -1301,8 +1299,6 @@ argument_list|(
 name|ugi2
 argument_list|,
 literal|"127.0.0.1"
-argument_list|,
-name|config
 argument_list|)
 expr_stmt|;
 name|System
@@ -1404,8 +1400,6 @@ argument_list|(
 name|ugi2
 argument_list|,
 literal|"127.0.0.1"
-argument_list|,
-name|config
 argument_list|)
 expr_stmt|;
 name|fail
@@ -1454,8 +1448,6 @@ argument_list|(
 name|ugi1
 argument_list|,
 literal|"127.0.0.1"
-argument_list|,
-name|config
 argument_list|)
 expr_stmt|;
 name|System

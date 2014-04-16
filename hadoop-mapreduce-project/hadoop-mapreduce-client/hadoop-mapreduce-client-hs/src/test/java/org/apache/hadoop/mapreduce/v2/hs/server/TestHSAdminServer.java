@@ -1166,8 +1166,6 @@ argument_list|(
 name|ugi
 argument_list|,
 literal|"127.0.0.1"
-argument_list|,
-name|conf
 argument_list|)
 expr_stmt|;
 block|}
@@ -1217,8 +1215,6 @@ argument_list|(
 name|ugi
 argument_list|,
 literal|"127.0.0.1"
-argument_list|,
-name|conf
 argument_list|)
 expr_stmt|;
 block|}
@@ -1262,8 +1258,6 @@ argument_list|(
 name|ugi
 argument_list|,
 literal|"127.0.0.1"
-argument_list|,
-name|conf
 argument_list|)
 expr_stmt|;
 block|}

@@ -646,8 +646,8 @@ operator|.
 name|CONF_HOSTS
 return|;
 block|}
-comment|/**    * Authorize the superuser which is doing doAs    *     * @param user ugi of the effective or proxy user which contains a real user    * @param remoteAddress the ip address of client    * @param newConf configuration    * @throws AuthorizationException    */
-DECL|method|authorize (UserGroupInformation user, String remoteAddress, Configuration newConf)
+comment|/**    * Authorize the superuser which is doing doAs    *     * @param user ugi of the effective or proxy user which contains a real user    * @param remoteAddress the ip address of client    * @throws AuthorizationException    */
+DECL|method|authorize (UserGroupInformation user, String remoteAddress)
 specifier|public
 specifier|static
 specifier|synchronized
@@ -659,9 +659,6 @@ name|user
 parameter_list|,
 name|String
 name|remoteAddress
-parameter_list|,
-name|Configuration
-name|newConf
 parameter_list|)
 throws|throws
 name|AuthorizationException
