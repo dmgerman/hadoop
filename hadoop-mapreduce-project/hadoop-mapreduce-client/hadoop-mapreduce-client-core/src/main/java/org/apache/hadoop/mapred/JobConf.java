@@ -1773,7 +1773,7 @@ name|class
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Should the map outputs be compressed before transfer?    * Uses the SequenceFile compression.    *     * @param compress should the map outputs be compressed?    */
+comment|/**    * Should the map outputs be compressed before transfer?    *     * @param compress should the map outputs be compressed?    */
 DECL|method|setCompressMapOutput (boolean compress)
 specifier|public
 name|void
