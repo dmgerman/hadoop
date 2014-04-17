@@ -2222,9 +2222,9 @@ name|Assert
 operator|.
 name|assertEquals
 argument_list|(
-literal|"Number of applications should only be one!"
+literal|"Number of applications should have two!"
 argument_list|,
-literal|1
+literal|2
 argument_list|,
 name|appToContainers
 operator|.
@@ -2236,9 +2236,28 @@ name|Assert
 operator|.
 name|assertEquals
 argument_list|(
-literal|"Number of container for the app should be two!"
+literal|"Number of container for the app-1 should be only one!"
 argument_list|,
-literal|2
+literal|1
+argument_list|,
+name|appToContainers
+operator|.
+name|get
+argument_list|(
+name|appId1
+argument_list|)
+operator|.
+name|size
+argument_list|()
+argument_list|)
+expr_stmt|;
+name|Assert
+operator|.
+name|assertEquals
+argument_list|(
+literal|"Number of container for the app-2 should be only one!"
+argument_list|,
+literal|1
 argument_list|,
 name|appToContainers
 operator|.
