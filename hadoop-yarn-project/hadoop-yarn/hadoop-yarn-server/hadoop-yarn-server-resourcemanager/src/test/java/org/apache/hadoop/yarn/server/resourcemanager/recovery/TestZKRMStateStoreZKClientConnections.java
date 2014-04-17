@@ -327,6 +327,15 @@ name|ZK_OP_WAIT_TIME
 init|=
 literal|3000
 decl_stmt|;
+DECL|field|ZK_TIMEOUT_MS
+specifier|private
+specifier|static
+specifier|final
+name|int
+name|ZK_TIMEOUT_MS
+init|=
+literal|1000
+decl_stmt|;
 DECL|field|LOG
 specifier|private
 name|Log
@@ -496,7 +505,7 @@ name|watcher
 argument_list|,
 name|hostPort
 argument_list|,
-literal|100
+name|ZK_TIMEOUT_MS
 argument_list|)
 return|;
 block|}
@@ -750,7 +759,7 @@ name|YarnConfiguration
 operator|.
 name|RM_ZK_TIMEOUT_MS
 argument_list|,
-literal|1000
+name|ZK_TIMEOUT_MS
 argument_list|)
 expr_stmt|;
 name|conf
@@ -921,7 +930,7 @@ name|YarnConfiguration
 operator|.
 name|RM_ZK_TIMEOUT_MS
 argument_list|,
-literal|100
+name|ZK_TIMEOUT_MS
 argument_list|)
 expr_stmt|;
 name|ZKRMStateStore
@@ -1158,7 +1167,7 @@ name|YarnConfiguration
 operator|.
 name|RM_ZK_TIMEOUT_MS
 argument_list|,
-literal|100
+name|ZK_TIMEOUT_MS
 argument_list|)
 expr_stmt|;
 name|ZKRMStateStore
@@ -1508,7 +1517,7 @@ name|YarnConfiguration
 operator|.
 name|RM_ZK_TIMEOUT_MS
 argument_list|,
-literal|100
+name|ZK_TIMEOUT_MS
 argument_list|)
 expr_stmt|;
 name|conf
