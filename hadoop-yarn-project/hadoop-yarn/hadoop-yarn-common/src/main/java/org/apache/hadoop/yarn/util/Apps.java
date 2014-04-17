@@ -253,7 +253,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * Yarn application related utilities  */
+comment|/**  * Yarn internal application-related utilities  */
 end_comment
 
 begin_class
@@ -680,6 +680,39 @@ expr_stmt|;
 block|}
 block|}
 block|}
+comment|/**    * This older version of this method is kept around for compatibility    * because downstream frameworks like Spark and Tez have been using it.    * Downstream frameworks are expected to move off of it.    */
+annotation|@
+name|Deprecated
+DECL|method|setEnvFromInputString (Map<String, String> env, String envString)
+specifier|public
+specifier|static
+name|void
+name|setEnvFromInputString
+parameter_list|(
+name|Map
+argument_list|<
+name|String
+argument_list|,
+name|String
+argument_list|>
+name|env
+parameter_list|,
+name|String
+name|envString
+parameter_list|)
+block|{
+name|setEnvFromInputString
+argument_list|(
+name|env
+argument_list|,
+name|envString
+argument_list|,
+name|File
+operator|.
+name|pathSeparator
+argument_list|)
+expr_stmt|;
+block|}
 annotation|@
 name|Public
 annotation|@
@@ -758,6 +791,44 @@ name|weakIntern
 argument_list|(
 name|val
 argument_list|)
+argument_list|)
+expr_stmt|;
+block|}
+comment|/**    * This older version of this method is kept around for compatibility    * because downstream frameworks like Spark and Tez have been using it.    * Downstream frameworks are expected to move off of it.    */
+annotation|@
+name|Deprecated
+DECL|method|addToEnvironment ( Map<String, String> environment, String variable, String value)
+specifier|public
+specifier|static
+name|void
+name|addToEnvironment
+parameter_list|(
+name|Map
+argument_list|<
+name|String
+argument_list|,
+name|String
+argument_list|>
+name|environment
+parameter_list|,
+name|String
+name|variable
+parameter_list|,
+name|String
+name|value
+parameter_list|)
+block|{
+name|addToEnvironment
+argument_list|(
+name|environment
+argument_list|,
+name|variable
+argument_list|,
+name|value
+argument_list|,
+name|File
+operator|.
+name|pathSeparator
 argument_list|)
 expr_stmt|;
 block|}
