@@ -1078,6 +1078,22 @@ name|dtSequenceNumber
 operator|=
 name|latestSequenceNumber
 expr_stmt|;
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"Store RMDT with sequence number "
+operator|+
+name|rmDTIdentifier
+operator|.
+name|getSequenceNumber
+argument_list|()
+operator|+
+literal|". And the latest sequence number is "
+operator|+
+name|latestSequenceNumber
+argument_list|)
+expr_stmt|;
 block|}
 annotation|@
 name|Override
@@ -1115,6 +1131,18 @@ argument_list|(
 name|rmDTIdentifier
 argument_list|)
 expr_stmt|;
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"Remove RMDT with sequence number "
+operator|+
+name|rmDTIdentifier
+operator|.
+name|getSequenceNumber
+argument_list|()
+argument_list|)
+expr_stmt|;
 block|}
 annotation|@
 name|Override
@@ -1147,6 +1175,18 @@ argument_list|,
 name|renewDate
 argument_list|,
 name|latestSequenceNumber
+argument_list|)
+expr_stmt|;
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"Update RMDT with sequence number "
+operator|+
+name|rmDTIdentifier
+operator|.
+name|getSequenceNumber
+argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
@@ -1238,7 +1278,14 @@ name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"rmDTMasterKeyState SIZE: "
+literal|"Store RMDT master key with key id: "
+operator|+
+name|delegationKey
+operator|.
+name|getKeyId
+argument_list|()
+operator|+
+literal|". Currently rmDTMasterKeyState size: "
 operator|+
 name|rmDTMasterKeyState
 operator|.
@@ -1261,6 +1308,18 @@ parameter_list|)
 throws|throws
 name|Exception
 block|{
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"Remove RMDT master key with key id: "
+operator|+
+name|delegationKey
+operator|.
+name|getKeyId
+argument_list|()
+argument_list|)
+expr_stmt|;
 name|Set
 argument_list|<
 name|DelegationKey
