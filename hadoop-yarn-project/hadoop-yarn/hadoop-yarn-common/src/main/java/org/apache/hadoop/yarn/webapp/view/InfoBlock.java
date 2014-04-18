@@ -521,7 +521,7 @@ argument_list|()
 expr_stmt|;
 name|singleLineDiv
 operator|.
-name|_r
+name|_
 argument_list|(
 name|line
 argument_list|)
@@ -537,7 +537,7 @@ else|else
 block|{
 name|td
 operator|.
-name|_r
+name|_
 argument_list|(
 name|value
 argument_list|)
