@@ -42,6 +42,9 @@ comment|//Producer:MRAppMaster
 DECL|enumConstant|JOB_INIT
 name|JOB_INIT
 block|,
+DECL|enumConstant|JOB_INIT_FAILED
+name|JOB_INIT_FAILED
+block|,
 DECL|enumConstant|JOB_START
 name|JOB_START
 block|,

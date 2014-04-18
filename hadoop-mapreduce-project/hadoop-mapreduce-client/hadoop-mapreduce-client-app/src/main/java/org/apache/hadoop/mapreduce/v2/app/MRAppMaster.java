@@ -6034,6 +6034,11 @@ argument_list|(
 literal|"MRAppMaster"
 argument_list|)
 expr_stmt|;
+name|boolean
+name|initFailed
+init|=
+literal|false
+decl_stmt|;
 if|if
 condition|(
 operator|!
@@ -6066,6 +6071,27 @@ name|handle
 argument_list|(
 name|initJobEvent
 argument_list|)
+expr_stmt|;
+comment|// If job is still not initialized, an error happened during
+comment|// initialization. Must complete starting all of the services so failure
+comment|// events can be processed.
+name|initFailed
+operator|=
+operator|(
+operator|(
+operator|(
+name|JobImpl
+operator|)
+name|job
+operator|)
+operator|.
+name|getInternalState
+argument_list|()
+operator|!=
+name|JobStateInternal
+operator|.
+name|INITED
+operator|)
 expr_stmt|;
 comment|// JobImpl's InitTransition is done (call above is synchronous), so the
 comment|// "uber-decision" (MR-1220) has been made.  Query job and switch to
@@ -6173,10 +6199,42 @@ name|getConfig
 argument_list|()
 argument_list|)
 expr_stmt|;
+if|if
+condition|(
+name|initFailed
+condition|)
+block|{
+name|JobEvent
+name|initFailedEvent
+init|=
+operator|new
+name|JobEvent
+argument_list|(
+name|job
+operator|.
+name|getID
+argument_list|()
+argument_list|,
+name|JobEventType
+operator|.
+name|JOB_INIT_FAILED
+argument_list|)
+decl_stmt|;
+name|jobEventDispatcher
+operator|.
+name|handle
+argument_list|(
+name|initFailedEvent
+argument_list|)
+expr_stmt|;
+block|}
+else|else
+block|{
 comment|// All components have started, start the job.
 name|startJobs
 argument_list|()
 expr_stmt|;
+block|}
 block|}
 annotation|@
 name|Override
