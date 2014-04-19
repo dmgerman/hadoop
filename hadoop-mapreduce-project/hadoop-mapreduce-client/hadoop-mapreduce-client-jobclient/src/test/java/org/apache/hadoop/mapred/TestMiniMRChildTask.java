@@ -1499,6 +1499,63 @@ argument_list|)
 expr_stmt|;
 comment|// check if X=$(tt's X var):/tmp for an old env variable inherited from
 comment|// the tt
+if|if
+condition|(
+name|Shell
+operator|.
+name|WINDOWS
+condition|)
+block|{
+comment|// On Windows, PATH is replaced one more time as part of default config
+comment|// of "mapreduce.admin.user.env", i.e. on Windows,
+comment|// "mapreduce.admin.user.env" is set to
+comment|// "PATH=%PATH%;%HADOOP_COMMON_HOME%\\bin"
+name|String
+name|hadoopHome
+init|=
+name|System
+operator|.
+name|getenv
+argument_list|(
+literal|"HADOOP_COMMON_HOME"
+argument_list|)
+decl_stmt|;
+if|if
+condition|(
+name|hadoopHome
+operator|==
+literal|null
+condition|)
+block|{
+name|hadoopHome
+operator|=
+literal|""
+expr_stmt|;
+block|}
+name|String
+name|hadoopLibLocation
+init|=
+name|hadoopHome
+operator|+
+literal|"\\bin"
+decl_stmt|;
+name|path
+operator|+=
+name|File
+operator|.
+name|pathSeparator
+operator|+
+name|hadoopLibLocation
+expr_stmt|;
+name|path
+operator|+=
+name|File
+operator|.
+name|pathSeparator
+operator|+
+name|path
+expr_stmt|;
+block|}
 name|checkEnv
 argument_list|(
 literal|"PATH"
@@ -1774,6 +1831,63 @@ argument_list|)
 expr_stmt|;
 comment|// check if X=$(tt's X var):/tmp for an old env variable inherited from
 comment|// the tt
+if|if
+condition|(
+name|Shell
+operator|.
+name|WINDOWS
+condition|)
+block|{
+comment|// On Windows, PATH is replaced one more time as part of default config
+comment|// of "mapreduce.admin.user.env", i.e. on Windows,
+comment|// "mapreduce.admin.user.env"
+comment|// is set to "PATH=%PATH%;%HADOOP_COMMON_HOME%\\bin"
+name|String
+name|hadoopHome
+init|=
+name|System
+operator|.
+name|getenv
+argument_list|(
+literal|"HADOOP_COMMON_HOME"
+argument_list|)
+decl_stmt|;
+if|if
+condition|(
+name|hadoopHome
+operator|==
+literal|null
+condition|)
+block|{
+name|hadoopHome
+operator|=
+literal|""
+expr_stmt|;
+block|}
+name|String
+name|hadoopLibLocation
+init|=
+name|hadoopHome
+operator|+
+literal|"\\bin"
+decl_stmt|;
+name|path
+operator|+=
+name|File
+operator|.
+name|pathSeparator
+operator|+
+name|hadoopLibLocation
+expr_stmt|;
+name|path
+operator|+=
+name|File
+operator|.
+name|pathSeparator
+operator|+
+name|path
+expr_stmt|;
+block|}
 name|checkEnv
 argument_list|(
 literal|"PATH"
