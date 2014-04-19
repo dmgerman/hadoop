@@ -2898,13 +2898,35 @@ operator|+
 name|appIdStr
 return|;
 block|}
+annotation|@
+name|VisibleForTesting
 DECL|class|ShellScriptBuilder
-specifier|private
 specifier|static
 specifier|abstract
 class|class
 name|ShellScriptBuilder
 block|{
+DECL|method|create ()
+specifier|public
+specifier|static
+name|ShellScriptBuilder
+name|create
+parameter_list|()
+block|{
+return|return
+name|Shell
+operator|.
+name|WINDOWS
+condition|?
+operator|new
+name|WindowsShellScriptBuilder
+argument_list|()
+else|:
+operator|new
+name|UnixShellScriptBuilder
+argument_list|()
+return|;
+block|}
 DECL|field|LINE_SEPARATOR
 specifier|private
 specifier|static
@@ -2941,6 +2963,8 @@ name|String
 argument_list|>
 name|command
 parameter_list|)
+throws|throws
+name|IOException
 function_decl|;
 DECL|method|env (String key, String value)
 specifier|public
@@ -2954,6 +2978,8 @@ parameter_list|,
 name|String
 name|value
 parameter_list|)
+throws|throws
+name|IOException
 function_decl|;
 DECL|method|symlink (Path src, Path dst)
 specifier|public
@@ -3133,6 +3159,8 @@ parameter_list|(
 name|Path
 name|path
 parameter_list|)
+throws|throws
+name|IOException
 function_decl|;
 block|}
 DECL|class|UnixShellScriptBuilder
@@ -3144,6 +3172,38 @@ name|UnixShellScriptBuilder
 extends|extends
 name|ShellScriptBuilder
 block|{
+DECL|method|errorCheck ()
+specifier|private
+name|void
+name|errorCheck
+parameter_list|()
+block|{
+name|line
+argument_list|(
+literal|"hadoop_shell_errorcode=$?"
+argument_list|)
+expr_stmt|;
+name|line
+argument_list|(
+literal|"if [ $hadoop_shell_errorcode -ne 0 ]"
+argument_list|)
+expr_stmt|;
+name|line
+argument_list|(
+literal|"then"
+argument_list|)
+expr_stmt|;
+name|line
+argument_list|(
+literal|"  exit $hadoop_shell_errorcode"
+argument_list|)
+expr_stmt|;
+name|line
+argument_list|(
+literal|"fi"
+argument_list|)
+expr_stmt|;
+block|}
 DECL|method|UnixShellScriptBuilder ()
 specifier|public
 name|UnixShellScriptBuilder
@@ -3187,6 +3247,9 @@ argument_list|)
 argument_list|,
 literal|"\""
 argument_list|)
+expr_stmt|;
+name|errorCheck
+argument_list|()
 expr_stmt|;
 block|}
 annotation|@
@@ -3255,6 +3318,9 @@ argument_list|,
 literal|"\""
 argument_list|)
 expr_stmt|;
+name|errorCheck
+argument_list|()
+expr_stmt|;
 block|}
 annotation|@
 name|Override
@@ -3277,6 +3343,9 @@ name|toString
 argument_list|()
 argument_list|)
 expr_stmt|;
+name|errorCheck
+argument_list|()
+expr_stmt|;
 block|}
 block|}
 DECL|class|WindowsShellScriptBuilder
@@ -3288,6 +3357,43 @@ name|WindowsShellScriptBuilder
 extends|extends
 name|ShellScriptBuilder
 block|{
+DECL|method|errorCheck ()
+specifier|private
+name|void
+name|errorCheck
+parameter_list|()
+block|{
+name|line
+argument_list|(
+literal|"@if %errorlevel% neq 0 exit /b %errorlevel%"
+argument_list|)
+expr_stmt|;
+block|}
+DECL|method|lineWithLenCheck (String... commands)
+specifier|private
+name|void
+name|lineWithLenCheck
+parameter_list|(
+name|String
+modifier|...
+name|commands
+parameter_list|)
+throws|throws
+name|IOException
+block|{
+name|Shell
+operator|.
+name|checkWindowsCommandLineLength
+argument_list|(
+name|commands
+argument_list|)
+expr_stmt|;
+name|line
+argument_list|(
+name|commands
+argument_list|)
+expr_stmt|;
+block|}
 DECL|method|WindowsShellScriptBuilder ()
 specifier|public
 name|WindowsShellScriptBuilder
@@ -3315,8 +3421,10 @@ name|String
 argument_list|>
 name|command
 parameter_list|)
+throws|throws
+name|IOException
 block|{
-name|line
+name|lineWithLenCheck
 argument_list|(
 literal|"@call "
 argument_list|,
@@ -3329,6 +3437,9 @@ argument_list|,
 name|command
 argument_list|)
 argument_list|)
+expr_stmt|;
+name|errorCheck
+argument_list|()
 expr_stmt|;
 block|}
 annotation|@
@@ -3344,8 +3455,10 @@ parameter_list|,
 name|String
 name|value
 parameter_list|)
+throws|throws
+name|IOException
 block|{
-name|line
+name|lineWithLenCheck
 argument_list|(
 literal|"@set "
 argument_list|,
@@ -3354,9 +3467,10 @@ argument_list|,
 literal|"="
 argument_list|,
 name|value
-argument_list|,
-literal|"\nif %errorlevel% neq 0 exit /b %errorlevel%"
 argument_list|)
+expr_stmt|;
+name|errorCheck
+argument_list|()
 expr_stmt|;
 block|}
 annotation|@
@@ -3429,7 +3543,7 @@ name|isFile
 argument_list|()
 condition|)
 block|{
-name|line
+name|lineWithLenCheck
 argument_list|(
 name|String
 operator|.
@@ -3443,10 +3557,13 @@ name|dstFileStr
 argument_list|)
 argument_list|)
 expr_stmt|;
+name|errorCheck
+argument_list|()
+expr_stmt|;
 block|}
 else|else
 block|{
-name|line
+name|lineWithLenCheck
 argument_list|(
 name|String
 operator|.
@@ -3464,6 +3581,9 @@ name|srcFileStr
 argument_list|)
 argument_list|)
 expr_stmt|;
+name|errorCheck
+argument_list|()
+expr_stmt|;
 block|}
 block|}
 annotation|@
@@ -3476,23 +3596,31 @@ parameter_list|(
 name|Path
 name|path
 parameter_list|)
+throws|throws
+name|IOException
 block|{
-name|line
+name|lineWithLenCheck
 argument_list|(
-literal|"@if not exist "
+name|String
+operator|.
+name|format
+argument_list|(
+literal|"@if not exist \"%s\" mkdir \"%s\""
 argument_list|,
 name|path
 operator|.
 name|toString
 argument_list|()
-argument_list|,
-literal|" mkdir "
 argument_list|,
 name|path
 operator|.
 name|toString
 argument_list|()
 argument_list|)
+argument_list|)
+expr_stmt|;
+name|errorCheck
+argument_list|()
 expr_stmt|;
 block|}
 block|}
@@ -4252,16 +4380,9 @@ block|{
 name|ShellScriptBuilder
 name|sb
 init|=
-name|Shell
+name|ShellScriptBuilder
 operator|.
-name|WINDOWS
-condition|?
-operator|new
-name|WindowsShellScriptBuilder
-argument_list|()
-else|:
-operator|new
-name|UnixShellScriptBuilder
+name|create
 argument_list|()
 decl_stmt|;
 if|if
