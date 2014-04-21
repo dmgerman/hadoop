@@ -8173,21 +8173,43 @@ name|IOException
 name|ioe
 parameter_list|)
 block|{
-throw|throw
-operator|new
-name|IllegalArgumentException
+name|LOG
+operator|.
+name|error
 argument_list|(
-literal|"Failed to parse conf property "
-operator|+
-name|DFS_DATANODE_DATA_DIR_KEY
-operator|+
-literal|": "
+literal|"Failed to initialize storage directory "
 operator|+
 name|locationString
-argument_list|,
+operator|+
+literal|". Exception details: "
+operator|+
 name|ioe
 argument_list|)
-throw|;
+expr_stmt|;
+comment|// Ignore the exception.
+continue|continue;
+block|}
+catch|catch
+parameter_list|(
+name|SecurityException
+name|se
+parameter_list|)
+block|{
+name|LOG
+operator|.
+name|error
+argument_list|(
+literal|"Failed to initialize storage directory "
+operator|+
+name|locationString
+operator|+
+literal|". Exception details: "
+operator|+
+name|se
+argument_list|)
+expr_stmt|;
+comment|// Ignore the exception.
+continue|continue;
 block|}
 name|locations
 operator|.

@@ -271,6 +271,8 @@ name|rawLocation
 parameter_list|)
 throws|throws
 name|IOException
+throws|,
+name|SecurityException
 block|{
 name|Matcher
 name|matcher
