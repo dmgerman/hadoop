@@ -13977,7 +13977,7 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * On stopping decommission, check if the node has excess replicas.    * If there are any excess replicas, call processOverReplicatedBlock()    */
+comment|/**    * On stopping decommission, check if the node has excess replicas.    * If there are any excess replicas, call processOverReplicatedBlock().    * Process over replicated blocks only when active NN is out of safe mode.    */
 DECL|method|processOverReplicatedBlocksOnReCommission ( final DatanodeDescriptor srcNode)
 name|void
 name|processOverReplicatedBlocksOnReCommission
@@ -13987,6 +13987,17 @@ name|DatanodeDescriptor
 name|srcNode
 parameter_list|)
 block|{
+if|if
+condition|(
+operator|!
+name|namesystem
+operator|.
+name|isPopulatingReplQueues
+argument_list|()
+condition|)
+block|{
+return|return;
+block|}
 specifier|final
 name|Iterator
 argument_list|<
@@ -14341,12 +14352,18 @@ name|block
 argument_list|)
 operator|==
 literal|0
+operator|&&
+name|namesystem
+operator|.
+name|isPopulatingReplQueues
+argument_list|()
 condition|)
 block|{
 comment|//
 comment|// These blocks have been reported from the datanode
 comment|// after the startDecommission method has been executed. These
 comment|// blocks were in flight when the decommissioning was started.
+comment|// Process these blocks only when active NN is out of safe mode.
 comment|//
 name|neededReplications
 operator|.
@@ -15449,12 +15466,22 @@ condition|)
 block|{
 try|try
 block|{
+comment|// Process replication work only when active NN is out of safe mode.
+if|if
+condition|(
+name|namesystem
+operator|.
+name|isPopulatingReplQueues
+argument_list|()
+condition|)
+block|{
 name|computeDatanodeWork
 argument_list|()
 expr_stmt|;
 name|processPendingReplications
 argument_list|()
 expr_stmt|;
+block|}
 name|Thread
 operator|.
 name|sleep

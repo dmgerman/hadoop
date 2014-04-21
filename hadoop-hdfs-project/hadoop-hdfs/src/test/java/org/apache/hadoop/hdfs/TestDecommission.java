@@ -338,9 +338,47 @@ name|hdfs
 operator|.
 name|server
 operator|.
+name|datanode
+operator|.
+name|DataNode
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|server
+operator|.
 name|namenode
 operator|.
 name|FSNamesystem
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|server
+operator|.
+name|namenode
+operator|.
+name|ha
+operator|.
+name|HATestUtil
 import|;
 end_import
 
@@ -1354,14 +1392,17 @@ argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
-comment|/*    * decommission one random node and wait for each to reach the    * given {@code waitForState}.    */
-DECL|method|decommissionNode (int nnIndex, ArrayList<DatanodeInfo>decommissionedNodes, AdminStates waitForState)
+comment|/*    * decommission the DN at index dnIndex or one random node if dnIndex is set    * to -1 and wait for the node to reach the given {@code waitForState}.    */
+DECL|method|decommissionNode (int nnIndex, String datanodeUuid, ArrayList<DatanodeInfo>decommissionedNodes, AdminStates waitForState)
 specifier|private
 name|DatanodeInfo
 name|decommissionNode
 parameter_list|(
 name|int
 name|nnIndex
+parameter_list|,
+name|String
+name|datanodeUuid
 parameter_list|,
 name|ArrayList
 argument_list|<
@@ -1404,13 +1445,20 @@ name|LIVE
 argument_list|)
 decl_stmt|;
 comment|//
-comment|// pick one datanode randomly.
+comment|// pick one datanode randomly unless the caller specifies one.
 comment|//
 name|int
 name|index
 init|=
 literal|0
 decl_stmt|;
+if|if
+condition|(
+name|datanodeUuid
+operator|==
+literal|null
+condition|)
+block|{
 name|boolean
 name|found
 init|=
@@ -1449,6 +1497,62 @@ name|found
 operator|=
 literal|true
 expr_stmt|;
+block|}
+block|}
+block|}
+else|else
+block|{
+comment|// The caller specifies a DN
+for|for
+control|(
+init|;
+name|index
+operator|<
+name|info
+operator|.
+name|length
+condition|;
+name|index
+operator|++
+control|)
+block|{
+if|if
+condition|(
+name|info
+index|[
+name|index
+index|]
+operator|.
+name|getDatanodeUuid
+argument_list|()
+operator|.
+name|equals
+argument_list|(
+name|datanodeUuid
+argument_list|)
+condition|)
+block|{
+break|break;
+block|}
+block|}
+if|if
+condition|(
+name|index
+operator|==
+name|info
+operator|.
+name|length
+condition|)
+block|{
+throw|throw
+operator|new
+name|IOException
+argument_list|(
+literal|"invalid datanodeUuid "
+operator|+
+name|datanodeUuid
+argument_list|)
+throw|;
 block|}
 block|}
 name|String
@@ -1569,12 +1673,15 @@ return|return
 name|ret
 return|;
 block|}
-comment|/* stop decommission of the datanode and wait for each to reach the NORMAL state */
-DECL|method|recomissionNode (DatanodeInfo decommissionedNode)
+comment|/* Ask a specific NN to stop decommission of the datanode and wait for each    * to reach the NORMAL state.    */
+DECL|method|recomissionNode (int nnIndex, DatanodeInfo decommissionedNode)
 specifier|private
 name|void
 name|recomissionNode
 parameter_list|(
+name|int
+name|nnIndex
+parameter_list|,
 name|DatanodeInfo
 name|decommissionedNode
 parameter_list|)
@@ -1602,7 +1709,9 @@ argument_list|(
 name|cluster
 operator|.
 name|getNamesystem
-argument_list|()
+argument_list|(
+name|nnIndex
+argument_list|)
 argument_list|,
 name|conf
 argument_list|)
@@ -2226,6 +2335,8 @@ name|decommissionNode
 argument_list|(
 literal|0
 argument_list|,
+literal|null
+argument_list|,
 name|decommissionedNodes
 argument_list|,
 name|AdminStates
@@ -2390,6 +2501,479 @@ literal|2
 argument_list|,
 literal|2
 argument_list|)
+expr_stmt|;
+block|}
+comment|/**    * Test decommission process on standby NN.    * Verify admins can run "dfsadmin -refreshNodes" on SBN and decomm    * process can finish as long as admins run "dfsadmin -refreshNodes"    * on active NN.    * SBN used to mark excess replica upon recommission. The SBN's pick    * for excess replica could be different from the one picked by ANN.    * That creates inconsistent state and prevent SBN from finishing    * decommission.    */
+annotation|@
+name|Test
+argument_list|(
+name|timeout
+operator|=
+literal|360000
+argument_list|)
+DECL|method|testDecommissionOnStandby ()
+specifier|public
+name|void
+name|testDecommissionOnStandby
+parameter_list|()
+throws|throws
+name|Exception
+block|{
+name|Configuration
+name|hdfsConf
+init|=
+operator|new
+name|HdfsConfiguration
+argument_list|(
+name|conf
+argument_list|)
+decl_stmt|;
+name|hdfsConf
+operator|.
+name|setInt
+argument_list|(
+name|DFSConfigKeys
+operator|.
+name|DFS_HA_TAILEDITS_PERIOD_KEY
+argument_list|,
+literal|1
+argument_list|)
+expr_stmt|;
+name|hdfsConf
+operator|.
+name|setInt
+argument_list|(
+name|DFSConfigKeys
+operator|.
+name|DFS_NAMENODE_HEARTBEAT_RECHECK_INTERVAL_KEY
+argument_list|,
+literal|30000
+argument_list|)
+expr_stmt|;
+name|hdfsConf
+operator|.
+name|setInt
+argument_list|(
+name|DFSConfigKeys
+operator|.
+name|DFS_NAMENODE_TOLERATE_HEARTBEAT_MULTIPLIER_KEY
+argument_list|,
+literal|2
+argument_list|)
+expr_stmt|;
+comment|// The time to wait so that the slow DN's heartbeat is considered old
+comment|// by BlockPlacementPolicyDefault and thus will choose that DN for
+comment|// excess replica.
+name|long
+name|slowHeartbeatDNwaitTime
+init|=
+name|hdfsConf
+operator|.
+name|getLong
+argument_list|(
+name|DFSConfigKeys
+operator|.
+name|DFS_HEARTBEAT_INTERVAL_KEY
+argument_list|,
+name|DFSConfigKeys
+operator|.
+name|DFS_HEARTBEAT_INTERVAL_DEFAULT
+argument_list|)
+operator|*
+literal|1000
+operator|*
+operator|(
+name|hdfsConf
+operator|.
+name|getInt
+argument_list|(
+name|DFSConfigKeys
+operator|.
+name|DFS_NAMENODE_TOLERATE_HEARTBEAT_MULTIPLIER_KEY
+argument_list|,
+name|DFSConfigKeys
+operator|.
+name|DFS_NAMENODE_TOLERATE_HEARTBEAT_MULTIPLIER_DEFAULT
+argument_list|)
+operator|+
+literal|1
+operator|)
+decl_stmt|;
+name|cluster
+operator|=
+operator|new
+name|MiniDFSCluster
+operator|.
+name|Builder
+argument_list|(
+name|hdfsConf
+argument_list|)
+operator|.
+name|nnTopology
+argument_list|(
+name|MiniDFSNNTopology
+operator|.
+name|simpleHATopology
+argument_list|()
+argument_list|)
+operator|.
+name|numDataNodes
+argument_list|(
+literal|3
+argument_list|)
+operator|.
+name|build
+argument_list|()
+expr_stmt|;
+name|cluster
+operator|.
+name|transitionToActive
+argument_list|(
+literal|0
+argument_list|)
+expr_stmt|;
+name|cluster
+operator|.
+name|waitActive
+argument_list|()
+expr_stmt|;
+comment|// Step 1, create a cluster with 4 DNs. Blocks are stored on the first 3 DNs.
+comment|// The last DN is empty. Also configure the last DN to have slow heartbeat
+comment|// so that it will be chosen as excess replica candidate during recommission.
+comment|// Step 1.a, copy blocks to the first 3 DNs. Given the replica count is the
+comment|// same as # of DNs, each DN will have a replica for any block.
+name|Path
+name|file1
+init|=
+operator|new
+name|Path
+argument_list|(
+literal|"testDecommissionHA.dat"
+argument_list|)
+decl_stmt|;
+name|int
+name|replicas
+init|=
+literal|3
+decl_stmt|;
+name|FileSystem
+name|activeFileSys
+init|=
+name|cluster
+operator|.
+name|getFileSystem
+argument_list|(
+literal|0
+argument_list|)
+decl_stmt|;
+name|writeFile
+argument_list|(
+name|activeFileSys
+argument_list|,
+name|file1
+argument_list|,
+name|replicas
+argument_list|)
+expr_stmt|;
+name|HATestUtil
+operator|.
+name|waitForStandbyToCatchUp
+argument_list|(
+name|cluster
+operator|.
+name|getNameNode
+argument_list|(
+literal|0
+argument_list|)
+argument_list|,
+name|cluster
+operator|.
+name|getNameNode
+argument_list|(
+literal|1
+argument_list|)
+argument_list|)
+expr_stmt|;
+comment|// Step 1.b, start a DN with slow heartbeat, so that we can know for sure it
+comment|// will be chosen as the target of excess replica during recommission.
+name|hdfsConf
+operator|.
+name|setLong
+argument_list|(
+name|DFSConfigKeys
+operator|.
+name|DFS_HEARTBEAT_INTERVAL_KEY
+argument_list|,
+literal|30
+argument_list|)
+expr_stmt|;
+name|cluster
+operator|.
+name|startDataNodes
+argument_list|(
+name|hdfsConf
+argument_list|,
+literal|1
+argument_list|,
+literal|true
+argument_list|,
+literal|null
+argument_list|,
+literal|null
+argument_list|,
+literal|null
+argument_list|)
+expr_stmt|;
+name|DataNode
+name|lastDN
+init|=
+name|cluster
+operator|.
+name|getDataNodes
+argument_list|()
+operator|.
+name|get
+argument_list|(
+literal|3
+argument_list|)
+decl_stmt|;
+name|lastDN
+operator|.
+name|getDatanodeUuid
+argument_list|()
+expr_stmt|;
+comment|// Step 2, decommission the first DN at both ANN and SBN.
+name|DataNode
+name|firstDN
+init|=
+name|cluster
+operator|.
+name|getDataNodes
+argument_list|()
+operator|.
+name|get
+argument_list|(
+literal|0
+argument_list|)
+decl_stmt|;
+comment|// Step 2.a, ask ANN to decomm the first DN
+name|DatanodeInfo
+name|decommissionedNodeFromANN
+init|=
+name|decommissionNode
+argument_list|(
+literal|0
+argument_list|,
+name|firstDN
+operator|.
+name|getDatanodeUuid
+argument_list|()
+argument_list|,
+literal|null
+argument_list|,
+name|AdminStates
+operator|.
+name|DECOMMISSIONED
+argument_list|)
+decl_stmt|;
+comment|// Step 2.b, ask SBN to decomm the first DN
+name|DatanodeInfo
+name|decomNodeFromSBN
+init|=
+name|decommissionNode
+argument_list|(
+literal|1
+argument_list|,
+name|firstDN
+operator|.
+name|getDatanodeUuid
+argument_list|()
+argument_list|,
+literal|null
+argument_list|,
+name|AdminStates
+operator|.
+name|DECOMMISSIONED
+argument_list|)
+decl_stmt|;
+comment|// Step 3, recommission the first DN on SBN and ANN to create excess replica
+comment|// It recommissions the node on SBN first to create potential
+comment|// inconsistent state. In production cluster, such insistent state can happen
+comment|// even if recommission command was issued on ANN first given the async nature
+comment|// of the system.
+comment|// Step 3.a, ask SBN to recomm the first DN.
+comment|// SBN has been fixed so that it no longer invalidates excess replica during
+comment|// recommission.
+comment|// Before the fix, SBN could get into the following state.
+comment|//    1. the last DN would have been chosen as excess replica, given its
+comment|//    heartbeat is considered old.
+comment|//    Please refer to BlockPlacementPolicyDefault#chooseReplicaToDelete
+comment|//    2. After recomissionNode finishes, SBN has 3 live replicas ( 0, 1, 2 )
+comment|//    and one excess replica ( 3 )
+comment|// After the fix,
+comment|//    After recomissionNode finishes, SBN has 4 live replicas ( 0, 1, 2, 3 )
+name|Thread
+operator|.
+name|sleep
+argument_list|(
+name|slowHeartbeatDNwaitTime
+argument_list|)
+expr_stmt|;
+name|recomissionNode
+argument_list|(
+literal|1
+argument_list|,
+name|decomNodeFromSBN
+argument_list|)
+expr_stmt|;
+comment|// Step 3.b, ask ANN to recommission the first DN.
+comment|// To verify the fix, the test makes sure the excess replica picked by ANN
+comment|// is different from the one picked by SBN before the fix.
+comment|// To achieve that, we make sure next-to-last DN is chosen as excess replica
+comment|// by ANN.
+comment|// 1. restore LastDNprop's heartbeat interval.
+comment|// 2. Make next-to-last DN's heartbeat slow.
+name|MiniDFSCluster
+operator|.
+name|DataNodeProperties
+name|LastDNprop
+init|=
+name|cluster
+operator|.
+name|stopDataNode
+argument_list|(
+literal|3
+argument_list|)
+decl_stmt|;
+name|LastDNprop
+operator|.
+name|conf
+operator|.
+name|setLong
+argument_list|(
+name|DFSConfigKeys
+operator|.
+name|DFS_HEARTBEAT_INTERVAL_KEY
+argument_list|,
+name|HEARTBEAT_INTERVAL
+argument_list|)
+expr_stmt|;
+name|cluster
+operator|.
+name|restartDataNode
+argument_list|(
+name|LastDNprop
+argument_list|)
+expr_stmt|;
+name|MiniDFSCluster
+operator|.
+name|DataNodeProperties
+name|nextToLastDNprop
+init|=
+name|cluster
+operator|.
+name|stopDataNode
+argument_list|(
+literal|2
+argument_list|)
+decl_stmt|;
+name|nextToLastDNprop
+operator|.
+name|conf
+operator|.
+name|setLong
+argument_list|(
+name|DFSConfigKeys
+operator|.
+name|DFS_HEARTBEAT_INTERVAL_KEY
+argument_list|,
+literal|30
+argument_list|)
+expr_stmt|;
+name|cluster
+operator|.
+name|restartDataNode
+argument_list|(
+name|nextToLastDNprop
+argument_list|)
+expr_stmt|;
+name|cluster
+operator|.
+name|waitActive
+argument_list|()
+expr_stmt|;
+name|Thread
+operator|.
+name|sleep
+argument_list|(
+name|slowHeartbeatDNwaitTime
+argument_list|)
+expr_stmt|;
+name|recomissionNode
+argument_list|(
+literal|0
+argument_list|,
+name|decommissionedNodeFromANN
+argument_list|)
+expr_stmt|;
+comment|// Step 3.c, make sure the DN has deleted the block and report to NNs
+name|cluster
+operator|.
+name|triggerHeartbeats
+argument_list|()
+expr_stmt|;
+name|HATestUtil
+operator|.
+name|waitForDNDeletions
+argument_list|(
+name|cluster
+argument_list|)
+expr_stmt|;
+name|cluster
+operator|.
+name|triggerDeletionReports
+argument_list|()
+expr_stmt|;
+comment|// Step 4, decommission the first DN on both ANN and SBN
+comment|// With the fix to make sure SBN no longer marks excess replica
+comment|// during recommission, SBN's decommission can finish properly
+name|decommissionNode
+argument_list|(
+literal|0
+argument_list|,
+name|firstDN
+operator|.
+name|getDatanodeUuid
+argument_list|()
+argument_list|,
+literal|null
+argument_list|,
+name|AdminStates
+operator|.
+name|DECOMMISSIONED
+argument_list|)
+expr_stmt|;
+comment|// Ask SBN to decomm the first DN
+name|decommissionNode
+argument_list|(
+literal|1
+argument_list|,
+name|firstDN
+operator|.
+name|getDatanodeUuid
+argument_list|()
+argument_list|,
+literal|null
+argument_list|,
+name|AdminStates
+operator|.
+name|DECOMMISSIONED
+argument_list|)
+expr_stmt|;
+name|cluster
+operator|.
+name|shutdown
+argument_list|()
 expr_stmt|;
 block|}
 DECL|method|testDecommission (int numNamenodes, int numDatanodes)
@@ -2592,6 +3176,8 @@ name|decommissionNode
 argument_list|(
 name|i
 argument_list|,
+literal|null
+argument_list|,
 name|decommissionedNodes
 argument_list|,
 name|AdminStates
@@ -2738,7 +3324,7 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-comment|// Restart the cluster and ensure recommissioned datanodes
+comment|// Restart the cluster and ensure decommissioned datanodes
 comment|// are allowed to register with the namenode
 name|cluster
 operator|.
@@ -2914,6 +3500,8 @@ name|decommissionNode
 argument_list|(
 name|i
 argument_list|,
+literal|null
+argument_list|,
 name|decommissionedNodes
 argument_list|,
 name|AdminStates
@@ -3032,6 +3620,8 @@ expr_stmt|;
 comment|// stop decommission and check if the new replicas are removed
 name|recomissionNode
 argument_list|(
+literal|0
+argument_list|,
 name|decomNode
 argument_list|)
 expr_stmt|;
@@ -3270,6 +3860,8 @@ init|=
 name|decommissionNode
 argument_list|(
 name|i
+argument_list|,
+literal|null
 argument_list|,
 literal|null
 argument_list|,
