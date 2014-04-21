@@ -3183,7 +3183,7 @@ init|=
 operator|new
 name|Path
 argument_list|(
-name|file
+name|file2
 argument_list|)
 decl_stmt|;
 name|when

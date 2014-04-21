@@ -142,9 +142,9 @@ end_import
 
 begin_import
 import|import
-name|junit
+name|org
 operator|.
-name|framework
+name|junit
 operator|.
 name|Assert
 import|;
@@ -1615,6 +1615,8 @@ name|jobStatus
 operator|.
 name|getMapProgress
 argument_list|()
+argument_list|,
+literal|0.0f
 argument_list|)
 expr_stmt|;
 name|Assert
@@ -1627,6 +1629,8 @@ name|jobStatus
 operator|.
 name|getReduceProgress
 argument_list|()
+argument_list|,
+literal|0.0f
 argument_list|)
 expr_stmt|;
 block|}
@@ -2534,6 +2538,8 @@ name|jobStatus1
 operator|.
 name|getMapProgress
 argument_list|()
+argument_list|,
+literal|0.0f
 argument_list|)
 expr_stmt|;
 name|Assert
@@ -2546,6 +2552,8 @@ name|jobStatus1
 operator|.
 name|getReduceProgress
 argument_list|()
+argument_list|,
+literal|0.0f
 argument_list|)
 expr_stmt|;
 name|verify

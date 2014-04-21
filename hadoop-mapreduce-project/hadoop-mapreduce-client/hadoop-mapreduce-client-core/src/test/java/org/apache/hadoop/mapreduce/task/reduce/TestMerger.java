@@ -140,9 +140,9 @@ end_import
 
 begin_import
 import|import
-name|junit
+name|org
 operator|.
-name|framework
+name|junit
 operator|.
 name|Assert
 import|;
@@ -1642,6 +1642,8 @@ argument_list|()
 operator|.
 name|get
 argument_list|()
+argument_list|,
+literal|0.0f
 argument_list|)
 expr_stmt|;
 block|}
