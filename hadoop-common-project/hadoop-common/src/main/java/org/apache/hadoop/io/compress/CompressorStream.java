@@ -457,9 +457,14 @@ operator|!
 name|closed
 condition|)
 block|{
+try|try
+block|{
 name|finish
 argument_list|()
 expr_stmt|;
+block|}
+finally|finally
+block|{
 name|out
 operator|.
 name|close
@@ -469,6 +474,7 @@ name|closed
 operator|=
 literal|true
 expr_stmt|;
+block|}
 block|}
 block|}
 DECL|field|oneByte
