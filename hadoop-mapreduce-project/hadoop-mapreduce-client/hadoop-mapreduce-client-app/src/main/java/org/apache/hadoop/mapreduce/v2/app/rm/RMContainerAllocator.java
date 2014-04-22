@@ -1227,7 +1227,10 @@ specifier|final
 name|AMPreemptionPolicy
 name|preemptionPolicy
 decl_stmt|;
+annotation|@
+name|VisibleForTesting
 DECL|field|eventQueue
+specifier|protected
 name|BlockingQueue
 argument_list|<
 name|ContainerAllocatorEvent
