@@ -1593,7 +1593,7 @@ name|key
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Update the token cache with renewal record in edit logs.    *     * @param identifier DelegationTokenIdentifier of the renewed token    * @param expiryTime    * @throws IOException    */
+comment|/**    * Update the token cache with renewal record in edit logs.    *     * @param identifier DelegationTokenIdentifier of the renewed token    * @param expiryTime expirty time in milliseconds    * @throws IOException    */
 DECL|method|updatePersistedTokenRenewal ( DelegationTokenIdentifier identifier, long expiryTime)
 specifier|public
 specifier|synchronized
@@ -2141,7 +2141,7 @@ name|step
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**      * Private helper method to load delegation keys from fsimage.      * @param in      * @throws IOException      */
+comment|/**      * Private helper method to load delegation keys from fsimage.      * @throws IOException on error      */
 DECL|method|loadAllKeys (DataInput in)
 specifier|private
 specifier|synchronized

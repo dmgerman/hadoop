@@ -507,7 +507,7 @@ name|init
 argument_list|()
 expr_stmt|;
 block|}
-comment|/**    * This constructor has the signature needed by    * {@link AbstractFileSystem#createFileSystem(URI, Configuration)}    *     * @param theUri    *          which must be that of Hdfs    * @param conf    * @throws IOException    */
+comment|/**    * This constructor has the signature needed by    * {@link AbstractFileSystem#createFileSystem(URI, Configuration)}    *     * @param theUri which must be that of Hdfs    * @param conf configuration    * @throws IOException    */
 DECL|method|Hdfs (final URI theUri, final Configuration conf)
 name|Hdfs
 parameter_list|(

@@ -6130,7 +6130,7 @@ argument_list|)
 throw|;
 block|}
 block|}
-comment|/**    * Find the last valid transaction ID in the stream.    * If there are invalid or corrupt transactions in the middle of the stream,    * validateEditLog will skip over them.    * This reads through the stream but does not close it.    *    * @throws IOException if the stream cannot be read due to an IO error (eg    *                     if the log does not exist)    */
+comment|/**    * Find the last valid transaction ID in the stream.    * If there are invalid or corrupt transactions in the middle of the stream,    * validateEditLog will skip over them.    * This reads through the stream but does not close it.    */
 DECL|method|validateEditLog (EditLogInputStream in)
 specifier|static
 name|EditLogValidation

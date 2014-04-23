@@ -1850,7 +1850,7 @@ name|filesystemURI
 argument_list|)
 return|;
 block|}
-comment|/**    * TODO:FEDERATION    * @param filesystemURI    * @return address of file system    */
+comment|/**    * @return address of file system    */
 DECL|method|getAddress (URI filesystemURI)
 specifier|public
 specifier|static
@@ -3569,7 +3569,7 @@ name|getHttpsAddress
 argument_list|()
 return|;
 block|}
-comment|/**    * Verify that configured directories exist, then    * Interactively confirm that formatting is desired     * for each existing directory and format them.    *     * @param conf    * @param force    * @return true if formatting was aborted, false otherwise    * @throws IOException    */
+comment|/**    * Verify that configured directories exist, then    * Interactively confirm that formatting is desired     * for each existing directory and format them.    *     * @param conf configuration to use    * @param force if true, format regardless of whether dirs exist    * @return true if formatting was aborted, false otherwise    * @throws IOException    */
 DECL|method|format (Configuration conf, boolean force, boolean isInteractive)
 specifier|private
 specifier|static

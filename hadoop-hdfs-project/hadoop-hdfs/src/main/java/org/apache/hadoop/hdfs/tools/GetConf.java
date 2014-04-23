@@ -766,7 +766,7 @@ argument_list|)
 throw|;
 block|}
 block|}
-comment|/** Method to be overridden by sub classes for specific behavior       * @param args */
+comment|/** Method to be overridden by sub classes for specific behavior */
 DECL|method|doWorkInternal (GetConf tool, String[] args)
 name|int
 name|doWorkInternal

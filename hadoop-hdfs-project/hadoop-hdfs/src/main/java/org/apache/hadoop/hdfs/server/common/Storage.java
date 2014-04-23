@@ -2925,7 +2925,7 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-comment|/**    * Checks if the upgrade from the given old version is supported. If    * no upgrade is supported, it throws IncorrectVersionException.    *     * @param oldVersion    */
+comment|/**    * Checks if the upgrade from {@code oldVersion} is supported.    * @param oldVersion the version of the metadata to check with the current    *                   version    * @throws IOException if upgrade is not supported    */
 DECL|method|checkVersionUpgradable (int oldVersion)
 specifier|public
 specifier|static

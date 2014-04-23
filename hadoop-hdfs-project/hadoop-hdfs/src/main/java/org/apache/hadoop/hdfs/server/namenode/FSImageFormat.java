@@ -2450,7 +2450,7 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-comment|/**     * Load all children of a directory     *      * @param in     * @param counter Counter to increment for namenode startup progress     * @return number of child inodes read     * @throws IOException     */
+comment|/**     * Load all children of a directory     *      * @param in input to load from     * @param counter Counter to increment for namenode startup progress     * @return number of child inodes read     * @throws IOException     */
 DECL|method|loadDirectory (DataInput in, Counter counter)
 specifier|private
 name|int

@@ -163,7 +163,7 @@ operator|/
 name|period
 return|;
 block|}
-comment|/**    * Sets throttle bandwidth. This takes affect latest by the end of current    * period.    *     * @param bytesPerSecond     */
+comment|/**    * Sets throttle bandwidth. This takes affect latest by the end of current    * period.    */
 DECL|method|setBandwidth (long bytesPerSecond)
 specifier|public
 specifier|synchronized

@@ -1825,7 +1825,7 @@ literal|0
 argument_list|)
 return|;
 block|}
-comment|/**    * Write last checkpoint time into a separate file.    *    * @param sd    * @throws IOException    */
+comment|/**    * Write last checkpoint time into a separate file.    * @param sd storage directory    * @throws IOException    */
 DECL|method|writeTransactionIdFile (StorageDirectory sd, long txid)
 name|void
 name|writeTransactionIdFile

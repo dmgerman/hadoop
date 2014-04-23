@@ -205,7 +205,7 @@ operator|=
 name|recoveryId
 expr_stmt|;
 block|}
-comment|/**    * Copy constructor.    * @param from    */
+comment|/**    * Copy constructor.    * @param from where to copy from    */
 DECL|method|ReplicaUnderRecovery (ReplicaUnderRecovery from)
 specifier|public
 name|ReplicaUnderRecovery

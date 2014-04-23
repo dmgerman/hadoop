@@ -8323,7 +8323,7 @@ argument_list|)
 return|;
 block|}
 block|}
-comment|/**    * Returns edit directories that are shared between primary and secondary.    * @param conf configuration    * @return Collection of edit directories.    */
+comment|/**    * Returns edit directories that are shared between primary and secondary.    * @param conf configuration    * @return collection of edit directories from {@code conf}    */
 DECL|method|getSharedEditsDirs (Configuration conf)
 specifier|public
 specifier|static
@@ -10335,7 +10335,7 @@ literal|null
 return|;
 comment|// can never reach here
 block|}
-comment|/**    * Moves all the blocks from {@code srcs} and appends them to {@code target}    * To avoid rollbacks we will verify validity of ALL of the args    * before we start actual move.    *     * This does not support ".inodes" relative path    * @param target target file path to concatenate into    * @param srcs files that are concatenated    * @throws IOException    */
+comment|/**    * Moves all the blocks from {@code srcs} and appends them to {@code target}    * To avoid rollbacks we will verify validity of ALL of the args    * before we start actual move.    *     * This does not support ".inodes" relative path    * @param target target to concat into    * @param srcs file that will be concatenated    * @throws IOException on error    */
 DECL|method|concat (String target, String [] srcs)
 name|void
 name|concat
@@ -21121,7 +21121,7 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-comment|/**    *    * @param pendingFile    * @param storedBlock    * @return Path of the file that was closed.    * @throws IOException    */
+comment|/**    * @param pendingFile open file that needs to be closed    * @param storedBlock last block    * @return Path of the file that was closed.    * @throws IOException on error    */
 annotation|@
 name|VisibleForTesting
 DECL|method|closeFileCommitBlocks (INodeFile pendingFile, BlockInfo storedBlock)
@@ -21748,7 +21748,7 @@ return|return
 name|hasResourcesAvailable
 return|;
 block|}
-comment|/**    * Perform resource checks and cache the results.    * @throws IOException    */
+comment|/**    * Perform resource checks and cache the results.    */
 DECL|method|checkAvailableResources ()
 name|void
 name|checkAvailableResources
@@ -25599,7 +25599,7 @@ argument_list|()
 expr_stmt|;
 block|}
 block|}
-comment|/**    * Leave safe mode.    * @throws IOException    */
+comment|/**    * Leave safe mode.    */
 DECL|method|leaveSafeMode ()
 name|void
 name|leaveSafeMode
@@ -27196,7 +27196,7 @@ name|getCurrentValue
 argument_list|()
 return|;
 block|}
-comment|/**    * Sets the generation stamp that delineates random and sequentially    * allocated block IDs.    * @param stamp    */
+comment|/**    * Sets the generation stamp that delineates random and sequentially    * allocated block IDs.    * @param stamp set generation stamp limit to this value    */
 DECL|method|setGenerationStampV1Limit (long stamp)
 name|void
 name|setGenerationStampV1Limit
@@ -27398,7 +27398,7 @@ return|return
 name|generationStampV1Limit
 return|;
 block|}
-comment|/**    * Determine whether the block ID was randomly generated (legacy) or    * sequentially generated. The generation stamp value is used to    * make the distinction.    * @param block    * @return true if the block ID was randomly generated, false otherwise.    */
+comment|/**    * Determine whether the block ID was randomly generated (legacy) or    * sequentially generated. The generation stamp value is used to    * make the distinction.    * @return true if the block ID was randomly generated, false otherwise.    */
 DECL|method|isLegacyBlock (Block block)
 name|boolean
 name|isLegacyBlock
@@ -28391,7 +28391,7 @@ argument_list|()
 expr_stmt|;
 block|}
 block|}
-comment|/**    * Release (unregister) backup node.    *<p>    * Find and remove the backup stream corresponding to the node.    * @param registration    * @throws IOException    */
+comment|/**    * Release (unregister) backup node.    *<p>    * Find and remove the backup stream corresponding to the node.    * @throws IOException    */
 DECL|method|releaseBackupNode (NamenodeRegistration registration)
 name|void
 name|releaseBackupNode
@@ -28945,7 +28945,7 @@ return|return
 name|dtSecretManager
 return|;
 block|}
-comment|/**    * @param renewer Renewer information    * @return Token<DelegationTokenIdentifier>    * @throws IOException    */
+comment|/**    * @param renewer Renewer information    * @return delegation toek    * @throws IOException on error    */
 DECL|method|getDelegationToken (Text renewer)
 name|Token
 argument_list|<
@@ -29144,7 +29144,7 @@ return|return
 name|token
 return|;
 block|}
-comment|/**    *     * @param token delegation token    * @return New expiryTime of the token    * @throws InvalidToken    * @throws IOException    */
+comment|/**    *     * @param token token to renew    * @return new expiryTime of the token    * @throws InvalidToken if {@code token} is invalid    * @throws IOException on other errors    */
 DECL|method|renewDelegationToken (Token<DelegationTokenIdentifier> token)
 name|long
 name|renewDelegationToken
@@ -29284,7 +29284,7 @@ return|return
 name|expiryTime
 return|;
 block|}
-comment|/**    *     * @param token delegation token that needs to be canceled    * @throws IOException    */
+comment|/**    *     * @param token token to cancel    * @throws IOException on error    */
 DECL|method|cancelDelegationToken (Token<DelegationTokenIdentifier> token)
 name|void
 name|cancelDelegationToken
@@ -33513,7 +33513,7 @@ return|return
 name|rollingUpgradeInfo
 return|;
 block|}
-comment|/**    * Update internal state to indicate that a rolling upgrade is in progress.    * @param startTime start time of the rolling upgrade    */
+comment|/**    * Update internal state to indicate that a rolling upgrade is in progress.    * @param startTime rolling upgrade start time    */
 DECL|method|startRollingUpgradeInternal (long startTime)
 name|void
 name|startRollingUpgradeInternal

@@ -2072,7 +2072,7 @@ name|datanodeUuid
 argument_list|)
 return|;
 block|}
-comment|/**    * Get data node by storage ID.    *     * @param nodeID    * @return DatanodeDescriptor or null if the node is not found.    * @throws UnregisteredNodeException    */
+comment|/**    * Get data node by datanode ID.    *     * @param nodeID datanode ID    * @return DatanodeDescriptor or null if the node is not found.    * @throws UnregisteredNodeException    */
 DECL|method|getDatanode (DatanodeID nodeID )
 specifier|public
 name|DatanodeDescriptor

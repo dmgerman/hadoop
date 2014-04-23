@@ -85,7 +85,7 @@ specifier|final
 name|StorageType
 name|storageType
 decl_stmt|;
-comment|/**    * Create a storage with {@link State#NORMAL} and {@link StorageType#DEFAULT}.    *    * @param storageID    */
+comment|/**    * Create a storage with {@link State#NORMAL} and {@link StorageType#DEFAULT}.    */
 DECL|method|DatanodeStorage (String storageID)
 specifier|public
 name|DatanodeStorage

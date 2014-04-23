@@ -418,7 +418,7 @@ parameter_list|)
 throws|throws
 name|IOException
 function_decl|;
-comment|/**    * Request a short circuit shared memory area from a DataNode.    *     * @pram clientName       The name of the client.    */
+comment|/**    * Request a short circuit shared memory area from a DataNode.    *     * @param clientName       The name of the client.    */
 DECL|method|requestShortCircuitShm (String clientName)
 specifier|public
 name|void

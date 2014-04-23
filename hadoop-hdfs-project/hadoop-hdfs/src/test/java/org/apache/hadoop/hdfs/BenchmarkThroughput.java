@@ -1294,7 +1294,7 @@ return|return
 literal|0
 return|;
 block|}
-comment|/**    * @param args    */
+comment|/**    * @param args arguments    */
 DECL|method|main (String[] args)
 specifier|public
 specifier|static

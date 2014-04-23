@@ -1841,7 +1841,7 @@ block|}
 block|}
 block|}
 block|}
-comment|/**    * Get the list of inodes corresponding to valid leases.    * @return list of inodes    * @throws UnresolvedLinkException    */
+comment|/**    * Get the list of inodes corresponding to valid leases.    * @return list of inodes    */
 DECL|method|getINodesUnderConstruction ()
 name|Map
 argument_list|<

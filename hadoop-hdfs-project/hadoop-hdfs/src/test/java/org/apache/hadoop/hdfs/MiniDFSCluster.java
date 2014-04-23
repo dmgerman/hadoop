@@ -6387,7 +6387,7 @@ block|}
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Finalize cluster for the namenode at the given index     * @see MiniDFSCluster#finalizeCluster(Configuration)    * @param nnIndex    * @param conf    * @throws Exception    */
+comment|/**    * Finalize cluster for the namenode at the given index     * @see MiniDFSCluster#finalizeCluster(Configuration)    * @param nnIndex index of the namenode    * @param conf configuration    * @throws Exception    */
 DECL|method|finalizeCluster (int nnIndex, Configuration conf)
 specifier|public
 name|void
@@ -9701,7 +9701,7 @@ argument_list|)
 argument_list|)
 return|;
 block|}
-comment|/**    * Calculate the DN instance-specific path for appending to the base dir    * to determine the location of the storage of a DN instance in the mini cluster    * @param dnIndex datanode index    * @param dirIndex directory index.    * @return    */
+comment|/**    * Calculate the DN instance-specific path for appending to the base dir    * to determine the location of the storage of a DN instance in the mini cluster    * @param dnIndex datanode index    * @param dirIndex directory index.    * @return storage directory path    */
 DECL|method|getStorageDirPath (int dnIndex, int dirIndex)
 specifier|private
 specifier|static
@@ -9777,7 +9777,7 @@ operator|+
 literal|"/"
 return|;
 block|}
-comment|/**    * Get directory relative to block pool directory in the datanode    * @param storageDir    * @return current directory    */
+comment|/**    * Get directory relative to block pool directory in the datanode    * @param storageDir storage directory    * @return current directory in the given storage directory    */
 DECL|method|getBPDir (File storageDir, String bpid, String dirName)
 specifier|public
 specifier|static

@@ -164,7 +164,7 @@ name|dir
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Copy constructor.    * @param from    */
+comment|/**    * Copy constructor.    * @param from where to copy construct from    */
 DECL|method|FinalizedReplica (FinalizedReplica from)
 specifier|public
 name|FinalizedReplica

@@ -327,7 +327,7 @@ literal|" is not allowed."
 argument_list|)
 throw|;
 block|}
-comment|/**    * Check if an operation is supported in a given state.    * @param context HA context    * @param op Type of the operation.    * @throws UnsupportedActionException if a given type of operation is not    *           supported in this state.    */
+comment|/**    * Check if an operation is supported in a given state.    * @param context HA context    * @param op Type of the operation.    * @throws StandbyException if a given type of operation is not    *           supported in standby state    */
 DECL|method|checkOperation (final HAContext context, final OperationCategory op)
 specifier|public
 specifier|abstract

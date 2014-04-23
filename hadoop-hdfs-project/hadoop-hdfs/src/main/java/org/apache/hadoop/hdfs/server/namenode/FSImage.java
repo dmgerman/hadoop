@@ -1095,7 +1095,7 @@ literal|0
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Check whether the storage directories and non-file journals exist.    * If running in interactive mode, will prompt the user for each    * directory to allow them to format anyway. Otherwise, returns    * false, unless 'force' is specified.    *     * @param force format regardless of whether dirs exist    * @param interactive prompt the user when a dir exists    * @return true if formatting should proceed    * @throws IOException if some storage cannot be accessed    */
+comment|/**    * Check whether the storage directories and non-file journals exist.    * If running in interactive mode, will prompt the user for each    * directory to allow them to format anyway. Otherwise, returns    * false, unless 'force' is specified.    *     * @param force if true, format regardless of whether dirs exist    * @param interactive prompt the user when a dir exists    * @return true if formatting should proceed    * @throws IOException if some storage cannot be accessed    */
 DECL|method|confirmFormat (boolean force, boolean interactive)
 name|boolean
 name|confirmFormat
@@ -5072,7 +5072,7 @@ literal|null
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Save the contents of the FS image to a new image file in each of the    * current storage directories.    * @param canceler    */
+comment|/**    * Save the contents of the FS image to a new image file in each of the    * current storage directories.    */
 DECL|method|saveNamespace (FSNamesystem source, NameNodeFile nnf, Canceler canceler)
 specifier|public
 specifier|synchronized

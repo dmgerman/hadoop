@@ -696,7 +696,7 @@ name|printUsageExit
 argument_list|()
 expr_stmt|;
 block|}
-comment|/**    * @param args    * @throws IOException     */
+comment|/**    * @param args arguments    * @throws IOException     */
 DECL|method|main (String[] args)
 specifier|public
 specifier|static

@@ -2147,7 +2147,7 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**      * Store the live datanode status information into datanode status map and      * DecommissionNode.      *       * @param statusMap Map of datanode status. Key is datanode, value      *          is an inner map whose key is namenode, value is datanode status.      *          reported by each namenode.      * @param namenodeHost host name of the namenode      * @param decomnode update DecommissionNode with alive node status      * @param json JSON string contains datanode status      * @throws IOException      */
+comment|/**      * Store the live datanode status information into datanode status map and      * DecommissionNode.      *       * @param statusMap Map of datanode status. Key is datanode, value      *          is an inner map whose key is namenode, value is datanode status.      *          reported by each namenode.      * @param namenodeHost host name of the namenode      * @param json JSON string contains datanode status      * @throws IOException      */
 DECL|method|getLiveNodeStatus ( Map<String, Map<String, String>> statusMap, String namenodeHost, String json)
 specifier|private
 specifier|static
@@ -2365,7 +2365,7 @@ block|}
 block|}
 block|}
 block|}
-comment|/**      * Store the dead datanode information into datanode status map and      * DecommissionNode.      *       * @param statusMap map with key being datanode, value being an      *          inner map (key:namenode, value:decommisionning state).      * @param host datanode hostname      * @param decomnode DecommissionNode      * @param json String      * @throws IOException      */
+comment|/**      * Store the dead datanode information into datanode status map and      * DecommissionNode.      *       * @param statusMap map with key being datanode, value being an      *          inner map (key:namenode, value:decommisionning state).      * @param host datanode hostname      * @param json String      * @throws IOException      */
 DECL|method|getDeadNodeStatus ( Map<String, Map<String, String>> statusMap, String host, String json)
 specifier|private
 specifier|static
@@ -2619,7 +2619,7 @@ expr_stmt|;
 block|}
 block|}
 block|}
-comment|/**      * Get the decommisioning datanode information.      *       * @param dataNodeStatusMap map with key being datanode, value being an      *          inner map (key:namenode, value:decommisionning state).      * @param host datanode      * @param decomnode DecommissionNode      * @param json String      */
+comment|/**      * Get the decommisioning datanode information.      *       * @param dataNodeStatusMap map with key being datanode, value being an      *          inner map (key:namenode, value:decommisionning state).      * @param host datanode      * @param json String      */
 DECL|method|getDecommissionNodeStatus ( Map<String, Map<String, String>> dataNodeStatusMap, String host, String json)
 specifier|private
 specifier|static

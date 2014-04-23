@@ -724,7 +724,7 @@ name|sd
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Get common storage fields.    * Should be overloaded if additional fields need to be get.    *     * @param props    * @throws IOException    */
+comment|/**    * Get common storage fields.    * Should be overloaded if additional fields need to be get.    *     * @param props properties    * @throws IOException on error    */
 DECL|method|setFieldsFromProperties ( Properties props, StorageDirectory sd)
 specifier|protected
 name|void

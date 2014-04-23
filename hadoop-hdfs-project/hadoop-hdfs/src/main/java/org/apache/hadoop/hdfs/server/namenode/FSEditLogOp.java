@@ -5075,7 +5075,7 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-comment|/**    * {@literal @AtMostOnce} for {@link ClientProtocol#startFile} and    * {@link ClientProtocol#appendFile}    */
+comment|/**    * {@literal @AtMostOnce} for {@link ClientProtocol#create} and    * {@link ClientProtocol#append}    */
 DECL|class|AddOp
 specifier|static
 class|class

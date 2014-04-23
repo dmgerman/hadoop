@@ -1091,7 +1091,7 @@ return|return
 literal|true
 return|;
 block|}
-comment|/**    * Find specified DatanodeDescriptor.    * @param dn    * @return index or -1 if not found.    */
+comment|/**    * Find specified DatanodeDescriptor.    * @return index or -1 if not found.    */
 DECL|method|findDatanode (DatanodeDescriptor dn)
 name|int
 name|findDatanode
@@ -1151,7 +1151,7 @@ operator|-
 literal|1
 return|;
 block|}
-comment|/**    * Find specified DatanodeStorageInfo.    * @param dn    * @return index or -1 if not found.    */
+comment|/**    * Find specified DatanodeStorageInfo.    * @return index or -1 if not found.    */
 DECL|method|findStorageInfo (DatanodeInfo dn)
 name|int
 name|findStorageInfo
@@ -1214,7 +1214,7 @@ operator|-
 literal|1
 return|;
 block|}
-comment|/**    * Find specified DatanodeStorageInfo.    * @param storageInfo    * @return index or -1 if not found.    */
+comment|/**    * Find specified DatanodeStorageInfo.    * @return index or -1 if not found.    */
 DECL|method|findStorageInfo (DatanodeStorageInfo storageInfo)
 name|int
 name|findStorageInfo

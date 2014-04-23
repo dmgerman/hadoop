@@ -538,7 +538,7 @@ name|size
 argument_list|()
 return|;
 block|}
-comment|/**    * @param blockManager    * @return replication monitor thread instance from block manager.    */
+comment|/**    * @return replication monitor thread instance from block manager.    */
 DECL|method|getReplicationThread (final BlockManager blockManager)
 specifier|public
 specifier|static
@@ -556,7 +556,7 @@ operator|.
 name|replicationThread
 return|;
 block|}
-comment|/**    * Stop the replication monitor thread    * @param blockManager    */
+comment|/**    * Stop the replication monitor thread    */
 DECL|method|stopReplicationThread (final BlockManager blockManager)
 specifier|public
 specifier|static
@@ -607,7 +607,7 @@ argument_list|)
 throw|;
 block|}
 block|}
-comment|/**    * @param blockManager    * @return corruptReplicas from block manager    */
+comment|/**    * @return corruptReplicas from block manager    */
 DECL|method|getCorruptReplicas (final BlockManager blockManager)
 specifier|public
 specifier|static
@@ -625,7 +625,7 @@ operator|.
 name|corruptReplicas
 return|;
 block|}
-comment|/**    * @param blockManager    * @return computed block replication and block invalidation work that can be    *         scheduled on data-nodes.    * @throws IOException    */
+comment|/**    * @return computed block replication and block invalidation work that can be    *         scheduled on data-nodes.    * @throws IOException    */
 DECL|method|getComputedDatanodeWork (final BlockManager blockManager)
 specifier|public
 specifier|static
@@ -667,7 +667,7 @@ name|MAX_VALUE
 argument_list|)
 return|;
 block|}
-comment|/**    * Compute all the replication and invalidation work for the    * given BlockManager.    *     * This differs from the above functions in that it computes    * replication work for all DNs rather than a particular subset,    * regardless of invalidation/replication limit configurations.    *     * NB: you may want to set    * {@link DFSConfigKeys.DFS_NAMENODE_REPLICATION_MAX_STREAMS_KEY} to    * a high value to ensure that all work is calculated.    */
+comment|/**    * Compute all the replication and invalidation work for the    * given BlockManager.    *     * This differs from the above functions in that it computes    * replication work for all DNs rather than a particular subset,    * regardless of invalidation/replication limit configurations.    *     * NB: you may want to set    * {@link DFSConfigKeys#DFS_NAMENODE_REPLICATION_MAX_STREAMS_KEY} to    * a high value to ensure that all work is calculated.    */
 DECL|method|computeAllPendingWork (BlockManager bm)
 specifier|public
 specifier|static
@@ -829,7 +829,7 @@ argument_list|()
 expr_stmt|;
 block|}
 block|}
-comment|/**    * Change whether the block placement policy will prefer the writer's    * local Datanode or not.    * @param prefer    */
+comment|/**    * Change whether the block placement policy will prefer the writer's    * local Datanode or not.    * @param prefer if true, prefer local node    */
 DECL|method|setWritingPrefersLocalNode ( BlockManager bm, boolean prefer)
 specifier|public
 specifier|static

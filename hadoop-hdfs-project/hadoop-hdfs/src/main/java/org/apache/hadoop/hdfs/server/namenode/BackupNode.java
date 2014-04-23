@@ -1848,7 +1848,7 @@ name|doCheckpoint
 argument_list|()
 expr_stmt|;
 block|}
-comment|/**    * Register this backup node with the active name-node.    * @param nsInfo    * @throws IOException    */
+comment|/**    * Register this backup node with the active name-node.    * @param nsInfo namespace information    * @throws IOException    */
 DECL|method|registerWith (NamespaceInfo nsInfo)
 specifier|private
 name|void

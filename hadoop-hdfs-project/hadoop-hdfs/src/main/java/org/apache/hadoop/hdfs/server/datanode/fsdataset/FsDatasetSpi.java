@@ -672,7 +672,7 @@ parameter_list|)
 throws|throws
 name|IOException
 function_decl|;
-comment|/**    * Returns the specified block's on-disk length (excluding metadata)    * @param b    * @return   the specified block's on-disk length (excluding metadta)    * @throws IOException    */
+comment|/**    * Returns the specified block's on-disk length (excluding metadata)    * @return   the specified block's on-disk length (excluding metadta)    * @throws IOException on error    */
 DECL|method|getLength (ExtendedBlock b)
 specifier|public
 name|long
@@ -684,7 +684,7 @@ parameter_list|)
 throws|throws
 name|IOException
 function_decl|;
-comment|/**    * Get reference to the replica meta info in the replicasMap.     * To be called from methods that are synchronized on {@link FSDataset}    * @param blockId    * @return replica from the replicas map    */
+comment|/**    * Get reference to the replica meta info in the replicasMap.     * To be called from methods that are synchronized on {@link FSDataset}    * @return replica from the replicas map    */
 annotation|@
 name|Deprecated
 DECL|method|getReplica (String bpid, long blockId)
@@ -727,7 +727,7 @@ parameter_list|)
 throws|throws
 name|IOException
 function_decl|;
-comment|/**    * Returns an input stream at specified offset of the specified block    * @param b    * @param seekOffset    * @return an input stream to read the contents of the specified block,    *  starting at the offset    * @throws IOException    */
+comment|/**    * Returns an input stream at specified offset of the specified block    * @param b block    * @param seekOffset offset with in the block to seek to    * @return an input stream to read the contents of the specified block,    *  starting at the offset    * @throws IOException    */
 DECL|method|getBlockInputStream (ExtendedBlock b, long seekOffset)
 specifier|public
 name|InputStream
@@ -742,7 +742,7 @@ parameter_list|)
 throws|throws
 name|IOException
 function_decl|;
-comment|/**    * Returns an input stream at specified offset of the specified block    * The block is still in the tmp directory and is not finalized    * @param b    * @param blkoff    * @param ckoff    * @return an input stream to read the contents of the specified block,    *  starting at the offset    * @throws IOException    */
+comment|/**    * Returns an input stream at specified offset of the specified block    * The block is still in the tmp directory and is not finalized    * @return an input stream to read the contents of the specified block,    *  starting at the offset    * @throws IOException    */
 DECL|method|getTmpInputStreams (ExtendedBlock b, long blkoff, long ckoff)
 specifier|public
 name|ReplicaInputStreams
@@ -871,7 +871,7 @@ parameter_list|)
 throws|throws
 name|IOException
 function_decl|;
-comment|/**    * Finalizes the block previously opened for writing using writeToBlock.    * The block size is what is in the parameter b and it must match the amount    *  of data written    * @param b    * @throws IOException    */
+comment|/**    * Finalizes the block previously opened for writing using writeToBlock.    * The block size is what is in the parameter b and it must match the amount    *  of data written    * @throws IOException    */
 DECL|method|finalizeBlock (ExtendedBlock b)
 specifier|public
 name|void
@@ -883,7 +883,7 @@ parameter_list|)
 throws|throws
 name|IOException
 function_decl|;
-comment|/**    * Unfinalizes the block previously opened for writing using writeToBlock.    * The temporary file associated with this block is deleted.    * @param b    * @throws IOException    */
+comment|/**    * Unfinalizes the block previously opened for writing using writeToBlock.    * The temporary file associated with this block is deleted.    * @throws IOException    */
 DECL|method|unfinalizeBlock (ExtendedBlock b)
 specifier|public
 name|void
@@ -933,7 +933,7 @@ name|ExtendedBlock
 name|block
 parameter_list|)
 function_decl|;
-comment|/**    * Is the block valid?    * @param b    * @return - true if the specified block is valid    */
+comment|/**    * Is the block valid?    * @return - true if the specified block is valid    */
 DECL|method|isValidBlock (ExtendedBlock b)
 specifier|public
 name|boolean
@@ -943,7 +943,7 @@ name|ExtendedBlock
 name|b
 parameter_list|)
 function_decl|;
-comment|/**    * Is the block a valid RBW?    * @param b    * @return - true if the specified block is a valid RBW    */
+comment|/**    * Is the block a valid RBW?    * @return - true if the specified block is a valid RBW    */
 DECL|method|isValidRbw (ExtendedBlock b)
 specifier|public
 name|boolean
@@ -997,7 +997,7 @@ index|[]
 name|blockIds
 parameter_list|)
 function_decl|;
-comment|/**    * Determine if the specified block is cached.    * @param bpid Block pool id    * @param blockIds - block id    * @returns true if the block is cached    */
+comment|/**    * Determine if the specified block is cached.    * @param bpid Block pool id    * @param blockIds - block id    * @return true if the block is cached    */
 DECL|method|isCached (String bpid, long blockId)
 specifier|public
 name|boolean

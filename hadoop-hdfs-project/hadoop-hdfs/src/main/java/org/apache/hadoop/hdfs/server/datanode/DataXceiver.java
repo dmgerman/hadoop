@@ -6180,7 +6180,7 @@ operator|-
 name|opStartTime
 return|;
 block|}
-comment|/**    * Utility function for sending a response.    *     * @param opStatus status message to write    * @param message message to send to the client or other DN    */
+comment|/**    * Utility function for sending a response.    *     * @param status status message to write    * @param message message to send to the client or other DN    */
 DECL|method|sendResponse (Status status, String message)
 specifier|private
 name|void

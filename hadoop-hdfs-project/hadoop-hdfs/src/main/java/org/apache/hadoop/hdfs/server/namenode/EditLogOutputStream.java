@@ -289,7 +289,7 @@ return|return
 literal|false
 return|;
 block|}
-comment|/**    * Return total time spent in {@link #flushAndSync()}    */
+comment|/**    * Return total time spent in {@link #flushAndSync(boolean)}    */
 DECL|method|getTotalSyncTime ()
 name|long
 name|getTotalSyncTime
@@ -299,7 +299,7 @@ return|return
 name|totalTimeSync
 return|;
 block|}
-comment|/**    * Return number of calls to {@link #flushAndSync()}    */
+comment|/**    * Return number of calls to {@link #flushAndSync(boolean)}    */
 DECL|method|getNumSync ()
 specifier|protected
 name|long

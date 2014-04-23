@@ -1262,7 +1262,7 @@ parameter_list|)
 throws|throws
 name|IOException
 function_decl|;
-comment|/**      * This corresponds to the arg1 argument of       * {@link #executeOp(int, int, String)}, which can have different meanings      * depending on the operation performed.      *       * @param daemonId      * @return the argument      */
+comment|/**      * This corresponds to the arg1 argument of       * {@link #executeOp(int, int, String)}, which can have different meanings      * depending on the operation performed.      *       * @param daemonId id of the daemon calling this method      * @return the argument      */
 DECL|method|getExecutionArgument (int daemonId)
 specifier|abstract
 name|String
@@ -1768,7 +1768,7 @@ operator|+=
 name|time
 expr_stmt|;
 block|}
-comment|/**      * Parse first 2 arguments, corresponding to the "-op" option.      *       * @param args      * @return true if operation is all, which means that options not related      * to this operation should be ignored, or false otherwise, meaning      * that usage should be printed when an unrelated option is encountered.      * @throws IOException      */
+comment|/**      * Parse first 2 arguments, corresponding to the "-op" option.      *       * @param args argument list      * @return true if operation is all, which means that options not related      * to this operation should be ignored, or false otherwise, meaning      * that usage should be printed when an unrelated option is encountered.      */
 DECL|method|verifyOpArgument (List<String> args)
 specifier|protected
 name|boolean

@@ -1504,7 +1504,7 @@ block|}
 block|}
 block|}
 block|}
-comment|/**    * Retrieve the incremental BR state for a given storage UUID    * @param storageUuid    * @return    */
+comment|/**    * @return pending incremental block report for given {@code storage}    */
 DECL|method|getIncrementalBRMapForStorage ( DatanodeStorage storage)
 specifier|private
 name|PerStoragePendingIncrementalBR
@@ -1554,7 +1554,7 @@ return|return
 name|mapForStorage
 return|;
 block|}
-comment|/**    * Add a blockInfo for notification to NameNode. If another entry    * exists for the same block it is removed.    *    * Caller must synchronize access using pendingIncrementalBRperStorage.    * @param bInfo    * @param storageUuid    */
+comment|/**    * Add a blockInfo for notification to NameNode. If another entry    * exists for the same block it is removed.    *    * Caller must synchronize access using pendingIncrementalBRperStorage.    */
 DECL|method|addPendingReplicationBlockInfo (ReceivedDeletedBlockInfo bInfo, DatanodeStorage storage)
 name|void
 name|addPendingReplicationBlockInfo

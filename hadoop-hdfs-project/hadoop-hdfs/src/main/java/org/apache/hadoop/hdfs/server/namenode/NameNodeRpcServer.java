@@ -7118,7 +7118,7 @@ name|getServiceStatus
 argument_list|()
 return|;
 block|}
-comment|/**    * Verify version.    *     * @param version    * @throws IOException    */
+comment|/**    * Verify version.    * @param version layout version    * @throws IOException on layout version mismatch    */
 DECL|method|verifyLayoutVersion (int version)
 name|void
 name|verifyLayoutVersion

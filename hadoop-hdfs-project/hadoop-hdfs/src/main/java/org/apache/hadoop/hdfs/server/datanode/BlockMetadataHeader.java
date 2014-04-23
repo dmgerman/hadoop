@@ -409,7 +409,7 @@ name|dataChecksum
 argument_list|)
 return|;
 block|}
-comment|/**    * This reads all the fields till the beginning of checksum.    * @param in     * @return Metadata Header    * @throws IOException    */
+comment|/**    * This reads all the fields till the beginning of checksum.    * @return Metadata Header    * @throws IOException    */
 DECL|method|readHeader (DataInputStream in)
 specifier|public
 specifier|static
@@ -434,7 +434,7 @@ name|in
 argument_list|)
 return|;
 block|}
-comment|/**    * Reads header at the top of metadata file and returns the header.    *     * @param dataset    * @param block    * @return    * @throws IOException    */
+comment|/**    * Reads header at the top of metadata file and returns the header.    *     * @return metadata header for the block    * @throws IOException    */
 DECL|method|readHeader (File file)
 specifier|public
 specifier|static
@@ -582,7 +582,7 @@ name|checksum
 argument_list|)
 return|;
 block|}
-comment|/**    * This writes all the fields till the beginning of checksum.    * @param out DataOutputStream    * @param header     * @return     * @throws IOException    */
+comment|/**    * This writes all the fields till the beginning of checksum.    * @param out DataOutputStream    * @throws IOException    */
 annotation|@
 name|VisibleForTesting
 DECL|method|writeHeader (DataOutputStream out, BlockMetadataHeader header)
@@ -621,7 +621,7 @@ name|out
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Writes all the fields till the beginning of checksum.    * @param out    * @param checksum    * @throws IOException    */
+comment|/**    * Writes all the fields till the beginning of checksum.    * @throws IOException on error    */
 DECL|method|writeHeader (DataOutputStream out, DataChecksum checksum)
 specifier|static
 name|void

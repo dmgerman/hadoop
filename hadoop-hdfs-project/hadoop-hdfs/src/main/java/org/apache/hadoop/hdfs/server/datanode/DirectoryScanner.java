@@ -662,7 +662,7 @@ name|sz
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**      * Merges "that" ScanInfoPerBlockPool into this one      * @param that      */
+comment|/**      * Merges {@code that} ScanInfoPerBlockPool into this one      */
 DECL|method|addAll (ScanInfoPerBlockPool that)
 specifier|public
 name|void

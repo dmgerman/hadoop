@@ -642,7 +642,7 @@ literal|256
 operator|*
 literal|1024
 decl_stmt|;
-comment|/**    * Constructor    *     * @param block Block that is being read    * @param startOffset starting offset to read from    * @param length length of data to read    * @param corruptChecksumOk    * @param verifyChecksum verify checksum while reading the data    * @param sendChecksum send checksum to client.    * @param datanode datanode from which the block is being read    * @param clientTraceFmt format string used to print client trace logs    * @throws IOException    */
+comment|/**    * Constructor    *     * @param block Block that is being read    * @param startOffset starting offset to read from    * @param length length of data to read    * @param corruptChecksumOk if true, corrupt checksum is okay    * @param verifyChecksum verify checksum while reading the data    * @param sendChecksum send checksum to client.    * @param datanode datanode from which the block is being read    * @param clientTraceFmt format string used to print client trace logs    * @throws IOException    */
 DECL|method|BlockSender (ExtendedBlock block, long startOffset, long length, boolean corruptChecksumOk, boolean verifyChecksum, boolean sendChecksum, DataNode datanode, String clientTraceFmt, CachingStrategy cachingStrategy)
 name|BlockSender
 parameter_list|(

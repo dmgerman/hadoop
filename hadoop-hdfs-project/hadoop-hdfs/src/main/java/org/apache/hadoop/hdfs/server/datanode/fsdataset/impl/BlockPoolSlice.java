@@ -507,7 +507,7 @@ specifier|final
 name|DU
 name|dfsUsage
 decl_stmt|;
-comment|/**    * Create a blook pool slice     * @param bpid Block pool Id    * @param volume {@link FsVolumeImpl} to which this BlockPool belongs to    * @param bpDir directory corresponding to the BlockPool    * @param conf    * @throws IOException    */
+comment|/**    * Create a blook pool slice     * @param bpid Block pool Id    * @param volume {@link FsVolumeImpl} to which this BlockPool belongs to    * @param bpDir directory corresponding to the BlockPool    * @param conf configuration    * @throws IOException    */
 DECL|method|BlockPoolSlice (String bpid, FsVolumeImpl volume, File bpDir, Configuration conf)
 name|BlockPoolSlice
 parameter_list|(

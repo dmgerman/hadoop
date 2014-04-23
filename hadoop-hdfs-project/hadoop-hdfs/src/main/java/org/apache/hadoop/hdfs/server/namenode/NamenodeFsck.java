@@ -929,7 +929,7 @@ specifier|final
 name|BlockPlacementPolicy
 name|bpPolicy
 decl_stmt|;
-comment|/**    * Filesystem checker.    * @param conf configuration (namenode config)    * @param namenode namenode that this fsck is going to use    * @param pmap key=value[] map passed to the http servlet as url parameters    * @param out output stream to write the fsck output    * @param totalDatanodes number of live datanodes    * @param minReplication minimum replication    * @param remoteAddress source address of the fsck request    * @throws IOException    */
+comment|/**    * Filesystem checker.    * @param conf configuration (namenode config)    * @param namenode namenode that this fsck is going to use    * @param pmap key=value[] map passed to the http servlet as url parameters    * @param out output stream to write the fsck output    * @param totalDatanodes number of live datanodes    * @param minReplication minimum replication    * @param remoteAddress source address of the fsck request    */
 DECL|method|NamenodeFsck (Configuration conf, NameNode namenode, NetworkTopology networktopology, Map<String,String[]> pmap, PrintWriter out, int totalDatanodes, short minReplication, InetAddress remoteAddress)
 name|NamenodeFsck
 parameter_list|(

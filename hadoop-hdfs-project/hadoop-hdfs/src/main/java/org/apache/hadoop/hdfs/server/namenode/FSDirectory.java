@@ -2712,7 +2712,7 @@ return|return
 literal|true
 return|;
 block|}
-comment|/**    * @throws SnapshotAccessControlException     * @see #unprotectedRenameTo(String, String, long)    * @deprecated Use {@link #renameTo(String, String, Rename...)} instead.    */
+comment|/**    * @throws SnapshotAccessControlException     * @see #unprotectedRenameTo(String, String, long)    * @deprecated Use {@link #renameTo(String, String, boolean, Rename...)}    */
 annotation|@
 name|Deprecated
 DECL|method|renameTo (String src, String dst, boolean logRetryCache)
@@ -2940,7 +2940,7 @@ name|options
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Change a path name    *     * @param src source path    * @param dst destination path    * @return true if rename succeeds; false otherwise    * @throws QuotaExceededException if the operation violates any quota limit    * @throws FileAlreadyExistsException if the src is a symlink that points to dst    * @throws SnapshotAccessControlException if path is in RO snapshot    * @deprecated See {@link #renameTo(String, String)}    */
+comment|/**    * Change a path name    *     * @param src source path    * @param dst destination path    * @return true if rename succeeds; false otherwise    * @throws QuotaExceededException if the operation violates any quota limit    * @throws FileAlreadyExistsException if the src is a symlink that points to dst    * @throws SnapshotAccessControlException if path is in RO snapshot    * @deprecated See {@link #renameTo(String, String, boolean, Rename...)}    */
 annotation|@
 name|Deprecated
 DECL|method|unprotectedRenameTo (String src, String dst, long timestamp)
@@ -9123,7 +9123,7 @@ name|dsDelta
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**     * update quota of each inode and check to see if quota is exceeded.     * See {@link #updateCount(INode[], int, long, long, boolean)}    */
+comment|/**     * update quota of each inode and check to see if quota is exceeded.     * See {@link #updateCount(INodesInPath, long, long, boolean)}    */
 DECL|method|updateCountNoQuotaCheck (INodesInPath inodesInPath, int numOfINodes, long nsDelta, long dsDelta)
 specifier|private
 name|void
@@ -9544,7 +9544,7 @@ literal|1
 argument_list|)
 return|;
 block|}
-comment|/**    * Create a directory     * If ancestor directories do not exist, automatically create them.     * @param src string representation of the path to the directory    * @param permissions the permission of the directory    * @param isAutocreate if the permission of the directory should inherit    *                          from its parent or not. u+wx is implicitly added to    *                          the automatically created directories, and to the    *                          given directory if inheritPermission is true    * @param now creation time    * @return true if the operation succeeds false otherwise    * @throws FileNotFoundException if an ancestor or itself is a file    * @throws QuotaExceededException if directory creation violates     *                                any quota limit    * @throws UnresolvedLinkException if a symlink is encountered in src.                          * @throws SnapshotAccessControlException if path is in RO snapshot    */
+comment|/**    * Create a directory     * If ancestor directories do not exist, automatically create them.     * @param src string representation of the path to the directory    * @param permissions the permission of the directory    * @param inheritPermission if the permission of the directory should inherit    *                          from its parent or not. u+wx is implicitly added to    *                          the automatically created directories, and to the    *                          given directory if inheritPermission is true    * @param now creation time    * @return true if the operation succeeds false otherwise    * @throws QuotaExceededException if directory creation violates    *                                any quota limit    * @throws UnresolvedLinkException if a symlink is encountered in src.                          * @throws SnapshotAccessControlException if path is in RO snapshot    */
 DECL|method|mkdirs (String src, PermissionStatus permissions, boolean inheritPermission, long now)
 name|boolean
 name|mkdirs
@@ -10213,7 +10213,7 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-comment|/**    * Add the given child to the namespace.    * @param src The full path name of the child node.    * @throw QuotaExceededException is thrown if it violates quota limit    */
+comment|/**    * Add the given child to the namespace.    * @param src The full path name of the child node.    * @throws QuotaExceededException is thrown if it violates quota limit    */
 DECL|method|addINode (String src, INode child )
 specifier|private
 name|boolean
@@ -11042,7 +11042,7 @@ name|checkQuota
 argument_list|)
 return|;
 block|}
-comment|/** Add a node child to the inodes at index pos.     * Its ancestors are stored at [0, pos-1].    * @return false if the child with this name already exists;     *         otherwise return true;    * @throw QuotaExceededException is thrown if it violates quota limit    */
+comment|/** Add a node child to the inodes at index pos.     * Its ancestors are stored at [0, pos-1].    * @return false if the child with this name already exists;     *         otherwise return true;    * @throws QuotaExceededException is thrown if it violates quota limit    */
 DECL|method|addChild (INodesInPath iip, int pos, INode child, boolean checkQuota)
 specifier|private
 name|boolean
@@ -11878,7 +11878,7 @@ name|size
 argument_list|()
 return|;
 block|}
-comment|/**    * See {@link ClientProtocol#setQuota(String, long, long)} for the contract.    * Sets quota for for a directory.    * @returns INodeDirectory if any of the quotas have changed. null other wise.    * @throws FileNotFoundException if the path does not exist.    * @throws PathIsNotDirectoryException if the path is not a directory.    * @throws QuotaExceededException if the directory tree size is     *                                greater than the given quota    * @throws UnresolvedLinkException if a symlink is encountered in src.    * @throws SnapshotAccessControlException if path is in RO snapshot    */
+comment|/**    * See {@link ClientProtocol#setQuota(String, long, long)} for the contract.    * Sets quota for for a directory.    * @return INodeDirectory if any of the quotas have changed. null other wise.    * @throws FileNotFoundException if the path does not exist.    * @throws PathIsNotDirectoryException if the path is not a directory.    * @throws QuotaExceededException if the directory tree size is     *                                greater than the given quota    * @throws UnresolvedLinkException if a symlink is encountered in src.    * @throws SnapshotAccessControlException if path is in RO snapshot    */
 DECL|method|unprotectedSetQuota (String src, long nsQuota, long dsQuota)
 name|INodeDirectory
 name|unprotectedSetQuota

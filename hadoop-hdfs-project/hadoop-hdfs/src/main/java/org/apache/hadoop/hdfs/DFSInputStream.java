@@ -1922,7 +1922,7 @@ argument_list|()
 argument_list|)
 return|;
 block|}
-comment|/**    * Get block at the specified position.    * Fetch it from the namenode if not cached.    *     * @param offset    * @param updatePosition whether to update current position    * @return located block    * @throws IOException    */
+comment|/**    * Get block at the specified position.    * Fetch it from the namenode if not cached.    *     * @param offset block corresponding to this offset in file is returned    * @param updatePosition whether to update current position    * @return located block    * @throws IOException    */
 DECL|method|getBlockAt (long offset, boolean updatePosition)
 specifier|private
 specifier|synchronized
@@ -2200,7 +2200,7 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Get blocks in the specified range.    * Fetch them from the namenode if not cached. This function    * will not get a read request beyond the EOF.    * @param offset    * @param length    * @return consequent segment of located blocks    * @throws IOException    */
+comment|/**    * Get blocks in the specified range.    * Fetch them from the namenode if not cached. This function    * will not get a read request beyond the EOF.    * @param offset starting offset in file    * @param length length of data    * @return consequent segment of located blocks    * @throws IOException    */
 DECL|method|getBlockRange (long offset, long length)
 specifier|private
 specifier|synchronized
@@ -4015,7 +4015,7 @@ argument_list|()
 argument_list|)
 return|;
 block|}
-comment|/**    * Add corrupted block replica into map.    * @param corruptedBlockMap     */
+comment|/**    * Add corrupted block replica into map.    */
 DECL|method|addIntoCorruptedBlockMap (ExtendedBlock blk, DatanodeInfo node, Map<ExtendedBlock, Set<DatanodeInfo>> corruptedBlockMap)
 specifier|private
 name|void
@@ -5345,7 +5345,7 @@ block|}
 block|}
 block|}
 block|}
-comment|/**    * Like {@link #fetchBlockByteRange(LocatedBlock, long, long, byte[],    * int, Map)} except we start up a second, parallel, 'hedged' read    * if the first read is taking longer than configured amount of    * time.  We then wait on which ever read returns first.    *     * @param block    * @param start    * @param end    * @param buf    * @param offset    * @param corruptedBlockMap    * @throws IOException    */
+comment|/**    * Like {@link #fetchBlockByteRange(LocatedBlock, long, long, byte[],    * int, Map)} except we start up a second, parallel, 'hedged' read    * if the first read is taking longer than configured amount of    * time.  We then wait on which ever read returns first.    */
 DECL|method|hedgedFetchBlockByteRange (LocatedBlock block, long start, long end, byte[] buf, int offset, Map<ExtendedBlock, Set<DatanodeInfo>> corruptedBlockMap)
 specifier|private
 name|void

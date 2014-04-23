@@ -978,7 +978,7 @@ expr_stmt|;
 block|}
 block|}
 block|}
-comment|/**    * Find all editlog segments starting at or above the given txid.    * @param fromTxId the txnid which to start looking    * @param inProgressOk whether or not to include the in-progress edit log     *        segment           * @return a list of remote edit logs    * @throws IOException if edit logs cannot be listed.    */
+comment|/**    * Find all editlog segments starting at or above the given txid.    * @param firstTxId the txnid which to start looking    * @param inProgressOk whether or not to include the in-progress edit log     *        segment           * @return a list of remote edit logs    * @throws IOException if edit logs cannot be listed.    */
 DECL|method|getRemoteEditLogs (long firstTxId, boolean inProgressOk)
 specifier|public
 name|List

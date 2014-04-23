@@ -7082,7 +7082,7 @@ name|absF
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Get the difference between two snapshots, or between a snapshot and the    * current tree of a directory.    *     * @see DFSClient#getSnapshotDiffReport(Path, String, String)    */
+comment|/**    * Get the difference between two snapshots, or between a snapshot and the    * current tree of a directory.    *     * @see DFSClient#getSnapshotDiffReport(String, String, String)    */
 DECL|method|getSnapshotDiffReport (final Path snapshotDir, final String fromSnapshot, final String toSnapshot)
 specifier|public
 name|SnapshotDiffReport

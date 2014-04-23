@@ -1122,7 +1122,7 @@ return|return
 name|metadatas
 return|;
 block|}
-comment|/**    * Group the per-replica {@link VolumeId} info returned from    * {@link DFSClient#queryDatanodesForHdfsBlocksMetadata(Map)} to be associated    * with the corresponding {@link LocatedBlock}.    *     * @param blocks    *          Original LocatedBlock array    * @param metadatas    *          VolumeId information for the replicas on each datanode    * @return blockVolumeIds per-replica VolumeId information associated with the    *         parent LocatedBlock    */
+comment|/**    * Group the per-replica {@link VolumeId} info returned from    * {@link DFSClient#queryDatanodesForHdfsBlocksMetadata(Map)} to be    * associated    * with the corresponding {@link LocatedBlock}.    *     * @param blocks    *          Original LocatedBlock array    * @param metadatas    *          VolumeId information for the replicas on each datanode    * @return blockVolumeIds per-replica VolumeId information associated with the    *         parent LocatedBlock    */
 DECL|method|associateVolumeIdsWithBlocks ( List<LocatedBlock> blocks, Map<DatanodeInfo, HdfsBlocksMetadata> metadatas)
 specifier|static
 name|Map

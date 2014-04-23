@@ -198,7 +198,7 @@ name|writer
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Copy constructor.    * @param from    */
+comment|/**    * Copy constructor.    * @param from where to copy from    */
 DECL|method|ReplicaBeingWritten (ReplicaBeingWritten from)
 specifier|public
 name|ReplicaBeingWritten

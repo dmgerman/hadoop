@@ -4621,7 +4621,7 @@ argument_list|()
 operator|)
 return|;
 block|}
-comment|/**      * enqueue the seqno that is still be to acked by the downstream datanode.      * @param seqno      * @param lastPacketInBlock      * @param offsetInBlock      */
+comment|/**      * enqueue the seqno that is still be to acked by the downstream datanode.      * @param seqno sequence number of the packet      * @param lastPacketInBlock if true, this is the last packet in block      * @param offsetInBlock offset of this packet in block      */
 DECL|method|enqueue (final long seqno, final boolean lastPacketInBlock, final long offsetInBlock, final Status ackStatus)
 name|void
 name|enqueue

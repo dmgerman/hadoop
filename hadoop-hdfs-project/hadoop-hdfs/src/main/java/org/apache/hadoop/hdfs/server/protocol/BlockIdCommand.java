@@ -79,7 +79,7 @@ name|long
 name|blockIds
 index|[]
 decl_stmt|;
-comment|/**    * Create BlockCommand for the given action    * @param blocks blocks related to the action    */
+comment|/**    * Create BlockCommand for the given action    */
 DECL|method|BlockIdCommand (int action, String poolId, long[] blockIds)
 specifier|public
 name|BlockIdCommand

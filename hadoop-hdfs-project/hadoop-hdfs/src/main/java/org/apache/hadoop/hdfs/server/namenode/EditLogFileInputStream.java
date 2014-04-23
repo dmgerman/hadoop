@@ -551,7 +551,7 @@ literal|false
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Open an EditLogInputStream for the given file.    * @param name filename to open    * @param firstTxId first transaction found in file    * @param lastTxId last transaction id found in file    * @throws LogHeaderCorruptException if the header is either missing or    *         appears to be corrupt/truncated    * @throws IOException if an actual IO error occurs while reading the    *         header    */
+comment|/**    * Open an EditLogInputStream for the given file.    * @param name filename to open    * @param firstTxId first transaction found in file    * @param lastTxId last transaction id found in file    */
 DECL|method|EditLogFileInputStream (File name, long firstTxId, long lastTxId, boolean isInProgress)
 specifier|public
 name|EditLogFileInputStream

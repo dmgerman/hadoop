@@ -750,7 +750,7 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-comment|/**      * Check if the available space on all the volumes is roughly equal.      *       * @param volumes the volumes to check      * @return true if all volumes' free space is within the configured threshold,      *         false otherwise.      * @throws IOException      *           in the event of error checking amount of available space      */
+comment|/**      * @return true if all volumes' free space is within the      *         configured threshold, false otherwise.      */
 DECL|method|areAllVolumesWithinFreeSpaceThreshold ()
 specifier|public
 name|boolean

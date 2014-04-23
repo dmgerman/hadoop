@@ -1345,7 +1345,7 @@ argument_list|)
 argument_list|)
 return|;
 block|}
-comment|/**    * Initialize SecondaryNameNode.    * @param commandLineOpts    */
+comment|/**    * Initialize SecondaryNameNode.    */
 DECL|method|initialize (final Configuration conf, CommandLineOpts commandLineOpts)
 specifier|private
 name|void

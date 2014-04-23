@@ -2492,7 +2492,7 @@ name|logSync
 argument_list|()
 expr_stmt|;
 block|}
-comment|/**    * Wait if an automatic sync is scheduled    * @throws InterruptedException    */
+comment|/**    * Wait if an automatic sync is scheduled    */
 DECL|method|waitIfAutoSyncScheduled ()
 specifier|synchronized
 name|void
@@ -3959,7 +3959,7 @@ name|op
 argument_list|)
 expr_stmt|;
 block|}
-comment|/** Add set namespace quota record to edit log    *     * @param src the string representation of the path to a directory    * @param quota the directory size limit    */
+comment|/** Add set namespace quota record to edit log    *     * @param src the string representation of the path to a directory    * @param nsQuota namespace quota    * @param dsQuota diskspace quota    */
 DECL|method|logSetQuota (String src, long nsQuota, long dsQuota)
 name|void
 name|logSetQuota
@@ -6647,7 +6647,7 @@ literal|true
 argument_list|)
 return|;
 block|}
-comment|/**    * Select a list of input streams.    *     * @param fromTxId first transaction in the selected streams    * @param toAtLeast the selected streams must contain this transaction    * @param inProgessOk set to true if in-progress streams are OK    */
+comment|/**    * Select a list of input streams.    *     * @param fromTxId first transaction in the selected streams    * @param toAtLeastTxId the selected streams must contain this transaction    * @param recovery recovery context    * @param inProgressOk set to true if in-progress streams are OK    */
 DECL|method|selectInputStreams ( long fromTxId, long toAtLeastTxId, MetaRecoveryContext recovery, boolean inProgressOk)
 specifier|public
 specifier|synchronized

@@ -1867,7 +1867,7 @@ name|component
 argument_list|)
 return|;
 block|}
-comment|/**    * Returns if the component is reserved.    *     *<p>    * Note that some components are only reserved under certain directories, e.g.    * "/.reserved" is reserved, while "/hadoop/.reserved" is not.    *     * @param component    * @return if the component is reserved    */
+comment|/**    * Returns if the component is reserved.    *     *<p>    * Note that some components are only reserved under certain directories, e.g.    * "/.reserved" is reserved, while "/hadoop/.reserved" is not.    * @return true, if the component is reserved    */
 DECL|method|isReservedPathComponent (String component)
 specifier|public
 specifier|static
@@ -5104,7 +5104,7 @@ else|:
 literal|null
 return|;
 block|}
-comment|/**    * return server http or https address from the configuration for a    * given namenode rpc address.    * @param conf    * @param namenodeAddr - namenode RPC address    * @param scheme - the scheme (http / https)    * @return server http or https address    * @throws IOException     */
+comment|/**    * return server http or https address from the configuration for a    * given namenode rpc address.    * @param namenodeAddr - namenode RPC address    * @param conf configuration    * @param scheme - the scheme (http / https)    * @return server http or https address    * @throws IOException     */
 DECL|method|getInfoServer (InetSocketAddress namenodeAddr, Configuration conf, String scheme)
 specifier|public
 specifier|static
@@ -6277,7 +6277,7 @@ name|namenodeId
 block|}
 return|;
 block|}
-comment|/**    * For given set of {@code keys} adds nameservice Id and or namenode Id    * and returns {nameserviceId, namenodeId} when address match is found.    * @see #getSuffixIDs(Configuration, String, AddressMatcher)    */
+comment|/**    * For given set of {@code keys} adds nameservice Id and or namenode Id    * and returns {nameserviceId, namenodeId} when address match is found.    * @see #getSuffixIDs(Configuration, String, String, String, AddressMatcher)    */
 DECL|method|getSuffixIDs (final Configuration conf, final InetSocketAddress address, final String... keys)
 specifier|static
 name|String
@@ -6930,7 +6930,7 @@ return|return
 name|blocksReplWorkMultiplier
 return|;
 block|}
-comment|/**    * Get SPNEGO keytab Key from configuration    *     * @param conf    *          Configuration    * @param defaultKey    * @return DFS_WEB_AUTHENTICATION_KERBEROS_KEYTAB_KEY if the key is not empty    *         else return defaultKey    */
+comment|/**    * Get SPNEGO keytab Key from configuration    *     * @param conf Configuration    * @param defaultKey default key to be used for config lookup    * @return DFS_WEB_AUTHENTICATION_KERBEROS_KEYTAB_KEY if the key is not empty    *         else return defaultKey    */
 DECL|method|getSpnegoKeytabKey (Configuration conf, String defaultKey)
 specifier|public
 specifier|static

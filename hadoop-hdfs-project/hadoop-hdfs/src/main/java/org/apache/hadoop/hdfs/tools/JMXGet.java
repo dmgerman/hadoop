@@ -973,7 +973,7 @@ name|opts
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * @param msg    */
+comment|/**    * @param msg error message    */
 DECL|method|err (String msg)
 specifier|private
 specifier|static
@@ -1243,7 +1243,6 @@ return|return
 name|commandLine
 return|;
 block|}
-comment|/**    * main    *     * @param args    */
 DECL|method|main (String[] args)
 specifier|public
 specifier|static

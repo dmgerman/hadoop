@@ -4318,7 +4318,7 @@ name|data
 init|=
 literal|null
 decl_stmt|;
-comment|/**      * An input stream of size l with repeated bytes      * @param l      * @param iRepeatedData      */
+comment|/**      * An input stream of size l with repeated bytes      * @param l size of the stream      * @param iRepeatedData byte that is repeated in the stream      */
 DECL|method|SimulatedInputStream (long l, byte iRepeatedData)
 name|SimulatedInputStream
 parameter_list|(
@@ -4338,7 +4338,7 @@ operator|=
 name|iRepeatedData
 expr_stmt|;
 block|}
-comment|/**      * An input stream of of the supplied data      *       * @param iData      */
+comment|/**      * An input stream of of the supplied data      * @param iData data to construct the stream      */
 DECL|method|SimulatedInputStream (byte[] iData)
 name|SimulatedInputStream
 parameter_list|(
@@ -4358,7 +4358,7 @@ operator|.
 name|length
 expr_stmt|;
 block|}
-comment|/**      *       * @return the lenght of the input stream      */
+comment|/**      * @return the lenght of the input stream      */
 DECL|method|getLength ()
 name|long
 name|getLength

@@ -262,7 +262,7 @@ argument_list|)
 operator|)
 return|;
 block|}
-comment|/**    * Parse the list of AclEntry and returns aclspec.    *     * @param List<AclEntry>    * @return String    */
+comment|/**    * @return parse {@code aclEntry} and return aclspec    */
 DECL|method|parseAclSpec (List<AclEntry> aclEntry)
 specifier|private
 specifier|static

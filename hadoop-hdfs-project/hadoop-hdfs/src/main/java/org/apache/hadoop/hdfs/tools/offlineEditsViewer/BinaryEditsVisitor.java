@@ -162,7 +162,7 @@ specifier|private
 name|EditLogFileOutputStream
 name|elfos
 decl_stmt|;
-comment|/**    * Create a processor that writes to a given file    *    * @param filename Name of file to write output to    */
+comment|/**    * Create a processor that writes to a given file    * @param outputName Name of file to write output to    */
 DECL|method|BinaryEditsVisitor (String outputName)
 specifier|public
 name|BinaryEditsVisitor

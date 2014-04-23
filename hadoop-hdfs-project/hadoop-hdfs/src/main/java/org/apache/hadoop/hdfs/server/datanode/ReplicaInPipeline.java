@@ -347,7 +347,7 @@ operator|=
 name|writer
 expr_stmt|;
 block|}
-comment|/**    * Copy constructor.    * @param from    */
+comment|/**    * Copy constructor.    * @param from where to copy from    */
 DECL|method|ReplicaInPipeline (ReplicaInPipeline from)
 specifier|public
 name|ReplicaInPipeline

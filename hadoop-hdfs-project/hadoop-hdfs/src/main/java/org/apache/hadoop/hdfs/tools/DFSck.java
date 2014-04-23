@@ -549,7 +549,6 @@ name|out
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * @param args    */
 annotation|@
 name|Override
 DECL|method|run (final String[] args)

@@ -475,7 +475,7 @@ return|return
 name|mappableBlock
 return|;
 block|}
-comment|/**    * Verifies the block's checksum. This is an I/O intensive operation.    * @return if the block was successfully checksummed.    */
+comment|/**    * Verifies the block's checksum. This is an I/O intensive operation.    */
 DECL|method|verifyChecksum (long length, FileInputStream metaIn, FileChannel blockChannel, String blockFileName)
 specifier|private
 specifier|static

@@ -327,7 +327,7 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-comment|/**    * choose<i>numOfReplicas</i> data nodes for<i>writer</i>     * to re-replicate a block with size<i>blocksize</i>     * If not, return as many as we can.    *    * @param srcPath the file to which this chooseTargets is being invoked.    * @param numOfReplicas additional number of replicas wanted.    * @param writer the writer's machine, null if not in the cluster.    * @param chosenNodes datanodes that have been chosen as targets.    * @param returnChosenNodes decide if the chosenNodes are returned.    * @param excludedNodes datanodes that should not be considered as targets.    * @param blocksize size of the data to be written.    * @return array of DatanodeDescriptor instances chosen as target    * and sorted as a pipeline.    */
+comment|/**    * choose<i>numOfReplicas</i> data nodes for<i>writer</i>     * to re-replicate a block with size<i>blocksize</i>     * If not, return as many as we can.    *    * @param srcPath the file to which this chooseTargets is being invoked.    * @param numOfReplicas additional number of replicas wanted.    * @param writer the writer's machine, null if not in the cluster.    * @param chosen datanodes that have been chosen as targets.    * @param returnChosenNodes decide if the chosenNodes are returned.    * @param excludedNodes datanodes that should not be considered as targets.    * @param blocksize size of the data to be written.    * @return array of DatanodeDescriptor instances chosen as target    * and sorted as a pipeline.    */
 DECL|method|chooseTarget (String srcPath, int numOfReplicas, Node writer, List<DatanodeStorageInfo> chosen, boolean returnChosenNodes, Set<Node> excludedNodes, long blocksize, StorageType storageType)
 specifier|public
 specifier|abstract
@@ -366,7 +366,7 @@ name|StorageType
 name|storageType
 parameter_list|)
 function_decl|;
-comment|/**    * Same as {@link #chooseTarget(String, int, Node, List, boolean,     * Set, long)} with added parameter {@code favoredDatanodes}    * @param favoredNodes datanodes that should be favored as targets. This    *          is only a hint and due to cluster state, namenode may not be     *          able to place the blocks on these datanodes.    */
+comment|/**    * Same as {@link #chooseTarget(String, int, Node, Set, long, List, StorageType)}    * with added parameter {@code favoredDatanodes}    * @param favoredNodes datanodes that should be favored as targets. This    *          is only a hint and due to cluster state, namenode may not be     *          able to place the blocks on these datanodes.    */
 DECL|method|chooseTarget (String src, int numOfReplicas, Node writer, Set<Node> excludedNodes, long blocksize, List<DatanodeDescriptor> favoredNodes, StorageType storageType)
 name|DatanodeStorageInfo
 index|[]
@@ -494,7 +494,7 @@ name|NetworkTopology
 name|clusterMap
 parameter_list|)
 function_decl|;
-comment|/**    * Get an instance of the configured Block Placement Policy based on the    * the configuration property {@link DFS_BLOCK_REPLICATOR_CLASSNAME_KEY}.    *     * @param conf the configuration to be used    * @param stats an object that is used to retrieve the load on the cluster    * @param clusterMap the network topology of the cluster    * @return an instance of BlockPlacementPolicy    */
+comment|/**    * Get an instance of the configured Block Placement Policy based on the    * the configuration property    * {@link  DFSConfigKeys#DFS_BLOCK_REPLICATOR_CLASSNAME_KEY}.    *     * @param conf the configuration to be used    * @param stats an object that is used to retrieve the load on the cluster    * @param clusterMap the network topology of the cluster    * @return an instance of BlockPlacementPolicy    */
 DECL|method|getInstance (Configuration conf, FSClusterStats stats, NetworkTopology clusterMap)
 specifier|public
 specifier|static
@@ -704,7 +704,7 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-comment|/**    * Get rack string from a data node    * @param datanode    * @return rack of data node    */
+comment|/**    * Get rack string from a data node    * @return rack of data node    */
 DECL|method|getRack (final DatanodeInfo datanode)
 specifier|protected
 name|String
@@ -722,7 +722,7 @@ name|getNetworkLocation
 argument_list|()
 return|;
 block|}
-comment|/**    * Split data nodes into two sets, one set includes nodes on rack with    * more than one  replica, the other set contains the remaining nodes.    *     * @param dataNodes    * @param rackMap a map from rack to datanodes    * @param moreThanOne contains nodes on rack with more than one replica    * @param exactlyOne remains contains the remaining nodes    */
+comment|/**    * Split data nodes into two sets, one set includes nodes on rack with    * more than one  replica, the other set contains the remaining nodes.    *     * @param dataNodes datanodes to be split into two sets    * @param rackMap a map from rack to datanodes    * @param moreThanOne contains nodes on rack with more than one replica    * @param exactlyOne remains contains the remaining nodes    */
 DECL|method|splitNodesWithRack ( Collection<DatanodeDescriptor> dataNodes, final Map<String, List<DatanodeDescriptor>> rackMap, final List<DatanodeDescriptor> moreThanOne, final List<DatanodeDescriptor> exactlyOne)
 specifier|public
 name|void

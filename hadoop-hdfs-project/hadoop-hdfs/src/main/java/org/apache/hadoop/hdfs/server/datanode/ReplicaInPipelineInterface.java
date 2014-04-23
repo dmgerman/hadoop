@@ -91,7 +91,7 @@ name|long
 name|getBytesAcked
 parameter_list|()
 function_decl|;
-comment|/**    * Set the number bytes that have acked    * @param bytesAcked    */
+comment|/**    * Set the number bytes that have acked    * @param bytesAcked number bytes acked    */
 DECL|method|setBytesAcked (long bytesAcked)
 name|void
 name|setBytesAcked

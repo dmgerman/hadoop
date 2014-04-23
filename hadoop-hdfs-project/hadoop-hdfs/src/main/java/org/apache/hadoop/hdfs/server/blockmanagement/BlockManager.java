@@ -2961,7 +2961,7 @@ return|return
 name|maxReplicationStreams
 return|;
 block|}
-comment|/**    * @param block    * @return true if the block has minimum replicas    */
+comment|/**    * @return true if the block has minimum replicas    */
 DECL|method|checkMinReplication (Block block)
 specifier|public
 name|boolean
@@ -15576,7 +15576,7 @@ block|}
 block|}
 block|}
 block|}
-comment|/**    * Compute block replication and block invalidation work that can be scheduled    * on data-nodes. The datanode will be informed of this work at the next    * heartbeat.    *     * @return number of blocks scheduled for replication or removal.    * @throws IOException    */
+comment|/**    * Compute block replication and block invalidation work that can be scheduled    * on data-nodes. The datanode will be informed of this work at the next    * heartbeat.    *     * @return number of blocks scheduled for replication or removal.    */
 DECL|method|computeDatanodeWork ()
 name|int
 name|computeDatanodeWork

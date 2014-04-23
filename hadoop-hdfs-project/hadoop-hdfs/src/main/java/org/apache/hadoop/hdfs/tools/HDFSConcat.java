@@ -117,7 +117,6 @@ name|def_uri
 init|=
 literal|"hdfs://localhost:9000"
 decl_stmt|;
-comment|/**    * @param args    */
 DECL|method|main (String... args)
 specifier|public
 specifier|static

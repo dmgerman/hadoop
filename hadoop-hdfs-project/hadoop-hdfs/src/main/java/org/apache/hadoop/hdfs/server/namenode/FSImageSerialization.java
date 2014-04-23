@@ -1199,7 +1199,7 @@ return|return
 name|bytes
 return|;
 block|}
-comment|/**    * Reading the path from the image and converting it to byte[][] directly    * this saves us an array copy and conversions to and from String    * @param in    * @return the array each element of which is a byte[] representation     *            of a path component    * @throws IOException    */
+comment|/**    * Reading the path from the image and converting it to byte[][] directly    * this saves us an array copy and conversions to and from String    * @param in input to read from    * @return the array each element of which is a byte[] representation     *            of a path component    * @throws IOException    */
 annotation|@
 name|SuppressWarnings
 argument_list|(

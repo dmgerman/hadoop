@@ -2069,7 +2069,7 @@ return|return
 name|nodeToUpdate
 return|;
 block|}
-comment|/**    * Breaks file path into components.    * @param path    * @return array of byte arrays each of which represents     * a single path component.    */
+comment|/**    * Breaks {@code path} into components.    * @return array of byte arrays each of which represents    * a single path component.    */
 DECL|method|getPathComponents (String path)
 specifier|static
 name|byte
@@ -2172,7 +2172,7 @@ return|return
 name|bytes
 return|;
 block|}
-comment|/**    * Splits an absolute path into an array of path components.    * @param path    * @throws AssertionError if the given path is invalid.    * @return array of path components.    */
+comment|/**    * Splits an absolute {@code path} into an array of path components.    * @throws AssertionError if the given path is invalid.    * @return array of path components.    */
 DECL|method|getPathNames (String path)
 specifier|static
 name|String

@@ -848,7 +848,7 @@ name|gs
 argument_list|)
 return|;
 block|}
-comment|/**    * Returns a clone of a replica stored in data-node memory.    * Should be primarily used for testing.    * @param blockId    * @return    */
+comment|/**    * This should be primarily used for testing.    * @return clone of replica store in datanode memory    */
 DECL|method|fetchReplicaInfo (String bpid, long blockId)
 name|ReplicaInfo
 name|fetchReplicaInfo
@@ -8023,7 +8023,7 @@ argument_list|()
 argument_list|)
 return|;
 block|}
-comment|/** static version of {@link #initReplicaRecovery(Block, long)}. */
+comment|/** static version of {@link #initReplicaRecovery(RecoveringBlock)}. */
 DECL|method|initReplicaRecovery (String bpid, ReplicaMap map, Block block, long recoveryId, long xceiverStopTimeout)
 specifier|static
 name|ReplicaRecoveryInfo

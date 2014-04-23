@@ -512,7 +512,7 @@ return|return
 literal|false
 return|;
 block|}
-comment|/**    * Get a list of the datanodes which this block is cached,    * planned to be cached, or planned to be uncached on.    *    * @param type      If null, this parameter is ignored.    *                  If it is non-null, we match only datanodes which    *                  have it on this list.    *                  See {@link DatanodeDescriptor#CachedBlocksList#Type}    *                  for a description of all the lists.    *                      * @return          The list of datanodes.  Modifying this list does not    *                  alter the state of the CachedBlock.    */
+comment|/**    * Get a list of the datanodes which this block is cached,    * planned to be cached, or planned to be uncached on.    *    * @param type      If null, this parameter is ignored.    *                  If it is non-null, we match only datanodes which    *                  have it on this list.    *                  See {@link DatanodeDescriptor.CachedBlocksList.Type}    *                  for a description of all the lists.    *                      * @return          The list of datanodes.  Modifying this list does not    *                  alter the state of the CachedBlock.    */
 DECL|method|getDatanodes (Type type)
 specifier|public
 name|List

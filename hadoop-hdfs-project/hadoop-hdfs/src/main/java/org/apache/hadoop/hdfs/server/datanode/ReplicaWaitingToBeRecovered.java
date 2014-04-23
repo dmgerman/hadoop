@@ -164,7 +164,7 @@ name|dir
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Copy constructor.    * @param from    */
+comment|/**    * Copy constructor.    * @param from where to copy from    */
 DECL|method|ReplicaWaitingToBeRecovered (ReplicaWaitingToBeRecovered from)
 specifier|public
 name|ReplicaWaitingToBeRecovered

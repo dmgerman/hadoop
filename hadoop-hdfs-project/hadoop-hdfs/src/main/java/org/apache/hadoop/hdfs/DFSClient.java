@@ -8319,7 +8319,7 @@ return|return
 name|result
 return|;
 block|}
-comment|/**    * Set replication for an existing file.    * @param src file name    * @param replication    *     * @see ClientProtocol#setReplication(String, short)    */
+comment|/**    * Set replication for an existing file.    * @param src file name    * @param replication replication to set the file to    *     * @see ClientProtocol#setReplication(String, short)    */
 DECL|method|setReplication (String src, short replication)
 specifier|public
 name|boolean
@@ -10420,7 +10420,7 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-comment|/**    * Set permissions to a file or directory.    * @param src path name.    * @param permission    *     * @see ClientProtocol#setPermission(String, FsPermission)    */
+comment|/**    * Set permissions to a file or directory.    * @param src path name.    * @param permission permission to set to    *     * @see ClientProtocol#setPermission(String, FsPermission)    */
 DECL|method|setPermission (String src, FsPermission permission)
 specifier|public
 name|void

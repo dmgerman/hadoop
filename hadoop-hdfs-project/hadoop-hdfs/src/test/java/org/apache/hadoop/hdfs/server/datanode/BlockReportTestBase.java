@@ -1148,7 +1148,7 @@ return|return
 name|reports
 return|;
 block|}
-comment|/**    * Utility routine to send block reports to the NN, either in a single call    * or reporting one storage per call.    *    * @param dnR    * @param poolId    * @param reports    * @throws IOException    */
+comment|/**    * Utility routine to send block reports to the NN, either in a single call    * or reporting one storage per call.    *    * @throws IOException    */
 DECL|method|sendBlockReports (DatanodeRegistration dnR, String poolId, StorageBlockReport[] reports)
 specifier|protected
 specifier|abstract

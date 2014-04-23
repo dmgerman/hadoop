@@ -73,7 +73,7 @@ specifier|final
 name|int
 name|action
 decl_stmt|;
-comment|/**    * Create a command for the specified action.    * Actions are protocol specific.    *     * @see DatanodeProtocol    * @see NamenodeProtocol    * @param action    */
+comment|/**    * Create a command for the specified action.    * Actions are protocol specific.    *     * @see DatanodeProtocol    * @see NamenodeProtocol    * @param action protocol specific action    */
 DECL|method|ServerCommand (int action)
 specifier|public
 name|ServerCommand

@@ -272,7 +272,6 @@ return|return
 name|posteriorDiff
 return|;
 block|}
-comment|/** @return the posterior diff. */
 DECL|method|setPosterior (D posterior)
 specifier|final
 name|void
