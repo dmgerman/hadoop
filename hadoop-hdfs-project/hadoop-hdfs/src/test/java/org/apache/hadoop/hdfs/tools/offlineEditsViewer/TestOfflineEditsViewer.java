@@ -376,9 +376,6 @@ name|b
 init|=
 name|ImmutableSet
 operator|.
-expr|<
-name|FSEditLogOpCodes
-operator|>
 name|builder
 argument_list|()
 decl_stmt|;

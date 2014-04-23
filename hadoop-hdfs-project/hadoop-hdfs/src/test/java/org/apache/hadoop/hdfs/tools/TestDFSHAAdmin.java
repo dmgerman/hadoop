@@ -2632,9 +2632,6 @@ block|{
 return|return
 name|Mockito
 operator|.
-expr|<
-name|StateChangeRequestInfo
-operator|>
 name|any
 argument_list|()
 return|;

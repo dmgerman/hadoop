@@ -2843,9 +2843,6 @@ name|aclSpec
 init|=
 name|Lists
 operator|.
-expr|<
-name|AclEntry
-operator|>
 name|newArrayList
 argument_list|()
 decl_stmt|;
@@ -6761,9 +6758,6 @@ name|aclSpec
 init|=
 name|Lists
 operator|.
-expr|<
-name|AclEntry
-operator|>
 name|newArrayList
 argument_list|()
 decl_stmt|;

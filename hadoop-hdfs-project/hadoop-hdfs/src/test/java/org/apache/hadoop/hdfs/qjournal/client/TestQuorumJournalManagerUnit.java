@@ -1685,9 +1685,6 @@ name|slowLog
 init|=
 name|SettableFuture
 operator|.
-expr|<
-name|Void
-operator|>
 name|create
 argument_list|()
 decl_stmt|;

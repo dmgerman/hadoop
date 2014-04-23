@@ -3633,9 +3633,6 @@ block|{
 return|return
 name|Mockito
 operator|.
-expr|<
-name|File
-operator|>
 name|argThat
 argument_list|(
 operator|new

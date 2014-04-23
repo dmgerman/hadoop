@@ -635,9 +635,6 @@ name|currentlyDownloadingCheckpoints
 init|=
 name|Collections
 operator|.
-expr|<
-name|Long
-operator|>
 name|synchronizedSet
 argument_list|(
 operator|new

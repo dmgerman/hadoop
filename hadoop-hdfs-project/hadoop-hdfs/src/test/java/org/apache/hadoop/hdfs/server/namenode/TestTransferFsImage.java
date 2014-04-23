@@ -431,9 +431,6 @@ name|localPath
 init|=
 name|Collections
 operator|.
-expr|<
-name|File
-operator|>
 name|singletonList
 argument_list|(
 operator|new

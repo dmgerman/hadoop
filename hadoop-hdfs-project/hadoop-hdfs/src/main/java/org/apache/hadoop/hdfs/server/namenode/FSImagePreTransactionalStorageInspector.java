@@ -1273,9 +1273,6 @@ expr_stmt|;
 return|return
 name|Collections
 operator|.
-expr|<
-name|File
-operator|>
 name|emptyList
 argument_list|()
 return|;
