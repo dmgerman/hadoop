@@ -4408,13 +4408,8 @@ argument_list|>
 name|getDecommissioningNodes
 parameter_list|()
 block|{
-name|namesystem
-operator|.
-name|readLock
-argument_list|()
-expr_stmt|;
-try|try
-block|{
+comment|// There is no need to take namesystem reader lock as
+comment|// getDatanodeListForReport will synchronize on datanodeMap
 specifier|final
 name|List
 argument_list|<
@@ -4471,15 +4466,6 @@ block|}
 return|return
 name|decommissioningNodes
 return|;
-block|}
-finally|finally
-block|{
-name|namesystem
-operator|.
-name|readUnlock
-argument_list|()
-expr_stmt|;
-block|}
 block|}
 comment|/* Getter and Setter for stale DataNodes related attributes */
 comment|/**    * Whether stale datanodes should be avoided as targets on the write path.    * The result of this function may change if the number of stale datanodes    * eclipses a configurable threshold.    *     * @return whether stale datanodes should be avoided on the write path    */
@@ -4589,13 +4575,8 @@ literal|"Both live and dead lists are null"
 argument_list|)
 throw|;
 block|}
-name|namesystem
-operator|.
-name|readLock
-argument_list|()
-expr_stmt|;
-try|try
-block|{
+comment|// There is no need to take namesystem reader lock as
+comment|// getDatanodeListForReport will synchronize on datanodeMap
 specifier|final
 name|List
 argument_list|<
@@ -4660,15 +4641,6 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-block|}
-block|}
-finally|finally
-block|{
-name|namesystem
-operator|.
-name|readUnlock
-argument_list|()
-expr_stmt|;
 block|}
 if|if
 condition|(
