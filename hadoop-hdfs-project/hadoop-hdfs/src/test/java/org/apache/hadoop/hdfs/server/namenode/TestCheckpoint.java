@@ -12075,12 +12075,12 @@ argument_list|()
 decl_stmt|;
 for|for
 control|(
-name|URI
+name|String
 name|u
 range|:
 name|secondary
 operator|.
-name|getCheckpointDirs
+name|getCheckpointDirectories
 argument_list|()
 control|)
 block|{
@@ -12090,7 +12090,12 @@ init|=
 operator|new
 name|File
 argument_list|(
+name|URI
+operator|.
+name|create
+argument_list|(
 name|u
+argument_list|)
 operator|.
 name|getPath
 argument_list|()
