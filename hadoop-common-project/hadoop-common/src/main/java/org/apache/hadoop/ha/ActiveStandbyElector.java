@@ -473,13 +473,6 @@ operator|.
 name|class
 argument_list|)
 decl_stmt|;
-DECL|field|NUM_RETRIES
-specifier|static
-name|int
-name|NUM_RETRIES
-init|=
-literal|3
-decl_stmt|;
 DECL|field|SLEEP_AFTER_FAILURE_TO_BECOME_ACTIVE
 specifier|private
 specifier|static
@@ -625,6 +618,12 @@ specifier|final
 name|String
 name|znodeWorkingDir
 decl_stmt|;
+DECL|field|maxRetryNum
+specifier|private
+specifier|final
+name|int
+name|maxRetryNum
+decl_stmt|;
 DECL|field|sessionReestablishLockForTests
 specifier|private
 name|Lock
@@ -640,7 +639,7 @@ name|boolean
 name|wantToBeInElection
 decl_stmt|;
 comment|/**    * Create a new ActiveStandbyElector object<br/>    * The elector is created by providing to it the Zookeeper configuration, the    * parent znode under which to create the znode and a reference to the    * callback interface.<br/>    * The parent znode name must be the same for all service instances and    * different across services.<br/>    * After the leader has been lost, a new leader will be elected after the    * session timeout expires. Hence, the app must set this parameter based on    * its needs for failure response time. The session timeout must be greater    * than the Zookeeper disconnect timeout and is recommended to be 3X that    * value to enable Zookeeper to retry transient disconnections. Setting a very    * short session timeout may result in frequent transitions between active and    * standby states during issues like network outages/GS pauses.    *     * @param zookeeperHostPorts    *          ZooKeeper hostPort for all ZooKeeper servers    * @param zookeeperSessionTimeout    *          ZooKeeper session timeout    * @param parentZnodeName    *          znode under which to create the lock    * @param acl    *          ZooKeeper ACL's    * @param authInfo a list of authentication credentials to add to the    *                 ZK connection    * @param app    *          reference to callback interface object    * @throws IOException    * @throws HadoopIllegalArgumentException    */
-DECL|method|ActiveStandbyElector (String zookeeperHostPorts, int zookeeperSessionTimeout, String parentZnodeName, List<ACL> acl, List<ZKAuthInfo> authInfo, ActiveStandbyElectorCallback app)
+DECL|method|ActiveStandbyElector (String zookeeperHostPorts, int zookeeperSessionTimeout, String parentZnodeName, List<ACL> acl, List<ZKAuthInfo> authInfo, ActiveStandbyElectorCallback app, int maxRetryNum)
 specifier|public
 name|ActiveStandbyElector
 parameter_list|(
@@ -667,6 +666,9 @@ name|authInfo
 parameter_list|,
 name|ActiveStandbyElectorCallback
 name|app
+parameter_list|,
+name|int
+name|maxRetryNum
 parameter_list|)
 throws|throws
 name|IOException
@@ -745,6 +747,12 @@ operator|+
 literal|"/"
 operator|+
 name|BREADCRUMB_FILENAME
+expr_stmt|;
+name|this
+operator|.
+name|maxRetryNum
+operator|=
+name|maxRetryNum
 expr_stmt|;
 comment|// createConnection for future API calls
 name|createConnection
@@ -1471,7 +1479,7 @@ if|if
 condition|(
 name|createRetryCount
 operator|<
-name|NUM_RETRIES
+name|maxRetryNum
 condition|)
 block|{
 name|LOG
@@ -1681,7 +1689,7 @@ if|if
 condition|(
 name|statRetryCount
 operator|<
-name|NUM_RETRIES
+name|maxRetryNum
 condition|)
 block|{
 operator|++
@@ -2398,7 +2406,7 @@ name|success
 operator|&&
 name|connectionRetryCount
 operator|<
-name|NUM_RETRIES
+name|maxRetryNum
 condition|)
 block|{
 name|LOG
@@ -3432,7 +3440,6 @@ expr_stmt|;
 block|}
 DECL|method|zkDoWithRetries (ZKAction<T> action)
 specifier|private
-specifier|static
 parameter_list|<
 name|T
 parameter_list|>
@@ -3488,7 +3495,7 @@ operator|&&
 operator|++
 name|retry
 operator|<
-name|NUM_RETRIES
+name|maxRetryNum
 condition|)
 block|{
 continue|continue;

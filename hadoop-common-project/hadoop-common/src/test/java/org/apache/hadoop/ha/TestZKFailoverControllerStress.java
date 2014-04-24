@@ -60,6 +60,20 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|fs
+operator|.
+name|CommonConfigurationKeys
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|util
 operator|.
 name|Shell
@@ -617,11 +631,16 @@ operator|.
 name|monitorHealth
 argument_list|()
 expr_stmt|;
-name|ActiveStandbyElector
+name|conf
 operator|.
-name|NUM_RETRIES
-operator|=
+name|setInt
+argument_list|(
+name|CommonConfigurationKeys
+operator|.
+name|HA_FC_ELECTOR_ZK_OP_RETRIES_KEY
+argument_list|,
 literal|100
+argument_list|)
 expr_stmt|;
 comment|// Don't start until after the above mocking. Otherwise we can get
 comment|// Mockito errors if the HM calls the proxy in the middle of

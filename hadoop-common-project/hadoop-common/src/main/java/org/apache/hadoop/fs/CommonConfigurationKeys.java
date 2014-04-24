@@ -641,6 +641,25 @@ name|HA_FC_GRACEFUL_FENCE_CONNECTION_RETRIES_DEFAULT
 init|=
 literal|1
 decl_stmt|;
+comment|/** number of zookeeper operation retry times in ActiveStandbyElector */
+DECL|field|HA_FC_ELECTOR_ZK_OP_RETRIES_KEY
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|HA_FC_ELECTOR_ZK_OP_RETRIES_KEY
+init|=
+literal|"ha.failover-controller.active-standby-elector.zk.op.retries"
+decl_stmt|;
+DECL|field|HA_FC_ELECTOR_ZK_OP_RETRIES_DEFAULT
+specifier|public
+specifier|static
+specifier|final
+name|int
+name|HA_FC_ELECTOR_ZK_OP_RETRIES_DEFAULT
+init|=
+literal|3
+decl_stmt|;
 comment|/* Timeout that the CLI (manual) FC waits for monitorHealth, getServiceState */
 DECL|field|HA_FC_CLI_CHECK_TIMEOUT_KEY
 specifier|public
