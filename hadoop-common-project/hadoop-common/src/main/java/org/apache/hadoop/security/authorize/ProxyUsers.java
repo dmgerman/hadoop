@@ -198,7 +198,18 @@ begin_class
 annotation|@
 name|InterfaceAudience
 operator|.
-name|Private
+name|LimitedPrivate
+argument_list|(
+block|{
+literal|"HDFS"
+block|,
+literal|"MapReduce"
+block|,
+literal|"HBase"
+block|,
+literal|"Hive"
+block|}
+argument_list|)
 DECL|class|ProxyUsers
 specifier|public
 class|class
@@ -925,6 +936,36 @@ name|remoteAddress
 argument_list|)
 throw|;
 block|}
+block|}
+comment|/**    * This function is kept to provide backward compatibility.    * @param user    * @param remoteAddress    * @param conf    * @throws AuthorizationException    * @deprecated use {@link #authorize(UserGroupInformation, String) instead.     */
+annotation|@
+name|Deprecated
+DECL|method|authorize (UserGroupInformation user, String remoteAddress, Configuration conf)
+specifier|public
+specifier|static
+specifier|synchronized
+name|void
+name|authorize
+parameter_list|(
+name|UserGroupInformation
+name|user
+parameter_list|,
+name|String
+name|remoteAddress
+parameter_list|,
+name|Configuration
+name|conf
+parameter_list|)
+throws|throws
+name|AuthorizationException
+block|{
+name|authorize
+argument_list|(
+name|user
+argument_list|,
+name|remoteAddress
+argument_list|)
+expr_stmt|;
 block|}
 comment|/**    * Return true if the configuration specifies the special configuration value    * "*", indicating that any group or host list is allowed to use this configuration.    */
 DECL|method|isWildcardList (Collection<String> list)
