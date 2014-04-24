@@ -7466,6 +7466,12 @@ parameter_list|)
 block|{
 comment|// don't care; assume it's not derived from ChainMapper
 block|}
+catch|catch
+parameter_list|(
+name|NoClassDefFoundError
+name|ignored
+parameter_list|)
+block|{     }
 try|try
 block|{
 name|String
@@ -7525,6 +7531,12 @@ parameter_list|)
 block|{
 comment|// don't care; assume it's not derived from ChainReducer
 block|}
+catch|catch
+parameter_list|(
+name|NoClassDefFoundError
+name|ignored
+parameter_list|)
+block|{     }
 return|return
 name|isChainJob
 return|;
