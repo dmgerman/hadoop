@@ -3184,6 +3184,20 @@ return|return
 name|clientRpcServer
 return|;
 block|}
+comment|/** Allow access to the service RPC server for testing */
+annotation|@
+name|VisibleForTesting
+DECL|method|getServiceRpcServer ()
+name|RPC
+operator|.
+name|Server
+name|getServiceRpcServer
+parameter_list|()
+block|{
+return|return
+name|serviceRpcServer
+return|;
+block|}
 comment|/**    * Start client and service RPC servers.    */
 DECL|method|start ()
 name|void

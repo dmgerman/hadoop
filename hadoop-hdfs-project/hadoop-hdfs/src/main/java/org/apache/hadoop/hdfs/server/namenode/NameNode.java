@@ -1017,6 +1017,10 @@ name|DFS_NAMENODE_HTTP_ADDRESS_KEY
 block|,
 name|DFS_NAMENODE_HTTPS_ADDRESS_KEY
 block|,
+name|DFS_NAMENODE_HTTP_BIND_HOST_KEY
+block|,
+name|DFS_NAMENODE_HTTPS_BIND_HOST_KEY
+block|,
 name|DFS_NAMENODE_KEYTAB_FILE_KEY
 block|,
 name|DFS_NAMENODE_SECONDARY_HTTP_ADDRESS_KEY
@@ -2214,6 +2218,68 @@ name|conf
 argument_list|)
 return|;
 block|}
+comment|/**    * HTTP server address for binding the endpoint. This method is    * for use by the NameNode and its derivatives. It may return    * a different address than the one that should be used by clients to    * connect to the NameNode. See    * {@link DFSConfigKeys#DFS_NAMENODE_HTTP_BIND_HOST_KEY}    *    * @param conf    * @return    */
+DECL|method|getHttpServerBindAddress (Configuration conf)
+specifier|protected
+name|InetSocketAddress
+name|getHttpServerBindAddress
+parameter_list|(
+name|Configuration
+name|conf
+parameter_list|)
+block|{
+name|InetSocketAddress
+name|bindAddress
+init|=
+name|getHttpServerAddress
+argument_list|(
+name|conf
+argument_list|)
+decl_stmt|;
+comment|// If DFS_NAMENODE_HTTP_BIND_HOST_KEY exists then it overrides the
+comment|// host name portion of DFS_NAMENODE_HTTP_ADDRESS_KEY.
+specifier|final
+name|String
+name|bindHost
+init|=
+name|conf
+operator|.
+name|getTrimmed
+argument_list|(
+name|DFS_NAMENODE_HTTP_BIND_HOST_KEY
+argument_list|)
+decl_stmt|;
+if|if
+condition|(
+name|bindHost
+operator|!=
+literal|null
+operator|&&
+operator|!
+name|bindHost
+operator|.
+name|isEmpty
+argument_list|()
+condition|)
+block|{
+name|bindAddress
+operator|=
+operator|new
+name|InetSocketAddress
+argument_list|(
+name|bindHost
+argument_list|,
+name|bindAddress
+operator|.
+name|getPort
+argument_list|()
+argument_list|)
+expr_stmt|;
+block|}
+return|return
+name|bindAddress
+return|;
+block|}
 comment|/** @return the NameNode HTTP address. */
 DECL|method|getHttpAddress (Configuration conf)
 specifier|public
@@ -3013,7 +3079,7 @@ name|conf
 argument_list|,
 name|this
 argument_list|,
-name|getHttpServerAddress
+name|getHttpServerBindAddress
 argument_list|(
 name|conf
 argument_list|)
