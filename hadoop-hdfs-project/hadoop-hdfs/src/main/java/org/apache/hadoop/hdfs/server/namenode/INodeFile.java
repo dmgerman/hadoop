@@ -2138,7 +2138,10 @@ condition|(
 name|snapshot
 operator|==
 name|CURRENT_STATE_ID
-operator|&&
+condition|)
+block|{
+if|if
+condition|(
 name|priorSnapshotId
 operator|==
 name|NO_SNAPSHOT_ID
@@ -2161,17 +2164,7 @@ name|removedINodes
 argument_list|)
 expr_stmt|;
 block|}
-elseif|else
-if|if
-condition|(
-name|snapshot
-operator|==
-name|CURRENT_STATE_ID
-operator|&&
-name|priorSnapshotId
-operator|!=
-name|NO_SNAPSHOT_ID
-condition|)
+else|else
 block|{
 comment|// when deleting the current file and the file is in snapshot, we should
 comment|// clean the 0-sized block if the file is UC
@@ -2197,6 +2190,7 @@ argument_list|,
 name|collectedBlocks
 argument_list|)
 expr_stmt|;
+block|}
 block|}
 block|}
 return|return

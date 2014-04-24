@@ -401,13 +401,6 @@ operator|==
 literal|null
 condition|)
 block|{
-if|if
-condition|(
-name|ugi
-operator|==
-literal|null
-condition|)
-block|{
 name|ugi
 operator|=
 name|NameNode
@@ -415,7 +408,6 @@ operator|.
 name|getRemoteUser
 argument_list|()
 expr_stmt|;
-block|}
 name|ownerName
 operator|=
 name|ugi

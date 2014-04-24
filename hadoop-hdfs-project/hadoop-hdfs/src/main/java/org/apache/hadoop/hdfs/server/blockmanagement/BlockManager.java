@@ -2388,13 +2388,6 @@ parameter_list|()
 block|{
 try|try
 block|{
-if|if
-condition|(
-name|replicationThread
-operator|!=
-literal|null
-condition|)
-block|{
 name|replicationThread
 operator|.
 name|interrupt
@@ -2407,7 +2400,6 @@ argument_list|(
 literal|3000
 argument_list|)
 expr_stmt|;
-block|}
 block|}
 catch|catch
 parameter_list|(
@@ -4305,9 +4297,6 @@ condition|(
 name|isCorrupt
 operator|||
 operator|(
-operator|!
-name|isCorrupt
-operator|&&
 operator|!
 name|replicaCorrupt
 operator|)
@@ -10554,13 +10543,6 @@ return|return
 name|block
 return|;
 block|}
-assert|assert
-name|storedBlock
-operator|!=
-literal|null
-operator|:
-literal|"Block must be stored by now"
-assert|;
 name|BlockCollection
 name|bc
 init|=

@@ -871,13 +871,6 @@ condition|)
 block|{
 return|return;
 block|}
-if|if
-condition|(
-name|line
-operator|==
-literal|null
-condition|)
-block|{
 comment|// move to the next file.
 if|if
 condition|(
@@ -888,7 +881,6 @@ block|{
 name|readNext
 argument_list|()
 expr_stmt|;
-block|}
 block|}
 block|}
 finally|finally

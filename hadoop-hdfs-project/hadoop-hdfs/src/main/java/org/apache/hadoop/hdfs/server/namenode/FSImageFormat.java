@@ -3305,10 +3305,6 @@ comment|// convert the last block to BlockUC
 if|if
 condition|(
 name|blocks
-operator|!=
-literal|null
-operator|&&
-name|blocks
 operator|.
 name|length
 operator|>
@@ -5253,10 +5249,6 @@ operator|.
 name|checkArgument
 argument_list|(
 name|renameReservedMap
-operator|!=
-literal|null
-operator|&&
-name|renameReservedMap
 operator|.
 name|containsKey
 argument_list|(
@@ -5341,10 +5333,6 @@ name|Preconditions
 operator|.
 name|checkArgument
 argument_list|(
-name|renameReservedMap
-operator|!=
-literal|null
-operator|&&
 name|renameReservedMap
 operator|.
 name|containsKey

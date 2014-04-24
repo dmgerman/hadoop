@@ -569,12 +569,6 @@ literal|null
 decl_stmt|;
 while|while
 condition|(
-operator|(
-name|nextBpId
-operator|==
-literal|null
-operator|)
-operator|&&
 name|datanode
 operator|.
 name|shouldRun
