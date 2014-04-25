@@ -32,6 +32,16 @@ end_import
 
 begin_import
 import|import
+name|java
+operator|.
+name|net
+operator|.
+name|DatagramSocket
+import|;
+end_import
+
+begin_import
+import|import
 name|org
 operator|.
 name|apache
@@ -70,12 +80,15 @@ name|Mountd
 extends|extends
 name|MountdBase
 block|{
-DECL|method|Mountd (Configuration config)
+DECL|method|Mountd (Configuration config, DatagramSocket registrationSocket)
 specifier|public
 name|Mountd
 parameter_list|(
 name|Configuration
 name|config
+parameter_list|,
+name|DatagramSocket
+name|registrationSocket
 parameter_list|)
 throws|throws
 name|IOException
@@ -86,6 +99,8 @@ operator|new
 name|RpcProgramMountd
 argument_list|(
 name|config
+argument_list|,
+name|registrationSocket
 argument_list|)
 argument_list|)
 expr_stmt|;
@@ -117,6 +132,8 @@ operator|new
 name|Mountd
 argument_list|(
 name|config
+argument_list|,
+literal|null
 argument_list|)
 decl_stmt|;
 name|mountd

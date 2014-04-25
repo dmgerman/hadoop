@@ -100,7 +100,13 @@ specifier|final
 name|boolean
 name|oneShot
 decl_stmt|;
-DECL|method|SimpleUdpClient (String host, int port, XDR request)
+DECL|field|clientSocket
+specifier|protected
+specifier|final
+name|DatagramSocket
+name|clientSocket
+decl_stmt|;
+DECL|method|SimpleUdpClient (String host, int port, XDR request, DatagramSocket clientSocket)
 specifier|public
 name|SimpleUdpClient
 parameter_list|(
@@ -112,6 +118,9 @@ name|port
 parameter_list|,
 name|XDR
 name|request
+parameter_list|,
+name|DatagramSocket
+name|clientSocket
 parameter_list|)
 block|{
 name|this
@@ -123,10 +132,12 @@ argument_list|,
 name|request
 argument_list|,
 literal|true
+argument_list|,
+name|clientSocket
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|SimpleUdpClient (String host, int port, XDR request, Boolean oneShot)
+DECL|method|SimpleUdpClient (String host, int port, XDR request, Boolean oneShot, DatagramSocket clientSocket)
 specifier|public
 name|SimpleUdpClient
 parameter_list|(
@@ -141,6 +152,9 @@ name|request
 parameter_list|,
 name|Boolean
 name|oneShot
+parameter_list|,
+name|DatagramSocket
+name|clientSocket
 parameter_list|)
 block|{
 name|this
@@ -167,6 +181,12 @@ name|oneShot
 operator|=
 name|oneShot
 expr_stmt|;
+name|this
+operator|.
+name|clientSocket
+operator|=
+name|clientSocket
+expr_stmt|;
 block|}
 DECL|method|run ()
 specifier|public
@@ -176,13 +196,6 @@ parameter_list|()
 throws|throws
 name|IOException
 block|{
-name|DatagramSocket
-name|clientSocket
-init|=
-operator|new
-name|DatagramSocket
-argument_list|()
-decl_stmt|;
 name|InetAddress
 name|IPAddress
 init|=
@@ -212,6 +225,26 @@ index|[
 literal|65535
 index|]
 decl_stmt|;
+comment|// Use the provided socket if there is one, else just make a new one.
+name|DatagramSocket
+name|socket
+init|=
+name|this
+operator|.
+name|clientSocket
+operator|==
+literal|null
+condition|?
+operator|new
+name|DatagramSocket
+argument_list|()
+else|:
+name|this
+operator|.
+name|clientSocket
+decl_stmt|;
+try|try
+block|{
 name|DatagramPacket
 name|sendPacket
 init|=
@@ -229,7 +262,7 @@ argument_list|,
 name|port
 argument_list|)
 decl_stmt|;
-name|clientSocket
+name|socket
 operator|.
 name|send
 argument_list|(
@@ -249,7 +282,7 @@ operator|.
 name|length
 argument_list|)
 decl_stmt|;
-name|clientSocket
+name|socket
 operator|.
 name|receive
 argument_list|(
@@ -315,11 +348,27 @@ argument_list|()
 argument_list|)
 throw|;
 block|}
+block|}
+finally|finally
+block|{
+comment|// If the client socket was passed in to this UDP client, it's on the
+comment|// caller of this UDP client to close that socket.
+if|if
+condition|(
+name|this
+operator|.
 name|clientSocket
+operator|==
+literal|null
+condition|)
+block|{
+name|socket
 operator|.
 name|close
 argument_list|()
 expr_stmt|;
+block|}
+block|}
 block|}
 block|}
 end_class

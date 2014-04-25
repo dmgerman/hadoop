@@ -28,6 +28,16 @@ end_import
 
 begin_import
 import|import
+name|java
+operator|.
+name|net
+operator|.
+name|DatagramSocket
+import|;
+end_import
+
+begin_import
+import|import
 name|org
 operator|.
 name|apache
@@ -258,8 +268,15 @@ specifier|final
 name|int
 name|highProgVersion
 decl_stmt|;
+comment|/**    * If not null, this will be used as the socket to use to connect to the    * system portmap daemon when registering this RPC server program.    */
+DECL|field|registrationSocket
+specifier|private
+specifier|final
+name|DatagramSocket
+name|registrationSocket
+decl_stmt|;
 comment|/**    * Constructor    *     * @param program program name    * @param host host where the Rpc server program is started    * @param port port where the Rpc server program is listening to    * @param progNumber program number as defined in RFC 1050    * @param lowProgVersion lowest version of the specification supported    * @param highProgVersion highest version of the specification supported    */
-DECL|method|RpcProgram (String program, String host, int port, int progNumber, int lowProgVersion, int highProgVersion)
+DECL|method|RpcProgram (String program, String host, int port, int progNumber, int lowProgVersion, int highProgVersion, DatagramSocket registrationSocket)
 specifier|protected
 name|RpcProgram
 parameter_list|(
@@ -280,6 +297,9 @@ name|lowProgVersion
 parameter_list|,
 name|int
 name|highProgVersion
+parameter_list|,
+name|DatagramSocket
+name|registrationSocket
 parameter_list|)
 block|{
 name|this
@@ -317,6 +337,12 @@ operator|.
 name|highProgVersion
 operator|=
 name|highProgVersion
+expr_stmt|;
+name|this
+operator|.
+name|registrationSocket
+operator|=
+name|registrationSocket
 expr_stmt|;
 block|}
 comment|/**    * Register this program with the local portmapper.    */
@@ -511,6 +537,8 @@ argument_list|,
 name|RPCB_PORT
 argument_list|,
 name|mappingRequest
+argument_list|,
+name|registrationSocket
 argument_list|)
 decl_stmt|;
 try|try
@@ -553,6 +581,8 @@ operator|+
 literal|", portmap entry: "
 operator|+
 name|mapEntry
+argument_list|,
+name|e
 argument_list|)
 expr_stmt|;
 throw|throw
@@ -562,6 +592,8 @@ argument_list|(
 name|request
 operator|+
 literal|" failure"
+argument_list|,
+name|e
 argument_list|)
 throw|;
 block|}

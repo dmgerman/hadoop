@@ -56,6 +56,16 @@ name|java
 operator|.
 name|net
 operator|.
+name|DatagramSocket
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|net
+operator|.
 name|InetAddress
 import|;
 end_import
@@ -1938,12 +1948,15 @@ specifier|final
 name|RpcCallCache
 name|rpcCallCache
 decl_stmt|;
-DECL|method|RpcProgramNfs3 (Configuration config)
+DECL|method|RpcProgramNfs3 (Configuration config, DatagramSocket registrationSocket)
 specifier|public
 name|RpcProgramNfs3
 parameter_list|(
 name|Configuration
 name|config
+parameter_list|,
+name|DatagramSocket
+name|registrationSocket
 parameter_list|)
 throws|throws
 name|IOException
@@ -1978,6 +1991,8 @@ argument_list|,
 name|Nfs3Constant
 operator|.
 name|VERSION
+argument_list|,
+name|registrationSocket
 argument_list|)
 expr_stmt|;
 name|config

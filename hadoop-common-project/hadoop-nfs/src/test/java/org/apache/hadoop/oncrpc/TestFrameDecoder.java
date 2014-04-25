@@ -312,6 +312,8 @@ argument_list|,
 name|lowProgVersion
 argument_list|,
 name|highProgVersion
+argument_list|,
+literal|null
 argument_list|)
 expr_stmt|;
 block|}

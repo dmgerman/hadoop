@@ -4865,6 +4865,25 @@ name|DFS_NFS_KERBEROS_PRINCIPAL_KEY
 init|=
 literal|"dfs.nfs.kerberos.principal"
 decl_stmt|;
+DECL|field|DFS_NFS_REGISTRATION_PORT_KEY
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|DFS_NFS_REGISTRATION_PORT_KEY
+init|=
+literal|"dfs.nfs.registration.port"
+decl_stmt|;
+DECL|field|DFS_NFS_REGISTRATION_PORT_DEFAULT
+specifier|public
+specifier|static
+specifier|final
+name|int
+name|DFS_NFS_REGISTRATION_PORT_DEFAULT
+init|=
+literal|40
+decl_stmt|;
+comment|// Currently unassigned.
 block|}
 end_class
 
