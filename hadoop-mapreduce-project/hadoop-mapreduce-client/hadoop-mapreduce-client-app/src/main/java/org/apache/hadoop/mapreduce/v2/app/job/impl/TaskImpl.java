@@ -2117,6 +2117,13 @@ name|T_ATTEMPT_SUCCEEDED
 argument_list|)
 argument_list|)
 comment|// Transitions from KILLED state
+comment|// There could be a race condition where TaskImpl might receive
+comment|// T_ATTEMPT_SUCCEEDED followed by T_ATTEMPTED_KILLED for the same attempt.
+comment|// a. The task is in KILL_WAIT.
+comment|// b. Before TA transitions to SUCCEEDED state, Task sends TA_KILL event.
+comment|// c. TA transitions to SUCCEEDED state and thus send T_ATTEMPT_SUCCEEDED
+comment|//    to the task. The task transitions to KILLED state.
+comment|// d. TA processes TA_KILL event and sends T_ATTEMPT_KILLED to the task.
 operator|.
 name|addTransition
 argument_list|(
@@ -2135,6 +2142,10 @@ argument_list|(
 name|TaskEventType
 operator|.
 name|T_KILL
+argument_list|,
+name|TaskEventType
+operator|.
+name|T_ATTEMPT_KILLED
 argument_list|,
 name|TaskEventType
 operator|.
