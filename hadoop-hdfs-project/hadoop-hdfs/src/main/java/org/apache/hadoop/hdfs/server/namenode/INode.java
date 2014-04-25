@@ -56,16 +56,6 @@ name|java
 operator|.
 name|util
 operator|.
-name|ArrayList
-import|;
-end_import
-
-begin_import
-import|import
-name|java
-operator|.
-name|util
-operator|.
 name|List
 import|;
 end_import
@@ -2070,7 +2060,10 @@ name|nodeToUpdate
 return|;
 block|}
 comment|/**    * Breaks {@code path} into components.    * @return array of byte arrays each of which represents    * a single path component.    */
+annotation|@
+name|VisibleForTesting
 DECL|method|getPathComponents (String path)
+specifier|public
 specifier|static
 name|byte
 index|[]

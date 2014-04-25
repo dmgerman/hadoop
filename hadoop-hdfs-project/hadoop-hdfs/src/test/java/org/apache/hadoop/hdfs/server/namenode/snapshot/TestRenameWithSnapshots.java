@@ -13824,7 +13824,7 @@ literal|true
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * move a directory to its prior descedant    */
+comment|/**    * move a directory to its prior descendant    */
 annotation|@
 name|Test
 DECL|method|testRename2PreDescendant_2 ()

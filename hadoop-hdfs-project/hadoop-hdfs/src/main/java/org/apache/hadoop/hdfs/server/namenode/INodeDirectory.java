@@ -1826,6 +1826,76 @@ name|snapshotId
 argument_list|)
 return|;
 block|}
+comment|/**    * Search for the given INode in the children list and the deleted lists of    * snapshots.    * @return {@link Snapshot#CURRENT_STATE_ID} if the inode is in the children    * list; {@link Snapshot#NO_SNAPSHOT_ID} if the inode is neither in the    * children list nor in any snapshot; otherwise the snapshot id of the    * corresponding snapshot diff list.    */
+DECL|method|searchChild (INode inode)
+name|int
+name|searchChild
+parameter_list|(
+name|INode
+name|inode
+parameter_list|)
+block|{
+name|INode
+name|child
+init|=
+name|getChild
+argument_list|(
+name|inode
+operator|.
+name|getLocalNameBytes
+argument_list|()
+argument_list|,
+name|Snapshot
+operator|.
+name|CURRENT_STATE_ID
+argument_list|)
+decl_stmt|;
+if|if
+condition|(
+name|child
+operator|!=
+name|inode
+condition|)
+block|{
+comment|// inode is not in parent's children list, thus inode must be in
+comment|// snapshot. identify the snapshot id and later add it into the path
+name|DirectoryDiffList
+name|diffs
+init|=
+name|getDiffs
+argument_list|()
+decl_stmt|;
+if|if
+condition|(
+name|diffs
+operator|==
+literal|null
+condition|)
+block|{
+return|return
+name|Snapshot
+operator|.
+name|NO_SNAPSHOT_ID
+return|;
+block|}
+return|return
+name|diffs
+operator|.
+name|findSnapshotDeleted
+argument_list|(
+name|inode
+argument_list|)
+return|;
+block|}
+else|else
+block|{
+return|return
+name|Snapshot
+operator|.
+name|CURRENT_STATE_ID
+return|;
+block|}
+block|}
 comment|/**    * @param snapshotId    *          if it is not {@link Snapshot#CURRENT_STATE_ID}, get the result    *          from the corresponding snapshot; otherwise, get the result from    *          the current directory.    * @return the current children list if the specified snapshot is null;    *         otherwise, return the children list corresponding to the snapshot.    *         Note that the returned list is never null.    */
 DECL|method|getChildrenList (final int snapshotId)
 specifier|public

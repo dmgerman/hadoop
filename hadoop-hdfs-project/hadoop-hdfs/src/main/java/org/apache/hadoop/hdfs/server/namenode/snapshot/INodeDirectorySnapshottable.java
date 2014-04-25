@@ -1166,6 +1166,7 @@ argument_list|)
 return|;
 block|}
 DECL|method|getSnapshotById (int sid)
+specifier|public
 name|Snapshot
 name|getSnapshotById
 parameter_list|(
