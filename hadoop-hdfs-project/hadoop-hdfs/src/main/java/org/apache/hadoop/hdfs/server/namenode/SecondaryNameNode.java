@@ -866,20 +866,6 @@ end_import
 
 begin_import
 import|import
-name|com
-operator|.
-name|google
-operator|.
-name|common
-operator|.
-name|collect
-operator|.
-name|ImmutableList
-import|;
-end_import
-
-begin_import
-import|import
 name|org
 operator|.
 name|apache
@@ -1055,11 +1041,11 @@ argument_list|()
 operator|+
 literal|" Status"
 operator|+
-literal|"\nName Node Address    : "
+literal|"\nName Node Address      : "
 operator|+
 name|nameNodeAddr
 operator|+
-literal|"\nStart Time           : "
+literal|"\nStart Time             : "
 operator|+
 operator|new
 name|Date
@@ -1067,7 +1053,7 @@ argument_list|(
 name|starttime
 argument_list|)
 operator|+
-literal|"\nLast Checkpoint      : "
+literal|"\nLast Checkpoint        : "
 operator|+
 operator|(
 name|lastCheckpointTime
@@ -1092,7 +1078,7 @@ operator|)
 operator|+
 literal|" seconds ago"
 operator|+
-literal|"\nCheckpoint Period    : "
+literal|"\nCheckpoint Period      : "
 operator|+
 name|checkpointConf
 operator|.
@@ -1101,32 +1087,18 @@ argument_list|()
 operator|+
 literal|" seconds"
 operator|+
-literal|"\nCheckpoint Size      : "
-operator|+
-name|StringUtils
-operator|.
-name|byteDesc
-argument_list|(
-name|checkpointConf
-operator|.
-name|getTxnCount
-argument_list|()
-argument_list|)
-operator|+
-literal|" (= "
+literal|"\nCheckpoint Transactions: "
 operator|+
 name|checkpointConf
 operator|.
 name|getTxnCount
 argument_list|()
 operator|+
-literal|" bytes)"
-operator|+
-literal|"\nCheckpoint Dirs      : "
+literal|"\nCheckpoint Dirs        : "
 operator|+
 name|checkpointDirs
 operator|+
-literal|"\nCheckpoint Edits Dirs: "
+literal|"\nCheckpoint Edits Dirs  : "
 operator|+
 name|checkpointEditsDirs
 return|;
