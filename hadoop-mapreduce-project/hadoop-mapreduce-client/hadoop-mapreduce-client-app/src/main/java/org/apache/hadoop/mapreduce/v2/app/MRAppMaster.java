@@ -4197,18 +4197,6 @@ name|t
 argument_list|)
 expr_stmt|;
 block|}
-comment|//Bring the process down by force.
-comment|//Not needed after HADOOP-7140
-name|LOG
-operator|.
-name|info
-argument_list|(
-literal|"Exiting MR AppMaster..GoodBye!"
-argument_list|)
-expr_stmt|;
-name|sysexit
-argument_list|()
-expr_stmt|;
 block|}
 DECL|class|JobFinishEventHandler
 specifier|private
