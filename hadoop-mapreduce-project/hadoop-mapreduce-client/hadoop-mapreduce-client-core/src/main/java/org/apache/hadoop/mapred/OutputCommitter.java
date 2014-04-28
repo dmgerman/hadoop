@@ -201,7 +201,9 @@ parameter_list|)
 throws|throws
 name|IOException
 function_decl|;
-comment|/**    * This method implements the new interface by calling the old method. Note    * that the input types are different between the new and old apis and this    * is a bridge between the two.    */
+comment|/**    * This method implements the new interface by calling the old method. Note    * that the input types are different between the new and old apis and this is    * a bridge between the two.    *     * @deprecated Use {@link #isRecoverySupported(JobContext)} instead.    */
+annotation|@
+name|Deprecated
 annotation|@
 name|Override
 DECL|method|isRecoverySupported ()
@@ -212,6 +214,23 @@ parameter_list|()
 block|{
 return|return
 literal|false
+return|;
+block|}
+comment|/**    * Is task output recovery supported for restarting jobs?    *     * If task output recovery is supported, job restart can be done more    * efficiently.    *     * @param jobContext    *          Context of the job whose output is being written.    * @return<code>true</code> if task output recovery is supported,    *<code>false</code> otherwise    * @throws IOException    * @see #recoverTask(TaskAttemptContext)    */
+DECL|method|isRecoverySupported (JobContext jobContext)
+specifier|public
+name|boolean
+name|isRecoverySupported
+parameter_list|(
+name|JobContext
+name|jobContext
+parameter_list|)
+throws|throws
+name|IOException
+block|{
+return|return
+name|isRecoverySupported
+argument_list|()
 return|;
 block|}
 comment|/**    * Recover the task output.     *     * The retry-count for the job will be passed via the     * {@link MRConstants#APPLICATION_ATTEMPT_ID} key in      * {@link TaskAttemptContext#getConfiguration()} for the     *<code>OutputCommitter</code>. This is called from the application master    * process, but it is called individually for each task.    *     * If an exception is thrown the task will be attempted again.     *     * @param taskContext Context of the task whose output is being recovered    * @throws IOException    */
@@ -569,6 +588,39 @@ operator|)
 name|taskContext
 argument_list|)
 expr_stmt|;
+block|}
+comment|/**    * This method implements the new interface by calling the old method. Note    * that the input types are different between the new and old apis and this is    * a bridge between the two.    */
+annotation|@
+name|Override
+DECL|method|isRecoverySupported ( org.apache.hadoop.mapreduce.JobContext context)
+specifier|public
+specifier|final
+name|boolean
+name|isRecoverySupported
+parameter_list|(
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|mapreduce
+operator|.
+name|JobContext
+name|context
+parameter_list|)
+throws|throws
+name|IOException
+block|{
+return|return
+name|isRecoverySupported
+argument_list|(
+operator|(
+name|JobContext
+operator|)
+name|context
+argument_list|)
+return|;
 block|}
 block|}
 end_class

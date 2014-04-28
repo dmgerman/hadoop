@@ -1927,6 +1927,8 @@ return|;
 block|}
 annotation|@
 name|Override
+annotation|@
+name|Deprecated
 DECL|method|isRecoverySupported ()
 specifier|public
 name|boolean

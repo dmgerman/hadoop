@@ -287,6 +287,8 @@ parameter_list|)
 block|{ }
 annotation|@
 name|Override
+annotation|@
+name|Deprecated
 specifier|public
 name|boolean
 name|isRecoverySupported

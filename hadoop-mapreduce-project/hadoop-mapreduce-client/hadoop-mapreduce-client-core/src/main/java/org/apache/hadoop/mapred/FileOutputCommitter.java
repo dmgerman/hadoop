@@ -987,6 +987,8 @@ return|;
 block|}
 annotation|@
 name|Override
+annotation|@
+name|Deprecated
 DECL|method|isRecoverySupported ()
 specifier|public
 name|boolean
@@ -995,6 +997,31 @@ parameter_list|()
 block|{
 return|return
 literal|true
+return|;
+block|}
+annotation|@
+name|Override
+DECL|method|isRecoverySupported (JobContext context)
+specifier|public
+name|boolean
+name|isRecoverySupported
+parameter_list|(
+name|JobContext
+name|context
+parameter_list|)
+throws|throws
+name|IOException
+block|{
+return|return
+name|getWrapped
+argument_list|(
+name|context
+argument_list|)
+operator|.
+name|isRecoverySupported
+argument_list|(
+name|context
+argument_list|)
 return|;
 block|}
 annotation|@

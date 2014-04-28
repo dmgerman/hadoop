@@ -193,7 +193,9 @@ parameter_list|)
 throws|throws
 name|IOException
 function_decl|;
-comment|/**    * Is task output recovery supported for restarting jobs?    *     * If task output recovery is supported, job restart can be done more     * efficiently.    *     * @return<code>true</code> if task output recovery is supported,    *<code>false</code> otherwise    * @see #recoverTask(TaskAttemptContext)             */
+comment|/**    * Is task output recovery supported for restarting jobs?    *     * If task output recovery is supported, job restart can be done more    * efficiently.    *     * @return<code>true</code> if task output recovery is supported,    *<code>false</code> otherwise    * @see #recoverTask(TaskAttemptContext)    * @deprecated Use {@link #isRecoverySupported(JobContext)} instead.    */
+annotation|@
+name|Deprecated
 DECL|method|isRecoverySupported ()
 specifier|public
 name|boolean
@@ -202,6 +204,23 @@ parameter_list|()
 block|{
 return|return
 literal|false
+return|;
+block|}
+comment|/**    * Is task output recovery supported for restarting jobs?    *     * If task output recovery is supported, job restart can be done more    * efficiently.    *     * @param jobContext    *          Context of the job whose output is being written.    * @return<code>true</code> if task output recovery is supported,    *<code>false</code> otherwise    * @throws IOException    * @see #recoverTask(TaskAttemptContext)    */
+DECL|method|isRecoverySupported (JobContext jobContext)
+specifier|public
+name|boolean
+name|isRecoverySupported
+parameter_list|(
+name|JobContext
+name|jobContext
+parameter_list|)
+throws|throws
+name|IOException
+block|{
+return|return
+name|isRecoverySupported
+argument_list|()
 return|;
 block|}
 comment|/**    * Recover the task output.     *     * The retry-count for the job will be passed via the     * {@link MRJobConfig#APPLICATION_ATTEMPT_ID} key in      * {@link TaskAttemptContext#getConfiguration()} for the     *<code>OutputCommitter</code>.  This is called from the application master    * process, but it is called individually for each task.    *     * If an exception is thrown the task will be attempted again.     *     * This may be called multiple times for the same task.  But from different    * application attempts.    *     * @param taskContext Context of the task whose output is being recovered    * @throws IOException    */
