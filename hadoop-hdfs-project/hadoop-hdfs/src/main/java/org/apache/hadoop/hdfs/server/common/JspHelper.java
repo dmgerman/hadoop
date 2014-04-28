@@ -4337,6 +4337,7 @@ comment|// honor the X-Forwarded-For header set by a configured set of trusted
 comment|// proxy servers.  allows audit logging and proxy user checks to work
 comment|// via an http proxy
 DECL|method|getRemoteAddr (HttpServletRequest request)
+specifier|public
 specifier|static
 name|String
 name|getRemoteAddr
