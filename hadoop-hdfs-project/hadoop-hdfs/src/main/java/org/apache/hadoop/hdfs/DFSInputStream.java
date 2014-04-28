@@ -5101,6 +5101,15 @@ argument_list|,
 name|len
 argument_list|)
 decl_stmt|;
+name|updateReadStatistics
+argument_list|(
+name|readStatistics
+argument_list|,
+name|nread
+argument_list|,
+name|reader
+argument_list|)
+expr_stmt|;
 if|if
 condition|(
 name|nread
