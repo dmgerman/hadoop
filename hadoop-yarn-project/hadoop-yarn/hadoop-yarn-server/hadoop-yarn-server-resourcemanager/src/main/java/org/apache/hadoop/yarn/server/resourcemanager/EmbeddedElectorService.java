@@ -414,7 +414,6 @@ annotation|@
 name|Override
 DECL|method|serviceInit (Configuration conf)
 specifier|protected
-specifier|synchronized
 name|void
 name|serviceInit
 parameter_list|(
@@ -646,7 +645,6 @@ annotation|@
 name|Override
 DECL|method|serviceStart ()
 specifier|protected
-specifier|synchronized
 name|void
 name|serviceStart
 parameter_list|()
@@ -670,7 +668,6 @@ annotation|@
 name|Override
 DECL|method|serviceStop ()
 specifier|protected
-specifier|synchronized
 name|void
 name|serviceStop
 parameter_list|()
@@ -699,7 +696,6 @@ annotation|@
 name|Override
 DECL|method|becomeActive ()
 specifier|public
-specifier|synchronized
 name|void
 name|becomeActive
 parameter_list|()
@@ -740,7 +736,6 @@ annotation|@
 name|Override
 DECL|method|becomeStandby ()
 specifier|public
-specifier|synchronized
 name|void
 name|becomeStandby
 parameter_list|()
@@ -796,7 +791,6 @@ annotation|@
 name|Override
 DECL|method|notifyFatalError (String errorMessage)
 specifier|public
-specifier|synchronized
 name|void
 name|notifyFatalError
 parameter_list|(
@@ -830,7 +824,6 @@ annotation|@
 name|Override
 DECL|method|fenceOldActive (byte[] oldActiveData)
 specifier|public
-specifier|synchronized
 name|void
 name|fenceOldActive
 parameter_list|(
@@ -901,7 +894,6 @@ return|;
 block|}
 DECL|method|isParentZnodeSafe (String clusterId)
 specifier|private
-specifier|synchronized
 name|boolean
 name|isParentZnodeSafe
 parameter_list|(

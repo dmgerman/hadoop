@@ -500,7 +500,6 @@ block|}
 comment|/**    * Stop the services in reverse order    *    * @param numOfServicesStarted index from where the stop should work    * @param stopOnlyStartedServices flag to say "only start services that are    * started, not those that are NOTINITED or INITED.    * @throws RuntimeException the first exception raised during the    * stop process -<i>after all services are stopped</i>    */
 DECL|method|stop (int numOfServicesStarted, boolean stopOnlyStartedServices)
 specifier|private
-specifier|synchronized
 name|void
 name|stop
 parameter_list|(

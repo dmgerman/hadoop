@@ -1024,7 +1024,6 @@ annotation|@
 name|Override
 DECL|method|serviceInit (Configuration conf)
 specifier|public
-specifier|synchronized
 name|void
 name|serviceInit
 parameter_list|(
@@ -1136,7 +1135,6 @@ annotation|@
 name|Override
 DECL|method|serviceStart ()
 specifier|protected
-specifier|synchronized
 name|void
 name|serviceStart
 parameter_list|()
@@ -1156,7 +1154,6 @@ annotation|@
 name|Override
 DECL|method|serviceStop ()
 specifier|protected
-specifier|synchronized
 name|void
 name|serviceStop
 parameter_list|()
