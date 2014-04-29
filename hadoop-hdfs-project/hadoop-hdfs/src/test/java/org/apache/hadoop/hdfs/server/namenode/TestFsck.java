@@ -873,7 +873,9 @@ literal|"ip=/\\d{1,3}\\.\\d{1,3}\\.\\d{1,3}\\.\\d{1,3}\\s"
 operator|+
 literal|"cmd=fsck\\ssrc=\\/\\sdst=null\\s"
 operator|+
-literal|"perm=null"
+literal|"perm=null\\s"
+operator|+
+literal|"proto=.*"
 argument_list|)
 decl_stmt|;
 DECL|field|getfileinfoPattern
@@ -894,7 +896,9 @@ literal|"ip=/\\d{1,3}\\.\\d{1,3}\\.\\d{1,3}\\.\\d{1,3}\\s"
 operator|+
 literal|"cmd=getfileinfo\\ssrc=\\/\\sdst=null\\s"
 operator|+
-literal|"perm=null"
+literal|"perm=null\\s"
+operator|+
+literal|"proto=.*"
 argument_list|)
 decl_stmt|;
 DECL|field|numCorruptBlocksPattern
