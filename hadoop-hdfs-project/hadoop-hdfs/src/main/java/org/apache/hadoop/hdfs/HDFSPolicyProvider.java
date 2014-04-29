@@ -252,6 +252,20 @@ name|GetUserMappingsProtocol
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|ipc
+operator|.
+name|RefreshCallQueueProtocol
+import|;
+end_import
+
 begin_comment
 comment|/**  * {@link PolicyProvider} for HDFS protocols.  */
 end_comment
@@ -408,6 +422,18 @@ operator|.
 name|HADOOP_SECURITY_SERVICE_AUTHORIZATION_GET_USER_MAPPINGS
 argument_list|,
 name|GetUserMappingsProtocol
+operator|.
+name|class
+argument_list|)
+block|,
+operator|new
+name|Service
+argument_list|(
+name|CommonConfigurationKeys
+operator|.
+name|HADOOP_SECURITY_SERVICE_AUTHORIZATION_REFRESH_CALLQUEUE
+argument_list|,
+name|RefreshCallQueueProtocol
 operator|.
 name|class
 argument_list|)

@@ -421,6 +421,15 @@ specifier|public
 specifier|static
 specifier|final
 name|String
+DECL|field|HADOOP_SECURITY_SERVICE_AUTHORIZATION_REFRESH_CALLQUEUE
+name|HADOOP_SECURITY_SERVICE_AUTHORIZATION_REFRESH_CALLQUEUE
+init|=
+literal|"security.refresh.callqueue.protocol.acl"
+decl_stmt|;
+specifier|public
+specifier|static
+specifier|final
+name|String
 DECL|field|SECURITY_HA_SERVICE_PROTOCOL_ACL
 name|SECURITY_HA_SERVICE_PROTOCOL_ACL
 init|=

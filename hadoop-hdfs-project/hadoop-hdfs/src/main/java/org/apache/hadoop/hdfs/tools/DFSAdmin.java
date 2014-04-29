@@ -5223,7 +5223,7 @@ operator|.
 name|getProxy
 argument_list|()
 decl_stmt|;
-comment|// Refresh the user-to-groups mappings
+comment|// Refresh the call queue
 name|refreshProtocol
 operator|.
 name|refreshCallQueue
