@@ -348,7 +348,7 @@ return|;
 block|}
 comment|/**    * The default Sasl Properties read from the configuration    * @return sasl Properties    */
 DECL|method|getDefaultProperties ()
-specifier|protected
+specifier|public
 name|Map
 argument_list|<
 name|String
