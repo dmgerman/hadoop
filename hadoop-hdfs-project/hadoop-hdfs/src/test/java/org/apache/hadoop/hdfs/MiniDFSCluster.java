@@ -4036,6 +4036,43 @@ condition|(
 name|formatThisOne
 condition|)
 block|{
+comment|// Allow overriding clusterID for specific NNs to test
+comment|// misconfiguration.
+if|if
+condition|(
+name|nn
+operator|.
+name|getClusterId
+argument_list|()
+operator|==
+literal|null
+condition|)
+block|{
+name|StartupOption
+operator|.
+name|FORMAT
+operator|.
+name|setClusterId
+argument_list|(
+name|clusterId
+argument_list|)
+expr_stmt|;
+block|}
+else|else
+block|{
+name|StartupOption
+operator|.
+name|FORMAT
+operator|.
+name|setClusterId
+argument_list|(
+name|nn
+operator|.
+name|getClusterId
+argument_list|()
+argument_list|)
+expr_stmt|;
+block|}
 name|DFSTestUtil
 operator|.
 name|formatNameNode
@@ -4409,7 +4446,8 @@ block|}
 block|}
 block|}
 DECL|method|copyNameDirs (Collection<URI> srcDirs, Collection<URI> dstDirs, Configuration dstConf)
-specifier|private
+specifier|public
+specifier|static
 name|void
 name|copyNameDirs
 parameter_list|(

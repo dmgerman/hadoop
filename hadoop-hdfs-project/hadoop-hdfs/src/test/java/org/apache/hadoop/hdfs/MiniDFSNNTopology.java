@@ -855,6 +855,11 @@ specifier|private
 name|int
 name|ipcPort
 decl_stmt|;
+DECL|field|clusterId
+specifier|private
+name|String
+name|clusterId
+decl_stmt|;
 DECL|method|NNConf (String nnId)
 specifier|public
 name|NNConf
@@ -897,6 +902,15 @@ return|return
 name|httpPort
 return|;
 block|}
+DECL|method|getClusterId ()
+name|String
+name|getClusterId
+parameter_list|()
+block|{
+return|return
+name|clusterId
+return|;
+block|}
 DECL|method|setHttpPort (int httpPort)
 specifier|public
 name|NNConf
@@ -930,6 +944,25 @@ operator|.
 name|ipcPort
 operator|=
 name|ipcPort
+expr_stmt|;
+return|return
+name|this
+return|;
+block|}
+DECL|method|setClusterId (String clusterId)
+specifier|public
+name|NNConf
+name|setClusterId
+parameter_list|(
+name|String
+name|clusterId
+parameter_list|)
+block|{
+name|this
+operator|.
+name|clusterId
+operator|=
+name|clusterId
 expr_stmt|;
 return|return
 name|this

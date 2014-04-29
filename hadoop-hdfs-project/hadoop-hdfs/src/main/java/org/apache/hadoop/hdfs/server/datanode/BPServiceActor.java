@@ -674,13 +674,35 @@ name|lastHeartbeat
 init|=
 literal|0
 decl_stmt|;
-DECL|field|initialized
+DECL|enum|RunningState
+specifier|static
+enum|enum
+name|RunningState
+block|{
+DECL|enumConstant|CONNECTING
+DECL|enumConstant|INIT_FAILED
+DECL|enumConstant|RUNNING
+DECL|enumConstant|EXITED
+DECL|enumConstant|FAILED
+name|CONNECTING
+block|,
+name|INIT_FAILED
+block|,
+name|RUNNING
+block|,
+name|EXITED
+block|,
+name|FAILED
+block|;   }
+DECL|field|runningState
 specifier|private
 specifier|volatile
-name|boolean
-name|initialized
+name|RunningState
+name|runningState
 init|=
-literal|false
+name|RunningState
+operator|.
+name|CONNECTING
 decl_stmt|;
 comment|/**    * Between block reports (which happen on the order of once an hour) the    * DN reports smaller incremental changes to its block list. This map,    * keyed by block ID, contains the pending changes which have yet to be    * reported to the NN. Access should be synchronized on this object.    */
 specifier|private
@@ -776,28 +798,43 @@ name|getDnConf
 argument_list|()
 expr_stmt|;
 block|}
-comment|/**    * returns true if BP thread has completed initialization of storage    * and has registered with the corresponding namenode    * @return true if initialized    */
-DECL|method|isInitialized ()
-name|boolean
-name|isInitialized
-parameter_list|()
-block|{
-return|return
-name|initialized
-return|;
-block|}
 DECL|method|isAlive ()
 name|boolean
 name|isAlive
 parameter_list|()
 block|{
-return|return
+if|if
+condition|(
+operator|!
 name|shouldServiceRun
-operator|&&
+operator|||
+operator|!
 name|bpThread
 operator|.
 name|isAlive
 argument_list|()
+condition|)
+block|{
+return|return
+literal|false
+return|;
+block|}
+return|return
+name|runningState
+operator|==
+name|BPServiceActor
+operator|.
+name|RunningState
+operator|.
+name|RUNNING
+operator|||
+name|runningState
+operator|==
+name|BPServiceActor
+operator|.
+name|RunningState
+operator|.
+name|CONNECTING
 return|;
 block|}
 annotation|@
@@ -3498,6 +3535,11 @@ argument_list|)
 expr_stmt|;
 try|try
 block|{
+while|while
+condition|(
+literal|true
+condition|)
+block|{
 comment|// init stuff
 try|try
 block|{
@@ -3505,6 +3547,7 @@ comment|// setup storage
 name|connectToNNAndHandshake
 argument_list|()
 expr_stmt|;
+break|break;
 block|}
 catch|catch
 parameter_list|(
@@ -3513,25 +3556,74 @@ name|ioe
 parameter_list|)
 block|{
 comment|// Initial handshake, storage recovery or registration failed
-comment|// End BPOfferService thread
+name|runningState
+operator|=
+name|RunningState
+operator|.
+name|INIT_FAILED
+expr_stmt|;
+if|if
+condition|(
+name|shouldRetryInit
+argument_list|()
+condition|)
+block|{
+comment|// Retry until all namenode's of BPOS failed initialization
+name|LOG
+operator|.
+name|error
+argument_list|(
+literal|"Initialization failed for "
+operator|+
+name|this
+operator|+
+literal|" "
+operator|+
+name|ioe
+operator|.
+name|getLocalizedMessage
+argument_list|()
+argument_list|)
+expr_stmt|;
+name|sleepAndLogInterrupts
+argument_list|(
+literal|5000
+argument_list|,
+literal|"initializing"
+argument_list|)
+expr_stmt|;
+block|}
+else|else
+block|{
+name|runningState
+operator|=
+name|RunningState
+operator|.
+name|FAILED
+expr_stmt|;
 name|LOG
 operator|.
 name|fatal
 argument_list|(
-literal|"Initialization failed for block pool "
+literal|"Initialization failed for "
 operator|+
 name|this
+operator|+
+literal|". Exiting. "
 argument_list|,
 name|ioe
 argument_list|)
 expr_stmt|;
 return|return;
 block|}
-name|initialized
+block|}
+block|}
+name|runningState
 operator|=
-literal|true
+name|RunningState
+operator|.
+name|RUNNING
 expr_stmt|;
-comment|// bp is initialized;
 while|while
 condition|(
 name|shouldRun
@@ -3570,6 +3662,12 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
+name|runningState
+operator|=
+name|RunningState
+operator|.
+name|EXITED
+expr_stmt|;
 block|}
 catch|catch
 parameter_list|(
@@ -3588,6 +3686,12 @@ argument_list|,
 name|ex
 argument_list|)
 expr_stmt|;
+name|runningState
+operator|=
+name|RunningState
+operator|.
+name|FAILED
+expr_stmt|;
 block|}
 finally|finally
 block|{
@@ -3604,6 +3708,22 @@ name|cleanUp
 argument_list|()
 expr_stmt|;
 block|}
+block|}
+DECL|method|shouldRetryInit ()
+specifier|private
+name|boolean
+name|shouldRetryInit
+parameter_list|()
+block|{
+return|return
+name|shouldRun
+argument_list|()
+operator|&&
+name|bpos
+operator|.
+name|shouldRetryInit
+argument_list|()
+return|;
 block|}
 DECL|method|shouldRun ()
 specifier|private

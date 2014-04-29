@@ -596,6 +596,18 @@ literal|null
 return|;
 block|}
 block|}
+DECL|method|hasBlockPoolId ()
+name|boolean
+name|hasBlockPoolId
+parameter_list|()
+block|{
+return|return
+name|getNamespaceInfo
+argument_list|()
+operator|!=
+literal|null
+return|;
+block|}
 DECL|method|getNamespaceInfo ()
 specifier|synchronized
 name|NamespaceInfo
@@ -2753,6 +2765,29 @@ expr_stmt|;
 block|}
 return|return
 literal|true
+return|;
+block|}
+comment|/*    * Let the actor retry for initialization until all namenodes of cluster have    * failed.    */
+DECL|method|shouldRetryInit ()
+name|boolean
+name|shouldRetryInit
+parameter_list|()
+block|{
+if|if
+condition|(
+name|hasBlockPoolId
+argument_list|()
+condition|)
+block|{
+comment|// One of the namenode registered successfully. lets continue retry for
+comment|// other.
+return|return
+literal|true
+return|;
+block|}
+return|return
+name|isAlive
+argument_list|()
 return|;
 block|}
 block|}

@@ -4415,6 +4415,17 @@ argument_list|(
 name|bpos
 argument_list|)
 expr_stmt|;
+if|if
+condition|(
+name|bpos
+operator|.
+name|hasBlockPoolId
+argument_list|()
+condition|)
+block|{
+comment|// Possible that this is shutting down before successfully
+comment|// registering anywhere. If that's the case, we wouldn't have
+comment|// a block pool id
 name|String
 name|bpId
 init|=
@@ -4469,6 +4480,7 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
+block|}
 comment|/**    * One of the Block Pools has successfully connected to its NN.    * This initializes the local storage for that block pool,    * checks consistency of the NN's cluster ID, etc.    *     * If this is the first block pool to register, this also initializes    * the datanode-scoped storage.    *     * @param bpos Block pool offer service    * @throws IOException if the NN is inconsistent with the local storage.    */
 DECL|method|initBlockPool (BPOfferService bpos)
 name|void
@@ -4507,14 +4519,6 @@ literal|" should have retrieved namespace info before initBlockPool."
 argument_list|)
 throw|;
 block|}
-comment|// Register the new block pool with the BP manager.
-name|blockPoolManager
-operator|.
-name|addBlockPool
-argument_list|(
-name|bpos
-argument_list|)
-expr_stmt|;
 name|setClusterId
 argument_list|(
 name|nsInfo
@@ -4525,6 +4529,14 @@ name|nsInfo
 operator|.
 name|getBlockPoolID
 argument_list|()
+argument_list|)
+expr_stmt|;
+comment|// Register the new block pool with the BP manager.
+name|blockPoolManager
+operator|.
+name|addBlockPool
+argument_list|(
+name|bpos
 argument_list|)
 expr_stmt|;
 comment|// In the case that this is the first block pool to connect, initialize
@@ -5261,6 +5273,15 @@ operator|.
 name|AccessMode
 operator|.
 name|READ
+argument_list|)
+expr_stmt|;
+name|Preconditions
+operator|.
+name|checkNotNull
+argument_list|(
+name|data
+argument_list|,
+literal|"Storage not yet initialized"
 argument_list|)
 expr_stmt|;
 name|BlockLocalPathInfo
@@ -11219,6 +11240,15 @@ name|String
 name|getVolumeInfo
 parameter_list|()
 block|{
+name|Preconditions
+operator|.
+name|checkNotNull
+argument_list|(
+name|data
+argument_list|,
+literal|"Storage not yet initialized"
+argument_list|)
+expr_stmt|;
 return|return
 name|JSON
 operator|.

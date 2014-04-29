@@ -475,6 +475,16 @@ argument_list|(
 name|t
 argument_list|)
 expr_stmt|;
+if|if
+condition|(
+name|t
+operator|.
+name|hasBlockPoolId
+argument_list|()
+condition|)
+block|{
+comment|// It's possible that the block pool never successfully registered
+comment|// with any NN, so it was never added it to this map
 name|bpByBlockPoolId
 operator|.
 name|remove
@@ -485,6 +495,7 @@ name|getBlockPoolId
 argument_list|()
 argument_list|)
 expr_stmt|;
+block|}
 name|boolean
 name|removed
 init|=

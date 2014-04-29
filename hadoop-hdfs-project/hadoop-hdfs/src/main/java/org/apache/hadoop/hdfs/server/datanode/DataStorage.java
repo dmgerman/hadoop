@@ -1042,6 +1042,8 @@ comment|// 2. Do transitions
 comment|// Each storage directory is treated individually.
 comment|// During startup some of them can upgrade or rollback
 comment|// while others could be uptodate for the regular startup.
+try|try
+block|{
 for|for
 control|(
 name|int
@@ -1080,6 +1082,20 @@ name|idx
 argument_list|)
 argument_list|)
 expr_stmt|;
+block|}
+block|}
+catch|catch
+parameter_list|(
+name|IOException
+name|e
+parameter_list|)
+block|{
+name|unlockAll
+argument_list|()
+expr_stmt|;
+throw|throw
+name|e
+throw|;
 block|}
 comment|// 3. Update all storages. Some of them might have just been formatted.
 name|this
