@@ -26267,8 +26267,6 @@ argument_list|(
 name|path
 argument_list|,
 name|dir
-operator|.
-name|rootDir
 argument_list|,
 name|doCheckOwner
 argument_list|,

@@ -2498,8 +2498,6 @@ name|namesystem
 operator|.
 name|dir
 operator|.
-name|rootDir
-operator|.
 name|getNode
 argument_list|(
 name|parentPath

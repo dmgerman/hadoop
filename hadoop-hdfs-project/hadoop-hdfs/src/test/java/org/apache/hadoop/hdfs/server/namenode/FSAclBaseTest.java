@@ -10722,9 +10722,6 @@ operator|.
 name|getFSDirectory
 argument_list|()
 operator|.
-name|getRoot
-argument_list|()
-operator|.
 name|getNode
 argument_list|(
 name|pathToCheck
