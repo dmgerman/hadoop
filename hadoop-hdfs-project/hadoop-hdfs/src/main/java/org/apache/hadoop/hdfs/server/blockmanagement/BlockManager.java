@@ -5266,6 +5266,14 @@ name|node
 argument_list|)
 expr_stmt|;
 block|}
+comment|// Remove all pending DN messages referencing this DN.
+name|pendingDNMessages
+operator|.
+name|removeAllMessagesForDatanode
+argument_list|(
+name|node
+argument_list|)
+expr_stmt|;
 name|node
 operator|.
 name|resetBlocks
@@ -5576,7 +5584,14 @@ literal|" as corrupt because datanode "
 operator|+
 name|dn
 operator|+
-literal|" does not exist"
+literal|" ("
+operator|+
+name|dn
+operator|.
+name|getDatanodeUuid
+argument_list|()
+operator|+
+literal|") does not exist"
 argument_list|)
 throw|;
 block|}
@@ -9474,6 +9489,9 @@ block|{
 comment|// If the block is an out-of-date generation stamp or state,
 comment|// but we're the standby, we shouldn't treat it as corrupt,
 comment|// but instead just queue it for later processing.
+comment|// TODO: Pretty confident this should be s/storedBlock/block below,
+comment|// since we should be postponing the info of the reported block, not
+comment|// the stored block. See HDFS-6289 for more context.
 name|queueReportedBlock
 argument_list|(
 name|dn

@@ -287,6 +287,7 @@ return|;
 block|}
 comment|/** Find the corresponding meta data file from a given block file */
 DECL|method|findMetaFile (final File blockFile)
+specifier|public
 specifier|static
 name|File
 name|findMetaFile
