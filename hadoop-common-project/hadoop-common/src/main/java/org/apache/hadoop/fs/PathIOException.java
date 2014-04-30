@@ -87,8 +87,6 @@ argument_list|(
 name|path
 argument_list|,
 name|EIO
-argument_list|,
-literal|null
 argument_list|)
 expr_stmt|;
 block|}
@@ -126,14 +124,16 @@ name|String
 name|error
 parameter_list|)
 block|{
-name|this
+name|super
 argument_list|(
-name|path
-argument_list|,
 name|error
-argument_list|,
-literal|null
 argument_list|)
+expr_stmt|;
+name|this
+operator|.
+name|path
+operator|=
+name|path
 expr_stmt|;
 block|}
 DECL|method|PathIOException (String path, String error, Throwable cause)
