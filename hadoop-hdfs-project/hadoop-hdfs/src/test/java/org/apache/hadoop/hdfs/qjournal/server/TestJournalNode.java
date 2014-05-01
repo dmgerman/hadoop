@@ -1253,32 +1253,6 @@ literal|"Hadoop:service=JournalNode,name=JvmMetrics"
 argument_list|)
 argument_list|)
 expr_stmt|;
-comment|// Check JSP page.
-name|pageContents
-operator|=
-name|DFSTestUtil
-operator|.
-name|urlGet
-argument_list|(
-operator|new
-name|URL
-argument_list|(
-name|urlRoot
-operator|+
-literal|"/journalstatus.jsp"
-argument_list|)
-argument_list|)
-expr_stmt|;
-name|assertTrue
-argument_list|(
-name|pageContents
-operator|.
-name|contains
-argument_list|(
-literal|"JournalNode"
-argument_list|)
-argument_list|)
-expr_stmt|;
 comment|// Create some edits on server side
 name|byte
 index|[]

@@ -558,6 +558,10 @@ operator|new
 name|Random
 argument_list|()
 decl_stmt|;
+DECL|field|dir
+name|Path
+name|dir
+decl_stmt|;
 DECL|field|hostsFile
 name|Path
 name|hostsFile
@@ -614,9 +618,8 @@ operator|.
 name|getWorkingDirectory
 argument_list|()
 decl_stmt|;
-name|Path
 name|dir
-init|=
+operator|=
 operator|new
 name|Path
 argument_list|(
@@ -632,7 +635,7 @@ argument_list|)
 operator|+
 literal|"/work-dir/decommission"
 argument_list|)
-decl_stmt|;
+expr_stmt|;
 name|hostsFile
 operator|=
 operator|new
@@ -783,10 +786,7 @@ name|cleanupFile
 argument_list|(
 name|localFileSys
 argument_list|,
-name|excludeFile
-operator|.
-name|getParent
-argument_list|()
+name|dir
 argument_list|)
 expr_stmt|;
 if|if
