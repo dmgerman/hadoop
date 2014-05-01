@@ -2536,8 +2536,8 @@ name|LOG
 operator|.
 name|error
 argument_list|(
-literal|"ExpiredTokenRemover thread received unexpected exception"
-argument_list|,
+literal|"ExpiredTokenRemover thread received unexpected exception. "
+operator|+
 name|t
 argument_list|)
 expr_stmt|;
