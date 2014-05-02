@@ -1512,14 +1512,6 @@ name|InvalidToken
 throws|,
 name|IOException
 block|{
-name|long
-name|now
-init|=
-name|Time
-operator|.
-name|now
-argument_list|()
-decl_stmt|;
 name|ByteArrayInputStream
 name|buf
 init|=
@@ -1558,11 +1550,26 @@ name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"Token renewal requested for identifier: "
+literal|"Token renewal for identifier: "
 operator|+
 name|id
+operator|+
+literal|"; total currentTokens "
+operator|+
+name|currentTokens
+operator|.
+name|size
+argument_list|()
 argument_list|)
 expr_stmt|;
+name|long
+name|now
+init|=
+name|Time
+operator|.
+name|now
+argument_list|()
+decl_stmt|;
 if|if
 condition|(
 name|id
@@ -1577,8 +1584,6 @@ throw|throw
 operator|new
 name|InvalidToken
 argument_list|(
-literal|"User "
-operator|+
 name|renewer
 operator|+
 literal|" tried to renew an expired token"
@@ -1614,13 +1619,9 @@ throw|throw
 operator|new
 name|AccessControlException
 argument_list|(
-literal|"User "
-operator|+
 name|renewer
 operator|+
-literal|" tried to renew a token without "
-operator|+
-literal|"a renewer"
+literal|" tried to renew a token without a renewer"
 argument_list|)
 throw|;
 block|}
@@ -1645,13 +1646,9 @@ throw|throw
 operator|new
 name|AccessControlException
 argument_list|(
-literal|"Client "
-operator|+
 name|renewer
 operator|+
-literal|" tries to renew a token with "
-operator|+
-literal|"renewer specified as "
+literal|" tries to renew a token with renewer "
 operator|+
 name|id
 operator|.
@@ -1739,13 +1736,9 @@ throw|throw
 operator|new
 name|AccessControlException
 argument_list|(
-literal|"Client "
-operator|+
 name|renewer
 operator|+
-literal|" is trying to renew a token with "
-operator|+
-literal|"wrong password"
+literal|" is trying to renew a token with wrong password"
 argument_list|)
 throw|;
 block|}
@@ -1992,17 +1985,13 @@ block|}
 name|DelegationTokenInformation
 name|info
 init|=
-literal|null
-decl_stmt|;
-name|info
-operator|=
 name|currentTokens
 operator|.
 name|remove
 argument_list|(
 name|id
 argument_list|)
-expr_stmt|;
+decl_stmt|;
 if|if
 condition|(
 name|info
@@ -2518,7 +2507,7 @@ name|LOG
 operator|.
 name|error
 argument_list|(
-literal|"InterruptedExcpetion recieved for ExpiredTokenRemover thread "
+literal|"ExpiredTokenRemover received "
 operator|+
 name|ie
 argument_list|)
@@ -2536,8 +2525,8 @@ name|LOG
 operator|.
 name|error
 argument_list|(
-literal|"ExpiredTokenRemover thread received unexpected exception. "
-operator|+
+literal|"ExpiredTokenRemover thread received unexpected exception"
+argument_list|,
 name|t
 argument_list|)
 expr_stmt|;
