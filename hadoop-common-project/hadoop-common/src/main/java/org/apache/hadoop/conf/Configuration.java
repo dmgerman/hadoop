@@ -2969,11 +2969,12 @@ name|reloadConfiguration
 argument_list|()
 expr_stmt|;
 block|}
-DECL|field|varPat
+DECL|field|VAR_PATTERN
 specifier|private
 specifier|static
+specifier|final
 name|Pattern
-name|varPat
+name|VAR_PATTERN
 init|=
 name|Pattern
 operator|.
@@ -2985,6 +2986,7 @@ decl_stmt|;
 DECL|field|MAX_SUBST
 specifier|private
 specifier|static
+specifier|final
 name|int
 name|MAX_SUBST
 init|=
@@ -3013,7 +3015,7 @@ block|}
 name|Matcher
 name|match
 init|=
-name|varPat
+name|VAR_PATTERN
 operator|.
 name|matcher
 argument_list|(
