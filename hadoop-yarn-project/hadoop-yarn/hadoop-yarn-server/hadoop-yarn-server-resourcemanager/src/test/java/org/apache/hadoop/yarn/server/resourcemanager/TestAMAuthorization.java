@@ -180,6 +180,20 @@ name|hadoop
 operator|.
 name|security
 operator|.
+name|AccessControlException
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|security
+operator|.
 name|Credentials
 import|;
 end_import
@@ -1746,6 +1760,18 @@ name|Exception
 name|e
 parameter_list|)
 block|{
+if|if
+condition|(
+name|isCause
+argument_list|(
+name|AccessControlException
+operator|.
+name|class
+argument_list|,
+name|e
+argument_list|)
+condition|)
+block|{
 comment|// Because there are no tokens, the request should be rejected as the
 comment|// server side will assume we are trying simple auth.
 name|String
@@ -1792,8 +1818,61 @@ argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
+else|else
+block|{
+throw|throw
+name|e
+throw|;
+block|}
+block|}
 comment|// TODO: Add validation of invalid authorization when there's more data in
 comment|// the AMRMToken
+block|}
+comment|/**    * Identify if an expected throwable included in an exception stack. We use    * this because sometimes, an exception will be wrapped to another exception    * before thrown. Like,    *     *<pre>    * {@code    * void methodA() throws IOException {    *   try {    *     // something    *   } catch (AccessControlException e) {    *     // do process    *     throw new IOException(e)    *   }    * }    *</pre>    *     * So we cannot simply catch AccessControlException by using    *<pre>    * {@code    * try {    *   methodA()    * } catch (AccessControlException e) {    *   // do something    * }    *</pre>    *     * This method is useful in such cases.    */
+DECL|method|isCause ( Class<? extends Throwable> expected, Throwable e )
+specifier|private
+specifier|static
+name|boolean
+name|isCause
+parameter_list|(
+name|Class
+argument_list|<
+name|?
+extends|extends
+name|Throwable
+argument_list|>
+name|expected
+parameter_list|,
+name|Throwable
+name|e
+parameter_list|)
+block|{
+return|return
+operator|(
+name|e
+operator|!=
+literal|null
+operator|)
+operator|&&
+operator|(
+name|expected
+operator|.
+name|isInstance
+argument_list|(
+name|e
+argument_list|)
+operator|||
+name|isCause
+argument_list|(
+name|expected
+argument_list|,
+name|e
+operator|.
+name|getCause
+argument_list|()
+argument_list|)
+operator|)
+return|;
 block|}
 DECL|method|waitForLaunchedState (RMAppAttempt attempt)
 specifier|private
