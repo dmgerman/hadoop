@@ -478,7 +478,7 @@ name|moreExistingReplicas
 parameter_list|)
 function_decl|;
 comment|/**    * Used to setup a BlockPlacementPolicy object. This should be defined by     * all implementations of a BlockPlacementPolicy.    *     * @param conf the configuration object    * @param stats retrieve cluster status from here    * @param clusterMap cluster topology    */
-DECL|method|initialize (Configuration conf, FSClusterStats stats, NetworkTopology clusterMap)
+DECL|method|initialize (Configuration conf, FSClusterStats stats, NetworkTopology clusterMap, Host2NodesMap host2datanodeMap)
 specifier|abstract
 specifier|protected
 name|void
@@ -492,10 +492,13 @@ name|stats
 parameter_list|,
 name|NetworkTopology
 name|clusterMap
+parameter_list|,
+name|Host2NodesMap
+name|host2datanodeMap
 parameter_list|)
 function_decl|;
 comment|/**    * Get an instance of the configured Block Placement Policy based on the    * the configuration property    * {@link  DFSConfigKeys#DFS_BLOCK_REPLICATOR_CLASSNAME_KEY}.    *     * @param conf the configuration to be used    * @param stats an object that is used to retrieve the load on the cluster    * @param clusterMap the network topology of the cluster    * @return an instance of BlockPlacementPolicy    */
-DECL|method|getInstance (Configuration conf, FSClusterStats stats, NetworkTopology clusterMap)
+DECL|method|getInstance (Configuration conf, FSClusterStats stats, NetworkTopology clusterMap, Host2NodesMap host2datanodeMap)
 specifier|public
 specifier|static
 name|BlockPlacementPolicy
@@ -509,6 +512,9 @@ name|stats
 parameter_list|,
 name|NetworkTopology
 name|clusterMap
+parameter_list|,
+name|Host2NodesMap
+name|host2datanodeMap
 parameter_list|)
 block|{
 specifier|final
@@ -559,6 +565,8 @@ argument_list|,
 name|stats
 argument_list|,
 name|clusterMap
+argument_list|,
+name|host2datanodeMap
 argument_list|)
 expr_stmt|;
 return|return

@@ -151,7 +151,6 @@ operator|.
 name|Evolving
 DECL|class|ScriptBasedMapping
 specifier|public
-specifier|final
 class|class
 name|ScriptBasedMapping
 extends|extends
@@ -215,11 +214,26 @@ specifier|public
 name|ScriptBasedMapping
 parameter_list|()
 block|{
-name|super
+name|this
 argument_list|(
 operator|new
 name|RawScriptBasedMapping
 argument_list|()
+argument_list|)
+expr_stmt|;
+block|}
+comment|/**    * Create an instance from the given raw mapping    * @param rawMap raw DNSTOSwithMapping    */
+DECL|method|ScriptBasedMapping (DNSToSwitchMapping rawMap)
+specifier|public
+name|ScriptBasedMapping
+parameter_list|(
+name|DNSToSwitchMapping
+name|rawMap
+parameter_list|)
+block|{
+name|super
+argument_list|(
+name|rawMap
 argument_list|)
 expr_stmt|;
 block|}
@@ -319,9 +333,8 @@ expr_stmt|;
 block|}
 comment|/**    * This is the uncached script mapping that is fed into the cache managed    * by the superclass {@link CachedDNSToSwitchMapping}    */
 DECL|class|RawScriptBasedMapping
-specifier|private
+specifier|protected
 specifier|static
-specifier|final
 class|class
 name|RawScriptBasedMapping
 extends|extends
@@ -501,6 +514,8 @@ init|=
 name|runResolveCommand
 argument_list|(
 name|names
+argument_list|,
+name|scriptName
 argument_list|)
 decl_stmt|;
 if|if
@@ -610,8 +625,8 @@ name|m
 return|;
 block|}
 comment|/**      * Build and execute the resolution command. The command is      * executed in the directory specified by the system property      * "user.dir" if set; otherwise the current working directory is used      * @param args a list of arguments      * @return null if the number of arguments is out of range,      * or the output of the command.      */
-DECL|method|runResolveCommand (List<String> args)
-specifier|private
+DECL|method|runResolveCommand (List<String> args, String commandScriptName)
+specifier|protected
 name|String
 name|runResolveCommand
 parameter_list|(
@@ -620,6 +635,9 @@ argument_list|<
 name|String
 argument_list|>
 name|args
+parameter_list|,
+name|String
+name|commandScriptName
 parameter_list|)
 block|{
 name|int
@@ -725,7 +743,7 @@ name|cmdList
 operator|.
 name|add
 argument_list|(
-name|scriptName
+name|commandScriptName
 argument_list|)
 expr_stmt|;
 for|for

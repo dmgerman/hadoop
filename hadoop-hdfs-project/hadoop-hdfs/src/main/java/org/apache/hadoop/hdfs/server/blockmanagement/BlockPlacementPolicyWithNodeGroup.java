@@ -224,7 +224,7 @@ name|BlockPlacementPolicyWithNodeGroup
 extends|extends
 name|BlockPlacementPolicyDefault
 block|{
-DECL|method|BlockPlacementPolicyWithNodeGroup (Configuration conf, FSClusterStats stats, NetworkTopology clusterMap)
+DECL|method|BlockPlacementPolicyWithNodeGroup (Configuration conf, FSClusterStats stats, NetworkTopology clusterMap, DatanodeManager datanodeManager)
 specifier|protected
 name|BlockPlacementPolicyWithNodeGroup
 parameter_list|(
@@ -236,6 +236,9 @@ name|stats
 parameter_list|,
 name|NetworkTopology
 name|clusterMap
+parameter_list|,
+name|DatanodeManager
+name|datanodeManager
 parameter_list|)
 block|{
 name|initialize
@@ -245,6 +248,8 @@ argument_list|,
 name|stats
 argument_list|,
 name|clusterMap
+argument_list|,
+name|host2datanodeMap
 argument_list|)
 expr_stmt|;
 block|}
@@ -255,7 +260,7 @@ parameter_list|()
 block|{   }
 annotation|@
 name|Override
-DECL|method|initialize (Configuration conf, FSClusterStats stats, NetworkTopology clusterMap)
+DECL|method|initialize (Configuration conf, FSClusterStats stats, NetworkTopology clusterMap, Host2NodesMap host2datanodeMap)
 specifier|public
 name|void
 name|initialize
@@ -268,6 +273,9 @@ name|stats
 parameter_list|,
 name|NetworkTopology
 name|clusterMap
+parameter_list|,
+name|Host2NodesMap
+name|host2datanodeMap
 parameter_list|)
 block|{
 name|super
@@ -279,6 +287,8 @@ argument_list|,
 name|stats
 argument_list|,
 name|clusterMap
+argument_list|,
+name|host2datanodeMap
 argument_list|)
 expr_stmt|;
 block|}
@@ -1163,6 +1173,118 @@ block|{
 comment|// not a existing node in excludedNodes
 name|countOfExcludedNodes
 operator|++
+expr_stmt|;
+block|}
+block|}
+name|countOfExcludedNodes
+operator|+=
+name|addDependentNodesToExcludedNodes
+argument_list|(
+name|chosenNode
+argument_list|,
+name|excludedNodes
+argument_list|)
+expr_stmt|;
+return|return
+name|countOfExcludedNodes
+return|;
+block|}
+comment|/**    * Add all nodes from a dependent nodes list to excludedNodes.    * @return number of new excluded nodes    */
+DECL|method|addDependentNodesToExcludedNodes (DatanodeDescriptor chosenNode, Set<Node> excludedNodes)
+specifier|private
+name|int
+name|addDependentNodesToExcludedNodes
+parameter_list|(
+name|DatanodeDescriptor
+name|chosenNode
+parameter_list|,
+name|Set
+argument_list|<
+name|Node
+argument_list|>
+name|excludedNodes
+parameter_list|)
+block|{
+if|if
+condition|(
+name|this
+operator|.
+name|host2datanodeMap
+operator|==
+literal|null
+condition|)
+block|{
+return|return
+literal|0
+return|;
+block|}
+name|int
+name|countOfExcludedNodes
+init|=
+literal|0
+decl_stmt|;
+for|for
+control|(
+name|String
+name|hostname
+range|:
+name|chosenNode
+operator|.
+name|getDependentHostNames
+argument_list|()
+control|)
+block|{
+name|DatanodeDescriptor
+name|node
+init|=
+name|this
+operator|.
+name|host2datanodeMap
+operator|.
+name|getDataNodeByHostName
+argument_list|(
+name|hostname
+argument_list|)
+decl_stmt|;
+if|if
+condition|(
+name|node
+operator|!=
+literal|null
+condition|)
+block|{
+if|if
+condition|(
+name|excludedNodes
+operator|.
+name|add
+argument_list|(
+name|node
+argument_list|)
+condition|)
+block|{
+name|countOfExcludedNodes
+operator|++
+expr_stmt|;
+block|}
+block|}
+else|else
+block|{
+name|LOG
+operator|.
+name|warn
+argument_list|(
+literal|"Not able to find datanode "
+operator|+
+name|hostname
+operator|+
+literal|" which has dependency with datanode "
+operator|+
+name|chosenNode
+operator|.
+name|getHostName
+argument_list|()
+argument_list|)
 expr_stmt|;
 block|}
 block|}

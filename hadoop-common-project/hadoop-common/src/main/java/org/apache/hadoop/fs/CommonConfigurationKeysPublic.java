@@ -207,6 +207,15 @@ name|NET_TOPOLOGY_TABLE_MAPPING_FILE_KEY
 init|=
 literal|"net.topology.table.file.name"
 decl_stmt|;
+DECL|field|NET_DEPENDENCY_SCRIPT_FILE_NAME_KEY
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|NET_DEPENDENCY_SCRIPT_FILE_NAME_KEY
+init|=
+literal|"net.topology.dependency.script.file.name"
+decl_stmt|;
 comment|/** See<a href="{@docRoot}/../core-default.html">core-default.xml</a> */
 DECL|field|FS_TRASH_CHECKPOINT_INTERVAL_KEY
 specifier|public

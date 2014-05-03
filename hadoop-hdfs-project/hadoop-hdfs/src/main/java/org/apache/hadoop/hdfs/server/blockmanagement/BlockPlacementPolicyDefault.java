@@ -405,6 +405,11 @@ specifier|protected
 name|NetworkTopology
 name|clusterMap
 decl_stmt|;
+DECL|field|host2datanodeMap
+specifier|protected
+name|Host2NodesMap
+name|host2datanodeMap
+decl_stmt|;
 DECL|field|stats
 specifier|private
 name|FSClusterStats
@@ -428,7 +433,7 @@ specifier|protected
 name|int
 name|tolerateHeartbeatMultiplier
 decl_stmt|;
-DECL|method|BlockPlacementPolicyDefault (Configuration conf, FSClusterStats stats, NetworkTopology clusterMap)
+DECL|method|BlockPlacementPolicyDefault (Configuration conf, FSClusterStats stats, NetworkTopology clusterMap, Host2NodesMap host2datanodeMap)
 specifier|protected
 name|BlockPlacementPolicyDefault
 parameter_list|(
@@ -440,6 +445,9 @@ name|stats
 parameter_list|,
 name|NetworkTopology
 name|clusterMap
+parameter_list|,
+name|Host2NodesMap
+name|host2datanodeMap
 parameter_list|)
 block|{
 name|initialize
@@ -449,6 +457,8 @@ argument_list|,
 name|stats
 argument_list|,
 name|clusterMap
+argument_list|,
+name|host2datanodeMap
 argument_list|)
 expr_stmt|;
 block|}
@@ -459,7 +469,7 @@ parameter_list|()
 block|{   }
 annotation|@
 name|Override
-DECL|method|initialize (Configuration conf, FSClusterStats stats, NetworkTopology clusterMap)
+DECL|method|initialize (Configuration conf, FSClusterStats stats, NetworkTopology clusterMap, Host2NodesMap host2datanodeMap)
 specifier|public
 name|void
 name|initialize
@@ -472,6 +482,9 @@ name|stats
 parameter_list|,
 name|NetworkTopology
 name|clusterMap
+parameter_list|,
+name|Host2NodesMap
+name|host2datanodeMap
 parameter_list|)
 block|{
 name|this
@@ -500,6 +513,12 @@ operator|.
 name|clusterMap
 operator|=
 name|clusterMap
+expr_stmt|;
+name|this
+operator|.
+name|host2datanodeMap
+operator|=
+name|host2datanodeMap
 expr_stmt|;
 name|this
 operator|.

@@ -1574,6 +1574,11 @@ name|datanodeManager
 operator|.
 name|getNetworkTopology
 argument_list|()
+argument_list|,
+name|datanodeManager
+operator|.
+name|getHost2DatanodeMap
+argument_list|()
 argument_list|)
 expr_stmt|;
 name|pendingReplications

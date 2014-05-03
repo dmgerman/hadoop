@@ -169,6 +169,26 @@ import|;
 end_import
 
 begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
+name|LinkedList
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
+name|List
+import|;
+end_import
+
+begin_import
 import|import static
 name|org
 operator|.
@@ -259,6 +279,21 @@ DECL|field|softwareVersion
 specifier|private
 name|String
 name|softwareVersion
+decl_stmt|;
+DECL|field|dependentHostNames
+specifier|private
+name|List
+argument_list|<
+name|String
+argument_list|>
+name|dependentHostNames
+init|=
+operator|new
+name|LinkedList
+argument_list|<
+name|String
+argument_list|>
+argument_list|()
 decl_stmt|;
 comment|// Datanode administrative states
 DECL|enum|AdminStates
@@ -1221,6 +1256,56 @@ name|normalize
 argument_list|(
 name|location
 argument_list|)
+expr_stmt|;
+block|}
+comment|/** Add a hostname to a list of network dependencies */
+DECL|method|addDependentHostName (String hostname)
+specifier|public
+name|void
+name|addDependentHostName
+parameter_list|(
+name|String
+name|hostname
+parameter_list|)
+block|{
+name|dependentHostNames
+operator|.
+name|add
+argument_list|(
+name|hostname
+argument_list|)
+expr_stmt|;
+block|}
+comment|/** List of Network dependencies */
+DECL|method|getDependentHostNames ()
+specifier|public
+name|List
+argument_list|<
+name|String
+argument_list|>
+name|getDependentHostNames
+parameter_list|()
+block|{
+return|return
+name|dependentHostNames
+return|;
+block|}
+comment|/** Sets the network dependencies */
+DECL|method|setDependentHostNames (List<String> dependencyList)
+specifier|public
+name|void
+name|setDependentHostNames
+parameter_list|(
+name|List
+argument_list|<
+name|String
+argument_list|>
+name|dependencyList
+parameter_list|)
+block|{
+name|dependentHostNames
+operator|=
+name|dependencyList
 expr_stmt|;
 block|}
 comment|/** A formatted string for reporting the status of the DataNode. */
