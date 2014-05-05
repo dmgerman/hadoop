@@ -479,11 +479,14 @@ block|{
 DECL|enumConstant|ALL
 DECL|enumConstant|LIVE
 DECL|enumConstant|DEAD
+DECL|enumConstant|DECOMMISSIONING
 name|ALL
 block|,
 name|LIVE
 block|,
 name|DEAD
+block|,
+name|DECOMMISSIONING
 block|}
 comment|// An invalid transaction ID that will never be seen in a real namesystem.
 DECL|field|INVALID_TXID
