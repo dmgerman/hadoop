@@ -225,7 +225,7 @@ init|=
 literal|".hosts"
 decl_stmt|;
 DECL|field|CONF_GROUPS
-specifier|public
+specifier|private
 specifier|static
 specifier|final
 name|String
@@ -234,7 +234,7 @@ init|=
 literal|".groups"
 decl_stmt|;
 DECL|field|CONF_HADOOP_PROXYUSER
-specifier|public
+specifier|private
 specifier|static
 specifier|final
 name|String
@@ -243,7 +243,7 @@ init|=
 literal|"hadoop.proxyuser."
 decl_stmt|;
 DECL|field|CONF_HADOOP_PROXYUSER_RE
-specifier|public
+specifier|private
 specifier|static
 specifier|final
 name|String
