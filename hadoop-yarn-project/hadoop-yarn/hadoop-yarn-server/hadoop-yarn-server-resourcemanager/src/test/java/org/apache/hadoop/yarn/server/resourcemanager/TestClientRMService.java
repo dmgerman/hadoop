@@ -3806,14 +3806,12 @@ argument_list|()
 operator|.
 name|contains
 argument_list|(
-literal|"Client "
-operator|+
 name|owner
 operator|.
 name|getUserName
 argument_list|()
 operator|+
-literal|" tries to renew a token with renewer specified as "
+literal|" tries to renew a token with renewer "
 operator|+
 name|other
 operator|.
