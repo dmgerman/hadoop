@@ -374,16 +374,22 @@ DECL|field|placementPolicy
 name|QueuePlacementPolicy
 name|placementPolicy
 decl_stmt|;
+comment|//Configured queues in the alloc xml
 annotation|@
 name|VisibleForTesting
-DECL|field|queueNames
+DECL|field|configuredQueues
+name|Map
+argument_list|<
+name|FSQueueType
+argument_list|,
 name|Set
 argument_list|<
 name|String
 argument_list|>
-name|queueNames
+argument_list|>
+name|configuredQueues
 decl_stmt|;
-DECL|method|AllocationConfiguration (Map<String, Resource> minQueueResources, Map<String, Resource> maxQueueResources, Map<String, Integer> queueMaxApps, Map<String, Integer> userMaxApps, Map<String, ResourceWeights> queueWeights, int userMaxAppsDefault, int queueMaxAppsDefault, Map<String, SchedulingPolicy> schedulingPolicies, SchedulingPolicy defaultSchedulingPolicy, Map<String, Long> minSharePreemptionTimeouts, Map<String, Map<QueueACL, AccessControlList>> queueAcls, long fairSharePreemptionTimeout, long defaultMinSharePreemptionTimeout, QueuePlacementPolicy placementPolicy, Set<String> queueNames)
+DECL|method|AllocationConfiguration (Map<String, Resource> minQueueResources, Map<String, Resource> maxQueueResources, Map<String, Integer> queueMaxApps, Map<String, Integer> userMaxApps, Map<String, ResourceWeights> queueWeights, int userMaxAppsDefault, int queueMaxAppsDefault, Map<String, SchedulingPolicy> schedulingPolicies, SchedulingPolicy defaultSchedulingPolicy, Map<String, Long> minSharePreemptionTimeouts, Map<String, Map<QueueACL, AccessControlList>> queueAcls, long fairSharePreemptionTimeout, long defaultMinSharePreemptionTimeout, QueuePlacementPolicy placementPolicy, Map<FSQueueType, Set<String>> configuredQueues)
 specifier|public
 name|AllocationConfiguration
 parameter_list|(
@@ -474,11 +480,16 @@ parameter_list|,
 name|QueuePlacementPolicy
 name|placementPolicy
 parameter_list|,
+name|Map
+argument_list|<
+name|FSQueueType
+argument_list|,
 name|Set
 argument_list|<
 name|String
 argument_list|>
-name|queueNames
+argument_list|>
+name|configuredQueues
 parameter_list|)
 block|{
 name|this
@@ -567,9 +578,9 @@ name|placementPolicy
 expr_stmt|;
 name|this
 operator|.
-name|queueNames
+name|configuredQueues
 operator|=
-name|queueNames
+name|configuredQueues
 expr_stmt|;
 block|}
 DECL|method|AllocationConfiguration (Configuration conf)
@@ -703,13 +714,36 @@ name|SchedulingPolicy
 operator|.
 name|DEFAULT_POLICY
 expr_stmt|;
-name|placementPolicy
+name|configuredQueues
 operator|=
-name|QueuePlacementPolicy
+operator|new
+name|HashMap
+argument_list|<
+name|FSQueueType
+argument_list|,
+name|Set
+argument_list|<
+name|String
+argument_list|>
+argument_list|>
+argument_list|()
+expr_stmt|;
+for|for
+control|(
+name|FSQueueType
+name|queueType
+range|:
+name|FSQueueType
 operator|.
-name|fromConfiguration
+name|values
+argument_list|()
+control|)
+block|{
+name|configuredQueues
+operator|.
+name|put
 argument_list|(
-name|conf
+name|queueType
 argument_list|,
 operator|new
 name|HashSet
@@ -719,14 +753,17 @@ argument_list|>
 argument_list|()
 argument_list|)
 expr_stmt|;
-name|queueNames
+block|}
+name|placementPolicy
 operator|=
-operator|new
-name|HashSet
-argument_list|<
-name|String
-argument_list|>
-argument_list|()
+name|QueuePlacementPolicy
+operator|.
+name|fromConfiguration
+argument_list|(
+name|conf
+argument_list|,
+name|configuredQueues
+argument_list|)
 expr_stmt|;
 block|}
 comment|/**    * Get the ACLs associated with this queue. If a given ACL is not explicitly    * configured, include the default value for that ACL.  The default for the    * root queue is everybody ("*") and the default for all other queues is    * nobody ("")    */
@@ -1132,17 +1169,22 @@ return|return
 name|defaultSchedulingPolicy
 return|;
 block|}
-DECL|method|getQueueNames ()
+DECL|method|getConfiguredQueues ()
 specifier|public
+name|Map
+argument_list|<
+name|FSQueueType
+argument_list|,
 name|Set
 argument_list|<
 name|String
 argument_list|>
-name|getQueueNames
+argument_list|>
+name|getConfiguredQueues
 parameter_list|()
 block|{
 return|return
-name|queueNames
+name|configuredQueues
 return|;
 block|}
 DECL|method|getPlacementPolicy ()

@@ -280,6 +280,19 @@ name|map
 operator|.
 name|put
 argument_list|(
+literal|"nestedUserQueue"
+argument_list|,
+name|QueuePlacementRule
+operator|.
+name|NestedUserQueue
+operator|.
+name|class
+argument_list|)
+expr_stmt|;
+name|map
+operator|.
+name|put
+argument_list|(
 literal|"default"
 argument_list|,
 name|QueuePlacementRule
@@ -324,9 +337,14 @@ decl_stmt|;
 DECL|field|configuredQueues
 specifier|private
 specifier|final
+name|Map
+argument_list|<
+name|FSQueueType
+argument_list|,
 name|Set
 argument_list|<
 name|String
+argument_list|>
 argument_list|>
 name|configuredQueues
 decl_stmt|;
@@ -336,7 +354,7 @@ specifier|final
 name|Groups
 name|groups
 decl_stmt|;
-DECL|method|QueuePlacementPolicy (List<QueuePlacementRule> rules, Set<String> configuredQueues, Configuration conf)
+DECL|method|QueuePlacementPolicy (List<QueuePlacementRule> rules, Map<FSQueueType, Set<String>> configuredQueues, Configuration conf)
 specifier|public
 name|QueuePlacementPolicy
 parameter_list|(
@@ -346,9 +364,14 @@ name|QueuePlacementRule
 argument_list|>
 name|rules
 parameter_list|,
+name|Map
+argument_list|<
+name|FSQueueType
+argument_list|,
 name|Set
 argument_list|<
 name|String
+argument_list|>
 argument_list|>
 name|configuredQueues
 parameter_list|,
@@ -453,7 +476,7 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|/**    * Builds a QueuePlacementPolicy from an xml element.    */
-DECL|method|fromXml (Element el, Set<String> configuredQueues, Configuration conf)
+DECL|method|fromXml (Element el, Map<FSQueueType, Set<String>> configuredQueues, Configuration conf)
 specifier|public
 specifier|static
 name|QueuePlacementPolicy
@@ -462,9 +485,14 @@ parameter_list|(
 name|Element
 name|el
 parameter_list|,
+name|Map
+argument_list|<
+name|FSQueueType
+argument_list|,
 name|Set
 argument_list|<
 name|String
+argument_list|>
 argument_list|>
 name|configuredQueues
 parameter_list|,
@@ -529,6 +557,48 @@ name|node
 operator|instanceof
 name|Element
 condition|)
+block|{
+name|QueuePlacementRule
+name|rule
+init|=
+name|createAndInitializeRule
+argument_list|(
+name|node
+argument_list|)
+decl_stmt|;
+name|rules
+operator|.
+name|add
+argument_list|(
+name|rule
+argument_list|)
+expr_stmt|;
+block|}
+block|}
+return|return
+operator|new
+name|QueuePlacementPolicy
+argument_list|(
+name|rules
+argument_list|,
+name|configuredQueues
+argument_list|,
+name|conf
+argument_list|)
+return|;
+block|}
+comment|/**    * Create and initialize a rule given a xml node    * @param node    * @return QueuePlacementPolicy    * @throws AllocationConfigurationException    */
+DECL|method|createAndInitializeRule (Node node)
+specifier|public
+specifier|static
+name|QueuePlacementRule
+name|createAndInitializeRule
+parameter_list|(
+name|Node
+name|node
+parameter_list|)
+throws|throws
+name|AllocationConfigurationException
 block|{
 name|Element
 name|element
@@ -619,29 +689,12 @@ argument_list|(
 name|element
 argument_list|)
 expr_stmt|;
-name|rules
-operator|.
-name|add
-argument_list|(
-name|rule
-argument_list|)
-expr_stmt|;
-block|}
-block|}
 return|return
-operator|new
-name|QueuePlacementPolicy
-argument_list|(
-name|rules
-argument_list|,
-name|configuredQueues
-argument_list|,
-name|conf
-argument_list|)
+name|rule
 return|;
 block|}
 comment|/**    * Build a simple queue placement policy from the allow-undeclared-pools and    * user-as-default-queue configuration options.    */
-DECL|method|fromConfiguration (Configuration conf, Set<String> configuredQueues)
+DECL|method|fromConfiguration (Configuration conf, Map<FSQueueType, Set<String>> configuredQueues)
 specifier|public
 specifier|static
 name|QueuePlacementPolicy
@@ -650,9 +703,14 @@ parameter_list|(
 name|Configuration
 name|conf
 parameter_list|,
+name|Map
+argument_list|<
+name|FSQueueType
+argument_list|,
 name|Set
 argument_list|<
 name|String
+argument_list|>
 argument_list|>
 name|configuredQueues
 parameter_list|)

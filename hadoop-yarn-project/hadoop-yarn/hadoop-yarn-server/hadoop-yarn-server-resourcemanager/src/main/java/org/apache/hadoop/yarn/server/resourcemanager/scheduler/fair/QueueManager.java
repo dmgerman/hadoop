@@ -376,7 +376,7 @@ literal|true
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Get a queue by name, creating it if the create param is true and is necessary.    * If the queue is not or can not be a leaf queue, i.e. it already exists as a    * parent queue, or one of the parents in its name is already a leaf queue,    * null is returned.    *     * The root part of the name is optional, so a queue underneath the root     * named "queue1" could be referred to  as just "queue1", and a queue named    * "queue2" underneath a parent named "parent1" that is underneath the root     * could be referred to as just "parent1.queue2".    */
+comment|/**    * Get a leaf queue by name, creating it if the create param is true and is necessary.    * If the queue is not or can not be a leaf queue, i.e. it already exists as a    * parent queue, or one of the parents in its name is already a leaf queue,    * null is returned.    *     * The root part of the name is optional, so a queue underneath the root     * named "queue1" could be referred to  as just "queue1", and a queue named    * "queue2" underneath a parent named "parent1" that is underneath the root     * could be referred to as just "parent1.queue2".    */
 DECL|method|getLeafQueue (String name, boolean create)
 specifier|public
 name|FSLeafQueue
@@ -387,6 +387,98 @@ name|name
 parameter_list|,
 name|boolean
 name|create
+parameter_list|)
+block|{
+name|FSQueue
+name|queue
+init|=
+name|getQueue
+argument_list|(
+name|name
+argument_list|,
+name|create
+argument_list|,
+name|FSQueueType
+operator|.
+name|LEAF
+argument_list|)
+decl_stmt|;
+if|if
+condition|(
+name|queue
+operator|instanceof
+name|FSParentQueue
+condition|)
+block|{
+return|return
+literal|null
+return|;
+block|}
+return|return
+operator|(
+name|FSLeafQueue
+operator|)
+name|queue
+return|;
+block|}
+comment|/**    * Get a parent queue by name, creating it if the create param is true and is necessary.    * If the queue is not or can not be a parent queue, i.e. it already exists as a    * leaf queue, or one of the parents in its name is already a leaf queue,    * null is returned.    *     * The root part of the name is optional, so a queue underneath the root     * named "queue1" could be referred to  as just "queue1", and a queue named    * "queue2" underneath a parent named "parent1" that is underneath the root     * could be referred to as just "parent1.queue2".    */
+DECL|method|getParentQueue (String name, boolean create)
+specifier|public
+name|FSParentQueue
+name|getParentQueue
+parameter_list|(
+name|String
+name|name
+parameter_list|,
+name|boolean
+name|create
+parameter_list|)
+block|{
+name|FSQueue
+name|queue
+init|=
+name|getQueue
+argument_list|(
+name|name
+argument_list|,
+name|create
+argument_list|,
+name|FSQueueType
+operator|.
+name|PARENT
+argument_list|)
+decl_stmt|;
+if|if
+condition|(
+name|queue
+operator|instanceof
+name|FSLeafQueue
+condition|)
+block|{
+return|return
+literal|null
+return|;
+block|}
+return|return
+operator|(
+name|FSParentQueue
+operator|)
+name|queue
+return|;
+block|}
+DECL|method|getQueue (String name, boolean create, FSQueueType queueType)
+specifier|private
+name|FSQueue
+name|getQueue
+parameter_list|(
+name|String
+name|name
+parameter_list|,
+name|boolean
+name|create
+parameter_list|,
+name|FSQueueType
+name|queueType
 parameter_list|)
 block|{
 name|name
@@ -420,58 +512,33 @@ operator|&&
 name|create
 condition|)
 block|{
-name|FSLeafQueue
-name|leafQueue
-init|=
-name|createLeafQueue
-argument_list|(
-name|name
-argument_list|)
-decl_stmt|;
-if|if
-condition|(
-name|leafQueue
-operator|==
-literal|null
-condition|)
-block|{
-return|return
-literal|null
-return|;
-block|}
+comment|// if the queue doesn't exist,create it and return
 name|queue
 operator|=
-name|leafQueue
+name|createQueue
+argument_list|(
+name|name
+argument_list|,
+name|queueType
+argument_list|)
 expr_stmt|;
 block|}
-elseif|else
-if|if
-condition|(
-name|queue
-operator|instanceof
-name|FSParentQueue
-condition|)
-block|{
 return|return
-literal|null
-return|;
-block|}
-return|return
-operator|(
-name|FSLeafQueue
-operator|)
 name|queue
 return|;
 block|}
 block|}
-comment|/**    * Creates a leaf queue and places it in the tree. Creates any    * parents that don't already exist.    *     * @return    *    the created queue, if successful. null if not allowed (one of the parent    *    queues in the queue name is already a leaf queue)    */
-DECL|method|createLeafQueue (String name)
+comment|/**    * Creates a leaf or parent queue based on what is specified in 'queueType'     * and places it in the tree. Creates any parents that don't already exist.    *     * @return    *    the created queue, if successful. null if not allowed (one of the parent    *    queues in the queue name is already a leaf queue)    */
+DECL|method|createQueue (String name, FSQueueType queueType)
 specifier|private
-name|FSLeafQueue
-name|createLeafQueue
+name|FSQueue
+name|createQueue
 parameter_list|(
 name|String
 name|name
+parameter_list|,
+name|FSQueueType
+name|queueType
 parameter_list|)
 block|{
 name|List
@@ -650,9 +717,14 @@ condition|(
 name|i
 operator|==
 literal|0
+operator|&&
+name|queueType
+operator|!=
+name|FSQueueType
+operator|.
+name|PARENT
 condition|)
 block|{
-comment|// First name added was the leaf queue
 name|leafQueue
 operator|=
 operator|new
@@ -727,6 +799,9 @@ argument_list|(
 name|leafQueue
 argument_list|)
 expr_stmt|;
+return|return
+name|leafQueue
+return|;
 block|}
 else|else
 block|{
@@ -805,38 +880,41 @@ expr_stmt|;
 block|}
 block|}
 return|return
-name|leafQueue
+name|parent
 return|;
 block|}
-comment|/**    * Make way for the given leaf queue if possible, by removing incompatible    * queues with no apps in them. Incompatibility could be due to    * (1) leafToCreate being currently being a parent, or (2) an existing leaf queue in    * the ancestry of leafToCreate.    *     * We will never remove the root queue or the default queue in this way.    *    * @return true if we can create leafToCreate or it already exists.    */
-DECL|method|removeEmptyIncompatibleQueues (String leafToCreate)
+comment|/**    * Make way for the given queue if possible, by removing incompatible    * queues with no apps in them. Incompatibility could be due to    * (1) queueToCreate being currently a parent but needs to change to leaf    * (2) queueToCreate being currently a leaf but needs to change to parent    * (3) an existing leaf queue in the ancestry of queueToCreate.    *     * We will never remove the root queue or the default queue in this way.    *    * @return true if we can create queueToCreate or it already exists.    */
+DECL|method|removeEmptyIncompatibleQueues (String queueToCreate, FSQueueType queueType)
 specifier|private
 name|boolean
 name|removeEmptyIncompatibleQueues
 parameter_list|(
 name|String
-name|leafToCreate
+name|queueToCreate
+parameter_list|,
+name|FSQueueType
+name|queueType
 parameter_list|)
 block|{
-name|leafToCreate
+name|queueToCreate
 operator|=
 name|ensureRootPrefix
 argument_list|(
-name|leafToCreate
+name|queueToCreate
 argument_list|)
 expr_stmt|;
-comment|// Ensure leafToCreate is not root and doesn't have the default queue in its
+comment|// Ensure queueToCreate is not root and doesn't have the default queue in its
 comment|// ancestry.
 if|if
 condition|(
-name|leafToCreate
+name|queueToCreate
 operator|.
 name|equals
 argument_list|(
 name|ROOT_QUEUE
 argument_list|)
 operator|||
-name|leafToCreate
+name|queueToCreate
 operator|.
 name|startsWith
 argument_list|(
@@ -863,7 +941,7 @@ name|queues
 operator|.
 name|get
 argument_list|(
-name|leafToCreate
+name|queueToCreate
 argument_list|)
 decl_stmt|;
 comment|// Queue exists already.
@@ -881,14 +959,46 @@ operator|instanceof
 name|FSLeafQueue
 condition|)
 block|{
-comment|// If it's an already existing leaf, we're ok.
+if|if
+condition|(
+name|queueType
+operator|==
+name|FSQueueType
+operator|.
+name|LEAF
+condition|)
+block|{
+comment|// if queue is already a leaf then return true
 return|return
 literal|true
 return|;
 block|}
+comment|// remove incompatibility since queue is a leaf currently
+comment|// needs to change to a parent.
+return|return
+name|removeQueueIfEmpty
+argument_list|(
+name|queue
+argument_list|)
+return|;
+block|}
 else|else
 block|{
-comment|// If it's an existing parent queue, remove it if it's empty.
+if|if
+condition|(
+name|queueType
+operator|==
+name|FSQueueType
+operator|.
+name|PARENT
+condition|)
+block|{
+return|return
+literal|true
+return|;
+block|}
+comment|// If it's an existing parent queue and needs to change to leaf,
+comment|// remove it if it's empty.
 return|return
 name|removeQueueIfEmpty
 argument_list|(
@@ -902,14 +1012,14 @@ comment|// under an existing leaf queue. If so, try removing that leaf queue.
 name|int
 name|sepIndex
 init|=
-name|leafToCreate
+name|queueToCreate
 operator|.
 name|length
 argument_list|()
 decl_stmt|;
 name|sepIndex
 operator|=
-name|leafToCreate
+name|queueToCreate
 operator|.
 name|lastIndexOf
 argument_list|(
@@ -931,7 +1041,7 @@ block|{
 name|String
 name|prefixString
 init|=
-name|leafToCreate
+name|queueToCreate
 operator|.
 name|substring
 argument_list|(
@@ -970,7 +1080,7 @@ return|;
 block|}
 name|sepIndex
 operator|=
-name|leafToCreate
+name|queueToCreate
 operator|.
 name|lastIndexOf
 argument_list|(
@@ -1327,7 +1437,7 @@ name|AllocationConfiguration
 name|queueConf
 parameter_list|)
 block|{
-comment|// Make sure all queues exist
+comment|// Create leaf queues and the parent queues in a leaf's ancestry if they do not exist
 for|for
 control|(
 name|String
@@ -1335,8 +1445,15 @@ name|name
 range|:
 name|queueConf
 operator|.
-name|getQueueNames
+name|getConfiguredQueues
 argument_list|()
+operator|.
+name|get
+argument_list|(
+name|FSQueueType
+operator|.
+name|LEAF
+argument_list|)
 control|)
 block|{
 if|if
@@ -1344,10 +1461,55 @@ condition|(
 name|removeEmptyIncompatibleQueues
 argument_list|(
 name|name
+argument_list|,
+name|FSQueueType
+operator|.
+name|LEAF
 argument_list|)
 condition|)
 block|{
 name|getLeafQueue
+argument_list|(
+name|name
+argument_list|,
+literal|true
+argument_list|)
+expr_stmt|;
+block|}
+block|}
+comment|// At this point all leaves and 'parents with at least one child' would have been created.
+comment|// Now create parents with no configured leaf.
+for|for
+control|(
+name|String
+name|name
+range|:
+name|queueConf
+operator|.
+name|getConfiguredQueues
+argument_list|()
+operator|.
+name|get
+argument_list|(
+name|FSQueueType
+operator|.
+name|PARENT
+argument_list|)
+control|)
+block|{
+if|if
+condition|(
+name|removeEmptyIncompatibleQueues
+argument_list|(
+name|name
+argument_list|,
+name|FSQueueType
+operator|.
+name|PARENT
+argument_list|)
+condition|)
+block|{
+name|getParentQueue
 argument_list|(
 name|name
 argument_list|,
