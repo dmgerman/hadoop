@@ -38,6 +38,20 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|fs
+operator|.
+name|CommonConfigurationKeysPublic
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|io
 operator|.
 name|Text
@@ -260,7 +274,7 @@ name|java
 operator|.
 name|util
 operator|.
-name|ArrayList
+name|Collection
 import|;
 end_import
 
@@ -270,7 +284,17 @@ name|java
 operator|.
 name|util
 operator|.
-name|Collection
+name|LinkedHashSet
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
+name|Set
 import|;
 end_import
 
@@ -1203,14 +1227,14 @@ operator|+
 name|line
 argument_list|)
 expr_stmt|;
-name|ArrayList
+name|Set
 argument_list|<
 name|String
 argument_list|>
 name|groups
 init|=
 operator|new
-name|ArrayList
+name|LinkedHashSet
 argument_list|<
 name|String
 argument_list|>
