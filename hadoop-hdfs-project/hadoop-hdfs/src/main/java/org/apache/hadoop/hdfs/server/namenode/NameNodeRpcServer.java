@@ -6345,9 +6345,9 @@ name|getBlockManager
 argument_list|()
 decl_stmt|;
 name|boolean
-name|hasStaleStorages
+name|noStaleStorages
 init|=
-literal|true
+literal|false
 decl_stmt|;
 for|for
 control|(
@@ -6370,7 +6370,7 @@ name|getBlocks
 argument_list|()
 argument_list|)
 decl_stmt|;
-name|hasStaleStorages
+name|noStaleStorages
 operator|=
 name|bm
 operator|.
@@ -6410,8 +6410,7 @@ operator|.
 name|isStandbyState
 argument_list|()
 operator|&&
-operator|!
-name|hasStaleStorages
+name|noStaleStorages
 condition|)
 block|{
 return|return
