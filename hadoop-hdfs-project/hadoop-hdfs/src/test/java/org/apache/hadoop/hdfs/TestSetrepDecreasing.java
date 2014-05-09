@@ -44,6 +44,11 @@ name|TestSetrepDecreasing
 block|{
 annotation|@
 name|Test
+argument_list|(
+name|timeout
+operator|=
+literal|120000
+argument_list|)
 DECL|method|testSetrepDecreasing ()
 specifier|public
 name|void

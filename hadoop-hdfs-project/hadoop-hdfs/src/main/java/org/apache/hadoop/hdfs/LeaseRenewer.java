@@ -1096,14 +1096,14 @@ operator|>
 name|gracePeriod
 return|;
 block|}
-DECL|method|put (final String src, final DFSOutputStream out, final DFSClient dfsc)
+DECL|method|put (final long inodeId, final DFSOutputStream out, final DFSClient dfsc)
 specifier|synchronized
 name|void
 name|put
 parameter_list|(
 specifier|final
-name|String
-name|src
+name|long
+name|inodeId
 parameter_list|,
 specifier|final
 name|DFSOutputStream
@@ -1307,7 +1307,7 @@ name|dfsc
 operator|.
 name|putFileBeingWritten
 argument_list|(
-name|src
+name|inodeId
 argument_list|,
 name|out
 argument_list|)
@@ -1337,13 +1337,13 @@ name|time
 expr_stmt|;
 block|}
 comment|/** Close a file. */
-DECL|method|closeFile (final String src, final DFSClient dfsc)
+DECL|method|closeFile (final long inodeId, final DFSClient dfsc)
 name|void
 name|closeFile
 parameter_list|(
 specifier|final
-name|String
-name|src
+name|long
+name|inodeId
 parameter_list|,
 specifier|final
 name|DFSClient
@@ -1354,7 +1354,7 @@ name|dfsc
 operator|.
 name|removeFileBeingWritten
 argument_list|(
-name|src
+name|inodeId
 argument_list|)
 expr_stmt|;
 synchronized|synchronized

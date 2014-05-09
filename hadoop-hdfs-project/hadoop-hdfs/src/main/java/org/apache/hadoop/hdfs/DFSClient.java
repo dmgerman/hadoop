@@ -3945,7 +3945,7 @@ specifier|private
 specifier|final
 name|Map
 argument_list|<
-name|String
+name|Long
 argument_list|,
 name|DFSOutputStream
 argument_list|>
@@ -3954,7 +3954,7 @@ init|=
 operator|new
 name|HashMap
 argument_list|<
-name|String
+name|Long
 argument_list|,
 name|DFSOutputStream
 argument_list|>
@@ -4991,14 +4991,14 @@ argument_list|)
 return|;
 block|}
 comment|/** Get a lease and start automatic renewal */
-DECL|method|beginFileLease (final String src, final DFSOutputStream out)
+DECL|method|beginFileLease (final long inodeId, final DFSOutputStream out)
 specifier|private
 name|void
 name|beginFileLease
 parameter_list|(
 specifier|final
-name|String
-name|src
+name|long
+name|inodeId
 parameter_list|,
 specifier|final
 name|DFSOutputStream
@@ -5012,7 +5012,7 @@ argument_list|()
 operator|.
 name|put
 argument_list|(
-name|src
+name|inodeId
 argument_list|,
 name|out
 argument_list|,
@@ -5021,13 +5021,13 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|/** Stop renewal of lease for the file. */
-DECL|method|endFileLease (final String src)
+DECL|method|endFileLease (final long inodeId)
 name|void
 name|endFileLease
 parameter_list|(
 specifier|final
-name|String
-name|src
+name|long
+name|inodeId
 parameter_list|)
 throws|throws
 name|IOException
@@ -5037,20 +5037,20 @@ argument_list|()
 operator|.
 name|closeFile
 argument_list|(
-name|src
+name|inodeId
 argument_list|,
 name|this
 argument_list|)
 expr_stmt|;
 block|}
 comment|/** Put a file. Only called from LeaseRenewer, where proper locking is    *  enforced to consistently update its local dfsclients array and     *  client's filesBeingWritten map.    */
-DECL|method|putFileBeingWritten (final String src, final DFSOutputStream out)
+DECL|method|putFileBeingWritten (final long inodeId, final DFSOutputStream out)
 name|void
 name|putFileBeingWritten
 parameter_list|(
 specifier|final
-name|String
-name|src
+name|long
+name|inodeId
 parameter_list|,
 specifier|final
 name|DFSOutputStream
@@ -5066,7 +5066,7 @@ name|filesBeingWritten
 operator|.
 name|put
 argument_list|(
-name|src
+name|inodeId
 argument_list|,
 name|out
 argument_list|)
@@ -5088,13 +5088,13 @@ block|}
 block|}
 block|}
 comment|/** Remove a file. Only called from LeaseRenewer. */
-DECL|method|removeFileBeingWritten (final String src)
+DECL|method|removeFileBeingWritten (final long inodeId)
 name|void
 name|removeFileBeingWritten
 parameter_list|(
 specifier|final
-name|String
-name|src
+name|long
+name|inodeId
 parameter_list|)
 block|{
 synchronized|synchronized
@@ -5106,7 +5106,7 @@ name|filesBeingWritten
 operator|.
 name|remove
 argument_list|(
-name|src
+name|inodeId
 argument_list|)
 expr_stmt|;
 if|if
@@ -5384,8 +5384,8 @@ condition|;
 control|)
 block|{
 specifier|final
-name|String
-name|src
+name|long
+name|inodeId
 decl_stmt|;
 specifier|final
 name|DFSOutputStream
@@ -5406,7 +5406,7 @@ condition|)
 block|{
 return|return;
 block|}
-name|src
+name|inodeId
 operator|=
 name|filesBeingWritten
 operator|.
@@ -5425,7 +5425,7 @@ name|filesBeingWritten
 operator|.
 name|remove
 argument_list|(
-name|src
+name|inodeId
 argument_list|)
 expr_stmt|;
 block|}
@@ -5478,9 +5478,9 @@ else|:
 literal|"close"
 operator|)
 operator|+
-literal|" file "
+literal|" inode "
 operator|+
-name|src
+name|inodeId
 argument_list|,
 name|ie
 argument_list|)
@@ -7709,7 +7709,10 @@ argument_list|)
 decl_stmt|;
 name|beginFileLease
 argument_list|(
-name|src
+name|result
+operator|.
+name|getFileId
+argument_list|()
 argument_list|,
 name|result
 argument_list|)
@@ -7931,7 +7934,10 @@ expr_stmt|;
 block|}
 name|beginFileLease
 argument_list|(
-name|src
+name|result
+operator|.
+name|getFileId
+argument_list|()
 argument_list|,
 name|result
 argument_list|)
@@ -8310,7 +8316,10 @@ argument_list|)
 decl_stmt|;
 name|beginFileLease
 argument_list|(
-name|src
+name|result
+operator|.
+name|getFileId
+argument_list|()
 argument_list|,
 name|result
 argument_list|)
@@ -11411,12 +11420,12 @@ block|}
 block|}
 annotation|@
 name|VisibleForTesting
-DECL|method|getPreviousBlock (String file)
+DECL|method|getPreviousBlock (long fileId)
 name|ExtendedBlock
 name|getPreviousBlock
 parameter_list|(
-name|String
-name|file
+name|long
+name|fileId
 parameter_list|)
 block|{
 return|return
@@ -11424,7 +11433,7 @@ name|filesBeingWritten
 operator|.
 name|get
 argument_list|(
-name|file
+name|fileId
 argument_list|)
 operator|.
 name|getBlock

@@ -410,6 +410,22 @@ operator|.
 name|hflush
 argument_list|()
 expr_stmt|;
+name|long
+name|fileId
+init|=
+operator|(
+operator|(
+name|DFSOutputStream
+operator|)
+name|fout
+operator|.
+name|getWrappedStream
+argument_list|()
+operator|)
+operator|.
+name|getFileId
+argument_list|()
+decl_stmt|;
 comment|// Now abandon the last block
 name|DFSClient
 name|dfsclient
@@ -468,6 +484,8 @@ operator|.
 name|getBlock
 argument_list|()
 argument_list|,
+name|fileId
+argument_list|,
 name|src
 argument_list|,
 name|dfsclient
@@ -487,6 +505,8 @@ name|b
 operator|.
 name|getBlock
 argument_list|()
+argument_list|,
+name|fileId
 argument_list|,
 name|src
 argument_list|,

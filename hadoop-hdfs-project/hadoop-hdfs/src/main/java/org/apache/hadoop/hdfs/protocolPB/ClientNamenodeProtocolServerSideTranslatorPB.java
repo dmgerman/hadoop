@@ -4367,6 +4367,11 @@ argument_list|)
 argument_list|,
 name|req
 operator|.
+name|getFileId
+argument_list|()
+argument_list|,
+name|req
+operator|.
 name|getSrc
 argument_list|()
 argument_list|,
@@ -4634,6 +4639,11 @@ argument_list|(
 name|req
 operator|.
 name|getSrc
+argument_list|()
+argument_list|,
+name|req
+operator|.
+name|getFileId
 argument_list|()
 argument_list|,
 name|PBHelper
@@ -6480,6 +6490,11 @@ argument_list|(
 name|req
 operator|.
 name|getSrc
+argument_list|()
+argument_list|,
+name|req
+operator|.
+name|getFileId
 argument_list|()
 argument_list|,
 name|req

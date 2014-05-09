@@ -29,6 +29,30 @@ import|;
 end_import
 
 begin_import
+import|import static
+name|org
+operator|.
+name|mockito
+operator|.
+name|Mockito
+operator|.
+name|doNothing
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|mockito
+operator|.
+name|Mockito
+operator|.
+name|spy
+import|;
+end_import
+
+begin_import
 import|import
 name|java
 operator|.
@@ -138,6 +162,24 @@ name|server
 operator|.
 name|namenode
 operator|.
+name|FSEditLog
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|server
+operator|.
+name|namenode
+operator|.
 name|FSNamesystem
 import|;
 end_import
@@ -197,6 +239,16 @@ operator|.
 name|junit
 operator|.
 name|Test
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|mockito
+operator|.
+name|Mockito
 import|;
 end_import
 
@@ -355,6 +407,19 @@ argument_list|,
 literal|1
 argument_list|)
 expr_stmt|;
+name|conf
+operator|.
+name|setInt
+argument_list|(
+name|DFSConfigKeys
+operator|.
+name|DFS_BLOCK_SIZE_KEY
+argument_list|,
+name|TestFileCreation
+operator|.
+name|blockSize
+argument_list|)
+expr_stmt|;
 comment|// create cluster
 name|System
 operator|.
@@ -397,6 +462,55 @@ name|cluster
 operator|.
 name|getFileSystem
 argument_list|()
+expr_stmt|;
+comment|// Normally, the in-progress edit log would be finalized by
+comment|// FSEditLog#endCurrentLogSegment.  For testing purposes, we
+comment|// disable that here.
+name|FSEditLog
+name|spyLog
+init|=
+name|spy
+argument_list|(
+name|cluster
+operator|.
+name|getNameNode
+argument_list|()
+operator|.
+name|getFSImage
+argument_list|()
+operator|.
+name|getEditLog
+argument_list|()
+argument_list|)
+decl_stmt|;
+name|doNothing
+argument_list|()
+operator|.
+name|when
+argument_list|(
+name|spyLog
+argument_list|)
+operator|.
+name|endCurrentLogSegment
+argument_list|(
+name|Mockito
+operator|.
+name|anyBoolean
+argument_list|()
+argument_list|)
+expr_stmt|;
+name|cluster
+operator|.
+name|getNameNode
+argument_list|()
+operator|.
+name|getFSImage
+argument_list|()
+operator|.
+name|setEditLogForTesting
+argument_list|(
+name|spyLog
+argument_list|)
 expr_stmt|;
 specifier|final
 name|int
@@ -568,27 +682,13 @@ decl_stmt|;
 name|FSDataOutputStream
 name|stm3
 init|=
-name|TestFileCreation
-operator|.
-name|createFile
-argument_list|(
 name|fs
-argument_list|,
+operator|.
+name|create
+argument_list|(
 name|file3
-argument_list|,
-literal|1
 argument_list|)
 decl_stmt|;
-name|TestFileCreation
-operator|.
-name|writeFile
-argument_list|(
-name|stm3
-argument_list|)
-expr_stmt|;
-comment|// rename file3 to some bad name
-try|try
-block|{
 name|fs
 operator|.
 name|rename
@@ -600,25 +700,42 @@ name|Path
 argument_list|(
 name|dir3
 argument_list|,
-literal|"$ "
+literal|"bozo"
 argument_list|)
 argument_list|)
 expr_stmt|;
-block|}
-catch|catch
-parameter_list|(
-name|Exception
-name|e
-parameter_list|)
-block|{
-name|e
+comment|// Get a new block for the file.
+name|TestFileCreation
 operator|.
-name|printStackTrace
+name|writeFile
+argument_list|(
+name|stm3
+argument_list|,
+name|TestFileCreation
+operator|.
+name|blockSize
+operator|+
+literal|1
+argument_list|)
+expr_stmt|;
+name|stm3
+operator|.
+name|hflush
 argument_list|()
 expr_stmt|;
-block|}
-comment|// restart cluster with the same namenode port as before.
-comment|// This ensures that leases are persisted in fsimage.
+comment|// Stop the NameNode before closing the files.
+comment|// This will ensure that the write leases are still active and present
+comment|// in the edit log.  Simiarly, there should be a pending ADD_BLOCK_OP
+comment|// for file3, since we just added a block to that file.
+name|cluster
+operator|.
+name|getNameNode
+argument_list|()
+operator|.
+name|stop
+argument_list|()
+expr_stmt|;
+comment|// Restart cluster with the same namenode port as before.
 name|cluster
 operator|.
 name|shutdown
@@ -671,7 +788,7 @@ name|waitActive
 argument_list|()
 expr_stmt|;
 comment|// restart cluster yet again. This triggers the code to read in
-comment|// persistent leases from fsimage.
+comment|// persistent leases from the edit log.
 name|cluster
 operator|.
 name|shutdown

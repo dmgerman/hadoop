@@ -840,6 +840,24 @@ name|server
 operator|.
 name|namenode
 operator|.
+name|LeaseExpiredException
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|server
+operator|.
+name|namenode
+operator|.
 name|LeaseManager
 import|;
 end_import
@@ -2511,11 +2529,6 @@ argument_list|(
 literal|1
 argument_list|)
 expr_stmt|;
-name|stm1
-operator|.
-name|hflush
-argument_list|()
-expr_stmt|;
 comment|// Create file again without overwrite
 try|try
 block|{
@@ -2597,7 +2610,16 @@ name|GenericTestUtils
 operator|.
 name|assertExceptionContains
 argument_list|(
-literal|"File is not open for writing"
+literal|"No lease on /testfile"
+argument_list|,
+name|ioe
+argument_list|)
+expr_stmt|;
+name|GenericTestUtils
+operator|.
+name|assertExceptionContains
+argument_list|(
+literal|"File does not exist."
 argument_list|,
 name|ioe
 argument_list|)
@@ -6728,8 +6750,8 @@ expr_stmt|;
 block|}
 catch|catch
 parameter_list|(
-name|FileNotFoundException
-name|fnf
+name|LeaseExpiredException
+name|e
 parameter_list|)
 block|{
 name|FileSystem
@@ -6738,9 +6760,9 @@ name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"Caught Expected FileNotFoundException: "
+literal|"Caught Expected LeaseExpiredException: "
 argument_list|,
-name|fnf
+name|e
 argument_list|)
 expr_stmt|;
 block|}

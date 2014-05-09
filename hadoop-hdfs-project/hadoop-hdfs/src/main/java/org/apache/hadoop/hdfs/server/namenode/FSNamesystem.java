@@ -14597,9 +14597,8 @@ literal|1
 index|]
 decl_stmt|;
 specifier|final
-name|INode
-index|[]
-name|inodes
+name|INodeFile
+name|pendingFile
 init|=
 name|analyzeFileState
 argument_list|(
@@ -14613,26 +14612,14 @@ name|previous
 argument_list|,
 name|onRetryBlock
 argument_list|)
-operator|.
-name|getINodes
-argument_list|()
 decl_stmt|;
-specifier|final
-name|INodeFile
+name|src
+operator|=
 name|pendingFile
-init|=
-name|inodes
-index|[
-name|inodes
 operator|.
-name|length
-operator|-
-literal|1
-index|]
-operator|.
-name|asFile
+name|getFullPathName
 argument_list|()
-decl_stmt|;
+expr_stmt|;
 if|if
 condition|(
 name|onRetryBlock
@@ -14798,8 +14785,9 @@ index|[
 literal|1
 index|]
 decl_stmt|;
-name|INodesInPath
-name|inodesInPath
+specifier|final
+name|INodeFile
+name|pendingFile
 init|=
 name|analyzeFileState
 argument_list|(
@@ -14813,31 +14801,6 @@ name|previous
 argument_list|,
 name|onRetryBlock
 argument_list|)
-decl_stmt|;
-name|INode
-index|[]
-name|inodes
-init|=
-name|inodesInPath
-operator|.
-name|getINodes
-argument_list|()
-decl_stmt|;
-specifier|final
-name|INodeFile
-name|pendingFile
-init|=
-name|inodes
-index|[
-name|inodes
-operator|.
-name|length
-operator|-
-literal|1
-index|]
-operator|.
-name|asFile
-argument_list|()
 decl_stmt|;
 if|if
 condition|(
@@ -14933,6 +14896,16 @@ operator|=
 name|createNewBlock
 argument_list|()
 expr_stmt|;
+name|INodesInPath
+name|inodesInPath
+init|=
+name|INodesInPath
+operator|.
+name|fromINode
+argument_list|(
+name|pendingFile
+argument_list|)
+decl_stmt|;
 name|saveAllocatedBlock
 argument_list|(
 name|src
@@ -14986,7 +14959,7 @@ argument_list|)
 return|;
 block|}
 DECL|method|analyzeFileState (String src, long fileId, String clientName, ExtendedBlock previous, LocatedBlock[] onRetryBlock)
-name|INodesInPath
+name|INodeFile
 name|analyzeFileState
 parameter_list|(
 name|String
@@ -15052,6 +15025,21 @@ argument_list|(
 name|previous
 argument_list|)
 decl_stmt|;
+name|INode
+name|inode
+decl_stmt|;
+if|if
+condition|(
+name|fileId
+operator|==
+name|INodeId
+operator|.
+name|GRANDFATHER_INODE_ID
+condition|)
+block|{
+comment|// Older clients may not have given us an inode ID to work with.
+comment|// In this case, we have to try to resolve the path and hope it
+comment|// hasn't changed or been deleted since the file was opened for write.
 specifier|final
 name|INodesInPath
 name|iip
@@ -15063,6 +15051,41 @@ argument_list|(
 name|src
 argument_list|)
 decl_stmt|;
+name|inode
+operator|=
+name|iip
+operator|.
+name|getLastINode
+argument_list|()
+expr_stmt|;
+block|}
+else|else
+block|{
+comment|// Newer clients pass the inode ID, so we can just get the inode
+comment|// directly.
+name|inode
+operator|=
+name|dir
+operator|.
+name|getInode
+argument_list|(
+name|fileId
+argument_list|)
+expr_stmt|;
+if|if
+condition|(
+name|inode
+operator|!=
+literal|null
+condition|)
+name|src
+operator|=
+name|inode
+operator|.
+name|getFullPathName
+argument_list|()
+expr_stmt|;
+block|}
 specifier|final
 name|INodeFile
 name|pendingFile
@@ -15071,14 +15094,11 @@ name|checkLease
 argument_list|(
 name|src
 argument_list|,
-name|fileId
-argument_list|,
 name|clientName
 argument_list|,
-name|iip
-operator|.
-name|getLastINode
-argument_list|()
+name|inode
+argument_list|,
+name|fileId
 argument_list|)
 decl_stmt|;
 name|BlockInfo
@@ -15283,7 +15303,7 @@ name|offset
 argument_list|)
 expr_stmt|;
 return|return
-name|iip
+name|pendingFile
 return|;
 block|}
 else|else
@@ -15335,7 +15355,7 @@ argument_list|)
 throw|;
 block|}
 return|return
-name|iip
+name|pendingFile
 return|;
 block|}
 DECL|method|makeLocatedBlock (Block blk, DatanodeStorageInfo[] locs, long offset)
@@ -15392,12 +15412,15 @@ name|lBlk
 return|;
 block|}
 comment|/** @see ClientProtocol#getAdditionalDatanode */
-DECL|method|getAdditionalDatanode (String src, final ExtendedBlock blk, final DatanodeInfo[] existings, final String[] storageIDs, final Set<Node> excludes, final int numAdditionalNodes, final String clientName )
+DECL|method|getAdditionalDatanode (String src, long fileId, final ExtendedBlock blk, final DatanodeInfo[] existings, final String[] storageIDs, final Set<Node> excludes, final int numAdditionalNodes, final String clientName )
 name|LocatedBlock
 name|getAdditionalDatanode
 parameter_list|(
 name|String
 name|src
+parameter_list|,
+name|long
+name|fileId
 parameter_list|,
 specifier|final
 name|ExtendedBlock
@@ -15510,6 +15533,57 @@ argument_list|)
 expr_stmt|;
 comment|//check lease
 specifier|final
+name|INode
+name|inode
+decl_stmt|;
+if|if
+condition|(
+name|fileId
+operator|==
+name|INodeId
+operator|.
+name|GRANDFATHER_INODE_ID
+condition|)
+block|{
+comment|// Older clients may not have given us an inode ID to work with.
+comment|// In this case, we have to try to resolve the path and hope it
+comment|// hasn't changed or been deleted since the file was opened for write.
+name|inode
+operator|=
+name|dir
+operator|.
+name|getINode
+argument_list|(
+name|src
+argument_list|)
+expr_stmt|;
+block|}
+else|else
+block|{
+name|inode
+operator|=
+name|dir
+operator|.
+name|getInode
+argument_list|(
+name|fileId
+argument_list|)
+expr_stmt|;
+if|if
+condition|(
+name|inode
+operator|!=
+literal|null
+condition|)
+name|src
+operator|=
+name|inode
+operator|.
+name|getFullPathName
+argument_list|()
+expr_stmt|;
+block|}
+specifier|final
 name|INodeFile
 name|file
 init|=
@@ -15518,6 +15592,10 @@ argument_list|(
 name|src
 argument_list|,
 name|clientName
+argument_list|,
+name|inode
+argument_list|,
+name|fileId
 argument_list|)
 decl_stmt|;
 name|clientnode
@@ -15631,12 +15709,15 @@ name|lb
 return|;
 block|}
 comment|/**    * The client would like to let go of the given block    */
-DECL|method|abandonBlock (ExtendedBlock b, String src, String holder)
+DECL|method|abandonBlock (ExtendedBlock b, long fileId, String src, String holder)
 name|boolean
 name|abandonBlock
 parameter_list|(
 name|ExtendedBlock
 name|b
+parameter_list|,
+name|long
+name|fileId
 parameter_list|,
 name|String
 name|src
@@ -15716,7 +15797,7 @@ literal|"Cannot abandon block "
 operator|+
 name|b
 operator|+
-literal|" for fle"
+literal|" for file"
 operator|+
 name|src
 argument_list|)
@@ -15734,9 +15815,58 @@ argument_list|,
 name|dir
 argument_list|)
 expr_stmt|;
-comment|//
-comment|// Remove the block from the pending creates list
-comment|//
+specifier|final
+name|INode
+name|inode
+decl_stmt|;
+if|if
+condition|(
+name|fileId
+operator|==
+name|INodeId
+operator|.
+name|GRANDFATHER_INODE_ID
+condition|)
+block|{
+comment|// Older clients may not have given us an inode ID to work with.
+comment|// In this case, we have to try to resolve the path and hope it
+comment|// hasn't changed or been deleted since the file was opened for write.
+name|inode
+operator|=
+name|dir
+operator|.
+name|getINode
+argument_list|(
+name|src
+argument_list|)
+expr_stmt|;
+block|}
+else|else
+block|{
+name|inode
+operator|=
+name|dir
+operator|.
+name|getInode
+argument_list|(
+name|fileId
+argument_list|)
+expr_stmt|;
+if|if
+condition|(
+name|inode
+operator|!=
+literal|null
+condition|)
+name|src
+operator|=
+name|inode
+operator|.
+name|getFullPathName
+argument_list|()
+expr_stmt|;
+block|}
+specifier|final
 name|INodeFile
 name|file
 init|=
@@ -15745,8 +15875,15 @@ argument_list|(
 name|src
 argument_list|,
 name|holder
+argument_list|,
+name|inode
+argument_list|,
+name|fileId
 argument_list|)
 decl_stmt|;
+comment|//
+comment|// Remove the block from the pending creates list
+comment|//
 name|boolean
 name|removed
 init|=
@@ -15828,61 +15965,22 @@ return|return
 literal|true
 return|;
 block|}
-comment|/** make sure that we still have the lease on this file. */
-DECL|method|checkLease (String src, String holder)
+DECL|method|checkLease (String src, String holder, INode inode, long fileId)
 specifier|private
 name|INodeFile
 name|checkLease
 parameter_list|(
 name|String
 name|src
-parameter_list|,
-name|String
-name|holder
-parameter_list|)
-throws|throws
-name|LeaseExpiredException
-throws|,
-name|UnresolvedLinkException
-throws|,
-name|FileNotFoundException
-block|{
-return|return
-name|checkLease
-argument_list|(
-name|src
-argument_list|,
-name|INodeId
-operator|.
-name|GRANDFATHER_INODE_ID
-argument_list|,
-name|holder
-argument_list|,
-name|dir
-operator|.
-name|getINode
-argument_list|(
-name|src
-argument_list|)
-argument_list|)
-return|;
-block|}
-DECL|method|checkLease (String src, long fileId, String holder, INode inode)
-specifier|private
-name|INodeFile
-name|checkLease
-parameter_list|(
-name|String
-name|src
-parameter_list|,
-name|long
-name|fileId
 parameter_list|,
 name|String
 name|holder
 parameter_list|,
 name|INode
 name|inode
+parameter_list|,
+name|long
+name|fileId
 parameter_list|)
 throws|throws
 name|LeaseExpiredException
@@ -15893,12 +15991,66 @@ assert|assert
 name|hasReadLock
 argument_list|()
 assert|;
+specifier|final
+name|String
+name|ident
+init|=
+name|src
+operator|+
+literal|" (inode "
+operator|+
+name|fileId
+operator|+
+literal|")"
+decl_stmt|;
 if|if
 condition|(
 name|inode
 operator|==
 literal|null
-operator|||
+condition|)
+block|{
+name|Lease
+name|lease
+init|=
+name|leaseManager
+operator|.
+name|getLease
+argument_list|(
+name|holder
+argument_list|)
+decl_stmt|;
+throw|throw
+operator|new
+name|LeaseExpiredException
+argument_list|(
+literal|"No lease on "
+operator|+
+name|ident
+operator|+
+literal|": File does not exist. "
+operator|+
+operator|(
+name|lease
+operator|!=
+literal|null
+condition|?
+name|lease
+operator|.
+name|toString
+argument_list|()
+else|:
+literal|"Holder "
+operator|+
+name|holder
+operator|+
+literal|" does not have any open files."
+operator|)
+argument_list|)
+throw|;
+block|}
+if|if
+condition|(
 operator|!
 name|inode
 operator|.
@@ -15922,9 +16074,9 @@ name|LeaseExpiredException
 argument_list|(
 literal|"No lease on "
 operator|+
-name|src
+name|ident
 operator|+
-literal|": File does not exist. "
+literal|": INode is not a regular file. "
 operator|+
 operator|(
 name|lease
@@ -15979,7 +16131,7 @@ name|LeaseExpiredException
 argument_list|(
 literal|"No lease on "
 operator|+
-name|src
+name|ident
 operator|+
 literal|": File is not open for writing. "
 operator|+
@@ -16034,7 +16186,7 @@ name|LeaseExpiredException
 argument_list|(
 literal|"Lease mismatch on "
 operator|+
-name|src
+name|ident
 operator|+
 literal|" owned by "
 operator|+
@@ -16046,15 +16198,6 @@ name|holder
 argument_list|)
 throw|;
 block|}
-name|INodeId
-operator|.
-name|checkId
-argument_list|(
-name|fileId
-argument_list|,
-name|file
-argument_list|)
-expr_stmt|;
 return|return
 name|file
 return|;
@@ -16255,6 +16398,28 @@ name|hasWriteLock
 argument_list|()
 assert|;
 specifier|final
+name|INodeFile
+name|pendingFile
+decl_stmt|;
+try|try
+block|{
+specifier|final
+name|INode
+name|inode
+decl_stmt|;
+if|if
+condition|(
+name|fileId
+operator|==
+name|INodeId
+operator|.
+name|GRANDFATHER_INODE_ID
+condition|)
+block|{
+comment|// Older clients may not have given us an inode ID to work with.
+comment|// In this case, we have to try to resolve the path and hope it
+comment|// hasn't changed or been deleted since the file was opened for write.
+specifier|final
 name|INodesInPath
 name|iip
 init|=
@@ -16265,28 +16430,52 @@ argument_list|(
 name|src
 argument_list|)
 decl_stmt|;
-specifier|final
-name|INodeFile
-name|pendingFile
-decl_stmt|;
-try|try
-block|{
-name|pendingFile
+name|inode
 operator|=
-name|checkLease
-argument_list|(
-name|src
-argument_list|,
-name|fileId
-argument_list|,
-name|holder
-argument_list|,
 name|iip
 operator|.
 name|getINode
 argument_list|(
 literal|0
 argument_list|)
+expr_stmt|;
+block|}
+else|else
+block|{
+name|inode
+operator|=
+name|dir
+operator|.
+name|getInode
+argument_list|(
+name|fileId
+argument_list|)
+expr_stmt|;
+if|if
+condition|(
+name|inode
+operator|!=
+literal|null
+condition|)
+name|src
+operator|=
+name|inode
+operator|.
+name|getFullPathName
+argument_list|()
+expr_stmt|;
+block|}
+name|pendingFile
+operator|=
+name|checkLease
+argument_list|(
+name|src
+argument_list|,
+name|holder
+argument_list|,
+name|inode
+argument_list|,
+name|fileId
 argument_list|)
 expr_stmt|;
 block|}
@@ -16370,13 +16559,17 @@ literal|"request from "
 operator|+
 name|holder
 operator|+
-literal|" to complete "
+literal|" to complete inode "
+operator|+
+name|fileId
+operator|+
+literal|"("
 operator|+
 name|src
 operator|+
-literal|" which is already closed. But, it appears to be an RPC "
+literal|") which is already closed. But, it appears to be "
 operator|+
-literal|"retry. Returning success"
+literal|"an RPC retry. Returning success"
 argument_list|)
 expr_stmt|;
 return|return
@@ -16434,10 +16627,9 @@ name|src
 argument_list|,
 name|pendingFile
 argument_list|,
-name|iip
+name|Snapshot
 operator|.
-name|getLatestSnapshotId
-argument_list|()
+name|CURRENT_STATE_ID
 argument_list|)
 expr_stmt|;
 return|return
@@ -19216,13 +19408,16 @@ name|logSync
 argument_list|()
 expr_stmt|;
 block|}
-comment|/** Persist all metadata about this file.    * @param src The string representation of the path    * @param clientName The string representation of the client    * @param lastBlockLength The length of the last block     *                        under construction reported from client.    * @throws IOException if path does not exist    */
-DECL|method|fsync (String src, String clientName, long lastBlockLength)
+comment|/** Persist all metadata about this file.    * @param src The string representation of the path    * @param fileId The inode ID that we're fsyncing.  Older clients will pass    *               INodeId.GRANDFATHER_INODE_ID here.    * @param clientName The string representation of the client    * @param lastBlockLength The length of the last block     *                        under construction reported from client.    * @throws IOException if path does not exist    */
+DECL|method|fsync (String src, long fileId, String clientName, long lastBlockLength)
 name|void
 name|fsync
 parameter_list|(
 name|String
 name|src
+parameter_list|,
+name|long
+name|fileId
 parameter_list|,
 name|String
 name|clientName
@@ -19301,6 +19496,58 @@ argument_list|,
 name|dir
 argument_list|)
 expr_stmt|;
+specifier|final
+name|INode
+name|inode
+decl_stmt|;
+if|if
+condition|(
+name|fileId
+operator|==
+name|INodeId
+operator|.
+name|GRANDFATHER_INODE_ID
+condition|)
+block|{
+comment|// Older clients may not have given us an inode ID to work with.
+comment|// In this case, we have to try to resolve the path and hope it
+comment|// hasn't changed or been deleted since the file was opened for write.
+name|inode
+operator|=
+name|dir
+operator|.
+name|getINode
+argument_list|(
+name|src
+argument_list|)
+expr_stmt|;
+block|}
+else|else
+block|{
+name|inode
+operator|=
+name|dir
+operator|.
+name|getInode
+argument_list|(
+name|fileId
+argument_list|)
+expr_stmt|;
+if|if
+condition|(
+name|inode
+operator|!=
+literal|null
+condition|)
+name|src
+operator|=
+name|inode
+operator|.
+name|getFullPathName
+argument_list|()
+expr_stmt|;
+block|}
+specifier|final
 name|INodeFile
 name|pendingFile
 init|=
@@ -19309,6 +19556,10 @@ argument_list|(
 name|src
 argument_list|,
 name|clientName
+argument_list|,
+name|inode
+argument_list|,
+name|fileId
 argument_list|)
 decl_stmt|;
 if|if

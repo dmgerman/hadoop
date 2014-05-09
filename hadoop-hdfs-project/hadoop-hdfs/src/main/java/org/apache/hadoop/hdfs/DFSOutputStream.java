@@ -4803,6 +4803,8 @@ name|getAdditionalDatanode
 argument_list|(
 name|src
 argument_list|,
+name|fileId
+argument_list|,
 name|block
 argument_list|,
 name|nodes
@@ -6057,6 +6059,8 @@ operator|.
 name|abandonBlock
 argument_list|(
 name|block
+argument_list|,
+name|fileId
 argument_list|,
 name|src
 argument_list|,
@@ -9087,6 +9091,8 @@ name|fsync
 argument_list|(
 name|src
 argument_list|,
+name|fileId
+argument_list|,
 name|dfsClient
 operator|.
 name|clientName
@@ -9486,7 +9492,7 @@ name|dfsClient
 operator|.
 name|endFileLease
 argument_list|(
-name|src
+name|fileId
 argument_list|)
 expr_stmt|;
 block|}
@@ -9687,7 +9693,7 @@ name|dfsClient
 operator|.
 name|endFileLease
 argument_list|(
-name|src
+name|fileId
 argument_list|)
 expr_stmt|;
 block|}
@@ -10104,6 +10110,7 @@ block|}
 annotation|@
 name|VisibleForTesting
 DECL|method|getFileId ()
+specifier|public
 name|long
 name|getFileId
 parameter_list|()

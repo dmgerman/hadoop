@@ -4242,7 +4242,7 @@ block|}
 annotation|@
 name|Override
 comment|// ClientProtocol
-DECL|method|getAdditionalDatanode (final String src, final ExtendedBlock blk, final DatanodeInfo[] existings, final String[] existingStorageIDs, final DatanodeInfo[] excludes, final int numAdditionalNodes, final String clientName )
+DECL|method|getAdditionalDatanode (final String src, final long fileId, final ExtendedBlock blk, final DatanodeInfo[] existings, final String[] existingStorageIDs, final DatanodeInfo[] excludes, final int numAdditionalNodes, final String clientName )
 specifier|public
 name|LocatedBlock
 name|getAdditionalDatanode
@@ -4250,6 +4250,10 @@ parameter_list|(
 specifier|final
 name|String
 name|src
+parameter_list|,
+specifier|final
+name|long
+name|fileId
 parameter_list|,
 specifier|final
 name|ExtendedBlock
@@ -4296,6 +4300,10 @@ argument_list|(
 literal|"getAdditionalDatanode: src="
 operator|+
 name|src
+operator|+
+literal|", fileId="
+operator|+
+name|fileId
 operator|+
 literal|", blk="
 operator|+
@@ -4386,6 +4394,8 @@ name|getAdditionalDatanode
 argument_list|(
 name|src
 argument_list|,
+name|fileId
+argument_list|,
 name|blk
 argument_list|,
 name|existings
@@ -4404,13 +4414,16 @@ comment|/**    * The client needs to give up on the block.    */
 annotation|@
 name|Override
 comment|// ClientProtocol
-DECL|method|abandonBlock (ExtendedBlock b, String src, String holder)
+DECL|method|abandonBlock (ExtendedBlock b, long fileId, String src, String holder)
 specifier|public
 name|void
 name|abandonBlock
 parameter_list|(
 name|ExtendedBlock
 name|b
+parameter_list|,
+name|long
+name|fileId
 parameter_list|,
 name|String
 name|src
@@ -4451,6 +4464,8 @@ operator|.
 name|abandonBlock
 argument_list|(
 name|b
+argument_list|,
+name|fileId
 argument_list|,
 name|src
 argument_list|,
@@ -5918,13 +5933,16 @@ block|}
 annotation|@
 name|Override
 comment|// ClientProtocol
-DECL|method|fsync (String src, String clientName, long lastBlockLength)
+DECL|method|fsync (String src, long fileId, String clientName, long lastBlockLength)
 specifier|public
 name|void
 name|fsync
 parameter_list|(
 name|String
 name|src
+parameter_list|,
+name|long
+name|fileId
 parameter_list|,
 name|String
 name|clientName
@@ -5940,6 +5958,8 @@ operator|.
 name|fsync
 argument_list|(
 name|src
+argument_list|,
+name|fileId
 argument_list|,
 name|clientName
 argument_list|,

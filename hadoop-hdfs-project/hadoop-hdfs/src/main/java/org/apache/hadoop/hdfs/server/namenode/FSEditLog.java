@@ -5660,6 +5660,7 @@ expr_stmt|;
 block|}
 comment|/**    * Finalize the current log segment.    * Transitions from IN_SEGMENT state to BETWEEN_LOG_SEGMENTS state.    */
 DECL|method|endCurrentLogSegment (boolean writeEndTxn)
+specifier|public
 specifier|synchronized
 name|void
 name|endCurrentLogSegment

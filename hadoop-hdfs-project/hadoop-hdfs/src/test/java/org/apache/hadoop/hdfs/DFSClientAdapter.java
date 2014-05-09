@@ -228,7 +228,7 @@ operator|.
 name|dfs
 return|;
 block|}
-DECL|method|getPreviousBlock (DFSClient client, String file)
+DECL|method|getPreviousBlock (DFSClient client, long fileId)
 specifier|public
 specifier|static
 name|ExtendedBlock
@@ -237,8 +237,8 @@ parameter_list|(
 name|DFSClient
 name|client
 parameter_list|,
-name|String
-name|file
+name|long
+name|fileId
 parameter_list|)
 block|{
 return|return
@@ -246,7 +246,7 @@ name|client
 operator|.
 name|getPreviousBlock
 argument_list|(
-name|file
+name|fileId
 argument_list|)
 return|;
 block|}

@@ -794,16 +794,19 @@ name|SnapshotAccessControlException
 throws|,
 name|IOException
 function_decl|;
-comment|/**    * The client can give up on a block by calling abandonBlock().    * The client can then either obtain a new block, or complete or abandon the     * file.    * Any partial writes to the block will be discarded.    *     * @throws AccessControlException If access is denied    * @throws FileNotFoundException file<code>src</code> is not found    * @throws UnresolvedLinkException If<code>src</code> contains a symlink    * @throws IOException If an I/O error occurred    */
+comment|/**    * The client can give up on a block by calling abandonBlock().    * The client can then either obtain a new block, or complete or abandon the     * file.    * Any partial writes to the block will be discarded.    *     * @param b         Block to abandon    * @param fileId    The id of the file where the block resides.  Older clients    *                    will pass GRANDFATHER_INODE_ID here.    * @param src       The path of the file where the block resides.    * @param holder    Lease holder.    *    * @throws AccessControlException If access is denied    * @throws FileNotFoundException file<code>src</code> is not found    * @throws UnresolvedLinkException If<code>src</code> contains a symlink    * @throws IOException If an I/O error occurred    */
 annotation|@
 name|Idempotent
-DECL|method|abandonBlock (ExtendedBlock b, String src, String holder)
+DECL|method|abandonBlock (ExtendedBlock b, long fileId, String src, String holder)
 specifier|public
 name|void
 name|abandonBlock
 parameter_list|(
 name|ExtendedBlock
 name|b
+parameter_list|,
+name|long
+name|fileId
 parameter_list|,
 name|String
 name|src
@@ -861,10 +864,10 @@ name|UnresolvedLinkException
 throws|,
 name|IOException
 function_decl|;
-comment|/**     * Get a datanode for an existing pipeline.    *     * @param src the file being written    * @param blk the block being written    * @param existings the existing nodes in the pipeline    * @param excludes the excluded nodes    * @param numAdditionalNodes number of additional datanodes    * @param clientName the name of the client    *     * @return the located block.    *     * @throws AccessControlException If access is denied    * @throws FileNotFoundException If file<code>src</code> is not found    * @throws SafeModeException create not allowed in safemode    * @throws UnresolvedLinkException If<code>src</code> contains a symlink    * @throws IOException If an I/O error occurred    */
+comment|/**     * Get a datanode for an existing pipeline.    *     * @param src the file being written    * @param fileId the ID of the file being written    * @param blk the block being written    * @param existings the existing nodes in the pipeline    * @param excludes the excluded nodes    * @param numAdditionalNodes number of additional datanodes    * @param clientName the name of the client    *     * @return the located block.    *     * @throws AccessControlException If access is denied    * @throws FileNotFoundException If file<code>src</code> is not found    * @throws SafeModeException create not allowed in safemode    * @throws UnresolvedLinkException If<code>src</code> contains a symlink    * @throws IOException If an I/O error occurred    */
 annotation|@
 name|Idempotent
-DECL|method|getAdditionalDatanode (final String src, final ExtendedBlock blk, final DatanodeInfo[] existings, final String[] existingStorageIDs, final DatanodeInfo[] excludes, final int numAdditionalNodes, final String clientName )
+DECL|method|getAdditionalDatanode (final String src, final long fileId, final ExtendedBlock blk, final DatanodeInfo[] existings, final String[] existingStorageIDs, final DatanodeInfo[] excludes, final int numAdditionalNodes, final String clientName )
 specifier|public
 name|LocatedBlock
 name|getAdditionalDatanode
@@ -872,6 +875,10 @@ parameter_list|(
 specifier|final
 name|String
 name|src
+parameter_list|,
+specifier|final
+name|long
+name|fileId
 parameter_list|,
 specifier|final
 name|ExtendedBlock
@@ -1517,16 +1524,19 @@ name|SnapshotAccessControlException
 throws|,
 name|IOException
 function_decl|;
-comment|/**    * Write all metadata for this file into persistent storage.    * The file must be currently open for writing.    * @param src The string representation of the path    * @param client The string representation of the client    * @param lastBlockLength The length of the last block (under construction)     *                        to be reported to NameNode     * @throws AccessControlException permission denied    * @throws FileNotFoundException file<code>src</code> is not found    * @throws UnresolvedLinkException if<code>src</code> contains a symlink.     * @throws IOException If an I/O error occurred    */
+comment|/**    * Write all metadata for this file into persistent storage.    * The file must be currently open for writing.    * @param src The string representation of the path    * @param inodeId The inode ID, or GRANDFATHER_INODE_ID if the client is    *                too old to support fsync with inode IDs.    * @param client The string representation of the client    * @param lastBlockLength The length of the last block (under construction)     *                        to be reported to NameNode     * @throws AccessControlException permission denied    * @throws FileNotFoundException file<code>src</code> is not found    * @throws UnresolvedLinkException if<code>src</code> contains a symlink.     * @throws IOException If an I/O error occurred    */
 annotation|@
 name|Idempotent
-DECL|method|fsync (String src, String client, long lastBlockLength)
+DECL|method|fsync (String src, long inodeId, String client, long lastBlockLength)
 specifier|public
 name|void
 name|fsync
 parameter_list|(
 name|String
 name|src
+parameter_list|,
+name|long
+name|inodeId
 parameter_list|,
 name|String
 name|client

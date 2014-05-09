@@ -1591,53 +1591,10 @@ argument_list|)
 argument_list|)
 expr_stmt|;
 comment|//d. Close file handle that was opened in (b).
-try|try
-block|{
 name|out
 operator|.
 name|close
 argument_list|()
-expr_stmt|;
-name|fail
-argument_list|(
-literal|"close() should throw an exception"
-argument_list|)
-expr_stmt|;
-block|}
-catch|catch
-parameter_list|(
-name|Exception
-name|e
-parameter_list|)
-block|{
-name|AppendTestUtil
-operator|.
-name|LOG
-operator|.
-name|info
-argument_list|(
-literal|"GOOD!"
-argument_list|,
-name|e
-argument_list|)
-expr_stmt|;
-block|}
-comment|//wait for the lease recovery
-name|cluster
-operator|.
-name|setLeasePeriod
-argument_list|(
-literal|1000
-argument_list|,
-literal|1000
-argument_list|)
-expr_stmt|;
-name|AppendTestUtil
-operator|.
-name|sleep
-argument_list|(
-literal|5000
-argument_list|)
 expr_stmt|;
 comment|//check block sizes
 specifier|final

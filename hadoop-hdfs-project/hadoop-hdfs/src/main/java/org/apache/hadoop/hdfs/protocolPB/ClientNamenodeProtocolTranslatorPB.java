@@ -3387,13 +3387,16 @@ block|}
 block|}
 annotation|@
 name|Override
-DECL|method|abandonBlock (ExtendedBlock b, String src, String holder)
+DECL|method|abandonBlock (ExtendedBlock b, long fileId, String src, String holder)
 specifier|public
 name|void
 name|abandonBlock
 parameter_list|(
 name|ExtendedBlock
 name|b
+parameter_list|,
+name|long
+name|fileId
 parameter_list|,
 name|String
 name|src
@@ -3436,6 +3439,11 @@ operator|.
 name|setHolder
 argument_list|(
 name|holder
+argument_list|)
+operator|.
+name|setFileId
+argument_list|(
+name|fileId
 argument_list|)
 operator|.
 name|build
@@ -3632,13 +3640,16 @@ block|}
 block|}
 annotation|@
 name|Override
-DECL|method|getAdditionalDatanode (String src, ExtendedBlock blk, DatanodeInfo[] existings, String[] existingStorageIDs, DatanodeInfo[] excludes, int numAdditionalNodes, String clientName)
+DECL|method|getAdditionalDatanode (String src, long fileId, ExtendedBlock blk, DatanodeInfo[] existings, String[] existingStorageIDs, DatanodeInfo[] excludes, int numAdditionalNodes, String clientName)
 specifier|public
 name|LocatedBlock
 name|getAdditionalDatanode
 parameter_list|(
 name|String
 name|src
+parameter_list|,
+name|long
+name|fileId
 parameter_list|,
 name|ExtendedBlock
 name|blk
@@ -3683,6 +3694,11 @@ operator|.
 name|setSrc
 argument_list|(
 name|src
+argument_list|)
+operator|.
+name|setFileId
+argument_list|(
+name|fileId
 argument_list|)
 operator|.
 name|setBlk
@@ -5672,13 +5688,16 @@ block|}
 block|}
 annotation|@
 name|Override
-DECL|method|fsync (String src, String client, long lastBlockLength)
+DECL|method|fsync (String src, long fileId, String client, long lastBlockLength)
 specifier|public
 name|void
 name|fsync
 parameter_list|(
 name|String
 name|src
+parameter_list|,
+name|long
+name|fileId
 parameter_list|,
 name|String
 name|client
@@ -5716,6 +5735,11 @@ operator|.
 name|setLastBlockLength
 argument_list|(
 name|lastBlockLength
+argument_list|)
+operator|.
+name|setFileId
+argument_list|(
+name|fileId
 argument_list|)
 operator|.
 name|build

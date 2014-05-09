@@ -2682,10 +2682,15 @@ block|}
 block|}
 annotation|@
 name|Test
-DECL|method|testWriteToRenamedFile ()
+argument_list|(
+name|timeout
+operator|=
+literal|120000
+argument_list|)
+DECL|method|testWriteToDeletedFile ()
 specifier|public
 name|void
-name|testWriteToRenamedFile
+name|testWriteToDeletedFile
 parameter_list|()
 throws|throws
 name|IOException
@@ -2792,38 +2797,17 @@ argument_list|(
 name|filePath
 argument_list|)
 decl_stmt|;
-comment|// Rename /test1 to test2, and recreate /test1/file
-name|Path
-name|renamedPath
-init|=
-operator|new
-name|Path
-argument_list|(
-literal|"/test2"
-argument_list|)
-decl_stmt|;
+comment|// Delete the file
 name|fs
 operator|.
-name|rename
-argument_list|(
-name|path
-argument_list|,
-name|renamedPath
-argument_list|)
-expr_stmt|;
-name|fs
-operator|.
-name|create
+name|delete
 argument_list|(
 name|filePath
 argument_list|,
-operator|(
-name|short
-operator|)
-literal|1
+literal|false
 argument_list|)
 expr_stmt|;
-comment|// Add new block should fail since /test1/file has a different fileId
+comment|// Add new block should fail since /test1/file has been deleted.
 try|try
 block|{
 name|fos
@@ -2847,7 +2831,7 @@ argument_list|()
 expr_stmt|;
 name|fail
 argument_list|(
-literal|"Write should fail after rename"
+literal|"Write should fail after delete"
 argument_list|)
 expr_stmt|;
 block|}

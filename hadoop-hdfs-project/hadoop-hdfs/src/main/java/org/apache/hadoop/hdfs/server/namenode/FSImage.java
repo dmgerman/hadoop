@@ -2887,6 +2887,7 @@ block|}
 annotation|@
 name|VisibleForTesting
 DECL|method|setEditLogForTesting (FSEditLog newLog)
+specifier|public
 name|void
 name|setEditLogForTesting
 parameter_list|(

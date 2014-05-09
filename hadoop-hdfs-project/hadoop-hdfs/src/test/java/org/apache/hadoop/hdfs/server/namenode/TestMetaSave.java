@@ -232,6 +232,16 @@ name|org
 operator|.
 name|junit
 operator|.
+name|Assert
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|junit
+operator|.
 name|BeforeClass
 import|;
 end_import
@@ -541,14 +551,13 @@ operator|.
 name|readLine
 argument_list|()
 decl_stmt|;
-name|assertTrue
-argument_list|(
-name|line
+name|Assert
 operator|.
-name|equals
+name|assertEquals
 argument_list|(
 literal|"3 files and directories, 2 blocks = 5 total filesystem objects"
-argument_list|)
+argument_list|,
+name|line
 argument_list|)
 expr_stmt|;
 name|line

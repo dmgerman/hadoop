@@ -485,6 +485,11 @@ block|}
 block|}
 annotation|@
 name|Test
+argument_list|(
+name|timeout
+operator|=
+literal|120000
+argument_list|)
 DECL|method|testSetrepIncreasing ()
 specifier|public
 name|void
@@ -505,6 +510,11 @@ expr_stmt|;
 block|}
 annotation|@
 name|Test
+argument_list|(
+name|timeout
+operator|=
+literal|120000
+argument_list|)
 DECL|method|testSetrepIncreasingSimulatedStorage ()
 specifier|public
 name|void
