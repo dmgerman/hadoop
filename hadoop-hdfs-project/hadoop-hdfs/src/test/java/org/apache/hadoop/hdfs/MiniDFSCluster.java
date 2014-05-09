@@ -3586,14 +3586,17 @@ operator|.
 name|getOnlyNameNode
 argument_list|()
 decl_stmt|;
-comment|// we only had one NN, set DEFAULT_NAME for it
+comment|// we only had one NN, set DEFAULT_NAME for it. If not explicitly
+comment|// specified initially, the port will be 0 to make NN bind to any
+comment|// available port. It will be set to the right address after
+comment|// NN is started.
 name|conf
 operator|.
 name|set
 argument_list|(
 name|FS_DEFAULT_NAME_KEY
 argument_list|,
-literal|"127.0.0.1:"
+literal|"hdfs://127.0.0.1:"
 operator|+
 name|onlyNN
 operator|.
@@ -3702,6 +3705,11 @@ name|nameservice
 operator|.
 name|getId
 argument_list|()
+decl_stmt|;
+name|String
+name|lastDefaultFileSystem
+init|=
+literal|null
 decl_stmt|;
 name|Preconditions
 operator|.
@@ -4159,7 +4167,6 @@ expr_stmt|;
 name|createNameNode
 argument_list|(
 name|nnCounter
-operator|++
 argument_list|,
 name|conf
 argument_list|,
@@ -4177,6 +4184,65 @@ name|nn
 operator|.
 name|getNnId
 argument_list|()
+argument_list|)
+expr_stmt|;
+comment|// Record the last namenode uri
+if|if
+condition|(
+name|nameNodes
+index|[
+name|nnCounter
+index|]
+operator|!=
+literal|null
+operator|&&
+name|nameNodes
+index|[
+name|nnCounter
+index|]
+operator|.
+name|conf
+operator|!=
+literal|null
+condition|)
+block|{
+name|lastDefaultFileSystem
+operator|=
+name|nameNodes
+index|[
+name|nnCounter
+index|]
+operator|.
+name|conf
+operator|.
+name|get
+argument_list|(
+name|FS_DEFAULT_NAME_KEY
+argument_list|)
+expr_stmt|;
+block|}
+name|nnCounter
+operator|++
+expr_stmt|;
+block|}
+if|if
+condition|(
+operator|!
+name|federation
+operator|&&
+name|lastDefaultFileSystem
+operator|!=
+literal|null
+condition|)
+block|{
+comment|// Set the default file system to the actual bind address of NN.
+name|conf
+operator|.
+name|set
+argument_list|(
+name|FS_DEFAULT_NAME_KEY
+argument_list|,
+name|lastDefaultFileSystem
 argument_list|)
 expr_stmt|;
 block|}
@@ -4863,7 +4929,17 @@ name|clusterId
 argument_list|)
 expr_stmt|;
 block|}
-comment|// Start the NameNode
+comment|// Start the NameNode after saving the default file system.
+name|String
+name|originalDefaultFs
+init|=
+name|conf
+operator|.
+name|get
+argument_list|(
+name|FS_DEFAULT_NAME_KEY
+argument_list|)
+decl_stmt|;
 name|String
 index|[]
 name|args
@@ -5029,6 +5105,36 @@ name|conf
 argument_list|)
 argument_list|)
 expr_stmt|;
+comment|// Restore the default fs name
+if|if
+condition|(
+name|originalDefaultFs
+operator|==
+literal|null
+condition|)
+block|{
+name|conf
+operator|.
+name|set
+argument_list|(
+name|FS_DEFAULT_NAME_KEY
+argument_list|,
+literal|""
+argument_list|)
+expr_stmt|;
+block|}
+else|else
+block|{
+name|conf
+operator|.
+name|set
+argument_list|(
+name|FS_DEFAULT_NAME_KEY
+argument_list|,
+name|originalDefaultFs
+argument_list|)
+expr_stmt|;
+block|}
 block|}
 comment|/**    * @return URI of the namenode from a single namenode MiniDFSCluster    */
 DECL|method|getURI ()

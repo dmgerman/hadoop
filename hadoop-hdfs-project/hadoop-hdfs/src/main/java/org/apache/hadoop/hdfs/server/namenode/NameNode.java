@@ -1595,11 +1595,11 @@ specifier|private
 name|ObjectName
 name|nameNodeStatusBeanName
 decl_stmt|;
-comment|/**    * The service name of the delegation token issued by the namenode. It is    * the name service id in HA mode, or the rpc address in non-HA mode.    */
-DECL|field|tokenServiceName
+comment|/**    * The namenode address that clients will use to access this namenode    * or the name service. For HA configurations using logical URI, it    * will be the logical address.    */
+DECL|field|clientNamenodeAddress
 specifier|private
 name|String
-name|tokenServiceName
+name|clientNamenodeAddress
 decl_stmt|;
 comment|/** Format a new filesystem.  Destroys any filesystem that may already    * exist at this location.  **/
 DECL|method|format (Configuration conf)
@@ -1716,7 +1716,159 @@ name|getTokenServiceName
 parameter_list|()
 block|{
 return|return
-name|tokenServiceName
+name|getClientNamenodeAddress
+argument_list|()
+return|;
+block|}
+comment|/**    * Set the namenode address that will be used by clients to access this    * namenode or name service. This needs to be called before the config    * is overriden.    */
+DECL|method|setClientNamenodeAddress (Configuration conf)
+specifier|public
+name|void
+name|setClientNamenodeAddress
+parameter_list|(
+name|Configuration
+name|conf
+parameter_list|)
+block|{
+name|String
+name|nnAddr
+init|=
+name|conf
+operator|.
+name|get
+argument_list|(
+name|FS_DEFAULT_NAME_KEY
+argument_list|)
+decl_stmt|;
+if|if
+condition|(
+name|nnAddr
+operator|==
+literal|null
+condition|)
+block|{
+comment|// default fs is not set.
+name|clientNamenodeAddress
+operator|=
+literal|null
+expr_stmt|;
+return|return;
+block|}
+name|LOG
+operator|.
+name|info
+argument_list|(
+name|FS_DEFAULT_NAME_KEY
+operator|+
+literal|" is "
+operator|+
+name|nnAddr
+argument_list|)
+expr_stmt|;
+name|URI
+name|nnUri
+init|=
+name|URI
+operator|.
+name|create
+argument_list|(
+name|nnAddr
+argument_list|)
+decl_stmt|;
+name|String
+name|nnHost
+init|=
+name|nnUri
+operator|.
+name|getHost
+argument_list|()
+decl_stmt|;
+if|if
+condition|(
+name|nnHost
+operator|==
+literal|null
+condition|)
+block|{
+name|clientNamenodeAddress
+operator|=
+literal|null
+expr_stmt|;
+return|return;
+block|}
+if|if
+condition|(
+name|DFSUtil
+operator|.
+name|getNameServiceIds
+argument_list|(
+name|conf
+argument_list|)
+operator|.
+name|contains
+argument_list|(
+name|nnHost
+argument_list|)
+condition|)
+block|{
+comment|// host name is logical
+name|clientNamenodeAddress
+operator|=
+name|nnHost
+expr_stmt|;
+block|}
+elseif|else
+if|if
+condition|(
+name|nnUri
+operator|.
+name|getPort
+argument_list|()
+operator|>
+literal|0
+condition|)
+block|{
+comment|// physical address with a valid port
+name|clientNamenodeAddress
+operator|=
+name|nnUri
+operator|.
+name|getAuthority
+argument_list|()
+expr_stmt|;
+block|}
+else|else
+block|{
+comment|// the port is missing or 0. Figure out real bind address later.
+name|clientNamenodeAddress
+operator|=
+literal|null
+expr_stmt|;
+return|return;
+block|}
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"Clients are to use "
+operator|+
+name|clientNamenodeAddress
+operator|+
+literal|" to access"
+operator|+
+literal|" this namenode/service."
+argument_list|)
+expr_stmt|;
+block|}
+comment|/**    * Get the namenode address to be used by clients.    * @return nn address    */
+DECL|method|getClientNamenodeAddress ()
+specifier|public
+name|String
+name|getClientNamenodeAddress
+parameter_list|()
+block|{
+return|return
+name|clientNamenodeAddress
 return|;
 block|}
 DECL|method|getAddress (String address)
@@ -2560,28 +2712,17 @@ argument_list|(
 name|conf
 argument_list|)
 expr_stmt|;
-specifier|final
-name|String
-name|nsId
-init|=
-name|getNameServiceId
-argument_list|(
-name|conf
-argument_list|)
-decl_stmt|;
-name|tokenServiceName
+if|if
+condition|(
+name|clientNamenodeAddress
+operator|==
+literal|null
+condition|)
+block|{
+comment|// This is expected for MiniDFSCluster. Set it now using
+comment|// the RPC server's bind address.
+name|clientNamenodeAddress
 operator|=
-name|HAUtil
-operator|.
-name|isHAEnabled
-argument_list|(
-name|conf
-argument_list|,
-name|nsId
-argument_list|)
-condition|?
-name|nsId
-else|:
 name|NetUtils
 operator|.
 name|getHostPortString
@@ -2592,6 +2733,20 @@ name|getRpcAddress
 argument_list|()
 argument_list|)
 expr_stmt|;
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"Clients are to use "
+operator|+
+name|clientNamenodeAddress
+operator|+
+literal|" to access"
+operator|+
+literal|" this namenode/service."
+argument_list|)
+expr_stmt|;
+block|}
 if|if
 condition|(
 name|NamenodeRole
@@ -3180,6 +3335,11 @@ operator|.
 name|role
 operator|=
 name|role
+expr_stmt|;
+name|setClientNamenodeAddress
+argument_list|(
+name|conf
+argument_list|)
 expr_stmt|;
 name|String
 name|nsId

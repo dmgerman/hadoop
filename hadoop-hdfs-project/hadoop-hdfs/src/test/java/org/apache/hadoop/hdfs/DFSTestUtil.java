@@ -1195,11 +1195,16 @@ argument_list|(
 literal|"testClusterID"
 argument_list|)
 expr_stmt|;
+comment|// Use a copy of conf as it can be altered by namenode during format.
 name|NameNode
 operator|.
 name|format
 argument_list|(
+operator|new
+name|Configuration
+argument_list|(
 name|conf
+argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
