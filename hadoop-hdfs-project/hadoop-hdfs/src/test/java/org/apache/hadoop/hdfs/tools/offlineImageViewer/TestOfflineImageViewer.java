@@ -925,6 +925,40 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
+comment|// Create an empty directory
+name|Path
+name|emptydir
+init|=
+operator|new
+name|Path
+argument_list|(
+literal|"/emptydir"
+argument_list|)
+decl_stmt|;
+name|hdfs
+operator|.
+name|mkdirs
+argument_list|(
+name|emptydir
+argument_list|)
+expr_stmt|;
+name|writtenFiles
+operator|.
+name|put
+argument_list|(
+name|emptydir
+operator|.
+name|toString
+argument_list|()
+argument_list|,
+name|hdfs
+operator|.
+name|getFileStatus
+argument_list|(
+name|emptydir
+argument_list|)
+argument_list|)
+expr_stmt|;
 comment|// Get delegation tokens so we log the delegation token op
 name|Token
 argument_list|<
@@ -1476,12 +1510,12 @@ literal|1
 argument_list|)
 argument_list|)
 decl_stmt|;
-comment|// totalDirs includes root directory
+comment|// totalDirs includes root directory and empty directory
 name|assertEquals
 argument_list|(
 name|NUM_DIRS
 operator|+
-literal|1
+literal|2
 argument_list|,
 name|totalDirs
 argument_list|)
@@ -1875,12 +1909,15 @@ decl_stmt|;
 name|assertEquals
 argument_list|(
 name|NUM_DIRS
+operator|+
+literal|1
 argument_list|,
 name|statuses
 operator|.
 name|length
 argument_list|)
 expr_stmt|;
+comment|// contains empty directory
 comment|// verify the number of files in the directory
 name|statuses
 operator|=
@@ -1937,6 +1974,29 @@ argument_list|(
 name|expected
 argument_list|,
 name|status
+argument_list|)
+expr_stmt|;
+comment|// LISTSTATUS operation to an empty directory
+name|statuses
+operator|=
+name|webhdfs
+operator|.
+name|listStatus
+argument_list|(
+operator|new
+name|Path
+argument_list|(
+literal|"/emptydir"
+argument_list|)
+argument_list|)
+expr_stmt|;
+name|assertEquals
+argument_list|(
+literal|0
+argument_list|,
+name|statuses
+operator|.
+name|length
 argument_list|)
 expr_stmt|;
 comment|// LISTSTATUS operation to a invalid path
