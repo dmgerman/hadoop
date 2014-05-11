@@ -4055,7 +4055,7 @@ specifier|final
 name|boolean
 name|DEFAULT_TIMELINE_SERVICE_ENABLED
 init|=
-literal|true
+literal|false
 decl_stmt|;
 comment|/** host:port address for timeline service RPC APIs. */
 DECL|field|TIMELINE_SERVICE_ADDRESS
