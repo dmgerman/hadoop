@@ -1542,11 +1542,8 @@ expr_stmt|;
 name|datanode
 operator|.
 name|checkDiskError
-argument_list|(
-name|ioe
-argument_list|)
+argument_list|()
 expr_stmt|;
-comment|// may throw an exception here
 block|}
 throw|throw
 name|ioe
@@ -1861,9 +1858,7 @@ block|{
 name|datanode
 operator|.
 name|checkDiskError
-argument_list|(
-name|ioe
-argument_list|)
+argument_list|()
 expr_stmt|;
 throw|throw
 name|ioe
@@ -3135,9 +3130,7 @@ block|{
 name|datanode
 operator|.
 name|checkDiskError
-argument_list|(
-name|iex
-argument_list|)
+argument_list|()
 expr_stmt|;
 throw|throw
 name|iex
@@ -5476,33 +5469,11 @@ condition|(
 name|running
 condition|)
 block|{
-try|try
-block|{
 name|datanode
 operator|.
 name|checkDiskError
-argument_list|(
-name|e
-argument_list|)
+argument_list|()
 expr_stmt|;
-comment|// may throw an exception here
-block|}
-catch|catch
-parameter_list|(
-name|IOException
-name|ioe
-parameter_list|)
-block|{
-name|LOG
-operator|.
-name|warn
-argument_list|(
-literal|"DataNode.checkDiskError failed in run() with: "
-argument_list|,
-name|ioe
-argument_list|)
-expr_stmt|;
-block|}
 name|LOG
 operator|.
 name|info
