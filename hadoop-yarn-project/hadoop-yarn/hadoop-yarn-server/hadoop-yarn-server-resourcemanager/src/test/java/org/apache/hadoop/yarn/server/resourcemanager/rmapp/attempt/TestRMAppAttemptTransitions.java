@@ -1491,7 +1491,7 @@ name|RM_WEBAPP_ADDR
 init|=
 name|WebAppUtils
 operator|.
-name|getResolvedRMWebAppURLWithoutScheme
+name|getResolvedRMWebAppURLWithScheme
 argument_list|(
 operator|new
 name|Configuration

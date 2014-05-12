@@ -3489,7 +3489,7 @@ name|pjoin
 argument_list|(
 name|WebAppUtils
 operator|.
-name|getResolvedRMWebAppURLWithoutScheme
+name|getResolvedRMWebAppURLWithScheme
 argument_list|(
 name|conf
 argument_list|)
