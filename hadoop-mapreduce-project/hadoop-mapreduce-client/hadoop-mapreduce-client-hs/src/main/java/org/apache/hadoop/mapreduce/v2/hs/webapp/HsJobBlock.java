@@ -880,23 +880,6 @@ name|infoBlock
 operator|.
 name|_
 argument_list|(
-literal|"Average Reduce Time"
-argument_list|,
-name|StringUtils
-operator|.
-name|formatTime
-argument_list|(
-name|job
-operator|.
-name|getAvgReduceTime
-argument_list|()
-argument_list|)
-argument_list|)
-expr_stmt|;
-name|infoBlock
-operator|.
-name|_
-argument_list|(
 literal|"Average Shuffle Time"
 argument_list|,
 name|StringUtils
@@ -923,6 +906,23 @@ argument_list|(
 name|job
 operator|.
 name|getAvgMergeTime
+argument_list|()
+argument_list|)
+argument_list|)
+expr_stmt|;
+name|infoBlock
+operator|.
+name|_
+argument_list|(
+literal|"Average Reduce Time"
+argument_list|,
+name|StringUtils
+operator|.
+name|formatTime
+argument_list|(
+name|job
+operator|.
+name|getAvgReduceTime
 argument_list|()
 argument_list|)
 argument_list|)
