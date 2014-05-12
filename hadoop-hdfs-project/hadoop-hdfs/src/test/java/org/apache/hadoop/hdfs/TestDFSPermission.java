@@ -2479,6 +2479,16 @@ parameter_list|)
 throws|throws
 name|Exception
 block|{
+name|boolean
+index|[]
+name|isDirEmpty
+init|=
+operator|new
+name|boolean
+index|[
+name|NUM_TEST_PERMISSIONS
+index|]
+decl_stmt|;
 name|login
 argument_list|(
 name|SUPERUSER
@@ -2610,6 +2620,27 @@ index|]
 argument_list|,
 name|fsPermission
 argument_list|)
+expr_stmt|;
+name|isDirEmpty
+index|[
+name|i
+index|]
+operator|=
+operator|(
+name|fs
+operator|.
+name|listStatus
+argument_list|(
+name|dirs
+index|[
+name|i
+index|]
+argument_list|)
+operator|.
+name|length
+operator|==
+literal|0
+operator|)
 expr_stmt|;
 block|}
 name|login
@@ -2878,6 +2909,11 @@ name|i
 index|]
 argument_list|,
 literal|null
+argument_list|,
+name|isDirEmpty
+index|[
+name|i
+index|]
 argument_list|)
 expr_stmt|;
 block|}
@@ -5021,7 +5057,7 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-comment|/* A class that verifies the permission checking is correct for    * directory deletion */
+comment|/* A class that verifies the permission checking is correct for    * directory deletion    */
 DECL|class|DeleteDirPermissionVerifier
 specifier|private
 class|class
@@ -5161,6 +5197,37 @@ return|;
 block|}
 block|}
 block|}
+comment|/* A class that verifies the permission checking is correct for    * empty-directory deletion    */
+DECL|class|DeleteEmptyDirPermissionVerifier
+specifier|private
+class|class
+name|DeleteEmptyDirPermissionVerifier
+extends|extends
+name|DeleteDirPermissionVerifier
+block|{
+annotation|@
+name|Override
+DECL|method|setOpPermission ()
+name|void
+name|setOpPermission
+parameter_list|()
+block|{
+name|this
+operator|.
+name|opParentPermission
+operator|=
+name|SEARCH_MASK
+operator||
+name|WRITE_MASK
+expr_stmt|;
+name|this
+operator|.
+name|opPermission
+operator|=
+name|NULL_MASK
+expr_stmt|;
+block|}
+block|}
 DECL|field|fileDeletionVerifier
 specifier|final
 name|DeletePermissionVerifier
@@ -5219,8 +5286,17 @@ operator|new
 name|DeleteDirPermissionVerifier
 argument_list|()
 decl_stmt|;
+DECL|field|emptyDirDeletionVerifier
+specifier|final
+name|DeleteEmptyDirPermissionVerifier
+name|emptyDirDeletionVerifier
+init|=
+operator|new
+name|DeleteEmptyDirPermissionVerifier
+argument_list|()
+decl_stmt|;
 comment|/* test if the permission checking of directory deletion is correct */
-DECL|method|testDeleteDir (UserGroupInformation ugi, Path path, short ancestorPermission, short parentPermission, short permission, short[] childPermissions)
+DECL|method|testDeleteDir (UserGroupInformation ugi, Path path, short ancestorPermission, short parentPermission, short permission, short[] childPermissions, final boolean isDirEmpty)
 specifier|private
 name|void
 name|testDeleteDir
@@ -5243,11 +5319,24 @@ parameter_list|,
 name|short
 index|[]
 name|childPermissions
+parameter_list|,
+specifier|final
+name|boolean
+name|isDirEmpty
 parameter_list|)
 throws|throws
 name|Exception
 block|{
+name|DeleteDirPermissionVerifier
+name|ddpv
+init|=
+name|isDirEmpty
+condition|?
+name|emptyDirDeletionVerifier
+else|:
 name|dirDeletionVerifier
+decl_stmt|;
+name|ddpv
 operator|.
 name|set
 argument_list|(
@@ -5262,7 +5351,7 @@ argument_list|,
 name|childPermissions
 argument_list|)
 expr_stmt|;
-name|dirDeletionVerifier
+name|ddpv
 operator|.
 name|verifyPermission
 argument_list|(

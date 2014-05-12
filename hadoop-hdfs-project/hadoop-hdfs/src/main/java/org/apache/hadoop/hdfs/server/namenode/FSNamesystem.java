@@ -1714,6 +1714,20 @@ name|hadoop
 operator|.
 name|fs
 operator|.
+name|PathIsNotEmptyDirectoryException
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|fs
+operator|.
 name|UnresolvedLinkException
 import|;
 end_import
@@ -17303,6 +17317,8 @@ argument_list|,
 literal|null
 argument_list|,
 literal|false
+argument_list|,
+literal|false
 argument_list|)
 expr_stmt|;
 comment|// Check write access to ancestor of dst
@@ -17323,6 +17339,8 @@ argument_list|,
 literal|null
 argument_list|,
 literal|null
+argument_list|,
+literal|false
 argument_list|,
 literal|false
 argument_list|)
@@ -17702,6 +17720,8 @@ argument_list|,
 literal|null
 argument_list|,
 literal|false
+argument_list|,
+literal|false
 argument_list|)
 expr_stmt|;
 comment|// Check write access to ancestor of dst
@@ -17722,6 +17742,8 @@ argument_list|,
 literal|null
 argument_list|,
 literal|null
+argument_list|,
+literal|false
 argument_list|,
 literal|false
 argument_list|)
@@ -18084,7 +18106,7 @@ condition|)
 block|{
 throw|throw
 operator|new
-name|IOException
+name|PathIsNotEmptyDirectoryException
 argument_list|(
 name|src
 operator|+
@@ -18118,6 +18140,8 @@ argument_list|,
 name|FsAction
 operator|.
 name|ALL
+argument_list|,
+literal|true
 argument_list|,
 literal|false
 argument_list|)
@@ -18662,6 +18686,8 @@ argument_list|,
 literal|null
 argument_list|,
 literal|null
+argument_list|,
+literal|false
 argument_list|,
 name|resolveLink
 argument_list|)
@@ -26453,12 +26479,14 @@ name|access
 argument_list|,
 name|subAccess
 argument_list|,
+literal|false
+argument_list|,
 literal|true
 argument_list|)
 expr_stmt|;
 block|}
 comment|/**    * Check whether current user have permissions to access the path. For more    * details of the parameters, see    * {@link FSPermissionChecker#checkPermission}.    */
-DECL|method|checkPermission (FSPermissionChecker pc, String path, boolean doCheckOwner, FsAction ancestorAccess, FsAction parentAccess, FsAction access, FsAction subAccess, boolean resolveLink)
+DECL|method|checkPermission (FSPermissionChecker pc, String path, boolean doCheckOwner, FsAction ancestorAccess, FsAction parentAccess, FsAction access, FsAction subAccess, boolean ignoreEmptyDir, boolean resolveLink)
 specifier|private
 name|void
 name|checkPermission
@@ -26483,6 +26511,9 @@ name|access
 parameter_list|,
 name|FsAction
 name|subAccess
+parameter_list|,
+name|boolean
+name|ignoreEmptyDir
 parameter_list|,
 name|boolean
 name|resolveLink
@@ -26528,6 +26559,8 @@ argument_list|,
 name|access
 argument_list|,
 name|subAccess
+argument_list|,
+name|ignoreEmptyDir
 argument_list|,
 name|resolveLink
 argument_list|)

@@ -210,6 +210,22 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|hdfs
+operator|.
+name|util
+operator|.
+name|ReadOnlyList
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|security
 operator|.
 name|AccessControlException
@@ -633,8 +649,8 @@ argument_list|)
 throw|;
 block|}
 block|}
-comment|/**    * Check whether current user have permissions to access the path.    * Traverse is always checked.    *    * Parent path means the parent directory for the path.    * Ancestor path means the last (the closest) existing ancestor directory    * of the path.    * Note that if the parent path exists,    * then the parent path and the ancestor path are the same.    *    * For example, suppose the path is "/foo/bar/baz".    * No matter baz is a file or a directory,    * the parent path is "/foo/bar".    * If bar exists, then the ancestor path is also "/foo/bar".    * If bar does not exist and foo exists,    * then the ancestor path is "/foo".    * Further, if both foo and bar do not exist,    * then the ancestor path is "/".    *    * @param doCheckOwner Require user to be the owner of the path?    * @param ancestorAccess The access required by the ancestor of the path.    * @param parentAccess The access required by the parent of the path.    * @param access The access required by the path.    * @param subAccess If path is a directory,    * it is the access required of the path and all the sub-directories.    * If path is not a directory, there is no effect.    * @param resolveLink whether to resolve the final path component if it is    * a symlink    * @throws AccessControlException    * @throws UnresolvedLinkException    *     * Guarded by {@link FSNamesystem#readLock()}    * Caller of this method must hold that lock.    */
-DECL|method|checkPermission (String path, FSDirectory dir, boolean doCheckOwner, FsAction ancestorAccess, FsAction parentAccess, FsAction access, FsAction subAccess, boolean resolveLink)
+comment|/**    * Check whether current user have permissions to access the path.    * Traverse is always checked.    *    * Parent path means the parent directory for the path.    * Ancestor path means the last (the closest) existing ancestor directory    * of the path.    * Note that if the parent path exists,    * then the parent path and the ancestor path are the same.    *    * For example, suppose the path is "/foo/bar/baz".    * No matter baz is a file or a directory,    * the parent path is "/foo/bar".    * If bar exists, then the ancestor path is also "/foo/bar".    * If bar does not exist and foo exists,    * then the ancestor path is "/foo".    * Further, if both foo and bar do not exist,    * then the ancestor path is "/".    *    * @param doCheckOwner Require user to be the owner of the path?    * @param ancestorAccess The access required by the ancestor of the path.    * @param parentAccess The access required by the parent of the path.    * @param access The access required by the path.    * @param subAccess If path is a directory,    * it is the access required of the path and all the sub-directories.    * If path is not a directory, there is no effect.    * @param ignoreEmptyDir Ignore permission checking for empty directory?    * @param resolveLink whether to resolve the final path component if it is    * a symlink    * @throws AccessControlException    * @throws UnresolvedLinkException    *     * Guarded by {@link FSNamesystem#readLock()}    * Caller of this method must hold that lock.    */
+DECL|method|checkPermission (String path, FSDirectory dir, boolean doCheckOwner, FsAction ancestorAccess, FsAction parentAccess, FsAction access, FsAction subAccess, boolean ignoreEmptyDir, boolean resolveLink)
 name|void
 name|checkPermission
 parameter_list|(
@@ -658,6 +674,9 @@ name|access
 parameter_list|,
 name|FsAction
 name|subAccess
+parameter_list|,
+name|boolean
+name|ignoreEmptyDir
 parameter_list|,
 name|boolean
 name|resolveLink
@@ -702,6 +721,10 @@ operator|+
 literal|", subAccess="
 operator|+
 name|subAccess
+operator|+
+literal|", ignoreEmptyDir="
+operator|+
+name|ignoreEmptyDir
 operator|+
 literal|", resolveLink="
 operator|+
@@ -920,6 +943,8 @@ argument_list|,
 name|snapshotId
 argument_list|,
 name|subAccess
+argument_list|,
+name|ignoreEmptyDir
 argument_list|)
 expr_stmt|;
 block|}
@@ -1032,7 +1057,7 @@ expr_stmt|;
 block|}
 block|}
 comment|/** Guarded by {@link FSNamesystem#readLock()} */
-DECL|method|checkSubAccess (INode inode, int snapshotId, FsAction access )
+DECL|method|checkSubAccess (INode inode, int snapshotId, FsAction access, boolean ignoreEmptyDir)
 specifier|private
 name|void
 name|checkSubAccess
@@ -1045,6 +1070,9 @@ name|snapshotId
 parameter_list|,
 name|FsAction
 name|access
+parameter_list|,
+name|boolean
+name|ignoreEmptyDir
 parameter_list|)
 throws|throws
 name|AccessControlException
@@ -1105,6 +1133,32 @@ operator|.
 name|pop
 argument_list|()
 decl_stmt|;
+name|ReadOnlyList
+argument_list|<
+name|INode
+argument_list|>
+name|cList
+init|=
+name|d
+operator|.
+name|getChildrenList
+argument_list|(
+name|snapshotId
+argument_list|)
+decl_stmt|;
+if|if
+condition|(
+operator|!
+operator|(
+name|cList
+operator|.
+name|isEmpty
+argument_list|()
+operator|&&
+name|ignoreEmptyDir
+operator|)
+condition|)
+block|{
 name|check
 argument_list|(
 name|d
@@ -1114,17 +1168,13 @@ argument_list|,
 name|access
 argument_list|)
 expr_stmt|;
+block|}
 for|for
 control|(
 name|INode
 name|child
 range|:
-name|d
-operator|.
-name|getChildrenList
-argument_list|(
-name|snapshotId
-argument_list|)
+name|cList
 control|)
 block|{
 if|if
