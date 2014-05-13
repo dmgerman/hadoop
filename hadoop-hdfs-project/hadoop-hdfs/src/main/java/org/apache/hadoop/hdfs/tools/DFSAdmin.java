@@ -4757,7 +4757,7 @@ name|getUri
 argument_list|()
 decl_stmt|;
 name|boolean
-name|isHaEnabled
+name|isHaAndLogicalUri
 init|=
 name|HAUtil
 operator|.
@@ -4770,10 +4770,11 @@ argument_list|)
 decl_stmt|;
 if|if
 condition|(
-name|isHaEnabled
+name|isHaAndLogicalUri
 condition|)
 block|{
-comment|// In the case of HA, run finalizeUpgrade for all NNs in this nameservice
+comment|// In the case of HA and logical URI, run finalizeUpgrade for all
+comment|// NNs in this nameservice.
 name|String
 name|nsId
 init|=

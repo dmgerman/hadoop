@@ -270,6 +270,20 @@ name|hadoop
 operator|.
 name|hdfs
 operator|.
+name|NameNodeProxies
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
 name|protocol
 operator|.
 name|ClientProtocol
@@ -329,6 +343,26 @@ operator|.
 name|delegation
 operator|.
 name|DelegationTokenSelector
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|server
+operator|.
+name|namenode
+operator|.
+name|ha
+operator|.
+name|AbstractNNFailoverProxyProvider
 import|;
 end_import
 
@@ -1060,12 +1094,49 @@ name|val
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * @return true if the given nameNodeUri appears to be a logical URI.    * This is the case if there is a failover proxy provider configured    * for it in the given configuration.    */
+comment|/**    * @return true if the given nameNodeUri appears to be a logical URI.    */
 DECL|method|isLogicalUri ( Configuration conf, URI nameNodeUri)
 specifier|public
 specifier|static
 name|boolean
 name|isLogicalUri
+parameter_list|(
+name|Configuration
+name|conf
+parameter_list|,
+name|URI
+name|nameNodeUri
+parameter_list|)
+block|{
+name|String
+name|host
+init|=
+name|nameNodeUri
+operator|.
+name|getHost
+argument_list|()
+decl_stmt|;
+comment|// A logical name must be one of the service IDs.
+return|return
+name|DFSUtil
+operator|.
+name|getNameServiceIds
+argument_list|(
+name|conf
+argument_list|)
+operator|.
+name|contains
+argument_list|(
+name|host
+argument_list|)
+return|;
+block|}
+comment|/**    * Check whether the client has a failover proxy provider configured    * for the namenode/nameservice.    *    * @param conf Configuration    * @param nameNodeUri The URI of namenode    * @return true if failover is configured.    */
+DECL|method|isClientFailoverConfigured ( Configuration conf, URI nameNodeUri)
+specifier|public
+specifier|static
+name|boolean
+name|isClientFailoverConfigured
 parameter_list|(
 name|Configuration
 name|conf
@@ -1100,6 +1171,64 @@ name|configKey
 argument_list|)
 operator|!=
 literal|null
+return|;
+block|}
+comment|/**    * Check whether logical URI is needed for the namenode and    * the corresponding failover proxy provider in the config.    *    * @param conf Configuration    * @param nameNodeUri The URI of namenode    * @return true if logical URI is needed. false, if not needed.    * @throws IOException most likely due to misconfiguration.    */
+DECL|method|useLogicalUri (Configuration conf, URI nameNodeUri)
+specifier|public
+specifier|static
+name|boolean
+name|useLogicalUri
+parameter_list|(
+name|Configuration
+name|conf
+parameter_list|,
+name|URI
+name|nameNodeUri
+parameter_list|)
+throws|throws
+name|IOException
+block|{
+comment|// Create the proxy provider. Actual proxy is not created.
+name|AbstractNNFailoverProxyProvider
+argument_list|<
+name|ClientProtocol
+argument_list|>
+name|provider
+init|=
+name|NameNodeProxies
+operator|.
+name|createFailoverProxyProvider
+argument_list|(
+name|conf
+argument_list|,
+name|nameNodeUri
+argument_list|,
+name|ClientProtocol
+operator|.
+name|class
+argument_list|,
+literal|false
+argument_list|)
+decl_stmt|;
+comment|// No need to use logical URI since failover is not configured.
+if|if
+condition|(
+name|provider
+operator|==
+literal|null
+condition|)
+block|{
+return|return
+literal|false
+return|;
+block|}
+comment|// Check whether the failover proxy provider uses logical URI.
+return|return
+name|provider
+operator|.
+name|useLogicalURI
+argument_list|()
 return|;
 block|}
 comment|/**    * Parse the file system URI out of the provided token.    */

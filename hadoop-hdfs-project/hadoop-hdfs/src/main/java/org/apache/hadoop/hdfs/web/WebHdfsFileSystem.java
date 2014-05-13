@@ -1545,6 +1545,22 @@ name|isHA
 init|=
 name|HAUtil
 operator|.
+name|isClientFailoverConfigured
+argument_list|(
+name|conf
+argument_list|,
+name|this
+operator|.
+name|uri
+argument_list|)
+decl_stmt|;
+name|boolean
+name|isLogicalUri
+init|=
+name|isHA
+operator|&&
+name|HAUtil
+operator|.
 name|isLogicalUri
 argument_list|(
 name|conf
@@ -1554,13 +1570,14 @@ operator|.
 name|uri
 argument_list|)
 decl_stmt|;
-comment|// In non-HA case, the code needs to call getCanonicalUri() in order to
-comment|// handle the case where no port is specified in the URI
+comment|// In non-HA or non-logical URI case, the code needs to call
+comment|// getCanonicalUri() in order to handle the case where no port is
+comment|// specified in the URI
 name|this
 operator|.
 name|tokenServiceName
 operator|=
-name|isHA
+name|isLogicalUri
 condition|?
 name|HAUtil
 operator|.
@@ -6545,7 +6562,7 @@ name|m
 argument_list|)
 return|;
 block|}
-comment|/**    * Resolve an HDFS URL into real INetSocketAddress. It works like a DNS    * resolver when the URL points to an non-HA cluster. When the URL points to    * an HA cluster, the resolver further resolves the logical name (i.e., the    * authority in the URL) into real namenode addresses.    */
+comment|/**    * Resolve an HDFS URL into real INetSocketAddress. It works like a DNS    * resolver when the URL points to an non-HA cluster. When the URL points to    * an HA cluster with its logical name, the resolver further resolves the    * logical name(i.e., the authority in the URL) into real namenode addresses.    */
 DECL|method|resolveNNAddr ()
 specifier|private
 name|InetSocketAddress

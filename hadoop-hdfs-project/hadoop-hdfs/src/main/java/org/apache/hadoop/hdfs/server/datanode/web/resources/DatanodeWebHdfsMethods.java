@@ -1201,7 +1201,7 @@ name|nnId
 argument_list|)
 decl_stmt|;
 name|boolean
-name|isHA
+name|isLogical
 init|=
 name|HAUtil
 operator|.
@@ -1214,7 +1214,7 @@ argument_list|)
 decl_stmt|;
 if|if
 condition|(
-name|isHA
+name|isLogical
 condition|)
 block|{
 name|token
