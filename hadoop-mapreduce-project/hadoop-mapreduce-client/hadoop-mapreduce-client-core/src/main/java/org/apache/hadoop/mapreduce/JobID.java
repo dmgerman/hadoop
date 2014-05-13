@@ -132,7 +132,7 @@ name|ID
 argument_list|>
 block|{
 DECL|field|JOB
-specifier|protected
+specifier|public
 specifier|static
 specifier|final
 name|String
