@@ -1878,6 +1878,25 @@ name|DFS_NAMENODE_PATH_BASED_CACHE_REFRESH_INTERVAL_MS_DEFAULT
 init|=
 literal|30000L
 decl_stmt|;
+comment|/** Pending period of block deletion since NameNode startup */
+DECL|field|DFS_NAMENODE_STARTUP_DELAY_BLOCK_DELETION_MS_KEY
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|DFS_NAMENODE_STARTUP_DELAY_BLOCK_DELETION_MS_KEY
+init|=
+literal|"dfs.namenode.startup.delay.block.deletion.ms"
+decl_stmt|;
+DECL|field|DFS_NAMENODE_STARTUP_DELAY_BLOCK_DELETION_MS_DEFAULT
+specifier|public
+specifier|static
+specifier|final
+name|long
+name|DFS_NAMENODE_STARTUP_DELAY_BLOCK_DELETION_MS_DEFAULT
+init|=
+literal|0L
+decl_stmt|;
 comment|// Whether to enable datanode's stale state detection and usage for reads
 DECL|field|DFS_NAMENODE_AVOID_STALE_DATANODE_FOR_READ_KEY
 specifier|public
