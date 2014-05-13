@@ -730,7 +730,7 @@ argument_list|()
 operator|.
 name|contains
 argument_list|(
-literal|"key1 has NOT been created."
+literal|"key1 has not been created."
 argument_list|)
 argument_list|)
 expr_stmt|;
@@ -814,7 +814,7 @@ argument_list|()
 operator|.
 name|contains
 argument_list|(
-literal|"key1 has NOT been created."
+literal|"key1 has not been created."
 argument_list|)
 argument_list|)
 expr_stmt|;

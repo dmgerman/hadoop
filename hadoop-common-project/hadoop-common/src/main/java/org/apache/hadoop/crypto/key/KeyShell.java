@@ -70,26 +70,6 @@ end_import
 
 begin_import
 import|import
-name|java
-operator|.
-name|util
-operator|.
-name|Map
-import|;
-end_import
-
-begin_import
-import|import
-name|javax
-operator|.
-name|crypto
-operator|.
-name|KeyGenerator
-import|;
-end_import
-
-begin_import
-import|import
 name|org
 operator|.
 name|apache
@@ -411,6 +391,19 @@ operator|++
 control|)
 block|{
 comment|// parse command line
+name|boolean
+name|moreTokens
+init|=
+operator|(
+name|i
+operator|<
+name|args
+operator|.
+name|length
+operator|-
+literal|1
+operator|)
+decl_stmt|;
 if|if
 condition|(
 name|args
@@ -427,12 +420,22 @@ block|{
 name|String
 name|keyName
 init|=
+literal|"--help"
+decl_stmt|;
+if|if
+condition|(
+name|moreTokens
+condition|)
+block|{
+name|keyName
+operator|=
 name|args
 index|[
 operator|++
 name|i
 index|]
-decl_stmt|;
+expr_stmt|;
+block|}
 name|command
 operator|=
 operator|new
@@ -443,11 +446,11 @@ argument_list|)
 expr_stmt|;
 if|if
 condition|(
-name|keyName
+literal|"--help"
 operator|.
 name|equals
 argument_list|(
-literal|"--help"
+name|keyName
 argument_list|)
 condition|)
 block|{
@@ -477,12 +480,22 @@ block|{
 name|String
 name|keyName
 init|=
+literal|"--help"
+decl_stmt|;
+if|if
+condition|(
+name|moreTokens
+condition|)
+block|{
+name|keyName
+operator|=
 name|args
 index|[
 operator|++
 name|i
 index|]
-decl_stmt|;
+expr_stmt|;
+block|}
 name|command
 operator|=
 operator|new
@@ -493,11 +506,11 @@ argument_list|)
 expr_stmt|;
 if|if
 condition|(
-name|keyName
+literal|"--help"
 operator|.
 name|equals
 argument_list|(
-literal|"--help"
+name|keyName
 argument_list|)
 condition|)
 block|{
@@ -527,12 +540,22 @@ block|{
 name|String
 name|keyName
 init|=
+literal|"--help"
+decl_stmt|;
+if|if
+condition|(
+name|moreTokens
+condition|)
+block|{
+name|keyName
+operator|=
 name|args
 index|[
 operator|++
 name|i
 index|]
-decl_stmt|;
+expr_stmt|;
+block|}
 name|command
 operator|=
 operator|new
@@ -543,11 +566,11 @@ argument_list|)
 expr_stmt|;
 if|if
 condition|(
-name|keyName
+literal|"--help"
 operator|.
 name|equals
 argument_list|(
-literal|"--help"
+name|keyName
 argument_list|)
 condition|)
 block|{
@@ -563,14 +586,14 @@ block|}
 elseif|else
 if|if
 condition|(
+literal|"list"
+operator|.
+name|equals
+argument_list|(
 name|args
 index|[
 name|i
 index|]
-operator|.
-name|equals
-argument_list|(
-literal|"list"
 argument_list|)
 condition|)
 block|{
@@ -584,15 +607,17 @@ block|}
 elseif|else
 if|if
 condition|(
+literal|"--size"
+operator|.
+name|equals
+argument_list|(
 name|args
 index|[
 name|i
 index|]
-operator|.
-name|equals
-argument_list|(
-literal|"--size"
 argument_list|)
+operator|&&
+name|moreTokens
 condition|)
 block|{
 name|getConf
@@ -615,15 +640,17 @@ block|}
 elseif|else
 if|if
 condition|(
+literal|"--cipher"
+operator|.
+name|equals
+argument_list|(
 name|args
 index|[
 name|i
 index|]
-operator|.
-name|equals
-argument_list|(
-literal|"--cipher"
 argument_list|)
+operator|&&
+name|moreTokens
 condition|)
 block|{
 name|getConf
@@ -646,15 +673,17 @@ block|}
 elseif|else
 if|if
 condition|(
+literal|"--provider"
+operator|.
+name|equals
+argument_list|(
 name|args
 index|[
 name|i
 index|]
-operator|.
-name|equals
-argument_list|(
-literal|"--provider"
 argument_list|)
+operator|&&
+name|moreTokens
 condition|)
 block|{
 name|userSuppliedProvider
@@ -681,14 +710,14 @@ block|}
 elseif|else
 if|if
 condition|(
+literal|"--metadata"
+operator|.
+name|equals
+argument_list|(
 name|args
 index|[
 name|i
 index|]
-operator|.
-name|equals
-argument_list|(
-literal|"--metadata"
 argument_list|)
 condition|)
 block|{
@@ -706,25 +735,25 @@ block|}
 elseif|else
 if|if
 condition|(
+literal|"-i"
+operator|.
+name|equals
+argument_list|(
 name|args
 index|[
 name|i
 index|]
-operator|.
-name|equals
-argument_list|(
-literal|"-i"
 argument_list|)
 operator|||
 operator|(
+literal|"--interactive"
+operator|.
+name|equals
+argument_list|(
 name|args
 index|[
 name|i
 index|]
-operator|.
-name|equals
-argument_list|(
-literal|"--interactive"
 argument_list|)
 operator|)
 condition|)
@@ -737,14 +766,14 @@ block|}
 elseif|else
 if|if
 condition|(
+literal|"--help"
+operator|.
+name|equals
+argument_list|(
 name|args
 index|[
 name|i
 index|]
-operator|.
-name|equals
-argument_list|(
-literal|"--help"
 argument_list|)
 condition|)
 block|{
@@ -775,6 +804,21 @@ operator|-
 literal|1
 return|;
 block|}
+block|}
+if|if
+condition|(
+name|command
+operator|==
+literal|null
+condition|)
+block|{
+name|printKeyShellUsage
+argument_list|()
+expr_stmt|;
+return|return
+operator|-
+literal|1
+return|;
 block|}
 return|return
 literal|0
@@ -1037,12 +1081,6 @@ operator|.
 name|println
 argument_list|(
 name|provider
-operator|.
-name|getClass
-argument_list|()
-operator|.
-name|getName
-argument_list|()
 operator|+
 literal|" has been updated."
 argument_list|)
@@ -1102,7 +1140,7 @@ specifier|final
 name|String
 name|USAGE
 init|=
-literal|"list [--provider] [--metadata] [--help]"
+literal|"list [--provider<provider>] [--metadata] [--help]"
 decl_stmt|;
 DECL|field|DESC
 specifier|public
@@ -1111,13 +1149,13 @@ specifier|final
 name|String
 name|DESC
 init|=
-literal|"The list subcommand displays the keynames contained within \n"
+literal|"The list subcommand displays the keynames contained within\n"
 operator|+
-literal|"a particular provider - as configured in core-site.xml or "
+literal|"a particular provider as configured in core-site.xml or\n"
 operator|+
-literal|"indicated\nthrough the --provider argument.\n"
+literal|"specified with the --provider argument. --metadata displays\n"
 operator|+
-literal|"If the --metadata option is used, the keys metadata will be printed"
+literal|"the metadata."
 decl_stmt|;
 DECL|field|metadata
 specifier|private
@@ -1155,11 +1193,11 @@ name|println
 argument_list|(
 literal|"There are no non-transient KeyProviders configured.\n"
 operator|+
-literal|"Consider using the --provider option to indicate the provider\n"
+literal|"Use the --provider option to specify a provider. If you\n"
 operator|+
-literal|"to use. If you want to list a transient provider then you\n"
+literal|"want to list a transient provider then you must use the\n"
 operator|+
-literal|"you MUST use the --provider argument."
+literal|"--provider argument."
 argument_list|)
 expr_stmt|;
 name|rc
@@ -1193,6 +1231,7 @@ name|IOException
 block|{
 try|try
 block|{
+specifier|final
 name|List
 argument_list|<
 name|String
@@ -1211,9 +1250,6 @@ argument_list|(
 literal|"Listing keys for KeyProvider: "
 operator|+
 name|provider
-operator|.
-name|toString
-argument_list|()
 argument_list|)
 expr_stmt|;
 if|if
@@ -1221,6 +1257,7 @@ condition|(
 name|metadata
 condition|)
 block|{
+specifier|final
 name|Metadata
 index|[]
 name|meta
@@ -1315,9 +1352,6 @@ argument_list|(
 literal|"Cannot list keys for KeyProvider: "
 operator|+
 name|provider
-operator|.
-name|toString
-argument_list|()
 operator|+
 literal|": "
 operator|+
@@ -1363,7 +1397,7 @@ specifier|final
 name|String
 name|USAGE
 init|=
-literal|"roll<keyname> [--provider] [--help]"
+literal|"roll<keyname> [--provider<provider>] [--help]"
 decl_stmt|;
 DECL|field|DESC
 specifier|public
@@ -1372,11 +1406,9 @@ specifier|final
 name|String
 name|DESC
 init|=
-literal|"The roll subcommand creates a new version of the key specified\n"
+literal|"The roll subcommand creates a new version for the specified key\n"
 operator|+
-literal|"through the<keyname> argument within the provider indicated using\n"
-operator|+
-literal|"the --provider argument"
+literal|"within the provider indicated using the --provider argument\n"
 decl_stmt|;
 DECL|field|keyName
 name|String
@@ -1426,13 +1458,11 @@ name|out
 operator|.
 name|println
 argument_list|(
-literal|"There are no valid KeyProviders configured.\n"
+literal|"There are no valid KeyProviders configured. The key\n"
 operator|+
-literal|"Key will not be rolled.\n"
+literal|"has not been rolled. Use the --provider option to specify\n"
 operator|+
-literal|"Consider using the --provider option to indicate the provider"
-operator|+
-literal|" to use."
+literal|"a provider."
 argument_list|)
 expr_stmt|;
 name|rc
@@ -1451,9 +1481,9 @@ name|out
 operator|.
 name|println
 argument_list|(
-literal|"There is no keyName specified. Please provide the"
+literal|"Please provide a<keyname>.\n"
 operator|+
-literal|"mandatory<keyname>. See the usage description with --help."
+literal|"See the usage description by using --help."
 argument_list|)
 expr_stmt|;
 name|rc
@@ -1477,16 +1507,6 @@ name|IOException
 block|{
 try|try
 block|{
-name|Metadata
-name|md
-init|=
-name|provider
-operator|.
-name|getMetadata
-argument_list|(
-name|keyName
-argument_list|)
-decl_stmt|;
 name|warnIfTransientProvider
 argument_list|()
 expr_stmt|;
@@ -1497,11 +1517,8 @@ argument_list|(
 literal|"Rolling key version from KeyProvider: "
 operator|+
 name|provider
-operator|.
-name|toString
-argument_list|()
 operator|+
-literal|" for key name: "
+literal|"\n  for key name: "
 operator|+
 name|keyName
 argument_list|)
@@ -1550,9 +1567,6 @@ operator|+
 literal|" within KeyProvider: "
 operator|+
 name|provider
-operator|.
-name|toString
-argument_list|()
 argument_list|)
 expr_stmt|;
 throw|throw
@@ -1577,9 +1591,6 @@ operator|+
 literal|" within KeyProvider: "
 operator|+
 name|provider
-operator|.
-name|toString
-argument_list|()
 argument_list|)
 expr_stmt|;
 throw|throw
@@ -1618,7 +1629,7 @@ specifier|final
 name|String
 name|USAGE
 init|=
-literal|"delete<keyname> [--provider] [--help]"
+literal|"delete<keyname> [--provider<provider>] [--help]"
 decl_stmt|;
 DECL|field|DESC
 specifier|public
@@ -1627,11 +1638,11 @@ specifier|final
 name|String
 name|DESC
 init|=
-literal|"The delete subcommand deletes all of the versions of the key\n"
+literal|"The delete subcommand deletes all versions of the key\n"
 operator|+
-literal|"specified as the<keyname> argument from within the provider\n"
+literal|"specified by the<keyname> argument from within the\n"
 operator|+
-literal|"indicated through the --provider argument"
+literal|"provider specified --provider."
 decl_stmt|;
 DECL|field|keyName
 name|String
@@ -1684,13 +1695,9 @@ name|out
 operator|.
 name|println
 argument_list|(
-literal|"There are no valid KeyProviders configured.\n"
+literal|"There are no valid KeyProviders configured. Nothing\n"
 operator|+
-literal|"Nothing will be deleted.\n"
-operator|+
-literal|"Consider using the --provider option to indicate the provider"
-operator|+
-literal|" to use."
+literal|"was deleted. Use the --provider option to specify a provider."
 argument_list|)
 expr_stmt|;
 return|return
@@ -1708,9 +1715,9 @@ name|out
 operator|.
 name|println
 argument_list|(
-literal|"There is no keyName specified. Please provide the"
+literal|"There is no keyName specified. Please specify a "
 operator|+
-literal|"mandatory<keyname>. See the usage description with --help."
+literal|"<keyname>. See the usage description with --help."
 argument_list|)
 expr_stmt|;
 return|return
@@ -1732,16 +1739,13 @@ name|confirmPrompt
 argument_list|(
 literal|"You are about to DELETE all versions of "
 operator|+
-literal|"the key: "
+literal|" key: "
 operator|+
 name|keyName
 operator|+
 literal|" from KeyProvider "
 operator|+
 name|provider
-operator|.
-name|toString
-argument_list|()
 operator|+
 literal|". Continue?:"
 argument_list|)
@@ -1814,9 +1818,6 @@ operator|+
 literal|" from KeyProvider: "
 operator|+
 name|provider
-operator|.
-name|toString
-argument_list|()
 argument_list|)
 expr_stmt|;
 if|if
@@ -1863,7 +1864,7 @@ name|println
 argument_list|(
 name|keyName
 operator|+
-literal|"has NOT been deleted."
+literal|" has not been deleted."
 argument_list|)
 expr_stmt|;
 throw|throw
@@ -1903,9 +1904,9 @@ specifier|final
 name|String
 name|USAGE
 init|=
-literal|"create<keyname> [--cipher] "
+literal|"create<keyname> [--cipher<cipher>] [--size<size>]\n"
 operator|+
-literal|"[--size] [--provider] [--help]"
+literal|"                     [--provider<provider>] [--help]"
 decl_stmt|;
 DECL|field|DESC
 specifier|public
@@ -1916,17 +1917,15 @@ name|DESC
 init|=
 literal|"The create subcommand creates a new key for the name specified\n"
 operator|+
-literal|"as the<keyname> argument within the provider indicated through\n"
+literal|"by the<keyname> argument within the provider specified by the\n"
 operator|+
-literal|"the --provider argument. You may also indicate the specific\n"
+literal|"--provider argument. You may specify a cipher with the --cipher\n"
 operator|+
-literal|"cipher through the --cipher argument. The default for cipher is\n"
+literal|"argument. The default cipher is currently \"AES/CTR/NoPadding\".\n"
 operator|+
-literal|"currently \"AES/CTR/NoPadding\". The default keysize is \"256\".\n"
+literal|"The default keysize is 256. You may specify the requested key\n"
 operator|+
-literal|"You may also indicate the requested key length through the --size\n"
-operator|+
-literal|"argument."
+literal|"length using the --size argument.\n"
 decl_stmt|;
 DECL|field|keyName
 name|String
@@ -1976,13 +1975,11 @@ name|out
 operator|.
 name|println
 argument_list|(
-literal|"There are no valid KeyProviders configured.\nKey"
+literal|"There are no valid KeyProviders configured. No key\n"
 operator|+
-literal|" will not be created.\n"
+literal|" was created. You can use the --provider option to specify\n"
 operator|+
-literal|"Consider using the --provider option to indicate the provider"
-operator|+
-literal|" to use."
+literal|" a provider to use."
 argument_list|)
 expr_stmt|;
 name|rc
@@ -2001,9 +1998,9 @@ name|out
 operator|.
 name|println
 argument_list|(
-literal|"There is no keyName specified. Please provide the"
+literal|"Please provide a<keyname>. See the usage description"
 operator|+
-literal|"mandatory<keyname>. See the usage description with --help."
+literal|" with --help."
 argument_list|)
 expr_stmt|;
 name|rc
@@ -2080,7 +2077,7 @@ name|println
 argument_list|(
 name|keyName
 operator|+
-literal|" has NOT been created. "
+literal|" has not been created. "
 operator|+
 name|e
 operator|.
@@ -2104,7 +2101,7 @@ name|println
 argument_list|(
 name|keyName
 operator|+
-literal|" has NOT been created. "
+literal|" has not been created. "
 operator|+
 name|e
 operator|.
@@ -2128,7 +2125,7 @@ name|println
 argument_list|(
 name|keyName
 operator|+
-literal|" has NOT been created. "
+literal|" has not been created. "
 operator|+
 name|e
 operator|.
