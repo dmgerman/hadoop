@@ -386,10 +386,7 @@ name|getDoOutput
 parameter_list|()
 block|{
 return|return
-name|op
-operator|.
-name|getDoOutput
-argument_list|()
+literal|false
 return|;
 block|}
 annotation|@
