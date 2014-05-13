@@ -899,6 +899,7 @@ block|}
 annotation|@
 name|VisibleForTesting
 DECL|method|isSystemClass (String name, List<String> systemClasses)
+specifier|public
 specifier|static
 name|boolean
 name|isSystemClass

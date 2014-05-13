@@ -166,6 +166,20 @@ end_import
 
 begin_import
 import|import
+name|com
+operator|.
+name|google
+operator|.
+name|common
+operator|.
+name|annotations
+operator|.
+name|VisibleForTesting
+import|;
+end_import
+
+begin_import
+import|import
 name|org
 operator|.
 name|apache
@@ -2249,13 +2263,9 @@ name|String
 index|[]
 name|systemClasses
 init|=
-name|conf
-operator|.
-name|getStrings
+name|getSystemClasses
 argument_list|(
-name|MRJobConfig
-operator|.
-name|MAPREDUCE_JOB_CLASSLOADER_SYSTEM_CLASSES
+name|conf
 argument_list|)
 decl_stmt|;
 name|ClassLoader
@@ -2295,6 +2305,29 @@ expr_stmt|;
 block|}
 block|}
 block|}
+block|}
+annotation|@
+name|VisibleForTesting
+DECL|method|getSystemClasses (Configuration conf)
+specifier|static
+name|String
+index|[]
+name|getSystemClasses
+parameter_list|(
+name|Configuration
+name|conf
+parameter_list|)
+block|{
+return|return
+name|conf
+operator|.
+name|getTrimmedStrings
+argument_list|(
+name|MRJobConfig
+operator|.
+name|MAPREDUCE_JOB_CLASSLOADER_SYSTEM_CLASSES
+argument_list|)
+return|;
 block|}
 DECL|method|createJobClassLoader (final String appClasspath, final String[] systemClasses)
 specifier|private
