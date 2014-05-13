@@ -917,9 +917,9 @@ operator|>
 literal|0
 condition|)
 block|{
-name|ThreadUtil
+name|Thread
 operator|.
-name|sleepAtLeastIgnoreInterrupts
+name|sleep
 argument_list|(
 name|action
 operator|.
