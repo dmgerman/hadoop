@@ -2614,6 +2614,15 @@ operator|.
 name|getReconnectedNode
 argument_list|()
 decl_stmt|;
+name|rmNode
+operator|.
+name|nodeManagerVersion
+operator|=
+name|newNode
+operator|.
+name|getNodeManagerVersion
+argument_list|()
+expr_stmt|;
 if|if
 condition|(
 name|rmNode
