@@ -444,6 +444,14 @@ block|{
 name|i
 operator|=
 name|j
+operator|>
+literal|0
+condition|?
+name|j
+operator|+
+literal|1
+else|:
+literal|0
 expr_stmt|;
 name|j
 operator|=
@@ -454,8 +462,6 @@ argument_list|(
 literal|','
 argument_list|,
 name|i
-operator|+
-literal|1
 argument_list|)
 expr_stmt|;
 specifier|final
