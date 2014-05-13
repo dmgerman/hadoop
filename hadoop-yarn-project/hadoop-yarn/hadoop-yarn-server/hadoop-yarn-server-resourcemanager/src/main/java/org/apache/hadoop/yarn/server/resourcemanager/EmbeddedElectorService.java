@@ -1018,6 +1018,27 @@ return|return
 literal|true
 return|;
 block|}
+DECL|method|resetLeaderElection ()
+specifier|public
+name|void
+name|resetLeaderElection
+parameter_list|()
+block|{
+name|elector
+operator|.
+name|quitElection
+argument_list|(
+literal|false
+argument_list|)
+expr_stmt|;
+name|elector
+operator|.
+name|joinElection
+argument_list|(
+name|localActiveNodeInfo
+argument_list|)
+expr_stmt|;
+block|}
 block|}
 end_class
 

@@ -3791,6 +3791,13 @@ argument_list|(
 literal|true
 argument_list|)
 expr_stmt|;
+name|rm
+operator|.
+name|adminService
+operator|.
+name|resetLeaderElection
+argument_list|()
+expr_stmt|;
 return|return;
 block|}
 catch|catch
