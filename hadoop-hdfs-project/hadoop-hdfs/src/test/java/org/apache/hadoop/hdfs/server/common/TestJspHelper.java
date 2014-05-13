@@ -236,6 +236,22 @@ name|security
 operator|.
 name|authorize
 operator|.
+name|ProxyServers
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|security
+operator|.
+name|authorize
+operator|.
 name|ProxyUsers
 import|;
 end_import
@@ -413,13 +429,6 @@ init|=
 operator|new
 name|HdfsConfiguration
 argument_list|()
-decl_stmt|;
-DECL|field|jspWriterOutput
-specifier|private
-name|String
-name|jspWriterOutput
-init|=
-literal|""
 decl_stmt|;
 comment|// allow user with TGT to run tests
 annotation|@
@@ -2924,7 +2933,7 @@ name|conf
 operator|.
 name|set
 argument_list|(
-name|ProxyUsers
+name|ProxyServers
 operator|.
 name|CONF_HADOOP_PROXYSERVERS
 argument_list|,

@@ -174,9 +174,7 @@ name|hadoop
 operator|.
 name|fs
 operator|.
-name|permission
-operator|.
-name|FsPermission
+name|Path
 import|;
 end_import
 
@@ -190,7 +188,9 @@ name|hadoop
 operator|.
 name|fs
 operator|.
-name|Path
+name|permission
+operator|.
+name|FsPermission
 import|;
 end_import
 
@@ -281,6 +281,22 @@ operator|.
 name|authorize
 operator|.
 name|ProxyUsers
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|security
+operator|.
+name|authorize
+operator|.
+name|ProxyServers
 import|;
 end_import
 
@@ -730,7 +746,7 @@ name|conf
 operator|.
 name|set
 argument_list|(
-name|ProxyUsers
+name|ProxyServers
 operator|.
 name|CONF_HADOOP_PROXYSERVERS
 argument_list|,
