@@ -707,7 +707,7 @@ name|currentPeriodStart
 init|=
 name|Time
 operator|.
-name|now
+name|monotonicNow
 argument_list|()
 decl_stmt|;
 DECL|field|bytesLeft
@@ -1453,7 +1453,7 @@ decl_stmt|;
 return|return
 name|Time
 operator|.
-name|now
+name|monotonicNow
 argument_list|()
 operator|-
 name|scanPeriod
@@ -1712,7 +1712,7 @@ name|now
 init|=
 name|Time
 operator|.
-name|now
+name|monotonicNow
 argument_list|()
 decl_stmt|;
 name|info
@@ -2074,14 +2074,21 @@ block|{
 name|long
 name|timeLeft
 init|=
+name|Math
+operator|.
+name|max
+argument_list|(
+literal|1L
+argument_list|,
 name|currentPeriodStart
 operator|+
 name|scanPeriod
 operator|-
 name|Time
 operator|.
-name|now
+name|monotonicNow
 argument_list|()
+argument_list|)
 decl_stmt|;
 name|long
 name|bw
@@ -2090,9 +2097,11 @@ name|Math
 operator|.
 name|max
 argument_list|(
+operator|(
 name|bytesLeft
 operator|*
 literal|1000
+operator|)
 operator|/
 name|timeLeft
 argument_list|,
@@ -2596,7 +2605,7 @@ name|now
 init|=
 name|Time
 operator|.
-name|now
+name|monotonicNow
 argument_list|()
 decl_stmt|;
 name|RollingLogs
@@ -2870,7 +2879,7 @@ name|lastScanTime
 init|=
 name|Time
 operator|.
-name|now
+name|monotonicNow
 argument_list|()
 operator|-
 name|scanPeriod
@@ -2989,7 +2998,7 @@ name|currentPeriodStart
 operator|=
 name|Time
 operator|.
-name|now
+name|monotonicNow
 argument_list|()
 expr_stmt|;
 name|isNewPeriod
@@ -3012,7 +3021,7 @@ literal|0
 operator|&&
 name|Time
 operator|.
-name|now
+name|monotonicNow
 argument_list|()
 operator|<
 name|currentPeriodStart
@@ -3048,7 +3057,7 @@ literal|", now="
 operator|+
 name|Time
 operator|.
-name|now
+name|monotonicNow
 argument_list|()
 operator|+
 literal|" "
@@ -3128,7 +3137,7 @@ name|set
 argument_list|(
 name|Time
 operator|.
-name|now
+name|monotonicNow
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -3212,7 +3221,7 @@ name|now
 init|=
 name|Time
 operator|.
-name|now
+name|monotonicNow
 argument_list|()
 decl_stmt|;
 synchronized|synchronized
@@ -3479,7 +3488,7 @@ name|now
 init|=
 name|Time
 operator|.
-name|now
+name|monotonicNow
 argument_list|()
 decl_stmt|;
 name|Date

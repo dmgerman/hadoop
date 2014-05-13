@@ -552,7 +552,7 @@ name|lastWarnTime
 init|=
 name|Time
 operator|.
-name|now
+name|monotonicNow
 argument_list|()
 decl_stmt|;
 if|if
@@ -600,7 +600,7 @@ name|MAX_VALUE
 else|:
 name|Time
 operator|.
-name|now
+name|monotonicNow
 argument_list|()
 operator|+
 name|timeout
@@ -618,7 +618,7 @@ name|failtime
 operator|<
 name|Time
 operator|.
-name|now
+name|monotonicNow
 argument_list|()
 condition|)
 block|{
@@ -765,7 +765,7 @@ name|now
 init|=
 name|Time
 operator|.
-name|now
+name|monotonicNow
 argument_list|()
 decl_stmt|;
 if|if
@@ -834,7 +834,7 @@ name|startTime
 init|=
 name|Time
 operator|.
-name|now
+name|monotonicNow
 argument_list|()
 decl_stmt|;
 name|Configuration
@@ -1984,7 +1984,7 @@ name|startTime
 init|=
 name|Time
 operator|.
-name|now
+name|monotonicNow
 argument_list|()
 decl_stmt|;
 name|MiniDFSCluster
@@ -2418,7 +2418,7 @@ name|failtime
 init|=
 name|Time
 operator|.
-name|now
+name|monotonicNow
 argument_list|()
 operator|+
 operator|(
@@ -2453,7 +2453,7 @@ name|failtime
 operator|<
 name|Time
 operator|.
-name|now
+name|monotonicNow
 argument_list|()
 condition|)
 block|{
@@ -2708,7 +2708,7 @@ name|startTime
 init|=
 name|Time
 operator|.
-name|now
+name|monotonicNow
 argument_list|()
 decl_stmt|;
 name|MiniDFSCluster
