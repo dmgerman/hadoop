@@ -1639,6 +1639,13 @@ operator|.
 name|class
 argument_list|)
 decl_stmt|;
+DECL|field|isDecommissioned
+specifier|private
+name|boolean
+name|isDecommissioned
+init|=
+literal|false
+decl_stmt|;
 DECL|method|NMContext (NMContainerTokenSecretManager containerTokenSecretManager, NMTokenSecretManagerInNM nmTokenSecretManager, LocalDirsHandlerService dirsHandler, ApplicationACLsManager aclsManager)
 specifier|public
 name|NMContext
@@ -1908,6 +1915,36 @@ block|{
 return|return
 name|aclsManager
 return|;
+block|}
+annotation|@
+name|Override
+DECL|method|getDecommissioned ()
+specifier|public
+name|boolean
+name|getDecommissioned
+parameter_list|()
+block|{
+return|return
+name|isDecommissioned
+return|;
+block|}
+annotation|@
+name|Override
+DECL|method|setDecommissioned (boolean isDecommissioned)
+specifier|public
+name|void
+name|setDecommissioned
+parameter_list|(
+name|boolean
+name|isDecommissioned
+parameter_list|)
+block|{
+name|this
+operator|.
+name|isDecommissioned
+operator|=
+name|isDecommissioned
+expr_stmt|;
 block|}
 block|}
 comment|/**    * @return the node health checker    */

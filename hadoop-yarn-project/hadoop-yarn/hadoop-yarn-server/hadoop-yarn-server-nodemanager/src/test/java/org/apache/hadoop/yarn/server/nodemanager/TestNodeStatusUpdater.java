@@ -5575,6 +5575,19 @@ operator|<
 literal|1
 argument_list|)
 expr_stmt|;
+name|Assert
+operator|.
+name|assertTrue
+argument_list|(
+name|nm
+operator|.
+name|getNMContext
+argument_list|()
+operator|.
+name|getDecommissioned
+argument_list|()
+argument_list|)
+expr_stmt|;
 comment|// NM takes a while to reach the STOPPED state.
 name|waitCount
 operator|=

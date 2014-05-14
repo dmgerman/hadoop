@@ -2764,6 +2764,13 @@ name|getDiagnosticsMessage
 argument_list|()
 argument_list|)
 expr_stmt|;
+name|context
+operator|.
+name|setDecommissioned
+argument_list|(
+literal|true
+argument_list|)
+expr_stmt|;
 name|dispatcher
 operator|.
 name|getEventHandler
