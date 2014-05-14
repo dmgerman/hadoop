@@ -936,8 +936,11 @@ operator|!=
 literal|null
 operator|&&
 name|queueName
+operator|.
+name|length
+argument_list|()
 operator|!=
-literal|""
+literal|0
 condition|)
 block|{
 if|if
