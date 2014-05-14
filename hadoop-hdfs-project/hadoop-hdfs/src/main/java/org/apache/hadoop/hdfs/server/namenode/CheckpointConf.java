@@ -162,6 +162,13 @@ specifier|final
 name|int
 name|maxRetriesOnMergeError
 decl_stmt|;
+comment|/** The output dir for legacy OIV image */
+DECL|field|legacyOivImageDir
+specifier|private
+specifier|final
+name|String
+name|legacyOivImageDir
+decl_stmt|;
 DECL|method|CheckpointConf (Configuration conf)
 specifier|public
 name|CheckpointConf
@@ -212,6 +219,15 @@ argument_list|(
 name|DFS_NAMENODE_CHECKPOINT_MAX_RETRIES_KEY
 argument_list|,
 name|DFS_NAMENODE_CHECKPOINT_MAX_RETRIES_DEFAULT
+argument_list|)
+expr_stmt|;
+name|legacyOivImageDir
+operator|=
+name|conf
+operator|.
+name|get
+argument_list|(
+name|DFS_NAMENODE_LEGACY_OIV_IMAGE_DIR_KEY
 argument_list|)
 expr_stmt|;
 name|warnForDeprecatedConfigs
@@ -320,6 +336,16 @@ parameter_list|()
 block|{
 return|return
 name|maxRetriesOnMergeError
+return|;
+block|}
+DECL|method|getLegacyOivImageDir ()
+specifier|public
+name|String
+name|getLegacyOivImageDir
+parameter_list|()
+block|{
+return|return
+name|legacyOivImageDir
 return|;
 block|}
 block|}

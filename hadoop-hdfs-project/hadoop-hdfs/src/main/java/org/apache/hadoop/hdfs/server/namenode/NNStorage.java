@@ -589,7 +589,14 @@ name|EDITS_TMP
 argument_list|(
 literal|"edits_tmp"
 argument_list|)
+block|,
+DECL|enumConstant|IMAGE_LEGACY_OIV
+name|IMAGE_LEGACY_OIV
+argument_list|(
+literal|"fsimage_legacy_oiv"
+argument_list|)
 block|;
+comment|// For pre-PB format
 DECL|field|fileName
 specifier|private
 name|String
@@ -2873,6 +2880,27 @@ argument_list|(
 name|NameNodeFile
 operator|.
 name|IMAGE_ROLLBACK
+argument_list|,
+name|txid
+argument_list|)
+return|;
+block|}
+DECL|method|getLegacyOIVImageFileName (long txid)
+specifier|public
+specifier|static
+name|String
+name|getLegacyOIVImageFileName
+parameter_list|(
+name|long
+name|txid
+parameter_list|)
+block|{
+return|return
+name|getNameNodeFileName
+argument_list|(
+name|NameNodeFile
+operator|.
+name|IMAGE_LEGACY_OIV
 argument_list|,
 name|txid
 argument_list|)

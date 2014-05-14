@@ -3931,6 +3931,15 @@ name|DFS_NAMENODE_NAME_CACHE_THRESHOLD_DEFAULT
 init|=
 literal|10
 decl_stmt|;
+DECL|field|DFS_NAMENODE_LEGACY_OIV_IMAGE_DIR_KEY
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|DFS_NAMENODE_LEGACY_OIV_IMAGE_DIR_KEY
+init|=
+literal|"dfs.namenode.legacy-oiv-image.dir"
+decl_stmt|;
 DECL|field|DFS_NAMESERVICES
 specifier|public
 specifier|static
