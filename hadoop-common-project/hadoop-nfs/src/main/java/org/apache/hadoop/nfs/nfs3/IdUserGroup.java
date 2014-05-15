@@ -507,6 +507,45 @@ argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
+comment|/**    * uid and gid are defined as uint32 in linux. Some systems create    * (intended or unintended)<nfsnobody, 4294967294> kind of<name,Id>    * mapping, where 4294967294 is 2**32-2 as unsigned int32. As an example,    *   https://bugzilla.redhat.com/show_bug.cgi?id=511876.    * Because user or group id are treated as Integer (signed integer or int32)    * here, the number 4294967294 is out of range. The solution is to convert    * uint32 to int32, so to map the out-of-range ID to the negative side of    * Integer, e.g. 4294967294 maps to -2 and 4294967295 maps to -1.    */
+DECL|method|parseId (final String idStr)
+specifier|private
+specifier|static
+name|Integer
+name|parseId
+parameter_list|(
+specifier|final
+name|String
+name|idStr
+parameter_list|)
+block|{
+name|Long
+name|longVal
+init|=
+name|Long
+operator|.
+name|parseLong
+argument_list|(
+name|idStr
+argument_list|)
+decl_stmt|;
+name|int
+name|intVal
+init|=
+name|longVal
+operator|.
+name|intValue
+argument_list|()
+decl_stmt|;
+return|return
+name|Integer
+operator|.
+name|valueOf
+argument_list|(
+name|intVal
+argument_list|)
+return|;
+block|}
 comment|/**    * Get the whole list of users and groups and save them in the maps.    * @throws IOException     */
 annotation|@
 name|VisibleForTesting
@@ -669,9 +708,7 @@ specifier|final
 name|Integer
 name|key
 init|=
-name|Integer
-operator|.
-name|valueOf
+name|parseId
 argument_list|(
 name|nameId
 index|[
