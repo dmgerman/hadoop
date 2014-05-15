@@ -1019,9 +1019,10 @@ name|EventHandler
 implements|implements
 name|Runnable
 block|{
+comment|// doneWithMaps and finishedSubMaps are accessed from only
+comment|// one thread. Therefore, no need to make them volatile.
 DECL|field|doneWithMaps
 specifier|private
-specifier|volatile
 name|boolean
 name|doneWithMaps
 init|=
@@ -1029,7 +1030,6 @@ literal|false
 decl_stmt|;
 DECL|field|finishedSubMaps
 specifier|private
-specifier|volatile
 name|int
 name|finishedSubMaps
 init|=
