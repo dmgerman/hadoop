@@ -277,7 +277,7 @@ specifier|static
 name|String
 name|usage
 init|=
-literal|"Usage: bin/hdfs oiv [OPTIONS] -i INPUTFILE -o OUTPUTFILE\n"
+literal|"Usage: bin/hdfs oiv_legacy [OPTIONS] -i INPUTFILE -o OUTPUTFILE\n"
 operator|+
 literal|"Offline Image Viewer\n"
 operator|+
