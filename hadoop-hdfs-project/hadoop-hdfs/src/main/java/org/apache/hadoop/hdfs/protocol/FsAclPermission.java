@@ -166,6 +166,45 @@ return|return
 name|aclBit
 return|;
 block|}
+annotation|@
+name|Override
+DECL|method|equals (Object o)
+specifier|public
+name|boolean
+name|equals
+parameter_list|(
+name|Object
+name|o
+parameter_list|)
+block|{
+comment|// This intentionally delegates to the base class.  This is only overridden
+comment|// to suppress a FindBugs warning.
+return|return
+name|super
+operator|.
+name|equals
+argument_list|(
+name|o
+argument_list|)
+return|;
+block|}
+annotation|@
+name|Override
+DECL|method|hashCode ()
+specifier|public
+name|int
+name|hashCode
+parameter_list|()
+block|{
+comment|// This intentionally delegates to the base class.  This is only overridden
+comment|// to suppress a FindBugs warning.
+return|return
+name|super
+operator|.
+name|hashCode
+argument_list|()
+return|;
+block|}
 block|}
 end_class
 
