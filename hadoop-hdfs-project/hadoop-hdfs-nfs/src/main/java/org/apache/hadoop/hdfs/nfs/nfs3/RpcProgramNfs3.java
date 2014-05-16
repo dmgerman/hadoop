@@ -1948,7 +1948,7 @@ specifier|final
 name|RpcCallCache
 name|rpcCallCache
 decl_stmt|;
-DECL|method|RpcProgramNfs3 (Configuration config, DatagramSocket registrationSocket)
+DECL|method|RpcProgramNfs3 (Configuration config, DatagramSocket registrationSocket, boolean allowInsecurePorts)
 specifier|public
 name|RpcProgramNfs3
 parameter_list|(
@@ -1957,6 +1957,9 @@ name|config
 parameter_list|,
 name|DatagramSocket
 name|registrationSocket
+parameter_list|,
+name|boolean
+name|allowInsecurePorts
 parameter_list|)
 throws|throws
 name|IOException
@@ -1993,6 +1996,8 @@ operator|.
 name|VERSION
 argument_list|,
 name|registrationSocket
+argument_list|,
+name|allowInsecurePorts
 argument_list|)
 expr_stmt|;
 name|config

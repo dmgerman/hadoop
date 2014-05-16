@@ -4894,6 +4894,24 @@ init|=
 literal|40
 decl_stmt|;
 comment|// Currently unassigned.
+DECL|field|DFS_NFS_ALLOW_INSECURE_PORTS_KEY
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|DFS_NFS_ALLOW_INSECURE_PORTS_KEY
+init|=
+literal|"dfs.nfs.allow.insecure.ports"
+decl_stmt|;
+DECL|field|DFS_NFS_ALLOW_INSECURE_PORTS_DEFAULT
+specifier|public
+specifier|static
+specifier|final
+name|boolean
+name|DFS_NFS_ALLOW_INSECURE_PORTS_DEFAULT
+init|=
+literal|true
+decl_stmt|;
 block|}
 end_class
 
