@@ -369,6 +369,16 @@ init|=
 operator|-
 literal|2
 decl_stmt|;
+DECL|field|ACLS_NOT_SUPPORTED
+specifier|public
+specifier|static
+specifier|final
+name|int
+name|ACLS_NOT_SUPPORTED
+init|=
+operator|-
+literal|3
+decl_stmt|;
 DECL|field|UNKNOWN_ERROR
 specifier|public
 specifier|static

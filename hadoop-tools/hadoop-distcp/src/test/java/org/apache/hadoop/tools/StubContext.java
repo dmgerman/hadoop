@@ -104,20 +104,6 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|fs
-operator|.
-name|FileStatus
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
 name|conf
 operator|.
 name|Configuration
@@ -175,7 +161,7 @@ name|RecordReader
 argument_list|<
 name|Text
 argument_list|,
-name|FileStatus
+name|CopyListingFileStatus
 argument_list|>
 name|reader
 decl_stmt|;
@@ -193,7 +179,7 @@ name|Mapper
 argument_list|<
 name|Text
 argument_list|,
-name|FileStatus
+name|CopyListingFileStatus
 argument_list|,
 name|Text
 argument_list|,
@@ -203,7 +189,7 @@ operator|.
 name|Context
 name|mapperContext
 decl_stmt|;
-DECL|method|StubContext (Configuration conf, RecordReader<Text, FileStatus> reader, int taskId)
+DECL|method|StubContext (Configuration conf, RecordReader<Text, CopyListingFileStatus> reader, int taskId)
 specifier|public
 name|StubContext
 parameter_list|(
@@ -214,7 +200,7 @@ name|RecordReader
 argument_list|<
 name|Text
 argument_list|,
-name|FileStatus
+name|CopyListingFileStatus
 argument_list|>
 name|reader
 parameter_list|,
@@ -230,7 +216,7 @@ name|WrappedMapper
 argument_list|<
 name|Text
 argument_list|,
-name|FileStatus
+name|CopyListingFileStatus
 argument_list|,
 name|Text
 argument_list|,
@@ -243,7 +229,7 @@ name|WrappedMapper
 argument_list|<
 name|Text
 argument_list|,
-name|FileStatus
+name|CopyListingFileStatus
 argument_list|,
 name|Text
 argument_list|,
@@ -255,7 +241,7 @@ name|MapContextImpl
 argument_list|<
 name|Text
 argument_list|,
-name|FileStatus
+name|CopyListingFileStatus
 argument_list|,
 name|Text
 argument_list|,
@@ -268,7 +254,7 @@ name|MapContextImpl
 argument_list|<
 name|Text
 argument_list|,
-name|FileStatus
+name|CopyListingFileStatus
 argument_list|,
 name|Text
 argument_list|,
@@ -317,7 +303,7 @@ name|Mapper
 argument_list|<
 name|Text
 argument_list|,
-name|FileStatus
+name|CopyListingFileStatus
 argument_list|,
 name|Text
 argument_list|,
@@ -348,7 +334,7 @@ name|RecordReader
 argument_list|<
 name|Text
 argument_list|,
-name|FileStatus
+name|CopyListingFileStatus
 argument_list|>
 name|getReader
 parameter_list|()

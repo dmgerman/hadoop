@@ -188,9 +188,9 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|fs
+name|tools
 operator|.
-name|FileStatus
+name|CopyListingFileStatus
 import|;
 end_import
 
@@ -695,11 +695,11 @@ name|DynamicInputChunk
 argument_list|>
 argument_list|()
 decl_stmt|;
-name|FileStatus
+name|CopyListingFileStatus
 name|fileStatus
 init|=
 operator|new
-name|FileStatus
+name|CopyListingFileStatus
 argument_list|()
 decl_stmt|;
 name|Text

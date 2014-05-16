@@ -122,20 +122,6 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|fs
-operator|.
-name|FileStatus
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
 name|hdfs
 operator|.
 name|MiniDFSCluster
@@ -211,6 +197,20 @@ operator|.
 name|tools
 operator|.
 name|CopyListing
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|tools
+operator|.
+name|CopyListingFileStatus
 import|;
 end_import
 
@@ -838,7 +838,7 @@ name|DynamicInputFormat
 argument_list|<
 name|Text
 argument_list|,
-name|FileStatus
+name|CopyListingFileStatus
 argument_list|>
 name|inputFormat
 init|=
@@ -847,7 +847,7 @@ name|DynamicInputFormat
 argument_list|<
 name|Text
 argument_list|,
-name|FileStatus
+name|CopyListingFileStatus
 argument_list|>
 argument_list|()
 decl_stmt|;
@@ -886,7 +886,7 @@ name|RecordReader
 argument_list|<
 name|Text
 argument_list|,
-name|FileStatus
+name|CopyListingFileStatus
 argument_list|>
 name|recordReader
 init|=
@@ -951,7 +951,7 @@ name|nextKeyValue
 argument_list|()
 condition|)
 block|{
-name|FileStatus
+name|CopyListingFileStatus
 name|fileStatus
 init|=
 name|recordReader
