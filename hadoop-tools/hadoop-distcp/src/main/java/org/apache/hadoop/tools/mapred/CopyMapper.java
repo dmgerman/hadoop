@@ -110,6 +110,22 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|fs
+operator|.
+name|permission
+operator|.
+name|AclEntry
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|io
 operator|.
 name|Text
@@ -141,6 +157,20 @@ operator|.
 name|mapreduce
 operator|.
 name|Mapper
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|tools
+operator|.
+name|CopyListingFileStatus
 import|;
 end_import
 
@@ -262,6 +292,16 @@ name|Arrays
 import|;
 end_import
 
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
+name|List
+import|;
+end_import
+
 begin_comment
 comment|/**  * Mapper class that executes the DistCp copy operation.  * Implements the o.a.h.mapreduce.Mapper<> interface.  */
 end_comment
@@ -276,7 +316,7 @@ name|Mapper
 argument_list|<
 name|Text
 argument_list|,
-name|FileStatus
+name|CopyListingFileStatus
 argument_list|,
 name|Text
 argument_list|,
@@ -884,7 +924,7 @@ block|}
 comment|/**    * Implementation of the Mapper<>::map(). Does the copy.    * @param relPath The target path.    * @param sourceFileStatus The source path.    * @throws IOException    */
 annotation|@
 name|Override
-DECL|method|map (Text relPath, FileStatus sourceFileStatus, Context context)
+DECL|method|map (Text relPath, CopyListingFileStatus sourceFileStatus, Context context)
 specifier|public
 name|void
 name|map
@@ -892,7 +932,7 @@ parameter_list|(
 name|Text
 name|relPath
 parameter_list|,
-name|FileStatus
+name|CopyListingFileStatus
 name|sourceFileStatus
 parameter_list|,
 name|Context
@@ -999,7 +1039,7 @@ argument_list|)
 expr_stmt|;
 try|try
 block|{
-name|FileStatus
+name|CopyListingFileStatus
 name|sourceCurrStatus
 decl_stmt|;
 name|FileSystem
@@ -1018,11 +1058,27 @@ argument_list|)
 expr_stmt|;
 name|sourceCurrStatus
 operator|=
+name|DistCpUtils
+operator|.
+name|toCopyListingFileStatus
+argument_list|(
+name|sourceFS
+argument_list|,
 name|sourceFS
 operator|.
 name|getFileStatus
 argument_list|(
 name|sourcePath
+argument_list|)
+argument_list|,
+name|fileAttributes
+operator|.
+name|contains
+argument_list|(
+name|FileAttribute
+operator|.
+name|ACL
+argument_list|)
 argument_list|)
 expr_stmt|;
 block|}

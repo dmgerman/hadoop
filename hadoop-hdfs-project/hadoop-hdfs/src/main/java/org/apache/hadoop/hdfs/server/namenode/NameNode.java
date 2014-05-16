@@ -7709,6 +7709,23 @@ argument_list|)
 operator|)
 return|;
 block|}
+DECL|method|isActiveState ()
+specifier|public
+name|boolean
+name|isActiveState
+parameter_list|()
+block|{
+return|return
+operator|(
+name|state
+operator|.
+name|equals
+argument_list|(
+name|ACTIVE_STATE
+argument_list|)
+operator|)
+return|;
+block|}
 comment|/**    * Check that a request to change this node's HA state is valid.    * In particular, verifies that, if auto failover is enabled, non-forced    * requests from the HAAdmin CLI are rejected, and vice versa.    *    * @param req the request to check    * @throws AccessControlException if the request is disallowed    */
 DECL|method|checkHaStateChange (StateChangeRequestInfo req)
 name|void

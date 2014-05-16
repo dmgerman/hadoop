@@ -296,6 +296,19 @@ name|ApplicationACLsManager
 name|getApplicationACLsManager
 parameter_list|()
 function_decl|;
+DECL|method|getDecommissioned ()
+name|boolean
+name|getDecommissioned
+parameter_list|()
+function_decl|;
+DECL|method|setDecommissioned (boolean isDecommissioned)
+name|void
+name|setDecommissioned
+parameter_list|(
+name|boolean
+name|isDecommissioned
+parameter_list|)
+function_decl|;
 block|}
 end_interface
 

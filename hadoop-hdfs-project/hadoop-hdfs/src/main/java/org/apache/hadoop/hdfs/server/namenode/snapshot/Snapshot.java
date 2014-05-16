@@ -38,6 +38,16 @@ name|java
 operator|.
 name|io
 operator|.
+name|DataOutput
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|io
+operator|.
 name|IOException
 import|;
 end_import
@@ -173,6 +183,24 @@ operator|.
 name|namenode
 operator|.
 name|FSImageFormat
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|server
+operator|.
+name|namenode
+operator|.
+name|FSImageSerialization
 import|;
 end_import
 
@@ -1050,6 +1078,35 @@ name|id
 operator|+
 literal|")"
 return|;
+block|}
+comment|/** Serialize the fields to out */
+DECL|method|write (DataOutput out)
+name|void
+name|write
+parameter_list|(
+name|DataOutput
+name|out
+parameter_list|)
+throws|throws
+name|IOException
+block|{
+name|out
+operator|.
+name|writeInt
+argument_list|(
+name|id
+argument_list|)
+expr_stmt|;
+comment|// write root
+name|FSImageSerialization
+operator|.
+name|writeINodeDirectory
+argument_list|(
+name|root
+argument_list|,
+name|out
+argument_list|)
+expr_stmt|;
 block|}
 block|}
 end_class

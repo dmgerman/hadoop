@@ -4,7 +4,7 @@ comment|/**  * Licensed to the Apache Software Foundation (ASF) under one  * or 
 end_comment
 
 begin_package
-DECL|package|org.apache.hadoop.hdfs.server.namenode
+DECL|package|org.apache.hadoop.fs.permission
 package|package
 name|org
 operator|.
@@ -12,11 +12,9 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|hdfs
+name|fs
 operator|.
-name|server
-operator|.
-name|namenode
+name|permission
 package|;
 end_package
 
@@ -62,6 +60,20 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|classification
+operator|.
+name|InterfaceStability
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|fs
 operator|.
 name|permission
@@ -94,8 +106,20 @@ begin_class
 annotation|@
 name|InterfaceAudience
 operator|.
-name|Private
+name|LimitedPrivate
+argument_list|(
+block|{
+literal|"HDFS"
+block|,
+literal|"MapReduce"
+block|}
+argument_list|)
+annotation|@
+name|InterfaceStability
+operator|.
+name|Unstable
 DECL|class|ScopedAclEntries
+specifier|public
 specifier|final
 class|class
 name|ScopedAclEntries

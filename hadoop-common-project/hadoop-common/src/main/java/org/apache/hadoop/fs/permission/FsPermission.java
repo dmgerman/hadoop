@@ -714,6 +714,18 @@ operator|)
 name|s
 return|;
 block|}
+comment|/**    * Encodes the object to a short.  Unlike {@link #toShort()}, this method may    * return values outside the fixed range 00000 - 01777 if extended features    * are encoded into this permission, such as the ACL bit.    *    * @return short extended short representation of this permission    */
+DECL|method|toExtendedShort ()
+specifier|public
+name|short
+name|toExtendedShort
+parameter_list|()
+block|{
+return|return
+name|toShort
+argument_list|()
+return|;
+block|}
 annotation|@
 name|Override
 DECL|method|equals (Object obj)
@@ -1160,6 +1172,18 @@ parameter_list|()
 block|{
 return|return
 name|stickyBit
+return|;
+block|}
+comment|/**    * Returns true if there is also an ACL (access control list).    *    * @return boolean true if there is also an ACL (access control list).    */
+DECL|method|getAclBit ()
+specifier|public
+name|boolean
+name|getAclBit
+parameter_list|()
+block|{
+comment|// File system subclasses that support the ACL bit would override this.
+return|return
+literal|false
 return|;
 block|}
 comment|/** Set the user file creation mask (umask) */

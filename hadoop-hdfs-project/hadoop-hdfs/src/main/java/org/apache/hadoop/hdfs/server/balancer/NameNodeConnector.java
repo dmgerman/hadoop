@@ -1019,7 +1019,7 @@ literal|null
 return|;
 block|}
 block|}
-comment|/* The idea for making sure that there is no more than one balancer    * running in an HDFS is to create a file in the HDFS, writes the IP address    * of the machine on which the balancer is running to the file, but did not    * close the file until the balancer exits.     * This prevents the second balancer from running because it can not    * creates the file while the first one is running.    *     * This method checks if there is any running balancer and     * if no, mark yes if no.    * Note that this is an atomic operation.    *     * Return null if there is a running balancer; otherwise the output stream    * to the newly created file.    */
+comment|/* The idea for making sure that there is no more than one balancer    * running in an HDFS is to create a file in the HDFS, writes the hostname    * of the machine on which the balancer is running to the file, but did not    * close the file until the balancer exits.     * This prevents the second balancer from running because it can not    * creates the file while the first one is running.    *     * This method checks if there is any running balancer and     * if no, mark yes if no.    * Note that this is an atomic operation.    *     * Return null if there is a running balancer; otherwise the output stream    * to the newly created file.    */
 DECL|method|checkAndMarkRunningBalancer ()
 specifier|private
 name|OutputStream

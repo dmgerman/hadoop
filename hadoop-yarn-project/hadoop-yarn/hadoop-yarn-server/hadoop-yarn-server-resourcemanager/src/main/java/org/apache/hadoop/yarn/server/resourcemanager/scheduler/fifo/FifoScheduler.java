@@ -2634,8 +2634,10 @@ name|nodeId
 argument_list|)
 return|;
 block|}
+annotation|@
+name|VisibleForTesting
 DECL|method|addApplication (ApplicationId applicationId, String queue, String user)
-specifier|private
+specifier|public
 specifier|synchronized
 name|void
 name|addApplication
@@ -2719,7 +2721,9 @@ argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
-specifier|private
+annotation|@
+name|VisibleForTesting
+specifier|public
 specifier|synchronized
 name|void
 DECL|method|addApplicationAttempt (ApplicationAttemptId appAttemptId, boolean transferStateFromPreviousAttempt)
@@ -3117,6 +3121,15 @@ operator|.
 name|getCurrentAppAttempt
 argument_list|()
 decl_stmt|;
+if|if
+condition|(
+name|application
+operator|==
+literal|null
+condition|)
+block|{
+continue|continue;
+block|}
 name|LOG
 operator|.
 name|debug
@@ -3270,6 +3283,15 @@ operator|.
 name|getCurrentAppAttempt
 argument_list|()
 decl_stmt|;
+if|if
+condition|(
+name|attempt
+operator|==
+literal|null
+condition|)
+block|{
+continue|continue;
+block|}
 name|attempt
 operator|.
 name|setHeadroom

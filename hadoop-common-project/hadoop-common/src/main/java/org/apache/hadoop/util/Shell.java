@@ -646,7 +646,7 @@ literal|"groups"
 block|}
 return|;
 block|}
-comment|/** a Unix command to get a given user's groups list */
+comment|/**    * a Unix command to get a given user's groups list.    * If the OS is not WINDOWS, the command will get the user's primary group    * first and finally get the groups list which includes the primary group.    * i.e. the user's primary group will be included twice.    */
 DECL|method|getGroupsForUserCommand (final String user)
 specifier|public
 specifier|static
@@ -690,7 +690,11 @@ literal|"bash"
 block|,
 literal|"-c"
 block|,
-literal|"id -Gn "
+literal|"id -gn "
+operator|+
+name|user
+operator|+
+literal|"&& id -Gn "
 operator|+
 name|user
 block|}

@@ -249,13 +249,13 @@ DECL|class|InvalidateBlocks
 class|class
 name|InvalidateBlocks
 block|{
-comment|/** Mapping: StorageID -> Collection of Blocks */
+comment|/** Mapping: DatanodeInfo -> Collection of Blocks */
 DECL|field|node2blocks
 specifier|private
 specifier|final
 name|Map
 argument_list|<
-name|String
+name|DatanodeInfo
 argument_list|,
 name|LightWeightHashSet
 argument_list|<
@@ -267,7 +267,7 @@ init|=
 operator|new
 name|TreeMap
 argument_list|<
-name|String
+name|DatanodeInfo
 argument_list|,
 name|LightWeightHashSet
 argument_list|<
@@ -284,11 +284,11 @@ name|numBlocks
 init|=
 literal|0L
 decl_stmt|;
-DECL|field|datanodeManager
+DECL|field|blockInvalidateLimit
 specifier|private
 specifier|final
-name|DatanodeManager
-name|datanodeManager
+name|int
+name|blockInvalidateLimit
 decl_stmt|;
 comment|/**    * The period of pending time for block invalidation since the NameNode    * startup    */
 DECL|field|pendingPeriodInMs
@@ -309,12 +309,12 @@ operator|.
 name|monotonicNow
 argument_list|()
 decl_stmt|;
-DECL|method|InvalidateBlocks (final DatanodeManager datanodeManager, long pendingPeriodInMs)
+DECL|method|InvalidateBlocks (final int blockInvalidateLimit, long pendingPeriodInMs)
 name|InvalidateBlocks
 parameter_list|(
 specifier|final
-name|DatanodeManager
-name|datanodeManager
+name|int
+name|blockInvalidateLimit
 parameter_list|,
 name|long
 name|pendingPeriodInMs
@@ -322,9 +322,9 @@ parameter_list|)
 block|{
 name|this
 operator|.
-name|datanodeManager
+name|blockInvalidateLimit
 operator|=
-name|datanodeManager
+name|blockInvalidateLimit
 expr_stmt|;
 name|this
 operator|.
@@ -430,15 +430,15 @@ return|return
 name|numBlocks
 return|;
 block|}
-comment|/**    * @return true if the given storage has the given block listed for    * invalidation. Blocks are compared including their generation stamps:    * if a block is pending invalidation but with a different generation stamp,    * returns false.    * @param storageID the storage to check    * @param the block to look for    *     */
-DECL|method|contains (final String storageID, final Block block)
+comment|/**    * @return true if the given storage has the given block listed for    * invalidation. Blocks are compared including their generation stamps:    * if a block is pending invalidation but with a different generation stamp,    * returns false.    */
+DECL|method|contains (final DatanodeInfo dn, final Block block)
 specifier|synchronized
 name|boolean
 name|contains
 parameter_list|(
 specifier|final
-name|String
-name|storageID
+name|DatanodeInfo
+name|dn
 parameter_list|,
 specifier|final
 name|Block
@@ -456,7 +456,7 @@ name|node2blocks
 operator|.
 name|get
 argument_list|(
-name|storageID
+name|dn
 argument_list|)
 decl_stmt|;
 if|if
@@ -527,9 +527,6 @@ operator|.
 name|get
 argument_list|(
 name|datanode
-operator|.
-name|getDatanodeUuid
-argument_list|()
 argument_list|)
 decl_stmt|;
 if|if
@@ -553,9 +550,6 @@ operator|.
 name|put
 argument_list|(
 name|datanode
-operator|.
-name|getDatanodeUuid
-argument_list|()
 argument_list|,
 name|set
 argument_list|)
@@ -606,14 +600,14 @@ block|}
 block|}
 block|}
 comment|/** Remove a storage from the invalidatesSet */
-DECL|method|remove (final String storageID)
+DECL|method|remove (final DatanodeInfo dn)
 specifier|synchronized
 name|void
 name|remove
 parameter_list|(
 specifier|final
-name|String
-name|storageID
+name|DatanodeInfo
+name|dn
 parameter_list|)
 block|{
 specifier|final
@@ -627,7 +621,7 @@ name|node2blocks
 operator|.
 name|remove
 argument_list|(
-name|storageID
+name|dn
 argument_list|)
 decl_stmt|;
 if|if
@@ -647,14 +641,14 @@ expr_stmt|;
 block|}
 block|}
 comment|/** Remove the block from the specified storage. */
-DECL|method|remove (final String storageID, final Block block)
+DECL|method|remove (final DatanodeInfo dn, final Block block)
 specifier|synchronized
 name|void
 name|remove
 parameter_list|(
 specifier|final
-name|String
-name|storageID
+name|DatanodeInfo
+name|dn
 parameter_list|,
 specifier|final
 name|Block
@@ -672,7 +666,7 @@ name|node2blocks
 operator|.
 name|get
 argument_list|(
-name|storageID
+name|dn
 argument_list|)
 decl_stmt|;
 if|if
@@ -704,7 +698,7 @@ name|node2blocks
 operator|.
 name|remove
 argument_list|(
-name|storageID
+name|dn
 argument_list|)
 expr_stmt|;
 block|}
@@ -763,7 +757,7 @@ name|Map
 operator|.
 name|Entry
 argument_list|<
-name|String
+name|DatanodeInfo
 argument_list|,
 name|LightWeightHashSet
 argument_list|<
@@ -804,15 +798,10 @@ name|out
 operator|.
 name|println
 argument_list|(
-name|datanodeManager
-operator|.
-name|getDatanode
-argument_list|(
 name|entry
 operator|.
 name|getKey
 argument_list|()
-argument_list|)
 argument_list|)
 expr_stmt|;
 name|out
@@ -826,20 +815,20 @@ block|}
 block|}
 block|}
 comment|/** @return a list of the storage IDs. */
-DECL|method|getStorageIDs ()
+DECL|method|getDatanodes ()
 specifier|synchronized
 name|List
 argument_list|<
-name|String
+name|DatanodeInfo
 argument_list|>
-name|getStorageIDs
+name|getDatanodes
 parameter_list|()
 block|{
 return|return
 operator|new
 name|ArrayList
 argument_list|<
-name|String
+name|DatanodeInfo
 argument_list|>
 argument_list|(
 name|node2blocks
@@ -870,7 +859,7 @@ name|startupTime
 operator|)
 return|;
 block|}
-DECL|method|invalidateWork ( final String storageId, final DatanodeDescriptor dn)
+DECL|method|invalidateWork (final DatanodeDescriptor dn)
 specifier|synchronized
 name|List
 argument_list|<
@@ -878,10 +867,6 @@ name|Block
 argument_list|>
 name|invalidateWork
 parameter_list|(
-specifier|final
-name|String
-name|storageId
-parameter_list|,
 specifier|final
 name|DatanodeDescriptor
 name|dn
@@ -942,7 +927,7 @@ name|node2blocks
 operator|.
 name|get
 argument_list|(
-name|storageId
+name|dn
 argument_list|)
 decl_stmt|;
 if|if
@@ -961,8 +946,6 @@ specifier|final
 name|int
 name|limit
 init|=
-name|datanodeManager
-operator|.
 name|blockInvalidateLimit
 decl_stmt|;
 specifier|final
@@ -990,7 +973,7 @@ condition|)
 block|{
 name|remove
 argument_list|(
-name|storageId
+name|dn
 argument_list|)
 expr_stmt|;
 block|}

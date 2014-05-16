@@ -656,6 +656,20 @@ name|Lists
 import|;
 end_import
 
+begin_import
+import|import
+name|com
+operator|.
+name|google
+operator|.
+name|common
+operator|.
+name|io
+operator|.
+name|Files
+import|;
+end_import
+
 begin_class
 DECL|class|TestStandbyCheckpoints
 specifier|public
@@ -689,6 +703,11 @@ specifier|protected
 name|FileSystem
 name|fs
 decl_stmt|;
+DECL|field|tmpOivImgDir
+specifier|protected
+name|File
+name|tmpOivImgDir
+decl_stmt|;
 DECL|field|LOG
 specifier|private
 specifier|static
@@ -720,6 +739,13 @@ parameter_list|()
 throws|throws
 name|Exception
 block|{
+name|tmpOivImgDir
+operator|=
+name|Files
+operator|.
+name|createTempDir
+argument_list|()
+expr_stmt|;
 name|Configuration
 name|conf
 init|=
@@ -758,6 +784,20 @@ operator|.
 name|DFS_HA_TAILEDITS_PERIOD_KEY
 argument_list|,
 literal|1
+argument_list|)
+expr_stmt|;
+name|conf
+operator|.
+name|set
+argument_list|(
+name|DFSConfigKeys
+operator|.
+name|DFS_NAMENODE_LEGACY_OIV_IMAGE_DIR_KEY
+argument_list|,
+name|tmpOivImgDir
+operator|.
+name|getAbsolutePath
+argument_list|()
 argument_list|)
 expr_stmt|;
 comment|// Dial down the retention of extra edits and checkpoints. This is to
@@ -1021,6 +1061,21 @@ name|of
 argument_list|(
 literal|12
 argument_list|)
+argument_list|)
+expr_stmt|;
+comment|// It should have saved the oiv image too.
+name|assertEquals
+argument_list|(
+literal|"One file is expected"
+argument_list|,
+literal|1
+argument_list|,
+name|tmpOivImgDir
+operator|.
+name|list
+argument_list|()
+operator|.
+name|length
 argument_list|)
 expr_stmt|;
 comment|// It should also upload it back to the active.

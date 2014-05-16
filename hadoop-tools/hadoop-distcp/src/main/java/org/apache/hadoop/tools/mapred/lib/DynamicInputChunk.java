@@ -156,6 +156,20 @@ name|hadoop
 operator|.
 name|tools
 operator|.
+name|CopyListingFileStatus
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|tools
+operator|.
 name|DistCpConstants
 import|;
 end_import
@@ -517,7 +531,7 @@ name|Text
 operator|.
 name|class
 argument_list|,
-name|FileStatus
+name|CopyListingFileStatus
 operator|.
 name|class
 argument_list|,
@@ -556,7 +570,7 @@ argument_list|)
 return|;
 block|}
 comment|/**    * Method to write records into a chunk.    * @param key Key from the listing file.    * @param value Corresponding value from the listing file.    * @throws IOException Exception onf failure to write to the file.    */
-DECL|method|write (Text key, FileStatus value)
+DECL|method|write (Text key, CopyListingFileStatus value)
 specifier|public
 name|void
 name|write
@@ -564,7 +578,7 @@ parameter_list|(
 name|Text
 name|key
 parameter_list|,
-name|FileStatus
+name|CopyListingFileStatus
 name|value
 parameter_list|)
 throws|throws

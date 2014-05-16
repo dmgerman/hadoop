@@ -98,6 +98,20 @@ name|hadoop
 operator|.
 name|tools
 operator|.
+name|CopyListingFileStatus
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|tools
+operator|.
 name|DistCpConstants
 import|;
 end_import
@@ -143,20 +157,6 @@ operator|.
 name|fs
 operator|.
 name|FileSystem
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|fs
-operator|.
-name|FileStatus
 import|;
 end_import
 
@@ -268,7 +268,7 @@ name|InputFormat
 argument_list|<
 name|Text
 argument_list|,
-name|FileStatus
+name|CopyListingFileStatus
 argument_list|>
 block|{
 DECL|field|LOG
@@ -414,11 +414,11 @@ operator|/
 name|numSplits
 argument_list|)
 decl_stmt|;
-name|FileStatus
+name|CopyListingFileStatus
 name|srcFileStatus
 init|=
 operator|new
-name|FileStatus
+name|CopyListingFileStatus
 argument_list|()
 decl_stmt|;
 name|Text
@@ -811,13 +811,13 @@ block|}
 comment|/**    * Implementation of InputFormat::createRecordReader().    * @param split The split for which the RecordReader is sought.    * @param context The context of the current task-attempt.    * @return A SequenceFileRecordReader instance, (since the copy-listing is a    * simple sequence-file.)    * @throws IOException    * @throws InterruptedException    */
 annotation|@
 name|Override
-DECL|method|createRecordReader (InputSplit split, TaskAttemptContext context)
+DECL|method|createRecordReader ( InputSplit split, TaskAttemptContext context)
 specifier|public
 name|RecordReader
 argument_list|<
 name|Text
 argument_list|,
-name|FileStatus
+name|CopyListingFileStatus
 argument_list|>
 name|createRecordReader
 parameter_list|(
@@ -838,7 +838,7 @@ name|SequenceFileRecordReader
 argument_list|<
 name|Text
 argument_list|,
-name|FileStatus
+name|CopyListingFileStatus
 argument_list|>
 argument_list|()
 return|;

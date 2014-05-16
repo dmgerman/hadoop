@@ -3039,6 +3039,21 @@ operator|=
 name|top
 argument_list|()
 expr_stmt|;
+name|long
+name|startPos
+init|=
+name|minSegment
+operator|.
+name|getPosition
+argument_list|()
+decl_stmt|;
+name|key
+operator|=
+name|minSegment
+operator|.
+name|getKey
+argument_list|()
+expr_stmt|;
 if|if
 condition|(
 operator|!
@@ -3057,6 +3072,13 @@ comment|//obtained from disk, and if the current segment is a disk
 comment|//segment, we reset the "value" DIB to the byte[] in that (so
 comment|//we reuse the disk segment DIB whenever we consider
 comment|//a disk segment).
+name|minSegment
+operator|.
+name|getValue
+argument_list|(
+name|diskIFileValue
+argument_list|)
+expr_stmt|;
 name|value
 operator|.
 name|reset
@@ -3073,21 +3095,8 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
-name|long
-name|startPos
-init|=
-name|minSegment
-operator|.
-name|getPosition
-argument_list|()
-decl_stmt|;
-name|key
-operator|=
-name|minSegment
-operator|.
-name|getKey
-argument_list|()
-expr_stmt|;
+else|else
+block|{
 name|minSegment
 operator|.
 name|getValue
@@ -3095,6 +3104,7 @@ argument_list|(
 name|value
 argument_list|)
 expr_stmt|;
+block|}
 name|long
 name|endPos
 init|=

@@ -1725,11 +1725,6 @@ argument_list|,
 name|nm1
 argument_list|)
 decl_stmt|;
-name|int
-name|NUM_CONTAINERS
-init|=
-literal|1
-decl_stmt|;
 name|List
 argument_list|<
 name|Container
@@ -1757,7 +1752,8 @@ name|NMToken
 argument_list|>
 argument_list|()
 decl_stmt|;
-comment|// am1 allocate 1 container on nm1.
+comment|// am1 allocate 2 container on nm1.
+comment|// first container
 while|while
 condition|(
 literal|true
@@ -1774,7 +1770,7 @@ literal|"127.0.0.1"
 argument_list|,
 literal|2000
 argument_list|,
-name|NUM_CONTAINERS
+literal|2
 argument_list|,
 operator|new
 name|ArrayList
@@ -1818,7 +1814,7 @@ operator|.
 name|size
 argument_list|()
 operator|==
-name|NUM_CONTAINERS
+literal|2
 condition|)
 block|{
 break|break;
@@ -1840,7 +1836,7 @@ literal|"Waiting for container to be allocated."
 argument_list|)
 expr_stmt|;
 block|}
-comment|// launch the container
+comment|// launch the container-2
 name|nm1
 operator|.
 name|nodeHeartbeat
@@ -1879,6 +1875,51 @@ argument_list|(
 name|nm1
 argument_list|,
 name|containerId2
+argument_list|,
+name|RMContainerState
+operator|.
+name|RUNNING
+argument_list|)
+expr_stmt|;
+comment|// launch the container-3
+name|nm1
+operator|.
+name|nodeHeartbeat
+argument_list|(
+name|am1
+operator|.
+name|getApplicationAttemptId
+argument_list|()
+argument_list|,
+literal|3
+argument_list|,
+name|ContainerState
+operator|.
+name|RUNNING
+argument_list|)
+expr_stmt|;
+name|ContainerId
+name|containerId3
+init|=
+name|ContainerId
+operator|.
+name|newInstance
+argument_list|(
+name|am1
+operator|.
+name|getApplicationAttemptId
+argument_list|()
+argument_list|,
+literal|3
+argument_list|)
+decl_stmt|;
+name|rm1
+operator|.
+name|waitForState
+argument_list|(
+name|nm1
+argument_list|,
+name|containerId3
 argument_list|,
 name|RMContainerState
 operator|.
@@ -2001,7 +2042,7 @@ literal|"127.1.1.1"
 argument_list|,
 literal|4000
 argument_list|,
-name|NUM_CONTAINERS
+literal|1
 argument_list|,
 operator|new
 name|ArrayList
@@ -2045,7 +2086,7 @@ operator|.
 name|size
 argument_list|()
 operator|==
-name|NUM_CONTAINERS
+literal|1
 condition|)
 block|{
 break|break;

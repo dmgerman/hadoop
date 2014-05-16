@@ -1054,7 +1054,7 @@ argument_list|,
 operator|(
 name|short
 operator|)
-literal|0755
+literal|010755
 argument_list|)
 expr_stmt|;
 name|restart
@@ -1133,7 +1133,7 @@ argument_list|,
 operator|(
 name|short
 operator|)
-literal|0755
+literal|010755
 argument_list|)
 expr_stmt|;
 name|aclSpec
@@ -1232,7 +1232,7 @@ argument_list|,
 operator|(
 name|short
 operator|)
-literal|0755
+literal|010755
 argument_list|)
 expr_stmt|;
 name|restart
@@ -1311,7 +1311,7 @@ argument_list|,
 operator|(
 name|short
 operator|)
-literal|0755
+literal|010755
 argument_list|)
 expr_stmt|;
 name|fs
@@ -1390,7 +1390,7 @@ argument_list|,
 operator|(
 name|short
 operator|)
-literal|0755
+literal|010755
 argument_list|)
 expr_stmt|;
 name|restart
@@ -1469,7 +1469,7 @@ argument_list|,
 operator|(
 name|short
 operator|)
-literal|0755
+literal|010755
 argument_list|)
 expr_stmt|;
 block|}

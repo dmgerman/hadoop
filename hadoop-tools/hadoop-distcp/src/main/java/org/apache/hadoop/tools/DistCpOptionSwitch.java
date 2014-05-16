@@ -88,9 +88,13 @@ literal|"p"
 argument_list|,
 literal|true
 argument_list|,
-literal|"preserve status (rbugpc)"
+literal|"preserve status (rbugpca)(replication, "
 operator|+
-literal|"(replication, block-size, user, group, permission, checksum-type)"
+literal|"block-size, user, group, permission, checksum-type, ACL).  If "
+operator|+
+literal|"-p is specified with no<arg>, then preserves replication, block "
+operator|+
+literal|"size, user, group, permission and checksum type."
 argument_list|)
 argument_list|)
 block|,
