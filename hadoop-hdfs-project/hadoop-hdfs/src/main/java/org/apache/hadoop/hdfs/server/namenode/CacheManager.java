@@ -3723,24 +3723,6 @@ if|if
 condition|(
 name|filter
 operator|.
-name|getId
-argument_list|()
-operator|!=
-literal|null
-condition|)
-block|{
-throw|throw
-operator|new
-name|IOException
-argument_list|(
-literal|"Filtering by ID is unsupported."
-argument_list|)
-throw|;
-block|}
-if|if
-condition|(
-name|filter
-operator|.
 name|getPath
 argument_list|()
 operator|!=
@@ -3767,11 +3749,58 @@ condition|)
 block|{
 throw|throw
 operator|new
-name|IOException
+name|InvalidRequestException
 argument_list|(
 literal|"Filtering by replication is unsupported."
 argument_list|)
 throw|;
+block|}
+comment|// Querying for a single ID
+specifier|final
+name|Long
+name|id
+init|=
+name|filter
+operator|.
+name|getId
+argument_list|()
+decl_stmt|;
+if|if
+condition|(
+name|id
+operator|!=
+literal|null
+condition|)
+block|{
+if|if
+condition|(
+operator|!
+name|directivesById
+operator|.
+name|containsKey
+argument_list|(
+name|id
+argument_list|)
+condition|)
+block|{
+throw|throw
+operator|new
+name|InvalidRequestException
+argument_list|(
+literal|"Did not find requested id "
+operator|+
+name|id
+argument_list|)
+throw|;
+block|}
+comment|// Since we use a tailMap on directivesById, setting prev to id-1 gets
+comment|// us the directive with the id (if present)
+name|prevId
+operator|=
+name|id
+operator|-
+literal|1
+expr_stmt|;
 block|}
 name|ArrayList
 argument_list|<
@@ -3865,6 +3894,31 @@ operator|.
 name|toInfo
 argument_list|()
 decl_stmt|;
+comment|// If the requested ID is present, it should be the first item.
+comment|// Hitting this case means the ID is not present, or we're on the second
+comment|// item and should break out.
+if|if
+condition|(
+name|id
+operator|!=
+literal|null
+operator|&&
+operator|!
+operator|(
+name|info
+operator|.
+name|getId
+argument_list|()
+operator|.
+name|equals
+argument_list|(
+name|id
+argument_list|)
+operator|)
+condition|)
+block|{
+break|break;
+block|}
 if|if
 condition|(
 name|filter

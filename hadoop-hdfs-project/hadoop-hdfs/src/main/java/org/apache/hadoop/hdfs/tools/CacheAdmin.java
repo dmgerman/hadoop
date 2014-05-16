@@ -2704,7 +2704,7 @@ operator|+
 name|getName
 argument_list|()
 operator|+
-literal|" [-stats] [-path<path>] [-pool<pool>]]\n"
+literal|" [-stats] [-path<path>] [-pool<pool>] [-id<id>]\n"
 return|;
 block|}
 annotation|@
@@ -2721,6 +2721,15 @@ init|=
 name|getOptionDescriptionListing
 argument_list|()
 decl_stmt|;
+name|listing
+operator|.
+name|addRow
+argument_list|(
+literal|"-stats"
+argument_list|,
+literal|"List path-based cache directive statistics."
+argument_list|)
+expr_stmt|;
 name|listing
 operator|.
 name|addRow
@@ -2751,9 +2760,9 @@ name|listing
 operator|.
 name|addRow
 argument_list|(
-literal|"-stats"
+literal|"<id>"
 argument_list|,
-literal|"List path-based cache directive statistics."
+literal|"List the cache directive with this id."
 argument_list|)
 expr_stmt|;
 return|return
@@ -2870,6 +2879,38 @@ argument_list|,
 name|args
 argument_list|)
 decl_stmt|;
+name|String
+name|idFilter
+init|=
+name|StringUtils
+operator|.
+name|popOptionWithArgument
+argument_list|(
+literal|"-id"
+argument_list|,
+name|args
+argument_list|)
+decl_stmt|;
+if|if
+condition|(
+name|idFilter
+operator|!=
+literal|null
+condition|)
+block|{
+name|builder
+operator|.
+name|setId
+argument_list|(
+name|Long
+operator|.
+name|parseLong
+argument_list|(
+name|idFilter
+argument_list|)
+argument_list|)
+expr_stmt|;
+block|}
 if|if
 condition|(
 operator|!
