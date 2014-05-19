@@ -13212,6 +13212,53 @@ literal|true
 argument_list|)
 expr_stmt|;
 specifier|final
+name|BlockInfo
+name|lastBlock
+init|=
+name|myFile
+operator|.
+name|getLastBlock
+argument_list|()
+decl_stmt|;
+comment|// Check that the block has at least minimum replication.
+if|if
+condition|(
+name|lastBlock
+operator|!=
+literal|null
+operator|&&
+name|lastBlock
+operator|.
+name|isComplete
+argument_list|()
+operator|&&
+operator|!
+name|getBlockManager
+argument_list|()
+operator|.
+name|isSufficientlyReplicated
+argument_list|(
+name|lastBlock
+argument_list|)
+condition|)
+block|{
+throw|throw
+operator|new
+name|IOException
+argument_list|(
+literal|"append: lastBlock="
+operator|+
+name|lastBlock
+operator|+
+literal|" of src="
+operator|+
+name|src
+operator|+
+literal|" is not sufficiently replicated yet."
+argument_list|)
+throw|;
+block|}
+specifier|final
 name|DatanodeDescriptor
 name|clientNode
 init|=
