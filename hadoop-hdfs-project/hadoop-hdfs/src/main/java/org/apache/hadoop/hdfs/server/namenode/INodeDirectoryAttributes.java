@@ -52,6 +52,24 @@ end_import
 
 begin_import
 import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|server
+operator|.
+name|namenode
+operator|.
+name|XAttrFeature
+import|;
+end_import
+
+begin_import
+import|import
 name|com
 operator|.
 name|google
@@ -110,7 +128,7 @@ name|SnapshotCopy
 implements|implements
 name|INodeDirectoryAttributes
 block|{
-DECL|method|SnapshotCopy (byte[] name, PermissionStatus permissions, AclFeature aclFeature, long modificationTime)
+DECL|method|SnapshotCopy (byte[] name, PermissionStatus permissions, AclFeature aclFeature, long modificationTime, XAttrFeature xAttrsFeature)
 specifier|public
 name|SnapshotCopy
 parameter_list|(
@@ -126,6 +144,9 @@ name|aclFeature
 parameter_list|,
 name|long
 name|modificationTime
+parameter_list|,
+name|XAttrFeature
+name|xAttrsFeature
 parameter_list|)
 block|{
 name|super
@@ -139,6 +160,8 @@ argument_list|,
 name|modificationTime
 argument_list|,
 literal|0L
+argument_list|,
+name|xAttrsFeature
 argument_list|)
 expr_stmt|;
 block|}
@@ -242,7 +265,7 @@ specifier|final
 name|long
 name|dsQuota
 decl_stmt|;
-DECL|method|CopyWithQuota (byte[] name, PermissionStatus permissions, AclFeature aclFeature, long modificationTime, long nsQuota, long dsQuota)
+DECL|method|CopyWithQuota (byte[] name, PermissionStatus permissions, AclFeature aclFeature, long modificationTime, long nsQuota, long dsQuota, XAttrFeature xAttrsFeature)
 specifier|public
 name|CopyWithQuota
 parameter_list|(
@@ -264,6 +287,9 @@ name|nsQuota
 parameter_list|,
 name|long
 name|dsQuota
+parameter_list|,
+name|XAttrFeature
+name|xAttrsFeature
 parameter_list|)
 block|{
 name|super
@@ -275,6 +301,8 @@ argument_list|,
 name|aclFeature
 argument_list|,
 name|modificationTime
+argument_list|,
+name|xAttrsFeature
 argument_list|)
 expr_stmt|;
 name|this

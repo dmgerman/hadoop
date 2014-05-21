@@ -70,6 +70,24 @@ name|HeaderFormat
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|server
+operator|.
+name|namenode
+operator|.
+name|XAttrFeature
+import|;
+end_import
+
 begin_comment
 comment|/**  * The attributes of a file.  */
 end_comment
@@ -126,7 +144,7 @@ specifier|final
 name|long
 name|header
 decl_stmt|;
-DECL|method|SnapshotCopy (byte[] name, PermissionStatus permissions, AclFeature aclFeature, long modificationTime, long accessTime, short replication, long preferredBlockSize)
+DECL|method|SnapshotCopy (byte[] name, PermissionStatus permissions, AclFeature aclFeature, long modificationTime, long accessTime, short replication, long preferredBlockSize, XAttrFeature xAttrsFeature)
 specifier|public
 name|SnapshotCopy
 parameter_list|(
@@ -151,6 +169,9 @@ name|replication
 parameter_list|,
 name|long
 name|preferredBlockSize
+parameter_list|,
+name|XAttrFeature
+name|xAttrsFeature
 parameter_list|)
 block|{
 name|super
@@ -164,6 +185,8 @@ argument_list|,
 name|modificationTime
 argument_list|,
 name|accessTime
+argument_list|,
+name|xAttrsFeature
 argument_list|)
 expr_stmt|;
 specifier|final

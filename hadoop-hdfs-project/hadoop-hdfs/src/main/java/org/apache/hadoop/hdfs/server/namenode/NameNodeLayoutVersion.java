@@ -283,6 +283,15 @@ literal|56
 argument_list|,
 literal|"Add length field to every edit log op"
 argument_list|)
+block|,
+DECL|enumConstant|XATTRS
+name|XATTRS
+argument_list|(
+operator|-
+literal|57
+argument_list|,
+literal|"Extended attributes"
+argument_list|)
 block|;
 DECL|field|info
 specifier|private

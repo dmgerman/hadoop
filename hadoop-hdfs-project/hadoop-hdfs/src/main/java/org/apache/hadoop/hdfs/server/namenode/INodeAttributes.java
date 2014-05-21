@@ -86,6 +86,24 @@ name|PermissionStatusFormat
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|server
+operator|.
+name|namenode
+operator|.
+name|XAttrFeature
+import|;
+end_import
+
 begin_comment
 comment|/**  * The attributes of an inode.  */
 end_comment
@@ -150,6 +168,13 @@ name|AclFeature
 name|getAclFeature
 parameter_list|()
 function_decl|;
+comment|/** @return the XAttrs feature. */
+DECL|method|getXAttrFeature ()
+specifier|public
+name|XAttrFeature
+name|getXAttrFeature
+parameter_list|()
+function_decl|;
 comment|/** @return the modification time. */
 DECL|method|getModificationTime ()
 specifier|public
@@ -205,7 +230,12 @@ specifier|final
 name|long
 name|accessTime
 decl_stmt|;
-DECL|method|SnapshotCopy (byte[] name, PermissionStatus permissions, AclFeature aclFeature, long modificationTime, long accessTime)
+DECL|field|xAttrFeature
+specifier|private
+name|XAttrFeature
+name|xAttrFeature
+decl_stmt|;
+DECL|method|SnapshotCopy (byte[] name, PermissionStatus permissions, AclFeature aclFeature, long modificationTime, long accessTime, XAttrFeature xAttrFeature)
 name|SnapshotCopy
 parameter_list|(
 name|byte
@@ -223,6 +253,9 @@ name|modificationTime
 parameter_list|,
 name|long
 name|accessTime
+parameter_list|,
+name|XAttrFeature
+name|xAttrFeature
 parameter_list|)
 block|{
 name|this
@@ -259,6 +292,12 @@ operator|.
 name|accessTime
 operator|=
 name|accessTime
+expr_stmt|;
+name|this
+operator|.
+name|xAttrFeature
+operator|=
+name|xAttrFeature
 expr_stmt|;
 block|}
 DECL|method|SnapshotCopy (INode inode)
@@ -311,6 +350,15 @@ operator|=
 name|inode
 operator|.
 name|getAccessTime
+argument_list|()
+expr_stmt|;
+name|this
+operator|.
+name|xAttrFeature
+operator|=
+name|inode
+operator|.
+name|getXAttrFeature
 argument_list|()
 expr_stmt|;
 block|}
@@ -489,6 +537,19 @@ parameter_list|()
 block|{
 return|return
 name|accessTime
+return|;
+block|}
+annotation|@
+name|Override
+DECL|method|getXAttrFeature ()
+specifier|public
+specifier|final
+name|XAttrFeature
+name|getXAttrFeature
+parameter_list|()
+block|{
+return|return
+name|xAttrFeature
 return|;
 block|}
 block|}

@@ -2280,7 +2280,7 @@ argument_list|()
 decl_stmt|;
 name|assertEquals
 argument_list|(
-literal|20
+literal|22
 argument_list|,
 name|cacheSet
 operator|.
@@ -2389,7 +2389,7 @@ argument_list|()
 expr_stmt|;
 name|assertEquals
 argument_list|(
-literal|20
+literal|22
 argument_list|,
 name|cacheSet
 operator|.
