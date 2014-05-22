@@ -1196,7 +1196,7 @@ name|when
 argument_list|(
 name|csContext
 operator|.
-name|getClusterResources
+name|getClusterResource
 argument_list|()
 argument_list|)
 operator|.
@@ -12742,7 +12742,7 @@ name|newRoot
 argument_list|,
 name|cs
 operator|.
-name|getClusterResources
+name|getClusterResource
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -12881,7 +12881,7 @@ name|newRoot
 argument_list|,
 name|cs
 operator|.
-name|getClusterResources
+name|getClusterResource
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -15052,7 +15052,7 @@ name|when
 argument_list|(
 name|csContext
 operator|.
-name|getClusterResources
+name|getClusterResource
 argument_list|()
 argument_list|)
 operator|.

@@ -186,9 +186,9 @@ name|RMContext
 name|getRMContext
 parameter_list|()
 function_decl|;
-DECL|method|getClusterResources ()
+DECL|method|getClusterResource ()
 name|Resource
-name|getClusterResources
+name|getClusterResource
 parameter_list|()
 function_decl|;
 comment|/**    * Get the yarn configuration.    */

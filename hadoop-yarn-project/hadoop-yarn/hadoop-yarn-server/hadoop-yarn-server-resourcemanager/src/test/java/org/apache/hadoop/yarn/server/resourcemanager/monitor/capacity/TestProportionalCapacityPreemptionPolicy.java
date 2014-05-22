@@ -3898,7 +3898,7 @@ name|when
 argument_list|(
 name|mCS
 operator|.
-name|getClusterResources
+name|getClusterResource
 argument_list|()
 argument_list|)
 operator|.

@@ -83,6 +83,11 @@ DECL|class|SchedulerApplication
 specifier|public
 class|class
 name|SchedulerApplication
+parameter_list|<
+name|T
+extends|extends
+name|SchedulerApplicationAttempt
+parameter_list|>
 block|{
 DECL|field|queue
 specifier|private
@@ -97,7 +102,7 @@ name|user
 decl_stmt|;
 DECL|field|currentAttempt
 specifier|private
-name|SchedulerApplicationAttempt
+name|T
 name|currentAttempt
 decl_stmt|;
 DECL|method|SchedulerApplication (Queue queue, String user)
@@ -162,7 +167,7 @@ return|;
 block|}
 DECL|method|getCurrentAppAttempt ()
 specifier|public
-name|SchedulerApplicationAttempt
+name|T
 name|getCurrentAppAttempt
 parameter_list|()
 block|{
@@ -170,12 +175,12 @@ return|return
 name|currentAttempt
 return|;
 block|}
-DECL|method|setCurrentAppAttempt (SchedulerApplicationAttempt currentAttempt)
+DECL|method|setCurrentAppAttempt (T currentAttempt)
 specifier|public
 name|void
 name|setCurrentAppAttempt
 parameter_list|(
-name|SchedulerApplicationAttempt
+name|T
 name|currentAttempt
 parameter_list|)
 block|{

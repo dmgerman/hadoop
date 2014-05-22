@@ -668,7 +668,7 @@ argument_list|()
 operator|/
 name|scheduler
 operator|.
-name|getClusterCapacity
+name|getClusterResource
 argument_list|()
 operator|.
 name|getMemory
@@ -690,7 +690,7 @@ argument_list|()
 operator|/
 name|scheduler
 operator|.
-name|getClusterCapacity
+name|getClusterResource
 argument_list|()
 operator|.
 name|getMemory

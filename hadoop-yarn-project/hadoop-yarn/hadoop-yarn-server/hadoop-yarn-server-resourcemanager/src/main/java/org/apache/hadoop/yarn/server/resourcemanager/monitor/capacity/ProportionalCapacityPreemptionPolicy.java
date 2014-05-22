@@ -964,7 +964,7 @@ name|clone
 argument_list|(
 name|scheduler
 operator|.
-name|getClusterResources
+name|getClusterResource
 argument_list|()
 argument_list|)
 decl_stmt|;

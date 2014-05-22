@@ -441,6 +441,20 @@ argument_list|>
 name|getQueueUserAclInfo
 parameter_list|()
 function_decl|;
+comment|/**    * Get the whole resource capacity of the cluster.    * @return the whole resource capacity of the cluster.    */
+annotation|@
+name|LimitedPrivate
+argument_list|(
+literal|"yarn"
+argument_list|)
+annotation|@
+name|Unstable
+DECL|method|getClusterResource ()
+specifier|public
+name|Resource
+name|getClusterResource
+parameter_list|()
+function_decl|;
 comment|/**    * Get minimum allocatable {@link Resource}.    * @return minimum allocatable resource    */
 annotation|@
 name|Public
