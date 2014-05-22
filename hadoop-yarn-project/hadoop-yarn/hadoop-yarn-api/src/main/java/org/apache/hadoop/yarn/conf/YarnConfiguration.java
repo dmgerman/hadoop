@@ -4366,6 +4366,30 @@ literal|60
 operator|*
 literal|5
 decl_stmt|;
+comment|/** The Kerberos principal for the timeline server.*/
+DECL|field|TIMELINE_SERVICE_PRINCIPAL
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|TIMELINE_SERVICE_PRINCIPAL
+init|=
+name|TIMELINE_SERVICE_PREFIX
+operator|+
+literal|"principal"
+decl_stmt|;
+comment|/** The Kerberos keytab for the timeline server.*/
+DECL|field|TIMELINE_SERVICE_KEYTAB
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|TIMELINE_SERVICE_KEYTAB
+init|=
+name|TIMELINE_SERVICE_PREFIX
+operator|+
+literal|"keytab"
+decl_stmt|;
 comment|////////////////////////////////
 comment|// Other Configs
 comment|////////////////////////////////

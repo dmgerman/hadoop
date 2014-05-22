@@ -1398,6 +1398,32 @@ name|getTaskId
 argument_list|()
 argument_list|)
 decl_stmt|;
+if|if
+condition|(
+name|taskInfo
+operator|==
+literal|null
+condition|)
+block|{
+name|LOG
+operator|.
+name|warn
+argument_list|(
+literal|"TaskInfo is null for TaskAttemptUnsuccessfulCompletionEvent"
+operator|+
+literal|" taskId:  "
+operator|+
+name|event
+operator|.
+name|getTaskId
+argument_list|()
+operator|.
+name|toString
+argument_list|()
+argument_list|)
+expr_stmt|;
+return|return;
+block|}
 name|TaskAttemptInfo
 name|attemptInfo
 init|=
@@ -1413,6 +1439,32 @@ name|getTaskAttemptId
 argument_list|()
 argument_list|)
 decl_stmt|;
+if|if
+condition|(
+name|attemptInfo
+operator|==
+literal|null
+condition|)
+block|{
+name|LOG
+operator|.
+name|warn
+argument_list|(
+literal|"AttemptInfo is null for TaskAttemptUnsuccessfulCompletionEvent"
+operator|+
+literal|" taskAttemptId:  "
+operator|+
+name|event
+operator|.
+name|getTaskAttemptId
+argument_list|()
+operator|.
+name|toString
+argument_list|()
+argument_list|)
+expr_stmt|;
+return|return;
+block|}
 name|attemptInfo
 operator|.
 name|finishTime

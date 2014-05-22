@@ -120,6 +120,42 @@ name|Snapshot
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|server
+operator|.
+name|namenode
+operator|.
+name|AclFeature
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|server
+operator|.
+name|namenode
+operator|.
+name|XAttrFeature
+import|;
+end_import
+
 begin_comment
 comment|/**  * An {@link INode} representing a symbolic link.  */
 end_comment
@@ -506,6 +542,96 @@ operator|.
 name|println
 argument_list|()
 expr_stmt|;
+block|}
+comment|/**    * getAclFeature is not overridden because it is needed for resolving    * symlinks.   @Override   final AclFeature getAclFeature(int snapshotId) {     throw new UnsupportedOperationException("ACLs are not supported on symlinks");   }   */
+annotation|@
+name|Override
+DECL|method|removeAclFeature ()
+specifier|public
+name|void
+name|removeAclFeature
+parameter_list|()
+block|{
+throw|throw
+operator|new
+name|UnsupportedOperationException
+argument_list|(
+literal|"ACLs are not supported on symlinks"
+argument_list|)
+throw|;
+block|}
+annotation|@
+name|Override
+DECL|method|addAclFeature (AclFeature f)
+specifier|public
+name|void
+name|addAclFeature
+parameter_list|(
+name|AclFeature
+name|f
+parameter_list|)
+block|{
+throw|throw
+operator|new
+name|UnsupportedOperationException
+argument_list|(
+literal|"ACLs are not supported on symlinks"
+argument_list|)
+throw|;
+block|}
+annotation|@
+name|Override
+DECL|method|getXAttrFeature (int snapshotId)
+specifier|final
+name|XAttrFeature
+name|getXAttrFeature
+parameter_list|(
+name|int
+name|snapshotId
+parameter_list|)
+block|{
+throw|throw
+operator|new
+name|UnsupportedOperationException
+argument_list|(
+literal|"XAttrs are not supported on symlinks"
+argument_list|)
+throw|;
+block|}
+annotation|@
+name|Override
+DECL|method|removeXAttrFeature ()
+specifier|public
+name|void
+name|removeXAttrFeature
+parameter_list|()
+block|{
+throw|throw
+operator|new
+name|UnsupportedOperationException
+argument_list|(
+literal|"XAttrs are not supported on symlinks"
+argument_list|)
+throw|;
+block|}
+annotation|@
+name|Override
+DECL|method|addXAttrFeature (XAttrFeature f)
+specifier|public
+name|void
+name|addXAttrFeature
+parameter_list|(
+name|XAttrFeature
+name|f
+parameter_list|)
+block|{
+throw|throw
+operator|new
+name|UnsupportedOperationException
+argument_list|(
+literal|"XAttrs are not supported on symlinks"
+argument_list|)
+throw|;
 block|}
 block|}
 end_class

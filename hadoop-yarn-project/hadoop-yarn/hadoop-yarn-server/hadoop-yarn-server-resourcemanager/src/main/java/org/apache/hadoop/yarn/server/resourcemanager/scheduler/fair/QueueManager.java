@@ -1580,7 +1580,7 @@ name|initialize
 argument_list|(
 name|scheduler
 operator|.
-name|getClusterCapacity
+name|getClusterResource
 argument_list|()
 argument_list|)
 expr_stmt|;

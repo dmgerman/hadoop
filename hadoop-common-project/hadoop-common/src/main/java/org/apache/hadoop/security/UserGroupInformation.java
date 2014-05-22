@@ -6281,7 +6281,6 @@ end_comment
 begin_function
 DECL|method|addToken (Token<? extends TokenIdentifier> token)
 specifier|public
-specifier|synchronized
 name|boolean
 name|addToken
 parameter_list|(
@@ -6323,7 +6322,6 @@ end_comment
 begin_function
 DECL|method|addToken (Text alias, Token<? extends TokenIdentifier> token)
 specifier|public
-specifier|synchronized
 name|boolean
 name|addToken
 parameter_list|(
@@ -6339,6 +6337,11 @@ argument_list|>
 name|token
 parameter_list|)
 block|{
+synchronized|synchronized
+init|(
+name|subject
+init|)
+block|{
 name|getCredentialsInternal
 argument_list|()
 operator|.
@@ -6353,6 +6356,7 @@ return|return
 literal|true
 return|;
 block|}
+block|}
 end_function
 
 begin_comment
@@ -6360,9 +6364,8 @@ comment|/**    * Obtain the collection of tokens associated with this user.    *
 end_comment
 
 begin_function
-specifier|public
-specifier|synchronized
 DECL|method|getTokens ()
+specifier|public
 name|Collection
 argument_list|<
 name|Token
@@ -6374,6 +6377,11 @@ argument_list|>
 argument_list|>
 name|getTokens
 parameter_list|()
+block|{
+synchronized|synchronized
+init|(
+name|subject
+init|)
 block|{
 return|return
 name|Collections
@@ -6398,6 +6406,7 @@ argument_list|)
 argument_list|)
 return|;
 block|}
+block|}
 end_function
 
 begin_comment
@@ -6407,10 +6416,14 @@ end_comment
 begin_function
 DECL|method|getCredentials ()
 specifier|public
-specifier|synchronized
 name|Credentials
 name|getCredentials
 parameter_list|()
+block|{
+synchronized|synchronized
+init|(
+name|subject
+init|)
 block|{
 name|Credentials
 name|creds
@@ -6470,6 +6483,7 @@ return|return
 name|creds
 return|;
 block|}
+block|}
 end_function
 
 begin_comment
@@ -6479,13 +6493,17 @@ end_comment
 begin_function
 DECL|method|addCredentials (Credentials credentials)
 specifier|public
-specifier|synchronized
 name|void
 name|addCredentials
 parameter_list|(
 name|Credentials
 name|credentials
 parameter_list|)
+block|{
+synchronized|synchronized
+init|(
+name|subject
+init|)
 block|{
 name|getCredentialsInternal
 argument_list|()
@@ -6495,6 +6513,7 @@ argument_list|(
 name|credentials
 argument_list|)
 expr_stmt|;
+block|}
 block|}
 end_function
 

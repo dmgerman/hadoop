@@ -636,7 +636,7 @@ specifier|final
 name|NfsExports
 name|hostsMatcher
 decl_stmt|;
-DECL|method|RpcProgramMountd (Configuration config, DatagramSocket registrationSocket)
+DECL|method|RpcProgramMountd (Configuration config, DatagramSocket registrationSocket, boolean allowInsecurePorts)
 specifier|public
 name|RpcProgramMountd
 parameter_list|(
@@ -645,6 +645,9 @@ name|config
 parameter_list|,
 name|DatagramSocket
 name|registrationSocket
+parameter_list|,
+name|boolean
+name|allowInsecurePorts
 parameter_list|)
 throws|throws
 name|IOException
@@ -672,6 +675,8 @@ argument_list|,
 name|VERSION_3
 argument_list|,
 name|registrationSocket
+argument_list|,
+name|allowInsecurePorts
 argument_list|)
 expr_stmt|;
 name|exports

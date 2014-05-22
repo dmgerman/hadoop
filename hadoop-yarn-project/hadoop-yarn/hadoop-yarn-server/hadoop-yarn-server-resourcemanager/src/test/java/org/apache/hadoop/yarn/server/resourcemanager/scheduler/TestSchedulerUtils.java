@@ -2712,21 +2712,23 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|verifyAppAddedAndRemovedFromScheduler ( final Map<ApplicationId, SchedulerApplication> applications, EventHandler<SchedulerEvent> handler, String queueName)
 specifier|public
 specifier|static
-parameter_list|<
-name|T
-parameter_list|>
 name|SchedulerApplication
+argument_list|<
+name|SchedulerApplicationAttempt
+argument_list|>
+DECL|method|verifyAppAddedAndRemovedFromScheduler ( Map<ApplicationId, SchedulerApplication<SchedulerApplicationAttempt>> applications, EventHandler<SchedulerEvent> handler, String queueName)
 name|verifyAppAddedAndRemovedFromScheduler
 parameter_list|(
-specifier|final
 name|Map
 argument_list|<
 name|ApplicationId
 argument_list|,
 name|SchedulerApplication
+argument_list|<
+name|SchedulerApplicationAttempt
+argument_list|>
 argument_list|>
 name|applications
 parameter_list|,
@@ -2778,6 +2780,9 @@ name|appAddedEvent
 argument_list|)
 expr_stmt|;
 name|SchedulerApplication
+argument_list|<
+name|SchedulerApplicationAttempt
+argument_list|>
 name|app
 init|=
 name|applications

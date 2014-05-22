@@ -80,7 +80,7 @@ name|Mountd
 extends|extends
 name|MountdBase
 block|{
-DECL|method|Mountd (Configuration config, DatagramSocket registrationSocket)
+DECL|method|Mountd (Configuration config, DatagramSocket registrationSocket, boolean allowInsecurePorts)
 specifier|public
 name|Mountd
 parameter_list|(
@@ -89,6 +89,9 @@ name|config
 parameter_list|,
 name|DatagramSocket
 name|registrationSocket
+parameter_list|,
+name|boolean
+name|allowInsecurePorts
 parameter_list|)
 throws|throws
 name|IOException
@@ -101,6 +104,8 @@ argument_list|(
 name|config
 argument_list|,
 name|registrationSocket
+argument_list|,
+name|allowInsecurePorts
 argument_list|)
 argument_list|)
 expr_stmt|;
@@ -134,6 +139,8 @@ argument_list|(
 name|config
 argument_list|,
 literal|null
+argument_list|,
+literal|true
 argument_list|)
 decl_stmt|;
 name|mountd

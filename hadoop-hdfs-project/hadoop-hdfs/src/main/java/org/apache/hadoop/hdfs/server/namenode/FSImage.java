@@ -1419,7 +1419,7 @@ operator|.
 name|getOptionString
 argument_list|()
 operator|+
-literal|"\" option if a rolling upgraded is already started;"
+literal|"\" option if a rolling upgrade is already started;"
 operator|+
 literal|" or restart NameNode with the \""
 operator|+

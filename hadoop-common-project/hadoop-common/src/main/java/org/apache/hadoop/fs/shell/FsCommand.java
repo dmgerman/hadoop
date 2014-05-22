@@ -277,6 +277,15 @@ operator|.
 name|class
 argument_list|)
 expr_stmt|;
+name|factory
+operator|.
+name|registerCommands
+argument_list|(
+name|XAttrCommands
+operator|.
+name|class
+argument_list|)
+expr_stmt|;
 block|}
 DECL|method|FsCommand ()
 specifier|protected

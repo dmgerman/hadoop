@@ -4921,6 +4921,46 @@ name|minReplication
 argument_list|)
 throw|;
 block|}
+comment|/**    * Check if a block is replicated to at least the minimum replication.    */
+DECL|method|isSufficientlyReplicated (BlockInfo b)
+specifier|public
+name|boolean
+name|isSufficientlyReplicated
+parameter_list|(
+name|BlockInfo
+name|b
+parameter_list|)
+block|{
+comment|// Compare against the lesser of the minReplication and number of live DNs.
+specifier|final
+name|int
+name|replication
+init|=
+name|Math
+operator|.
+name|min
+argument_list|(
+name|minReplication
+argument_list|,
+name|getDatanodeManager
+argument_list|()
+operator|.
+name|getNumLiveDataNodes
+argument_list|()
+argument_list|)
+decl_stmt|;
+return|return
+name|countNodes
+argument_list|(
+name|b
+argument_list|)
+operator|.
+name|liveReplicas
+argument_list|()
+operator|>=
+name|replication
+return|;
+block|}
 comment|/**    * return a list of blocks& their locations on<code>datanode</code> whose    * total size is<code>size</code>    *     * @param datanode on which blocks are located    * @param size total size of blocks    */
 DECL|method|getBlocks (DatanodeID datanode, long size )
 specifier|public

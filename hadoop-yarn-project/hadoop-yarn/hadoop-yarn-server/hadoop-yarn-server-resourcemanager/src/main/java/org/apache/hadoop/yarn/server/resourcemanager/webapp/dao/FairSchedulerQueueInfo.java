@@ -386,7 +386,7 @@ name|ResourceInfo
 argument_list|(
 name|scheduler
 operator|.
-name|getClusterCapacity
+name|getClusterResource
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -465,7 +465,7 @@ argument_list|()
 argument_list|,
 name|scheduler
 operator|.
-name|getClusterCapacity
+name|getClusterResource
 argument_list|()
 argument_list|)
 argument_list|)

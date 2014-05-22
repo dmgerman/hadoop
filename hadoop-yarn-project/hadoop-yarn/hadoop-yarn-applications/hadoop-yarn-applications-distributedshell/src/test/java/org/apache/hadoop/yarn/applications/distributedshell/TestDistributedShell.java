@@ -590,6 +590,17 @@ argument_list|,
 literal|"target"
 argument_list|)
 expr_stmt|;
+name|conf
+operator|.
+name|setBoolean
+argument_list|(
+name|YarnConfiguration
+operator|.
+name|TIMELINE_SERVICE_ENABLED
+argument_list|,
+literal|true
+argument_list|)
+expr_stmt|;
 if|if
 condition|(
 name|yarnCluster

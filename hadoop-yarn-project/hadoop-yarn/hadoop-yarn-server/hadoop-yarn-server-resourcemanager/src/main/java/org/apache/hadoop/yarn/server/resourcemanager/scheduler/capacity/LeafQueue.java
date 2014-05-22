@@ -1385,7 +1385,7 @@ name|resourceCalculator
 argument_list|,
 name|cs
 operator|.
-name|getClusterResources
+name|getClusterResource
 argument_list|()
 argument_list|,
 name|this
@@ -1409,7 +1409,7 @@ name|resourceCalculator
 argument_list|,
 name|cs
 operator|.
-name|getClusterResources
+name|getClusterResource
 argument_list|()
 argument_list|,
 name|this
@@ -1508,7 +1508,7 @@ name|setupQueueConfigs
 argument_list|(
 name|cs
 operator|.
-name|getClusterResources
+name|getClusterResource
 argument_list|()
 argument_list|,
 name|capacity

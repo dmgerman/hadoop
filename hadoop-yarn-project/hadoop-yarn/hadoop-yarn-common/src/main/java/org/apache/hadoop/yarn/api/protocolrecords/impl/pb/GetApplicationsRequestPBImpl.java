@@ -684,7 +684,7 @@ name|builder
 operator|.
 name|setFinishBegin
 argument_list|(
-name|start
+name|finish
 operator|.
 name|getMinimumLong
 argument_list|()
@@ -694,7 +694,7 @@ name|builder
 operator|.
 name|setFinishEnd
 argument_list|(
-name|start
+name|finish
 operator|.
 name|getMaximumLong
 argument_list|()

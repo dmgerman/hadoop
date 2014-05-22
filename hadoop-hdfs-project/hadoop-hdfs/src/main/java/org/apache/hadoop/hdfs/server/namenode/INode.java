@@ -781,6 +781,114 @@ return|return
 name|nodeToUpdate
 return|;
 block|}
+comment|/**    * @param snapshotId    *          if it is not {@link Snapshot#CURRENT_STATE_ID}, get the result    *          from the given snapshot; otherwise, get the result from the    *          current inode.    * @return XAttrFeature    */
+DECL|method|getXAttrFeature (int snapshotId)
+specifier|abstract
+name|XAttrFeature
+name|getXAttrFeature
+parameter_list|(
+name|int
+name|snapshotId
+parameter_list|)
+function_decl|;
+annotation|@
+name|Override
+DECL|method|getXAttrFeature ()
+specifier|public
+specifier|final
+name|XAttrFeature
+name|getXAttrFeature
+parameter_list|()
+block|{
+return|return
+name|getXAttrFeature
+argument_list|(
+name|Snapshot
+operator|.
+name|CURRENT_STATE_ID
+argument_list|)
+return|;
+block|}
+comment|/**    * Set<code>XAttrFeature</code>     */
+DECL|method|addXAttrFeature (XAttrFeature xAttrFeature)
+specifier|abstract
+name|void
+name|addXAttrFeature
+parameter_list|(
+name|XAttrFeature
+name|xAttrFeature
+parameter_list|)
+function_decl|;
+DECL|method|addXAttrFeature (XAttrFeature xAttrFeature, int latestSnapshotId)
+specifier|final
+name|INode
+name|addXAttrFeature
+parameter_list|(
+name|XAttrFeature
+name|xAttrFeature
+parameter_list|,
+name|int
+name|latestSnapshotId
+parameter_list|)
+throws|throws
+name|QuotaExceededException
+block|{
+specifier|final
+name|INode
+name|nodeToUpdate
+init|=
+name|recordModification
+argument_list|(
+name|latestSnapshotId
+argument_list|)
+decl_stmt|;
+name|nodeToUpdate
+operator|.
+name|addXAttrFeature
+argument_list|(
+name|xAttrFeature
+argument_list|)
+expr_stmt|;
+return|return
+name|nodeToUpdate
+return|;
+block|}
+comment|/**    * Remove<code>XAttrFeature</code>     */
+DECL|method|removeXAttrFeature ()
+specifier|abstract
+name|void
+name|removeXAttrFeature
+parameter_list|()
+function_decl|;
+DECL|method|removeXAttrFeature (int lastestSnapshotId)
+specifier|final
+name|INode
+name|removeXAttrFeature
+parameter_list|(
+name|int
+name|lastestSnapshotId
+parameter_list|)
+throws|throws
+name|QuotaExceededException
+block|{
+specifier|final
+name|INode
+name|nodeToUpdate
+init|=
+name|recordModification
+argument_list|(
+name|lastestSnapshotId
+argument_list|)
+decl_stmt|;
+name|nodeToUpdate
+operator|.
+name|removeXAttrFeature
+argument_list|()
+expr_stmt|;
+return|return
+name|nodeToUpdate
+return|;
+block|}
 comment|/**    * @return if the given snapshot id is {@link Snapshot#CURRENT_STATE_ID},    *         return this; otherwise return the corresponding snapshot inode.    */
 DECL|method|getSnapshotINode (final int snapshotId)
 specifier|public

@@ -4020,6 +4020,8 @@ argument_list|,
 name|replication
 argument_list|,
 name|preferredBlockSize
+argument_list|,
+literal|null
 argument_list|)
 return|;
 block|}
@@ -4146,6 +4148,8 @@ argument_list|,
 literal|null
 argument_list|,
 name|modificationTime
+argument_list|,
+literal|null
 argument_list|)
 else|:
 operator|new
@@ -4164,6 +4168,8 @@ argument_list|,
 name|nsQuota
 argument_list|,
 name|dsQuota
+argument_list|,
+literal|null
 argument_list|)
 return|;
 block|}
