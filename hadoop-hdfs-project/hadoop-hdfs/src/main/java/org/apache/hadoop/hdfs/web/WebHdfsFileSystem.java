@@ -5356,7 +5356,7 @@ operator|.
 name|Op
 name|op
 init|=
-name|PutOpParam
+name|DeleteOpParam
 operator|.
 name|Op
 operator|.

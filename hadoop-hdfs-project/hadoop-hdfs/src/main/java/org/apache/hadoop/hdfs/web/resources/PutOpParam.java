@@ -242,16 +242,6 @@ operator|.
 name|HTTP_OK
 argument_list|)
 block|,
-DECL|enumConstant|DELETESNAPSHOT
-name|DELETESNAPSHOT
-argument_list|(
-literal|false
-argument_list|,
-name|HttpURLConnection
-operator|.
-name|HTTP_OK
-argument_list|)
-block|,
 DECL|enumConstant|RENAMESNAPSHOT
 name|RENAMESNAPSHOT
 argument_list|(
