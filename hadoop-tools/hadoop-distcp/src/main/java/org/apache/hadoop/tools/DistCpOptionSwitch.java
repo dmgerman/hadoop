@@ -319,6 +319,24 @@ literal|"unconditionally, even if they exist."
 argument_list|)
 argument_list|)
 block|,
+DECL|enumConstant|APPEND
+name|APPEND
+argument_list|(
+name|DistCpConstants
+operator|.
+name|CONF_LABEL_APPEND
+argument_list|,
+operator|new
+name|Option
+argument_list|(
+literal|"append"
+argument_list|,
+literal|false
+argument_list|,
+literal|"Reuse existing data in target files and append new data to them if possible"
+argument_list|)
+argument_list|)
+block|,
 comment|/**    * Should DisctpExecution be blocking    */
 DECL|enumConstant|BLOCKING
 name|BLOCKING

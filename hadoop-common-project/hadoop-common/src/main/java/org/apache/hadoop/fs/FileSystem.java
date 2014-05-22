@@ -6336,6 +6336,33 @@ throws|throws
 name|IOException
 block|{
 return|return
+name|getFileChecksum
+argument_list|(
+name|f
+argument_list|,
+name|Long
+operator|.
+name|MAX_VALUE
+argument_list|)
+return|;
+block|}
+comment|/**    * Get the checksum of a file, from the beginning of the file till the    * specific length.    * @param f The file path    * @param length The length of the file range for checksum calculation    * @return The file checksum.    */
+DECL|method|getFileChecksum (Path f, final long length)
+specifier|public
+name|FileChecksum
+name|getFileChecksum
+parameter_list|(
+name|Path
+name|f
+parameter_list|,
+specifier|final
+name|long
+name|length
+parameter_list|)
+throws|throws
+name|IOException
+block|{
+return|return
 literal|null
 return|;
 block|}

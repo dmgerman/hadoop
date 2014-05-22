@@ -797,6 +797,10 @@ name|getUriPath
 argument_list|(
 name|f
 argument_list|)
+argument_list|,
+name|Long
+operator|.
+name|MAX_VALUE
 argument_list|)
 return|;
 block|}

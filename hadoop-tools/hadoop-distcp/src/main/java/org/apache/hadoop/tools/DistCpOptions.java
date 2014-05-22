@@ -145,6 +145,13 @@ name|overwrite
 init|=
 literal|false
 decl_stmt|;
+DECL|field|append
+specifier|private
+name|boolean
+name|append
+init|=
+literal|false
+decl_stmt|;
 DECL|field|skipCRC
 specifier|private
 name|boolean
@@ -791,6 +798,43 @@ operator|=
 name|overwrite
 expr_stmt|;
 block|}
+comment|/**    * @return whether we can append new data to target files    */
+DECL|method|shouldAppend ()
+specifier|public
+name|boolean
+name|shouldAppend
+parameter_list|()
+block|{
+return|return
+name|append
+return|;
+block|}
+comment|/**    * Set if we want to append new data to target files. This is valid only with    * update option and CRC is not skipped.    */
+DECL|method|setAppend (boolean append)
+specifier|public
+name|void
+name|setAppend
+parameter_list|(
+name|boolean
+name|append
+parameter_list|)
+block|{
+name|validate
+argument_list|(
+name|DistCpOptionSwitch
+operator|.
+name|APPEND
+argument_list|,
+name|append
+argument_list|)
+expr_stmt|;
+name|this
+operator|.
+name|append
+operator|=
+name|append
+expr_stmt|;
+block|}
 comment|/**    * Should CRC/checksum check be skipped while checking files are identical    *    * @return true if checksum check should be skipped while checking files are    *         identical. false otherwise    */
 DECL|method|shouldSkipCRC ()
 specifier|public
@@ -1283,6 +1327,23 @@ operator|.
 name|skipCRC
 operator|)
 decl_stmt|;
+name|boolean
+name|append
+init|=
+operator|(
+name|option
+operator|==
+name|DistCpOptionSwitch
+operator|.
+name|APPEND
+condition|?
+name|value
+else|:
+name|this
+operator|.
+name|append
+operator|)
+decl_stmt|;
 if|if
 condition|(
 name|syncFolder
@@ -1352,6 +1413,37 @@ operator|new
 name|IllegalArgumentException
 argument_list|(
 literal|"Skip CRC is valid only with update options"
+argument_list|)
+throw|;
+block|}
+if|if
+condition|(
+operator|!
+name|syncFolder
+operator|&&
+name|append
+condition|)
+block|{
+throw|throw
+operator|new
+name|IllegalArgumentException
+argument_list|(
+literal|"Append is valid only with update options"
+argument_list|)
+throw|;
+block|}
+if|if
+condition|(
+name|skipCRC
+operator|&&
+name|append
+condition|)
+block|{
+throw|throw
+operator|new
+name|IllegalArgumentException
+argument_list|(
+literal|"Append is disallowed when skipping CRC"
 argument_list|)
 throw|;
 block|}
@@ -1453,6 +1545,24 @@ operator|.
 name|valueOf
 argument_list|(
 name|overwrite
+argument_list|)
+argument_list|)
+expr_stmt|;
+name|DistCpOptionSwitch
+operator|.
+name|addToConf
+argument_list|(
+name|conf
+argument_list|,
+name|DistCpOptionSwitch
+operator|.
+name|APPEND
+argument_list|,
+name|String
+operator|.
+name|valueOf
+argument_list|(
+name|append
 argument_list|)
 argument_list|)
 expr_stmt|;
