@@ -33,6 +33,8 @@ operator|.
 name|classification
 operator|.
 name|InterfaceAudience
+operator|.
+name|Private
 import|;
 end_import
 
@@ -47,6 +49,8 @@ operator|.
 name|classification
 operator|.
 name|InterfaceStability
+operator|.
+name|Unstable
 import|;
 end_import
 
@@ -64,14 +68,30 @@ name|Service
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|api
+operator|.
+name|records
+operator|.
+name|timeline
+operator|.
+name|TimelineEntity
+import|;
+end_import
+
 begin_interface
 annotation|@
-name|InterfaceAudience
-operator|.
 name|Private
 annotation|@
-name|InterfaceStability
-operator|.
 name|Unstable
 DECL|interface|TimelineStore
 specifier|public
@@ -83,7 +103,18 @@ extends|,
 name|TimelineReader
 extends|,
 name|TimelineWriter
-block|{ }
+block|{
+comment|/**    * The system filter which will be automatically added to a    * {@link TimelineEntity}'s primary filter section when storing the entity.    * The filter key is case sensitive. Users are supposed not to use the key    * reserved by the timeline system.    */
+annotation|@
+name|Private
+DECL|enum|SystemFilter
+enum|enum
+name|SystemFilter
+block|{
+DECL|enumConstant|ENTITY_OWNER
+name|ENTITY_OWNER
+block|}
+block|}
 end_interface
 
 end_unit
