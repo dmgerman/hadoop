@@ -2060,11 +2060,15 @@ argument_list|()
 argument_list|)
 decl_stmt|;
 comment|// check if there is existing entity
-try|try
-block|{
 name|TimelineEntity
 name|existingEntity
 init|=
+literal|null
+decl_stmt|;
+try|try
+block|{
+name|existingEntity
+operator|=
 name|store
 operator|.
 name|getEntity
@@ -2088,7 +2092,7 @@ operator|.
 name|PRIMARY_FILTERS
 argument_list|)
 argument_list|)
-decl_stmt|;
+expr_stmt|;
 if|if
 condition|(
 name|existingEntity
@@ -2197,8 +2201,17 @@ argument_list|)
 expr_stmt|;
 continue|continue;
 block|}
-comment|// inject owner information for the access check
+comment|// inject owner information for the access check if this is the first
+comment|// time to post the entity, in case it's the admin who is updating
+comment|// the timeline data.
 try|try
+block|{
+if|if
+condition|(
+name|existingEntity
+operator|==
+literal|null
+condition|)
 block|{
 name|injectOwnerInfo
 argument_list|(
@@ -2216,6 +2229,7 @@ name|getShortUserName
 argument_list|()
 argument_list|)
 expr_stmt|;
+block|}
 block|}
 catch|catch
 parameter_list|(

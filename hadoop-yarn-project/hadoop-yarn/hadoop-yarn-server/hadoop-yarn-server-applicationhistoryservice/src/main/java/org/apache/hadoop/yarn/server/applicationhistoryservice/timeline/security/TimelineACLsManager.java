@@ -146,9 +146,9 @@ name|hadoop
 operator|.
 name|yarn
 operator|.
-name|conf
+name|exceptions
 operator|.
-name|YarnConfiguration
+name|YarnException
 import|;
 end_import
 
@@ -162,9 +162,9 @@ name|hadoop
 operator|.
 name|yarn
 operator|.
-name|exceptions
+name|security
 operator|.
-name|YarnException
+name|AdminACLsManager
 import|;
 end_import
 
@@ -252,10 +252,10 @@ operator|.
 name|class
 argument_list|)
 decl_stmt|;
-DECL|field|aclsEnabled
+DECL|field|adminAclsManager
 specifier|private
-name|boolean
-name|aclsEnabled
+name|AdminACLsManager
+name|adminAclsManager
 decl_stmt|;
 DECL|method|TimelineACLsManager (Configuration conf)
 specifier|public
@@ -265,19 +265,14 @@ name|Configuration
 name|conf
 parameter_list|)
 block|{
-name|aclsEnabled
+name|this
+operator|.
+name|adminAclsManager
 operator|=
-name|conf
-operator|.
-name|getBoolean
+operator|new
+name|AdminACLsManager
 argument_list|(
-name|YarnConfiguration
-operator|.
-name|YARN_ACL_ENABLE
-argument_list|,
-name|YarnConfiguration
-operator|.
-name|DEFAULT_YARN_ACL_ENABLE
+name|conf
 argument_list|)
 expr_stmt|;
 block|}
@@ -337,7 +332,10 @@ block|}
 if|if
 condition|(
 operator|!
-name|aclsEnabled
+name|adminAclsManager
+operator|.
+name|areACLsEnabled
+argument_list|()
 condition|)
 block|{
 return|return
@@ -417,8 +415,8 @@ operator|.
 name|toString
 argument_list|()
 decl_stmt|;
-comment|// TODO: Currently we just check the user is the timeline entity owner. In
-comment|// the future, we need to check whether the user is admin or is in the
+comment|// TODO: Currently we just check the user is the admin or the timeline
+comment|// entity owner. In the future, we need to check whether the user is in the
 comment|// allowed user/group list
 if|if
 condition|(
@@ -426,6 +424,14 @@ name|callerUGI
 operator|!=
 literal|null
 operator|&&
+operator|(
+name|adminAclsManager
+operator|.
+name|isAdmin
+argument_list|(
+name|callerUGI
+argument_list|)
+operator|||
 name|callerUGI
 operator|.
 name|getShortUserName
@@ -435,6 +441,7 @@ name|equals
 argument_list|(
 name|owner
 argument_list|)
+operator|)
 condition|)
 block|{
 return|return
@@ -449,21 +456,31 @@ annotation|@
 name|Private
 annotation|@
 name|VisibleForTesting
-DECL|method|setACLsEnabled (boolean aclsEnabled)
 specifier|public
-name|void
-name|setACLsEnabled
+name|AdminACLsManager
+DECL|method|setAdminACLsManager (AdminACLsManager adminAclsManager)
+name|setAdminACLsManager
 parameter_list|(
-name|boolean
-name|aclsEnabled
+name|AdminACLsManager
+name|adminAclsManager
 parameter_list|)
 block|{
+name|AdminACLsManager
+name|oldAdminACLsManager
+init|=
 name|this
 operator|.
-name|aclsEnabled
+name|adminAclsManager
+decl_stmt|;
+name|this
+operator|.
+name|adminAclsManager
 operator|=
-name|aclsEnabled
+name|adminAclsManager
 expr_stmt|;
+return|return
+name|oldAdminACLsManager
+return|;
 block|}
 block|}
 end_class
