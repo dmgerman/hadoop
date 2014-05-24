@@ -981,6 +981,46 @@ name|HADOOP_SECURITY_SASL_PROPS_RESOLVER_CLASS
 init|=
 literal|"hadoop.security.saslproperties.resolver.class"
 decl_stmt|;
+comment|/** See<a href="{@docRoot}/../core-default.html">core-default.xml</a> */
+DECL|field|HADOOP_SECURITY_CRYPTO_CODEC_CLASS_KEY
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|HADOOP_SECURITY_CRYPTO_CODEC_CLASS_KEY
+init|=
+literal|"hadoop.security.crypto.codec.class"
+decl_stmt|;
+comment|/** See<a href="{@docRoot}/../core-default.html">core-default.xml</a> */
+DECL|field|HADOOP_SECURITY_CRYPTO_JCE_PROVIDER_KEY
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|HADOOP_SECURITY_CRYPTO_JCE_PROVIDER_KEY
+init|=
+literal|"hadoop.security.crypto.jce.provider"
+decl_stmt|;
+comment|/** See<a href="{@docRoot}/../core-default.html">core-default.xml</a> */
+DECL|field|HADOOP_SECURITY_CRYPTO_BUFFER_SIZE_KEY
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|HADOOP_SECURITY_CRYPTO_BUFFER_SIZE_KEY
+init|=
+literal|"hadoop.security.crypto.buffer.size"
+decl_stmt|;
+comment|/** Defalt value for HADOOP_SECURITY_CRYPTO_BUFFER_SIZE_KEY */
+DECL|field|HADOOP_SECURITY_CRYPTO_BUFFER_SIZE_DEFAULT
+specifier|public
+specifier|static
+specifier|final
+name|int
+name|HADOOP_SECURITY_CRYPTO_BUFFER_SIZE_DEFAULT
+init|=
+literal|8192
+decl_stmt|;
 block|}
 end_class
 
