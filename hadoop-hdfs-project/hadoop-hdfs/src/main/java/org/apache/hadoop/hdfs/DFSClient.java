@@ -2965,6 +2965,11 @@ specifier|final
 name|long
 name|datanodeRestartTimeout
 decl_stmt|;
+DECL|field|dfsclientSlowIoWarningThresholdMs
+specifier|final
+name|long
+name|dfsclientSlowIoWarningThresholdMs
+decl_stmt|;
 DECL|field|useLegacyBlockReader
 specifier|final
 name|boolean
@@ -3702,6 +3707,21 @@ name|DFS_CLIENT_DATANODE_RESTART_TIMEOUT_DEFAULT
 argument_list|)
 operator|*
 literal|1000
+expr_stmt|;
+name|dfsclientSlowIoWarningThresholdMs
+operator|=
+name|conf
+operator|.
+name|getLong
+argument_list|(
+name|DFSConfigKeys
+operator|.
+name|DFS_CLIENT_SLOW_IO_WARNING_THRESHOLD_KEY
+argument_list|,
+name|DFSConfigKeys
+operator|.
+name|DFS_CLIENT_SLOW_IO_WARNING_THRESHOLD_DEFAULT
+argument_list|)
 expr_stmt|;
 block|}
 DECL|method|isUseLegacyBlockReaderLocal ()
