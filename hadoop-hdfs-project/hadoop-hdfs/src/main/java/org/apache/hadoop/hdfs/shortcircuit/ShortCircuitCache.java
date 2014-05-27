@@ -1949,29 +1949,101 @@ argument_list|()
 expr_stmt|;
 try|try
 block|{
-comment|// If the replica is stale, but we haven't purged it yet, let's do that.
-comment|// It would be a shame to evict a non-stale replica so that we could put
-comment|// a stale one into the cache.
+comment|// If the replica is stale or unusable, but we haven't purged it yet,
+comment|// let's do that.  It would be a shame to evict a non-stale replica so
+comment|// that we could put a stale or unusable one into the cache.
 if|if
 condition|(
-operator|(
 operator|!
 name|replica
 operator|.
 name|purged
-operator|)
-operator|&&
+condition|)
+block|{
+name|String
+name|purgeReason
+init|=
+literal|null
+decl_stmt|;
+if|if
+condition|(
+operator|!
+name|replica
+operator|.
+name|getDataStream
+argument_list|()
+operator|.
+name|getChannel
+argument_list|()
+operator|.
+name|isOpen
+argument_list|()
+condition|)
+block|{
+name|purgeReason
+operator|=
+literal|"purging replica because its data channel is closed."
+expr_stmt|;
+block|}
+elseif|else
+if|if
+condition|(
+operator|!
+name|replica
+operator|.
+name|getMetaStream
+argument_list|()
+operator|.
+name|getChannel
+argument_list|()
+operator|.
+name|isOpen
+argument_list|()
+condition|)
+block|{
+name|purgeReason
+operator|=
+literal|"purging replica because its meta channel is closed."
+expr_stmt|;
+block|}
+elseif|else
+if|if
+condition|(
 name|replica
 operator|.
 name|isStale
 argument_list|()
 condition|)
 block|{
+name|purgeReason
+operator|=
+literal|"purging replica because it is stale."
+expr_stmt|;
+block|}
+if|if
+condition|(
+name|purgeReason
+operator|!=
+literal|null
+condition|)
+block|{
+name|LOG
+operator|.
+name|debug
+argument_list|(
+name|this
+operator|+
+literal|": "
+operator|+
+name|purgeReason
+argument_list|)
+expr_stmt|;
 name|purge
 argument_list|(
 name|replica
 argument_list|)
 expr_stmt|;
+block|}
 block|}
 name|String
 name|addedString
