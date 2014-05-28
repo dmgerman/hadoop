@@ -594,6 +594,20 @@ end_import
 
 begin_import
 import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|util
+operator|.
+name|Time
+import|;
+end_import
+
+begin_import
+import|import
 name|com
 operator|.
 name|google
@@ -1065,9 +1079,9 @@ block|{
 name|long
 name|start
 init|=
-name|System
+name|Time
 operator|.
-name|currentTimeMillis
+name|monotonicNow
 argument_list|()
 decl_stmt|;
 name|imgDigest
@@ -1111,9 +1125,9 @@ expr_stmt|;
 name|long
 name|end
 init|=
-name|System
+name|Time
 operator|.
-name|currentTimeMillis
+name|monotonicNow
 argument_list|()
 decl_stmt|;
 name|LOG

@@ -11748,9 +11748,9 @@ init|)
 block|{
 name|lastDiskErrorCheck
 operator|=
-name|System
+name|Time
 operator|.
-name|currentTimeMillis
+name|monotonicNow
 argument_list|()
 expr_stmt|;
 block|}
