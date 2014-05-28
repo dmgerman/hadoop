@@ -4,7 +4,7 @@ comment|/**  * Licensed to the Apache Software Foundation (ASF) under one  * or 
 end_comment
 
 begin_package
-DECL|package|org.apache.hadoop.yarn.server.applicationhistoryservice.timeline
+DECL|package|org.apache.hadoop.yarn.server.timeline
 package|package
 name|org
 operator|.
@@ -15,8 +15,6 @@ operator|.
 name|yarn
 operator|.
 name|server
-operator|.
-name|applicationhistoryservice
 operator|.
 name|timeline
 package|;
@@ -33,8 +31,6 @@ operator|.
 name|classification
 operator|.
 name|InterfaceAudience
-operator|.
-name|Private
 import|;
 end_import
 
@@ -49,73 +45,103 @@ operator|.
 name|classification
 operator|.
 name|InterfaceStability
-operator|.
-name|Unstable
 import|;
 end_import
 
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|service
-operator|.
-name|Service
-import|;
-end_import
+begin_comment
+comment|/**  * A class holding a name and value pair, used for specifying filters in  * {@link TimelineReader}.  */
+end_comment
 
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|yarn
-operator|.
-name|api
-operator|.
-name|records
-operator|.
-name|timeline
-operator|.
-name|TimelineEntity
-import|;
-end_import
-
-begin_interface
+begin_class
 annotation|@
+name|InterfaceAudience
+operator|.
 name|Private
 annotation|@
+name|InterfaceStability
+operator|.
 name|Unstable
-DECL|interface|TimelineStore
+DECL|class|NameValuePair
 specifier|public
-interface|interface
-name|TimelineStore
-extends|extends
-name|Service
-extends|,
-name|TimelineReader
-extends|,
-name|TimelineWriter
+class|class
+name|NameValuePair
 block|{
-comment|/**    * The system filter which will be automatically added to a    * {@link TimelineEntity}'s primary filter section when storing the entity.    * The filter key is case sensitive. Users are supposed not to use the key    * reserved by the timeline system.    */
+DECL|field|name
+name|String
+name|name
+decl_stmt|;
+DECL|field|value
+name|Object
+name|value
+decl_stmt|;
+DECL|method|NameValuePair (String name, Object value)
+specifier|public
+name|NameValuePair
+parameter_list|(
+name|String
+name|name
+parameter_list|,
+name|Object
+name|value
+parameter_list|)
+block|{
+name|this
+operator|.
+name|name
+operator|=
+name|name
+expr_stmt|;
+name|this
+operator|.
+name|value
+operator|=
+name|value
+expr_stmt|;
+block|}
+comment|/**    * Get the name.    * @return The name.    */
+DECL|method|getName ()
+specifier|public
+name|String
+name|getName
+parameter_list|()
+block|{
+return|return
+name|name
+return|;
+block|}
+comment|/**    * Get the value.    * @return The value.    */
+DECL|method|getValue ()
+specifier|public
+name|Object
+name|getValue
+parameter_list|()
+block|{
+return|return
+name|value
+return|;
+block|}
 annotation|@
-name|Private
-DECL|enum|SystemFilter
-enum|enum
-name|SystemFilter
+name|Override
+DECL|method|toString ()
+specifier|public
+name|String
+name|toString
+parameter_list|()
 block|{
-DECL|enumConstant|ENTITY_OWNER
-name|ENTITY_OWNER
+return|return
+literal|"{ name: "
+operator|+
+name|name
+operator|+
+literal|", value: "
+operator|+
+name|value
+operator|+
+literal|" }"
+return|;
 block|}
 block|}
-end_interface
+end_class
 
 end_unit
 

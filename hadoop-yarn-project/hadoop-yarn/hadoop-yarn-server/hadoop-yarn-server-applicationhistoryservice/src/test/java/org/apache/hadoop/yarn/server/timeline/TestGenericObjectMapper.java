@@ -4,7 +4,7 @@ comment|/**  * Licensed to the Apache Software Foundation (ASF) under one  * or 
 end_comment
 
 begin_package
-DECL|package|org.apache.hadoop.yarn.server.applicationhistoryservice.timeline
+DECL|package|org.apache.hadoop.yarn.server.timeline
 package|package
 name|org
 operator|.
@@ -15,8 +15,6 @@ operator|.
 name|yarn
 operator|.
 name|server
-operator|.
-name|applicationhistoryservice
 operator|.
 name|timeline
 package|;
@@ -75,8 +73,6 @@ operator|.
 name|yarn
 operator|.
 name|server
-operator|.
-name|applicationhistoryservice
 operator|.
 name|timeline
 operator|.

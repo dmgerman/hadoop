@@ -4,7 +4,7 @@ comment|/**  * Licensed to the Apache Software Foundation (ASF) under one  * or 
 end_comment
 
 begin_package
-DECL|package|org.apache.hadoop.yarn.server.applicationhistoryservice.webapp
+DECL|package|org.apache.hadoop.yarn.server.timeline.webapp
 package|package
 name|org
 operator|.
@@ -16,7 +16,7 @@ name|yarn
 operator|.
 name|server
 operator|.
-name|applicationhistoryservice
+name|timeline
 operator|.
 name|webapp
 package|;
@@ -310,8 +310,6 @@ name|yarn
 operator|.
 name|server
 operator|.
-name|applicationhistoryservice
-operator|.
 name|timeline
 operator|.
 name|TestMemoryTimelineStore
@@ -329,8 +327,6 @@ operator|.
 name|yarn
 operator|.
 name|server
-operator|.
-name|applicationhistoryservice
 operator|.
 name|timeline
 operator|.
@@ -350,13 +346,33 @@ name|yarn
 operator|.
 name|server
 operator|.
-name|applicationhistoryservice
-operator|.
 name|timeline
 operator|.
 name|security
 operator|.
 name|TimelineACLsManager
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|server
+operator|.
+name|timeline
+operator|.
+name|webapp
+operator|.
+name|TimelineWebServices
+operator|.
+name|AboutInfo
 import|;
 end_import
 
