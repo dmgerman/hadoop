@@ -768,6 +768,10 @@ name|int
 operator|)
 name|Math
 operator|.
+name|max
+argument_list|(
+name|Math
+operator|.
 name|min
 argument_list|(
 name|Integer
@@ -777,6 +781,9 @@ argument_list|,
 name|end
 operator|-
 name|pos
+argument_list|)
+argument_list|,
+name|maxLineLength
 argument_list|)
 return|;
 block|}
@@ -892,16 +899,9 @@ name|value
 argument_list|,
 name|maxLineLength
 argument_list|,
-name|Math
-operator|.
-name|max
-argument_list|(
 name|maxBytesToConsume
 argument_list|(
 name|pos
-argument_list|)
-argument_list|,
-name|maxLineLength
 argument_list|)
 argument_list|)
 expr_stmt|;
