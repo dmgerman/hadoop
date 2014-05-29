@@ -58,16 +58,6 @@ end_import
 
 begin_import
 import|import
-name|java
-operator|.
-name|util
-operator|.
-name|Iterator
-import|;
-end_import
-
-begin_import
-import|import
 name|org
 operator|.
 name|apache
@@ -440,6 +430,30 @@ name|totalResources
 argument_list|)
 argument_list|)
 expr_stmt|;
+block|}
+annotation|@
+name|Override
+DECL|method|checkIfUsageOverFairShare (Resource usage, Resource fairShare)
+specifier|public
+name|boolean
+name|checkIfUsageOverFairShare
+parameter_list|(
+name|Resource
+name|usage
+parameter_list|,
+name|Resource
+name|fairShare
+parameter_list|)
+block|{
+throw|throw
+operator|new
+name|UnsupportedOperationException
+argument_list|(
+literal|"FifoPolicy doesn't support checkIfUsageOverFairshare operation, "
+operator|+
+literal|"as FifoPolicy only works for FSLeafQueue."
+argument_list|)
+throw|;
 block|}
 annotation|@
 name|Override

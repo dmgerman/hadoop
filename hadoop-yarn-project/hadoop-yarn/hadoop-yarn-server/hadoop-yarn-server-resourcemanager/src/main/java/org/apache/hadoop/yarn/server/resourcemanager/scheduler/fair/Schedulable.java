@@ -122,6 +122,26 @@ name|hadoop
 operator|.
 name|yarn
 operator|.
+name|server
+operator|.
+name|resourcemanager
+operator|.
+name|rmcontainer
+operator|.
+name|RMContainer
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
 name|util
 operator|.
 name|resource
@@ -240,6 +260,14 @@ parameter_list|(
 name|FSSchedulerNode
 name|node
 parameter_list|)
+function_decl|;
+comment|/**    * Preempt a container from this Schedulable if possible.    */
+DECL|method|preemptContainer ()
+specifier|public
+specifier|abstract
+name|RMContainer
+name|preemptContainer
+parameter_list|()
 function_decl|;
 comment|/** Assign a fair share to this Schedulable. */
 DECL|method|setFairShare (Resource fairShare)

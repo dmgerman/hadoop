@@ -281,16 +281,6 @@ import|;
 end_import
 
 begin_import
-import|import
-name|java
-operator|.
-name|util
-operator|.
-name|Collection
-import|;
-end_import
-
-begin_import
 import|import static
 name|org
 operator|.
@@ -299,18 +289,6 @@ operator|.
 name|Assert
 operator|.
 name|assertEquals
-import|;
-end_import
-
-begin_import
-import|import static
-name|org
-operator|.
-name|junit
-operator|.
-name|Assert
-operator|.
-name|assertNotEquals
 import|;
 end_import
 
@@ -382,17 +360,11 @@ literal|1
 decl_stmt|;
 annotation|@
 name|Override
-DECL|method|preemptResources ( Collection<FSLeafQueue> scheds, Resource toPreempt)
+DECL|method|preemptResources (Resource toPreempt)
 specifier|protected
 name|void
 name|preemptResources
 parameter_list|(
-name|Collection
-argument_list|<
-name|FSLeafQueue
-argument_list|>
-name|scheds
-parameter_list|,
 name|Resource
 name|toPreempt
 parameter_list|)
