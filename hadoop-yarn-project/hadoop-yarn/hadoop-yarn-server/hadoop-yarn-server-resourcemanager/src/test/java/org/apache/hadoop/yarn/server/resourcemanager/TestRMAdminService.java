@@ -1912,6 +1912,9 @@ name|assertTrue
 argument_list|(
 name|ProxyUsers
 operator|.
+name|getDefaultImpersonationProvider
+argument_list|()
+operator|.
 name|getProxyGroups
 argument_list|()
 operator|.
@@ -1931,6 +1934,9 @@ operator|.
 name|assertTrue
 argument_list|(
 name|ProxyUsers
+operator|.
+name|getDefaultImpersonationProvider
+argument_list|()
 operator|.
 name|getProxyGroups
 argument_list|()
@@ -1952,6 +1958,9 @@ name|assertTrue
 argument_list|(
 name|ProxyUsers
 operator|.
+name|getDefaultImpersonationProvider
+argument_list|()
+operator|.
 name|getProxyHosts
 argument_list|()
 operator|.
@@ -1971,6 +1980,9 @@ operator|.
 name|assertTrue
 argument_list|(
 name|ProxyUsers
+operator|.
+name|getDefaultImpersonationProvider
+argument_list|()
 operator|.
 name|getProxyHosts
 argument_list|()
@@ -3804,6 +3816,9 @@ name|assertTrue
 argument_list|(
 name|ProxyUsers
 operator|.
+name|getDefaultImpersonationProvider
+argument_list|()
+operator|.
 name|getProxyGroups
 argument_list|()
 operator|.
@@ -3823,6 +3838,9 @@ operator|.
 name|assertTrue
 argument_list|(
 name|ProxyUsers
+operator|.
+name|getDefaultImpersonationProvider
+argument_list|()
 operator|.
 name|getProxyGroups
 argument_list|()
@@ -3844,6 +3862,9 @@ name|assertTrue
 argument_list|(
 name|ProxyUsers
 operator|.
+name|getDefaultImpersonationProvider
+argument_list|()
+operator|.
 name|getProxyHosts
 argument_list|()
 operator|.
@@ -3863,6 +3884,9 @@ operator|.
 name|assertTrue
 argument_list|(
 name|ProxyUsers
+operator|.
+name|getDefaultImpersonationProvider
+argument_list|()
 operator|.
 name|getProxyHosts
 argument_list|()

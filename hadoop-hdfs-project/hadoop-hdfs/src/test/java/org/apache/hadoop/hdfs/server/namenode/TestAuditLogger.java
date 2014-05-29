@@ -280,7 +280,7 @@ name|security
 operator|.
 name|authorize
 operator|.
-name|ProxyUsers
+name|ProxyServers
 import|;
 end_import
 
@@ -296,7 +296,7 @@ name|security
 operator|.
 name|authorize
 operator|.
-name|ProxyServers
+name|ProxyUsers
 import|;
 end_import
 
