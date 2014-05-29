@@ -270,7 +270,7 @@ argument_list|,
 operator|-
 literal|53
 argument_list|,
-literal|"First datenode layout"
+literal|"First datanode layout"
 argument_list|,
 literal|false
 argument_list|)
