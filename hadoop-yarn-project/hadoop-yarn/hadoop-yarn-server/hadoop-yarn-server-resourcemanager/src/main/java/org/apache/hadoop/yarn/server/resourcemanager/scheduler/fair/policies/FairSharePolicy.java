@@ -692,6 +692,35 @@ expr_stmt|;
 block|}
 annotation|@
 name|Override
+DECL|method|checkIfUsageOverFairShare (Resource usage, Resource fairShare)
+specifier|public
+name|boolean
+name|checkIfUsageOverFairShare
+parameter_list|(
+name|Resource
+name|usage
+parameter_list|,
+name|Resource
+name|fairShare
+parameter_list|)
+block|{
+return|return
+name|Resources
+operator|.
+name|greaterThan
+argument_list|(
+name|RESOURCE_CALCULATOR
+argument_list|,
+literal|null
+argument_list|,
+name|usage
+argument_list|,
+name|fairShare
+argument_list|)
+return|;
+block|}
+annotation|@
+name|Override
 DECL|method|getApplicableDepth ()
 specifier|public
 name|byte

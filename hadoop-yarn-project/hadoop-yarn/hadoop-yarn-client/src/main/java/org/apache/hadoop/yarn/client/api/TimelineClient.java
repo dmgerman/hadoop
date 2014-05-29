@@ -86,6 +86,22 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|security
+operator|.
+name|token
+operator|.
+name|Token
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|service
 operator|.
 name|AbstractService
@@ -168,8 +184,26 @@ name|YarnException
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|security
+operator|.
+name|client
+operator|.
+name|TimelineDelegationTokenIdentifier
+import|;
+end_import
+
 begin_comment
-comment|/**  * A client library that can be used to post some information in terms of a  * number of conceptual entities.  *   * @See Entity  */
+comment|/**  * A client library that can be used to post some information in terms of a  * number of conceptual entities.  */
 end_comment
 
 begin_class
@@ -233,6 +267,26 @@ parameter_list|(
 name|TimelineEntity
 modifier|...
 name|entities
+parameter_list|)
+throws|throws
+name|IOException
+throws|,
+name|YarnException
+function_decl|;
+comment|/**    *<p>    * Get a delegation token so as to be able to talk to the timeline server in a    * secure way.    *</p>    *     * @param renewer    *          Address of the renewer who can renew these tokens when needed by    *          securely talking to the timeline server    * @return a delegation token ({@link Token}) that can be used to talk to the    *         timeline server    * @throws IOException    * @throws YarnException    */
+annotation|@
+name|Public
+DECL|method|getDelegationToken ( String renewer)
+specifier|public
+specifier|abstract
+name|Token
+argument_list|<
+name|TimelineDelegationTokenIdentifier
+argument_list|>
+name|getDelegationToken
+parameter_list|(
+name|String
+name|renewer
 parameter_list|)
 throws|throws
 name|IOException

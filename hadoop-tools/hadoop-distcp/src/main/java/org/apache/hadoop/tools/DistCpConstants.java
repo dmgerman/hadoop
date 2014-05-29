@@ -174,6 +174,15 @@ name|CONF_LABEL_OVERWRITE
 init|=
 literal|"distcp.copy.overwrite"
 decl_stmt|;
+DECL|field|CONF_LABEL_APPEND
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|CONF_LABEL_APPEND
+init|=
+literal|"distcp.copy.append"
+decl_stmt|;
 DECL|field|CONF_LABEL_BANDWIDTH_MB
 specifier|public
 specifier|static

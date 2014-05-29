@@ -609,6 +609,20 @@ name|Resource
 name|totalResources
 parameter_list|)
 function_decl|;
+comment|/**    * Check if the resource usage is over the fair share under this policy    *    * @param usage {@link Resource} the resource usage    * @param fairShare {@link Resource} the fair share    * @return true if check passes (is over) or false otherwise    */
+DECL|method|checkIfUsageOverFairShare ( Resource usage, Resource fairShare)
+specifier|public
+specifier|abstract
+name|boolean
+name|checkIfUsageOverFairShare
+parameter_list|(
+name|Resource
+name|usage
+parameter_list|,
+name|Resource
+name|fairShare
+parameter_list|)
+function_decl|;
 block|}
 end_class
 

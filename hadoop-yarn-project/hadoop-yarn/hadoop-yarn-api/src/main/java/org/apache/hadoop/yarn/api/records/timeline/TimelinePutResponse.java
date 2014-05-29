@@ -315,6 +315,26 @@ name|IO_EXCEPTION
 init|=
 literal|2
 decl_stmt|;
+comment|/**      * Error code returned if the user specifies the timeline system reserved      * filter key      */
+DECL|field|SYSTEM_FILTER_CONFLICT
+specifier|public
+specifier|static
+specifier|final
+name|int
+name|SYSTEM_FILTER_CONFLICT
+init|=
+literal|3
+decl_stmt|;
+comment|/**      * Error code returned if the user is denied to access the timeline data      */
+DECL|field|ACCESS_DENIED
+specifier|public
+specifier|static
+specifier|final
+name|int
+name|ACCESS_DENIED
+init|=
+literal|4
+decl_stmt|;
 DECL|field|entityId
 specifier|private
 name|String

@@ -1056,6 +1056,17 @@ parameter_list|)
 throws|throws
 name|IOException
 function_decl|;
+DECL|method|getFileChecksum (Path f)
+specifier|public
+name|FileChecksum
+name|getFileChecksum
+parameter_list|(
+name|Path
+name|f
+parameter_list|)
+throws|throws
+name|IOException
+function_decl|;
 DECL|method|deleteOnExit (Path f)
 specifier|public
 name|boolean
@@ -1642,6 +1653,8 @@ specifier|public
 name|void
 name|testFileChecksum
 parameter_list|()
+throws|throws
+name|Exception
 block|{
 specifier|final
 name|Path
@@ -1661,6 +1674,8 @@ operator|new
 name|HarFileSystem
 argument_list|()
 decl_stmt|;
+try|try
+block|{
 name|Assert
 operator|.
 name|assertEquals
@@ -1675,6 +1690,23 @@ name|p
 argument_list|)
 argument_list|)
 expr_stmt|;
+block|}
+finally|finally
+block|{
+if|if
+condition|(
+name|harfs
+operator|!=
+literal|null
+condition|)
+block|{
+name|harfs
+operator|.
+name|close
+argument_list|()
+expr_stmt|;
+block|}
+block|}
 block|}
 comment|/**    * Test how block location offsets and lengths are fixed.    */
 annotation|@

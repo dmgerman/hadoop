@@ -444,7 +444,9 @@ name|SSLFactory
 operator|.
 name|SSL_REQUIRE_CLIENT_CERT_KEY
 argument_list|,
-literal|true
+name|SSLFactory
+operator|.
+name|DEFAULT_SSL_REQUIRE_CLIENT_CERT
 argument_list|)
 decl_stmt|;
 comment|// certificate store

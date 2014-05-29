@@ -925,7 +925,7 @@ name|configuration
 argument_list|,
 name|conf
 operator|.
-name|hdfsTimeout
+name|socketTimeout
 argument_list|,
 name|token
 argument_list|,

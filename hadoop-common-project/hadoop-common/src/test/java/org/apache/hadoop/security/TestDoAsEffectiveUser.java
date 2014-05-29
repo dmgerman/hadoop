@@ -222,6 +222,22 @@ name|security
 operator|.
 name|authorize
 operator|.
+name|DefaultImpersonationProvider
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|security
+operator|.
+name|authorize
+operator|.
 name|ProxyUsers
 import|;
 end_import
@@ -667,7 +683,7 @@ name|conf
 operator|.
 name|setStrings
 argument_list|(
-name|ProxyUsers
+name|DefaultImpersonationProvider
 operator|.
 name|getProxySuperuserIpConfKey
 argument_list|(
@@ -1035,7 +1051,7 @@ name|conf
 operator|.
 name|setStrings
 argument_list|(
-name|ProxyUsers
+name|DefaultImpersonationProvider
 operator|.
 name|getProxySuperuserGroupConfKey
 argument_list|(
@@ -1230,7 +1246,7 @@ name|conf
 operator|.
 name|setStrings
 argument_list|(
-name|ProxyUsers
+name|DefaultImpersonationProvider
 operator|.
 name|getProxySuperuserGroupConfKey
 argument_list|(
@@ -1407,7 +1423,7 @@ name|conf
 operator|.
 name|setStrings
 argument_list|(
-name|ProxyUsers
+name|DefaultImpersonationProvider
 operator|.
 name|getProxySuperuserIpConfKey
 argument_list|(
@@ -1422,7 +1438,7 @@ name|conf
 operator|.
 name|setStrings
 argument_list|(
-name|ProxyUsers
+name|DefaultImpersonationProvider
 operator|.
 name|getProxySuperuserGroupConfKey
 argument_list|(
@@ -1652,7 +1668,7 @@ name|conf
 operator|.
 name|setStrings
 argument_list|(
-name|ProxyUsers
+name|DefaultImpersonationProvider
 operator|.
 name|getProxySuperuserGroupConfKey
 argument_list|(
@@ -2110,7 +2126,7 @@ name|conf
 operator|.
 name|setStrings
 argument_list|(
-name|ProxyUsers
+name|DefaultImpersonationProvider
 operator|.
 name|getProxySuperuserGroupConfKey
 argument_list|(

@@ -1185,9 +1185,9 @@ specifier|final
 name|long
 name|milliTime
 init|=
-name|System
+name|Time
 operator|.
-name|currentTimeMillis
+name|monotonicNow
 argument_list|()
 decl_stmt|;
 name|String

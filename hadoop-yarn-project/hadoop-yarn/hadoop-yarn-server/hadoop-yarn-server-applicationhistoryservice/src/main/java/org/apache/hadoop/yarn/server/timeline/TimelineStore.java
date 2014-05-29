@@ -4,7 +4,7 @@ comment|/**  * Licensed to the Apache Software Foundation (ASF) under one  * or 
 end_comment
 
 begin_package
-DECL|package|org.apache.hadoop.yarn.server.applicationhistoryservice.timeline
+DECL|package|org.apache.hadoop.yarn.server.timeline
 package|package
 name|org
 operator|.
@@ -15,8 +15,6 @@ operator|.
 name|yarn
 operator|.
 name|server
-operator|.
-name|applicationhistoryservice
 operator|.
 name|timeline
 package|;
@@ -33,6 +31,8 @@ operator|.
 name|classification
 operator|.
 name|InterfaceAudience
+operator|.
+name|Private
 import|;
 end_import
 
@@ -47,6 +47,22 @@ operator|.
 name|classification
 operator|.
 name|InterfaceStability
+operator|.
+name|Unstable
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|service
+operator|.
+name|Service
 import|;
 end_import
 
@@ -66,69 +82,36 @@ name|records
 operator|.
 name|timeline
 operator|.
-name|TimelineEntities
+name|TimelineEntity
 import|;
 end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|yarn
-operator|.
-name|api
-operator|.
-name|records
-operator|.
-name|timeline
-operator|.
-name|TimelinePutResponse
-import|;
-end_import
-
-begin_import
-import|import
-name|java
-operator|.
-name|io
-operator|.
-name|IOException
-import|;
-end_import
-
-begin_comment
-comment|/**  * This interface is for storing timeline information.  */
-end_comment
 
 begin_interface
 annotation|@
-name|InterfaceAudience
-operator|.
 name|Private
 annotation|@
-name|InterfaceStability
-operator|.
 name|Unstable
-DECL|interface|TimelineWriter
+DECL|interface|TimelineStore
 specifier|public
 interface|interface
+name|TimelineStore
+extends|extends
+name|Service
+extends|,
+name|TimelineReader
+extends|,
 name|TimelineWriter
 block|{
-comment|/**    * Stores entity information to the timeline store. Any errors occurring for    * individual put request objects will be reported in the response.    *     * @param data    *          An {@link TimelineEntities} object.    * @return An {@link TimelinePutResponse} object.    * @throws IOException    */
-DECL|method|put (TimelineEntities data)
-name|TimelinePutResponse
-name|put
-parameter_list|(
-name|TimelineEntities
-name|data
-parameter_list|)
-throws|throws
-name|IOException
-function_decl|;
+comment|/**    * The system filter which will be automatically added to a    * {@link TimelineEntity}'s primary filter section when storing the entity.    * The filter key is case sensitive. Users are supposed not to use the key    * reserved by the timeline system.    */
+annotation|@
+name|Private
+DECL|enum|SystemFilter
+enum|enum
+name|SystemFilter
+block|{
+DECL|enumConstant|ENTITY_OWNER
+name|ENTITY_OWNER
+block|}
 block|}
 end_interface
 

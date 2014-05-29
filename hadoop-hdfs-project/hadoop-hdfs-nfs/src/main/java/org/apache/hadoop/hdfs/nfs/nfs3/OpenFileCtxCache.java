@@ -154,6 +154,20 @@ end_import
 
 begin_import
 import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|util
+operator|.
+name|Time
+import|;
+end_import
+
+begin_import
+import|import
 name|com
 operator|.
 name|google
@@ -495,9 +509,9 @@ block|{
 name|long
 name|idleTime
 init|=
-name|System
+name|Time
 operator|.
-name|currentTimeMillis
+name|monotonicNow
 argument_list|()
 operator|-
 name|idlest
@@ -1219,9 +1233,9 @@ block|{
 name|long
 name|workedTime
 init|=
-name|System
+name|Time
 operator|.
-name|currentTimeMillis
+name|monotonicNow
 argument_list|()
 operator|-
 name|lastWakeupTime
@@ -1271,9 +1285,9 @@ expr_stmt|;
 block|}
 name|lastWakeupTime
 operator|=
-name|System
+name|Time
 operator|.
-name|currentTimeMillis
+name|monotonicNow
 argument_list|()
 expr_stmt|;
 block|}

@@ -1244,6 +1244,17 @@ decl_stmt|;
 name|BufferedOutputStream
 name|bos
 init|=
+literal|null
+decl_stmt|;
+name|DataOutputStream
+name|dos
+init|=
+literal|null
+decl_stmt|;
+try|try
+block|{
+name|bos
+operator|=
 operator|new
 name|BufferedOutputStream
 argument_list|(
@@ -1256,23 +1267,20 @@ argument_list|,
 literal|0644
 argument_list|)
 argument_list|)
-decl_stmt|;
-name|DataOutputStream
+expr_stmt|;
 name|dos
-init|=
+operator|=
 operator|new
 name|DataOutputStream
 argument_list|(
 name|bos
 argument_list|)
-decl_stmt|;
+expr_stmt|;
 comment|//the format of the index file is
 comment|//LOG_DIR:<the dir where the task logs are really stored>
 comment|//STDOUT:<start-offset in the stdout file><length>
 comment|//STDERR:<start-offset in the stderr file><length>
 comment|//SYSLOG:<start-offset in the syslog file><length>
-try|try
-block|{
 name|dos
 operator|.
 name|writeBytes
@@ -1451,6 +1459,15 @@ name|dos
 operator|=
 literal|null
 expr_stmt|;
+name|bos
+operator|.
+name|close
+argument_list|()
+expr_stmt|;
+name|bos
+operator|=
+literal|null
+expr_stmt|;
 block|}
 finally|finally
 block|{
@@ -1461,6 +1478,8 @@ argument_list|(
 name|LOG
 argument_list|,
 name|dos
+argument_list|,
+name|bos
 argument_list|)
 expr_stmt|;
 block|}

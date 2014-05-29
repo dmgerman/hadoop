@@ -2965,6 +2965,11 @@ specifier|final
 name|long
 name|datanodeRestartTimeout
 decl_stmt|;
+DECL|field|dfsclientSlowIoWarningThresholdMs
+specifier|final
+name|long
+name|dfsclientSlowIoWarningThresholdMs
+decl_stmt|;
 DECL|field|useLegacyBlockReader
 specifier|final
 name|boolean
@@ -3702,6 +3707,21 @@ name|DFS_CLIENT_DATANODE_RESTART_TIMEOUT_DEFAULT
 argument_list|)
 operator|*
 literal|1000
+expr_stmt|;
+name|dfsclientSlowIoWarningThresholdMs
+operator|=
+name|conf
+operator|.
+name|getLong
+argument_list|(
+name|DFSConfigKeys
+operator|.
+name|DFS_CLIENT_SLOW_IO_WARNING_THRESHOLD_KEY
+argument_list|,
+name|DFSConfigKeys
+operator|.
+name|DFS_CLIENT_SLOW_IO_WARNING_THRESHOLD_DEFAULT
+argument_list|)
 expr_stmt|;
 block|}
 DECL|method|isUseLegacyBlockReaderLocal ()
@@ -8993,14 +9013,17 @@ argument_list|)
 throw|;
 block|}
 block|}
-comment|/**    * Get the checksum of a file.    * @param src The file path    * @return The checksum     * @see DistributedFileSystem#getFileChecksum(Path)    */
-DECL|method|getFileChecksum (String src)
+comment|/**    * Get the checksum of the whole file of a range of the file. Note that the    * range always starts from the beginning of the file.    * @param src The file path    * @param length The length of the range    * @return The checksum     * @see DistributedFileSystem#getFileChecksum(Path)    */
+DECL|method|getFileChecksum (String src, long length)
 specifier|public
 name|MD5MD5CRC32FileChecksum
 name|getFileChecksum
 parameter_list|(
 name|String
 name|src
+parameter_list|,
+name|long
+name|length
 parameter_list|)
 throws|throws
 name|IOException
@@ -9008,10 +9031,21 @@ block|{
 name|checkOpen
 argument_list|()
 expr_stmt|;
+name|Preconditions
+operator|.
+name|checkArgument
+argument_list|(
+name|length
+operator|>=
+literal|0
+argument_list|)
+expr_stmt|;
 return|return
 name|getFileChecksum
 argument_list|(
 name|src
+argument_list|,
+name|length
 argument_list|,
 name|clientName
 argument_list|,
@@ -9161,8 +9195,8 @@ literal|null
 return|;
 block|}
 block|}
-comment|/**    * Get the checksum of a file.    * @param src The file path    * @param clientName the name of the client requesting the checksum.    * @param namenode the RPC proxy for the namenode    * @param socketFactory to create sockets to connect to DNs    * @param socketTimeout timeout to use when connecting and waiting for a response    * @param encryptionKey the key needed to communicate with DNs in this cluster    * @param connectToDnViaHostname whether the client should use hostnames instead of IPs    * @return The checksum     */
-DECL|method|getFileChecksum (String src, String clientName, ClientProtocol namenode, SocketFactory socketFactory, int socketTimeout, DataEncryptionKey encryptionKey, boolean connectToDnViaHostname)
+comment|/**    * Get the checksum of the whole file or a range of the file.    * @param src The file path    * @param length the length of the range, i.e., the range is [0, length]    * @param clientName the name of the client requesting the checksum.    * @param namenode the RPC proxy for the namenode    * @param socketFactory to create sockets to connect to DNs    * @param socketTimeout timeout to use when connecting and waiting for a response    * @param encryptionKey the key needed to communicate with DNs in this cluster    * @param connectToDnViaHostname whether the client should use hostnames instead of IPs    * @return The checksum     */
+DECL|method|getFileChecksum (String src, long length, String clientName, ClientProtocol namenode, SocketFactory socketFactory, int socketTimeout, DataEncryptionKey encryptionKey, boolean connectToDnViaHostname)
 specifier|private
 specifier|static
 name|MD5MD5CRC32FileChecksum
@@ -9170,6 +9204,9 @@ name|getFileChecksum
 parameter_list|(
 name|String
 name|src
+parameter_list|,
+name|long
+name|length
 parameter_list|,
 name|String
 name|clientName
@@ -9192,7 +9229,7 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
-comment|//get all block locations
+comment|//get block locations for the file range
 name|LocatedBlocks
 name|blockLocations
 init|=
@@ -9204,9 +9241,7 @@ name|src
 argument_list|,
 literal|0
 argument_list|,
-name|Long
-operator|.
-name|MAX_VALUE
+name|length
 argument_list|)
 decl_stmt|;
 if|if
@@ -9278,7 +9313,12 @@ init|=
 operator|-
 literal|1
 decl_stmt|;
-comment|//get block checksum for each block
+comment|// get block checksum for each block
+name|long
+name|remaining
+init|=
+name|length
+decl_stmt|;
 for|for
 control|(
 name|int
@@ -9287,11 +9327,16 @@ init|=
 literal|0
 init|;
 name|i
-operator|<
+argument_list|<
 name|locatedblocks
 operator|.
 name|size
-argument_list|()
+operator|(
+operator|)
+operator|&&
+name|remaining
+argument_list|>
+literal|0
 condition|;
 name|i
 operator|++
@@ -9313,9 +9358,7 @@ name|src
 argument_list|,
 literal|0
 argument_list|,
-name|Long
-operator|.
-name|MAX_VALUE
+name|length
 argument_list|)
 expr_stmt|;
 if|if
@@ -9366,6 +9409,31 @@ operator|.
 name|getBlock
 argument_list|()
 decl_stmt|;
+if|if
+condition|(
+name|remaining
+operator|<
+name|block
+operator|.
+name|getNumBytes
+argument_list|()
+condition|)
+block|{
+name|block
+operator|.
+name|setNumBytes
+argument_list|(
+name|remaining
+argument_list|)
+expr_stmt|;
+block|}
+name|remaining
+operator|-=
+name|block
+operator|.
+name|getNumBytes
+argument_list|()
+expr_stmt|;
 specifier|final
 name|DatanodeInfo
 index|[]

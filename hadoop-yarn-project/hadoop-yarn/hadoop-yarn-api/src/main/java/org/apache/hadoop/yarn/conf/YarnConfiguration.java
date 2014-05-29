@@ -4174,30 +4174,6 @@ literal|"0.0.0.0:"
 operator|+
 name|DEFAULT_TIMELINE_SERVICE_WEBAPP_HTTPS_PORT
 decl_stmt|;
-comment|/**The kerberos principal to be used for spnego filter for timeline service.*/
-DECL|field|TIMELINE_SERVICE_WEBAPP_SPNEGO_USER_NAME_KEY
-specifier|public
-specifier|static
-specifier|final
-name|String
-name|TIMELINE_SERVICE_WEBAPP_SPNEGO_USER_NAME_KEY
-init|=
-name|TIMELINE_SERVICE_PREFIX
-operator|+
-literal|"webapp.spnego-principal"
-decl_stmt|;
-comment|/**The kerberos keytab to be used for spnego filter for timeline service.*/
-DECL|field|TIMELINE_SERVICE_WEBAPP_SPNEGO_KEYTAB_FILE_KEY
-specifier|public
-specifier|static
-specifier|final
-name|String
-name|TIMELINE_SERVICE_WEBAPP_SPNEGO_KEYTAB_FILE_KEY
-init|=
-name|TIMELINE_SERVICE_PREFIX
-operator|+
-literal|"webapp.spnego-keytab-file"
-decl_stmt|;
 comment|/** Timeline service store class */
 DECL|field|TIMELINE_SERVICE_STORE
 specifier|public

@@ -4,7 +4,7 @@ comment|/**  * Licensed to the Apache Software Foundation (ASF) under one  * or 
 end_comment
 
 begin_package
-DECL|package|org.apache.hadoop.yarn.server.applicationhistoryservice.timeline
+DECL|package|org.apache.hadoop.security.authorize
 package|package
 name|org
 operator|.
@@ -12,13 +12,9 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|yarn
+name|security
 operator|.
-name|server
-operator|.
-name|applicationhistoryservice
-operator|.
-name|timeline
+name|authorize
 package|;
 end_package
 
@@ -30,9 +26,9 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|classification
+name|conf
 operator|.
-name|InterfaceAudience
+name|Configurable
 import|;
 end_import
 
@@ -44,46 +40,36 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|classification
+name|security
 operator|.
-name|InterfaceStability
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|service
-operator|.
-name|Service
+name|UserGroupInformation
 import|;
 end_import
 
 begin_interface
-annotation|@
-name|InterfaceAudience
-operator|.
-name|Private
-annotation|@
-name|InterfaceStability
-operator|.
-name|Unstable
-DECL|interface|TimelineStore
+DECL|interface|ImpersonationProvider
 specifier|public
 interface|interface
-name|TimelineStore
+name|ImpersonationProvider
 extends|extends
-name|Service
-extends|,
-name|TimelineReader
-extends|,
-name|TimelineWriter
-block|{ }
+name|Configurable
+block|{
+comment|/**    * Authorize the superuser which is doing doAs    *     * @param user ugi of the effective or proxy user which contains a real user    * @param remoteAddress the ip address of client    * @throws AuthorizationException    */
+DECL|method|authorize (UserGroupInformation user, String remoteAddress)
+specifier|public
+name|void
+name|authorize
+parameter_list|(
+name|UserGroupInformation
+name|user
+parameter_list|,
+name|String
+name|remoteAddress
+parameter_list|)
+throws|throws
+name|AuthorizationException
+function_decl|;
+block|}
 end_interface
 
 end_unit

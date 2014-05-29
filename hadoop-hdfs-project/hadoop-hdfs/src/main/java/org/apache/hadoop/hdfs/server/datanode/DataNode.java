@@ -5999,7 +5999,7 @@ name|timeNotified
 init|=
 name|Time
 operator|.
-name|now
+name|monotonicNow
 argument_list|()
 decl_stmt|;
 if|if
@@ -6127,7 +6127,7 @@ operator|&&
 operator|(
 name|Time
 operator|.
-name|now
+name|monotonicNow
 argument_list|()
 operator|-
 name|timeNotified
@@ -11748,9 +11748,9 @@ init|)
 block|{
 name|lastDiskErrorCheck
 operator|=
-name|System
+name|Time
 operator|.
-name|currentTimeMillis
+name|monotonicNow
 argument_list|()
 expr_stmt|;
 block|}

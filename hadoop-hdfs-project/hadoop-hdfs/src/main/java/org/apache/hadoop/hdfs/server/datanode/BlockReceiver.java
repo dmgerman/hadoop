@@ -601,6 +601,12 @@ literal|1024
 operator|*
 literal|1024
 decl_stmt|;
+DECL|field|datanodeSlowLogThresholdMs
+specifier|private
+specifier|final
+name|long
+name|datanodeSlowLogThresholdMs
+decl_stmt|;
 DECL|field|in
 specifier|private
 name|DataInputStream
@@ -939,6 +945,17 @@ name|getDnConf
 argument_list|()
 operator|.
 name|restartReplicaExpiry
+expr_stmt|;
+name|this
+operator|.
+name|datanodeSlowLogThresholdMs
+operator|=
+name|datanode
+operator|.
+name|getDnConf
+argument_list|()
+operator|.
+name|datanodeSlowIoWarningThresholdMs
 expr_stmt|;
 comment|//for datanode, we have
 comment|//1: clientName.length() == 0, and
@@ -1881,6 +1898,14 @@ name|flushTotalNanos
 init|=
 literal|0
 decl_stmt|;
+name|long
+name|begin
+init|=
+name|Time
+operator|.
+name|monotonicNow
+argument_list|()
+decl_stmt|;
 if|if
 condition|(
 name|checksumOut
@@ -2044,6 +2069,47 @@ name|incrFsyncCount
 argument_list|()
 expr_stmt|;
 block|}
+block|}
+name|long
+name|duration
+init|=
+name|Time
+operator|.
+name|monotonicNow
+argument_list|()
+operator|-
+name|begin
+decl_stmt|;
+if|if
+condition|(
+name|duration
+operator|>
+name|datanodeSlowLogThresholdMs
+condition|)
+block|{
+name|LOG
+operator|.
+name|warn
+argument_list|(
+literal|"Slow flushOrSync took "
+operator|+
+name|duration
+operator|+
+literal|"ms (threshold="
+operator|+
+name|datanodeSlowLogThresholdMs
+operator|+
+literal|"ms), isSync:"
+operator|+
+name|isSync
+operator|+
+literal|", flushTotalNanos="
+operator|+
+name|flushTotalNanos
+operator|+
+literal|"ns"
+argument_list|)
+expr_stmt|;
 block|}
 block|}
 comment|/**    * While writing to mirrorOut, failure to write to mirror should not    * affect this datanode unless it is caused by interruption.    */
@@ -2544,6 +2610,14 @@ condition|)
 block|{
 try|try
 block|{
+name|long
+name|begin
+init|=
+name|Time
+operator|.
+name|monotonicNow
+argument_list|()
+decl_stmt|;
 name|packetReceiver
 operator|.
 name|mirrorPacketTo
@@ -2556,6 +2630,39 @@ operator|.
 name|flush
 argument_list|()
 expr_stmt|;
+name|long
+name|duration
+init|=
+name|Time
+operator|.
+name|monotonicNow
+argument_list|()
+operator|-
+name|begin
+decl_stmt|;
+if|if
+condition|(
+name|duration
+operator|>
+name|datanodeSlowLogThresholdMs
+condition|)
+block|{
+name|LOG
+operator|.
+name|warn
+argument_list|(
+literal|"Slow BlockReceiver write packet to mirror took "
+operator|+
+name|duration
+operator|+
+literal|"ms (threshold="
+operator|+
+name|datanodeSlowLogThresholdMs
+operator|+
+literal|"ms)"
+argument_list|)
+expr_stmt|;
+block|}
 block|}
 catch|catch
 parameter_list|(
@@ -2895,6 +3002,14 @@ name|onDiskLen
 argument_list|)
 decl_stmt|;
 comment|// Write data to disk.
+name|long
+name|begin
+init|=
+name|Time
+operator|.
+name|monotonicNow
+argument_list|()
+decl_stmt|;
 name|out
 operator|.
 name|write
@@ -2909,6 +3024,39 @@ argument_list|,
 name|numBytesToDisk
 argument_list|)
 expr_stmt|;
+name|long
+name|duration
+init|=
+name|Time
+operator|.
+name|monotonicNow
+argument_list|()
+operator|-
+name|begin
+decl_stmt|;
+if|if
+condition|(
+name|duration
+operator|>
+name|datanodeSlowLogThresholdMs
+condition|)
+block|{
+name|LOG
+operator|.
+name|warn
+argument_list|(
+literal|"Slow BlockReceiver write data to disk cost:"
+operator|+
+name|duration
+operator|+
+literal|"ms (threshold="
+operator|+
+name|datanodeSlowLogThresholdMs
+operator|+
+literal|"ms)"
+argument_list|)
+expr_stmt|;
+block|}
 comment|// If this is a partial chunk, then verify that this is the only
 comment|// chunk in the packet. Calculate new crc for this chunk.
 if|if
@@ -3226,6 +3374,14 @@ operator|+
 name|CACHE_DROP_LAG_BYTES
 condition|)
 block|{
+name|long
+name|begin
+init|=
+name|Time
+operator|.
+name|monotonicNow
+argument_list|()
+decl_stmt|;
 comment|//
 comment|// For SYNC_FILE_RANGE_WRITE, we want to sync from
 comment|// lastCacheManagementOffset to a position "two windows ago"
@@ -3320,6 +3476,39 @@ name|lastCacheManagementOffset
 operator|=
 name|offsetInBlock
 expr_stmt|;
+name|long
+name|duration
+init|=
+name|Time
+operator|.
+name|monotonicNow
+argument_list|()
+operator|-
+name|begin
+decl_stmt|;
+if|if
+condition|(
+name|duration
+operator|>
+name|datanodeSlowLogThresholdMs
+condition|)
+block|{
+name|LOG
+operator|.
+name|warn
+argument_list|(
+literal|"Slow manageWriterOsCache took "
+operator|+
+name|duration
+operator|+
+literal|"ms (threshold="
+operator|+
+name|datanodeSlowLogThresholdMs
+operator|+
+literal|"ms)"
+argument_list|)
+expr_stmt|;
+block|}
 block|}
 block|}
 catch|catch
@@ -6010,6 +6199,14 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|// send my ack back to upstream datanode
+name|long
+name|begin
+init|=
+name|Time
+operator|.
+name|monotonicNow
+argument_list|()
+decl_stmt|;
 name|replyAck
 operator|.
 name|write
@@ -6022,6 +6219,46 @@ operator|.
 name|flush
 argument_list|()
 expr_stmt|;
+name|long
+name|duration
+init|=
+name|Time
+operator|.
+name|monotonicNow
+argument_list|()
+operator|-
+name|begin
+decl_stmt|;
+if|if
+condition|(
+name|duration
+operator|>
+name|datanodeSlowLogThresholdMs
+condition|)
+block|{
+name|LOG
+operator|.
+name|warn
+argument_list|(
+literal|"Slow PacketResponder send ack to upstream took "
+operator|+
+name|duration
+operator|+
+literal|"ms (threshold="
+operator|+
+name|datanodeSlowLogThresholdMs
+operator|+
+literal|"ms), "
+operator|+
+name|myString
+operator|+
+literal|", replyAck="
+operator|+
+name|replyAck
+argument_list|)
+expr_stmt|;
+block|}
+elseif|else
 if|if
 condition|(
 name|LOG

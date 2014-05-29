@@ -1108,6 +1108,12 @@ specifier|final
 name|DFSClient
 name|dfsClient
 decl_stmt|;
+DECL|field|dfsclientSlowLogThresholdMs
+specifier|private
+specifier|final
+name|long
+name|dfsclientSlowLogThresholdMs
+decl_stmt|;
 DECL|field|s
 specifier|private
 name|Socket
@@ -3883,6 +3889,14 @@ comment|// process responses from datanodes.
 try|try
 block|{
 comment|// read an ack from the pipeline
+name|long
+name|begin
+init|=
+name|Time
+operator|.
+name|monotonicNow
+argument_list|()
+decl_stmt|;
 name|ack
 operator|.
 name|readFields
@@ -3890,6 +3904,62 @@ argument_list|(
 name|blockReplyStream
 argument_list|)
 expr_stmt|;
+name|long
+name|duration
+init|=
+name|Time
+operator|.
+name|monotonicNow
+argument_list|()
+operator|-
+name|begin
+decl_stmt|;
+if|if
+condition|(
+name|duration
+operator|>
+name|dfsclientSlowLogThresholdMs
+operator|&&
+name|ack
+operator|.
+name|getSeqno
+argument_list|()
+operator|!=
+name|Packet
+operator|.
+name|HEART_BEAT_SEQNO
+condition|)
+block|{
+name|DFSClient
+operator|.
+name|LOG
+operator|.
+name|warn
+argument_list|(
+literal|"Slow ReadProcessor read fields took "
+operator|+
+name|duration
+operator|+
+literal|"ms (threshold="
+operator|+
+name|dfsclientSlowLogThresholdMs
+operator|+
+literal|"ms); ack: "
+operator|+
+name|ack
+operator|+
+literal|", targets: "
+operator|+
+name|Arrays
+operator|.
+name|asList
+argument_list|(
+name|targets
+argument_list|)
+argument_list|)
+expr_stmt|;
+block|}
+elseif|else
 if|if
 condition|(
 name|DFSClient
@@ -7594,6 +7664,17 @@ name|checksum
 operator|=
 name|checksum
 expr_stmt|;
+name|this
+operator|.
+name|dfsclientSlowLogThresholdMs
+operator|=
+name|dfsClient
+operator|.
+name|getConf
+argument_list|()
+operator|.
+name|dfsclientSlowIoWarningThresholdMs
+expr_stmt|;
 block|}
 comment|/** Construct a new output stream for creating a file. */
 DECL|method|DFSOutputStream (DFSClient dfsClient, String src, HdfsFileStatus stat, EnumSet<CreateFlag> flag, Progressable progress, DataChecksum checksum, String[] favoredNodes)
@@ -9368,6 +9449,14 @@ name|seqno
 argument_list|)
 expr_stmt|;
 block|}
+name|long
+name|begin
+init|=
+name|Time
+operator|.
+name|monotonicNow
+argument_list|()
+decl_stmt|;
 try|try
 block|{
 synchronized|synchronized
@@ -9431,6 +9520,41 @@ name|ClosedChannelException
 name|e
 parameter_list|)
 block|{     }
+name|long
+name|duration
+init|=
+name|Time
+operator|.
+name|monotonicNow
+argument_list|()
+operator|-
+name|begin
+decl_stmt|;
+if|if
+condition|(
+name|duration
+operator|>
+name|dfsclientSlowLogThresholdMs
+condition|)
+block|{
+name|DFSClient
+operator|.
+name|LOG
+operator|.
+name|warn
+argument_list|(
+literal|"Slow waitForAckedSeqno took "
+operator|+
+name|duration
+operator|+
+literal|"ms (threshold="
+operator|+
+name|dfsclientSlowLogThresholdMs
+operator|+
+literal|"ms)"
+argument_list|)
+expr_stmt|;
+block|}
 block|}
 DECL|method|start ()
 specifier|private

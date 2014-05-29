@@ -1021,6 +1021,16 @@ name|HADOOP_SECURITY_CRYPTO_BUFFER_SIZE_DEFAULT
 init|=
 literal|8192
 decl_stmt|;
+comment|/** Class to override Impersonation provider */
+DECL|field|HADOOP_SECURITY_IMPERSONATION_PROVIDER_CLASS
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|HADOOP_SECURITY_IMPERSONATION_PROVIDER_CLASS
+init|=
+literal|"hadoop.security.impersonation.provider.class"
+decl_stmt|;
 block|}
 end_class
 

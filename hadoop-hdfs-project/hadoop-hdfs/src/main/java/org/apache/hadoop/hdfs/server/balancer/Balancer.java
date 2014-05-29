@@ -6864,6 +6864,27 @@ name|System
 operator|.
 name|out
 operator|.
+name|format
+argument_list|(
+literal|"%-24s "
+argument_list|,
+name|DateFormat
+operator|.
+name|getDateTimeInstance
+argument_list|()
+operator|.
+name|format
+argument_list|(
+operator|new
+name|Date
+argument_list|()
+argument_list|)
+argument_list|)
+expr_stmt|;
+name|System
+operator|.
+name|out
+operator|.
 name|println
 argument_list|(
 literal|"Balancing took "

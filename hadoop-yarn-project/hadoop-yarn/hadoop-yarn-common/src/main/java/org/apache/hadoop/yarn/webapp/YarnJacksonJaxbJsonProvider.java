@@ -222,6 +222,25 @@ argument_list|,
 name|mediaType
 argument_list|)
 decl_stmt|;
+name|configObjectMapper
+argument_list|(
+name|mapper
+argument_list|)
+expr_stmt|;
+return|return
+name|mapper
+return|;
+block|}
+DECL|method|configObjectMapper (ObjectMapper mapper)
+specifier|public
+specifier|static
+name|void
+name|configObjectMapper
+parameter_list|(
+name|ObjectMapper
+name|mapper
+parameter_list|)
+block|{
 name|AnnotationIntrospector
 name|introspector
 init|=
@@ -245,9 +264,6 @@ operator|.
 name|NON_NULL
 argument_list|)
 expr_stmt|;
-return|return
-name|mapper
-return|;
 block|}
 block|}
 end_class

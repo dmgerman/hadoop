@@ -2834,13 +2834,16 @@ block|}
 comment|/**    * @return null since no checksum algorithm is implemented.    */
 annotation|@
 name|Override
-DECL|method|getFileChecksum (Path f)
+DECL|method|getFileChecksum (Path f, long length)
 specifier|public
 name|FileChecksum
 name|getFileChecksum
 parameter_list|(
 name|Path
 name|f
+parameter_list|,
+name|long
+name|length
 parameter_list|)
 block|{
 return|return

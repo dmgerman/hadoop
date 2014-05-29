@@ -56,16 +56,6 @@ name|java
 operator|.
 name|util
 operator|.
-name|Arrays
-import|;
-end_import
-
-begin_import
-import|import
-name|java
-operator|.
-name|util
-operator|.
 name|List
 import|;
 end_import
@@ -342,7 +332,9 @@ name|hadoop
 operator|.
 name|security
 operator|.
-name|UserGroupInformation
+name|authorize
+operator|.
+name|DefaultImpersonationProvider
 import|;
 end_import
 
@@ -359,20 +351,6 @@ operator|.
 name|authorize
 operator|.
 name|ProxyUsers
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|util
-operator|.
-name|StringUtils
 import|;
 end_import
 
@@ -504,7 +482,7 @@ name|config
 operator|.
 name|set
 argument_list|(
-name|ProxyUsers
+name|DefaultImpersonationProvider
 operator|.
 name|getProxySuperuserGroupConfKey
 argument_list|(
@@ -518,7 +496,7 @@ name|config
 operator|.
 name|set
 argument_list|(
-name|ProxyUsers
+name|DefaultImpersonationProvider
 operator|.
 name|getProxySuperuserIpConfKey
 argument_list|(

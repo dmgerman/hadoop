@@ -762,7 +762,9 @@ init|=
 name|MiniQJMHACluster
 operator|.
 name|createDefaultTopology
-argument_list|()
+argument_list|(
+literal|10000
+argument_list|)
 decl_stmt|;
 name|cluster
 operator|=

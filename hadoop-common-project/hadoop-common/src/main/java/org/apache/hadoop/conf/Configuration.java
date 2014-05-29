@@ -2153,6 +2153,21 @@ name|String
 name|name
 parameter_list|)
 block|{
+if|if
+condition|(
+literal|null
+operator|!=
+name|name
+condition|)
+block|{
+name|name
+operator|=
+name|name
+operator|.
+name|trim
+argument_list|()
+expr_stmt|;
+block|}
 name|ArrayList
 argument_list|<
 name|String
@@ -3224,7 +3239,7 @@ name|expr
 argument_list|)
 throw|;
 block|}
-comment|/**    * Get the value of the<code>name</code> property,<code>null</code> if    * no such property exists. If the key is deprecated, it returns the value of    * the first key which replaces the deprecated key and is not null    *     * Values are processed for<a href="#VariableExpansion">variable expansion</a>     * before being returned.     *     * @param name the property name.    * @return the value of the<code>name</code> or its replacing property,     *         or null if no such property exists.    */
+comment|/**    * Get the value of the<code>name</code> property,<code>null</code> if    * no such property exists. If the key is deprecated, it returns the value of    * the first key which replaces the deprecated key and is not null.    *     * Values are processed for<a href="#VariableExpansion">variable expansion</a>     * before being returned.     *     * @param name the property name, will be trimmed before get value.    * @return the value of the<code>name</code> or its replacing property,     *         or null if no such property exists.    */
 DECL|method|get (String name)
 specifier|public
 name|String
@@ -3552,7 +3567,7 @@ return|return
 name|altNames
 return|;
 block|}
-comment|/**     * Set the<code>value</code> of the<code>name</code> property. If     *<code>name</code> is deprecated or there is a deprecated name associated to it,    * it sets the value to both names.    *     * @param name property name.    * @param value property value.    */
+comment|/**     * Set the<code>value</code> of the<code>name</code> property. If     *<code>name</code> is deprecated or there is a deprecated name associated to it,    * it sets the value to both names. Name will be trimmed before put into    * configuration.    *     * @param name property name.    * @param value property value.    */
 DECL|method|set (String name, String value)
 specifier|public
 name|void
@@ -3575,7 +3590,7 @@ literal|null
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**     * Set the<code>value</code> of the<code>name</code> property. If     *<code>name</code> is deprecated, it also sets the<code>value</code> to    * the keys that replace the deprecated key.    *    * @param name property name.    * @param value property value.    * @param source the place that this configuration value came from     * (For debugging).    * @throws IllegalArgumentException when the value or name is null.    */
+comment|/**     * Set the<code>value</code> of the<code>name</code> property. If     *<code>name</code> is deprecated, it also sets the<code>value</code> to    * the keys that replace the deprecated key. Name will be trimmed before put    * into configuration.    *    * @param name property name.    * @param value property value.    * @param source the place that this configuration value came from     * (For debugging).    * @throws IllegalArgumentException when the value or name is null.    */
 DECL|method|set (String name, String value, String source)
 specifier|public
 name|void
@@ -3616,6 +3631,13 @@ name|name
 operator|+
 literal|" must not be null"
 argument_list|)
+expr_stmt|;
+name|name
+operator|=
+name|name
+operator|.
+name|trim
+argument_list|()
 expr_stmt|;
 name|DeprecationContext
 name|deprecations
@@ -4041,7 +4063,7 @@ return|return
 name|overlay
 return|;
 block|}
-comment|/**     * Get the value of the<code>name</code>. If the key is deprecated,    * it returns the value of the first key which replaces the deprecated key    * and is not null.    * If no such property exists,    * then<code>defaultValue</code> is returned.    *     * @param name property name.    * @param defaultValue default value.    * @return property value, or<code>defaultValue</code> if the property     *         doesn't exist.                        */
+comment|/**     * Get the value of the<code>name</code>. If the key is deprecated,    * it returns the value of the first key which replaces the deprecated key    * and is not null.    * If no such property exists,    * then<code>defaultValue</code> is returned.    *     * @param name property name, will be trimmed before get value.    * @param defaultValue default value.    * @return property value, or<code>defaultValue</code> if the property     *         doesn't exist.                        */
 DECL|method|get (String name, String defaultValue)
 specifier|public
 name|String
