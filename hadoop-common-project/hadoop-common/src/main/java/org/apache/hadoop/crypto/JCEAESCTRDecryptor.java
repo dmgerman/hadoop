@@ -239,7 +239,7 @@ argument_list|)
 throw|;
 block|}
 block|}
-comment|/**    * For AES-CTR, will consume all input data and needs enough space in the     * destination buffer to decrypt entire input data.    */
+comment|/**    * AES-CTR will consume all of the input data. It requires enough space in    * the destination buffer to decrypt entire input buffer.    */
 annotation|@
 name|Override
 DECL|method|decrypt (ByteBuffer inBuffer, ByteBuffer outBuffer)

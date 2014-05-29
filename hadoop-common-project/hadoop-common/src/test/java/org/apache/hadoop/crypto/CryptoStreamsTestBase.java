@@ -444,6 +444,7 @@ throws|throws
 name|IOException
 block|{
 comment|// Generate data
+specifier|final
 name|int
 name|seed
 init|=
@@ -454,6 +455,7 @@ operator|.
 name|nextInt
 argument_list|()
 decl_stmt|;
+specifier|final
 name|DataOutputBuffer
 name|dataBuf
 init|=
@@ -461,6 +463,7 @@ operator|new
 name|DataOutputBuffer
 argument_list|()
 decl_stmt|;
+specifier|final
 name|RandomDatum
 operator|.
 name|Generator
@@ -494,6 +497,7 @@ operator|.
 name|next
 argument_list|()
 expr_stmt|;
+specifier|final
 name|RandomDatum
 name|key
 init|=
@@ -502,6 +506,7 @@ operator|.
 name|getKey
 argument_list|()
 decl_stmt|;
+specifier|final
 name|RandomDatum
 name|value
 init|=
@@ -747,7 +752,7 @@ parameter_list|)
 throws|throws
 name|IOException
 function_decl|;
-comment|/**    * Test crypto reading with different buffer size.    */
+comment|/** Test crypto reading with different buffer size. */
 annotation|@
 name|Test
 argument_list|(
@@ -922,7 +927,7 @@ name|close
 argument_list|()
 expr_stmt|;
 block|}
-comment|/**    * Test crypto with different IV.    */
+comment|/** Test crypto with different IV. */
 annotation|@
 name|Test
 argument_list|(
@@ -1280,6 +1285,7 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
+specifier|final
 name|byte
 index|[]
 name|readBuf
@@ -1419,7 +1425,7 @@ return|return
 name|total
 return|;
 block|}
-comment|/**    * Test positioned read.    */
+comment|/** Test positioned read. */
 annotation|@
 name|Test
 argument_list|(
@@ -1593,7 +1599,7 @@ name|expectedData
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Test read fully    */
+comment|/** Test read fully */
 annotation|@
 name|Test
 argument_list|(
@@ -1944,7 +1950,7 @@ name|e
 parameter_list|)
 block|{     }
 block|}
-comment|/**    * Test seek to different position.    */
+comment|/** Test seek to different position. */
 annotation|@
 name|Test
 argument_list|(
@@ -2009,6 +2015,20 @@ operator|/
 literal|2
 argument_list|)
 expr_stmt|;
+specifier|final
+name|long
+name|pos
+init|=
+operator|(
+operator|(
+name|Seekable
+operator|)
+name|in
+operator|)
+operator|.
+name|getPos
+argument_list|()
+decl_stmt|;
 comment|// Pos: -3
 try|try
 block|{
@@ -2046,6 +2066,23 @@ name|e
 argument_list|)
 expr_stmt|;
 block|}
+name|Assert
+operator|.
+name|assertEquals
+argument_list|(
+name|pos
+argument_list|,
+operator|(
+operator|(
+name|Seekable
+operator|)
+name|in
+operator|)
+operator|.
+name|getPos
+argument_list|()
+argument_list|)
+expr_stmt|;
 comment|// Pos: dataLen + 3
 try|try
 block|{
@@ -2082,6 +2119,23 @@ name|e
 argument_list|)
 expr_stmt|;
 block|}
+name|Assert
+operator|.
+name|assertEquals
+argument_list|(
+name|pos
+argument_list|,
+operator|(
+operator|(
+name|Seekable
+operator|)
+name|in
+operator|)
+operator|.
+name|getPos
+argument_list|()
+argument_list|)
+expr_stmt|;
 name|in
 operator|.
 name|close
@@ -2209,7 +2263,7 @@ name|expectedData
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Test get position.    */
+comment|/** Test get position. */
 annotation|@
 name|Test
 argument_list|(
@@ -2446,7 +2500,7 @@ name|close
 argument_list|()
 expr_stmt|;
 block|}
-comment|/**    * Test skip.    */
+comment|/** Test skip. */
 annotation|@
 name|Test
 argument_list|(
@@ -2791,7 +2845,7 @@ name|expectedData
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Test byte buffer read with different buffer size.    */
+comment|/** Test byte buffer read with different buffer size. */
 annotation|@
 name|Test
 argument_list|(
@@ -3743,7 +3797,9 @@ name|GenericTestUtils
 operator|.
 name|assertExceptionContains
 argument_list|(
-literal|"Attempted to read past end of file"
+literal|"Attempted to read past "
+operator|+
+literal|"end of file"
 argument_list|,
 name|e
 argument_list|)

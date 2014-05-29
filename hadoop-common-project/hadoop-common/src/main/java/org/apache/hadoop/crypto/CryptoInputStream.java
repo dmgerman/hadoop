@@ -399,7 +399,7 @@ init|=
 literal|0
 decl_stmt|;
 comment|// Underlying stream offset.
-comment|/**    * Whether underlying stream supports     * {@link #org.apache.hadoop.fs.ByteBufferReadable}    */
+comment|/**    * Whether the underlying stream supports     * {@link #org.apache.hadoop.fs.ByteBufferReadable}    */
 DECL|field|usingByteBufferRead
 specifier|private
 name|Boolean
@@ -407,7 +407,7 @@ name|usingByteBufferRead
 init|=
 literal|null
 decl_stmt|;
-comment|/**    * Padding = pos%(algorithm blocksize); Padding is put into {@link #inBuffer}     * before any other data goes in. The purpose of padding is to put input data    * at proper position.    */
+comment|/**    * Padding = pos%(algorithm blocksize); Padding is put into {@link #inBuffer}     * before any other data goes in. The purpose of padding is to put the input     * data at proper position.    */
 DECL|field|padding
 specifier|private
 name|byte
@@ -704,6 +704,7 @@ return|return
 literal|0
 return|;
 block|}
+specifier|final
 name|int
 name|remaining
 init|=
@@ -753,7 +754,7 @@ name|n
 init|=
 literal|0
 decl_stmt|;
-comment|/**        * Check whether the underlying stream is {@link ByteBufferReadable},        * it can avoid bytes copy.        */
+comment|/*        * Check whether the underlying stream is {@link ByteBufferReadable},        * it can avoid bytes copy.        */
 if|if
 condition|(
 name|usingByteBufferRead
@@ -904,7 +905,7 @@ name|n
 return|;
 block|}
 block|}
-comment|// Read data from underlying stream.
+comment|/** Read data from underlying stream. */
 DECL|method|readFromUnderlyingStream ()
 specifier|private
 name|int
@@ -913,6 +914,7 @@ parameter_list|()
 throws|throws
 name|IOException
 block|{
+specifier|final
 name|int
 name|toRead
 init|=
@@ -921,6 +923,7 @@ operator|.
 name|remaining
 argument_list|()
 decl_stmt|;
+specifier|final
 name|byte
 index|[]
 name|tmp
@@ -928,6 +931,7 @@ init|=
 name|getTmpBuf
 argument_list|()
 decl_stmt|;
+specifier|final
 name|int
 name|n
 init|=
@@ -1071,7 +1075,7 @@ operator|>
 literal|0
 condition|)
 block|{
-comment|/**        * The plain text and cipher text have 1:1 mapping, they start at same         * position.        */
+comment|/*        * The plain text and cipher text have a 1:1 mapping, they start at the         * same position.        */
 name|outBuffer
 operator|.
 name|position
@@ -1092,7 +1096,7 @@ name|isContextReset
 argument_list|()
 condition|)
 block|{
-comment|/**        * Typically we will not get here. To improve performance in CTR mode,        * we rely on the decryptor maintaining context, for example calculating         * the counter. Unfortunately, some bad implementations can't maintain         * context so we need to re-init after doing decryption.        */
+comment|/*        * This code is generally not executed since the decryptor usually         * maintains decryption context (e.g. the counter) internally. However,         * some implementations can't maintain context so a re-init is necessary         * after each decryption call.        */
 name|updateDecryptor
 argument_list|()
 expr_stmt|;
@@ -1107,6 +1111,7 @@ parameter_list|()
 throws|throws
 name|IOException
 block|{
+specifier|final
 name|long
 name|counter
 init|=
@@ -1160,7 +1165,7 @@ name|iv
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Reset the underlying stream offset; and clear {@link #inBuffer} and     * {@link #outBuffer}. Typically this happens when doing {@link #seek(long)}     * or {@link #skip(long)}.    */
+comment|/**    * Reset the underlying stream offset, and clear {@link #inBuffer} and     * {@link #outBuffer}. This Typically happens during {@link #seek(long)}     * or {@link #skip(long)}.    */
 DECL|method|resetStreamOffset (long offset)
 specifier|private
 name|void
@@ -1227,13 +1232,14 @@ operator|=
 literal|true
 expr_stmt|;
 block|}
-comment|/**    * Free the direct buffer manually.    */
+comment|/** Forcibly free the direct buffer. */
 DECL|method|freeBuffers ()
 specifier|private
 name|void
 name|freeBuffers
 parameter_list|()
 block|{
+specifier|final
 name|sun
 operator|.
 name|misc
@@ -1262,6 +1268,7 @@ operator|.
 name|clean
 argument_list|()
 expr_stmt|;
+specifier|final
 name|sun
 operator|.
 name|misc
@@ -1291,7 +1298,7 @@ name|clean
 argument_list|()
 expr_stmt|;
 block|}
-comment|// Positioned read.
+comment|/** Positioned read. */
 annotation|@
 name|Override
 DECL|method|read (long position, byte[] buffer, int offset, int length)
@@ -1320,6 +1327,7 @@ argument_list|()
 expr_stmt|;
 try|try
 block|{
+specifier|final
 name|int
 name|n
 init|=
@@ -1348,7 +1356,7 @@ operator|>
 literal|0
 condition|)
 block|{
-comment|/**           * Since this operation does not change the current offset of a file,           * streamOffset should be not changed and we need to restore the           * decryptor and outBuffer after decryption.          */
+comment|/*          * Since this operation does not change the current offset of a file,           * streamOffset should not be changed. We need to restore the decryptor           * and outBuffer after decryption.          */
 name|decrypt
 argument_list|(
 name|position
@@ -1382,7 +1390,7 @@ argument_list|)
 throw|;
 block|}
 block|}
-comment|/**    * Decrypt given length of data in buffer: start from offset.    * Output is also buffer and start from same offset. Restore the     * {@link #decryptor} and {@link #outBuffer} after decryption.    */
+comment|/**    * Decrypt length bytes in buffer starting at offset. Output is also put     * into buffer starting at offset. Restore the {@link #decryptor} and     * {@link #outBuffer} after the decryption.    */
 DECL|method|decrypt (long position, byte[] buffer, int offset, int length)
 specifier|private
 name|void
@@ -1404,6 +1412,7 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
+specifier|final
 name|byte
 index|[]
 name|tmp
@@ -1439,6 +1448,7 @@ name|unread
 argument_list|)
 expr_stmt|;
 block|}
+specifier|final
 name|long
 name|curOffset
 init|=
@@ -1461,6 +1471,7 @@ operator|<
 name|length
 condition|)
 block|{
+specifier|final
 name|int
 name|toDecrypt
 init|=
@@ -1550,7 +1561,7 @@ argument_list|()
 expr_stmt|;
 block|}
 block|}
-comment|// Positioned read fully.
+comment|/** Positioned read fully. */
 annotation|@
 name|Override
 DECL|method|readFully (long position, byte[] buffer, int offset, int length)
@@ -1604,7 +1615,7 @@ operator|>
 literal|0
 condition|)
 block|{
-comment|/**           * Since this operation does not change the current offset of a file,           * streamOffset should be not changed and we need to restore the decryptor           * and outBuffer after decryption.          */
+comment|/*          * Since this operation does not change the current offset of the file,           * streamOffset should not be changed. We need to restore the decryptor           * and outBuffer after decryption.          */
 name|decrypt
 argument_list|(
 name|position
@@ -1666,7 +1677,7 @@ name|length
 argument_list|)
 expr_stmt|;
 block|}
-comment|// Seek to a position.
+comment|/** Seek to a position. */
 annotation|@
 name|Override
 DECL|method|seek (long pos)
@@ -1696,7 +1707,7 @@ argument_list|()
 expr_stmt|;
 try|try
 block|{
-comment|// If target pos we have already read and decrypt.
+comment|/*        * If data of target pos in the underlying stream has already been read         * and decrypted in outBuffer, we just need to re-position outBuffer.        */
 if|if
 condition|(
 name|pos
@@ -1793,7 +1804,7 @@ argument_list|)
 throw|;
 block|}
 block|}
-comment|// Skip n bytes
+comment|/** Skip n bytes */
 annotation|@
 name|Override
 DECL|method|skip (long n)
@@ -1869,7 +1880,7 @@ return|;
 block|}
 else|else
 block|{
-comment|/**        * Subtract outBuffer.remaining() to see how many bytes we need to         * skip in underlying stream. We get real skipped bytes number of         * underlying stream then add outBuffer.remaining() to get skipped        * bytes number from user's view.        */
+comment|/*        * Subtract outBuffer.remaining() to see how many bytes we need to         * skip in the underlying stream. Add outBuffer.remaining() to the         * actual number of skipped bytes in the underlying stream to get the         * number of skipped bytes from the user's point of view.        */
 name|n
 operator|-=
 name|outBuffer
@@ -1923,7 +1934,7 @@ name|skipped
 return|;
 block|}
 block|}
-comment|// Get underlying stream position.
+comment|/** Get underlying stream position. */
 annotation|@
 name|Override
 DECL|method|getPos ()
@@ -1947,7 +1958,7 @@ name|remaining
 argument_list|()
 return|;
 block|}
-comment|// ByteBuffer read.
+comment|/** ByteBuffer read. */
 annotation|@
 name|Override
 DECL|method|read (ByteBuffer buf)
@@ -1971,6 +1982,7 @@ operator|instanceof
 name|ByteBufferReadable
 condition|)
 block|{
+specifier|final
 name|int
 name|unread
 init|=
@@ -2002,6 +2014,7 @@ operator|<=
 name|unread
 condition|)
 block|{
+specifier|final
 name|int
 name|limit
 init|=
@@ -2051,6 +2064,7 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
+specifier|final
 name|int
 name|pos
 init|=
@@ -2059,6 +2073,7 @@ operator|.
 name|position
 argument_list|()
 decl_stmt|;
+specifier|final
 name|int
 name|n
 init|=
@@ -2128,6 +2143,7 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
+specifier|final
 name|int
 name|pos
 init|=
@@ -2136,6 +2152,7 @@ operator|.
 name|position
 argument_list|()
 decl_stmt|;
+specifier|final
 name|int
 name|limit
 init|=
@@ -2434,6 +2451,7 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
+specifier|final
 name|ByteBuffer
 name|buffer
 init|=
@@ -2460,6 +2478,7 @@ operator|!=
 literal|null
 condition|)
 block|{
+specifier|final
 name|int
 name|n
 init|=
@@ -2483,6 +2502,7 @@ name|remaining
 argument_list|()
 expr_stmt|;
 comment|// Read n bytes
+specifier|final
 name|int
 name|pos
 init|=

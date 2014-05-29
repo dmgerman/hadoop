@@ -621,6 +621,7 @@ operator|>
 literal|0
 condition|)
 block|{
+specifier|final
 name|int
 name|remaining
 init|=
@@ -749,7 +750,7 @@ operator|>
 literal|0
 condition|)
 block|{
-comment|/**        * The plain text and cipher text have 1:1 mapping, they start at same         * position.        */
+comment|/*        * The plain text and cipher text have a 1:1 mapping, they start at the         * same position.        */
 name|outBuffer
 operator|.
 name|position
@@ -762,6 +763,7 @@ operator|=
 literal|0
 expr_stmt|;
 block|}
+specifier|final
 name|int
 name|len
 init|=
@@ -770,7 +772,7 @@ operator|.
 name|remaining
 argument_list|()
 decl_stmt|;
-comment|/**      * If underlying stream supports {@link ByteBuffer} write in future, needs      * refine here.       */
+comment|/*      * If underlying stream supports {@link ByteBuffer} write in future, needs      * refine here.       */
 specifier|final
 name|byte
 index|[]
@@ -813,7 +815,7 @@ name|isContextReset
 argument_list|()
 condition|)
 block|{
-comment|/**        * We will generally not get here.  For CTR mode, to improve        * performance, we rely on the encryptor maintaining context, for        * example to calculate the counter.  But some bad implementations        * can't maintain context, and need us to re-init after doing        * encryption.        */
+comment|/*        * This code is generally not executed since the encryptor usually        * maintains encryption context (e.g. the counter) internally. However,        * some implementations can't maintain context so a re-init is necessary        * after each encryption call.        */
 name|updateEncryptor
 argument_list|()
 expr_stmt|;
@@ -828,6 +830,7 @@ parameter_list|()
 throws|throws
 name|IOException
 block|{
+specifier|final
 name|long
 name|counter
 init|=
@@ -947,13 +950,14 @@ operator|=
 literal|true
 expr_stmt|;
 block|}
-comment|/**    * Free the direct buffer manually.    */
+comment|/** Forcibly free the direct buffer. */
 DECL|method|freeBuffers ()
 specifier|private
 name|void
 name|freeBuffers
 parameter_list|()
 block|{
+specifier|final
 name|sun
 operator|.
 name|misc
@@ -982,6 +986,7 @@ operator|.
 name|clean
 argument_list|()
 expr_stmt|;
+specifier|final
 name|sun
 operator|.
 name|misc
@@ -1011,7 +1016,7 @@ name|clean
 argument_list|()
 expr_stmt|;
 block|}
-comment|/**    * To flush, we need to encrypt the data in buffer and write to underlying    * stream, then do the flush.    */
+comment|/**    * To flush, we need to encrypt the data in the buffer and write to the     * underlying stream, then do the flush.    */
 annotation|@
 name|Override
 DECL|method|flush ()

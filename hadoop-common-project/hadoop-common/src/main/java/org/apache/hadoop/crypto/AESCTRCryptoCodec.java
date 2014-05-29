@@ -117,7 +117,7 @@ return|return
 name|AES_BLOCK_SIZE
 return|;
 block|}
-comment|/**    * IV is produced by combining initial IV and the counter using addition.    * IV length should be the same as {@link #AES_BLOCK_SIZE}    */
+comment|/**    * The IV is produced by adding the initial IV to the counter. IV length     * should be the same as {@link #AES_BLOCK_SIZE}    */
 annotation|@
 name|Override
 DECL|method|calculateIV (byte[] initIV, long counter, byte[] IV)
@@ -159,6 +159,7 @@ operator|==
 name|AES_BLOCK_SIZE
 argument_list|)
 expr_stmt|;
+specifier|final
 name|ByteBuffer
 name|buf
 init|=
