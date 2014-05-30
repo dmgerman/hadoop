@@ -1908,6 +1908,16 @@ name|CommonConfigurationKeys
 operator|.
 name|FS_PERMISSIONS_UMASK_KEY
 argument_list|)
+block|,
+operator|new
+name|DeprecationDelta
+argument_list|(
+literal|"dfs.nfs.exports.allowed.hosts"
+argument_list|,
+name|CommonConfigurationKeys
+operator|.
+name|NFS_EXPORTS_ALLOWED_HOSTS_KEY
+argument_list|)
 block|}
 decl_stmt|;
 comment|/**    * The global DeprecationContext.    */

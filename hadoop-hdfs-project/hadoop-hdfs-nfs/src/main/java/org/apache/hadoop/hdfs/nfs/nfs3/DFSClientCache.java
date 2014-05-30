@@ -158,20 +158,6 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|conf
-operator|.
-name|Configuration
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
 name|fs
 operator|.
 name|FSDataInputStream
@@ -203,6 +189,24 @@ operator|.
 name|hdfs
 operator|.
 name|DFSInputStream
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|nfs
+operator|.
+name|conf
+operator|.
+name|NfsConfiguration
 import|;
 end_import
 
@@ -443,7 +447,7 @@ decl_stmt|;
 DECL|field|config
 specifier|private
 specifier|final
-name|Configuration
+name|NfsConfiguration
 name|config
 decl_stmt|;
 DECL|class|DFSInputStreamCaheKey
@@ -559,10 +563,10 @@ argument_list|)
 return|;
 block|}
 block|}
-DECL|method|DFSClientCache (Configuration config)
+DECL|method|DFSClientCache (NfsConfiguration config)
 name|DFSClientCache
 parameter_list|(
-name|Configuration
+name|NfsConfiguration
 name|config
 parameter_list|)
 block|{
@@ -574,10 +578,10 @@ name|DEFAULT_DFS_CLIENT_CACHE_SIZE
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|DFSClientCache (Configuration config, int clientCache)
+DECL|method|DFSClientCache (NfsConfiguration config, int clientCache)
 name|DFSClientCache
 parameter_list|(
-name|Configuration
+name|NfsConfiguration
 name|config
 parameter_list|,
 name|int

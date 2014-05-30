@@ -282,24 +282,6 @@ name|MAC_GET_ALL_GROUPS_CMD
 init|=
 literal|"dscl . -list /Groups PrimaryGroupID"
 decl_stmt|;
-comment|// Used for finding the configured static mapping file.
-DECL|field|NFS_STATIC_MAPPING_FILE_KEY
-specifier|static
-specifier|final
-name|String
-name|NFS_STATIC_MAPPING_FILE_KEY
-init|=
-literal|"dfs.nfs.static.mapping.file"
-decl_stmt|;
-DECL|field|NFS_STATIC_MAPPING_FILE_DEFAULT
-specifier|private
-specifier|static
-specifier|final
-name|String
-name|NFS_STATIC_MAPPING_FILE_DEFAULT
-init|=
-literal|"/etc/nfs.map"
-decl_stmt|;
 DECL|field|staticMappingFile
 specifier|private
 specifier|final
@@ -349,46 +331,11 @@ argument_list|(
 literal|"^(uid|gid)\\s+(\\d+)\\s+(\\d+)\\s*(#.*)?$"
 argument_list|)
 decl_stmt|;
-comment|// Do update every 15 minutes by default
-DECL|field|TIMEOUT_DEFAULT
-specifier|final
-specifier|static
-name|long
-name|TIMEOUT_DEFAULT
-init|=
-literal|15
-operator|*
-literal|60
-operator|*
-literal|1000
-decl_stmt|;
-comment|// ms
-DECL|field|TIMEOUT_MIN
-specifier|final
-specifier|static
-name|long
-name|TIMEOUT_MIN
-init|=
-literal|1
-operator|*
-literal|60
-operator|*
-literal|1000
-decl_stmt|;
-comment|// ms
 DECL|field|timeout
 specifier|final
 specifier|private
 name|long
 name|timeout
-decl_stmt|;
-DECL|field|NFS_USERUPDATE_MILLY
-specifier|final
-specifier|static
-name|String
-name|NFS_USERUPDATE_MILLY
-init|=
-literal|"hadoop.nfs.userupdate.milly"
 decl_stmt|;
 comment|// Maps for id to name map. Guarded by this object monitor lock
 DECL|field|uidNameMap
@@ -429,29 +376,6 @@ init|=
 literal|0
 decl_stmt|;
 comment|// Last time maps were updated
-DECL|method|IdUserGroup ()
-specifier|public
-name|IdUserGroup
-parameter_list|()
-throws|throws
-name|IOException
-block|{
-name|timeout
-operator|=
-name|TIMEOUT_DEFAULT
-expr_stmt|;
-name|staticMappingFile
-operator|=
-operator|new
-name|File
-argument_list|(
-name|NFS_STATIC_MAPPING_FILE_DEFAULT
-argument_list|)
-expr_stmt|;
-name|updateMaps
-argument_list|()
-expr_stmt|;
-block|}
 DECL|method|IdUserGroup (Configuration conf)
 specifier|public
 name|IdUserGroup
@@ -469,9 +393,13 @@ name|conf
 operator|.
 name|getLong
 argument_list|(
-name|NFS_USERUPDATE_MILLY
+name|Nfs3Constant
+operator|.
+name|NFS_USERGROUP_UPDATE_MILLIS_KEY
 argument_list|,
-name|TIMEOUT_DEFAULT
+name|Nfs3Constant
+operator|.
+name|NFS_USERGROUP_UPDATE_MILLIS_DEFAULT
 argument_list|)
 decl_stmt|;
 comment|// Minimal interval is 1 minute
@@ -479,7 +407,9 @@ if|if
 condition|(
 name|updateTime
 operator|<
-name|TIMEOUT_MIN
+name|Nfs3Constant
+operator|.
+name|NFS_USERGROUP_UPDATE_MILLIS_MIN
 condition|)
 block|{
 name|LOG
@@ -493,7 +423,9 @@ argument_list|)
 expr_stmt|;
 name|timeout
 operator|=
-name|TIMEOUT_MIN
+name|Nfs3Constant
+operator|.
+name|NFS_USERGROUP_UPDATE_MILLIS_MIN
 expr_stmt|;
 block|}
 else|else
@@ -510,8 +442,12 @@ name|conf
 operator|.
 name|get
 argument_list|(
+name|Nfs3Constant
+operator|.
 name|NFS_STATIC_MAPPING_FILE_KEY
 argument_list|,
+name|Nfs3Constant
+operator|.
 name|NFS_STATIC_MAPPING_FILE_DEFAULT
 argument_list|)
 decl_stmt|;
