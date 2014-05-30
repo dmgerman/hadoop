@@ -3282,32 +3282,6 @@ comment|// the client does not keep any local state, thus flushing is not requir
 comment|// because of the client.
 comment|// the server should not keep in memory state on behalf of clients either.
 block|}
-annotation|@
-name|VisibleForTesting
-DECL|method|buildVersionName (String name, int version)
-specifier|public
-specifier|static
-name|String
-name|buildVersionName
-parameter_list|(
-name|String
-name|name
-parameter_list|,
-name|int
-name|version
-parameter_list|)
-block|{
-return|return
-name|KeyProvider
-operator|.
-name|buildVersionName
-argument_list|(
-name|name
-argument_list|,
-name|version
-argument_list|)
-return|;
-block|}
 block|}
 end_class
 

@@ -3781,18 +3781,13 @@ expr_stmt|;
 block|}
 try|try
 block|{
+comment|// we are using JavaKeyStoreProvider for testing, so we know how
+comment|// the keyversion is created.
 name|kp
 operator|.
 name|getKeyVersion
 argument_list|(
-name|KMSClientProvider
-operator|.
-name|buildVersionName
-argument_list|(
-literal|"k"
-argument_list|,
-literal|0
-argument_list|)
+literal|"k@0"
 argument_list|)
 expr_stmt|;
 name|Assert
