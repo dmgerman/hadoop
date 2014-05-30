@@ -1031,6 +1031,26 @@ name|HADOOP_SECURITY_IMPERSONATION_PROVIDER_CLASS
 init|=
 literal|"hadoop.security.impersonation.provider.class"
 decl_stmt|;
+comment|/** See<a href="{@docRoot}/../core-default.html">core-default.xml</a> */
+DECL|field|HADOOP_SECURITY_SECURE_RANDOM_ALGORITHM_KEY
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|HADOOP_SECURITY_SECURE_RANDOM_ALGORITHM_KEY
+init|=
+literal|"hadoop.security.secure.random.algorithm"
+decl_stmt|;
+comment|/** Defalt value for HADOOP_SECURITY_SECURE_RANDOM_ALGORITHM_KEY */
+DECL|field|HADOOP_SECURITY_SECURE_RANDOM_ALGORITHM_DEFAULT
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|HADOOP_SECURITY_SECURE_RANDOM_ALGORITHM_DEFAULT
+init|=
+literal|"SHA1PRNG"
+decl_stmt|;
 block|}
 end_class
 

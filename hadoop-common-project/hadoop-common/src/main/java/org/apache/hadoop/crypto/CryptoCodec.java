@@ -225,6 +225,18 @@ index|[]
 name|IV
 parameter_list|)
 function_decl|;
+comment|/**    * Generate secure random.    * @param bytes length of the secure random    * @return byte[] the secure random    */
+DECL|method|generateSecureRandom (int bytes)
+specifier|public
+specifier|abstract
+name|byte
+index|[]
+name|generateSecureRandom
+parameter_list|(
+name|int
+name|bytes
+parameter_list|)
+function_decl|;
 block|}
 end_class
 
