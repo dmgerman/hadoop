@@ -4485,6 +4485,15 @@ block|}
 block|}
 argument_list|)
 expr_stmt|;
+comment|//stop the reloader, to avoid running while we are writing the new file
+name|KMSWebApp
+operator|.
+name|getACLs
+argument_list|()
+operator|.
+name|stopReloader
+argument_list|()
+expr_stmt|;
 comment|// test ACL reloading
 name|Thread
 operator|.
