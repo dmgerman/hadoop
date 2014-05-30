@@ -1359,7 +1359,7 @@ specifier|final
 name|int
 name|DEFAULT_ZK_RM_NUM_RETRIES
 init|=
-literal|500
+literal|1000
 decl_stmt|;
 DECL|field|RM_ZK_RETRY_INTERVAL_MS
 specifier|public
@@ -1379,7 +1379,7 @@ specifier|final
 name|long
 name|DEFAULT_RM_ZK_RETRY_INTERVAL_MS
 init|=
-literal|2000
+literal|1000
 decl_stmt|;
 DECL|field|RM_ZK_TIMEOUT_MS
 specifier|public
