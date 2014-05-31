@@ -1500,6 +1500,20 @@ parameter_list|)
 throws|throws
 name|IOException
 function_decl|;
+DECL|method|listXAttrs (Path path)
+specifier|public
+name|List
+argument_list|<
+name|String
+argument_list|>
+name|listXAttrs
+parameter_list|(
+name|Path
+name|path
+parameter_list|)
+throws|throws
+name|IOException
+function_decl|;
 DECL|method|removeXAttr (Path path, String name)
 specifier|public
 name|void

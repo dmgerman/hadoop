@@ -1705,6 +1705,34 @@ return|;
 block|}
 annotation|@
 name|Override
+DECL|method|listXAttrs (Path path)
+specifier|public
+name|List
+argument_list|<
+name|String
+argument_list|>
+name|listXAttrs
+parameter_list|(
+name|Path
+name|path
+parameter_list|)
+throws|throws
+name|IOException
+block|{
+return|return
+name|super
+operator|.
+name|listXAttrs
+argument_list|(
+name|fullPath
+argument_list|(
+name|path
+argument_list|)
+argument_list|)
+return|;
+block|}
+annotation|@
+name|Override
 DECL|method|removeXAttr (Path path, String name)
 specifier|public
 name|void

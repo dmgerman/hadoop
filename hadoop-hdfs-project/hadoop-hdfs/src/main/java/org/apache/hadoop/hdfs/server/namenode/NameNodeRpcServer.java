@@ -8171,6 +8171,31 @@ return|;
 block|}
 annotation|@
 name|Override
+DECL|method|listXAttrs (String src)
+specifier|public
+name|List
+argument_list|<
+name|XAttr
+argument_list|>
+name|listXAttrs
+parameter_list|(
+name|String
+name|src
+parameter_list|)
+throws|throws
+name|IOException
+block|{
+return|return
+name|namesystem
+operator|.
+name|listXAttrs
+argument_list|(
+name|src
+argument_list|)
+return|;
+block|}
+annotation|@
+name|Override
 DECL|method|removeXAttr (String src, XAttr xAttr)
 specifier|public
 name|void
