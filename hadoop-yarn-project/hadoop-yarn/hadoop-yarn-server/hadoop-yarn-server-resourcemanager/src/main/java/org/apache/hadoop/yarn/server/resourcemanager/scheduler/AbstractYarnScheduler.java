@@ -110,6 +110,20 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|service
+operator|.
+name|AbstractService
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|yarn
 operator|.
 name|api
@@ -335,6 +349,8 @@ name|N
 extends|extends
 name|SchedulerNode
 parameter_list|>
+extends|extends
+name|AbstractService
 implements|implements
 name|ResourceScheduler
 block|{
@@ -460,6 +476,21 @@ argument_list|,
 literal|null
 argument_list|)
 decl_stmt|;
+comment|/**    * Construct the service.    *    * @param name service name    */
+DECL|method|AbstractYarnScheduler (String name)
+specifier|public
+name|AbstractYarnScheduler
+parameter_list|(
+name|String
+name|name
+parameter_list|)
+block|{
+name|super
+argument_list|(
+name|name
+argument_list|)
+expr_stmt|;
+block|}
 DECL|method|getTransferredContainers ( ApplicationAttemptId currentAttempt)
 specifier|public
 specifier|synchronized

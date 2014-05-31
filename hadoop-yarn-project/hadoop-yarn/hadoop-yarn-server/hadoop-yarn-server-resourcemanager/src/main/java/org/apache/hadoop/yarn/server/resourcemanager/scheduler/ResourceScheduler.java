@@ -137,6 +137,15 @@ name|YarnScheduler
 extends|,
 name|Recoverable
 block|{
+comment|/**    * Set RMContext for<code>ResourceScheduler</code>.    * This method should be called immediately after instantiating    * a scheduler once.    * @param rmContext created by ResourceManager    */
+DECL|method|setRMContext (RMContext rmContext)
+name|void
+name|setRMContext
+parameter_list|(
+name|RMContext
+name|rmContext
+parameter_list|)
+function_decl|;
 comment|/**    * Re-initialize the<code>ResourceScheduler</code>.    * @param conf configuration    * @throws IOException    */
 DECL|method|reinitialize (Configuration conf, RMContext rmContext)
 name|void
