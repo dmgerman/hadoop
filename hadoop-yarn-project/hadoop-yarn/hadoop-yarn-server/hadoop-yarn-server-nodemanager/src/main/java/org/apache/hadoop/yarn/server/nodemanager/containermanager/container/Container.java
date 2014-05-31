@@ -176,6 +176,26 @@ name|ContainerTokenIdentifier
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|server
+operator|.
+name|api
+operator|.
+name|protocolrecords
+operator|.
+name|NMContainerStatus
+import|;
+end_import
+
 begin_interface
 DECL|interface|Container
 specifier|public
@@ -238,6 +258,11 @@ function_decl|;
 DECL|method|cloneAndGetContainerStatus ()
 name|ContainerStatus
 name|cloneAndGetContainerStatus
+parameter_list|()
+function_decl|;
+DECL|method|getNMContainerStatus ()
+name|NMContainerStatus
+name|getNMContainerStatus
 parameter_list|()
 function_decl|;
 DECL|method|toString ()
