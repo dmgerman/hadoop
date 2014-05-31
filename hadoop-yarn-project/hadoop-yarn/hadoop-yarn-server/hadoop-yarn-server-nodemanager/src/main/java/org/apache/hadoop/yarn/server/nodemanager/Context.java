@@ -180,6 +180,26 @@ name|server
 operator|.
 name|nodemanager
 operator|.
+name|recovery
+operator|.
+name|NMStateStoreService
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|server
+operator|.
+name|nodemanager
+operator|.
 name|security
 operator|.
 name|NMContainerTokenSecretManager
@@ -294,6 +314,11 @@ function_decl|;
 DECL|method|getApplicationACLsManager ()
 name|ApplicationACLsManager
 name|getApplicationACLsManager
+parameter_list|()
+function_decl|;
+DECL|method|getNMStateStore ()
+name|NMStateStoreService
+name|getNMStateStore
 parameter_list|()
 function_decl|;
 DECL|method|getDecommissioned ()

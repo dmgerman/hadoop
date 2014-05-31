@@ -42,6 +42,20 @@ begin_import
 import|import static
 name|org
 operator|.
+name|hamcrest
+operator|.
+name|core
+operator|.
+name|Is
+operator|.
+name|is
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
 name|junit
 operator|.
 name|Assert
@@ -70,7 +84,7 @@ name|junit
 operator|.
 name|Assert
 operator|.
-name|assertTrue
+name|assertThat
 import|;
 end_import
 
@@ -82,21 +96,7 @@ name|junit
 operator|.
 name|Assert
 operator|.
-name|assertThat
-import|;
-end_import
-
-begin_import
-import|import static
-name|org
-operator|.
-name|hamcrest
-operator|.
-name|core
-operator|.
-name|Is
-operator|.
-name|is
+name|assertTrue
 import|;
 end_import
 
@@ -107,20 +107,6 @@ operator|.
 name|io
 operator|.
 name|IOException
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|conf
-operator|.
-name|Configuration
 import|;
 end_import
 
@@ -149,6 +135,24 @@ operator|.
 name|hdfs
 operator|.
 name|DFSClient
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|nfs
+operator|.
+name|conf
+operator|.
+name|NfsConfiguration
 import|;
 end_import
 
@@ -192,11 +196,11 @@ parameter_list|()
 throws|throws
 name|IOException
 block|{
-name|Configuration
+name|NfsConfiguration
 name|conf
 init|=
 operator|new
-name|Configuration
+name|NfsConfiguration
 argument_list|()
 decl_stmt|;
 name|conf
@@ -326,11 +330,11 @@ name|currentUser
 init|=
 literal|"test-user"
 decl_stmt|;
-name|Configuration
+name|NfsConfiguration
 name|conf
 init|=
 operator|new
-name|Configuration
+name|NfsConfiguration
 argument_list|()
 decl_stmt|;
 name|UserGroupInformation
@@ -458,11 +462,11 @@ literal|0
 index|]
 argument_list|)
 decl_stmt|;
-name|Configuration
+name|NfsConfiguration
 name|conf
 init|=
 operator|new
-name|Configuration
+name|NfsConfiguration
 argument_list|()
 decl_stmt|;
 name|conf

@@ -48,9 +48,13 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|hdfs
+operator|.
+name|nfs
+operator|.
 name|conf
 operator|.
-name|Configuration
+name|NfsConfiguration
 import|;
 end_import
 
@@ -80,11 +84,11 @@ name|Mountd
 extends|extends
 name|MountdBase
 block|{
-DECL|method|Mountd (Configuration config, DatagramSocket registrationSocket, boolean allowInsecurePorts)
+DECL|method|Mountd (NfsConfiguration config, DatagramSocket registrationSocket, boolean allowInsecurePorts)
 specifier|public
 name|Mountd
 parameter_list|(
-name|Configuration
+name|NfsConfiguration
 name|config
 parameter_list|,
 name|DatagramSocket
@@ -123,11 +127,11 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
-name|Configuration
+name|NfsConfiguration
 name|config
 init|=
 operator|new
-name|Configuration
+name|NfsConfiguration
 argument_list|()
 decl_stmt|;
 name|Mountd

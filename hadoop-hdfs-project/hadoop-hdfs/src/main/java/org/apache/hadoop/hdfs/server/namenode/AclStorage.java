@@ -1452,7 +1452,7 @@ argument_list|)
 argument_list|)
 return|;
 block|}
-comment|/**    * Creates the new FsPermission for an inode that is receiving an extended    * ACL, based on its access ACL entries.  For a correctly sorted ACL, the    * first entry is the owner and the last 2 entries are the mask and other    * entries respectively.  Also preserve sticky bit and toggle ACL bit on.    *    * @param accessEntries List<AclEntry> access ACL entries    * @param existingPerm FsPermission existing permissions    * @return FsPermission new permissions    */
+comment|/**    * Creates the new FsPermission for an inode that is receiving an extended    * ACL, based on its access ACL entries.  For a correctly sorted ACL, the    * first entry is the owner and the last 2 entries are the mask and other    * entries respectively.  Also preserve sticky bit and toggle ACL bit on.    * Note that this method intentionally copies the permissions of the mask    * entry into the FsPermission group permissions.  This is consistent with the    * POSIX ACLs model, which presents the mask as the permissions of the group    * class.    *    * @param accessEntries List<AclEntry> access ACL entries    * @param existingPerm FsPermission existing permissions    * @return FsPermission new permissions    */
 DECL|method|createFsPermissionForExtendedAcl ( List<AclEntry> accessEntries, FsPermission existingPerm)
 specifier|private
 specifier|static

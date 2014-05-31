@@ -852,6 +852,34 @@ name|RPC_METRICS_PERCENTILES_INTERVALS_KEY
 init|=
 literal|"rpc.metrics.percentiles.intervals"
 decl_stmt|;
+comment|/** Allowed hosts for nfs exports */
+DECL|field|NFS_EXPORTS_ALLOWED_HOSTS_SEPARATOR
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|NFS_EXPORTS_ALLOWED_HOSTS_SEPARATOR
+init|=
+literal|";"
+decl_stmt|;
+DECL|field|NFS_EXPORTS_ALLOWED_HOSTS_KEY
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|NFS_EXPORTS_ALLOWED_HOSTS_KEY
+init|=
+literal|"nfs.exports.allowed.hosts"
+decl_stmt|;
+DECL|field|NFS_EXPORTS_ALLOWED_HOSTS_KEY_DEFAULT
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|NFS_EXPORTS_ALLOWED_HOSTS_KEY_DEFAULT
+init|=
+literal|"* rw"
+decl_stmt|;
 block|}
 end_class
 

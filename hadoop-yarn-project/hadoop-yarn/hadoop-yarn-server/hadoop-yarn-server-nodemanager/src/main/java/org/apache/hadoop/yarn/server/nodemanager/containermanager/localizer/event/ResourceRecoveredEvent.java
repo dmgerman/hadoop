@@ -34,6 +34,20 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|fs
+operator|.
+name|Path
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|yarn
 operator|.
 name|server
@@ -44,41 +58,88 @@ name|containermanager
 operator|.
 name|localizer
 operator|.
-name|LocalizedResource
+name|LocalResourceRequest
 import|;
 end_import
 
-begin_comment
-comment|/**  * Events delivered to {@link LocalizedResource}. Each of these  * events is a subclass of {@link ResourceEvent}.  */
-end_comment
-
-begin_enum
-DECL|enum|ResourceEventType
+begin_class
+DECL|class|ResourceRecoveredEvent
 specifier|public
-enum|enum
-name|ResourceEventType
+class|class
+name|ResourceRecoveredEvent
+extends|extends
+name|ResourceEvent
 block|{
-comment|/** See {@link ResourceRequestEvent} */
-DECL|enumConstant|REQUEST
-name|REQUEST
-block|,
-comment|/** See {@link ResourceLocalizedEvent} */
-DECL|enumConstant|LOCALIZED
-name|LOCALIZED
-block|,
-comment|/** See {@link ResourceReleaseEvent} */
-DECL|enumConstant|RELEASE
-name|RELEASE
-block|,
-comment|/** See {@link ResourceFailedLocalizationEvent} */
-DECL|enumConstant|LOCALIZATION_FAILED
-name|LOCALIZATION_FAILED
-block|,
-comment|/** See {@link ResourceRecoveredEvent} */
-DECL|enumConstant|RECOVERED
+DECL|field|localPath
+specifier|private
+specifier|final
+name|Path
+name|localPath
+decl_stmt|;
+DECL|field|size
+specifier|private
+specifier|final
+name|long
+name|size
+decl_stmt|;
+DECL|method|ResourceRecoveredEvent (LocalResourceRequest rsrc, Path localPath, long size)
+specifier|public
+name|ResourceRecoveredEvent
+parameter_list|(
+name|LocalResourceRequest
+name|rsrc
+parameter_list|,
+name|Path
+name|localPath
+parameter_list|,
+name|long
+name|size
+parameter_list|)
+block|{
+name|super
+argument_list|(
+name|rsrc
+argument_list|,
+name|ResourceEventType
+operator|.
 name|RECOVERED
+argument_list|)
+expr_stmt|;
+name|this
+operator|.
+name|localPath
+operator|=
+name|localPath
+expr_stmt|;
+name|this
+operator|.
+name|size
+operator|=
+name|size
+expr_stmt|;
 block|}
-end_enum
+DECL|method|getLocalPath ()
+specifier|public
+name|Path
+name|getLocalPath
+parameter_list|()
+block|{
+return|return
+name|localPath
+return|;
+block|}
+DECL|method|getSize ()
+specifier|public
+name|long
+name|getSize
+parameter_list|()
+block|{
+return|return
+name|size
+return|;
+block|}
+block|}
+end_class
 
 end_unit
 

@@ -21,38 +21,6 @@ package|;
 end_package
 
 begin_import
-import|import static
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|hdfs
-operator|.
-name|DFSConfigKeys
-operator|.
-name|DFS_NFS_KEYTAB_FILE_KEY
-import|;
-end_import
-
-begin_import
-import|import static
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|hdfs
-operator|.
-name|DFSConfigKeys
-operator|.
-name|DFS_NFS_KERBEROS_PRINCIPAL_KEY
-import|;
-end_import
-
-begin_import
 import|import
 name|java
 operator|.
@@ -158,9 +126,9 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|conf
+name|hdfs
 operator|.
-name|Configuration
+name|DFSClient
 import|;
 end_import
 
@@ -174,7 +142,29 @@ name|hadoop
 operator|.
 name|hdfs
 operator|.
-name|DFSClient
+name|nfs
+operator|.
+name|conf
+operator|.
+name|NfsConfigKeys
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|nfs
+operator|.
+name|conf
+operator|.
+name|NfsConfiguration
 import|;
 end_import
 
@@ -295,22 +285,6 @@ operator|.
 name|nfs3
 operator|.
 name|FileHandle
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|nfs
-operator|.
-name|nfs3
-operator|.
-name|Nfs3Constant
 import|;
 end_import
 
@@ -594,16 +568,6 @@ name|VERSION_3
 init|=
 literal|3
 decl_stmt|;
-DECL|field|PORT
-specifier|public
-specifier|static
-specifier|final
-name|int
-name|PORT
-init|=
-literal|4242
-decl_stmt|;
-comment|// Need DFSClient for branch-1 to get ExtendedHdfsFileStatus
 DECL|field|dfsClient
 specifier|private
 specifier|final
@@ -636,11 +600,11 @@ specifier|final
 name|NfsExports
 name|hostsMatcher
 decl_stmt|;
-DECL|method|RpcProgramMountd (Configuration config, DatagramSocket registrationSocket, boolean allowInsecurePorts)
+DECL|method|RpcProgramMountd (NfsConfiguration config, DatagramSocket registrationSocket, boolean allowInsecurePorts)
 specifier|public
 name|RpcProgramMountd
 parameter_list|(
-name|Configuration
+name|NfsConfiguration
 name|config
 parameter_list|,
 name|DatagramSocket
@@ -663,9 +627,13 @@ name|config
 operator|.
 name|getInt
 argument_list|(
-literal|"nfs3.mountd.port"
+name|NfsConfigKeys
+operator|.
+name|DFS_NFS_MOUNTD_PORT_KEY
 argument_list|,
-name|PORT
+name|NfsConfigKeys
+operator|.
+name|DFS_NFS_MOUNTD_PORT_DEFAULT
 argument_list|)
 argument_list|,
 name|PROGRAM
@@ -696,13 +664,13 @@ name|config
 operator|.
 name|get
 argument_list|(
-name|Nfs3Constant
+name|NfsConfigKeys
 operator|.
-name|EXPORT_POINT
+name|DFS_NFS_EXPORT_POINT_KEY
 argument_list|,
-name|Nfs3Constant
+name|NfsConfigKeys
 operator|.
-name|EXPORT_POINT_DEFAULT
+name|DFS_NFS_EXPORT_POINT_DEFAULT
 argument_list|)
 argument_list|)
 expr_stmt|;
@@ -746,8 +714,12 @@ name|login
 argument_list|(
 name|config
 argument_list|,
+name|NfsConfigKeys
+operator|.
 name|DFS_NFS_KEYTAB_FILE_KEY
 argument_list|,
+name|NfsConfigKeys
+operator|.
 name|DFS_NFS_KERBEROS_PRINCIPAL_KEY
 argument_list|)
 expr_stmt|;

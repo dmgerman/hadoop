@@ -540,6 +540,26 @@ name|server
 operator|.
 name|nodemanager
 operator|.
+name|recovery
+operator|.
+name|NMNullStateStoreService
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|server
+operator|.
+name|nodemanager
+operator|.
 name|webapp
 operator|.
 name|ContainerLogsPage
@@ -776,6 +796,10 @@ name|ApplicationACLsManager
 argument_list|(
 name|conf
 argument_list|)
+argument_list|,
+operator|new
+name|NMNullStateStoreService
+argument_list|()
 argument_list|)
 decl_stmt|;
 comment|// Add an application and the corresponding containers

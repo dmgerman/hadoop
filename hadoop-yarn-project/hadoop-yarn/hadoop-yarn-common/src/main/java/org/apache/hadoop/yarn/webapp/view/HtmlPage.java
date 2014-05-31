@@ -352,6 +352,13 @@ argument_list|()
 operator|.
 name|meta_http
 argument_list|(
+literal|"X-UA-Compatible"
+argument_list|,
+literal|"IE=8"
+argument_list|)
+operator|.
+name|meta_http
+argument_list|(
 literal|"Content-type"
 argument_list|,
 name|MimeType

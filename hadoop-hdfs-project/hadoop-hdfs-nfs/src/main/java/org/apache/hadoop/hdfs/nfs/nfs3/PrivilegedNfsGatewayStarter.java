@@ -76,9 +76,13 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|hdfs
+operator|.
+name|nfs
+operator|.
 name|conf
 operator|.
-name|Configuration
+name|NfsConfigKeys
 import|;
 end_import
 
@@ -92,21 +96,11 @@ name|hadoop
 operator|.
 name|hdfs
 operator|.
-name|DFSConfigKeys
-import|;
-end_import
-
-begin_import
-import|import
-name|org
+name|nfs
 operator|.
-name|apache
+name|conf
 operator|.
-name|hadoop
-operator|.
-name|hdfs
-operator|.
-name|HdfsConfiguration
+name|NfsConfiguration
 import|;
 end_import
 
@@ -159,11 +153,11 @@ argument_list|(
 literal|"Initializing privileged NFS client socket..."
 argument_list|)
 expr_stmt|;
-name|Configuration
+name|NfsConfiguration
 name|conf
 init|=
 operator|new
-name|HdfsConfiguration
+name|NfsConfiguration
 argument_list|()
 decl_stmt|;
 name|int
@@ -173,11 +167,11 @@ name|conf
 operator|.
 name|getInt
 argument_list|(
-name|DFSConfigKeys
+name|NfsConfigKeys
 operator|.
 name|DFS_NFS_REGISTRATION_PORT_KEY
 argument_list|,
-name|DFSConfigKeys
+name|NfsConfigKeys
 operator|.
 name|DFS_NFS_REGISTRATION_PORT_DEFAULT
 argument_list|)
@@ -199,7 +193,7 @@ name|RuntimeException
 argument_list|(
 literal|"Must start privileged NFS server with '"
 operator|+
-name|DFSConfigKeys
+name|NfsConfigKeys
 operator|.
 name|DFS_NFS_REGISTRATION_PORT_KEY
 operator|+

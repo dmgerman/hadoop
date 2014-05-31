@@ -48,9 +48,13 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|hdfs
+operator|.
+name|nfs
+operator|.
 name|conf
 operator|.
-name|Configuration
+name|NfsConfigKeys
 import|;
 end_import
 
@@ -64,7 +68,11 @@ name|hadoop
 operator|.
 name|hdfs
 operator|.
-name|DFSConfigKeys
+name|nfs
+operator|.
+name|conf
+operator|.
+name|NfsConfiguration
 import|;
 end_import
 
@@ -147,28 +155,11 @@ specifier|private
 name|Mountd
 name|mountd
 decl_stmt|;
-static|static
-block|{
-name|Configuration
-operator|.
-name|addDefaultResource
-argument_list|(
-literal|"hdfs-default.xml"
-argument_list|)
-expr_stmt|;
-name|Configuration
-operator|.
-name|addDefaultResource
-argument_list|(
-literal|"hdfs-site.xml"
-argument_list|)
-expr_stmt|;
-block|}
-DECL|method|Nfs3 (Configuration conf)
+DECL|method|Nfs3 (NfsConfiguration conf)
 specifier|public
 name|Nfs3
 parameter_list|(
-name|Configuration
+name|NfsConfiguration
 name|conf
 parameter_list|)
 throws|throws
@@ -184,11 +175,11 @@ literal|true
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|Nfs3 (Configuration conf, DatagramSocket registrationSocket, boolean allowInsecurePorts)
+DECL|method|Nfs3 (NfsConfiguration conf, DatagramSocket registrationSocket, boolean allowInsecurePorts)
 specifier|public
 name|Nfs3
 parameter_list|(
-name|Configuration
+name|NfsConfiguration
 name|conf
 parameter_list|,
 name|DatagramSocket
@@ -293,11 +284,11 @@ argument_list|,
 name|LOG
 argument_list|)
 expr_stmt|;
-name|Configuration
+name|NfsConfiguration
 name|conf
 init|=
 operator|new
-name|Configuration
+name|NfsConfiguration
 argument_list|()
 decl_stmt|;
 name|boolean
@@ -307,11 +298,11 @@ name|conf
 operator|.
 name|getBoolean
 argument_list|(
-name|DFSConfigKeys
+name|NfsConfigKeys
 operator|.
 name|DFS_NFS_ALLOW_INSECURE_PORTS_KEY
 argument_list|,
-name|DFSConfigKeys
+name|NfsConfigKeys
 operator|.
 name|DFS_NFS_ALLOW_INSECURE_PORTS_DEFAULT
 argument_list|)
@@ -323,9 +314,7 @@ init|=
 operator|new
 name|Nfs3
 argument_list|(
-operator|new
-name|Configuration
-argument_list|()
+name|conf
 argument_list|,
 name|registrationSocket
 argument_list|,

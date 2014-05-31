@@ -74,9 +74,9 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|conf
+name|hdfs
 operator|.
-name|Configuration
+name|MiniDFSCluster
 import|;
 end_import
 
@@ -90,7 +90,11 @@ name|hadoop
 operator|.
 name|hdfs
 operator|.
-name|MiniDFSCluster
+name|nfs
+operator|.
+name|conf
+operator|.
+name|NfsConfiguration
 import|;
 end_import
 
@@ -205,11 +209,11 @@ throws|throws
 name|IOException
 block|{
 comment|// Start minicluster
-name|Configuration
+name|NfsConfiguration
 name|config
 init|=
 operator|new
-name|Configuration
+name|NfsConfiguration
 argument_list|()
 decl_stmt|;
 name|MiniDFSCluster
