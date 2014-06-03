@@ -9522,6 +9522,7 @@ name|getLocatedBlocks
 argument_list|()
 argument_list|)
 expr_stmt|;
+comment|// lastBlock is not part of getLocatedBlocks(), might need to sort it too
 name|LocatedBlock
 name|lastBlock
 init|=
@@ -9543,12 +9544,12 @@ name|LocatedBlock
 argument_list|>
 name|lastBlockList
 init|=
-operator|new
-name|ArrayList
-argument_list|<
-name|LocatedBlock
-argument_list|>
-argument_list|()
+name|Lists
+operator|.
+name|newArrayListWithCapacity
+argument_list|(
+literal|1
+argument_list|)
 decl_stmt|;
 name|lastBlockList
 operator|.

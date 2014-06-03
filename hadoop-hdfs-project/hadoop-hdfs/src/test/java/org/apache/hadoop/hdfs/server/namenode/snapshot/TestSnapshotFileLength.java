@@ -771,14 +771,16 @@ argument_list|)
 expr_stmt|;
 name|assertEquals
 argument_list|(
-name|fileStatus
-operator|.
-name|getLen
-argument_list|()
+literal|"Unexpected file length"
 argument_list|,
 name|BLOCKSIZE
 operator|*
 literal|2
+argument_list|,
+name|fileStatus
+operator|.
+name|getLen
+argument_list|()
 argument_list|)
 expr_stmt|;
 name|fis
@@ -807,11 +809,13 @@ argument_list|)
 expr_stmt|;
 name|assertEquals
 argument_list|(
-name|bytesRead
+literal|"Unexpected # bytes read"
 argument_list|,
 name|BLOCKSIZE
 operator|*
 literal|2
+argument_list|,
+name|bytesRead
 argument_list|)
 expr_stmt|;
 name|fis
@@ -879,9 +883,11 @@ argument_list|)
 expr_stmt|;
 name|assertEquals
 argument_list|(
-name|bytesRead
+literal|"Unexpected # bytes read"
 argument_list|,
 name|BLOCKSIZE
+argument_list|,
+name|bytesRead
 argument_list|)
 expr_stmt|;
 name|fis
@@ -890,11 +896,18 @@ name|close
 argument_list|()
 expr_stmt|;
 name|PrintStream
-name|psBackup
+name|outBackup
 init|=
 name|System
 operator|.
 name|out
+decl_stmt|;
+name|PrintStream
+name|errBackup
+init|=
+name|System
+operator|.
+name|err
 decl_stmt|;
 name|ByteArrayOutputStream
 name|bao
@@ -955,12 +968,14 @@ argument_list|)
 expr_stmt|;
 name|assertEquals
 argument_list|(
+literal|"Unexpected # bytes from -cat"
+argument_list|,
+name|BLOCKSIZE
+argument_list|,
 name|bao
 operator|.
 name|size
 argument_list|()
-argument_list|,
-name|BLOCKSIZE
 argument_list|)
 expr_stmt|;
 block|}
@@ -970,7 +985,14 @@ name|System
 operator|.
 name|setOut
 argument_list|(
-name|psBackup
+name|outBackup
+argument_list|)
+expr_stmt|;
+name|System
+operator|.
+name|setErr
+argument_list|(
+name|errBackup
 argument_list|)
 expr_stmt|;
 block|}
