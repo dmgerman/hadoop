@@ -757,24 +757,13 @@ argument_list|)
 decl_stmt|;
 if|if
 condition|(
+operator|!
 name|truststoreLocation
 operator|.
 name|isEmpty
 argument_list|()
 condition|)
 block|{
-throw|throw
-operator|new
-name|GeneralSecurityException
-argument_list|(
-literal|"The property '"
-operator|+
-name|locationProperty
-operator|+
-literal|"' has not been set in the ssl configuration file."
-argument_list|)
-throw|;
-block|}
 name|String
 name|passwordProperty
 init|=
@@ -890,6 +879,27 @@ block|{
 name|trustManager
 block|}
 expr_stmt|;
+block|}
+else|else
+block|{
+name|LOG
+operator|.
+name|warn
+argument_list|(
+literal|"The property '"
+operator|+
+name|locationProperty
+operator|+
+literal|"' has not been set, "
+operator|+
+literal|"no TrustStore will be loaded"
+argument_list|)
+expr_stmt|;
+name|trustManagers
+operator|=
+literal|null
+expr_stmt|;
+block|}
 block|}
 comment|/**    * Releases any resources being used.    */
 annotation|@
