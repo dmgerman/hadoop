@@ -3001,7 +3001,7 @@ block|}
 block|}
 name|LOG
 operator|.
-name|info
+name|debug
 argument_list|(
 literal|"Done Loading applications from ZK state store"
 argument_list|)
@@ -3189,7 +3189,7 @@ argument_list|)
 expr_stmt|;
 name|LOG
 operator|.
-name|info
+name|debug
 argument_list|(
 name|appId
 operator|+
@@ -3424,7 +3424,7 @@ argument_list|)
 expr_stmt|;
 name|LOG
 operator|.
-name|info
+name|debug
 argument_list|(
 name|appAttemptId
 operator|+
@@ -3717,7 +3717,7 @@ else|else
 block|{
 name|LOG
 operator|.
-name|info
+name|debug
 argument_list|(
 literal|"Attempted to delete a non-existing znode "
 operator|+
@@ -3806,7 +3806,7 @@ argument_list|)
 expr_stmt|;
 name|LOG
 operator|.
-name|info
+name|debug
 argument_list|(
 literal|"Attempted to update a non-existing znode "
 operator|+
@@ -4259,7 +4259,7 @@ else|else
 block|{
 name|LOG
 operator|.
-name|info
+name|debug
 argument_list|(
 literal|"Attempted to delete a non-existing znode "
 operator|+
@@ -4473,7 +4473,7 @@ name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"Session expired"
+literal|"ZKRMStateStore Session expired"
 argument_list|)
 expr_stmt|;
 name|createConnection
