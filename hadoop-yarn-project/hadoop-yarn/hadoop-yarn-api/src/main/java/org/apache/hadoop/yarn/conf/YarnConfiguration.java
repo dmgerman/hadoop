@@ -3464,7 +3464,7 @@ name|DEFAULT_PROXY_ADDRESS
 init|=
 literal|"0.0.0.0:"
 operator|+
-name|DEFAULT_RM_PORT
+name|DEFAULT_PROXY_PORT
 decl_stmt|;
 comment|/**    * YARN Service Level Authorization    */
 specifier|public
