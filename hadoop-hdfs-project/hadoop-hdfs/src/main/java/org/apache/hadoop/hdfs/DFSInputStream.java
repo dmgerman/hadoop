@@ -784,6 +784,22 @@ name|lastBlockBeingWrittenLength
 init|=
 literal|0
 decl_stmt|;
+DECL|field|key
+specifier|private
+name|byte
+index|[]
+name|key
+init|=
+literal|null
+decl_stmt|;
+DECL|field|iv
+specifier|private
+name|byte
+index|[]
+name|iv
+init|=
+literal|null
+decl_stmt|;
 DECL|field|currentNode
 specifier|private
 name|DatanodeInfo
@@ -1606,6 +1622,20 @@ name|len
 expr_stmt|;
 block|}
 block|}
+name|key
+operator|=
+name|locatedBlocks
+operator|.
+name|getKey
+argument_list|()
+expr_stmt|;
+name|iv
+operator|=
+name|locatedBlocks
+operator|.
+name|getIv
+argument_list|()
+expr_stmt|;
 name|currentNode
 operator|=
 literal|null
@@ -7266,6 +7296,32 @@ name|ReadStatistics
 argument_list|(
 name|readStatistics
 argument_list|)
+return|;
+block|}
+comment|/**    * Get the encryption key for this stream.    *    * @return byte[] the key    */
+DECL|method|getKey ()
+specifier|public
+specifier|synchronized
+name|byte
+index|[]
+name|getKey
+parameter_list|()
+block|{
+return|return
+name|key
+return|;
+block|}
+comment|/**    * Get the encryption initialization vector (IV) for this stream.    *    * @return byte[] the initialization vector (IV).    */
+DECL|method|getIv ()
+specifier|public
+specifier|synchronized
+name|byte
+index|[]
+name|getIv
+parameter_list|()
+block|{
+return|return
+name|iv
 return|;
 block|}
 DECL|method|closeCurrentBlockReader ()

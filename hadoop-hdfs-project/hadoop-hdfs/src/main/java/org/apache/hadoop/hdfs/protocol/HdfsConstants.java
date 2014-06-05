@@ -619,6 +619,33 @@ name|SEPARATOR
 operator|+
 name|DOT_SNAPSHOT_DIR
 decl_stmt|;
+comment|/* Temporary until we stop hard-coding these values. */
+DECL|field|KEY
+specifier|public
+specifier|static
+specifier|final
+name|byte
+index|[]
+name|KEY
+init|=
+literal|"0123456789012345"
+operator|.
+name|getBytes
+argument_list|()
+decl_stmt|;
+DECL|field|IV
+specifier|public
+specifier|static
+specifier|final
+name|byte
+index|[]
+name|IV
+init|=
+literal|"ABCDEFGJIJKLMNOP"
+operator|.
+name|getBytes
+argument_list|()
+decl_stmt|;
 block|}
 end_class
 

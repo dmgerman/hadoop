@@ -141,7 +141,7 @@ name|LocatedBlocks
 name|locations
 decl_stmt|;
 comment|/**    * Constructor    *     * @param length size    * @param isdir if this is directory    * @param block_replication the file's replication factor    * @param blocksize the file's block size    * @param modification_time most recent modification time    * @param access_time most recent access time    * @param permission permission    * @param owner owner    * @param group group    * @param symlink symbolic link    * @param path local path name in java UTF8 format     * @param fileId the file id    * @param locations block locations    */
-DECL|method|HdfsLocatedFileStatus (long length, boolean isdir, int block_replication, long blocksize, long modification_time, long access_time, FsPermission permission, String owner, String group, byte[] symlink, byte[] path, long fileId, LocatedBlocks locations, int childrenNum)
+DECL|method|HdfsLocatedFileStatus (long length, boolean isdir, int block_replication, long blocksize, long modification_time, long access_time, FsPermission permission, String owner, String group, byte[] symlink, byte[] path, long fileId, LocatedBlocks locations, int childrenNum, byte[] key, byte[] iv)
 specifier|public
 name|HdfsLocatedFileStatus
 parameter_list|(
@@ -188,6 +188,14 @@ name|locations
 parameter_list|,
 name|int
 name|childrenNum
+parameter_list|,
+name|byte
+index|[]
+name|key
+parameter_list|,
+name|byte
+index|[]
+name|iv
 parameter_list|)
 block|{
 name|super
@@ -217,6 +225,10 @@ argument_list|,
 name|fileId
 argument_list|,
 name|childrenNum
+argument_list|,
+name|key
+argument_list|,
+name|iv
 argument_list|)
 expr_stmt|;
 name|this

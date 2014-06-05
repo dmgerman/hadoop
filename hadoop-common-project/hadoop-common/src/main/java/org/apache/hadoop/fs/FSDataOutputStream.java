@@ -376,7 +376,7 @@ argument_list|()
 expr_stmt|;
 comment|// This invokes PositionCache.close()
 block|}
-comment|/**    * Get a reference to the wrapped output stream. Used by unit tests.    *    * @return the underlying output stream    */
+comment|/**    * Get a reference to the wrapped output stream.    *    * @return the underlying output stream    */
 annotation|@
 name|InterfaceAudience
 operator|.

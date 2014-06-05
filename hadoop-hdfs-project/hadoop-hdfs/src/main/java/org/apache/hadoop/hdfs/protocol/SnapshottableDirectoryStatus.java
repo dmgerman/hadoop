@@ -289,6 +289,12 @@ argument_list|,
 name|inodeId
 argument_list|,
 name|childrenNum
+argument_list|,
+literal|null
+comment|/* key */
+argument_list|,
+literal|null
+comment|/* IV */
 argument_list|)
 expr_stmt|;
 name|this

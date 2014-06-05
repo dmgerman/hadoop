@@ -1340,6 +1340,22 @@ name|failPacket
 init|=
 literal|false
 decl_stmt|;
+DECL|field|key
+specifier|private
+name|byte
+index|[]
+name|key
+init|=
+literal|null
+decl_stmt|;
+DECL|field|iv
+specifier|private
+name|byte
+index|[]
+name|iv
+init|=
+literal|null
+decl_stmt|;
 DECL|class|Packet
 specifier|private
 specifier|static
@@ -7568,6 +7584,24 @@ argument_list|()
 expr_stmt|;
 name|this
 operator|.
+name|key
+operator|=
+name|stat
+operator|.
+name|getKey
+argument_list|()
+expr_stmt|;
+name|this
+operator|.
+name|iv
+operator|=
+name|stat
+operator|.
+name|getIv
+argument_list|()
+expr_stmt|;
+name|this
+operator|.
 name|progress
 operator|=
 name|progress
@@ -10132,6 +10166,30 @@ parameter_list|()
 block|{
 return|return
 name|initialFileSize
+return|;
+block|}
+comment|/**    * Get the encryption key for this stream.    *    * @return byte[] the key.    */
+DECL|method|getKey ()
+specifier|public
+name|byte
+index|[]
+name|getKey
+parameter_list|()
+block|{
+return|return
+name|key
+return|;
+block|}
+comment|/**    * Get the encryption initialization vector (IV) for this stream.    *    * @return byte[] the initialization vector (IV).    */
+DECL|method|getIv ()
+specifier|public
+name|byte
+index|[]
+name|getIv
+parameter_list|()
+block|{
+return|return
+name|iv
 return|;
 block|}
 comment|/**    * Returns the access token currently used by streamer, for testing only    */

@@ -444,6 +444,22 @@ name|hdfs
 operator|.
 name|protocol
 operator|.
+name|HdfsConstants
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|protocol
+operator|.
 name|LocatedBlock
 import|;
 end_import
@@ -4480,6 +4496,12 @@ argument_list|,
 literal|null
 argument_list|,
 literal|false
+argument_list|,
+literal|null
+comment|/* key */
+argument_list|,
+literal|null
+comment|/* IV */
 argument_list|)
 return|;
 block|}
@@ -4641,6 +4663,14 @@ argument_list|,
 name|lastlb
 argument_list|,
 name|isComplete
+argument_list|,
+name|HdfsConstants
+operator|.
+name|KEY
+argument_list|,
+name|HdfsConstants
+operator|.
+name|IV
 argument_list|)
 return|;
 block|}

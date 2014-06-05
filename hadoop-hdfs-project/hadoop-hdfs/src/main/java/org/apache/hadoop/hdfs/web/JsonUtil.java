@@ -2009,6 +2009,12 @@ argument_list|,
 name|fileId
 argument_list|,
 name|childrenNum
+argument_list|,
+literal|null
+comment|/* key */
+argument_list|,
+literal|null
+comment|/* IV */
 argument_list|)
 return|;
 block|}
@@ -3954,6 +3960,12 @@ argument_list|,
 name|lastLocatedBlock
 argument_list|,
 name|isLastBlockComplete
+argument_list|,
+literal|null
+comment|/* key */
+argument_list|,
+literal|null
+comment|/* IV */
 argument_list|)
 return|;
 block|}

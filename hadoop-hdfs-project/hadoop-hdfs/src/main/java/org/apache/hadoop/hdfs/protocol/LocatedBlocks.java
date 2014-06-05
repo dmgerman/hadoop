@@ -130,6 +130,20 @@ name|isLastBlockComplete
 init|=
 literal|false
 decl_stmt|;
+DECL|field|key
+specifier|private
+specifier|final
+name|byte
+index|[]
+name|key
+decl_stmt|;
+DECL|field|iv
+specifier|private
+specifier|final
+name|byte
+index|[]
+name|iv
+decl_stmt|;
 DECL|method|LocatedBlocks ()
 specifier|public
 name|LocatedBlocks
@@ -147,9 +161,16 @@ name|underConstruction
 operator|=
 literal|false
 expr_stmt|;
+name|key
+operator|=
+literal|null
+expr_stmt|;
+name|iv
+operator|=
+literal|null
+expr_stmt|;
 block|}
-comment|/** public Constructor */
-DECL|method|LocatedBlocks (long flength, boolean isUnderConstuction, List<LocatedBlock> blks, LocatedBlock lastBlock, boolean isLastBlockCompleted)
+DECL|method|LocatedBlocks (long flength, boolean isUnderConstuction, List<LocatedBlock> blks, LocatedBlock lastBlock, boolean isLastBlockCompleted, byte[] key, byte[] iv)
 specifier|public
 name|LocatedBlocks
 parameter_list|(
@@ -170,6 +191,14 @@ name|lastBlock
 parameter_list|,
 name|boolean
 name|isLastBlockCompleted
+parameter_list|,
+name|byte
+index|[]
+name|key
+parameter_list|,
+name|byte
+index|[]
+name|iv
 parameter_list|)
 block|{
 name|fileLength
@@ -195,6 +224,18 @@ operator|.
 name|isLastBlockComplete
 operator|=
 name|isLastBlockCompleted
+expr_stmt|;
+name|this
+operator|.
+name|key
+operator|=
+name|key
+expr_stmt|;
+name|this
+operator|.
+name|iv
+operator|=
+name|iv
 expr_stmt|;
 block|}
 comment|/**    * Get located blocks.    */
@@ -285,7 +326,7 @@ operator|.
 name|fileLength
 return|;
 block|}
-comment|/**    * Return ture if file was under construction when     * this LocatedBlocks was constructed, false otherwise.    */
+comment|/**    * Return true if file was under construction when this LocatedBlocks was    * constructed, false otherwise.    */
 DECL|method|isUnderConstruction ()
 specifier|public
 name|boolean
@@ -294,6 +335,28 @@ parameter_list|()
 block|{
 return|return
 name|underConstruction
+return|;
+block|}
+DECL|method|getKey ()
+specifier|public
+name|byte
+index|[]
+name|getKey
+parameter_list|()
+block|{
+return|return
+name|key
+return|;
+block|}
+DECL|method|getIv ()
+specifier|public
+name|byte
+index|[]
+name|getIv
+parameter_list|()
+block|{
+return|return
+name|iv
 return|;
 block|}
 comment|/**    * Find block containing specified offset.    *     * @return block if found, or null otherwise.    */

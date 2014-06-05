@@ -8385,6 +8385,12 @@ operator|-
 literal|1L
 argument_list|,
 literal|0
+argument_list|,
+literal|null
+comment|/* key */
+argument_list|,
+literal|null
+comment|/* IV */
 argument_list|)
 return|;
 block|}
@@ -12676,8 +12682,18 @@ name|getId
 argument_list|()
 argument_list|,
 name|childrenNum
+argument_list|,
+name|HdfsConstants
+operator|.
+name|KEY
+argument_list|,
+comment|// key
+name|HdfsConstants
+operator|.
+name|IV
 argument_list|)
 return|;
+comment|// IV
 block|}
 comment|/**    * Create FileStatus with location info by file INode    */
 DECL|method|createLocatedFileStatus (byte[] path, INode node, int snapshot)
@@ -12943,6 +12959,12 @@ argument_list|,
 name|loc
 argument_list|,
 name|childrenNum
+argument_list|,
+literal|null
+comment|/* key */
+argument_list|,
+literal|null
+comment|/* IV */
 argument_list|)
 decl_stmt|;
 comment|// Set caching information for the located blocks.
