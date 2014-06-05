@@ -837,6 +837,15 @@ name|FALSE
 expr_stmt|;
 block|}
 block|}
+else|else
+block|{
+name|usingByteBufferRead
+operator|=
+name|Boolean
+operator|.
+name|FALSE
+expr_stmt|;
+block|}
 if|if
 condition|(
 operator|!
