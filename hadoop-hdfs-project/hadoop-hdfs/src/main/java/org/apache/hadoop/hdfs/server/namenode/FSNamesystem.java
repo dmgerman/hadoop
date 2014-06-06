@@ -2012,6 +2012,22 @@ name|hdfs
 operator|.
 name|protocol
 operator|.
+name|EncryptionZone
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|protocol
+operator|.
 name|ExtendedBlock
 import|;
 end_import
@@ -36608,6 +36624,46 @@ name|readUnlock
 argument_list|()
 expr_stmt|;
 block|}
+block|}
+DECL|method|createEncryptionZone (final String src, final String keyId)
+name|void
+name|createEncryptionZone
+parameter_list|(
+specifier|final
+name|String
+name|src
+parameter_list|,
+specifier|final
+name|String
+name|keyId
+parameter_list|)
+throws|throws
+name|IOException
+block|{   }
+DECL|method|deleteEncryptionZone (final String src)
+name|void
+name|deleteEncryptionZone
+parameter_list|(
+specifier|final
+name|String
+name|src
+parameter_list|)
+throws|throws
+name|IOException
+block|{   }
+DECL|method|listEncryptionZones ()
+name|List
+argument_list|<
+name|EncryptionZone
+argument_list|>
+name|listEncryptionZones
+parameter_list|()
+throws|throws
+name|IOException
+block|{
+return|return
+literal|null
+return|;
 block|}
 comment|/**    * Set xattr for a file or directory.    *     * @param src    *          - path on which it sets the xattr    * @param xAttr    *          - xAttr details to set    * @param flag    *          - xAttrs flags    * @throws AccessControlException    * @throws SafeModeException    * @throws UnresolvedLinkException    * @throws IOException    */
 DECL|method|setXAttr (String src, XAttr xAttr, EnumSet<XAttrSetFlag> flag)

@@ -2108,6 +2108,51 @@ parameter_list|)
 throws|throws
 name|IOException
 function_decl|;
+comment|/**    * Create an encryption zone    */
+annotation|@
+name|AtMostOnce
+DECL|method|createEncryptionZone (String src, String keyId)
+specifier|public
+name|void
+name|createEncryptionZone
+parameter_list|(
+name|String
+name|src
+parameter_list|,
+name|String
+name|keyId
+parameter_list|)
+throws|throws
+name|IOException
+function_decl|;
+comment|/**    * Delete an encryption zone    */
+annotation|@
+name|AtMostOnce
+DECL|method|deleteEncryptionZone (String src)
+specifier|public
+name|void
+name|deleteEncryptionZone
+parameter_list|(
+name|String
+name|src
+parameter_list|)
+throws|throws
+name|IOException
+function_decl|;
+comment|/**    * Return a list of all {@EncryptionZone}s in the HDFS hierarchy which are    * visible to the caller. If the caller is the HDFS admin, then the returned    * EncryptionZone instances will have the key id field filled in. If the    * caller is not the HDFS admin, then the EncryptionZone instances will only    * have the path field filled in and only those zones that are visible to the    * user are returned.    */
+annotation|@
+name|Idempotent
+DECL|method|listEncryptionZones ()
+specifier|public
+name|List
+argument_list|<
+name|EncryptionZone
+argument_list|>
+name|listEncryptionZones
+parameter_list|()
+throws|throws
+name|IOException
+function_decl|;
 comment|/**    * Set xattr of a file or directory.    * A regular user only can set xattr of "user" namespace.    * A super user can set xattr of "user" and "trusted" namespace.    * XAttr of "security" and "system" namespace is only used/exposed     * internally to the FS impl.    *<p/>    * For xattr of "user" namespace, its access permissions are     * defined by the file or directory permission bits.    * XAttr will be set only when login user has correct permissions.    *<p/>    * @see<a href="http://en.wikipedia.org/wiki/Extended_file_attributes">    * http://en.wikipedia.org/wiki/Extended_file_attributes</a>    * @param src file or directory    * @param xAttr<code>XAttr</code> to set    * @param flag set flag    * @throws IOException    */
 annotation|@
 name|AtMostOnce
