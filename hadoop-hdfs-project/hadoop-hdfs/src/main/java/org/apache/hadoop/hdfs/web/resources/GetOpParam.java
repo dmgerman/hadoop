@@ -151,16 +151,6 @@ operator|.
 name|HTTP_OK
 argument_list|)
 block|,
-DECL|enumConstant|GETXATTR
-name|GETXATTR
-argument_list|(
-literal|false
-argument_list|,
-name|HttpURLConnection
-operator|.
-name|HTTP_OK
-argument_list|)
-block|,
 DECL|enumConstant|GETXATTRS
 name|GETXATTRS
 argument_list|(
