@@ -94,22 +94,6 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|fs
-operator|.
-name|permission
-operator|.
-name|AclEntry
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
 name|conf
 operator|.
 name|Configuration
@@ -241,16 +225,6 @@ operator|.
 name|io
 operator|.
 name|*
-import|;
-end_import
-
-begin_import
-import|import
-name|java
-operator|.
-name|util
-operator|.
-name|List
 import|;
 end_import
 
@@ -594,7 +568,7 @@ name|options
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Collect the list of     *<sourceRelativePath, sourceFileStatus>    * to be copied and write to the sequence file. In essence, any file or    * directory that need to be copied or sync-ed is written as an entry to the    * sequence file, with the possible exception of the source root:    *     when either -update (sync) or -overwrite switch is specified, and if    *     the the source root is a directory, then the source root entry is not     *     written to the sequence file, because only the contents of the source    *     directory need to be copied in this case.    * See {@link org.apache.hadoop.tools.util.DistCpUtils.getRelativePath} for    *     how relative path is computed.    * See computeSourceRootPath method for how the root path of the source is    *     computed.    * @param fileListWriter    * @param options    * @throws IOException    */
+comment|/**    * Collect the list of     *<sourceRelativePath, sourceFileStatus>    * to be copied and write to the sequence file. In essence, any file or    * directory that need to be copied or sync-ed is written as an entry to the    * sequence file, with the possible exception of the source root:    *     when either -update (sync) or -overwrite switch is specified, and if    *     the the source root is a directory, then the source root entry is not     *     written to the sequence file, because only the contents of the source    *     directory need to be copied in this case.    * See {@link org.apache.hadoop.tools.util.DistCpUtils#getRelativePath} for    *     how relative path is computed.    * See computeSourceRootPath method for how the root path of the source is    *     computed.    * @param fileListWriter    * @param options    * @throws IOException    */
 annotation|@
 name|VisibleForTesting
 DECL|method|doBuildListing (SequenceFile.Writer fileListWriter, DistCpOptions options)
@@ -720,6 +694,15 @@ name|FileAttribute
 operator|.
 name|ACL
 argument_list|)
+argument_list|,
+name|options
+operator|.
+name|shouldPreserve
+argument_list|(
+name|FileAttribute
+operator|.
+name|XATTR
+argument_list|)
 argument_list|)
 decl_stmt|;
 name|writeToFileListingRoot
@@ -788,6 +771,20 @@ argument_list|(
 name|FileAttribute
 operator|.
 name|ACL
+argument_list|)
+operator|&&
+name|sourceStatus
+operator|.
+name|isDirectory
+argument_list|()
+argument_list|,
+name|options
+operator|.
+name|shouldPreserve
+argument_list|(
+name|FileAttribute
+operator|.
+name|XATTR
 argument_list|)
 operator|&&
 name|sourceStatus
@@ -1387,6 +1384,20 @@ argument_list|(
 name|FileAttribute
 operator|.
 name|ACL
+argument_list|)
+operator|&&
+name|child
+operator|.
+name|isDirectory
+argument_list|()
+argument_list|,
+name|options
+operator|.
+name|shouldPreserve
+argument_list|(
+name|FileAttribute
+operator|.
+name|XATTR
 argument_list|)
 operator|&&
 name|child

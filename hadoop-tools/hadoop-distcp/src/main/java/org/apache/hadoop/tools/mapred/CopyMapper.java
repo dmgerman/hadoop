@@ -1139,6 +1139,15 @@ name|FileAttribute
 operator|.
 name|ACL
 argument_list|)
+argument_list|,
+name|fileAttributes
+operator|.
+name|contains
+argument_list|(
+name|FileAttribute
+operator|.
+name|XATTR
+argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
