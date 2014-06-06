@@ -3458,6 +3458,18 @@ name|err
 argument_list|)
 throw|;
 block|}
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"Found KeyProvider: "
+operator|+
+name|provider
+operator|.
+name|toString
+argument_list|()
+argument_list|)
+expr_stmt|;
 block|}
 catch|catch
 parameter_list|(
