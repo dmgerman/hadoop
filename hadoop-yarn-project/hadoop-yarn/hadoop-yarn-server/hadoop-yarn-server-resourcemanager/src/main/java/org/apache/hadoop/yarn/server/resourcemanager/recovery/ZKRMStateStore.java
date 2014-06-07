@@ -5259,6 +5259,15 @@ name|KeeperException
 name|ke
 parameter_list|)
 block|{
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"Exception while executing a ZK operation."
+argument_list|,
+name|ke
+argument_list|)
+expr_stmt|;
 if|if
 condition|(
 name|shouldRetry
@@ -5279,7 +5288,7 @@ name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"Waiting for zookeeper to be connected, retry no. + "
+literal|"Retrying operation on ZK. Retry no. "
 operator|+
 name|retry
 argument_list|)
@@ -5295,11 +5304,9 @@ continue|continue;
 block|}
 name|LOG
 operator|.
-name|debug
+name|info
 argument_list|(
-literal|"Error while doing ZK operation."
-argument_list|,
-name|ke
+literal|"Maxed out ZK retries. Giving up!"
 argument_list|)
 expr_stmt|;
 throw|throw
