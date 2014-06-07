@@ -1275,6 +1275,13 @@ name|getResource
 argument_list|()
 argument_list|)
 expr_stmt|;
+name|app
+operator|.
+name|setAmRunning
+argument_list|(
+literal|true
+argument_list|)
+expr_stmt|;
 block|}
 return|return
 name|container

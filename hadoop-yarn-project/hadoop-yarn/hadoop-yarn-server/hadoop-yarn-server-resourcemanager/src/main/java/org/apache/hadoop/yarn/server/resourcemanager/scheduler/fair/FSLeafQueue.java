@@ -566,6 +566,11 @@ if|if
 condition|(
 name|app
 operator|.
+name|isAmRunning
+argument_list|()
+operator|&&
+name|app
+operator|.
 name|getAMResource
 argument_list|()
 operator|!=
@@ -844,6 +849,16 @@ expr_stmt|;
 block|}
 return|return
 name|usage
+return|;
+block|}
+DECL|method|getAmResourceUsage ()
+specifier|public
+name|Resource
+name|getAmResourceUsage
+parameter_list|()
+block|{
+return|return
+name|amResourceUsage
 return|;
 block|}
 annotation|@

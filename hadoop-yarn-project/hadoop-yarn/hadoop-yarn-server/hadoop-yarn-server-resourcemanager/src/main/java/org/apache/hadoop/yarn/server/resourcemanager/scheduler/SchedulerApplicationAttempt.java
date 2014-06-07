@@ -716,6 +716,13 @@ name|unmanagedAM
 init|=
 literal|true
 decl_stmt|;
+DECL|field|amRunning
+specifier|private
+name|boolean
+name|amRunning
+init|=
+literal|false
+decl_stmt|;
 DECL|field|newlyAllocatedContainers
 specifier|protected
 name|List
@@ -883,13 +890,6 @@ operator|!=
 literal|null
 condition|)
 block|{
-name|amResource
-operator|=
-name|appSubmissionContext
-operator|.
-name|getResource
-argument_list|()
-expr_stmt|;
 name|unmanagedAM
 operator|=
 name|appSubmissionContext
@@ -1122,6 +1122,46 @@ block|{
 return|return
 name|amResource
 return|;
+block|}
+DECL|method|setAMResource (Resource amResource)
+specifier|public
+name|void
+name|setAMResource
+parameter_list|(
+name|Resource
+name|amResource
+parameter_list|)
+block|{
+name|this
+operator|.
+name|amResource
+operator|=
+name|amResource
+expr_stmt|;
+block|}
+DECL|method|isAmRunning ()
+specifier|public
+name|boolean
+name|isAmRunning
+parameter_list|()
+block|{
+return|return
+name|amRunning
+return|;
+block|}
+DECL|method|setAmRunning (boolean bool)
+specifier|public
+name|void
+name|setAmRunning
+parameter_list|(
+name|boolean
+name|bool
+parameter_list|)
+block|{
+name|amRunning
+operator|=
+name|bool
+expr_stmt|;
 block|}
 DECL|method|getUnmanagedAM ()
 specifier|public
