@@ -1224,7 +1224,6 @@ return|;
 block|}
 comment|/**    * Rename a snapshot    * @param path    *          The directory path where the snapshot was taken. Used for    *          generating exception message.    * @param oldName    *          Old name of the snapshot    * @param newName    *          New name the snapshot will be renamed to    * @throws SnapshotException    *           Throw SnapshotException when either the snapshot with the old    *           name does not exist or a snapshot with the new name already    *           exists    */
 DECL|method|renameSnapshot (String path, String oldName, String newName)
-specifier|public
 name|void
 name|renameSnapshot
 parameter_list|(
@@ -1312,7 +1311,7 @@ decl_stmt|;
 if|if
 condition|(
 name|indexOfNew
-operator|>
+operator|>=
 literal|0
 condition|)
 block|{
