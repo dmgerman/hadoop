@@ -462,6 +462,50 @@ name|recovery
 operator|.
 name|records
 operator|.
+name|ApplicationAttemptStateData
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|server
+operator|.
+name|resourcemanager
+operator|.
+name|recovery
+operator|.
+name|records
+operator|.
+name|ApplicationStateData
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|server
+operator|.
+name|resourcemanager
+operator|.
+name|recovery
+operator|.
+name|records
+operator|.
 name|RMStateVersion
 import|;
 end_import
@@ -3009,7 +3053,7 @@ expr_stmt|;
 block|}
 annotation|@
 name|Override
-DECL|method|storeApplicationStateInternal (ApplicationId appId, ApplicationStateDataPBImpl appStateDataPB)
+DECL|method|storeApplicationStateInternal (ApplicationId appId, ApplicationStateData appStateDataPB)
 specifier|public
 specifier|synchronized
 name|void
@@ -3018,7 +3062,7 @@ parameter_list|(
 name|ApplicationId
 name|appId
 parameter_list|,
-name|ApplicationStateDataPBImpl
+name|ApplicationStateData
 name|appStateDataPB
 parameter_list|)
 throws|throws
@@ -3087,7 +3131,7 @@ expr_stmt|;
 block|}
 annotation|@
 name|Override
-DECL|method|updateApplicationStateInternal (ApplicationId appId, ApplicationStateDataPBImpl appStateDataPB)
+DECL|method|updateApplicationStateInternal (ApplicationId appId, ApplicationStateData appStateDataPB)
 specifier|public
 specifier|synchronized
 name|void
@@ -3096,7 +3140,7 @@ parameter_list|(
 name|ApplicationId
 name|appId
 parameter_list|,
-name|ApplicationStateDataPBImpl
+name|ApplicationStateData
 name|appStateDataPB
 parameter_list|)
 throws|throws
@@ -3202,7 +3246,7 @@ block|}
 block|}
 annotation|@
 name|Override
-DECL|method|storeApplicationAttemptStateInternal ( ApplicationAttemptId appAttemptId, ApplicationAttemptStateDataPBImpl attemptStateDataPB)
+DECL|method|storeApplicationAttemptStateInternal ( ApplicationAttemptId appAttemptId, ApplicationAttemptStateData attemptStateDataPB)
 specifier|public
 specifier|synchronized
 name|void
@@ -3211,7 +3255,7 @@ parameter_list|(
 name|ApplicationAttemptId
 name|appAttemptId
 parameter_list|,
-name|ApplicationAttemptStateDataPBImpl
+name|ApplicationAttemptStateData
 name|attemptStateDataPB
 parameter_list|)
 throws|throws
@@ -3296,7 +3340,7 @@ expr_stmt|;
 block|}
 annotation|@
 name|Override
-DECL|method|updateApplicationAttemptStateInternal ( ApplicationAttemptId appAttemptId, ApplicationAttemptStateDataPBImpl attemptStateDataPB)
+DECL|method|updateApplicationAttemptStateInternal ( ApplicationAttemptId appAttemptId, ApplicationAttemptStateData attemptStateDataPB)
 specifier|public
 specifier|synchronized
 name|void
@@ -3305,7 +3349,7 @@ parameter_list|(
 name|ApplicationAttemptId
 name|appAttemptId
 parameter_list|,
-name|ApplicationAttemptStateDataPBImpl
+name|ApplicationAttemptStateData
 name|attemptStateDataPB
 parameter_list|)
 throws|throws

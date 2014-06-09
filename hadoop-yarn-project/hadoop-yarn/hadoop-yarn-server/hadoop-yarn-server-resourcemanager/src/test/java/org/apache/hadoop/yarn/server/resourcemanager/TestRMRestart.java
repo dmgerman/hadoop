@@ -1032,11 +1032,7 @@ name|recovery
 operator|.
 name|records
 operator|.
-name|impl
-operator|.
-name|pb
-operator|.
-name|ApplicationAttemptStateDataPBImpl
+name|ApplicationAttemptStateData
 import|;
 end_import
 
@@ -1058,11 +1054,7 @@ name|recovery
 operator|.
 name|records
 operator|.
-name|impl
-operator|.
-name|pb
-operator|.
-name|ApplicationStateDataPBImpl
+name|ApplicationStateData
 import|;
 end_import
 
@@ -4535,7 +4527,7 @@ parameter_list|(
 name|ApplicationId
 name|appId
 parameter_list|,
-name|ApplicationStateDataPBImpl
+name|ApplicationStateData
 name|appStateData
 parameter_list|)
 throws|throws
@@ -5489,7 +5481,7 @@ parameter_list|(
 name|ApplicationAttemptId
 name|attemptId
 parameter_list|,
-name|ApplicationAttemptStateDataPBImpl
+name|ApplicationAttemptStateData
 name|attemptStateData
 parameter_list|)
 throws|throws
@@ -5507,7 +5499,7 @@ parameter_list|(
 name|ApplicationAttemptId
 name|attemptId
 parameter_list|,
-name|ApplicationAttemptStateDataPBImpl
+name|ApplicationAttemptStateData
 name|attemptStateData
 parameter_list|)
 throws|throws
@@ -12065,7 +12057,7 @@ literal|0
 decl_stmt|;
 annotation|@
 name|Override
-DECL|method|updateApplicationStateInternal (ApplicationId appId, ApplicationStateDataPBImpl appStateData)
+DECL|method|updateApplicationStateInternal (ApplicationId appId, ApplicationStateData appStateData)
 specifier|public
 name|void
 name|updateApplicationStateInternal
@@ -12073,7 +12065,7 @@ parameter_list|(
 name|ApplicationId
 name|appId
 parameter_list|,
-name|ApplicationStateDataPBImpl
+name|ApplicationStateData
 name|appStateData
 parameter_list|)
 throws|throws
@@ -12099,13 +12091,13 @@ name|Override
 specifier|public
 specifier|synchronized
 name|void
-DECL|method|updateApplicationAttemptStateInternal ( ApplicationAttemptId attemptId, ApplicationAttemptStateDataPBImpl attemptStateData)
+DECL|method|updateApplicationAttemptStateInternal ( ApplicationAttemptId attemptId, ApplicationAttemptStateData attemptStateData)
 name|updateApplicationAttemptStateInternal
 parameter_list|(
 name|ApplicationAttemptId
 name|attemptId
 parameter_list|,
-name|ApplicationAttemptStateDataPBImpl
+name|ApplicationAttemptStateData
 name|attemptStateData
 parameter_list|)
 throws|throws

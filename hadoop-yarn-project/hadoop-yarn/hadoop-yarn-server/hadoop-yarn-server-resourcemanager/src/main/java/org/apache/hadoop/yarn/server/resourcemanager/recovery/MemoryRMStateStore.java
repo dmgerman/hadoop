@@ -232,59 +232,51 @@ name|recovery
 operator|.
 name|records
 operator|.
+name|ApplicationAttemptStateData
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|server
+operator|.
+name|resourcemanager
+operator|.
+name|recovery
+operator|.
+name|records
+operator|.
+name|ApplicationStateData
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|server
+operator|.
+name|resourcemanager
+operator|.
+name|recovery
+operator|.
+name|records
+operator|.
 name|RMStateVersion
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|yarn
-operator|.
-name|server
-operator|.
-name|resourcemanager
-operator|.
-name|recovery
-operator|.
-name|records
-operator|.
-name|impl
-operator|.
-name|pb
-operator|.
-name|ApplicationAttemptStateDataPBImpl
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|yarn
-operator|.
-name|server
-operator|.
-name|resourcemanager
-operator|.
-name|recovery
-operator|.
-name|records
-operator|.
-name|impl
-operator|.
-name|pb
-operator|.
-name|ApplicationStateDataPBImpl
 import|;
 end_import
 
@@ -460,7 +452,7 @@ name|Exception
 block|{   }
 annotation|@
 name|Override
-DECL|method|storeApplicationStateInternal (ApplicationId appId, ApplicationStateDataPBImpl appStateData)
+DECL|method|storeApplicationStateInternal (ApplicationId appId, ApplicationStateData appStateData)
 specifier|public
 name|void
 name|storeApplicationStateInternal
@@ -468,7 +460,7 @@ parameter_list|(
 name|ApplicationId
 name|appId
 parameter_list|,
-name|ApplicationStateDataPBImpl
+name|ApplicationStateData
 name|appStateData
 parameter_list|)
 throws|throws
@@ -515,7 +507,7 @@ expr_stmt|;
 block|}
 annotation|@
 name|Override
-DECL|method|updateApplicationStateInternal (ApplicationId appId, ApplicationStateDataPBImpl appStateData)
+DECL|method|updateApplicationStateInternal (ApplicationId appId, ApplicationStateData appStateData)
 specifier|public
 name|void
 name|updateApplicationStateInternal
@@ -523,7 +515,7 @@ parameter_list|(
 name|ApplicationId
 name|appId
 parameter_list|,
-name|ApplicationStateDataPBImpl
+name|ApplicationStateData
 name|appStateData
 parameter_list|)
 throws|throws
@@ -635,7 +627,7 @@ expr_stmt|;
 block|}
 annotation|@
 name|Override
-DECL|method|storeApplicationAttemptStateInternal ( ApplicationAttemptId appAttemptId, ApplicationAttemptStateDataPBImpl attemptStateData)
+DECL|method|storeApplicationAttemptStateInternal ( ApplicationAttemptId appAttemptId, ApplicationAttemptStateData attemptStateData)
 specifier|public
 specifier|synchronized
 name|void
@@ -644,7 +636,7 @@ parameter_list|(
 name|ApplicationAttemptId
 name|appAttemptId
 parameter_list|,
-name|ApplicationAttemptStateDataPBImpl
+name|ApplicationAttemptStateData
 name|attemptStateData
 parameter_list|)
 throws|throws
@@ -768,7 +760,7 @@ expr_stmt|;
 block|}
 annotation|@
 name|Override
-DECL|method|updateApplicationAttemptStateInternal ( ApplicationAttemptId appAttemptId, ApplicationAttemptStateDataPBImpl attemptStateData)
+DECL|method|updateApplicationAttemptStateInternal ( ApplicationAttemptId appAttemptId, ApplicationAttemptStateData attemptStateData)
 specifier|public
 specifier|synchronized
 name|void
@@ -777,7 +769,7 @@ parameter_list|(
 name|ApplicationAttemptId
 name|appAttemptId
 parameter_list|,
-name|ApplicationAttemptStateDataPBImpl
+name|ApplicationAttemptStateData
 name|attemptStateData
 parameter_list|)
 throws|throws
