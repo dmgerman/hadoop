@@ -21,6 +21,30 @@ package|;
 end_package
 
 begin_import
+import|import static
+name|org
+operator|.
+name|junit
+operator|.
+name|Assert
+operator|.
+name|assertTrue
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|junit
+operator|.
+name|Assert
+operator|.
+name|fail
+import|;
+end_import
+
+begin_import
 import|import
 name|java
 operator|.
@@ -47,16 +71,6 @@ operator|.
 name|util
 operator|.
 name|List
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|junit
-operator|.
-name|Assert
 import|;
 end_import
 
@@ -99,22 +113,6 @@ operator|.
 name|conf
 operator|.
 name|Configuration
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|yarn
-operator|.
-name|exceptions
-operator|.
-name|YarnRuntimeException
 import|;
 end_import
 
@@ -275,6 +273,22 @@ operator|.
 name|conf
 operator|.
 name|YarnConfiguration
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|exceptions
+operator|.
+name|YarnRuntimeException
 import|;
 end_import
 
@@ -654,6 +668,16 @@ name|org
 operator|.
 name|junit
 operator|.
+name|Assert
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|junit
+operator|.
 name|BeforeClass
 import|;
 end_import
@@ -672,23 +696,11 @@ begin_import
 import|import static
 name|org
 operator|.
-name|junit
+name|mockito
 operator|.
-name|Assert
+name|Mockito
 operator|.
-name|assertTrue
-import|;
-end_import
-
-begin_import
-import|import static
-name|org
-operator|.
-name|junit
-operator|.
-name|Assert
-operator|.
-name|fail
+name|mock
 import|;
 end_import
 
@@ -2278,6 +2290,17 @@ operator|.
 name|start
 argument_list|()
 expr_stmt|;
+comment|// mock rmContext to avoid NPE.
+name|RMContext
+name|context
+init|=
+name|mock
+argument_list|(
+name|RMContext
+operator|.
+name|class
+argument_list|)
+decl_stmt|;
 name|fs
 operator|.
 name|reinitialize
@@ -2285,6 +2308,13 @@ argument_list|(
 name|conf
 argument_list|,
 literal|null
+argument_list|)
+expr_stmt|;
+name|fs
+operator|.
+name|setRMContext
+argument_list|(
+name|context
 argument_list|)
 expr_stmt|;
 name|RMNode

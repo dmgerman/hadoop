@@ -164,24 +164,6 @@ name|api
 operator|.
 name|records
 operator|.
-name|Container
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|yarn
-operator|.
-name|api
-operator|.
-name|records
-operator|.
 name|ContainerStatus
 import|;
 end_import
@@ -644,22 +626,6 @@ specifier|public
 name|ActiveUsersManager
 name|getActiveUsersManager
 parameter_list|()
-function_decl|;
-comment|/**    * Recover the state of the queue    * @param clusterResource the resource of the cluster    * @param application the application for which the container was allocated    * @param container the container that was recovered.    */
-DECL|method|recoverContainer (Resource clusterResource, FiCaSchedulerApp application, Container container)
-specifier|public
-name|void
-name|recoverContainer
-parameter_list|(
-name|Resource
-name|clusterResource
-parameter_list|,
-name|FiCaSchedulerApp
-name|application
-parameter_list|,
-name|Container
-name|container
-parameter_list|)
 function_decl|;
 comment|/**    * Adds all applications in the queue and its subqueues to the given collection.    * @param apps the collection to add the applications to    */
 DECL|method|collectSchedulerApplications (Collection<ApplicationAttemptId> apps)

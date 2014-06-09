@@ -4245,6 +4245,46 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
+comment|// synchronously recover attempt to ensure any incoming external events
+comment|// to be processed after the attempt processes the recover event.
+DECL|method|recoverAppAttempts ()
+specifier|private
+name|void
+name|recoverAppAttempts
+parameter_list|()
+block|{
+for|for
+control|(
+name|RMAppAttempt
+name|attempt
+range|:
+name|getAppAttempts
+argument_list|()
+operator|.
+name|values
+argument_list|()
+control|)
+block|{
+name|attempt
+operator|.
+name|handle
+argument_list|(
+operator|new
+name|RMAppAttemptEvent
+argument_list|(
+name|attempt
+operator|.
+name|getAppAttemptId
+argument_list|()
+argument_list|,
+name|RMAppAttemptEventType
+operator|.
+name|RECOVER
+argument_list|)
+argument_list|)
+expr_stmt|;
+block|}
+block|}
 DECL|class|RMAppRecoveredTransition
 specifier|private
 specifier|static
@@ -4275,41 +4315,6 @@ name|RMAppEvent
 name|event
 parameter_list|)
 block|{
-for|for
-control|(
-name|RMAppAttempt
-name|attempt
-range|:
-name|app
-operator|.
-name|getAppAttempts
-argument_list|()
-operator|.
-name|values
-argument_list|()
-control|)
-block|{
-comment|// synchronously recover attempt to ensure any incoming external events
-comment|// to be processed after the attempt processes the recover event.
-name|attempt
-operator|.
-name|handle
-argument_list|(
-operator|new
-name|RMAppAttemptEvent
-argument_list|(
-name|attempt
-operator|.
-name|getAppAttemptId
-argument_list|()
-argument_list|,
-name|RMAppAttemptEventType
-operator|.
-name|RECOVER
-argument_list|)
-argument_list|)
-expr_stmt|;
-block|}
 comment|// The app has completed.
 if|if
 condition|(
@@ -4320,6 +4325,11 @@ operator|!=
 literal|null
 condition|)
 block|{
+name|app
+operator|.
+name|recoverAppAttempts
+argument_list|()
+expr_stmt|;
 operator|new
 name|FinalTransition
 argument_list|(
@@ -4341,9 +4351,26 @@ operator|.
 name|recoveredFinalState
 return|;
 block|}
-comment|// Last attempt is in final state, do not add to scheduler and just return
-comment|// ACCEPTED waiting for last RMAppAttempt to send finished or failed event
-comment|// back.
+comment|// Notify scheduler about the app on recovery
+operator|new
+name|AddApplicationToSchedulerTransition
+argument_list|()
+operator|.
+name|transition
+argument_list|(
+name|app
+argument_list|,
+name|event
+argument_list|)
+expr_stmt|;
+comment|// recover attempts
+name|app
+operator|.
+name|recoverAppAttempts
+argument_list|()
+expr_stmt|;
+comment|// Last attempt is in final state, return ACCEPTED waiting for last
+comment|// RMAppAttempt to send finished or failed event back.
 if|if
 condition|(
 name|app
@@ -4407,18 +4434,6 @@ operator|.
 name|ACCEPTED
 return|;
 block|}
-comment|// Notify scheduler about the app on recovery
-operator|new
-name|AddApplicationToSchedulerTransition
-argument_list|()
-operator|.
-name|transition
-argument_list|(
-name|app
-argument_list|,
-name|event
-argument_list|)
-expr_stmt|;
 comment|// No existent attempts means the attempt associated with this app was not
 comment|// started or started but not yet saved.
 if|if
@@ -5867,6 +5882,17 @@ name|currentTimeMillis
 argument_list|()
 expr_stmt|;
 block|}
+comment|// Recovered apps that are completed were not added to scheduler, so no
+comment|// need to remove them from scheduler.
+if|if
+condition|(
+name|app
+operator|.
+name|recoveredFinalState
+operator|==
+literal|null
+condition|)
+block|{
 name|app
 operator|.
 name|handler
@@ -5884,6 +5910,7 @@ name|finalState
 argument_list|)
 argument_list|)
 expr_stmt|;
+block|}
 name|app
 operator|.
 name|handler
