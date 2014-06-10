@@ -2419,7 +2419,7 @@ name|Test
 argument_list|(
 name|timeout
 operator|=
-literal|1000
+literal|3000
 argument_list|)
 DECL|method|testLoadJobLoadSortComparator ()
 specifier|public
@@ -2640,7 +2640,7 @@ name|Test
 argument_list|(
 name|timeout
 operator|=
-literal|1000
+literal|3000
 argument_list|)
 DECL|method|testGridmixJobSpecGroupingComparator ()
 specifier|public
@@ -2974,7 +2974,7 @@ name|Test
 argument_list|(
 name|timeout
 operator|=
-literal|10000
+literal|30000
 argument_list|)
 DECL|method|testCompareGridmixJob ()
 specifier|public
@@ -3191,7 +3191,7 @@ name|Test
 argument_list|(
 name|timeout
 operator|=
-literal|1000
+literal|3000
 argument_list|)
 DECL|method|testReadRecordFactory ()
 specifier|public
@@ -3606,7 +3606,7 @@ name|Test
 argument_list|(
 name|timeout
 operator|=
-literal|1000
+literal|3000
 argument_list|)
 DECL|method|testLoadJobLoadRecordReader ()
 specifier|public
@@ -4054,7 +4054,7 @@ name|Test
 argument_list|(
 name|timeout
 operator|=
-literal|1000
+literal|3000
 argument_list|)
 DECL|method|testLoadJobLoadReducer ()
 specifier|public
@@ -4755,7 +4755,7 @@ name|Test
 argument_list|(
 name|timeout
 operator|=
-literal|40000
+literal|120000
 argument_list|)
 DECL|method|testSerialReaderThread ()
 specifier|public
@@ -5111,7 +5111,7 @@ name|Test
 argument_list|(
 name|timeout
 operator|=
-literal|10000
+literal|30000
 argument_list|)
 DECL|method|testSleepMapper ()
 specifier|public
@@ -5421,7 +5421,7 @@ name|Test
 argument_list|(
 name|timeout
 operator|=
-literal|1000
+literal|3000
 argument_list|)
 DECL|method|testSleepReducer ()
 specifier|public
