@@ -3656,7 +3656,7 @@ name|weight
 return|;
 block|}
 comment|/**    * Sort nodes array by network distance to<i>reader</i>.    *<p/>    * In a three-level topology, a node can be either local, on the same rack, or    * on a different rack from the reader. Sorting the nodes based on network    * distance from the reader reduces network traffic and improves performance.    *<p/>    * As an additional twist, we also randomize the nodes at each network    * distance using the provided random seed. This helps with load balancing    * when there is data skew.    *     * @param reader Node where data will be read    * @param nodes Available replicas with the requested data    * @param seed Used to seed the pseudo-random generator that randomizes the    *          set of nodes at each network distance.    */
-DECL|method|sortByDistance (Node reader, Node[] nodes, long seed)
+DECL|method|sortByDistance (Node reader, Node[] nodes, int activeLen, long seed)
 specifier|public
 name|void
 name|sortByDistance
@@ -3667,6 +3667,9 @@ parameter_list|,
 name|Node
 index|[]
 name|nodes
+parameter_list|,
+name|int
+name|activeLen
 parameter_list|,
 name|long
 name|seed
@@ -3680,9 +3683,7 @@ init|=
 operator|new
 name|int
 index|[
-name|nodes
-operator|.
-name|length
+name|activeLen
 index|]
 decl_stmt|;
 for|for
@@ -3694,9 +3695,7 @@ literal|0
 init|;
 name|i
 operator|<
-name|nodes
-operator|.
-name|length
+name|activeLen
 condition|;
 name|i
 operator|++
@@ -3751,9 +3750,7 @@ literal|0
 init|;
 name|i
 operator|<
-name|nodes
-operator|.
-name|length
+name|activeLen
 condition|;
 name|i
 operator|++
@@ -3900,9 +3897,7 @@ name|checkState
 argument_list|(
 name|idx
 operator|==
-name|nodes
-operator|.
-name|length
+name|activeLen
 argument_list|,
 literal|"Sorted the wrong number of nodes!"
 argument_list|)

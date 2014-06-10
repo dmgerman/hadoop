@@ -768,6 +768,10 @@ index|]
 argument_list|,
 name|testNodes
 argument_list|,
+name|testNodes
+operator|.
+name|length
+argument_list|,
 literal|0xDEADBEEF
 argument_list|)
 expr_stmt|;
@@ -875,6 +879,10 @@ index|]
 argument_list|,
 name|testNodes
 argument_list|,
+name|testNodes
+operator|.
+name|length
+argument_list|,
 literal|0xDEADBEEF
 argument_list|)
 expr_stmt|;
@@ -956,6 +964,10 @@ index|]
 argument_list|,
 name|testNodes
 argument_list|,
+name|testNodes
+operator|.
+name|length
+argument_list|,
 literal|0xDEADBEEF
 argument_list|)
 expr_stmt|;
@@ -1033,6 +1045,10 @@ argument_list|(
 name|computeNode
 argument_list|,
 name|testNodes
+argument_list|,
+name|testNodes
+operator|.
+name|length
 argument_list|,
 literal|0xDEADBEEF
 argument_list|)
