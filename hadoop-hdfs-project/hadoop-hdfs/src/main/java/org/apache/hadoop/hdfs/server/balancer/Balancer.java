@@ -3092,7 +3092,7 @@ argument_list|)
 decl_stmt|;
 if|if
 condition|(
-name|datanode
+name|d
 operator|!=
 literal|null
 condition|)
