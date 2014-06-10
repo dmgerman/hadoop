@@ -664,6 +664,24 @@ name|api
 operator|.
 name|records
 operator|.
+name|ContainerExitStatus
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|api
+operator|.
+name|records
+operator|.
 name|ContainerId
 import|;
 end_import
@@ -4750,6 +4768,10 @@ name|ContainerKillEvent
 argument_list|(
 name|containerID
 argument_list|,
+name|ContainerExitStatus
+operator|.
+name|KILLED_BY_APPMASTER
+argument_list|,
 literal|"Container killed by the ApplicationMaster."
 argument_list|)
 argument_list|)
@@ -5490,6 +5512,10 @@ operator|new
 name|ContainerKillEvent
 argument_list|(
 name|container
+argument_list|,
+name|ContainerExitStatus
+operator|.
+name|KILLED_BY_RESOURCEMANAGER
 argument_list|,
 literal|"Container Killed by ResourceManager"
 argument_list|)

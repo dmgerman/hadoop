@@ -56,12 +56,21 @@ specifier|final
 name|String
 name|diagnostic
 decl_stmt|;
-DECL|method|ContainerKillEvent (ContainerId cID, String diagnostic)
+DECL|field|exitStatus
+specifier|private
+specifier|final
+name|int
+name|exitStatus
+decl_stmt|;
+DECL|method|ContainerKillEvent (ContainerId cID, int exitStatus, String diagnostic)
 specifier|public
 name|ContainerKillEvent
 parameter_list|(
 name|ContainerId
 name|cID
+parameter_list|,
+name|int
+name|exitStatus
 parameter_list|,
 name|String
 name|diagnostic
@@ -75,6 +84,12 @@ name|ContainerEventType
 operator|.
 name|KILL_CONTAINER
 argument_list|)
+expr_stmt|;
+name|this
+operator|.
+name|exitStatus
+operator|=
+name|exitStatus
 expr_stmt|;
 name|this
 operator|.
@@ -93,6 +108,18 @@ return|return
 name|this
 operator|.
 name|diagnostic
+return|;
+block|}
+DECL|method|getContainerExitStatus ()
+specifier|public
+name|int
+name|getContainerExitStatus
+parameter_list|()
+block|{
+return|return
+name|this
+operator|.
+name|exitStatus
 return|;
 block|}
 block|}

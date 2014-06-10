@@ -118,6 +118,61 @@ init|=
 operator|-
 literal|102
 decl_stmt|;
+comment|/**    * Container terminated because of exceeding allocated virtual memory.    */
+DECL|field|KILLED_EXCEEDED_VMEM
+specifier|public
+specifier|static
+specifier|final
+name|int
+name|KILLED_EXCEEDED_VMEM
+init|=
+operator|-
+literal|103
+decl_stmt|;
+comment|/**    * Container terminated because of exceeding allocated physical memory.    */
+DECL|field|KILLED_EXCEEDED_PMEM
+specifier|public
+specifier|static
+specifier|final
+name|int
+name|KILLED_EXCEEDED_PMEM
+init|=
+operator|-
+literal|104
+decl_stmt|;
+comment|/**    * Container was terminated by stop request by the app master.    */
+DECL|field|KILLED_BY_APPMASTER
+specifier|public
+specifier|static
+specifier|final
+name|int
+name|KILLED_BY_APPMASTER
+init|=
+operator|-
+literal|105
+decl_stmt|;
+comment|/**    * Container was terminated by the resource manager.    */
+DECL|field|KILLED_BY_RESOURCEMANAGER
+specifier|public
+specifier|static
+specifier|final
+name|int
+name|KILLED_BY_RESOURCEMANAGER
+init|=
+operator|-
+literal|106
+decl_stmt|;
+comment|/**    * Container was terminated after the application finished.    */
+DECL|field|KILLED_AFTER_APP_COMPLETION
+specifier|public
+specifier|static
+specifier|final
+name|int
+name|KILLED_AFTER_APP_COMPLETION
+init|=
+operator|-
+literal|107
+decl_stmt|;
 block|}
 end_class
 

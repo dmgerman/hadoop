@@ -192,6 +192,24 @@ name|api
 operator|.
 name|records
 operator|.
+name|ContainerExitStatus
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|api
+operator|.
+name|records
+operator|.
 name|ContainerId
 import|;
 end_import
@@ -2008,6 +2026,10 @@ operator|new
 name|ContainerKillEvent
 argument_list|(
 name|containerID
+argument_list|,
+name|ContainerExitStatus
+operator|.
+name|KILLED_AFTER_APP_COMPLETION
 argument_list|,
 literal|"Container killed on application-finish event: "
 operator|+
