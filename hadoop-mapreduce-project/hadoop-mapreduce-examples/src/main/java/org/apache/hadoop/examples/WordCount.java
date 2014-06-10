@@ -417,7 +417,7 @@ condition|(
 name|otherArgs
 operator|.
 name|length
-operator|!=
+operator|<
 literal|2
 condition|)
 block|{
@@ -427,7 +427,7 @@ name|err
 operator|.
 name|println
 argument_list|(
-literal|"Usage: wordcount<in><out>"
+literal|"Usage: wordcount<in> [<in>...]<out>"
 argument_list|)
 expr_stmt|;
 name|System
@@ -503,6 +503,25 @@ operator|.
 name|class
 argument_list|)
 expr_stmt|;
+for|for
+control|(
+name|int
+name|i
+init|=
+literal|0
+init|;
+name|i
+operator|<
+name|otherArgs
+operator|.
+name|length
+operator|-
+literal|1
+condition|;
+operator|++
+name|i
+control|)
+block|{
 name|FileInputFormat
 operator|.
 name|addInputPath
@@ -514,11 +533,12 @@ name|Path
 argument_list|(
 name|otherArgs
 index|[
-literal|0
+name|i
 index|]
 argument_list|)
 argument_list|)
 expr_stmt|;
+block|}
 name|FileOutputFormat
 operator|.
 name|setOutputPath
@@ -530,6 +550,10 @@ name|Path
 argument_list|(
 name|otherArgs
 index|[
+name|otherArgs
+operator|.
+name|length
+operator|-
 literal|1
 index|]
 argument_list|)
