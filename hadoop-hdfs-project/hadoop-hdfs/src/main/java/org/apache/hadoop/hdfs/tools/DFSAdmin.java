@@ -3153,10 +3153,10 @@ literal|0
 return|;
 block|}
 comment|/**    * Command to enable/disable/check restoring of failed storage replicas in the namenode.    * Usage: java DFSAdmin -restoreFailedStorage true|false|check    * @exception IOException     * @see org.apache.hadoop.hdfs.protocol.ClientProtocol#restoreFailedStorage(String arg)    */
-DECL|method|restoreFaileStorage (String arg)
+DECL|method|restoreFailedStorage (String arg)
 specifier|public
 name|int
-name|restoreFaileStorage
+name|restoreFailedStorage
 parameter_list|(
 name|String
 name|arg
@@ -7217,7 +7217,7 @@ condition|)
 block|{
 name|exitCode
 operator|=
-name|restoreFaileStorage
+name|restoreFailedStorage
 argument_list|(
 name|argv
 index|[
