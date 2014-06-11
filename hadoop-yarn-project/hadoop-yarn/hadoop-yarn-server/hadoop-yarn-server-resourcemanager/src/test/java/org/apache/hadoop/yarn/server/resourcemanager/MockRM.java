@@ -3934,6 +3934,16 @@ name|clearQueueMetrics
 argument_list|()
 expr_stmt|;
 block|}
+DECL|method|getRMActiveService ()
+specifier|public
+name|RMActiveServices
+name|getRMActiveService
+parameter_list|()
+block|{
+return|return
+name|activeServices
+return|;
+block|}
 block|}
 end_class
 

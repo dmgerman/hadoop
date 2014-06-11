@@ -940,6 +940,18 @@ argument_list|()
 expr_stmt|;
 block|}
 annotation|@
+name|VisibleForTesting
+DECL|method|getResourceCalculator ()
+specifier|public
+name|ResourceCalculator
+name|getResourceCalculator
+parameter_list|()
+block|{
+return|return
+name|rc
+return|;
+block|}
+annotation|@
 name|Override
 DECL|method|editSchedule ()
 specifier|public

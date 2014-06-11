@@ -2301,6 +2301,7 @@ comment|/**    * RMActiveServices handles all the Active services in the RM.    
 annotation|@
 name|Private
 DECL|class|RMActiveServices
+specifier|public
 class|class
 name|RMActiveServices
 extends|extends
@@ -3140,26 +3141,6 @@ name|getPolicyName
 argument_list|()
 argument_list|)
 expr_stmt|;
-name|policy
-operator|.
-name|init
-argument_list|(
-name|conf
-argument_list|,
-name|rmContext
-operator|.
-name|getDispatcher
-argument_list|()
-operator|.
-name|getEventHandler
-argument_list|()
-argument_list|,
-operator|(
-name|PreemptableResourceScheduler
-operator|)
-name|scheduler
-argument_list|)
-expr_stmt|;
 comment|// periodically check whether we need to take action to guarantee
 comment|// constraints
 name|SchedulingMonitor
@@ -3168,6 +3149,8 @@ init|=
 operator|new
 name|SchedulingMonitor
 argument_list|(
+name|rmContext
+argument_list|,
 name|policy
 argument_list|)
 decl_stmt|;
