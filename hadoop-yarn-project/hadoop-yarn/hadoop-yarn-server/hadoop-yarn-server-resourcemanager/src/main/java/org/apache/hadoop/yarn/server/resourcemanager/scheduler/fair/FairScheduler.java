@@ -5686,7 +5686,7 @@ name|float
 operator|)
 name|rootMetrics
 operator|.
-name|getAvailableMB
+name|getAllocatedMB
 argument_list|()
 operator|/
 name|clusterResource
@@ -5699,7 +5699,7 @@ name|float
 operator|)
 name|rootMetrics
 operator|.
-name|getAvailableVirtualCores
+name|getAllocatedVirtualCores
 argument_list|()
 operator|/
 name|clusterResource
