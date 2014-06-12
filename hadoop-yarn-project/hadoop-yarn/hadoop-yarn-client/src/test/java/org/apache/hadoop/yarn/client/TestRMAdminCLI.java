@@ -1791,7 +1791,9 @@ block|,
 literal|"-transitionToActive"
 block|}
 argument_list|,
-literal|"Usage: yarn rmadmin [-transitionToActive<serviceId>]"
+literal|"Usage: yarn rmadmin [-transitionToActive<serviceId>"
+operator|+
+literal|" [--forceactive]]"
 argument_list|,
 name|dataErr
 argument_list|,
@@ -1944,11 +1946,11 @@ literal|"UserGroupsConfiguration] [-refreshUserToGroupsMappings] "
 operator|+
 literal|"[-refreshAdminAcls] [-refreshServiceAcl] [-getGroup"
 operator|+
-literal|" [username]] [-help [cmd]] [-transitionToActive<serviceId>]"
+literal|" [username]] [-help [cmd]] [-transitionToActive<serviceId>"
 operator|+
-literal|" [-transitionToStandby<serviceId>] [-failover [--forcefence]"
+literal|" [--forceactive]] [-transitionToStandby<serviceId>] [-failover"
 operator|+
-literal|" [--forceactive]<serviceId><serviceId>] "
+literal|" [--forcefence] [--forceactive]<serviceId><serviceId>] "
 operator|+
 literal|"[-getServiceState<serviceId>] [-checkHealth<serviceId>]"
 argument_list|)
