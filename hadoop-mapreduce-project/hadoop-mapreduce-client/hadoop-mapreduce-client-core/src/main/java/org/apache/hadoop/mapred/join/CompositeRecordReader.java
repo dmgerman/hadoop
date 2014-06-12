@@ -588,6 +588,8 @@ argument_list|()
 operator|.
 name|getClass
 argument_list|()
+argument_list|,
+name|conf
 argument_list|)
 expr_stmt|;
 name|q
