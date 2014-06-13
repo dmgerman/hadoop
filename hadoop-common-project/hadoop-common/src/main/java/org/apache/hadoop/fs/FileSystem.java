@@ -8308,7 +8308,7 @@ name|Statistics
 block|{
 comment|/**      * Statistics data.      *       * There is only a single writer to thread-local StatisticsData objects.      * Hence, volatile is adequate here-- we do not need AtomicLong or similar      * to prevent lost updates.      * The Java specification guarantees that updates to volatile longs will      * be perceived as atomic with respect to other threads, which is all we      * need.      */
 DECL|class|StatisticsData
-specifier|private
+specifier|public
 specifier|static
 class|class
 name|StatisticsData
@@ -8496,6 +8496,56 @@ operator|+
 literal|" write ops"
 return|;
 block|}
+DECL|method|getBytesRead ()
+specifier|public
+name|long
+name|getBytesRead
+parameter_list|()
+block|{
+return|return
+name|bytesRead
+return|;
+block|}
+DECL|method|getBytesWritten ()
+specifier|public
+name|long
+name|getBytesWritten
+parameter_list|()
+block|{
+return|return
+name|bytesWritten
+return|;
+block|}
+DECL|method|getReadOps ()
+specifier|public
+name|int
+name|getReadOps
+parameter_list|()
+block|{
+return|return
+name|readOps
+return|;
+block|}
+DECL|method|getLargeReadOps ()
+specifier|public
+name|int
+name|getLargeReadOps
+parameter_list|()
+block|{
+return|return
+name|largeReadOps
+return|;
+block|}
+DECL|method|getWriteOps ()
+specifier|public
+name|int
+name|getWriteOps
+parameter_list|()
+block|{
+return|return
+name|writeOps
+return|;
+block|}
 block|}
 DECL|interface|StatisticsAggregator
 specifier|private
@@ -8674,10 +8724,10 @@ argument_list|()
 expr_stmt|;
 block|}
 comment|/**      * Get or create the thread-local data associated with the current thread.      */
-DECL|method|getThreadData ()
-specifier|private
+DECL|method|getThreadStatistics ()
+specifier|public
 name|StatisticsData
-name|getThreadData
+name|getThreadStatistics
 parameter_list|()
 block|{
 name|StatisticsData
@@ -8765,7 +8815,7 @@ name|long
 name|newBytes
 parameter_list|)
 block|{
-name|getThreadData
+name|getThreadStatistics
 argument_list|()
 operator|.
 name|bytesRead
@@ -8783,7 +8833,7 @@ name|long
 name|newBytes
 parameter_list|)
 block|{
-name|getThreadData
+name|getThreadStatistics
 argument_list|()
 operator|.
 name|bytesWritten
@@ -8801,7 +8851,7 @@ name|int
 name|count
 parameter_list|)
 block|{
-name|getThreadData
+name|getThreadStatistics
 argument_list|()
 operator|.
 name|readOps
@@ -8819,7 +8869,7 @@ name|int
 name|count
 parameter_list|)
 block|{
-name|getThreadData
+name|getThreadStatistics
 argument_list|()
 operator|.
 name|largeReadOps
@@ -8837,7 +8887,7 @@ name|int
 name|count
 parameter_list|)
 block|{
-name|getThreadData
+name|getThreadStatistics
 argument_list|()
 operator|.
 name|writeOps
