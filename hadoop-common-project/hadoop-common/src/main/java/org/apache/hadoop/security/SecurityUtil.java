@@ -1158,11 +1158,6 @@ name|Configuration
 name|conf
 parameter_list|)
 block|{
-synchronized|synchronized
-init|(
-name|testProviders
-init|)
-block|{
 for|for
 control|(
 name|SecurityInfo
@@ -1193,7 +1188,6 @@ block|{
 return|return
 name|result
 return|;
-block|}
 block|}
 block|}
 synchronized|synchronized
@@ -1255,11 +1249,6 @@ name|Configuration
 name|conf
 parameter_list|)
 block|{
-synchronized|synchronized
-init|(
-name|testProviders
-init|)
-block|{
 for|for
 control|(
 name|SecurityInfo
@@ -1290,7 +1279,6 @@ block|{
 return|return
 name|result
 return|;
-block|}
 block|}
 block|}
 synchronized|synchronized
