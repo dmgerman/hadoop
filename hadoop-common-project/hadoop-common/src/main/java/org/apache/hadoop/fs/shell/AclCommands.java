@@ -349,7 +349,7 @@ literal|" (ACLs) of files and directories. If a directory has a default ACL,"
 operator|+
 literal|" then getfacl also displays the default ACL.\n"
 operator|+
-literal|"-R: List the ACLs of all files and directories recursively.\n"
+literal|"  -R: List the ACLs of all files and directories recursively.\n"
 operator|+
 literal|"<path>: File or directory to list.\n"
 decl_stmt|;
@@ -828,23 +828,23 @@ literal|" of files and directories.\n"
 operator|+
 literal|"Options:\n"
 operator|+
-literal|"-b :Remove all but the base ACL entries. The entries for user,"
+literal|"  -b :Remove all but the base ACL entries. The entries for user,"
 operator|+
 literal|" group and others are retained for compatibility with permission "
 operator|+
 literal|"bits.\n"
 operator|+
-literal|"-k :Remove the default ACL.\n"
+literal|"  -k :Remove the default ACL.\n"
 operator|+
-literal|"-R :Apply operations to all files and directories recursively.\n"
+literal|"  -R :Apply operations to all files and directories recursively.\n"
 operator|+
-literal|"-m :Modify ACL. New entries are added to the ACL, and existing"
+literal|"  -m :Modify ACL. New entries are added to the ACL, and existing"
 operator|+
 literal|" entries are retained.\n"
 operator|+
-literal|"-x :Remove specified ACL entries. Other ACL entries are retained.\n"
+literal|"  -x :Remove specified ACL entries. Other ACL entries are retained.\n"
 operator|+
-literal|"--set :Fully replace the ACL, discarding all existing entries."
+literal|"  --set :Fully replace the ACL, discarding all existing entries."
 operator|+
 literal|" The<acl_spec> must include entries for user, group, and others"
 operator|+

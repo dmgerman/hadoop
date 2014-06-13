@@ -4,15 +4,13 @@ comment|/**  * Licensed to the Apache Software Foundation (ASF) under one  * or 
 end_comment
 
 begin_package
-DECL|package|org.apache.hadoop.hdfs.tools
+DECL|package|org.apache.hadoop.tools
 package|package
 name|org
 operator|.
 name|apache
 operator|.
 name|hadoop
-operator|.
-name|hdfs
 operator|.
 name|tools
 package|;
@@ -81,7 +79,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * This class implements a "table listing" with column headers.  *   * Example:  *   * NAME   OWNER   GROUP   MODE       WEIGHT  * pool1  andrew  andrew  rwxr-xr-x     100  * pool2  andrew  andrew  rwxr-xr-x     100  * pool3  andrew  andrew  rwxr-xr-x     100  *   */
+comment|/**  * This class implements a "table listing" with column headers.  *  * Example:  *  * NAME   OWNER   GROUP   MODE       WEIGHT  * pool1  andrew  andrew  rwxr-xr-x     100  * pool2  andrew  andrew  rwxr-xr-x     100  * pool3  andrew  andrew  rwxr-xr-x     100  *  */
 end_comment
 
 begin_class
@@ -602,7 +600,7 @@ name|wrap
 argument_list|)
 return|;
 block|}
-comment|/**      * Add a new field to the Table under construction.      *       * @param title Field title.      * @param justification Right or left justification. Defaults to left.      * @param wrap Width at which to auto-wrap the content of the cell.      *        Defaults to Integer.MAX_VALUE.      * @return This Builder object      */
+comment|/**      * Add a new field to the Table under construction.      *      * @param title Field title.      * @param justification Right or left justification. Defaults to left.      * @param wrap Width at which to auto-wrap the content of the cell.      *        Defaults to Integer.MAX_VALUE.      * @return This Builder object      */
 DECL|method|addField (String title, Justification justification, boolean wrap)
 specifier|public
 name|Builder

@@ -183,9 +183,9 @@ specifier|final
 name|String
 name|DESCRIPTION
 init|=
-literal|"Creates a file of zero length\n"
+literal|"Creates a file of zero length "
 operator|+
-literal|"at<path> with current time as the timestamp of that<path>.\n"
+literal|"at<path> with current time as the timestamp of that<path>. "
 operator|+
 literal|"An error is returned if the file exists with non-zero length\n"
 decl_stmt|;

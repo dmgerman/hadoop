@@ -335,13 +335,13 @@ specifier|final
 name|String
 name|DESCRIPTION
 init|=
-literal|"Get all the files in the directories that\n"
+literal|"Get all the files in the directories that "
 operator|+
-literal|"match the source file pattern and merge and sort them to only\n"
+literal|"match the source file pattern and merge and sort them to only "
 operator|+
 literal|"one file on local fs.<src> is kept.\n"
 operator|+
-literal|"  -nl   Add a newline character at the end of each file."
+literal|"-nl: Add a newline character at the end of each file."
 decl_stmt|;
 DECL|field|dst
 specifier|protected
@@ -731,17 +731,17 @@ specifier|final
 name|String
 name|DESCRIPTION
 init|=
-literal|"Copy files that match the file pattern<src> to a\n"
+literal|"Copy files that match the file pattern<src> to a "
 operator|+
-literal|"destination.  When copying multiple files, the destination\n"
+literal|"destination.  When copying multiple files, the destination "
 operator|+
-literal|"must be a directory. Passing -p preserves status\n"
+literal|"must be a directory. Passing -p preserves status "
 operator|+
-literal|"[topx] (timestamps, ownership, permission, XAttr).\n"
+literal|"[topx] (timestamps, ownership, permission, XAttr). "
 operator|+
-literal|"If -p is specified with no<arg>, then preserves\n"
+literal|"If -p is specified with no<arg>, then preserves "
 operator|+
-literal|"timestamps, ownership, permission. Passing -f\n"
+literal|"timestamps, ownership, permission. Passing -f "
 operator|+
 literal|"overwrites the destination if it already exists.\n"
 decl_stmt|;
@@ -981,13 +981,13 @@ specifier|final
 name|String
 name|DESCRIPTION
 init|=
-literal|"Copy files that match the file pattern<src>\n"
+literal|"Copy files that match the file pattern<src> "
 operator|+
-literal|"to the local name.<src> is kept.  When copying multiple,\n"
+literal|"to the local name.<src> is kept.  When copying multiple "
 operator|+
-literal|"files, the destination must be a directory. Passing\n"
+literal|"files, the destination must be a directory. Passing "
 operator|+
-literal|"-p preserves access and modification times,\n"
+literal|"-p preserves access and modification times, "
 operator|+
 literal|"ownership and the mode.\n"
 decl_stmt|;
@@ -1110,15 +1110,15 @@ specifier|final
 name|String
 name|DESCRIPTION
 init|=
-literal|"Copy files from the local file system\n"
+literal|"Copy files from the local file system "
 operator|+
-literal|"into fs. Copying fails if the file already\n"
+literal|"into fs. Copying fails if the file already "
 operator|+
-literal|"exists, unless the -f flag is given. Passing\n"
+literal|"exists, unless the -f flag is given. Passing "
 operator|+
-literal|"-p preserves access and modification times,\n"
+literal|"-p preserves access and modification times, "
 operator|+
-literal|"ownership and the mode. Passing -f overwrites\n"
+literal|"ownership and the mode. Passing -f overwrites "
 operator|+
 literal|"the destination if it already exists.\n"
 decl_stmt|;
@@ -1471,11 +1471,11 @@ specifier|final
 name|String
 name|DESCRIPTION
 init|=
-literal|"Appends the contents of all the given local files to the\n"
+literal|"Appends the contents of all the given local files to the "
 operator|+
-literal|"given dst file. The dst file will be created if it does\n"
+literal|"given dst file. The dst file will be created if it does "
 operator|+
-literal|"not exist. If<localSrc> is -, then the input is read\n"
+literal|"not exist. If<localSrc> is -, then the input is read "
 operator|+
 literal|"from stdin."
 decl_stmt|;

@@ -204,7 +204,7 @@ name|DESCRIPTION
 init|=
 literal|"Create a directory in specified location.\n"
 operator|+
-literal|"  -p  Do not fail if the directory already exists"
+literal|"-p: Do not fail if the directory already exists"
 decl_stmt|;
 DECL|field|createParents
 specifier|private

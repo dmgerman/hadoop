@@ -276,19 +276,19 @@ specifier|final
 name|String
 name|DESCRIPTION
 init|=
-literal|"Delete all files that match the specified file pattern.\n"
+literal|"Delete all files that match the specified file pattern. "
 operator|+
 literal|"Equivalent to the Unix command \"rm<src>\"\n"
 operator|+
-literal|"-skipTrash option bypasses trash, if enabled, and immediately\n"
+literal|"-skipTrash: option bypasses trash, if enabled, and immediately "
 operator|+
 literal|"deletes<src>\n"
 operator|+
-literal|"  -f     If the file does not exist, do not display a diagnostic\n"
+literal|"-f: If the file does not exist, do not display a diagnostic "
 operator|+
-literal|"         message or modify the exit status to reflect an error.\n"
+literal|"message or modify the exit status to reflect an error.\n"
 operator|+
-literal|"  -[rR]  Recursively deletes directories"
+literal|"-[rR]:  Recursively deletes directories"
 decl_stmt|;
 DECL|field|skipTrash
 specifier|private
@@ -733,7 +733,7 @@ specifier|final
 name|String
 name|DESCRIPTION
 init|=
-literal|"Removes the directory entry specified by each directory argument,\n"
+literal|"Removes the directory entry specified by each directory argument, "
 operator|+
 literal|"provided it is empty.\n"
 decl_stmt|;

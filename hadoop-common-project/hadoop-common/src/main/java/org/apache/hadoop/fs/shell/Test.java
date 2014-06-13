@@ -142,9 +142,7 @@ literal|"  -f  return 0 if<path> is a file.\n"
 operator|+
 literal|"  -s  return 0 if file<path> is greater than zero bytes in size.\n"
 operator|+
-literal|"  -z  return 0 if file<path> is zero bytes in size.\n"
-operator|+
-literal|"else, return 1."
+literal|"  -z  return 0 if file<path> is zero bytes in size, else return 1."
 decl_stmt|;
 DECL|field|flag
 specifier|private
