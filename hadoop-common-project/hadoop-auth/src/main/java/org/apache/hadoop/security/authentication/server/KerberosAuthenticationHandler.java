@@ -1059,7 +1059,7 @@ literal|"Login using keytab {}, for principal {}"
 argument_list|,
 name|keytab
 argument_list|,
-name|principal
+name|spnegoPrincipal
 argument_list|)
 expr_stmt|;
 specifier|final
