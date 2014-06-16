@@ -59,9 +59,6 @@ DECL|enumConstant|UNREGISTERED
 name|UNREGISTERED
 block|,
 comment|// Source: Containers
-DECL|enumConstant|CONTAINER_ACQUIRED
-name|CONTAINER_ACQUIRED
-block|,
 DECL|enumConstant|CONTAINER_ALLOCATED
 name|CONTAINER_ALLOCATED
 block|,

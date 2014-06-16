@@ -36,16 +36,6 @@ end_import
 
 begin_import
 import|import
-name|java
-operator|.
-name|util
-operator|.
-name|Set
-import|;
-end_import
-
-begin_import
-import|import
 name|javax
 operator|.
 name|crypto
@@ -226,24 +216,6 @@ name|api
 operator|.
 name|records
 operator|.
-name|NodeId
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|yarn
-operator|.
-name|api
-operator|.
-name|records
-operator|.
 name|YarnApplicationAttemptState
 import|;
 end_import
@@ -407,15 +379,6 @@ comment|/**    * The final status set by the AM.    * @return the final status t
 DECL|method|getFinalApplicationStatus ()
 name|FinalApplicationStatus
 name|getFinalApplicationStatus
-parameter_list|()
-function_decl|;
-comment|/**    * Nodes on which the containers for this {@link RMAppAttempt} ran.    * @return the set of nodes that ran any containers from this {@link RMAppAttempt}    */
-DECL|method|getRanNodes ()
-name|Set
-argument_list|<
-name|NodeId
-argument_list|>
-name|getRanNodes
 parameter_list|()
 function_decl|;
 comment|/**    * Return a list of the last set of finished containers, resetting the    * finished containers to empty.    * @return the list of just finished containers, re setting the finished containers.    */

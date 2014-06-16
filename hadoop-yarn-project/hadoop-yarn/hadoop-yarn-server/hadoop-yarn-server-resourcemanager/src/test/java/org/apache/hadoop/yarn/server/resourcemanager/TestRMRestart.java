@@ -2528,6 +2528,8 @@ name|asList
 argument_list|(
 name|status
 argument_list|)
+argument_list|,
+literal|null
 argument_list|)
 expr_stmt|;
 name|nm2
@@ -3804,6 +3806,8 @@ name|asList
 argument_list|(
 name|status
 argument_list|)
+argument_list|,
+literal|null
 argument_list|)
 expr_stmt|;
 name|rm2
@@ -10974,6 +10978,8 @@ name|asList
 argument_list|(
 name|status
 argument_list|)
+argument_list|,
+literal|null
 argument_list|)
 expr_stmt|;
 while|while
@@ -11761,6 +11767,8 @@ name|asList
 argument_list|(
 name|status
 argument_list|)
+argument_list|,
+literal|null
 argument_list|)
 expr_stmt|;
 block|}

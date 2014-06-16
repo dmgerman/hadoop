@@ -338,11 +338,7 @@ name|resourcemanager
 operator|.
 name|rmapp
 operator|.
-name|attempt
-operator|.
-name|event
-operator|.
-name|RMAppAttemptContainerAcquiredEvent
+name|RMAppRunningOnNodeEvent
 import|;
 end_import
 
@@ -2041,7 +2037,7 @@ name|RUNNING
 argument_list|)
 condition|)
 block|{
-comment|// Tell the appAttempt
+comment|// Tell the app
 name|container
 operator|.
 name|eventHandler
@@ -2049,17 +2045,19 @@ operator|.
 name|handle
 argument_list|(
 operator|new
-name|RMAppAttemptContainerAcquiredEvent
+name|RMAppRunningOnNodeEvent
 argument_list|(
 name|container
 operator|.
 name|getApplicationAttemptId
 argument_list|()
+operator|.
+name|getApplicationId
+argument_list|()
 argument_list|,
 name|container
 operator|.
-name|getContainer
-argument_list|()
+name|nodeId
 argument_list|)
 argument_list|)
 expr_stmt|;
@@ -2232,7 +2230,7 @@ name|getContainerId
 argument_list|()
 argument_list|)
 expr_stmt|;
-comment|// Tell the appAttempt
+comment|// Tell the app
 name|container
 operator|.
 name|eventHandler
@@ -2240,17 +2238,19 @@ operator|.
 name|handle
 argument_list|(
 operator|new
-name|RMAppAttemptContainerAcquiredEvent
+name|RMAppRunningOnNodeEvent
 argument_list|(
 name|container
 operator|.
 name|getApplicationAttemptId
 argument_list|()
+operator|.
+name|getApplicationId
+argument_list|()
 argument_list|,
 name|container
 operator|.
-name|getContainer
-argument_list|()
+name|nodeId
 argument_list|)
 argument_list|)
 expr_stmt|;

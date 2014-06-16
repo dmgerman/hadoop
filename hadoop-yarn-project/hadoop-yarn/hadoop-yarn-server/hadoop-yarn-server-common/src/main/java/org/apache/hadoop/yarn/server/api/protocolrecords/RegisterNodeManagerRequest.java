@@ -46,6 +46,24 @@ name|api
 operator|.
 name|records
 operator|.
+name|ApplicationId
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|api
+operator|.
+name|records
+operator|.
 name|NodeId
 import|;
 end_import
@@ -91,7 +109,7 @@ specifier|abstract
 class|class
 name|RegisterNodeManagerRequest
 block|{
-DECL|method|newInstance (NodeId nodeId, int httpPort, Resource resource, String nodeManagerVersionId, List<NMContainerStatus> containerStatuses)
+DECL|method|newInstance (NodeId nodeId, int httpPort, Resource resource, String nodeManagerVersionId, List<NMContainerStatus> containerStatuses, List<ApplicationId> runningApplications)
 specifier|public
 specifier|static
 name|RegisterNodeManagerRequest
@@ -114,6 +132,12 @@ argument_list|<
 name|NMContainerStatus
 argument_list|>
 name|containerStatuses
+parameter_list|,
+name|List
+argument_list|<
+name|ApplicationId
+argument_list|>
+name|runningApplications
 parameter_list|)
 block|{
 name|RegisterNodeManagerRequest
@@ -163,6 +187,13 @@ argument_list|(
 name|containerStatuses
 argument_list|)
 expr_stmt|;
+name|request
+operator|.
+name|setRunningApplications
+argument_list|(
+name|runningApplications
+argument_list|)
+expr_stmt|;
 return|return
 name|request
 return|;
@@ -203,6 +234,17 @@ argument_list|<
 name|NMContainerStatus
 argument_list|>
 name|getNMContainerStatuses
+parameter_list|()
+function_decl|;
+comment|/**    * We introduce this here because currently YARN RM doesn't persist nodes info    * for application running. When RM restart happened, we cannot determinate if    * a node should do application cleanup (like log-aggregation, status update,    * etc.) or not.<p/>    * When we have this running application list in node manager register    * request, we can recover nodes info for running applications. And then we    * can take actions accordingly    *     * @return running application list in this node    */
+DECL|method|getRunningApplications ()
+specifier|public
+specifier|abstract
+name|List
+argument_list|<
+name|ApplicationId
+argument_list|>
+name|getRunningApplications
 parameter_list|()
 function_decl|;
 DECL|method|setNodeId (NodeId nodeId)
@@ -256,6 +298,20 @@ argument_list|<
 name|NMContainerStatus
 argument_list|>
 name|containerStatuses
+parameter_list|)
+function_decl|;
+comment|/**    * Setter for {@link RegisterNodeManagerRequest#getRunningApplications()}    * @param runningApplications running application in this node    */
+DECL|method|setRunningApplications ( List<ApplicationId> runningApplications)
+specifier|public
+specifier|abstract
+name|void
+name|setRunningApplications
+parameter_list|(
+name|List
+argument_list|<
+name|ApplicationId
+argument_list|>
+name|runningApplications
 parameter_list|)
 function_decl|;
 block|}

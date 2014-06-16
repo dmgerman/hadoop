@@ -1318,6 +1318,8 @@ argument_list|(
 literal|null
 argument_list|,
 literal|null
+argument_list|,
+literal|null
 argument_list|)
 argument_list|)
 expr_stmt|;
@@ -1495,6 +1497,8 @@ argument_list|(
 literal|null
 argument_list|,
 literal|null
+argument_list|,
+literal|null
 argument_list|)
 argument_list|)
 expr_stmt|;
@@ -1540,6 +1544,8 @@ argument_list|(
 operator|new
 name|RMNodeStartedEvent
 argument_list|(
+literal|null
+argument_list|,
 literal|null
 argument_list|,
 literal|null
@@ -1902,6 +1908,8 @@ argument_list|(
 operator|new
 name|RMNodeStartedEvent
 argument_list|(
+literal|null
+argument_list|,
 literal|null
 argument_list|,
 literal|null
@@ -3633,6 +3641,8 @@ name|getNodeID
 argument_list|()
 argument_list|,
 literal|null
+argument_list|,
+literal|null
 argument_list|)
 argument_list|)
 expr_stmt|;
@@ -3846,6 +3856,8 @@ name|node
 operator|.
 name|getNodeID
 argument_list|()
+argument_list|,
+literal|null
 argument_list|,
 literal|null
 argument_list|)
