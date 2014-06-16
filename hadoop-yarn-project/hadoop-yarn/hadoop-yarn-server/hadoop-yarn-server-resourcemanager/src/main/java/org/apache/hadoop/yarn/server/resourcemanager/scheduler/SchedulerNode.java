@@ -630,7 +630,7 @@ operator|.
 name|getNodeAddress
 argument_list|()
 operator|+
-literal|", which currently has "
+literal|", which has "
 operator|+
 name|numContainers
 operator|+
@@ -644,7 +644,7 @@ operator|+
 name|getAvailableResource
 argument_list|()
 operator|+
-literal|" available"
+literal|" available after allocation"
 argument_list|)
 expr_stmt|;
 block|}
