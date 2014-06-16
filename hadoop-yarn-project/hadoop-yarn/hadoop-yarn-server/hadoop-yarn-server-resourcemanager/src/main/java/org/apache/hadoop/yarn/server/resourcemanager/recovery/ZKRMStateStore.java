@@ -462,6 +462,50 @@ name|recovery
 operator|.
 name|records
 operator|.
+name|ApplicationAttemptStateData
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|server
+operator|.
+name|resourcemanager
+operator|.
+name|recovery
+operator|.
+name|records
+operator|.
+name|ApplicationStateData
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|server
+operator|.
+name|resourcemanager
+operator|.
+name|recovery
+operator|.
+name|records
+operator|.
 name|RMStateVersion
 import|;
 end_import
@@ -3001,7 +3045,7 @@ block|}
 block|}
 name|LOG
 operator|.
-name|info
+name|debug
 argument_list|(
 literal|"Done Loading applications from ZK state store"
 argument_list|)
@@ -3009,7 +3053,7 @@ expr_stmt|;
 block|}
 annotation|@
 name|Override
-DECL|method|storeApplicationStateInternal (ApplicationId appId, ApplicationStateDataPBImpl appStateDataPB)
+DECL|method|storeApplicationStateInternal (ApplicationId appId, ApplicationStateData appStateDataPB)
 specifier|public
 specifier|synchronized
 name|void
@@ -3018,7 +3062,7 @@ parameter_list|(
 name|ApplicationId
 name|appId
 parameter_list|,
-name|ApplicationStateDataPBImpl
+name|ApplicationStateData
 name|appStateDataPB
 parameter_list|)
 throws|throws
@@ -3087,7 +3131,7 @@ expr_stmt|;
 block|}
 annotation|@
 name|Override
-DECL|method|updateApplicationStateInternal (ApplicationId appId, ApplicationStateDataPBImpl appStateDataPB)
+DECL|method|updateApplicationStateInternal (ApplicationId appId, ApplicationStateData appStateDataPB)
 specifier|public
 specifier|synchronized
 name|void
@@ -3096,7 +3140,7 @@ parameter_list|(
 name|ApplicationId
 name|appId
 parameter_list|,
-name|ApplicationStateDataPBImpl
+name|ApplicationStateData
 name|appStateDataPB
 parameter_list|)
 throws|throws
@@ -3189,7 +3233,7 @@ argument_list|)
 expr_stmt|;
 name|LOG
 operator|.
-name|info
+name|debug
 argument_list|(
 name|appId
 operator|+
@@ -3202,7 +3246,7 @@ block|}
 block|}
 annotation|@
 name|Override
-DECL|method|storeApplicationAttemptStateInternal ( ApplicationAttemptId appAttemptId, ApplicationAttemptStateDataPBImpl attemptStateDataPB)
+DECL|method|storeApplicationAttemptStateInternal ( ApplicationAttemptId appAttemptId, ApplicationAttemptStateData attemptStateDataPB)
 specifier|public
 specifier|synchronized
 name|void
@@ -3211,7 +3255,7 @@ parameter_list|(
 name|ApplicationAttemptId
 name|appAttemptId
 parameter_list|,
-name|ApplicationAttemptStateDataPBImpl
+name|ApplicationAttemptStateData
 name|attemptStateDataPB
 parameter_list|)
 throws|throws
@@ -3296,7 +3340,7 @@ expr_stmt|;
 block|}
 annotation|@
 name|Override
-DECL|method|updateApplicationAttemptStateInternal ( ApplicationAttemptId appAttemptId, ApplicationAttemptStateDataPBImpl attemptStateDataPB)
+DECL|method|updateApplicationAttemptStateInternal ( ApplicationAttemptId appAttemptId, ApplicationAttemptStateData attemptStateDataPB)
 specifier|public
 specifier|synchronized
 name|void
@@ -3305,7 +3349,7 @@ parameter_list|(
 name|ApplicationAttemptId
 name|appAttemptId
 parameter_list|,
-name|ApplicationAttemptStateDataPBImpl
+name|ApplicationAttemptStateData
 name|attemptStateDataPB
 parameter_list|)
 throws|throws
@@ -3424,7 +3468,7 @@ argument_list|)
 expr_stmt|;
 name|LOG
 operator|.
-name|info
+name|debug
 argument_list|(
 name|appAttemptId
 operator|+
@@ -3717,7 +3761,7 @@ else|else
 block|{
 name|LOG
 operator|.
-name|info
+name|debug
 argument_list|(
 literal|"Attempted to delete a non-existing znode "
 operator|+
@@ -3806,7 +3850,7 @@ argument_list|)
 expr_stmt|;
 name|LOG
 operator|.
-name|info
+name|debug
 argument_list|(
 literal|"Attempted to update a non-existing znode "
 operator|+
@@ -4259,7 +4303,7 @@ else|else
 block|{
 name|LOG
 operator|.
-name|info
+name|debug
 argument_list|(
 literal|"Attempted to delete a non-existing znode "
 operator|+
@@ -4473,7 +4517,7 @@ name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"Session expired"
+literal|"ZKRMStateStore Session expired"
 argument_list|)
 expr_stmt|;
 name|createConnection
@@ -5259,6 +5303,15 @@ name|KeeperException
 name|ke
 parameter_list|)
 block|{
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"Exception while executing a ZK operation."
+argument_list|,
+name|ke
+argument_list|)
+expr_stmt|;
 if|if
 condition|(
 name|shouldRetry
@@ -5279,7 +5332,7 @@ name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"Waiting for zookeeper to be connected, retry no. + "
+literal|"Retrying operation on ZK. Retry no. "
 operator|+
 name|retry
 argument_list|)
@@ -5295,11 +5348,9 @@ continue|continue;
 block|}
 name|LOG
 operator|.
-name|debug
+name|info
 argument_list|(
-literal|"Error while doing ZK operation."
-argument_list|,
-name|ke
+literal|"Maxed out ZK retries. Giving up!"
 argument_list|)
 expr_stmt|;
 throw|throw

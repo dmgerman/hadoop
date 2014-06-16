@@ -653,6 +653,8 @@ operator|.
 name|get
 argument_list|(
 name|keyclass
+argument_list|,
+name|conf
 argument_list|)
 expr_stmt|;
 name|q

@@ -940,6 +940,18 @@ argument_list|()
 expr_stmt|;
 block|}
 annotation|@
+name|VisibleForTesting
+DECL|method|getResourceCalculator ()
+specifier|public
+name|ResourceCalculator
+name|getResourceCalculator
+parameter_list|()
+block|{
+return|return
+name|rc
+return|;
+block|}
+annotation|@
 name|Override
 DECL|method|editSchedule ()
 specifier|public
@@ -1063,11 +1075,20 @@ argument_list|,
 name|clusterResources
 argument_list|)
 decl_stmt|;
+if|if
+condition|(
+name|LOG
+operator|.
+name|isDebugEnabled
+argument_list|()
+condition|)
+block|{
 name|logToCSV
 argument_list|(
 name|queues
 argument_list|)
 expr_stmt|;
+block|}
 comment|// if we are in observeOnly mode return before any action is taken
 if|if
 condition|(
@@ -2939,7 +2960,7 @@ expr_stmt|;
 block|}
 name|LOG
 operator|.
-name|info
+name|debug
 argument_list|(
 name|sb
 operator|.

@@ -1527,10 +1527,8 @@ argument_list|)
 expr_stmt|;
 name|cs
 operator|.
-name|reinitialize
+name|setRMContext
 argument_list|(
-name|conf
-argument_list|,
 operator|new
 name|RMContextImpl
 argument_list|(
@@ -1564,6 +1562,13 @@ argument_list|()
 argument_list|,
 literal|null
 argument_list|)
+argument_list|)
+expr_stmt|;
+name|cs
+operator|.
+name|init
+argument_list|(
+name|conf
 argument_list|)
 expr_stmt|;
 return|return
@@ -2007,7 +2012,9 @@ name|ResourceScheduler
 name|rs
 init|=
 name|mockFifoScheduler
-argument_list|()
+argument_list|(
+name|rmContext
+argument_list|)
 decl_stmt|;
 name|when
 argument_list|(
@@ -2039,12 +2046,15 @@ return|return
 name|rm
 return|;
 block|}
-DECL|method|mockFifoScheduler ()
+DECL|method|mockFifoScheduler (RMContext rmContext)
 specifier|public
 specifier|static
 name|FifoScheduler
 name|mockFifoScheduler
-parameter_list|()
+parameter_list|(
+name|RMContext
+name|rmContext
+parameter_list|)
 throws|throws
 name|Exception
 block|{
@@ -2078,11 +2088,16 @@ argument_list|)
 expr_stmt|;
 name|fs
 operator|.
-name|reinitialize
+name|setRMContext
+argument_list|(
+name|rmContext
+argument_list|)
+expr_stmt|;
+name|fs
+operator|.
+name|init
 argument_list|(
 name|conf
-argument_list|,
-literal|null
 argument_list|)
 expr_stmt|;
 return|return

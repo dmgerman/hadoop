@@ -930,7 +930,7 @@ name|password
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Creates a keystore with a single key and saves it to a file.    *     * @param filename String file to save    * @param password String store password to set on keystore    * @param keyPassword String key password to set on key    * @param alias String alias to use for the key    * @param privateKey Key to save in keystore    * @param cert Certificate to use as certificate chain associated to key    * @throws GeneralSecurityException for any error with the security APIs    * @throws IOException if there is an I/O error saving the file    */
+comment|/**    * Creates a keystore with a single key and saves it to a file.    *    * @param filename String file to save    * @param password String store password to set on keystore    * @param keyPassword String key password to set on key    * @param alias String alias to use for the key    * @param privateKey Key to save in keystore    * @param cert Certificate to use as certificate chain associated to key    * @throws GeneralSecurityException for any error with the security APIs    * @throws IOException if there is an I/O error saving the file    */
 DECL|method|createKeyStore (String filename, String password, String keyPassword, String alias, Key privateKey, Certificate cert)
 specifier|public
 specifier|static
@@ -1217,7 +1217,7 @@ name|delete
 argument_list|()
 expr_stmt|;
 block|}
-comment|/**    * Performs complete setup of SSL configuration in preparation for testing an    * SSLFactory.  This includes keys, certs, keystores, truststores, the server    * SSL configuration file, the client SSL configuration file, and the master    * configuration file read by the SSLFactory.    *     * @param keystoresDir String directory to save keystores    * @param sslConfDir String directory to save SSL configuration files    * @param conf Configuration master configuration to be used by an SSLFactory,    *   which will be mutated by this method    * @param useClientCert boolean true to make the client present a cert in the    *   SSL handshake    */
+comment|/**    * Performs complete setup of SSL configuration in preparation for testing an    * SSLFactory.  This includes keys, certs, keystores, truststores, the server    * SSL configuration file, the client SSL configuration file, and the master    * configuration file read by the SSLFactory.    *    * @param keystoresDir String directory to save keystores    * @param sslConfDir String directory to save SSL configuration files    * @param conf Configuration master configuration to be used by an SSLFactory,    * which will be mutated by this method    * @param useClientCert boolean true to make the client present a cert in the    * SSL handshake    */
 DECL|method|setupSSLConfig (String keystoresDir, String sslConfDir, Configuration conf, boolean useClientCert)
 specifier|public
 specifier|static
@@ -1235,6 +1235,45 @@ name|conf
 parameter_list|,
 name|boolean
 name|useClientCert
+parameter_list|)
+throws|throws
+name|Exception
+block|{
+name|setupSSLConfig
+argument_list|(
+name|keystoresDir
+argument_list|,
+name|sslConfDir
+argument_list|,
+name|conf
+argument_list|,
+name|useClientCert
+argument_list|,
+literal|true
+argument_list|)
+expr_stmt|;
+block|}
+comment|/**    * Performs complete setup of SSL configuration in preparation for testing an    * SSLFactory.  This includes keys, certs, keystores, truststores, the server    * SSL configuration file, the client SSL configuration file, and the master    * configuration file read by the SSLFactory.    *    * @param keystoresDir String directory to save keystores    * @param sslConfDir String directory to save SSL configuration files    * @param conf Configuration master configuration to be used by an SSLFactory,    * which will be mutated by this method    * @param useClientCert boolean true to make the client present a cert in the    * SSL handshake    * @param trustStore boolean true to create truststore, false not to create it    */
+DECL|method|setupSSLConfig (String keystoresDir, String sslConfDir, Configuration conf, boolean useClientCert, boolean trustStore)
+specifier|public
+specifier|static
+name|void
+name|setupSSLConfig
+parameter_list|(
+name|String
+name|keystoresDir
+parameter_list|,
+name|String
+name|sslConfDir
+parameter_list|,
+name|Configuration
+name|conf
+parameter_list|,
+name|boolean
+name|useClientCert
+parameter_list|,
+name|boolean
+name|trustStore
 parameter_list|)
 throws|throws
 name|Exception
@@ -1266,9 +1305,7 @@ decl_stmt|;
 name|String
 name|trustKS
 init|=
-name|keystoresDir
-operator|+
-literal|"/trustKS.jks"
+literal|null
 decl_stmt|;
 name|String
 name|trustPassword
@@ -1426,6 +1463,17 @@ argument_list|,
 name|sCert
 argument_list|)
 expr_stmt|;
+if|if
+condition|(
+name|trustStore
+condition|)
+block|{
+name|trustKS
+operator|=
+name|keystoresDir
+operator|+
+literal|"/trustKS.jks"
+expr_stmt|;
 name|KeyStoreTestUtil
 operator|.
 name|createTrustStore
@@ -1437,6 +1485,7 @@ argument_list|,
 name|certs
 argument_list|)
 expr_stmt|;
+block|}
 name|Configuration
 name|clientSSLConf
 init|=

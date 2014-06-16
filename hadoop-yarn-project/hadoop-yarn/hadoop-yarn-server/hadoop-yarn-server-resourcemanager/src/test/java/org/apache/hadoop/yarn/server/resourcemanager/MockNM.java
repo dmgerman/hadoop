@@ -24,16 +24,6 @@ begin_import
 import|import
 name|java
 operator|.
-name|io
-operator|.
-name|IOException
-import|;
-end_import
-
-begin_import
-import|import
-name|java
-operator|.
 name|util
 operator|.
 name|ArrayList
@@ -214,9 +204,13 @@ name|hadoop
 operator|.
 name|yarn
 operator|.
-name|exceptions
+name|server
 operator|.
-name|YarnException
+name|api
+operator|.
+name|protocolrecords
+operator|.
+name|NMContainerStatus
 import|;
 end_import
 
@@ -754,16 +748,16 @@ literal|null
 argument_list|)
 return|;
 block|}
-DECL|method|registerNode ( List<ContainerStatus> containerStatus)
+DECL|method|registerNode ( List<NMContainerStatus> containerReports)
 specifier|public
 name|RegisterNodeManagerResponse
 name|registerNode
 parameter_list|(
 name|List
 argument_list|<
-name|ContainerStatus
+name|NMContainerStatus
 argument_list|>
-name|containerStatus
+name|containerReports
 parameter_list|)
 throws|throws
 name|Exception
@@ -817,7 +811,7 @@ name|req
 operator|.
 name|setContainerStatuses
 argument_list|(
-name|containerStatus
+name|containerReports
 argument_list|)
 expr_stmt|;
 name|req
@@ -1294,6 +1288,26 @@ expr_stmt|;
 block|}
 return|return
 name|heartbeatResponse
+return|;
+block|}
+DECL|method|getMemory ()
+specifier|public
+name|int
+name|getMemory
+parameter_list|()
+block|{
+return|return
+name|memory
+return|;
+block|}
+DECL|method|getvCores ()
+specifier|public
+name|int
+name|getvCores
+parameter_list|()
+block|{
+return|return
+name|vCores
 return|;
 block|}
 block|}

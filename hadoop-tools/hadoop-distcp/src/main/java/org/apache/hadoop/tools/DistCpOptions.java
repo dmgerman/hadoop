@@ -265,6 +265,7 @@ DECL|enumConstant|GROUP
 DECL|enumConstant|PERMISSION
 DECL|enumConstant|CHECKSUMTYPE
 DECL|enumConstant|ACL
+DECL|enumConstant|XATTR
 name|REPLICATION
 block|,
 name|BLOCKSIZE
@@ -278,6 +279,8 @@ block|,
 name|CHECKSUMTYPE
 block|,
 name|ACL
+block|,
+name|XATTR
 block|;
 DECL|method|getAttribute (char symbol)
 specifier|public

@@ -55,6 +55,9 @@ block|,
 comment|// Source: ContainerAllocationExpirer
 DECL|enumConstant|EXPIRE
 name|EXPIRE
+block|,
+DECL|enumConstant|RECOVER
+name|RECOVER
 block|}
 end_enum
 

@@ -420,6 +420,26 @@ name|api
 operator|.
 name|protocolrecords
 operator|.
+name|NMContainerStatus
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|server
+operator|.
+name|api
+operator|.
+name|protocolrecords
+operator|.
 name|NodeHeartbeatResponse
 import|;
 end_import
@@ -3256,10 +3276,10 @@ literal|true
 argument_list|)
 decl_stmt|;
 comment|// Case 1.1: AppAttemptId is null
-name|ContainerStatus
-name|status
+name|NMContainerStatus
+name|report
 init|=
-name|ContainerStatus
+name|NMContainerStatus
 operator|.
 name|newInstance
 argument_list|(
@@ -3286,6 +3306,15 @@ name|ContainerState
 operator|.
 name|COMPLETE
 argument_list|,
+name|Resource
+operator|.
+name|newInstance
+argument_list|(
+literal|1024
+argument_list|,
+literal|1
+argument_list|)
+argument_list|,
 literal|"Dummy Completed"
 argument_list|,
 literal|0
@@ -3296,9 +3325,9 @@ operator|.
 name|getResourceTrackerService
 argument_list|()
 operator|.
-name|handleContainerStatus
+name|handleNMContainerStatus
 argument_list|(
-name|status
+name|report
 argument_list|)
 expr_stmt|;
 name|verify
@@ -3337,9 +3366,9 @@ argument_list|(
 literal|null
 argument_list|)
 expr_stmt|;
-name|status
+name|report
 operator|=
-name|ContainerStatus
+name|NMContainerStatus
 operator|.
 name|newInstance
 argument_list|(
@@ -3359,6 +3388,15 @@ name|ContainerState
 operator|.
 name|COMPLETE
 argument_list|,
+name|Resource
+operator|.
+name|newInstance
+argument_list|(
+literal|1024
+argument_list|,
+literal|1
+argument_list|)
+argument_list|,
 literal|"Dummy Completed"
 argument_list|,
 literal|0
@@ -3369,9 +3407,9 @@ operator|.
 name|getResourceTrackerService
 argument_list|()
 operator|.
-name|handleContainerStatus
+name|handleNMContainerStatus
 argument_list|(
-name|status
+name|report
 argument_list|)
 expr_stmt|;
 name|verify
@@ -3402,9 +3440,9 @@ literal|1024
 argument_list|)
 expr_stmt|;
 comment|// Case 2.1: AppAttemptId is null
-name|status
+name|report
 operator|=
-name|ContainerStatus
+name|NMContainerStatus
 operator|.
 name|newInstance
 argument_list|(
@@ -3431,6 +3469,15 @@ name|ContainerState
 operator|.
 name|COMPLETE
 argument_list|,
+name|Resource
+operator|.
+name|newInstance
+argument_list|(
+literal|1024
+argument_list|,
+literal|1
+argument_list|)
+argument_list|,
 literal|"Dummy Completed"
 argument_list|,
 literal|0
@@ -3443,9 +3490,9 @@ operator|.
 name|getResourceTrackerService
 argument_list|()
 operator|.
-name|handleContainerStatus
+name|handleNMContainerStatus
 argument_list|(
-name|status
+name|report
 argument_list|)
 expr_stmt|;
 block|}
@@ -3492,9 +3539,9 @@ argument_list|(
 literal|null
 argument_list|)
 expr_stmt|;
-name|status
+name|report
 operator|=
-name|ContainerStatus
+name|NMContainerStatus
 operator|.
 name|newInstance
 argument_list|(
@@ -3514,6 +3561,15 @@ name|ContainerState
 operator|.
 name|COMPLETE
 argument_list|,
+name|Resource
+operator|.
+name|newInstance
+argument_list|(
+literal|1024
+argument_list|,
+literal|1
+argument_list|)
+argument_list|,
 literal|"Dummy Completed"
 argument_list|,
 literal|0
@@ -3526,9 +3582,9 @@ operator|.
 name|getResourceTrackerService
 argument_list|()
 operator|.
-name|handleContainerStatus
+name|handleNMContainerStatus
 argument_list|(
-name|status
+name|report
 argument_list|)
 expr_stmt|;
 block|}

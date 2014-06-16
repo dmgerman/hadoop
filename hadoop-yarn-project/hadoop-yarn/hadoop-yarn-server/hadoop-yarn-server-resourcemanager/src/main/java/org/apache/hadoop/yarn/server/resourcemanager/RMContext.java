@@ -547,6 +547,11 @@ name|ConfigurationProvider
 name|getConfigurationProvider
 parameter_list|()
 function_decl|;
+DECL|method|isWorkPreservingRecoveryEnabled ()
+name|boolean
+name|isWorkPreservingRecoveryEnabled
+parameter_list|()
+function_decl|;
 block|}
 end_interface
 

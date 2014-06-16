@@ -170,17 +170,17 @@ specifier|final
 name|String
 name|DESCRIPTION
 init|=
-literal|"Set the replication level of a file. If<path> is a directory\n"
+literal|"Set the replication level of a file. If<path> is a directory "
 operator|+
-literal|"then the command recursively changes the replication factor of\n"
+literal|"then the command recursively changes the replication factor of "
 operator|+
 literal|"all files under the directory tree rooted at<path>.\n"
 operator|+
-literal|"The -w flag requests that the command wait for the replication\n"
+literal|"-w: It requests that the command waits for the replication "
 operator|+
 literal|"to complete. This can potentially take a very long time.\n"
 operator|+
-literal|"The -R flag is accepted for backwards compatibility. It has no effect."
+literal|"-R: It is accepted for backwards compatibility. It has no effect."
 decl_stmt|;
 DECL|field|newRep
 specifier|protected

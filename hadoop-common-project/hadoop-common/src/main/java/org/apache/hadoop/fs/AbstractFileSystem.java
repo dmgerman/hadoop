@@ -4095,6 +4095,35 @@ literal|" doesn't support getXAttrs"
 argument_list|)
 throw|;
 block|}
+comment|/**    * Get all of the xattr names for a file or directory.    * Only the xattr names for which the logged-in user has permissions to view    * are returned.    *<p/>    * A regular user can only get xattr names for the "user" namespace.    * The super user can only get xattr names for the "user" and "trusted"    * namespaces.    * The xattr names in the "security" and "system" namespaces are only    * used/exposed internally by/to the FS impl.    *<p/>    * @see<a href="http://en.wikipedia.org/wiki/Extended_file_attributes">    * http://en.wikipedia.org/wiki/Extended_file_attributes</a>    *    * @param path Path to get extended attributes    * @return Map<String, byte[]> describing the XAttrs of the file or directory    * @throws IOException    */
+DECL|method|listXAttrs (Path path)
+specifier|public
+name|List
+argument_list|<
+name|String
+argument_list|>
+name|listXAttrs
+parameter_list|(
+name|Path
+name|path
+parameter_list|)
+throws|throws
+name|IOException
+block|{
+throw|throw
+operator|new
+name|UnsupportedOperationException
+argument_list|(
+name|getClass
+argument_list|()
+operator|.
+name|getSimpleName
+argument_list|()
+operator|+
+literal|" doesn't support listXAttrs"
+argument_list|)
+throw|;
+block|}
 comment|/**    * Remove an xattr of a file or directory.    * The name must be prefixed with user/trusted/security/system and    * followed by ".". For example, "user.attr".    *<p/>    * A regular user can only remove an xattr for the "user" namespace.    * The super user can remove an xattr of either the "user" or "trusted" namespaces.    * The xattrs of the "security" and "system" namespaces are only used/exposed     * internally by/to the FS impl.    *<p/>    * The access permissions of an xattr in the "user" namespace are    * defined by the file and directory permission bits.    * An xattr can only be set when the logged-in user has the correct permissions.    * If the xattr exists, it will be replaced.    *<p/>    * @see<a href="http://en.wikipedia.org/wiki/Extended_file_attributes">    * http://en.wikipedia.org/wiki/Extended_file_attributes</a>    *    * @param path Path to remove extended attribute    * @param name xattr name    * @throws IOException    */
 DECL|method|removeXAttr (Path path, String name)
 specifier|public

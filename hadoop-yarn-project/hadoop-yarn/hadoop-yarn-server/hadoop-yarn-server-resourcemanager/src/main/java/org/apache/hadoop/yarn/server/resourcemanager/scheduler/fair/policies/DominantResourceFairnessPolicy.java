@@ -366,6 +366,32 @@ return|;
 block|}
 annotation|@
 name|Override
+DECL|method|checkIfAMResourceUsageOverLimit (Resource usage, Resource maxAMResource)
+specifier|public
+name|boolean
+name|checkIfAMResourceUsageOverLimit
+parameter_list|(
+name|Resource
+name|usage
+parameter_list|,
+name|Resource
+name|maxAMResource
+parameter_list|)
+block|{
+return|return
+operator|!
+name|Resources
+operator|.
+name|fitsIn
+argument_list|(
+name|usage
+argument_list|,
+name|maxAMResource
+argument_list|)
+return|;
+block|}
+annotation|@
+name|Override
 DECL|method|initialize (Resource clusterCapacity)
 specifier|public
 name|void

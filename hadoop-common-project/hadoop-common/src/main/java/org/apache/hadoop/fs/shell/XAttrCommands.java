@@ -298,13 +298,13 @@ literal|"-n name: Dump the named extended attribute value.\n"
 operator|+
 literal|"-d: Dump all extended attribute values associated with pathname.\n"
 operator|+
-literal|"-e<encoding>: Encode values after retrieving them.\n"
+literal|"-e<encoding>: Encode values after retrieving them."
 operator|+
-literal|"Valid encodings are \"text\", \"hex\", and \"base64\".\n"
+literal|"Valid encodings are \"text\", \"hex\", and \"base64\". "
 operator|+
-literal|"Values encoded as text strings are enclosed in double quotes (\"),\n"
+literal|"Values encoded as text strings are enclosed in double quotes (\"),"
 operator|+
-literal|" and values encoded as hexadecimal and base64 are prefixed with\n"
+literal|" and values encoded as hexadecimal and base64 are prefixed with "
 operator|+
 literal|"0x and 0s, respectively.\n"
 operator|+
@@ -748,15 +748,15 @@ literal|"Sets an extended attribute name and value for a file or directory.\n"
 operator|+
 literal|"-n name: The extended attribute name.\n"
 operator|+
-literal|"-v value: The extended attribute value. There are three different\n"
+literal|"-v value: The extended attribute value. There are three different "
 operator|+
-literal|"encoding methods for the value. If the argument is enclosed in double\n"
+literal|"encoding methods for the value. If the argument is enclosed in double "
 operator|+
-literal|"quotes, then the value is the string inside the quotes. If the\n"
+literal|"quotes, then the value is the string inside the quotes. If the "
 operator|+
-literal|"argument is prefixed with 0x or 0X, then it is taken as a hexadecimal\n"
+literal|"argument is prefixed with 0x or 0X, then it is taken as a hexadecimal "
 operator|+
-literal|"number. If the argument begins with 0s or 0S, then it is taken as a\n"
+literal|"number. If the argument begins with 0s or 0S, then it is taken as a "
 operator|+
 literal|"base64 encoding.\n"
 operator|+

@@ -3136,7 +3136,7 @@ literal|"127.0.0.1"
 block|,
 literal|"localhost"
 block|,
-literal|"3w.org"
+literal|"1.kanyezone.appspot.com"
 block|,
 literal|"UnknownHost123"
 block|}

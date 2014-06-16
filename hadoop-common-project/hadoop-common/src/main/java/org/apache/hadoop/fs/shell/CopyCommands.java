@@ -74,6 +74,16 @@ name|java
 operator|.
 name|util
 operator|.
+name|Iterator
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
 name|LinkedList
 import|;
 end_import
@@ -325,13 +335,13 @@ specifier|final
 name|String
 name|DESCRIPTION
 init|=
-literal|"Get all the files in the directories that\n"
+literal|"Get all the files in the directories that "
 operator|+
-literal|"match the source file pattern and merge and sort them to only\n"
+literal|"match the source file pattern and merge and sort them to only "
 operator|+
 literal|"one file on local fs.<src> is kept.\n"
 operator|+
-literal|"  -nl   Add a newline character at the end of each file."
+literal|"-nl: Add a newline character at the end of each file."
 decl_stmt|;
 DECL|field|dst
 specifier|protected
@@ -712,7 +722,7 @@ specifier|final
 name|String
 name|USAGE
 init|=
-literal|"[-f] [-p]<src> ...<dst>"
+literal|"[-f] [-p | -p[topx]]<src> ...<dst>"
 decl_stmt|;
 DECL|field|DESCRIPTION
 specifier|public
@@ -721,13 +731,17 @@ specifier|final
 name|String
 name|DESCRIPTION
 init|=
-literal|"Copy files that match the file pattern<src> to a\n"
+literal|"Copy files that match the file pattern<src> to a "
 operator|+
-literal|"destination.  When copying multiple files, the destination\n"
+literal|"destination.  When copying multiple files, the destination "
 operator|+
-literal|"must be a directory. Passing -p preserves access and\n"
+literal|"must be a directory. Passing -p preserves status "
 operator|+
-literal|"modification times, ownership and the mode. Passing -f\n"
+literal|"[topx] (timestamps, ownership, permission, XAttr). "
+operator|+
+literal|"If -p is specified with no<arg>, then preserves "
+operator|+
+literal|"timestamps, ownership, permission. Passing -f "
 operator|+
 literal|"overwrites the destination if it already exists.\n"
 decl_stmt|;
@@ -747,6 +761,11 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
+name|popPreserveOption
+argument_list|(
+name|args
+argument_list|)
+expr_stmt|;
 name|CommandFormat
 name|cf
 init|=
@@ -760,8 +779,6 @@ operator|.
 name|MAX_VALUE
 argument_list|,
 literal|"f"
-argument_list|,
-literal|"p"
 argument_list|)
 decl_stmt|;
 name|cf
@@ -781,16 +798,6 @@ literal|"f"
 argument_list|)
 argument_list|)
 expr_stmt|;
-name|setPreserve
-argument_list|(
-name|cf
-operator|.
-name|getOpt
-argument_list|(
-literal|"p"
-argument_list|)
-argument_list|)
-expr_stmt|;
 comment|// should have a -r option
 name|setRecursive
 argument_list|(
@@ -802,6 +809,142 @@ argument_list|(
 name|args
 argument_list|)
 expr_stmt|;
+block|}
+DECL|method|popPreserveOption (List<String> args)
+specifier|private
+name|void
+name|popPreserveOption
+parameter_list|(
+name|List
+argument_list|<
+name|String
+argument_list|>
+name|args
+parameter_list|)
+block|{
+for|for
+control|(
+name|Iterator
+argument_list|<
+name|String
+argument_list|>
+name|iter
+init|=
+name|args
+operator|.
+name|iterator
+argument_list|()
+init|;
+name|iter
+operator|.
+name|hasNext
+argument_list|()
+condition|;
+control|)
+block|{
+name|String
+name|cur
+init|=
+name|iter
+operator|.
+name|next
+argument_list|()
+decl_stmt|;
+if|if
+condition|(
+name|cur
+operator|.
+name|equals
+argument_list|(
+literal|"--"
+argument_list|)
+condition|)
+block|{
+comment|// stop parsing arguments when you see --
+break|break;
+block|}
+elseif|else
+if|if
+condition|(
+name|cur
+operator|.
+name|startsWith
+argument_list|(
+literal|"-p"
+argument_list|)
+condition|)
+block|{
+name|iter
+operator|.
+name|remove
+argument_list|()
+expr_stmt|;
+if|if
+condition|(
+name|cur
+operator|.
+name|length
+argument_list|()
+operator|==
+literal|2
+condition|)
+block|{
+name|setPreserve
+argument_list|(
+literal|true
+argument_list|)
+expr_stmt|;
+block|}
+else|else
+block|{
+name|String
+name|attributes
+init|=
+name|cur
+operator|.
+name|substring
+argument_list|(
+literal|2
+argument_list|)
+decl_stmt|;
+for|for
+control|(
+name|int
+name|index
+init|=
+literal|0
+init|;
+name|index
+operator|<
+name|attributes
+operator|.
+name|length
+argument_list|()
+condition|;
+name|index
+operator|++
+control|)
+block|{
+name|preserve
+argument_list|(
+name|FileAttribute
+operator|.
+name|getAttribute
+argument_list|(
+name|attributes
+operator|.
+name|charAt
+argument_list|(
+name|index
+argument_list|)
+argument_list|)
+argument_list|)
+expr_stmt|;
+block|}
+block|}
+return|return;
+block|}
+block|}
 block|}
 block|}
 comment|/**     * Copy local files to a remote filesystem    */
@@ -838,13 +981,13 @@ specifier|final
 name|String
 name|DESCRIPTION
 init|=
-literal|"Copy files that match the file pattern<src>\n"
+literal|"Copy files that match the file pattern<src> "
 operator|+
-literal|"to the local name.<src> is kept.  When copying multiple,\n"
+literal|"to the local name.<src> is kept.  When copying multiple "
 operator|+
-literal|"files, the destination must be a directory. Passing\n"
+literal|"files, the destination must be a directory. Passing "
 operator|+
-literal|"-p preserves access and modification times,\n"
+literal|"-p preserves access and modification times, "
 operator|+
 literal|"ownership and the mode.\n"
 decl_stmt|;
@@ -967,15 +1110,15 @@ specifier|final
 name|String
 name|DESCRIPTION
 init|=
-literal|"Copy files from the local file system\n"
+literal|"Copy files from the local file system "
 operator|+
-literal|"into fs. Copying fails if the file already\n"
+literal|"into fs. Copying fails if the file already "
 operator|+
-literal|"exists, unless the -f flag is given. Passing\n"
+literal|"exists, unless the -f flag is given. Passing "
 operator|+
-literal|"-p preserves access and modification times,\n"
+literal|"-p preserves access and modification times, "
 operator|+
-literal|"ownership and the mode. Passing -f overwrites\n"
+literal|"ownership and the mode. Passing -f overwrites "
 operator|+
 literal|"the destination if it already exists.\n"
 decl_stmt|;
@@ -1328,11 +1471,11 @@ specifier|final
 name|String
 name|DESCRIPTION
 init|=
-literal|"Appends the contents of all the given local files to the\n"
+literal|"Appends the contents of all the given local files to the "
 operator|+
-literal|"given dst file. The dst file will be created if it does\n"
+literal|"given dst file. The dst file will be created if it does "
 operator|+
-literal|"not exist. If<localSrc> is -, then the input is read\n"
+literal|"not exist. If<localSrc> is -, then the input is read "
 operator|+
 literal|"from stdin."
 decl_stmt|;

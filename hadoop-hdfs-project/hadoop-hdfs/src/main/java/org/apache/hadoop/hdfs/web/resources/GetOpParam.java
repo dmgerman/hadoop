@@ -151,8 +151,8 @@ operator|.
 name|HTTP_OK
 argument_list|)
 block|,
-DECL|enumConstant|GETXATTR
-name|GETXATTR
+DECL|enumConstant|GETXATTRS
+name|GETXATTRS
 argument_list|(
 literal|false
 argument_list|,
@@ -161,8 +161,8 @@ operator|.
 name|HTTP_OK
 argument_list|)
 block|,
-DECL|enumConstant|GETXATTRS
-name|GETXATTRS
+DECL|enumConstant|LISTXATTRS
+name|LISTXATTRS
 argument_list|(
 literal|false
 argument_list|,

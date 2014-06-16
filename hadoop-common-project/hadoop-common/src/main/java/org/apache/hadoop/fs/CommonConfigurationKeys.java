@@ -430,6 +430,15 @@ specifier|public
 specifier|static
 specifier|final
 name|String
+DECL|field|HADOOP_SECURITY_SERVICE_AUTHORIZATION_GENERIC_REFRESH
+name|HADOOP_SECURITY_SERVICE_AUTHORIZATION_GENERIC_REFRESH
+init|=
+literal|"security.refresh.generic.protocol.acl"
+decl_stmt|;
+specifier|public
+specifier|static
+specifier|final
+name|String
 DECL|field|SECURITY_HA_SERVICE_PROTOCOL_ACL
 name|SECURITY_HA_SERVICE_PROTOCOL_ACL
 init|=

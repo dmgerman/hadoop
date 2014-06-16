@@ -42,6 +42,16 @@ name|java
 operator|.
 name|util
 operator|.
+name|ArrayList
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
 name|Arrays
 import|;
 end_import
@@ -586,6 +596,12 @@ name|targetNodeToActivate
 parameter_list|)
 block|{
 return|return
+operator|new
+name|ArrayList
+argument_list|<
+name|String
+argument_list|>
+argument_list|(
 name|Arrays
 operator|.
 name|asList
@@ -596,6 +612,7 @@ index|[]
 block|{
 name|targetNodeToActivate
 block|}
+argument_list|)
 argument_list|)
 return|;
 block|}

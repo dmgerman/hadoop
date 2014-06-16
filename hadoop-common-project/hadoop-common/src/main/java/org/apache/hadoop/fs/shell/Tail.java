@@ -186,7 +186,7 @@ name|DESCRIPTION
 init|=
 literal|"Show the last 1KB of the file.\n"
 operator|+
-literal|"\t\tThe -f option shows appended data as the file grows.\n"
+literal|"-f: Shows appended data as the file grows.\n"
 decl_stmt|;
 DECL|field|startingOffset
 specifier|private

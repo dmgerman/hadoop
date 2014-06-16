@@ -134,6 +134,46 @@ name|hadoop
 operator|.
 name|yarn
 operator|.
+name|proto
+operator|.
+name|YarnServerResourceManagerServiceProtos
+operator|.
+name|ApplicationStateDataProto
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|server
+operator|.
+name|resourcemanager
+operator|.
+name|recovery
+operator|.
+name|RMStateStore
+operator|.
+name|ApplicationState
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
 name|server
 operator|.
 name|resourcemanager
@@ -144,20 +184,187 @@ name|RMAppState
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|util
+operator|.
+name|Records
+import|;
+end_import
+
 begin_comment
 comment|/**  * Contains all the state data that needs to be stored persistently   * for an Application  */
 end_comment
 
-begin_interface
+begin_class
 annotation|@
 name|Public
 annotation|@
 name|Unstable
-DECL|interface|ApplicationStateData
+DECL|class|ApplicationStateData
 specifier|public
-interface|interface
+specifier|abstract
+class|class
 name|ApplicationStateData
 block|{
+DECL|method|newInstance (long submitTime, long startTime, String user, ApplicationSubmissionContext submissionContext, RMAppState state, String diagnostics, long finishTime)
+specifier|public
+specifier|static
+name|ApplicationStateData
+name|newInstance
+parameter_list|(
+name|long
+name|submitTime
+parameter_list|,
+name|long
+name|startTime
+parameter_list|,
+name|String
+name|user
+parameter_list|,
+name|ApplicationSubmissionContext
+name|submissionContext
+parameter_list|,
+name|RMAppState
+name|state
+parameter_list|,
+name|String
+name|diagnostics
+parameter_list|,
+name|long
+name|finishTime
+parameter_list|)
+block|{
+name|ApplicationStateData
+name|appState
+init|=
+name|Records
+operator|.
+name|newRecord
+argument_list|(
+name|ApplicationStateData
+operator|.
+name|class
+argument_list|)
+decl_stmt|;
+name|appState
+operator|.
+name|setSubmitTime
+argument_list|(
+name|submitTime
+argument_list|)
+expr_stmt|;
+name|appState
+operator|.
+name|setStartTime
+argument_list|(
+name|startTime
+argument_list|)
+expr_stmt|;
+name|appState
+operator|.
+name|setUser
+argument_list|(
+name|user
+argument_list|)
+expr_stmt|;
+name|appState
+operator|.
+name|setApplicationSubmissionContext
+argument_list|(
+name|submissionContext
+argument_list|)
+expr_stmt|;
+name|appState
+operator|.
+name|setState
+argument_list|(
+name|state
+argument_list|)
+expr_stmt|;
+name|appState
+operator|.
+name|setDiagnostics
+argument_list|(
+name|diagnostics
+argument_list|)
+expr_stmt|;
+name|appState
+operator|.
+name|setFinishTime
+argument_list|(
+name|finishTime
+argument_list|)
+expr_stmt|;
+return|return
+name|appState
+return|;
+block|}
+DECL|method|newInstance ( ApplicationState appState)
+specifier|public
+specifier|static
+name|ApplicationStateData
+name|newInstance
+parameter_list|(
+name|ApplicationState
+name|appState
+parameter_list|)
+block|{
+return|return
+name|newInstance
+argument_list|(
+name|appState
+operator|.
+name|getSubmitTime
+argument_list|()
+argument_list|,
+name|appState
+operator|.
+name|getStartTime
+argument_list|()
+argument_list|,
+name|appState
+operator|.
+name|getUser
+argument_list|()
+argument_list|,
+name|appState
+operator|.
+name|getApplicationSubmissionContext
+argument_list|()
+argument_list|,
+name|appState
+operator|.
+name|getState
+argument_list|()
+argument_list|,
+name|appState
+operator|.
+name|getDiagnostics
+argument_list|()
+argument_list|,
+name|appState
+operator|.
+name|getFinishTime
+argument_list|()
+argument_list|)
+return|;
+block|}
+DECL|method|getProto ()
+specifier|public
+specifier|abstract
+name|ApplicationStateDataProto
+name|getProto
+parameter_list|()
+function_decl|;
 comment|/**    * The time at which the application was received by the Resource Manager    * @return submitTime    */
 annotation|@
 name|Public
@@ -165,6 +372,7 @@ annotation|@
 name|Unstable
 DECL|method|getSubmitTime ()
 specifier|public
+specifier|abstract
 name|long
 name|getSubmitTime
 parameter_list|()
@@ -175,6 +383,7 @@ annotation|@
 name|Unstable
 DECL|method|setSubmitTime (long submitTime)
 specifier|public
+specifier|abstract
 name|void
 name|setSubmitTime
 parameter_list|(
@@ -215,6 +424,7 @@ annotation|@
 name|Unstable
 DECL|method|setUser (String user)
 specifier|public
+specifier|abstract
 name|void
 name|setUser
 parameter_list|(
@@ -228,6 +438,7 @@ annotation|@
 name|Unstable
 DECL|method|getUser ()
 specifier|public
+specifier|abstract
 name|String
 name|getUser
 parameter_list|()
@@ -239,6 +450,7 @@ annotation|@
 name|Unstable
 DECL|method|getApplicationSubmissionContext ()
 specifier|public
+specifier|abstract
 name|ApplicationSubmissionContext
 name|getApplicationSubmissionContext
 parameter_list|()
@@ -249,6 +461,7 @@ annotation|@
 name|Unstable
 DECL|method|setApplicationSubmissionContext ( ApplicationSubmissionContext context)
 specifier|public
+specifier|abstract
 name|void
 name|setApplicationSubmissionContext
 parameter_list|(
@@ -259,12 +472,14 @@ function_decl|;
 comment|/**    * Get the final state of the application.    * @return the final state of the application.    */
 DECL|method|getState ()
 specifier|public
+specifier|abstract
 name|RMAppState
 name|getState
 parameter_list|()
 function_decl|;
 DECL|method|setState (RMAppState state)
 specifier|public
+specifier|abstract
 name|void
 name|setState
 parameter_list|(
@@ -275,12 +490,14 @@ function_decl|;
 comment|/**    * Get the diagnostics information for the application master.    * @return the diagnostics information for the application master.    */
 DECL|method|getDiagnostics ()
 specifier|public
+specifier|abstract
 name|String
 name|getDiagnostics
 parameter_list|()
 function_decl|;
 DECL|method|setDiagnostics (String diagnostics)
 specifier|public
+specifier|abstract
 name|void
 name|setDiagnostics
 parameter_list|(
@@ -291,12 +508,14 @@ function_decl|;
 comment|/**    * The finish time of the application.    * @return the finish time of the application.,    */
 DECL|method|getFinishTime ()
 specifier|public
+specifier|abstract
 name|long
 name|getFinishTime
 parameter_list|()
 function_decl|;
 DECL|method|setFinishTime (long finishTime)
 specifier|public
+specifier|abstract
 name|void
 name|setFinishTime
 parameter_list|(
@@ -305,7 +524,7 @@ name|finishTime
 parameter_list|)
 function_decl|;
 block|}
-end_interface
+end_class
 
 end_unit
 

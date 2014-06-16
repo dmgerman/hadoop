@@ -46,24 +46,6 @@ name|api
 operator|.
 name|records
 operator|.
-name|ContainerStatus
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|yarn
-operator|.
-name|api
-operator|.
-name|records
-operator|.
 name|NodeId
 import|;
 end_import
@@ -109,7 +91,7 @@ specifier|abstract
 class|class
 name|RegisterNodeManagerRequest
 block|{
-DECL|method|newInstance (NodeId nodeId, int httpPort, Resource resource, String nodeManagerVersionId, List<ContainerStatus> containerStatuses)
+DECL|method|newInstance (NodeId nodeId, int httpPort, Resource resource, String nodeManagerVersionId, List<NMContainerStatus> containerStatuses)
 specifier|public
 specifier|static
 name|RegisterNodeManagerRequest
@@ -129,7 +111,7 @@ name|nodeManagerVersionId
 parameter_list|,
 name|List
 argument_list|<
-name|ContainerStatus
+name|NMContainerStatus
 argument_list|>
 name|containerStatuses
 parameter_list|)
@@ -213,14 +195,14 @@ name|String
 name|getNMVersion
 parameter_list|()
 function_decl|;
-DECL|method|getContainerStatuses ()
+DECL|method|getNMContainerStatuses ()
 specifier|public
 specifier|abstract
 name|List
 argument_list|<
-name|ContainerStatus
+name|NMContainerStatus
 argument_list|>
-name|getContainerStatuses
+name|getNMContainerStatuses
 parameter_list|()
 function_decl|;
 DECL|method|setNodeId (NodeId nodeId)
@@ -263,7 +245,7 @@ name|String
 name|version
 parameter_list|)
 function_decl|;
-DECL|method|setContainerStatuses (List<ContainerStatus> containerStatuses)
+DECL|method|setContainerStatuses ( List<NMContainerStatus> containerStatuses)
 specifier|public
 specifier|abstract
 name|void
@@ -271,7 +253,7 @@ name|setContainerStatuses
 parameter_list|(
 name|List
 argument_list|<
-name|ContainerStatus
+name|NMContainerStatus
 argument_list|>
 name|containerStatuses
 parameter_list|)

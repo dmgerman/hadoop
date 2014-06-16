@@ -253,25 +253,25 @@ specifier|final
 name|String
 name|DESCRIPTION
 init|=
-literal|"List the contents that match the specified file pattern. If\n"
+literal|"List the contents that match the specified file pattern. If "
 operator|+
-literal|"path is not specified, the contents of /user/<currentUser>\n"
+literal|"path is not specified, the contents of /user/<currentUser> "
 operator|+
-literal|"will be listed. Directory entries are of the form \n"
+literal|"will be listed. Directory entries are of the form:\n"
 operator|+
-literal|"\tpermissions - userid groupid size_of_directory(in bytes) modification_date(yyyy-MM-dd HH:mm) directoryName \n"
+literal|"\tpermissions - userId groupId sizeOfDirectory(in bytes) modificationDate(yyyy-MM-dd HH:mm) directoryName\n\n"
 operator|+
-literal|"and file entries are of the form \n"
+literal|"and file entries are of the form:\n"
 operator|+
-literal|"\tpermissions number_of_replicas userid groupid size_of_file(in bytes) modification_date(yyyy-MM-dd HH:mm) fileName \n"
+literal|"\tpermissions numberOfReplicas userId groupId sizeOfFile(in bytes) modificationDate(yyyy-MM-dd HH:mm) fileName\n"
 operator|+
-literal|"  -d  Directories are listed as plain files.\n"
+literal|"-d:  Directories are listed as plain files.\n"
 operator|+
-literal|"  -h  Formats the sizes of files in a human-readable fashion\n"
+literal|"-h:  Formats the sizes of files in a human-readable fashion "
 operator|+
-literal|"      rather than a number of bytes.\n"
+literal|"rather than a number of bytes.\n"
 operator|+
-literal|"  -R  Recursively list the contents of directories."
+literal|"-R:  Recursively list the contents of directories."
 decl_stmt|;
 DECL|field|dateFormat
 specifier|protected

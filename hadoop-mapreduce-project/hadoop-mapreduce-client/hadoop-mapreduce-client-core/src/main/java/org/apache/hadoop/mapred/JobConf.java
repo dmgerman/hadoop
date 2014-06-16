@@ -2192,6 +2192,8 @@ name|WritableComparable
 operator|.
 name|class
 argument_list|)
+argument_list|,
+name|this
 argument_list|)
 return|;
 block|}

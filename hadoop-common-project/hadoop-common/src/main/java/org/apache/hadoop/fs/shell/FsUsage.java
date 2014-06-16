@@ -280,17 +280,17 @@ specifier|final
 name|String
 name|DESCRIPTION
 init|=
-literal|"Shows the capacity, free and used space of the filesystem.\n"
+literal|"Shows the capacity, free and used space of the filesystem. "
 operator|+
-literal|"If the filesystem has multiple partitions, and no path to a\n"
+literal|"If the filesystem has multiple partitions, and no path to a "
 operator|+
-literal|"particular partition is specified, then the status of the root\n"
+literal|"particular partition is specified, then the status of the root "
 operator|+
 literal|"partitions will be shown.\n"
 operator|+
-literal|"  -h   Formats the sizes of files in a human-readable fashion\n"
+literal|"-h: Formats the sizes of files in a human-readable fashion "
 operator|+
-literal|"       rather than a number of bytes.\n\n"
+literal|"rather than a number of bytes."
 decl_stmt|;
 annotation|@
 name|Override
@@ -557,21 +557,21 @@ specifier|final
 name|String
 name|DESCRIPTION
 init|=
-literal|"Show the amount of space, in bytes, used by the files that\n"
+literal|"Show the amount of space, in bytes, used by the files that "
 operator|+
 literal|"match the specified file pattern. The following flags are optional:\n"
 operator|+
-literal|"  -s   Rather than showing the size of each individual file that\n"
+literal|"-s: Rather than showing the size of each individual file that"
 operator|+
-literal|"       matches the pattern, shows the total (summary) size.\n"
+literal|" matches the pattern, shows the total (summary) size.\n"
 operator|+
-literal|"  -h   Formats the sizes of files in a human-readable fashion\n"
+literal|"-h: Formats the sizes of files in a human-readable fashion"
 operator|+
-literal|"       rather than a number of bytes.\n\n"
+literal|" rather than a number of bytes.\n\n"
 operator|+
-literal|"Note that, even without the -s option, this only shows size summaries\n"
+literal|"Note that, even without the -s option, this only shows size summaries "
 operator|+
-literal|"one level deep into a directory.\n"
+literal|"one level deep into a directory.\n\n"
 operator|+
 literal|"The output is in the form \n"
 operator|+

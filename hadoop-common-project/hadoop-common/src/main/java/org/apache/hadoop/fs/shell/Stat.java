@@ -176,9 +176,9 @@ specifier|final
 name|String
 name|DESCRIPTION
 init|=
-literal|"Print statistics about the file/directory at<path>\n"
+literal|"Print statistics about the file/directory at<path> "
 operator|+
-literal|"in the specified format. Format accepts filesize in blocks (%b), group name of owner(%g),\n"
+literal|"in the specified format. Format accepts filesize in blocks (%b), group name of owner(%g), "
 operator|+
 literal|"filename (%n), block size (%o), replication (%r), user name of owner(%u), modification date (%y, %Y)\n"
 decl_stmt|;

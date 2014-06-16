@@ -1089,6 +1089,40 @@ argument_list|,
 literal|"/sub1/.snapshot/sn.rename/sub1sub2"
 argument_list|)
 expr_stmt|;
+comment|//try renaming from a non-existing snapshot
+name|FsShellRun
+argument_list|(
+literal|"-renameSnapshot /sub1 sn.nonexist sn.rename"
+argument_list|,
+literal|1
+argument_list|,
+literal|"renameSnapshot: The snapshot sn.nonexist does not exist for directory /sub1"
+argument_list|)
+expr_stmt|;
+comment|//try renaming to existing snapshots
+name|FsShellRun
+argument_list|(
+literal|"-createSnapshot /sub1 sn.new"
+argument_list|)
+expr_stmt|;
+name|FsShellRun
+argument_list|(
+literal|"-renameSnapshot /sub1 sn.new sn.rename"
+argument_list|,
+literal|1
+argument_list|,
+literal|"renameSnapshot: The snapshot sn.rename already exists for directory /sub1"
+argument_list|)
+expr_stmt|;
+name|FsShellRun
+argument_list|(
+literal|"-renameSnapshot /sub1 sn.rename sn.new"
+argument_list|,
+literal|1
+argument_list|,
+literal|"renameSnapshot: The snapshot sn.new already exists for directory /sub1"
+argument_list|)
+expr_stmt|;
 block|}
 annotation|@
 name|Test

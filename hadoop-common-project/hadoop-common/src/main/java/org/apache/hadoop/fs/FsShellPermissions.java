@@ -320,29 +320,29 @@ specifier|final
 name|String
 name|DESCRIPTION
 init|=
-literal|"Changes permissions of a file.\n"
+literal|"Changes permissions of a file. "
 operator|+
-literal|"\tThis works similar to shell's chmod with a few exceptions.\n\n"
+literal|"This works similar to the shell's chmod command with a few exceptions.\n"
 operator|+
-literal|"-R\tmodifies the files recursively. This is the only option\n"
+literal|"-R: modifies the files recursively. This is the only option"
 operator|+
-literal|"\tcurrently supported.\n\n"
+literal|" currently supported.\n"
 operator|+
-literal|"MODE\tMode is same as mode used for chmod shell command.\n"
+literal|"<MODE>: Mode is the same as mode used for the shell's command. "
 operator|+
-literal|"\tOnly letters recognized are 'rwxXt'. E.g. +t,a+r,g-w,+rwx,o=r\n\n"
+literal|"The only letters recognized are 'rwxXt', e.g. +t,a+r,g-w,+rwx,o=r.\n"
 operator|+
-literal|"OCTALMODE Mode specifed in 3 or 4 digits. If 4 digits, the first may\n"
+literal|"<OCTALMODE>: Mode specifed in 3 or 4 digits. If 4 digits, the first "
 operator|+
-literal|"be 1 or 0 to turn the sticky bit on or off, respectively.  Unlike "
+literal|"may be 1 or 0 to turn the sticky bit on or off, respectively.  Unlike "
 operator|+
-literal|"shell command, it is not possible to specify only part of the mode\n"
+literal|"the shell command, it is not possible to specify only part of the "
 operator|+
-literal|"\tE.g. 754 is same as u=rwx,g=rx,o=r\n\n"
+literal|"mode, e.g. 754 is same as u=rwx,g=rx,o=r.\n\n"
 operator|+
-literal|"\tIf none of 'augo' is specified, 'a' is assumed and unlike\n"
+literal|"If none of 'augo' is specified, 'a' is assumed and unlike the "
 operator|+
-literal|"\tshell command, no umask is applied."
+literal|"shell command, no umask is applied."
 decl_stmt|;
 DECL|field|pp
 specifier|protected
@@ -585,33 +585,33 @@ specifier|final
 name|String
 name|DESCRIPTION
 init|=
-literal|"Changes owner and group of a file.\n"
+literal|"Changes owner and group of a file. "
 operator|+
-literal|"\tThis is similar to shell's chown with a few exceptions.\n\n"
+literal|"This is similar to the shell's chown command with a few exceptions.\n"
 operator|+
-literal|"\t-R\tmodifies the files recursively. This is the only option\n"
+literal|"-R: modifies the files recursively. This is the only option "
 operator|+
-literal|"\tcurrently supported.\n\n"
+literal|"currently supported.\n\n"
 operator|+
-literal|"\tIf only owner or group is specified then only owner or\n"
+literal|"If only the owner or group is specified, then only the owner or "
 operator|+
-literal|"\tgroup is modified.\n\n"
+literal|"group is modified. "
 operator|+
-literal|"\tThe owner and group names may only consist of digits, alphabet,\n"
+literal|"The owner and group names may only consist of digits, alphabet, "
 operator|+
-literal|"\tand any of "
+literal|"and any of "
 operator|+
 name|allowedChars
 operator|+
 literal|". The names are case sensitive.\n\n"
 operator|+
-literal|"\tWARNING: Avoid using '.' to separate user name and group though\n"
+literal|"WARNING: Avoid using '.' to separate user name and group though "
 operator|+
-literal|"\tLinux allows it. If user names have dots in them and you are\n"
+literal|"Linux allows it. If user names have dots in them and you are "
 operator|+
-literal|"\tusing local file system, you might see surprising results since\n"
+literal|"using local file system, you might see surprising results since "
 operator|+
-literal|"\tshell command 'chown' is used for local files."
+literal|"the shell command 'chown' is used for local files."
 decl_stmt|;
 comment|///allows only "allowedChars" above in names for owner and group
 DECL|field|chownPattern

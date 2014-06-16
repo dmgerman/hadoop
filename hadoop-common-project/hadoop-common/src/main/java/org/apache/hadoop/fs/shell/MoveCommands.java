@@ -207,7 +207,7 @@ specifier|final
 name|String
 name|DESCRIPTION
 init|=
-literal|"Same as -put, except that the source is\n"
+literal|"Same as -put, except that the source is "
 operator|+
 literal|"deleted after it's copied."
 decl_stmt|;
@@ -414,9 +414,9 @@ specifier|final
 name|String
 name|DESCRIPTION
 init|=
-literal|"Move files that match the specified file pattern<src>\n"
+literal|"Move files that match the specified file pattern<src> "
 operator|+
-literal|"to a destination<dst>.  When moving multiple files, the\n"
+literal|"to a destination<dst>.  When moving multiple files, the "
 operator|+
 literal|"destination must be a directory."
 decl_stmt|;

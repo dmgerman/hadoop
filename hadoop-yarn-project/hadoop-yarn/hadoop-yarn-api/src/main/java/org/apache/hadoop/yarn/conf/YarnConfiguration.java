@@ -1318,6 +1318,30 @@ name|DEFAULT_RM_RECOVERY_ENABLED
 init|=
 literal|false
 decl_stmt|;
+annotation|@
+name|Private
+DECL|field|RM_WORK_PRESERVING_RECOVERY_ENABLED
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|RM_WORK_PRESERVING_RECOVERY_ENABLED
+init|=
+name|RM_PREFIX
+operator|+
+literal|"work-preserving-recovery.enabled"
+decl_stmt|;
+annotation|@
+name|Private
+DECL|field|DEFAULT_RM_WORK_PRESERVING_RECOVERY_ENABLED
+specifier|public
+specifier|static
+specifier|final
+name|boolean
+name|DEFAULT_RM_WORK_PRESERVING_RECOVERY_ENABLED
+init|=
+literal|false
+decl_stmt|;
 comment|/** Zookeeper interaction configs */
 DECL|field|RM_ZK_PREFIX
 specifier|public
@@ -3464,7 +3488,7 @@ name|DEFAULT_PROXY_ADDRESS
 init|=
 literal|"0.0.0.0:"
 operator|+
-name|DEFAULT_RM_PORT
+name|DEFAULT_PROXY_PORT
 decl_stmt|;
 comment|/**    * YARN Service Level Authorization    */
 specifier|public

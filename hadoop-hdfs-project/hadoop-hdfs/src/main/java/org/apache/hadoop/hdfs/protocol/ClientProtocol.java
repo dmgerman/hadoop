@@ -2199,6 +2199,23 @@ parameter_list|)
 throws|throws
 name|IOException
 function_decl|;
+comment|/**    * List the xattrs names for a file or directory.    * Only the xattr names for which the logged in user has the permissions to    * access will be returned.    *<p/>    * A regular user only can get xattr names from the "user" namespace.    * A super user can get xattr names of the "user" and "trusted" namespace.    * XAttr names of the "security" and "system" namespaces are only used/exposed    * internally by the file system impl.    *<p/>    * @see<a href="http://en.wikipedia.org/wiki/Extended_file_attributes">    * http://en.wikipedia.org/wiki/Extended_file_attributes</a>    * @param src file or directory    * @param xAttrs xAttrs to get    * @return List<XAttr><code>XAttr</code> list    * @throws IOException    */
+annotation|@
+name|Idempotent
+DECL|method|listXAttrs (String src)
+specifier|public
+name|List
+argument_list|<
+name|XAttr
+argument_list|>
+name|listXAttrs
+parameter_list|(
+name|String
+name|src
+parameter_list|)
+throws|throws
+name|IOException
+function_decl|;
 comment|/**    * Remove xattr of a file or directory.Value in xAttr parameter is ignored.    * Name must be prefixed with user/trusted/security/system.    *<p/>    * A regular user only can remove xattr of "user" namespace.    * A super user can remove xattr of "user" and "trusted" namespace.    * XAttr of "security" and "system" namespace is only used/exposed     * internally to the FS impl.    *<p/>    * @see<a href="http://en.wikipedia.org/wiki/Extended_file_attributes">    * http://en.wikipedia.org/wiki/Extended_file_attributes</a>    * @param src file or directory    * @param xAttr<code>XAttr</code> to remove    * @throws IOException    */
 annotation|@
 name|Idempotent

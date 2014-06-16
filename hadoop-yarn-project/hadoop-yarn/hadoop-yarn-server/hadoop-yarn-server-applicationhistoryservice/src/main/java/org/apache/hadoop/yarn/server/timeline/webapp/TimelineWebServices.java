@@ -3123,6 +3123,9 @@ operator|.
 name|SystemFilter
 operator|.
 name|ENTITY_OWNER
+operator|.
+name|toString
+argument_list|()
 argument_list|)
 condition|)
 block|{

@@ -698,10 +698,10 @@ expr_stmt|;
 block|}
 annotation|@
 name|Test
-DECL|method|testPseudoSortByDistance ()
+DECL|method|testSortByDistance ()
 specifier|public
 name|void
-name|testPseudoSortByDistance
+name|testSortByDistance
 parameter_list|()
 throws|throws
 name|Exception
@@ -759,7 +759,7 @@ index|]
 expr_stmt|;
 name|cluster
 operator|.
-name|pseudoSortByDistance
+name|sortByDistance
 argument_list|(
 name|dataNodes
 index|[
@@ -767,6 +767,12 @@ literal|0
 index|]
 argument_list|,
 name|testNodes
+argument_list|,
+name|testNodes
+operator|.
+name|length
+argument_list|,
+literal|0xDEADBEEF
 argument_list|)
 expr_stmt|;
 name|assertTrue
@@ -864,7 +870,7 @@ index|]
 expr_stmt|;
 name|cluster
 operator|.
-name|pseudoSortByDistance
+name|sortByDistance
 argument_list|(
 name|dataNodes
 index|[
@@ -872,6 +878,12 @@ literal|0
 index|]
 argument_list|,
 name|testNodes
+argument_list|,
+name|testNodes
+operator|.
+name|length
+argument_list|,
+literal|0xDEADBEEF
 argument_list|)
 expr_stmt|;
 name|assertTrue
@@ -943,7 +955,7 @@ index|]
 expr_stmt|;
 name|cluster
 operator|.
-name|pseudoSortByDistance
+name|sortByDistance
 argument_list|(
 name|dataNodes
 index|[
@@ -951,6 +963,12 @@ literal|0
 index|]
 argument_list|,
 name|testNodes
+argument_list|,
+name|testNodes
+operator|.
+name|length
+argument_list|,
+literal|0xDEADBEEF
 argument_list|)
 expr_stmt|;
 name|assertTrue
@@ -1022,11 +1040,17 @@ index|]
 expr_stmt|;
 name|cluster
 operator|.
-name|pseudoSortByDistance
+name|sortByDistance
 argument_list|(
 name|computeNode
 argument_list|,
 name|testNodes
+argument_list|,
+name|testNodes
+operator|.
+name|length
+argument_list|,
+literal|0xDEADBEEF
 argument_list|)
 expr_stmt|;
 name|assertTrue

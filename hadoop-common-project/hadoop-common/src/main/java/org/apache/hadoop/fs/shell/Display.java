@@ -597,7 +597,7 @@ specifier|final
 name|String
 name|DESCRIPTION
 init|=
-literal|"Fetch all files that match the file pattern<src> \n"
+literal|"Fetch all files that match the file pattern<src> "
 operator|+
 literal|"and display their content on stdout.\n"
 decl_stmt|;
@@ -1029,15 +1029,15 @@ specifier|final
 name|String
 name|DESCRIPTION
 init|=
-literal|"Dump checksum information for files that match the file\n"
+literal|"Dump checksum information for files that match the file "
 operator|+
-literal|"pattern<src> to stdout. Note that this requires a round-trip\n"
+literal|"pattern<src> to stdout. Note that this requires a round-trip "
 operator|+
-literal|"to a datanode storing each block of the file, and thus is not\n"
+literal|"to a datanode storing each block of the file, and thus is not "
 operator|+
-literal|"efficient to run on a large number of files. The checksum of a\n"
+literal|"efficient to run on a large number of files. The checksum of a "
 operator|+
-literal|"file depends on its content, block size and the checksum\n"
+literal|"file depends on its content, block size and the checksum "
 operator|+
 literal|"algorithm and parameters used for creating the file."
 decl_stmt|;

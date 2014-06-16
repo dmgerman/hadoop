@@ -192,7 +192,7 @@ return|return
 name|report
 return|;
 block|}
-comment|/**    * Get the number of used containers    * @return the number of used containers    */
+comment|/**    * Get the number of used containers.  -1 for invalid/inaccessible reports.    * @return the number of used containers    */
 annotation|@
 name|Public
 annotation|@
@@ -219,7 +219,7 @@ name|int
 name|num_containers
 parameter_list|)
 function_decl|;
-comment|/**    * Get the number of reserved containers    * @return the number of reserved containers    */
+comment|/**    * Get the number of reserved containers.  -1 for invalid/inaccessible reports.    * @return the number of reserved containers    */
 annotation|@
 name|Private
 annotation|@
@@ -246,7 +246,7 @@ name|int
 name|num_reserved_containers
 parameter_list|)
 function_decl|;
-comment|/**    * Get the used<code>Resource</code>    * @return the used<code>Resource</code>    */
+comment|/**    * Get the used<code>Resource</code>.  -1 for invalid/inaccessible reports.    * @return the used<code>Resource</code>    */
 annotation|@
 name|Public
 annotation|@
@@ -272,7 +272,7 @@ name|Resource
 name|resources
 parameter_list|)
 function_decl|;
-comment|/**    * Get the reserved<code>Resource</code>    * @return the reserved<code>Resource</code>    */
+comment|/**    * Get the reserved<code>Resource</code>.  -1 for invalid/inaccessible reports.    * @return the reserved<code>Resource</code>    */
 annotation|@
 name|Public
 annotation|@
@@ -298,7 +298,7 @@ name|Resource
 name|reserved_resources
 parameter_list|)
 function_decl|;
-comment|/**    * Get the needed<code>Resource</code>    * @return the needed<code>Resource</code>    */
+comment|/**    * Get the needed<code>Resource</code>.  -1 for invalid/inaccessible reports.    * @return the needed<code>Resource</code>    */
 annotation|@
 name|Public
 annotation|@

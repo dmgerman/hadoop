@@ -2472,7 +2472,7 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Similar to BlockReport_03() but works with two DNs    * Test writes a file and closes it.    * The second datanode is started in the cluster.    * As soon as the replication process is completed test finds a block from    * the second DN and sets its GS to be< of original one.    * Block report is forced and the check for # of currupted blocks is performed.    * Another block is chosen and its length is set to a lesser than original.    * A check for another corrupted block is performed after yet another    * BlockReport    *    * @throws IOException in case of an error    */
+comment|/**    * Similar to BlockReport_03() but works with two DNs    * Test writes a file and closes it.    * The second datanode is started in the cluster.    * As soon as the replication process is completed test finds a block from    * the second DN and sets its GS to be< of original one.    * this is the markBlockAsCorrupt case 3 so we expect one pending deletion    * Block report is forced and the check for # of currupted blocks is performed.    * Another block is chosen and its length is set to a lesser than original.    * A check for another corrupted block is performed after yet another    * BlockReport    *    * @throws IOException in case of an error    */
 annotation|@
 name|Test
 argument_list|(
@@ -2611,7 +2611,7 @@ argument_list|()
 argument_list|,
 name|is
 argument_list|(
-literal|1L
+literal|0L
 argument_list|)
 argument_list|)
 expr_stmt|;
@@ -2629,7 +2629,7 @@ argument_list|()
 argument_list|,
 name|is
 argument_list|(
-literal|0L
+literal|1L
 argument_list|)
 argument_list|)
 expr_stmt|;
@@ -2659,7 +2659,7 @@ name|dn
 argument_list|,
 name|poolId
 argument_list|,
-literal|true
+literal|false
 argument_list|,
 literal|true
 argument_list|)
@@ -2690,7 +2690,7 @@ argument_list|()
 argument_list|,
 name|is
 argument_list|(
-literal|2L
+literal|1L
 argument_list|)
 argument_list|)
 expr_stmt|;
@@ -2708,7 +2708,7 @@ argument_list|()
 argument_list|,
 name|is
 argument_list|(
-literal|0L
+literal|1L
 argument_list|)
 argument_list|)
 expr_stmt|;

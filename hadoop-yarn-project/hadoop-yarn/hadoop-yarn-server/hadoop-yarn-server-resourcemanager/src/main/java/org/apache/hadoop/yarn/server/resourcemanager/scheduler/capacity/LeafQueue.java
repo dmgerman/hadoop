@@ -662,6 +662,26 @@ name|resourcemanager
 operator|.
 name|scheduler
 operator|.
+name|SchedulerApplicationAttempt
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|server
+operator|.
+name|resourcemanager
+operator|.
+name|scheduler
+operator|.
 name|common
 operator|.
 name|fica
@@ -691,26 +711,6 @@ operator|.
 name|fica
 operator|.
 name|FiCaSchedulerNode
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|yarn
-operator|.
-name|server
-operator|.
-name|resourcemanager
-operator|.
-name|security
-operator|.
-name|RMContainerTokenSecretManager
 import|;
 end_import
 
@@ -803,6 +803,20 @@ operator|.
 name|resource
 operator|.
 name|Resources
+import|;
+end_import
+
+begin_import
+import|import
+name|com
+operator|.
+name|google
+operator|.
+name|common
+operator|.
+name|annotations
+operator|.
+name|VisibleForTesting
 import|;
 end_import
 
@@ -2835,8 +2849,10 @@ name|getNumContainers
 argument_list|()
 return|;
 block|}
+annotation|@
+name|VisibleForTesting
 DECL|method|getUser (String userName)
-specifier|private
+specifier|public
 specifier|synchronized
 name|User
 name|getUser
@@ -6285,11 +6301,6 @@ name|node
 operator|.
 name|allocateContainer
 argument_list|(
-name|application
-operator|.
-name|getApplicationId
-argument_list|()
-argument_list|,
 name|allocatedContainer
 argument_list|)
 expr_stmt|;
@@ -6706,7 +6717,7 @@ expr_stmt|;
 block|}
 block|}
 block|}
-DECL|method|allocateResource (Resource clusterResource, FiCaSchedulerApp application, Resource resource)
+DECL|method|allocateResource (Resource clusterResource, SchedulerApplicationAttempt application, Resource resource)
 specifier|synchronized
 name|void
 name|allocateResource
@@ -6714,7 +6725,7 @@ parameter_list|(
 name|Resource
 name|clusterResource
 parameter_list|,
-name|FiCaSchedulerApp
+name|SchedulerApplicationAttempt
 name|application
 parameter_list|,
 name|Resource
@@ -7074,7 +7085,10 @@ return|return
 name|metrics
 return|;
 block|}
+annotation|@
+name|VisibleForTesting
 DECL|class|User
+specifier|public
 specifier|static
 class|class
 name|User
@@ -7242,7 +7256,7 @@ block|}
 block|}
 annotation|@
 name|Override
-DECL|method|recoverContainer (Resource clusterResource, FiCaSchedulerApp application, Container container)
+DECL|method|recoverContainer (Resource clusterResource, SchedulerApplicationAttempt attempt, RMContainer rmContainer)
 specifier|public
 name|void
 name|recoverContainer
@@ -7250,13 +7264,30 @@ parameter_list|(
 name|Resource
 name|clusterResource
 parameter_list|,
-name|FiCaSchedulerApp
-name|application
+name|SchedulerApplicationAttempt
+name|attempt
 parameter_list|,
-name|Container
-name|container
+name|RMContainer
+name|rmContainer
 parameter_list|)
 block|{
+if|if
+condition|(
+name|rmContainer
+operator|.
+name|getState
+argument_list|()
+operator|.
+name|equals
+argument_list|(
+name|RMContainerState
+operator|.
+name|COMPLETED
+argument_list|)
+condition|)
+block|{
+return|return;
+block|}
 comment|// Careful! Locking order is important!
 synchronized|synchronized
 init|(
@@ -7267,9 +7298,12 @@ name|allocateResource
 argument_list|(
 name|clusterResource
 argument_list|,
-name|application
+name|attempt
 argument_list|,
-name|container
+name|rmContainer
+operator|.
+name|getContainer
+argument_list|()
 operator|.
 name|getResource
 argument_list|()
@@ -7283,9 +7317,9 @@ name|recoverContainer
 argument_list|(
 name|clusterResource
 argument_list|,
-name|application
+name|attempt
 argument_list|,
-name|container
+name|rmContainer
 argument_list|)
 expr_stmt|;
 block|}

@@ -388,6 +388,16 @@ init|=
 operator|-
 literal|3
 decl_stmt|;
+DECL|field|XATTRS_NOT_SUPPORTED
+specifier|public
+specifier|static
+specifier|final
+name|int
+name|XATTRS_NOT_SUPPORTED
+init|=
+operator|-
+literal|4
+decl_stmt|;
 DECL|field|UNKNOWN_ERROR
 specifier|public
 specifier|static

@@ -3462,6 +3462,8 @@ name|debug
 argument_list|(
 name|LOG
 argument_list|,
+literal|"%s"
+argument_list|,
 name|SwiftUtils
 operator|.
 name|fileStatsToString

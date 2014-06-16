@@ -236,16 +236,11 @@ operator|.
 name|class
 argument_list|)
 decl_stmt|;
-DECL|field|RAND
+DECL|field|random
 specifier|private
-specifier|static
 specifier|final
 name|Random
-name|RAND
-init|=
-operator|new
-name|Random
-argument_list|()
+name|random
 decl_stmt|;
 DECL|field|balancedSpaceThreshold
 specifier|private
@@ -261,6 +256,33 @@ name|balancedPreferencePercent
 init|=
 name|DFS_DATANODE_AVAILABLE_SPACE_VOLUME_CHOOSING_POLICY_BALANCED_SPACE_PREFERENCE_FRACTION_DEFAULT
 decl_stmt|;
+DECL|method|AvailableSpaceVolumeChoosingPolicy (Random random)
+name|AvailableSpaceVolumeChoosingPolicy
+parameter_list|(
+name|Random
+name|random
+parameter_list|)
+block|{
+name|this
+operator|.
+name|random
+operator|=
+name|random
+expr_stmt|;
+block|}
+DECL|method|AvailableSpaceVolumeChoosingPolicy ()
+specifier|public
+name|AvailableSpaceVolumeChoosingPolicy
+parameter_list|()
+block|{
+name|this
+argument_list|(
+operator|new
+name|Random
+argument_list|()
+argument_list|)
+expr_stmt|;
+block|}
 annotation|@
 name|Override
 DECL|method|setConf (Configuration conf)
@@ -605,7 +627,7 @@ name|mostAvailableAmongLowVolumes
 operator|<
 name|replicaSize
 operator|||
-name|RAND
+name|random
 operator|.
 name|nextFloat
 argument_list|()

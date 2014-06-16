@@ -121,7 +121,7 @@ parameter_list|)
 throws|throws
 name|IOException
 function_decl|;
-comment|/**    * Returns an estimate of the number of bytes that can be read    * (or skipped over) from this input stream without performing    * network I/O.    */
+comment|/**    * Returns an estimate of the number of bytes that can be read    * (or skipped over) from this input stream without performing    * network I/O.    * This may return more than what is actually present in the block.    */
 DECL|method|available ()
 name|int
 name|available
