@@ -35507,14 +35507,19 @@ name|getFinalizeTime
 argument_list|()
 argument_list|)
 expr_stmt|;
+if|if
+condition|(
+name|haEnabled
+condition|)
+block|{
+comment|// roll the edit log to make sure the standby NameNode can tail
 name|getFSImage
 argument_list|()
 operator|.
-name|saveNamespace
-argument_list|(
-name|this
-argument_list|)
+name|rollEditLog
+argument_list|()
 expr_stmt|;
+block|}
 name|getFSImage
 argument_list|()
 operator|.
@@ -35536,7 +35541,20 @@ name|writeUnlock
 argument_list|()
 expr_stmt|;
 block|}
-comment|// getEditLog().logSync() is not needed since it does saveNamespace
+if|if
+condition|(
+operator|!
+name|haEnabled
+condition|)
+block|{
+comment|// Sync not needed for ha since the edit was rolled after logging.
+name|getEditLog
+argument_list|()
+operator|.
+name|logSync
+argument_list|()
+expr_stmt|;
+block|}
 if|if
 condition|(
 name|auditLog
