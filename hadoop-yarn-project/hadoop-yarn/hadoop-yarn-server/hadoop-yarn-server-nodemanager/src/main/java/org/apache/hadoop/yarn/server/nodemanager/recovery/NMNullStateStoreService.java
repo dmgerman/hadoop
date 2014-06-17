@@ -110,6 +110,24 @@ name|proto
 operator|.
 name|YarnServerNodemanagerRecoveryProtos
 operator|.
+name|DeletionServiceDeleteTaskProto
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|proto
+operator|.
+name|YarnServerNodemanagerRecoveryProtos
+operator|.
 name|LocalizedResourceProto
 import|;
 end_import
@@ -228,6 +246,53 @@ name|appId
 parameter_list|,
 name|Path
 name|localPath
+parameter_list|)
+throws|throws
+name|IOException
+block|{   }
+annotation|@
+name|Override
+DECL|method|loadDeletionServiceState ()
+specifier|public
+name|RecoveredDeletionServiceState
+name|loadDeletionServiceState
+parameter_list|()
+throws|throws
+name|IOException
+block|{
+throw|throw
+operator|new
+name|UnsupportedOperationException
+argument_list|(
+literal|"Recovery not supported by this state store"
+argument_list|)
+throw|;
+block|}
+annotation|@
+name|Override
+DECL|method|storeDeletionTask (int taskId, DeletionServiceDeleteTaskProto taskProto)
+specifier|public
+name|void
+name|storeDeletionTask
+parameter_list|(
+name|int
+name|taskId
+parameter_list|,
+name|DeletionServiceDeleteTaskProto
+name|taskProto
+parameter_list|)
+throws|throws
+name|IOException
+block|{   }
+annotation|@
+name|Override
+DECL|method|removeDeletionTask (int taskId)
+specifier|public
+name|void
+name|removeDeletionTask
+parameter_list|(
+name|int
+name|taskId
 parameter_list|)
 throws|throws
 name|IOException
