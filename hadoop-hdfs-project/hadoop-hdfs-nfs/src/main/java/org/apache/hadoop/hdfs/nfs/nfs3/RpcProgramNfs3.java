@@ -84,6 +84,16 @@ begin_import
 import|import
 name|java
 operator|.
+name|net
+operator|.
+name|SocketAddress
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
 name|nio
 operator|.
 name|ByteBuffer
@@ -2301,7 +2311,7 @@ return|;
 block|}
 annotation|@
 name|Override
-DECL|method|getattr (XDR xdr, SecurityHandler securityHandler, InetAddress client)
+DECL|method|getattr (XDR xdr, RpcInfo info)
 specifier|public
 name|GETATTR3Response
 name|getattr
@@ -2309,11 +2319,8 @@ parameter_list|(
 name|XDR
 name|xdr
 parameter_list|,
-name|SecurityHandler
-name|securityHandler
-parameter_list|,
-name|InetAddress
-name|client
+name|RpcInfo
+name|info
 parameter_list|)
 block|{
 name|GETATTR3Response
@@ -2332,7 +2339,7 @@ condition|(
 operator|!
 name|checkAccessPrivilege
 argument_list|(
-name|client
+name|info
 argument_list|,
 name|AccessPrivilege
 operator|.
@@ -2353,6 +2360,14 @@ return|return
 name|response
 return|;
 block|}
+name|SecurityHandler
+name|securityHandler
+init|=
+name|getSecurityHandler
+argument_list|(
+name|info
+argument_list|)
+decl_stmt|;
 name|DFSClient
 name|dfsClient
 init|=
@@ -2884,7 +2899,7 @@ block|}
 block|}
 annotation|@
 name|Override
-DECL|method|setattr (XDR xdr, SecurityHandler securityHandler, InetAddress client)
+DECL|method|setattr (XDR xdr, RpcInfo info)
 specifier|public
 name|SETATTR3Response
 name|setattr
@@ -2892,11 +2907,8 @@ parameter_list|(
 name|XDR
 name|xdr
 parameter_list|,
-name|SecurityHandler
-name|securityHandler
-parameter_list|,
-name|InetAddress
-name|client
+name|RpcInfo
+name|info
 parameter_list|)
 block|{
 name|SETATTR3Response
@@ -2908,6 +2920,14 @@ argument_list|(
 name|Nfs3Status
 operator|.
 name|NFS3_OK
+argument_list|)
+decl_stmt|;
+name|SecurityHandler
+name|securityHandler
+init|=
+name|getSecurityHandler
+argument_list|(
+name|info
 argument_list|)
 decl_stmt|;
 name|DFSClient
@@ -3184,7 +3204,7 @@ condition|(
 operator|!
 name|checkAccessPrivilege
 argument_list|(
-name|client
+name|info
 argument_list|,
 name|AccessPrivilege
 operator|.
@@ -3359,7 +3379,7 @@ block|}
 block|}
 annotation|@
 name|Override
-DECL|method|lookup (XDR xdr, SecurityHandler securityHandler, InetAddress client)
+DECL|method|lookup (XDR xdr, RpcInfo info)
 specifier|public
 name|LOOKUP3Response
 name|lookup
@@ -3367,11 +3387,8 @@ parameter_list|(
 name|XDR
 name|xdr
 parameter_list|,
-name|SecurityHandler
-name|securityHandler
-parameter_list|,
-name|InetAddress
-name|client
+name|RpcInfo
+name|info
 parameter_list|)
 block|{
 name|LOOKUP3Response
@@ -3390,7 +3407,7 @@ condition|(
 operator|!
 name|checkAccessPrivilege
 argument_list|(
-name|client
+name|info
 argument_list|,
 name|AccessPrivilege
 operator|.
@@ -3411,6 +3428,14 @@ return|return
 name|response
 return|;
 block|}
+name|SecurityHandler
+name|securityHandler
+init|=
+name|getSecurityHandler
+argument_list|(
+name|info
+argument_list|)
+decl_stmt|;
 name|DFSClient
 name|dfsClient
 init|=
@@ -3713,7 +3738,7 @@ block|}
 block|}
 annotation|@
 name|Override
-DECL|method|access (XDR xdr, SecurityHandler securityHandler, InetAddress client)
+DECL|method|access (XDR xdr, RpcInfo info)
 specifier|public
 name|ACCESS3Response
 name|access
@@ -3721,11 +3746,8 @@ parameter_list|(
 name|XDR
 name|xdr
 parameter_list|,
-name|SecurityHandler
-name|securityHandler
-parameter_list|,
-name|InetAddress
-name|client
+name|RpcInfo
+name|info
 parameter_list|)
 block|{
 name|ACCESS3Response
@@ -3744,7 +3766,7 @@ condition|(
 operator|!
 name|checkAccessPrivilege
 argument_list|(
-name|client
+name|info
 argument_list|,
 name|AccessPrivilege
 operator|.
@@ -3765,6 +3787,14 @@ return|return
 name|response
 return|;
 block|}
+name|SecurityHandler
+name|securityHandler
+init|=
+name|getSecurityHandler
+argument_list|(
+name|info
+argument_list|)
+decl_stmt|;
 name|DFSClient
 name|dfsClient
 init|=
@@ -4028,7 +4058,9 @@ argument_list|)
 return|;
 block|}
 block|}
-DECL|method|readlink (XDR xdr, SecurityHandler securityHandler, InetAddress client)
+annotation|@
+name|Override
+DECL|method|readlink (XDR xdr, RpcInfo info)
 specifier|public
 name|READLINK3Response
 name|readlink
@@ -4036,11 +4068,8 @@ parameter_list|(
 name|XDR
 name|xdr
 parameter_list|,
-name|SecurityHandler
-name|securityHandler
-parameter_list|,
-name|InetAddress
-name|client
+name|RpcInfo
+name|info
 parameter_list|)
 block|{
 name|READLINK3Response
@@ -4059,7 +4088,7 @@ condition|(
 operator|!
 name|checkAccessPrivilege
 argument_list|(
-name|client
+name|info
 argument_list|,
 name|AccessPrivilege
 operator|.
@@ -4080,6 +4109,14 @@ return|return
 name|response
 return|;
 block|}
+name|SecurityHandler
+name|securityHandler
+init|=
+name|getSecurityHandler
+argument_list|(
+name|info
+argument_list|)
+decl_stmt|;
 name|DFSClient
 name|dfsClient
 init|=
@@ -4461,8 +4498,48 @@ block|}
 block|}
 annotation|@
 name|Override
-DECL|method|read (XDR xdr, SecurityHandler securityHandler, InetAddress client)
+DECL|method|read (XDR xdr, RpcInfo info)
 specifier|public
+name|READ3Response
+name|read
+parameter_list|(
+name|XDR
+name|xdr
+parameter_list|,
+name|RpcInfo
+name|info
+parameter_list|)
+block|{
+name|SecurityHandler
+name|securityHandler
+init|=
+name|getSecurityHandler
+argument_list|(
+name|info
+argument_list|)
+decl_stmt|;
+name|SocketAddress
+name|remoteAddress
+init|=
+name|info
+operator|.
+name|remoteAddress
+argument_list|()
+decl_stmt|;
+return|return
+name|read
+argument_list|(
+name|xdr
+argument_list|,
+name|securityHandler
+argument_list|,
+name|remoteAddress
+argument_list|)
+return|;
+block|}
+annotation|@
+name|VisibleForTesting
+DECL|method|read (XDR xdr, SecurityHandler securityHandler, SocketAddress remoteAddress)
 name|READ3Response
 name|read
 parameter_list|(
@@ -4472,8 +4549,8 @@ parameter_list|,
 name|SecurityHandler
 name|securityHandler
 parameter_list|,
-name|InetAddress
-name|client
+name|SocketAddress
+name|remoteAddress
 parameter_list|)
 block|{
 name|READ3Response
@@ -4501,7 +4578,7 @@ condition|(
 operator|!
 name|checkAccessPrivilege
 argument_list|(
-name|client
+name|remoteAddress
 argument_list|,
 name|AccessPrivilege
 operator|.
@@ -5164,8 +5241,74 @@ block|}
 block|}
 annotation|@
 name|Override
-DECL|method|write (XDR xdr, Channel channel, int xid, SecurityHandler securityHandler, InetAddress client)
+DECL|method|write (XDR xdr, RpcInfo info)
 specifier|public
+name|WRITE3Response
+name|write
+parameter_list|(
+name|XDR
+name|xdr
+parameter_list|,
+name|RpcInfo
+name|info
+parameter_list|)
+block|{
+name|SecurityHandler
+name|securityHandler
+init|=
+name|getSecurityHandler
+argument_list|(
+name|info
+argument_list|)
+decl_stmt|;
+name|RpcCall
+name|rpcCall
+init|=
+operator|(
+name|RpcCall
+operator|)
+name|info
+operator|.
+name|header
+argument_list|()
+decl_stmt|;
+name|int
+name|xid
+init|=
+name|rpcCall
+operator|.
+name|getXid
+argument_list|()
+decl_stmt|;
+name|SocketAddress
+name|remoteAddress
+init|=
+name|info
+operator|.
+name|remoteAddress
+argument_list|()
+decl_stmt|;
+return|return
+name|write
+argument_list|(
+name|xdr
+argument_list|,
+name|info
+operator|.
+name|channel
+argument_list|()
+argument_list|,
+name|xid
+argument_list|,
+name|securityHandler
+argument_list|,
+name|remoteAddress
+argument_list|)
+return|;
+block|}
+annotation|@
+name|VisibleForTesting
+DECL|method|write (XDR xdr, Channel channel, int xid, SecurityHandler securityHandler, SocketAddress remoteAddress)
 name|WRITE3Response
 name|write
 parameter_list|(
@@ -5181,8 +5324,8 @@ parameter_list|,
 name|SecurityHandler
 name|securityHandler
 parameter_list|,
-name|InetAddress
-name|client
+name|SocketAddress
+name|remoteAddress
 parameter_list|)
 block|{
 name|WRITE3Response
@@ -5432,7 +5575,7 @@ condition|(
 operator|!
 name|checkAccessPrivilege
 argument_list|(
-name|client
+name|remoteAddress
 argument_list|,
 name|AccessPrivilege
 operator|.
@@ -5641,8 +5784,48 @@ return|;
 block|}
 annotation|@
 name|Override
-DECL|method|create (XDR xdr, SecurityHandler securityHandler, InetAddress client)
+DECL|method|create (XDR xdr, RpcInfo info)
 specifier|public
+name|CREATE3Response
+name|create
+parameter_list|(
+name|XDR
+name|xdr
+parameter_list|,
+name|RpcInfo
+name|info
+parameter_list|)
+block|{
+name|SecurityHandler
+name|securityHandler
+init|=
+name|getSecurityHandler
+argument_list|(
+name|info
+argument_list|)
+decl_stmt|;
+name|SocketAddress
+name|remoteAddress
+init|=
+name|info
+operator|.
+name|remoteAddress
+argument_list|()
+decl_stmt|;
+return|return
+name|create
+argument_list|(
+name|xdr
+argument_list|,
+name|securityHandler
+argument_list|,
+name|remoteAddress
+argument_list|)
+return|;
+block|}
+annotation|@
+name|VisibleForTesting
+DECL|method|create (XDR xdr, SecurityHandler securityHandler, SocketAddress remoteAddress)
 name|CREATE3Response
 name|create
 parameter_list|(
@@ -5652,8 +5835,8 @@ parameter_list|,
 name|SecurityHandler
 name|securityHandler
 parameter_list|,
-name|InetAddress
-name|client
+name|SocketAddress
+name|remoteAddress
 parameter_list|)
 block|{
 name|CREATE3Response
@@ -5931,7 +6114,7 @@ condition|(
 operator|!
 name|checkAccessPrivilege
 argument_list|(
-name|client
+name|remoteAddress
 argument_list|,
 name|AccessPrivilege
 operator|.
@@ -6468,7 +6651,7 @@ return|;
 block|}
 annotation|@
 name|Override
-DECL|method|mkdir (XDR xdr, SecurityHandler securityHandler, InetAddress client)
+DECL|method|mkdir (XDR xdr, RpcInfo info)
 specifier|public
 name|MKDIR3Response
 name|mkdir
@@ -6476,11 +6659,8 @@ parameter_list|(
 name|XDR
 name|xdr
 parameter_list|,
-name|SecurityHandler
-name|securityHandler
-parameter_list|,
-name|InetAddress
-name|client
+name|RpcInfo
+name|info
 parameter_list|)
 block|{
 name|MKDIR3Response
@@ -6492,6 +6672,14 @@ argument_list|(
 name|Nfs3Status
 operator|.
 name|NFS3_OK
+argument_list|)
+decl_stmt|;
+name|SecurityHandler
+name|securityHandler
+init|=
+name|getSecurityHandler
+argument_list|(
+name|info
 argument_list|)
 decl_stmt|;
 name|DFSClient
@@ -6702,7 +6890,7 @@ condition|(
 operator|!
 name|checkAccessPrivilege
 argument_list|(
-name|client
+name|info
 argument_list|,
 name|AccessPrivilege
 operator|.
@@ -7080,7 +7268,9 @@ return|;
 block|}
 block|}
 block|}
-DECL|method|mknod (XDR xdr, SecurityHandler securityHandler, InetAddress client)
+annotation|@
+name|Override
+DECL|method|mknod (XDR xdr, RpcInfo info)
 specifier|public
 name|READDIR3Response
 name|mknod
@@ -7088,11 +7278,8 @@ parameter_list|(
 name|XDR
 name|xdr
 parameter_list|,
-name|SecurityHandler
-name|securityHandler
-parameter_list|,
-name|InetAddress
-name|client
+name|RpcInfo
+name|info
 parameter_list|)
 block|{
 return|return
@@ -7107,7 +7294,7 @@ return|;
 block|}
 annotation|@
 name|Override
-DECL|method|remove (XDR xdr, SecurityHandler securityHandler, InetAddress client)
+DECL|method|remove (XDR xdr, RpcInfo info)
 specifier|public
 name|REMOVE3Response
 name|remove
@@ -7115,11 +7302,8 @@ parameter_list|(
 name|XDR
 name|xdr
 parameter_list|,
-name|SecurityHandler
-name|securityHandler
-parameter_list|,
-name|InetAddress
-name|client
+name|RpcInfo
+name|info
 parameter_list|)
 block|{
 name|REMOVE3Response
@@ -7131,6 +7315,14 @@ argument_list|(
 name|Nfs3Status
 operator|.
 name|NFS3_OK
+argument_list|)
+decl_stmt|;
+name|SecurityHandler
+name|securityHandler
+init|=
+name|getSecurityHandler
+argument_list|(
+name|info
 argument_list|)
 decl_stmt|;
 name|DFSClient
@@ -7576,7 +7768,7 @@ block|}
 block|}
 annotation|@
 name|Override
-DECL|method|rmdir (XDR xdr, SecurityHandler securityHandler, InetAddress client)
+DECL|method|rmdir (XDR xdr, RpcInfo info)
 specifier|public
 name|RMDIR3Response
 name|rmdir
@@ -7584,11 +7776,8 @@ parameter_list|(
 name|XDR
 name|xdr
 parameter_list|,
-name|SecurityHandler
-name|securityHandler
-parameter_list|,
-name|InetAddress
-name|client
+name|RpcInfo
+name|info
 parameter_list|)
 block|{
 name|RMDIR3Response
@@ -7600,6 +7789,14 @@ argument_list|(
 name|Nfs3Status
 operator|.
 name|NFS3_OK
+argument_list|)
+decl_stmt|;
+name|SecurityHandler
+name|securityHandler
+init|=
+name|getSecurityHandler
+argument_list|(
+name|info
 argument_list|)
 decl_stmt|;
 name|DFSClient
@@ -7800,7 +7997,7 @@ condition|(
 operator|!
 name|checkAccessPrivilege
 argument_list|(
-name|client
+name|info
 argument_list|,
 name|AccessPrivilege
 operator|.
@@ -8077,7 +8274,7 @@ block|}
 block|}
 annotation|@
 name|Override
-DECL|method|rename (XDR xdr, SecurityHandler securityHandler, InetAddress client)
+DECL|method|rename (XDR xdr, RpcInfo info)
 specifier|public
 name|RENAME3Response
 name|rename
@@ -8085,11 +8282,8 @@ parameter_list|(
 name|XDR
 name|xdr
 parameter_list|,
-name|SecurityHandler
-name|securityHandler
-parameter_list|,
-name|InetAddress
-name|client
+name|RpcInfo
+name|info
 parameter_list|)
 block|{
 name|RENAME3Response
@@ -8101,6 +8295,14 @@ argument_list|(
 name|Nfs3Status
 operator|.
 name|NFS3_OK
+argument_list|)
+decl_stmt|;
+name|SecurityHandler
+name|securityHandler
+init|=
+name|getSecurityHandler
+argument_list|(
+name|info
 argument_list|)
 decl_stmt|;
 name|DFSClient
@@ -8374,7 +8576,7 @@ condition|(
 operator|!
 name|checkAccessPrivilege
 argument_list|(
-name|client
+name|info
 argument_list|,
 name|AccessPrivilege
 operator|.
@@ -8638,7 +8840,7 @@ block|}
 block|}
 annotation|@
 name|Override
-DECL|method|symlink (XDR xdr, SecurityHandler securityHandler, InetAddress client)
+DECL|method|symlink (XDR xdr, RpcInfo info)
 specifier|public
 name|SYMLINK3Response
 name|symlink
@@ -8646,11 +8848,8 @@ parameter_list|(
 name|XDR
 name|xdr
 parameter_list|,
-name|SecurityHandler
-name|securityHandler
-parameter_list|,
-name|InetAddress
-name|client
+name|RpcInfo
+name|info
 parameter_list|)
 block|{
 name|SYMLINK3Response
@@ -8669,7 +8868,7 @@ condition|(
 operator|!
 name|checkAccessPrivilege
 argument_list|(
-name|client
+name|info
 argument_list|,
 name|AccessPrivilege
 operator|.
@@ -8690,6 +8889,14 @@ return|return
 name|response
 return|;
 block|}
+name|SecurityHandler
+name|securityHandler
+init|=
+name|getSecurityHandler
+argument_list|(
+name|info
+argument_list|)
+decl_stmt|;
 name|DFSClient
 name|dfsClient
 init|=
@@ -8963,7 +9170,9 @@ name|response
 return|;
 block|}
 block|}
-DECL|method|link (XDR xdr, SecurityHandler securityHandler, InetAddress client)
+annotation|@
+name|Override
+DECL|method|link (XDR xdr, RpcInfo info)
 specifier|public
 name|READDIR3Response
 name|link
@@ -8971,11 +9180,8 @@ parameter_list|(
 name|XDR
 name|xdr
 parameter_list|,
-name|SecurityHandler
-name|securityHandler
-parameter_list|,
-name|InetAddress
-name|client
+name|RpcInfo
+name|info
 parameter_list|)
 block|{
 return|return
@@ -9090,7 +9296,46 @@ return|;
 block|}
 annotation|@
 name|Override
-DECL|method|readdir (XDR xdr, SecurityHandler securityHandler, InetAddress client)
+DECL|method|readdir (XDR xdr, RpcInfo info)
+specifier|public
+name|READDIR3Response
+name|readdir
+parameter_list|(
+name|XDR
+name|xdr
+parameter_list|,
+name|RpcInfo
+name|info
+parameter_list|)
+block|{
+name|SecurityHandler
+name|securityHandler
+init|=
+name|getSecurityHandler
+argument_list|(
+name|info
+argument_list|)
+decl_stmt|;
+name|SocketAddress
+name|remoteAddress
+init|=
+name|info
+operator|.
+name|remoteAddress
+argument_list|()
+decl_stmt|;
+return|return
+name|readdir
+argument_list|(
+name|xdr
+argument_list|,
+name|securityHandler
+argument_list|,
+name|remoteAddress
+argument_list|)
+return|;
+block|}
+DECL|method|readdir (XDR xdr, SecurityHandler securityHandler, SocketAddress remoteAddress)
 specifier|public
 name|READDIR3Response
 name|readdir
@@ -9101,8 +9346,8 @@ parameter_list|,
 name|SecurityHandler
 name|securityHandler
 parameter_list|,
-name|InetAddress
-name|client
+name|SocketAddress
+name|remoteAddress
 parameter_list|)
 block|{
 name|READDIR3Response
@@ -9121,7 +9366,7 @@ condition|(
 operator|!
 name|checkAccessPrivilege
 argument_list|(
-name|client
+name|remoteAddress
 argument_list|,
 name|AccessPrivilege
 operator|.
@@ -9906,8 +10151,50 @@ name|dirList
 argument_list|)
 return|;
 block|}
-DECL|method|readdirplus (XDR xdr, SecurityHandler securityHandler, InetAddress client)
+annotation|@
+name|Override
+DECL|method|readdirplus (XDR xdr, RpcInfo info)
 specifier|public
+name|READDIRPLUS3Response
+name|readdirplus
+parameter_list|(
+name|XDR
+name|xdr
+parameter_list|,
+name|RpcInfo
+name|info
+parameter_list|)
+block|{
+name|SecurityHandler
+name|securityHandler
+init|=
+name|getSecurityHandler
+argument_list|(
+name|info
+argument_list|)
+decl_stmt|;
+name|SocketAddress
+name|remoteAddress
+init|=
+name|info
+operator|.
+name|remoteAddress
+argument_list|()
+decl_stmt|;
+return|return
+name|readdirplus
+argument_list|(
+name|xdr
+argument_list|,
+name|securityHandler
+argument_list|,
+name|remoteAddress
+argument_list|)
+return|;
+block|}
+annotation|@
+name|VisibleForTesting
+DECL|method|readdirplus (XDR xdr, SecurityHandler securityHandler, SocketAddress remoteAddress)
 name|READDIRPLUS3Response
 name|readdirplus
 parameter_list|(
@@ -9917,8 +10204,8 @@ parameter_list|,
 name|SecurityHandler
 name|securityHandler
 parameter_list|,
-name|InetAddress
-name|client
+name|SocketAddress
+name|remoteAddress
 parameter_list|)
 block|{
 if|if
@@ -9926,7 +10213,7 @@ condition|(
 operator|!
 name|checkAccessPrivilege
 argument_list|(
-name|client
+name|remoteAddress
 argument_list|,
 name|AccessPrivilege
 operator|.
@@ -10866,7 +11153,7 @@ return|;
 block|}
 annotation|@
 name|Override
-DECL|method|fsstat (XDR xdr, SecurityHandler securityHandler, InetAddress client)
+DECL|method|fsstat (XDR xdr, RpcInfo info)
 specifier|public
 name|FSSTAT3Response
 name|fsstat
@@ -10874,11 +11161,8 @@ parameter_list|(
 name|XDR
 name|xdr
 parameter_list|,
-name|SecurityHandler
-name|securityHandler
-parameter_list|,
-name|InetAddress
-name|client
+name|RpcInfo
+name|info
 parameter_list|)
 block|{
 name|FSSTAT3Response
@@ -10897,7 +11181,7 @@ condition|(
 operator|!
 name|checkAccessPrivilege
 argument_list|(
-name|client
+name|info
 argument_list|,
 name|AccessPrivilege
 operator|.
@@ -10918,6 +11202,14 @@ return|return
 name|response
 return|;
 block|}
+name|SecurityHandler
+name|securityHandler
+init|=
+name|getSecurityHandler
+argument_list|(
+name|info
+argument_list|)
+decl_stmt|;
 name|DFSClient
 name|dfsClient
 init|=
@@ -11225,7 +11517,7 @@ block|}
 block|}
 annotation|@
 name|Override
-DECL|method|fsinfo (XDR xdr, SecurityHandler securityHandler, InetAddress client)
+DECL|method|fsinfo (XDR xdr, RpcInfo info)
 specifier|public
 name|FSINFO3Response
 name|fsinfo
@@ -11233,11 +11525,8 @@ parameter_list|(
 name|XDR
 name|xdr
 parameter_list|,
-name|SecurityHandler
-name|securityHandler
-parameter_list|,
-name|InetAddress
-name|client
+name|RpcInfo
+name|info
 parameter_list|)
 block|{
 name|FSINFO3Response
@@ -11256,7 +11545,7 @@ condition|(
 operator|!
 name|checkAccessPrivilege
 argument_list|(
-name|client
+name|info
 argument_list|,
 name|AccessPrivilege
 operator|.
@@ -11277,6 +11566,14 @@ return|return
 name|response
 return|;
 block|}
+name|SecurityHandler
+name|securityHandler
+init|=
+name|getSecurityHandler
+argument_list|(
+name|info
+argument_list|)
+decl_stmt|;
 name|DFSClient
 name|dfsClient
 init|=
@@ -11553,7 +11850,7 @@ block|}
 block|}
 annotation|@
 name|Override
-DECL|method|pathconf (XDR xdr, SecurityHandler securityHandler, InetAddress client)
+DECL|method|pathconf (XDR xdr, RpcInfo info)
 specifier|public
 name|PATHCONF3Response
 name|pathconf
@@ -11561,11 +11858,8 @@ parameter_list|(
 name|XDR
 name|xdr
 parameter_list|,
-name|SecurityHandler
-name|securityHandler
-parameter_list|,
-name|InetAddress
-name|client
+name|RpcInfo
+name|info
 parameter_list|)
 block|{
 name|PATHCONF3Response
@@ -11584,7 +11878,7 @@ condition|(
 operator|!
 name|checkAccessPrivilege
 argument_list|(
-name|client
+name|info
 argument_list|,
 name|AccessPrivilege
 operator|.
@@ -11605,6 +11899,14 @@ return|return
 name|response
 return|;
 block|}
+name|SecurityHandler
+name|securityHandler
+init|=
+name|getSecurityHandler
+argument_list|(
+name|info
+argument_list|)
+decl_stmt|;
 name|DFSClient
 name|dfsClient
 init|=
@@ -11812,7 +12114,7 @@ block|}
 block|}
 annotation|@
 name|Override
-DECL|method|commit (XDR xdr, Channel channel, int xid, SecurityHandler securityHandler, InetAddress client)
+DECL|method|commit (XDR xdr, RpcInfo info)
 specifier|public
 name|COMMIT3Response
 name|commit
@@ -11820,19 +12122,12 @@ parameter_list|(
 name|XDR
 name|xdr
 parameter_list|,
-name|Channel
-name|channel
-parameter_list|,
-name|int
-name|xid
-parameter_list|,
-name|SecurityHandler
-name|securityHandler
-parameter_list|,
-name|InetAddress
-name|client
+name|RpcInfo
+name|info
 parameter_list|)
 block|{
+comment|//Channel channel, int xid,
+comment|//    SecurityHandler securityHandler, InetAddress client) {
 name|COMMIT3Response
 name|response
 init|=
@@ -11842,6 +12137,14 @@ argument_list|(
 name|Nfs3Status
 operator|.
 name|NFS3_OK
+argument_list|)
+decl_stmt|;
+name|SecurityHandler
+name|securityHandler
+init|=
+name|getSecurityHandler
+argument_list|(
+name|info
 argument_list|)
 decl_stmt|;
 name|DFSClient
@@ -12026,7 +12329,7 @@ condition|(
 operator|!
 name|checkAccessPrivilege
 argument_list|(
-name|client
+name|info
 argument_list|,
 name|AccessPrivilege
 operator|.
@@ -12088,6 +12391,25 @@ argument_list|()
 operator|)
 decl_stmt|;
 comment|// Insert commit as an async request
+name|RpcCall
+name|rpcCall
+init|=
+operator|(
+name|RpcCall
+operator|)
+name|info
+operator|.
+name|header
+argument_list|()
+decl_stmt|;
+name|int
+name|xid
+init|=
+name|rpcCall
+operator|.
+name|getXid
+argument_list|()
+decl_stmt|;
 name|writeManager
 operator|.
 name|handleCommit
@@ -12098,7 +12420,10 @@ name|handle
 argument_list|,
 name|commitOffset
 argument_list|,
+name|info
+operator|.
 name|channel
+argument_list|()
 argument_list|,
 name|xid
 argument_list|,
@@ -12239,6 +12564,41 @@ literal|null
 return|;
 block|}
 block|}
+DECL|method|getSecurityHandler (RpcInfo info)
+specifier|private
+name|SecurityHandler
+name|getSecurityHandler
+parameter_list|(
+name|RpcInfo
+name|info
+parameter_list|)
+block|{
+name|RpcCall
+name|rpcCall
+init|=
+operator|(
+name|RpcCall
+operator|)
+name|info
+operator|.
+name|header
+argument_list|()
+decl_stmt|;
+return|return
+name|getSecurityHandler
+argument_list|(
+name|rpcCall
+operator|.
+name|getCredential
+argument_list|()
+argument_list|,
+name|rpcCall
+operator|.
+name|getVerifier
+argument_list|()
+argument_list|)
+return|;
+block|}
 annotation|@
 name|Override
 DECL|method|handleInternal (ChannelHandlerContext ctx, RpcInfo info)
@@ -12342,14 +12702,6 @@ argument_list|()
 operator|)
 operator|.
 name|getAddress
-argument_list|()
-decl_stmt|;
-name|Channel
-name|channel
-init|=
-name|info
-operator|.
-name|channel
 argument_list|()
 decl_stmt|;
 name|Credentials
@@ -12565,19 +12917,6 @@ return|return;
 block|}
 block|}
 block|}
-name|SecurityHandler
-name|securityHandler
-init|=
-name|getSecurityHandler
-argument_list|(
-name|credentials
-argument_list|,
-name|rpcCall
-operator|.
-name|getVerifier
-argument_list|()
-argument_list|)
-decl_stmt|;
 name|NFS3Response
 name|response
 init|=
@@ -12614,9 +12953,7 @@ name|getattr
 argument_list|(
 name|xdr
 argument_list|,
-name|securityHandler
-argument_list|,
-name|client
+name|info
 argument_list|)
 expr_stmt|;
 block|}
@@ -12636,9 +12973,7 @@ name|setattr
 argument_list|(
 name|xdr
 argument_list|,
-name|securityHandler
-argument_list|,
-name|client
+name|info
 argument_list|)
 expr_stmt|;
 block|}
@@ -12658,9 +12993,7 @@ name|lookup
 argument_list|(
 name|xdr
 argument_list|,
-name|securityHandler
-argument_list|,
-name|client
+name|info
 argument_list|)
 expr_stmt|;
 block|}
@@ -12680,9 +13013,7 @@ name|access
 argument_list|(
 name|xdr
 argument_list|,
-name|securityHandler
-argument_list|,
-name|client
+name|info
 argument_list|)
 expr_stmt|;
 block|}
@@ -12702,9 +13033,7 @@ name|readlink
 argument_list|(
 name|xdr
 argument_list|,
-name|securityHandler
-argument_list|,
-name|client
+name|info
 argument_list|)
 expr_stmt|;
 block|}
@@ -12744,9 +13073,7 @@ name|read
 argument_list|(
 name|xdr
 argument_list|,
-name|securityHandler
-argument_list|,
-name|client
+name|info
 argument_list|)
 expr_stmt|;
 if|if
@@ -12814,13 +13141,7 @@ name|write
 argument_list|(
 name|xdr
 argument_list|,
-name|channel
-argument_list|,
-name|xid
-argument_list|,
-name|securityHandler
-argument_list|,
-name|client
+name|info
 argument_list|)
 expr_stmt|;
 comment|// Write end debug trace is in Nfs3Utils.writeChannel
@@ -12841,9 +13162,7 @@ name|create
 argument_list|(
 name|xdr
 argument_list|,
-name|securityHandler
-argument_list|,
-name|client
+name|info
 argument_list|)
 expr_stmt|;
 block|}
@@ -12863,9 +13182,7 @@ name|mkdir
 argument_list|(
 name|xdr
 argument_list|,
-name|securityHandler
-argument_list|,
-name|client
+name|info
 argument_list|)
 expr_stmt|;
 block|}
@@ -12885,9 +13202,7 @@ name|symlink
 argument_list|(
 name|xdr
 argument_list|,
-name|securityHandler
-argument_list|,
-name|client
+name|info
 argument_list|)
 expr_stmt|;
 block|}
@@ -12907,9 +13222,7 @@ name|mknod
 argument_list|(
 name|xdr
 argument_list|,
-name|securityHandler
-argument_list|,
-name|client
+name|info
 argument_list|)
 expr_stmt|;
 block|}
@@ -12929,9 +13242,7 @@ name|remove
 argument_list|(
 name|xdr
 argument_list|,
-name|securityHandler
-argument_list|,
-name|client
+name|info
 argument_list|)
 expr_stmt|;
 block|}
@@ -12951,9 +13262,7 @@ name|rmdir
 argument_list|(
 name|xdr
 argument_list|,
-name|securityHandler
-argument_list|,
-name|client
+name|info
 argument_list|)
 expr_stmt|;
 block|}
@@ -12973,9 +13282,7 @@ name|rename
 argument_list|(
 name|xdr
 argument_list|,
-name|securityHandler
-argument_list|,
-name|client
+name|info
 argument_list|)
 expr_stmt|;
 block|}
@@ -12995,9 +13302,7 @@ name|link
 argument_list|(
 name|xdr
 argument_list|,
-name|securityHandler
-argument_list|,
-name|client
+name|info
 argument_list|)
 expr_stmt|;
 block|}
@@ -13017,9 +13322,7 @@ name|readdir
 argument_list|(
 name|xdr
 argument_list|,
-name|securityHandler
-argument_list|,
-name|client
+name|info
 argument_list|)
 expr_stmt|;
 block|}
@@ -13039,9 +13342,7 @@ name|readdirplus
 argument_list|(
 name|xdr
 argument_list|,
-name|securityHandler
-argument_list|,
-name|client
+name|info
 argument_list|)
 expr_stmt|;
 block|}
@@ -13061,9 +13362,7 @@ name|fsstat
 argument_list|(
 name|xdr
 argument_list|,
-name|securityHandler
-argument_list|,
-name|client
+name|info
 argument_list|)
 expr_stmt|;
 block|}
@@ -13083,9 +13382,7 @@ name|fsinfo
 argument_list|(
 name|xdr
 argument_list|,
-name|securityHandler
-argument_list|,
-name|client
+name|info
 argument_list|)
 expr_stmt|;
 block|}
@@ -13105,9 +13402,7 @@ name|pathconf
 argument_list|(
 name|xdr
 argument_list|,
-name|securityHandler
-argument_list|,
-name|client
+name|info
 argument_list|)
 expr_stmt|;
 block|}
@@ -13127,13 +13422,7 @@ name|commit
 argument_list|(
 name|xdr
 argument_list|,
-name|channel
-argument_list|,
-name|xid
-argument_list|,
-name|securityHandler
-argument_list|,
-name|client
+name|info
 argument_list|)
 expr_stmt|;
 block|}
@@ -13306,20 +13595,77 @@ name|isIdempotent
 argument_list|()
 return|;
 block|}
-DECL|method|checkAccessPrivilege (final InetAddress client, final AccessPrivilege expected)
+DECL|method|checkAccessPrivilege (RpcInfo info, final AccessPrivilege expected)
 specifier|private
 name|boolean
 name|checkAccessPrivilege
 parameter_list|(
-specifier|final
-name|InetAddress
-name|client
+name|RpcInfo
+name|info
 parameter_list|,
 specifier|final
 name|AccessPrivilege
 name|expected
 parameter_list|)
 block|{
+name|SocketAddress
+name|remoteAddress
+init|=
+name|info
+operator|.
+name|remoteAddress
+argument_list|()
+decl_stmt|;
+return|return
+name|checkAccessPrivilege
+argument_list|(
+name|remoteAddress
+argument_list|,
+name|expected
+argument_list|)
+return|;
+block|}
+DECL|method|checkAccessPrivilege (SocketAddress remoteAddress, final AccessPrivilege expected)
+specifier|private
+name|boolean
+name|checkAccessPrivilege
+parameter_list|(
+name|SocketAddress
+name|remoteAddress
+parameter_list|,
+specifier|final
+name|AccessPrivilege
+name|expected
+parameter_list|)
+block|{
+comment|// Port monitoring
+if|if
+condition|(
+operator|!
+name|doPortMonitoring
+argument_list|(
+name|remoteAddress
+argument_list|)
+condition|)
+block|{
+return|return
+literal|false
+return|;
+block|}
+comment|// Check export table
+name|InetAddress
+name|client
+init|=
+operator|(
+operator|(
+name|InetSocketAddress
+operator|)
+name|remoteAddress
+operator|)
+operator|.
+name|getAddress
+argument_list|()
+decl_stmt|;
 name|AccessPrivilege
 name|access
 init|=

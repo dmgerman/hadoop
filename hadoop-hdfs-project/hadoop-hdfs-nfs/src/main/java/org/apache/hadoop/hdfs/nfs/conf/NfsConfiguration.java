@@ -186,6 +186,16 @@ name|NfsConfigKeys
 operator|.
 name|DFS_NFS_EXPORT_POINT_KEY
 argument_list|)
+block|,
+operator|new
+name|DeprecationDelta
+argument_list|(
+literal|"nfs.allow.insecure.ports"
+argument_list|,
+name|NfsConfigKeys
+operator|.
+name|DFS_NFS_PORT_MONITORING_DISABLED_KEY
+argument_list|)
 block|}
 argument_list|)
 expr_stmt|;

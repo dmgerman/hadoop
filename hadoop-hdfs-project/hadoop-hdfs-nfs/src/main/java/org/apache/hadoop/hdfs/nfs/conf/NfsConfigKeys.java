@@ -267,21 +267,21 @@ init|=
 literal|40
 decl_stmt|;
 comment|// Currently unassigned.
-DECL|field|DFS_NFS_ALLOW_INSECURE_PORTS_KEY
+DECL|field|DFS_NFS_PORT_MONITORING_DISABLED_KEY
 specifier|public
 specifier|static
 specifier|final
 name|String
-name|DFS_NFS_ALLOW_INSECURE_PORTS_KEY
+name|DFS_NFS_PORT_MONITORING_DISABLED_KEY
 init|=
-literal|"nfs.allow.insecure.ports"
+literal|"nfs.port.monitoring.disabled"
 decl_stmt|;
-DECL|field|DFS_NFS_ALLOW_INSECURE_PORTS_DEFAULT
+DECL|field|DFS_NFS_PORT_MONITORING_DISABLED_DEFAULT
 specifier|public
 specifier|static
 specifier|final
 name|boolean
-name|DFS_NFS_ALLOW_INSECURE_PORTS_DEFAULT
+name|DFS_NFS_PORT_MONITORING_DISABLED_DEFAULT
 init|=
 literal|true
 decl_stmt|;
