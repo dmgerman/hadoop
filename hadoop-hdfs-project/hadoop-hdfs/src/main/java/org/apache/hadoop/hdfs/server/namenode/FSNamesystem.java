@@ -16343,6 +16343,42 @@ operator|)
 argument_list|)
 throw|;
 block|}
+comment|// No further modification is allowed on a deleted file.
+comment|// A file is considered deleted, if it has no parent or is marked
+comment|// as deleted in the snapshot feature.
+if|if
+condition|(
+name|file
+operator|.
+name|getParent
+argument_list|()
+operator|==
+literal|null
+operator|||
+operator|(
+name|file
+operator|.
+name|isWithSnapshot
+argument_list|()
+operator|&&
+name|file
+operator|.
+name|getFileWithSnapshotFeature
+argument_list|()
+operator|.
+name|isCurrentFileDeleted
+argument_list|()
+operator|)
+condition|)
+block|{
+throw|throw
+operator|new
+name|FileNotFoundException
+argument_list|(
+name|src
+argument_list|)
+throw|;
+block|}
 name|String
 name|clientName
 init|=
