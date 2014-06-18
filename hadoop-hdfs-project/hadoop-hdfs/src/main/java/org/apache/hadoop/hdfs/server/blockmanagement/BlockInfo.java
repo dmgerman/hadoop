@@ -937,7 +937,10 @@ comment|// The block is on the DN but belongs to a different storage.
 comment|// Update our state.
 name|removeStorage
 argument_list|(
-name|storage
+name|getStorageInfo
+argument_list|(
+name|idx
+argument_list|)
 argument_list|)
 expr_stmt|;
 name|added
