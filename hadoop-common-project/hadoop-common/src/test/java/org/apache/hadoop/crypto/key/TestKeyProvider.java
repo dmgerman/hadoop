@@ -60,6 +60,20 @@ begin_import
 import|import
 name|org
 operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|security
+operator|.
+name|ProviderUtils
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
 name|junit
 operator|.
 name|Test
@@ -961,7 +975,7 @@ argument_list|(
 literal|"hdfs://nn.example.com/my/path"
 argument_list|)
 argument_list|,
-name|KeyProvider
+name|ProviderUtils
 operator|.
 name|unnestUri
 argument_list|(
@@ -981,7 +995,7 @@ argument_list|(
 literal|"hdfs://nn/my/path?foo=bar&baz=bat#yyy"
 argument_list|)
 argument_list|,
-name|KeyProvider
+name|ProviderUtils
 operator|.
 name|unnestUri
 argument_list|(
@@ -1001,7 +1015,7 @@ argument_list|(
 literal|"inner://hdfs@nn1.example.com/my/path"
 argument_list|)
 argument_list|,
-name|KeyProvider
+name|ProviderUtils
 operator|.
 name|unnestUri
 argument_list|(
@@ -1021,7 +1035,7 @@ argument_list|(
 literal|"user:///"
 argument_list|)
 argument_list|,
-name|KeyProvider
+name|ProviderUtils
 operator|.
 name|unnestUri
 argument_list|(
