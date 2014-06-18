@@ -3041,6 +3041,27 @@ name|TA_TIMED_OUT
 argument_list|,
 name|CLEANUP_CONTAINER_TRANSITION
 argument_list|)
+comment|// AM is likely to receive duplicate TA_COMMIT_PENDINGs as the task attempt
+comment|// will re-send the commit message until it doesn't encounter any
+comment|// IOException and succeeds in delivering the commit message.
+comment|// Ignoring the duplicate commit message is a short-term fix. In long term,
+comment|// we need to make use of retry cache to help this and other MR protocol
+comment|// APIs that can be considered as @AtMostOnce.
+operator|.
+name|addTransition
+argument_list|(
+name|TaskAttemptStateInternal
+operator|.
+name|COMMIT_PENDING
+argument_list|,
+name|TaskAttemptStateInternal
+operator|.
+name|COMMIT_PENDING
+argument_list|,
+name|TaskAttemptEventType
+operator|.
+name|TA_COMMIT_PENDING
+argument_list|)
 comment|// Transitions from SUCCESS_CONTAINER_CLEANUP state
 comment|// kill and cleanup the container
 operator|.

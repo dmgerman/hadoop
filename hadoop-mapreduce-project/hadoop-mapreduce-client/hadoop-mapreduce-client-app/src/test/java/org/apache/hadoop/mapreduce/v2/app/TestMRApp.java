@@ -1091,6 +1091,43 @@ operator|.
 name|COMMIT_PENDING
 argument_list|)
 expr_stmt|;
+comment|//re-send the commit pending signal to the task
+name|app
+operator|.
+name|getContext
+argument_list|()
+operator|.
+name|getEventHandler
+argument_list|()
+operator|.
+name|handle
+argument_list|(
+operator|new
+name|TaskAttemptEvent
+argument_list|(
+name|attempt
+operator|.
+name|getID
+argument_list|()
+argument_list|,
+name|TaskAttemptEventType
+operator|.
+name|TA_COMMIT_PENDING
+argument_list|)
+argument_list|)
+expr_stmt|;
+comment|//the task attempt should be still at COMMIT_PENDING
+name|app
+operator|.
+name|waitForState
+argument_list|(
+name|attempt
+argument_list|,
+name|TaskAttemptState
+operator|.
+name|COMMIT_PENDING
+argument_list|)
+expr_stmt|;
 comment|//send the done signal to the task
 name|app
 operator|.
