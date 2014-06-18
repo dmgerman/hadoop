@@ -6310,6 +6310,8 @@ operator|.
 name|createRemoteUser
 argument_list|(
 name|authorizedId
+argument_list|,
+name|authMethod
 argument_list|)
 return|;
 block|}

@@ -134,6 +134,20 @@ end_import
 
 begin_import
 import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|security
+operator|.
+name|ProviderUtils
+import|;
+end_import
+
+begin_import
+import|import
 name|javax
 operator|.
 name|crypto
@@ -537,6 +551,8 @@ name|uri
 expr_stmt|;
 name|path
 operator|=
+name|ProviderUtils
+operator|.
 name|unnestUri
 argument_list|(
 name|uri

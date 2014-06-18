@@ -102,24 +102,6 @@ name|api
 operator|.
 name|records
 operator|.
-name|FinalApplicationStatus
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|yarn
-operator|.
-name|api
-operator|.
-name|records
-operator|.
 name|ApplicationId
 import|;
 end_import
@@ -157,6 +139,42 @@ operator|.
 name|records
 operator|.
 name|ApplicationSubmissionContext
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|api
+operator|.
+name|records
+operator|.
+name|FinalApplicationStatus
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|api
+operator|.
+name|records
+operator|.
+name|NodeId
 import|;
 end_import
 
@@ -413,6 +431,15 @@ comment|/**    * Check whether this application's state has been saved to the st
 DECL|method|isAppFinalStateStored ()
 name|boolean
 name|isAppFinalStateStored
+parameter_list|()
+function_decl|;
+comment|/**    * Nodes on which the containers for this {@link RMApp} ran.    * @return the set of nodes that ran any containers from this {@link RMApp}    * Add more node on which containers for this {@link RMApp} ran    */
+DECL|method|getRanNodes ()
+name|Set
+argument_list|<
+name|NodeId
+argument_list|>
+name|getRanNodes
 parameter_list|()
 function_decl|;
 comment|/**    * Create the external user-facing state of ApplicationMaster from the    * current state of the {@link RMApp}.    * @return the external user-facing state of ApplicationMaster.    */

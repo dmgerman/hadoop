@@ -300,11 +300,11 @@ name|getBoolean
 argument_list|(
 name|NfsConfigKeys
 operator|.
-name|DFS_NFS_ALLOW_INSECURE_PORTS_KEY
+name|DFS_NFS_PORT_MONITORING_DISABLED_KEY
 argument_list|,
 name|NfsConfigKeys
 operator|.
-name|DFS_NFS_ALLOW_INSECURE_PORTS_DEFAULT
+name|DFS_NFS_PORT_MONITORING_DISABLED_DEFAULT
 argument_list|)
 decl_stmt|;
 specifier|final

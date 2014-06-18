@@ -745,10 +745,35 @@ return|return
 name|registerNode
 argument_list|(
 literal|null
+argument_list|,
+literal|null
 argument_list|)
 return|;
 block|}
-DECL|method|registerNode ( List<NMContainerStatus> containerReports)
+DECL|method|registerNode ( List<ApplicationId> runningApplications)
+specifier|public
+name|RegisterNodeManagerResponse
+name|registerNode
+parameter_list|(
+name|List
+argument_list|<
+name|ApplicationId
+argument_list|>
+name|runningApplications
+parameter_list|)
+throws|throws
+name|Exception
+block|{
+return|return
+name|registerNode
+argument_list|(
+literal|null
+argument_list|,
+name|runningApplications
+argument_list|)
+return|;
+block|}
+DECL|method|registerNode ( List<NMContainerStatus> containerReports, List<ApplicationId> runningApplications)
 specifier|public
 name|RegisterNodeManagerResponse
 name|registerNode
@@ -758,6 +783,12 @@ argument_list|<
 name|NMContainerStatus
 argument_list|>
 name|containerReports
+parameter_list|,
+name|List
+argument_list|<
+name|ApplicationId
+argument_list|>
+name|runningApplications
 parameter_list|)
 throws|throws
 name|Exception
@@ -819,6 +850,13 @@ operator|.
 name|setNMVersion
 argument_list|(
 name|version
+argument_list|)
+expr_stmt|;
+name|req
+operator|.
+name|setRunningApplications
+argument_list|(
+name|runningApplications
 argument_list|)
 expr_stmt|;
 name|RegisterNodeManagerResponse

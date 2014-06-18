@@ -260,6 +260,7 @@ literal|"hadoop-policy.xml"
 decl_stmt|;
 DECL|field|protocolToAcl
 specifier|private
+specifier|volatile
 name|Map
 argument_list|<
 name|Class
@@ -565,7 +566,6 @@ expr_stmt|;
 block|}
 DECL|method|refresh (Configuration conf, PolicyProvider provider)
 specifier|public
-specifier|synchronized
 name|void
 name|refresh
 parameter_list|(
@@ -618,7 +618,6 @@ annotation|@
 name|Private
 DECL|method|refreshWithLoadedConfiguration (Configuration conf, PolicyProvider provider)
 specifier|public
-specifier|synchronized
 name|void
 name|refreshWithLoadedConfiguration
 parameter_list|(

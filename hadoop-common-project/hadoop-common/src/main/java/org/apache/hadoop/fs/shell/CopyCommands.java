@@ -722,7 +722,7 @@ specifier|final
 name|String
 name|USAGE
 init|=
-literal|"[-f] [-p | -p[topx]]<src> ...<dst>"
+literal|"[-f] [-p | -p[topax]]<src> ...<dst>"
 decl_stmt|;
 DECL|field|DESCRIPTION
 specifier|public
@@ -737,13 +737,17 @@ literal|"destination.  When copying multiple files, the destination "
 operator|+
 literal|"must be a directory. Passing -p preserves status "
 operator|+
-literal|"[topx] (timestamps, ownership, permission, XAttr). "
+literal|"[topax] (timestamps, ownership, permission, ACLs, XAttr). "
 operator|+
 literal|"If -p is specified with no<arg>, then preserves "
 operator|+
-literal|"timestamps, ownership, permission. Passing -f "
+literal|"timestamps, ownership, permission. If -pa is specified, "
 operator|+
-literal|"overwrites the destination if it already exists.\n"
+literal|"then preserves permission also because ACL is a super-set of "
+operator|+
+literal|"permission. Passing -f overwrites the destination if it "
+operator|+
+literal|"already exists.\n"
 decl_stmt|;
 annotation|@
 name|Override

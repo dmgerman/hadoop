@@ -16730,6 +16730,42 @@ operator|)
 argument_list|)
 throw|;
 block|}
+comment|// No further modification is allowed on a deleted file.
+comment|// A file is considered deleted, if it has no parent or is marked
+comment|// as deleted in the snapshot feature.
+if|if
+condition|(
+name|file
+operator|.
+name|getParent
+argument_list|()
+operator|==
+literal|null
+operator|||
+operator|(
+name|file
+operator|.
+name|isWithSnapshot
+argument_list|()
+operator|&&
+name|file
+operator|.
+name|getFileWithSnapshotFeature
+argument_list|()
+operator|.
+name|isCurrentFileDeleted
+argument_list|()
+operator|)
+condition|)
+block|{
+throw|throw
+operator|new
+name|FileNotFoundException
+argument_list|(
+name|src
+argument_list|)
+throw|;
+block|}
 name|String
 name|clientName
 init|=
@@ -35894,14 +35930,19 @@ name|getFinalizeTime
 argument_list|()
 argument_list|)
 expr_stmt|;
+if|if
+condition|(
+name|haEnabled
+condition|)
+block|{
+comment|// roll the edit log to make sure the standby NameNode can tail
 name|getFSImage
 argument_list|()
 operator|.
-name|saveNamespace
-argument_list|(
-name|this
-argument_list|)
+name|rollEditLog
+argument_list|()
 expr_stmt|;
+block|}
 name|getFSImage
 argument_list|()
 operator|.
@@ -35923,7 +35964,20 @@ name|writeUnlock
 argument_list|()
 expr_stmt|;
 block|}
-comment|// getEditLog().logSync() is not needed since it does saveNamespace
+if|if
+condition|(
+operator|!
+name|haEnabled
+condition|)
+block|{
+comment|// Sync not needed for ha since the edit was rolled after logging.
+name|getEditLog
+argument_list|()
+operator|.
+name|logSync
+argument_list|()
+expr_stmt|;
+block|}
 if|if
 condition|(
 name|auditLog

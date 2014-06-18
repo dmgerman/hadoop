@@ -70,6 +70,10 @@ block|,
 DECL|enumConstant|NODE_UPDATE
 name|NODE_UPDATE
 block|,
+comment|// Source: Container and ResourceTracker
+DECL|enumConstant|APP_RUNNING_ON_NODE
+name|APP_RUNNING_ON_NODE
+block|,
 comment|// Source: RMStateStore
 DECL|enumConstant|APP_NEW_SAVED
 name|APP_NEW_SAVED

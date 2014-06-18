@@ -1281,6 +1281,8 @@ name|runningContainer
 argument_list|,
 name|completedContainer
 argument_list|)
+argument_list|,
+literal|null
 argument_list|)
 expr_stmt|;
 comment|// Wait for RM to settle down on recovering containers;
@@ -2676,6 +2678,8 @@ operator|.
 name|registerNode
 argument_list|(
 name|am1_1Containers
+argument_list|,
+literal|null
 argument_list|)
 expr_stmt|;
 name|List
@@ -2694,6 +2698,8 @@ operator|.
 name|registerNode
 argument_list|(
 name|am2Containers
+argument_list|,
+literal|null
 argument_list|)
 expr_stmt|;
 comment|// Wait for RM to settle down on recovering containers;
@@ -3381,6 +3387,8 @@ name|runningContainer
 argument_list|,
 name|completedContainer
 argument_list|)
+argument_list|,
+literal|null
 argument_list|)
 expr_stmt|;
 name|rm2
@@ -3624,6 +3632,8 @@ name|runningContainer
 argument_list|,
 name|completedContainer
 argument_list|)
+argument_list|,
+literal|null
 argument_list|)
 expr_stmt|;
 name|RMApp

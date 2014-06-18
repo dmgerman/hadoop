@@ -962,6 +962,8 @@ operator|new
 name|DeletionService
 argument_list|(
 name|exec
+argument_list|,
+name|nmStore
 argument_list|)
 return|;
 block|}
