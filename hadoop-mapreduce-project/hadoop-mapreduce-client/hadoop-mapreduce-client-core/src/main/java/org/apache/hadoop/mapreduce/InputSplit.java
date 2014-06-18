@@ -62,6 +62,36 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|classification
+operator|.
+name|InterfaceStability
+operator|.
+name|Evolving
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|mapred
+operator|.
+name|SplitLocationInfo
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|mapreduce
 operator|.
 name|InputFormat
@@ -127,7 +157,7 @@ name|IOException
 throws|,
 name|InterruptedException
 function_decl|;
-comment|/**    * Get the list of nodes by name where the data for the split would be local.    * The locations do not need to be serialized.    * @return a new array of the node nodes.    * @throws IOException    * @throws InterruptedException    */
+comment|/**    * Get the list of nodes by name where the data for the split would be local.    * The locations do not need to be serialized.    *     * @return a new array of the node nodes.    * @throws IOException    * @throws InterruptedException    */
 specifier|public
 specifier|abstract
 DECL|method|getLocations ()
@@ -140,6 +170,22 @@ name|IOException
 throws|,
 name|InterruptedException
 function_decl|;
+comment|/**    * Gets info about which nodes the input split is stored on and how it is    * stored at each location.    *     * @return list of<code>SplitLocationInfo</code>s describing how the split    *    data is stored at each location. A null value indicates that all the    *    locations have the data stored on disk.    * @throws IOException    */
+annotation|@
+name|Evolving
+DECL|method|getLocationInfo ()
+specifier|public
+name|SplitLocationInfo
+index|[]
+name|getLocationInfo
+parameter_list|()
+throws|throws
+name|IOException
+block|{
+return|return
+literal|null
+return|;
+block|}
 block|}
 end_class
 
