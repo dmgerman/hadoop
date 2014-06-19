@@ -916,6 +916,22 @@ name|yarn
 operator|.
 name|util
 operator|.
+name|Clock
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|util
+operator|.
 name|RackResolver
 import|;
 end_import
@@ -1171,16 +1187,16 @@ name|recalculateReduceSchedule
 init|=
 literal|false
 decl_stmt|;
-DECL|field|mapResourceReqt
+DECL|field|mapResourceRequest
 specifier|private
 name|int
-name|mapResourceReqt
+name|mapResourceRequest
 decl_stmt|;
 comment|//memory
-DECL|field|reduceResourceReqt
+DECL|field|reduceResourceRequest
 specifier|private
 name|int
-name|reduceResourceReqt
+name|reduceResourceRequest
 decl_stmt|;
 comment|//memory
 DECL|field|reduceStarted
@@ -1204,6 +1220,14 @@ name|maxReducePreemptionLimit
 init|=
 literal|0
 decl_stmt|;
+comment|/**    * after this threshold, if the container request is not allocated, it is    * considered delayed.    */
+DECL|field|allocationDelayThresholdMs
+specifier|private
+name|long
+name|allocationDelayThresholdMs
+init|=
+literal|0
+decl_stmt|;
 DECL|field|reduceSlowStart
 specifier|private
 name|float
@@ -1220,6 +1244,11 @@ DECL|field|retrystartTime
 specifier|private
 name|long
 name|retrystartTime
+decl_stmt|;
+DECL|field|clock
+specifier|private
+name|Clock
+name|clock
 decl_stmt|;
 DECL|field|preemptionPolicy
 specifier|private
@@ -1290,6 +1319,15 @@ argument_list|(
 literal|false
 argument_list|)
 expr_stmt|;
+name|this
+operator|.
+name|clock
+operator|=
+name|context
+operator|.
+name|getClock
+argument_list|()
+expr_stmt|;
 block|}
 annotation|@
 name|Override
@@ -1354,6 +1392,24 @@ operator|.
 name|DEFAULT_MR_AM_JOB_REDUCE_PREEMPTION_LIMIT
 argument_list|)
 expr_stmt|;
+name|allocationDelayThresholdMs
+operator|=
+name|conf
+operator|.
+name|getInt
+argument_list|(
+name|MRJobConfig
+operator|.
+name|MR_JOB_REDUCER_PREEMPT_DELAY_SEC
+argument_list|,
+name|MRJobConfig
+operator|.
+name|DEFAULT_MR_JOB_REDUCER_PREEMPT_DELAY_SEC
+argument_list|)
+operator|*
+literal|1000
+expr_stmt|;
+comment|//sec -> ms
 name|RackResolver
 operator|.
 name|init
@@ -1688,9 +1744,9 @@ operator|.
 name|size
 argument_list|()
 argument_list|,
-name|mapResourceReqt
+name|mapResourceRequest
 argument_list|,
-name|reduceResourceReqt
+name|reduceResourceRequest
 argument_list|,
 name|pendingReduces
 operator|.
@@ -1763,6 +1819,32 @@ argument_list|(
 literal|"Final Stats: "
 argument_list|)
 expr_stmt|;
+block|}
+annotation|@
+name|Private
+annotation|@
+name|VisibleForTesting
+DECL|method|getAssignedRequests ()
+name|AssignedRequests
+name|getAssignedRequests
+parameter_list|()
+block|{
+return|return
+name|assignedRequests
+return|;
+block|}
+annotation|@
+name|Private
+annotation|@
+name|VisibleForTesting
+DECL|method|getScheduledRequests ()
+name|ScheduledRequests
+name|getScheduledRequests
+parameter_list|()
+block|{
+return|return
+name|scheduledRequests
+return|;
 block|}
 DECL|method|getIsReduceStarted ()
 specifier|public
@@ -1968,12 +2050,12 @@ condition|)
 block|{
 if|if
 condition|(
-name|mapResourceReqt
+name|mapResourceRequest
 operator|==
 literal|0
 condition|)
 block|{
-name|mapResourceReqt
+name|mapResourceRequest
 operator|=
 name|reqEvent
 operator|.
@@ -2007,7 +2089,7 @@ name|TaskType
 operator|.
 name|MAP
 argument_list|,
-name|mapResourceReqt
+name|mapResourceRequest
 argument_list|)
 argument_list|)
 argument_list|)
@@ -2016,14 +2098,14 @@ name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"mapResourceReqt:"
+literal|"mapResourceRequest:"
 operator|+
-name|mapResourceReqt
+name|mapResourceRequest
 argument_list|)
 expr_stmt|;
 if|if
 condition|(
-name|mapResourceReqt
+name|mapResourceRequest
 operator|>
 name|supportedMaxContainerCapability
 condition|)
@@ -2033,9 +2115,9 @@ name|diagMsg
 init|=
 literal|"MAP capability required is more than the supported "
 operator|+
-literal|"max container capability in the cluster. Killing the Job. mapResourceReqt: "
+literal|"max container capability in the cluster. Killing the Job. mapResourceRequest: "
 operator|+
-name|mapResourceReqt
+name|mapResourceRequest
 operator|+
 literal|" maxContainerCapability:"
 operator|+
@@ -2086,7 +2168,7 @@ argument_list|()
 operator|.
 name|setMemory
 argument_list|(
-name|mapResourceReqt
+name|mapResourceRequest
 argument_list|)
 expr_stmt|;
 name|scheduledRequests
@@ -2102,12 +2184,12 @@ else|else
 block|{
 if|if
 condition|(
-name|reduceResourceReqt
+name|reduceResourceRequest
 operator|==
 literal|0
 condition|)
 block|{
-name|reduceResourceReqt
+name|reduceResourceRequest
 operator|=
 name|reqEvent
 operator|.
@@ -2141,7 +2223,7 @@ name|TaskType
 operator|.
 name|REDUCE
 argument_list|,
-name|reduceResourceReqt
+name|reduceResourceRequest
 argument_list|)
 argument_list|)
 argument_list|)
@@ -2150,14 +2232,14 @@ name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"reduceResourceReqt:"
+literal|"reduceResourceRequest:"
 operator|+
-name|reduceResourceReqt
+name|reduceResourceRequest
 argument_list|)
 expr_stmt|;
 if|if
 condition|(
-name|reduceResourceReqt
+name|reduceResourceRequest
 operator|>
 name|supportedMaxContainerCapability
 condition|)
@@ -2169,9 +2251,9 @@ literal|"REDUCE capability required is more than the "
 operator|+
 literal|"supported max container capability in the cluster. Killing the "
 operator|+
-literal|"Job. reduceResourceReqt: "
+literal|"Job. reduceResourceRequest: "
 operator|+
-name|reduceResourceReqt
+name|reduceResourceRequest
 operator|+
 literal|" maxContainerCapability:"
 operator|+
@@ -2222,7 +2304,7 @@ argument_list|()
 operator|.
 name|setMemory
 argument_list|(
-name|reduceResourceReqt
+name|reduceResourceRequest
 argument_list|)
 expr_stmt|;
 if|if
@@ -2483,15 +2565,58 @@ return|return
 name|host
 return|;
 block|}
+annotation|@
+name|Private
+annotation|@
+name|VisibleForTesting
+DECL|method|setReduceResourceRequest (int mem)
+specifier|synchronized
+name|void
+name|setReduceResourceRequest
+parameter_list|(
+name|int
+name|mem
+parameter_list|)
+block|{
+name|this
+operator|.
+name|reduceResourceRequest
+operator|=
+name|mem
+expr_stmt|;
+block|}
+annotation|@
+name|Private
+annotation|@
+name|VisibleForTesting
+DECL|method|setMapResourceRequest (int mem)
+specifier|synchronized
+name|void
+name|setMapResourceRequest
+parameter_list|(
+name|int
+name|mem
+parameter_list|)
+block|{
+name|this
+operator|.
+name|mapResourceRequest
+operator|=
+name|mem
+expr_stmt|;
+block|}
+annotation|@
+name|Private
+annotation|@
+name|VisibleForTesting
 DECL|method|preemptReducesIfNeeded ()
-specifier|private
 name|void
 name|preemptReducesIfNeeded
 parameter_list|()
 block|{
 if|if
 condition|(
-name|reduceResourceReqt
+name|reduceResourceRequest
 operator|==
 literal|0
 condition|)
@@ -2541,7 +2666,7 @@ name|size
 argument_list|()
 operator|)
 operator|*
-name|reduceResourceReqt
+name|reduceResourceRequest
 operator|)
 decl_stmt|;
 comment|//availableMemForMap must be sufficient to run atleast 1 map
@@ -2549,7 +2674,7 @@ if|if
 condition|(
 name|availableMemForMap
 operator|<
-name|mapResourceReqt
+name|mapResourceRequest
 condition|)
 block|{
 comment|//to make sure new containers are given to maps and not reduces
@@ -2597,6 +2722,25 @@ operator|.
 name|clear
 argument_list|()
 expr_stmt|;
+comment|//do further checking to find the number of map requests that were
+comment|//hanging around for a while
+name|int
+name|hangingMapRequests
+init|=
+name|getNumOfHangingRequests
+argument_list|(
+name|scheduledRequests
+operator|.
+name|maps
+argument_list|)
+decl_stmt|;
+if|if
+condition|(
+name|hangingMapRequests
+operator|>
+literal|0
+condition|)
+block|{
 comment|//preempt for making space for at least one map
 name|int
 name|premeptionLimit
@@ -2605,7 +2749,7 @@ name|Math
 operator|.
 name|max
 argument_list|(
-name|mapResourceReqt
+name|mapResourceRequest
 argument_list|,
 call|(
 name|int
@@ -2624,14 +2768,9 @@ name|Math
 operator|.
 name|min
 argument_list|(
-name|scheduledRequests
-operator|.
-name|maps
-operator|.
-name|size
-argument_list|()
+name|hangingMapRequests
 operator|*
-name|mapResourceReqt
+name|mapResourceRequest
 argument_list|,
 name|premeptionLimit
 argument_list|)
@@ -2651,7 +2790,7 @@ name|float
 operator|)
 name|preemptMem
 operator|/
-name|reduceResourceReqt
+name|reduceResourceRequest
 argument_list|)
 decl_stmt|;
 name|toPreempt
@@ -2690,6 +2829,80 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
+block|}
+block|}
+DECL|method|getNumOfHangingRequests (Map<TaskAttemptId, ContainerRequest> requestMap)
+specifier|private
+name|int
+name|getNumOfHangingRequests
+parameter_list|(
+name|Map
+argument_list|<
+name|TaskAttemptId
+argument_list|,
+name|ContainerRequest
+argument_list|>
+name|requestMap
+parameter_list|)
+block|{
+if|if
+condition|(
+name|allocationDelayThresholdMs
+operator|<=
+literal|0
+condition|)
+return|return
+name|requestMap
+operator|.
+name|size
+argument_list|()
+return|;
+name|int
+name|hangingRequests
+init|=
+literal|0
+decl_stmt|;
+name|long
+name|currTime
+init|=
+name|clock
+operator|.
+name|getTime
+argument_list|()
+decl_stmt|;
+for|for
+control|(
+name|ContainerRequest
+name|request
+range|:
+name|requestMap
+operator|.
+name|values
+argument_list|()
+control|)
+block|{
+name|long
+name|delay
+init|=
+name|currTime
+operator|-
+name|request
+operator|.
+name|requestTimeMs
+decl_stmt|;
+if|if
+condition|(
+name|delay
+operator|>
+name|allocationDelayThresholdMs
+condition|)
+name|hangingRequests
+operator|++
+expr_stmt|;
+block|}
+return|return
+name|hangingRequests
+return|;
 block|}
 annotation|@
 name|Private
@@ -4059,7 +4272,7 @@ operator|.
 name|size
 argument_list|()
 operator|*
-name|mapResourceReqt
+name|mapResourceRequest
 operator|+
 name|assignedRequests
 operator|.
@@ -4068,11 +4281,14 @@ operator|.
 name|size
 argument_list|()
 operator|*
-name|reduceResourceReqt
+name|reduceResourceRequest
 return|;
 block|}
+annotation|@
+name|Private
+annotation|@
+name|VisibleForTesting
 DECL|class|ScheduledRequests
-specifier|private
 class|class
 name|ScheduledRequests
 block|{
@@ -4145,8 +4361,9 @@ argument_list|>
 argument_list|>
 argument_list|()
 decl_stmt|;
+annotation|@
+name|VisibleForTesting
 DECL|field|maps
-specifier|private
 specifier|final
 name|Map
 argument_list|<
@@ -4742,7 +4959,7 @@ if|if
 condition|(
 name|allocatedMemory
 operator|<
-name|mapResourceReqt
+name|mapResourceRequest
 operator|||
 name|maps
 operator|.
@@ -4762,7 +4979,7 @@ literal|" for a map as either "
 operator|+
 literal|" container memory less than required "
 operator|+
-name|mapResourceReqt
+name|mapResourceRequest
 operator|+
 literal|" or no pending map tasks - maps.isEmpty="
 operator|+
@@ -4793,7 +5010,7 @@ if|if
 condition|(
 name|allocatedMemory
 operator|<
-name|reduceResourceReqt
+name|reduceResourceRequest
 operator|||
 name|reduces
 operator|.
@@ -4813,7 +5030,7 @@ literal|" for a reduce as either "
 operator|+
 literal|" container memory less than required "
 operator|+
-name|reduceResourceReqt
+name|reduceResourceRequest
 operator|+
 literal|" or no pending reduce tasks - reduces.isEmpty="
 operator|+
@@ -6352,8 +6569,11 @@ block|}
 block|}
 block|}
 block|}
+annotation|@
+name|Private
+annotation|@
+name|VisibleForTesting
 DECL|class|AssignedRequests
-specifier|private
 class|class
 name|AssignedRequests
 block|{
@@ -6397,8 +6617,9 @@ name|Container
 argument_list|>
 argument_list|()
 decl_stmt|;
+annotation|@
+name|VisibleForTesting
 DECL|field|reduces
-specifier|private
 specifier|final
 name|LinkedHashMap
 argument_list|<
@@ -6417,8 +6638,9 @@ name|Container
 argument_list|>
 argument_list|()
 decl_stmt|;
+annotation|@
+name|VisibleForTesting
 DECL|field|preemptionWaitingReduces
-specifier|private
 specifier|final
 name|Set
 argument_list|<

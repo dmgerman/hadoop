@@ -1226,9 +1226,7 @@ name|backupNode
 operator|.
 name|namesystem
 operator|.
-name|dir
-operator|.
-name|setReady
+name|setImageLoaded
 argument_list|()
 expr_stmt|;
 if|if

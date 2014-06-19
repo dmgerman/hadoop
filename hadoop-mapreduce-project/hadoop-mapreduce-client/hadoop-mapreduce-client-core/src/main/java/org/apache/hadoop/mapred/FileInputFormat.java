@@ -1514,6 +1514,46 @@ name|hosts
 argument_list|)
 return|;
 block|}
+comment|/**    * A factory that makes the split for this class. It can be overridden    * by sub-classes to make sub-types    */
+DECL|method|makeSplit (Path file, long start, long length, String[] hosts, String[] inMemoryHosts)
+specifier|protected
+name|FileSplit
+name|makeSplit
+parameter_list|(
+name|Path
+name|file
+parameter_list|,
+name|long
+name|start
+parameter_list|,
+name|long
+name|length
+parameter_list|,
+name|String
+index|[]
+name|hosts
+parameter_list|,
+name|String
+index|[]
+name|inMemoryHosts
+parameter_list|)
+block|{
+return|return
+operator|new
+name|FileSplit
+argument_list|(
+name|file
+argument_list|,
+name|start
+argument_list|,
+name|length
+argument_list|,
+name|hosts
+argument_list|,
+name|inMemoryHosts
+argument_list|)
+return|;
+block|}
 comment|/** Splits files returned by {@link #listStatus(JobConf)} when    * they're too big.*/
 DECL|method|getSplits (JobConf job, int numSplits)
 specifier|public
@@ -1808,9 +1848,10 @@ condition|)
 block|{
 name|String
 index|[]
+index|[]
 name|splitHosts
 init|=
-name|getSplitHosts
+name|getSplitHostsAndCachedHosts
 argument_list|(
 name|blkLocations
 argument_list|,
@@ -1838,6 +1879,14 @@ argument_list|,
 name|splitSize
 argument_list|,
 name|splitHosts
+index|[
+literal|0
+index|]
+argument_list|,
+name|splitHosts
+index|[
+literal|1
+index|]
 argument_list|)
 argument_list|)
 expr_stmt|;
@@ -1855,9 +1904,10 @@ condition|)
 block|{
 name|String
 index|[]
+index|[]
 name|splitHosts
 init|=
-name|getSplitHosts
+name|getSplitHostsAndCachedHosts
 argument_list|(
 name|blkLocations
 argument_list|,
@@ -1885,6 +1935,14 @@ argument_list|,
 name|bytesRemaining
 argument_list|,
 name|splitHosts
+index|[
+literal|0
+index|]
+argument_list|,
+name|splitHosts
+index|[
+literal|1
+index|]
 argument_list|)
 argument_list|)
 expr_stmt|;
@@ -1894,9 +1952,10 @@ else|else
 block|{
 name|String
 index|[]
+index|[]
 name|splitHosts
 init|=
-name|getSplitHosts
+name|getSplitHostsAndCachedHosts
 argument_list|(
 name|blkLocations
 argument_list|,
@@ -1920,6 +1979,14 @@ argument_list|,
 name|length
 argument_list|,
 name|splitHosts
+index|[
+literal|0
+index|]
+argument_list|,
+name|splitHosts
+index|[
+literal|1
+index|]
 argument_list|)
 argument_list|)
 expr_stmt|;
@@ -2831,12 +2898,52 @@ block|}
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**     * This function identifies and returns the hosts that contribute     * most for a given split. For calculating the contribution, rack    * locality is treated on par with host locality, so hosts from racks    * that contribute the most are preferred over hosts on racks that     * contribute less    * @param blkLocations The list of block locations    * @param offset     * @param splitSize     * @return array of hosts that contribute most to this split    * @throws IOException    */
+comment|/**     * This function identifies and returns the hosts that contribute     * most for a given split. For calculating the contribution, rack    * locality is treated on par with host locality, so hosts from racks    * that contribute the most are preferred over hosts on racks that     * contribute less    * @param blkLocations The list of block locations    * @param offset     * @param splitSize     * @return an array of hosts that contribute most to this split    * @throws IOException    */
 DECL|method|getSplitHosts (BlockLocation[] blkLocations, long offset, long splitSize, NetworkTopology clusterMap)
 specifier|protected
 name|String
 index|[]
 name|getSplitHosts
+parameter_list|(
+name|BlockLocation
+index|[]
+name|blkLocations
+parameter_list|,
+name|long
+name|offset
+parameter_list|,
+name|long
+name|splitSize
+parameter_list|,
+name|NetworkTopology
+name|clusterMap
+parameter_list|)
+throws|throws
+name|IOException
+block|{
+return|return
+name|getSplitHostsAndCachedHosts
+argument_list|(
+name|blkLocations
+argument_list|,
+name|offset
+argument_list|,
+name|splitSize
+argument_list|,
+name|clusterMap
+argument_list|)
+index|[
+literal|0
+index|]
+return|;
+block|}
+comment|/**     * This function identifies and returns the hosts that contribute     * most for a given split. For calculating the contribution, rack    * locality is treated on par with host locality, so hosts from racks    * that contribute the most are preferred over hosts on racks that     * contribute less    * @param blkLocations The list of block locations    * @param offset     * @param splitSize     * @return two arrays - one of hosts that contribute most to this split, and    *    one of hosts that contribute most to this split that have the data    *    cached on them    * @throws IOException    */
+DECL|method|getSplitHostsAndCachedHosts (BlockLocation[] blkLocations, long offset, long splitSize, NetworkTopology clusterMap)
+specifier|private
+name|String
+index|[]
+index|[]
+name|getSplitHostsAndCachedHosts
 parameter_list|(
 name|BlockLocation
 index|[]
@@ -2894,6 +3001,11 @@ name|splitSize
 condition|)
 block|{
 return|return
+operator|new
+name|String
+index|[]
+index|[]
+block|{
 name|blkLocations
 index|[
 name|startIndex
@@ -2901,6 +3013,15 @@ index|]
 operator|.
 name|getHosts
 argument_list|()
+block|,
+name|blkLocations
+index|[
+name|startIndex
+index|]
+operator|.
+name|getCachedHosts
+argument_list|()
+block|}
 return|;
 block|}
 name|long
@@ -3277,7 +3398,13 @@ block|}
 comment|// for all topos
 block|}
 comment|// for all indices
+comment|// We don't yet support cached hosts when bytesInThisBlock> splitSize
 return|return
+operator|new
+name|String
+index|[]
+index|[]
+block|{
 name|identifyHosts
 argument_list|(
 name|allTopos
@@ -3286,6 +3413,13 @@ name|length
 argument_list|,
 name|racksMap
 argument_list|)
+block|,
+operator|new
+name|String
+index|[
+literal|0
+index|]
+block|}
 return|;
 block|}
 DECL|method|identifyHosts (int replicationFactor, Map<Node,NodeInfo> racksMap)

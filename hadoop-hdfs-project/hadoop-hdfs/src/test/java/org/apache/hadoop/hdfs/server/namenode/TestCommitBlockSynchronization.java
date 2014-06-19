@@ -204,18 +204,6 @@ name|org
 operator|.
 name|mockito
 operator|.
-name|Matchers
-operator|.
-name|anyBoolean
-import|;
-end_import
-
-begin_import
-import|import static
-name|org
-operator|.
-name|mockito
-operator|.
 name|Mockito
 operator|.
 name|*
@@ -307,6 +295,13 @@ argument_list|,
 name|image
 argument_list|)
 decl_stmt|;
+name|namesystem
+operator|.
+name|setImageLoaded
+argument_list|(
+literal|true
+argument_list|)
+expr_stmt|;
 name|FSNamesystem
 name|namesystemSpy
 init|=
