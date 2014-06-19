@@ -2813,6 +2813,10 @@ name|addCloseOp
 operator|.
 name|aclEntries
 argument_list|,
+name|addCloseOp
+operator|.
+name|xAttrs
+argument_list|,
 name|replication
 argument_list|,
 name|addCloseOp
@@ -5159,7 +5163,7 @@ name|op
 decl_stmt|;
 name|fsDir
 operator|.
-name|unprotectedSetXAttr
+name|unprotectedSetXAttrs
 argument_list|(
 name|setXAttrOp
 operator|.
@@ -5167,7 +5171,7 @@ name|src
 argument_list|,
 name|setXAttrOp
 operator|.
-name|xAttr
+name|xAttrs
 argument_list|,
 name|EnumSet
 operator|.
@@ -5218,7 +5222,7 @@ name|op
 decl_stmt|;
 name|fsDir
 operator|.
-name|unprotectedRemoveXAttr
+name|unprotectedRemoveXAttrs
 argument_list|(
 name|removeXAttrOp
 operator|.
@@ -5226,7 +5230,7 @@ name|src
 argument_list|,
 name|removeXAttrOp
 operator|.
-name|xAttr
+name|xAttrs
 argument_list|)
 expr_stmt|;
 break|break;
