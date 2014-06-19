@@ -2295,6 +2295,25 @@ name|DEFAULT_MR_AM_HISTORY_USE_BATCHED_FLUSH_QUEUE_SIZE_THRESHOLD
 init|=
 literal|50
 decl_stmt|;
+comment|/**    * The threshold in terms of seconds after which an unsatisfied mapper request    * triggers reducer preemption to free space. Default 0 implies that the reduces    * should be preempted immediately after allocation if there is currently no    * room for newly allocated mappers.    */
+DECL|field|MR_JOB_REDUCER_PREEMPT_DELAY_SEC
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|MR_JOB_REDUCER_PREEMPT_DELAY_SEC
+init|=
+literal|"mapreduce.job.reducer.preempt.delay.sec"
+decl_stmt|;
+DECL|field|DEFAULT_MR_JOB_REDUCER_PREEMPT_DELAY_SEC
+specifier|public
+specifier|static
+specifier|final
+name|int
+name|DEFAULT_MR_JOB_REDUCER_PREEMPT_DELAY_SEC
+init|=
+literal|0
+decl_stmt|;
 DECL|field|MR_AM_ENV
 specifier|public
 specifier|static
