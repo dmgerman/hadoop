@@ -3956,6 +3956,16 @@ name|getSaverContext
 argument_list|()
 argument_list|)
 decl_stmt|;
+if|if
+condition|(
+name|n
+operator|.
+name|getBlocks
+argument_list|()
+operator|!=
+literal|null
+condition|)
+block|{
 for|for
 control|(
 name|Block
@@ -3979,6 +3989,7 @@ name|block
 argument_list|)
 argument_list|)
 expr_stmt|;
+block|}
 block|}
 name|FileUnderConstructionFeature
 name|uc

@@ -784,7 +784,9 @@ condition|)
 block|{
 name|newBlocks
 operator|=
-literal|null
+name|BlockInfo
+operator|.
+name|EMPTY_ARRAY
 expr_stmt|;
 block|}
 else|else
