@@ -14124,7 +14124,6 @@ argument_list|)
 decl_stmt|;
 if|if
 condition|(
-operator|(
 name|leaseFile
 operator|!=
 literal|null
@@ -14134,17 +14133,6 @@ operator|.
 name|equals
 argument_list|(
 name|lease
-argument_list|)
-operator|)
-operator|||
-name|lease
-operator|.
-name|getHolder
-argument_list|()
-operator|.
-name|equals
-argument_list|(
-name|holder
 argument_list|)
 condition|)
 block|{
