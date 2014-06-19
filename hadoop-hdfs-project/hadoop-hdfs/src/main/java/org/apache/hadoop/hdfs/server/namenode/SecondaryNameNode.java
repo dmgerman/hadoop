@@ -5111,8 +5111,6 @@ expr_stmt|;
 block|}
 name|dstNamesystem
 operator|.
-name|dir
-operator|.
 name|imageLoadComplete
 argument_list|()
 expr_stmt|;

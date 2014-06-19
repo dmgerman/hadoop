@@ -44,39 +44,11 @@ begin_import
 import|import static
 name|org
 operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|util
-operator|.
-name|Time
-operator|.
-name|now
-import|;
-end_import
-
-begin_import
-import|import static
-name|org
-operator|.
 name|junit
 operator|.
 name|Assert
 operator|.
 name|assertEquals
-import|;
-end_import
-
-begin_import
-import|import static
-name|org
-operator|.
-name|mockito
-operator|.
-name|Matchers
-operator|.
-name|anyObject
 import|;
 end_import
 
@@ -101,18 +73,6 @@ operator|.
 name|Mockito
 operator|.
 name|mock
-import|;
-end_import
-
-begin_import
-import|import static
-name|org
-operator|.
-name|mockito
-operator|.
-name|Mockito
-operator|.
-name|when
 import|;
 end_import
 
@@ -439,10 +399,7 @@ argument_list|)
 decl_stmt|;
 name|fsn
 operator|.
-name|getFSDirectory
-argument_list|()
-operator|.
-name|setReady
+name|setImageLoaded
 argument_list|(
 name|fsIsReady
 argument_list|)

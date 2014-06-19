@@ -114,32 +114,6 @@ name|util
 operator|.
 name|concurrent
 operator|.
-name|TimeUnit
-import|;
-end_import
-
-begin_import
-import|import
-name|java
-operator|.
-name|util
-operator|.
-name|concurrent
-operator|.
-name|locks
-operator|.
-name|Condition
-import|;
-end_import
-
-begin_import
-import|import
-name|java
-operator|.
-name|util
-operator|.
-name|concurrent
-operator|.
 name|locks
 operator|.
 name|ReentrantReadWriteLock
@@ -155,6 +129,20 @@ operator|.
 name|hadoop
 operator|.
 name|HadoopIllegalArgumentException
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|classification
+operator|.
+name|InterfaceAudience
 import|;
 end_import
 
@@ -967,10 +955,14 @@ import|;
 end_import
 
 begin_comment
-comment|/*************************************************  * FSDirectory stores the filesystem directory state.  * It handles writing/loading values to disk, and logging  * changes as we go.  *  * It keeps the filename->blockset mapping always-current  * and logged to disk.  *   *************************************************/
+comment|/**  * Both FSDirectory and FSNamesystem manage the state of the namespace.  * FSDirectory is a pure in-memory data structure, all of whose operations  * happen entirely in memory. In contrast, FSNamesystem persists the operations  * to the disk.  * @see org.apache.hadoop.hdfs.server.namenode.FSNamesystem  **/
 end_comment
 
 begin_class
+annotation|@
+name|InterfaceAudience
+operator|.
+name|Private
 DECL|class|FSDirectory
 specifier|public
 class|class
@@ -1138,14 +1130,6 @@ specifier|final
 name|FSNamesystem
 name|namesystem
 decl_stmt|;
-DECL|field|ready
-specifier|private
-specifier|volatile
-name|boolean
-name|ready
-init|=
-literal|false
-decl_stmt|;
 DECL|field|skipQuotaCheck
 specifier|private
 specifier|volatile
@@ -1209,12 +1193,6 @@ specifier|private
 specifier|final
 name|ReentrantReadWriteLock
 name|dirLock
-decl_stmt|;
-DECL|field|cond
-specifier|private
-specifier|final
-name|Condition
-name|cond
 decl_stmt|;
 comment|// utility methods to acquire and release read lock and write lock
 DECL|method|readLock ()
@@ -1375,18 +1353,6 @@ literal|true
 argument_list|)
 expr_stmt|;
 comment|// fair
-name|this
-operator|.
-name|cond
-operator|=
-name|dirLock
-operator|.
-name|writeLock
-argument_list|()
-operator|.
-name|newCondition
-argument_list|()
-expr_stmt|;
 name|rootDir
 operator|=
 name|createRoot
@@ -1641,93 +1607,6 @@ return|return
 name|rootDir
 return|;
 block|}
-comment|/**    * Notify that loading of this FSDirectory is complete, and    * it is ready for use     */
-DECL|method|imageLoadComplete ()
-name|void
-name|imageLoadComplete
-parameter_list|()
-block|{
-name|Preconditions
-operator|.
-name|checkState
-argument_list|(
-operator|!
-name|ready
-argument_list|,
-literal|"FSDirectory already loaded"
-argument_list|)
-expr_stmt|;
-name|setReady
-argument_list|()
-expr_stmt|;
-block|}
-DECL|method|setReady ()
-name|void
-name|setReady
-parameter_list|()
-block|{
-if|if
-condition|(
-name|ready
-condition|)
-return|return;
-name|writeLock
-argument_list|()
-expr_stmt|;
-try|try
-block|{
-name|setReady
-argument_list|(
-literal|true
-argument_list|)
-expr_stmt|;
-name|this
-operator|.
-name|nameCache
-operator|.
-name|initialized
-argument_list|()
-expr_stmt|;
-name|cond
-operator|.
-name|signalAll
-argument_list|()
-expr_stmt|;
-block|}
-finally|finally
-block|{
-name|writeUnlock
-argument_list|()
-expr_stmt|;
-block|}
-block|}
-comment|//This is for testing purposes only
-annotation|@
-name|VisibleForTesting
-DECL|method|isReady ()
-name|boolean
-name|isReady
-parameter_list|()
-block|{
-return|return
-name|ready
-return|;
-block|}
-comment|// exposed for unit tests
-DECL|method|setReady (boolean flag)
-specifier|protected
-name|void
-name|setReady
-parameter_list|(
-name|boolean
-name|flag
-parameter_list|)
-block|{
-name|ready
-operator|=
-name|flag
-expr_stmt|;
-block|}
 comment|/**    * Shutdown the filestore    */
 annotation|@
 name|Override
@@ -1745,57 +1624,27 @@ name|close
 argument_list|()
 expr_stmt|;
 block|}
-comment|/**    * Block until the object is ready to be used.    */
-DECL|method|waitForReady ()
+DECL|method|markNameCacheInitialized ()
 name|void
-name|waitForReady
+name|markNameCacheInitialized
 parameter_list|()
-block|{
-if|if
-condition|(
-operator|!
-name|ready
-condition|)
 block|{
 name|writeLock
 argument_list|()
 expr_stmt|;
 try|try
 block|{
-while|while
-condition|(
-operator|!
-name|ready
-condition|)
-block|{
-try|try
-block|{
-name|cond
+name|nameCache
 operator|.
-name|await
-argument_list|(
-literal|5000
-argument_list|,
-name|TimeUnit
-operator|.
-name|MILLISECONDS
-argument_list|)
+name|initialized
+argument_list|()
 expr_stmt|;
-block|}
-catch|catch
-parameter_list|(
-name|InterruptedException
-name|ignored
-parameter_list|)
-block|{           }
-block|}
 block|}
 finally|finally
 block|{
 name|writeUnlock
 argument_list|()
 expr_stmt|;
-block|}
 block|}
 block|}
 comment|/** Enable quota verification */
@@ -1857,9 +1706,6 @@ name|SnapshotAccessControlException
 throws|,
 name|AclException
 block|{
-name|waitForReady
-argument_list|()
-expr_stmt|;
 name|long
 name|modTime
 init|=
@@ -2193,9 +2039,6 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
-name|waitForReady
-argument_list|()
-expr_stmt|;
 name|writeLock
 argument_list|()
 expr_stmt|;
@@ -2343,9 +2186,6 @@ operator|.
 name|isUnderConstruction
 argument_list|()
 argument_list|)
-expr_stmt|;
-name|waitForReady
-argument_list|()
 expr_stmt|;
 name|writeLock
 argument_list|()
@@ -2528,9 +2368,6 @@ name|dst
 argument_list|)
 expr_stmt|;
 block|}
-name|waitForReady
-argument_list|()
-expr_stmt|;
 name|writeLock
 argument_list|()
 expr_stmt|;
@@ -2621,9 +2458,6 @@ name|dst
 argument_list|)
 expr_stmt|;
 block|}
-name|waitForReady
-argument_list|()
-expr_stmt|;
 name|writeLock
 argument_list|()
 expr_stmt|;
@@ -5329,9 +5163,6 @@ name|UnresolvedLinkException
 throws|,
 name|SnapshotAccessControlException
 block|{
-name|waitForReady
-argument_list|()
-expr_stmt|;
 name|writeLock
 argument_list|()
 expr_stmt|;
@@ -5909,9 +5740,6 @@ expr_stmt|;
 try|try
 block|{
 comment|// actual move
-name|waitForReady
-argument_list|()
-expr_stmt|;
 name|unprotectedConcat
 argument_list|(
 name|target
@@ -6327,9 +6155,6 @@ name|src
 argument_list|)
 expr_stmt|;
 block|}
-name|waitForReady
-argument_list|()
-expr_stmt|;
 specifier|final
 name|long
 name|filesRemoved
@@ -8443,7 +8268,10 @@ assert|;
 if|if
 condition|(
 operator|!
-name|ready
+name|namesystem
+operator|.
+name|isImageLoaded
+argument_list|()
 condition|)
 block|{
 comment|//still initializing. do not check or update quotas.
@@ -9367,7 +9195,10 @@ block|{
 if|if
 condition|(
 operator|!
-name|ready
+name|namesystem
+operator|.
+name|isImageLoaded
+argument_list|()
 operator|||
 name|skipQuotaCheck
 condition|)
@@ -9673,7 +9504,10 @@ decl_stmt|;
 if|if
 condition|(
 operator|!
-name|ready
+name|namesystem
+operator|.
+name|isImageLoaded
+argument_list|()
 condition|)
 block|{
 name|s
@@ -9783,7 +9617,10 @@ argument_list|)
 decl_stmt|;
 if|if
 condition|(
-name|ready
+name|namesystem
+operator|.
+name|isImageLoaded
+argument_list|()
 condition|)
 block|{
 throw|throw
@@ -9874,7 +9711,10 @@ argument_list|)
 decl_stmt|;
 if|if
 condition|(
-name|ready
+name|namesystem
+operator|.
+name|isImageLoaded
+argument_list|()
 condition|)
 block|{
 name|e
@@ -11361,11 +11201,6 @@ argument_list|()
 expr_stmt|;
 try|try
 block|{
-name|setReady
-argument_list|(
-literal|false
-argument_list|)
-expr_stmt|;
 name|rootDir
 operator|=
 name|createRoot
