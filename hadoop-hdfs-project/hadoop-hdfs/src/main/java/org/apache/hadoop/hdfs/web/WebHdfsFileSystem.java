@@ -2074,15 +2074,6 @@ name|nnAddrs
 operator|.
 name|length
 expr_stmt|;
-name|delegationToken
-operator|=
-literal|null
-expr_stmt|;
-name|tokenAspect
-operator|.
-name|reset
-argument_list|()
-expr_stmt|;
 block|}
 comment|/**    * Return a URL pointing to given path on the namenode.    *    * @param path to obtain the URL for    * @param query string to append to the path    * @return namenode URL referring to the given path    * @throws IOException on error constructing the URL    */
 DECL|method|getNamenodeURL (String path, String query)
