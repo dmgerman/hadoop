@@ -197,6 +197,24 @@ name|LogInfo
 argument_list|(
 literal|"Total number of info log events"
 argument_list|)
+block|,
+DECL|enumConstant|GcNumWarnThresholdExceeded
+name|GcNumWarnThresholdExceeded
+argument_list|(
+literal|"Number of times that the GC warn threshold is exceeded"
+argument_list|)
+block|,
+DECL|enumConstant|GcNumInfoThresholdExceeded
+name|GcNumInfoThresholdExceeded
+argument_list|(
+literal|"Number of times that the GC info threshold is exceeded"
+argument_list|)
+block|,
+DECL|enumConstant|GcTotalExtraSleepTime
+name|GcTotalExtraSleepTime
+argument_list|(
+literal|"Total GC extra sleep time in milliseconds"
+argument_list|)
 block|;
 DECL|field|desc
 specifier|private

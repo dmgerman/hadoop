@@ -489,7 +489,13 @@ specifier|final
 name|String
 name|name
 decl_stmt|;
-DECL|method|DataNodeMetrics (String name, String sessionId, int[] intervals)
+DECL|field|jvmMetrics
+name|JvmMetrics
+name|jvmMetrics
+init|=
+literal|null
+decl_stmt|;
+DECL|method|DataNodeMetrics (String name, String sessionId, int[] intervals, final JvmMetrics jvmMetrics)
 specifier|public
 name|DataNodeMetrics
 parameter_list|(
@@ -502,6 +508,10 @@ parameter_list|,
 name|int
 index|[]
 name|intervals
+parameter_list|,
+specifier|final
+name|JvmMetrics
+name|jvmMetrics
 parameter_list|)
 block|{
 name|this
@@ -509,6 +519,12 @@ operator|.
 name|name
 operator|=
 name|name
+expr_stmt|;
+name|this
+operator|.
+name|jvmMetrics
+operator|=
+name|jvmMetrics
 expr_stmt|;
 name|registry
 operator|.
@@ -748,6 +764,9 @@ name|instance
 argument_list|()
 decl_stmt|;
 name|JvmMetrics
+name|jm
+init|=
+name|JvmMetrics
 operator|.
 name|create
 argument_list|(
@@ -757,7 +776,7 @@ name|sessionId
 argument_list|,
 name|ms
 argument_list|)
-expr_stmt|;
+decl_stmt|;
 name|String
 name|name
 init|=
@@ -820,6 +839,8 @@ argument_list|,
 name|sessionId
 argument_list|,
 name|intervals
+argument_list|,
+name|jm
 argument_list|)
 argument_list|)
 return|;
@@ -832,6 +853,16 @@ parameter_list|()
 block|{
 return|return
 name|name
+return|;
+block|}
+DECL|method|getJvmMetrics ()
+specifier|public
+name|JvmMetrics
+name|getJvmMetrics
+parameter_list|()
+block|{
+return|return
+name|jvmMetrics
 return|;
 block|}
 DECL|method|addHeartbeat (long latency)

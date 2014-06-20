@@ -2786,6 +2786,16 @@ operator|.
 name|start
 argument_list|()
 expr_stmt|;
+name|metrics
+operator|.
+name|getJvmMetrics
+argument_list|()
+operator|.
+name|setPauseMonitor
+argument_list|(
+name|pauseMonitor
+argument_list|)
+expr_stmt|;
 name|startCommonServices
 argument_list|(
 name|conf

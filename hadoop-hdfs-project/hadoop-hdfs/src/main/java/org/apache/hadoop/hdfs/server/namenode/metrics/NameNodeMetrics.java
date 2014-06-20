@@ -576,7 +576,13 @@ DECL|field|putImage
 name|MutableRate
 name|putImage
 decl_stmt|;
-DECL|method|NameNodeMetrics (String processName, String sessionId, int[] intervals)
+DECL|field|jvmMetrics
+name|JvmMetrics
+name|jvmMetrics
+init|=
+literal|null
+decl_stmt|;
+DECL|method|NameNodeMetrics (String processName, String sessionId, int[] intervals, final JvmMetrics jvmMetrics)
 name|NameNodeMetrics
 parameter_list|(
 name|String
@@ -588,8 +594,18 @@ parameter_list|,
 name|int
 index|[]
 name|intervals
+parameter_list|,
+specifier|final
+name|JvmMetrics
+name|jvmMetrics
 parameter_list|)
 block|{
+name|this
+operator|.
+name|jvmMetrics
+operator|=
+name|jvmMetrics
+expr_stmt|;
 name|registry
 operator|.
 name|tag
@@ -777,6 +793,9 @@ name|instance
 argument_list|()
 decl_stmt|;
 name|JvmMetrics
+name|jm
+init|=
+name|JvmMetrics
 operator|.
 name|create
 argument_list|(
@@ -786,7 +805,7 @@ name|sessionId
 argument_list|,
 name|ms
 argument_list|)
-expr_stmt|;
+decl_stmt|;
 comment|// Percentile measurement is off by default, by watching no intervals
 name|int
 index|[]
@@ -814,8 +833,20 @@ argument_list|,
 name|sessionId
 argument_list|,
 name|intervals
+argument_list|,
+name|jm
 argument_list|)
 argument_list|)
+return|;
+block|}
+DECL|method|getJvmMetrics ()
+specifier|public
+name|JvmMetrics
+name|getJvmMetrics
+parameter_list|()
+block|{
+return|return
+name|jvmMetrics
 return|;
 block|}
 DECL|method|shutdown ()

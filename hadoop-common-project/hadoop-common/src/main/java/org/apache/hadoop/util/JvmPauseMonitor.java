@@ -300,6 +300,27 @@ name|INFO_THRESHOLD_DEFAULT
 init|=
 literal|1000
 decl_stmt|;
+DECL|field|numGcWarnThresholdExceeded
+specifier|private
+name|long
+name|numGcWarnThresholdExceeded
+init|=
+literal|0
+decl_stmt|;
+DECL|field|numGcInfoThresholdExceeded
+specifier|private
+name|long
+name|numGcInfoThresholdExceeded
+init|=
+literal|0
+decl_stmt|;
+DECL|field|totalGcExtraSleepTime
+specifier|private
+name|long
+name|totalGcExtraSleepTime
+init|=
+literal|0
+decl_stmt|;
 DECL|field|monitorThread
 specifier|private
 name|Thread
@@ -419,6 +440,48 @@ name|interrupt
 argument_list|()
 expr_stmt|;
 block|}
+block|}
+DECL|method|isStarted ()
+specifier|public
+name|boolean
+name|isStarted
+parameter_list|()
+block|{
+return|return
+name|monitorThread
+operator|!=
+literal|null
+return|;
+block|}
+DECL|method|getNumGcWarnThreadholdExceeded ()
+specifier|public
+name|long
+name|getNumGcWarnThreadholdExceeded
+parameter_list|()
+block|{
+return|return
+name|numGcWarnThresholdExceeded
+return|;
+block|}
+DECL|method|getNumGcInfoThresholdExceeded ()
+specifier|public
+name|long
+name|getNumGcInfoThresholdExceeded
+parameter_list|()
+block|{
+return|return
+name|numGcInfoThresholdExceeded
+return|;
+block|}
+DECL|method|getTotalGcExtraSleepTime ()
+specifier|public
+name|long
+name|getTotalGcExtraSleepTime
+parameter_list|()
+block|{
+return|return
+name|totalGcExtraSleepTime
+return|;
 block|}
 DECL|method|formatMessage (long extraSleepTime, Map<String, GcTimes> gcTimesAfterSleep, Map<String, GcTimes> gcTimesBeforeSleep)
 specifier|private
@@ -848,6 +911,9 @@ operator|>
 name|warnThresholdMs
 condition|)
 block|{
+operator|++
+name|numGcWarnThresholdExceeded
+expr_stmt|;
 name|LOG
 operator|.
 name|warn
@@ -871,6 +937,9 @@ operator|>
 name|infoThresholdMs
 condition|)
 block|{
+operator|++
+name|numGcInfoThresholdExceeded
+expr_stmt|;
 name|LOG
 operator|.
 name|info
@@ -886,6 +955,10 @@ argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
+name|totalGcExtraSleepTime
+operator|+=
+name|extraSleepTime
+expr_stmt|;
 name|gcTimesBeforeSleep
 operator|=
 name|gcTimesAfterSleep
