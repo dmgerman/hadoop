@@ -96,6 +96,35 @@ name|taskAttemptID
 operator|)
 return|;
 block|}
+comment|/**    * Always throws {@link RuntimeException} because this method is not    * supposed to be called at runtime. This method is only for keeping    * binary compatibility with Hive 0.13. MAPREDUCE-5830 for the details.    * @deprecated Use {@link #getTaskLogUrl(String, String, String, String)}    * to construct the taskLogUrl.    */
+annotation|@
+name|Deprecated
+DECL|method|getTaskLogUrl (String taskTrackerHostName, String httpPort, String taskAttemptID)
+specifier|public
+specifier|static
+name|String
+name|getTaskLogUrl
+parameter_list|(
+name|String
+name|taskTrackerHostName
+parameter_list|,
+name|String
+name|httpPort
+parameter_list|,
+name|String
+name|taskAttemptID
+parameter_list|)
+block|{
+throw|throw
+operator|new
+name|RuntimeException
+argument_list|(
+literal|"This method is not supposed to be called at runtime. "
+operator|+
+literal|"Use HostUtil.getTaskLogUrl(String, String, String, String) instead."
+argument_list|)
+throw|;
+block|}
 DECL|method|convertTrackerNameToHostName (String trackerName)
 specifier|public
 specifier|static
