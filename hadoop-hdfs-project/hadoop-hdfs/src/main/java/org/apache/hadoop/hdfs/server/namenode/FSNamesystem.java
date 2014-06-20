@@ -13819,6 +13819,11 @@ argument_list|,
 literal|0
 argument_list|,
 name|diff
+operator|*
+name|file
+operator|.
+name|getBlockReplication
+argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
