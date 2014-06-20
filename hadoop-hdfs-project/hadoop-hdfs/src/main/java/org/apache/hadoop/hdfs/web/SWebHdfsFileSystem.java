@@ -102,28 +102,15 @@ return|;
 block|}
 annotation|@
 name|Override
-DECL|method|initializeTokenAspect ()
+DECL|method|getTokenKind ()
 specifier|protected
-specifier|synchronized
-name|void
-name|initializeTokenAspect
+name|Text
+name|getTokenKind
 parameter_list|()
 block|{
-name|tokenAspect
-operator|=
-operator|new
-name|TokenAspect
-argument_list|<
-name|SWebHdfsFileSystem
-argument_list|>
-argument_list|(
-name|this
-argument_list|,
-name|tokenServiceName
-argument_list|,
+return|return
 name|TOKEN_KIND
-argument_list|)
-expr_stmt|;
+return|;
 block|}
 annotation|@
 name|Override
