@@ -3710,9 +3710,8 @@ block|{
 return|return
 name|namesystem
 operator|.
-name|dir
-operator|.
-name|fsImage
+name|getFSImage
+argument_list|()
 return|;
 block|}
 comment|/**    * @return NameNode RPC address    */
@@ -5073,9 +5072,8 @@ block|}
 block|}
 name|nsys
 operator|.
-name|dir
-operator|.
-name|fsImage
+name|getFSImage
+argument_list|()
 operator|.
 name|doRollback
 argument_list|(

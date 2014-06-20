@@ -2658,14 +2658,6 @@ argument_list|,
 name|checkpointEditsDirs
 argument_list|)
 decl_stmt|;
-name|target
-operator|.
-name|dir
-operator|.
-name|fsImage
-operator|=
-name|ckptImage
-expr_stmt|;
 comment|// load from the checkpoint dirs
 try|try
 block|{
@@ -2731,14 +2723,6 @@ name|StartupOption
 operator|.
 name|IMPORT
 argument_list|)
-expr_stmt|;
-name|target
-operator|.
-name|dir
-operator|.
-name|fsImage
-operator|=
-name|realImage
 expr_stmt|;
 name|realImage
 operator|.

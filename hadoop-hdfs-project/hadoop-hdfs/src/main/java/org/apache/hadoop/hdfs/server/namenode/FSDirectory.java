@@ -1130,10 +1130,6 @@ DECL|field|rootDir
 name|INodeDirectory
 name|rootDir
 decl_stmt|;
-DECL|field|fsImage
-name|FSImage
-name|fsImage
-decl_stmt|;
 DECL|field|namesystem
 specifier|private
 specifier|final
@@ -1339,12 +1335,9 @@ name|ByteArray
 argument_list|>
 name|nameCache
 decl_stmt|;
-DECL|method|FSDirectory (FSImage fsImage, FSNamesystem ns, Configuration conf)
+DECL|method|FSDirectory (FSNamesystem ns, Configuration conf)
 name|FSDirectory
 parameter_list|(
-name|FSImage
-name|fsImage
-parameter_list|,
 name|FSNamesystem
 name|ns
 parameter_list|,
@@ -1378,12 +1371,6 @@ name|newInstance
 argument_list|(
 name|rootDir
 argument_list|)
-expr_stmt|;
-name|this
-operator|.
-name|fsImage
-operator|=
-name|fsImage
 expr_stmt|;
 name|int
 name|configuredLimit
@@ -1627,13 +1614,7 @@ name|close
 parameter_list|()
 throws|throws
 name|IOException
-block|{
-name|fsImage
-operator|.
-name|close
-argument_list|()
-expr_stmt|;
-block|}
+block|{}
 DECL|method|markNameCacheInitialized ()
 name|void
 name|markNameCacheInitialized
