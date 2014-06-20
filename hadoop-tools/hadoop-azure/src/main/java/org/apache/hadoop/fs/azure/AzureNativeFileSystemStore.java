@@ -6056,7 +6056,7 @@ operator|!=
 literal|null
 condition|)
 block|{
-name|inDataStream
+name|in
 operator|.
 name|close
 argument_list|()
