@@ -114,20 +114,6 @@ name|hadoop
 operator|.
 name|fs
 operator|.
-name|UnresolvedLinkException
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|fs
-operator|.
 name|permission
 operator|.
 name|PermissionStatus
@@ -161,22 +147,6 @@ operator|.
 name|protocol
 operator|.
 name|QuotaExceededException
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|hdfs
-operator|.
-name|protocol
-operator|.
-name|SnapshotAccessControlException
 import|;
 end_import
 
@@ -1828,6 +1798,7 @@ return|;
 block|}
 comment|/**    * Search for the given INode in the children list and the deleted lists of    * snapshots.    * @return {@link Snapshot#CURRENT_STATE_ID} if the inode is in the children    * list; {@link Snapshot#NO_SNAPSHOT_ID} if the inode is neither in the    * children list nor in any snapshot; otherwise the snapshot id of the    * corresponding snapshot diff list.    */
 DECL|method|searchChild (INode inode)
+specifier|public
 name|int
 name|searchChild
 parameter_list|(
@@ -3559,6 +3530,22 @@ operator|==
 name|other
 operator|.
 name|getPermissionLong
+argument_list|()
+operator|&&
+name|getAclFeature
+argument_list|()
+operator|==
+name|other
+operator|.
+name|getAclFeature
+argument_list|()
+operator|&&
+name|getXAttrFeature
+argument_list|()
+operator|==
+name|other
+operator|.
+name|getXAttrFeature
 argument_list|()
 return|;
 block|}

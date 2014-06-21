@@ -887,6 +887,55 @@ return|return
 name|this
 return|;
 block|}
+annotation|@
+name|Override
+DECL|method|metadataEquals (INodeFileAttributes other)
+specifier|public
+name|boolean
+name|metadataEquals
+parameter_list|(
+name|INodeFileAttributes
+name|other
+parameter_list|)
+block|{
+return|return
+name|other
+operator|!=
+literal|null
+operator|&&
+name|getHeaderLong
+argument_list|()
+operator|==
+name|other
+operator|.
+name|getHeaderLong
+argument_list|()
+operator|&&
+name|getPermissionLong
+argument_list|()
+operator|==
+name|other
+operator|.
+name|getPermissionLong
+argument_list|()
+operator|&&
+name|getAclFeature
+argument_list|()
+operator|==
+name|other
+operator|.
+name|getAclFeature
+argument_list|()
+operator|&&
+name|getXAttrFeature
+argument_list|()
+operator|==
+name|other
+operator|.
+name|getXAttrFeature
+argument_list|()
+return|;
+block|}
 comment|/* Start of Under-Construction Feature */
 comment|/**    * If the inode contains a {@link FileUnderConstructionFeature}, return it;    * otherwise, return null.    */
 DECL|method|getFileUnderConstructionFeature ()
