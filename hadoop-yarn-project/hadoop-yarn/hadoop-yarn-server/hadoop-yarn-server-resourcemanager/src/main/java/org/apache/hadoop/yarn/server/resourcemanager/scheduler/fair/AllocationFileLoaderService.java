@@ -1242,6 +1242,7 @@ decl_stmt|;
 name|float
 name|queueMaxAMShareDefault
 init|=
+operator|-
 literal|1.0f
 decl_stmt|;
 name|long
