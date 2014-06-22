@@ -225,15 +225,15 @@ index|[]
 name|IV
 parameter_list|)
 function_decl|;
-comment|/**    * Generate secure random.    * @param bytes length of the secure random    * @return byte[] the secure random    */
-DECL|method|generateSecureRandom (int bytes)
+comment|/**    * Generate a number of secure, random bytes suitable for cryptographic use.    * This method needs to be thread-safe.    *    * @param bytes byte array to populate with random data    */
+DECL|method|generateSecureRandom (byte[] bytes)
 specifier|public
 specifier|abstract
-name|byte
-index|[]
+name|void
 name|generateSecureRandom
 parameter_list|(
-name|int
+name|byte
+index|[]
 name|bytes
 parameter_list|)
 function_decl|;
