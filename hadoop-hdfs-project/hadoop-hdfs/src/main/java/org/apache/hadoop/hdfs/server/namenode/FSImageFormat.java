@@ -3512,8 +3512,6 @@ argument_list|(
 name|clientName
 argument_list|,
 name|clientMachine
-argument_list|,
-literal|null
 argument_list|)
 expr_stmt|;
 block|}
@@ -4371,11 +4369,6 @@ argument_list|,
 name|uc
 operator|.
 name|getClientMachine
-argument_list|()
-argument_list|,
-name|uc
-operator|.
-name|getClientNode
 argument_list|()
 argument_list|)
 expr_stmt|;

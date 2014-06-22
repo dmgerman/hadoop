@@ -124,16 +124,6 @@ begin_import
 import|import
 name|org
 operator|.
-name|junit
-operator|.
-name|Assert
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
 name|apache
 operator|.
 name|commons
@@ -1861,8 +1851,6 @@ argument_list|(
 literal|"client"
 argument_list|,
 literal|"machine"
-argument_list|,
-literal|null
 argument_list|)
 expr_stmt|;
 comment|//cast to INodeFile, should success
@@ -6410,8 +6398,6 @@ argument_list|(
 name|clientName
 argument_list|,
 name|clientMachine
-argument_list|,
-literal|null
 argument_list|)
 expr_stmt|;
 name|assertTrue
@@ -6447,16 +6433,6 @@ argument_list|,
 name|uc
 operator|.
 name|getClientMachine
-argument_list|()
-argument_list|)
-expr_stmt|;
-name|Assert
-operator|.
-name|assertNull
-argument_list|(
-name|uc
-operator|.
-name|getClientNode
 argument_list|()
 argument_list|)
 expr_stmt|;

@@ -244,24 +244,6 @@ name|server
 operator|.
 name|blockmanagement
 operator|.
-name|DatanodeDescriptor
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|hdfs
-operator|.
-name|server
-operator|.
-name|blockmanagement
-operator|.
 name|DatanodeStorageInfo
 import|;
 end_import
@@ -972,7 +954,7 @@ literal|null
 return|;
 block|}
 comment|/** Convert this file to an {@link INodeFileUnderConstruction}. */
-DECL|method|toUnderConstruction (String clientName, String clientMachine, DatanodeDescriptor clientNode)
+DECL|method|toUnderConstruction (String clientName, String clientMachine)
 name|INodeFile
 name|toUnderConstruction
 parameter_list|(
@@ -981,9 +963,6 @@ name|clientName
 parameter_list|,
 name|String
 name|clientMachine
-parameter_list|,
-name|DatanodeDescriptor
-name|clientNode
 parameter_list|)
 block|{
 name|Preconditions
@@ -1006,8 +985,6 @@ argument_list|(
 name|clientName
 argument_list|,
 name|clientMachine
-argument_list|,
-name|clientNode
 argument_list|)
 decl_stmt|;
 name|addFeature

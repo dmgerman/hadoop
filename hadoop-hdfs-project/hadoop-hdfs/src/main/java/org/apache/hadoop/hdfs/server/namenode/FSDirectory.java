@@ -1661,7 +1661,7 @@ literal|true
 expr_stmt|;
 block|}
 comment|/**    * Add the given filename to the fs.    * @throws FileAlreadyExistsException    * @throws QuotaExceededException    * @throws UnresolvedLinkException    * @throws SnapshotAccessControlException     */
-DECL|method|addFile (String path, PermissionStatus permissions, short replication, long preferredBlockSize, String clientName, String clientMachine, DatanodeDescriptor clientNode)
+DECL|method|addFile (String path, PermissionStatus permissions, short replication, long preferredBlockSize, String clientName, String clientMachine)
 name|INodeFile
 name|addFile
 parameter_list|(
@@ -1682,9 +1682,6 @@ name|clientName
 parameter_list|,
 name|String
 name|clientMachine
-parameter_list|,
-name|DatanodeDescriptor
-name|clientNode
 parameter_list|)
 throws|throws
 name|FileAlreadyExistsException
@@ -1738,8 +1735,6 @@ argument_list|(
 name|clientName
 argument_list|,
 name|clientMachine
-argument_list|,
-name|clientNode
 argument_list|)
 expr_stmt|;
 name|boolean
@@ -1908,8 +1903,6 @@ argument_list|(
 name|clientName
 argument_list|,
 name|clientMachine
-argument_list|,
-literal|null
 argument_list|)
 expr_stmt|;
 block|}

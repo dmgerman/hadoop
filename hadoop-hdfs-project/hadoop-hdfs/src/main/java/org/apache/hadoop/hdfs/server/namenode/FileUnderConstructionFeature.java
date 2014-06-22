@@ -148,14 +148,7 @@ specifier|final
 name|String
 name|clientMachine
 decl_stmt|;
-comment|// if client is a cluster node too.
-DECL|field|clientNode
-specifier|private
-specifier|final
-name|DatanodeDescriptor
-name|clientNode
-decl_stmt|;
-DECL|method|FileUnderConstructionFeature (final String clientName, final String clientMachine, final DatanodeDescriptor clientNode)
+DECL|method|FileUnderConstructionFeature (final String clientName, final String clientMachine)
 specifier|public
 name|FileUnderConstructionFeature
 parameter_list|(
@@ -166,10 +159,6 @@ parameter_list|,
 specifier|final
 name|String
 name|clientMachine
-parameter_list|,
-specifier|final
-name|DatanodeDescriptor
-name|clientNode
 parameter_list|)
 block|{
 name|this
@@ -183,12 +172,6 @@ operator|.
 name|clientMachine
 operator|=
 name|clientMachine
-expr_stmt|;
-name|this
-operator|.
-name|clientNode
-operator|=
-name|clientNode
 expr_stmt|;
 block|}
 DECL|method|getClientName ()
@@ -224,16 +207,6 @@ parameter_list|()
 block|{
 return|return
 name|clientMachine
-return|;
-block|}
-DECL|method|getClientNode ()
-specifier|public
-name|DatanodeDescriptor
-name|getClientNode
-parameter_list|()
-block|{
-return|return
-name|clientNode
 return|;
 block|}
 comment|/**    * Update the length for the last block    *    * @param lastBlockLength    *          The length of the last block reported from client    * @throws IOException    */
