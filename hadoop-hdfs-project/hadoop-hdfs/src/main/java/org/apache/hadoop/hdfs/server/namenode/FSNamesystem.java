@@ -19522,9 +19522,7 @@ condition|)
 block|{
 name|resultingStat
 operator|=
-name|dir
-operator|.
-name|getFileInfo
+name|getAuditFileInfo
 argument_list|(
 name|src
 argument_list|,
