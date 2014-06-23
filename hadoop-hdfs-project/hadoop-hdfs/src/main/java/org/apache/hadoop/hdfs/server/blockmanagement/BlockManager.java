@@ -8456,6 +8456,13 @@ operator|.
 name|getNumberOfBlocks
 argument_list|()
 operator|+
+literal|", hasStaleStorages: "
+operator|+
+name|node
+operator|.
+name|hasStaleStorages
+argument_list|()
+operator|+
 literal|", processing time: "
 operator|+
 operator|(

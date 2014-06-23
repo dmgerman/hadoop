@@ -6545,6 +6545,11 @@ name|getBlocks
 argument_list|()
 argument_list|)
 decl_stmt|;
+comment|//
+comment|// BlockManager.processReport accumulates information of prior calls
+comment|// for the same node and storage, so the value returned by the last
+comment|// call of this loop is the final updated value for noStaleStorage.
+comment|//
 name|noStaleStorages
 operator|=
 name|bm
