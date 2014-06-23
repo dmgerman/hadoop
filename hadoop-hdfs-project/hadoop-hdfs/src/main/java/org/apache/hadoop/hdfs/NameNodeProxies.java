@@ -1062,7 +1062,13 @@ specifier|final
 name|Text
 name|dtService
 decl_stmt|;
-DECL|method|ProxyAndInfo (PROXYTYPE proxy, Text dtService)
+DECL|field|address
+specifier|private
+specifier|final
+name|InetSocketAddress
+name|address
+decl_stmt|;
+DECL|method|ProxyAndInfo (PROXYTYPE proxy, Text dtService, InetSocketAddress address)
 specifier|public
 name|ProxyAndInfo
 parameter_list|(
@@ -1071,6 +1077,9 @@ name|proxy
 parameter_list|,
 name|Text
 name|dtService
+parameter_list|,
+name|InetSocketAddress
+name|address
 parameter_list|)
 block|{
 name|this
@@ -1084,6 +1093,12 @@ operator|.
 name|dtService
 operator|=
 name|dtService
+expr_stmt|;
+name|this
+operator|.
+name|address
+operator|=
+name|address
 expr_stmt|;
 block|}
 DECL|method|getProxy ()
@@ -1104,6 +1119,16 @@ parameter_list|()
 block|{
 return|return
 name|dtService
+return|;
+block|}
+DECL|method|getAddress ()
+specifier|public
+name|InetSocketAddress
+name|getAddress
+parameter_list|()
+block|{
+return|return
+name|address
 return|;
 block|}
 block|}
@@ -1288,6 +1313,13 @@ argument_list|(
 name|proxy
 argument_list|,
 name|dtService
+argument_list|,
+name|NameNode
+operator|.
+name|getAddress
+argument_list|(
+name|nameNodeUri
+argument_list|)
 argument_list|)
 return|;
 block|}
@@ -1526,6 +1558,13 @@ argument_list|(
 name|proxy
 argument_list|,
 name|dtService
+argument_list|,
+name|NameNode
+operator|.
+name|getAddress
+argument_list|(
+name|nameNodeUri
+argument_list|)
 argument_list|)
 return|;
 block|}
@@ -1827,6 +1866,8 @@ argument_list|(
 name|proxy
 argument_list|,
 name|dtService
+argument_list|,
+name|nnAddr
 argument_list|)
 return|;
 block|}
