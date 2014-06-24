@@ -78,28 +78,6 @@ end_import
 
 begin_import
 import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|hdfs
-operator|.
-name|server
-operator|.
-name|namenode
-operator|.
-name|snapshot
-operator|.
-name|INodeDirectorySnapshottable
-operator|.
-name|SnapshotDiffInfo
-import|;
-end_import
-
-begin_import
-import|import
 name|com
 operator|.
 name|google
@@ -113,7 +91,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * This class represents to end users the difference between two snapshots of   * the same directory, or the difference between a snapshot of the directory and  * its current state. Instead of capturing all the details of the diff, which   * is stored in {@link SnapshotDiffInfo}, this class only lists where the   * changes happened and their types.  */
+comment|/**  * This class represents to end users the difference between two snapshots of   * the same directory, or the difference between a snapshot of the directory and  * its current state. Instead of capturing all the details of the diff, this  * class only lists where the changes happened and their types.  */
 end_comment
 
 begin_class
