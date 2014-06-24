@@ -139,7 +139,7 @@ specifier|abstract
 class|class
 name|NMContainerStatus
 block|{
-DECL|method|newInstance (ContainerId containerId, ContainerState containerState, Resource allocatedResource, String diagnostics, int containerExitStatus)
+DECL|method|newInstance (ContainerId containerId, ContainerState containerState, Resource allocatedResource, String diagnostics, int containerExitStatus, Priority priority, long creationTime)
 specifier|public
 specifier|static
 name|NMContainerStatus
@@ -159,6 +159,12 @@ name|diagnostics
 parameter_list|,
 name|int
 name|containerExitStatus
+parameter_list|,
+name|Priority
+name|priority
+parameter_list|,
+name|long
+name|creationTime
 parameter_list|)
 block|{
 name|NMContainerStatus
@@ -206,6 +212,20 @@ operator|.
 name|setContainerExitStatus
 argument_list|(
 name|containerExitStatus
+argument_list|)
+expr_stmt|;
+name|status
+operator|.
+name|setPriority
+argument_list|(
+name|priority
+argument_list|)
+expr_stmt|;
+name|status
+operator|.
+name|setCreationTime
+argument_list|(
+name|creationTime
 argument_list|)
 expr_stmt|;
 return|return
@@ -317,6 +337,24 @@ name|setPriority
 parameter_list|(
 name|Priority
 name|priority
+parameter_list|)
+function_decl|;
+comment|/**    * Get the time when the container is created    */
+DECL|method|getCreationTime ()
+specifier|public
+specifier|abstract
+name|long
+name|getCreationTime
+parameter_list|()
+function_decl|;
+DECL|method|setCreationTime (long creationTime)
+specifier|public
+specifier|abstract
+name|void
+name|setCreationTime
+parameter_list|(
+name|long
+name|creationTime
 parameter_list|)
 function_decl|;
 block|}

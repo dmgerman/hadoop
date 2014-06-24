@@ -118,7 +118,7 @@ name|api
 operator|.
 name|records
 operator|.
-name|ContainerStatus
+name|NodeId
 import|;
 end_import
 
@@ -136,7 +136,7 @@ name|api
 operator|.
 name|records
 operator|.
-name|NodeId
+name|Priority
 import|;
 end_import
 
@@ -293,6 +293,15 @@ literal|"good"
 argument_list|,
 operator|-
 literal|1
+argument_list|,
+name|Priority
+operator|.
+name|newInstance
+argument_list|(
+literal|0
+argument_list|)
+argument_list|,
+literal|1234
 argument_list|)
 argument_list|)
 argument_list|,

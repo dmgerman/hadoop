@@ -1987,7 +1987,7 @@ name|println
 argument_list|(
 name|containerReport
 operator|.
-name|getStartTime
+name|getCreationTime
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -3225,7 +3225,7 @@ argument_list|()
 argument_list|,
 name|containerReport
 operator|.
-name|getStartTime
+name|getCreationTime
 argument_list|()
 argument_list|,
 name|containerReport

@@ -1422,13 +1422,13 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-DECL|method|recoverAndCreateContainer (NMContainerStatus report, RMNode node)
+DECL|method|recoverAndCreateContainer (NMContainerStatus status, RMNode node)
 specifier|private
 name|RMContainer
 name|recoverAndCreateContainer
 parameter_list|(
 name|NMContainerStatus
-name|report
+name|status
 parameter_list|,
 name|RMNode
 name|node
@@ -1441,7 +1441,7 @@ name|Container
 operator|.
 name|newInstance
 argument_list|(
-name|report
+name|status
 operator|.
 name|getContainerId
 argument_list|()
@@ -1456,12 +1456,12 @@ operator|.
 name|getHttpAddress
 argument_list|()
 argument_list|,
-name|report
+name|status
 operator|.
 name|getAllocatedResource
 argument_list|()
 argument_list|,
-name|report
+name|status
 operator|.
 name|getPriority
 argument_list|()
@@ -1509,6 +1509,11 @@ name|getUser
 argument_list|()
 argument_list|,
 name|rmContext
+argument_list|,
+name|status
+operator|.
+name|getCreationTime
+argument_list|()
 argument_list|)
 decl_stmt|;
 return|return

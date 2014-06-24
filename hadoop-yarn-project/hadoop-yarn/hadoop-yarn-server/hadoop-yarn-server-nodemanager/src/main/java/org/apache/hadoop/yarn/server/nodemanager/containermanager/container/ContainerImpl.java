@@ -2434,6 +2434,16 @@ name|toString
 argument_list|()
 argument_list|,
 name|exitCode
+argument_list|,
+name|containerTokenIdentifier
+operator|.
+name|getPriority
+argument_list|()
+argument_list|,
+name|containerTokenIdentifier
+operator|.
+name|getCreationTime
+argument_list|()
 argument_list|)
 return|;
 block|}

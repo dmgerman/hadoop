@@ -1230,6 +1230,15 @@ argument_list|,
 name|masterKeyId
 argument_list|,
 name|rmIdentifier
+argument_list|,
+name|Priority
+operator|.
+name|newInstance
+argument_list|(
+literal|0
+argument_list|)
+argument_list|,
+literal|0
 argument_list|)
 decl_stmt|;
 return|return

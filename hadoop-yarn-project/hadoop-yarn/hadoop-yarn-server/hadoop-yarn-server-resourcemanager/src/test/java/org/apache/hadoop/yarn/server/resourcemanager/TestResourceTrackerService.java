@@ -21,6 +21,54 @@ package|;
 end_package
 
 begin_import
+import|import static
+name|org
+operator|.
+name|mockito
+operator|.
+name|Matchers
+operator|.
+name|any
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|mockito
+operator|.
+name|Mockito
+operator|.
+name|never
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|mockito
+operator|.
+name|Mockito
+operator|.
+name|spy
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|mockito
+operator|.
+name|Mockito
+operator|.
+name|verify
+import|;
+end_import
+
+begin_import
 import|import
 name|java
 operator|.
@@ -47,26 +95,6 @@ operator|.
 name|io
 operator|.
 name|IOException
-import|;
-end_import
-
-begin_import
-import|import
-name|java
-operator|.
-name|util
-operator|.
-name|ArrayList
-import|;
-end_import
-
-begin_import
-import|import
-name|java
-operator|.
-name|util
-operator|.
-name|Collections
 import|;
 end_import
 
@@ -212,24 +240,6 @@ name|api
 operator|.
 name|records
 operator|.
-name|Container
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|yarn
-operator|.
-name|api
-operator|.
-name|records
-operator|.
 name|ContainerId
 import|;
 end_import
@@ -303,6 +313,24 @@ operator|.
 name|records
 operator|.
 name|NodeState
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|api
+operator|.
+name|records
+operator|.
+name|Priority
 import|;
 end_import
 
@@ -665,66 +693,6 @@ operator|.
 name|junit
 operator|.
 name|Test
-import|;
-end_import
-
-begin_import
-import|import static
-name|org
-operator|.
-name|junit
-operator|.
-name|Assert
-operator|.
-name|assertEquals
-import|;
-end_import
-
-begin_import
-import|import static
-name|org
-operator|.
-name|mockito
-operator|.
-name|Matchers
-operator|.
-name|any
-import|;
-end_import
-
-begin_import
-import|import static
-name|org
-operator|.
-name|mockito
-operator|.
-name|Mockito
-operator|.
-name|never
-import|;
-end_import
-
-begin_import
-import|import static
-name|org
-operator|.
-name|mockito
-operator|.
-name|Mockito
-operator|.
-name|spy
-import|;
-end_import
-
-begin_import
-import|import static
-name|org
-operator|.
-name|mockito
-operator|.
-name|Mockito
-operator|.
-name|verify
 import|;
 end_import
 
@@ -3318,6 +3286,15 @@ argument_list|,
 literal|"Dummy Completed"
 argument_list|,
 literal|0
+argument_list|,
+name|Priority
+operator|.
+name|newInstance
+argument_list|(
+literal|10
+argument_list|)
+argument_list|,
+literal|1234
 argument_list|)
 decl_stmt|;
 name|rm
@@ -3400,6 +3377,15 @@ argument_list|,
 literal|"Dummy Completed"
 argument_list|,
 literal|0
+argument_list|,
+name|Priority
+operator|.
+name|newInstance
+argument_list|(
+literal|10
+argument_list|)
+argument_list|,
+literal|1234
 argument_list|)
 expr_stmt|;
 name|rm
@@ -3481,6 +3467,15 @@ argument_list|,
 literal|"Dummy Completed"
 argument_list|,
 literal|0
+argument_list|,
+name|Priority
+operator|.
+name|newInstance
+argument_list|(
+literal|10
+argument_list|)
+argument_list|,
+literal|1234
 argument_list|)
 expr_stmt|;
 try|try
@@ -3573,6 +3568,15 @@ argument_list|,
 literal|"Dummy Completed"
 argument_list|,
 literal|0
+argument_list|,
+name|Priority
+operator|.
+name|newInstance
+argument_list|(
+literal|10
+argument_list|)
+argument_list|,
+literal|1234
 argument_list|)
 expr_stmt|;
 try|try

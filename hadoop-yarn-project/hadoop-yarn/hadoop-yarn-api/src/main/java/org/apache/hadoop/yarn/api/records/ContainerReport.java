@@ -85,7 +85,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  *<p>  *<code>ContainerReport</code> is a report of an container.  *</p>  *   *<p>  * It includes details such as:  *<ul>  *<li>{@link ContainerId} of the container.</li>  *<li>Allocated Resources to the container.</li>  *<li>Assigned Node id.</li>  *<li>Assigned Priority.</li>  *<li>Start Time.</li>  *<li>Finish Time.</li>  *<li>Container Exit Status.</li>  *<li>{@link ContainerState} of the container.</li>  *<li>Diagnostic information in case of errors.</li>  *<li>Log URL.</li>  *</ul>  *</p>  *   */
+comment|/**  *<p>  *<code>ContainerReport</code> is a report of an container.  *</p>  *   *<p>  * It includes details such as:  *<ul>  *<li>{@link ContainerId} of the container.</li>  *<li>Allocated Resources to the container.</li>  *<li>Assigned Node id.</li>  *<li>Assigned Priority.</li>  *<li>Creation Time.</li>  *<li>Finish Time.</li>  *<li>Container Exit Status.</li>  *<li>{@link ContainerState} of the container.</li>  *<li>Diagnostic information in case of errors.</li>  *<li>Log URL.</li>  *</ul>  *</p>  *   */
 end_comment
 
 begin_class
@@ -103,7 +103,7 @@ annotation|@
 name|Private
 annotation|@
 name|Unstable
-DECL|method|newInstance (ContainerId containerId, Resource allocatedResource, NodeId assignedNode, Priority priority, long startTime, long finishTime, String diagnosticInfo, String logUrl, int containerExitStatus, ContainerState containerState)
+DECL|method|newInstance (ContainerId containerId, Resource allocatedResource, NodeId assignedNode, Priority priority, long creationTime, long finishTime, String diagnosticInfo, String logUrl, int containerExitStatus, ContainerState containerState)
 specifier|public
 specifier|static
 name|ContainerReport
@@ -122,7 +122,7 @@ name|Priority
 name|priority
 parameter_list|,
 name|long
-name|startTime
+name|creationTime
 parameter_list|,
 name|long
 name|finishTime
@@ -182,9 +182,9 @@ argument_list|)
 expr_stmt|;
 name|report
 operator|.
-name|setStartTime
+name|setCreationTime
 argument_list|(
-name|startTime
+name|creationTime
 argument_list|)
 expr_stmt|;
 name|report
@@ -330,30 +330,30 @@ name|Priority
 name|priority
 parameter_list|)
 function_decl|;
-comment|/**    * Get the Start time of the container.    *     * @return Start time of the container    */
+comment|/**    * Get the creation time of the container.    *     * @return creation time of the container    */
 annotation|@
 name|Public
 annotation|@
 name|Unstable
-DECL|method|getStartTime ()
+DECL|method|getCreationTime ()
 specifier|public
 specifier|abstract
 name|long
-name|getStartTime
+name|getCreationTime
 parameter_list|()
 function_decl|;
 annotation|@
 name|Public
 annotation|@
 name|Unstable
-DECL|method|setStartTime (long startTime)
+DECL|method|setCreationTime (long creationTime)
 specifier|public
 specifier|abstract
 name|void
-name|setStartTime
+name|setCreationTime
 parameter_list|(
 name|long
-name|startTime
+name|creationTime
 parameter_list|)
 function_decl|;
 comment|/**    * Get the Finish time of the container.    *     * @return Finish time of the container    */

@@ -247,9 +247,9 @@ name|Priority
 name|getAllocatedPriority
 parameter_list|()
 function_decl|;
-DECL|method|getStartTime ()
+DECL|method|getCreationTime ()
 name|long
-name|getStartTime
+name|getCreationTime
 parameter_list|()
 function_decl|;
 DECL|method|getFinishTime ()

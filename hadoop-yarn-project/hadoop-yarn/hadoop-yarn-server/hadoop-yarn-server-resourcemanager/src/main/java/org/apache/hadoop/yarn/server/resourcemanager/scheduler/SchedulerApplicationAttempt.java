@@ -2147,6 +2147,16 @@ name|container
 operator|.
 name|getResource
 argument_list|()
+argument_list|,
+name|container
+operator|.
+name|getPriority
+argument_list|()
+argument_list|,
+name|rmContainer
+operator|.
+name|getCreationTime
+argument_list|()
 argument_list|)
 argument_list|)
 expr_stmt|;
