@@ -566,6 +566,16 @@ argument_list|)
 operator|.
 name|_
 argument_list|(
+literal|"TotalVCoresNeeded"
+argument_list|,
+name|info
+operator|.
+name|getVCoresNeeded
+argument_list|()
+argument_list|)
+operator|.
+name|_
+argument_list|(
 literal|"logs"
 argument_list|,
 name|info

@@ -173,6 +173,11 @@ specifier|protected
 name|long
 name|totalPmemAllocatedContainersMB
 decl_stmt|;
+DECL|field|totalVCoresAllocatedContainers
+specifier|protected
+name|long
+name|totalVCoresAllocatedContainers
+decl_stmt|;
 DECL|field|vmemCheckEnabled
 specifier|protected
 name|boolean
@@ -314,6 +319,15 @@ operator|=
 name|resourceView
 operator|.
 name|isPmemCheckEnabled
+argument_list|()
+expr_stmt|;
+name|this
+operator|.
+name|totalVCoresAllocatedContainers
+operator|=
+name|resourceView
+operator|.
+name|getVCoresAllocatedForContainers
 argument_list|()
 expr_stmt|;
 name|this
@@ -549,6 +563,18 @@ return|return
 name|this
 operator|.
 name|totalVmemAllocatedContainersMB
+return|;
+block|}
+DECL|method|getTotalVCoresAllocated ()
+specifier|public
+name|long
+name|getTotalVCoresAllocated
+parameter_list|()
+block|{
+return|return
+name|this
+operator|.
+name|totalVCoresAllocatedContainers
 return|;
 block|}
 DECL|method|isVmemCheckEnabled ()

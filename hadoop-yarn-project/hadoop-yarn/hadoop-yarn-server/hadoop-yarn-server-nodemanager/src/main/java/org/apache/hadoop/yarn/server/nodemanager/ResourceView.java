@@ -46,6 +46,11 @@ name|boolean
 name|isPmemCheckEnabled
 parameter_list|()
 function_decl|;
+DECL|method|getVCoresAllocatedForContainers ()
+name|long
+name|getVCoresAllocatedForContainers
+parameter_list|()
+function_decl|;
 block|}
 end_interface
 

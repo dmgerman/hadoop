@@ -433,6 +433,21 @@ argument_list|)
 operator|.
 name|_
 argument_list|(
+literal|"Total VCores allocated for Containers"
+argument_list|,
+name|String
+operator|.
+name|valueOf
+argument_list|(
+name|info
+operator|.
+name|getTotalVCoresAllocated
+argument_list|()
+argument_list|)
+argument_list|)
+operator|.
+name|_
+argument_list|(
 literal|"NodeHealthyStatus"
 argument_list|,
 name|info

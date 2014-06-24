@@ -1134,6 +1134,21 @@ block|}
 annotation|@
 name|Override
 specifier|public
+name|long
+name|getVCoresAllocatedForContainers
+parameter_list|()
+block|{
+return|return
+operator|new
+name|Long
+argument_list|(
+literal|"4000"
+argument_list|)
+return|;
+block|}
+annotation|@
+name|Override
+specifier|public
 name|boolean
 name|isVmemCheckEnabled
 parameter_list|()
@@ -2906,6 +2921,15 @@ argument_list|)
 argument_list|,
 name|WebServicesTestUtils
 operator|.
+name|getXmlLong
+argument_list|(
+name|element
+argument_list|,
+literal|"totalVCoresAllocatedContainers"
+argument_list|)
+argument_list|,
+name|WebServicesTestUtils
+operator|.
 name|getXmlBoolean
 argument_list|(
 name|element
@@ -3045,7 +3069,7 @@ name|assertEquals
 argument_list|(
 literal|"incorrect number of elements"
 argument_list|,
-literal|15
+literal|16
 argument_list|,
 name|info
 operator|.
@@ -3081,6 +3105,13 @@ operator|.
 name|getLong
 argument_list|(
 literal|"totalPmemAllocatedContainersMB"
+argument_list|)
+argument_list|,
+name|info
+operator|.
+name|getLong
+argument_list|(
+literal|"totalVCoresAllocatedContainers"
 argument_list|)
 argument_list|,
 name|info
@@ -3162,7 +3193,7 @@ argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|verifyNodeInfoGeneric (String id, String healthReport, long totalVmemAllocatedContainersMB, long totalPmemAllocatedContainersMB, boolean vmemCheckEnabled, boolean pmemCheckEnabled, long lastNodeUpdateTime, Boolean nodeHealthy, String nodeHostName, String hadoopVersionBuiltOn, String hadoopBuildVersion, String hadoopVersion, String resourceManagerVersionBuiltOn, String resourceManagerBuildVersion, String resourceManagerVersion)
+DECL|method|verifyNodeInfoGeneric (String id, String healthReport, long totalVmemAllocatedContainersMB, long totalPmemAllocatedContainersMB, long totalVCoresAllocatedContainers, boolean vmemCheckEnabled, boolean pmemCheckEnabled, long lastNodeUpdateTime, Boolean nodeHealthy, String nodeHostName, String hadoopVersionBuiltOn, String hadoopBuildVersion, String hadoopVersion, String resourceManagerVersionBuiltOn, String resourceManagerBuildVersion, String resourceManagerVersion)
 specifier|public
 name|void
 name|verifyNodeInfoGeneric
@@ -3178,6 +3209,9 @@ name|totalVmemAllocatedContainersMB
 parameter_list|,
 name|long
 name|totalPmemAllocatedContainersMB
+parameter_list|,
+name|long
+name|totalVCoresAllocatedContainers
 parameter_list|,
 name|boolean
 name|vmemCheckEnabled
@@ -3251,6 +3285,15 @@ argument_list|,
 literal|16384
 argument_list|,
 name|totalPmemAllocatedContainersMB
+argument_list|)
+expr_stmt|;
+name|assertEquals
+argument_list|(
+literal|"totalVCoresAllocatedContainers incorrect"
+argument_list|,
+literal|4000
+argument_list|,
+name|totalVCoresAllocatedContainers
 argument_list|)
 expr_stmt|;
 name|assertEquals

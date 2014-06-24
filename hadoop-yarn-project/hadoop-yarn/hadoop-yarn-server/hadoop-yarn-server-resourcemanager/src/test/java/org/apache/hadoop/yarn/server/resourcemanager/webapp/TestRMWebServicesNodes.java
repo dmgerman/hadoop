@@ -5371,6 +5371,24 @@ argument_list|)
 argument_list|,
 name|WebServicesTestUtils
 operator|.
+name|getXmlLong
+argument_list|(
+name|element
+argument_list|,
+literal|"usedVirtualCores"
+argument_list|)
+argument_list|,
+name|WebServicesTestUtils
+operator|.
+name|getXmlLong
+argument_list|(
+name|element
+argument_list|,
+literal|"availableVirtualCores"
+argument_list|)
+argument_list|,
+name|WebServicesTestUtils
+operator|.
 name|getXmlString
 argument_list|(
 name|element
@@ -5401,7 +5419,7 @@ name|assertEquals
 argument_list|(
 literal|"incorrect number of elements"
 argument_list|,
-literal|11
+literal|13
 argument_list|,
 name|nodeInfo
 operator|.
@@ -5485,6 +5503,20 @@ argument_list|)
 argument_list|,
 name|nodeInfo
 operator|.
+name|getLong
+argument_list|(
+literal|"usedVirtualCores"
+argument_list|)
+argument_list|,
+name|nodeInfo
+operator|.
+name|getLong
+argument_list|(
+literal|"availableVirtualCores"
+argument_list|)
+argument_list|,
+name|nodeInfo
+operator|.
 name|getString
 argument_list|(
 literal|"version"
@@ -5492,7 +5524,7 @@ argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|verifyNodeInfoGeneric (MockNM nm, String state, String rack, String id, String nodeHostName, String nodeHTTPAddress, long lastHealthUpdate, String healthReport, int numContainers, long usedMemoryMB, long availMemoryMB, String version)
+DECL|method|verifyNodeInfoGeneric (MockNM nm, String state, String rack, String id, String nodeHostName, String nodeHTTPAddress, long lastHealthUpdate, String healthReport, int numContainers, long usedMemoryMB, long availMemoryMB, long usedVirtualCores, long availVirtualCores, String version)
 specifier|public
 name|void
 name|verifyNodeInfoGeneric
@@ -5529,6 +5561,12 @@ name|usedMemoryMB
 parameter_list|,
 name|long
 name|availMemoryMB
+parameter_list|,
+name|long
+name|usedVirtualCores
+parameter_list|,
+name|long
+name|availVirtualCores
 parameter_list|,
 name|String
 name|version
@@ -5781,6 +5819,40 @@ name|getMemory
 argument_list|()
 argument_list|,
 name|availMemoryMB
+argument_list|)
+expr_stmt|;
+name|assertEquals
+argument_list|(
+literal|"usedVirtualCores doesn't match: "
+operator|+
+name|usedVirtualCores
+argument_list|,
+name|report
+operator|.
+name|getUsedResource
+argument_list|()
+operator|.
+name|getVirtualCores
+argument_list|()
+argument_list|,
+name|usedVirtualCores
+argument_list|)
+expr_stmt|;
+name|assertEquals
+argument_list|(
+literal|"availVirtualCores doesn't match: "
+operator|+
+name|availVirtualCores
+argument_list|,
+name|report
+operator|.
+name|getAvailableResource
+argument_list|()
+operator|.
+name|getVirtualCores
+argument_list|()
+argument_list|,
+name|availVirtualCores
 argument_list|)
 expr_stmt|;
 block|}

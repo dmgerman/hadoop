@@ -260,6 +260,11 @@ specifier|protected
 name|long
 name|totalMemoryNeededMB
 decl_stmt|;
+DECL|field|totalVCoresNeeded
+specifier|protected
+name|long
+name|totalVCoresNeeded
+decl_stmt|;
 DECL|field|containerLogsLink
 specifier|protected
 name|String
@@ -475,6 +480,15 @@ operator|.
 name|getMemory
 argument_list|()
 expr_stmt|;
+name|this
+operator|.
+name|totalVCoresNeeded
+operator|=
+name|res
+operator|.
+name|getVirtualCores
+argument_list|()
+expr_stmt|;
 block|}
 name|this
 operator|.
@@ -652,6 +666,18 @@ return|return
 name|this
 operator|.
 name|totalMemoryNeededMB
+return|;
+block|}
+DECL|method|getVCoresNeeded ()
+specifier|public
+name|long
+name|getVCoresNeeded
+parameter_list|()
+block|{
+return|return
+name|this
+operator|.
+name|totalVCoresNeeded
 return|;
 block|}
 block|}
