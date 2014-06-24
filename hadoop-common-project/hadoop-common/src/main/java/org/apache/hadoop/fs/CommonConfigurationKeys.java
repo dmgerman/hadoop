@@ -805,6 +805,24 @@ name|IPC_CLIENT_FALLBACK_TO_SIMPLE_AUTH_ALLOWED_DEFAULT
 init|=
 literal|false
 decl_stmt|;
+DECL|field|IPC_CLIENT_CONNECT_MAX_RETRIES_ON_SASL_KEY
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|IPC_CLIENT_CONNECT_MAX_RETRIES_ON_SASL_KEY
+init|=
+literal|"ipc.client.connect.max.retries.on.sasl"
+decl_stmt|;
+DECL|field|IPC_CLIENT_CONNECT_MAX_RETRIES_ON_SASL_DEFAULT
+specifier|public
+specifier|static
+specifier|final
+name|int
+name|IPC_CLIENT_CONNECT_MAX_RETRIES_ON_SASL_DEFAULT
+init|=
+literal|5
+decl_stmt|;
 comment|/** How often the server scans for idle connections */
 DECL|field|IPC_CLIENT_CONNECTION_IDLESCANINTERVAL_KEY
 specifier|public
