@@ -5543,14 +5543,7 @@ literal|false
 decl_stmt|;
 if|if
 condition|(
-name|Resources
-operator|.
-name|greaterThan
-argument_list|(
-name|RESOURCE_CALCULATOR
-argument_list|,
-name|clusterResource
-argument_list|,
+operator|!
 name|queueMgr
 operator|.
 name|getRootQueue
@@ -5560,7 +5553,9 @@ name|assignContainer
 argument_list|(
 name|node
 argument_list|)
-argument_list|,
+operator|.
+name|equals
+argument_list|(
 name|Resources
 operator|.
 name|none
