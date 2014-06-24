@@ -609,6 +609,28 @@ operator|.
 name|OS_TYPE_OTHER
 operator|)
 decl_stmt|;
+DECL|field|PPC_64
+specifier|public
+specifier|static
+specifier|final
+name|boolean
+name|PPC_64
+init|=
+name|System
+operator|.
+name|getProperties
+argument_list|()
+operator|.
+name|getProperty
+argument_list|(
+literal|"os.arch"
+argument_list|)
+operator|.
+name|contains
+argument_list|(
+literal|"ppc64"
+argument_list|)
+decl_stmt|;
 comment|/** a Unix command to get the current user's groups list */
 DECL|method|getGroupsCommand ()
 specifier|public
