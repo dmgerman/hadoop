@@ -418,6 +418,24 @@ name|api
 operator|.
 name|records
 operator|.
+name|ContainerExitStatus
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|api
+operator|.
+name|records
+operator|.
 name|ContainerId
 import|;
 end_import
@@ -473,24 +491,6 @@ operator|.
 name|records
 operator|.
 name|Priority
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|yarn
-operator|.
-name|api
-operator|.
-name|records
-operator|.
-name|Resource
 import|;
 end_import
 
@@ -1613,16 +1613,29 @@ operator|new
 name|StringBuilder
 argument_list|()
 decl_stmt|;
+DECL|field|amContainerExitStatus
+specifier|private
+name|int
+name|amContainerExitStatus
+init|=
+name|ContainerExitStatus
+operator|.
+name|INVALID
+decl_stmt|;
 DECL|field|conf
 specifier|private
 name|Configuration
 name|conf
 decl_stmt|;
-DECL|field|isLastAttempt
+comment|// Since AM preemption is not counted towards AM failure count,
+comment|// even if this flag is true, a new attempt can still be re-created if this
+comment|// attempt is eventually preempted. So this flag indicates that this may be
+comment|// last attempt.
+DECL|field|maybeLastAttempt
 specifier|private
 specifier|final
 name|boolean
-name|isLastAttempt
+name|maybeLastAttempt
 decl_stmt|;
 DECL|field|EXPIRED_TRANSITION
 specifier|private
@@ -2813,7 +2826,7 @@ operator|.
 name|installTopology
 argument_list|()
 decl_stmt|;
-DECL|method|RMAppAttemptImpl (ApplicationAttemptId appAttemptId, RMContext rmContext, YarnScheduler scheduler, ApplicationMasterService masterService, ApplicationSubmissionContext submissionContext, Configuration conf, boolean isLastAttempt)
+DECL|method|RMAppAttemptImpl (ApplicationAttemptId appAttemptId, RMContext rmContext, YarnScheduler scheduler, ApplicationMasterService masterService, ApplicationSubmissionContext submissionContext, Configuration conf, boolean maybeLastAttempt)
 specifier|public
 name|RMAppAttemptImpl
 parameter_list|(
@@ -2836,7 +2849,7 @@ name|Configuration
 name|conf
 parameter_list|,
 name|boolean
-name|isLastAttempt
+name|maybeLastAttempt
 parameter_list|)
 block|{
 name|this
@@ -2923,9 +2936,9 @@ argument_list|)
 expr_stmt|;
 name|this
 operator|.
-name|isLastAttempt
+name|maybeLastAttempt
 operator|=
-name|isLastAttempt
+name|maybeLastAttempt
 expr_stmt|;
 name|this
 operator|.
@@ -3574,6 +3587,38 @@ argument_list|()
 expr_stmt|;
 block|}
 block|}
+DECL|method|getAMContainerExitStatus ()
+specifier|public
+name|int
+name|getAMContainerExitStatus
+parameter_list|()
+block|{
+name|this
+operator|.
+name|readLock
+operator|.
+name|lock
+argument_list|()
+expr_stmt|;
+try|try
+block|{
+return|return
+name|this
+operator|.
+name|amContainerExitStatus
+return|;
+block|}
+finally|finally
+block|{
+name|this
+operator|.
+name|readLock
+operator|.
+name|unlock
+argument_list|()
+expr_stmt|;
+block|}
+block|}
 annotation|@
 name|Override
 DECL|method|getProgress ()
@@ -4031,6 +4076,15 @@ operator|.
 name|getDiagnostics
 argument_list|()
 argument_list|)
+expr_stmt|;
+name|this
+operator|.
+name|amContainerExitStatus
+operator|=
+name|attemptState
+operator|.
+name|getAMContainerExitStatus
+argument_list|()
 expr_stmt|;
 name|setMasterContainer
 argument_list|(
@@ -5061,6 +5115,13 @@ name|finalStatus
 init|=
 literal|null
 decl_stmt|;
+name|int
+name|exitStatus
+init|=
+name|ContainerExitStatus
+operator|.
+name|INVALID
+decl_stmt|;
 switch|switch
 condition|(
 name|event
@@ -5151,6 +5212,16 @@ argument_list|(
 name|finishEvent
 argument_list|)
 expr_stmt|;
+name|exitStatus
+operator|=
+name|finishEvent
+operator|.
+name|getContainerStatus
+argument_list|()
+operator|.
+name|getExitStatus
+argument_list|()
+expr_stmt|;
 break|break;
 case|case
 name|KILL
@@ -5205,6 +5276,8 @@ argument_list|,
 name|diags
 argument_list|,
 name|finalStatus
+argument_list|,
+name|exitStatus
 argument_list|)
 decl_stmt|;
 name|LOG
@@ -5218,6 +5291,10 @@ operator|+
 literal|" with final state: "
 operator|+
 name|targetedFinalState
+operator|+
+literal|", and exit status: "
+operator|+
+name|exitStatus
 argument_list|)
 expr_stmt|;
 name|rmStore
@@ -5607,21 +5684,43 @@ operator|&&
 operator|!
 name|appAttempt
 operator|.
-name|isLastAttempt
-operator|&&
-operator|!
-name|appAttempt
-operator|.
 name|submissionContext
 operator|.
 name|getUnmanagedAM
 argument_list|()
 condition|)
 block|{
+comment|// See if we should retain containers for non-unmanaged applications
+if|if
+condition|(
+name|appAttempt
+operator|.
+name|isPreempted
+argument_list|()
+condition|)
+block|{
+comment|// Premption doesn't count towards app-failures and so we should
+comment|// retain containers.
 name|keepContainersAcrossAppAttempts
 operator|=
 literal|true
 expr_stmt|;
+block|}
+elseif|else
+if|if
+condition|(
+operator|!
+name|appAttempt
+operator|.
+name|maybeLastAttempt
+condition|)
+block|{
+comment|// Not preemption. Not last-attempt too - keep containers.
+name|keepContainersAcrossAppAttempts
+operator|=
+literal|true
+expr_stmt|;
+block|}
 block|}
 name|appEvent
 operator|=
@@ -5756,6 +5855,23 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
+block|}
+annotation|@
+name|Override
+DECL|method|isPreempted ()
+specifier|public
+name|boolean
+name|isPreempted
+parameter_list|()
+block|{
+return|return
+name|getAMContainerExitStatus
+argument_list|()
+operator|==
+name|ContainerExitStatus
+operator|.
+name|PREEMPTED
+return|;
 block|}
 DECL|class|UnmanagedAMAttemptSavedTransition
 specifier|private
@@ -6116,17 +6232,12 @@ name|getAppAttemptId
 argument_list|()
 argument_list|)
 expr_stmt|;
-comment|// Setup diagnostic message
+comment|// Setup diagnostic message and exit status
 name|appAttempt
 operator|.
-name|diagnostics
-operator|.
-name|append
-argument_list|(
-name|getAMContainerCrashedDiagnostics
+name|setAMContainerCrashedDiagnosticsAndExitStatus
 argument_list|(
 name|finishEvent
-argument_list|)
 argument_list|)
 expr_stmt|;
 comment|// Tell the app, scheduler
@@ -6140,6 +6251,50 @@ name|finishEvent
 argument_list|)
 expr_stmt|;
 block|}
+block|}
+DECL|method|setAMContainerCrashedDiagnosticsAndExitStatus ( RMAppAttemptContainerFinishedEvent finishEvent)
+specifier|private
+name|void
+name|setAMContainerCrashedDiagnosticsAndExitStatus
+parameter_list|(
+name|RMAppAttemptContainerFinishedEvent
+name|finishEvent
+parameter_list|)
+block|{
+name|ContainerStatus
+name|status
+init|=
+name|finishEvent
+operator|.
+name|getContainerStatus
+argument_list|()
+decl_stmt|;
+name|String
+name|diagnostics
+init|=
+name|getAMContainerCrashedDiagnostics
+argument_list|(
+name|finishEvent
+argument_list|)
+decl_stmt|;
+name|this
+operator|.
+name|diagnostics
+operator|.
+name|append
+argument_list|(
+name|diagnostics
+argument_list|)
+expr_stmt|;
+name|this
+operator|.
+name|amContainerExitStatus
+operator|=
+name|status
+operator|.
+name|getExitStatus
+argument_list|()
+expr_stmt|;
 block|}
 DECL|method|getAMContainerCrashedDiagnostics ( RMAppAttemptContainerFinishedEvent finishEvent)
 specifier|private
@@ -7001,7 +7156,7 @@ name|event
 parameter_list|)
 block|{
 name|RMAppAttemptContainerFinishedEvent
-name|containerFinishedEvent
+name|finishEvent
 init|=
 operator|(
 name|RMAppAttemptContainerFinishedEvent
@@ -7019,17 +7174,12 @@ argument_list|()
 operator|==
 literal|false
 assert|;
-comment|// Setup diagnostic message
+comment|// Setup diagnostic message and exit status
 name|appAttempt
 operator|.
-name|diagnostics
-operator|.
-name|append
+name|setAMContainerCrashedDiagnosticsAndExitStatus
 argument_list|(
-name|getAMContainerCrashedDiagnostics
-argument_list|(
-name|containerFinishedEvent
-argument_list|)
+name|finishEvent
 argument_list|)
 expr_stmt|;
 operator|new
@@ -7846,6 +7996,17 @@ expr_stmt|;
 block|}
 return|return
 name|attemptReport
+return|;
+block|}
+comment|// for testing
+DECL|method|mayBeLastAttempt ()
+specifier|public
+name|boolean
+name|mayBeLastAttempt
+parameter_list|()
+block|{
+return|return
+name|maybeLastAttempt
 return|;
 block|}
 block|}

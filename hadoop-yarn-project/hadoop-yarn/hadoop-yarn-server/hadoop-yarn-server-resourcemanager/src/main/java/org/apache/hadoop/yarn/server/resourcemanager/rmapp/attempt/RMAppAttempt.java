@@ -473,6 +473,12 @@ name|ApplicationAttemptReport
 name|createApplicationAttemptReport
 parameter_list|()
 function_decl|;
+comment|/**    * Return the flag which indicates whether the attempt is preempted by the    * scheduler.    */
+DECL|method|isPreempted ()
+name|boolean
+name|isPreempted
+parameter_list|()
+function_decl|;
 block|}
 end_interface
 

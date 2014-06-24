@@ -5963,12 +5963,9 @@ operator|.
 name|getContainerId
 argument_list|()
 argument_list|,
-literal|"Container being forcibly preempted:"
-operator|+
-name|cont
+name|SchedulerUtils
 operator|.
-name|getContainerId
-argument_list|()
+name|PREEMPTED_CONTAINER
 argument_list|)
 argument_list|,
 name|RMContainerEventType

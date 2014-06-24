@@ -308,6 +308,24 @@ name|api
 operator|.
 name|records
 operator|.
+name|ContainerExitStatus
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|api
+operator|.
+name|records
+operator|.
 name|FinalApplicationStatus
 import|;
 end_import
@@ -1819,6 +1837,14 @@ DECL|field|diagnostics
 name|String
 name|diagnostics
 decl_stmt|;
+DECL|field|exitStatus
+name|int
+name|exitStatus
+init|=
+name|ContainerExitStatus
+operator|.
+name|INVALID
+decl_stmt|;
 DECL|field|amUnregisteredFinalStatus
 name|FinalApplicationStatus
 name|amUnregisteredFinalStatus
@@ -1857,10 +1883,14 @@ argument_list|,
 literal|""
 argument_list|,
 literal|null
+argument_list|,
+name|ContainerExitStatus
+operator|.
+name|INVALID
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|ApplicationAttemptState (ApplicationAttemptId attemptId, Container masterContainer, Credentials appAttemptCredentials, long startTime, RMAppAttemptState state, String finalTrackingUrl, String diagnostics, FinalApplicationStatus amUnregisteredFinalStatus)
+DECL|method|ApplicationAttemptState (ApplicationAttemptId attemptId, Container masterContainer, Credentials appAttemptCredentials, long startTime, RMAppAttemptState state, String finalTrackingUrl, String diagnostics, FinalApplicationStatus amUnregisteredFinalStatus, int exitStatus)
 specifier|public
 name|ApplicationAttemptState
 parameter_list|(
@@ -1887,6 +1917,9 @@ name|diagnostics
 parameter_list|,
 name|FinalApplicationStatus
 name|amUnregisteredFinalStatus
+parameter_list|,
+name|int
+name|exitStatus
 parameter_list|)
 block|{
 name|this
@@ -1942,6 +1975,12 @@ operator|.
 name|amUnregisteredFinalStatus
 operator|=
 name|amUnregisteredFinalStatus
+expr_stmt|;
+name|this
+operator|.
+name|exitStatus
+operator|=
+name|exitStatus
 expr_stmt|;
 block|}
 DECL|method|getMasterContainer ()
@@ -2022,6 +2061,18 @@ parameter_list|()
 block|{
 return|return
 name|amUnregisteredFinalStatus
+return|;
+block|}
+DECL|method|getAMContainerExitStatus ()
+specifier|public
+name|int
+name|getAMContainerExitStatus
+parameter_list|()
+block|{
+return|return
+name|this
+operator|.
+name|exitStatus
 return|;
 block|}
 block|}

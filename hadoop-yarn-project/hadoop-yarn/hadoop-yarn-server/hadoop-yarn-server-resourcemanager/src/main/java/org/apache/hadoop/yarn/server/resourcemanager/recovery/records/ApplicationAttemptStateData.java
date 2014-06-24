@@ -251,7 +251,7 @@ specifier|abstract
 class|class
 name|ApplicationAttemptStateData
 block|{
-DECL|method|newInstance ( ApplicationAttemptId attemptId, Container container, ByteBuffer attemptTokens, long startTime, RMAppAttemptState finalState, String finalTrackingUrl, String diagnostics, FinalApplicationStatus amUnregisteredFinalStatus)
+DECL|method|newInstance ( ApplicationAttemptId attemptId, Container container, ByteBuffer attemptTokens, long startTime, RMAppAttemptState finalState, String finalTrackingUrl, String diagnostics, FinalApplicationStatus amUnregisteredFinalStatus, int exitStatus)
 specifier|public
 specifier|static
 name|ApplicationAttemptStateData
@@ -280,6 +280,9 @@ name|diagnostics
 parameter_list|,
 name|FinalApplicationStatus
 name|amUnregisteredFinalStatus
+parameter_list|,
+name|int
+name|exitStatus
 parameter_list|)
 block|{
 name|ApplicationAttemptStateData
@@ -348,6 +351,13 @@ operator|.
 name|setFinalApplicationStatus
 argument_list|(
 name|amUnregisteredFinalStatus
+argument_list|)
+expr_stmt|;
+name|attemptStateData
+operator|.
+name|setAMContainerExitStatus
+argument_list|(
+name|exitStatus
 argument_list|)
 expr_stmt|;
 return|return
@@ -458,6 +468,11 @@ argument_list|,
 name|attemptState
 operator|.
 name|getFinalApplicationStatus
+argument_list|()
+argument_list|,
+name|attemptState
+operator|.
+name|getAMContainerExitStatus
 argument_list|()
 argument_list|)
 return|;
@@ -616,7 +631,7 @@ name|FinalApplicationStatus
 name|getFinalApplicationStatus
 parameter_list|()
 function_decl|;
-DECL|method|setFinalApplicationStatus (FinalApplicationStatus finishState)
+DECL|method|setFinalApplicationStatus ( FinalApplicationStatus finishState)
 specifier|public
 specifier|abstract
 name|void
@@ -624,6 +639,23 @@ name|setFinalApplicationStatus
 parameter_list|(
 name|FinalApplicationStatus
 name|finishState
+parameter_list|)
+function_decl|;
+DECL|method|getAMContainerExitStatus ()
+specifier|public
+specifier|abstract
+name|int
+name|getAMContainerExitStatus
+parameter_list|()
+function_decl|;
+DECL|method|setAMContainerExitStatus (int exitStatus)
+specifier|public
+specifier|abstract
+name|void
+name|setAMContainerExitStatus
+parameter_list|(
+name|int
+name|exitStatus
 parameter_list|)
 function_decl|;
 block|}

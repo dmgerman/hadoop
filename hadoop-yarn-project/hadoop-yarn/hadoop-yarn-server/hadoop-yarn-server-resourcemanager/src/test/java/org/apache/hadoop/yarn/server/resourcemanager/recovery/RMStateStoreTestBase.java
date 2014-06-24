@@ -1880,6 +1880,17 @@ name|getAttemptId
 argument_list|()
 argument_list|)
 expr_stmt|;
+name|assertEquals
+argument_list|(
+operator|-
+literal|1000
+argument_list|,
+name|attemptState
+operator|.
+name|getAMContainerExitStatus
+argument_list|()
+argument_list|)
+expr_stmt|;
 comment|// attempt1 container is loaded correctly
 name|assertEquals
 argument_list|(
@@ -2133,6 +2144,8 @@ argument_list|,
 name|FinalApplicationStatus
 operator|.
 name|SUCCEEDED
+argument_list|,
+literal|100
 argument_list|)
 decl_stmt|;
 name|store
@@ -2252,6 +2265,8 @@ argument_list|,
 name|FinalApplicationStatus
 operator|.
 name|SUCCEEDED
+argument_list|,
+literal|111
 argument_list|)
 decl_stmt|;
 name|store
@@ -2526,6 +2541,16 @@ argument_list|,
 name|updatedAttemptState
 operator|.
 name|getDiagnostics
+argument_list|()
+argument_list|)
+expr_stmt|;
+name|assertEquals
+argument_list|(
+literal|100
+argument_list|,
+name|updatedAttemptState
+operator|.
+name|getAMContainerExitStatus
 argument_list|()
 argument_list|)
 expr_stmt|;

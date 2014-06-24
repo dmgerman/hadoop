@@ -860,6 +860,11 @@ name|attemptStateData
 operator|.
 name|getFinalApplicationStatus
 argument_list|()
+argument_list|,
+name|attemptStateData
+operator|.
+name|getAMContainerExitStatus
+argument_list|()
 argument_list|)
 decl_stmt|;
 name|ApplicationState
