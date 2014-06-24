@@ -362,17 +362,50 @@ block|{
 name|buildACL
 argument_list|(
 name|aclString
+operator|.
+name|split
+argument_list|(
+literal|" "
+argument_list|,
+literal|2
+argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Build ACL from the given string, format of the string is    * user1,...,userN group1,...,groupN    *    * @param aclString build ACL from this string    */
-DECL|method|buildACL (String aclString)
+comment|/**    * Construct a new ACL from String representation of users and groups    *     * The arguments are comma separated lists    *     * @param users comma separated list of users    * @param groups comma separated list of groups    */
+DECL|method|AccessControlList (String users, String groups)
+specifier|public
+name|AccessControlList
+parameter_list|(
+name|String
+name|users
+parameter_list|,
+name|String
+name|groups
+parameter_list|)
+block|{
+name|buildACL
+argument_list|(
+operator|new
+name|String
+index|[]
+block|{
+name|users
+block|,
+name|groups
+block|}
+argument_list|)
+expr_stmt|;
+block|}
+comment|/**    * Build ACL from the given two Strings.    * The Strings contain comma separated values.    *    * @param aclString build ACL from array of Strings    */
+DECL|method|buildACL (String[] userGroupStrings)
 specifier|private
 name|void
 name|buildACL
 parameter_list|(
 name|String
-name|aclString
+index|[]
+name|userGroupStrings
 parameter_list|)
 block|{
 name|users
@@ -393,11 +426,23 @@ name|String
 argument_list|>
 argument_list|()
 expr_stmt|;
+for|for
+control|(
+name|String
+name|aclPart
+range|:
+name|userGroupStrings
+control|)
+block|{
 if|if
 condition|(
+name|aclPart
+operator|!=
+literal|null
+operator|&&
 name|isWildCardACLValue
 argument_list|(
-name|aclString
+name|aclPart
 argument_list|)
 condition|)
 block|{
@@ -405,26 +450,15 @@ name|allAllowed
 operator|=
 literal|true
 expr_stmt|;
+break|break;
 block|}
-else|else
-block|{
+block|}
+if|if
+condition|(
+operator|!
 name|allAllowed
-operator|=
-literal|false
-expr_stmt|;
-name|String
-index|[]
-name|userGroupStrings
-init|=
-name|aclString
-operator|.
-name|split
-argument_list|(
-literal|" "
-argument_list|,
-literal|2
-argument_list|)
-decl_stmt|;
+condition|)
+block|{
 if|if
 condition|(
 name|userGroupStrings
@@ -432,6 +466,13 @@ operator|.
 name|length
 operator|>=
 literal|1
+operator|&&
+name|userGroupStrings
+index|[
+literal|0
+index|]
+operator|!=
+literal|null
 condition|)
 block|{
 name|users
@@ -454,6 +495,13 @@ operator|.
 name|length
 operator|==
 literal|2
+operator|&&
+name|userGroupStrings
+index|[
+literal|1
+index|]
+operator|!=
+literal|null
 condition|)
 block|{
 name|groups
@@ -1103,6 +1151,13 @@ decl_stmt|;
 name|buildACL
 argument_list|(
 name|aclString
+operator|.
+name|split
+argument_list|(
+literal|" "
+argument_list|,
+literal|2
+argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
