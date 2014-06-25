@@ -3402,7 +3402,7 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|/**    * Add a new application attempt to the scheduler.    */
-DECL|method|addApplicationAttempt ( ApplicationAttemptId applicationAttemptId, boolean transferStateFromPreviousAttempt)
+DECL|method|addApplicationAttempt ( ApplicationAttemptId applicationAttemptId, boolean transferStateFromPreviousAttempt, boolean shouldNotifyAttemptAdded)
 specifier|protected
 specifier|synchronized
 name|void
@@ -3413,6 +3413,9 @@ name|applicationAttemptId
 parameter_list|,
 name|boolean
 name|transferStateFromPreviousAttempt
+parameter_list|,
+name|boolean
+name|shouldNotifyAttemptAdded
 parameter_list|)
 block|{
 name|SchedulerApplication
@@ -3562,6 +3565,11 @@ operator|+
 name|user
 argument_list|)
 expr_stmt|;
+if|if
+condition|(
+name|shouldNotifyAttemptAdded
+condition|)
+block|{
 name|rmContext
 operator|.
 name|getDispatcher
@@ -3583,6 +3591,26 @@ name|ATTEMPT_ADDED
 argument_list|)
 argument_list|)
 expr_stmt|;
+block|}
+else|else
+block|{
+if|if
+condition|(
+name|LOG
+operator|.
+name|isDebugEnabled
+argument_list|()
+condition|)
+block|{
+name|LOG
+operator|.
+name|debug
+argument_list|(
+literal|"Skipping notifying ATTEMPT_ADDED"
+argument_list|)
+expr_stmt|;
+block|}
+block|}
 block|}
 comment|/**    * Helper method that attempts to assign the app to a queue. The method is    * responsible to call the appropriate event-handler if the app is rejected.    */
 annotation|@
@@ -5996,6 +6024,11 @@ argument_list|,
 name|appAttemptAddedEvent
 operator|.
 name|getTransferStateFromPreviousAttempt
+argument_list|()
+argument_list|,
+name|appAttemptAddedEvent
+operator|.
+name|getShouldNotifyAttemptAdded
 argument_list|()
 argument_list|)
 expr_stmt|;

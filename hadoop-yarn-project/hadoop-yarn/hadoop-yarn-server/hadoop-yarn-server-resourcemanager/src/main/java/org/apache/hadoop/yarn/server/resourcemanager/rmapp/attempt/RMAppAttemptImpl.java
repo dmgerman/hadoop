@@ -4994,6 +4994,18 @@ name|isWorkPreservingRecoveryEnabled
 argument_list|()
 condition|)
 block|{
+comment|// Need to register an app attempt before AM can register
+name|appAttempt
+operator|.
+name|masterService
+operator|.
+name|registerAppAttempt
+argument_list|(
+name|appAttempt
+operator|.
+name|applicationAttemptId
+argument_list|)
+expr_stmt|;
 name|appAttempt
 operator|.
 name|eventHandler
@@ -5007,6 +5019,8 @@ name|appAttempt
 operator|.
 name|getAppAttemptId
 argument_list|()
+argument_list|,
+literal|false
 argument_list|,
 literal|false
 argument_list|)

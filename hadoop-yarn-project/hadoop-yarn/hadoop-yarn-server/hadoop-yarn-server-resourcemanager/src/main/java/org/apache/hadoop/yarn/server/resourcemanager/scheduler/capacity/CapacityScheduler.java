@@ -3452,7 +3452,7 @@ argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|addApplicationAttempt ( ApplicationAttemptId applicationAttemptId, boolean transferStateFromPreviousAttempt)
+DECL|method|addApplicationAttempt ( ApplicationAttemptId applicationAttemptId, boolean transferStateFromPreviousAttempt, boolean shouldNotifyAttemptAdded)
 specifier|private
 specifier|synchronized
 name|void
@@ -3463,6 +3463,9 @@ name|applicationAttemptId
 parameter_list|,
 name|boolean
 name|transferStateFromPreviousAttempt
+parameter_list|,
+name|boolean
+name|shouldNotifyAttemptAdded
 parameter_list|)
 block|{
 name|SchedulerApplication
@@ -3573,6 +3576,11 @@ name|getQueueName
 argument_list|()
 argument_list|)
 expr_stmt|;
+if|if
+condition|(
+name|shouldNotifyAttemptAdded
+condition|)
+block|{
 name|rmContext
 operator|.
 name|getDispatcher
@@ -3594,6 +3602,26 @@ name|ATTEMPT_ADDED
 argument_list|)
 argument_list|)
 expr_stmt|;
+block|}
+else|else
+block|{
+if|if
+condition|(
+name|LOG
+operator|.
+name|isDebugEnabled
+argument_list|()
+condition|)
+block|{
+name|LOG
+operator|.
+name|debug
+argument_list|(
+literal|"Skipping notifying ATTEMPT_ADDED"
+argument_list|)
+expr_stmt|;
+block|}
+block|}
 block|}
 DECL|method|doneApplication (ApplicationId applicationId, RMAppState finalState)
 specifier|private
@@ -5149,6 +5177,11 @@ argument_list|,
 name|appAttemptAddedEvent
 operator|.
 name|getTransferStateFromPreviousAttempt
+argument_list|()
+argument_list|,
+name|appAttemptAddedEvent
+operator|.
+name|getShouldNotifyAttemptAdded
 argument_list|()
 argument_list|)
 expr_stmt|;

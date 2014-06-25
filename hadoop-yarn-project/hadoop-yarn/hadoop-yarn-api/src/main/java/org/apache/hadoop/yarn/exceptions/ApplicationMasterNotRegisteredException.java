@@ -48,7 +48,7 @@ name|api
 operator|.
 name|protocolrecords
 operator|.
-name|AllocateRequest
+name|FinishApplicationMasterRequest
 import|;
 end_import
 
@@ -71,14 +71,14 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * This exception is thrown when an ApplicationMaster asks for resources by  * calling {@link ApplicationMasterProtocol#allocate(AllocateRequest)}  * without first registering by calling  * {@link ApplicationMasterProtocol#registerApplicationMaster(RegisterApplicationMasterRequest)}  * or if it tries to register more than once.  */
+comment|/**  * This exception is thrown when an Application Master tries to unregister by calling  * {@link ApplicationMasterProtocol#finishApplicationMaster(FinishApplicationMasterRequest)}  * API without first registering by calling  * {@link ApplicationMasterProtocol#registerApplicationMaster(RegisterApplicationMasterRequest)}  * or after an RM restart. The ApplicationMaster is expected to call  * {@link ApplicationMasterProtocol#registerApplicationMaster(RegisterApplicationMasterRequest)}  * and retry.  */
 end_comment
 
 begin_class
-DECL|class|InvalidApplicationMasterRequestException
+DECL|class|ApplicationMasterNotRegisteredException
 specifier|public
 class|class
-name|InvalidApplicationMasterRequestException
+name|ApplicationMasterNotRegisteredException
 extends|extends
 name|YarnException
 block|{
@@ -89,11 +89,11 @@ specifier|final
 name|long
 name|serialVersionUID
 init|=
-literal|1357686L
+literal|13498238L
 decl_stmt|;
-DECL|method|InvalidApplicationMasterRequestException (Throwable cause)
+DECL|method|ApplicationMasterNotRegisteredException (Throwable cause)
 specifier|public
-name|InvalidApplicationMasterRequestException
+name|ApplicationMasterNotRegisteredException
 parameter_list|(
 name|Throwable
 name|cause
@@ -105,9 +105,9 @@ name|cause
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|InvalidApplicationMasterRequestException (String message)
+DECL|method|ApplicationMasterNotRegisteredException (String message)
 specifier|public
-name|InvalidApplicationMasterRequestException
+name|ApplicationMasterNotRegisteredException
 parameter_list|(
 name|String
 name|message
@@ -119,9 +119,9 @@ name|message
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|InvalidApplicationMasterRequestException (String message, Throwable cause)
+DECL|method|ApplicationMasterNotRegisteredException (String message, Throwable cause)
 specifier|public
-name|InvalidApplicationMasterRequestException
+name|ApplicationMasterNotRegisteredException
 parameter_list|(
 name|String
 name|message

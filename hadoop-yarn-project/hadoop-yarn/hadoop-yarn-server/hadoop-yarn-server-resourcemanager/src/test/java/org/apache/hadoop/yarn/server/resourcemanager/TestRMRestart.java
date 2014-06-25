@@ -2423,16 +2423,16 @@ argument_list|)
 decl_stmt|;
 name|Assert
 operator|.
-name|assertTrue
+name|assertEquals
 argument_list|(
+name|AMCommand
+operator|.
+name|AM_SHUTDOWN
+argument_list|,
 name|allocResponse
 operator|.
 name|getAMCommand
 argument_list|()
-operator|==
-name|AMCommand
-operator|.
-name|AM_RESYNC
 argument_list|)
 expr_stmt|;
 comment|// NM should be rebooted on heartbeat, even first heartbeat for nm2
