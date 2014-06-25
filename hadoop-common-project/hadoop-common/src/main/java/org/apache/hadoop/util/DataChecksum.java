@@ -64,6 +64,18 @@ name|util
 operator|.
 name|zip
 operator|.
+name|CRC32
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
+name|zip
+operator|.
 name|Checksum
 import|;
 end_import
@@ -332,6 +344,29 @@ index|]
 return|;
 block|}
 block|}
+comment|/**    * Create a Crc32 Checksum object. The implementation of the Crc32 algorithm    * is chosen depending on the platform.    */
+DECL|method|newCrc32 ()
+specifier|public
+specifier|static
+name|Checksum
+name|newCrc32
+parameter_list|()
+block|{
+return|return
+name|Shell
+operator|.
+name|isJava7OrAbove
+argument_list|()
+condition|?
+operator|new
+name|CRC32
+argument_list|()
+else|:
+operator|new
+name|PureJavaCrc32
+argument_list|()
+return|;
+block|}
 DECL|method|newDataChecksum (Type type, int bytesPerChecksum )
 specifier|public
 specifier|static
@@ -386,8 +421,7 @@ name|DataChecksum
 argument_list|(
 name|type
 argument_list|,
-operator|new
-name|PureJavaCrc32
+name|newCrc32
 argument_list|()
 argument_list|,
 name|bytesPerChecksum
