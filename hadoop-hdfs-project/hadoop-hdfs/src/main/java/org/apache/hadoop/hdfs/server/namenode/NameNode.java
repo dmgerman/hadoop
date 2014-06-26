@@ -1075,7 +1075,7 @@ operator|.
 name|getName
 argument_list|()
 operator|+
-literal|"] | ["
+literal|"] | \n\t["
 operator|+
 name|StartupOption
 operator|.
@@ -1084,7 +1084,7 @@ operator|.
 name|getName
 argument_list|()
 operator|+
-literal|"] | ["
+literal|"] | \n\t["
 operator|+
 name|StartupOption
 operator|.
@@ -1120,7 +1120,7 @@ operator|.
 name|getName
 argument_list|()
 operator|+
-literal|"] ] | ["
+literal|"] ] | \n\t["
 operator|+
 name|StartupOption
 operator|.
@@ -1149,7 +1149,7 @@ operator|.
 name|getName
 argument_list|()
 operator|+
-literal|"<k-v pairs>] ] | ["
+literal|"<k-v pairs>] ] | \n\t["
 operator|+
 name|StartupOption
 operator|.
@@ -1158,7 +1158,7 @@ operator|.
 name|getName
 argument_list|()
 operator|+
-literal|"] | ["
+literal|"] | \n\t["
 operator|+
 name|StartupOption
 operator|.
@@ -1191,7 +1191,7 @@ operator|.
 name|toLowerCase
 argument_list|()
 operator|+
-literal|"> ] | ["
+literal|"> ] | \n\t["
 operator|+
 name|StartupOption
 operator|.
@@ -1200,7 +1200,7 @@ operator|.
 name|getName
 argument_list|()
 operator|+
-literal|"] | ["
+literal|"] | \n\t["
 operator|+
 name|StartupOption
 operator|.
@@ -1209,7 +1209,7 @@ operator|.
 name|getName
 argument_list|()
 operator|+
-literal|"] | ["
+literal|"] | \n\t["
 operator|+
 name|StartupOption
 operator|.
@@ -1218,7 +1218,7 @@ operator|.
 name|getName
 argument_list|()
 operator|+
-literal|"] | ["
+literal|"] | \n\t["
 operator|+
 name|StartupOption
 operator|.
@@ -1227,7 +1227,7 @@ operator|.
 name|getName
 argument_list|()
 operator|+
-literal|"] | ["
+literal|"] | \n\t["
 operator|+
 name|StartupOption
 operator|.
@@ -1245,7 +1245,18 @@ operator|.
 name|getName
 argument_list|()
 operator|+
-literal|" ] ]"
+literal|"] ] | \n\t["
+operator|+
+name|StartupOption
+operator|.
+name|METADATAVERSION
+operator|.
+name|getName
+argument_list|()
+operator|+
+literal|" ] "
+operator|+
+literal|" ]"
 decl_stmt|;
 DECL|method|getProtocolVersion (String protocol, long clientVersion)
 specifier|public
@@ -5981,6 +5992,29 @@ throw|;
 block|}
 block|}
 block|}
+elseif|else
+if|if
+condition|(
+name|StartupOption
+operator|.
+name|METADATAVERSION
+operator|.
+name|getName
+argument_list|()
+operator|.
+name|equalsIgnoreCase
+argument_list|(
+name|cmd
+argument_list|)
+condition|)
+block|{
+name|startOpt
+operator|=
+name|StartupOption
+operator|.
+name|METADATAVERSION
+expr_stmt|;
+block|}
 else|else
 block|{
 return|return
@@ -6257,6 +6291,58 @@ name|close
 argument_list|()
 expr_stmt|;
 block|}
+block|}
+comment|/**    * Verify that configured directories exist, then print the metadata versions    * of the software and the image.    *    * @param conf configuration to use    * @throws IOException    */
+DECL|method|printMetadataVersion (Configuration conf)
+specifier|private
+specifier|static
+name|boolean
+name|printMetadataVersion
+parameter_list|(
+name|Configuration
+name|conf
+parameter_list|)
+throws|throws
+name|IOException
+block|{
+specifier|final
+name|FSImage
+name|fsImage
+init|=
+operator|new
+name|FSImage
+argument_list|(
+name|conf
+argument_list|)
+decl_stmt|;
+specifier|final
+name|FSNamesystem
+name|fs
+init|=
+operator|new
+name|FSNamesystem
+argument_list|(
+name|conf
+argument_list|,
+name|fsImage
+argument_list|,
+literal|false
+argument_list|)
+decl_stmt|;
+return|return
+name|fsImage
+operator|.
+name|recoverTransitionRead
+argument_list|(
+name|StartupOption
+operator|.
+name|METADATAVERSION
+argument_list|,
+name|fs
+argument_list|,
+literal|null
+argument_list|)
+return|;
 block|}
 DECL|method|createNameNode (String argv[], Configuration conf)
 specifier|public
@@ -6624,6 +6710,25 @@ expr_stmt|;
 return|return
 literal|null
 return|;
+block|}
+case|case
+name|METADATAVERSION
+case|:
+block|{
+name|printMetadataVersion
+argument_list|(
+name|conf
+argument_list|)
+expr_stmt|;
+name|terminate
+argument_list|(
+literal|0
+argument_list|)
+expr_stmt|;
+return|return
+literal|null
+return|;
+comment|// avoid javac warning
 block|}
 default|default:
 block|{
