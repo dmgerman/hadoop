@@ -64,6 +64,20 @@ name|InterfaceStability
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|fs
+operator|.
+name|CommonConfigurationKeysPublic
+import|;
+end_import
+
 begin_comment
 comment|/**  * An interface for the implementation of a user-to-groups mapping service  * used by {@link Groups}.  */
 end_comment
@@ -82,6 +96,17 @@ specifier|public
 interface|interface
 name|GroupMappingServiceProvider
 block|{
+DECL|field|GROUP_MAPPING_CONFIG_PREFIX
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|GROUP_MAPPING_CONFIG_PREFIX
+init|=
+name|CommonConfigurationKeysPublic
+operator|.
+name|HADOOP_SECURITY_GROUP_MAPPING
+decl_stmt|;
 comment|/**    * Get all various group memberships of a given user.    * Returns EMPTY list in case of non-existing user    * @param user User's name    * @return group memberships of user    * @throws IOException    */
 DECL|method|getGroups (String user)
 specifier|public
