@@ -194,6 +194,22 @@ name|getGID
 argument_list|()
 return|;
 block|}
+annotation|@
+name|Override
+DECL|method|getAuxGids ()
+specifier|public
+name|int
+index|[]
+name|getAuxGids
+parameter_list|()
+block|{
+return|return
+name|mCredentialsSys
+operator|.
+name|getAuxGIDs
+argument_list|()
+return|;
+block|}
 block|}
 end_class
 

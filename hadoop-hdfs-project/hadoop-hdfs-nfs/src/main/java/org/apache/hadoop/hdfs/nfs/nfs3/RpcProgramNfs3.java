@@ -3984,6 +3984,11 @@ operator|.
 name|getGid
 argument_list|()
 argument_list|,
+name|securityHandler
+operator|.
+name|getAuxGids
+argument_list|()
+argument_list|,
 name|attrs
 argument_list|)
 decl_stmt|;
@@ -4872,6 +4877,11 @@ argument_list|,
 name|securityHandler
 operator|.
 name|getGid
+argument_list|()
+argument_list|,
+name|securityHandler
+operator|.
+name|getAuxGids
 argument_list|()
 argument_list|,
 name|attrs
