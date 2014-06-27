@@ -394,6 +394,15 @@ specifier|public
 specifier|static
 specifier|final
 name|String
+DECL|field|HADOOP_SECURITY_SERVICE_AUTHORIZATION_DEFAULT_ACL
+name|HADOOP_SECURITY_SERVICE_AUTHORIZATION_DEFAULT_ACL
+init|=
+literal|"security.service.authorization.default.acl"
+decl_stmt|;
+specifier|public
+specifier|static
+specifier|final
+name|String
 DECL|field|HADOOP_SECURITY_SERVICE_AUTHORIZATION_REFRESH_POLICY
 name|HADOOP_SECURITY_SERVICE_AUTHORIZATION_REFRESH_POLICY
 init|=
