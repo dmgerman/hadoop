@@ -452,6 +452,20 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|fs
+operator|.
+name|FileEncryptionInfo
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|hdfs
 operator|.
 name|protocol
@@ -784,19 +798,10 @@ name|lastBlockBeingWrittenLength
 init|=
 literal|0
 decl_stmt|;
-DECL|field|key
+DECL|field|fileEncryptionInfo
 specifier|private
-name|byte
-index|[]
-name|key
-init|=
-literal|null
-decl_stmt|;
-DECL|field|iv
-specifier|private
-name|byte
-index|[]
-name|iv
+name|FileEncryptionInfo
+name|fileEncryptionInfo
 init|=
 literal|null
 decl_stmt|;
@@ -1622,18 +1627,11 @@ name|len
 expr_stmt|;
 block|}
 block|}
-name|key
+name|fileEncryptionInfo
 operator|=
 name|locatedBlocks
 operator|.
-name|getKey
-argument_list|()
-expr_stmt|;
-name|iv
-operator|=
-name|locatedBlocks
-operator|.
-name|getIv
+name|getFileEncryptionInfo
 argument_list|()
 expr_stmt|;
 name|currentNode
@@ -7298,30 +7296,15 @@ name|readStatistics
 argument_list|)
 return|;
 block|}
-comment|/**    * Get the encryption key for this stream.    *    * @return byte[] the key    */
-DECL|method|getKey ()
+DECL|method|getFileEncryptionInfo ()
 specifier|public
 specifier|synchronized
-name|byte
-index|[]
-name|getKey
+name|FileEncryptionInfo
+name|getFileEncryptionInfo
 parameter_list|()
 block|{
 return|return
-name|key
-return|;
-block|}
-comment|/**    * Get the encryption initialization vector (IV) for this stream.    *    * @return byte[] the initialization vector (IV).    */
-DECL|method|getIv ()
-specifier|public
-specifier|synchronized
-name|byte
-index|[]
-name|getIv
-parameter_list|()
-block|{
-return|return
-name|iv
+name|fileEncryptionInfo
 return|;
 block|}
 DECL|method|closeCurrentBlockReader ()

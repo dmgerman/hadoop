@@ -76,6 +76,20 @@ name|InterfaceStability
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|fs
+operator|.
+name|FileEncryptionInfo
+import|;
+end_import
+
 begin_comment
 comment|/**  * Collection of blocks with their locations and the file length.  */
 end_comment
@@ -130,19 +144,12 @@ name|isLastBlockComplete
 init|=
 literal|false
 decl_stmt|;
-DECL|field|key
+DECL|field|fileEncryptionInfo
 specifier|private
-specifier|final
-name|byte
-index|[]
-name|key
-decl_stmt|;
-DECL|field|iv
-specifier|private
-specifier|final
-name|byte
-index|[]
-name|iv
+name|FileEncryptionInfo
+name|fileEncryptionInfo
+init|=
+literal|null
 decl_stmt|;
 DECL|method|LocatedBlocks ()
 specifier|public
@@ -161,16 +168,8 @@ name|underConstruction
 operator|=
 literal|false
 expr_stmt|;
-name|key
-operator|=
-literal|null
-expr_stmt|;
-name|iv
-operator|=
-literal|null
-expr_stmt|;
 block|}
-DECL|method|LocatedBlocks (long flength, boolean isUnderConstuction, List<LocatedBlock> blks, LocatedBlock lastBlock, boolean isLastBlockCompleted, byte[] key, byte[] iv)
+DECL|method|LocatedBlocks (long flength, boolean isUnderConstuction, List<LocatedBlock> blks, LocatedBlock lastBlock, boolean isLastBlockCompleted, FileEncryptionInfo feInfo)
 specifier|public
 name|LocatedBlocks
 parameter_list|(
@@ -192,13 +191,8 @@ parameter_list|,
 name|boolean
 name|isLastBlockCompleted
 parameter_list|,
-name|byte
-index|[]
-name|key
-parameter_list|,
-name|byte
-index|[]
-name|iv
+name|FileEncryptionInfo
+name|feInfo
 parameter_list|)
 block|{
 name|fileLength
@@ -227,15 +221,9 @@ name|isLastBlockCompleted
 expr_stmt|;
 name|this
 operator|.
-name|key
+name|fileEncryptionInfo
 operator|=
-name|key
-expr_stmt|;
-name|this
-operator|.
-name|iv
-operator|=
-name|iv
+name|feInfo
 expr_stmt|;
 block|}
 comment|/**    * Get located blocks.    */
@@ -337,26 +325,15 @@ return|return
 name|underConstruction
 return|;
 block|}
-DECL|method|getKey ()
+comment|/**    * @return the FileEncryptionInfo for the LocatedBlocks    */
+DECL|method|getFileEncryptionInfo ()
 specifier|public
-name|byte
-index|[]
-name|getKey
+name|FileEncryptionInfo
+name|getFileEncryptionInfo
 parameter_list|()
 block|{
 return|return
-name|key
-return|;
-block|}
-DECL|method|getIv ()
-specifier|public
-name|byte
-index|[]
-name|getIv
-parameter_list|()
-block|{
-return|return
-name|iv
+name|fileEncryptionInfo
 return|;
 block|}
 comment|/**    * Find block containing specified offset.    *     * @return block if found, or null otherwise.    */

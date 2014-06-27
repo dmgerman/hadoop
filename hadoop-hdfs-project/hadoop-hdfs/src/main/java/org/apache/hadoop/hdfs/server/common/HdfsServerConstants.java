@@ -1098,6 +1098,24 @@ name|NAMENODE_LEASE_RECHECK_INTERVAL
 init|=
 literal|2000
 decl_stmt|;
+DECL|field|CRYPTO_XATTR_ENCRYPTION_ZONE
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|CRYPTO_XATTR_ENCRYPTION_ZONE
+init|=
+literal|"system.hdfs.crypto.encryption.zone"
+decl_stmt|;
+DECL|field|CRYPTO_XATTR_FILE_ENCRYPTION_INFO
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|CRYPTO_XATTR_FILE_ENCRYPTION_INFO
+init|=
+literal|"system.hdfs.crypto.file.encryption.info"
+decl_stmt|;
 block|}
 end_class
 

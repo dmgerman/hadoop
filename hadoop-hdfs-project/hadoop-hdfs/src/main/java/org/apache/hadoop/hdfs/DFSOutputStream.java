@@ -340,6 +340,20 @@ name|hadoop
 operator|.
 name|fs
 operator|.
+name|FileEncryptionInfo
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|fs
+operator|.
 name|ParentNotDirectoryException
 import|;
 end_import
@@ -1340,21 +1354,10 @@ name|failPacket
 init|=
 literal|false
 decl_stmt|;
-DECL|field|key
+DECL|field|fileEncryptionInfo
 specifier|private
-name|byte
-index|[]
-name|key
-init|=
-literal|null
-decl_stmt|;
-DECL|field|iv
-specifier|private
-name|byte
-index|[]
-name|iv
-init|=
-literal|null
+name|FileEncryptionInfo
+name|fileEncryptionInfo
 decl_stmt|;
 DECL|class|Packet
 specifier|private
@@ -7584,20 +7587,11 @@ argument_list|()
 expr_stmt|;
 name|this
 operator|.
-name|key
+name|fileEncryptionInfo
 operator|=
 name|stat
 operator|.
-name|getKey
-argument_list|()
-expr_stmt|;
-name|this
-operator|.
-name|iv
-operator|=
-name|stat
-operator|.
-name|getIv
+name|getFileEncryptionInfo
 argument_list|()
 expr_stmt|;
 name|this
@@ -8147,6 +8141,15 @@ name|DataStreamer
 argument_list|()
 expr_stmt|;
 block|}
+name|this
+operator|.
+name|fileEncryptionInfo
+operator|=
+name|stat
+operator|.
+name|getFileEncryptionInfo
+argument_list|()
+expr_stmt|;
 block|}
 DECL|method|newStreamForAppend (DFSClient dfsClient, String src, int buffersize, Progressable progress, LocatedBlock lastBlock, HdfsFileStatus stat, DataChecksum checksum)
 specifier|static
@@ -10160,6 +10163,7 @@ expr_stmt|;
 block|}
 comment|/**    * Returns the size of a file as it was when this stream was opened    */
 DECL|method|getInitialLen ()
+specifier|public
 name|long
 name|getInitialLen
 parameter_list|()
@@ -10168,28 +10172,15 @@ return|return
 name|initialFileSize
 return|;
 block|}
-comment|/**    * Get the encryption key for this stream.    *    * @return byte[] the key.    */
-DECL|method|getKey ()
+comment|/**    * @return the FileEncryptionInfo for this stream, or null if not encrypted.    */
+DECL|method|getFileEncryptionInfo ()
 specifier|public
-name|byte
-index|[]
-name|getKey
+name|FileEncryptionInfo
+name|getFileEncryptionInfo
 parameter_list|()
 block|{
 return|return
-name|key
-return|;
-block|}
-comment|/**    * Get the encryption initialization vector (IV) for this stream.    *    * @return byte[] the initialization vector (IV).    */
-DECL|method|getIv ()
-specifier|public
-name|byte
-index|[]
-name|getIv
-parameter_list|()
-block|{
-return|return
-name|iv
+name|fileEncryptionInfo
 return|;
 block|}
 comment|/**    * Returns the access token currently used by streamer, for testing only    */

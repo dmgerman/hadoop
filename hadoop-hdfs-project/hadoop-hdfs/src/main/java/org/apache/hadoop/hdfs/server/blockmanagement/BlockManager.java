@@ -440,11 +440,9 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|hdfs
+name|fs
 operator|.
-name|protocol
-operator|.
-name|HdfsConstants
+name|FileEncryptionInfo
 import|;
 end_import
 
@@ -4413,7 +4411,7 @@ argument_list|)
 return|;
 block|}
 comment|/** Create a LocatedBlocks. */
-DECL|method|createLocatedBlocks (final BlockInfo[] blocks, final long fileSizeExcludeBlocksUnderConstruction, final boolean isFileUnderConstruction, final long offset, final long length, final boolean needBlockToken, final boolean inSnapshot)
+DECL|method|createLocatedBlocks (final BlockInfo[] blocks, final long fileSizeExcludeBlocksUnderConstruction, final boolean isFileUnderConstruction, final long offset, final long length, final boolean needBlockToken, final boolean inSnapshot, FileEncryptionInfo feInfo)
 specifier|public
 name|LocatedBlocks
 name|createLocatedBlocks
@@ -4446,6 +4444,9 @@ parameter_list|,
 specifier|final
 name|boolean
 name|inSnapshot
+parameter_list|,
+name|FileEncryptionInfo
+name|feInfo
 parameter_list|)
 throws|throws
 name|IOException
@@ -4498,10 +4499,6 @@ argument_list|,
 literal|false
 argument_list|,
 literal|null
-comment|/* key */
-argument_list|,
-literal|null
-comment|/* IV */
 argument_list|)
 return|;
 block|}
@@ -4664,13 +4661,7 @@ name|lastlb
 argument_list|,
 name|isComplete
 argument_list|,
-name|HdfsConstants
-operator|.
-name|KEY
-argument_list|,
-name|HdfsConstants
-operator|.
-name|IV
+name|feInfo
 argument_list|)
 return|;
 block|}
