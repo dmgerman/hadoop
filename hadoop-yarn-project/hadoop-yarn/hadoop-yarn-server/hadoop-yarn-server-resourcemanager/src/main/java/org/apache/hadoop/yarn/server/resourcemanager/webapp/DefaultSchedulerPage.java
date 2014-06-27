@@ -922,7 +922,7 @@ literal|"    var q = $('.q', data.rslt.obj).first().text();"
 argument_list|,
 literal|"    if (q == 'root') q = '';"
 argument_list|,
-literal|"    $('#apps').dataTable().fnFilter(q, 3);"
+literal|"    $('#apps').dataTable().fnFilter(q, 4);"
 argument_list|,
 literal|"  });"
 argument_list|,
