@@ -39357,7 +39357,6 @@ block|}
 block|}
 comment|/** Lookup the encryption zone of a path. */
 DECL|method|getEncryptionZoneForPath (String src)
-specifier|private
 name|EncryptionZone
 name|getEncryptionZoneForPath
 parameter_list|(
