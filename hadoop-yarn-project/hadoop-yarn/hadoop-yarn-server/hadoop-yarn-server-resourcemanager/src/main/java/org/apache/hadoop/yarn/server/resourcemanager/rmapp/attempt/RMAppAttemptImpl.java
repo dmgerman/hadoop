@@ -1627,9 +1627,10 @@ specifier|private
 name|Configuration
 name|conf
 decl_stmt|;
-comment|// Since AM preemption is not counted towards AM failure count,
-comment|// even if this flag is true, a new attempt can still be re-created if this
-comment|// attempt is eventually preempted. So this flag indicates that this may be
+comment|// Since AM preemption, hardware error and NM resync are not counted towards
+comment|// AM failure count, even if this flag is true, a new attempt can still be
+comment|// re-created if this attempt is eventually failed because of preemption,
+comment|// hardware error or NM resync. So this flag indicates that this may be
 comment|// last attempt.
 DECL|field|maybeLastAttempt
 specifier|private
@@ -5707,14 +5708,15 @@ block|{
 comment|// See if we should retain containers for non-unmanaged applications
 if|if
 condition|(
+operator|!
 name|appAttempt
 operator|.
-name|isPreempted
+name|shouldCountTowardsMaxAttemptRetry
 argument_list|()
 condition|)
 block|{
-comment|// Premption doesn't count towards app-failures and so we should
-comment|// retain containers.
+comment|// Premption, hardware failures, NM resync doesn't count towards
+comment|// app-failures and so we should retain containers.
 name|keepContainersAcrossAppAttempts
 operator|=
 literal|true
@@ -5729,7 +5731,8 @@ operator|.
 name|maybeLastAttempt
 condition|)
 block|{
-comment|// Not preemption. Not last-attempt too - keep containers.
+comment|// Not preemption, hardware failures or NM resync.
+comment|// Not last-attempt too - keep containers.
 name|keepContainersAcrossAppAttempts
 operator|=
 literal|true
@@ -5872,20 +5875,66 @@ block|}
 block|}
 annotation|@
 name|Override
-DECL|method|isPreempted ()
+DECL|method|shouldCountTowardsMaxAttemptRetry ()
 specifier|public
 name|boolean
-name|isPreempted
+name|shouldCountTowardsMaxAttemptRetry
 parameter_list|()
 block|{
-return|return
+try|try
+block|{
+name|this
+operator|.
+name|readLock
+operator|.
+name|lock
+argument_list|()
+expr_stmt|;
+name|int
+name|exitStatus
+init|=
 name|getAMContainerExitStatus
 argument_list|()
+decl_stmt|;
+return|return
+operator|!
+operator|(
+name|exitStatus
 operator|==
 name|ContainerExitStatus
 operator|.
 name|PREEMPTED
+operator|||
+name|exitStatus
+operator|==
+name|ContainerExitStatus
+operator|.
+name|ABORTED
+operator|||
+name|exitStatus
+operator|==
+name|ContainerExitStatus
+operator|.
+name|DISKS_FAILED
+operator|||
+name|exitStatus
+operator|==
+name|ContainerExitStatus
+operator|.
+name|KILLED_BY_RESOURCEMANAGER
+operator|)
 return|;
+block|}
+finally|finally
+block|{
+name|this
+operator|.
+name|readLock
+operator|.
+name|unlock
+argument_list|()
+expr_stmt|;
+block|}
 block|}
 DECL|class|UnmanagedAMAttemptSavedTransition
 specifier|private

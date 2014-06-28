@@ -4103,12 +4103,13 @@ argument_list|,
 name|conf
 argument_list|,
 comment|// The newly created attempt maybe last attempt if (number of
-comment|// previously NonPreempted attempts + 1) equal to the max-attempt
+comment|// previously failed attempts(which should not include Preempted,
+comment|// hardware error and NM resync) + 1) equal to the max-attempt
 comment|// limit.
 name|maxAppAttempts
 operator|==
 operator|(
-name|getNumNonPreemptedAppAttempts
+name|getNumFailedAppAttempts
 argument_list|()
 operator|+
 literal|1
@@ -4610,7 +4611,7 @@ name|FAILED
 operator|&&
 name|app
 operator|.
-name|getNumNonPreemptedAppAttempts
+name|getNumFailedAppAttempts
 argument_list|()
 operator|==
 name|app
@@ -5076,7 +5077,7 @@ block|}
 elseif|else
 if|if
 condition|(
-name|getNumNonPreemptedAppAttempts
+name|getNumFailedAppAttempts
 argument_list|()
 operator|>=
 name|this
@@ -6074,10 +6075,10 @@ expr_stmt|;
 block|}
 empty_stmt|;
 block|}
-DECL|method|getNumNonPreemptedAppAttempts ()
+DECL|method|getNumFailedAppAttempts ()
 specifier|private
 name|int
-name|getNumNonPreemptedAppAttempts
+name|getNumFailedAppAttempts
 parameter_list|()
 block|{
 name|int
@@ -6085,7 +6086,8 @@ name|completedAttempts
 init|=
 literal|0
 decl_stmt|;
-comment|// Do not count AM preemption as attempt failure.
+comment|// Do not count AM preemption, hardware failures or NM resync
+comment|// as attempt failure.
 for|for
 control|(
 name|RMAppAttempt
@@ -6099,10 +6101,9 @@ control|)
 block|{
 if|if
 condition|(
-operator|!
 name|attempt
 operator|.
-name|isPreempted
+name|shouldCountTowardsMaxAttemptRetry
 argument_list|()
 condition|)
 block|{
@@ -6178,7 +6179,7 @@ argument_list|()
 operator|&&
 name|app
 operator|.
-name|getNumNonPreemptedAppAttempts
+name|getNumFailedAppAttempts
 argument_list|()
 operator|<
 name|app
