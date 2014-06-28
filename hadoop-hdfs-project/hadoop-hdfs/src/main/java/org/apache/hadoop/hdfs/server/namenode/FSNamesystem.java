@@ -35770,6 +35770,12 @@ block|}
 name|getFSImage
 argument_list|()
 operator|.
+name|updateStorageVersion
+argument_list|()
+expr_stmt|;
+name|getFSImage
+argument_list|()
+operator|.
 name|renameCheckpoint
 argument_list|(
 name|NameNodeFile

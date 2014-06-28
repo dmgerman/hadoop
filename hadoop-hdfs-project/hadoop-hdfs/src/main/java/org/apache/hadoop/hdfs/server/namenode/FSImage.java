@@ -5190,6 +5190,22 @@ block|}
 block|}
 block|}
 block|}
+comment|/**    * Update version of all storage directories.    */
+DECL|method|updateStorageVersion ()
+specifier|public
+specifier|synchronized
+name|void
+name|updateStorageVersion
+parameter_list|()
+throws|throws
+name|IOException
+block|{
+name|storage
+operator|.
+name|writeAll
+argument_list|()
+expr_stmt|;
+block|}
 comment|/**    * @see #saveNamespace(FSNamesystem, Canceler)    */
 DECL|method|saveNamespace (FSNamesystem source)
 specifier|public

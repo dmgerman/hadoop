@@ -4810,12 +4810,32 @@ operator|.
 name|getTime
 argument_list|()
 decl_stmt|;
+if|if
+condition|(
+name|fsNamesys
+operator|.
+name|isRollingUpgrade
+argument_list|()
+condition|)
+block|{
+comment|// Only do it when NN is actually doing rolling upgrade.
+comment|// We can get FINALIZE without corresponding START, if NN is restarted
+comment|// before this op is consumed and a new checkpoint is created.
 name|fsNamesys
 operator|.
 name|finalizeRollingUpgradeInternal
 argument_list|(
 name|finalizeTime
 argument_list|)
+expr_stmt|;
+block|}
+name|fsNamesys
+operator|.
+name|getFSImage
+argument_list|()
+operator|.
+name|updateStorageVersion
+argument_list|()
 expr_stmt|;
 name|fsNamesys
 operator|.

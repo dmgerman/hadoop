@@ -2370,6 +2370,15 @@ name|hasRollbackFSImage
 argument_list|()
 argument_list|)
 expr_stmt|;
+comment|// Should have no problem in restart and replaying edits that include
+comment|// the FINALIZE op.
+name|dfsCluster
+operator|.
+name|restartNameNode
+argument_list|(
+literal|0
+argument_list|)
+expr_stmt|;
 block|}
 finally|finally
 block|{
