@@ -16915,7 +16915,7 @@ name|reset
 argument_list|()
 expr_stmt|;
 block|}
-comment|/**    * HDFS-6374 setXAttr should require the user to be the owner of the file    * or directory.    *    * Test to make sure that only the owner of a file or directory can set    * or remove the xattrs.    *    * As user1:    * Create a directory (/foo) as user1, chown it to user1 (and user1's group),    * grant rwx to "other".    *    * As user2:    * Set an xattr (should fail).    *    * As user1:    * Set an xattr (should pass).    *    * As user2:    * Read the xattr (should pass).    * Remove the xattr (should fail).    *    * As user1:    * Read the xattr (should pass).    * Remove the xattr (should pass).    */
+comment|/**    *     * Test to make sure that user namespace xattrs can be set only if path has    * access and for sticky directorries, only owner/privileged user can write.    * Trusted namespace xattrs can be set only with privileged users.    *     * As user1: Create a directory (/foo) as user1, chown it to user1 (and    * user1's group), grant rwx to "other".    *     * As user2: Set an xattr (should pass with path access).    *     * As user1: Set an xattr (should pass).    *     * As user2: Read the xattr (should pass). Remove the xattr (should pass with    * path access).    *     * As user1: Read the xattr (should pass). Remove the xattr (should pass).    *     * As user1: Change permissions only to owner    *     * As User2: Set an Xattr (Should fail set with no path access) Remove an    * Xattr (Should fail with no path access)    *     * As SuperUser: Set an Xattr with Trusted (Should pass)    */
 annotation|@
 name|Test
 argument_list|(
@@ -16941,7 +16941,7 @@ specifier|final
 name|String
 name|GROUP1
 init|=
-literal|"mygroup1"
+literal|"supergroup"
 decl_stmt|;
 specifier|final
 name|UserGroupInformation
@@ -16978,6 +16978,15 @@ block|{
 literal|"mygroup2"
 block|}
 argument_list|)
+decl_stmt|;
+specifier|final
+name|UserGroupInformation
+name|SUPERUSER
+init|=
+name|UserGroupInformation
+operator|.
+name|getCurrentUser
+argument_list|()
 decl_stmt|;
 name|MiniDFSCluster
 name|cluster
@@ -17081,7 +17090,7 @@ name|out
 argument_list|)
 argument_list|)
 expr_stmt|;
-comment|// mkdir foo as user1
+comment|//Test 1.  Let user1 be owner for /foo
 name|user1
 operator|.
 name|doAs
@@ -17143,6 +17152,7 @@ block|}
 block|}
 argument_list|)
 expr_stmt|;
+comment|//Test 2. Give access to others
 name|user1
 operator|.
 name|doAs
@@ -17207,7 +17217,8 @@ block|}
 block|}
 argument_list|)
 expr_stmt|;
-comment|// No permission to write xattr for non-owning user (user2).
+comment|// Test 3. Should be allowed to write xattr if there is a path access to
+comment|// user (user2).
 name|user2
 operator|.
 name|doAs
@@ -17258,35 +17269,11 @@ argument_list|)
 decl_stmt|;
 name|assertEquals
 argument_list|(
-literal|"Returned should be 1"
+literal|"Returned should be 0"
 argument_list|,
-literal|1
+literal|0
 argument_list|,
 name|ret
-argument_list|)
-expr_stmt|;
-specifier|final
-name|String
-name|str
-init|=
-name|out
-operator|.
-name|toString
-argument_list|()
-decl_stmt|;
-name|assertTrue
-argument_list|(
-literal|"Permission denied printed"
-argument_list|,
-name|str
-operator|.
-name|indexOf
-argument_list|(
-literal|"Permission denied"
-argument_list|)
-operator|!=
-operator|-
-literal|1
 argument_list|)
 expr_stmt|;
 name|out
@@ -17301,8 +17288,8 @@ block|}
 block|}
 argument_list|)
 expr_stmt|;
-comment|// But there should be permission to write xattr for
-comment|// the owning user.
+comment|//Test 4. There should be permission to write xattr for
+comment|// the owning user with write permissions.
 name|user1
 operator|.
 name|doAs
@@ -17372,8 +17359,8 @@ block|}
 block|}
 argument_list|)
 expr_stmt|;
-comment|// There should be permission to read,but not to remove for
-comment|// non-owning user (user2).
+comment|// Test 5. There should be permission to read non-owning user (user2) if
+comment|// there is path access to that user and also can remove.
 name|user2
 operator|.
 name|doAs
@@ -17457,6 +17444,167 @@ argument_list|)
 expr_stmt|;
 name|assertEquals
 argument_list|(
+literal|"Returned should be 0"
+argument_list|,
+literal|0
+argument_list|,
+name|ret
+argument_list|)
+expr_stmt|;
+name|out
+operator|.
+name|reset
+argument_list|()
+expr_stmt|;
+return|return
+literal|null
+return|;
+block|}
+block|}
+argument_list|)
+expr_stmt|;
+comment|// Test 6. There should be permission to read/remove for
+comment|// the owning user with path access.
+name|user1
+operator|.
+name|doAs
+argument_list|(
+operator|new
+name|PrivilegedExceptionAction
+argument_list|<
+name|Object
+argument_list|>
+argument_list|()
+block|{
+annotation|@
+name|Override
+specifier|public
+name|Object
+name|run
+parameter_list|()
+throws|throws
+name|Exception
+block|{
+return|return
+literal|null
+return|;
+block|}
+block|}
+argument_list|)
+expr_stmt|;
+comment|// Test 7. Change permission to have path access only to owner(user1)
+name|user1
+operator|.
+name|doAs
+argument_list|(
+operator|new
+name|PrivilegedExceptionAction
+argument_list|<
+name|Object
+argument_list|>
+argument_list|()
+block|{
+annotation|@
+name|Override
+specifier|public
+name|Object
+name|run
+parameter_list|()
+throws|throws
+name|Exception
+block|{
+comment|// Give access to "other"
+specifier|final
+name|int
+name|ret
+init|=
+name|ToolRunner
+operator|.
+name|run
+argument_list|(
+name|fshell
+argument_list|,
+operator|new
+name|String
+index|[]
+block|{
+literal|"-chmod"
+block|,
+literal|"700"
+block|,
+literal|"/foo"
+block|}
+argument_list|)
+decl_stmt|;
+name|assertEquals
+argument_list|(
+literal|"Return should be 0"
+argument_list|,
+literal|0
+argument_list|,
+name|ret
+argument_list|)
+expr_stmt|;
+name|out
+operator|.
+name|reset
+argument_list|()
+expr_stmt|;
+return|return
+literal|null
+return|;
+block|}
+block|}
+argument_list|)
+expr_stmt|;
+comment|// Test 8. There should be no permissions to set for
+comment|// the non-owning user with no path access.
+name|user2
+operator|.
+name|doAs
+argument_list|(
+operator|new
+name|PrivilegedExceptionAction
+argument_list|<
+name|Object
+argument_list|>
+argument_list|()
+block|{
+annotation|@
+name|Override
+specifier|public
+name|Object
+name|run
+parameter_list|()
+throws|throws
+name|Exception
+block|{
+comment|// set
+name|int
+name|ret
+init|=
+name|ToolRunner
+operator|.
+name|run
+argument_list|(
+name|fshell
+argument_list|,
+operator|new
+name|String
+index|[]
+block|{
+literal|"-setfattr"
+block|,
+literal|"-n"
+block|,
+literal|"user.a2"
+block|,
+literal|"/foo"
+block|}
+argument_list|)
+decl_stmt|;
+name|assertEquals
+argument_list|(
 literal|"Returned should be 1"
 argument_list|,
 literal|1
@@ -17500,9 +17648,9 @@ block|}
 block|}
 argument_list|)
 expr_stmt|;
-comment|// But there should be permission to read/remove for
-comment|// the owning user.
-name|user1
+comment|// Test 9. There should be no permissions to remove for
+comment|// the non-owning user with no path access.
+name|user2
 operator|.
 name|doAs
 argument_list|(
@@ -17522,47 +17670,10 @@ parameter_list|()
 throws|throws
 name|Exception
 block|{
-comment|// Read
+comment|// set
 name|int
 name|ret
 init|=
-name|ToolRunner
-operator|.
-name|run
-argument_list|(
-name|fshell
-argument_list|,
-operator|new
-name|String
-index|[]
-block|{
-literal|"-getfattr"
-block|,
-literal|"-n"
-block|,
-literal|"user.a1"
-block|,
-literal|"/foo"
-block|}
-argument_list|)
-decl_stmt|;
-name|assertEquals
-argument_list|(
-literal|"Returned should be 0"
-argument_list|,
-literal|0
-argument_list|,
-name|ret
-argument_list|)
-expr_stmt|;
-name|out
-operator|.
-name|reset
-argument_list|()
-expr_stmt|;
-comment|// Remove
-name|ret
-operator|=
 name|ToolRunner
 operator|.
 name|run
@@ -17577,12 +17688,102 @@ literal|"-setfattr"
 block|,
 literal|"-x"
 block|,
-literal|"user.a1"
+literal|"user.a2"
 block|,
 literal|"/foo"
 block|}
 argument_list|)
+decl_stmt|;
+name|assertEquals
+argument_list|(
+literal|"Returned should be 1"
+argument_list|,
+literal|1
+argument_list|,
+name|ret
+argument_list|)
 expr_stmt|;
+specifier|final
+name|String
+name|str
+init|=
+name|out
+operator|.
+name|toString
+argument_list|()
+decl_stmt|;
+name|assertTrue
+argument_list|(
+literal|"Permission denied printed"
+argument_list|,
+name|str
+operator|.
+name|indexOf
+argument_list|(
+literal|"Permission denied"
+argument_list|)
+operator|!=
+operator|-
+literal|1
+argument_list|)
+expr_stmt|;
+name|out
+operator|.
+name|reset
+argument_list|()
+expr_stmt|;
+return|return
+literal|null
+return|;
+block|}
+block|}
+argument_list|)
+expr_stmt|;
+comment|// Test 10. Superuser should be allowed to set with trusted namespace
+name|SUPERUSER
+operator|.
+name|doAs
+argument_list|(
+operator|new
+name|PrivilegedExceptionAction
+argument_list|<
+name|Object
+argument_list|>
+argument_list|()
+block|{
+annotation|@
+name|Override
+specifier|public
+name|Object
+name|run
+parameter_list|()
+throws|throws
+name|Exception
+block|{
+comment|// set
+name|int
+name|ret
+init|=
+name|ToolRunner
+operator|.
+name|run
+argument_list|(
+name|fshell
+argument_list|,
+operator|new
+name|String
+index|[]
+block|{
+literal|"-setfattr"
+block|,
+literal|"-n"
+block|,
+literal|"trusted.a3"
+block|,
+literal|"/foo"
+block|}
+argument_list|)
+decl_stmt|;
 name|assertEquals
 argument_list|(
 literal|"Returned should be 0"
