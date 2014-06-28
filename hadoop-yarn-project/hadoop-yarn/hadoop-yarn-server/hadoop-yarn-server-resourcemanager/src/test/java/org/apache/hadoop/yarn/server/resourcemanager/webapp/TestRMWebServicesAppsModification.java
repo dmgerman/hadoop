@@ -47,6 +47,18 @@ import|;
 end_import
 
 begin_import
+import|import static
+name|org
+operator|.
+name|junit
+operator|.
+name|Assume
+operator|.
+name|assumeTrue
+import|;
+end_import
+
+begin_import
 import|import
 name|java
 operator|.
@@ -411,6 +423,28 @@ operator|.
 name|rmapp
 operator|.
 name|RMAppState
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|server
+operator|.
+name|resourcemanager
+operator|.
+name|scheduler
+operator|.
+name|capacity
+operator|.
+name|CapacityScheduler
 import|;
 end_import
 
@@ -940,6 +974,13 @@ name|webserviceUserName
 init|=
 literal|"testuser"
 decl_stmt|;
+DECL|field|setAuthFilter
+specifier|private
+name|boolean
+name|setAuthFilter
+init|=
+literal|false
+decl_stmt|;
 DECL|class|GuiceServletConfig
 specifier|public
 class|class
@@ -1106,12 +1147,6 @@ operator|new
 name|Configuration
 argument_list|()
 decl_stmt|;
-DECL|field|setAuthFilter
-name|boolean
-name|setAuthFilter
-init|=
-literal|false
-decl_stmt|;
 annotation|@
 name|Override
 DECL|method|configureServlets ()
@@ -1273,6 +1308,10 @@ name|void
 name|configureServlets
 parameter_list|()
 block|{
+name|setAuthFilter
+operator|=
+literal|false
+expr_stmt|;
 name|super
 operator|.
 name|configureServlets
@@ -1475,26 +1514,14 @@ expr_stmt|;
 break|break;
 block|}
 block|}
-DECL|method|isAuthorizationEnabled ()
+DECL|method|isAuthenticationEnabled ()
 specifier|private
 name|boolean
-name|isAuthorizationEnabled
+name|isAuthenticationEnabled
 parameter_list|()
 block|{
 return|return
-name|rm
-operator|.
-name|getConfig
-argument_list|()
-operator|.
-name|getBoolean
-argument_list|(
-name|YarnConfiguration
-operator|.
-name|YARN_ACL_ENABLE
-argument_list|,
-literal|false
-argument_list|)
+name|setAuthFilter
 return|;
 block|}
 DECL|method|constructWebResource (WebResource r, String... paths)
@@ -1535,7 +1562,7 @@ expr_stmt|;
 block|}
 if|if
 condition|(
-name|isAuthorizationEnabled
+name|isAuthenticationEnabled
 argument_list|()
 condition|)
 block|{
@@ -1973,7 +2000,7 @@ expr_stmt|;
 if|if
 condition|(
 operator|!
-name|isAuthorizationEnabled
+name|isAuthenticationEnabled
 argument_list|()
 condition|)
 block|{
@@ -2077,7 +2104,7 @@ argument_list|)
 decl_stmt|;
 if|if
 condition|(
-name|isAuthorizationEnabled
+name|isAuthenticationEnabled
 argument_list|()
 condition|)
 block|{
@@ -2473,7 +2500,7 @@ expr_stmt|;
 if|if
 condition|(
 operator|!
-name|isAuthorizationEnabled
+name|isAuthenticationEnabled
 argument_list|()
 condition|)
 block|{
@@ -2856,6 +2883,23 @@ parameter_list|()
 throws|throws
 name|Exception
 block|{
+name|boolean
+name|isCapacityScheduler
+init|=
+name|rm
+operator|.
+name|getResourceScheduler
+argument_list|()
+operator|instanceof
+name|CapacityScheduler
+decl_stmt|;
+name|assumeTrue
+argument_list|(
+literal|"Currently this test is only supported on CapacityScheduler"
+argument_list|,
+name|isCapacityScheduler
+argument_list|)
+expr_stmt|;
 comment|// default root queue allows anyone to have admin acl
 name|CapacitySchedulerConfiguration
 name|csconf
@@ -3064,7 +3108,7 @@ expr_stmt|;
 if|if
 condition|(
 operator|!
-name|isAuthorizationEnabled
+name|isAuthenticationEnabled
 argument_list|()
 condition|)
 block|{
@@ -3205,7 +3249,7 @@ decl_stmt|;
 if|if
 condition|(
 operator|!
-name|isAuthorizationEnabled
+name|isAuthenticationEnabled
 argument_list|()
 condition|)
 block|{
