@@ -654,6 +654,11 @@ specifier|private
 name|ConfigurationProvider
 name|configurationProvider
 decl_stmt|;
+DECL|field|epoch
+specifier|private
+name|int
+name|epoch
+decl_stmt|;
 comment|/**    * Default constructor. To be used in conjunction with setter methods for    * individual fields.    */
 DECL|method|RMContextImpl ()
 specifier|public
@@ -1528,6 +1533,35 @@ operator|.
 name|configurationProvider
 operator|=
 name|configurationProvider
+expr_stmt|;
+block|}
+annotation|@
+name|Override
+DECL|method|getEpoch ()
+specifier|public
+name|int
+name|getEpoch
+parameter_list|()
+block|{
+return|return
+name|this
+operator|.
+name|epoch
+return|;
+block|}
+DECL|method|setEpoch (int epoch)
+name|void
+name|setEpoch
+parameter_list|(
+name|int
+name|epoch
+parameter_list|)
+block|{
+name|this
+operator|.
+name|epoch
+operator|=
+name|epoch
 expr_stmt|;
 block|}
 block|}

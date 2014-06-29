@@ -23,6 +23,24 @@ package|;
 end_package
 
 begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|server
+operator|.
+name|resourcemanager
+operator|.
+name|RMContext
+import|;
+end_import
+
+begin_import
 import|import static
 name|org
 operator|.
@@ -418,6 +436,29 @@ argument_list|,
 literal|0
 argument_list|)
 decl_stmt|;
+name|RMContext
+name|rmContext
+init|=
+name|mock
+argument_list|(
+name|RMContext
+operator|.
+name|class
+argument_list|)
+decl_stmt|;
+name|when
+argument_list|(
+name|rmContext
+operator|.
+name|getEpoch
+argument_list|()
+argument_list|)
+operator|.
+name|thenReturn
+argument_list|(
+literal|3
+argument_list|)
+expr_stmt|;
 name|SchedulerApplicationAttempt
 name|app
 init|=
@@ -435,7 +476,7 @@ operator|.
 name|getActiveUsersManager
 argument_list|()
 argument_list|,
-literal|null
+name|rmContext
 argument_list|)
 decl_stmt|;
 name|oldMetrics
@@ -443,6 +484,17 @@ operator|.
 name|submitApp
 argument_list|(
 name|user
+argument_list|)
+expr_stmt|;
+comment|// confirm that containerId is calculated based on epoch.
+name|assertEquals
+argument_list|(
+name|app
+operator|.
+name|getNewContainerId
+argument_list|()
+argument_list|,
+literal|0x00c00001
 argument_list|)
 expr_stmt|;
 comment|// Resource request

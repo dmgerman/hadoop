@@ -410,6 +410,22 @@ name|hadoop
 operator|.
 name|yarn
 operator|.
+name|proto
+operator|.
+name|YarnServerResourceManagerServiceProtos
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
 name|security
 operator|.
 name|AMRMTokenIdentifier
@@ -892,6 +908,15 @@ name|String
 name|VERSION_NODE
 init|=
 literal|"RMVersionNode"
+decl_stmt|;
+DECL|field|EPOCH_NODE
+specifier|protected
+specifier|static
+specifier|final
+name|String
+name|EPOCH_NODE
+init|=
+literal|"EpochNode"
 decl_stmt|;
 DECL|field|LOG
 specifier|public
@@ -2781,6 +2806,16 @@ specifier|abstract
 name|RMStateVersion
 name|getCurrentVersion
 parameter_list|()
+function_decl|;
+comment|/**    * Get the current epoch of RM and increment the value.    */
+DECL|method|getAndIncrementEpoch ()
+specifier|public
+specifier|abstract
+name|int
+name|getAndIncrementEpoch
+parameter_list|()
+throws|throws
+name|Exception
 function_decl|;
 comment|/**    * Blocking API    * The derived class must recover state from the store and return a new     * RMState object populated with that state    * This must not be called on the dispatcher thread    */
 DECL|method|loadState ()

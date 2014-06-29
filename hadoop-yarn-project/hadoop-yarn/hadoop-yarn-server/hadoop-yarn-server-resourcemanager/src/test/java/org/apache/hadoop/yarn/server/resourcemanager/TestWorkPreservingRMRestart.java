@@ -1645,7 +1645,13 @@ expr_stmt|;
 comment|// *********** check appSchedulingInfo state ***********
 name|assertEquals
 argument_list|(
-literal|4
+operator|(
+literal|1
+operator|<<
+literal|22
+operator|)
+operator|+
+literal|1
 argument_list|,
 name|schedulerAttempt
 operator|.

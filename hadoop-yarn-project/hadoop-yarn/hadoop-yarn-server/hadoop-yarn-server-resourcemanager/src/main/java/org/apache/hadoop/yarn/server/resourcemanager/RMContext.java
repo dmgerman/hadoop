@@ -552,6 +552,11 @@ name|boolean
 name|isWorkPreservingRecoveryEnabled
 parameter_list|()
 function_decl|;
+DECL|method|getEpoch ()
+name|int
+name|getEpoch
+parameter_list|()
+function_decl|;
 block|}
 end_interface
 
