@@ -1820,7 +1820,7 @@ literal|":\n"
 operator|+
 literal|"     query: query the current rolling upgrade status.\n"
 operator|+
-literal|"   prepare: prepare a new rolling upgrade."
+literal|"   prepare: prepare a new rolling upgrade.\n"
 operator|+
 literal|"  finalize: finalize the current rolling upgrade."
 decl_stmt|;
