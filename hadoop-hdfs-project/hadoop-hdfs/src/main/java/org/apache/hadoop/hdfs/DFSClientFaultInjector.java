@@ -18,6 +18,20 @@ end_package
 
 begin_import
 import|import
+name|java
+operator|.
+name|util
+operator|.
+name|concurrent
+operator|.
+name|atomic
+operator|.
+name|AtomicLong
+import|;
+end_import
+
+begin_import
+import|import
 name|com
 operator|.
 name|google
@@ -70,6 +84,18 @@ operator|new
 name|DFSClientFaultInjector
 argument_list|()
 decl_stmt|;
+DECL|field|exceptionNum
+specifier|public
+specifier|static
+name|AtomicLong
+name|exceptionNum
+init|=
+operator|new
+name|AtomicLong
+argument_list|(
+literal|0
+argument_list|)
+decl_stmt|;
 DECL|method|get ()
 specifier|public
 specifier|static
@@ -115,6 +141,12 @@ DECL|method|startFetchFromDatanode ()
 specifier|public
 name|void
 name|startFetchFromDatanode
+parameter_list|()
+block|{}
+DECL|method|fetchFromDatanodeException ()
+specifier|public
+name|void
+name|fetchFromDatanodeException
 parameter_list|()
 block|{}
 block|}
