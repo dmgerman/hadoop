@@ -1629,7 +1629,7 @@ block|}
 block|}
 block|}
 block|}
-comment|/**    * Creates the Hadoop authentication HTTP cookie.    *    * @param token authentication token for the cookie.    * @param expires UNIX timestamp that indicates the expire date of the    *                cookie. It has no effect if its value< 0.    *    * XXX the following code duplicate some logic in Jetty / Servlet API,    * because of the fact that Hadoop is stuck at servlet 3.0 and jetty 6    * right now.    */
+comment|/**    * Creates the Hadoop authentication HTTP cookie.    *    * @param token authentication token for the cookie.    * @param expires UNIX timestamp that indicates the expire date of the    *                cookie. It has no effect if its value< 0.    *    * XXX the following code duplicate some logic in Jetty / Servlet API,    * because of the fact that Hadoop is stuck at servlet 2.5 and jetty 6    * right now.    */
 DECL|method|createAuthCookie (HttpServletResponse resp, String token, String domain, String path, long expires, boolean isSecure)
 specifier|public
 specifier|static
@@ -1670,12 +1670,46 @@ name|append
 argument_list|(
 literal|"="
 argument_list|)
+decl_stmt|;
+if|if
+condition|(
+name|token
+operator|!=
+literal|null
+operator|&&
+name|token
+operator|.
+name|length
+argument_list|()
+operator|>
+literal|0
+condition|)
+block|{
+name|sb
+operator|.
+name|append
+argument_list|(
+literal|"\""
+argument_list|)
 operator|.
 name|append
 argument_list|(
 name|token
 argument_list|)
-decl_stmt|;
+operator|.
+name|append
+argument_list|(
+literal|"\""
+argument_list|)
+expr_stmt|;
+block|}
+name|sb
+operator|.
+name|append
+argument_list|(
+literal|"; Version=1"
+argument_list|)
+expr_stmt|;
 if|if
 condition|(
 name|path
