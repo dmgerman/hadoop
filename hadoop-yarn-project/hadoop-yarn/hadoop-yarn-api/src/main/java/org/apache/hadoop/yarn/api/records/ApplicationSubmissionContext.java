@@ -388,7 +388,7 @@ name|maxAppAttempts
 argument_list|,
 name|resource
 argument_list|,
-literal|null
+name|applicationType
 argument_list|,
 literal|false
 argument_list|)
