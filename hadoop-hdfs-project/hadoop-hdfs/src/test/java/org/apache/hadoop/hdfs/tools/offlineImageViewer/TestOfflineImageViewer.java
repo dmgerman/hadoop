@@ -1099,6 +1099,18 @@ literal|0x39
 block|}
 argument_list|)
 expr_stmt|;
+comment|// OIV should be able to handle empty value XAttrs
+name|hdfs
+operator|.
+name|setXAttr
+argument_list|(
+name|xattr
+argument_list|,
+literal|"user.a3"
+argument_list|,
+literal|null
+argument_list|)
+expr_stmt|;
 name|writtenFiles
 operator|.
 name|put
