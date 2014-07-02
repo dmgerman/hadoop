@@ -282,6 +282,11 @@ name|ContainerReport
 name|createContainerReport
 parameter_list|()
 function_decl|;
+DECL|method|isAMContainer ()
+name|boolean
+name|isAMContainer
+parameter_list|()
+function_decl|;
 block|}
 end_interface
 
