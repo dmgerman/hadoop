@@ -1707,8 +1707,6 @@ throws|throws
 name|Exception
 block|{
 comment|// For root dirs, we shouldn't use the doMulti helper methods
-try|try
-block|{
 operator|new
 name|ZKAction
 argument_list|<
@@ -1727,6 +1725,8 @@ name|KeeperException
 throws|,
 name|InterruptedException
 block|{
+try|try
+block|{
 return|return
 name|zkClient
 operator|.
@@ -1743,12 +1743,6 @@ operator|.
 name|PERSISTENT
 argument_list|)
 return|;
-block|}
-block|}
-operator|.
-name|runWithRetries
-argument_list|()
-expr_stmt|;
 block|}
 catch|catch
 parameter_list|(
@@ -1777,6 +1771,9 @@ operator|+
 literal|"znode already exists!"
 argument_list|)
 expr_stmt|;
+return|return
+literal|null
+return|;
 block|}
 else|else
 block|{
@@ -1785,6 +1782,12 @@ name|ke
 throw|;
 block|}
 block|}
+block|}
+block|}
+operator|.
+name|runWithRetries
+argument_list|()
+expr_stmt|;
 block|}
 DECL|method|logRootNodeAcls (String prefix)
 specifier|private
