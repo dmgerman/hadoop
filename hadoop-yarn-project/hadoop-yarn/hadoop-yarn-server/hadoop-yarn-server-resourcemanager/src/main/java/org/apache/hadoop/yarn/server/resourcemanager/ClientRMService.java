@@ -5866,10 +5866,13 @@ decl_stmt|;
 name|String
 name|user
 init|=
-name|getRenewerForToken
-argument_list|(
-name|token
-argument_list|)
+name|UserGroupInformation
+operator|.
+name|getCurrentUser
+argument_list|()
+operator|.
+name|getUserName
+argument_list|()
 decl_stmt|;
 name|rmDTSecretManager
 operator|.
