@@ -4328,6 +4328,16 @@ name|req
 operator|.
 name|getBlockSize
 argument_list|()
+argument_list|,
+name|PBHelper
+operator|.
+name|convertCipherSuiteProtos
+argument_list|(
+name|req
+operator|.
+name|getCipherSuitesList
+argument_list|()
+argument_list|)
 argument_list|)
 decl_stmt|;
 if|if

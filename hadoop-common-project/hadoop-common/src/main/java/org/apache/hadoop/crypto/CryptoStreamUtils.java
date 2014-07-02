@@ -266,6 +266,9 @@ name|bufferSize
 operator|%
 name|codec
 operator|.
+name|getCipherSuite
+argument_list|()
+operator|.
 name|getAlgorithmBlockSize
 argument_list|()
 return|;

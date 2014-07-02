@@ -75,6 +75,17 @@ name|AESCTRCryptoCodec
 extends|extends
 name|CryptoCodec
 block|{
+DECL|field|SUITE
+specifier|protected
+specifier|static
+specifier|final
+name|CipherSuite
+name|SUITE
+init|=
+name|CipherSuite
+operator|.
+name|AES_CTR_NOPADDING
+decl_stmt|;
 comment|/**    * For AES, the algorithm block is fixed size of 128 bits.    * @see http://en.wikipedia.org/wiki/Advanced_Encryption_Standard    */
 DECL|field|AES_BLOCK_SIZE
 specifier|private
@@ -83,7 +94,10 @@ specifier|final
 name|int
 name|AES_BLOCK_SIZE
 init|=
-literal|16
+name|SUITE
+operator|.
+name|getAlgorithmBlockSize
+argument_list|()
 decl_stmt|;
 DECL|field|CTR_OFFSET
 specifier|private
@@ -96,14 +110,14 @@ literal|8
 decl_stmt|;
 annotation|@
 name|Override
-DECL|method|getAlgorithmBlockSize ()
+DECL|method|getCipherSuite ()
 specifier|public
-name|int
-name|getAlgorithmBlockSize
+name|CipherSuite
+name|getCipherSuite
 parameter_list|()
 block|{
 return|return
-name|AES_BLOCK_SIZE
+name|SUITE
 return|;
 block|}
 comment|/**    * The IV is produced by adding the initial IV to the counter. IV length     * should be the same as {@link #AES_BLOCK_SIZE}    */

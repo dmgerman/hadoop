@@ -2548,6 +2548,8 @@ argument_list|,
 name|DataNodes
 argument_list|,
 name|BlockSize
+argument_list|,
+literal|null
 argument_list|)
 expr_stmt|;
 block|}

@@ -439,7 +439,10 @@ name|Cipher
 operator|.
 name|getInstance
 argument_list|(
-literal|"AES/CTR/NoPadding"
+name|SUITE
+operator|.
+name|getName
+argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
@@ -451,7 +454,10 @@ name|Cipher
 operator|.
 name|getInstance
 argument_list|(
-literal|"AES/CTR/NoPadding"
+name|SUITE
+operator|.
+name|getName
+argument_list|()
 argument_list|,
 name|provider
 argument_list|)

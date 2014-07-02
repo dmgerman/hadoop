@@ -30,20 +30,6 @@ name|InterfaceAudience
 import|;
 end_import
 
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|classification
-operator|.
-name|InterfaceStability
-import|;
-end_import
-
 begin_comment
 comment|/**  * Defines properties of a CipherSuite. Modeled after the ciphers in  * {@link javax.crypto.Cipher}.  */
 end_comment
@@ -58,12 +44,20 @@ specifier|public
 enum|enum
 name|CipherSuite
 block|{
+DECL|enumConstant|UNKNOWN
+name|UNKNOWN
+argument_list|(
+literal|"Unknown"
+argument_list|,
+literal|0
+argument_list|)
+block|,
 DECL|enumConstant|AES_CTR_NOPADDING
 name|AES_CTR_NOPADDING
 argument_list|(
 literal|"AES/CTR/NoPadding"
 argument_list|,
-literal|128
+literal|16
 argument_list|)
 block|;
 DECL|field|name
@@ -72,20 +66,27 @@ specifier|final
 name|String
 name|name
 decl_stmt|;
-DECL|field|blockBits
+DECL|field|algoBlockSize
 specifier|private
 specifier|final
 name|int
-name|blockBits
+name|algoBlockSize
 decl_stmt|;
-DECL|method|CipherSuite (String name, int blockBits)
+DECL|field|unknownValue
+specifier|private
+name|Integer
+name|unknownValue
+init|=
+literal|null
+decl_stmt|;
+DECL|method|CipherSuite (String name, int algoBlockSize)
 name|CipherSuite
 parameter_list|(
 name|String
 name|name
 parameter_list|,
 name|int
-name|blockBits
+name|algoBlockSize
 parameter_list|)
 block|{
 name|this
@@ -96,10 +97,36 @@ name|name
 expr_stmt|;
 name|this
 operator|.
-name|blockBits
+name|algoBlockSize
 operator|=
-name|blockBits
+name|algoBlockSize
 expr_stmt|;
+block|}
+DECL|method|setUnknownValue (int unknown)
+specifier|public
+name|void
+name|setUnknownValue
+parameter_list|(
+name|int
+name|unknown
+parameter_list|)
+block|{
+name|this
+operator|.
+name|unknownValue
+operator|=
+name|unknown
+expr_stmt|;
+block|}
+DECL|method|getUnknownValue ()
+specifier|public
+name|int
+name|getUnknownValue
+parameter_list|()
+block|{
+return|return
+name|unknownValue
+return|;
 block|}
 comment|/**    * @return name of cipher suite, as in {@link javax.crypto.Cipher}    */
 DECL|method|getName ()
@@ -112,15 +139,15 @@ return|return
 name|name
 return|;
 block|}
-comment|/**    * @return size of an algorithm block in bits    */
-DECL|method|getNumberBlockBits ()
+comment|/**    * @return size of an algorithm block in bytes    */
+DECL|method|getAlgorithmBlockSize ()
 specifier|public
 name|int
-name|getNumberBlockBits
+name|getAlgorithmBlockSize
 parameter_list|()
 block|{
 return|return
-name|blockBits
+name|algoBlockSize
 return|;
 block|}
 annotation|@
@@ -146,22 +173,35 @@ name|append
 argument_list|(
 literal|"name: "
 operator|+
-name|getName
-argument_list|()
-operator|+
-literal|", "
+name|name
 argument_list|)
 expr_stmt|;
 name|builder
 operator|.
 name|append
 argument_list|(
-literal|"numBlockBits: "
+literal|", algorithmBlockSize: "
 operator|+
-name|getNumberBlockBits
-argument_list|()
+name|algoBlockSize
 argument_list|)
 expr_stmt|;
+if|if
+condition|(
+name|unknownValue
+operator|!=
+literal|null
+condition|)
+block|{
+name|builder
+operator|.
+name|append
+argument_list|(
+literal|", unknownValue: "
+operator|+
+name|unknownValue
+argument_list|)
+expr_stmt|;
+block|}
 name|builder
 operator|.
 name|append

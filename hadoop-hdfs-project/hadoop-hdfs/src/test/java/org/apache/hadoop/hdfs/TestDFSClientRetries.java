@@ -112,6 +112,18 @@ name|mockito
 operator|.
 name|Matchers
 operator|.
+name|anyList
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|mockito
+operator|.
+name|Matchers
+operator|.
 name|anyLong
 import|;
 end_import
@@ -387,6 +399,20 @@ operator|.
 name|conf
 operator|.
 name|Configuration
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|crypto
+operator|.
+name|CipherSuite
 import|;
 end_import
 
@@ -1985,6 +2011,15 @@ name|anyShort
 argument_list|()
 argument_list|,
 name|anyLong
+argument_list|()
+argument_list|,
+operator|(
+name|List
+argument_list|<
+name|CipherSuite
+argument_list|>
+operator|)
+name|anyList
 argument_list|()
 argument_list|)
 expr_stmt|;

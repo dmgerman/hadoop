@@ -4498,7 +4498,7 @@ literal|null
 argument_list|,
 literal|false
 argument_list|,
-literal|null
+name|feInfo
 argument_list|)
 return|;
 block|}

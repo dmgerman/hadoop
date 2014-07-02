@@ -803,6 +803,9 @@ name|streamOffset
 operator|/
 name|codec
 operator|.
+name|getCipherSuite
+argument_list|()
+operator|.
 name|getAlgorithmBlockSize
 argument_list|()
 decl_stmt|;
@@ -815,6 +818,9 @@ argument_list|(
 name|streamOffset
 operator|%
 name|codec
+operator|.
+name|getCipherSuite
+argument_list|()
 operator|.
 name|getAlgorithmBlockSize
 argument_list|()

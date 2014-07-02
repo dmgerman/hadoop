@@ -178,12 +178,12 @@ name|conf
 argument_list|)
 return|;
 block|}
-comment|/**    * Get the block size of a block cipher.    * For different algorithms, the block size may be different.    * @return int the block size    */
-DECL|method|getAlgorithmBlockSize ()
+comment|/**    * @return the CipherSuite for this codec.    */
+DECL|method|getCipherSuite ()
 specifier|public
 specifier|abstract
-name|int
-name|getAlgorithmBlockSize
+name|CipherSuite
+name|getCipherSuite
 parameter_list|()
 function_decl|;
 comment|/**    * Create a {@link org.apache.hadoop.crypto.Encryptor}.     * @return Encryptor the encryptor    */

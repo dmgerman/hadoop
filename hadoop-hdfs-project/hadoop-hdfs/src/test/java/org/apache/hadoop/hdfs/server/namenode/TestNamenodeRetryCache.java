@@ -1248,6 +1248,8 @@ operator|)
 literal|1
 argument_list|,
 name|BlockSize
+argument_list|,
+literal|null
 argument_list|)
 decl_stmt|;
 name|Assert
@@ -1285,6 +1287,8 @@ operator|)
 literal|1
 argument_list|,
 name|BlockSize
+argument_list|,
+literal|null
 argument_list|)
 argument_list|)
 expr_stmt|;
@@ -1323,6 +1327,8 @@ operator|)
 literal|1
 argument_list|,
 name|BlockSize
+argument_list|,
+literal|null
 argument_list|)
 argument_list|)
 expr_stmt|;
@@ -1361,6 +1367,8 @@ operator|)
 literal|1
 argument_list|,
 name|BlockSize
+argument_list|,
+literal|null
 argument_list|)
 expr_stmt|;
 name|Assert

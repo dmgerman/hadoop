@@ -3114,6 +3114,8 @@ argument_list|,
 name|replication
 argument_list|,
 name|BLOCK_SIZE
+argument_list|,
+literal|null
 argument_list|)
 expr_stmt|;
 name|long
@@ -6038,6 +6040,8 @@ argument_list|,
 name|replication
 argument_list|,
 name|BLOCK_SIZE
+argument_list|,
+literal|null
 argument_list|)
 expr_stmt|;
 name|ExtendedBlock

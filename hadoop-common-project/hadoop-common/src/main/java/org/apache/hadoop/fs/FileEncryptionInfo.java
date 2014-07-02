@@ -54,20 +54,6 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|classification
-operator|.
-name|InterfaceStability
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
 name|crypto
 operator|.
 name|CipherSuite
@@ -179,10 +165,8 @@ name|length
 operator|==
 name|suite
 operator|.
-name|getNumberBlockBits
+name|getAlgorithmBlockSize
 argument_list|()
-operator|/
-literal|8
 argument_list|,
 literal|"Unexpected key length"
 argument_list|)
@@ -195,10 +179,8 @@ name|length
 operator|==
 name|suite
 operator|.
-name|getNumberBlockBits
+name|getAlgorithmBlockSize
 argument_list|()
-operator|/
-literal|8
 argument_list|,
 literal|"Unexpected IV length"
 argument_list|)
