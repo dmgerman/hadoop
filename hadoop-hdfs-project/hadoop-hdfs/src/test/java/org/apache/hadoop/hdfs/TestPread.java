@@ -2650,6 +2650,18 @@ argument_list|,
 literal|4096
 argument_list|)
 expr_stmt|;
+comment|// Set short retry timeouts so this test runs faster
+name|conf
+operator|.
+name|setInt
+argument_list|(
+name|DFSConfigKeys
+operator|.
+name|DFS_CLIENT_RETRY_WINDOW_BASE
+argument_list|,
+literal|0
+argument_list|)
+expr_stmt|;
 if|if
 condition|(
 name|simulatedStorage
