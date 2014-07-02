@@ -864,6 +864,17 @@ operator|.
 name|class
 argument_list|)
 expr_stmt|;
+name|conf
+operator|.
+name|setBoolean
+argument_list|(
+name|YarnConfiguration
+operator|.
+name|NM_VMEM_CHECK_ENABLED
+argument_list|,
+literal|true
+argument_list|)
+expr_stmt|;
 name|super
 operator|.
 name|setup
