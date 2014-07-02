@@ -1981,7 +1981,7 @@ name|Test
 argument_list|(
 name|timeout
 operator|=
-literal|10000
+literal|60000
 argument_list|)
 DECL|method|testFileLocalReadNoChecksum ()
 specifier|public
@@ -2010,7 +2010,7 @@ name|Test
 argument_list|(
 name|timeout
 operator|=
-literal|10000
+literal|60000
 argument_list|)
 DECL|method|testFileLocalReadChecksum ()
 specifier|public
@@ -2039,7 +2039,7 @@ name|Test
 argument_list|(
 name|timeout
 operator|=
-literal|10000
+literal|60000
 argument_list|)
 DECL|method|testSmallFileLocalRead ()
 specifier|public
@@ -2091,7 +2091,7 @@ name|Test
 argument_list|(
 name|timeout
 operator|=
-literal|10000
+literal|60000
 argument_list|)
 DECL|method|testLocalReadLegacy ()
 specifier|public
@@ -2125,7 +2125,7 @@ name|Test
 argument_list|(
 name|timeout
 operator|=
-literal|10000
+literal|60000
 argument_list|)
 DECL|method|testLocalReadFallback ()
 specifier|public
@@ -2157,7 +2157,7 @@ name|Test
 argument_list|(
 name|timeout
 operator|=
-literal|10000
+literal|60000
 argument_list|)
 DECL|method|testReadFromAnOffset ()
 specifier|public
@@ -2199,7 +2199,7 @@ name|Test
 argument_list|(
 name|timeout
 operator|=
-literal|10000
+literal|60000
 argument_list|)
 DECL|method|testLongFile ()
 specifier|public
@@ -3782,6 +3782,13 @@ literal|false
 argument_list|)
 expr_stmt|;
 block|}
+annotation|@
+name|Test
+argument_list|(
+name|timeout
+operator|=
+literal|60000
+argument_list|)
 DECL|method|testReadWithRemoteBlockReader ()
 specifier|public
 name|void
