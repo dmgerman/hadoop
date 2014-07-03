@@ -22,6 +22,16 @@ name|java
 operator|.
 name|io
 operator|.
+name|EOFException
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|io
+operator|.
 name|IOException
 import|;
 end_import
@@ -1242,7 +1252,15 @@ operator|<
 literal|0
 condition|)
 block|{
-return|return;
+throw|throw
+operator|new
+name|EOFException
+argument_list|(
+name|FSExceptionMessages
+operator|.
+name|NEGATIVE_SEEK
+argument_list|)
+throw|;
 block|}
 comment|// optimize: check if the pos is in the buffer
 name|long

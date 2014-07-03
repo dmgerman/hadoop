@@ -34,6 +34,16 @@ name|java
 operator|.
 name|io
 operator|.
+name|EOFException
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|io
+operator|.
 name|File
 import|;
 end_import
@@ -202,29 +212,15 @@ end_import
 
 begin_import
 import|import
-name|org
+name|com
 operator|.
-name|apache
+name|google
 operator|.
-name|commons
+name|common
 operator|.
-name|logging
+name|base
 operator|.
-name|Log
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|commons
-operator|.
-name|logging
-operator|.
-name|LogFactory
+name|Preconditions
 import|;
 end_import
 
@@ -322,7 +318,35 @@ name|hadoop
 operator|.
 name|fs
 operator|.
+name|FSExceptionMessages
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|fs
+operator|.
 name|FSInputStream
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|fs
+operator|.
+name|FileAlreadyExistsException
 import|;
 end_import
 
@@ -462,6 +486,26 @@ name|Progressable
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|slf4j
+operator|.
+name|Logger
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|slf4j
+operator|.
+name|LoggerFactory
+import|;
+end_import
+
 begin_comment
 comment|/**  *<p>  * A {@link FileSystem} for reading and writing files stored on  *<a href="http://aws.amazon.com/s3">Amazon S3</a>.  * Unlike {@link org.apache.hadoop.fs.s3.S3FileSystem} this implementation  * stores files on S3 in their  * native form so they can be read by other S3 tools.  *  * A note about directories. S3 of course has no "native" support for them.  * The idiom we choose then is: for any directory created by this class,  * we use an empty object "#{dirpath}_$folder$" as a marker.  * Further, to interoperate with other S3 tools, we also accept the following:  *  - an object "#{dirpath}/' denoting a directory marker  *  - if there exists any objects with the prefix "#{dirpath}/", then the  *    directory is said to exist  *  - if both a file with the name of a directory and a marker for that  *    directory exists, then the *file masks the directory*, and the directory  *    is never returned.  *</p>  * @see org.apache.hadoop.fs.s3.S3FileSystem  */
 end_comment
@@ -486,12 +530,12 @@ DECL|field|LOG
 specifier|public
 specifier|static
 specifier|final
-name|Log
+name|Logger
 name|LOG
 init|=
-name|LogFactory
+name|LoggerFactory
 operator|.
-name|getLog
+name|getLogger
 argument_list|(
 name|NativeS3FileSystem
 operator|.
@@ -578,6 +622,15 @@ name|String
 name|key
 parameter_list|)
 block|{
+name|Preconditions
+operator|.
+name|checkNotNull
+argument_list|(
+name|in
+argument_list|,
+literal|"Null input stream"
+argument_list|)
+expr_stmt|;
 name|this
 operator|.
 name|store
@@ -616,9 +669,6 @@ name|IOException
 block|{
 name|int
 name|result
-init|=
-operator|-
-literal|1
 decl_stmt|;
 try|try
 block|{
@@ -640,13 +690,24 @@ name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"Received IOException while reading '"
-operator|+
+literal|"Received IOException while reading '{}', attempting to reopen"
+argument_list|,
 name|key
-operator|+
-literal|"', attempting to reopen."
 argument_list|)
 expr_stmt|;
+name|LOG
+operator|.
+name|debug
+argument_list|(
+literal|"{}"
+argument_list|,
+name|e
+argument_list|,
+name|e
+argument_list|)
+expr_stmt|;
+try|try
+block|{
 name|seek
 argument_list|(
 name|pos
@@ -659,6 +720,30 @@ operator|.
 name|read
 argument_list|()
 expr_stmt|;
+block|}
+catch|catch
+parameter_list|(
+name|EOFException
+name|eof
+parameter_list|)
+block|{
+name|LOG
+operator|.
+name|debug
+argument_list|(
+literal|"EOF on input stream read: {}"
+argument_list|,
+name|eof
+argument_list|,
+name|eof
+argument_list|)
+expr_stmt|;
+name|result
+operator|=
+operator|-
+literal|1
+expr_stmt|;
+block|}
 block|}
 if|if
 condition|(
@@ -717,6 +802,21 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
+if|if
+condition|(
+name|in
+operator|==
+literal|null
+condition|)
+block|{
+throw|throw
+operator|new
+name|EOFException
+argument_list|(
+literal|"Cannot read closed stream"
+argument_list|)
+throw|;
+block|}
 name|int
 name|result
 init|=
@@ -741,6 +841,16 @@ expr_stmt|;
 block|}
 catch|catch
 parameter_list|(
+name|EOFException
+name|eof
+parameter_list|)
+block|{
+throw|throw
+name|eof
+throw|;
+block|}
+catch|catch
+parameter_list|(
 name|IOException
 name|e
 parameter_list|)
@@ -749,11 +859,11 @@ name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"Received IOException while reading '"
+literal|"Received IOException while reading '{}',"
 operator|+
+literal|" attempting to reopen."
+argument_list|,
 name|key
-operator|+
-literal|"', attempting to reopen."
 argument_list|)
 expr_stmt|;
 name|seek
@@ -814,11 +924,34 @@ annotation|@
 name|Override
 DECL|method|close ()
 specifier|public
+specifier|synchronized
 name|void
 name|close
 parameter_list|()
 throws|throws
 name|IOException
+block|{
+name|closeInnerStream
+argument_list|()
+expr_stmt|;
+block|}
+comment|/**      * Close the inner stream if not null. Even if an exception      * is raised during the close, the field is set to null      * @throws IOException if raised by the close() operation.      */
+DECL|method|closeInnerStream ()
+specifier|private
+name|void
+name|closeInnerStream
+parameter_list|()
+throws|throws
+name|IOException
+block|{
+if|if
+condition|(
+name|in
+operator|!=
+literal|null
+condition|)
+block|{
+try|try
 block|{
 name|in
 operator|.
@@ -826,57 +959,124 @@ name|close
 argument_list|()
 expr_stmt|;
 block|}
+finally|finally
+block|{
+name|in
+operator|=
+literal|null
+expr_stmt|;
+block|}
+block|}
+block|}
+comment|/**      * Update inner stream with a new stream and position      * @param newStream new stream -must not be null      * @param newpos new position      * @throws IOException IO exception on a failure to close the existing      * stream.      */
+DECL|method|updateInnerStream (InputStream newStream, long newpos)
+specifier|private
+specifier|synchronized
+name|void
+name|updateInnerStream
+parameter_list|(
+name|InputStream
+name|newStream
+parameter_list|,
+name|long
+name|newpos
+parameter_list|)
+throws|throws
+name|IOException
+block|{
+name|Preconditions
+operator|.
+name|checkNotNull
+argument_list|(
+name|newStream
+argument_list|,
+literal|"Null newstream argument"
+argument_list|)
+expr_stmt|;
+name|closeInnerStream
+argument_list|()
+expr_stmt|;
+name|in
+operator|=
+name|newStream
+expr_stmt|;
+name|this
+operator|.
+name|pos
+operator|=
+name|newpos
+expr_stmt|;
+block|}
 annotation|@
 name|Override
-DECL|method|seek (long pos)
+DECL|method|seek (long newpos)
 specifier|public
 specifier|synchronized
 name|void
 name|seek
 parameter_list|(
 name|long
-name|pos
+name|newpos
 parameter_list|)
 throws|throws
 name|IOException
 block|{
-name|in
+if|if
+condition|(
+name|newpos
+operator|<
+literal|0
+condition|)
+block|{
+throw|throw
+operator|new
+name|EOFException
+argument_list|(
+name|FSExceptionMessages
 operator|.
-name|close
-argument_list|()
-expr_stmt|;
+name|NEGATIVE_SEEK
+argument_list|)
+throw|;
+block|}
+if|if
+condition|(
+name|pos
+operator|!=
+name|newpos
+condition|)
+block|{
+comment|// the seek is attempting to move the current position
 name|LOG
 operator|.
-name|info
+name|debug
 argument_list|(
-literal|"Opening key '"
-operator|+
+literal|"Opening key '{}' for reading at position '{}"
+argument_list|,
 name|key
-operator|+
-literal|"' for reading at position '"
-operator|+
-name|pos
-operator|+
-literal|"'"
+argument_list|,
+name|newpos
 argument_list|)
 expr_stmt|;
-name|in
-operator|=
+name|InputStream
+name|newStream
+init|=
 name|store
 operator|.
 name|retrieve
 argument_list|(
 name|key
 argument_list|,
-name|pos
+name|newpos
+argument_list|)
+decl_stmt|;
+name|updateInnerStream
+argument_list|(
+name|newStream
+argument_list|,
+name|newpos
 argument_list|)
 expr_stmt|;
-name|this
-operator|.
-name|pos
-operator|=
-name|pos
-expr_stmt|;
+block|}
 block|}
 annotation|@
 name|Override
@@ -1188,11 +1388,9 @@ name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"OutputStream for key '"
-operator|+
+literal|"OutputStream for key '{}' closed. Now beginning upload"
+argument_list|,
 name|key
-operator|+
-literal|"' closed. Now beginning upload"
 argument_list|)
 expr_stmt|;
 try|try
@@ -1259,11 +1457,9 @@ name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"OutputStream for key '"
-operator|+
+literal|"OutputStream for key '{}' upload complete"
+argument_list|,
 name|key
-operator|+
-literal|"' upload complete"
 argument_list|)
 expr_stmt|;
 block|}
@@ -1885,9 +2081,9 @@ condition|)
 block|{
 throw|throw
 operator|new
-name|IOException
+name|FileAlreadyExistsException
 argument_list|(
-literal|"File already exists:"
+literal|"File already exists: "
 operator|+
 name|f
 argument_list|)
@@ -2058,7 +2254,7 @@ literal|"Can not delete "
 operator|+
 name|f
 operator|+
-literal|" at is a not empty directory and recurse option is false"
+literal|" as is a not empty directory and recurse option is false"
 argument_list|)
 throw|;
 block|}
@@ -3049,7 +3245,7 @@ condition|)
 block|{
 throw|throw
 operator|new
-name|IOException
+name|FileAlreadyExistsException
 argument_list|(
 name|String
 operator|.
@@ -3146,7 +3342,7 @@ condition|)
 block|{
 throw|throw
 operator|new
-name|IOException
+name|FileNotFoundException
 argument_list|(
 literal|"'"
 operator|+
