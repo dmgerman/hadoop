@@ -751,30 +751,6 @@ name|keyId
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Delete the encryption zone rooted at path. Path must refer to an existing,    * empty directory. Otherwise, an IOException is thrown. This method removes    * those extended attributes on the directory which indicate that it is part    * of an encryption zone. Following successful completion of this call, any    * new files created in the directory (or it's children) will not be    * encrypted. The directory is not removed by this method.    *    * @param path The path of the root of the encryption zone.    *    * @throws IOException if there was a general IO exception    *    * @throws AccessControlException if the caller does not have access to path    *    * @throws FileNotFoundException if the path does not exist    */
-DECL|method|deleteEncryptionZone (Path path)
-specifier|public
-name|void
-name|deleteEncryptionZone
-parameter_list|(
-name|Path
-name|path
-parameter_list|)
-throws|throws
-name|IOException
-throws|,
-name|AccessControlException
-throws|,
-name|FileNotFoundException
-block|{
-name|dfs
-operator|.
-name|deleteEncryptionZone
-argument_list|(
-name|path
-argument_list|)
-expr_stmt|;
-block|}
 comment|/**    * Return a list of all {@EncryptionZone}s in the HDFS hierarchy which are    * visible to the caller. If the caller is the HDFS admin, then the returned    * EncryptionZone instances will have the key id field filled in. If the    * caller is not the HDFS admin, then the EncryptionZone instances will only    * have the path field filled in and only those zones that are visible to the    * user are returned.    *    * @throws IOException if there was a general IO exception    *    * @return List<EncryptionZone> the list of Encryption Zones that the caller has    * access to.    */
 DECL|method|listEncryptionZones ()
 specifier|public

@@ -2145,20 +2145,6 @@ parameter_list|)
 throws|throws
 name|IOException
 function_decl|;
-comment|/**    * Delete an encryption zone    */
-annotation|@
-name|AtMostOnce
-DECL|method|deleteEncryptionZone (String src)
-specifier|public
-name|void
-name|deleteEncryptionZone
-parameter_list|(
-name|String
-name|src
-parameter_list|)
-throws|throws
-name|IOException
-function_decl|;
 comment|/**    * Return a list of all {@EncryptionZone}s in the HDFS hierarchy which are    * visible to the caller. If the caller is the HDFS admin, then the returned    * EncryptionZone instances will have the key id field filled in. If the    * caller is not the HDFS admin, then the EncryptionZone instances will only    * have the path field filled in and only those zones that are visible to the    * user are returned.    */
 annotation|@
 name|Idempotent

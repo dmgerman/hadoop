@@ -8652,29 +8652,6 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|/* HDFS only */
-DECL|method|deleteEncryptionZone (Path path)
-specifier|public
-name|void
-name|deleteEncryptionZone
-parameter_list|(
-name|Path
-name|path
-parameter_list|)
-throws|throws
-name|IOException
-block|{
-name|dfs
-operator|.
-name|deleteEncryptionZone
-argument_list|(
-name|getPathName
-argument_list|(
-name|path
-argument_list|)
-argument_list|)
-expr_stmt|;
-block|}
-comment|/* HDFS only */
 DECL|method|listEncryptionZones ()
 specifier|public
 name|List

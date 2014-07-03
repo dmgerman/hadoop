@@ -8329,27 +8329,6 @@ expr_stmt|;
 block|}
 annotation|@
 name|Override
-DECL|method|deleteEncryptionZone (String src)
-specifier|public
-name|void
-name|deleteEncryptionZone
-parameter_list|(
-name|String
-name|src
-parameter_list|)
-throws|throws
-name|IOException
-block|{
-name|namesystem
-operator|.
-name|deleteEncryptionZone
-argument_list|(
-name|src
-argument_list|)
-expr_stmt|;
-block|}
-annotation|@
-name|Override
 DECL|method|listEncryptionZones ()
 specifier|public
 name|List
