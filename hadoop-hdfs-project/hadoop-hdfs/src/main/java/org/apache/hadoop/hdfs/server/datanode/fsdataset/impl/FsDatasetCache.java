@@ -230,34 +230,6 @@ name|org
 operator|.
 name|apache
 operator|.
-name|commons
-operator|.
-name|logging
-operator|.
-name|Log
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|commons
-operator|.
-name|logging
-operator|.
-name|LogFactory
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
 name|hadoop
 operator|.
 name|classification
@@ -370,6 +342,26 @@ name|NativeIO
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|slf4j
+operator|.
+name|Logger
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|slf4j
+operator|.
+name|LoggerFactory
+import|;
+end_import
+
 begin_comment
 comment|/**  * Manages caching for an FsDatasetImpl by using the mmap(2) and mlock(2)  * system calls to lock blocks into memory. Block checksums are verified upon  * entry into the cache.  */
 end_comment
@@ -471,12 +463,12 @@ DECL|field|LOG
 specifier|private
 specifier|static
 specifier|final
-name|Log
+name|Logger
 name|LOG
 init|=
-name|LogFactory
+name|LoggerFactory
 operator|.
-name|getLog
+name|getLogger
 argument_list|(
 name|FsDatasetCache
 operator|.
@@ -1023,34 +1015,23 @@ operator|!=
 literal|null
 condition|)
 block|{
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"Block with id "
+literal|"Block with id {}, pool {} already exists in the "
 operator|+
+literal|"FsDatasetCache with state {}"
+argument_list|,
 name|blockId
-operator|+
-literal|", pool "
-operator|+
+argument_list|,
 name|bpid
-operator|+
-literal|" already exists in the FsDatasetCache with state "
-operator|+
+argument_list|,
 name|prevValue
 operator|.
 name|state
 argument_list|)
 expr_stmt|;
-block|}
 name|numBlocksFailedToCache
 operator|.
 name|incrementAndGet
@@ -1092,28 +1073,17 @@ name|genstamp
 argument_list|)
 argument_list|)
 expr_stmt|;
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"Initiating caching for Block with id "
-operator|+
+literal|"Initiating caching for Block with id {}, pool {}"
+argument_list|,
 name|blockId
-operator|+
-literal|", pool "
-operator|+
+argument_list|,
 name|bpid
 argument_list|)
 expr_stmt|;
-block|}
 block|}
 DECL|method|uncacheBlock (String bpid, long blockId)
 specifier|synchronized
@@ -1166,24 +1136,15 @@ condition|)
 block|{
 comment|// TODO: we probably want to forcibly uncache the block (and close the
 comment|// shm) after a certain timeout has elapsed.
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
 argument_list|(
+literal|"{} is anchored, and can't be uncached now."
+argument_list|,
 name|key
-operator|+
-literal|" is anchored, and can't be uncached now."
 argument_list|)
 expr_stmt|;
-block|}
 return|return;
 block|}
 if|if
@@ -1193,34 +1154,19 @@ operator|==
 literal|null
 condition|)
 block|{
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"Block with id "
+literal|"Block with id {}, pool {} does not need to be uncached, "
 operator|+
+literal|"because it is not currently in the mappableBlockMap."
+argument_list|,
 name|blockId
-operator|+
-literal|", pool "
-operator|+
+argument_list|,
 name|bpid
-operator|+
-literal|" "
-operator|+
-literal|"does not need to be uncached, because it is not currently "
-operator|+
-literal|"in the mappableBlockMap."
 argument_list|)
 expr_stmt|;
-block|}
 name|numBlocksFailedToUncache
 operator|.
 name|incrementAndGet
@@ -1238,30 +1184,17 @@ block|{
 case|case
 name|CACHING
 case|:
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"Cancelling caching for block with id "
-operator|+
+literal|"Cancelling caching for block with id {}, pool {}."
+argument_list|,
 name|blockId
-operator|+
-literal|", pool "
-operator|+
+argument_list|,
 name|bpid
-operator|+
-literal|"."
 argument_list|)
 expr_stmt|;
-block|}
 name|mappableBlockMap
 operator|.
 name|put
@@ -1285,32 +1218,19 @@ break|break;
 case|case
 name|CACHED
 case|:
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"Block with id "
+literal|"Block with id {}, pool {} has been scheduled for uncaching"
 operator|+
+literal|"."
+argument_list|,
 name|blockId
-operator|+
-literal|", pool "
-operator|+
+argument_list|,
 name|bpid
-operator|+
-literal|" "
-operator|+
-literal|"has been scheduled for uncaching."
 argument_list|)
 expr_stmt|;
-block|}
 name|mappableBlockMap
 operator|.
 name|put
@@ -1343,40 +1263,23 @@ argument_list|)
 expr_stmt|;
 break|break;
 default|default:
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"Block with id "
+literal|"Block with id {}, pool {} does not need to be uncached, "
 operator|+
+literal|"because it is in state {}."
+argument_list|,
 name|blockId
-operator|+
-literal|", pool "
-operator|+
+argument_list|,
 name|bpid
-operator|+
-literal|" "
-operator|+
-literal|"does not need to be uncached, because it is "
-operator|+
-literal|"in state "
-operator|+
+argument_list|,
 name|prevValue
 operator|.
 name|state
-operator|+
-literal|"."
 argument_list|)
 expr_stmt|;
-block|}
 name|numBlocksFailedToUncache
 operator|.
 name|incrementAndGet
@@ -1807,30 +1710,19 @@ argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"Successfully cached "
+literal|"Successfully cached {}.  We are now caching {} bytes in"
 operator|+
+literal|" total."
+argument_list|,
 name|key
-operator|+
-literal|".  We are now caching "
-operator|+
+argument_list|,
 name|newUsedBytes
-operator|+
-literal|" bytes in total."
 argument_list|)
 expr_stmt|;
-block|}
 name|dataset
 operator|.
 name|datanode
@@ -1894,8 +1786,6 @@ condition|(
 name|reservedBytes
 condition|)
 block|{
-name|newUsedBytes
-operator|=
 name|usedBytesCount
 operator|.
 name|release
@@ -1904,32 +1794,22 @@ name|length
 argument_list|)
 expr_stmt|;
 block|}
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"Caching of "
+literal|"Caching of {} was aborted.  We are now caching only {} "
 operator|+
+literal|"bytes in total."
+argument_list|,
 name|key
-operator|+
-literal|" was aborted.  We are now "
-operator|+
-literal|"caching only "
-operator|+
-name|newUsedBytes
-operator|+
-literal|" + bytes in total."
+argument_list|,
+name|usedBytesCount
+operator|.
+name|get
+argument_list|()
 argument_list|)
 expr_stmt|;
-block|}
 if|if
 condition|(
 name|mappableBlock
@@ -2103,30 +1983,17 @@ argument_list|(
 literal|1
 argument_list|)
 expr_stmt|;
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"Uncaching of "
-operator|+
+literal|"Uncaching of {} completed. usedBytes = {}"
+argument_list|,
 name|key
-operator|+
-literal|" completed.  "
-operator|+
-literal|"usedBytes = "
-operator|+
+argument_list|,
 name|newUsedBytes
 argument_list|)
 expr_stmt|;
-block|}
 block|}
 block|}
 comment|// Stats related methods for FSDatasetMBean
