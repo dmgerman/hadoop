@@ -128,6 +128,20 @@ name|hadoop
 operator|.
 name|fs
 operator|.
+name|FileAlreadyExistsException
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|fs
+operator|.
 name|FileStatus
 import|;
 end_import
@@ -143,6 +157,20 @@ operator|.
 name|fs
 operator|.
 name|FileSystem
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|fs
+operator|.
+name|ParentNotDirectoryException
 import|;
 end_import
 
@@ -208,43 +236,7 @@ name|swift
 operator|.
 name|exceptions
 operator|.
-name|SwiftNotDirectoryException
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|fs
-operator|.
-name|swift
-operator|.
-name|exceptions
-operator|.
 name|SwiftOperationFailedException
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|fs
-operator|.
-name|swift
-operator|.
-name|exceptions
-operator|.
-name|SwiftPathExistsException
 import|;
 end_import
 
@@ -1434,7 +1426,7 @@ return|return
 name|shouldCreate
 return|;
 block|}
-comment|/**    * Should mkdir create this directory?    * If the directory is root : false    * If the entry exists and is a directory: false    * If the entry exists and is a file: exception    * else: true    * @param directory path to query    * @return true iff the directory should be created    * @throws IOException IO problems    * @throws SwiftNotDirectoryException if the path references a file    */
+comment|/**    * Should mkdir create this directory?    * If the directory is root : false    * If the entry exists and is a directory: false    * If the entry exists and is a file: exception    * else: true    * @param directory path to query    * @return true iff the directory should be created    * @throws IOException IO problems    * @throws ParentNotDirectoryException if the path references a file    */
 DECL|method|shouldCreate (Path directory)
 specifier|private
 name|boolean
@@ -1489,15 +1481,15 @@ block|{
 comment|//if it's a file, raise an error
 throw|throw
 operator|new
-name|SwiftNotDirectoryException
+name|ParentNotDirectoryException
 argument_list|(
-name|directory
-argument_list|,
 name|String
 operator|.
 name|format
 argument_list|(
-literal|": can't mkdir since it exists and is not a directory: %s"
+literal|"%s: can't mkdir since it exists and is not a directory: %s"
+argument_list|,
+name|directory
 argument_list|,
 name|fileStatus
 argument_list|)
@@ -1801,7 +1793,7 @@ else|else
 block|{
 throw|throw
 operator|new
-name|SwiftPathExistsException
+name|FileAlreadyExistsException
 argument_list|(
 literal|"Path exists: "
 operator|+
@@ -2061,6 +2053,17 @@ block|}
 catch|catch
 parameter_list|(
 name|SwiftOperationFailedException
+name|e
+parameter_list|)
+block|{
+comment|//downgrade to a failure
+return|return
+literal|false
+return|;
+block|}
+catch|catch
+parameter_list|(
+name|FileAlreadyExistsException
 name|e
 parameter_list|)
 block|{

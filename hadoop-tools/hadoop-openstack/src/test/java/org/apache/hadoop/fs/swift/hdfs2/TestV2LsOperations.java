@@ -465,7 +465,7 @@ name|dir
 init|=
 name|path
 argument_list|(
-literal|"/test"
+literal|"/test/subdir"
 argument_list|)
 decl_stmt|;
 name|Path
@@ -527,7 +527,7 @@ name|dir
 init|=
 name|path
 argument_list|(
-literal|"/test"
+literal|"/test/recursive"
 argument_list|)
 decl_stmt|;
 name|Path

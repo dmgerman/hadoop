@@ -90,6 +90,24 @@ name|swift
 operator|.
 name|exceptions
 operator|.
+name|SwiftConnectionClosedException
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|fs
+operator|.
+name|swift
+operator|.
+name|exceptions
+operator|.
 name|SwiftException
 import|;
 end_import
@@ -489,10 +507,8 @@ condition|)
 block|{
 throw|throw
 operator|new
-name|SwiftException
-argument_list|(
-literal|"Output stream is closed"
-argument_list|)
+name|SwiftConnectionClosedException
+argument_list|()
 throw|;
 block|}
 block|}
