@@ -1933,21 +1933,21 @@ init|=
 literal|30000L
 decl_stmt|;
 comment|/** Pending period of block deletion since NameNode startup */
-DECL|field|DFS_NAMENODE_STARTUP_DELAY_BLOCK_DELETION_MS_KEY
+DECL|field|DFS_NAMENODE_STARTUP_DELAY_BLOCK_DELETION_SEC_KEY
 specifier|public
 specifier|static
 specifier|final
 name|String
-name|DFS_NAMENODE_STARTUP_DELAY_BLOCK_DELETION_MS_KEY
+name|DFS_NAMENODE_STARTUP_DELAY_BLOCK_DELETION_SEC_KEY
 init|=
-literal|"dfs.namenode.startup.delay.block.deletion.ms"
+literal|"dfs.namenode.startup.delay.block.deletion.sec"
 decl_stmt|;
-DECL|field|DFS_NAMENODE_STARTUP_DELAY_BLOCK_DELETION_MS_DEFAULT
+DECL|field|DFS_NAMENODE_STARTUP_DELAY_BLOCK_DELETION_SEC_DEFAULT
 specifier|public
 specifier|static
 specifier|final
 name|long
-name|DFS_NAMENODE_STARTUP_DELAY_BLOCK_DELETION_MS_DEFAULT
+name|DFS_NAMENODE_STARTUP_DELAY_BLOCK_DELETION_SEC_DEFAULT
 init|=
 literal|0L
 decl_stmt|;

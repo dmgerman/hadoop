@@ -1546,12 +1546,14 @@ name|getLong
 argument_list|(
 name|DFSConfigKeys
 operator|.
-name|DFS_NAMENODE_STARTUP_DELAY_BLOCK_DELETION_MS_KEY
+name|DFS_NAMENODE_STARTUP_DELAY_BLOCK_DELETION_SEC_KEY
 argument_list|,
 name|DFSConfigKeys
 operator|.
-name|DFS_NAMENODE_STARTUP_DELAY_BLOCK_DELETION_MS_DEFAULT
+name|DFS_NAMENODE_STARTUP_DELAY_BLOCK_DELETION_SEC_DEFAULT
 argument_list|)
+operator|*
+literal|1000L
 decl_stmt|;
 name|invalidateBlocks
 operator|=
