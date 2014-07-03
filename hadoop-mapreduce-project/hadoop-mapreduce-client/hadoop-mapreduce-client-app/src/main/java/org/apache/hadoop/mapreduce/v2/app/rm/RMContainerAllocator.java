@@ -3989,6 +3989,15 @@ operator|==
 name|ContainerExitStatus
 operator|.
 name|ABORTED
+operator|||
+name|cont
+operator|.
+name|getExitStatus
+argument_list|()
+operator|==
+name|ContainerExitStatus
+operator|.
+name|PREEMPTED
 condition|)
 block|{
 comment|// killed by framework
