@@ -6409,7 +6409,6 @@ expr_stmt|;
 block|}
 DECL|method|getAMContainerCrashedDiagnostics ( RMAppAttemptContainerFinishedEvent finishEvent)
 specifier|private
-specifier|static
 name|String
 name|getAMContainerCrashedDiagnostics
 parameter_list|(
@@ -6444,16 +6443,16 @@ operator|.
 name|getExitStatus
 argument_list|()
 operator|+
-literal|" due to: "
+literal|". "
 operator|+
-name|status
+literal|"Check application tracking page: "
+operator|+
+name|this
 operator|.
-name|getDiagnostics
+name|getTrackingUrl
 argument_list|()
 operator|+
-literal|"."
-operator|+
-literal|"Failing this attempt."
+literal|" . Then, click on links to logs of each attempt for detailed output. "
 decl_stmt|;
 return|return
 name|diagnostics
