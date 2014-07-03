@@ -52,6 +52,20 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|crypto
+operator|.
+name|OpensslCipher
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|io
 operator|.
 name|compress
@@ -304,6 +318,11 @@ name|snappyLoaded
 init|=
 literal|false
 decl_stmt|;
+name|boolean
+name|opensslLoaded
+init|=
+literal|false
+decl_stmt|;
 comment|// lz4 is linked within libhadoop
 name|boolean
 name|lz4Loaded
@@ -332,6 +351,11 @@ literal|""
 decl_stmt|;
 name|String
 name|snappyLibraryName
+init|=
+literal|""
+decl_stmt|;
+name|String
+name|opensslLibraryName
 init|=
 literal|""
 decl_stmt|;
@@ -409,6 +433,31 @@ name|getLibraryName
 argument_list|()
 expr_stmt|;
 block|}
+name|opensslLoaded
+operator|=
+name|NativeCodeLoader
+operator|.
+name|buildSupportsOpenssl
+argument_list|()
+operator|&&
+name|OpensslCipher
+operator|.
+name|isNativeCodeLoaded
+argument_list|()
+expr_stmt|;
+if|if
+condition|(
+name|opensslLoaded
+condition|)
+block|{
+name|opensslLibraryName
+operator|=
+name|OpensslCipher
+operator|.
+name|getLibraryName
+argument_list|()
+expr_stmt|;
+block|}
 if|if
 condition|(
 name|lz4Loaded
@@ -453,7 +502,7 @@ name|out
 operator|.
 name|printf
 argument_list|(
-literal|"hadoop: %b %s\n"
+literal|"hadoop:  %b %s\n"
 argument_list|,
 name|nativeHadoopLoaded
 argument_list|,
@@ -466,7 +515,7 @@ name|out
 operator|.
 name|printf
 argument_list|(
-literal|"zlib:   %b %s\n"
+literal|"zlib:    %b %s\n"
 argument_list|,
 name|zlibLoaded
 argument_list|,
@@ -479,7 +528,7 @@ name|out
 operator|.
 name|printf
 argument_list|(
-literal|"snappy: %b %s\n"
+literal|"snappy:  %b %s\n"
 argument_list|,
 name|snappyLoaded
 argument_list|,
@@ -492,7 +541,7 @@ name|out
 operator|.
 name|printf
 argument_list|(
-literal|"lz4:    %b %s\n"
+literal|"lz4:     %b %s\n"
 argument_list|,
 name|lz4Loaded
 argument_list|,
@@ -505,11 +554,24 @@ name|out
 operator|.
 name|printf
 argument_list|(
-literal|"bzip2:  %b %s\n"
+literal|"bzip2:   %b %s\n"
 argument_list|,
 name|bzip2Loaded
 argument_list|,
 name|bzip2LibraryName
+argument_list|)
+expr_stmt|;
+name|System
+operator|.
+name|out
+operator|.
+name|printf
+argument_list|(
+literal|"openssl: %b %s\n"
+argument_list|,
+name|opensslLoaded
+argument_list|,
+name|opensslLibraryName
 argument_list|)
 expr_stmt|;
 if|if

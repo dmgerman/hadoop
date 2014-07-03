@@ -158,7 +158,7 @@ name|getClass
 argument_list|(
 name|HADOOP_SECURITY_CRYPTO_CODEC_CLASS_KEY
 argument_list|,
-name|JCEAESCTRCryptoCodec
+name|JceAesCtrCryptoCodec
 operator|.
 name|class
 argument_list|,
