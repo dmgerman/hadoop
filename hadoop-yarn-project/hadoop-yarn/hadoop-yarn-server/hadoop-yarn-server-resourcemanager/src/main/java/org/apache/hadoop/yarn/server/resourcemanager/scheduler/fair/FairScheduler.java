@@ -26,20 +26,6 @@ end_package
 
 begin_import
 import|import
-name|com
-operator|.
-name|google
-operator|.
-name|common
-operator|.
-name|base
-operator|.
-name|Preconditions
-import|;
-end_import
-
-begin_import
-import|import
 name|java
 operator|.
 name|io
@@ -1321,6 +1307,20 @@ operator|.
 name|annotations
 operator|.
 name|VisibleForTesting
+import|;
+end_import
+
+begin_import
+import|import
+name|com
+operator|.
+name|google
+operator|.
+name|common
+operator|.
+name|base
+operator|.
+name|Preconditions
 import|;
 end_import
 
@@ -7602,8 +7602,9 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
+annotation|@
+name|VisibleForTesting
 DECL|method|findLowestCommonAncestorQueue (FSQueue queue1, FSQueue queue2)
-specifier|private
 name|FSQueue
 name|findLowestCommonAncestorQueue
 parameter_list|(
@@ -7709,6 +7710,8 @@ name|name1
 operator|.
 name|substring
 argument_list|(
+literal|0
+argument_list|,
 name|lastPeriodIndex
 argument_list|)
 argument_list|)
