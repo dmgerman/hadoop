@@ -645,6 +645,11 @@ name|KMSKeyVersion
 argument_list|(
 name|keyVersion
 operator|.
+name|getName
+argument_list|()
+argument_list|,
+name|keyVersion
+operator|.
 name|getVersionName
 argument_list|()
 argument_list|,

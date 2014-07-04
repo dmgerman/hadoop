@@ -304,6 +304,12 @@ specifier|static
 class|class
 name|KeyVersion
 block|{
+DECL|field|name
+specifier|private
+specifier|final
+name|String
+name|name
+decl_stmt|;
 DECL|field|versionName
 specifier|private
 specifier|final
@@ -317,10 +323,13 @@ name|byte
 index|[]
 name|material
 decl_stmt|;
-DECL|method|KeyVersion (String versionName, byte[] material)
+DECL|method|KeyVersion (String name, String versionName, byte[] material)
 specifier|protected
 name|KeyVersion
 parameter_list|(
+name|String
+name|name
+parameter_list|,
 name|String
 name|versionName
 parameter_list|,
@@ -331,6 +340,12 @@ parameter_list|)
 block|{
 name|this
 operator|.
+name|name
+operator|=
+name|name
+expr_stmt|;
+name|this
+operator|.
 name|versionName
 operator|=
 name|versionName
@@ -341,6 +356,16 @@ name|material
 operator|=
 name|material
 expr_stmt|;
+block|}
+DECL|method|getName ()
+specifier|public
+name|String
+name|getName
+parameter_list|()
+block|{
+return|return
+name|name
+return|;
 block|}
 DECL|method|getVersionName ()
 specifier|public

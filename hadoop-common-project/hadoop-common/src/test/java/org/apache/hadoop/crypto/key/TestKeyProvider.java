@@ -373,6 +373,8 @@ name|KeyProvider
 operator|.
 name|KeyVersion
 argument_list|(
+literal|"key1"
+argument_list|,
 literal|"key1@1"
 argument_list|,
 name|key1
