@@ -242,6 +242,16 @@ name|java
 operator|.
 name|util
 operator|.
+name|Arrays
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
 name|Date
 import|;
 end_import
@@ -4495,6 +4505,31 @@ name|readUnlock
 argument_list|()
 expr_stmt|;
 block|}
+name|LOG
+operator|.
+name|info
+argument_list|(
+name|logString
+operator|+
+literal|" cached blocks: have "
+operator|+
+name|numCachedBlocks
+operator|+
+literal|" / "
+operator|+
+name|expectedCachedBlocks
+operator|+
+literal|".  "
+operator|+
+literal|"cached replicas: have "
+operator|+
+name|numCachedReplicas
+operator|+
+literal|" / "
+operator|+
+name|expectedCachedReplicas
+argument_list|)
+expr_stmt|;
 if|if
 condition|(
 name|expectedCachedBlocks
@@ -4524,31 +4559,6 @@ literal|true
 return|;
 block|}
 block|}
-name|LOG
-operator|.
-name|info
-argument_list|(
-name|logString
-operator|+
-literal|" cached blocks: have "
-operator|+
-name|numCachedBlocks
-operator|+
-literal|" / "
-operator|+
-name|expectedCachedBlocks
-operator|+
-literal|".  "
-operator|+
-literal|"cached replicas: have "
-operator|+
-name|numCachedReplicas
-operator|+
-literal|" / "
-operator|+
-name|expectedCachedReplicas
-argument_list|)
-expr_stmt|;
 return|return
 literal|false
 return|;
@@ -9277,6 +9287,25 @@ name|Assert
 operator|.
 name|assertTrue
 argument_list|(
+literal|"Pending cached list of "
+operator|+
+name|descriptor
+operator|+
+literal|" is not empty, "
+operator|+
+name|Arrays
+operator|.
+name|toString
+argument_list|(
+name|descriptor
+operator|.
+name|getPendingCached
+argument_list|()
+operator|.
+name|toArray
+argument_list|()
+argument_list|)
+argument_list|,
 name|descriptor
 operator|.
 name|getPendingCached
@@ -9370,31 +9399,6 @@ operator|)
 name|NUM_DATANODES
 argument_list|,
 literal|0xFADED
-argument_list|)
-expr_stmt|;
-comment|// Set up a log appender watcher
-specifier|final
-name|LogVerificationAppender
-name|appender
-init|=
-operator|new
-name|LogVerificationAppender
-argument_list|()
-decl_stmt|;
-specifier|final
-name|Logger
-name|logger
-init|=
-name|Logger
-operator|.
-name|getRootLogger
-argument_list|()
-decl_stmt|;
-name|logger
-operator|.
-name|addAppender
-argument_list|(
-name|appender
 argument_list|)
 expr_stmt|;
 name|dfs

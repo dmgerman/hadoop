@@ -1342,6 +1342,43 @@ argument_list|()
 decl_stmt|;
 if|if
 condition|(
+name|startOpt
+operator|==
+name|StartupOption
+operator|.
+name|METADATAVERSION
+condition|)
+block|{
+name|System
+operator|.
+name|out
+operator|.
+name|println
+argument_list|(
+literal|"HDFS Image Version: "
+operator|+
+name|layoutVersion
+argument_list|)
+expr_stmt|;
+name|System
+operator|.
+name|out
+operator|.
+name|println
+argument_list|(
+literal|"Software format version: "
+operator|+
+name|HdfsConstants
+operator|.
+name|NAMENODE_LAYOUT_VERSION
+argument_list|)
+expr_stmt|;
+return|return
+literal|false
+return|;
+block|}
+if|if
+condition|(
 name|layoutVersion
 operator|<
 name|Storage
@@ -1656,6 +1693,27 @@ decl_stmt|;
 name|StorageState
 name|curState
 decl_stmt|;
+if|if
+condition|(
+name|startOpt
+operator|==
+name|StartupOption
+operator|.
+name|METADATAVERSION
+condition|)
+block|{
+comment|/* All we need is the layout version. */
+name|storage
+operator|.
+name|readProperties
+argument_list|(
+name|sd
+argument_list|)
+expr_stmt|;
+return|return
+literal|true
+return|;
+block|}
 try|try
 block|{
 name|curState
@@ -2658,14 +2716,6 @@ argument_list|,
 name|checkpointEditsDirs
 argument_list|)
 decl_stmt|;
-name|target
-operator|.
-name|dir
-operator|.
-name|fsImage
-operator|=
-name|ckptImage
-expr_stmt|;
 comment|// load from the checkpoint dirs
 try|try
 block|{
@@ -2731,14 +2781,6 @@ name|StartupOption
 operator|.
 name|IMPORT
 argument_list|)
-expr_stmt|;
-name|target
-operator|.
-name|dir
-operator|.
-name|fsImage
-operator|=
-name|realImage
 expr_stmt|;
 name|realImage
 operator|.
@@ -5147,6 +5189,22 @@ expr_stmt|;
 block|}
 block|}
 block|}
+block|}
+comment|/**    * Update version of all storage directories.    */
+DECL|method|updateStorageVersion ()
+specifier|public
+specifier|synchronized
+name|void
+name|updateStorageVersion
+parameter_list|()
+throws|throws
+name|IOException
+block|{
+name|storage
+operator|.
+name|writeAll
+argument_list|()
+expr_stmt|;
 block|}
 comment|/**    * @see #saveNamespace(FSNamesystem, Canceler)    */
 DECL|method|saveNamespace (FSNamesystem source)

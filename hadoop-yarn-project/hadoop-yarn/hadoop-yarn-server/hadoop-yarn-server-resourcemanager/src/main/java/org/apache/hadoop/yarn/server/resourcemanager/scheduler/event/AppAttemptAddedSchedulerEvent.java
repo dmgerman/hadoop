@@ -62,6 +62,12 @@ specifier|final
 name|boolean
 name|transferStateFromPreviousAttempt
 decl_stmt|;
+DECL|field|shouldNotifyAttemptAdded
+specifier|private
+specifier|final
+name|boolean
+name|shouldNotifyAttemptAdded
+decl_stmt|;
 DECL|method|AppAttemptAddedSchedulerEvent ( ApplicationAttemptId applicationAttemptId, boolean transferStateFromPreviousAttempt)
 specifier|public
 name|AppAttemptAddedSchedulerEvent
@@ -71,6 +77,30 @@ name|applicationAttemptId
 parameter_list|,
 name|boolean
 name|transferStateFromPreviousAttempt
+parameter_list|)
+block|{
+name|this
+argument_list|(
+name|applicationAttemptId
+argument_list|,
+name|transferStateFromPreviousAttempt
+argument_list|,
+literal|true
+argument_list|)
+expr_stmt|;
+block|}
+DECL|method|AppAttemptAddedSchedulerEvent ( ApplicationAttemptId applicationAttemptId, boolean transferStateFromPreviousAttempt, boolean shouldNotifyAttemptAdded)
+specifier|public
+name|AppAttemptAddedSchedulerEvent
+parameter_list|(
+name|ApplicationAttemptId
+name|applicationAttemptId
+parameter_list|,
+name|boolean
+name|transferStateFromPreviousAttempt
+parameter_list|,
+name|boolean
+name|shouldNotifyAttemptAdded
 parameter_list|)
 block|{
 name|super
@@ -92,6 +122,12 @@ name|transferStateFromPreviousAttempt
 operator|=
 name|transferStateFromPreviousAttempt
 expr_stmt|;
+name|this
+operator|.
+name|shouldNotifyAttemptAdded
+operator|=
+name|shouldNotifyAttemptAdded
+expr_stmt|;
 block|}
 DECL|method|getApplicationAttemptId ()
 specifier|public
@@ -111,6 +147,16 @@ parameter_list|()
 block|{
 return|return
 name|transferStateFromPreviousAttempt
+return|;
+block|}
+DECL|method|getShouldNotifyAttemptAdded ()
+specifier|public
+name|boolean
+name|getShouldNotifyAttemptAdded
+parameter_list|()
+block|{
+return|return
+name|shouldNotifyAttemptAdded
 return|;
 block|}
 block|}

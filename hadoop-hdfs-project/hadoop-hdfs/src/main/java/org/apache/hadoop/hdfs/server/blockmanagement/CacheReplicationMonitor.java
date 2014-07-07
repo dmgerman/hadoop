@@ -182,34 +182,6 @@ name|org
 operator|.
 name|apache
 operator|.
-name|commons
-operator|.
-name|logging
-operator|.
-name|Log
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|commons
-operator|.
-name|logging
-operator|.
-name|LogFactory
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
 name|hadoop
 operator|.
 name|classification
@@ -516,6 +488,26 @@ end_import
 
 begin_import
 import|import
+name|org
+operator|.
+name|slf4j
+operator|.
+name|Logger
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|slf4j
+operator|.
+name|LoggerFactory
+import|;
+end_import
+
+begin_import
+import|import
 name|com
 operator|.
 name|google
@@ -527,6 +519,10 @@ operator|.
 name|Preconditions
 import|;
 end_import
+
+begin_empty_stmt
+empty_stmt|;
+end_empty_stmt
 
 begin_comment
 comment|/**  * Scans the namesystem, scheduling blocks to be cached as appropriate.  *  * The CacheReplicationMonitor does a full scan when the NameNode first  * starts up, and at configurable intervals afterwards.  */
@@ -555,12 +551,12 @@ DECL|field|LOG
 specifier|private
 specifier|static
 specifier|final
-name|Log
+name|Logger
 name|LOG
 init|=
-name|LogFactory
+name|LoggerFactory
 operator|.
-name|getLog
+name|getLogger
 argument_list|(
 name|CacheReplicationMonitor
 operator|.
@@ -1037,7 +1033,7 @@ parameter_list|)
 block|{
 name|LOG
 operator|.
-name|fatal
+name|error
 argument_list|(
 literal|"Thread exiting"
 argument_list|,
@@ -1409,42 +1405,25 @@ operator|<=
 name|now
 condition|)
 block|{
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"Directive "
-operator|+
+literal|"Directive {}: the directive expired at {} (now = {})"
+argument_list|,
 name|directive
 operator|.
 name|getId
 argument_list|()
-operator|+
-literal|": the directive "
-operator|+
-literal|"expired at "
-operator|+
+argument_list|,
 name|directive
 operator|.
 name|getExpiryTime
 argument_list|()
-operator|+
-literal|" (now = "
-operator|+
+argument_list|,
 name|now
-operator|+
-literal|")"
 argument_list|)
 expr_stmt|;
-block|}
 continue|continue;
 block|}
 name|String
@@ -1477,31 +1456,22 @@ name|e
 parameter_list|)
 block|{
 comment|// We don't cache through symlinks
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"Directive "
+literal|"Directive {}: got UnresolvedLinkException while resolving "
 operator|+
+literal|"path {}"
+argument_list|,
 name|directive
 operator|.
 name|getId
 argument_list|()
-operator|+
-literal|": got UnresolvedLinkException while resolving path "
-operator|+
+argument_list|,
 name|path
 argument_list|)
 expr_stmt|;
-block|}
 continue|continue;
 block|}
 if|if
@@ -1511,31 +1481,20 @@ operator|==
 literal|null
 condition|)
 block|{
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"Directive "
-operator|+
+literal|"Directive {}: No inode found at {}"
+argument_list|,
 name|directive
 operator|.
 name|getId
 argument_list|()
-operator|+
-literal|": No inode found at "
-operator|+
+argument_list|,
 name|path
 argument_list|)
 expr_stmt|;
-block|}
 block|}
 elseif|else
 if|if
@@ -1620,31 +1579,20 @@ expr_stmt|;
 block|}
 else|else
 block|{
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"Directive "
-operator|+
+literal|"Directive {}: ignoring non-directive, non-file inode {} "
+argument_list|,
 name|directive
 operator|.
 name|getId
 argument_list|()
-operator|+
-literal|": ignoring non-directive, non-file inode "
-operator|+
+argument_list|,
 name|node
 argument_list|)
 expr_stmt|;
-block|}
 block|}
 block|}
 block|}
@@ -1723,25 +1671,13 @@ name|getLimit
 argument_list|()
 condition|)
 block|{
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
 argument_list|(
-name|String
-operator|.
-name|format
-argument_list|(
-literal|"Directive %d: not scanning file %s because "
+literal|"Directive {}: not scanning file {} because "
 operator|+
-literal|"bytesNeeded for pool %s is %d, but the pool's limit is %d"
+literal|"bytesNeeded for pool {} is {}, but the pool's limit is {}"
 argument_list|,
 name|directive
 operator|.
@@ -1768,9 +1704,7 @@ operator|.
 name|getLimit
 argument_list|()
 argument_list|)
-argument_list|)
 expr_stmt|;
-block|}
 return|return;
 block|}
 name|long
@@ -1803,42 +1737,27 @@ argument_list|)
 condition|)
 block|{
 comment|// We don't try to cache blocks that are under construction.
-if|if
-condition|(
-name|LOG
-operator|.
-name|isTraceEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|trace
 argument_list|(
-literal|"Directive "
+literal|"Directive {}: can't cache block {} because it is in state "
 operator|+
+literal|"{}, not COMPLETE."
+argument_list|,
 name|directive
 operator|.
 name|getId
 argument_list|()
-operator|+
-literal|": can't cache "
-operator|+
-literal|"block "
-operator|+
+argument_list|,
 name|blockInfo
-operator|+
-literal|" because it is in state "
-operator|+
+argument_list|,
 name|blockInfo
 operator|.
 name|getBlockUCState
 argument_list|()
-operator|+
-literal|", not COMPLETE."
 argument_list|)
 expr_stmt|;
-block|}
 continue|continue;
 block|}
 name|Block
@@ -1906,7 +1825,7 @@ block|{
 comment|// Update bytesUsed using the current replication levels.
 comment|// Assumptions: we assume that all the blocks are the same length
 comment|// on each datanode.  We can assume this because we're only caching
-comment|// blocks in state COMMITTED.
+comment|// blocks in state COMPLETE.
 comment|// Note that if two directives are caching the same block(s), they will
 comment|// both get them added to their bytesCached.
 name|List
@@ -2001,40 +1920,25 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-if|if
-condition|(
-name|LOG
-operator|.
-name|isTraceEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|trace
 argument_list|(
-literal|"Directive "
-operator|+
+literal|"Directive {}: setting replication for block {} to {}"
+argument_list|,
 name|directive
 operator|.
 name|getId
 argument_list|()
-operator|+
-literal|": setting replication "
-operator|+
-literal|"for block "
-operator|+
+argument_list|,
 name|blockInfo
-operator|+
-literal|" to "
-operator|+
+argument_list|,
 name|ocblock
 operator|.
 name|getReplication
 argument_list|()
 argument_list|)
 expr_stmt|;
-block|}
 block|}
 comment|// Increment the "cached" statistics
 name|directive
@@ -2059,44 +1963,27 @@ literal|1
 argument_list|)
 expr_stmt|;
 block|}
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"Directive "
-operator|+
+literal|"Directive {}: caching {}: {}/{} bytes"
+argument_list|,
 name|directive
 operator|.
 name|getId
 argument_list|()
-operator|+
-literal|": caching "
-operator|+
+argument_list|,
 name|file
 operator|.
 name|getFullPathName
 argument_list|()
-operator|+
-literal|": "
-operator|+
+argument_list|,
 name|cachedTotal
-operator|+
-literal|"/"
-operator|+
+argument_list|,
 name|neededTotal
-operator|+
-literal|" bytes"
 argument_list|)
 expr_stmt|;
-block|}
 block|}
 DECL|method|findReasonForNotCaching (CachedBlock cblock, BlockInfo blockInfo)
 specifier|private
@@ -2325,38 +2212,25 @@ argument_list|()
 argument_list|)
 condition|)
 block|{
-if|if
-condition|(
-name|LOG
-operator|.
-name|isTraceEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|trace
 argument_list|(
-literal|"Block "
+literal|"Block {}: removing from PENDING_UNCACHED for node {} "
 operator|+
+literal|"because the DataNode uncached it."
+argument_list|,
 name|cblock
 operator|.
 name|getBlockId
 argument_list|()
-operator|+
-literal|": removing from "
-operator|+
-literal|"PENDING_UNCACHED for node "
-operator|+
+argument_list|,
 name|datanode
 operator|.
 name|getDatanodeUuid
 argument_list|()
-operator|+
-literal|"because the DataNode uncached it."
 argument_list|)
 expr_stmt|;
-block|}
 name|datanode
 operator|.
 name|getPendingUncached
@@ -2413,33 +2287,20 @@ operator|!=
 literal|null
 condition|)
 block|{
-if|if
-condition|(
-name|LOG
-operator|.
-name|isTraceEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|trace
 argument_list|(
-literal|"Block "
-operator|+
+literal|"Block {}: can't cache block because it is {}"
+argument_list|,
 name|cblock
 operator|.
 name|getBlockId
 argument_list|()
-operator|+
-literal|": can't cache "
-operator|+
-literal|"block because it is "
-operator|+
+argument_list|,
 name|reason
 argument_list|)
 expr_stmt|;
-block|}
 block|}
 else|else
 block|{
@@ -2510,46 +2371,31 @@ operator|.
 name|remove
 argument_list|()
 expr_stmt|;
-if|if
-condition|(
-name|LOG
-operator|.
-name|isTraceEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|trace
 argument_list|(
-literal|"Block "
+literal|"Block {}: removing from PENDING_CACHED for node {}"
 operator|+
+literal|"because we already have {} cached replicas and we only"
+operator|+
+literal|" need {}"
+argument_list|,
 name|cblock
 operator|.
 name|getBlockId
 argument_list|()
-operator|+
-literal|": removing from "
-operator|+
-literal|"PENDING_CACHED for node "
-operator|+
+argument_list|,
 name|datanode
 operator|.
 name|getDatanodeUuid
 argument_list|()
-operator|+
-literal|"because we already have "
-operator|+
+argument_list|,
 name|numCached
-operator|+
-literal|" cached "
-operator|+
-literal|"replicas and we only need "
-operator|+
+argument_list|,
 name|neededCached
 argument_list|)
 expr_stmt|;
-block|}
 block|}
 block|}
 if|if
@@ -2603,46 +2449,31 @@ operator|.
 name|remove
 argument_list|()
 expr_stmt|;
-if|if
-condition|(
-name|LOG
-operator|.
-name|isTraceEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|trace
 argument_list|(
-literal|"Block "
+literal|"Block {}: removing from PENDING_UNCACHED for node {} "
 operator|+
+literal|"because we only have {} cached replicas and we need "
+operator|+
+literal|"{}"
+argument_list|,
 name|cblock
 operator|.
 name|getBlockId
 argument_list|()
-operator|+
-literal|": removing from "
-operator|+
-literal|"PENDING_UNCACHED for node "
-operator|+
+argument_list|,
 name|datanode
 operator|.
 name|getDatanodeUuid
 argument_list|()
-operator|+
-literal|"because we only have "
-operator|+
+argument_list|,
 name|numCached
-operator|+
-literal|" cached replicas "
-operator|+
-literal|"and we need "
-operator|+
+argument_list|,
 name|neededCached
 argument_list|)
 expr_stmt|;
-block|}
 block|}
 block|}
 name|int
@@ -2734,33 +2565,20 @@ argument_list|()
 condition|)
 block|{
 comment|// we have nothing more to do with this block.
-if|if
-condition|(
-name|LOG
-operator|.
-name|isTraceEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|trace
 argument_list|(
-literal|"Block "
+literal|"Block {}: removing from cachedBlocks, since neededCached "
 operator|+
+literal|"== 0, and pendingUncached and pendingCached are empty."
+argument_list|,
 name|cblock
 operator|.
 name|getBlockId
 argument_list|()
-operator|+
-literal|": removing from "
-operator|+
-literal|"cachedBlocks, since neededCached == 0, and "
-operator|+
-literal|"pendingUncached and pendingCached are empty."
 argument_list|)
 expr_stmt|;
-block|}
 name|cbIter
 operator|.
 name|remove
@@ -2962,33 +2780,22 @@ operator|==
 literal|null
 condition|)
 block|{
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"Block "
+literal|"Block {}: can't add new cached replicas,"
 operator|+
+literal|" because there is no record of this block "
+operator|+
+literal|"on the NameNode."
+argument_list|,
 name|cachedBlock
 operator|.
 name|getBlockId
 argument_list|()
-operator|+
-literal|": can't add new "
-operator|+
-literal|"cached replicas, because there is no record of this block "
-operator|+
-literal|"on the NameNode."
 argument_list|)
 expr_stmt|;
-block|}
 return|return;
 block|}
 if|if
@@ -3000,31 +2807,20 @@ name|isComplete
 argument_list|()
 condition|)
 block|{
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"Block "
+literal|"Block {}: can't cache this block, because it is not yet"
 operator|+
+literal|" complete."
+argument_list|,
 name|cachedBlock
 operator|.
 name|getBlockId
 argument_list|()
-operator|+
-literal|": can't cache this "
-operator|+
-literal|"block, because it is not yet complete."
 argument_list|)
 expr_stmt|;
-block|}
 return|return;
 block|}
 comment|// Filter the list of replicas to only the valid targets
@@ -3152,12 +2948,9 @@ block|{
 continue|continue;
 block|}
 name|long
-name|pendingCapacity
+name|pendingBytes
 init|=
-name|datanode
-operator|.
-name|getCacheRemaining
-argument_list|()
+literal|0
 decl_stmt|;
 comment|// Subtract pending cached blocks from effective capacity
 name|Iterator
@@ -3214,7 +3007,7 @@ operator|!=
 literal|null
 condition|)
 block|{
-name|pendingCapacity
+name|pendingBytes
 operator|-=
 name|info
 operator|.
@@ -3274,7 +3067,7 @@ operator|!=
 literal|null
 condition|)
 block|{
-name|pendingCapacity
+name|pendingBytes
 operator|+=
 name|info
 operator|.
@@ -3283,6 +3076,16 @@ argument_list|()
 expr_stmt|;
 block|}
 block|}
+name|long
+name|pendingCapacity
+init|=
+name|pendingBytes
+operator|+
+name|datanode
+operator|.
+name|getCacheRemaining
+argument_list|()
+decl_stmt|;
 if|if
 condition|(
 name|pendingCapacity
@@ -3293,56 +3096,41 @@ name|getNumBytes
 argument_list|()
 condition|)
 block|{
-if|if
-condition|(
-name|LOG
-operator|.
-name|isTraceEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|trace
 argument_list|(
-literal|"Block "
+literal|"Block {}: DataNode {} is not a valid possibility "
 operator|+
+literal|"because the block has size {}, but the DataNode only has {}"
+operator|+
+literal|"bytes of cache remaining ({} pending bytes, {} already cached."
+argument_list|,
 name|blockInfo
 operator|.
 name|getBlockId
 argument_list|()
-operator|+
-literal|": DataNode "
-operator|+
+argument_list|,
 name|datanode
 operator|.
 name|getDatanodeUuid
 argument_list|()
-operator|+
-literal|" is not a valid possibility "
-operator|+
-literal|"because the block has size "
-operator|+
+argument_list|,
 name|blockInfo
 operator|.
 name|getNumBytes
 argument_list|()
-operator|+
-literal|", but "
-operator|+
-literal|"the DataNode only has "
-operator|+
+argument_list|,
+name|pendingCapacity
+argument_list|,
+name|pendingBytes
+argument_list|,
 name|datanode
 operator|.
 name|getCacheRemaining
 argument_list|()
-operator|+
-literal|" "
-operator|+
-literal|"bytes of cache remaining."
 argument_list|)
 expr_stmt|;
-block|}
 name|outOfCapacity
 operator|++
 expr_stmt|;
@@ -3385,36 +3173,23 @@ range|:
 name|chosen
 control|)
 block|{
-if|if
-condition|(
-name|LOG
-operator|.
-name|isTraceEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|trace
 argument_list|(
-literal|"Block "
-operator|+
+literal|"Block {}: added to PENDING_CACHED on DataNode {}"
+argument_list|,
 name|blockInfo
 operator|.
 name|getBlockId
 argument_list|()
-operator|+
-literal|": added to "
-operator|+
-literal|"PENDING_CACHED on DataNode "
-operator|+
+argument_list|,
 name|datanode
 operator|.
 name|getDatanodeUuid
 argument_list|()
 argument_list|)
 expr_stmt|;
-block|}
 name|pendingCached
 operator|.
 name|add
@@ -3450,27 +3225,19 @@ name|size
 argument_list|()
 condition|)
 block|{
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"Block "
+literal|"Block {}: we only have {} of {} cached replicas."
 operator|+
+literal|" {} DataNodes have insufficient cache capacity."
+argument_list|,
 name|blockInfo
 operator|.
 name|getBlockId
 argument_list|()
-operator|+
-literal|": we only have "
-operator|+
+argument_list|,
 operator|(
 name|cachedBlock
 operator|.
@@ -3484,22 +3251,15 @@ operator|.
 name|size
 argument_list|()
 operator|)
-operator|+
-literal|" of "
-operator|+
+argument_list|,
 name|cachedBlock
 operator|.
 name|getReplication
 argument_list|()
-operator|+
-literal|" cached replicas.  "
-operator|+
+argument_list|,
 name|outOfCapacity
-operator|+
-literal|" DataNodes have insufficient cache capacity."
 argument_list|)
 expr_stmt|;
-block|}
 block|}
 block|}
 comment|/**    * Chooses datanode locations for caching from a list of valid possibilities.    * Non-stale nodes are chosen before stale nodes.    *     * @param possibilities List of candidate datanodes    * @param neededCached Number of replicas needed    * @param staleInterval Age of a stale datanode    * @return A list of chosen datanodes    */

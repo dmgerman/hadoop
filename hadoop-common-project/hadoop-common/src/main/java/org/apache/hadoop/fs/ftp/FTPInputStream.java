@@ -453,13 +453,7 @@ condition|(
 name|closed
 condition|)
 block|{
-throw|throw
-operator|new
-name|IOException
-argument_list|(
-literal|"Stream closed"
-argument_list|)
-throw|;
+return|return;
 block|}
 name|super
 operator|.

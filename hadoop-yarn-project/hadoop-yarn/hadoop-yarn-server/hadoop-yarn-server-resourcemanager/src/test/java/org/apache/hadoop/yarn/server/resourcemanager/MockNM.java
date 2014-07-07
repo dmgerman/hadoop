@@ -649,6 +649,7 @@ name|httpPort
 return|;
 block|}
 DECL|method|setResourceTrackerService (ResourceTrackerService resourceTracker)
+specifier|public
 name|void
 name|setResourceTrackerService
 parameter_list|(

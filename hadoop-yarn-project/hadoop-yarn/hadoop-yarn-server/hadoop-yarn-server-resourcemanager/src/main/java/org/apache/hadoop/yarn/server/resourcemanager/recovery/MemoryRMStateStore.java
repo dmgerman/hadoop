@@ -314,6 +314,13 @@ operator|new
 name|RMState
 argument_list|()
 decl_stmt|;
+DECL|field|epoch
+specifier|private
+name|int
+name|epoch
+init|=
+literal|0
+decl_stmt|;
 annotation|@
 name|VisibleForTesting
 DECL|method|getState ()
@@ -336,6 +343,32 @@ parameter_list|()
 throws|throws
 name|Exception
 block|{   }
+annotation|@
+name|Override
+DECL|method|getAndIncrementEpoch ()
+specifier|public
+specifier|synchronized
+name|int
+name|getAndIncrementEpoch
+parameter_list|()
+throws|throws
+name|Exception
+block|{
+name|int
+name|currentEpoch
+init|=
+name|epoch
+decl_stmt|;
+name|epoch
+operator|=
+name|epoch
+operator|+
+literal|1
+expr_stmt|;
+return|return
+name|currentEpoch
+return|;
+block|}
 annotation|@
 name|Override
 DECL|method|loadState ()
@@ -859,6 +892,11 @@ argument_list|,
 name|attemptStateData
 operator|.
 name|getFinalApplicationStatus
+argument_list|()
+argument_list|,
+name|attemptStateData
+operator|.
+name|getAMContainerExitStatus
 argument_list|()
 argument_list|)
 decl_stmt|;

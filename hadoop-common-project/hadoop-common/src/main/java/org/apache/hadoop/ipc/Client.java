@@ -1944,6 +1944,12 @@ specifier|final
 name|RetryPolicy
 name|connectionRetryPolicy
 decl_stmt|;
+DECL|field|maxRetriesOnSasl
+specifier|private
+specifier|final
+name|int
+name|maxRetriesOnSasl
+decl_stmt|;
 DECL|field|maxRetriesOnSocketTimeouts
 specifier|private
 name|int
@@ -2115,6 +2121,15 @@ operator|=
 name|remoteId
 operator|.
 name|connectionRetryPolicy
+expr_stmt|;
+name|this
+operator|.
+name|maxRetriesOnSasl
+operator|=
+name|remoteId
+operator|.
+name|getMaxRetriesOnSasl
+argument_list|()
 expr_stmt|;
 name|this
 operator|.
@@ -3314,12 +3329,6 @@ name|numRetries
 init|=
 literal|0
 decl_stmt|;
-specifier|final
-name|short
-name|MAX_RETRIES
-init|=
-literal|5
-decl_stmt|;
 name|Random
 name|rand
 init|=
@@ -3476,7 +3485,7 @@ argument_list|(
 name|numRetries
 operator|++
 argument_list|,
-name|MAX_RETRIES
+name|maxRetriesOnSasl
 argument_list|,
 name|ex
 argument_list|,
@@ -6467,6 +6476,12 @@ specifier|final
 name|RetryPolicy
 name|connectionRetryPolicy
 decl_stmt|;
+DECL|field|maxRetriesOnSasl
+specifier|private
+specifier|final
+name|int
+name|maxRetriesOnSasl
+decl_stmt|;
 comment|// the max. no. of retries for socket connections on time out exceptions
 DECL|field|maxRetriesOnSocketTimeouts
 specifier|private
@@ -6578,6 +6593,23 @@ argument_list|,
 name|CommonConfigurationKeysPublic
 operator|.
 name|IPC_CLIENT_CONNECTION_MAXIDLETIME_DEFAULT
+argument_list|)
+expr_stmt|;
+name|this
+operator|.
+name|maxRetriesOnSasl
+operator|=
+name|conf
+operator|.
+name|getInt
+argument_list|(
+name|CommonConfigurationKeys
+operator|.
+name|IPC_CLIENT_CONNECT_MAX_RETRIES_ON_SASL_KEY
+argument_list|,
+name|CommonConfigurationKeys
+operator|.
+name|IPC_CLIENT_CONNECT_MAX_RETRIES_ON_SASL_DEFAULT
 argument_list|)
 expr_stmt|;
 name|this
@@ -6702,6 +6734,16 @@ parameter_list|()
 block|{
 return|return
 name|maxIdleTime
+return|;
+block|}
+DECL|method|getMaxRetriesOnSasl ()
+specifier|public
+name|int
+name|getMaxRetriesOnSasl
+parameter_list|()
+block|{
+return|return
+name|maxRetriesOnSasl
 return|;
 block|}
 comment|/** max connection retries on socket time outs */

@@ -275,11 +275,20 @@ parameter_list|()
 throws|throws
 name|IOException
 block|{
+comment|// ensure close works even if a null reference was passed in
+if|if
+condition|(
+name|out
+operator|!=
+literal|null
+condition|)
+block|{
 name|out
 operator|.
 name|close
 argument_list|()
 expr_stmt|;
+block|}
 block|}
 block|}
 DECL|method|FSDataOutputStream (OutputStream out, FileSystem.Statistics stats)

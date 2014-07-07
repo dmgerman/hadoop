@@ -478,6 +478,11 @@ specifier|private
 name|boolean
 name|vmemCheckEnabled
 decl_stmt|;
+DECL|field|maxVCoresAllottedForContainers
+specifier|private
+name|long
+name|maxVCoresAllottedForContainers
+decl_stmt|;
 DECL|field|UNKNOWN_MEMORY_LIMIT
 specifier|private
 specifier|static
@@ -689,6 +694,22 @@ literal|1024
 operator|*
 literal|1024l
 decl_stmt|;
+name|long
+name|configuredVCoresForContainers
+init|=
+name|conf
+operator|.
+name|getLong
+argument_list|(
+name|YarnConfiguration
+operator|.
+name|NM_VCORES
+argument_list|,
+name|YarnConfiguration
+operator|.
+name|DEFAULT_NM_VCORES
+argument_list|)
+decl_stmt|;
 comment|// Setting these irrespective of whether checks are enabled. Required in
 comment|// the UI.
 comment|// ///////// Physical memory configuration //////
@@ -697,6 +718,12 @@ operator|.
 name|maxPmemAllottedForContainers
 operator|=
 name|configuredPMemForContainers
+expr_stmt|;
+name|this
+operator|.
+name|maxVCoresAllottedForContainers
+operator|=
+name|configuredVCoresForContainers
 expr_stmt|;
 comment|// ///////// Virtual memory configuration //////
 name|float
@@ -2336,6 +2363,20 @@ return|return
 name|this
 operator|.
 name|maxPmemAllottedForContainers
+return|;
+block|}
+annotation|@
+name|Override
+DECL|method|getVCoresAllocatedForContainers ()
+specifier|public
+name|long
+name|getVCoresAllocatedForContainers
+parameter_list|()
+block|{
+return|return
+name|this
+operator|.
+name|maxVCoresAllottedForContainers
 return|;
 block|}
 comment|/**    * Is the total virtual memory check enabled?    *    * @return true if total virtual memory check is enabled.    */

@@ -2576,21 +2576,32 @@ literal|10000
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|waitForBlockReceived ( ExtendedBlock fakeBlock, DatanodeProtocolClientSideTranslatorPB mockNN)
+DECL|method|waitForBlockReceived ( final ExtendedBlock fakeBlock, final DatanodeProtocolClientSideTranslatorPB mockNN)
 specifier|private
 name|ReceivedDeletedBlockInfo
 index|[]
 name|waitForBlockReceived
 parameter_list|(
+specifier|final
 name|ExtendedBlock
 name|fakeBlock
 parameter_list|,
+specifier|final
 name|DatanodeProtocolClientSideTranslatorPB
 name|mockNN
 parameter_list|)
 throws|throws
 name|Exception
 block|{
+specifier|final
+name|String
+name|fakeBlockPoolId
+init|=
+name|fakeBlock
+operator|.
+name|getBlockPoolId
+argument_list|()
+decl_stmt|;
 specifier|final
 name|ArgumentCaptor
 argument_list|<
@@ -2633,7 +2644,7 @@ name|Mockito
 operator|.
 name|verify
 argument_list|(
-name|mockNN1
+name|mockNN
 argument_list|)
 operator|.
 name|blockReceivedAndDeleted
@@ -2650,7 +2661,7 @@ name|Mockito
 operator|.
 name|eq
 argument_list|(
-name|FAKE_BPID
+name|fakeBlockPoolId
 argument_list|)
 argument_list|,
 name|captor

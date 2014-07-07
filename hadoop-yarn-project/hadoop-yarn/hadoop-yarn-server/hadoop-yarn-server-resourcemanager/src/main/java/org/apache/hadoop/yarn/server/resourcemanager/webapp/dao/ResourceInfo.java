@@ -111,7 +111,7 @@ DECL|method|ResourceInfo ()
 specifier|public
 name|ResourceInfo
 parameter_list|()
-block|{    }
+block|{   }
 DECL|method|ResourceInfo (Resource res)
 specifier|public
 name|ResourceInfo
@@ -174,6 +174,38 @@ name|vCores
 operator|+
 literal|">"
 return|;
+block|}
+DECL|method|setMemory (int memory)
+specifier|public
+name|void
+name|setMemory
+parameter_list|(
+name|int
+name|memory
+parameter_list|)
+block|{
+name|this
+operator|.
+name|memory
+operator|=
+name|memory
+expr_stmt|;
+block|}
+DECL|method|setvCores (int vCores)
+specifier|public
+name|void
+name|setvCores
+parameter_list|(
+name|int
+name|vCores
+parameter_list|)
+block|{
+name|this
+operator|.
+name|vCores
+operator|=
+name|vCores
+expr_stmt|;
 block|}
 block|}
 end_class

@@ -54,6 +54,16 @@ name|java
 operator|.
 name|net
 operator|.
+name|ConnectException
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|net
+operator|.
 name|URI
 import|;
 end_import
@@ -230,6 +240,20 @@ name|hadoop
 operator|.
 name|fs
 operator|.
+name|FileAlreadyExistsException
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|fs
+operator|.
 name|FileStatus
 import|;
 end_import
@@ -245,6 +269,20 @@ operator|.
 name|fs
 operator|.
 name|FileSystem
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|fs
+operator|.
+name|ParentNotDirectoryException
 import|;
 end_import
 
@@ -291,6 +329,20 @@ operator|.
 name|permission
 operator|.
 name|FsPermission
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|net
+operator|.
+name|NetUtils
 import|;
 end_import
 
@@ -366,6 +418,51 @@ literal|4
 operator|*
 literal|1024
 decl_stmt|;
+DECL|field|FS_FTP_USER_PREFIX
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|FS_FTP_USER_PREFIX
+init|=
+literal|"fs.ftp.user."
+decl_stmt|;
+DECL|field|FS_FTP_HOST
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|FS_FTP_HOST
+init|=
+literal|"fs.ftp.host"
+decl_stmt|;
+DECL|field|FS_FTP_HOST_PORT
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|FS_FTP_HOST_PORT
+init|=
+literal|"fs.ftp.host.port"
+decl_stmt|;
+DECL|field|FS_FTP_PASSWORD_PREFIX
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|FS_FTP_PASSWORD_PREFIX
+init|=
+literal|"fs.ftp.password."
+decl_stmt|;
+DECL|field|E_SAME_DIRECTORY_ONLY
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|E_SAME_DIRECTORY_ONLY
+init|=
+literal|"only same directory renames are supported"
+decl_stmt|;
 DECL|field|uri
 specifier|private
 name|URI
@@ -431,7 +528,7 @@ name|conf
 operator|.
 name|get
 argument_list|(
-literal|"fs.ftp.host"
+name|FS_FTP_HOST
 argument_list|,
 literal|null
 argument_list|)
@@ -457,7 +554,7 @@ name|conf
 operator|.
 name|set
 argument_list|(
-literal|"fs.ftp.host"
+name|FS_FTP_HOST
 argument_list|,
 name|host
 argument_list|)
@@ -570,7 +667,7 @@ name|conf
 operator|.
 name|set
 argument_list|(
-literal|"fs.ftp.user."
+name|FS_FTP_USER_PREFIX
 operator|+
 name|host
 argument_list|,
@@ -593,7 +690,7 @@ name|conf
 operator|.
 name|set
 argument_list|(
-literal|"fs.ftp.password."
+name|FS_FTP_PASSWORD_PREFIX
 operator|+
 name|host
 argument_list|,
@@ -610,7 +707,7 @@ name|conf
 operator|.
 name|set
 argument_list|(
-literal|"fs.ftp.password."
+name|FS_FTP_PASSWORD_PREFIX
 operator|+
 name|host
 argument_list|,
@@ -657,7 +754,7 @@ name|conf
 operator|.
 name|get
 argument_list|(
-literal|"fs.ftp.host"
+name|FS_FTP_HOST
 argument_list|)
 decl_stmt|;
 name|int
@@ -667,7 +764,7 @@ name|conf
 operator|.
 name|getInt
 argument_list|(
-literal|"fs.ftp.host.port"
+name|FS_FTP_HOST_PORT
 argument_list|,
 name|FTP
 operator|.
@@ -681,7 +778,7 @@ name|conf
 operator|.
 name|get
 argument_list|(
-literal|"fs.ftp.user."
+name|FS_FTP_USER_PREFIX
 operator|+
 name|host
 argument_list|)
@@ -693,7 +790,7 @@ name|conf
 operator|.
 name|get
 argument_list|(
-literal|"fs.ftp.password."
+name|FS_FTP_PASSWORD_PREFIX
 operator|+
 name|host
 argument_list|)
@@ -733,16 +830,27 @@ argument_list|)
 condition|)
 block|{
 throw|throw
-operator|new
-name|IOException
+name|NetUtils
+operator|.
+name|wrapException
 argument_list|(
-literal|"Server - "
-operator|+
 name|host
-operator|+
-literal|" refused connection on port - "
-operator|+
+argument_list|,
 name|port
+argument_list|,
+name|NetUtils
+operator|.
+name|UNKNOWN_HOST
+argument_list|,
+literal|0
+argument_list|,
+operator|new
+name|ConnectException
+argument_list|(
+literal|"Server response "
+operator|+
+name|reply
+argument_list|)
 argument_list|)
 throw|;
 block|}
@@ -798,6 +906,12 @@ operator|+
 literal|", port - "
 operator|+
 name|port
+operator|+
+literal|" as user '"
+operator|+
+name|user
+operator|+
+literal|"'"
 argument_list|)
 throw|;
 block|}
@@ -979,7 +1093,7 @@ argument_list|)
 expr_stmt|;
 throw|throw
 operator|new
-name|IOException
+name|FileNotFoundException
 argument_list|(
 literal|"Path "
 operator|+
@@ -1152,19 +1266,48 @@ argument_list|,
 name|file
 argument_list|)
 decl_stmt|;
-if|if
-condition|(
-name|exists
+name|FileStatus
+name|status
+decl_stmt|;
+try|try
+block|{
+name|status
+operator|=
+name|getFileStatus
 argument_list|(
 name|client
 argument_list|,
 name|file
 argument_list|)
+expr_stmt|;
+block|}
+catch|catch
+parameter_list|(
+name|FileNotFoundException
+name|fnfe
+parameter_list|)
+block|{
+name|status
+operator|=
+literal|null
+expr_stmt|;
+block|}
+if|if
+condition|(
+name|status
+operator|!=
+literal|null
 condition|)
 block|{
 if|if
 condition|(
 name|overwrite
+operator|&&
+operator|!
+name|status
+operator|.
+name|isDirectory
+argument_list|()
 condition|)
 block|{
 name|delete
@@ -1172,6 +1315,8 @@ argument_list|(
 name|client
 argument_list|,
 name|file
+argument_list|,
+literal|false
 argument_list|)
 expr_stmt|;
 block|}
@@ -1184,7 +1329,7 @@ argument_list|)
 expr_stmt|;
 throw|throw
 operator|new
-name|IOException
+name|FileAlreadyExistsException
 argument_list|(
 literal|"File already exists: "
 operator|+
@@ -1427,7 +1572,7 @@ literal|"Not supported"
 argument_list|)
 throw|;
 block|}
-comment|/**    * Convenience method, so that we don't open a new connection when using this    * method from within another method. Otherwise every API invocation incurs    * the overhead of opening/closing a TCP connection.    */
+comment|/**    * Convenience method, so that we don't open a new connection when using this    * method from within another method. Otherwise every API invocation incurs    * the overhead of opening/closing a TCP connection.    * @throws IOException on IO problems other than FileNotFoundException    */
 DECL|method|exists (FTPClient client, Path file)
 specifier|private
 name|boolean
@@ -1439,6 +1584,8 @@ parameter_list|,
 name|Path
 name|file
 parameter_list|)
+throws|throws
+name|IOException
 block|{
 try|try
 block|{
@@ -1462,22 +1609,6 @@ block|{
 return|return
 literal|false
 return|;
-block|}
-catch|catch
-parameter_list|(
-name|IOException
-name|ioe
-parameter_list|)
-block|{
-throw|throw
-operator|new
-name|FTPException
-argument_list|(
-literal|"Failed to get file status"
-argument_list|,
-name|ioe
-argument_list|)
-throw|;
 block|}
 block|}
 annotation|@
@@ -1528,34 +1659,6 @@ name|client
 argument_list|)
 expr_stmt|;
 block|}
-block|}
-comment|/** @deprecated Use delete(Path, boolean) instead */
-annotation|@
-name|Deprecated
-DECL|method|delete (FTPClient client, Path file)
-specifier|private
-name|boolean
-name|delete
-parameter_list|(
-name|FTPClient
-name|client
-parameter_list|,
-name|Path
-name|file
-parameter_list|)
-throws|throws
-name|IOException
-block|{
-return|return
-name|delete
-argument_list|(
-name|client
-argument_list|,
-name|file
-argument_list|,
-literal|false
-argument_list|)
-return|;
 block|}
 comment|/**    * Convenience method, so that we don't open a new connection when using this    * method from within another method. Otherwise every API invocation incurs    * the overhead of opening/closing a TCP connection.    */
 DECL|method|delete (FTPClient client, Path file, boolean recursive)
@@ -1608,6 +1711,8 @@ operator|.
 name|getPath
 argument_list|()
 decl_stmt|;
+try|try
+block|{
 name|FileStatus
 name|fileStat
 init|=
@@ -1633,6 +1738,18 @@ name|deleteFile
 argument_list|(
 name|pathName
 argument_list|)
+return|;
+block|}
+block|}
+catch|catch
+parameter_list|(
+name|FileNotFoundException
+name|e
+parameter_list|)
+block|{
+comment|//the file is not there
+return|return
+literal|false
 return|;
 block|}
 name|FileStatus
@@ -2661,7 +2778,7 @@ condition|)
 block|{
 throw|throw
 operator|new
-name|IOException
+name|ParentNotDirectoryException
 argument_list|(
 name|String
 operator|.
@@ -2783,6 +2900,76 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
+comment|/**    * Probe for a path being a parent of another    * @param parent parent path    * @param child possible child path    * @return true if the parent's path matches the start of the child's    */
+DECL|method|isParentOf (Path parent, Path child)
+specifier|private
+name|boolean
+name|isParentOf
+parameter_list|(
+name|Path
+name|parent
+parameter_list|,
+name|Path
+name|child
+parameter_list|)
+block|{
+name|URI
+name|parentURI
+init|=
+name|parent
+operator|.
+name|toUri
+argument_list|()
+decl_stmt|;
+name|String
+name|parentPath
+init|=
+name|parentURI
+operator|.
+name|getPath
+argument_list|()
+decl_stmt|;
+if|if
+condition|(
+operator|!
+name|parentPath
+operator|.
+name|endsWith
+argument_list|(
+literal|"/"
+argument_list|)
+condition|)
+block|{
+name|parentPath
+operator|+=
+literal|"/"
+expr_stmt|;
+block|}
+name|URI
+name|childURI
+init|=
+name|child
+operator|.
+name|toUri
+argument_list|()
+decl_stmt|;
+name|String
+name|childPath
+init|=
+name|childURI
+operator|.
+name|getPath
+argument_list|()
+decl_stmt|;
+return|return
+name|childPath
+operator|.
+name|startsWith
+argument_list|(
+name|parentPath
+argument_list|)
+return|;
+block|}
 comment|/**    * Convenience method, so that we don't open a new connection when using this    * method from within another method. Otherwise every API invocation incurs    * the overhead of opening/closing a TCP connection.    *     * @param client    * @param src    * @param dst    * @return    * @throws IOException    */
 DECL|method|rename (FTPClient client, Path src, Path dst)
 specifier|private
@@ -2846,7 +3033,7 @@ condition|)
 block|{
 throw|throw
 operator|new
-name|IOException
+name|FileNotFoundException
 argument_list|(
 literal|"Source path "
 operator|+
@@ -2855,6 +3042,30 @@ operator|+
 literal|" does not exist"
 argument_list|)
 throw|;
+block|}
+if|if
+condition|(
+name|isDirectory
+argument_list|(
+name|absoluteDst
+argument_list|)
+condition|)
+block|{
+comment|// destination is a directory: rename goes underneath it with the
+comment|// source name
+name|absoluteDst
+operator|=
+operator|new
+name|Path
+argument_list|(
+name|absoluteDst
+argument_list|,
+name|absoluteSrc
+operator|.
+name|getName
+argument_list|()
+argument_list|)
+expr_stmt|;
 block|}
 if|if
 condition|(
@@ -2868,13 +3079,13 @@ condition|)
 block|{
 throw|throw
 operator|new
-name|IOException
+name|FileAlreadyExistsException
 argument_list|(
 literal|"Destination path "
 operator|+
 name|dst
 operator|+
-literal|" already exist, cannot rename!"
+literal|" already exists"
 argument_list|)
 throw|;
 block|}
@@ -2906,22 +3117,32 @@ operator|.
 name|toString
 argument_list|()
 decl_stmt|;
-name|String
-name|from
-init|=
-name|src
-operator|.
-name|getName
-argument_list|()
-decl_stmt|;
-name|String
-name|to
-init|=
-name|dst
-operator|.
-name|getName
-argument_list|()
-decl_stmt|;
+if|if
+condition|(
+name|isParentOf
+argument_list|(
+name|absoluteSrc
+argument_list|,
+name|absoluteDst
+argument_list|)
+condition|)
+block|{
+throw|throw
+operator|new
+name|IOException
+argument_list|(
+literal|"Cannot rename "
+operator|+
+name|absoluteSrc
+operator|+
+literal|" under itself"
+operator|+
+literal|" : "
+operator|+
+name|absoluteDst
+argument_list|)
+throw|;
+block|}
 if|if
 condition|(
 operator|!
@@ -2937,16 +3158,36 @@ throw|throw
 operator|new
 name|IOException
 argument_list|(
-literal|"Cannot rename parent(source): "
+literal|"Cannot rename source: "
 operator|+
-name|parentSrc
+name|absoluteSrc
 operator|+
-literal|", parent(destination):  "
+literal|" to "
 operator|+
-name|parentDst
+name|absoluteDst
+operator|+
+literal|" -"
+operator|+
+name|E_SAME_DIRECTORY_ONLY
 argument_list|)
 throw|;
 block|}
+name|String
+name|from
+init|=
+name|absoluteSrc
+operator|.
+name|getName
+argument_list|()
+decl_stmt|;
+name|String
+name|to
+init|=
+name|absoluteDst
+operator|.
+name|getName
+argument_list|()
+decl_stmt|;
 name|client
 operator|.
 name|changeWorkingDirectory

@@ -281,19 +281,33 @@ specifier|private
 name|int
 name|numThreads
 decl_stmt|;
+DECL|field|maxThreads
+specifier|private
+name|int
+name|maxThreads
+decl_stmt|;
 comment|/**Constructor     *      * @param bandwidth Total amount of bandwidth can be used for balancing      */
-DECL|method|BlockBalanceThrottler (long bandwidth)
+DECL|method|BlockBalanceThrottler (long bandwidth, int maxThreads)
 specifier|private
 name|BlockBalanceThrottler
 parameter_list|(
 name|long
 name|bandwidth
+parameter_list|,
+name|int
+name|maxThreads
 parameter_list|)
 block|{
 name|super
 argument_list|(
 name|bandwidth
 argument_list|)
+expr_stmt|;
+name|this
+operator|.
+name|maxThreads
+operator|=
+name|maxThreads
 expr_stmt|;
 name|LOG
 operator|.
@@ -304,6 +318,15 @@ operator|+
 name|bandwidth
 operator|+
 literal|" bytes/s"
+argument_list|)
+expr_stmt|;
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"Number threads for balancing is "
+operator|+
+name|maxThreads
 argument_list|)
 expr_stmt|;
 block|}
@@ -318,9 +341,7 @@ if|if
 condition|(
 name|numThreads
 operator|>=
-name|Balancer
-operator|.
-name|MAX_NUM_CONCURRENT_MOVES
+name|maxThreads
 condition|)
 block|{
 return|return
@@ -435,6 +456,19 @@ argument_list|,
 name|DFSConfigKeys
 operator|.
 name|DFS_DATANODE_BALANCE_BANDWIDTHPERSEC_DEFAULT
+argument_list|)
+argument_list|,
+name|conf
+operator|.
+name|getInt
+argument_list|(
+name|DFSConfigKeys
+operator|.
+name|DFS_DATANODE_BALANCE_MAX_NUM_CONCURRENT_MOVES_KEY
+argument_list|,
+name|DFSConfigKeys
+operator|.
+name|DFS_DATANODE_BALANCE_MAX_NUM_CONCURRENT_MOVES_DEFAULT
 argument_list|)
 argument_list|)
 expr_stmt|;

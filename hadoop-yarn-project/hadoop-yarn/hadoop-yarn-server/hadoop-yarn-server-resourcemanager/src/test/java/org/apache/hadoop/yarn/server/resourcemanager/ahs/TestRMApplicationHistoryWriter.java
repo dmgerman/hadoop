@@ -1312,7 +1312,7 @@ name|when
 argument_list|(
 name|container
 operator|.
-name|getStartTime
+name|getCreationTime
 argument_list|()
 argument_list|)
 operator|.
@@ -2156,7 +2156,7 @@ literal|0L
 argument_list|,
 name|container
 operator|.
-name|getStartTime
+name|getCreationTime
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -2961,7 +2961,7 @@ name|Thread
 operator|.
 name|sleep
 argument_list|(
-literal|100
+literal|300
 argument_list|)
 expr_stmt|;
 name|allocated

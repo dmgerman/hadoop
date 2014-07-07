@@ -344,11 +344,9 @@ name|setLong
 argument_list|(
 name|DFSConfigKeys
 operator|.
-name|DFS_NAMENODE_STARTUP_DELAY_BLOCK_DELETION_MS_KEY
+name|DFS_NAMENODE_STARTUP_DELAY_BLOCK_DELETION_SEC_KEY
 argument_list|,
-literal|1000
-operator|*
-literal|5
+literal|5L
 argument_list|)
 expr_stmt|;
 comment|// set the block report interval to 2s

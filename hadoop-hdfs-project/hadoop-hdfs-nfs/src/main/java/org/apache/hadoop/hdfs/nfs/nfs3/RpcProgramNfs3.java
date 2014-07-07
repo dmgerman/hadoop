@@ -1918,6 +1918,12 @@ specifier|final
 name|int
 name|bufferSize
 decl_stmt|;
+DECL|field|aixCompatMode
+specifier|private
+specifier|final
+name|boolean
+name|aixCompatMode
+decl_stmt|;
 DECL|field|statistics
 specifier|private
 name|Statistics
@@ -2012,6 +2018,21 @@ argument_list|(
 name|config
 argument_list|)
 expr_stmt|;
+name|aixCompatMode
+operator|=
+name|config
+operator|.
+name|getBoolean
+argument_list|(
+name|NfsConfigKeys
+operator|.
+name|AIX_COMPAT_MODE_KEY
+argument_list|,
+name|NfsConfigKeys
+operator|.
+name|AIX_COMPAT_MODE_DEFAULT
+argument_list|)
+expr_stmt|;
 name|exports
 operator|=
 name|NfsExports
@@ -2029,6 +2050,8 @@ argument_list|(
 name|iug
 argument_list|,
 name|config
+argument_list|,
+name|aixCompatMode
 argument_list|)
 expr_stmt|;
 name|clientCache
@@ -3961,6 +3984,11 @@ operator|.
 name|getGid
 argument_list|()
 argument_list|,
+name|securityHandler
+operator|.
+name|getAuxGids
+argument_list|()
+argument_list|,
 name|attrs
 argument_list|)
 decl_stmt|;
@@ -4849,6 +4877,11 @@ argument_list|,
 name|securityHandler
 operator|.
 name|getGid
+argument_list|()
+argument_list|,
+name|securityHandler
+operator|.
+name|getAuxGids
 argument_list|()
 argument_list|,
 name|attrs
@@ -6409,6 +6442,8 @@ argument_list|,
 name|dfsClient
 argument_list|,
 name|iug
+argument_list|,
+name|aixCompatMode
 argument_list|)
 decl_stmt|;
 name|fileHandle
@@ -9691,15 +9726,42 @@ argument_list|()
 operator|)
 condition|)
 block|{
+if|if
+condition|(
+name|aixCompatMode
+condition|)
+block|{
+comment|// The AIX NFS client misinterprets RFC-1813 and will repeatedly send
+comment|// the same cookieverf value even across VFS-level readdir calls,
+comment|// instead of getting a new cookieverf for every VFS-level readdir
+comment|// call, and reusing the cookieverf only in the event that multiple
+comment|// incremental NFS-level readdir calls must be made to fetch all of
+comment|// the directory entries. This means that whenever a readdir call is
+comment|// made by an AIX NFS client for a given directory, and that directory
+comment|// is subsequently modified, thus changing its mtime, no later readdir
+comment|// calls will succeed from AIX for that directory until the FS is
+comment|// unmounted/remounted. See HDFS-6549 for more info.
+name|LOG
+operator|.
+name|warn
+argument_list|(
+literal|"AIX compatibility mode enabled, ignoring cookieverf "
+operator|+
+literal|"mismatches."
+argument_list|)
+expr_stmt|;
+block|}
+else|else
+block|{
 name|LOG
 operator|.
 name|error
 argument_list|(
-literal|"CookierVerf mismatch. request cookierVerf:"
+literal|"CookieVerf mismatch. request cookieVerf: "
 operator|+
 name|cookieVerf
 operator|+
-literal|" dir cookieVerf:"
+literal|" dir cookieVerf: "
 operator|+
 name|dirStatus
 operator|.
@@ -9716,6 +9778,7 @@ operator|.
 name|NFS3ERR_BAD_COOKIE
 argument_list|)
 return|;
+block|}
 block|}
 if|if
 condition|(
@@ -10568,15 +10631,40 @@ argument_list|()
 operator|)
 condition|)
 block|{
+if|if
+condition|(
+name|aixCompatMode
+condition|)
+block|{
+comment|// The AIX NFS client misinterprets RFC-1813 and will repeatedly send
+comment|// the same cookieverf value even across VFS-level readdir calls,
+comment|// instead of getting a new cookieverf for every VFS-level readdir
+comment|// call. This means that whenever a readdir call is made by an AIX NFS
+comment|// client for a given directory, and that directory is subsequently
+comment|// modified, thus changing its mtime, no later readdir calls will
+comment|// succeed for that directory from AIX until the FS is
+comment|// unmounted/remounted. See HDFS-6549 for more info.
+name|LOG
+operator|.
+name|warn
+argument_list|(
+literal|"AIX compatibility mode enabled, ignoring cookieverf "
+operator|+
+literal|"mismatches."
+argument_list|)
+expr_stmt|;
+block|}
+else|else
+block|{
 name|LOG
 operator|.
 name|error
 argument_list|(
-literal|"CookierVerf mismatch. request cookierVerf:"
+literal|"cookieverf mismatch. request cookieverf: "
 operator|+
 name|cookieVerf
 operator|+
-literal|" dir cookieVerf:"
+literal|" dir cookieverf: "
 operator|+
 name|dirStatus
 operator|.
@@ -10593,6 +10681,7 @@ operator|.
 name|NFS3ERR_BAD_COOKIE
 argument_list|)
 return|;
+block|}
 block|}
 if|if
 condition|(

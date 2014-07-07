@@ -241,6 +241,21 @@ comment|// Do nothing
 block|}
 annotation|@
 name|Override
+DECL|method|getAndIncrementEpoch ()
+specifier|public
+specifier|synchronized
+name|int
+name|getAndIncrementEpoch
+parameter_list|()
+throws|throws
+name|Exception
+block|{
+return|return
+literal|0
+return|;
+block|}
+annotation|@
+name|Override
 DECL|method|loadState ()
 specifier|public
 name|RMState

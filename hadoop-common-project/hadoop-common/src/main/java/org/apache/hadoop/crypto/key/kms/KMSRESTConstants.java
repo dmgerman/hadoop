@@ -178,6 +178,15 @@ name|DESCRIPTION_FIELD
 init|=
 literal|"description"
 decl_stmt|;
+DECL|field|ATTRIBUTES_FIELD
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|ATTRIBUTES_FIELD
+init|=
+literal|"attributes"
+decl_stmt|;
 DECL|field|CREATED_FIELD
 specifier|public
 specifier|static

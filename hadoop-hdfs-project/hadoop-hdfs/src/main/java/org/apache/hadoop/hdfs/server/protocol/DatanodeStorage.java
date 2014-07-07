@@ -190,6 +190,30 @@ return|;
 block|}
 annotation|@
 name|Override
+DECL|method|toString ()
+specifier|public
+name|String
+name|toString
+parameter_list|()
+block|{
+return|return
+literal|"DatanodeStorage["
+operator|+
+name|storageID
+operator|+
+literal|","
+operator|+
+name|storageType
+operator|+
+literal|","
+operator|+
+name|state
+operator|+
+literal|"]"
+return|;
+block|}
+annotation|@
+name|Override
 DECL|method|equals (Object other)
 specifier|public
 name|boolean

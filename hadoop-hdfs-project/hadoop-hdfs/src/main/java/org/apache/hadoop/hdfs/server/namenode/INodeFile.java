@@ -244,24 +244,6 @@ name|server
 operator|.
 name|blockmanagement
 operator|.
-name|DatanodeDescriptor
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|hdfs
-operator|.
-name|server
-operator|.
-name|blockmanagement
-operator|.
 name|DatanodeStorageInfo
 import|;
 end_import
@@ -887,6 +869,55 @@ return|return
 name|this
 return|;
 block|}
+annotation|@
+name|Override
+DECL|method|metadataEquals (INodeFileAttributes other)
+specifier|public
+name|boolean
+name|metadataEquals
+parameter_list|(
+name|INodeFileAttributes
+name|other
+parameter_list|)
+block|{
+return|return
+name|other
+operator|!=
+literal|null
+operator|&&
+name|getHeaderLong
+argument_list|()
+operator|==
+name|other
+operator|.
+name|getHeaderLong
+argument_list|()
+operator|&&
+name|getPermissionLong
+argument_list|()
+operator|==
+name|other
+operator|.
+name|getPermissionLong
+argument_list|()
+operator|&&
+name|getAclFeature
+argument_list|()
+operator|==
+name|other
+operator|.
+name|getAclFeature
+argument_list|()
+operator|&&
+name|getXAttrFeature
+argument_list|()
+operator|==
+name|other
+operator|.
+name|getXAttrFeature
+argument_list|()
+return|;
+block|}
 comment|/* Start of Under-Construction Feature */
 comment|/**    * If the inode contains a {@link FileUnderConstructionFeature}, return it;    * otherwise, return null.    */
 DECL|method|getFileUnderConstructionFeature ()
@@ -923,7 +954,7 @@ literal|null
 return|;
 block|}
 comment|/** Convert this file to an {@link INodeFileUnderConstruction}. */
-DECL|method|toUnderConstruction (String clientName, String clientMachine, DatanodeDescriptor clientNode)
+DECL|method|toUnderConstruction (String clientName, String clientMachine)
 name|INodeFile
 name|toUnderConstruction
 parameter_list|(
@@ -932,9 +963,6 @@ name|clientName
 parameter_list|,
 name|String
 name|clientMachine
-parameter_list|,
-name|DatanodeDescriptor
-name|clientNode
 parameter_list|)
 block|{
 name|Preconditions
@@ -957,8 +985,6 @@ argument_list|(
 name|clientName
 argument_list|,
 name|clientMachine
-argument_list|,
-name|clientNode
 argument_list|)
 decl_stmt|;
 name|addFeature

@@ -26,20 +26,6 @@ end_package
 
 begin_import
 import|import
-name|com
-operator|.
-name|google
-operator|.
-name|common
-operator|.
-name|base
-operator|.
-name|Preconditions
-import|;
-end_import
-
-begin_import
-import|import
 name|java
 operator|.
 name|io
@@ -1321,6 +1307,20 @@ operator|.
 name|annotations
 operator|.
 name|VisibleForTesting
+import|;
+end_import
+
+begin_import
+import|import
+name|com
+operator|.
+name|google
+operator|.
+name|common
+operator|.
+name|base
+operator|.
+name|Preconditions
 import|;
 end_import
 
@@ -3402,7 +3402,7 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|/**    * Add a new application attempt to the scheduler.    */
-DECL|method|addApplicationAttempt ( ApplicationAttemptId applicationAttemptId, boolean transferStateFromPreviousAttempt)
+DECL|method|addApplicationAttempt ( ApplicationAttemptId applicationAttemptId, boolean transferStateFromPreviousAttempt, boolean shouldNotifyAttemptAdded)
 specifier|protected
 specifier|synchronized
 name|void
@@ -3413,6 +3413,9 @@ name|applicationAttemptId
 parameter_list|,
 name|boolean
 name|transferStateFromPreviousAttempt
+parameter_list|,
+name|boolean
+name|shouldNotifyAttemptAdded
 parameter_list|)
 block|{
 name|SchedulerApplication
@@ -3562,6 +3565,11 @@ operator|+
 name|user
 argument_list|)
 expr_stmt|;
+if|if
+condition|(
+name|shouldNotifyAttemptAdded
+condition|)
+block|{
 name|rmContext
 operator|.
 name|getDispatcher
@@ -3583,6 +3591,26 @@ name|ATTEMPT_ADDED
 argument_list|)
 argument_list|)
 expr_stmt|;
+block|}
+else|else
+block|{
+if|if
+condition|(
+name|LOG
+operator|.
+name|isDebugEnabled
+argument_list|()
+condition|)
+block|{
+name|LOG
+operator|.
+name|debug
+argument_list|(
+literal|"Skipping notifying ATTEMPT_ADDED"
+argument_list|)
+expr_stmt|;
+block|}
+block|}
 block|}
 comment|/**    * Helper method that attempts to assign the app to a queue. The method is    * responsible to call the appropriate event-handler if the app is rejected.    */
 annotation|@
@@ -5543,14 +5571,7 @@ literal|false
 decl_stmt|;
 if|if
 condition|(
-name|Resources
-operator|.
-name|greaterThan
-argument_list|(
-name|RESOURCE_CALCULATOR
-argument_list|,
-name|clusterResource
-argument_list|,
+operator|!
 name|queueMgr
 operator|.
 name|getRootQueue
@@ -5560,7 +5581,9 @@ name|assignContainer
 argument_list|(
 name|node
 argument_list|)
-argument_list|,
+operator|.
+name|equals
+argument_list|(
 name|Resources
 operator|.
 name|none
@@ -6001,6 +6024,11 @@ argument_list|,
 name|appAttemptAddedEvent
 operator|.
 name|getTransferStateFromPreviousAttempt
+argument_list|()
+argument_list|,
+name|appAttemptAddedEvent
+operator|.
+name|getShouldNotifyAttemptAdded
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -7574,8 +7602,9 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
+annotation|@
+name|VisibleForTesting
 DECL|method|findLowestCommonAncestorQueue (FSQueue queue1, FSQueue queue2)
-specifier|private
 name|FSQueue
 name|findLowestCommonAncestorQueue
 parameter_list|(
@@ -7681,6 +7710,8 @@ name|name1
 operator|.
 name|substring
 argument_list|(
+literal|0
+argument_list|,
 name|lastPeriodIndex
 argument_list|)
 argument_list|)

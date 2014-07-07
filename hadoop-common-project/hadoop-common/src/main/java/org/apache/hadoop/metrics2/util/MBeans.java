@@ -377,6 +377,13 @@ name|e
 argument_list|)
 expr_stmt|;
 block|}
+name|DefaultMetricsSystem
+operator|.
+name|removeMBeanName
+argument_list|(
+name|mbeanName
+argument_list|)
+expr_stmt|;
 block|}
 DECL|method|getMBeanName (String serviceName, String nameName)
 specifier|static

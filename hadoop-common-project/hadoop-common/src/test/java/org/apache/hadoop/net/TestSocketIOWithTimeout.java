@@ -714,6 +714,11 @@ operator|!
 name|Shell
 operator|.
 name|WINDOWS
+operator|&&
+operator|!
+name|Shell
+operator|.
+name|PPC_64
 condition|)
 block|{
 try|try

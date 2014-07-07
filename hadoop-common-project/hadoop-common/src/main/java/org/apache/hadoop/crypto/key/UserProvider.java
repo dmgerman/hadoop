@@ -260,6 +260,8 @@ parameter_list|(
 name|String
 name|versionName
 parameter_list|)
+throws|throws
+name|IOException
 block|{
 name|byte
 index|[]
@@ -291,6 +293,11 @@ return|return
 operator|new
 name|KeyVersion
 argument_list|(
+name|getBaseName
+argument_list|(
+name|versionName
+argument_list|)
+argument_list|,
 name|versionName
 argument_list|,
 name|bytes
@@ -492,6 +499,11 @@ operator|.
 name|getDescription
 argument_list|()
 argument_list|,
+name|options
+operator|.
+name|getAttributes
+argument_list|()
+argument_list|,
 operator|new
 name|Date
 argument_list|()
@@ -547,6 +559,8 @@ return|return
 operator|new
 name|KeyVersion
 argument_list|(
+name|name
+argument_list|,
 name|versionName
 argument_list|,
 name|material
@@ -783,6 +797,8 @@ return|return
 operator|new
 name|KeyVersion
 argument_list|(
+name|name
+argument_list|,
 name|versionName
 argument_list|,
 name|material

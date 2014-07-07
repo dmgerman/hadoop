@@ -308,6 +308,24 @@ name|api
 operator|.
 name|records
 operator|.
+name|ContainerExitStatus
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|api
+operator|.
+name|records
+operator|.
 name|FinalApplicationStatus
 import|;
 end_import
@@ -379,6 +397,22 @@ operator|.
 name|event
 operator|.
 name|EventHandler
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|proto
+operator|.
+name|YarnServerResourceManagerServiceProtos
 import|;
 end_import
 
@@ -874,6 +908,15 @@ name|String
 name|VERSION_NODE
 init|=
 literal|"RMVersionNode"
+decl_stmt|;
+DECL|field|EPOCH_NODE
+specifier|protected
+specifier|static
+specifier|final
+name|String
+name|EPOCH_NODE
+init|=
+literal|"EpochNode"
 decl_stmt|;
 DECL|field|LOG
 specifier|public
@@ -1819,6 +1862,14 @@ DECL|field|diagnostics
 name|String
 name|diagnostics
 decl_stmt|;
+DECL|field|exitStatus
+name|int
+name|exitStatus
+init|=
+name|ContainerExitStatus
+operator|.
+name|INVALID
+decl_stmt|;
 DECL|field|amUnregisteredFinalStatus
 name|FinalApplicationStatus
 name|amUnregisteredFinalStatus
@@ -1857,10 +1908,14 @@ argument_list|,
 literal|""
 argument_list|,
 literal|null
+argument_list|,
+name|ContainerExitStatus
+operator|.
+name|INVALID
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|ApplicationAttemptState (ApplicationAttemptId attemptId, Container masterContainer, Credentials appAttemptCredentials, long startTime, RMAppAttemptState state, String finalTrackingUrl, String diagnostics, FinalApplicationStatus amUnregisteredFinalStatus)
+DECL|method|ApplicationAttemptState (ApplicationAttemptId attemptId, Container masterContainer, Credentials appAttemptCredentials, long startTime, RMAppAttemptState state, String finalTrackingUrl, String diagnostics, FinalApplicationStatus amUnregisteredFinalStatus, int exitStatus)
 specifier|public
 name|ApplicationAttemptState
 parameter_list|(
@@ -1887,6 +1942,9 @@ name|diagnostics
 parameter_list|,
 name|FinalApplicationStatus
 name|amUnregisteredFinalStatus
+parameter_list|,
+name|int
+name|exitStatus
 parameter_list|)
 block|{
 name|this
@@ -1942,6 +2000,12 @@ operator|.
 name|amUnregisteredFinalStatus
 operator|=
 name|amUnregisteredFinalStatus
+expr_stmt|;
+name|this
+operator|.
+name|exitStatus
+operator|=
+name|exitStatus
 expr_stmt|;
 block|}
 DECL|method|getMasterContainer ()
@@ -2022,6 +2086,18 @@ parameter_list|()
 block|{
 return|return
 name|amUnregisteredFinalStatus
+return|;
+block|}
+DECL|method|getAMContainerExitStatus ()
+specifier|public
+name|int
+name|getAMContainerExitStatus
+parameter_list|()
+block|{
+return|return
+name|this
+operator|.
+name|exitStatus
 return|;
 block|}
 block|}
@@ -2730,6 +2806,16 @@ specifier|abstract
 name|RMStateVersion
 name|getCurrentVersion
 parameter_list|()
+function_decl|;
+comment|/**    * Get the current epoch of RM and increment the value.    */
+DECL|method|getAndIncrementEpoch ()
+specifier|public
+specifier|abstract
+name|int
+name|getAndIncrementEpoch
+parameter_list|()
+throws|throws
+name|Exception
 function_decl|;
 comment|/**    * Blocking API    * The derived class must recover state from the store and return a new     * RMState object populated with that state    * This must not be called on the dispatcher thread    */
 DECL|method|loadState ()

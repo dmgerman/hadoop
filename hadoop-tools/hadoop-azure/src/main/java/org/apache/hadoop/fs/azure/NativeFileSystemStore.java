@@ -106,6 +106,24 @@ name|hadoop
 operator|.
 name|fs
 operator|.
+name|azure
+operator|.
+name|metrics
+operator|.
+name|AzureFileSystemInstrumentation
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|fs
+operator|.
 name|permission
 operator|.
 name|PermissionStatus
@@ -139,7 +157,7 @@ DECL|interface|NativeFileSystemStore
 interface|interface
 name|NativeFileSystemStore
 block|{
-DECL|method|initialize (URI uri, Configuration conf)
+DECL|method|initialize (URI uri, Configuration conf, AzureFileSystemInstrumentation instrumentation)
 name|void
 name|initialize
 parameter_list|(
@@ -148,6 +166,9 @@ name|uri
 parameter_list|,
 name|Configuration
 name|conf
+parameter_list|,
+name|AzureFileSystemInstrumentation
+name|instrumentation
 parameter_list|)
 throws|throws
 name|IOException

@@ -224,6 +224,20 @@ end_import
 
 begin_import
 import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|DFSUtil
+import|;
+end_import
+
+begin_import
+import|import
 name|com
 operator|.
 name|google
@@ -356,13 +370,16 @@ name|info
 argument_list|(
 name|DFSConfigKeys
 operator|.
-name|DFS_NAMENODE_STARTUP_DELAY_BLOCK_DELETION_MS_KEY
+name|DFS_NAMENODE_STARTUP_DELAY_BLOCK_DELETION_SEC_KEY
 operator|+
 literal|" is set to "
 operator|+
+name|DFSUtil
+operator|.
+name|durationToString
+argument_list|(
 name|pendingPeriodInMs
-operator|+
-literal|" ms."
+argument_list|)
 argument_list|)
 expr_stmt|;
 name|SimpleDateFormat

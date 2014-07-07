@@ -473,6 +473,12 @@ name|ApplicationAttemptReport
 name|createApplicationAttemptReport
 parameter_list|()
 function_decl|;
+comment|/**    * Return the flag which indicates whether the attempt failure should be    * counted to attempt retry count.    *<ul>    * There failure types should not be counted to attempt retry count:    *<li>preempted by the scheduler.</li>    *<li>hardware failures, such as NM failing, lost NM and NM disk errors.</li>    *<li>killed by RM because of RM restart or failover.</li>    *</ul>    */
+DECL|method|shouldCountTowardsMaxAttemptRetry ()
+name|boolean
+name|shouldCountTowardsMaxAttemptRetry
+parameter_list|()
+function_decl|;
 block|}
 end_interface
 

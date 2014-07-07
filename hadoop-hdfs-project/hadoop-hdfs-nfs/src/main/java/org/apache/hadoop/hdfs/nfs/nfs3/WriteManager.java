@@ -468,6 +468,12 @@ specifier|final
 name|int
 name|maxStreams
 decl_stmt|;
+DECL|field|aixCompatMode
+specifier|private
+specifier|final
+name|boolean
+name|aixCompatMode
+decl_stmt|;
 comment|/**    * The time limit to wait for accumulate reordered sequential writes to the    * same file before the write is considered done.    */
 DECL|field|streamTimeout
 specifier|private
@@ -534,7 +540,7 @@ name|ctx
 argument_list|)
 return|;
 block|}
-DECL|method|WriteManager (IdUserGroup iug, final NfsConfiguration config)
+DECL|method|WriteManager (IdUserGroup iug, final NfsConfiguration config, boolean aixCompatMode)
 name|WriteManager
 parameter_list|(
 name|IdUserGroup
@@ -543,6 +549,9 @@ parameter_list|,
 specifier|final
 name|NfsConfiguration
 name|config
+parameter_list|,
+name|boolean
+name|aixCompatMode
 parameter_list|)
 block|{
 name|this
@@ -556,6 +565,12 @@ operator|.
 name|config
 operator|=
 name|config
+expr_stmt|;
+name|this
+operator|.
+name|aixCompatMode
+operator|=
+name|aixCompatMode
 expr_stmt|;
 name|streamTimeout
 operator|=
@@ -1105,6 +1120,8 @@ argument_list|,
 name|dfsClient
 argument_list|,
 name|iug
+argument_list|,
+name|aixCompatMode
 argument_list|)
 expr_stmt|;
 if|if

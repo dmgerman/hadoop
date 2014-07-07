@@ -1022,24 +1022,6 @@ name|StateMachineFactory
 import|;
 end_import
 
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|yarn
-operator|.
-name|util
-operator|.
-name|resource
-operator|.
-name|Resources
-import|;
-end_import
-
 begin_class
 annotation|@
 name|SuppressWarnings
@@ -4120,12 +4102,18 @@ name|submissionContext
 argument_list|,
 name|conf
 argument_list|,
+comment|// The newly created attempt maybe last attempt if (number of
+comment|// previously failed attempts(which should not include Preempted,
+comment|// hardware error and NM resync) + 1) equal to the max-attempt
+comment|// limit.
 name|maxAppAttempts
 operator|==
-name|attempts
-operator|.
-name|size
+operator|(
+name|getNumFailedAppAttempts
 argument_list|()
+operator|+
+literal|1
+operator|)
 argument_list|)
 decl_stmt|;
 name|attempts
@@ -4623,9 +4611,7 @@ name|FAILED
 operator|&&
 name|app
 operator|.
-name|attempts
-operator|.
-name|size
+name|getNumFailedAppAttempts
 argument_list|()
 operator|==
 name|app
@@ -5091,11 +5077,7 @@ block|}
 elseif|else
 if|if
 condition|(
-name|this
-operator|.
-name|attempts
-operator|.
-name|size
+name|getNumFailedAppAttempts
 argument_list|()
 operator|>=
 name|this
@@ -6093,6 +6075,47 @@ expr_stmt|;
 block|}
 empty_stmt|;
 block|}
+DECL|method|getNumFailedAppAttempts ()
+specifier|private
+name|int
+name|getNumFailedAppAttempts
+parameter_list|()
+block|{
+name|int
+name|completedAttempts
+init|=
+literal|0
+decl_stmt|;
+comment|// Do not count AM preemption, hardware failures or NM resync
+comment|// as attempt failure.
+for|for
+control|(
+name|RMAppAttempt
+name|attempt
+range|:
+name|attempts
+operator|.
+name|values
+argument_list|()
+control|)
+block|{
+if|if
+condition|(
+name|attempt
+operator|.
+name|shouldCountTowardsMaxAttemptRetry
+argument_list|()
+condition|)
+block|{
+name|completedAttempts
+operator|++
+expr_stmt|;
+block|}
+block|}
+return|return
+name|completedAttempts
+return|;
+block|}
 DECL|class|AttemptFailedTransition
 specifier|private
 specifier|static
@@ -6156,9 +6179,7 @@ argument_list|()
 operator|&&
 name|app
 operator|.
-name|attempts
-operator|.
-name|size
+name|getNumFailedAppAttempts
 argument_list|()
 operator|<
 name|app

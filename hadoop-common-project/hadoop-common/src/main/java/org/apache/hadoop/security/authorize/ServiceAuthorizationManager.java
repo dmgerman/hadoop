@@ -652,6 +652,22 @@ name|AccessControlList
 argument_list|>
 argument_list|()
 decl_stmt|;
+name|String
+name|defaultAcl
+init|=
+name|conf
+operator|.
+name|get
+argument_list|(
+name|CommonConfigurationKeys
+operator|.
+name|HADOOP_SECURITY_SERVICE_AUTHORIZATION_DEFAULT_ACL
+argument_list|,
+name|AccessControlList
+operator|.
+name|WILDCARD_ACL_VALUE
+argument_list|)
+decl_stmt|;
 comment|// Parse the config file
 name|Service
 index|[]
@@ -692,9 +708,7 @@ operator|.
 name|getServiceKey
 argument_list|()
 argument_list|,
-name|AccessControlList
-operator|.
-name|WILDCARD_ACL_VALUE
+name|defaultAcl
 argument_list|)
 argument_list|)
 decl_stmt|;

@@ -4151,6 +4151,16 @@ name|getDisplayName
 argument_list|()
 argument_list|)
 expr_stmt|;
+name|metrics
+operator|.
+name|getJvmMetrics
+argument_list|()
+operator|.
+name|setPauseMonitor
+argument_list|(
+name|pauseMonitor
+argument_list|)
+expr_stmt|;
 name|blockPoolManager
 operator|=
 operator|new

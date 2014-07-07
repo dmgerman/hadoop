@@ -336,6 +336,78 @@ name|hadoop
 operator|.
 name|fs
 operator|.
+name|azure
+operator|.
+name|metrics
+operator|.
+name|AzureFileSystemInstrumentation
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|fs
+operator|.
+name|azure
+operator|.
+name|metrics
+operator|.
+name|BandwidthGaugeUpdater
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|fs
+operator|.
+name|azure
+operator|.
+name|metrics
+operator|.
+name|ErrorMetricUpdater
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|fs
+operator|.
+name|azure
+operator|.
+name|metrics
+operator|.
+name|ResponseReceivedMetricUpdater
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|fs
+operator|.
 name|permission
 operator|.
 name|FsPermission
@@ -640,12 +712,19 @@ name|Utility
 import|;
 end_import
 
+begin_comment
+comment|/**  * Core implementation of Windows Azure Filesystem for Hadoop.  * Provides the bridging logic between Hadoop's abstract filesystem and Azure Storage   *  */
+end_comment
+
 begin_class
 annotation|@
 name|InterfaceAudience
 operator|.
 name|Private
+annotation|@
+name|VisibleForTesting
 DECL|class|AzureNativeFileSystemStore
+specifier|public
 class|class
 name|AzureNativeFileSystemStore
 implements|implements
@@ -1134,6 +1213,16 @@ name|connectingUsingSAS
 init|=
 literal|false
 decl_stmt|;
+DECL|field|instrumentation
+specifier|private
+name|AzureFileSystemInstrumentation
+name|instrumentation
+decl_stmt|;
+DECL|field|bandwidthGaugeUpdater
+specifier|private
+name|BandwidthGaugeUpdater
+name|bandwidthGaugeUpdater
+decl_stmt|;
 DECL|field|PERMISSION_JSON_SERIALIZER
 specifier|private
 specifier|static
@@ -1612,6 +1701,18 @@ operator|=
 name|storageInteractionLayer
 expr_stmt|;
 block|}
+annotation|@
+name|VisibleForTesting
+DECL|method|getBandwidthGaugeUpdater ()
+specifier|public
+name|BandwidthGaugeUpdater
+name|getBandwidthGaugeUpdater
+parameter_list|()
+block|{
+return|return
+name|bandwidthGaugeUpdater
+return|;
+block|}
 comment|/**    * Check if concurrent reads and writes on the same blob are allowed.    *     * @return true if concurrent reads and OOB writes has been configured, false    *         otherwise.    */
 DECL|method|isConcurrentOOBAppendAllowed ()
 specifier|private
@@ -1626,7 +1727,7 @@ block|}
 comment|/**    * Method for the URI and configuration object necessary to create a storage    * session with an Azure session. It parses the scheme to ensure it matches    * the storage protocol supported by this file system.    *     * @param uri    *          - URI for target storage blob.    * @param conf    *          - reference to configuration object.    *     * @throws IllegalArgumentException    *           if URI or job object is null, or invalid scheme.    */
 annotation|@
 name|Override
-DECL|method|initialize (URI uri, Configuration conf)
+DECL|method|initialize (URI uri, Configuration conf, AzureFileSystemInstrumentation instrumentation)
 specifier|public
 name|void
 name|initialize
@@ -1636,10 +1737,47 @@ name|uri
 parameter_list|,
 name|Configuration
 name|conf
+parameter_list|,
+name|AzureFileSystemInstrumentation
+name|instrumentation
 parameter_list|)
 throws|throws
 name|AzureException
 block|{
+if|if
+condition|(
+literal|null
+operator|==
+name|this
+operator|.
+name|storageInteractionLayer
+condition|)
+block|{
+name|this
+operator|.
+name|storageInteractionLayer
+operator|=
+operator|new
+name|StorageInterfaceImpl
+argument_list|()
+expr_stmt|;
+block|}
+name|this
+operator|.
+name|instrumentation
+operator|=
+name|instrumentation
+expr_stmt|;
+name|this
+operator|.
+name|bandwidthGaugeUpdater
+operator|=
+operator|new
+name|BandwidthGaugeUpdater
+argument_list|(
+name|instrumentation
+argument_list|)
+expr_stmt|;
 if|if
 condition|(
 literal|null
@@ -3016,6 +3154,13 @@ name|errMsg
 argument_list|)
 throw|;
 block|}
+name|instrumentation
+operator|.
+name|setAccountName
+argument_list|(
+name|accountName
+argument_list|)
+expr_stmt|;
 name|String
 name|containerName
 init|=
@@ -3024,6 +3169,13 @@ argument_list|(
 name|sessionUri
 argument_list|)
 decl_stmt|;
+name|instrumentation
+operator|.
+name|setContainerName
+argument_list|(
+name|containerName
+argument_list|)
+expr_stmt|;
 comment|// Check whether this is a storage emulator account.
 if|if
 condition|(
@@ -5286,6 +5438,17 @@ name|selfThrottlingWriteFactor
 argument_list|)
 expr_stmt|;
 block|}
+name|ResponseReceivedMetricUpdater
+operator|.
+name|hook
+argument_list|(
+name|operationContext
+argument_list|,
+name|instrumentation
+argument_list|,
+name|bandwidthGaugeUpdater
+argument_list|)
+expr_stmt|;
 comment|// Bind operation context to receive send request callbacks on this
 comment|// operation.
 comment|// If reads concurrent to OOB writes are allowed, the interception will
@@ -5327,6 +5490,15 @@ name|operationContext
 argument_list|)
 expr_stmt|;
 block|}
+name|ErrorMetricUpdater
+operator|.
+name|hook
+argument_list|(
+name|operationContext
+argument_list|,
+name|instrumentation
+argument_list|)
+expr_stmt|;
 comment|// Return the operation context.
 return|return
 name|operationContext
@@ -6056,7 +6228,7 @@ operator|!=
 literal|null
 condition|)
 block|{
-name|inDataStream
+name|in
 operator|.
 name|close
 argument_list|()
@@ -8015,7 +8187,40 @@ specifier|public
 name|void
 name|close
 parameter_list|()
-block|{   }
+block|{
+name|bandwidthGaugeUpdater
+operator|.
+name|close
+argument_list|()
+expr_stmt|;
+block|}
+comment|// Finalizer to ensure complete shutdown
+annotation|@
+name|Override
+DECL|method|finalize ()
+specifier|protected
+name|void
+name|finalize
+parameter_list|()
+throws|throws
+name|Throwable
+block|{
+name|LOG
+operator|.
+name|debug
+argument_list|(
+literal|"finalize() called"
+argument_list|)
+expr_stmt|;
+name|close
+argument_list|()
+expr_stmt|;
+name|super
+operator|.
+name|finalize
+argument_list|()
+expr_stmt|;
+block|}
 block|}
 end_class
 

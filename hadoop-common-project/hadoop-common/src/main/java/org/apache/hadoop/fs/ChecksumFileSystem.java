@@ -22,7 +22,37 @@ name|java
 operator|.
 name|io
 operator|.
-name|*
+name|EOFException
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|io
+operator|.
+name|FileNotFoundException
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|io
+operator|.
+name|IOException
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|io
+operator|.
+name|InputStream
 import|;
 end_import
 
@@ -116,7 +146,7 @@ name|hadoop
 operator|.
 name|util
 operator|.
-name|Progressable
+name|DataChecksum
 import|;
 end_import
 
@@ -130,7 +160,7 @@ name|hadoop
 operator|.
 name|util
 operator|.
-name|PureJavaCrc32
+name|Progressable
 import|;
 end_import
 
@@ -700,8 +730,9 @@ name|fs
 operator|.
 name|verifyChecksum
 argument_list|,
-operator|new
-name|PureJavaCrc32
+name|DataChecksum
+operator|.
+name|newCrc32
 argument_list|()
 argument_list|,
 name|bytesPerSum
@@ -1351,8 +1382,6 @@ parameter_list|,
 name|InputStream
 name|in
 parameter_list|)
-throws|throws
-name|IOException
 block|{
 name|super
 argument_list|(
@@ -1495,7 +1524,7 @@ condition|)
 block|{
 throw|throw
 operator|new
-name|IOException
+name|EOFException
 argument_list|(
 literal|"Cannot seek after EOF"
 argument_list|)
@@ -1716,8 +1745,9 @@ name|IOException
 block|{
 name|super
 argument_list|(
-operator|new
-name|PureJavaCrc32
+name|DataChecksum
+operator|.
+name|newCrc32
 argument_list|()
 argument_list|,
 name|fs

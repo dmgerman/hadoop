@@ -394,6 +394,12 @@ name|RENAMERESERVED
 argument_list|(
 literal|"-renameReserved"
 argument_list|)
+block|,
+DECL|enumConstant|METADATAVERSION
+name|METADATAVERSION
+argument_list|(
+literal|"-metadataVersion"
+argument_list|)
 block|;
 DECL|field|ENUM_WITH_ROLLING_UPGRADE_OPTION
 specifier|private

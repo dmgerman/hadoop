@@ -970,6 +970,11 @@ return|return
 operator|new
 name|KeyVersion
 argument_list|(
+name|getBaseName
+argument_list|(
+name|versionName
+argument_list|)
+argument_list|,
 name|versionName
 argument_list|,
 name|key
@@ -1509,6 +1514,11 @@ operator|.
 name|getDescription
 argument_list|()
 argument_list|,
+name|options
+operator|.
+name|getAttributes
+argument_list|()
+argument_list|,
 operator|new
 name|Date
 argument_list|()
@@ -1575,6 +1585,8 @@ decl_stmt|;
 return|return
 name|innerSetKeyVersion
 argument_list|(
+name|name
+argument_list|,
 name|versionName
 argument_list|,
 name|material
@@ -1780,10 +1792,13 @@ argument_list|()
 expr_stmt|;
 block|}
 block|}
-DECL|method|innerSetKeyVersion (String versionName, byte[] material, String cipher)
+DECL|method|innerSetKeyVersion (String name, String versionName, byte[] material, String cipher)
 name|KeyVersion
 name|innerSetKeyVersion
 parameter_list|(
+name|String
+name|name
+parameter_list|,
 name|String
 name|versionName
 parameter_list|,
@@ -1849,6 +1864,8 @@ return|return
 operator|new
 name|KeyVersion
 argument_list|(
+name|name
+argument_list|,
 name|versionName
 argument_list|,
 name|material
@@ -1964,6 +1981,8 @@ decl_stmt|;
 return|return
 name|innerSetKeyVersion
 argument_list|(
+name|name
+argument_list|,
 name|versionName
 argument_list|,
 name|material

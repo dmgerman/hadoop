@@ -324,34 +324,6 @@ name|org
 operator|.
 name|apache
 operator|.
-name|commons
-operator|.
-name|logging
-operator|.
-name|Log
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|commons
-operator|.
-name|logging
-operator|.
-name|LogFactory
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
 name|hadoop
 operator|.
 name|classification
@@ -1026,6 +998,26 @@ end_import
 
 begin_import
 import|import
+name|org
+operator|.
+name|slf4j
+operator|.
+name|Logger
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|slf4j
+operator|.
+name|LoggerFactory
+import|;
+end_import
+
+begin_import
+import|import
 name|com
 operator|.
 name|google
@@ -1076,12 +1068,12 @@ DECL|field|LOG
 specifier|public
 specifier|static
 specifier|final
-name|Log
+name|Logger
 name|LOG
 init|=
-name|LogFactory
+name|LoggerFactory
 operator|.
-name|getLog
+name|getLogger
 argument_list|(
 name|CacheManager
 operator|.
@@ -1409,12 +1401,10 @@ name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"Using minimum value "
-operator|+
+literal|"Using minimum value {} for {}"
+argument_list|,
 name|MIN_CACHED_BLOCKS_PERCENT
-operator|+
-literal|" for "
-operator|+
+argument_list|,
 name|DFS_NAMENODE_PATH_BASED_CACHE_BLOCK_MAP_ALLOCATION_PERCENT
 argument_list|)
 expr_stmt|;
@@ -1965,28 +1955,17 @@ parameter_list|)
 throws|throws
 name|InvalidRequestException
 block|{
-if|if
-condition|(
-name|LOG
-operator|.
-name|isTraceEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|trace
 argument_list|(
-literal|"Validating directive "
-operator|+
+literal|"Validating directive {} pool maxRelativeExpiryTime {}"
+argument_list|,
 name|info
-operator|+
-literal|" pool maxRelativeExpiryTime "
-operator|+
+argument_list|,
 name|maxRelativeExpiryTime
 argument_list|)
 expr_stmt|;
-block|}
 specifier|final
 name|long
 name|now
@@ -2943,11 +2922,9 @@ name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"addDirective of "
-operator|+
+literal|"addDirective of {} successful."
+argument_list|,
 name|info
-operator|+
-literal|" successful."
 argument_list|)
 expr_stmt|;
 return|return
@@ -3433,15 +3410,11 @@ name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"modifyDirective of "
-operator|+
+literal|"modifyDirective of {} successfully applied {}."
+argument_list|,
 name|idString
-operator|+
-literal|" successfully applied "
-operator|+
+argument_list|,
 name|info
-operator|+
-literal|"."
 argument_list|)
 expr_stmt|;
 block|}
@@ -4169,11 +4142,9 @@ name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"addCachePool of "
-operator|+
+literal|"addCachePool of {} successful."
+argument_list|,
 name|info
-operator|+
-literal|" successful."
 argument_list|)
 expr_stmt|;
 return|return
@@ -4528,15 +4499,13 @@ name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"modifyCachePool of "
-operator|+
+literal|"modifyCachePool of {} successful; {}"
+argument_list|,
 name|info
 operator|.
 name|getPoolName
 argument_list|()
-operator|+
-literal|" successful; "
-operator|+
+argument_list|,
 name|bld
 operator|.
 name|toString
@@ -5036,41 +5005,28 @@ argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"Processed cache report from "
+literal|"Processed cache report from {}, blocks: {}, "
 operator|+
+literal|"processing time: {} msecs"
+argument_list|,
 name|datanodeID
-operator|+
-literal|", blocks: "
-operator|+
+argument_list|,
 name|blockIds
 operator|.
 name|size
 argument_list|()
-operator|+
-literal|", processing time: "
-operator|+
+argument_list|,
 operator|(
 name|endTime
 operator|-
 name|startTime
 operator|)
-operator|+
-literal|" msecs"
 argument_list|)
 expr_stmt|;
-block|}
 block|}
 DECL|method|processCacheReportImpl (final DatanodeDescriptor datanode, final List<Long> blockIds)
 specifier|private
@@ -5146,6 +5102,17 @@ operator|.
 name|next
 argument_list|()
 decl_stmt|;
+name|LOG
+operator|.
+name|trace
+argument_list|(
+literal|"Cache report from datanode {} has block {}"
+argument_list|,
+name|datanode
+argument_list|,
+name|blockId
+argument_list|)
+expr_stmt|;
 name|CachedBlock
 name|cachedBlock
 init|=
@@ -5195,6 +5162,15 @@ argument_list|(
 name|cachedBlock
 argument_list|)
 expr_stmt|;
+name|LOG
+operator|.
+name|trace
+argument_list|(
+literal|"Added block {}  to cachedBlocks"
+argument_list|,
+name|cachedBlock
+argument_list|)
+expr_stmt|;
 block|}
 comment|// Add the block to the datanode's implicit cached block list
 comment|// if it's not already there.  Similarly, remove it from the pending
@@ -5217,6 +5193,15 @@ argument_list|(
 name|cachedBlock
 argument_list|)
 expr_stmt|;
+name|LOG
+operator|.
+name|trace
+argument_list|(
+literal|"Added block {} to CACHED list."
+argument_list|,
+name|cachedBlock
+argument_list|)
+expr_stmt|;
 block|}
 if|if
 condition|(
@@ -5232,6 +5217,15 @@ name|pendingCachedList
 operator|.
 name|remove
 argument_list|(
+name|cachedBlock
+argument_list|)
+expr_stmt|;
+name|LOG
+operator|.
+name|trace
+argument_list|(
+literal|"Removed block {} from PENDING_CACHED list."
+argument_list|,
 name|cachedBlock
 argument_list|)
 expr_stmt|;

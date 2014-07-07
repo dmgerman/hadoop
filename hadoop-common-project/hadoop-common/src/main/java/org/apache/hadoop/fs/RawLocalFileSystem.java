@@ -56,6 +56,16 @@ name|java
 operator|.
 name|io
 operator|.
+name|EOFException
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|io
+operator|.
 name|File
 import|;
 end_import
@@ -543,6 +553,23 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
+if|if
+condition|(
+name|pos
+operator|<
+literal|0
+condition|)
+block|{
+throw|throw
+operator|new
+name|EOFException
+argument_list|(
+name|FSExceptionMessages
+operator|.
+name|NEGATIVE_SEEK
+argument_list|)
+throw|;
+block|}
 name|fis
 operator|.
 name|getChannel
@@ -1319,7 +1346,7 @@ condition|)
 block|{
 throw|throw
 operator|new
-name|IOException
+name|FileAlreadyExistsException
 argument_list|(
 literal|"File already exists: "
 operator|+
@@ -1439,7 +1466,7 @@ condition|)
 block|{
 throw|throw
 operator|new
-name|IOException
+name|FileAlreadyExistsException
 argument_list|(
 literal|"File already exists: "
 operator|+
@@ -1795,6 +1822,20 @@ argument_list|(
 name|p
 argument_list|)
 decl_stmt|;
+if|if
+condition|(
+operator|!
+name|f
+operator|.
+name|exists
+argument_list|()
+condition|)
+block|{
+comment|//no path, return false "nothing to delete"
+return|return
+literal|false
+return|;
+block|}
 if|if
 condition|(
 name|f
@@ -2154,7 +2195,7 @@ condition|)
 block|{
 throw|throw
 operator|new
-name|FileAlreadyExistsException
+name|ParentNotDirectoryException
 argument_list|(
 literal|"Parent path is not a directory: "
 operator|+
@@ -2162,6 +2203,35 @@ name|parent
 argument_list|)
 throw|;
 block|}
+block|}
+if|if
+condition|(
+name|p2f
+operator|.
+name|exists
+argument_list|()
+operator|&&
+operator|!
+name|p2f
+operator|.
+name|isDirectory
+argument_list|()
+condition|)
+block|{
+throw|throw
+operator|new
+name|FileNotFoundException
+argument_list|(
+literal|"Destination exists"
+operator|+
+literal|" and is not a directory: "
+operator|+
+name|p2f
+operator|.
+name|getCanonicalPath
+argument_list|()
+argument_list|)
+throw|;
 block|}
 return|return
 operator|(

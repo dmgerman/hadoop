@@ -815,6 +815,11 @@ argument_list|(
 literal|false
 argument_list|)
 decl_stmt|;
+DECL|field|rmWorkPreservingRestartEnabled
+specifier|private
+name|boolean
+name|rmWorkPreservingRestartEnabled
+decl_stmt|;
 DECL|method|NodeManager ()
 specifier|public
 name|NodeManager
@@ -1277,6 +1282,21 @@ argument_list|,
 literal|true
 argument_list|)
 expr_stmt|;
+name|rmWorkPreservingRestartEnabled
+operator|=
+name|conf
+operator|.
+name|getBoolean
+argument_list|(
+name|YarnConfiguration
+operator|.
+name|RM_WORK_PRESERVING_RECOVERY_ENABLED
+argument_list|,
+name|YarnConfiguration
+operator|.
+name|DEFAULT_RM_WORK_PRESERVING_RECOVERY_ENABLED
+argument_list|)
+expr_stmt|;
 name|initAndStartRecoveryStore
 argument_list|(
 name|conf
@@ -1705,6 +1725,12 @@ argument_list|(
 literal|true
 argument_list|)
 expr_stmt|;
+if|if
+condition|(
+operator|!
+name|rmWorkPreservingRestartEnabled
+condition|)
+block|{
 name|LOG
 operator|.
 name|info
@@ -1717,6 +1743,17 @@ operator|.
 name|cleanupContainersOnNMResync
 argument_list|()
 expr_stmt|;
+block|}
+else|else
+block|{
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"Preserving containers on resync"
+argument_list|)
+expr_stmt|;
+block|}
 operator|(
 operator|(
 name|NodeStatusUpdaterImpl

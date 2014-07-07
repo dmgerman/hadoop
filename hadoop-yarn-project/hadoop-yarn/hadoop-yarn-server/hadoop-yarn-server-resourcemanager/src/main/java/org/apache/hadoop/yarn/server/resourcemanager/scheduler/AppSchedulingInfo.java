@@ -420,17 +420,28 @@ specifier|final
 name|String
 name|user
 decl_stmt|;
+comment|// TODO making containerIdCounter long
 DECL|field|containerIdCounter
 specifier|private
 specifier|final
 name|AtomicInteger
 name|containerIdCounter
+decl_stmt|;
+DECL|field|EPOCH_BIT_MASK
+specifier|private
+specifier|final
+name|int
+name|EPOCH_BIT_MASK
 init|=
-operator|new
-name|AtomicInteger
-argument_list|(
-literal|0
-argument_list|)
+literal|0x3ff
+decl_stmt|;
+DECL|field|EPOCH_BIT_SHIFT
+specifier|private
+specifier|final
+name|int
+name|EPOCH_BIT_SHIFT
+init|=
+literal|22
 decl_stmt|;
 DECL|field|priorities
 specifier|final
@@ -525,7 +536,7 @@ init|=
 literal|true
 decl_stmt|;
 comment|// for app metrics
-DECL|method|AppSchedulingInfo (ApplicationAttemptId appAttemptId, String user, Queue queue, ActiveUsersManager activeUsersManager)
+DECL|method|AppSchedulingInfo (ApplicationAttemptId appAttemptId, String user, Queue queue, ActiveUsersManager activeUsersManager, int epoch)
 specifier|public
 name|AppSchedulingInfo
 parameter_list|(
@@ -540,6 +551,9 @@ name|queue
 parameter_list|,
 name|ActiveUsersManager
 name|activeUsersManager
+parameter_list|,
+name|int
+name|epoch
 parameter_list|)
 block|{
 name|this
@@ -583,6 +597,22 @@ operator|.
 name|activeUsersManager
 operator|=
 name|activeUsersManager
+expr_stmt|;
+name|this
+operator|.
+name|containerIdCounter
+operator|=
+operator|new
+name|AtomicInteger
+argument_list|(
+operator|(
+name|epoch
+operator|&
+name|EPOCH_BIT_MASK
+operator|)
+operator|<<
+name|EPOCH_BIT_SHIFT
+argument_list|)
 expr_stmt|;
 block|}
 DECL|method|getApplicationId ()
@@ -2033,14 +2063,6 @@ name|RMContainer
 name|rmContainer
 parameter_list|)
 block|{
-comment|// ContainerIdCounter on recovery will be addressed in YARN-2052
-name|this
-operator|.
-name|containerIdCounter
-operator|.
-name|incrementAndGet
-argument_list|()
-expr_stmt|;
 name|QueueMetrics
 name|metrics
 init|=

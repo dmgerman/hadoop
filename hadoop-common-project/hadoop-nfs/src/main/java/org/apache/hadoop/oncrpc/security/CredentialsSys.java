@@ -202,6 +202,17 @@ return|return
 name|mUID
 return|;
 block|}
+DECL|method|getAuxGIDs ()
+specifier|public
+name|int
+index|[]
+name|getAuxGIDs
+parameter_list|()
+block|{
+return|return
+name|mAuxGIDs
+return|;
+block|}
 DECL|method|setGID (int gid)
 specifier|public
 name|void

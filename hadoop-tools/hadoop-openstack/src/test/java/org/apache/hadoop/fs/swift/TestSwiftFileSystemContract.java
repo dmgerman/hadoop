@@ -94,7 +94,7 @@ name|hadoop
 operator|.
 name|fs
 operator|.
-name|Path
+name|ParentNotDirectoryException
 import|;
 end_import
 
@@ -108,11 +108,7 @@ name|hadoop
 operator|.
 name|fs
 operator|.
-name|swift
-operator|.
-name|exceptions
-operator|.
-name|SwiftNotDirectoryException
+name|Path
 import|;
 end_import
 
@@ -210,6 +206,17 @@ operator|.
 name|class
 argument_list|)
 decl_stmt|;
+comment|/**    * Override this if the filesystem is not case sensitive    * @return true if the case detection/preservation tests should run    */
+DECL|method|filesystemIsCaseSensitive ()
+specifier|protected
+name|boolean
+name|filesystemIsCaseSensitive
+parameter_list|()
+block|{
+return|return
+literal|false
+return|;
+block|}
 annotation|@
 name|Override
 DECL|method|setUp ()
@@ -422,21 +429,11 @@ expr_stmt|;
 block|}
 catch|catch
 parameter_list|(
-name|SwiftNotDirectoryException
+name|ParentNotDirectoryException
 name|e
 parameter_list|)
 block|{
 comment|// expected
-name|assertEquals
-argument_list|(
-name|filepath
-argument_list|,
-name|e
-operator|.
-name|getPath
-argument_list|()
-argument_list|)
-expr_stmt|;
 block|}
 comment|//now verify that the subdir path does not exist
 name|SwiftTestUtils
@@ -475,7 +472,7 @@ expr_stmt|;
 block|}
 catch|catch
 parameter_list|(
-name|SwiftNotDirectoryException
+name|ParentNotDirectoryException
 name|e
 parameter_list|)
 block|{

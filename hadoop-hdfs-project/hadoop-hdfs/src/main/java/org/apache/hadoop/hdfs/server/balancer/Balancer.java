@@ -931,15 +931,6 @@ literal|1000L
 decl_stmt|;
 comment|// 1.5 hour
 comment|/** The maximum number of concurrent blocks moves for     * balancing purpose at a datanode    */
-DECL|field|MAX_NUM_CONCURRENT_MOVES
-specifier|public
-specifier|static
-specifier|final
-name|int
-name|MAX_NUM_CONCURRENT_MOVES
-init|=
-literal|5
-decl_stmt|;
 DECL|field|MAX_NO_PENDING_BLOCK_ITERATIONS
 specifier|private
 specifier|static
@@ -1197,6 +1188,12 @@ specifier|private
 specifier|final
 name|ExecutorService
 name|dispatcherExecutor
+decl_stmt|;
+DECL|field|maxConcurrentMovesPerNode
+specifier|private
+specifier|final
+name|int
+name|maxConcurrentMovesPerNode
 decl_stmt|;
 comment|/* This class keeps track of a scheduled block move */
 DECL|class|PendingBlockMove
@@ -2348,15 +2345,12 @@ argument_list|<
 name|PendingBlockMove
 argument_list|>
 name|pendingBlocks
-init|=
-operator|new
-name|ArrayList
-argument_list|<
-name|PendingBlockMove
-argument_list|>
-argument_list|(
-name|MAX_NUM_CONCURRENT_MOVES
-argument_list|)
+decl_stmt|;
+DECL|field|maxConcurrentMoves
+specifier|private
+specifier|final
+name|int
+name|maxConcurrentMoves
 decl_stmt|;
 annotation|@
 name|Override
@@ -2385,7 +2379,7 @@ literal|"]"
 return|;
 block|}
 comment|/* Constructor       * Depending on avgutil& threshold, calculate maximum bytes to move       */
-DECL|method|BalancerDatanode (DatanodeInfo node, BalancingPolicy policy, double threshold)
+DECL|method|BalancerDatanode (DatanodeInfo node, BalancingPolicy policy, double threshold, int maxConcurrentMoves)
 specifier|private
 name|BalancerDatanode
 parameter_list|(
@@ -2397,6 +2391,9 @@ name|policy
 parameter_list|,
 name|double
 name|threshold
+parameter_list|,
+name|int
+name|maxConcurrentMoves
 parameter_list|)
 block|{
 name|datanode
@@ -2515,6 +2512,25 @@ argument_list|(
 name|MAX_SIZE_TO_MOVE
 argument_list|,
 name|maxSizeToMove
+argument_list|)
+expr_stmt|;
+name|this
+operator|.
+name|maxConcurrentMoves
+operator|=
+name|maxConcurrentMoves
+expr_stmt|;
+name|this
+operator|.
+name|pendingBlocks
+operator|=
+operator|new
+name|ArrayList
+argument_list|<
+name|PendingBlockMove
+argument_list|>
+argument_list|(
+name|maxConcurrentMoves
 argument_list|)
 expr_stmt|;
 block|}
@@ -2713,7 +2729,9 @@ operator|.
 name|size
 argument_list|()
 operator|<
-name|MAX_NUM_CONCURRENT_MOVES
+name|this
+operator|.
+name|maxConcurrentMoves
 condition|)
 block|{
 return|return
@@ -2866,7 +2884,7 @@ argument_list|>
 argument_list|()
 decl_stmt|;
 comment|/* constructor */
-DECL|method|Source (DatanodeInfo node, BalancingPolicy policy, double threshold)
+DECL|method|Source (DatanodeInfo node, BalancingPolicy policy, double threshold, int maxConcurrentMoves)
 specifier|private
 name|Source
 parameter_list|(
@@ -2878,6 +2896,9 @@ name|policy
 parameter_list|,
 name|double
 name|threshold
+parameter_list|,
+name|int
+name|maxConcurrentMoves
 parameter_list|)
 block|{
 name|super
@@ -2887,6 +2908,8 @@ argument_list|,
 name|policy
 argument_list|,
 name|threshold
+argument_list|,
+name|maxConcurrentMoves
 argument_list|)
 expr_stmt|;
 block|}
@@ -3737,6 +3760,23 @@ name|DFS_BALANCER_DISPATCHERTHREADS_DEFAULT
 argument_list|)
 argument_list|)
 expr_stmt|;
+name|this
+operator|.
+name|maxConcurrentMovesPerNode
+operator|=
+name|conf
+operator|.
+name|getInt
+argument_list|(
+name|DFSConfigKeys
+operator|.
+name|DFS_DATANODE_BALANCE_MAX_NUM_CONCURRENT_MOVES_KEY
+argument_list|,
+name|DFSConfigKeys
+operator|.
+name|DFS_DATANODE_BALANCE_MAX_NUM_CONCURRENT_MOVES_DEFAULT
+argument_list|)
+expr_stmt|;
 block|}
 comment|/* Given a data node set, build a network topology and decide    * over-utilized datanodes, above average utilized datanodes,     * below average utilized datanodes, and underutilized datanodes.     * The input data node set is shuffled before the datanodes     * are put into the over-utilized datanodes, above average utilized    * datanodes, below average utilized datanodes, and    * underutilized datanodes lists. This will add some randomness    * to the node matching later on.    *     * @return the total number of bytes that are     *                needed to move to make the cluster balanced.    * @param datanodes a set of datanodes    */
 DECL|method|initNodes (DatanodeInfo[] datanodes)
@@ -3867,6 +3907,8 @@ argument_list|,
 name|policy
 argument_list|,
 name|threshold
+argument_list|,
+name|maxConcurrentMovesPerNode
 argument_list|)
 expr_stmt|;
 if|if
@@ -3959,6 +4001,8 @@ argument_list|,
 name|policy
 argument_list|,
 name|threshold
+argument_list|,
+name|maxConcurrentMovesPerNode
 argument_list|)
 expr_stmt|;
 if|if

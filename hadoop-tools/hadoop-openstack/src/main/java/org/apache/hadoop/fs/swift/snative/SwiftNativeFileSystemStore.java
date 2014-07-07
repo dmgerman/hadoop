@@ -100,6 +100,20 @@ name|hadoop
 operator|.
 name|fs
 operator|.
+name|FileAlreadyExistsException
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|fs
+operator|.
 name|FileStatus
 import|;
 end_import
@@ -2334,7 +2348,7 @@ condition|)
 block|{
 throw|throw
 operator|new
-name|SwiftOperationFailedException
+name|FileAlreadyExistsException
 argument_list|(
 literal|"cannot rename a file over one that already exists"
 argument_list|)
@@ -2468,7 +2482,7 @@ block|{
 comment|// #1 destination is a file: fail
 throw|throw
 operator|new
-name|SwiftOperationFailedException
+name|FileAlreadyExistsException
 argument_list|(
 literal|"the source is a directory, but not the destination"
 argument_list|)

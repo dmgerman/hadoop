@@ -962,6 +962,21 @@ block|}
 annotation|@
 name|Override
 specifier|public
+name|long
+name|getVCoresAllocatedForContainers
+parameter_list|()
+block|{
+return|return
+operator|new
+name|Long
+argument_list|(
+literal|"4000"
+argument_list|)
+return|;
+block|}
+annotation|@
+name|Override
+specifier|public
 name|boolean
 name|isVmemCheckEnabled
 parameter_list|()
@@ -3540,6 +3555,15 @@ argument_list|)
 argument_list|,
 name|WebServicesTestUtils
 operator|.
+name|getXmlInt
+argument_list|(
+name|element
+argument_list|,
+literal|"totalVCoresNeeded"
+argument_list|)
+argument_list|,
+name|WebServicesTestUtils
+operator|.
 name|getXmlString
 argument_list|(
 name|element
@@ -3570,7 +3594,7 @@ name|assertEquals
 argument_list|(
 literal|"incorrect number of elements"
 argument_list|,
-literal|8
+literal|9
 argument_list|,
 name|info
 operator|.
@@ -3633,6 +3657,13 @@ argument_list|)
 argument_list|,
 name|info
 operator|.
+name|getInt
+argument_list|(
+literal|"totalVCoresNeeded"
+argument_list|)
+argument_list|,
+name|info
+operator|.
 name|getString
 argument_list|(
 literal|"containerLogsLink"
@@ -3640,7 +3671,7 @@ argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|verifyNodeContainerInfoGeneric (Container cont, String id, String state, String user, int exitCode, String diagnostics, String nodeId, int totalMemoryNeededMB, String logsLink)
+DECL|method|verifyNodeContainerInfoGeneric (Container cont, String id, String state, String user, int exitCode, String diagnostics, String nodeId, int totalMemoryNeededMB, int totalVCoresNeeded, String logsLink)
 specifier|public
 name|void
 name|verifyNodeContainerInfoGeneric
@@ -3668,6 +3699,9 @@ name|nodeId
 parameter_list|,
 name|int
 name|totalMemoryNeededMB
+parameter_list|,
+name|int
+name|totalVCoresNeeded
 parameter_list|,
 name|String
 name|logsLink
@@ -3774,6 +3808,17 @@ operator|.
 name|DEFAULT_RM_SCHEDULER_MINIMUM_ALLOCATION_MB
 argument_list|,
 name|totalMemoryNeededMB
+argument_list|)
+expr_stmt|;
+name|assertEquals
+argument_list|(
+literal|"totalVCoresNeeded wrong"
+argument_list|,
+name|YarnConfiguration
+operator|.
+name|DEFAULT_RM_SCHEDULER_MINIMUM_ALLOCATION_VCORES
+argument_list|,
+name|totalVCoresNeeded
 argument_list|)
 expr_stmt|;
 name|String

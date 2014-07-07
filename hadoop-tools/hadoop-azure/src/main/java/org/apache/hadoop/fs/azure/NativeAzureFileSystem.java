@@ -150,6 +150,20 @@ end_import
 
 begin_import
 import|import
+name|java
+operator|.
+name|util
+operator|.
+name|concurrent
+operator|.
+name|atomic
+operator|.
+name|AtomicInteger
+import|;
+end_import
+
+begin_import
+import|import
 name|org
 operator|.
 name|apache
@@ -184,20 +198,6 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|conf
-operator|.
-name|Configuration
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
 name|classification
 operator|.
 name|InterfaceAudience
@@ -215,6 +215,20 @@ operator|.
 name|classification
 operator|.
 name|InterfaceStability
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|conf
+operator|.
+name|Configuration
 import|;
 end_import
 
@@ -340,6 +354,42 @@ name|hadoop
 operator|.
 name|fs
 operator|.
+name|azure
+operator|.
+name|metrics
+operator|.
+name|AzureFileSystemInstrumentation
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|fs
+operator|.
+name|azure
+operator|.
+name|metrics
+operator|.
+name|AzureFileSystemMetricsSystem
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|fs
+operator|.
 name|permission
 operator|.
 name|FsPermission
@@ -359,6 +409,22 @@ operator|.
 name|permission
 operator|.
 name|PermissionStatus
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|metrics2
+operator|.
+name|lib
+operator|.
+name|DefaultMetricsSystem
 import|;
 end_import
 
@@ -785,6 +851,7 @@ annotation|@
 name|Override
 DECL|method|close ()
 specifier|public
+specifier|synchronized
 name|void
 name|close
 parameter_list|()
@@ -1207,6 +1274,11 @@ name|blockSize
 init|=
 name|MAX_AZURE_BLOCK_SIZE
 decl_stmt|;
+DECL|field|instrumentation
+specifier|private
+name|AzureFileSystemInstrumentation
+name|instrumentation
+decl_stmt|;
 DECL|field|suppressRetryPolicy
 specifier|private
 specifier|static
@@ -1214,6 +1286,17 @@ name|boolean
 name|suppressRetryPolicy
 init|=
 literal|false
+decl_stmt|;
+comment|// A counter to create unique (within-process) names for my metrics sources.
+DECL|field|metricsSourceNameCounter
+specifier|private
+specifier|static
+name|AtomicInteger
+name|metricsSourceNameCounter
+init|=
+operator|new
+name|AtomicInteger
+argument_list|()
 decl_stmt|;
 DECL|method|NativeAzureFileSystem ()
 specifier|public
@@ -1264,6 +1347,51 @@ name|suppressRetryPolicy
 operator|=
 literal|false
 expr_stmt|;
+block|}
+comment|/**    * Creates a new metrics source name that's unique within this process.    */
+annotation|@
+name|VisibleForTesting
+DECL|method|newMetricsSourceName ()
+specifier|public
+specifier|static
+name|String
+name|newMetricsSourceName
+parameter_list|()
+block|{
+name|int
+name|number
+init|=
+name|metricsSourceNameCounter
+operator|.
+name|incrementAndGet
+argument_list|()
+decl_stmt|;
+specifier|final
+name|String
+name|baseName
+init|=
+literal|"AzureFileSystemMetrics"
+decl_stmt|;
+if|if
+condition|(
+name|number
+operator|==
+literal|1
+condition|)
+block|{
+comment|// No need for a suffix for the first one
+return|return
+name|baseName
+return|;
+block|}
+else|else
+block|{
+return|return
+name|baseName
+operator|+
+name|number
+return|;
+block|}
 block|}
 comment|/**    * Checks if the given URI scheme is a scheme that's affiliated with the Azure    * File System.    *     * @param scheme    *          The URI scheme.    * @return true iff it's an Azure File System URI scheme.    */
 DECL|method|isWasbScheme (String scheme)
@@ -1533,6 +1661,53 @@ name|conf
 argument_list|)
 expr_stmt|;
 block|}
+comment|// Make sure the metrics system is available before interacting with Azure
+name|AzureFileSystemMetricsSystem
+operator|.
+name|fileSystemStarted
+argument_list|()
+expr_stmt|;
+name|String
+name|sourceName
+init|=
+name|newMetricsSourceName
+argument_list|()
+decl_stmt|,
+name|sourceDesc
+init|=
+literal|"Azure Storage Volume File System metrics"
+decl_stmt|;
+name|instrumentation
+operator|=
+name|DefaultMetricsSystem
+operator|.
+name|instance
+argument_list|()
+operator|.
+name|register
+argument_list|(
+name|sourceName
+argument_list|,
+name|sourceDesc
+argument_list|,
+operator|new
+name|AzureFileSystemInstrumentation
+argument_list|(
+name|conf
+argument_list|)
+argument_list|)
+expr_stmt|;
+name|AzureFileSystemMetricsSystem
+operator|.
+name|registerSource
+argument_list|(
+name|sourceName
+argument_list|,
+name|sourceDesc
+argument_list|,
+name|instrumentation
+argument_list|)
+expr_stmt|;
 name|store
 operator|.
 name|initialize
@@ -1540,6 +1715,8 @@ argument_list|(
 name|uri
 argument_list|,
 name|conf
+argument_list|,
+name|instrumentation
 argument_list|)
 expr_stmt|;
 name|setConf
@@ -1870,12 +2047,24 @@ comment|/**    * For unit test purposes, retrieves the AzureNativeFileSystemStor
 annotation|@
 name|VisibleForTesting
 DECL|method|getStore ()
+specifier|public
 name|AzureNativeFileSystemStore
 name|getStore
 parameter_list|()
 block|{
 return|return
 name|actualStore
+return|;
+block|}
+comment|/**    * Gets the metrics source for this file system.    * This is mainly here for unit testing purposes.    *    * @return the metrics source.    */
+DECL|method|getInstrumentation ()
+specifier|public
+name|AzureFileSystemInstrumentation
+name|getInstrumentation
+parameter_list|()
+block|{
+return|return
+name|instrumentation
 return|;
 block|}
 comment|/** This optional operation is not yet supported. */
@@ -2222,6 +2411,12 @@ argument_list|,
 name|statistics
 argument_list|)
 decl_stmt|;
+comment|// Increment the counter
+name|instrumentation
+operator|.
+name|fileCreated
+argument_list|()
+expr_stmt|;
 comment|// Return data output stream to caller.
 return|return
 name|fsOut
@@ -2476,6 +2671,11 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
+name|instrumentation
+operator|.
+name|fileDeleted
+argument_list|()
+expr_stmt|;
 name|store
 operator|.
 name|delete
@@ -2690,6 +2890,11 @@ operator|+
 name|suffix
 argument_list|)
 expr_stmt|;
+name|instrumentation
+operator|.
+name|fileDeleted
+argument_list|()
+expr_stmt|;
 block|}
 else|else
 block|{
@@ -2768,6 +2973,11 @@ name|parentKey
 argument_list|)
 expr_stmt|;
 block|}
+name|instrumentation
+operator|.
+name|directoryDeleted
+argument_list|()
+expr_stmt|;
 block|}
 comment|// File or directory was successfully deleted.
 return|return
@@ -3859,6 +4069,11 @@ name|lastModified
 argument_list|)
 expr_stmt|;
 block|}
+name|instrumentation
+operator|.
+name|directoryCreated
+argument_list|()
+expr_stmt|;
 comment|// otherwise throws exception
 return|return
 literal|true
@@ -5450,6 +5665,49 @@ operator|.
 name|close
 argument_list|()
 expr_stmt|;
+comment|// Notify the metrics system that this file system is closed, which may
+comment|// trigger one final metrics push to get the accurate final file system
+comment|// metrics out.
+name|long
+name|startTime
+init|=
+name|System
+operator|.
+name|currentTimeMillis
+argument_list|()
+decl_stmt|;
+name|AzureFileSystemMetricsSystem
+operator|.
+name|fileSystemClosed
+argument_list|()
+expr_stmt|;
+if|if
+condition|(
+name|LOG
+operator|.
+name|isDebugEnabled
+argument_list|()
+condition|)
+block|{
+name|LOG
+operator|.
+name|debug
+argument_list|(
+literal|"Submitting metrics when file system closed took "
+operator|+
+operator|(
+name|System
+operator|.
+name|currentTimeMillis
+argument_list|()
+operator|-
+name|startTime
+operator|)
+operator|+
+literal|" ms."
+argument_list|)
+expr_stmt|;
+block|}
 block|}
 comment|/**    * A handler that defines what to do with blobs whose upload was interrupted.    */
 DECL|class|DanglingFileHandler

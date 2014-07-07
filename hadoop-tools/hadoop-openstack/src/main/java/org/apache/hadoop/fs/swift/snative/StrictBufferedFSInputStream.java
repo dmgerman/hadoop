@@ -44,6 +44,20 @@ name|hadoop
 operator|.
 name|fs
 operator|.
+name|FSExceptionMessages
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|fs
+operator|.
 name|FSInputStream
 import|;
 end_import
@@ -63,6 +77,16 @@ operator|.
 name|exceptions
 operator|.
 name|SwiftConnectionClosedException
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|io
+operator|.
+name|EOFException
 import|;
 end_import
 
@@ -129,9 +153,11 @@ condition|)
 block|{
 throw|throw
 operator|new
-name|IOException
+name|EOFException
 argument_list|(
-literal|"Negative position"
+name|FSExceptionMessages
+operator|.
+name|NEGATIVE_SEEK
 argument_list|)
 throw|;
 block|}
@@ -146,7 +172,9 @@ throw|throw
 operator|new
 name|SwiftConnectionClosedException
 argument_list|(
-literal|"Stream closed"
+name|FSExceptionMessages
+operator|.
+name|STREAM_IS_CLOSED
 argument_list|)
 throw|;
 block|}

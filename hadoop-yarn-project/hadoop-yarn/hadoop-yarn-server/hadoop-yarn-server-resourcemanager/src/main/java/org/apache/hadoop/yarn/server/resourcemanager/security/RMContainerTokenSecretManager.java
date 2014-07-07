@@ -150,6 +150,24 @@ name|api
 operator|.
 name|records
 operator|.
+name|Priority
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|api
+operator|.
+name|records
+operator|.
 name|Resource
 import|;
 end_import
@@ -272,9 +290,9 @@ name|yarn
 operator|.
 name|server
 operator|.
-name|utils
+name|security
 operator|.
-name|BuilderUtils
+name|MasterKeyData
 import|;
 end_import
 
@@ -290,9 +308,9 @@ name|yarn
 operator|.
 name|server
 operator|.
-name|security
+name|utils
 operator|.
-name|MasterKeyData
+name|BuilderUtils
 import|;
 end_import
 
@@ -764,10 +782,10 @@ argument_list|()
 expr_stmt|;
 block|}
 block|}
-comment|/**    * Helper function for creating ContainerTokens    *     * @param containerId    * @param nodeId    * @param appSubmitter    * @param capability    * @return the container-token    */
+comment|/**    * Helper function for creating ContainerTokens    *     * @param containerId    * @param nodeId    * @param appSubmitter    * @param capability    * @param priority    * @param createTime    * @return the container-token    */
+DECL|method|createContainerToken (ContainerId containerId, NodeId nodeId, String appSubmitter, Resource capability, Priority priority, long createTime)
 specifier|public
 name|Token
-DECL|method|createContainerToken (ContainerId containerId, NodeId nodeId, String appSubmitter, Resource capability)
 name|createContainerToken
 parameter_list|(
 name|ContainerId
@@ -781,6 +799,12 @@ name|appSubmitter
 parameter_list|,
 name|Resource
 name|capability
+parameter_list|,
+name|Priority
+name|priority
+parameter_list|,
+name|long
+name|createTime
 parameter_list|)
 block|{
 name|byte
@@ -842,6 +866,10 @@ name|ResourceManager
 operator|.
 name|getClusterTimeStamp
 argument_list|()
+argument_list|,
+name|priority
+argument_list|,
+name|createTime
 argument_list|)
 expr_stmt|;
 name|password

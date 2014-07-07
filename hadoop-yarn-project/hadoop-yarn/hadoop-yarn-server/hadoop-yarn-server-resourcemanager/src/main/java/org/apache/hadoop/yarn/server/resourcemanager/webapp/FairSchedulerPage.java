@@ -1430,7 +1430,7 @@ literal|"    if (q == 'root') q = '';"
 argument_list|,
 literal|"    else q = '^' + q.substr(q.lastIndexOf('.') + 1) + '$';"
 argument_list|,
-literal|"    $('#apps').dataTable().fnFilter(q, 3, true);"
+literal|"    $('#apps').dataTable().fnFilter(q, 4, true);"
 argument_list|,
 literal|"  });"
 argument_list|,

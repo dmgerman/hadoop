@@ -142,6 +142,20 @@ name|google
 operator|.
 name|common
 operator|.
+name|annotations
+operator|.
+name|VisibleForTesting
+import|;
+end_import
+
+begin_import
+import|import
+name|com
+operator|.
+name|google
+operator|.
+name|common
+operator|.
 name|collect
 operator|.
 name|Maps
@@ -1206,6 +1220,17 @@ operator|=
 literal|null
 expr_stmt|;
 block|}
+block|}
+annotation|@
+name|VisibleForTesting
+DECL|method|getMBeanName ()
+name|ObjectName
+name|getMBeanName
+parameter_list|()
+block|{
+return|return
+name|mbeanName
+return|;
 block|}
 DECL|method|updateInfoCache ()
 specifier|private

@@ -226,6 +226,20 @@ name|UnsupportedOperationException
 argument_list|()
 throw|;
 block|}
+comment|/** Used by AUTH_SYS */
+DECL|method|getAuxGids ()
+specifier|public
+name|int
+index|[]
+name|getAuxGids
+parameter_list|()
+block|{
+throw|throw
+operator|new
+name|UnsupportedOperationException
+argument_list|()
+throw|;
+block|}
 block|}
 end_class
 

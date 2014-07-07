@@ -249,14 +249,14 @@ specifier|final
 name|int
 name|numberOfThInMetricsTable
 init|=
-literal|13
+literal|16
 decl_stmt|;
 DECL|field|numberOfActualTableHeaders
 specifier|final
 name|int
 name|numberOfActualTableHeaders
 init|=
-literal|10
+literal|12
 decl_stmt|;
 DECL|field|injector
 specifier|private

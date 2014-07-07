@@ -156,6 +156,20 @@ end_import
 
 begin_import
 import|import
+name|java
+operator|.
+name|util
+operator|.
+name|concurrent
+operator|.
+name|atomic
+operator|.
+name|AtomicInteger
+import|;
+end_import
+
+begin_import
+import|import
 name|org
 operator|.
 name|apache
@@ -1710,10 +1724,14 @@ argument_list|()
 decl_stmt|;
 DECL|field|numNodeManagers
 specifier|private
-name|int
+name|AtomicInteger
 name|numNodeManagers
 init|=
+operator|new
+name|AtomicInteger
+argument_list|(
 literal|0
+argument_list|)
 decl_stmt|;
 DECL|field|calculator
 specifier|private
@@ -1879,13 +1897,15 @@ annotation|@
 name|Override
 DECL|method|getNumClusterNodes ()
 specifier|public
-specifier|synchronized
 name|int
 name|getNumClusterNodes
 parameter_list|()
 block|{
 return|return
 name|numNodeManagers
+operator|.
+name|get
+argument_list|()
 return|;
 block|}
 annotation|@
@@ -3452,7 +3472,7 @@ argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|addApplicationAttempt ( ApplicationAttemptId applicationAttemptId, boolean transferStateFromPreviousAttempt)
+DECL|method|addApplicationAttempt ( ApplicationAttemptId applicationAttemptId, boolean transferStateFromPreviousAttempt, boolean shouldNotifyAttemptAdded)
 specifier|private
 specifier|synchronized
 name|void
@@ -3463,6 +3483,9 @@ name|applicationAttemptId
 parameter_list|,
 name|boolean
 name|transferStateFromPreviousAttempt
+parameter_list|,
+name|boolean
+name|shouldNotifyAttemptAdded
 parameter_list|)
 block|{
 name|SchedulerApplication
@@ -3573,6 +3596,11 @@ name|getQueueName
 argument_list|()
 argument_list|)
 expr_stmt|;
+if|if
+condition|(
+name|shouldNotifyAttemptAdded
+condition|)
+block|{
 name|rmContext
 operator|.
 name|getDispatcher
@@ -3594,6 +3622,26 @@ name|ATTEMPT_ADDED
 argument_list|)
 argument_list|)
 expr_stmt|;
+block|}
+else|else
+block|{
+if|if
+condition|(
+name|LOG
+operator|.
+name|isDebugEnabled
+argument_list|()
+condition|)
+block|{
+name|LOG
+operator|.
+name|debug
+argument_list|(
+literal|"Skipping notifying ATTEMPT_ADDED"
+argument_list|)
+expr_stmt|;
+block|}
+block|}
 block|}
 DECL|method|doneApplication (ApplicationId applicationId, RMAppState finalState)
 specifier|private
@@ -5150,6 +5198,11 @@ name|appAttemptAddedEvent
 operator|.
 name|getTransferStateFromPreviousAttempt
 argument_list|()
+argument_list|,
+name|appAttemptAddedEvent
+operator|.
+name|getShouldNotifyAttemptAdded
+argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
@@ -5297,9 +5350,14 @@ argument_list|(
 name|clusterResource
 argument_list|)
 expr_stmt|;
-operator|++
+name|int
+name|numNodes
+init|=
 name|numNodeManagers
-expr_stmt|;
+operator|.
+name|incrementAndGet
+argument_list|()
+decl_stmt|;
 name|LOG
 operator|.
 name|info
@@ -5320,7 +5378,7 @@ if|if
 condition|(
 name|scheduleAsynchronously
 operator|&&
-name|numNodeManagers
+name|numNodes
 operator|==
 literal|1
 condition|)
@@ -5386,14 +5444,19 @@ argument_list|(
 name|clusterResource
 argument_list|)
 expr_stmt|;
-operator|--
+name|int
+name|numNodes
+init|=
 name|numNodeManagers
-expr_stmt|;
+operator|.
+name|decrementAndGet
+argument_list|()
+decl_stmt|;
 if|if
 condition|(
 name|scheduleAsynchronously
 operator|&&
-name|numNodeManagers
+name|numNodes
 operator|==
 literal|0
 condition|)
@@ -5963,12 +6026,9 @@ operator|.
 name|getContainerId
 argument_list|()
 argument_list|,
-literal|"Container being forcibly preempted:"
-operator|+
-name|cont
+name|SchedulerUtils
 operator|.
-name|getContainerId
-argument_list|()
+name|PREEMPTED_CONTAINER
 argument_list|)
 argument_list|,
 name|RMContainerEventType

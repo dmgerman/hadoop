@@ -72,6 +72,24 @@ name|fs
 operator|.
 name|swift
 operator|.
+name|exceptions
+operator|.
+name|SwiftOperationFailedException
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|fs
+operator|.
+name|swift
+operator|.
 name|util
 operator|.
 name|SwiftTestUtils
@@ -1246,6 +1264,8 @@ name|getParent
 argument_list|()
 decl_stmt|;
 comment|//the outcome here is ambiguous, so is not checked
+try|try
+block|{
 name|fs
 operator|.
 name|rename
@@ -1255,6 +1275,15 @@ argument_list|,
 name|parent
 argument_list|)
 expr_stmt|;
+block|}
+catch|catch
+parameter_list|(
+name|SwiftOperationFailedException
+name|e
+parameter_list|)
+block|{
+comment|// allowed
+block|}
 name|assertExists
 argument_list|(
 literal|"Source directory has been deleted "

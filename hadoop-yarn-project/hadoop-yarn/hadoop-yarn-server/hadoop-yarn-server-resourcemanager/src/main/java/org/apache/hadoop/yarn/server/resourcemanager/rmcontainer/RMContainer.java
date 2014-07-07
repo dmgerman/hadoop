@@ -247,9 +247,9 @@ name|Priority
 name|getAllocatedPriority
 parameter_list|()
 function_decl|;
-DECL|method|getStartTime ()
+DECL|method|getCreationTime ()
 name|long
-name|getStartTime
+name|getCreationTime
 parameter_list|()
 function_decl|;
 DECL|method|getFinishTime ()
@@ -280,6 +280,11 @@ function_decl|;
 DECL|method|createContainerReport ()
 name|ContainerReport
 name|createContainerReport
+parameter_list|()
+function_decl|;
+DECL|method|isAMContainer ()
+name|boolean
+name|isAMContainer
 parameter_list|()
 function_decl|;
 block|}

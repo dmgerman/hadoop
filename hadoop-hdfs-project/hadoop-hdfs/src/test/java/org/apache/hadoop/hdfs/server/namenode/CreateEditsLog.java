@@ -400,8 +400,6 @@ argument_list|(
 literal|""
 argument_list|,
 literal|""
-argument_list|,
-literal|null
 argument_list|)
 expr_stmt|;
 comment|// Append path to filename with information about blockIDs
@@ -537,8 +535,6 @@ argument_list|(
 literal|""
 argument_list|,
 literal|""
-argument_list|,
-literal|null
 argument_list|)
 expr_stmt|;
 name|editLog

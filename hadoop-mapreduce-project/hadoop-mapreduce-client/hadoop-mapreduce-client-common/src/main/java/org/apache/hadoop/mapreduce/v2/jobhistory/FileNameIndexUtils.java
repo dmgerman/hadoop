@@ -814,6 +814,28 @@ argument_list|)
 expr_stmt|;
 try|try
 block|{
+if|if
+condition|(
+name|jobDetails
+operator|.
+name|length
+operator|<=
+name|JOB_START_TIME_INDEX
+condition|)
+block|{
+name|indexInfo
+operator|.
+name|setJobStartTime
+argument_list|(
+name|indexInfo
+operator|.
+name|getSubmitTime
+argument_list|()
+argument_list|)
+expr_stmt|;
+block|}
+else|else
+block|{
 name|indexInfo
 operator|.
 name|setJobStartTime
@@ -833,6 +855,7 @@ argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
+block|}
 catch|catch
 parameter_list|(
 name|NumberFormatException
@@ -843,7 +866,7 @@ name|LOG
 operator|.
 name|warn
 argument_list|(
-literal|"Unable to parse launch time from job history file "
+literal|"Unable to parse start time from job history file "
 operator|+
 name|jhFileName
 operator|+

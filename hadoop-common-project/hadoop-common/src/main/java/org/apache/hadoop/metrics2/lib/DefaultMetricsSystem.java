@@ -421,6 +421,31 @@ annotation|@
 name|InterfaceAudience
 operator|.
 name|Private
+DECL|method|removeMBeanName (ObjectName name)
+specifier|public
+specifier|static
+name|void
+name|removeMBeanName
+parameter_list|(
+name|ObjectName
+name|name
+parameter_list|)
+block|{
+name|INSTANCE
+operator|.
+name|removeObjectName
+argument_list|(
+name|name
+operator|.
+name|toString
+argument_list|()
+argument_list|)
+expr_stmt|;
+block|}
+annotation|@
+name|InterfaceAudience
+operator|.
+name|Private
 DECL|method|sourceName (String name, boolean dupOK)
 specifier|public
 specifier|static
@@ -508,6 +533,25 @@ name|e
 argument_list|)
 throw|;
 block|}
+block|}
+DECL|method|removeObjectName (String name)
+specifier|synchronized
+name|void
+name|removeObjectName
+parameter_list|(
+name|String
+name|name
+parameter_list|)
+block|{
+name|mBeanNames
+operator|.
+name|map
+operator|.
+name|remove
+argument_list|(
+name|name
+argument_list|)
+expr_stmt|;
 block|}
 DECL|method|newSourceName (String name, boolean dupOK)
 specifier|synchronized

@@ -715,7 +715,7 @@ name|ShortCircuitReplica
 argument_list|>
 name|entry
 init|=
-name|evictableMmapped
+name|evictable
 operator|.
 name|ceilingEntry
 argument_list|(
@@ -1742,16 +1742,6 @@ name|shmManager
 operator|=
 name|shmManager
 expr_stmt|;
-block|}
-DECL|method|getMmapRetryTimeoutMs ()
-specifier|public
-name|long
-name|getMmapRetryTimeoutMs
-parameter_list|()
-block|{
-return|return
-name|mmapRetryTimeoutMs
-return|;
 block|}
 DECL|method|getStaleThresholdMs ()
 specifier|public
@@ -3816,7 +3806,7 @@ if|if
 condition|(
 name|delta
 operator|<
-name|staleThresholdMs
+name|mmapRetryTimeoutMs
 condition|)
 block|{
 if|if

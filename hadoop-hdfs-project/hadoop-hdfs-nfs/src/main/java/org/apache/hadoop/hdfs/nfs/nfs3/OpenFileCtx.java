@@ -711,6 +711,12 @@ specifier|final
 name|HdfsDataOutputStream
 name|fos
 decl_stmt|;
+DECL|field|aixCompatMode
+specifier|private
+specifier|final
+name|boolean
+name|aixCompatMode
+decl_stmt|;
 comment|// It's updated after each sync to HDFS
 DECL|field|latestAttr
 specifier|private
@@ -1102,6 +1108,44 @@ name|iug
 parameter_list|)
 block|{
 name|this
+argument_list|(
+name|fos
+argument_list|,
+name|latestAttr
+argument_list|,
+name|dumpFilePath
+argument_list|,
+name|client
+argument_list|,
+name|iug
+argument_list|,
+literal|false
+argument_list|)
+expr_stmt|;
+block|}
+DECL|method|OpenFileCtx (HdfsDataOutputStream fos, Nfs3FileAttributes latestAttr, String dumpFilePath, DFSClient client, IdUserGroup iug, boolean aixCompatMode)
+name|OpenFileCtx
+parameter_list|(
+name|HdfsDataOutputStream
+name|fos
+parameter_list|,
+name|Nfs3FileAttributes
+name|latestAttr
+parameter_list|,
+name|String
+name|dumpFilePath
+parameter_list|,
+name|DFSClient
+name|client
+parameter_list|,
+name|IdUserGroup
+name|iug
+parameter_list|,
+name|boolean
+name|aixCompatMode
+parameter_list|)
+block|{
+name|this
 operator|.
 name|fos
 operator|=
@@ -1112,6 +1156,12 @@ operator|.
 name|latestAttr
 operator|=
 name|latestAttr
+expr_stmt|;
+name|this
+operator|.
+name|aixCompatMode
+operator|=
+name|aixCompatMode
 expr_stmt|;
 comment|// We use the ReverseComparatorOnMin as the comparator of the map. In this
 comment|// way, we first dump the data with larger offset. In the meanwhile, we
@@ -4013,6 +4063,35 @@ condition|)
 block|{
 if|if
 condition|(
+name|aixCompatMode
+condition|)
+block|{
+comment|// The AIX NFS client misinterprets RFC-1813 and will always send 4096
+comment|// for the commitOffset even if fewer bytes than that have ever (or will
+comment|// ever) be sent by the client. So, if in AIX compatibility mode, we
+comment|// will always DO_SYNC if the number of bytes to commit have already all
+comment|// been flushed, else we will fall through to the logic below which
+comment|// checks for pending writes in the case that we're being asked to
+comment|// commit more bytes than have so far been flushed. See HDFS-6549 for
+comment|// more info.
+if|if
+condition|(
+name|commitOffset
+operator|<=
+name|flushed
+condition|)
+block|{
+return|return
+name|COMMIT_STATUS
+operator|.
+name|COMMIT_DO_SYNC
+return|;
+block|}
+block|}
+else|else
+block|{
+if|if
+condition|(
 name|commitOffset
 operator|>
 name|flushed
@@ -4062,6 +4141,7 @@ name|COMMIT_STATUS
 operator|.
 name|COMMIT_DO_SYNC
 return|;
+block|}
 block|}
 block|}
 name|Entry

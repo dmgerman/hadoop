@@ -258,6 +258,24 @@ name|server
 operator|.
 name|namenode
 operator|.
+name|EditLogFileOutputStream
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|server
+operator|.
+name|namenode
+operator|.
 name|NameNode
 import|;
 end_import
@@ -420,6 +438,17 @@ specifier|private
 name|FileSystem
 name|fs
 decl_stmt|;
+static|static
+block|{
+comment|// Make tests run faster by avoiding fsync()
+name|EditLogFileOutputStream
+operator|.
+name|setShouldSkipFsyncForTesting
+argument_list|(
+literal|true
+argument_list|)
+expr_stmt|;
+block|}
 annotation|@
 name|Before
 DECL|method|setup ()

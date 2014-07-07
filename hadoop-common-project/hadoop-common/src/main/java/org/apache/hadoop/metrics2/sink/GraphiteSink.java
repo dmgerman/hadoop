@@ -308,22 +308,6 @@ name|socket
 init|=
 literal|null
 decl_stmt|;
-DECL|method|setWriter (Writer writer)
-specifier|public
-name|void
-name|setWriter
-parameter_list|(
-name|Writer
-name|writer
-parameter_list|)
-block|{
-name|this
-operator|.
-name|writer
-operator|=
-name|writer
-expr_stmt|;
-block|}
 annotation|@
 name|Override
 DECL|method|init (SubsetConfiguration conf)
@@ -394,8 +378,8 @@ argument_list|,
 name|serverPort
 argument_list|)
 expr_stmt|;
-name|setWriter
-argument_list|(
+name|writer
+operator|=
 operator|new
 name|OutputStreamWriter
 argument_list|(
@@ -403,7 +387,6 @@ name|socket
 operator|.
 name|getOutputStream
 argument_list|()
-argument_list|)
 argument_list|)
 expr_stmt|;
 block|}

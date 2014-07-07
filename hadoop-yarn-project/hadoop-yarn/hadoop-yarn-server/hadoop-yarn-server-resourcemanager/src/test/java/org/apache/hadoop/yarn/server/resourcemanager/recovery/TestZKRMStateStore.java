@@ -700,6 +700,11 @@ argument_list|(
 name|zkTester
 argument_list|)
 expr_stmt|;
+name|testEpoch
+argument_list|(
+name|zkTester
+argument_list|)
+expr_stmt|;
 name|testAppDeletion
 argument_list|(
 name|zkTester

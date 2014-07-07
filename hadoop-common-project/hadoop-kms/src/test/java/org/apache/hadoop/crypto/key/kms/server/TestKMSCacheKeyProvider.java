@@ -1027,6 +1027,8 @@ literal|0
 argument_list|,
 literal|"l"
 argument_list|,
+literal|null
+argument_list|,
 operator|new
 name|Date
 argument_list|()

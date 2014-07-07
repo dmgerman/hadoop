@@ -285,6 +285,24 @@ name|DFS_NFS_PORT_MONITORING_DISABLED_DEFAULT
 init|=
 literal|true
 decl_stmt|;
+DECL|field|AIX_COMPAT_MODE_KEY
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|AIX_COMPAT_MODE_KEY
+init|=
+literal|"nfs.aix.compatibility.mode.enabled"
+decl_stmt|;
+DECL|field|AIX_COMPAT_MODE_DEFAULT
+specifier|public
+specifier|static
+specifier|final
+name|boolean
+name|AIX_COMPAT_MODE_DEFAULT
+init|=
+literal|false
+decl_stmt|;
 block|}
 end_class
 
