@@ -123,7 +123,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * This class provides inteface and utilities for processing checksums for  * DFS data transfers.  */
+comment|/**  * This class provides interface and utilities for processing checksums for  * DFS data transfers.  */
 end_comment
 
 begin_class
