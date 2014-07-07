@@ -11201,6 +11201,15 @@ argument_list|(
 name|inode
 argument_list|)
 expr_stmt|;
+if|if
+condition|(
+operator|!
+name|inode
+operator|.
+name|isSymlink
+argument_list|()
+condition|)
+block|{
 specifier|final
 name|XAttrFeature
 name|xaf
@@ -11286,6 +11295,7 @@ argument_list|()
 argument_list|)
 argument_list|)
 expr_stmt|;
+block|}
 block|}
 block|}
 block|}
