@@ -1250,6 +1250,11 @@ argument_list|,
 literal|"true"
 argument_list|)
 expr_stmt|;
+name|initStdOut
+argument_list|(
+name|conf
+argument_list|)
+expr_stmt|;
 name|Application
 argument_list|<
 name|WritableComparable
