@@ -2922,6 +2922,16 @@ name|length
 argument_list|()
 argument_list|)
 expr_stmt|;
+name|String
+name|responseState
+init|=
+name|json
+operator|.
+name|getString
+argument_list|(
+literal|"state"
+argument_list|)
+decl_stmt|;
 name|boolean
 name|valid
 init|=
@@ -2944,12 +2954,7 @@ argument_list|()
 operator|.
 name|equals
 argument_list|(
-name|json
-operator|.
-name|getString
-argument_list|(
-literal|"state"
-argument_list|)
+name|responseState
 argument_list|)
 condition|)
 block|{
@@ -2959,9 +2964,16 @@ literal|true
 expr_stmt|;
 block|}
 block|}
+name|String
+name|msg
+init|=
+literal|"app state incorrect, got "
+operator|+
+name|responseState
+decl_stmt|;
 name|assertTrue
 argument_list|(
-literal|"app state incorrect"
+name|msg
 argument_list|,
 name|valid
 argument_list|)
@@ -3135,9 +3147,16 @@ literal|true
 expr_stmt|;
 block|}
 block|}
+name|String
+name|msg
+init|=
+literal|"app state incorrect, got "
+operator|+
+name|state
+decl_stmt|;
 name|assertTrue
 argument_list|(
-literal|"app state incorrect"
+name|msg
 argument_list|,
 name|valid
 argument_list|)
