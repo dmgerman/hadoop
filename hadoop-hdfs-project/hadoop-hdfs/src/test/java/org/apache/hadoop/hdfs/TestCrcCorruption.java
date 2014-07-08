@@ -336,6 +336,18 @@ operator|new
 name|HdfsConfiguration
 argument_list|()
 decl_stmt|;
+comment|// Set short retry timeouts so this test runs faster
+name|conf
+operator|.
+name|setInt
+argument_list|(
+name|DFSConfigKeys
+operator|.
+name|DFS_CLIENT_RETRY_WINDOW_BASE
+argument_list|,
+literal|10
+argument_list|)
+expr_stmt|;
 name|MiniDFSCluster
 name|cluster
 init|=
@@ -795,6 +807,18 @@ operator|new
 name|Random
 argument_list|()
 decl_stmt|;
+comment|// Set short retry timeouts so this test runs faster
+name|conf
+operator|.
+name|setInt
+argument_list|(
+name|DFSConfigKeys
+operator|.
+name|DFS_CLIENT_RETRY_WINDOW_BASE
+argument_list|,
+literal|10
+argument_list|)
+expr_stmt|;
 try|try
 block|{
 name|cluster
@@ -1807,6 +1831,18 @@ operator|.
 name|DFS_REPLICATION_KEY
 argument_list|,
 name|numDataNodes
+argument_list|)
+expr_stmt|;
+comment|// Set short retry timeouts so this test runs faster
+name|conf
+operator|.
+name|setInt
+argument_list|(
+name|DFSConfigKeys
+operator|.
+name|DFS_CLIENT_RETRY_WINDOW_BASE
+argument_list|,
+literal|10
 argument_list|)
 expr_stmt|;
 name|MiniDFSCluster
