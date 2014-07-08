@@ -366,6 +366,20 @@ name|MBeans
 import|;
 end_import
 
+begin_import
+import|import
+name|com
+operator|.
+name|google
+operator|.
+name|common
+operator|.
+name|base
+operator|.
+name|Preconditions
+import|;
+end_import
+
 begin_comment
 comment|/**  * Manage snapshottable directories and their snapshots.  *   * This class includes operations that create, access, modify snapshots and/or  * snapshot-related data. In general, the locking structure of snapshot  * operations is:<br>  *   * 1. Lock the {@link FSNamesystem} lock in {@link FSNamesystem} before calling  * into {@link SnapshotManager} methods.<br>  * 2. Lock the {@link FSDirectory} lock for the {@link SnapshotManager} methods  * if necessary.  */
 end_comment
@@ -425,7 +439,7 @@ name|Map
 argument_list|<
 name|Long
 argument_list|,
-name|INodeDirectorySnapshottable
+name|INodeDirectory
 argument_list|>
 name|snapshottables
 init|=
@@ -434,7 +448,7 @@ name|HashMap
 argument_list|<
 name|Long
 argument_list|,
-name|INodeDirectorySnapshottable
+name|INodeDirectory
 argument_list|>
 argument_list|()
 decl_stmt|;
@@ -493,7 +507,7 @@ return|return;
 block|}
 for|for
 control|(
-name|INodeDirectorySnapshottable
+name|INodeDirectory
 name|s
 range|:
 name|snapshottables
@@ -618,10 +632,6 @@ name|path
 argument_list|)
 expr_stmt|;
 block|}
-specifier|final
-name|INodeDirectorySnapshottable
-name|s
-decl_stmt|;
 if|if
 condition|(
 name|d
@@ -631,18 +641,11 @@ argument_list|()
 condition|)
 block|{
 comment|//The directory is already a snapshottable directory.
-name|s
-operator|=
-operator|(
-name|INodeDirectorySnapshottable
-operator|)
 name|d
-expr_stmt|;
-name|s
 operator|.
 name|setSnapshotQuota
 argument_list|(
-name|INodeDirectorySnapshottable
+name|DirectorySnapshottableFeature
 operator|.
 name|SNAPSHOT_LIMIT
 argument_list|)
@@ -650,40 +653,38 @@ expr_stmt|;
 block|}
 else|else
 block|{
-name|s
-operator|=
 name|d
 operator|.
-name|replaceSelf4INodeDirectorySnapshottable
-argument_list|(
-name|iip
-operator|.
-name|getLatestSnapshotId
+name|addSnapshottableFeature
 argument_list|()
-argument_list|,
-name|fsdir
-operator|.
-name|getINodeMap
-argument_list|()
-argument_list|)
 expr_stmt|;
 block|}
 name|addSnapshottable
 argument_list|(
-name|s
+name|d
 argument_list|)
 expr_stmt|;
 block|}
 comment|/** Add the given snapshottable directory to {@link #snapshottables}. */
-DECL|method|addSnapshottable (INodeDirectorySnapshottable dir)
+DECL|method|addSnapshottable (INodeDirectory dir)
 specifier|public
 name|void
 name|addSnapshottable
 parameter_list|(
-name|INodeDirectorySnapshottable
+name|INodeDirectory
 name|dir
 parameter_list|)
 block|{
+name|Preconditions
+operator|.
+name|checkArgument
+argument_list|(
+name|dir
+operator|.
+name|isSnapshottable
+argument_list|()
+argument_list|)
+expr_stmt|;
 name|snapshottables
 operator|.
 name|put
@@ -698,12 +699,12 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|/** Remove the given snapshottable directory from {@link #snapshottables}. */
-DECL|method|removeSnapshottable (INodeDirectorySnapshottable s)
+DECL|method|removeSnapshottable (INodeDirectory s)
 specifier|private
 name|void
 name|removeSnapshottable
 parameter_list|(
-name|INodeDirectorySnapshottable
+name|INodeDirectory
 name|s
 parameter_list|)
 block|{
@@ -719,14 +720,14 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|/** Remove snapshottable directories from {@link #snapshottables} */
-DECL|method|removeSnapshottable (List<INodeDirectorySnapshottable> toRemove)
+DECL|method|removeSnapshottable (List<INodeDirectory> toRemove)
 specifier|public
 name|void
 name|removeSnapshottable
 parameter_list|(
 name|List
 argument_list|<
-name|INodeDirectorySnapshottable
+name|INodeDirectory
 argument_list|>
 name|toRemove
 parameter_list|)
@@ -740,7 +741,7 @@ condition|)
 block|{
 for|for
 control|(
-name|INodeDirectorySnapshottable
+name|INodeDirectory
 name|s
 range|:
 name|toRemove
@@ -794,30 +795,27 @@ argument_list|,
 name|path
 argument_list|)
 decl_stmt|;
-if|if
-condition|(
-operator|!
+name|DirectorySnapshottableFeature
+name|sf
+init|=
 name|d
 operator|.
-name|isSnapshottable
+name|getDirectorySnapshottableFeature
 argument_list|()
+decl_stmt|;
+if|if
+condition|(
+name|sf
+operator|==
+literal|null
 condition|)
 block|{
 comment|// the directory is already non-snapshottable
 return|return;
 block|}
-specifier|final
-name|INodeDirectorySnapshottable
-name|s
-init|=
-operator|(
-name|INodeDirectorySnapshottable
-operator|)
-name|d
-decl_stmt|;
 if|if
 condition|(
-name|s
+name|sf
 operator|.
 name|getNumSnapshots
 argument_list|()
@@ -841,7 +839,7 @@ throw|;
 block|}
 if|if
 condition|(
-name|s
+name|d
 operator|==
 name|fsdir
 operator|.
@@ -849,7 +847,7 @@ name|getRoot
 argument_list|()
 condition|)
 block|{
-name|s
+name|d
 operator|.
 name|setSnapshotQuota
 argument_list|(
@@ -859,32 +857,22 @@ expr_stmt|;
 block|}
 else|else
 block|{
-name|s
+name|d
 operator|.
-name|replaceSelf
-argument_list|(
-name|iip
-operator|.
-name|getLatestSnapshotId
+name|removeSnapshottableFeature
 argument_list|()
-argument_list|,
-name|fsdir
-operator|.
-name|getINodeMap
-argument_list|()
-argument_list|)
 expr_stmt|;
 block|}
 name|removeSnapshottable
 argument_list|(
-name|s
+name|d
 argument_list|)
 expr_stmt|;
 block|}
 comment|/**   * Find the source root directory where the snapshot will be taken   * for a given path.   *   * @param path The directory path where the snapshot will be taken.   * @return Snapshottable directory.   * @throws IOException   *           Throw IOException when the given path does not lead to an   *           existing snapshottable directory.   */
-DECL|method|getSnapshottableRoot (final String path )
+DECL|method|getSnapshottableRoot (final String path)
 specifier|public
-name|INodeDirectorySnapshottable
+name|INodeDirectory
 name|getSnapshottableRoot
 parameter_list|(
 specifier|final
@@ -895,28 +883,47 @@ throws|throws
 name|IOException
 block|{
 specifier|final
-name|INodesInPath
-name|i
+name|INodeDirectory
+name|dir
 init|=
+name|INodeDirectory
+operator|.
+name|valueOf
+argument_list|(
 name|fsdir
 operator|.
 name|getINodesInPath4Write
 argument_list|(
 name|path
 argument_list|)
-decl_stmt|;
-return|return
-name|INodeDirectorySnapshottable
-operator|.
-name|valueOf
-argument_list|(
-name|i
 operator|.
 name|getLastINode
 argument_list|()
 argument_list|,
 name|path
 argument_list|)
+decl_stmt|;
+if|if
+condition|(
+operator|!
+name|dir
+operator|.
+name|isSnapshottable
+argument_list|()
+condition|)
+block|{
+throw|throw
+operator|new
+name|SnapshotException
+argument_list|(
+literal|"Directory is not a snapshottable directory: "
+operator|+
+name|path
+argument_list|)
+throw|;
+block|}
+return|return
+name|dir
 return|;
 block|}
 comment|/**    * Create a snapshot of the given path.    * It is assumed that the caller will perform synchronization.    *    * @param path    *          The directory path where the snapshot will be taken.    * @param snapshotName    *          The name of the snapshot.    * @throws IOException    *           Throw IOException when 1) the given path does not lead to an    *           existing snapshottable directory, and/or 2) there exists a    *           snapshot with the given name for the directory, and/or 3)    *           snapshot number exceeds quota    */
@@ -935,7 +942,7 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
-name|INodeDirectorySnapshottable
+name|INodeDirectory
 name|srcRoot
 init|=
 name|getSnapshottableRoot
@@ -1024,7 +1031,7 @@ block|{
 comment|// parse the path, and check if the path is a snapshot path
 comment|// the INodeDirectorySnapshottable#valueOf method will throw Exception
 comment|// if the path is not for a snapshottable directory
-name|INodeDirectorySnapshottable
+name|INodeDirectory
 name|srcRoot
 init|=
 name|getSnapshottableRoot
@@ -1073,20 +1080,11 @@ block|{
 comment|// Find the source root directory path where the snapshot was taken.
 comment|// All the check for path has been included in the valueOf method.
 specifier|final
-name|INodeDirectorySnapshottable
+name|INodeDirectory
 name|srcRoot
 init|=
-name|INodeDirectorySnapshottable
-operator|.
-name|valueOf
+name|getSnapshottableRoot
 argument_list|(
-name|fsdir
-operator|.
-name|getINode
-argument_list|(
-name|path
-argument_list|)
-argument_list|,
 name|path
 argument_list|)
 decl_stmt|;
@@ -1169,7 +1167,7 @@ name|counter
 expr_stmt|;
 block|}
 DECL|method|getSnapshottableDirs ()
-name|INodeDirectorySnapshottable
+name|INodeDirectory
 index|[]
 name|getSnapshottableDirs
 parameter_list|()
@@ -1183,7 +1181,7 @@ operator|.
 name|toArray
 argument_list|(
 operator|new
-name|INodeDirectorySnapshottable
+name|INodeDirectory
 index|[
 name|snapshottables
 operator|.
@@ -1225,7 +1223,7 @@ expr_stmt|;
 comment|// write all snapshots.
 for|for
 control|(
-name|INodeDirectorySnapshottable
+name|INodeDirectory
 name|snapshottableDir
 range|:
 name|snapshottables
@@ -1241,7 +1239,10 @@ name|s
 range|:
 name|snapshottableDir
 operator|.
-name|getSnapshotsByNames
+name|getDirectorySnapshottableFeature
+argument_list|()
+operator|.
+name|getSnapshotList
 argument_list|()
 control|)
 block|{
@@ -1399,7 +1400,7 @@ argument_list|()
 decl_stmt|;
 for|for
 control|(
-name|INodeDirectorySnapshottable
+name|INodeDirectory
 name|dir
 range|:
 name|snapshottables
@@ -1477,10 +1478,16 @@ argument_list|)
 argument_list|,
 name|dir
 operator|.
+name|getDirectorySnapshottableFeature
+argument_list|()
+operator|.
 name|getNumSnapshots
 argument_list|()
 argument_list|,
 name|dir
+operator|.
+name|getDirectorySnapshottableFeature
+argument_list|()
 operator|.
 name|getSnapshotQuota
 argument_list|()
@@ -1567,6 +1574,17 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
+comment|// Find the source root directory path where the snapshots were taken.
+comment|// All the check for path has been included in the valueOf method.
+specifier|final
+name|INodeDirectory
+name|snapshotRoot
+init|=
+name|getSnapshottableRoot
+argument_list|(
+name|path
+argument_list|)
+decl_stmt|;
 if|if
 condition|(
 operator|(
@@ -1613,45 +1631,19 @@ argument_list|()
 argument_list|)
 return|;
 block|}
-comment|// Find the source root directory path where the snapshots were taken.
-comment|// All the check for path has been included in the valueOf method.
-name|INodesInPath
-name|inodesInPath
-init|=
-name|fsdir
-operator|.
-name|getINodesInPath4Write
-argument_list|(
-name|path
-operator|.
-name|toString
-argument_list|()
-argument_list|)
-decl_stmt|;
-specifier|final
-name|INodeDirectorySnapshottable
-name|snapshotRoot
-init|=
-name|INodeDirectorySnapshottable
-operator|.
-name|valueOf
-argument_list|(
-name|inodesInPath
-operator|.
-name|getLastINode
-argument_list|()
-argument_list|,
-name|path
-argument_list|)
-decl_stmt|;
 specifier|final
 name|SnapshotDiffInfo
 name|diffs
 init|=
 name|snapshotRoot
 operator|.
+name|getDirectorySnapshottableFeature
+argument_list|()
+operator|.
 name|computeDiff
 argument_list|(
+name|snapshotRoot
+argument_list|,
 name|from
 argument_list|,
 name|to
@@ -1791,7 +1783,7 @@ argument_list|()
 decl_stmt|;
 for|for
 control|(
-name|INodeDirectorySnapshottable
+name|INodeDirectory
 name|d
 range|:
 name|getSnapshottableDirs
@@ -1858,7 +1850,7 @@ argument_list|()
 decl_stmt|;
 for|for
 control|(
-name|INodeDirectorySnapshottable
+name|INodeDirectory
 name|d
 range|:
 name|getSnapshottableDirs
@@ -1871,6 +1863,9 @@ name|Snapshot
 name|s
 range|:
 name|d
+operator|.
+name|getDirectorySnapshottableFeature
+argument_list|()
 operator|.
 name|getSnapshotList
 argument_list|()
@@ -1906,7 +1901,7 @@ index|]
 argument_list|)
 return|;
 block|}
-DECL|method|toBean ( INodeDirectorySnapshottable d)
+DECL|method|toBean (INodeDirectory d)
 specifier|public
 specifier|static
 name|SnapshottableDirectoryStatus
@@ -1914,7 +1909,7 @@ operator|.
 name|Bean
 name|toBean
 parameter_list|(
-name|INodeDirectorySnapshottable
+name|INodeDirectory
 name|d
 parameter_list|)
 block|{
@@ -1931,10 +1926,16 @@ argument_list|()
 argument_list|,
 name|d
 operator|.
+name|getDirectorySnapshottableFeature
+argument_list|()
+operator|.
 name|getNumSnapshots
 argument_list|()
 argument_list|,
 name|d
+operator|.
+name|getDirectorySnapshottableFeature
+argument_list|()
 operator|.
 name|getSnapshotQuota
 argument_list|()

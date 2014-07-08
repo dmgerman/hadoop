@@ -3062,26 +3062,6 @@ name|namenode
 operator|.
 name|snapshot
 operator|.
-name|INodeDirectorySnapshottable
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|hdfs
-operator|.
-name|server
-operator|.
-name|namenode
-operator|.
-name|snapshot
-operator|.
 name|Snapshot
 import|;
 end_import
@@ -35180,13 +35160,13 @@ expr_stmt|;
 block|}
 block|}
 comment|/**    * Remove a list of INodeDirectorySnapshottable from the SnapshotManager    * @param toRemove the list of INodeDirectorySnapshottable to be removed    */
-DECL|method|removeSnapshottableDirs (List<INodeDirectorySnapshottable> toRemove)
+DECL|method|removeSnapshottableDirs (List<INodeDirectory> toRemove)
 name|void
 name|removeSnapshottableDirs
 parameter_list|(
 name|List
 argument_list|<
-name|INodeDirectorySnapshottable
+name|INodeDirectory
 argument_list|>
 name|toRemove
 parameter_list|)

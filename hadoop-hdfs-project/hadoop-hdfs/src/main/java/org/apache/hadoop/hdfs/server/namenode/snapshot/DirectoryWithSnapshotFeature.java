@@ -437,7 +437,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * Feature for directory with snapshot-related information.  */
+comment|/**  * Feature used to store and process the snapshot diff information for a  * directory. In particular, it contains a directory diff list recording changes  * made to the directory and its children for each snapshot.  */
 end_comment
 
 begin_class

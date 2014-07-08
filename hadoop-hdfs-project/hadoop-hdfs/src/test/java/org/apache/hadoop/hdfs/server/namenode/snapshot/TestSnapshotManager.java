@@ -23,6 +23,54 @@ package|;
 end_package
 
 begin_import
+import|import static
+name|org
+operator|.
+name|mockito
+operator|.
+name|Matchers
+operator|.
+name|anyString
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|mockito
+operator|.
+name|Mockito
+operator|.
+name|doReturn
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|mockito
+operator|.
+name|Mockito
+operator|.
+name|mock
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|mockito
+operator|.
+name|Mockito
+operator|.
+name|spy
+import|;
+end_import
+
+begin_import
 import|import
 name|java
 operator|.
@@ -88,21 +136,37 @@ begin_import
 import|import
 name|org
 operator|.
-name|junit
+name|apache
 operator|.
-name|*
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|server
+operator|.
+name|namenode
+operator|.
+name|INodeDirectory
 import|;
 end_import
 
 begin_import
-import|import static
+import|import
 name|org
 operator|.
-name|mockito
+name|junit
 operator|.
-name|Mockito
+name|Assert
+import|;
+end_import
+
+begin_import
+import|import
+name|org
 operator|.
-name|*
+name|junit
+operator|.
+name|Test
 import|;
 end_import
 
@@ -143,12 +207,12 @@ name|Exception
 block|{
 comment|// Setup mock objects for SnapshotManager.createSnapshot.
 comment|//
-name|INodeDirectorySnapshottable
+name|INodeDirectory
 name|ids
 init|=
 name|mock
 argument_list|(
-name|INodeDirectorySnapshottable
+name|INodeDirectory
 operator|.
 name|class
 argument_list|)
