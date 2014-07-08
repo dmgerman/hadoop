@@ -10706,7 +10706,7 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
-name|checkWriteAccess
+name|checkReadAccess
 argument_list|(
 name|block
 argument_list|)
@@ -10720,10 +10720,10 @@ name|block
 argument_list|)
 return|;
 block|}
-DECL|method|checkWriteAccess (final ExtendedBlock block)
+DECL|method|checkReadAccess (final ExtendedBlock block)
 specifier|private
 name|void
-name|checkWriteAccess
+name|checkReadAccess
 parameter_list|(
 specifier|final
 name|ExtendedBlock
