@@ -1086,15 +1086,6 @@ argument_list|()
 operator|==
 name|AMCommand
 operator|.
-name|AM_RESYNC
-operator|||
-name|response
-operator|.
-name|getAMCommand
-argument_list|()
-operator|==
-name|AMCommand
-operator|.
 name|AM_SHUTDOWN
 condition|)
 block|{
@@ -1264,9 +1255,6 @@ name|getAMCommand
 argument_list|()
 condition|)
 block|{
-case|case
-name|AM_RESYNC
-case|:
 case|case
 name|AM_SHUTDOWN
 case|:
