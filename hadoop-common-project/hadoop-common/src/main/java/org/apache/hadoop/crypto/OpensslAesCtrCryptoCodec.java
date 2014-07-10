@@ -274,13 +274,10 @@ name|OpensslCipher
 operator|.
 name|getInstance
 argument_list|(
-name|OpensslCipher
+name|SUITE
 operator|.
-name|AES_CTR
-argument_list|,
-name|OpensslCipher
-operator|.
-name|PADDING_NOPADDING
+name|getName
+argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
