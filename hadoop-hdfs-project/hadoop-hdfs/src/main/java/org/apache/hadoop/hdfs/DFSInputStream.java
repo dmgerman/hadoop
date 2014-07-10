@@ -5169,6 +5169,14 @@ name|nread
 argument_list|)
 throw|;
 block|}
+name|DFSClientFaultInjector
+operator|.
+name|get
+argument_list|()
+operator|.
+name|readFromDatanodeDelay
+argument_list|()
+expr_stmt|;
 return|return;
 block|}
 catch|catch
