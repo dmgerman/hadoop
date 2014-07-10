@@ -18676,7 +18676,9 @@ name|src
 argument_list|,
 literal|null
 argument_list|,
-literal|null
+name|removedINodes
+argument_list|,
+literal|true
 argument_list|)
 expr_stmt|;
 name|ret
@@ -18703,34 +18705,6 @@ argument_list|)
 expr_stmt|;
 comment|// Incremental deletion of blocks
 name|collectedBlocks
-operator|.
-name|clear
-argument_list|()
-expr_stmt|;
-name|dir
-operator|.
-name|writeLock
-argument_list|()
-expr_stmt|;
-try|try
-block|{
-name|dir
-operator|.
-name|removeFromInodeMap
-argument_list|(
-name|removedINodes
-argument_list|)
-expr_stmt|;
-block|}
-finally|finally
-block|{
-name|dir
-operator|.
-name|writeUnlock
-argument_list|()
-expr_stmt|;
-block|}
-name|removedINodes
 operator|.
 name|clear
 argument_list|()
@@ -18847,8 +18821,8 @@ expr_stmt|;
 block|}
 block|}
 block|}
-comment|/**    * Remove leases, inodes and blocks related to a given path    * @param src The given path    * @param blocks Containing the list of blocks to be deleted from blocksMap    * @param removedINodes Containing the list of inodes to be removed from     *                      inodesMap    */
-DECL|method|removePathAndBlocks (String src, BlocksMapUpdateInfo blocks, List<INode> removedINodes)
+comment|/**    * Remove leases, inodes and blocks related to a given path    * @param src The given path    * @param blocks Containing the list of blocks to be deleted from blocksMap    * @param removedINodes Containing the list of inodes to be removed from     *                      inodesMap    * @param acquireINodeMapLock Whether to acquire the lock for inode removal    */
+DECL|method|removePathAndBlocks (String src, BlocksMapUpdateInfo blocks, List<INode> removedINodes, final boolean acquireINodeMapLock)
 name|void
 name|removePathAndBlocks
 parameter_list|(
@@ -18863,6 +18837,10 @@ argument_list|<
 name|INode
 argument_list|>
 name|removedINodes
+parameter_list|,
+specifier|final
+name|boolean
+name|acquireINodeMapLock
 parameter_list|)
 block|{
 assert|assert
@@ -18884,6 +18862,19 @@ operator|!=
 literal|null
 condition|)
 block|{
+if|if
+condition|(
+name|acquireINodeMapLock
+condition|)
+block|{
+name|dir
+operator|.
+name|writeLock
+argument_list|()
+expr_stmt|;
+block|}
+try|try
+block|{
 name|dir
 operator|.
 name|removeFromInodeMap
@@ -18891,6 +18882,21 @@ argument_list|(
 name|removedINodes
 argument_list|)
 expr_stmt|;
+block|}
+finally|finally
+block|{
+if|if
+condition|(
+name|acquireINodeMapLock
+condition|)
+block|{
+name|dir
+operator|.
+name|writeUnlock
+argument_list|()
+expr_stmt|;
+block|}
+block|}
 name|removedINodes
 operator|.
 name|clear

@@ -3455,6 +3455,8 @@ argument_list|,
 name|collectedBlocks
 argument_list|,
 name|removedINodes
+argument_list|,
+literal|false
 argument_list|)
 expr_stmt|;
 block|}
@@ -6132,6 +6134,8 @@ argument_list|,
 name|collectedBlocks
 argument_list|,
 name|removedINodes
+argument_list|,
+literal|false
 argument_list|)
 expr_stmt|;
 block|}
