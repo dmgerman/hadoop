@@ -1295,21 +1295,6 @@ parameter_list|)
 throws|throws
 name|NativeIOException
 function_decl|;
-DECL|method|munlock_native ( ByteBuffer buffer, long len)
-specifier|static
-specifier|native
-name|void
-name|munlock_native
-parameter_list|(
-name|ByteBuffer
-name|buffer
-parameter_list|,
-name|long
-name|len
-parameter_list|)
-throws|throws
-name|NativeIOException
-function_decl|;
 comment|/**      * Locks the provided direct ByteBuffer into memory, preventing it from      * swapping out. After a buffer is locked, future accesses will not incur      * a page fault.      *       * See the mlock(2) man page for more information.      *       * @throws NativeIOException      */
 DECL|method|mlock (ByteBuffer buffer, long len)
 specifier|static
@@ -1346,50 +1331,6 @@ argument_list|)
 throw|;
 block|}
 name|mlock_native
-argument_list|(
-name|buffer
-argument_list|,
-name|len
-argument_list|)
-expr_stmt|;
-block|}
-comment|/**      * Unlocks a locked direct ByteBuffer, allowing it to swap out of memory.      * This is a no-op if the ByteBuffer was not previously locked.      *       * See the munlock(2) man page for more information.      *       * @throws NativeIOException      */
-DECL|method|munlock (ByteBuffer buffer, long len)
-specifier|public
-specifier|static
-name|void
-name|munlock
-parameter_list|(
-name|ByteBuffer
-name|buffer
-parameter_list|,
-name|long
-name|len
-parameter_list|)
-throws|throws
-name|IOException
-block|{
-name|assertCodeLoaded
-argument_list|()
-expr_stmt|;
-if|if
-condition|(
-operator|!
-name|buffer
-operator|.
-name|isDirect
-argument_list|()
-condition|)
-block|{
-throw|throw
-operator|new
-name|IOException
-argument_list|(
-literal|"Cannot munlock a non-direct ByteBuffer"
-argument_list|)
-throw|;
-block|}
-name|munlock_native
 argument_list|(
 name|buffer
 argument_list|,

@@ -3528,16 +3528,14 @@ argument_list|,
 name|sum
 argument_list|)
 expr_stmt|;
-comment|// munlock the buffer
+comment|// munmap the buffer, which also implicitly unlocks it
 name|NativeIO
 operator|.
 name|POSIX
 operator|.
-name|munlock
+name|munmap
 argument_list|(
 name|mapbuf
-argument_list|,
-name|fileSize
 argument_list|)
 expr_stmt|;
 block|}
