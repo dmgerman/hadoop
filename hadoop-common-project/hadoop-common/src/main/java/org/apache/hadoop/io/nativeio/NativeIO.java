@@ -2550,6 +2550,20 @@ argument_list|()
 argument_list|)
 return|;
 block|}
+comment|/**      * Extends both the minimum and maximum working set size of the current      * process.  This method gets the current minimum and maximum working set      * size, adds the requested amount to each and then sets the minimum and      * maximum working set size to the new values.  Controlling the working set      * size of the process also controls the amount of memory it can lock.      *      * @param delta amount to increment minimum and maximum working set size      * @throws IOException for any error      * @see POSIX#mlock(ByteBuffer, long)      */
+DECL|method|extendWorkingSetSize (long delta)
+specifier|public
+specifier|static
+specifier|native
+name|void
+name|extendWorkingSetSize
+parameter_list|(
+name|long
+name|delta
+parameter_list|)
+throws|throws
+name|IOException
+function_decl|;
 static|static
 block|{
 if|if
