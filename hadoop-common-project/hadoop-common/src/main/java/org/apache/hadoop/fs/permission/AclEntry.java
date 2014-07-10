@@ -882,7 +882,7 @@ condition|(
 name|split
 operator|.
 name|length
-operator|<
+operator|<=
 name|index
 condition|)
 block|{
