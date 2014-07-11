@@ -1084,10 +1084,6 @@ name|System
 operator|.
 name|currentTimeMillis
 argument_list|()
-argument_list|,
-name|MRJobConfig
-operator|.
-name|DEFAULT_MR_AM_MAX_ATTEMPTS
 argument_list|)
 decl_stmt|;
 name|JobConf
@@ -1297,10 +1293,6 @@ name|System
 operator|.
 name|currentTimeMillis
 argument_list|()
-argument_list|,
-name|MRJobConfig
-operator|.
-name|DEFAULT_MR_AM_MAX_ATTEMPTS
 argument_list|,
 literal|false
 argument_list|,
@@ -1551,10 +1543,6 @@ operator|.
 name|currentTimeMillis
 argument_list|()
 argument_list|,
-name|MRJobConfig
-operator|.
-name|DEFAULT_MR_AM_MAX_ATTEMPTS
-argument_list|,
 literal|false
 argument_list|,
 literal|false
@@ -1804,10 +1792,6 @@ operator|.
 name|currentTimeMillis
 argument_list|()
 argument_list|,
-name|MRJobConfig
-operator|.
-name|DEFAULT_MR_AM_MAX_ATTEMPTS
-argument_list|,
 literal|false
 argument_list|,
 literal|false
@@ -2007,10 +1991,6 @@ operator|.
 name|currentTimeMillis
 argument_list|()
 argument_list|,
-name|MRJobConfig
-operator|.
-name|DEFAULT_MR_AM_MAX_ATTEMPTS
-argument_list|,
 literal|false
 argument_list|,
 literal|false
@@ -2104,21 +2084,8 @@ name|IOException
 throws|,
 name|InterruptedException
 block|{
-name|int
-index|[]
-name|maxAppAttemtps
-init|=
-operator|new
-name|int
-index|[]
-block|{
-literal|1
-block|,
-literal|2
-block|,
-literal|3
-block|}
-decl_stmt|;
+comment|// No matter what's the maxAppAttempt or attempt id, the isLastRetry always
+comment|// equals to false
 name|Boolean
 index|[]
 name|expectedBools
@@ -2127,9 +2094,9 @@ operator|new
 name|Boolean
 index|[]
 block|{
-literal|true
+literal|false
 block|,
-literal|true
+literal|false
 block|,
 literal|false
 block|}
@@ -2220,7 +2187,7 @@ literal|0
 init|;
 name|i
 operator|<
-name|maxAppAttemtps
+name|expectedBools
 operator|.
 name|length
 condition|;
@@ -2250,11 +2217,6 @@ name|System
 operator|.
 name|currentTimeMillis
 argument_list|()
-argument_list|,
-name|maxAppAttemtps
-index|[
-name|i
-index|]
 argument_list|,
 literal|false
 argument_list|,
@@ -2911,8 +2873,6 @@ operator|.
 name|currentTimeMillis
 argument_list|()
 argument_list|,
-literal|1
-argument_list|,
 literal|false
 argument_list|,
 literal|true
@@ -3309,7 +3269,7 @@ DECL|field|spyHistoryService
 name|JobHistoryEventHandler
 name|spyHistoryService
 decl_stmt|;
-DECL|method|MRAppMasterTest (ApplicationAttemptId applicationAttemptId, ContainerId containerId, String host, int port, int httpPort, long submitTime, int maxAppAttempts)
+DECL|method|MRAppMasterTest (ApplicationAttemptId applicationAttemptId, ContainerId containerId, String host, int port, int httpPort, long submitTime)
 specifier|public
 name|MRAppMasterTest
 parameter_list|(
@@ -3330,9 +3290,6 @@ name|httpPort
 parameter_list|,
 name|long
 name|submitTime
-parameter_list|,
-name|int
-name|maxAppAttempts
 parameter_list|)
 block|{
 name|this
@@ -3349,15 +3306,13 @@ name|httpPort
 argument_list|,
 name|submitTime
 argument_list|,
-name|maxAppAttempts
-argument_list|,
 literal|true
 argument_list|,
 literal|true
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|MRAppMasterTest (ApplicationAttemptId applicationAttemptId, ContainerId containerId, String host, int port, int httpPort, long submitTime, int maxAppAttempts, boolean overrideInit, boolean overrideStart)
+DECL|method|MRAppMasterTest (ApplicationAttemptId applicationAttemptId, ContainerId containerId, String host, int port, int httpPort, long submitTime, boolean overrideInit, boolean overrideStart)
 specifier|public
 name|MRAppMasterTest
 parameter_list|(
@@ -3378,9 +3333,6 @@ name|httpPort
 parameter_list|,
 name|long
 name|submitTime
-parameter_list|,
-name|int
-name|maxAppAttempts
 parameter_list|,
 name|boolean
 name|overrideInit
@@ -3402,8 +3354,6 @@ argument_list|,
 name|httpPort
 argument_list|,
 name|submitTime
-argument_list|,
-name|maxAppAttempts
 argument_list|)
 expr_stmt|;
 name|this

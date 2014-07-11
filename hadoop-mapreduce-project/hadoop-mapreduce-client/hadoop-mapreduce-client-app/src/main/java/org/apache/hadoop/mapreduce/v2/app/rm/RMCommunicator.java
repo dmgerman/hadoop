@@ -1268,7 +1268,7 @@ name|context
 decl_stmt|;
 name|raContext
 operator|.
-name|computeIsLastAMRetry
+name|resetIsLastAMRetry
 argument_list|()
 expr_stmt|;
 block|}

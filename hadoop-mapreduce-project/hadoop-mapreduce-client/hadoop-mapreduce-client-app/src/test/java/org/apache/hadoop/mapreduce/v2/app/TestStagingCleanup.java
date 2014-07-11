@@ -24,6 +24,18 @@ begin_import
 import|import static
 name|org
 operator|.
+name|junit
+operator|.
+name|Assert
+operator|.
+name|assertTrue
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
 name|mockito
 operator|.
 name|Matchers
@@ -111,26 +123,6 @@ operator|.
 name|io
 operator|.
 name|IOException
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|junit
-operator|.
-name|Assert
-import|;
-end_import
-
-begin_import
-import|import
-name|junit
-operator|.
-name|framework
-operator|.
-name|TestCase
 import|;
 end_import
 
@@ -678,6 +670,16 @@ name|org
 operator|.
 name|junit
 operator|.
+name|Assert
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|junit
+operator|.
 name|Test
 import|;
 end_import
@@ -691,8 +693,6 @@ DECL|class|TestStagingCleanup
 specifier|public
 class|class
 name|TestStagingCleanup
-extends|extends
-name|TestCase
 block|{
 DECL|field|conf
 specifier|private
@@ -761,7 +761,7 @@ name|testDeletionofStagingOnUnregistrationFailure
 argument_list|(
 literal|1
 argument_list|,
-literal|true
+literal|false
 argument_list|)
 expr_stmt|;
 block|}
@@ -959,7 +959,7 @@ name|getContext
 argument_list|()
 operator|)
 operator|.
-name|computeIsLastAMRetry
+name|resetIsLastAMRetry
 argument_list|()
 expr_stmt|;
 if|if
@@ -1474,13 +1474,11 @@ literal|true
 argument_list|)
 expr_stmt|;
 block|}
-annotation|@
-name|Test
-argument_list|(
-name|timeout
-operator|=
-literal|30000
-argument_list|)
+comment|// FIXME:
+comment|// Disabled this test because currently, when job state=REBOOT at shutdown
+comment|// when lastRetry = true in RM view, cleanup will not do.
+comment|// This will be supported after YARN-2261 completed
+comment|//   @Test (timeout = 30000)
 DECL|method|testDeletionofStagingOnReboot ()
 specifier|public
 name|void
@@ -1836,8 +1834,6 @@ argument_list|(
 name|attemptId
 argument_list|,
 name|mockAlloc
-argument_list|,
-literal|4
 argument_list|)
 decl_stmt|;
 name|appMaster
@@ -1884,13 +1880,11 @@ literal|true
 argument_list|)
 expr_stmt|;
 block|}
-annotation|@
-name|Test
-argument_list|(
-name|timeout
-operator|=
-literal|30000
-argument_list|)
+comment|// FIXME:
+comment|// Disabled this test because currently, when shutdown hook triggered at
+comment|// lastRetry in RM view, cleanup will not do. This should be supported after
+comment|// YARN-2261 completed
+comment|//   @Test (timeout = 30000)
 DECL|method|testDeletionofStagingOnKillLastTry ()
 specifier|public
 name|void
@@ -2046,8 +2040,6 @@ argument_list|(
 name|attemptId
 argument_list|,
 name|mockAlloc
-argument_list|,
-literal|1
 argument_list|)
 decl_stmt|;
 comment|//no retry
@@ -2143,7 +2135,7 @@ name|crushUnregistration
 init|=
 literal|false
 decl_stmt|;
-DECL|method|TestMRApp (ApplicationAttemptId applicationAttemptId, ContainerAllocator allocator, int maxAppAttempts)
+DECL|method|TestMRApp (ApplicationAttemptId applicationAttemptId, ContainerAllocator allocator)
 specifier|public
 name|TestMRApp
 parameter_list|(
@@ -2152,9 +2144,6 @@ name|applicationAttemptId
 parameter_list|,
 name|ContainerAllocator
 name|allocator
-parameter_list|,
-name|int
-name|maxAppAttempts
 parameter_list|)
 block|{
 name|super
@@ -2180,8 +2169,6 @@ name|System
 operator|.
 name|currentTimeMillis
 argument_list|()
-argument_list|,
-name|maxAppAttempts
 argument_list|)
 expr_stmt|;
 name|this
@@ -2222,8 +2209,6 @@ argument_list|(
 name|applicationAttemptId
 argument_list|,
 name|allocator
-argument_list|,
-name|maxAppAttempts
 argument_list|)
 expr_stmt|;
 name|this
