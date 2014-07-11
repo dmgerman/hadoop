@@ -112,12 +112,12 @@ specifier|final
 name|CipherSuite
 name|cipherSuite
 decl_stmt|;
-DECL|field|key
+DECL|field|edek
 specifier|private
 specifier|final
 name|byte
 index|[]
-name|key
+name|edek
 decl_stmt|;
 DECL|field|iv
 specifier|private
@@ -126,20 +126,34 @@ name|byte
 index|[]
 name|iv
 decl_stmt|;
-DECL|method|FileEncryptionInfo (CipherSuite suite, byte[] key, byte[] iv)
+DECL|field|ezKeyVersionName
+specifier|private
+specifier|final
+name|String
+name|ezKeyVersionName
+decl_stmt|;
+comment|/**    * Create a FileEncryptionInfo.    *    * @param suite CipherSuite used to encrypt the file    * @param edek encrypted data encryption key (EDEK) of the file    * @param iv initialization vector (IV) used to encrypt the file    * @param ezKeyVersionName name of the KeyVersion used to encrypt the    *                         encrypted data encryption key.    */
+DECL|method|FileEncryptionInfo (final CipherSuite suite, final byte[] edek, final byte[] iv, final String ezKeyVersionName)
 specifier|public
 name|FileEncryptionInfo
 parameter_list|(
+specifier|final
 name|CipherSuite
 name|suite
 parameter_list|,
+specifier|final
 name|byte
 index|[]
-name|key
+name|edek
 parameter_list|,
+specifier|final
 name|byte
 index|[]
 name|iv
+parameter_list|,
+specifier|final
+name|String
+name|ezKeyVersionName
 parameter_list|)
 block|{
 name|checkNotNull
@@ -149,7 +163,7 @@ argument_list|)
 expr_stmt|;
 name|checkNotNull
 argument_list|(
-name|key
+name|edek
 argument_list|)
 expr_stmt|;
 name|checkNotNull
@@ -157,9 +171,14 @@ argument_list|(
 name|iv
 argument_list|)
 expr_stmt|;
+name|checkNotNull
+argument_list|(
+name|ezKeyVersionName
+argument_list|)
+expr_stmt|;
 name|checkArgument
 argument_list|(
-name|key
+name|edek
 operator|.
 name|length
 operator|==
@@ -193,15 +212,21 @@ name|suite
 expr_stmt|;
 name|this
 operator|.
-name|key
+name|edek
 operator|=
-name|key
+name|edek
 expr_stmt|;
 name|this
 operator|.
 name|iv
 operator|=
 name|iv
+expr_stmt|;
+name|this
+operator|.
+name|ezKeyVersionName
+operator|=
+name|ezKeyVersionName
 expr_stmt|;
 block|}
 comment|/**    * @return {@link org.apache.hadoop.crypto.CipherSuite} used to encrypt    * the file.    */
@@ -215,7 +240,7 @@ return|return
 name|cipherSuite
 return|;
 block|}
-comment|/**    * @return encrypted data encryption key for the file    */
+comment|/**    * @return encrypted data encryption key (EDEK) for the file    */
 DECL|method|getEncryptedDataEncryptionKey ()
 specifier|public
 name|byte
@@ -224,10 +249,10 @@ name|getEncryptedDataEncryptionKey
 parameter_list|()
 block|{
 return|return
-name|key
+name|edek
 return|;
 block|}
-comment|/**    * @return initialization vector for the cipher used to encrypt the file    */
+comment|/**    * @return initialization vector (IV) for the cipher used to encrypt the file    */
 DECL|method|getIV ()
 specifier|public
 name|byte
@@ -237,6 +262,17 @@ parameter_list|()
 block|{
 return|return
 name|iv
+return|;
+block|}
+comment|/**    * @return name of the encryption zone KeyVersion used to encrypt the    * encrypted data encryption key (EDEK).    */
+DECL|method|getEzKeyVersionName ()
+specifier|public
+name|String
+name|getEzKeyVersionName
+parameter_list|()
+block|{
+return|return
+name|ezKeyVersionName
 return|;
 block|}
 annotation|@
@@ -269,13 +305,13 @@ name|builder
 operator|.
 name|append
 argument_list|(
-literal|", key: "
+literal|", edek: "
 operator|+
 name|Hex
 operator|.
 name|encodeHexString
 argument_list|(
-name|key
+name|edek
 argument_list|)
 argument_list|)
 expr_stmt|;
@@ -291,6 +327,15 @@ name|encodeHexString
 argument_list|(
 name|iv
 argument_list|)
+argument_list|)
+expr_stmt|;
+name|builder
+operator|.
+name|append
+argument_list|(
+literal|", ezKeyVersionName: "
+operator|+
+name|ezKeyVersionName
 argument_list|)
 expr_stmt|;
 name|builder
