@@ -160,7 +160,7 @@ name|fs
 operator|.
 name|CommonConfigurationKeysPublic
 operator|.
-name|HADOOP_SECURITY_SECURE_RANDOM_ALGORITHM_KEY
+name|HADOOP_SECURITY_JAVA_SECURE_RANDOM_ALGORITHM_KEY
 import|;
 end_import
 
@@ -176,7 +176,7 @@ name|fs
 operator|.
 name|CommonConfigurationKeysPublic
 operator|.
-name|HADOOP_SECURITY_SECURE_RANDOM_ALGORITHM_DEFAULT
+name|HADOOP_SECURITY_JAVA_SECURE_RANDOM_ALGORITHM_DEFAULT
 import|;
 end_import
 
@@ -262,9 +262,9 @@ name|conf
 operator|.
 name|get
 argument_list|(
-name|HADOOP_SECURITY_SECURE_RANDOM_ALGORITHM_KEY
+name|HADOOP_SECURITY_JAVA_SECURE_RANDOM_ALGORITHM_KEY
 argument_list|,
-name|HADOOP_SECURITY_SECURE_RANDOM_ALGORITHM_DEFAULT
+name|HADOOP_SECURITY_JAVA_SECURE_RANDOM_ALGORITHM_DEFAULT
 argument_list|)
 decl_stmt|;
 try|try
