@@ -1430,6 +1430,21 @@ name|UPDATE_INTERVAL
 init|=
 literal|500
 decl_stmt|;
+DECL|field|UPDATE_DEBUG_FREQUENCY
+specifier|private
+specifier|final
+name|int
+name|UPDATE_DEBUG_FREQUENCY
+init|=
+literal|5
+decl_stmt|;
+DECL|field|updatesToSkipForDebug
+specifier|private
+name|int
+name|updatesToSkipForDebug
+init|=
+name|UPDATE_DEBUG_FREQUENCY
+decl_stmt|;
 DECL|field|updateThread
 specifier|private
 name|Thread
@@ -1928,6 +1943,68 @@ operator|.
 name|recomputeShares
 argument_list|()
 expr_stmt|;
+if|if
+condition|(
+name|LOG
+operator|.
+name|isDebugEnabled
+argument_list|()
+condition|)
+block|{
+if|if
+condition|(
+operator|--
+name|updatesToSkipForDebug
+operator|<
+literal|0
+condition|)
+block|{
+name|updatesToSkipForDebug
+operator|=
+name|UPDATE_DEBUG_FREQUENCY
+expr_stmt|;
+name|LOG
+operator|.
+name|debug
+argument_list|(
+literal|"Cluster Capacity: "
+operator|+
+name|clusterResource
+operator|+
+literal|"  Allocations: "
+operator|+
+name|rootMetrics
+operator|.
+name|getAllocatedResources
+argument_list|()
+operator|+
+literal|"  Availability: "
+operator|+
+name|Resource
+operator|.
+name|newInstance
+argument_list|(
+name|rootMetrics
+operator|.
+name|getAvailableMB
+argument_list|()
+argument_list|,
+name|rootMetrics
+operator|.
+name|getAvailableVirtualCores
+argument_list|()
+argument_list|)
+operator|+
+literal|"  Demand: "
+operator|+
+name|rootQueue
+operator|.
+name|getDemand
+argument_list|()
+argument_list|)
+expr_stmt|;
+block|}
+block|}
 block|}
 comment|/**    * Update the preemption fields for all QueueScheduables, i.e. the times since    * each queue last was at its guaranteed share and at> 1/2 of its fair share    * for each type of task.    */
 DECL|method|updatePreemptionVariables ()
@@ -4766,13 +4843,6 @@ argument_list|(
 name|ask
 argument_list|)
 expr_stmt|;
-name|LOG
-operator|.
-name|debug
-argument_list|(
-literal|"allocate: post-update"
-argument_list|)
-expr_stmt|;
 name|application
 operator|.
 name|showRequests
@@ -4791,7 +4861,7 @@ name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"allocate:"
+literal|"allocate: post-update"
 operator|+
 literal|" applicationAttemptId="
 operator|+
@@ -4802,6 +4872,13 @@ operator|+
 name|ask
 operator|.
 name|size
+argument_list|()
+operator|+
+literal|" reservation= "
+operator|+
+name|application
+operator|.
+name|getCurrentReservation
 argument_list|()
 argument_list|)
 expr_stmt|;
