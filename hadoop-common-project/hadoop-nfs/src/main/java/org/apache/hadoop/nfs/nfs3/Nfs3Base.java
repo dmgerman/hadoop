@@ -116,6 +116,22 @@ name|ShutdownHookManager
 import|;
 end_import
 
+begin_import
+import|import static
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|util
+operator|.
+name|ExitUtil
+operator|.
+name|terminate
+import|;
+end_import
+
 begin_comment
 comment|/**  * Nfs server. Supports NFS v3 using {@link RpcProgram}.  * Currently Mountd program is also started inside this class.  * Only TCP server is supported and UDP is not supported.  */
 end_comment
@@ -227,6 +243,8 @@ argument_list|,
 name|SHUTDOWN_HOOK_PRIORITY
 argument_list|)
 expr_stmt|;
+try|try
+block|{
 name|rpcProgram
 operator|.
 name|register
@@ -238,6 +256,30 @@ argument_list|,
 name|nfsBoundPort
 argument_list|)
 expr_stmt|;
+block|}
+catch|catch
+parameter_list|(
+name|Throwable
+name|e
+parameter_list|)
+block|{
+name|LOG
+operator|.
+name|fatal
+argument_list|(
+literal|"Failed to start the server. Cause:"
+argument_list|,
+name|e
+argument_list|)
+expr_stmt|;
+name|terminate
+argument_list|(
+literal|1
+argument_list|,
+name|e
+argument_list|)
+expr_stmt|;
+block|}
 block|}
 block|}
 DECL|method|startTCPServer ()

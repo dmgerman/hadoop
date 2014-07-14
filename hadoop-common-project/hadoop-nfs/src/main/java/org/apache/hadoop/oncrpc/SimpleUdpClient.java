@@ -269,6 +269,13 @@ argument_list|(
 name|sendPacket
 argument_list|)
 expr_stmt|;
+name|socket
+operator|.
+name|setSoTimeout
+argument_list|(
+literal|500
+argument_list|)
+expr_stmt|;
 name|DatagramPacket
 name|receivePacket
 init|=
