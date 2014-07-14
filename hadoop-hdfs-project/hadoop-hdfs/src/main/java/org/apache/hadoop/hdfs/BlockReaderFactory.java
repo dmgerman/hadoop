@@ -3221,6 +3221,10 @@ operator|.
 name|newConnectedPeer
 argument_list|(
 name|inetSocketAddress
+argument_list|,
+name|token
+argument_list|,
+name|datanode
 argument_list|)
 decl_stmt|;
 if|if

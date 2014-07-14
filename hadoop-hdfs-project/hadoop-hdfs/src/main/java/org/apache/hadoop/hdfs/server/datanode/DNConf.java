@@ -554,11 +554,45 @@ name|hadoop
 operator|.
 name|hdfs
 operator|.
+name|protocol
+operator|.
+name|datatransfer
+operator|.
+name|sasl
+operator|.
+name|DataTransferSaslUtil
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
 name|server
 operator|.
 name|common
 operator|.
 name|HdfsServerConstants
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|security
+operator|.
+name|SaslPropertiesResolver
 import|;
 end_import
 
@@ -690,6 +724,11 @@ DECL|field|encryptionAlgorithm
 specifier|final
 name|String
 name|encryptionAlgorithm
+decl_stmt|;
+DECL|field|saslPropsResolver
+specifier|final
+name|SaslPropertiesResolver
+name|saslPropsResolver
 decl_stmt|;
 DECL|field|trustedChannelResolver
 specifier|final
@@ -1074,6 +1113,17 @@ argument_list|)
 expr_stmt|;
 name|this
 operator|.
+name|saslPropsResolver
+operator|=
+name|DataTransferSaslUtil
+operator|.
+name|getSaslPropertiesResolver
+argument_list|(
+name|conf
+argument_list|)
+expr_stmt|;
+name|this
+operator|.
 name|xceiverStopTimeout
 operator|=
 name|conf
@@ -1126,6 +1176,28 @@ operator|.
 name|minimumNameNodeVersion
 return|;
 block|}
+comment|/**    * Returns true if encryption enabled for DataTransferProtocol.    *    * @return boolean true if encryption enabled for DataTransferProtocol    */
+DECL|method|getEncryptDataTransfer ()
+specifier|public
+name|boolean
+name|getEncryptDataTransfer
+parameter_list|()
+block|{
+return|return
+name|encryptDataTransfer
+return|;
+block|}
+comment|/**    * Returns encryption algorithm configured for DataTransferProtocol, or null    * if not configured.    *    * @return encryption algorithm configured for DataTransferProtocol    */
+DECL|method|getEncryptionAlgorithm ()
+specifier|public
+name|String
+name|getEncryptionAlgorithm
+parameter_list|()
+block|{
+return|return
+name|encryptionAlgorithm
+return|;
+block|}
 DECL|method|getXceiverStopTimeout ()
 specifier|public
 name|long
@@ -1144,6 +1216,28 @@ parameter_list|()
 block|{
 return|return
 name|maxLockedMemory
+return|;
+block|}
+comment|/**    * Returns the SaslPropertiesResolver configured for use with    * DataTransferProtocol, or null if not configured.    *    * @return SaslPropertiesResolver configured for use with DataTransferProtocol    */
+DECL|method|getSaslPropsResolver ()
+specifier|public
+name|SaslPropertiesResolver
+name|getSaslPropsResolver
+parameter_list|()
+block|{
+return|return
+name|saslPropsResolver
+return|;
+block|}
+comment|/**    * Returns the TrustedChannelResolver configured for use with    * DataTransferProtocol, or null if not configured.    *    * @return TrustedChannelResolver configured for use with DataTransferProtocol    */
+DECL|method|getTrustedChannelResolver ()
+specifier|public
+name|TrustedChannelResolver
+name|getTrustedChannelResolver
+parameter_list|()
+block|{
+return|return
+name|trustedChannelResolver
 return|;
 block|}
 block|}
