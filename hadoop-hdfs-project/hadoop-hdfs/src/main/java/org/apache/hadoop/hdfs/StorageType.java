@@ -67,6 +67,9 @@ name|DISK
 block|,
 DECL|enumConstant|SSD
 name|SSD
+block|,
+DECL|enumConstant|ARCHIVE
+name|ARCHIVE
 block|;
 DECL|field|DEFAULT
 specifier|public
@@ -76,6 +79,16 @@ name|StorageType
 name|DEFAULT
 init|=
 name|DISK
+decl_stmt|;
+DECL|field|EMPTY_ARRAY
+specifier|public
+specifier|static
+specifier|final
+name|StorageType
+index|[]
+name|EMPTY_ARRAY
+init|=
+block|{}
 decl_stmt|;
 block|}
 end_enum
