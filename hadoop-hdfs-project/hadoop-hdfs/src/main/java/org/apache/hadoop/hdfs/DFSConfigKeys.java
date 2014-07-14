@@ -4469,6 +4469,24 @@ name|DFS_TRUSTEDCHANNEL_RESOLVER_CLASS
 init|=
 literal|"dfs.trustedchannel.resolver.class"
 decl_stmt|;
+DECL|field|DFS_DATA_TRANSFER_PROTECTION_KEY
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|DFS_DATA_TRANSFER_PROTECTION_KEY
+init|=
+literal|"dfs.data.transfer.protection"
+decl_stmt|;
+DECL|field|DFS_DATA_TRANSFER_SASL_PROPS_RESOLVER_CLASS_KEY
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|DFS_DATA_TRANSFER_SASL_PROPS_RESOLVER_CLASS_KEY
+init|=
+literal|"dfs.data.transfer.saslproperties.resolver.class"
+decl_stmt|;
 comment|// Journal-node related configs. These are read on the JN side.
 DECL|field|DFS_JOURNALNODE_EDITS_DIR_KEY
 specifier|public

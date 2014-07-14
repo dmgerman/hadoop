@@ -236,13 +236,13 @@ name|hadoop
 operator|.
 name|hdfs
 operator|.
-name|security
+name|protocol
 operator|.
-name|token
+name|datatransfer
 operator|.
-name|block
+name|sasl
 operator|.
-name|DataEncryptionKey
+name|DataEncryptionKeyFactory
 import|;
 end_import
 
@@ -256,11 +256,13 @@ name|hadoop
 operator|.
 name|hdfs
 operator|.
-name|protocol
+name|security
 operator|.
-name|datatransfer
+name|token
 operator|.
-name|TrustedChannelResolver
+name|block
+operator|.
+name|DataEncryptionKey
 import|;
 end_import
 
@@ -430,6 +432,8 @@ name|Private
 DECL|class|NameNodeConnector
 class|class
 name|NameNodeConnector
+implements|implements
+name|DataEncryptionKeyFactory
 block|{
 DECL|field|LOG
 specifier|private
@@ -539,12 +543,6 @@ DECL|field|encryptionKey
 specifier|private
 name|DataEncryptionKey
 name|encryptionKey
-decl_stmt|;
-DECL|field|trustedChannelResolver
-specifier|private
-specifier|final
-name|TrustedChannelResolver
-name|trustedChannelResolver
 decl_stmt|;
 DECL|method|NameNodeConnector (URI nameNodeUri, Configuration conf)
 name|NameNodeConnector
@@ -830,17 +828,6 @@ literal|"Another balancer is running"
 argument_list|)
 throw|;
 block|}
-name|this
-operator|.
-name|trustedChannelResolver
-operator|=
-name|TrustedChannelResolver
-operator|.
-name|getInstance
-argument_list|(
-name|conf
-argument_list|)
-expr_stmt|;
 block|}
 DECL|method|shouldContinue (long dispatchBlockMoveBytes)
 name|boolean
@@ -967,24 +954,17 @@ argument_list|)
 return|;
 block|}
 block|}
-DECL|method|getDataEncryptionKey ()
+annotation|@
+name|Override
+DECL|method|newDataEncryptionKey ()
+specifier|public
 name|DataEncryptionKey
-name|getDataEncryptionKey
+name|newDataEncryptionKey
 parameter_list|()
-throws|throws
-name|IOException
 block|{
 if|if
 condition|(
 name|encryptDataTransfer
-operator|&&
-operator|!
-name|this
-operator|.
-name|trustedChannelResolver
-operator|.
-name|isTrusted
-argument_list|()
 condition|)
 block|{
 synchronized|synchronized

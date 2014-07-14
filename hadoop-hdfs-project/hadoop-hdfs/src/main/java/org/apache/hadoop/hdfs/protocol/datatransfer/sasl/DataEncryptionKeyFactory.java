@@ -4,7 +4,7 @@ comment|/**  * Licensed to the Apache Software Foundation (ASF) under one  * or 
 end_comment
 
 begin_package
-DECL|package|org.apache.hadoop.hdfs
+DECL|package|org.apache.hadoop.hdfs.protocol.datatransfer.sasl
 package|package
 name|org
 operator|.
@@ -13,6 +13,12 @@ operator|.
 name|hadoop
 operator|.
 name|hdfs
+operator|.
+name|protocol
+operator|.
+name|datatransfer
+operator|.
+name|sasl
 package|;
 end_package
 
@@ -28,43 +34,15 @@ end_import
 
 begin_import
 import|import
-name|java
-operator|.
-name|net
-operator|.
-name|InetSocketAddress
-import|;
-end_import
-
-begin_import
-import|import
 name|org
 operator|.
 name|apache
 operator|.
 name|hadoop
 operator|.
-name|hdfs
+name|classification
 operator|.
-name|net
-operator|.
-name|Peer
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|hdfs
-operator|.
-name|protocol
-operator|.
-name|DatanodeID
+name|InterfaceAudience
 import|;
 end_import
 
@@ -84,49 +62,29 @@ name|token
 operator|.
 name|block
 operator|.
-name|BlockTokenIdentifier
+name|DataEncryptionKey
 import|;
 end_import
 
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|security
-operator|.
-name|token
-operator|.
-name|Token
-import|;
-end_import
+begin_comment
+comment|/**  * Creates a new {@link DataEncryptionKey} on demand.  */
+end_comment
 
 begin_interface
-DECL|interface|RemotePeerFactory
+annotation|@
+name|InterfaceAudience
+operator|.
+name|Private
+DECL|interface|DataEncryptionKeyFactory
 specifier|public
 interface|interface
-name|RemotePeerFactory
+name|DataEncryptionKeyFactory
 block|{
-comment|/**    * @param addr          The address to connect to.    * @param blockToken    Token used during optional SASL negotiation    * @param datanodeId    ID of destination DataNode    * @return              A new Peer connected to the address.    *    * @throws IOException  If there was an error connecting or creating     *                      the remote socket, encrypted stream, etc.    */
-DECL|method|newConnectedPeer (InetSocketAddress addr, Token<BlockTokenIdentifier> blockToken, DatanodeID datanodeId)
-name|Peer
-name|newConnectedPeer
-parameter_list|(
-name|InetSocketAddress
-name|addr
-parameter_list|,
-name|Token
-argument_list|<
-name|BlockTokenIdentifier
-argument_list|>
-name|blockToken
-parameter_list|,
-name|DatanodeID
-name|datanodeId
-parameter_list|)
+comment|/**    * Creates a new DataEncryptionKey.    *    * @return DataEncryptionKey newly created    * @throws IOException for any error    */
+DECL|method|newDataEncryptionKey ()
+name|DataEncryptionKey
+name|newDataEncryptionKey
+parameter_list|()
 throws|throws
 name|IOException
 function_decl|;
