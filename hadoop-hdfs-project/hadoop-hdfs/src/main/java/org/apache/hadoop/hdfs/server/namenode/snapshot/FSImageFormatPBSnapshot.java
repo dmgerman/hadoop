@@ -1776,6 +1776,14 @@ operator|.
 name|getPreferredBlockSize
 argument_list|()
 argument_list|,
+operator|(
+name|byte
+operator|)
+name|fileInPb
+operator|.
+name|getStoragePolicyID
+argument_list|()
+argument_list|,
 name|xAttrs
 argument_list|)
 expr_stmt|;

@@ -118,6 +118,13 @@ name|long
 name|getPreferredBlockSize
 parameter_list|()
 function_decl|;
+comment|/** @return the storage policy ID. */
+DECL|method|getStoragePolicyID ()
+specifier|public
+name|byte
+name|getStoragePolicyID
+parameter_list|()
+function_decl|;
 comment|/** @return the header as a long. */
 DECL|method|getHeaderLong ()
 specifier|public
@@ -153,7 +160,7 @@ specifier|final
 name|long
 name|header
 decl_stmt|;
-DECL|method|SnapshotCopy (byte[] name, PermissionStatus permissions, AclFeature aclFeature, long modificationTime, long accessTime, short replication, long preferredBlockSize, XAttrFeature xAttrsFeature)
+DECL|method|SnapshotCopy (byte[] name, PermissionStatus permissions, AclFeature aclFeature, long modificationTime, long accessTime, short replication, long preferredBlockSize, byte storagePolicyID, XAttrFeature xAttrsFeature)
 specifier|public
 name|SnapshotCopy
 parameter_list|(
@@ -178,6 +185,9 @@ name|replication
 parameter_list|,
 name|long
 name|preferredBlockSize
+parameter_list|,
+name|byte
+name|storagePolicyID
 parameter_list|,
 name|XAttrFeature
 name|xAttrsFeature
@@ -207,6 +217,8 @@ argument_list|(
 name|preferredBlockSize
 argument_list|,
 name|replication
+argument_list|,
+name|storagePolicyID
 argument_list|)
 expr_stmt|;
 block|}
@@ -262,6 +274,23 @@ return|return
 name|HeaderFormat
 operator|.
 name|getPreferredBlockSize
+argument_list|(
+name|header
+argument_list|)
+return|;
+block|}
+annotation|@
+name|Override
+DECL|method|getStoragePolicyID ()
+specifier|public
+name|byte
+name|getStoragePolicyID
+parameter_list|()
+block|{
+return|return
+name|HeaderFormat
+operator|.
+name|getStoragePolicyID
 argument_list|(
 name|header
 argument_list|)

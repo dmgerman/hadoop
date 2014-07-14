@@ -513,7 +513,7 @@ name|asFile
 argument_list|()
 return|;
 block|}
-comment|/** Format: [16 bits for replication][48 bits for PreferredBlockSize] */
+comment|/**     * Bit format:    * [4-bit storagePolicyID][12-bit replication][48-bit preferredBlockSize]    */
 DECL|enum|HeaderFormat
 specifier|static
 enum|enum
@@ -536,9 +536,21 @@ name|PREFERRED_BLOCK_SIZE
 operator|.
 name|BITS
 argument_list|,
-literal|16
+literal|12
 argument_list|,
 literal|1
+argument_list|)
+block|,
+DECL|enumConstant|STORAGE_POLICY_ID
+name|STORAGE_POLICY_ID
+argument_list|(
+name|REPLICATION
+operator|.
+name|BITS
+argument_list|,
+literal|4
+argument_list|,
+literal|0
 argument_list|)
 block|;
 DECL|field|BITS
@@ -620,7 +632,30 @@ name|header
 argument_list|)
 return|;
 block|}
-DECL|method|toLong (long preferredBlockSize, short replication)
+DECL|method|getStoragePolicyID (long header)
+specifier|static
+name|byte
+name|getStoragePolicyID
+parameter_list|(
+name|long
+name|header
+parameter_list|)
+block|{
+return|return
+operator|(
+name|byte
+operator|)
+name|STORAGE_POLICY_ID
+operator|.
+name|BITS
+operator|.
+name|retrieve
+argument_list|(
+name|header
+argument_list|)
+return|;
+block|}
+DECL|method|toLong (long preferredBlockSize, short replication, byte storagePolicyID)
 specifier|static
 name|long
 name|toLong
@@ -630,6 +665,9 @@ name|preferredBlockSize
 parameter_list|,
 name|short
 name|replication
+parameter_list|,
+name|byte
+name|storagePolicyID
 parameter_list|)
 block|{
 name|long
@@ -663,6 +701,19 @@ argument_list|,
 name|h
 argument_list|)
 expr_stmt|;
+name|h
+operator|=
+name|STORAGE_POLICY_ID
+operator|.
+name|BITS
+operator|.
+name|combine
+argument_list|(
+name|storagePolicyID
+argument_list|,
+name|h
+argument_list|)
+expr_stmt|;
 return|return
 name|h
 return|;
@@ -681,7 +732,7 @@ name|BlockInfo
 index|[]
 name|blocks
 decl_stmt|;
-DECL|method|INodeFile (long id, byte[] name, PermissionStatus permissions, long mtime, long atime, BlockInfo[] blklist, short replication, long preferredBlockSize)
+DECL|method|INodeFile (long id, byte[] name, PermissionStatus permissions, long mtime, long atime, BlockInfo[] blklist, short replication, long preferredBlockSize, byte storagePolicyID)
 name|INodeFile
 parameter_list|(
 name|long
@@ -709,6 +760,9 @@ name|replication
 parameter_list|,
 name|long
 name|preferredBlockSize
+parameter_list|,
+name|byte
+name|storagePolicyID
 parameter_list|)
 block|{
 name|super
@@ -733,6 +787,8 @@ argument_list|(
 name|preferredBlockSize
 argument_list|,
 name|replication
+argument_list|,
+name|storagePolicyID
 argument_list|)
 expr_stmt|;
 name|this
@@ -1759,6 +1815,23 @@ return|return
 name|HeaderFormat
 operator|.
 name|getPreferredBlockSize
+argument_list|(
+name|header
+argument_list|)
+return|;
+block|}
+annotation|@
+name|Override
+DECL|method|getStoragePolicyID ()
+specifier|public
+name|byte
+name|getStoragePolicyID
+parameter_list|()
+block|{
+return|return
+name|HeaderFormat
+operator|.
+name|getStoragePolicyID
 argument_list|(
 name|header
 argument_list|)
