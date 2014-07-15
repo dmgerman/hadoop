@@ -152,20 +152,6 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|security
-operator|.
-name|UserGroupInformation
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
 name|service
 operator|.
 name|CompositeService
@@ -1001,35 +987,11 @@ init|=
 name|getConfig
 argument_list|()
 decl_stmt|;
-comment|// Play trick to make the customized filter will only be loaded by the
-comment|// timeline server when security is enabled and Kerberos authentication
-comment|// is used.
-if|if
-condition|(
-name|UserGroupInformation
-operator|.
-name|isSecurityEnabled
-argument_list|()
-operator|&&
-name|conf
-operator|.
-name|get
-argument_list|(
-name|TimelineAuthenticationFilterInitializer
-operator|.
-name|PREFIX
-operator|+
-literal|"type"
-argument_list|,
-literal|""
-argument_list|)
-operator|.
-name|equals
-argument_list|(
-literal|"kerberos"
-argument_list|)
-condition|)
-block|{
+comment|// Always load pseudo authentication filter to parse "user.name" in an URL
+comment|// to identify a HTTP request's user in insecure mode.
+comment|// When Kerberos authentication type is set (i.e., secure mode is turned on),
+comment|// the customized filter will be loaded by the timeline server to do Kerberos
+comment|// + DT authentication.
 name|String
 name|initializers
 init|=
@@ -1091,7 +1053,6 @@ operator|+
 name|initializers
 argument_list|)
 expr_stmt|;
-block|}
 block|}
 name|String
 name|bindAddress
