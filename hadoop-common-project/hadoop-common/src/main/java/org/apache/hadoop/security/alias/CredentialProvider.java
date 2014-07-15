@@ -67,7 +67,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * A provider of credentials or password for Hadoop applications. Provides an  * abstraction to separate credential storage from users of them. It  * is intended to support getting or storing passwords in a variety of ways,  * including third party bindings.  */
+comment|/**  * A provider of credentials or password for Hadoop applications. Provides an  * abstraction to separate credential storage from users of them. It  * is intended to support getting or storing passwords in a variety of ways,  * including third party bindings.  *   *<code>CredentialProvider</code> implementations must be thread safe.  */
 end_comment
 
 begin_class
