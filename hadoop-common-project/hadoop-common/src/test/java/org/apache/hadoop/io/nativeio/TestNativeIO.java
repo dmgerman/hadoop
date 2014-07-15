@@ -374,20 +374,6 @@ name|hadoop
 operator|.
 name|util
 operator|.
-name|Shell
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|util
-operator|.
 name|Time
 import|;
 end_import
@@ -3297,13 +3283,6 @@ name|isAvailable
 argument_list|()
 argument_list|)
 expr_stmt|;
-name|assumeTrue
-argument_list|(
-name|Shell
-operator|.
-name|LINUX
-argument_list|)
-expr_stmt|;
 specifier|final
 name|File
 name|TEST_FILE
@@ -3528,16 +3507,14 @@ argument_list|,
 name|sum
 argument_list|)
 expr_stmt|;
-comment|// munlock the buffer
+comment|// munmap the buffer, which also implicitly unlocks it
 name|NativeIO
 operator|.
 name|POSIX
 operator|.
-name|munlock
+name|munmap
 argument_list|(
 name|mapbuf
-argument_list|,
-name|fileSize
 argument_list|)
 expr_stmt|;
 block|}

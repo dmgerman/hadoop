@@ -284,6 +284,17 @@ argument_list|,
 literal|0
 argument_list|)
 expr_stmt|;
+name|conf
+operator|.
+name|setInt
+argument_list|(
+name|DFSConfigKeys
+operator|.
+name|DFS_CLIENT_RETRY_WINDOW_BASE
+argument_list|,
+literal|10
+argument_list|)
+expr_stmt|;
 name|int
 name|fileLen
 init|=

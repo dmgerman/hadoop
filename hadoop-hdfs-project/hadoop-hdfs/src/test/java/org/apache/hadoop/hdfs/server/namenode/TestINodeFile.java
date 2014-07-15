@@ -731,6 +731,8 @@ DECL|field|preferredBlockSize
 specifier|private
 name|long
 name|preferredBlockSize
+init|=
+literal|1024
 decl_stmt|;
 DECL|method|createINodeFile (short replication, long preferredBlockSize)
 name|INodeFile

@@ -448,6 +448,12 @@ name|YarnApplicationState
 name|createApplicationState
 parameter_list|()
 function_decl|;
+comment|/**    * Get RMAppMetrics of the {@link RMApp}.    *     * @return metrics    */
+DECL|method|getRMAppMetrics ()
+name|RMAppMetrics
+name|getRMAppMetrics
+parameter_list|()
+function_decl|;
 block|}
 end_interface
 

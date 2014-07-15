@@ -364,6 +364,20 @@ name|ReadOnlyList
 import|;
 end_import
 
+begin_import
+import|import
+name|com
+operator|.
+name|google
+operator|.
+name|common
+operator|.
+name|base
+operator|.
+name|Preconditions
+import|;
+end_import
+
 begin_comment
 comment|/**  * A helper class defining static methods for reading/writing snapshot related  * information from/to FSImage.  */
 end_comment
@@ -375,13 +389,13 @@ class|class
 name|SnapshotFSImageFormat
 block|{
 comment|/**    * Save snapshots and snapshot quota for a snapshottable directory.    * @param current The directory that the snapshots belongs to.    * @param out The {@link DataOutput} to write.    * @throws IOException    */
-DECL|method|saveSnapshots (INodeDirectorySnapshottable current, DataOutput out)
+DECL|method|saveSnapshots (INodeDirectory current, DataOutput out)
 specifier|public
 specifier|static
 name|void
 name|saveSnapshots
 parameter_list|(
-name|INodeDirectorySnapshottable
+name|INodeDirectory
 name|current
 parameter_list|,
 name|DataOutput
@@ -390,6 +404,23 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
+name|DirectorySnapshottableFeature
+name|sf
+init|=
+name|current
+operator|.
+name|getDirectorySnapshottableFeature
+argument_list|()
+decl_stmt|;
+name|Preconditions
+operator|.
+name|checkArgument
+argument_list|(
+name|sf
+operator|!=
+literal|null
+argument_list|)
+expr_stmt|;
 comment|// list of snapshots in snapshotsByNames
 name|ReadOnlyList
 argument_list|<
@@ -397,9 +428,9 @@ name|Snapshot
 argument_list|>
 name|snapshots
 init|=
-name|current
+name|sf
 operator|.
-name|getSnapshotsByNames
+name|getSnapshotList
 argument_list|()
 decl_stmt|;
 name|out
@@ -437,7 +468,7 @@ name|out
 operator|.
 name|writeInt
 argument_list|(
-name|current
+name|sf
 operator|.
 name|getSnapshotQuota
 argument_list|()
@@ -1135,13 +1166,13 @@ name|deletedList
 return|;
 block|}
 comment|/**    * Load snapshots and snapshotQuota for a Snapshottable directory.    *    * @param snapshottableParent    *          The snapshottable directory for loading.    * @param numSnapshots    *          The number of snapshots that the directory has.    * @param loader    *          The loader    */
-DECL|method|loadSnapshotList ( INodeDirectorySnapshottable snapshottableParent, int numSnapshots, DataInput in, FSImageFormat.Loader loader)
+DECL|method|loadSnapshotList (INodeDirectory snapshottableParent, int numSnapshots, DataInput in, FSImageFormat.Loader loader)
 specifier|public
 specifier|static
 name|void
 name|loadSnapshotList
 parameter_list|(
-name|INodeDirectorySnapshottable
+name|INodeDirectory
 name|snapshottableParent
 parameter_list|,
 name|int
@@ -1158,6 +1189,23 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
+name|DirectorySnapshottableFeature
+name|sf
+init|=
+name|snapshottableParent
+operator|.
+name|getDirectorySnapshottableFeature
+argument_list|()
+decl_stmt|;
+name|Preconditions
+operator|.
+name|checkArgument
+argument_list|(
+name|sf
+operator|!=
+literal|null
+argument_list|)
+expr_stmt|;
 for|for
 control|(
 name|int
@@ -1195,7 +1243,7 @@ argument_list|(
 name|snapshottableParent
 argument_list|)
 expr_stmt|;
-name|snapshottableParent
+name|sf
 operator|.
 name|addSnapshot
 argument_list|(

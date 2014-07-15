@@ -1221,7 +1221,7 @@ block|}
 decl_stmt|;
 name|ZkUtils
 operator|.
-name|createFullPathOptimistic
+name|asyncCreateFullPathOptimistic
 argument_list|(
 name|zkc
 argument_list|,

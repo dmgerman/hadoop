@@ -1271,7 +1271,7 @@ operator|-
 name|usedMemoryBefore
 operator|)
 operator|<
-literal|200
+literal|400
 argument_list|)
 expr_stmt|;
 block|}

@@ -3066,12 +3066,9 @@ name|foo_s3
 argument_list|)
 argument_list|)
 expr_stmt|;
-name|INodeDirectorySnapshottable
+name|INodeDirectory
 name|sdir2Node
 init|=
-operator|(
-name|INodeDirectorySnapshottable
-operator|)
 name|fsdir
 operator|.
 name|getINode
@@ -3081,6 +3078,9 @@ operator|.
 name|toString
 argument_list|()
 argument_list|)
+operator|.
+name|asDirectory
+argument_list|()
 decl_stmt|;
 name|Snapshot
 name|s2
@@ -4541,12 +4541,9 @@ name|size
 argument_list|()
 argument_list|)
 expr_stmt|;
-name|INodeDirectorySnapshottable
+name|INodeDirectory
 name|sdir2Node
 init|=
-operator|(
-name|INodeDirectorySnapshottable
-operator|)
 name|fsdir
 operator|.
 name|getINode
@@ -4556,6 +4553,9 @@ operator|.
 name|toString
 argument_list|()
 argument_list|)
+operator|.
+name|asDirectory
+argument_list|()
 decl_stmt|;
 name|Snapshot
 name|s2
@@ -5582,12 +5582,9 @@ name|size
 argument_list|()
 argument_list|)
 expr_stmt|;
-name|INodeDirectorySnapshottable
+name|INodeDirectory
 name|sdir1Node
 init|=
-operator|(
-name|INodeDirectorySnapshottable
-operator|)
 name|fsdir
 operator|.
 name|getINode
@@ -5597,6 +5594,9 @@ operator|.
 name|toString
 argument_list|()
 argument_list|)
+operator|.
+name|asDirectory
+argument_list|()
 decl_stmt|;
 name|Snapshot
 name|s1
@@ -7084,12 +7084,9 @@ name|bar_dir1
 argument_list|)
 expr_stmt|;
 comment|// check the internal details
-name|INodeDirectorySnapshottable
+name|INodeDirectory
 name|sdir1Node
 init|=
-operator|(
-name|INodeDirectorySnapshottable
-operator|)
 name|fsdir
 operator|.
 name|getINode
@@ -7099,13 +7096,13 @@ operator|.
 name|toString
 argument_list|()
 argument_list|)
+operator|.
+name|asDirectory
+argument_list|()
 decl_stmt|;
-name|INodeDirectorySnapshottable
+name|INodeDirectory
 name|sdir2Node
 init|=
-operator|(
-name|INodeDirectorySnapshottable
-operator|)
 name|fsdir
 operator|.
 name|getINode
@@ -7115,13 +7112,13 @@ operator|.
 name|toString
 argument_list|()
 argument_list|)
+operator|.
+name|asDirectory
+argument_list|()
 decl_stmt|;
-name|INodeDirectorySnapshottable
+name|INodeDirectory
 name|sdir3Node
 init|=
-operator|(
-name|INodeDirectorySnapshottable
-operator|)
 name|fsdir
 operator|.
 name|getINode
@@ -7131,6 +7128,9 @@ operator|.
 name|toString
 argument_list|()
 argument_list|)
+operator|.
+name|asDirectory
+argument_list|()
 decl_stmt|;
 name|INodeReference
 name|fooRef
@@ -8721,12 +8721,9 @@ argument_list|)
 argument_list|)
 expr_stmt|;
 comment|// check internal details
-name|INodeDirectorySnapshottable
+name|INodeDirectory
 name|sdir2Node
 init|=
-operator|(
-name|INodeDirectorySnapshottable
-operator|)
 name|fsdir
 operator|.
 name|getINode
@@ -8736,6 +8733,9 @@ operator|.
 name|toString
 argument_list|()
 argument_list|)
+operator|.
+name|asDirectory
+argument_list|()
 decl_stmt|;
 name|Snapshot
 name|s2
@@ -9509,12 +9509,9 @@ name|result
 argument_list|)
 expr_stmt|;
 comment|// check the current internal details
-name|INodeDirectorySnapshottable
+name|INodeDirectory
 name|dir1Node
 init|=
-operator|(
-name|INodeDirectorySnapshottable
-operator|)
 name|fsdir
 operator|.
 name|getINode4Write
@@ -9524,6 +9521,9 @@ operator|.
 name|toString
 argument_list|()
 argument_list|)
+operator|.
+name|asDirectory
+argument_list|()
 decl_stmt|;
 name|Snapshot
 name|s1
@@ -10093,12 +10093,9 @@ name|result
 argument_list|)
 expr_stmt|;
 comment|// check the current internal details
-name|INodeDirectorySnapshottable
+name|INodeDirectory
 name|dir1Node
 init|=
-operator|(
-name|INodeDirectorySnapshottable
-operator|)
 name|fsdir
 operator|.
 name|getINode4Write
@@ -10108,6 +10105,9 @@ operator|.
 name|toString
 argument_list|()
 argument_list|)
+operator|.
+name|asDirectory
+argument_list|()
 decl_stmt|;
 name|Snapshot
 name|s1
@@ -10653,12 +10653,9 @@ name|result
 argument_list|)
 expr_stmt|;
 comment|// check the current internal details
-name|INodeDirectorySnapshottable
+name|INodeDirectory
 name|dir1Node
 init|=
-operator|(
-name|INodeDirectorySnapshottable
-operator|)
 name|fsdir
 operator|.
 name|getINode4Write
@@ -10668,6 +10665,9 @@ operator|.
 name|toString
 argument_list|()
 argument_list|)
+operator|.
+name|asDirectory
+argument_list|()
 decl_stmt|;
 name|Snapshot
 name|s1
@@ -10684,12 +10684,9 @@ literal|"s1"
 argument_list|)
 argument_list|)
 decl_stmt|;
-name|INodeDirectorySnapshottable
+name|INodeDirectory
 name|dir2Node
 init|=
-operator|(
-name|INodeDirectorySnapshottable
-operator|)
 name|fsdir
 operator|.
 name|getINode4Write
@@ -10699,6 +10696,9 @@ operator|.
 name|toString
 argument_list|()
 argument_list|)
+operator|.
+name|asDirectory
+argument_list|()
 decl_stmt|;
 name|Snapshot
 name|s2
@@ -10969,9 +10969,6 @@ expr_stmt|;
 comment|// check internal details again
 name|dir2Node
 operator|=
-operator|(
-name|INodeDirectorySnapshottable
-operator|)
 name|fsdir
 operator|.
 name|getINode4Write
@@ -10981,6 +10978,9 @@ operator|.
 name|toString
 argument_list|()
 argument_list|)
+operator|.
+name|asDirectory
+argument_list|()
 expr_stmt|;
 name|Snapshot
 name|s3
@@ -12101,7 +12101,7 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 comment|// check dir2
-name|INode
+name|INodeDirectory
 name|dir2Node
 init|=
 name|fsdir
@@ -12113,17 +12113,16 @@ operator|.
 name|toString
 argument_list|()
 argument_list|)
+operator|.
+name|asDirectory
+argument_list|()
 decl_stmt|;
 name|assertTrue
 argument_list|(
 name|dir2Node
 operator|.
-name|getClass
+name|isSnapshottable
 argument_list|()
-operator|==
-name|INodeDirectorySnapshottable
-operator|.
-name|class
 argument_list|)
 expr_stmt|;
 name|Quota
@@ -12232,12 +12231,7 @@ argument_list|)
 expr_stmt|;
 name|diffList
 operator|=
-operator|(
-operator|(
-name|INodeDirectorySnapshottable
-operator|)
 name|dir2Node
-operator|)
 operator|.
 name|getDiffs
 argument_list|()
@@ -12653,7 +12647,7 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 comment|// check dir2
-name|INode
+name|INodeDirectory
 name|dir2Node
 init|=
 name|fsdir
@@ -12665,17 +12659,16 @@ operator|.
 name|toString
 argument_list|()
 argument_list|)
+operator|.
+name|asDirectory
+argument_list|()
 decl_stmt|;
 name|assertTrue
 argument_list|(
 name|dir2Node
 operator|.
-name|getClass
+name|isSnapshottable
 argument_list|()
-operator|==
-name|INodeDirectorySnapshottable
-operator|.
-name|class
 argument_list|)
 expr_stmt|;
 name|Quota
@@ -12831,9 +12824,6 @@ expr_stmt|;
 name|diffList
 operator|=
 operator|(
-operator|(
-name|INodeDirectorySnapshottable
-operator|)
 name|dir2Node
 operator|)
 operator|.
@@ -13049,12 +13039,9 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|// check
-name|INodeDirectorySnapshottable
+name|INodeDirectory
 name|rootNode
 init|=
-operator|(
-name|INodeDirectorySnapshottable
-operator|)
 name|fsdir
 operator|.
 name|getINode4Write
@@ -13064,6 +13051,9 @@ operator|.
 name|toString
 argument_list|()
 argument_list|)
+operator|.
+name|asDirectory
+argument_list|()
 decl_stmt|;
 name|INodeDirectory
 name|fooNode
@@ -13551,12 +13541,11 @@ name|assertTrue
 argument_list|(
 name|dir2Node
 operator|.
-name|getClass
+name|asDirectory
 argument_list|()
-operator|==
-name|INodeDirectorySnapshottable
 operator|.
-name|class
+name|isSnapshottable
+argument_list|()
 argument_list|)
 expr_stmt|;
 name|Quota
@@ -14557,12 +14546,9 @@ argument_list|)
 expr_stmt|;
 comment|// check
 specifier|final
-name|INodeDirectorySnapshottable
+name|INodeDirectory
 name|dir1Node
 init|=
-operator|(
-name|INodeDirectorySnapshottable
-operator|)
 name|fsdir
 operator|.
 name|getINode4Write
@@ -14572,6 +14558,9 @@ operator|.
 name|toString
 argument_list|()
 argument_list|)
+operator|.
+name|asDirectory
+argument_list|()
 decl_stmt|;
 name|Quota
 operator|.
@@ -14601,12 +14590,9 @@ argument_list|)
 argument_list|)
 expr_stmt|;
 specifier|final
-name|INodeDirectorySnapshottable
+name|INodeDirectory
 name|dir2Node
 init|=
-operator|(
-name|INodeDirectorySnapshottable
-operator|)
 name|fsdir
 operator|.
 name|getINode4Write
@@ -14616,6 +14602,9 @@ operator|.
 name|toString
 argument_list|()
 argument_list|)
+operator|.
+name|asDirectory
+argument_list|()
 decl_stmt|;
 name|Quota
 operator|.
@@ -15081,12 +15070,9 @@ argument_list|)
 expr_stmt|;
 comment|// check
 specifier|final
-name|INodeDirectorySnapshottable
+name|INodeDirectory
 name|dir1Node
 init|=
-operator|(
-name|INodeDirectorySnapshottable
-operator|)
 name|fsdir
 operator|.
 name|getINode4Write
@@ -15096,6 +15082,9 @@ operator|.
 name|toString
 argument_list|()
 argument_list|)
+operator|.
+name|asDirectory
+argument_list|()
 decl_stmt|;
 comment|// sdir1 + s1 + foo_s1 (foo) + foo (foo + s1 + bar~bar3)
 name|Quota
@@ -15126,12 +15115,9 @@ argument_list|)
 argument_list|)
 expr_stmt|;
 specifier|final
-name|INodeDirectorySnapshottable
+name|INodeDirectory
 name|dir2Node
 init|=
-operator|(
-name|INodeDirectorySnapshottable
-operator|)
 name|fsdir
 operator|.
 name|getINode4Write
@@ -15141,6 +15127,9 @@ operator|.
 name|toString
 argument_list|()
 argument_list|)
+operator|.
+name|asDirectory
+argument_list|()
 decl_stmt|;
 name|Quota
 operator|.
@@ -16597,12 +16586,9 @@ argument_list|(
 literal|0
 argument_list|)
 decl_stmt|;
-name|INodeDirectorySnapshottable
+name|INodeDirectory
 name|testNode
 init|=
-operator|(
-name|INodeDirectorySnapshottable
-operator|)
 name|fsdir
 operator|.
 name|getINode4Write
@@ -16612,6 +16598,9 @@ operator|.
 name|toString
 argument_list|()
 argument_list|)
+operator|.
+name|asDirectory
+argument_list|()
 decl_stmt|;
 name|Snapshot
 name|s0
@@ -16699,12 +16688,10 @@ operator|.
 name|asList
 argument_list|()
 decl_stmt|;
-comment|// dir2Node should contain 2 snapshot diffs, one for s2, and the other was
-comment|// originally s1 (created when dir2 was transformed to a snapshottable dir),
-comment|// and currently is s0
+comment|// dir2Node should contain 1 snapshot diffs for s2
 name|assertEquals
 argument_list|(
-literal|2
+literal|1
 argument_list|,
 name|dir2DiffList
 operator|.
@@ -16718,7 +16705,7 @@ name|dir2DiffList
 operator|.
 name|get
 argument_list|(
-literal|1
+literal|0
 argument_list|)
 operator|.
 name|getChildrenDiff
@@ -16738,33 +16725,6 @@ argument_list|,
 name|dList
 operator|.
 name|size
-argument_list|()
-argument_list|)
-expr_stmt|;
-name|cList
-operator|=
-name|dir2DiffList
-operator|.
-name|get
-argument_list|(
-literal|0
-argument_list|)
-operator|.
-name|getChildrenDiff
-argument_list|()
-operator|.
-name|getList
-argument_list|(
-name|ListType
-operator|.
-name|CREATED
-argument_list|)
-expr_stmt|;
-name|assertTrue
-argument_list|(
-name|cList
-operator|.
-name|isEmpty
 argument_list|()
 argument_list|)
 expr_stmt|;

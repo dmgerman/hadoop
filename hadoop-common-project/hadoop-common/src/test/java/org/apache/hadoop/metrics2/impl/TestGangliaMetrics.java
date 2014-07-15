@@ -432,14 +432,14 @@ argument_list|()
 operator|.
 name|add
 argument_list|(
-literal|"Test.sink.ganglia.tagsForPrefix.all"
+literal|"test.sink.ganglia.tagsForPrefix.all"
 argument_list|,
 literal|"*"
 argument_list|)
 operator|.
 name|add
 argument_list|(
-literal|"Test.sink.ganglia.tagsForPrefix.some"
+literal|"test.sink.ganglia.tagsForPrefix.some"
 argument_list|,
 literal|"NumActiveSinks, "
 operator|+
@@ -448,7 +448,7 @@ argument_list|)
 operator|.
 name|add
 argument_list|(
-literal|"Test.sink.ganglia.tagsForPrefix.none"
+literal|"test.sink.ganglia.tagsForPrefix.none"
 argument_list|,
 literal|""
 argument_list|)
@@ -468,7 +468,7 @@ name|cb
 operator|.
 name|subset
 argument_list|(
-literal|"Test.sink.ganglia"
+literal|"test.sink.ganglia"
 argument_list|)
 argument_list|)
 expr_stmt|;
@@ -772,7 +772,7 @@ argument_list|)
 operator|.
 name|add
 argument_list|(
-literal|"Test.sink.gsink30.context"
+literal|"test.sink.gsink30.context"
 argument_list|,
 literal|"test"
 argument_list|)
@@ -780,7 +780,7 @@ comment|// filter out only "test"
 operator|.
 name|add
 argument_list|(
-literal|"Test.sink.gsink31.context"
+literal|"test.sink.gsink31.context"
 argument_list|,
 literal|"test"
 argument_list|)

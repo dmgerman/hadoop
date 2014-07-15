@@ -411,6 +411,16 @@ name|getProto
 argument_list|()
 argument_list|)
 decl_stmt|;
+comment|// verify the whole record equals with original record
+name|Assert
+operator|.
+name|assertEquals
+argument_list|(
+name|requestFromProto
+argument_list|,
+name|request
+argument_list|)
+expr_stmt|;
 comment|// verify all properties are the same as original request
 name|Assert
 operator|.

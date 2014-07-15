@@ -1182,7 +1182,7 @@ return|return
 name|ref
 return|;
 block|}
-comment|/**      * Load the snapshots section from fsimage. Also convert snapshottable      * directories into {@link INodeDirectorySnapshottable}.      *      */
+comment|/**      * Load the snapshots section from fsimage. Also add snapshottable feature      * to snapshottable directories.      */
 DECL|method|loadSnapshotSection (InputStream in)
 specifier|public
 name|void
@@ -1261,10 +1261,6 @@ operator|.
 name|asDirectory
 argument_list|()
 decl_stmt|;
-specifier|final
-name|INodeDirectorySnapshottable
-name|sdir
-decl_stmt|;
 if|if
 condition|(
 operator|!
@@ -1274,37 +1270,20 @@ name|isSnapshottable
 argument_list|()
 condition|)
 block|{
-name|sdir
-operator|=
-operator|new
-name|INodeDirectorySnapshottable
-argument_list|(
 name|dir
-argument_list|)
-expr_stmt|;
-name|fsDir
 operator|.
-name|addToInodeMap
-argument_list|(
-name|sdir
-argument_list|)
+name|addSnapshottableFeature
+argument_list|()
 expr_stmt|;
 block|}
 else|else
 block|{
 comment|// dir is root, and admin set root to snapshottable before
-name|sdir
-operator|=
-operator|(
-name|INodeDirectorySnapshottable
-operator|)
 name|dir
-expr_stmt|;
-name|sdir
 operator|.
 name|setSnapshotQuota
 argument_list|(
-name|INodeDirectorySnapshottable
+name|DirectorySnapshottableFeature
 operator|.
 name|SNAPSHOT_LIMIT
 argument_list|)
@@ -1314,7 +1293,7 @@ name|sm
 operator|.
 name|addSnapshottable
 argument_list|(
-name|sdir
+name|dir
 argument_list|)
 expr_stmt|;
 block|}
@@ -1393,12 +1372,9 @@ operator|.
 name|getSnapshotId
 argument_list|()
 decl_stmt|;
-name|INodeDirectorySnapshottable
+name|INodeDirectory
 name|parent
 init|=
-operator|(
-name|INodeDirectorySnapshottable
-operator|)
 name|fsDir
 operator|.
 name|getInode
@@ -1428,6 +1404,9 @@ decl_stmt|;
 comment|// add the snapshot to parent, since we follow the sequence of
 comment|// snapshotsByNames when saving, we do not need to sort when loading
 name|parent
+operator|.
+name|getDirectorySnapshottableFeature
+argument_list|()
 operator|.
 name|addSnapshot
 argument_list|(
@@ -2688,7 +2667,7 @@ name|getNumSnapshots
 argument_list|()
 argument_list|)
 decl_stmt|;
-name|INodeDirectorySnapshottable
+name|INodeDirectory
 index|[]
 name|snapshottables
 init|=
@@ -2699,7 +2678,7 @@ argument_list|()
 decl_stmt|;
 for|for
 control|(
-name|INodeDirectorySnapshottable
+name|INodeDirectory
 name|sdir
 range|:
 name|snapshottables
@@ -2733,7 +2712,7 @@ literal|0
 decl_stmt|;
 for|for
 control|(
-name|INodeDirectorySnapshottable
+name|INodeDirectory
 name|sdir
 range|:
 name|snapshottables
@@ -2746,7 +2725,10 @@ name|s
 range|:
 name|sdir
 operator|.
-name|getSnapshotsByNames
+name|getDirectorySnapshottableFeature
+argument_list|()
+operator|.
+name|getSnapshotList
 argument_list|()
 control|)
 block|{

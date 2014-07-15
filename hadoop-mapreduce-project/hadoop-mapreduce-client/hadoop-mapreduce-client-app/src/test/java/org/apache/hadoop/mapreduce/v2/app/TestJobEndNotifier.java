@@ -1762,6 +1762,17 @@ literal|false
 argument_list|)
 argument_list|)
 decl_stmt|;
+comment|// Currently, we will have isLastRetry always equals to false at beginning
+comment|// of MRAppMaster, except staging area exists or commit already started at
+comment|// the beginning.
+comment|// Now manually set isLastRetry to true and this should reset to false when
+comment|// unregister failed.
+name|app
+operator|.
+name|isLastAMRetry
+operator|=
+literal|true
+expr_stmt|;
 name|doNothing
 argument_list|()
 operator|.
@@ -1863,7 +1874,7 @@ argument_list|()
 expr_stmt|;
 name|Assert
 operator|.
-name|assertTrue
+name|assertFalse
 argument_list|(
 name|app
 operator|.
@@ -1871,11 +1882,12 @@ name|isLastAMRetry
 argument_list|()
 argument_list|)
 expr_stmt|;
+comment|// Since it's not last retry, JobEndServlet didn't called
 name|Assert
 operator|.
 name|assertEquals
 argument_list|(
-literal|1
+literal|0
 argument_list|,
 name|JobEndServlet
 operator|.
@@ -1884,36 +1896,17 @@ argument_list|)
 expr_stmt|;
 name|Assert
 operator|.
-name|assertEquals
+name|assertNull
 argument_list|(
-literal|"jobid="
-operator|+
-name|job
-operator|.
-name|getID
-argument_list|()
-operator|+
-literal|"&status=FAILED"
-argument_list|,
 name|JobEndServlet
 operator|.
 name|requestUri
-operator|.
-name|getQuery
-argument_list|()
 argument_list|)
 expr_stmt|;
 name|Assert
 operator|.
-name|assertEquals
+name|assertNull
 argument_list|(
-name|JobState
-operator|.
-name|FAILED
-operator|.
-name|toString
-argument_list|()
-argument_list|,
 name|JobEndServlet
 operator|.
 name|foundJobState

@@ -149,6 +149,12 @@ name|void
 name|fetchFromDatanodeException
 parameter_list|()
 block|{}
+DECL|method|readFromDatanodeDelay ()
+specifier|public
+name|void
+name|readFromDatanodeDelay
+parameter_list|()
+block|{}
 block|}
 end_class
 

@@ -3846,6 +3846,16 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
+comment|/**    * Derived classes must implement this method to delete the state store    * @throws Exception    */
+DECL|method|deleteStore ()
+specifier|public
+specifier|abstract
+name|void
+name|deleteStore
+parameter_list|()
+throws|throws
+name|Exception
+function_decl|;
 block|}
 end_class
 

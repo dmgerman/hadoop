@@ -940,7 +940,7 @@ specifier|final
 name|Root
 name|root
 decl_stmt|;
-DECL|method|Snapshot (int id, String name, INodeDirectorySnapshottable dir)
+DECL|method|Snapshot (int id, String name, INodeDirectory dir)
 name|Snapshot
 parameter_list|(
 name|int
@@ -949,7 +949,7 @@ parameter_list|,
 name|String
 name|name
 parameter_list|,
-name|INodeDirectorySnapshottable
+name|INodeDirectory
 name|dir
 parameter_list|)
 block|{
@@ -977,7 +977,7 @@ argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|Snapshot (int id, INodeDirectory dir, INodeDirectorySnapshottable parent)
+DECL|method|Snapshot (int id, INodeDirectory dir, INodeDirectory parent)
 name|Snapshot
 parameter_list|(
 name|int
@@ -986,7 +986,7 @@ parameter_list|,
 name|INodeDirectory
 name|dir
 parameter_list|,
-name|INodeDirectorySnapshottable
+name|INodeDirectory
 name|parent
 parameter_list|)
 block|{

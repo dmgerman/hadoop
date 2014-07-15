@@ -1244,7 +1244,7 @@ name|out
 operator|.
 name|println
 argument_list|(
-literal|"Nothing has been be deleted."
+literal|"Nothing has been deleted."
 argument_list|)
 expr_stmt|;
 block|}

@@ -1407,6 +1407,16 @@ return|return
 literal|null
 return|;
 block|}
+annotation|@
+name|Override
+DECL|method|deleteStore ()
+specifier|public
+name|void
+name|deleteStore
+parameter_list|()
+throws|throws
+name|Exception
+block|{   }
 block|}
 end_class
 

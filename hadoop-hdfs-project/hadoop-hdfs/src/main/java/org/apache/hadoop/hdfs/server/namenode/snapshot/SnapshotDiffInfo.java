@@ -606,7 +606,7 @@ comment|/** The root directory of the snapshots */
 DECL|field|snapshotRoot
 specifier|private
 specifier|final
-name|INodeDirectorySnapshottable
+name|INodeDirectory
 name|snapshotRoot
 decl_stmt|;
 comment|/** The starting point of the difference */
@@ -691,10 +691,10 @@ name|RenameEntry
 argument_list|>
 argument_list|()
 decl_stmt|;
-DECL|method|SnapshotDiffInfo (INodeDirectorySnapshottable snapshotRoot, Snapshot start, Snapshot end)
+DECL|method|SnapshotDiffInfo (INodeDirectory snapshotRoot, Snapshot start, Snapshot end)
 name|SnapshotDiffInfo
 parameter_list|(
-name|INodeDirectorySnapshottable
+name|INodeDirectory
 name|snapshotRoot
 parameter_list|,
 name|Snapshot
@@ -704,6 +704,16 @@ name|Snapshot
 name|end
 parameter_list|)
 block|{
+name|Preconditions
+operator|.
+name|checkArgument
+argument_list|(
+name|snapshotRoot
+operator|.
+name|isSnapshottable
+argument_list|()
+argument_list|)
+expr_stmt|;
 name|this
 operator|.
 name|snapshotRoot

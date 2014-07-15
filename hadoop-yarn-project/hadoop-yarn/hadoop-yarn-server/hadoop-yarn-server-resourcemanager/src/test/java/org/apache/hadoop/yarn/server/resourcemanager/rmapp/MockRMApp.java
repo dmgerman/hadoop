@@ -198,6 +198,24 @@ name|api
 operator|.
 name|records
 operator|.
+name|Resource
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|api
+operator|.
+name|records
+operator|.
 name|YarnApplicationState
 import|;
 end_import
@@ -1064,6 +1082,36 @@ block|{
 return|return
 literal|null
 return|;
+block|}
+DECL|method|getResourcePreempted ()
+specifier|public
+name|Resource
+name|getResourcePreempted
+parameter_list|()
+block|{
+throw|throw
+operator|new
+name|UnsupportedOperationException
+argument_list|(
+literal|"Not supported yet."
+argument_list|)
+throw|;
+block|}
+annotation|@
+name|Override
+DECL|method|getRMAppMetrics ()
+specifier|public
+name|RMAppMetrics
+name|getRMAppMetrics
+parameter_list|()
+block|{
+throw|throw
+operator|new
+name|UnsupportedOperationException
+argument_list|(
+literal|"Not supported yet."
+argument_list|)
+throw|;
 block|}
 block|}
 end_class

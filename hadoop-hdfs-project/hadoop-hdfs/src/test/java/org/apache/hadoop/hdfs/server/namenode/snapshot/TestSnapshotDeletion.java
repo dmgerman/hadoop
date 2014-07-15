@@ -1948,10 +1948,6 @@ comment|// get two snapshots for later use
 name|Snapshot
 name|snapshot0
 init|=
-operator|(
-operator|(
-name|INodeDirectorySnapshottable
-operator|)
 name|fsdir
 operator|.
 name|getINode
@@ -1961,7 +1957,9 @@ operator|.
 name|toString
 argument_list|()
 argument_list|)
-operator|)
+operator|.
+name|asDirectory
+argument_list|()
 operator|.
 name|getSnapshot
 argument_list|(
@@ -1976,10 +1974,6 @@ decl_stmt|;
 name|Snapshot
 name|snapshot1
 init|=
-operator|(
-operator|(
-name|INodeDirectorySnapshottable
-operator|)
 name|fsdir
 operator|.
 name|getINode
@@ -1989,7 +1983,9 @@ operator|.
 name|toString
 argument_list|()
 argument_list|)
-operator|)
+operator|.
+name|asDirectory
+argument_list|()
 operator|.
 name|getSnapshot
 argument_list|(
@@ -3402,12 +3398,9 @@ expr_stmt|;
 block|}
 comment|// check 1. there is no snapshot s0
 specifier|final
-name|INodeDirectorySnapshottable
+name|INodeDirectory
 name|dirNode
 init|=
-operator|(
-name|INodeDirectorySnapshottable
-operator|)
 name|fsdir
 operator|.
 name|getINode
@@ -3417,6 +3410,9 @@ operator|.
 name|toString
 argument_list|()
 argument_list|)
+operator|.
+name|asDirectory
+argument_list|()
 decl_stmt|;
 name|Snapshot
 name|snapshot0

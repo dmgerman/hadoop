@@ -28,16 +28,6 @@ name|java
 operator|.
 name|io
 operator|.
-name|IOException
-import|;
-end_import
-
-begin_import
-import|import
-name|java
-operator|.
-name|io
-operator|.
 name|PrintWriter
 import|;
 end_import
@@ -232,6 +222,26 @@ name|server
 operator|.
 name|namenode
 operator|.
+name|INode
+operator|.
+name|BlocksMapUpdateInfo
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|server
+operator|.
+name|namenode
+operator|.
 name|INodeDirectory
 import|;
 end_import
@@ -250,7 +260,9 @@ name|server
 operator|.
 name|namenode
 operator|.
-name|INodeFile
+name|INodeDirectory
+operator|.
+name|SnapshotAndINode
 import|;
 end_import
 
@@ -268,7 +280,7 @@ name|server
 operator|.
 name|namenode
 operator|.
-name|INodeMap
+name|INodeFile
 import|;
 end_import
 
@@ -358,50 +370,6 @@ name|hadoop
 operator|.
 name|hdfs
 operator|.
-name|server
-operator|.
-name|namenode
-operator|.
-name|snapshot
-operator|.
-name|DirectoryWithSnapshotFeature
-operator|.
-name|ChildrenDiff
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|hdfs
-operator|.
-name|server
-operator|.
-name|namenode
-operator|.
-name|snapshot
-operator|.
-name|DirectoryWithSnapshotFeature
-operator|.
-name|DirectoryDiff
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|hdfs
-operator|.
 name|util
 operator|.
 name|Diff
@@ -448,6 +416,20 @@ name|google
 operator|.
 name|common
 operator|.
+name|annotations
+operator|.
+name|VisibleForTesting
+import|;
+end_import
+
+begin_import
+import|import
+name|com
+operator|.
+name|google
+operator|.
+name|common
+operator|.
 name|base
 operator|.
 name|Preconditions
@@ -469,7 +451,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * Directories where taking snapshots is allowed.  *   * Like other {@link INode} subclasses, this class is synchronized externally  * by the namesystem and FSDirectory locks.  */
+comment|/**  * A directory with this feature is a snapshottable directory, where snapshots  * can be taken. This feature extends {@link DirectoryWithSnapshotFeature}, and  * maintains extra information about all the snapshots taken on this directory.  */
 end_comment
 
 begin_class
@@ -477,12 +459,12 @@ annotation|@
 name|InterfaceAudience
 operator|.
 name|Private
-DECL|class|INodeDirectorySnapshottable
+DECL|class|DirectorySnapshottableFeature
 specifier|public
 class|class
-name|INodeDirectorySnapshottable
+name|DirectorySnapshottableFeature
 extends|extends
-name|INodeDirectory
+name|DirectoryWithSnapshotFeature
 block|{
 comment|/** Limit the number of snapshot per snapshottable directory. */
 DECL|field|SNAPSHOT_LIMIT
@@ -495,61 +477,6 @@ literal|1
 operator|<<
 literal|16
 decl_stmt|;
-comment|/** Cast INode to INodeDirectorySnapshottable. */
-DECL|method|valueOf ( INode inode, String src)
-specifier|static
-specifier|public
-name|INodeDirectorySnapshottable
-name|valueOf
-parameter_list|(
-name|INode
-name|inode
-parameter_list|,
-name|String
-name|src
-parameter_list|)
-throws|throws
-name|IOException
-block|{
-specifier|final
-name|INodeDirectory
-name|dir
-init|=
-name|INodeDirectory
-operator|.
-name|valueOf
-argument_list|(
-name|inode
-argument_list|,
-name|src
-argument_list|)
-decl_stmt|;
-if|if
-condition|(
-operator|!
-name|dir
-operator|.
-name|isSnapshottable
-argument_list|()
-condition|)
-block|{
-throw|throw
-operator|new
-name|SnapshotException
-argument_list|(
-literal|"Directory is not a snapshottable directory: "
-operator|+
-name|src
-argument_list|)
-throw|;
-block|}
-return|return
-operator|(
-name|INodeDirectorySnapshottable
-operator|)
-name|dir
-return|;
-block|}
 comment|/**    * Snapshots of this directory in ascending order of snapshot names.    * Note that snapshots in ascending order of snapshot id are stored in    * {@link INodeDirectoryWithSnapshot}.diffs (a private field).    */
 DECL|field|snapshotsByNames
 specifier|private
@@ -567,28 +494,6 @@ name|Snapshot
 argument_list|>
 argument_list|()
 decl_stmt|;
-comment|/**    * @return {@link #snapshotsByNames}    */
-DECL|method|getSnapshotsByNames ()
-name|ReadOnlyList
-argument_list|<
-name|Snapshot
-argument_list|>
-name|getSnapshotsByNames
-parameter_list|()
-block|{
-return|return
-name|ReadOnlyList
-operator|.
-name|Util
-operator|.
-name|asReadOnlyList
-argument_list|(
-name|this
-operator|.
-name|snapshotsByNames
-argument_list|)
-return|;
-block|}
 comment|/** Number of snapshots allowed. */
 DECL|field|snapshotQuota
 specifier|private
@@ -597,40 +502,28 @@ name|snapshotQuota
 init|=
 name|SNAPSHOT_LIMIT
 decl_stmt|;
-DECL|method|INodeDirectorySnapshottable (INodeDirectory dir)
+DECL|method|DirectorySnapshottableFeature (DirectoryWithSnapshotFeature feature)
 specifier|public
-name|INodeDirectorySnapshottable
+name|DirectorySnapshottableFeature
 parameter_list|(
-name|INodeDirectory
-name|dir
+name|DirectoryWithSnapshotFeature
+name|feature
 parameter_list|)
 block|{
 name|super
 argument_list|(
-name|dir
-argument_list|,
-literal|true
-argument_list|,
-name|dir
-operator|.
-name|getFeatures
-argument_list|()
-argument_list|)
-expr_stmt|;
-comment|// add snapshot feature if the original directory does not have it
-if|if
-condition|(
-operator|!
-name|isWithSnapshot
-argument_list|()
-condition|)
-block|{
-name|addSnapshotFeature
-argument_list|(
+name|feature
+operator|==
 literal|null
+condition|?
+literal|null
+else|:
+name|feature
+operator|.
+name|getDiffs
+argument_list|()
 argument_list|)
 expr_stmt|;
-block|}
 block|}
 comment|/** @return the number of existing snapshots. */
 DECL|method|getNumSnapshots ()
@@ -761,6 +654,7 @@ return|;
 block|}
 comment|/**    * Rename a snapshot    * @param path    *          The directory path where the snapshot was taken. Used for    *          generating exception message.    * @param oldName    *          Old name of the snapshot    * @param newName    *          New name the snapshot will be renamed to    * @throws SnapshotException    *           Throw SnapshotException when either the snapshot with the old    *           name does not exist or a snapshot with the new name already    *           exists    */
 DECL|method|renameSnapshot (String path, String oldName, String newName)
+specifier|public
 name|void
 name|renameSnapshot
 parameter_list|(
@@ -979,19 +873,7 @@ operator|=
 name|snapshotQuota
 expr_stmt|;
 block|}
-annotation|@
-name|Override
-DECL|method|isSnapshottable ()
-specifier|public
-name|boolean
-name|isSnapshottable
-parameter_list|()
-block|{
-return|return
-literal|true
-return|;
-block|}
-comment|/**    * Simply add a snapshot into the {@link #snapshotsByNames}. Used by FSImage    * loading.    */
+comment|/**    * Simply add a snapshot into the {@link #snapshotsByNames}. Used when loading    * fsimage.    */
 DECL|method|addSnapshot (Snapshot snapshot)
 name|void
 name|addSnapshot
@@ -1011,10 +893,14 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|/** Add a snapshot. */
-DECL|method|addSnapshot (int id, String name)
+DECL|method|addSnapshot (INodeDirectory snapshotRoot, int id, String name)
+specifier|public
 name|Snapshot
 name|addSnapshot
 parameter_list|(
+name|INodeDirectory
+name|snapshotRoot
+parameter_list|,
 name|int
 name|id
 parameter_list|,
@@ -1068,7 +954,7 @@ name|id
 argument_list|,
 name|name
 argument_list|,
-name|this
+name|snapshotRoot
 argument_list|)
 decl_stmt|;
 specifier|final
@@ -1130,7 +1016,7 @@ name|addDiff
 argument_list|(
 name|id
 argument_list|,
-name|this
+name|snapshotRoot
 argument_list|)
 decl_stmt|;
 name|d
@@ -1155,13 +1041,21 @@ argument_list|,
 name|s
 argument_list|)
 expr_stmt|;
-comment|//set modification time
-name|updateModificationTime
-argument_list|(
+comment|// set modification time
+specifier|final
+name|long
+name|now
+init|=
 name|Time
 operator|.
 name|now
 argument_list|()
+decl_stmt|;
+name|snapshotRoot
+operator|.
+name|updateModificationTime
+argument_list|(
+name|now
 argument_list|,
 name|Snapshot
 operator|.
@@ -1175,8 +1069,7 @@ argument_list|()
 operator|.
 name|setModificationTime
 argument_list|(
-name|getModificationTime
-argument_list|()
+name|now
 argument_list|,
 name|Snapshot
 operator|.
@@ -1187,11 +1080,15 @@ return|return
 name|s
 return|;
 block|}
-comment|/**    * Remove the snapshot with the given name from {@link #snapshotsByNames},    * and delete all the corresponding DirectoryDiff.    *     * @param snapshotName The name of the snapshot to be removed    * @param collectedBlocks Used to collect information to update blocksMap    * @return The removed snapshot. Null if no snapshot with the given name     *         exists.    */
-DECL|method|removeSnapshot (String snapshotName, BlocksMapUpdateInfo collectedBlocks, final List<INode> removedINodes)
+comment|/**    * Remove the snapshot with the given name from {@link #snapshotsByNames},    * and delete all the corresponding DirectoryDiff.    *    * @param snapshotRoot The directory where we take snapshots    * @param snapshotName The name of the snapshot to be removed    * @param collectedBlocks Used to collect information to update blocksMap    * @return The removed snapshot. Null if no snapshot with the given name    *         exists.    */
+DECL|method|removeSnapshot (INodeDirectory snapshotRoot, String snapshotName, BlocksMapUpdateInfo collectedBlocks, final List<INode> removedINodes)
+specifier|public
 name|Snapshot
 name|removeSnapshot
 parameter_list|(
+name|INodeDirectory
+name|snapshotRoot
+parameter_list|,
 name|String
 name|snapshotName
 parameter_list|,
@@ -1239,7 +1136,7 @@ name|snapshotName
 operator|+
 literal|" from path "
 operator|+
-name|this
+name|snapshotRoot
 operator|.
 name|getFullPathName
 argument_list|()
@@ -1268,7 +1165,7 @@ name|Snapshot
 operator|.
 name|findLatestSnapshot
 argument_list|(
-name|this
+name|snapshotRoot
 argument_list|,
 name|snapshot
 operator|.
@@ -1283,6 +1180,8 @@ operator|.
 name|Counts
 name|counts
 init|=
+name|snapshotRoot
+operator|.
 name|cleanSubtree
 argument_list|(
 name|snapshot
@@ -1302,6 +1201,8 @@ decl_stmt|;
 name|INodeDirectory
 name|parent
 init|=
+name|snapshotRoot
+operator|.
 name|getParent
 argument_list|()
 decl_stmt|;
@@ -1349,6 +1250,8 @@ name|QuotaExceededException
 name|e
 parameter_list|)
 block|{
+name|INode
+operator|.
 name|LOG
 operator|.
 name|error
@@ -1372,19 +1275,21 @@ name|snapshot
 return|;
 block|}
 block|}
-annotation|@
-name|Override
-DECL|method|computeContentSummary ( final ContentSummaryComputationContext summary)
+DECL|method|computeContentSummary ( final INodeDirectory snapshotRoot, final ContentSummaryComputationContext summary)
 specifier|public
 name|ContentSummaryComputationContext
 name|computeContentSummary
 parameter_list|(
 specifier|final
+name|INodeDirectory
+name|snapshotRoot
+parameter_list|,
+specifier|final
 name|ContentSummaryComputationContext
 name|summary
 parameter_list|)
 block|{
-name|super
+name|snapshotRoot
 operator|.
 name|computeContentSummary
 argument_list|(
@@ -1426,11 +1331,15 @@ return|return
 name|summary
 return|;
 block|}
-comment|/**    * Compute the difference between two snapshots (or a snapshot and the current    * directory) of the directory.    *     * @param from The name of the start point of the comparison. Null indicating    *          the current tree.    * @param to The name of the end point. Null indicating the current tree.    * @return The difference between the start/end points.    * @throws SnapshotException If there is no snapshot matching the starting    *           point, or if endSnapshotName is not null but cannot be identified    *           as a previous snapshot.    */
-DECL|method|computeDiff (final String from, final String to)
+comment|/**    * Compute the difference between two snapshots (or a snapshot and the current    * directory) of the directory.    *    * @param from The name of the start point of the comparison. Null indicating    *          the current tree.    * @param to The name of the end point. Null indicating the current tree.    * @return The difference between the start/end points.    * @throws SnapshotException If there is no snapshot matching the starting    *           point, or if endSnapshotName is not null but cannot be identified    *           as a previous snapshot.    */
+DECL|method|computeDiff (final INodeDirectory snapshotRoot, final String from, final String to)
 name|SnapshotDiffInfo
 name|computeDiff
 parameter_list|(
+specifier|final
+name|INodeDirectory
+name|snapshotRoot
+parameter_list|,
 specifier|final
 name|String
 name|from
@@ -1447,6 +1356,8 @@ name|fromSnapshot
 init|=
 name|getSnapshotByName
 argument_list|(
+name|snapshotRoot
+argument_list|,
 name|from
 argument_list|)
 decl_stmt|;
@@ -1455,6 +1366,8 @@ name|toSnapshot
 init|=
 name|getSnapshotByName
 argument_list|(
+name|snapshotRoot
+argument_list|,
 name|to
 argument_list|)
 decl_stmt|;
@@ -1479,7 +1392,7 @@ init|=
 operator|new
 name|SnapshotDiffInfo
 argument_list|(
-name|this
+name|snapshotRoot
 argument_list|,
 name|fromSnapshot
 argument_list|,
@@ -1488,7 +1401,9 @@ argument_list|)
 decl_stmt|;
 name|computeDiffRecursively
 argument_list|(
-name|this
+name|snapshotRoot
+argument_list|,
+name|snapshotRoot
 argument_list|,
 operator|new
 name|ArrayList
@@ -1505,12 +1420,15 @@ return|return
 name|diffs
 return|;
 block|}
-comment|/**    * Find the snapshot matching the given name.    *     * @param snapshotName The name of the snapshot.    * @return The corresponding snapshot. Null if snapshotName is null or empty.    * @throws SnapshotException If snapshotName is not null or empty, but there    *           is no snapshot matching the name.    */
-DECL|method|getSnapshotByName (String snapshotName)
+comment|/**    * Find the snapshot matching the given name.    *    * @param snapshotRoot The directory where snapshots were taken.    * @param snapshotName The name of the snapshot.    * @return The corresponding snapshot. Null if snapshotName is null or empty.    * @throws SnapshotException If snapshotName is not null or empty, but there    *           is no snapshot matching the name.    */
+DECL|method|getSnapshotByName (INodeDirectory snapshotRoot, String snapshotName)
 specifier|private
 name|Snapshot
 name|getSnapshotByName
 parameter_list|(
+name|INodeDirectory
+name|snapshotRoot
+parameter_list|,
 name|String
 name|snapshotName
 parameter_list|)
@@ -1562,7 +1480,7 @@ name|SnapshotException
 argument_list|(
 literal|"Cannot find the snapshot of directory "
 operator|+
-name|this
+name|snapshotRoot
 operator|.
 name|getFullPathName
 argument_list|()
@@ -1587,12 +1505,16 @@ return|return
 name|s
 return|;
 block|}
-comment|/**    * Recursively compute the difference between snapshots under a given    * directory/file.    * @param node The directory/file under which the diff is computed.     * @param parentPath Relative path (corresponding to the snapshot root) of     *                   the node's parent.    * @param diffReport data structure used to store the diff.    */
-DECL|method|computeDiffRecursively (INode node, List<byte[]> parentPath, SnapshotDiffInfo diffReport)
+comment|/**    * Recursively compute the difference between snapshots under a given    * directory/file.    * @param snapshotRoot The directory where snapshots were taken.    * @param node The directory/file under which the diff is computed.    * @param parentPath Relative path (corresponding to the snapshot root) of    *                   the node's parent.    * @param diffReport data structure used to store the diff.    */
+DECL|method|computeDiffRecursively (final INodeDirectory snapshotRoot, INode node, List<byte[]> parentPath, SnapshotDiffInfo diffReport)
 specifier|private
 name|void
 name|computeDiffRecursively
 parameter_list|(
+specifier|final
+name|INodeDirectory
+name|snapshotRoot
+parameter_list|,
 name|INode
 name|node
 parameter_list|,
@@ -1807,6 +1729,8 @@ name|renameTargetPath
 init|=
 name|findRenameTargetPath
 argument_list|(
+name|snapshotRoot
+argument_list|,
 operator|(
 name|WithName
 operator|)
@@ -1865,6 +1789,8 @@ argument_list|)
 expr_stmt|;
 name|computeDiffRecursively
 argument_list|(
+name|snapshotRoot
+argument_list|,
 name|child
 argument_list|,
 name|parentPath
@@ -1947,13 +1873,17 @@ block|}
 block|}
 block|}
 comment|/**    * We just found a deleted WithName node as the source of a rename operation.    * However, we should include it in our snapshot diff report as rename only    * if the rename target is also under the same snapshottable directory.    */
-DECL|method|findRenameTargetPath (INodeReference.WithName wn, final int snapshotId)
+DECL|method|findRenameTargetPath (final INodeDirectory snapshotRoot, INodeReference.WithName wn, final int snapshotId)
 specifier|private
 name|byte
 index|[]
 index|[]
 name|findRenameTargetPath
 parameter_list|(
+specifier|final
+name|INodeDirectory
+name|snapshotRoot
+parameter_list|,
 name|INodeReference
 operator|.
 name|WithName
@@ -1996,7 +1926,7 @@ if|if
 condition|(
 name|inode
 operator|==
-name|this
+name|snapshotRoot
 condition|)
 block|{
 return|return
@@ -2129,106 +2059,30 @@ return|return
 literal|null
 return|;
 block|}
-comment|/**    * Replace itself with {@link INodeDirectoryWithSnapshot} or    * {@link INodeDirectory} depending on the latest snapshot.    */
-DECL|method|replaceSelf (final int latestSnapshotId, final INodeMap inodeMap)
-name|INodeDirectory
-name|replaceSelf
-parameter_list|(
-specifier|final
-name|int
-name|latestSnapshotId
-parameter_list|,
-specifier|final
-name|INodeMap
-name|inodeMap
-parameter_list|)
-throws|throws
-name|QuotaExceededException
-block|{
-if|if
-condition|(
-name|latestSnapshotId
-operator|==
-name|Snapshot
-operator|.
-name|CURRENT_STATE_ID
-condition|)
-block|{
-name|Preconditions
-operator|.
-name|checkState
-argument_list|(
-name|getDirectoryWithSnapshotFeature
-argument_list|()
-operator|.
-name|getLastSnapshotId
-argument_list|()
-operator|==
-name|Snapshot
-operator|.
-name|CURRENT_STATE_ID
-argument_list|,
-literal|"this=%s"
-argument_list|,
-name|this
-argument_list|)
-expr_stmt|;
-block|}
-name|INodeDirectory
-name|dir
-init|=
-name|replaceSelf4INodeDirectory
-argument_list|(
-name|inodeMap
-argument_list|)
-decl_stmt|;
-if|if
-condition|(
-name|latestSnapshotId
-operator|!=
-name|Snapshot
-operator|.
-name|CURRENT_STATE_ID
-condition|)
-block|{
-name|dir
-operator|.
-name|recordModification
-argument_list|(
-name|latestSnapshotId
-argument_list|)
-expr_stmt|;
-block|}
-return|return
-name|dir
-return|;
-block|}
 annotation|@
 name|Override
-DECL|method|toDetailString ()
+DECL|method|toString ()
 specifier|public
 name|String
-name|toDetailString
+name|toString
 parameter_list|()
 block|{
 return|return
-name|super
-operator|.
-name|toDetailString
-argument_list|()
-operator|+
-literal|", snapshotsByNames="
+literal|"snapshotsByNames="
 operator|+
 name|snapshotsByNames
 return|;
 block|}
 annotation|@
-name|Override
-DECL|method|dumpTreeRecursively (PrintWriter out, StringBuilder prefix, int snapshot)
+name|VisibleForTesting
+DECL|method|dumpTreeRecursively (INodeDirectory snapshotRoot, PrintWriter out, StringBuilder prefix, int snapshot)
 specifier|public
 name|void
 name|dumpTreeRecursively
 parameter_list|(
+name|INodeDirectory
+name|snapshotRoot
+parameter_list|,
 name|PrintWriter
 name|out
 parameter_list|,
@@ -2239,17 +2093,6 @@ name|int
 name|snapshot
 parameter_list|)
 block|{
-name|super
-operator|.
-name|dumpTreeRecursively
-argument_list|(
-name|out
-argument_list|,
-name|prefix
-argument_list|,
-name|snapshot
-argument_list|)
-expr_stmt|;
 if|if
 condition|(
 name|snapshot
@@ -2282,6 +2125,8 @@ specifier|final
 name|String
 name|name
 init|=
+name|snapshotRoot
+operator|.
 name|getLocalName
 argument_list|()
 decl_stmt|;
@@ -2378,6 +2223,8 @@ argument_list|(
 name|n
 argument_list|)
 expr_stmt|;
+name|INodeDirectory
+operator|.
 name|dumpTreeRecursively
 argument_list|(
 name|out

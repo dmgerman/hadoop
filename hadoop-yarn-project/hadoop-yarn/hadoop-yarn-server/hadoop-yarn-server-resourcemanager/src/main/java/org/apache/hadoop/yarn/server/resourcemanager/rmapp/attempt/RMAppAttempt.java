@@ -479,6 +479,12 @@ name|boolean
 name|shouldCountTowardsMaxAttemptRetry
 parameter_list|()
 function_decl|;
+comment|/**    * Get metrics from the {@link RMAppAttempt}    * @return metrics    */
+DECL|method|getRMAppAttemptMetrics ()
+name|RMAppAttemptMetrics
+name|getRMAppAttemptMetrics
+parameter_list|()
+function_decl|;
 block|}
 end_interface
 

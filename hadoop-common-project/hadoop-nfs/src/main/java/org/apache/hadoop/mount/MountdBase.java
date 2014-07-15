@@ -32,6 +32,34 @@ name|org
 operator|.
 name|apache
 operator|.
+name|commons
+operator|.
+name|logging
+operator|.
+name|Log
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|commons
+operator|.
+name|logging
+operator|.
+name|LogFactory
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
 name|hadoop
 operator|.
 name|oncrpc
@@ -96,6 +124,22 @@ name|ShutdownHookManager
 import|;
 end_import
 
+begin_import
+import|import static
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|util
+operator|.
+name|ExitUtil
+operator|.
+name|terminate
+import|;
+end_import
+
 begin_comment
 comment|/**  * Main class for starting mountd daemon. This daemon implements the NFS  * mount protocol. When receiving a MOUNT request from an NFS client, it checks  * the request against the list of currently exported file systems. If the  * client is permitted to mount the file system, rpc.mountd obtains a file  * handle for requested directory and returns it to the client.  */
 end_comment
@@ -107,6 +151,22 @@ specifier|public
 class|class
 name|MountdBase
 block|{
+DECL|field|LOG
+specifier|public
+specifier|static
+specifier|final
+name|Log
+name|LOG
+init|=
+name|LogFactory
+operator|.
+name|getLog
+argument_list|(
+name|MountdBase
+operator|.
+name|class
+argument_list|)
+decl_stmt|;
 DECL|field|rpcProgram
 specifier|private
 specifier|final
@@ -135,7 +195,7 @@ return|return
 name|rpcProgram
 return|;
 block|}
-comment|/**    * Constructor    * @param program    * @throws IOException     */
+comment|/**    * Constructor    * @param program    * @throws IOException    */
 DECL|method|MountdBase (RpcProgram program)
 specifier|public
 name|MountdBase
@@ -267,6 +327,8 @@ argument_list|,
 name|SHUTDOWN_HOOK_PRIORITY
 argument_list|)
 expr_stmt|;
+try|try
+block|{
 name|rpcProgram
 operator|.
 name|register
@@ -289,6 +351,30 @@ argument_list|,
 name|tcpBoundPort
 argument_list|)
 expr_stmt|;
+block|}
+catch|catch
+parameter_list|(
+name|Throwable
+name|e
+parameter_list|)
+block|{
+name|LOG
+operator|.
+name|fatal
+argument_list|(
+literal|"Failed to start the server. Cause:"
+argument_list|,
+name|e
+argument_list|)
+expr_stmt|;
+name|terminate
+argument_list|(
+literal|1
+argument_list|,
+name|e
+argument_list|)
+expr_stmt|;
+block|}
 block|}
 block|}
 comment|/**    * Priority of the mountd shutdown hook.    */

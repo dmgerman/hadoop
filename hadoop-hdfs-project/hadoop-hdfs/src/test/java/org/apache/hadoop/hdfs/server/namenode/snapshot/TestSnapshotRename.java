@@ -280,6 +280,24 @@ name|server
 operator|.
 name|namenode
 operator|.
+name|INodeDirectory
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|server
+operator|.
+name|namenode
+operator|.
 name|snapshot
 operator|.
 name|DirectoryWithSnapshotFeature
@@ -575,13 +593,13 @@ operator|.
 name|none
 argument_list|()
 decl_stmt|;
-comment|/**    * Check the correctness of snapshot list within    * {@link INodeDirectorySnapshottable}    */
-DECL|method|checkSnapshotList (INodeDirectorySnapshottable srcRoot, String[] sortedNames, String[] names)
+comment|/**    * Check the correctness of snapshot list within snapshottable dir    */
+DECL|method|checkSnapshotList (INodeDirectory srcRoot, String[] sortedNames, String[] names)
 specifier|private
 name|void
 name|checkSnapshotList
 parameter_list|(
-name|INodeDirectorySnapshottable
+name|INodeDirectory
 name|srcRoot
 parameter_list|,
 name|String
@@ -593,6 +611,14 @@ index|[]
 name|names
 parameter_list|)
 block|{
+name|assertTrue
+argument_list|(
+name|srcRoot
+operator|.
+name|isSnapshottable
+argument_list|()
+argument_list|)
+expr_stmt|;
 name|ReadOnlyList
 argument_list|<
 name|Snapshot
@@ -601,7 +627,10 @@ name|listByName
 init|=
 name|srcRoot
 operator|.
-name|getSnapshotsByNames
+name|getDirectorySnapshottableFeature
+argument_list|()
+operator|.
+name|getSnapshotList
 argument_list|()
 decl_stmt|;
 name|assertEquals
@@ -704,6 +733,9 @@ name|Snapshot
 name|s
 init|=
 name|srcRoot
+operator|.
+name|getDirectorySnapshottableFeature
+argument_list|()
 operator|.
 name|getSnapshotById
 argument_list|(
@@ -814,13 +846,9 @@ literal|"s22"
 argument_list|)
 expr_stmt|;
 comment|// Check the snapshots list
-name|INodeDirectorySnapshottable
+name|INodeDirectory
 name|srcRoot
 init|=
-name|INodeDirectorySnapshottable
-operator|.
-name|valueOf
-argument_list|(
 name|fsdir
 operator|.
 name|getINode
@@ -830,12 +858,9 @@ operator|.
 name|toString
 argument_list|()
 argument_list|)
-argument_list|,
-name|sub1
 operator|.
-name|toString
+name|asDirectory
 argument_list|()
-argument_list|)
 decl_stmt|;
 name|checkSnapshotList
 argument_list|(

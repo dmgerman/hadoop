@@ -2219,12 +2219,6 @@ specifier|final
 name|MRAppMetrics
 name|metrics
 decl_stmt|;
-DECL|field|maxAppAttempts
-specifier|private
-specifier|final
-name|int
-name|maxAppAttempts
-decl_stmt|;
 DECL|field|completedTasksFromPreviousRun
 specifier|private
 name|Map
@@ -2407,7 +2401,7 @@ argument_list|(
 literal|false
 argument_list|)
 decl_stmt|;
-DECL|method|MRAppMaster (ApplicationAttemptId applicationAttemptId, ContainerId containerId, String nmHost, int nmPort, int nmHttpPort, long appSubmitTime, int maxAppAttempts)
+DECL|method|MRAppMaster (ApplicationAttemptId applicationAttemptId, ContainerId containerId, String nmHost, int nmPort, int nmHttpPort, long appSubmitTime)
 specifier|public
 name|MRAppMaster
 parameter_list|(
@@ -2428,9 +2422,6 @@ name|nmHttpPort
 parameter_list|,
 name|long
 name|appSubmitTime
-parameter_list|,
-name|int
-name|maxAppAttempts
 parameter_list|)
 block|{
 name|this
@@ -2450,12 +2441,10 @@ name|SystemClock
 argument_list|()
 argument_list|,
 name|appSubmitTime
-argument_list|,
-name|maxAppAttempts
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|MRAppMaster (ApplicationAttemptId applicationAttemptId, ContainerId containerId, String nmHost, int nmPort, int nmHttpPort, Clock clock, long appSubmitTime, int maxAppAttempts)
+DECL|method|MRAppMaster (ApplicationAttemptId applicationAttemptId, ContainerId containerId, String nmHost, int nmPort, int nmHttpPort, Clock clock, long appSubmitTime)
 specifier|public
 name|MRAppMaster
 parameter_list|(
@@ -2479,9 +2468,6 @@ name|clock
 parameter_list|,
 name|long
 name|appSubmitTime
-parameter_list|,
-name|int
-name|maxAppAttempts
 parameter_list|)
 block|{
 name|super
@@ -2554,12 +2540,6 @@ operator|.
 name|create
 argument_list|()
 expr_stmt|;
-name|this
-operator|.
-name|maxAppAttempts
-operator|=
-name|maxAppAttempts
-expr_stmt|;
 name|logSyncer
 operator|=
 name|TaskLog
@@ -2613,46 +2593,6 @@ operator|new
 name|RunningAppContext
 argument_list|(
 name|conf
-argument_list|)
-expr_stmt|;
-operator|(
-operator|(
-name|RunningAppContext
-operator|)
-name|context
-operator|)
-operator|.
-name|computeIsLastAMRetry
-argument_list|()
-expr_stmt|;
-name|LOG
-operator|.
-name|info
-argument_list|(
-literal|"The specific max attempts: "
-operator|+
-name|maxAppAttempts
-operator|+
-literal|" for application: "
-operator|+
-name|appAttemptID
-operator|.
-name|getApplicationId
-argument_list|()
-operator|.
-name|getId
-argument_list|()
-operator|+
-literal|". Attempt num: "
-operator|+
-name|appAttemptID
-operator|.
-name|getAttemptId
-argument_list|()
-operator|+
-literal|" is last retry: "
-operator|+
-name|isLastAMRetry
 argument_list|)
 expr_stmt|;
 comment|// Job name is the same as the app name util we support DAG of jobs
@@ -5818,20 +5758,15 @@ literal|true
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|computeIsLastAMRetry ()
+DECL|method|resetIsLastAMRetry ()
 specifier|public
 name|void
-name|computeIsLastAMRetry
+name|resetIsLastAMRetry
 parameter_list|()
 block|{
 name|isLastAMRetry
 operator|=
-name|appAttemptID
-operator|.
-name|getAttemptId
-argument_list|()
-operator|>=
-name|maxAppAttempts
+literal|false
 expr_stmt|;
 block|}
 block|}
@@ -7695,18 +7630,6 @@ operator|.
 name|APP_SUBMIT_TIME_ENV
 argument_list|)
 decl_stmt|;
-name|String
-name|maxAppAttempts
-init|=
-name|System
-operator|.
-name|getenv
-argument_list|(
-name|ApplicationConstants
-operator|.
-name|MAX_APP_ATTEMPTS_ENV
-argument_list|)
-decl_stmt|;
 name|validateInputParam
 argument_list|(
 name|containerIdStr
@@ -7764,15 +7687,6 @@ operator|.
 name|APP_SUBMIT_TIME_ENV
 argument_list|)
 expr_stmt|;
-name|validateInputParam
-argument_list|(
-name|maxAppAttempts
-argument_list|,
-name|ApplicationConstants
-operator|.
-name|MAX_APP_ATTEMPTS_ENV
-argument_list|)
-expr_stmt|;
 name|ContainerId
 name|containerId
 init|=
@@ -7828,13 +7742,6 @@ name|nodeHttpPortString
 argument_list|)
 argument_list|,
 name|appSubmitTime
-argument_list|,
-name|Integer
-operator|.
-name|parseInt
-argument_list|(
-name|maxAppAttempts
-argument_list|)
 argument_list|)
 decl_stmt|;
 name|ShutdownHookManager

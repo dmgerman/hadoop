@@ -71,13 +71,6 @@ argument_list|(
 literal|"#footer.ui-widget"
 argument_list|)
 operator|.
-name|a
-argument_list|(
-literal|"http://hadoop.apache.org/"
-argument_list|,
-literal|"About Apache Hadoop"
-argument_list|)
-operator|.
 name|_
 argument_list|()
 expr_stmt|;

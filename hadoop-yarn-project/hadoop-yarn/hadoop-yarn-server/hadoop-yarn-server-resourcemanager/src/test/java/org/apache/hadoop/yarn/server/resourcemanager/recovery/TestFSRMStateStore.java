@@ -1032,6 +1032,11 @@ argument_list|(
 name|fsTester
 argument_list|)
 expr_stmt|;
+name|testDeleteStore
+argument_list|(
+name|fsTester
+argument_list|)
+expr_stmt|;
 block|}
 finally|finally
 block|{

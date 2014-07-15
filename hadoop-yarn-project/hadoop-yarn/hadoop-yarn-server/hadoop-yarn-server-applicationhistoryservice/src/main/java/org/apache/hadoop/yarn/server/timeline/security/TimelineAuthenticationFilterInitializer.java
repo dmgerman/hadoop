@@ -168,7 +168,7 @@ name|TimelineAuthenticationFilterInitializer
 extends|extends
 name|FilterInitializer
 block|{
-comment|/**    * The configuration prefix of timeline Kerberos + DT authentication    */
+comment|/**    * The configuration prefix of timeline HTTP authentication    */
 DECL|field|PREFIX
 specifier|public
 specifier|static
@@ -176,7 +176,7 @@ specifier|final
 name|String
 name|PREFIX
 init|=
-literal|"yarn.timeline-service.http.authentication."
+literal|"yarn.timeline-service.http-authentication."
 decl_stmt|;
 DECL|field|SIGNATURE_SECRET_FILE
 specifier|private

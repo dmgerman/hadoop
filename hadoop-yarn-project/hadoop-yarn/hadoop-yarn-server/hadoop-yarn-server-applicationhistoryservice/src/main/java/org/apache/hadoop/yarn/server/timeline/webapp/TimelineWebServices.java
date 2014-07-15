@@ -596,7 +596,9 @@ name|server
 operator|.
 name|timeline
 operator|.
-name|TimelineStore
+name|TimelineReader
+operator|.
+name|Field
 import|;
 end_import
 
@@ -614,9 +616,7 @@ name|server
 operator|.
 name|timeline
 operator|.
-name|TimelineReader
-operator|.
-name|Field
+name|TimelineStore
 import|;
 end_import
 
@@ -671,6 +671,22 @@ operator|.
 name|webapp
 operator|.
 name|BadRequestException
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|webapp
+operator|.
+name|ForbiddenException
 import|;
 end_import
 
@@ -1980,6 +1996,33 @@ argument_list|(
 name|req
 argument_list|)
 decl_stmt|;
+if|if
+condition|(
+name|callerUGI
+operator|==
+literal|null
+condition|)
+block|{
+name|String
+name|msg
+init|=
+literal|"The owner of the posted timeline entities is not set"
+decl_stmt|;
+name|LOG
+operator|.
+name|error
+argument_list|(
+name|msg
+argument_list|)
+expr_stmt|;
+throw|throw
+operator|new
+name|ForbiddenException
+argument_list|(
+name|msg
+argument_list|)
+throw|;
+block|}
 try|try
 block|{
 name|List
@@ -2205,12 +2248,6 @@ name|injectOwnerInfo
 argument_list|(
 name|entity
 argument_list|,
-name|callerUGI
-operator|==
-literal|null
-condition|?
-literal|""
-else|:
 name|callerUGI
 operator|.
 name|getShortUserName

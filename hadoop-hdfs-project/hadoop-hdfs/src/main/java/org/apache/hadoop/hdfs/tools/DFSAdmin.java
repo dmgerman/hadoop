@@ -7752,6 +7752,52 @@ literal|" [-fetchImage<local directory>]"
 argument_list|)
 expr_stmt|;
 block|}
+elseif|else
+if|if
+condition|(
+literal|"-shutdownDatanode"
+operator|.
+name|equals
+argument_list|(
+name|cmd
+argument_list|)
+condition|)
+block|{
+name|System
+operator|.
+name|err
+operator|.
+name|println
+argument_list|(
+literal|"Usage: java DFSAdmin"
+operator|+
+literal|" [-shutdownDatanode<datanode_host:ipc_port> [upgrade]]"
+argument_list|)
+expr_stmt|;
+block|}
+elseif|else
+if|if
+condition|(
+literal|"-getDatanodeInfo"
+operator|.
+name|equals
+argument_list|(
+name|cmd
+argument_list|)
+condition|)
+block|{
+name|System
+operator|.
+name|err
+operator|.
+name|println
+argument_list|(
+literal|"Usage: java DFSAdmin"
+operator|+
+literal|" [-getDatanodeInfo<datanode_host:ipc_port>]"
+argument_list|)
+expr_stmt|;
+block|}
 else|else
 block|{
 name|System
