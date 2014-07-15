@@ -6013,6 +6013,11 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
+name|recoverResourceRequestForContainer
+argument_list|(
+name|cont
+argument_list|)
+expr_stmt|;
 name|completedContainer
 argument_list|(
 name|cont

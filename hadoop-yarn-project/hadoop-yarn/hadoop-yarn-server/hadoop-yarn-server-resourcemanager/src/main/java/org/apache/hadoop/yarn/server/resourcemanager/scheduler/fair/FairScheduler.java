@@ -2555,7 +2555,7 @@ block|}
 block|}
 block|}
 DECL|method|warnOrKillContainer (RMContainer container)
-specifier|private
+specifier|protected
 name|void
 name|warnOrKillContainer
 parameter_list|(
@@ -2667,6 +2667,11 @@ operator|.
 name|PREEMPTED_CONTAINER
 argument_list|)
 decl_stmt|;
+name|recoverResourceRequestForContainer
+argument_list|(
+name|container
+argument_list|)
+expr_stmt|;
 comment|// TODO: Not sure if this ever actually adds this to the list of cleanup
 comment|// containers on the RMNode (see SchedulerNode.releaseContainer()).
 name|completedContainer

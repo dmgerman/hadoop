@@ -52,6 +52,16 @@ name|java
 operator|.
 name|util
 operator|.
+name|List
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
 name|Map
 import|;
 end_import
@@ -680,6 +690,14 @@ return|return
 literal|false
 return|;
 block|}
+comment|// Remove from the list of newly allocated containers if found
+name|newlyAllocatedContainers
+operator|.
+name|remove
+argument_list|(
+name|rmContainer
+argument_list|)
+expr_stmt|;
 name|Container
 name|container
 init|=
@@ -901,6 +919,12 @@ name|rmContainer
 argument_list|)
 expr_stmt|;
 comment|// Update consumption and track allocations
+name|List
+argument_list|<
+name|ResourceRequest
+argument_list|>
+name|resourceRequestList
+init|=
 name|appSchedulingInfo
 operator|.
 name|allocate
@@ -915,7 +939,7 @@ name|request
 argument_list|,
 name|container
 argument_list|)
-expr_stmt|;
+decl_stmt|;
 name|Resources
 operator|.
 name|addTo
@@ -926,6 +950,19 @@ name|container
 operator|.
 name|getResource
 argument_list|()
+argument_list|)
+expr_stmt|;
+comment|// Update resource requests related to "request" and store in RMContainer
+operator|(
+operator|(
+name|RMContainerImpl
+operator|)
+name|rmContainer
+operator|)
+operator|.
+name|setResourceRequests
+argument_list|(
+name|resourceRequestList
 argument_list|)
 expr_stmt|;
 comment|// Inform the container
