@@ -250,7 +250,9 @@ index|[
 name|index
 index|]
 operator|=
-literal|"-prbugpc"
+name|DistCpOptionSwitch
+operator|.
+name|PRESERVE_STATUS_DEFAULT
 expr_stmt|;
 block|}
 block|}

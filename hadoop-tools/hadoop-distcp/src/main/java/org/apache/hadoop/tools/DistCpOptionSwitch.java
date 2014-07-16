@@ -409,6 +409,14 @@ literal|"Specify bandwidth per map in MB"
 argument_list|)
 argument_list|)
 block|;
+DECL|field|PRESERVE_STATUS_DEFAULT
+specifier|static
+specifier|final
+name|String
+name|PRESERVE_STATUS_DEFAULT
+init|=
+literal|"-prbugpc"
+decl_stmt|;
 DECL|field|confLabel
 specifier|private
 specifier|final
