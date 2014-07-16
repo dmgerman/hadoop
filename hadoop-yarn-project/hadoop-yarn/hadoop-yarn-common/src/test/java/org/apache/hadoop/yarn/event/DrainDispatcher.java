@@ -75,6 +75,11 @@ name|Event
 argument_list|>
 name|queue
 decl_stmt|;
+DECL|field|mutex
+specifier|final
+name|Object
+name|mutex
+decl_stmt|;
 DECL|method|DrainDispatcher ()
 specifier|public
 name|DrainDispatcher
@@ -112,6 +117,12 @@ operator|.
 name|queue
 operator|=
 name|eventQueue
+expr_stmt|;
+name|this
+operator|.
+name|mutex
+operator|=
+name|this
 expr_stmt|;
 block|}
 comment|/**    * Busy loop waiting for all queued events to drain.    */
@@ -165,6 +176,11 @@ name|isInterrupted
 argument_list|()
 condition|)
 block|{
+synchronized|synchronized
+init|(
+name|mutex
+init|)
+block|{
 comment|// !drained if dispatch queued new events on this dispatcher
 name|drained
 operator|=
@@ -173,6 +189,7 @@ operator|.
 name|isEmpty
 argument_list|()
 expr_stmt|;
+block|}
 name|Event
 name|event
 decl_stmt|;
@@ -244,10 +261,11 @@ name|Event
 name|event
 parameter_list|)
 block|{
-name|drained
-operator|=
-literal|false
-expr_stmt|;
+synchronized|synchronized
+init|(
+name|mutex
+init|)
+block|{
 name|actual
 operator|.
 name|handle
@@ -255,6 +273,11 @@ argument_list|(
 name|event
 argument_list|)
 expr_stmt|;
+name|drained
+operator|=
+literal|false
+expr_stmt|;
+block|}
 block|}
 block|}
 return|;
