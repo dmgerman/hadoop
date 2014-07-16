@@ -991,6 +991,36 @@ name|HADOOP_SECURITY_CRYPTO_CODEC_CLASS_KEY
 init|=
 literal|"hadoop.security.crypto.codec.class"
 decl_stmt|;
+DECL|field|HADOOP_SECURITY_CRYPTO_CODEC_CLASS_DEFAULT
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|HADOOP_SECURITY_CRYPTO_CODEC_CLASS_DEFAULT
+init|=
+literal|"org.apache.hadoop.crypto.OpensslAesCtrCryptoCodec,"
+operator|+
+literal|"org.apache.hadoop.crypto.JceAesCtrCryptoCodec"
+decl_stmt|;
+comment|/** See<a href="{@docRoot}/../core-default.html">core-default.xml</a> */
+DECL|field|HADOOP_SECURITY_CRYPTO_CIPHER_SUITE_KEY
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|HADOOP_SECURITY_CRYPTO_CIPHER_SUITE_KEY
+init|=
+literal|"hadoop.security.crypto.cipher.suite"
+decl_stmt|;
+DECL|field|HADOOP_SECURITY_CRYPTO_CIPHER_SUITE_DEFAULT
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|HADOOP_SECURITY_CRYPTO_CIPHER_SUITE_DEFAULT
+init|=
+literal|"AES/CTR/NoPadding"
+decl_stmt|;
 comment|/** See<a href="{@docRoot}/../core-default.html">core-default.xml</a> */
 DECL|field|HADOOP_SECURITY_CRYPTO_JCE_PROVIDER_KEY
 specifier|public
@@ -1051,6 +1081,7 @@ name|HADOOP_SECURITY_JAVA_SECURE_RANDOM_ALGORITHM_DEFAULT
 init|=
 literal|"SHA1PRNG"
 decl_stmt|;
+comment|/** See<a href="{@docRoot}/../core-default.html">core-default.xml</a> */
 DECL|field|HADOOP_SECURITY_SECURE_RANDOM_IMPL_KEY
 specifier|public
 specifier|static
@@ -1060,6 +1091,7 @@ name|HADOOP_SECURITY_SECURE_RANDOM_IMPL_KEY
 init|=
 literal|"hadoop.security.secure.random.impl"
 decl_stmt|;
+comment|/** See<a href="{@docRoot}/../core-default.html">core-default.xml</a> */
 DECL|field|HADOOP_SECURITY_SECURE_RANDOM_DEVICE_FILE_PATH_KEY
 specifier|public
 specifier|static

@@ -241,7 +241,25 @@ DECL|method|OpensslAesCtrCryptoCodec ()
 specifier|public
 name|OpensslAesCtrCryptoCodec
 parameter_list|()
-block|{   }
+block|{
+if|if
+condition|(
+operator|!
+name|OpensslCipher
+operator|.
+name|isNativeCodeLoaded
+argument_list|()
+condition|)
+block|{
+throw|throw
+operator|new
+name|RuntimeException
+argument_list|(
+literal|"Failed to load OpenSSL Cipher."
+argument_list|)
+throw|;
+block|}
+block|}
 annotation|@
 name|Override
 DECL|method|setConf (Configuration conf)

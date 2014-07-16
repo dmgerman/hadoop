@@ -94,6 +94,15 @@ name|class
 operator|.
 name|getName
 argument_list|()
+operator|+
+literal|","
+operator|+
+name|JceAesCtrCryptoCodec
+operator|.
+name|class
+operator|.
+name|getName
+argument_list|()
 argument_list|)
 expr_stmt|;
 name|codec
