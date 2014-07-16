@@ -99,6 +99,17 @@ name|T
 name|source
 parameter_list|)
 function_decl|;
+comment|/**    * Unregister a metrics source    * @param name of the source. This is the name you use to call register()    */
+DECL|method|unregisterSource (String name)
+specifier|public
+specifier|abstract
+name|void
+name|unregisterSource
+parameter_list|(
+name|String
+name|name
+parameter_list|)
+function_decl|;
 comment|/**    * Register a metrics source (deriving name and description from the object)    * @param<T>   the actual type of the source object    * @param source  object to register    * @return  the source object    * @exception MetricsException    */
 DECL|method|register (T source)
 specifier|public
