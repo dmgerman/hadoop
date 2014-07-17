@@ -3395,6 +3395,28 @@ name|status
 argument_list|)
 expr_stmt|;
 block|}
+annotation|@
+name|Test
+DECL|method|testCloseFileSystemTwice ()
+specifier|public
+name|void
+name|testCloseFileSystemTwice
+parameter_list|()
+throws|throws
+name|Exception
+block|{
+comment|//make sure close() can be called multiple times without doing any harm
+name|fs
+operator|.
+name|close
+argument_list|()
+expr_stmt|;
+name|fs
+operator|.
+name|close
+argument_list|()
+expr_stmt|;
+block|}
 DECL|method|testModifiedTime (Path testPath, long time)
 specifier|private
 name|boolean
