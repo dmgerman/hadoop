@@ -1960,20 +1960,6 @@ name|hadoop
 operator|.
 name|hdfs
 operator|.
-name|StorageType
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|hdfs
-operator|.
 name|protocol
 operator|.
 name|AclException
@@ -14872,11 +14858,17 @@ name|UnresolvedLinkException
 throws|,
 name|IOException
 block|{
+specifier|final
 name|long
 name|blockSize
 decl_stmt|;
+specifier|final
 name|int
 name|replication
+decl_stmt|;
+specifier|final
+name|byte
+name|storagePolicyID
 decl_stmt|;
 name|DatanodeDescriptor
 name|clientNode
@@ -15099,6 +15091,13 @@ operator|.
 name|getFileReplication
 argument_list|()
 expr_stmt|;
+name|storagePolicyID
+operator|=
+name|pendingFile
+operator|.
+name|getStoragePolicyID
+argument_list|()
+expr_stmt|;
 block|}
 finally|finally
 block|{
@@ -15115,7 +15114,7 @@ init|=
 name|getBlockManager
 argument_list|()
 operator|.
-name|chooseTarget
+name|chooseTarget4NewBlock
 argument_list|(
 name|src
 argument_list|,
@@ -15128,6 +15127,8 @@ argument_list|,
 name|blockSize
 argument_list|,
 name|favoredNodes
+argument_list|,
+name|storagePolicyID
 argument_list|)
 decl_stmt|;
 comment|// Part II.
@@ -15923,6 +15924,10 @@ name|long
 name|preferredblocksize
 decl_stmt|;
 specifier|final
+name|byte
+name|storagePolicyID
+decl_stmt|;
+specifier|final
 name|List
 argument_list|<
 name|DatanodeStorageInfo
@@ -16082,6 +16087,13 @@ operator|.
 name|getPreferredBlockSize
 argument_list|()
 expr_stmt|;
+name|storagePolicyID
+operator|=
+name|file
+operator|.
+name|getStoragePolicyID
+argument_list|()
+expr_stmt|;
 comment|//find datanode storages
 specifier|final
 name|DatanodeManager
@@ -16123,10 +16135,7 @@ name|targets
 init|=
 name|blockManager
 operator|.
-name|getBlockPlacementPolicy
-argument_list|(         )
-operator|.
-name|chooseTarget
+name|chooseTarget4AdditionalDatanode
 argument_list|(
 name|src
 argument_list|,
@@ -16136,16 +16145,11 @@ name|clientnode
 argument_list|,
 name|chosen
 argument_list|,
-literal|true
-argument_list|,
-comment|// TODO: get storage type from the file
 name|excludes
 argument_list|,
 name|preferredblocksize
 argument_list|,
-name|StorageType
-operator|.
-name|DEFAULT
+name|storagePolicyID
 argument_list|)
 decl_stmt|;
 specifier|final

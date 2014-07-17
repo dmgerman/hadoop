@@ -754,7 +754,7 @@ argument_list|(
 name|spyBM
 argument_list|)
 operator|.
-name|chooseTarget
+name|chooseTarget4NewBlock
 argument_list|(
 name|Mockito
 operator|.
@@ -799,6 +799,11 @@ name|String
 argument_list|>
 operator|>
 name|any
+argument_list|()
+argument_list|,
+name|Mockito
+operator|.
+name|anyByte
 argument_list|()
 argument_list|)
 expr_stmt|;

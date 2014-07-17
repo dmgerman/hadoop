@@ -230,7 +230,7 @@ name|hadoop
 operator|.
 name|hdfs
 operator|.
-name|StorageType
+name|TestBlockStoragePolicy
 import|;
 end_import
 
@@ -1405,9 +1405,9 @@ name|excludedNodes
 argument_list|,
 name|BLOCK_SIZE
 argument_list|,
-name|StorageType
+name|TestBlockStoragePolicy
 operator|.
-name|DEFAULT
+name|DEFAULT_STORAGE_POLICY
 argument_list|)
 return|;
 block|}
@@ -1883,9 +1883,9 @@ name|excludedNodes
 argument_list|,
 name|BLOCK_SIZE
 argument_list|,
-name|StorageType
+name|TestBlockStoragePolicy
 operator|.
-name|DEFAULT
+name|DEFAULT_STORAGE_POLICY
 argument_list|)
 expr_stmt|;
 name|assertEquals
@@ -2049,9 +2049,9 @@ name|excludedNodes
 argument_list|,
 name|BLOCK_SIZE
 argument_list|,
-name|StorageType
+name|TestBlockStoragePolicy
 operator|.
-name|DEFAULT
+name|DEFAULT_STORAGE_POLICY
 argument_list|)
 expr_stmt|;
 name|System
