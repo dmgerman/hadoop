@@ -1199,6 +1199,9 @@ operator|.
 name|buildTokenServiceForLogicalUri
 argument_list|(
 name|uri
+argument_list|,
+name|getScheme
+argument_list|()
 argument_list|)
 else|:
 name|SecurityUtil

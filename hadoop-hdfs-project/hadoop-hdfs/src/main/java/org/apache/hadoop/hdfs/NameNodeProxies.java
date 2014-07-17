@@ -1283,6 +1283,10 @@ operator|.
 name|buildTokenServiceForLogicalUri
 argument_list|(
 name|nameNodeUri
+argument_list|,
+name|HdfsConstants
+operator|.
+name|HDFS_URI_SCHEME
 argument_list|)
 expr_stmt|;
 block|}
@@ -1528,6 +1532,10 @@ operator|.
 name|buildTokenServiceForLogicalUri
 argument_list|(
 name|nameNodeUri
+argument_list|,
+name|HdfsConstants
+operator|.
+name|HDFS_URI_SCHEME
 argument_list|)
 expr_stmt|;
 block|}
