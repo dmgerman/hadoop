@@ -296,6 +296,7 @@ name|userSuppliedProvider
 init|=
 literal|false
 decl_stmt|;
+comment|/**    * Primary entry point for the KeyShell; called via main().    *    * @param args Command line arguments.    * @return 0 on success and 1 on failure.  This value is passed back to    * the unix shell, so we must follow shell return code conventions:    * the return code is an unsigned character, and 0 means success, and    * small positive integers mean failure.    * @throws Exception    */
 annotation|@
 name|Override
 DECL|method|run (String[] args)
@@ -353,7 +354,6 @@ else|else
 block|{
 name|exitCode
 operator|=
-operator|-
 literal|1
 expr_stmt|;
 block|}
@@ -372,7 +372,6 @@ name|err
 argument_list|)
 expr_stmt|;
 return|return
-operator|-
 literal|1
 return|;
 block|}
@@ -380,7 +379,7 @@ return|return
 name|exitCode
 return|;
 block|}
-comment|/**    * Parse the command line arguments and initialize the data    *<pre>    * % hadoop key create keyName [--size size] [--cipher algorithm]    *    [--provider providerPath]    * % hadoop key roll keyName [--provider providerPath]    * % hadoop key list [-provider providerPath]    * % hadoop key delete keyName [--provider providerPath] [-i]    *</pre>    * @param args    * @return    * @throws IOException    */
+comment|/**    * Parse the command line arguments and initialize the data    *<pre>    * % hadoop key create keyName [--size size] [--cipher algorithm]    *    [--provider providerPath]    * % hadoop key roll keyName [--provider providerPath]    * % hadoop key list [-provider providerPath]    * % hadoop key delete keyName [--provider providerPath] [-i]    *</pre>    * @param args Command line arguments.    * @return 0 on success, 1 on failure.    * @throws IOException    */
 DECL|method|init (String[] args)
 specifier|private
 name|int
@@ -510,7 +509,6 @@ name|printKeyShellUsage
 argument_list|()
 expr_stmt|;
 return|return
-operator|-
 literal|1
 return|;
 block|}
@@ -570,7 +568,6 @@ name|printKeyShellUsage
 argument_list|()
 expr_stmt|;
 return|return
-operator|-
 literal|1
 return|;
 block|}
@@ -630,7 +627,6 @@ name|printKeyShellUsage
 argument_list|()
 expr_stmt|;
 return|return
-operator|-
 literal|1
 return|;
 block|}
@@ -829,7 +825,6 @@ name|printKeyShellUsage
 argument_list|()
 expr_stmt|;
 return|return
-operator|-
 literal|1
 return|;
 block|}
@@ -860,7 +855,6 @@ name|printKeyShellUsage
 argument_list|()
 expr_stmt|;
 return|return
-operator|-
 literal|1
 return|;
 block|}
@@ -985,7 +979,6 @@ name|printKeyShellUsage
 argument_list|()
 expr_stmt|;
 return|return
-operator|-
 literal|1
 return|;
 block|}
@@ -1004,7 +997,6 @@ name|err
 argument_list|)
 expr_stmt|;
 return|return
-operator|-
 literal|1
 return|;
 block|}
@@ -1020,7 +1012,6 @@ name|printKeyShellUsage
 argument_list|()
 expr_stmt|;
 return|return
-operator|-
 literal|1
 return|;
 block|}
@@ -2386,7 +2377,7 @@ name|DESC
 return|;
 block|}
 block|}
-comment|/**    * Main program.    *    * @param args    *          Command line arguments    * @throws Exception    */
+comment|/**    * main() entry point for the KeyShell.  While strictly speaking the    * return is void, it will System.exit() with a return code: 0 is for    * success and 1 for failure.    *    * @param args Command line arguments.    * @throws Exception    */
 DECL|method|main (String[] args)
 specifier|public
 specifier|static
