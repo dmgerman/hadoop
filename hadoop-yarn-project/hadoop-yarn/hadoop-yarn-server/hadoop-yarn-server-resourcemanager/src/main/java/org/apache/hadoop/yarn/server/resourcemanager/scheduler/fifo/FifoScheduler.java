@@ -2557,7 +2557,7 @@ return|;
 block|}
 annotation|@
 name|VisibleForTesting
-DECL|method|addApplication (ApplicationId applicationId, String queue, String user)
+DECL|method|addApplication (ApplicationId applicationId, String queue, String user, boolean isAppRecovering)
 specifier|public
 specifier|synchronized
 name|void
@@ -2571,6 +2571,9 @@ name|queue
 parameter_list|,
 name|String
 name|user
+parameter_list|,
+name|boolean
+name|isAppRecovering
 parameter_list|)
 block|{
 name|SchedulerApplication
@@ -2626,6 +2629,32 @@ name|size
 argument_list|()
 argument_list|)
 expr_stmt|;
+if|if
+condition|(
+name|isAppRecovering
+condition|)
+block|{
+if|if
+condition|(
+name|LOG
+operator|.
+name|isDebugEnabled
+argument_list|()
+condition|)
+block|{
+name|LOG
+operator|.
+name|debug
+argument_list|(
+name|applicationId
+operator|+
+literal|" is recovering. Skip notifying APP_ACCEPTED"
+argument_list|)
+expr_stmt|;
+block|}
+block|}
+else|else
+block|{
 name|rmContext
 operator|.
 name|getDispatcher
@@ -2648,12 +2677,13 @@ argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
+block|}
 annotation|@
 name|VisibleForTesting
 specifier|public
 specifier|synchronized
 name|void
-DECL|method|addApplicationAttempt (ApplicationAttemptId appAttemptId, boolean transferStateFromPreviousAttempt, boolean shouldNotifyAttemptAdded)
+DECL|method|addApplicationAttempt (ApplicationAttemptId appAttemptId, boolean transferStateFromPreviousAttempt, boolean isAttemptRecovering)
 name|addApplicationAttempt
 parameter_list|(
 name|ApplicationAttemptId
@@ -2663,7 +2693,7 @@ name|boolean
 name|transferStateFromPreviousAttempt
 parameter_list|,
 name|boolean
-name|shouldNotifyAttemptAdded
+name|isAttemptRecovering
 parameter_list|)
 block|{
 name|SchedulerApplication
@@ -2758,8 +2788,29 @@ argument_list|)
 expr_stmt|;
 if|if
 condition|(
-name|shouldNotifyAttemptAdded
+name|isAttemptRecovering
 condition|)
+block|{
+if|if
+condition|(
+name|LOG
+operator|.
+name|isDebugEnabled
+argument_list|()
+condition|)
+block|{
+name|LOG
+operator|.
+name|debug
+argument_list|(
+name|appAttemptId
+operator|+
+literal|" is recovering. Skipping notifying ATTEMPT_ADDED"
+argument_list|)
+expr_stmt|;
+block|}
+block|}
+else|else
 block|{
 name|rmContext
 operator|.
@@ -2782,25 +2833,6 @@ name|ATTEMPT_ADDED
 argument_list|)
 argument_list|)
 expr_stmt|;
-block|}
-else|else
-block|{
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
-name|LOG
-operator|.
-name|debug
-argument_list|(
-literal|"Skipping notifying ATTEMPT_ADDED"
-argument_list|)
-expr_stmt|;
-block|}
 block|}
 block|}
 DECL|method|doneApplication (ApplicationId applicationId, RMAppState finalState)
@@ -4519,6 +4551,11 @@ name|appAddedEvent
 operator|.
 name|getUser
 argument_list|()
+argument_list|,
+name|appAddedEvent
+operator|.
+name|getIsAppRecovering
+argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
@@ -4576,7 +4613,7 @@ argument_list|()
 argument_list|,
 name|appAttemptAddedEvent
 operator|.
-name|getShouldNotifyAttemptAdded
+name|getIsAttemptRecovering
 argument_list|()
 argument_list|)
 expr_stmt|;

@@ -1092,6 +1092,8 @@ argument_list|,
 name|queueId
 argument_list|,
 name|userId
+argument_list|,
+literal|true
 argument_list|)
 expr_stmt|;
 comment|// This conditional is for testAclSubmitApplication where app is rejected

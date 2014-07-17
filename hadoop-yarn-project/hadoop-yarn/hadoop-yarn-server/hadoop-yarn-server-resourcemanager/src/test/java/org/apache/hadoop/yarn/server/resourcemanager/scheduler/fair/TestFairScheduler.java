@@ -6088,6 +6088,8 @@ argument_list|,
 literal|"root.queue1"
 argument_list|,
 literal|"user1"
+argument_list|,
+literal|true
 argument_list|)
 expr_stmt|;
 name|scheduler
@@ -6123,6 +6125,8 @@ argument_list|,
 literal|"root.queue2"
 argument_list|,
 literal|"user1"
+argument_list|,
+literal|true
 argument_list|)
 expr_stmt|;
 name|scheduler
@@ -6158,6 +6162,8 @@ argument_list|,
 literal|"root.queue2"
 argument_list|,
 literal|"user1"
+argument_list|,
+literal|true
 argument_list|)
 expr_stmt|;
 name|scheduler
@@ -11111,6 +11117,8 @@ argument_list|,
 literal|"queue1"
 argument_list|,
 literal|"user1"
+argument_list|,
+literal|true
 argument_list|)
 expr_stmt|;
 name|scheduler
@@ -12911,6 +12919,8 @@ argument_list|,
 name|queue
 argument_list|,
 name|user
+argument_list|,
+literal|true
 argument_list|)
 expr_stmt|;
 name|numTries
@@ -18932,6 +18942,8 @@ argument_list|,
 literal|"queue11"
 argument_list|,
 literal|"user11"
+argument_list|,
+literal|true
 argument_list|)
 expr_stmt|;
 name|fs

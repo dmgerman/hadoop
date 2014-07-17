@@ -5146,9 +5146,11 @@ operator|.
 name|applicationAttemptId
 argument_list|)
 expr_stmt|;
+comment|// Add attempt to scheduler synchronously to guarantee scheduler
+comment|// knows attempts before AM or NM re-registers.
 name|appAttempt
 operator|.
-name|eventHandler
+name|scheduler
 operator|.
 name|handle
 argument_list|(
@@ -5162,7 +5164,7 @@ argument_list|()
 argument_list|,
 literal|false
 argument_list|,
-literal|false
+literal|true
 argument_list|)
 argument_list|)
 expr_stmt|;

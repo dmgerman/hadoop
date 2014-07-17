@@ -3223,7 +3223,7 @@ name|queueName
 argument_list|)
 return|;
 block|}
-DECL|method|addApplication (ApplicationId applicationId, String queueName, String user)
+DECL|method|addApplication (ApplicationId applicationId, String queueName, String user, boolean isAppRecovering)
 specifier|private
 specifier|synchronized
 name|void
@@ -3237,6 +3237,9 @@ name|queueName
 parameter_list|,
 name|String
 name|user
+parameter_list|,
+name|boolean
+name|isAppRecovering
 parameter_list|)
 block|{
 comment|// santiy checks.
@@ -3450,6 +3453,32 @@ operator|+
 name|queueName
 argument_list|)
 expr_stmt|;
+if|if
+condition|(
+name|isAppRecovering
+condition|)
+block|{
+if|if
+condition|(
+name|LOG
+operator|.
+name|isDebugEnabled
+argument_list|()
+condition|)
+block|{
+name|LOG
+operator|.
+name|debug
+argument_list|(
+name|applicationId
+operator|+
+literal|" is recovering. Skip notifying APP_ACCEPTED"
+argument_list|)
+expr_stmt|;
+block|}
+block|}
+else|else
+block|{
 name|rmContext
 operator|.
 name|getDispatcher
@@ -3472,7 +3501,8 @@ argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|addApplicationAttempt ( ApplicationAttemptId applicationAttemptId, boolean transferStateFromPreviousAttempt, boolean shouldNotifyAttemptAdded)
+block|}
+DECL|method|addApplicationAttempt ( ApplicationAttemptId applicationAttemptId, boolean transferStateFromPreviousAttempt, boolean isAttemptRecovering)
 specifier|private
 specifier|synchronized
 name|void
@@ -3485,7 +3515,7 @@ name|boolean
 name|transferStateFromPreviousAttempt
 parameter_list|,
 name|boolean
-name|shouldNotifyAttemptAdded
+name|isAttemptRecovering
 parameter_list|)
 block|{
 name|SchedulerApplication
@@ -3598,8 +3628,29 @@ argument_list|)
 expr_stmt|;
 if|if
 condition|(
-name|shouldNotifyAttemptAdded
+name|isAttemptRecovering
 condition|)
+block|{
+if|if
+condition|(
+name|LOG
+operator|.
+name|isDebugEnabled
+argument_list|()
+condition|)
+block|{
+name|LOG
+operator|.
+name|debug
+argument_list|(
+name|applicationAttemptId
+operator|+
+literal|" is recovering. Skipping notifying ATTEMPT_ADDED"
+argument_list|)
+expr_stmt|;
+block|}
+block|}
+else|else
 block|{
 name|rmContext
 operator|.
@@ -3622,25 +3673,6 @@ name|ATTEMPT_ADDED
 argument_list|)
 argument_list|)
 expr_stmt|;
-block|}
-else|else
-block|{
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
-name|LOG
-operator|.
-name|debug
-argument_list|(
-literal|"Skipping notifying ATTEMPT_ADDED"
-argument_list|)
-expr_stmt|;
-block|}
 block|}
 block|}
 DECL|method|doneApplication (ApplicationId applicationId, RMAppState finalState)
@@ -5144,6 +5176,11 @@ name|appAddedEvent
 operator|.
 name|getUser
 argument_list|()
+argument_list|,
+name|appAddedEvent
+operator|.
+name|getIsAppRecovering
+argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
@@ -5201,7 +5238,7 @@ argument_list|()
 argument_list|,
 name|appAttemptAddedEvent
 operator|.
-name|getShouldNotifyAttemptAdded
+name|getIsAttemptRecovering
 argument_list|()
 argument_list|)
 expr_stmt|;
