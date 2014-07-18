@@ -138,6 +138,11 @@ specifier|static
 class|class
 name|EncryptedKeyVersion
 block|{
+DECL|field|keyName
+specifier|private
+name|String
+name|keyName
+decl_stmt|;
 DECL|field|keyVersionName
 specifier|private
 name|String
@@ -154,10 +159,13 @@ specifier|private
 name|KeyVersion
 name|encryptedKey
 decl_stmt|;
-DECL|method|EncryptedKeyVersion (String keyVersionName, byte[] iv, KeyVersion encryptedKey)
+DECL|method|EncryptedKeyVersion (String keyName, String keyVersionName, byte[] iv, KeyVersion encryptedKey)
 specifier|protected
 name|EncryptedKeyVersion
 parameter_list|(
+name|String
+name|keyName
+parameter_list|,
 name|String
 name|keyVersionName
 parameter_list|,
@@ -171,6 +179,12 @@ parameter_list|)
 block|{
 name|this
 operator|.
+name|keyName
+operator|=
+name|keyName
+expr_stmt|;
+name|this
+operator|.
 name|keyVersionName
 operator|=
 name|keyVersionName
@@ -187,6 +201,16 @@ name|encryptedKey
 operator|=
 name|encryptedKey
 expr_stmt|;
+block|}
+DECL|method|getKeyName ()
+specifier|public
+name|String
+name|getKeyName
+parameter_list|()
+block|{
+return|return
+name|keyName
+return|;
 block|}
 DECL|method|getKeyVersionName ()
 specifier|public
@@ -492,6 +516,11 @@ return|return
 operator|new
 name|EncryptedKeyVersion
 argument_list|(
+name|keyVersion
+operator|.
+name|getName
+argument_list|()
+argument_list|,
 name|keyVersion
 operator|.
 name|getVersionName
