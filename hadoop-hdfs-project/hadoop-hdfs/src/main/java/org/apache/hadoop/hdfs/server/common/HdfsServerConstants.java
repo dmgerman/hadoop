@@ -400,6 +400,12 @@ name|METADATAVERSION
 argument_list|(
 literal|"-metadataVersion"
 argument_list|)
+block|,
+DECL|enumConstant|UPGRADEONLY
+name|UPGRADEONLY
+argument_list|(
+literal|"-upgradeOnly"
+argument_list|)
 block|;
 DECL|field|ENUM_WITH_ROLLING_UPGRADE_OPTION
 specifier|private

@@ -1153,6 +1153,35 @@ literal|"<k-v pairs>] ] | \n\t["
 operator|+
 name|StartupOption
 operator|.
+name|UPGRADEONLY
+operator|.
+name|getName
+argument_list|()
+operator|+
+literal|" ["
+operator|+
+name|StartupOption
+operator|.
+name|CLUSTERID
+operator|.
+name|getName
+argument_list|()
+operator|+
+literal|" cid]"
+operator|+
+literal|" ["
+operator|+
+name|StartupOption
+operator|.
+name|RENAMERESERVED
+operator|.
+name|getName
+argument_list|()
+operator|+
+literal|"<k-v pairs>] ] | \n\t["
+operator|+
+name|StartupOption
+operator|.
 name|ROLLBACK
 operator|.
 name|getName
@@ -3311,7 +3340,7 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-comment|/**    * Start NameNode.    *<p>    * The name-node can be started with one of the following startup options:    *<ul>     *<li>{@link StartupOption#REGULAR REGULAR} - normal name node startup</li>    *<li>{@link StartupOption#FORMAT FORMAT} - format name node</li>    *<li>{@link StartupOption#BACKUP BACKUP} - start backup node</li>    *<li>{@link StartupOption#CHECKPOINT CHECKPOINT} - start checkpoint node</li>    *<li>{@link StartupOption#UPGRADE UPGRADE} - start the cluster      * upgrade and create a snapshot of the current file system state</li>     *<li>{@link StartupOption#RECOVER RECOVERY} - recover name node    * metadata</li>    *<li>{@link StartupOption#ROLLBACK ROLLBACK} - roll the      *            cluster back to the previous state</li>    *<li>{@link StartupOption#FINALIZE FINALIZE} - finalize     *            previous upgrade</li>    *<li>{@link StartupOption#IMPORT IMPORT} - import checkpoint</li>    *</ul>    * The option is passed via configuration field:     *<tt>dfs.namenode.startup</tt>    *     * The conf will be modified to reflect the actual ports on which     * the NameNode is up and running if the user passes the port as    *<code>zero</code> in the conf.    *     * @param conf  confirguration    * @throws IOException    */
+comment|/**    * Start NameNode.    *<p>    * The name-node can be started with one of the following startup options:    *<ul>     *<li>{@link StartupOption#REGULAR REGULAR} - normal name node startup</li>    *<li>{@link StartupOption#FORMAT FORMAT} - format name node</li>    *<li>{@link StartupOption#BACKUP BACKUP} - start backup node</li>    *<li>{@link StartupOption#CHECKPOINT CHECKPOINT} - start checkpoint node</li>    *<li>{@link StartupOption#UPGRADE UPGRADE} - start the cluster      *<li>{@link StartupOption#UPGRADEONLY UPGRADEONLY} - upgrade the cluster      * upgrade and create a snapshot of the current file system state</li>     *<li>{@link StartupOption#RECOVER RECOVERY} - recover name node    * metadata</li>    *<li>{@link StartupOption#ROLLBACK ROLLBACK} - roll the      *            cluster back to the previous state</li>    *<li>{@link StartupOption#FINALIZE FINALIZE} - finalize     *            previous upgrade</li>    *<li>{@link StartupOption#IMPORT IMPORT} - import checkpoint</li>    *</ul>    * The option is passed via configuration field:     *<tt>dfs.namenode.startup</tt>    *     * The conf will be modified to reflect the actual ports on which     * the NameNode is up and running if the user passes the port as    *<code>zero</code> in the conf.    *     * @param conf  confirguration    * @throws IOException    */
 DECL|method|NameNode (Configuration conf)
 specifier|public
 name|NameNode
@@ -3520,6 +3549,12 @@ operator|==
 name|StartupOption
 operator|.
 name|UPGRADE
+operator|||
+name|startOpt
+operator|==
+name|StartupOption
+operator|.
+name|UPGRADEONLY
 condition|)
 block|{
 return|return
@@ -5487,6 +5522,18 @@ name|equalsIgnoreCase
 argument_list|(
 name|cmd
 argument_list|)
+operator|||
+name|StartupOption
+operator|.
+name|UPGRADEONLY
+operator|.
+name|getName
+argument_list|()
+operator|.
+name|equalsIgnoreCase
+argument_list|(
+name|cmd
+argument_list|)
 condition|)
 block|{
 name|startOpt
@@ -5494,6 +5541,22 @@ operator|=
 name|StartupOption
 operator|.
 name|UPGRADE
+operator|.
+name|getName
+argument_list|()
+operator|.
+name|equalsIgnoreCase
+argument_list|(
+name|cmd
+argument_list|)
+condition|?
+name|StartupOption
+operator|.
+name|UPGRADE
+else|:
+name|StartupOption
+operator|.
+name|UPGRADEONLY
 expr_stmt|;
 comment|/* Can be followed by CLUSTERID with a required parameter or          * RENAMERESERVED with an optional parameter          */
 while|while
@@ -6729,6 +6792,32 @@ return|return
 literal|null
 return|;
 comment|// avoid javac warning
+block|}
+case|case
+name|UPGRADEONLY
+case|:
+block|{
+name|DefaultMetricsSystem
+operator|.
+name|initialize
+argument_list|(
+literal|"NameNode"
+argument_list|)
+expr_stmt|;
+operator|new
+name|NameNode
+argument_list|(
+name|conf
+argument_list|)
+expr_stmt|;
+name|terminate
+argument_list|(
+literal|0
+argument_list|)
+expr_stmt|;
+return|return
+literal|null
+return|;
 block|}
 default|default:
 block|{
