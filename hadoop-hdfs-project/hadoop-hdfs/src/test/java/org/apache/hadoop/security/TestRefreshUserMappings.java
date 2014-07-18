@@ -1051,6 +1051,9 @@ name|userKeyGroups
 init|=
 name|DefaultImpersonationProvider
 operator|.
+name|getTestProvider
+argument_list|()
+operator|.
 name|getProxySuperuserGroupConfKey
 argument_list|(
 name|SUPER_USER
@@ -1060,6 +1063,9 @@ name|String
 name|userKeyHosts
 init|=
 name|DefaultImpersonationProvider
+operator|.
+name|getTestProvider
+argument_list|()
 operator|.
 name|getProxySuperuserIpConfKey
 argument_list|(

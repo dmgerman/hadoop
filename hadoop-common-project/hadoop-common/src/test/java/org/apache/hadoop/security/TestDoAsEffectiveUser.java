@@ -685,6 +685,9 @@ name|setStrings
 argument_list|(
 name|DefaultImpersonationProvider
 operator|.
+name|getTestProvider
+argument_list|()
+operator|.
 name|getProxySuperuserIpConfKey
 argument_list|(
 name|superUserShortName
@@ -1053,6 +1056,9 @@ name|setStrings
 argument_list|(
 name|DefaultImpersonationProvider
 operator|.
+name|getTestProvider
+argument_list|()
+operator|.
 name|getProxySuperuserGroupConfKey
 argument_list|(
 name|REAL_USER_SHORT_NAME
@@ -1248,6 +1254,9 @@ name|setStrings
 argument_list|(
 name|DefaultImpersonationProvider
 operator|.
+name|getTestProvider
+argument_list|()
+operator|.
 name|getProxySuperuserGroupConfKey
 argument_list|(
 name|REAL_USER_SHORT_NAME
@@ -1425,6 +1434,9 @@ name|setStrings
 argument_list|(
 name|DefaultImpersonationProvider
 operator|.
+name|getTestProvider
+argument_list|()
+operator|.
 name|getProxySuperuserIpConfKey
 argument_list|(
 name|REAL_USER_SHORT_NAME
@@ -1439,6 +1451,9 @@ operator|.
 name|setStrings
 argument_list|(
 name|DefaultImpersonationProvider
+operator|.
+name|getTestProvider
+argument_list|()
 operator|.
 name|getProxySuperuserGroupConfKey
 argument_list|(
@@ -1669,6 +1684,9 @@ operator|.
 name|setStrings
 argument_list|(
 name|DefaultImpersonationProvider
+operator|.
+name|getTestProvider
+argument_list|()
 operator|.
 name|getProxySuperuserGroupConfKey
 argument_list|(
@@ -2127,6 +2145,9 @@ operator|.
 name|setStrings
 argument_list|(
 name|DefaultImpersonationProvider
+operator|.
+name|getTestProvider
+argument_list|()
 operator|.
 name|getProxySuperuserGroupConfKey
 argument_list|(
