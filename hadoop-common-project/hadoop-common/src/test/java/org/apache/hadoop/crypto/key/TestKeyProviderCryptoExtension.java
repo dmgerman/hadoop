@@ -192,6 +192,9 @@ operator|.
 name|generateEncryptedKey
 argument_list|(
 name|kv
+operator|.
+name|getName
+argument_list|()
 argument_list|)
 decl_stmt|;
 name|Assert
@@ -340,6 +343,9 @@ operator|.
 name|generateEncryptedKey
 argument_list|(
 name|kv
+operator|.
+name|getName
+argument_list|()
 argument_list|)
 decl_stmt|;
 name|KeyProvider
