@@ -3498,9 +3498,9 @@ return|;
 block|}
 annotation|@
 name|Override
-DECL|method|chooseReplicaToDelete (BlockCollection bc, Block block, short replicationFactor, Collection<DatanodeDescriptor> first, Collection<DatanodeDescriptor> second)
+DECL|method|chooseReplicaToDelete (BlockCollection bc, Block block, short replicationFactor, Collection<DatanodeStorageInfo> first, Collection<DatanodeStorageInfo> second)
 specifier|public
-name|DatanodeDescriptor
+name|DatanodeStorageInfo
 name|chooseReplicaToDelete
 parameter_list|(
 name|BlockCollection
@@ -3514,13 +3514,13 @@ name|replicationFactor
 parameter_list|,
 name|Collection
 argument_list|<
-name|DatanodeDescriptor
+name|DatanodeStorageInfo
 argument_list|>
 name|first
 parameter_list|,
 name|Collection
 argument_list|<
-name|DatanodeDescriptor
+name|DatanodeStorageInfo
 argument_list|>
 name|second
 parameter_list|)
@@ -3535,8 +3535,8 @@ name|heartbeatInterval
 operator|*
 name|tolerateHeartbeatMultiplier
 decl_stmt|;
-name|DatanodeDescriptor
-name|oldestHeartbeatNode
+name|DatanodeStorageInfo
+name|oldestHeartbeatStorage
 init|=
 literal|null
 decl_stmt|;
@@ -3547,8 +3547,8 @@ name|Long
 operator|.
 name|MAX_VALUE
 decl_stmt|;
-name|DatanodeDescriptor
-name|minSpaceNode
+name|DatanodeStorageInfo
+name|minSpaceStorage
 init|=
 literal|null
 decl_stmt|;
@@ -3556,8 +3556,8 @@ comment|// Pick the node with the oldest heartbeat or with the least free space,
 comment|// if all hearbeats are within the tolerable heartbeat interval
 for|for
 control|(
-name|DatanodeDescriptor
-name|node
+name|DatanodeStorageInfo
+name|storage
 range|:
 name|pickupReplicaSet
 argument_list|(
@@ -3567,6 +3567,15 @@ name|second
 argument_list|)
 control|)
 block|{
+specifier|final
+name|DatanodeDescriptor
+name|node
+init|=
+name|storage
+operator|.
+name|getDatanodeDescriptor
+argument_list|()
+decl_stmt|;
 name|long
 name|free
 init|=
@@ -3594,9 +3603,9 @@ name|oldestHeartbeat
 operator|=
 name|lastHeartbeat
 expr_stmt|;
-name|oldestHeartbeatNode
+name|oldestHeartbeatStorage
 operator|=
-name|node
+name|storage
 expr_stmt|;
 block|}
 if|if
@@ -3610,40 +3619,40 @@ name|minSpace
 operator|=
 name|free
 expr_stmt|;
-name|minSpaceNode
+name|minSpaceStorage
 operator|=
-name|node
+name|storage
 expr_stmt|;
 block|}
 block|}
 return|return
-name|oldestHeartbeatNode
+name|oldestHeartbeatStorage
 operator|!=
 literal|null
 condition|?
-name|oldestHeartbeatNode
+name|oldestHeartbeatStorage
 else|:
-name|minSpaceNode
+name|minSpaceStorage
 return|;
 block|}
 comment|/**    * Pick up replica node set for deleting replica as over-replicated.     * First set contains replica nodes on rack with more than one    * replica while second set contains remaining replica nodes.    * So pick up first set if not empty. If first is empty, then pick second.    */
-DECL|method|pickupReplicaSet ( Collection<DatanodeDescriptor> first, Collection<DatanodeDescriptor> second)
+DECL|method|pickupReplicaSet ( Collection<DatanodeStorageInfo> first, Collection<DatanodeStorageInfo> second)
 specifier|protected
 name|Collection
 argument_list|<
-name|DatanodeDescriptor
+name|DatanodeStorageInfo
 argument_list|>
 name|pickupReplicaSet
 parameter_list|(
 name|Collection
 argument_list|<
-name|DatanodeDescriptor
+name|DatanodeStorageInfo
 argument_list|>
 name|first
 parameter_list|,
 name|Collection
 argument_list|<
-name|DatanodeDescriptor
+name|DatanodeStorageInfo
 argument_list|>
 name|second
 parameter_list|)

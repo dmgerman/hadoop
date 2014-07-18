@@ -3497,14 +3497,14 @@ name|Exception
 block|{
 name|List
 argument_list|<
-name|DatanodeDescriptor
+name|DatanodeStorageInfo
 argument_list|>
-name|replicaNodeList
+name|replicaList
 init|=
 operator|new
 name|ArrayList
 argument_list|<
-name|DatanodeDescriptor
+name|DatanodeStorageInfo
 argument_list|>
 argument_list|()
 decl_stmt|;
@@ -3515,7 +3515,7 @@ name|String
 argument_list|,
 name|List
 argument_list|<
-name|DatanodeDescriptor
+name|DatanodeStorageInfo
 argument_list|>
 argument_list|>
 name|rackMap
@@ -3527,7 +3527,7 @@ name|String
 argument_list|,
 name|List
 argument_list|<
-name|DatanodeDescriptor
+name|DatanodeStorageInfo
 argument_list|>
 argument_list|>
 argument_list|()
@@ -3546,11 +3546,11 @@ operator|*
 literal|1024
 argument_list|)
 expr_stmt|;
-name|replicaNodeList
+name|replicaList
 operator|.
 name|add
 argument_list|(
-name|dataNodes
+name|storages
 index|[
 literal|0
 index|]
@@ -3570,11 +3570,11 @@ operator|*
 literal|1024
 argument_list|)
 expr_stmt|;
-name|replicaNodeList
+name|replicaList
 operator|.
 name|add
 argument_list|(
-name|dataNodes
+name|storages
 index|[
 literal|1
 index|]
@@ -3594,11 +3594,11 @@ operator|*
 literal|1024
 argument_list|)
 expr_stmt|;
-name|replicaNodeList
+name|replicaList
 operator|.
 name|add
 argument_list|(
-name|dataNodes
+name|storages
 index|[
 literal|2
 index|]
@@ -3618,11 +3618,11 @@ operator|*
 literal|1024
 argument_list|)
 expr_stmt|;
-name|replicaNodeList
+name|replicaList
 operator|.
 name|add
 argument_list|(
-name|dataNodes
+name|storages
 index|[
 literal|5
 index|]
@@ -3630,27 +3630,27 @@ argument_list|)
 expr_stmt|;
 name|List
 argument_list|<
-name|DatanodeDescriptor
+name|DatanodeStorageInfo
 argument_list|>
 name|first
 init|=
 operator|new
 name|ArrayList
 argument_list|<
-name|DatanodeDescriptor
+name|DatanodeStorageInfo
 argument_list|>
 argument_list|()
 decl_stmt|;
 name|List
 argument_list|<
-name|DatanodeDescriptor
+name|DatanodeStorageInfo
 argument_list|>
 name|second
 init|=
 operator|new
 name|ArrayList
 argument_list|<
-name|DatanodeDescriptor
+name|DatanodeStorageInfo
 argument_list|>
 argument_list|()
 decl_stmt|;
@@ -3658,7 +3658,7 @@ name|replicator
 operator|.
 name|splitNodesWithRack
 argument_list|(
-name|replicaNodeList
+name|replicaList
 argument_list|,
 name|rackMap
 argument_list|,
@@ -3687,8 +3687,8 @@ name|size
 argument_list|()
 argument_list|)
 expr_stmt|;
-name|DatanodeDescriptor
-name|chosenNode
+name|DatanodeStorageInfo
+name|chosen
 init|=
 name|replicator
 operator|.
@@ -3713,9 +3713,9 @@ comment|// dataNodes[0] and dataNodes[1] are in the same nodegroup,
 comment|// but dataNodes[1] is chosen as less free space
 name|assertEquals
 argument_list|(
-name|chosenNode
+name|chosen
 argument_list|,
-name|dataNodes
+name|storages
 index|[
 literal|1
 index|]
@@ -3731,7 +3731,7 @@ name|first
 argument_list|,
 name|second
 argument_list|,
-name|chosenNode
+name|chosen
 argument_list|)
 expr_stmt|;
 name|assertEquals
@@ -3756,7 +3756,7 @@ argument_list|)
 expr_stmt|;
 comment|// Within first set {dataNodes[0], dataNodes[2]}, dataNodes[2] is chosen
 comment|// as less free space
-name|chosenNode
+name|chosen
 operator|=
 name|replicator
 operator|.
@@ -3778,9 +3778,9 @@ argument_list|)
 expr_stmt|;
 name|assertEquals
 argument_list|(
-name|chosenNode
+name|chosen
 argument_list|,
-name|dataNodes
+name|storages
 index|[
 literal|2
 index|]
@@ -3796,7 +3796,7 @@ name|first
 argument_list|,
 name|second
 argument_list|,
-name|chosenNode
+name|chosen
 argument_list|)
 expr_stmt|;
 name|assertEquals
@@ -3820,7 +3820,7 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 comment|// Within second set, dataNodes[5] with less free space
-name|chosenNode
+name|chosen
 operator|=
 name|replicator
 operator|.
@@ -3842,9 +3842,9 @@ argument_list|)
 expr_stmt|;
 name|assertEquals
 argument_list|(
-name|chosenNode
+name|chosen
 argument_list|,
-name|dataNodes
+name|storages
 index|[
 literal|5
 index|]
