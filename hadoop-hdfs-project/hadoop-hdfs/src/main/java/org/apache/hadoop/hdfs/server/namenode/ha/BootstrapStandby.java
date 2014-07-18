@@ -696,13 +696,6 @@ name|interactive
 init|=
 literal|true
 decl_stmt|;
-DECL|field|skipSharedEditsCheck
-specifier|private
-name|boolean
-name|skipSharedEditsCheck
-init|=
-literal|false
-decl_stmt|;
 comment|// Exit/return codes.
 DECL|field|ERR_CODE_FAILED_CONNECT
 specifier|static
@@ -886,22 +879,6 @@ operator|=
 literal|false
 expr_stmt|;
 block|}
-elseif|else
-if|if
-condition|(
-literal|"-skipSharedEditsCheck"
-operator|.
-name|equals
-argument_list|(
-name|arg
-argument_list|)
-condition|)
-block|{
-name|skipSharedEditsCheck
-operator|=
-literal|true
-expr_stmt|;
-block|}
 else|else
 block|{
 name|printUsage
@@ -941,7 +918,7 @@ operator|.
 name|getSimpleName
 argument_list|()
 operator|+
-literal|" [-force] [-nonInteractive] [-skipSharedEditsCheck]"
+literal|"[-force] [-nonInteractive]"
 argument_list|)
 expr_stmt|;
 block|}
@@ -1276,9 +1253,6 @@ comment|// Ensure that we have enough edits already in the shared directory to
 comment|// start up from the last checkpoint on the active.
 if|if
 condition|(
-operator|!
-name|skipSharedEditsCheck
-operator|&&
 operator|!
 name|checkLogsAvailableForRead
 argument_list|(
