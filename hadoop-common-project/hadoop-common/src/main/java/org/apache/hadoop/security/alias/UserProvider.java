@@ -243,6 +243,7 @@ annotation|@
 name|Override
 DECL|method|getCredentialEntry (String alias)
 specifier|public
+specifier|synchronized
 name|CredentialEntry
 name|getCredentialEntry
 parameter_list|(
@@ -297,6 +298,7 @@ annotation|@
 name|Override
 DECL|method|createCredentialEntry (String name, char[] credential)
 specifier|public
+specifier|synchronized
 name|CredentialEntry
 name|createCredentialEntry
 parameter_list|(
@@ -381,6 +383,7 @@ annotation|@
 name|Override
 DECL|method|deleteCredentialEntry (String name)
 specifier|public
+specifier|synchronized
 name|void
 name|deleteCredentialEntry
 parameter_list|(
@@ -466,6 +469,7 @@ annotation|@
 name|Override
 DECL|method|flush ()
 specifier|public
+specifier|synchronized
 name|void
 name|flush
 parameter_list|()
@@ -530,6 +534,7 @@ annotation|@
 name|Override
 DECL|method|getAliases ()
 specifier|public
+specifier|synchronized
 name|List
 argument_list|<
 name|String

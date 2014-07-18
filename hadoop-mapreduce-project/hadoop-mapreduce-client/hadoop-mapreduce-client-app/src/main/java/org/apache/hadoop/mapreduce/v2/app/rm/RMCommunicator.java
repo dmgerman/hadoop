@@ -562,6 +562,22 @@ name|yarn
 operator|.
 name|exceptions
 operator|.
+name|ApplicationMasterNotRegisteredException
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|exceptions
+operator|.
 name|YarnException
 import|;
 end_import
@@ -1468,6 +1484,8 @@ argument_list|,
 name|historyUrl
 argument_list|)
 decl_stmt|;
+try|try
+block|{
 while|while
 condition|(
 literal|true
@@ -1523,6 +1541,22 @@ name|sleep
 argument_list|(
 name|rmPollInterval
 argument_list|)
+expr_stmt|;
+block|}
+block|}
+catch|catch
+parameter_list|(
+name|ApplicationMasterNotRegisteredException
+name|e
+parameter_list|)
+block|{
+comment|// RM might have restarted or failed over and so lost the fact that AM had
+comment|// registered before.
+name|register
+argument_list|()
+expr_stmt|;
+name|doUnregistration
+argument_list|()
 expr_stmt|;
 block|}
 block|}

@@ -68,6 +68,16 @@ name|org
 operator|.
 name|junit
 operator|.
+name|AfterClass
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|junit
+operator|.
 name|Assert
 import|;
 end_import
@@ -278,17 +288,7 @@ name|org
 operator|.
 name|junit
 operator|.
-name|After
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|junit
-operator|.
-name|Before
+name|BeforeClass
 import|;
 end_import
 
@@ -350,6 +350,15 @@ name|RMAppState
 operator|.
 name|KILLED
 argument_list|)
+decl_stmt|;
+DECL|field|PROFILED_TASK_ID
+specifier|private
+specifier|static
+specifier|final
+name|int
+name|PROFILED_TASK_ID
+init|=
+literal|1
 decl_stmt|;
 DECL|field|mrCluster
 specifier|private
@@ -457,9 +466,10 @@ literal|"MRAppJar.jar"
 argument_list|)
 decl_stmt|;
 annotation|@
-name|Before
+name|BeforeClass
 DECL|method|setup ()
 specifier|public
+specifier|static
 name|void
 name|setup
 parameter_list|()
@@ -512,8 +522,9 @@ operator|=
 operator|new
 name|MiniMRYarnCluster
 argument_list|(
-name|getClass
-argument_list|()
+name|TestMRJobsWithProfiler
+operator|.
+name|class
 operator|.
 name|getName
 argument_list|()
@@ -564,9 +575,10 @@ argument_list|)
 expr_stmt|;
 block|}
 annotation|@
-name|After
+name|AfterClass
 DECL|method|tearDown ()
 specifier|public
+specifier|static
 name|void
 name|tearDown
 parameter_list|()
@@ -624,17 +636,65 @@ name|timeout
 operator|=
 literal|150000
 argument_list|)
-DECL|method|testProfiler ()
+DECL|method|testDefaultProfiler ()
 specifier|public
 name|void
-name|testProfiler
+name|testDefaultProfiler
 parameter_list|()
 throws|throws
-name|IOException
-throws|,
-name|InterruptedException
-throws|,
-name|ClassNotFoundException
+name|Exception
+block|{
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"Starting testDefaultProfiler"
+argument_list|)
+expr_stmt|;
+name|testProfilerInternal
+argument_list|(
+literal|true
+argument_list|)
+expr_stmt|;
+block|}
+annotation|@
+name|Test
+argument_list|(
+name|timeout
+operator|=
+literal|150000
+argument_list|)
+DECL|method|testDifferentProfilers ()
+specifier|public
+name|void
+name|testDifferentProfilers
+parameter_list|()
+throws|throws
+name|Exception
+block|{
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"Starting testDefaultProfiler"
+argument_list|)
+expr_stmt|;
+name|testProfilerInternal
+argument_list|(
+literal|false
+argument_list|)
+expr_stmt|;
+block|}
+DECL|method|testProfilerInternal (boolean useDefault)
+specifier|private
+name|void
+name|testProfilerInternal
+parameter_list|(
+name|boolean
+name|useDefault
+parameter_list|)
+throws|throws
+name|Exception
 block|{
 if|if
 condition|(
@@ -696,26 +756,40 @@ argument_list|(
 literal|true
 argument_list|)
 expr_stmt|;
-comment|// profile map split 1
 name|sleepConf
 operator|.
 name|setProfileTaskRange
 argument_list|(
 literal|true
 argument_list|,
-literal|"1"
+name|String
+operator|.
+name|valueOf
+argument_list|(
+name|PROFILED_TASK_ID
+argument_list|)
 argument_list|)
 expr_stmt|;
-comment|// profile reduce of map output partitions 1
 name|sleepConf
 operator|.
 name|setProfileTaskRange
 argument_list|(
 literal|false
 argument_list|,
-literal|"1"
+name|String
+operator|.
+name|valueOf
+argument_list|(
+name|PROFILED_TASK_ID
+argument_list|)
 argument_list|)
 expr_stmt|;
+if|if
+condition|(
+operator|!
+name|useDefault
+condition|)
+block|{
 comment|// use hprof for map to profile.out
 name|sleepConf
 operator|.
@@ -742,6 +816,7 @@ argument_list|,
 literal|"-Xprof"
 argument_list|)
 expr_stmt|;
+block|}
 name|sleepJob
 operator|.
 name|setConf
@@ -1238,6 +1313,8 @@ argument_list|)
 decl_stmt|;
 if|if
 condition|(
+name|useDefault
+operator|||
 name|tid
 operator|.
 name|getTaskType
@@ -1258,7 +1335,7 @@ operator|.
 name|getId
 argument_list|()
 operator|==
-literal|1
+name|PROFILED_TASK_ID
 condition|)
 block|{
 comment|// verify profile.out
@@ -1375,9 +1452,10 @@ operator|.
 name|getId
 argument_list|()
 operator|==
-literal|1
+name|PROFILED_TASK_ID
 condition|)
 block|{
+comment|// reducer is profiled with Xprof
 specifier|final
 name|BufferedReader
 name|br

@@ -300,10 +300,18 @@ name|debug
 argument_list|(
 literal|"Verifying the access of "
 operator|+
+operator|(
+name|callerUGI
+operator|==
+literal|null
+condition|?
+literal|null
+else|:
 name|callerUGI
 operator|.
 name|getShortUserName
 argument_list|()
+operator|)
 operator|+
 literal|" on the timeline entity "
 operator|+

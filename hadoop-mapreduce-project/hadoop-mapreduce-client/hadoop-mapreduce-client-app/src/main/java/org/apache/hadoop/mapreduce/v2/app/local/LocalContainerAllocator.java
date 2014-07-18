@@ -553,6 +553,11 @@ specifier|private
 name|ContainerId
 name|containerId
 decl_stmt|;
+DECL|field|lastResponseID
+specifier|protected
+name|int
+name|lastResponseID
+decl_stmt|;
 DECL|field|recordFactory
 specifier|private
 specifier|final
@@ -839,6 +844,25 @@ block|{
 case|case
 name|AM_RESYNC
 case|:
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"ApplicationMaster is out of sync with ResourceManager,"
+operator|+
+literal|" hence resyncing."
+argument_list|)
+expr_stmt|;
+name|this
+operator|.
+name|lastResponseID
+operator|=
+literal|0
+expr_stmt|;
+name|register
+argument_list|()
+expr_stmt|;
+break|break;
 case|case
 name|AM_SHUTDOWN
 case|:

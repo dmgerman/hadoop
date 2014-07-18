@@ -1244,7 +1244,7 @@ name|out
 operator|.
 name|println
 argument_list|(
-literal|"Nothing has been be deleted."
+literal|"Nothing has been deleted."
 argument_list|)
 expr_stmt|;
 block|}
@@ -1711,6 +1711,12 @@ condition|(
 name|noMatch
 condition|)
 block|{
+if|if
+condition|(
+name|newPassword1
+operator|!=
+literal|null
+condition|)
 name|Arrays
 operator|.
 name|fill
@@ -1735,6 +1741,12 @@ operator|=
 name|newPassword1
 expr_stmt|;
 block|}
+if|if
+condition|(
+name|newPassword2
+operator|!=
+literal|null
+condition|)
 name|Arrays
 operator|.
 name|fill

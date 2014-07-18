@@ -650,8 +650,6 @@ operator|+
 literal|", portmap entry: "
 operator|+
 name|mapEntry
-argument_list|,
-name|e
 argument_list|)
 expr_stmt|;
 throw|throw

@@ -2294,11 +2294,13 @@ name|rpcRequestClass
 decl_stmt|;
 comment|// class used for deserializing the rpc request
 DECL|field|rpcMetrics
+specifier|final
 specifier|protected
 name|RpcMetrics
 name|rpcMetrics
 decl_stmt|;
 DECL|field|rpcDetailedMetrics
+specifier|final
 specifier|protected
 name|RpcDetailedMetrics
 name|rpcDetailedMetrics
@@ -12090,15 +12092,6 @@ expr_stmt|;
 name|notifyAll
 argument_list|()
 expr_stmt|;
-if|if
-condition|(
-name|this
-operator|.
-name|rpcMetrics
-operator|!=
-literal|null
-condition|)
-block|{
 name|this
 operator|.
 name|rpcMetrics
@@ -12106,16 +12099,6 @@ operator|.
 name|shutdown
 argument_list|()
 expr_stmt|;
-block|}
-if|if
-condition|(
-name|this
-operator|.
-name|rpcDetailedMetrics
-operator|!=
-literal|null
-condition|)
-block|{
 name|this
 operator|.
 name|rpcDetailedMetrics
@@ -12123,7 +12106,6 @@ operator|.
 name|shutdown
 argument_list|()
 expr_stmt|;
-block|}
 block|}
 comment|/** Wait for the server to be stopped.    * Does not wait for all subthreads to finish.    *  See {@link #stop()}.    */
 DECL|method|join ()

@@ -132,16 +132,6 @@ begin_import
 import|import
 name|java
 operator|.
-name|net
-operator|.
-name|URISyntaxException
-import|;
-end_import
-
-begin_import
-import|import
-name|java
-operator|.
 name|util
 operator|.
 name|ArrayList
@@ -271,20 +261,6 @@ operator|.
 name|hdfs
 operator|.
 name|NameNodeProxies
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|hdfs
-operator|.
-name|NameNodeProxies
 operator|.
 name|ProxyAndInfo
 import|;
@@ -376,9 +352,7 @@ name|server
 operator|.
 name|namenode
 operator|.
-name|ha
-operator|.
-name|AbstractNNFailoverProxyProvider
+name|NameNode
 import|;
 end_import
 
@@ -396,7 +370,9 @@ name|server
 operator|.
 name|namenode
 operator|.
-name|NameNode
+name|ha
+operator|.
+name|AbstractNNFailoverProxyProvider
 import|;
 end_import
 
@@ -1276,13 +1252,22 @@ operator|.
 name|toString
 argument_list|()
 decl_stmt|;
+specifier|final
+name|String
+name|prefix
+init|=
+name|buildTokenServicePrefixForLogicalUri
+argument_list|(
+name|scheme
+argument_list|)
+decl_stmt|;
 if|if
 condition|(
 name|tokStr
 operator|.
 name|startsWith
 argument_list|(
-name|HA_DT_SERVICE_PREFIX
+name|prefix
 argument_list|)
 condition|)
 block|{
@@ -1292,7 +1277,7 @@ name|tokStr
 operator|.
 name|replaceFirst
 argument_list|(
-name|HA_DT_SERVICE_PREFIX
+name|prefix
 argument_list|,
 literal|""
 argument_list|)
@@ -1311,22 +1296,30 @@ name|tokStr
 argument_list|)
 return|;
 block|}
-comment|/**    * Get the service name used in the delegation token for the given logical    * HA service.    * @param uri the logical URI of the cluster    * @return the service name    */
-DECL|method|buildTokenServiceForLogicalUri (URI uri)
+comment|/**    * Get the service name used in the delegation token for the given logical    * HA service.    * @param uri the logical URI of the cluster    * @param scheme the scheme of the corresponding FileSystem    * @return the service name    */
+DECL|method|buildTokenServiceForLogicalUri (final URI uri, final String scheme)
 specifier|public
 specifier|static
 name|Text
 name|buildTokenServiceForLogicalUri
 parameter_list|(
+specifier|final
 name|URI
 name|uri
+parameter_list|,
+specifier|final
+name|String
+name|scheme
 parameter_list|)
 block|{
 return|return
 operator|new
 name|Text
 argument_list|(
-name|HA_DT_SERVICE_PREFIX
+name|buildTokenServicePrefixForLogicalUri
+argument_list|(
+name|scheme
+argument_list|)
 operator|+
 name|uri
 operator|.
@@ -1364,6 +1357,24 @@ name|HA_DT_SERVICE_PREFIX
 argument_list|)
 return|;
 block|}
+DECL|method|buildTokenServicePrefixForLogicalUri (String scheme)
+specifier|public
+specifier|static
+name|String
+name|buildTokenServicePrefixForLogicalUri
+parameter_list|(
+name|String
+name|scheme
+parameter_list|)
+block|{
+return|return
+name|HA_DT_SERVICE_PREFIX
+operator|+
+name|scheme
+operator|+
+literal|":"
+return|;
+block|}
 comment|/**    * Locate a delegation token associated with the given HA cluster URI, and if    * one is found, clone it to also represent the underlying namenode address.    * @param ugi the UGI to modify    * @param haUri the logical URI for the cluster    * @param nnAddrs collection of NNs in the cluster to which the token    * applies    */
 DECL|method|cloneDelegationTokenForLogicalUri ( UserGroupInformation ugi, URI haUri, Collection<InetSocketAddress> nnAddrs)
 specifier|public
@@ -1384,6 +1395,7 @@ argument_list|>
 name|nnAddrs
 parameter_list|)
 block|{
+comment|// this cloning logic is only used by hdfs
 name|Text
 name|haService
 init|=
@@ -1392,6 +1404,10 @@ operator|.
 name|buildTokenServiceForLogicalUri
 argument_list|(
 name|haUri
+argument_list|,
+name|HdfsConstants
+operator|.
+name|HDFS_URI_SCHEME
 argument_list|)
 decl_stmt|;
 name|Token
@@ -1462,7 +1478,12 @@ init|=
 operator|new
 name|Text
 argument_list|(
-name|HA_DT_SERVICE_PREFIX
+name|buildTokenServicePrefixForLogicalUri
+argument_list|(
+name|HdfsConstants
+operator|.
+name|HDFS_URI_SCHEME
+argument_list|)
 operator|+
 literal|"//"
 operator|+

@@ -945,6 +945,15 @@ operator|.
 name|ACCESS3_EXECUTE
 expr_stmt|;
 block|}
+else|else
+block|{
+name|rtn
+operator||=
+name|Nfs3Constant
+operator|.
+name|ACCESS3_LOOKUP
+expr_stmt|;
+block|}
 block|}
 return|return
 name|rtn
