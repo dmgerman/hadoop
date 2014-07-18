@@ -6854,6 +6854,16 @@ name|StartupOption
 operator|.
 name|UPGRADE
 operator|)
+operator|||
+operator|(
+name|haEnabled
+operator|&&
+name|startOpt
+operator|==
+name|StartupOption
+operator|.
+name|UPGRADEONLY
+operator|)
 condition|)
 block|{
 name|fsImage
