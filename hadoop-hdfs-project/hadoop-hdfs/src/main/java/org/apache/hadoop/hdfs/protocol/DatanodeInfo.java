@@ -1732,6 +1732,18 @@ name|buffer
 operator|.
 name|append
 argument_list|(
+literal|"Xceivers: "
+operator|+
+name|getXceiverCount
+argument_list|()
+operator|+
+literal|"\n"
+argument_list|)
+expr_stmt|;
+name|buffer
+operator|.
+name|append
+argument_list|(
 literal|"Last contact: "
 operator|+
 operator|new
