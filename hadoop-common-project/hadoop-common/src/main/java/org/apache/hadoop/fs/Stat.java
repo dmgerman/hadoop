@@ -610,6 +610,8 @@ argument_list|)
 throw|;
 block|}
 comment|// 6,symbolic link,6,1373584236,1373584236,lrwxrwxrwx,andrew,andrew,`link' -> `target'
+comment|// OR
+comment|// 6,symbolic link,6,1373584236,1373584236,lrwxrwxrwx,andrew,andrew,'link' -> 'target'
 name|StringTokenizer
 name|tokens
 init|=
@@ -766,38 +768,33 @@ name|nextToken
 argument_list|()
 decl_stmt|;
 comment|// 'notalink'
-comment|// 'link' -> `target'
+comment|// `link' -> `target' OR 'link' -> 'target'
 comment|// '' -> ''
 name|Path
 name|symlink
 init|=
 literal|null
 decl_stmt|;
-name|StringTokenizer
-name|symTokens
+name|String
+name|parts
+index|[]
 init|=
-operator|new
-name|StringTokenizer
-argument_list|(
 name|symStr
-argument_list|,
-literal|"`"
+operator|.
+name|split
+argument_list|(
+literal|" -> "
 argument_list|)
 decl_stmt|;
-name|symTokens
-operator|.
-name|nextToken
-argument_list|()
-expr_stmt|;
 try|try
 block|{
 name|String
 name|target
 init|=
-name|symTokens
-operator|.
-name|nextToken
-argument_list|()
+name|parts
+index|[
+literal|1
+index|]
 decl_stmt|;
 name|target
 operator|=
@@ -805,7 +802,7 @@ name|target
 operator|.
 name|substring
 argument_list|(
-literal|0
+literal|1
 argument_list|,
 name|target
 operator|.
@@ -836,7 +833,7 @@ block|}
 block|}
 catch|catch
 parameter_list|(
-name|NoSuchElementException
+name|ArrayIndexOutOfBoundsException
 name|e
 parameter_list|)
 block|{
