@@ -462,8 +462,8 @@ name|int
 name|numOfReplicas
 parameter_list|)
 function_decl|;
-comment|/**    * Decide whether deleting the specified replica of the block still makes     * the block conform to the configured block placement policy.    *     * @param srcBC block collection of file to which block-to-be-deleted belongs    * @param block The block to be deleted    * @param replicationFactor The required number of replicas for this block    * @param existingReplicas The replica locations of this block that are present                   on at least two unique racks.     * @param moreExistingReplicas Replica locations of this block that are not                    listed in the previous parameter.    * @return the replica that is the best candidate for deletion    */
-DECL|method|chooseReplicaToDelete ( BlockCollection srcBC, Block block, short replicationFactor, Collection<DatanodeStorageInfo> existingReplicas, Collection<DatanodeStorageInfo> moreExistingReplicas)
+comment|/**    * Decide whether deleting the specified replica of the block still makes     * the block conform to the configured block placement policy.    *     * @param srcBC block collection of file to which block-to-be-deleted belongs    * @param block The block to be deleted    * @param replicationFactor The required number of replicas for this block    * @param moreThanOne The replica locations of this block that are present    *                    on more than one unique racks.    * @param exactlyOne Replica locations of this block that  are present    *                    on exactly one unique racks.    * @param excessTypes The excess {@link StorageType}s according to the    *                    {@link BlockStoragePolicy}.    * @return the replica that is the best candidate for deletion    */
+DECL|method|chooseReplicaToDelete ( BlockCollection srcBC, Block block, short replicationFactor, Collection<DatanodeStorageInfo> moreThanOne, Collection<DatanodeStorageInfo> exactlyOne, List<StorageType> excessTypes)
 specifier|abstract
 specifier|public
 name|DatanodeStorageInfo
@@ -482,13 +482,19 @@ name|Collection
 argument_list|<
 name|DatanodeStorageInfo
 argument_list|>
-name|existingReplicas
+name|moreThanOne
 parameter_list|,
 name|Collection
 argument_list|<
 name|DatanodeStorageInfo
 argument_list|>
-name|moreExistingReplicas
+name|exactlyOne
+parameter_list|,
+name|List
+argument_list|<
+name|StorageType
+argument_list|>
+name|excessTypes
 parameter_list|)
 function_decl|;
 comment|/**    * Used to setup a BlockPlacementPolicy object. This should be defined by     * all implementations of a BlockPlacementPolicy.    *     * @param conf the configuration object    * @param stats retrieve cluster status from here    * @param clusterMap cluster topology    */
