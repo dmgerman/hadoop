@@ -292,6 +292,15 @@ literal|57
 argument_list|,
 literal|"Extended attributes"
 argument_list|)
+block|,
+DECL|enumConstant|BLOCK_STORAGE_POLICY
+name|BLOCK_STORAGE_POLICY
+argument_list|(
+operator|-
+literal|58
+argument_list|,
+literal|"Block Storage policy"
+argument_list|)
 block|;
 DECL|field|info
 specifier|private
