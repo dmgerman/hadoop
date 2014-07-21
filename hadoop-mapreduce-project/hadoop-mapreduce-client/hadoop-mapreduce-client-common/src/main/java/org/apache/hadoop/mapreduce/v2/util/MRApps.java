@@ -2175,7 +2175,7 @@ block|}
 block|}
 block|}
 block|}
-comment|/**    * Sets a {@link ApplicationClassLoader} on the given configuration and as    * the context classloader, if    * {@link MRJobConfig#MAPREDUCE_JOB_CLASSLOADER} is set to true, and    * the APP_CLASSPATH environment variable is set.    * @param conf    * @throws IOException    */
+comment|/**    * Creates and sets a {@link ApplicationClassLoader} on the given    * configuration and as the thread context classloader, if    * {@link MRJobConfig#MAPREDUCE_JOB_CLASSLOADER} is set to true, and    * the APP_CLASSPATH environment variable is set.    * @param conf    * @throws IOException    */
 DECL|method|setJobClassLoader (Configuration conf)
 specifier|public
 specifier|static
@@ -2188,6 +2188,35 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
+name|setClassLoader
+argument_list|(
+name|createJobClassLoader
+argument_list|(
+name|conf
+argument_list|)
+argument_list|,
+name|conf
+argument_list|)
+expr_stmt|;
+block|}
+comment|/**    * Creates a {@link ApplicationClassLoader} if    * {@link MRJobConfig#MAPREDUCE_JOB_CLASSLOADER} is set to true, and    * the APP_CLASSPATH environment variable is set.    * @param conf    * @returns the created job classloader, or null if the job classloader is not    * enabled or the APP_CLASSPATH environment variable is not set    * @throws IOException    */
+DECL|method|createJobClassLoader (Configuration conf)
+specifier|public
+specifier|static
+name|ClassLoader
+name|createJobClassLoader
+parameter_list|(
+name|Configuration
+name|conf
+parameter_list|)
+throws|throws
+name|IOException
+block|{
+name|ClassLoader
+name|jobClassLoader
+init|=
+literal|null
+decl_stmt|;
 if|if
 condition|(
 name|conf
@@ -2228,7 +2257,7 @@ name|LOG
 operator|.
 name|warn
 argument_list|(
-literal|"Not using job classloader since APP_CLASSPATH is not set."
+literal|"Not creating job classloader since APP_CLASSPATH is not set."
 argument_list|)
 expr_stmt|;
 block|}
@@ -2238,7 +2267,7 @@ name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"Using job classloader"
+literal|"Creating job classloader"
 argument_list|)
 expr_stmt|;
 if|if
@@ -2268,28 +2297,64 @@ argument_list|(
 name|conf
 argument_list|)
 decl_stmt|;
-name|ClassLoader
 name|jobClassLoader
-init|=
+operator|=
 name|createJobClassLoader
 argument_list|(
 name|appClasspath
 argument_list|,
 name|systemClasses
 argument_list|)
-decl_stmt|;
+expr_stmt|;
+block|}
+block|}
+return|return
+name|jobClassLoader
+return|;
+block|}
+comment|/**    * Sets the provided classloader on the given configuration and as the thread    * context classloader if the classloader is not null.    * @param classLoader    * @param conf    */
+DECL|method|setClassLoader (ClassLoader classLoader, Configuration conf)
+specifier|public
+specifier|static
+name|void
+name|setClassLoader
+parameter_list|(
+name|ClassLoader
+name|classLoader
+parameter_list|,
+name|Configuration
+name|conf
+parameter_list|)
+block|{
 if|if
 condition|(
-name|jobClassLoader
+name|classLoader
 operator|!=
 literal|null
 condition|)
 block|{
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"Setting classloader "
+operator|+
+name|classLoader
+operator|.
+name|getClass
+argument_list|()
+operator|.
+name|getName
+argument_list|()
+operator|+
+literal|" on the configuration and as the thread context classloader"
+argument_list|)
+expr_stmt|;
 name|conf
 operator|.
 name|setClassLoader
 argument_list|(
-name|jobClassLoader
+name|classLoader
 argument_list|)
 expr_stmt|;
 name|Thread
@@ -2299,11 +2364,9 @@ argument_list|()
 operator|.
 name|setContextClassLoader
 argument_list|(
-name|jobClassLoader
+name|classLoader
 argument_list|)
 expr_stmt|;
-block|}
-block|}
 block|}
 block|}
 annotation|@

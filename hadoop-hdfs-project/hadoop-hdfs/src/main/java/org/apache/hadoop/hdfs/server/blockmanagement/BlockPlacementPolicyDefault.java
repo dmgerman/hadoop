@@ -805,17 +805,17 @@ literal|0
 init|;
 name|i
 operator|<
-name|Math
-operator|.
-name|min
-argument_list|(
 name|favoredNodes
 operator|.
 name|size
 argument_list|()
-argument_list|,
+operator|&&
+name|results
+operator|.
+name|size
+argument_list|()
+operator|<
 name|numOfReplicas
-argument_list|)
 condition|;
 name|i
 operator|++
@@ -868,6 +868,8 @@ name|get
 argument_list|(
 literal|0
 argument_list|)
+argument_list|,
+literal|false
 argument_list|)
 decl_stmt|;
 if|if
@@ -1543,6 +1545,8 @@ name|remove
 argument_list|(
 literal|0
 argument_list|)
+argument_list|,
+literal|true
 argument_list|)
 operator|.
 name|getDatanodeDescriptor
@@ -1900,7 +1904,7 @@ name|writer
 return|;
 block|}
 comment|/**    * Choose<i>localMachine</i> as the target.    * if<i>localMachine</i> is not available,     * choose a node on the same rack    * @return the chosen storage    */
-DECL|method|chooseLocalStorage (Node localMachine, Set<Node> excludedNodes, long blocksize, int maxNodesPerRack, List<DatanodeStorageInfo> results, boolean avoidStaleNodes, StorageType storageType)
+DECL|method|chooseLocalStorage (Node localMachine, Set<Node> excludedNodes, long blocksize, int maxNodesPerRack, List<DatanodeStorageInfo> results, boolean avoidStaleNodes, StorageType storageType, boolean fallbackToLocalRack)
 specifier|protected
 name|DatanodeStorageInfo
 name|chooseLocalStorage
@@ -1931,6 +1935,9 @@ name|avoidStaleNodes
 parameter_list|,
 name|StorageType
 name|storageType
+parameter_list|,
+name|boolean
+name|fallbackToLocalRack
 parameter_list|)
 throws|throws
 name|NotEnoughReplicasException
@@ -1942,6 +1949,7 @@ name|localMachine
 operator|==
 literal|null
 condition|)
+block|{
 return|return
 name|chooseRandom
 argument_list|(
@@ -1962,6 +1970,7 @@ argument_list|,
 name|storageType
 argument_list|)
 return|;
+block|}
 if|if
 condition|(
 name|preferLocalNode
@@ -2037,6 +2046,16 @@ return|;
 block|}
 block|}
 block|}
+block|}
+if|if
+condition|(
+operator|!
+name|fallbackToLocalRack
+condition|)
+block|{
+return|return
+literal|null
+return|;
 block|}
 comment|// try a node on local rack
 return|return

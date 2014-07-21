@@ -30,6 +30,20 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|classification
+operator|.
+name|InterfaceAudience
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|conf
 operator|.
 name|Configuration
@@ -147,6 +161,10 @@ comment|/**  * Provides access to the<code>AccessControlList</code>s used by KMS
 end_comment
 
 begin_class
+annotation|@
+name|InterfaceAudience
+operator|.
+name|Private
 DECL|class|KMSACLs
 specifier|public
 class|class
@@ -181,7 +199,6 @@ DECL|enumConstant|ROLLOVER
 DECL|enumConstant|GET
 DECL|enumConstant|GET_KEYS
 DECL|enumConstant|GET_METADATA
-DECL|enumConstant|SET_KEY_MATERIAL
 name|CREATE
 block|,
 name|DELETE
@@ -194,7 +211,14 @@ name|GET_KEYS
 block|,
 name|GET_METADATA
 block|,
+DECL|enumConstant|SET_KEY_MATERIAL
+DECL|enumConstant|GENERATE_EEK
+DECL|enumConstant|DECRYPT_EEK
 name|SET_KEY_MATERIAL
+block|,
+name|GENERATE_EEK
+block|,
+name|DECRYPT_EEK
 block|;
 DECL|method|getConfigKey ()
 specifier|public

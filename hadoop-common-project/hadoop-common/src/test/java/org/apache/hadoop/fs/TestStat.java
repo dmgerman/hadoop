@@ -209,17 +209,18 @@ specifier|final
 name|String
 name|file
 decl_stmt|;
-DECL|field|symlink
+DECL|field|symlinks
 specifier|final
 name|String
-name|symlink
+index|[]
+name|symlinks
 decl_stmt|;
 DECL|field|stickydir
 specifier|final
 name|String
 name|stickydir
 decl_stmt|;
-DECL|method|StatOutput (String doesNotExist, String directory, String file, String symlink, String stickydir)
+DECL|method|StatOutput (String doesNotExist, String directory, String file, String[] symlinks, String stickydir)
 name|StatOutput
 parameter_list|(
 name|String
@@ -232,7 +233,8 @@ name|String
 name|file
 parameter_list|,
 name|String
-name|symlink
+index|[]
+name|symlinks
 parameter_list|,
 name|String
 name|stickydir
@@ -258,9 +260,9 @@ name|file
 expr_stmt|;
 name|this
 operator|.
-name|symlink
+name|symlinks
 operator|=
-name|symlink
+name|symlinks
 expr_stmt|;
 name|this
 operator|.
@@ -380,6 +382,14 @@ name|isFile
 argument_list|()
 argument_list|)
 expr_stmt|;
+for|for
+control|(
+name|String
+name|symlink
+range|:
+name|symlinks
+control|)
+block|{
 name|br
 operator|=
 operator|new
@@ -414,6 +424,7 @@ name|isSymlink
 argument_list|()
 argument_list|)
 expr_stmt|;
+block|}
 name|br
 operator|=
 operator|new
@@ -476,6 +487,19 @@ parameter_list|()
 throws|throws
 name|Exception
 block|{
+name|String
+index|[]
+name|symlinks
+init|=
+operator|new
+name|String
+index|[]
+block|{
+literal|"6,symbolic link,1373584236,1373584236,777,andrew,andrew,`link' -> `target'"
+block|,
+literal|"6,symbolic link,1373584236,1373584236,777,andrew,andrew,'link' -> 'target'"
+block|}
+decl_stmt|;
 name|StatOutput
 name|linux
 init|=
@@ -488,7 +512,7 @@ literal|"4096,directory,1373584236,1373586485,755,andrew,root,`.'"
 argument_list|,
 literal|"0,regular empty file,1373584228,1373584228,644,andrew,andrew,`target'"
 argument_list|,
-literal|"6,symbolic link,1373584236,1373584236,777,andrew,andrew,`link' -> `target'"
+name|symlinks
 argument_list|,
 literal|"4096,directory,1374622334,1375124212,1755,andrew,andrew,`stickydir'"
 argument_list|)
@@ -514,6 +538,17 @@ parameter_list|()
 throws|throws
 name|Exception
 block|{
+name|String
+index|[]
+name|symlinks
+init|=
+operator|new
+name|String
+index|[]
+block|{
+literal|"6,Symbolic Link,1373508941,1373508941,120755,awang,awang,`link' -> `target'"
+block|}
+decl_stmt|;
 name|StatOutput
 name|freebsd
 init|=
@@ -526,7 +561,7 @@ literal|"512,Directory,1373583695,1373583669,40755,awang,awang,`link' -> `'"
 argument_list|,
 literal|"0,Regular File,1373508937,1373508937,100644,awang,awang,`link' -> `'"
 argument_list|,
-literal|"6,Symbolic Link,1373508941,1373508941,120755,awang,awang,`link' -> `target'"
+name|symlinks
 argument_list|,
 literal|"512,Directory,1375139537,1375139537,41755,awang,awang,`link' -> `'"
 argument_list|)
