@@ -69,6 +69,13 @@ name|int
 name|getNumDatanodesInService
 parameter_list|()
 function_decl|;
+comment|/**    * an indication of the average load of non-decommission(ing|ed) nodes    * eligible for block placement    *     * @return average of the in service number of block transfers and block    *         writes that are currently occurring on the cluster.    */
+DECL|method|getInServiceXceiverAverage ()
+specifier|public
+name|double
+name|getInServiceXceiverAverage
+parameter_list|()
+function_decl|;
 block|}
 end_interface
 

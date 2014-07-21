@@ -7244,7 +7244,7 @@ name|scheduledWork
 return|;
 block|}
 comment|/** Choose target for WebHDFS redirection. */
-DECL|method|chooseTarget4WebHDFS (String src, DatanodeDescriptor clientnode, long blocksize)
+DECL|method|chooseTarget4WebHDFS (String src, DatanodeDescriptor clientnode, Set<Node> excludes, long blocksize)
 specifier|public
 name|DatanodeStorageInfo
 index|[]
@@ -7255,6 +7255,12 @@ name|src
 parameter_list|,
 name|DatanodeDescriptor
 name|clientnode
+parameter_list|,
+name|Set
+argument_list|<
+name|Node
+argument_list|>
+name|excludes
 parameter_list|,
 name|long
 name|blocksize
@@ -7281,7 +7287,7 @@ argument_list|()
 argument_list|,
 literal|false
 argument_list|,
-literal|null
+name|excludes
 argument_list|,
 name|blocksize
 argument_list|,

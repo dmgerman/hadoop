@@ -26,6 +26,34 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|classification
+operator|.
+name|InterfaceAudience
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|classification
+operator|.
+name|InterfaceStability
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|conf
 operator|.
 name|Configurable
@@ -47,6 +75,14 @@ import|;
 end_import
 
 begin_interface
+annotation|@
+name|InterfaceStability
+operator|.
+name|Unstable
+annotation|@
+name|InterfaceAudience
+operator|.
+name|Public
 DECL|interface|ImpersonationProvider
 specifier|public
 interface|interface
@@ -54,6 +90,16 @@ name|ImpersonationProvider
 extends|extends
 name|Configurable
 block|{
+comment|/**    * Specifies the configuration prefix for the proxy user properties and    * initializes the provider.    *    * @param configurationPrefix the configuration prefix for the proxy user    * properties    */
+DECL|method|init (String configurationPrefix)
+specifier|public
+name|void
+name|init
+parameter_list|(
+name|String
+name|configurationPrefix
+parameter_list|)
+function_decl|;
 comment|/**    * Authorize the superuser which is doing doAs    *     * @param user ugi of the effective or proxy user which contains a real user    * @param remoteAddress the ip address of client    * @throws AuthorizationException    */
 DECL|method|authorize (UserGroupInformation user, String remoteAddress)
 specifier|public

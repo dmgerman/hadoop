@@ -3612,8 +3612,14 @@ argument_list|()
 return|;
 block|}
 comment|/** Start decommissioning the specified datanode. */
+annotation|@
+name|InterfaceAudience
+operator|.
+name|Private
+annotation|@
+name|VisibleForTesting
 DECL|method|startDecommission (DatanodeDescriptor node)
-specifier|private
+specifier|public
 name|void
 name|startDecommission
 parameter_list|(
