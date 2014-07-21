@@ -427,7 +427,7 @@ literal|"Pmem enforcement enabled"
 argument_list|,
 name|info
 operator|.
-name|isVmemCheckEnabled
+name|isPmemCheckEnabled
 argument_list|()
 argument_list|)
 operator|.
