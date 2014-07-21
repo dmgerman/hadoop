@@ -94,6 +94,12 @@ specifier|final
 name|OutputStream
 name|out
 decl_stmt|;
+comment|/**    * If non-null, this is the Compressor object that we should call    * CodecPool#returnCompressor on when this stream is closed.    */
+DECL|field|trackedCompressor
+specifier|private
+name|Compressor
+name|trackedCompressor
+decl_stmt|;
 comment|/**    * Create a compression output stream that writes    * the compressed bytes to the given stream.    * @param out    */
 DECL|method|CompressionOutputStream (OutputStream out)
 specifier|protected
@@ -108,6 +114,19 @@ operator|.
 name|out
 operator|=
 name|out
+expr_stmt|;
+block|}
+DECL|method|setTrackedCompressor (Compressor compressor)
+name|void
+name|setTrackedCompressor
+parameter_list|(
+name|Compressor
+name|compressor
+parameter_list|)
+block|{
+name|trackedCompressor
+operator|=
+name|compressor
 expr_stmt|;
 block|}
 annotation|@
@@ -128,6 +147,25 @@ operator|.
 name|close
 argument_list|()
 expr_stmt|;
+if|if
+condition|(
+name|trackedCompressor
+operator|!=
+literal|null
+condition|)
+block|{
+name|CodecPool
+operator|.
+name|returnCompressor
+argument_list|(
+name|trackedCompressor
+argument_list|)
+expr_stmt|;
+name|trackedCompressor
+operator|=
+literal|null
+expr_stmt|;
+block|}
 block|}
 annotation|@
 name|Override

@@ -711,8 +711,8 @@ name|incrementAndGet
 argument_list|()
 return|;
 block|}
-comment|/**    * The ApplicationMaster is updating resource requirements for the    * application, by asking for more resources and releasing resources acquired    * by the application.    *    * @param requests resources to be acquired    */
-DECL|method|updateResourceRequests ( List<ResourceRequest> requests)
+comment|/**    * The ApplicationMaster is updating resource requirements for the    * application, by asking for more resources and releasing resources acquired    * by the application.    *    * @param requests resources to be acquired    * @param recoverPreemptedRequest recover Resource Request on preemption    */
+DECL|method|updateResourceRequests ( List<ResourceRequest> requests, boolean recoverPreemptedRequest)
 specifier|synchronized
 specifier|public
 name|void
@@ -723,6 +723,9 @@ argument_list|<
 name|ResourceRequest
 argument_list|>
 name|requests
+parameter_list|,
+name|boolean
+name|recoverPreemptedRequest
 parameter_list|)
 block|{
 name|QueueMetrics
@@ -891,12 +894,6 @@ name|priority
 argument_list|)
 expr_stmt|;
 block|}
-elseif|else
-if|if
-condition|(
-name|updatePendingResources
-condition|)
-block|{
 name|lastRequest
 operator|=
 name|asks
@@ -904,6 +901,29 @@ operator|.
 name|get
 argument_list|(
 name|resourceName
+argument_list|)
+expr_stmt|;
+if|if
+condition|(
+name|recoverPreemptedRequest
+operator|&&
+name|lastRequest
+operator|!=
+literal|null
+condition|)
+block|{
+comment|// Increment the number of containers to 1, as it is recovering a
+comment|// single container.
+name|request
+operator|.
+name|setNumContainers
+argument_list|(
+name|lastRequest
+operator|.
+name|getNumContainers
+argument_list|()
+operator|+
+literal|1
 argument_list|)
 expr_stmt|;
 block|}
@@ -1247,7 +1267,10 @@ comment|/**    * Resources have been allocated to this application by the resour
 DECL|method|allocate (NodeType type, SchedulerNode node, Priority priority, ResourceRequest request, Container container)
 specifier|synchronized
 specifier|public
-name|void
+name|List
+argument_list|<
+name|ResourceRequest
+argument_list|>
 name|allocate
 parameter_list|(
 name|NodeType
@@ -1266,6 +1289,19 @@ name|Container
 name|container
 parameter_list|)
 block|{
+name|List
+argument_list|<
+name|ResourceRequest
+argument_list|>
+name|resourceRequests
+init|=
+operator|new
+name|ArrayList
+argument_list|<
+name|ResourceRequest
+argument_list|>
+argument_list|()
+decl_stmt|;
 if|if
 condition|(
 name|type
@@ -1284,6 +1320,8 @@ argument_list|,
 name|request
 argument_list|,
 name|container
+argument_list|,
+name|resourceRequests
 argument_list|)
 expr_stmt|;
 block|}
@@ -1306,6 +1344,8 @@ argument_list|,
 name|request
 argument_list|,
 name|container
+argument_list|,
+name|resourceRequests
 argument_list|)
 expr_stmt|;
 block|}
@@ -1320,6 +1360,8 @@ argument_list|,
 name|request
 argument_list|,
 name|container
+argument_list|,
+name|resourceRequests
 argument_list|)
 expr_stmt|;
 block|}
@@ -1414,9 +1456,12 @@ argument_list|,
 literal|true
 argument_list|)
 expr_stmt|;
+return|return
+name|resourceRequests
+return|;
 block|}
 comment|/**    * The {@link ResourceScheduler} is allocating data-local resources to the    * application.    *     * @param allocatedContainers    *          resources allocated to the application    */
-DECL|method|allocateNodeLocal ( SchedulerNode node, Priority priority, ResourceRequest nodeLocalRequest, Container container)
+DECL|method|allocateNodeLocal (SchedulerNode node, Priority priority, ResourceRequest nodeLocalRequest, Container container, List<ResourceRequest> resourceRequests)
 specifier|synchronized
 specifier|private
 name|void
@@ -1433,6 +1478,12 @@ name|nodeLocalRequest
 parameter_list|,
 name|Container
 name|container
+parameter_list|,
+name|List
+argument_list|<
+name|ResourceRequest
+argument_list|>
+name|resourceRequests
 parameter_list|)
 block|{
 comment|// Update future requirements
@@ -1534,8 +1585,9 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
-name|decrementOutstanding
-argument_list|(
+name|ResourceRequest
+name|offRackRequest
+init|=
 name|requests
 operator|.
 name|get
@@ -1549,11 +1601,46 @@ name|ResourceRequest
 operator|.
 name|ANY
 argument_list|)
+decl_stmt|;
+name|decrementOutstanding
+argument_list|(
+name|offRackRequest
+argument_list|)
+expr_stmt|;
+comment|// Update cloned NodeLocal, RackLocal and OffRack requests for recovery
+name|resourceRequests
+operator|.
+name|add
+argument_list|(
+name|cloneResourceRequest
+argument_list|(
+name|nodeLocalRequest
+argument_list|)
+argument_list|)
+expr_stmt|;
+name|resourceRequests
+operator|.
+name|add
+argument_list|(
+name|cloneResourceRequest
+argument_list|(
+name|rackLocalRequest
+argument_list|)
+argument_list|)
+expr_stmt|;
+name|resourceRequests
+operator|.
+name|add
+argument_list|(
+name|cloneResourceRequest
+argument_list|(
+name|offRackRequest
+argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
 comment|/**    * The {@link ResourceScheduler} is allocating data-local resources to the    * application.    *     * @param allocatedContainers    *          resources allocated to the application    */
-DECL|method|allocateRackLocal ( SchedulerNode node, Priority priority, ResourceRequest rackLocalRequest, Container container)
+DECL|method|allocateRackLocal (SchedulerNode node, Priority priority, ResourceRequest rackLocalRequest, Container container, List<ResourceRequest> resourceRequests)
 specifier|synchronized
 specifier|private
 name|void
@@ -1570,6 +1657,12 @@ name|rackLocalRequest
 parameter_list|,
 name|Container
 name|container
+parameter_list|,
+name|List
+argument_list|<
+name|ResourceRequest
+argument_list|>
+name|resourceRequests
 parameter_list|)
 block|{
 comment|// Update future requirements
@@ -1613,8 +1706,9 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
-name|decrementOutstanding
-argument_list|(
+name|ResourceRequest
+name|offRackRequest
+init|=
 name|requests
 operator|.
 name|get
@@ -1628,11 +1722,36 @@ name|ResourceRequest
 operator|.
 name|ANY
 argument_list|)
+decl_stmt|;
+name|decrementOutstanding
+argument_list|(
+name|offRackRequest
+argument_list|)
+expr_stmt|;
+comment|// Update cloned RackLocal and OffRack requests for recovery
+name|resourceRequests
+operator|.
+name|add
+argument_list|(
+name|cloneResourceRequest
+argument_list|(
+name|rackLocalRequest
+argument_list|)
+argument_list|)
+expr_stmt|;
+name|resourceRequests
+operator|.
+name|add
+argument_list|(
+name|cloneResourceRequest
+argument_list|(
+name|offRackRequest
+argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
 comment|/**    * The {@link ResourceScheduler} is allocating data-local resources to the    * application.    *     * @param allocatedContainers    *          resources allocated to the application    */
-DECL|method|allocateOffSwitch ( SchedulerNode node, Priority priority, ResourceRequest offSwitchRequest, Container container)
+DECL|method|allocateOffSwitch (SchedulerNode node, Priority priority, ResourceRequest offSwitchRequest, Container container, List<ResourceRequest> resourceRequests)
 specifier|synchronized
 specifier|private
 name|void
@@ -1649,12 +1768,29 @@ name|offSwitchRequest
 parameter_list|,
 name|Container
 name|container
+parameter_list|,
+name|List
+argument_list|<
+name|ResourceRequest
+argument_list|>
+name|resourceRequests
 parameter_list|)
 block|{
 comment|// Update future requirements
 name|decrementOutstanding
 argument_list|(
 name|offSwitchRequest
+argument_list|)
+expr_stmt|;
+comment|// Update cloned RackLocal and OffRack requests for recovery
+name|resourceRequests
+operator|.
+name|add
+argument_list|(
+name|cloneResourceRequest
+argument_list|(
+name|offSwitchRequest
+argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
@@ -2126,6 +2262,49 @@ argument_list|,
 literal|false
 argument_list|)
 expr_stmt|;
+block|}
+DECL|method|cloneResourceRequest (ResourceRequest request)
+specifier|public
+name|ResourceRequest
+name|cloneResourceRequest
+parameter_list|(
+name|ResourceRequest
+name|request
+parameter_list|)
+block|{
+name|ResourceRequest
+name|newRequest
+init|=
+name|ResourceRequest
+operator|.
+name|newInstance
+argument_list|(
+name|request
+operator|.
+name|getPriority
+argument_list|()
+argument_list|,
+name|request
+operator|.
+name|getResourceName
+argument_list|()
+argument_list|,
+name|request
+operator|.
+name|getCapability
+argument_list|()
+argument_list|,
+literal|1
+argument_list|,
+name|request
+operator|.
+name|getRelaxLocality
+argument_list|()
+argument_list|)
+decl_stmt|;
+return|return
+name|newRequest
+return|;
 block|}
 block|}
 end_class

@@ -96,11 +96,29 @@ name|Preconditions
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|classification
+operator|.
+name|InterfaceAudience
+import|;
+end_import
+
 begin_comment
 comment|/**  * A KeyProvider with Cytographic Extensions specifically for generating  * Encrypted Keys as well as decrypting them  *   */
 end_comment
 
 begin_class
+annotation|@
+name|InterfaceAudience
+operator|.
+name|Private
 DECL|class|KeyProviderCryptoExtension
 specifier|public
 class|class
@@ -114,7 +132,7 @@ name|CryptoExtension
 argument_list|>
 block|{
 DECL|field|EEK
-specifier|protected
+specifier|public
 specifier|static
 specifier|final
 name|String
@@ -123,7 +141,7 @@ init|=
 literal|"EEK"
 decl_stmt|;
 DECL|field|EK
-specifier|protected
+specifier|public
 specifier|static
 specifier|final
 name|String
@@ -138,6 +156,11 @@ specifier|static
 class|class
 name|EncryptedKeyVersion
 block|{
+DECL|field|keyName
+specifier|private
+name|String
+name|keyName
+decl_stmt|;
 DECL|field|keyVersionName
 specifier|private
 name|String
@@ -154,10 +177,13 @@ specifier|private
 name|KeyVersion
 name|encryptedKey
 decl_stmt|;
-DECL|method|EncryptedKeyVersion (String keyVersionName, byte[] iv, KeyVersion encryptedKey)
+DECL|method|EncryptedKeyVersion (String keyName, String keyVersionName, byte[] iv, KeyVersion encryptedKey)
 specifier|protected
 name|EncryptedKeyVersion
 parameter_list|(
+name|String
+name|keyName
+parameter_list|,
 name|String
 name|keyVersionName
 parameter_list|,
@@ -171,6 +197,12 @@ parameter_list|)
 block|{
 name|this
 operator|.
+name|keyName
+operator|=
+name|keyName
+expr_stmt|;
+name|this
+operator|.
 name|keyVersionName
 operator|=
 name|keyVersionName
@@ -187,6 +219,16 @@ name|encryptedKey
 operator|=
 name|encryptedKey
 expr_stmt|;
+block|}
+DECL|method|getKeyName ()
+specifier|public
+name|String
+name|getKeyName
+parameter_list|()
+block|{
+return|return
+name|keyName
+return|;
 block|}
 DECL|method|getKeyVersionName ()
 specifier|public
@@ -230,14 +272,27 @@ name|KeyProviderExtension
 operator|.
 name|Extension
 block|{
-comment|/**      * Generates a key material and encrypts it using the given key version name      * and initialization vector. The generated key material is of the same      * length as the<code>KeyVersion</code> material and is encrypted using the      * same cipher.      *<p/>      * NOTE: The generated key is not stored by the<code>KeyProvider</code>      *       * @param encryptionKeyVersion      *          a KeyVersion object containing the keyVersion name and material      *          to encrypt.      * @return EncryptedKeyVersion with the generated key material, the version      *         name is 'EEK' (for Encrypted Encryption Key)      * @throws IOException      *           thrown if the key material could not be generated      * @throws GeneralSecurityException      *           thrown if the key material could not be encrypted because of a      *           cryptographic issue.      */
-DECL|method|generateEncryptedKey ( KeyVersion encryptionKeyVersion)
+comment|/**      * Calls to this method allows the underlying KeyProvider to warm-up any      * implementation specific caches used to store the Encrypted Keys.      * @param keyNames Array of Key Names      */
+DECL|method|warmUpEncryptedKeys (String... keyNames)
+specifier|public
+name|void
+name|warmUpEncryptedKeys
+parameter_list|(
+name|String
+modifier|...
+name|keyNames
+parameter_list|)
+throws|throws
+name|IOException
+function_decl|;
+comment|/**      * Generates a key material and encrypts it using the given key version name      * and initialization vector. The generated key material is of the same      * length as the<code>KeyVersion</code> material of the latest key version      * of the key and is encrypted using the same cipher.      *<p/>      * NOTE: The generated key is not stored by the<code>KeyProvider</code>      *       * @param encryptionKeyName      *          The latest KeyVersion of this key's material will be encrypted.      * @return EncryptedKeyVersion with the generated key material, the version      *         name is 'EEK' (for Encrypted Encryption Key)      * @throws IOException      *           thrown if the key material could not be generated      * @throws GeneralSecurityException      *           thrown if the key material could not be encrypted because of a      *           cryptographic issue.      */
+DECL|method|generateEncryptedKey ( String encryptionKeyName)
 specifier|public
 name|EncryptedKeyVersion
 name|generateEncryptedKey
 parameter_list|(
-name|KeyVersion
-name|encryptionKeyVersion
+name|String
+name|encryptionKeyName
 parameter_list|)
 throws|throws
 name|IOException
@@ -357,13 +412,13 @@ return|;
 block|}
 annotation|@
 name|Override
-DECL|method|generateEncryptedKey (KeyVersion keyVersion)
+DECL|method|generateEncryptedKey (String encryptionKeyName)
 specifier|public
 name|EncryptedKeyVersion
 name|generateEncryptedKey
 parameter_list|(
-name|KeyVersion
-name|keyVersion
+name|String
+name|encryptionKeyName
 parameter_list|)
 throws|throws
 name|IOException
@@ -375,12 +430,9 @@ name|keyVer
 init|=
 name|keyProvider
 operator|.
-name|getKeyVersion
+name|getCurrentKey
 argument_list|(
-name|keyVersion
-operator|.
-name|getVersionName
-argument_list|()
+name|encryptionKeyName
 argument_list|)
 decl_stmt|;
 name|Preconditions
@@ -389,12 +441,9 @@ name|checkNotNull
 argument_list|(
 name|keyVer
 argument_list|,
-literal|"KeyVersion name '%s' does not exist"
+literal|"No KeyVersion exists for key '%s' "
 argument_list|,
-name|keyVersion
-operator|.
-name|getVersionName
-argument_list|()
+name|encryptionKeyName
 argument_list|)
 expr_stmt|;
 name|byte
@@ -492,7 +541,9 @@ return|return
 operator|new
 name|EncryptedKeyVersion
 argument_list|(
-name|keyVersion
+name|encryptionKeyName
+argument_list|,
+name|keyVer
 operator|.
 name|getVersionName
 argument_list|()
@@ -638,9 +689,26 @@ name|ek
 argument_list|)
 return|;
 block|}
+annotation|@
+name|Override
+DECL|method|warmUpEncryptedKeys (String... keyNames)
+specifier|public
+name|void
+name|warmUpEncryptedKeys
+parameter_list|(
+name|String
+modifier|...
+name|keyNames
+parameter_list|)
+throws|throws
+name|IOException
+block|{
+comment|// NO-OP since the default version does not cache any keys
 block|}
+block|}
+comment|/**    * This constructor is to be used by sub classes that provide    * delegating/proxying functionality to the {@link KeyProviderCryptoExtension}    * @param keyProvider    * @param extension    */
 DECL|method|KeyProviderCryptoExtension (KeyProvider keyProvider, CryptoExtension extension)
-specifier|private
+specifier|protected
 name|KeyProviderCryptoExtension
 parameter_list|(
 name|KeyProvider
@@ -658,14 +726,36 @@ name|extension
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Generates a key material and encrypts it using the given key version name    * and initialization vector. The generated key material is of the same    * length as the<code>KeyVersion</code> material and is encrypted using the    * same cipher.    *<p/>    * NOTE: The generated key is not stored by the<code>KeyProvider</code>    *    * @param encryptionKey a KeyVersion object containing the keyVersion name and     * material to encrypt.    * @return EncryptedKeyVersion with the generated key material, the version    * name is 'EEK' (for Encrypted Encryption Key)    * @throws IOException thrown if the key material could not be generated    * @throws GeneralSecurityException thrown if the key material could not be     * encrypted because of a cryptographic issue.    */
-DECL|method|generateEncryptedKey (KeyVersion encryptionKey)
+comment|/**    * Notifies the Underlying CryptoExtension implementation to warm up any    * implementation specific caches for the specified KeyVersions    * @param keyNames Arrays of key Names    */
+DECL|method|warmUpEncryptedKeys (String... keyNames)
+specifier|public
+name|void
+name|warmUpEncryptedKeys
+parameter_list|(
+name|String
+modifier|...
+name|keyNames
+parameter_list|)
+throws|throws
+name|IOException
+block|{
+name|getExtension
+argument_list|()
+operator|.
+name|warmUpEncryptedKeys
+argument_list|(
+name|keyNames
+argument_list|)
+expr_stmt|;
+block|}
+comment|/**    * Generates a key material and encrypts it using the given key version name    * and initialization vector. The generated key material is of the same    * length as the<code>KeyVersion</code> material and is encrypted using the    * same cipher.    *<p/>    * NOTE: The generated key is not stored by the<code>KeyProvider</code>    *    * @param encryptionKeyName The latest KeyVersion of this key's material will    * be encrypted.    * @return EncryptedKeyVersion with the generated key material, the version    * name is 'EEK' (for Encrypted Encryption Key)    * @throws IOException thrown if the key material could not be generated    * @throws GeneralSecurityException thrown if the key material could not be     * encrypted because of a cryptographic issue.    */
+DECL|method|generateEncryptedKey (String encryptionKeyName)
 specifier|public
 name|EncryptedKeyVersion
 name|generateEncryptedKey
 parameter_list|(
-name|KeyVersion
-name|encryptionKey
+name|String
+name|encryptionKeyName
 parameter_list|)
 throws|throws
 name|IOException
@@ -678,7 +768,7 @@ argument_list|()
 operator|.
 name|generateEncryptedKey
 argument_list|(
-name|encryptionKey
+name|encryptionKeyName
 argument_list|)
 return|;
 block|}

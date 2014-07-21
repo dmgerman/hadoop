@@ -1061,6 +1061,87 @@ name|HADOOP_SECURITY_IMPERSONATION_PROVIDER_CLASS
 init|=
 literal|"hadoop.security.impersonation.provider.class"
 decl_stmt|;
+comment|//<!--- KMSClientProvider configurations â>
+comment|/** See<a href="{@docRoot}/../core-default.html">core-default.xml</a> */
+DECL|field|KMS_CLIENT_ENC_KEY_CACHE_SIZE
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|KMS_CLIENT_ENC_KEY_CACHE_SIZE
+init|=
+literal|"hadoop.security.kms.client.encrypted.key.cache.size"
+decl_stmt|;
+comment|/** Default value for KMS_CLIENT_ENC_KEY_CACHE_SIZE */
+DECL|field|KMS_CLIENT_ENC_KEY_CACHE_SIZE_DEFAULT
+specifier|public
+specifier|static
+specifier|final
+name|int
+name|KMS_CLIENT_ENC_KEY_CACHE_SIZE_DEFAULT
+init|=
+literal|500
+decl_stmt|;
+comment|/** See<a href="{@docRoot}/../core-default.html">core-default.xml</a> */
+DECL|field|KMS_CLIENT_ENC_KEY_CACHE_LOW_WATERMARK
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|KMS_CLIENT_ENC_KEY_CACHE_LOW_WATERMARK
+init|=
+literal|"hadoop.security.kms.client.encrypted.key.cache.low-watermark"
+decl_stmt|;
+comment|/** Default value for KMS_CLIENT_ENC_KEY_CACHE_LOW_WATERMARK */
+DECL|field|KMS_CLIENT_ENC_KEY_CACHE_LOW_WATERMARK_DEFAULT
+specifier|public
+specifier|static
+specifier|final
+name|float
+name|KMS_CLIENT_ENC_KEY_CACHE_LOW_WATERMARK_DEFAULT
+init|=
+literal|0.3f
+decl_stmt|;
+comment|/** See<a href="{@docRoot}/../core-default.html">core-default.xml</a> */
+DECL|field|KMS_CLIENT_ENC_KEY_CACHE_NUM_REFILL_THREADS
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|KMS_CLIENT_ENC_KEY_CACHE_NUM_REFILL_THREADS
+init|=
+literal|"hadoop.security.kms.client.encrypted.key.cache.num.refill.threads"
+decl_stmt|;
+comment|/** Default value for KMS_CLIENT_ENC_KEY_NUM_REFILL_THREADS */
+DECL|field|KMS_CLIENT_ENC_KEY_CACHE_NUM_REFILL_THREADS_DEFAULT
+specifier|public
+specifier|static
+specifier|final
+name|int
+name|KMS_CLIENT_ENC_KEY_CACHE_NUM_REFILL_THREADS_DEFAULT
+init|=
+literal|2
+decl_stmt|;
+comment|/** See<a href="{@docRoot}/../core-default.html">core-default.xml</a> */
+DECL|field|KMS_CLIENT_ENC_KEY_CACHE_EXPIRY_MS
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|KMS_CLIENT_ENC_KEY_CACHE_EXPIRY_MS
+init|=
+literal|"hadoop.security.kms.client.encrypted.key.cache.expiry"
+decl_stmt|;
+comment|/** Default value for KMS_CLIENT_ENC_KEY_CACHE_EXPIRY (12 hrs)*/
+DECL|field|KMS_CLIENT_ENC_KEY_CACHE_EXPIRY_DEFAULT
+specifier|public
+specifier|static
+specifier|final
+name|int
+name|KMS_CLIENT_ENC_KEY_CACHE_EXPIRY_DEFAULT
+init|=
+literal|43200000
+decl_stmt|;
 comment|/** See<a href="{@docRoot}/../core-default.html">core-default.xml</a> */
 DECL|field|HADOOP_SECURITY_JAVA_SECURE_RANDOM_ALGORITHM_KEY
 specifier|public

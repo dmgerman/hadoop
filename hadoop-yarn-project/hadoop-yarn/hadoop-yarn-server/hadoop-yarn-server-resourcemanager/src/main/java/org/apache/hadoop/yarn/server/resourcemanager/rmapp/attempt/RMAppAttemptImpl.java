@@ -4494,35 +4494,22 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|// create AMRMToken
-name|AMRMTokenIdentifier
-name|id
-init|=
-operator|new
-name|AMRMTokenIdentifier
-argument_list|(
-name|appAttempt
-operator|.
-name|applicationAttemptId
-argument_list|)
-decl_stmt|;
 name|appAttempt
 operator|.
 name|amrmToken
 operator|=
-operator|new
-name|Token
-argument_list|<
-name|AMRMTokenIdentifier
-argument_list|>
-argument_list|(
-name|id
-argument_list|,
 name|appAttempt
 operator|.
 name|rmContext
 operator|.
 name|getAMRMTokenSecretManager
 argument_list|()
+operator|.
+name|createAndGetAMRMToken
+argument_list|(
+name|appAttempt
+operator|.
+name|applicationAttemptId
 argument_list|)
 expr_stmt|;
 comment|// Add the applicationAttempt to the scheduler and inform the scheduler
@@ -5146,9 +5133,11 @@ operator|.
 name|applicationAttemptId
 argument_list|)
 expr_stmt|;
+comment|// Add attempt to scheduler synchronously to guarantee scheduler
+comment|// knows attempts before AM or NM re-registers.
 name|appAttempt
 operator|.
-name|eventHandler
+name|scheduler
 operator|.
 name|handle
 argument_list|(
@@ -5162,7 +5151,7 @@ argument_list|()
 argument_list|,
 literal|false
 argument_list|,
-literal|false
+literal|true
 argument_list|)
 argument_list|)
 expr_stmt|;

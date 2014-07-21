@@ -62,11 +62,11 @@ specifier|final
 name|boolean
 name|transferStateFromPreviousAttempt
 decl_stmt|;
-DECL|field|shouldNotifyAttemptAdded
+DECL|field|isAttemptRecovering
 specifier|private
 specifier|final
 name|boolean
-name|shouldNotifyAttemptAdded
+name|isAttemptRecovering
 decl_stmt|;
 DECL|method|AppAttemptAddedSchedulerEvent ( ApplicationAttemptId applicationAttemptId, boolean transferStateFromPreviousAttempt)
 specifier|public
@@ -85,11 +85,11 @@ name|applicationAttemptId
 argument_list|,
 name|transferStateFromPreviousAttempt
 argument_list|,
-literal|true
+literal|false
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|AppAttemptAddedSchedulerEvent ( ApplicationAttemptId applicationAttemptId, boolean transferStateFromPreviousAttempt, boolean shouldNotifyAttemptAdded)
+DECL|method|AppAttemptAddedSchedulerEvent ( ApplicationAttemptId applicationAttemptId, boolean transferStateFromPreviousAttempt, boolean isAttemptRecovering)
 specifier|public
 name|AppAttemptAddedSchedulerEvent
 parameter_list|(
@@ -100,7 +100,7 @@ name|boolean
 name|transferStateFromPreviousAttempt
 parameter_list|,
 name|boolean
-name|shouldNotifyAttemptAdded
+name|isAttemptRecovering
 parameter_list|)
 block|{
 name|super
@@ -124,9 +124,9 @@ name|transferStateFromPreviousAttempt
 expr_stmt|;
 name|this
 operator|.
-name|shouldNotifyAttemptAdded
+name|isAttemptRecovering
 operator|=
-name|shouldNotifyAttemptAdded
+name|isAttemptRecovering
 expr_stmt|;
 block|}
 DECL|method|getApplicationAttemptId ()
@@ -149,14 +149,14 @@ return|return
 name|transferStateFromPreviousAttempt
 return|;
 block|}
-DECL|method|getShouldNotifyAttemptAdded ()
+DECL|method|getIsAttemptRecovering ()
 specifier|public
 name|boolean
-name|getShouldNotifyAttemptAdded
+name|getIsAttemptRecovering
 parameter_list|()
 block|{
 return|return
-name|shouldNotifyAttemptAdded
+name|isAttemptRecovering
 return|;
 block|}
 block|}

@@ -116,6 +116,20 @@ name|int
 name|getXceiverCount
 parameter_list|()
 function_decl|;
+comment|/** @return average xceiver count for non-decommission(ing|ed) nodes */
+DECL|method|getInServiceXceiverCount ()
+specifier|public
+name|int
+name|getInServiceXceiverCount
+parameter_list|()
+function_decl|;
+comment|/** @return number of non-decommission(ing|ed) nodes */
+DECL|method|getNumDatanodesInService ()
+specifier|public
+name|int
+name|getNumDatanodesInService
+parameter_list|()
+function_decl|;
 comment|/**    * @return the total used space by data nodes for non-DFS purposes    * such as storing temporary files on the local file system    */
 DECL|method|getCapacityUsedNonDFS ()
 specifier|public

@@ -1934,6 +1934,8 @@ argument_list|,
 literal|"queue1"
 argument_list|,
 literal|"user1"
+argument_list|,
+literal|false
 argument_list|)
 expr_stmt|;
 name|NodeUpdateSchedulerEvent
@@ -1987,7 +1989,7 @@ name|attId
 argument_list|,
 literal|false
 argument_list|,
-literal|true
+literal|false
 argument_list|)
 expr_stmt|;
 name|rm

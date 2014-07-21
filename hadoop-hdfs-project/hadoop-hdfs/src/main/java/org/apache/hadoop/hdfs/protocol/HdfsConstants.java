@@ -533,7 +533,7 @@ specifier|final
 name|String
 name|HA_DT_SERVICE_PREFIX
 init|=
-literal|"ha-hdfs:"
+literal|"ha-"
 decl_stmt|;
 comment|/**    * Current layout version for NameNode.    * Please see {@link NameNodeLayoutVersion.Feature} on adding new layout version.    */
 DECL|field|NAMENODE_LAYOUT_VERSION

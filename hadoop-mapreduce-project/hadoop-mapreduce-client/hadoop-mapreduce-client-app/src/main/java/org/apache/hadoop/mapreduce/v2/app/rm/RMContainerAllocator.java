@@ -2431,6 +2431,13 @@ expr_stmt|;
 name|containersReleased
 operator|++
 expr_stmt|;
+name|pendingRelease
+operator|.
+name|add
+argument_list|(
+name|containerId
+argument_list|)
+expr_stmt|;
 name|release
 argument_list|(
 name|containerId
@@ -3588,6 +3595,28 @@ block|{
 case|case
 name|AM_RESYNC
 case|:
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"ApplicationMaster is out of sync with ResourceManager,"
+operator|+
+literal|" hence resyncing."
+argument_list|)
+expr_stmt|;
+name|lastResponseID
+operator|=
+literal|0
+expr_stmt|;
+comment|// Registering to allow RM to discover an active AM for this
+comment|// application
+name|register
+argument_list|()
+expr_stmt|;
+name|addOutstandingRequestOnResync
+argument_list|()
+expr_stmt|;
+break|break;
 case|case
 name|AM_SHUTDOWN
 case|:
@@ -3905,6 +3934,16 @@ expr_stmt|;
 block|}
 else|else
 block|{
+name|pendingRelease
+operator|.
+name|remove
+argument_list|(
+name|cont
+operator|.
+name|getContainerId
+argument_list|()
+argument_list|)
+expr_stmt|;
 name|assignedRequests
 operator|.
 name|remove
@@ -5395,6 +5434,16 @@ parameter_list|)
 block|{
 name|containersReleased
 operator|++
+expr_stmt|;
+name|pendingRelease
+operator|.
+name|add
+argument_list|(
+name|allocated
+operator|.
+name|getId
+argument_list|()
+argument_list|)
 expr_stmt|;
 name|release
 argument_list|(

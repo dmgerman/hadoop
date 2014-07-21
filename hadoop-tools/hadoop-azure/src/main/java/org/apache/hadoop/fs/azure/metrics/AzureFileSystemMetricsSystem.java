@@ -140,9 +140,9 @@ parameter_list|()
 block|{
 if|if
 condition|(
-name|instance
-operator|!=
-literal|null
+name|numFileSystems
+operator|==
+literal|1
 condition|)
 block|{
 name|instance
@@ -150,14 +150,6 @@ operator|.
 name|publishMetricsNow
 argument_list|()
 expr_stmt|;
-block|}
-if|if
-condition|(
-name|numFileSystems
-operator|==
-literal|1
-condition|)
-block|{
 name|instance
 operator|.
 name|stop
@@ -193,21 +185,51 @@ name|MetricsSource
 name|source
 parameter_list|)
 block|{
-comment|// Register the source with the name appended with -WasbSystem
-comment|// so that the name is globally unique.
+comment|//caller has to use unique name to register source
 name|instance
 operator|.
 name|register
 argument_list|(
 name|name
-operator|+
-literal|"-WasbSystem"
 argument_list|,
 name|desc
 argument_list|,
 name|source
 argument_list|)
 expr_stmt|;
+block|}
+DECL|method|unregisterSource (String name)
+specifier|public
+specifier|static
+specifier|synchronized
+name|void
+name|unregisterSource
+parameter_list|(
+name|String
+name|name
+parameter_list|)
+block|{
+if|if
+condition|(
+name|instance
+operator|!=
+literal|null
+condition|)
+block|{
+comment|//publish metrics before unregister a metrics source
+name|instance
+operator|.
+name|publishMetricsNow
+argument_list|()
+expr_stmt|;
+name|instance
+operator|.
+name|unregisterSource
+argument_list|(
+name|name
+argument_list|)
+expr_stmt|;
+block|}
 block|}
 block|}
 end_class

@@ -131,6 +131,11 @@ name|maxAvailableData
 init|=
 literal|0L
 decl_stmt|;
+DECL|field|trackedDecompressor
+specifier|private
+name|Decompressor
+name|trackedDecompressor
+decl_stmt|;
 comment|/**    * Create a compression input stream that reads    * the decompressed bytes from the given stream.    *     * @param in The input stream to be compressed.    * @throws IOException    */
 DECL|method|CompressionInputStream (InputStream in)
 specifier|protected
@@ -191,6 +196,25 @@ operator|.
 name|close
 argument_list|()
 expr_stmt|;
+if|if
+condition|(
+name|trackedDecompressor
+operator|!=
+literal|null
+condition|)
+block|{
+name|CodecPool
+operator|.
+name|returnDecompressor
+argument_list|(
+name|trackedDecompressor
+argument_list|)
+expr_stmt|;
+name|trackedDecompressor
+operator|=
+literal|null
+expr_stmt|;
+block|}
 block|}
 comment|/**    * Read bytes from the stream.    * Made abstract to prevent leakage to underlying stream.    */
 annotation|@
@@ -326,6 +350,19 @@ operator|new
 name|UnsupportedOperationException
 argument_list|()
 throw|;
+block|}
+DECL|method|setTrackedDecompressor (Decompressor decompressor)
+name|void
+name|setTrackedDecompressor
+parameter_list|(
+name|Decompressor
+name|decompressor
+parameter_list|)
+block|{
+name|trackedDecompressor
+operator|=
+name|decompressor
+expr_stmt|;
 block|}
 block|}
 end_class

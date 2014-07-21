@@ -74,6 +74,24 @@ name|api
 operator|.
 name|records
 operator|.
+name|ApplicationAttemptId
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|api
+operator|.
+name|records
+operator|.
 name|ApplicationId
 import|;
 end_import
@@ -129,6 +147,26 @@ operator|.
 name|YarnServerNodemanagerRecoveryProtos
 operator|.
 name|LocalizedResourceProto
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|server
+operator|.
+name|api
+operator|.
+name|records
+operator|.
+name|MasterKey
 import|;
 end_import
 
@@ -293,6 +331,79 @@ name|removeDeletionTask
 parameter_list|(
 name|int
 name|taskId
+parameter_list|)
+throws|throws
+name|IOException
+block|{   }
+annotation|@
+name|Override
+DECL|method|loadNMTokenState ()
+specifier|public
+name|RecoveredNMTokenState
+name|loadNMTokenState
+parameter_list|()
+throws|throws
+name|IOException
+block|{
+throw|throw
+operator|new
+name|UnsupportedOperationException
+argument_list|(
+literal|"Recovery not supported by this state store"
+argument_list|)
+throw|;
+block|}
+annotation|@
+name|Override
+DECL|method|storeNMTokenCurrentMasterKey (MasterKey key)
+specifier|public
+name|void
+name|storeNMTokenCurrentMasterKey
+parameter_list|(
+name|MasterKey
+name|key
+parameter_list|)
+throws|throws
+name|IOException
+block|{   }
+annotation|@
+name|Override
+DECL|method|storeNMTokenPreviousMasterKey (MasterKey key)
+specifier|public
+name|void
+name|storeNMTokenPreviousMasterKey
+parameter_list|(
+name|MasterKey
+name|key
+parameter_list|)
+throws|throws
+name|IOException
+block|{   }
+annotation|@
+name|Override
+DECL|method|storeNMTokenApplicationMasterKey (ApplicationAttemptId attempt, MasterKey key)
+specifier|public
+name|void
+name|storeNMTokenApplicationMasterKey
+parameter_list|(
+name|ApplicationAttemptId
+name|attempt
+parameter_list|,
+name|MasterKey
+name|key
+parameter_list|)
+throws|throws
+name|IOException
+block|{   }
+annotation|@
+name|Override
+DECL|method|removeNMTokenApplicationMasterKey (ApplicationAttemptId attempt)
+specifier|public
+name|void
+name|removeNMTokenApplicationMasterKey
+parameter_list|(
+name|ApplicationAttemptId
+name|attempt
 parameter_list|)
 throws|throws
 name|IOException

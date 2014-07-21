@@ -112,6 +112,19 @@ name|CONFIG_PREFIX
 init|=
 literal|"hadoop.kms."
 decl_stmt|;
+comment|// Property to Enable/Disable Caching
+DECL|field|KEY_CACHE_ENABLE
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|KEY_CACHE_ENABLE
+init|=
+name|CONFIG_PREFIX
+operator|+
+literal|"cache.enable"
+decl_stmt|;
+comment|// Timeout for the Key and Metadata Cache
 DECL|field|KEY_CACHE_TIMEOUT_KEY
 specifier|public
 specifier|static
@@ -123,6 +136,28 @@ name|CONFIG_PREFIX
 operator|+
 literal|"cache.timeout.ms"
 decl_stmt|;
+comment|// TImeout for the Current Key cache
+DECL|field|CURR_KEY_CACHE_TIMEOUT_KEY
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|CURR_KEY_CACHE_TIMEOUT_KEY
+init|=
+name|CONFIG_PREFIX
+operator|+
+literal|"current.key.cache.timeout.ms"
+decl_stmt|;
+DECL|field|KEY_CACHE_ENABLE_DEFAULT
+specifier|public
+specifier|static
+specifier|final
+name|boolean
+name|KEY_CACHE_ENABLE_DEFAULT
+init|=
+literal|true
+decl_stmt|;
+comment|// 10 mins
 DECL|field|KEY_CACHE_TIMEOUT_DEFAULT
 specifier|public
 specifier|static
@@ -132,9 +167,22 @@ name|KEY_CACHE_TIMEOUT_DEFAULT
 init|=
 literal|10
 operator|*
+literal|60
+operator|*
 literal|1000
 decl_stmt|;
-comment|// 10 secs
+comment|// 30 secs
+DECL|field|CURR_KEY_CACHE_TIMEOUT_DEFAULT
+specifier|public
+specifier|static
+specifier|final
+name|long
+name|CURR_KEY_CACHE_TIMEOUT_DEFAULT
+init|=
+literal|30
+operator|*
+literal|1000
+decl_stmt|;
 DECL|method|getConfiguration (boolean loadHadoopDefaults, String ... resources)
 specifier|static
 name|Configuration

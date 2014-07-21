@@ -2673,6 +2673,12 @@ operator|.
 name|length
 operator|==
 literal|0
+operator|&&
+operator|!
+name|stat
+operator|.
+name|isDirectory
+argument_list|()
 condition|)
 block|{
 name|locations

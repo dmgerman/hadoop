@@ -251,38 +251,18 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
-comment|// This may leak memory if called in a loop. The createCompressor() call
-comment|// may cause allocation of an untracked direct-backed buffer if native
-comment|// libs are being used (even if you close the stream).  A Compressor
-comment|// object should be reused between successive calls.
-name|LOG
-operator|.
-name|warn
-argument_list|(
-literal|"DefaultCodec.createOutputStream() may leak memory. "
-operator|+
-literal|"Create a compressor first."
-argument_list|)
-expr_stmt|;
 return|return
-operator|new
-name|CompressorStream
+name|CompressionCodec
+operator|.
+name|Util
+operator|.
+name|createOutputStreamWithCodecPool
 argument_list|(
-name|out
-argument_list|,
-name|createCompressor
-argument_list|()
+name|this
 argument_list|,
 name|conf
-operator|.
-name|getInt
-argument_list|(
-literal|"io.file.buffer.size"
 argument_list|,
-literal|4
-operator|*
-literal|1024
-argument_list|)
+name|out
 argument_list|)
 return|;
 block|}
@@ -376,24 +356,17 @@ throws|throws
 name|IOException
 block|{
 return|return
-operator|new
-name|DecompressorStream
+name|CompressionCodec
+operator|.
+name|Util
+operator|.
+name|createInputStreamWithCodecPool
 argument_list|(
-name|in
-argument_list|,
-name|createDecompressor
-argument_list|()
+name|this
 argument_list|,
 name|conf
-operator|.
-name|getInt
-argument_list|(
-literal|"io.file.buffer.size"
 argument_list|,
-literal|4
-operator|*
-literal|1024
-argument_list|)
+name|in
 argument_list|)
 return|;
 block|}
