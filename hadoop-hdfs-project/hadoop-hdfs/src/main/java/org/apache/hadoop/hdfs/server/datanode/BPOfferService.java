@@ -2196,6 +2196,11 @@ name|bcmd
 operator|.
 name|getTargets
 argument_list|()
+argument_list|,
+name|bcmd
+operator|.
+name|getTargetStorageTypes
+argument_list|()
 argument_list|)
 expr_stmt|;
 name|dn
