@@ -981,26 +981,14 @@ name|HADOOP_SECURITY_SASL_PROPS_RESOLVER_CLASS
 init|=
 literal|"hadoop.security.saslproperties.resolver.class"
 decl_stmt|;
-comment|/** See<a href="{@docRoot}/../core-default.html">core-default.xml</a> */
-DECL|field|HADOOP_SECURITY_CRYPTO_CODEC_CLASS_KEY
+DECL|field|HADOOP_SECURITY_CRYPTO_CODEC_CLASSES_KEY_PREFIX
 specifier|public
 specifier|static
 specifier|final
 name|String
-name|HADOOP_SECURITY_CRYPTO_CODEC_CLASS_KEY
+name|HADOOP_SECURITY_CRYPTO_CODEC_CLASSES_KEY_PREFIX
 init|=
-literal|"hadoop.security.crypto.codec.class"
-decl_stmt|;
-DECL|field|HADOOP_SECURITY_CRYPTO_CODEC_CLASS_DEFAULT
-specifier|public
-specifier|static
-specifier|final
-name|String
-name|HADOOP_SECURITY_CRYPTO_CODEC_CLASS_DEFAULT
-init|=
-literal|"org.apache.hadoop.crypto.OpensslAesCtrCryptoCodec,"
-operator|+
-literal|"org.apache.hadoop.crypto.JceAesCtrCryptoCodec"
+literal|"hadoop.security.crypto.codec.classes"
 decl_stmt|;
 comment|/** See<a href="{@docRoot}/../core-default.html">core-default.xml</a> */
 DECL|field|HADOOP_SECURITY_CRYPTO_CIPHER_SUITE_KEY

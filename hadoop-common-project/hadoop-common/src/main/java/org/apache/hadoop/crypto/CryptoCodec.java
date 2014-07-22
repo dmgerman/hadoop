@@ -166,23 +166,7 @@ name|fs
 operator|.
 name|CommonConfigurationKeysPublic
 operator|.
-name|HADOOP_SECURITY_CRYPTO_CODEC_CLASS_KEY
-import|;
-end_import
-
-begin_import
-import|import static
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|fs
-operator|.
-name|CommonConfigurationKeysPublic
-operator|.
-name|HADOOP_SECURITY_CRYPTO_CODEC_CLASS_DEFAULT
+name|HADOOP_SECURITY_CRYPTO_CODEC_CLASSES_KEY_PREFIX
 import|;
 end_import
 
@@ -254,7 +238,8 @@ operator|.
 name|class
 argument_list|)
 decl_stmt|;
-DECL|method|getInstance (Configuration conf)
+comment|/**    * Get crypto codec for specified algorithm/mode/padding.    * @param conf the configuration    * @param CipherSuite algorithm/mode/padding    * @return CryptoCodec the codec object    */
+DECL|method|getInstance (Configuration conf, CipherSuite cipherSuite)
 specifier|public
 specifier|static
 name|CryptoCodec
@@ -262,6 +247,9 @@ name|getInstance
 parameter_list|(
 name|Configuration
 name|conf
+parameter_list|,
+name|CipherSuite
+name|cipherSuite
 parameter_list|)
 block|{
 name|List
@@ -278,27 +266,10 @@ init|=
 name|getCodecClasses
 argument_list|(
 name|conf
-argument_list|)
-decl_stmt|;
-name|String
-name|name
-init|=
-name|conf
-operator|.
-name|get
-argument_list|(
-name|HADOOP_SECURITY_CRYPTO_CIPHER_SUITE_KEY
 argument_list|,
-name|HADOOP_SECURITY_CRYPTO_CIPHER_SUITE_DEFAULT
+name|cipherSuite
 argument_list|)
 decl_stmt|;
-name|CipherSuite
-operator|.
-name|checkName
-argument_list|(
-name|name
-argument_list|)
-expr_stmt|;
 name|CryptoCodec
 name|codec
 init|=
@@ -341,9 +312,12 @@ operator|.
 name|getName
 argument_list|()
 operator|.
-name|equalsIgnoreCase
+name|equals
 argument_list|(
-name|name
+name|cipherSuite
+operator|.
+name|getName
+argument_list|()
 argument_list|)
 condition|)
 block|{
@@ -385,7 +359,10 @@ operator|.
 name|getName
 argument_list|()
 argument_list|,
-name|name
+name|cipherSuite
+operator|.
+name|getName
+argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
@@ -429,13 +406,53 @@ literal|"No available crypto codec which meets "
 operator|+
 literal|"the cipher suite "
 operator|+
-name|name
+name|cipherSuite
+operator|.
+name|getName
+argument_list|()
 operator|+
 literal|"."
 argument_list|)
 throw|;
 block|}
-DECL|method|getCodecClasses ( Configuration conf)
+comment|/**    * Get crypto codec for algorithm/mode/padding in config value     * hadoop.security.crypto.cipher.suite    * @param conf the configuration    * @return CryptoCodec the codec object    */
+DECL|method|getInstance (Configuration conf)
+specifier|public
+specifier|static
+name|CryptoCodec
+name|getInstance
+parameter_list|(
+name|Configuration
+name|conf
+parameter_list|)
+block|{
+name|String
+name|name
+init|=
+name|conf
+operator|.
+name|get
+argument_list|(
+name|HADOOP_SECURITY_CRYPTO_CIPHER_SUITE_KEY
+argument_list|,
+name|HADOOP_SECURITY_CRYPTO_CIPHER_SUITE_DEFAULT
+argument_list|)
+decl_stmt|;
+return|return
+name|getInstance
+argument_list|(
+name|conf
+argument_list|,
+name|CipherSuite
+operator|.
+name|convert
+argument_list|(
+name|name
+argument_list|)
+argument_list|)
+return|;
+block|}
+DECL|method|getCodecClasses ( Configuration conf, CipherSuite cipherSuite)
 specifier|private
 specifier|static
 name|List
@@ -451,6 +468,9 @@ name|getCodecClasses
 parameter_list|(
 name|Configuration
 name|conf
+parameter_list|,
+name|CipherSuite
+name|cipherSuite
 parameter_list|)
 block|{
 name|List
@@ -470,15 +490,23 @@ name|newArrayList
 argument_list|()
 decl_stmt|;
 name|String
+name|configName
+init|=
+name|HADOOP_SECURITY_CRYPTO_CODEC_CLASSES_KEY_PREFIX
+operator|+
+name|cipherSuite
+operator|.
+name|getConfigSuffix
+argument_list|()
+decl_stmt|;
+name|String
 name|codecString
 init|=
 name|conf
 operator|.
 name|get
 argument_list|(
-name|HADOOP_SECURITY_CRYPTO_CODEC_CLASS_KEY
-argument_list|,
-name|HADOOP_SECURITY_CRYPTO_CODEC_CLASS_DEFAULT
+name|configName
 argument_list|)
 decl_stmt|;
 for|for
