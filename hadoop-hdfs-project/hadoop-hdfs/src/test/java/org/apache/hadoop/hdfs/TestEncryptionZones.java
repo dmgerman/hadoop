@@ -2188,19 +2188,6 @@ argument_list|(
 name|keyId
 argument_list|)
 expr_stmt|;
-name|cluster
-operator|.
-name|getNamesystem
-argument_list|()
-operator|.
-name|getFSDirectory
-argument_list|()
-operator|.
-name|ezManager
-operator|.
-name|kickMonitor
-argument_list|()
-expr_stmt|;
 comment|// Read them back in and compare byte-by-byte
 name|validateFiles
 argument_list|(
