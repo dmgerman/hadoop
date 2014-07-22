@@ -791,6 +791,28 @@ argument_list|,
 name|nsId
 argument_list|)
 decl_stmt|;
+if|if
+condition|(
+name|nnId
+operator|==
+literal|null
+condition|)
+block|{
+name|String
+name|msg
+init|=
+literal|"Could not get the namenode ID of this node. "
+operator|+
+literal|"You may run zkfc on the node other than namenode."
+decl_stmt|;
+throw|throw
+operator|new
+name|HadoopIllegalArgumentException
+argument_list|(
+name|msg
+argument_list|)
+throw|;
+block|}
 name|NameNode
 operator|.
 name|initializeGenericKeys
