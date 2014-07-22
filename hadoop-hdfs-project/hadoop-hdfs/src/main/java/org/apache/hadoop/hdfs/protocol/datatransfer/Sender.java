@@ -108,6 +108,20 @@ name|hadoop
 operator|.
 name|hdfs
 operator|.
+name|StorageType
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
 name|protocol
 operator|.
 name|DatanodeInfo
@@ -809,7 +823,7 @@ expr_stmt|;
 block|}
 annotation|@
 name|Override
-DECL|method|writeBlock (final ExtendedBlock blk, final Token<BlockTokenIdentifier> blockToken, final String clientName, final DatanodeInfo[] targets, final DatanodeInfo source, final BlockConstructionStage stage, final int pipelineSize, final long minBytesRcvd, final long maxBytesRcvd, final long latestGenerationStamp, DataChecksum requestedChecksum, final CachingStrategy cachingStrategy)
+DECL|method|writeBlock (final ExtendedBlock blk, final StorageType storageType, final Token<BlockTokenIdentifier> blockToken, final String clientName, final DatanodeInfo[] targets, final StorageType[] targetStorageTypes, final DatanodeInfo source, final BlockConstructionStage stage, final int pipelineSize, final long minBytesRcvd, final long maxBytesRcvd, final long latestGenerationStamp, DataChecksum requestedChecksum, final CachingStrategy cachingStrategy)
 specifier|public
 name|void
 name|writeBlock
@@ -817,6 +831,10 @@ parameter_list|(
 specifier|final
 name|ExtendedBlock
 name|blk
+parameter_list|,
+specifier|final
+name|StorageType
+name|storageType
 parameter_list|,
 specifier|final
 name|Token
@@ -833,6 +851,11 @@ specifier|final
 name|DatanodeInfo
 index|[]
 name|targets
+parameter_list|,
+specifier|final
+name|StorageType
+index|[]
+name|targetStorageTypes
 parameter_list|,
 specifier|final
 name|DatanodeInfo
@@ -907,6 +930,16 @@ argument_list|(
 name|header
 argument_list|)
 operator|.
+name|setStorageType
+argument_list|(
+name|PBHelper
+operator|.
+name|convertStorageType
+argument_list|(
+name|storageType
+argument_list|)
+argument_list|)
+operator|.
 name|addAllTargets
 argument_list|(
 name|PBHelper
@@ -914,6 +947,18 @@ operator|.
 name|convert
 argument_list|(
 name|targets
+argument_list|,
+literal|1
+argument_list|)
+argument_list|)
+operator|.
+name|addAllTargetStorageTypes
+argument_list|(
+name|PBHelper
+operator|.
+name|convertStorageTypes
+argument_list|(
+name|targetStorageTypes
 argument_list|,
 literal|1
 argument_list|)
@@ -997,7 +1042,7 @@ expr_stmt|;
 block|}
 annotation|@
 name|Override
-DECL|method|transferBlock (final ExtendedBlock blk, final Token<BlockTokenIdentifier> blockToken, final String clientName, final DatanodeInfo[] targets)
+DECL|method|transferBlock (final ExtendedBlock blk, final Token<BlockTokenIdentifier> blockToken, final String clientName, final DatanodeInfo[] targets, final StorageType[] targetStorageTypes)
 specifier|public
 name|void
 name|transferBlock
@@ -1021,6 +1066,11 @@ specifier|final
 name|DatanodeInfo
 index|[]
 name|targets
+parameter_list|,
+specifier|final
+name|StorageType
+index|[]
+name|targetStorageTypes
 parameter_list|)
 throws|throws
 name|IOException
@@ -1054,6 +1104,16 @@ operator|.
 name|convert
 argument_list|(
 name|targets
+argument_list|)
+argument_list|)
+operator|.
+name|addAllTargetStorageTypes
+argument_list|(
+name|PBHelper
+operator|.
+name|convertStorageTypes
+argument_list|(
+name|targetStorageTypes
 argument_list|)
 argument_list|)
 operator|.
@@ -1255,7 +1315,7 @@ expr_stmt|;
 block|}
 annotation|@
 name|Override
-DECL|method|replaceBlock (final ExtendedBlock blk, final Token<BlockTokenIdentifier> blockToken, final String delHint, final DatanodeInfo source)
+DECL|method|replaceBlock (final ExtendedBlock blk, final StorageType storageType, final Token<BlockTokenIdentifier> blockToken, final String delHint, final DatanodeInfo source)
 specifier|public
 name|void
 name|replaceBlock
@@ -1263,6 +1323,10 @@ parameter_list|(
 specifier|final
 name|ExtendedBlock
 name|blk
+parameter_list|,
+specifier|final
+name|StorageType
+name|storageType
 parameter_list|,
 specifier|final
 name|Token
@@ -1299,6 +1363,16 @@ argument_list|(
 name|blk
 argument_list|,
 name|blockToken
+argument_list|)
+argument_list|)
+operator|.
+name|setStorageType
+argument_list|(
+name|PBHelper
+operator|.
+name|convertStorageType
+argument_list|(
+name|storageType
 argument_list|)
 argument_list|)
 operator|.

@@ -376,6 +376,20 @@ name|hadoop
 operator|.
 name|hdfs
 operator|.
+name|StorageType
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
 name|net
 operator|.
 name|Peer
@@ -3337,7 +3351,7 @@ expr_stmt|;
 block|}
 annotation|@
 name|Override
-DECL|method|writeBlock (final ExtendedBlock block, final Token<BlockTokenIdentifier> blockToken, final String clientname, final DatanodeInfo[] targets, final DatanodeInfo srcDataNode, final BlockConstructionStage stage, final int pipelineSize, final long minBytesRcvd, final long maxBytesRcvd, final long latestGenerationStamp, DataChecksum requestedChecksum, CachingStrategy cachingStrategy)
+DECL|method|writeBlock (final ExtendedBlock block, final StorageType storageType, final Token<BlockTokenIdentifier> blockToken, final String clientname, final DatanodeInfo[] targets, final StorageType[] targetStorageTypes, final DatanodeInfo srcDataNode, final BlockConstructionStage stage, final int pipelineSize, final long minBytesRcvd, final long maxBytesRcvd, final long latestGenerationStamp, DataChecksum requestedChecksum, CachingStrategy cachingStrategy)
 specifier|public
 name|void
 name|writeBlock
@@ -3345,6 +3359,10 @@ parameter_list|(
 specifier|final
 name|ExtendedBlock
 name|block
+parameter_list|,
+specifier|final
+name|StorageType
+name|storageType
 parameter_list|,
 specifier|final
 name|Token
@@ -3361,6 +3379,11 @@ specifier|final
 name|DatanodeInfo
 index|[]
 name|targets
+parameter_list|,
+specifier|final
+name|StorageType
+index|[]
+name|targetStorageTypes
 parameter_list|,
 specifier|final
 name|DatanodeInfo
@@ -3708,6 +3731,8 @@ name|BlockReceiver
 argument_list|(
 name|block
 argument_list|,
+name|storageType
+argument_list|,
 name|in
 argument_list|,
 name|peer
@@ -3995,11 +4020,18 @@ name|writeBlock
 argument_list|(
 name|originalBlock
 argument_list|,
+name|targetStorageTypes
+index|[
+literal|0
+index|]
+argument_list|,
 name|blockToken
 argument_list|,
 name|clientname
 argument_list|,
 name|targets
+argument_list|,
+name|targetStorageTypes
 argument_list|,
 name|srcDataNode
 argument_list|,
@@ -4527,7 +4559,7 @@ expr_stmt|;
 block|}
 annotation|@
 name|Override
-DECL|method|transferBlock (final ExtendedBlock blk, final Token<BlockTokenIdentifier> blockToken, final String clientName, final DatanodeInfo[] targets)
+DECL|method|transferBlock (final ExtendedBlock blk, final Token<BlockTokenIdentifier> blockToken, final String clientName, final DatanodeInfo[] targets, final StorageType[] targetStorageTypes)
 specifier|public
 name|void
 name|transferBlock
@@ -4551,6 +4583,11 @@ specifier|final
 name|DatanodeInfo
 index|[]
 name|targets
+parameter_list|,
+specifier|final
+name|StorageType
+index|[]
+name|targetStorageTypes
 parameter_list|)
 throws|throws
 name|IOException
@@ -4611,6 +4648,8 @@ argument_list|(
 name|blk
 argument_list|,
 name|targets
+argument_list|,
+name|targetStorageTypes
 argument_list|,
 name|clientName
 argument_list|)
@@ -5618,7 +5657,7 @@ expr_stmt|;
 block|}
 annotation|@
 name|Override
-DECL|method|replaceBlock (final ExtendedBlock block, final Token<BlockTokenIdentifier> blockToken, final String delHint, final DatanodeInfo proxySource)
+DECL|method|replaceBlock (final ExtendedBlock block, final StorageType storageType, final Token<BlockTokenIdentifier> blockToken, final String delHint, final DatanodeInfo proxySource)
 specifier|public
 name|void
 name|replaceBlock
@@ -5626,6 +5665,10 @@ parameter_list|(
 specifier|final
 name|ExtendedBlock
 name|block
+parameter_list|,
+specifier|final
+name|StorageType
+name|storageType
 parameter_list|,
 specifier|final
 name|Token
@@ -6098,6 +6141,8 @@ operator|new
 name|BlockReceiver
 argument_list|(
 name|block
+argument_list|,
+name|storageType
 argument_list|,
 name|proxyReply
 argument_list|,
