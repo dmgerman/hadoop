@@ -778,14 +778,14 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Checks that an encryption zone with the specified keyId and path (if not    * null) is present.    *    * @throws IOException if a matching zone could not be found    */
-DECL|method|assertZonePresent (String keyId, String path)
+comment|/**    * Checks that an encryption zone with the specified keyName and path (if not    * null) is present.    *    * @throws IOException if a matching zone could not be found    */
+DECL|method|assertZonePresent (String keyName, String path)
 specifier|public
 name|void
 name|assertZonePresent
 parameter_list|(
 name|String
-name|keyId
+name|keyName
 parameter_list|,
 name|String
 name|path
@@ -822,7 +822,7 @@ name|boolean
 name|matchKey
 init|=
 operator|(
-name|keyId
+name|keyName
 operator|==
 literal|null
 operator|)
@@ -838,18 +838,18 @@ operator|)
 decl_stmt|;
 if|if
 condition|(
-name|keyId
+name|keyName
 operator|!=
 literal|null
 operator|&&
 name|zone
 operator|.
-name|getKeyId
+name|getKeyName
 argument_list|()
 operator|.
 name|equals
 argument_list|(
-name|keyId
+name|keyName
 argument_list|)
 condition|)
 block|{
@@ -896,9 +896,9 @@ block|}
 block|}
 name|assertTrue
 argument_list|(
-literal|"Did not find expected encryption zone with keyId "
+literal|"Did not find expected encryption zone with keyName "
 operator|+
-name|keyId
+name|keyName
 operator|+
 literal|" path "
 operator|+
@@ -909,13 +909,13 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|/**    * Helper function to create a key in the Key Provider.    */
-DECL|method|createKey (String keyId)
+DECL|method|createKey (String keyName)
 specifier|private
 name|void
 name|createKey
 parameter_list|(
 name|String
-name|keyId
+name|keyName
 parameter_list|)
 throws|throws
 name|NoSuchAlgorithmException
@@ -953,7 +953,7 @@ name|provider
 operator|.
 name|createKey
 argument_list|(
-name|keyId
+name|keyName
 argument_list|,
 name|options
 argument_list|)
@@ -1294,9 +1294,9 @@ argument_list|)
 expr_stmt|;
 specifier|final
 name|String
-name|myKeyId
+name|myKeyName
 init|=
-literal|"mykeyid"
+literal|"mykeyname"
 decl_stmt|;
 try|try
 block|{
@@ -1306,7 +1306,7 @@ name|createEncryptionZone
 argument_list|(
 name|zone2
 argument_list|,
-name|myKeyId
+name|myKeyName
 argument_list|)
 expr_stmt|;
 name|fail
@@ -1337,7 +1337,7 @@ expr_stmt|;
 comment|/* Test success of creating an EZ when they key exists. */
 name|createKey
 argument_list|(
-name|myKeyId
+name|myKeyName
 argument_list|)
 expr_stmt|;
 name|dfsAdmin
@@ -1346,7 +1346,7 @@ name|createEncryptionZone
 argument_list|(
 name|zone2
 argument_list|,
-name|myKeyId
+name|myKeyName
 argument_list|)
 expr_stmt|;
 name|assertNumZones
@@ -1357,7 +1357,7 @@ argument_list|)
 expr_stmt|;
 name|assertZonePresent
 argument_list|(
-name|myKeyId
+name|myKeyName
 argument_list|,
 name|zone2
 operator|.
@@ -2163,7 +2163,7 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 name|String
-name|keyId
+name|keyName
 init|=
 name|zones
 operator|.
@@ -2172,7 +2172,7 @@ argument_list|(
 literal|0
 argument_list|)
 operator|.
-name|getKeyId
+name|getKeyName
 argument_list|()
 decl_stmt|;
 name|cluster
@@ -2185,7 +2185,7 @@ argument_list|()
 operator|.
 name|rollNewVersion
 argument_list|(
-name|keyId
+name|keyName
 argument_list|)
 expr_stmt|;
 comment|// Read them back in and compare byte-by-byte

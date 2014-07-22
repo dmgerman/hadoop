@@ -8624,7 +8624,7 @@ argument_list|)
 return|;
 block|}
 comment|/* HDFS only */
-DECL|method|createEncryptionZone (Path path, String keyId)
+DECL|method|createEncryptionZone (Path path, String keyName)
 specifier|public
 name|void
 name|createEncryptionZone
@@ -8633,7 +8633,7 @@ name|Path
 name|path
 parameter_list|,
 name|String
-name|keyId
+name|keyName
 parameter_list|)
 throws|throws
 name|IOException
@@ -8647,7 +8647,7 @@ argument_list|(
 name|path
 argument_list|)
 argument_list|,
-name|keyId
+name|keyName
 argument_list|)
 expr_stmt|;
 block|}

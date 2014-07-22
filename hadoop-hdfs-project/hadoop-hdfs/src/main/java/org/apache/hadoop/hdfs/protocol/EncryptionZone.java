@@ -79,7 +79,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * A simple class for representing an encryption zone. Presently an encryption  * zone only has a path (the root of the encryption zone) and a key id.  */
+comment|/**  * A simple class for representing an encryption zone. Presently an encryption  * zone only has a path (the root of the encryption zone) and a key name.  */
 end_comment
 
 begin_class
@@ -102,13 +102,13 @@ specifier|final
 name|String
 name|path
 decl_stmt|;
-DECL|field|keyId
+DECL|field|keyName
 specifier|private
 specifier|final
 name|String
-name|keyId
+name|keyName
 decl_stmt|;
-DECL|method|EncryptionZone (String path, String keyId)
+DECL|method|EncryptionZone (String path, String keyName)
 specifier|public
 name|EncryptionZone
 parameter_list|(
@@ -116,7 +116,7 @@ name|String
 name|path
 parameter_list|,
 name|String
-name|keyId
+name|keyName
 parameter_list|)
 block|{
 name|this
@@ -127,9 +127,9 @@ name|path
 expr_stmt|;
 name|this
 operator|.
-name|keyId
+name|keyName
 operator|=
-name|keyId
+name|keyName
 expr_stmt|;
 block|}
 DECL|method|getPath ()
@@ -142,14 +142,14 @@ return|return
 name|path
 return|;
 block|}
-DECL|method|getKeyId ()
+DECL|method|getKeyName ()
 specifier|public
 name|String
-name|getKeyId
+name|getKeyName
 parameter_list|()
 block|{
 return|return
-name|keyId
+name|keyName
 return|;
 block|}
 annotation|@
@@ -176,7 +176,7 @@ argument_list|)
 operator|.
 name|append
 argument_list|(
-name|keyId
+name|keyName
 argument_list|)
 operator|.
 name|toHashCode
@@ -255,11 +255,11 @@ argument_list|)
 operator|.
 name|append
 argument_list|(
-name|keyId
+name|keyName
 argument_list|,
 name|rhs
 operator|.
-name|keyId
+name|keyName
 argument_list|)
 operator|.
 name|isEquals
@@ -279,9 +279,9 @@ literal|"EncryptionZone [path="
 operator|+
 name|path
 operator|+
-literal|", keyId="
+literal|", keyName="
 operator|+
-name|keyId
+name|keyName
 operator|+
 literal|"]"
 return|;

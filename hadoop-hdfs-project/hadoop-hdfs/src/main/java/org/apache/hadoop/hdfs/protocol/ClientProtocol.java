@@ -2131,7 +2131,7 @@ function_decl|;
 comment|/**    * Create an encryption zone    */
 annotation|@
 name|AtMostOnce
-DECL|method|createEncryptionZone (String src, String keyId)
+DECL|method|createEncryptionZone (String src, String keyName)
 specifier|public
 name|void
 name|createEncryptionZone
@@ -2140,7 +2140,7 @@ name|String
 name|src
 parameter_list|,
 name|String
-name|keyId
+name|keyName
 parameter_list|)
 throws|throws
 name|IOException

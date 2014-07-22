@@ -28,24 +28,6 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|crypto
-operator|.
-name|key
-operator|.
-name|KeyProvider
-operator|.
-name|KeyVersion
-import|;
-end_import
-
-begin_import
-import|import static
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
 name|hdfs
 operator|.
 name|server
@@ -237,22 +219,6 @@ operator|.
 name|conf
 operator|.
 name|Configuration
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|crypto
-operator|.
-name|key
-operator|.
-name|KeyProvider
 import|;
 end_import
 
@@ -1741,11 +1707,6 @@ operator|new
 name|EncryptionZoneManager
 argument_list|(
 name|this
-argument_list|,
-name|ns
-operator|.
-name|getProvider
-argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
@@ -13071,7 +13032,7 @@ argument_list|()
 expr_stmt|;
 block|}
 block|}
-DECL|method|createEncryptionZone (String src, String keyId, KeyVersion keyVersion)
+DECL|method|createEncryptionZone (String src, String keyName)
 name|XAttr
 name|createEncryptionZone
 parameter_list|(
@@ -13079,10 +13040,7 @@ name|String
 name|src
 parameter_list|,
 name|String
-name|keyId
-parameter_list|,
-name|KeyVersion
-name|keyVersion
+name|keyName
 parameter_list|)
 throws|throws
 name|IOException
@@ -13099,9 +13057,7 @@ name|createEncryptionZone
 argument_list|(
 name|src
 argument_list|,
-name|keyId
-argument_list|,
-name|keyVersion
+name|keyName
 argument_list|)
 return|;
 block|}

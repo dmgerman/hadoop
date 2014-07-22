@@ -68,20 +68,6 @@ end_import
 
 begin_import
 import|import
-name|java
-operator|.
-name|util
-operator|.
-name|concurrent
-operator|.
-name|locks
-operator|.
-name|ReentrantReadWriteLock
-import|;
-end_import
-
-begin_import
-import|import
 name|com
 operator|.
 name|google
@@ -105,22 +91,6 @@ operator|.
 name|collect
 operator|.
 name|Lists
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|crypto
-operator|.
-name|key
-operator|.
-name|KeyProvider
 import|;
 end_import
 
@@ -229,24 +199,6 @@ operator|.
 name|slf4j
 operator|.
 name|LoggerFactory
-import|;
-end_import
-
-begin_import
-import|import static
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|crypto
-operator|.
-name|key
-operator|.
-name|KeyProvider
-operator|.
-name|KeyVersion
 import|;
 end_import
 
@@ -372,22 +324,13 @@ specifier|final
 name|FSDirectory
 name|dir
 decl_stmt|;
-DECL|field|provider
-specifier|private
-specifier|final
-name|KeyProvider
-name|provider
-decl_stmt|;
 comment|/**    * Construct a new EncryptionZoneManager.    *    * @param dir Enclosing FSDirectory    */
-DECL|method|EncryptionZoneManager (FSDirectory dir, KeyProvider provider)
+DECL|method|EncryptionZoneManager (FSDirectory dir)
 specifier|public
 name|EncryptionZoneManager
 parameter_list|(
 name|FSDirectory
 name|dir
-parameter_list|,
-name|KeyProvider
-name|provider
 parameter_list|)
 block|{
 name|this
@@ -395,12 +338,6 @@ operator|.
 name|dir
 operator|=
 name|dir
-expr_stmt|;
-name|this
-operator|.
-name|provider
-operator|=
-name|provider
 expr_stmt|;
 name|encryptionZones
 operator|=
@@ -414,8 +351,8 @@ argument_list|>
 argument_list|()
 expr_stmt|;
 block|}
-comment|/**    * Add a new encryption zone.    *<p/>    * Called while holding the FSDirectory lock.    *    * @param inodeId of the encryption zone    * @param keyId   encryption zone key id    */
-DECL|method|addEncryptionZone (Long inodeId, String keyId)
+comment|/**    * Add a new encryption zone.    *<p/>    * Called while holding the FSDirectory lock.    *    * @param inodeId of the encryption zone    * @param keyName encryption zone key name    */
+DECL|method|addEncryptionZone (Long inodeId, String keyName)
 name|void
 name|addEncryptionZone
 parameter_list|(
@@ -423,7 +360,7 @@ name|Long
 name|inodeId
 parameter_list|,
 name|String
-name|keyId
+name|keyName
 parameter_list|)
 block|{
 assert|assert
@@ -441,7 +378,7 @@ name|EncryptionZoneInt
 argument_list|(
 name|inodeId
 argument_list|,
-name|keyId
+name|keyName
 argument_list|)
 decl_stmt|;
 name|encryptionZones
@@ -893,7 +830,7 @@ block|}
 block|}
 block|}
 comment|/**    * Create a new encryption zone.    *<p/>    * Called while holding the FSDirectory lock.    */
-DECL|method|createEncryptionZone (String src, String keyId, KeyVersion keyVersion)
+DECL|method|createEncryptionZone (String src, String keyName)
 name|XAttr
 name|createEncryptionZone
 parameter_list|(
@@ -901,10 +838,7 @@ name|String
 name|src
 parameter_list|,
 name|String
-name|keyId
-parameter_list|,
-name|KeyVersion
-name|keyVersion
+name|keyName
 parameter_list|)
 throws|throws
 name|IOException
@@ -984,7 +918,7 @@ throw|;
 block|}
 specifier|final
 name|XAttr
-name|keyIdXAttr
+name|ezXAttr
 init|=
 name|XAttrHelper
 operator|.
@@ -992,7 +926,7 @@ name|buildXAttr
 argument_list|(
 name|CRYPTO_XATTR_ENCRYPTION_ZONE
 argument_list|,
-name|keyId
+name|keyName
 operator|.
 name|getBytes
 argument_list|()
@@ -1016,7 +950,7 @@ name|xattrs
 operator|.
 name|add
 argument_list|(
-name|keyIdXAttr
+name|ezXAttr
 argument_list|)
 expr_stmt|;
 comment|// updating the xattr will call addEncryptionZone,
@@ -1039,7 +973,6 @@ name|CREATE
 argument_list|)
 argument_list|)
 expr_stmt|;
-comment|// Re-get the new encryption zone add the latest key version
 name|ezi
 operator|=
 name|getEncryptionZoneForPath
@@ -1048,7 +981,7 @@ name|srcIIP
 argument_list|)
 expr_stmt|;
 return|return
-name|keyIdXAttr
+name|ezXAttr
 return|;
 block|}
 comment|/**    * Return the current list of encryption zones.    *<p/>    * Called while holding the FSDirectory lock.    */

@@ -8552,7 +8552,7 @@ block|}
 block|}
 annotation|@
 name|Override
-DECL|method|createEncryptionZone (String src, String keyId)
+DECL|method|createEncryptionZone (String src, String keyName)
 specifier|public
 name|void
 name|createEncryptionZone
@@ -8561,7 +8561,7 @@ name|String
 name|src
 parameter_list|,
 name|String
-name|keyId
+name|keyName
 parameter_list|)
 throws|throws
 name|IOException
@@ -8586,12 +8586,12 @@ argument_list|)
 expr_stmt|;
 if|if
 condition|(
-name|keyId
+name|keyName
 operator|!=
 literal|null
 operator|&&
 operator|!
-name|keyId
+name|keyName
 operator|.
 name|isEmpty
 argument_list|()
@@ -8599,9 +8599,9 @@ condition|)
 block|{
 name|builder
 operator|.
-name|setKeyId
+name|setKeyName
 argument_list|(
-name|keyId
+name|keyName
 argument_list|)
 expr_stmt|;
 block|}

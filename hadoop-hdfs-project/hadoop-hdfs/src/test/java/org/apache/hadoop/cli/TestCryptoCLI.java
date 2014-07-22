@@ -639,13 +639,13 @@ argument_list|()
 expr_stmt|;
 block|}
 comment|/* Helper function to create a key in the Key Provider. */
-DECL|method|createAKey (String keyId, Configuration conf)
+DECL|method|createAKey (String keyName, Configuration conf)
 specifier|private
 name|void
 name|createAKey
 parameter_list|(
 name|String
-name|keyId
+name|keyName
 parameter_list|,
 name|Configuration
 name|conf
@@ -687,7 +687,7 @@ name|provider
 operator|.
 name|createKey
 argument_list|(
-name|keyId
+name|keyName
 argument_list|,
 name|options
 argument_list|)

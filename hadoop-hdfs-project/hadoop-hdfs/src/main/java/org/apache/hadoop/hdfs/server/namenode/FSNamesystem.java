@@ -39372,8 +39372,8 @@ argument_list|()
 expr_stmt|;
 block|}
 block|}
-comment|/**    * Create an encryption zone on directory src either using keyIdArg if    * supplied or generating a keyId if it's null.    *    * @param src the path of a directory which will be the root of the    * encryption zone. The directory must be empty.    *    * @param keyIdArg an optional keyId of a key in the configured    * KeyProvider. If this is null, then a a new key is generated.    *    * @throws AccessControlException if the caller is not the superuser.    *    * @throws UnresolvedLinkException if the path can't be resolved.    *    * @throws SafeModeException if the Namenode is in safe mode.    */
-DECL|method|createEncryptionZone (final String src, String keyIdArg)
+comment|/**    * Create an encryption zone on directory src. If provided,    * will use an existing key, else will generate a new key.    *    * @param src the path of a directory which will be the root of the    * encryption zone. The directory must be empty.    *    * @param keyNameArg an optional name of a key in the configured    * KeyProvider. If this is null, then a a new key is generated.    *    * @throws AccessControlException if the caller is not the superuser.    *    * @throws UnresolvedLinkException if the path can't be resolved.    *    * @throws SafeModeException if the Namenode is in safe mode.    */
+DECL|method|createEncryptionZone (final String src, String keyNameArg)
 name|void
 name|createEncryptionZone
 parameter_list|(
@@ -39382,7 +39382,7 @@ name|String
 name|src
 parameter_list|,
 name|String
-name|keyIdArg
+name|keyNameArg
 parameter_list|)
 throws|throws
 name|IOException
@@ -39425,9 +39425,9 @@ init|=
 literal|false
 decl_stmt|;
 name|String
-name|keyId
+name|keyName
 init|=
-name|keyIdArg
+name|keyNameArg
 decl_stmt|;
 name|boolean
 name|success
@@ -39436,22 +39436,19 @@ literal|false
 decl_stmt|;
 try|try
 block|{
-name|KeyVersion
-name|keyVersion
-decl_stmt|;
 if|if
 condition|(
-name|keyId
+name|keyName
 operator|==
 literal|null
 operator|||
-name|keyId
+name|keyName
 operator|.
 name|isEmpty
 argument_list|()
 condition|)
 block|{
-name|keyId
+name|keyName
 operator|=
 name|UUID
 operator|.
@@ -39461,11 +39458,9 @@ operator|.
 name|toString
 argument_list|()
 expr_stmt|;
-name|keyVersion
-operator|=
 name|createNewKey
 argument_list|(
-name|keyId
+name|keyName
 argument_list|,
 name|src
 argument_list|)
@@ -39477,15 +39472,16 @@ expr_stmt|;
 block|}
 else|else
 block|{
+name|KeyVersion
 name|keyVersion
-operator|=
+init|=
 name|provider
 operator|.
 name|getCurrentKey
 argument_list|(
-name|keyId
+name|keyName
 argument_list|)
-expr_stmt|;
+decl_stmt|;
 if|if
 condition|(
 name|keyVersion
@@ -39500,7 +39496,7 @@ name|IOException
 argument_list|(
 literal|"Key "
 operator|+
-name|keyId
+name|keyName
 operator|+
 literal|" doesn't exist."
 argument_list|)
@@ -39511,9 +39507,7 @@ name|createEncryptionZoneInt
 argument_list|(
 name|src
 argument_list|,
-name|keyId
-argument_list|,
-name|keyVersion
+name|keyName
 argument_list|,
 name|cacheEntry
 operator|!=
@@ -39568,13 +39562,13 @@ name|provider
 operator|.
 name|deleteKey
 argument_list|(
-name|keyId
+name|keyName
 argument_list|)
 expr_stmt|;
 block|}
 block|}
 block|}
-DECL|method|createEncryptionZoneInt (final String srcArg, String keyId, final KeyVersion keyVersion, final boolean logRetryCache)
+DECL|method|createEncryptionZoneInt (final String srcArg, String keyName, final boolean logRetryCache)
 specifier|private
 name|void
 name|createEncryptionZoneInt
@@ -39584,11 +39578,7 @@ name|String
 name|srcArg
 parameter_list|,
 name|String
-name|keyId
-parameter_list|,
-specifier|final
-name|KeyVersion
-name|keyVersion
+name|keyName
 parameter_list|,
 specifier|final
 name|boolean
@@ -39667,7 +39657,7 @@ argument_list|)
 expr_stmt|;
 specifier|final
 name|XAttr
-name|keyIdXAttr
+name|ezXAttr
 init|=
 name|dir
 operator|.
@@ -39675,9 +39665,7 @@ name|createEncryptionZone
 argument_list|(
 name|src
 argument_list|,
-name|keyId
-argument_list|,
-name|keyVersion
+name|keyName
 argument_list|)
 decl_stmt|;
 name|List
@@ -39697,7 +39685,7 @@ name|xAttrs
 operator|.
 name|add
 argument_list|(
-name|keyIdXAttr
+name|ezXAttr
 argument_list|)
 expr_stmt|;
 name|getEditLog
@@ -39748,14 +39736,14 @@ name|resultingStat
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Create a new key on the KeyProvider for an encryption zone.    *    * @param keyIdArg id of the key    * @param src path of the encryption zone.    * @return KeyVersion of the created key    * @throws IOException    */
-DECL|method|createNewKey (String keyIdArg, String src)
+comment|/**    * Create a new key on the KeyProvider for an encryption zone.    *    * @param keyNameArg name of the key    * @param src path of the encryption zone.    * @return KeyVersion of the created key    * @throws IOException    */
+DECL|method|createNewKey (String keyNameArg, String src)
 specifier|private
 name|KeyVersion
 name|createNewKey
 parameter_list|(
 name|String
-name|keyIdArg
+name|keyNameArg
 parameter_list|,
 name|String
 name|src
@@ -39767,7 +39755,7 @@ name|Preconditions
 operator|.
 name|checkNotNull
 argument_list|(
-name|keyIdArg
+name|keyNameArg
 argument_list|)
 expr_stmt|;
 name|Preconditions
@@ -39832,12 +39820,12 @@ name|sb
 operator|.
 name|append
 argument_list|(
-name|keyIdArg
+name|keyNameArg
 argument_list|)
 expr_stmt|;
 specifier|final
 name|String
-name|keyId
+name|keyName
 init|=
 name|sb
 operator|.
@@ -39848,7 +39836,7 @@ name|providerOptions
 operator|.
 name|setDescription
 argument_list|(
-name|keyId
+name|keyName
 argument_list|)
 expr_stmt|;
 name|providerOptions
@@ -39879,7 +39867,7 @@ name|provider
 operator|.
 name|createKey
 argument_list|(
-name|keyIdArg
+name|keyNameArg
 argument_list|,
 name|providerOptions
 argument_list|)

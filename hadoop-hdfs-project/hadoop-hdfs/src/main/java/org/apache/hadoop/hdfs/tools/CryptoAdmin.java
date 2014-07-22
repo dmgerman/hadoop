@@ -666,7 +666,7 @@ operator|+
 name|getName
 argument_list|()
 operator|+
-literal|" [-keyId<keyId>] -path<path> "
+literal|" [-keyName<keyName>] -path<path> "
 operator|+
 literal|"]\n"
 return|;
@@ -701,9 +701,11 @@ name|listing
 operator|.
 name|addRow
 argument_list|(
-literal|"<keyId>"
+literal|"<keyName>"
 argument_list|,
-literal|"The keyId of the new encryption zone."
+literal|"Name of the key to use for the "
+operator|+
+literal|"encryption zone. A new key will be generated if unspecified."
 argument_list|)
 expr_stmt|;
 return|return
@@ -774,13 +776,13 @@ return|;
 block|}
 specifier|final
 name|String
-name|keyId
+name|keyName
 init|=
 name|StringUtils
 operator|.
 name|popOptionWithArgument
 argument_list|(
-literal|"-keyId"
+literal|"-keyName"
 argument_list|,
 name|args
 argument_list|)
@@ -835,7 +837,7 @@ argument_list|(
 name|path
 argument_list|)
 argument_list|,
-name|keyId
+name|keyName
 argument_list|)
 expr_stmt|;
 name|System
@@ -1054,7 +1056,7 @@ argument_list|()
 argument_list|,
 name|ez
 operator|.
-name|getKeyId
+name|getKeyName
 argument_list|()
 argument_list|)
 expr_stmt|;
