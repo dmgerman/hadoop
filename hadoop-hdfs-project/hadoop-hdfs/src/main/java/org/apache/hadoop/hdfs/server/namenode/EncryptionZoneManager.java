@@ -355,104 +355,6 @@ name|inodeId
 return|;
 block|}
 block|}
-comment|/**    * Protects the<tt>encryptionZones</tt> map and its contents.    */
-DECL|field|lock
-specifier|private
-specifier|final
-name|ReentrantReadWriteLock
-name|lock
-decl_stmt|;
-DECL|method|readLock ()
-specifier|private
-name|void
-name|readLock
-parameter_list|()
-block|{
-name|lock
-operator|.
-name|readLock
-argument_list|()
-operator|.
-name|lock
-argument_list|()
-expr_stmt|;
-block|}
-DECL|method|readUnlock ()
-specifier|private
-name|void
-name|readUnlock
-parameter_list|()
-block|{
-name|lock
-operator|.
-name|readLock
-argument_list|()
-operator|.
-name|unlock
-argument_list|()
-expr_stmt|;
-block|}
-DECL|method|writeLock ()
-specifier|private
-name|void
-name|writeLock
-parameter_list|()
-block|{
-name|lock
-operator|.
-name|writeLock
-argument_list|()
-operator|.
-name|lock
-argument_list|()
-expr_stmt|;
-block|}
-DECL|method|writeUnlock ()
-specifier|private
-name|void
-name|writeUnlock
-parameter_list|()
-block|{
-name|lock
-operator|.
-name|writeLock
-argument_list|()
-operator|.
-name|unlock
-argument_list|()
-expr_stmt|;
-block|}
-DECL|method|hasWriteLock ()
-specifier|public
-name|boolean
-name|hasWriteLock
-parameter_list|()
-block|{
-return|return
-name|lock
-operator|.
-name|isWriteLockedByCurrentThread
-argument_list|()
-return|;
-block|}
-DECL|method|hasReadLock ()
-specifier|public
-name|boolean
-name|hasReadLock
-parameter_list|()
-block|{
-return|return
-name|lock
-operator|.
-name|getReadHoldCount
-argument_list|()
-operator|>
-literal|0
-operator|||
-name|hasWriteLock
-argument_list|()
-return|;
-block|}
 DECL|field|encryptionZones
 specifier|private
 specifier|final
@@ -500,12 +402,6 @@ name|provider
 operator|=
 name|provider
 expr_stmt|;
-name|lock
-operator|=
-operator|new
-name|ReentrantReadWriteLock
-argument_list|()
-expr_stmt|;
 name|encryptionZones
 operator|=
 operator|new
@@ -548,11 +444,6 @@ argument_list|,
 name|keyId
 argument_list|)
 decl_stmt|;
-name|writeLock
-argument_list|()
-expr_stmt|;
-try|try
-block|{
 name|encryptionZones
 operator|.
 name|put
@@ -562,13 +453,6 @@ argument_list|,
 name|ez
 argument_list|)
 expr_stmt|;
-block|}
-finally|finally
-block|{
-name|writeUnlock
-argument_list|()
-expr_stmt|;
-block|}
 block|}
 comment|/**    * Remove an encryption zone.    *<p/>    * Called while holding the FSDirectory lock.    */
 DECL|method|removeEncryptionZone (Long inodeId)
@@ -585,11 +469,6 @@ operator|.
 name|hasWriteLock
 argument_list|()
 assert|;
-name|writeLock
-argument_list|()
-expr_stmt|;
-try|try
-block|{
 name|encryptionZones
 operator|.
 name|remove
@@ -597,13 +476,6 @@ argument_list|(
 name|inodeId
 argument_list|)
 expr_stmt|;
-block|}
-finally|finally
-block|{
-name|writeUnlock
-argument_list|()
-expr_stmt|;
-block|}
 block|}
 comment|/**    * Returns true if an IIP is within an encryption zone.    *<p/>    * Called while holding the FSDirectory lock.    */
 DECL|method|isInAnEZ (INodesInPath iip)
@@ -624,11 +496,6 @@ operator|.
 name|hasReadLock
 argument_list|()
 assert|;
-name|readLock
-argument_list|()
-expr_stmt|;
-try|try
-block|{
 return|return
 operator|(
 name|getEncryptionZoneForPath
@@ -639,13 +506,6 @@ operator|!=
 literal|null
 operator|)
 return|;
-block|}
-finally|finally
-block|{
-name|readUnlock
-argument_list|()
-expr_stmt|;
-block|}
 block|}
 comment|/**    * Returns the path of the EncryptionZoneInt.    *<p/>    * Called while holding the FSDirectory lock.    */
 DECL|method|getFullPathName (EncryptionZoneInt ezi)
@@ -688,11 +548,12 @@ name|INodesInPath
 name|iip
 parameter_list|)
 block|{
-name|readLock
+assert|assert
+name|dir
+operator|.
+name|hasReadLock
 argument_list|()
-expr_stmt|;
-try|try
-block|{
+assert|;
 name|EncryptionZoneInt
 name|ezi
 init|=
@@ -719,13 +580,6 @@ name|getKeyName
 argument_list|()
 return|;
 block|}
-finally|finally
-block|{
-name|readUnlock
-argument_list|()
-expr_stmt|;
-block|}
-block|}
 comment|/**    * Looks up the EncryptionZoneInt for a path within an encryption zone.    * Returns null if path is not within an EZ.    *<p/>    * Must be called while holding the manager lock.    */
 DECL|method|getEncryptionZoneForPath (INodesInPath iip)
 specifier|private
@@ -737,6 +591,8 @@ name|iip
 parameter_list|)
 block|{
 assert|assert
+name|dir
+operator|.
 name|hasReadLock
 argument_list|()
 assert|;
@@ -846,11 +702,6 @@ operator|.
 name|hasReadLock
 argument_list|()
 assert|;
-name|readLock
-argument_list|()
-expr_stmt|;
-try|try
-block|{
 specifier|final
 name|EncryptionZoneInt
 name|srcEZI
@@ -1041,13 +892,6 @@ throw|;
 block|}
 block|}
 block|}
-finally|finally
-block|{
-name|readUnlock
-argument_list|()
-expr_stmt|;
-block|}
-block|}
 comment|/**    * Create a new encryption zone.    *<p/>    * Called while holding the FSDirectory lock.    */
 DECL|method|createEncryptionZone (String src, String keyId, KeyVersion keyVersion)
 name|XAttr
@@ -1071,11 +915,6 @@ operator|.
 name|hasWriteLock
 argument_list|()
 assert|;
-name|writeLock
-argument_list|()
-expr_stmt|;
-try|try
-block|{
 if|if
 condition|(
 name|dir
@@ -1212,13 +1051,6 @@ return|return
 name|keyIdXAttr
 return|;
 block|}
-finally|finally
-block|{
-name|writeUnlock
-argument_list|()
-expr_stmt|;
-block|}
-block|}
 comment|/**    * Return the current list of encryption zones.    *<p/>    * Called while holding the FSDirectory lock.    */
 DECL|method|listEncryptionZones ()
 name|List
@@ -1236,11 +1068,6 @@ operator|.
 name|hasReadLock
 argument_list|()
 assert|;
-name|readLock
-argument_list|()
-expr_stmt|;
-try|try
-block|{
 specifier|final
 name|List
 argument_list|<
@@ -1292,13 +1119,6 @@ block|}
 return|return
 name|ret
 return|;
-block|}
-finally|finally
-block|{
-name|readUnlock
-argument_list|()
-expr_stmt|;
-block|}
 block|}
 block|}
 end_class
