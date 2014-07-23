@@ -3317,7 +3317,7 @@ name|EEK
 argument_list|,
 name|ek1
 operator|.
-name|getEncryptedKey
+name|getEncryptedKeyVersion
 argument_list|()
 operator|.
 name|getVersionName
@@ -3330,7 +3330,7 @@ name|assertNotNull
 argument_list|(
 name|ek1
 operator|.
-name|getEncryptedKey
+name|getEncryptedKeyVersion
 argument_list|()
 operator|.
 name|getMaterial
@@ -3350,7 +3350,7 @@ name|length
 argument_list|,
 name|ek1
 operator|.
-name|getEncryptedKey
+name|getEncryptedKeyVersion
 argument_list|()
 operator|.
 name|getMaterial
@@ -3474,7 +3474,7 @@ name|i
 operator|<
 name|ek2
 operator|.
-name|getEncryptedKey
+name|getEncryptedKeyVersion
 argument_list|()
 operator|.
 name|getMaterial

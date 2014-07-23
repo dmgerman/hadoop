@@ -340,7 +340,7 @@ name|VERSION_NAME_FIELD
 argument_list|,
 name|encryptedKeyVersion
 operator|.
-name|getKeyVersionName
+name|getEncryptionKeyVersionName
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -358,7 +358,7 @@ name|encodeBase64URLSafeString
 argument_list|(
 name|encryptedKeyVersion
 operator|.
-name|getIv
+name|getEncryptedKeyIv
 argument_list|()
 argument_list|)
 argument_list|)
@@ -375,7 +375,7 @@ name|toJSON
 argument_list|(
 name|encryptedKeyVersion
 operator|.
-name|getEncryptedKey
+name|getEncryptedKeyVersion
 argument_list|()
 argument_list|)
 argument_list|)
