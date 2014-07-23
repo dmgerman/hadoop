@@ -39438,6 +39438,25 @@ try|try
 block|{
 if|if
 condition|(
+name|provider
+operator|==
+literal|null
+condition|)
+block|{
+throw|throw
+operator|new
+name|IOException
+argument_list|(
+literal|"Can't create an encryption zone for "
+operator|+
+name|src
+operator|+
+literal|" since no key provider is available."
+argument_list|)
+throw|;
+block|}
+if|if
+condition|(
 name|keyName
 operator|==
 literal|null
