@@ -330,6 +330,20 @@ name|hadoop
 operator|.
 name|hdfs
 operator|.
+name|StorageType
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
 name|protocol
 operator|.
 name|Block
@@ -2031,12 +2045,6 @@ operator|+
 literal|".dat"
 argument_list|)
 decl_stmt|;
-name|ArrayList
-argument_list|<
-name|Block
-argument_list|>
-name|blocks
-init|=
 name|writeFile
 argument_list|(
 name|METHOD_NAME
@@ -2045,7 +2053,7 @@ name|FILE_SIZE
 argument_list|,
 name|filePath
 argument_list|)
-decl_stmt|;
+expr_stmt|;
 comment|// all blocks belong to the same file, hence same BP
 name|DataNode
 name|dn
@@ -2255,6 +2263,10 @@ argument_list|()
 operator|.
 name|createRbw
 argument_list|(
+name|StorageType
+operator|.
+name|DEFAULT
+argument_list|,
 name|b
 argument_list|)
 expr_stmt|;

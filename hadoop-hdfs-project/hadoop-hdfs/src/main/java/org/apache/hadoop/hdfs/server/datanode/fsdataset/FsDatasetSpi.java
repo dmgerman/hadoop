@@ -134,6 +134,20 @@ name|hadoop
 operator|.
 name|hdfs
 operator|.
+name|StorageType
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
 name|protocol
 operator|.
 name|Block
@@ -771,11 +785,14 @@ throws|throws
 name|IOException
 function_decl|;
 comment|/**    * Creates a temporary replica and returns the meta information of the replica    *     * @param b block    * @return the meta info of the replica which is being written to    * @throws IOException if an error occurs    */
-DECL|method|createTemporary (ExtendedBlock b )
+DECL|method|createTemporary (StorageType storageType, ExtendedBlock b)
 specifier|public
 name|ReplicaInPipelineInterface
 name|createTemporary
 parameter_list|(
+name|StorageType
+name|storageType
+parameter_list|,
 name|ExtendedBlock
 name|b
 parameter_list|)
@@ -783,11 +800,14 @@ throws|throws
 name|IOException
 function_decl|;
 comment|/**    * Creates a RBW replica and returns the meta info of the replica    *     * @param b block    * @return the meta info of the replica which is being written to    * @throws IOException if an error occurs    */
-DECL|method|createRbw (ExtendedBlock b )
+DECL|method|createRbw (StorageType storageType, ExtendedBlock b)
 specifier|public
 name|ReplicaInPipelineInterface
 name|createRbw
 parameter_list|(
+name|StorageType
+name|storageType
+parameter_list|,
 name|ExtendedBlock
 name|b
 parameter_list|)

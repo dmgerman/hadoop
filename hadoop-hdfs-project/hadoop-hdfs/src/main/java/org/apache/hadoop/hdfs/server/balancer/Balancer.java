@@ -500,6 +500,20 @@ name|hadoop
 operator|.
 name|hdfs
 operator|.
+name|StorageType
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
 name|protocol
 operator|.
 name|Block
@@ -1826,6 +1840,10 @@ name|out
 argument_list|,
 name|eb
 argument_list|,
+name|StorageType
+operator|.
+name|DEFAULT
+argument_list|,
 name|accessToken
 argument_list|)
 expr_stmt|;
@@ -1956,7 +1974,7 @@ block|}
 block|}
 block|}
 comment|/* Send a block replace request to the output stream*/
-DECL|method|sendRequest (DataOutputStream out, ExtendedBlock eb, Token<BlockTokenIdentifier> accessToken)
+DECL|method|sendRequest (DataOutputStream out, ExtendedBlock eb, StorageType storageType, Token<BlockTokenIdentifier> accessToken)
 specifier|private
 name|void
 name|sendRequest
@@ -1966,6 +1984,9 @@ name|out
 parameter_list|,
 name|ExtendedBlock
 name|eb
+parameter_list|,
+name|StorageType
+name|storageType
 parameter_list|,
 name|Token
 argument_list|<
@@ -1985,6 +2006,8 @@ operator|.
 name|replaceBlock
 argument_list|(
 name|eb
+argument_list|,
+name|storageType
 argument_list|,
 name|accessToken
 argument_list|,

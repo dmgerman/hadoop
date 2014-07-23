@@ -96,6 +96,20 @@ name|hadoop
 operator|.
 name|hdfs
 operator|.
+name|StorageType
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
 name|protocol
 operator|.
 name|DatanodeInfo
@@ -289,8 +303,8 @@ parameter_list|)
 throws|throws
 name|IOException
 function_decl|;
-comment|/**    * Write a block to a datanode pipeline.    *     * @param blk the block being written.    * @param blockToken security token for accessing the block.    * @param clientName client's name.    * @param targets target datanodes in the pipeline.    * @param source source datanode.    * @param stage pipeline stage.    * @param pipelineSize the size of the pipeline.    * @param minBytesRcvd minimum number of bytes received.    * @param maxBytesRcvd maximum number of bytes received.    * @param latestGenerationStamp the latest generation stamp of the block.    */
-DECL|method|writeBlock (final ExtendedBlock blk, final Token<BlockTokenIdentifier> blockToken, final String clientName, final DatanodeInfo[] targets, final DatanodeInfo source, final BlockConstructionStage stage, final int pipelineSize, final long minBytesRcvd, final long maxBytesRcvd, final long latestGenerationStamp, final DataChecksum requestedChecksum, final CachingStrategy cachingStrategy)
+comment|/**    * Write a block to a datanode pipeline.    * The receiver datanode of this call is the next datanode in the pipeline.    * The other downstream datanodes are specified by the targets parameter.    * Note that the receiver {@link DatanodeInfo} is not required in the    * parameter list since the receiver datanode knows its info.  However, the    * {@link StorageType} for storing the replica in the receiver datanode is a     * parameter since the receiver datanode may support multiple storage types.    *    * @param blk the block being written.    * @param storageType for storing the replica in the receiver datanode.    * @param blockToken security token for accessing the block.    * @param clientName client's name.    * @param targets other downstream datanodes in the pipeline.    * @param targetStorageTypes target {@link StorageType}s corresponding    *                           to the target datanodes.    * @param source source datanode.    * @param stage pipeline stage.    * @param pipelineSize the size of the pipeline.    * @param minBytesRcvd minimum number of bytes received.    * @param maxBytesRcvd maximum number of bytes received.    * @param latestGenerationStamp the latest generation stamp of the block.    */
+DECL|method|writeBlock (final ExtendedBlock blk, final StorageType storageType, final Token<BlockTokenIdentifier> blockToken, final String clientName, final DatanodeInfo[] targets, final StorageType[] targetStorageTypes, final DatanodeInfo source, final BlockConstructionStage stage, final int pipelineSize, final long minBytesRcvd, final long maxBytesRcvd, final long latestGenerationStamp, final DataChecksum requestedChecksum, final CachingStrategy cachingStrategy)
 specifier|public
 name|void
 name|writeBlock
@@ -298,6 +312,10 @@ parameter_list|(
 specifier|final
 name|ExtendedBlock
 name|blk
+parameter_list|,
+specifier|final
+name|StorageType
+name|storageType
 parameter_list|,
 specifier|final
 name|Token
@@ -314,6 +332,11 @@ specifier|final
 name|DatanodeInfo
 index|[]
 name|targets
+parameter_list|,
+specifier|final
+name|StorageType
+index|[]
+name|targetStorageTypes
 parameter_list|,
 specifier|final
 name|DatanodeInfo
@@ -351,7 +374,7 @@ throws|throws
 name|IOException
 function_decl|;
 comment|/**    * Transfer a block to another datanode.    * The block stage must be    * either {@link BlockConstructionStage#TRANSFER_RBW}    * or {@link BlockConstructionStage#TRANSFER_FINALIZED}.    *     * @param blk the block being transferred.    * @param blockToken security token for accessing the block.    * @param clientName client's name.    * @param targets target datanodes.    */
-DECL|method|transferBlock (final ExtendedBlock blk, final Token<BlockTokenIdentifier> blockToken, final String clientName, final DatanodeInfo[] targets)
+DECL|method|transferBlock (final ExtendedBlock blk, final Token<BlockTokenIdentifier> blockToken, final String clientName, final DatanodeInfo[] targets, final StorageType[] targetStorageTypes)
 specifier|public
 name|void
 name|transferBlock
@@ -375,6 +398,11 @@ specifier|final
 name|DatanodeInfo
 index|[]
 name|targets
+parameter_list|,
+specifier|final
+name|StorageType
+index|[]
+name|targetStorageTypes
 parameter_list|)
 throws|throws
 name|IOException
@@ -430,8 +458,8 @@ parameter_list|)
 throws|throws
 name|IOException
 function_decl|;
-comment|/**    * Receive a block from a source datanode    * and then notifies the namenode    * to remove the copy from the original datanode.    * Note that the source datanode and the original datanode can be different.    * It is used for balancing purpose.    *     * @param blk the block being replaced.    * @param blockToken security token for accessing the block.    * @param delHint the hint for deleting the block in the original datanode.    * @param source the source datanode for receiving the block.    */
-DECL|method|replaceBlock (final ExtendedBlock blk, final Token<BlockTokenIdentifier> blockToken, final String delHint, final DatanodeInfo source)
+comment|/**    * Receive a block from a source datanode    * and then notifies the namenode    * to remove the copy from the original datanode.    * Note that the source datanode and the original datanode can be different.    * It is used for balancing purpose.    *     * @param blk the block being replaced.    * @param storageType the {@link StorageType} for storing the block.    * @param blockToken security token for accessing the block.    * @param delHint the hint for deleting the block in the original datanode.    * @param source the source datanode for receiving the block.    */
+DECL|method|replaceBlock (final ExtendedBlock blk, final StorageType storageType, final Token<BlockTokenIdentifier> blockToken, final String delHint, final DatanodeInfo source)
 specifier|public
 name|void
 name|replaceBlock
@@ -439,6 +467,10 @@ parameter_list|(
 specifier|final
 name|ExtendedBlock
 name|blk
+parameter_list|,
+specifier|final
+name|StorageType
+name|storageType
 parameter_list|,
 specifier|final
 name|Token

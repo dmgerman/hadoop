@@ -2609,8 +2609,6 @@ name|int
 name|neededReplicas
 parameter_list|)
 throws|throws
-name|IOException
-throws|,
 name|TimeoutException
 throws|,
 name|InterruptedException
@@ -2778,8 +2776,6 @@ name|int
 name|corruptRepls
 parameter_list|)
 throws|throws
-name|IOException
-throws|,
 name|TimeoutException
 throws|,
 name|InterruptedException
@@ -5079,6 +5075,15 @@ name|datanodes
 index|[
 literal|1
 index|]
+block|}
+argument_list|,
+operator|new
+name|StorageType
+index|[]
+block|{
+name|StorageType
+operator|.
+name|DEFAULT
 block|}
 argument_list|)
 expr_stmt|;

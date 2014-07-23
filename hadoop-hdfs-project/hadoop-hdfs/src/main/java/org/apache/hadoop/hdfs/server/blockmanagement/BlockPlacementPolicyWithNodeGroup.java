@@ -295,7 +295,7 @@ block|}
 comment|/** choose local node of localMachine as the target.    * if localMachine is not available, choose a node on the same nodegroup or     * rack instead.    * @return the chosen node    */
 annotation|@
 name|Override
-DECL|method|chooseLocalStorage (Node localMachine, Set<Node> excludedNodes, long blocksize, int maxNodesPerRack, List<DatanodeStorageInfo> results, boolean avoidStaleNodes, StorageType storageType)
+DECL|method|chooseLocalStorage (Node localMachine, Set<Node> excludedNodes, long blocksize, int maxNodesPerRack, List<DatanodeStorageInfo> results, boolean avoidStaleNodes, StorageType storageType, boolean fallbackToLocalRack )
 specifier|protected
 name|DatanodeStorageInfo
 name|chooseLocalStorage
@@ -326,6 +326,9 @@ name|avoidStaleNodes
 parameter_list|,
 name|StorageType
 name|storageType
+parameter_list|,
+name|boolean
+name|fallbackToLocalRack
 parameter_list|)
 throws|throws
 name|NotEnoughReplicasException
@@ -466,6 +469,16 @@ condition|)
 block|{
 return|return
 name|chosenStorage
+return|;
+block|}
+if|if
+condition|(
+operator|!
+name|fallbackToLocalRack
+condition|)
+block|{
+return|return
+literal|null
 return|;
 block|}
 comment|// try a node on local rack

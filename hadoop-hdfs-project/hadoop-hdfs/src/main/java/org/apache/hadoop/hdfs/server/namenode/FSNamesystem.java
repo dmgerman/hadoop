@@ -1120,6 +1120,38 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|hdfs
+operator|.
+name|DFSConfigKeys
+operator|.
+name|DFS_NAMENODE_RANDOMIZE_BLOCK_LOCATIONS_PER_BLOCK
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|DFSConfigKeys
+operator|.
+name|DFS_NAMENODE_RANDOMIZE_BLOCK_LOCATIONS_PER_BLOCK_DEFAULT
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|util
 operator|.
 name|Time
@@ -4995,6 +5027,11 @@ specifier|final
 name|FSImage
 name|fsImage
 decl_stmt|;
+DECL|field|randomizeBlockLocationsPerBlock
+specifier|private
+name|boolean
+name|randomizeBlockLocationsPerBlock
+decl_stmt|;
 comment|/**    * Notify that loading of this FSDirectory is complete, and    * it is imageLoaded for use    */
 DECL|method|imageLoadComplete ()
 name|void
@@ -6325,6 +6362,19 @@ argument_list|(
 name|DFS_NAMENODE_DELEGATION_TOKEN_ALWAYS_USE_KEY
 argument_list|,
 name|DFS_NAMENODE_DELEGATION_TOKEN_ALWAYS_USE_DEFAULT
+argument_list|)
+expr_stmt|;
+name|this
+operator|.
+name|randomizeBlockLocationsPerBlock
+operator|=
+name|conf
+operator|.
+name|getBoolean
+argument_list|(
+name|DFS_NAMENODE_RANDOMIZE_BLOCK_LOCATIONS_PER_BLOCK
+argument_list|,
+name|DFS_NAMENODE_RANDOMIZE_BLOCK_LOCATIONS_PER_BLOCK_DEFAULT
 argument_list|)
 expr_stmt|;
 name|this
@@ -10191,6 +10241,8 @@ name|blocks
 operator|.
 name|getLocatedBlocks
 argument_list|()
+argument_list|,
+name|randomizeBlockLocationsPerBlock
 argument_list|)
 expr_stmt|;
 comment|// lastBlock is not part of getLocatedBlocks(), might need to sort it too
@@ -10239,6 +10291,8 @@ argument_list|(
 name|clientMachine
 argument_list|,
 name|lastBlockList
+argument_list|,
+name|randomizeBlockLocationsPerBlock
 argument_list|)
 expr_stmt|;
 block|}
@@ -14136,7 +14190,7 @@ name|equals
 argument_list|(
 name|edek
 operator|.
-name|getKeyName
+name|getEncryptionKeyName
 argument_list|()
 argument_list|)
 condition|)
@@ -14156,7 +14210,7 @@ name|suite
 argument_list|,
 name|edek
 operator|.
-name|getEncryptedKey
+name|getEncryptedKeyVersion
 argument_list|()
 operator|.
 name|getMaterial
@@ -14164,12 +14218,12 @@ argument_list|()
 argument_list|,
 name|edek
 operator|.
-name|getIv
+name|getEncryptedKeyIv
 argument_list|()
 argument_list|,
 name|edek
 operator|.
-name|getKeyVersionName
+name|getEncryptionKeyVersionName
 argument_list|()
 argument_list|)
 expr_stmt|;
