@@ -6952,7 +6952,7 @@ literal|" doesn't support getXAttrs"
 argument_list|)
 throw|;
 block|}
-comment|/**    * Get all of the xattr names for a file or directory.    * Only those xattr names which the logged-in user has permissions to view    * are returned.    *<p/>    * A regular user can only get xattr names for the "user" namespace.    * The super user can only get xattr names for "user" and "trusted"    * namespaces.    * The xattrs of the "security" and "system" namespaces are only    * used/exposed internally by/to the FS impl.    *<p/>    * @see<a href="http://en.wikipedia.org/wiki/Extended_file_attributes">    * http://en.wikipedia.org/wiki/Extended_file_attributes</a>    *    * @param path Path to get extended attributes    * @return Map<String, byte[]> describing the XAttrs of the file or directory    * @throws IOException    */
+comment|/**    * Get all of the xattr names for a file or directory.    * Only those xattr names which the logged-in user has permissions to view    * are returned.    *<p/>    * A regular user can only get xattr names for the "user" namespace.    * The super user can only get xattr names for "user" and "trusted"    * namespaces.    * The xattrs of the "security" and "system" namespaces are only    * used/exposed internally by/to the FS impl.    *<p/>    * @see<a href="http://en.wikipedia.org/wiki/Extended_file_attributes">    * http://en.wikipedia.org/wiki/Extended_file_attributes</a>    *    * @param path Path to get extended attributes    * @return List<String> of the XAttr names of the file or directory    * @throws IOException    */
 DECL|method|listXAttrs (Path path)
 specifier|public
 name|List
