@@ -2088,6 +2088,20 @@ argument_list|(
 literal|"Mkdirs failed to create "
 operator|+
 name|parent
+operator|+
+literal|" (exists="
+operator|+
+name|exists
+argument_list|(
+name|parent
+argument_list|)
+operator|+
+literal|", cwd="
+operator|+
+name|getWorkingDirectory
+argument_list|()
+operator|+
+literal|")"
 argument_list|)
 throw|;
 block|}

@@ -87,6 +87,18 @@ import|;
 end_import
 
 begin_import
+import|import static
+name|org
+operator|.
+name|junit
+operator|.
+name|Assume
+operator|.
+name|assumeTrue
+import|;
+end_import
+
+begin_import
 import|import
 name|java
 operator|.
@@ -581,6 +593,20 @@ operator|.
 name|permission
 operator|.
 name|FsPermission
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|util
+operator|.
+name|Shell
 import|;
 end_import
 
@@ -2472,6 +2498,31 @@ argument_list|()
 argument_list|)
 argument_list|)
 decl_stmt|;
+comment|// if test directory doesn't have ancestor permission, skip this test
+name|FileSystem
+name|f
+init|=
+name|basedir
+operator|.
+name|getFileSystem
+argument_list|(
+name|conf
+argument_list|)
+decl_stmt|;
+name|assumeTrue
+argument_list|(
+name|FSDownload
+operator|.
+name|ancestorsHaveExecutePermissions
+argument_list|(
+name|f
+argument_list|,
+name|basedir
+argument_list|,
+literal|null
+argument_list|)
+argument_list|)
+expr_stmt|;
 name|files
 operator|.
 name|mkdir

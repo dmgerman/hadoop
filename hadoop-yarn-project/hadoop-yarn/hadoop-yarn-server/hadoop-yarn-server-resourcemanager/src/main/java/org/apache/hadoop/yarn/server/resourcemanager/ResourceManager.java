@@ -5338,7 +5338,7 @@ operator|new
 name|YarnConfiguration
 argument_list|()
 decl_stmt|;
-comment|// If -format, then delete RMStateStore; else startup normally
+comment|// If -format-state-store, then delete RMStateStore; else startup normally
 if|if
 condition|(
 name|argv
@@ -5354,7 +5354,7 @@ index|]
 operator|.
 name|equals
 argument_list|(
-literal|"-format"
+literal|"-format-state-store"
 argument_list|)
 condition|)
 block|{

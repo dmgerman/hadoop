@@ -294,8 +294,13 @@ argument_list|(
 literal|"got exception trying to get groups for user "
 operator|+
 name|user
-argument_list|,
+operator|+
+literal|": "
+operator|+
 name|e
+operator|.
+name|getMessage
+argument_list|()
 argument_list|)
 expr_stmt|;
 return|return

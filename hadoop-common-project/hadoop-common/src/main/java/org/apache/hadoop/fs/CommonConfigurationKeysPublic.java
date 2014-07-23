@@ -873,6 +873,26 @@ init|=
 literal|300
 decl_stmt|;
 comment|/** See<a href="{@docRoot}/../core-default.html">core-default.xml</a> */
+DECL|field|HADOOP_SECURITY_GROUPS_NEGATIVE_CACHE_SECS
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|HADOOP_SECURITY_GROUPS_NEGATIVE_CACHE_SECS
+init|=
+literal|"hadoop.security.groups.negative-cache.secs"
+decl_stmt|;
+comment|/** See<a href="{@docRoot}/../core-default.html">core-default.xml</a> */
+DECL|field|HADOOP_SECURITY_GROUPS_NEGATIVE_CACHE_SECS_DEFAULT
+specifier|public
+specifier|static
+specifier|final
+name|long
+name|HADOOP_SECURITY_GROUPS_NEGATIVE_CACHE_SECS_DEFAULT
+init|=
+literal|30
+decl_stmt|;
+comment|/** See<a href="{@docRoot}/../core-default.html">core-default.xml</a> */
 DECL|field|HADOOP_SECURITY_GROUPS_CACHE_WARN_AFTER_MS
 specifier|public
 specifier|static
