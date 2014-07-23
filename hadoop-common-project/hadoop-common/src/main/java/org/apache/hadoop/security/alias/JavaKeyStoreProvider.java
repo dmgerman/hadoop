@@ -1286,6 +1286,11 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
+name|writeLock
+operator|.
+name|lock
+argument_list|()
+expr_stmt|;
 try|try
 block|{
 name|keyStore
@@ -1338,6 +1343,14 @@ argument_list|,
 name|e
 argument_list|)
 throw|;
+block|}
+finally|finally
+block|{
+name|writeLock
+operator|.
+name|unlock
+argument_list|()
+expr_stmt|;
 block|}
 name|changed
 operator|=

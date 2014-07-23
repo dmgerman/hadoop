@@ -956,6 +956,24 @@ name|api
 operator|.
 name|records
 operator|.
+name|URL
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|api
+operator|.
+name|records
+operator|.
 name|timeline
 operator|.
 name|TimelineEntity
@@ -1143,22 +1161,6 @@ operator|.
 name|util
 operator|.
 name|ConverterUtils
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|yarn
-operator|.
-name|util
-operator|.
-name|Records
 import|;
 end_import
 
@@ -2888,6 +2890,8 @@ name|e
 argument_list|)
 expr_stmt|;
 block|}
+comment|// Note: Credentials, Token, UserGroupInformation, DataOutputBuffer class
+comment|// are marked as LimitedPrivate
 name|Credentials
 name|credentials
 init|=
@@ -4528,26 +4532,6 @@ name|getId
 argument_list|()
 argument_list|)
 expr_stmt|;
-name|ContainerLaunchContext
-name|ctx
-init|=
-name|Records
-operator|.
-name|newRecord
-argument_list|(
-name|ContainerLaunchContext
-operator|.
-name|class
-argument_list|)
-decl_stmt|;
-comment|// Set the environment
-name|ctx
-operator|.
-name|setEnvironment
-argument_list|(
-name|shellEnv
-argument_list|)
-expr_stmt|;
 comment|// Set the local resources
 name|Map
 argument_list|<
@@ -4653,42 +4637,15 @@ argument_list|()
 expr_stmt|;
 return|return;
 block|}
-name|LocalResource
-name|shellRsrc
+name|URL
+name|yarnUrl
 init|=
-name|Records
-operator|.
-name|newRecord
-argument_list|(
-name|LocalResource
-operator|.
-name|class
-argument_list|)
+literal|null
 decl_stmt|;
-name|shellRsrc
-operator|.
-name|setType
-argument_list|(
-name|LocalResourceType
-operator|.
-name|FILE
-argument_list|)
-expr_stmt|;
-name|shellRsrc
-operator|.
-name|setVisibility
-argument_list|(
-name|LocalResourceVisibility
-operator|.
-name|APPLICATION
-argument_list|)
-expr_stmt|;
 try|try
 block|{
-name|shellRsrc
-operator|.
-name|setResource
-argument_list|(
+name|yarnUrl
+operator|=
 name|ConverterUtils
 operator|.
 name|getYarnUrlFromURI
@@ -4700,7 +4657,6 @@ name|renamedScriptPath
 operator|.
 name|toString
 argument_list|()
-argument_list|)
 argument_list|)
 argument_list|)
 expr_stmt|;
@@ -4740,20 +4696,28 @@ argument_list|()
 expr_stmt|;
 return|return;
 block|}
+name|LocalResource
 name|shellRsrc
+init|=
+name|LocalResource
 operator|.
-name|setTimestamp
+name|newInstance
 argument_list|(
+name|yarnUrl
+argument_list|,
+name|LocalResourceType
+operator|.
+name|FILE
+argument_list|,
+name|LocalResourceVisibility
+operator|.
+name|APPLICATION
+argument_list|,
+name|shellScriptPathLen
+argument_list|,
 name|shellScriptPathTimestamp
 argument_list|)
-expr_stmt|;
-name|shellRsrc
-operator|.
-name|setSize
-argument_list|(
-name|shellScriptPathLen
-argument_list|)
-expr_stmt|;
+decl_stmt|;
 name|localResources
 operator|.
 name|put
@@ -4780,13 +4744,6 @@ else|:
 name|linux_bash_command
 expr_stmt|;
 block|}
-name|ctx
-operator|.
-name|setLocalResources
-argument_list|(
-name|localResources
-argument_list|)
-expr_stmt|;
 comment|// Set the necessary command to execute on the allocated container
 name|Vector
 argument_list|<
@@ -4922,29 +4879,37 @@ name|toString
 argument_list|()
 argument_list|)
 expr_stmt|;
+comment|// Set up ContainerLaunchContext, setting local resource, environment,
+comment|// command and token for constructor.
+comment|// Note for tokens: Set up tokens for the container too. Today, for normal
+comment|// shell commands, the container in distribute-shell doesn't need any
+comment|// tokens. We are populating them mainly for NodeManagers to be able to
+comment|// download anyfiles in the distributed file-system. The tokens are
+comment|// otherwise also useful in cases, for e.g., when one is running a
+comment|// "hadoop dfs" command inside the distributed shell.
+name|ContainerLaunchContext
 name|ctx
+init|=
+name|ContainerLaunchContext
 operator|.
-name|setCommands
+name|newInstance
 argument_list|(
+name|localResources
+argument_list|,
+name|shellEnv
+argument_list|,
 name|commands
-argument_list|)
-expr_stmt|;
-comment|// Set up tokens for the container too. Today, for normal shell commands,
-comment|// the container in distribute-shell doesn't need any tokens. We are
-comment|// populating them mainly for NodeManagers to be able to download any
-comment|// files in the distributed file-system. The tokens are otherwise also
-comment|// useful in cases, for e.g., when one is running a "hadoop dfs" command
-comment|// inside the distributed shell.
-name|ctx
-operator|.
-name|setTokens
-argument_list|(
+argument_list|,
+literal|null
+argument_list|,
 name|allTokens
 operator|.
 name|duplicate
 argument_list|()
+argument_list|,
+literal|null
 argument_list|)
-expr_stmt|;
+decl_stmt|;
 name|containerListener
 operator|.
 name|addContainer
@@ -5059,54 +5024,31 @@ block|{
 comment|// setup requirements for hosts
 comment|// using * as any host will do for the distributed shell app
 comment|// set the priority for the request
+comment|// TODO - what is the range for priority? how to decide?
 name|Priority
 name|pri
 init|=
-name|Records
-operator|.
-name|newRecord
-argument_list|(
 name|Priority
 operator|.
-name|class
-argument_list|)
-decl_stmt|;
-comment|// TODO - what is the range for priority? how to decide?
-name|pri
-operator|.
-name|setPriority
+name|newInstance
 argument_list|(
 name|requestPriority
 argument_list|)
-expr_stmt|;
+decl_stmt|;
 comment|// Set up resource type requirements
 comment|// For now, memory and CPU are supported so we set memory and cpu requirements
 name|Resource
 name|capability
 init|=
-name|Records
-operator|.
-name|newRecord
-argument_list|(
 name|Resource
 operator|.
-name|class
-argument_list|)
-decl_stmt|;
-name|capability
-operator|.
-name|setMemory
+name|newInstance
 argument_list|(
 name|containerMemory
-argument_list|)
-expr_stmt|;
-name|capability
-operator|.
-name|setVirtualCores
-argument_list|(
+argument_list|,
 name|containerVirtualCores
 argument_list|)
-expr_stmt|;
+decl_stmt|;
 name|ContainerRequest
 name|request
 init|=

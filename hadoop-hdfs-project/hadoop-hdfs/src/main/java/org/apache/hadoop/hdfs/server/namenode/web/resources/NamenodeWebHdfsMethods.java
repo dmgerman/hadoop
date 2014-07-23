@@ -140,6 +140,16 @@ name|java
 operator|.
 name|util
 operator|.
+name|HashSet
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
 name|List
 import|;
 end_import
@@ -966,6 +976,24 @@ name|web
 operator|.
 name|resources
 operator|.
+name|ExcludeDatanodesParam
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|web
+operator|.
+name|resources
+operator|.
 name|GetOpParam
 import|;
 end_import
@@ -1474,6 +1502,20 @@ name|hadoop
 operator|.
 name|net
 operator|.
+name|Node
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|net
+operator|.
 name|NodeBase
 import|;
 end_import
@@ -1535,6 +1577,20 @@ operator|.
 name|token
 operator|.
 name|TokenIdentifier
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|util
+operator|.
+name|StringUtils
 import|;
 end_import
 
@@ -1920,7 +1976,7 @@ return|;
 block|}
 annotation|@
 name|VisibleForTesting
-DECL|method|chooseDatanode (final NameNode namenode, final String path, final HttpOpParam.Op op, final long openOffset, final long blocksize)
+DECL|method|chooseDatanode (final NameNode namenode, final String path, final HttpOpParam.Op op, final long openOffset, final long blocksize, final String excludeDatanodes)
 specifier|static
 name|DatanodeInfo
 name|chooseDatanode
@@ -1946,6 +2002,10 @@ parameter_list|,
 specifier|final
 name|long
 name|blocksize
+parameter_list|,
+specifier|final
+name|String
+name|excludeDatanodes
 parameter_list|)
 throws|throws
 name|IOException
@@ -1962,6 +2022,114 @@ operator|.
 name|getBlockManager
 argument_list|()
 decl_stmt|;
+name|HashSet
+argument_list|<
+name|Node
+argument_list|>
+name|excludes
+init|=
+operator|new
+name|HashSet
+argument_list|<
+name|Node
+argument_list|>
+argument_list|()
+decl_stmt|;
+if|if
+condition|(
+name|excludeDatanodes
+operator|!=
+literal|null
+condition|)
+block|{
+for|for
+control|(
+name|String
+name|host
+range|:
+name|StringUtils
+operator|.
+name|getTrimmedStringCollection
+argument_list|(
+name|excludeDatanodes
+argument_list|)
+control|)
+block|{
+name|int
+name|idx
+init|=
+name|host
+operator|.
+name|indexOf
+argument_list|(
+literal|":"
+argument_list|)
+decl_stmt|;
+if|if
+condition|(
+name|idx
+operator|!=
+operator|-
+literal|1
+condition|)
+block|{
+name|excludes
+operator|.
+name|add
+argument_list|(
+name|bm
+operator|.
+name|getDatanodeManager
+argument_list|()
+operator|.
+name|getDatanodeByXferAddr
+argument_list|(
+name|host
+operator|.
+name|substring
+argument_list|(
+literal|0
+argument_list|,
+name|idx
+argument_list|)
+argument_list|,
+name|Integer
+operator|.
+name|parseInt
+argument_list|(
+name|host
+operator|.
+name|substring
+argument_list|(
+name|idx
+operator|+
+literal|1
+argument_list|)
+argument_list|)
+argument_list|)
+argument_list|)
+expr_stmt|;
+block|}
+else|else
+block|{
+name|excludes
+operator|.
+name|add
+argument_list|(
+name|bm
+operator|.
+name|getDatanodeManager
+argument_list|()
+operator|.
+name|getDatanodeByHost
+argument_list|(
+name|host
+argument_list|)
+argument_list|)
+expr_stmt|;
+block|}
+block|}
+block|}
 if|if
 condition|(
 name|op
@@ -2023,7 +2191,7 @@ argument_list|()
 argument_list|,
 literal|false
 argument_list|,
-literal|null
+name|excludes
 argument_list|,
 name|blocksize
 argument_list|,
@@ -2250,6 +2418,8 @@ argument_list|)
 operator|.
 name|getLocations
 argument_list|()
+argument_list|,
+name|excludes
 argument_list|)
 return|;
 block|}
@@ -2276,7 +2446,7 @@ argument_list|)
 return|;
 block|}
 comment|/**    * Choose the datanode to redirect the request. Note that the nodes have been    * sorted based on availability and network distances, thus it is sufficient    * to return the first element of the node here.    */
-DECL|method|bestNode (DatanodeInfo[] nodes)
+DECL|method|bestNode (DatanodeInfo[] nodes, HashSet<Node> excludes)
 specifier|private
 specifier|static
 name|DatanodeInfo
@@ -2285,27 +2455,48 @@ parameter_list|(
 name|DatanodeInfo
 index|[]
 name|nodes
+parameter_list|,
+name|HashSet
+argument_list|<
+name|Node
+argument_list|>
+name|excludes
 parameter_list|)
 throws|throws
 name|IOException
 block|{
+for|for
+control|(
+name|DatanodeInfo
+name|dn
+range|:
+name|nodes
+control|)
+block|{
 if|if
 condition|(
-name|nodes
-operator|.
-name|length
+literal|false
 operator|==
-literal|0
-operator|||
-name|nodes
-index|[
-literal|0
-index|]
+name|dn
 operator|.
 name|isDecommissioned
 argument_list|()
+operator|&&
+literal|false
+operator|==
+name|excludes
+operator|.
+name|contains
+argument_list|(
+name|dn
+argument_list|)
 condition|)
 block|{
+return|return
+name|dn
+return|;
+block|}
+block|}
 throw|throw
 operator|new
 name|IOException
@@ -2313,13 +2504,6 @@ argument_list|(
 literal|"No active nodes contain this block"
 argument_list|)
 throw|;
-block|}
-return|return
-name|nodes
-index|[
-literal|0
-index|]
-return|;
 block|}
 DECL|method|generateDelegationToken ( final NameNode namenode, final UserGroupInformation ugi, final String renewer)
 specifier|private
@@ -2422,7 +2606,7 @@ return|return
 name|t
 return|;
 block|}
-DECL|method|redirectURI (final NameNode namenode, final UserGroupInformation ugi, final DelegationParam delegation, final UserParam username, final DoAsParam doAsUser, final String path, final HttpOpParam.Op op, final long openOffset, final long blocksize, final Param<?, ?>... parameters)
+DECL|method|redirectURI (final NameNode namenode, final UserGroupInformation ugi, final DelegationParam delegation, final UserParam username, final DoAsParam doAsUser, final String path, final HttpOpParam.Op op, final long openOffset, final long blocksize, final String excludeDatanodes, final Param<?, ?>... parameters)
 specifier|private
 name|URI
 name|redirectURI
@@ -2466,6 +2650,10 @@ name|long
 name|blocksize
 parameter_list|,
 specifier|final
+name|String
+name|excludeDatanodes
+parameter_list|,
+specifier|final
 name|Param
 argument_list|<
 name|?
@@ -2499,6 +2687,8 @@ argument_list|,
 name|openOffset
 argument_list|,
 name|blocksize
+argument_list|,
+name|excludeDatanodes
 argument_list|)
 expr_stmt|;
 block|}
@@ -2748,7 +2938,7 @@ operator|.
 name|APPLICATION_JSON
 block|}
 argument_list|)
-DECL|method|putRoot ( @ontext final UserGroupInformation ugi, @QueryParam(DelegationParam.NAME) @DefaultValue(DelegationParam.DEFAULT) final DelegationParam delegation, @QueryParam(UserParam.NAME) @DefaultValue(UserParam.DEFAULT) final UserParam username, @QueryParam(DoAsParam.NAME) @DefaultValue(DoAsParam.DEFAULT) final DoAsParam doAsUser, @QueryParam(PutOpParam.NAME) @DefaultValue(PutOpParam.DEFAULT) final PutOpParam op, @QueryParam(DestinationParam.NAME) @DefaultValue(DestinationParam.DEFAULT) final DestinationParam destination, @QueryParam(OwnerParam.NAME) @DefaultValue(OwnerParam.DEFAULT) final OwnerParam owner, @QueryParam(GroupParam.NAME) @DefaultValue(GroupParam.DEFAULT) final GroupParam group, @QueryParam(PermissionParam.NAME) @DefaultValue(PermissionParam.DEFAULT) final PermissionParam permission, @QueryParam(OverwriteParam.NAME) @DefaultValue(OverwriteParam.DEFAULT) final OverwriteParam overwrite, @QueryParam(BufferSizeParam.NAME) @DefaultValue(BufferSizeParam.DEFAULT) final BufferSizeParam bufferSize, @QueryParam(ReplicationParam.NAME) @DefaultValue(ReplicationParam.DEFAULT) final ReplicationParam replication, @QueryParam(BlockSizeParam.NAME) @DefaultValue(BlockSizeParam.DEFAULT) final BlockSizeParam blockSize, @QueryParam(ModificationTimeParam.NAME) @DefaultValue(ModificationTimeParam.DEFAULT) final ModificationTimeParam modificationTime, @QueryParam(AccessTimeParam.NAME) @DefaultValue(AccessTimeParam.DEFAULT) final AccessTimeParam accessTime, @QueryParam(RenameOptionSetParam.NAME) @DefaultValue(RenameOptionSetParam.DEFAULT) final RenameOptionSetParam renameOptions, @QueryParam(CreateParentParam.NAME) @DefaultValue(CreateParentParam.DEFAULT) final CreateParentParam createParent, @QueryParam(TokenArgumentParam.NAME) @DefaultValue(TokenArgumentParam.DEFAULT) final TokenArgumentParam delegationTokenArgument, @QueryParam(AclPermissionParam.NAME) @DefaultValue(AclPermissionParam.DEFAULT) final AclPermissionParam aclPermission, @QueryParam(XAttrNameParam.NAME) @DefaultValue(XAttrNameParam.DEFAULT) final XAttrNameParam xattrName, @QueryParam(XAttrValueParam.NAME) @DefaultValue(XAttrValueParam.DEFAULT) final XAttrValueParam xattrValue, @QueryParam(XAttrSetFlagParam.NAME) @DefaultValue(XAttrSetFlagParam.DEFAULT) final XAttrSetFlagParam xattrSetFlag, @QueryParam(SnapshotNameParam.NAME) @DefaultValue(SnapshotNameParam.DEFAULT) final SnapshotNameParam snapshotName, @QueryParam(OldSnapshotNameParam.NAME) @DefaultValue(OldSnapshotNameParam.DEFAULT) final OldSnapshotNameParam oldSnapshotName )
+DECL|method|putRoot ( @ontext final UserGroupInformation ugi, @QueryParam(DelegationParam.NAME) @DefaultValue(DelegationParam.DEFAULT) final DelegationParam delegation, @QueryParam(UserParam.NAME) @DefaultValue(UserParam.DEFAULT) final UserParam username, @QueryParam(DoAsParam.NAME) @DefaultValue(DoAsParam.DEFAULT) final DoAsParam doAsUser, @QueryParam(PutOpParam.NAME) @DefaultValue(PutOpParam.DEFAULT) final PutOpParam op, @QueryParam(DestinationParam.NAME) @DefaultValue(DestinationParam.DEFAULT) final DestinationParam destination, @QueryParam(OwnerParam.NAME) @DefaultValue(OwnerParam.DEFAULT) final OwnerParam owner, @QueryParam(GroupParam.NAME) @DefaultValue(GroupParam.DEFAULT) final GroupParam group, @QueryParam(PermissionParam.NAME) @DefaultValue(PermissionParam.DEFAULT) final PermissionParam permission, @QueryParam(OverwriteParam.NAME) @DefaultValue(OverwriteParam.DEFAULT) final OverwriteParam overwrite, @QueryParam(BufferSizeParam.NAME) @DefaultValue(BufferSizeParam.DEFAULT) final BufferSizeParam bufferSize, @QueryParam(ReplicationParam.NAME) @DefaultValue(ReplicationParam.DEFAULT) final ReplicationParam replication, @QueryParam(BlockSizeParam.NAME) @DefaultValue(BlockSizeParam.DEFAULT) final BlockSizeParam blockSize, @QueryParam(ModificationTimeParam.NAME) @DefaultValue(ModificationTimeParam.DEFAULT) final ModificationTimeParam modificationTime, @QueryParam(AccessTimeParam.NAME) @DefaultValue(AccessTimeParam.DEFAULT) final AccessTimeParam accessTime, @QueryParam(RenameOptionSetParam.NAME) @DefaultValue(RenameOptionSetParam.DEFAULT) final RenameOptionSetParam renameOptions, @QueryParam(CreateParentParam.NAME) @DefaultValue(CreateParentParam.DEFAULT) final CreateParentParam createParent, @QueryParam(TokenArgumentParam.NAME) @DefaultValue(TokenArgumentParam.DEFAULT) final TokenArgumentParam delegationTokenArgument, @QueryParam(AclPermissionParam.NAME) @DefaultValue(AclPermissionParam.DEFAULT) final AclPermissionParam aclPermission, @QueryParam(XAttrNameParam.NAME) @DefaultValue(XAttrNameParam.DEFAULT) final XAttrNameParam xattrName, @QueryParam(XAttrValueParam.NAME) @DefaultValue(XAttrValueParam.DEFAULT) final XAttrValueParam xattrValue, @QueryParam(XAttrSetFlagParam.NAME) @DefaultValue(XAttrSetFlagParam.DEFAULT) final XAttrSetFlagParam xattrSetFlag, @QueryParam(SnapshotNameParam.NAME) @DefaultValue(SnapshotNameParam.DEFAULT) final SnapshotNameParam snapshotName, @QueryParam(OldSnapshotNameParam.NAME) @DefaultValue(OldSnapshotNameParam.DEFAULT) final OldSnapshotNameParam oldSnapshotName, @QueryParam(ExcludeDatanodesParam.NAME) @DefaultValue(ExcludeDatanodesParam.DEFAULT) final ExcludeDatanodesParam excludeDatanodes )
 specifier|public
 name|Response
 name|putRoot
@@ -3172,6 +3362,24 @@ argument_list|)
 specifier|final
 name|OldSnapshotNameParam
 name|oldSnapshotName
+parameter_list|,
+annotation|@
+name|QueryParam
+argument_list|(
+name|ExcludeDatanodesParam
+operator|.
+name|NAME
+argument_list|)
+annotation|@
+name|DefaultValue
+argument_list|(
+name|ExcludeDatanodesParam
+operator|.
+name|DEFAULT
+argument_list|)
+specifier|final
+name|ExcludeDatanodesParam
+name|excludeDatanodes
 parameter_list|)
 throws|throws
 name|IOException
@@ -3230,6 +3438,8 @@ argument_list|,
 name|snapshotName
 argument_list|,
 name|oldSnapshotName
+argument_list|,
+name|excludeDatanodes
 argument_list|)
 return|;
 block|}
@@ -3267,7 +3477,7 @@ operator|.
 name|APPLICATION_JSON
 block|}
 argument_list|)
-DECL|method|put ( @ontext final UserGroupInformation ugi, @QueryParam(DelegationParam.NAME) @DefaultValue(DelegationParam.DEFAULT) final DelegationParam delegation, @QueryParam(UserParam.NAME) @DefaultValue(UserParam.DEFAULT) final UserParam username, @QueryParam(DoAsParam.NAME) @DefaultValue(DoAsParam.DEFAULT) final DoAsParam doAsUser, @PathParam(UriFsPathParam.NAME) final UriFsPathParam path, @QueryParam(PutOpParam.NAME) @DefaultValue(PutOpParam.DEFAULT) final PutOpParam op, @QueryParam(DestinationParam.NAME) @DefaultValue(DestinationParam.DEFAULT) final DestinationParam destination, @QueryParam(OwnerParam.NAME) @DefaultValue(OwnerParam.DEFAULT) final OwnerParam owner, @QueryParam(GroupParam.NAME) @DefaultValue(GroupParam.DEFAULT) final GroupParam group, @QueryParam(PermissionParam.NAME) @DefaultValue(PermissionParam.DEFAULT) final PermissionParam permission, @QueryParam(OverwriteParam.NAME) @DefaultValue(OverwriteParam.DEFAULT) final OverwriteParam overwrite, @QueryParam(BufferSizeParam.NAME) @DefaultValue(BufferSizeParam.DEFAULT) final BufferSizeParam bufferSize, @QueryParam(ReplicationParam.NAME) @DefaultValue(ReplicationParam.DEFAULT) final ReplicationParam replication, @QueryParam(BlockSizeParam.NAME) @DefaultValue(BlockSizeParam.DEFAULT) final BlockSizeParam blockSize, @QueryParam(ModificationTimeParam.NAME) @DefaultValue(ModificationTimeParam.DEFAULT) final ModificationTimeParam modificationTime, @QueryParam(AccessTimeParam.NAME) @DefaultValue(AccessTimeParam.DEFAULT) final AccessTimeParam accessTime, @QueryParam(RenameOptionSetParam.NAME) @DefaultValue(RenameOptionSetParam.DEFAULT) final RenameOptionSetParam renameOptions, @QueryParam(CreateParentParam.NAME) @DefaultValue(CreateParentParam.DEFAULT) final CreateParentParam createParent, @QueryParam(TokenArgumentParam.NAME) @DefaultValue(TokenArgumentParam.DEFAULT) final TokenArgumentParam delegationTokenArgument, @QueryParam(AclPermissionParam.NAME) @DefaultValue(AclPermissionParam.DEFAULT) final AclPermissionParam aclPermission, @QueryParam(XAttrNameParam.NAME) @DefaultValue(XAttrNameParam.DEFAULT) final XAttrNameParam xattrName, @QueryParam(XAttrValueParam.NAME) @DefaultValue(XAttrValueParam.DEFAULT) final XAttrValueParam xattrValue, @QueryParam(XAttrSetFlagParam.NAME) @DefaultValue(XAttrSetFlagParam.DEFAULT) final XAttrSetFlagParam xattrSetFlag, @QueryParam(SnapshotNameParam.NAME) @DefaultValue(SnapshotNameParam.DEFAULT) final SnapshotNameParam snapshotName, @QueryParam(OldSnapshotNameParam.NAME) @DefaultValue(OldSnapshotNameParam.DEFAULT) final OldSnapshotNameParam oldSnapshotName )
+DECL|method|put ( @ontext final UserGroupInformation ugi, @QueryParam(DelegationParam.NAME) @DefaultValue(DelegationParam.DEFAULT) final DelegationParam delegation, @QueryParam(UserParam.NAME) @DefaultValue(UserParam.DEFAULT) final UserParam username, @QueryParam(DoAsParam.NAME) @DefaultValue(DoAsParam.DEFAULT) final DoAsParam doAsUser, @PathParam(UriFsPathParam.NAME) final UriFsPathParam path, @QueryParam(PutOpParam.NAME) @DefaultValue(PutOpParam.DEFAULT) final PutOpParam op, @QueryParam(DestinationParam.NAME) @DefaultValue(DestinationParam.DEFAULT) final DestinationParam destination, @QueryParam(OwnerParam.NAME) @DefaultValue(OwnerParam.DEFAULT) final OwnerParam owner, @QueryParam(GroupParam.NAME) @DefaultValue(GroupParam.DEFAULT) final GroupParam group, @QueryParam(PermissionParam.NAME) @DefaultValue(PermissionParam.DEFAULT) final PermissionParam permission, @QueryParam(OverwriteParam.NAME) @DefaultValue(OverwriteParam.DEFAULT) final OverwriteParam overwrite, @QueryParam(BufferSizeParam.NAME) @DefaultValue(BufferSizeParam.DEFAULT) final BufferSizeParam bufferSize, @QueryParam(ReplicationParam.NAME) @DefaultValue(ReplicationParam.DEFAULT) final ReplicationParam replication, @QueryParam(BlockSizeParam.NAME) @DefaultValue(BlockSizeParam.DEFAULT) final BlockSizeParam blockSize, @QueryParam(ModificationTimeParam.NAME) @DefaultValue(ModificationTimeParam.DEFAULT) final ModificationTimeParam modificationTime, @QueryParam(AccessTimeParam.NAME) @DefaultValue(AccessTimeParam.DEFAULT) final AccessTimeParam accessTime, @QueryParam(RenameOptionSetParam.NAME) @DefaultValue(RenameOptionSetParam.DEFAULT) final RenameOptionSetParam renameOptions, @QueryParam(CreateParentParam.NAME) @DefaultValue(CreateParentParam.DEFAULT) final CreateParentParam createParent, @QueryParam(TokenArgumentParam.NAME) @DefaultValue(TokenArgumentParam.DEFAULT) final TokenArgumentParam delegationTokenArgument, @QueryParam(AclPermissionParam.NAME) @DefaultValue(AclPermissionParam.DEFAULT) final AclPermissionParam aclPermission, @QueryParam(XAttrNameParam.NAME) @DefaultValue(XAttrNameParam.DEFAULT) final XAttrNameParam xattrName, @QueryParam(XAttrValueParam.NAME) @DefaultValue(XAttrValueParam.DEFAULT) final XAttrValueParam xattrValue, @QueryParam(XAttrSetFlagParam.NAME) @DefaultValue(XAttrSetFlagParam.DEFAULT) final XAttrSetFlagParam xattrSetFlag, @QueryParam(SnapshotNameParam.NAME) @DefaultValue(SnapshotNameParam.DEFAULT) final SnapshotNameParam snapshotName, @QueryParam(OldSnapshotNameParam.NAME) @DefaultValue(OldSnapshotNameParam.DEFAULT) final OldSnapshotNameParam oldSnapshotName, @QueryParam(ExcludeDatanodesParam.NAME) @DefaultValue(ExcludeDatanodesParam.DEFAULT) final ExcludeDatanodesParam excludeDatanodes )
 specifier|public
 name|Response
 name|put
@@ -3702,6 +3912,24 @@ argument_list|)
 specifier|final
 name|OldSnapshotNameParam
 name|oldSnapshotName
+parameter_list|,
+annotation|@
+name|QueryParam
+argument_list|(
+name|ExcludeDatanodesParam
+operator|.
+name|NAME
+argument_list|)
+annotation|@
+name|DefaultValue
+argument_list|(
+name|ExcludeDatanodesParam
+operator|.
+name|DEFAULT
+argument_list|)
+specifier|final
+name|ExcludeDatanodesParam
+name|excludeDatanodes
 parameter_list|)
 throws|throws
 name|IOException
@@ -3757,6 +3985,8 @@ argument_list|,
 name|snapshotName
 argument_list|,
 name|oldSnapshotName
+argument_list|,
+name|excludeDatanodes
 argument_list|)
 expr_stmt|;
 return|return
@@ -3839,6 +4069,8 @@ argument_list|,
 name|snapshotName
 argument_list|,
 name|oldSnapshotName
+argument_list|,
+name|excludeDatanodes
 argument_list|)
 return|;
 block|}
@@ -3853,7 +4085,7 @@ block|}
 argument_list|)
 return|;
 block|}
-DECL|method|put ( final UserGroupInformation ugi, final DelegationParam delegation, final UserParam username, final DoAsParam doAsUser, final String fullpath, final PutOpParam op, final DestinationParam destination, final OwnerParam owner, final GroupParam group, final PermissionParam permission, final OverwriteParam overwrite, final BufferSizeParam bufferSize, final ReplicationParam replication, final BlockSizeParam blockSize, final ModificationTimeParam modificationTime, final AccessTimeParam accessTime, final RenameOptionSetParam renameOptions, final CreateParentParam createParent, final TokenArgumentParam delegationTokenArgument, final AclPermissionParam aclPermission, final XAttrNameParam xattrName, final XAttrValueParam xattrValue, final XAttrSetFlagParam xattrSetFlag, final SnapshotNameParam snapshotName, final OldSnapshotNameParam oldSnapshotName )
+DECL|method|put ( final UserGroupInformation ugi, final DelegationParam delegation, final UserParam username, final DoAsParam doAsUser, final String fullpath, final PutOpParam op, final DestinationParam destination, final OwnerParam owner, final GroupParam group, final PermissionParam permission, final OverwriteParam overwrite, final BufferSizeParam bufferSize, final ReplicationParam replication, final BlockSizeParam blockSize, final ModificationTimeParam modificationTime, final AccessTimeParam accessTime, final RenameOptionSetParam renameOptions, final CreateParentParam createParent, final TokenArgumentParam delegationTokenArgument, final AclPermissionParam aclPermission, final XAttrNameParam xattrName, final XAttrValueParam xattrValue, final XAttrSetFlagParam xattrSetFlag, final SnapshotNameParam snapshotName, final OldSnapshotNameParam oldSnapshotName, final ExcludeDatanodesParam exclDatanodes )
 specifier|private
 name|Response
 name|put
@@ -3957,6 +4189,10 @@ parameter_list|,
 specifier|final
 name|OldSnapshotNameParam
 name|oldSnapshotName
+parameter_list|,
+specifier|final
+name|ExcludeDatanodesParam
+name|exclDatanodes
 parameter_list|)
 throws|throws
 name|IOException
@@ -4046,6 +4282,11 @@ name|getValue
 argument_list|(
 name|conf
 argument_list|)
+argument_list|,
+name|exclDatanodes
+operator|.
+name|getValue
+argument_list|()
 argument_list|,
 name|permission
 argument_list|,
@@ -4996,7 +5237,7 @@ operator|.
 name|APPLICATION_JSON
 block|}
 argument_list|)
-DECL|method|postRoot ( @ontext final UserGroupInformation ugi, @QueryParam(DelegationParam.NAME) @DefaultValue(DelegationParam.DEFAULT) final DelegationParam delegation, @QueryParam(UserParam.NAME) @DefaultValue(UserParam.DEFAULT) final UserParam username, @QueryParam(DoAsParam.NAME) @DefaultValue(DoAsParam.DEFAULT) final DoAsParam doAsUser, @QueryParam(PostOpParam.NAME) @DefaultValue(PostOpParam.DEFAULT) final PostOpParam op, @QueryParam(ConcatSourcesParam.NAME) @DefaultValue(ConcatSourcesParam.DEFAULT) final ConcatSourcesParam concatSrcs, @QueryParam(BufferSizeParam.NAME) @DefaultValue(BufferSizeParam.DEFAULT) final BufferSizeParam bufferSize )
+DECL|method|postRoot ( @ontext final UserGroupInformation ugi, @QueryParam(DelegationParam.NAME) @DefaultValue(DelegationParam.DEFAULT) final DelegationParam delegation, @QueryParam(UserParam.NAME) @DefaultValue(UserParam.DEFAULT) final UserParam username, @QueryParam(DoAsParam.NAME) @DefaultValue(DoAsParam.DEFAULT) final DoAsParam doAsUser, @QueryParam(PostOpParam.NAME) @DefaultValue(PostOpParam.DEFAULT) final PostOpParam op, @QueryParam(ConcatSourcesParam.NAME) @DefaultValue(ConcatSourcesParam.DEFAULT) final ConcatSourcesParam concatSrcs, @QueryParam(BufferSizeParam.NAME) @DefaultValue(BufferSizeParam.DEFAULT) final BufferSizeParam bufferSize, @QueryParam(ExcludeDatanodesParam.NAME) @DefaultValue(ExcludeDatanodesParam.DEFAULT) final ExcludeDatanodesParam excludeDatanodes )
 specifier|public
 name|Response
 name|postRoot
@@ -5114,6 +5355,24 @@ argument_list|)
 specifier|final
 name|BufferSizeParam
 name|bufferSize
+parameter_list|,
+annotation|@
+name|QueryParam
+argument_list|(
+name|ExcludeDatanodesParam
+operator|.
+name|NAME
+argument_list|)
+annotation|@
+name|DefaultValue
+argument_list|(
+name|ExcludeDatanodesParam
+operator|.
+name|DEFAULT
+argument_list|)
+specifier|final
+name|ExcludeDatanodesParam
+name|excludeDatanodes
 parameter_list|)
 throws|throws
 name|IOException
@@ -5138,6 +5397,8 @@ argument_list|,
 name|concatSrcs
 argument_list|,
 name|bufferSize
+argument_list|,
+name|excludeDatanodes
 argument_list|)
 return|;
 block|}
@@ -5175,7 +5436,7 @@ operator|.
 name|APPLICATION_JSON
 block|}
 argument_list|)
-DECL|method|post ( @ontext final UserGroupInformation ugi, @QueryParam(DelegationParam.NAME) @DefaultValue(DelegationParam.DEFAULT) final DelegationParam delegation, @QueryParam(UserParam.NAME) @DefaultValue(UserParam.DEFAULT) final UserParam username, @QueryParam(DoAsParam.NAME) @DefaultValue(DoAsParam.DEFAULT) final DoAsParam doAsUser, @PathParam(UriFsPathParam.NAME) final UriFsPathParam path, @QueryParam(PostOpParam.NAME) @DefaultValue(PostOpParam.DEFAULT) final PostOpParam op, @QueryParam(ConcatSourcesParam.NAME) @DefaultValue(ConcatSourcesParam.DEFAULT) final ConcatSourcesParam concatSrcs, @QueryParam(BufferSizeParam.NAME) @DefaultValue(BufferSizeParam.DEFAULT) final BufferSizeParam bufferSize )
+DECL|method|post ( @ontext final UserGroupInformation ugi, @QueryParam(DelegationParam.NAME) @DefaultValue(DelegationParam.DEFAULT) final DelegationParam delegation, @QueryParam(UserParam.NAME) @DefaultValue(UserParam.DEFAULT) final UserParam username, @QueryParam(DoAsParam.NAME) @DefaultValue(DoAsParam.DEFAULT) final DoAsParam doAsUser, @PathParam(UriFsPathParam.NAME) final UriFsPathParam path, @QueryParam(PostOpParam.NAME) @DefaultValue(PostOpParam.DEFAULT) final PostOpParam op, @QueryParam(ConcatSourcesParam.NAME) @DefaultValue(ConcatSourcesParam.DEFAULT) final ConcatSourcesParam concatSrcs, @QueryParam(BufferSizeParam.NAME) @DefaultValue(BufferSizeParam.DEFAULT) final BufferSizeParam bufferSize, @QueryParam(ExcludeDatanodesParam.NAME) @DefaultValue(ExcludeDatanodesParam.DEFAULT) final ExcludeDatanodesParam excludeDatanodes )
 specifier|public
 name|Response
 name|post
@@ -5304,6 +5565,24 @@ argument_list|)
 specifier|final
 name|BufferSizeParam
 name|bufferSize
+parameter_list|,
+annotation|@
+name|QueryParam
+argument_list|(
+name|ExcludeDatanodesParam
+operator|.
+name|NAME
+argument_list|)
+annotation|@
+name|DefaultValue
+argument_list|(
+name|ExcludeDatanodesParam
+operator|.
+name|DEFAULT
+argument_list|)
+specifier|final
+name|ExcludeDatanodesParam
+name|excludeDatanodes
 parameter_list|)
 throws|throws
 name|IOException
@@ -5327,6 +5606,8 @@ argument_list|,
 name|concatSrcs
 argument_list|,
 name|bufferSize
+argument_list|,
+name|excludeDatanodes
 argument_list|)
 expr_stmt|;
 return|return
@@ -5375,6 +5656,8 @@ argument_list|,
 name|concatSrcs
 argument_list|,
 name|bufferSize
+argument_list|,
+name|excludeDatanodes
 argument_list|)
 return|;
 block|}
@@ -5389,7 +5672,7 @@ block|}
 argument_list|)
 return|;
 block|}
-DECL|method|post ( final UserGroupInformation ugi, final DelegationParam delegation, final UserParam username, final DoAsParam doAsUser, final String fullpath, final PostOpParam op, final ConcatSourcesParam concatSrcs, final BufferSizeParam bufferSize )
+DECL|method|post ( final UserGroupInformation ugi, final DelegationParam delegation, final UserParam username, final DoAsParam doAsUser, final String fullpath, final PostOpParam op, final ConcatSourcesParam concatSrcs, final BufferSizeParam bufferSize, final ExcludeDatanodesParam excludeDatanodes )
 specifier|private
 name|Response
 name|post
@@ -5425,6 +5708,10 @@ parameter_list|,
 specifier|final
 name|BufferSizeParam
 name|bufferSize
+parameter_list|,
+specifier|final
+name|ExcludeDatanodesParam
+name|excludeDatanodes
 parameter_list|)
 throws|throws
 name|IOException
@@ -5485,6 +5772,11 @@ literal|1L
 argument_list|,
 operator|-
 literal|1L
+argument_list|,
+name|excludeDatanodes
+operator|.
+name|getValue
+argument_list|()
 argument_list|,
 name|bufferSize
 argument_list|)
@@ -5570,7 +5862,7 @@ operator|.
 name|APPLICATION_JSON
 block|}
 argument_list|)
-DECL|method|getRoot ( @ontext final UserGroupInformation ugi, @QueryParam(DelegationParam.NAME) @DefaultValue(DelegationParam.DEFAULT) final DelegationParam delegation, @QueryParam(UserParam.NAME) @DefaultValue(UserParam.DEFAULT) final UserParam username, @QueryParam(DoAsParam.NAME) @DefaultValue(DoAsParam.DEFAULT) final DoAsParam doAsUser, @QueryParam(GetOpParam.NAME) @DefaultValue(GetOpParam.DEFAULT) final GetOpParam op, @QueryParam(OffsetParam.NAME) @DefaultValue(OffsetParam.DEFAULT) final OffsetParam offset, @QueryParam(LengthParam.NAME) @DefaultValue(LengthParam.DEFAULT) final LengthParam length, @QueryParam(RenewerParam.NAME) @DefaultValue(RenewerParam.DEFAULT) final RenewerParam renewer, @QueryParam(BufferSizeParam.NAME) @DefaultValue(BufferSizeParam.DEFAULT) final BufferSizeParam bufferSize, @QueryParam(XAttrNameParam.NAME) @DefaultValue(XAttrNameParam.DEFAULT) final List<XAttrNameParam> xattrNames, @QueryParam(XAttrEncodingParam.NAME) @DefaultValue(XAttrEncodingParam.DEFAULT) final XAttrEncodingParam xattrEncoding )
+DECL|method|getRoot ( @ontext final UserGroupInformation ugi, @QueryParam(DelegationParam.NAME) @DefaultValue(DelegationParam.DEFAULT) final DelegationParam delegation, @QueryParam(UserParam.NAME) @DefaultValue(UserParam.DEFAULT) final UserParam username, @QueryParam(DoAsParam.NAME) @DefaultValue(DoAsParam.DEFAULT) final DoAsParam doAsUser, @QueryParam(GetOpParam.NAME) @DefaultValue(GetOpParam.DEFAULT) final GetOpParam op, @QueryParam(OffsetParam.NAME) @DefaultValue(OffsetParam.DEFAULT) final OffsetParam offset, @QueryParam(LengthParam.NAME) @DefaultValue(LengthParam.DEFAULT) final LengthParam length, @QueryParam(RenewerParam.NAME) @DefaultValue(RenewerParam.DEFAULT) final RenewerParam renewer, @QueryParam(BufferSizeParam.NAME) @DefaultValue(BufferSizeParam.DEFAULT) final BufferSizeParam bufferSize, @QueryParam(XAttrNameParam.NAME) @DefaultValue(XAttrNameParam.DEFAULT) final List<XAttrNameParam> xattrNames, @QueryParam(XAttrEncodingParam.NAME) @DefaultValue(XAttrEncodingParam.DEFAULT) final XAttrEncodingParam xattrEncoding, @QueryParam(ExcludeDatanodesParam.NAME) @DefaultValue(ExcludeDatanodesParam.DEFAULT) final ExcludeDatanodesParam excludeDatanodes )
 specifier|public
 name|Response
 name|getRoot
@@ -5763,6 +6055,24 @@ argument_list|)
 specifier|final
 name|XAttrEncodingParam
 name|xattrEncoding
+parameter_list|,
+annotation|@
+name|QueryParam
+argument_list|(
+name|ExcludeDatanodesParam
+operator|.
+name|NAME
+argument_list|)
+annotation|@
+name|DefaultValue
+argument_list|(
+name|ExcludeDatanodesParam
+operator|.
+name|DEFAULT
+argument_list|)
+specifier|final
+name|ExcludeDatanodesParam
+name|excludeDatanodes
 parameter_list|)
 throws|throws
 name|IOException
@@ -5795,6 +6105,8 @@ argument_list|,
 name|xattrNames
 argument_list|,
 name|xattrEncoding
+argument_list|,
+name|excludeDatanodes
 argument_list|)
 return|;
 block|}
@@ -5825,7 +6137,7 @@ operator|.
 name|APPLICATION_JSON
 block|}
 argument_list|)
-DECL|method|get ( @ontext final UserGroupInformation ugi, @QueryParam(DelegationParam.NAME) @DefaultValue(DelegationParam.DEFAULT) final DelegationParam delegation, @QueryParam(UserParam.NAME) @DefaultValue(UserParam.DEFAULT) final UserParam username, @QueryParam(DoAsParam.NAME) @DefaultValue(DoAsParam.DEFAULT) final DoAsParam doAsUser, @PathParam(UriFsPathParam.NAME) final UriFsPathParam path, @QueryParam(GetOpParam.NAME) @DefaultValue(GetOpParam.DEFAULT) final GetOpParam op, @QueryParam(OffsetParam.NAME) @DefaultValue(OffsetParam.DEFAULT) final OffsetParam offset, @QueryParam(LengthParam.NAME) @DefaultValue(LengthParam.DEFAULT) final LengthParam length, @QueryParam(RenewerParam.NAME) @DefaultValue(RenewerParam.DEFAULT) final RenewerParam renewer, @QueryParam(BufferSizeParam.NAME) @DefaultValue(BufferSizeParam.DEFAULT) final BufferSizeParam bufferSize, @QueryParam(XAttrNameParam.NAME) @DefaultValue(XAttrNameParam.DEFAULT) final List<XAttrNameParam> xattrNames, @QueryParam(XAttrEncodingParam.NAME) @DefaultValue(XAttrEncodingParam.DEFAULT) final XAttrEncodingParam xattrEncoding )
+DECL|method|get ( @ontext final UserGroupInformation ugi, @QueryParam(DelegationParam.NAME) @DefaultValue(DelegationParam.DEFAULT) final DelegationParam delegation, @QueryParam(UserParam.NAME) @DefaultValue(UserParam.DEFAULT) final UserParam username, @QueryParam(DoAsParam.NAME) @DefaultValue(DoAsParam.DEFAULT) final DoAsParam doAsUser, @PathParam(UriFsPathParam.NAME) final UriFsPathParam path, @QueryParam(GetOpParam.NAME) @DefaultValue(GetOpParam.DEFAULT) final GetOpParam op, @QueryParam(OffsetParam.NAME) @DefaultValue(OffsetParam.DEFAULT) final OffsetParam offset, @QueryParam(LengthParam.NAME) @DefaultValue(LengthParam.DEFAULT) final LengthParam length, @QueryParam(RenewerParam.NAME) @DefaultValue(RenewerParam.DEFAULT) final RenewerParam renewer, @QueryParam(BufferSizeParam.NAME) @DefaultValue(BufferSizeParam.DEFAULT) final BufferSizeParam bufferSize, @QueryParam(XAttrNameParam.NAME) @DefaultValue(XAttrNameParam.DEFAULT) final List<XAttrNameParam> xattrNames, @QueryParam(XAttrEncodingParam.NAME) @DefaultValue(XAttrEncodingParam.DEFAULT) final XAttrEncodingParam xattrEncoding, @QueryParam(ExcludeDatanodesParam.NAME) @DefaultValue(ExcludeDatanodesParam.DEFAULT) final ExcludeDatanodesParam excludeDatanodes )
 specifier|public
 name|Response
 name|get
@@ -6029,6 +6341,24 @@ argument_list|)
 specifier|final
 name|XAttrEncodingParam
 name|xattrEncoding
+parameter_list|,
+annotation|@
+name|QueryParam
+argument_list|(
+name|ExcludeDatanodesParam
+operator|.
+name|NAME
+argument_list|)
+annotation|@
+name|DefaultValue
+argument_list|(
+name|ExcludeDatanodesParam
+operator|.
+name|DEFAULT
+argument_list|)
+specifier|final
+name|ExcludeDatanodesParam
+name|excludeDatanodes
 parameter_list|)
 throws|throws
 name|IOException
@@ -6058,6 +6388,8 @@ argument_list|,
 name|bufferSize
 argument_list|,
 name|xattrEncoding
+argument_list|,
+name|excludeDatanodes
 argument_list|)
 expr_stmt|;
 return|return
@@ -6114,6 +6446,8 @@ argument_list|,
 name|xattrNames
 argument_list|,
 name|xattrEncoding
+argument_list|,
+name|excludeDatanodes
 argument_list|)
 return|;
 block|}
@@ -6128,7 +6462,7 @@ block|}
 argument_list|)
 return|;
 block|}
-DECL|method|get ( final UserGroupInformation ugi, final DelegationParam delegation, final UserParam username, final DoAsParam doAsUser, final String fullpath, final GetOpParam op, final OffsetParam offset, final LengthParam length, final RenewerParam renewer, final BufferSizeParam bufferSize, final List<XAttrNameParam> xattrNames, final XAttrEncodingParam xattrEncoding )
+DECL|method|get ( final UserGroupInformation ugi, final DelegationParam delegation, final UserParam username, final DoAsParam doAsUser, final String fullpath, final GetOpParam op, final OffsetParam offset, final LengthParam length, final RenewerParam renewer, final BufferSizeParam bufferSize, final List<XAttrNameParam> xattrNames, final XAttrEncodingParam xattrEncoding, final ExcludeDatanodesParam excludeDatanodes )
 specifier|private
 name|Response
 name|get
@@ -6183,6 +6517,10 @@ parameter_list|,
 specifier|final
 name|XAttrEncodingParam
 name|xattrEncoding
+parameter_list|,
+specifier|final
+name|ExcludeDatanodesParam
+name|excludeDatanodes
 parameter_list|)
 throws|throws
 name|IOException
@@ -6254,6 +6592,11 @@ argument_list|()
 argument_list|,
 operator|-
 literal|1L
+argument_list|,
+name|excludeDatanodes
+operator|.
+name|getValue
+argument_list|()
 argument_list|,
 name|offset
 argument_list|,
@@ -6531,6 +6874,8 @@ literal|1L
 argument_list|,
 operator|-
 literal|1L
+argument_list|,
+literal|null
 argument_list|)
 decl_stmt|;
 return|return

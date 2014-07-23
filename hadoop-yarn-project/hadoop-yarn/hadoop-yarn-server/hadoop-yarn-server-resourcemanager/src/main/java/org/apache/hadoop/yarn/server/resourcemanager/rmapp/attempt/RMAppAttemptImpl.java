@@ -4494,35 +4494,22 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|// create AMRMToken
-name|AMRMTokenIdentifier
-name|id
-init|=
-operator|new
-name|AMRMTokenIdentifier
-argument_list|(
-name|appAttempt
-operator|.
-name|applicationAttemptId
-argument_list|)
-decl_stmt|;
 name|appAttempt
 operator|.
 name|amrmToken
 operator|=
-operator|new
-name|Token
-argument_list|<
-name|AMRMTokenIdentifier
-argument_list|>
-argument_list|(
-name|id
-argument_list|,
 name|appAttempt
 operator|.
 name|rmContext
 operator|.
 name|getAMRMTokenSecretManager
 argument_list|()
+operator|.
+name|createAndGetAMRMToken
+argument_list|(
+name|appAttempt
+operator|.
+name|applicationAttemptId
 argument_list|)
 expr_stmt|;
 comment|// Add the applicationAttempt to the scheduler and inform the scheduler
@@ -5146,9 +5133,11 @@ operator|.
 name|applicationAttemptId
 argument_list|)
 expr_stmt|;
+comment|// Add attempt to scheduler synchronously to guarantee scheduler
+comment|// knows attempts before AM or NM re-registers.
 name|appAttempt
 operator|.
-name|eventHandler
+name|scheduler
 operator|.
 name|handle
 argument_list|(
@@ -5162,7 +5151,7 @@ argument_list|()
 argument_list|,
 literal|false
 argument_list|,
-literal|false
+literal|true
 argument_list|)
 argument_list|)
 expr_stmt|;
@@ -6515,38 +6504,112 @@ operator|.
 name|getContainerStatus
 argument_list|()
 decl_stmt|;
-name|String
-name|diagnostics
+name|StringBuilder
+name|diagnosticsBuilder
 init|=
+operator|new
+name|StringBuilder
+argument_list|()
+decl_stmt|;
+name|diagnosticsBuilder
+operator|.
+name|append
+argument_list|(
 literal|"AM Container for "
-operator|+
+argument_list|)
+operator|.
+name|append
+argument_list|(
 name|finishEvent
 operator|.
 name|getApplicationAttemptId
 argument_list|()
-operator|+
+argument_list|)
+operator|.
+name|append
+argument_list|(
 literal|" exited with "
-operator|+
+argument_list|)
+operator|.
+name|append
+argument_list|(
 literal|" exitCode: "
-operator|+
+argument_list|)
+operator|.
+name|append
+argument_list|(
 name|status
 operator|.
 name|getExitStatus
 argument_list|()
-operator|+
-literal|". "
-operator|+
-literal|"Check application tracking page: "
-operator|+
+argument_list|)
+operator|.
+name|append
+argument_list|(
+literal|"\n"
+argument_list|)
+expr_stmt|;
+if|if
+condition|(
 name|this
 operator|.
 name|getTrackingUrl
 argument_list|()
-operator|+
-literal|" . Then, click on links to logs of each attempt for detailed output. "
-decl_stmt|;
+operator|!=
+literal|null
+condition|)
+block|{
+name|diagnosticsBuilder
+operator|.
+name|append
+argument_list|(
+literal|"For more detailed output,"
+argument_list|)
+operator|.
+name|append
+argument_list|(
+literal|" check application tracking page:"
+argument_list|)
+operator|.
+name|append
+argument_list|(
+name|this
+operator|.
+name|getTrackingUrl
+argument_list|()
+argument_list|)
+operator|.
+name|append
+argument_list|(
+literal|"Then, click on links to logs of each attempt.\n"
+argument_list|)
+expr_stmt|;
+block|}
+name|diagnosticsBuilder
+operator|.
+name|append
+argument_list|(
+literal|"Diagnostics: "
+argument_list|)
+operator|.
+name|append
+argument_list|(
+name|status
+operator|.
+name|getDiagnostics
+argument_list|()
+argument_list|)
+operator|.
+name|append
+argument_list|(
+literal|"Failing this attempt"
+argument_list|)
+expr_stmt|;
 return|return
-name|diagnostics
+name|diagnosticsBuilder
+operator|.
+name|toString
+argument_list|()
 return|;
 block|}
 DECL|class|FinalTransition

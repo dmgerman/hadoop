@@ -68,6 +68,12 @@ specifier|final
 name|String
 name|user
 decl_stmt|;
+DECL|field|isAppRecovering
+specifier|private
+specifier|final
+name|boolean
+name|isAppRecovering
+decl_stmt|;
 DECL|method|AppAddedSchedulerEvent ( ApplicationId applicationId, String queue, String user)
 specifier|public
 name|AppAddedSchedulerEvent
@@ -80,6 +86,35 @@ name|queue
 parameter_list|,
 name|String
 name|user
+parameter_list|)
+block|{
+name|this
+argument_list|(
+name|applicationId
+argument_list|,
+name|queue
+argument_list|,
+name|user
+argument_list|,
+literal|false
+argument_list|)
+expr_stmt|;
+block|}
+DECL|method|AppAddedSchedulerEvent (ApplicationId applicationId, String queue, String user, boolean isAppRecovering)
+specifier|public
+name|AppAddedSchedulerEvent
+parameter_list|(
+name|ApplicationId
+name|applicationId
+parameter_list|,
+name|String
+name|queue
+parameter_list|,
+name|String
+name|user
+parameter_list|,
+name|boolean
+name|isAppRecovering
 parameter_list|)
 block|{
 name|super
@@ -106,6 +141,12 @@ operator|.
 name|user
 operator|=
 name|user
+expr_stmt|;
+name|this
+operator|.
+name|isAppRecovering
+operator|=
+name|isAppRecovering
 expr_stmt|;
 block|}
 DECL|method|getApplicationId ()
@@ -136,6 +177,16 @@ parameter_list|()
 block|{
 return|return
 name|user
+return|;
+block|}
+DECL|method|getIsAppRecovering ()
+specifier|public
+name|boolean
+name|getIsAppRecovering
+parameter_list|()
+block|{
+return|return
+name|isAppRecovering
 return|;
 block|}
 block|}

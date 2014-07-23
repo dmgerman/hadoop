@@ -422,7 +422,7 @@ name|server
 operator|.
 name|blockmanagement
 operator|.
-name|DatanodeDescriptor
+name|DatanodeStorageInfo
 import|;
 end_import
 
@@ -2959,9 +2959,9 @@ expr_stmt|;
 block|}
 annotation|@
 name|Override
-DECL|method|chooseReplicaToDelete (BlockCollection inode, Block block, short replicationFactor, Collection<DatanodeDescriptor> first, Collection<DatanodeDescriptor> second)
+DECL|method|chooseReplicaToDelete (BlockCollection inode, Block block, short replicationFactor, Collection<DatanodeStorageInfo> first, Collection<DatanodeStorageInfo> second)
 specifier|public
-name|DatanodeDescriptor
+name|DatanodeStorageInfo
 name|chooseReplicaToDelete
 parameter_list|(
 name|BlockCollection
@@ -2975,20 +2975,20 @@ name|replicationFactor
 parameter_list|,
 name|Collection
 argument_list|<
-name|DatanodeDescriptor
+name|DatanodeStorageInfo
 argument_list|>
 name|first
 parameter_list|,
 name|Collection
 argument_list|<
-name|DatanodeDescriptor
+name|DatanodeStorageInfo
 argument_list|>
 name|second
 parameter_list|)
 block|{
 name|Collection
 argument_list|<
-name|DatanodeDescriptor
+name|DatanodeStorageInfo
 argument_list|>
 name|chooseFrom
 init|=
@@ -3004,7 +3004,7 @@ name|second
 decl_stmt|;
 name|List
 argument_list|<
-name|DatanodeDescriptor
+name|DatanodeStorageInfo
 argument_list|>
 name|l
 init|=

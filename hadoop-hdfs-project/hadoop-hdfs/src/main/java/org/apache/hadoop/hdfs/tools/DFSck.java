@@ -377,7 +377,7 @@ literal|"[-list-corruptfileblocks | "
 operator|+
 literal|"[-move | -delete | -openforwrite] "
 operator|+
-literal|"[-files [-blocks [-locations | -racks]]]]\n"
+literal|"[-files [-blocks [-locations | -racks]]]] [-showprogress]\n"
 operator|+
 literal|"\t<path>\tstart checking from this path\n"
 operator|+
@@ -403,7 +403,9 @@ literal|"\t-blocks\tprint out block report\n"
 operator|+
 literal|"\t-locations\tprint out locations for every block\n"
 operator|+
-literal|"\t-racks\tprint out network topology for data-node locations\n\n"
+literal|"\t-racks\tprint out network topology for data-node locations\n"
+operator|+
+literal|"\t-showprogress\tshow progress in output. Default is OFF (no progress)\n\n"
 operator|+
 literal|"Please Note:\n"
 operator|+
@@ -1371,6 +1373,28 @@ operator|.
 name|append
 argument_list|(
 literal|"&racks=1"
+argument_list|)
+expr_stmt|;
+block|}
+elseif|else
+if|if
+condition|(
+name|args
+index|[
+name|idx
+index|]
+operator|.
+name|equals
+argument_list|(
+literal|"-showprogress"
+argument_list|)
+condition|)
+block|{
+name|url
+operator|.
+name|append
+argument_list|(
+literal|"&showprogress=1"
 argument_list|)
 expr_stmt|;
 block|}

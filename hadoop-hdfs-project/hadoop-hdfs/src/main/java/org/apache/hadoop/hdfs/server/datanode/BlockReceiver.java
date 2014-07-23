@@ -234,6 +234,20 @@ name|hadoop
 operator|.
 name|hdfs
 operator|.
+name|StorageType
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
 name|protocol
 operator|.
 name|DatanodeInfo
@@ -820,12 +834,16 @@ specifier|private
 name|long
 name|restartBudget
 decl_stmt|;
-DECL|method|BlockReceiver (final ExtendedBlock block, final DataInputStream in, final String inAddr, final String myAddr, final BlockConstructionStage stage, final long newGs, final long minBytesRcvd, final long maxBytesRcvd, final String clientname, final DatanodeInfo srcDataNode, final DataNode datanode, DataChecksum requestedChecksum, CachingStrategy cachingStrategy)
+DECL|method|BlockReceiver (final ExtendedBlock block, final StorageType storageType, final DataInputStream in, final String inAddr, final String myAddr, final BlockConstructionStage stage, final long newGs, final long minBytesRcvd, final long maxBytesRcvd, final String clientname, final DatanodeInfo srcDataNode, final DataNode datanode, DataChecksum requestedChecksum, CachingStrategy cachingStrategy)
 name|BlockReceiver
 parameter_list|(
 specifier|final
 name|ExtendedBlock
 name|block
+parameter_list|,
+specifier|final
+name|StorageType
+name|storageType
 parameter_list|,
 specifier|final
 name|DataInputStream
@@ -1056,6 +1074,8 @@ name|data
 operator|.
 name|createTemporary
 argument_list|(
+name|storageType
+argument_list|,
 name|block
 argument_list|)
 expr_stmt|;
@@ -1078,6 +1098,8 @@ name|data
 operator|.
 name|createRbw
 argument_list|(
+name|storageType
+argument_list|,
 name|block
 argument_list|)
 expr_stmt|;
@@ -1269,6 +1291,8 @@ name|data
 operator|.
 name|createTemporary
 argument_list|(
+name|storageType
+argument_list|,
 name|block
 argument_list|)
 expr_stmt|;

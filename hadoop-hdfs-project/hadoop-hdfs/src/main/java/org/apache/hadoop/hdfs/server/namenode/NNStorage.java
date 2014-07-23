@@ -3494,6 +3494,12 @@ operator|==
 name|StartupOption
 operator|.
 name|UPGRADE
+operator|||
+name|startOpt
+operator|==
+name|StartupOption
+operator|.
+name|UPGRADEONLY
 condition|)
 block|{
 comment|// If upgrade from a release that does not support federation,

@@ -785,8 +785,13 @@ argument_list|(
 literal|"Exception trying to get groups for user "
 operator|+
 name|user
-argument_list|,
+operator|+
+literal|": "
+operator|+
 name|e
+operator|.
+name|getMessage
+argument_list|()
 argument_list|)
 expr_stmt|;
 return|return
@@ -851,8 +856,13 @@ argument_list|(
 literal|"Exception trying to get groups for user "
 operator|+
 name|user
-argument_list|,
+operator|+
+literal|":"
+operator|+
 name|e
+operator|.
+name|getMessage
+argument_list|()
 argument_list|)
 expr_stmt|;
 return|return

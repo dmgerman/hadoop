@@ -405,6 +405,41 @@ argument_list|(
 name|SLASH_FORMAT_LONG
 argument_list|)
 decl_stmt|;
+comment|// Hostnames are composed of series of 'labels' concatenated with dots.
+comment|// Labels can be between 1-63 characters long, and can only take
+comment|// letters, digits& hyphens. They cannot start and end with hyphens. For
+comment|// more details, refer RFC-1123& http://en.wikipedia.org/wiki/Hostname
+DECL|field|LABEL_FORMAT
+specifier|private
+specifier|static
+specifier|final
+name|String
+name|LABEL_FORMAT
+init|=
+literal|"[a-zA-Z0-9]([a-zA-Z0-9\\-]{0,61}[a-zA-Z0-9])?"
+decl_stmt|;
+DECL|field|HOSTNAME_FORMAT
+specifier|private
+specifier|static
+specifier|final
+name|Pattern
+name|HOSTNAME_FORMAT
+init|=
+name|Pattern
+operator|.
+name|compile
+argument_list|(
+literal|"^("
+operator|+
+name|LABEL_FORMAT
+operator|+
+literal|"\\.)*"
+operator|+
+name|LABEL_FORMAT
+operator|+
+literal|"$"
+argument_list|)
+decl_stmt|;
 DECL|class|AccessCacheEntry
 specifier|static
 class|class
@@ -1930,6 +1965,20 @@ name|host
 argument_list|)
 return|;
 block|}
+elseif|else
+if|if
+condition|(
+name|HOSTNAME_FORMAT
+operator|.
+name|matcher
+argument_list|(
+name|host
+argument_list|)
+operator|.
+name|matches
+argument_list|()
+condition|)
+block|{
 if|if
 condition|(
 name|LOG
@@ -1961,6 +2010,21 @@ argument_list|,
 name|host
 argument_list|)
 return|;
+block|}
+else|else
+block|{
+throw|throw
+operator|new
+name|IllegalArgumentException
+argument_list|(
+literal|"Invalid hostname provided '"
+operator|+
+name|host
+operator|+
+literal|"'"
+argument_list|)
+throw|;
+block|}
 block|}
 block|}
 end_class

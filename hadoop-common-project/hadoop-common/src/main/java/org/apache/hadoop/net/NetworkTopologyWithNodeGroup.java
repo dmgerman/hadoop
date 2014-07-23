@@ -1038,7 +1038,7 @@ block|}
 comment|/**    * Sort nodes array by their distances to<i>reader</i>.    *<p/>    * This is the same as    * {@link NetworkTopology#sortByDistance(Node, Node[], long)} except with a    * four-level network topology which contains the additional network distance    * of a "node group" which is between local and same rack.    *     * @param reader Node where data will be read    * @param nodes Available replicas with the requested data    * @param seed Used to seed the pseudo-random generator that randomizes the    *          set of nodes at each network distance.    */
 annotation|@
 name|Override
-DECL|method|sortByDistance ( Node reader, Node[] nodes, int activeLen, long seed)
+DECL|method|sortByDistance (Node reader, Node[] nodes, int activeLen, long seed, boolean randomizeBlockLocationsPerBlock)
 specifier|public
 name|void
 name|sortByDistance
@@ -1055,6 +1055,9 @@ name|activeLen
 parameter_list|,
 name|long
 name|seed
+parameter_list|,
+name|boolean
+name|randomizeBlockLocationsPerBlock
 parameter_list|)
 block|{
 comment|// If reader is not a datanode (not in NetworkTopology tree), we need to
@@ -1135,6 +1138,8 @@ operator|.
 name|length
 argument_list|,
 name|seed
+argument_list|,
+name|randomizeBlockLocationsPerBlock
 argument_list|)
 expr_stmt|;
 block|}

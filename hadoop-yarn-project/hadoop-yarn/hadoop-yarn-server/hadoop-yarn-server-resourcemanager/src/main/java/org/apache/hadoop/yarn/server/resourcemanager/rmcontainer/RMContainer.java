@@ -24,6 +24,16 @@ end_package
 
 begin_import
 import|import
+name|java
+operator|.
+name|util
+operator|.
+name|List
+import|;
+end_import
+
+begin_import
+import|import
 name|org
 operator|.
 name|apache
@@ -163,6 +173,24 @@ operator|.
 name|records
 operator|.
 name|Resource
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|api
+operator|.
+name|records
+operator|.
+name|ResourceRequest
 import|;
 end_import
 
@@ -285,6 +313,14 @@ function_decl|;
 DECL|method|isAMContainer ()
 name|boolean
 name|isAMContainer
+parameter_list|()
+function_decl|;
+DECL|method|getResourceRequests ()
+name|List
+argument_list|<
+name|ResourceRequest
+argument_list|>
+name|getResourceRequests
 parameter_list|()
 function_decl|;
 block|}

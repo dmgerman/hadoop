@@ -1656,7 +1656,7 @@ literal|false
 return|;
 block|}
 comment|/** Sort the located blocks by the distance to the target host. */
-DECL|method|sortLocatedBlocks (final String targethost, final List<LocatedBlock> locatedblocks)
+DECL|method|sortLocatedBlocks (final String targethost, final List<LocatedBlock> locatedblocks, boolean randomizeBlockLocationsPerBlock)
 specifier|public
 name|void
 name|sortLocatedBlocks
@@ -1671,6 +1671,9 @@ argument_list|<
 name|LocatedBlock
 argument_list|>
 name|locatedblocks
+parameter_list|,
+name|boolean
+name|randomizeBlockLocationsPerBlock
 parameter_list|)
 block|{
 comment|//sort the blocks
@@ -1851,6 +1854,8 @@ argument_list|()
 operator|.
 name|getBlockId
 argument_list|()
+argument_list|,
+name|randomizeBlockLocationsPerBlock
 argument_list|)
 expr_stmt|;
 block|}
@@ -3612,8 +3617,14 @@ argument_list|()
 return|;
 block|}
 comment|/** Start decommissioning the specified datanode. */
+annotation|@
+name|InterfaceAudience
+operator|.
+name|Private
+annotation|@
+name|VisibleForTesting
 DECL|method|startDecommission (DatanodeDescriptor node)
-specifier|private
+specifier|public
 name|void
 name|startDecommission
 parameter_list|(

@@ -580,6 +580,9 @@ name|set
 argument_list|(
 name|DefaultImpersonationProvider
 operator|.
+name|getTestProvider
+argument_list|()
+operator|.
 name|getProxySuperuserGroupConfKey
 argument_list|(
 name|currentUser
@@ -593,6 +596,9 @@ operator|.
 name|set
 argument_list|(
 name|DefaultImpersonationProvider
+operator|.
+name|getTestProvider
+argument_list|()
 operator|.
 name|getProxySuperuserIpConfKey
 argument_list|(

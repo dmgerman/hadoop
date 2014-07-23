@@ -3895,12 +3895,15 @@ block|}
 annotation|@
 name|Override
 comment|// FsDatasetSpi
-DECL|method|createRbw (ExtendedBlock b)
+DECL|method|createRbw ( StorageType storageType, ExtendedBlock b)
 specifier|public
 specifier|synchronized
 name|ReplicaInPipelineInterface
 name|createRbw
 parameter_list|(
+name|StorageType
+name|storageType
+parameter_list|,
 name|ExtendedBlock
 name|b
 parameter_list|)
@@ -3910,6 +3913,8 @@ block|{
 return|return
 name|createTemporary
 argument_list|(
+name|storageType
+argument_list|,
 name|b
 argument_list|)
 return|;
@@ -3917,12 +3922,15 @@ block|}
 annotation|@
 name|Override
 comment|// FsDatasetSpi
-DECL|method|createTemporary (ExtendedBlock b)
+DECL|method|createTemporary ( StorageType storageType, ExtendedBlock b)
 specifier|public
 specifier|synchronized
 name|ReplicaInPipelineInterface
 name|createTemporary
 parameter_list|(
+name|StorageType
+name|storageType
+parameter_list|,
 name|ExtendedBlock
 name|b
 parameter_list|)

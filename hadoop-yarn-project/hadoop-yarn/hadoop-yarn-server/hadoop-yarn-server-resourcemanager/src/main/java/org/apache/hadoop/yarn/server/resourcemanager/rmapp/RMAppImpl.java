@@ -1865,25 +1865,6 @@ operator|new
 name|AppRunningOnNodeTransition
 argument_list|()
 argument_list|)
-comment|// ACCECPTED state can once again receive APP_ACCEPTED event, because on
-comment|// recovery the app returns ACCEPTED state and the app once again go
-comment|// through the scheduler and triggers one more APP_ACCEPTED event at
-comment|// ACCEPTED state.
-operator|.
-name|addTransition
-argument_list|(
-name|RMAppState
-operator|.
-name|ACCEPTED
-argument_list|,
-name|RMAppState
-operator|.
-name|ACCEPTED
-argument_list|,
-name|RMAppEventType
-operator|.
-name|APP_ACCEPTED
-argument_list|)
 comment|// Transitions from RUNNING state
 operator|.
 name|addTransition
@@ -4604,16 +4585,78 @@ operator|.
 name|recoveredFinalState
 return|;
 block|}
-comment|// Notify scheduler about the app on recovery
-operator|new
-name|AddApplicationToSchedulerTransition
-argument_list|()
+comment|// No existent attempts means the attempt associated with this app was not
+comment|// started or started but not yet saved.
+if|if
+condition|(
+name|app
 operator|.
-name|transition
+name|attempts
+operator|.
+name|isEmpty
+argument_list|()
+condition|)
+block|{
+name|app
+operator|.
+name|scheduler
+operator|.
+name|handle
+argument_list|(
+operator|new
+name|AppAddedSchedulerEvent
 argument_list|(
 name|app
+operator|.
+name|applicationId
 argument_list|,
-name|event
+name|app
+operator|.
+name|submissionContext
+operator|.
+name|getQueue
+argument_list|()
+argument_list|,
+name|app
+operator|.
+name|user
+argument_list|)
+argument_list|)
+expr_stmt|;
+return|return
+name|RMAppState
+operator|.
+name|SUBMITTED
+return|;
+block|}
+comment|// Add application to scheduler synchronously to guarantee scheduler
+comment|// knows applications before AM or NM re-registers.
+name|app
+operator|.
+name|scheduler
+operator|.
+name|handle
+argument_list|(
+operator|new
+name|AppAddedSchedulerEvent
+argument_list|(
+name|app
+operator|.
+name|applicationId
+argument_list|,
+name|app
+operator|.
+name|submissionContext
+operator|.
+name|getQueue
+argument_list|()
+argument_list|,
+name|app
+operator|.
+name|user
+argument_list|,
+literal|true
+argument_list|)
 argument_list|)
 expr_stmt|;
 comment|// recover attempts
@@ -4683,24 +4726,6 @@ return|return
 name|RMAppState
 operator|.
 name|ACCEPTED
-return|;
-block|}
-comment|// No existent attempts means the attempt associated with this app was not
-comment|// started or started but not yet saved.
-if|if
-condition|(
-name|app
-operator|.
-name|attempts
-operator|.
-name|isEmpty
-argument_list|()
-condition|)
-block|{
-return|return
-name|RMAppState
-operator|.
-name|SUBMITTED
 return|;
 block|}
 comment|// YARN-1507 is saving the application state after the application is

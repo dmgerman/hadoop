@@ -20,6 +20,20 @@ end_package
 
 begin_import
 import|import
+name|com
+operator|.
+name|google
+operator|.
+name|common
+operator|.
+name|base
+operator|.
+name|Preconditions
+import|;
+end_import
+
+begin_import
+import|import
 name|org
 operator|.
 name|apache
@@ -29,6 +43,20 @@ operator|.
 name|classification
 operator|.
 name|InterfaceAudience
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|classification
+operator|.
+name|InterfaceStability
 import|;
 end_import
 
@@ -104,6 +132,10 @@ end_import
 
 begin_class
 annotation|@
+name|InterfaceStability
+operator|.
+name|Unstable
+annotation|@
 name|InterfaceAudience
 operator|.
 name|LimitedPrivate
@@ -123,6 +155,15 @@ specifier|public
 class|class
 name|ProxyUsers
 block|{
+DECL|field|CONF_HADOOP_PROXYUSER
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|CONF_HADOOP_PROXYUSER
+init|=
+literal|"hadoop.proxyuser"
+decl_stmt|;
 DECL|field|sip
 specifier|private
 specifier|static
@@ -194,7 +235,67 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * refresh configuration    * @param conf    */
+comment|/**    * Refreshes configuration using the specified Proxy user prefix for    * properties.    *    * @param conf configuration    * @param proxyUserPrefix proxy user configuration prefix    */
+DECL|method|refreshSuperUserGroupsConfiguration (Configuration conf, String proxyUserPrefix)
+specifier|public
+specifier|static
+name|void
+name|refreshSuperUserGroupsConfiguration
+parameter_list|(
+name|Configuration
+name|conf
+parameter_list|,
+name|String
+name|proxyUserPrefix
+parameter_list|)
+block|{
+name|Preconditions
+operator|.
+name|checkArgument
+argument_list|(
+name|proxyUserPrefix
+operator|!=
+literal|null
+operator|&&
+operator|!
+name|proxyUserPrefix
+operator|.
+name|isEmpty
+argument_list|()
+argument_list|,
+literal|"prefix cannot be NULL or empty"
+argument_list|)
+expr_stmt|;
+comment|// sip is volatile. Any assignment to it as well as the object's state
+comment|// will be visible to all the other threads.
+name|ImpersonationProvider
+name|ip
+init|=
+name|getInstance
+argument_list|(
+name|conf
+argument_list|)
+decl_stmt|;
+name|ip
+operator|.
+name|init
+argument_list|(
+name|proxyUserPrefix
+argument_list|)
+expr_stmt|;
+name|sip
+operator|=
+name|ip
+expr_stmt|;
+name|ProxyServers
+operator|.
+name|refresh
+argument_list|(
+name|conf
+argument_list|)
+expr_stmt|;
+block|}
+comment|/**    * Refreshes configuration using the default Proxy user prefix for properties.    * @param conf configuration    */
 DECL|method|refreshSuperUserGroupsConfiguration (Configuration conf)
 specifier|public
 specifier|static
@@ -205,20 +306,11 @@ name|Configuration
 name|conf
 parameter_list|)
 block|{
-comment|// sip is volatile. Any assignment to it as well as the object's state
-comment|// will be visible to all the other threads.
-name|sip
-operator|=
-name|getInstance
+name|refreshSuperUserGroupsConfiguration
 argument_list|(
 name|conf
-argument_list|)
-expr_stmt|;
-name|ProxyServers
-operator|.
-name|refresh
-argument_list|(
-name|conf
+argument_list|,
+name|CONF_HADOOP_PROXYUSER
 argument_list|)
 expr_stmt|;
 block|}

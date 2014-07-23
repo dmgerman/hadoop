@@ -1212,6 +1212,10 @@ operator|.
 name|buildTokenServiceForLogicalUri
 argument_list|(
 name|nnUri
+argument_list|,
+name|HdfsConstants
+operator|.
+name|HDFS_URI_SCHEME
 argument_list|)
 argument_list|)
 expr_stmt|;

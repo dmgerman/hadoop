@@ -2555,7 +2555,7 @@ block|}
 block|}
 block|}
 DECL|method|warnOrKillContainer (RMContainer container)
-specifier|private
+specifier|protected
 name|void
 name|warnOrKillContainer
 parameter_list|(
@@ -2667,6 +2667,11 @@ operator|.
 name|PREEMPTED_CONTAINER
 argument_list|)
 decl_stmt|;
+name|recoverResourceRequestForContainer
+argument_list|(
+name|container
+argument_list|)
+expr_stmt|;
 comment|// TODO: Not sure if this ever actually adds this to the list of cleanup
 comment|// containers on the RMNode (see SchedulerNode.releaseContainer()).
 name|completedContainer
@@ -3210,7 +3215,7 @@ name|eventLog
 return|;
 block|}
 comment|/**    * Add a new application to the scheduler, with a given id, queue name, and    * user. This will accept a new app even if the user or queue is above    * configured limits, but the app will not be marked as runnable.    */
-DECL|method|addApplication (ApplicationId applicationId, String queueName, String user)
+DECL|method|addApplication (ApplicationId applicationId, String queueName, String user, boolean isAppRecovering)
 specifier|protected
 specifier|synchronized
 name|void
@@ -3224,6 +3229,9 @@ name|queueName
 parameter_list|,
 name|String
 name|user
+parameter_list|,
+name|boolean
+name|isAppRecovering
 parameter_list|)
 block|{
 if|if
@@ -3456,6 +3464,32 @@ name|size
 argument_list|()
 argument_list|)
 expr_stmt|;
+if|if
+condition|(
+name|isAppRecovering
+condition|)
+block|{
+if|if
+condition|(
+name|LOG
+operator|.
+name|isDebugEnabled
+argument_list|()
+condition|)
+block|{
+name|LOG
+operator|.
+name|debug
+argument_list|(
+name|applicationId
+operator|+
+literal|" is recovering. Skip notifying APP_ACCEPTED"
+argument_list|)
+expr_stmt|;
+block|}
+block|}
+else|else
+block|{
 name|rmContext
 operator|.
 name|getDispatcher
@@ -3478,8 +3512,9 @@ argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
+block|}
 comment|/**    * Add a new application attempt to the scheduler.    */
-DECL|method|addApplicationAttempt ( ApplicationAttemptId applicationAttemptId, boolean transferStateFromPreviousAttempt, boolean shouldNotifyAttemptAdded)
+DECL|method|addApplicationAttempt ( ApplicationAttemptId applicationAttemptId, boolean transferStateFromPreviousAttempt, boolean isAttemptRecovering)
 specifier|protected
 specifier|synchronized
 name|void
@@ -3492,7 +3527,7 @@ name|boolean
 name|transferStateFromPreviousAttempt
 parameter_list|,
 name|boolean
-name|shouldNotifyAttemptAdded
+name|isAttemptRecovering
 parameter_list|)
 block|{
 name|SchedulerApplication
@@ -3644,8 +3679,29 @@ argument_list|)
 expr_stmt|;
 if|if
 condition|(
-name|shouldNotifyAttemptAdded
+name|isAttemptRecovering
 condition|)
+block|{
+if|if
+condition|(
+name|LOG
+operator|.
+name|isDebugEnabled
+argument_list|()
+condition|)
+block|{
+name|LOG
+operator|.
+name|debug
+argument_list|(
+name|applicationAttemptId
+operator|+
+literal|" is recovering. Skipping notifying ATTEMPT_ADDED"
+argument_list|)
+expr_stmt|;
+block|}
+block|}
+else|else
 block|{
 name|rmContext
 operator|.
@@ -3668,25 +3724,6 @@ name|ATTEMPT_ADDED
 argument_list|)
 argument_list|)
 expr_stmt|;
-block|}
-else|else
-block|{
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
-name|LOG
-operator|.
-name|debug
-argument_list|(
-literal|"Skipping notifying ATTEMPT_ADDED"
-argument_list|)
-expr_stmt|;
-block|}
 block|}
 block|}
 comment|/**    * Helper method that attempts to assign the app to a queue. The method is    * responsible to call the appropriate event-handler if the app is rejected.    */
@@ -4980,73 +5017,6 @@ argument_list|)
 return|;
 block|}
 block|}
-comment|/**    * Process a container which has launched on a node, as reported by the node.    */
-DECL|method|containerLaunchedOnNode (ContainerId containerId, FSSchedulerNode node)
-specifier|private
-name|void
-name|containerLaunchedOnNode
-parameter_list|(
-name|ContainerId
-name|containerId
-parameter_list|,
-name|FSSchedulerNode
-name|node
-parameter_list|)
-block|{
-comment|// Get the application for the finished container
-name|FSSchedulerApp
-name|application
-init|=
-name|getCurrentAttemptForContainer
-argument_list|(
-name|containerId
-argument_list|)
-decl_stmt|;
-if|if
-condition|(
-name|application
-operator|==
-literal|null
-condition|)
-block|{
-name|LOG
-operator|.
-name|info
-argument_list|(
-literal|"Unknown application "
-operator|+
-name|containerId
-operator|.
-name|getApplicationAttemptId
-argument_list|()
-operator|.
-name|getApplicationId
-argument_list|()
-operator|+
-literal|" launched container "
-operator|+
-name|containerId
-operator|+
-literal|" on node: "
-operator|+
-name|node
-argument_list|)
-expr_stmt|;
-return|return;
-block|}
-name|application
-operator|.
-name|containerLaunchedOnNode
-argument_list|(
-name|containerId
-argument_list|,
-name|node
-operator|.
-name|getNodeID
-argument_list|()
-argument_list|)
-expr_stmt|;
-block|}
 comment|/**    * Process a heartbeat update from a node.    */
 DECL|method|nodeUpdate (RMNode nm)
 specifier|private
@@ -5274,16 +5244,10 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-DECL|method|continuousScheduling ()
-specifier|private
+DECL|method|continuousSchedulingAttempt ()
 name|void
-name|continuousScheduling
+name|continuousSchedulingAttempt
 parameter_list|()
-block|{
-while|while
-condition|(
-literal|true
-condition|)
 block|{
 name|List
 argument_list|<
@@ -5331,16 +5295,6 @@ range|:
 name|nodeIdList
 control|)
 block|{
-if|if
-condition|(
-name|nodes
-operator|.
-name|containsKey
-argument_list|(
-name|nodeId
-argument_list|)
-condition|)
-block|{
 name|FSSchedulerNode
 name|node
 init|=
@@ -5353,6 +5307,10 @@ try|try
 block|{
 if|if
 condition|(
+name|node
+operator|!=
+literal|null
+operator|&&
 name|Resources
 operator|.
 name|fitsIn
@@ -5381,7 +5339,7 @@ parameter_list|)
 block|{
 name|LOG
 operator|.
-name|warn
+name|error
 argument_list|(
 literal|"Error while attempting scheduling for node "
 operator|+
@@ -5395,40 +5353,6 @@ name|toString
 argument_list|()
 argument_list|,
 name|ex
-argument_list|)
-expr_stmt|;
-block|}
-block|}
-block|}
-try|try
-block|{
-name|Thread
-operator|.
-name|sleep
-argument_list|(
-name|getContinuousSchedulingSleepMs
-argument_list|()
-argument_list|)
-expr_stmt|;
-block|}
-catch|catch
-parameter_list|(
-name|InterruptedException
-name|e
-parameter_list|)
-block|{
-name|LOG
-operator|.
-name|warn
-argument_list|(
-literal|"Error while doing sleep in continuous scheduling: "
-operator|+
-name|e
-operator|.
-name|toString
-argument_list|()
-argument_list|,
-name|e
 argument_list|)
 expr_stmt|;
 block|}
@@ -5459,6 +5383,37 @@ name|NodeId
 name|n2
 parameter_list|)
 block|{
+if|if
+condition|(
+operator|!
+name|nodes
+operator|.
+name|containsKey
+argument_list|(
+name|n1
+argument_list|)
+condition|)
+block|{
+return|return
+literal|1
+return|;
+block|}
+if|if
+condition|(
+operator|!
+name|nodes
+operator|.
+name|containsKey
+argument_list|(
+name|n2
+argument_list|)
+condition|)
+block|{
+return|return
+operator|-
+literal|1
+return|;
+block|}
 return|return
 name|RESOURCE_CALCULATOR
 operator|.
@@ -6012,6 +5967,11 @@ name|appAddedEvent
 operator|.
 name|getUser
 argument_list|()
+argument_list|,
+name|appAddedEvent
+operator|.
+name|getIsAppRecovering
+argument_list|()
 argument_list|)
 expr_stmt|;
 break|break;
@@ -6105,7 +6065,7 @@ argument_list|()
 argument_list|,
 name|appAttemptAddedEvent
 operator|.
-name|getShouldNotifyAttemptAdded
+name|getIsAttemptRecovering
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -6581,9 +6541,50 @@ name|void
 name|run
 parameter_list|()
 block|{
-name|continuousScheduling
+while|while
+condition|(
+operator|!
+name|Thread
+operator|.
+name|currentThread
+argument_list|()
+operator|.
+name|isInterrupted
+argument_list|()
+condition|)
+block|{
+try|try
+block|{
+name|continuousSchedulingAttempt
 argument_list|()
 expr_stmt|;
+name|Thread
+operator|.
+name|sleep
+argument_list|(
+name|getContinuousSchedulingSleepMs
+argument_list|()
+argument_list|)
+expr_stmt|;
+block|}
+catch|catch
+parameter_list|(
+name|InterruptedException
+name|e
+parameter_list|)
+block|{
+name|LOG
+operator|.
+name|error
+argument_list|(
+literal|"Continuous scheduling thread interrupted. Exiting. "
+argument_list|,
+name|e
+argument_list|)
+expr_stmt|;
+return|return;
+block|}
+block|}
 block|}
 block|}
 argument_list|)

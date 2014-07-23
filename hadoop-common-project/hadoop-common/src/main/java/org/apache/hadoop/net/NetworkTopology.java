@@ -3656,7 +3656,7 @@ name|weight
 return|;
 block|}
 comment|/**    * Sort nodes array by network distance to<i>reader</i>.    *<p/>    * In a three-level topology, a node can be either local, on the same rack, or    * on a different rack from the reader. Sorting the nodes based on network    * distance from the reader reduces network traffic and improves performance.    *<p/>    * As an additional twist, we also randomize the nodes at each network    * distance using the provided random seed. This helps with load balancing    * when there is data skew.    *     * @param reader Node where data will be read    * @param nodes Available replicas with the requested data    * @param seed Used to seed the pseudo-random generator that randomizes the    *          set of nodes at each network distance.    */
-DECL|method|sortByDistance (Node reader, Node[] nodes, int activeLen, long seed)
+DECL|method|sortByDistance (Node reader, Node[] nodes, int activeLen, long seed, boolean randomizeBlockLocationsPerBlock)
 specifier|public
 name|void
 name|sortByDistance
@@ -3673,6 +3673,9 @@ name|activeLen
 parameter_list|,
 name|long
 name|seed
+parameter_list|,
+name|boolean
+name|randomizeBlockLocationsPerBlock
 parameter_list|)
 block|{
 comment|/** Sort weights for the nodes array */
@@ -3822,12 +3825,19 @@ block|}
 comment|// Seed is normally the block id
 comment|// This means we use the same pseudo-random order for each block, for
 comment|// potentially better page cache usage.
+comment|// Seed is not used if we want to randomize block location for every block
 name|Random
 name|rand
 init|=
 name|getRandom
 argument_list|()
 decl_stmt|;
+if|if
+condition|(
+operator|!
+name|randomizeBlockLocationsPerBlock
+condition|)
+block|{
 name|rand
 operator|.
 name|setSeed
@@ -3835,6 +3845,7 @@ argument_list|(
 name|seed
 argument_list|)
 expr_stmt|;
+block|}
 name|int
 name|idx
 init|=

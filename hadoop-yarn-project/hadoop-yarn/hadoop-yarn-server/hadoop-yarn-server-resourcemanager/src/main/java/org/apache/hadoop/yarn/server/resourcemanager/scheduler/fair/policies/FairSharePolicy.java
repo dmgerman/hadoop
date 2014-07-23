@@ -302,6 +302,20 @@ name|serialVersionUID
 init|=
 literal|5564969375856699313L
 decl_stmt|;
+DECL|field|ONE
+specifier|private
+specifier|static
+specifier|final
+name|Resource
+name|ONE
+init|=
+name|Resources
+operator|.
+name|createResource
+argument_list|(
+literal|1
+argument_list|)
+decl_stmt|;
 annotation|@
 name|Override
 DECL|method|compare (Schedulable s1, Schedulable s2)
@@ -408,16 +422,6 @@ argument_list|,
 name|minShare2
 argument_list|)
 decl_stmt|;
-name|Resource
-name|one
-init|=
-name|Resources
-operator|.
-name|createResource
-argument_list|(
-literal|1
-argument_list|)
-decl_stmt|;
 name|minShareRatio1
 operator|=
 operator|(
@@ -441,7 +445,7 @@ literal|null
 argument_list|,
 name|minShare1
 argument_list|,
-name|one
+name|ONE
 argument_list|)
 operator|.
 name|getMemory
@@ -470,7 +474,7 @@ literal|null
 argument_list|,
 name|minShare2
 argument_list|,
-name|one
+name|ONE
 argument_list|)
 operator|.
 name|getMemory
