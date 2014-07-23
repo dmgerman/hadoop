@@ -6504,38 +6504,112 @@ operator|.
 name|getContainerStatus
 argument_list|()
 decl_stmt|;
-name|String
-name|diagnostics
+name|StringBuilder
+name|diagnosticsBuilder
 init|=
+operator|new
+name|StringBuilder
+argument_list|()
+decl_stmt|;
+name|diagnosticsBuilder
+operator|.
+name|append
+argument_list|(
 literal|"AM Container for "
-operator|+
+argument_list|)
+operator|.
+name|append
+argument_list|(
 name|finishEvent
 operator|.
 name|getApplicationAttemptId
 argument_list|()
-operator|+
+argument_list|)
+operator|.
+name|append
+argument_list|(
 literal|" exited with "
-operator|+
+argument_list|)
+operator|.
+name|append
+argument_list|(
 literal|" exitCode: "
-operator|+
+argument_list|)
+operator|.
+name|append
+argument_list|(
 name|status
 operator|.
 name|getExitStatus
 argument_list|()
-operator|+
-literal|". "
-operator|+
-literal|"Check application tracking page: "
-operator|+
+argument_list|)
+operator|.
+name|append
+argument_list|(
+literal|"\n"
+argument_list|)
+expr_stmt|;
+if|if
+condition|(
 name|this
 operator|.
 name|getTrackingUrl
 argument_list|()
-operator|+
-literal|" . Then, click on links to logs of each attempt for detailed output. "
-decl_stmt|;
+operator|!=
+literal|null
+condition|)
+block|{
+name|diagnosticsBuilder
+operator|.
+name|append
+argument_list|(
+literal|"For more detailed output,"
+argument_list|)
+operator|.
+name|append
+argument_list|(
+literal|" check application tracking page:"
+argument_list|)
+operator|.
+name|append
+argument_list|(
+name|this
+operator|.
+name|getTrackingUrl
+argument_list|()
+argument_list|)
+operator|.
+name|append
+argument_list|(
+literal|"Then, click on links to logs of each attempt.\n"
+argument_list|)
+expr_stmt|;
+block|}
+name|diagnosticsBuilder
+operator|.
+name|append
+argument_list|(
+literal|"Diagnostics: "
+argument_list|)
+operator|.
+name|append
+argument_list|(
+name|status
+operator|.
+name|getDiagnostics
+argument_list|()
+argument_list|)
+operator|.
+name|append
+argument_list|(
+literal|"Failing this attempt"
+argument_list|)
+expr_stmt|;
 return|return
-name|diagnostics
+name|diagnosticsBuilder
+operator|.
+name|toString
+argument_list|()
 return|;
 block|}
 DECL|class|FinalTransition

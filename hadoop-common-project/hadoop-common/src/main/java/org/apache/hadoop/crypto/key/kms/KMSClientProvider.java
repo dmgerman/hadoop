@@ -3984,7 +3984,7 @@ name|checkNotNull
 argument_list|(
 name|encryptedKeyVersion
 operator|.
-name|getKeyVersionName
+name|getEncryptionKeyVersionName
 argument_list|()
 argument_list|,
 literal|"versionName"
@@ -3994,7 +3994,7 @@ name|checkNotNull
 argument_list|(
 name|encryptedKeyVersion
 operator|.
-name|getIv
+name|getEncryptedKeyIv
 argument_list|()
 argument_list|,
 literal|"iv"
@@ -4006,7 +4006,7 @@ name|checkArgument
 argument_list|(
 name|encryptedKeyVersion
 operator|.
-name|getEncryptedKey
+name|getEncryptedKeyVersion
 argument_list|()
 operator|.
 name|getVersionName
@@ -4027,7 +4027,7 @@ name|EK
 argument_list|,
 name|encryptedKeyVersion
 operator|.
-name|getEncryptedKey
+name|getEncryptedKeyVersion
 argument_list|()
 operator|.
 name|getVersionName
@@ -4038,7 +4038,7 @@ name|checkNotNull
 argument_list|(
 name|encryptedKeyVersion
 operator|.
-name|getEncryptedKey
+name|getEncryptedKeyVersion
 argument_list|()
 argument_list|,
 literal|"encryptedKey"
@@ -4101,7 +4101,7 @@ name|NAME_FIELD
 argument_list|,
 name|encryptedKeyVersion
 operator|.
-name|getKeyName
+name|getEncryptionKeyName
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -4119,7 +4119,7 @@ name|encodeBase64String
 argument_list|(
 name|encryptedKeyVersion
 operator|.
-name|getIv
+name|getEncryptedKeyIv
 argument_list|()
 argument_list|)
 argument_list|)
@@ -4138,7 +4138,7 @@ name|encodeBase64String
 argument_list|(
 name|encryptedKeyVersion
 operator|.
-name|getEncryptedKey
+name|getEncryptedKeyVersion
 argument_list|()
 operator|.
 name|getMaterial
@@ -4157,7 +4157,7 @@ name|KEY_VERSION_RESOURCE
 argument_list|,
 name|encryptedKeyVersion
 operator|.
-name|getKeyVersionName
+name|getEncryptionKeyVersionName
 argument_list|()
 argument_list|,
 name|KMSRESTConstants

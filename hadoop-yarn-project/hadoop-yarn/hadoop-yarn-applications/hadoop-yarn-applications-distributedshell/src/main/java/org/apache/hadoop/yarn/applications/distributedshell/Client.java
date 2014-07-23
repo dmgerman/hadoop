@@ -2680,19 +2680,6 @@ argument_list|(
 name|appName
 argument_list|)
 expr_stmt|;
-comment|// Set up the container launch context for the application master
-name|ContainerLaunchContext
-name|amContainer
-init|=
-name|Records
-operator|.
-name|newRecord
-argument_list|(
-name|ContainerLaunchContext
-operator|.
-name|class
-argument_list|)
-decl_stmt|;
 comment|// set local resources for the application master
 comment|// local files or archives as needed
 comment|// In this scenario, the jar file for the application master is part of the local resources
@@ -2959,14 +2946,6 @@ argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
-comment|// Set local resource info into app master container launch context
-name|amContainer
-operator|.
-name|setLocalResources
-argument_list|(
-name|localResources
-argument_list|)
-expr_stmt|;
 comment|// Set the necessary security tokens as needed
 comment|//amContainer.setContainerTokens(containerToken);
 comment|// Set the env variables to be setup in the env where the application master will be run
@@ -3170,13 +3149,6 @@ name|classPathEnv
 operator|.
 name|toString
 argument_list|()
-argument_list|)
-expr_stmt|;
-name|amContainer
-operator|.
-name|setEnvironment
-argument_list|(
-name|env
 argument_list|)
 expr_stmt|;
 comment|// Set the necessary command to execute the application master
@@ -3435,42 +3407,42 @@ name|toString
 argument_list|()
 argument_list|)
 expr_stmt|;
+comment|// Set up the container launch context for the application master
+name|ContainerLaunchContext
 name|amContainer
+init|=
+name|ContainerLaunchContext
 operator|.
-name|setCommands
+name|newInstance
 argument_list|(
+name|localResources
+argument_list|,
+name|env
+argument_list|,
 name|commands
+argument_list|,
+literal|null
+argument_list|,
+literal|null
+argument_list|,
+literal|null
 argument_list|)
-expr_stmt|;
+decl_stmt|;
 comment|// Set up resource type requirements
 comment|// For now, both memory and vcores are supported, so we set memory and
 comment|// vcores requirements
 name|Resource
 name|capability
 init|=
-name|Records
-operator|.
-name|newRecord
-argument_list|(
 name|Resource
 operator|.
-name|class
-argument_list|)
-decl_stmt|;
-name|capability
-operator|.
-name|setMemory
+name|newInstance
 argument_list|(
 name|amMemory
-argument_list|)
-expr_stmt|;
-name|capability
-operator|.
-name|setVirtualCores
-argument_list|(
+argument_list|,
 name|amVCores
 argument_list|)
-expr_stmt|;
+decl_stmt|;
 name|appContext
 operator|.
 name|setResource
@@ -3490,6 +3462,7 @@ name|isSecurityEnabled
 argument_list|()
 condition|)
 block|{
+comment|// Note: Credentials class is marked as LimitedPrivate for HDFS and MapReduce
 name|Credentials
 name|credentials
 init|=
@@ -3635,26 +3608,17 @@ name|amContainer
 argument_list|)
 expr_stmt|;
 comment|// Set the priority for the application master
+comment|// TODO - what is the range for priority? how to decide?
 name|Priority
 name|pri
 init|=
-name|Records
-operator|.
-name|newRecord
-argument_list|(
 name|Priority
 operator|.
-name|class
-argument_list|)
-decl_stmt|;
-comment|// TODO - what is the range for priority? how to decide?
-name|pri
-operator|.
-name|setPriority
+name|newInstance
 argument_list|(
 name|amPriority
 argument_list|)
-expr_stmt|;
+decl_stmt|;
 name|appContext
 operator|.
 name|setPriority
