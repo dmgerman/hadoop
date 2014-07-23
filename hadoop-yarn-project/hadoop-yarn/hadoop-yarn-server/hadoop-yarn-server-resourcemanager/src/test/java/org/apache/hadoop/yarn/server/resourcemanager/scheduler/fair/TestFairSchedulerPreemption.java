@@ -563,7 +563,7 @@ argument_list|)
 expr_stmt|;
 name|scheduler
 operator|.
-name|UPDATE_INTERVAL
+name|updateInterval
 operator|=
 literal|60
 operator|*
