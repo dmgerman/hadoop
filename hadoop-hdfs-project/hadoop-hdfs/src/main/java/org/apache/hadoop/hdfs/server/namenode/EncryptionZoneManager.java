@@ -973,13 +973,6 @@ name|CREATE
 argument_list|)
 argument_list|)
 expr_stmt|;
-name|ezi
-operator|=
-name|getEncryptionZoneForPath
-argument_list|(
-name|srcIIP
-argument_list|)
-expr_stmt|;
 return|return
 name|ezXAttr
 return|;
