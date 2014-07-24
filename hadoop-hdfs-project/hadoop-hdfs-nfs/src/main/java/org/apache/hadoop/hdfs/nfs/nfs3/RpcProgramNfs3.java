@@ -13776,6 +13776,17 @@ literal|false
 return|;
 block|}
 comment|// Check export table
+if|if
+condition|(
+name|exports
+operator|==
+literal|null
+condition|)
+block|{
+return|return
+literal|false
+return|;
+block|}
 name|InetAddress
 name|client
 init|=

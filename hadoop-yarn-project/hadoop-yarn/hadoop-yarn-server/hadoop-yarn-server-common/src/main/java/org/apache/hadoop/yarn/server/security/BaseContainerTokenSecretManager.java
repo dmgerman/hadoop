@@ -229,7 +229,7 @@ name|class
 argument_list|)
 decl_stmt|;
 DECL|field|serialNo
-specifier|private
+specifier|protected
 name|int
 name|serialNo
 init|=

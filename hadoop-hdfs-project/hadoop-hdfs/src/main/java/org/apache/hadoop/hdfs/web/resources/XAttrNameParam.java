@@ -75,7 +75,7 @@ name|Pattern
 operator|.
 name|compile
 argument_list|(
-literal|"^(user\\.|trusted\\.|system\\.|security\\.).+"
+literal|".*"
 argument_list|)
 argument_list|)
 decl_stmt|;

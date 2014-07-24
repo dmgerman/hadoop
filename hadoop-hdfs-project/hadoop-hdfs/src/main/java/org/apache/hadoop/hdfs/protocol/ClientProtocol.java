@@ -2224,7 +2224,7 @@ name|IOException
 function_decl|;
 comment|/**    * Remove xattr of a file or directory.Value in xAttr parameter is ignored.    * Name must be prefixed with user/trusted/security/system.    *<p/>    * A regular user only can remove xattr of "user" namespace.    * A super user can remove xattr of "user" and "trusted" namespace.    * XAttr of "security" and "system" namespace is only used/exposed     * internally to the FS impl.    *<p/>    * @see<a href="http://en.wikipedia.org/wiki/Extended_file_attributes">    * http://en.wikipedia.org/wiki/Extended_file_attributes</a>    * @param src file or directory    * @param xAttr<code>XAttr</code> to remove    * @throws IOException    */
 annotation|@
-name|Idempotent
+name|AtMostOnce
 DECL|method|removeXAttr (String src, XAttr xAttr)
 specifier|public
 name|void

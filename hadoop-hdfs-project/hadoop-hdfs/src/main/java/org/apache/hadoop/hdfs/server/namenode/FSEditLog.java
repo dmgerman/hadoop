@@ -5376,7 +5376,7 @@ name|op
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|logRemoveXAttrs (String src, List<XAttr> xAttrs)
+DECL|method|logRemoveXAttrs (String src, List<XAttr> xAttrs, boolean toLogRpcIds)
 name|void
 name|logRemoveXAttrs
 parameter_list|(
@@ -5388,6 +5388,9 @@ argument_list|<
 name|XAttr
 argument_list|>
 name|xAttrs
+parameter_list|,
+name|boolean
+name|toLogRpcIds
 parameter_list|)
 block|{
 specifier|final
@@ -5410,6 +5413,13 @@ operator|.
 name|xAttrs
 operator|=
 name|xAttrs
+expr_stmt|;
+name|logRpcIds
+argument_list|(
+name|op
+argument_list|,
+name|toLogRpcIds
+argument_list|)
 expr_stmt|;
 name|logEdit
 argument_list|(
