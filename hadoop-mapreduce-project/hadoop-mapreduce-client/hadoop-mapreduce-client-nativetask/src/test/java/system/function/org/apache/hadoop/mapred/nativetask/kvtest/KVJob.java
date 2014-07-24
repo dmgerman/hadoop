@@ -44,6 +44,20 @@ end_import
 
 begin_import
 import|import
+name|com
+operator|.
+name|google
+operator|.
+name|common
+operator|.
+name|primitives
+operator|.
+name|Longs
+import|;
+end_import
+
+begin_import
+import|import
 name|org
 operator|.
 name|apache
@@ -117,24 +131,6 @@ operator|.
 name|testutil
 operator|.
 name|TestConstants
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|mapred
-operator|.
-name|nativetask
-operator|.
-name|util
-operator|.
-name|BytesUtil
 import|;
 end_import
 
@@ -483,9 +479,9 @@ name|BytesFactory
 operator|.
 name|newObject
 argument_list|(
-name|BytesUtil
+name|Longs
 operator|.
-name|toBytes
+name|toByteArray
 argument_list|(
 name|resultlong
 argument_list|)
