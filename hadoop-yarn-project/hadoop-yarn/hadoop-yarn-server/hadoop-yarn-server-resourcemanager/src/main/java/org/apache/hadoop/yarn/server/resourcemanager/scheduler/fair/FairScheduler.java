@@ -1423,12 +1423,10 @@ literal|1
 argument_list|)
 decl_stmt|;
 comment|// How often fair shares are re-calculated (ms)
-DECL|field|UPDATE_INTERVAL
+DECL|field|updateInterval
 specifier|protected
 name|long
-name|UPDATE_INTERVAL
-init|=
-literal|500
+name|updateInterval
 decl_stmt|;
 DECL|field|UPDATE_DEBUG_FREQUENCY
 specifier|private
@@ -1849,7 +1847,7 @@ return|return
 name|queueMgr
 return|;
 block|}
-comment|/**    * A runnable which calls {@link FairScheduler#update()} every    *<code>UPDATE_INTERVAL</code> milliseconds.    */
+comment|/**    * A runnable which calls {@link FairScheduler#update()} every    *<code>updateInterval</code> milliseconds.    */
 DECL|class|UpdateThread
 specifier|private
 class|class
@@ -1874,7 +1872,7 @@ name|Thread
 operator|.
 name|sleep
 argument_list|(
-name|UPDATE_INTERVAL
+name|updateInterval
 argument_list|)
 expr_stmt|;
 name|update
@@ -6412,6 +6410,47 @@ operator|.
 name|getUsePortForNodeName
 argument_list|()
 expr_stmt|;
+name|updateInterval
+operator|=
+name|this
+operator|.
+name|conf
+operator|.
+name|getUpdateInterval
+argument_list|()
+expr_stmt|;
+if|if
+condition|(
+name|updateInterval
+operator|<
+literal|0
+condition|)
+block|{
+name|updateInterval
+operator|=
+name|FairSchedulerConfiguration
+operator|.
+name|DEFAULT_UPDATE_INTERVAL_MS
+expr_stmt|;
+name|LOG
+operator|.
+name|warn
+argument_list|(
+name|FairSchedulerConfiguration
+operator|.
+name|UPDATE_INTERVAL_MS
+operator|+
+literal|" is invalid, so using default value "
+operator|+
+operator|+
+name|FairSchedulerConfiguration
+operator|.
+name|DEFAULT_UPDATE_INTERVAL_MS
+operator|+
+literal|" ms instead"
+argument_list|)
+expr_stmt|;
+block|}
 name|rootMetrics
 operator|=
 name|FSQueueMetrics

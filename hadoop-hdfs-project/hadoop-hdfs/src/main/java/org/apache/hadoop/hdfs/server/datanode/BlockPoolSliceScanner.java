@@ -626,6 +626,26 @@ operator|.
 name|LAST_SCAN_TIME_COMPARATOR
 argument_list|)
 decl_stmt|;
+DECL|field|newBlockInfoSet
+specifier|private
+specifier|final
+name|SortedSet
+argument_list|<
+name|BlockScanInfo
+argument_list|>
+name|newBlockInfoSet
+init|=
+operator|new
+name|TreeSet
+argument_list|<
+name|BlockScanInfo
+argument_list|>
+argument_list|(
+name|BlockScanInfo
+operator|.
+name|LAST_SCAN_TIME_COMPARATOR
+argument_list|)
+decl_stmt|;
 DECL|field|blockMap
 specifier|private
 specifier|final
@@ -1134,6 +1154,8 @@ comment|//still keep 'info.lastScanType' to NONE.
 name|addBlockInfo
 argument_list|(
 name|info
+argument_list|,
+literal|false
 argument_list|)
 expr_stmt|;
 block|}
@@ -1228,7 +1250,8 @@ block|}
 comment|// Should we change throttler bandwidth every time bytesLeft changes?
 comment|// not really required.
 block|}
-DECL|method|addBlockInfo (BlockScanInfo info)
+comment|/**    * Add the BlockScanInfo to sorted set of blockScanInfo    * @param info BlockScanInfo to be added    * @param isNewBlock true if the block is the new Block, false if    *          BlockScanInfo is being updated with new scanTime    */
+DECL|method|addBlockInfo (BlockScanInfo info, boolean isNewBlock)
 specifier|private
 specifier|synchronized
 name|void
@@ -1236,18 +1259,57 @@ name|addBlockInfo
 parameter_list|(
 name|BlockScanInfo
 name|info
+parameter_list|,
+name|boolean
+name|isNewBlock
 parameter_list|)
 block|{
 name|boolean
 name|added
 init|=
+literal|false
+decl_stmt|;
+if|if
+condition|(
+name|isNewBlock
+condition|)
+block|{
+comment|// check whether the block already present
+name|boolean
+name|exists
+init|=
+name|blockInfoSet
+operator|.
+name|contains
+argument_list|(
+name|info
+argument_list|)
+decl_stmt|;
+name|added
+operator|=
+operator|!
+name|exists
+operator|&&
+name|newBlockInfoSet
+operator|.
+name|add
+argument_list|(
+name|info
+argument_list|)
+expr_stmt|;
+block|}
+else|else
+block|{
+name|added
+operator|=
 name|blockInfoSet
 operator|.
 name|add
 argument_list|(
 name|info
 argument_list|)
-decl_stmt|;
+expr_stmt|;
+block|}
 name|blockMap
 operator|.
 name|put
@@ -1294,6 +1356,22 @@ argument_list|(
 name|info
 argument_list|)
 decl_stmt|;
+if|if
+condition|(
+operator|!
+name|exists
+condition|)
+block|{
+name|exists
+operator|=
+name|newBlockInfoSet
+operator|.
+name|remove
+argument_list|(
+name|info
+argument_list|)
+expr_stmt|;
+block|}
 name|blockMap
 operator|.
 name|remove
@@ -1399,6 +1477,8 @@ expr_stmt|;
 name|addBlockInfo
 argument_list|(
 name|info
+argument_list|,
+literal|false
 argument_list|)
 expr_stmt|;
 block|}
@@ -1535,6 +1615,8 @@ expr_stmt|;
 name|addBlockInfo
 argument_list|(
 name|info
+argument_list|,
+literal|true
 argument_list|)
 expr_stmt|;
 name|adjustThrottler
@@ -1706,6 +1788,8 @@ expr_stmt|;
 name|addBlockInfo
 argument_list|(
 name|info
+argument_list|,
+literal|false
 argument_list|)
 expr_stmt|;
 comment|// Don't update meta data if the verification failed.
@@ -2906,6 +2990,8 @@ expr_stmt|;
 name|addBlockInfo
 argument_list|(
 name|info
+argument_list|,
+literal|false
 argument_list|)
 expr_stmt|;
 block|}
@@ -3305,6 +3391,9 @@ block|{
 name|rollVerificationLogs
 argument_list|()
 expr_stmt|;
+name|rollNewBlocksInfo
+argument_list|()
+expr_stmt|;
 if|if
 condition|(
 name|LOG
@@ -3324,6 +3413,36 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
+block|}
+comment|// add new blocks to scan in next iteration
+DECL|method|rollNewBlocksInfo ()
+specifier|private
+specifier|synchronized
+name|void
+name|rollNewBlocksInfo
+parameter_list|()
+block|{
+for|for
+control|(
+name|BlockScanInfo
+name|newBlock
+range|:
+name|newBlockInfoSet
+control|)
+block|{
+name|blockInfoSet
+operator|.
+name|add
+argument_list|(
+name|newBlock
+argument_list|)
+expr_stmt|;
+block|}
+name|newBlockInfoSet
+operator|.
+name|clear
+argument_list|()
+expr_stmt|;
 block|}
 DECL|method|rollVerificationLogs ()
 specifier|private

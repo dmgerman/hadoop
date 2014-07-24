@@ -682,6 +682,27 @@ init|=
 operator|-
 literal|1
 decl_stmt|;
+comment|/** The update interval for calculating resources in FairScheduler .*/
+DECL|field|UPDATE_INTERVAL_MS
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|UPDATE_INTERVAL_MS
+init|=
+name|CONF_PREFIX
+operator|+
+literal|"update-interval-ms"
+decl_stmt|;
+DECL|field|DEFAULT_UPDATE_INTERVAL_MS
+specifier|public
+specifier|static
+specifier|final
+name|int
+name|DEFAULT_UPDATE_INTERVAL_MS
+init|=
+literal|500
+decl_stmt|;
 DECL|method|FairSchedulerConfiguration ()
 specifier|public
 name|FairSchedulerConfiguration
@@ -1168,6 +1189,21 @@ name|ex
 argument_list|)
 throw|;
 block|}
+block|}
+DECL|method|getUpdateInterval ()
+specifier|public
+name|long
+name|getUpdateInterval
+parameter_list|()
+block|{
+return|return
+name|getLong
+argument_list|(
+name|UPDATE_INTERVAL_MS
+argument_list|,
+name|DEFAULT_UPDATE_INTERVAL_MS
+argument_list|)
+return|;
 block|}
 DECL|method|findResource (String val, String units)
 specifier|private

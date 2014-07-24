@@ -310,6 +310,8 @@ literal|1000
 operator|*
 literal|1000
 decl_stmt|;
+try|try
+block|{
 name|exports
 operator|=
 operator|new
@@ -322,6 +324,26 @@ argument_list|,
 name|matchHosts
 argument_list|)
 expr_stmt|;
+block|}
+catch|catch
+parameter_list|(
+name|IllegalArgumentException
+name|e
+parameter_list|)
+block|{
+name|LOG
+operator|.
+name|error
+argument_list|(
+literal|"Invalid NFS Exports provided: "
+argument_list|,
+name|e
+argument_list|)
+expr_stmt|;
+return|return
+name|exports
+return|;
+block|}
 block|}
 return|return
 name|exports
