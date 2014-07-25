@@ -715,6 +715,11 @@ argument_list|(
 name|zkTester
 argument_list|)
 expr_stmt|;
+name|testAMRMTokenSecretManagerStateStore
+argument_list|(
+name|zkTester
+argument_list|)
+expr_stmt|;
 block|}
 DECL|method|createHARMConf ( String rmIds, String rmId, int adminPort)
 specifier|private

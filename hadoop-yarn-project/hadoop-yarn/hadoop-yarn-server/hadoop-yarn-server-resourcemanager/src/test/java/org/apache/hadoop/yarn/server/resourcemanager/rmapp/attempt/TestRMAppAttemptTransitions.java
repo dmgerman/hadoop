@@ -1645,6 +1645,8 @@ operator|new
 name|AMRMTokenSecretManager
 argument_list|(
 name|conf
+argument_list|,
+name|rmContext
 argument_list|)
 argument_list|)
 decl_stmt|;
