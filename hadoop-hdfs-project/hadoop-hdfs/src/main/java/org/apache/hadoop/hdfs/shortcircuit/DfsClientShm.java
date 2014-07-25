@@ -129,7 +129,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * DfsClientShm is a subclass of ShortCircuitShm which is used by the  * DfsClient.  * When the UNIX domain socket associated with this shared memory segment  * closes unexpectedly, we mark the slots inside this segment as stale.  * ShortCircuitReplica objects that contain stale slots are themselves stale,  * and will not be used to service new reads or mmap operations.  * However, in-progress read or mmap operations will continue to proceed.  * Once the last slot is deallocated, the segment can be safely munmapped.  */
+comment|/**  * DfsClientShm is a subclass of ShortCircuitShm which is used by the  * DfsClient.  * When the UNIX domain socket associated with this shared memory segment  * closes unexpectedly, we mark the slots inside this segment as disconnected.  * ShortCircuitReplica objects that contain disconnected slots are stale,  * and will not be used to service new reads or mmap operations.  * However, in-progress read or mmap operations will continue to proceed.  * Once the last slot is deallocated, the segment can be safely munmapped.  *  * Slots may also become stale because the associated replica has been deleted  * on the DataNode.  In this case, the DataNode will clear the 'valid' bit.  * The client will then see these slots as stale (see  * #{ShortCircuitReplica#isStale}).  */
 end_comment
 
 begin_class
@@ -159,10 +159,10 @@ name|DomainPeer
 name|peer
 decl_stmt|;
 comment|/**    * True if this shared memory segment has lost its connection to the    * DataNode.    *    * {@link DfsClientShm#handle} sets this to true.    */
-DECL|field|stale
+DECL|field|disconnected
 specifier|private
 name|boolean
-name|stale
+name|disconnected
 init|=
 literal|false
 decl_stmt|;
@@ -224,16 +224,16 @@ return|return
 name|peer
 return|;
 block|}
-comment|/**    * Determine if the shared memory segment is stale.    *    * This must be called with the DfsClientShmManager lock held.    *    * @return   True if the shared memory segment is stale.    */
-DECL|method|isStale ()
+comment|/**    * Determine if the shared memory segment is disconnected from the DataNode.    *    * This must be called with the DfsClientShmManager lock held.    *    * @return   True if the shared memory segment is stale.    */
+DECL|method|isDisconnected ()
 specifier|public
 specifier|synchronized
 name|boolean
-name|isStale
+name|isDisconnected
 parameter_list|()
 block|{
 return|return
-name|stale
+name|disconnected
 return|;
 block|}
 comment|/**    * Handle the closure of the UNIX domain socket associated with this shared    * memory segment by marking this segment as stale.    *    * If there are no slots associated with this shared memory segment, it will    * be freed immediately in this function.    */
@@ -266,10 +266,10 @@ operator|.
 name|checkState
 argument_list|(
 operator|!
-name|stale
+name|disconnected
 argument_list|)
 expr_stmt|;
-name|stale
+name|disconnected
 operator|=
 literal|true
 expr_stmt|;
