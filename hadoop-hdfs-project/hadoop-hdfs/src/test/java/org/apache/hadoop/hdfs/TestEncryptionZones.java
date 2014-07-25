@@ -719,6 +719,26 @@ argument_list|,
 name|conf
 argument_list|)
 expr_stmt|;
+comment|// Need to set the client's KeyProvider to the NN's for JKS,
+comment|// else the updates do not get flushed properly
+name|fs
+operator|.
+name|getClient
+argument_list|()
+operator|.
+name|provider
+operator|=
+name|cluster
+operator|.
+name|getNameNode
+argument_list|()
+operator|.
+name|getNamesystem
+argument_list|()
+operator|.
+name|getProvider
+argument_list|()
+expr_stmt|;
 block|}
 annotation|@
 name|After

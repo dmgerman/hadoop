@@ -24,6 +24,42 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|crypto
+operator|.
+name|key
+operator|.
+name|KeyProvider
+operator|.
+name|KeyVersion
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|crypto
+operator|.
+name|key
+operator|.
+name|KeyProviderCryptoExtension
+operator|.
+name|EncryptedKeyVersion
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|fs
 operator|.
 name|CommonConfigurationKeys
@@ -870,6 +906,16 @@ begin_import
 import|import
 name|java
 operator|.
+name|security
+operator|.
+name|GeneralSecurityException
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
 name|util
 operator|.
 name|ArrayList
@@ -1129,6 +1175,22 @@ operator|.
 name|crypto
 operator|.
 name|CryptoOutputStream
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|crypto
+operator|.
+name|key
+operator|.
+name|KeyProviderCryptoExtension
 import|;
 end_import
 
@@ -3033,6 +3095,12 @@ name|CipherSuite
 argument_list|>
 name|cipherSuites
 decl_stmt|;
+annotation|@
+name|VisibleForTesting
+DECL|field|provider
+name|KeyProviderCryptoExtension
+name|provider
+decl_stmt|;
 comment|/**    * DFSClient configuration     */
 DECL|class|Conf
 specifier|public
@@ -4518,6 +4586,45 @@ name|getCipherSuite
 argument_list|()
 argument_list|)
 expr_stmt|;
+name|provider
+operator|=
+name|DFSUtil
+operator|.
+name|createKeyProviderCryptoExtension
+argument_list|(
+name|conf
+argument_list|)
+expr_stmt|;
+if|if
+condition|(
+name|provider
+operator|==
+literal|null
+condition|)
+block|{
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"No KeyProvider found."
+argument_list|)
+expr_stmt|;
+block|}
+else|else
+block|{
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"Found KeyProvider: "
+operator|+
+name|provider
+operator|.
+name|toString
+argument_list|()
+argument_list|)
+expr_stmt|;
+block|}
 name|int
 name|numResponseToDrop
 init|=
@@ -7376,6 +7483,84 @@ return|return
 name|volumeBlockLocations
 return|;
 block|}
+comment|/**    * Decrypts a EDEK by consulting the KeyProvider.    */
+DECL|method|decryptEncryptedDataEncryptionKey (FileEncryptionInfo feInfo)
+specifier|private
+name|KeyVersion
+name|decryptEncryptedDataEncryptionKey
+parameter_list|(
+name|FileEncryptionInfo
+name|feInfo
+parameter_list|)
+throws|throws
+name|IOException
+block|{
+if|if
+condition|(
+name|provider
+operator|==
+literal|null
+condition|)
+block|{
+throw|throw
+operator|new
+name|IOException
+argument_list|(
+literal|"No KeyProvider is configured, cannot access"
+operator|+
+literal|" an encrypted file"
+argument_list|)
+throw|;
+block|}
+name|EncryptedKeyVersion
+name|ekv
+init|=
+name|EncryptedKeyVersion
+operator|.
+name|createForDecryption
+argument_list|(
+name|feInfo
+operator|.
+name|getEzKeyVersionName
+argument_list|()
+argument_list|,
+name|feInfo
+operator|.
+name|getIV
+argument_list|()
+argument_list|,
+name|feInfo
+operator|.
+name|getEncryptedDataEncryptionKey
+argument_list|()
+argument_list|)
+decl_stmt|;
+try|try
+block|{
+return|return
+name|provider
+operator|.
+name|decryptEncryptedKey
+argument_list|(
+name|ekv
+argument_list|)
+return|;
+block|}
+catch|catch
+parameter_list|(
+name|GeneralSecurityException
+name|e
+parameter_list|)
+block|{
+throw|throw
+operator|new
+name|IOException
+argument_list|(
+name|e
+argument_list|)
+throw|;
+block|}
+block|}
 comment|/**    * Wraps the stream in a CryptoInputStream if the underlying file is    * encrypted.    */
 DECL|method|createWrappedInputStream (DFSInputStream dfsis)
 specifier|public
@@ -7405,6 +7590,14 @@ literal|null
 condition|)
 block|{
 comment|// File is encrypted, wrap the stream in a crypto stream.
+name|KeyVersion
+name|decrypted
+init|=
+name|decryptEncryptedDataEncryptionKey
+argument_list|(
+name|feInfo
+argument_list|)
+decl_stmt|;
 specifier|final
 name|CryptoInputStream
 name|cryptoIn
@@ -7426,9 +7619,9 @@ name|getCipherSuite
 argument_list|()
 argument_list|)
 argument_list|,
-name|feInfo
+name|decrypted
 operator|.
-name|getEncryptedDataEncryptionKey
+name|getMaterial
 argument_list|()
 argument_list|,
 name|feInfo
@@ -7447,7 +7640,7 @@ return|;
 block|}
 else|else
 block|{
-comment|// No key/IV pair so no encryption.
+comment|// No FileEncryptionInfo so no encryption.
 return|return
 operator|new
 name|HdfsDataInputStream
@@ -7522,6 +7715,14 @@ literal|null
 condition|)
 block|{
 comment|// File is encrypted, wrap the stream in a crypto stream.
+name|KeyVersion
+name|decrypted
+init|=
+name|decryptEncryptedDataEncryptionKey
+argument_list|(
+name|feInfo
+argument_list|)
+decl_stmt|;
 specifier|final
 name|CryptoOutputStream
 name|cryptoOut
@@ -7533,9 +7734,9 @@ name|dfsos
 argument_list|,
 name|codec
 argument_list|,
-name|feInfo
+name|decrypted
 operator|.
-name|getEncryptedDataEncryptionKey
+name|getMaterial
 argument_list|()
 argument_list|,
 name|feInfo
@@ -7560,7 +7761,7 @@ return|;
 block|}
 else|else
 block|{
-comment|// No key/IV present so no encryption.
+comment|// No FileEncryptionInfo present so no encryption.
 return|return
 operator|new
 name|HdfsDataOutputStream
