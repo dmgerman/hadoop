@@ -468,7 +468,7 @@ block|}
 block|}
 catch|catch
 parameter_list|(
-name|YarnException
+name|Exception
 name|e
 parameter_list|)
 block|{
@@ -477,29 +477,20 @@ operator|.
 name|printStackTrace
 argument_list|()
 expr_stmt|;
-block|}
-catch|catch
-parameter_list|(
-name|IOException
-name|e
-parameter_list|)
-block|{
-name|e
+name|Thread
 operator|.
-name|printStackTrace
+name|getDefaultUncaughtExceptionHandler
 argument_list|()
-expr_stmt|;
-block|}
-catch|catch
-parameter_list|(
-name|InterruptedException
-name|e
-parameter_list|)
-block|{
-name|e
 operator|.
-name|printStackTrace
+name|uncaughtException
+argument_list|(
+name|Thread
+operator|.
+name|currentThread
 argument_list|()
+argument_list|,
+name|e
+argument_list|)
 expr_stmt|;
 block|}
 block|}
@@ -592,11 +583,7 @@ name|void
 name|firstStep
 parameter_list|()
 throws|throws
-name|YarnException
-throws|,
-name|IOException
-throws|,
-name|InterruptedException
+name|Exception
 function_decl|;
 DECL|method|middleStep ()
 specifier|public
@@ -605,11 +592,7 @@ name|void
 name|middleStep
 parameter_list|()
 throws|throws
-name|YarnException
-throws|,
-name|InterruptedException
-throws|,
-name|IOException
+name|Exception
 function_decl|;
 DECL|method|lastStep ()
 specifier|public
@@ -618,7 +601,7 @@ name|void
 name|lastStep
 parameter_list|()
 throws|throws
-name|YarnException
+name|Exception
 function_decl|;
 DECL|method|setEndTime (long et)
 specifier|public

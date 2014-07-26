@@ -4301,6 +4301,11 @@ name|long
 name|simulateEndTimeMS
 parameter_list|)
 block|{
+if|if
+condition|(
+name|metricsON
+condition|)
+block|{
 try|try
 block|{
 comment|// write job runtime information
@@ -4387,6 +4392,7 @@ operator|.
 name|printStackTrace
 argument_list|()
 expr_stmt|;
+block|}
 block|}
 block|}
 DECL|method|updateQueueMetrics (String queue, int releasedMemory, int releasedVCores)

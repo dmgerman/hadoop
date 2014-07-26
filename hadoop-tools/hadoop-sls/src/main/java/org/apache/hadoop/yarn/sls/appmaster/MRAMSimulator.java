@@ -867,11 +867,7 @@ name|void
 name|firstStep
 parameter_list|()
 throws|throws
-name|YarnException
-throws|,
-name|IOException
-throws|,
-name|InterruptedException
+name|Exception
 block|{
 name|super
 operator|.
@@ -2245,6 +2241,8 @@ specifier|public
 name|void
 name|lastStep
 parameter_list|()
+throws|throws
+name|Exception
 block|{
 name|super
 operator|.
