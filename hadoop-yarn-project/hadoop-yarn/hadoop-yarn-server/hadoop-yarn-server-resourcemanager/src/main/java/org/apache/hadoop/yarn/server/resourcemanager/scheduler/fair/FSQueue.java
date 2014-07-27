@@ -923,46 +923,6 @@ return|return
 literal|true
 return|;
 block|}
-comment|/**    * Helper method to check if the queue should preempt containers    *    * @return true if check passes (can preempt) or false otherwise    */
-DECL|method|preemptContainerPreCheck ()
-specifier|protected
-name|boolean
-name|preemptContainerPreCheck
-parameter_list|()
-block|{
-if|if
-condition|(
-name|this
-operator|==
-name|scheduler
-operator|.
-name|getQueueManager
-argument_list|()
-operator|.
-name|getRootQueue
-argument_list|()
-condition|)
-block|{
-return|return
-literal|true
-return|;
-block|}
-return|return
-name|parent
-operator|.
-name|getPolicy
-argument_list|()
-operator|.
-name|checkIfUsageOverFairShare
-argument_list|(
-name|getResourceUsage
-argument_list|()
-argument_list|,
-name|getFairShare
-argument_list|()
-argument_list|)
-return|;
-block|}
 block|}
 end_class
 

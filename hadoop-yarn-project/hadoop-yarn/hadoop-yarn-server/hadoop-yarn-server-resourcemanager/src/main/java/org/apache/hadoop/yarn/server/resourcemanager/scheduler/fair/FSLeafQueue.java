@@ -1232,6 +1232,18 @@ name|toBePreempted
 init|=
 literal|null
 decl_stmt|;
+comment|// If this queue is not over its fair share, reject
+if|if
+condition|(
+operator|!
+name|preemptContainerPreCheck
+argument_list|()
+condition|)
+block|{
+return|return
+name|toBePreempted
+return|;
+block|}
 if|if
 condition|(
 name|LOG
@@ -1254,18 +1266,6 @@ operator|+
 literal|"from its applications."
 argument_list|)
 expr_stmt|;
-block|}
-comment|// If this queue is not over its fair share, reject
-if|if
-condition|(
-operator|!
-name|preemptContainerPreCheck
-argument_list|()
-condition|)
-block|{
-return|return
-name|toBePreempted
-return|;
 block|}
 comment|// Choose the app that is most over fair share
 name|Comparator
@@ -1655,6 +1655,29 @@ name|rmContainer
 parameter_list|)
 block|{
 comment|// TODO Auto-generated method stub
+block|}
+comment|/**    * Helper method to check if the queue should preempt containers    *    * @return true if check passes (can preempt) or false otherwise    */
+DECL|method|preemptContainerPreCheck ()
+specifier|private
+name|boolean
+name|preemptContainerPreCheck
+parameter_list|()
+block|{
+return|return
+name|parent
+operator|.
+name|getPolicy
+argument_list|()
+operator|.
+name|checkIfUsageOverFairShare
+argument_list|(
+name|getResourceUsage
+argument_list|()
+argument_list|,
+name|getFairShare
+argument_list|()
+argument_list|)
+return|;
 block|}
 block|}
 end_class

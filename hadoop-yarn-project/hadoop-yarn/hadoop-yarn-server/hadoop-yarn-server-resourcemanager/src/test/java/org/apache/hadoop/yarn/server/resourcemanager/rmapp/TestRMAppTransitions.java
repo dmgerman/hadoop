@@ -1485,6 +1485,10 @@ operator|new
 name|AMRMTokenSecretManager
 argument_list|(
 name|conf
+argument_list|,
+name|this
+operator|.
+name|rmContext
 argument_list|)
 argument_list|,
 operator|new

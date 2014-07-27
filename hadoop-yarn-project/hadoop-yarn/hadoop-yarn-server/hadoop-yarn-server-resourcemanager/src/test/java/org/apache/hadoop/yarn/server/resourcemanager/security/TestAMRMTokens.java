@@ -1273,12 +1273,12 @@ argument_list|()
 operator|.
 name|contains
 argument_list|(
-literal|"Password not found for ApplicationAttempt "
-operator|+
 name|applicationAttemptId
 operator|.
 name|toString
 argument_list|()
+operator|+
+literal|" not found in AMRMTokenSecretManager."
 argument_list|)
 argument_list|)
 expr_stmt|;

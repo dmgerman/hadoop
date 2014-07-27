@@ -5287,6 +5287,17 @@ argument_list|(
 name|state
 argument_list|)
 expr_stmt|;
+comment|// recover AMRMTokenSecretManager
+name|rmContext
+operator|.
+name|getAMRMTokenSecretManager
+argument_list|()
+operator|.
+name|recover
+argument_list|(
+name|state
+argument_list|)
+expr_stmt|;
 comment|// recover applications
 name|rmAppManager
 operator|.

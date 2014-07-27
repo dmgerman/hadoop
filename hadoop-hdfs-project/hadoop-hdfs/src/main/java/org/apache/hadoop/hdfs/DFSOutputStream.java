@@ -9973,13 +9973,6 @@ throw|;
 block|}
 try|try
 block|{
-name|Thread
-operator|.
-name|sleep
-argument_list|(
-name|localTimeout
-argument_list|)
-expr_stmt|;
 if|if
 condition|(
 name|retries
@@ -9999,6 +9992,13 @@ throw|;
 block|}
 name|retries
 operator|--
+expr_stmt|;
+name|Thread
+operator|.
+name|sleep
+argument_list|(
+name|localTimeout
+argument_list|)
 expr_stmt|;
 name|localTimeout
 operator|*=

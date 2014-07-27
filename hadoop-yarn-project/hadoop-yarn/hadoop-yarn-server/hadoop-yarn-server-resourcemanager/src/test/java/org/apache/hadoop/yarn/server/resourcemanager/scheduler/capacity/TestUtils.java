@@ -722,7 +722,7 @@ operator|.
 name|class
 argument_list|)
 decl_stmt|;
-name|RMContext
+name|RMContextImpl
 name|rmContext
 init|=
 operator|new
@@ -742,6 +742,8 @@ operator|new
 name|AMRMTokenSecretManager
 argument_list|(
 name|conf
+argument_list|,
+literal|null
 argument_list|)
 argument_list|,
 operator|new

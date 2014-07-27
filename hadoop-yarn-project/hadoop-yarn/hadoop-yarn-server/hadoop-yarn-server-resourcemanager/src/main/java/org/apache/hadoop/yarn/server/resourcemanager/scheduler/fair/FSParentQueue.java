@@ -924,18 +924,6 @@ name|toBePreempted
 init|=
 literal|null
 decl_stmt|;
-comment|// If this queue is not over its fair share, reject
-if|if
-condition|(
-operator|!
-name|preemptContainerPreCheck
-argument_list|()
-condition|)
-block|{
-return|return
-name|toBePreempted
-return|;
-block|}
 comment|// Find the childQueue which is most over fair share
 name|FSQueue
 name|candidateQueue
