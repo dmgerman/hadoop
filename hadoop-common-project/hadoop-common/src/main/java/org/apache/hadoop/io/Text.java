@@ -916,22 +916,6 @@ operator|=
 name|len
 expr_stmt|;
 block|}
-DECL|method|setLength (int len)
-specifier|public
-name|void
-name|setLength
-parameter_list|(
-name|int
-name|len
-parameter_list|)
-block|{
-name|this
-operator|.
-name|length
-operator|=
-name|len
-expr_stmt|;
-block|}
 comment|/**    * Append a range of bytes to the end of the given text    * @param utf8 the data to copy from    * @param start the first position to append from utf8    * @param len the number of bytes to append    */
 DECL|method|append (byte[] utf8, int start, int len)
 specifier|public
@@ -992,7 +976,7 @@ expr_stmt|;
 block|}
 comment|/*    * Sets the capacity of this Text object to<em>at least</em>    *<code>len</code> bytes. If the current buffer is longer,    * then the capacity and existing content of the buffer are    * unchanged. If<code>len</code> is larger    * than the current capacity, the Text object's capacity is    * increased to match.    * @param len the number of bytes we need    * @param keepData should the old data be kept    */
 DECL|method|setCapacity (int len, boolean keepData)
-specifier|public
+specifier|private
 name|void
 name|setCapacity
 parameter_list|(
