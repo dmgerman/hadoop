@@ -1536,6 +1536,24 @@ name|server
 operator|.
 name|protocol
 operator|.
+name|DatanodeStorageReport
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|server
+operator|.
+name|protocol
+operator|.
 name|FinalizeCommand
 import|;
 end_import
@@ -5507,12 +5525,66 @@ throw|throw
 operator|new
 name|IOException
 argument_list|(
-literal|"Cannot find datanode report"
+literal|"Failed to get datanode report for "
+operator|+
+name|type
+operator|+
+literal|" datanodes."
 argument_list|)
 throw|;
 block|}
 return|return
 name|results
+return|;
+block|}
+annotation|@
+name|Override
+comment|// ClientProtocol
+DECL|method|getDatanodeStorageReport ( DatanodeReportType type)
+specifier|public
+name|DatanodeStorageReport
+index|[]
+name|getDatanodeStorageReport
+parameter_list|(
+name|DatanodeReportType
+name|type
+parameter_list|)
+throws|throws
+name|IOException
+block|{
+specifier|final
+name|DatanodeStorageReport
+index|[]
+name|reports
+init|=
+name|namesystem
+operator|.
+name|getDatanodeStorageReport
+argument_list|(
+name|type
+argument_list|)
+decl_stmt|;
+if|if
+condition|(
+name|reports
+operator|==
+literal|null
+condition|)
+block|{
+throw|throw
+operator|new
+name|IOException
+argument_list|(
+literal|"Failed to get datanode storage report for "
+operator|+
+name|type
+operator|+
+literal|" datanodes."
+argument_list|)
+throw|;
+block|}
+return|return
+name|reports
 return|;
 block|}
 annotation|@
