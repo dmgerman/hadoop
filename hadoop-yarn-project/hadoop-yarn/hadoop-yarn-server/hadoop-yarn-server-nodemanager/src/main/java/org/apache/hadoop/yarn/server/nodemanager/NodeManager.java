@@ -1283,14 +1283,13 @@ block|{
 name|nmTokenSecretManager
 operator|.
 name|recover
-argument_list|(
-name|nmStore
-operator|.
-name|loadNMTokenState
 argument_list|()
-argument_list|)
 expr_stmt|;
-comment|// TODO: recover containerTokenSecretManager
+name|containerTokenSecretManager
+operator|.
+name|recover
+argument_list|()
+expr_stmt|;
 block|}
 block|}
 annotation|@
@@ -1344,6 +1343,8 @@ operator|new
 name|NMContainerTokenSecretManager
 argument_list|(
 name|conf
+argument_list|,
+name|nmStore
 argument_list|)
 decl_stmt|;
 name|NMTokenSecretManagerInNM

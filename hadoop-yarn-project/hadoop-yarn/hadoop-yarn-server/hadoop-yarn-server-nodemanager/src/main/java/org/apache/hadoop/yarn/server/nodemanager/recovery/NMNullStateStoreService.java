@@ -106,6 +106,24 @@ name|hadoop
 operator|.
 name|yarn
 operator|.
+name|api
+operator|.
+name|records
+operator|.
+name|ContainerId
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
 name|proto
 operator|.
 name|YarnProtos
@@ -337,10 +355,10 @@ name|IOException
 block|{   }
 annotation|@
 name|Override
-DECL|method|loadNMTokenState ()
+DECL|method|loadNMTokensState ()
 specifier|public
-name|RecoveredNMTokenState
-name|loadNMTokenState
+name|RecoveredNMTokensState
+name|loadNMTokensState
 parameter_list|()
 throws|throws
 name|IOException
@@ -404,6 +422,79 @@ name|removeNMTokenApplicationMasterKey
 parameter_list|(
 name|ApplicationAttemptId
 name|attempt
+parameter_list|)
+throws|throws
+name|IOException
+block|{   }
+annotation|@
+name|Override
+DECL|method|loadContainerTokensState ()
+specifier|public
+name|RecoveredContainerTokensState
+name|loadContainerTokensState
+parameter_list|()
+throws|throws
+name|IOException
+block|{
+throw|throw
+operator|new
+name|UnsupportedOperationException
+argument_list|(
+literal|"Recovery not supported by this state store"
+argument_list|)
+throw|;
+block|}
+annotation|@
+name|Override
+DECL|method|storeContainerTokenCurrentMasterKey (MasterKey key)
+specifier|public
+name|void
+name|storeContainerTokenCurrentMasterKey
+parameter_list|(
+name|MasterKey
+name|key
+parameter_list|)
+throws|throws
+name|IOException
+block|{   }
+annotation|@
+name|Override
+DECL|method|storeContainerTokenPreviousMasterKey (MasterKey key)
+specifier|public
+name|void
+name|storeContainerTokenPreviousMasterKey
+parameter_list|(
+name|MasterKey
+name|key
+parameter_list|)
+throws|throws
+name|IOException
+block|{   }
+annotation|@
+name|Override
+DECL|method|storeContainerToken (ContainerId containerId, Long expirationTime)
+specifier|public
+name|void
+name|storeContainerToken
+parameter_list|(
+name|ContainerId
+name|containerId
+parameter_list|,
+name|Long
+name|expirationTime
+parameter_list|)
+throws|throws
+name|IOException
+block|{   }
+annotation|@
+name|Override
+DECL|method|removeContainerToken (ContainerId containerId)
+specifier|public
+name|void
+name|removeContainerToken
+parameter_list|(
+name|ContainerId
+name|containerId
 parameter_list|)
 throws|throws
 name|IOException

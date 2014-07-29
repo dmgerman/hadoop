@@ -308,6 +308,20 @@ name|hadoop
 operator|.
 name|hdfs
 operator|.
+name|ExtendedBlockId
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
 name|DFSConfigKeys
 import|;
 end_import
@@ -6801,6 +6815,30 @@ index|]
 argument_list|)
 expr_stmt|;
 block|}
+comment|// If a DFSClient has the replica in its cache of short-circuit file
+comment|// descriptors (and the client is using ShortCircuitShm), invalidate it.
+name|datanode
+operator|.
+name|getShortCircuitRegistry
+argument_list|()
+operator|.
+name|processBlockInvalidation
+argument_list|(
+operator|new
+name|ExtendedBlockId
+argument_list|(
+name|invalidBlks
+index|[
+name|i
+index|]
+operator|.
+name|getBlockId
+argument_list|()
+argument_list|,
+name|bpid
+argument_list|)
+argument_list|)
+expr_stmt|;
 comment|// If the block is cached, start uncaching it.
 name|cacheManager
 operator|.

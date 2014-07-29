@@ -1196,6 +1196,37 @@ operator|+
 name|state
 return|;
 block|}
+DECL|method|toStorageReport ()
+name|StorageReport
+name|toStorageReport
+parameter_list|()
+block|{
+return|return
+operator|new
+name|StorageReport
+argument_list|(
+operator|new
+name|DatanodeStorage
+argument_list|(
+name|storageID
+argument_list|,
+name|state
+argument_list|,
+name|storageType
+argument_list|)
+argument_list|,
+literal|false
+argument_list|,
+name|capacity
+argument_list|,
+name|dfsUsed
+argument_list|,
+name|remaining
+argument_list|,
+name|blockPoolUsed
+argument_list|)
+return|;
+block|}
 DECL|method|toStorageTypes ( final Iterable<DatanodeStorageInfo> infos)
 specifier|static
 name|Iterable

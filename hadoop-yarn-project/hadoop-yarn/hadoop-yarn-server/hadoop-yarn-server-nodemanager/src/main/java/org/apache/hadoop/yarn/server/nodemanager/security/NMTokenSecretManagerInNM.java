@@ -264,7 +264,7 @@ name|recovery
 operator|.
 name|NMStateStoreService
 operator|.
-name|RecoveredNMTokenState
+name|RecoveredNMTokensState
 import|;
 end_import
 
@@ -438,18 +438,23 @@ operator|=
 name|stateStore
 expr_stmt|;
 block|}
-DECL|method|recover (RecoveredNMTokenState state)
+DECL|method|recover ()
 specifier|public
 specifier|synchronized
 name|void
 name|recover
-parameter_list|(
-name|RecoveredNMTokenState
-name|state
-parameter_list|)
+parameter_list|()
 throws|throws
 name|IOException
 block|{
+name|RecoveredNMTokensState
+name|state
+init|=
+name|stateStore
+operator|.
+name|loadNMTokensState
+argument_list|()
+decl_stmt|;
 name|MasterKey
 name|key
 init|=

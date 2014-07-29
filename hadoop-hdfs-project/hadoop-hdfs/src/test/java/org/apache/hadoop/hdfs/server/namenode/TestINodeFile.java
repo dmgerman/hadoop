@@ -3151,6 +3151,17 @@ operator|.
 name|DFS_BYTES_PER_CHECKSUM_DEFAULT
 argument_list|)
 expr_stmt|;
+name|conf
+operator|.
+name|setBoolean
+argument_list|(
+name|DFSConfigKeys
+operator|.
+name|DFS_NAMENODE_ACLS_ENABLED_KEY
+argument_list|,
+literal|true
+argument_list|)
+expr_stmt|;
 name|MiniDFSCluster
 name|cluster
 init|=
@@ -3462,6 +3473,37 @@ argument_list|()
 argument_list|)
 argument_list|)
 expr_stmt|;
+comment|/*        * HDFS-6749 added missing calls to FSDirectory.resolvePath in the        * following four methods. The calls below ensure that        * /.reserved/.inodes paths work properly. No need to check return        * values as these methods are tested elsewhere.        */
+block|{
+name|fs
+operator|.
+name|isFileClosed
+argument_list|(
+name|testFileInodePath
+argument_list|)
+expr_stmt|;
+name|fs
+operator|.
+name|getAclStatus
+argument_list|(
+name|testFileInodePath
+argument_list|)
+expr_stmt|;
+name|fs
+operator|.
+name|getXAttrs
+argument_list|(
+name|testFileInodePath
+argument_list|)
+expr_stmt|;
+name|fs
+operator|.
+name|listXAttrs
+argument_list|(
+name|testFileInodePath
+argument_list|)
+expr_stmt|;
+block|}
 comment|// symbolic link related tests
 comment|// Reserved path is not allowed as a target
 name|String

@@ -4,15 +4,13 @@ comment|/**  * Licensed to the Apache Software Foundation (ASF) under one  * or 
 end_comment
 
 begin_package
-DECL|package|org.apache.hadoop.hdfs.util
+DECL|package|org.apache.hadoop.util
 package|package
 name|org
 operator|.
 name|apache
 operator|.
 name|hadoop
-operator|.
-name|hdfs
 operator|.
 name|util
 package|;
@@ -114,6 +112,20 @@ name|VisibleForTesting
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|classification
+operator|.
+name|InterfaceStability
+import|;
+end_import
+
 begin_comment
 comment|/**  * A simple class for pooling direct ByteBuffers. This is necessary  * because Direct Byte Buffers do not take up much space on the heap,  * and hence will not trigger GCs on their own. However, they do take  * native memory, and thus can cause high memory usage if not pooled.  * The pooled instances are referred to only via weak references, allowing  * them to be collected when a GC does run.  *  * This class only does effective pooling when many buffers will be  * allocated at the same size. There is no attempt to reuse larger  * buffers to satisfy smaller allocations.  */
 end_comment
@@ -122,7 +134,18 @@ begin_class
 annotation|@
 name|InterfaceAudience
 operator|.
-name|Private
+name|LimitedPrivate
+argument_list|(
+block|{
+literal|"HDFS"
+block|,
+literal|"MapReduce"
+block|}
+argument_list|)
+annotation|@
+name|InterfaceStability
+operator|.
+name|Evolving
 DECL|class|DirectBufferPool
 specifier|public
 class|class

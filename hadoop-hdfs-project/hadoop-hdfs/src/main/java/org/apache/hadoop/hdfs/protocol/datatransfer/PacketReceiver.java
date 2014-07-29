@@ -132,8 +132,6 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|hdfs
-operator|.
 name|util
 operator|.
 name|DirectBufferPool
