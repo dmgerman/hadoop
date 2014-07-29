@@ -722,7 +722,7 @@ name|listCachePools
 argument_list|()
 return|;
 block|}
-comment|/**    * Create an encryption zone rooted at an empty existing directory. An    * encryption zone has an associated encryption key used when reading and    * writing files within the zone. An existing key can be specified,    * else a new key will be generated for the encryption zone.    *    * @param path The path of the root of the encryption zone. Must refer to    *             an empty, existing directory.    *    * @param keyName Optional name of key available at the KeyProvider. If null,    *                then a key is generated.    *    * @throws IOException if there was a general IO exception    *    * @throws AccessControlException if the caller does not have access to path    *    * @throws FileNotFoundException if the path does not exist    */
+comment|/**    * Create an encryption zone rooted at an empty existing directory, using the    * specified encryption key. An encryption zone has an associated encryption    * key used when reading and writing files within the zone.    *    * @param path    The path of the root of the encryption zone. Must refer to    *                an empty, existing directory.    * @param keyName Name of key available at the KeyProvider.    * @throws IOException            if there was a general IO exception    * @throws AccessControlException if the caller does not have access to path    * @throws FileNotFoundException  if the path does not exist    */
 DECL|method|createEncryptionZone (Path path, String keyName)
 specifier|public
 name|void

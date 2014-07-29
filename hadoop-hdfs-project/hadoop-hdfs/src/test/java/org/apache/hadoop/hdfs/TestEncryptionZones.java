@@ -570,6 +570,14 @@ specifier|private
 name|File
 name|testRootDir
 decl_stmt|;
+DECL|field|TEST_KEY
+specifier|private
+specifier|final
+name|String
+name|TEST_KEY
+init|=
+literal|"testKey"
+decl_stmt|;
 DECL|field|fsWrapper
 specifier|protected
 name|FileSystemTestWrapper
@@ -588,7 +596,7 @@ name|void
 name|setup
 parameter_list|()
 throws|throws
-name|IOException
+name|Exception
 block|{
 name|conf
 operator|=
@@ -740,6 +748,12 @@ argument_list|()
 operator|.
 name|getProvider
 argument_list|()
+expr_stmt|;
+comment|// Create a test key
+name|createKey
+argument_list|(
+name|TEST_KEY
+argument_list|)
 expr_stmt|;
 block|}
 annotation|@
@@ -972,6 +986,20 @@ argument_list|(
 name|conf
 argument_list|)
 decl_stmt|;
+name|options
+operator|.
+name|setDescription
+argument_list|(
+name|keyName
+argument_list|)
+expr_stmt|;
+name|options
+operator|.
+name|setBitLength
+argument_list|(
+literal|128
+argument_list|)
+expr_stmt|;
 name|provider
 operator|.
 name|createKey
@@ -1026,7 +1054,7 @@ name|createEncryptionZone
 argument_list|(
 name|zone1
 argument_list|,
-literal|null
+name|TEST_KEY
 argument_list|)
 expr_stmt|;
 name|fail
@@ -1070,7 +1098,7 @@ name|createEncryptionZone
 argument_list|(
 name|zone1
 argument_list|,
-literal|null
+name|TEST_KEY
 argument_list|)
 expr_stmt|;
 name|assertNumZones
@@ -1098,7 +1126,7 @@ name|createEncryptionZone
 argument_list|(
 name|zone1
 argument_list|,
-literal|null
+name|TEST_KEY
 argument_list|)
 expr_stmt|;
 block|}
@@ -1151,7 +1179,7 @@ name|createEncryptionZone
 argument_list|(
 name|zone1Child
 argument_list|,
-literal|null
+name|TEST_KEY
 argument_list|)
 expr_stmt|;
 name|fail
@@ -1219,7 +1247,7 @@ name|createEncryptionZone
 argument_list|(
 name|notEmpty
 argument_list|,
-literal|null
+name|TEST_KEY
 argument_list|)
 expr_stmt|;
 name|fail
@@ -1267,7 +1295,7 @@ name|createEncryptionZone
 argument_list|(
 name|notEmpty
 argument_list|,
-literal|null
+name|TEST_KEY
 argument_list|)
 expr_stmt|;
 name|fail
@@ -1347,6 +1375,69 @@ block|{
 name|assertExceptionContains
 argument_list|(
 literal|"doesn't exist."
+argument_list|,
+name|e
+argument_list|)
+expr_stmt|;
+block|}
+comment|/* Test failure of empty and null key name */
+try|try
+block|{
+name|dfsAdmin
+operator|.
+name|createEncryptionZone
+argument_list|(
+name|zone2
+argument_list|,
+literal|""
+argument_list|)
+expr_stmt|;
+name|fail
+argument_list|(
+literal|"created a zone with empty key name"
+argument_list|)
+expr_stmt|;
+block|}
+catch|catch
+parameter_list|(
+name|IOException
+name|e
+parameter_list|)
+block|{
+name|assertExceptionContains
+argument_list|(
+literal|"Must specify a key name when creating"
+argument_list|,
+name|e
+argument_list|)
+expr_stmt|;
+block|}
+try|try
+block|{
+name|dfsAdmin
+operator|.
+name|createEncryptionZone
+argument_list|(
+name|zone2
+argument_list|,
+literal|null
+argument_list|)
+expr_stmt|;
+name|fail
+argument_list|(
+literal|"created a zone with null key name"
+argument_list|)
+expr_stmt|;
+block|}
+catch|catch
+parameter_list|(
+name|IOException
+name|e
+parameter_list|)
+block|{
+name|assertExceptionContains
+argument_list|(
+literal|"Must specify a key name when creating"
 argument_list|,
 name|e
 argument_list|)
@@ -1476,7 +1567,7 @@ name|createEncryptionZone
 argument_list|(
 name|nonSuper
 argument_list|,
-literal|null
+name|TEST_KEY
 argument_list|)
 expr_stmt|;
 name|fail
@@ -1536,7 +1627,7 @@ name|createEncryptionZone
 argument_list|(
 name|deepZone
 argument_list|,
-literal|null
+name|TEST_KEY
 argument_list|)
 expr_stmt|;
 name|assertNumZones
@@ -1651,7 +1742,7 @@ name|createEncryptionZone
 argument_list|(
 name|superPath
 argument_list|,
-literal|null
+name|TEST_KEY
 argument_list|)
 expr_stmt|;
 name|fsWrapper
@@ -1678,7 +1769,7 @@ name|createEncryptionZone
 argument_list|(
 name|allPath
 argument_list|,
-literal|null
+name|TEST_KEY
 argument_list|)
 expr_stmt|;
 name|user
@@ -1817,7 +1908,7 @@ name|createEncryptionZone
 argument_list|(
 name|pathFoo
 argument_list|,
-literal|null
+name|TEST_KEY
 argument_list|)
 expr_stmt|;
 name|wrapper
@@ -2037,7 +2128,7 @@ name|createEncryptionZone
 argument_list|(
 name|zone
 argument_list|,
-literal|null
+name|TEST_KEY
 argument_list|)
 expr_stmt|;
 specifier|final
@@ -2295,7 +2386,7 @@ name|createEncryptionZone
 argument_list|(
 name|zone
 argument_list|,
-literal|null
+name|TEST_KEY
 argument_list|)
 expr_stmt|;
 comment|// Create a file in an EZ, which should succeed
@@ -2882,7 +2973,7 @@ name|createEncryptionZone
 argument_list|(
 name|zone1
 argument_list|,
-literal|null
+name|TEST_KEY
 argument_list|)
 expr_stmt|;
 name|fail

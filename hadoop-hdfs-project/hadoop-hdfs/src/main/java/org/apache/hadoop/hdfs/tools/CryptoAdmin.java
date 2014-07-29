@@ -666,7 +666,7 @@ operator|+
 name|getName
 argument_list|()
 operator|+
-literal|" [-keyName<keyName>] -path<path> "
+literal|" -keyName<keyName> -path<path> "
 operator|+
 literal|"]\n"
 return|;
@@ -705,7 +705,7 @@ literal|"<keyName>"
 argument_list|,
 literal|"Name of the key to use for the "
 operator|+
-literal|"encryption zone. A new key will be generated if unspecified."
+literal|"encryption zone."
 argument_list|)
 expr_stmt|;
 return|return
@@ -787,6 +787,26 @@ argument_list|,
 name|args
 argument_list|)
 decl_stmt|;
+if|if
+condition|(
+name|keyName
+operator|==
+literal|null
+condition|)
+block|{
+name|System
+operator|.
+name|err
+operator|.
+name|println
+argument_list|(
+literal|"You must specify a key name with -keyName."
+argument_list|)
+expr_stmt|;
+return|return
+literal|1
+return|;
+block|}
 if|if
 condition|(
 operator|!

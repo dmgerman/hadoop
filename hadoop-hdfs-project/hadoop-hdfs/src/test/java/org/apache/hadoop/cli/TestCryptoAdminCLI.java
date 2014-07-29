@@ -389,10 +389,10 @@ import|;
 end_import
 
 begin_class
-DECL|class|TestCryptoCLI
+DECL|class|TestCryptoAdminCLI
 specifier|public
 class|class
-name|TestCryptoCLI
+name|TestCryptoAdminCLI
 extends|extends
 name|CLITestHelperDFS
 block|{
