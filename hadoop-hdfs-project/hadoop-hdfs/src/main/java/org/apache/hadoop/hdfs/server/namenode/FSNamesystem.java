@@ -4245,6 +4245,8 @@ argument_list|(
 name|path
 argument_list|,
 name|resolveSymlink
+argument_list|,
+literal|false
 argument_list|)
 else|:
 literal|null
@@ -9620,13 +9622,14 @@ name|e
 throw|;
 block|}
 block|}
-DECL|method|setPermissionInt (String src, FsPermission permission)
+DECL|method|setPermissionInt (final String srcArg, FsPermission permission)
 specifier|private
 name|void
 name|setPermissionInt
 parameter_list|(
+specifier|final
 name|String
-name|src
+name|srcArg
 parameter_list|,
 name|FsPermission
 name|permission
@@ -9642,6 +9645,11 @@ name|UnresolvedLinkException
 throws|,
 name|IOException
 block|{
+name|String
+name|src
+init|=
+name|srcArg
+decl_stmt|;
 name|HdfsFileStatus
 name|resultingStat
 init|=
@@ -9693,15 +9701,11 @@ argument_list|)
 expr_stmt|;
 name|src
 operator|=
-name|FSDirectory
-operator|.
 name|resolvePath
 argument_list|(
 name|src
 argument_list|,
 name|pathComponents
-argument_list|,
-name|dir
 argument_list|)
 expr_stmt|;
 name|checkOwner
@@ -9758,7 +9762,7 @@ literal|true
 argument_list|,
 literal|"setPermission"
 argument_list|,
-name|src
+name|srcArg
 argument_list|,
 literal|null
 argument_list|,
@@ -9823,13 +9827,14 @@ name|e
 throw|;
 block|}
 block|}
-DECL|method|setOwnerInt (String src, String username, String group)
+DECL|method|setOwnerInt (final String srcArg, String username, String group)
 specifier|private
 name|void
 name|setOwnerInt
 parameter_list|(
+specifier|final
 name|String
-name|src
+name|srcArg
 parameter_list|,
 name|String
 name|username
@@ -9848,6 +9853,11 @@ name|UnresolvedLinkException
 throws|,
 name|IOException
 block|{
+name|String
+name|src
+init|=
+name|srcArg
+decl_stmt|;
 name|HdfsFileStatus
 name|resultingStat
 init|=
@@ -9899,15 +9909,11 @@ argument_list|)
 expr_stmt|;
 name|src
 operator|=
-name|FSDirectory
-operator|.
 name|resolvePath
 argument_list|(
 name|src
 argument_list|,
 name|pathComponents
-argument_list|,
-name|dir
 argument_list|)
 expr_stmt|;
 name|checkOwner
@@ -10029,7 +10035,7 @@ literal|true
 argument_list|,
 literal|"setOwner"
 argument_list|,
-name|src
+name|srcArg
 argument_list|,
 literal|null
 argument_list|,
@@ -10419,13 +10425,14 @@ name|ret
 return|;
 block|}
 comment|/*    * Get block locations within the specified range, updating the    * access times if necessary.     */
-DECL|method|getBlockLocationsUpdateTimes (String src, long offset, long length, boolean doAccessTime, boolean needBlockToken)
+DECL|method|getBlockLocationsUpdateTimes (final String srcArg, long offset, long length, boolean doAccessTime, boolean needBlockToken)
 specifier|private
 name|LocatedBlocks
 name|getBlockLocationsUpdateTimes
 parameter_list|(
+specifier|final
 name|String
-name|src
+name|srcArg
 parameter_list|,
 name|long
 name|offset
@@ -10446,6 +10453,11 @@ name|UnresolvedLinkException
 throws|,
 name|IOException
 block|{
+name|String
+name|src
+init|=
+name|srcArg
+decl_stmt|;
 name|FSPermissionChecker
 name|pc
 init|=
@@ -10522,15 +10534,11 @@ comment|// writelock is needed to set accesstime
 block|}
 name|src
 operator|=
-name|FSDirectory
-operator|.
 name|resolvePath
 argument_list|(
 name|src
 argument_list|,
 name|pathComponents
-argument_list|,
-name|dir
 argument_list|)
 expr_stmt|;
 try|try
@@ -10765,6 +10773,15 @@ specifier|final
 name|FileEncryptionInfo
 name|feInfo
 init|=
+name|FSDirectory
+operator|.
+name|isReservedRawName
+argument_list|(
+name|srcArg
+argument_list|)
+condition|?
+literal|null
+else|:
 name|dir
 operator|.
 name|getFileEncryptionInfo
@@ -11843,13 +11860,14 @@ name|e
 throw|;
 block|}
 block|}
-DECL|method|setTimesInt (String src, long mtime, long atime)
+DECL|method|setTimesInt (final String srcArg, long mtime, long atime)
 specifier|private
 name|void
 name|setTimesInt
 parameter_list|(
+specifier|final
 name|String
-name|src
+name|srcArg
 parameter_list|,
 name|long
 name|mtime
@@ -11862,6 +11880,11 @@ name|IOException
 throws|,
 name|UnresolvedLinkException
 block|{
+name|String
+name|src
+init|=
+name|srcArg
+decl_stmt|;
 name|HdfsFileStatus
 name|resultingStat
 init|=
@@ -11913,15 +11936,11 @@ argument_list|)
 expr_stmt|;
 name|src
 operator|=
-name|FSDirectory
-operator|.
 name|resolvePath
 argument_list|(
 name|src
 argument_list|,
 name|pathComponents
-argument_list|,
-name|dir
 argument_list|)
 expr_stmt|;
 comment|// Write access is required to set access and modification times
@@ -12045,7 +12064,7 @@ literal|true
 argument_list|,
 literal|"setTimes"
 argument_list|,
-name|src
+name|srcArg
 argument_list|,
 literal|null
 argument_list|,
@@ -12204,7 +12223,7 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-DECL|method|createSymlinkInt (String target, String link, PermissionStatus dirPerms, boolean createParent, boolean logRetryCache)
+DECL|method|createSymlinkInt (String target, final String linkArg, PermissionStatus dirPerms, boolean createParent, boolean logRetryCache)
 specifier|private
 name|void
 name|createSymlinkInt
@@ -12212,8 +12231,9 @@ parameter_list|(
 name|String
 name|target
 parameter_list|,
+specifier|final
 name|String
-name|link
+name|linkArg
 parameter_list|,
 name|PermissionStatus
 name|dirPerms
@@ -12229,6 +12249,11 @@ name|IOException
 throws|,
 name|UnresolvedLinkException
 block|{
+name|String
+name|link
+init|=
+name|linkArg
+decl_stmt|;
 if|if
 condition|(
 name|NameNode
@@ -12306,15 +12331,11 @@ argument_list|)
 expr_stmt|;
 name|link
 operator|=
-name|FSDirectory
-operator|.
 name|resolvePath
 argument_list|(
 name|link
 argument_list|,
 name|pathComponents
-argument_list|,
-name|dir
 argument_list|)
 expr_stmt|;
 if|if
@@ -12415,7 +12436,7 @@ literal|true
 argument_list|,
 literal|"createSymlink"
 argument_list|,
-name|link
+name|linkArg
 argument_list|,
 name|target
 argument_list|,
@@ -12470,13 +12491,14 @@ name|e
 throw|;
 block|}
 block|}
-DECL|method|setReplicationInt (String src, final short replication)
+DECL|method|setReplicationInt (final String srcArg, final short replication)
 specifier|private
 name|boolean
 name|setReplicationInt
 parameter_list|(
+specifier|final
 name|String
-name|src
+name|srcArg
 parameter_list|,
 specifier|final
 name|short
@@ -12485,6 +12507,11 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
+name|String
+name|src
+init|=
+name|srcArg
+decl_stmt|;
 name|blockManager
 operator|.
 name|verifyReplication
@@ -12549,15 +12576,11 @@ argument_list|)
 expr_stmt|;
 name|src
 operator|=
-name|FSDirectory
-operator|.
 name|resolvePath
 argument_list|(
 name|src
 argument_list|,
 name|pathComponents
-argument_list|,
-name|dir
 argument_list|)
 expr_stmt|;
 if|if
@@ -12670,7 +12693,7 @@ literal|true
 argument_list|,
 literal|"setReplication"
 argument_list|,
-name|src
+name|srcArg
 argument_list|)
 expr_stmt|;
 block|}
@@ -12729,15 +12752,11 @@ argument_list|)
 expr_stmt|;
 name|filename
 operator|=
-name|FSDirectory
-operator|.
 name|resolvePath
 argument_list|(
 name|filename
 argument_list|,
 name|pathComponents
-argument_list|,
-name|dir
 argument_list|)
 expr_stmt|;
 if|if
@@ -13251,13 +13270,14 @@ return|return
 name|status
 return|;
 block|}
-DECL|method|startFileInt (String src, PermissionStatus permissions, String holder, String clientMachine, EnumSet<CreateFlag> flag, boolean createParent, short replication, long blockSize, List<CipherSuite> cipherSuites, boolean logRetryCache)
+DECL|method|startFileInt (final String srcArg, PermissionStatus permissions, String holder, String clientMachine, EnumSet<CreateFlag> flag, boolean createParent, short replication, long blockSize, List<CipherSuite> cipherSuites, boolean logRetryCache)
 specifier|private
 name|HdfsFileStatus
 name|startFileInt
 parameter_list|(
+specifier|final
 name|String
-name|src
+name|srcArg
 parameter_list|,
 name|PermissionStatus
 name|permissions
@@ -13307,6 +13327,11 @@ name|ParentNotDirectoryException
 throws|,
 name|IOException
 block|{
+name|String
+name|src
+init|=
+name|srcArg
+decl_stmt|;
 if|if
 condition|(
 name|NameNode
@@ -13599,15 +13624,11 @@ try|try
 block|{
 name|src
 operator|=
-name|FSDirectory
-operator|.
 name|resolvePath
 argument_list|(
 name|src
 argument_list|,
 name|pathComponents
-argument_list|,
-name|dir
 argument_list|)
 expr_stmt|;
 name|INodesInPath
@@ -13749,15 +13770,11 @@ argument_list|)
 expr_stmt|;
 name|src
 operator|=
-name|FSDirectory
-operator|.
 name|resolvePath
 argument_list|(
 name|src
 argument_list|,
 name|pathComponents
-argument_list|,
-name|dir
 argument_list|)
 expr_stmt|;
 name|startFileInternal
@@ -13798,6 +13815,13 @@ argument_list|(
 name|src
 argument_list|,
 literal|false
+argument_list|,
+name|FSDirectory
+operator|.
+name|isReservedRawName
+argument_list|(
+name|srcArg
+argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
@@ -13878,7 +13902,7 @@ literal|true
 argument_list|,
 literal|"create"
 argument_list|,
-name|src
+name|srcArg
 argument_list|,
 literal|null
 argument_list|,
@@ -14958,15 +14982,11 @@ argument_list|)
 expr_stmt|;
 name|src
 operator|=
-name|FSDirectory
-operator|.
 name|resolvePath
 argument_list|(
 name|src
 argument_list|,
 name|pathComponents
-argument_list|,
-name|dir
 argument_list|)
 expr_stmt|;
 specifier|final
@@ -15568,13 +15588,14 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-DECL|method|appendFileInt (String src, String holder, String clientMachine, boolean logRetryCache)
+DECL|method|appendFileInt (final String srcArg, String holder, String clientMachine, boolean logRetryCache)
 specifier|private
 name|LocatedBlock
 name|appendFileInt
 parameter_list|(
+specifier|final
 name|String
-name|src
+name|srcArg
 parameter_list|,
 name|String
 name|holder
@@ -15598,6 +15619,11 @@ name|ParentNotDirectoryException
 throws|,
 name|IOException
 block|{
+name|String
+name|src
+init|=
+name|srcArg
+decl_stmt|;
 if|if
 condition|(
 name|NameNode
@@ -15684,15 +15710,11 @@ argument_list|)
 expr_stmt|;
 name|src
 operator|=
-name|FSDirectory
-operator|.
 name|resolvePath
 argument_list|(
 name|src
 argument_list|,
 name|pathComponents
-argument_list|,
-name|dir
 argument_list|)
 expr_stmt|;
 name|lb
@@ -15807,7 +15829,7 @@ literal|true
 argument_list|,
 literal|"append"
 argument_list|,
-name|src
+name|srcArg
 argument_list|)
 expr_stmt|;
 return|return
@@ -15969,15 +15991,11 @@ argument_list|)
 expr_stmt|;
 name|src
 operator|=
-name|FSDirectory
-operator|.
 name|resolvePath
 argument_list|(
 name|src
 argument_list|,
 name|pathComponents
-argument_list|,
-name|dir
 argument_list|)
 expr_stmt|;
 name|LocatedBlock
@@ -16996,15 +17014,11 @@ argument_list|)
 expr_stmt|;
 name|src
 operator|=
-name|FSDirectory
-operator|.
 name|resolvePath
 argument_list|(
 name|src
 argument_list|,
 name|pathComponents
-argument_list|,
-name|dir
 argument_list|)
 expr_stmt|;
 comment|//check lease
@@ -17296,15 +17310,11 @@ argument_list|)
 expr_stmt|;
 name|src
 operator|=
-name|FSDirectory
-operator|.
 name|resolvePath
 argument_list|(
 name|src
 argument_list|,
 name|pathComponents
-argument_list|,
-name|dir
 argument_list|)
 expr_stmt|;
 specifier|final
@@ -17712,12 +17722,13 @@ name|file
 return|;
 block|}
 comment|/**    * Complete in-progress write to the given file.    * @return true if successful, false if the client should continue to retry    *         (e.g if not all blocks have reached minimum replication yet)    * @throws IOException on error (eg lease mismatch, file not open, file deleted)    */
-DECL|method|completeFile (String src, String holder, ExtendedBlock last, long fileId)
+DECL|method|completeFile (final String srcArg, String holder, ExtendedBlock last, long fileId)
 name|boolean
 name|completeFile
 parameter_list|(
+specifier|final
 name|String
-name|src
+name|srcArg
 parameter_list|,
 name|String
 name|holder
@@ -17735,6 +17746,11 @@ name|UnresolvedLinkException
 throws|,
 name|IOException
 block|{
+name|String
+name|src
+init|=
+name|srcArg
+decl_stmt|;
 if|if
 condition|(
 name|NameNode
@@ -17814,15 +17830,11 @@ argument_list|)
 expr_stmt|;
 name|src
 operator|=
-name|FSDirectory
-operator|.
 name|resolvePath
 argument_list|(
 name|src
 argument_list|,
 name|pathComponents
-argument_list|,
-name|dir
 argument_list|)
 expr_stmt|;
 name|success
@@ -17869,7 +17881,7 @@ name|info
 argument_list|(
 literal|"DIR* completeFile: "
 operator|+
-name|src
+name|srcArg
 operator|+
 literal|" is closed by "
 operator|+
@@ -18499,16 +18511,18 @@ return|return
 name|ret
 return|;
 block|}
-DECL|method|renameToInt (String src, String dst, boolean logRetryCache)
+DECL|method|renameToInt (final String srcArg, final String dstArg, boolean logRetryCache)
 specifier|private
 name|boolean
 name|renameToInt
 parameter_list|(
+specifier|final
 name|String
-name|src
+name|srcArg
 parameter_list|,
+specifier|final
 name|String
-name|dst
+name|dstArg
 parameter_list|,
 name|boolean
 name|logRetryCache
@@ -18518,6 +18532,16 @@ name|IOException
 throws|,
 name|UnresolvedLinkException
 block|{
+name|String
+name|src
+init|=
+name|srcArg
+decl_stmt|;
+name|String
+name|dst
+init|=
+name|dstArg
+decl_stmt|;
 if|if
 condition|(
 name|NameNode
@@ -18636,28 +18660,20 @@ argument_list|()
 expr_stmt|;
 name|src
 operator|=
-name|FSDirectory
-operator|.
 name|resolvePath
 argument_list|(
 name|src
 argument_list|,
 name|srcComponents
-argument_list|,
-name|dir
 argument_list|)
 expr_stmt|;
 name|dst
 operator|=
-name|FSDirectory
-operator|.
 name|resolvePath
 argument_list|(
 name|dst
 argument_list|,
 name|dstComponents
-argument_list|,
-name|dir
 argument_list|)
 expr_stmt|;
 name|checkOperation
@@ -18719,9 +18735,9 @@ literal|true
 argument_list|,
 literal|"rename"
 argument_list|,
-name|src
+name|srcArg
 argument_list|,
-name|dst
+name|dstArg
 argument_list|,
 name|resultingStat
 argument_list|)
@@ -18890,15 +18906,17 @@ literal|false
 return|;
 block|}
 comment|/** Rename src to dst */
-DECL|method|renameTo (String src, String dst, Options.Rename... options)
+DECL|method|renameTo (final String srcArg, final String dstArg, Options.Rename... options)
 name|void
 name|renameTo
 parameter_list|(
+specifier|final
 name|String
-name|src
+name|srcArg
 parameter_list|,
+specifier|final
 name|String
-name|dst
+name|dstArg
 parameter_list|,
 name|Options
 operator|.
@@ -18911,6 +18929,16 @@ name|IOException
 throws|,
 name|UnresolvedLinkException
 block|{
+name|String
+name|src
+init|=
+name|srcArg
+decl_stmt|;
+name|String
+name|dst
+init|=
+name|dstArg
+decl_stmt|;
 if|if
 condition|(
 name|NameNode
@@ -19052,28 +19080,20 @@ argument_list|)
 expr_stmt|;
 name|src
 operator|=
-name|FSDirectory
-operator|.
 name|resolvePath
 argument_list|(
 name|src
 argument_list|,
 name|srcComponents
-argument_list|,
-name|dir
 argument_list|)
 expr_stmt|;
 name|dst
 operator|=
-name|FSDirectory
-operator|.
 name|resolvePath
 argument_list|(
 name|dst
 argument_list|,
 name|dstComponents
-argument_list|,
-name|dir
 argument_list|)
 expr_stmt|;
 name|renameToInternal
@@ -19175,9 +19195,9 @@ operator|.
 name|toString
 argument_list|()
 argument_list|,
-name|src
+name|srcArg
 argument_list|,
-name|dst
+name|dstArg
 argument_list|,
 name|resultingStat
 argument_list|)
@@ -19629,15 +19649,11 @@ argument_list|)
 expr_stmt|;
 name|src
 operator|=
-name|FSDirectory
-operator|.
 name|resolvePath
 argument_list|(
 name|src
 argument_list|,
 name|pathComponents
-argument_list|,
-name|dir
 argument_list|)
 expr_stmt|;
 if|if
@@ -20164,13 +20180,14 @@ name|shouldIncrementallyTrackBlocks
 argument_list|()
 return|;
 block|}
-comment|/**    * Get the file info for a specific file.    *    * @param src The string representation of the path to the file    * @param resolveLink whether to throw UnresolvedLinkException     *        if src refers to a symlink    *    * @throws AccessControlException if access is denied    * @throws UnresolvedLinkException if a symlink is encountered.    *    * @return object containing information regarding the file    *         or null if file not found    * @throws StandbyException     */
-DECL|method|getFileInfo (String src, boolean resolveLink)
+comment|/**    * Get the file info for a specific file.    *    * @param srcArg The string representation of the path to the file    * @param resolveLink whether to throw UnresolvedLinkException     *        if src refers to a symlink    *    * @throws AccessControlException if access is denied    * @throws UnresolvedLinkException if a symlink is encountered.    *    * @return object containing information regarding the file    *         or null if file not found    * @throws StandbyException     */
+DECL|method|getFileInfo (final String srcArg, boolean resolveLink)
 name|HdfsFileStatus
 name|getFileInfo
 parameter_list|(
+specifier|final
 name|String
-name|src
+name|srcArg
 parameter_list|,
 name|boolean
 name|resolveLink
@@ -20184,6 +20201,11 @@ name|StandbyException
 throws|,
 name|IOException
 block|{
+name|String
+name|src
+init|=
+name|srcArg
+decl_stmt|;
 if|if
 condition|(
 operator|!
@@ -20249,15 +20271,11 @@ argument_list|)
 expr_stmt|;
 name|src
 operator|=
-name|FSDirectory
-operator|.
 name|resolvePath
 argument_list|(
 name|src
 argument_list|,
 name|pathComponents
-argument_list|,
-name|dir
 argument_list|)
 expr_stmt|;
 if|if
@@ -20296,6 +20314,13 @@ argument_list|(
 name|src
 argument_list|,
 name|resolveLink
+argument_list|,
+name|FSDirectory
+operator|.
+name|isReservedRawName
+argument_list|(
+name|srcArg
+argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
@@ -20311,7 +20336,7 @@ literal|false
 argument_list|,
 literal|"getfileinfo"
 argument_list|,
-name|src
+name|srcArg
 argument_list|)
 expr_stmt|;
 throw|throw
@@ -20330,7 +20355,7 @@ literal|true
 argument_list|,
 literal|"getfileinfo"
 argument_list|,
-name|src
+name|srcArg
 argument_list|)
 expr_stmt|;
 return|return
@@ -20338,12 +20363,13 @@ name|stat
 return|;
 block|}
 comment|/**    * Returns true if the file is closed    */
-DECL|method|isFileClosed (String src)
+DECL|method|isFileClosed (final String srcArg)
 name|boolean
 name|isFileClosed
 parameter_list|(
+specifier|final
 name|String
-name|src
+name|srcArg
 parameter_list|)
 throws|throws
 name|AccessControlException
@@ -20354,6 +20380,11 @@ name|StandbyException
 throws|,
 name|IOException
 block|{
+name|String
+name|src
+init|=
+name|srcArg
+decl_stmt|;
 name|FSPermissionChecker
 name|pc
 init|=
@@ -20386,15 +20417,11 @@ try|try
 block|{
 name|src
 operator|=
-name|FSDirectory
-operator|.
 name|resolvePath
 argument_list|(
 name|src
 argument_list|,
 name|pathComponents
-argument_list|,
-name|dir
 argument_list|)
 expr_stmt|;
 name|checkOperation
@@ -20458,7 +20485,7 @@ literal|false
 argument_list|,
 literal|"isFileClosed"
 argument_list|,
-name|src
+name|srcArg
 argument_list|)
 expr_stmt|;
 block|}
@@ -20534,13 +20561,14 @@ return|return
 name|ret
 return|;
 block|}
-DECL|method|mkdirsInt (String src, PermissionStatus permissions, boolean createParent)
+DECL|method|mkdirsInt (final String srcArg, PermissionStatus permissions, boolean createParent)
 specifier|private
 name|boolean
 name|mkdirsInt
 parameter_list|(
+specifier|final
 name|String
-name|src
+name|srcArg
 parameter_list|,
 name|PermissionStatus
 name|permissions
@@ -20553,6 +20581,11 @@ name|IOException
 throws|,
 name|UnresolvedLinkException
 block|{
+name|String
+name|src
+init|=
+name|srcArg
+decl_stmt|;
 if|if
 condition|(
 name|NameNode
@@ -20650,15 +20683,11 @@ argument_list|)
 expr_stmt|;
 name|src
 operator|=
-name|FSDirectory
-operator|.
 name|resolvePath
 argument_list|(
 name|src
 argument_list|,
 name|pathComponents
-argument_list|,
-name|dir
 argument_list|)
 expr_stmt|;
 name|status
@@ -20713,7 +20742,7 @@ literal|true
 argument_list|,
 literal|"mkdirs"
 argument_list|,
-name|src
+name|srcArg
 argument_list|,
 literal|null
 argument_list|,
@@ -21318,16 +21347,22 @@ literal|true
 return|;
 block|}
 comment|/**    * Get the content summary for a specific file/dir.    *    * @param src The string representation of the path to the file    *    * @throws AccessControlException if access is denied    * @throws UnresolvedLinkException if a symlink is encountered.    * @throws FileNotFoundException if no file exists    * @throws StandbyException    * @throws IOException for issues with writing to the audit log    *    * @return object containing information regarding the file    *         or null if file not found    */
-DECL|method|getContentSummary (String src)
+DECL|method|getContentSummary (final String srcArg)
 name|ContentSummary
 name|getContentSummary
 parameter_list|(
+specifier|final
 name|String
-name|src
+name|srcArg
 parameter_list|)
 throws|throws
 name|IOException
 block|{
+name|String
+name|src
+init|=
+name|srcArg
+decl_stmt|;
 name|FSPermissionChecker
 name|pc
 init|=
@@ -21372,15 +21407,11 @@ argument_list|)
 expr_stmt|;
 name|src
 operator|=
-name|FSDirectory
-operator|.
 name|resolvePath
 argument_list|(
 name|src
 argument_list|,
 name|pathComponents
-argument_list|,
-name|dir
 argument_list|)
 expr_stmt|;
 if|if
@@ -21442,7 +21473,7 @@ name|success
 argument_list|,
 literal|"contentSummary"
 argument_list|,
-name|src
+name|srcArg
 argument_list|)
 expr_stmt|;
 block|}
@@ -21648,15 +21679,11 @@ argument_list|)
 expr_stmt|;
 name|src
 operator|=
-name|FSDirectory
-operator|.
 name|resolvePath
 argument_list|(
 name|src
 argument_list|,
 name|pathComponents
-argument_list|,
-name|dir
 argument_list|)
 expr_stmt|;
 specifier|final
@@ -23577,13 +23604,14 @@ name|e
 throw|;
 block|}
 block|}
-DECL|method|getListingInt (String src, byte[] startAfter, boolean needLocation)
+DECL|method|getListingInt (final String srcArg, byte[] startAfter, boolean needLocation)
 specifier|private
 name|DirectoryListing
 name|getListingInt
 parameter_list|(
+specifier|final
 name|String
-name|src
+name|srcArg
 parameter_list|,
 name|byte
 index|[]
@@ -23599,6 +23627,11 @@ name|UnresolvedLinkException
 throws|,
 name|IOException
 block|{
+name|String
+name|src
+init|=
+name|srcArg
+decl_stmt|;
 name|DirectoryListing
 name|dl
 decl_stmt|;
@@ -23650,15 +23683,11 @@ argument_list|)
 expr_stmt|;
 name|src
 operator|=
-name|FSDirectory
-operator|.
 name|resolvePath
 argument_list|(
 name|src
 argument_list|,
 name|pathComponents
-argument_list|,
-name|dir
 argument_list|)
 expr_stmt|;
 comment|// Get file name when startAfter is an INodePath
@@ -23786,7 +23815,7 @@ literal|true
 argument_list|,
 literal|"listStatus"
 argument_list|,
-name|src
+name|srcArg
 argument_list|)
 expr_stmt|;
 name|dl
@@ -28940,6 +28969,52 @@ argument_list|,
 literal|null
 argument_list|)
 expr_stmt|;
+block|}
+comment|/**    * This is a wrapper for FSDirectory.resolvePath(). If the path passed    * is prefixed with /.reserved/raw, then it checks to ensure that the caller    * has super user privs.    *    * @param path The path to resolve.    * @param pathComponents path components corresponding to the path    * @return if the path indicates an inode, return path after replacing up to    *<inodeid> with the corresponding path of the inode, else the path    *         in {@code src} as is. If the path refers to a path in the "raw"    *         directory, return the non-raw pathname.    * @throws FileNotFoundException    * @throws AccessControlException    */
+DECL|method|resolvePath (String path, byte[][] pathComponents)
+specifier|private
+name|String
+name|resolvePath
+parameter_list|(
+name|String
+name|path
+parameter_list|,
+name|byte
+index|[]
+index|[]
+name|pathComponents
+parameter_list|)
+throws|throws
+name|FileNotFoundException
+throws|,
+name|AccessControlException
+block|{
+if|if
+condition|(
+name|FSDirectory
+operator|.
+name|isReservedRawName
+argument_list|(
+name|path
+argument_list|)
+condition|)
+block|{
+name|checkSuperuserPrivilege
+argument_list|()
+expr_stmt|;
+block|}
+return|return
+name|FSDirectory
+operator|.
+name|resolvePath
+argument_list|(
+name|path
+argument_list|,
+name|pathComponents
+argument_list|,
+name|dir
+argument_list|)
+return|;
 block|}
 annotation|@
 name|Override
@@ -38497,12 +38572,13 @@ return|return
 name|results
 return|;
 block|}
-DECL|method|modifyAclEntries (String src, List<AclEntry> aclSpec)
+DECL|method|modifyAclEntries (final String srcArg, List<AclEntry> aclSpec)
 name|void
 name|modifyAclEntries
 parameter_list|(
+specifier|final
 name|String
-name|src
+name|srcArg
 parameter_list|,
 name|List
 argument_list|<
@@ -38513,6 +38589,11 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
+name|String
+name|src
+init|=
+name|srcArg
+decl_stmt|;
 name|nnConf
 operator|.
 name|checkAclsConfigFlag
@@ -38569,15 +38650,11 @@ argument_list|)
 expr_stmt|;
 name|src
 operator|=
-name|FSDirectory
-operator|.
 name|resolvePath
 argument_list|(
 name|src
 argument_list|,
 name|pathComponents
-argument_list|,
-name|dir
 argument_list|)
 expr_stmt|;
 name|checkOwner
@@ -38640,7 +38717,7 @@ literal|true
 argument_list|,
 literal|"modifyAclEntries"
 argument_list|,
-name|src
+name|srcArg
 argument_list|,
 literal|null
 argument_list|,
@@ -38648,12 +38725,13 @@ name|resultingStat
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|removeAclEntries (String src, List<AclEntry> aclSpec)
+DECL|method|removeAclEntries (final String srcArg, List<AclEntry> aclSpec)
 name|void
 name|removeAclEntries
 parameter_list|(
+specifier|final
 name|String
-name|src
+name|srcArg
 parameter_list|,
 name|List
 argument_list|<
@@ -38664,6 +38742,11 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
+name|String
+name|src
+init|=
+name|srcArg
+decl_stmt|;
 name|nnConf
 operator|.
 name|checkAclsConfigFlag
@@ -38720,15 +38803,11 @@ argument_list|)
 expr_stmt|;
 name|src
 operator|=
-name|FSDirectory
-operator|.
 name|resolvePath
 argument_list|(
 name|src
 argument_list|,
 name|pathComponents
-argument_list|,
-name|dir
 argument_list|)
 expr_stmt|;
 name|checkOwner
@@ -38791,7 +38870,7 @@ literal|true
 argument_list|,
 literal|"removeAclEntries"
 argument_list|,
-name|src
+name|srcArg
 argument_list|,
 literal|null
 argument_list|,
@@ -38799,16 +38878,22 @@ name|resultingStat
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|removeDefaultAcl (String src)
+DECL|method|removeDefaultAcl (final String srcArg)
 name|void
 name|removeDefaultAcl
 parameter_list|(
+specifier|final
 name|String
-name|src
+name|srcArg
 parameter_list|)
 throws|throws
 name|IOException
 block|{
+name|String
+name|src
+init|=
+name|srcArg
+decl_stmt|;
 name|nnConf
 operator|.
 name|checkAclsConfigFlag
@@ -38865,15 +38950,11 @@ argument_list|)
 expr_stmt|;
 name|src
 operator|=
-name|FSDirectory
-operator|.
 name|resolvePath
 argument_list|(
 name|src
 argument_list|,
 name|pathComponents
-argument_list|,
-name|dir
 argument_list|)
 expr_stmt|;
 name|checkOwner
@@ -38934,7 +39015,7 @@ literal|true
 argument_list|,
 literal|"removeDefaultAcl"
 argument_list|,
-name|src
+name|srcArg
 argument_list|,
 literal|null
 argument_list|,
@@ -38942,16 +39023,22 @@ name|resultingStat
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|removeAcl (String src)
+DECL|method|removeAcl (final String srcArg)
 name|void
 name|removeAcl
 parameter_list|(
+specifier|final
 name|String
-name|src
+name|srcArg
 parameter_list|)
 throws|throws
 name|IOException
 block|{
+name|String
+name|src
+init|=
+name|srcArg
+decl_stmt|;
 name|nnConf
 operator|.
 name|checkAclsConfigFlag
@@ -39008,15 +39095,11 @@ argument_list|)
 expr_stmt|;
 name|src
 operator|=
-name|FSDirectory
-operator|.
 name|resolvePath
 argument_list|(
 name|src
 argument_list|,
 name|pathComponents
-argument_list|,
-name|dir
 argument_list|)
 expr_stmt|;
 name|checkOwner
@@ -39073,7 +39156,7 @@ literal|true
 argument_list|,
 literal|"removeAcl"
 argument_list|,
-name|src
+name|srcArg
 argument_list|,
 literal|null
 argument_list|,
@@ -39081,12 +39164,13 @@ name|resultingStat
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|setAcl (String src, List<AclEntry> aclSpec)
+DECL|method|setAcl (final String srcArg, List<AclEntry> aclSpec)
 name|void
 name|setAcl
 parameter_list|(
+specifier|final
 name|String
-name|src
+name|srcArg
 parameter_list|,
 name|List
 argument_list|<
@@ -39097,6 +39181,11 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
+name|String
+name|src
+init|=
+name|srcArg
+decl_stmt|;
 name|nnConf
 operator|.
 name|checkAclsConfigFlag
@@ -39153,15 +39242,11 @@ argument_list|)
 expr_stmt|;
 name|src
 operator|=
-name|FSDirectory
-operator|.
 name|resolvePath
 argument_list|(
 name|src
 argument_list|,
 name|pathComponents
-argument_list|,
-name|dir
 argument_list|)
 expr_stmt|;
 name|checkOwner
@@ -39224,7 +39309,7 @@ literal|true
 argument_list|,
 literal|"setAcl"
 argument_list|,
-name|src
+name|srcArg
 argument_list|,
 literal|null
 argument_list|,
@@ -39286,15 +39371,11 @@ argument_list|)
 expr_stmt|;
 name|src
 operator|=
-name|FSDirectory
-operator|.
 name|resolvePath
 argument_list|(
 name|src
 argument_list|,
 name|pathComponents
-argument_list|,
-name|dir
 argument_list|)
 expr_stmt|;
 if|if
@@ -39627,15 +39708,11 @@ argument_list|)
 expr_stmt|;
 name|src
 operator|=
-name|FSDirectory
-operator|.
 name|resolvePath
 argument_list|(
 name|src
 argument_list|,
 name|pathComponents
-argument_list|,
-name|dir
 argument_list|)
 expr_stmt|;
 specifier|final
@@ -39711,7 +39788,7 @@ literal|true
 argument_list|,
 literal|"createEncryptionZone"
 argument_list|,
-name|src
+name|srcArg
 argument_list|,
 literal|null
 argument_list|,
@@ -40058,13 +40135,14 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-DECL|method|setXAttrInt (String src, XAttr xAttr, EnumSet<XAttrSetFlag> flag, boolean logRetryCache)
+DECL|method|setXAttrInt (final String srcArg, XAttr xAttr, EnumSet<XAttrSetFlag> flag, boolean logRetryCache)
 specifier|private
 name|void
 name|setXAttrInt
 parameter_list|(
+specifier|final
 name|String
-name|src
+name|srcArg
 parameter_list|,
 name|XAttr
 name|xAttr
@@ -40081,6 +40159,11 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
+name|String
+name|src
+init|=
+name|srcArg
+decl_stmt|;
 name|nnConf
 operator|.
 name|checkXAttrsConfigFlag
@@ -40151,15 +40234,11 @@ argument_list|)
 expr_stmt|;
 name|src
 operator|=
-name|FSDirectory
-operator|.
 name|resolvePath
 argument_list|(
 name|src
 argument_list|,
 name|pathComponents
-argument_list|,
-name|dir
 argument_list|)
 expr_stmt|;
 name|checkXAttrChangeAccess
@@ -40242,7 +40321,7 @@ literal|true
 argument_list|,
 literal|"setXAttr"
 argument_list|,
-name|src
+name|srcArg
 argument_list|,
 literal|null
 argument_list|,
@@ -40336,15 +40415,16 @@ argument_list|)
 throw|;
 block|}
 block|}
-DECL|method|getXAttrs (String src, List<XAttr> xAttrs)
+DECL|method|getXAttrs (final String srcArg, List<XAttr> xAttrs)
 name|List
 argument_list|<
 name|XAttr
 argument_list|>
 name|getXAttrs
 parameter_list|(
+specifier|final
 name|String
-name|src
+name|srcArg
 parameter_list|,
 name|List
 argument_list|<
@@ -40355,6 +40435,11 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
+name|String
+name|src
+init|=
+name|srcArg
+decl_stmt|;
 name|nnConf
 operator|.
 name|checkXAttrsConfigFlag
@@ -40408,7 +40493,7 @@ literal|false
 argument_list|,
 literal|"getXAttrs"
 argument_list|,
-name|src
+name|srcArg
 argument_list|)
 expr_stmt|;
 throw|throw
@@ -40442,15 +40527,11 @@ try|try
 block|{
 name|src
 operator|=
-name|FSDirectory
-operator|.
 name|resolvePath
 argument_list|(
 name|src
 argument_list|,
 name|pathComponents
-argument_list|,
-name|dir
 argument_list|)
 expr_stmt|;
 name|checkOperation
@@ -40641,7 +40722,7 @@ literal|false
 argument_list|,
 literal|"getXAttrs"
 argument_list|,
-name|src
+name|srcArg
 argument_list|)
 expr_stmt|;
 throw|throw
@@ -40706,15 +40787,11 @@ try|try
 block|{
 name|src
 operator|=
-name|FSDirectory
-operator|.
 name|resolvePath
 argument_list|(
 name|src
 argument_list|,
 name|pathComponents
-argument_list|,
-name|dir
 argument_list|)
 expr_stmt|;
 name|checkOperation
@@ -40896,12 +40973,13 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-DECL|method|removeXAttrInt (String src, XAttr xAttr, boolean logRetryCache)
+DECL|method|removeXAttrInt (final String srcArg, XAttr xAttr, boolean logRetryCache)
 name|void
 name|removeXAttrInt
 parameter_list|(
+specifier|final
 name|String
-name|src
+name|srcArg
 parameter_list|,
 name|XAttr
 name|xAttr
@@ -40912,6 +40990,11 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
+name|String
+name|src
+init|=
+name|srcArg
+decl_stmt|;
 name|nnConf
 operator|.
 name|checkXAttrsConfigFlag
@@ -40977,15 +41060,11 @@ argument_list|)
 expr_stmt|;
 name|src
 operator|=
-name|FSDirectory
-operator|.
 name|resolvePath
 argument_list|(
 name|src
 argument_list|,
 name|pathComponents
-argument_list|,
-name|dir
 argument_list|)
 expr_stmt|;
 name|checkXAttrChangeAccess
@@ -41096,7 +41175,7 @@ literal|true
 argument_list|,
 literal|"removeXAttr"
 argument_list|,
-name|src
+name|srcArg
 argument_list|,
 literal|null
 argument_list|,
