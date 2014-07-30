@@ -1460,6 +1460,38 @@ name|e
 argument_list|)
 expr_stmt|;
 block|}
+comment|/* Test failure of create EZ on a file. */
+try|try
+block|{
+name|dfsAdmin
+operator|.
+name|createEncryptionZone
+argument_list|(
+name|notEmptyChild
+argument_list|,
+name|TEST_KEY
+argument_list|)
+expr_stmt|;
+name|fail
+argument_list|(
+literal|"Created EZ on a file"
+argument_list|)
+expr_stmt|;
+block|}
+catch|catch
+parameter_list|(
+name|IOException
+name|e
+parameter_list|)
+block|{
+name|assertExceptionContains
+argument_list|(
+literal|"create an encryption zone for a file."
+argument_list|,
+name|e
+argument_list|)
+expr_stmt|;
+block|}
 comment|/* Test failure of creating an EZ passing a key that doesn't exist. */
 specifier|final
 name|Path
