@@ -102,6 +102,20 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|test
+operator|.
+name|GenericTestUtils
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|util
 operator|.
 name|Shell
@@ -129,6 +143,18 @@ operator|.
 name|framework
 operator|.
 name|TestCase
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|junit
+operator|.
+name|Assert
+operator|.
+name|fail
 import|;
 end_import
 
@@ -2301,6 +2327,101 @@ name|toString
 argument_list|()
 argument_list|)
 expr_stmt|;
+comment|// empty URI
+name|URI
+name|uri3
+init|=
+operator|new
+name|URI
+argument_list|(
+literal|""
+argument_list|)
+decl_stmt|;
+name|assertEquals
+argument_list|(
+literal|""
+argument_list|,
+name|uri3
+operator|.
+name|toString
+argument_list|()
+argument_list|)
+expr_stmt|;
+try|try
+block|{
+name|path
+operator|=
+operator|new
+name|Path
+argument_list|(
+name|uri3
+argument_list|)
+expr_stmt|;
+name|fail
+argument_list|(
+literal|"Expected exception for empty URI"
+argument_list|)
+expr_stmt|;
+block|}
+catch|catch
+parameter_list|(
+name|IllegalArgumentException
+name|e
+parameter_list|)
+block|{
+comment|// expect to receive an IllegalArgumentException
+name|GenericTestUtils
+operator|.
+name|assertExceptionContains
+argument_list|(
+literal|"Can not create a Path"
+operator|+
+literal|" from an empty URI"
+argument_list|,
+name|e
+argument_list|)
+expr_stmt|;
+block|}
+comment|// null URI
+name|uri3
+operator|=
+literal|null
+expr_stmt|;
+try|try
+block|{
+name|path
+operator|=
+operator|new
+name|Path
+argument_list|(
+name|uri3
+argument_list|)
+expr_stmt|;
+name|fail
+argument_list|(
+literal|"Expected exception for null URI"
+argument_list|)
+expr_stmt|;
+block|}
+catch|catch
+parameter_list|(
+name|IllegalArgumentException
+name|e
+parameter_list|)
+block|{
+comment|// expect to receive an IllegalArgumentException
+name|GenericTestUtils
+operator|.
+name|assertExceptionContains
+argument_list|(
+literal|"Can not create a Path"
+operator|+
+literal|" from a null URI"
+argument_list|,
+name|e
+argument_list|)
+expr_stmt|;
+block|}
 block|}
 comment|/** Test URIs created from Path objects */
 annotation|@

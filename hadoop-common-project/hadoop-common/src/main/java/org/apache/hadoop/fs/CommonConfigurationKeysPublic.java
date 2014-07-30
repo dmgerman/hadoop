@@ -711,7 +711,7 @@ specifier|final
 name|boolean
 name|IPC_CLIENT_TCPNODELAY_DEFAULT
 init|=
-literal|false
+literal|true
 decl_stmt|;
 comment|/** See<a href="{@docRoot}/../core-default.html">core-default.xml</a> */
 DECL|field|IPC_SERVER_LISTEN_QUEUE_SIZE_KEY
@@ -791,7 +791,7 @@ specifier|final
 name|boolean
 name|IPC_SERVER_TCPNODELAY_DEFAULT
 init|=
-literal|false
+literal|true
 decl_stmt|;
 comment|/** See<a href="{@docRoot}/../core-default.html">core-default.xml</a> */
 DECL|field|HADOOP_RPC_SOCKET_FACTORY_CLASS_DEFAULT_KEY

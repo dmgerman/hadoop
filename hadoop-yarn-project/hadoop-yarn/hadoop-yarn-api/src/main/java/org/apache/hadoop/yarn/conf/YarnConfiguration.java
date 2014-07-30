@@ -1067,6 +1067,27 @@ name|RM_PREFIX
 operator|+
 literal|"webapp.spnego-keytab-file"
 decl_stmt|;
+comment|/**    * Flag to enable override of the default kerberos authentication filter with    * the RM authentication filter to allow authentication using delegation    * tokens(fallback to kerberos if the tokens are missing). Only applicable    * when the http authentication type is kerberos.    */
+DECL|field|RM_WEBAPP_DELEGATION_TOKEN_AUTH_FILTER
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|RM_WEBAPP_DELEGATION_TOKEN_AUTH_FILTER
+init|=
+name|RM_PREFIX
+operator|+
+literal|"webapp.delegation-token-auth-filter.enabled"
+decl_stmt|;
+DECL|field|DEFAULT_RM_WEBAPP_DELEGATION_TOKEN_AUTH_FILTER
+specifier|public
+specifier|static
+specifier|final
+name|boolean
+name|DEFAULT_RM_WEBAPP_DELEGATION_TOKEN_AUTH_FILTER
+init|=
+literal|true
+decl_stmt|;
 comment|/** How long to wait until a container is considered dead.*/
 DECL|field|RM_CONTAINER_ALLOC_EXPIRY_INTERVAL_MS
 specifier|public
