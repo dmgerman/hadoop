@@ -15524,7 +15524,7 @@ argument_list|)
 return|;
 block|}
 DECL|method|convert (FsAction v)
-specifier|private
+specifier|public
 specifier|static
 name|FsActionProto
 name|convert
@@ -15552,7 +15552,7 @@ argument_list|)
 return|;
 block|}
 DECL|method|convert (FsActionProto v)
-specifier|private
+specifier|public
 specifier|static
 name|FsAction
 name|convert

@@ -204,6 +204,22 @@ name|fs
 operator|.
 name|permission
 operator|.
+name|FsAction
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|fs
+operator|.
+name|permission
+operator|.
 name|FsPermission
 import|;
 end_import
@@ -5175,6 +5191,35 @@ parameter_list|)
 block|{
 comment|// expected
 block|}
+try|try
+block|{
+name|fs
+operator|.
+name|access
+argument_list|(
+name|pathToCheck
+argument_list|,
+name|FsAction
+operator|.
+name|READ
+argument_list|)
+expr_stmt|;
+name|fail
+argument_list|(
+literal|"The access call should have failed for "
+operator|+
+name|pathToCheck
+argument_list|)
+expr_stmt|;
+block|}
+catch|catch
+parameter_list|(
+name|AccessControlException
+name|e
+parameter_list|)
+block|{
+comment|// expected
+block|}
 block|}
 comment|/**    * Asserts that permission is granted to the given fs/user for the given    * directory.    *    * @param fs FileSystem to check    * @param user UserGroupInformation owner of fs    * @param pathToCheck Path directory to check    * @throws Exception if there is an unexpected error    */
 DECL|method|assertDirPermissionGranted (FileSystem fs, UserGroupInformation user, Path pathToCheck)
@@ -5202,6 +5247,17 @@ operator|.
 name|listStatus
 argument_list|(
 name|pathToCheck
+argument_list|)
+expr_stmt|;
+name|fs
+operator|.
+name|access
+argument_list|(
+name|pathToCheck
+argument_list|,
+name|FsAction
+operator|.
+name|READ
 argument_list|)
 expr_stmt|;
 block|}
