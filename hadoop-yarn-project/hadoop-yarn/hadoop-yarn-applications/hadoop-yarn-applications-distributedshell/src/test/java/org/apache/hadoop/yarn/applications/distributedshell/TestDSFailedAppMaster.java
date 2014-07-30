@@ -128,7 +128,9 @@ condition|)
 block|{
 comment|// should reuse the earlier running container, so numAllocatedContainers
 comment|// should be set to 1. And should ask no more containers, so
-comment|// numRequestedContainers should be set to 0.
+comment|// numRequestedContainers should be the same as numTotalContainers.
+comment|// The only container is the container requested by the AM in the first
+comment|// attempt.
 if|if
 condition|(
 name|numAllocatedContainers
@@ -143,7 +145,7 @@ operator|.
 name|get
 argument_list|()
 operator|!=
-literal|0
+name|numTotalContainers
 condition|)
 block|{
 name|LOG
