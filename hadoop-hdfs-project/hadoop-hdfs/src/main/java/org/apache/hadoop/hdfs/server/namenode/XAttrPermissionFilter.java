@@ -115,7 +115,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * There are four types of extended attributes<XAttr> defined by the  * following namespaces:  *<br>  * USER - extended user attributes: these can be assigned to files and  * directories to store arbitrary additional information. The access  * permissions for user attributes are defined by the file permission  * bits. For sticky directories, only the owner and privileged user can   * write attributes.  *<br>  * TRUSTED - trusted extended attributes: these are visible/accessible  * only to/by the super user.  *<br>  * SECURITY - extended security attributes: these are used by the HDFS  * core for security purposes and are not available through admin/user  * API.  *<br>  * SYSTEM - extended system attributes: these are used by the HDFS  * core and are not available through admin/user API.  */
+comment|/**  * There are four types of extended attributes<XAttr> defined by the  * following namespaces:  *<br>  * USER - extended user attributes: these can be assigned to files and  * directories to store arbitrary additional information. The access  * permissions for user attributes are defined by the file permission  * bits. For sticky directories, only the owner and privileged user can   * write attributes.  *<br>  * TRUSTED - trusted extended attributes: these are visible/accessible  * only to/by the super user.  *<br>  * SECURITY - extended security attributes: these are used by the HDFS  * core for security purposes and are not available through admin/user  * API.  *<br>  * SYSTEM - extended system attributes: these are used by the HDFS  * core and are not available through admin/user API.  *<br>  * RAW - extended system attributes: these are used for internal system  *   attributes that sometimes need to be exposed. Like SYSTEM namespace  *   attributes they are not visible to the user except when getXAttr/getXAttrs  *   is called on a file or directory in the /.reserved/raw HDFS directory  *   hierarchy. These attributes can only be accessed by the superuser.  *</br>  */
 end_comment
 
 begin_class
@@ -128,7 +128,7 @@ specifier|public
 class|class
 name|XAttrPermissionFilter
 block|{
-DECL|method|checkPermissionForApi (FSPermissionChecker pc, XAttr xAttr)
+DECL|method|checkPermissionForApi (FSPermissionChecker pc, XAttr xAttr, boolean isRawPath)
 specifier|static
 name|void
 name|checkPermissionForApi
@@ -138,10 +138,22 @@ name|pc
 parameter_list|,
 name|XAttr
 name|xAttr
+parameter_list|,
+name|boolean
+name|isRawPath
 parameter_list|)
 throws|throws
 name|AccessControlException
 block|{
+specifier|final
+name|boolean
+name|isSuperUser
+init|=
+name|pc
+operator|.
+name|isSuperUser
+argument_list|()
+decl_stmt|;
 if|if
 condition|(
 name|xAttr
@@ -167,11 +179,28 @@ name|NameSpace
 operator|.
 name|TRUSTED
 operator|&&
-name|pc
-operator|.
 name|isSuperUser
-argument_list|()
 operator|)
+condition|)
+block|{
+return|return;
+block|}
+if|if
+condition|(
+name|xAttr
+operator|.
+name|getNameSpace
+argument_list|()
+operator|==
+name|XAttr
+operator|.
+name|NameSpace
+operator|.
+name|RAW
+operator|&&
+name|isRawPath
+operator|&&
+name|isSuperUser
 condition|)
 block|{
 return|return;
@@ -191,7 +220,7 @@ argument_list|)
 argument_list|)
 throw|;
 block|}
-DECL|method|checkPermissionForApi (FSPermissionChecker pc, List<XAttr> xAttrs)
+DECL|method|checkPermissionForApi (FSPermissionChecker pc, List<XAttr> xAttrs, boolean isRawPath)
 specifier|static
 name|void
 name|checkPermissionForApi
@@ -204,6 +233,9 @@ argument_list|<
 name|XAttr
 argument_list|>
 name|xAttrs
+parameter_list|,
+name|boolean
+name|isRawPath
 parameter_list|)
 throws|throws
 name|AccessControlException
@@ -240,11 +272,13 @@ argument_list|(
 name|pc
 argument_list|,
 name|xAttr
+argument_list|,
+name|isRawPath
 argument_list|)
 expr_stmt|;
 block|}
 block|}
-DECL|method|filterXAttrsForApi (FSPermissionChecker pc, List<XAttr> xAttrs)
+DECL|method|filterXAttrsForApi (FSPermissionChecker pc, List<XAttr> xAttrs, boolean isRawPath)
 specifier|static
 name|List
 argument_list|<
@@ -260,6 +294,9 @@ argument_list|<
 name|XAttr
 argument_list|>
 name|xAttrs
+parameter_list|,
+name|boolean
+name|isRawPath
 parameter_list|)
 block|{
 assert|assert
@@ -300,6 +337,15 @@ operator|.
 name|size
 argument_list|()
 argument_list|)
+decl_stmt|;
+specifier|final
+name|boolean
+name|isSuperUser
+init|=
+name|pc
+operator|.
+name|isSuperUser
+argument_list|()
 decl_stmt|;
 for|for
 control|(
@@ -345,10 +391,34 @@ name|NameSpace
 operator|.
 name|TRUSTED
 operator|&&
-name|pc
-operator|.
 name|isSuperUser
+condition|)
+block|{
+name|filteredXAttrs
+operator|.
+name|add
+argument_list|(
+name|xAttr
+argument_list|)
+expr_stmt|;
+block|}
+elseif|else
+if|if
+condition|(
+name|xAttr
+operator|.
+name|getNameSpace
 argument_list|()
+operator|==
+name|XAttr
+operator|.
+name|NameSpace
+operator|.
+name|RAW
+operator|&&
+name|isSuperUser
+operator|&&
+name|isRawPath
 condition|)
 block|{
 name|filteredXAttrs
