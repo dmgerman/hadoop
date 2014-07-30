@@ -13766,6 +13766,14 @@ argument_list|(
 name|ezKeyName
 argument_list|)
 decl_stmt|;
+name|EncryptionFaultInjector
+operator|.
+name|getInstance
+argument_list|()
+operator|.
+name|startFileAfterGenerateKey
+argument_list|()
+expr_stmt|;
 comment|// Try to create the file with the computed cipher suite and EDEK
 name|writeLock
 argument_list|()
