@@ -2143,7 +2143,7 @@ parameter_list|)
 throws|throws
 name|IOException
 function_decl|;
-comment|/**    * Set xattr of a file or directory.    * A regular user only can set xattr of "user" namespace.    * A super user can set xattr of "user" and "trusted" namespace.    * XAttr of "security" and "system" namespace is only used/exposed     * internally to the FS impl.    *<p/>    * For xattr of "user" namespace, its access permissions are     * defined by the file or directory permission bits.    * XAttr will be set only when login user has correct permissions.    *<p/>    * @see<a href="http://en.wikipedia.org/wiki/Extended_file_attributes">    * http://en.wikipedia.org/wiki/Extended_file_attributes</a>    * @param src file or directory    * @param xAttr<code>XAttr</code> to set    * @param flag set flag    * @throws IOException    */
+comment|/**    * Set xattr of a file or directory.    * The name must be prefixed with the namespace followed by ".". For example,    * "user.attr".    *<p/>    * Refer to the HDFS extended attributes user documentation for details.    *    * @param src file or directory    * @param xAttr<code>XAttr</code> to set    * @param flag set flag    * @throws IOException    */
 annotation|@
 name|AtMostOnce
 DECL|method|setXAttr (String src, XAttr xAttr, EnumSet<XAttrSetFlag> flag)
@@ -2166,7 +2166,7 @@ parameter_list|)
 throws|throws
 name|IOException
 function_decl|;
-comment|/**    * Get xattrs of file or directory. Values in xAttrs parameter are ignored.    * If xattrs is null or empty, equals getting all xattrs of the file or     * directory.    * Only xattrs which login user has correct permissions will be returned.     *<p/>    * A regular user only can get xattr of "user" namespace.    * A super user can get xattr of "user" and "trusted" namespace.    * XAttr of "security" and "system" namespace is only used/exposed     * internally to the FS impl.    *<p/>    * @see<a href="http://en.wikipedia.org/wiki/Extended_file_attributes">    * http://en.wikipedia.org/wiki/Extended_file_attributes</a>    * @param src file or directory    * @param xAttrs xAttrs to get    * @return List<XAttr><code>XAttr</code> list     * @throws IOException    */
+comment|/**    * Get xattrs of a file or directory. Values in xAttrs parameter are ignored.    * If xAttrs is null or empty, this is the same as getting all xattrs of the    * file or directory.  Only those xattrs for which the logged-in user has    * permissions to view are returned.    *<p/>    * Refer to the HDFS extended attributes user documentation for details.    *    * @param src file or directory    * @param xAttrs xAttrs to get    * @return List<XAttr><code>XAttr</code> list     * @throws IOException    */
 annotation|@
 name|Idempotent
 DECL|method|getXAttrs (String src, List<XAttr> xAttrs)
@@ -2189,7 +2189,7 @@ parameter_list|)
 throws|throws
 name|IOException
 function_decl|;
-comment|/**    * List the xattrs names for a file or directory.    * Only the xattr names for which the logged in user has the permissions to    * access will be returned.    *<p/>    * A regular user only can get xattr names from the "user" namespace.    * A super user can get xattr names of the "user" and "trusted" namespace.    * XAttr names of the "security" and "system" namespaces are only used/exposed    * internally by the file system impl.    *<p/>    * @see<a href="http://en.wikipedia.org/wiki/Extended_file_attributes">    * http://en.wikipedia.org/wiki/Extended_file_attributes</a>    * @param src file or directory    * @param xAttrs xAttrs to get    * @return List<XAttr><code>XAttr</code> list    * @throws IOException    */
+comment|/**    * List the xattrs names for a file or directory.    * Only the xattr names for which the logged in user has the permissions to    * access will be returned.    *<p/>    * Refer to the HDFS extended attributes user documentation for details.    *    * @param src file or directory    * @param xAttrs xAttrs to get    * @return List<XAttr><code>XAttr</code> list    * @throws IOException    */
 annotation|@
 name|Idempotent
 DECL|method|listXAttrs (String src)
@@ -2206,7 +2206,7 @@ parameter_list|)
 throws|throws
 name|IOException
 function_decl|;
-comment|/**    * Remove xattr of a file or directory.Value in xAttr parameter is ignored.    * Name must be prefixed with user/trusted/security/system.    *<p/>    * A regular user only can remove xattr of "user" namespace.    * A super user can remove xattr of "user" and "trusted" namespace.    * XAttr of "security" and "system" namespace is only used/exposed     * internally to the FS impl.    *<p/>    * @see<a href="http://en.wikipedia.org/wiki/Extended_file_attributes">    * http://en.wikipedia.org/wiki/Extended_file_attributes</a>    * @param src file or directory    * @param xAttr<code>XAttr</code> to remove    * @throws IOException    */
+comment|/**    * Remove xattr of a file or directory.Value in xAttr parameter is ignored.    * The name must be prefixed with the namespace followed by ".". For example,    * "user.attr".    *<p/>    * Refer to the HDFS extended attributes user documentation for details.    *    * @param src file or directory    * @param xAttr<code>XAttr</code> to remove    * @throws IOException    */
 annotation|@
 name|AtMostOnce
 DECL|method|removeXAttr (String src, XAttr xAttr)
