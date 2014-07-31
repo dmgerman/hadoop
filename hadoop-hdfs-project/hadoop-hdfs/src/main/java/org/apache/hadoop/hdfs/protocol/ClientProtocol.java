@@ -2257,7 +2257,7 @@ parameter_list|)
 throws|throws
 name|IOException
 function_decl|;
-comment|/**    * Remove xattr of a file or directory.Value in xAttr parameter is ignored.<<<<<<< .working    * Name must be prefixed with user/trusted/security/system/raw. =======    * The name must be prefixed with the namespace followed by ".". For example,    * "user.attr".>>>>>>> .merge-right.r1614550    *<p/><<<<<<< .working    * A regular user only can remove xattr of "user" namespace.    * A super user can remove xattr of "user" and "trusted" namespace.    * XAttr of "security" and "system" namespace is only used/exposed     * internally to the FS impl.    * The xattrs of the "raw" namespace are only used/exposed when accessed in    * the /.reserved/raw HDFS directory hierarchy. These attributes can only be    * accessed by the superuser.    *<p/>    * @see<a href="http://en.wikipedia.org/wiki/Extended_file_attributes">    * http://en.wikipedia.org/wiki/Extended_file_attributes</a> =======    * Refer to the HDFS extended attributes user documentation for details.    *>>>>>>> .merge-right.r1614550    * @param src file or directory    * @param xAttr<code>XAttr</code> to remove    * @throws IOException    */
+comment|/**    * Remove xattr of a file or directory.Value in xAttr parameter is ignored.    * The name must be prefixed with the namespace followed by ".". For example,    * "user.attr".    *<p/>    * Refer to the HDFS extended attributes user documentation for details.    *    * @param src file or directory    * @param xAttr<code>XAttr</code> to remove    * @throws IOException    */
 annotation|@
 name|AtMostOnce
 DECL|method|removeXAttr (String src, XAttr xAttr)
