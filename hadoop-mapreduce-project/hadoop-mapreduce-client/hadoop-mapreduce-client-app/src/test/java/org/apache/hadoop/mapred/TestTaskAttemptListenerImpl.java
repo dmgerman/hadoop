@@ -606,6 +606,35 @@ name|MockTaskAttemptListenerImpl
 extends|extends
 name|TaskAttemptListenerImpl
 block|{
+DECL|method|MockTaskAttemptListenerImpl (AppContext context, JobTokenSecretManager jobTokenSecretManager, RMHeartbeatHandler rmHeartbeatHandler, AMPreemptionPolicy policy)
+specifier|public
+name|MockTaskAttemptListenerImpl
+parameter_list|(
+name|AppContext
+name|context
+parameter_list|,
+name|JobTokenSecretManager
+name|jobTokenSecretManager
+parameter_list|,
+name|RMHeartbeatHandler
+name|rmHeartbeatHandler
+parameter_list|,
+name|AMPreemptionPolicy
+name|policy
+parameter_list|)
+block|{
+name|super
+argument_list|(
+name|context
+argument_list|,
+name|jobTokenSecretManager
+argument_list|,
+name|rmHeartbeatHandler
+argument_list|,
+name|policy
+argument_list|)
+expr_stmt|;
+block|}
 DECL|method|MockTaskAttemptListenerImpl (AppContext context, JobTokenSecretManager jobTokenSecretManager, RMHeartbeatHandler rmHeartbeatHandler, TaskHeartbeatHandler hbHandler, AMPreemptionPolicy policy)
 specifier|public
 name|MockTaskAttemptListenerImpl
@@ -1524,7 +1553,7 @@ name|TaskAttemptListenerImpl
 name|listener
 init|=
 operator|new
-name|TaskAttemptListenerImpl
+name|MockTaskAttemptListenerImpl
 argument_list|(
 name|appCtx
 argument_list|,
@@ -2068,7 +2097,7 @@ name|TaskAttemptListenerImpl
 name|listener
 init|=
 operator|new
-name|TaskAttemptListenerImpl
+name|MockTaskAttemptListenerImpl
 argument_list|(
 name|appCtx
 argument_list|,
@@ -2483,7 +2512,7 @@ name|TaskAttemptListenerImpl
 name|listener
 init|=
 operator|new
-name|TaskAttemptListenerImpl
+name|MockTaskAttemptListenerImpl
 argument_list|(
 name|appCtx
 argument_list|,

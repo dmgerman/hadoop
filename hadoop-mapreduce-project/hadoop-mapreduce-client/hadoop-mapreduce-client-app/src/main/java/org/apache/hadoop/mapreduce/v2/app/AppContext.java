@@ -280,6 +280,11 @@ name|boolean
 name|hasSuccessfullyUnregistered
 parameter_list|()
 function_decl|;
+DECL|method|getNMHostname ()
+name|String
+name|getNMHostname
+parameter_list|()
+function_decl|;
 block|}
 end_interface
 
