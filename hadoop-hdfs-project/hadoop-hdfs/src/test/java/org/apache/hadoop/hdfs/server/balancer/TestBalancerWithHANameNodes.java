@@ -630,7 +630,7 @@ name|Balancer
 operator|.
 name|Parameters
 operator|.
-name|DEFALUT
+name|DEFAULT
 argument_list|,
 name|conf
 argument_list|)
@@ -659,6 +659,12 @@ argument_list|,
 name|client
 argument_list|,
 name|cluster
+argument_list|,
+name|Balancer
+operator|.
+name|Parameters
+operator|.
+name|DEFAULT
 argument_list|)
 expr_stmt|;
 block|}
