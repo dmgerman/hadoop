@@ -926,9 +926,9 @@ name|yarn
 operator|.
 name|proto
 operator|.
-name|YarnServerNodemanagerRecoveryProtos
+name|YarnServerCommonProtos
 operator|.
-name|NMDBSchemaVersionProto
+name|VersionProto
 import|;
 end_import
 
@@ -1020,13 +1020,9 @@ name|yarn
 operator|.
 name|server
 operator|.
-name|nodemanager
-operator|.
-name|recovery
-operator|.
 name|records
 operator|.
-name|NMDBSchemaVersion
+name|Version
 import|;
 end_import
 
@@ -1042,17 +1038,13 @@ name|yarn
 operator|.
 name|server
 operator|.
-name|nodemanager
-operator|.
-name|recovery
-operator|.
 name|records
 operator|.
 name|impl
 operator|.
 name|pb
 operator|.
-name|NMDBSchemaVersionPBImpl
+name|VersionPBImpl
 import|;
 end_import
 
@@ -1792,10 +1784,10 @@ DECL|field|CURRENT_VERSION_INFO
 specifier|protected
 specifier|static
 specifier|final
-name|NMDBSchemaVersion
+name|Version
 name|CURRENT_VERSION_INFO
 init|=
-name|NMDBSchemaVersion
+name|Version
 operator|.
 name|newInstance
 argument_list|(
@@ -3471,7 +3463,7 @@ block|}
 annotation|@
 name|VisibleForTesting
 DECL|method|loadVersion ()
-name|NMDBSchemaVersion
+name|Version
 name|loadVersion
 parameter_list|()
 throws|throws
@@ -3506,7 +3498,7 @@ literal|0
 condition|)
 block|{
 return|return
-name|NMDBSchemaVersion
+name|Version
 operator|.
 name|newInstance
 argument_list|(
@@ -3516,13 +3508,13 @@ literal|0
 argument_list|)
 return|;
 block|}
-name|NMDBSchemaVersion
+name|Version
 name|version
 init|=
 operator|new
-name|NMDBSchemaVersionPBImpl
+name|VersionPBImpl
 argument_list|(
-name|NMDBSchemaVersionProto
+name|VersionProto
 operator|.
 name|parseFrom
 argument_list|(
@@ -3534,12 +3526,12 @@ return|return
 name|version
 return|;
 block|}
-DECL|method|storeSchemaVersion (NMDBSchemaVersion version)
+DECL|method|storeSchemaVersion (Version version)
 specifier|private
 name|void
 name|storeSchemaVersion
 parameter_list|(
-name|NMDBSchemaVersion
+name|Version
 name|version
 parameter_list|)
 throws|throws
@@ -3556,7 +3548,7 @@ name|data
 init|=
 operator|(
 operator|(
-name|NMDBSchemaVersionPBImpl
+name|VersionPBImpl
 operator|)
 name|version
 operator|)
@@ -3619,11 +3611,11 @@ block|}
 comment|// Only used for test
 annotation|@
 name|VisibleForTesting
-DECL|method|storeVersion (NMDBSchemaVersion version)
+DECL|method|storeVersion (Version version)
 name|void
 name|storeVersion
 parameter_list|(
-name|NMDBSchemaVersion
+name|Version
 name|version
 parameter_list|)
 throws|throws
@@ -3637,7 +3629,7 @@ expr_stmt|;
 block|}
 DECL|method|getCurrentVersion ()
 specifier|protected
-name|NMDBSchemaVersion
+name|Version
 name|getCurrentVersion
 parameter_list|()
 block|{
@@ -3654,7 +3646,7 @@ parameter_list|()
 throws|throws
 name|IOException
 block|{
-name|NMDBSchemaVersion
+name|Version
 name|loadedVersion
 init|=
 name|loadVersion

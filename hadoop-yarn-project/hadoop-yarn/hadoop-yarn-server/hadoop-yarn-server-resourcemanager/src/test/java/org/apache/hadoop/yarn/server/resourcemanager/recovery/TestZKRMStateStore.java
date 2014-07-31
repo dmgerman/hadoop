@@ -196,31 +196,9 @@ name|yarn
 operator|.
 name|server
 operator|.
-name|resourcemanager
-operator|.
-name|ResourceManager
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|yarn
-operator|.
-name|server
-operator|.
-name|resourcemanager
-operator|.
-name|recovery
-operator|.
 name|records
 operator|.
-name|RMStateVersion
+name|Version
 import|;
 end_import
 
@@ -235,10 +213,6 @@ operator|.
 name|yarn
 operator|.
 name|server
-operator|.
-name|resourcemanager
-operator|.
-name|recovery
 operator|.
 name|records
 operator|.
@@ -246,7 +220,25 @@ name|impl
 operator|.
 name|pb
 operator|.
-name|RMStateVersionPBImpl
+name|VersionPBImpl
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|server
+operator|.
+name|resourcemanager
+operator|.
+name|ResourceManager
 import|;
 end_import
 
@@ -429,7 +421,7 @@ return|;
 block|}
 DECL|method|getCurrentVersion ()
 specifier|public
-name|RMStateVersion
+name|Version
 name|getCurrentVersion
 parameter_list|()
 block|{
@@ -567,12 +559,12 @@ return|;
 block|}
 annotation|@
 name|Override
-DECL|method|writeVersion (RMStateVersion version)
+DECL|method|writeVersion (Version version)
 specifier|public
 name|void
 name|writeVersion
 parameter_list|(
-name|RMStateVersion
+name|Version
 name|version
 parameter_list|)
 throws|throws
@@ -589,7 +581,7 @@ argument_list|()
 argument_list|,
 operator|(
 operator|(
-name|RMStateVersionPBImpl
+name|VersionPBImpl
 operator|)
 name|version
 operator|)
@@ -609,7 +601,7 @@ annotation|@
 name|Override
 DECL|method|getCurrentVersion ()
 specifier|public
-name|RMStateVersion
+name|Version
 name|getCurrentVersion
 parameter_list|()
 throws|throws

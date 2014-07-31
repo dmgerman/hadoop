@@ -4,7 +4,7 @@ comment|/**  * Licensed to the Apache Software Foundation (ASF) under one  * or 
 end_comment
 
 begin_package
-DECL|package|org.apache.hadoop.yarn.server.nodemanager.recovery.records.impl.pb
+DECL|package|org.apache.hadoop.yarn.server.records.impl.pb
 package|package
 name|org
 operator|.
@@ -15,10 +15,6 @@ operator|.
 name|yarn
 operator|.
 name|server
-operator|.
-name|nodemanager
-operator|.
-name|recovery
 operator|.
 name|records
 operator|.
@@ -36,27 +32,13 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|classification
+name|yarn
 operator|.
-name|InterfaceAudience
+name|proto
 operator|.
-name|Private
-import|;
-end_import
-
-begin_import
-import|import
-name|org
+name|YarnServerCommonProtos
 operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|classification
-operator|.
-name|InterfaceStability
-operator|.
-name|Evolving
+name|VersionProto
 import|;
 end_import
 
@@ -72,27 +54,9 @@ name|yarn
 operator|.
 name|proto
 operator|.
-name|YarnServerNodemanagerRecoveryProtos
+name|YarnServerCommonProtos
 operator|.
-name|NMDBSchemaVersionProto
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|yarn
-operator|.
-name|proto
-operator|.
-name|YarnServerNodemanagerRecoveryProtos
-operator|.
-name|NMDBSchemaVersionProtoOrBuilder
+name|VersionProtoOrBuilder
 import|;
 end_import
 
@@ -108,39 +72,31 @@ name|yarn
 operator|.
 name|server
 operator|.
-name|nodemanager
-operator|.
-name|recovery
-operator|.
 name|records
 operator|.
-name|NMDBSchemaVersion
+name|Version
 import|;
 end_import
 
 begin_class
-annotation|@
-name|Private
-annotation|@
-name|Evolving
-DECL|class|NMDBSchemaVersionPBImpl
+DECL|class|VersionPBImpl
 specifier|public
 class|class
-name|NMDBSchemaVersionPBImpl
+name|VersionPBImpl
 extends|extends
-name|NMDBSchemaVersion
+name|Version
 block|{
 DECL|field|proto
-name|NMDBSchemaVersionProto
+name|VersionProto
 name|proto
 init|=
-name|NMDBSchemaVersionProto
+name|VersionProto
 operator|.
 name|getDefaultInstance
 argument_list|()
 decl_stmt|;
 DECL|field|builder
-name|NMDBSchemaVersionProto
+name|VersionProto
 operator|.
 name|Builder
 name|builder
@@ -153,24 +109,24 @@ name|viaProto
 init|=
 literal|false
 decl_stmt|;
-DECL|method|NMDBSchemaVersionPBImpl ()
+DECL|method|VersionPBImpl ()
 specifier|public
-name|NMDBSchemaVersionPBImpl
+name|VersionPBImpl
 parameter_list|()
 block|{
 name|builder
 operator|=
-name|NMDBSchemaVersionProto
+name|VersionProto
 operator|.
 name|newBuilder
 argument_list|()
 expr_stmt|;
 block|}
-DECL|method|NMDBSchemaVersionPBImpl (NMDBSchemaVersionProto proto)
+DECL|method|VersionPBImpl (VersionProto proto)
 specifier|public
-name|NMDBSchemaVersionPBImpl
+name|VersionPBImpl
 parameter_list|(
-name|NMDBSchemaVersionProto
+name|VersionProto
 name|proto
 parameter_list|)
 block|{
@@ -187,7 +143,7 @@ expr_stmt|;
 block|}
 DECL|method|getProto ()
 specifier|public
-name|NMDBSchemaVersionProto
+name|VersionProto
 name|getProto
 parameter_list|()
 block|{
@@ -227,7 +183,7 @@ condition|)
 block|{
 name|builder
 operator|=
-name|NMDBSchemaVersionProto
+name|VersionProto
 operator|.
 name|newBuilder
 argument_list|(
@@ -248,7 +204,7 @@ name|int
 name|getMajorVersion
 parameter_list|()
 block|{
-name|NMDBSchemaVersionProtoOrBuilder
+name|VersionProtoOrBuilder
 name|p
 init|=
 name|viaProto
@@ -266,13 +222,13 @@ return|;
 block|}
 annotation|@
 name|Override
-DECL|method|setMajorVersion (int majorVersion)
+DECL|method|setMajorVersion (int major)
 specifier|public
 name|void
 name|setMajorVersion
 parameter_list|(
 name|int
-name|majorVersion
+name|major
 parameter_list|)
 block|{
 name|maybeInitBuilder
@@ -282,7 +238,7 @@ name|builder
 operator|.
 name|setMajorVersion
 argument_list|(
-name|majorVersion
+name|major
 argument_list|)
 expr_stmt|;
 block|}
@@ -294,7 +250,7 @@ name|int
 name|getMinorVersion
 parameter_list|()
 block|{
-name|NMDBSchemaVersionProtoOrBuilder
+name|VersionProtoOrBuilder
 name|p
 init|=
 name|viaProto
@@ -312,13 +268,13 @@ return|;
 block|}
 annotation|@
 name|Override
-DECL|method|setMinorVersion (int minorVersion)
+DECL|method|setMinorVersion (int minor)
 specifier|public
 name|void
 name|setMinorVersion
 parameter_list|(
 name|int
-name|minorVersion
+name|minor
 parameter_list|)
 block|{
 name|maybeInitBuilder
@@ -328,7 +284,7 @@ name|builder
 operator|.
 name|setMinorVersion
 argument_list|(
-name|minorVersion
+name|minor
 argument_list|)
 expr_stmt|;
 block|}

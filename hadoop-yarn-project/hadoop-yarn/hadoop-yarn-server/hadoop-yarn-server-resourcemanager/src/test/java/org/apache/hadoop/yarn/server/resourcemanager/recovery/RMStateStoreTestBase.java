@@ -528,6 +528,24 @@ name|yarn
 operator|.
 name|server
 operator|.
+name|records
+operator|.
+name|Version
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|server
+operator|.
 name|resourcemanager
 operator|.
 name|RMContext
@@ -641,28 +659,6 @@ operator|.
 name|records
 operator|.
 name|AMRMTokenSecretManagerState
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|yarn
-operator|.
-name|server
-operator|.
-name|resourcemanager
-operator|.
-name|recovery
-operator|.
-name|records
-operator|.
-name|RMStateVersion
 import|;
 end_import
 
@@ -1003,18 +999,18 @@ parameter_list|()
 throws|throws
 name|Exception
 function_decl|;
-DECL|method|writeVersion (RMStateVersion version)
+DECL|method|writeVersion (Version version)
 name|void
 name|writeVersion
 parameter_list|(
-name|RMStateVersion
+name|Version
 name|version
 parameter_list|)
 throws|throws
 name|Exception
 function_decl|;
 DECL|method|getCurrentVersion ()
-name|RMStateVersion
+name|Version
 name|getCurrentVersion
 parameter_list|()
 throws|throws
@@ -3189,7 +3185,7 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 comment|// default version
-name|RMStateVersion
+name|Version
 name|defaultVersion
 init|=
 name|stateStoreHelper
@@ -3215,10 +3211,10 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 comment|// compatible version
-name|RMStateVersion
+name|Version
 name|compatibleVersion
 init|=
-name|RMStateVersion
+name|Version
 operator|.
 name|newInstance
 argument_list|(
@@ -3273,10 +3269,10 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 comment|// incompatible version
-name|RMStateVersion
+name|Version
 name|incompatibleVersion
 init|=
-name|RMStateVersion
+name|Version
 operator|.
 name|newInstance
 argument_list|(

@@ -520,13 +520,9 @@ name|yarn
 operator|.
 name|server
 operator|.
-name|nodemanager
-operator|.
-name|recovery
-operator|.
 name|records
 operator|.
-name|NMDBSchemaVersion
+name|Version
 import|;
 end_import
 
@@ -911,7 +907,7 @@ throws|throws
 name|IOException
 block|{
 comment|// default version
-name|NMDBSchemaVersion
+name|Version
 name|defaultVersion
 init|=
 name|stateStore
@@ -932,10 +928,10 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 comment|// compatible version
-name|NMDBSchemaVersion
+name|Version
 name|compatibleVersion
 init|=
-name|NMDBSchemaVersion
+name|Version
 operator|.
 name|newInstance
 argument_list|(
@@ -988,10 +984,10 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 comment|// incompatible version
-name|NMDBSchemaVersion
+name|Version
 name|incompatibleVersion
 init|=
-name|NMDBSchemaVersion
+name|Version
 operator|.
 name|newInstance
 argument_list|(
