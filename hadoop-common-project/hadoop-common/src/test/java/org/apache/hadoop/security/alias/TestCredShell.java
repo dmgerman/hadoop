@@ -237,11 +237,11 @@ literal|"create"
 block|,
 literal|"credential1"
 block|,
-literal|"--value"
+literal|"-value"
 block|,
 literal|"p@ssw0rd"
 block|,
-literal|"--provider"
+literal|"-provider"
 block|,
 literal|"jceks://file"
 operator|+
@@ -319,7 +319,7 @@ init|=
 block|{
 literal|"list"
 block|,
-literal|"--provider"
+literal|"-provider"
 block|,
 literal|"jceks://file"
 operator|+
@@ -371,7 +371,7 @@ literal|"delete"
 block|,
 literal|"credential1"
 block|,
-literal|"--provider"
+literal|"-provider"
 block|,
 literal|"jceks://file"
 operator|+
@@ -423,7 +423,7 @@ init|=
 block|{
 literal|"list"
 block|,
-literal|"--provider"
+literal|"-provider"
 block|,
 literal|"jceks://file"
 operator|+
@@ -486,11 +486,11 @@ literal|"create"
 block|,
 literal|"credential1"
 block|,
-literal|"--value"
+literal|"-value"
 block|,
 literal|"p@ssw0rd"
 block|,
-literal|"--provider"
+literal|"-provider"
 block|,
 literal|"sdff://file/tmp/credstore.jceks"
 block|}
@@ -568,11 +568,11 @@ literal|"create"
 block|,
 literal|"credential1"
 block|,
-literal|"--value"
+literal|"-value"
 block|,
 literal|"p@ssw0rd"
 block|,
-literal|"--provider"
+literal|"-provider"
 block|,
 literal|"user:///"
 block|}
@@ -643,7 +643,7 @@ literal|"delete"
 block|,
 literal|"credential1"
 block|,
-literal|"--provider"
+literal|"-provider"
 block|,
 literal|"user:///"
 block|}
@@ -794,7 +794,7 @@ literal|"create"
 block|,
 literal|"credential1"
 block|,
-literal|"--provider"
+literal|"-provider"
 block|,
 literal|"jceks://file"
 operator|+
@@ -917,7 +917,7 @@ literal|"create"
 block|,
 literal|"credential1"
 block|,
-literal|"--provider"
+literal|"-provider"
 block|,
 literal|"jceks://file"
 operator|+
@@ -1025,7 +1025,7 @@ literal|"delete"
 block|,
 literal|"credential1"
 block|,
-literal|"--provider"
+literal|"-provider"
 block|,
 literal|"jceks://file"
 operator|+
