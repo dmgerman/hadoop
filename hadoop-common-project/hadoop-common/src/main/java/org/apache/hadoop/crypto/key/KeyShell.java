@@ -212,7 +212,7 @@ specifier|private
 name|String
 name|COMMANDS
 init|=
-literal|"   [--help]\n"
+literal|"   [-help]\n"
 operator|+
 literal|"   ["
 operator|+
@@ -379,7 +379,7 @@ return|return
 name|exitCode
 return|;
 block|}
-comment|/**    * Parse the command line arguments and initialize the data    *<pre>    * % hadoop key create keyName [--size size] [--cipher algorithm]    *    [--provider providerPath]    * % hadoop key roll keyName [--provider providerPath]    * % hadoop key list [-provider providerPath]    * % hadoop key delete keyName [--provider providerPath] [-i]    *</pre>    * @param args Command line arguments.    * @return 0 on success, 1 on failure.    * @throws IOException    */
+comment|/**    * Parse the command line arguments and initialize the data    *<pre>    * % hadoop key create keyName [-size size] [-cipher algorithm]    *    [-provider providerPath]    * % hadoop key roll keyName [-provider providerPath]    * % hadoop key list [-provider providerPath]    * % hadoop key delete keyName [-provider providerPath] [-i]    *</pre>    * @param args Command line arguments.    * @return 0 on success, 1 on failure.    * @throws IOException    */
 DECL|method|init (String[] args)
 specifier|private
 name|int
@@ -469,7 +469,7 @@ block|{
 name|String
 name|keyName
 init|=
-literal|"--help"
+literal|"-help"
 decl_stmt|;
 if|if
 condition|(
@@ -497,7 +497,7 @@ argument_list|)
 expr_stmt|;
 if|if
 condition|(
-literal|"--help"
+literal|"-help"
 operator|.
 name|equals
 argument_list|(
@@ -530,7 +530,7 @@ block|{
 name|String
 name|keyName
 init|=
-literal|"--help"
+literal|"-help"
 decl_stmt|;
 if|if
 condition|(
@@ -556,7 +556,7 @@ argument_list|)
 expr_stmt|;
 if|if
 condition|(
-literal|"--help"
+literal|"-help"
 operator|.
 name|equals
 argument_list|(
@@ -589,7 +589,7 @@ block|{
 name|String
 name|keyName
 init|=
-literal|"--help"
+literal|"-help"
 decl_stmt|;
 if|if
 condition|(
@@ -615,7 +615,7 @@ argument_list|)
 expr_stmt|;
 if|if
 condition|(
-literal|"--help"
+literal|"-help"
 operator|.
 name|equals
 argument_list|(
@@ -655,7 +655,7 @@ block|}
 elseif|else
 if|if
 condition|(
-literal|"--size"
+literal|"-size"
 operator|.
 name|equals
 argument_list|(
@@ -688,7 +688,7 @@ block|}
 elseif|else
 if|if
 condition|(
-literal|"--cipher"
+literal|"-cipher"
 operator|.
 name|equals
 argument_list|(
@@ -716,7 +716,7 @@ block|}
 elseif|else
 if|if
 condition|(
-literal|"--description"
+literal|"-description"
 operator|.
 name|equals
 argument_list|(
@@ -744,7 +744,7 @@ block|}
 elseif|else
 if|if
 condition|(
-literal|"--attr"
+literal|"-attr"
 operator|.
 name|equals
 argument_list|(
@@ -871,7 +871,7 @@ block|}
 elseif|else
 if|if
 condition|(
-literal|"--provider"
+literal|"-provider"
 operator|.
 name|equals
 argument_list|(
@@ -908,7 +908,7 @@ block|}
 elseif|else
 if|if
 condition|(
-literal|"--metadata"
+literal|"-metadata"
 operator|.
 name|equals
 argument_list|(
@@ -944,7 +944,7 @@ index|]
 argument_list|)
 operator|||
 operator|(
-literal|"--interactive"
+literal|"-interactive"
 operator|.
 name|equals
 argument_list|(
@@ -964,7 +964,7 @@ block|}
 elseif|else
 if|if
 condition|(
-literal|"--help"
+literal|"-help"
 operator|.
 name|equals
 argument_list|(
@@ -1352,7 +1352,7 @@ specifier|final
 name|String
 name|USAGE
 init|=
-literal|"list [--provider<provider>] [--metadata] [--help]"
+literal|"list [-provider<provider>] [-metadata] [-help]"
 decl_stmt|;
 DECL|field|DESC
 specifier|public
@@ -1365,7 +1365,7 @@ literal|"The list subcommand displays the keynames contained within\n"
 operator|+
 literal|"a particular provider as configured in core-site.xml or\n"
 operator|+
-literal|"specified with the --provider argument. --metadata displays\n"
+literal|"specified with the -provider argument. -metadata displays\n"
 operator|+
 literal|"the metadata."
 decl_stmt|;
@@ -1405,11 +1405,11 @@ name|println
 argument_list|(
 literal|"There are no non-transient KeyProviders configured.\n"
 operator|+
-literal|"Use the --provider option to specify a provider. If you\n"
+literal|"Use the -provider option to specify a provider. If you\n"
 operator|+
 literal|"want to list a transient provider then you must use the\n"
 operator|+
-literal|"--provider argument."
+literal|"-provider argument."
 argument_list|)
 expr_stmt|;
 name|rc
@@ -1609,7 +1609,7 @@ specifier|final
 name|String
 name|USAGE
 init|=
-literal|"roll<keyname> [--provider<provider>] [--help]"
+literal|"roll<keyname> [-provider<provider>] [-help]"
 decl_stmt|;
 DECL|field|DESC
 specifier|public
@@ -1620,7 +1620,7 @@ name|DESC
 init|=
 literal|"The roll subcommand creates a new version for the specified key\n"
 operator|+
-literal|"within the provider indicated using the --provider argument\n"
+literal|"within the provider indicated using the -provider argument\n"
 decl_stmt|;
 DECL|field|keyName
 name|String
@@ -1672,7 +1672,7 @@ name|println
 argument_list|(
 literal|"There are no valid KeyProviders configured. The key\n"
 operator|+
-literal|"has not been rolled. Use the --provider option to specify\n"
+literal|"has not been rolled. Use the -provider option to specify\n"
 operator|+
 literal|"a provider."
 argument_list|)
@@ -1695,7 +1695,7 @@ name|println
 argument_list|(
 literal|"Please provide a<keyname>.\n"
 operator|+
-literal|"See the usage description by using --help."
+literal|"See the usage description by using -help."
 argument_list|)
 expr_stmt|;
 name|rc
@@ -1841,7 +1841,7 @@ specifier|final
 name|String
 name|USAGE
 init|=
-literal|"delete<keyname> [--provider<provider>] [--help]"
+literal|"delete<keyname> [-provider<provider>] [-help]"
 decl_stmt|;
 DECL|field|DESC
 specifier|public
@@ -1854,7 +1854,7 @@ literal|"The delete subcommand deletes all versions of the key\n"
 operator|+
 literal|"specified by the<keyname> argument from within the\n"
 operator|+
-literal|"provider specified --provider."
+literal|"provider specified -provider."
 decl_stmt|;
 DECL|field|keyName
 name|String
@@ -1909,7 +1909,7 @@ name|println
 argument_list|(
 literal|"There are no valid KeyProviders configured. Nothing\n"
 operator|+
-literal|"was deleted. Use the --provider option to specify a provider."
+literal|"was deleted. Use the -provider option to specify a provider."
 argument_list|)
 expr_stmt|;
 return|return
@@ -1929,7 +1929,7 @@ name|println
 argument_list|(
 literal|"There is no keyName specified. Please specify a "
 operator|+
-literal|"<keyname>. See the usage description with --help."
+literal|"<keyname>. See the usage description with -help."
 argument_list|)
 expr_stmt|;
 return|return
@@ -2116,13 +2116,13 @@ specifier|final
 name|String
 name|USAGE
 init|=
-literal|"create<keyname> [--cipher<cipher>] [--size<size>]\n"
+literal|"create<keyname> [-cipher<cipher>] [-size<size>]\n"
 operator|+
-literal|"                     [--description<description>]\n"
+literal|"                     [-description<description>]\n"
 operator|+
-literal|"                     [--attr<attribute=value>]\n"
+literal|"                     [-attr<attribute=value>]\n"
 operator|+
-literal|"                     [--provider<provider>] [--help]"
+literal|"                     [-provider<provider>] [-help]"
 decl_stmt|;
 DECL|field|DESC
 specifier|public
@@ -2135,17 +2135,17 @@ literal|"The create subcommand creates a new key for the name specified\n"
 operator|+
 literal|"by the<keyname> argument within the provider specified by the\n"
 operator|+
-literal|"--provider argument. You may specify a cipher with the --cipher\n"
+literal|"-provider argument. You may specify a cipher with the -cipher\n"
 operator|+
 literal|"argument. The default cipher is currently \"AES/CTR/NoPadding\".\n"
 operator|+
 literal|"The default keysize is 256. You may specify the requested key\n"
 operator|+
-literal|"length using the --size argument. Arbitrary attribute=value\n"
+literal|"length using the -size argument. Arbitrary attribute=value\n"
 operator|+
-literal|"style attributes may be specified using the --attr argument.\n"
+literal|"style attributes may be specified using the -attr argument.\n"
 operator|+
-literal|"--attr may be specified multiple times, once per attribute.\n"
+literal|"-attr may be specified multiple times, once per attribute.\n"
 decl_stmt|;
 DECL|field|keyName
 specifier|final
@@ -2210,7 +2210,7 @@ name|println
 argument_list|(
 literal|"There are no valid KeyProviders configured. No key\n"
 operator|+
-literal|" was created. You can use the --provider option to specify\n"
+literal|" was created. You can use the -provider option to specify\n"
 operator|+
 literal|" a provider to use."
 argument_list|)
@@ -2233,7 +2233,7 @@ name|println
 argument_list|(
 literal|"Please provide a<keyname>. See the usage description"
 operator|+
-literal|" with --help."
+literal|" with -help."
 argument_list|)
 expr_stmt|;
 name|rc
