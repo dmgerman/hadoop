@@ -1730,6 +1730,24 @@ return|;
 block|}
 annotation|@
 name|Override
+DECL|method|setStartRange (LongRange range)
+specifier|public
+name|void
+name|setStartRange
+parameter_list|(
+name|LongRange
+name|range
+parameter_list|)
+block|{
+name|this
+operator|.
+name|start
+operator|=
+name|range
+expr_stmt|;
+block|}
+annotation|@
+name|Override
 DECL|method|setStartRange (long begin, long end)
 specifier|public
 name|void
@@ -1872,6 +1890,24 @@ name|this
 operator|.
 name|finish
 return|;
+block|}
+annotation|@
+name|Override
+DECL|method|setFinishRange (LongRange range)
+specifier|public
+name|void
+name|setFinishRange
+parameter_list|(
+name|LongRange
+name|range
+parameter_list|)
+block|{
+name|this
+operator|.
+name|finish
+operator|=
+name|range
+expr_stmt|;
 block|}
 annotation|@
 name|Override

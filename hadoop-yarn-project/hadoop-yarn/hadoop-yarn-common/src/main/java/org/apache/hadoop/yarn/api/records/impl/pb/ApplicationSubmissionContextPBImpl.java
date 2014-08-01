@@ -680,6 +680,11 @@ condition|)
 block|{
 name|builder
 operator|.
+name|clearApplicationTags
+argument_list|()
+expr_stmt|;
+name|builder
+operator|.
 name|addAllApplicationTags
 argument_list|(
 name|this
