@@ -505,6 +505,8 @@ argument_list|(
 name|nodeType
 argument_list|,
 name|curDir
+argument_list|,
+literal|false
 argument_list|)
 argument_list|,
 name|UpgradeUtilities
