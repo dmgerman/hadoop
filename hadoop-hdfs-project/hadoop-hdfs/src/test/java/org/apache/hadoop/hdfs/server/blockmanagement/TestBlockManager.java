@@ -2142,14 +2142,6 @@ operator|.
 name|addBlock
 argument_list|(
 name|storage
-operator|.
-name|getDatanodeDescriptor
-argument_list|()
-argument_list|,
-name|storage
-operator|.
-name|getStorageID
-argument_list|()
 argument_list|,
 name|blockInfo
 argument_list|,
@@ -3143,8 +3135,6 @@ name|getStorageID
 argument_list|()
 argument_list|)
 argument_list|,
-literal|"pool"
-argument_list|,
 operator|new
 name|BlockListAsLongs
 argument_list|(
@@ -3184,8 +3174,6 @@ operator|.
 name|getStorageID
 argument_list|()
 argument_list|)
-argument_list|,
-literal|"pool"
 argument_list|,
 operator|new
 name|BlockListAsLongs
@@ -3273,8 +3261,6 @@ operator|.
 name|getStorageID
 argument_list|()
 argument_list|)
-argument_list|,
-literal|"pool"
 argument_list|,
 operator|new
 name|BlockListAsLongs
@@ -3456,8 +3442,6 @@ operator|.
 name|getStorageID
 argument_list|()
 argument_list|)
-argument_list|,
-literal|"pool"
 argument_list|,
 operator|new
 name|BlockListAsLongs

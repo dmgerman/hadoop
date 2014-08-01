@@ -6651,8 +6651,6 @@ operator|.
 name|getStorage
 argument_list|()
 argument_list|,
-name|poolId
-argument_list|,
 name|blocks
 argument_list|)
 expr_stmt|;
@@ -6837,8 +6835,6 @@ operator|.
 name|processIncrementalBlockReport
 argument_list|(
 name|nodeReg
-argument_list|,
-name|poolId
 argument_list|,
 name|r
 argument_list|)

@@ -22302,6 +22302,9 @@ name|i
 operator|++
 control|)
 block|{
+name|DatanodeStorageInfo
+name|storageInfo
+init|=
 name|trimmedTargets
 operator|.
 name|get
@@ -22309,7 +22312,7 @@ argument_list|(
 name|i
 argument_list|)
 operator|.
-name|addBlock
+name|getStorageInfo
 argument_list|(
 name|trimmedStorages
 operator|.
@@ -22317,10 +22320,23 @@ name|get
 argument_list|(
 name|i
 argument_list|)
-argument_list|,
+argument_list|)
+decl_stmt|;
+if|if
+condition|(
+name|storageInfo
+operator|!=
+literal|null
+condition|)
+block|{
+name|storageInfo
+operator|.
+name|addBlock
+argument_list|(
 name|storedBlock
 argument_list|)
 expr_stmt|;
+block|}
 block|}
 block|}
 comment|// add pipeline locations into the INodeUnderConstruction
@@ -27782,7 +27798,7 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-DECL|method|processIncrementalBlockReport (final DatanodeID nodeID, final String poolId, final StorageReceivedDeletedBlocks srdb)
+DECL|method|processIncrementalBlockReport (final DatanodeID nodeID, final StorageReceivedDeletedBlocks srdb)
 specifier|public
 name|void
 name|processIncrementalBlockReport
@@ -27790,10 +27806,6 @@ parameter_list|(
 specifier|final
 name|DatanodeID
 name|nodeID
-parameter_list|,
-specifier|final
-name|String
-name|poolId
 parameter_list|,
 specifier|final
 name|StorageReceivedDeletedBlocks
