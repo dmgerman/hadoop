@@ -470,7 +470,10 @@ annotation|@
 name|InterfaceAudience
 operator|.
 name|Private
+annotation|@
+name|VisibleForTesting
 DECL|method|setTokenServiceUseIp (boolean flag)
+specifier|public
 specifier|static
 name|void
 name|setTokenServiceUseIp
