@@ -340,6 +340,22 @@ name|fs
 operator|.
 name|permission
 operator|.
+name|FsAction
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|fs
+operator|.
+name|permission
+operator|.
 name|FsPermission
 import|;
 end_import
@@ -3286,6 +3302,53 @@ name|UnresolvedLinkException
 throws|,
 name|IOException
 function_decl|;
+comment|/**    * The specification of this method matches that of    * {@link FileContext#access(Path, FsAction)}    * except that an UnresolvedLinkException may be thrown if a symlink is    * encountered in the path.    */
+annotation|@
+name|InterfaceAudience
+operator|.
+name|LimitedPrivate
+argument_list|(
+block|{
+literal|"HDFS"
+block|,
+literal|"Hive"
+block|}
+argument_list|)
+DECL|method|access (Path path, FsAction mode)
+specifier|public
+name|void
+name|access
+parameter_list|(
+name|Path
+name|path
+parameter_list|,
+name|FsAction
+name|mode
+parameter_list|)
+throws|throws
+name|AccessControlException
+throws|,
+name|FileNotFoundException
+throws|,
+name|UnresolvedLinkException
+throws|,
+name|IOException
+block|{
+name|FileSystem
+operator|.
+name|checkAccessPermissions
+argument_list|(
+name|this
+operator|.
+name|getFileStatus
+argument_list|(
+name|path
+argument_list|)
+argument_list|,
+name|mode
+argument_list|)
+expr_stmt|;
+block|}
 comment|/**    * The specification of this method matches that of    * {@link FileContext#getFileLinkStatus(Path)}    * except that an UnresolvedLinkException may be thrown if a symlink is      * encountered in the path leading up to the final path component.    * If the file system does not support symlinks then the behavior is    * equivalent to {@link AbstractFileSystem#getFileStatus(Path)}.    */
 DECL|method|getFileLinkStatus (final Path f)
 specifier|public
@@ -3914,7 +3977,7 @@ literal|" doesn't support getAclStatus"
 argument_list|)
 throw|;
 block|}
-comment|/**    * Set an xattr of a file or directory.    * The name must be prefixed with user/trusted/security/system and    * followed by ".". For example, "user.attr".    *<p/>    * A regular user can only set an xattr for the "user" namespace.    * The super user can set an xattr of either the "user" or "trusted" namespaces.    * The xattrs of the "security" and "system" namespaces are only used/exposed     * internally by/to the FS impl.    *<p/>    * The access permissions of an xattr in the "user" namespace are    * defined by the file and directory permission bits.    * An xattr can only be set when the logged-in user has the correct permissions.    * If the xattr exists, it will be replaced.    *<p/>    * @see<a href="http://en.wikipedia.org/wiki/Extended_file_attributes">    * http://en.wikipedia.org/wiki/Extended_file_attributes</a>    *    * @param path Path to modify    * @param name xattr name.    * @param value xattr value.    * @throws IOException    */
+comment|/**    * Set an xattr of a file or directory.    * The name must be prefixed with the namespace followed by ".". For example,    * "user.attr".    *<p/>    * Refer to the HDFS extended attributes user documentation for details.    *    * @param path Path to modify    * @param name xattr name.    * @param value xattr value.    * @throws IOException    */
 DECL|method|setXAttr (Path path, String name, byte[] value)
 specifier|public
 name|void
@@ -3956,7 +4019,7 @@ argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Set an xattr of a file or directory.    * The name must be prefixed with user/trusted/security/system and    * followed by ".". For example, "user.attr".    *<p/>    * A regular user can only set an xattr for the "user" namespace.    * The super user can set an xattr of either the "user" or "trusted" namespaces.    * The xattrs of the "security" and "system" namespaces are only used/exposed     * internally by/to the FS impl.    *<p/>    * The access permissions of an xattr in the "user" namespace are    * defined by the file and directory permission bits.    * An xattr can only be set when the logged-in user has the correct permissions.    * If the xattr exists, it will be replaced.    *<p/>    * @see<a href="http://en.wikipedia.org/wiki/Extended_file_attributes">    * http://en.wikipedia.org/wiki/Extended_file_attributes</a>    *    * @param path Path to modify    * @param name xattr name.    * @param value xattr value.    * @param flag xattr set flag    * @throws IOException    */
+comment|/**    * Set an xattr of a file or directory.    * The name must be prefixed with the namespace followed by ".". For example,    * "user.attr".    *<p/>    * Refer to the HDFS extended attributes user documentation for details.    *    * @param path Path to modify    * @param name xattr name.    * @param value xattr value.    * @param flag xattr set flag    * @throws IOException    */
 DECL|method|setXAttr (Path path, String name, byte[] value, EnumSet<XAttrSetFlag> flag)
 specifier|public
 name|void
@@ -3995,7 +4058,7 @@ literal|" doesn't support setXAttr"
 argument_list|)
 throw|;
 block|}
-comment|/**    * Get an xattr for a file or directory.    * The name must be prefixed with user/trusted/security/system and    * followed by ".". For example, "user.attr".    *<p/>    * A regular user can only get an xattr for the "user" namespace.    * The super user can get an xattr of either the "user" or "trusted" namespaces.    * The xattrs of the "security" and "system" namespaces are only used/exposed     * internally by/to the FS impl.    *<p/>    * An xattr will only be returned when the logged-in user has the correct permissions.    *<p/>    * @see<a href="http://en.wikipedia.org/wiki/Extended_file_attributes">    * http://en.wikipedia.org/wiki/Extended_file_attributes</a>    *    * @param path Path to get extended attribute    * @param name xattr name.    * @return byte[] xattr value.    * @throws IOException    */
+comment|/**    * Get an xattr for a file or directory.    * The name must be prefixed with the namespace followed by ".". For example,    * "user.attr".    *<p/>    * Refer to the HDFS extended attributes user documentation for details.    *    * @param path Path to get extended attribute    * @param name xattr name.    * @return byte[] xattr value.    * @throws IOException    */
 DECL|method|getXAttr (Path path, String name)
 specifier|public
 name|byte
@@ -4025,7 +4088,7 @@ literal|" doesn't support getXAttr"
 argument_list|)
 throw|;
 block|}
-comment|/**    * Get all of the xattrs for a file or directory.    * Only those xattrs for which the logged-in user has permissions to view    * are returned.    *<p/>    * A regular user can only get xattrs for the "user" namespace.    * The super user can only get xattrs for "user" and "trusted" namespaces.    * The xattr of "security" and "system" namespaces are only used/exposed     * internally by/to the FS impl.    *<p/>    * @see<a href="http://en.wikipedia.org/wiki/Extended_file_attributes">    * http://en.wikipedia.org/wiki/Extended_file_attributes</a>    *    * @param path Path to get extended attributes    * @return Map<String, byte[]> describing the XAttrs of the file or directory    * @throws IOException    */
+comment|/**    * Get all of the xattrs for a file or directory.    * Only those xattrs for which the logged-in user has permissions to view    * are returned.    *<p/>    * Refer to the HDFS extended attributes user documentation for details.    *    * @param path Path to get extended attributes    * @return Map<String, byte[]> describing the XAttrs of the file or directory    * @throws IOException    */
 DECL|method|getXAttrs (Path path)
 specifier|public
 name|Map
@@ -4057,7 +4120,7 @@ literal|" doesn't support getXAttrs"
 argument_list|)
 throw|;
 block|}
-comment|/**    * Get all of the xattrs for a file or directory.    * Only those xattrs for which the logged-in user has permissions to view    * are returned.    *<p/>    * A regular user can only get xattrs for the "user" namespace.    * The super user can only get xattrs for "user" and "trusted" namespaces.    * The xattr of "security" and "system" namespaces are only used/exposed     * internally by/to the FS impl.    *<p/>    * @see<a href="http://en.wikipedia.org/wiki/Extended_file_attributes">    * http://en.wikipedia.org/wiki/Extended_file_attributes</a>    *    * @param path Path to get extended attributes    * @param names XAttr names.    * @return Map<String, byte[]> describing the XAttrs of the file or directory    * @throws IOException    */
+comment|/**    * Get all of the xattrs for a file or directory.    * Only those xattrs for which the logged-in user has permissions to view    * are returned.    *<p/>    * Refer to the HDFS extended attributes user documentation for details.    *    * @param path Path to get extended attributes    * @param names XAttr names.    * @return Map<String, byte[]> describing the XAttrs of the file or directory    * @throws IOException    */
 DECL|method|getXAttrs (Path path, List<String> names)
 specifier|public
 name|Map
@@ -4095,7 +4158,7 @@ literal|" doesn't support getXAttrs"
 argument_list|)
 throw|;
 block|}
-comment|/**    * Get all of the xattr names for a file or directory.    * Only the xattr names for which the logged-in user has permissions to view    * are returned.    *<p/>    * A regular user can only get xattr names for the "user" namespace.    * The super user can only get xattr names for the "user" and "trusted"    * namespaces.    * The xattr names in the "security" and "system" namespaces are only    * used/exposed internally by/to the FS impl.    *<p/>    * @see<a href="http://en.wikipedia.org/wiki/Extended_file_attributes">    * http://en.wikipedia.org/wiki/Extended_file_attributes</a>    *    * @param path Path to get extended attributes    * @return Map<String, byte[]> describing the XAttrs of the file or directory    * @throws IOException    */
+comment|/**    * Get all of the xattr names for a file or directory.    * Only the xattr names for which the logged-in user has permissions to view    * are returned.    *<p/>    * Refer to the HDFS extended attributes user documentation for details.    *    * @param path Path to get extended attributes    * @return Map<String, byte[]> describing the XAttrs of the file or directory    * @throws IOException    */
 DECL|method|listXAttrs (Path path)
 specifier|public
 name|List
@@ -4124,7 +4187,7 @@ literal|" doesn't support listXAttrs"
 argument_list|)
 throw|;
 block|}
-comment|/**    * Remove an xattr of a file or directory.    * The name must be prefixed with user/trusted/security/system and    * followed by ".". For example, "user.attr".    *<p/>    * A regular user can only remove an xattr for the "user" namespace.    * The super user can remove an xattr of either the "user" or "trusted" namespaces.    * The xattrs of the "security" and "system" namespaces are only used/exposed     * internally by/to the FS impl.    *<p/>    * The access permissions of an xattr in the "user" namespace are    * defined by the file and directory permission bits.    * An xattr can only be set when the logged-in user has the correct permissions.    * If the xattr exists, it will be replaced.    *<p/>    * @see<a href="http://en.wikipedia.org/wiki/Extended_file_attributes">    * http://en.wikipedia.org/wiki/Extended_file_attributes</a>    *    * @param path Path to remove extended attribute    * @param name xattr name    * @throws IOException    */
+comment|/**    * Remove an xattr of a file or directory.    * The name must be prefixed with the namespace followed by ".". For example,    * "user.attr".    *<p/>    * Refer to the HDFS extended attributes user documentation for details.    *    * @param path Path to remove extended attribute    * @param name xattr name    * @throws IOException    */
 DECL|method|removeXAttr (Path path, String name)
 specifier|public
 name|void

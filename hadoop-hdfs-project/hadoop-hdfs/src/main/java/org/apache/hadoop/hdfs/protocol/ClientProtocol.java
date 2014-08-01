@@ -316,6 +316,22 @@ name|fs
 operator|.
 name|permission
 operator|.
+name|FsAction
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|fs
+operator|.
+name|permission
+operator|.
 name|FsPermission
 import|;
 end_import
@@ -2143,7 +2159,7 @@ parameter_list|)
 throws|throws
 name|IOException
 function_decl|;
-comment|/**    * Set xattr of a file or directory.    * A regular user only can set xattr of "user" namespace.    * A super user can set xattr of "user" and "trusted" namespace.    * XAttr of "security" and "system" namespace is only used/exposed     * internally to the FS impl.    *<p/>    * For xattr of "user" namespace, its access permissions are     * defined by the file or directory permission bits.    * XAttr will be set only when login user has correct permissions.    *<p/>    * @see<a href="http://en.wikipedia.org/wiki/Extended_file_attributes">    * http://en.wikipedia.org/wiki/Extended_file_attributes</a>    * @param src file or directory    * @param xAttr<code>XAttr</code> to set    * @param flag set flag    * @throws IOException    */
+comment|/**    * Set xattr of a file or directory.    * The name must be prefixed with the namespace followed by ".". For example,    * "user.attr".    *<p/>    * Refer to the HDFS extended attributes user documentation for details.    *    * @param src file or directory    * @param xAttr<code>XAttr</code> to set    * @param flag set flag    * @throws IOException    */
 annotation|@
 name|AtMostOnce
 DECL|method|setXAttr (String src, XAttr xAttr, EnumSet<XAttrSetFlag> flag)
@@ -2166,7 +2182,7 @@ parameter_list|)
 throws|throws
 name|IOException
 function_decl|;
-comment|/**    * Get xattrs of file or directory. Values in xAttrs parameter are ignored.    * If xattrs is null or empty, equals getting all xattrs of the file or     * directory.    * Only xattrs which login user has correct permissions will be returned.     *<p/>    * A regular user only can get xattr of "user" namespace.    * A super user can get xattr of "user" and "trusted" namespace.    * XAttr of "security" and "system" namespace is only used/exposed     * internally to the FS impl.    *<p/>    * @see<a href="http://en.wikipedia.org/wiki/Extended_file_attributes">    * http://en.wikipedia.org/wiki/Extended_file_attributes</a>    * @param src file or directory    * @param xAttrs xAttrs to get    * @return List<XAttr><code>XAttr</code> list     * @throws IOException    */
+comment|/**    * Get xattrs of a file or directory. Values in xAttrs parameter are ignored.    * If xAttrs is null or empty, this is the same as getting all xattrs of the    * file or directory.  Only those xattrs for which the logged-in user has    * permissions to view are returned.    *<p/>    * Refer to the HDFS extended attributes user documentation for details.    *    * @param src file or directory    * @param xAttrs xAttrs to get    * @return List<XAttr><code>XAttr</code> list     * @throws IOException    */
 annotation|@
 name|Idempotent
 DECL|method|getXAttrs (String src, List<XAttr> xAttrs)
@@ -2189,7 +2205,7 @@ parameter_list|)
 throws|throws
 name|IOException
 function_decl|;
-comment|/**    * List the xattrs names for a file or directory.    * Only the xattr names for which the logged in user has the permissions to    * access will be returned.    *<p/>    * A regular user only can get xattr names from the "user" namespace.    * A super user can get xattr names of the "user" and "trusted" namespace.    * XAttr names of the "security" and "system" namespaces are only used/exposed    * internally by the file system impl.    *<p/>    * @see<a href="http://en.wikipedia.org/wiki/Extended_file_attributes">    * http://en.wikipedia.org/wiki/Extended_file_attributes</a>    * @param src file or directory    * @param xAttrs xAttrs to get    * @return List<XAttr><code>XAttr</code> list    * @throws IOException    */
+comment|/**    * List the xattrs names for a file or directory.    * Only the xattr names for which the logged in user has the permissions to    * access will be returned.    *<p/>    * Refer to the HDFS extended attributes user documentation for details.    *    * @param src file or directory    * @param xAttrs xAttrs to get    * @return List<XAttr><code>XAttr</code> list    * @throws IOException    */
 annotation|@
 name|Idempotent
 DECL|method|listXAttrs (String src)
@@ -2206,7 +2222,7 @@ parameter_list|)
 throws|throws
 name|IOException
 function_decl|;
-comment|/**    * Remove xattr of a file or directory.Value in xAttr parameter is ignored.    * Name must be prefixed with user/trusted/security/system.    *<p/>    * A regular user only can remove xattr of "user" namespace.    * A super user can remove xattr of "user" and "trusted" namespace.    * XAttr of "security" and "system" namespace is only used/exposed     * internally to the FS impl.    *<p/>    * @see<a href="http://en.wikipedia.org/wiki/Extended_file_attributes">    * http://en.wikipedia.org/wiki/Extended_file_attributes</a>    * @param src file or directory    * @param xAttr<code>XAttr</code> to remove    * @throws IOException    */
+comment|/**    * Remove xattr of a file or directory.Value in xAttr parameter is ignored.    * The name must be prefixed with the namespace followed by ".". For example,    * "user.attr".    *<p/>    * Refer to the HDFS extended attributes user documentation for details.    *    * @param src file or directory    * @param xAttr<code>XAttr</code> to remove    * @throws IOException    */
 annotation|@
 name|AtMostOnce
 DECL|method|removeXAttr (String src, XAttr xAttr)
@@ -2219,6 +2235,23 @@ name|src
 parameter_list|,
 name|XAttr
 name|xAttr
+parameter_list|)
+throws|throws
+name|IOException
+function_decl|;
+comment|/**    * Checks if the user can access a path.  The mode specifies which access    * checks to perform.  If the requested permissions are granted, then the    * method returns normally.  If access is denied, then the method throws an    * {@link AccessControlException}.    * In general, applications should avoid using this method, due to the risk of    * time-of-check/time-of-use race conditions.  The permissions on a file may    * change immediately after the access call returns.    *    * @param path Path to check    * @param mode type of access to check    * @throws AccessControlException if access is denied    * @throws FileNotFoundException if the path does not exist    * @throws IOException see specific implementation    */
+annotation|@
+name|Idempotent
+DECL|method|checkAccess (String path, FsAction mode)
+specifier|public
+name|void
+name|checkAccess
+parameter_list|(
+name|String
+name|path
+parameter_list|,
+name|FsAction
+name|mode
 parameter_list|)
 throws|throws
 name|IOException

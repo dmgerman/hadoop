@@ -4339,6 +4339,17 @@ argument_list|()
 argument_list|)
 argument_list|)
 operator|.
+name|addAllStorageTypes
+argument_list|(
+name|convertStorageTypes
+argument_list|(
+name|blk
+operator|.
+name|getStorageTypes
+argument_list|()
+argument_list|)
+argument_list|)
+operator|.
 name|build
 argument_list|()
 return|;
@@ -4375,6 +4386,18 @@ init|=
 name|b
 operator|.
 name|getStorageUuidsList
+argument_list|()
+decl_stmt|;
+specifier|final
+name|List
+argument_list|<
+name|StorageTypeProto
+argument_list|>
+name|storageTypes
+init|=
+name|b
+operator|.
+name|getStorageTypesList
 argument_list|()
 decl_stmt|;
 return|return
@@ -4415,6 +4438,16 @@ operator|.
 name|size
 argument_list|()
 index|]
+argument_list|)
+argument_list|,
+name|convertStorageTypes
+argument_list|(
+name|storageTypes
+argument_list|,
+name|storageUuids
+operator|.
+name|size
+argument_list|()
 argument_list|)
 argument_list|)
 return|;
@@ -15540,7 +15573,7 @@ argument_list|)
 return|;
 block|}
 DECL|method|convert (FsAction v)
-specifier|private
+specifier|public
 specifier|static
 name|FsActionProto
 name|convert
@@ -15568,7 +15601,7 @@ argument_list|)
 return|;
 block|}
 DECL|method|convert (FsActionProto v)
-specifier|private
+specifier|public
 specifier|static
 name|FsAction
 name|convert

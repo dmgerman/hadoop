@@ -621,7 +621,10 @@ name|queryString
 argument_list|)
 expr_stmt|;
 block|}
-name|KMSAudit
+name|KMSWebApp
+operator|.
+name|getKMSAudit
+argument_list|()
 operator|.
 name|unauthenticated
 argument_list|(

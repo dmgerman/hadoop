@@ -1063,7 +1063,7 @@ name|Balancer
 operator|.
 name|Parameters
 operator|.
-name|DEFALUT
+name|DEFAULT
 argument_list|,
 name|conf
 argument_list|)
@@ -1155,7 +1155,7 @@ name|Balancer
 operator|.
 name|Parameters
 operator|.
-name|DEFALUT
+name|DEFAULT
 argument_list|,
 name|conf
 argument_list|)

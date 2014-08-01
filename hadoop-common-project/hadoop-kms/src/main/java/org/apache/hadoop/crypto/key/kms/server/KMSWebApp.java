@@ -466,6 +466,12 @@ specifier|static
 name|Meter
 name|invalidCallsMeter
 decl_stmt|;
+DECL|field|kmsAudit
+specifier|private
+specifier|static
+name|KMSAudit
+name|kmsAudit
+decl_stmt|;
 DECL|field|keyProviderCryptoExtension
 specifier|private
 specifier|static
@@ -877,6 +883,25 @@ name|Meter
 argument_list|()
 argument_list|)
 expr_stmt|;
+name|kmsAudit
+operator|=
+operator|new
+name|KMSAudit
+argument_list|(
+name|kmsConf
+operator|.
+name|getLong
+argument_list|(
+name|KMSConfiguration
+operator|.
+name|KMS_AUDIT_AGGREGATION_DELAY
+argument_list|,
+name|KMSConfiguration
+operator|.
+name|KMS_AUDIT_AGGREGATION_DELAY_DEFAULT
+argument_list|)
+argument_list|)
+expr_stmt|;
 comment|// this is required for the the JMXJsonServlet to work properly.
 comment|// the JMXJsonServlet is behind the authentication filter,
 comment|// thus the '*' ACL.
@@ -1184,6 +1209,11 @@ name|ServletContextEvent
 name|sce
 parameter_list|)
 block|{
+name|kmsAudit
+operator|.
+name|shutdown
+argument_list|()
+expr_stmt|;
 name|acls
 operator|.
 name|stopReloader
@@ -1323,6 +1353,17 @@ parameter_list|()
 block|{
 return|return
 name|keyProviderCryptoExtension
+return|;
+block|}
+DECL|method|getKMSAudit ()
+specifier|public
+specifier|static
+name|KMSAudit
+name|getKMSAudit
+parameter_list|()
+block|{
+return|return
+name|kmsAudit
 return|;
 block|}
 block|}

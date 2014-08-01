@@ -80,7 +80,7 @@ name|E
 argument_list|>
 name|enumClass
 decl_stmt|;
-comment|/** The counter array, counters[i] corresponds to the enumConstants[i]. */
+comment|/** An array of longs corresponding to the enum type. */
 DECL|field|counters
 specifier|private
 specifier|final
@@ -269,6 +269,42 @@ name|counters
 index|[
 name|i
 index|]
+expr_stmt|;
+block|}
+block|}
+comment|/** Reset all counters to zero. */
+DECL|method|reset ()
+specifier|public
+specifier|final
+name|void
+name|reset
+parameter_list|()
+block|{
+for|for
+control|(
+name|int
+name|i
+init|=
+literal|0
+init|;
+name|i
+operator|<
+name|counters
+operator|.
+name|length
+condition|;
+name|i
+operator|++
+control|)
+block|{
+name|this
+operator|.
+name|counters
+index|[
+name|i
+index|]
+operator|=
+literal|0L
 expr_stmt|;
 block|}
 block|}

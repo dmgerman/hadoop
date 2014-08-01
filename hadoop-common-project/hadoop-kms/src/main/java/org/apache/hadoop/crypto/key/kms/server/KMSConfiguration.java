@@ -148,6 +148,18 @@ name|CONFIG_PREFIX
 operator|+
 literal|"current.key.cache.timeout.ms"
 decl_stmt|;
+comment|// Delay for Audit logs that need aggregation
+DECL|field|KMS_AUDIT_AGGREGATION_DELAY
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|KMS_AUDIT_AGGREGATION_DELAY
+init|=
+name|CONFIG_PREFIX
+operator|+
+literal|"aggregation.delay.ms"
+decl_stmt|;
 DECL|field|KEY_CACHE_ENABLE_DEFAULT
 specifier|public
 specifier|static
@@ -182,6 +194,16 @@ init|=
 literal|30
 operator|*
 literal|1000
+decl_stmt|;
+comment|// 10 secs
+DECL|field|KMS_AUDIT_AGGREGATION_DELAY_DEFAULT
+specifier|public
+specifier|static
+specifier|final
+name|long
+name|KMS_AUDIT_AGGREGATION_DELAY_DEFAULT
+init|=
+literal|10000
 decl_stmt|;
 DECL|method|getConfiguration (boolean loadHadoopDefaults, String ... resources)
 specifier|static

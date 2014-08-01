@@ -2179,7 +2179,15 @@ name|updateConnectAddr
 argument_list|(
 name|YarnConfiguration
 operator|.
+name|RM_BIND_HOST
+argument_list|,
+name|YarnConfiguration
+operator|.
 name|RM_ADDRESS
+argument_list|,
+name|YarnConfiguration
+operator|.
+name|DEFAULT_RM_ADDRESS
 argument_list|,
 name|server
 operator|.
@@ -2239,6 +2247,10 @@ name|conf
 operator|.
 name|getSocketAddr
 argument_list|(
+name|YarnConfiguration
+operator|.
+name|RM_BIND_HOST
+argument_list|,
 name|YarnConfiguration
 operator|.
 name|RM_ADDRESS

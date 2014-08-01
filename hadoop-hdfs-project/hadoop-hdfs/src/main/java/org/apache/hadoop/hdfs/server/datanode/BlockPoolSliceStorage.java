@@ -1467,10 +1467,9 @@ argument_list|()
 operator|+
 literal|".\n   new LV = "
 operator|+
-name|nsInfo
+name|HdfsConstants
 operator|.
-name|getLayoutVersion
-argument_list|()
+name|DATANODE_LAYOUT_VERSION
 operator|+
 literal|"; new CTime = "
 operator|+
