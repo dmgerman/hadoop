@@ -437,6 +437,14 @@ specifier|private
 name|DistributedFileSystem
 name|fs
 decl_stmt|;
+DECL|field|TEST_KEY
+specifier|private
+specifier|final
+name|String
+name|TEST_KEY
+init|=
+literal|"testKey"
+decl_stmt|;
 DECL|field|fsWrapper
 specifier|protected
 name|FileSystemTestWrapper
@@ -455,7 +463,7 @@ name|void
 name|setup
 parameter_list|()
 throws|throws
-name|IOException
+name|Exception
 block|{
 name|conf
 operator|=
@@ -612,6 +620,17 @@ operator|.
 name|getProvider
 argument_list|()
 expr_stmt|;
+name|DFSTestUtil
+operator|.
+name|createKey
+argument_list|(
+name|TEST_KEY
+argument_list|,
+name|cluster
+argument_list|,
+name|conf
+argument_list|)
+expr_stmt|;
 block|}
 annotation|@
 name|After
@@ -710,7 +729,7 @@ name|createEncryptionZone
 argument_list|(
 name|zone
 argument_list|,
-literal|null
+name|TEST_KEY
 argument_list|)
 expr_stmt|;
 specifier|final
@@ -957,7 +976,7 @@ name|createEncryptionZone
 argument_list|(
 name|slashZone
 argument_list|,
-literal|null
+name|TEST_KEY
 argument_list|)
 expr_stmt|;
 specifier|final
@@ -1197,7 +1216,7 @@ name|createEncryptionZone
 argument_list|(
 name|slashZone
 argument_list|,
-literal|null
+name|TEST_KEY
 argument_list|)
 expr_stmt|;
 specifier|final
@@ -1511,7 +1530,7 @@ name|createEncryptionZone
 argument_list|(
 name|slashZone
 argument_list|,
-literal|null
+name|TEST_KEY
 argument_list|)
 expr_stmt|;
 specifier|final
