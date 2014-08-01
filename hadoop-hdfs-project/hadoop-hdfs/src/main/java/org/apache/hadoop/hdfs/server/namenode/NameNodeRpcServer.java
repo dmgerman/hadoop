@@ -864,7 +864,7 @@ name|hdfs
 operator|.
 name|protocol
 operator|.
-name|EncryptionZone
+name|EncryptionZoneWithId
 import|;
 end_import
 
@@ -8406,14 +8406,17 @@ expr_stmt|;
 block|}
 annotation|@
 name|Override
-DECL|method|listEncryptionZones ()
+DECL|method|listEncryptionZones ( long prevId)
 specifier|public
-name|List
+name|BatchedEntries
 argument_list|<
-name|EncryptionZone
+name|EncryptionZoneWithId
 argument_list|>
 name|listEncryptionZones
-parameter_list|()
+parameter_list|(
+name|long
+name|prevId
+parameter_list|)
 throws|throws
 name|IOException
 block|{
@@ -8421,7 +8424,9 @@ return|return
 name|namesystem
 operator|.
 name|listEncryptionZones
-argument_list|()
+argument_list|(
+name|prevId
+argument_list|)
 return|;
 block|}
 annotation|@

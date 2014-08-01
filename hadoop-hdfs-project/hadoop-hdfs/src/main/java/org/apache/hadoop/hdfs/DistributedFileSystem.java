@@ -8654,7 +8654,7 @@ block|}
 comment|/* HDFS only */
 DECL|method|listEncryptionZones ()
 specifier|public
-name|List
+name|RemoteIterator
 argument_list|<
 name|EncryptionZone
 argument_list|>

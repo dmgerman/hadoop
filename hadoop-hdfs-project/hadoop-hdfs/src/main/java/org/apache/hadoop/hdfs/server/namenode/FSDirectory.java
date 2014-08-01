@@ -28,6 +28,22 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|fs
+operator|.
+name|BatchedRemoteIterator
+operator|.
+name|BatchedListEntries
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|hdfs
 operator|.
 name|server
@@ -574,7 +590,7 @@ name|hdfs
 operator|.
 name|protocol
 operator|.
-name|EncryptionZone
+name|EncryptionZoneWithId
 import|;
 end_import
 
@@ -1731,6 +1747,8 @@ operator|new
 name|EncryptionZoneManager
 argument_list|(
 name|this
+argument_list|,
+name|conf
 argument_list|)
 expr_stmt|;
 block|}
@@ -13111,13 +13129,16 @@ argument_list|()
 expr_stmt|;
 block|}
 block|}
-DECL|method|listEncryptionZones ()
-name|List
+DECL|method|listEncryptionZones (long prevId)
+name|BatchedListEntries
 argument_list|<
-name|EncryptionZone
+name|EncryptionZoneWithId
 argument_list|>
 name|listEncryptionZones
-parameter_list|()
+parameter_list|(
+name|long
+name|prevId
+parameter_list|)
 throws|throws
 name|IOException
 block|{
@@ -13130,7 +13151,9 @@ return|return
 name|ezManager
 operator|.
 name|listEncryptionZones
-argument_list|()
+argument_list|(
+name|prevId
+argument_list|)
 return|;
 block|}
 finally|finally

@@ -2180,17 +2180,20 @@ parameter_list|)
 throws|throws
 name|IOException
 function_decl|;
-comment|/**    * Return a list of all {@EncryptionZone}s in the HDFS hierarchy which are    * visible to the caller. If the caller is the HDFS admin, then the returned    * EncryptionZone instances will have the key id field filled in. If the    * caller is not the HDFS admin, then the EncryptionZone instances will only    * have the path field filled in and only those zones that are visible to the    * user are returned.    */
+comment|/**    * Used to implement cursor-based batched listing of {@EncryptionZone}s.    *    * @param prevId ID of the last item in the previous batch. If there is no    *               previous batch, a negative value can be used.    * @return Batch of encryption zones.    */
 annotation|@
 name|Idempotent
-DECL|method|listEncryptionZones ()
+DECL|method|listEncryptionZones ( long prevId)
 specifier|public
-name|List
+name|BatchedEntries
 argument_list|<
-name|EncryptionZone
+name|EncryptionZoneWithId
 argument_list|>
 name|listEncryptionZones
-parameter_list|()
+parameter_list|(
+name|long
+name|prevId
+parameter_list|)
 throws|throws
 name|IOException
 function_decl|;

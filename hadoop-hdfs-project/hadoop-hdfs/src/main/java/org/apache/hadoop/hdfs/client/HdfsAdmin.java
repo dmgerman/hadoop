@@ -751,10 +751,10 @@ name|keyName
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Return a list of all {@link EncryptionZone}s in the HDFS hierarchy which    * are visible to the caller. If the caller is an HDFS superuser,    * then the key name of each encryption zone will also be provided.    *    * @throws IOException if there was a general IO exception    *    * @return List<EncryptionZone> the list of Encryption Zones that the caller has    * access to.    */
+comment|/**    * Returns a RemoteIterator which can be used to list the encryption zones    * in HDFS. For large numbers of encryption zones, the iterator will fetch    * the list of zones in a number of small batches.    *<p/>    * Since the list is fetched in batches, it does not represent a    * consistent snapshot of the entire list of encryption zones.    *<p/>    * This method can only be called by HDFS superusers.    */
 DECL|method|listEncryptionZones ()
 specifier|public
-name|List
+name|RemoteIterator
 argument_list|<
 name|EncryptionZone
 argument_list|>
