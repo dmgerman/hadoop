@@ -30,16 +30,6 @@ end_import
 
 begin_import
 import|import
-name|java
-operator|.
-name|util
-operator|.
-name|HashMap
-import|;
-end_import
-
-begin_import
-import|import
 name|com
 operator|.
 name|google
@@ -53,14 +43,14 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * Counters for an enum type.  *   * For example, suppose there is an enum type  *<pre>  * enum Fruit { APPLE, ORANGE, GRAPE }  *</pre>  * An {@link EnumCounters} object can be created for counting the numbers of  * APPLE, ORANGLE and GRAPE.  *  * @param<E> the enum type  */
+comment|/**  * Similar to {@link EnumCounters} except that the value type is double.  *  * @param<E> the enum type  */
 end_comment
 
 begin_class
-DECL|class|EnumCounters
+DECL|class|EnumDoubles
 specifier|public
 class|class
-name|EnumCounters
+name|EnumDoubles
 parameter_list|<
 name|E
 extends|extends
@@ -80,18 +70,18 @@ name|E
 argument_list|>
 name|enumClass
 decl_stmt|;
-comment|/** An array of longs corresponding to the enum type. */
-DECL|field|counters
+comment|/** An array of doubles corresponding to the enum type. */
+DECL|field|doubles
 specifier|private
 specifier|final
-name|long
+name|double
 index|[]
-name|counters
+name|doubles
 decl_stmt|;
-comment|/**    * Construct counters for the given enum constants.    * @param enumClass the enum class of the counters.    */
-DECL|method|EnumCounters (final Class<E> enumClass)
+comment|/**    * Construct doubles for the given enum constants.    * @param enumClass the enum class.    */
+DECL|method|EnumDoubles (final Class<E> enumClass)
 specifier|public
-name|EnumCounters
+name|EnumDoubles
 parameter_list|(
 specifier|final
 name|Class
@@ -126,10 +116,10 @@ name|enumClass
 expr_stmt|;
 name|this
 operator|.
-name|counters
+name|doubles
 operator|=
 operator|new
-name|long
+name|double
 index|[
 name|enumConstants
 operator|.
@@ -137,11 +127,11 @@ name|length
 index|]
 expr_stmt|;
 block|}
-comment|/** @return the value of counter e. */
+comment|/** @return the value corresponding to e. */
 DECL|method|get (final E e)
 specifier|public
 specifier|final
-name|long
+name|double
 name|get
 parameter_list|(
 specifier|final
@@ -150,7 +140,7 @@ name|e
 parameter_list|)
 block|{
 return|return
-name|counters
+name|doubles
 index|[
 name|e
 operator|.
@@ -159,7 +149,7 @@ argument_list|()
 index|]
 return|;
 block|}
-comment|/** Negate all counters. */
+comment|/** Negate all values. */
 DECL|method|negation ()
 specifier|public
 specifier|final
@@ -176,7 +166,7 @@ literal|0
 init|;
 name|i
 operator|<
-name|counters
+name|doubles
 operator|.
 name|length
 condition|;
@@ -184,21 +174,21 @@ name|i
 operator|++
 control|)
 block|{
-name|counters
+name|doubles
 index|[
 name|i
 index|]
 operator|=
 operator|-
-name|counters
+name|doubles
 index|[
 name|i
 index|]
 expr_stmt|;
 block|}
 block|}
-comment|/** Set counter e to the given value. */
-DECL|method|set (final E e, final long value)
+comment|/** Set e to the given value. */
+DECL|method|set (final E e, final double value)
 specifier|public
 specifier|final
 name|void
@@ -209,11 +199,11 @@ name|E
 name|e
 parameter_list|,
 specifier|final
-name|long
+name|double
 name|value
 parameter_list|)
 block|{
-name|counters
+name|doubles
 index|[
 name|e
 operator|.
@@ -224,15 +214,15 @@ operator|=
 name|value
 expr_stmt|;
 block|}
-comment|/** Set this counters to that counters. */
-DECL|method|set (final EnumCounters<E> that)
+comment|/** Set the values of this object to that object. */
+DECL|method|set (final EnumDoubles<E> that)
 specifier|public
 specifier|final
 name|void
 name|set
 parameter_list|(
 specifier|final
-name|EnumCounters
+name|EnumDoubles
 argument_list|<
 name|E
 argument_list|>
@@ -248,7 +238,7 @@ literal|0
 init|;
 name|i
 operator|<
-name|counters
+name|doubles
 operator|.
 name|length
 condition|;
@@ -258,21 +248,21 @@ control|)
 block|{
 name|this
 operator|.
-name|counters
+name|doubles
 index|[
 name|i
 index|]
 operator|=
 name|that
 operator|.
-name|counters
+name|doubles
 index|[
 name|i
 index|]
 expr_stmt|;
 block|}
 block|}
-comment|/** Reset all counters to zero. */
+comment|/** Reset all values to zero. */
 DECL|method|reset ()
 specifier|public
 specifier|final
@@ -289,7 +279,7 @@ literal|0
 init|;
 name|i
 operator|<
-name|counters
+name|doubles
 operator|.
 name|length
 condition|;
@@ -299,17 +289,17 @@ control|)
 block|{
 name|this
 operator|.
-name|counters
+name|doubles
 index|[
 name|i
 index|]
 operator|=
-literal|0L
+literal|0.0
 expr_stmt|;
 block|}
 block|}
-comment|/** Add the given value to counter e. */
-DECL|method|add (final E e, final long value)
+comment|/** Add the given value to e. */
+DECL|method|add (final E e, final double value)
 specifier|public
 specifier|final
 name|void
@@ -320,11 +310,11 @@ name|E
 name|e
 parameter_list|,
 specifier|final
-name|long
+name|double
 name|value
 parameter_list|)
 block|{
-name|counters
+name|doubles
 index|[
 name|e
 operator|.
@@ -335,15 +325,15 @@ operator|+=
 name|value
 expr_stmt|;
 block|}
-comment|/** Add that counters to this counters. */
-DECL|method|add (final EnumCounters<E> that)
+comment|/** Add the values of that object to this. */
+DECL|method|add (final EnumDoubles<E> that)
 specifier|public
 specifier|final
 name|void
 name|add
 parameter_list|(
 specifier|final
-name|EnumCounters
+name|EnumDoubles
 argument_list|<
 name|E
 argument_list|>
@@ -359,7 +349,7 @@ literal|0
 init|;
 name|i
 operator|<
-name|counters
+name|doubles
 operator|.
 name|length
 condition|;
@@ -369,22 +359,22 @@ control|)
 block|{
 name|this
 operator|.
-name|counters
+name|doubles
 index|[
 name|i
 index|]
 operator|+=
 name|that
 operator|.
-name|counters
+name|doubles
 index|[
 name|i
 index|]
 expr_stmt|;
 block|}
 block|}
-comment|/** Subtract the given value from counter e. */
-DECL|method|subtract (final E e, final long value)
+comment|/** Subtract the given value from e. */
+DECL|method|subtract (final E e, final double value)
 specifier|public
 specifier|final
 name|void
@@ -395,11 +385,11 @@ name|E
 name|e
 parameter_list|,
 specifier|final
-name|long
+name|double
 name|value
 parameter_list|)
 block|{
-name|counters
+name|doubles
 index|[
 name|e
 operator|.
@@ -410,15 +400,15 @@ operator|-=
 name|value
 expr_stmt|;
 block|}
-comment|/** Subtract this counters from that counters. */
-DECL|method|subtract (final EnumCounters<E> that)
+comment|/** Subtract the values of this object from that object. */
+DECL|method|subtract (final EnumDoubles<E> that)
 specifier|public
 specifier|final
 name|void
 name|subtract
 parameter_list|(
 specifier|final
-name|EnumCounters
+name|EnumDoubles
 argument_list|<
 name|E
 argument_list|>
@@ -434,7 +424,7 @@ literal|0
 init|;
 name|i
 operator|<
-name|counters
+name|doubles
 operator|.
 name|length
 condition|;
@@ -444,14 +434,14 @@ control|)
 block|{
 name|this
 operator|.
-name|counters
+name|doubles
 index|[
 name|i
 index|]
 operator|-=
 name|that
 operator|.
-name|counters
+name|doubles
 index|[
 name|i
 index|]
@@ -491,7 +481,7 @@ operator|!
 operator|(
 name|obj
 operator|instanceof
-name|EnumCounters
+name|EnumDoubles
 operator|)
 condition|)
 block|{
@@ -500,14 +490,14 @@ literal|false
 return|;
 block|}
 specifier|final
-name|EnumCounters
+name|EnumDoubles
 argument_list|<
 name|?
 argument_list|>
 name|that
 init|=
 operator|(
-name|EnumCounters
+name|EnumDoubles
 argument_list|<
 name|?
 argument_list|>
@@ -529,11 +519,11 @@ name|equals
 argument_list|(
 name|this
 operator|.
-name|counters
+name|doubles
 argument_list|,
 name|that
 operator|.
-name|counters
+name|doubles
 argument_list|)
 return|;
 block|}
@@ -550,7 +540,7 @@ name|Arrays
 operator|.
 name|hashCode
 argument_list|(
-name|counters
+name|doubles
 argument_list|)
 return|;
 block|}
@@ -589,7 +579,7 @@ literal|0
 init|;
 name|i
 operator|<
-name|counters
+name|doubles
 operator|.
 name|length
 condition|;
@@ -623,7 +613,7 @@ argument_list|)
 operator|.
 name|append
 argument_list|(
-name|counters
+name|doubles
 index|[
 name|i
 index|]
@@ -650,267 +640,6 @@ operator|-
 literal|2
 argument_list|)
 return|;
-block|}
-comment|/**    * A factory for creating counters.    *     * @param<E> the enum type    * @param<C> the counter type    */
-DECL|interface|Factory
-specifier|public
-specifier|static
-interface|interface
-name|Factory
-parameter_list|<
-name|E
-extends|extends
-name|Enum
-parameter_list|<
-name|E
-parameter_list|>
-parameter_list|,
-name|C
-extends|extends
-name|EnumCounters
-parameter_list|<
-name|E
-parameter_list|>
-parameter_list|>
-block|{
-comment|/** Create a new counters instance. */
-DECL|method|newInstance ()
-specifier|public
-name|C
-name|newInstance
-parameter_list|()
-function_decl|;
-block|}
-comment|/**    * A key-value map which maps the keys to {@link EnumCounters}.    * Note that null key is supported.    *    * @param<K> the key type    * @param<E> the enum type    * @param<C> the counter type    */
-DECL|class|Map
-specifier|public
-specifier|static
-class|class
-name|Map
-parameter_list|<
-name|K
-parameter_list|,
-name|E
-extends|extends
-name|Enum
-parameter_list|<
-name|E
-parameter_list|>
-parameter_list|,
-name|C
-extends|extends
-name|EnumCounters
-parameter_list|<
-name|E
-parameter_list|>
-parameter_list|>
-block|{
-comment|/** The factory for creating counters. */
-DECL|field|factory
-specifier|private
-specifier|final
-name|Factory
-argument_list|<
-name|E
-argument_list|,
-name|C
-argument_list|>
-name|factory
-decl_stmt|;
-comment|/** Key-to-Counts map. */
-DECL|field|counts
-specifier|private
-specifier|final
-name|java
-operator|.
-name|util
-operator|.
-name|Map
-argument_list|<
-name|K
-argument_list|,
-name|C
-argument_list|>
-name|counts
-init|=
-operator|new
-name|HashMap
-argument_list|<
-name|K
-argument_list|,
-name|C
-argument_list|>
-argument_list|()
-decl_stmt|;
-comment|/** Construct a map. */
-DECL|method|Map (final Factory<E, C> factory)
-specifier|public
-name|Map
-parameter_list|(
-specifier|final
-name|Factory
-argument_list|<
-name|E
-argument_list|,
-name|C
-argument_list|>
-name|factory
-parameter_list|)
-block|{
-name|this
-operator|.
-name|factory
-operator|=
-name|factory
-expr_stmt|;
-block|}
-comment|/** @return the counters for the given key. */
-DECL|method|getCounts (final K key)
-specifier|public
-specifier|final
-name|C
-name|getCounts
-parameter_list|(
-specifier|final
-name|K
-name|key
-parameter_list|)
-block|{
-name|C
-name|c
-init|=
-name|counts
-operator|.
-name|get
-argument_list|(
-name|key
-argument_list|)
-decl_stmt|;
-if|if
-condition|(
-name|c
-operator|==
-literal|null
-condition|)
-block|{
-name|c
-operator|=
-name|factory
-operator|.
-name|newInstance
-argument_list|()
-expr_stmt|;
-name|counts
-operator|.
-name|put
-argument_list|(
-name|key
-argument_list|,
-name|c
-argument_list|)
-expr_stmt|;
-block|}
-return|return
-name|c
-return|;
-block|}
-comment|/** @return the sum of the values of all the counters. */
-DECL|method|sum ()
-specifier|public
-specifier|final
-name|C
-name|sum
-parameter_list|()
-block|{
-specifier|final
-name|C
-name|sum
-init|=
-name|factory
-operator|.
-name|newInstance
-argument_list|()
-decl_stmt|;
-for|for
-control|(
-name|C
-name|c
-range|:
-name|counts
-operator|.
-name|values
-argument_list|()
-control|)
-block|{
-name|sum
-operator|.
-name|add
-argument_list|(
-name|c
-argument_list|)
-expr_stmt|;
-block|}
-return|return
-name|sum
-return|;
-block|}
-comment|/** @return the sum of the values of all the counters for e. */
-DECL|method|sum (final E e)
-specifier|public
-specifier|final
-name|long
-name|sum
-parameter_list|(
-specifier|final
-name|E
-name|e
-parameter_list|)
-block|{
-name|long
-name|sum
-init|=
-literal|0
-decl_stmt|;
-for|for
-control|(
-name|C
-name|c
-range|:
-name|counts
-operator|.
-name|values
-argument_list|()
-control|)
-block|{
-name|sum
-operator|+=
-name|c
-operator|.
-name|get
-argument_list|(
-name|e
-argument_list|)
-expr_stmt|;
-block|}
-return|return
-name|sum
-return|;
-block|}
-annotation|@
-name|Override
-DECL|method|toString ()
-specifier|public
-name|String
-name|toString
-parameter_list|()
-block|{
-return|return
-name|counts
-operator|.
-name|toString
-argument_list|()
-return|;
-block|}
 block|}
 block|}
 end_class
