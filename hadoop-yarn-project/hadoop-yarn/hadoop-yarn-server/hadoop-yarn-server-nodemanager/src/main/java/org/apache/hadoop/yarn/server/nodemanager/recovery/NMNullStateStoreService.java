@@ -146,6 +146,24 @@ name|proto
 operator|.
 name|YarnServerNodemanagerRecoveryProtos
 operator|.
+name|ContainerManagerApplicationProto
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|proto
+operator|.
+name|YarnServerNodemanagerRecoveryProtos
+operator|.
 name|DeletionServiceDeleteTaskProto
 import|;
 end_import
@@ -228,6 +246,64 @@ return|return
 literal|false
 return|;
 block|}
+annotation|@
+name|Override
+DECL|method|loadApplicationsState ()
+specifier|public
+name|RecoveredApplicationsState
+name|loadApplicationsState
+parameter_list|()
+throws|throws
+name|IOException
+block|{
+throw|throw
+operator|new
+name|UnsupportedOperationException
+argument_list|(
+literal|"Recovery not supported by this state store"
+argument_list|)
+throw|;
+block|}
+annotation|@
+name|Override
+DECL|method|storeApplication (ApplicationId appId, ContainerManagerApplicationProto p)
+specifier|public
+name|void
+name|storeApplication
+parameter_list|(
+name|ApplicationId
+name|appId
+parameter_list|,
+name|ContainerManagerApplicationProto
+name|p
+parameter_list|)
+throws|throws
+name|IOException
+block|{   }
+annotation|@
+name|Override
+DECL|method|storeFinishedApplication (ApplicationId appId)
+specifier|public
+name|void
+name|storeFinishedApplication
+parameter_list|(
+name|ApplicationId
+name|appId
+parameter_list|)
+block|{   }
+annotation|@
+name|Override
+DECL|method|removeApplication (ApplicationId appId)
+specifier|public
+name|void
+name|removeApplication
+parameter_list|(
+name|ApplicationId
+name|appId
+parameter_list|)
+throws|throws
+name|IOException
+block|{   }
 annotation|@
 name|Override
 DECL|method|loadLocalizationState ()

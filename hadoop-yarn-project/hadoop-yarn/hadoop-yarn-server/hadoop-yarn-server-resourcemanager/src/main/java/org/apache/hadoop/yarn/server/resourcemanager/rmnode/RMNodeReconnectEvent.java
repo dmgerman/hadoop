@@ -24,6 +24,34 @@ end_package
 
 begin_import
 import|import
+name|java
+operator|.
+name|util
+operator|.
+name|List
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|api
+operator|.
+name|records
+operator|.
+name|ApplicationId
+import|;
+end_import
+
+begin_import
+import|import
 name|org
 operator|.
 name|apache
@@ -53,7 +81,15 @@ specifier|private
 name|RMNode
 name|reconnectedNode
 decl_stmt|;
-DECL|method|RMNodeReconnectEvent (NodeId nodeId, RMNode newNode)
+DECL|field|runningApplications
+specifier|private
+name|List
+argument_list|<
+name|ApplicationId
+argument_list|>
+name|runningApplications
+decl_stmt|;
+DECL|method|RMNodeReconnectEvent (NodeId nodeId, RMNode newNode, List<ApplicationId> runningApps)
 specifier|public
 name|RMNodeReconnectEvent
 parameter_list|(
@@ -62,6 +98,12 @@ name|nodeId
 parameter_list|,
 name|RMNode
 name|newNode
+parameter_list|,
+name|List
+argument_list|<
+name|ApplicationId
+argument_list|>
+name|runningApps
 parameter_list|)
 block|{
 name|super
@@ -77,6 +119,10 @@ name|reconnectedNode
 operator|=
 name|newNode
 expr_stmt|;
+name|runningApplications
+operator|=
+name|runningApps
+expr_stmt|;
 block|}
 DECL|method|getReconnectedNode ()
 specifier|public
@@ -86,6 +132,19 @@ parameter_list|()
 block|{
 return|return
 name|reconnectedNode
+return|;
+block|}
+DECL|method|getRunningApplications ()
+specifier|public
+name|List
+argument_list|<
+name|ApplicationId
+argument_list|>
+name|getRunningApplications
+parameter_list|()
+block|{
+return|return
+name|runningApplications
 return|;
 block|}
 block|}

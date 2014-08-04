@@ -4046,6 +4046,8 @@ name|getNodeID
 argument_list|()
 argument_list|,
 name|node
+argument_list|,
+literal|null
 argument_list|)
 argument_list|)
 expr_stmt|;
@@ -4216,6 +4218,8 @@ name|getNodeID
 argument_list|()
 argument_list|,
 name|reconnectingNode
+argument_list|,
+literal|null
 argument_list|)
 argument_list|)
 expr_stmt|;
