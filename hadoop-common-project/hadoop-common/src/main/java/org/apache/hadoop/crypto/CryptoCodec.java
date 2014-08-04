@@ -238,7 +238,7 @@ operator|.
 name|class
 argument_list|)
 decl_stmt|;
-comment|/**    * Get crypto codec for specified algorithm/mode/padding.    * @param conf the configuration    * @param CipherSuite algorithm/mode/padding    * @return CryptoCodec the codec object    */
+comment|/**    * Get crypto codec for specified algorithm/mode/padding.    *     * @param conf    *          the configuration    * @param CipherSuite    *          algorithm/mode/padding    * @return CryptoCodec the codec object. Null value will be returned if no    *         crypto codec classes with cipher suite configured.    */
 DECL|method|getInstance (Configuration conf, CipherSuite cipherSuite)
 specifier|public
 specifier|static
@@ -270,6 +270,17 @@ argument_list|,
 name|cipherSuite
 argument_list|)
 decl_stmt|;
+if|if
+condition|(
+name|klasses
+operator|==
+literal|null
+condition|)
+block|{
+return|return
+literal|null
+return|;
+block|}
 name|CryptoCodec
 name|codec
 init|=
@@ -415,7 +426,7 @@ literal|"."
 argument_list|)
 throw|;
 block|}
-comment|/**    * Get crypto codec for algorithm/mode/padding in config value     * hadoop.security.crypto.cipher.suite    * @param conf the configuration    * @return CryptoCodec the codec object    */
+comment|/**    * Get crypto codec for algorithm/mode/padding in config value    * hadoop.security.crypto.cipher.suite    *     * @param conf    *          the configuration    * @return CryptoCodec the codec object Null value will be returned if no    *         crypto codec classes with cipher suite configured.    */
 DECL|method|getInstance (Configuration conf)
 specifier|public
 specifier|static
@@ -509,6 +520,24 @@ argument_list|(
 name|configName
 argument_list|)
 decl_stmt|;
+if|if
+condition|(
+name|codecString
+operator|==
+literal|null
+condition|)
+block|{
+name|LOG
+operator|.
+name|warn
+argument_list|(
+literal|"No crypto codec classes with cipher suite configured."
+argument_list|)
+expr_stmt|;
+return|return
+literal|null
+return|;
+block|}
 for|for
 control|(
 name|String

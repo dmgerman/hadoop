@@ -4610,6 +4610,13 @@ argument_list|(
 literal|1
 argument_list|)
 expr_stmt|;
+if|if
+condition|(
+name|codec
+operator|!=
+literal|null
+condition|)
+block|{
 name|cipherSuites
 operator|.
 name|add
@@ -4620,6 +4627,7 @@ name|getCipherSuite
 argument_list|()
 argument_list|)
 expr_stmt|;
+block|}
 name|provider
 operator|=
 name|DFSUtil
@@ -7632,15 +7640,9 @@ argument_list|(
 name|feInfo
 argument_list|)
 decl_stmt|;
-specifier|final
-name|CryptoInputStream
-name|cryptoIn
+name|CryptoCodec
+name|codec
 init|=
-operator|new
-name|CryptoInputStream
-argument_list|(
-name|dfsis
-argument_list|,
 name|CryptoCodec
 operator|.
 name|getInstance
@@ -7652,6 +7654,28 @@ operator|.
 name|getCipherSuite
 argument_list|()
 argument_list|)
+decl_stmt|;
+name|Preconditions
+operator|.
+name|checkNotNull
+argument_list|(
+name|codec
+operator|==
+literal|null
+argument_list|,
+literal|"No crypto codec classes with cipher suite configured."
+argument_list|)
+expr_stmt|;
+specifier|final
+name|CryptoInputStream
+name|cryptoIn
+init|=
+operator|new
+name|CryptoInputStream
+argument_list|(
+name|dfsis
+argument_list|,
+name|codec
 argument_list|,
 name|decrypted
 operator|.
@@ -7748,6 +7772,17 @@ operator|!=
 literal|null
 condition|)
 block|{
+name|Preconditions
+operator|.
+name|checkNotNull
+argument_list|(
+name|codec
+operator|==
+literal|null
+argument_list|,
+literal|"No crypto codec classes with cipher suite configured."
+argument_list|)
+expr_stmt|;
 comment|// File is encrypted, wrap the stream in a crypto stream.
 name|KeyVersion
 name|decrypted
