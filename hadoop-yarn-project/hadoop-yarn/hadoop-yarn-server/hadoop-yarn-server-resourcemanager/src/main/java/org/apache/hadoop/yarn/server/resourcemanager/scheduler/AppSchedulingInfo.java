@@ -1782,7 +1782,7 @@ argument_list|(
 name|offSwitchRequest
 argument_list|)
 expr_stmt|;
-comment|// Update cloned RackLocal and OffRack requests for recovery
+comment|// Update cloned OffRack requests for recovery
 name|resourceRequests
 operator|.
 name|add
