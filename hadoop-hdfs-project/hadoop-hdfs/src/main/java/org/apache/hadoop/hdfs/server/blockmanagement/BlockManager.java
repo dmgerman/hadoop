@@ -10115,6 +10115,67 @@ literal|null
 return|;
 comment|// not corrupt
 block|}
+case|case
+name|UNDER_CONSTRUCTION
+case|:
+if|if
+condition|(
+name|storedBlock
+operator|.
+name|getGenerationStamp
+argument_list|()
+operator|>
+name|reported
+operator|.
+name|getGenerationStamp
+argument_list|()
+condition|)
+block|{
+specifier|final
+name|long
+name|reportedGS
+init|=
+name|reported
+operator|.
+name|getGenerationStamp
+argument_list|()
+decl_stmt|;
+return|return
+operator|new
+name|BlockToMarkCorrupt
+argument_list|(
+name|storedBlock
+argument_list|,
+name|reportedGS
+argument_list|,
+literal|"block is "
+operator|+
+name|ucState
+operator|+
+literal|" and reported state "
+operator|+
+name|reportedState
+operator|+
+literal|", But reported genstamp "
+operator|+
+name|reportedGS
+operator|+
+literal|" does not match genstamp in block map "
+operator|+
+name|storedBlock
+operator|.
+name|getGenerationStamp
+argument_list|()
+argument_list|,
+name|Reason
+operator|.
+name|GENSTAMP_MISMATCH
+argument_list|)
+return|;
+block|}
+return|return
+literal|null
+return|;
 default|default:
 return|return
 literal|null

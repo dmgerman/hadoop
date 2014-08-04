@@ -416,6 +416,20 @@ name|hadoop
 operator|.
 name|hdfs
 operator|.
+name|DFSOutputStream
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
 name|DFSTestUtil
 import|;
 end_import
@@ -4348,10 +4362,23 @@ argument_list|,
 name|storageIDs
 argument_list|)
 expr_stmt|;
+comment|// close can fail if the out.close() commit the block after block received
+comment|// notifications from Datanode.
+comment|// Since datanodes and output stream have still old genstamps, these
+comment|// blocks will be marked as corrupt after HDFS-5723 if RECEIVED
+comment|// notifications reaches namenode first and close() will fail.
+name|DFSTestUtil
+operator|.
+name|abortStream
+argument_list|(
+operator|(
+name|DFSOutputStream
+operator|)
 name|out
 operator|.
-name|close
+name|getWrappedStream
 argument_list|()
+argument_list|)
 expr_stmt|;
 block|}
 annotation|@
