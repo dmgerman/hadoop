@@ -6338,7 +6338,7 @@ return|;
 comment|// if file is not null, but doesn't exist - possibly disk failed
 name|datanode
 operator|.
-name|checkDiskError
+name|checkDiskErrorAsync
 argument_list|()
 expr_stmt|;
 block|}

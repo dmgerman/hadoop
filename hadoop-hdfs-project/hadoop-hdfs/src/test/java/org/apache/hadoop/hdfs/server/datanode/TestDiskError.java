@@ -1305,7 +1305,7 @@ expr_stmt|;
 block|}
 block|}
 block|}
-comment|/**    * Checks whether {@link DataNode#checkDiskError()} is being called or not.    * Before refactoring the code the above function was not getting called     * @throws IOException, InterruptedException    */
+comment|/**    * Checks whether {@link DataNode#checkDiskErrorAsync()} is being called or not.    * Before refactoring the code the above function was not getting called     * @throws IOException, InterruptedException    */
 annotation|@
 name|Test
 DECL|method|testcheckDiskError ()
@@ -1377,7 +1377,7 @@ decl_stmt|;
 comment|//checking for disk error
 name|dataNode
 operator|.
-name|checkDiskError
+name|checkDiskErrorAsync
 argument_list|()
 expr_stmt|;
 name|Thread

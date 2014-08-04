@@ -6202,6 +6202,11 @@ argument_list|(
 name|nsInfo
 argument_list|)
 expr_stmt|;
+comment|// Exclude failed disks before initializing the block pools to avoid startup
+comment|// failures.
+name|checkDiskError
+argument_list|()
+expr_stmt|;
 name|initPeriodicScanners
 argument_list|(
 name|conf
@@ -8092,11 +8097,11 @@ argument_list|()
 expr_stmt|;
 block|}
 block|}
-comment|/**    *  Check if there is a disk failure and if so, handle the error    */
-DECL|method|checkDiskError ()
+comment|/**    * Check if there is a disk failure asynchronously and if so, handle the error    */
+DECL|method|checkDiskErrorAsync ()
 specifier|public
 name|void
-name|checkDiskError
+name|checkDiskErrorAsync
 parameter_list|()
 block|{
 synchronized|synchronized
@@ -9302,7 +9307,7 @@ name|ie
 argument_list|)
 expr_stmt|;
 comment|// check if there are any disk problem
-name|checkDiskError
+name|checkDiskErrorAsync
 argument_list|()
 expr_stmt|;
 block|}
@@ -13382,6 +13387,37 @@ return|return
 name|shortCircuitRegistry
 return|;
 block|}
+comment|/**    * Check the disk error    */
+DECL|method|checkDiskError ()
+specifier|private
+name|void
+name|checkDiskError
+parameter_list|()
+block|{
+try|try
+block|{
+name|data
+operator|.
+name|checkDataDir
+argument_list|()
+expr_stmt|;
+block|}
+catch|catch
+parameter_list|(
+name|DiskErrorException
+name|de
+parameter_list|)
+block|{
+name|handleDiskError
+argument_list|(
+name|de
+operator|.
+name|getMessage
+argument_list|()
+argument_list|)
+expr_stmt|;
+block|}
+block|}
 comment|/**    * Starts a new thread which will check for disk error check request     * every 5 sec    */
 DECL|method|startCheckDiskErrorThread ()
 specifier|private
@@ -13434,25 +13470,8 @@ condition|)
 block|{
 try|try
 block|{
-name|data
-operator|.
-name|checkDataDir
+name|checkDiskError
 argument_list|()
-expr_stmt|;
-block|}
-catch|catch
-parameter_list|(
-name|DiskErrorException
-name|de
-parameter_list|)
-block|{
-name|handleDiskError
-argument_list|(
-name|de
-operator|.
-name|getMessage
-argument_list|()
-argument_list|)
 expr_stmt|;
 block|}
 catch|catch

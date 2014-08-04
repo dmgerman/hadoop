@@ -1598,7 +1598,7 @@ name|cause
 expr_stmt|;
 name|datanode
 operator|.
-name|checkDiskError
+name|checkDiskErrorAsync
 argument_list|()
 expr_stmt|;
 block|}
@@ -1914,7 +1914,7 @@ condition|)
 block|{
 name|datanode
 operator|.
-name|checkDiskError
+name|checkDiskErrorAsync
 argument_list|()
 expr_stmt|;
 throw|throw
@@ -3317,7 +3317,7 @@ parameter_list|)
 block|{
 name|datanode
 operator|.
-name|checkDiskError
+name|checkDiskErrorAsync
 argument_list|()
 expr_stmt|;
 throw|throw
@@ -5735,7 +5735,7 @@ condition|)
 block|{
 name|datanode
 operator|.
-name|checkDiskError
+name|checkDiskErrorAsync
 argument_list|()
 expr_stmt|;
 name|LOG
