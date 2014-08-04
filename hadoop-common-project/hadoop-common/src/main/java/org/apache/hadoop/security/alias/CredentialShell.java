@@ -935,7 +935,7 @@ specifier|final
 name|String
 name|USAGE
 init|=
-literal|"list<alias> [-provider] [-help]"
+literal|"list [-provider] [-help]"
 decl_stmt|;
 DECL|field|DESC
 specifier|public
