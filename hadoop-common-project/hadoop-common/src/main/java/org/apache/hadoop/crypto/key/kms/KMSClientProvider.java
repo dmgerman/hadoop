@@ -4023,7 +4023,7 @@ literal|"encryptedKey version name must be '%s', is '%s'"
 argument_list|,
 name|KeyProviderCryptoExtension
 operator|.
-name|EK
+name|EEK
 argument_list|,
 name|encryptedKeyVersion
 operator|.
