@@ -680,9 +680,7 @@ operator|+
 name|getName
 argument_list|()
 operator|+
-literal|" -keyName<keyName> -path<path> "
-operator|+
-literal|"]\n"
+literal|" -keyName<keyName> -path<path>]\n"
 return|;
 block|}
 annotation|@
@@ -964,7 +962,7 @@ argument_list|()
 operator|+
 literal|"\n"
 operator|+
-literal|"List all encryption zones.\n\n"
+literal|"List all encryption zones. Requires superuser permissions.\n\n"
 return|;
 block|}
 annotation|@
