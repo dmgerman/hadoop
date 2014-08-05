@@ -5837,17 +5837,6 @@ name|count
 operator|++
 expr_stmt|;
 block|}
-comment|// update inodeMap
-name|removeFromInodeMap
-argument_list|(
-name|Arrays
-operator|.
-name|asList
-argument_list|(
-name|allSrcInodes
-argument_list|)
-argument_list|)
-expr_stmt|;
 name|trgInode
 operator|.
 name|setModificationTime

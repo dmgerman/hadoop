@@ -297,6 +297,51 @@ operator|)
 operator|)
 return|;
 block|}
+comment|/**    * Recurse down a directory tree, checking all child directories.    * @param dir    * @throws DiskErrorException    */
+DECL|method|checkDirs (File dir)
+specifier|public
+specifier|static
+name|void
+name|checkDirs
+parameter_list|(
+name|File
+name|dir
+parameter_list|)
+throws|throws
+name|DiskErrorException
+block|{
+name|checkDir
+argument_list|(
+name|dir
+argument_list|)
+expr_stmt|;
+for|for
+control|(
+name|File
+name|child
+range|:
+name|dir
+operator|.
+name|listFiles
+argument_list|()
+control|)
+block|{
+if|if
+condition|(
+name|child
+operator|.
+name|isDirectory
+argument_list|()
+condition|)
+block|{
+name|checkDirs
+argument_list|(
+name|child
+argument_list|)
+expr_stmt|;
+block|}
+block|}
+block|}
 comment|/**    * Create the directory if it doesn't exist and check that dir is readable,    * writable and executable    *      * @param dir    * @throws DiskErrorException    */
 DECL|method|checkDir (File dir)
 specifier|public

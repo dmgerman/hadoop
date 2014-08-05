@@ -330,6 +330,22 @@ name|fs
 operator|.
 name|permission
 operator|.
+name|FsAction
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|fs
+operator|.
+name|permission
+operator|.
 name|FsPermission
 import|;
 end_import
@@ -2273,6 +2289,23 @@ name|src
 parameter_list|,
 name|XAttr
 name|xAttr
+parameter_list|)
+throws|throws
+name|IOException
+function_decl|;
+comment|/**    * Checks if the user can access a path.  The mode specifies which access    * checks to perform.  If the requested permissions are granted, then the    * method returns normally.  If access is denied, then the method throws an    * {@link AccessControlException}.    * In general, applications should avoid using this method, due to the risk of    * time-of-check/time-of-use race conditions.  The permissions on a file may    * change immediately after the access call returns.    *    * @param path Path to check    * @param mode type of access to check    * @throws AccessControlException if access is denied    * @throws FileNotFoundException if the path does not exist    * @throws IOException see specific implementation    */
+annotation|@
+name|Idempotent
+DECL|method|checkAccess (String path, FsAction mode)
+specifier|public
+name|void
+name|checkAccess
+parameter_list|(
+name|String
+name|path
+parameter_list|,
+name|FsAction
+name|mode
 parameter_list|)
 throws|throws
 name|IOException

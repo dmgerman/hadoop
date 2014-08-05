@@ -1236,7 +1236,7 @@ name|Balancer
 operator|.
 name|Parameters
 operator|.
-name|DEFALUT
+name|DEFAULT
 argument_list|,
 name|s
 operator|.
@@ -1563,7 +1563,7 @@ name|Balancer
 operator|.
 name|Parameters
 operator|.
-name|DEFALUT
+name|DEFAULT
 operator|.
 name|threshold
 expr_stmt|;

@@ -982,10 +982,11 @@ specifier|private
 name|Server
 name|server
 decl_stmt|;
-DECL|field|masterServiceAddress
+comment|// Address to use for binding. May be a wildcard address.
+DECL|field|masterServiceBindAddress
 specifier|private
 name|InetSocketAddress
-name|masterServiceAddress
+name|masterServiceBindAddress
 decl_stmt|;
 DECL|field|adminAcl
 specifier|private
@@ -1097,12 +1098,16 @@ expr_stmt|;
 block|}
 block|}
 block|}
-name|masterServiceAddress
+name|masterServiceBindAddress
 operator|=
 name|conf
 operator|.
 name|getSocketAddr
 argument_list|(
+name|YarnConfiguration
+operator|.
+name|RM_BIND_HOST
+argument_list|,
 name|YarnConfiguration
 operator|.
 name|RM_ADMIN_ADDRESS
@@ -1233,7 +1238,7 @@ name|class
 argument_list|,
 name|this
 argument_list|,
-name|masterServiceAddress
+name|masterServiceBindAddress
 argument_list|,
 name|conf
 argument_list|,
@@ -1361,7 +1366,15 @@ name|updateConnectAddr
 argument_list|(
 name|YarnConfiguration
 operator|.
+name|RM_BIND_HOST
+argument_list|,
+name|YarnConfiguration
+operator|.
 name|RM_ADMIN_ADDRESS
+argument_list|,
+name|YarnConfiguration
+operator|.
+name|DEFAULT_RM_ADMIN_ADDRESS
 argument_list|,
 name|server
 operator|.

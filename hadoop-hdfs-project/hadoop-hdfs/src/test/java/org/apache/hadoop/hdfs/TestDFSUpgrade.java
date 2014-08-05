@@ -747,6 +747,8 @@ argument_list|(
 name|NAME_NODE
 argument_list|,
 name|previous
+argument_list|,
+literal|false
 argument_list|)
 argument_list|,
 name|UpgradeUtilities
@@ -816,6 +818,8 @@ argument_list|(
 name|DATA_NODE
 argument_list|,
 name|current
+argument_list|,
+literal|false
 argument_list|)
 argument_list|,
 name|UpgradeUtilities
@@ -853,6 +857,8 @@ argument_list|(
 name|DATA_NODE
 argument_list|,
 name|currentFinalized
+argument_list|,
+literal|true
 argument_list|)
 argument_list|,
 name|UpgradeUtilities
@@ -896,6 +902,8 @@ argument_list|(
 name|DATA_NODE
 argument_list|,
 name|previous
+argument_list|,
+literal|false
 argument_list|)
 argument_list|,
 name|UpgradeUtilities
@@ -933,6 +941,8 @@ argument_list|(
 name|DATA_NODE
 argument_list|,
 name|previousFinalized
+argument_list|,
+literal|true
 argument_list|)
 argument_list|,
 name|UpgradeUtilities

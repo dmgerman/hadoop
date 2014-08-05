@@ -114,6 +114,24 @@ name|Maps
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|server
+operator|.
+name|protocol
+operator|.
+name|DatanodeStorage
+import|;
+end_import
+
 begin_comment
 comment|/**  * In the Standby Node, we can receive messages about blocks  * before they are actually available in the namespace, or while  * they have an outdated state in the namespace. In those cases,  * we queue those block-related messages in this structure.  * */
 end_comment
@@ -159,17 +177,11 @@ specifier|final
 name|Block
 name|block
 decl_stmt|;
-DECL|field|dn
+DECL|field|storageInfo
 specifier|private
 specifier|final
-name|DatanodeDescriptor
-name|dn
-decl_stmt|;
-DECL|field|storageID
-specifier|private
-specifier|final
-name|String
-name|storageID
+name|DatanodeStorageInfo
+name|storageInfo
 decl_stmt|;
 DECL|field|reportedState
 specifier|private
@@ -177,14 +189,11 @@ specifier|final
 name|ReplicaState
 name|reportedState
 decl_stmt|;
-DECL|method|ReportedBlockInfo (DatanodeDescriptor dn, String storageID, Block block, ReplicaState reportedState)
+DECL|method|ReportedBlockInfo (DatanodeStorageInfo storageInfo, Block block, ReplicaState reportedState)
 name|ReportedBlockInfo
 parameter_list|(
-name|DatanodeDescriptor
-name|dn
-parameter_list|,
-name|String
-name|storageID
+name|DatanodeStorageInfo
+name|storageInfo
 parameter_list|,
 name|Block
 name|block
@@ -195,15 +204,9 @@ parameter_list|)
 block|{
 name|this
 operator|.
-name|dn
+name|storageInfo
 operator|=
-name|dn
-expr_stmt|;
-name|this
-operator|.
-name|storageID
-operator|=
-name|storageID
+name|storageInfo
 expr_stmt|;
 name|this
 operator|.
@@ -227,24 +230,6 @@ return|return
 name|block
 return|;
 block|}
-DECL|method|getNode ()
-name|DatanodeDescriptor
-name|getNode
-parameter_list|()
-block|{
-return|return
-name|dn
-return|;
-block|}
-DECL|method|getStorageID ()
-name|String
-name|getStorageID
-parameter_list|()
-block|{
-return|return
-name|storageID
-return|;
-block|}
 DECL|method|getReportedState ()
 name|ReplicaState
 name|getReportedState
@@ -252,6 +237,15 @@ parameter_list|()
 block|{
 return|return
 name|reportedState
+return|;
+block|}
+DECL|method|getStorageInfo ()
+name|DatanodeStorageInfo
+name|getStorageInfo
+parameter_list|()
+block|{
+return|return
+name|storageInfo
 return|;
 block|}
 annotation|@
@@ -269,7 +263,10 @@ name|block
 operator|+
 literal|", dn="
 operator|+
-name|dn
+name|storageInfo
+operator|.
+name|getDatanodeDescriptor
+argument_list|()
 operator|+
 literal|", reportedState="
 operator|+
@@ -353,7 +350,10 @@ condition|(
 operator|!
 name|rbi
 operator|.
-name|getNode
+name|getStorageInfo
+argument_list|()
+operator|.
+name|getDatanodeDescriptor
 argument_list|()
 operator|.
 name|equals
@@ -391,15 +391,12 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-DECL|method|enqueueReportedBlock (DatanodeDescriptor dn, String storageID, Block block, ReplicaState reportedState)
+DECL|method|enqueueReportedBlock (DatanodeStorageInfo storageInfo, Block block, ReplicaState reportedState)
 name|void
 name|enqueueReportedBlock
 parameter_list|(
-name|DatanodeDescriptor
-name|dn
-parameter_list|,
-name|String
-name|storageID
+name|DatanodeStorageInfo
+name|storageInfo
 parameter_list|,
 name|Block
 name|block
@@ -426,9 +423,7 @@ argument_list|(
 operator|new
 name|ReportedBlockInfo
 argument_list|(
-name|dn
-argument_list|,
-name|storageID
+name|storageInfo
 argument_list|,
 name|block
 argument_list|,

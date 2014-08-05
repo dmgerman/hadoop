@@ -756,6 +756,21 @@ name|LongRange
 name|getStartRange
 parameter_list|()
 function_decl|;
+comment|/**    * Set the range of start times to filter applications on    *    * @param range    */
+annotation|@
+name|Private
+annotation|@
+name|Unstable
+DECL|method|setStartRange (LongRange range)
+specifier|public
+specifier|abstract
+name|void
+name|setStartRange
+parameter_list|(
+name|LongRange
+name|range
+parameter_list|)
+function_decl|;
 comment|/**    * Set the range of start times to filter applications on    *    * @param begin beginning of the range    * @param end end of the range    * @throws IllegalArgumentException    */
 annotation|@
 name|Private
@@ -787,6 +802,21 @@ specifier|abstract
 name|LongRange
 name|getFinishRange
 parameter_list|()
+function_decl|;
+comment|/**    * Set the range of finish times to filter applications on    *    * @param range    */
+annotation|@
+name|Private
+annotation|@
+name|Unstable
+DECL|method|setFinishRange (LongRange range)
+specifier|public
+specifier|abstract
+name|void
+name|setFinishRange
+parameter_list|(
+name|LongRange
+name|range
+parameter_list|)
 function_decl|;
 comment|/**    * Set the range of finish times to filter applications on    *    * @param begin beginning of the range    * @param end end of the range    * @throws IllegalArgumentException    */
 annotation|@

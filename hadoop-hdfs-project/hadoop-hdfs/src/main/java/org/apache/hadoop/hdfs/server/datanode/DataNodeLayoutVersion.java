@@ -274,6 +274,17 @@ literal|"First datanode layout"
 argument_list|,
 literal|false
 argument_list|)
+block|,
+DECL|enumConstant|BLOCKID_BASED_LAYOUT
+name|BLOCKID_BASED_LAYOUT
+argument_list|(
+operator|-
+literal|56
+argument_list|,
+literal|"The block ID of a finalized block uniquely determines its position "
+operator|+
+literal|"in the directory structure"
+argument_list|)
 block|;
 DECL|field|info
 specifier|private

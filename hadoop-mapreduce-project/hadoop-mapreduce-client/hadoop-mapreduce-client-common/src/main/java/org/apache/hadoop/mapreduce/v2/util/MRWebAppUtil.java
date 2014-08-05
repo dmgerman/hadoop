@@ -204,6 +204,22 @@ end_import
 
 begin_import
 import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|ipc
+operator|.
+name|RPCUtil
+import|;
+end_import
+
+begin_import
+import|import
 name|java
 operator|.
 name|net
@@ -613,6 +629,10 @@ name|getSocketAddr
 argument_list|(
 name|JHAdminConfig
 operator|.
+name|MR_HISTORY_BIND_HOST
+argument_list|,
+name|JHAdminConfig
+operator|.
 name|MR_HISTORY_WEBAPP_HTTPS_ADDRESS
 argument_list|,
 name|JHAdminConfig
@@ -632,6 +652,10 @@ name|conf
 operator|.
 name|getSocketAddr
 argument_list|(
+name|JHAdminConfig
+operator|.
+name|MR_HISTORY_BIND_HOST
+argument_list|,
 name|JHAdminConfig
 operator|.
 name|MR_HISTORY_WEBAPP_ADDRESS

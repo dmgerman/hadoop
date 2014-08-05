@@ -142,17 +142,11 @@ end_import
 
 begin_import
 import|import
-name|com
-operator|.
-name|sun
-operator|.
 name|org
 operator|.
 name|apache
 operator|.
 name|xml
-operator|.
-name|internal
 operator|.
 name|serialize
 operator|.
@@ -162,17 +156,11 @@ end_import
 
 begin_import
 import|import
-name|com
-operator|.
-name|sun
-operator|.
 name|org
 operator|.
 name|apache
 operator|.
 name|xml
-operator|.
-name|internal
 operator|.
 name|serialize
 operator|.

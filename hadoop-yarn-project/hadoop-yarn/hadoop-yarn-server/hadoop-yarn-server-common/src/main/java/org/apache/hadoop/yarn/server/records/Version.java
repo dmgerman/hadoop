@@ -4,7 +4,7 @@ comment|/**  * Licensed to the Apache Software Foundation (ASF) under one  * or 
 end_comment
 
 begin_package
-DECL|package|org.apache.hadoop.yarn.server.resourcemanager.recovery.records
+DECL|package|org.apache.hadoop.yarn.server.records
 package|package
 name|org
 operator|.
@@ -15,10 +15,6 @@ operator|.
 name|yarn
 operator|.
 name|server
-operator|.
-name|resourcemanager
-operator|.
-name|recovery
 operator|.
 name|records
 package|;
@@ -36,7 +32,7 @@ name|classification
 operator|.
 name|InterfaceAudience
 operator|.
-name|Private
+name|LimitedPrivate
 import|;
 end_import
 
@@ -73,24 +69,31 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * The version information of RM state.  */
+comment|/**  * The version information for state get stored in YARN components,  * i.e. RMState, NMState, etc., which include: majorVersion and   * minorVersion.  * The major version update means incompatible changes happen while  * minor version update indicates compatible changes.  */
 end_comment
 
 begin_class
 annotation|@
-name|Private
+name|LimitedPrivate
+argument_list|(
+block|{
+literal|"YARN"
+block|,
+literal|"MapReduce"
+block|}
+argument_list|)
 annotation|@
 name|Unstable
-DECL|class|RMStateVersion
+DECL|class|Version
 specifier|public
 specifier|abstract
 class|class
-name|RMStateVersion
+name|Version
 block|{
 DECL|method|newInstance (int majorVersion, int minorVersion)
 specifier|public
 specifier|static
-name|RMStateVersion
+name|Version
 name|newInstance
 parameter_list|(
 name|int
@@ -100,14 +103,14 @@ name|int
 name|minorVersion
 parameter_list|)
 block|{
-name|RMStateVersion
+name|Version
 name|version
 init|=
 name|Records
 operator|.
 name|newRecord
 argument_list|(
-name|RMStateVersion
+name|Version
 operator|.
 name|class
 argument_list|)
@@ -180,12 +183,12 @@ name|getMinorVersion
 argument_list|()
 return|;
 block|}
-DECL|method|isCompatibleTo (RMStateVersion version)
+DECL|method|isCompatibleTo (Version version)
 specifier|public
 name|boolean
 name|isCompatibleTo
 parameter_list|(
-name|RMStateVersion
+name|Version
 name|version
 parameter_list|)
 block|{
@@ -282,11 +285,11 @@ condition|)
 return|return
 literal|false
 return|;
-name|RMStateVersion
+name|Version
 name|other
 init|=
 operator|(
-name|RMStateVersion
+name|Version
 operator|)
 name|obj
 decl_stmt|;

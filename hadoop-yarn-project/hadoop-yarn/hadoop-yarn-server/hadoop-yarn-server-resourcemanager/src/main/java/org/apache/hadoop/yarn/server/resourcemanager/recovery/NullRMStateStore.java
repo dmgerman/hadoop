@@ -136,6 +136,24 @@ name|yarn
 operator|.
 name|server
 operator|.
+name|records
+operator|.
+name|Version
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|server
+operator|.
 name|resourcemanager
 operator|.
 name|recovery
@@ -187,28 +205,6 @@ operator|.
 name|records
 operator|.
 name|ApplicationStateData
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|yarn
-operator|.
-name|server
-operator|.
-name|resourcemanager
-operator|.
-name|recovery
-operator|.
-name|records
-operator|.
-name|RMStateVersion
 import|;
 end_import
 
@@ -482,7 +478,7 @@ annotation|@
 name|Override
 DECL|method|loadVersion ()
 specifier|protected
-name|RMStateVersion
+name|Version
 name|loadVersion
 parameter_list|()
 throws|throws
@@ -509,7 +505,7 @@ annotation|@
 name|Override
 DECL|method|getCurrentVersion ()
 specifier|protected
-name|RMStateVersion
+name|Version
 name|getCurrentVersion
 parameter_list|()
 block|{

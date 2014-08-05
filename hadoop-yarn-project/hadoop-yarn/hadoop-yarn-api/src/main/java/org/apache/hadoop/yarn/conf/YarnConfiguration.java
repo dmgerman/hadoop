@@ -528,6 +528,18 @@ literal|"0.0.0.0:"
 operator|+
 name|DEFAULT_RM_PORT
 decl_stmt|;
+comment|/** The actual bind address for the RM.*/
+DECL|field|RM_BIND_HOST
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|RM_BIND_HOST
+init|=
+name|RM_PREFIX
+operator|+
+literal|"bind-host"
+decl_stmt|;
 comment|/** The number of threads used to handle applications manager requests.*/
 DECL|field|RM_CLIENT_THREAD_COUNT
 specifier|public
@@ -2235,6 +2247,18 @@ init|=
 literal|"0.0.0.0:"
 operator|+
 name|DEFAULT_NM_PORT
+decl_stmt|;
+comment|/** The actual bind address or the NM.*/
+DECL|field|NM_BIND_HOST
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|NM_BIND_HOST
+init|=
+name|NM_PREFIX
+operator|+
+literal|"bind-host"
 decl_stmt|;
 comment|/** who will execute(launch) the containers.*/
 DECL|field|NM_CONTAINER_EXECUTOR
@@ -4133,6 +4157,18 @@ init|=
 literal|"0.0.0.0:"
 operator|+
 name|DEFAULT_TIMELINE_SERVICE_PORT
+decl_stmt|;
+comment|/** The listening endpoint for the timeline service application.*/
+DECL|field|TIMELINE_SERVICE_BIND_HOST
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|TIMELINE_SERVICE_BIND_HOST
+init|=
+name|TIMELINE_SERVICE_PREFIX
+operator|+
+literal|"bind-host"
 decl_stmt|;
 comment|/** The number of threads to handle client RPC API requests. */
 DECL|field|TIMELINE_SERVICE_HANDLER_THREAD_COUNT
