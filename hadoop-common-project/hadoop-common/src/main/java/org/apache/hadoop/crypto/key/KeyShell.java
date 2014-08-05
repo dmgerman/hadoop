@@ -2139,7 +2139,7 @@ literal|"-provider argument. You may specify a cipher with the -cipher\n"
 operator|+
 literal|"argument. The default cipher is currently \"AES/CTR/NoPadding\".\n"
 operator|+
-literal|"The default keysize is 256. You may specify the requested key\n"
+literal|"The default keysize is 128. You may specify the requested key\n"
 operator|+
 literal|"length using the -size argument. Arbitrary attribute=value\n"
 operator|+
@@ -2275,7 +2275,14 @@ name|println
 argument_list|(
 name|keyName
 operator|+
-literal|" has been successfully created."
+literal|" has been successfully created with options "
+operator|+
+name|options
+operator|.
+name|toString
+argument_list|()
+operator|+
+literal|"."
 argument_list|)
 expr_stmt|;
 name|provider

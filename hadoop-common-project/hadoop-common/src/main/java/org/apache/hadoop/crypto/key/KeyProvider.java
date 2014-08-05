@@ -261,7 +261,7 @@ specifier|final
 name|int
 name|DEFAULT_BITLENGTH
 init|=
-literal|256
+literal|128
 decl_stmt|;
 comment|/**    * The combination of both the key version name and the key material.    */
 DECL|class|KeyVersion
@@ -1745,6 +1745,40 @@ operator|.
 name|EMPTY_MAP
 else|:
 name|attributes
+return|;
+block|}
+annotation|@
+name|Override
+DECL|method|toString ()
+specifier|public
+name|String
+name|toString
+parameter_list|()
+block|{
+return|return
+literal|"Options{"
+operator|+
+literal|"cipher='"
+operator|+
+name|cipher
+operator|+
+literal|'\''
+operator|+
+literal|", bitLength="
+operator|+
+name|bitLength
+operator|+
+literal|", description='"
+operator|+
+name|description
+operator|+
+literal|'\''
+operator|+
+literal|", attributes="
+operator|+
+name|attributes
+operator|+
+literal|'}'
 return|;
 block|}
 block|}
