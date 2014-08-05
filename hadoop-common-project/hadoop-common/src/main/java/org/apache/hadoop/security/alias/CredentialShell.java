@@ -312,7 +312,6 @@ else|else
 block|{
 name|exitCode
 operator|=
-operator|-
 literal|1
 expr_stmt|;
 block|}
@@ -331,7 +330,6 @@ name|err
 argument_list|)
 expr_stmt|;
 return|return
-operator|-
 literal|1
 return|;
 block|}
@@ -339,9 +337,9 @@ return|return
 name|exitCode
 return|;
 block|}
-comment|/**    * Parse the command line arguments and initialize the data    *<pre>    * % hadoop alias create alias [-provider providerPath]    * % hadoop alias list [-provider providerPath]    * % hadoop alias delete alias [-provider providerPath] [-i]    *</pre>    * @param args    * @return    * @throws IOException    */
+comment|/**    * Parse the command line arguments and initialize the data    *<pre>    * % hadoop credential create alias [-provider providerPath]    * % hadoop credential list [-provider providerPath]    * % hadoop credential delete alias [-provider providerPath] [-i]    *</pre>    * @param args    * @return 0 if the argument(s) were recognized, 1 otherwise    * @throws IOException    */
 DECL|method|init (String[] args)
-specifier|private
+specifier|protected
 name|int
 name|init
 parameter_list|(
@@ -352,6 +350,32 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
+comment|// no args should print the help message
+if|if
+condition|(
+literal|0
+operator|==
+name|args
+operator|.
+name|length
+condition|)
+block|{
+name|printCredShellUsage
+argument_list|()
+expr_stmt|;
+name|ToolRunner
+operator|.
+name|printGenericCommandUsage
+argument_list|(
+name|System
+operator|.
+name|err
+argument_list|)
+expr_stmt|;
+return|return
+literal|1
+return|;
+block|}
 for|for
 control|(
 name|int
@@ -414,8 +438,7 @@ name|printCredShellUsage
 argument_list|()
 expr_stmt|;
 return|return
-operator|-
-literal|1
+literal|0
 return|;
 block|}
 block|}
@@ -464,8 +487,7 @@ name|printCredShellUsage
 argument_list|()
 expr_stmt|;
 return|return
-operator|-
-literal|1
+literal|0
 return|;
 block|}
 block|}
@@ -609,8 +631,7 @@ name|printCredShellUsage
 argument_list|()
 expr_stmt|;
 return|return
-operator|-
-literal|1
+literal|0
 return|;
 block|}
 else|else
@@ -628,7 +649,6 @@ name|err
 argument_list|)
 expr_stmt|;
 return|return
-operator|-
 literal|1
 return|;
 block|}
