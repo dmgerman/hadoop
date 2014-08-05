@@ -557,7 +557,7 @@ name|keyName
 operator|+
 literal|" has been "
 operator|+
-literal|"successfully created."
+literal|"successfully created"
 argument_list|)
 argument_list|)
 expr_stmt|;
@@ -783,7 +783,7 @@ name|contains
 argument_list|(
 literal|"key1 has been successfully "
 operator|+
-literal|"created."
+literal|"created"
 argument_list|)
 argument_list|)
 expr_stmt|;
@@ -1317,9 +1317,7 @@ name|keyName
 operator|+
 literal|" has been "
 operator|+
-literal|"successfully "
-operator|+
-literal|"created."
+literal|"successfully created"
 argument_list|)
 argument_list|)
 expr_stmt|;
@@ -1407,9 +1405,7 @@ name|contains
 argument_list|(
 literal|"keyattr1 has been "
 operator|+
-literal|"successfully "
-operator|+
-literal|"created."
+literal|"successfully created"
 argument_list|)
 argument_list|)
 expr_stmt|;
