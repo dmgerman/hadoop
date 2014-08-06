@@ -196,24 +196,6 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|mapred
-operator|.
-name|nativetask
-operator|.
-name|util
-operator|.
-name|SnappyUtil
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
 name|util
 operator|.
 name|VersionInfo
@@ -267,36 +249,6 @@ static|static
 block|{
 try|try
 block|{
-if|if
-condition|(
-literal|false
-operator|==
-name|SnappyUtil
-operator|.
-name|isNativeSnappyLoaded
-argument_list|(
-name|conf
-argument_list|)
-condition|)
-block|{
-throw|throw
-operator|new
-name|IOException
-argument_list|(
-literal|"Snappy library cannot be loaded"
-argument_list|)
-throw|;
-block|}
-else|else
-block|{
-name|LOG
-operator|.
-name|info
-argument_list|(
-literal|"Snappy native library is available"
-argument_list|)
-expr_stmt|;
-block|}
 name|System
 operator|.
 name|loadLibrary
@@ -806,6 +758,19 @@ block|}
 block|}
 block|}
 comment|/*******************************************************    *** The following are JNI Apis    ********************************************************/
+comment|/**    * Check whether the native side has compression codec support built in    */
+DECL|method|supportsCompressionCodec (byte[] codec)
+specifier|public
+specifier|native
+specifier|static
+name|boolean
+name|supportsCompressionCodec
+parameter_list|(
+name|byte
+index|[]
+name|codec
+parameter_list|)
+function_decl|;
 comment|/**    * Config the native runtime with mapreduce job configurations.    *     * @param configs    */
 DECL|method|JNIConfigure (byte[][] configs)
 specifier|private
