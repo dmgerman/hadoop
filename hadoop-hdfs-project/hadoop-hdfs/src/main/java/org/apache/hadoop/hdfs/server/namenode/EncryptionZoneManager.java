@@ -294,6 +294,7 @@ decl_stmt|;
 comment|/**    * EncryptionZoneInt is the internal representation of an encryption zone. The    * external representation of an EZ is embodied in an EncryptionZone and    * contains the EZ's pathname.    */
 DECL|class|EncryptionZoneInt
 specifier|private
+specifier|static
 class|class
 name|EncryptionZoneInt
 block|{
