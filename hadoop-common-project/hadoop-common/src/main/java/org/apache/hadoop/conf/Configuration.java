@@ -6452,7 +6452,7 @@ literal|null
 decl_stmt|;
 name|pass
 operator|=
-name|getPasswordFromCredenitalProviders
+name|getPasswordFromCredentialProviders
 argument_list|(
 name|name
 argument_list|)
@@ -6477,11 +6477,11 @@ name|pass
 return|;
 block|}
 comment|/**    * Try and resolve the provided element name as a credential provider    * alias.    * @param name alias of the provisioned credential    * @return password or null if not found    * @throws IOException    */
-DECL|method|getPasswordFromCredenitalProviders (String name)
+DECL|method|getPasswordFromCredentialProviders (String name)
 specifier|protected
 name|char
 index|[]
-name|getPasswordFromCredenitalProviders
+name|getPasswordFromCredentialProviders
 parameter_list|(
 name|String
 name|name
