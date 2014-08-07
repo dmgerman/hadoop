@@ -789,6 +789,8 @@ control|)
 block|{
 name|doTransition
 argument_list|(
+name|datanode
+argument_list|,
 name|getStorageDir
 argument_list|(
 name|idx
@@ -1151,11 +1153,14 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|/**    * Analyze whether a transition of the BP state is required and    * perform it if necessary.    *<br>    * Rollback if previousLV>= LAYOUT_VERSION&& prevCTime<= namenode.cTime.    * Upgrade if this.LV> LAYOUT_VERSION || this.cTime< namenode.cTime Regular    * startup if this.LV = LAYOUT_VERSION&& this.cTime = namenode.cTime    *     * @param sd storage directory<SD>/current/<bpid>    * @param nsInfo namespace info    * @param startOpt startup option    * @throws IOException    */
-DECL|method|doTransition (StorageDirectory sd, NamespaceInfo nsInfo, StartupOption startOpt)
+DECL|method|doTransition (DataNode datanode, StorageDirectory sd, NamespaceInfo nsInfo, StartupOption startOpt)
 specifier|private
 name|void
 name|doTransition
 parameter_list|(
+name|DataNode
+name|datanode
+parameter_list|,
 name|StorageDirectory
 name|sd
 parameter_list|,
@@ -1362,6 +1367,8 @@ condition|)
 block|{
 name|doUpgrade
 argument_list|(
+name|datanode
+argument_list|,
 name|sd
 argument_list|,
 name|nsInfo
@@ -1407,10 +1414,13 @@ argument_list|)
 throw|;
 block|}
 comment|/**    * Upgrade to any release after 0.22 (0.22 included) release e.g. 0.22 => 0.23    * Upgrade procedure is as follows:    *<ol>    *<li>If<SD>/current/<bpid>/previous exists then delete it</li>    *<li>Rename<SD>/current/<bpid>/current to    *<SD>/current/bpid/current/previous.tmp</li>    *<li>Create new<SD>current/<bpid>/current directory</li>    *<ol>    *<li>Hard links for block files are created from previous.tmp to current</li>    *<li>Save new version file in current directory</li>    *</ol>    *<li>Rename previous.tmp to previous</li></ol>    *     * @param bpSd storage directory<SD>/current/<bpid>    * @param nsInfo Namespace Info from the namenode    * @throws IOException on error    */
-DECL|method|doUpgrade (StorageDirectory bpSd, NamespaceInfo nsInfo)
+DECL|method|doUpgrade (DataNode datanode, StorageDirectory bpSd, NamespaceInfo nsInfo)
 name|void
 name|doUpgrade
 parameter_list|(
+name|DataNode
+name|datanode
+parameter_list|,
 name|StorageDirectory
 name|bpSd
 parameter_list|,
@@ -1611,6 +1621,8 @@ expr_stmt|;
 comment|// 3. Create new<SD>/current with block files hardlinks and VERSION
 name|linkAllBlocks
 argument_list|(
+name|datanode
+argument_list|,
 name|bpTmpDir
 argument_list|,
 name|bpCurDir
@@ -2344,11 +2356,14 @@ argument_list|()
 expr_stmt|;
 block|}
 comment|/**    * Hardlink all finalized and RBW blocks in fromDir to toDir    *     * @param fromDir directory where the snapshot is stored    * @param toDir the current data directory    * @throws IOException if error occurs during hardlink    */
-DECL|method|linkAllBlocks (File fromDir, File toDir)
+DECL|method|linkAllBlocks (DataNode datanode, File fromDir, File toDir)
 specifier|private
 name|void
 name|linkAllBlocks
 parameter_list|(
+name|DataNode
+name|datanode
+parameter_list|,
 name|File
 name|fromDir
 parameter_list|,
@@ -2379,6 +2394,8 @@ name|DataStorage
 operator|.
 name|linkBlocks
 argument_list|(
+name|datanode
+argument_list|,
 operator|new
 name|File
 argument_list|(
@@ -2408,6 +2425,8 @@ name|DataStorage
 operator|.
 name|linkBlocks
 argument_list|(
+name|datanode
+argument_list|,
 operator|new
 name|File
 argument_list|(

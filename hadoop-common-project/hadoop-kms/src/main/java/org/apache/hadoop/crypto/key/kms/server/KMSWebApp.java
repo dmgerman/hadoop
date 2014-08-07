@@ -1069,6 +1069,15 @@ name|currKeyTimeOutMillis
 argument_list|)
 expr_stmt|;
 block|}
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"Initialized KeyProvider "
+operator|+
+name|keyProvider
+argument_list|)
+expr_stmt|;
 name|keyProviderCryptoExtension
 operator|=
 name|KeyProviderCryptoExtension
@@ -1086,6 +1095,41 @@ argument_list|(
 name|kmsConf
 argument_list|,
 name|keyProviderCryptoExtension
+argument_list|)
+expr_stmt|;
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"Initialized KeyProviderCryptoExtension "
+operator|+
+name|keyProviderCryptoExtension
+argument_list|)
+expr_stmt|;
+specifier|final
+name|int
+name|defaultBitlength
+init|=
+name|kmsConf
+operator|.
+name|getInt
+argument_list|(
+name|KeyProvider
+operator|.
+name|DEFAULT_BITLENGTH_NAME
+argument_list|,
+name|KeyProvider
+operator|.
+name|DEFAULT_BITLENGTH
+argument_list|)
+decl_stmt|;
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"Default key bitlength is {}"
+argument_list|,
+name|defaultBitlength
 argument_list|)
 expr_stmt|;
 name|LOG

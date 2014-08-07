@@ -78,6 +78,16 @@ name|java
 operator|.
 name|io
 operator|.
+name|FileInputStream
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|io
+operator|.
 name|FileOutputStream
 import|;
 end_import
@@ -518,7 +528,6 @@ name|checksum
 decl_stmt|;
 block|}
 DECL|field|upgradeConf
-specifier|private
 specifier|static
 specifier|final
 name|Configuration
@@ -597,13 +606,15 @@ name|printChecksum
 init|=
 literal|false
 decl_stmt|;
-DECL|method|unpackStorage (String tarFileName)
-specifier|private
+DECL|method|unpackStorage (String tarFileName, String referenceName)
 name|void
 name|unpackStorage
 parameter_list|(
 name|String
 name|tarFileName
+parameter_list|,
+name|String
+name|referenceName
 parameter_list|)
 throws|throws
 name|IOException
@@ -722,7 +733,7 @@ argument_list|)
 operator|+
 literal|"/"
 operator|+
-name|HADOOP_DFS_DIR_TXT
+name|referenceName
 argument_list|)
 argument_list|)
 decl_stmt|;
@@ -1610,6 +1621,8 @@ block|{
 name|unpackStorage
 argument_list|(
 name|HADOOP22_IMAGE
+argument_list|,
+name|HADOOP_DFS_DIR_TXT
 argument_list|)
 expr_stmt|;
 name|upgradeAndVerify
@@ -1643,6 +1656,8 @@ block|{
 name|unpackStorage
 argument_list|(
 name|HADOOP22_IMAGE
+argument_list|,
+name|HADOOP_DFS_DIR_TXT
 argument_list|)
 expr_stmt|;
 comment|// Overwrite the md5 stored in the VERSION files
@@ -1808,6 +1823,8 @@ block|{
 name|unpackStorage
 argument_list|(
 name|HADOOP1_RESERVED_IMAGE
+argument_list|,
+name|HADOOP_DFS_DIR_TXT
 argument_list|)
 expr_stmt|;
 name|MiniDFSCluster
@@ -2146,6 +2163,8 @@ block|{
 name|unpackStorage
 argument_list|(
 name|HADOOP023_RESERVED_IMAGE
+argument_list|,
+name|HADOOP_DFS_DIR_TXT
 argument_list|)
 expr_stmt|;
 name|MiniDFSCluster
@@ -2472,6 +2491,8 @@ block|{
 name|unpackStorage
 argument_list|(
 name|HADOOP2_RESERVED_IMAGE
+argument_list|,
+name|HADOOP_DFS_DIR_TXT
 argument_list|)
 expr_stmt|;
 name|MiniDFSCluster
@@ -2991,7 +3012,6 @@ condition|)
 do|;
 block|}
 DECL|method|upgradeAndVerify (MiniDFSCluster.Builder bld)
-specifier|private
 name|void
 name|upgradeAndVerify
 parameter_list|(
@@ -3143,6 +3163,8 @@ block|{
 name|unpackStorage
 argument_list|(
 name|HADOOP1_BBW_IMAGE
+argument_list|,
+name|HADOOP_DFS_DIR_TXT
 argument_list|)
 expr_stmt|;
 name|Configuration

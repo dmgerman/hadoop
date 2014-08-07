@@ -866,6 +866,7 @@ name|blockPoolUsed
 return|;
 block|}
 DECL|method|addBlock (BlockInfo b)
+specifier|public
 name|boolean
 name|addBlock
 parameter_list|(

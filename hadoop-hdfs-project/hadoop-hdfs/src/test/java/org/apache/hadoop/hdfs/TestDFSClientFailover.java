@@ -456,6 +456,20 @@ name|hadoop
 operator|.
 name|security
 operator|.
+name|SecurityUtil
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|security
+operator|.
 name|UserGroupInformation
 import|;
 end_import
@@ -689,6 +703,22 @@ name|cluster
 operator|.
 name|shutdown
 argument_list|()
+expr_stmt|;
+block|}
+annotation|@
+name|After
+DECL|method|clearConfig ()
+specifier|public
+name|void
+name|clearConfig
+parameter_list|()
+block|{
+name|SecurityUtil
+operator|.
+name|setTokenServiceUseIp
+argument_list|(
+literal|true
+argument_list|)
 expr_stmt|;
 block|}
 comment|/**    * Make sure that client failover works when an active NN dies and the standby    * takes over.    */
@@ -1797,6 +1827,8 @@ name|IOException
 block|{     }
 block|}
 comment|/**    * Test to verify legacy proxy providers are correctly wrapped.    */
+annotation|@
+name|Test
 DECL|method|testWrappedFailoverProxyProvider ()
 specifier|public
 name|void
@@ -1867,6 +1899,14 @@ operator|+
 literal|"/"
 argument_list|)
 decl_stmt|;
+comment|// not to use IP address for token service
+name|SecurityUtil
+operator|.
+name|setTokenServiceUseIp
+argument_list|(
+literal|false
+argument_list|)
+expr_stmt|;
 comment|// Logical URI should be used.
 name|assertTrue
 argument_list|(
@@ -1887,6 +1927,8 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|/**    * Test to verify IPFailoverProxyProvider is not requiring logical URI.    */
+annotation|@
+name|Test
 DECL|method|testIPFailoverProxyProviderLogicalUri ()
 specifier|public
 name|void

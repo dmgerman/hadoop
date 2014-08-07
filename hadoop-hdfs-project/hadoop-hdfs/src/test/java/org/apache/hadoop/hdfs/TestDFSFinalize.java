@@ -476,6 +476,8 @@ name|dnCurDirs
 index|[
 name|i
 index|]
+argument_list|,
+literal|false
 argument_list|)
 argument_list|,
 name|UpgradeUtilities
@@ -635,6 +637,8 @@ argument_list|(
 name|DATA_NODE
 argument_list|,
 name|bpCurFinalizeDir
+argument_list|,
+literal|true
 argument_list|)
 argument_list|,
 name|UpgradeUtilities

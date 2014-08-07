@@ -167,39 +167,8 @@ argument_list|>
 argument_list|>
 argument_list|()
 decl_stmt|;
-comment|/**    * Mark the block belonging to datanode as corrupt.    *    * @param blk Block to be added to CorruptReplicasMap    * @param dn DatanodeDescriptor which holds the corrupt replica    * @param reason a textual reason (for logging purposes)    */
-DECL|method|addToCorruptReplicasMap (Block blk, DatanodeDescriptor dn, String reason)
-specifier|public
-name|void
-name|addToCorruptReplicasMap
-parameter_list|(
-name|Block
-name|blk
-parameter_list|,
-name|DatanodeDescriptor
-name|dn
-parameter_list|,
-name|String
-name|reason
-parameter_list|)
-block|{
-name|addToCorruptReplicasMap
-argument_list|(
-name|blk
-argument_list|,
-name|dn
-argument_list|,
-name|reason
-argument_list|,
-name|Reason
-operator|.
-name|NONE
-argument_list|)
-expr_stmt|;
-block|}
 comment|/**    * Mark the block belonging to datanode as corrupt.    *    * @param blk Block to be added to CorruptReplicasMap    * @param dn DatanodeDescriptor which holds the corrupt replica    * @param reason a textual reason (for logging purposes)    * @param reasonCode the enum representation of the reason    */
 DECL|method|addToCorruptReplicasMap (Block blk, DatanodeDescriptor dn, String reason, Reason reasonCode)
-specifier|public
 name|void
 name|addToCorruptReplicasMap
 parameter_list|(
@@ -449,11 +418,6 @@ argument_list|(
 name|blk
 argument_list|)
 decl_stmt|;
-name|boolean
-name|removed
-init|=
-literal|false
-decl_stmt|;
 if|if
 condition|(
 name|datanodes
@@ -619,7 +583,6 @@ operator|)
 return|;
 block|}
 DECL|method|numCorruptReplicas (Block blk)
-specifier|public
 name|int
 name|numCorruptReplicas
 parameter_list|(
@@ -654,7 +617,6 @@ argument_list|()
 return|;
 block|}
 DECL|method|size ()
-specifier|public
 name|int
 name|size
 parameter_list|()

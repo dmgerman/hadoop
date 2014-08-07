@@ -821,6 +821,19 @@ argument_list|)
 expr_stmt|;
 name|when
 argument_list|(
+name|report
+operator|.
+name|getStatus
+argument_list|()
+argument_list|)
+operator|.
+name|thenReturn
+argument_list|(
+literal|"Dummy Status \n*"
+argument_list|)
+expr_stmt|;
+name|when
+argument_list|(
 name|task
 operator|.
 name|getReport
@@ -1042,6 +1055,32 @@ operator|.
 name|contains
 argument_list|(
 literal|"100011"
+argument_list|)
+argument_list|)
+expr_stmt|;
+name|assertFalse
+argument_list|(
+name|data
+operator|.
+name|toString
+argument_list|()
+operator|.
+name|contains
+argument_list|(
+literal|"Dummy Status \n*"
+argument_list|)
+argument_list|)
+expr_stmt|;
+name|assertTrue
+argument_list|(
+name|data
+operator|.
+name|toString
+argument_list|()
+operator|.
+name|contains
+argument_list|(
+literal|"Dummy Status \\n*"
 argument_list|)
 argument_list|)
 expr_stmt|;

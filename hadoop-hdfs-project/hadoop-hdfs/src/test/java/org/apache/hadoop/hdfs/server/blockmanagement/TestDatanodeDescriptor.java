@@ -360,12 +360,13 @@ decl_stmt|;
 comment|// add first block
 name|assertTrue
 argument_list|(
-name|dd
+name|storages
+index|[
+literal|0
+index|]
 operator|.
 name|addBlock
 argument_list|(
-name|storageID
-argument_list|,
 name|blk
 argument_list|)
 argument_list|)
@@ -404,12 +405,13 @@ expr_stmt|;
 comment|// add an existent block
 name|assertFalse
 argument_list|(
-name|dd
+name|storages
+index|[
+literal|0
+index|]
 operator|.
 name|addBlock
 argument_list|(
-name|storageID
-argument_list|,
 name|blk
 argument_list|)
 argument_list|)
@@ -427,12 +429,13 @@ expr_stmt|;
 comment|// add second block
 name|assertTrue
 argument_list|(
-name|dd
+name|storages
+index|[
+literal|0
+index|]
 operator|.
 name|addBlock
 argument_list|(
-name|storageID
-argument_list|,
 name|blk1
 argument_list|)
 argument_list|)

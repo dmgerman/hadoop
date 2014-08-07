@@ -4978,7 +4978,7 @@ name|sendError
 argument_list|(
 name|HttpServletResponse
 operator|.
-name|SC_UNAUTHORIZED
+name|SC_FORBIDDEN
 argument_list|,
 literal|"Unauthenticated users are not "
 operator|+
@@ -5015,7 +5015,7 @@ name|sendError
 argument_list|(
 name|HttpServletResponse
 operator|.
-name|SC_UNAUTHORIZED
+name|SC_FORBIDDEN
 argument_list|,
 literal|"User "
 operator|+

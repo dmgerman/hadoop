@@ -797,8 +797,8 @@ DECL|field|dataNodes
 specifier|private
 specifier|static
 name|DatanodeDescriptor
-name|dataNodes
 index|[]
+name|dataNodes
 decl_stmt|;
 DECL|field|storages
 specifier|private
@@ -7175,12 +7175,10 @@ argument_list|)
 argument_list|,
 name|TestReplicationPolicy
 operator|.
-name|dataNodes
+name|storages
 index|[
 literal|0
 index|]
-argument_list|,
-literal|"STORAGE"
 argument_list|)
 expr_stmt|;
 comment|// Choose 1 block from UnderReplicatedBlocks. Then it should pick 1 block
