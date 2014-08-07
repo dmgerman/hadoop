@@ -2536,7 +2536,7 @@ name|assertEquals
 argument_list|(
 name|HttpURLConnection
 operator|.
-name|HTTP_UNAUTHORIZED
+name|HTTP_FORBIDDEN
 argument_list|,
 name|getHttpStatusCode
 argument_list|(
@@ -3033,7 +3033,7 @@ name|eq
 argument_list|(
 name|HttpServletResponse
 operator|.
-name|SC_UNAUTHORIZED
+name|SC_FORBIDDEN
 argument_list|)
 argument_list|,
 name|Mockito
@@ -3182,7 +3182,7 @@ name|eq
 argument_list|(
 name|HttpServletResponse
 operator|.
-name|SC_UNAUTHORIZED
+name|SC_FORBIDDEN
 argument_list|)
 argument_list|,
 name|Mockito

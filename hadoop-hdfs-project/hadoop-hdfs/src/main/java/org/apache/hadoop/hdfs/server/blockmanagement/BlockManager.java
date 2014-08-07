@@ -14626,6 +14626,39 @@ block|}
 block|}
 block|}
 block|}
+if|if
+condition|(
+operator|!
+name|status
+operator|&&
+operator|!
+name|srcNode
+operator|.
+name|isAlive
+condition|)
+block|{
+name|LOG
+operator|.
+name|warn
+argument_list|(
+literal|"srcNode "
+operator|+
+name|srcNode
+operator|+
+literal|" is dead "
+operator|+
+literal|"when decommission is in progress. Continue to mark "
+operator|+
+literal|"it as decommission in progress. In that way, when it rejoins the "
+operator|+
+literal|"cluster it can continue the decommission process."
+argument_list|)
+expr_stmt|;
+name|status
+operator|=
+literal|true
+expr_stmt|;
+block|}
 name|srcNode
 operator|.
 name|decommissioningStatus

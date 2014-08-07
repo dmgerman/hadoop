@@ -165,6 +165,33 @@ name|denominator
 argument_list|)
 return|;
 block|}
+DECL|method|isInvalidDivisor (Resource r)
+specifier|public
+name|boolean
+name|isInvalidDivisor
+parameter_list|(
+name|Resource
+name|r
+parameter_list|)
+block|{
+if|if
+condition|(
+name|r
+operator|.
+name|getMemory
+argument_list|()
+operator|==
+literal|0.0f
+condition|)
+block|{
+return|return
+literal|true
+return|;
+block|}
+return|return
+literal|false
+return|;
+block|}
 annotation|@
 name|Override
 DECL|method|ratio (Resource a, Resource b)

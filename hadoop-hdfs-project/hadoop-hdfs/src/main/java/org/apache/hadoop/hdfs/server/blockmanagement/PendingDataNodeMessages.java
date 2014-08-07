@@ -114,24 +114,6 @@ name|Maps
 import|;
 end_import
 
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|hdfs
-operator|.
-name|server
-operator|.
-name|protocol
-operator|.
-name|DatanodeStorage
-import|;
-end_import
-
 begin_comment
 comment|/**  * In the Standby Node, we can receive messages about blocks  * before they are actually available in the namespace, or while  * they have an outdated state in the namespace. In those cases,  * we queue those block-related messages in this structure.  * */
 end_comment
@@ -533,7 +515,6 @@ name|queue
 return|;
 block|}
 DECL|method|count ()
-specifier|public
 name|int
 name|count
 parameter_list|()
@@ -630,7 +611,6 @@ argument_list|()
 return|;
 block|}
 DECL|method|takeAll ()
-specifier|public
 name|Iterable
 argument_list|<
 name|ReportedBlockInfo

@@ -655,7 +655,7 @@ init|=
 operator|new
 name|byte
 index|[
-literal|32
+literal|16
 index|]
 decl_stmt|;
 name|byte
@@ -665,7 +665,7 @@ init|=
 operator|new
 name|byte
 index|[
-literal|32
+literal|16
 index|]
 decl_stmt|;
 name|byte
@@ -675,7 +675,7 @@ init|=
 operator|new
 name|byte
 index|[
-literal|32
+literal|16
 index|]
 decl_stmt|;
 for|for
@@ -1016,7 +1016,7 @@ parameter_list|)
 block|{
 name|assertEquals
 argument_list|(
-literal|"Wrong key length. Required 8, but got 256"
+literal|"Wrong key length. Required 8, but got 128"
 argument_list|,
 name|e
 operator|.
@@ -1166,7 +1166,7 @@ parameter_list|)
 block|{
 name|assertEquals
 argument_list|(
-literal|"Wrong key length. Required 8, but got 256"
+literal|"Wrong key length. Required 8, but got 128"
 argument_list|,
 name|e
 operator|.
@@ -1680,7 +1680,7 @@ init|=
 operator|new
 name|byte
 index|[
-literal|32
+literal|16
 index|]
 decl_stmt|;
 for|for
@@ -1915,7 +1915,7 @@ argument_list|,
 operator|new
 name|byte
 index|[
-literal|32
+literal|16
 index|]
 argument_list|,
 name|KeyProvider

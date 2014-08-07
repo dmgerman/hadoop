@@ -895,6 +895,28 @@ name|factor
 argument_list|)
 return|;
 block|}
+DECL|method|isInvalidDivisor ( ResourceCalculator resourceCalculator, Resource divisor)
+specifier|public
+specifier|static
+name|boolean
+name|isInvalidDivisor
+parameter_list|(
+name|ResourceCalculator
+name|resourceCalculator
+parameter_list|,
+name|Resource
+name|divisor
+parameter_list|)
+block|{
+return|return
+name|resourceCalculator
+operator|.
+name|isInvalidDivisor
+argument_list|(
+name|divisor
+argument_list|)
+return|;
+block|}
 DECL|method|ratio ( ResourceCalculator resourceCalculator, Resource lhs, Resource rhs)
 specifier|public
 specifier|static

@@ -70,22 +70,6 @@ name|hadoop
 operator|.
 name|hdfs
 operator|.
-name|protocol
-operator|.
-name|DatanodeInfo
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|hdfs
-operator|.
 name|server
 operator|.
 name|common
@@ -1154,12 +1138,12 @@ operator|-
 literal|1
 return|;
 block|}
-comment|/**    * Find specified DatanodeStorageInfo.    * @return index or -1 if not found.    */
-DECL|method|findStorageInfo (DatanodeInfo dn)
-name|int
+comment|/**    * Find specified DatanodeStorageInfo.    * @return DatanodeStorageInfo or null if not found.    */
+DECL|method|findStorageInfo (DatanodeDescriptor dn)
+name|DatanodeStorageInfo
 name|findStorageInfo
 parameter_list|(
-name|DatanodeInfo
+name|DatanodeDescriptor
 name|dn
 parameter_list|)
 block|{
@@ -1209,12 +1193,11 @@ operator|==
 name|dn
 condition|)
 return|return
-name|idx
+name|cur
 return|;
 block|}
 return|return
-operator|-
-literal|1
+literal|null
 return|;
 block|}
 comment|/**    * Find specified DatanodeStorageInfo.    * @return index or -1 if not found.    */

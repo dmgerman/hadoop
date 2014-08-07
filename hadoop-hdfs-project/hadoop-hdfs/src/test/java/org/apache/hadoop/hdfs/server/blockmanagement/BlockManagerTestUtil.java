@@ -1224,6 +1224,28 @@ name|EMPTY_ARRAY
 argument_list|)
 return|;
 block|}
+comment|/**    * Have DatanodeManager check decommission state.    * @param dm the DatanodeManager to manipulate    */
+DECL|method|checkDecommissionState (DatanodeManager dm, DatanodeDescriptor node)
+specifier|public
+specifier|static
+name|void
+name|checkDecommissionState
+parameter_list|(
+name|DatanodeManager
+name|dm
+parameter_list|,
+name|DatanodeDescriptor
+name|node
+parameter_list|)
+block|{
+name|dm
+operator|.
+name|checkDecommissionState
+argument_list|(
+name|node
+argument_list|)
+expr_stmt|;
+block|}
 block|}
 end_class
 
