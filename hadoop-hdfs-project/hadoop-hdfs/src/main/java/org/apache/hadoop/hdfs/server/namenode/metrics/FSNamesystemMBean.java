@@ -182,6 +182,13 @@ name|long
 name|getPendingDeletionBlocks
 parameter_list|()
 function_decl|;
+comment|/**    * Number of content stale storages.    * @return number of content stale storages    */
+DECL|method|getNumStaleStorages ()
+specifier|public
+name|int
+name|getNumStaleStorages
+parameter_list|()
+function_decl|;
 block|}
 end_interface
 

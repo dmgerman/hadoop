@@ -722,6 +722,13 @@ specifier|volatile
 name|int
 name|numStaleNodes
 decl_stmt|;
+comment|/** The number of stale storages */
+DECL|field|numStaleStorages
+specifier|private
+specifier|volatile
+name|int
+name|numStaleStorages
+decl_stmt|;
 comment|/**    * Whether or not this cluster has ever consisted of more than 1 rack,    * according to the NetworkTopology.    */
 DECL|field|hasClusterEverBeenMultiRack
 specifier|private
@@ -4808,6 +4815,33 @@ name|this
 operator|.
 name|numStaleNodes
 return|;
+block|}
+comment|/**    * Get the number of content stale storages.    */
+DECL|method|getNumStaleStorages ()
+specifier|public
+name|int
+name|getNumStaleStorages
+parameter_list|()
+block|{
+return|return
+name|numStaleStorages
+return|;
+block|}
+comment|/**    * Set the number of content stale storages.    *    * @param numStaleStorages The number of content stale storages.    */
+DECL|method|setNumStaleStorages (int numStaleStorages)
+name|void
+name|setNumStaleStorages
+parameter_list|(
+name|int
+name|numStaleStorages
+parameter_list|)
+block|{
+name|this
+operator|.
+name|numStaleStorages
+operator|=
+name|numStaleStorages
+expr_stmt|;
 block|}
 comment|/** Fetch live and dead datanodes. */
 DECL|method|fetchDatanodes (final List<DatanodeDescriptor> live, final List<DatanodeDescriptor> dead, final boolean removeDecommissionNode)
