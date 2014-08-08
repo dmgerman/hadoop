@@ -485,6 +485,24 @@ literal|false
 argument_list|)
 expr_stmt|;
 block|}
+comment|/**    * Set whether to display the extended stats (stdev, min/max etc.) or not    * @param extended enable/disable displaying extended stats    */
+DECL|method|setExtended (boolean extended)
+specifier|public
+specifier|synchronized
+name|void
+name|setExtended
+parameter_list|(
+name|boolean
+name|extended
+parameter_list|)
+block|{
+name|this
+operator|.
+name|extended
+operator|=
+name|extended
+expr_stmt|;
+block|}
 comment|/**    * Add a number of samples and their sum to the running stat    * @param numSamples  number of samples    * @param sum of the samples    */
 DECL|method|add (long numSamples, long sum)
 specifier|public
