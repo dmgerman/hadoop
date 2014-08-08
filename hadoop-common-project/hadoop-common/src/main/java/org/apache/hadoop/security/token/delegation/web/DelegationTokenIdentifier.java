@@ -4,7 +4,7 @@ comment|/**  * Licensed to the Apache Software Foundation (ASF) under one  * or 
 end_comment
 
 begin_package
-DECL|package|org.apache.hadoop.lib.service
+DECL|package|org.apache.hadoop.security.token.delegation.web
 package|package
 name|org
 operator|.
@@ -12,9 +12,13 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|lib
+name|security
 operator|.
-name|service
+name|token
+operator|.
+name|delegation
+operator|.
+name|web
 package|;
 end_package
 
@@ -40,11 +44,9 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|hdfs
+name|classification
 operator|.
-name|web
-operator|.
-name|WebHdfsFileSystem
+name|InterfaceStability
 import|;
 end_import
 
@@ -81,7 +83,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * HttpFS<code>DelegationTokenIdentifier</code> implementation.  */
+comment|/**  * Concrete delegation token identifier used by {@link DelegationTokenManager},  * {@link KerberosDelegationTokenAuthenticationHandler} and  * {@link DelegationTokenAuthenticationFilter}.  */
 end_comment
 
 begin_class
@@ -89,6 +91,10 @@ annotation|@
 name|InterfaceAudience
 operator|.
 name|Private
+annotation|@
+name|InterfaceStability
+operator|.
+name|Evolving
 DECL|class|DelegationTokenIdentifier
 specifier|public
 class|class
@@ -100,10 +106,6 @@ DECL|field|kind
 specifier|private
 name|Text
 name|kind
-init|=
-name|WebHdfsFileSystem
-operator|.
-name|TOKEN_KIND
 decl_stmt|;
 DECL|method|DelegationTokenIdentifier (Text kind)
 specifier|public
@@ -154,7 +156,7 @@ operator|=
 name|kind
 expr_stmt|;
 block|}
-comment|/**    * Returns the kind,<code>TOKEN_KIND</code>.    * @return returns<code>TOKEN_KIND</code>.    */
+comment|/**    * Return the delegation token kind    * @return returns the delegation token kind    */
 annotation|@
 name|Override
 DECL|method|getKind ()

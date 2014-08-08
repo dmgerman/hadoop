@@ -60,7 +60,11 @@ name|hadoop
 operator|.
 name|security
 operator|.
-name|UserGroupInformation
+name|authentication
+operator|.
+name|client
+operator|.
+name|Authenticator
 import|;
 end_import
 
@@ -78,22 +82,12 @@ name|authentication
 operator|.
 name|client
 operator|.
-name|PseudoAuthenticator
-import|;
-end_import
-
-begin_import
-import|import
-name|java
-operator|.
-name|io
-operator|.
-name|IOException
+name|KerberosAuthenticator
 import|;
 end_import
 
 begin_comment
-comment|/**  * The<code>PseudoDelegationTokenAuthenticator</code> provides support for  * Hadoop's pseudo authentication mechanism that accepts  * the user name specified as a query string parameter and support for Hadoop  * Delegation Token operations.  *<p/>  * This mimics the model of Hadoop Simple authentication trusting the  * {@link UserGroupInformation#getCurrentUser()} value.  */
+comment|/**  * The<code>KerberosDelegationTokenAuthenticator</code> provides support for  * Kerberos SPNEGO authentication mechanism and support for Hadoop Delegation  * Token operations.  *<p/>  * It falls back to the {@link PseudoDelegationTokenAuthenticator} if the HTTP  * endpoint does not trigger a SPNEGO authentication  */
 end_comment
 
 begin_class
@@ -105,57 +99,36 @@ annotation|@
 name|InterfaceStability
 operator|.
 name|Evolving
-DECL|class|PseudoDelegationTokenAuthenticator
+DECL|class|KerberosDelegationTokenAuthenticator
 specifier|public
 class|class
-name|PseudoDelegationTokenAuthenticator
+name|KerberosDelegationTokenAuthenticator
 extends|extends
 name|DelegationTokenAuthenticator
 block|{
-DECL|method|PseudoDelegationTokenAuthenticator ()
+DECL|method|KerberosDelegationTokenAuthenticator ()
 specifier|public
-name|PseudoDelegationTokenAuthenticator
+name|KerberosDelegationTokenAuthenticator
 parameter_list|()
 block|{
 name|super
 argument_list|(
 operator|new
-name|PseudoAuthenticator
+name|KerberosAuthenticator
 argument_list|()
 block|{
 annotation|@
 name|Override
 specifier|protected
-name|String
-name|getUserName
+name|Authenticator
+name|getFallBackAuthenticator
 parameter_list|()
 block|{
-try|try
-block|{
 return|return
-name|UserGroupInformation
-operator|.
-name|getCurrentUser
-argument_list|()
-operator|.
-name|getShortUserName
+operator|new
+name|PseudoDelegationTokenAuthenticator
 argument_list|()
 return|;
-block|}
-catch|catch
-parameter_list|(
-name|IOException
-name|ex
-parameter_list|)
-block|{
-throw|throw
-operator|new
-name|RuntimeException
-argument_list|(
-name|ex
-argument_list|)
-throw|;
-block|}
 block|}
 block|}
 argument_list|)
