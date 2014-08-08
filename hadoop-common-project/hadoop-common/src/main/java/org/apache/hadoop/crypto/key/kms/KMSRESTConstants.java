@@ -142,12 +142,12 @@ name|CURRENT_VERSION_SUB_RESOURCE
 init|=
 literal|"_currentversion"
 decl_stmt|;
-DECL|field|KEY_OP
+DECL|field|KEY
 specifier|public
 specifier|static
 specifier|final
 name|String
-name|KEY_OP
+name|KEY
 init|=
 literal|"key"
 decl_stmt|;
