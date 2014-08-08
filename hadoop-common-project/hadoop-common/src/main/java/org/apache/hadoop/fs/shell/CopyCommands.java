@@ -747,7 +747,15 @@ literal|"then preserves permission also because ACL is a super-set of "
 operator|+
 literal|"permission. Passing -f overwrites the destination if it "
 operator|+
-literal|"already exists.\n"
+literal|"already exists. raw namespace extended attributes are preserved "
+operator|+
+literal|"if (1) they are supported (HDFS only) and, (2) all of the source and "
+operator|+
+literal|"target pathnames are in the /.reserved/raw hierarchy. raw namespace "
+operator|+
+literal|"xattr preservation is determined solely by the presence (or absence) "
+operator|+
+literal|"of the /.reserved/raw prefix and not by the -p option.\n"
 decl_stmt|;
 annotation|@
 name|Override
