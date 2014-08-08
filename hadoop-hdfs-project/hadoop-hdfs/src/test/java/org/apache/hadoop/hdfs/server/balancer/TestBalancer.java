@@ -742,7 +742,7 @@ argument_list|()
 decl_stmt|;
 static|static
 block|{
-name|Balancer
+name|Dispatcher
 operator|.
 name|setBlockMoveWaitTime
 argument_list|(
@@ -2046,11 +2046,11 @@ argument_list|()
 decl_stmt|;
 if|if
 condition|(
-name|Balancer
+name|Dispatcher
 operator|.
 name|Util
 operator|.
-name|shouldBeExcluded
+name|isExcluded
 argument_list|(
 name|p
 operator|.
@@ -2075,11 +2075,11 @@ block|}
 if|if
 condition|(
 operator|!
-name|Balancer
+name|Dispatcher
 operator|.
 name|Util
 operator|.
-name|shouldBeIncluded
+name|isIncluded
 argument_list|(
 name|p
 operator|.
