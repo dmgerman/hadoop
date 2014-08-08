@@ -62,6 +62,38 @@ name|hadoop
 operator|.
 name|fs
 operator|.
+name|CommonConfigurationKeysPublic
+operator|.
+name|HADOOP_SECURITY_CRYPTO_CODEC_CLASSES_KEY_PREFIX
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|fs
+operator|.
+name|CommonConfigurationKeysPublic
+operator|.
+name|HADOOP_SECURITY_CRYPTO_CIPHER_SUITE_KEY
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|fs
+operator|.
 name|CommonConfigurationKeys
 operator|.
 name|IPC_CLIENT_FALLBACK_TO_SIMPLE_AUTH_ALLOWED_DEFAULT
@@ -7671,17 +7703,39 @@ name|getCipherSuite
 argument_list|()
 argument_list|)
 decl_stmt|;
-name|Preconditions
-operator|.
-name|checkNotNull
-argument_list|(
+if|if
+condition|(
 name|codec
 operator|==
 literal|null
-argument_list|,
-literal|"No crypto codec classes with cipher suite configured."
+condition|)
+block|{
+throw|throw
+operator|new
+name|IOException
+argument_list|(
+literal|"No configuration found for the cipher suite "
+operator|+
+name|feInfo
+operator|.
+name|getCipherSuite
+argument_list|()
+operator|.
+name|getConfigSuffix
+argument_list|()
+operator|+
+literal|" prefixed with "
+operator|+
+name|HADOOP_SECURITY_CRYPTO_CODEC_CLASSES_KEY_PREFIX
+operator|+
+literal|". Please see the example configuration "
+operator|+
+literal|"hadoop.security.crypto.codec.classes.EXAMPLECIPHERSUITE "
+operator|+
+literal|"at core-default.xml for details."
 argument_list|)
-expr_stmt|;
+throw|;
+block|}
 specifier|final
 name|CryptoInputStream
 name|cryptoIn
@@ -7788,17 +7842,33 @@ operator|!=
 literal|null
 condition|)
 block|{
-name|Preconditions
-operator|.
-name|checkNotNull
-argument_list|(
+if|if
+condition|(
 name|codec
 operator|==
 literal|null
-argument_list|,
-literal|"No crypto codec classes with cipher suite configured."
+condition|)
+block|{
+throw|throw
+operator|new
+name|IOException
+argument_list|(
+literal|"No configuration found for the cipher suite "
+operator|+
+name|HADOOP_SECURITY_CRYPTO_CIPHER_SUITE_KEY
+operator|+
+literal|" value prefixed with "
+operator|+
+name|HADOOP_SECURITY_CRYPTO_CODEC_CLASSES_KEY_PREFIX
+operator|+
+literal|". Please see the example configuration "
+operator|+
+literal|"hadoop.security.crypto.codec.classes.EXAMPLECIPHERSUITE "
+operator|+
+literal|"at core-default.xml for details."
 argument_list|)
-expr_stmt|;
+throw|;
+block|}
 comment|// File is encrypted, wrap the stream in a crypto stream.
 name|KeyVersion
 name|decrypted
