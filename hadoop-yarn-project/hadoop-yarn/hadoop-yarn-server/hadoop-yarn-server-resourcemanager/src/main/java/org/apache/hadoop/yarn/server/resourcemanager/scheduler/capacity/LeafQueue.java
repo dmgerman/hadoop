@@ -4622,6 +4622,23 @@ argument_list|,
 name|required
 argument_list|)
 decl_stmt|;
+comment|//Max avail capacity needs to take into account usage by ancestor-siblings
+comment|//which are greater than their base capacity, so we are interested in "max avail"
+comment|//capacity
+name|float
+name|absoluteMaxAvailCapacity
+init|=
+name|CSQueueUtils
+operator|.
+name|getAbsoluteMaxAvailCapacity
+argument_list|(
+name|resourceCalculator
+argument_list|,
+name|clusterResource
+argument_list|,
+name|this
+argument_list|)
+decl_stmt|;
 name|Resource
 name|queueMaxCap
 init|=
@@ -4634,7 +4651,7 @@ name|resourceCalculator
 argument_list|,
 name|clusterResource
 argument_list|,
-name|absoluteMaxCapacity
+name|absoluteMaxAvailCapacity
 argument_list|,
 name|minimumAllocation
 argument_list|)

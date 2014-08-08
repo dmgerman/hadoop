@@ -609,7 +609,7 @@ argument_list|()
 decl_stmt|;
 static|static
 block|{
-name|Balancer
+name|Dispatcher
 operator|.
 name|setBlockMoveWaitTime
 argument_list|(

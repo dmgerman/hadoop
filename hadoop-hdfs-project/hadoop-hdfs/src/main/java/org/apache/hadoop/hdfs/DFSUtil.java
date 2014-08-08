@@ -7808,6 +7808,14 @@ argument_list|)
 argument_list|)
 decl_stmt|;
 comment|// initialize the webserver for uploading/downloading files.
+if|if
+condition|(
+name|UserGroupInformation
+operator|.
+name|isSecurityEnabled
+argument_list|()
+condition|)
+block|{
 name|LOG
 operator|.
 name|info
@@ -7832,6 +7840,7 @@ argument_list|()
 argument_list|)
 argument_list|)
 expr_stmt|;
+block|}
 if|if
 condition|(
 name|policy

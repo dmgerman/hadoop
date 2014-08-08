@@ -595,54 +595,6 @@ argument_list|)
 throw|;
 block|}
 block|}
-comment|/** check URI parameter of Path constructor. */
-DECL|method|checkPathArg (URI aUri)
-specifier|private
-name|void
-name|checkPathArg
-parameter_list|(
-name|URI
-name|aUri
-parameter_list|)
-throws|throws
-name|IllegalArgumentException
-block|{
-comment|// disallow construction of a Path from an empty URI
-if|if
-condition|(
-name|aUri
-operator|==
-literal|null
-condition|)
-block|{
-throw|throw
-operator|new
-name|IllegalArgumentException
-argument_list|(
-literal|"Can not create a Path from a null URI"
-argument_list|)
-throw|;
-block|}
-if|if
-condition|(
-name|aUri
-operator|.
-name|toString
-argument_list|()
-operator|.
-name|isEmpty
-argument_list|()
-condition|)
-block|{
-throw|throw
-operator|new
-name|IllegalArgumentException
-argument_list|(
-literal|"Can not create a Path from an empty URI"
-argument_list|)
-throw|;
-block|}
-block|}
 comment|/** Construct a path from a String.  Path strings are URIs, but with    * unescaped elements and some additional normalization. */
 DECL|method|Path (String pathString)
 specifier|public
@@ -875,11 +827,6 @@ name|URI
 name|aUri
 parameter_list|)
 block|{
-name|checkPathArg
-argument_list|(
-name|aUri
-argument_list|)
-expr_stmt|;
 name|uri
 operator|=
 name|aUri

@@ -68,6 +68,16 @@ name|java
 operator|.
 name|util
 operator|.
+name|Collection
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
 name|List
 import|;
 end_import
@@ -305,6 +315,24 @@ operator|.
 name|datanode
 operator|.
 name|ReplicaInPipelineInterface
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|server
+operator|.
+name|datanode
+operator|.
+name|StorageLocation
 import|;
 end_import
 
@@ -602,6 +630,21 @@ name|V
 argument_list|>
 name|getVolumes
 parameter_list|()
+function_decl|;
+comment|/** Add an array of StorageLocation to FsDataset. */
+DECL|method|addVolumes (Collection<StorageLocation> volumes)
+specifier|public
+name|void
+name|addVolumes
+parameter_list|(
+name|Collection
+argument_list|<
+name|StorageLocation
+argument_list|>
+name|volumes
+parameter_list|)
+throws|throws
+name|IOException
 function_decl|;
 comment|/** @return a storage with the given storage ID */
 DECL|method|getStorage (final String storageUuid)

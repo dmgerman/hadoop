@@ -733,7 +733,7 @@ annotation|@
 name|Private
 annotation|@
 name|Unstable
-comment|/**  * A simple class for storing RM state in any storage that implements a basic  * FileSystem interface. Does not use directories so that simple key-value  * stores can be used. The retry policy for the real filesystem client must be  * configured separately to enable retry of filesystem operations when needed.  */
+comment|/**  * A simple class for storing RM state in any storage that implements a basic  * FileSystem interface. Does not use directories so that simple key-value  * stores can be used. The retry policy for the real filesystem client must be  * configured separately to enable retry of filesystem operations when needed.  *  * Changes from 1.1 to 1.2, AMRMTokenSecretManager state has been saved  * separately. The currentMasterkey and nextMasterkey have been stored.  * Also, AMRMToken has been removed from ApplicationAttemptState.  */
 DECL|class|FileSystemRMStateStore
 specifier|public
 class|class
@@ -779,7 +779,7 @@ name|newInstance
 argument_list|(
 literal|1
 argument_list|,
-literal|1
+literal|2
 argument_list|)
 decl_stmt|;
 DECL|field|AMRMTOKEN_SECRET_MANAGER_NODE

@@ -2841,14 +2841,6 @@ literal|null
 argument_list|)
 argument_list|)
 expr_stmt|;
-name|assertNotNull
-argument_list|(
-name|applicationAttempt
-operator|.
-name|getAMRMToken
-argument_list|()
-argument_list|)
-expr_stmt|;
 comment|// Check events
 name|verify
 argument_list|(

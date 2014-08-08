@@ -912,6 +912,10 @@ name|VisibleForTesting
 import|;
 end_import
 
+begin_comment
+comment|/**  * Changes from 1.1 to 1.2, AMRMTokenSecretManager state has been saved  * separately. The currentMasterkey and nextMasterkey have been stored.  * Also, AMRMToken has been removed from ApplicationAttemptState.  */
+end_comment
+
 begin_class
 annotation|@
 name|Private
@@ -972,7 +976,7 @@ name|newInstance
 argument_list|(
 literal|1
 argument_list|,
-literal|1
+literal|2
 argument_list|)
 decl_stmt|;
 DECL|field|RM_DELEGATION_TOKENS_ROOT_ZNODE_NAME

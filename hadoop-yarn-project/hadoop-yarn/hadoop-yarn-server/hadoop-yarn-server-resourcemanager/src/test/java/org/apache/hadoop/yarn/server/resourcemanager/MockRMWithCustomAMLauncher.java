@@ -341,7 +341,7 @@ name|Token
 argument_list|<
 name|AMRMTokenIdentifier
 argument_list|>
-name|getAMRMToken
+name|createAndSetAMRMToken
 parameter_list|()
 block|{
 name|Token
@@ -352,7 +352,7 @@ name|amRmToken
 init|=
 name|super
 operator|.
-name|getAMRMToken
+name|createAndSetAMRMToken
 argument_list|()
 decl_stmt|;
 name|InetSocketAddress
