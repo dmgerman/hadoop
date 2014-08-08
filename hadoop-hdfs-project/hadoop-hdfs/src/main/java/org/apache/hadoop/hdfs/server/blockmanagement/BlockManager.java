@@ -9703,13 +9703,14 @@ operator|.
 name|FINALIZED
 operator|&&
 operator|(
-operator|!
 name|storedBlock
 operator|.
 name|findDatanode
 argument_list|(
 name|dn
 argument_list|)
+operator|<
+literal|0
 operator|||
 name|corruptReplicas
 operator|.
@@ -10478,7 +10479,6 @@ name|ReplicaState
 operator|.
 name|FINALIZED
 operator|&&
-operator|!
 name|block
 operator|.
 name|findDatanode
@@ -10488,6 +10488,8 @@ operator|.
 name|getDatanodeDescriptor
 argument_list|()
 argument_list|)
+operator|<
+literal|0
 condition|)
 block|{
 name|addStoredBlock

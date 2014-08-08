@@ -877,6 +877,63 @@ name|DatanodeStorageInfo
 name|storage
 parameter_list|)
 block|{
+name|boolean
+name|added
+init|=
+literal|true
+decl_stmt|;
+name|int
+name|idx
+init|=
+name|findDatanode
+argument_list|(
+name|storage
+operator|.
+name|getDatanodeDescriptor
+argument_list|()
+argument_list|)
+decl_stmt|;
+if|if
+condition|(
+name|idx
+operator|>=
+literal|0
+condition|)
+block|{
+if|if
+condition|(
+name|getStorageInfo
+argument_list|(
+name|idx
+argument_list|)
+operator|==
+name|storage
+condition|)
+block|{
+comment|// the storage is already there
+return|return
+literal|false
+return|;
+block|}
+else|else
+block|{
+comment|// The block is on the DN but belongs to a different storage.
+comment|// Update our state.
+name|removeStorage
+argument_list|(
+name|getStorageInfo
+argument_list|(
+name|idx
+argument_list|)
+argument_list|)
+expr_stmt|;
+name|added
+operator|=
+literal|false
+expr_stmt|;
+comment|// Just updating storage. Return false.
+block|}
+block|}
 comment|// find the last null node
 name|int
 name|lastNode
@@ -908,7 +965,7 @@ literal|null
 argument_list|)
 expr_stmt|;
 return|return
-literal|true
+name|added
 return|;
 block|}
 comment|/**    * Remove {@link DatanodeStorageInfo} location for a block    */
@@ -1023,7 +1080,7 @@ return|;
 block|}
 comment|/**    * Find specified DatanodeDescriptor.    * @return index or -1 if not found.    */
 DECL|method|findDatanode (DatanodeDescriptor dn)
-name|boolean
+name|int
 name|findDatanode
 parameter_list|(
 name|DatanodeDescriptor
@@ -1065,23 +1122,20 @@ name|cur
 operator|==
 name|dn
 condition|)
-block|{
 return|return
-literal|true
+name|idx
 return|;
-block|}
 if|if
 condition|(
 name|cur
 operator|==
 literal|null
 condition|)
-block|{
 break|break;
 block|}
-block|}
 return|return
-literal|false
+operator|-
+literal|1
 return|;
 block|}
 comment|/**    * Find specified DatanodeStorageInfo.    * @return DatanodeStorageInfo or null if not found.    */

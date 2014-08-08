@@ -874,67 +874,20 @@ name|BlockInfo
 name|b
 parameter_list|)
 block|{
-comment|// First check whether the block belongs to a different storage
-comment|// on the same DN.
-name|boolean
-name|replaced
-init|=
-literal|false
-decl_stmt|;
-name|DatanodeStorageInfo
-name|otherStorage
-init|=
-name|b
-operator|.
-name|findStorageInfo
-argument_list|(
-name|getDatanodeDescriptor
-argument_list|()
-argument_list|)
-decl_stmt|;
 if|if
 condition|(
-name|otherStorage
-operator|!=
-literal|null
-condition|)
-block|{
-if|if
-condition|(
-name|otherStorage
-operator|!=
-name|this
-condition|)
-block|{
-comment|// The block belongs to a different storage. Remove it first.
-name|otherStorage
-operator|.
-name|removeBlock
-argument_list|(
-name|b
-argument_list|)
-expr_stmt|;
-name|replaced
-operator|=
-literal|true
-expr_stmt|;
-block|}
-else|else
-block|{
-comment|// The block is already associated with this storage.
-return|return
-literal|false
-return|;
-block|}
-block|}
-comment|// add to the head of the data-node list
+operator|!
 name|b
 operator|.
 name|addStorage
 argument_list|(
 name|this
 argument_list|)
-expr_stmt|;
+condition|)
+return|return
+literal|false
+return|;
+comment|// add to the head of the data-node list
 name|blockList
 operator|=
 name|b
@@ -950,8 +903,7 @@ name|numBlocks
 operator|++
 expr_stmt|;
 return|return
-operator|!
-name|replaced
+literal|true
 return|;
 block|}
 DECL|method|removeBlock (BlockInfo b)
