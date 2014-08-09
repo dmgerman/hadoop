@@ -2589,6 +2589,17 @@ argument_list|,
 literal|"user1"
 argument_list|)
 expr_stmt|;
+name|createSchedulingRequest
+argument_list|(
+literal|10
+operator|*
+literal|1024
+argument_list|,
+literal|"root.default"
+argument_list|,
+literal|"user1"
+argument_list|)
+expr_stmt|;
 name|scheduler
 operator|.
 name|update
@@ -2753,6 +2764,17 @@ operator|*
 literal|1024
 argument_list|,
 literal|"parent.queue3"
+argument_list|,
+literal|"user1"
+argument_list|)
+expr_stmt|;
+name|createSchedulingRequest
+argument_list|(
+literal|10
+operator|*
+literal|1024
+argument_list|,
+literal|"root.default"
 argument_list|,
 literal|"user1"
 argument_list|)
@@ -5948,26 +5970,38 @@ name|nodeEvent1
 argument_list|)
 expr_stmt|;
 comment|// user1,user2 submit their apps to parentq and create user queues
-name|scheduler
-operator|.
-name|assignToQueue
+name|createSchedulingRequest
 argument_list|(
-name|rmApp1
+literal|10
+operator|*
+literal|1024
 argument_list|,
 literal|"root.parentq"
 argument_list|,
 literal|"user1"
 argument_list|)
 expr_stmt|;
-name|scheduler
-operator|.
-name|assignToQueue
+name|createSchedulingRequest
 argument_list|(
-name|rmApp2
+literal|10
+operator|*
+literal|1024
 argument_list|,
 literal|"root.parentq"
 argument_list|,
 literal|"user2"
+argument_list|)
+expr_stmt|;
+comment|// user3 submits app in default queue
+name|createSchedulingRequest
+argument_list|(
+literal|10
+operator|*
+literal|1024
+argument_list|,
+literal|"root.default"
+argument_list|,
+literal|"user3"
 argument_list|)
 expr_stmt|;
 name|scheduler
@@ -9434,7 +9468,7 @@ argument_list|)
 decl_stmt|;
 name|assertEquals
 argument_list|(
-literal|2980
+literal|3277
 argument_list|,
 name|toPreempt
 operator|.
@@ -17083,9 +17117,9 @@ argument_list|)
 decl_stmt|;
 name|assertEquals
 argument_list|(
-literal|"Queue queue1's fair share should be 10240"
+literal|"Queue queue1's fair share should be 0"
 argument_list|,
-literal|10240
+literal|0
 argument_list|,
 name|queue1
 operator|.
@@ -17094,6 +17128,29 @@ argument_list|()
 operator|.
 name|getMemory
 argument_list|()
+argument_list|)
+expr_stmt|;
+name|createSchedulingRequest
+argument_list|(
+literal|1
+operator|*
+literal|1024
+argument_list|,
+literal|"root.default"
+argument_list|,
+literal|"user1"
+argument_list|)
+expr_stmt|;
+name|scheduler
+operator|.
+name|update
+argument_list|()
+expr_stmt|;
+name|scheduler
+operator|.
+name|handle
+argument_list|(
+name|updateEvent
 argument_list|)
 expr_stmt|;
 name|Resource
@@ -18353,9 +18410,9 @@ argument_list|)
 decl_stmt|;
 name|assertEquals
 argument_list|(
-literal|"Queue queue1's fair share should be 1366"
+literal|"Queue queue1's fair share should be 0"
 argument_list|,
-literal|1366
+literal|0
 argument_list|,
 name|queue1
 operator|.
@@ -18383,9 +18440,9 @@ argument_list|)
 decl_stmt|;
 name|assertEquals
 argument_list|(
-literal|"Queue queue2's fair share should be 1366"
+literal|"Queue queue2's fair share should be 0"
 argument_list|,
-literal|1366
+literal|0
 argument_list|,
 name|queue2
 operator|.
@@ -18413,9 +18470,9 @@ argument_list|)
 decl_stmt|;
 name|assertEquals
 argument_list|(
-literal|"Queue queue3's fair share should be 1366"
+literal|"Queue queue3's fair share should be 0"
 argument_list|,
-literal|1366
+literal|0
 argument_list|,
 name|queue3
 operator|.
@@ -18443,9 +18500,9 @@ argument_list|)
 decl_stmt|;
 name|assertEquals
 argument_list|(
-literal|"Queue queue4's fair share should be 1366"
+literal|"Queue queue4's fair share should be 0"
 argument_list|,
-literal|1366
+literal|0
 argument_list|,
 name|queue4
 operator|.
@@ -18473,9 +18530,9 @@ argument_list|)
 decl_stmt|;
 name|assertEquals
 argument_list|(
-literal|"Queue queue5's fair share should be 1366"
+literal|"Queue queue5's fair share should be 0"
 argument_list|,
-literal|1366
+literal|0
 argument_list|,
 name|queue5
 operator|.
@@ -18486,6 +18543,57 @@ name|getMemory
 argument_list|()
 argument_list|)
 expr_stmt|;
+name|List
+argument_list|<
+name|String
+argument_list|>
+name|queues
+init|=
+name|Arrays
+operator|.
+name|asList
+argument_list|(
+literal|"root.default"
+argument_list|,
+literal|"root.queue3"
+argument_list|,
+literal|"root.queue4"
+argument_list|,
+literal|"root.queue5"
+argument_list|)
+decl_stmt|;
+for|for
+control|(
+name|String
+name|queue
+range|:
+name|queues
+control|)
+block|{
+name|createSchedulingRequest
+argument_list|(
+literal|1
+operator|*
+literal|1024
+argument_list|,
+name|queue
+argument_list|,
+literal|"user1"
+argument_list|)
+expr_stmt|;
+name|scheduler
+operator|.
+name|update
+argument_list|()
+expr_stmt|;
+name|scheduler
+operator|.
+name|handle
+argument_list|(
+name|updateEvent
+argument_list|)
+expr_stmt|;
+block|}
 name|Resource
 name|amResource1
 init|=
