@@ -2896,10 +2896,6 @@ name|ATTEMPT_ADDED
 argument_list|,
 name|RMAppAttemptEventType
 operator|.
-name|EXPIRE
-argument_list|,
-name|RMAppAttemptEventType
-operator|.
 name|LAUNCHED
 argument_list|,
 name|RMAppAttemptEventType
