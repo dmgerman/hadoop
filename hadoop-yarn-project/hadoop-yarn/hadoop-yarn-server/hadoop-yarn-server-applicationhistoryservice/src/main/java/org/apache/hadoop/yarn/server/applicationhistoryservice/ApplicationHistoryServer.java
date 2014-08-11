@@ -326,6 +326,24 @@ name|server
 operator|.
 name|timeline
 operator|.
+name|TimelineDataManager
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|server
+operator|.
+name|timeline
+operator|.
 name|TimelineStore
 import|;
 end_import
@@ -492,32 +510,32 @@ name|class
 argument_list|)
 decl_stmt|;
 DECL|field|ahsClientService
-specifier|protected
+specifier|private
 name|ApplicationHistoryClientService
 name|ahsClientService
 decl_stmt|;
 DECL|field|historyManager
-specifier|protected
+specifier|private
 name|ApplicationHistoryManager
 name|historyManager
 decl_stmt|;
 DECL|field|timelineStore
-specifier|protected
+specifier|private
 name|TimelineStore
 name|timelineStore
 decl_stmt|;
 DECL|field|secretManagerService
-specifier|protected
+specifier|private
 name|TimelineDelegationTokenSecretManagerService
 name|secretManagerService
 decl_stmt|;
-DECL|field|timelineACLsManager
-specifier|protected
-name|TimelineACLsManager
-name|timelineACLsManager
+DECL|field|timelineDataManager
+specifier|private
+name|TimelineDataManager
+name|timelineDataManager
 decl_stmt|;
 DECL|field|webApp
-specifier|protected
+specifier|private
 name|WebApp
 name|webApp
 decl_stmt|;
@@ -550,31 +568,7 @@ parameter_list|)
 throws|throws
 name|Exception
 block|{
-name|historyManager
-operator|=
-name|createApplicationHistory
-argument_list|()
-expr_stmt|;
-name|ahsClientService
-operator|=
-name|createApplicationHistoryClientService
-argument_list|(
-name|historyManager
-argument_list|)
-expr_stmt|;
-name|addService
-argument_list|(
-name|ahsClientService
-argument_list|)
-expr_stmt|;
-name|addService
-argument_list|(
-operator|(
-name|Service
-operator|)
-name|historyManager
-argument_list|)
-expr_stmt|;
+comment|// init timeline services first
 name|timelineStore
 operator|=
 name|createTimelineStore
@@ -599,11 +593,39 @@ argument_list|(
 name|secretManagerService
 argument_list|)
 expr_stmt|;
-name|timelineACLsManager
+name|timelineDataManager
 operator|=
-name|createTimelineACLsManager
+name|createTimelineDataManager
 argument_list|(
 name|conf
+argument_list|)
+expr_stmt|;
+comment|// init generic history service afterwards
+name|historyManager
+operator|=
+name|createApplicationHistoryManager
+argument_list|(
+name|conf
+argument_list|)
+expr_stmt|;
+name|ahsClientService
+operator|=
+name|createApplicationHistoryClientService
+argument_list|(
+name|historyManager
+argument_list|)
+expr_stmt|;
+name|addService
+argument_list|(
+name|ahsClientService
+argument_list|)
+expr_stmt|;
+name|addService
+argument_list|(
+operator|(
+name|Service
+operator|)
+name|historyManager
 argument_list|)
 expr_stmt|;
 name|DefaultMetricsSystem
@@ -713,7 +735,6 @@ name|Private
 annotation|@
 name|VisibleForTesting
 DECL|method|getClientService ()
-specifier|public
 name|ApplicationHistoryClientService
 name|getClientService
 parameter_list|()
@@ -724,39 +745,28 @@ operator|.
 name|ahsClientService
 return|;
 block|}
-specifier|protected
-name|ApplicationHistoryClientService
-DECL|method|createApplicationHistoryClientService ( ApplicationHistoryManager historyManager)
-name|createApplicationHistoryClientService
-parameter_list|(
-name|ApplicationHistoryManager
-name|historyManager
-parameter_list|)
-block|{
-return|return
-operator|new
-name|ApplicationHistoryClientService
-argument_list|(
-name|historyManager
-argument_list|)
-return|;
-block|}
-DECL|method|createApplicationHistory ()
-specifier|protected
-name|ApplicationHistoryManager
-name|createApplicationHistory
+comment|/**    * @return ApplicationTimelineStore    */
+annotation|@
+name|Private
+annotation|@
+name|VisibleForTesting
+DECL|method|getTimelineStore ()
+specifier|public
+name|TimelineStore
+name|getTimelineStore
 parameter_list|()
 block|{
 return|return
-operator|new
-name|ApplicationHistoryManagerImpl
-argument_list|()
+name|timelineStore
 return|;
 block|}
-DECL|method|getApplicationHistory ()
-specifier|protected
+annotation|@
+name|Private
+annotation|@
+name|VisibleForTesting
+DECL|method|getApplicationHistoryManager ()
 name|ApplicationHistoryManager
-name|getApplicationHistory
+name|getApplicationHistoryManager
 parameter_list|()
 block|{
 return|return
@@ -893,8 +903,25 @@ name|args
 argument_list|)
 expr_stmt|;
 block|}
+specifier|private
+name|ApplicationHistoryClientService
+DECL|method|createApplicationHistoryClientService ( ApplicationHistoryManager historyManager)
+name|createApplicationHistoryClientService
+parameter_list|(
+name|ApplicationHistoryManager
+name|historyManager
+parameter_list|)
+block|{
+return|return
+operator|new
+name|ApplicationHistoryClientService
+argument_list|(
+name|historyManager
+argument_list|)
+return|;
+block|}
 DECL|method|createApplicationHistoryManager ( Configuration conf)
-specifier|protected
+specifier|private
 name|ApplicationHistoryManager
 name|createApplicationHistoryManager
 parameter_list|(
@@ -909,7 +936,7 @@ argument_list|()
 return|;
 block|}
 DECL|method|createTimelineStore ( Configuration conf)
-specifier|protected
+specifier|private
 name|TimelineStore
 name|createTimelineStore
 parameter_list|(
@@ -943,7 +970,7 @@ name|conf
 argument_list|)
 return|;
 block|}
-specifier|protected
+specifier|private
 name|TimelineDelegationTokenSecretManagerService
 DECL|method|createTimelineDelegationTokenSecretManagerService (Configuration conf)
 name|createTimelineDelegationTokenSecretManagerService
@@ -958,10 +985,10 @@ name|TimelineDelegationTokenSecretManagerService
 argument_list|()
 return|;
 block|}
-DECL|method|createTimelineACLsManager (Configuration conf)
-specifier|protected
-name|TimelineACLsManager
-name|createTimelineACLsManager
+DECL|method|createTimelineDataManager (Configuration conf)
+specifier|private
+name|TimelineDataManager
+name|createTimelineDataManager
 parameter_list|(
 name|Configuration
 name|conf
@@ -969,14 +996,20 @@ parameter_list|)
 block|{
 return|return
 operator|new
+name|TimelineDataManager
+argument_list|(
+name|timelineStore
+argument_list|,
+operator|new
 name|TimelineACLsManager
 argument_list|(
 name|conf
 argument_list|)
+argument_list|)
 return|;
 block|}
 DECL|method|startWebApp ()
-specifier|protected
+specifier|private
 name|void
 name|startWebApp
 parameter_list|()
@@ -1103,13 +1136,6 @@ argument_list|)
 expr_stmt|;
 name|ahsWebApp
 operator|.
-name|setTimelineStore
-argument_list|(
-name|timelineStore
-argument_list|)
-expr_stmt|;
-name|ahsWebApp
-operator|.
 name|setTimelineDelegationTokenSecretManagerService
 argument_list|(
 name|secretManagerService
@@ -1117,9 +1143,9 @@ argument_list|)
 expr_stmt|;
 name|ahsWebApp
 operator|.
-name|setTimelineACLsManager
+name|setTimelineDataManager
 argument_list|(
-name|timelineACLsManager
+name|timelineDataManager
 argument_list|)
 expr_stmt|;
 name|webApp
@@ -1185,21 +1211,6 @@ name|e
 argument_list|)
 throw|;
 block|}
-block|}
-comment|/**    * @return ApplicationTimelineStore    */
-annotation|@
-name|Private
-annotation|@
-name|VisibleForTesting
-DECL|method|getTimelineStore ()
-specifier|public
-name|TimelineStore
-name|getTimelineStore
-parameter_list|()
-block|{
-return|return
-name|timelineStore
-return|;
 block|}
 DECL|method|doSecureLogin (Configuration conf)
 specifier|private

@@ -78,6 +78,28 @@ name|org
 operator|.
 name|apache
 operator|.
+name|hadoop
+operator|.
+name|crypto
+operator|.
+name|key
+operator|.
+name|kms
+operator|.
+name|server
+operator|.
+name|KMS
+operator|.
+name|KMSOp
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
 name|log4j
 operator|.
 name|LogManager
@@ -397,7 +419,7 @@ name|ok
 argument_list|(
 name|luser
 argument_list|,
-name|KMS
+name|KMSOp
 operator|.
 name|DECRYPT_EEK
 argument_list|,
@@ -412,7 +434,7 @@ name|ok
 argument_list|(
 name|luser
 argument_list|,
-name|KMS
+name|KMSOp
 operator|.
 name|DECRYPT_EEK
 argument_list|,
@@ -427,7 +449,7 @@ name|ok
 argument_list|(
 name|luser
 argument_list|,
-name|KMS
+name|KMSOp
 operator|.
 name|DECRYPT_EEK
 argument_list|,
@@ -442,7 +464,7 @@ name|ok
 argument_list|(
 name|luser
 argument_list|,
-name|KMS
+name|KMSOp
 operator|.
 name|DELETE_KEY
 argument_list|,
@@ -457,7 +479,7 @@ name|ok
 argument_list|(
 name|luser
 argument_list|,
-name|KMS
+name|KMSOp
 operator|.
 name|ROLL_NEW_VERSION
 argument_list|,
@@ -472,7 +494,7 @@ name|ok
 argument_list|(
 name|luser
 argument_list|,
-name|KMS
+name|KMSOp
 operator|.
 name|DECRYPT_EEK
 argument_list|,
@@ -487,7 +509,7 @@ name|ok
 argument_list|(
 name|luser
 argument_list|,
-name|KMS
+name|KMSOp
 operator|.
 name|DECRYPT_EEK
 argument_list|,
@@ -502,7 +524,7 @@ name|ok
 argument_list|(
 name|luser
 argument_list|,
-name|KMS
+name|KMSOp
 operator|.
 name|DECRYPT_EEK
 argument_list|,
@@ -524,7 +546,7 @@ name|ok
 argument_list|(
 name|luser
 argument_list|,
-name|KMS
+name|KMSOp
 operator|.
 name|DECRYPT_EEK
 argument_list|,
@@ -621,7 +643,7 @@ name|unauthorized
 argument_list|(
 name|luser
 argument_list|,
-name|KMS
+name|KMSOp
 operator|.
 name|GENERATE_EEK
 argument_list|,
@@ -641,7 +663,7 @@ name|ok
 argument_list|(
 name|luser
 argument_list|,
-name|KMS
+name|KMSOp
 operator|.
 name|GENERATE_EEK
 argument_list|,
@@ -656,7 +678,7 @@ name|ok
 argument_list|(
 name|luser
 argument_list|,
-name|KMS
+name|KMSOp
 operator|.
 name|GENERATE_EEK
 argument_list|,
@@ -671,7 +693,7 @@ name|ok
 argument_list|(
 name|luser
 argument_list|,
-name|KMS
+name|KMSOp
 operator|.
 name|GENERATE_EEK
 argument_list|,
@@ -686,7 +708,7 @@ name|ok
 argument_list|(
 name|luser
 argument_list|,
-name|KMS
+name|KMSOp
 operator|.
 name|GENERATE_EEK
 argument_list|,
@@ -701,7 +723,7 @@ name|ok
 argument_list|(
 name|luser
 argument_list|,
-name|KMS
+name|KMSOp
 operator|.
 name|GENERATE_EEK
 argument_list|,
@@ -716,7 +738,7 @@ name|unauthorized
 argument_list|(
 name|luser
 argument_list|,
-name|KMS
+name|KMSOp
 operator|.
 name|GENERATE_EEK
 argument_list|,
@@ -729,7 +751,7 @@ name|ok
 argument_list|(
 name|luser
 argument_list|,
-name|KMS
+name|KMSOp
 operator|.
 name|GENERATE_EEK
 argument_list|,

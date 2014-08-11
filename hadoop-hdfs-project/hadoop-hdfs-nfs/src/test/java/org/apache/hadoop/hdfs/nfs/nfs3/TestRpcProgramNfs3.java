@@ -2072,7 +2072,43 @@ name|xdr_req
 argument_list|)
 expr_stmt|;
 comment|// Attempt by an unpriviledged user should fail.
-comment|/* Hits HDFS-6582. It needs to be fixed first.     READ3Response response1 = nfsd.read(xdr_req.asReadOnlyWrap(),         securityHandlerUnpriviledged,         new InetSocketAddress("localhost", 1234));     assertEquals("Incorrect return code:", Nfs3Status.NFS3ERR_ACCES,         response1.getStatus());     */
+name|READ3Response
+name|response1
+init|=
+name|nfsd
+operator|.
+name|read
+argument_list|(
+name|xdr_req
+operator|.
+name|asReadOnlyWrap
+argument_list|()
+argument_list|,
+name|securityHandlerUnpriviledged
+argument_list|,
+operator|new
+name|InetSocketAddress
+argument_list|(
+literal|"localhost"
+argument_list|,
+literal|1234
+argument_list|)
+argument_list|)
+decl_stmt|;
+name|assertEquals
+argument_list|(
+literal|"Incorrect return code:"
+argument_list|,
+name|Nfs3Status
+operator|.
+name|NFS3ERR_ACCES
+argument_list|,
+name|response1
+operator|.
+name|getStatus
+argument_list|()
+argument_list|)
+expr_stmt|;
 comment|// Attempt by a priviledged user should pass.
 name|READ3Response
 name|response2

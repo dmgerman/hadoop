@@ -360,20 +360,6 @@ name|hadoop
 operator|.
 name|hdfs
 operator|.
-name|DFSConfigKeys
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|hdfs
-operator|.
 name|DFSUtil
 import|;
 end_import
@@ -607,6 +593,28 @@ operator|.
 name|block
 operator|.
 name|BlockTokenIdentifier
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|server
+operator|.
+name|balancer
+operator|.
+name|Dispatcher
+operator|.
+name|DDatanode
+operator|.
+name|StorageGroup
 import|;
 end_import
 
@@ -892,12 +900,6 @@ specifier|final
 name|NameNodeConnector
 name|nnc
 decl_stmt|;
-DECL|field|keyManager
-specifier|private
-specifier|final
-name|KeyManager
-name|keyManager
-decl_stmt|;
 DECL|field|saslClient
 specifier|private
 specifier|final
@@ -945,8 +947,6 @@ specifier|private
 specifier|final
 name|Collection
 argument_list|<
-name|BalancerDatanode
-operator|.
 name|StorageGroup
 argument_list|>
 name|targets
@@ -954,8 +954,6 @@ init|=
 operator|new
 name|HashSet
 argument_list|<
-name|BalancerDatanode
-operator|.
 name|StorageGroup
 argument_list|>
 argument_list|()
@@ -975,8 +973,6 @@ specifier|private
 specifier|final
 name|MovedBlocks
 argument_list|<
-name|BalancerDatanode
-operator|.
 name|StorageGroup
 argument_list|>
 name|movedBlocks
@@ -1102,15 +1098,13 @@ name|block
 return|;
 block|}
 comment|/** Remove all blocks except for the moved blocks. */
-DECL|method|removeAllButRetain ( MovedBlocks<BalancerDatanode.StorageGroup> movedBlocks)
+DECL|method|removeAllButRetain (MovedBlocks<StorageGroup> movedBlocks)
 specifier|private
 name|void
 name|removeAllButRetain
 parameter_list|(
 name|MovedBlocks
 argument_list|<
-name|BalancerDatanode
-operator|.
 name|StorageGroup
 argument_list|>
 name|movedBlocks
@@ -1195,8 +1189,6 @@ name|Map
 argument_list|<
 name|String
 argument_list|,
-name|BalancerDatanode
-operator|.
 name|StorageGroup
 argument_list|>
 name|map
@@ -1206,15 +1198,11 @@ name|HashMap
 argument_list|<
 name|String
 argument_list|,
-name|BalancerDatanode
-operator|.
 name|StorageGroup
 argument_list|>
 argument_list|()
 decl_stmt|;
 DECL|method|get (String datanodeUuid, StorageType storageType)
-name|BalancerDatanode
-operator|.
 name|StorageGroup
 name|get
 parameter_list|(
@@ -1239,12 +1227,10 @@ argument_list|)
 argument_list|)
 return|;
 block|}
-DECL|method|put (BalancerDatanode.StorageGroup g)
+DECL|method|put (StorageGroup g)
 name|void
 name|put
 parameter_list|(
-name|BalancerDatanode
-operator|.
 name|StorageGroup
 name|g
 parameter_list|)
@@ -1257,7 +1243,7 @@ name|toKey
 argument_list|(
 name|g
 operator|.
-name|getDatanode
+name|getDatanodeInfo
 argument_list|()
 operator|.
 name|getDatanodeUuid
@@ -1269,8 +1255,6 @@ name|storageType
 argument_list|)
 decl_stmt|;
 specifier|final
-name|BalancerDatanode
-operator|.
 name|StorageGroup
 name|existing
 init|=
@@ -1335,13 +1319,11 @@ name|source
 decl_stmt|;
 DECL|field|proxySource
 specifier|private
-name|BalancerDatanode
+name|DDatanode
 name|proxySource
 decl_stmt|;
 DECL|field|target
 specifier|private
-name|BalancerDatanode
-operator|.
 name|StorageGroup
 name|target
 decl_stmt|;
@@ -1544,7 +1526,7 @@ name|targetDN
 init|=
 name|target
 operator|.
-name|getDatanode
+name|getDatanodeInfo
 argument_list|()
 decl_stmt|;
 comment|// if node group is supported, first try add nodes in the same node group
@@ -1558,8 +1540,6 @@ condition|)
 block|{
 for|for
 control|(
-name|BalancerDatanode
-operator|.
 name|StorageGroup
 name|loc
 range|:
@@ -1577,7 +1557,7 @@ name|isOnSameNodeGroup
 argument_list|(
 name|loc
 operator|.
-name|getDatanode
+name|getDatanodeInfo
 argument_list|()
 argument_list|,
 name|targetDN
@@ -1598,8 +1578,6 @@ block|}
 comment|// check if there is replica which is on the same rack with the target
 for|for
 control|(
-name|BalancerDatanode
-operator|.
 name|StorageGroup
 name|loc
 range|:
@@ -1617,7 +1595,7 @@ name|isOnSameRack
 argument_list|(
 name|loc
 operator|.
-name|getDatanode
+name|getDatanodeInfo
 argument_list|()
 argument_list|,
 name|targetDN
@@ -1637,8 +1615,6 @@ block|}
 comment|// find out a non-busy replica
 for|for
 control|(
-name|BalancerDatanode
-operator|.
 name|StorageGroup
 name|loc
 range|:
@@ -1666,29 +1642,27 @@ literal|false
 return|;
 block|}
 comment|/** add to a proxy source for specific block movement */
-DECL|method|addTo (BalancerDatanode.StorageGroup g)
+DECL|method|addTo (StorageGroup g)
 specifier|private
 name|boolean
 name|addTo
 parameter_list|(
-name|BalancerDatanode
-operator|.
 name|StorageGroup
 name|g
 parameter_list|)
 block|{
 specifier|final
-name|BalancerDatanode
-name|bdn
+name|DDatanode
+name|dn
 init|=
 name|g
 operator|.
-name|getBalancerDatanode
+name|getDDatanode
 argument_list|()
 decl_stmt|;
 if|if
 condition|(
-name|bdn
+name|dn
 operator|.
 name|addPendingBlock
 argument_list|(
@@ -1698,7 +1672,7 @@ condition|)
 block|{
 name|proxySource
 operator|=
-name|bdn
+name|dn
 expr_stmt|;
 return|return
 literal|true
@@ -1762,7 +1736,7 @@ name|createSocketAddr
 argument_list|(
 name|target
 operator|.
-name|getDatanode
+name|getDatanodeInfo
 argument_list|()
 operator|.
 name|getXferAddr
@@ -1774,7 +1748,7 @@ operator|.
 name|READ_TIMEOUT
 argument_list|)
 expr_stmt|;
-comment|/*          * Unfortunately we don't have a good way to know if the Datanode is          * taking a really long time to move a block, OR something has gone          * wrong and it's never going to finish. To deal with this scenario, we          * set a long timeout (20 minutes) to avoid hanging the balancer          * indefinitely.          */
+comment|/*          * Unfortunately we don't have a good way to know if the Datanode is          * taking a really long time to move a block, OR something has gone          * wrong and it's never going to finish. To deal with this scenario, we          * set a long timeout (20 minutes) to avoid hanging indefinitely.          */
 name|sock
 operator|.
 name|setSoTimeout
@@ -1822,13 +1796,22 @@ name|getBlock
 argument_list|()
 argument_list|)
 decl_stmt|;
+specifier|final
+name|KeyManager
+name|km
+init|=
+name|nnc
+operator|.
+name|getKeyManager
+argument_list|()
+decl_stmt|;
 name|Token
 argument_list|<
 name|BlockTokenIdentifier
 argument_list|>
 name|accessToken
 init|=
-name|keyManager
+name|km
 operator|.
 name|getAccessToken
 argument_list|(
@@ -1848,13 +1831,13 @@ name|unbufOut
 argument_list|,
 name|unbufIn
 argument_list|,
-name|keyManager
+name|km
 argument_list|,
 name|accessToken
 argument_list|,
 name|target
 operator|.
-name|getDatanode
+name|getDatanodeInfo
 argument_list|()
 argument_list|)
 decl_stmt|;
@@ -1958,7 +1941,10 @@ name|getMessage
 argument_list|()
 argument_list|)
 expr_stmt|;
-comment|/*          * proxy or target may have an issue, insert a small delay before using          * these nodes further. This avoids a potential storm of          * "threads quota exceeded" Warnings when the balancer gets out of sync          * with work going on in datanode.          */
+comment|// Proxy or target may have some issues, delay before using these nodes
+comment|// further in order to avoid a potential storm of "threads quota
+comment|// exceeded" warnings when the dispatcher gets out of sync with work
+comment|// going on in datanodes.
 name|proxySource
 operator|.
 name|activateDelay
@@ -1968,7 +1954,7 @@ argument_list|)
 expr_stmt|;
 name|target
 operator|.
-name|getBalancerDatanode
+name|getDDatanode
 argument_list|()
 operator|.
 name|activateDelay
@@ -2009,7 +1995,7 @@ argument_list|)
 expr_stmt|;
 name|target
 operator|.
-name|getBalancerDatanode
+name|getDDatanode
 argument_list|()
 operator|.
 name|removePendingBlock
@@ -2082,7 +2068,7 @@ name|accessToken
 argument_list|,
 name|source
 operator|.
-name|getDatanode
+name|getDatanodeInfo
 argument_list|()
 operator|.
 name|getDatanodeUuid
@@ -2201,8 +2187,6 @@ name|MovedBlocks
 operator|.
 name|Locations
 argument_list|<
-name|BalancerDatanode
-operator|.
 name|StorageGroup
 argument_list|>
 block|{
@@ -2229,8 +2213,6 @@ block|{
 DECL|field|target
 specifier|private
 specifier|final
-name|BalancerDatanode
-operator|.
 name|StorageGroup
 name|target
 decl_stmt|;
@@ -2240,11 +2222,9 @@ name|long
 name|size
 decl_stmt|;
 comment|// bytes scheduled to move
-DECL|method|Task (BalancerDatanode.StorageGroup target, long size)
+DECL|method|Task (StorageGroup target, long size)
 name|Task
 parameter_list|(
-name|BalancerDatanode
-operator|.
 name|StorageGroup
 name|target
 parameter_list|,
@@ -2276,10 +2256,10 @@ return|;
 block|}
 block|}
 comment|/** A class that keeps track of a datanode. */
-DECL|class|BalancerDatanode
+DECL|class|DDatanode
 specifier|static
 class|class
-name|BalancerDatanode
+name|DDatanode
 block|{
 comment|/** A group of storages in a datanode with the same storage type. */
 DECL|class|StorageGroup
@@ -2290,11 +2270,6 @@ DECL|field|storageType
 specifier|final
 name|StorageType
 name|storageType
-decl_stmt|;
-DECL|field|utilization
-specifier|final
-name|double
-name|utilization
 decl_stmt|;
 DECL|field|maxSize2Move
 specifier|final
@@ -2308,15 +2283,12 @@ name|scheduledSize
 init|=
 literal|0L
 decl_stmt|;
-DECL|method|StorageGroup (StorageType storageType, double utilization, long maxSize2Move)
+DECL|method|StorageGroup (StorageType storageType, long maxSize2Move)
 specifier|private
 name|StorageGroup
 parameter_list|(
 name|StorageType
 name|storageType
-parameter_list|,
-name|double
-name|utilization
 parameter_list|,
 name|long
 name|maxSize2Move
@@ -2330,35 +2302,30 @@ name|storageType
 expr_stmt|;
 name|this
 operator|.
-name|utilization
-operator|=
-name|utilization
-expr_stmt|;
-name|this
-operator|.
 name|maxSize2Move
 operator|=
 name|maxSize2Move
 expr_stmt|;
 block|}
-DECL|method|getBalancerDatanode ()
-name|BalancerDatanode
-name|getBalancerDatanode
+DECL|method|getDDatanode ()
+specifier|private
+name|DDatanode
+name|getDDatanode
 parameter_list|()
 block|{
 return|return
-name|BalancerDatanode
+name|DDatanode
 operator|.
 name|this
 return|;
 block|}
-DECL|method|getDatanode ()
+DECL|method|getDatanodeInfo ()
 name|DatanodeInfo
-name|getDatanode
+name|getDatanodeInfo
 parameter_list|()
 block|{
 return|return
-name|BalancerDatanode
+name|DDatanode
 operator|.
 name|this
 operator|.
@@ -2453,9 +2420,8 @@ name|toString
 parameter_list|()
 block|{
 return|return
-literal|""
-operator|+
-name|utilization
+name|getDisplayName
+argument_list|()
 return|;
 block|}
 block|}
@@ -2532,11 +2498,14 @@ operator|+
 literal|":"
 operator|+
 name|storageMap
+operator|.
+name|values
+argument_list|()
 return|;
 block|}
-DECL|method|BalancerDatanode (DatanodeStorageReport r, int maxConcurrentMoves)
+DECL|method|DDatanode (DatanodeStorageReport r, int maxConcurrentMoves)
 specifier|private
-name|BalancerDatanode
+name|DDatanode
 parameter_list|(
 name|DatanodeStorageReport
 name|r
@@ -2609,15 +2578,12 @@ literal|null
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|addStorageGroup (StorageType storageType, double utilization, long maxSize2Move)
+DECL|method|addStorageGroup (StorageType storageType, long maxSize2Move)
 name|StorageGroup
 name|addStorageGroup
 parameter_list|(
 name|StorageType
 name|storageType
-parameter_list|,
-name|double
-name|utilization
 parameter_list|,
 name|long
 name|maxSize2Move
@@ -2631,8 +2597,6 @@ operator|new
 name|StorageGroup
 argument_list|(
 name|storageType
-argument_list|,
-name|utilization
 argument_list|,
 name|maxSize2Move
 argument_list|)
@@ -2648,35 +2612,30 @@ return|return
 name|g
 return|;
 block|}
-DECL|method|addSource (StorageType storageType, double utilization, long maxSize2Move, Dispatcher balancer)
+DECL|method|addSource (StorageType storageType, long maxSize2Move, Dispatcher d)
 name|Source
 name|addSource
 parameter_list|(
 name|StorageType
 name|storageType
 parameter_list|,
-name|double
-name|utilization
-parameter_list|,
 name|long
 name|maxSize2Move
 parameter_list|,
 name|Dispatcher
-name|balancer
+name|d
 parameter_list|)
 block|{
 specifier|final
 name|Source
 name|s
 init|=
-name|balancer
+name|d
 operator|.
 expr|new
 name|Source
 argument_list|(
 name|storageType
-argument_list|,
-name|utilization
 argument_list|,
 name|maxSize2Move
 argument_list|,
@@ -2835,7 +2794,7 @@ DECL|class|Source
 class|class
 name|Source
 extends|extends
-name|BalancerDatanode
+name|DDatanode
 operator|.
 name|StorageGroup
 block|{
@@ -2881,20 +2840,17 @@ name|DBlock
 argument_list|>
 argument_list|()
 decl_stmt|;
-DECL|method|Source (StorageType storageType, double utilization, long maxSize2Move, BalancerDatanode dn)
+DECL|method|Source (StorageType storageType, long maxSize2Move, DDatanode dn)
 specifier|private
 name|Source
 parameter_list|(
 name|StorageType
 name|storageType
 parameter_list|,
-name|double
-name|utilization
-parameter_list|,
 name|long
 name|maxSize2Move
 parameter_list|,
-name|BalancerDatanode
+name|DDatanode
 name|dn
 parameter_list|)
 block|{
@@ -2903,8 +2859,6 @@ operator|.
 name|super
 argument_list|(
 name|storageType
-argument_list|,
-name|utilization
 argument_list|,
 name|maxSize2Move
 argument_list|)
@@ -2996,7 +2950,7 @@ name|nnc
 operator|.
 name|getBlocks
 argument_list|(
-name|getDatanode
+name|getDatanodeInfo
 argument_list|()
 argument_list|,
 name|size
@@ -3096,8 +3050,6 @@ operator|++
 control|)
 block|{
 specifier|final
-name|BalancerDatanode
-operator|.
 name|StorageGroup
 name|g
 init|=
@@ -3247,14 +3199,14 @@ name|next
 argument_list|()
 decl_stmt|;
 specifier|final
-name|BalancerDatanode
+name|DDatanode
 name|target
 init|=
 name|task
 operator|.
 name|target
 operator|.
-name|getBalancerDatanode
+name|getDDatanode
 argument_list|()
 decl_stmt|;
 name|PendingMove
@@ -3478,7 +3430,7 @@ init|=
 literal|false
 decl_stmt|;
 name|int
-name|noPendingBlockIteration
+name|noPendingMoveIteration
 init|=
 literal|0
 decl_stmt|;
@@ -3589,15 +3541,15 @@ block|}
 block|}
 else|else
 block|{
-comment|// source node cannot find a pendingBlockToMove, iteration +1
-name|noPendingBlockIteration
+comment|// source node cannot find a pending block to move, iteration +1
+name|noPendingMoveIteration
 operator|++
 expr_stmt|;
 comment|// in case no blocks can be moved for source node's task,
 comment|// jump out of while-loop after 5 iterations.
 if|if
 condition|(
-name|noPendingBlockIteration
+name|noPendingMoveIteration
 operator|>=
 name|MAX_NO_PENDING_MOVE_ITERATIONS
 condition|)
@@ -3658,11 +3610,12 @@ block|{         }
 block|}
 block|}
 block|}
-DECL|method|Dispatcher (NameNodeConnector theblockpool, Set<String> includedNodes, Set<String> excludedNodes, Configuration conf)
+DECL|method|Dispatcher (NameNodeConnector nnc, Set<String> includedNodes, Set<String> excludedNodes, long movedWinWidth, int moverThreads, int dispatcherThreads, int maxConcurrentMovesPerNode, Configuration conf)
+specifier|public
 name|Dispatcher
 parameter_list|(
 name|NameNodeConnector
-name|theblockpool
+name|nnc
 parameter_list|,
 name|Set
 argument_list|<
@@ -3675,6 +3628,18 @@ argument_list|<
 name|String
 argument_list|>
 name|excludedNodes
+parameter_list|,
+name|long
+name|movedWinWidth
+parameter_list|,
+name|int
+name|moverThreads
+parameter_list|,
+name|int
+name|dispatcherThreads
+parameter_list|,
+name|int
+name|maxConcurrentMovesPerNode
 parameter_list|,
 name|Configuration
 name|conf
@@ -3684,16 +3649,7 @@ name|this
 operator|.
 name|nnc
 operator|=
-name|theblockpool
-expr_stmt|;
-name|this
-operator|.
-name|keyManager
-operator|=
 name|nnc
-operator|.
-name|getKeyManager
-argument_list|()
 expr_stmt|;
 name|this
 operator|.
@@ -3707,30 +3663,13 @@ name|includedNodes
 operator|=
 name|includedNodes
 expr_stmt|;
-specifier|final
-name|long
-name|movedWinWidth
-init|=
-name|conf
+name|this
 operator|.
-name|getLong
-argument_list|(
-name|DFSConfigKeys
-operator|.
-name|DFS_BALANCER_MOVEDWINWIDTH_KEY
-argument_list|,
-name|DFSConfigKeys
-operator|.
-name|DFS_BALANCER_MOVEDWINWIDTH_DEFAULT
-argument_list|)
-decl_stmt|;
 name|movedBlocks
 operator|=
 operator|new
 name|MovedBlocks
 argument_list|<
-name|BalancerDatanode
-operator|.
 name|StorageGroup
 argument_list|>
 argument_list|(
@@ -3756,18 +3695,7 @@ name|Executors
 operator|.
 name|newFixedThreadPool
 argument_list|(
-name|conf
-operator|.
-name|getInt
-argument_list|(
-name|DFSConfigKeys
-operator|.
-name|DFS_BALANCER_MOVERTHREADS_KEY
-argument_list|,
-name|DFSConfigKeys
-operator|.
-name|DFS_BALANCER_MOVERTHREADS_DEFAULT
-argument_list|)
+name|moverThreads
 argument_list|)
 expr_stmt|;
 name|this
@@ -3778,36 +3706,14 @@ name|Executors
 operator|.
 name|newFixedThreadPool
 argument_list|(
-name|conf
-operator|.
-name|getInt
-argument_list|(
-name|DFSConfigKeys
-operator|.
-name|DFS_BALANCER_DISPATCHERTHREADS_KEY
-argument_list|,
-name|DFSConfigKeys
-operator|.
-name|DFS_BALANCER_DISPATCHERTHREADS_DEFAULT
-argument_list|)
+name|dispatcherThreads
 argument_list|)
 expr_stmt|;
 name|this
 operator|.
 name|maxConcurrentMovesPerNode
 operator|=
-name|conf
-operator|.
-name|getInt
-argument_list|(
-name|DFSConfigKeys
-operator|.
-name|DFS_DATANODE_BALANCE_MAX_NUM_CONCURRENT_MOVES_KEY
-argument_list|,
-name|DFSConfigKeys
-operator|.
-name|DFS_DATANODE_BALANCE_MAX_NUM_CONCURRENT_MOVES_DEFAULT
-argument_list|)
+name|maxConcurrentMovesPerNode
 expr_stmt|;
 specifier|final
 name|boolean
@@ -3954,15 +3860,13 @@ return|return
 name|b
 return|;
 block|}
-DECL|method|add (Source source, BalancerDatanode.StorageGroup target)
+DECL|method|add (Source source, StorageGroup target)
 name|void
 name|add
 parameter_list|(
 name|Source
 name|source
 parameter_list|,
-name|BalancerDatanode
-operator|.
 name|StorageGroup
 name|target
 parameter_list|)
@@ -4183,7 +4087,7 @@ return|;
 block|}
 DECL|method|newDatanode (DatanodeStorageReport r)
 specifier|public
-name|BalancerDatanode
+name|DDatanode
 name|newDatanode
 parameter_list|(
 name|DatanodeStorageReport
@@ -4192,7 +4096,7 @@ parameter_list|)
 block|{
 return|return
 operator|new
-name|BalancerDatanode
+name|DDatanode
 argument_list|(
 name|r
 argument_list|,
@@ -4421,8 +4325,6 @@ literal|true
 decl_stmt|;
 for|for
 control|(
-name|BalancerDatanode
-operator|.
 name|StorageGroup
 name|t
 range|:
@@ -4434,7 +4336,7 @@ condition|(
 operator|!
 name|t
 operator|.
-name|getBalancerDatanode
+name|getDDatanode
 argument_list|()
 operator|.
 name|isPendingQEmpty
@@ -4475,7 +4377,7 @@ block|{       }
 block|}
 block|}
 comment|/**    * Decide if the block is a good candidate to be moved from source to target.    * A block is a good candidate if     * 1. the block is not in the process of being moved/has not been moved;    * 2. the block does not have a replica on the target;    * 3. doing the move does not reduce the number of racks that the block has    */
-DECL|method|isGoodBlockCandidate (Source source, BalancerDatanode.StorageGroup target, DBlock block)
+DECL|method|isGoodBlockCandidate (Source source, StorageGroup target, DBlock block)
 specifier|private
 name|boolean
 name|isGoodBlockCandidate
@@ -4483,8 +4385,6 @@ parameter_list|(
 name|Source
 name|source
 parameter_list|,
-name|BalancerDatanode
-operator|.
 name|StorageGroup
 name|target
 parameter_list|,
@@ -4581,7 +4481,7 @@ literal|true
 return|;
 block|}
 comment|/**    * Determine whether moving the given block replica from source to target    * would reduce the number of racks of the block replicas.    */
-DECL|method|reduceNumOfRacks (Source source, BalancerDatanode.StorageGroup target, DBlock block)
+DECL|method|reduceNumOfRacks (Source source, StorageGroup target, DBlock block)
 specifier|private
 name|boolean
 name|reduceNumOfRacks
@@ -4589,8 +4489,6 @@ parameter_list|(
 name|Source
 name|source
 parameter_list|,
-name|BalancerDatanode
-operator|.
 name|StorageGroup
 name|target
 parameter_list|,
@@ -4604,7 +4502,7 @@ name|sourceDn
 init|=
 name|source
 operator|.
-name|getDatanode
+name|getDatanodeInfo
 argument_list|()
 decl_stmt|;
 if|if
@@ -4617,7 +4515,7 @@ name|sourceDn
 argument_list|,
 name|target
 operator|.
-name|getDatanode
+name|getDatanodeInfo
 argument_list|()
 argument_list|)
 condition|)
@@ -4639,8 +4537,6 @@ init|)
 block|{
 for|for
 control|(
-name|BalancerDatanode
-operator|.
 name|StorageGroup
 name|loc
 range|:
@@ -4658,12 +4554,12 @@ name|isOnSameRack
 argument_list|(
 name|loc
 operator|.
-name|getDatanode
+name|getDatanodeInfo
 argument_list|()
 argument_list|,
 name|target
 operator|.
-name|getDatanode
+name|getDatanodeInfo
 argument_list|()
 argument_list|)
 condition|)
@@ -4688,8 +4584,6 @@ return|;
 block|}
 for|for
 control|(
-name|BalancerDatanode
-operator|.
 name|StorageGroup
 name|g
 range|:
@@ -4711,7 +4605,7 @@ name|isOnSameRack
 argument_list|(
 name|g
 operator|.
-name|getDatanode
+name|getDatanodeInfo
 argument_list|()
 argument_list|,
 name|sourceDn
@@ -4729,13 +4623,11 @@ literal|true
 return|;
 block|}
 comment|/**    * Check if there are any replica (other than source) on the same node group    * with target. If true, then target is not a good candidate for placing    * specific replica as we don't want 2 replicas under the same nodegroup.    *     * @return true if there are any replica (other than source) on the same node    *         group with target    */
-DECL|method|isOnSameNodeGroupWithReplicas ( BalancerDatanode.StorageGroup target, DBlock block, Source source)
+DECL|method|isOnSameNodeGroupWithReplicas ( StorageGroup target, DBlock block, Source source)
 specifier|private
 name|boolean
 name|isOnSameNodeGroupWithReplicas
 parameter_list|(
-name|BalancerDatanode
-operator|.
 name|StorageGroup
 name|target
 parameter_list|,
@@ -4752,13 +4644,11 @@ name|targetDn
 init|=
 name|target
 operator|.
-name|getDatanode
+name|getDatanodeInfo
 argument_list|()
 decl_stmt|;
 for|for
 control|(
-name|BalancerDatanode
-operator|.
 name|StorageGroup
 name|g
 range|:
@@ -4780,7 +4670,7 @@ name|isOnSameNodeGroup
 argument_list|(
 name|g
 operator|.
-name|getDatanode
+name|getDatanodeInfo
 argument_list|()
 argument_list|,
 name|targetDn

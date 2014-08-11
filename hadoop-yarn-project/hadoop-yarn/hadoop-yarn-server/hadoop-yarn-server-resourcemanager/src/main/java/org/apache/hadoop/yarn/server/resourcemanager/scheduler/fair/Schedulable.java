@@ -297,6 +297,41 @@ return|return
 name|fairShare
 return|;
 block|}
+comment|/**    * Returns true if queue has atleast one app running. Always returns true for    * AppSchedulables.    */
+DECL|method|isActive ()
+specifier|public
+name|boolean
+name|isActive
+parameter_list|()
+block|{
+if|if
+condition|(
+name|this
+operator|instanceof
+name|FSQueue
+condition|)
+block|{
+name|FSQueue
+name|queue
+init|=
+operator|(
+name|FSQueue
+operator|)
+name|this
+decl_stmt|;
+return|return
+name|queue
+operator|.
+name|getNumRunnableApps
+argument_list|()
+operator|>
+literal|0
+return|;
+block|}
+return|return
+literal|true
+return|;
+block|}
 comment|/** Convenient toString implementation for debugging. */
 annotation|@
 name|Override

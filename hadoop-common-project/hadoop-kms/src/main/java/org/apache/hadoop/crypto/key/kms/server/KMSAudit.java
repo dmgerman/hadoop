@@ -314,7 +314,9 @@ decl_stmt|;
 DECL|field|op
 specifier|private
 specifier|final
-name|String
+name|KMS
+operator|.
+name|KMSOp
 name|op
 decl_stmt|;
 DECL|field|extraMsg
@@ -334,7 +336,7 @@ operator|.
 name|currentTimeMillis
 argument_list|()
 decl_stmt|;
-DECL|method|AuditEvent (String keyName, String user, String op, String msg)
+DECL|method|AuditEvent (String keyName, String user, KMS.KMSOp op, String msg)
 specifier|private
 name|AuditEvent
 parameter_list|(
@@ -344,7 +346,9 @@ parameter_list|,
 name|String
 name|user
 parameter_list|,
-name|String
+name|KMS
+operator|.
+name|KMSOp
 name|op
 parameter_list|,
 name|String
@@ -418,7 +422,9 @@ return|;
 block|}
 DECL|method|getOp ()
 specifier|public
-name|String
+name|KMS
+operator|.
+name|KMSOp
 name|getOp
 parameter_list|()
 block|{
@@ -460,7 +466,9 @@ specifier|private
 specifier|static
 name|Set
 argument_list|<
-name|String
+name|KMS
+operator|.
+name|KMSOp
 argument_list|>
 name|AGGREGATE_OPS_WHITELIST
 init|=
@@ -470,17 +478,25 @@ name|newHashSet
 argument_list|(
 name|KMS
 operator|.
+name|KMSOp
+operator|.
 name|GET_KEY_VERSION
 argument_list|,
 name|KMS
+operator|.
+name|KMSOp
 operator|.
 name|GET_CURRENT_KEY
 argument_list|,
 name|KMS
 operator|.
+name|KMSOp
+operator|.
 name|DECRYPT_EEK
 argument_list|,
 name|KMS
+operator|.
+name|KMSOp
 operator|.
 name|GENERATE_EEK
 argument_list|)
@@ -757,7 +773,7 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|op (OpStatus opStatus, final String op, final String user, final String key, final String extraMsg)
+DECL|method|op (OpStatus opStatus, final KMS.KMSOp op, final String user, final String key, final String extraMsg)
 specifier|private
 name|void
 name|op
@@ -766,7 +782,9 @@ name|OpStatus
 name|opStatus
 parameter_list|,
 specifier|final
-name|String
+name|KMS
+operator|.
+name|KMSOp
 name|op
 parameter_list|,
 specifier|final
@@ -800,13 +818,11 @@ argument_list|(
 name|key
 argument_list|)
 operator|&&
-operator|!
-name|Strings
-operator|.
-name|isNullOrEmpty
-argument_list|(
+operator|(
 name|op
-argument_list|)
+operator|!=
+literal|null
+operator|)
 operator|&&
 name|AGGREGATE_OPS_WHITELIST
 operator|.
@@ -969,13 +985,9 @@ argument_list|()
 decl_stmt|;
 if|if
 condition|(
-operator|!
-name|Strings
-operator|.
-name|isNullOrEmpty
-argument_list|(
 name|op
-argument_list|)
+operator|!=
+literal|null
 condition|)
 block|{
 name|kvs
@@ -1091,7 +1103,7 @@ expr_stmt|;
 block|}
 block|}
 block|}
-DECL|method|ok (Principal user, String op, String key, String extraMsg)
+DECL|method|ok (Principal user, KMS.KMSOp op, String key, String extraMsg)
 specifier|public
 name|void
 name|ok
@@ -1099,7 +1111,9 @@ parameter_list|(
 name|Principal
 name|user
 parameter_list|,
-name|String
+name|KMS
+operator|.
+name|KMSOp
 name|op
 parameter_list|,
 name|String
@@ -1128,7 +1142,7 @@ name|extraMsg
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|ok (Principal user, String op, String extraMsg)
+DECL|method|ok (Principal user, KMS.KMSOp op, String extraMsg)
 specifier|public
 name|void
 name|ok
@@ -1136,7 +1150,9 @@ parameter_list|(
 name|Principal
 name|user
 parameter_list|,
-name|String
+name|KMS
+operator|.
+name|KMSOp
 name|op
 parameter_list|,
 name|String
@@ -1162,7 +1178,7 @@ name|extraMsg
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|unauthorized (Principal user, String op, String key)
+DECL|method|unauthorized (Principal user, KMS.KMSOp op, String key)
 specifier|public
 name|void
 name|unauthorized
@@ -1170,7 +1186,9 @@ parameter_list|(
 name|Principal
 name|user
 parameter_list|,
-name|String
+name|KMS
+operator|.
+name|KMSOp
 name|op
 parameter_list|,
 name|String
@@ -1291,7 +1309,7 @@ literal|"'"
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|createCacheKey (String user, String key, String op)
+DECL|method|createCacheKey (String user, String key, KMS.KMSOp op)
 specifier|private
 specifier|static
 name|String
@@ -1303,7 +1321,9 @@ parameter_list|,
 name|String
 name|key
 parameter_list|,
-name|String
+name|KMS
+operator|.
+name|KMSOp
 name|op
 parameter_list|)
 block|{

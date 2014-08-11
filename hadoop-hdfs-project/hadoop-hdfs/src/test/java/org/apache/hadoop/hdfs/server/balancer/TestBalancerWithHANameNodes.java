@@ -637,13 +637,12 @@ argument_list|)
 decl_stmt|;
 name|assertEquals
 argument_list|(
-name|Balancer
-operator|.
-name|ReturnStatus
+name|ExitStatus
 operator|.
 name|SUCCESS
 operator|.
-name|code
+name|getExitCode
+argument_list|()
 argument_list|,
 name|r
 argument_list|)

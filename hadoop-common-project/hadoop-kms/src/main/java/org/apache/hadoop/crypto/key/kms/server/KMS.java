@@ -412,16 +412,6 @@ begin_import
 import|import
 name|java
 operator|.
-name|text
-operator|.
-name|MessageFormat
-import|;
-end_import
-
-begin_import
-import|import
-name|java
-operator|.
 name|util
 operator|.
 name|ArrayList
@@ -479,105 +469,45 @@ specifier|public
 class|class
 name|KMS
 block|{
-DECL|field|CREATE_KEY
+DECL|enum|KMSOp
 specifier|public
 specifier|static
-specifier|final
-name|String
+enum|enum
+name|KMSOp
+block|{
+DECL|enumConstant|CREATE_KEY
+DECL|enumConstant|DELETE_KEY
+DECL|enumConstant|ROLL_NEW_VERSION
 name|CREATE_KEY
-init|=
-literal|"CREATE_KEY"
-decl_stmt|;
-DECL|field|DELETE_KEY
-specifier|public
-specifier|static
-specifier|final
-name|String
+block|,
 name|DELETE_KEY
-init|=
-literal|"DELETE_KEY"
-decl_stmt|;
-DECL|field|ROLL_NEW_VERSION
-specifier|public
-specifier|static
-specifier|final
-name|String
+block|,
 name|ROLL_NEW_VERSION
-init|=
-literal|"ROLL_NEW_VERSION"
-decl_stmt|;
-DECL|field|GET_KEYS
-specifier|public
-specifier|static
-specifier|final
-name|String
+block|,
+DECL|enumConstant|GET_KEYS
+DECL|enumConstant|GET_KEYS_METADATA
 name|GET_KEYS
-init|=
-literal|"GET_KEYS"
-decl_stmt|;
-DECL|field|GET_KEYS_METADATA
-specifier|public
-specifier|static
-specifier|final
-name|String
+block|,
 name|GET_KEYS_METADATA
-init|=
-literal|"GET_KEYS_METADATA"
-decl_stmt|;
-DECL|field|GET_KEY_VERSIONS
-specifier|public
-specifier|static
-specifier|final
-name|String
+block|,
+DECL|enumConstant|GET_KEY_VERSIONS
+DECL|enumConstant|GET_METADATA
+DECL|enumConstant|GET_KEY_VERSION
+DECL|enumConstant|GET_CURRENT_KEY
 name|GET_KEY_VERSIONS
-init|=
-literal|"GET_KEY_VERSIONS"
-decl_stmt|;
-DECL|field|GET_METADATA
-specifier|public
-specifier|static
-specifier|final
-name|String
+block|,
 name|GET_METADATA
-init|=
-literal|"GET_METADATA"
-decl_stmt|;
-DECL|field|GET_KEY_VERSION
-specifier|public
-specifier|static
-specifier|final
-name|String
+block|,
 name|GET_KEY_VERSION
-init|=
-literal|"GET_KEY_VERSION"
-decl_stmt|;
-DECL|field|GET_CURRENT_KEY
-specifier|public
-specifier|static
-specifier|final
-name|String
+block|,
 name|GET_CURRENT_KEY
-init|=
-literal|"GET_CURRENT_KEY"
-decl_stmt|;
-DECL|field|GENERATE_EEK
-specifier|public
-specifier|static
-specifier|final
-name|String
+block|,
+DECL|enumConstant|GENERATE_EEK
+DECL|enumConstant|DECRYPT_EEK
 name|GENERATE_EEK
-init|=
-literal|"GENERATE_EEK"
-decl_stmt|;
-DECL|field|DECRYPT_EEK
-specifier|public
-specifier|static
-specifier|final
-name|String
+block|,
 name|DECRYPT_EEK
-init|=
-literal|"DECRYPT_EEK"
-decl_stmt|;
+block|}
 DECL|field|provider
 specifier|private
 name|KeyProviderCryptoExtension
@@ -656,7 +586,7 @@ specifier|final
 name|String
 name|UNAUTHORIZED_MSG_WITH_KEY
 init|=
-literal|"User:{0} not allowed to do ''{1}'' on ''{2}''"
+literal|"User:%s not allowed to do '%s' on '%s'"
 decl_stmt|;
 DECL|field|UNAUTHORIZED_MSG_WITHOUT_KEY
 specifier|private
@@ -665,9 +595,9 @@ specifier|final
 name|String
 name|UNAUTHORIZED_MSG_WITHOUT_KEY
 init|=
-literal|"User:{0} not allowed to do ''{1}''"
+literal|"User:%s not allowed to do '%s'"
 decl_stmt|;
-DECL|method|assertAccess (KMSACLs.Type aclType, Principal principal, String operation)
+DECL|method|assertAccess (KMSACLs.Type aclType, Principal principal, KMSOp operation)
 specifier|private
 name|void
 name|assertAccess
@@ -680,7 +610,7 @@ parameter_list|,
 name|Principal
 name|principal
 parameter_list|,
-name|String
+name|KMSOp
 name|operation
 parameter_list|)
 throws|throws
@@ -698,7 +628,7 @@ literal|null
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|assertAccess (KMSACLs.Type aclType, Principal principal, String operation, String key)
+DECL|method|assertAccess (KMSACLs.Type aclType, Principal principal, KMSOp operation, String key)
 specifier|private
 name|void
 name|assertAccess
@@ -711,7 +641,7 @@ parameter_list|,
 name|Principal
 name|principal
 parameter_list|,
-name|String
+name|KMSOp
 name|operation
 parameter_list|,
 name|String
@@ -762,7 +692,7 @@ throw|throw
 operator|new
 name|AuthorizationException
 argument_list|(
-name|MessageFormat
+name|String
 operator|.
 name|format
 argument_list|(
@@ -951,6 +881,8 @@ name|CREATE
 argument_list|,
 name|user
 argument_list|,
+name|KMSOp
+operator|.
 name|CREATE_KEY
 argument_list|,
 name|name
@@ -1071,9 +1003,9 @@ name|SET_KEY_MATERIAL
 argument_list|,
 name|user
 argument_list|,
+name|KMSOp
+operator|.
 name|CREATE_KEY
-operator|+
-literal|" with user provided material"
 argument_list|,
 name|name
 argument_list|)
@@ -1186,6 +1118,8 @@ name|ok
 argument_list|(
 name|user
 argument_list|,
+name|KMSOp
+operator|.
 name|CREATE_KEY
 argument_list|,
 name|name
@@ -1380,6 +1314,8 @@ name|DELETE
 argument_list|,
 name|user
 argument_list|,
+name|KMSOp
+operator|.
 name|DELETE_KEY
 argument_list|,
 name|name
@@ -1412,6 +1348,8 @@ name|ok
 argument_list|(
 name|user
 argument_list|,
+name|KMSOp
+operator|.
 name|DELETE_KEY
 argument_list|,
 name|name
@@ -1504,6 +1442,8 @@ name|ROLLOVER
 argument_list|,
 name|user
 argument_list|,
+name|KMSOp
+operator|.
 name|ROLL_NEW_VERSION
 argument_list|,
 name|name
@@ -1550,9 +1490,9 @@ name|SET_KEY_MATERIAL
 argument_list|,
 name|user
 argument_list|,
+name|KMSOp
+operator|.
 name|ROLL_NEW_VERSION
-operator|+
-literal|" with user provided material"
 argument_list|,
 name|name
 argument_list|)
@@ -1601,6 +1541,8 @@ name|ok
 argument_list|(
 name|user
 argument_list|,
+name|KMSOp
+operator|.
 name|ROLL_NEW_VERSION
 argument_list|,
 name|name
@@ -1700,7 +1642,7 @@ name|MediaType
 operator|.
 name|APPLICATION_JSON
 argument_list|)
-DECL|method|getKeysMetadata (@ontext SecurityContext securityContext, @QueryParam(KMSRESTConstants.KEY_OP) List<String> keyNamesList)
+DECL|method|getKeysMetadata (@ontext SecurityContext securityContext, @QueryParam(KMSRESTConstants.KEY) List<String> keyNamesList)
 specifier|public
 name|Response
 name|getKeysMetadata
@@ -1715,7 +1657,7 @@ name|QueryParam
 argument_list|(
 name|KMSRESTConstants
 operator|.
-name|KEY_OP
+name|KEY
 argument_list|)
 name|List
 argument_list|<
@@ -1770,6 +1712,8 @@ name|GET_METADATA
 argument_list|,
 name|user
 argument_list|,
+name|KMSOp
+operator|.
 name|GET_KEYS_METADATA
 argument_list|)
 expr_stmt|;
@@ -1804,6 +1748,8 @@ name|ok
 argument_list|(
 name|user
 argument_list|,
+name|KMSOp
+operator|.
 name|GET_KEYS_METADATA
 argument_list|,
 literal|""
@@ -1886,6 +1832,8 @@ name|GET_KEYS
 argument_list|,
 name|user
 argument_list|,
+name|KMSOp
+operator|.
 name|GET_KEYS
 argument_list|)
 expr_stmt|;
@@ -1903,6 +1851,8 @@ name|ok
 argument_list|(
 name|user
 argument_list|,
+name|KMSOp
+operator|.
 name|GET_KEYS
 argument_list|,
 literal|""
@@ -2049,6 +1999,8 @@ name|GET_METADATA
 argument_list|,
 name|user
 argument_list|,
+name|KMSOp
+operator|.
 name|GET_METADATA
 argument_list|,
 name|name
@@ -2077,6 +2029,8 @@ name|ok
 argument_list|(
 name|user
 argument_list|,
+name|KMSOp
+operator|.
 name|GET_METADATA
 argument_list|,
 name|name
@@ -2184,6 +2138,8 @@ name|GET
 argument_list|,
 name|user
 argument_list|,
+name|KMSOp
+operator|.
 name|GET_CURRENT_KEY
 argument_list|,
 name|name
@@ -2210,6 +2166,8 @@ name|ok
 argument_list|(
 name|user
 argument_list|,
+name|KMSOp
+operator|.
 name|GET_CURRENT_KEY
 argument_list|,
 name|name
@@ -2323,6 +2281,8 @@ name|GET
 argument_list|,
 name|user
 argument_list|,
+name|KMSOp
+operator|.
 name|GET_KEY_VERSION
 argument_list|)
 expr_stmt|;
@@ -2339,6 +2299,8 @@ name|ok
 argument_list|(
 name|user
 argument_list|,
+name|KMSOp
+operator|.
 name|GET_KEY_VERSION
 argument_list|,
 name|keyVersion
@@ -2510,6 +2472,8 @@ name|GENERATE_EEK
 argument_list|,
 name|user
 argument_list|,
+name|KMSOp
+operator|.
 name|GENERATE_EEK
 argument_list|,
 name|name
@@ -2579,6 +2543,8 @@ name|ok
 argument_list|(
 name|user
 argument_list|,
+name|KMSOp
+operator|.
 name|GENERATE_EEK
 argument_list|,
 name|name
@@ -2832,6 +2798,8 @@ name|DECRYPT_EEK
 argument_list|,
 name|user
 argument_list|,
+name|KMSOp
+operator|.
 name|DECRYPT_EEK
 argument_list|,
 name|keyName
@@ -2924,6 +2892,8 @@ name|ok
 argument_list|(
 name|user
 argument_list|,
+name|KMSOp
+operator|.
 name|DECRYPT_EEK
 argument_list|,
 name|keyName
@@ -3066,6 +3036,8 @@ name|GET
 argument_list|,
 name|user
 argument_list|,
+name|KMSOp
+operator|.
 name|GET_KEY_VERSIONS
 argument_list|,
 name|name
@@ -3092,6 +3064,8 @@ name|ok
 argument_list|(
 name|user
 argument_list|,
+name|KMSOp
+operator|.
 name|GET_KEY_VERSIONS
 argument_list|,
 name|name
