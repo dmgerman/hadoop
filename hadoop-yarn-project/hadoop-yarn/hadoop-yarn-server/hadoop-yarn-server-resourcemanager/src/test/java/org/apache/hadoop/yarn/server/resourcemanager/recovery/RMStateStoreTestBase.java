@@ -742,7 +742,7 @@ name|rmapp
 operator|.
 name|attempt
 operator|.
-name|RMAppAttemptState
+name|RMAppAttemptEvent
 import|;
 end_import
 
@@ -764,9 +764,7 @@ name|rmapp
 operator|.
 name|attempt
 operator|.
-name|event
-operator|.
-name|RMAppAttemptNewSavedEvent
+name|RMAppAttemptState
 import|;
 end_import
 
@@ -877,16 +875,12 @@ name|Dispatcher
 implements|,
 name|EventHandler
 argument_list|<
-name|RMAppAttemptNewSavedEvent
+name|RMAppAttemptEvent
 argument_list|>
 block|{
 DECL|field|attemptId
 name|ApplicationAttemptId
 name|attemptId
-decl_stmt|;
-DECL|field|storedException
-name|Exception
-name|storedException
 decl_stmt|;
 DECL|field|notified
 name|boolean
@@ -920,12 +914,12 @@ parameter_list|)
 block|{     }
 annotation|@
 name|Override
-DECL|method|handle (RMAppAttemptNewSavedEvent event)
+DECL|method|handle (RMAppAttemptEvent event)
 specifier|public
 name|void
 name|handle
 parameter_list|(
-name|RMAppAttemptNewSavedEvent
+name|RMAppAttemptEvent
 name|event
 parameter_list|)
 block|{
@@ -936,16 +930,6 @@ argument_list|,
 name|event
 operator|.
 name|getApplicationAttemptId
-argument_list|()
-argument_list|)
-expr_stmt|;
-name|assertEquals
-argument_list|(
-name|storedException
-argument_list|,
-name|event
-operator|.
-name|getStoredException
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -1340,12 +1324,6 @@ operator|.
 name|attemptId
 operator|=
 name|attemptId
-expr_stmt|;
-name|dispatcher
-operator|.
-name|storedException
-operator|=
-literal|null
 expr_stmt|;
 name|store
 operator|.
