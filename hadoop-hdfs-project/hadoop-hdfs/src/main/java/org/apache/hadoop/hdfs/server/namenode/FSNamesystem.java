@@ -13822,8 +13822,6 @@ throws|throws
 name|IOException
 block|{
 name|file
-operator|=
-name|file
 operator|.
 name|recordModification
 argument_list|(
@@ -21632,8 +21630,6 @@ argument_list|,
 name|src
 argument_list|)
 expr_stmt|;
-name|pendingFile
-operator|=
 name|pendingFile
 operator|.
 name|recordModification
