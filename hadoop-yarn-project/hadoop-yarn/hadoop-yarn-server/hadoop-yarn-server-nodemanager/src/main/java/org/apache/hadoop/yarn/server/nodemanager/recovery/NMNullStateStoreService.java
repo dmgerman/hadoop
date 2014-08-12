@@ -34,6 +34,16 @@ end_import
 
 begin_import
 import|import
+name|java
+operator|.
+name|util
+operator|.
+name|List
+import|;
+end_import
+
+begin_import
+import|import
 name|org
 operator|.
 name|apache
@@ -57,6 +67,24 @@ operator|.
 name|fs
 operator|.
 name|Path
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|api
+operator|.
+name|protocolrecords
+operator|.
+name|StartContainerRequest
 import|;
 end_import
 
@@ -300,6 +328,114 @@ name|removeApplication
 parameter_list|(
 name|ApplicationId
 name|appId
+parameter_list|)
+throws|throws
+name|IOException
+block|{   }
+annotation|@
+name|Override
+DECL|method|loadContainersState ()
+specifier|public
+name|List
+argument_list|<
+name|RecoveredContainerState
+argument_list|>
+name|loadContainersState
+parameter_list|()
+throws|throws
+name|IOException
+block|{
+throw|throw
+operator|new
+name|UnsupportedOperationException
+argument_list|(
+literal|"Recovery not supported by this state store"
+argument_list|)
+throw|;
+block|}
+annotation|@
+name|Override
+DECL|method|storeContainer (ContainerId containerId, StartContainerRequest startRequest)
+specifier|public
+name|void
+name|storeContainer
+parameter_list|(
+name|ContainerId
+name|containerId
+parameter_list|,
+name|StartContainerRequest
+name|startRequest
+parameter_list|)
+throws|throws
+name|IOException
+block|{   }
+annotation|@
+name|Override
+DECL|method|storeContainerDiagnostics (ContainerId containerId, StringBuilder diagnostics)
+specifier|public
+name|void
+name|storeContainerDiagnostics
+parameter_list|(
+name|ContainerId
+name|containerId
+parameter_list|,
+name|StringBuilder
+name|diagnostics
+parameter_list|)
+throws|throws
+name|IOException
+block|{   }
+annotation|@
+name|Override
+DECL|method|storeContainerLaunched (ContainerId containerId)
+specifier|public
+name|void
+name|storeContainerLaunched
+parameter_list|(
+name|ContainerId
+name|containerId
+parameter_list|)
+throws|throws
+name|IOException
+block|{   }
+annotation|@
+name|Override
+DECL|method|storeContainerKilled (ContainerId containerId)
+specifier|public
+name|void
+name|storeContainerKilled
+parameter_list|(
+name|ContainerId
+name|containerId
+parameter_list|)
+throws|throws
+name|IOException
+block|{   }
+annotation|@
+name|Override
+DECL|method|storeContainerCompleted (ContainerId containerId, int exitCode)
+specifier|public
+name|void
+name|storeContainerCompleted
+parameter_list|(
+name|ContainerId
+name|containerId
+parameter_list|,
+name|int
+name|exitCode
+parameter_list|)
+throws|throws
+name|IOException
+block|{   }
+annotation|@
+name|Override
+DECL|method|removeContainer (ContainerId containerId)
+specifier|public
+name|void
+name|removeContainer
+parameter_list|(
+name|ContainerId
+name|containerId
 parameter_list|)
 throws|throws
 name|IOException

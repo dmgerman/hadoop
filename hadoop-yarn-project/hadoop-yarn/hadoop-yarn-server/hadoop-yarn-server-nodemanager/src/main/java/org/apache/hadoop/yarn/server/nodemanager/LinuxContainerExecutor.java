@@ -2559,6 +2559,36 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
+annotation|@
+name|Override
+DECL|method|isContainerProcessAlive (String user, String pid)
+specifier|public
+name|boolean
+name|isContainerProcessAlive
+parameter_list|(
+name|String
+name|user
+parameter_list|,
+name|String
+name|pid
+parameter_list|)
+throws|throws
+name|IOException
+block|{
+comment|// Send a test signal to the process as the user to see if it's alive
+return|return
+name|signalContainer
+argument_list|(
+name|user
+argument_list|,
+name|pid
+argument_list|,
+name|Signal
+operator|.
+name|NULL
+argument_list|)
+return|;
+block|}
 DECL|method|mountCgroups (List<String> cgroupKVs, String hierarchy)
 specifier|public
 name|void

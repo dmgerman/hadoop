@@ -3106,7 +3106,7 @@ name|additionalLen
 init|=
 name|KMSRESTConstants
 operator|.
-name|KEY_OP
+name|KEY
 operator|.
 name|length
 argument_list|()
@@ -3290,7 +3290,7 @@ name|put
 argument_list|(
 name|KMSRESTConstants
 operator|.
-name|KEY_OP
+name|KEY
 argument_list|,
 name|keySet
 argument_list|)

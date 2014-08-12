@@ -515,6 +515,23 @@ literal|"MaxObjects"
 argument_list|)
 argument_list|)
 decl_stmt|;
+name|Integer
+name|numStaleStorages
+init|=
+call|(
+name|Integer
+call|)
+argument_list|(
+name|mbs
+operator|.
+name|getAttribute
+argument_list|(
+name|mxbeanNameFsns
+argument_list|,
+literal|"NumStaleStorages"
+argument_list|)
+argument_list|)
+decl_stmt|;
 comment|// Metrics that belong to "NameNodeInfo".
 comment|// These are metrics that FSNamesystem registers directly with MBeanServer.
 name|ObjectName

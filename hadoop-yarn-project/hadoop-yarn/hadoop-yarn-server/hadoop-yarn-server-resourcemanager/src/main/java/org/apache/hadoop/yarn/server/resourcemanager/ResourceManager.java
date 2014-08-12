@@ -2933,13 +2933,6 @@ operator|=
 name|createClientRMService
 argument_list|()
 expr_stmt|;
-name|rmContext
-operator|.
-name|setClientRMService
-argument_list|(
-name|clientRM
-argument_list|)
-expr_stmt|;
 name|addService
 argument_list|(
 name|clientRM

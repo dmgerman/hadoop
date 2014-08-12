@@ -14828,8 +14828,6 @@ throws|throws
 name|IOException
 block|{
 name|file
-operator|=
-name|file
 operator|.
 name|recordModification
 argument_list|(
@@ -22642,8 +22640,6 @@ name|src
 argument_list|)
 expr_stmt|;
 name|pendingFile
-operator|=
-name|pendingFile
 operator|.
 name|recordModification
 argument_list|(
@@ -30053,6 +30049,27 @@ name|getDatanodeManager
 argument_list|()
 operator|.
 name|getNumStaleNodes
+argument_list|()
+return|;
+block|}
+comment|/**    * Storages are marked as "content stale" after NN restart or fails over and    * before NN receives the first Heartbeat followed by the first Blockreport.    */
+annotation|@
+name|Override
+comment|// FSNamesystemMBean
+DECL|method|getNumStaleStorages ()
+specifier|public
+name|int
+name|getNumStaleStorages
+parameter_list|()
+block|{
+return|return
+name|getBlockManager
+argument_list|()
+operator|.
+name|getDatanodeManager
+argument_list|()
+operator|.
+name|getNumStaleStorages
 argument_list|()
 return|;
 block|}

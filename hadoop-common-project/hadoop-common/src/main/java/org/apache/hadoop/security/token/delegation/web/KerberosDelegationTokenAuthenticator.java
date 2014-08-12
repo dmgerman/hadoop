@@ -4,7 +4,7 @@ comment|/**  * Licensed to the Apache Software Foundation (ASF) under one  * or 
 end_comment
 
 begin_package
-DECL|package|org.apache.hadoop.fs.http.client
+DECL|package|org.apache.hadoop.security.token.delegation.web
 package|package
 name|org
 operator|.
@@ -12,11 +12,13 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|fs
+name|security
 operator|.
-name|http
+name|token
 operator|.
-name|client
+name|delegation
+operator|.
+name|web
 package|;
 end_package
 
@@ -42,9 +44,9 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|security
+name|classification
 operator|.
-name|UserGroupInformation
+name|InterfaceStability
 import|;
 end_import
 
@@ -62,78 +64,75 @@ name|authentication
 operator|.
 name|client
 operator|.
-name|PseudoAuthenticator
+name|Authenticator
 import|;
 end_import
 
 begin_import
 import|import
-name|java
+name|org
 operator|.
-name|io
+name|apache
 operator|.
-name|IOException
+name|hadoop
+operator|.
+name|security
+operator|.
+name|authentication
+operator|.
+name|client
+operator|.
+name|KerberosAuthenticator
 import|;
 end_import
 
 begin_comment
-comment|/**  * A<code>PseudoAuthenticator</code> subclass that uses FileSystemAccess's  *<code>UserGroupInformation</code> to obtain the client user name (the UGI's login user).  */
+comment|/**  * The<code>KerberosDelegationTokenAuthenticator</code> provides support for  * Kerberos SPNEGO authentication mechanism and support for Hadoop Delegation  * Token operations.  *<p/>  * It falls back to the {@link PseudoDelegationTokenAuthenticator} if the HTTP  * endpoint does not trigger a SPNEGO authentication  */
 end_comment
 
 begin_class
 annotation|@
 name|InterfaceAudience
 operator|.
-name|Private
-DECL|class|HttpFSPseudoAuthenticator
+name|Public
+annotation|@
+name|InterfaceStability
+operator|.
+name|Evolving
+DECL|class|KerberosDelegationTokenAuthenticator
 specifier|public
 class|class
-name|HttpFSPseudoAuthenticator
+name|KerberosDelegationTokenAuthenticator
 extends|extends
-name|PseudoAuthenticator
+name|DelegationTokenAuthenticator
 block|{
-comment|/**    * Return the client user name.    *    * @return the client user name.    */
-annotation|@
-name|Override
-DECL|method|getUserName ()
-specifier|protected
-name|String
-name|getUserName
+DECL|method|KerberosDelegationTokenAuthenticator ()
+specifier|public
+name|KerberosDelegationTokenAuthenticator
 parameter_list|()
 block|{
-try|try
+name|super
+argument_list|(
+operator|new
+name|KerberosAuthenticator
+argument_list|()
+block|{
+annotation|@
+name|Override
+specifier|protected
+name|Authenticator
+name|getFallBackAuthenticator
+parameter_list|()
 block|{
 return|return
-name|UserGroupInformation
-operator|.
-name|getLoginUser
-argument_list|()
-operator|.
-name|getUserName
+operator|new
+name|PseudoDelegationTokenAuthenticator
 argument_list|()
 return|;
 block|}
-catch|catch
-parameter_list|(
-name|IOException
-name|ex
-parameter_list|)
-block|{
-throw|throw
-operator|new
-name|SecurityException
-argument_list|(
-literal|"Could not obtain current user, "
-operator|+
-name|ex
-operator|.
-name|getMessage
-argument_list|()
-argument_list|,
-name|ex
-argument_list|)
-throw|;
 block|}
+argument_list|)
+expr_stmt|;
 block|}
 block|}
 end_class

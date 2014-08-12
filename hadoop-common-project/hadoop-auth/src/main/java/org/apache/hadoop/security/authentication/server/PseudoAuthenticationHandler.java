@@ -213,6 +213,39 @@ specifier|private
 name|boolean
 name|acceptAnonymous
 decl_stmt|;
+DECL|field|type
+specifier|private
+name|String
+name|type
+decl_stmt|;
+comment|/**    * Creates a Hadoop pseudo authentication handler with the default auth-token    * type,<code>simple</code>.    */
+DECL|method|PseudoAuthenticationHandler ()
+specifier|public
+name|PseudoAuthenticationHandler
+parameter_list|()
+block|{
+name|this
+argument_list|(
+name|TYPE
+argument_list|)
+expr_stmt|;
+block|}
+comment|/**    * Creates a Hadoop pseudo authentication handler with a custom auth-token    * type.    *    * @param type auth-token type.    */
+DECL|method|PseudoAuthenticationHandler (String type)
+specifier|public
+name|PseudoAuthenticationHandler
+parameter_list|(
+name|String
+name|type
+parameter_list|)
+block|{
+name|this
+operator|.
+name|type
+operator|=
+name|type
+expr_stmt|;
+block|}
 comment|/**    * Initializes the authentication handler instance.    *<p/>    * This method is invoked by the {@link AuthenticationFilter#init} method.    *    * @param config configuration properties to initialize the handler.    *    * @throws ServletException thrown if the handler could not be initialized.    */
 annotation|@
 name|Override
@@ -274,7 +307,7 @@ name|getType
 parameter_list|()
 block|{
 return|return
-name|TYPE
+name|type
 return|;
 block|}
 comment|/**    * This is an empty implementation, it always returns<code>TRUE</code>.    *    *    *    * @param token the authentication token if any, otherwise<code>NULL</code>.    * @param request the HTTP client request.    * @param response the HTTP client response.    *    * @return<code>TRUE</code>    * @throws IOException it is never thrown.    * @throws AuthenticationException it is never thrown.    */

@@ -1439,6 +1439,8 @@ name|conf
 argument_list|,
 name|dispatcher
 argument_list|,
+name|stateStore
+argument_list|,
 name|launchContext
 argument_list|,
 literal|null

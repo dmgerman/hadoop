@@ -586,7 +586,7 @@ name|ApplicationHistoryManagerImpl
 operator|)
 name|historyServer
 operator|.
-name|getApplicationHistory
+name|getApplicationHistoryManager
 argument_list|()
 operator|)
 operator|.

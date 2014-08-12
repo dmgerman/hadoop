@@ -996,6 +996,25 @@ operator|.
 name|shutdown
 argument_list|()
 expr_stmt|;
+comment|// if recovery on restart is supported then leave outstanding aggregations
+comment|// to the next restart
+name|boolean
+name|shouldAbort
+init|=
+name|context
+operator|.
+name|getNMStateStore
+argument_list|()
+operator|.
+name|canRecover
+argument_list|()
+operator|&&
+operator|!
+name|context
+operator|.
+name|getDecommissioned
+argument_list|()
+decl_stmt|;
 comment|// politely ask to finish
 for|for
 control|(
@@ -1008,11 +1027,25 @@ name|values
 argument_list|()
 control|)
 block|{
+if|if
+condition|(
+name|shouldAbort
+condition|)
+block|{
+name|aggregator
+operator|.
+name|abortLogAggregation
+argument_list|()
+expr_stmt|;
+block|}
+else|else
+block|{
 name|aggregator
 operator|.
 name|finishLogAggregation
 argument_list|()
 expr_stmt|;
+block|}
 block|}
 while|while
 condition|(

@@ -1075,7 +1075,7 @@ annotation|@
 name|Override
 DECL|method|recordModification (int latestSnapshotId)
 specifier|final
-name|INode
+name|void
 name|recordModification
 parameter_list|(
 name|int
@@ -1091,10 +1091,6 @@ argument_list|(
 name|latestSnapshotId
 argument_list|)
 expr_stmt|;
-comment|// reference is never replaced
-return|return
-name|this
-return|;
 block|}
 annotation|@
 name|Override

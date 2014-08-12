@@ -4425,8 +4425,6 @@ name|isSrcInSnapshot
 condition|)
 block|{
 name|srcChild
-operator|=
-name|srcChild
 operator|.
 name|recordModification
 argument_list|(
@@ -5081,8 +5079,6 @@ argument_list|)
 expr_stmt|;
 block|}
 name|file
-operator|=
-name|file
 operator|.
 name|setFileReplication
 argument_list|(
@@ -5092,8 +5088,6 @@ name|iip
 operator|.
 name|getLatestSnapshotId
 argument_list|()
-argument_list|,
-name|inodeMap
 argument_list|)
 expr_stmt|;
 specifier|final
@@ -6416,19 +6410,10 @@ name|getLatestSnapshotId
 argument_list|()
 decl_stmt|;
 name|targetNode
-operator|=
-name|targetNode
 operator|.
 name|recordModification
 argument_list|(
 name|latestSnapshot
-argument_list|)
-expr_stmt|;
-name|iip
-operator|.
-name|setLastINode
-argument_list|(
-name|targetNode
 argument_list|)
 expr_stmt|;
 comment|// Remove the node from the namespace
@@ -10752,8 +10737,6 @@ operator|.
 name|getLatestSnapshotId
 argument_list|()
 decl_stmt|;
-name|dirNode
-operator|=
 name|dirNode
 operator|.
 name|recordModification

@@ -252,7 +252,7 @@ block|}
 annotation|@
 name|Override
 DECL|method|recordModification (int latestSnapshotId)
-name|INode
+name|void
 name|recordModification
 parameter_list|(
 name|int
@@ -291,9 +291,6 @@ argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
-return|return
-name|this
-return|;
 block|}
 comment|/** @return true unconditionally. */
 annotation|@

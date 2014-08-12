@@ -61,6 +61,11 @@ name|boolean
 name|wasContainerSuccessful
 parameter_list|)
 function_decl|;
+DECL|method|abortLogAggregation ()
+name|void
+name|abortLogAggregation
+parameter_list|()
+function_decl|;
 DECL|method|finishLogAggregation ()
 name|void
 name|finishLogAggregation

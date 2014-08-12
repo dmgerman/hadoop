@@ -262,6 +262,7 @@ return|;
 block|}
 comment|/**    * Attempt to parse a storage uri with storage class and URI. The storage    * class component of the uri is case-insensitive.    *    * @param rawLocation Location string of the format [type]uri, where [type] is    *                    optional.    * @return A StorageLocation object if successfully parsed, null otherwise.    *         Does not throw any exceptions.    */
 DECL|method|parse (String rawLocation)
+specifier|public
 specifier|static
 name|StorageLocation
 name|parse
