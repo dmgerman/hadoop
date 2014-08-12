@@ -594,11 +594,11 @@ name|normalized
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Update resource in SchedulerNode if any resource change in RMNode.    * @param node SchedulerNode with old resource view    * @param rmNode RMNode with new resource view    * @param clusterResource the cluster's resource that need to update    * @param log Scheduler's log for resource change    */
+comment|/**    * Update resource in SchedulerNode if any resource change in RMNode.    * @param node SchedulerNode with old resource view    * @param rmNode RMNode with new resource view    * @param clusterResource the cluster's resource that need to update    * @param log Scheduler's log for resource change    * @return true if the resources have changed    */
 DECL|method|updateResourceIfChanged (SchedulerNode node, RMNode rmNode, Resource clusterResource, Log log)
 specifier|public
 specifier|static
-name|void
+name|boolean
 name|updateResourceIfChanged
 parameter_list|(
 name|SchedulerNode
@@ -614,6 +614,11 @@ name|Log
 name|log
 parameter_list|)
 block|{
+name|boolean
+name|result
+init|=
+literal|false
+decl_stmt|;
 name|Resource
 name|oldAvailableResource
 init|=
@@ -651,6 +656,10 @@ name|oldAvailableResource
 argument_list|)
 condition|)
 block|{
+name|result
+operator|=
+literal|true
+expr_stmt|;
 name|Resource
 name|deltaResource
 init|=
@@ -714,6 +723,9 @@ literal|"MB"
 argument_list|)
 expr_stmt|;
 block|}
+return|return
+name|result
+return|;
 block|}
 comment|/**    * Utility method to normalize a list of resource requests, by insuring that    * the memory for each request is a multiple of minMemory and is not zero.    */
 DECL|method|normalizeRequests ( List<ResourceRequest> asks, ResourceCalculator resourceCalculator, Resource clusterResource, Resource minimumResource, Resource maximumResource, Resource incrementResource)

@@ -930,6 +930,17 @@ argument_list|)
 expr_stmt|;
 name|conf
 operator|.
+name|set
+argument_list|(
+name|YarnConfiguration
+operator|.
+name|NM_ADDRESS
+argument_list|,
+literal|"localhost:1234"
+argument_list|)
+expr_stmt|;
+name|conf
+operator|.
 name|setBoolean
 argument_list|(
 name|YarnConfiguration

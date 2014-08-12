@@ -4506,6 +4506,8 @@ argument_list|()
 argument_list|)
 decl_stmt|;
 comment|// Update resource if any change
+if|if
+condition|(
 name|SchedulerUtils
 operator|.
 name|updateResourceIfChanged
@@ -4518,7 +4520,16 @@ name|clusterResource
 argument_list|,
 name|LOG
 argument_list|)
+condition|)
+block|{
+name|root
+operator|.
+name|updateClusterResource
+argument_list|(
+name|clusterResource
+argument_list|)
 expr_stmt|;
+block|}
 name|List
 argument_list|<
 name|UpdatedContainerInfo

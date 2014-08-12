@@ -1492,6 +1492,23 @@ argument_list|(
 literal|","
 argument_list|)
 decl_stmt|;
+if|if
+condition|(
+name|fileArr
+operator|.
+name|length
+operator|==
+literal|0
+condition|)
+block|{
+throw|throw
+operator|new
+name|IllegalArgumentException
+argument_list|(
+literal|"File name can't be empty string"
+argument_list|)
+throw|;
+block|}
 name|String
 index|[]
 name|finalArr
@@ -1529,6 +1546,22 @@ index|[
 name|i
 index|]
 decl_stmt|;
+if|if
+condition|(
+name|tmp
+operator|.
+name|isEmpty
+argument_list|()
+condition|)
+block|{
+throw|throw
+operator|new
+name|IllegalArgumentException
+argument_list|(
+literal|"File name can't be empty string"
+argument_list|)
+throw|;
+block|}
 name|String
 name|finalPath
 decl_stmt|;

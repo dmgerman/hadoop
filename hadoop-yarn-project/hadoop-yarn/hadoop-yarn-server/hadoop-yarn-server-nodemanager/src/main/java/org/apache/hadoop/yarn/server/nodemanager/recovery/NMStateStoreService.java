@@ -158,6 +158,24 @@ name|yarn
 operator|.
 name|api
 operator|.
+name|protocolrecords
+operator|.
+name|StartContainerRequest
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|api
+operator|.
 name|records
 operator|.
 name|ApplicationAttemptId
@@ -179,6 +197,24 @@ operator|.
 name|records
 operator|.
 name|ApplicationId
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|api
+operator|.
+name|records
+operator|.
+name|ContainerExitStatus
 import|;
 end_import
 
@@ -363,6 +399,105 @@ parameter_list|()
 block|{
 return|return
 name|finishedApplications
+return|;
+block|}
+block|}
+DECL|enum|RecoveredContainerStatus
+specifier|public
+enum|enum
+name|RecoveredContainerStatus
+block|{
+DECL|enumConstant|REQUESTED
+name|REQUESTED
+block|,
+DECL|enumConstant|LAUNCHED
+name|LAUNCHED
+block|,
+DECL|enumConstant|COMPLETED
+name|COMPLETED
+block|}
+DECL|class|RecoveredContainerState
+specifier|public
+specifier|static
+class|class
+name|RecoveredContainerState
+block|{
+DECL|field|status
+name|RecoveredContainerStatus
+name|status
+decl_stmt|;
+DECL|field|exitCode
+name|int
+name|exitCode
+init|=
+name|ContainerExitStatus
+operator|.
+name|INVALID
+decl_stmt|;
+DECL|field|killed
+name|boolean
+name|killed
+init|=
+literal|false
+decl_stmt|;
+DECL|field|diagnostics
+name|String
+name|diagnostics
+init|=
+literal|""
+decl_stmt|;
+DECL|field|startRequest
+name|StartContainerRequest
+name|startRequest
+decl_stmt|;
+DECL|method|getStatus ()
+specifier|public
+name|RecoveredContainerStatus
+name|getStatus
+parameter_list|()
+block|{
+return|return
+name|status
+return|;
+block|}
+DECL|method|getExitCode ()
+specifier|public
+name|int
+name|getExitCode
+parameter_list|()
+block|{
+return|return
+name|exitCode
+return|;
+block|}
+DECL|method|getKilled ()
+specifier|public
+name|boolean
+name|getKilled
+parameter_list|()
+block|{
+return|return
+name|killed
+return|;
+block|}
+DECL|method|getDiagnostics ()
+specifier|public
+name|String
+name|getDiagnostics
+parameter_list|()
+block|{
+return|return
+name|diagnostics
+return|;
+block|}
+DECL|method|getStartRequest ()
+specifier|public
+name|StartContainerRequest
+name|getStartRequest
+parameter_list|()
+block|{
+return|return
+name|startRequest
 return|;
 block|}
 block|}
@@ -772,6 +907,7 @@ return|return
 literal|true
 return|;
 block|}
+comment|/**    * Load the state of applications    * @return recovered state for applications    * @throws IOException    */
 DECL|method|loadApplicationsState ()
 specifier|public
 specifier|abstract
@@ -781,6 +917,7 @@ parameter_list|()
 throws|throws
 name|IOException
 function_decl|;
+comment|/**    * Record the start of an application    * @param appId the application ID    * @param p state to store for the application    * @throws IOException    */
 DECL|method|storeApplication (ApplicationId appId, ContainerManagerApplicationProto p)
 specifier|public
 specifier|abstract
@@ -796,6 +933,7 @@ parameter_list|)
 throws|throws
 name|IOException
 function_decl|;
+comment|/**    * Record that an application has finished    * @param appId the application ID    * @throws IOException    */
 DECL|method|storeFinishedApplication (ApplicationId appId)
 specifier|public
 specifier|abstract
@@ -808,6 +946,7 @@ parameter_list|)
 throws|throws
 name|IOException
 function_decl|;
+comment|/**    * Remove records corresponding to an application    * @param appId the application ID    * @throws IOException    */
 DECL|method|removeApplication (ApplicationId appId)
 specifier|public
 specifier|abstract
@@ -816,6 +955,106 @@ name|removeApplication
 parameter_list|(
 name|ApplicationId
 name|appId
+parameter_list|)
+throws|throws
+name|IOException
+function_decl|;
+comment|/**    * Load the state of containers    * @return recovered state for containers    * @throws IOException    */
+DECL|method|loadContainersState ()
+specifier|public
+specifier|abstract
+name|List
+argument_list|<
+name|RecoveredContainerState
+argument_list|>
+name|loadContainersState
+parameter_list|()
+throws|throws
+name|IOException
+function_decl|;
+comment|/**    * Record a container start request    * @param containerId the container ID    * @param startRequest the container start request    * @throws IOException    */
+DECL|method|storeContainer (ContainerId containerId, StartContainerRequest startRequest)
+specifier|public
+specifier|abstract
+name|void
+name|storeContainer
+parameter_list|(
+name|ContainerId
+name|containerId
+parameter_list|,
+name|StartContainerRequest
+name|startRequest
+parameter_list|)
+throws|throws
+name|IOException
+function_decl|;
+comment|/**    * Record that a container has been launched    * @param containerId the container ID    * @throws IOException    */
+DECL|method|storeContainerLaunched (ContainerId containerId)
+specifier|public
+specifier|abstract
+name|void
+name|storeContainerLaunched
+parameter_list|(
+name|ContainerId
+name|containerId
+parameter_list|)
+throws|throws
+name|IOException
+function_decl|;
+comment|/**    * Record that a container has completed    * @param containerId the container ID    * @param exitCode the exit code from the container    * @throws IOException    */
+DECL|method|storeContainerCompleted (ContainerId containerId, int exitCode)
+specifier|public
+specifier|abstract
+name|void
+name|storeContainerCompleted
+parameter_list|(
+name|ContainerId
+name|containerId
+parameter_list|,
+name|int
+name|exitCode
+parameter_list|)
+throws|throws
+name|IOException
+function_decl|;
+comment|/**    * Record a request to kill a container    * @param containerId the container ID    * @throws IOException    */
+DECL|method|storeContainerKilled (ContainerId containerId)
+specifier|public
+specifier|abstract
+name|void
+name|storeContainerKilled
+parameter_list|(
+name|ContainerId
+name|containerId
+parameter_list|)
+throws|throws
+name|IOException
+function_decl|;
+comment|/**    * Record diagnostics for a container    * @param containerId the container ID    * @param diagnostics the container diagnostics    * @throws IOException    */
+DECL|method|storeContainerDiagnostics (ContainerId containerId, StringBuilder diagnostics)
+specifier|public
+specifier|abstract
+name|void
+name|storeContainerDiagnostics
+parameter_list|(
+name|ContainerId
+name|containerId
+parameter_list|,
+name|StringBuilder
+name|diagnostics
+parameter_list|)
+throws|throws
+name|IOException
+function_decl|;
+comment|/**    * Remove records corresponding to a container    * @param containerId the container ID    * @throws IOException    */
+DECL|method|removeContainer (ContainerId containerId)
+specifier|public
+specifier|abstract
+name|void
+name|removeContainer
+parameter_list|(
+name|ContainerId
+name|containerId
 parameter_list|)
 throws|throws
 name|IOException
@@ -890,6 +1129,7 @@ parameter_list|)
 throws|throws
 name|IOException
 function_decl|;
+comment|/**    * Load the state of the deletion service    * @return recovered deletion service state    * @throws IOException    */
 DECL|method|loadDeletionServiceState ()
 specifier|public
 specifier|abstract
@@ -899,6 +1139,7 @@ parameter_list|()
 throws|throws
 name|IOException
 function_decl|;
+comment|/**    * Record a deletion task    * @param taskId the deletion task ID    * @param taskProto the deletion task protobuf    * @throws IOException    */
 DECL|method|storeDeletionTask (int taskId, DeletionServiceDeleteTaskProto taskProto)
 specifier|public
 specifier|abstract
@@ -914,6 +1155,7 @@ parameter_list|)
 throws|throws
 name|IOException
 function_decl|;
+comment|/**    * Remove records corresponding to a deletion task    * @param taskId the deletion task ID    * @throws IOException    */
 DECL|method|removeDeletionTask (int taskId)
 specifier|public
 specifier|abstract
@@ -926,6 +1168,7 @@ parameter_list|)
 throws|throws
 name|IOException
 function_decl|;
+comment|/**    * Load the state of NM tokens    * @return recovered state of NM tokens    * @throws IOException    */
 DECL|method|loadNMTokensState ()
 specifier|public
 specifier|abstract
@@ -935,6 +1178,7 @@ parameter_list|()
 throws|throws
 name|IOException
 function_decl|;
+comment|/**    * Record the current NM token master key    * @param key the master key    * @throws IOException    */
 DECL|method|storeNMTokenCurrentMasterKey (MasterKey key)
 specifier|public
 specifier|abstract
@@ -947,6 +1191,7 @@ parameter_list|)
 throws|throws
 name|IOException
 function_decl|;
+comment|/**    * Record the previous NM token master key    * @param key the previous master key    * @throws IOException    */
 DECL|method|storeNMTokenPreviousMasterKey (MasterKey key)
 specifier|public
 specifier|abstract
@@ -959,6 +1204,7 @@ parameter_list|)
 throws|throws
 name|IOException
 function_decl|;
+comment|/**    * Record a master key corresponding to an application    * @param attempt the application attempt ID    * @param key the master key    * @throws IOException    */
 DECL|method|storeNMTokenApplicationMasterKey ( ApplicationAttemptId attempt, MasterKey key)
 specifier|public
 specifier|abstract
@@ -974,6 +1220,7 @@ parameter_list|)
 throws|throws
 name|IOException
 function_decl|;
+comment|/**    * Remove a master key corresponding to an application    * @param attempt the application attempt ID    * @throws IOException    */
 DECL|method|removeNMTokenApplicationMasterKey ( ApplicationAttemptId attempt)
 specifier|public
 specifier|abstract
@@ -986,6 +1233,7 @@ parameter_list|)
 throws|throws
 name|IOException
 function_decl|;
+comment|/**    * Load the state of container tokens    * @return recovered state of container tokens    * @throws IOException    */
 DECL|method|loadContainerTokensState ()
 specifier|public
 specifier|abstract
@@ -995,6 +1243,7 @@ parameter_list|()
 throws|throws
 name|IOException
 function_decl|;
+comment|/**    * Record the current container token master key    * @param key the master key    * @throws IOException    */
 DECL|method|storeContainerTokenCurrentMasterKey (MasterKey key)
 specifier|public
 specifier|abstract
@@ -1007,6 +1256,7 @@ parameter_list|)
 throws|throws
 name|IOException
 function_decl|;
+comment|/**    * Record the previous container token master key    * @param key the previous master key    * @throws IOException    */
 DECL|method|storeContainerTokenPreviousMasterKey (MasterKey key)
 specifier|public
 specifier|abstract
@@ -1019,6 +1269,7 @@ parameter_list|)
 throws|throws
 name|IOException
 function_decl|;
+comment|/**    * Record the expiration time for a container token    * @param containerId the container ID    * @param expirationTime the container token expiration time    * @throws IOException    */
 DECL|method|storeContainerToken (ContainerId containerId, Long expirationTime)
 specifier|public
 specifier|abstract
@@ -1034,6 +1285,7 @@ parameter_list|)
 throws|throws
 name|IOException
 function_decl|;
+comment|/**    * Remove records for a container token    * @param containerId the container ID    * @throws IOException    */
 DECL|method|removeContainerToken (ContainerId containerId)
 specifier|public
 specifier|abstract

@@ -5521,6 +5521,10 @@ name|conf
 argument_list|,
 name|dispatcher
 argument_list|,
+operator|new
+name|NMNullStateStoreService
+argument_list|()
+argument_list|,
 name|ctxt
 argument_list|,
 literal|null

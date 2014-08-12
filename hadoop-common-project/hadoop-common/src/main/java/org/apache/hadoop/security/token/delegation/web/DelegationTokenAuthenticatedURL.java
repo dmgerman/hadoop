@@ -252,6 +252,16 @@ begin_import
 import|import
 name|java
 operator|.
+name|net
+operator|.
+name|URLEncoder
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
 name|util
 operator|.
 name|HashMap
@@ -288,6 +298,15 @@ name|DelegationTokenAuthenticatedURL
 extends|extends
 name|AuthenticatedURL
 block|{
+comment|/**    * Constant used in URL's query string to perform a proxy user request, the    * value of the<code>DO_AS</code> parameter is the user the request will be    * done on behalf of.    */
+DECL|field|DO_AS
+specifier|static
+specifier|final
+name|String
+name|DO_AS
+init|=
+literal|"doAs"
+decl_stmt|;
 comment|/**    * Client side authentication token that handles Delegation Tokens.    */
 annotation|@
 name|InterfaceAudience
@@ -876,6 +895,31 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
+block|}
+comment|// proxyuser
+if|if
+condition|(
+name|doAs
+operator|!=
+literal|null
+condition|)
+block|{
+name|extraParams
+operator|.
+name|put
+argument_list|(
+name|DO_AS
+argument_list|,
+name|URLEncoder
+operator|.
+name|encode
+argument_list|(
+name|doAs
+argument_list|,
+literal|"UTF-8"
+argument_list|)
+argument_list|)
+expr_stmt|;
 block|}
 name|url
 operator|=
