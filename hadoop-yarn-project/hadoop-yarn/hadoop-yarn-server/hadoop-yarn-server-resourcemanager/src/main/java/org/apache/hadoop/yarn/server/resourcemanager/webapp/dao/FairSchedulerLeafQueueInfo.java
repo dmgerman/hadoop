@@ -94,7 +94,7 @@ name|scheduler
 operator|.
 name|fair
 operator|.
-name|AppSchedulable
+name|FSAppAttempt
 import|;
 end_import
 
@@ -194,7 +194,7 @@ argument_list|)
 expr_stmt|;
 name|Collection
 argument_list|<
-name|AppSchedulable
+name|FSAppAttempt
 argument_list|>
 name|apps
 init|=
@@ -205,7 +205,7 @@ argument_list|()
 decl_stmt|;
 for|for
 control|(
-name|AppSchedulable
+name|FSAppAttempt
 name|app
 range|:
 name|apps
@@ -214,9 +214,6 @@ block|{
 if|if
 condition|(
 name|app
-operator|.
-name|getApp
-argument_list|()
 operator|.
 name|isPending
 argument_list|()

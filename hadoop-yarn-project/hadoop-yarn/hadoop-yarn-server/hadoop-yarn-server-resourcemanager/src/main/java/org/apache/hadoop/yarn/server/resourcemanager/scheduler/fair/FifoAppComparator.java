@@ -77,7 +77,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * Order {@link AppSchedulable} objects by priority and then by submit time, as  * in the default scheduler in Hadoop.  */
+comment|/**  * Order {@link FSAppAttempt} objects by priority and then by submit time, as  * in the default scheduler in Hadoop.  */
 end_comment
 
 begin_class
@@ -92,7 +92,7 @@ name|FifoAppComparator
 implements|implements
 name|Comparator
 argument_list|<
-name|AppSchedulable
+name|FSAppAttempt
 argument_list|>
 implements|,
 name|Serializable
@@ -106,15 +106,15 @@ name|serialVersionUID
 init|=
 literal|3428835083489547918L
 decl_stmt|;
-DECL|method|compare (AppSchedulable a1, AppSchedulable a2)
+DECL|method|compare (FSAppAttempt a1, FSAppAttempt a2)
 specifier|public
 name|int
 name|compare
 parameter_list|(
-name|AppSchedulable
+name|FSAppAttempt
 name|a1
 parameter_list|,
-name|AppSchedulable
+name|FSAppAttempt
 name|a2
 parameter_list|)
 block|{
@@ -194,18 +194,12 @@ name|res
 operator|=
 name|a1
 operator|.
-name|getApp
-argument_list|()
-operator|.
 name|getApplicationId
 argument_list|()
 operator|.
 name|compareTo
 argument_list|(
 name|a2
-operator|.
-name|getApp
-argument_list|()
 operator|.
 name|getApplicationId
 argument_list|()

@@ -88,7 +88,7 @@ name|scheduler
 operator|.
 name|fair
 operator|.
-name|AppSchedulable
+name|FSAppAttempt
 import|;
 end_import
 
@@ -382,7 +382,7 @@ operator|)
 name|scheduler
 decl_stmt|;
 specifier|final
-name|AppSchedulable
+name|FSAppAttempt
 name|app
 init|=
 name|fair
@@ -391,9 +391,6 @@ name|getSchedulerApp
 argument_list|(
 name|appAttemptId
 argument_list|)
-operator|.
-name|getAppSchedulable
-argument_list|()
 decl_stmt|;
 name|metrics
 operator|.
