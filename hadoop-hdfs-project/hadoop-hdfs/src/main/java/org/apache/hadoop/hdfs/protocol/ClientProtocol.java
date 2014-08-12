@@ -799,6 +799,31 @@ name|SnapshotAccessControlException
 throws|,
 name|IOException
 function_decl|;
+comment|/**    * Set the storage policy for an existing file    * @param src Path of an existing file.     * @param policyName The name of the storage policy    * @throws SnapshotAccessControlException If access is denied    * @throws UnresolvedLinkException if<code>src</code> contains a symlink    * @throws FileNotFoundException If file/dir<code>src</code> is not found    * @throws QuotaExceededException If changes violate the quota restriction    */
+annotation|@
+name|Idempotent
+DECL|method|setStoragePolicy (String src, String policyName)
+specifier|public
+name|void
+name|setStoragePolicy
+parameter_list|(
+name|String
+name|src
+parameter_list|,
+name|String
+name|policyName
+parameter_list|)
+throws|throws
+name|SnapshotAccessControlException
+throws|,
+name|UnresolvedLinkException
+throws|,
+name|FileNotFoundException
+throws|,
+name|QuotaExceededException
+throws|,
+name|IOException
+function_decl|;
 comment|/**    * Set permissions for an existing file/directory.    *     * @throws AccessControlException If access is denied    * @throws FileNotFoundException If file<code>src</code> is not found    * @throws SafeModeException not allowed in safemode    * @throws UnresolvedLinkException If<code>src</code> contains a symlink    * @throws SnapshotAccessControlException if path is in RO snapshot    * @throws IOException If an I/O error occurred    */
 annotation|@
 name|Idempotent

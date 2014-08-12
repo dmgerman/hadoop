@@ -2322,6 +2322,25 @@ argument_list|)
 return|;
 block|}
 block|}
+DECL|method|getStoragePolicy (final String policyName)
+specifier|public
+name|BlockStoragePolicy
+name|getStoragePolicy
+parameter_list|(
+specifier|final
+name|String
+name|policyName
+parameter_list|)
+block|{
+return|return
+name|storagePolicySuite
+operator|.
+name|getPolicy
+argument_list|(
+name|policyName
+argument_list|)
+return|;
+block|}
 DECL|method|setBlockPoolId (String blockPoolId)
 specifier|public
 name|void
