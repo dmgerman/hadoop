@@ -457,6 +457,11 @@ name|SIGNATURE_PROVIDER_ATTRIBUTE
 init|=
 literal|"org.apache.hadoop.security.authentication.util.SignerSecretProvider"
 decl_stmt|;
+DECL|field|config
+specifier|private
+name|Properties
+name|config
+decl_stmt|;
 DECL|field|signer
 specifier|private
 name|Signer
@@ -535,16 +540,15 @@ literal|"."
 else|:
 literal|""
 expr_stmt|;
-name|Properties
 name|config
-init|=
+operator|=
 name|getConfiguration
 argument_list|(
 name|configPrefix
 argument_list|,
 name|filterConfig
 argument_list|)
-decl_stmt|;
+expr_stmt|;
 name|String
 name|authHandlerName
 init|=
@@ -985,6 +989,17 @@ argument_list|,
 literal|null
 argument_list|)
 expr_stmt|;
+block|}
+comment|/**    * Returns the configuration properties of the {@link AuthenticationFilter}    * without the prefix. The returned properties are the same that the    * {@link #getConfiguration(String, FilterConfig)} method returned.    *    * @return the configuration properties.    */
+DECL|method|getConfiguration ()
+specifier|protected
+name|Properties
+name|getConfiguration
+parameter_list|()
+block|{
+return|return
+name|config
+return|;
 block|}
 comment|/**    * Returns the authentication handler being used.    *    * @return the authentication handler being used.    */
 DECL|method|getAuthenticationHandler ()
@@ -1765,10 +1780,10 @@ name|isHttps
 argument_list|)
 expr_stmt|;
 block|}
-name|filterChain
-operator|.
 name|doFilter
 argument_list|(
+name|filterChain
+argument_list|,
 name|httpRequest
 argument_list|,
 name|httpResponse
@@ -1881,6 +1896,36 @@ expr_stmt|;
 block|}
 block|}
 block|}
+block|}
+comment|/**    * Delegates call to the servlet filter chain. Sub-classes my override this    * method to perform pre and post tasks.    */
+DECL|method|doFilter (FilterChain filterChain, HttpServletRequest request, HttpServletResponse response)
+specifier|protected
+name|void
+name|doFilter
+parameter_list|(
+name|FilterChain
+name|filterChain
+parameter_list|,
+name|HttpServletRequest
+name|request
+parameter_list|,
+name|HttpServletResponse
+name|response
+parameter_list|)
+throws|throws
+name|IOException
+throws|,
+name|ServletException
+block|{
+name|filterChain
+operator|.
+name|doFilter
+argument_list|(
+name|request
+argument_list|,
+name|response
+argument_list|)
+expr_stmt|;
 block|}
 comment|/**    * Creates the Hadoop authentication HTTP cookie.    *    * @param token authentication token for the cookie.    * @param expires UNIX timestamp that indicates the expire date of the    *                cookie. It has no effect if its value< 0.    *    * XXX the following code duplicate some logic in Jetty / Servlet API,    * because of the fact that Hadoop is stuck at servlet 2.5 and jetty 6    * right now.    */
 DECL|method|createAuthCookie (HttpServletResponse resp, String token, String domain, String path, long expires, boolean isSecure)
