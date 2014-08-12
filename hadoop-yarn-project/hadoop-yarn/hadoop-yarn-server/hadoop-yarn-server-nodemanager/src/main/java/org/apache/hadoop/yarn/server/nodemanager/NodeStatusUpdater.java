@@ -60,16 +60,19 @@ name|NodeStatusUpdater
 extends|extends
 name|Service
 block|{
+comment|/**    * Schedule a heartbeat to the ResourceManager outside of the normal,    * periodic heartbeating process. This is typically called when the state    * of containers on the node has changed to notify the RM sooner.    */
 DECL|method|sendOutofBandHeartBeat ()
 name|void
 name|sendOutofBandHeartBeat
 parameter_list|()
 function_decl|;
+comment|/**    * Get the ResourceManager identifier received during registration    * @return the ResourceManager ID    */
 DECL|method|getRMIdentifier ()
 name|long
 name|getRMIdentifier
 parameter_list|()
 function_decl|;
+comment|/**    * Query if a container has recently completed    * @param containerId the container ID    * @return true if the container has recently completed    */
 DECL|method|isContainerRecentlyStopped (ContainerId containerId)
 specifier|public
 name|boolean
@@ -79,6 +82,17 @@ name|ContainerId
 name|containerId
 parameter_list|)
 function_decl|;
+comment|/**    * Add a container to the list of containers that have recently completed    * @param containerId the ID of the completed container    */
+DECL|method|addCompletedContainer (ContainerId containerId)
+specifier|public
+name|void
+name|addCompletedContainer
+parameter_list|(
+name|ContainerId
+name|containerId
+parameter_list|)
+function_decl|;
+comment|/**    * Clear the list of recently completed containers    */
 DECL|method|clearFinishedContainersFromCache ()
 specifier|public
 name|void

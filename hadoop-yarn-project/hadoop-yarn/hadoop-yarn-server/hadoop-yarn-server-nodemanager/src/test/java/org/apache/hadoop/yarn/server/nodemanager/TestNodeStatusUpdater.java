@@ -1823,6 +1823,13 @@ argument_list|(
 name|mockEventHandler
 argument_list|)
 expr_stmt|;
+name|NMStateStoreService
+name|stateStore
+init|=
+operator|new
+name|NMNullStateStoreService
+argument_list|()
+decl_stmt|;
 name|nodeStatus
 operator|.
 name|setResponseId
@@ -2011,6 +2018,8 @@ argument_list|(
 name|conf
 argument_list|,
 name|mockDispatcher
+argument_list|,
+name|stateStore
 argument_list|,
 name|launchContext
 argument_list|,
@@ -2224,6 +2233,8 @@ argument_list|(
 name|conf
 argument_list|,
 name|mockDispatcher
+argument_list|,
+name|stateStore
 argument_list|,
 name|launchContext
 argument_list|,
@@ -4858,7 +4869,7 @@ argument_list|)
 decl_stmt|;
 name|nodeStatusUpdater
 operator|.
-name|updateStoppedContainersInCache
+name|addCompletedContainer
 argument_list|(
 name|cId
 argument_list|)

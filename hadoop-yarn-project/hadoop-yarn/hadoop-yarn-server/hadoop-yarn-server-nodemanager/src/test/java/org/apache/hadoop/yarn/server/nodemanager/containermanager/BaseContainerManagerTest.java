@@ -1660,7 +1660,7 @@ name|Path
 name|subDir
 parameter_list|,
 name|Path
-index|[]
+modifier|...
 name|baseDirs
 parameter_list|)
 block|{
