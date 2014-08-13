@@ -5222,7 +5222,7 @@ operator|.
 name|getCurrentUser
 argument_list|()
 operator|.
-name|toString
+name|getShortUserName
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -5360,7 +5360,7 @@ operator|.
 name|getCurrentUser
 argument_list|()
 operator|.
-name|toString
+name|getShortUserName
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -5492,7 +5492,7 @@ operator|.
 name|getCurrentUser
 argument_list|()
 operator|.
-name|toString
+name|getShortUserName
 argument_list|()
 argument_list|)
 expr_stmt|;
