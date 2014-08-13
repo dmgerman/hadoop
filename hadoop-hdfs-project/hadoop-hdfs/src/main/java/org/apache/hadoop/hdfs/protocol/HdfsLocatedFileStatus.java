@@ -237,8 +237,8 @@ name|locations
 return|;
 block|}
 DECL|method|makeQualifiedLocated (URI defaultUri, Path path)
-specifier|final
 specifier|public
+specifier|final
 name|LocatedFileStatus
 name|makeQualifiedLocated
 parameter_list|(
