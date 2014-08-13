@@ -224,26 +224,6 @@ name|server
 operator|.
 name|HttpFSParametersProvider
 operator|.
-name|DoAsParam
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|fs
-operator|.
-name|http
-operator|.
-name|server
-operator|.
-name|HttpFSParametersProvider
-operator|.
 name|FilterParam
 import|;
 end_import
@@ -622,41 +602,9 @@ name|hadoop
 operator|.
 name|lib
 operator|.
-name|service
-operator|.
-name|ProxyUser
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|lib
-operator|.
 name|servlet
 operator|.
 name|FileSystemReleaseFilter
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|lib
-operator|.
-name|servlet
-operator|.
-name|HostnameFilter
 import|;
 end_import
 
@@ -702,11 +650,27 @@ name|hadoop
 operator|.
 name|security
 operator|.
-name|authentication
+name|UserGroupInformation
+import|;
+end_import
+
+begin_import
+import|import
+name|org
 operator|.
-name|server
+name|apache
 operator|.
-name|AuthenticationToken
+name|hadoop
+operator|.
+name|security
+operator|.
+name|token
+operator|.
+name|delegation
+operator|.
+name|web
+operator|.
+name|HttpUserGroupInformation
 import|;
 end_import
 
@@ -974,16 +938,6 @@ begin_import
 import|import
 name|java
 operator|.
-name|security
-operator|.
-name|Principal
-import|;
-end_import
-
-begin_import
-import|import
-name|java
-operator|.
 name|text
 operator|.
 name|MessageFormat
@@ -1054,131 +1008,8 @@ argument_list|(
 literal|"httpfsaudit"
 argument_list|)
 decl_stmt|;
-comment|/**    * Resolves the effective user that will be used to request a FileSystemAccess filesystem.    *<p/>    * If the doAs-user is NULL or the same as the user, it returns the user.    *<p/>    * Otherwise it uses proxyuser rules (see {@link ProxyUser} to determine if the    * current user can impersonate the doAs-user.    *<p/>    * If the current user cannot impersonate the doAs-user an    *<code>AccessControlException</code> will be thrown.    *    * @param user principal for whom the filesystem instance is.    * @param doAs do-as user, if any.    *    * @return the effective user.    *    * @throws IOException thrown if an IO error occurrs.    * @throws AccessControlException thrown if the current user cannot impersonate    * the doAs-user.    */
-DECL|method|getEffectiveUser (Principal user, String doAs)
-specifier|private
-name|String
-name|getEffectiveUser
-parameter_list|(
-name|Principal
-name|user
-parameter_list|,
-name|String
-name|doAs
-parameter_list|)
-throws|throws
-name|IOException
-block|{
-name|String
-name|effectiveUser
-init|=
-name|user
-operator|.
-name|getName
-argument_list|()
-decl_stmt|;
-if|if
-condition|(
-name|doAs
-operator|!=
-literal|null
-operator|&&
-operator|!
-name|doAs
-operator|.
-name|equals
-argument_list|(
-name|user
-operator|.
-name|getName
-argument_list|()
-argument_list|)
-condition|)
-block|{
-name|ProxyUser
-name|proxyUser
-init|=
-name|HttpFSServerWebApp
-operator|.
-name|get
-argument_list|()
-operator|.
-name|get
-argument_list|(
-name|ProxyUser
-operator|.
-name|class
-argument_list|)
-decl_stmt|;
-name|String
-name|proxyUserName
-decl_stmt|;
-if|if
-condition|(
-name|user
-operator|instanceof
-name|AuthenticationToken
-condition|)
-block|{
-name|proxyUserName
-operator|=
-operator|(
-operator|(
-name|AuthenticationToken
-operator|)
-name|user
-operator|)
-operator|.
-name|getUserName
-argument_list|()
-expr_stmt|;
-block|}
-else|else
-block|{
-name|proxyUserName
-operator|=
-name|user
-operator|.
-name|getName
-argument_list|()
-expr_stmt|;
-block|}
-name|proxyUser
-operator|.
-name|validate
-argument_list|(
-name|proxyUserName
-argument_list|,
-name|HostnameFilter
-operator|.
-name|get
-argument_list|()
-argument_list|,
-name|doAs
-argument_list|)
-expr_stmt|;
-name|effectiveUser
-operator|=
-name|doAs
-expr_stmt|;
-name|AUDIT_LOG
-operator|.
-name|info
-argument_list|(
-literal|"Proxy user [{}] DoAs user [{}]"
-argument_list|,
-name|proxyUserName
-argument_list|,
-name|doAs
-argument_list|)
-expr_stmt|;
-block|}
-return|return
-name|effectiveUser
-return|;
-block|}
-comment|/**    * Executes a {@link FileSystemAccess.FileSystemExecutor} using a filesystem for the effective    * user.    *    * @param user principal making the request.    * @param doAs do-as user, if any.    * @param executor FileSystemExecutor to execute.    *    * @return FileSystemExecutor response    *    * @throws IOException thrown if an IO error occurrs.    * @throws FileSystemAccessException thrown if a FileSystemAccess releated error occurred. Thrown    * exceptions are handled by {@link HttpFSExceptionProvider}.    */
-DECL|method|fsExecute (Principal user, String doAs, FileSystemAccess.FileSystemExecutor<T> executor)
+comment|/**    * Executes a {@link FileSystemAccess.FileSystemExecutor} using a filesystem for the effective    * user.    *    * @param ugi user making the request.    * @param executor FileSystemExecutor to execute.    *    * @return FileSystemExecutor response    *    * @throws IOException thrown if an IO error occurrs.    * @throws FileSystemAccessException thrown if a FileSystemAccess releated error occurred. Thrown    * exceptions are handled by {@link HttpFSExceptionProvider}.    */
+DECL|method|fsExecute (UserGroupInformation ugi, FileSystemAccess.FileSystemExecutor<T> executor)
 specifier|private
 parameter_list|<
 name|T
@@ -1186,11 +1017,8 @@ parameter_list|>
 name|T
 name|fsExecute
 parameter_list|(
-name|Principal
-name|user
-parameter_list|,
-name|String
-name|doAs
+name|UserGroupInformation
+name|ugi
 parameter_list|,
 name|FileSystemAccess
 operator|.
@@ -1205,16 +1033,6 @@ name|IOException
 throws|,
 name|FileSystemAccessException
 block|{
-name|String
-name|hadoopUser
-init|=
-name|getEffectiveUser
-argument_list|(
-name|user
-argument_list|,
-name|doAs
-argument_list|)
-decl_stmt|;
 name|FileSystemAccess
 name|fsAccess
 init|=
@@ -1253,7 +1071,10 @@ name|fsAccess
 operator|.
 name|execute
 argument_list|(
-name|hadoopUser
+name|ugi
+operator|.
+name|getShortUserName
+argument_list|()
 argument_list|,
 name|conf
 argument_list|,
@@ -1261,17 +1082,14 @@ name|executor
 argument_list|)
 return|;
 block|}
-comment|/**    * Returns a filesystem instance. The fileystem instance is wired for release at the completion of    * the current Servlet request via the {@link FileSystemReleaseFilter}.    *<p/>    * If a do-as user is specified, the current user must be a valid proxyuser, otherwise an    *<code>AccessControlException</code> will be thrown.    *    * @param user principal for whom the filesystem instance is.    * @param doAs do-as user, if any.    *    * @return a filesystem for the specified user or do-as user.    *    * @throws IOException thrown if an IO error occurred. Thrown exceptions are    * handled by {@link HttpFSExceptionProvider}.    * @throws FileSystemAccessException thrown if a FileSystemAccess releated error occurred. Thrown    * exceptions are handled by {@link HttpFSExceptionProvider}.    */
-DECL|method|createFileSystem (Principal user, String doAs)
+comment|/**    * Returns a filesystem instance. The fileystem instance is wired for release at the completion of    * the current Servlet request via the {@link FileSystemReleaseFilter}.    *<p/>    * If a do-as user is specified, the current user must be a valid proxyuser, otherwise an    *<code>AccessControlException</code> will be thrown.    *    * @param ugi principal for whom the filesystem instance is.    *    * @return a filesystem for the specified user or do-as user.    *    * @throws IOException thrown if an IO error occurred. Thrown exceptions are    * handled by {@link HttpFSExceptionProvider}.    * @throws FileSystemAccessException thrown if a FileSystemAccess releated error occurred. Thrown    * exceptions are handled by {@link HttpFSExceptionProvider}.    */
+DECL|method|createFileSystem (UserGroupInformation ugi)
 specifier|private
 name|FileSystem
 name|createFileSystem
 parameter_list|(
-name|Principal
-name|user
-parameter_list|,
-name|String
-name|doAs
+name|UserGroupInformation
+name|ugi
 parameter_list|)
 throws|throws
 name|IOException
@@ -1281,12 +1099,10 @@ block|{
 name|String
 name|hadoopUser
 init|=
-name|getEffectiveUser
-argument_list|(
-name|user
-argument_list|,
-name|doAs
-argument_list|)
+name|ugi
+operator|.
+name|getShortUserName
+argument_list|()
 decl_stmt|;
 name|FileSystemAccess
 name|fsAccess
@@ -1387,7 +1203,7 @@ argument_list|)
 throw|;
 block|}
 block|}
-comment|/**    * Special binding for '/' as it is not handled by the wildcard binding.    *    * @param user the principal of the user making the request.    * @param op the HttpFS operation of the request.    * @param params the HttpFS parameters of the request.    *    * @return the request response.    *    * @throws IOException thrown if an IO error occurred. Thrown exceptions are    * handled by {@link HttpFSExceptionProvider}.    * @throws FileSystemAccessException thrown if a FileSystemAccess releated    * error occurred. Thrown exceptions are handled by    * {@link HttpFSExceptionProvider}.    */
+comment|/**    * Special binding for '/' as it is not handled by the wildcard binding.    *    * @param op the HttpFS operation of the request.    * @param params the HttpFS parameters of the request.    *    * @return the request response.    *    * @throws IOException thrown if an IO error occurred. Thrown exceptions are    * handled by {@link HttpFSExceptionProvider}.    * @throws FileSystemAccessException thrown if a FileSystemAccess releated    * error occurred. Thrown exceptions are handled by    * {@link HttpFSExceptionProvider}.    */
 annotation|@
 name|GET
 annotation|@
@@ -1397,16 +1213,11 @@ name|MediaType
 operator|.
 name|APPLICATION_JSON
 argument_list|)
-DECL|method|getRoot (@ontext Principal user, @QueryParam(OperationParam.NAME) OperationParam op, @Context Parameters params)
+DECL|method|getRoot (@ueryParamOperationParam.NAME) OperationParam op, @Context Parameters params)
 specifier|public
 name|Response
 name|getRoot
 parameter_list|(
-annotation|@
-name|Context
-name|Principal
-name|user
-parameter_list|,
 annotation|@
 name|QueryParam
 argument_list|(
@@ -1430,8 +1241,6 @@ block|{
 return|return
 name|get
 argument_list|(
-name|user
-argument_list|,
 literal|""
 argument_list|,
 name|op
@@ -1465,7 +1274,7 @@ literal|""
 operator|)
 return|;
 block|}
-comment|/**    * Binding to handle GET requests, supported operations are    *    * @param user the principal of the user making the request.    * @param path the path for operation.    * @param op the HttpFS operation of the request.    * @param params the HttpFS parameters of the request.    *    * @return the request response.    *    * @throws IOException thrown if an IO error occurred. Thrown exceptions are    * handled by {@link HttpFSExceptionProvider}.    * @throws FileSystemAccessException thrown if a FileSystemAccess releated    * error occurred. Thrown exceptions are handled by    * {@link HttpFSExceptionProvider}.    */
+comment|/**    * Binding to handle GET requests, supported operations are    *    * @param path the path for operation.    * @param op the HttpFS operation of the request.    * @param params the HttpFS parameters of the request.    *    * @return the request response.    *    * @throws IOException thrown if an IO error occurred. Thrown exceptions are    * handled by {@link HttpFSExceptionProvider}.    * @throws FileSystemAccessException thrown if a FileSystemAccess releated    * error occurred. Thrown exceptions are handled by    * {@link HttpFSExceptionProvider}.    */
 annotation|@
 name|GET
 annotation|@
@@ -1486,16 +1295,11 @@ operator|.
 name|APPLICATION_JSON
 block|}
 argument_list|)
-DECL|method|get (@ontext Principal user, @PathParam(R) String path, @QueryParam(OperationParam.NAME) OperationParam op, @Context Parameters params)
+DECL|method|get (@athParamR) String path, @QueryParam(OperationParam.NAME) OperationParam op, @Context Parameters params)
 specifier|public
 name|Response
 name|get
 parameter_list|(
-annotation|@
-name|Context
-name|Principal
-name|user
-parameter_list|,
 annotation|@
 name|PathParam
 argument_list|(
@@ -1524,6 +1328,14 @@ name|IOException
 throws|,
 name|FileSystemAccessException
 block|{
+name|UserGroupInformation
+name|user
+init|=
+name|HttpUserGroupInformation
+operator|.
+name|get
+argument_list|()
+decl_stmt|;
 name|Response
 name|response
 decl_stmt|;
@@ -1551,22 +1363,6 @@ name|name
 argument_list|()
 argument_list|)
 expr_stmt|;
-name|String
-name|doAs
-init|=
-name|params
-operator|.
-name|get
-argument_list|(
-name|DoAsParam
-operator|.
-name|NAME
-argument_list|,
-name|DoAsParam
-operator|.
-name|class
-argument_list|)
-decl_stmt|;
 switch|switch
 condition|(
 name|op
@@ -1600,8 +1396,6 @@ init|=
 name|createFileSystem
 argument_list|(
 name|user
-argument_list|,
-name|doAs
 argument_list|)
 decl_stmt|;
 name|InputStream
@@ -1722,8 +1516,6 @@ name|fsExecute
 argument_list|(
 name|user
 argument_list|,
-name|doAs
-argument_list|,
 name|command
 argument_list|)
 decl_stmt|;
@@ -1798,8 +1590,6 @@ init|=
 name|fsExecute
 argument_list|(
 name|user
-argument_list|,
-name|doAs
 argument_list|,
 name|command
 argument_list|)
@@ -1876,8 +1666,6 @@ name|fsExecute
 argument_list|(
 name|user
 argument_list|,
-name|doAs
-argument_list|,
 name|command
 argument_list|)
 decl_stmt|;
@@ -1950,7 +1738,7 @@ name|getGroups
 argument_list|(
 name|user
 operator|.
-name|getName
+name|getShortUserName
 argument_list|()
 argument_list|)
 decl_stmt|;
@@ -2040,8 +1828,6 @@ name|fsExecute
 argument_list|(
 name|user
 argument_list|,
-name|doAs
-argument_list|,
 name|command
 argument_list|)
 decl_stmt|;
@@ -2098,8 +1884,6 @@ init|=
 name|fsExecute
 argument_list|(
 name|user
-argument_list|,
-name|doAs
 argument_list|,
 name|command
 argument_list|)
@@ -2179,8 +1963,6 @@ init|=
 name|fsExecute
 argument_list|(
 name|user
-argument_list|,
-name|doAs
 argument_list|,
 name|command
 argument_list|)
@@ -2283,8 +2065,6 @@ name|fsExecute
 argument_list|(
 name|user
 argument_list|,
-name|doAs
-argument_list|,
 name|command
 argument_list|)
 decl_stmt|;
@@ -2347,8 +2127,6 @@ name|fsExecute
 argument_list|(
 name|user
 argument_list|,
-name|doAs
-argument_list|,
 name|command
 argument_list|)
 decl_stmt|;
@@ -2407,7 +2185,7 @@ return|return
 name|response
 return|;
 block|}
-comment|/**    * Binding to handle DELETE requests.    *    * @param user the principal of the user making the request.    * @param path the path for operation.    * @param op the HttpFS operation of the request.    * @param params the HttpFS parameters of the request.    *    * @return the request response.    *    * @throws IOException thrown if an IO error occurred. Thrown exceptions are    * handled by {@link HttpFSExceptionProvider}.    * @throws FileSystemAccessException thrown if a FileSystemAccess releated    * error occurred. Thrown exceptions are handled by    * {@link HttpFSExceptionProvider}.    */
+comment|/**    * Binding to handle DELETE requests.    *    * @param path the path for operation.    * @param op the HttpFS operation of the request.    * @param params the HttpFS parameters of the request.    *    * @return the request response.    *    * @throws IOException thrown if an IO error occurred. Thrown exceptions are    * handled by {@link HttpFSExceptionProvider}.    * @throws FileSystemAccessException thrown if a FileSystemAccess releated    * error occurred. Thrown exceptions are handled by    * {@link HttpFSExceptionProvider}.    */
 annotation|@
 name|DELETE
 annotation|@
@@ -2422,16 +2200,11 @@ name|MediaType
 operator|.
 name|APPLICATION_JSON
 argument_list|)
-DECL|method|delete (@ontext Principal user, @PathParam(R) String path, @QueryParam(OperationParam.NAME) OperationParam op, @Context Parameters params)
+DECL|method|delete (@athParamR) String path, @QueryParam(OperationParam.NAME) OperationParam op, @Context Parameters params)
 specifier|public
 name|Response
 name|delete
 parameter_list|(
-annotation|@
-name|Context
-name|Principal
-name|user
-parameter_list|,
 annotation|@
 name|PathParam
 argument_list|(
@@ -2460,6 +2233,14 @@ name|IOException
 throws|,
 name|FileSystemAccessException
 block|{
+name|UserGroupInformation
+name|user
+init|=
+name|HttpUserGroupInformation
+operator|.
+name|get
+argument_list|()
+decl_stmt|;
 name|Response
 name|response
 decl_stmt|;
@@ -2487,22 +2268,6 @@ name|name
 argument_list|()
 argument_list|)
 expr_stmt|;
-name|String
-name|doAs
-init|=
-name|params
-operator|.
-name|get
-argument_list|(
-name|DoAsParam
-operator|.
-name|NAME
-argument_list|,
-name|DoAsParam
-operator|.
-name|class
-argument_list|)
-decl_stmt|;
 switch|switch
 condition|(
 name|op
@@ -2564,8 +2329,6 @@ name|fsExecute
 argument_list|(
 name|user
 argument_list|,
-name|doAs
-argument_list|,
 name|command
 argument_list|)
 decl_stmt|;
@@ -2615,7 +2378,7 @@ return|return
 name|response
 return|;
 block|}
-comment|/**    * Binding to handle POST requests.    *    * @param is the inputstream for the request payload.    * @param user the principal of the user making the request.    * @param uriInfo the of the request.    * @param path the path for operation.    * @param op the HttpFS operation of the request.    * @param params the HttpFS parameters of the request.    *    * @return the request response.    *    * @throws IOException thrown if an IO error occurred. Thrown exceptions are    * handled by {@link HttpFSExceptionProvider}.    * @throws FileSystemAccessException thrown if a FileSystemAccess releated    * error occurred. Thrown exceptions are handled by    * {@link HttpFSExceptionProvider}.    */
+comment|/**    * Binding to handle POST requests.    *    * @param is the inputstream for the request payload.    * @param uriInfo the of the request.    * @param path the path for operation.    * @param op the HttpFS operation of the request.    * @param params the HttpFS parameters of the request.    *    * @return the request response.    *    * @throws IOException thrown if an IO error occurred. Thrown exceptions are    * handled by {@link HttpFSExceptionProvider}.    * @throws FileSystemAccessException thrown if a FileSystemAccess releated    * error occurred. Thrown exceptions are handled by    * {@link HttpFSExceptionProvider}.    */
 annotation|@
 name|POST
 annotation|@
@@ -2639,18 +2402,13 @@ operator|.
 name|APPLICATION_JSON
 block|}
 argument_list|)
-DECL|method|post (InputStream is, @Context Principal user, @Context UriInfo uriInfo, @PathParam(R) String path, @QueryParam(OperationParam.NAME) OperationParam op, @Context Parameters params)
+DECL|method|post (InputStream is, @Context UriInfo uriInfo, @PathParam(R) String path, @QueryParam(OperationParam.NAME) OperationParam op, @Context Parameters params)
 specifier|public
 name|Response
 name|post
 parameter_list|(
 name|InputStream
 name|is
-parameter_list|,
-annotation|@
-name|Context
-name|Principal
-name|user
 parameter_list|,
 annotation|@
 name|Context
@@ -2685,6 +2443,14 @@ name|IOException
 throws|,
 name|FileSystemAccessException
 block|{
+name|UserGroupInformation
+name|user
+init|=
+name|HttpUserGroupInformation
+operator|.
+name|get
+argument_list|()
+decl_stmt|;
 name|Response
 name|response
 decl_stmt|;
@@ -2724,22 +2490,6 @@ case|case
 name|APPEND
 case|:
 block|{
-name|String
-name|doAs
-init|=
-name|params
-operator|.
-name|get
-argument_list|(
-name|DoAsParam
-operator|.
-name|NAME
-argument_list|,
-name|DoAsParam
-operator|.
-name|class
-argument_list|)
-decl_stmt|;
 name|Boolean
 name|hasData
 init|=
@@ -2804,8 +2554,6 @@ decl_stmt|;
 name|fsExecute
 argument_list|(
 name|user
-argument_list|,
-name|doAs
 argument_list|,
 name|command
 argument_list|)
@@ -2891,8 +2639,6 @@ decl_stmt|;
 name|fsExecute
 argument_list|(
 name|user
-argument_list|,
-literal|null
 argument_list|,
 name|command
 argument_list|)
@@ -3009,7 +2755,7 @@ literal|null
 argument_list|)
 return|;
 block|}
-comment|/**    * Binding to handle PUT requests.    *    * @param is the inputstream for the request payload.    * @param user the principal of the user making the request.    * @param uriInfo the of the request.    * @param path the path for operation.    * @param op the HttpFS operation of the request.    * @param params the HttpFS parameters of the request.    *    * @return the request response.    *    * @throws IOException thrown if an IO error occurred. Thrown exceptions are    * handled by {@link HttpFSExceptionProvider}.    * @throws FileSystemAccessException thrown if a FileSystemAccess releated    * error occurred. Thrown exceptions are handled by    * {@link HttpFSExceptionProvider}.    */
+comment|/**    * Binding to handle PUT requests.    *    * @param is the inputstream for the request payload.    * @param uriInfo the of the request.    * @param path the path for operation.    * @param op the HttpFS operation of the request.    * @param params the HttpFS parameters of the request.    *    * @return the request response.    *    * @throws IOException thrown if an IO error occurred. Thrown exceptions are    * handled by {@link HttpFSExceptionProvider}.    * @throws FileSystemAccessException thrown if a FileSystemAccess releated    * error occurred. Thrown exceptions are handled by    * {@link HttpFSExceptionProvider}.    */
 annotation|@
 name|PUT
 annotation|@
@@ -3033,18 +2779,13 @@ operator|.
 name|APPLICATION_JSON
 block|}
 argument_list|)
-DECL|method|put (InputStream is, @Context Principal user, @Context UriInfo uriInfo, @PathParam(R) String path, @QueryParam(OperationParam.NAME) OperationParam op, @Context Parameters params)
+DECL|method|put (InputStream is, @Context UriInfo uriInfo, @PathParam(R) String path, @QueryParam(OperationParam.NAME) OperationParam op, @Context Parameters params)
 specifier|public
 name|Response
 name|put
 parameter_list|(
 name|InputStream
 name|is
-parameter_list|,
-annotation|@
-name|Context
-name|Principal
-name|user
 parameter_list|,
 annotation|@
 name|Context
@@ -3079,6 +2820,14 @@ name|IOException
 throws|,
 name|FileSystemAccessException
 block|{
+name|UserGroupInformation
+name|user
+init|=
+name|HttpUserGroupInformation
+operator|.
+name|get
+argument_list|()
+decl_stmt|;
 name|Response
 name|response
 decl_stmt|;
@@ -3106,22 +2855,6 @@ name|name
 argument_list|()
 argument_list|)
 expr_stmt|;
-name|String
-name|doAs
-init|=
-name|params
-operator|.
-name|get
-argument_list|(
-name|DoAsParam
-operator|.
-name|NAME
-argument_list|,
-name|DoAsParam
-operator|.
-name|class
-argument_list|)
-decl_stmt|;
 switch|switch
 condition|(
 name|op
@@ -3270,8 +3003,6 @@ decl_stmt|;
 name|fsExecute
 argument_list|(
 name|user
-argument_list|,
-name|doAs
 argument_list|,
 name|command
 argument_list|)
@@ -3395,8 +3126,6 @@ name|fsExecute
 argument_list|(
 name|user
 argument_list|,
-name|doAs
-argument_list|,
 name|command
 argument_list|)
 expr_stmt|;
@@ -3461,8 +3190,6 @@ decl_stmt|;
 name|fsExecute
 argument_list|(
 name|user
-argument_list|,
-name|doAs
 argument_list|,
 name|command
 argument_list|)
@@ -3531,8 +3258,6 @@ init|=
 name|fsExecute
 argument_list|(
 name|user
-argument_list|,
-name|doAs
 argument_list|,
 name|command
 argument_list|)
@@ -3610,8 +3335,6 @@ init|=
 name|fsExecute
 argument_list|(
 name|user
-argument_list|,
-name|doAs
 argument_list|,
 name|command
 argument_list|)
@@ -3705,8 +3428,6 @@ name|fsExecute
 argument_list|(
 name|user
 argument_list|,
-name|doAs
-argument_list|,
 name|command
 argument_list|)
 expr_stmt|;
@@ -3776,8 +3497,6 @@ name|fsExecute
 argument_list|(
 name|user
 argument_list|,
-name|doAs
-argument_list|,
 name|command
 argument_list|)
 expr_stmt|;
@@ -3845,8 +3564,6 @@ init|=
 name|fsExecute
 argument_list|(
 name|user
-argument_list|,
-name|doAs
 argument_list|,
 name|command
 argument_list|)
@@ -3933,8 +3650,6 @@ name|fsExecute
 argument_list|(
 name|user
 argument_list|,
-name|doAs
-argument_list|,
 name|command
 argument_list|)
 expr_stmt|;
@@ -4004,8 +3719,6 @@ name|fsExecute
 argument_list|(
 name|user
 argument_list|,
-name|doAs
-argument_list|,
 name|command
 argument_list|)
 expr_stmt|;
@@ -4052,8 +3765,6 @@ decl_stmt|;
 name|fsExecute
 argument_list|(
 name|user
-argument_list|,
-name|doAs
 argument_list|,
 name|command
 argument_list|)
@@ -4117,8 +3828,6 @@ decl_stmt|;
 name|fsExecute
 argument_list|(
 name|user
-argument_list|,
-name|doAs
 argument_list|,
 name|command
 argument_list|)
@@ -4185,8 +3894,6 @@ name|fsExecute
 argument_list|(
 name|user
 argument_list|,
-name|doAs
-argument_list|,
 name|command
 argument_list|)
 expr_stmt|;
@@ -4233,8 +3940,6 @@ decl_stmt|;
 name|fsExecute
 argument_list|(
 name|user
-argument_list|,
-name|doAs
 argument_list|,
 name|command
 argument_list|)
