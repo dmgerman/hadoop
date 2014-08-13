@@ -4356,6 +4356,8 @@ argument_list|,
 literal|null
 argument_list|,
 name|targets
+argument_list|,
+literal|false
 argument_list|)
 expr_stmt|;
 comment|// send close-ack for transfer-RBW/Finalized
@@ -5853,6 +5855,16 @@ name|proxyReply
 init|=
 literal|null
 decl_stmt|;
+name|DataOutputStream
+name|replyOut
+init|=
+operator|new
+name|DataOutputStream
+argument_list|(
+name|getOutputStream
+argument_list|()
+argument_list|)
+decl_stmt|;
 try|try
 block|{
 comment|// get the output stream to the proxy
@@ -6193,7 +6205,7 @@ literal|null
 argument_list|,
 literal|null
 argument_list|,
-literal|null
+name|replyOut
 argument_list|,
 literal|null
 argument_list|,
@@ -6202,6 +6214,8 @@ operator|.
 name|balanceThrottler
 argument_list|,
 literal|null
+argument_list|,
+literal|true
 argument_list|)
 expr_stmt|;
 comment|// notify name node
@@ -6353,6 +6367,13 @@ operator|.
 name|closeStream
 argument_list|(
 name|proxyReply
+argument_list|)
+expr_stmt|;
+name|IOUtils
+operator|.
+name|closeStream
+argument_list|(
+name|replyOut
 argument_list|)
 expr_stmt|;
 block|}
