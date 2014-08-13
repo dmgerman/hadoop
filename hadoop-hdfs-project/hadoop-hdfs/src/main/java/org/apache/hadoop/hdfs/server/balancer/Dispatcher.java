@@ -879,6 +879,21 @@ operator|*
 literal|1000L
 decl_stmt|;
 comment|// 10 seconds
+DECL|field|BLOCK_MOVE_READ_TIMEOUT
+specifier|private
+specifier|static
+specifier|final
+name|int
+name|BLOCK_MOVE_READ_TIMEOUT
+init|=
+literal|20
+operator|*
+literal|60
+operator|*
+literal|1000
+decl_stmt|;
+comment|// 20
+comment|// minutes
 DECL|field|nnc
 specifier|private
 specifier|final
@@ -1733,6 +1748,14 @@ operator|.
 name|READ_TIMEOUT
 argument_list|)
 expr_stmt|;
+comment|/*          * Unfortunately we don't have a good way to know if the Datanode is          * taking a really long time to move a block, OR something has gone          * wrong and it's never going to finish. To deal with this scenario, we          * set a long timeout (20 minutes) to avoid hanging indefinitely.          */
+name|sock
+operator|.
+name|setSoTimeout
+argument_list|(
+name|BLOCK_MOVE_READ_TIMEOUT
+argument_list|)
+expr_stmt|;
 name|sock
 operator|.
 name|setKeepAlive
@@ -2082,32 +2105,6 @@ name|in
 argument_list|)
 argument_list|)
 decl_stmt|;
-while|while
-condition|(
-name|response
-operator|.
-name|getStatus
-argument_list|()
-operator|==
-name|Status
-operator|.
-name|IN_PROGRESS
-condition|)
-block|{
-comment|// read intermediate responses
-name|response
-operator|=
-name|BlockOpResponseProto
-operator|.
-name|parseFrom
-argument_list|(
-name|vintPrefixed
-argument_list|(
-name|in
-argument_list|)
-argument_list|)
-expr_stmt|;
-block|}
 if|if
 condition|(
 name|response
