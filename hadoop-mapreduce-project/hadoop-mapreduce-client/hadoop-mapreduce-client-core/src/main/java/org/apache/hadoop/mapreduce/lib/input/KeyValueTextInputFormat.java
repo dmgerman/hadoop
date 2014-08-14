@@ -205,7 +205,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * An {@link InputFormat} for plain text files. Files are broken into lines.  * Either line feed or carriage-return are used to signal end of line.   * Each line is divided into key and value parts by a separator byte. If no  * such a byte exists, the key will be the entire line and value will be empty.  */
+comment|/**  * An {@link InputFormat} for plain text files. Files are broken into lines.  * Either line feed or carriage-return are used to signal end of line.   * Each line is divided into key and value parts by a separator byte. If no  * such a byte exists, the key will be the entire line and value will be empty.  * The separator byte can be specified in config file under the attribute name  * mapreduce.input.keyvaluelinerecordreader.key.value.separator. The default  * is the tab character ('\t').  */
 end_comment
 
 begin_class
