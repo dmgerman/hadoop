@@ -298,7 +298,7 @@ return|return
 name|taskId
 return|;
 block|}
-comment|/**    * Returns enum Status.SUCESS or Status.FAILURE.    * @return task tracker status    */
+comment|/**    * Returns {@link Status}    * @return task completion status    */
 DECL|method|getStatus ()
 specifier|public
 name|Status
