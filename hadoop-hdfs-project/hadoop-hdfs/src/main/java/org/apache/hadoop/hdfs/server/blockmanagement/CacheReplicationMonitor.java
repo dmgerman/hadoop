@@ -632,27 +632,28 @@ specifier|final
 name|Condition
 name|scanFinished
 decl_stmt|;
-comment|/**    * Whether there are pending CacheManager operations that necessitate a    * CacheReplicationMonitor rescan. Protected by the CRM lock.    */
-DECL|field|needsRescan
-specifier|private
-name|boolean
-name|needsRescan
-init|=
-literal|true
-decl_stmt|;
-comment|/**    * Whether we are currently doing a rescan. Protected by the CRM lock.    */
-DECL|field|isScanning
-specifier|private
-name|boolean
-name|isScanning
-init|=
-literal|false
-decl_stmt|;
 comment|/**    * The number of rescans completed. Used to wait for scans to finish.    * Protected by the CacheReplicationMonitor lock.    */
-DECL|field|scanCount
+DECL|field|completedScanCount
 specifier|private
 name|long
-name|scanCount
+name|completedScanCount
+init|=
+literal|0
+decl_stmt|;
+comment|/**    * The scan we're currently performing, or -1 if no scan is in progress.    * Protected by the CacheReplicationMonitor lock.    */
+DECL|field|curScanCount
+specifier|private
+name|long
+name|curScanCount
+init|=
+operator|-
+literal|1
+decl_stmt|;
+comment|/**    * The number of rescans we need to complete.  Protected by the CRM lock.    */
+DECL|field|neededScanCount
+specifier|private
+name|long
+name|neededScanCount
 init|=
 literal|0
 decl_stmt|;
@@ -852,7 +853,9 @@ return|return;
 block|}
 if|if
 condition|(
-name|needsRescan
+name|completedScanCount
+operator|<
+name|neededScanCount
 condition|)
 block|{
 name|LOG
@@ -918,14 +921,6 @@ name|monotonicNow
 argument_list|()
 expr_stmt|;
 block|}
-name|isScanning
-operator|=
-literal|true
-expr_stmt|;
-name|needsRescan
-operator|=
-literal|false
-expr_stmt|;
 block|}
 finally|finally
 block|{
@@ -962,12 +957,14 @@ argument_list|()
 expr_stmt|;
 try|try
 block|{
-name|isScanning
+name|completedScanCount
 operator|=
-literal|false
+name|curScanCount
 expr_stmt|;
-name|scanCount
-operator|++
+name|curScanCount
+operator|=
+operator|-
+literal|1
 expr_stmt|;
 name|scanFinished
 operator|.
@@ -1083,8 +1080,9 @@ argument_list|)
 expr_stmt|;
 if|if
 condition|(
-operator|!
-name|needsRescan
+name|neededScanCount
+operator|<=
+name|completedScanCount
 condition|)
 block|{
 return|return;
@@ -1092,8 +1090,9 @@ block|}
 comment|// If no scan is already ongoing, mark the CRM as dirty and kick
 if|if
 condition|(
-operator|!
-name|isScanning
+name|curScanCount
+operator|<
+literal|0
 condition|)
 block|{
 name|doRescan
@@ -1103,12 +1102,6 @@ argument_list|()
 expr_stmt|;
 block|}
 comment|// Wait until the scan finishes and the count advances
-specifier|final
-name|long
-name|startCount
-init|=
-name|scanCount
-decl_stmt|;
 while|while
 condition|(
 operator|(
@@ -1117,9 +1110,9 @@ name|shutdown
 operator|)
 operator|&&
 operator|(
-name|startCount
-operator|>=
-name|scanCount
+name|completedScanCount
+operator|<
+name|neededScanCount
 operator|)
 condition|)
 block|{
@@ -1171,12 +1164,32 @@ argument_list|,
 literal|"Must hold the CRM lock when setting the needsRescan bit."
 argument_list|)
 expr_stmt|;
-name|this
-operator|.
-name|needsRescan
+if|if
+condition|(
+name|curScanCount
+operator|>=
+literal|0
+condition|)
+block|{
+comment|// If there is a scan in progress, we need to wait for the scan after
+comment|// that.
+name|neededScanCount
 operator|=
-literal|true
+name|curScanCount
+operator|+
+literal|1
 expr_stmt|;
+block|}
+else|else
+block|{
+comment|// If there is no scan in progress, we need to wait for the next scan.
+name|neededScanCount
+operator|=
+name|completedScanCount
+operator|+
+literal|1
+expr_stmt|;
+block|}
 block|}
 comment|/**    * Shut down the monitor thread.    */
 annotation|@
@@ -1264,6 +1277,11 @@ argument_list|()
 expr_stmt|;
 try|try
 block|{
+name|lock
+operator|.
+name|lock
+argument_list|()
+expr_stmt|;
 if|if
 condition|(
 name|shutdown
@@ -1279,6 +1297,23 @@ literal|"shut down."
 argument_list|)
 throw|;
 block|}
+name|curScanCount
+operator|=
+name|completedScanCount
+operator|+
+literal|1
+expr_stmt|;
+block|}
+finally|finally
+block|{
+name|lock
+operator|.
+name|unlock
+argument_list|()
+expr_stmt|;
+block|}
+try|try
+block|{
 name|resetStatistics
 argument_list|()
 expr_stmt|;
