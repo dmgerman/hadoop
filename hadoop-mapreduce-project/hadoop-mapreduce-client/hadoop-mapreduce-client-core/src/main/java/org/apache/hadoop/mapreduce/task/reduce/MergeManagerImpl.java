@@ -1068,7 +1068,9 @@ name|MRJobConfig
 operator|.
 name|SHUFFLE_INPUT_BUFFER_PERCENT
 argument_list|,
-literal|0.90f
+name|MRJobConfig
+operator|.
+name|DEFAULT_SHUFFLE_INPUT_BUFFER_PERCENT
 argument_list|)
 decl_stmt|;
 if|if

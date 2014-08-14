@@ -1165,6 +1165,15 @@ name|SHUFFLE_INPUT_BUFFER_PERCENT
 init|=
 literal|"mapreduce.reduce.shuffle.input.buffer.percent"
 decl_stmt|;
+DECL|field|DEFAULT_SHUFFLE_INPUT_BUFFER_PERCENT
+specifier|public
+specifier|static
+specifier|final
+name|float
+name|DEFAULT_SHUFFLE_INPUT_BUFFER_PERCENT
+init|=
+literal|0.70f
+decl_stmt|;
 DECL|field|SHUFFLE_MEMORY_LIMIT_PERCENT
 specifier|public
 specifier|static
