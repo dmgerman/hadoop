@@ -648,7 +648,7 @@ name|container
 operator|.
 name|addFilter
 argument_list|(
-literal|"YARNAuthenticationFilter"
+literal|"RMAuthenticationFilter"
 argument_list|,
 name|RMAuthenticationFilter
 operator|.
