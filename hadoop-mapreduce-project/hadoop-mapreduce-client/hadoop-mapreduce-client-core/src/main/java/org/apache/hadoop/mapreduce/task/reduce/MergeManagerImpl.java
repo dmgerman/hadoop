@@ -1301,7 +1301,7 @@ throw|throw
 operator|new
 name|RuntimeException
 argument_list|(
-literal|"Invlaid configuration: "
+literal|"Invalid configuration: "
 operator|+
 literal|"maxSingleShuffleLimit should be less than mergeThreshold"
 operator|+
