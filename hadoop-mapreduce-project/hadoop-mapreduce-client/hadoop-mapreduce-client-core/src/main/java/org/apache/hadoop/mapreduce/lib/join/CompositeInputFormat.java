@@ -225,7 +225,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * An InputFormat capable of performing joins over a set of data sources sorted  * and partitioned the same way.  * @see #setFormat  *  * A user may define new join types by setting the property  *<tt>mapreduce.join.define.&lt;ident&gt;</tt> to a classname.   * In the expression<tt>mapreduce.join.expr</tt>, the identifier will be  * assumed to be a ComposableRecordReader.  *<tt>mapreduce.join.keycomparator</tt> can be a classname used to compare   * keys in the join.  * @see JoinRecordReader  * @see MultiFilterRecordReader  */
+comment|/**  * An InputFormat capable of performing joins over a set of data sources sorted  * and partitioned the same way.  *  * A user may define new join types by setting the property  *<tt>mapreduce.join.define.&lt;ident&gt;</tt> to a classname.   * In the expression<tt>mapreduce.join.expr</tt>, the identifier will be  * assumed to be a ComposableRecordReader.  *<tt>mapreduce.join.keycomparator</tt> can be a classname used to compare   * keys in the join.  * @see #setFormat  * @see JoinRecordReader  * @see MultiFilterRecordReader  */
 end_comment
 
 begin_class
