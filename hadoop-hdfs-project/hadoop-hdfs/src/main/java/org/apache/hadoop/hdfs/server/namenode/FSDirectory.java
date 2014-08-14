@@ -13101,6 +13101,35 @@ argument_list|()
 expr_stmt|;
 block|}
 block|}
+DECL|method|getEZForPath (INodesInPath iip)
+name|EncryptionZoneWithId
+name|getEZForPath
+parameter_list|(
+name|INodesInPath
+name|iip
+parameter_list|)
+block|{
+name|readLock
+argument_list|()
+expr_stmt|;
+try|try
+block|{
+return|return
+name|ezManager
+operator|.
+name|getEZINodeForPath
+argument_list|(
+name|iip
+argument_list|)
+return|;
+block|}
+finally|finally
+block|{
+name|readUnlock
+argument_list|()
+expr_stmt|;
+block|}
+block|}
 DECL|method|listEncryptionZones (long prevId)
 name|BatchedListEntries
 argument_list|<

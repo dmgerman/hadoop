@@ -2196,6 +2196,20 @@ parameter_list|)
 throws|throws
 name|IOException
 function_decl|;
+comment|/**    * Get the encryption zone for a path.    */
+annotation|@
+name|Idempotent
+DECL|method|getEZForPath (String src)
+specifier|public
+name|EncryptionZoneWithId
+name|getEZForPath
+parameter_list|(
+name|String
+name|src
+parameter_list|)
+throws|throws
+name|IOException
+function_decl|;
 comment|/**    * Used to implement cursor-based batched listing of {@EncryptionZone}s.    *    * @param prevId ID of the last item in the previous batch. If there is no    *               previous batch, a negative value can be used.    * @return Batch of encryption zones.    */
 annotation|@
 name|Idempotent

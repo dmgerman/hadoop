@@ -8418,6 +8418,28 @@ expr_stmt|;
 block|}
 annotation|@
 name|Override
+DECL|method|getEZForPath (String src)
+specifier|public
+name|EncryptionZoneWithId
+name|getEZForPath
+parameter_list|(
+name|String
+name|src
+parameter_list|)
+throws|throws
+name|IOException
+block|{
+return|return
+name|namesystem
+operator|.
+name|getEZForPath
+argument_list|(
+name|src
+argument_list|)
+return|;
+block|}
+annotation|@
+name|Override
 DECL|method|listEncryptionZones ( long prevId)
 specifier|public
 name|BatchedEntries

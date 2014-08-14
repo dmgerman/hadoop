@@ -60,16 +60,6 @@ end_import
 
 begin_import
 import|import
-name|java
-operator|.
-name|util
-operator|.
-name|List
-import|;
-end_import
-
-begin_import
-import|import
 name|org
 operator|.
 name|apache
@@ -750,6 +740,31 @@ argument_list|,
 name|keyName
 argument_list|)
 expr_stmt|;
+block|}
+comment|/**    * Get the path of the encryption zone for a given file or directory.    *    * @param path The path to get the ez for.    *    * @return The EncryptionZone of the ez, or null if path is not in an ez.    * @throws IOException            if there was a general IO exception    * @throws AccessControlException if the caller does not have access to path    * @throws FileNotFoundException  if the path does not exist    */
+DECL|method|getEncryptionZoneForPath (Path path)
+specifier|public
+name|EncryptionZone
+name|getEncryptionZoneForPath
+parameter_list|(
+name|Path
+name|path
+parameter_list|)
+throws|throws
+name|IOException
+throws|,
+name|AccessControlException
+throws|,
+name|FileNotFoundException
+block|{
+return|return
+name|dfs
+operator|.
+name|getEZForPath
+argument_list|(
+name|path
+argument_list|)
+return|;
 block|}
 comment|/**    * Returns a RemoteIterator which can be used to list the encryption zones    * in HDFS. For large numbers of encryption zones, the iterator will fetch    * the list of zones in a number of small batches.    *<p/>    * Since the list is fetched in batches, it does not represent a    * consistent snapshot of the entire list of encryption zones.    *<p/>    * This method can only be called by HDFS superusers.    */
 DECL|method|listEncryptionZones ()

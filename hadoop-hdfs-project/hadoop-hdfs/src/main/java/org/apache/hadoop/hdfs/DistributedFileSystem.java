@@ -8668,6 +8668,37 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|/* HDFS only */
+DECL|method|getEZForPath (Path path)
+specifier|public
+name|EncryptionZone
+name|getEZForPath
+parameter_list|(
+name|Path
+name|path
+parameter_list|)
+throws|throws
+name|IOException
+block|{
+name|Preconditions
+operator|.
+name|checkNotNull
+argument_list|(
+name|path
+argument_list|)
+expr_stmt|;
+return|return
+name|dfs
+operator|.
+name|getEZForPath
+argument_list|(
+name|getPathName
+argument_list|(
+name|path
+argument_list|)
+argument_list|)
+return|;
+block|}
+comment|/* HDFS only */
 DECL|method|listEncryptionZones ()
 specifier|public
 name|RemoteIterator
