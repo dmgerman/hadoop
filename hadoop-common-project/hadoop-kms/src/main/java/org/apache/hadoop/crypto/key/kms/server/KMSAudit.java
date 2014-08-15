@@ -26,6 +26,20 @@ begin_import
 import|import
 name|org
 operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|security
+operator|.
+name|UserGroupInformation
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
 name|slf4j
 operator|.
 name|Logger
@@ -153,16 +167,6 @@ operator|.
 name|concurrent
 operator|.
 name|ThreadFactoryBuilder
-import|;
-end_import
-
-begin_import
-import|import
-name|java
-operator|.
-name|security
-operator|.
-name|Principal
 import|;
 end_import
 
@@ -1103,12 +1107,12 @@ expr_stmt|;
 block|}
 block|}
 block|}
-DECL|method|ok (Principal user, KMS.KMSOp op, String key, String extraMsg)
+DECL|method|ok (UserGroupInformation user, KMS.KMSOp op, String key, String extraMsg)
 specifier|public
 name|void
 name|ok
 parameter_list|(
-name|Principal
+name|UserGroupInformation
 name|user
 parameter_list|,
 name|KMS
@@ -1133,7 +1137,7 @@ name|op
 argument_list|,
 name|user
 operator|.
-name|getName
+name|getShortUserName
 argument_list|()
 argument_list|,
 name|key
@@ -1142,12 +1146,12 @@ name|extraMsg
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|ok (Principal user, KMS.KMSOp op, String extraMsg)
+DECL|method|ok (UserGroupInformation user, KMS.KMSOp op, String extraMsg)
 specifier|public
 name|void
 name|ok
 parameter_list|(
-name|Principal
+name|UserGroupInformation
 name|user
 parameter_list|,
 name|KMS
@@ -1169,7 +1173,7 @@ name|op
 argument_list|,
 name|user
 operator|.
-name|getName
+name|getShortUserName
 argument_list|()
 argument_list|,
 literal|null
@@ -1178,12 +1182,12 @@ name|extraMsg
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|unauthorized (Principal user, KMS.KMSOp op, String key)
+DECL|method|unauthorized (UserGroupInformation user, KMS.KMSOp op, String key)
 specifier|public
 name|void
 name|unauthorized
 parameter_list|(
-name|Principal
+name|UserGroupInformation
 name|user
 parameter_list|,
 name|KMS
@@ -1205,7 +1209,7 @@ name|op
 argument_list|,
 name|user
 operator|.
-name|getName
+name|getShortUserName
 argument_list|()
 argument_list|,
 name|key
@@ -1214,12 +1218,12 @@ literal|""
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|error (Principal user, String method, String url, String extraMsg)
+DECL|method|error (UserGroupInformation user, String method, String url, String extraMsg)
 specifier|public
 name|void
 name|error
 parameter_list|(
-name|Principal
+name|UserGroupInformation
 name|user
 parameter_list|,
 name|String
@@ -1242,7 +1246,7 @@ literal|null
 argument_list|,
 name|user
 operator|.
-name|getName
+name|getShortUserName
 argument_list|()
 argument_list|,
 literal|null

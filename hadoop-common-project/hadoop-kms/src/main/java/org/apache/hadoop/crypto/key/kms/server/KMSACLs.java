@@ -560,7 +560,7 @@ return|return
 name|conf
 return|;
 block|}
-DECL|method|hasAccess (Type type, String user)
+DECL|method|hasAccess (Type type, UserGroupInformation ugi)
 specifier|public
 name|boolean
 name|hasAccess
@@ -568,20 +568,10 @@ parameter_list|(
 name|Type
 name|type
 parameter_list|,
-name|String
-name|user
-parameter_list|)
-block|{
 name|UserGroupInformation
 name|ugi
-init|=
-name|UserGroupInformation
-operator|.
-name|createRemoteUser
-argument_list|(
-name|user
-argument_list|)
-decl_stmt|;
+parameter_list|)
+block|{
 return|return
 name|acls
 operator|.
