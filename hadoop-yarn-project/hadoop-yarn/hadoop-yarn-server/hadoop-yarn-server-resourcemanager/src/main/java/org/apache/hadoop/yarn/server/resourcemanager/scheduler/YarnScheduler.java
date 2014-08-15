@@ -675,6 +675,17 @@ parameter_list|)
 throws|throws
 name|YarnException
 function_decl|;
+comment|/**    * Terminate all applications in the specified queue.    *    * @param queueName the name of queue to be drained    * @throws YarnException    */
+DECL|method|killAllAppsInQueue (String queueName)
+name|void
+name|killAllAppsInQueue
+parameter_list|(
+name|String
+name|queueName
+parameter_list|)
+throws|throws
+name|YarnException
+function_decl|;
 block|}
 end_interface
 
