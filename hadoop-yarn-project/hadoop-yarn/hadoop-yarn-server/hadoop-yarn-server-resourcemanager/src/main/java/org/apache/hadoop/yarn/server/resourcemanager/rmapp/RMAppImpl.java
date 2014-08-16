@@ -1601,6 +1601,25 @@ operator|.
 name|FAILED
 argument_list|)
 argument_list|)
+operator|.
+name|addTransition
+argument_list|(
+name|RMAppState
+operator|.
+name|NEW_SAVING
+argument_list|,
+name|RMAppState
+operator|.
+name|NEW_SAVING
+argument_list|,
+name|RMAppEventType
+operator|.
+name|MOVE
+argument_list|,
+operator|new
+name|RMAppMoveTransition
+argument_list|()
+argument_list|)
 comment|// Transitions from SUBMITTED state
 operator|.
 name|addTransition
@@ -2125,6 +2144,10 @@ argument_list|,
 name|RMAppEventType
 operator|.
 name|APP_NEW_SAVED
+argument_list|,
+name|RMAppEventType
+operator|.
+name|MOVE
 argument_list|)
 argument_list|)
 comment|// Transitions from FINISHING state
@@ -2184,11 +2207,15 @@ name|RMAppEventType
 operator|.
 name|NODE_UPDATE
 argument_list|,
-comment|// ignore Kill as we have already saved the final Finished state in
-comment|// state store.
+comment|// ignore Kill/Move as we have already saved the final Finished state
+comment|// in state store.
 name|RMAppEventType
 operator|.
 name|KILL
+argument_list|,
+name|RMAppEventType
+operator|.
+name|MOVE
 argument_list|)
 argument_list|)
 comment|// Transitions from KILLING state
@@ -2280,6 +2307,10 @@ argument_list|,
 name|RMAppEventType
 operator|.
 name|KILL
+argument_list|,
+name|RMAppEventType
+operator|.
+name|MOVE
 argument_list|)
 argument_list|)
 comment|// Transitions from FINISHED state
@@ -2333,6 +2364,10 @@ argument_list|,
 name|RMAppEventType
 operator|.
 name|KILL
+argument_list|,
+name|RMAppEventType
+operator|.
+name|MOVE
 argument_list|)
 argument_list|)
 comment|// Transitions from FAILED state
@@ -2378,6 +2413,10 @@ argument_list|,
 name|RMAppEventType
 operator|.
 name|NODE_UPDATE
+argument_list|,
+name|RMAppEventType
+operator|.
+name|MOVE
 argument_list|)
 argument_list|)
 comment|// Transitions from KILLED state
@@ -2439,6 +2478,10 @@ argument_list|,
 name|RMAppEventType
 operator|.
 name|NODE_UPDATE
+argument_list|,
+name|RMAppEventType
+operator|.
+name|MOVE
 argument_list|)
 argument_list|)
 operator|.

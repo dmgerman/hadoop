@@ -408,12 +408,12 @@ name|void
 name|testUpdateDemand
 parameter_list|()
 block|{
-name|AppSchedulable
+name|FSAppAttempt
 name|app
 init|=
 name|mock
 argument_list|(
-name|AppSchedulable
+name|FSAppAttempt
 operator|.
 name|class
 argument_list|)

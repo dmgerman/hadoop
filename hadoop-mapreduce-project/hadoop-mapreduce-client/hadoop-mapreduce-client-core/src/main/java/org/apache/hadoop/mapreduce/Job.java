@@ -283,7 +283,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * The job submitter's view of the Job.  *   *<p>It allows the user to configure the  * job, submit it, control its execution, and query the state. The set methods  * only work until the job is submitted, afterwards they will throw an   * IllegalStateException.</p>  *   *<p>  * Normally the user creates the application, describes various facets of the  * job via {@link Job} and then submits the job and monitor its progress.</p>  *   *<p>Here is an example on how to submit a job:</p>  *<p><blockquote><pre>  *     // Create a new Job  *     Job job = new Job(new Configuration());  *     job.setJarByClass(MyJob.class);  *       *     // Specify various job-specific parameters       *     job.setJobName("myjob");  *       *     job.setInputPath(new Path("in"));  *     job.setOutputPath(new Path("out"));  *       *     job.setMapperClass(MyJob.MyMapper.class);  *     job.setReducerClass(MyJob.MyReducer.class);  *  *     // Submit the job, then poll for progress until the job is complete  *     job.waitForCompletion(true);  *</pre></blockquote></p>  *   *   */
+comment|/**  * The job submitter's view of the Job.  *   *<p>It allows the user to configure the  * job, submit it, control its execution, and query the state. The set methods  * only work until the job is submitted, afterwards they will throw an   * IllegalStateException.</p>  *   *<p>  * Normally the user creates the application, describes various facets of the  * job via {@link Job} and then submits the job and monitor its progress.</p>  *   *<p>Here is an example on how to submit a job:</p>  *<p><blockquote><pre>  *     // Create a new Job  *     Job job = Job.getInstance();  *     job.setJarByClass(MyJob.class);  *       *     // Specify various job-specific parameters       *     job.setJobName("myjob");  *       *     job.setInputPath(new Path("in"));  *     job.setOutputPath(new Path("out"));  *       *     job.setMapperClass(MyJob.MyMapper.class);  *     job.setReducerClass(MyJob.MyReducer.class);  *  *     // Submit the job, then poll for progress until the job is complete  *     job.waitForCompletion(true);  *</pre></blockquote></p>  *   *   */
 end_comment
 
 begin_class
@@ -488,6 +488,7 @@ specifier|private
 name|Cluster
 name|cluster
 decl_stmt|;
+comment|/**    * @deprecated Use {@link #getInstance()}    */
 annotation|@
 name|Deprecated
 DECL|method|Job ()
@@ -505,6 +506,7 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
+comment|/**    * @deprecated Use {@link #getInstance(Configuration)}    */
 annotation|@
 name|Deprecated
 DECL|method|Job (Configuration conf)
@@ -527,6 +529,7 @@ argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
+comment|/**    * @deprecated Use {@link #getInstance(Configuration, String)}    */
 annotation|@
 name|Deprecated
 DECL|method|Job (Configuration conf, String jobName)

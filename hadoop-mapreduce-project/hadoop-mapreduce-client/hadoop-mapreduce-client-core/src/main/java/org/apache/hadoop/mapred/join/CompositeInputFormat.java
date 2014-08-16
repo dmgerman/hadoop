@@ -185,7 +185,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * An InputFormat capable of performing joins over a set of data sources sorted  * and partitioned the same way.  * @see #setFormat  *  * A user may define new join types by setting the property  *<tt>mapred.join.define.&lt;ident&gt;</tt> to a classname. In the expression  *<tt>mapred.join.expr</tt>, the identifier will be assumed to be a  * ComposableRecordReader.  *<tt>mapred.join.keycomparator</tt> can be a classname used to compare keys  * in the join.  * @see JoinRecordReader  * @see MultiFilterRecordReader  */
+comment|/**  * An InputFormat capable of performing joins over a set of data sources sorted  * and partitioned the same way.  *  * A user may define new join types by setting the property  *<tt>mapred.join.define.&lt;ident&gt;</tt> to a classname. In the expression  *<tt>mapred.join.expr</tt>, the identifier will be assumed to be a  * ComposableRecordReader.  *<tt>mapred.join.keycomparator</tt> can be a classname used to compare keys  * in the join.  * @see #setFormat  * @see JoinRecordReader  * @see MultiFilterRecordReader  */
 end_comment
 
 begin_class

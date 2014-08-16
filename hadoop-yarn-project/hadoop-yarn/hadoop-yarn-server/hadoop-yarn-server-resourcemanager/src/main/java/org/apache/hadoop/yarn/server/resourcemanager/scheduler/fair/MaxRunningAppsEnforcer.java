@@ -206,7 +206,7 @@ name|ListMultimap
 argument_list|<
 name|String
 argument_list|,
-name|AppSchedulable
+name|FSAppAttempt
 argument_list|>
 name|usersNonRunnableApps
 decl_stmt|;
@@ -354,12 +354,12 @@ literal|true
 return|;
 block|}
 comment|/**    * Tracks the given new runnable app for purposes of maintaining max running    * app limits.    */
-DECL|method|trackRunnableApp (FSSchedulerApp app)
+DECL|method|trackRunnableApp (FSAppAttempt app)
 specifier|public
 name|void
 name|trackRunnableApp
 parameter_list|(
-name|FSSchedulerApp
+name|FSAppAttempt
 name|app
 parameter_list|)
 block|{
@@ -439,12 +439,12 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|/**    * Tracks the given new non runnable app so that it can be made runnable when    * it would not violate max running app limits.    */
-DECL|method|trackNonRunnableApp (FSSchedulerApp app)
+DECL|method|trackNonRunnableApp (FSAppAttempt app)
 specifier|public
 name|void
 name|trackNonRunnableApp
 parameter_list|(
-name|FSSchedulerApp
+name|FSAppAttempt
 name|app
 parameter_list|)
 block|{
@@ -463,19 +463,16 @@ argument_list|(
 name|user
 argument_list|,
 name|app
-operator|.
-name|getAppSchedulable
-argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
 comment|/**    * Checks to see whether any other applications runnable now that the given    * application has been removed from the given queue.  And makes them so.    *     * Runs in O(n log(n)) where n is the number of queues that are under the    * highest queue that went from having no slack to having slack.    */
-DECL|method|updateRunnabilityOnAppRemoval (FSSchedulerApp app, FSLeafQueue queue)
+DECL|method|updateRunnabilityOnAppRemoval (FSAppAttempt app, FSLeafQueue queue)
 specifier|public
 name|void
 name|updateRunnabilityOnAppRemoval
 parameter_list|(
-name|FSSchedulerApp
+name|FSAppAttempt
 name|app
 parameter_list|,
 name|FSLeafQueue
@@ -576,7 +573,7 @@ name|List
 argument_list|<
 name|List
 argument_list|<
-name|AppSchedulable
+name|FSAppAttempt
 argument_list|>
 argument_list|>
 name|appsNowMaybeRunnable
@@ -586,7 +583,7 @@ name|ArrayList
 argument_list|<
 name|List
 argument_list|<
-name|AppSchedulable
+name|FSAppAttempt
 argument_list|>
 argument_list|>
 argument_list|()
@@ -656,7 +653,7 @@ condition|)
 block|{
 name|List
 argument_list|<
-name|AppSchedulable
+name|FSAppAttempt
 argument_list|>
 name|userWaitingApps
 init|=
@@ -686,7 +683,7 @@ block|}
 comment|// Scan through and check whether this means that any apps are now runnable
 name|Iterator
 argument_list|<
-name|FSSchedulerApp
+name|FSAppAttempt
 argument_list|>
 name|iter
 init|=
@@ -696,21 +693,21 @@ argument_list|(
 name|appsNowMaybeRunnable
 argument_list|)
 decl_stmt|;
-name|FSSchedulerApp
+name|FSAppAttempt
 name|prev
 init|=
 literal|null
 decl_stmt|;
 name|List
 argument_list|<
-name|AppSchedulable
+name|FSAppAttempt
 argument_list|>
 name|noLongerPendingApps
 init|=
 operator|new
 name|ArrayList
 argument_list|<
-name|AppSchedulable
+name|FSAppAttempt
 argument_list|>
 argument_list|()
 decl_stmt|;
@@ -722,7 +719,7 @@ name|hasNext
 argument_list|()
 condition|)
 block|{
-name|FSSchedulerApp
+name|FSAppAttempt
 name|next
 init|=
 name|iter
@@ -760,13 +757,10 @@ argument_list|(
 name|next
 argument_list|)
 expr_stmt|;
-name|AppSchedulable
+name|FSAppAttempt
 name|appSched
 init|=
 name|next
-operator|.
-name|getAppSchedulable
-argument_list|()
 decl_stmt|;
 name|next
 operator|.
@@ -816,7 +810,7 @@ comment|// pull them out from under the iterator.  If they are not in these list
 comment|// in the first place, there is a bug.
 for|for
 control|(
-name|AppSchedulable
+name|FSAppAttempt
 name|appSched
 range|:
 name|noLongerPendingApps
@@ -826,9 +820,6 @@ if|if
 condition|(
 operator|!
 name|appSched
-operator|.
-name|getApp
-argument_list|()
 operator|.
 name|getQueue
 argument_list|()
@@ -865,9 +856,6 @@ name|remove
 argument_list|(
 name|appSched
 operator|.
-name|getApp
-argument_list|()
-operator|.
 name|getUser
 argument_list|()
 argument_list|,
@@ -892,12 +880,12 @@ block|}
 block|}
 block|}
 comment|/**    * Updates the relevant tracking variables after a runnable app with the given    * queue and user has been removed.    */
-DECL|method|untrackRunnableApp (FSSchedulerApp app)
+DECL|method|untrackRunnableApp (FSAppAttempt app)
 specifier|public
 name|void
 name|untrackRunnableApp
 parameter_list|(
-name|FSSchedulerApp
+name|FSAppAttempt
 name|app
 parameter_list|)
 block|{
@@ -988,12 +976,12 @@ expr_stmt|;
 block|}
 block|}
 comment|/**    * Stops tracking the given non-runnable app    */
-DECL|method|untrackNonRunnableApp (FSSchedulerApp app)
+DECL|method|untrackNonRunnableApp (FSAppAttempt app)
 specifier|public
 name|void
 name|untrackNonRunnableApp
 parameter_list|(
-name|FSSchedulerApp
+name|FSAppAttempt
 name|app
 parameter_list|)
 block|{
@@ -1007,14 +995,11 @@ name|getUser
 argument_list|()
 argument_list|,
 name|app
-operator|.
-name|getAppSchedulable
-argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
 comment|/**    * Traverses the queue hierarchy under the given queue to gather all lists    * of non-runnable applications.    */
-DECL|method|gatherPossiblyRunnableAppLists (FSQueue queue, List<List<AppSchedulable>> appLists)
+DECL|method|gatherPossiblyRunnableAppLists (FSQueue queue, List<List<FSAppAttempt>> appLists)
 specifier|private
 name|void
 name|gatherPossiblyRunnableAppLists
@@ -1026,7 +1011,7 @@ name|List
 argument_list|<
 name|List
 argument_list|<
-name|AppSchedulable
+name|FSAppAttempt
 argument_list|>
 argument_list|>
 name|appLists
@@ -1108,14 +1093,14 @@ name|MultiListStartTimeIterator
 implements|implements
 name|Iterator
 argument_list|<
-name|FSSchedulerApp
+name|FSAppAttempt
 argument_list|>
 block|{
 DECL|field|appLists
 specifier|private
 name|List
 argument_list|<
-name|AppSchedulable
+name|FSAppAttempt
 argument_list|>
 index|[]
 name|appLists
@@ -1139,7 +1124,7 @@ name|SuppressWarnings
 argument_list|(
 literal|"unchecked"
 argument_list|)
-DECL|method|MultiListStartTimeIterator (List<List<AppSchedulable>> appListList)
+DECL|method|MultiListStartTimeIterator (List<List<FSAppAttempt>> appListList)
 specifier|public
 name|MultiListStartTimeIterator
 parameter_list|(
@@ -1147,7 +1132,7 @@ name|List
 argument_list|<
 name|List
 argument_list|<
-name|AppSchedulable
+name|FSAppAttempt
 argument_list|>
 argument_list|>
 name|appListList
@@ -1279,7 +1264,7 @@ annotation|@
 name|Override
 DECL|method|next ()
 specifier|public
-name|FSSchedulerApp
+name|FSAppAttempt
 name|next
 parameter_list|()
 block|{
@@ -1298,7 +1283,7 @@ name|indexAndTime
 operator|.
 name|index
 decl_stmt|;
-name|AppSchedulable
+name|FSAppAttempt
 name|next
 init|=
 name|appLists
@@ -1377,9 +1362,6 @@ argument_list|)
 expr_stmt|;
 return|return
 name|next
-operator|.
-name|getApp
-argument_list|()
 return|;
 block|}
 annotation|@

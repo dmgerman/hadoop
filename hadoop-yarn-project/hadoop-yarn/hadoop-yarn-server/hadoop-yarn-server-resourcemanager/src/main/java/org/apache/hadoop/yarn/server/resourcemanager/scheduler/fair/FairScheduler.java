@@ -1348,7 +1348,7 @@ name|FairScheduler
 extends|extends
 name|AbstractYarnScheduler
 argument_list|<
-name|FSSchedulerApp
+name|FSAppAttempt
 argument_list|,
 name|FSSchedulerNode
 argument_list|>
@@ -2580,7 +2580,7 @@ control|)
 block|{
 for|for
 control|(
-name|AppSchedulable
+name|FSAppAttempt
 name|app
 range|:
 name|queue
@@ -2590,9 +2590,6 @@ argument_list|()
 control|)
 block|{
 name|app
-operator|.
-name|getApp
-argument_list|()
 operator|.
 name|resetPreemptedResources
 argument_list|()
@@ -2688,7 +2685,7 @@ control|)
 block|{
 for|for
 control|(
-name|AppSchedulable
+name|FSAppAttempt
 name|app
 range|:
 name|queue
@@ -2698,9 +2695,6 @@ argument_list|()
 control|)
 block|{
 name|app
-operator|.
-name|getApp
-argument_list|()
 operator|.
 name|clearPreemptedResources
 argument_list|()
@@ -2744,7 +2738,7 @@ operator|.
 name|getApplicationAttemptId
 argument_list|()
 decl_stmt|;
-name|FSSchedulerApp
+name|FSAppAttempt
 name|app
 init|=
 name|getSchedulerApp
@@ -2886,7 +2880,7 @@ block|}
 block|}
 else|else
 block|{
-comment|// track the request in the FSSchedulerApp itself
+comment|// track the request in the FSAppAttempt itself
 name|app
 operator|.
 name|addPreemption
@@ -3167,13 +3161,13 @@ argument_list|()
 return|;
 block|}
 comment|// synchronized for sizeBasedWeight
-DECL|method|getAppWeight (AppSchedulable app)
+DECL|method|getAppWeight (FSAppAttempt app)
 specifier|public
 specifier|synchronized
 name|ResourceWeights
 name|getAppWeight
 parameter_list|(
-name|AppSchedulable
+name|FSAppAttempt
 name|app
 parameter_list|)
 block|{
@@ -3582,14 +3576,14 @@ return|return;
 block|}
 name|SchedulerApplication
 argument_list|<
-name|FSSchedulerApp
+name|FSAppAttempt
 argument_list|>
 name|application
 init|=
 operator|new
 name|SchedulerApplication
 argument_list|<
-name|FSSchedulerApp
+name|FSAppAttempt
 argument_list|>
 argument_list|(
 name|queue
@@ -3708,7 +3702,7 @@ parameter_list|)
 block|{
 name|SchedulerApplication
 argument_list|<
-name|FSSchedulerApp
+name|FSAppAttempt
 argument_list|>
 name|application
 init|=
@@ -3741,12 +3735,14 @@ operator|.
 name|getQueue
 argument_list|()
 decl_stmt|;
-name|FSSchedulerApp
+name|FSAppAttempt
 name|attempt
 init|=
 operator|new
-name|FSSchedulerApp
+name|FSAppAttempt
 argument_list|(
+name|this
+argument_list|,
 name|applicationAttemptId
 argument_list|,
 name|user
@@ -4095,7 +4091,7 @@ parameter_list|)
 block|{
 name|SchedulerApplication
 argument_list|<
-name|FSSchedulerApp
+name|FSAppAttempt
 argument_list|>
 name|application
 init|=
@@ -4172,7 +4168,7 @@ argument_list|)
 expr_stmt|;
 name|SchedulerApplication
 argument_list|<
-name|FSSchedulerApp
+name|FSAppAttempt
 argument_list|>
 name|application
 init|=
@@ -4186,7 +4182,7 @@ name|getApplicationId
 argument_list|()
 argument_list|)
 decl_stmt|;
-name|FSSchedulerApp
+name|FSAppAttempt
 name|attempt
 init|=
 name|getSchedulerApp
@@ -4436,7 +4432,7 @@ name|getContainer
 argument_list|()
 decl_stmt|;
 comment|// Get the application for the finished container
-name|FSSchedulerApp
+name|FSAppAttempt
 name|application
 init|=
 name|getCurrentAttemptForContainer
@@ -4517,19 +4513,12 @@ name|application
 operator|.
 name|unreserve
 argument_list|(
-name|node
-argument_list|,
 name|rmContainer
 operator|.
 name|getReservedPriority
 argument_list|()
-argument_list|)
-expr_stmt|;
+argument_list|,
 name|node
-operator|.
-name|unreserveResource
-argument_list|(
-name|application
 argument_list|)
 expr_stmt|;
 block|}
@@ -4838,7 +4827,7 @@ name|blacklistRemovals
 parameter_list|)
 block|{
 comment|// Make sure this application exists
-name|FSSchedulerApp
+name|FSAppAttempt
 name|application
 init|=
 name|getSchedulerApp
@@ -5689,7 +5678,7 @@ block|{
 comment|// Assign new containers...
 comment|// 1. Check for reserved applications
 comment|// 2. Schedule if there are no reservations
-name|AppSchedulable
+name|FSAppAttempt
 name|reservedAppSchedulable
 init|=
 name|node
@@ -5737,9 +5726,6 @@ literal|"Releasing reservation that cannot be satisfied for application "
 operator|+
 name|reservedAppSchedulable
 operator|.
-name|getApp
-argument_list|()
-operator|.
 name|getApplicationAttemptId
 argument_list|()
 operator|+
@@ -5780,9 +5766,6 @@ argument_list|(
 literal|"Trying to fulfill reservation for application "
 operator|+
 name|reservedAppSchedulable
-operator|.
-name|getApp
-argument_list|()
 operator|.
 name|getApplicationAttemptId
 argument_list|()
@@ -5904,7 +5887,7 @@ expr_stmt|;
 block|}
 DECL|method|getSchedulerApp (ApplicationAttemptId appAttemptId)
 specifier|public
-name|FSSchedulerApp
+name|FSAppAttempt
 name|getSchedulerApp
 parameter_list|(
 name|ApplicationAttemptId
@@ -5912,9 +5895,6 @@ name|appAttemptId
 parameter_list|)
 block|{
 return|return
-operator|(
-name|FSSchedulerApp
-operator|)
 name|super
 operator|.
 name|getApplicationAttempt
@@ -6065,6 +6045,19 @@ name|event
 decl_stmt|;
 name|addNode
 argument_list|(
+name|nodeAddedEvent
+operator|.
+name|getAddedRMNode
+argument_list|()
+argument_list|)
+expr_stmt|;
+name|recoverContainersOnNode
+argument_list|(
+name|nodeAddedEvent
+operator|.
+name|getContainerReports
+argument_list|()
+argument_list|,
 name|nodeAddedEvent
 operator|.
 name|getAddedRMNode
@@ -6721,7 +6714,7 @@ name|ApplicationId
 argument_list|,
 name|SchedulerApplication
 argument_list|<
-name|FSSchedulerApp
+name|FSAppAttempt
 argument_list|>
 argument_list|>
 argument_list|()
@@ -7163,8 +7156,6 @@ parameter_list|()
 block|{
 name|UserGroupInformation
 name|user
-init|=
-literal|null
 decl_stmt|;
 try|try
 block|{
@@ -7432,7 +7423,7 @@ name|YarnException
 block|{
 name|SchedulerApplication
 argument_list|<
-name|FSSchedulerApp
+name|FSAppAttempt
 argument_list|>
 name|app
 init|=
@@ -7462,11 +7453,11 @@ literal|" not found."
 argument_list|)
 throw|;
 block|}
-name|FSSchedulerApp
+name|FSAppAttempt
 name|attempt
 init|=
 operator|(
-name|FSSchedulerApp
+name|FSAppAttempt
 operator|)
 name|app
 operator|.
@@ -7545,9 +7536,6 @@ operator|.
 name|contains
 argument_list|(
 name|attempt
-operator|.
-name|getAppSchedulable
-argument_list|()
 argument_list|)
 condition|)
 block|{
@@ -7580,12 +7568,12 @@ argument_list|()
 return|;
 block|}
 block|}
-DECL|method|verifyMoveDoesNotViolateConstraints (FSSchedulerApp app, FSLeafQueue oldQueue, FSLeafQueue targetQueue)
+DECL|method|verifyMoveDoesNotViolateConstraints (FSAppAttempt app, FSLeafQueue oldQueue, FSLeafQueue targetQueue)
 specifier|private
 name|void
 name|verifyMoveDoesNotViolateConstraints
 parameter_list|(
-name|FSSchedulerApp
+name|FSAppAttempt
 name|app
 parameter_list|,
 name|FSLeafQueue
@@ -7749,18 +7737,18 @@ expr_stmt|;
 block|}
 block|}
 comment|/**    * Helper for moveApplication, which has appropriate synchronization, so all    * operations will be atomic.    */
-DECL|method|executeMove (SchedulerApplication<FSSchedulerApp> app, FSSchedulerApp attempt, FSLeafQueue oldQueue, FSLeafQueue newQueue)
+DECL|method|executeMove (SchedulerApplication<FSAppAttempt> app, FSAppAttempt attempt, FSLeafQueue oldQueue, FSLeafQueue newQueue)
 specifier|private
 name|void
 name|executeMove
 parameter_list|(
 name|SchedulerApplication
 argument_list|<
-name|FSSchedulerApp
+name|FSAppAttempt
 argument_list|>
 name|app
 parameter_list|,
-name|FSSchedulerApp
+name|FSAppAttempt
 name|attempt
 parameter_list|,
 name|FSLeafQueue

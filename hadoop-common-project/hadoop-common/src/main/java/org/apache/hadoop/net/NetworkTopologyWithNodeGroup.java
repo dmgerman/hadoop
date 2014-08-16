@@ -1133,9 +1133,7 @@ name|reader
 argument_list|,
 name|nodes
 argument_list|,
-name|nodes
-operator|.
-name|length
+name|activeLen
 argument_list|,
 name|seed
 argument_list|,

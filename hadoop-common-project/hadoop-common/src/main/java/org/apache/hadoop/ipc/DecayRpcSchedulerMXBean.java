@@ -4,7 +4,7 @@ comment|/**  * Licensed to the Apache Software Foundation (ASF) under one  * or 
 end_comment
 
 begin_package
-DECL|package|org.apache.hadoop.lib.service
+DECL|package|org.apache.hadoop.ipc
 package|package
 name|org
 operator|.
@@ -12,74 +12,40 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|lib
-operator|.
-name|service
+name|ipc
 package|;
 end_package
 
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|classification
-operator|.
-name|InterfaceAudience
-import|;
-end_import
-
-begin_import
-import|import
-name|java
-operator|.
-name|io
-operator|.
-name|IOException
-import|;
-end_import
-
-begin_import
-import|import
-name|java
-operator|.
-name|security
-operator|.
-name|AccessControlException
-import|;
-end_import
+begin_comment
+comment|/**  * Provides metrics for Decay scheduler.  */
+end_comment
 
 begin_interface
-annotation|@
-name|InterfaceAudience
-operator|.
-name|Private
-DECL|interface|ProxyUser
+DECL|interface|DecayRpcSchedulerMXBean
 specifier|public
 interface|interface
-name|ProxyUser
+name|DecayRpcSchedulerMXBean
 block|{
-DECL|method|validate (String proxyUser, String proxyHost, String doAsUser)
-specifier|public
-name|void
-name|validate
-parameter_list|(
+comment|// Get an overview of the requests in history.
+DECL|method|getSchedulingDecisionSummary ()
 name|String
-name|proxyUser
-parameter_list|,
+name|getSchedulingDecisionSummary
+parameter_list|()
+function_decl|;
+DECL|method|getCallVolumeSummary ()
 name|String
-name|proxyHost
-parameter_list|,
-name|String
-name|doAsUser
-parameter_list|)
-throws|throws
-name|IOException
-throws|,
-name|AccessControlException
+name|getCallVolumeSummary
+parameter_list|()
+function_decl|;
+DECL|method|getUniqueIdentityCount ()
+name|int
+name|getUniqueIdentityCount
+parameter_list|()
+function_decl|;
+DECL|method|getTotalCallVolume ()
+name|long
+name|getTotalCallVolume
+parameter_list|()
 function_decl|;
 block|}
 end_interface

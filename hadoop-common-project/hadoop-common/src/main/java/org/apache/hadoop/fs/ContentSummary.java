@@ -88,6 +88,20 @@ name|Writable
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|util
+operator|.
+name|StringUtils
+import|;
+end_import
+
 begin_comment
 comment|/** Store the summary of a content (a directory or a file). */
 end_comment
@@ -444,7 +458,7 @@ specifier|final
 name|String
 name|STRING_FORMAT
 init|=
-literal|"%12d %12d %18d "
+literal|"%12s %12s %18s "
 decl_stmt|;
 comment|/**     * Output format:    *<----12----><----15----><----15----><----15----><----12----><----12----><-------18------->    *    QUOTA   REMAINING_QUATA SPACE_QUOTA SPACE_QUOTA_REM DIR_COUNT   FILE_COUNT   CONTENT_SIZE     FILE_NAME        */
 DECL|field|QUOTA_STRING_FORMAT
@@ -508,13 +522,13 @@ name|QUOTA_STRING_FORMAT
 operator|+
 name|SPACE_QUOTA_STRING_FORMAT
 argument_list|,
-literal|"quota"
+literal|"name quota"
 argument_list|,
-literal|"remaining quota"
+literal|"rem name quota"
 argument_list|,
 literal|"space quota"
 argument_list|,
-literal|"reamaining quota"
+literal|"rem space quota"
 argument_list|)
 operator|+
 name|HEADER
@@ -553,7 +567,7 @@ literal|true
 argument_list|)
 return|;
 block|}
-comment|/** Return the string representation of the object in the output format.    * if qOption is false, output directory count, file count, and content size;    * if qOption is true, output quota and remaining quota as well.    *     * @param qOption a flag indicating if quota needs to be printed or not    * @return the string representation of the object    */
+comment|/** Return the string representation of the object in the output format.    * if qOption is false, output directory count, file count, and content size;    * if qOption is true, output quota and remaining quota as well.    *    * @param qOption a flag indicating if quota needs to be printed or not    * @return the string representation of the object   */
 DECL|method|toString (boolean qOption)
 specifier|public
 name|String
@@ -561,6 +575,28 @@ name|toString
 parameter_list|(
 name|boolean
 name|qOption
+parameter_list|)
+block|{
+return|return
+name|toString
+argument_list|(
+name|qOption
+argument_list|,
+literal|false
+argument_list|)
+return|;
+block|}
+comment|/** Return the string representation of the object in the output format.    * if qOption is false, output directory count, file count, and content size;    * if qOption is true, output quota and remaining quota as well.    * if hOption is false file sizes are returned in bytes    * if hOption is true file sizes are returned in human readable     *     * @param qOption a flag indicating if quota needs to be printed or not    * @param hOption a flag indicating if human readable output if to be used    * @return the string representation of the object    */
+DECL|method|toString (boolean qOption, boolean hOption)
+specifier|public
+name|String
+name|toString
+parameter_list|(
+name|boolean
+name|qOption
+parameter_list|,
+name|boolean
+name|hOption
 parameter_list|)
 block|{
 name|String
@@ -602,18 +638,16 @@ condition|)
 block|{
 name|quotaStr
 operator|=
-name|Long
-operator|.
-name|toString
+name|formatSize
 argument_list|(
 name|quota
+argument_list|,
+name|hOption
 argument_list|)
 expr_stmt|;
 name|quotaRem
 operator|=
-name|Long
-operator|.
-name|toString
+name|formatSize
 argument_list|(
 name|quota
 operator|-
@@ -622,6 +656,8 @@ name|directoryCount
 operator|+
 name|fileCount
 operator|)
+argument_list|,
+name|hOption
 argument_list|)
 expr_stmt|;
 block|}
@@ -634,22 +670,22 @@ condition|)
 block|{
 name|spaceQuotaStr
 operator|=
-name|Long
-operator|.
-name|toString
+name|formatSize
 argument_list|(
 name|spaceQuota
+argument_list|,
+name|hOption
 argument_list|)
 expr_stmt|;
 name|spaceQuotaRem
 operator|=
-name|Long
-operator|.
-name|toString
+name|formatSize
 argument_list|(
 name|spaceQuota
 operator|-
 name|spaceConsumed
+argument_list|,
+name|hOption
 argument_list|)
 expr_stmt|;
 block|}
@@ -682,11 +718,63 @@ name|format
 argument_list|(
 name|STRING_FORMAT
 argument_list|,
+name|formatSize
+argument_list|(
 name|directoryCount
 argument_list|,
+name|hOption
+argument_list|)
+argument_list|,
+name|formatSize
+argument_list|(
 name|fileCount
 argument_list|,
+name|hOption
+argument_list|)
+argument_list|,
+name|formatSize
+argument_list|(
 name|length
+argument_list|,
+name|hOption
+argument_list|)
+argument_list|)
+return|;
+block|}
+comment|/**    * Formats a size to be human readable or in bytes    * @param size value to be formatted    * @param humanReadable flag indicating human readable or not    * @return String representation of the size   */
+DECL|method|formatSize (long size, boolean humanReadable)
+specifier|private
+name|String
+name|formatSize
+parameter_list|(
+name|long
+name|size
+parameter_list|,
+name|boolean
+name|humanReadable
+parameter_list|)
+block|{
+return|return
+name|humanReadable
+condition|?
+name|StringUtils
+operator|.
+name|TraditionalBinaryPrefix
+operator|.
+name|long2String
+argument_list|(
+name|size
+argument_list|,
+literal|""
+argument_list|,
+literal|1
+argument_list|)
+else|:
+name|String
+operator|.
+name|valueOf
+argument_list|(
+name|size
 argument_list|)
 return|;
 block|}

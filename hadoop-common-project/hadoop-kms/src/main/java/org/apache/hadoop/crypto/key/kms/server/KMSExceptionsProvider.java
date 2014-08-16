@@ -94,6 +94,20 @@ name|hadoop
 operator|.
 name|security
 operator|.
+name|UserGroupInformation
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|security
+operator|.
 name|authentication
 operator|.
 name|client
@@ -201,16 +215,6 @@ operator|.
 name|io
 operator|.
 name|IOException
-import|;
-end_import
-
-begin_import
-import|import
-name|java
-operator|.
-name|security
-operator|.
-name|Principal
 import|;
 end_import
 
@@ -631,7 +635,7 @@ name|error
 argument_list|(
 name|KMSMDCFilter
 operator|.
-name|getPrincipal
+name|getUgi
 argument_list|()
 argument_list|,
 name|KMSMDCFilter
@@ -674,12 +678,12 @@ name|Throwable
 name|ex
 parameter_list|)
 block|{
-name|Principal
-name|principal
+name|UserGroupInformation
+name|ugi
 init|=
 name|KMSMDCFilter
 operator|.
-name|getPrincipal
+name|getUgi
 argument_list|()
 decl_stmt|;
 name|String
@@ -710,9 +714,9 @@ name|LOG
 operator|.
 name|warn
 argument_list|(
-literal|"User:{} Method:{} URL:{} Response:{}-{}"
+literal|"User:'{}' Method:{} URL:{} Response:{}-{}"
 argument_list|,
-name|principal
+name|ugi
 argument_list|,
 name|method
 argument_list|,
