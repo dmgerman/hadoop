@@ -189,6 +189,13 @@ name|long
 name|getAccessTime
 parameter_list|()
 function_decl|;
+comment|/** @return the storage policy ID */
+DECL|method|getStoragePolicyID ()
+specifier|public
+name|byte
+name|getStoragePolicyID
+parameter_list|()
+function_decl|;
 comment|/** A read-only copy of the inode attributes. */
 DECL|class|SnapshotCopy
 specifier|public

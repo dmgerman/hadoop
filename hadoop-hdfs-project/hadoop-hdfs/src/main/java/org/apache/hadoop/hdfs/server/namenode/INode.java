@@ -2113,6 +2113,32 @@ return|return
 name|this
 return|;
 block|}
+comment|/**    * @return the storage policy id of the inode    */
+DECL|method|getStoragePolicyID (int snapshotId)
+specifier|public
+specifier|abstract
+name|byte
+name|getStoragePolicyID
+parameter_list|(
+name|int
+name|snapshotId
+parameter_list|)
+function_decl|;
+DECL|method|getStoragePolicyID ()
+specifier|public
+name|byte
+name|getStoragePolicyID
+parameter_list|()
+block|{
+return|return
+name|getStoragePolicyID
+argument_list|(
+name|Snapshot
+operator|.
+name|CURRENT_STATE_ID
+argument_list|)
+return|;
+block|}
 comment|/**    * Breaks {@code path} into components.    * @return array of byte arrays each of which represents    * a single path component.    */
 annotation|@
 name|VisibleForTesting

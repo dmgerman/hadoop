@@ -24,19 +24,7 @@ name|mockito
 operator|.
 name|Matchers
 operator|.
-name|anyString
-import|;
-end_import
-
-begin_import
-import|import static
-name|org
-operator|.
-name|mockito
-operator|.
-name|Matchers
-operator|.
-name|anyShort
+name|anyBoolean
 import|;
 end_import
 
@@ -60,7 +48,7 @@ name|mockito
 operator|.
 name|Matchers
 operator|.
-name|anyBoolean
+name|anyObject
 import|;
 end_import
 
@@ -72,7 +60,19 @@ name|mockito
 operator|.
 name|Matchers
 operator|.
-name|anyObject
+name|anyShort
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|mockito
+operator|.
+name|Matchers
+operator|.
+name|anyString
 import|;
 end_import
 
@@ -209,20 +209,6 @@ operator|.
 name|fs
 operator|.
 name|FSDataOutputStream
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|fs
-operator|.
-name|FileStatus
 import|;
 end_import
 
@@ -2424,6 +2410,11 @@ argument_list|,
 literal|1010
 argument_list|,
 literal|0
+argument_list|,
+operator|(
+name|byte
+operator|)
+literal|0
 argument_list|)
 argument_list|)
 operator|.
@@ -2484,6 +2475,11 @@ index|]
 argument_list|,
 literal|1010
 argument_list|,
+literal|0
+argument_list|,
+operator|(
+name|byte
+operator|)
 literal|0
 argument_list|)
 argument_list|)

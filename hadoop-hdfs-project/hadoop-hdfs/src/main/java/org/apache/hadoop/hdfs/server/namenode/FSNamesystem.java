@@ -12410,7 +12410,7 @@ return|return
 name|isFile
 return|;
 block|}
-comment|/**    * Set the storage policy for an existing file.    *    * @param src file name    * @param policyName storage policy name    */
+comment|/**    * Set the storage policy for a file or a directory.    *    * @param src file/directory path    * @param policyName storage policy name    */
 DECL|method|setStoragePolicy (String src, final String policyName)
 name|void
 name|setStoragePolicy
@@ -23041,6 +23041,11 @@ argument_list|)
 throw|;
 block|}
 block|}
+name|boolean
+name|isSuperUser
+init|=
+literal|true
+decl_stmt|;
 if|if
 condition|(
 name|isPermissionEnabled
@@ -23078,6 +23083,13 @@ name|src
 argument_list|)
 expr_stmt|;
 block|}
+name|isSuperUser
+operator|=
+name|pc
+operator|.
+name|isSuperUser
+argument_list|()
+expr_stmt|;
 block|}
 name|logAuditEvent
 argument_list|(
@@ -23099,6 +23111,8 @@ argument_list|,
 name|startAfter
 argument_list|,
 name|needLocation
+argument_list|,
+name|isSuperUser
 argument_list|)
 expr_stmt|;
 block|}

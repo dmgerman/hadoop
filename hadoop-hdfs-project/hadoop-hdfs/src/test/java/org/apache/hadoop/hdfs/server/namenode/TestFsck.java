@@ -6937,6 +6937,11 @@ name|numChildren
 init|=
 literal|1
 decl_stmt|;
+name|byte
+name|storagePolicy
+init|=
+literal|0
+decl_stmt|;
 name|HdfsFileStatus
 name|file
 init|=
@@ -6968,6 +6973,8 @@ argument_list|,
 name|fileId
 argument_list|,
 name|numChildren
+argument_list|,
+name|storagePolicy
 argument_list|)
 decl_stmt|;
 name|Result

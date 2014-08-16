@@ -1073,6 +1073,27 @@ expr_stmt|;
 block|}
 annotation|@
 name|Override
+DECL|method|getStoragePolicyID (int snapshotId)
+specifier|public
+specifier|final
+name|byte
+name|getStoragePolicyID
+parameter_list|(
+name|int
+name|snapshotId
+parameter_list|)
+block|{
+return|return
+name|referred
+operator|.
+name|getStoragePolicyID
+argument_list|(
+name|snapshotId
+argument_list|)
+return|;
+block|}
+annotation|@
+name|Override
 DECL|method|recordModification (int latestSnapshotId)
 specifier|final
 name|void

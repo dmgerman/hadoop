@@ -8621,7 +8621,7 @@ argument_list|)
 throw|;
 block|}
 block|}
-comment|/**    * Set storage policy for an existing file    * @param src file name    * @param policyName name of the storage policy    */
+comment|/**    * Set storage policy for an existing file/directory    * @param src file/directory name    * @param policyName name of the storage policy    */
 DECL|method|setStoragePolicy (String src, String policyName)
 specifier|public
 name|void

@@ -118,13 +118,6 @@ name|long
 name|getPreferredBlockSize
 parameter_list|()
 function_decl|;
-comment|/** @return the storage policy ID. */
-DECL|method|getStoragePolicyID ()
-specifier|public
-name|byte
-name|getStoragePolicyID
-parameter_list|()
-function_decl|;
 comment|/** @return the header as a long. */
 DECL|method|getHeaderLong ()
 specifier|public

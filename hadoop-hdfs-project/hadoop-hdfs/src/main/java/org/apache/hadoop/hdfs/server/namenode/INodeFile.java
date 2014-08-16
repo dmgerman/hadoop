@@ -1825,6 +1825,41 @@ return|;
 block|}
 annotation|@
 name|Override
+DECL|method|getStoragePolicyID (int snapshotId)
+specifier|public
+name|byte
+name|getStoragePolicyID
+parameter_list|(
+name|int
+name|snapshotId
+parameter_list|)
+block|{
+if|if
+condition|(
+name|snapshotId
+operator|!=
+name|Snapshot
+operator|.
+name|CURRENT_STATE_ID
+condition|)
+block|{
+return|return
+name|getSnapshotINode
+argument_list|(
+name|snapshotId
+argument_list|)
+operator|.
+name|getStoragePolicyID
+argument_list|()
+return|;
+block|}
+return|return
+name|getStoragePolicyID
+argument_list|()
+return|;
+block|}
+annotation|@
+name|Override
 DECL|method|getStoragePolicyID ()
 specifier|public
 name|byte
@@ -1840,15 +1875,13 @@ name|header
 argument_list|)
 return|;
 block|}
-comment|/** Set the policy id of the file */
-DECL|method|setStoragePolicyID (byte policyId)
-specifier|public
-specifier|final
+DECL|method|setStoragePolicyID (byte storagePolicyId)
+specifier|private
 name|void
 name|setStoragePolicyID
 parameter_list|(
 name|byte
-name|policyId
+name|storagePolicyId
 parameter_list|)
 block|{
 name|header
@@ -1861,35 +1894,35 @@ name|BITS
 operator|.
 name|combine
 argument_list|(
-name|policyId
+name|storagePolicyId
 argument_list|,
 name|header
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|setStoragePolicyID (byte policyId, int lastSnapshotId)
+DECL|method|setStoragePolicyID (byte storagePolicyId, int latestSnapshotId)
 specifier|public
 specifier|final
 name|void
 name|setStoragePolicyID
 parameter_list|(
 name|byte
-name|policyId
+name|storagePolicyId
 parameter_list|,
 name|int
-name|lastSnapshotId
+name|latestSnapshotId
 parameter_list|)
 throws|throws
 name|QuotaExceededException
 block|{
 name|recordModification
 argument_list|(
-name|lastSnapshotId
+name|latestSnapshotId
 argument_list|)
 expr_stmt|;
 name|setStoragePolicyID
 argument_list|(
-name|policyId
+name|storagePolicyId
 argument_list|)
 expr_stmt|;
 block|}

@@ -630,6 +630,25 @@ literal|"XAttrs are not supported on symlinks"
 argument_list|)
 throw|;
 block|}
+annotation|@
+name|Override
+DECL|method|getStoragePolicyID (int snapshotId)
+specifier|public
+name|byte
+name|getStoragePolicyID
+parameter_list|(
+name|int
+name|snapshotId
+parameter_list|)
+block|{
+throw|throw
+operator|new
+name|UnsupportedOperationException
+argument_list|(
+literal|"Storage policy are not supported on symlinks"
+argument_list|)
+throw|;
+block|}
 block|}
 end_class
 
