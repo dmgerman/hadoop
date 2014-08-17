@@ -169,7 +169,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * Container class which holds a list of ip/host addresses and   * answers membership queries.  *  * Accepts list of ip addresses, ip addreses in CIDR format and/or   * host addresses.  */
+comment|/**  * Container class which holds a list of ip/host addresses and   * answers membership queries.  * .  * Accepts list of ip addresses, ip addreses in CIDR format and/or   * host addresses.  */
 end_comment
 
 begin_class
@@ -290,24 +290,6 @@ name|getTrimmedStringCollection
 argument_list|(
 name|hostEntries
 argument_list|)
-argument_list|)
-expr_stmt|;
-block|}
-comment|/**    *    * @param hostEntries collection of separated ip/cidr/host addresses    */
-DECL|method|MachineList (Collection<String> hostEntries)
-specifier|public
-name|MachineList
-parameter_list|(
-name|Collection
-argument_list|<
-name|String
-argument_list|>
-name|hostEntries
-parameter_list|)
-block|{
-name|this
-argument_list|(
-name|hostEntries
 argument_list|,
 name|InetAddressFactory
 operator|.
