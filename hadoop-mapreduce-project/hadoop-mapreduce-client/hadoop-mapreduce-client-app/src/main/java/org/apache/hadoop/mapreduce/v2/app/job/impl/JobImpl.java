@@ -4982,7 +4982,7 @@ name|callerUGI
 argument_list|,
 name|jobOperation
 argument_list|,
-name|username
+name|userName
 argument_list|,
 name|jobACL
 argument_list|)
