@@ -218,6 +218,20 @@ name|hadoop
 operator|.
 name|fs
 operator|.
+name|FileContext
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|fs
+operator|.
 name|FileStatus
 import|;
 end_import
@@ -624,7 +638,9 @@ specifier|private
 name|int
 name|eventCounter
 decl_stmt|;
-comment|//TODO Does the FS object need to be different ?
+comment|// Those file systems may differ from the job configuration
+comment|// See org.apache.hadoop.mapreduce.v2.jobhistory.JobHistoryUtils
+comment|// #ensurePathInDefaultFileSystem
 DECL|field|stagingDirFS
 specifier|private
 name|FileSystem
@@ -911,9 +927,9 @@ try|try
 block|{
 name|stagingDirPath
 operator|=
-name|FileSystem
+name|FileContext
 operator|.
-name|get
+name|getFileContext
 argument_list|(
 name|conf
 argument_list|)
@@ -994,9 +1010,9 @@ try|try
 block|{
 name|doneDirPath
 operator|=
-name|FileSystem
+name|FileContext
 operator|.
-name|get
+name|getFileContext
 argument_list|(
 name|conf
 argument_list|)
@@ -1153,9 +1169,9 @@ try|try
 block|{
 name|doneDirPrefixPath
 operator|=
-name|FileSystem
+name|FileContext
 operator|.
-name|get
+name|getFileContext
 argument_list|(
 name|conf
 argument_list|)

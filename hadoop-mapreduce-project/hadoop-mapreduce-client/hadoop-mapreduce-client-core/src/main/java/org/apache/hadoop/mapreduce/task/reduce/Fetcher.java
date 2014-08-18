@@ -1740,6 +1740,16 @@ argument_list|)
 expr_stmt|;
 comment|// If connect did not succeed, just mark all the maps as failed,
 comment|// indirectly penalizing the host
+name|scheduler
+operator|.
+name|hostFailed
+argument_list|(
+name|host
+operator|.
+name|getHostName
+argument_list|()
+argument_list|)
+expr_stmt|;
 for|for
 control|(
 name|TaskAttemptID
@@ -1845,6 +1855,16 @@ name|toString
 argument_list|(
 name|failedTasks
 argument_list|)
+argument_list|)
+expr_stmt|;
+name|scheduler
+operator|.
+name|hostFailed
+argument_list|(
+name|host
+operator|.
+name|getHostName
+argument_list|()
 argument_list|)
 expr_stmt|;
 for|for

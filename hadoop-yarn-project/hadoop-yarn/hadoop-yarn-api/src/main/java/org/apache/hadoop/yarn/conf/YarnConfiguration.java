@@ -4995,7 +4995,7 @@ throw|throw
 operator|new
 name|HadoopIllegalArgumentException
 argument_list|(
-literal|"Configuration doesn't specify"
+literal|"Configuration doesn't specify "
 operator|+
 name|YarnConfiguration
 operator|.

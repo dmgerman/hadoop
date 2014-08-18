@@ -431,8 +431,8 @@ expr_stmt|;
 block|}
 comment|/**    * Get the length of this file, in bytes.    * @return the length of this file, in bytes.    */
 DECL|method|getLen ()
-specifier|final
 specifier|public
+specifier|final
 name|long
 name|getLen
 parameter_list|()
@@ -443,8 +443,8 @@ return|;
 block|}
 comment|/**    * Is this a directory?    * @return true if this is a directory    */
 DECL|method|isDir ()
-specifier|final
 specifier|public
+specifier|final
 name|boolean
 name|isDir
 parameter_list|()
@@ -468,8 +468,8 @@ return|;
 block|}
 comment|/**    * Get the block size of the file.    * @return the number of bytes    */
 DECL|method|getBlockSize ()
-specifier|final
 specifier|public
+specifier|final
 name|long
 name|getBlockSize
 parameter_list|()
@@ -480,8 +480,8 @@ return|;
 block|}
 comment|/**    * Get the replication factor of a file.    * @return the replication factor of a file.    */
 DECL|method|getReplication ()
-specifier|final
 specifier|public
+specifier|final
 name|short
 name|getReplication
 parameter_list|()
@@ -492,8 +492,8 @@ return|;
 block|}
 comment|/**    * Get the modification time of the file.    * @return the modification time of file in milliseconds since January 1, 1970 UTC.    */
 DECL|method|getModificationTime ()
-specifier|final
 specifier|public
+specifier|final
 name|long
 name|getModificationTime
 parameter_list|()
@@ -504,8 +504,8 @@ return|;
 block|}
 comment|/**    * Get the access time of the file.    * @return the access time of file in milliseconds since January 1, 1970 UTC.    */
 DECL|method|getAccessTime ()
-specifier|final
 specifier|public
+specifier|final
 name|long
 name|getAccessTime
 parameter_list|()
@@ -516,8 +516,8 @@ return|;
 block|}
 comment|/**    * Get FsPermission associated with the file.    * @return permssion    */
 DECL|method|getPermission ()
-specifier|final
 specifier|public
+specifier|final
 name|FsPermission
 name|getPermission
 parameter_list|()
@@ -528,8 +528,8 @@ return|;
 block|}
 comment|/**    * Get the owner of the file.    * @return owner of the file    */
 DECL|method|getOwner ()
-specifier|final
 specifier|public
+specifier|final
 name|String
 name|getOwner
 parameter_list|()
@@ -540,8 +540,8 @@ return|;
 block|}
 comment|/**    * Get the group associated with the file.    * @return group for the file.     */
 DECL|method|getGroup ()
-specifier|final
 specifier|public
+specifier|final
 name|String
 name|getGroup
 parameter_list|()
@@ -552,8 +552,8 @@ return|;
 block|}
 comment|/**    * Check if the local name is empty    * @return true if the name is empty    */
 DECL|method|isEmptyLocalName ()
-specifier|final
 specifier|public
+specifier|final
 name|boolean
 name|isEmptyLocalName
 parameter_list|()
@@ -568,8 +568,8 @@ return|;
 block|}
 comment|/**    * Get the string representation of the local name    * @return the local name in string    */
 DECL|method|getLocalName ()
-specifier|final
 specifier|public
+specifier|final
 name|String
 name|getLocalName
 parameter_list|()
@@ -585,8 +585,8 @@ return|;
 block|}
 comment|/**    * Get the Java UTF8 representation of the local name    * @return the local name in java UTF8    */
 DECL|method|getLocalNameInBytes ()
-specifier|final
 specifier|public
+specifier|final
 name|byte
 index|[]
 name|getLocalNameInBytes
@@ -598,8 +598,8 @@ return|;
 block|}
 comment|/**    * Get the string representation of the full path name    * @param parent the parent path    * @return the full path in string    */
 DECL|method|getFullName (final String parent)
-specifier|final
 specifier|public
+specifier|final
 name|String
 name|getFullName
 parameter_list|(
@@ -667,8 +667,8 @@ return|;
 block|}
 comment|/**    * Get the full path    * @param parent the parent path    * @return the full path    */
 DECL|method|getFullPath (final Path parent)
-specifier|final
 specifier|public
+specifier|final
 name|Path
 name|getFullPath
 parameter_list|(
@@ -700,8 +700,8 @@ return|;
 block|}
 comment|/**    * Get the string representation of the symlink.    * @return the symlink as a string.    */
 DECL|method|getSymlink ()
-specifier|final
 specifier|public
+specifier|final
 name|String
 name|getSymlink
 parameter_list|()
@@ -716,8 +716,8 @@ argument_list|)
 return|;
 block|}
 DECL|method|getSymlinkInBytes ()
-specifier|final
 specifier|public
+specifier|final
 name|byte
 index|[]
 name|getSymlinkInBytes
@@ -728,8 +728,8 @@ name|symlink
 return|;
 block|}
 DECL|method|getFileId ()
-specifier|final
 specifier|public
+specifier|final
 name|long
 name|getFileId
 parameter_list|()
@@ -739,8 +739,8 @@ name|fileId
 return|;
 block|}
 DECL|method|getFileEncryptionInfo ()
-specifier|final
 specifier|public
+specifier|final
 name|FileEncryptionInfo
 name|getFileEncryptionInfo
 parameter_list|()
@@ -750,8 +750,8 @@ name|feInfo
 return|;
 block|}
 DECL|method|getChildrenNum ()
-specifier|final
 specifier|public
+specifier|final
 name|int
 name|getChildrenNum
 parameter_list|()
@@ -761,8 +761,8 @@ name|childrenNum
 return|;
 block|}
 DECL|method|makeQualified (URI defaultUri, Path path)
-specifier|final
 specifier|public
+specifier|final
 name|FileStatus
 name|makeQualified
 parameter_list|(

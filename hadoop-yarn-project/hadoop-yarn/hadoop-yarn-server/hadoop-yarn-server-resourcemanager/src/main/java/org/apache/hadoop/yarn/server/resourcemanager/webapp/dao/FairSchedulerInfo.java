@@ -227,9 +227,6 @@ argument_list|(
 name|appAttemptId
 argument_list|)
 operator|.
-name|getAppSchedulable
-argument_list|()
-operator|.
 name|getFairShare
 argument_list|()
 operator|.

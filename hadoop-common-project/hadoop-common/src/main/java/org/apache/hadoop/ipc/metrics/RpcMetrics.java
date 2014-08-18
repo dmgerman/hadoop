@@ -595,7 +595,7 @@ argument_list|(
 literal|"Number of authentication failures"
 argument_list|)
 DECL|field|rpcAuthenticationFailures
-name|MutableCounterInt
+name|MutableCounterLong
 name|rpcAuthenticationFailures
 decl_stmt|;
 annotation|@
@@ -604,7 +604,7 @@ argument_list|(
 literal|"Number of authentication successes"
 argument_list|)
 DECL|field|rpcAuthenticationSuccesses
-name|MutableCounterInt
+name|MutableCounterLong
 name|rpcAuthenticationSuccesses
 decl_stmt|;
 annotation|@
@@ -613,7 +613,7 @@ argument_list|(
 literal|"Number of authorization failures"
 argument_list|)
 DECL|field|rpcAuthorizationFailures
-name|MutableCounterInt
+name|MutableCounterLong
 name|rpcAuthorizationFailures
 decl_stmt|;
 annotation|@
@@ -622,7 +622,7 @@ argument_list|(
 literal|"Number of authorization sucesses"
 argument_list|)
 DECL|field|rpcAuthorizationSuccesses
-name|MutableCounterInt
+name|MutableCounterLong
 name|rpcAuthorizationSuccesses
 decl_stmt|;
 DECL|method|numOpenConnections ()

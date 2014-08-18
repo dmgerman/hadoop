@@ -4,7 +4,7 @@ comment|/**  * Licensed to the Apache Software Foundation (ASF) under one  * or 
 end_comment
 
 begin_package
-DECL|package|org.apache.hadoop.lib.service
+DECL|package|org.apache.hadoop.util
 package|package
 name|org
 operator|.
@@ -12,9 +12,7 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|lib
-operator|.
-name|service
+name|util
 package|;
 end_package
 
@@ -34,52 +32,42 @@ end_import
 
 begin_import
 import|import
-name|java
+name|org
 operator|.
-name|io
+name|apache
 operator|.
-name|IOException
-import|;
-end_import
-
-begin_import
-import|import
-name|java
+name|hadoop
 operator|.
-name|security
+name|classification
 operator|.
-name|AccessControlException
+name|InterfaceStability
 import|;
 end_import
 
 begin_interface
 annotation|@
+name|InterfaceStability
+operator|.
+name|Unstable
+annotation|@
 name|InterfaceAudience
 operator|.
-name|Private
-DECL|interface|ProxyUser
+name|Public
+DECL|interface|IPList
 specifier|public
 interface|interface
-name|ProxyUser
+name|IPList
 block|{
-DECL|method|validate (String proxyUser, String proxyHost, String doAsUser)
+comment|/**    * returns true if the ipAddress is in the IPList.    * @param ipAddress    * @return boolean value indicating whether the ipAddress is in the IPList    */
+DECL|method|isIn (String ipAddress)
 specifier|public
-name|void
-name|validate
+specifier|abstract
+name|boolean
+name|isIn
 parameter_list|(
 name|String
-name|proxyUser
-parameter_list|,
-name|String
-name|proxyHost
-parameter_list|,
-name|String
-name|doAsUser
+name|ipAddress
 parameter_list|)
-throws|throws
-name|IOException
-throws|,
-name|AccessControlException
 function_decl|;
 block|}
 end_interface

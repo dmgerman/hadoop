@@ -506,24 +506,6 @@ name|api
 operator|.
 name|records
 operator|.
-name|ContainerStatus
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|yarn
-operator|.
-name|api
-operator|.
-name|records
-operator|.
 name|FinalApplicationStatus
 import|;
 end_import
@@ -958,26 +940,6 @@ name|server
 operator|.
 name|resourcemanager
 operator|.
-name|rmcontainer
-operator|.
-name|RMContainerEventType
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|yarn
-operator|.
-name|server
-operator|.
-name|resourcemanager
-operator|.
 name|rmnode
 operator|.
 name|RMNode
@@ -1061,26 +1023,6 @@ operator|.
 name|scheduler
 operator|.
 name|SchedulerNode
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|yarn
-operator|.
-name|server
-operator|.
-name|resourcemanager
-operator|.
-name|scheduler
-operator|.
-name|SchedulerUtils
 import|;
 end_import
 
@@ -10955,7 +10897,7 @@ argument_list|(
 name|updateEvent
 argument_list|)
 expr_stmt|;
-name|FSSchedulerApp
+name|FSAppAttempt
 name|app
 init|=
 name|scheduler
@@ -11436,7 +11378,7 @@ argument_list|,
 literal|1
 argument_list|)
 decl_stmt|;
-name|FSSchedulerApp
+name|FSAppAttempt
 name|app1
 init|=
 name|scheduler
@@ -11453,7 +11395,7 @@ argument_list|,
 name|app1
 argument_list|)
 expr_stmt|;
-name|FSSchedulerApp
+name|FSAppAttempt
 name|app2
 init|=
 name|scheduler
@@ -11999,7 +11941,7 @@ argument_list|,
 literal|2
 argument_list|)
 decl_stmt|;
-name|FSSchedulerApp
+name|FSAppAttempt
 name|app1
 init|=
 name|scheduler
@@ -12009,7 +11951,7 @@ argument_list|(
 name|attId1
 argument_list|)
 decl_stmt|;
-name|FSSchedulerApp
+name|FSAppAttempt
 name|app2
 init|=
 name|scheduler
@@ -12272,7 +12214,7 @@ argument_list|,
 literal|8
 argument_list|)
 decl_stmt|;
-name|FSSchedulerApp
+name|FSAppAttempt
 name|app
 init|=
 name|scheduler
@@ -12477,7 +12419,7 @@ argument_list|,
 literal|8
 argument_list|)
 decl_stmt|;
-name|FSSchedulerApp
+name|FSAppAttempt
 name|app
 init|=
 name|scheduler
@@ -12765,7 +12707,7 @@ argument_list|,
 literal|4
 argument_list|)
 decl_stmt|;
-name|FSSchedulerApp
+name|FSAppAttempt
 name|app1
 init|=
 name|scheduler
@@ -12775,7 +12717,7 @@ argument_list|(
 name|attId1
 argument_list|)
 decl_stmt|;
-name|FSSchedulerApp
+name|FSAppAttempt
 name|app2
 init|=
 name|scheduler
@@ -12785,7 +12727,7 @@ argument_list|(
 name|attId2
 argument_list|)
 decl_stmt|;
-name|FSSchedulerApp
+name|FSAppAttempt
 name|app3
 init|=
 name|scheduler
@@ -12795,7 +12737,7 @@ argument_list|(
 name|attId3
 argument_list|)
 decl_stmt|;
-name|FSSchedulerApp
+name|FSAppAttempt
 name|app4
 init|=
 name|scheduler
@@ -13602,7 +13544,7 @@ argument_list|(
 name|updateEvent
 argument_list|)
 expr_stmt|;
-name|FSSchedulerApp
+name|FSAppAttempt
 name|app
 init|=
 name|scheduler
@@ -14141,7 +14083,7 @@ name|node2
 argument_list|)
 decl_stmt|;
 comment|// no matter how many heartbeats, node2 should never get a container
-name|FSSchedulerApp
+name|FSAppAttempt
 name|app
 init|=
 name|scheduler
@@ -14433,7 +14375,7 @@ name|node2
 argument_list|)
 decl_stmt|;
 comment|// no matter how many heartbeats, node2 should never get a container
-name|FSSchedulerApp
+name|FSAppAttempt
 name|app
 init|=
 name|scheduler
@@ -14684,7 +14626,7 @@ argument_list|,
 literal|0
 argument_list|)
 decl_stmt|;
-name|FSSchedulerApp
+name|FSAppAttempt
 name|app
 init|=
 name|scheduler
@@ -14992,7 +14934,7 @@ argument_list|,
 literal|2
 argument_list|)
 decl_stmt|;
-name|FSSchedulerApp
+name|FSAppAttempt
 name|app
 init|=
 name|scheduler
@@ -15142,7 +15084,7 @@ argument_list|,
 literal|2
 argument_list|)
 decl_stmt|;
-name|FSSchedulerApp
+name|FSAppAttempt
 name|app1
 init|=
 name|scheduler
@@ -15168,7 +15110,7 @@ argument_list|,
 literal|2
 argument_list|)
 decl_stmt|;
-name|FSSchedulerApp
+name|FSAppAttempt
 name|app2
 init|=
 name|scheduler
@@ -15429,7 +15371,7 @@ argument_list|,
 literal|2
 argument_list|)
 decl_stmt|;
-name|FSSchedulerApp
+name|FSAppAttempt
 name|app1
 init|=
 name|scheduler
@@ -15455,7 +15397,7 @@ argument_list|,
 literal|2
 argument_list|)
 decl_stmt|;
-name|FSSchedulerApp
+name|FSAppAttempt
 name|app2
 init|=
 name|scheduler
@@ -15481,7 +15423,7 @@ argument_list|,
 literal|2
 argument_list|)
 decl_stmt|;
-name|FSSchedulerApp
+name|FSAppAttempt
 name|app3
 init|=
 name|scheduler
@@ -15738,7 +15680,7 @@ literal|3
 argument_list|)
 expr_stmt|;
 comment|// so that start times will be different
-name|FSSchedulerApp
+name|FSAppAttempt
 name|app1
 init|=
 name|scheduler
@@ -15772,7 +15714,7 @@ literal|3
 argument_list|)
 expr_stmt|;
 comment|// so that start times will be different
-name|FSSchedulerApp
+name|FSAppAttempt
 name|app2
 init|=
 name|scheduler
@@ -15806,7 +15748,7 @@ literal|3
 argument_list|)
 expr_stmt|;
 comment|// so that start times will be different
-name|FSSchedulerApp
+name|FSAppAttempt
 name|app3
 init|=
 name|scheduler
@@ -15840,7 +15782,7 @@ literal|3
 argument_list|)
 expr_stmt|;
 comment|// so that start times will be different
-name|FSSchedulerApp
+name|FSAppAttempt
 name|app4
 init|=
 name|scheduler
@@ -16393,7 +16335,7 @@ name|node2
 argument_list|)
 decl_stmt|;
 comment|// no matter how many heartbeats, node2 should never get a container
-name|FSSchedulerApp
+name|FSAppAttempt
 name|app
 init|=
 name|scheduler
@@ -16486,7 +16428,7 @@ name|boolean
 name|runnable
 parameter_list|)
 block|{
-name|FSSchedulerApp
+name|FSAppAttempt
 name|app
 init|=
 name|scheduler
@@ -16506,7 +16448,7 @@ argument_list|()
 decl_stmt|;
 name|Collection
 argument_list|<
-name|AppSchedulable
+name|FSAppAttempt
 argument_list|>
 name|runnableApps
 init|=
@@ -16517,7 +16459,7 @@ argument_list|()
 decl_stmt|;
 name|Collection
 argument_list|<
-name|AppSchedulable
+name|FSAppAttempt
 argument_list|>
 name|nonRunnableApps
 init|=
@@ -16535,9 +16477,6 @@ operator|.
 name|contains
 argument_list|(
 name|app
-operator|.
-name|getAppSchedulable
-argument_list|()
 argument_list|)
 argument_list|)
 expr_stmt|;
@@ -16551,9 +16490,6 @@ operator|.
 name|contains
 argument_list|(
 name|app
-operator|.
-name|getAppSchedulable
-argument_list|()
 argument_list|)
 argument_list|)
 expr_stmt|;
@@ -17232,7 +17168,7 @@ argument_list|,
 name|attId1
 argument_list|)
 expr_stmt|;
-name|FSSchedulerApp
+name|FSAppAttempt
 name|app1
 init|=
 name|scheduler
@@ -17332,7 +17268,7 @@ argument_list|,
 name|attId2
 argument_list|)
 expr_stmt|;
-name|FSSchedulerApp
+name|FSAppAttempt
 name|app2
 init|=
 name|scheduler
@@ -17432,7 +17368,7 @@ argument_list|,
 name|attId3
 argument_list|)
 expr_stmt|;
-name|FSSchedulerApp
+name|FSAppAttempt
 name|app3
 init|=
 name|scheduler
@@ -17664,7 +17600,7 @@ argument_list|,
 name|attId4
 argument_list|)
 expr_stmt|;
-name|FSSchedulerApp
+name|FSAppAttempt
 name|app4
 init|=
 name|scheduler
@@ -17764,7 +17700,7 @@ argument_list|,
 name|attId5
 argument_list|)
 expr_stmt|;
-name|FSSchedulerApp
+name|FSAppAttempt
 name|app5
 init|=
 name|scheduler
@@ -18046,7 +17982,7 @@ argument_list|,
 name|attId6
 argument_list|)
 expr_stmt|;
-name|FSSchedulerApp
+name|FSAppAttempt
 name|app6
 init|=
 name|scheduler
@@ -18649,7 +18585,7 @@ argument_list|,
 name|attId1
 argument_list|)
 expr_stmt|;
-name|FSSchedulerApp
+name|FSAppAttempt
 name|app1
 init|=
 name|scheduler
@@ -18749,7 +18685,7 @@ argument_list|,
 name|attId2
 argument_list|)
 expr_stmt|;
-name|FSSchedulerApp
+name|FSAppAttempt
 name|app2
 init|=
 name|scheduler
@@ -19624,7 +19560,7 @@ operator|+
 literal|500
 argument_list|)
 expr_stmt|;
-name|FSSchedulerApp
+name|FSAppAttempt
 name|app
 init|=
 name|fs
@@ -20745,7 +20681,7 @@ name|size
 argument_list|()
 argument_list|)
 expr_stmt|;
-name|FSSchedulerApp
+name|FSAppAttempt
 name|app
 init|=
 name|scheduler
@@ -21048,7 +20984,7 @@ argument_list|,
 literal|1
 argument_list|)
 decl_stmt|;
-name|FSSchedulerApp
+name|FSAppAttempt
 name|app
 init|=
 name|scheduler
@@ -21822,7 +21758,7 @@ argument_list|,
 literal|"queue2"
 argument_list|)
 expr_stmt|;
-name|FSSchedulerApp
+name|FSAppAttempt
 name|app
 init|=
 name|scheduler
@@ -21852,9 +21788,6 @@ operator|.
 name|contains
 argument_list|(
 name|app
-operator|.
-name|getAppSchedulable
-argument_list|()
 argument_list|)
 argument_list|)
 expr_stmt|;
@@ -21868,9 +21801,6 @@ operator|.
 name|contains
 argument_list|(
 name|app
-operator|.
-name|getAppSchedulable
-argument_list|()
 argument_list|)
 argument_list|)
 expr_stmt|;
@@ -22243,7 +22173,7 @@ argument_list|,
 literal|3
 argument_list|)
 decl_stmt|;
-name|FSSchedulerApp
+name|FSAppAttempt
 name|app
 init|=
 name|scheduler
@@ -22263,9 +22193,6 @@ operator|.
 name|contains
 argument_list|(
 name|app
-operator|.
-name|getAppSchedulable
-argument_list|()
 argument_list|)
 argument_list|)
 expr_stmt|;
@@ -22291,9 +22218,6 @@ operator|.
 name|contains
 argument_list|(
 name|app
-operator|.
-name|getAppSchedulable
-argument_list|()
 argument_list|)
 argument_list|)
 expr_stmt|;
@@ -22307,9 +22231,6 @@ operator|.
 name|contains
 argument_list|(
 name|app
-operator|.
-name|getAppSchedulable
-argument_list|()
 argument_list|)
 argument_list|)
 expr_stmt|;
@@ -22323,9 +22244,6 @@ operator|.
 name|contains
 argument_list|(
 name|app
-operator|.
-name|getAppSchedulable
-argument_list|()
 argument_list|)
 argument_list|)
 expr_stmt|;

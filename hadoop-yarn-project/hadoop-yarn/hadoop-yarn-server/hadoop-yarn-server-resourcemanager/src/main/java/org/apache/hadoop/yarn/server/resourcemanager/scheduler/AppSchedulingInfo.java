@@ -407,7 +407,6 @@ name|applicationId
 decl_stmt|;
 DECL|field|queueName
 specifier|private
-specifier|final
 name|String
 name|queueName
 decl_stmt|;
@@ -2043,6 +2042,15 @@ operator|.
 name|queue
 operator|=
 name|newQueue
+expr_stmt|;
+name|this
+operator|.
+name|queueName
+operator|=
+name|newQueue
+operator|.
+name|getQueueName
+argument_list|()
 expr_stmt|;
 block|}
 DECL|method|stop (RMAppAttemptState rmAppAttemptFinalState)

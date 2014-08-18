@@ -48,6 +48,16 @@ name|Token
 import|;
 end_import
 
+begin_import
+import|import
+name|java
+operator|.
+name|io
+operator|.
+name|IOException
+import|;
+end_import
+
 begin_comment
 comment|/**  * A KeyProvider extension with the ability to add a renewer's Delegation   * Tokens to the provided Credentials.  */
 end_comment
@@ -85,7 +95,7 @@ name|KeyProviderExtension
 operator|.
 name|Extension
 block|{
-comment|/**      * The implementer of this class will take a renewer and add all      * delegation tokens associated with the renewer to the       *<code>Credentials</code> object if it is not already present,       * @param renewer the user allowed to renew the delegation tokens      * @param credentials cache in which to add new delegation tokens      * @return list of new delegation tokens      */
+comment|/**      * The implementer of this class will take a renewer and add all      * delegation tokens associated with the renewer to the       *<code>Credentials</code> object if it is not already present,       * @param renewer the user allowed to renew the delegation tokens      * @param credentials cache in which to add new delegation tokens      * @return list of new delegation tokens      * @throws IOException thrown if IOException if an IO error occurs.      */
 DECL|method|addDelegationTokens (final String renewer, Credentials credentials)
 specifier|public
 name|Token
@@ -102,6 +112,8 @@ parameter_list|,
 name|Credentials
 name|credentials
 parameter_list|)
+throws|throws
+name|IOException
 function_decl|;
 block|}
 comment|/**    * Default implementation of {@link DelegationTokenExtension} that    * implements the method as a no-op.    */
@@ -155,7 +167,7 @@ name|extensions
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Passes the renewer and Credentials object to the underlying     * {@link DelegationTokenExtension}     * @param renewer the user allowed to renew the delegation tokens    * @param credentials cache in which to add new delegation tokens    * @return list of new delegation tokens    */
+comment|/**    * Passes the renewer and Credentials object to the underlying     * {@link DelegationTokenExtension}     * @param renewer the user allowed to renew the delegation tokens    * @param credentials cache in which to add new delegation tokens    * @return list of new delegation tokens    * @throws IOException thrown if IOException if an IO error occurs.    */
 DECL|method|addDelegationTokens (final String renewer, Credentials credentials)
 specifier|public
 name|Token
@@ -172,6 +184,8 @@ parameter_list|,
 name|Credentials
 name|credentials
 parameter_list|)
+throws|throws
+name|IOException
 block|{
 return|return
 name|getExtension

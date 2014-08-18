@@ -310,11 +310,25 @@ specifier|public
 specifier|abstract
 class|class
 name|FSQueue
-extends|extends
-name|Schedulable
 implements|implements
 name|Queue
+implements|,
+name|Schedulable
 block|{
+DECL|field|fairShare
+specifier|private
+name|Resource
+name|fairShare
+init|=
+name|Resources
+operator|.
+name|createResource
+argument_list|(
+literal|0
+argument_list|,
+literal|0
+argument_list|)
+decl_stmt|;
 DECL|field|name
 specifier|private
 specifier|final
@@ -780,6 +794,17 @@ return|return
 name|metrics
 return|;
 block|}
+comment|/** Get the fair share assigned to this Schedulable. */
+DECL|method|getFairShare ()
+specifier|public
+name|Resource
+name|getFairShare
+parameter_list|()
+block|{
+return|return
+name|fairShare
+return|;
+block|}
 annotation|@
 name|Override
 DECL|method|setFairShare (Resource fairShare)
@@ -791,12 +816,11 @@ name|Resource
 name|fairShare
 parameter_list|)
 block|{
-name|super
+name|this
 operator|.
-name|setFairShare
-argument_list|(
 name|fairShare
-argument_list|)
+operator|=
+name|fairShare
 expr_stmt|;
 name|metrics
 operator|.
@@ -921,6 +945,53 @@ return|;
 block|}
 return|return
 literal|true
+return|;
+block|}
+annotation|@
+name|Override
+DECL|method|isActive ()
+specifier|public
+name|boolean
+name|isActive
+parameter_list|()
+block|{
+return|return
+name|getNumRunnableApps
+argument_list|()
+operator|>
+literal|0
+return|;
+block|}
+comment|/** Convenient toString implementation for debugging. */
+annotation|@
+name|Override
+DECL|method|toString ()
+specifier|public
+name|String
+name|toString
+parameter_list|()
+block|{
+return|return
+name|String
+operator|.
+name|format
+argument_list|(
+literal|"[%s, demand=%s, running=%s, share=%s, w=%s]"
+argument_list|,
+name|getName
+argument_list|()
+argument_list|,
+name|getDemand
+argument_list|()
+argument_list|,
+name|getResourceUsage
+argument_list|()
+argument_list|,
+name|fairShare
+argument_list|,
+name|getWeights
+argument_list|()
+argument_list|)
 return|;
 block|}
 block|}

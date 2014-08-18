@@ -412,7 +412,7 @@ name|TOKEN_KIND
 init|=
 name|PREFIX
 operator|+
-literal|"token-kind.sec"
+literal|"token-kind"
 decl_stmt|;
 DECL|field|UPDATE_INTERVAL
 specifier|public
