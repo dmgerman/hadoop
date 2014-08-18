@@ -1270,6 +1270,8 @@ name|scannedBlocks
 operator|=
 literal|0
 expr_stmt|;
+try|try
+block|{
 name|namesystem
 operator|.
 name|writeLock
@@ -1312,8 +1314,6 @@ name|unlock
 argument_list|()
 expr_stmt|;
 block|}
-try|try
-block|{
 name|resetStatistics
 argument_list|()
 expr_stmt|;
