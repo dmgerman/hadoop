@@ -1410,6 +1410,13 @@ argument_list|(
 literal|", replicas=["
 argument_list|)
 expr_stmt|;
+if|if
+condition|(
+name|replicas
+operator|!=
+literal|null
+condition|)
+block|{
 name|Iterator
 argument_list|<
 name|ReplicaUnderConstruction
@@ -1464,6 +1471,7 @@ argument_list|(
 name|sb
 argument_list|)
 expr_stmt|;
+block|}
 block|}
 block|}
 name|sb

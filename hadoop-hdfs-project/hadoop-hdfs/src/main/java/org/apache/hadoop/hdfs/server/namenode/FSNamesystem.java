@@ -21980,6 +21980,47 @@ argument_list|)
 throw|;
 block|}
 block|}
+comment|//
+comment|// The implementation of delete operation (see @deleteInternal method)
+comment|// first removes the file paths from namespace, and delays the removal
+comment|// of blocks to later time for better performance. When
+comment|// commitBlockSynchronization (this method) is called in between, the
+comment|// blockCollection of storedBlock could have been assigned to null by
+comment|// the delete operation, throw IOException here instead of NPE; if the
+comment|// file path is already removed from namespace by the delete operation,
+comment|// throw FileNotFoundException here, so not to proceed to the end of
+comment|// this method to add a CloseOp to the edit log for an already deleted
+comment|// file (See HDFS-6825).
+comment|//
+name|BlockCollection
+name|blockCollection
+init|=
+name|storedBlock
+operator|.
+name|getBlockCollection
+argument_list|()
+decl_stmt|;
+if|if
+condition|(
+name|blockCollection
+operator|==
+literal|null
+condition|)
+block|{
+throw|throw
+operator|new
+name|IOException
+argument_list|(
+literal|"The blockCollection of "
+operator|+
+name|storedBlock
+operator|+
+literal|" is null, likely because the file owning this block was"
+operator|+
+literal|" deleted and the block removal is delayed"
+argument_list|)
+throw|;
+block|}
 name|INodeFile
 name|iFile
 init|=
@@ -21987,15 +22028,37 @@ operator|(
 operator|(
 name|INode
 operator|)
-name|storedBlock
-operator|.
-name|getBlockCollection
-argument_list|()
+name|blockCollection
 operator|)
 operator|.
 name|asFile
 argument_list|()
 decl_stmt|;
+if|if
+condition|(
+name|isFileDeleted
+argument_list|(
+name|iFile
+argument_list|)
+condition|)
+block|{
+throw|throw
+operator|new
+name|FileNotFoundException
+argument_list|(
+literal|"File not found: "
+operator|+
+name|iFile
+operator|.
+name|getFullPathName
+argument_list|()
+operator|+
+literal|", likely due to delayed block"
+operator|+
+literal|" removal"
+argument_list|)
+throw|;
+block|}
 if|if
 condition|(
 operator|!
@@ -29408,15 +29471,79 @@ argument_list|()
 argument_list|)
 operator|==
 literal|null
-operator|||
+condition|)
+block|{
+return|return
+literal|true
+return|;
+block|}
+comment|// look at the path hierarchy to see if one parent is deleted by recursive
+comment|// deletion
+name|INode
+name|tmpChild
+init|=
+name|file
+decl_stmt|;
+name|INodeDirectory
+name|tmpParent
+init|=
 name|file
 operator|.
 name|getParent
 argument_list|()
+decl_stmt|;
+while|while
+condition|(
+literal|true
+condition|)
+block|{
+if|if
+condition|(
+name|tmpParent
 operator|==
 literal|null
 operator|||
-operator|(
+name|tmpParent
+operator|.
+name|searchChildren
+argument_list|(
+name|tmpChild
+operator|.
+name|getLocalNameBytes
+argument_list|()
+argument_list|)
+operator|<
+literal|0
+condition|)
+block|{
+return|return
+literal|true
+return|;
+block|}
+if|if
+condition|(
+name|tmpParent
+operator|.
+name|isRoot
+argument_list|()
+condition|)
+block|{
+break|break;
+block|}
+name|tmpChild
+operator|=
+name|tmpParent
+expr_stmt|;
+name|tmpParent
+operator|=
+name|tmpParent
+operator|.
+name|getParent
+argument_list|()
+expr_stmt|;
+block|}
+if|if
+condition|(
 name|file
 operator|.
 name|isWithSnapshot
@@ -29429,7 +29556,6 @@ argument_list|()
 operator|.
 name|isCurrentFileDeleted
 argument_list|()
-operator|)
 condition|)
 block|{
 return|return
