@@ -146,24 +146,6 @@ name|hadoop
 operator|.
 name|hdfs
 operator|.
-name|server
-operator|.
-name|balancer
-operator|.
-name|Balancer
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|hdfs
-operator|.
 name|util
 operator|.
 name|DataTransferThrottler
@@ -195,6 +177,20 @@ operator|.
 name|util
 operator|.
 name|Daemon
+import|;
+end_import
+
+begin_import
+import|import
+name|com
+operator|.
+name|google
+operator|.
+name|common
+operator|.
+name|annotations
+operator|.
+name|VisibleForTesting
 import|;
 end_import
 
@@ -249,6 +245,26 @@ argument_list|<
 name|Peer
 argument_list|,
 name|Thread
+argument_list|>
+argument_list|()
+decl_stmt|;
+DECL|field|peersXceiver
+specifier|private
+specifier|final
+name|HashMap
+argument_list|<
+name|Peer
+argument_list|,
+name|DataXceiver
+argument_list|>
+name|peersXceiver
+init|=
+operator|new
+name|HashMap
+argument_list|<
+name|Peer
+argument_list|,
+name|DataXceiver
 argument_list|>
 argument_list|()
 decl_stmt|;
@@ -871,7 +887,7 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-DECL|method|addPeer (Peer peer, Thread t)
+DECL|method|addPeer (Peer peer, Thread t, DataXceiver xceiver)
 specifier|synchronized
 name|void
 name|addPeer
@@ -881,6 +897,9 @@ name|peer
 parameter_list|,
 name|Thread
 name|t
+parameter_list|,
+name|DataXceiver
+name|xceiver
 parameter_list|)
 throws|throws
 name|IOException
@@ -907,6 +926,15 @@ argument_list|,
 name|t
 argument_list|)
 expr_stmt|;
+name|peersXceiver
+operator|.
+name|put
+argument_list|(
+name|peer
+argument_list|,
+name|xceiver
+argument_list|)
+expr_stmt|;
 block|}
 DECL|method|closePeer (Peer peer)
 specifier|synchronized
@@ -924,6 +952,13 @@ argument_list|(
 name|peer
 argument_list|)
 expr_stmt|;
+name|peersXceiver
+operator|.
+name|remove
+argument_list|(
+name|peer
+argument_list|)
+expr_stmt|;
 name|IOUtils
 operator|.
 name|cleanup
@@ -933,6 +968,80 @@ argument_list|,
 name|peer
 argument_list|)
 expr_stmt|;
+block|}
+comment|// Sending OOB to all peers
+DECL|method|sendOOBToPeers ()
+specifier|public
+specifier|synchronized
+name|void
+name|sendOOBToPeers
+parameter_list|()
+block|{
+if|if
+condition|(
+operator|!
+name|datanode
+operator|.
+name|shutdownForUpgrade
+condition|)
+block|{
+return|return;
+block|}
+for|for
+control|(
+name|Peer
+name|p
+range|:
+name|peers
+operator|.
+name|keySet
+argument_list|()
+control|)
+block|{
+try|try
+block|{
+name|peersXceiver
+operator|.
+name|get
+argument_list|(
+name|p
+argument_list|)
+operator|.
+name|sendOOB
+argument_list|()
+expr_stmt|;
+block|}
+catch|catch
+parameter_list|(
+name|IOException
+name|e
+parameter_list|)
+block|{
+name|LOG
+operator|.
+name|warn
+argument_list|(
+literal|"Got error when sending OOB message."
+argument_list|,
+name|e
+argument_list|)
+expr_stmt|;
+block|}
+catch|catch
+parameter_list|(
+name|InterruptedException
+name|e
+parameter_list|)
+block|{
+name|LOG
+operator|.
+name|warn
+argument_list|(
+literal|"Interrupted when sending OOB message."
+argument_list|)
+expr_stmt|;
+block|}
+block|}
 block|}
 comment|// Notify all peers of the shutdown and restart.
 comment|// datanode.shouldRun should still be true and datanode.restarting should
@@ -1020,6 +1129,11 @@ operator|.
 name|clear
 argument_list|()
 expr_stmt|;
+name|peersXceiver
+operator|.
+name|clear
+argument_list|()
+expr_stmt|;
 block|}
 comment|// Return the number of peers.
 DECL|method|getNumPeers ()
@@ -1035,6 +1149,22 @@ name|size
 argument_list|()
 return|;
 block|}
+comment|// Return the number of peers and DataXceivers.
+annotation|@
+name|VisibleForTesting
+DECL|method|getNumPeersXceiver ()
+specifier|synchronized
+name|int
+name|getNumPeersXceiver
+parameter_list|()
+block|{
+return|return
+name|peersXceiver
+operator|.
+name|size
+argument_list|()
+return|;
+block|}
 DECL|method|releasePeer (Peer peer)
 specifier|synchronized
 name|void
@@ -1045,6 +1175,13 @@ name|peer
 parameter_list|)
 block|{
 name|peers
+operator|.
+name|remove
+argument_list|(
+name|peer
+argument_list|)
+expr_stmt|;
+name|peersXceiver
 operator|.
 name|remove
 argument_list|(
