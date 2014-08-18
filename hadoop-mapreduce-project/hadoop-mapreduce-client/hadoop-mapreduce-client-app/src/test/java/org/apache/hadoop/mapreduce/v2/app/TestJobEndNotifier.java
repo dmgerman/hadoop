@@ -1867,10 +1867,13 @@ argument_list|)
 expr_stmt|;
 comment|// Now shutdown. User should see FAILED state.
 comment|// Unregistration fails: isLastAMRetry is recalculated, this is
+comment|///reboot will stop service internally, we don't need to shutdown twice
 name|app
 operator|.
-name|shutDownJob
-argument_list|()
+name|waitForServiceToStop
+argument_list|(
+literal|10000
+argument_list|)
 expr_stmt|;
 name|Assert
 operator|.
