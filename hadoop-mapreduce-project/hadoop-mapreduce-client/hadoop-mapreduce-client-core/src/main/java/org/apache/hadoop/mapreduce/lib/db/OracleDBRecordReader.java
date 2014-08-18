@@ -459,13 +459,6 @@ name|getLength
 argument_list|()
 operator|>
 literal|0
-operator|&&
-name|split
-operator|.
-name|getStart
-argument_list|()
-operator|>
-literal|0
 condition|)
 block|{
 name|String
@@ -507,7 +500,7 @@ name|append
 argument_list|(
 name|split
 operator|.
-name|getStart
+name|getEnd
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -515,22 +508,7 @@ name|query
 operator|.
 name|append
 argument_list|(
-literal|" + "
-argument_list|)
-operator|.
-name|append
-argument_list|(
-name|split
-operator|.
-name|getLength
-argument_list|()
-argument_list|)
-expr_stmt|;
-name|query
-operator|.
-name|append
-argument_list|(
-literal|" ) WHERE dbif_rno>= "
+literal|" ) WHERE dbif_rno> "
 argument_list|)
 operator|.
 name|append

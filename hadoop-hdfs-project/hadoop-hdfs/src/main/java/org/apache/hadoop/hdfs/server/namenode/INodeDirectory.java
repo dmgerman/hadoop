@@ -974,7 +974,6 @@ name|quota
 return|;
 block|}
 DECL|method|searchChildren (byte[] name)
-specifier|private
 name|int
 name|searchChildren
 parameter_list|(
