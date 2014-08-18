@@ -374,6 +374,20 @@ name|hadoop
 operator|.
 name|hdfs
 operator|.
+name|DistributedFileSystem
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
 name|StorageType
 import|;
 end_import
@@ -967,10 +981,16 @@ DECL|field|storageGroupMap
 specifier|private
 specifier|final
 name|StorageGroupMap
+argument_list|<
+name|StorageGroup
+argument_list|>
 name|storageGroupMap
 init|=
 operator|new
 name|StorageGroupMap
+argument_list|<
+name|StorageGroup
+argument_list|>
 argument_list|()
 decl_stmt|;
 DECL|field|cluster
@@ -1142,9 +1162,15 @@ block|}
 block|}
 block|}
 DECL|class|StorageGroupMap
+specifier|public
 specifier|static
 class|class
 name|StorageGroupMap
+parameter_list|<
+name|G
+extends|extends
+name|StorageGroup
+parameter_list|>
 block|{
 DECL|method|toKey (String datanodeUuid, StorageType storageType)
 specifier|private
@@ -1174,7 +1200,7 @@ name|Map
 argument_list|<
 name|String
 argument_list|,
-name|StorageGroup
+name|G
 argument_list|>
 name|map
 init|=
@@ -1183,12 +1209,13 @@ name|HashMap
 argument_list|<
 name|String
 argument_list|,
-name|StorageGroup
+name|G
 argument_list|>
 argument_list|()
 decl_stmt|;
 DECL|method|get (String datanodeUuid, StorageType storageType)
-name|StorageGroup
+specifier|public
+name|G
 name|get
 parameter_list|(
 name|String
@@ -1212,11 +1239,12 @@ argument_list|)
 argument_list|)
 return|;
 block|}
-DECL|method|put (StorageGroup g)
+DECL|method|put (G g)
+specifier|public
 name|void
 name|put
 parameter_list|(
-name|StorageGroup
+name|G
 name|g
 parameter_list|)
 block|{
@@ -1288,7 +1316,7 @@ block|}
 block|}
 comment|/** This class keeps track of a scheduled block move */
 DECL|class|PendingMove
-specifier|private
+specifier|public
 class|class
 name|PendingMove
 block|{
@@ -1317,6 +1345,39 @@ specifier|private
 name|PendingMove
 parameter_list|()
 block|{     }
+DECL|method|PendingMove (DBlock block, Source source, StorageGroup target)
+specifier|public
+name|PendingMove
+parameter_list|(
+name|DBlock
+name|block
+parameter_list|,
+name|Source
+name|source
+parameter_list|,
+name|StorageGroup
+name|target
+parameter_list|)
+block|{
+name|this
+operator|.
+name|block
+operator|=
+name|block
+expr_stmt|;
+name|this
+operator|.
+name|source
+operator|=
+name|source
+expr_stmt|;
+name|this
+operator|.
+name|target
+operator|=
+name|target
+expr_stmt|;
+block|}
 annotation|@
 name|Override
 DECL|method|toString ()
@@ -1500,7 +1561,7 @@ return|;
 block|}
 comment|/**      * Choose a proxy source.      *       * @return true if a proxy is found; otherwise false      */
 DECL|method|chooseProxySource ()
-specifier|private
+specifier|public
 name|boolean
 name|chooseProxySource
 parameter_list|()
@@ -2181,7 +2242,7 @@ block|}
 block|}
 comment|/** A class for keeping track of block locations in the dispatcher. */
 DECL|class|DBlock
-specifier|private
+specifier|public
 specifier|static
 class|class
 name|DBlock
@@ -2194,6 +2255,7 @@ name|StorageGroup
 argument_list|>
 block|{
 DECL|method|DBlock (Block block)
+specifier|public
 name|DBlock
 parameter_list|(
 name|Block
@@ -2260,12 +2322,14 @@ block|}
 block|}
 comment|/** A class that keeps track of a datanode. */
 DECL|class|DDatanode
+specifier|public
 specifier|static
 class|class
 name|DDatanode
 block|{
 comment|/** A group of storages in a datanode with the same storage type. */
 DECL|class|StorageGroup
+specifier|public
 class|class
 name|StorageGroup
 block|{
@@ -2310,6 +2374,16 @@ operator|=
 name|maxSize2Move
 expr_stmt|;
 block|}
+DECL|method|getStorageType ()
+specifier|public
+name|StorageType
+name|getStorageType
+parameter_list|()
+block|{
+return|return
+name|storageType
+return|;
+block|}
 DECL|method|getDDatanode ()
 specifier|private
 name|DDatanode
@@ -2323,6 +2397,7 @@ name|this
 return|;
 block|}
 DECL|method|getDatanodeInfo ()
+specifier|public
 name|DatanodeInfo
 name|getDatanodeInfo
 parameter_list|()
@@ -2337,16 +2412,31 @@ return|;
 block|}
 comment|/** Decide if still need to move more bytes */
 DECL|method|hasSpaceForScheduling ()
-specifier|synchronized
 name|boolean
 name|hasSpaceForScheduling
 parameter_list|()
 block|{
 return|return
+name|hasSpaceForScheduling
+argument_list|(
+literal|0L
+argument_list|)
+return|;
+block|}
+DECL|method|hasSpaceForScheduling (long size)
+specifier|synchronized
+name|boolean
+name|hasSpaceForScheduling
+parameter_list|(
+name|long
+name|size
+parameter_list|)
+block|{
+return|return
 name|availableSizeToMove
 argument_list|()
 operator|>
-literal|0L
+name|size
 return|;
 block|}
 comment|/** @return the total number of bytes that need to be moved */
@@ -2364,6 +2454,7 @@ return|;
 block|}
 comment|/** increment scheduled size */
 DECL|method|incScheduledSize (long size)
+specifier|public
 specifier|synchronized
 name|void
 name|incScheduledSize
@@ -2433,7 +2524,32 @@ specifier|final
 name|DatanodeInfo
 name|datanode
 decl_stmt|;
-DECL|field|storageMap
+DECL|field|sourceMap
+specifier|private
+specifier|final
+name|EnumMap
+argument_list|<
+name|StorageType
+argument_list|,
+name|Source
+argument_list|>
+name|sourceMap
+init|=
+operator|new
+name|EnumMap
+argument_list|<
+name|StorageType
+argument_list|,
+name|Source
+argument_list|>
+argument_list|(
+name|StorageType
+operator|.
+name|class
+argument_list|)
+decl_stmt|;
+DECL|field|targetMap
+specifier|private
 specifier|final
 name|EnumMap
 argument_list|<
@@ -2441,7 +2557,7 @@ name|StorageType
 argument_list|,
 name|StorageGroup
 argument_list|>
-name|storageMap
+name|targetMap
 init|=
 operator|new
 name|EnumMap
@@ -2497,21 +2613,14 @@ operator|+
 literal|":"
 operator|+
 name|datanode
-operator|+
-literal|":"
-operator|+
-name|storageMap
-operator|.
-name|values
-argument_list|()
 return|;
 block|}
-DECL|method|DDatanode (DatanodeStorageReport r, int maxConcurrentMoves)
+DECL|method|DDatanode (DatanodeInfo datanode, int maxConcurrentMoves)
 specifier|private
 name|DDatanode
 parameter_list|(
-name|DatanodeStorageReport
-name|r
+name|DatanodeInfo
+name|datanode
 parameter_list|,
 name|int
 name|maxConcurrentMoves
@@ -2521,10 +2630,7 @@ name|this
 operator|.
 name|datanode
 operator|=
-name|r
-operator|.
-name|getDatanodeInfo
-argument_list|()
+name|datanode
 expr_stmt|;
 name|this
 operator|.
@@ -2546,23 +2652,47 @@ name|maxConcurrentMoves
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|put (StorageType storageType, StorageGroup g)
+DECL|method|getDatanodeInfo ()
+specifier|public
+name|DatanodeInfo
+name|getDatanodeInfo
+parameter_list|()
+block|{
+return|return
+name|datanode
+return|;
+block|}
+DECL|method|put (StorageType storageType, G g, EnumMap<StorageType, G> map)
 specifier|private
+specifier|static
+parameter_list|<
+name|G
+extends|extends
+name|StorageGroup
+parameter_list|>
 name|void
 name|put
 parameter_list|(
 name|StorageType
 name|storageType
 parameter_list|,
-name|StorageGroup
+name|G
 name|g
+parameter_list|,
+name|EnumMap
+argument_list|<
+name|StorageType
+argument_list|,
+name|G
+argument_list|>
+name|map
 parameter_list|)
 block|{
 specifier|final
 name|StorageGroup
 name|existing
 init|=
-name|storageMap
+name|map
 operator|.
 name|put
 argument_list|(
@@ -2581,9 +2711,10 @@ literal|null
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|addStorageGroup (StorageType storageType, long maxSize2Move)
+DECL|method|addTarget (StorageType storageType, long maxSize2Move)
+specifier|public
 name|StorageGroup
-name|addStorageGroup
+name|addTarget
 parameter_list|(
 name|StorageType
 name|storageType
@@ -2609,6 +2740,8 @@ argument_list|(
 name|storageType
 argument_list|,
 name|g
+argument_list|,
+name|targetMap
 argument_list|)
 expr_stmt|;
 return|return
@@ -2616,6 +2749,7 @@ name|g
 return|;
 block|}
 DECL|method|addSource (StorageType storageType, long maxSize2Move, Dispatcher d)
+specifier|public
 name|Source
 name|addSource
 parameter_list|(
@@ -2650,6 +2784,8 @@ argument_list|(
 name|storageType
 argument_list|,
 name|s
+argument_list|,
+name|sourceMap
 argument_list|)
 expr_stmt|;
 return|return
@@ -2794,6 +2930,7 @@ block|}
 block|}
 comment|/** A node that can be the sources of a block move */
 DECL|class|Source
+specifier|public
 class|class
 name|Source
 extends|extends
@@ -3474,29 +3611,9 @@ operator|!=
 literal|null
 condition|)
 block|{
-comment|// move the block
-name|moveExecutor
-operator|.
-name|execute
+name|executePendingMove
 argument_list|(
-operator|new
-name|Runnable
-argument_list|()
-block|{
-annotation|@
-name|Override
-specifier|public
-name|void
-name|run
-parameter_list|()
-block|{
 name|p
-operator|.
-name|dispatch
-argument_list|()
-expr_stmt|;
-block|}
-block|}
 argument_list|)
 expr_stmt|;
 continue|continue;
@@ -3705,6 +3822,12 @@ name|this
 operator|.
 name|dispatchExecutor
 operator|=
+name|dispatcherThreads
+operator|==
+literal|0
+condition|?
+literal|null
+else|:
 name|Executors
 operator|.
 name|newFixedThreadPool
@@ -3760,8 +3883,25 @@ name|fallbackToSimpleAuthAllowed
 argument_list|)
 expr_stmt|;
 block|}
+DECL|method|getDistributedFileSystem ()
+specifier|public
+name|DistributedFileSystem
+name|getDistributedFileSystem
+parameter_list|()
+block|{
+return|return
+name|nnc
+operator|.
+name|getDistributedFileSystem
+argument_list|()
+return|;
+block|}
 DECL|method|getStorageGroupMap ()
+specifier|public
 name|StorageGroupMap
+argument_list|<
+name|StorageGroup
+argument_list|>
 name|getStorageGroupMap
 parameter_list|()
 block|{
@@ -3770,6 +3910,7 @@ name|storageGroupMap
 return|;
 block|}
 DECL|method|getCluster ()
+specifier|public
 name|NetworkTopology
 name|getCluster
 parameter_list|()
@@ -4002,6 +4143,7 @@ return|;
 block|}
 comment|/** Get live datanode storage reports and then build the network topology. */
 DECL|method|init ()
+specifier|public
 name|List
 argument_list|<
 name|DatanodeStorageReport
@@ -4088,24 +4230,60 @@ return|return
 name|trimmed
 return|;
 block|}
-DECL|method|newDatanode (DatanodeStorageReport r)
+DECL|method|newDatanode (DatanodeInfo datanode)
 specifier|public
 name|DDatanode
 name|newDatanode
 parameter_list|(
-name|DatanodeStorageReport
-name|r
+name|DatanodeInfo
+name|datanode
 parameter_list|)
 block|{
 return|return
 operator|new
 name|DDatanode
 argument_list|(
-name|r
+name|datanode
 argument_list|,
 name|maxConcurrentMovesPerNode
 argument_list|)
 return|;
+block|}
+DECL|method|executePendingMove (final PendingMove p)
+specifier|public
+name|void
+name|executePendingMove
+parameter_list|(
+specifier|final
+name|PendingMove
+name|p
+parameter_list|)
+block|{
+comment|// move the block
+name|moveExecutor
+operator|.
+name|execute
+argument_list|(
+operator|new
+name|Runnable
+argument_list|()
+block|{
+annotation|@
+name|Override
+specifier|public
+name|void
+name|run
+parameter_list|()
+block|{
+name|p
+operator|.
+name|dispatch
+argument_list|()
+expr_stmt|;
+block|}
+block|}
+argument_list|)
+expr_stmt|;
 block|}
 DECL|method|dispatchAndCheckContinue ()
 specifier|public
@@ -4379,13 +4557,12 @@ parameter_list|)
 block|{       }
 block|}
 block|}
-comment|/**    * Decide if the block is a good candidate to be moved from source to target.    * A block is a good candidate if     * 1. the block is not in the process of being moved/has not been moved;    * 2. the block does not have a replica on the target;    * 3. doing the move does not reduce the number of racks that the block has    */
-DECL|method|isGoodBlockCandidate (Source source, StorageGroup target, DBlock block)
+DECL|method|isGoodBlockCandidate (StorageGroup source, StorageGroup target, DBlock block)
 specifier|private
 name|boolean
 name|isGoodBlockCandidate
 parameter_list|(
-name|Source
+name|StorageGroup
 name|source
 parameter_list|,
 name|StorageGroup
@@ -4395,15 +4572,67 @@ name|DBlock
 name|block
 parameter_list|)
 block|{
-if|if
-condition|(
+comment|// match source and target storage type
+return|return
+name|isGoodBlockCandidate
+argument_list|(
+name|source
+argument_list|,
+name|target
+argument_list|,
 name|source
 operator|.
-name|storageType
-operator|!=
+name|getStorageType
+argument_list|()
+argument_list|,
+name|block
+argument_list|)
+return|;
+block|}
+comment|/**    * Decide if the block is a good candidate to be moved from source to target.    * A block is a good candidate if     * 1. the block is not in the process of being moved/has not been moved;    * 2. the block does not have a replica on the target;    * 3. doing the move does not reduce the number of racks that the block has    */
+DECL|method|isGoodBlockCandidate (StorageGroup source, StorageGroup target, StorageType targetStorageType, DBlock block)
+specifier|public
+name|boolean
+name|isGoodBlockCandidate
+parameter_list|(
+name|StorageGroup
+name|source
+parameter_list|,
+name|StorageGroup
+name|target
+parameter_list|,
+name|StorageType
+name|targetStorageType
+parameter_list|,
+name|DBlock
+name|block
+parameter_list|)
+block|{
+if|if
+condition|(
 name|target
 operator|.
 name|storageType
+operator|!=
+name|targetStorageType
+condition|)
+block|{
+return|return
+literal|false
+return|;
+block|}
+if|if
+condition|(
+operator|!
+name|target
+operator|.
+name|hasSpaceForScheduling
+argument_list|(
+name|block
+operator|.
+name|getNumBytes
+argument_list|()
+argument_list|)
 condition|)
 block|{
 return|return
@@ -4451,11 +4680,11 @@ argument_list|()
 operator|&&
 name|isOnSameNodeGroupWithReplicas
 argument_list|(
+name|source
+argument_list|,
 name|target
 argument_list|,
 name|block
-argument_list|,
-name|source
 argument_list|)
 condition|)
 block|{
@@ -4484,12 +4713,12 @@ literal|true
 return|;
 block|}
 comment|/**    * Determine whether moving the given block replica from source to target    * would reduce the number of racks of the block replicas.    */
-DECL|method|reduceNumOfRacks (Source source, StorageGroup target, DBlock block)
+DECL|method|reduceNumOfRacks (StorageGroup source, StorageGroup target, DBlock block)
 specifier|private
 name|boolean
 name|reduceNumOfRacks
 parameter_list|(
-name|Source
+name|StorageGroup
 name|source
 parameter_list|,
 name|StorageGroup
@@ -4626,19 +4855,19 @@ literal|true
 return|;
 block|}
 comment|/**    * Check if there are any replica (other than source) on the same node group    * with target. If true, then target is not a good candidate for placing    * specific replica as we don't want 2 replicas under the same nodegroup.    *     * @return true if there are any replica (other than source) on the same node    *         group with target    */
-DECL|method|isOnSameNodeGroupWithReplicas ( StorageGroup target, DBlock block, Source source)
+DECL|method|isOnSameNodeGroupWithReplicas (StorageGroup source, StorageGroup target, DBlock block)
 specifier|private
 name|boolean
 name|isOnSameNodeGroupWithReplicas
 parameter_list|(
 name|StorageGroup
+name|source
+parameter_list|,
+name|StorageGroup
 name|target
 parameter_list|,
 name|DBlock
 name|block
-parameter_list|,
-name|Source
-name|source
 parameter_list|)
 block|{
 specifier|final
@@ -4737,6 +4966,7 @@ expr_stmt|;
 block|}
 comment|/** shutdown thread pools */
 DECL|method|shutdownNow ()
+specifier|public
 name|void
 name|shutdownNow
 parameter_list|()
