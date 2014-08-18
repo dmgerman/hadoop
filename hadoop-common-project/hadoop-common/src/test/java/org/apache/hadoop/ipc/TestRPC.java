@@ -3384,7 +3384,7 @@ name|assertCounter
 argument_list|(
 literal|"RpcAuthorizationFailures"
 argument_list|,
-literal|1
+literal|1L
 argument_list|,
 name|rb
 argument_list|)
@@ -3396,7 +3396,7 @@ name|assertCounter
 argument_list|(
 literal|"RpcAuthorizationSuccesses"
 argument_list|,
-literal|1
+literal|1L
 argument_list|,
 name|rb
 argument_list|)
@@ -3408,7 +3408,7 @@ name|assertCounter
 argument_list|(
 literal|"RpcAuthenticationFailures"
 argument_list|,
-literal|0
+literal|0L
 argument_list|,
 name|rb
 argument_list|)
@@ -3417,7 +3417,7 @@ name|assertCounter
 argument_list|(
 literal|"RpcAuthenticationSuccesses"
 argument_list|,
-literal|0
+literal|0L
 argument_list|,
 name|rb
 argument_list|)
