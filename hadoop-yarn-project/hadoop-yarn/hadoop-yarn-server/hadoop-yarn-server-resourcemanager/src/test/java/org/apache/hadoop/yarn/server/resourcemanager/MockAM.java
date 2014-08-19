@@ -452,7 +452,6 @@ name|attemptId
 decl_stmt|;
 DECL|field|context
 specifier|private
-specifier|final
 name|RMContext
 name|context
 decl_stmt|;
@@ -526,14 +525,24 @@ operator|=
 name|attemptId
 expr_stmt|;
 block|}
-DECL|method|setAMRMProtocol (ApplicationMasterProtocol amRMProtocol)
+DECL|method|setAMRMProtocol (ApplicationMasterProtocol amRMProtocol, RMContext context)
+specifier|public
 name|void
 name|setAMRMProtocol
 parameter_list|(
 name|ApplicationMasterProtocol
 name|amRMProtocol
+parameter_list|,
+name|RMContext
+name|context
 parameter_list|)
 block|{
+name|this
+operator|.
+name|context
+operator|=
+name|context
+expr_stmt|;
 name|this
 operator|.
 name|amRMProtocol
