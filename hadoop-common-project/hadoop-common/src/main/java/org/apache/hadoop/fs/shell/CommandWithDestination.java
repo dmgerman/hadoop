@@ -373,6 +373,7 @@ decl_stmt|;
 comment|/**    * The name of the raw xattr namespace. It would be nice to use    * XAttr.RAW.name() but we can't reference the hadoop-hdfs project.    */
 DECL|field|RAW
 specifier|private
+specifier|static
 specifier|final
 name|String
 name|RAW
@@ -382,6 +383,7 @@ decl_stmt|;
 comment|/**    * The name of the reserved raw directory.    */
 DECL|field|RESERVED_RAW
 specifier|private
+specifier|static
 specifier|final
 name|String
 name|RESERVED_RAW
