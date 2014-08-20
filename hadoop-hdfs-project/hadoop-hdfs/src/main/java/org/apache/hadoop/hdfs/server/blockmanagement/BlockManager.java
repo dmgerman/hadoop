@@ -440,6 +440,20 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|fs
+operator|.
+name|FileEncryptionInfo
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|hdfs
 operator|.
 name|protocol
@@ -4390,7 +4404,7 @@ argument_list|)
 return|;
 block|}
 comment|/** Create a LocatedBlocks. */
-DECL|method|createLocatedBlocks (final BlockInfo[] blocks, final long fileSizeExcludeBlocksUnderConstruction, final boolean isFileUnderConstruction, final long offset, final long length, final boolean needBlockToken, final boolean inSnapshot)
+DECL|method|createLocatedBlocks (final BlockInfo[] blocks, final long fileSizeExcludeBlocksUnderConstruction, final boolean isFileUnderConstruction, final long offset, final long length, final boolean needBlockToken, final boolean inSnapshot, FileEncryptionInfo feInfo)
 specifier|public
 name|LocatedBlocks
 name|createLocatedBlocks
@@ -4423,6 +4437,9 @@ parameter_list|,
 specifier|final
 name|boolean
 name|inSnapshot
+parameter_list|,
+name|FileEncryptionInfo
+name|feInfo
 parameter_list|)
 throws|throws
 name|IOException
@@ -4473,6 +4490,8 @@ argument_list|,
 literal|null
 argument_list|,
 literal|false
+argument_list|,
+name|feInfo
 argument_list|)
 return|;
 block|}
@@ -4634,6 +4653,8 @@ argument_list|,
 name|lastlb
 argument_list|,
 name|isComplete
+argument_list|,
+name|feInfo
 argument_list|)
 return|;
 block|}

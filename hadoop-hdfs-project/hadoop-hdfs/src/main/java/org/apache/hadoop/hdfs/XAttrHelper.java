@@ -203,17 +203,17 @@ if|if
 condition|(
 name|prefixIndex
 operator|<
-literal|4
+literal|3
 condition|)
 block|{
-comment|// Prefix length is at least 4.
+comment|// Prefix length is at least 3.
 throw|throw
 operator|new
 name|HadoopIllegalArgumentException
 argument_list|(
 literal|"An XAttr name must be "
 operator|+
-literal|"prefixed with user/trusted/security/system, followed by a '.'"
+literal|"prefixed with user/trusted/security/system/raw, followed by a '.'"
 argument_list|)
 throw|;
 block|}
@@ -360,6 +360,32 @@ operator|.
 name|SECURITY
 expr_stmt|;
 block|}
+elseif|else
+if|if
+condition|(
+name|prefix
+operator|.
+name|equals
+argument_list|(
+name|NameSpace
+operator|.
+name|RAW
+operator|.
+name|toString
+argument_list|()
+operator|.
+name|toLowerCase
+argument_list|()
+argument_list|)
+condition|)
+block|{
+name|ns
+operator|=
+name|NameSpace
+operator|.
+name|RAW
+expr_stmt|;
+block|}
 else|else
 block|{
 throw|throw
@@ -368,7 +394,7 @@ name|HadoopIllegalArgumentException
 argument_list|(
 literal|"An XAttr name must be "
 operator|+
-literal|"prefixed with user/trusted/security/system, followed by a '.'"
+literal|"prefixed with user/trusted/security/system/raw, followed by a '.'"
 argument_list|)
 throw|;
 block|}

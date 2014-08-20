@@ -6968,6 +6968,8 @@ argument_list|,
 name|fileId
 argument_list|,
 name|numChildren
+argument_list|,
+literal|null
 argument_list|)
 decl_stmt|;
 name|Result

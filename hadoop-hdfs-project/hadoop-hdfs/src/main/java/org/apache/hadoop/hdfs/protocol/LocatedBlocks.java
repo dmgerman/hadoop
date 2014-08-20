@@ -76,6 +76,20 @@ name|InterfaceStability
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|fs
+operator|.
+name|FileEncryptionInfo
+import|;
+end_import
+
 begin_comment
 comment|/**  * Collection of blocks with their locations and the file length.  */
 end_comment
@@ -130,6 +144,13 @@ name|isLastBlockComplete
 init|=
 literal|false
 decl_stmt|;
+DECL|field|fileEncryptionInfo
+specifier|private
+name|FileEncryptionInfo
+name|fileEncryptionInfo
+init|=
+literal|null
+decl_stmt|;
 DECL|method|LocatedBlocks ()
 specifier|public
 name|LocatedBlocks
@@ -148,8 +169,7 @@ operator|=
 literal|false
 expr_stmt|;
 block|}
-comment|/** public Constructor */
-DECL|method|LocatedBlocks (long flength, boolean isUnderConstuction, List<LocatedBlock> blks, LocatedBlock lastBlock, boolean isLastBlockCompleted)
+DECL|method|LocatedBlocks (long flength, boolean isUnderConstuction, List<LocatedBlock> blks, LocatedBlock lastBlock, boolean isLastBlockCompleted, FileEncryptionInfo feInfo)
 specifier|public
 name|LocatedBlocks
 parameter_list|(
@@ -170,6 +190,9 @@ name|lastBlock
 parameter_list|,
 name|boolean
 name|isLastBlockCompleted
+parameter_list|,
+name|FileEncryptionInfo
+name|feInfo
 parameter_list|)
 block|{
 name|fileLength
@@ -195,6 +218,12 @@ operator|.
 name|isLastBlockComplete
 operator|=
 name|isLastBlockCompleted
+expr_stmt|;
+name|this
+operator|.
+name|fileEncryptionInfo
+operator|=
+name|feInfo
 expr_stmt|;
 block|}
 comment|/**    * Get located blocks.    */
@@ -285,7 +314,7 @@ operator|.
 name|fileLength
 return|;
 block|}
-comment|/**    * Return ture if file was under construction when     * this LocatedBlocks was constructed, false otherwise.    */
+comment|/**    * Return true if file was under construction when this LocatedBlocks was    * constructed, false otherwise.    */
 DECL|method|isUnderConstruction ()
 specifier|public
 name|boolean
@@ -294,6 +323,17 @@ parameter_list|()
 block|{
 return|return
 name|underConstruction
+return|;
+block|}
+comment|/**    * @return the FileEncryptionInfo for the LocatedBlocks    */
+DECL|method|getFileEncryptionInfo ()
+specifier|public
+name|FileEncryptionInfo
+name|getFileEncryptionInfo
+parameter_list|()
+block|{
+return|return
+name|fileEncryptionInfo
 return|;
 block|}
 comment|/**    * Find block containing specified offset.    *     * @return block if found, or null otherwise.    */

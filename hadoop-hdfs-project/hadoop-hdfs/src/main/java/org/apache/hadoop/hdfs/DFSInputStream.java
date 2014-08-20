@@ -488,6 +488,20 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|fs
+operator|.
+name|FileEncryptionInfo
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|hdfs
 operator|.
 name|protocol
@@ -826,6 +840,13 @@ name|long
 name|lastBlockBeingWrittenLength
 init|=
 literal|0
+decl_stmt|;
+DECL|field|fileEncryptionInfo
+specifier|private
+name|FileEncryptionInfo
+name|fileEncryptionInfo
+init|=
+literal|null
 decl_stmt|;
 DECL|field|currentNode
 specifier|private
@@ -1649,6 +1670,13 @@ name|len
 expr_stmt|;
 block|}
 block|}
+name|fileEncryptionInfo
+operator|=
+name|locatedBlocks
+operator|.
+name|getFileEncryptionInfo
+argument_list|()
+expr_stmt|;
 name|currentNode
 operator|=
 literal|null
@@ -7312,6 +7340,17 @@ name|ReadStatistics
 argument_list|(
 name|readStatistics
 argument_list|)
+return|;
+block|}
+DECL|method|getFileEncryptionInfo ()
+specifier|public
+specifier|synchronized
+name|FileEncryptionInfo
+name|getFileEncryptionInfo
+parameter_list|()
+block|{
+return|return
+name|fileEncryptionInfo
 return|;
 block|}
 DECL|method|closeCurrentBlockReader ()

@@ -66,6 +66,20 @@ name|hadoop
 operator|.
 name|fs
 operator|.
+name|FileEncryptionInfo
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|fs
+operator|.
 name|FileStatus
 import|;
 end_import
@@ -208,6 +222,12 @@ specifier|final
 name|long
 name|fileId
 decl_stmt|;
+DECL|field|feInfo
+specifier|private
+specifier|final
+name|FileEncryptionInfo
+name|feInfo
+decl_stmt|;
 comment|// Used by dir, not including dot and dotdot. Always zero for a regular file.
 DECL|field|childrenNum
 specifier|private
@@ -229,8 +249,8 @@ index|[
 literal|0
 index|]
 decl_stmt|;
-comment|/**    * Constructor    * @param length the number of bytes the file has    * @param isdir if the path is a directory    * @param block_replication the replication factor    * @param blocksize the block size    * @param modification_time modification time    * @param access_time access time    * @param permission permission    * @param owner the owner of the path    * @param group the group of the path    * @param path the local name in java UTF8 encoding the same as that in-memory    * @param fileId the file id    */
-DECL|method|HdfsFileStatus (long length, boolean isdir, int block_replication, long blocksize, long modification_time, long access_time, FsPermission permission, String owner, String group, byte[] symlink, byte[] path, long fileId, int childrenNum)
+comment|/**    * Constructor    * @param length the number of bytes the file has    * @param isdir if the path is a directory    * @param block_replication the replication factor    * @param blocksize the block size    * @param modification_time modification time    * @param access_time access time    * @param permission permission    * @param owner the owner of the path    * @param group the group of the path    * @param path the local name in java UTF8 encoding the same as that in-memory    * @param fileId the file id    * @param feInfo the file's encryption info    */
+DECL|method|HdfsFileStatus (long length, boolean isdir, int block_replication, long blocksize, long modification_time, long access_time, FsPermission permission, String owner, String group, byte[] symlink, byte[] path, long fileId, int childrenNum, FileEncryptionInfo feInfo)
 specifier|public
 name|HdfsFileStatus
 parameter_list|(
@@ -274,6 +294,9 @@ name|fileId
 parameter_list|,
 name|int
 name|childrenNum
+parameter_list|,
+name|FileEncryptionInfo
+name|feInfo
 parameter_list|)
 block|{
 name|this
@@ -398,6 +421,12 @@ operator|.
 name|childrenNum
 operator|=
 name|childrenNum
+expr_stmt|;
+name|this
+operator|.
+name|feInfo
+operator|=
+name|feInfo
 expr_stmt|;
 block|}
 comment|/**    * Get the length of this file, in bytes.    * @return the length of this file, in bytes.    */
@@ -707,6 +736,17 @@ parameter_list|()
 block|{
 return|return
 name|fileId
+return|;
+block|}
+DECL|method|getFileEncryptionInfo ()
+specifier|public
+specifier|final
+name|FileEncryptionInfo
+name|getFileEncryptionInfo
+parameter_list|()
+block|{
+return|return
+name|feInfo
 return|;
 block|}
 DECL|method|getChildrenNum ()

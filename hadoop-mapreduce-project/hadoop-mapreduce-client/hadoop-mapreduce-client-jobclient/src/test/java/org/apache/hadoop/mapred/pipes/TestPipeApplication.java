@@ -764,7 +764,9 @@ argument_list|(
 name|conf
 argument_list|,
 name|fs
-argument_list|,
+operator|.
+name|create
+argument_list|(
 operator|new
 name|Path
 argument_list|(
@@ -775,6 +777,7 @@ operator|.
 name|separator
 operator|+
 literal|"outfile"
+argument_list|)
 argument_list|)
 argument_list|,
 name|IntWritable
@@ -788,6 +791,8 @@ argument_list|,
 literal|null
 argument_list|,
 literal|null
+argument_list|,
+literal|true
 argument_list|)
 decl_stmt|;
 name|output
@@ -1203,7 +1208,9 @@ argument_list|(
 name|conf
 argument_list|,
 name|fs
-argument_list|,
+operator|.
+name|create
+argument_list|(
 operator|new
 name|Path
 argument_list|(
@@ -1218,6 +1225,7 @@ name|separator
 operator|+
 literal|"outfile"
 argument_list|)
+argument_list|)
 argument_list|,
 name|IntWritable
 operator|.
@@ -1230,6 +1238,8 @@ argument_list|,
 literal|null
 argument_list|,
 literal|null
+argument_list|,
+literal|true
 argument_list|)
 decl_stmt|;
 name|output

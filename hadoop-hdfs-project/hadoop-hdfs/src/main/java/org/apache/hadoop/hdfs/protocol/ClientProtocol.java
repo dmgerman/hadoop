@@ -94,6 +94,20 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|crypto
+operator|.
+name|CipherSuite
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|fs
 operator|.
 name|BatchedRemoteIterator
@@ -689,7 +703,7 @@ function_decl|;
 comment|/**    * Create a new file entry in the namespace.    *<p>    * This will create an empty file specified by the source path.    * The path should reflect a full path originated at the root.    * The name-node does not have a notion of "current" directory for a client.    *<p>    * Once created, the file is visible and available for read to other clients.    * Although, other clients cannot {@link #delete(String, boolean)}, re-create or     * {@link #rename(String, String)} it until the file is completed    * or explicitly as a result of lease expiration.    *<p>    * Blocks have a maximum size.  Clients that intend to create    * multi-block files must also use     * {@link #addBlock}    *    * @param src path of the file being created.    * @param masked masked permission.    * @param clientName name of the current client.    * @param flag indicates whether the file should be     * overwritten if it already exists or create if it does not exist or append.    * @param createParent create missing parent directory if true    * @param replication block replication factor.    * @param blockSize maximum block size.    *     * @return the status of the created file, it could be null if the server    *           doesn't support returning the file status    * @throws AccessControlException If access is denied    * @throws AlreadyBeingCreatedException if the path does not exist.    * @throws DSQuotaExceededException If file creation violates disk space     *           quota restriction    * @throws FileAlreadyExistsException If file<code>src</code> already exists    * @throws FileNotFoundException If parent of<code>src</code> does not exist    *           and<code>createParent</code> is false    * @throws ParentNotDirectoryException If parent of<code>src</code> is not a    *           directory.    * @throws NSQuotaExceededException If file creation violates name space     *           quota restriction    * @throws SafeModeException create not allowed in safemode    * @throws UnresolvedLinkException If<code>src</code> contains a symlink    * @throws SnapshotAccessControlException if path is in RO snapshot    * @throws IOException If an I/O error occurred    *    * RuntimeExceptions:    * @throws InvalidPathException Path<code>src</code> is invalid    *<p>    *<em>Note that create with {@link CreateFlag#OVERWRITE} is idempotent.</em>    */
 annotation|@
 name|AtMostOnce
-DECL|method|create (String src, FsPermission masked, String clientName, EnumSetWritable<CreateFlag> flag, boolean createParent, short replication, long blockSize)
+DECL|method|create (String src, FsPermission masked, String clientName, EnumSetWritable<CreateFlag> flag, boolean createParent, short replication, long blockSize, List<CipherSuite> cipherSuites)
 specifier|public
 name|HdfsFileStatus
 name|create
@@ -717,6 +731,12 @@ name|replication
 parameter_list|,
 name|long
 name|blockSize
+parameter_list|,
+name|List
+argument_list|<
+name|CipherSuite
+argument_list|>
+name|cipherSuites
 parameter_list|)
 throws|throws
 name|AccessControlException
@@ -2159,6 +2179,54 @@ parameter_list|)
 throws|throws
 name|IOException
 function_decl|;
+comment|/**    * Create an encryption zone    */
+annotation|@
+name|AtMostOnce
+DECL|method|createEncryptionZone (String src, String keyName)
+specifier|public
+name|void
+name|createEncryptionZone
+parameter_list|(
+name|String
+name|src
+parameter_list|,
+name|String
+name|keyName
+parameter_list|)
+throws|throws
+name|IOException
+function_decl|;
+comment|/**    * Get the encryption zone for a path.    */
+annotation|@
+name|Idempotent
+DECL|method|getEZForPath (String src)
+specifier|public
+name|EncryptionZoneWithId
+name|getEZForPath
+parameter_list|(
+name|String
+name|src
+parameter_list|)
+throws|throws
+name|IOException
+function_decl|;
+comment|/**    * Used to implement cursor-based batched listing of {@EncryptionZone}s.    *    * @param prevId ID of the last item in the previous batch. If there is no    *               previous batch, a negative value can be used.    * @return Batch of encryption zones.    */
+annotation|@
+name|Idempotent
+DECL|method|listEncryptionZones ( long prevId)
+specifier|public
+name|BatchedEntries
+argument_list|<
+name|EncryptionZoneWithId
+argument_list|>
+name|listEncryptionZones
+parameter_list|(
+name|long
+name|prevId
+parameter_list|)
+throws|throws
+name|IOException
+function_decl|;
 comment|/**    * Set xattr of a file or directory.    * The name must be prefixed with the namespace followed by ".". For example,    * "user.attr".    *<p/>    * Refer to the HDFS extended attributes user documentation for details.    *    * @param src file or directory    * @param xAttr<code>XAttr</code> to set    * @param flag set flag    * @throws IOException    */
 annotation|@
 name|AtMostOnce
@@ -2205,7 +2273,7 @@ parameter_list|)
 throws|throws
 name|IOException
 function_decl|;
-comment|/**    * List the xattrs names for a file or directory.    * Only the xattr names for which the logged in user has the permissions to    * access will be returned.    *<p/>    * Refer to the HDFS extended attributes user documentation for details.    *    * @param src file or directory    * @param xAttrs xAttrs to get    * @return List<XAttr><code>XAttr</code> list    * @throws IOException    */
+comment|/**    * List the xattrs names for a file or directory.    * Only the xattr names for which the logged in user has the permissions to    * access will be returned.    *<p/>    * Refer to the HDFS extended attributes user documentation for details.    *    * @param src file or directory    * @return List<XAttr><code>XAttr</code> list    * @throws IOException    */
 annotation|@
 name|Idempotent
 DECL|method|listXAttrs (String src)

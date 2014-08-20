@@ -102,6 +102,15 @@ name|CONF_LABEL_PRESERVE_STATUS
 init|=
 literal|"distcp.preserve.status"
 decl_stmt|;
+DECL|field|CONF_LABEL_PRESERVE_RAWXATTRS
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|CONF_LABEL_PRESERVE_RAWXATTRS
+init|=
+literal|"distcp.preserve.rawxattrs"
+decl_stmt|;
 DECL|field|CONF_LABEL_SYNC_FOLDERS
 specifier|public
 specifier|static
@@ -444,6 +453,15 @@ name|int
 name|SPLIT_RATIO_DEFAULT
 init|=
 literal|2
+decl_stmt|;
+comment|/**    * Value of reserved raw HDFS directory when copying raw.* xattrs.    */
+DECL|field|HDFS_RESERVED_RAW_DIRECTORY_NAME
+specifier|static
+specifier|final
+name|String
+name|HDFS_RESERVED_RAW_DIRECTORY_NAME
+init|=
+literal|"/.reserved/raw"
 decl_stmt|;
 block|}
 end_class
