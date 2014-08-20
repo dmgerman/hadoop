@@ -3730,6 +3730,35 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
+DECL|method|sendOOB ()
+specifier|public
+name|void
+name|sendOOB
+parameter_list|()
+throws|throws
+name|IOException
+throws|,
+name|InterruptedException
+block|{
+operator|(
+operator|(
+name|PacketResponder
+operator|)
+name|responder
+operator|.
+name|getRunnable
+argument_list|()
+operator|)
+operator|.
+name|sendOOBResponse
+argument_list|(
+name|PipelineAck
+operator|.
+name|getRestartOOBStatus
+argument_list|()
+argument_list|)
+expr_stmt|;
+block|}
 DECL|method|receiveBlock ( DataOutputStream mirrOut, DataInputStream mirrIn, DataOutputStream replyOut, String mirrAddr, DataTransferThrottler throttlerArg, DatanodeInfo[] downstreams, boolean isReplaceBlock)
 name|void
 name|receiveBlock
@@ -4144,24 +4173,6 @@ comment|// Client will fall back to regular pipeline recovery.
 block|}
 try|try
 block|{
-operator|(
-operator|(
-name|PacketResponder
-operator|)
-name|responder
-operator|.
-name|getRunnable
-argument_list|()
-operator|)
-operator|.
-name|sendOOBResponse
-argument_list|(
-name|PipelineAck
-operator|.
-name|getRestartOOBStatus
-argument_list|()
-argument_list|)
-expr_stmt|;
 comment|// Even if the connection is closed after the ack packet is
 comment|// flushed, the client can react to the connection closure
 comment|// first. Insert a delay to lower the chance of client
@@ -4181,22 +4192,6 @@ name|ie
 parameter_list|)
 block|{
 comment|// It is already going down. Ignore this.
-block|}
-catch|catch
-parameter_list|(
-name|IOException
-name|ioe
-parameter_list|)
-block|{
-name|LOG
-operator|.
-name|info
-argument_list|(
-literal|"Error sending OOB Ack."
-argument_list|,
-name|ioe
-argument_list|)
-expr_stmt|;
 block|}
 block|}
 name|responder

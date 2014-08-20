@@ -24,20 +24,6 @@ end_package
 
 begin_import
 import|import
-name|com
-operator|.
-name|google
-operator|.
-name|common
-operator|.
-name|base
-operator|.
-name|Preconditions
-import|;
-end_import
-
-begin_import
-import|import
 name|java
 operator|.
 name|util
@@ -72,6 +58,16 @@ name|java
 operator|.
 name|util
 operator|.
+name|HashSet
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
 name|Iterator
 import|;
 end_import
@@ -93,6 +89,16 @@ operator|.
 name|util
 operator|.
 name|Map
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
+name|Set
 import|;
 end_import
 
@@ -380,22 +386,6 @@ name|hadoop
 operator|.
 name|yarn
 operator|.
-name|exceptions
-operator|.
-name|YarnRuntimeException
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|yarn
-operator|.
 name|server
 operator|.
 name|resourcemanager
@@ -581,6 +571,20 @@ operator|.
 name|resource
 operator|.
 name|Resources
+import|;
+end_import
+
+begin_import
+import|import
+name|com
+operator|.
+name|google
+operator|.
+name|common
+operator|.
+name|base
+operator|.
+name|Preconditions
 import|;
 end_import
 
@@ -788,6 +792,21 @@ name|RMContainer
 argument_list|>
 argument_list|()
 decl_stmt|;
+comment|// This pendingRelease is used in work-preserving recovery scenario to keep
+comment|// track of the AM's outstanding release requests. RM on recovery could
+comment|// receive the release request form AM before it receives the container status
+comment|// from NM for recovery. In this case, the to-be-recovered containers reported
+comment|// by NM should not be recovered.
+DECL|field|pendingRelease
+specifier|private
+name|Set
+argument_list|<
+name|ContainerId
+argument_list|>
+name|pendingRelease
+init|=
+literal|null
+decl_stmt|;
 comment|/**    * Count how many times the application has been given an opportunity    * to schedule a task at each priority. Each time the scheduler    * asks the application for a task at this priority, it is incremented,    * and each time the application successfully schedules a task, it    * is reset to 0.    */
 DECL|field|schedulingOpportunities
 name|Multiset
@@ -900,6 +919,17 @@ operator|.
 name|queue
 operator|=
 name|queue
+expr_stmt|;
+name|this
+operator|.
+name|pendingRelease
+operator|=
+operator|new
+name|HashSet
+argument_list|<
+name|ContainerId
+argument_list|>
+argument_list|()
 expr_stmt|;
 if|if
 condition|(
@@ -1060,6 +1090,21 @@ name|getResourceRequests
 argument_list|(
 name|priority
 argument_list|)
+return|;
+block|}
+DECL|method|getPendingRelease ()
+specifier|public
+name|Set
+argument_list|<
+name|ContainerId
+argument_list|>
+name|getPendingRelease
+parameter_list|()
+block|{
+return|return
+name|this
+operator|.
+name|pendingRelease
 return|;
 block|}
 DECL|method|getNewContainerId ()
