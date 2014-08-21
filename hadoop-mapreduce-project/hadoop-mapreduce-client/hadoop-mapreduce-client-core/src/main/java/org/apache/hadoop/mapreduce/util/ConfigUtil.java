@@ -1354,6 +1354,16 @@ block|,
 operator|new
 name|DeprecationDelta
 argument_list|(
+literal|"mapred.merge.recordsBeforeProgress"
+argument_list|,
+name|MRJobConfig
+operator|.
+name|COMBINE_RECORDS_BEFORE_PROGRESS
+argument_list|)
+block|,
+operator|new
+name|DeprecationDelta
+argument_list|(
 literal|"mapred.skip.attempts.to.start.skipping"
 argument_list|,
 name|MRJobConfig
