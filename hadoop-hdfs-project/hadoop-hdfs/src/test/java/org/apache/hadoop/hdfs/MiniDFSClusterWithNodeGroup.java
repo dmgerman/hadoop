@@ -331,7 +331,7 @@ operator|=
 name|nodeGroups
 expr_stmt|;
 block|}
-DECL|method|startDataNodes (Configuration conf, int numDataNodes, StorageType storageType, boolean manageDfsDirs, StartupOption operation, String[] racks, String[] nodeGroups, String[] hosts, long[] simulatedCapacities, boolean setupHostsFile, boolean checkDataNodeAddrConfig, boolean checkDataNodeHostConfig)
+DECL|method|startDataNodes (Configuration conf, int numDataNodes, StorageType[][] storageTypes, boolean manageDfsDirs, StartupOption operation, String[] racks, String[] nodeGroups, String[] hosts, long[] simulatedCapacities, boolean setupHostsFile, boolean checkDataNodeAddrConfig, boolean checkDataNodeHostConfig)
 specifier|public
 specifier|synchronized
 name|void
@@ -344,7 +344,9 @@ name|int
 name|numDataNodes
 parameter_list|,
 name|StorageType
-name|storageType
+index|[]
+index|[]
+name|storageTypes
 parameter_list|,
 name|boolean
 name|manageDfsDirs
@@ -380,6 +382,17 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
+assert|assert
+name|storageTypes
+operator|==
+literal|null
+operator|||
+name|storageTypes
+operator|.
+name|length
+operator|==
+name|numDataNodes
+assert|;
 if|if
 condition|(
 name|operation
@@ -719,7 +732,16 @@ name|makeDataNodeDirs
 argument_list|(
 name|i
 argument_list|,
-name|storageType
+name|storageTypes
+operator|==
+literal|null
+condition|?
+literal|null
+else|:
+name|storageTypes
+index|[
+name|i
+index|]
 argument_list|)
 decl_stmt|;
 name|dnConf
@@ -1291,9 +1313,7 @@ name|conf
 argument_list|,
 name|numDataNodes
 argument_list|,
-name|StorageType
-operator|.
-name|DEFAULT
+literal|null
 argument_list|,
 name|manageDfsDirs
 argument_list|,
@@ -1372,7 +1392,7 @@ block|}
 comment|// This is for initialize from parent class.
 annotation|@
 name|Override
-DECL|method|startDataNodes (Configuration conf, int numDataNodes, StorageType storageType, boolean manageDfsDirs, StartupOption operation, String[] racks, String[] hosts, long[] simulatedCapacities, boolean setupHostsFile, boolean checkDataNodeAddrConfig, boolean checkDataNodeHostConfig, Configuration[] dnConfOverlays)
+DECL|method|startDataNodes (Configuration conf, int numDataNodes, StorageType[][] storageTypes, boolean manageDfsDirs, StartupOption operation, String[] racks, String[] hosts, long[] simulatedCapacities, boolean setupHostsFile, boolean checkDataNodeAddrConfig, boolean checkDataNodeHostConfig, Configuration[] dnConfOverlays)
 specifier|public
 specifier|synchronized
 name|void
@@ -1385,7 +1405,9 @@ name|int
 name|numDataNodes
 parameter_list|,
 name|StorageType
-name|storageType
+index|[]
+index|[]
+name|storageTypes
 parameter_list|,
 name|boolean
 name|manageDfsDirs
@@ -1427,7 +1449,7 @@ name|conf
 argument_list|,
 name|numDataNodes
 argument_list|,
-name|storageType
+name|storageTypes
 argument_list|,
 name|manageDfsDirs
 argument_list|,
