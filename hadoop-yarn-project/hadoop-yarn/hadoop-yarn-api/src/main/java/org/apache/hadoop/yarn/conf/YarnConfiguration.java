@@ -3215,6 +3215,27 @@ name|NM_PREFIX
 operator|+
 literal|"linux-container-executor.group"
 decl_stmt|;
+comment|/**    * True if linux-container-executor should limit itself to one user    * when running in non-secure mode.    */
+DECL|field|NM_NONSECURE_MODE_LIMIT_USERS
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|NM_NONSECURE_MODE_LIMIT_USERS
+init|=
+name|NM_PREFIX
+operator|+
+literal|"linux-container-executor.nonsecure-mode.limit-users"
+decl_stmt|;
+DECL|field|DEFAULT_NM_NONSECURE_MODE_LIMIT_USERS
+specifier|public
+specifier|static
+specifier|final
+name|boolean
+name|DEFAULT_NM_NONSECURE_MODE_LIMIT_USERS
+init|=
+literal|true
+decl_stmt|;
 comment|/**    * The UNIX user that containers will run as when Linux-container-executor    * is used in nonsecure mode (a use case for this is using cgroups).    */
 DECL|field|NM_NONSECURE_MODE_LOCAL_USER_KEY
 specifier|public
