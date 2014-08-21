@@ -2247,6 +2247,7 @@ return|;
 block|}
 comment|/**    * Splits an absolute {@code path} into an array of path components.    * @throws AssertionError if the given path is invalid.    * @return array of path components.    */
 DECL|method|getPathNames (String path)
+specifier|public
 specifier|static
 name|String
 index|[]
