@@ -6512,6 +6512,24 @@ argument_list|()
 else|:
 name|stage
 decl_stmt|;
+comment|// We cannot change the block length in 'block' as it counts the number
+comment|// of bytes ack'ed.
+name|ExtendedBlock
+name|blockCopy
+init|=
+operator|new
+name|ExtendedBlock
+argument_list|(
+name|block
+argument_list|)
+decl_stmt|;
+name|blockCopy
+operator|.
+name|setNumBytes
+argument_list|(
+name|blockSize
+argument_list|)
+expr_stmt|;
 comment|// send the request
 operator|new
 name|Sender
@@ -6521,7 +6539,7 @@ argument_list|)
 operator|.
 name|writeBlock
 argument_list|(
-name|block
+name|blockCopy
 argument_list|,
 name|nodeStorageTypes
 index|[

@@ -3638,6 +3638,16 @@ argument_list|(
 name|block
 argument_list|)
 decl_stmt|;
+if|if
+condition|(
+name|block
+operator|.
+name|getNumBytes
+argument_list|()
+operator|==
+literal|0
+condition|)
+block|{
 name|block
 operator|.
 name|setNumBytes
@@ -3647,6 +3657,7 @@ operator|.
 name|estimateBlockSize
 argument_list|)
 expr_stmt|;
+block|}
 name|LOG
 operator|.
 name|info
