@@ -6059,6 +6059,18 @@ operator|)
 name|rmDispatcher
 argument_list|)
 expr_stmt|;
+comment|// Need to stop previous rmDispatcher before assigning new dispatcher
+comment|// otherwise causes "AsyncDispatcher event handler" thread leak
+operator|(
+operator|(
+name|Service
+operator|)
+name|rmDispatcher
+operator|)
+operator|.
+name|stop
+argument_list|()
+expr_stmt|;
 name|rmDispatcher
 operator|=
 name|dispatcher

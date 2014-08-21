@@ -4552,6 +4552,24 @@ name|DFS_DATA_TRANSFER_SASL_PROPS_RESOLVER_CLASS_KEY
 init|=
 literal|"dfs.data.transfer.saslproperties.resolver.class"
 decl_stmt|;
+DECL|field|DFS_NAMENODE_LIST_ENCRYPTION_ZONES_NUM_RESPONSES_DEFAULT
+specifier|public
+specifier|static
+specifier|final
+name|int
+name|DFS_NAMENODE_LIST_ENCRYPTION_ZONES_NUM_RESPONSES_DEFAULT
+init|=
+literal|100
+decl_stmt|;
+DECL|field|DFS_NAMENODE_LIST_ENCRYPTION_ZONES_NUM_RESPONSES
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|DFS_NAMENODE_LIST_ENCRYPTION_ZONES_NUM_RESPONSES
+init|=
+literal|"dfs.namenode.list.encryption.zones.num.responses"
+decl_stmt|;
 comment|// Journal-node related configs. These are read on the JN side.
 DECL|field|DFS_JOURNALNODE_EDITS_DIR_KEY
 specifier|public

@@ -919,6 +919,8 @@ argument_list|,
 name|l2
 argument_list|,
 literal|true
+argument_list|,
+literal|null
 argument_list|)
 decl_stmt|;
 name|BlockLocation

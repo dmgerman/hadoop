@@ -282,6 +282,20 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|crypto
+operator|.
+name|CipherSuite
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|fs
 operator|.
 name|CanSetDropBehind
@@ -327,6 +341,20 @@ operator|.
 name|fs
 operator|.
 name|FileAlreadyExistsException
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|fs
+operator|.
+name|FileEncryptionInfo
 import|;
 end_import
 
@@ -1321,6 +1349,11 @@ name|boolean
 name|failPacket
 init|=
 literal|false
+decl_stmt|;
+DECL|field|fileEncryptionInfo
+specifier|private
+name|FileEncryptionInfo
+name|fileEncryptionInfo
 decl_stmt|;
 DECL|class|Packet
 specifier|private
@@ -6479,6 +6512,24 @@ argument_list|()
 else|:
 name|stage
 decl_stmt|;
+comment|// We cannot change the block length in 'block' as it counts the number
+comment|// of bytes ack'ed.
+name|ExtendedBlock
+name|blockCopy
+init|=
+operator|new
+name|ExtendedBlock
+argument_list|(
+name|block
+argument_list|)
+decl_stmt|;
+name|blockCopy
+operator|.
+name|setNumBytes
+argument_list|(
+name|blockSize
+argument_list|)
+expr_stmt|;
 comment|// send the request
 operator|new
 name|Sender
@@ -6488,7 +6539,7 @@ argument_list|)
 operator|.
 name|writeBlock
 argument_list|(
-name|block
+name|blockCopy
 argument_list|,
 name|nodeStorageTypes
 index|[
@@ -7571,6 +7622,15 @@ argument_list|()
 expr_stmt|;
 name|this
 operator|.
+name|fileEncryptionInfo
+operator|=
+name|stat
+operator|.
+name|getFileEncryptionInfo
+argument_list|()
+expr_stmt|;
+name|this
+operator|.
 name|progress
 operator|=
 name|progress
@@ -7781,7 +7841,7 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-DECL|method|newStreamForCreate (DFSClient dfsClient, String src, FsPermission masked, EnumSet<CreateFlag> flag, boolean createParent, short replication, long blockSize, Progressable progress, int buffersize, DataChecksum checksum, String[] favoredNodes)
+DECL|method|newStreamForCreate (DFSClient dfsClient, String src, FsPermission masked, EnumSet<CreateFlag> flag, boolean createParent, short replication, long blockSize, Progressable progress, int buffersize, DataChecksum checksum, String[] favoredNodes, List<CipherSuite> cipherSuites)
 specifier|static
 name|DFSOutputStream
 name|newStreamForCreate
@@ -7822,6 +7882,12 @@ parameter_list|,
 name|String
 index|[]
 name|favoredNodes
+parameter_list|,
+name|List
+argument_list|<
+name|CipherSuite
+argument_list|>
+name|cipherSuites
 parameter_list|)
 throws|throws
 name|IOException
@@ -7862,6 +7928,8 @@ argument_list|,
 name|replication
 argument_list|,
 name|blockSize
+argument_list|,
+name|cipherSuites
 argument_list|)
 expr_stmt|;
 block|}
@@ -7911,6 +7979,10 @@ argument_list|,
 name|SnapshotAccessControlException
 operator|.
 name|class
+argument_list|,
+name|UnknownCipherSuiteException
+operator|.
+name|class
 argument_list|)
 throw|;
 block|}
@@ -7943,74 +8015,6 @@ argument_list|()
 expr_stmt|;
 return|return
 name|out
-return|;
-block|}
-DECL|method|newStreamForCreate (DFSClient dfsClient, String src, FsPermission masked, EnumSet<CreateFlag> flag, boolean createParent, short replication, long blockSize, Progressable progress, int buffersize, DataChecksum checksum)
-specifier|static
-name|DFSOutputStream
-name|newStreamForCreate
-parameter_list|(
-name|DFSClient
-name|dfsClient
-parameter_list|,
-name|String
-name|src
-parameter_list|,
-name|FsPermission
-name|masked
-parameter_list|,
-name|EnumSet
-argument_list|<
-name|CreateFlag
-argument_list|>
-name|flag
-parameter_list|,
-name|boolean
-name|createParent
-parameter_list|,
-name|short
-name|replication
-parameter_list|,
-name|long
-name|blockSize
-parameter_list|,
-name|Progressable
-name|progress
-parameter_list|,
-name|int
-name|buffersize
-parameter_list|,
-name|DataChecksum
-name|checksum
-parameter_list|)
-throws|throws
-name|IOException
-block|{
-return|return
-name|newStreamForCreate
-argument_list|(
-name|dfsClient
-argument_list|,
-name|src
-argument_list|,
-name|masked
-argument_list|,
-name|flag
-argument_list|,
-name|createParent
-argument_list|,
-name|replication
-argument_list|,
-name|blockSize
-argument_list|,
-name|progress
-argument_list|,
-name|buffersize
-argument_list|,
-name|checksum
-argument_list|,
-literal|null
-argument_list|)
 return|;
 block|}
 comment|/** Construct a new output stream for append. */
@@ -8116,6 +8120,15 @@ name|DataStreamer
 argument_list|()
 expr_stmt|;
 block|}
+name|this
+operator|.
+name|fileEncryptionInfo
+operator|=
+name|stat
+operator|.
+name|getFileEncryptionInfo
+argument_list|()
+expr_stmt|;
 block|}
 DECL|method|newStreamForAppend (DFSClient dfsClient, String src, int buffersize, Progressable progress, LocatedBlock lastBlock, HdfsFileStatus stat, DataChecksum checksum)
 specifier|static
@@ -10129,12 +10142,24 @@ expr_stmt|;
 block|}
 comment|/**    * Returns the size of a file as it was when this stream was opened    */
 DECL|method|getInitialLen ()
+specifier|public
 name|long
 name|getInitialLen
 parameter_list|()
 block|{
 return|return
 name|initialFileSize
+return|;
+block|}
+comment|/**    * @return the FileEncryptionInfo for this stream, or null if not encrypted.    */
+DECL|method|getFileEncryptionInfo ()
+specifier|public
+name|FileEncryptionInfo
+name|getFileEncryptionInfo
+parameter_list|()
+block|{
+return|return
+name|fileEncryptionInfo
 return|;
 block|}
 comment|/**    * Returns the access token currently used by streamer, for testing only    */

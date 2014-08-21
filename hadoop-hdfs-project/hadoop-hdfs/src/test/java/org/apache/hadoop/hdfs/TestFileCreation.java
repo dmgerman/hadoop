@@ -6597,6 +6597,8 @@ operator|*
 literal|1024
 operator|*
 literal|1024L
+argument_list|,
+literal|null
 argument_list|)
 expr_stmt|;
 name|fail

@@ -1064,16 +1064,6 @@ operator|.
 name|registerAppAttempt
 argument_list|()
 expr_stmt|;
-name|am1
-operator|.
-name|setAMRMProtocol
-argument_list|(
-name|rm
-operator|.
-name|getApplicationMasterService
-argument_list|()
-argument_list|)
-expr_stmt|;
 name|AllocateRequestPBImpl
 name|allocateRequest
 init|=

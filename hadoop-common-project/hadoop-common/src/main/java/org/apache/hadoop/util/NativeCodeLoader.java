@@ -260,6 +260,15 @@ name|boolean
 name|buildSupportsSnappy
 parameter_list|()
 function_decl|;
+comment|/**    * Returns true only if this build was compiled with support for openssl.    */
+DECL|method|buildSupportsOpenssl ()
+specifier|public
+specifier|static
+specifier|native
+name|boolean
+name|buildSupportsOpenssl
+parameter_list|()
+function_decl|;
 DECL|method|getLibraryName ()
 specifier|public
 specifier|static

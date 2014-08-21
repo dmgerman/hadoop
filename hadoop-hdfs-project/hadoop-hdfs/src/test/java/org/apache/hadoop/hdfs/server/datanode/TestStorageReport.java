@@ -393,9 +393,16 @@ argument_list|(
 name|REPL_FACTOR
 argument_list|)
 operator|.
-name|storageType
+name|storageTypes
 argument_list|(
+operator|new
+name|StorageType
+index|[]
+block|{
 name|storageType
+block|,
+name|storageType
+block|}
 argument_list|)
 operator|.
 name|build

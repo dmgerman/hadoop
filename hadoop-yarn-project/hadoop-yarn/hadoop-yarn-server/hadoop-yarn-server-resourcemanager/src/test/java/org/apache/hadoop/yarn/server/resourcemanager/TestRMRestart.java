@@ -2397,6 +2397,11 @@ name|rm2
 operator|.
 name|getApplicationMasterService
 argument_list|()
+argument_list|,
+name|rm2
+operator|.
+name|getRMContext
+argument_list|()
 argument_list|)
 expr_stmt|;
 name|AllocateResponse
@@ -10829,6 +10834,11 @@ argument_list|(
 name|rm2
 operator|.
 name|getApplicationMasterService
+argument_list|()
+argument_list|,
+name|rm2
+operator|.
+name|getRMContext
 argument_list|()
 argument_list|)
 expr_stmt|;

@@ -304,6 +304,8 @@ name|inodeId
 argument_list|,
 name|childrenNum
 argument_list|,
+literal|null
+argument_list|,
 name|BlockStoragePolicy
 operator|.
 name|ID_UNSPECIFIED

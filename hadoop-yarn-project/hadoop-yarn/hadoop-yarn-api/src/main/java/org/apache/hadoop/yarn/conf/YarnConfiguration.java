@@ -2446,7 +2446,7 @@ literal|60
 operator|*
 literal|1000
 decl_stmt|;
-comment|/** Target size of localizer cache in MB, per local directory.*/
+comment|/**    * Target size of localizer cache in MB, per nodemanager. It is a target    * retention size that only includes resources with PUBLIC and PRIVATE    * visibility and excludes resources with APPLICATION visibility    */
 DECL|field|NM_LOCALIZER_CACHE_TARGET_SIZE_MB
 specifier|public
 specifier|static

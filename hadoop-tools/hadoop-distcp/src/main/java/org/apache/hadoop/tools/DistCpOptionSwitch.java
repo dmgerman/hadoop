@@ -95,6 +95,14 @@ operator|+
 literal|"If -p is specified with no<arg>, then preserves replication, "
 operator|+
 literal|"block size, user, group, permission and checksum type."
+operator|+
+literal|"raw.* xattrs are preserved when both the source and destination "
+operator|+
+literal|"paths are in the /.reserved/raw hierarchy (HDFS only). raw.* xattr"
+operator|+
+literal|"preservation is independent of the -p flag."
+operator|+
+literal|"Refer to the DistCp documentation for more details."
 argument_list|)
 argument_list|)
 block|,

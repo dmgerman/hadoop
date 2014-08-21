@@ -228,7 +228,7 @@ name|classification
 operator|.
 name|InterfaceAudience
 operator|.
-name|Private
+name|LimitedPrivate
 import|;
 end_import
 
@@ -244,7 +244,7 @@ name|classification
 operator|.
 name|InterfaceAudience
 operator|.
-name|LimitedPrivate
+name|Private
 import|;
 end_import
 
@@ -639,6 +639,26 @@ operator|.
 name|rmcontainer
 operator|.
 name|RMContainer
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|server
+operator|.
+name|resourcemanager
+operator|.
+name|rmcontainer
+operator|.
+name|RMContainerEventType
 import|;
 end_import
 
@@ -5363,6 +5383,25 @@ argument_list|>
 argument_list|>
 argument_list|()
 return|;
+block|}
+annotation|@
+name|Override
+DECL|method|completedContainer (RMContainer rmContainer, ContainerStatus containerStatus, RMContainerEventType event)
+specifier|protected
+name|void
+name|completedContainer
+parameter_list|(
+name|RMContainer
+name|rmContainer
+parameter_list|,
+name|ContainerStatus
+name|containerStatus
+parameter_list|,
+name|RMContainerEventType
+name|event
+parameter_list|)
+block|{
+comment|// do nothing
 block|}
 block|}
 end_class

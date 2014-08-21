@@ -388,7 +388,7 @@ specifier|final
 name|BlockBalanceThrottler
 name|balanceThrottler
 decl_stmt|;
-comment|/**    * We need an estimate for block size to check if the disk partition has    * enough space. For now we set it to be the default block size set    * in the server side configuration, which is not ideal because the    * default block size should be a client-size configuration.     * A better solution is to include in the header the estimated block size,    * i.e. either the actual block size or the default block size.    */
+comment|/**    * We need an estimate for block size to check if the disk partition has    * enough space. Newer clients pass the expected block size to the DataNode.    * For older clients we just use the server-side default block size.    */
 DECL|field|estimateBlockSize
 specifier|final
 name|long
