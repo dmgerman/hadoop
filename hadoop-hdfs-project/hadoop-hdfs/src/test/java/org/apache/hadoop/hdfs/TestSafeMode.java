@@ -1284,9 +1284,10 @@ name|NN_METRICS
 argument_list|)
 argument_list|)
 operator|==
-name|MiniDFSCluster
+name|cluster
 operator|.
-name|DIRS_PER_DATANODE
+name|getStoragesPerDatanode
+argument_list|()
 return|;
 block|}
 block|}

@@ -150,6 +150,20 @@ end_import
 
 begin_import
 import|import
+name|com
+operator|.
+name|google
+operator|.
+name|common
+operator|.
+name|annotations
+operator|.
+name|VisibleForTesting
+import|;
+end_import
+
+begin_import
+import|import
 name|org
 operator|.
 name|apache
@@ -363,7 +377,10 @@ annotation|@
 name|InterfaceAudience
 operator|.
 name|Private
+annotation|@
+name|VisibleForTesting
 DECL|class|FsVolumeImpl
+specifier|public
 class|class
 name|FsVolumeImpl
 implements|implements
@@ -425,6 +442,14 @@ specifier|private
 specifier|final
 name|long
 name|reserved
+decl_stmt|;
+comment|// Capacity configured. This is useful when we want to
+comment|// limit the visible capacity for tests. If negative, then we just
+comment|// query from the filesystem.
+DECL|field|configuredCapacity
+specifier|protected
+name|long
+name|configuredCapacity
 decl_stmt|;
 comment|/**    * Per-volume worker pool that processes new blocks to cache.    * The maximum number of workers per volume is bounded (configurable via    * dfs.datanode.fsdatasetcache.max.threads.per.volume) to limit resource    * contention.    */
 DECL|field|cacheExecutor
@@ -515,6 +540,30 @@ name|storageType
 operator|=
 name|storageType
 expr_stmt|;
+name|this
+operator|.
+name|configuredCapacity
+operator|=
+operator|-
+literal|1
+expr_stmt|;
+name|cacheExecutor
+operator|=
+name|initializeCacheExecutor
+argument_list|(
+name|parent
+argument_list|)
+expr_stmt|;
+block|}
+DECL|method|initializeCacheExecutor (File parent)
+specifier|protected
+name|ThreadPoolExecutor
+name|initializeCacheExecutor
+parameter_list|(
+name|File
+name|parent
+parameter_list|)
+block|{
 specifier|final
 name|int
 name|maxNumThreads
@@ -564,8 +613,9 @@ operator|.
 name|build
 argument_list|()
 decl_stmt|;
-name|cacheExecutor
-operator|=
+name|ThreadPoolExecutor
+name|executor
+init|=
 operator|new
 name|ThreadPoolExecutor
 argument_list|(
@@ -588,14 +638,17 @@ argument_list|()
 argument_list|,
 name|workerFactory
 argument_list|)
-expr_stmt|;
-name|cacheExecutor
+decl_stmt|;
+name|executor
 operator|.
 name|allowCoreThreadTimeOut
 argument_list|(
 literal|true
 argument_list|)
 expr_stmt|;
+return|return
+name|executor
+return|;
 block|}
 DECL|method|getCurrentDir ()
 name|File
@@ -731,10 +784,20 @@ argument_list|()
 return|;
 block|}
 comment|/**    * Calculate the capacity of the filesystem, after removing any    * reserved capacity.    * @return the unreserved number of bytes left in this filesystem. May be zero.    */
+annotation|@
+name|VisibleForTesting
 DECL|method|getCapacity ()
+specifier|public
 name|long
 name|getCapacity
 parameter_list|()
+block|{
+if|if
+condition|(
+name|configuredCapacity
+operator|<
+literal|0
+condition|)
 block|{
 name|long
 name|remaining
@@ -755,6 +818,29 @@ name|remaining
 else|:
 literal|0
 return|;
+block|}
+return|return
+name|configuredCapacity
+return|;
+block|}
+comment|/**    * This function MUST NOT be used outside of tests.    *    * @param capacity    */
+annotation|@
+name|VisibleForTesting
+DECL|method|setCapacityForTesting (long capacity)
+specifier|public
+name|void
+name|setCapacityForTesting
+parameter_list|(
+name|long
+name|capacity
+parameter_list|)
+block|{
+name|this
+operator|.
+name|configuredCapacity
+operator|=
+name|capacity
+expr_stmt|;
 block|}
 annotation|@
 name|Override
