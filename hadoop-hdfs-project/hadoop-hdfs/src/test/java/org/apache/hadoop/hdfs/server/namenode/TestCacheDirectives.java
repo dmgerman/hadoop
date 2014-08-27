@@ -1160,13 +1160,6 @@ name|NoMlockCacheManipulator
 argument_list|()
 argument_list|)
 expr_stmt|;
-name|EditLogFileOutputStream
-operator|.
-name|setShouldSkipFsyncForTesting
-argument_list|(
-literal|false
-argument_list|)
-expr_stmt|;
 block|}
 DECL|field|BLOCK_SIZE
 specifier|private

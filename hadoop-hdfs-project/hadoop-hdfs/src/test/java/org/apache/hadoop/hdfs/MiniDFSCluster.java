@@ -1164,6 +1164,24 @@ name|server
 operator|.
 name|namenode
 operator|.
+name|EditLogFileOutputStream
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|server
+operator|.
+name|namenode
+operator|.
 name|FSNamesystem
 import|;
 end_import
@@ -1762,6 +1780,13 @@ name|Configuration
 index|[]
 name|dnConfOverlays
 decl_stmt|;
+DECL|field|skipFsyncForTesting
+specifier|private
+name|boolean
+name|skipFsyncForTesting
+init|=
+literal|true
+decl_stmt|;
 DECL|method|Builder (Configuration conf)
 specifier|public
 name|Builder
@@ -2307,6 +2332,26 @@ return|return
 name|this
 return|;
 block|}
+comment|/**      * Default: true      * When true, we skip fsync() calls for speed improvements.      */
+DECL|method|skipFsyncForTesting (boolean val)
+specifier|public
+name|Builder
+name|skipFsyncForTesting
+parameter_list|(
+name|boolean
+name|val
+parameter_list|)
+block|{
+name|this
+operator|.
+name|skipFsyncForTesting
+operator|=
+name|val
+expr_stmt|;
+return|return
+name|this
+return|;
+block|}
 comment|/**      * Construct the actual MiniDFSCluster      */
 DECL|method|build ()
 specifier|public
@@ -2652,6 +2697,10 @@ argument_list|,
 name|builder
 operator|.
 name|dnConfOverlays
+argument_list|,
+name|builder
+operator|.
+name|skipFsyncForTesting
 argument_list|)
 expr_stmt|;
 block|}
@@ -3339,10 +3388,12 @@ argument_list|,
 literal|false
 argument_list|,
 literal|null
+argument_list|,
+literal|true
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|initMiniDFSCluster ( Configuration conf, int numDataNodes, StorageType[][] storageTypes, boolean format, boolean manageNameDfsDirs, boolean manageNameDfsSharedDirs, boolean enableManagedDfsDirsRedundancy, boolean manageDataDfsDirs, StartupOption startOpt, StartupOption dnStartOpt, String[] racks, String[] hosts, long[][] storageCapacities, long[] simulatedCapacities, String clusterId, boolean waitSafeMode, boolean setupHostsFile, MiniDFSNNTopology nnTopology, boolean checkExitOnShutdown, boolean checkDataNodeAddrConfig, boolean checkDataNodeHostConfig, Configuration[] dnConfOverlays)
+DECL|method|initMiniDFSCluster ( Configuration conf, int numDataNodes, StorageType[][] storageTypes, boolean format, boolean manageNameDfsDirs, boolean manageNameDfsSharedDirs, boolean enableManagedDfsDirsRedundancy, boolean manageDataDfsDirs, StartupOption startOpt, StartupOption dnStartOpt, String[] racks, String[] hosts, long[][] storageCapacities, long[] simulatedCapacities, String clusterId, boolean waitSafeMode, boolean setupHostsFile, MiniDFSNNTopology nnTopology, boolean checkExitOnShutdown, boolean checkDataNodeAddrConfig, boolean checkDataNodeHostConfig, Configuration[] dnConfOverlays, boolean skipFsyncForTesting)
 specifier|private
 name|void
 name|initMiniDFSCluster
@@ -3420,6 +3471,9 @@ parameter_list|,
 name|Configuration
 index|[]
 name|dnConfOverlays
+parameter_list|,
+name|boolean
+name|skipFsyncForTesting
 parameter_list|)
 throws|throws
 name|IOException
@@ -3630,6 +3684,13 @@ literal|1
 argument_list|)
 expr_stmt|;
 block|}
+name|EditLogFileOutputStream
+operator|.
+name|setShouldSkipFsyncForTesting
+argument_list|(
+name|skipFsyncForTesting
+argument_list|)
+expr_stmt|;
 name|federation
 operator|=
 name|nnTopology

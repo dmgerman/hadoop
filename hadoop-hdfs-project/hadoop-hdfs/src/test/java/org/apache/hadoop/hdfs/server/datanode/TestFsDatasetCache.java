@@ -1088,13 +1088,6 @@ name|prevCacheManipulator
 decl_stmt|;
 static|static
 block|{
-name|EditLogFileOutputStream
-operator|.
-name|setShouldSkipFsyncForTesting
-argument_list|(
-literal|false
-argument_list|)
-expr_stmt|;
 name|LogManager
 operator|.
 name|getLogger
