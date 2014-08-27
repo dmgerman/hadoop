@@ -1340,18 +1340,10 @@ specifier|private
 name|StorageGroup
 name|target
 decl_stmt|;
-DECL|method|PendingMove ()
+DECL|method|PendingMove (Source source, StorageGroup target)
 specifier|private
 name|PendingMove
-parameter_list|()
-block|{     }
-DECL|method|PendingMove (DBlock block, Source source, StorageGroup target)
-specifier|public
-name|PendingMove
 parameter_list|(
-name|DBlock
-name|block
-parameter_list|,
 name|Source
 name|source
 parameter_list|,
@@ -1359,12 +1351,6 @@ name|StorageGroup
 name|target
 parameter_list|)
 block|{
-name|this
-operator|.
-name|block
-operator|=
-name|block
-expr_stmt|;
 name|this
 operator|.
 name|source
@@ -1433,6 +1419,16 @@ name|boolean
 name|chooseBlockAndProxy
 parameter_list|()
 block|{
+comment|// source and target must have the same storage type
+specifier|final
+name|StorageType
+name|t
+init|=
+name|source
+operator|.
+name|getStorageType
+argument_list|()
+decl_stmt|;
 comment|// iterate all source's blocks until find a good one
 for|for
 control|(
@@ -1462,6 +1458,8 @@ name|i
 operator|.
 name|next
 argument_list|()
+argument_list|,
+name|t
 argument_list|)
 condition|)
 block|{
@@ -1480,13 +1478,16 @@ literal|false
 return|;
 block|}
 comment|/**      * @return true if the given block is good for the tentative move.      */
-DECL|method|markMovedIfGoodBlock (DBlock block)
+DECL|method|markMovedIfGoodBlock (DBlock block, StorageType targetStorageType)
 specifier|private
 name|boolean
 name|markMovedIfGoodBlock
 parameter_list|(
 name|DBlock
 name|block
+parameter_list|,
+name|StorageType
+name|targetStorageType
 parameter_list|)
 block|{
 synchronized|synchronized
@@ -1506,6 +1507,8 @@ argument_list|(
 name|source
 argument_list|,
 name|target
+argument_list|,
+name|targetStorageType
 argument_list|,
 name|block
 argument_list|)
@@ -1561,7 +1564,7 @@ return|;
 block|}
 comment|/**      * Choose a proxy source.      *       * @return true if a proxy is found; otherwise false      */
 DECL|method|chooseProxySource ()
-specifier|public
+specifier|private
 name|boolean
 name|chooseProxySource
 parameter_list|()
@@ -2491,6 +2494,73 @@ operator|=
 literal|0L
 expr_stmt|;
 block|}
+DECL|method|addPendingMove (DBlock block, final PendingMove pm)
+specifier|private
+name|PendingMove
+name|addPendingMove
+parameter_list|(
+name|DBlock
+name|block
+parameter_list|,
+specifier|final
+name|PendingMove
+name|pm
+parameter_list|)
+block|{
+if|if
+condition|(
+name|getDDatanode
+argument_list|()
+operator|.
+name|addPendingBlock
+argument_list|(
+name|pm
+argument_list|)
+condition|)
+block|{
+if|if
+condition|(
+name|pm
+operator|.
+name|markMovedIfGoodBlock
+argument_list|(
+name|block
+argument_list|,
+name|getStorageType
+argument_list|()
+argument_list|)
+condition|)
+block|{
+name|incScheduledSize
+argument_list|(
+name|pm
+operator|.
+name|block
+operator|.
+name|getNumBytes
+argument_list|()
+argument_list|)
+expr_stmt|;
+return|return
+name|pm
+return|;
+block|}
+else|else
+block|{
+name|getDDatanode
+argument_list|()
+operator|.
+name|removePendingBlock
+argument_list|(
+name|pm
+argument_list|)
+expr_stmt|;
+block|}
+block|}
+return|return
+literal|null
+return|;
+block|}
 comment|/** @return the name for display */
 DECL|method|getDisplayName ()
 name|String
@@ -3267,6 +3337,14 @@ name|DBlock
 name|block
 parameter_list|)
 block|{
+comment|// source and target must have the same storage type
+specifier|final
+name|StorageType
+name|sourceStorageType
+init|=
+name|getStorageType
+argument_list|()
+decl_stmt|;
 for|for
 control|(
 name|Task
@@ -3288,6 +3366,8 @@ argument_list|,
 name|t
 operator|.
 name|target
+argument_list|,
+name|sourceStorageType
 argument_list|,
 name|block
 argument_list|)
@@ -3349,12 +3429,19 @@ operator|.
 name|getDDatanode
 argument_list|()
 decl_stmt|;
+specifier|final
 name|PendingMove
 name|pendingBlock
 init|=
 operator|new
 name|PendingMove
-argument_list|()
+argument_list|(
+name|this
+argument_list|,
+name|task
+operator|.
+name|target
+argument_list|)
 decl_stmt|;
 if|if
 condition|(
@@ -3367,20 +3454,6 @@ argument_list|)
 condition|)
 block|{
 comment|// target is not busy, so do a tentative block allocation
-name|pendingBlock
-operator|.
-name|source
-operator|=
-name|this
-expr_stmt|;
-name|pendingBlock
-operator|.
-name|target
-operator|=
-name|task
-operator|.
-name|target
-expr_stmt|;
 if|if
 condition|(
 name|pendingBlock
@@ -3445,6 +3518,36 @@ block|}
 block|}
 return|return
 literal|null
+return|;
+block|}
+comment|/** Add a pending move */
+DECL|method|addPendingMove (DBlock block, StorageGroup target)
+specifier|public
+name|PendingMove
+name|addPendingMove
+parameter_list|(
+name|DBlock
+name|block
+parameter_list|,
+name|StorageGroup
+name|target
+parameter_list|)
+block|{
+return|return
+name|target
+operator|.
+name|addPendingMove
+argument_list|(
+name|block
+argument_list|,
+operator|new
+name|PendingMove
+argument_list|(
+name|this
+argument_list|,
+name|target
+argument_list|)
+argument_list|)
 return|;
 block|}
 comment|/** Iterate all source's blocks to remove moved ones */
@@ -4557,41 +4660,9 @@ parameter_list|)
 block|{       }
 block|}
 block|}
-DECL|method|isGoodBlockCandidate (StorageGroup source, StorageGroup target, DBlock block)
-specifier|private
-name|boolean
-name|isGoodBlockCandidate
-parameter_list|(
-name|StorageGroup
-name|source
-parameter_list|,
-name|StorageGroup
-name|target
-parameter_list|,
-name|DBlock
-name|block
-parameter_list|)
-block|{
-comment|// match source and target storage type
-return|return
-name|isGoodBlockCandidate
-argument_list|(
-name|source
-argument_list|,
-name|target
-argument_list|,
-name|source
-operator|.
-name|getStorageType
-argument_list|()
-argument_list|,
-name|block
-argument_list|)
-return|;
-block|}
 comment|/**    * Decide if the block is a good candidate to be moved from source to target.    * A block is a good candidate if     * 1. the block is not in the process of being moved/has not been moved;    * 2. the block does not have a replica on the target;    * 3. doing the move does not reduce the number of racks that the block has    */
 DECL|method|isGoodBlockCandidate (StorageGroup source, StorageGroup target, StorageType targetStorageType, DBlock block)
-specifier|public
+specifier|private
 name|boolean
 name|isGoodBlockCandidate
 parameter_list|(

@@ -113,6 +113,17 @@ name|right
 argument_list|)
 return|;
 block|}
+annotation|@
+name|Override
+specifier|public
+name|String
+name|toString
+parameter_list|()
+block|{
+return|return
+literal|"SAME_NODE_GROUP"
+return|;
+block|}
 block|}
 decl_stmt|;
 comment|/** Match datanodes in the same rack. */
@@ -154,6 +165,17 @@ name|right
 argument_list|)
 return|;
 block|}
+annotation|@
+name|Override
+specifier|public
+name|String
+name|toString
+parameter_list|()
+block|{
+return|return
+literal|"SAME_RACK"
+return|;
+block|}
 block|}
 decl_stmt|;
 comment|/** Match any datanode with any other datanode. */
@@ -188,6 +210,17 @@ return|return
 name|left
 operator|!=
 name|right
+return|;
+block|}
+annotation|@
+name|Override
+specifier|public
+name|String
+name|toString
+parameter_list|()
+block|{
+return|return
+literal|"ANY_OTHER"
 return|;
 block|}
 block|}
