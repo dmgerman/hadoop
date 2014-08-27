@@ -3391,7 +3391,7 @@ expr_stmt|;
 block|}
 annotation|@
 name|Override
-DECL|method|writeBlock (final ExtendedBlock block, final StorageType storageType, final Token<BlockTokenIdentifier> blockToken, final String clientname, final DatanodeInfo[] targets, final StorageType[] targetStorageTypes, final DatanodeInfo srcDataNode, final BlockConstructionStage stage, final int pipelineSize, final long minBytesRcvd, final long maxBytesRcvd, final long latestGenerationStamp, DataChecksum requestedChecksum, CachingStrategy cachingStrategy)
+DECL|method|writeBlock (final ExtendedBlock block, final StorageType storageType, final Token<BlockTokenIdentifier> blockToken, final String clientname, final DatanodeInfo[] targets, final StorageType[] targetStorageTypes, final DatanodeInfo srcDataNode, final BlockConstructionStage stage, final int pipelineSize, final long minBytesRcvd, final long maxBytesRcvd, final long latestGenerationStamp, DataChecksum requestedChecksum, CachingStrategy cachingStrategy, final boolean allowLazyPersist)
 specifier|public
 name|void
 name|writeBlock
@@ -3454,6 +3454,10 @@ name|requestedChecksum
 parameter_list|,
 name|CachingStrategy
 name|cachingStrategy
+parameter_list|,
+specifier|final
+name|boolean
+name|allowLazyPersist
 parameter_list|)
 throws|throws
 name|IOException
@@ -4055,6 +4059,7 @@ argument_list|(
 name|unbufMirrorIn
 argument_list|)
 expr_stmt|;
+comment|// Do not propagate allowLazyPersist to downstream DataNodes.
 operator|new
 name|Sender
 argument_list|(
@@ -4093,6 +4098,8 @@ argument_list|,
 name|requestedChecksum
 argument_list|,
 name|cachingStrategy
+argument_list|,
+literal|false
 argument_list|)
 expr_stmt|;
 name|mirrorOut

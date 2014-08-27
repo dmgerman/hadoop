@@ -823,7 +823,7 @@ expr_stmt|;
 block|}
 annotation|@
 name|Override
-DECL|method|writeBlock (final ExtendedBlock blk, final StorageType storageType, final Token<BlockTokenIdentifier> blockToken, final String clientName, final DatanodeInfo[] targets, final StorageType[] targetStorageTypes, final DatanodeInfo source, final BlockConstructionStage stage, final int pipelineSize, final long minBytesRcvd, final long maxBytesRcvd, final long latestGenerationStamp, DataChecksum requestedChecksum, final CachingStrategy cachingStrategy)
+DECL|method|writeBlock (final ExtendedBlock blk, final StorageType storageType, final Token<BlockTokenIdentifier> blockToken, final String clientName, final DatanodeInfo[] targets, final StorageType[] targetStorageTypes, final DatanodeInfo source, final BlockConstructionStage stage, final int pipelineSize, final long minBytesRcvd, final long maxBytesRcvd, final long latestGenerationStamp, DataChecksum requestedChecksum, final CachingStrategy cachingStrategy, final boolean allowLazyPersist)
 specifier|public
 name|void
 name|writeBlock
@@ -887,6 +887,10 @@ parameter_list|,
 specifier|final
 name|CachingStrategy
 name|cachingStrategy
+parameter_list|,
+specifier|final
+name|boolean
+name|allowLazyPersist
 parameter_list|)
 throws|throws
 name|IOException
@@ -1003,6 +1007,11 @@ name|getCachingStrategy
 argument_list|(
 name|cachingStrategy
 argument_list|)
+argument_list|)
+operator|.
+name|setAllowLazyPersist
+argument_list|(
+name|allowLazyPersist
 argument_list|)
 decl_stmt|;
 if|if

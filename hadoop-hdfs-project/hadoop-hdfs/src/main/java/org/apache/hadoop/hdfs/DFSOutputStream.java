@@ -2181,6 +2181,12 @@ init|=
 literal|0
 decl_stmt|;
 comment|// number of bytes that've been sent
+DECL|field|isLazyPersistFile
+specifier|private
+specifier|final
+name|boolean
+name|isLazyPersistFile
+decl_stmt|;
 comment|/** Nodes have been used in the pipeline before and have failed. */
 DECL|field|failed
 specifier|private
@@ -2230,14 +2236,24 @@ name|boolean
 name|isAppend
 decl_stmt|;
 comment|/**      * Default construction for file create      */
-DECL|method|DataStreamer ()
+DECL|method|DataStreamer (HdfsFileStatus stat)
 specifier|private
 name|DataStreamer
-parameter_list|()
+parameter_list|(
+name|HdfsFileStatus
+name|stat
+parameter_list|)
 block|{
 name|isAppend
 operator|=
 literal|false
+expr_stmt|;
+name|isLazyPersistFile
+operator|=
+name|stat
+operator|.
+name|isLazyPersist
+argument_list|()
 expr_stmt|;
 name|stage
 operator|=
@@ -2292,6 +2308,13 @@ operator|=
 name|lastBlock
 operator|.
 name|getBlockToken
+argument_list|()
+expr_stmt|;
+name|isLazyPersistFile
+operator|=
+name|stat
+operator|.
+name|isLazyPersist
 argument_list|()
 expr_stmt|;
 name|long
@@ -6579,6 +6602,8 @@ name|cachingStrategy
 operator|.
 name|get
 argument_list|()
+argument_list|,
+name|isLazyPersistFile
 argument_list|)
 expr_stmt|;
 comment|// receive ack for connect
@@ -7817,7 +7842,9 @@ name|streamer
 operator|=
 operator|new
 name|DataStreamer
-argument_list|()
+argument_list|(
+name|stat
+argument_list|)
 expr_stmt|;
 if|if
 condition|(
@@ -8117,7 +8144,9 @@ name|streamer
 operator|=
 operator|new
 name|DataStreamer
-argument_list|()
+argument_list|(
+name|stat
+argument_list|)
 expr_stmt|;
 block|}
 name|this
