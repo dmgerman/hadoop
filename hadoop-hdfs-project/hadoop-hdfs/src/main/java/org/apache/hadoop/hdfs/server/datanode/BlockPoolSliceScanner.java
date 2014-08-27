@@ -1108,7 +1108,7 @@ name|arr
 init|=
 name|dataset
 operator|.
-name|getFinalizedBlocks
+name|getFinalizedBlocksOnPersistentStorage
 argument_list|(
 name|blockPoolId
 argument_list|)

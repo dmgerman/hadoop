@@ -717,6 +717,15 @@ name|STORAGE_DIR_FINALIZED
 init|=
 literal|"finalized"
 decl_stmt|;
+DECL|field|STORAGE_DIR_LAZY_PERSIST
+specifier|public
+specifier|final
+specifier|static
+name|String
+name|STORAGE_DIR_LAZY_PERSIST
+init|=
+literal|"lazypersist"
+decl_stmt|;
 DECL|field|STORAGE_DIR_TMP
 specifier|public
 specifier|final
