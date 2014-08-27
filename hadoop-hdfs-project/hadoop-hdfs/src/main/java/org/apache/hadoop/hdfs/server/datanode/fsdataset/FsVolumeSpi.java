@@ -127,6 +127,13 @@ name|StorageType
 name|getStorageType
 parameter_list|()
 function_decl|;
+comment|/** Returns true if the volume is NOT backed by persistent storage. */
+DECL|method|isTransientStorage ()
+specifier|public
+name|boolean
+name|isTransientStorage
+parameter_list|()
+function_decl|;
 block|}
 end_interface
 

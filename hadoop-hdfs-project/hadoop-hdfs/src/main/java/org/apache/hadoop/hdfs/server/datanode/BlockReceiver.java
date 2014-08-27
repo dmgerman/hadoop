@@ -882,7 +882,7 @@ name|replyOut
 init|=
 literal|null
 decl_stmt|;
-DECL|method|BlockReceiver (final ExtendedBlock block, final StorageType storageType, final DataInputStream in, final String inAddr, final String myAddr, final BlockConstructionStage stage, final long newGs, final long minBytesRcvd, final long maxBytesRcvd, final String clientname, final DatanodeInfo srcDataNode, final DataNode datanode, DataChecksum requestedChecksum, CachingStrategy cachingStrategy)
+DECL|method|BlockReceiver (final ExtendedBlock block, final StorageType storageType, final DataInputStream in, final String inAddr, final String myAddr, final BlockConstructionStage stage, final long newGs, final long minBytesRcvd, final long maxBytesRcvd, final String clientname, final DatanodeInfo srcDataNode, final DataNode datanode, DataChecksum requestedChecksum, CachingStrategy cachingStrategy, final boolean allowLazyPersist)
 name|BlockReceiver
 parameter_list|(
 specifier|final
@@ -938,6 +938,10 @@ name|requestedChecksum
 parameter_list|,
 name|CachingStrategy
 name|cachingStrategy
+parameter_list|,
+specifier|final
+name|boolean
+name|allowLazyPersist
 parameter_list|)
 throws|throws
 name|IOException
@@ -1169,6 +1173,8 @@ argument_list|(
 name|storageType
 argument_list|,
 name|block
+argument_list|,
+name|allowLazyPersist
 argument_list|)
 expr_stmt|;
 name|datanode

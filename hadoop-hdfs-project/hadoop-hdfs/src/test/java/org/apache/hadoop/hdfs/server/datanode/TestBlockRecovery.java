@@ -3630,6 +3630,8 @@ operator|.
 name|DEFAULT
 argument_list|,
 name|block
+argument_list|,
+literal|false
 argument_list|)
 expr_stmt|;
 try|try
@@ -3772,6 +3774,8 @@ operator|.
 name|DEFAULT
 argument_list|,
 name|block
+argument_list|,
+literal|false
 argument_list|)
 decl_stmt|;
 name|ReplicaOutputStreams

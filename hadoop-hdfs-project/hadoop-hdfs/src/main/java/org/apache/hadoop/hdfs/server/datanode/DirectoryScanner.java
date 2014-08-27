@@ -1823,6 +1823,8 @@ DECL|method|reconcile ()
 name|void
 name|reconcile
 parameter_list|()
+throws|throws
+name|IOException
 block|{
 name|scan
 argument_list|()

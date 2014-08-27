@@ -230,6 +230,48 @@ end_import
 
 begin_import
 import|import
+name|com
+operator|.
+name|google
+operator|.
+name|common
+operator|.
+name|base
+operator|.
+name|Preconditions
+import|;
+end_import
+
+begin_import
+import|import
+name|com
+operator|.
+name|google
+operator|.
+name|common
+operator|.
+name|collect
+operator|.
+name|TreeMultimap
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|commons
+operator|.
+name|io
+operator|.
+name|FileUtils
+import|;
+end_import
+
+begin_import
+import|import
 name|org
 operator|.
 name|apache
@@ -2037,8 +2079,9 @@ comment|// storageMap and asyncDiskService, consistent.
 name|FsVolumeImpl
 name|fsVolume
 init|=
-operator|new
-name|FsVolumeImpl
+name|FsVolumeImplAllocator
+operator|.
+name|createVolume
 argument_list|(
 name|this
 argument_list|,
@@ -2600,21 +2643,21 @@ argument_list|()
 argument_list|,
 name|b
 operator|.
-name|getLocalBlock
+name|getBlockId
 argument_list|()
 argument_list|)
 return|;
 block|}
 comment|/**    * Get File name for a given block.    */
-DECL|method|getBlockFile (String bpid, Block b)
+DECL|method|getBlockFile (String bpid, long blockId)
 name|File
 name|getBlockFile
 parameter_list|(
 name|String
 name|bpid
 parameter_list|,
-name|Block
-name|b
+name|long
+name|blockId
 parameter_list|)
 throws|throws
 name|IOException
@@ -2626,7 +2669,7 @@ name|validateBlockFile
 argument_list|(
 name|bpid
 argument_list|,
-name|b
+name|blockId
 argument_list|)
 decl_stmt|;
 if|if
@@ -2640,9 +2683,9 @@ throw|throw
 operator|new
 name|IOException
 argument_list|(
-literal|"Block "
+literal|"BlockId "
 operator|+
-name|b
+name|blockId
 operator|+
 literal|" is not valid."
 argument_list|)
@@ -4543,7 +4586,7 @@ block|}
 annotation|@
 name|Override
 comment|// FsDatasetSpi
-DECL|method|createRbw (StorageType storageType, ExtendedBlock b)
+DECL|method|createRbw (StorageType storageType, ExtendedBlock b, boolean allowLazyPersist)
 specifier|public
 specifier|synchronized
 name|ReplicaInPipeline
@@ -4554,6 +4597,9 @@ name|storageType
 parameter_list|,
 name|ExtendedBlock
 name|b
+parameter_list|,
+name|boolean
+name|allowLazyPersist
 parameter_list|)
 throws|throws
 name|IOException
@@ -4605,7 +4651,37 @@ block|}
 comment|// create a new block
 name|FsVolumeImpl
 name|v
-init|=
+decl_stmt|;
+while|while
+condition|(
+literal|true
+condition|)
+block|{
+try|try
+block|{
+if|if
+condition|(
+name|allowLazyPersist
+condition|)
+block|{
+comment|// First try to place the block on a transient volume.
+name|v
+operator|=
+name|volumes
+operator|.
+name|getNextTransientVolume
+argument_list|(
+name|b
+operator|.
+name|getNumBytes
+argument_list|()
+argument_list|)
+expr_stmt|;
+block|}
+else|else
+block|{
+name|v
+operator|=
 name|volumes
 operator|.
 name|getNextVolume
@@ -4617,8 +4693,33 @@ operator|.
 name|getNumBytes
 argument_list|()
 argument_list|)
-decl_stmt|;
-comment|// create a rbw file to hold block in the designated volume
+expr_stmt|;
+block|}
+block|}
+catch|catch
+parameter_list|(
+name|DiskOutOfSpaceException
+name|de
+parameter_list|)
+block|{
+if|if
+condition|(
+name|allowLazyPersist
+condition|)
+block|{
+name|allowLazyPersist
+operator|=
+literal|false
+expr_stmt|;
+continue|continue;
+block|}
+throw|throw
+name|de
+throw|;
+block|}
+break|break;
+block|}
+comment|// create an rbw file to hold block in the designated volume
 name|File
 name|f
 init|=
@@ -6427,15 +6528,15 @@ argument_list|()
 return|;
 block|}
 comment|/**    * Find the file corresponding to the block and return it if it exists.    */
-DECL|method|validateBlockFile (String bpid, Block b)
+DECL|method|validateBlockFile (String bpid, long blockId)
 name|File
 name|validateBlockFile
 parameter_list|(
 name|String
 name|bpid
 parameter_list|,
-name|Block
-name|b
+name|long
+name|blockId
 parameter_list|)
 block|{
 comment|//Should we check for metadata file too?
@@ -6454,10 +6555,7 @@ name|getFile
 argument_list|(
 name|bpid
 argument_list|,
-name|b
-operator|.
-name|getBlockId
-argument_list|()
+name|blockId
 argument_list|)
 expr_stmt|;
 block|}
@@ -6497,9 +6595,9 @@ name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"b="
+literal|"blockId="
 operator|+
-name|b
+name|blockId
 operator|+
 literal|", f="
 operator|+
@@ -7256,6 +7354,27 @@ operator|+
 name|blockId
 operator|+
 literal|": volume was not an instance of FsVolumeImpl."
+argument_list|)
+expr_stmt|;
+return|return;
+block|}
+if|if
+condition|(
+name|volume
+operator|.
+name|isTransientStorage
+argument_list|()
+condition|)
+block|{
+name|LOG
+operator|.
+name|warn
+argument_list|(
+literal|"Caching not supported on block with id "
+operator|+
+name|blockId
+operator|+
+literal|" since the volume is backed by RAM."
 argument_list|)
 expr_stmt|;
 return|return;

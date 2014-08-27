@@ -1606,6 +1606,18 @@ literal|null
 argument_list|)
 return|;
 block|}
+annotation|@
+name|Override
+DECL|method|isOnTransientStorage ()
+specifier|public
+name|boolean
+name|isOnTransientStorage
+parameter_list|()
+block|{
+return|return
+literal|false
+return|;
+block|}
 block|}
 comment|/**    * Class is used for tracking block pool storage utilization similar    * to {@link BlockPoolSlice}    */
 DECL|class|SimulatedBPStorage
@@ -3905,7 +3917,7 @@ block|}
 annotation|@
 name|Override
 comment|// FsDatasetSpi
-DECL|method|createRbw ( StorageType storageType, ExtendedBlock b)
+DECL|method|createRbw ( StorageType storageType, ExtendedBlock b, boolean allowLazyPersist)
 specifier|public
 specifier|synchronized
 name|ReplicaInPipelineInterface
@@ -3916,6 +3928,9 @@ name|storageType
 parameter_list|,
 name|ExtendedBlock
 name|b
+parameter_list|,
+name|boolean
+name|allowLazyPersist
 parameter_list|)
 throws|throws
 name|IOException
@@ -5251,6 +5266,8 @@ parameter_list|,
 name|FsVolumeSpi
 name|vol
 parameter_list|)
+throws|throws
+name|IOException
 block|{
 throw|throw
 operator|new

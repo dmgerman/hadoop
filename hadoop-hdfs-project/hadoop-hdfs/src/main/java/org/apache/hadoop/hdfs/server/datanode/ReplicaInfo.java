@@ -265,37 +265,6 @@ name|File
 argument_list|>
 argument_list|()
 decl_stmt|;
-comment|/**    * Constructor for a zero length replica    * @param blockId block id    * @param genStamp replica generation stamp    * @param vol volume where replica is located    * @param dir directory path where block and meta files are located    */
-DECL|method|ReplicaInfo (long blockId, long genStamp, FsVolumeSpi vol, File dir)
-name|ReplicaInfo
-parameter_list|(
-name|long
-name|blockId
-parameter_list|,
-name|long
-name|genStamp
-parameter_list|,
-name|FsVolumeSpi
-name|vol
-parameter_list|,
-name|File
-name|dir
-parameter_list|)
-block|{
-name|this
-argument_list|(
-name|blockId
-argument_list|,
-literal|0L
-argument_list|,
-name|genStamp
-argument_list|,
-name|vol
-argument_list|,
-name|dir
-argument_list|)
-expr_stmt|;
-block|}
 comment|/**    * Constructor    * @param block a block    * @param vol volume where replica is located    * @param dir directory path where block and meta files are located    */
 DECL|method|ReplicaInfo (Block block, FsVolumeSpi vol, File dir)
 name|ReplicaInfo
@@ -1036,52 +1005,6 @@ return|return
 literal|true
 return|;
 block|}
-comment|/**    * Set this replica's generation stamp to be a newer one    * @param newGS new generation stamp    * @throws IOException is the new generation stamp is not greater than the current one    */
-DECL|method|setNewerGenerationStamp (long newGS)
-name|void
-name|setNewerGenerationStamp
-parameter_list|(
-name|long
-name|newGS
-parameter_list|)
-throws|throws
-name|IOException
-block|{
-name|long
-name|curGS
-init|=
-name|getGenerationStamp
-argument_list|()
-decl_stmt|;
-if|if
-condition|(
-name|newGS
-operator|<=
-name|curGS
-condition|)
-block|{
-throw|throw
-operator|new
-name|IOException
-argument_list|(
-literal|"New generation stamp ("
-operator|+
-name|newGS
-operator|+
-literal|") must be greater than current one ("
-operator|+
-name|curGS
-operator|+
-literal|")"
-argument_list|)
-throw|;
-block|}
-name|setGenerationStamp
-argument_list|(
-name|newGS
-argument_list|)
-expr_stmt|;
-block|}
 annotation|@
 name|Override
 comment|//Object
@@ -1133,6 +1056,21 @@ operator|+
 literal|"\n  getBlockFile()    = "
 operator|+
 name|getBlockFile
+argument_list|()
+return|;
+block|}
+annotation|@
+name|Override
+DECL|method|isOnTransientStorage ()
+specifier|public
+name|boolean
+name|isOnTransientStorage
+parameter_list|()
+block|{
+return|return
+name|volume
+operator|.
+name|isTransientStorage
 argument_list|()
 return|;
 block|}

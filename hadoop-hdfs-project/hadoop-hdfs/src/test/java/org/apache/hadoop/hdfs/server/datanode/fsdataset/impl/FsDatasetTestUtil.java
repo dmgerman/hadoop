@@ -199,6 +199,9 @@ argument_list|(
 name|bpid
 argument_list|,
 name|b
+operator|.
+name|getBlockId
+argument_list|()
 argument_list|)
 return|;
 block|}

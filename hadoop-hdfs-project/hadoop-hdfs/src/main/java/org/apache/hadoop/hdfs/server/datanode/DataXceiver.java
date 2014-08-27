@@ -3811,6 +3811,8 @@ argument_list|,
 name|requestedChecksum
 argument_list|,
 name|cachingStrategy
+argument_list|,
+name|allowLazyPersist
 argument_list|)
 expr_stmt|;
 name|storageUuid
@@ -6250,6 +6252,8 @@ name|CachingStrategy
 operator|.
 name|newDropBehind
 argument_list|()
+argument_list|,
+literal|false
 argument_list|)
 expr_stmt|;
 comment|// receive a block

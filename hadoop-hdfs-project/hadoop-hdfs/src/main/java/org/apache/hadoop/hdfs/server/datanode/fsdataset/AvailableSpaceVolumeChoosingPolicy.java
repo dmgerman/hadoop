@@ -441,7 +441,7 @@ argument_list|()
 decl_stmt|;
 annotation|@
 name|Override
-DECL|method|chooseVolume (List<V> volumes, final long replicaSize)
+DECL|method|chooseVolume (List<V> volumes, long replicaSize)
 specifier|public
 specifier|synchronized
 name|V
@@ -453,7 +453,6 @@ name|V
 argument_list|>
 name|volumes
 parameter_list|,
-specifier|final
 name|long
 name|replicaSize
 parameter_list|)

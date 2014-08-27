@@ -117,6 +117,13 @@ name|String
 name|getStorageUuid
 parameter_list|()
 function_decl|;
+comment|/**    * Return true if the target volume is backed by RAM.    */
+DECL|method|isOnTransientStorage ()
+specifier|public
+name|boolean
+name|isOnTransientStorage
+parameter_list|()
+function_decl|;
 block|}
 end_interface
 

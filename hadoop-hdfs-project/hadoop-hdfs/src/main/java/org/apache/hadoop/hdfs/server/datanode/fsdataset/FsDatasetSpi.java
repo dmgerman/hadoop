@@ -726,6 +726,8 @@ parameter_list|,
 name|FsVolumeSpi
 name|vol
 parameter_list|)
+throws|throws
+name|IOException
 function_decl|;
 comment|/**    * @param b - the block    * @return a stream if the meta-data of the block exists;    *         otherwise, return null.    * @throws IOException    */
 DECL|method|getMetaDataInputStream (ExtendedBlock b )
@@ -843,7 +845,7 @@ throws|throws
 name|IOException
 function_decl|;
 comment|/**    * Creates a RBW replica and returns the meta info of the replica    *     * @param b block    * @return the meta info of the replica which is being written to    * @throws IOException if an error occurs    */
-DECL|method|createRbw (StorageType storageType, ExtendedBlock b)
+DECL|method|createRbw (StorageType storageType, ExtendedBlock b, boolean allowLazyPersist)
 specifier|public
 name|ReplicaInPipelineInterface
 name|createRbw
@@ -853,6 +855,9 @@ name|storageType
 parameter_list|,
 name|ExtendedBlock
 name|b
+parameter_list|,
+name|boolean
+name|allowLazyPersist
 parameter_list|)
 throws|throws
 name|IOException

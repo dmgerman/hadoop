@@ -2268,6 +2268,8 @@ operator|.
 name|DEFAULT
 argument_list|,
 name|b
+argument_list|,
+literal|false
 argument_list|)
 expr_stmt|;
 name|DatanodeRegistration

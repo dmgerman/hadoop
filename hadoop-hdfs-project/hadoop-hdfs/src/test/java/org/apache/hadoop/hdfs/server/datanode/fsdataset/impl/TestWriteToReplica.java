@@ -2513,6 +2513,8 @@ name|blocks
 index|[
 name|FINALIZED
 index|]
+argument_list|,
+literal|false
 argument_list|)
 expr_stmt|;
 name|Assert
@@ -2619,6 +2621,8 @@ name|blocks
 index|[
 name|TEMPORARY
 index|]
+argument_list|,
+literal|false
 argument_list|)
 expr_stmt|;
 name|Assert
@@ -2687,6 +2691,8 @@ name|blocks
 index|[
 name|RBW
 index|]
+argument_list|,
+literal|false
 argument_list|)
 expr_stmt|;
 name|Assert
@@ -2791,6 +2797,8 @@ name|blocks
 index|[
 name|RWR
 index|]
+argument_list|,
+literal|false
 argument_list|)
 expr_stmt|;
 name|Assert
@@ -2897,6 +2905,8 @@ name|blocks
 index|[
 name|RUR
 index|]
+argument_list|,
+literal|false
 argument_list|)
 expr_stmt|;
 name|Assert
@@ -2999,6 +3009,8 @@ name|blocks
 index|[
 name|NON_EXISTENT
 index|]
+argument_list|,
+literal|false
 argument_list|)
 expr_stmt|;
 block|}

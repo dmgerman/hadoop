@@ -1413,6 +1413,8 @@ parameter_list|,
 name|long
 name|mismatchBlocks
 parameter_list|)
+throws|throws
+name|IOException
 block|{
 name|scanner
 operator|.
@@ -2637,6 +2639,18 @@ parameter_list|()
 block|{
 return|return
 literal|""
+return|;
+block|}
+annotation|@
+name|Override
+DECL|method|isTransientStorage ()
+specifier|public
+name|boolean
+name|isTransientStorage
+parameter_list|()
+block|{
+return|return
+literal|false
 return|;
 block|}
 block|}

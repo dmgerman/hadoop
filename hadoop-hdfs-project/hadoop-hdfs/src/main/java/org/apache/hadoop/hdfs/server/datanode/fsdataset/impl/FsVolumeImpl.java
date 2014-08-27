@@ -453,8 +453,7 @@ name|configuredCapacity
 decl_stmt|;
 comment|/**    * Per-volume worker pool that processes new blocks to cache.    * The maximum number of workers per volume is bounded (configurable via    * dfs.datanode.fsdatasetcache.max.threads.per.volume) to limit resource    * contention.    */
 DECL|field|cacheExecutor
-specifier|private
-specifier|final
+specifier|protected
 name|ThreadPoolExecutor
 name|cacheExecutor
 decl_stmt|;
@@ -962,6 +961,18 @@ return|;
 block|}
 annotation|@
 name|Override
+DECL|method|isTransientStorage ()
+specifier|public
+name|boolean
+name|isTransientStorage
+parameter_list|()
+block|{
+return|return
+literal|false
+return|;
+block|}
+annotation|@
+name|Override
 DECL|method|getPath (String bpid)
 specifier|public
 name|String
@@ -1274,11 +1285,19 @@ name|void
 name|shutdown
 parameter_list|()
 block|{
+if|if
+condition|(
+name|cacheExecutor
+operator|!=
+literal|null
+condition|)
+block|{
 name|cacheExecutor
 operator|.
 name|shutdown
 argument_list|()
 expr_stmt|;
+block|}
 name|Set
 argument_list|<
 name|Entry
