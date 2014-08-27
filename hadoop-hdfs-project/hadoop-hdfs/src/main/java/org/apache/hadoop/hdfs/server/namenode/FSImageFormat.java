@@ -3533,6 +3533,8 @@ name|increment
 argument_list|()
 expr_stmt|;
 block|}
+comment|// Images in the old format will not have the lazyPersist flag so it is
+comment|// safe to pass false always.
 specifier|final
 name|INodeFile
 name|file
@@ -3555,6 +3557,8 @@ argument_list|,
 name|replication
 argument_list|,
 name|blockSize
+argument_list|,
+literal|false
 argument_list|)
 decl_stmt|;
 if|if
@@ -4059,6 +4063,8 @@ operator|.
 name|readLong
 argument_list|()
 decl_stmt|;
+comment|// LazyPersist flag will not be present in old image formats and hence
+comment|// can be safely set to false always.
 return|return
 operator|new
 name|INodeFileAttributes
@@ -4078,6 +4084,8 @@ argument_list|,
 name|replication
 argument_list|,
 name|preferredBlockSize
+argument_list|,
+literal|false
 argument_list|,
 literal|null
 argument_list|)

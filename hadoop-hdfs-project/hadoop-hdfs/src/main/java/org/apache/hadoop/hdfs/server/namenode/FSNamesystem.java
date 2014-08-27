@@ -14308,6 +14308,8 @@ name|replication
 argument_list|,
 name|blockSize
 argument_list|,
+name|isLazyPersist
+argument_list|,
 name|holder
 argument_list|,
 name|clientMachine

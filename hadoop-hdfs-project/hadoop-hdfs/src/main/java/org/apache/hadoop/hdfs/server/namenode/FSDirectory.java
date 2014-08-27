@@ -1844,7 +1844,7 @@ literal|true
 expr_stmt|;
 block|}
 comment|/**    * Add the given filename to the fs.    * @throws FileAlreadyExistsException    * @throws QuotaExceededException    * @throws UnresolvedLinkException    * @throws SnapshotAccessControlException     */
-DECL|method|addFile (String path, PermissionStatus permissions, short replication, long preferredBlockSize, String clientName, String clientMachine)
+DECL|method|addFile (String path, PermissionStatus permissions, short replication, long preferredBlockSize, boolean isLazyPersist, String clientName, String clientMachine)
 name|INodeFile
 name|addFile
 parameter_list|(
@@ -1859,6 +1859,9 @@ name|replication
 parameter_list|,
 name|long
 name|preferredBlockSize
+parameter_list|,
+name|boolean
+name|isLazyPersist
 parameter_list|,
 name|String
 name|clientName
@@ -1909,6 +1912,8 @@ argument_list|,
 name|replication
 argument_list|,
 name|preferredBlockSize
+argument_list|,
+name|isLazyPersist
 argument_list|)
 decl_stmt|;
 name|newNode
@@ -1995,7 +2000,7 @@ return|return
 name|newNode
 return|;
 block|}
-DECL|method|unprotectedAddFile ( long id, String path, PermissionStatus permissions, List<AclEntry> aclEntries, List<XAttr> xAttrs, short replication, long modificationTime, long atime, long preferredBlockSize, boolean underConstruction, String clientName, String clientMachine)
+DECL|method|unprotectedAddFile ( long id, String path, PermissionStatus permissions, List<AclEntry> aclEntries, List<XAttr> xAttrs, short replication, long modificationTime, long atime, long preferredBlockSize, boolean isLazyPersist, boolean underConstruction, String clientName, String clientMachine)
 name|INodeFile
 name|unprotectedAddFile
 parameter_list|(
@@ -2031,6 +2036,9 @@ name|atime
 parameter_list|,
 name|long
 name|preferredBlockSize
+parameter_list|,
+name|boolean
+name|isLazyPersist
 parameter_list|,
 name|boolean
 name|underConstruction
@@ -2077,6 +2085,8 @@ argument_list|,
 name|replication
 argument_list|,
 name|preferredBlockSize
+argument_list|,
+name|isLazyPersist
 argument_list|)
 expr_stmt|;
 name|newNode
@@ -2113,6 +2123,8 @@ argument_list|,
 name|replication
 argument_list|,
 name|preferredBlockSize
+argument_list|,
+name|isLazyPersist
 argument_list|)
 expr_stmt|;
 block|}
@@ -11231,6 +11243,11 @@ name|blocksize
 init|=
 literal|0
 decl_stmt|;
+name|boolean
+name|isLazyPersist
+init|=
+literal|false
+decl_stmt|;
 if|if
 condition|(
 name|node
@@ -11271,6 +11288,13 @@ operator|=
 name|fileNode
 operator|.
 name|getPreferredBlockSize
+argument_list|()
+expr_stmt|;
+name|isLazyPersist
+operator|=
+name|fileNode
+operator|.
+name|getLazyPersistFlag
 argument_list|()
 expr_stmt|;
 block|}
@@ -11323,7 +11347,7 @@ name|replication
 argument_list|,
 name|blocksize
 argument_list|,
-literal|false
+name|isLazyPersist
 argument_list|,
 name|node
 operator|.
@@ -11430,6 +11454,11 @@ name|blocksize
 init|=
 literal|0
 decl_stmt|;
+name|boolean
+name|isLazyPersist
+init|=
+literal|false
+decl_stmt|;
 name|LocatedBlocks
 name|loc
 init|=
@@ -11485,11 +11514,11 @@ argument_list|(
 name|snapshot
 argument_list|)
 expr_stmt|;
-name|blocksize
+name|isLazyPersist
 operator|=
 name|fileNode
 operator|.
-name|getPreferredBlockSize
+name|getLazyPersistFlag
 argument_list|()
 expr_stmt|;
 specifier|final
@@ -11612,7 +11641,7 @@ name|replication
 argument_list|,
 name|blocksize
 argument_list|,
-literal|false
+name|isLazyPersist
 argument_list|,
 name|node
 operator|.

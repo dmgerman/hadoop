@@ -108,6 +108,13 @@ name|long
 name|getPreferredBlockSize
 parameter_list|()
 function_decl|;
+comment|/**    * Return true if the file was created with {@Link CreateFlag#LAZY_PERSIST}.    * @return    */
+DECL|method|getLazyPersistFlag ()
+specifier|public
+name|boolean
+name|getLazyPersistFlag
+parameter_list|()
+function_decl|;
 comment|/**    * Get block replication for the collection     * @return block replication value    */
 DECL|method|getBlockReplication ()
 specifier|public

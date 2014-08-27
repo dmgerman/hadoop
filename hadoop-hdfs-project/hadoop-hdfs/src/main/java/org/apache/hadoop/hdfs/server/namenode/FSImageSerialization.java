@@ -939,6 +939,8 @@ literal|0
 operator|:
 literal|"Unexpected block locations"
 assert|;
+comment|// Images in the pre-protobuf format will not have the lazyPersist flag,
+comment|// so it is safe to pass false always.
 name|INodeFile
 name|file
 init|=
@@ -960,6 +962,8 @@ argument_list|,
 name|blockReplication
 argument_list|,
 name|preferredBlockSize
+argument_list|,
+literal|false
 argument_list|)
 decl_stmt|;
 name|file
@@ -976,7 +980,7 @@ name|file
 return|;
 block|}
 comment|// Helper function that writes an INodeUnderConstruction
-comment|// into the input stream
+comment|// into the output stream
 comment|//
 DECL|method|writeINodeUnderConstruction (DataOutputStream out, INodeFile cons, String path)
 specifier|static

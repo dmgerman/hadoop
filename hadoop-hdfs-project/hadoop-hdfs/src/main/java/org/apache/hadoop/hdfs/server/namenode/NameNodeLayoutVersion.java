@@ -292,6 +292,17 @@ literal|57
 argument_list|,
 literal|"Extended attributes"
 argument_list|)
+block|,
+DECL|enumConstant|LAZY_PERSIST_FILES
+name|LAZY_PERSIST_FILES
+argument_list|(
+operator|-
+literal|58
+argument_list|,
+literal|"Support for optional lazy persistence of "
+operator|+
+literal|" files with reduced durability guarantees"
+argument_list|)
 block|;
 DECL|field|info
 specifier|private

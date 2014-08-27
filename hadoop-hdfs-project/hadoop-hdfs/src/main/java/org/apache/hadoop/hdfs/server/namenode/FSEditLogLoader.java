@@ -2831,6 +2831,10 @@ name|addCloseOp
 operator|.
 name|blockSize
 argument_list|,
+name|addCloseOp
+operator|.
+name|isLazyPersist
+argument_list|,
 literal|true
 argument_list|,
 name|addCloseOp

@@ -782,6 +782,8 @@ argument_list|,
 name|replication
 argument_list|,
 name|preferredBlockSize
+argument_list|,
+literal|false
 argument_list|)
 return|;
 block|}
@@ -1625,6 +1627,8 @@ argument_list|,
 name|replication
 argument_list|,
 name|preferredBlockSize
+argument_list|,
+literal|false
 argument_list|)
 expr_stmt|;
 name|iNodes
@@ -1857,6 +1861,8 @@ argument_list|,
 name|replication
 argument_list|,
 literal|1024L
+argument_list|,
+literal|false
 argument_list|)
 decl_stmt|;
 name|from
@@ -6440,6 +6446,8 @@ argument_list|,
 name|replication
 argument_list|,
 literal|1024L
+argument_list|,
+literal|false
 argument_list|)
 decl_stmt|;
 name|assertFalse
