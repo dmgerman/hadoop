@@ -252,6 +252,20 @@ name|org
 operator|.
 name|apache
 operator|.
+name|hadoop
+operator|.
+name|util
+operator|.
+name|PerformanceAdvisory
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
 name|commons
 operator|.
 name|logging
@@ -899,9 +913,11 @@ block|{
 comment|// This can happen if the user has an older version of libhadoop.so
 comment|// installed - in this case we can continue without native IO
 comment|// after warning
+name|PerformanceAdvisory
+operator|.
 name|LOG
 operator|.
-name|error
+name|debug
 argument_list|(
 literal|"Unable to initialize NativeIO libraries"
 argument_list|,
@@ -2607,9 +2623,11 @@ block|{
 comment|// This can happen if the user has an older version of libhadoop.so
 comment|// installed - in this case we can continue without native IO
 comment|// after warning
+name|PerformanceAdvisory
+operator|.
 name|LOG
 operator|.
-name|error
+name|debug
 argument_list|(
 literal|"Unable to initialize NativeIO libraries"
 argument_list|,
@@ -2673,9 +2691,11 @@ block|{
 comment|// This can happen if the user has an older version of libhadoop.so
 comment|// installed - in this case we can continue without native IO
 comment|// after warning
+name|PerformanceAdvisory
+operator|.
 name|LOG
 operator|.
-name|error
+name|debug
 argument_list|(
 literal|"Unable to initialize NativeIO libraries"
 argument_list|,

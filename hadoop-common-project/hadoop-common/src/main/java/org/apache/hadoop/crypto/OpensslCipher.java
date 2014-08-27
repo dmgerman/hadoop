@@ -156,6 +156,20 @@ name|Preconditions
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|util
+operator|.
+name|PerformanceAdvisory
+import|;
+end_import
+
 begin_comment
 comment|/**  * OpenSSL cipher using JNI.  * Currently only AES-CTR is supported. It's flexible to add   * other crypto algorithms/modes.  */
 end_comment
@@ -368,6 +382,15 @@ name|buildSupportsOpenssl
 argument_list|()
 condition|)
 block|{
+name|PerformanceAdvisory
+operator|.
+name|LOG
+operator|.
+name|debug
+argument_list|(
+literal|"Build does not support openssl"
+argument_list|)
+expr_stmt|;
 name|loadingFailure
 operator|=
 literal|"build does not support openssl."
