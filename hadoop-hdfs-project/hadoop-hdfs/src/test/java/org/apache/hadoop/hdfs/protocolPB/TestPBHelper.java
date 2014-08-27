@@ -4025,7 +4025,20 @@ name|AdminStates
 operator|.
 name|NORMAL
 argument_list|)
-block|}
+block|,
+name|DFSTestUtil
+operator|.
+name|getLocalDatanodeInfo
+argument_list|(
+literal|"127.0.0.1"
+argument_list|,
+literal|"h4"
+argument_list|,
+name|AdminStates
+operator|.
+name|NORMAL
+argument_list|)
+block|,     }
 decl_stmt|;
 name|String
 index|[]
@@ -4037,6 +4050,8 @@ block|,
 literal|"s2"
 block|,
 literal|"s3"
+block|,
+literal|"s4"
 block|}
 decl_stmt|;
 name|StorageType
@@ -4055,6 +4070,10 @@ block|,
 name|StorageType
 operator|.
 name|DISK
+block|,
+name|StorageType
+operator|.
+name|RAM_DISK
 block|}
 decl_stmt|;
 name|LocatedBlock
