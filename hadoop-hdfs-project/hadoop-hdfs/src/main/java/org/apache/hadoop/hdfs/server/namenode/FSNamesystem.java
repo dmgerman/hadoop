@@ -4408,6 +4408,11 @@ argument_list|()
 argument_list|,
 name|stat
 operator|.
+name|isLazyPersist
+argument_list|()
+argument_list|,
+name|stat
+operator|.
 name|getModificationTime
 argument_list|()
 argument_list|,
@@ -13489,6 +13494,18 @@ operator|.
 name|OVERWRITE
 argument_list|)
 decl_stmt|;
+name|boolean
+name|isLazyPersist
+init|=
+name|flag
+operator|.
+name|contains
+argument_list|(
+name|CreateFlag
+operator|.
+name|LAZY_PERSIST
+argument_list|)
+decl_stmt|;
 name|waitForLoadingFSImage
 argument_list|()
 expr_stmt|;
@@ -13740,6 +13757,8 @@ name|replication
 argument_list|,
 name|blockSize
 argument_list|,
+name|isLazyPersist
+argument_list|,
 name|suite
 argument_list|,
 name|edek
@@ -13855,7 +13874,7 @@ name|stat
 return|;
 block|}
 comment|/**    * Create a new file or overwrite an existing file<br>    *     * Once the file is create the client then allocates a new block with the next    * call using {@link ClientProtocol#addBlock}.    *<p>    * For description of parameters and exceptions thrown see    * {@link ClientProtocol#create}    */
-DECL|method|startFileInternal (FSPermissionChecker pc, String src, PermissionStatus permissions, String holder, String clientMachine, boolean create, boolean overwrite, boolean createParent, short replication, long blockSize, CipherSuite suite, EncryptedKeyVersion edek, boolean logRetryEntry)
+DECL|method|startFileInternal (FSPermissionChecker pc, String src, PermissionStatus permissions, String holder, String clientMachine, boolean create, boolean overwrite, boolean createParent, short replication, long blockSize, boolean isLazyPersist, CipherSuite suite, EncryptedKeyVersion edek, boolean logRetryEntry)
 specifier|private
 name|void
 name|startFileInternal
@@ -13889,6 +13908,9 @@ name|replication
 parameter_list|,
 name|long
 name|blockSize
+parameter_list|,
+name|boolean
+name|isLazyPersist
 parameter_list|,
 name|CipherSuite
 name|suite

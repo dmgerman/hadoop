@@ -3625,6 +3625,11 @@ argument_list|()
 argument_list|,
 name|fs
 operator|.
+name|isLazyPersist
+argument_list|()
+argument_list|,
+name|fs
+operator|.
 name|getModificationTime
 argument_list|()
 argument_list|,
@@ -3685,6 +3690,8 @@ argument_list|,
 literal|0
 argument_list|,
 literal|0
+argument_list|,
+literal|false
 argument_list|,
 literal|0
 argument_list|,

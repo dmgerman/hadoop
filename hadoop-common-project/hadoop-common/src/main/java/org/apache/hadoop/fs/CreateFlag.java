@@ -143,6 +143,16 @@ name|short
 operator|)
 literal|0x08
 argument_list|)
+block|,
+comment|/**    * Create the block on transient storage (RAM) if available. If    * transient storage is unavailable then the block will be created    * on disk.    *    * HDFS will make a best effort to lazily write these files to persistent    * storage, however file contents may be lost at any time due to process/    * node restarts, hence there is no guarantee of data durability.    *    * This flag must only be used for intermediate data whose loss can be    * tolerated by the application.    */
+DECL|enumConstant|LAZY_PERSIST
+name|LAZY_PERSIST
+argument_list|(
+operator|(
+name|short
+operator|)
+literal|0x10
+argument_list|)
 block|;
 DECL|field|mode
 specifier|private
