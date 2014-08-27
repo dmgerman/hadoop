@@ -122,7 +122,7 @@ decl_stmt|;
 comment|// the block
 comment|/** The locations of the replicas of the block. */
 DECL|field|locations
-specifier|private
+specifier|protected
 specifier|final
 name|List
 argument_list|<

@@ -282,6 +282,20 @@ end_import
 
 begin_import
 import|import
+name|com
+operator|.
+name|google
+operator|.
+name|common
+operator|.
+name|annotations
+operator|.
+name|VisibleForTesting
+import|;
+end_import
+
+begin_import
+import|import
 name|org
 operator|.
 name|apache
@@ -1313,6 +1327,22 @@ name|clear
 argument_list|()
 expr_stmt|;
 block|}
+DECL|method|values ()
+specifier|public
+name|Collection
+argument_list|<
+name|G
+argument_list|>
+name|values
+parameter_list|()
+block|{
+return|return
+name|map
+operator|.
+name|values
+argument_list|()
+return|;
+block|}
 block|}
 comment|/** This class keeps track of a scheduled block move */
 DECL|class|PendingMove
@@ -1982,6 +2012,14 @@ name|getMessage
 argument_list|()
 argument_list|)
 expr_stmt|;
+name|target
+operator|.
+name|getDDatanode
+argument_list|()
+operator|.
+name|setHasFailure
+argument_list|()
+expr_stmt|;
 comment|// Proxy or target may have some issues, delay before using these nodes
 comment|// further in order to avoid a potential storm of "threads quota
 comment|// exceeded" warnings when the dispatcher gets out of sync with work
@@ -2270,6 +2308,54 @@ argument_list|(
 name|block
 argument_list|)
 expr_stmt|;
+block|}
+annotation|@
+name|Override
+DECL|method|isLocatedOn (StorageGroup loc)
+specifier|public
+specifier|synchronized
+name|boolean
+name|isLocatedOn
+parameter_list|(
+name|StorageGroup
+name|loc
+parameter_list|)
+block|{
+comment|// currently we only check if replicas are located on the same DataNodes
+comment|// since we do not have the capability to store two replicas in the same
+comment|// DataNode even though they are on two different storage types
+for|for
+control|(
+name|StorageGroup
+name|existing
+range|:
+name|locations
+control|)
+block|{
+if|if
+condition|(
+name|existing
+operator|.
+name|getDatanodeInfo
+argument_list|()
+operator|.
+name|equals
+argument_list|(
+name|loc
+operator|.
+name|getDatanodeInfo
+argument_list|()
+argument_list|)
+condition|)
+block|{
+return|return
+literal|true
+return|;
+block|}
+block|}
+return|return
+literal|false
+return|;
 block|}
 block|}
 comment|/** The class represents a desired move. */
@@ -2659,6 +2745,14 @@ name|PendingMove
 argument_list|>
 name|pendings
 decl_stmt|;
+DECL|field|hasFailure
+specifier|private
+specifier|volatile
+name|boolean
+name|hasFailure
+init|=
+literal|false
+decl_stmt|;
 DECL|field|maxConcurrentMoves
 specifier|private
 specifier|final
@@ -2996,6 +3090,18 @@ argument_list|(
 name|pendingBlock
 argument_list|)
 return|;
+block|}
+DECL|method|setHasFailure ()
+name|void
+name|setHasFailure
+parameter_list|()
+block|{
+name|this
+operator|.
+name|hasFailure
+operator|=
+literal|true
+expr_stmt|;
 block|}
 block|}
 comment|/** A node that can be the sources of a block move */
@@ -4554,7 +4660,9 @@ block|}
 block|}
 comment|// wait for all block moving to be done
 name|waitForMoveCompletion
-argument_list|()
+argument_list|(
+name|targets
+argument_list|)
 expr_stmt|;
 return|return
 name|bytesMoved
@@ -4574,28 +4682,27 @@ name|blockMoveWaitTime
 init|=
 literal|30000L
 decl_stmt|;
-comment|/** set the sleeping period for block move completion check */
-DECL|method|setBlockMoveWaitTime (long time)
+comment|/**    * Wait for all block move confirmations.    * @return true if there is failed move execution    */
+DECL|method|waitForMoveCompletion ( Iterable<? extends StorageGroup> targets)
+specifier|public
 specifier|static
-name|void
-name|setBlockMoveWaitTime
+name|boolean
+name|waitForMoveCompletion
 parameter_list|(
-name|long
-name|time
+name|Iterable
+argument_list|<
+name|?
+extends|extends
+name|StorageGroup
+argument_list|>
+name|targets
 parameter_list|)
 block|{
-name|blockMoveWaitTime
-operator|=
-name|time
-expr_stmt|;
-block|}
-comment|/** Wait for all block move confirmations. */
-DECL|method|waitForMoveCompletion ()
-specifier|private
-name|void
-name|waitForMoveCompletion
-parameter_list|()
-block|{
+name|boolean
+name|hasFailure
+init|=
+literal|false
+decl_stmt|;
 for|for
 control|(
 init|;
@@ -4633,14 +4740,28 @@ literal|false
 expr_stmt|;
 break|break;
 block|}
+else|else
+block|{
+name|hasFailure
+operator||=
+name|t
+operator|.
+name|getDDatanode
+argument_list|()
+operator|.
+name|hasFailure
+expr_stmt|;
+block|}
 block|}
 if|if
 condition|(
 name|empty
 condition|)
 block|{
-return|return;
-comment|//all pending queues are empty
+return|return
+name|hasFailure
+return|;
+comment|// all pending queues are empty
 block|}
 try|try
 block|{
@@ -4660,7 +4781,7 @@ parameter_list|)
 block|{       }
 block|}
 block|}
-comment|/**    * Decide if the block is a good candidate to be moved from source to target.    * A block is a good candidate if     * 1. the block is not in the process of being moved/has not been moved;    * 2. the block does not have a replica on the target;    * 3. doing the move does not reduce the number of racks that the block has    */
+comment|/**    * Decide if the block is a good candidate to be moved from source to target.    * A block is a good candidate if    * 1. the block is not in the process of being moved/has not been moved;    * 2. the block does not have a replica on the target;    * 3. doing the move does not reduce the number of racks that the block has    */
 DECL|method|isGoodBlockCandidate (StorageGroup source, StorageGroup target, StorageType targetStorageType, DBlock block)
 specifier|private
 name|boolean
@@ -4925,7 +5046,7 @@ return|return
 literal|true
 return|;
 block|}
-comment|/**    * Check if there are any replica (other than source) on the same node group    * with target. If true, then target is not a good candidate for placing    * specific replica as we don't want 2 replicas under the same nodegroup.    *     * @return true if there are any replica (other than source) on the same node    *         group with target    */
+comment|/**    * Check if there are any replica (other than source) on the same node group    * with target. If true, then target is not a good candidate for placing    * specific replica as we don't want 2 replicas under the same nodegroup.    *    * @return true if there are any replica (other than source) on the same node    *         group with target    */
 DECL|method|isOnSameNodeGroupWithReplicas (StorageGroup source, StorageGroup target, DBlock block)
 specifier|private
 name|boolean
@@ -5035,6 +5156,24 @@ name|cleanup
 argument_list|()
 expr_stmt|;
 block|}
+comment|/** set the sleeping period for block move completion check */
+annotation|@
+name|VisibleForTesting
+DECL|method|setBlockMoveWaitTime (long time)
+specifier|public
+specifier|static
+name|void
+name|setBlockMoveWaitTime
+parameter_list|(
+name|long
+name|time
+parameter_list|)
+block|{
+name|blockMoveWaitTime
+operator|=
+name|time
+expr_stmt|;
+block|}
 comment|/** shutdown thread pools */
 DECL|method|shutdownNow ()
 specifier|public
@@ -5042,11 +5181,19 @@ name|void
 name|shutdownNow
 parameter_list|()
 block|{
+if|if
+condition|(
+name|dispatchExecutor
+operator|!=
+literal|null
+condition|)
+block|{
 name|dispatchExecutor
 operator|.
 name|shutdownNow
 argument_list|()
 expr_stmt|;
+block|}
 name|moveExecutor
 operator|.
 name|shutdownNow
