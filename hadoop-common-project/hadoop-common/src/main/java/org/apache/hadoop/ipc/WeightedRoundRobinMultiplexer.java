@@ -81,6 +81,8 @@ DECL|class|WeightedRoundRobinMultiplexer
 specifier|public
 class|class
 name|WeightedRoundRobinMultiplexer
+implements|implements
+name|RpcMultiplexer
 block|{
 comment|// Config keys
 DECL|field|IPC_CALLQUEUE_WRRMUX_WEIGHTS_KEY

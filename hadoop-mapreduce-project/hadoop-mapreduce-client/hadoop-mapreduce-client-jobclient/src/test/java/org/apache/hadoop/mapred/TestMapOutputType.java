@@ -18,6 +18,36 @@ end_package
 
 begin_import
 import|import
+name|java
+operator|.
+name|io
+operator|.
+name|File
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|io
+operator|.
+name|IOException
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
+name|Iterator
+import|;
+end_import
+
+begin_import
+import|import
 name|org
 operator|.
 name|apache
@@ -26,7 +56,35 @@ name|hadoop
 operator|.
 name|fs
 operator|.
-name|*
+name|FileSystem
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|fs
+operator|.
+name|FileUtil
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|fs
+operator|.
+name|Path
 import|;
 end_import
 
@@ -40,7 +98,7 @@ name|hadoop
 operator|.
 name|io
 operator|.
-name|*
+name|IntWritable
 import|;
 end_import
 
@@ -52,11 +110,51 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|mapred
+name|io
 operator|.
-name|lib
+name|SequenceFile
+import|;
+end_import
+
+begin_import
+import|import
+name|org
 operator|.
-name|*
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|io
+operator|.
+name|Text
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|io
+operator|.
+name|Writable
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|io
+operator|.
+name|WritableComparable
 import|;
 end_import
 
@@ -76,31 +174,43 @@ end_import
 
 begin_import
 import|import
+name|org
+operator|.
 name|junit
 operator|.
-name|framework
-operator|.
-name|TestCase
+name|After
 import|;
 end_import
 
 begin_import
 import|import
-name|java
+name|org
 operator|.
-name|io
+name|junit
 operator|.
-name|*
+name|Before
 import|;
 end_import
 
 begin_import
 import|import
-name|java
+name|org
 operator|.
-name|util
+name|junit
 operator|.
-name|*
+name|Test
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|junit
+operator|.
+name|Assert
+operator|.
+name|fail
 import|;
 end_import
 
@@ -113,9 +223,34 @@ DECL|class|TestMapOutputType
 specifier|public
 class|class
 name|TestMapOutputType
-extends|extends
-name|TestCase
 block|{
+DECL|field|TEST_DIR
+specifier|private
+specifier|static
+specifier|final
+name|File
+name|TEST_DIR
+init|=
+operator|new
+name|File
+argument_list|(
+name|System
+operator|.
+name|getProperty
+argument_list|(
+literal|"test.build.data"
+argument_list|,
+name|System
+operator|.
+name|getProperty
+argument_list|(
+literal|"java.io.tmpdir"
+argument_list|)
+argument_list|)
+argument_list|,
+literal|"TestMapOutputType-mapred"
+argument_list|)
+decl_stmt|;
 DECL|field|conf
 name|JobConf
 name|conf
@@ -287,6 +422,8 @@ name|close
 parameter_list|()
 block|{     }
 block|}
+annotation|@
+name|Before
 DECL|method|configure ()
 specifier|public
 name|void
@@ -301,7 +438,10 @@ init|=
 operator|new
 name|Path
 argument_list|(
-literal|"build/test/test.mapred.spill"
+name|TEST_DIR
+operator|.
+name|getAbsolutePath
+argument_list|()
 argument_list|)
 decl_stmt|;
 name|Path
@@ -555,6 +695,24 @@ name|conf
 argument_list|)
 expr_stmt|;
 block|}
+annotation|@
+name|After
+DECL|method|cleanup ()
+specifier|public
+name|void
+name|cleanup
+parameter_list|()
+block|{
+name|FileUtil
+operator|.
+name|fullyDelete
+argument_list|(
+name|TEST_DIR
+argument_list|)
+expr_stmt|;
+block|}
+annotation|@
+name|Test
 DECL|method|testKeyMismatch ()
 specifier|public
 name|void
@@ -563,9 +721,6 @@ parameter_list|()
 throws|throws
 name|Exception
 block|{
-name|configure
-argument_list|()
-expr_stmt|;
 comment|//  Set bad MapOutputKeyClass and MapOutputValueClass
 name|conf
 operator|.
@@ -627,6 +782,8 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
+annotation|@
+name|Test
 DECL|method|testValueMismatch ()
 specifier|public
 name|void
@@ -635,10 +792,6 @@ parameter_list|()
 throws|throws
 name|Exception
 block|{
-name|configure
-argument_list|()
-expr_stmt|;
-comment|// Set good MapOutputKeyClass, bad MapOutputValueClass
 name|conf
 operator|.
 name|setMapOutputKeyClass
@@ -699,6 +852,8 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
+annotation|@
+name|Test
 DECL|method|testNoMismatch ()
 specifier|public
 name|void
@@ -707,9 +862,6 @@ parameter_list|()
 throws|throws
 name|Exception
 block|{
-name|configure
-argument_list|()
-expr_stmt|;
 comment|//  Set good MapOutputKeyClass and MapOutputValueClass
 name|conf
 operator|.

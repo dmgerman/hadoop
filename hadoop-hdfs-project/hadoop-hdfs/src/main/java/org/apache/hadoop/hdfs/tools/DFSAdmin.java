@@ -2105,7 +2105,9 @@ parameter_list|()
 block|{
 name|this
 argument_list|(
-literal|null
+operator|new
+name|HdfsConfiguration
+argument_list|()
 argument_list|)
 expr_stmt|;
 block|}

@@ -4,7 +4,7 @@ comment|/**  * Licensed to the Apache Software Foundation (ASF) under one  * or 
 end_comment
 
 begin_package
-DECL|package|org.apache.hadoop.hdfs.server.namenode
+DECL|package|org.apache.hadoop.util
 package|package
 name|org
 operator|.
@@ -12,83 +12,69 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|hdfs
-operator|.
-name|server
-operator|.
-name|namenode
+name|util
 package|;
 end_package
 
-begin_import
-import|import
-name|java
-operator|.
-name|io
-operator|.
-name|IOException
-import|;
-end_import
-
-begin_import
-import|import
-name|com
-operator|.
-name|google
-operator|.
-name|common
-operator|.
-name|annotations
-operator|.
-name|VisibleForTesting
-import|;
-end_import
-
 begin_comment
-comment|/**  * Used to inject certain faults for testing.  */
+comment|/**  * Test class used by {@link TestRunJar} to verify that it is loaded by the  * {@link ApplicationClassLoader}.  */
 end_comment
 
 begin_class
-DECL|class|EncryptionFaultInjector
+DECL|class|ClassLoaderCheckMain
 specifier|public
 class|class
-name|EncryptionFaultInjector
+name|ClassLoaderCheckMain
 block|{
-annotation|@
-name|VisibleForTesting
-DECL|field|instance
+DECL|method|main (String[] args)
 specifier|public
 specifier|static
-name|EncryptionFaultInjector
-name|instance
-init|=
-operator|new
-name|EncryptionFaultInjector
-argument_list|()
-decl_stmt|;
-annotation|@
-name|VisibleForTesting
-DECL|method|getInstance ()
-specifier|public
-specifier|static
-name|EncryptionFaultInjector
-name|getInstance
-parameter_list|()
-block|{
-return|return
-name|instance
-return|;
-block|}
-annotation|@
-name|VisibleForTesting
-DECL|method|startFileAfterGenerateKey ()
-specifier|public
 name|void
-name|startFileAfterGenerateKey
-parameter_list|()
-throws|throws
-name|IOException
-block|{}
+name|main
+parameter_list|(
+name|String
+index|[]
+name|args
+parameter_list|)
+block|{
+comment|// ClassLoaderCheckMain should be loaded by the application classloader
+name|ClassLoaderCheck
+operator|.
+name|checkClassLoader
+argument_list|(
+name|ClassLoaderCheckMain
+operator|.
+name|class
+argument_list|,
+literal|true
+argument_list|)
+expr_stmt|;
+comment|// ClassLoaderCheckSecond should NOT be loaded by the application
+comment|// classloader
+name|ClassLoaderCheck
+operator|.
+name|checkClassLoader
+argument_list|(
+name|ClassLoaderCheckSecond
+operator|.
+name|class
+argument_list|,
+literal|false
+argument_list|)
+expr_stmt|;
+comment|// ClassLoaderCheckThird should be loaded by the application classloader
+name|ClassLoaderCheck
+operator|.
+name|checkClassLoader
+argument_list|(
+name|ClassLoaderCheckThird
+operator|.
+name|class
+argument_list|,
+literal|true
+argument_list|)
+expr_stmt|;
+block|}
 block|}
 end_class
 

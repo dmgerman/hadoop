@@ -26,38 +26,6 @@ end_package
 
 begin_import
 import|import
-name|java
-operator|.
-name|util
-operator|.
-name|Collection
-import|;
-end_import
-
-begin_import
-import|import
-name|java
-operator|.
-name|util
-operator|.
-name|Comparator
-import|;
-end_import
-
-begin_import
-import|import
-name|java
-operator|.
-name|util
-operator|.
-name|concurrent
-operator|.
-name|ConcurrentHashMap
-import|;
-end_import
-
-begin_import
-import|import
 name|org
 operator|.
 name|apache
@@ -189,6 +157,38 @@ operator|.
 name|policies
 operator|.
 name|FifoPolicy
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
+name|Collection
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
+name|Comparator
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
+name|concurrent
+operator|.
+name|ConcurrentHashMap
 import|;
 end_import
 
@@ -590,7 +590,7 @@ argument_list|>
 name|getComparator
 parameter_list|()
 function_decl|;
-comment|/**    * Computes and updates the shares of {@link Schedulable}s as per the    * {@link SchedulingPolicy}, to be used later at schedule time.    *     * @param schedulables {@link Schedulable}s whose shares are to be updated    * @param totalResources Total {@link Resource}s in the cluster    */
+comment|/**    * Computes and updates the shares of {@link Schedulable}s as per    * the {@link SchedulingPolicy}, to be used later for scheduling decisions.    * The shares computed are instantaneous and only consider queues with    * running applications.    *     * @param schedulables {@link Schedulable}s whose shares are to be updated    * @param totalResources Total {@link Resource}s in the cluster    */
 DECL|method|computeShares ( Collection<? extends Schedulable> schedulables, Resource totalResources)
 specifier|public
 specifier|abstract
@@ -604,6 +604,25 @@ extends|extends
 name|Schedulable
 argument_list|>
 name|schedulables
+parameter_list|,
+name|Resource
+name|totalResources
+parameter_list|)
+function_decl|;
+comment|/**    * Computes and updates the steady shares of {@link FSQueue}s as per the    * {@link SchedulingPolicy}. The steady share does not differentiate    * between queues with and without running applications under them. The    * steady share is not used for scheduling, it is displayed on the Web UI    * for better visibility.    *    * @param queues {@link FSQueue}s whose shares are to be updated    * @param totalResources Total {@link Resource}s in the cluster    */
+DECL|method|computeSteadyShares ( Collection<? extends FSQueue> queues, Resource totalResources)
+specifier|public
+specifier|abstract
+name|void
+name|computeSteadyShares
+parameter_list|(
+name|Collection
+argument_list|<
+name|?
+extends|extends
+name|FSQueue
+argument_list|>
+name|queues
 parameter_list|,
 name|Resource
 name|totalResources

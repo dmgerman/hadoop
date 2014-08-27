@@ -329,6 +329,20 @@ argument_list|,
 literal|0
 argument_list|)
 decl_stmt|;
+DECL|field|steadyFairShare
+specifier|private
+name|Resource
+name|steadyFairShare
+init|=
+name|Resources
+operator|.
+name|createResource
+argument_list|(
+literal|0
+argument_list|,
+literal|0
+argument_list|)
+decl_stmt|;
 DECL|field|name
 specifier|private
 specifier|final
@@ -830,6 +844,40 @@ name|fairShare
 argument_list|)
 expr_stmt|;
 block|}
+comment|/** Get the steady fair share assigned to this Schedulable. */
+DECL|method|getSteadyFairShare ()
+specifier|public
+name|Resource
+name|getSteadyFairShare
+parameter_list|()
+block|{
+return|return
+name|steadyFairShare
+return|;
+block|}
+DECL|method|setSteadyFairShare (Resource steadyFairShare)
+specifier|public
+name|void
+name|setSteadyFairShare
+parameter_list|(
+name|Resource
+name|steadyFairShare
+parameter_list|)
+block|{
+name|this
+operator|.
+name|steadyFairShare
+operator|=
+name|steadyFairShare
+expr_stmt|;
+name|metrics
+operator|.
+name|setSteadyFairShare
+argument_list|(
+name|steadyFairShare
+argument_list|)
+expr_stmt|;
+block|}
 DECL|method|hasAccess (QueueACL acl, UserGroupInformation user)
 specifier|public
 name|boolean
@@ -947,8 +995,7 @@ return|return
 literal|true
 return|;
 block|}
-annotation|@
-name|Override
+comment|/**    * Returns true if queue has at least one app running.    */
 DECL|method|isActive ()
 specifier|public
 name|boolean

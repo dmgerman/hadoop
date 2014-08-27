@@ -575,18 +575,6 @@ expr_stmt|;
 block|}
 annotation|@
 name|Override
-DECL|method|isActive ()
-specifier|public
-name|boolean
-name|isActive
-parameter_list|()
-block|{
-return|return
-literal|true
-return|;
-block|}
-annotation|@
-name|Override
 DECL|method|getDemand ()
 specifier|public
 name|Resource

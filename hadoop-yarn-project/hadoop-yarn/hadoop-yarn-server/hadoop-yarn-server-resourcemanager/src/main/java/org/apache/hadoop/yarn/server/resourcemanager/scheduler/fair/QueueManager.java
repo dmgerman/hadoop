@@ -522,6 +522,20 @@ argument_list|,
 name|queueType
 argument_list|)
 expr_stmt|;
+comment|// Update steady fair share for all queues
+if|if
+condition|(
+name|queue
+operator|!=
+literal|null
+condition|)
+block|{
+name|rootQueue
+operator|.
+name|recomputeSteadyShares
+argument_list|()
+expr_stmt|;
+block|}
 block|}
 return|return
 name|queue
@@ -1614,6 +1628,12 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
+comment|// Update steady fair shares for all queues
+name|rootQueue
+operator|.
+name|recomputeSteadyShares
+argument_list|()
+expr_stmt|;
 block|}
 block|}
 end_class
