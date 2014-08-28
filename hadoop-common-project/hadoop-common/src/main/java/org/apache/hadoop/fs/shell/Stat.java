@@ -111,7 +111,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * Print statistics about path in specified format.  * Format sequences:  *   %b: Size of file in blocks  *   %g: Group name of owner  *   %n: Filename  *   %o: Block size  *   %r: replication  *   %u: User name of owner  *   %y: UTC date as&quot;yyyy-MM-dd HH:mm:ss&quot;  *   %Y: Milliseconds since January 1, 1970 UTC  */
+comment|/**  * Print statistics about path in specified format.  * Format sequences:  *   %b: Size of file in blocks  *   %g: Group name of owner  *   %n: Filename  *   %o: Block size  *   %r: replication  *   %u: User name of owner  *   %y: UTC date as&quot;yyyy-MM-dd HH:mm:ss&quot;  *   %Y: Milliseconds since January 1, 1970 UTC  *   %l: Whether lazyPersist flag is set on the file.  */
 end_comment
 
 begin_class
@@ -180,7 +180,9 @@ literal|"Print statistics about the file/directory at<path> "
 operator|+
 literal|"in the specified format. Format accepts filesize in blocks (%b), group name of owner(%g), "
 operator|+
-literal|"filename (%n), block size (%o), replication (%r), user name of owner(%u), modification date (%y, %Y)\n"
+literal|"filename (%n), block size (%o), replication (%r), user name of owner(%u), modification date (%y, %Y), "
+operator|+
+literal|"lazyPersist flag (%l)\n"
 decl_stmt|;
 DECL|field|timeFmt
 specifier|protected
@@ -539,6 +541,20 @@ argument_list|(
 name|stat
 operator|.
 name|getModificationTime
+argument_list|()
+argument_list|)
+expr_stmt|;
+break|break;
+case|case
+literal|'l'
+case|:
+name|buf
+operator|.
+name|append
+argument_list|(
+name|stat
+operator|.
+name|isLazyPersist
 argument_list|()
 argument_list|)
 expr_stmt|;

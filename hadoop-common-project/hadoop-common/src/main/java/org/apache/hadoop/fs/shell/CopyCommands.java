@@ -1113,7 +1113,7 @@ specifier|final
 name|String
 name|USAGE
 init|=
-literal|"[-f] [-p]<localsrc> ...<dst>"
+literal|"[-f] [-p] [-l]<localsrc> ...<dst>"
 decl_stmt|;
 DECL|field|DESCRIPTION
 specifier|public
@@ -1126,13 +1126,19 @@ literal|"Copy files from the local file system "
 operator|+
 literal|"into fs. Copying fails if the file already "
 operator|+
-literal|"exists, unless the -f flag is given. Passing "
+literal|"exists, unless the -f flag is given.\n"
 operator|+
-literal|"-p preserves access and modification times, "
+literal|"Flags:\n"
 operator|+
-literal|"ownership and the mode. Passing -f overwrites "
+literal|"  -p : Preserves access and modification times, ownership and the mode.\n"
 operator|+
-literal|"the destination if it already exists.\n"
+literal|"  -f : Overwrites the destination if it already exists.\n"
+operator|+
+literal|"  -l : Allow DataNode to lazily persist the file to disk. Forces\n"
+operator|+
+literal|"       replication factor of 1. This flag will result in reduced\n"
+operator|+
+literal|"       durability. Use with care.\n"
 decl_stmt|;
 annotation|@
 name|Override
@@ -1165,6 +1171,8 @@ argument_list|,
 literal|"f"
 argument_list|,
 literal|"p"
+argument_list|,
+literal|"l"
 argument_list|)
 decl_stmt|;
 name|cf
@@ -1191,6 +1199,16 @@ operator|.
 name|getOpt
 argument_list|(
 literal|"p"
+argument_list|)
+argument_list|)
+expr_stmt|;
+name|setLazyPersist
+argument_list|(
+name|cf
+operator|.
+name|getOpt
+argument_list|(
+literal|"l"
 argument_list|)
 argument_list|)
 expr_stmt|;
