@@ -1312,7 +1312,7 @@ name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"Canceling commit"
+literal|"Cancelling commit"
 argument_list|)
 expr_stmt|;
 name|threadCommitting

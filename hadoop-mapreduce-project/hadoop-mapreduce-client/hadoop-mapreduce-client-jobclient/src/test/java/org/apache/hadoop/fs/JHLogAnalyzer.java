@@ -6018,7 +6018,7 @@ name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"Analizing results ..."
+literal|"Analyzing results ..."
 argument_list|)
 expr_stmt|;
 name|DataOutputStream
@@ -6337,7 +6337,7 @@ name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"Analizing results ... done."
+literal|"Analyzing results ... done."
 argument_list|)
 expr_stmt|;
 block|}

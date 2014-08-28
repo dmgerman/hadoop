@@ -1958,7 +1958,7 @@ name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"RMCommunicator notified that iSignalled is: "
+literal|"RMCommunicator notified that isSignalled is: "
 operator|+
 name|isSignalled
 argument_list|)

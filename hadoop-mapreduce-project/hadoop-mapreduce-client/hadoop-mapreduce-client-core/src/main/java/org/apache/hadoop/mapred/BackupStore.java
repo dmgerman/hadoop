@@ -2797,7 +2797,7 @@ name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"No Space available. Available: "
+literal|"No space available. Available: "
 operator|+
 name|availableSize
 operator|+
