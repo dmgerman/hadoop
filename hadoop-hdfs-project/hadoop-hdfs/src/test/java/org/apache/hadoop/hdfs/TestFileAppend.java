@@ -1561,6 +1561,13 @@ operator|-
 name|start
 argument_list|)
 expr_stmt|;
+comment|// need to make sure we completely write out all full blocks before
+comment|// the checkFile() call (see FSOutputSummer#flush)
+name|stm
+operator|.
+name|flush
+argument_list|()
+expr_stmt|;
 comment|// verify that full blocks are sane
 name|checkFile
 argument_list|(
