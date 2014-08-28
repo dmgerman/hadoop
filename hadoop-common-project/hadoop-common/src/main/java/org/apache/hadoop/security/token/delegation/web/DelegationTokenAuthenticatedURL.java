@@ -462,6 +462,13 @@ argument_list|)
 throw|;
 block|}
 block|}
+DECL|field|useQueryStringforDelegationToken
+specifier|private
+name|boolean
+name|useQueryStringforDelegationToken
+init|=
+literal|false
+decl_stmt|;
 comment|/**    * Creates an<code>DelegationTokenAuthenticatedURL</code>.    *<p/>    * An instance of the default {@link DelegationTokenAuthenticator} will be    * used.    */
 DECL|method|DelegationTokenAuthenticatedURL ()
 specifier|public
@@ -532,6 +539,34 @@ argument_list|,
 name|connConfigurator
 argument_list|)
 expr_stmt|;
+block|}
+comment|/**    * Sets if delegation token should be transmitted in the URL query string.    * By default it is transmitted using the    * {@link DelegationTokenAuthenticator#DELEGATION_TOKEN_HEADER} HTTP header.    *<p/>    * This method is provided to enable WebHDFS backwards compatibility.    *    * @param useQueryString<code>TRUE</code> if the token is transmitted in the    * URL query string,<code>FALSE</code> if the delegation token is transmitted    * using the {@link DelegationTokenAuthenticator#DELEGATION_TOKEN_HEADER} HTTP    * header.    */
+annotation|@
+name|Deprecated
+DECL|method|setUseQueryStringForDelegationToken (boolean useQueryString)
+specifier|protected
+name|void
+name|setUseQueryStringForDelegationToken
+parameter_list|(
+name|boolean
+name|useQueryString
+parameter_list|)
+block|{
+name|useQueryStringforDelegationToken
+operator|=
+name|useQueryString
+expr_stmt|;
+block|}
+comment|/**    * Returns if delegation token is transmitted as a HTTP header.    *    * @return<code>TRUE</code> if the token is transmitted in the URL query    * string,<code>FALSE</code> if the delegation token is transmitted using the    * {@link DelegationTokenAuthenticator#DELEGATION_TOKEN_HEADER} HTTP header.    */
+DECL|method|useQueryStringForDelegationToken ()
+specifier|public
+name|boolean
+name|useQueryStringForDelegationToken
+parameter_list|()
+block|{
+return|return
+name|useQueryStringforDelegationToken
+return|;
 block|}
 comment|/**    * Returns an authenticated {@link HttpURLConnection}, it uses a Delegation    * Token only if the given auth token is an instance of {@link Token} and    * it contains a Delegation Token, otherwise use the configured    * {@link DelegationTokenAuthenticator} to authenticate the connection.    *    * @param url the URL to connect to. Only HTTP/S URLs are supported.    * @param token the authentication token being used for the user.    * @return an authenticated {@link HttpURLConnection}.    * @throws IOException if an IO error occurred.    * @throws AuthenticationException if an authentication exception occurred.    */
 annotation|@
@@ -743,6 +778,11 @@ name|url
 return|;
 block|}
 comment|/**    * Returns an authenticated {@link HttpURLConnection}. If the Delegation    * Token is present, it will be used taking precedence over the configured    *<code>Authenticator</code>. If the<code>doAs</code> parameter is not NULL,    * the request will be done on behalf of the specified<code>doAs</code> user.    *    * @param url the URL to connect to. Only HTTP/S URLs are supported.    * @param token the authentication token being used for the user.    * @param doAs user to do the the request on behalf of, if NULL the request is    * as self.    * @return an authenticated {@link HttpURLConnection}.    * @throws IOException if an IO error occurred.    * @throws AuthenticationException if an authentication exception occurred.    */
+annotation|@
+name|SuppressWarnings
+argument_list|(
+literal|"unchecked"
+argument_list|)
 DECL|method|openConnection (URL url, Token token, String doAs)
 specifier|public
 name|HttpURLConnection
@@ -797,6 +837,37 @@ name|String
 argument_list|>
 argument_list|()
 decl_stmt|;
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|security
+operator|.
+name|token
+operator|.
+name|Token
+argument_list|<
+name|?
+extends|extends
+name|TokenIdentifier
+argument_list|>
+name|dToken
+init|=
+literal|null
+decl_stmt|;
+comment|// if we have valid auth token, it takes precedence over a delegation token
+comment|// and we don't even look for one.
+if|if
+condition|(
+operator|!
+name|token
+operator|.
+name|isSet
+argument_list|()
+condition|)
+block|{
 comment|// delegation token
 name|Credentials
 name|creds
@@ -848,6 +919,56 @@ argument_list|(
 name|serviceAddr
 argument_list|)
 decl_stmt|;
+name|dToken
+operator|=
+name|creds
+operator|.
+name|getToken
+argument_list|(
+name|service
+argument_list|)
+expr_stmt|;
+if|if
+condition|(
+name|dToken
+operator|!=
+literal|null
+condition|)
+block|{
+if|if
+condition|(
+name|useQueryStringForDelegationToken
+argument_list|()
+condition|)
+block|{
+comment|// delegation token will go in the query string, injecting it
+name|extraParams
+operator|.
+name|put
+argument_list|(
+name|KerberosDelegationTokenAuthenticator
+operator|.
+name|DELEGATION_PARAM
+argument_list|,
+name|dToken
+operator|.
+name|encodeToUrlString
+argument_list|()
+argument_list|)
+expr_stmt|;
+block|}
+else|else
+block|{
+comment|// delegation token will go as request header, setting it in the
+comment|// auth-token to ensure no authentication handshake is triggered
+comment|// (if we have a delegation token, we are authenticated)
+comment|// the delegation token header is injected in the connection request
+comment|// at the end of this method.
+name|token
+operator|.
+name|delegationToken
+operator|=
+operator|(
 name|org
 operator|.
 name|apache
@@ -860,40 +981,13 @@ name|token
 operator|.
 name|Token
 argument_list|<
-name|?
-extends|extends
-name|TokenIdentifier
+name|AbstractDelegationTokenIdentifier
 argument_list|>
-name|dt
-init|=
-name|creds
-operator|.
-name|getToken
-argument_list|(
-name|service
-argument_list|)
-decl_stmt|;
-if|if
-condition|(
-name|dt
-operator|!=
-literal|null
-condition|)
-block|{
-name|extraParams
-operator|.
-name|put
-argument_list|(
-name|KerberosDelegationTokenAuthenticator
-operator|.
-name|DELEGATION_PARAM
-argument_list|,
-name|dt
-operator|.
-name|encodeToUrlString
-argument_list|()
-argument_list|)
+operator|)
+name|dToken
 expr_stmt|;
+block|}
+block|}
 block|}
 block|}
 comment|// proxyuser
@@ -930,7 +1024,9 @@ argument_list|,
 name|extraParams
 argument_list|)
 expr_stmt|;
-return|return
+name|HttpURLConnection
+name|conn
+init|=
 name|super
 operator|.
 name|openConnection
@@ -939,6 +1035,42 @@ name|url
 argument_list|,
 name|token
 argument_list|)
+decl_stmt|;
+if|if
+condition|(
+operator|!
+name|token
+operator|.
+name|isSet
+argument_list|()
+operator|&&
+operator|!
+name|useQueryStringForDelegationToken
+argument_list|()
+operator|&&
+name|dToken
+operator|!=
+literal|null
+condition|)
+block|{
+comment|// injecting the delegation token header in the connection request
+name|conn
+operator|.
+name|setRequestProperty
+argument_list|(
+name|DelegationTokenAuthenticator
+operator|.
+name|DELEGATION_TOKEN_HEADER
+argument_list|,
+name|dToken
+operator|.
+name|encodeToUrlString
+argument_list|()
+argument_list|)
+expr_stmt|;
+block|}
+return|return
+name|conn
 return|;
 block|}
 comment|/**    * Requests a delegation token using the configured<code>Authenticator</code>    * for authentication.    *    * @param url the URL to get the delegation token from. Only HTTP/S URLs are    * supported.    * @param token the authentication token being used for the user where the    * Delegation token will be stored.    * @return a delegation token.    * @throws IOException if an IO error occurred.    * @throws AuthenticationException if an authentication exception occurred.    */
