@@ -406,7 +406,7 @@ name|yarn
 operator|.
 name|proto
 operator|.
-name|YarnServerResourceManagerServiceProtos
+name|YarnServerResourceManagerRecoveryProtos
 operator|.
 name|EpochProto
 import|;
@@ -424,7 +424,7 @@ name|yarn
 operator|.
 name|proto
 operator|.
-name|YarnServerResourceManagerServiceProtos
+name|YarnServerResourceManagerRecoveryProtos
 operator|.
 name|ApplicationAttemptStateDataProto
 import|;
@@ -442,7 +442,7 @@ name|yarn
 operator|.
 name|proto
 operator|.
-name|YarnServerResourceManagerServiceProtos
+name|YarnServerResourceManagerRecoveryProtos
 operator|.
 name|ApplicationStateDataProto
 import|;
