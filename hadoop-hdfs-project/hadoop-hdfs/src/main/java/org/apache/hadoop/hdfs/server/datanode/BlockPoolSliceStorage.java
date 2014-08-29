@@ -1261,8 +1261,48 @@ operator|==
 name|StartupOption
 operator|.
 name|ROLLBACK
+operator|&&
+name|sd
+operator|.
+name|getPreviousDir
+argument_list|()
+operator|.
+name|exists
+argument_list|()
 condition|)
 block|{
+comment|// we will already restore everything in the trash by rolling back to
+comment|// the previous directory, so we must delete the trash to ensure
+comment|// that it's not restored by BPOfferService.signalRollingUpgrade()
+if|if
+condition|(
+operator|!
+name|FileUtil
+operator|.
+name|fullyDelete
+argument_list|(
+name|getTrashRootDir
+argument_list|(
+name|sd
+argument_list|)
+argument_list|)
+condition|)
+block|{
+throw|throw
+operator|new
+name|IOException
+argument_list|(
+literal|"Unable to delete trash directory prior to "
+operator|+
+literal|"restoration of previous directory: "
+operator|+
+name|getTrashRootDir
+argument_list|(
+name|sd
+argument_list|)
+argument_list|)
+throw|;
+block|}
 name|doRollback
 argument_list|(
 name|sd

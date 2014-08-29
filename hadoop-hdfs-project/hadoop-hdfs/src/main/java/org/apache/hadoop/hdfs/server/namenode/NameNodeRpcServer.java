@@ -6709,6 +6709,12 @@ name|isUpgradeFinalized
 argument_list|()
 operator|&&
 operator|!
+name|namesystem
+operator|.
+name|isRollingUpgrade
+argument_list|()
+operator|&&
+operator|!
 name|nn
 operator|.
 name|isStandbyState
