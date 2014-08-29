@@ -7043,7 +7043,7 @@ name|entry
 range|:
 name|credentials
 operator|.
-name|getTokens
+name|getSecrets
 argument_list|()
 operator|.
 name|entrySet
