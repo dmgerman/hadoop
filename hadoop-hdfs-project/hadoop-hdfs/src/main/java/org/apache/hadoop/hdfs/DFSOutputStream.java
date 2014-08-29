@@ -2406,7 +2406,7 @@ argument_list|,
 name|freeInCksum
 argument_list|)
 expr_stmt|;
-name|resetChecksumChunk
+name|setChecksumBufSize
 argument_list|(
 name|freeInCksum
 argument_list|)
@@ -7594,16 +7594,6 @@ block|{
 name|super
 argument_list|(
 name|checksum
-argument_list|,
-name|checksum
-operator|.
-name|getBytesPerChecksum
-argument_list|()
-argument_list|,
-name|checksum
-operator|.
-name|getChecksumSize
-argument_list|()
 argument_list|)
 expr_stmt|;
 name|this
@@ -8443,7 +8433,7 @@ block|}
 comment|// @see FSOutputSummer#writeChunk()
 annotation|@
 name|Override
-DECL|method|writeChunk (byte[] b, int offset, int len, byte[] checksum)
+DECL|method|writeChunk (byte[] b, int offset, int len, byte[] checksum, int ckoff, int cklen)
 specifier|protected
 specifier|synchronized
 name|void
@@ -8462,6 +8452,12 @@ parameter_list|,
 name|byte
 index|[]
 name|checksum
+parameter_list|,
+name|int
+name|ckoff
+parameter_list|,
+name|int
+name|cklen
 parameter_list|)
 throws|throws
 name|IOException
@@ -8474,13 +8470,6 @@ expr_stmt|;
 name|checkClosed
 argument_list|()
 expr_stmt|;
-name|int
-name|cklen
-init|=
-name|checksum
-operator|.
-name|length
-decl_stmt|;
 name|int
 name|bytesPerChecksum
 init|=
@@ -8514,9 +8503,7 @@ throw|;
 block|}
 if|if
 condition|(
-name|checksum
-operator|.
-name|length
+name|cklen
 operator|!=
 name|this
 operator|.
@@ -8541,9 +8528,7 @@ argument_list|()
 operator|+
 literal|" but found to be "
 operator|+
-name|checksum
-operator|.
-name|length
+name|cklen
 argument_list|)
 throw|;
 block|}
@@ -8623,7 +8608,7 @@ name|writeChecksum
 argument_list|(
 name|checksum
 argument_list|,
-literal|0
+name|ckoff
 argument_list|,
 name|cklen
 argument_list|)
@@ -8726,10 +8711,8 @@ name|appendChunk
 operator|=
 literal|false
 expr_stmt|;
-name|resetChecksumChunk
-argument_list|(
-name|bytesPerChecksum
-argument_list|)
+name|resetChecksumBufSize
+argument_list|()
 expr_stmt|;
 block|}
 if|if
@@ -8955,23 +8938,17 @@ init|(
 name|this
 init|)
 block|{
-comment|/* Record current blockOffset. This might be changed inside          * flushBuffer() where a partial checksum chunk might be flushed.          * After the flush, reset the bytesCurBlock back to its previous value,          * any partial checksum chunk will be sent now and in next packet.          */
-name|long
-name|saveOffset
-init|=
-name|bytesCurBlock
-decl_stmt|;
-name|Packet
-name|oldCurrentPacket
-init|=
-name|currentPacket
-decl_stmt|;
 comment|// flush checksum buffer, but keep checksum buffer intact
+name|int
+name|numKept
+init|=
 name|flushBuffer
 argument_list|(
 literal|true
+argument_list|,
+literal|true
 argument_list|)
-expr_stmt|;
+decl_stmt|;
 comment|// bytesCurBlock potentially incremented if there was buffered data
 if|if
 condition|(
@@ -8989,9 +8966,7 @@ name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"DFSClient flush() : saveOffset "
-operator|+
-name|saveOffset
+literal|"DFSClient flush() :"
 operator|+
 literal|" bytesCurBlock "
 operator|+
@@ -9059,18 +9034,6 @@ block|}
 block|}
 else|else
 block|{
-comment|// We already flushed up to this offset.
-comment|// This means that we haven't written anything since the last flush
-comment|// (or the beginning of the file). Hence, we should not have any
-comment|// packet queued prior to this call, since the last flush set
-comment|// currentPacket = null.
-assert|assert
-name|oldCurrentPacket
-operator|==
-literal|null
-operator|:
-literal|"Empty flush should not occur with a currentPacket"
-assert|;
 if|if
 condition|(
 name|isSync
@@ -9137,8 +9100,8 @@ comment|// Restore state of stream. Record the last flush offset
 comment|// of the last full chunk that was flushed.
 comment|//
 name|bytesCurBlock
-operator|=
-name|saveOffset
+operator|-=
+name|numKept
 expr_stmt|;
 name|toWaitFor
 operator|=

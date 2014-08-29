@@ -504,6 +504,13 @@ argument_list|,
 name|BLOCK_SIZE
 argument_list|)
 expr_stmt|;
+comment|// need to make sure the full block is completely flushed to the DataNodes
+comment|// (see FSOutputSummer#flush)
+name|stm
+operator|.
+name|flush
+argument_list|()
+expr_stmt|;
 name|int
 name|blocksAfter
 init|=

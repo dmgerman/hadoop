@@ -2765,6 +2765,12 @@ literal|1000
 index|]
 argument_list|)
 expr_stmt|;
+comment|// ensure that the first block is written out (see FSOutputSummer#flush)
+name|out
+operator|.
+name|flush
+argument_list|()
+expr_stmt|;
 name|LocatedBlocks
 name|locatedBlocks
 init|=
