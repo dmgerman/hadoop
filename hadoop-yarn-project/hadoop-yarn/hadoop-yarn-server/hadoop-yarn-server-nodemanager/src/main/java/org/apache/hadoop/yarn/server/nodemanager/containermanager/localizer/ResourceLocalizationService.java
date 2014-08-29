@@ -5450,7 +5450,7 @@ name|LOG
 operator|.
 name|error
 argument_list|(
-literal|"Localized unkonwn resource to "
+literal|"Localized unknown resource to "
 operator|+
 name|completed
 argument_list|)
@@ -5515,7 +5515,7 @@ name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"Failed to download rsrc "
+literal|"Failed to download resource "
 operator|+
 name|assoc
 operator|.

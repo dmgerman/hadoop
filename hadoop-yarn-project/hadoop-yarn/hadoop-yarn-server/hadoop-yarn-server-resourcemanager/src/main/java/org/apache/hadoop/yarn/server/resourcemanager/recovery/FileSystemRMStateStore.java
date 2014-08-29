@@ -1924,7 +1924,7 @@ name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"Done Loading applications from FS state store"
+literal|"Done loading applications from FS state store"
 argument_list|)
 expr_stmt|;
 block|}

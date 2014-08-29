@@ -3422,7 +3422,7 @@ name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"Done Loading applications from ZK state store"
+literal|"Done loading applications from ZK state store"
 argument_list|)
 expr_stmt|;
 block|}

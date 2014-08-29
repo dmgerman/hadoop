@@ -2881,7 +2881,7 @@ name|LOG
 operator|.
 name|error
 argument_list|(
-literal|"App Attempt start event coud not be pulished for "
+literal|"App Attempt start event could not be published for "
 operator|+
 name|appAttemptID
 operator|.
@@ -3347,7 +3347,7 @@ name|LOG
 operator|.
 name|error
 argument_list|(
-literal|"App Attempt start event coud not be pulished for "
+literal|"App Attempt start event could not be published for "
 operator|+
 name|appAttemptID
 operator|.
@@ -3814,7 +3814,7 @@ name|LOG
 operator|.
 name|error
 argument_list|(
-literal|"Container start event could not be pulished for "
+literal|"Container start event could not be published for "
 operator|+
 name|containerStatus
 operator|.
@@ -4359,7 +4359,7 @@ name|LOG
 operator|.
 name|error
 argument_list|(
-literal|"Container start event coud not be pulished for "
+literal|"Container start event could not be published for "
 operator|+
 name|container
 operator|.
