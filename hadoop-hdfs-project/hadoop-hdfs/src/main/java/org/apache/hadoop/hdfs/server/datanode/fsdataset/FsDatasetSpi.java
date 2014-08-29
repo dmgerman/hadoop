@@ -646,6 +646,19 @@ parameter_list|)
 throws|throws
 name|IOException
 function_decl|;
+comment|/** Removes a collection of volumes from FsDataset. */
+DECL|method|removeVolumes (Collection<StorageLocation> volumes)
+specifier|public
+name|void
+name|removeVolumes
+parameter_list|(
+name|Collection
+argument_list|<
+name|StorageLocation
+argument_list|>
+name|volumes
+parameter_list|)
+function_decl|;
 comment|/** @return a storage with the given storage ID */
 DECL|method|getStorage (final String storageUuid)
 specifier|public

@@ -5466,6 +5466,27 @@ throw|;
 block|}
 annotation|@
 name|Override
+DECL|method|removeVolumes (Collection<StorageLocation> volumes)
+specifier|public
+specifier|synchronized
+name|void
+name|removeVolumes
+parameter_list|(
+name|Collection
+argument_list|<
+name|StorageLocation
+argument_list|>
+name|volumes
+parameter_list|)
+block|{
+throw|throw
+operator|new
+name|UnsupportedOperationException
+argument_list|()
+throw|;
+block|}
+annotation|@
+name|Override
 DECL|method|submitBackgroundSyncFileRangeRequest (ExtendedBlock block, FileDescriptor fd, long offset, long nbytes, int flags)
 specifier|public
 name|void

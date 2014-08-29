@@ -402,7 +402,7 @@ name|yarn
 operator|.
 name|proto
 operator|.
-name|YarnServerResourceManagerServiceProtos
+name|YarnServerResourceManagerRecoveryProtos
 operator|.
 name|ApplicationAttemptStateDataProto
 import|;
@@ -420,7 +420,7 @@ name|yarn
 operator|.
 name|proto
 operator|.
-name|YarnServerResourceManagerServiceProtos
+name|YarnServerResourceManagerRecoveryProtos
 operator|.
 name|ApplicationStateDataProto
 import|;
@@ -438,7 +438,7 @@ name|yarn
 operator|.
 name|proto
 operator|.
-name|YarnServerResourceManagerServiceProtos
+name|YarnServerResourceManagerRecoveryProtos
 operator|.
 name|EpochProto
 import|;
@@ -3422,7 +3422,7 @@ name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"Done Loading applications from ZK state store"
+literal|"Done loading applications from ZK state store"
 argument_list|)
 expr_stmt|;
 block|}

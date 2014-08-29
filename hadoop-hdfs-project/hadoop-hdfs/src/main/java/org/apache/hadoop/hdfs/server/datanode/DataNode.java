@@ -2669,13 +2669,11 @@ specifier|final
 name|String
 name|USAGE
 init|=
-literal|"Usage: java DataNode [-regular | -rollback | -rollingupgrade rollback]\n"
+literal|"Usage: java DataNode [-regular | -rollback]\n"
 operator|+
 literal|"    -regular                 : Normal DataNode startup (default).\n"
 operator|+
-literal|"    -rollback                : Rollback a standard upgrade.\n"
-operator|+
-literal|"    -rollingupgrade rollback : Rollback a rolling upgrade operation.\n"
+literal|"    -rollback                : Rollback a standard or rolling upgrade.\n"
 operator|+
 literal|"  Refer to HDFS documentation for the difference between standard\n"
 operator|+
