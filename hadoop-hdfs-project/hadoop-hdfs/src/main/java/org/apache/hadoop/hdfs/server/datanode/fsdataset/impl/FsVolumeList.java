@@ -508,7 +508,7 @@ return|return
 name|remaining
 return|;
 block|}
-DECL|method|getAllVolumesMap (final String bpid, final ReplicaMap volumeMap)
+DECL|method|getAllVolumesMap (final String bpid, final ReplicaMap volumeMap, final LazyWriteReplicaTracker lazyWriteReplicaMap)
 name|void
 name|getAllVolumesMap
 parameter_list|(
@@ -519,6 +519,10 @@ parameter_list|,
 specifier|final
 name|ReplicaMap
 name|volumeMap
+parameter_list|,
+specifier|final
+name|LazyWriteReplicaTracker
+name|lazyWriteReplicaMap
 parameter_list|)
 throws|throws
 name|IOException
@@ -618,6 +622,8 @@ argument_list|(
 name|bpid
 argument_list|,
 name|volumeMap
+argument_list|,
+name|lazyWriteReplicaMap
 argument_list|)
 expr_stmt|;
 name|long
@@ -769,88 +775,6 @@ argument_list|(
 literal|"Total time to add all replicas to map: "
 operator|+
 name|totalTimeTaken
-operator|+
-literal|"ms"
-argument_list|)
-expr_stmt|;
-block|}
-DECL|method|getVolumeMap (String bpid, FsVolumeImpl volume, ReplicaMap volumeMap)
-name|void
-name|getVolumeMap
-parameter_list|(
-name|String
-name|bpid
-parameter_list|,
-name|FsVolumeImpl
-name|volume
-parameter_list|,
-name|ReplicaMap
-name|volumeMap
-parameter_list|)
-throws|throws
-name|IOException
-block|{
-name|FsDatasetImpl
-operator|.
-name|LOG
-operator|.
-name|info
-argument_list|(
-literal|"Adding replicas to map for block pool "
-operator|+
-name|bpid
-operator|+
-literal|" on volume "
-operator|+
-name|volume
-operator|+
-literal|"..."
-argument_list|)
-expr_stmt|;
-name|long
-name|startTime
-init|=
-name|Time
-operator|.
-name|monotonicNow
-argument_list|()
-decl_stmt|;
-name|volume
-operator|.
-name|getVolumeMap
-argument_list|(
-name|bpid
-argument_list|,
-name|volumeMap
-argument_list|)
-expr_stmt|;
-name|long
-name|timeTaken
-init|=
-name|Time
-operator|.
-name|monotonicNow
-argument_list|()
-operator|-
-name|startTime
-decl_stmt|;
-name|FsDatasetImpl
-operator|.
-name|LOG
-operator|.
-name|info
-argument_list|(
-literal|"Time to add replicas to map for block pool "
-operator|+
-name|bpid
-operator|+
-literal|" on volume "
-operator|+
-name|volume
-operator|+
-literal|": "
-operator|+
-name|timeTaken
 operator|+
 literal|"ms"
 argument_list|)

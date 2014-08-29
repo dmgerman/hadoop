@@ -2004,7 +2004,6 @@ argument_list|(
 name|datanode
 argument_list|)
 expr_stmt|;
-comment|// TODO: Initialize transientReplicaTracker from blocks on disk.
 for|for
 control|(
 name|int
@@ -2044,6 +2043,7 @@ argument_list|(
 name|this
 argument_list|)
 expr_stmt|;
+comment|// Start the lazy writer once we have built the replica maps.
 name|lazyWriter
 operator|=
 operator|new
@@ -2154,6 +2154,8 @@ operator|.
 name|getVolumeMap
 argument_list|(
 name|volumeMap
+argument_list|,
+name|lazyWriteReplicaTracker
 argument_list|)
 expr_stmt|;
 name|volumes
@@ -10548,6 +10550,8 @@ argument_list|(
 name|bpid
 argument_list|,
 name|volumeMap
+argument_list|,
+name|lazyWriteReplicaTracker
 argument_list|)
 expr_stmt|;
 block|}
@@ -11765,6 +11769,17 @@ operator|!=
 literal|null
 condition|)
 block|{
+name|LOG
+operator|.
+name|warn
+argument_list|(
+literal|"Failed to save replica "
+operator|+
+name|replicaState
+operator|+
+literal|". re-enqueueing it."
+argument_list|)
+expr_stmt|;
 name|lazyWriteReplicaTracker
 operator|.
 name|reenqueueReplica

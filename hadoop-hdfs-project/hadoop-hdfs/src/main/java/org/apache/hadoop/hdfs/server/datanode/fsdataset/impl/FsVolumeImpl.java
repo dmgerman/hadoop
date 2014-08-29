@@ -1169,12 +1169,16 @@ argument_list|()
 expr_stmt|;
 block|}
 block|}
-DECL|method|getVolumeMap (ReplicaMap volumeMap)
+DECL|method|getVolumeMap (ReplicaMap volumeMap, final LazyWriteReplicaTracker lazyWriteReplicaMap)
 name|void
 name|getVolumeMap
 parameter_list|(
 name|ReplicaMap
 name|volumeMap
+parameter_list|,
+specifier|final
+name|LazyWriteReplicaTracker
+name|lazyWriteReplicaMap
 parameter_list|)
 throws|throws
 name|IOException
@@ -1195,11 +1199,13 @@ operator|.
 name|getVolumeMap
 argument_list|(
 name|volumeMap
+argument_list|,
+name|lazyWriteReplicaMap
 argument_list|)
 expr_stmt|;
 block|}
 block|}
-DECL|method|getVolumeMap (String bpid, ReplicaMap volumeMap)
+DECL|method|getVolumeMap (String bpid, ReplicaMap volumeMap, final LazyWriteReplicaTracker lazyWriteReplicaMap)
 name|void
 name|getVolumeMap
 parameter_list|(
@@ -1208,6 +1214,10 @@ name|bpid
 parameter_list|,
 name|ReplicaMap
 name|volumeMap
+parameter_list|,
+specifier|final
+name|LazyWriteReplicaTracker
+name|lazyWriteReplicaMap
 parameter_list|)
 throws|throws
 name|IOException
@@ -1220,6 +1230,8 @@ operator|.
 name|getVolumeMap
 argument_list|(
 name|volumeMap
+argument_list|,
+name|lazyWriteReplicaMap
 argument_list|)
 expr_stmt|;
 block|}
