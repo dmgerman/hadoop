@@ -215,13 +215,21 @@ name|Metadata
 argument_list|>
 argument_list|()
 decl_stmt|;
-DECL|method|UserProvider ()
+DECL|method|UserProvider (Configuration conf)
 specifier|private
 name|UserProvider
-parameter_list|()
+parameter_list|(
+name|Configuration
+name|conf
+parameter_list|)
 throws|throws
 name|IOException
 block|{
+name|super
+argument_list|(
+name|conf
+argument_list|)
+expr_stmt|;
 name|user
 operator|=
 name|UserGroupInformation
@@ -876,7 +884,9 @@ block|{
 return|return
 operator|new
 name|UserProvider
-argument_list|()
+argument_list|(
+name|conf
+argument_list|)
 return|;
 block|}
 return|return
