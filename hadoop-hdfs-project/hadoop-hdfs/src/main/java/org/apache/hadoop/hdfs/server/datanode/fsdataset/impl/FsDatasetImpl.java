@@ -570,6 +570,24 @@ name|server
 operator|.
 name|datanode
 operator|.
+name|DatanodeUtil
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|server
+operator|.
+name|datanode
+operator|.
 name|FinalizedReplica
 import|;
 end_import
@@ -3297,33 +3315,47 @@ return|return
 name|dstfile
 return|;
 block|}
-DECL|method|copyBlockFiles (Block b, File srcfile, File destdir)
+comment|/**    * Copy the block and meta files for the given block from the given    * @return the new meta file.    * @throws IOException    */
+DECL|method|copyBlockFiles (ReplicaInfo replicaInfo, File destRoot)
 specifier|static
 name|File
 name|copyBlockFiles
 parameter_list|(
-name|Block
-name|b
+name|ReplicaInfo
+name|replicaInfo
 parameter_list|,
 name|File
-name|srcfile
-parameter_list|,
-name|File
-name|destdir
+name|destRoot
 parameter_list|)
 throws|throws
 name|IOException
 block|{
 specifier|final
 name|File
-name|dstfile
+name|destDir
+init|=
+name|DatanodeUtil
+operator|.
+name|idToBlockDir
+argument_list|(
+name|destRoot
+argument_list|,
+name|replicaInfo
+operator|.
+name|getBlockId
+argument_list|()
+argument_list|)
+decl_stmt|;
+specifier|final
+name|File
+name|dstFile
 init|=
 operator|new
 name|File
 argument_list|(
-name|destdir
+name|destDir
 argument_list|,
-name|b
+name|replicaInfo
 operator|.
 name|getBlockName
 argument_list|()
@@ -3331,15 +3363,15 @@ argument_list|)
 decl_stmt|;
 specifier|final
 name|File
-name|srcmeta
+name|dstMeta
 init|=
 name|FsDatasetUtil
 operator|.
 name|getMetaFile
 argument_list|(
-name|srcfile
+name|dstFile
 argument_list|,
-name|b
+name|replicaInfo
 operator|.
 name|getGenerationStamp
 argument_list|()
@@ -3347,19 +3379,21 @@ argument_list|)
 decl_stmt|;
 specifier|final
 name|File
-name|dstmeta
+name|srcMeta
 init|=
-name|FsDatasetUtil
+name|replicaInfo
 operator|.
 name|getMetaFile
-argument_list|(
-name|dstfile
-argument_list|,
-name|b
-operator|.
-name|getGenerationStamp
 argument_list|()
-argument_list|)
+decl_stmt|;
+specifier|final
+name|File
+name|srcFile
+init|=
+name|replicaInfo
+operator|.
+name|getBlockFile
+argument_list|()
 decl_stmt|;
 try|try
 block|{
@@ -3367,9 +3401,9 @@ name|FileUtils
 operator|.
 name|copyFile
 argument_list|(
-name|srcmeta
+name|srcMeta
 argument_list|,
-name|dstmeta
+name|dstMeta
 argument_list|)
 expr_stmt|;
 block|}
@@ -3383,17 +3417,13 @@ throw|throw
 operator|new
 name|IOException
 argument_list|(
-literal|"Failed to copy meta file for "
+literal|"Failed to copy "
 operator|+
-name|b
-operator|+
-literal|" from "
-operator|+
-name|srcmeta
+name|srcMeta
 operator|+
 literal|" to "
 operator|+
-name|dstmeta
+name|dstMeta
 argument_list|,
 name|e
 argument_list|)
@@ -3405,9 +3435,9 @@ name|FileUtils
 operator|.
 name|copyFile
 argument_list|(
-name|srcfile
+name|srcFile
 argument_list|,
-name|dstfile
+name|dstFile
 argument_list|)
 expr_stmt|;
 block|}
@@ -3421,20 +3451,13 @@ throw|throw
 operator|new
 name|IOException
 argument_list|(
-literal|"Failed to copy block file for "
+literal|"Failed to copy "
 operator|+
-name|b
-operator|+
-literal|" from "
-operator|+
-name|srcfile
+name|srcFile
 operator|+
 literal|" to "
 operator|+
-name|dstfile
-operator|.
-name|getAbsolutePath
-argument_list|()
+name|dstFile
 argument_list|,
 name|e
 argument_list|)
@@ -3454,24 +3477,29 @@ name|debug
 argument_list|(
 literal|"addBlock: Moved "
 operator|+
-name|srcmeta
+name|srcMeta
 operator|+
 literal|" to "
 operator|+
-name|dstmeta
+name|dstMeta
+argument_list|)
+expr_stmt|;
+name|LOG
+operator|.
+name|debug
+argument_list|(
+literal|"addBlock: Moved "
 operator|+
-literal|" and "
-operator|+
-name|srcfile
+name|srcFile
 operator|+
 literal|" to "
 operator|+
-name|dstfile
+name|dstFile
 argument_list|)
 expr_stmt|;
 block|}
 return|return
-name|dstfile
+name|dstMeta
 return|;
 block|}
 DECL|method|truncateBlock (File blockFile, File metaFile, long oldlen, long newlen)
@@ -6404,27 +6432,6 @@ name|getBlockId
 argument_list|()
 argument_list|,
 name|v
-argument_list|)
-expr_stmt|;
-comment|// Schedule a checkpoint.
-operator|(
-operator|(
-name|LazyWriter
-operator|)
-name|lazyWriter
-operator|.
-name|getRunnable
-argument_list|()
-operator|)
-operator|.
-name|addReplicaToLazyWriteQueue
-argument_list|(
-name|bpid
-argument_list|,
-name|replicaInfo
-operator|.
-name|getBlockId
-argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
@@ -11456,50 +11463,7 @@ name|flags
 argument_list|)
 expr_stmt|;
 block|}
-DECL|class|BlockIdPair
-specifier|private
-specifier|static
-class|class
-name|BlockIdPair
-block|{
-DECL|field|bpid
-specifier|final
-name|String
-name|bpid
-decl_stmt|;
-DECL|field|blockId
-specifier|final
-name|long
-name|blockId
-decl_stmt|;
-DECL|method|BlockIdPair (final String bpid, final long blockId)
-name|BlockIdPair
-parameter_list|(
-specifier|final
-name|String
-name|bpid
-parameter_list|,
-specifier|final
-name|long
-name|blockId
-parameter_list|)
-block|{
-name|this
-operator|.
-name|bpid
-operator|=
-name|bpid
-expr_stmt|;
-name|this
-operator|.
-name|blockId
-operator|=
-name|blockId
-expr_stmt|;
-block|}
-block|}
 DECL|class|LazyWriter
-specifier|private
 class|class
 name|LazyWriter
 implements|implements
@@ -11518,15 +11482,6 @@ specifier|final
 name|int
 name|checkpointerInterval
 decl_stmt|;
-DECL|field|blocksPendingCheckpoint
-specifier|final
-specifier|private
-name|Queue
-argument_list|<
-name|BlockIdPair
-argument_list|>
-name|blocksPendingCheckpoint
-decl_stmt|;
 DECL|method|LazyWriter (final int checkpointerInterval)
 specifier|public
 name|LazyWriter
@@ -11541,58 +11496,6 @@ operator|.
 name|checkpointerInterval
 operator|=
 name|checkpointerInterval
-expr_stmt|;
-name|blocksPendingCheckpoint
-operator|=
-operator|new
-name|LinkedList
-argument_list|<
-name|BlockIdPair
-argument_list|>
-argument_list|()
-expr_stmt|;
-block|}
-comment|// Schedule a replica for writing to persistent storage.
-DECL|method|addReplicaToLazyWriteQueue ( String bpid, long blockId)
-specifier|public
-specifier|synchronized
-name|void
-name|addReplicaToLazyWriteQueue
-parameter_list|(
-name|String
-name|bpid
-parameter_list|,
-name|long
-name|blockId
-parameter_list|)
-block|{
-name|LOG
-operator|.
-name|info
-argument_list|(
-literal|"Block with blockId="
-operator|+
-name|blockId
-operator|+
-literal|"; bpid="
-operator|+
-name|bpid
-operator|+
-literal|" added to lazy writer queue"
-argument_list|)
-expr_stmt|;
-name|blocksPendingCheckpoint
-operator|.
-name|add
-argument_list|(
-operator|new
-name|BlockIdPair
-argument_list|(
-name|bpid
-argument_list|,
-name|blockId
-argument_list|)
-argument_list|)
 expr_stmt|;
 block|}
 DECL|method|moveReplicaToNewVolume (String bpid, long blockId)
@@ -11624,36 +11527,20 @@ argument_list|)
 expr_stmt|;
 name|FsVolumeImpl
 name|targetVolume
-init|=
-literal|null
 decl_stmt|;
-name|Block
-name|block
-init|=
-literal|null
-decl_stmt|;
-name|File
-name|blockFile
-init|=
-literal|null
+name|ReplicaInfo
+name|replicaInfo
 decl_stmt|;
 synchronized|synchronized
 init|(
 name|this
 init|)
 block|{
-name|block
+name|replicaInfo
 operator|=
-name|getStoredBlock
-argument_list|(
-name|bpid
-argument_list|,
-name|blockId
-argument_list|)
-expr_stmt|;
-name|blockFile
-operator|=
-name|getFile
+name|volumeMap
+operator|.
+name|get
 argument_list|(
 name|bpid
 argument_list|,
@@ -11662,12 +11549,24 @@ argument_list|)
 expr_stmt|;
 if|if
 condition|(
-name|block
+name|replicaInfo
 operator|==
 literal|null
+operator|||
+operator|!
+name|replicaInfo
+operator|.
+name|getVolume
+argument_list|()
+operator|.
+name|isTransientStorage
+argument_list|()
 condition|)
 block|{
-comment|// The block was deleted before it could be checkpointed.
+comment|// The block was either deleted before it could be checkpointed or
+comment|// it is already on persistent storage. This can occur if a second
+comment|// replica on persistent storage was found after the lazy write was
+comment|// scheduled.
 return|return;
 block|}
 comment|// Pick a target volume for the block.
@@ -11681,16 +11580,24 @@ name|StorageType
 operator|.
 name|DEFAULT
 argument_list|,
-name|block
+name|replicaInfo
 operator|.
 name|getNumBytes
 argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
+if|if
+condition|(
 name|LOG
 operator|.
-name|info
+name|isDebugEnabled
+argument_list|()
+condition|)
+block|{
+name|LOG
+operator|.
+name|debug
 argument_list|(
 literal|"LazyWriter starting to save blockId="
 operator|+
@@ -11701,6 +11608,7 @@ operator|+
 name|bpid
 argument_list|)
 expr_stmt|;
+block|}
 name|lazyWriteReplicaTracker
 operator|.
 name|recordStartLazyPersist
@@ -11724,9 +11632,7 @@ argument_list|)
 operator|.
 name|lazyPersistReplica
 argument_list|(
-name|block
-argument_list|,
-name|blockFile
+name|replicaInfo
 argument_list|)
 decl_stmt|;
 name|lazyWriteReplicaTracker
@@ -11740,9 +11646,17 @@ argument_list|,
 name|savedBlockFile
 argument_list|)
 expr_stmt|;
+if|if
+condition|(
 name|LOG
 operator|.
-name|info
+name|isDebugEnabled
+argument_list|()
+condition|)
+block|{
+name|LOG
+operator|.
+name|debug
 argument_list|(
 literal|"LazyWriter finished saving blockId="
 operator|+
@@ -11758,22 +11672,25 @@ name|savedBlockFile
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**      * Checkpoint a pending replica to persistent storage now.      * @return true if there is more work to be done, false otherwise.      */
+block|}
+comment|/**      * Checkpoint a pending replica to persistent storage now.      * If we fail then move the replica to the end of the queue.      * @return true if there is more work to be done, false otherwise.      */
 DECL|method|saveNextReplica ()
 specifier|private
 name|boolean
 name|saveNextReplica
 parameter_list|()
 block|{
-name|BlockIdPair
-name|blockIdPair
+name|LazyWriteReplicaTracker
+operator|.
+name|ReplicaState
+name|replicaState
 init|=
 literal|null
 decl_stmt|;
-name|int
-name|moreWorkThreshold
+name|boolean
+name|succeeded
 init|=
-literal|0
+literal|false
 decl_stmt|;
 try|try
 block|{
@@ -11782,30 +11699,20 @@ init|(
 name|this
 init|)
 block|{
-comment|// Dequeue the next replica waiting to be checkpointed.
-name|blockIdPair
+name|replicaState
 operator|=
-name|blocksPendingCheckpoint
+name|lazyWriteReplicaTracker
 operator|.
-name|poll
+name|dequeueNextReplicaToPersist
 argument_list|()
 expr_stmt|;
 if|if
 condition|(
-name|blockIdPair
+name|replicaState
 operator|==
 literal|null
 condition|)
 block|{
-name|LOG
-operator|.
-name|info
-argument_list|(
-literal|"LazyWriter has no blocks to persist. "
-operator|+
-literal|"Thread going to sleep."
-argument_list|)
-expr_stmt|;
 return|return
 literal|false
 return|;
@@ -11814,14 +11721,18 @@ block|}
 comment|// Move the replica outside the lock.
 name|moveReplicaToNewVolume
 argument_list|(
-name|blockIdPair
+name|replicaState
 operator|.
 name|bpid
 argument_list|,
-name|blockIdPair
+name|replicaState
 operator|.
 name|blockId
 argument_list|)
+expr_stmt|;
+name|succeeded
+operator|=
+literal|true
 expr_stmt|;
 block|}
 catch|catch
@@ -11830,40 +11741,42 @@ name|IOException
 name|ioe
 parameter_list|)
 block|{
-comment|// If we failed, put the block on the queue and let a retry
-comment|// interval elapse before we try again so we don't try to keep
-comment|// checkpointing the same block in a tight loop.
-synchronized|synchronized
-init|(
-name|this
-init|)
-block|{
-name|blocksPendingCheckpoint
+name|LOG
 operator|.
-name|add
+name|warn
 argument_list|(
-name|blockIdPair
+literal|"Exception saving replica "
+operator|+
+name|replicaState
+argument_list|,
+name|ioe
 argument_list|)
 expr_stmt|;
-operator|++
-name|moreWorkThreshold
+block|}
+finally|finally
+block|{
+if|if
+condition|(
+operator|!
+name|succeeded
+operator|&&
+name|replicaState
+operator|!=
+literal|null
+condition|)
+block|{
+name|lazyWriteReplicaTracker
+operator|.
+name|reenqueueReplica
+argument_list|(
+name|replicaState
+argument_list|)
 expr_stmt|;
 block|}
 block|}
-synchronized|synchronized
-init|(
-name|this
-init|)
-block|{
 return|return
-name|blocksPendingCheckpoint
-operator|.
-name|size
-argument_list|()
-operator|>
-name|moreWorkThreshold
+name|succeeded
 return|;
-block|}
 block|}
 annotation|@
 name|Override
@@ -11873,6 +11786,11 @@ name|void
 name|run
 parameter_list|()
 block|{
+name|int
+name|numSuccessiveFailures
+init|=
+literal|0
+decl_stmt|;
 while|while
 condition|(
 name|fsRunning
@@ -11882,10 +11800,29 @@ condition|)
 block|{
 try|try
 block|{
+name|numSuccessiveFailures
+operator|=
+name|saveNextReplica
+argument_list|()
+condition|?
+literal|0
+else|:
+operator|(
+name|numSuccessiveFailures
+operator|+
+literal|1
+operator|)
+expr_stmt|;
+comment|// Sleep if we have no more work to do or if it looks like we are not
+comment|// making any forward progress. This is to ensure that if all persist
+comment|// operations are failing we don't keep retrying them in a tight loop.
 if|if
 condition|(
-operator|!
-name|saveNextReplica
+name|numSuccessiveFailures
+operator|==
+name|lazyWriteReplicaTracker
+operator|.
+name|numReplicasNotPersisted
 argument_list|()
 condition|)
 block|{
@@ -11897,6 +11834,10 @@ name|checkpointerInterval
 operator|*
 literal|1000
 argument_list|)
+expr_stmt|;
+name|numSuccessiveFailures
+operator|=
+literal|0
 expr_stmt|;
 block|}
 block|}

@@ -1223,48 +1223,6 @@ name|volumeMap
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Add replicas under the given directory to the volume map    * @param volumeMap the replicas map    * @param dir an input directory    * @param isFinalized true if the directory has finalized replicas;    *                    false if the directory has rbw replicas    * @throws IOException     */
-DECL|method|addToReplicasMap (String bpid, ReplicaMap volumeMap, File dir, boolean isFinalized)
-name|void
-name|addToReplicasMap
-parameter_list|(
-name|String
-name|bpid
-parameter_list|,
-name|ReplicaMap
-name|volumeMap
-parameter_list|,
-name|File
-name|dir
-parameter_list|,
-name|boolean
-name|isFinalized
-parameter_list|)
-throws|throws
-name|IOException
-block|{
-name|BlockPoolSlice
-name|bp
-init|=
-name|getBlockPoolSlice
-argument_list|(
-name|bpid
-argument_list|)
-decl_stmt|;
-comment|// TODO move this up
-comment|// dfsUsage.incDfsUsed(b.getNumBytes()+metaFile.length());
-name|bp
-operator|.
-name|addToReplicasMap
-argument_list|(
-name|volumeMap
-argument_list|,
-name|dir
-argument_list|,
-name|isFinalized
-argument_list|)
-expr_stmt|;
-block|}
 annotation|@
 name|Override
 DECL|method|toString ()

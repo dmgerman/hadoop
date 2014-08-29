@@ -34,21 +34,27 @@ name|common
 operator|.
 name|collect
 operator|.
-name|Multimap
+name|TreeMultimap
 import|;
 end_import
 
 begin_import
 import|import
-name|com
+name|org
 operator|.
-name|google
+name|apache
 operator|.
-name|common
+name|hadoop
 operator|.
-name|collect
+name|hdfs
 operator|.
-name|TreeMultimap
+name|server
+operator|.
+name|datanode
+operator|.
+name|fsdataset
+operator|.
+name|FsVolumeSpi
 import|;
 end_import
 
@@ -68,17 +74,7 @@ name|java
 operator|.
 name|util
 operator|.
-name|HashMap
-import|;
-end_import
-
-begin_import
-import|import
-name|java
-operator|.
-name|util
-operator|.
-name|Map
+name|*
 import|;
 end_import
 
@@ -127,7 +123,7 @@ decl_stmt|;
 comment|/**      * transient storage volume that holds the original replica.      */
 DECL|field|transientVolume
 specifier|final
-name|FsVolumeImpl
+name|FsVolumeSpi
 name|transientVolume
 decl_stmt|;
 comment|/**      * Persistent volume that holds or will hold the saved replica.      */
@@ -139,7 +135,7 @@ DECL|field|savedBlockFile
 name|File
 name|savedBlockFile
 decl_stmt|;
-DECL|method|ReplicaState (final String bpid, final long blockId, FsVolumeImpl transientVolume)
+DECL|method|ReplicaState (final String bpid, final long blockId, FsVolumeSpi transientVolume)
 name|ReplicaState
 parameter_list|(
 specifier|final
@@ -150,7 +146,7 @@ specifier|final
 name|long
 name|blockId
 parameter_list|,
-name|FsVolumeImpl
+name|FsVolumeSpi
 name|transientVolume
 parameter_list|)
 block|{
@@ -186,6 +182,26 @@ name|savedBlockFile
 operator|=
 literal|null
 expr_stmt|;
+block|}
+annotation|@
+name|Override
+DECL|method|toString ()
+specifier|public
+name|String
+name|toString
+parameter_list|()
+block|{
+return|return
+literal|"[Bpid="
+operator|+
+name|bpid
+operator|+
+literal|";blockId="
+operator|+
+name|blockId
+operator|+
+literal|"]"
+return|;
 block|}
 annotation|@
 name|Override
@@ -343,8 +359,17 @@ argument_list|>
 argument_list|>
 name|replicaMaps
 decl_stmt|;
+comment|/**    * Queue of replicas that need to be written to disk.    */
+DECL|field|replicasNotPersisted
+specifier|final
+name|Queue
+argument_list|<
+name|ReplicaState
+argument_list|>
+name|replicasNotPersisted
+decl_stmt|;
 comment|/**    * A map of blockId to persist complete time for transient blocks. This allows    * us to evict LRU blocks from transient storage. Protected by 'this'    * Object lock.    */
-DECL|field|persistTimeMap
+DECL|field|replicasPersisted
 specifier|final
 name|Map
 argument_list|<
@@ -352,7 +377,7 @@ name|ReplicaState
 argument_list|,
 name|Long
 argument_list|>
-name|persistTimeMap
+name|replicasPersisted
 decl_stmt|;
 DECL|method|LazyWriteReplicaTracker (final FsDatasetImpl fsDataset)
 name|LazyWriteReplicaTracker
@@ -384,7 +409,16 @@ argument_list|>
 argument_list|>
 argument_list|()
 expr_stmt|;
-name|persistTimeMap
+name|replicasNotPersisted
+operator|=
+operator|new
+name|LinkedList
+argument_list|<
+name|ReplicaState
+argument_list|>
+argument_list|()
+expr_stmt|;
+name|replicasPersisted
 operator|=
 operator|new
 name|HashMap
@@ -432,7 +466,7 @@ name|Long
 argument_list|>
 name|entry
 range|:
-name|persistTimeMap
+name|replicasPersisted
 operator|.
 name|entrySet
 argument_list|()
@@ -458,7 +492,7 @@ return|return
 name|reversedMap
 return|;
 block|}
-DECL|method|addReplica (String bpid, long blockId, final FsVolumeImpl transientVolume)
+DECL|method|addReplica (String bpid, long blockId, final FsVolumeSpi transientVolume)
 specifier|synchronized
 name|void
 name|addReplica
@@ -470,7 +504,7 @@ name|long
 name|blockId
 parameter_list|,
 specifier|final
-name|FsVolumeImpl
+name|FsVolumeSpi
 name|transientVolume
 parameter_list|)
 block|{
@@ -517,12 +551,9 @@ name|map
 argument_list|)
 expr_stmt|;
 block|}
-name|map
-operator|.
-name|put
-argument_list|(
-name|blockId
-argument_list|,
+name|ReplicaState
+name|replicaState
+init|=
 operator|new
 name|ReplicaState
 argument_list|(
@@ -532,6 +563,21 @@ name|blockId
 argument_list|,
 name|transientVolume
 argument_list|)
+decl_stmt|;
+name|map
+operator|.
+name|put
+argument_list|(
+name|blockId
+argument_list|,
+name|replicaState
+argument_list|)
+expr_stmt|;
+name|replicasNotPersisted
+operator|.
+name|add
+argument_list|(
+name|replicaState
 argument_list|)
 expr_stmt|;
 block|}
@@ -669,7 +715,37 @@ name|savedBlockFile
 operator|=
 name|savedBlockFile
 expr_stmt|;
-name|persistTimeMap
+if|if
+condition|(
+name|replicasNotPersisted
+operator|.
+name|peek
+argument_list|()
+operator|==
+name|replicaState
+condition|)
+block|{
+comment|// Common case.
+name|replicasNotPersisted
+operator|.
+name|remove
+argument_list|()
+expr_stmt|;
+block|}
+else|else
+block|{
+comment|// Should never occur in practice as lazy writer always persists
+comment|// the replica at the head of the queue before moving to the next
+comment|// one.
+name|replicasNotPersisted
+operator|.
+name|remove
+argument_list|(
+name|replicaState
+argument_list|)
+expr_stmt|;
+block|}
+name|replicasPersisted
 operator|.
 name|put
 argument_list|(
@@ -683,6 +759,106 @@ operator|/
 literal|1000
 argument_list|)
 expr_stmt|;
+block|}
+DECL|method|dequeueNextReplicaToPersist ()
+specifier|synchronized
+name|ReplicaState
+name|dequeueNextReplicaToPersist
+parameter_list|()
+block|{
+while|while
+condition|(
+name|replicasNotPersisted
+operator|.
+name|size
+argument_list|()
+operator|!=
+literal|0
+condition|)
+block|{
+name|ReplicaState
+name|replicaState
+init|=
+name|replicasNotPersisted
+operator|.
+name|remove
+argument_list|()
+decl_stmt|;
+name|Map
+argument_list|<
+name|Long
+argument_list|,
+name|ReplicaState
+argument_list|>
+name|replicaMap
+init|=
+name|replicaMaps
+operator|.
+name|get
+argument_list|(
+name|replicaState
+operator|.
+name|bpid
+argument_list|)
+decl_stmt|;
+if|if
+condition|(
+name|replicaMap
+operator|!=
+literal|null
+operator|&&
+name|replicaMap
+operator|.
+name|get
+argument_list|(
+name|replicaState
+operator|.
+name|blockId
+argument_list|)
+operator|!=
+literal|null
+condition|)
+block|{
+return|return
+name|replicaState
+return|;
+block|}
+comment|// The replica no longer exists, look for the next one.
+block|}
+return|return
+literal|null
+return|;
+block|}
+DECL|method|reenqueueReplica (final ReplicaState replicaState)
+specifier|synchronized
+name|void
+name|reenqueueReplica
+parameter_list|(
+specifier|final
+name|ReplicaState
+name|replicaState
+parameter_list|)
+block|{
+name|replicasNotPersisted
+operator|.
+name|add
+argument_list|(
+name|replicaState
+argument_list|)
+expr_stmt|;
+block|}
+DECL|method|numReplicasNotPersisted ()
+specifier|synchronized
+name|int
+name|numReplicasNotPersisted
+parameter_list|()
+block|{
+return|return
+name|replicasNotPersisted
+operator|.
+name|size
+argument_list|()
+return|;
 block|}
 DECL|method|discardReplica ( final String bpid, final long blockId, boolean force)
 specifier|synchronized
@@ -716,6 +892,15 @@ argument_list|(
 name|bpid
 argument_list|)
 decl_stmt|;
+if|if
+condition|(
+name|map
+operator|==
+literal|null
+condition|)
+block|{
+return|return;
+block|}
 name|ReplicaState
 name|replicaState
 init|=
@@ -791,13 +976,15 @@ argument_list|(
 name|blockId
 argument_list|)
 expr_stmt|;
-name|persistTimeMap
+name|replicasPersisted
 operator|.
 name|remove
 argument_list|(
 name|replicaState
 argument_list|)
 expr_stmt|;
+comment|// Leave the replica in replicasNotPersisted if its present.
+comment|// dequeueNextReplicaToPersist will GC it eventually.
 block|}
 block|}
 end_class
