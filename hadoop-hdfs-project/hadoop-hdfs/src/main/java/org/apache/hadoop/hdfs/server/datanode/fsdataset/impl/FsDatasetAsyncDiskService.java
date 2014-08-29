@@ -519,6 +519,76 @@ name|volume
 argument_list|)
 expr_stmt|;
 block|}
+comment|/**    * Stops AsyncDiskService for a volume.    * @param volume the root of the volume.    */
+DECL|method|removeVolume (File volume)
+specifier|synchronized
+name|void
+name|removeVolume
+parameter_list|(
+name|File
+name|volume
+parameter_list|)
+block|{
+if|if
+condition|(
+name|executors
+operator|==
+literal|null
+condition|)
+block|{
+throw|throw
+operator|new
+name|RuntimeException
+argument_list|(
+literal|"AsyncDiskService is already shutdown"
+argument_list|)
+throw|;
+block|}
+name|ThreadPoolExecutor
+name|executor
+init|=
+name|executors
+operator|.
+name|get
+argument_list|(
+name|volume
+argument_list|)
+decl_stmt|;
+if|if
+condition|(
+name|executor
+operator|==
+literal|null
+condition|)
+block|{
+throw|throw
+operator|new
+name|RuntimeException
+argument_list|(
+literal|"Can not find volume "
+operator|+
+name|volume
+operator|+
+literal|" to remove."
+argument_list|)
+throw|;
+block|}
+else|else
+block|{
+name|executor
+operator|.
+name|shutdown
+argument_list|()
+expr_stmt|;
+name|executors
+operator|.
+name|remove
+argument_list|(
+name|volume
+argument_list|)
+expr_stmt|;
+block|}
+block|}
 DECL|method|countPendingDeletions ()
 specifier|synchronized
 name|long

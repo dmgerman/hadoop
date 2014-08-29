@@ -1710,6 +1710,7 @@ argument_list|()
 expr_stmt|;
 if|if
 condition|(
+operator|!
 name|restartMeta
 operator|.
 name|delete
