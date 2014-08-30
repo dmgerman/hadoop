@@ -508,6 +508,35 @@ block|}
 block|}
 annotation|@
 name|Override
+DECL|method|updatePreemptionTimeouts ()
+specifier|public
+name|void
+name|updatePreemptionTimeouts
+parameter_list|()
+block|{
+name|super
+operator|.
+name|updatePreemptionTimeouts
+argument_list|()
+expr_stmt|;
+comment|// For child queues
+for|for
+control|(
+name|FSQueue
+name|childQueue
+range|:
+name|childQueues
+control|)
+block|{
+name|childQueue
+operator|.
+name|updatePreemptionTimeouts
+argument_list|()
+expr_stmt|;
+block|}
+block|}
+annotation|@
+name|Override
 DECL|method|getDemand ()
 specifier|public
 name|Resource
