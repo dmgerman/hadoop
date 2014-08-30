@@ -3605,13 +3605,6 @@ name|ResourceTrackerService
 name|createResourceTrackerService
 parameter_list|()
 block|{
-name|Configuration
-name|conf
-init|=
-operator|new
-name|Configuration
-argument_list|()
-decl_stmt|;
 name|RMContainerTokenSecretManager
 name|containerTokenSecretManager
 init|=
@@ -3855,6 +3848,18 @@ return|return
 name|this
 operator|.
 name|rmAppManager
+return|;
+block|}
+DECL|method|getAdminService ()
+specifier|public
+name|AdminService
+name|getAdminService
+parameter_list|()
+block|{
+return|return
+name|this
+operator|.
+name|adminService
 return|;
 block|}
 annotation|@

@@ -69,7 +69,7 @@ DECL|class|UpdateNodeResourceResponsePBImpl
 specifier|public
 class|class
 name|UpdateNodeResourceResponsePBImpl
-implements|implements
+extends|extends
 name|UpdateNodeResourceResponse
 block|{
 DECL|field|proto

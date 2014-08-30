@@ -40,6 +40,9 @@ block|,
 DECL|enumConstant|NODE_UPDATE
 name|NODE_UPDATE
 block|,
+DECL|enumConstant|NODE_RESOURCE_UPDATE
+name|NODE_RESOURCE_UPDATE
+block|,
 comment|// Source: RMApp
 DECL|enumConstant|APP_ADDED
 name|APP_ADDED
