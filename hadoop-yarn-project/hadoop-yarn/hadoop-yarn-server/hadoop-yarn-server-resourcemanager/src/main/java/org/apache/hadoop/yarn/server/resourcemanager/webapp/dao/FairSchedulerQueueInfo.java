@@ -124,24 +124,6 @@ name|hadoop
 operator|.
 name|yarn
 operator|.
-name|api
-operator|.
-name|records
-operator|.
-name|Resource
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|yarn
-operator|.
 name|server
 operator|.
 name|resourcemanager
@@ -276,6 +258,13 @@ name|fractionMemUsed
 decl_stmt|;
 annotation|@
 name|XmlTransient
+DECL|field|fractionMemSteadyFairShare
+specifier|private
+name|float
+name|fractionMemSteadyFairShare
+decl_stmt|;
+annotation|@
+name|XmlTransient
 DECL|field|fractionMemFairShare
 specifier|private
 name|float
@@ -309,6 +298,11 @@ DECL|field|usedResources
 specifier|private
 name|ResourceInfo
 name|usedResources
+decl_stmt|;
+DECL|field|steadyFairResources
+specifier|private
+name|ResourceInfo
+name|steadyFairResources
 decl_stmt|;
 DECL|field|fairResources
 specifier|private
@@ -416,6 +410,17 @@ operator|.
 name|getMemory
 argument_list|()
 expr_stmt|;
+name|steadyFairResources
+operator|=
+operator|new
+name|ResourceInfo
+argument_list|(
+name|queue
+operator|.
+name|getSteadyFairShare
+argument_list|()
+argument_list|)
+expr_stmt|;
 name|fairResources
 operator|=
 operator|new
@@ -469,6 +474,21 @@ name|getClusterResource
 argument_list|()
 argument_list|)
 argument_list|)
+expr_stmt|;
+name|fractionMemSteadyFairShare
+operator|=
+operator|(
+name|float
+operator|)
+name|steadyFairResources
+operator|.
+name|getMemory
+argument_list|()
+operator|/
+name|clusterResources
+operator|.
+name|getMemory
+argument_list|()
 expr_stmt|;
 name|fractionMemFairShare
 operator|=
@@ -594,6 +614,17 @@ expr_stmt|;
 block|}
 block|}
 block|}
+comment|/**    * Returns the steady fair share as a fraction of the entire cluster capacity.    */
+DECL|method|getSteadyFairShareMemoryFraction ()
+specifier|public
+name|float
+name|getSteadyFairShareMemoryFraction
+parameter_list|()
+block|{
+return|return
+name|fractionMemSteadyFairShare
+return|;
+block|}
 comment|/**    * Returns the fair share as a fraction of the entire cluster capacity.    */
 DECL|method|getFairShareMemoryFraction ()
 specifier|public
@@ -605,7 +636,18 @@ return|return
 name|fractionMemFairShare
 return|;
 block|}
-comment|/**    * Returns the fair share of this queue in megabytes.    */
+comment|/**    * Returns the steady fair share of this queue in megabytes.    */
+DECL|method|getSteadyFairShare ()
+specifier|public
+name|ResourceInfo
+name|getSteadyFairShare
+parameter_list|()
+block|{
+return|return
+name|steadyFairResources
+return|;
+block|}
+comment|/**    * Returns the fair share of this queue in megabytes    */
 DECL|method|getFairShare ()
 specifier|public
 name|ResourceInfo
