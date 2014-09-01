@@ -351,21 +351,19 @@ name|Long
 argument_list|>
 name|minSharePreemptionTimeouts
 decl_stmt|;
-comment|// Default min share preemption timeout for queues where it is not set
-comment|// explicitly.
-DECL|field|defaultMinSharePreemptionTimeout
+comment|// Fair share preemption timeout for each queue in seconds. If a job in the
+comment|// queue waits this long without receiving its fair share threshold, it is
+comment|// allowed to preempt other jobs' tasks.
+DECL|field|fairSharePreemptionTimeouts
 specifier|private
 specifier|final
-name|long
-name|defaultMinSharePreemptionTimeout
-decl_stmt|;
-comment|// Preemption timeout for jobs below fair share in seconds. If a job remains
-comment|// below half its fair share for this long, it is allowed to preempt tasks.
-DECL|field|fairSharePreemptionTimeout
-specifier|private
-specifier|final
-name|long
-name|fairSharePreemptionTimeout
+name|Map
+argument_list|<
+name|String
+argument_list|,
+name|Long
+argument_list|>
+name|fairSharePreemptionTimeouts
 decl_stmt|;
 DECL|field|schedulingPolicies
 specifier|private
@@ -406,7 +404,7 @@ argument_list|>
 argument_list|>
 name|configuredQueues
 decl_stmt|;
-DECL|method|AllocationConfiguration (Map<String, Resource> minQueueResources, Map<String, Resource> maxQueueResources, Map<String, Integer> queueMaxApps, Map<String, Integer> userMaxApps, Map<String, ResourceWeights> queueWeights, Map<String, Float> queueMaxAMShares, int userMaxAppsDefault, int queueMaxAppsDefault, float queueMaxAMShareDefault, Map<String, SchedulingPolicy> schedulingPolicies, SchedulingPolicy defaultSchedulingPolicy, Map<String, Long> minSharePreemptionTimeouts, Map<String, Map<QueueACL, AccessControlList>> queueAcls, long fairSharePreemptionTimeout, long defaultMinSharePreemptionTimeout, QueuePlacementPolicy placementPolicy, Map<FSQueueType, Set<String>> configuredQueues)
+DECL|method|AllocationConfiguration (Map<String, Resource> minQueueResources, Map<String, Resource> maxQueueResources, Map<String, Integer> queueMaxApps, Map<String, Integer> userMaxApps, Map<String, ResourceWeights> queueWeights, Map<String, Float> queueMaxAMShares, int userMaxAppsDefault, int queueMaxAppsDefault, float queueMaxAMShareDefault, Map<String, SchedulingPolicy> schedulingPolicies, SchedulingPolicy defaultSchedulingPolicy, Map<String, Long> minSharePreemptionTimeouts, Map<String, Long> fairSharePreemptionTimeouts, Map<String, Map<QueueACL, AccessControlList>> queueAcls, QueuePlacementPolicy placementPolicy, Map<FSQueueType, Set<String>> configuredQueues)
 specifier|public
 name|AllocationConfiguration
 parameter_list|(
@@ -490,6 +488,14 @@ name|Map
 argument_list|<
 name|String
 argument_list|,
+name|Long
+argument_list|>
+name|fairSharePreemptionTimeouts
+parameter_list|,
+name|Map
+argument_list|<
+name|String
+argument_list|,
 name|Map
 argument_list|<
 name|QueueACL
@@ -498,12 +504,6 @@ name|AccessControlList
 argument_list|>
 argument_list|>
 name|queueAcls
-parameter_list|,
-name|long
-name|fairSharePreemptionTimeout
-parameter_list|,
-name|long
-name|defaultMinSharePreemptionTimeout
 parameter_list|,
 name|QueuePlacementPolicy
 name|placementPolicy
@@ -594,21 +594,15 @@ name|minSharePreemptionTimeouts
 expr_stmt|;
 name|this
 operator|.
-name|queueAcls
+name|fairSharePreemptionTimeouts
 operator|=
-name|queueAcls
+name|fairSharePreemptionTimeouts
 expr_stmt|;
 name|this
 operator|.
-name|fairSharePreemptionTimeout
+name|queueAcls
 operator|=
-name|fairSharePreemptionTimeout
-expr_stmt|;
-name|this
-operator|.
-name|defaultMinSharePreemptionTimeout
-operator|=
-name|defaultMinSharePreemptionTimeout
+name|queueAcls
 expr_stmt|;
 name|this
 operator|.
@@ -741,17 +735,16 @@ name|Long
 argument_list|>
 argument_list|()
 expr_stmt|;
-name|defaultMinSharePreemptionTimeout
+name|fairSharePreemptionTimeouts
 operator|=
+operator|new
+name|HashMap
+argument_list|<
+name|String
+argument_list|,
 name|Long
-operator|.
-name|MAX_VALUE
-expr_stmt|;
-name|fairSharePreemptionTimeout
-operator|=
-name|Long
-operator|.
-name|MAX_VALUE
+argument_list|>
+argument_list|()
 expr_stmt|;
 name|schedulingPolicies
 operator|=
@@ -896,7 +889,7 @@ else|:
 name|NOBODY_ACL
 return|;
 block|}
-comment|/**    * Get a queue's min share preemption timeout, in milliseconds. This is the    * time after which jobs in the queue may kill other queues' tasks if they    * are below their min share.    */
+comment|/**    * Get a queue's min share preemption timeout configured in the allocation    * file, in milliseconds. Return -1 if not set.    */
 DECL|method|getMinSharePreemptionTimeout (String queueName)
 specifier|public
 name|long
@@ -923,19 +916,42 @@ operator|==
 literal|null
 operator|)
 condition|?
-name|defaultMinSharePreemptionTimeout
+operator|-
+literal|1
 else|:
 name|minSharePreemptionTimeout
 return|;
 block|}
-comment|/**    * Get the fair share preemption, in milliseconds. This is the time    * after which any job may kill other jobs' tasks if it is below half    * its fair share.    */
-DECL|method|getFairSharePreemptionTimeout ()
+comment|/**    * Get a queue's fair share preemption timeout configured in the allocation    * file, in milliseconds. Return -1 if not set.    */
+DECL|method|getFairSharePreemptionTimeout (String queueName)
 specifier|public
 name|long
 name|getFairSharePreemptionTimeout
-parameter_list|()
+parameter_list|(
+name|String
+name|queueName
+parameter_list|)
 block|{
+name|Long
+name|fairSharePreemptionTimeout
+init|=
+name|fairSharePreemptionTimeouts
+operator|.
+name|get
+argument_list|(
+name|queueName
+argument_list|)
+decl_stmt|;
 return|return
+operator|(
+name|fairSharePreemptionTimeout
+operator|==
+literal|null
+operator|)
+condition|?
+operator|-
+literal|1
+else|:
 name|fairSharePreemptionTimeout
 return|;
 block|}

@@ -389,6 +389,24 @@ name|SchedulingPolicy
 operator|.
 name|DEFAULT_POLICY
 decl_stmt|;
+DECL|field|fairSharePreemptionTimeout
+specifier|private
+name|long
+name|fairSharePreemptionTimeout
+init|=
+name|Long
+operator|.
+name|MAX_VALUE
+decl_stmt|;
+DECL|field|minSharePreemptionTimeout
+specifier|private
+name|long
+name|minSharePreemptionTimeout
+init|=
+name|Long
+operator|.
+name|MAX_VALUE
+decl_stmt|;
 DECL|method|FSQueue (String name, FairScheduler scheduler, FSParentQueue parent)
 specifier|public
 name|FSQueue
@@ -906,6 +924,58 @@ name|user
 argument_list|)
 return|;
 block|}
+DECL|method|getFairSharePreemptionTimeout ()
+specifier|public
+name|long
+name|getFairSharePreemptionTimeout
+parameter_list|()
+block|{
+return|return
+name|fairSharePreemptionTimeout
+return|;
+block|}
+DECL|method|setFairSharePreemptionTimeout (long fairSharePreemptionTimeout)
+specifier|public
+name|void
+name|setFairSharePreemptionTimeout
+parameter_list|(
+name|long
+name|fairSharePreemptionTimeout
+parameter_list|)
+block|{
+name|this
+operator|.
+name|fairSharePreemptionTimeout
+operator|=
+name|fairSharePreemptionTimeout
+expr_stmt|;
+block|}
+DECL|method|getMinSharePreemptionTimeout ()
+specifier|public
+name|long
+name|getMinSharePreemptionTimeout
+parameter_list|()
+block|{
+return|return
+name|minSharePreemptionTimeout
+return|;
+block|}
+DECL|method|setMinSharePreemptionTimeout (long minSharePreemptionTimeout)
+specifier|public
+name|void
+name|setMinSharePreemptionTimeout
+parameter_list|(
+name|long
+name|minSharePreemptionTimeout
+parameter_list|)
+block|{
+name|this
+operator|.
+name|minSharePreemptionTimeout
+operator|=
+name|minSharePreemptionTimeout
+expr_stmt|;
+block|}
 comment|/**    * Recomputes the shares for all child queues and applications based on this    * queue's current share    */
 DECL|method|recomputeShares ()
 specifier|public
@@ -914,6 +984,82 @@ name|void
 name|recomputeShares
 parameter_list|()
 function_decl|;
+comment|/**    * Update the min/fair share preemption timeouts for this queue.    */
+DECL|method|updatePreemptionTimeouts ()
+specifier|public
+name|void
+name|updatePreemptionTimeouts
+parameter_list|()
+block|{
+comment|// For min share
+name|minSharePreemptionTimeout
+operator|=
+name|scheduler
+operator|.
+name|getAllocationConfiguration
+argument_list|()
+operator|.
+name|getMinSharePreemptionTimeout
+argument_list|(
+name|getName
+argument_list|()
+argument_list|)
+expr_stmt|;
+if|if
+condition|(
+name|minSharePreemptionTimeout
+operator|==
+operator|-
+literal|1
+operator|&&
+name|parent
+operator|!=
+literal|null
+condition|)
+block|{
+name|minSharePreemptionTimeout
+operator|=
+name|parent
+operator|.
+name|getMinSharePreemptionTimeout
+argument_list|()
+expr_stmt|;
+block|}
+comment|// For fair share
+name|fairSharePreemptionTimeout
+operator|=
+name|scheduler
+operator|.
+name|getAllocationConfiguration
+argument_list|()
+operator|.
+name|getFairSharePreemptionTimeout
+argument_list|(
+name|getName
+argument_list|()
+argument_list|)
+expr_stmt|;
+if|if
+condition|(
+name|fairSharePreemptionTimeout
+operator|==
+operator|-
+literal|1
+operator|&&
+name|parent
+operator|!=
+literal|null
+condition|)
+block|{
+name|fairSharePreemptionTimeout
+operator|=
+name|parent
+operator|.
+name|getFairSharePreemptionTimeout
+argument_list|()
+expr_stmt|;
+block|}
+block|}
 comment|/**    * Gets the children of this queue, if any.    */
 DECL|method|getChildQueues ()
 specifier|public

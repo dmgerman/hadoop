@@ -376,7 +376,15 @@ specifier|final
 name|String
 name|Q_GIVEN
 init|=
-literal|"left:0%;background:none;border:1px dashed rgba(0,0,0,0.25)"
+literal|"left:0%;background:none;border:1px solid rgba(0,0,0,1)"
+decl_stmt|;
+DECL|field|Q_INSTANTANEOUS_FS
+specifier|static
+specifier|final
+name|String
+name|Q_INSTANTANEOUS_FS
+init|=
+literal|"left:0%;background:none;border:1px dashed rgba(0,0,0,1)"
 decl_stmt|;
 DECL|field|Q_OVER
 specifier|static
@@ -393,6 +401,22 @@ name|String
 name|Q_UNDER
 init|=
 literal|"background:rgba(50, 205, 50, 0.8)"
+decl_stmt|;
+DECL|field|STEADY_FAIR_SHARE
+specifier|static
+specifier|final
+name|String
+name|STEADY_FAIR_SHARE
+init|=
+literal|"Steady Fair Share"
+decl_stmt|;
+DECL|field|INSTANTANEOUS_FAIR_SHARE
+specifier|static
+specifier|final
+name|String
+name|INSTANTANEOUS_FAIR_SHARE
+init|=
+literal|"Instantaneous Fair Share"
 decl_stmt|;
 annotation|@
 name|RequestScoped
@@ -564,7 +588,26 @@ name|ri
 operator|.
 name|_
 argument_list|(
-literal|"Fair Share:"
+name|STEADY_FAIR_SHARE
+operator|+
+literal|":"
+argument_list|,
+name|qinfo
+operator|.
+name|getSteadyFairShare
+argument_list|()
+operator|.
+name|toString
+argument_list|()
+argument_list|)
+expr_stmt|;
+name|ri
+operator|.
+name|_
+argument_list|(
+name|INSTANTANEOUS_FAIR_SHARE
+operator|+
+literal|":"
 argument_list|,
 name|qinfo
 operator|.
@@ -672,7 +715,15 @@ name|getMaxResourcesFraction
 argument_list|()
 decl_stmt|;
 name|float
-name|fairShare
+name|steadyFairShare
+init|=
+name|info
+operator|.
+name|getSteadyFairShareMemoryFraction
+argument_list|()
+decl_stmt|;
+name|float
+name|instantaneousFairShare
 init|=
 name|info
 operator|.
@@ -720,11 +771,30 @@ name|$title
 argument_list|(
 name|join
 argument_list|(
-literal|"Fair Share:"
+name|join
+argument_list|(
+name|STEADY_FAIR_SHARE
+operator|+
+literal|":"
 argument_list|,
 name|percent
 argument_list|(
-name|fairShare
+name|steadyFairShare
+argument_list|)
+argument_list|)
+argument_list|,
+name|join
+argument_list|(
+literal|" "
+operator|+
+name|INSTANTANEOUS_FAIR_SHARE
+operator|+
+literal|":"
+argument_list|,
+name|percent
+argument_list|(
+name|instantaneousFairShare
+argument_list|)
 argument_list|)
 argument_list|)
 argument_list|)
@@ -742,7 +812,35 @@ literal|";font-size:1px;"
 argument_list|,
 name|width
 argument_list|(
-name|fairShare
+name|steadyFairShare
+operator|/
+name|capacity
+argument_list|)
+argument_list|)
+argument_list|)
+operator|.
+name|_
+argument_list|(
+literal|'.'
+argument_list|)
+operator|.
+name|_
+argument_list|()
+operator|.
+name|span
+argument_list|()
+operator|.
+name|$style
+argument_list|(
+name|join
+argument_list|(
+name|Q_INSTANTANEOUS_FS
+argument_list|,
+literal|";font-size:1px;"
+argument_list|,
+name|width
+argument_list|(
+name|instantaneousFairShare
 operator|/
 name|capacity
 argument_list|)
@@ -775,7 +873,7 @@ literal|";font-size:1px;left:0%;"
 argument_list|,
 name|used
 operator|>
-name|fairShare
+name|instantaneousFairShare
 condition|?
 name|Q_OVER
 else|:
@@ -1126,9 +1224,44 @@ argument_list|(
 name|Q_GIVEN
 argument_list|)
 operator|.
+name|$title
+argument_list|(
+literal|"The steady fair shares consider all queues, "
+operator|+
+literal|"both active (with running applications) and inactive."
+argument_list|)
+operator|.
 name|_
 argument_list|(
-literal|"Fair Share"
+name|STEADY_FAIR_SHARE
+argument_list|)
+operator|.
+name|_
+argument_list|()
+operator|.
+name|span
+argument_list|()
+operator|.
+name|$class
+argument_list|(
+literal|"qlegend ui-corner-all"
+argument_list|)
+operator|.
+name|$style
+argument_list|(
+name|Q_INSTANTANEOUS_FS
+argument_list|)
+operator|.
+name|$title
+argument_list|(
+literal|"The instantaneous fair shares consider only active "
+operator|+
+literal|"queues (with running applications)."
+argument_list|)
+operator|.
+name|_
+argument_list|(
+name|INSTANTANEOUS_FAIR_SHARE
 argument_list|)
 operator|.
 name|_

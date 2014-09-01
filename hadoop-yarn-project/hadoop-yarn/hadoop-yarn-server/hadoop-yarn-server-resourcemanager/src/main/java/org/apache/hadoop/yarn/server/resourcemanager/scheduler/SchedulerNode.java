@@ -505,6 +505,39 @@ operator|.
 name|rmNode
 return|;
 block|}
+comment|/**    * Set total resources on the node.    * @param resource total resources on the node.    */
+DECL|method|setTotalResource (Resource resource)
+specifier|public
+specifier|synchronized
+name|void
+name|setTotalResource
+parameter_list|(
+name|Resource
+name|resource
+parameter_list|)
+block|{
+name|this
+operator|.
+name|totalResourceCapability
+operator|=
+name|resource
+expr_stmt|;
+name|this
+operator|.
+name|availableResource
+operator|=
+name|Resources
+operator|.
+name|subtract
+argument_list|(
+name|totalResourceCapability
+argument_list|,
+name|this
+operator|.
+name|usedResource
+argument_list|)
+expr_stmt|;
+block|}
 comment|/**    * Get the ID of the node which contains both its hostname and port.    *     * @return the ID of the node    */
 DECL|method|getNodeID ()
 specifier|public
@@ -679,6 +712,7 @@ block|}
 comment|/**    * Get total resources on the node.    *     * @return total resources on the node.    */
 DECL|method|getTotalResource ()
 specifier|public
+specifier|synchronized
 name|Resource
 name|getTotalResource
 parameter_list|()
@@ -1069,30 +1103,6 @@ operator|.
 name|reservedContainer
 operator|=
 name|reservedContainer
-expr_stmt|;
-block|}
-comment|/**    * Apply delta resource on node's available resource.    *     * @param deltaResource    *          the delta of resource need to apply to node    */
-specifier|public
-specifier|synchronized
-name|void
-DECL|method|applyDeltaOnAvailableResource (Resource deltaResource)
-name|applyDeltaOnAvailableResource
-parameter_list|(
-name|Resource
-name|deltaResource
-parameter_list|)
-block|{
-comment|// we can only adjust available resource if total resource is changed.
-name|Resources
-operator|.
-name|addTo
-argument_list|(
-name|this
-operator|.
-name|availableResource
-argument_list|,
-name|deltaResource
-argument_list|)
 expr_stmt|;
 block|}
 DECL|method|recoverContainer (RMContainer rmContainer)

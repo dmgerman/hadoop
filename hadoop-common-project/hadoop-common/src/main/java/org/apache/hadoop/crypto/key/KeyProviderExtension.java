@@ -96,6 +96,14 @@ name|E
 name|extensions
 parameter_list|)
 block|{
+name|super
+argument_list|(
+name|keyProvider
+operator|.
+name|getConf
+argument_list|()
+argument_list|)
+expr_stmt|;
 name|this
 operator|.
 name|keyProvider
