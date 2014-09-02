@@ -733,11 +733,19 @@ specifier|private
 name|QJournalProtocol
 name|proxy
 decl_stmt|;
-DECL|field|executor
+comment|/**    * Executes tasks submitted to it serially, on a single thread, in FIFO order    * (generally used for write tasks that should not be reordered).    */
+DECL|field|singleThreadExecutor
 specifier|private
 specifier|final
 name|ListeningExecutorService
-name|executor
+name|singleThreadExecutor
+decl_stmt|;
+comment|/**    * Executes tasks submitted to it in parallel with each other and with those    * submitted to singleThreadExecutor (generally used for read tasks that can    * be safely reordered and interleaved with writes).    */
+DECL|field|parallelExecutor
+specifier|private
+specifier|final
+name|ListeningExecutorService
+name|parallelExecutor
 decl_stmt|;
 DECL|field|ipcSerial
 specifier|private
@@ -971,13 +979,23 @@ operator|.
 name|DFS_QJOURNAL_QUEUE_SIZE_LIMIT_DEFAULT
 argument_list|)
 expr_stmt|;
-name|executor
+name|singleThreadExecutor
 operator|=
 name|MoreExecutors
 operator|.
 name|listeningDecorator
 argument_list|(
-name|createExecutor
+name|createSingleThreadExecutor
+argument_list|()
+argument_list|)
+expr_stmt|;
+name|parallelExecutor
+operator|=
+name|MoreExecutors
+operator|.
+name|listeningDecorator
+argument_list|(
+name|createParallelExecutor
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -1064,7 +1082,12 @@ name|close
 parameter_list|()
 block|{
 comment|// No more tasks may be submitted after this point.
-name|executor
+name|singleThreadExecutor
+operator|.
+name|shutdown
+argument_list|()
+expr_stmt|;
+name|parallelExecutor
 operator|.
 name|shutdown
 argument_list|()
@@ -1237,10 +1260,10 @@ block|}
 comment|/**    * Separated out for easy overriding in tests.    */
 annotation|@
 name|VisibleForTesting
-DECL|method|createExecutor ()
+DECL|method|createSingleThreadExecutor ()
 specifier|protected
 name|ExecutorService
-name|createExecutor
+name|createSingleThreadExecutor
 parameter_list|()
 block|{
 return|return
@@ -1259,7 +1282,50 @@ argument_list|)
 operator|.
 name|setNameFormat
 argument_list|(
-literal|"Logger channel to "
+literal|"Logger channel (from single-thread executor) to "
+operator|+
+name|addr
+argument_list|)
+operator|.
+name|setUncaughtExceptionHandler
+argument_list|(
+name|UncaughtExceptionHandlers
+operator|.
+name|systemExit
+argument_list|()
+argument_list|)
+operator|.
+name|build
+argument_list|()
+argument_list|)
+return|;
+block|}
+comment|/**    * Separated out for easy overriding in tests.    */
+annotation|@
+name|VisibleForTesting
+DECL|method|createParallelExecutor ()
+specifier|protected
+name|ExecutorService
+name|createParallelExecutor
+parameter_list|()
+block|{
+return|return
+name|Executors
+operator|.
+name|newCachedThreadPool
+argument_list|(
+operator|new
+name|ThreadFactoryBuilder
+argument_list|()
+operator|.
+name|setDaemon
+argument_list|(
+literal|true
+argument_list|)
+operator|.
+name|setNameFormat
+argument_list|(
+literal|"Logger channel (from parallel executor) to "
 operator|+
 name|addr
 argument_list|)
@@ -1444,7 +1510,7 @@ name|InterruptedException
 block|{
 try|try
 block|{
-name|executor
+name|singleThreadExecutor
 operator|.
 name|submit
 argument_list|(
@@ -1494,7 +1560,7 @@ name|isFormatted
 parameter_list|()
 block|{
 return|return
-name|executor
+name|singleThreadExecutor
 operator|.
 name|submit
 argument_list|(
@@ -1540,7 +1606,7 @@ name|getJournalState
 parameter_list|()
 block|{
 return|return
-name|executor
+name|singleThreadExecutor
 operator|.
 name|submit
 argument_list|(
@@ -1600,7 +1666,7 @@ name|epoch
 parameter_list|)
 block|{
 return|return
-name|executor
+name|singleThreadExecutor
 operator|.
 name|submit
 argument_list|(
@@ -1714,7 +1780,7 @@ try|try
 block|{
 name|ret
 operator|=
-name|executor
+name|singleThreadExecutor
 operator|.
 name|submit
 argument_list|(
@@ -2203,7 +2269,7 @@ name|nsInfo
 parameter_list|)
 block|{
 return|return
-name|executor
+name|singleThreadExecutor
 operator|.
 name|submit
 argument_list|(
@@ -2261,7 +2327,7 @@ name|layoutVersion
 parameter_list|)
 block|{
 return|return
-name|executor
+name|singleThreadExecutor
 operator|.
 name|submit
 argument_list|(
@@ -2357,7 +2423,7 @@ name|endTxId
 parameter_list|)
 block|{
 return|return
-name|executor
+name|singleThreadExecutor
 operator|.
 name|submit
 argument_list|(
@@ -2417,7 +2483,7 @@ name|minTxIdToKeep
 parameter_list|)
 block|{
 return|return
-name|executor
+name|singleThreadExecutor
 operator|.
 name|submit
 argument_list|(
@@ -2476,7 +2542,7 @@ name|inProgressOk
 parameter_list|)
 block|{
 return|return
-name|executor
+name|parallelExecutor
 operator|.
 name|submit
 argument_list|(
@@ -2550,7 +2616,7 @@ name|segmentTxId
 parameter_list|)
 block|{
 return|return
-name|executor
+name|singleThreadExecutor
 operator|.
 name|submit
 argument_list|(
@@ -2633,7 +2699,7 @@ name|url
 parameter_list|)
 block|{
 return|return
-name|executor
+name|singleThreadExecutor
 operator|.
 name|submit
 argument_list|(
@@ -2686,7 +2752,7 @@ name|doPreUpgrade
 parameter_list|()
 block|{
 return|return
-name|executor
+name|singleThreadExecutor
 operator|.
 name|submit
 argument_list|(
@@ -2738,7 +2804,7 @@ name|sInfo
 parameter_list|)
 block|{
 return|return
-name|executor
+name|singleThreadExecutor
 operator|.
 name|submit
 argument_list|(
@@ -2788,7 +2854,7 @@ name|doFinalize
 parameter_list|()
 block|{
 return|return
-name|executor
+name|singleThreadExecutor
 operator|.
 name|submit
 argument_list|(
@@ -2848,7 +2914,7 @@ name|targetLayoutVersion
 parameter_list|)
 block|{
 return|return
-name|executor
+name|singleThreadExecutor
 operator|.
 name|submit
 argument_list|(
@@ -2900,7 +2966,7 @@ name|doRollback
 parameter_list|()
 block|{
 return|return
-name|executor
+name|singleThreadExecutor
 operator|.
 name|submit
 argument_list|(
@@ -2952,7 +3018,7 @@ name|startTxId
 parameter_list|)
 block|{
 return|return
-name|executor
+name|singleThreadExecutor
 operator|.
 name|submit
 argument_list|(
@@ -3002,7 +3068,7 @@ name|getJournalCTime
 parameter_list|()
 block|{
 return|return
-name|executor
+name|singleThreadExecutor
 operator|.
 name|submit
 argument_list|(

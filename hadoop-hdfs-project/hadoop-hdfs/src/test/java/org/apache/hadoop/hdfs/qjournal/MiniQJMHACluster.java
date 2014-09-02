@@ -386,6 +386,8 @@ name|conf
 operator|=
 name|conf
 expr_stmt|;
+comment|// most QJMHACluster tests don't need DataNodes, so we'll make
+comment|// this the default
 name|this
 operator|.
 name|dfsBuilder
@@ -396,6 +398,11 @@ operator|.
 name|Builder
 argument_list|(
 name|conf
+argument_list|)
+operator|.
+name|numDataNodes
+argument_list|(
+literal|0
 argument_list|)
 expr_stmt|;
 block|}
@@ -637,7 +644,7 @@ argument_list|()
 expr_stmt|;
 name|cluster
 operator|.
-name|shutdown
+name|shutdownNameNodes
 argument_list|()
 expr_stmt|;
 comment|// initialize the journal nodes

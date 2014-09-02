@@ -410,6 +410,14 @@ name|int
 name|maxOpSize
 parameter_list|)
 function_decl|;
+comment|/**    * Returns true if we are currently reading the log from a local disk or an    * even faster data source (e.g. a byte buffer).    */
+DECL|method|isLocalLog ()
+specifier|public
+specifier|abstract
+name|boolean
+name|isLocalLog
+parameter_list|()
+function_decl|;
 block|}
 end_class
 

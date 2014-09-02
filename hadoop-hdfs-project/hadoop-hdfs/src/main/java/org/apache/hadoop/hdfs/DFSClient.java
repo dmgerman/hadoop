@@ -4703,6 +4703,14 @@ argument_list|)
 expr_stmt|;
 if|if
 condition|(
+name|LOG
+operator|.
+name|isDebugEnabled
+argument_list|()
+condition|)
+block|{
+if|if
+condition|(
 name|provider
 operator|==
 literal|null
@@ -4710,7 +4718,7 @@ condition|)
 block|{
 name|LOG
 operator|.
-name|info
+name|debug
 argument_list|(
 literal|"No KeyProvider found."
 argument_list|)
@@ -4720,7 +4728,7 @@ else|else
 block|{
 name|LOG
 operator|.
-name|info
+name|debug
 argument_list|(
 literal|"Found KeyProvider: "
 operator|+
@@ -4730,6 +4738,7 @@ name|toString
 argument_list|()
 argument_list|)
 expr_stmt|;
+block|}
 block|}
 name|int
 name|numResponseToDrop
@@ -14113,6 +14122,43 @@ name|class
 argument_list|)
 throw|;
 block|}
+block|}
+DECL|method|getInotifyEventStream ()
+specifier|public
+name|DFSInotifyEventInputStream
+name|getInotifyEventStream
+parameter_list|()
+throws|throws
+name|IOException
+block|{
+return|return
+operator|new
+name|DFSInotifyEventInputStream
+argument_list|(
+name|namenode
+argument_list|)
+return|;
+block|}
+DECL|method|getInotifyEventStream (long lastReadTxid)
+specifier|public
+name|DFSInotifyEventInputStream
+name|getInotifyEventStream
+parameter_list|(
+name|long
+name|lastReadTxid
+parameter_list|)
+throws|throws
+name|IOException
+block|{
+return|return
+operator|new
+name|DFSInotifyEventInputStream
+argument_list|(
+name|namenode
+argument_list|,
+name|lastReadTxid
+argument_list|)
+return|;
 block|}
 annotation|@
 name|Override
