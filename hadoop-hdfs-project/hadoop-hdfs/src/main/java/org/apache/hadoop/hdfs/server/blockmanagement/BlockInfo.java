@@ -70,22 +70,6 @@ name|hadoop
 operator|.
 name|hdfs
 operator|.
-name|protocol
-operator|.
-name|DatanodeInfo
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|hdfs
-operator|.
 name|server
 operator|.
 name|common
@@ -893,63 +877,6 @@ name|DatanodeStorageInfo
 name|storage
 parameter_list|)
 block|{
-name|boolean
-name|added
-init|=
-literal|true
-decl_stmt|;
-name|int
-name|idx
-init|=
-name|findDatanode
-argument_list|(
-name|storage
-operator|.
-name|getDatanodeDescriptor
-argument_list|()
-argument_list|)
-decl_stmt|;
-if|if
-condition|(
-name|idx
-operator|>=
-literal|0
-condition|)
-block|{
-if|if
-condition|(
-name|getStorageInfo
-argument_list|(
-name|idx
-argument_list|)
-operator|==
-name|storage
-condition|)
-block|{
-comment|// the storage is already there
-return|return
-literal|false
-return|;
-block|}
-else|else
-block|{
-comment|// The block is on the DN but belongs to a different storage.
-comment|// Update our state.
-name|removeStorage
-argument_list|(
-name|getStorageInfo
-argument_list|(
-name|idx
-argument_list|)
-argument_list|)
-expr_stmt|;
-name|added
-operator|=
-literal|false
-expr_stmt|;
-comment|// Just updating storage. Return false.
-block|}
-block|}
 comment|// find the last null node
 name|int
 name|lastNode
@@ -981,7 +908,7 @@ literal|null
 argument_list|)
 expr_stmt|;
 return|return
-name|added
+literal|true
 return|;
 block|}
 comment|/**    * Remove {@link DatanodeStorageInfo} location for a block    */
@@ -1096,7 +1023,7 @@ return|;
 block|}
 comment|/**    * Find specified DatanodeDescriptor.    * @return index or -1 if not found.    */
 DECL|method|findDatanode (DatanodeDescriptor dn)
-name|int
+name|boolean
 name|findDatanode
 parameter_list|(
 name|DatanodeDescriptor
@@ -1138,28 +1065,31 @@ name|cur
 operator|==
 name|dn
 condition|)
+block|{
 return|return
-name|idx
+literal|true
 return|;
+block|}
 if|if
 condition|(
 name|cur
 operator|==
 literal|null
 condition|)
+block|{
 break|break;
 block|}
+block|}
 return|return
-operator|-
-literal|1
+literal|false
 return|;
 block|}
-comment|/**    * Find specified DatanodeStorageInfo.    * @return index or -1 if not found.    */
-DECL|method|findStorageInfo (DatanodeInfo dn)
-name|int
+comment|/**    * Find specified DatanodeStorageInfo.    * @return DatanodeStorageInfo or null if not found.    */
+DECL|method|findStorageInfo (DatanodeDescriptor dn)
+name|DatanodeStorageInfo
 name|findStorageInfo
 parameter_list|(
-name|DatanodeInfo
+name|DatanodeDescriptor
 name|dn
 parameter_list|)
 block|{
@@ -1209,12 +1139,11 @@ operator|==
 name|dn
 condition|)
 return|return
-name|idx
+name|cur
 return|;
 block|}
 return|return
-operator|-
-literal|1
+literal|null
 return|;
 block|}
 comment|/**    * Find specified DatanodeStorageInfo.    * @return index or -1 if not found.    */

@@ -528,6 +528,18 @@ literal|"0.0.0.0:"
 operator|+
 name|DEFAULT_RM_PORT
 decl_stmt|;
+comment|/** The actual bind address for the RM.*/
+DECL|field|RM_BIND_HOST
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|RM_BIND_HOST
+init|=
+name|RM_PREFIX
+operator|+
+literal|"bind-host"
+decl_stmt|;
 comment|/** The number of threads used to handle applications manager requests.*/
 DECL|field|RM_CLIENT_THREAD_COUNT
 specifier|public
@@ -1066,6 +1078,27 @@ init|=
 name|RM_PREFIX
 operator|+
 literal|"webapp.spnego-keytab-file"
+decl_stmt|;
+comment|/**    * Flag to enable override of the default kerberos authentication filter with    * the RM authentication filter to allow authentication using delegation    * tokens(fallback to kerberos if the tokens are missing). Only applicable    * when the http authentication type is kerberos.    */
+DECL|field|RM_WEBAPP_DELEGATION_TOKEN_AUTH_FILTER
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|RM_WEBAPP_DELEGATION_TOKEN_AUTH_FILTER
+init|=
+name|RM_PREFIX
+operator|+
+literal|"webapp.delegation-token-auth-filter.enabled"
+decl_stmt|;
+DECL|field|DEFAULT_RM_WEBAPP_DELEGATION_TOKEN_AUTH_FILTER
+specifier|public
+specifier|static
+specifier|final
+name|boolean
+name|DEFAULT_RM_WEBAPP_DELEGATION_TOKEN_AUTH_FILTER
+init|=
+literal|true
 decl_stmt|;
 comment|/** How long to wait until a container is considered dead.*/
 DECL|field|RM_CONTAINER_ALLOC_EXPIRY_INTERVAL_MS
@@ -2215,6 +2248,18 @@ literal|"0.0.0.0:"
 operator|+
 name|DEFAULT_NM_PORT
 decl_stmt|;
+comment|/** The actual bind address or the NM.*/
+DECL|field|NM_BIND_HOST
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|NM_BIND_HOST
+init|=
+name|NM_PREFIX
+operator|+
+literal|"bind-host"
+decl_stmt|;
 comment|/** who will execute(launch) the containers.*/
 DECL|field|NM_CONTAINER_EXECUTOR
 specifier|public
@@ -2401,7 +2446,7 @@ literal|60
 operator|*
 literal|1000
 decl_stmt|;
-comment|/** Target size of localizer cache in MB, per local directory.*/
+comment|/**    * Target size of localizer cache in MB, per nodemanager. It is a target    * retention size that only includes resources with PUBLIC and PRIVATE    * visibility and excludes resources with APPLICATION visibility    */
 DECL|field|NM_LOCALIZER_CACHE_TARGET_SIZE_MB
 specifier|public
 specifier|static
@@ -3169,6 +3214,27 @@ init|=
 name|NM_PREFIX
 operator|+
 literal|"linux-container-executor.group"
+decl_stmt|;
+comment|/**    * True if linux-container-executor should limit itself to one user    * when running in non-secure mode.    */
+DECL|field|NM_NONSECURE_MODE_LIMIT_USERS
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|NM_NONSECURE_MODE_LIMIT_USERS
+init|=
+name|NM_PREFIX
+operator|+
+literal|"linux-container-executor.nonsecure-mode.limit-users"
+decl_stmt|;
+DECL|field|DEFAULT_NM_NONSECURE_MODE_LIMIT_USERS
+specifier|public
+specifier|static
+specifier|final
+name|boolean
+name|DEFAULT_NM_NONSECURE_MODE_LIMIT_USERS
+init|=
+literal|true
 decl_stmt|;
 comment|/**    * The UNIX user that containers will run as when Linux-container-executor    * is used in nonsecure mode (a use case for this is using cgroups).    */
 DECL|field|NM_NONSECURE_MODE_LOCAL_USER_KEY
@@ -4113,6 +4179,18 @@ literal|"0.0.0.0:"
 operator|+
 name|DEFAULT_TIMELINE_SERVICE_PORT
 decl_stmt|;
+comment|/** The listening endpoint for the timeline service application.*/
+DECL|field|TIMELINE_SERVICE_BIND_HOST
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|TIMELINE_SERVICE_BIND_HOST
+init|=
+name|TIMELINE_SERVICE_PREFIX
+operator|+
+literal|"bind-host"
+decl_stmt|;
 comment|/** The number of threads to handle client RPC API requests. */
 DECL|field|TIMELINE_SERVICE_HANDLER_THREAD_COUNT
 specifier|public
@@ -4938,7 +5016,7 @@ throw|throw
 operator|new
 name|HadoopIllegalArgumentException
 argument_list|(
-literal|"Configuration doesn't specify"
+literal|"Configuration doesn't specify "
 operator|+
 name|YarnConfiguration
 operator|.

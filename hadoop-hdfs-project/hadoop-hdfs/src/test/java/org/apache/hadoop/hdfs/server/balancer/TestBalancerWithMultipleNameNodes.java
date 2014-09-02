@@ -609,7 +609,7 @@ argument_list|()
 decl_stmt|;
 static|static
 block|{
-name|Balancer
+name|Dispatcher
 operator|.
 name|setBlockMoveWaitTime
 argument_list|(
@@ -1236,7 +1236,7 @@ name|Balancer
 operator|.
 name|Parameters
 operator|.
-name|DEFALUT
+name|DEFAULT
 argument_list|,
 name|s
 operator|.
@@ -1247,13 +1247,12 @@ name|Assert
 operator|.
 name|assertEquals
 argument_list|(
-name|Balancer
-operator|.
-name|ReturnStatus
+name|ExitStatus
 operator|.
 name|SUCCESS
 operator|.
-name|code
+name|getExitCode
+argument_list|()
 argument_list|,
 name|r
 argument_list|)
@@ -1563,7 +1562,7 @@ name|Balancer
 operator|.
 name|Parameters
 operator|.
-name|DEFALUT
+name|DEFAULT
 operator|.
 name|threshold
 expr_stmt|;

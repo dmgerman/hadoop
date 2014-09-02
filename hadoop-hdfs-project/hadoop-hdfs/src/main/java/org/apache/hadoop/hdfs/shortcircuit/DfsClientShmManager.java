@@ -1207,15 +1207,15 @@ if|if
 condition|(
 name|shm
 operator|.
-name|isStale
+name|isDisconnected
 argument_list|()
 condition|)
 block|{
 comment|// If the peer closed immediately after the shared memory segment
 comment|// was created, the DomainSocketWatcher callback might already have
-comment|// fired and marked the shm as stale.  In this case, we obviously
-comment|// don't want to add the SharedMemorySegment to our list of valid
-comment|// not-full segments.
+comment|// fired and marked the shm as disconnected.  In this case, we
+comment|// obviously don't want to add the SharedMemorySegment to our list
+comment|// of valid not-full segments.
 if|if
 condition|(
 name|LOG
@@ -1291,7 +1291,7 @@ if|if
 condition|(
 name|shm
 operator|.
-name|isStale
+name|isDisconnected
 argument_list|()
 condition|)
 block|{

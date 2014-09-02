@@ -38,6 +38,40 @@ end_import
 
 begin_import
 import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|security
+operator|.
+name|UserGroupInformation
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|security
+operator|.
+name|token
+operator|.
+name|delegation
+operator|.
+name|web
+operator|.
+name|HttpUserGroupInformation
+import|;
+end_import
+
+begin_import
+import|import
 name|javax
 operator|.
 name|servlet
@@ -118,16 +152,6 @@ name|IOException
 import|;
 end_import
 
-begin_import
-import|import
-name|java
-operator|.
-name|security
-operator|.
-name|Principal
-import|;
-end_import
-
 begin_comment
 comment|/**  * Servlet filter that captures context of the HTTP request to be use in the  * scope of KMS calls on the server side.  */
 end_comment
@@ -150,10 +174,10 @@ specifier|static
 class|class
 name|Data
 block|{
-DECL|field|principal
+DECL|field|ugi
 specifier|private
-name|Principal
-name|principal
+name|UserGroupInformation
+name|ugi
 decl_stmt|;
 DECL|field|method
 specifier|private
@@ -165,12 +189,12 @@ specifier|private
 name|StringBuffer
 name|url
 decl_stmt|;
-DECL|method|Data (Principal principal, String method, StringBuffer url)
+DECL|method|Data (UserGroupInformation ugi, String method, StringBuffer url)
 specifier|private
 name|Data
 parameter_list|(
-name|Principal
-name|principal
+name|UserGroupInformation
+name|ugi
 parameter_list|,
 name|String
 name|method
@@ -181,9 +205,9 @@ parameter_list|)
 block|{
 name|this
 operator|.
-name|principal
+name|ugi
 operator|=
-name|principal
+name|ugi
 expr_stmt|;
 name|this
 operator|.
@@ -215,11 +239,11 @@ name|Data
 argument_list|>
 argument_list|()
 decl_stmt|;
-DECL|method|getPrincipal ()
+DECL|method|getUgi ()
 specifier|public
 specifier|static
-name|Principal
-name|getPrincipal
+name|UserGroupInformation
+name|getUgi
 parameter_list|()
 block|{
 return|return
@@ -228,7 +252,7 @@ operator|.
 name|get
 argument_list|()
 operator|.
-name|principal
+name|ugi
 return|;
 block|}
 DECL|method|getMethod ()
@@ -307,17 +331,12 @@ operator|.
 name|remove
 argument_list|()
 expr_stmt|;
-name|Principal
-name|principal
+name|UserGroupInformation
+name|ugi
 init|=
-operator|(
-operator|(
-name|HttpServletRequest
-operator|)
-name|request
-operator|)
+name|HttpUserGroupInformation
 operator|.
-name|getUserPrincipal
+name|get
 argument_list|()
 decl_stmt|;
 name|String
@@ -386,7 +405,7 @@ argument_list|(
 operator|new
 name|Data
 argument_list|(
-name|principal
+name|ugi
 argument_list|,
 name|method
 argument_list|,

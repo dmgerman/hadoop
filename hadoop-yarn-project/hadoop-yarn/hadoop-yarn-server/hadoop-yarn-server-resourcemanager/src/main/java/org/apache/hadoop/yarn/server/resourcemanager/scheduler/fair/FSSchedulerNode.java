@@ -230,7 +230,7 @@ argument_list|)
 decl_stmt|;
 DECL|field|reservedAppSchedulable
 specifier|private
-name|AppSchedulable
+name|FSAppAttempt
 name|reservedAppSchedulable
 decl_stmt|;
 DECL|method|FSSchedulerNode (RMNode node, boolean usePortForNodeName)
@@ -454,14 +454,9 @@ operator|.
 name|reservedAppSchedulable
 operator|=
 operator|(
-operator|(
-name|FSSchedulerApp
+name|FSAppAttempt
 operator|)
 name|application
-operator|)
-operator|.
-name|getAppSchedulable
-argument_list|()
 expr_stmt|;
 block|}
 annotation|@
@@ -549,7 +544,7 @@ block|}
 DECL|method|getReservedAppSchedulable ()
 specifier|public
 specifier|synchronized
-name|AppSchedulable
+name|FSAppAttempt
 name|getReservedAppSchedulable
 parameter_list|()
 block|{

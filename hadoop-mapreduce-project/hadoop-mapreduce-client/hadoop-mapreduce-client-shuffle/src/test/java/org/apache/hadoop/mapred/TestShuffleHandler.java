@@ -814,13 +814,9 @@ name|yarn
 operator|.
 name|server
 operator|.
-name|nodemanager
-operator|.
-name|recovery
-operator|.
 name|records
 operator|.
-name|NMDBSchemaVersion
+name|Version
 import|;
 end_import
 
@@ -4983,10 +4979,10 @@ argument_list|,
 name|rc
 argument_list|)
 expr_stmt|;
-name|NMDBSchemaVersion
+name|Version
 name|version
 init|=
-name|NMDBSchemaVersion
+name|Version
 operator|.
 name|newInstance
 argument_list|(
@@ -5008,10 +5004,10 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 comment|// emulate shuffle handler restart with compatible version
-name|NMDBSchemaVersion
+name|Version
 name|version11
 init|=
-name|NMDBSchemaVersion
+name|Version
 operator|.
 name|newInstance
 argument_list|(
@@ -5113,10 +5109,10 @@ name|rc
 argument_list|)
 expr_stmt|;
 comment|// emulate shuffle handler restart with incompatible version
-name|NMDBSchemaVersion
+name|Version
 name|version21
 init|=
-name|NMDBSchemaVersion
+name|Version
 operator|.
 name|newInstance
 argument_list|(

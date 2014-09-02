@@ -600,6 +600,18 @@ name|Lists
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|mortbay
+operator|.
+name|jetty
+operator|.
+name|EofException
+import|;
+end_import
+
 begin_comment
 comment|/**  * This class provides fetching a specified file from the NameNode.  */
 end_comment
@@ -2251,6 +2263,25 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
+block|}
+catch|catch
+parameter_list|(
+name|EofException
+name|e
+parameter_list|)
+block|{
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"Connection closed by client"
+argument_list|)
+expr_stmt|;
+name|out
+operator|=
+literal|null
+expr_stmt|;
+comment|// so we don't close in the finally
 block|}
 finally|finally
 block|{

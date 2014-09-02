@@ -661,6 +661,31 @@ parameter_list|)
 throws|throws
 name|YarnException
 function_decl|;
+comment|/**    * Completely drain sourceQueue of applications, by moving all of them to    * destQueue.    *    * @param sourceQueue    * @param destQueue    * @throws YarnException    */
+DECL|method|moveAllApps (String sourceQueue, String destQueue)
+name|void
+name|moveAllApps
+parameter_list|(
+name|String
+name|sourceQueue
+parameter_list|,
+name|String
+name|destQueue
+parameter_list|)
+throws|throws
+name|YarnException
+function_decl|;
+comment|/**    * Terminate all applications in the specified queue.    *    * @param queueName the name of queue to be drained    * @throws YarnException    */
+DECL|method|killAllAppsInQueue (String queueName)
+name|void
+name|killAllAppsInQueue
+parameter_list|(
+name|String
+name|queueName
+parameter_list|)
+throws|throws
+name|YarnException
+function_decl|;
 block|}
 end_interface
 

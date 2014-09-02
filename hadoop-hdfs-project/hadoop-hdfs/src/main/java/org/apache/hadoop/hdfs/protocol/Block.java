@@ -223,6 +223,26 @@ operator|+
 literal|"$"
 argument_list|)
 decl_stmt|;
+DECL|field|metaOrBlockFilePattern
+specifier|public
+specifier|static
+specifier|final
+name|Pattern
+name|metaOrBlockFilePattern
+init|=
+name|Pattern
+operator|.
+name|compile
+argument_list|(
+name|BLOCK_FILE_PREFIX
+operator|+
+literal|"(-??\\d++)(_(\\d++)\\"
+operator|+
+name|METADATA_EXTENSION
+operator|+
+literal|")?$"
+argument_list|)
+decl_stmt|;
 DECL|method|isBlockFilename (File f)
 specifier|public
 specifier|static
@@ -316,6 +336,47 @@ name|matches
 argument_list|()
 return|;
 block|}
+DECL|method|metaToBlockFile (File metaFile)
+specifier|public
+specifier|static
+name|File
+name|metaToBlockFile
+parameter_list|(
+name|File
+name|metaFile
+parameter_list|)
+block|{
+return|return
+operator|new
+name|File
+argument_list|(
+name|metaFile
+operator|.
+name|getParent
+argument_list|()
+argument_list|,
+name|metaFile
+operator|.
+name|getName
+argument_list|()
+operator|.
+name|substring
+argument_list|(
+literal|0
+argument_list|,
+name|metaFile
+operator|.
+name|getName
+argument_list|()
+operator|.
+name|lastIndexOf
+argument_list|(
+literal|'_'
+argument_list|)
+argument_list|)
+argument_list|)
+return|;
+block|}
 comment|/**    * Get generation stamp from the name of the metafile name    */
 DECL|method|getGenerationStamp (String metaFile)
 specifier|public
@@ -360,25 +421,25 @@ operator|.
 name|GRANDFATHER_GENERATION_STAMP
 return|;
 block|}
-comment|/**    * Get the blockId from the name of the metafile name    */
-DECL|method|getBlockId (String metaFile)
+comment|/**    * Get the blockId from the name of the meta or block file    */
+DECL|method|getBlockId (String metaOrBlockFile)
 specifier|public
 specifier|static
 name|long
 name|getBlockId
 parameter_list|(
 name|String
-name|metaFile
+name|metaOrBlockFile
 parameter_list|)
 block|{
 name|Matcher
 name|m
 init|=
-name|metaFilePattern
+name|metaOrBlockFilePattern
 operator|.
 name|matcher
 argument_list|(
-name|metaFile
+name|metaOrBlockFile
 argument_list|)
 decl_stmt|;
 return|return

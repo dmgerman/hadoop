@@ -282,6 +282,20 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|crypto
+operator|.
+name|CipherSuite
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|fs
 operator|.
 name|CanSetDropBehind
@@ -327,6 +341,20 @@ operator|.
 name|fs
 operator|.
 name|FileAlreadyExistsException
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|fs
+operator|.
+name|FileEncryptionInfo
 import|;
 end_import
 
@@ -1321,6 +1349,11 @@ name|boolean
 name|failPacket
 init|=
 literal|false
+decl_stmt|;
+DECL|field|fileEncryptionInfo
+specifier|private
+name|FileEncryptionInfo
+name|fileEncryptionInfo
 decl_stmt|;
 DECL|class|Packet
 specifier|private
@@ -2350,7 +2383,7 @@ argument_list|,
 name|freeInCksum
 argument_list|)
 expr_stmt|;
-name|resetChecksumChunk
+name|setChecksumBufSize
 argument_list|(
 name|freeInCksum
 argument_list|)
@@ -5676,9 +5709,53 @@ name|isHflushed
 argument_list|)
 condition|)
 block|{
+try|try
+block|{
 name|addDatanode2ExistingPipeline
 argument_list|()
 expr_stmt|;
+block|}
+catch|catch
+parameter_list|(
+name|IOException
+name|ioe
+parameter_list|)
+block|{
+if|if
+condition|(
+operator|!
+name|dfsClient
+operator|.
+name|dtpReplaceDatanodeOnFailure
+operator|.
+name|isBestEffort
+argument_list|()
+condition|)
+block|{
+throw|throw
+name|ioe
+throw|;
+block|}
+name|DFSClient
+operator|.
+name|LOG
+operator|.
+name|warn
+argument_list|(
+literal|"Failed to replace datanode."
+operator|+
+literal|" Continue with the remaining datanodes since "
+operator|+
+name|DFSConfigKeys
+operator|.
+name|DFS_CLIENT_WRITE_REPLACE_DATANODE_ON_FAILURE_BEST_EFFORT_KEY
+operator|+
+literal|" is set to true."
+argument_list|,
+name|ioe
+argument_list|)
+expr_stmt|;
+block|}
 block|}
 comment|// get a new generation stamp and an access token
 name|LocatedBlock
@@ -6479,6 +6556,24 @@ argument_list|()
 else|:
 name|stage
 decl_stmt|;
+comment|// We cannot change the block length in 'block' as it counts the number
+comment|// of bytes ack'ed.
+name|ExtendedBlock
+name|blockCopy
+init|=
+operator|new
+name|ExtendedBlock
+argument_list|(
+name|block
+argument_list|)
+decl_stmt|;
+name|blockCopy
+operator|.
+name|setNumBytes
+argument_list|(
+name|blockSize
+argument_list|)
+expr_stmt|;
 comment|// send the request
 operator|new
 name|Sender
@@ -6488,7 +6583,7 @@ argument_list|)
 operator|.
 name|writeBlock
 argument_list|(
-name|block
+name|blockCopy
 argument_list|,
 name|nodeStorageTypes
 index|[
@@ -7518,16 +7613,6 @@ block|{
 name|super
 argument_list|(
 name|checksum
-argument_list|,
-name|checksum
-operator|.
-name|getBytesPerChecksum
-argument_list|()
-argument_list|,
-name|checksum
-operator|.
-name|getChecksumSize
-argument_list|()
 argument_list|)
 expr_stmt|;
 name|this
@@ -7567,6 +7652,15 @@ operator|=
 name|stat
 operator|.
 name|getReplication
+argument_list|()
+expr_stmt|;
+name|this
+operator|.
+name|fileEncryptionInfo
+operator|=
+name|stat
+operator|.
+name|getFileEncryptionInfo
 argument_list|()
 expr_stmt|;
 name|this
@@ -7781,7 +7875,7 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-DECL|method|newStreamForCreate (DFSClient dfsClient, String src, FsPermission masked, EnumSet<CreateFlag> flag, boolean createParent, short replication, long blockSize, Progressable progress, int buffersize, DataChecksum checksum, String[] favoredNodes)
+DECL|method|newStreamForCreate (DFSClient dfsClient, String src, FsPermission masked, EnumSet<CreateFlag> flag, boolean createParent, short replication, long blockSize, Progressable progress, int buffersize, DataChecksum checksum, String[] favoredNodes, List<CipherSuite> cipherSuites)
 specifier|static
 name|DFSOutputStream
 name|newStreamForCreate
@@ -7822,6 +7916,12 @@ parameter_list|,
 name|String
 index|[]
 name|favoredNodes
+parameter_list|,
+name|List
+argument_list|<
+name|CipherSuite
+argument_list|>
+name|cipherSuites
 parameter_list|)
 throws|throws
 name|IOException
@@ -7862,6 +7962,8 @@ argument_list|,
 name|replication
 argument_list|,
 name|blockSize
+argument_list|,
+name|cipherSuites
 argument_list|)
 expr_stmt|;
 block|}
@@ -7911,6 +8013,10 @@ argument_list|,
 name|SnapshotAccessControlException
 operator|.
 name|class
+argument_list|,
+name|UnknownCipherSuiteException
+operator|.
+name|class
 argument_list|)
 throw|;
 block|}
@@ -7943,74 +8049,6 @@ argument_list|()
 expr_stmt|;
 return|return
 name|out
-return|;
-block|}
-DECL|method|newStreamForCreate (DFSClient dfsClient, String src, FsPermission masked, EnumSet<CreateFlag> flag, boolean createParent, short replication, long blockSize, Progressable progress, int buffersize, DataChecksum checksum)
-specifier|static
-name|DFSOutputStream
-name|newStreamForCreate
-parameter_list|(
-name|DFSClient
-name|dfsClient
-parameter_list|,
-name|String
-name|src
-parameter_list|,
-name|FsPermission
-name|masked
-parameter_list|,
-name|EnumSet
-argument_list|<
-name|CreateFlag
-argument_list|>
-name|flag
-parameter_list|,
-name|boolean
-name|createParent
-parameter_list|,
-name|short
-name|replication
-parameter_list|,
-name|long
-name|blockSize
-parameter_list|,
-name|Progressable
-name|progress
-parameter_list|,
-name|int
-name|buffersize
-parameter_list|,
-name|DataChecksum
-name|checksum
-parameter_list|)
-throws|throws
-name|IOException
-block|{
-return|return
-name|newStreamForCreate
-argument_list|(
-name|dfsClient
-argument_list|,
-name|src
-argument_list|,
-name|masked
-argument_list|,
-name|flag
-argument_list|,
-name|createParent
-argument_list|,
-name|replication
-argument_list|,
-name|blockSize
-argument_list|,
-name|progress
-argument_list|,
-name|buffersize
-argument_list|,
-name|checksum
-argument_list|,
-literal|null
-argument_list|)
 return|;
 block|}
 comment|/** Construct a new output stream for append. */
@@ -8116,6 +8154,15 @@ name|DataStreamer
 argument_list|()
 expr_stmt|;
 block|}
+name|this
+operator|.
+name|fileEncryptionInfo
+operator|=
+name|stat
+operator|.
+name|getFileEncryptionInfo
+argument_list|()
+expr_stmt|;
 block|}
 DECL|method|newStreamForAppend (DFSClient dfsClient, String src, int buffersize, Progressable progress, LocatedBlock lastBlock, HdfsFileStatus stat, DataChecksum checksum)
 specifier|static
@@ -8401,7 +8448,7 @@ block|}
 comment|// @see FSOutputSummer#writeChunk()
 annotation|@
 name|Override
-DECL|method|writeChunk (byte[] b, int offset, int len, byte[] checksum)
+DECL|method|writeChunk (byte[] b, int offset, int len, byte[] checksum, int ckoff, int cklen)
 specifier|protected
 specifier|synchronized
 name|void
@@ -8420,6 +8467,12 @@ parameter_list|,
 name|byte
 index|[]
 name|checksum
+parameter_list|,
+name|int
+name|ckoff
+parameter_list|,
+name|int
+name|cklen
 parameter_list|)
 throws|throws
 name|IOException
@@ -8432,13 +8485,6 @@ expr_stmt|;
 name|checkClosed
 argument_list|()
 expr_stmt|;
-name|int
-name|cklen
-init|=
-name|checksum
-operator|.
-name|length
-decl_stmt|;
 name|int
 name|bytesPerChecksum
 init|=
@@ -8472,9 +8518,7 @@ throw|;
 block|}
 if|if
 condition|(
-name|checksum
-operator|.
-name|length
+name|cklen
 operator|!=
 name|this
 operator|.
@@ -8499,9 +8543,7 @@ argument_list|()
 operator|+
 literal|" but found to be "
 operator|+
-name|checksum
-operator|.
-name|length
+name|cklen
 argument_list|)
 throw|;
 block|}
@@ -8581,7 +8623,7 @@ name|writeChecksum
 argument_list|(
 name|checksum
 argument_list|,
-literal|0
+name|ckoff
 argument_list|,
 name|cklen
 argument_list|)
@@ -8684,10 +8726,8 @@ name|appendChunk
 operator|=
 literal|false
 expr_stmt|;
-name|resetChecksumChunk
-argument_list|(
-name|bytesPerChecksum
-argument_list|)
+name|resetChecksumBufSize
+argument_list|()
 expr_stmt|;
 block|}
 if|if
@@ -8913,23 +8953,17 @@ init|(
 name|this
 init|)
 block|{
-comment|/* Record current blockOffset. This might be changed inside          * flushBuffer() where a partial checksum chunk might be flushed.          * After the flush, reset the bytesCurBlock back to its previous value,          * any partial checksum chunk will be sent now and in next packet.          */
-name|long
-name|saveOffset
-init|=
-name|bytesCurBlock
-decl_stmt|;
-name|Packet
-name|oldCurrentPacket
-init|=
-name|currentPacket
-decl_stmt|;
 comment|// flush checksum buffer, but keep checksum buffer intact
+name|int
+name|numKept
+init|=
 name|flushBuffer
 argument_list|(
 literal|true
+argument_list|,
+literal|true
 argument_list|)
-expr_stmt|;
+decl_stmt|;
 comment|// bytesCurBlock potentially incremented if there was buffered data
 if|if
 condition|(
@@ -8947,9 +8981,7 @@ name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"DFSClient flush() : saveOffset "
-operator|+
-name|saveOffset
+literal|"DFSClient flush() :"
 operator|+
 literal|" bytesCurBlock "
 operator|+
@@ -9017,18 +9049,6 @@ block|}
 block|}
 else|else
 block|{
-comment|// We already flushed up to this offset.
-comment|// This means that we haven't written anything since the last flush
-comment|// (or the beginning of the file). Hence, we should not have any
-comment|// packet queued prior to this call, since the last flush set
-comment|// currentPacket = null.
-assert|assert
-name|oldCurrentPacket
-operator|==
-literal|null
-operator|:
-literal|"Empty flush should not occur with a currentPacket"
-assert|;
 if|if
 condition|(
 name|isSync
@@ -9095,8 +9115,8 @@ comment|// Restore state of stream. Record the last flush offset
 comment|// of the last full chunk that was flushed.
 comment|//
 name|bytesCurBlock
-operator|=
-name|saveOffset
+operator|-=
+name|numKept
 expr_stmt|;
 name|toWaitFor
 operator|=
@@ -9978,13 +9998,6 @@ throw|;
 block|}
 try|try
 block|{
-name|Thread
-operator|.
-name|sleep
-argument_list|(
-name|localTimeout
-argument_list|)
-expr_stmt|;
 if|if
 condition|(
 name|retries
@@ -10004,6 +10017,13 @@ throw|;
 block|}
 name|retries
 operator|--
+expr_stmt|;
+name|Thread
+operator|.
+name|sleep
+argument_list|(
+name|localTimeout
+argument_list|)
 expr_stmt|;
 name|localTimeout
 operator|*=
@@ -10129,12 +10149,24 @@ expr_stmt|;
 block|}
 comment|/**    * Returns the size of a file as it was when this stream was opened    */
 DECL|method|getInitialLen ()
+specifier|public
 name|long
 name|getInitialLen
 parameter_list|()
 block|{
 return|return
 name|initialFileSize
+return|;
+block|}
+comment|/**    * @return the FileEncryptionInfo for this stream, or null if not encrypted.    */
+DECL|method|getFileEncryptionInfo ()
+specifier|public
+name|FileEncryptionInfo
+name|getFileEncryptionInfo
+parameter_list|()
+block|{
+return|return
+name|fileEncryptionInfo
 return|;
 block|}
 comment|/**    * Returns the access token currently used by streamer, for testing only    */

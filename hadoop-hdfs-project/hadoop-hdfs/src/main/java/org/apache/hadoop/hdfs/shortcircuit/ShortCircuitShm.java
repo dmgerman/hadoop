@@ -1166,6 +1166,26 @@ name|BYTES_PER_SLOT
 argument_list|)
 return|;
 block|}
+comment|/**      * Clear the slot.      */
+DECL|method|clear ()
+name|void
+name|clear
+parameter_list|()
+block|{
+name|unsafe
+operator|.
+name|putLongVolatile
+argument_list|(
+literal|null
+argument_list|,
+name|this
+operator|.
+name|slotAddress
+argument_list|,
+literal|0
+argument_list|)
+expr_stmt|;
+block|}
 DECL|method|isSet (long flag)
 specifier|private
 name|boolean
@@ -2005,6 +2025,11 @@ argument_list|)
 decl_stmt|;
 name|slot
 operator|.
+name|clear
+argument_list|()
+expr_stmt|;
+name|slot
+operator|.
 name|makeValid
 argument_list|()
 expr_stmt|;
@@ -2216,7 +2241,7 @@ literal|": slot "
 operator|+
 name|slotIdx
 operator|+
-literal|" has not been allocated."
+literal|" is not marked as valid."
 argument_list|)
 throw|;
 block|}

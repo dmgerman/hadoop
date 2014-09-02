@@ -280,6 +280,16 @@ name|java
 operator|.
 name|util
 operator|.
+name|HashSet
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
 name|Iterator
 import|;
 end_import
@@ -291,6 +301,16 @@ operator|.
 name|util
 operator|.
 name|Properties
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
+name|Set
 import|;
 end_import
 
@@ -556,24 +576,54 @@ name|getBlockPoolID
 argument_list|()
 argument_list|)
 expr_stmt|;
-comment|// 1. For each BP data directory analyze the state and
-comment|// check whether all is consistent before transitioning.
-name|this
-operator|.
-name|storageDirs
-operator|=
-operator|new
-name|ArrayList
+name|Set
 argument_list|<
-name|StorageDirectory
+name|String
 argument_list|>
-argument_list|(
-name|dataDirs
+name|existingStorageDirs
+init|=
+operator|new
+name|HashSet
+argument_list|<
+name|String
+argument_list|>
+argument_list|()
+decl_stmt|;
+for|for
+control|(
+name|int
+name|i
+init|=
+literal|0
+init|;
+name|i
+operator|<
+name|getNumStorageDirs
+argument_list|()
+condition|;
+name|i
+operator|++
+control|)
+block|{
+name|existingStorageDirs
 operator|.
-name|size
+name|add
+argument_list|(
+name|getStorageDir
+argument_list|(
+name|i
+argument_list|)
+operator|.
+name|getRoot
+argument_list|()
+operator|.
+name|getAbsolutePath
 argument_list|()
 argument_list|)
 expr_stmt|;
+block|}
+comment|// 1. For each BP data directory analyze the state and
+comment|// check whether all is consistent before transitioning.
 name|ArrayList
 argument_list|<
 name|StorageState
@@ -620,6 +670,37 @@ operator|.
 name|next
 argument_list|()
 decl_stmt|;
+if|if
+condition|(
+name|existingStorageDirs
+operator|.
+name|contains
+argument_list|(
+name|dataDir
+operator|.
+name|getAbsolutePath
+argument_list|()
+argument_list|)
+condition|)
+block|{
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"Storage directory "
+operator|+
+name|dataDir
+operator|+
+literal|" has already been used."
+argument_list|)
+expr_stmt|;
+name|it
+operator|.
+name|remove
+argument_list|()
+expr_stmt|;
+continue|continue;
+block|}
 name|StorageDirectory
 name|sd
 init|=
@@ -789,6 +870,8 @@ control|)
 block|{
 name|doTransition
 argument_list|(
+name|datanode
+argument_list|,
 name|getStorageDir
 argument_list|(
 name|idx
@@ -939,6 +1022,69 @@ argument_list|(
 name|bpSdir
 argument_list|)
 expr_stmt|;
+block|}
+comment|/**    * Remove storage directories.    * @param storageDirs a set of storage directories to be removed.    */
+DECL|method|removeVolumes (Set<File> storageDirs)
+name|void
+name|removeVolumes
+parameter_list|(
+name|Set
+argument_list|<
+name|File
+argument_list|>
+name|storageDirs
+parameter_list|)
+block|{
+for|for
+control|(
+name|Iterator
+argument_list|<
+name|StorageDirectory
+argument_list|>
+name|it
+init|=
+name|this
+operator|.
+name|storageDirs
+operator|.
+name|iterator
+argument_list|()
+init|;
+name|it
+operator|.
+name|hasNext
+argument_list|()
+condition|;
+control|)
+block|{
+name|StorageDirectory
+name|sd
+init|=
+name|it
+operator|.
+name|next
+argument_list|()
+decl_stmt|;
+if|if
+condition|(
+name|storageDirs
+operator|.
+name|contains
+argument_list|(
+name|sd
+operator|.
+name|getRoot
+argument_list|()
+argument_list|)
+condition|)
+block|{
+name|it
+operator|.
+name|remove
+argument_list|()
+expr_stmt|;
+block|}
+block|}
 block|}
 comment|/**    * Set layoutVersion, namespaceID and blockpoolID into block pool storage    * VERSION file    */
 annotation|@
@@ -1151,11 +1297,14 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|/**    * Analyze whether a transition of the BP state is required and    * perform it if necessary.    *<br>    * Rollback if previousLV>= LAYOUT_VERSION&& prevCTime<= namenode.cTime.    * Upgrade if this.LV> LAYOUT_VERSION || this.cTime< namenode.cTime Regular    * startup if this.LV = LAYOUT_VERSION&& this.cTime = namenode.cTime    *     * @param sd storage directory<SD>/current/<bpid>    * @param nsInfo namespace info    * @param startOpt startup option    * @throws IOException    */
-DECL|method|doTransition (StorageDirectory sd, NamespaceInfo nsInfo, StartupOption startOpt)
+DECL|method|doTransition (DataNode datanode, StorageDirectory sd, NamespaceInfo nsInfo, StartupOption startOpt)
 specifier|private
 name|void
 name|doTransition
 parameter_list|(
+name|DataNode
+name|datanode
+parameter_list|,
 name|StorageDirectory
 name|sd
 parameter_list|,
@@ -1175,8 +1324,48 @@ operator|==
 name|StartupOption
 operator|.
 name|ROLLBACK
+operator|&&
+name|sd
+operator|.
+name|getPreviousDir
+argument_list|()
+operator|.
+name|exists
+argument_list|()
 condition|)
 block|{
+comment|// we will already restore everything in the trash by rolling back to
+comment|// the previous directory, so we must delete the trash to ensure
+comment|// that it's not restored by BPOfferService.signalRollingUpgrade()
+if|if
+condition|(
+operator|!
+name|FileUtil
+operator|.
+name|fullyDelete
+argument_list|(
+name|getTrashRootDir
+argument_list|(
+name|sd
+argument_list|)
+argument_list|)
+condition|)
+block|{
+throw|throw
+operator|new
+name|IOException
+argument_list|(
+literal|"Unable to delete trash directory prior to "
+operator|+
+literal|"restoration of previous directory: "
+operator|+
+name|getTrashRootDir
+argument_list|(
+name|sd
+argument_list|)
+argument_list|)
+throw|;
+block|}
 name|doRollback
 argument_list|(
 name|sd
@@ -1362,6 +1551,8 @@ condition|)
 block|{
 name|doUpgrade
 argument_list|(
+name|datanode
+argument_list|,
 name|sd
 argument_list|,
 name|nsInfo
@@ -1407,10 +1598,13 @@ argument_list|)
 throw|;
 block|}
 comment|/**    * Upgrade to any release after 0.22 (0.22 included) release e.g. 0.22 => 0.23    * Upgrade procedure is as follows:    *<ol>    *<li>If<SD>/current/<bpid>/previous exists then delete it</li>    *<li>Rename<SD>/current/<bpid>/current to    *<SD>/current/bpid/current/previous.tmp</li>    *<li>Create new<SD>current/<bpid>/current directory</li>    *<ol>    *<li>Hard links for block files are created from previous.tmp to current</li>    *<li>Save new version file in current directory</li>    *</ol>    *<li>Rename previous.tmp to previous</li></ol>    *     * @param bpSd storage directory<SD>/current/<bpid>    * @param nsInfo Namespace Info from the namenode    * @throws IOException on error    */
-DECL|method|doUpgrade (StorageDirectory bpSd, NamespaceInfo nsInfo)
+DECL|method|doUpgrade (DataNode datanode, StorageDirectory bpSd, NamespaceInfo nsInfo)
 name|void
 name|doUpgrade
 parameter_list|(
+name|DataNode
+name|datanode
+parameter_list|,
 name|StorageDirectory
 name|bpSd
 parameter_list|,
@@ -1467,10 +1661,9 @@ argument_list|()
 operator|+
 literal|".\n   new LV = "
 operator|+
-name|nsInfo
+name|HdfsConstants
 operator|.
-name|getLayoutVersion
-argument_list|()
+name|DATANODE_LAYOUT_VERSION
 operator|+
 literal|"; new CTime = "
 operator|+
@@ -1612,6 +1805,8 @@ expr_stmt|;
 comment|// 3. Create new<SD>/current with block files hardlinks and VERSION
 name|linkAllBlocks
 argument_list|(
+name|datanode
+argument_list|,
 name|bpTmpDir
 argument_list|,
 name|bpCurDir
@@ -2345,11 +2540,14 @@ argument_list|()
 expr_stmt|;
 block|}
 comment|/**    * Hardlink all finalized and RBW blocks in fromDir to toDir    *     * @param fromDir directory where the snapshot is stored    * @param toDir the current data directory    * @throws IOException if error occurs during hardlink    */
-DECL|method|linkAllBlocks (File fromDir, File toDir)
+DECL|method|linkAllBlocks (DataNode datanode, File fromDir, File toDir)
 specifier|private
 name|void
 name|linkAllBlocks
 parameter_list|(
+name|DataNode
+name|datanode
+parameter_list|,
 name|File
 name|fromDir
 parameter_list|,
@@ -2380,6 +2578,8 @@ name|DataStorage
 operator|.
 name|linkBlocks
 argument_list|(
+name|datanode
+argument_list|,
 operator|new
 name|File
 argument_list|(
@@ -2409,6 +2609,8 @@ name|DataStorage
 operator|.
 name|linkBlocks
 argument_list|(
+name|datanode
+argument_list|,
 operator|new
 name|File
 argument_list|(

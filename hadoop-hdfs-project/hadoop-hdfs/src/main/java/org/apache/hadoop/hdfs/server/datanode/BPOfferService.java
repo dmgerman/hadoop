@@ -298,6 +298,34 @@ name|CopyOnWriteArrayList
 import|;
 end_import
 
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
+name|concurrent
+operator|.
+name|locks
+operator|.
+name|Lock
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
+name|concurrent
+operator|.
+name|locks
+operator|.
+name|ReentrantReadWriteLock
+import|;
+end_import
+
 begin_comment
 comment|/**  * One instance per block-pool/namespace on the DN, which handles the  * heartbeats to the active and standby NNs for that namespace.  * This class manages an instance of {@link BPServiceActor} for each NN,  * and delegates calls to both NNs.   * It also maintains the state about which of the NNs is considered active.  */
 end_comment
@@ -372,6 +400,83 @@ init|=
 operator|-
 literal|1
 decl_stmt|;
+DECL|field|mReadWriteLock
+specifier|private
+specifier|final
+name|ReentrantReadWriteLock
+name|mReadWriteLock
+init|=
+operator|new
+name|ReentrantReadWriteLock
+argument_list|()
+decl_stmt|;
+DECL|field|mReadLock
+specifier|private
+specifier|final
+name|Lock
+name|mReadLock
+init|=
+name|mReadWriteLock
+operator|.
+name|readLock
+argument_list|()
+decl_stmt|;
+DECL|field|mWriteLock
+specifier|private
+specifier|final
+name|Lock
+name|mWriteLock
+init|=
+name|mReadWriteLock
+operator|.
+name|writeLock
+argument_list|()
+decl_stmt|;
+comment|// utility methods to acquire and release read lock and write lock
+DECL|method|readLock ()
+name|void
+name|readLock
+parameter_list|()
+block|{
+name|mReadLock
+operator|.
+name|lock
+argument_list|()
+expr_stmt|;
+block|}
+DECL|method|readUnlock ()
+name|void
+name|readUnlock
+parameter_list|()
+block|{
+name|mReadLock
+operator|.
+name|unlock
+argument_list|()
+expr_stmt|;
+block|}
+DECL|method|writeLock ()
+name|void
+name|writeLock
+parameter_list|()
+block|{
+name|mWriteLock
+operator|.
+name|lock
+argument_list|()
+expr_stmt|;
+block|}
+DECL|method|writeUnlock ()
+name|void
+name|writeUnlock
+parameter_list|()
+block|{
+name|mWriteLock
+operator|.
+name|unlock
+argument_list|()
+expr_stmt|;
+block|}
 DECL|method|BPOfferService (List<InetSocketAddress> nnAddrs, DataNode dn)
 name|BPOfferService
 parameter_list|(
@@ -557,10 +662,14 @@ literal|false
 return|;
 block|}
 DECL|method|getBlockPoolId ()
-specifier|synchronized
 name|String
 name|getBlockPoolId
 parameter_list|()
+block|{
+name|readLock
+argument_list|()
+expr_stmt|;
+try|try
 block|{
 if|if
 condition|(
@@ -596,6 +705,13 @@ literal|null
 return|;
 block|}
 block|}
+finally|finally
+block|{
+name|readUnlock
+argument_list|()
+expr_stmt|;
+block|}
+block|}
 DECL|method|hasBlockPoolId ()
 name|boolean
 name|hasBlockPoolId
@@ -609,23 +725,38 @@ literal|null
 return|;
 block|}
 DECL|method|getNamespaceInfo ()
-specifier|synchronized
 name|NamespaceInfo
 name|getNamespaceInfo
 parameter_list|()
+block|{
+name|readLock
+argument_list|()
+expr_stmt|;
+try|try
 block|{
 return|return
 name|bpNSInfo
 return|;
 block|}
+finally|finally
+block|{
+name|readUnlock
+argument_list|()
+expr_stmt|;
+block|}
+block|}
 annotation|@
 name|Override
 DECL|method|toString ()
 specifier|public
-specifier|synchronized
 name|String
 name|toString
 parameter_list|()
+block|{
+name|readLock
+argument_list|()
+expr_stmt|;
+try|try
 block|{
 if|if
 condition|(
@@ -688,6 +819,13 @@ argument_list|()
 operator|+
 literal|")"
 return|;
+block|}
+block|}
+finally|finally
+block|{
+name|readUnlock
+argument_list|()
+expr_stmt|;
 block|}
 block|}
 DECL|method|reportBadBlocks (ExtendedBlock block, String storageUuid, StorageType storageType)
@@ -1042,7 +1180,6 @@ return|;
 block|}
 comment|/**    * Called by the BPServiceActors when they handshake to a NN.    * If this is the first NN connection, this sets the namespace info    * for this BPOfferService. If it's a connection to a new NN, it    * verifies that this namespace matches (eg to prevent a misconfiguration    * where a StandbyNode from a different cluster is specified)    */
 DECL|method|verifyAndSetNamespaceInfo (NamespaceInfo nsInfo)
-specifier|synchronized
 name|void
 name|verifyAndSetNamespaceInfo
 parameter_list|(
@@ -1051,6 +1188,11 @@ name|nsInfo
 parameter_list|)
 throws|throws
 name|IOException
+block|{
+name|writeLock
+argument_list|()
+expr_stmt|;
+try|try
 block|{
 if|if
 condition|(
@@ -1158,9 +1300,15 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
+finally|finally
+block|{
+name|writeUnlock
+argument_list|()
+expr_stmt|;
+block|}
+block|}
 comment|/**    * After one of the BPServiceActors registers successfully with the    * NN, it calls this function to verify that the NN it connected to    * is consistent with other NNs serving the block-pool.    */
 DECL|method|registrationSucceeded (BPServiceActor bpServiceActor, DatanodeRegistration reg)
-specifier|synchronized
 name|void
 name|registrationSucceeded
 parameter_list|(
@@ -1172,6 +1320,11 @@ name|reg
 parameter_list|)
 throws|throws
 name|IOException
+block|{
+name|writeLock
+argument_list|()
+expr_stmt|;
+try|try
 block|{
 if|if
 condition|(
@@ -1265,6 +1418,13 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
+finally|finally
+block|{
+name|writeUnlock
+argument_list|()
+expr_stmt|;
+block|}
+block|}
 comment|/**    * Verify equality of two namespace-related fields, throwing    * an exception if they are unequal.    */
 DECL|method|checkNSEquality ( Object ourID, Object theirID, String idHelpText)
 specifier|private
@@ -1323,10 +1483,14 @@ throw|;
 block|}
 block|}
 DECL|method|createRegistration ()
-specifier|synchronized
 name|DatanodeRegistration
 name|createRegistration
 parameter_list|()
+block|{
+name|writeLock
+argument_list|()
+expr_stmt|;
+try|try
 block|{
 name|Preconditions
 operator|.
@@ -1348,15 +1512,26 @@ name|bpNSInfo
 argument_list|)
 return|;
 block|}
+finally|finally
+block|{
+name|writeUnlock
+argument_list|()
+expr_stmt|;
+block|}
+block|}
 comment|/**    * Called when an actor shuts down. If this is the last actor    * to shut down, shuts down the whole blockpool in the DN.    */
 DECL|method|shutdownActor (BPServiceActor actor)
-specifier|synchronized
 name|void
 name|shutdownActor
 parameter_list|(
 name|BPServiceActor
 name|actor
 parameter_list|)
+block|{
+name|writeLock
+argument_list|()
+expr_stmt|;
+try|try
 block|{
 if|if
 condition|(
@@ -1391,6 +1566,13 @@ name|shutdownBlockPool
 argument_list|(
 name|this
 argument_list|)
+expr_stmt|;
+block|}
+block|}
+finally|finally
+block|{
+name|writeUnlock
+argument_list|()
 expr_stmt|;
 block|}
 block|}
@@ -1509,10 +1691,14 @@ block|}
 block|}
 comment|/**    * @return a proxy to the active NN, or null if the BPOS has not    * acknowledged any NN as active yet.    */
 DECL|method|getActiveNN ()
-specifier|synchronized
 name|DatanodeProtocolClientSideTranslatorPB
 name|getActiveNN
 parameter_list|()
+block|{
+name|readLock
+argument_list|()
+expr_stmt|;
+try|try
 block|{
 if|if
 condition|(
@@ -1532,6 +1718,13 @@ block|{
 return|return
 literal|null
 return|;
+block|}
+block|}
+finally|finally
+block|{
+name|readUnlock
+argument_list|()
+expr_stmt|;
 block|}
 block|}
 annotation|@
@@ -1596,7 +1789,6 @@ block|}
 block|}
 comment|/**    * Update the BPOS's view of which NN is active, based on a heartbeat    * response from one of the actors.    *     * @param actor the actor which received the heartbeat    * @param nnHaState the HA-related heartbeat contents    */
 DECL|method|updateActorStatesFromHeartbeat ( BPServiceActor actor, NNHAStatusHeartbeat nnHaState)
-specifier|synchronized
 name|void
 name|updateActorStatesFromHeartbeat
 parameter_list|(
@@ -1606,6 +1798,11 @@ parameter_list|,
 name|NNHAStatusHeartbeat
 name|nnHaState
 parameter_list|)
+block|{
+name|writeLock
+argument_list|()
+expr_stmt|;
+try|try
 block|{
 specifier|final
 name|long
@@ -1788,6 +1985,13 @@ assert|;
 name|lastActiveClaimTxId
 operator|=
 name|txid
+expr_stmt|;
+block|}
+block|}
+finally|finally
+block|{
+name|writeUnlock
+argument_list|()
 expr_stmt|;
 block|}
 block|}
@@ -1992,13 +2196,13 @@ name|reRegister
 argument_list|()
 expr_stmt|;
 return|return
-literal|true
+literal|false
 return|;
 block|}
-synchronized|synchronized
-init|(
-name|this
-init|)
+name|writeLock
+argument_list|()
+expr_stmt|;
+try|try
 block|{
 if|if
 condition|(
@@ -2027,6 +2231,12 @@ name|actor
 argument_list|)
 return|;
 block|}
+block|}
+finally|finally
+block|{
+name|writeUnlock
+argument_list|()
+expr_stmt|;
 block|}
 block|}
 DECL|method|blockIdArrayToString (long ids[])

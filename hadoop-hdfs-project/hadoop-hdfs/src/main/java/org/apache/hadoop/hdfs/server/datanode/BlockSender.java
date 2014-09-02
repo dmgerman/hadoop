@@ -2806,7 +2806,7 @@ name|startTime
 init|=
 name|ClientTraceLog
 operator|.
-name|isInfoEnabled
+name|isDebugEnabled
 argument_list|()
 condition|?
 name|System
@@ -3043,9 +3043,16 @@ finally|finally
 block|{
 if|if
 condition|(
+operator|(
 name|clientTraceFmt
 operator|!=
 literal|null
+operator|)
+operator|&&
+name|ClientTraceLog
+operator|.
+name|isDebugEnabled
+argument_list|()
 condition|)
 block|{
 specifier|final
@@ -3059,7 +3066,7 @@ argument_list|()
 decl_stmt|;
 name|ClientTraceLog
 operator|.
-name|info
+name|debug
 argument_list|(
 name|String
 operator|.

@@ -196,6 +196,20 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|fs
+operator|.
+name|HardLink
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|io
 operator|.
 name|SecureIOUtils
@@ -229,6 +243,20 @@ operator|.
 name|util
 operator|.
 name|Shell
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|util
+operator|.
+name|PerformanceAdvisory
 import|;
 end_import
 
@@ -885,9 +913,11 @@ block|{
 comment|// This can happen if the user has an older version of libhadoop.so
 comment|// installed - in this case we can continue without native IO
 comment|// after warning
+name|PerformanceAdvisory
+operator|.
 name|LOG
 operator|.
-name|error
+name|debug
 argument_list|(
 literal|"Unable to initialize NativeIO libraries"
 argument_list|,
@@ -2593,9 +2623,11 @@ block|{
 comment|// This can happen if the user has an older version of libhadoop.so
 comment|// installed - in this case we can continue without native IO
 comment|// after warning
+name|PerformanceAdvisory
+operator|.
 name|LOG
 operator|.
-name|error
+name|debug
 argument_list|(
 literal|"Unable to initialize NativeIO libraries"
 argument_list|,
@@ -2659,9 +2691,11 @@ block|{
 comment|// This can happen if the user has an older version of libhadoop.so
 comment|// installed - in this case we can continue without native IO
 comment|// after warning
+name|PerformanceAdvisory
+operator|.
 name|LOG
 operator|.
-name|error
+name|debug
 argument_list|(
 literal|"Unable to initialize NativeIO libraries"
 argument_list|,
@@ -3604,6 +3638,54 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
+DECL|method|link (File src, File dst)
+specifier|public
+specifier|static
+name|void
+name|link
+parameter_list|(
+name|File
+name|src
+parameter_list|,
+name|File
+name|dst
+parameter_list|)
+throws|throws
+name|IOException
+block|{
+if|if
+condition|(
+operator|!
+name|nativeLoaded
+condition|)
+block|{
+name|HardLink
+operator|.
+name|createHardLink
+argument_list|(
+name|src
+argument_list|,
+name|dst
+argument_list|)
+expr_stmt|;
+block|}
+else|else
+block|{
+name|link0
+argument_list|(
+name|src
+operator|.
+name|getAbsolutePath
+argument_list|()
+argument_list|,
+name|dst
+operator|.
+name|getAbsolutePath
+argument_list|()
+argument_list|)
+expr_stmt|;
+block|}
+block|}
 comment|/**    * A version of renameTo that throws a descriptive exception when it fails.    *    * @param src                  The source path    * @param dst                  The destination path    *     * @throws NativeIOException   On failure.    */
 DECL|method|renameTo0 (String src, String dst)
 specifier|private
@@ -3611,6 +3693,22 @@ specifier|static
 specifier|native
 name|void
 name|renameTo0
+parameter_list|(
+name|String
+name|src
+parameter_list|,
+name|String
+name|dst
+parameter_list|)
+throws|throws
+name|NativeIOException
+function_decl|;
+DECL|method|link0 (String src, String dst)
+specifier|private
+specifier|static
+specifier|native
+name|void
+name|link0
 parameter_list|(
 name|String
 name|src

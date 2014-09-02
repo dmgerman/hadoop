@@ -28,6 +28,38 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|classification
+operator|.
+name|InterfaceAudience
+operator|.
+name|Private
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|classification
+operator|.
+name|InterfaceStability
+operator|.
+name|Unstable
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|util
 operator|.
 name|ShutdownHookManager
@@ -1115,6 +1147,10 @@ import|;
 end_import
 
 begin_class
+annotation|@
+name|Private
+annotation|@
+name|Unstable
 DECL|class|SLSCapacityScheduler
 specifier|public
 class|class
@@ -4265,6 +4301,11 @@ name|long
 name|simulateEndTimeMS
 parameter_list|)
 block|{
+if|if
+condition|(
+name|metricsON
+condition|)
+block|{
 try|try
 block|{
 comment|// write job runtime information
@@ -4351,6 +4392,7 @@ operator|.
 name|printStackTrace
 argument_list|()
 expr_stmt|;
+block|}
 block|}
 block|}
 DECL|method|updateQueueMetrics (String queue, int releasedMemory, int releasedVCores)

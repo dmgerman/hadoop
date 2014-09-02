@@ -1860,7 +1860,7 @@ argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * configure the jobconf of the user with the command line options of     * -libjars, -files, -archives.    * @param conf    * @throws IOException    */
+comment|/**    * configure the jobconf of the user with the command line options of     * -libjars, -files, -archives.    * @param job    * @throws IOException    */
 DECL|method|copyAndConfigureFiles (Job job, Path jobSubmitDir)
 specifier|private
 name|void
@@ -2176,6 +2176,31 @@ name|keyGen
 decl_stmt|;
 try|try
 block|{
+name|int
+name|keyLen
+init|=
+name|CryptoUtils
+operator|.
+name|isShuffleEncrypted
+argument_list|(
+name|conf
+argument_list|)
+condition|?
+name|conf
+operator|.
+name|getInt
+argument_list|(
+name|MRJobConfig
+operator|.
+name|MR_ENCRYPTED_INTERMEDIATE_DATA_KEY_SIZE_BITS
+argument_list|,
+name|MRJobConfig
+operator|.
+name|DEFAULT_MR_ENCRYPTED_INTERMEDIATE_DATA_KEY_SIZE_BITS
+argument_list|)
+else|:
+name|SHUFFLE_KEY_LENGTH
+decl_stmt|;
 name|keyGen
 operator|=
 name|KeyGenerator
@@ -2189,7 +2214,7 @@ name|keyGen
 operator|.
 name|init
 argument_list|(
-name|SHUFFLE_KEY_LENGTH
+name|keyLen
 argument_list|)
 expr_stmt|;
 block|}

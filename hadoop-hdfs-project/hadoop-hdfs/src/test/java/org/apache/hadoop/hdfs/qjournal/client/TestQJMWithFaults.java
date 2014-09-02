@@ -2048,10 +2048,10 @@ return|;
 block|}
 annotation|@
 name|Override
-DECL|method|createExecutor ()
+DECL|method|createSingleThreadExecutor ()
 specifier|protected
 name|ExecutorService
-name|createExecutor
+name|createSingleThreadExecutor
 parameter_list|()
 block|{
 return|return

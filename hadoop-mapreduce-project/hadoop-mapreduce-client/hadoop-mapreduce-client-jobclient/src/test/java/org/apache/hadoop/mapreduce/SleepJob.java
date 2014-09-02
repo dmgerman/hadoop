@@ -1359,30 +1359,11 @@ operator|<
 literal|1
 condition|)
 block|{
-name|System
-operator|.
-name|err
-operator|.
-name|println
-argument_list|(
-literal|"SleepJob [-m numMapper] [-r numReducer]"
-operator|+
-literal|" [-mt mapSleepTime (msec)] [-rt reduceSleepTime (msec)]"
-operator|+
-literal|" [-recordt recordSleepTime (msec)]"
-argument_list|)
-expr_stmt|;
-name|ToolRunner
-operator|.
-name|printGenericCommandUsage
-argument_list|(
-name|System
-operator|.
-name|err
-argument_list|)
-expr_stmt|;
 return|return
-literal|2
+name|printUsage
+argument_list|(
+literal|"number of arguments must be> 0"
+argument_list|)
 return|;
 block|}
 name|int
@@ -1459,6 +1440,22 @@ name|i
 index|]
 argument_list|)
 expr_stmt|;
+if|if
+condition|(
+name|numMapper
+operator|<
+literal|0
+condition|)
+block|{
+return|return
+name|printUsage
+argument_list|(
+name|numMapper
+operator|+
+literal|": numMapper must be>= 0"
+argument_list|)
+return|;
+block|}
 block|}
 elseif|else
 if|if
@@ -1487,6 +1484,22 @@ name|i
 index|]
 argument_list|)
 expr_stmt|;
+if|if
+condition|(
+name|numReducer
+operator|<
+literal|0
+condition|)
+block|{
+return|return
+name|printUsage
+argument_list|(
+name|numReducer
+operator|+
+literal|": numReducer must be>= 0"
+argument_list|)
+return|;
+block|}
 block|}
 elseif|else
 if|if
@@ -1515,6 +1528,22 @@ name|i
 index|]
 argument_list|)
 expr_stmt|;
+if|if
+condition|(
+name|mapSleepTime
+operator|<
+literal|0
+condition|)
+block|{
+return|return
+name|printUsage
+argument_list|(
+name|mapSleepTime
+operator|+
+literal|": mapSleepTime must be>= 0"
+argument_list|)
+return|;
+block|}
 block|}
 elseif|else
 if|if
@@ -1543,6 +1572,22 @@ name|i
 index|]
 argument_list|)
 expr_stmt|;
+if|if
+condition|(
+name|reduceSleepTime
+operator|<
+literal|0
+condition|)
+block|{
+return|return
+name|printUsage
+argument_list|(
+name|reduceSleepTime
+operator|+
+literal|": reduceSleepTime must be>= 0"
+argument_list|)
+return|;
+block|}
 block|}
 elseif|else
 if|if
@@ -1571,6 +1616,22 @@ name|i
 index|]
 argument_list|)
 expr_stmt|;
+if|if
+condition|(
+name|recSleepTime
+operator|<
+literal|0
+condition|)
+block|{
+return|return
+name|printUsage
+argument_list|(
+name|recSleepTime
+operator|+
+literal|": recordSleepTime must be>= 0"
+argument_list|)
+return|;
+block|}
 block|}
 block|}
 comment|// sleep for *SleepTime duration in Task by recSleepTime per record
@@ -1641,6 +1702,60 @@ condition|?
 literal|0
 else|:
 literal|1
+return|;
+block|}
+DECL|method|printUsage (String error)
+specifier|private
+name|int
+name|printUsage
+parameter_list|(
+name|String
+name|error
+parameter_list|)
+block|{
+if|if
+condition|(
+name|error
+operator|!=
+literal|null
+condition|)
+block|{
+name|System
+operator|.
+name|err
+operator|.
+name|println
+argument_list|(
+literal|"ERROR: "
+operator|+
+name|error
+argument_list|)
+expr_stmt|;
+block|}
+name|System
+operator|.
+name|err
+operator|.
+name|println
+argument_list|(
+literal|"SleepJob [-m numMapper] [-r numReducer]"
+operator|+
+literal|" [-mt mapSleepTime (msec)] [-rt reduceSleepTime (msec)]"
+operator|+
+literal|" [-recordt recordSleepTime (msec)]"
+argument_list|)
+expr_stmt|;
+name|ToolRunner
+operator|.
+name|printGenericCommandUsage
+argument_list|(
+name|System
+operator|.
+name|err
+argument_list|)
+expr_stmt|;
+return|return
+literal|2
 return|;
 block|}
 block|}

@@ -1334,8 +1334,10 @@ literal|""
 decl_stmt|;
 comment|// App Master configuration
 comment|// No. of containers to run shell command on
+annotation|@
+name|VisibleForTesting
 DECL|field|numTotalContainers
-specifier|private
+specifier|protected
 name|int
 name|numTotalContainers
 init|=
@@ -2879,7 +2881,7 @@ name|LOG
 operator|.
 name|error
 argument_list|(
-literal|"App Attempt start event coud not be pulished for "
+literal|"App Attempt start event could not be published for "
 operator|+
 name|appAttemptID
 operator|.
@@ -3244,14 +3246,16 @@ name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"Received "
+name|appAttemptID
+operator|+
+literal|" received "
 operator|+
 name|previousAMRunningContainers
 operator|.
 name|size
 argument_list|()
 operator|+
-literal|" previous AM's running containers on AM registration."
+literal|" previous attempts' running containers on AM registration."
 argument_list|)
 expr_stmt|;
 name|numAllocatedContainers
@@ -3313,7 +3317,7 @@ name|numRequestedContainers
 operator|.
 name|set
 argument_list|(
-name|numTotalContainersToRequest
+name|numTotalContainers
 argument_list|)
 expr_stmt|;
 try|try
@@ -3343,7 +3347,7 @@ name|LOG
 operator|.
 name|error
 argument_list|(
-literal|"App Attempt start event coud not be pulished for "
+literal|"App Attempt start event could not be published for "
 operator|+
 name|appAttemptID
 operator|.
@@ -3665,7 +3669,9 @@ name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"Got container status for containerID="
+name|appAttemptID
+operator|+
+literal|" got container status for containerID="
 operator|+
 name|containerStatus
 operator|.
@@ -3808,7 +3814,7 @@ name|LOG
 operator|.
 name|error
 argument_list|(
-literal|"Container start event could not be pulished for "
+literal|"Container start event could not be published for "
 operator|+
 name|containerStatus
 operator|.
@@ -4353,7 +4359,7 @@ name|LOG
 operator|.
 name|error
 argument_list|(
-literal|"Container start event coud not be pulished for "
+literal|"Container start event could not be published for "
 operator|+
 name|container
 operator|.
@@ -5216,7 +5222,7 @@ operator|.
 name|getCurrentUser
 argument_list|()
 operator|.
-name|toString
+name|getShortUserName
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -5354,7 +5360,7 @@ operator|.
 name|getCurrentUser
 argument_list|()
 operator|.
-name|toString
+name|getShortUserName
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -5486,7 +5492,7 @@ operator|.
 name|getCurrentUser
 argument_list|()
 operator|.
-name|toString
+name|getShortUserName
 argument_list|()
 argument_list|)
 expr_stmt|;

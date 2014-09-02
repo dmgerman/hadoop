@@ -33,6 +33,9 @@ block|{
 DECL|enumConstant|LAUNCH_CONTAINER
 name|LAUNCH_CONTAINER
 block|,
+DECL|enumConstant|RECOVER_CONTAINER
+name|RECOVER_CONTAINER
+block|,
 DECL|enumConstant|CLEANUP_CONTAINER
 name|CLEANUP_CONTAINER
 block|,

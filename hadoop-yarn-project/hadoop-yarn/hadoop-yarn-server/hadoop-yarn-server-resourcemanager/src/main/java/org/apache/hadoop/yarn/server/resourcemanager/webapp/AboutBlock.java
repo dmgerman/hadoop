@@ -239,6 +239,16 @@ argument_list|)
 operator|.
 name|_
 argument_list|(
+literal|"ResourceManager RMStateStore:"
+argument_list|,
+name|cinfo
+operator|.
+name|getRMStateStore
+argument_list|()
+argument_list|)
+operator|.
+name|_
+argument_list|(
 literal|"ResourceManager started on:"
 argument_list|,
 name|Times

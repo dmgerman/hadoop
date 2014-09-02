@@ -116,6 +116,8 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|mapreduce
+operator|.
 name|SleepJob
 import|;
 end_import

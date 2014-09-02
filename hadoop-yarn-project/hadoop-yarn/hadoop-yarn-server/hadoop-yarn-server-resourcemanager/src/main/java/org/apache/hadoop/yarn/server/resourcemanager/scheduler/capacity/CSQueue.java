@@ -640,6 +640,38 @@ argument_list|>
 name|apps
 parameter_list|)
 function_decl|;
+comment|/**   * Detach a container from this queue   * @param clusterResource the current cluster resource   * @param application application to which the container was assigned   * @param container the container to detach   */
+DECL|method|detachContainer (Resource clusterResource, FiCaSchedulerApp application, RMContainer container)
+specifier|public
+name|void
+name|detachContainer
+parameter_list|(
+name|Resource
+name|clusterResource
+parameter_list|,
+name|FiCaSchedulerApp
+name|application
+parameter_list|,
+name|RMContainer
+name|container
+parameter_list|)
+function_decl|;
+comment|/**    * Attach a container to this queue    * @param clusterResource the current cluster resource    * @param application application to which the container was assigned    * @param container the container to attach    */
+DECL|method|attachContainer (Resource clusterResource, FiCaSchedulerApp application, RMContainer container)
+specifier|public
+name|void
+name|attachContainer
+parameter_list|(
+name|Resource
+name|clusterResource
+parameter_list|,
+name|FiCaSchedulerApp
+name|application
+parameter_list|,
+name|RMContainer
+name|container
+parameter_list|)
+function_decl|;
 block|}
 end_interface
 

@@ -4002,7 +4002,7 @@ argument_list|()
 expr_stmt|;
 name|response
 operator|=
-name|nm2
+name|nm1
 operator|.
 name|nodeHeartbeat
 argument_list|(

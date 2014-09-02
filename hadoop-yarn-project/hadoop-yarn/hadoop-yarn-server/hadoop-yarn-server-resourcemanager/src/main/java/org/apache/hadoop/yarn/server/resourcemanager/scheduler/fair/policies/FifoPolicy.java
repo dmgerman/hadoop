@@ -124,6 +124,28 @@ name|scheduler
 operator|.
 name|fair
 operator|.
+name|FSQueue
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|server
+operator|.
+name|resourcemanager
+operator|.
+name|scheduler
+operator|.
+name|fair
+operator|.
 name|Schedulable
 import|;
 end_import
@@ -430,6 +452,28 @@ name|totalResources
 argument_list|)
 argument_list|)
 expr_stmt|;
+block|}
+annotation|@
+name|Override
+DECL|method|computeSteadyShares (Collection<? extends FSQueue> queues, Resource totalResources)
+specifier|public
+name|void
+name|computeSteadyShares
+parameter_list|(
+name|Collection
+argument_list|<
+name|?
+extends|extends
+name|FSQueue
+argument_list|>
+name|queues
+parameter_list|,
+name|Resource
+name|totalResources
+parameter_list|)
+block|{
+comment|// Nothing needs to do, as leaf queue doesn't have to calculate steady
+comment|// fair shares for applications.
 block|}
 annotation|@
 name|Override

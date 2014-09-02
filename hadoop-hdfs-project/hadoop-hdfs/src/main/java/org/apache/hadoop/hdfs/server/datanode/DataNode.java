@@ -2484,6 +2484,20 @@ begin_import
 import|import
 name|org
 operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|tracing
+operator|.
+name|SpanReceiverHost
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
 name|mortbay
 operator|.
 name|util
@@ -2655,13 +2669,11 @@ specifier|final
 name|String
 name|USAGE
 init|=
-literal|"Usage: java DataNode [-regular | -rollback | -rollingupgrade rollback]\n"
+literal|"Usage: java DataNode [-regular | -rollback]\n"
 operator|+
 literal|"    -regular                 : Normal DataNode startup (default).\n"
 operator|+
-literal|"    -rollback                : Rollback a standard upgrade.\n"
-operator|+
-literal|"    -rollingupgrade rollback : Rollback a rolling upgrade operation.\n"
+literal|"    -rollback                : Rollback a standard or rolling upgrade.\n"
 operator|+
 literal|"  Refer to HDFS documentation for the difference between standard\n"
 operator|+
@@ -2763,6 +2775,12 @@ decl_stmt|;
 DECL|field|dataXceiverServer
 name|Daemon
 name|dataXceiverServer
+init|=
+literal|null
+decl_stmt|;
+DECL|field|xserver
+name|DataXceiverServer
+name|xserver
 init|=
 literal|null
 decl_stmt|;
@@ -3021,6 +3039,11 @@ name|String
 name|dnUserName
 init|=
 literal|null
+decl_stmt|;
+DECL|field|spanReceiverHost
+specifier|private
+name|SpanReceiverHost
+name|spanReceiverHost
 decl_stmt|;
 comment|/**    * Create the DataNode given a configuration, an array of dataDirs,    * and a namenode proxy    */
 DECL|method|DataNode (final Configuration conf, final List<StorageLocation> dataDirs, final SecureResources resources)
@@ -4544,15 +4567,8 @@ argument_list|(
 literal|"dataXceiverServer"
 argument_list|)
 expr_stmt|;
-name|this
-operator|.
-name|dataXceiverServer
+name|xserver
 operator|=
-operator|new
-name|Daemon
-argument_list|(
-name|threadGroup
-argument_list|,
 operator|new
 name|DataXceiverServer
 argument_list|(
@@ -4562,6 +4578,17 @@ name|conf
 argument_list|,
 name|this
 argument_list|)
+expr_stmt|;
+name|this
+operator|.
+name|dataXceiverServer
+operator|=
+operator|new
+name|Daemon
+argument_list|(
+name|threadGroup
+argument_list|,
+name|xserver
 argument_list|)
 expr_stmt|;
 name|this
@@ -5262,6 +5289,17 @@ name|dnConf
 operator|=
 operator|new
 name|DNConf
+argument_list|(
+name|conf
+argument_list|)
+expr_stmt|;
+name|this
+operator|.
+name|spanReceiverHost
+operator|=
+name|SpanReceiverHost
+operator|.
+name|getInstance
 argument_list|(
 name|conf
 argument_list|)
@@ -6202,6 +6240,11 @@ argument_list|(
 name|nsInfo
 argument_list|)
 expr_stmt|;
+comment|// Exclude failed disks before initializing the block pools to avoid startup
+comment|// failures.
+name|checkDiskError
+argument_list|()
+expr_stmt|;
 name|initPeriodicScanners
 argument_list|(
 name|conf
@@ -6465,6 +6508,18 @@ argument_list|,
 name|this
 argument_list|)
 expr_stmt|;
+block|}
+annotation|@
+name|VisibleForTesting
+DECL|method|getXferServer ()
+specifier|public
+name|DataXceiverServer
+name|getXferServer
+parameter_list|()
+block|{
+return|return
+name|xserver
+return|;
 block|}
 annotation|@
 name|VisibleForTesting
@@ -7604,6 +7659,11 @@ operator|!=
 literal|null
 condition|)
 block|{
+name|xserver
+operator|.
+name|sendOOBToPeers
+argument_list|()
+expr_stmt|;
 operator|(
 operator|(
 name|DataXceiverServer
@@ -8058,6 +8118,23 @@ expr_stmt|;
 block|}
 if|if
 condition|(
+name|this
+operator|.
+name|spanReceiverHost
+operator|!=
+literal|null
+condition|)
+block|{
+name|this
+operator|.
+name|spanReceiverHost
+operator|.
+name|closeReceivers
+argument_list|()
+expr_stmt|;
+block|}
+if|if
+condition|(
 name|shortCircuitRegistry
 operator|!=
 literal|null
@@ -8092,11 +8169,11 @@ argument_list|()
 expr_stmt|;
 block|}
 block|}
-comment|/**    *  Check if there is a disk failure and if so, handle the error    */
-DECL|method|checkDiskError ()
+comment|/**    * Check if there is a disk failure asynchronously and if so, handle the error    */
+DECL|method|checkDiskErrorAsync ()
 specifier|public
 name|void
-name|checkDiskError
+name|checkDiskErrorAsync
 parameter_list|()
 block|{
 synchronized|synchronized
@@ -9302,7 +9379,7 @@ name|ie
 argument_list|)
 expr_stmt|;
 comment|// check if there are any disk problem
-name|checkDiskError
+name|checkDiskErrorAsync
 argument_list|()
 expr_stmt|;
 block|}
@@ -13382,6 +13459,37 @@ return|return
 name|shortCircuitRegistry
 return|;
 block|}
+comment|/**    * Check the disk error    */
+DECL|method|checkDiskError ()
+specifier|private
+name|void
+name|checkDiskError
+parameter_list|()
+block|{
+try|try
+block|{
+name|data
+operator|.
+name|checkDataDir
+argument_list|()
+expr_stmt|;
+block|}
+catch|catch
+parameter_list|(
+name|DiskErrorException
+name|de
+parameter_list|)
+block|{
+name|handleDiskError
+argument_list|(
+name|de
+operator|.
+name|getMessage
+argument_list|()
+argument_list|)
+expr_stmt|;
+block|}
+block|}
 comment|/**    * Starts a new thread which will check for disk error check request     * every 5 sec    */
 DECL|method|startCheckDiskErrorThread ()
 specifier|private
@@ -13434,25 +13542,8 @@ condition|)
 block|{
 try|try
 block|{
-name|data
-operator|.
-name|checkDataDir
+name|checkDiskError
 argument_list|()
-expr_stmt|;
-block|}
-catch|catch
-parameter_list|(
-name|DiskErrorException
-name|de
-parameter_list|)
-block|{
-name|handleDiskError
-argument_list|(
-name|de
-operator|.
-name|getMessage
-argument_list|()
-argument_list|)
 expr_stmt|;
 block|}
 catch|catch

@@ -385,6 +385,17 @@ name|Resource
 name|denominator
 parameter_list|)
 function_decl|;
+comment|/**    * Determine if a resource is not suitable for use as a divisor    * (will result in divide by 0, etc)    *    * @param r resource    * @return true if divisor is invalid (should not be used), false else    */
+DECL|method|isInvalidDivisor (Resource r)
+specifier|public
+specifier|abstract
+name|boolean
+name|isInvalidDivisor
+parameter_list|(
+name|Resource
+name|r
+parameter_list|)
+function_decl|;
 comment|/**    * Ratio of resource<code>a</code> to resource<code>b</code>.    *     * @param a resource     * @param b resource    * @return ratio of resource<code>a</code> to resource<code>b</code>    */
 DECL|method|ratio (Resource a, Resource b)
 specifier|public

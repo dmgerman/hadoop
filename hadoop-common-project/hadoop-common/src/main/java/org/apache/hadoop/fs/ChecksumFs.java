@@ -1654,15 +1654,19 @@ name|super
 argument_list|(
 name|DataChecksum
 operator|.
-name|newCrc32
-argument_list|()
+name|newDataChecksum
+argument_list|(
+name|DataChecksum
+operator|.
+name|Type
+operator|.
+name|CRC32
 argument_list|,
 name|fs
 operator|.
 name|getBytesPerSum
 argument_list|()
-argument_list|,
-literal|4
+argument_list|)
 argument_list|)
 expr_stmt|;
 comment|// checksumOpt is passed down to the raw fs. Unless it implements
@@ -1823,7 +1827,7 @@ block|}
 block|}
 annotation|@
 name|Override
-DECL|method|writeChunk (byte[] b, int offset, int len, byte[] checksum)
+DECL|method|writeChunk (byte[] b, int offset, int len, byte[] checksum, int ckoff, int cklen)
 specifier|protected
 name|void
 name|writeChunk
@@ -1841,6 +1845,12 @@ parameter_list|,
 name|byte
 index|[]
 name|checksum
+parameter_list|,
+name|int
+name|ckoff
+parameter_list|,
+name|int
+name|cklen
 parameter_list|)
 throws|throws
 name|IOException
@@ -1861,6 +1871,10 @@ operator|.
 name|write
 argument_list|(
 name|checksum
+argument_list|,
+name|ckoff
+argument_list|,
+name|cklen
 argument_list|)
 expr_stmt|;
 block|}

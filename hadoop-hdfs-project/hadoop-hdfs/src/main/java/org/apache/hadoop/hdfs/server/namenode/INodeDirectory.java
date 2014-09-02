@@ -836,7 +836,6 @@ name|quota
 return|;
 block|}
 DECL|method|searchChildren (byte[] name)
-specifier|private
 name|int
 name|searchChildren
 parameter_list|(
@@ -1655,7 +1654,7 @@ annotation|@
 name|Override
 DECL|method|recordModification (int latestSnapshotId)
 specifier|public
-name|INodeDirectory
+name|void
 name|recordModification
 parameter_list|(
 name|int
@@ -1716,9 +1715,6 @@ literal|null
 argument_list|)
 expr_stmt|;
 block|}
-return|return
-name|this
-return|;
 block|}
 comment|/**    * Save the child to the latest snapshot.    *     * @return the child inode, which may be replaced.    */
 DECL|method|saveChild2Snapshot (final INode child, final int latestSnapshotId, final INode snapshotCopy)

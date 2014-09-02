@@ -711,7 +711,7 @@ specifier|final
 name|boolean
 name|IPC_CLIENT_TCPNODELAY_DEFAULT
 init|=
-literal|false
+literal|true
 decl_stmt|;
 comment|/** See<a href="{@docRoot}/../core-default.html">core-default.xml</a> */
 DECL|field|IPC_SERVER_LISTEN_QUEUE_SIZE_KEY
@@ -791,7 +791,7 @@ specifier|final
 name|boolean
 name|IPC_SERVER_TCPNODELAY_DEFAULT
 init|=
-literal|false
+literal|true
 decl_stmt|;
 comment|/** See<a href="{@docRoot}/../core-default.html">core-default.xml</a> */
 DECL|field|HADOOP_RPC_SOCKET_FACTORY_CLASS_DEFAULT_KEY
@@ -1001,6 +1001,64 @@ name|HADOOP_SECURITY_SASL_PROPS_RESOLVER_CLASS
 init|=
 literal|"hadoop.security.saslproperties.resolver.class"
 decl_stmt|;
+DECL|field|HADOOP_SECURITY_CRYPTO_CODEC_CLASSES_KEY_PREFIX
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|HADOOP_SECURITY_CRYPTO_CODEC_CLASSES_KEY_PREFIX
+init|=
+literal|"hadoop.security.crypto.codec.classes"
+decl_stmt|;
+comment|/** See<a href="{@docRoot}/../core-default.html">core-default.xml</a> */
+DECL|field|HADOOP_SECURITY_CRYPTO_CIPHER_SUITE_KEY
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|HADOOP_SECURITY_CRYPTO_CIPHER_SUITE_KEY
+init|=
+literal|"hadoop.security.crypto.cipher.suite"
+decl_stmt|;
+DECL|field|HADOOP_SECURITY_CRYPTO_CIPHER_SUITE_DEFAULT
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|HADOOP_SECURITY_CRYPTO_CIPHER_SUITE_DEFAULT
+init|=
+literal|"AES/CTR/NoPadding"
+decl_stmt|;
+comment|/** See<a href="{@docRoot}/../core-default.html">core-default.xml</a> */
+DECL|field|HADOOP_SECURITY_CRYPTO_JCE_PROVIDER_KEY
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|HADOOP_SECURITY_CRYPTO_JCE_PROVIDER_KEY
+init|=
+literal|"hadoop.security.crypto.jce.provider"
+decl_stmt|;
+comment|/** See<a href="{@docRoot}/../core-default.html">core-default.xml</a> */
+DECL|field|HADOOP_SECURITY_CRYPTO_BUFFER_SIZE_KEY
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|HADOOP_SECURITY_CRYPTO_BUFFER_SIZE_KEY
+init|=
+literal|"hadoop.security.crypto.buffer.size"
+decl_stmt|;
+comment|/** Defalt value for HADOOP_SECURITY_CRYPTO_BUFFER_SIZE_KEY */
+DECL|field|HADOOP_SECURITY_CRYPTO_BUFFER_SIZE_DEFAULT
+specifier|public
+specifier|static
+specifier|final
+name|int
+name|HADOOP_SECURITY_CRYPTO_BUFFER_SIZE_DEFAULT
+init|=
+literal|8192
+decl_stmt|;
 comment|/** Class to override Impersonation provider */
 DECL|field|HADOOP_SECURITY_IMPERSONATION_PROVIDER_CLASS
 specifier|public
@@ -1091,6 +1149,55 @@ name|int
 name|KMS_CLIENT_ENC_KEY_CACHE_EXPIRY_DEFAULT
 init|=
 literal|43200000
+decl_stmt|;
+comment|/** See<a href="{@docRoot}/../core-default.html">core-default.xml</a> */
+DECL|field|HADOOP_SECURITY_JAVA_SECURE_RANDOM_ALGORITHM_KEY
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|HADOOP_SECURITY_JAVA_SECURE_RANDOM_ALGORITHM_KEY
+init|=
+literal|"hadoop.security.java.secure.random.algorithm"
+decl_stmt|;
+comment|/** Defalt value for HADOOP_SECURITY_JAVA_SECURE_RANDOM_ALGORITHM_KEY */
+DECL|field|HADOOP_SECURITY_JAVA_SECURE_RANDOM_ALGORITHM_DEFAULT
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|HADOOP_SECURITY_JAVA_SECURE_RANDOM_ALGORITHM_DEFAULT
+init|=
+literal|"SHA1PRNG"
+decl_stmt|;
+comment|/** See<a href="{@docRoot}/../core-default.html">core-default.xml</a> */
+DECL|field|HADOOP_SECURITY_SECURE_RANDOM_IMPL_KEY
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|HADOOP_SECURITY_SECURE_RANDOM_IMPL_KEY
+init|=
+literal|"hadoop.security.secure.random.impl"
+decl_stmt|;
+comment|/** See<a href="{@docRoot}/../core-default.html">core-default.xml</a> */
+DECL|field|HADOOP_SECURITY_SECURE_RANDOM_DEVICE_FILE_PATH_KEY
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|HADOOP_SECURITY_SECURE_RANDOM_DEVICE_FILE_PATH_KEY
+init|=
+literal|"hadoop.security.random.device.file.path"
+decl_stmt|;
+DECL|field|HADOOP_SECURITY_SECURE_RANDOM_DEVICE_FILE_PATH_DEFAULT
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|HADOOP_SECURITY_SECURE_RANDOM_DEVICE_FILE_PATH_DEFAULT
+init|=
+literal|"/dev/urandom"
 decl_stmt|;
 block|}
 end_class

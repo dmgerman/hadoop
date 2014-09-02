@@ -1456,7 +1456,7 @@ annotation|@
 name|Override
 DECL|method|recordModification (final int latestSnapshotId)
 specifier|public
-name|INodeFile
+name|void
 name|recordModification
 parameter_list|(
 specifier|final
@@ -1520,9 +1520,6 @@ literal|null
 argument_list|)
 expr_stmt|;
 block|}
-return|return
-name|this
-return|;
 block|}
 DECL|method|getDiffs ()
 specifier|public
@@ -1707,7 +1704,7 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|/** Set the replication factor of this file. */
-DECL|method|setFileReplication (short replication, int latestSnapshotId, final INodeMap inodeMap)
+DECL|method|setFileReplication (short replication, int latestSnapshotId)
 specifier|public
 specifier|final
 name|INodeFile
@@ -1718,32 +1715,22 @@ name|replication
 parameter_list|,
 name|int
 name|latestSnapshotId
-parameter_list|,
-specifier|final
-name|INodeMap
-name|inodeMap
 parameter_list|)
 throws|throws
 name|QuotaExceededException
 block|{
-specifier|final
-name|INodeFile
-name|nodeToUpdate
-init|=
 name|recordModification
 argument_list|(
 name|latestSnapshotId
 argument_list|)
-decl_stmt|;
-name|nodeToUpdate
-operator|.
+expr_stmt|;
 name|setFileReplication
 argument_list|(
 name|replication
 argument_list|)
 expr_stmt|;
 return|return
-name|nodeToUpdate
+name|this
 return|;
 block|}
 comment|/** @return preferred block size (in bytes) of the file. */

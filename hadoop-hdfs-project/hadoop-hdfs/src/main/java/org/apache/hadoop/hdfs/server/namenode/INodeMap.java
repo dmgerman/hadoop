@@ -380,7 +380,7 @@ argument_list|)
 block|{
 annotation|@
 name|Override
-name|INode
+name|void
 name|recordModification
 parameter_list|(
 name|int
@@ -388,11 +388,7 @@ name|latestSnapshotId
 parameter_list|)
 throws|throws
 name|QuotaExceededException
-block|{
-return|return
-literal|null
-return|;
-block|}
+block|{       }
 annotation|@
 name|Override
 specifier|public

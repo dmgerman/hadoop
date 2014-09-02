@@ -312,7 +312,6 @@ else|else
 block|{
 name|exitCode
 operator|=
-operator|-
 literal|1
 expr_stmt|;
 block|}
@@ -331,7 +330,6 @@ name|err
 argument_list|)
 expr_stmt|;
 return|return
-operator|-
 literal|1
 return|;
 block|}
@@ -339,9 +337,9 @@ return|return
 name|exitCode
 return|;
 block|}
-comment|/**    * Parse the command line arguments and initialize the data    *<pre>    * % hadoop alias create alias [--provider providerPath]    * % hadoop alias list [-provider providerPath]    * % hadoop alias delete alias [--provider providerPath] [-i]    *</pre>    * @param args    * @return    * @throws IOException    */
+comment|/**    * Parse the command line arguments and initialize the data    *<pre>    * % hadoop credential create alias [-provider providerPath]    * % hadoop credential list [-provider providerPath]    * % hadoop credential delete alias [-provider providerPath] [-i]    *</pre>    * @param args    * @return 0 if the argument(s) were recognized, 1 otherwise    * @throws IOException    */
 DECL|method|init (String[] args)
-specifier|private
+specifier|protected
 name|int
 name|init
 parameter_list|(
@@ -352,6 +350,32 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
+comment|// no args should print the help message
+if|if
+condition|(
+literal|0
+operator|==
+name|args
+operator|.
+name|length
+condition|)
+block|{
+name|printCredShellUsage
+argument_list|()
+expr_stmt|;
+name|ToolRunner
+operator|.
+name|printGenericCommandUsage
+argument_list|(
+name|System
+operator|.
+name|err
+argument_list|)
+expr_stmt|;
+return|return
+literal|1
+return|;
+block|}
 for|for
 control|(
 name|int
@@ -406,7 +430,7 @@ name|alias
 operator|.
 name|equals
 argument_list|(
-literal|"--help"
+literal|"-help"
 argument_list|)
 condition|)
 block|{
@@ -414,8 +438,7 @@ name|printCredShellUsage
 argument_list|()
 expr_stmt|;
 return|return
-operator|-
-literal|1
+literal|0
 return|;
 block|}
 block|}
@@ -456,7 +479,7 @@ name|alias
 operator|.
 name|equals
 argument_list|(
-literal|"--help"
+literal|"-help"
 argument_list|)
 condition|)
 block|{
@@ -464,8 +487,7 @@ name|printCredShellUsage
 argument_list|()
 expr_stmt|;
 return|return
-operator|-
-literal|1
+literal|0
 return|;
 block|}
 block|}
@@ -500,7 +522,7 @@ index|]
 operator|.
 name|equals
 argument_list|(
-literal|"--provider"
+literal|"-provider"
 argument_list|)
 condition|)
 block|{
@@ -546,7 +568,7 @@ index|]
 operator|.
 name|equals
 argument_list|(
-literal|"--interactive"
+literal|"-interactive"
 argument_list|)
 operator|)
 condition|)
@@ -577,7 +599,7 @@ index|]
 operator|.
 name|equals
 argument_list|(
-literal|"--value"
+literal|"-value"
 argument_list|)
 operator|)
 condition|)
@@ -601,7 +623,7 @@ index|]
 operator|.
 name|equals
 argument_list|(
-literal|"--help"
+literal|"-help"
 argument_list|)
 condition|)
 block|{
@@ -609,8 +631,7 @@ name|printCredShellUsage
 argument_list|()
 expr_stmt|;
 return|return
-operator|-
-literal|1
+literal|0
 return|;
 block|}
 else|else
@@ -628,7 +649,6 @@ name|err
 argument_list|)
 expr_stmt|;
 return|return
-operator|-
 literal|1
 return|;
 block|}
@@ -935,7 +955,7 @@ specifier|final
 name|String
 name|USAGE
 init|=
-literal|"list<alias> [--provider] [--help]"
+literal|"list [-provider] [-help]"
 decl_stmt|;
 DECL|field|DESC
 specifier|public
@@ -948,7 +968,7 @@ literal|"The list subcommand displays the aliases contained within \n"
 operator|+
 literal|"a particular provider - as configured in core-site.xml or "
 operator|+
-literal|"indicated\nthrough the --provider argument."
+literal|"indicated\nthrough the -provider argument."
 decl_stmt|;
 DECL|method|validate ()
 specifier|public
@@ -979,11 +999,11 @@ name|println
 argument_list|(
 literal|"There are no non-transient CredentialProviders configured.\n"
 operator|+
-literal|"Consider using the --provider option to indicate the provider\n"
+literal|"Consider using the -provider option to indicate the provider\n"
 operator|+
 literal|"to use. If you want to list a transient provider then you\n"
 operator|+
-literal|"you MUST use the --provider argument."
+literal|"you MUST use the -provider argument."
 argument_list|)
 expr_stmt|;
 name|rc
@@ -1108,7 +1128,7 @@ specifier|final
 name|String
 name|USAGE
 init|=
-literal|"delete<alias> [--provider] [--help]"
+literal|"delete<alias> [-provider] [-help]"
 decl_stmt|;
 DECL|field|DESC
 specifier|public
@@ -1121,7 +1141,7 @@ literal|"The delete subcommand deletes the credenital\n"
 operator|+
 literal|"specified as the<alias> argument from within the provider\n"
 operator|+
-literal|"indicated through the --provider argument"
+literal|"indicated through the -provider argument"
 decl_stmt|;
 DECL|field|alias
 name|String
@@ -1178,7 +1198,7 @@ literal|"There are no valid CredentialProviders configured.\n"
 operator|+
 literal|"Nothing will be deleted.\n"
 operator|+
-literal|"Consider using the --provider option to indicate the provider"
+literal|"Consider using the -provider option to indicate the provider"
 operator|+
 literal|" to use."
 argument_list|)
@@ -1200,7 +1220,7 @@ name|println
 argument_list|(
 literal|"There is no alias specified. Please provide the"
 operator|+
-literal|"mandatory<alias>. See the usage description with --help."
+literal|"mandatory<alias>. See the usage description with -help."
 argument_list|)
 expr_stmt|;
 return|return
@@ -1391,7 +1411,7 @@ specifier|final
 name|String
 name|USAGE
 init|=
-literal|"create<alias> [--provider] [--help]"
+literal|"create<alias> [-provider] [-help]"
 decl_stmt|;
 DECL|field|DESC
 specifier|public
@@ -1404,7 +1424,7 @@ literal|"The create subcommand creates a new credential for the name specified\n
 operator|+
 literal|"as the<alias> argument within the provider indicated through\n"
 operator|+
-literal|"the --provider argument."
+literal|"the -provider argument."
 decl_stmt|;
 DECL|field|alias
 name|String
@@ -1458,7 +1478,7 @@ literal|"There are no valid CredentialProviders configured."
 operator|+
 literal|"\nCredential will not be created.\n"
 operator|+
-literal|"Consider using the --provider option to indicate the provider"
+literal|"Consider using the -provider option to indicate the provider"
 operator|+
 literal|" to use."
 argument_list|)
@@ -1481,7 +1501,7 @@ name|println
 argument_list|(
 literal|"There is no alias specified. Please provide the"
 operator|+
-literal|"mandatory<alias>. See the usage description with --help."
+literal|"mandatory<alias>. See the usage description with -help."
 argument_list|)
 expr_stmt|;
 name|rc

@@ -66,6 +66,20 @@ name|hadoop
 operator|.
 name|fs
 operator|.
+name|FileEncryptionInfo
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|fs
+operator|.
 name|FileStatus
 import|;
 end_import
@@ -208,6 +222,12 @@ specifier|final
 name|long
 name|fileId
 decl_stmt|;
+DECL|field|feInfo
+specifier|private
+specifier|final
+name|FileEncryptionInfo
+name|feInfo
+decl_stmt|;
 comment|// Used by dir, not including dot and dotdot. Always zero for a regular file.
 DECL|field|childrenNum
 specifier|private
@@ -229,8 +249,8 @@ index|[
 literal|0
 index|]
 decl_stmt|;
-comment|/**    * Constructor    * @param length the number of bytes the file has    * @param isdir if the path is a directory    * @param block_replication the replication factor    * @param blocksize the block size    * @param modification_time modification time    * @param access_time access time    * @param permission permission    * @param owner the owner of the path    * @param group the group of the path    * @param path the local name in java UTF8 encoding the same as that in-memory    * @param fileId the file id    */
-DECL|method|HdfsFileStatus (long length, boolean isdir, int block_replication, long blocksize, long modification_time, long access_time, FsPermission permission, String owner, String group, byte[] symlink, byte[] path, long fileId, int childrenNum)
+comment|/**    * Constructor    * @param length the number of bytes the file has    * @param isdir if the path is a directory    * @param block_replication the replication factor    * @param blocksize the block size    * @param modification_time modification time    * @param access_time access time    * @param permission permission    * @param owner the owner of the path    * @param group the group of the path    * @param path the local name in java UTF8 encoding the same as that in-memory    * @param fileId the file id    * @param feInfo the file's encryption info    */
+DECL|method|HdfsFileStatus (long length, boolean isdir, int block_replication, long blocksize, long modification_time, long access_time, FsPermission permission, String owner, String group, byte[] symlink, byte[] path, long fileId, int childrenNum, FileEncryptionInfo feInfo)
 specifier|public
 name|HdfsFileStatus
 parameter_list|(
@@ -274,6 +294,9 @@ name|fileId
 parameter_list|,
 name|int
 name|childrenNum
+parameter_list|,
+name|FileEncryptionInfo
+name|feInfo
 parameter_list|)
 block|{
 name|this
@@ -399,11 +422,17 @@ name|childrenNum
 operator|=
 name|childrenNum
 expr_stmt|;
+name|this
+operator|.
+name|feInfo
+operator|=
+name|feInfo
+expr_stmt|;
 block|}
 comment|/**    * Get the length of this file, in bytes.    * @return the length of this file, in bytes.    */
 DECL|method|getLen ()
-specifier|final
 specifier|public
+specifier|final
 name|long
 name|getLen
 parameter_list|()
@@ -414,8 +443,8 @@ return|;
 block|}
 comment|/**    * Is this a directory?    * @return true if this is a directory    */
 DECL|method|isDir ()
-specifier|final
 specifier|public
+specifier|final
 name|boolean
 name|isDir
 parameter_list|()
@@ -439,8 +468,8 @@ return|;
 block|}
 comment|/**    * Get the block size of the file.    * @return the number of bytes    */
 DECL|method|getBlockSize ()
-specifier|final
 specifier|public
+specifier|final
 name|long
 name|getBlockSize
 parameter_list|()
@@ -451,8 +480,8 @@ return|;
 block|}
 comment|/**    * Get the replication factor of a file.    * @return the replication factor of a file.    */
 DECL|method|getReplication ()
-specifier|final
 specifier|public
+specifier|final
 name|short
 name|getReplication
 parameter_list|()
@@ -463,8 +492,8 @@ return|;
 block|}
 comment|/**    * Get the modification time of the file.    * @return the modification time of file in milliseconds since January 1, 1970 UTC.    */
 DECL|method|getModificationTime ()
-specifier|final
 specifier|public
+specifier|final
 name|long
 name|getModificationTime
 parameter_list|()
@@ -475,8 +504,8 @@ return|;
 block|}
 comment|/**    * Get the access time of the file.    * @return the access time of file in milliseconds since January 1, 1970 UTC.    */
 DECL|method|getAccessTime ()
-specifier|final
 specifier|public
+specifier|final
 name|long
 name|getAccessTime
 parameter_list|()
@@ -487,8 +516,8 @@ return|;
 block|}
 comment|/**    * Get FsPermission associated with the file.    * @return permssion    */
 DECL|method|getPermission ()
-specifier|final
 specifier|public
+specifier|final
 name|FsPermission
 name|getPermission
 parameter_list|()
@@ -499,8 +528,8 @@ return|;
 block|}
 comment|/**    * Get the owner of the file.    * @return owner of the file    */
 DECL|method|getOwner ()
-specifier|final
 specifier|public
+specifier|final
 name|String
 name|getOwner
 parameter_list|()
@@ -511,8 +540,8 @@ return|;
 block|}
 comment|/**    * Get the group associated with the file.    * @return group for the file.     */
 DECL|method|getGroup ()
-specifier|final
 specifier|public
+specifier|final
 name|String
 name|getGroup
 parameter_list|()
@@ -523,8 +552,8 @@ return|;
 block|}
 comment|/**    * Check if the local name is empty    * @return true if the name is empty    */
 DECL|method|isEmptyLocalName ()
-specifier|final
 specifier|public
+specifier|final
 name|boolean
 name|isEmptyLocalName
 parameter_list|()
@@ -539,8 +568,8 @@ return|;
 block|}
 comment|/**    * Get the string representation of the local name    * @return the local name in string    */
 DECL|method|getLocalName ()
-specifier|final
 specifier|public
+specifier|final
 name|String
 name|getLocalName
 parameter_list|()
@@ -556,8 +585,8 @@ return|;
 block|}
 comment|/**    * Get the Java UTF8 representation of the local name    * @return the local name in java UTF8    */
 DECL|method|getLocalNameInBytes ()
-specifier|final
 specifier|public
+specifier|final
 name|byte
 index|[]
 name|getLocalNameInBytes
@@ -569,8 +598,8 @@ return|;
 block|}
 comment|/**    * Get the string representation of the full path name    * @param parent the parent path    * @return the full path in string    */
 DECL|method|getFullName (final String parent)
-specifier|final
 specifier|public
+specifier|final
 name|String
 name|getFullName
 parameter_list|(
@@ -638,8 +667,8 @@ return|;
 block|}
 comment|/**    * Get the full path    * @param parent the parent path    * @return the full path    */
 DECL|method|getFullPath (final Path parent)
-specifier|final
 specifier|public
+specifier|final
 name|Path
 name|getFullPath
 parameter_list|(
@@ -671,8 +700,8 @@ return|;
 block|}
 comment|/**    * Get the string representation of the symlink.    * @return the symlink as a string.    */
 DECL|method|getSymlink ()
-specifier|final
 specifier|public
+specifier|final
 name|String
 name|getSymlink
 parameter_list|()
@@ -687,8 +716,8 @@ argument_list|)
 return|;
 block|}
 DECL|method|getSymlinkInBytes ()
-specifier|final
 specifier|public
+specifier|final
 name|byte
 index|[]
 name|getSymlinkInBytes
@@ -699,8 +728,8 @@ name|symlink
 return|;
 block|}
 DECL|method|getFileId ()
-specifier|final
 specifier|public
+specifier|final
 name|long
 name|getFileId
 parameter_list|()
@@ -709,9 +738,20 @@ return|return
 name|fileId
 return|;
 block|}
-DECL|method|getChildrenNum ()
-specifier|final
+DECL|method|getFileEncryptionInfo ()
 specifier|public
+specifier|final
+name|FileEncryptionInfo
+name|getFileEncryptionInfo
+parameter_list|()
+block|{
+return|return
+name|feInfo
+return|;
+block|}
+DECL|method|getChildrenNum ()
+specifier|public
+specifier|final
 name|int
 name|getChildrenNum
 parameter_list|()
@@ -721,8 +761,8 @@ name|childrenNum
 return|;
 block|}
 DECL|method|makeQualified (URI defaultUri, Path path)
-specifier|final
 specifier|public
+specifier|final
 name|FileStatus
 name|makeQualified
 parameter_list|(

@@ -136,6 +136,17 @@ literal|"0.0.0.0:"
 operator|+
 name|DEFAULT_MR_HISTORY_PORT
 decl_stmt|;
+DECL|field|MR_HISTORY_BIND_HOST
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|MR_HISTORY_BIND_HOST
+init|=
+name|MR_HISTORY_PREFIX
+operator|+
+literal|"bind-host"
+decl_stmt|;
 comment|/** The address of the History server admin interface. */
 DECL|field|JHS_ADMIN_ADDRESS
 specifier|public

@@ -5843,6 +5843,18 @@ operator|=
 literal|false
 expr_stmt|;
 block|}
+annotation|@
+name|Override
+DECL|method|getNMHostname ()
+specifier|public
+name|String
+name|getNMHostname
+parameter_list|()
+block|{
+return|return
+name|nmHost
+return|;
+block|}
 block|}
 annotation|@
 name|SuppressWarnings

@@ -170,7 +170,7 @@ name|yarn
 operator|.
 name|proto
 operator|.
-name|YarnServerResourceManagerServiceProtos
+name|YarnServerResourceManagerRecoveryProtos
 operator|.
 name|ApplicationAttemptStateDataProto
 import|;

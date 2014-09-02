@@ -2607,9 +2607,10 @@ name|long
 operator|)
 name|DATANODE_COUNT
 operator|*
-name|MiniDFSCluster
+name|cluster
 operator|.
-name|DIRS_PER_DATANODE
+name|getStoragesPerDatanode
+argument_list|()
 argument_list|,
 name|rb
 argument_list|)

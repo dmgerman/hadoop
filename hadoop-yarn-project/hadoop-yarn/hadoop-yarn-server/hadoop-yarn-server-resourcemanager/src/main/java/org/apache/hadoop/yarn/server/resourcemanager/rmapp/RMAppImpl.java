@@ -1601,6 +1601,25 @@ operator|.
 name|FAILED
 argument_list|)
 argument_list|)
+operator|.
+name|addTransition
+argument_list|(
+name|RMAppState
+operator|.
+name|NEW_SAVING
+argument_list|,
+name|RMAppState
+operator|.
+name|NEW_SAVING
+argument_list|,
+name|RMAppEventType
+operator|.
+name|MOVE
+argument_list|,
+operator|new
+name|RMAppMoveTransition
+argument_list|()
+argument_list|)
 comment|// Transitions from SUBMITTED state
 operator|.
 name|addTransition
@@ -2125,6 +2144,10 @@ argument_list|,
 name|RMAppEventType
 operator|.
 name|APP_NEW_SAVED
+argument_list|,
+name|RMAppEventType
+operator|.
+name|MOVE
 argument_list|)
 argument_list|)
 comment|// Transitions from FINISHING state
@@ -2184,11 +2207,15 @@ name|RMAppEventType
 operator|.
 name|NODE_UPDATE
 argument_list|,
-comment|// ignore Kill as we have already saved the final Finished state in
-comment|// state store.
+comment|// ignore Kill/Move as we have already saved the final Finished state
+comment|// in state store.
 name|RMAppEventType
 operator|.
 name|KILL
+argument_list|,
+name|RMAppEventType
+operator|.
+name|MOVE
 argument_list|)
 argument_list|)
 comment|// Transitions from KILLING state
@@ -2280,6 +2307,10 @@ argument_list|,
 name|RMAppEventType
 operator|.
 name|KILL
+argument_list|,
+name|RMAppEventType
+operator|.
+name|MOVE
 argument_list|)
 argument_list|)
 comment|// Transitions from FINISHED state
@@ -2333,6 +2364,10 @@ argument_list|,
 name|RMAppEventType
 operator|.
 name|KILL
+argument_list|,
+name|RMAppEventType
+operator|.
+name|MOVE
 argument_list|)
 argument_list|)
 comment|// Transitions from FAILED state
@@ -2378,6 +2413,10 @@ argument_list|,
 name|RMAppEventType
 operator|.
 name|NODE_UPDATE
+argument_list|,
+name|RMAppEventType
+operator|.
+name|MOVE
 argument_list|)
 argument_list|)
 comment|// Transitions from KILLED state
@@ -2439,6 +2478,10 @@ argument_list|,
 name|RMAppEventType
 operator|.
 name|NODE_UPDATE
+argument_list|,
+name|RMAppEventType
+operator|.
+name|MOVE
 argument_list|)
 argument_list|)
 operator|.
@@ -4761,69 +4804,6 @@ name|RMAppEvent
 name|event
 parameter_list|)
 block|{
-if|if
-condition|(
-name|event
-operator|instanceof
-name|RMAppNewSavedEvent
-condition|)
-block|{
-name|RMAppNewSavedEvent
-name|storeEvent
-init|=
-operator|(
-name|RMAppNewSavedEvent
-operator|)
-name|event
-decl_stmt|;
-comment|// For HA this exception needs to be handled by giving up
-comment|// master status if we got fenced
-if|if
-condition|(
-operator|(
-operator|(
-name|RMAppNewSavedEvent
-operator|)
-name|event
-operator|)
-operator|.
-name|getStoredException
-argument_list|()
-operator|!=
-literal|null
-condition|)
-block|{
-name|LOG
-operator|.
-name|error
-argument_list|(
-literal|"Failed to store application: "
-operator|+
-name|storeEvent
-operator|.
-name|getApplicationId
-argument_list|()
-argument_list|,
-name|storeEvent
-operator|.
-name|getStoredException
-argument_list|()
-argument_list|)
-expr_stmt|;
-name|ExitUtil
-operator|.
-name|terminate
-argument_list|(
-literal|1
-argument_list|,
-name|storeEvent
-operator|.
-name|getStoredException
-argument_list|()
-argument_list|)
-expr_stmt|;
-block|}
-block|}
 name|app
 operator|.
 name|handler
@@ -4915,54 +4895,6 @@ name|RMAppEvent
 name|event
 parameter_list|)
 block|{
-name|RMAppUpdateSavedEvent
-name|storeEvent
-init|=
-operator|(
-name|RMAppUpdateSavedEvent
-operator|)
-name|event
-decl_stmt|;
-if|if
-condition|(
-name|storeEvent
-operator|.
-name|getUpdatedException
-argument_list|()
-operator|!=
-literal|null
-condition|)
-block|{
-name|LOG
-operator|.
-name|error
-argument_list|(
-literal|"Failed to update the final state of application"
-operator|+
-name|storeEvent
-operator|.
-name|getApplicationId
-argument_list|()
-argument_list|,
-name|storeEvent
-operator|.
-name|getUpdatedException
-argument_list|()
-argument_list|)
-expr_stmt|;
-name|ExitUtil
-operator|.
-name|terminate
-argument_list|(
-literal|1
-argument_list|,
-name|storeEvent
-operator|.
-name|getUpdatedException
-argument_list|()
-argument_list|)
-expr_stmt|;
-block|}
 if|if
 condition|(
 name|app
@@ -6525,6 +6457,21 @@ operator|.
 name|getRecoveredFinalState
 argument_list|()
 decl_stmt|;
+if|if
+condition|(
+name|appState
+operator|==
+literal|null
+condition|)
+block|{
+name|appState
+operator|=
+name|rmApp
+operator|.
+name|getState
+argument_list|()
+expr_stmt|;
+block|}
 return|return
 name|appState
 operator|==

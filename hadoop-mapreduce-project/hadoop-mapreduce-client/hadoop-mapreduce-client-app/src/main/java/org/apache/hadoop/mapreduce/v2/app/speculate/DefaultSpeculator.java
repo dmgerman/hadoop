@@ -995,7 +995,7 @@ name|LOG
 operator|.
 name|error
 argument_list|(
-literal|"Can't make a speculation runtime extimator"
+literal|"Can't make a speculation runtime estimator"
 argument_list|,
 name|ex
 argument_list|)
@@ -1018,7 +1018,7 @@ name|LOG
 operator|.
 name|error
 argument_list|(
-literal|"Can't make a speculation runtime extimator"
+literal|"Can't make a speculation runtime estimator"
 argument_list|,
 name|ex
 argument_list|)
@@ -1041,7 +1041,7 @@ name|LOG
 operator|.
 name|error
 argument_list|(
-literal|"Can't make a speculation runtime extimator"
+literal|"Can't make a speculation runtime estimator"
 argument_list|,
 name|ex
 argument_list|)
@@ -1064,7 +1064,7 @@ name|LOG
 operator|.
 name|error
 argument_list|(
-literal|"Can't make a speculation runtime extimator"
+literal|"Can't make a speculation runtime estimator"
 argument_list|,
 name|ex
 argument_list|)

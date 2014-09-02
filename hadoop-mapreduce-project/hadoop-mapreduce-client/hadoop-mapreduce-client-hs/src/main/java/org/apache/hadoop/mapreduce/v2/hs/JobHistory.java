@@ -1833,6 +1833,19 @@ return|return
 literal|true
 return|;
 block|}
+annotation|@
+name|Override
+DECL|method|getNMHostname ()
+specifier|public
+name|String
+name|getNMHostname
+parameter_list|()
+block|{
+comment|// bogus - Not Required
+return|return
+literal|null
+return|;
+block|}
 block|}
 end_class
 

@@ -959,6 +959,18 @@ argument_list|(
 name|attemptId
 argument_list|)
 decl_stmt|;
+if|if
+condition|(
+name|fairShare
+operator|==
+name|FairSchedulerInfo
+operator|.
+name|INVALID_FAIR_SHARE
+condition|)
+block|{
+comment|// FairScheduler#applications don't have the entry. Skip it.
+continue|continue;
+block|}
 comment|//AppID numerical value parsed by parseHadoopID in yarn.dt.plugins.js
 name|appsTableData
 operator|.

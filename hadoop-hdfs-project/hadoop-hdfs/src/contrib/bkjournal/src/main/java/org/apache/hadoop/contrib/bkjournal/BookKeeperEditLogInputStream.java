@@ -732,6 +732,18 @@ name|maxOpSize
 argument_list|)
 expr_stmt|;
 block|}
+annotation|@
+name|Override
+DECL|method|isLocalLog ()
+specifier|public
+name|boolean
+name|isLocalLog
+parameter_list|()
+block|{
+return|return
+literal|false
+return|;
+block|}
 comment|/**    * Input stream implementation which can be used by     * FSEditLogOp.Reader    */
 DECL|class|LedgerInputStream
 specifier|private

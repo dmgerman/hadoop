@@ -1500,7 +1500,7 @@ argument_list|)
 operator|.
 name|thenReturn
 argument_list|(
-literal|"Processed 128/128 records"
+literal|"Processed 128/128 records<p> \n"
 argument_list|)
 expr_stmt|;
 name|when
@@ -1683,6 +1683,32 @@ operator|.
 name|contains
 argument_list|(
 literal|"SUCCEEDED"
+argument_list|)
+argument_list|)
+expr_stmt|;
+name|assertFalse
+argument_list|(
+name|data
+operator|.
+name|toString
+argument_list|()
+operator|.
+name|contains
+argument_list|(
+literal|"Processed 128/128 records<p> \n"
+argument_list|)
+argument_list|)
+expr_stmt|;
+name|assertTrue
+argument_list|(
+name|data
+operator|.
+name|toString
+argument_list|()
+operator|.
+name|contains
+argument_list|(
+literal|"Processed 128\\/128 records&lt;p&gt; \\n"
 argument_list|)
 argument_list|)
 expr_stmt|;

@@ -674,6 +674,14 @@ parameter_list|()
 throws|throws
 name|Exception
 block|{
+comment|/**      * When error occurs in serviceInit(), serviceStop() can be called.      * We need null check for the case.      */
+if|if
+condition|(
+name|elector
+operator|!=
+literal|null
+condition|)
+block|{
 name|elector
 operator|.
 name|quitElection
@@ -686,6 +694,7 @@ operator|.
 name|terminateConnection
 argument_list|()
 expr_stmt|;
+block|}
 name|super
 operator|.
 name|serviceStop

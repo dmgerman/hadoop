@@ -4353,7 +4353,7 @@ argument_list|)
 block|{
 specifier|protected
 name|ExecutorService
-name|createExecutor
+name|createSingleThreadExecutor
 parameter_list|()
 block|{
 comment|// Don't parallelize calls to the quorum in the tests.

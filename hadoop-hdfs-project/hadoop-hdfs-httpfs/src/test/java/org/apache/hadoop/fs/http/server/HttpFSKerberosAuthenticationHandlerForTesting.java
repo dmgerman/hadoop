@@ -22,6 +22,26 @@ end_package
 
 begin_import
 import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|security
+operator|.
+name|token
+operator|.
+name|delegation
+operator|.
+name|web
+operator|.
+name|KerberosDelegationTokenAuthenticationHandler
+import|;
+end_import
+
+begin_import
+import|import
 name|javax
 operator|.
 name|servlet
@@ -46,7 +66,7 @@ specifier|public
 class|class
 name|HttpFSKerberosAuthenticationHandlerForTesting
 extends|extends
-name|HttpFSKerberosAuthenticationHandler
+name|KerberosDelegationTokenAuthenticationHandler
 block|{
 annotation|@
 name|Override
@@ -62,6 +82,20 @@ throws|throws
 name|ServletException
 block|{
 comment|//NOP overwrite to avoid Kerberos initialization
+name|config
+operator|.
+name|setProperty
+argument_list|(
+name|TOKEN_KIND
+argument_list|,
+literal|"t"
+argument_list|)
+expr_stmt|;
+name|initTokenManager
+argument_list|(
+name|config
+argument_list|)
+expr_stmt|;
 block|}
 annotation|@
 name|Override

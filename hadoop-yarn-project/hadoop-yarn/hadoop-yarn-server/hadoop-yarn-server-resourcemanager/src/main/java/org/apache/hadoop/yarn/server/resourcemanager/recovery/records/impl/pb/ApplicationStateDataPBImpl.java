@@ -80,7 +80,7 @@ name|yarn
 operator|.
 name|proto
 operator|.
-name|YarnServerResourceManagerServiceProtos
+name|YarnServerResourceManagerRecoveryProtos
 operator|.
 name|ApplicationStateDataProto
 import|;
@@ -98,7 +98,7 @@ name|yarn
 operator|.
 name|proto
 operator|.
-name|YarnServerResourceManagerServiceProtos
+name|YarnServerResourceManagerRecoveryProtos
 operator|.
 name|ApplicationStateDataProtoOrBuilder
 import|;
@@ -116,7 +116,7 @@ name|yarn
 operator|.
 name|proto
 operator|.
-name|YarnServerResourceManagerServiceProtos
+name|YarnServerResourceManagerRecoveryProtos
 operator|.
 name|RMAppStateProto
 import|;

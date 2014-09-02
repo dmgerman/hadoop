@@ -611,7 +611,7 @@ name|out
 operator|.
 name|println
 argument_list|(
-literal|"Subversion "
+literal|"Source code repository "
 operator|+
 name|getUrl
 argument_list|()

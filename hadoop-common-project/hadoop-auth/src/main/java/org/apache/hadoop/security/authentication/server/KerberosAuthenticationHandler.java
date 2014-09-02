@@ -809,6 +809,11 @@ name|TYPE
 operator|+
 literal|".name.rules"
 decl_stmt|;
+DECL|field|type
+specifier|private
+name|String
+name|type
+decl_stmt|;
 DECL|field|keytab
 specifier|private
 name|String
@@ -843,6 +848,34 @@ name|LoginContext
 argument_list|>
 argument_list|()
 decl_stmt|;
+comment|/**    * Creates a Kerberos SPNEGO authentication handler with the default    * auth-token type,<code>kerberos</code>.    */
+DECL|method|KerberosAuthenticationHandler ()
+specifier|public
+name|KerberosAuthenticationHandler
+parameter_list|()
+block|{
+name|this
+argument_list|(
+name|TYPE
+argument_list|)
+expr_stmt|;
+block|}
+comment|/**    * Creates a Kerberos SPNEGO authentication handler with a custom auth-token    * type.    *    * @param type auth-token type.    */
+DECL|method|KerberosAuthenticationHandler (String type)
+specifier|public
+name|KerberosAuthenticationHandler
+parameter_list|(
+name|String
+name|type
+parameter_list|)
+block|{
+name|this
+operator|.
+name|type
+operator|=
+name|type
+expr_stmt|;
+block|}
 comment|/**    * Initializes the authentication handler instance.    *<p/>    * It creates a Kerberos context using the principal and keytab specified in the configuration.    *<p/>    * This method is invoked by the {@link AuthenticationFilter#init} method.    *    * @param config configuration properties to initialize the handler.    *    * @throws ServletException thrown if the handler could not be initialized.    */
 annotation|@
 name|Override
@@ -1266,7 +1299,7 @@ name|getType
 parameter_list|()
 block|{
 return|return
-name|TYPE
+name|type
 return|;
 block|}
 comment|/**    * Returns the Kerberos principals used by the authentication handler.    *    * @return the Kerberos principals used by the authentication handler.    */

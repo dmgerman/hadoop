@@ -114,9 +114,11 @@ operator|=
 name|name
 expr_stmt|;
 block|}
-DECL|method|LOOKUP3Request (XDR xdr)
+DECL|method|deserialize (XDR xdr)
 specifier|public
+specifier|static
 name|LOOKUP3Request
+name|deserialize
 parameter_list|(
 name|XDR
 name|xdr
@@ -124,18 +126,31 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
-name|super
+name|FileHandle
+name|handle
+init|=
+name|readHandle
 argument_list|(
 name|xdr
 argument_list|)
-expr_stmt|;
+decl_stmt|;
+name|String
 name|name
-operator|=
+init|=
 name|xdr
 operator|.
 name|readString
 argument_list|()
-expr_stmt|;
+decl_stmt|;
+return|return
+operator|new
+name|LOOKUP3Request
+argument_list|(
+name|handle
+argument_list|,
+name|name
+argument_list|)
+return|;
 block|}
 DECL|method|getName ()
 specifier|public
@@ -178,7 +193,7 @@ name|XDR
 name|xdr
 parameter_list|)
 block|{
-name|super
+name|handle
 operator|.
 name|serialize
 argument_list|(

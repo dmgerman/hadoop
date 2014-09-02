@@ -28,6 +28,38 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|classification
+operator|.
+name|InterfaceAudience
+operator|.
+name|Private
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|classification
+operator|.
+name|InterfaceStability
+operator|.
+name|Unstable
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|yarn
 operator|.
 name|api
@@ -56,7 +88,7 @@ name|scheduler
 operator|.
 name|fair
 operator|.
-name|AppSchedulable
+name|FSAppAttempt
 import|;
 end_import
 
@@ -133,6 +165,10 @@ import|;
 end_import
 
 begin_class
+annotation|@
+name|Private
+annotation|@
+name|Unstable
 DECL|class|FairSchedulerMetrics
 specifier|public
 class|class
@@ -346,7 +382,7 @@ operator|)
 name|scheduler
 decl_stmt|;
 specifier|final
-name|AppSchedulable
+name|FSAppAttempt
 name|app
 init|=
 name|fair
@@ -355,9 +391,6 @@ name|getSchedulerApp
 argument_list|(
 name|appAttemptId
 argument_list|)
-operator|.
-name|getAppSchedulable
-argument_list|()
 decl_stmt|;
 name|metrics
 operator|.

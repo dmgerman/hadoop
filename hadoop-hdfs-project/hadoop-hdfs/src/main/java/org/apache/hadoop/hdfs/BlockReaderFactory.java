@@ -576,6 +576,20 @@ name|hadoop
 operator|.
 name|util
 operator|.
+name|PerformanceAdvisory
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|util
+operator|.
 name|Time
 import|;
 end_import
@@ -1332,26 +1346,21 @@ name|getDisableLegacyBlockReaderLocal
 argument_list|()
 condition|)
 block|{
-if|if
-condition|(
+name|PerformanceAdvisory
+operator|.
 name|LOG
 operator|.
-name|isTraceEnabled
-argument_list|()
-condition|)
-block|{
-name|LOG
-operator|.
-name|trace
+name|debug
 argument_list|(
 name|this
 operator|+
-literal|": can't construct BlockReaderLocalLegacy because "
+literal|": can't construct "
+operator|+
+literal|"BlockReaderLocalLegacy because "
 operator|+
 literal|"disableLegacyBlockReaderLocal is set."
 argument_list|)
 expr_stmt|;
-block|}
 return|return
 literal|null
 return|;
@@ -1531,17 +1540,11 @@ name|getUsableForShortCircuit
 argument_list|()
 condition|)
 block|{
-if|if
-condition|(
+name|PerformanceAdvisory
+operator|.
 name|LOG
 operator|.
-name|isTraceEnabled
-argument_list|()
-condition|)
-block|{
-name|LOG
-operator|.
-name|trace
+name|debug
 argument_list|(
 name|this
 operator|+
@@ -1554,7 +1557,6 @@ operator|+
 literal|"usable for short circuit; giving up on BlockReaderLocal."
 argument_list|)
 expr_stmt|;
-block|}
 return|return
 literal|null
 return|;
@@ -1658,15 +1660,19 @@ name|isTraceEnabled
 argument_list|()
 condition|)
 block|{
+name|PerformanceAdvisory
+operator|.
 name|LOG
 operator|.
-name|trace
+name|debug
 argument_list|(
 name|this
 operator|+
-literal|": failed to get ShortCircuitReplica.  "
+literal|": failed to get "
 operator|+
-literal|"Cannot construct BlockReaderLocal via "
+literal|"ShortCircuitReplica. Cannot construct "
+operator|+
+literal|"BlockReaderLocal via "
 operator|+
 name|pathInfo
 operator|.
@@ -2533,30 +2539,23 @@ name|getUsableForDataTransfer
 argument_list|()
 condition|)
 block|{
-if|if
-condition|(
+name|PerformanceAdvisory
+operator|.
 name|LOG
 operator|.
-name|isTraceEnabled
-argument_list|()
-condition|)
-block|{
-name|LOG
-operator|.
-name|trace
+name|debug
 argument_list|(
 name|this
 operator|+
-literal|": not trying to create a remote block reader "
+literal|": not trying to create a "
 operator|+
-literal|"because the UNIX domain socket at "
+literal|"remote block reader because the UNIX domain socket at "
 operator|+
 name|pathInfo
 operator|+
 literal|" is not usable."
 argument_list|)
 expr_stmt|;
-block|}
 return|return
 literal|null
 return|;

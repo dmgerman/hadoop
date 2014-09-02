@@ -866,6 +866,22 @@ name|yarn
 operator|.
 name|ipc
 operator|.
+name|RPCUtil
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|ipc
+operator|.
 name|YarnRPC
 import|;
 end_import
@@ -2498,6 +2514,10 @@ name|getSocketAddr
 argument_list|(
 name|YarnConfiguration
 operator|.
+name|NM_BIND_HOST
+argument_list|,
+name|YarnConfiguration
+operator|.
 name|NM_LOCALIZER_ADDRESS
 argument_list|,
 name|YarnConfiguration
@@ -3038,7 +3058,15 @@ name|updateConnectAddr
 argument_list|(
 name|YarnConfiguration
 operator|.
+name|NM_BIND_HOST
+argument_list|,
+name|YarnConfiguration
+operator|.
 name|NM_LOCALIZER_ADDRESS
+argument_list|,
+name|YarnConfiguration
+operator|.
+name|DEFAULT_NM_LOCALIZER_ADDRESS
 argument_list|,
 name|server
 operator|.
@@ -5422,7 +5450,7 @@ name|LOG
 operator|.
 name|error
 argument_list|(
-literal|"Localized unkonwn resource to "
+literal|"Localized unknown resource to "
 operator|+
 name|completed
 argument_list|)
@@ -5487,7 +5515,7 @@ name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"Failed to download rsrc "
+literal|"Failed to download resource "
 operator|+
 name|assoc
 operator|.

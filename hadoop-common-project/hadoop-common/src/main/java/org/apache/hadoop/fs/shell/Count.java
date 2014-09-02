@@ -161,6 +161,24 @@ literal|"-count"
 argument_list|)
 expr_stmt|;
 block|}
+DECL|field|OPTION_QUOTA
+specifier|private
+specifier|static
+specifier|final
+name|String
+name|OPTION_QUOTA
+init|=
+literal|"q"
+decl_stmt|;
+DECL|field|OPTION_HUMAN
+specifier|private
+specifier|static
+specifier|final
+name|String
+name|OPTION_HUMAN
+init|=
+literal|"h"
+decl_stmt|;
 DECL|field|NAME
 specifier|public
 specifier|static
@@ -177,7 +195,15 @@ specifier|final
 name|String
 name|USAGE
 init|=
-literal|"[-q]<path> ..."
+literal|"[-"
+operator|+
+name|OPTION_QUOTA
+operator|+
+literal|"] [-"
+operator|+
+name|OPTION_HUMAN
+operator|+
+literal|"]<path> ..."
 decl_stmt|;
 DECL|field|DESCRIPTION
 specifier|public
@@ -194,12 +220,19 @@ literal|"DIR_COUNT FILE_COUNT CONTENT_SIZE FILE_NAME or\n"
 operator|+
 literal|"QUOTA REMAINING_QUOTA SPACE_QUOTA REMAINING_SPACE_QUOTA \n"
 operator|+
-literal|"      DIR_COUNT FILE_COUNT CONTENT_SIZE FILE_NAME"
+literal|"      DIR_COUNT FILE_COUNT CONTENT_SIZE FILE_NAME\n"
+operator|+
+literal|"The -h option shows file sizes in human readable format."
 decl_stmt|;
 DECL|field|showQuotas
 specifier|private
 name|boolean
 name|showQuotas
+decl_stmt|;
+DECL|field|humanReadable
+specifier|private
+name|boolean
+name|humanReadable
 decl_stmt|;
 comment|/** Constructor */
 DECL|method|Count ()
@@ -274,7 +307,9 @@ name|Integer
 operator|.
 name|MAX_VALUE
 argument_list|,
-literal|"q"
+name|OPTION_QUOTA
+argument_list|,
+name|OPTION_HUMAN
 argument_list|)
 decl_stmt|;
 name|cf
@@ -307,7 +342,16 @@ name|cf
 operator|.
 name|getOpt
 argument_list|(
-literal|"q"
+name|OPTION_QUOTA
+argument_list|)
+expr_stmt|;
+name|humanReadable
+operator|=
+name|cf
+operator|.
+name|getOpt
+argument_list|(
+name|OPTION_HUMAN
 argument_list|)
 expr_stmt|;
 block|}
@@ -347,11 +391,42 @@ operator|.
 name|toString
 argument_list|(
 name|showQuotas
+argument_list|,
+name|isHumanReadable
+argument_list|()
 argument_list|)
 operator|+
 name|src
 argument_list|)
 expr_stmt|;
+block|}
+comment|/**    * Should quotas get shown as part of the report?    * @return if quotas should be shown then true otherwise false    */
+annotation|@
+name|InterfaceAudience
+operator|.
+name|Private
+DECL|method|isShowQuotas ()
+name|boolean
+name|isShowQuotas
+parameter_list|()
+block|{
+return|return
+name|showQuotas
+return|;
+block|}
+comment|/**    * Should sizes be shown in human readable format rather than bytes?    * @return true if human readable format    */
+annotation|@
+name|InterfaceAudience
+operator|.
+name|Private
+DECL|method|isHumanReadable ()
+name|boolean
+name|isHumanReadable
+parameter_list|()
+block|{
+return|return
+name|humanReadable
+return|;
 block|}
 block|}
 end_class

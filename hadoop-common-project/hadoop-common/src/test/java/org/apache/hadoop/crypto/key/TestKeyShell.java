@@ -355,7 +355,7 @@ literal|"delete"
 block|,
 name|keyName
 block|,
-literal|"--provider"
+literal|"-provider"
 block|,
 name|jceksProvider
 block|}
@@ -425,7 +425,7 @@ init|=
 block|{
 literal|"list"
 block|,
-literal|"--provider"
+literal|"-provider"
 block|,
 name|jceksProvider
 block|}
@@ -438,9 +438,9 @@ init|=
 block|{
 literal|"list"
 block|,
-literal|"--metadata"
+literal|"-metadata"
 block|,
-literal|"--provider"
+literal|"-provider"
 block|,
 name|jceksProvider
 block|}
@@ -523,7 +523,7 @@ literal|"create"
 block|,
 name|keyName
 block|,
-literal|"--provider"
+literal|"-provider"
 block|,
 name|jceksProvider
 block|}
@@ -557,7 +557,7 @@ name|keyName
 operator|+
 literal|" has been "
 operator|+
-literal|"successfully created."
+literal|"successfully created"
 argument_list|)
 argument_list|)
 expr_stmt|;
@@ -635,7 +635,7 @@ literal|"roll"
 block|,
 name|keyName
 block|,
-literal|"--provider"
+literal|"-provider"
 block|,
 name|jceksProvider
 block|}
@@ -726,11 +726,11 @@ literal|"create"
 block|,
 literal|"key1"
 block|,
-literal|"--provider"
+literal|"-provider"
 block|,
 name|jceksProvider
 block|,
-literal|"--description"
+literal|"-description"
 block|,
 literal|"someDescription"
 block|}
@@ -783,7 +783,7 @@ name|contains
 argument_list|(
 literal|"key1 has been successfully "
 operator|+
-literal|"created."
+literal|"created"
 argument_list|)
 argument_list|)
 expr_stmt|;
@@ -838,11 +838,11 @@ literal|"create"
 block|,
 literal|"key1"
 block|,
-literal|"--size"
+literal|"-size"
 block|,
 literal|"56"
 block|,
-literal|"--provider"
+literal|"-provider"
 block|,
 name|jceksProvider
 block|}
@@ -918,11 +918,11 @@ literal|"create"
 block|,
 literal|"key1"
 block|,
-literal|"--cipher"
+literal|"-cipher"
 block|,
 literal|"LJM"
 block|,
-literal|"--provider"
+literal|"-provider"
 block|,
 name|jceksProvider
 block|}
@@ -998,11 +998,11 @@ literal|"create"
 block|,
 literal|"key1"
 block|,
-literal|"--cipher"
+literal|"-cipher"
 block|,
 literal|"AES"
 block|,
-literal|"--provider"
+literal|"-provider"
 block|,
 literal|"sdff://file/tmp/keystore.jceks"
 block|}
@@ -1080,11 +1080,11 @@ literal|"create"
 block|,
 literal|"key1"
 block|,
-literal|"--cipher"
+literal|"-cipher"
 block|,
 literal|"AES"
 block|,
-literal|"--provider"
+literal|"-provider"
 block|,
 literal|"user:///"
 block|}
@@ -1258,11 +1258,11 @@ literal|"create"
 block|,
 name|keyName
 block|,
-literal|"--cipher"
+literal|"-cipher"
 block|,
 literal|"AES/CBC/pkcs5Padding"
 block|,
-literal|"--provider"
+literal|"-provider"
 block|,
 name|jceksProvider
 block|}
@@ -1317,9 +1317,7 @@ name|keyName
 operator|+
 literal|" has been "
 operator|+
-literal|"successfully "
-operator|+
-literal|"created."
+literal|"successfully created"
 argument_list|)
 argument_list|)
 expr_stmt|;
@@ -1371,11 +1369,11 @@ literal|"create"
 block|,
 literal|"keyattr1"
 block|,
-literal|"--provider"
+literal|"-provider"
 block|,
 name|jceksProvider
 block|,
-literal|"--attr"
+literal|"-attr"
 block|,
 literal|"foo=bar"
 block|}
@@ -1407,9 +1405,7 @@ name|contains
 argument_list|(
 literal|"keyattr1 has been "
 operator|+
-literal|"successfully "
-operator|+
-literal|"created."
+literal|"successfully created"
 argument_list|)
 argument_list|)
 expr_stmt|;
@@ -1460,11 +1456,11 @@ literal|"create"
 block|,
 literal|"keyattr2"
 block|,
-literal|"--provider"
+literal|"-provider"
 block|,
 name|jceksProvider
 block|,
-literal|"--attr"
+literal|"-attr"
 block|,
 literal|"=bar"
 block|}
@@ -1617,19 +1613,19 @@ literal|"create"
 block|,
 literal|"keyattr3"
 block|,
-literal|"--provider"
+literal|"-provider"
 block|,
 name|jceksProvider
 block|,
-literal|"--attr"
+literal|"-attr"
 block|,
 literal|"foo = bar"
 block|,
-literal|"--attr"
+literal|"-attr"
 block|,
 literal|" glarch =baz  "
 block|,
-literal|"--attr"
+literal|"-attr"
 block|,
 literal|"abc=def"
 block|}
@@ -1716,15 +1712,15 @@ literal|"create"
 block|,
 literal|"keyattr4"
 block|,
-literal|"--provider"
+literal|"-provider"
 block|,
 name|jceksProvider
 block|,
-literal|"--attr"
+literal|"-attr"
 block|,
 literal|"foo=bar"
 block|,
-literal|"--attr"
+literal|"-attr"
 block|,
 literal|"foo=glarch"
 block|}

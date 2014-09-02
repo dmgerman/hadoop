@@ -215,6 +215,11 @@ operator|.
 name|class
 argument_list|)
 decl_stmt|;
+DECL|field|preserveRawXattrs
+specifier|private
+name|boolean
+name|preserveRawXattrs
+decl_stmt|;
 DECL|field|atomicWorkPath
 specifier|private
 name|Path
@@ -540,6 +545,14 @@ operator|=
 name|that
 operator|.
 name|preserveStatus
+expr_stmt|;
+name|this
+operator|.
+name|preserveRawXattrs
+operator|=
+name|that
+operator|.
+name|preserveRawXattrs
 expr_stmt|;
 name|this
 operator|.
@@ -994,7 +1007,7 @@ name|iterator
 argument_list|()
 return|;
 block|}
-comment|/**    * Checks if the input attibute should be preserved or not    *    * @param attribute - Attribute to check    * @return True if attribute should be preserved, false otherwise    */
+comment|/**    * Checks if the input attribute should be preserved or not    *    * @param attribute - Attribute to check    * @return True if attribute should be preserved, false otherwise    */
 DECL|method|shouldPreserve (FileAttribute attribute)
 specifier|public
 name|boolean
@@ -1050,6 +1063,29 @@ name|add
 argument_list|(
 name|fileAttribute
 argument_list|)
+expr_stmt|;
+block|}
+comment|/**    * Return true if raw.* xattrs should be preserved.    * @return true if raw.* xattrs should be preserved.    */
+DECL|method|shouldPreserveRawXattrs ()
+specifier|public
+name|boolean
+name|shouldPreserveRawXattrs
+parameter_list|()
+block|{
+return|return
+name|preserveRawXattrs
+return|;
+block|}
+comment|/**    * Indicate that raw.* xattrs should be preserved    */
+DECL|method|preserveRawXattrs ()
+specifier|public
+name|void
+name|preserveRawXattrs
+parameter_list|()
+block|{
+name|preserveRawXattrs
+operator|=
+literal|true
 expr_stmt|;
 block|}
 comment|/** Get work path for atomic commit. If null, the work    * path would be parentOf(targetPath) + "/._WIP_" + nameOf(targetPath)    *    * @return Atomic work path on the target cluster. Null if not set    */
@@ -1683,6 +1719,10 @@ operator|+
 literal|", targetPathExists="
 operator|+
 name|targetPathExists
+operator|+
+literal|", preserveRawXattrs="
+operator|+
+name|preserveRawXattrs
 operator|+
 literal|'}'
 return|;

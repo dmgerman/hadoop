@@ -370,6 +370,26 @@ name|writeChecksum
 init|=
 literal|true
 decl_stmt|;
+comment|/**    * The name of the raw xattr namespace. It would be nice to use    * XAttr.RAW.name() but we can't reference the hadoop-hdfs project.    */
+DECL|field|RAW
+specifier|private
+specifier|static
+specifier|final
+name|String
+name|RAW
+init|=
+literal|"raw."
+decl_stmt|;
+comment|/**    * The name of the reserved raw directory.    */
+DECL|field|RESERVED_RAW
+specifier|private
+specifier|static
+specifier|final
+name|String
+name|RESERVED_RAW
+init|=
+literal|"/.reserved/raw"
+decl_stmt|;
 comment|/**    *     * This method is used to enable the force(-f)  option while copying the files.    *     * @param flag true/false    */
 DECL|method|setOverwrite (boolean flag)
 specifier|protected
@@ -1131,7 +1151,7 @@ argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Called with a source and target destination pair    * @param src for the operation    * @param target for the operation    * @throws IOException if anything goes wrong    */
+comment|/**    * Called with a source and target destination pair    * @param src for the operation    * @param dst for the operation    * @throws IOException if anything goes wrong    */
 DECL|method|processPath (PathData src, PathData dst)
 specifier|protected
 name|void
@@ -1244,6 +1264,21 @@ argument_list|(
 name|src
 argument_list|)
 expr_stmt|;
+specifier|final
+name|boolean
+name|preserveRawXattrs
+init|=
+name|checkPathsForReservedRaw
+argument_list|(
+name|src
+operator|.
+name|path
+argument_list|,
+name|dst
+operator|.
+name|path
+argument_list|)
+decl_stmt|;
 if|if
 condition|(
 name|dst
@@ -1344,6 +1379,8 @@ argument_list|(
 name|src
 argument_list|,
 name|dst
+argument_list|,
+name|preserveRawXattrs
 argument_list|)
 expr_stmt|;
 block|}
@@ -1451,6 +1488,21 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
+specifier|final
+name|boolean
+name|preserveRawXattrs
+init|=
+name|checkPathsForReservedRaw
+argument_list|(
+name|src
+operator|.
+name|path
+argument_list|,
+name|target
+operator|.
+name|path
+argument_list|)
+decl_stmt|;
 name|src
 operator|.
 name|fs
@@ -1492,6 +1544,8 @@ argument_list|(
 name|src
 argument_list|,
 name|target
+argument_list|,
+name|preserveRawXattrs
 argument_list|)
 expr_stmt|;
 block|}
@@ -1505,6 +1559,164 @@ name|in
 argument_list|)
 expr_stmt|;
 block|}
+block|}
+comment|/**    * Check the source and target paths to ensure that they are either both in    * /.reserved/raw or neither in /.reserved/raw. If neither src nor target are    * in /.reserved/raw, then return false, indicating not to preserve raw.*    * xattrs. If both src/target are in /.reserved/raw, then return true,    * indicating raw.* xattrs should be preserved. If only one of src/target is    * in /.reserved/raw then throw an exception.    *    * @param src The source path to check. This should be a fully-qualified    *            path, not relative.    * @param target The target path to check. This should be a fully-qualified    *               path, not relative.    * @return true if raw.* xattrs should be preserved.    * @throws PathOperationException is only one of src/target are in    * /.reserved/raw.    */
+DECL|method|checkPathsForReservedRaw (Path src, Path target)
+specifier|private
+name|boolean
+name|checkPathsForReservedRaw
+parameter_list|(
+name|Path
+name|src
+parameter_list|,
+name|Path
+name|target
+parameter_list|)
+throws|throws
+name|PathOperationException
+block|{
+specifier|final
+name|boolean
+name|srcIsRR
+init|=
+name|Path
+operator|.
+name|getPathWithoutSchemeAndAuthority
+argument_list|(
+name|src
+argument_list|)
+operator|.
+name|toString
+argument_list|()
+operator|.
+name|startsWith
+argument_list|(
+name|RESERVED_RAW
+argument_list|)
+decl_stmt|;
+specifier|final
+name|boolean
+name|dstIsRR
+init|=
+name|Path
+operator|.
+name|getPathWithoutSchemeAndAuthority
+argument_list|(
+name|target
+argument_list|)
+operator|.
+name|toString
+argument_list|()
+operator|.
+name|startsWith
+argument_list|(
+name|RESERVED_RAW
+argument_list|)
+decl_stmt|;
+name|boolean
+name|preserveRawXattrs
+init|=
+literal|false
+decl_stmt|;
+if|if
+condition|(
+name|srcIsRR
+operator|&&
+operator|!
+name|dstIsRR
+condition|)
+block|{
+specifier|final
+name|String
+name|s
+init|=
+literal|"' copy from '"
+operator|+
+name|RESERVED_RAW
+operator|+
+literal|"' to non '"
+operator|+
+name|RESERVED_RAW
+operator|+
+literal|"'. Either both source and target must be in '"
+operator|+
+name|RESERVED_RAW
+operator|+
+literal|"' or neither."
+decl_stmt|;
+throw|throw
+operator|new
+name|PathOperationException
+argument_list|(
+literal|"'"
+operator|+
+name|src
+operator|.
+name|toString
+argument_list|()
+operator|+
+name|s
+argument_list|)
+throw|;
+block|}
+elseif|else
+if|if
+condition|(
+operator|!
+name|srcIsRR
+operator|&&
+name|dstIsRR
+condition|)
+block|{
+specifier|final
+name|String
+name|s
+init|=
+literal|"' copy from non '"
+operator|+
+name|RESERVED_RAW
+operator|+
+literal|"' to '"
+operator|+
+name|RESERVED_RAW
+operator|+
+literal|"'. Either both source and target must be in '"
+operator|+
+name|RESERVED_RAW
+operator|+
+literal|"' or neither."
+decl_stmt|;
+throw|throw
+operator|new
+name|PathOperationException
+argument_list|(
+literal|"'"
+operator|+
+name|dst
+operator|.
+name|toString
+argument_list|()
+operator|+
+name|s
+argument_list|)
+throw|;
+block|}
+elseif|else
+if|if
+condition|(
+name|srcIsRR
+operator|&&
+name|dstIsRR
+condition|)
+block|{
+name|preserveRawXattrs
+operator|=
+literal|true
+expr_stmt|;
+block|}
+return|return
+name|preserveRawXattrs
+return|;
 block|}
 comment|/**    * Copies the stream contents to a temporary file.  If the copy is    * successful, the temporary file will be renamed to the real path,    * else the temporary file will be deleted.    * @param in the input stream for the copy    * @param target where to store the contents of the stream    * @throws IOException if copy fails    */
 DECL|method|copyStreamToTarget (InputStream in, PathData target)
@@ -1610,8 +1822,8 @@ expr_stmt|;
 comment|// last ditch effort to ensure temp file is removed
 block|}
 block|}
-comment|/**    * Preserve the attributes of the source to the target.    * The method calls {@link #shouldPreserve(FileAttribute)} to check what    * attribute to preserve.    * @param src source to preserve    * @param target where to preserve attributes    * @throws IOException if fails to preserve attributes    */
-DECL|method|preserveAttributes (PathData src, PathData target)
+comment|/**    * Preserve the attributes of the source to the target.    * The method calls {@link #shouldPreserve(FileAttribute)} to check what    * attribute to preserve.    * @param src source to preserve    * @param target where to preserve attributes    * @param preserveRawXAttrs true if raw.* xattrs should be preserved    * @throws IOException if fails to preserve attributes    */
+DECL|method|preserveAttributes (PathData src, PathData target, boolean preserveRawXAttrs)
 specifier|protected
 name|void
 name|preserveAttributes
@@ -1621,6 +1833,9 @@ name|src
 parameter_list|,
 name|PathData
 name|target
+parameter_list|,
+name|boolean
+name|preserveRawXAttrs
 parameter_list|)
 throws|throws
 name|IOException
@@ -1811,14 +2026,22 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-if|if
-condition|(
+specifier|final
+name|boolean
+name|preserveXAttrs
+init|=
 name|shouldPreserve
 argument_list|(
 name|FileAttribute
 operator|.
 name|XATTR
 argument_list|)
+decl_stmt|;
+if|if
+condition|(
+name|preserveXAttrs
+operator|||
+name|preserveRawXAttrs
 condition|)
 block|{
 name|Map
@@ -1890,6 +2113,27 @@ operator|.
 name|next
 argument_list|()
 decl_stmt|;
+specifier|final
+name|String
+name|xattrName
+init|=
+name|entry
+operator|.
+name|getKey
+argument_list|()
+decl_stmt|;
+if|if
+condition|(
+name|xattrName
+operator|.
+name|startsWith
+argument_list|(
+name|RAW
+argument_list|)
+operator|||
+name|preserveXAttrs
+condition|)
+block|{
 name|target
 operator|.
 name|fs
@@ -1911,6 +2155,7 @@ name|getValue
 argument_list|()
 argument_list|)
 expr_stmt|;
+block|}
 block|}
 block|}
 block|}

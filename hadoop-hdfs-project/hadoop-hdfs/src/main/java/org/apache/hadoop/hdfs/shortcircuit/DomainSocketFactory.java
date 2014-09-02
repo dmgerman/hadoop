@@ -206,6 +206,20 @@ name|CacheBuilder
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|util
+operator|.
+name|PerformanceAdvisory
+import|;
+end_import
+
 begin_class
 DECL|class|DomainSocketFactory
 specifier|public
@@ -523,6 +537,8 @@ operator|==
 literal|null
 condition|)
 block|{
+name|PerformanceAdvisory
+operator|.
 name|LOG
 operator|.
 name|debug

@@ -234,6 +234,20 @@ name|TaskAttemptID
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|mapreduce
+operator|.
+name|CryptoUtils
+import|;
+end_import
+
 begin_comment
 comment|/**  * LocalFetcher is used by LocalJobRunner to perform a local filesystem  * fetch.  */
 end_comment
@@ -738,6 +752,17 @@ argument_list|(
 name|mapOutputFileName
 argument_list|)
 decl_stmt|;
+name|inStream
+operator|=
+name|CryptoUtils
+operator|.
+name|wrapIfNecessary
+argument_list|(
+name|job
+argument_list|,
+name|inStream
+argument_list|)
+expr_stmt|;
 try|try
 block|{
 name|inStream

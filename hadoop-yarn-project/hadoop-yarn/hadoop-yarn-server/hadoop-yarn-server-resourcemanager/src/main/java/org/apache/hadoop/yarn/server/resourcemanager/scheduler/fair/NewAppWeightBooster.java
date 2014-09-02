@@ -181,12 +181,12 @@ name|conf
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|adjustWeight (AppSchedulable app, double curWeight)
+DECL|method|adjustWeight (FSAppAttempt app, double curWeight)
 specifier|public
 name|double
 name|adjustWeight
 parameter_list|(
-name|AppSchedulable
+name|FSAppAttempt
 name|app
 parameter_list|,
 name|double

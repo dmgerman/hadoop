@@ -1157,6 +1157,24 @@ name|register
 argument_list|()
 expr_stmt|;
 block|}
+comment|// This is useful to make sure NN gets Heartbeat before Blockreport
+comment|// upon NN restart while DN keeps retrying Otherwise,
+comment|// 1. NN restarts.
+comment|// 2. Heartbeat RPC will retry and succeed. NN asks DN to reregister.
+comment|// 3. After reregistration completes, DN will send Blockreport first.
+comment|// 4. Given NN receives Blockreport after Heartbeat, it won't mark
+comment|//    DatanodeStorageInfo#blockContentsStale to false until the next
+comment|//    Blockreport.
+DECL|method|scheduleHeartbeat ()
+name|void
+name|scheduleHeartbeat
+parameter_list|()
+block|{
+name|lastHeartbeat
+operator|=
+literal|0
+expr_stmt|;
+block|}
 comment|/**    * This methods  arranges for the data node to send the block report at     * the next heartbeat.    */
 DECL|method|scheduleBlockReport (long delay)
 name|void
@@ -3915,6 +3933,9 @@ argument_list|()
 expr_stmt|;
 comment|// and re-register
 name|register
+argument_list|()
+expr_stmt|;
+name|scheduleHeartbeat
 argument_list|()
 expr_stmt|;
 block|}

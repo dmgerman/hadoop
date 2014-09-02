@@ -48,6 +48,38 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|classification
+operator|.
+name|InterfaceAudience
+operator|.
+name|Private
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|classification
+operator|.
+name|InterfaceStability
+operator|.
+name|Unstable
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|net
 operator|.
 name|Node
@@ -208,24 +240,6 @@ name|hadoop
 operator|.
 name|yarn
 operator|.
-name|api
-operator|.
-name|records
-operator|.
-name|ResourceOption
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|yarn
-operator|.
 name|server
 operator|.
 name|api
@@ -277,6 +291,10 @@ import|;
 end_import
 
 begin_class
+annotation|@
+name|Private
+annotation|@
+name|Unstable
 DECL|class|NodeInfo
 specifier|public
 class|class
@@ -314,6 +332,10 @@ name|port
 argument_list|)
 return|;
 block|}
+annotation|@
+name|Private
+annotation|@
+name|Unstable
 DECL|class|FakeRMNodeImpl
 specifier|private
 specifier|static
@@ -350,7 +372,7 @@ decl_stmt|;
 DECL|field|perNode
 specifier|private
 specifier|volatile
-name|ResourceOption
+name|Resource
 name|perNode
 decl_stmt|;
 DECL|field|rackName
@@ -384,7 +406,7 @@ name|ApplicationId
 argument_list|>
 name|toCleanUpApplications
 decl_stmt|;
-DECL|method|FakeRMNodeImpl (NodeId nodeId, String nodeAddr, String httpAddress, ResourceOption perNode, String rackName, String healthReport, int cmdPort, String hostName, NodeState state)
+DECL|method|FakeRMNodeImpl (NodeId nodeId, String nodeAddr, String httpAddress, Resource perNode, String rackName, String healthReport, int cmdPort, String hostName, NodeState state)
 specifier|public
 name|FakeRMNodeImpl
 parameter_list|(
@@ -397,7 +419,7 @@ parameter_list|,
 name|String
 name|httpAddress
 parameter_list|,
-name|ResourceOption
+name|Resource
 name|perNode
 parameter_list|,
 name|String
@@ -573,19 +595,6 @@ DECL|method|getTotalCapability ()
 specifier|public
 name|Resource
 name|getTotalCapability
-parameter_list|()
-block|{
-return|return
-name|perNode
-operator|.
-name|getResource
-argument_list|()
-return|;
-block|}
-DECL|method|getResourceOption ()
-specifier|public
-name|ResourceOption
-name|getResourceOption
 parameter_list|()
 block|{
 return|return
@@ -769,29 +778,12 @@ name|String
 name|getNodeManagerVersion
 parameter_list|()
 block|{
-comment|// TODO Auto-generated method stub
 return|return
 literal|null
 return|;
 block|}
-annotation|@
-name|Override
-DECL|method|setResourceOption (ResourceOption resourceOption)
-specifier|public
-name|void
-name|setResourceOption
-parameter_list|(
-name|ResourceOption
-name|resourceOption
-parameter_list|)
-block|{
-name|perNode
-operator|=
-name|resourceOption
-expr_stmt|;
 block|}
-block|}
-DECL|method|newNodeInfo (String rackName, String hostName, final ResourceOption resourceOption, int port)
+DECL|method|newNodeInfo (String rackName, String hostName, final Resource resource, int port)
 specifier|public
 specifier|static
 name|RMNode
@@ -804,8 +796,8 @@ name|String
 name|hostName
 parameter_list|,
 specifier|final
-name|ResourceOption
-name|resourceOption
+name|Resource
+name|resource
 parameter_list|,
 name|int
 name|port
@@ -848,7 +840,7 @@ name|nodeAddr
 argument_list|,
 name|httpAddress
 argument_list|,
-name|resourceOption
+name|resource
 argument_list|,
 name|rackName
 argument_list|,
@@ -886,16 +878,7 @@ name|rackName
 argument_list|,
 name|hostName
 argument_list|,
-name|ResourceOption
-operator|.
-name|newInstance
-argument_list|(
 name|resource
-argument_list|,
-name|RMNode
-operator|.
-name|OVER_COMMIT_TIMEOUT_MILLIS_DEFAULT
-argument_list|)
 argument_list|,
 name|NODE_ID
 operator|++

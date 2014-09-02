@@ -1042,6 +1042,8 @@ name|namenodeStorage
 argument_list|,
 literal|"current"
 argument_list|)
+argument_list|,
+literal|false
 argument_list|)
 expr_stmt|;
 name|File
@@ -1062,6 +1064,8 @@ argument_list|(
 name|DATA_NODE
 argument_list|,
 name|dnCurDir
+argument_list|,
+literal|false
 argument_list|)
 expr_stmt|;
 name|File
@@ -1089,6 +1093,8 @@ argument_list|(
 name|DATA_NODE
 argument_list|,
 name|bpCurDir
+argument_list|,
+literal|false
 argument_list|)
 expr_stmt|;
 name|File
@@ -1120,6 +1126,8 @@ argument_list|(
 name|DATA_NODE
 argument_list|,
 name|bpCurFinalizeDir
+argument_list|,
+literal|true
 argument_list|)
 expr_stmt|;
 name|File
@@ -1151,6 +1159,8 @@ argument_list|(
 name|DATA_NODE
 argument_list|,
 name|bpCurRbwDir
+argument_list|,
+literal|false
 argument_list|)
 expr_stmt|;
 block|}
@@ -1502,8 +1512,8 @@ return|return
 name|blockPoolRbwStorageChecksum
 return|;
 block|}
-comment|/**    * Compute the checksum of all the files in the specified directory.    * The contents of subdirectories are not included. This method provides    * an easy way to ensure equality between the contents of two directories.    *    * @param nodeType if DATA_NODE then any file named "VERSION" is ignored.    *    This is because this file file is changed every time    *    the Datanode is started.    * @param dir must be a directory. Subdirectories are ignored.    *    * @throws IllegalArgumentException if specified directory is not a directory    * @throws IOException if an IOException occurs while reading the files    * @return the computed checksum value    */
-DECL|method|checksumContents (NodeType nodeType, File dir)
+comment|/**    * Compute the checksum of all the files in the specified directory.    * This method provides an easy way to ensure equality between the contents    * of two directories.    *    * @param nodeType if DATA_NODE then any file named "VERSION" is ignored.    *    This is because this file file is changed every time    *    the Datanode is started.    * @param dir must be a directory    * @param recursive whether or not to consider subdirectories    *    * @throws IllegalArgumentException if specified directory is not a directory    * @throws IOException if an IOException occurs while reading the files    * @return the computed checksum value    */
+DECL|method|checksumContents (NodeType nodeType, File dir, boolean recursive)
 specifier|public
 specifier|static
 name|long
@@ -1514,6 +1524,55 @@ name|nodeType
 parameter_list|,
 name|File
 name|dir
+parameter_list|,
+name|boolean
+name|recursive
+parameter_list|)
+throws|throws
+name|IOException
+block|{
+name|CRC32
+name|checksum
+init|=
+operator|new
+name|CRC32
+argument_list|()
+decl_stmt|;
+name|checksumContentsHelper
+argument_list|(
+name|nodeType
+argument_list|,
+name|dir
+argument_list|,
+name|checksum
+argument_list|,
+name|recursive
+argument_list|)
+expr_stmt|;
+return|return
+name|checksum
+operator|.
+name|getValue
+argument_list|()
+return|;
+block|}
+DECL|method|checksumContentsHelper (NodeType nodeType, File dir, CRC32 checksum, boolean recursive)
+specifier|public
+specifier|static
+name|void
+name|checksumContentsHelper
+parameter_list|(
+name|NodeType
+name|nodeType
+parameter_list|,
+name|File
+name|dir
+parameter_list|,
+name|CRC32
+name|checksum
+parameter_list|,
+name|boolean
+name|recursive
 parameter_list|)
 throws|throws
 name|IOException
@@ -1553,13 +1612,6 @@ argument_list|(
 name|list
 argument_list|)
 expr_stmt|;
-name|CRC32
-name|checksum
-init|=
-operator|new
-name|CRC32
-argument_list|()
-decl_stmt|;
 for|for
 control|(
 name|int
@@ -1589,6 +1641,26 @@ name|isFile
 argument_list|()
 condition|)
 block|{
+if|if
+condition|(
+name|recursive
+condition|)
+block|{
+name|checksumContentsHelper
+argument_list|(
+name|nodeType
+argument_list|,
+name|list
+index|[
+name|i
+index|]
+argument_list|,
+name|checksum
+argument_list|,
+name|recursive
+argument_list|)
+expr_stmt|;
+block|}
 continue|continue;
 block|}
 comment|// skip VERSION and dfsUsed file for DataNodes
@@ -1707,12 +1779,6 @@ expr_stmt|;
 block|}
 block|}
 block|}
-return|return
-name|checksum
-operator|.
-name|getValue
-argument_list|()
-return|;
 block|}
 comment|/**    * Simulate the {@link DFSConfigKeys#DFS_NAMENODE_NAME_DIR_KEY} of a populated     * DFS filesystem.    * This method populates for each parent directory,<code>parent/dirName</code>    * with the content of namenode storage directory that comes from a singleton    * namenode master (that contains edits, fsimage, version and time files).     * If the destination directory does not exist, it will be created.      * If the directory already exists, it will first be deleted.    *    * @param parents parent directory where {@code dirName} is created    * @param dirName directory under which storage directory is created    * @return the array of created directories    */
 DECL|method|createNameNodeStorageDirs (String[] parents, String dirName)

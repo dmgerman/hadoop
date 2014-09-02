@@ -1065,6 +1065,13 @@ argument_list|(
 literal|"GET"
 argument_list|)
 expr_stmt|;
+name|resp
+operator|.
+name|setContentType
+argument_list|(
+literal|"text/html"
+argument_list|)
+expr_stmt|;
 name|PrintWriter
 name|out
 init|=
@@ -1135,6 +1142,13 @@ operator|.
 name|info
 argument_list|(
 literal|"POST"
+argument_list|)
+expr_stmt|;
+name|resp
+operator|.
+name|setContentType
+argument_list|(
+literal|"text/html"
 argument_list|)
 expr_stmt|;
 name|PrintWriter

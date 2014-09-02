@@ -311,6 +311,10 @@ operator|=
 name|createAMRMTokenSecretManager
 argument_list|(
 name|conf
+argument_list|,
+name|this
+operator|.
+name|rmContext
 argument_list|)
 expr_stmt|;
 name|rmContext
@@ -515,13 +519,16 @@ name|conf
 argument_list|)
 return|;
 block|}
-DECL|method|createAMRMTokenSecretManager ( Configuration conf)
+DECL|method|createAMRMTokenSecretManager ( Configuration conf, RMContext rmContext)
 specifier|protected
 name|AMRMTokenSecretManager
 name|createAMRMTokenSecretManager
 parameter_list|(
 name|Configuration
 name|conf
+parameter_list|,
+name|RMContext
+name|rmContext
 parameter_list|)
 block|{
 return|return
@@ -529,6 +536,8 @@ operator|new
 name|AMRMTokenSecretManager
 argument_list|(
 name|conf
+argument_list|,
+name|rmContext
 argument_list|)
 return|;
 block|}

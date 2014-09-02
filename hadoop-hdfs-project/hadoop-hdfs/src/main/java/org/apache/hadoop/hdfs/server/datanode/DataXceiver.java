@@ -1128,6 +1128,13 @@ specifier|private
 name|OutputStream
 name|socketOut
 decl_stmt|;
+DECL|field|blockReceiver
+specifier|private
+name|BlockReceiver
+name|blockReceiver
+init|=
+literal|null
+decl_stmt|;
 comment|/**    * Client Name used in previous operation. Not available on first request    * on the socket.    */
 DECL|field|previousOpClientName
 specifier|private
@@ -1382,6 +1389,37 @@ return|return
 name|socketOut
 return|;
 block|}
+DECL|method|sendOOB ()
+specifier|public
+name|void
+name|sendOOB
+parameter_list|()
+throws|throws
+name|IOException
+throws|,
+name|InterruptedException
+block|{
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"Sending OOB to peer: "
+operator|+
+name|peer
+argument_list|)
+expr_stmt|;
+if|if
+condition|(
+name|blockReceiver
+operator|!=
+literal|null
+condition|)
+name|blockReceiver
+operator|.
+name|sendOOB
+argument_list|()
+expr_stmt|;
+block|}
 comment|/**    * Read/write data from/to the DataXceiverServer.    */
 annotation|@
 name|Override
@@ -1413,6 +1451,8 @@ name|Thread
 operator|.
 name|currentThread
 argument_list|()
+argument_list|,
+name|this
 argument_list|)
 expr_stmt|;
 name|peer
@@ -3598,6 +3638,16 @@ argument_list|(
 name|block
 argument_list|)
 decl_stmt|;
+if|if
+condition|(
+name|block
+operator|.
+name|getNumBytes
+argument_list|()
+operator|==
+literal|0
+condition|)
+block|{
 name|block
 operator|.
 name|setNumBytes
@@ -3607,6 +3657,7 @@ operator|.
 name|estimateBlockSize
 argument_list|)
 expr_stmt|;
+block|}
 name|LOG
 operator|.
 name|info
@@ -3683,12 +3734,6 @@ init|=
 literal|null
 decl_stmt|;
 comment|// socket to next target
-name|BlockReceiver
-name|blockReceiver
-init|=
-literal|null
-decl_stmt|;
-comment|// responsible for data handling
 name|String
 name|mirrorNode
 init|=
@@ -4356,6 +4401,8 @@ argument_list|,
 literal|null
 argument_list|,
 name|targets
+argument_list|,
+literal|false
 argument_list|)
 expr_stmt|;
 comment|// send close-ack for transfer-RBW/Finalized
@@ -4531,6 +4578,10 @@ name|closeStream
 argument_list|(
 name|blockReceiver
 argument_list|)
+expr_stmt|;
+name|blockReceiver
+operator|=
+literal|null
 expr_stmt|;
 block|}
 comment|//update metrics
@@ -5853,6 +5904,16 @@ name|proxyReply
 init|=
 literal|null
 decl_stmt|;
+name|DataOutputStream
+name|replyOut
+init|=
+operator|new
+name|DataOutputStream
+argument_list|(
+name|getOutputStream
+argument_list|()
+argument_list|)
+decl_stmt|;
 try|try
 block|{
 comment|// get the output stream to the proxy
@@ -6193,7 +6254,7 @@ literal|null
 argument_list|,
 literal|null
 argument_list|,
-literal|null
+name|replyOut
 argument_list|,
 literal|null
 argument_list|,
@@ -6202,6 +6263,8 @@ operator|.
 name|balanceThrottler
 argument_list|,
 literal|null
+argument_list|,
+literal|true
 argument_list|)
 expr_stmt|;
 comment|// notify name node
@@ -6353,6 +6416,13 @@ operator|.
 name|closeStream
 argument_list|(
 name|proxyReply
+argument_list|)
+expr_stmt|;
+name|IOUtils
+operator|.
+name|closeStream
+argument_list|(
+name|replyOut
 argument_list|)
 expr_stmt|;
 block|}

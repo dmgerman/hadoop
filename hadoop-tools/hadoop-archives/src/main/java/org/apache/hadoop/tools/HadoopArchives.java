@@ -808,6 +808,13 @@ literal|1024
 operator|*
 literal|1024l
 decl_stmt|;
+comment|/** the desired replication degree; default is 10 **/
+DECL|field|repl
+name|short
+name|repl
+init|=
+literal|10
+decl_stmt|;
 DECL|field|usage
 specifier|private
 specifier|static
@@ -817,7 +824,9 @@ name|usage
 init|=
 literal|"archive"
 operator|+
-literal|" -archiveName NAME -p<parent path><src>*<dest>"
+literal|" -archiveName NAME -p<parent path> [-r<replication factor>]"
+operator|+
+literal|"<src>*<dest>"
 operator|+
 literal|"\n"
 decl_stmt|;
@@ -1938,7 +1947,7 @@ return|return
 literal|null
 return|;
 block|}
-comment|/**    * this method writes all the valid top level directories     * into the srcWriter for indexing. This method is a little    * tricky. example-     * for an input with parent path /home/user/ and sources     * as /home/user/source/dir1, /home/user/source/dir2 - this     * will output<source, dir, dir1, dir2> (dir means that source is a dir    * with dir1 and dir2 as children) and<source/dir1, file, null>    * and<source/dir2, file, null>    * @param srcWriter the sequence file writer to write the    * directories to    * @param paths the source paths provided by the user. They    * are glob free and have full path (not relative paths)    * @param parentPath the parent path that you wnat the archives    * to be relative to. example - /home/user/dir1 can be archived with    * parent as /home or /home/user.    * @throws IOException    */
+comment|/**    * this method writes all the valid top level directories     * into the srcWriter for indexing. This method is a little    * tricky. example-     * for an input with parent path /home/user/ and sources     * as /home/user/source/dir1, /home/user/source/dir2 - this     * will output<source, dir, dir1, dir2> (dir means that source is a dir    * with dir1 and dir2 as children) and<source/dir1, file, null>    * and<source/dir2, file, null>    * @param srcWriter the sequence file writer to write the    * directories to    * @param paths the source paths provided by the user. They    * are glob free and have full path (not relative paths)    * @param parentPath the parent path that you want the archives    * to be relative to. example - /home/user/dir1 can be archived with    * parent as /home or /home/user.    * @throws IOException    */
 DECL|method|writeTopLevelDirs (SequenceFile.Writer srcWriter, List<Path> paths, Path parentPath)
 specifier|private
 name|void
@@ -3103,10 +3112,7 @@ name|setReplication
 argument_list|(
 name|srcFiles
 argument_list|,
-operator|(
-name|short
-operator|)
-literal|10
+name|repl
 argument_list|)
 expr_stmt|;
 name|conf
@@ -4781,6 +4787,38 @@ name|i
 operator|+=
 literal|2
 expr_stmt|;
+if|if
+condition|(
+literal|"-r"
+operator|.
+name|equals
+argument_list|(
+name|args
+index|[
+name|i
+index|]
+argument_list|)
+condition|)
+block|{
+name|repl
+operator|=
+name|Short
+operator|.
+name|parseShort
+argument_list|(
+name|args
+index|[
+name|i
+operator|+
+literal|1
+index|]
+argument_list|)
+expr_stmt|;
+name|i
+operator|+=
+literal|2
+expr_stmt|;
+block|}
 comment|//read the rest of the paths
 for|for
 control|(

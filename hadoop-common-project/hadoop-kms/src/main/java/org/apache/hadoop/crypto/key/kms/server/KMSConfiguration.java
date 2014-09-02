@@ -30,6 +30,20 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|classification
+operator|.
+name|InterfaceAudience
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|conf
 operator|.
 name|Configuration
@@ -71,6 +85,10 @@ comment|/**  * Utility class to load KMS configuration files.  */
 end_comment
 
 begin_class
+annotation|@
+name|InterfaceAudience
+operator|.
+name|Private
 DECL|class|KMSConfiguration
 specifier|public
 class|class
@@ -148,6 +166,18 @@ name|CONFIG_PREFIX
 operator|+
 literal|"current.key.cache.timeout.ms"
 decl_stmt|;
+comment|// Delay for Audit logs that need aggregation
+DECL|field|KMS_AUDIT_AGGREGATION_DELAY
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|KMS_AUDIT_AGGREGATION_DELAY
+init|=
+name|CONFIG_PREFIX
+operator|+
+literal|"aggregation.delay.ms"
+decl_stmt|;
 DECL|field|KEY_CACHE_ENABLE_DEFAULT
 specifier|public
 specifier|static
@@ -182,6 +212,16 @@ init|=
 literal|30
 operator|*
 literal|1000
+decl_stmt|;
+comment|// 10 secs
+DECL|field|KMS_AUDIT_AGGREGATION_DELAY_DEFAULT
+specifier|public
+specifier|static
+specifier|final
+name|long
+name|KMS_AUDIT_AGGREGATION_DELAY_DEFAULT
+init|=
+literal|10000
 decl_stmt|;
 DECL|method|getConfiguration (boolean loadHadoopDefaults, String ... resources)
 specifier|static
