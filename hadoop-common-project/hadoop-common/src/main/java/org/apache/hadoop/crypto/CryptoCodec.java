@@ -102,6 +102,20 @@ name|hadoop
 operator|.
 name|util
 operator|.
+name|PerformanceAdvisory
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|util
+operator|.
 name|ReflectionUtils
 import|;
 end_import
@@ -238,7 +252,7 @@ operator|.
 name|class
 argument_list|)
 decl_stmt|;
-comment|/**    * Get crypto codec for specified algorithm/mode/padding.    *     * @param conf    *          the configuration    * @param CipherSuite    *          algorithm/mode/padding    * @return CryptoCodec the codec object. Null value will be returned if no    *         crypto codec classes with cipher suite configured.    */
+comment|/**    * Get crypto codec for specified algorithm/mode/padding.    *     * @param conf    *          the configuration    * @param cipherSuite    *          algorithm/mode/padding    * @return CryptoCodec the codec object. Null value will be returned if no    *         crypto codec classes with cipher suite configured.    */
 DECL|method|getInstance (Configuration conf, CipherSuite cipherSuite)
 specifier|public
 specifier|static
@@ -339,6 +353,8 @@ operator|==
 literal|null
 condition|)
 block|{
+name|PerformanceAdvisory
+operator|.
 name|LOG
 operator|.
 name|debug
@@ -359,9 +375,11 @@ block|}
 block|}
 else|else
 block|{
+name|PerformanceAdvisory
+operator|.
 name|LOG
 operator|.
-name|warn
+name|debug
 argument_list|(
 literal|"Crypto codec {} doesn't meet the cipher suite {}."
 argument_list|,
@@ -384,9 +402,11 @@ name|Exception
 name|e
 parameter_list|)
 block|{
+name|PerformanceAdvisory
+operator|.
 name|LOG
 operator|.
-name|warn
+name|debug
 argument_list|(
 literal|"Crypto codec {} is not available."
 argument_list|,
@@ -527,9 +547,11 @@ operator|==
 literal|null
 condition|)
 block|{
+name|PerformanceAdvisory
+operator|.
 name|LOG
 operator|.
-name|warn
+name|debug
 argument_list|(
 literal|"No crypto codec classes with cipher suite configured."
 argument_list|)
@@ -598,15 +620,15 @@ name|ClassCastException
 name|e
 parameter_list|)
 block|{
+name|PerformanceAdvisory
+operator|.
 name|LOG
 operator|.
-name|warn
+name|debug
 argument_list|(
-literal|"Class "
-operator|+
+literal|"Class {} is not a CryptoCodec."
+argument_list|,
 name|c
-operator|+
-literal|" is not a CryptoCodec."
 argument_list|)
 expr_stmt|;
 block|}
@@ -616,15 +638,15 @@ name|ClassNotFoundException
 name|e
 parameter_list|)
 block|{
+name|PerformanceAdvisory
+operator|.
 name|LOG
 operator|.
-name|warn
+name|debug
 argument_list|(
-literal|"Crypto codec "
-operator|+
+literal|"Crypto codec {} not found."
+argument_list|,
 name|c
-operator|+
-literal|" not found."
 argument_list|)
 expr_stmt|;
 block|}

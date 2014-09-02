@@ -4703,6 +4703,14 @@ argument_list|)
 expr_stmt|;
 if|if
 condition|(
+name|LOG
+operator|.
+name|isDebugEnabled
+argument_list|()
+condition|)
+block|{
+if|if
+condition|(
 name|provider
 operator|==
 literal|null
@@ -4710,7 +4718,7 @@ condition|)
 block|{
 name|LOG
 operator|.
-name|info
+name|debug
 argument_list|(
 literal|"No KeyProvider found."
 argument_list|)
@@ -4720,7 +4728,7 @@ else|else
 block|{
 name|LOG
 operator|.
-name|info
+name|debug
 argument_list|(
 literal|"Found KeyProvider: "
 operator|+
@@ -4730,6 +4738,7 @@ name|toString
 argument_list|()
 argument_list|)
 expr_stmt|;
+block|}
 block|}
 name|int
 name|numResponseToDrop
