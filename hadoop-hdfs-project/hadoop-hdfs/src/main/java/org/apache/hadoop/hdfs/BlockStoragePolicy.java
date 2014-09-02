@@ -1310,10 +1310,10 @@ name|Configuration
 name|conf
 parameter_list|)
 block|{
-name|Byte
+name|byte
 name|id
 init|=
-literal|null
+literal|0
 decl_stmt|;
 try|try
 block|{

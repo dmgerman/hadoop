@@ -172,6 +172,20 @@ name|hadoop
 operator|.
 name|hdfs
 operator|.
+name|BlockStoragePolicy
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
 name|DFSUtil
 import|;
 end_import
@@ -2113,32 +2127,22 @@ return|return
 name|this
 return|;
 block|}
-comment|/**    * @return the storage policy id of the inode    */
-DECL|method|getStoragePolicyID (int snapshotId)
+comment|/**    * @return the latest block storage policy id of the INode. Specifically,    * if a storage policy is directly specified on the INode then return the ID    * of that policy. Otherwise follow the latest parental path and return the    * ID of the first specified storage policy.    */
+DECL|method|getStoragePolicyID ()
 specifier|public
 specifier|abstract
 name|byte
 name|getStoragePolicyID
-parameter_list|(
-name|int
-name|snapshotId
-parameter_list|)
-function_decl|;
-DECL|method|getStoragePolicyID ()
-specifier|public
-name|byte
-name|getStoragePolicyID
 parameter_list|()
-block|{
-return|return
-name|getStoragePolicyID
-argument_list|(
-name|Snapshot
-operator|.
-name|CURRENT_STATE_ID
-argument_list|)
-return|;
-block|}
+function_decl|;
+comment|/**    * @return the storage policy directly specified on the INode. Return    * {@link BlockStoragePolicy#ID_UNSPECIFIED} if no policy has    * been specified.    */
+DECL|method|getLocalStoragePolicyID ()
+specifier|public
+specifier|abstract
+name|byte
+name|getLocalStoragePolicyID
+parameter_list|()
+function_decl|;
 comment|/**    * Breaks {@code path} into components.    * @return array of byte arrays each of which represents    * a single path component.    */
 annotation|@
 name|VisibleForTesting

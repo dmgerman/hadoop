@@ -1326,16 +1326,6 @@ begin_import
 import|import
 name|java
 operator|.
-name|security
-operator|.
-name|NoSuchAlgorithmException
-import|;
-end_import
-
-begin_import
-import|import
-name|java
-operator|.
 name|util
 operator|.
 name|ArrayList
@@ -1459,16 +1449,6 @@ operator|.
 name|util
 operator|.
 name|Set
-import|;
-end_import
-
-begin_import
-import|import
-name|java
-operator|.
-name|util
-operator|.
-name|UUID
 import|;
 end_import
 
@@ -2323,22 +2303,6 @@ operator|.
 name|protocol
 operator|.
 name|DirectoryListing
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|hdfs
-operator|.
-name|protocol
-operator|.
-name|EncryptionZone
 import|;
 end_import
 
@@ -21613,7 +21577,7 @@ return|return
 literal|true
 return|;
 block|}
-comment|/**    * Get the content summary for a specific file/dir.    *    * @param src The string representation of the path to the file    *    * @throws AccessControlException if access is denied    * @throws UnresolvedLinkException if a symlink is encountered.    * @throws FileNotFoundException if no file exists    * @throws StandbyException    * @throws IOException for issues with writing to the audit log    *    * @return object containing information regarding the file    *         or null if file not found    */
+comment|/**    * Get the content summary for a specific file/dir.    *    * @param srcArg The string representation of the path to the file    *    * @throws AccessControlException if access is denied    * @throws UnresolvedLinkException if a symlink is encountered.    * @throws FileNotFoundException if no file exists    * @throws StandbyException    * @throws IOException for issues with writing to the audit log    *    * @return object containing information regarding the file    *         or null if file not found    */
 DECL|method|getContentSummary (final String srcArg)
 name|ContentSummary
 name|getContentSummary
@@ -24576,7 +24540,7 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-comment|/**    * Add the given symbolic link to the fs. Record it in the edits log.    * @param path    * @param target    * @param dirPerms    * @param createParent    * @param logRetryCache    * @param dir    */
+comment|/**    * Add the given symbolic link to the fs. Record it in the edits log.    */
 DECL|method|addSymlink (String path, String target, PermissionStatus dirPerms, boolean createParent, boolean logRetryCache)
 specifier|private
 name|INodeSymlink

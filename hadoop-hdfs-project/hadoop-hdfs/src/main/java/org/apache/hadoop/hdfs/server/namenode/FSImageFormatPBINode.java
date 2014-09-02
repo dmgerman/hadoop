@@ -3003,7 +3003,7 @@ name|setStoragePolicyID
 argument_list|(
 name|file
 operator|.
-name|getStoragePolicyID
+name|getLocalStoragePolicyID
 argument_list|()
 argument_list|)
 decl_stmt|;

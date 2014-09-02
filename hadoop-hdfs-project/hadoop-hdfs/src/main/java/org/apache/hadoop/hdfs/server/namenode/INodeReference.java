@@ -160,24 +160,6 @@ end_import
 
 begin_import
 import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|hdfs
-operator|.
-name|server
-operator|.
-name|namenode
-operator|.
-name|XAttrFeature
-import|;
-end_import
-
-begin_import
-import|import
 name|com
 operator|.
 name|google
@@ -1073,23 +1055,34 @@ expr_stmt|;
 block|}
 annotation|@
 name|Override
-DECL|method|getStoragePolicyID (int snapshotId)
+DECL|method|getStoragePolicyID ()
 specifier|public
 specifier|final
 name|byte
 name|getStoragePolicyID
-parameter_list|(
-name|int
-name|snapshotId
-parameter_list|)
+parameter_list|()
 block|{
 return|return
 name|referred
 operator|.
 name|getStoragePolicyID
-argument_list|(
-name|snapshotId
-argument_list|)
+argument_list|()
+return|;
+block|}
+annotation|@
+name|Override
+DECL|method|getLocalStoragePolicyID ()
+specifier|public
+specifier|final
+name|byte
+name|getLocalStoragePolicyID
+parameter_list|()
+block|{
+return|return
+name|referred
+operator|.
+name|getLocalStoragePolicyID
+argument_list|()
 return|;
 block|}
 annotation|@

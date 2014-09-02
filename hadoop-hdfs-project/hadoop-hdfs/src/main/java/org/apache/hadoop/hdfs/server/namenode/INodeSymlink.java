@@ -632,14 +632,27 @@ throw|;
 block|}
 annotation|@
 name|Override
-DECL|method|getStoragePolicyID (int snapshotId)
+DECL|method|getStoragePolicyID ()
 specifier|public
 name|byte
 name|getStoragePolicyID
-parameter_list|(
-name|int
-name|snapshotId
-parameter_list|)
+parameter_list|()
+block|{
+throw|throw
+operator|new
+name|UnsupportedOperationException
+argument_list|(
+literal|"Storage policy are not supported on symlinks"
+argument_list|)
+throw|;
+block|}
+annotation|@
+name|Override
+DECL|method|getLocalStoragePolicyID ()
+specifier|public
+name|byte
+name|getLocalStoragePolicyID
+parameter_list|()
 block|{
 throw|throw
 operator|new

@@ -134,6 +134,12 @@ name|INodeFileAttributes
 name|other
 parameter_list|)
 function_decl|;
+DECL|method|getLocalStoragePolicyID ()
+specifier|public
+name|byte
+name|getLocalStoragePolicyID
+parameter_list|()
+function_decl|;
 comment|/** A copy of the inode file attributes */
 DECL|class|SnapshotCopy
 specifier|public
@@ -274,10 +280,10 @@ return|;
 block|}
 annotation|@
 name|Override
-DECL|method|getStoragePolicyID ()
+DECL|method|getLocalStoragePolicyID ()
 specifier|public
 name|byte
-name|getStoragePolicyID
+name|getLocalStoragePolicyID
 parameter_list|()
 block|{
 return|return
