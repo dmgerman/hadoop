@@ -864,7 +864,7 @@ name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"Successfully opened for appends"
+literal|"Successfully opened for append"
 argument_list|)
 expr_stmt|;
 name|recovered
