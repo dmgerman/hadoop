@@ -1182,6 +1182,24 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
+annotation|@
+name|Override
+DECL|method|isLocalLog ()
+specifier|public
+name|boolean
+name|isLocalLog
+parameter_list|()
+block|{
+return|return
+name|streams
+index|[
+name|curIdx
+index|]
+operator|.
+name|isLocalLog
+argument_list|()
+return|;
+block|}
 block|}
 end_class
 

@@ -5120,6 +5120,24 @@ name|DFS_DATANODE_BLOCK_ID_LAYOUT_UPGRADE_THREADS
 init|=
 literal|12
 decl_stmt|;
+DECL|field|DFS_NAMENODE_INOTIFY_MAX_EVENTS_PER_RPC_KEY
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|DFS_NAMENODE_INOTIFY_MAX_EVENTS_PER_RPC_KEY
+init|=
+literal|"dfs.namenode.inotify.max.events.per.rpc"
+decl_stmt|;
+DECL|field|DFS_NAMENODE_INOTIFY_MAX_EVENTS_PER_RPC_DEFAULT
+specifier|public
+specifier|static
+specifier|final
+name|int
+name|DFS_NAMENODE_INOTIFY_MAX_EVENTS_PER_RPC_DEFAULT
+init|=
+literal|1000
+decl_stmt|;
 block|}
 end_class
 
