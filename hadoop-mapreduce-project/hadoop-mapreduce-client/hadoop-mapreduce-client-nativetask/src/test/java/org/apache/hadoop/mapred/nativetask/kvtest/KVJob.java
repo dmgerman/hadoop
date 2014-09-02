@@ -787,19 +787,20 @@ expr_stmt|;
 block|}
 DECL|method|runJob ()
 specifier|public
-name|void
+name|boolean
 name|runJob
 parameter_list|()
 throws|throws
 name|Exception
 block|{
+return|return
 name|job
 operator|.
 name|waitForCompletion
 argument_list|(
 literal|true
 argument_list|)
-expr_stmt|;
+return|;
 block|}
 block|}
 end_class
