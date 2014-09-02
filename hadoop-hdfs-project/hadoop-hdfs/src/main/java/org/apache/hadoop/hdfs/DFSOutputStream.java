@@ -5709,9 +5709,53 @@ name|isHflushed
 argument_list|)
 condition|)
 block|{
+try|try
+block|{
 name|addDatanode2ExistingPipeline
 argument_list|()
 expr_stmt|;
+block|}
+catch|catch
+parameter_list|(
+name|IOException
+name|ioe
+parameter_list|)
+block|{
+if|if
+condition|(
+operator|!
+name|dfsClient
+operator|.
+name|dtpReplaceDatanodeOnFailure
+operator|.
+name|isBestEffort
+argument_list|()
+condition|)
+block|{
+throw|throw
+name|ioe
+throw|;
+block|}
+name|DFSClient
+operator|.
+name|LOG
+operator|.
+name|warn
+argument_list|(
+literal|"Failed to replace datanode."
+operator|+
+literal|" Continue with the remaining datanodes since "
+operator|+
+name|DFSConfigKeys
+operator|.
+name|DFS_CLIENT_WRITE_REPLACE_DATANODE_ON_FAILURE_BEST_EFFORT_KEY
+operator|+
+literal|" is set to true."
+argument_list|,
+name|ioe
+argument_list|)
+expr_stmt|;
+block|}
 block|}
 comment|// get a new generation stamp and an access token
 name|LocatedBlock
