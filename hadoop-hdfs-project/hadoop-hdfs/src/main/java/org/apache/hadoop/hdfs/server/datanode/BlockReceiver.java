@@ -4122,17 +4122,21 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
-try|try
-block|{
 name|FileWriter
 name|out
 init|=
+literal|null
+decl_stmt|;
+try|try
+block|{
+name|out
+operator|=
 operator|new
 name|FileWriter
 argument_list|(
 name|restartMeta
 argument_list|)
-decl_stmt|;
+expr_stmt|;
 comment|// write out the current time.
 name|out
 operator|.
@@ -4156,11 +4160,6 @@ operator|.
 name|flush
 argument_list|()
 expr_stmt|;
-name|out
-operator|.
-name|close
-argument_list|()
-expr_stmt|;
 block|}
 catch|catch
 parameter_list|(
@@ -4170,6 +4169,18 @@ parameter_list|)
 block|{
 comment|// The worst case is not recovering this RBW replica.
 comment|// Client will fall back to regular pipeline recovery.
+block|}
+finally|finally
+block|{
+name|IOUtils
+operator|.
+name|cleanup
+argument_list|(
+name|LOG
+argument_list|,
+name|out
+argument_list|)
+expr_stmt|;
 block|}
 try|try
 block|{

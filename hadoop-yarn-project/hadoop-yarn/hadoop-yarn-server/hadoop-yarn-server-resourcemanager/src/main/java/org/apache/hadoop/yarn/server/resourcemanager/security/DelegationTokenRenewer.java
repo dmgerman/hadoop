@@ -1621,7 +1621,7 @@ name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"Canceling token "
+literal|"Cancelling token "
 operator|+
 name|tokenWithConf
 operator|.

@@ -265,23 +265,6 @@ name|Resource
 name|getTotalCapability
 parameter_list|()
 function_decl|;
-comment|/**    * Set resource option with total available resource and overCommitTimoutMillis    * @param resourceOption    */
-DECL|method|setResourceOption (ResourceOption resourceOption)
-specifier|public
-name|void
-name|setResourceOption
-parameter_list|(
-name|ResourceOption
-name|resourceOption
-parameter_list|)
-function_decl|;
-comment|/**    * resource option with total available resource and overCommitTimoutMillis    * @return ResourceOption    */
-DECL|method|getResourceOption ()
-specifier|public
-name|ResourceOption
-name|getResourceOption
-parameter_list|()
-function_decl|;
 comment|/**    * The rack name for this node manager.    * @return the rack name.    */
 DECL|method|getRackName ()
 specifier|public

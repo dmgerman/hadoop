@@ -1768,6 +1768,11 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
+name|super
+argument_list|(
+name|conf
+argument_list|)
+expr_stmt|;
 name|Path
 name|path
 init|=

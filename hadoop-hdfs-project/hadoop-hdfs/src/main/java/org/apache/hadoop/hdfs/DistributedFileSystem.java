@@ -9634,6 +9634,41 @@ name|absF
 argument_list|)
 expr_stmt|;
 block|}
+DECL|method|getInotifyEventStream ()
+specifier|public
+name|DFSInotifyEventInputStream
+name|getInotifyEventStream
+parameter_list|()
+throws|throws
+name|IOException
+block|{
+return|return
+name|dfs
+operator|.
+name|getInotifyEventStream
+argument_list|()
+return|;
+block|}
+DECL|method|getInotifyEventStream (long lastReadTxid)
+specifier|public
+name|DFSInotifyEventInputStream
+name|getInotifyEventStream
+parameter_list|(
+name|long
+name|lastReadTxid
+parameter_list|)
+throws|throws
+name|IOException
+block|{
+return|return
+name|dfs
+operator|.
+name|getInotifyEventStream
+argument_list|(
+name|lastReadTxid
+argument_list|)
+return|;
+block|}
 block|}
 end_class
 

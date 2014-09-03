@@ -4620,6 +4620,18 @@ name|maxOpSize
 argument_list|)
 expr_stmt|;
 block|}
+DECL|method|isLocalLog ()
+annotation|@
+name|Override
+specifier|public
+name|boolean
+name|isLocalLog
+parameter_list|()
+block|{
+return|return
+literal|true
+return|;
+block|}
 block|}
 annotation|@
 name|Test

@@ -2153,7 +2153,7 @@ name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"Repeated write request which hasn't be served: xid="
+literal|"Repeated write request which hasn't been served: xid="
 operator|+
 name|xid
 operator|+
@@ -3015,7 +3015,7 @@ name|xid
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Check if we can start the write (back to HDFS) now. If there is no hole for    * writing, and there is no other threads writing (i.e., asyncStatus is    * false), start the writing and set asyncStatus to true.    *     * @return True if the new write is sequencial and we can start writing    *         (including the case that there is already a thread writing).    */
+comment|/**    * Check if we can start the write (back to HDFS) now. If there is no hole for    * writing, and there is no other threads writing (i.e., asyncStatus is    * false), start the writing and set asyncStatus to true.    *     * @return True if the new write is sequential and we can start writing    *         (including the case that there is already a thread writing).    */
 DECL|method|checkAndStartWrite ( AsyncDataService asyncDataService, WriteCtx writeCtx)
 specifier|private
 specifier|synchronized
@@ -4504,7 +4504,7 @@ name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"The next sequencial write has not arrived yet"
+literal|"The next sequential write has not arrived yet"
 argument_list|)
 expr_stmt|;
 block|}

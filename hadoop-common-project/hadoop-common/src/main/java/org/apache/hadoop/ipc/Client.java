@@ -900,6 +900,16 @@ end_import
 
 begin_import
 import|import
+name|org
+operator|.
+name|htrace
+operator|.
+name|Trace
+import|;
+end_import
+
+begin_import
+import|import
 name|com
 operator|.
 name|google
@@ -3324,6 +3334,24 @@ name|server
 argument_list|)
 expr_stmt|;
 block|}
+if|if
+condition|(
+name|Trace
+operator|.
+name|isTracing
+argument_list|()
+condition|)
+block|{
+name|Trace
+operator|.
+name|addTimelineAnnotation
+argument_list|(
+literal|"IPC client connecting to "
+operator|+
+name|server
+argument_list|)
+expr_stmt|;
+block|}
 name|short
 name|numRetries
 init|=
@@ -3647,6 +3675,24 @@ comment|// update last activity time
 name|touch
 argument_list|()
 expr_stmt|;
+if|if
+condition|(
+name|Trace
+operator|.
+name|isTracing
+argument_list|()
+condition|)
+block|{
+name|Trace
+operator|.
+name|addTimelineAnnotation
+argument_list|(
+literal|"IPC client connected to "
+operator|+
+name|server
+argument_list|)
+expr_stmt|;
+block|}
 comment|// start the receiver thread after the socket connection has been set
 comment|// up
 name|start

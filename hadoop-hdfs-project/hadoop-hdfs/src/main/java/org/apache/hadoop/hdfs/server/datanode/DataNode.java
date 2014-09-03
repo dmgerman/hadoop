@@ -2484,6 +2484,20 @@ begin_import
 import|import
 name|org
 operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|tracing
+operator|.
+name|SpanReceiverHost
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
 name|mortbay
 operator|.
 name|util
@@ -2655,13 +2669,11 @@ specifier|final
 name|String
 name|USAGE
 init|=
-literal|"Usage: java DataNode [-regular | -rollback | -rollingupgrade rollback]\n"
+literal|"Usage: java DataNode [-regular | -rollback]\n"
 operator|+
 literal|"    -regular                 : Normal DataNode startup (default).\n"
 operator|+
-literal|"    -rollback                : Rollback a standard upgrade.\n"
-operator|+
-literal|"    -rollingupgrade rollback : Rollback a rolling upgrade operation.\n"
+literal|"    -rollback                : Rollback a standard or rolling upgrade.\n"
 operator|+
 literal|"  Refer to HDFS documentation for the difference between standard\n"
 operator|+
@@ -3027,6 +3039,11 @@ name|String
 name|dnUserName
 init|=
 literal|null
+decl_stmt|;
+DECL|field|spanReceiverHost
+specifier|private
+name|SpanReceiverHost
+name|spanReceiverHost
 decl_stmt|;
 comment|/**    * Create the DataNode given a configuration, an array of dataDirs,    * and a namenode proxy    */
 DECL|method|DataNode (final Configuration conf, final List<StorageLocation> dataDirs, final SecureResources resources)
@@ -5272,6 +5289,17 @@ name|dnConf
 operator|=
 operator|new
 name|DNConf
+argument_list|(
+name|conf
+argument_list|)
+expr_stmt|;
+name|this
+operator|.
+name|spanReceiverHost
+operator|=
+name|SpanReceiverHost
+operator|.
+name|getInstance
 argument_list|(
 name|conf
 argument_list|)
@@ -8090,6 +8118,23 @@ expr_stmt|;
 block|}
 if|if
 condition|(
+name|this
+operator|.
+name|spanReceiverHost
+operator|!=
+literal|null
+condition|)
+block|{
+name|this
+operator|.
+name|spanReceiverHost
+operator|.
+name|closeReceivers
+argument_list|()
+expr_stmt|;
+block|}
+if|if
+condition|(
 name|shortCircuitRegistry
 operator|!=
 literal|null
@@ -8741,7 +8786,7 @@ literal|", clientname="
 operator|+
 name|clientname
 operator|+
-literal|", targests="
+literal|", targets="
 operator|+
 name|Arrays
 operator|.

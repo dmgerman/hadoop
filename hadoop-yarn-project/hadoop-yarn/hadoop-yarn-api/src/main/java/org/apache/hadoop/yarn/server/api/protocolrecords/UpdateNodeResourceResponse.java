@@ -34,7 +34,7 @@ name|classification
 operator|.
 name|InterfaceAudience
 operator|.
-name|Public
+name|Private
 import|;
 end_import
 
@@ -72,21 +72,62 @@ name|ResourceManagerAdministrationProtocol
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|util
+operator|.
+name|Records
+import|;
+end_import
+
 begin_comment
 comment|/**  *<p>The response sent by the<code>ResourceManager</code> to Admin client on  * node resource change.</p>  *   *<p>Currently, this is empty.</p>  *   * @see ResourceManagerAdministrationProtocol#updateNodeResource(  *      UpdateNodeResourceRequest)  */
 end_comment
 
-begin_interface
+begin_class
 annotation|@
-name|Public
+name|Private
 annotation|@
 name|Evolving
-DECL|interface|UpdateNodeResourceResponse
+DECL|class|UpdateNodeResourceResponse
 specifier|public
-interface|interface
+specifier|abstract
+class|class
 name|UpdateNodeResourceResponse
-block|{  }
-end_interface
+block|{
+DECL|method|newInstance ()
+specifier|public
+specifier|static
+name|UpdateNodeResourceResponse
+name|newInstance
+parameter_list|()
+block|{
+name|UpdateNodeResourceResponse
+name|response
+init|=
+name|Records
+operator|.
+name|newRecord
+argument_list|(
+name|UpdateNodeResourceResponse
+operator|.
+name|class
+argument_list|)
+decl_stmt|;
+return|return
+name|response
+return|;
+block|}
+block|}
+end_class
 
 end_unit
 

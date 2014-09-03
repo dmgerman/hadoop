@@ -148,6 +148,16 @@ name|Test
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|mockito
+operator|.
+name|Mockito
+import|;
+end_import
+
 begin_class
 DECL|class|TestKeyProviderDelegationTokenExtension
 specifier|public
@@ -164,7 +174,23 @@ extends|extends
 name|KeyProvider
 implements|implements
 name|DelegationTokenExtension
-block|{   }
+block|{
+DECL|method|MockKeyProvider ()
+specifier|public
+name|MockKeyProvider
+parameter_list|()
+block|{
+name|super
+argument_list|(
+operator|new
+name|Configuration
+argument_list|(
+literal|false
+argument_list|)
+argument_list|)
+expr_stmt|;
+block|}
+block|}
 annotation|@
 name|Test
 DECL|method|testCreateExtension ()
@@ -251,6 +277,23 @@ operator|.
 name|class
 argument_list|)
 decl_stmt|;
+name|Mockito
+operator|.
+name|when
+argument_list|(
+name|mock
+operator|.
+name|getConf
+argument_list|()
+argument_list|)
+operator|.
+name|thenReturn
+argument_list|(
+operator|new
+name|Configuration
+argument_list|()
+argument_list|)
+expr_stmt|;
 name|when
 argument_list|(
 name|mock

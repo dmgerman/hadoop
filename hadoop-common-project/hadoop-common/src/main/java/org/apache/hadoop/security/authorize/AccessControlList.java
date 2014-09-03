@@ -818,10 +818,12 @@ return|return
 name|groups
 return|;
 block|}
-DECL|method|isUserAllowed (UserGroupInformation ugi)
+comment|/**    * Checks if a user represented by the provided {@link UserGroupInformation}    * is a member of the Access Control List    * @param ugi UserGroupInformation to check if contained in the ACL    * @return true if ugi is member of the list    */
+DECL|method|isUserInList (UserGroupInformation ugi)
 specifier|public
+specifier|final
 name|boolean
-name|isUserAllowed
+name|isUserInList
 parameter_list|(
 name|UserGroupInformation
 name|ugi
@@ -877,6 +879,22 @@ block|}
 block|}
 return|return
 literal|false
+return|;
+block|}
+DECL|method|isUserAllowed (UserGroupInformation ugi)
+specifier|public
+name|boolean
+name|isUserAllowed
+parameter_list|(
+name|UserGroupInformation
+name|ugi
+parameter_list|)
+block|{
+return|return
+name|isUserInList
+argument_list|(
+name|ugi
+argument_list|)
 return|;
 block|}
 comment|/**    * Returns descriptive way of users and groups that are part of this ACL.    * Use {@link #getAclString()} to get the exact String that can be given to    * the constructor of AccessControlList to create a new instance.    */

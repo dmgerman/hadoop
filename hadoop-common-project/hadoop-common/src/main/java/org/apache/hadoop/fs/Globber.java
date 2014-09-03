@@ -1122,6 +1122,29 @@ range|:
 name|children
 control|)
 block|{
+if|if
+condition|(
+name|componentIdx
+operator|<
+name|components
+operator|.
+name|size
+argument_list|()
+operator|-
+literal|1
+condition|)
+block|{
+comment|// Don't try to recurse into non-directories.  See HADOOP-10957.
+if|if
+condition|(
+operator|!
+name|child
+operator|.
+name|isDirectory
+argument_list|()
+condition|)
+continue|continue;
+block|}
 comment|// Set the child path based on the parent path.
 name|child
 operator|.

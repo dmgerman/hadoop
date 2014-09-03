@@ -22,16 +22,6 @@ end_package
 
 begin_import
 import|import
-name|java
-operator|.
-name|io
-operator|.
-name|IOException
-import|;
-end_import
-
-begin_import
-import|import
 name|org
 operator|.
 name|apache
@@ -46,20 +36,6 @@ name|FileHandle
 import|;
 end_import
 
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|oncrpc
-operator|.
-name|XDR
-import|;
-end_import
-
 begin_comment
 comment|/**  * An NFS request that uses {@link FileHandle} to identify a file.  */
 end_comment
@@ -67,8 +43,11 @@ end_comment
 begin_class
 DECL|class|RequestWithHandle
 specifier|public
+specifier|abstract
 class|class
 name|RequestWithHandle
+extends|extends
+name|NFS3Request
 block|{
 DECL|field|handle
 specifier|protected
@@ -90,41 +69,6 @@ operator|=
 name|handle
 expr_stmt|;
 block|}
-DECL|method|RequestWithHandle (XDR xdr)
-name|RequestWithHandle
-parameter_list|(
-name|XDR
-name|xdr
-parameter_list|)
-throws|throws
-name|IOException
-block|{
-name|handle
-operator|=
-operator|new
-name|FileHandle
-argument_list|()
-expr_stmt|;
-if|if
-condition|(
-operator|!
-name|handle
-operator|.
-name|deserialize
-argument_list|(
-name|xdr
-argument_list|)
-condition|)
-block|{
-throw|throw
-operator|new
-name|IOException
-argument_list|(
-literal|"can't deserialize file handle"
-argument_list|)
-throw|;
-block|}
-block|}
 DECL|method|getHandle ()
 specifier|public
 name|FileHandle
@@ -136,23 +80,6 @@ name|this
 operator|.
 name|handle
 return|;
-block|}
-DECL|method|serialize (XDR xdr)
-specifier|public
-name|void
-name|serialize
-parameter_list|(
-name|XDR
-name|xdr
-parameter_list|)
-block|{
-name|handle
-operator|.
-name|serialize
-argument_list|(
-name|xdr
-argument_list|)
-expr_stmt|;
 block|}
 block|}
 end_class

@@ -808,6 +808,13 @@ literal|1024
 operator|*
 literal|1024l
 decl_stmt|;
+comment|/** the desired replication degree; default is 10 **/
+DECL|field|repl
+name|short
+name|repl
+init|=
+literal|10
+decl_stmt|;
 DECL|field|usage
 specifier|private
 specifier|static
@@ -817,7 +824,9 @@ name|usage
 init|=
 literal|"archive"
 operator|+
-literal|" -archiveName NAME -p<parent path><src>*<dest>"
+literal|" -archiveName NAME -p<parent path> [-r<replication factor>]"
+operator|+
+literal|"<src>*<dest>"
 operator|+
 literal|"\n"
 decl_stmt|;
@@ -3103,10 +3112,7 @@ name|setReplication
 argument_list|(
 name|srcFiles
 argument_list|,
-operator|(
-name|short
-operator|)
-literal|10
+name|repl
 argument_list|)
 expr_stmt|;
 name|conf
@@ -4781,6 +4787,38 @@ name|i
 operator|+=
 literal|2
 expr_stmt|;
+if|if
+condition|(
+literal|"-r"
+operator|.
+name|equals
+argument_list|(
+name|args
+index|[
+name|i
+index|]
+argument_list|)
+condition|)
+block|{
+name|repl
+operator|=
+name|Short
+operator|.
+name|parseShort
+argument_list|(
+name|args
+index|[
+name|i
+operator|+
+literal|1
+index|]
+argument_list|)
+expr_stmt|;
+name|i
+operator|+=
+literal|2
+expr_stmt|;
+block|}
 comment|//read the rest of the paths
 for|for
 control|(

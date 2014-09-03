@@ -508,6 +508,35 @@ block|}
 block|}
 annotation|@
 name|Override
+DECL|method|updatePreemptionVariables ()
+specifier|public
+name|void
+name|updatePreemptionVariables
+parameter_list|()
+block|{
+name|super
+operator|.
+name|updatePreemptionVariables
+argument_list|()
+expr_stmt|;
+comment|// For child queues
+for|for
+control|(
+name|FSQueue
+name|childQueue
+range|:
+name|childQueues
+control|)
+block|{
+name|childQueue
+operator|.
+name|updatePreemptionVariables
+argument_list|()
+expr_stmt|;
+block|}
+block|}
+annotation|@
+name|Override
 DECL|method|getDemand ()
 specifier|public
 name|Resource

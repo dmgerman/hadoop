@@ -1280,7 +1280,7 @@ name|LOG
 operator|.
 name|fatal
 argument_list|(
-literal|"Error running CLient"
+literal|"Error running Client"
 argument_list|,
 name|t
 argument_list|)

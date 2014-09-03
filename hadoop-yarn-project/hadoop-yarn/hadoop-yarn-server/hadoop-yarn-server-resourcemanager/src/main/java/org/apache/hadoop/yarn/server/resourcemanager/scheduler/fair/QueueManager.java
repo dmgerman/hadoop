@@ -813,6 +813,11 @@ argument_list|(
 name|leafQueue
 argument_list|)
 expr_stmt|;
+name|leafQueue
+operator|.
+name|updatePreemptionVariables
+argument_list|()
+expr_stmt|;
 return|return
 name|leafQueue
 return|;
@@ -886,6 +891,11 @@ argument_list|()
 argument_list|,
 name|newParent
 argument_list|)
+expr_stmt|;
+name|newParent
+operator|.
+name|updatePreemptionVariables
+argument_list|()
 expr_stmt|;
 name|parent
 operator|=
@@ -1632,6 +1642,13 @@ comment|// Update steady fair shares for all queues
 name|rootQueue
 operator|.
 name|recomputeSteadyShares
+argument_list|()
+expr_stmt|;
+comment|// Update the fair share preemption timeouts and preemption for all queues
+comment|// recursively
+name|rootQueue
+operator|.
+name|updatePreemptionVariables
 argument_list|()
 expr_stmt|;
 block|}

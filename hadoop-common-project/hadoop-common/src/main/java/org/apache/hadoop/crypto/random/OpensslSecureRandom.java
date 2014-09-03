@@ -98,6 +98,20 @@ name|Preconditions
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|util
+operator|.
+name|PerformanceAdvisory
+import|;
+end_import
+
 begin_comment
 comment|/**  * OpenSSL secure random using JNI.  * This implementation is thread-safe.  *<p/>  *   * If using an Intel chipset with RDRAND, the high-performance hardware   * random number generator will be used and it's much faster than  * {@link java.security.SecureRandom}. If RDRAND is unavailable, default  * OpenSSL secure random generator will be used. It's still faster  * and can generate strong random bytes.  *<p/>  * @see https://wiki.openssl.org/index.php/Random_Numbers  * @see http://en.wikipedia.org/wiki/RdRand  */
 end_comment
@@ -228,6 +242,17 @@ operator|!
 name|nativeEnabled
 condition|)
 block|{
+name|PerformanceAdvisory
+operator|.
+name|LOG
+operator|.
+name|debug
+argument_list|(
+literal|"Build does not support openssl, "
+operator|+
+literal|"falling back to Java SecureRandom."
+argument_list|)
+expr_stmt|;
 name|fallback
 operator|=
 operator|new

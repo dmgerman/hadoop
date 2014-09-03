@@ -2245,6 +2245,20 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
+annotation|@
+name|Override
+DECL|method|isLocalLog ()
+specifier|public
+name|boolean
+name|isLocalLog
+parameter_list|()
+block|{
+return|return
+name|log
+operator|instanceof
+name|FileLog
+return|;
+block|}
 block|}
 end_class
 

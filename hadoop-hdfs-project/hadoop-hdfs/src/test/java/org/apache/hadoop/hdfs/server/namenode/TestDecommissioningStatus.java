@@ -1074,6 +1074,13 @@ argument_list|(
 name|buffer
 argument_list|)
 expr_stmt|;
+comment|// need to make sure that we actually write out both file blocks
+comment|// (see FSOutputSummer#flush)
+name|stm
+operator|.
+name|flush
+argument_list|()
+expr_stmt|;
 comment|// Do not close stream, return it
 comment|// so that it is not garbage collected
 return|return

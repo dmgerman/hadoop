@@ -2856,7 +2856,7 @@ name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"Read an compressed iamge and store it as uncompressed."
+literal|"Read a compressed image and store it as uncompressed."
 argument_list|)
 expr_stmt|;
 name|conf

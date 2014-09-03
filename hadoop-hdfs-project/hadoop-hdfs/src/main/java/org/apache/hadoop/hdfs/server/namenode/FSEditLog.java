@@ -1664,6 +1664,17 @@ name|URI
 argument_list|>
 name|sharedEditsDirs
 decl_stmt|;
+comment|/**    * Take this lock when adding journals to or closing the JournalSet. Allows    * us to ensure that the JournalSet isn't closed or updated underneath us    * in selectInputStreams().    */
+DECL|field|journalSetLock
+specifier|private
+specifier|final
+name|Object
+name|journalSetLock
+init|=
+operator|new
+name|Object
+argument_list|()
+decl_stmt|;
 DECL|class|TransactionId
 specifier|private
 specifier|static
@@ -1929,6 +1940,11 @@ operator|.
 name|DFS_NAMENODE_EDITS_DIR_MINIMUM_DEFAULT
 argument_list|)
 decl_stmt|;
+synchronized|synchronized
+init|(
+name|journalSetLock
+init|)
+block|{
 name|journalSet
 operator|=
 operator|new
@@ -2039,6 +2055,7 @@ name|u
 argument_list|)
 argument_list|)
 expr_stmt|;
+block|}
 block|}
 block|}
 if|if
@@ -2322,11 +2339,17 @@ condition|)
 block|{
 try|try
 block|{
+synchronized|synchronized
+init|(
+name|journalSetLock
+init|)
+block|{
 name|journalSet
 operator|.
 name|close
 argument_list|()
 expr_stmt|;
+block|}
 block|}
 catch|catch
 parameter_list|(
@@ -3009,6 +3032,11 @@ name|Exception
 argument_list|()
 argument_list|)
 expr_stmt|;
+synchronized|synchronized
+init|(
+name|journalSetLock
+init|)
+block|{
 name|IOUtils
 operator|.
 name|cleanup
@@ -3018,6 +3046,7 @@ argument_list|,
 name|journalSet
 argument_list|)
 expr_stmt|;
+block|}
 name|terminate
 argument_list|(
 literal|1
@@ -3100,6 +3129,11 @@ name|Exception
 argument_list|()
 argument_list|)
 expr_stmt|;
+synchronized|synchronized
+init|(
+name|journalSetLock
+init|)
+block|{
 name|IOUtils
 operator|.
 name|cleanup
@@ -3109,6 +3143,7 @@ argument_list|,
 name|journalSet
 argument_list|)
 expr_stmt|;
+block|}
 name|terminate
 argument_list|(
 literal|1
@@ -6182,8 +6217,9 @@ parameter_list|)
 block|{}
 block|}
 block|}
-comment|/**    * Return the txid of the last synced transaction.    * For test use only    */
+comment|/**    * Return the txid of the last synced transaction.    */
 DECL|method|getSyncTxId ()
+specifier|public
 specifier|synchronized
 name|long
 name|getSyncTxId
@@ -6290,6 +6326,11 @@ argument_list|,
 name|nnReg
 argument_list|)
 decl_stmt|;
+synchronized|synchronized
+init|(
+name|journalSetLock
+init|)
+block|{
 name|journalSet
 operator|.
 name|add
@@ -6299,6 +6340,7 @@ argument_list|,
 literal|false
 argument_list|)
 expr_stmt|;
+block|}
 block|}
 DECL|method|releaseBackupStream (NamenodeRegistration registration)
 specifier|synchronized
@@ -6337,6 +6379,11 @@ operator|+
 name|bjm
 argument_list|)
 expr_stmt|;
+synchronized|synchronized
+init|(
+name|journalSetLock
+init|)
+block|{
 name|journalSet
 operator|.
 name|remove
@@ -6344,6 +6391,7 @@ argument_list|(
 name|bjm
 argument_list|)
 expr_stmt|;
+block|}
 block|}
 block|}
 comment|/**    * Find the JournalAndStream associated with this BackupNode.    *     * @return null if it cannot be found    */
@@ -6920,7 +6968,6 @@ block|}
 comment|/**    * Select a list of input streams.    *     * @param fromTxId first transaction in the selected streams    * @param toAtLeastTxId the selected streams must contain this transaction    * @param recovery recovery context    * @param inProgressOk set to true if in-progress streams are OK    */
 DECL|method|selectInputStreams ( long fromTxId, long toAtLeastTxId, MetaRecoveryContext recovery, boolean inProgressOk)
 specifier|public
-specifier|synchronized
 name|Collection
 argument_list|<
 name|EditLogInputStream
@@ -6955,6 +7002,25 @@ name|EditLogInputStream
 argument_list|>
 argument_list|()
 decl_stmt|;
+synchronized|synchronized
+init|(
+name|journalSetLock
+init|)
+block|{
+name|Preconditions
+operator|.
+name|checkState
+argument_list|(
+name|journalSet
+operator|.
+name|isOpen
+argument_list|()
+argument_list|,
+literal|"Cannot call "
+operator|+
+literal|"selectInputStreams() on closed FSEditLog"
+argument_list|)
+expr_stmt|;
 name|selectInputStreams
 argument_list|(
 name|streams
@@ -6964,6 +7030,7 @@ argument_list|,
 name|inProgressOk
 argument_list|)
 expr_stmt|;
+block|}
 try|try
 block|{
 name|checkForGaps

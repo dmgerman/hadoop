@@ -263,6 +263,12 @@ name|DEFAULT_BITLENGTH
 init|=
 literal|128
 decl_stmt|;
+DECL|field|conf
+specifier|private
+specifier|final
+name|Configuration
+name|conf
+decl_stmt|;
 comment|/**    * The combination of both the key version name and the key material.    */
 DECL|class|KeyVersion
 specifier|public
@@ -1781,6 +1787,37 @@ operator|+
 literal|'}'
 return|;
 block|}
+block|}
+comment|/**    * Constructor.    *     * @param conf configuration for the provider    */
+DECL|method|KeyProvider (Configuration conf)
+specifier|public
+name|KeyProvider
+parameter_list|(
+name|Configuration
+name|conf
+parameter_list|)
+block|{
+name|this
+operator|.
+name|conf
+operator|=
+operator|new
+name|Configuration
+argument_list|(
+name|conf
+argument_list|)
+expr_stmt|;
+block|}
+comment|/**    * Return the provider configuration.    *     * @return the provider configuration    */
+DECL|method|getConf ()
+specifier|public
+name|Configuration
+name|getConf
+parameter_list|()
+block|{
+return|return
+name|conf
+return|;
 block|}
 comment|/**    * A helper function to create an options object.    * @param conf the configuration to use    * @return a new options object    */
 DECL|method|options (Configuration conf)
