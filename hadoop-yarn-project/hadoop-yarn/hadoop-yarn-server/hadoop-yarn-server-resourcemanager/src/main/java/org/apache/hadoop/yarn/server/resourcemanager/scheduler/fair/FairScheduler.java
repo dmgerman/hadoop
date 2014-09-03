@@ -2039,7 +2039,7 @@ operator|.
 name|getTime
 argument_list|()
 decl_stmt|;
-name|updatePreemptionVariables
+name|updateStarvationStats
 argument_list|()
 expr_stmt|;
 comment|// Determine if any queues merit preemption
@@ -2152,25 +2152,19 @@ name|duration
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Update the preemption fields for all QueueScheduables, i.e. the times since    * each queue last was at its guaranteed share and at> 1/2 of its fair share    * for each type of task.    */
-DECL|method|updatePreemptionVariables ()
+comment|/**    * Update the preemption fields for all QueueScheduables, i.e. the times since    * each queue last was at its guaranteed share and over its fair share    * threshold for each type of task.    */
+DECL|method|updateStarvationStats ()
 specifier|private
 name|void
-name|updatePreemptionVariables
+name|updateStarvationStats
 parameter_list|()
 block|{
-name|long
-name|now
-init|=
-name|getClock
-argument_list|()
+name|lastPreemptionUpdateTime
+operator|=
+name|clock
 operator|.
 name|getTime
 argument_list|()
-decl_stmt|;
-name|lastPreemptionUpdateTime
-operator|=
-name|now
 expr_stmt|;
 for|for
 control|(
@@ -2183,148 +2177,14 @@ name|getLeafQueues
 argument_list|()
 control|)
 block|{
-if|if
-condition|(
-operator|!
-name|isStarvedForMinShare
-argument_list|(
-name|sched
-argument_list|)
-condition|)
-block|{
 name|sched
 operator|.
-name|setLastTimeAtMinShare
-argument_list|(
-name|now
-argument_list|)
-expr_stmt|;
-block|}
-if|if
-condition|(
-operator|!
-name|isStarvedForFairShare
-argument_list|(
-name|sched
-argument_list|)
-condition|)
-block|{
-name|sched
-operator|.
-name|setLastTimeAtHalfFairShare
-argument_list|(
-name|now
-argument_list|)
+name|updateStarvationStats
+argument_list|()
 expr_stmt|;
 block|}
 block|}
-block|}
-comment|/**    * Is a queue below its min share for the given task type?    */
-DECL|method|isStarvedForMinShare (FSLeafQueue sched)
-name|boolean
-name|isStarvedForMinShare
-parameter_list|(
-name|FSLeafQueue
-name|sched
-parameter_list|)
-block|{
-name|Resource
-name|desiredShare
-init|=
-name|Resources
-operator|.
-name|min
-argument_list|(
-name|RESOURCE_CALCULATOR
-argument_list|,
-name|clusterResource
-argument_list|,
-name|sched
-operator|.
-name|getMinShare
-argument_list|()
-argument_list|,
-name|sched
-operator|.
-name|getDemand
-argument_list|()
-argument_list|)
-decl_stmt|;
-return|return
-name|Resources
-operator|.
-name|lessThan
-argument_list|(
-name|RESOURCE_CALCULATOR
-argument_list|,
-name|clusterResource
-argument_list|,
-name|sched
-operator|.
-name|getResourceUsage
-argument_list|()
-argument_list|,
-name|desiredShare
-argument_list|)
-return|;
-block|}
-comment|/**    * Is a queue being starved for fair share for the given task type? This is    * defined as being below half its fair share.    */
-DECL|method|isStarvedForFairShare (FSLeafQueue sched)
-name|boolean
-name|isStarvedForFairShare
-parameter_list|(
-name|FSLeafQueue
-name|sched
-parameter_list|)
-block|{
-name|Resource
-name|desiredFairShare
-init|=
-name|Resources
-operator|.
-name|min
-argument_list|(
-name|RESOURCE_CALCULATOR
-argument_list|,
-name|clusterResource
-argument_list|,
-name|Resources
-operator|.
-name|multiply
-argument_list|(
-name|sched
-operator|.
-name|getFairShare
-argument_list|()
-argument_list|,
-literal|.5
-argument_list|)
-argument_list|,
-name|sched
-operator|.
-name|getDemand
-argument_list|()
-argument_list|)
-decl_stmt|;
-return|return
-name|Resources
-operator|.
-name|lessThan
-argument_list|(
-name|RESOURCE_CALCULATOR
-argument_list|,
-name|clusterResource
-argument_list|,
-name|sched
-operator|.
-name|getResourceUsage
-argument_list|()
-argument_list|,
-name|desiredFairShare
-argument_list|)
-return|;
-block|}
-comment|/**    * Check for queues that need tasks preempted, either because they have been    * below their guaranteed share for minSharePreemptionTimeout or they have    * been below half their fair share for the fairSharePreemptionTimeout. If    * such queues exist, compute how many tasks of each type need to be preempted    * and then select the right ones using preemptTasks.    */
+comment|/**    * Check for queues that need tasks preempted, either because they have been    * below their guaranteed share for minSharePreemptionTimeout or they have    * been below their fair share threshold for the fairSharePreemptionTimeout. If    * such queues exist, compute how many tasks of each type need to be preempted    * and then select the right ones using preemptTasks.    */
 DECL|method|preemptTasksIfNecessary ()
 specifier|protected
 specifier|synchronized
@@ -2898,7 +2758,7 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-comment|/**    * Return the resource amount that this queue is allowed to preempt, if any.    * If the queue has been below its min share for at least its preemption    * timeout, it should preempt the difference between its current share and    * this min share. If it has been below half its fair share for at least the    * fairSharePreemptionTimeout, it should preempt enough tasks to get up to its    * full fair share. If both conditions hold, we preempt the max of the two    * amounts (this shouldn't happen unless someone sets the timeouts to be    * identical for some reason).    */
+comment|/**    * Return the resource amount that this queue is allowed to preempt, if any.    * If the queue has been below its min share for at least its preemption    * timeout, it should preempt the difference between its current share and    * this min share. If it has been below its fair share preemption threshold    * for at least the fairSharePreemptionTimeout, it should preempt enough tasks    * to get up to its full fair share. If both conditions hold, we preempt the    * max of the two amounts (this shouldn't happen unless someone sets the    * timeouts to be identical for some reason).    */
 DECL|method|resToPreempt (FSLeafQueue sched, long curTime)
 specifier|protected
 name|Resource
@@ -3012,7 +2872,7 @@ name|curTime
 operator|-
 name|sched
 operator|.
-name|getLastTimeAtHalfFairShare
+name|getLastTimeAtFairShareThreshold
 argument_list|()
 operator|>
 name|fairShareTimeout
@@ -5852,6 +5712,17 @@ name|getApplicationAttempt
 argument_list|(
 name|appAttemptId
 argument_list|)
+return|;
+block|}
+DECL|method|getResourceCalculator ()
+specifier|public
+specifier|static
+name|ResourceCalculator
+name|getResourceCalculator
+parameter_list|()
+block|{
+return|return
+name|RESOURCE_CALCULATOR
 return|;
 block|}
 comment|/**    * Subqueue metrics might be a little out of date because fair shares are    * recalculated at the update interval, but the root queue metrics needs to    * be updated synchronously with allocations and completions so that cluster    * metrics will be consistent.    */

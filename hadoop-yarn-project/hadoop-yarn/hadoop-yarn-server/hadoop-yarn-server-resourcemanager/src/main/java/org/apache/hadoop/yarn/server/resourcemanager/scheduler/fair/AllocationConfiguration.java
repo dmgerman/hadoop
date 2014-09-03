@@ -365,6 +365,21 @@ name|Long
 argument_list|>
 name|fairSharePreemptionTimeouts
 decl_stmt|;
+comment|// The fair share preemption threshold for each queue. If a queue waits
+comment|// fairSharePreemptionTimeout without receiving
+comment|// fairshare * fairSharePreemptionThreshold resources, it is allowed to
+comment|// preempt other queues' tasks.
+DECL|field|fairSharePreemptionThresholds
+specifier|private
+specifier|final
+name|Map
+argument_list|<
+name|String
+argument_list|,
+name|Float
+argument_list|>
+name|fairSharePreemptionThresholds
+decl_stmt|;
 DECL|field|schedulingPolicies
 specifier|private
 specifier|final
@@ -404,7 +419,7 @@ argument_list|>
 argument_list|>
 name|configuredQueues
 decl_stmt|;
-DECL|method|AllocationConfiguration (Map<String, Resource> minQueueResources, Map<String, Resource> maxQueueResources, Map<String, Integer> queueMaxApps, Map<String, Integer> userMaxApps, Map<String, ResourceWeights> queueWeights, Map<String, Float> queueMaxAMShares, int userMaxAppsDefault, int queueMaxAppsDefault, float queueMaxAMShareDefault, Map<String, SchedulingPolicy> schedulingPolicies, SchedulingPolicy defaultSchedulingPolicy, Map<String, Long> minSharePreemptionTimeouts, Map<String, Long> fairSharePreemptionTimeouts, Map<String, Map<QueueACL, AccessControlList>> queueAcls, QueuePlacementPolicy placementPolicy, Map<FSQueueType, Set<String>> configuredQueues)
+DECL|method|AllocationConfiguration (Map<String, Resource> minQueueResources, Map<String, Resource> maxQueueResources, Map<String, Integer> queueMaxApps, Map<String, Integer> userMaxApps, Map<String, ResourceWeights> queueWeights, Map<String, Float> queueMaxAMShares, int userMaxAppsDefault, int queueMaxAppsDefault, float queueMaxAMShareDefault, Map<String, SchedulingPolicy> schedulingPolicies, SchedulingPolicy defaultSchedulingPolicy, Map<String, Long> minSharePreemptionTimeouts, Map<String, Long> fairSharePreemptionTimeouts, Map<String, Float> fairSharePreemptionThresholds, Map<String, Map<QueueACL, AccessControlList>> queueAcls, QueuePlacementPolicy placementPolicy, Map<FSQueueType, Set<String>> configuredQueues)
 specifier|public
 name|AllocationConfiguration
 parameter_list|(
@@ -491,6 +506,14 @@ argument_list|,
 name|Long
 argument_list|>
 name|fairSharePreemptionTimeouts
+parameter_list|,
+name|Map
+argument_list|<
+name|String
+argument_list|,
+name|Float
+argument_list|>
+name|fairSharePreemptionThresholds
 parameter_list|,
 name|Map
 argument_list|<
@@ -597,6 +620,12 @@ operator|.
 name|fairSharePreemptionTimeouts
 operator|=
 name|fairSharePreemptionTimeouts
+expr_stmt|;
+name|this
+operator|.
+name|fairSharePreemptionThresholds
+operator|=
+name|fairSharePreemptionThresholds
 expr_stmt|;
 name|this
 operator|.
@@ -743,6 +772,17 @@ argument_list|<
 name|String
 argument_list|,
 name|Long
+argument_list|>
+argument_list|()
+expr_stmt|;
+name|fairSharePreemptionThresholds
+operator|=
+operator|new
+name|HashMap
+argument_list|<
+name|String
+argument_list|,
+name|Float
 argument_list|>
 argument_list|()
 expr_stmt|;
@@ -953,6 +993,39 @@ operator|-
 literal|1
 else|:
 name|fairSharePreemptionTimeout
+return|;
+block|}
+comment|/**    * Get a queue's fair share preemption threshold in the allocation file.    * Return -1f if not set.    */
+DECL|method|getFairSharePreemptionThreshold (String queueName)
+specifier|public
+name|float
+name|getFairSharePreemptionThreshold
+parameter_list|(
+name|String
+name|queueName
+parameter_list|)
+block|{
+name|Float
+name|fairSharePreemptionThreshold
+init|=
+name|fairSharePreemptionThresholds
+operator|.
+name|get
+argument_list|(
+name|queueName
+argument_list|)
+decl_stmt|;
+return|return
+operator|(
+name|fairSharePreemptionThreshold
+operator|==
+literal|null
+operator|)
+condition|?
+operator|-
+literal|1f
+else|:
+name|fairSharePreemptionThreshold
 return|;
 block|}
 DECL|method|getQueueWeight (String queue)

@@ -508,15 +508,15 @@ block|}
 block|}
 annotation|@
 name|Override
-DECL|method|updatePreemptionTimeouts ()
+DECL|method|updatePreemptionVariables ()
 specifier|public
 name|void
-name|updatePreemptionTimeouts
+name|updatePreemptionVariables
 parameter_list|()
 block|{
 name|super
 operator|.
-name|updatePreemptionTimeouts
+name|updatePreemptionVariables
 argument_list|()
 expr_stmt|;
 comment|// For child queues
@@ -530,7 +530,7 @@ control|)
 block|{
 name|childQueue
 operator|.
-name|updatePreemptionTimeouts
+name|updatePreemptionVariables
 argument_list|()
 expr_stmt|;
 block|}
