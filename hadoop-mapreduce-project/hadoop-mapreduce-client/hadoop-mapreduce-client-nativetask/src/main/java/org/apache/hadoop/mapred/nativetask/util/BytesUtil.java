@@ -312,7 +312,7 @@ argument_list|)
 argument_list|)
 return|;
 block|}
-comment|/**    * Write a printable representation of a byte array.    *    * @param b byte array    * @return string    * @see #toStringBinary(byte[], int, int)    */
+comment|/**    * Write a printable representation of a byte array.    *    * @param b byte array    * @return the printable presentation    * @see #toStringBinary(byte[], int, int)    */
 DECL|method|toStringBinary (final byte [] b)
 specifier|public
 specifier|static

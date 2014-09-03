@@ -100,7 +100,7 @@ specifier|public
 interface|interface
 name|NativeTaskOutput
 block|{
-comment|/**    * Return the path to local map output file created earlier    *     * @return path    * @throws IOException    */
+comment|/**    * Return the path to local map output file created earlier    */
 DECL|method|getOutputFile ()
 specifier|public
 name|Path
@@ -109,7 +109,7 @@ parameter_list|()
 throws|throws
 name|IOException
 function_decl|;
-comment|/**    * Create a local map output file name.    *     * @param size    *          the size of the file    * @return path    * @throws IOException    */
+comment|/**    * Create a local map output file name.    *     * @param size the size of the file    */
 DECL|method|getOutputFileForWrite (long size)
 specifier|public
 name|Path
@@ -121,7 +121,7 @@ parameter_list|)
 throws|throws
 name|IOException
 function_decl|;
-comment|/**    * Return the path to a local map output index file created earlier    *     * @return path    * @throws IOException    */
+comment|/**    * Return the path to a local map output index file created earlier    */
 DECL|method|getOutputIndexFile ()
 specifier|public
 name|Path
@@ -130,7 +130,7 @@ parameter_list|()
 throws|throws
 name|IOException
 function_decl|;
-comment|/**    * Create a local map output index file name.    *     * @param size    *          the size of the file    * @return path    * @throws IOException    */
+comment|/**    * Create a local map output index file name.    *     * @param size the size of the file    */
 DECL|method|getOutputIndexFileForWrite (long size)
 specifier|public
 name|Path
@@ -142,7 +142,7 @@ parameter_list|)
 throws|throws
 name|IOException
 function_decl|;
-comment|/**    * Return a local map spill file created earlier.    *     * @param spillNumber    *          the number    * @return path    * @throws IOException    */
+comment|/**    * Return a local map spill file created earlier.    *     * @param spillNumber the number    */
 DECL|method|getSpillFile (int spillNumber)
 specifier|public
 name|Path
@@ -154,7 +154,7 @@ parameter_list|)
 throws|throws
 name|IOException
 function_decl|;
-comment|/**    * Create a local map spill file name.    *     * @param spillNumber    *          the number    * @param size    *          the size of the file    * @return path    * @throws IOException    */
+comment|/**    * Create a local map spill file name.    *     * @param spillNumber the number    * @param size the size of the file    */
 DECL|method|getSpillFileForWrite (int spillNumber, long size)
 specifier|public
 name|Path
@@ -169,7 +169,7 @@ parameter_list|)
 throws|throws
 name|IOException
 function_decl|;
-comment|/**    * Return a local map spill index file created earlier    *     * @param spillNumber    *          the number    * @return path    * @throws IOException    */
+comment|/**    * Return a local map spill index file created earlier    *     * @param spillNumber the number    */
 DECL|method|getSpillIndexFile (int spillNumber)
 specifier|public
 name|Path
@@ -181,7 +181,7 @@ parameter_list|)
 throws|throws
 name|IOException
 function_decl|;
-comment|/**    * Create a local map spill index file name.    *     * @param spillNumber    *          the number    * @param size    *          the size of the file    * @return path    * @throws IOException    */
+comment|/**    * Create a local map spill index file name.    *      r* @param spillNumber the number    * @param size the size of the file    */
 DECL|method|getSpillIndexFileForWrite (int spillNumber, long size)
 specifier|public
 name|Path
@@ -196,7 +196,7 @@ parameter_list|)
 throws|throws
 name|IOException
 function_decl|;
-comment|/**    * Return a local reduce input file created earlier    *     * @param mapId    *          a map task id    * @return path    * @throws IOException    */
+comment|/**    * Return a local reduce input file created earlier    *     * @param mapId a map task id    */
 DECL|method|getInputFile (int mapId)
 specifier|public
 name|Path
@@ -208,7 +208,7 @@ parameter_list|)
 throws|throws
 name|IOException
 function_decl|;
-comment|/**    * Create a local reduce input file name.    *     * @param mapId    *          a map task id    * @param size    *          the size of the file    * @return path    * @throws IOException    */
+comment|/**    * Create a local reduce input file name.    *     * @param mapId a map task id    * @param size the size of the file    */
 DECL|method|getInputFileForWrite (TaskID mapId, long size, Configuration conf)
 specifier|public
 name|Path

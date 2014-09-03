@@ -58,7 +58,7 @@ specifier|public
 interface|interface
 name|IDataLoader
 block|{
-comment|/**    * @return size of data loaded    * @throws IOException    */
+comment|/**    * @return size of data loaded    */
 DECL|method|load ()
 specifier|public
 name|int

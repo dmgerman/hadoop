@@ -991,7 +991,7 @@ return|return
 literal|null
 return|;
 block|}
-comment|/**    * Closes the iterator so that the underlying streams can be closed.    *     * @throws IOException    */
+comment|/**    * Closes the iterator so that the underlying streams can be closed.    */
 annotation|@
 name|Override
 DECL|method|close ()

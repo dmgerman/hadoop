@@ -56,7 +56,7 @@ specifier|public
 interface|interface
 name|DataReceiver
 block|{
-comment|/**    * Send a signal to the receiver that the data arrives.    * The data is transferred in another band.    *     * @return    * @throws IOException    */
+comment|/**    * Send a signal to the receiver that the data arrives.    * The data is transferred in another band.    */
 DECL|method|receiveData ()
 specifier|public
 name|boolean

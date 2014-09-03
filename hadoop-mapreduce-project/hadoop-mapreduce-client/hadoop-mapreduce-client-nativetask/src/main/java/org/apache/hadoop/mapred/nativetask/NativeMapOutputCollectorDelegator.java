@@ -736,7 +736,9 @@ block|{
 name|String
 name|message
 init|=
-literal|"Native output collector doesn't support this key, this key is not comparable in native "
+literal|"Native output collector doesn't support this key, "
+operator|+
+literal|"this key is not comparable in native: "
 operator|+
 name|keyCls
 operator|.
@@ -920,7 +922,9 @@ block|{
 name|String
 name|message
 init|=
-literal|"Nativeruntime cannot be loaded, please check the libnativetask.so is in hadoop library dir"
+literal|"NativeRuntime cannot be loaded, please check that "
+operator|+
+literal|"libnativetask.so is in hadoop library dir"
 decl_stmt|;
 name|LOG
 operator|.

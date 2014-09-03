@@ -56,7 +56,7 @@ specifier|public
 interface|interface
 name|ICombineHandler
 block|{
-comment|/**    * run combiner    * @throws IOException    */
+comment|/**    * run combiner    */
 DECL|method|combine ()
 specifier|public
 name|void
@@ -72,7 +72,7 @@ name|long
 name|getId
 parameter_list|()
 function_decl|;
-comment|/**    * close handlers, buffer pullers and pushers    * @throws IOException    */
+comment|/**    * close handlers, buffer pullers and pushers    */
 DECL|method|close ()
 specifier|public
 name|void

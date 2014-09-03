@@ -172,7 +172,7 @@ specifier|public
 class|class
 name|ResultVerifier
 block|{
-comment|/**    * verify the result    *     * @param sample    *          :nativetask output    * @param source    *          :yuanwenjian    * @throws Exception    */
+comment|/**    * verify the result    *     * @param sample the path to correct results    * @param source the path to the results from the native implementation    */
 DECL|method|verify (String sample, String source)
 specifier|public
 specifier|static
@@ -421,7 +421,7 @@ throw|throw
 operator|new
 name|Exception
 argument_list|(
-literal|"cound not found file "
+literal|"cound not find file "
 operator|+
 name|samplepaths
 index|[

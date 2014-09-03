@@ -125,7 +125,7 @@ parameter_list|()
 throws|throws
 name|IOException
 function_decl|;
-comment|/**    * call command to downstream    *     * @param command    * @param parameter    * @return    * @throws IOException    */
+comment|/**    * call command to downstream    */
 DECL|method|call (Command command, ReadWriteBuffer parameter)
 specifier|public
 name|ReadWriteBuffer
@@ -140,7 +140,6 @@ parameter_list|)
 throws|throws
 name|IOException
 function_decl|;
-comment|/**    * @param handler    */
 DECL|method|setCommandDispatcher (CommandDispatcher handler)
 name|void
 name|setCommandDispatcher

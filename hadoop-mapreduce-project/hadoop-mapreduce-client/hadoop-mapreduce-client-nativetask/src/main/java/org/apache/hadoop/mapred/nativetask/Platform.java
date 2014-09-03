@@ -181,7 +181,7 @@ name|getInstance
 argument_list|()
 expr_stmt|;
 block|}
-comment|/**    * initialize a platform, where we should call registerKey    *    * @throws IOException    */
+comment|/**    * initialize a platform, where we should call registerKey    */
 DECL|method|init ()
 specifier|public
 specifier|abstract
@@ -199,7 +199,7 @@ name|String
 name|name
 parameter_list|()
 function_decl|;
-comment|/**    * associate a key class with its serializer and platform    *    * @param keyClassName map out key class name    * @param key          key serializer class    * @throws IOException    */
+comment|/**    * associate a key class with its serializer and platform    *    * @param keyClassName map out key class name    * @param key          key serializer class    */
 DECL|method|registerKey (String keyClassName, Class<?> key)
 specifier|protected
 name|void
@@ -254,7 +254,7 @@ name|JobConf
 name|job
 parameter_list|)
 function_decl|;
-comment|/**    * whether it's the platform that has defined a custom Java comparator    *    * NativeTask doesn't support custom Java comparator(set with mapreduce.job.output.key.comparator.class)    * but a platform (e.g Pig) could also set that conf and implement native comparators so    * we shouldn't bail out.    *    * @param keyComparator comparator set with mapreduce.job.output.key.comparator.class    * @return    */
+comment|/**    * whether it's the platform that has defined a custom Java comparator    *    * NativeTask doesn't support custom Java comparators    * (set with mapreduce.job.output.key.comparator.class)    * but a platform (e.g Pig) could also set that conf and implement native    * comparators so we shouldn't bail out.    *    * @param keyComparator comparator set with mapreduce.job.output.key.comparator.class    */
 DECL|method|define (Class<?> keyComparator)
 specifier|protected
 specifier|abstract

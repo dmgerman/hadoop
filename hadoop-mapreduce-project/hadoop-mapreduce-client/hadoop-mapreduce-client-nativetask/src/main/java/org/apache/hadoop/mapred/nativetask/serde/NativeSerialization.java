@@ -369,7 +369,7 @@ throw|throw
 operator|new
 name|IOException
 argument_list|(
-literal|"Error! Serializer already registered, exist: "
+literal|"Error! Serializer already registered, existing: "
 operator|+
 name|storedSerializer
 operator|.

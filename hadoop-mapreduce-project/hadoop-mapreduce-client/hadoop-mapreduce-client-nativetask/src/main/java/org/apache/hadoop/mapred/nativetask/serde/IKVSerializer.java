@@ -112,7 +112,7 @@ specifier|public
 interface|interface
 name|IKVSerializer
 block|{
-comment|/**    * update the length field of SizedWritable    * @param key    * @param value    * @throws IOException    */
+comment|/**    * update the length field of SizedWritable    */
 DECL|method|updateLength (SizedWritable<?> key, SizedWritable<?> value)
 specifier|public
 name|void
@@ -133,7 +133,6 @@ parameter_list|)
 throws|throws
 name|IOException
 function_decl|;
-comment|/**    *    * @param out    * @param key    * @param value    * @return       bytes written    * @throws IOException    */
 DECL|method|serializeKV (DataOutputStream out, SizedWritable<?> key, SizedWritable<?> value)
 specifier|public
 name|int
@@ -157,7 +156,6 @@ parameter_list|)
 throws|throws
 name|IOException
 function_decl|;
-comment|/**    * serialize partitionId as well    * @param out    * @param partitionId    * @param key    * @param value    * @return    * @throws IOException    */
 DECL|method|serializePartitionKV (DataOutputStream out, int partitionId, SizedWritable<?> key, SizedWritable<?> value)
 specifier|public
 name|int
@@ -184,7 +182,6 @@ parameter_list|)
 throws|throws
 name|IOException
 function_decl|;
-comment|/**    *    * @param in    * @param key    * @param value    * @return      bytes read    * @throws IOException    */
 DECL|method|deserializeKV (DataInputStream in, SizedWritable<?> key, SizedWritable<?> value)
 specifier|public
 name|int

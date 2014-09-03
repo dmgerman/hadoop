@@ -412,7 +412,7 @@ argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * create native object We use it to create native handlers    *     * @param clazz    * @return    */
+comment|/**    * create native object We use it to create native handlers    */
 DECL|method|createNativeObject (String clazz)
 specifier|public
 specifier|synchronized
@@ -466,7 +466,7 @@ return|return
 name|ret
 return|;
 block|}
-comment|/**    * Register a customized library    *     * @param clazz    * @return    */
+comment|/**    * Register a customized library    */
 DECL|method|registerLibrary (String libraryName, String clazz)
 specifier|public
 specifier|synchronized
@@ -553,7 +553,7 @@ name|addr
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Get the status report from native space    *     * @param reporter    * @throws IOException    */
+comment|/**    * Get the status report from native space    */
 DECL|method|reportStatus (TaskReporter reporter)
 specifier|public
 specifier|static
@@ -789,7 +789,7 @@ index|[]
 name|codec
 parameter_list|)
 function_decl|;
-comment|/**    * Config the native runtime with mapreduce job configurations.    *     * @param configs    */
+comment|/**    * Config the native runtime with mapreduce job configurations.    */
 DECL|method|JNIConfigure (byte[][] configs)
 specifier|private
 specifier|native
@@ -803,7 +803,7 @@ index|[]
 name|configs
 parameter_list|)
 function_decl|;
-comment|/**    * create a native object in native space    *     * @param clazz    * @return    */
+comment|/**    * create a native object in native space    */
 DECL|method|JNICreateNativeObject (byte[] clazz)
 specifier|private
 specifier|native
@@ -816,7 +816,7 @@ index|[]
 name|clazz
 parameter_list|)
 function_decl|;
-comment|/**    * create the default native object for certain type    *     * @param type    * @return    */
+comment|/**    * create the default native object for certain type    */
 annotation|@
 name|Deprecated
 DECL|method|JNICreateDefaultNativeObject (byte[] type)
@@ -831,7 +831,7 @@ index|[]
 name|type
 parameter_list|)
 function_decl|;
-comment|/**    * destroy native object in native space    *     * @param addr    */
+comment|/**    * destroy native object in native space    */
 DECL|method|JNIReleaseNativeObject (long addr)
 specifier|private
 specifier|native
@@ -843,7 +843,7 @@ name|long
 name|addr
 parameter_list|)
 function_decl|;
-comment|/**    * get status update from native side Encoding: progress:float status:Text Counter number: int the count of the    * counters Counters: array [group:Text, name:Text, incrCount:Long]    *     * @return    */
+comment|/**    * Get status update from native side    * Encoding:    *  progress:float    *  status:Text    *  number: int the count of the counters    *  Counters: array [group:Text, name:Text, incrCount:Long]    */
 DECL|method|JNIUpdateStatus ()
 specifier|private
 specifier|native

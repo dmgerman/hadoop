@@ -993,7 +993,7 @@ index|[]
 name|configs
 parameter_list|)
 function_decl|;
-comment|/**    * Let native side to process data in inputBuffer    *     * @param handler    * @param length    */
+comment|/**    * Let native side to process data in inputBuffer    */
 DECL|method|nativeProcessInput (long handler, int length)
 specifier|private
 specifier|native
@@ -1007,7 +1007,7 @@ name|int
 name|length
 parameter_list|)
 function_decl|;
-comment|/**    * Notice native side input is finished    *     * @param handler    */
+comment|/**    * Notice native side input is finished    */
 DECL|method|nativeFinish (long handler)
 specifier|private
 specifier|native
@@ -1018,7 +1018,7 @@ name|long
 name|handler
 parameter_list|)
 function_decl|;
-comment|/**    * Send control message to native side    *     * @param cmd    *          command data    * @return return value    */
+comment|/**    * Send control message to native side    */
 DECL|method|nativeCommand (long handler, int cmd, byte[] parameter)
 specifier|private
 specifier|native
@@ -1037,7 +1037,7 @@ index|[]
 name|parameter
 parameter_list|)
 function_decl|;
-comment|/**    * Load data from native    *     * @return    */
+comment|/**    * Load data from native    */
 DECL|method|nativeLoadData (long handler)
 specifier|private
 specifier|native
