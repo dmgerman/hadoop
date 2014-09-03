@@ -28,9 +28,9 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|io
+name|classification
 operator|.
-name|Writable
+name|InterfaceAudience
 import|;
 end_import
 
@@ -51,6 +51,10 @@ import|;
 end_import
 
 begin_class
+annotation|@
+name|InterfaceAudience
+operator|.
+name|Private
 DECL|class|VLongWritableSerializer
 specifier|public
 class|class

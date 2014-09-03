@@ -24,16 +24,6 @@ name|java
 operator|.
 name|io
 operator|.
-name|File
-import|;
-end_import
-
-begin_import
-import|import
-name|java
-operator|.
-name|io
-operator|.
 name|IOException
 import|;
 end_import
@@ -88,9 +78,9 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|fs
+name|classification
 operator|.
-name|Path
+name|InterfaceAudience
 import|;
 end_import
 
@@ -254,41 +244,9 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|mapreduce
-operator|.
-name|server
-operator|.
-name|jobtracker
-operator|.
-name|JTConfig
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
 name|util
 operator|.
 name|QuickSort
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|util
-operator|.
-name|RunJar
 import|;
 end_import
 
@@ -297,6 +255,10 @@ comment|/**  * native map output collector wrapped in Java interface  */
 end_comment
 
 begin_class
+annotation|@
+name|InterfaceAudience
+operator|.
+name|Private
 DECL|class|NativeMapOutputCollectorDelegator
 specifier|public
 class|class
@@ -434,6 +396,11 @@ argument_list|()
 expr_stmt|;
 block|}
 annotation|@
+name|SuppressWarnings
+argument_list|(
+literal|"unchecked"
+argument_list|)
+annotation|@
 name|Override
 DECL|method|init (Context context)
 specifier|public
@@ -495,6 +462,9 @@ argument_list|)
 throw|;
 block|}
 name|Class
+argument_list|<
+name|?
+argument_list|>
 name|comparatorClass
 init|=
 name|job

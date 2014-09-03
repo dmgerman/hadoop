@@ -74,6 +74,20 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|classification
+operator|.
+name|InterfaceAudience
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|conf
 operator|.
 name|Configuration
@@ -135,6 +149,10 @@ comment|/**  * this class will load in and init all platforms on classpath  * it
 end_comment
 
 begin_class
+annotation|@
+name|InterfaceAudience
+operator|.
+name|Private
 DECL|class|Platforms
 specifier|public
 class|class
@@ -216,7 +234,7 @@ expr_stmt|;
 block|}
 block|}
 block|}
-DECL|method|support (String keyClassName, INativeSerializer serializer, JobConf job)
+DECL|method|support (String keyClassName, INativeSerializer<?> serializer, JobConf job)
 specifier|public
 specifier|static
 name|boolean
@@ -226,6 +244,9 @@ name|String
 name|keyClassName
 parameter_list|,
 name|INativeSerializer
+argument_list|<
+name|?
+argument_list|>
 name|serializer
 parameter_list|,
 name|JobConf
@@ -285,13 +306,16 @@ return|return
 literal|false
 return|;
 block|}
-DECL|method|define (Class keyComparator)
+DECL|method|define (Class<?> keyComparator)
 specifier|public
 specifier|static
 name|boolean
 name|define
 parameter_list|(
 name|Class
+argument_list|<
+name|?
+argument_list|>
 name|keyComparator
 parameter_list|)
 block|{

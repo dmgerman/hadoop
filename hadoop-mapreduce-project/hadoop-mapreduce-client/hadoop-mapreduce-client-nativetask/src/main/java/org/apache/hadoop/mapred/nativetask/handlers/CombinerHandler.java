@@ -21,24 +21,6 @@ package|;
 end_package
 
 begin_import
-import|import static
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|mapred
-operator|.
-name|Task
-operator|.
-name|Counter
-operator|.
-name|COMBINE_INPUT_RECORDS
-import|;
-end_import
-
-begin_import
 import|import
 name|java
 operator|.
@@ -300,9 +282,22 @@ name|MRJobConfig
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|mapreduce
+operator|.
+name|TaskCounter
+import|;
+end_import
+
 begin_class
 DECL|class|CombinerHandler
-specifier|public
 class|class
 name|CombinerHandler
 parameter_list|<
@@ -318,6 +313,7 @@ block|{
 DECL|field|NAME
 specifier|public
 specifier|static
+specifier|final
 name|String
 name|NAME
 init|=
@@ -341,6 +337,7 @@ decl_stmt|;
 DECL|field|LOAD
 specifier|public
 specifier|static
+specifier|final
 name|Command
 name|LOAD
 init|=
@@ -355,6 +352,7 @@ decl_stmt|;
 DECL|field|COMBINE
 specifier|public
 specifier|static
+specifier|final
 name|Command
 name|COMBINE
 init|=
@@ -525,6 +523,8 @@ argument_list|()
 operator|.
 name|getCounter
 argument_list|(
+name|TaskCounter
+operator|.
 name|COMBINE_INPUT_RECORDS
 argument_list|)
 decl_stmt|;
@@ -575,6 +575,11 @@ operator|.
 name|INOUT
 argument_list|)
 decl_stmt|;
+annotation|@
+name|SuppressWarnings
+argument_list|(
+literal|"unchecked"
+argument_list|)
 specifier|final
 name|BufferPusher
 argument_list|<
@@ -592,11 +597,23 @@ argument_list|,
 name|V
 argument_list|>
 argument_list|(
+operator|(
+name|Class
+argument_list|<
+name|K
+argument_list|>
+operator|)
 name|context
 operator|.
 name|getInputKeyClass
 argument_list|()
 argument_list|,
+operator|(
+name|Class
+argument_list|<
+name|V
+argument_list|>
+operator|)
 name|context
 operator|.
 name|getInputValueClass

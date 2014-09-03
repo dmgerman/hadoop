@@ -68,7 +68,7 @@ name|mapred
 operator|.
 name|Task
 operator|.
-name|Counter
+name|TaskReporter
 import|;
 end_import
 
@@ -80,11 +80,27 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|mapred
+name|mapreduce
 operator|.
-name|Task
+name|TaskCounter
+import|;
+end_import
+
+begin_import
+import|import
+name|org
 operator|.
-name|TaskReporter
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|mapreduce
+operator|.
+name|lib
+operator|.
+name|input
+operator|.
+name|FileInputFormatCounter
 import|;
 end_import
 
@@ -94,7 +110,6 @@ end_comment
 
 begin_class
 DECL|class|StatusReportChecker
-specifier|public
 class|class
 name|StatusReportChecker
 implements|implements
@@ -118,12 +133,13 @@ decl_stmt|;
 DECL|field|INTERVAL
 specifier|public
 specifier|static
+specifier|final
 name|int
 name|INTERVAL
 init|=
 literal|1000
 decl_stmt|;
-comment|// milli-seconds
+comment|// milliseconds
 DECL|field|checker
 specifier|private
 name|Thread
@@ -281,7 +297,7 @@ name|reporter
 operator|.
 name|getCounter
 argument_list|(
-name|Counter
+name|TaskCounter
 operator|.
 name|MAP_INPUT_RECORDS
 argument_list|)
@@ -290,7 +306,7 @@ name|reporter
 operator|.
 name|getCounter
 argument_list|(
-name|Counter
+name|TaskCounter
 operator|.
 name|MAP_OUTPUT_RECORDS
 argument_list|)
@@ -299,16 +315,16 @@ name|reporter
 operator|.
 name|getCounter
 argument_list|(
-name|Counter
+name|FileInputFormatCounter
 operator|.
-name|MAP_INPUT_BYTES
+name|BYTES_READ
 argument_list|)
 expr_stmt|;
 name|reporter
 operator|.
 name|getCounter
 argument_list|(
-name|Counter
+name|TaskCounter
 operator|.
 name|MAP_OUTPUT_BYTES
 argument_list|)
@@ -317,7 +333,7 @@ name|reporter
 operator|.
 name|getCounter
 argument_list|(
-name|Counter
+name|TaskCounter
 operator|.
 name|MAP_OUTPUT_MATERIALIZED_BYTES
 argument_list|)
@@ -326,7 +342,7 @@ name|reporter
 operator|.
 name|getCounter
 argument_list|(
-name|Counter
+name|TaskCounter
 operator|.
 name|COMBINE_INPUT_RECORDS
 argument_list|)
@@ -335,7 +351,7 @@ name|reporter
 operator|.
 name|getCounter
 argument_list|(
-name|Counter
+name|TaskCounter
 operator|.
 name|COMBINE_OUTPUT_RECORDS
 argument_list|)
@@ -344,7 +360,7 @@ name|reporter
 operator|.
 name|getCounter
 argument_list|(
-name|Counter
+name|TaskCounter
 operator|.
 name|REDUCE_INPUT_RECORDS
 argument_list|)
@@ -353,7 +369,7 @@ name|reporter
 operator|.
 name|getCounter
 argument_list|(
-name|Counter
+name|TaskCounter
 operator|.
 name|REDUCE_OUTPUT_RECORDS
 argument_list|)
@@ -362,7 +378,7 @@ name|reporter
 operator|.
 name|getCounter
 argument_list|(
-name|Counter
+name|TaskCounter
 operator|.
 name|REDUCE_INPUT_GROUPS
 argument_list|)
@@ -371,7 +387,7 @@ name|reporter
 operator|.
 name|getCounter
 argument_list|(
-name|Counter
+name|TaskCounter
 operator|.
 name|SPILLED_RECORDS
 argument_list|)
@@ -380,7 +396,7 @@ name|reporter
 operator|.
 name|getCounter
 argument_list|(
-name|Counter
+name|TaskCounter
 operator|.
 name|MAP_OUTPUT_BYTES
 argument_list|)
@@ -389,7 +405,7 @@ name|reporter
 operator|.
 name|getCounter
 argument_list|(
-name|Counter
+name|TaskCounter
 operator|.
 name|MAP_OUTPUT_RECORDS
 argument_list|)

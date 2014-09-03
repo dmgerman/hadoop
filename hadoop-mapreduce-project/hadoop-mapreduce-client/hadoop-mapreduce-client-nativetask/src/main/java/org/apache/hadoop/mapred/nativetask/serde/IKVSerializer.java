@@ -38,6 +38,20 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|classification
+operator|.
+name|InterfaceAudience
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|mapred
 operator|.
 name|nativetask
@@ -89,28 +103,38 @@ comment|/**  * serializes key-value pair  */
 end_comment
 
 begin_interface
+annotation|@
+name|InterfaceAudience
+operator|.
+name|Private
 DECL|interface|IKVSerializer
 specifier|public
 interface|interface
 name|IKVSerializer
 block|{
 comment|/**    * update the length field of SizedWritable    * @param key    * @param value    * @throws IOException    */
-DECL|method|updateLength (SizedWritable key, SizedWritable value)
+DECL|method|updateLength (SizedWritable<?> key, SizedWritable<?> value)
 specifier|public
 name|void
 name|updateLength
 parameter_list|(
 name|SizedWritable
+argument_list|<
+name|?
+argument_list|>
 name|key
 parameter_list|,
 name|SizedWritable
+argument_list|<
+name|?
+argument_list|>
 name|value
 parameter_list|)
 throws|throws
 name|IOException
 function_decl|;
 comment|/**    *    * @param out    * @param key    * @param value    * @return       bytes written    * @throws IOException    */
-DECL|method|serializeKV (DataOutputStream out, SizedWritable key, SizedWritable value)
+DECL|method|serializeKV (DataOutputStream out, SizedWritable<?> key, SizedWritable<?> value)
 specifier|public
 name|int
 name|serializeKV
@@ -119,16 +143,22 @@ name|DataOutputStream
 name|out
 parameter_list|,
 name|SizedWritable
+argument_list|<
+name|?
+argument_list|>
 name|key
 parameter_list|,
 name|SizedWritable
+argument_list|<
+name|?
+argument_list|>
 name|value
 parameter_list|)
 throws|throws
 name|IOException
 function_decl|;
 comment|/**    * serialize partitionId as well    * @param out    * @param partitionId    * @param key    * @param value    * @return    * @throws IOException    */
-DECL|method|serializePartitionKV (DataOutputStream out, int partitionId, SizedWritable key, SizedWritable value)
+DECL|method|serializePartitionKV (DataOutputStream out, int partitionId, SizedWritable<?> key, SizedWritable<?> value)
 specifier|public
 name|int
 name|serializePartitionKV
@@ -140,16 +170,22 @@ name|int
 name|partitionId
 parameter_list|,
 name|SizedWritable
+argument_list|<
+name|?
+argument_list|>
 name|key
 parameter_list|,
 name|SizedWritable
+argument_list|<
+name|?
+argument_list|>
 name|value
 parameter_list|)
 throws|throws
 name|IOException
 function_decl|;
 comment|/**    *    * @param in    * @param key    * @param value    * @return      bytes read    * @throws IOException    */
-DECL|method|deserializeKV (DataInputStream in, SizedWritable key, SizedWritable value)
+DECL|method|deserializeKV (DataInputStream in, SizedWritable<?> key, SizedWritable<?> value)
 specifier|public
 name|int
 name|deserializeKV
@@ -158,9 +194,15 @@ name|DataInputStream
 name|in
 parameter_list|,
 name|SizedWritable
+argument_list|<
+name|?
+argument_list|>
 name|key
 parameter_list|,
 name|SizedWritable
+argument_list|<
+name|?
+argument_list|>
 name|value
 parameter_list|)
 throws|throws

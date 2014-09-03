@@ -34,27 +34,7 @@ name|java
 operator|.
 name|util
 operator|.
-name|HashMap
-import|;
-end_import
-
-begin_import
-import|import
-name|java
-operator|.
-name|util
-operator|.
 name|HashSet
-import|;
-end_import
-
-begin_import
-import|import
-name|java
-operator|.
-name|util
-operator|.
-name|Map
 import|;
 end_import
 
@@ -76,9 +56,9 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|conf
+name|classification
 operator|.
-name|Configuration
+name|InterfaceAudience
 import|;
 end_import
 
@@ -90,9 +70,9 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|mapred
+name|classification
 operator|.
-name|InvalidJobConfException
+name|InterfaceStability
 import|;
 end_import
 
@@ -151,6 +131,14 @@ comment|/**  * Base class for platforms. A platform is a framework running on to
 end_comment
 
 begin_class
+annotation|@
+name|InterfaceAudience
+operator|.
+name|Public
+annotation|@
+name|InterfaceStability
+operator|.
+name|Evolving
 DECL|class|Platform
 specifier|public
 specifier|abstract
@@ -212,7 +200,7 @@ name|name
 parameter_list|()
 function_decl|;
 comment|/**    * associate a key class with its serializer and platform    *    * @param keyClassName map out key class name    * @param key          key serializer class    * @throws IOException    */
-DECL|method|registerKey (String keyClassName, Class key)
+DECL|method|registerKey (String keyClassName, Class<?> key)
 specifier|protected
 name|void
 name|registerKey
@@ -221,6 +209,9 @@ name|String
 name|keyClassName
 parameter_list|,
 name|Class
+argument_list|<
+name|?
+argument_list|>
 name|key
 parameter_list|)
 throws|throws
@@ -244,7 +235,7 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|/**    * whether a platform supports a specific key should at least satisfy two conditions    *    * 1. the key belongs to the platform    * 2. the associated serializer must implement {@link INativeComparable} interface    *    *    * @param keyClassName map out put key class name    * @param serializer   serializer associated with key via registerKey    * @param job          job configuration    * @return             true if the platform has implemented native comparators of the key and    *                     false otherwise    */
-DECL|method|support (String keyClassName, INativeSerializer serializer, JobConf job)
+DECL|method|support (String keyClassName, INativeSerializer<?> serializer, JobConf job)
 specifier|protected
 specifier|abstract
 name|boolean
@@ -254,6 +245,9 @@ name|String
 name|keyClassName
 parameter_list|,
 name|INativeSerializer
+argument_list|<
+name|?
+argument_list|>
 name|serializer
 parameter_list|,
 name|JobConf
@@ -261,13 +255,16 @@ name|job
 parameter_list|)
 function_decl|;
 comment|/**    * whether it's the platform that has defined a custom Java comparator    *    * NativeTask doesn't support custom Java comparator(set with mapreduce.job.output.key.comparator.class)    * but a platform (e.g Pig) could also set that conf and implement native comparators so    * we shouldn't bail out.    *    * @param keyComparator comparator set with mapreduce.job.output.key.comparator.class    * @return    */
-DECL|method|define (Class keyComparator)
+DECL|method|define (Class<?> keyComparator)
 specifier|protected
 specifier|abstract
 name|boolean
 name|define
 parameter_list|(
 name|Class
+argument_list|<
+name|?
+argument_list|>
 name|keyComparator
 parameter_list|)
 function_decl|;

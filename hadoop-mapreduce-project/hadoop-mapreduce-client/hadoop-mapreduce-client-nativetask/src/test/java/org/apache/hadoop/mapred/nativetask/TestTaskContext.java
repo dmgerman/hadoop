@@ -193,7 +193,7 @@ argument_list|()
 argument_list|,
 name|context
 operator|.
-name|getOuputKeyClass
+name|getOutputKeyClass
 argument_list|()
 operator|.
 name|getName

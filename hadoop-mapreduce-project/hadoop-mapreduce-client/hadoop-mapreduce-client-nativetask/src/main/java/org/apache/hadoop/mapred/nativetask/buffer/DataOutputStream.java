@@ -50,7 +50,25 @@ name|OutputStream
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|classification
+operator|.
+name|InterfaceAudience
+import|;
+end_import
+
 begin_class
+annotation|@
+name|InterfaceAudience
+operator|.
+name|Private
 DECL|class|DataOutputStream
 specifier|public
 specifier|abstract
@@ -61,7 +79,7 @@ name|OutputStream
 implements|implements
 name|DataOutput
 block|{
-comment|/**    * Check whether this buffer has enough space to store length of bytes    *     * @param length    *          , length of bytes    * @return    * @throws IOException    */
+comment|/**    * Check whether this buffer has enough space to store length of bytes    *     * @param length length of bytes    */
 DECL|method|shortOfSpace (int length)
 specifier|public
 specifier|abstract
@@ -74,7 +92,7 @@ parameter_list|)
 throws|throws
 name|IOException
 function_decl|;
-comment|/**    * Check whether there is unflushed data stored in the stream    *     * @return    */
+comment|/**    * Check whether there is unflushed data stored in the stream    */
 DECL|method|hasUnFlushedData ()
 specifier|public
 specifier|abstract

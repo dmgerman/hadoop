@@ -64,6 +64,20 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|classification
+operator|.
+name|InterfaceAudience
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|io
 operator|.
 name|BooleanWritable
@@ -257,6 +271,10 @@ import|;
 end_import
 
 begin_class
+annotation|@
+name|InterfaceAudience
+operator|.
+name|Private
 DECL|class|HadoopPlatform
 specifier|public
 class|class
@@ -475,7 +493,7 @@ expr_stmt|;
 block|}
 annotation|@
 name|Override
-DECL|method|support (String keyClassName, INativeSerializer serializer, JobConf job)
+DECL|method|support (String keyClassName, INativeSerializer<?> serializer, JobConf job)
 specifier|public
 name|boolean
 name|support
@@ -484,6 +502,9 @@ name|String
 name|keyClassName
 parameter_list|,
 name|INativeSerializer
+argument_list|<
+name|?
+argument_list|>
 name|serializer
 parameter_list|,
 name|JobConf
@@ -517,12 +538,15 @@ block|}
 block|}
 annotation|@
 name|Override
-DECL|method|define (Class comparatorClass)
+DECL|method|define (Class<?> comparatorClass)
 specifier|public
 name|boolean
 name|define
 parameter_list|(
 name|Class
+argument_list|<
+name|?
+argument_list|>
 name|comparatorClass
 parameter_list|)
 block|{

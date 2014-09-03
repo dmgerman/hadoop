@@ -50,11 +50,47 @@ name|IOException
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|classification
+operator|.
+name|InterfaceAudience
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|classification
+operator|.
+name|InterfaceStability
+import|;
+end_import
+
 begin_comment
 comment|/**  * an INativeSerializer serializes and deserializes data transferred between  * Java and native. {@link DefaultSerializer} provides default implementations.  *  * Note: if you implemented your customized NativeSerializer instead of DefaultSerializer,  * you have to make sure the native side can serialize it correctly.  *   */
 end_comment
 
 begin_interface
+annotation|@
+name|InterfaceAudience
+operator|.
+name|Public
+annotation|@
+name|InterfaceStability
+operator|.
+name|Evolving
 DECL|interface|INativeSerializer
 specifier|public
 interface|interface

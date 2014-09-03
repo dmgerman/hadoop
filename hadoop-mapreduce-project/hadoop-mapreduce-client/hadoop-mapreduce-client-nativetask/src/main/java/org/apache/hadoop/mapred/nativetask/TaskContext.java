@@ -26,6 +26,20 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|classification
+operator|.
+name|InterfaceAudience
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|mapred
 operator|.
 name|JobConf
@@ -63,6 +77,10 @@ import|;
 end_import
 
 begin_class
+annotation|@
+name|InterfaceAudience
+operator|.
+name|Private
 DECL|class|TaskContext
 specifier|public
 class|class
@@ -77,21 +95,33 @@ decl_stmt|;
 DECL|field|iKClass
 specifier|private
 name|Class
+argument_list|<
+name|?
+argument_list|>
 name|iKClass
 decl_stmt|;
 DECL|field|iVClass
 specifier|private
 name|Class
+argument_list|<
+name|?
+argument_list|>
 name|iVClass
 decl_stmt|;
 DECL|field|oKClass
 specifier|private
 name|Class
+argument_list|<
+name|?
+argument_list|>
 name|oKClass
 decl_stmt|;
 DECL|field|oVClass
 specifier|private
 name|Class
+argument_list|<
+name|?
+argument_list|>
 name|oVClass
 decl_stmt|;
 DECL|field|reporter
@@ -106,7 +136,7 @@ specifier|final
 name|TaskAttemptID
 name|taskAttemptID
 decl_stmt|;
-DECL|method|TaskContext (JobConf conf, Class iKClass, Class iVClass, Class oKClass, Class oVClass, TaskReporter reporter, TaskAttemptID id)
+DECL|method|TaskContext (JobConf conf, Class<?> iKClass, Class<?> iVClass, Class<?> oKClass, Class<?> oVClass, TaskReporter reporter, TaskAttemptID id)
 specifier|public
 name|TaskContext
 parameter_list|(
@@ -114,15 +144,27 @@ name|JobConf
 name|conf
 parameter_list|,
 name|Class
+argument_list|<
+name|?
+argument_list|>
 name|iKClass
 parameter_list|,
 name|Class
+argument_list|<
+name|?
+argument_list|>
 name|iVClass
 parameter_list|,
 name|Class
+argument_list|<
+name|?
+argument_list|>
 name|oKClass
 parameter_list|,
 name|Class
+argument_list|<
+name|?
+argument_list|>
 name|oVClass
 parameter_list|,
 name|TaskReporter
@@ -178,6 +220,9 @@ block|}
 DECL|method|getInputKeyClass ()
 specifier|public
 name|Class
+argument_list|<
+name|?
+argument_list|>
 name|getInputKeyClass
 parameter_list|()
 block|{
@@ -185,12 +230,15 @@ return|return
 name|iKClass
 return|;
 block|}
-DECL|method|setInputKeyClass (Class klass)
+DECL|method|setInputKeyClass (Class<?> klass)
 specifier|public
 name|void
 name|setInputKeyClass
 parameter_list|(
 name|Class
+argument_list|<
+name|?
+argument_list|>
 name|klass
 parameter_list|)
 block|{
@@ -204,6 +252,9 @@ block|}
 DECL|method|getInputValueClass ()
 specifier|public
 name|Class
+argument_list|<
+name|?
+argument_list|>
 name|getInputValueClass
 parameter_list|()
 block|{
@@ -211,12 +262,15 @@ return|return
 name|iVClass
 return|;
 block|}
-DECL|method|setInputValueClass (Class klass)
+DECL|method|setInputValueClass (Class<?> klass)
 specifier|public
 name|void
 name|setInputValueClass
 parameter_list|(
 name|Class
+argument_list|<
+name|?
+argument_list|>
 name|klass
 parameter_list|)
 block|{
@@ -227,10 +281,13 @@ operator|=
 name|klass
 expr_stmt|;
 block|}
-DECL|method|getOuputKeyClass ()
+DECL|method|getOutputKeyClass ()
 specifier|public
 name|Class
-name|getOuputKeyClass
+argument_list|<
+name|?
+argument_list|>
+name|getOutputKeyClass
 parameter_list|()
 block|{
 return|return
@@ -239,12 +296,15 @@ operator|.
 name|oKClass
 return|;
 block|}
-DECL|method|setOutputKeyClass (Class klass)
+DECL|method|setOutputKeyClass (Class<?> klass)
 specifier|public
 name|void
 name|setOutputKeyClass
 parameter_list|(
 name|Class
+argument_list|<
+name|?
+argument_list|>
 name|klass
 parameter_list|)
 block|{
@@ -258,6 +318,9 @@ block|}
 DECL|method|getOutputValueClass ()
 specifier|public
 name|Class
+argument_list|<
+name|?
+argument_list|>
 name|getOutputValueClass
 parameter_list|()
 block|{
@@ -267,12 +330,15 @@ operator|.
 name|oVClass
 return|;
 block|}
-DECL|method|setOutputValueClass (Class klass)
+DECL|method|setOutputValueClass (Class<?> klass)
 specifier|public
 name|void
 name|setOutputValueClass
 parameter_list|(
 name|Class
+argument_list|<
+name|?
+argument_list|>
 name|klass
 parameter_list|)
 block|{

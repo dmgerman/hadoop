@@ -38,6 +38,20 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|classification
+operator|.
+name|InterfaceAudience
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|mapred
 operator|.
 name|RawKeyValueIterator
@@ -153,6 +167,10 @@ comment|/**  * load data into a buffer signaled by a {@link BufferPuller}  */
 end_comment
 
 begin_class
+annotation|@
+name|InterfaceAudience
+operator|.
+name|Private
 DECL|class|BufferPullee
 specifier|public
 class|class
@@ -168,6 +186,7 @@ block|{
 DECL|field|KV_HEADER_LENGTH
 specifier|public
 specifier|static
+specifier|final
 name|int
 name|KV_HEADER_LENGTH
 init|=

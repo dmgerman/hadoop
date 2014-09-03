@@ -36,13 +36,9 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|mapred
+name|classification
 operator|.
-name|nativetask
-operator|.
-name|buffer
-operator|.
-name|InputBuffer
+name|InterfaceAudience
 import|;
 end_import
 
@@ -58,9 +54,9 @@ name|mapred
 operator|.
 name|nativetask
 operator|.
-name|util
+name|buffer
 operator|.
-name|ReadWriteBuffer
+name|InputBuffer
 import|;
 end_import
 
@@ -69,19 +65,23 @@ comment|/**  * NativeDataSource loads data from upstream  */
 end_comment
 
 begin_interface
+annotation|@
+name|InterfaceAudience
+operator|.
+name|Private
 DECL|interface|NativeDataSource
 specifier|public
 interface|interface
 name|NativeDataSource
 block|{
-comment|/**    * get input buffer    *     * @return    */
+comment|/**    * get input buffer    */
 DECL|method|getInputBuffer ()
 specifier|public
 name|InputBuffer
 name|getInputBuffer
 parameter_list|()
 function_decl|;
-comment|/**    * set listener. When data from upstream arrives, the listener will be activated.    *     * @param handler    */
+comment|/**    * set listener. When data from upstream arrives, the listener will be activated.    */
 DECL|method|setDataReceiver (DataReceiver handler)
 name|void
 name|setDataReceiver
@@ -90,7 +90,7 @@ name|DataReceiver
 name|handler
 parameter_list|)
 function_decl|;
-comment|/**    * load data from upstream    *     * @return    * @throws IOException    */
+comment|/**    * load data from upstream    */
 DECL|method|loadData ()
 specifier|public
 name|void

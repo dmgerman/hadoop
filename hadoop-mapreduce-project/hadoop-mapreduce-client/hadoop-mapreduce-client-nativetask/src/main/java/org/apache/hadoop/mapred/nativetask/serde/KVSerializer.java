@@ -66,6 +66,20 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|classification
+operator|.
+name|InterfaceAudience
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|io
 operator|.
 name|Writable
@@ -143,6 +157,10 @@ import|;
 end_import
 
 begin_class
+annotation|@
+name|InterfaceAudience
+operator|.
+name|Private
 DECL|class|KVSerializer
 specifier|public
 class|class
@@ -174,6 +192,7 @@ decl_stmt|;
 DECL|field|KV_HEAD_LENGTH
 specifier|public
 specifier|static
+specifier|final
 name|int
 name|KV_HEAD_LENGTH
 init|=
@@ -249,15 +268,21 @@ expr_stmt|;
 block|}
 annotation|@
 name|Override
-DECL|method|updateLength (SizedWritable key, SizedWritable value)
+DECL|method|updateLength (SizedWritable<?> key, SizedWritable<?> value)
 specifier|public
 name|void
 name|updateLength
 parameter_list|(
 name|SizedWritable
+argument_list|<
+name|?
+argument_list|>
 name|key
 parameter_list|,
 name|SizedWritable
+argument_list|<
+name|?
+argument_list|>
 name|value
 parameter_list|)
 throws|throws
@@ -293,7 +318,7 @@ return|return;
 block|}
 annotation|@
 name|Override
-DECL|method|serializeKV (DataOutputStream out, SizedWritable key, SizedWritable value)
+DECL|method|serializeKV (DataOutputStream out, SizedWritable<?> key, SizedWritable<?> value)
 specifier|public
 name|int
 name|serializeKV
@@ -302,9 +327,15 @@ name|DataOutputStream
 name|out
 parameter_list|,
 name|SizedWritable
+argument_list|<
+name|?
+argument_list|>
 name|key
 parameter_list|,
 name|SizedWritable
+argument_list|<
+name|?
+argument_list|>
 name|value
 parameter_list|)
 throws|throws
@@ -326,7 +357,7 @@ return|;
 block|}
 annotation|@
 name|Override
-DECL|method|serializePartitionKV (DataOutputStream out, int partitionId, SizedWritable key, SizedWritable value)
+DECL|method|serializePartitionKV (DataOutputStream out, int partitionId, SizedWritable<?> key, SizedWritable<?> value)
 specifier|public
 name|int
 name|serializePartitionKV
@@ -338,9 +369,15 @@ name|int
 name|partitionId
 parameter_list|,
 name|SizedWritable
+argument_list|<
+name|?
+argument_list|>
 name|key
 parameter_list|,
 name|SizedWritable
+argument_list|<
+name|?
+argument_list|>
 name|value
 parameter_list|)
 throws|throws
@@ -492,7 +529,7 @@ return|;
 block|}
 annotation|@
 name|Override
-DECL|method|deserializeKV (DataInputStream in, SizedWritable key, SizedWritable value)
+DECL|method|deserializeKV (DataInputStream in, SizedWritable<?> key, SizedWritable<?> value)
 specifier|public
 name|int
 name|deserializeKV
@@ -501,9 +538,15 @@ name|DataInputStream
 name|in
 parameter_list|,
 name|SizedWritable
+argument_list|<
+name|?
+argument_list|>
 name|key
 parameter_list|,
 name|SizedWritable
+argument_list|<
+name|?
+argument_list|>
 name|value
 parameter_list|)
 throws|throws

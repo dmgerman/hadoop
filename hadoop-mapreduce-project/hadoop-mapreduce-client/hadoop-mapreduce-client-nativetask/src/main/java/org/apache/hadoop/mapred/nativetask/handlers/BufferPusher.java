@@ -66,9 +66,9 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|io
+name|classification
 operator|.
-name|Text
+name|InterfaceAudience
 import|;
 end_import
 
@@ -179,6 +179,10 @@ comment|/**  * actively push data into a buffer and signal a {@link BufferPushee
 end_comment
 
 begin_class
+annotation|@
+name|InterfaceAudience
+operator|.
+name|Private
 DECL|class|BufferPusher
 specifier|public
 class|class

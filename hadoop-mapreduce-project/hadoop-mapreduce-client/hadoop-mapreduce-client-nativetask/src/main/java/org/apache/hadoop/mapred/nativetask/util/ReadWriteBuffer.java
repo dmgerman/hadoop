@@ -34,7 +34,25 @@ name|Charsets
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|classification
+operator|.
+name|InterfaceAudience
+import|;
+end_import
+
 begin_class
+annotation|@
+name|InterfaceAudience
+operator|.
+name|Private
 DECL|class|ReadWriteBuffer
 specifier|public
 class|class
@@ -58,6 +76,7 @@ name|_readPoint
 decl_stmt|;
 DECL|field|CACHE_LINE_SIZE
 specifier|final
+specifier|static
 name|int
 name|CACHE_LINE_SIZE
 init|=

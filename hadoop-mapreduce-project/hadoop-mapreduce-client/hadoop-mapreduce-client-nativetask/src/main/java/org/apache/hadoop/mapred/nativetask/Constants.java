@@ -18,7 +18,25 @@ name|nativetask
 package|;
 end_package
 
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|classification
+operator|.
+name|InterfaceAudience
+import|;
+end_import
+
 begin_class
+annotation|@
+name|InterfaceAudience
+operator|.
+name|Private
 DECL|class|Constants
 specifier|public
 class|class
@@ -171,6 +189,7 @@ decl_stmt|;
 DECL|field|NATIVE_PROCESSOR_BUFFER_KB_DEFAULT
 specifier|public
 specifier|static
+specifier|final
 name|int
 name|NATIVE_PROCESSOR_BUFFER_KB_DEFAULT
 init|=
@@ -179,6 +198,7 @@ decl_stmt|;
 DECL|field|NATIVE_ASYNC_PROCESSOR_BUFFER_KB_DEFAULT
 specifier|public
 specifier|static
+specifier|final
 name|int
 name|NATIVE_ASYNC_PROCESSOR_BUFFER_KB_DEFAULT
 init|=
@@ -196,6 +216,7 @@ decl_stmt|;
 DECL|field|NATIVE_STATUS_UPDATE_INTERVAL_DEFVAL
 specifier|public
 specifier|static
+specifier|final
 name|int
 name|NATIVE_STATUS_UPDATE_INTERVAL_DEFVAL
 init|=
@@ -213,6 +234,7 @@ decl_stmt|;
 DECL|field|SIZEOF_PARTITION_LENGTH
 specifier|public
 specifier|static
+specifier|final
 name|int
 name|SIZEOF_PARTITION_LENGTH
 init|=
@@ -221,6 +243,7 @@ decl_stmt|;
 DECL|field|SIZEOF_KEY_LENGTH
 specifier|public
 specifier|static
+specifier|final
 name|int
 name|SIZEOF_KEY_LENGTH
 init|=
@@ -229,6 +252,7 @@ decl_stmt|;
 DECL|field|SIZEOF_VALUE_LENGTH
 specifier|public
 specifier|static
+specifier|final
 name|int
 name|SIZEOF_VALUE_LENGTH
 init|=
@@ -237,6 +261,7 @@ decl_stmt|;
 DECL|field|SIZEOF_KV_LENGTH
 specifier|public
 specifier|static
+specifier|final
 name|int
 name|SIZEOF_KV_LENGTH
 init|=

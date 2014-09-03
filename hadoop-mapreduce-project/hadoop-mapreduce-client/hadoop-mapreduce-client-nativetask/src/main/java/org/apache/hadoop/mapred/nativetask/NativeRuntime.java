@@ -78,6 +78,20 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|classification
+operator|.
+name|InterfaceAudience
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|conf
 operator|.
 name|Configuration
@@ -203,10 +217,14 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * This class stands for the native runtime It has three functions: 1. Create native handlers for map, reduce,  * outputcollector, and etc 2. Configure native task with provided MR configs 3. Provide file system api to native  * space, so that it can use File system like HDFS.  *   */
+comment|/**  * This class stands for the native runtime It has three functions:  * 1. Create native handlers for map, reduce, outputcollector, etc  * 2. Configure native task with provided MR configs  * 3. Provide file system api to native space, so that it can use File system like HDFS.  */
 end_comment
 
 begin_class
+annotation|@
+name|InterfaceAudience
+operator|.
+name|Private
 DECL|class|NativeRuntime
 specifier|public
 class|class

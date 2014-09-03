@@ -36,6 +36,20 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|classification
+operator|.
+name|InterfaceAudience
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|mapred
 operator|.
 name|nativetask
@@ -51,12 +65,15 @@ comment|/**  * a CommandDispatcher receives {@link Command} from upstream  * and
 end_comment
 
 begin_interface
+annotation|@
+name|InterfaceAudience
+operator|.
+name|Private
 DECL|interface|CommandDispatcher
 specifier|public
 interface|interface
 name|CommandDispatcher
 block|{
-comment|/**    *    * @param command    * @param parameter    * @return    * @throws IOException    */
 DECL|method|onCall (Command command, ReadWriteBuffer parameter)
 specifier|public
 name|ReadWriteBuffer

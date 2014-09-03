@@ -20,7 +20,25 @@ name|serde
 package|;
 end_package
 
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|classification
+operator|.
+name|InterfaceAudience
+import|;
+end_import
+
 begin_enum
+annotation|@
+name|InterfaceAudience
+operator|.
+name|Private
 DECL|enum|SerializationFramework
 specifier|public
 enum|enum

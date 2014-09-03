@@ -36,6 +36,20 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|classification
+operator|.
+name|InterfaceAudience
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|mapred
 operator|.
 name|nativetask
@@ -51,12 +65,16 @@ comment|/**  * NativeDataTarge sends data to downstream  */
 end_comment
 
 begin_interface
+annotation|@
+name|InterfaceAudience
+operator|.
+name|Private
 DECL|interface|NativeDataTarget
 specifier|public
 interface|interface
 name|NativeDataTarget
 block|{
-comment|/**    * send a signal to indicate that the data has been stored in output buffer    *     * @throws IOException    */
+comment|/**    * Sends a signal to indicate that the data has been stored in output buffer    */
 DECL|method|sendData ()
 specifier|public
 name|void
@@ -65,7 +83,7 @@ parameter_list|()
 throws|throws
 name|IOException
 function_decl|;
-comment|/**    * Send a signal that there is no more data    *     * @throws IOException    */
+comment|/**    * Sends a signal that there is no more data    */
 DECL|method|finishSendData ()
 specifier|public
 name|void
@@ -74,7 +92,7 @@ parameter_list|()
 throws|throws
 name|IOException
 function_decl|;
-comment|/**    * get the output buffer.    *     * @return    */
+comment|/**    * Gets the output buffer.    */
 DECL|method|getOutputBuffer ()
 specifier|public
 name|OutputBuffer
