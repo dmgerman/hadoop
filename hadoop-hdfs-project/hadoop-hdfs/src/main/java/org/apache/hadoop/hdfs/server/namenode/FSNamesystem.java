@@ -19173,6 +19173,13 @@ decl_stmt|;
 name|writeLock
 argument_list|()
 expr_stmt|;
+name|BlocksMapUpdateInfo
+name|collectedBlocks
+init|=
+operator|new
+name|BlocksMapUpdateInfo
+argument_list|()
+decl_stmt|;
 try|try
 block|{
 name|checkOperation
@@ -19219,6 +19226,8 @@ name|cacheEntry
 operator|!=
 literal|null
 argument_list|,
+name|collectedBlocks
+argument_list|,
 name|options
 argument_list|)
 expr_stmt|;
@@ -19257,6 +19266,29 @@ operator|.
 name|logSync
 argument_list|()
 expr_stmt|;
+if|if
+condition|(
+operator|!
+name|collectedBlocks
+operator|.
+name|getToDeleteList
+argument_list|()
+operator|.
+name|isEmpty
+argument_list|()
+condition|)
+block|{
+name|removeBlocks
+argument_list|(
+name|collectedBlocks
+argument_list|)
+expr_stmt|;
+name|collectedBlocks
+operator|.
+name|clear
+argument_list|()
+expr_stmt|;
+block|}
 if|if
 condition|(
 name|resultingStat
@@ -19315,7 +19347,7 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-DECL|method|renameToInternal (FSPermissionChecker pc, String src, String dst, boolean logRetryCache, Options.Rename... options)
+DECL|method|renameToInternal (FSPermissionChecker pc, String src, String dst, boolean logRetryCache, BlocksMapUpdateInfo collectedBlocks, Options.Rename... options)
 specifier|private
 name|void
 name|renameToInternal
@@ -19331,6 +19363,9 @@ name|dst
 parameter_list|,
 name|boolean
 name|logRetryCache
+parameter_list|,
+name|BlocksMapUpdateInfo
+name|collectedBlocks
 parameter_list|,
 name|Options
 operator|.
@@ -19419,6 +19454,8 @@ argument_list|,
 name|dst
 argument_list|,
 name|mtime
+argument_list|,
+name|collectedBlocks
 argument_list|,
 name|options
 argument_list|)

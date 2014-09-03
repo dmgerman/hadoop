@@ -76,6 +76,20 @@ end_import
 
 begin_import
 import|import
+name|com
+operator|.
+name|google
+operator|.
+name|common
+operator|.
+name|annotations
+operator|.
+name|VisibleForTesting
+import|;
+end_import
+
+begin_import
+import|import
 name|org
 operator|.
 name|apache
@@ -400,10 +414,10 @@ specifier|private
 name|long
 name|lastTimeAtMinShare
 decl_stmt|;
-DECL|field|lastTimeAtHalfFairShare
+DECL|field|lastTimeAtFairShareThreshold
 specifier|private
 name|long
-name|lastTimeAtHalfFairShare
+name|lastTimeAtFairShareThreshold
 decl_stmt|;
 comment|// Track the AM resource usage for this queue
 DECL|field|amResourceUsage
@@ -454,7 +468,7 @@ argument_list|()
 expr_stmt|;
 name|this
 operator|.
-name|lastTimeAtHalfFairShare
+name|lastTimeAtFairShareThreshold
 operator|=
 name|scheduler
 operator|.
@@ -1427,7 +1441,7 @@ name|lastTimeAtMinShare
 return|;
 block|}
 DECL|method|setLastTimeAtMinShare (long lastTimeAtMinShare)
-specifier|public
+specifier|private
 name|void
 name|setLastTimeAtMinShare
 parameter_list|(
@@ -1442,30 +1456,30 @@ operator|=
 name|lastTimeAtMinShare
 expr_stmt|;
 block|}
-DECL|method|getLastTimeAtHalfFairShare ()
+DECL|method|getLastTimeAtFairShareThreshold ()
 specifier|public
 name|long
-name|getLastTimeAtHalfFairShare
+name|getLastTimeAtFairShareThreshold
 parameter_list|()
 block|{
 return|return
-name|lastTimeAtHalfFairShare
+name|lastTimeAtFairShareThreshold
 return|;
 block|}
-DECL|method|setLastTimeAtHalfFairShare (long lastTimeAtHalfFairShare)
-specifier|public
+DECL|method|setLastTimeAtFairShareThreshold ( long lastTimeAtFairShareThreshold)
+specifier|private
 name|void
-name|setLastTimeAtHalfFairShare
+name|setLastTimeAtFairShareThreshold
 parameter_list|(
 name|long
-name|lastTimeAtHalfFairShare
+name|lastTimeAtFairShareThreshold
 parameter_list|)
 block|{
 name|this
 operator|.
-name|lastTimeAtHalfFairShare
+name|lastTimeAtFairShareThreshold
 operator|=
-name|lastTimeAtHalfFairShare
+name|lastTimeAtFairShareThreshold
 expr_stmt|;
 block|}
 annotation|@
@@ -1621,6 +1635,51 @@ parameter_list|)
 block|{
 comment|// TODO Auto-generated method stub
 block|}
+comment|/**    * Update the preemption fields for the queue, i.e. the times since last was    * at its guaranteed share and over its fair share threshold.    */
+DECL|method|updateStarvationStats ()
+specifier|public
+name|void
+name|updateStarvationStats
+parameter_list|()
+block|{
+name|long
+name|now
+init|=
+name|scheduler
+operator|.
+name|getClock
+argument_list|()
+operator|.
+name|getTime
+argument_list|()
+decl_stmt|;
+if|if
+condition|(
+operator|!
+name|isStarvedForMinShare
+argument_list|()
+condition|)
+block|{
+name|setLastTimeAtMinShare
+argument_list|(
+name|now
+argument_list|)
+expr_stmt|;
+block|}
+if|if
+condition|(
+operator|!
+name|isStarvedForFairShare
+argument_list|()
+condition|)
+block|{
+name|setLastTimeAtFairShareThreshold
+argument_list|(
+name|now
+argument_list|)
+expr_stmt|;
+block|}
+block|}
 comment|/**    * Helper method to check if the queue should preempt containers    *    * @return true if check passes (can preempt) or false otherwise    */
 DECL|method|preemptContainerPreCheck ()
 specifier|private
@@ -1641,6 +1700,100 @@ argument_list|()
 argument_list|,
 name|getFairShare
 argument_list|()
+argument_list|)
+return|;
+block|}
+comment|/**    * Is a queue being starved for its min share.    */
+annotation|@
+name|VisibleForTesting
+DECL|method|isStarvedForMinShare ()
+name|boolean
+name|isStarvedForMinShare
+parameter_list|()
+block|{
+return|return
+name|isStarved
+argument_list|(
+name|getMinShare
+argument_list|()
+argument_list|)
+return|;
+block|}
+comment|/**    * Is a queue being starved for its fair share threshold.    */
+annotation|@
+name|VisibleForTesting
+DECL|method|isStarvedForFairShare ()
+name|boolean
+name|isStarvedForFairShare
+parameter_list|()
+block|{
+return|return
+name|isStarved
+argument_list|(
+name|Resources
+operator|.
+name|multiply
+argument_list|(
+name|getFairShare
+argument_list|()
+argument_list|,
+name|getFairSharePreemptionThreshold
+argument_list|()
+argument_list|)
+argument_list|)
+return|;
+block|}
+DECL|method|isStarved (Resource share)
+specifier|private
+name|boolean
+name|isStarved
+parameter_list|(
+name|Resource
+name|share
+parameter_list|)
+block|{
+name|Resource
+name|desiredShare
+init|=
+name|Resources
+operator|.
+name|min
+argument_list|(
+name|FairScheduler
+operator|.
+name|getResourceCalculator
+argument_list|()
+argument_list|,
+name|scheduler
+operator|.
+name|getClusterResource
+argument_list|()
+argument_list|,
+name|share
+argument_list|,
+name|getDemand
+argument_list|()
+argument_list|)
+decl_stmt|;
+return|return
+name|Resources
+operator|.
+name|lessThan
+argument_list|(
+name|FairScheduler
+operator|.
+name|getResourceCalculator
+argument_list|()
+argument_list|,
+name|scheduler
+operator|.
+name|getClusterResource
+argument_list|()
+argument_list|,
+name|getResourceUsage
+argument_list|()
+argument_list|,
+name|desiredShare
 argument_list|)
 return|;
 block|}

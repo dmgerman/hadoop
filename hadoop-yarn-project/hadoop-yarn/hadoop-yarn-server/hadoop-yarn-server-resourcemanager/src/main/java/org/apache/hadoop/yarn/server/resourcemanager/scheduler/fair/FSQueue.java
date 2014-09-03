@@ -407,6 +407,13 @@ name|Long
 operator|.
 name|MAX_VALUE
 decl_stmt|;
+DECL|field|fairSharePreemptionThreshold
+specifier|private
+name|float
+name|fairSharePreemptionThreshold
+init|=
+literal|0.5f
+decl_stmt|;
 DECL|method|FSQueue (String name, FairScheduler scheduler, FSParentQueue parent)
 specifier|public
 name|FSQueue
@@ -976,6 +983,32 @@ operator|=
 name|minSharePreemptionTimeout
 expr_stmt|;
 block|}
+DECL|method|getFairSharePreemptionThreshold ()
+specifier|public
+name|float
+name|getFairSharePreemptionThreshold
+parameter_list|()
+block|{
+return|return
+name|fairSharePreemptionThreshold
+return|;
+block|}
+DECL|method|setFairSharePreemptionThreshold (float fairSharePreemptionThreshold)
+specifier|public
+name|void
+name|setFairSharePreemptionThreshold
+parameter_list|(
+name|float
+name|fairSharePreemptionThreshold
+parameter_list|)
+block|{
+name|this
+operator|.
+name|fairSharePreemptionThreshold
+operator|=
+name|fairSharePreemptionThreshold
+expr_stmt|;
+block|}
 comment|/**    * Recomputes the shares for all child queues and applications based on this    * queue's current share    */
 DECL|method|recomputeShares ()
 specifier|public
@@ -984,14 +1017,14 @@ name|void
 name|recomputeShares
 parameter_list|()
 function_decl|;
-comment|/**    * Update the min/fair share preemption timeouts for this queue.    */
-DECL|method|updatePreemptionTimeouts ()
+comment|/**    * Update the min/fair share preemption timeouts and threshold for this queue.    */
+DECL|method|updatePreemptionVariables ()
 specifier|public
 name|void
-name|updatePreemptionTimeouts
+name|updatePreemptionVariables
 parameter_list|()
 block|{
-comment|// For min share
+comment|// For min share timeout
 name|minSharePreemptionTimeout
 operator|=
 name|scheduler
@@ -1025,7 +1058,7 @@ name|getMinSharePreemptionTimeout
 argument_list|()
 expr_stmt|;
 block|}
-comment|// For fair share
+comment|// For fair share timeout
 name|fairSharePreemptionTimeout
 operator|=
 name|scheduler
@@ -1056,6 +1089,39 @@ operator|=
 name|parent
 operator|.
 name|getFairSharePreemptionTimeout
+argument_list|()
+expr_stmt|;
+block|}
+comment|// For fair share preemption threshold
+name|fairSharePreemptionThreshold
+operator|=
+name|scheduler
+operator|.
+name|getAllocationConfiguration
+argument_list|()
+operator|.
+name|getFairSharePreemptionThreshold
+argument_list|(
+name|getName
+argument_list|()
+argument_list|)
+expr_stmt|;
+if|if
+condition|(
+name|fairSharePreemptionThreshold
+operator|<
+literal|0
+operator|&&
+name|parent
+operator|!=
+literal|null
+condition|)
+block|{
+name|fairSharePreemptionThreshold
+operator|=
+name|parent
+operator|.
+name|getFairSharePreemptionThreshold
 argument_list|()
 expr_stmt|;
 block|}
