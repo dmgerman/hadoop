@@ -2529,6 +2529,7 @@ block|}
 annotation|@
 name|VisibleForTesting
 DECL|method|getBlockPlacementPolicy ()
+specifier|public
 name|BlockPlacementPolicy
 name|getBlockPlacementPolicy
 parameter_list|()
