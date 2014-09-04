@@ -477,7 +477,7 @@ literal|1
 operator|<<
 literal|16
 decl_stmt|;
-comment|/**    * Snapshots of this directory in ascending order of snapshot names.    * Note that snapshots in ascending order of snapshot id are stored in    * {@link INodeDirectoryWithSnapshot}.diffs (a private field).    */
+comment|/**    * Snapshots of this directory in ascending order of snapshot names.    * Note that snapshots in ascending order of snapshot id are stored in    * {@link DirectoryWithSnapshotFeature}.diffs (a private field).    */
 DECL|field|snapshotsByNames
 specifier|private
 specifier|final

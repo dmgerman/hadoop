@@ -2509,7 +2509,7 @@ return|return
 literal|true
 return|;
 block|}
-comment|/**    * @throws SnapshotAccessControlException     * @see #unprotectedRenameTo(String, String, long)    * @deprecated Use {@link #renameTo(String, String, boolean, Rename...)}    */
+comment|/**    * @throws SnapshotAccessControlException     * @see #unprotectedRenameTo(String, String, long)    * @deprecated Use {@link #renameTo(String, String, long,    *                                  BlocksMapUpdateInfo, Rename...)}    */
 annotation|@
 name|Deprecated
 DECL|method|renameTo (String src, String dst, long mtime)
@@ -2692,7 +2692,7 @@ argument_list|()
 expr_stmt|;
 block|}
 block|}
-comment|/**    * Change a path name    *     * @param src source path    * @param dst destination path    * @return true if rename succeeds; false otherwise    * @throws QuotaExceededException if the operation violates any quota limit    * @throws FileAlreadyExistsException if the src is a symlink that points to dst    * @throws SnapshotAccessControlException if path is in RO snapshot    * @deprecated See {@link #renameTo(String, String, boolean, Rename...)}    */
+comment|/**    * Change a path name    *     * @param src source path    * @param dst destination path    * @return true if rename succeeds; false otherwise    * @throws QuotaExceededException if the operation violates any quota limit    * @throws FileAlreadyExistsException if the src is a symlink that points to dst    * @throws SnapshotAccessControlException if path is in RO snapshot    * @deprecated See {@link #renameTo(String, String, long, BlocksMapUpdateInfo, Rename...)}    */
 annotation|@
 name|Deprecated
 DECL|method|unprotectedRenameTo (String src, String dst, long timestamp)
