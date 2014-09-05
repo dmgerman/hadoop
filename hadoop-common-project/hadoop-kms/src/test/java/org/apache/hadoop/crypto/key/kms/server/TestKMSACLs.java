@@ -171,7 +171,7 @@ name|set
 argument_list|(
 name|type
 operator|.
-name|getConfigKey
+name|getAclConfigKey
 argument_list|()
 argument_list|,
 name|type

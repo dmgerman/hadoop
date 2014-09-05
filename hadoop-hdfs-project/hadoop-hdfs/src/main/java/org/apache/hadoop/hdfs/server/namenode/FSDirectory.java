@@ -2509,7 +2509,7 @@ return|return
 literal|true
 return|;
 block|}
-comment|/**    * @throws SnapshotAccessControlException     * @see #unprotectedRenameTo(String, String, long)    * @deprecated Use {@link #renameTo(String, String, boolean, Rename...)}    */
+comment|/**    * @throws SnapshotAccessControlException     * @see #unprotectedRenameTo(String, String, long)    * @deprecated Use {@link #renameTo(String, String, long,    *                                  BlocksMapUpdateInfo, Rename...)}    */
 annotation|@
 name|Deprecated
 DECL|method|renameTo (String src, String dst, long mtime)
@@ -2594,7 +2594,7 @@ literal|true
 return|;
 block|}
 comment|/**    * @see #unprotectedRenameTo(String, String, long, Options.Rename...)    */
-DECL|method|renameTo (String src, String dst, long mtime, Options.Rename... options)
+DECL|method|renameTo (String src, String dst, long mtime, BlocksMapUpdateInfo collectedBlocks, Options.Rename... options)
 name|void
 name|renameTo
 parameter_list|(
@@ -2606,6 +2606,9 @@ name|dst
 parameter_list|,
 name|long
 name|mtime
+parameter_list|,
+name|BlocksMapUpdateInfo
+name|collectedBlocks
 parameter_list|,
 name|Options
 operator|.
@@ -2667,6 +2670,8 @@ name|dst
 argument_list|,
 name|mtime
 argument_list|,
+name|collectedBlocks
+argument_list|,
 name|options
 argument_list|)
 condition|)
@@ -2687,7 +2692,7 @@ argument_list|()
 expr_stmt|;
 block|}
 block|}
-comment|/**    * Change a path name    *     * @param src source path    * @param dst destination path    * @return true if rename succeeds; false otherwise    * @throws QuotaExceededException if the operation violates any quota limit    * @throws FileAlreadyExistsException if the src is a symlink that points to dst    * @throws SnapshotAccessControlException if path is in RO snapshot    * @deprecated See {@link #renameTo(String, String, boolean, Rename...)}    */
+comment|/**    * Change a path name    *     * @param src source path    * @param dst destination path    * @return true if rename succeeds; false otherwise    * @throws QuotaExceededException if the operation violates any quota limit    * @throws FileAlreadyExistsException if the src is a symlink that points to dst    * @throws SnapshotAccessControlException if path is in RO snapshot    * @deprecated See {@link #renameTo(String, String, long, BlocksMapUpdateInfo, Rename...)}    */
 annotation|@
 name|Deprecated
 DECL|method|unprotectedRenameTo (String src, String dst, long timestamp)
@@ -3098,7 +3103,7 @@ return|return
 literal|false
 return|;
 block|}
-comment|/**    * Rename src to dst.    * See {@link DistributedFileSystem#rename(Path, Path, Options.Rename...)}    * for details related to rename semantics and exceptions.    *     * @param src source path    * @param dst destination path    * @param timestamp modification time    * @param options Rename options    */
+comment|/**    * Rename src to dst.    *<br>    * Note: This is to be used by {@link FSEditLog} only.    *<br>    *     * @param src source path    * @param dst destination path    * @param timestamp modification time    * @param options Rename options    */
 DECL|method|unprotectedRenameTo (String src, String dst, long timestamp, Options.Rename... options)
 name|boolean
 name|unprotectedRenameTo
@@ -3111,6 +3116,90 @@ name|dst
 parameter_list|,
 name|long
 name|timestamp
+parameter_list|,
+name|Options
+operator|.
+name|Rename
+modifier|...
+name|options
+parameter_list|)
+throws|throws
+name|FileAlreadyExistsException
+throws|,
+name|FileNotFoundException
+throws|,
+name|ParentNotDirectoryException
+throws|,
+name|QuotaExceededException
+throws|,
+name|UnresolvedLinkException
+throws|,
+name|IOException
+block|{
+name|BlocksMapUpdateInfo
+name|collectedBlocks
+init|=
+operator|new
+name|BlocksMapUpdateInfo
+argument_list|()
+decl_stmt|;
+name|boolean
+name|ret
+init|=
+name|unprotectedRenameTo
+argument_list|(
+name|src
+argument_list|,
+name|dst
+argument_list|,
+name|timestamp
+argument_list|,
+name|collectedBlocks
+argument_list|,
+name|options
+argument_list|)
+decl_stmt|;
+if|if
+condition|(
+operator|!
+name|collectedBlocks
+operator|.
+name|getToDeleteList
+argument_list|()
+operator|.
+name|isEmpty
+argument_list|()
+condition|)
+block|{
+name|getFSNamesystem
+argument_list|()
+operator|.
+name|removeBlocksAndUpdateSafemodeTotal
+argument_list|(
+name|collectedBlocks
+argument_list|)
+expr_stmt|;
+block|}
+return|return
+name|ret
+return|;
+block|}
+comment|/**    * Rename src to dst.    * See {@link DistributedFileSystem#rename(Path, Path, Options.Rename...)}    * for details related to rename semantics and exceptions.    *     * @param src source path    * @param dst destination path    * @param timestamp modification time    * @param collectedBlocks blocks to be removed    * @param options Rename options    */
+DECL|method|unprotectedRenameTo (String src, String dst, long timestamp, BlocksMapUpdateInfo collectedBlocks, Options.Rename... options)
+name|boolean
+name|unprotectedRenameTo
+parameter_list|(
+name|String
+name|src
+parameter_list|,
+name|String
+name|dst
+parameter_list|,
+name|long
+name|timestamp
+parameter_list|,
+name|BlocksMapUpdateInfo
+name|collectedBlocks
 parameter_list|,
 name|Options
 operator|.
@@ -3623,13 +3712,6 @@ operator|>
 literal|0
 condition|)
 block|{
-name|BlocksMapUpdateInfo
-name|collectedBlocks
-init|=
-operator|new
-name|BlocksMapUpdateInfo
-argument_list|()
-decl_stmt|;
 name|List
 argument_list|<
 name|INode
@@ -3712,7 +3794,7 @@ name|removePathAndBlocks
 argument_list|(
 name|src
 argument_list|,
-name|collectedBlocks
+literal|null
 argument_list|,
 name|removedINodes
 argument_list|,

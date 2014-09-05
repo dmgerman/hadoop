@@ -9516,7 +9516,7 @@ name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"Cookie cound't be found: "
+literal|"Cookie couldn't be found: "
 operator|+
 operator|new
 name|String

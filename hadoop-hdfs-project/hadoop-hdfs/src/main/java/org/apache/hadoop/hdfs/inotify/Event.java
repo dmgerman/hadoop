@@ -336,6 +336,11 @@ specifier|private
 name|String
 name|symlinkTarget
 decl_stmt|;
+DECL|field|overwrite
+specifier|private
+name|boolean
+name|overwrite
+decl_stmt|;
 DECL|class|Builder
 specifier|public
 specifier|static
@@ -381,6 +386,11 @@ DECL|field|symlinkTarget
 specifier|private
 name|String
 name|symlinkTarget
+decl_stmt|;
+DECL|field|overwrite
+specifier|private
+name|boolean
+name|overwrite
 decl_stmt|;
 DECL|method|iNodeType (INodeType type)
 specifier|public
@@ -534,6 +544,25 @@ return|return
 name|this
 return|;
 block|}
+DECL|method|overwrite (boolean overwrite)
+specifier|public
+name|Builder
+name|overwrite
+parameter_list|(
+name|boolean
+name|overwrite
+parameter_list|)
+block|{
+name|this
+operator|.
+name|overwrite
+operator|=
+name|overwrite
+expr_stmt|;
+return|return
+name|this
+return|;
+block|}
 DECL|method|build ()
 specifier|public
 name|CreateEvent
@@ -628,6 +657,14 @@ name|b
 operator|.
 name|symlinkTarget
 expr_stmt|;
+name|this
+operator|.
+name|overwrite
+operator|=
+name|b
+operator|.
+name|overwrite
+expr_stmt|;
 block|}
 DECL|method|getiNodeType ()
 specifier|public
@@ -710,6 +747,16 @@ parameter_list|()
 block|{
 return|return
 name|symlinkTarget
+return|;
+block|}
+DECL|method|getOverwrite ()
+specifier|public
+name|boolean
+name|getOverwrite
+parameter_list|()
+block|{
+return|return
+name|overwrite
 return|;
 block|}
 block|}

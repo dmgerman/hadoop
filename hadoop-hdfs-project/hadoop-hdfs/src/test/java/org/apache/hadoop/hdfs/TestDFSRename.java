@@ -764,7 +764,7 @@ expr_stmt|;
 block|}
 block|}
 block|}
-comment|/**    * Check the blocks of dst file are cleaned after rename with overwrite    */
+comment|/**    * Check the blocks of dst file are cleaned after rename with overwrite    * Restart NN to check the rename successfully    */
 annotation|@
 name|Test
 argument_list|(
@@ -991,6 +991,32 @@ argument_list|()
 argument_list|)
 operator|==
 literal|null
+argument_list|)
+expr_stmt|;
+comment|// Restart NN and check the rename successfully
+name|cluster
+operator|.
+name|restartNameNodes
+argument_list|()
+expr_stmt|;
+name|assertFalse
+argument_list|(
+name|dfs
+operator|.
+name|exists
+argument_list|(
+name|srcPath
+argument_list|)
+argument_list|)
+expr_stmt|;
+name|assertTrue
+argument_list|(
+name|dfs
+operator|.
+name|exists
+argument_list|(
+name|dstPath
+argument_list|)
 argument_list|)
 expr_stmt|;
 block|}

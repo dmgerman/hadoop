@@ -546,6 +546,8 @@ argument_list|,
 name|fileUc
 argument_list|,
 literal|false
+argument_list|,
+literal|false
 argument_list|)
 expr_stmt|;
 name|editLog

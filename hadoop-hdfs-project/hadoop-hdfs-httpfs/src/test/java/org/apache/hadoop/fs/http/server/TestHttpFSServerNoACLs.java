@@ -1163,7 +1163,7 @@ name|res
 operator|.
 name|contains
 argument_list|(
-literal|"RemoteException"
+literal|"AclException"
 argument_list|)
 argument_list|)
 expr_stmt|;
@@ -1175,19 +1175,7 @@ name|res
 operator|.
 name|contains
 argument_list|(
-literal|"ACL"
-argument_list|)
-argument_list|)
-expr_stmt|;
-name|Assert
-operator|.
-name|assertTrue
-argument_list|(
-name|res
-operator|.
-name|contains
-argument_list|(
-literal|"rejected"
+literal|"Support for ACLs has been disabled"
 argument_list|)
 argument_list|)
 expr_stmt|;
@@ -1393,7 +1381,7 @@ name|err
 operator|.
 name|contains
 argument_list|(
-literal|"RemoteException"
+literal|"AclException"
 argument_list|)
 argument_list|)
 expr_stmt|;
@@ -1405,19 +1393,7 @@ name|err
 operator|.
 name|contains
 argument_list|(
-literal|"ACL"
-argument_list|)
-argument_list|)
-expr_stmt|;
-name|Assert
-operator|.
-name|assertTrue
-argument_list|(
-name|err
-operator|.
-name|contains
-argument_list|(
-literal|"rejected"
+literal|"Support for ACLs has been disabled"
 argument_list|)
 argument_list|)
 expr_stmt|;
