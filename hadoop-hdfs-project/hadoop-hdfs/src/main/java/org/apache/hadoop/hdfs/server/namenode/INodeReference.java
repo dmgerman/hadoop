@@ -1931,6 +1931,13 @@ block|}
 block|}
 if|if
 condition|(
+name|start
+operator|<
+name|withNameList
+operator|.
+name|size
+argument_list|()
+operator|&&
 name|withNameList
 operator|.
 name|get

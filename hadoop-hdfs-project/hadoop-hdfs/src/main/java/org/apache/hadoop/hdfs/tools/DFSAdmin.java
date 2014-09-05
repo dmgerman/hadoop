@@ -2137,6 +2137,104 @@ literal|0
 return|;
 block|}
 block|}
+comment|/**    * Common usage summary shared between "hdfs dfsadmin -help" and    * "hdfs dfsadmin"    */
+DECL|field|commonUsageSummary
+specifier|private
+specifier|static
+specifier|final
+name|String
+name|commonUsageSummary
+init|=
+literal|"\t[-report [-live] [-dead] [-decommissioning]]\n"
+operator|+
+literal|"\t[-safemode<enter | leave | get | wait>]\n"
+operator|+
+literal|"\t[-saveNamespace]\n"
+operator|+
+literal|"\t[-rollEdits]\n"
+operator|+
+literal|"\t[-restoreFailedStorage true|false|check]\n"
+operator|+
+literal|"\t[-refreshNodes]\n"
+operator|+
+literal|"\t["
+operator|+
+name|SetQuotaCommand
+operator|.
+name|USAGE
+operator|+
+literal|"]\n"
+operator|+
+literal|"\t["
+operator|+
+name|ClearQuotaCommand
+operator|.
+name|USAGE
+operator|+
+literal|"]\n"
+operator|+
+literal|"\t["
+operator|+
+name|SetSpaceQuotaCommand
+operator|.
+name|USAGE
+operator|+
+literal|"]\n"
+operator|+
+literal|"\t["
+operator|+
+name|ClearSpaceQuotaCommand
+operator|.
+name|USAGE
+operator|+
+literal|"]\n"
+operator|+
+literal|"\t[-finalizeUpgrade]\n"
+operator|+
+literal|"\t["
+operator|+
+name|RollingUpgradeCommand
+operator|.
+name|USAGE
+operator|+
+literal|"]\n"
+operator|+
+literal|"\t[-refreshServiceAcl]\n"
+operator|+
+literal|"\t[-refreshUserToGroupsMappings]\n"
+operator|+
+literal|"\t[-refreshSuperUserGroupsConfiguration]\n"
+operator|+
+literal|"\t[-refreshCallQueue]\n"
+operator|+
+literal|"\t[-refresh<host:ipc_port><key> [arg1..argn]\n"
+operator|+
+literal|"\t[-printTopology]\n"
+operator|+
+literal|"\t[-refreshNamenodes datanode_host:ipc_port]\n"
+operator|+
+literal|"\t[-deleteBlockPool datanode_host:ipc_port blockpoolId [force]]\n"
+operator|+
+literal|"\t[-setBalancerBandwidth<bandwidth in bytes per second>]\n"
+operator|+
+literal|"\t[-fetchImage<local directory>]\n"
+operator|+
+literal|"\t[-allowSnapshot<snapshotDir>]\n"
+operator|+
+literal|"\t[-disallowSnapshot<snapshotDir>]\n"
+operator|+
+literal|"\t[-shutdownDatanode<datanode_host:ipc_port> [upgrade]]\n"
+operator|+
+literal|"\t[-getDatanodeInfo<datanode_host:ipc_port>]\n"
+operator|+
+literal|"\t[-metasave filename]\n"
+operator|+
+literal|"\t[-setStoragePolicy path policyName\n"
+operator|+
+literal|"\t[-getStoragePolicy path\n"
+operator|+
+literal|"\t[-help [cmd]]\n"
+decl_stmt|;
 comment|/**    * Construct a DFSAdmin object.    */
 DECL|method|DFSAdmin ()
 specifier|public
@@ -3634,7 +3732,7 @@ literal|" succeeded"
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Command to ask the namenode to save the namespace.    * Usage: java DFSAdmin -saveNamespace    * @exception IOException     * @see org.apache.hadoop.hdfs.protocol.ClientProtocol#saveNamespace()    */
+comment|/**    * Command to ask the namenode to save the namespace.    * Usage: hdfs dfsadmin -saveNamespace    * @exception IOException     * @see org.apache.hadoop.hdfs.protocol.ClientProtocol#saveNamespace()    */
 DECL|method|saveNamespace ()
 specifier|public
 name|int
@@ -3824,7 +3922,7 @@ return|return
 literal|0
 return|;
 block|}
-comment|/**    * Command to enable/disable/check restoring of failed storage replicas in the namenode.    * Usage: java DFSAdmin -restoreFailedStorage true|false|check    * @exception IOException     * @see org.apache.hadoop.hdfs.protocol.ClientProtocol#restoreFailedStorage(String arg)    */
+comment|/**    * Command to enable/disable/check restoring of failed storage replicas in the namenode.    * Usage: hdfs dfsadmin -restoreFailedStorage true|false|check    * @exception IOException     * @see org.apache.hadoop.hdfs.protocol.ClientProtocol#restoreFailedStorage(String arg)    */
 DECL|method|restoreFailedStorage (String arg)
 specifier|public
 name|int
@@ -4027,7 +4125,7 @@ return|return
 name|exitCode
 return|;
 block|}
-comment|/**    * Command to ask the namenode to reread the hosts and excluded hosts     * file.    * Usage: java DFSAdmin -refreshNodes    * @exception IOException     */
+comment|/**    * Command to ask the namenode to reread the hosts and excluded hosts     * file.    * Usage: hdfs dfsadmin -refreshNodes    * @exception IOException     */
 DECL|method|refreshNodes ()
 specifier|public
 name|int
@@ -4171,7 +4269,7 @@ return|return
 name|exitCode
 return|;
 block|}
-comment|/**    * Command to ask the namenode to set the balancer bandwidth for all of the    * datanodes.    * Usage: java DFSAdmin -setBalancerBandwidth bandwidth    * @param argv List of of command line parameters.    * @param idx The index of the command that is being processed.    * @exception IOException     */
+comment|/**    * Command to ask the namenode to set the balancer bandwidth for all of the    * datanodes.    * Usage: hdfs dfsadmin -setBalancerBandwidth bandwidth    * @param argv List of of command line parameters.    * @param idx The index of the command that is being processed.    * @exception IOException     */
 DECL|method|setBalancerBandwidth (String[] argv, int idx)
 specifier|public
 name|int
@@ -4237,7 +4335,7 @@ name|err
 operator|.
 name|println
 argument_list|(
-literal|"Usage: java DFSAdmin"
+literal|"Usage: hdfs dfsadmin"
 operator|+
 literal|" [-setBalancerBandwidth<bandwidth in bytes per second>]"
 argument_list|)
@@ -4533,99 +4631,15 @@ block|{
 name|String
 name|summary
 init|=
-literal|"hadoop dfsadmin performs DFS administrative commands.\n"
+literal|"hdfs dfsadmin performs DFS administrative commands.\n"
+operator|+
+literal|"Note: Administrative commands can only be run with superuser permission.\n"
 operator|+
 literal|"The full syntax is: \n\n"
 operator|+
-literal|"hadoop dfsadmin\n"
+literal|"hdfs dfsadmin\n"
 operator|+
-literal|"\t[-report [-live] [-dead] [-decommissioning]]\n"
-operator|+
-literal|"\t[-safemode<enter | leave | get | wait>]\n"
-operator|+
-literal|"\t[-saveNamespace]\n"
-operator|+
-literal|"\t[-rollEdits]\n"
-operator|+
-literal|"\t[-restoreFailedStorage true|false|check]\n"
-operator|+
-literal|"\t[-refreshNodes]\n"
-operator|+
-literal|"\t["
-operator|+
-name|SetQuotaCommand
-operator|.
-name|USAGE
-operator|+
-literal|"]\n"
-operator|+
-literal|"\t["
-operator|+
-name|ClearQuotaCommand
-operator|.
-name|USAGE
-operator|+
-literal|"]\n"
-operator|+
-literal|"\t["
-operator|+
-name|SetSpaceQuotaCommand
-operator|.
-name|USAGE
-operator|+
-literal|"]\n"
-operator|+
-literal|"\t["
-operator|+
-name|ClearSpaceQuotaCommand
-operator|.
-name|USAGE
-operator|+
-literal|"]\n"
-operator|+
-literal|"\t[-finalizeUpgrade]\n"
-operator|+
-literal|"\t["
-operator|+
-name|RollingUpgradeCommand
-operator|.
-name|USAGE
-operator|+
-literal|"]\n"
-operator|+
-literal|"\t[-refreshServiceAcl]\n"
-operator|+
-literal|"\t[-refreshUserToGroupsMappings]\n"
-operator|+
-literal|"\t[-refreshSuperUserGroupsConfiguration]\n"
-operator|+
-literal|"\t[-refreshCallQueue]\n"
-operator|+
-literal|"\t[-refresh<host:ipc_port><key> [arg1..argn]\n"
-operator|+
-literal|"\t[-printTopology]\n"
-operator|+
-literal|"\t[-refreshNamenodes datanodehost:port]\n"
-operator|+
-literal|"\t[-deleteBlockPool datanodehost:port blockpoolId [force]]\n"
-operator|+
-literal|"\t[-setBalancerBandwidth<bandwidth>]\n"
-operator|+
-literal|"\t[-fetchImage<local directory>]\n"
-operator|+
-literal|"\t[-allowSnapshot<snapshotDir>]\n"
-operator|+
-literal|"\t[-disallowSnapshot<snapshotDir>]\n"
-operator|+
-literal|"\t[-shutdownDatanode<datanode_host:ipc_port> [upgrade]]\n"
-operator|+
-literal|"\t[-getDatanodeInfo<datanode_host:ipc_port>\n"
-operator|+
-literal|"\t[-setStoragePolicy path policyName\n"
-operator|+
-literal|"\t[-getStoragePolicy path\n"
-operator|+
-literal|"\t[-help [cmd]]\n"
+name|commonUsageSummary
 decl_stmt|;
 name|String
 name|report
@@ -4664,7 +4678,7 @@ literal|"-saveNamespace:\t"
 operator|+
 literal|"Save current namespace into storage directories and reset edits log.\n"
 operator|+
-literal|"\t\tRequires superuser permissions and safe mode.\n"
+literal|"\t\tRequires safe mode.\n"
 decl_stmt|;
 name|String
 name|rollEdits
@@ -4672,8 +4686,6 @@ init|=
 literal|"-rollEdits:\t"
 operator|+
 literal|"Rolls the edit log.\n"
-operator|+
-literal|"\t\tRequires superuser permissions.\n"
 decl_stmt|;
 name|String
 name|restoreFailedStorage
@@ -4681,8 +4693,6 @@ init|=
 literal|"-restoreFailedStorage:\t"
 operator|+
 literal|"Set/Unset/Check flag to attempt restore of failed storage replicas if they become available.\n"
-operator|+
-literal|"\t\tRequires superuser permissions.\n"
 decl_stmt|;
 name|String
 name|refreshNodes
@@ -5854,7 +5864,7 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-comment|/**    * Command to ask the namenode to finalize previously performed upgrade.    * Usage: java DFSAdmin -finalizeUpgrade    * @exception IOException     */
+comment|/**    * Command to ask the namenode to finalize previously performed upgrade.    * Usage: hdfs dfsadmin -finalizeUpgrade    * @exception IOException     */
 DECL|method|finalizeUpgrade ()
 specifier|public
 name|int
@@ -6024,7 +6034,7 @@ return|return
 literal|0
 return|;
 block|}
-comment|/**    * Dumps DFS data structures into specified file.    * Usage: java DFSAdmin -metasave filename    * @param argv List of of command line parameters.    * @param idx The index of the command that is being processed.    * @exception IOException if an error occurred while accessing    *            the file or path.    */
+comment|/**    * Dumps DFS data structures into specified file.    * Usage: hdfs dfsadmin -metasave filename    * @param argv List of of command line parameters.    * @param idx The index of the command that is being processed.    * @exception IOException if an error occurred while accessing    *            the file or path.    */
 DECL|method|metaSave (String[] argv, int idx)
 specifier|public
 name|int
@@ -7476,7 +7486,7 @@ name|err
 operator|.
 name|println
 argument_list|(
-literal|"Usage: java DFSAdmin"
+literal|"Usage: hdfs dfsadmin"
 operator|+
 literal|" [-report] [-live] [-dead] [-decommissioning]"
 argument_list|)
@@ -7499,7 +7509,7 @@ name|err
 operator|.
 name|println
 argument_list|(
-literal|"Usage: java DFSAdmin"
+literal|"Usage: hdfs dfsadmin"
 operator|+
 literal|" [-safemode enter | leave | get | wait]"
 argument_list|)
@@ -7568,7 +7578,7 @@ name|err
 operator|.
 name|println
 argument_list|(
-literal|"Usage: java DFSAdmin"
+literal|"Usage: hdfs dfsadmin"
 operator|+
 literal|" [-allowSnapshot<snapshotDir>]"
 argument_list|)
@@ -7591,7 +7601,7 @@ name|err
 operator|.
 name|println
 argument_list|(
-literal|"Usage: java DFSAdmin"
+literal|"Usage: hdfs dfsadmin"
 operator|+
 literal|" [-disallowSnapshot<snapshotDir>]"
 argument_list|)
@@ -7614,7 +7624,7 @@ name|err
 operator|.
 name|println
 argument_list|(
-literal|"Usage: java DFSAdmin"
+literal|"Usage: hdfs dfsadmin"
 operator|+
 literal|" [-saveNamespace]"
 argument_list|)
@@ -7637,7 +7647,7 @@ name|err
 operator|.
 name|println
 argument_list|(
-literal|"Usage: java DFSAdmin"
+literal|"Usage: hdfs dfsadmin"
 operator|+
 literal|" [-rollEdits]"
 argument_list|)
@@ -7660,7 +7670,7 @@ name|err
 operator|.
 name|println
 argument_list|(
-literal|"Usage: java DFSAdmin"
+literal|"Usage: hdfs dfsadmin"
 operator|+
 literal|" [-restoreFailedStorage true|false|check ]"
 argument_list|)
@@ -7683,7 +7693,7 @@ name|err
 operator|.
 name|println
 argument_list|(
-literal|"Usage: java DFSAdmin"
+literal|"Usage: hdfs dfsadmin"
 operator|+
 literal|" [-refreshNodes]"
 argument_list|)
@@ -7706,7 +7716,7 @@ name|err
 operator|.
 name|println
 argument_list|(
-literal|"Usage: java DFSAdmin"
+literal|"Usage: hdfs dfsadmin"
 operator|+
 literal|" [-finalizeUpgrade]"
 argument_list|)
@@ -7729,7 +7739,7 @@ name|err
 operator|.
 name|println
 argument_list|(
-literal|"Usage: java DFSAdmin"
+literal|"Usage: hdfs dfsadmin"
 operator|+
 literal|" ["
 operator|+
@@ -7758,7 +7768,7 @@ name|err
 operator|.
 name|println
 argument_list|(
-literal|"Usage: java DFSAdmin"
+literal|"Usage: hdfs dfsadmin"
 operator|+
 literal|" [-metasave filename]"
 argument_list|)
@@ -7781,7 +7791,7 @@ name|err
 operator|.
 name|println
 argument_list|(
-literal|"Usage: java DFSAdmin"
+literal|"Usage: hdfs dfsadmin"
 operator|+
 literal|" ["
 operator|+
@@ -7810,7 +7820,7 @@ name|err
 operator|.
 name|println
 argument_list|(
-literal|"Usage: java DFSAdmin"
+literal|"Usage: hdfs dfsadmin"
 operator|+
 literal|" ["
 operator|+
@@ -7839,7 +7849,7 @@ name|err
 operator|.
 name|println
 argument_list|(
-literal|"Usage: java DFSAdmin"
+literal|"Usage: hdfs dfsadmin"
 operator|+
 literal|" ["
 operator|+
@@ -7868,7 +7878,7 @@ name|err
 operator|.
 name|println
 argument_list|(
-literal|"Usage: java DFSAdmin"
+literal|"Usage: hdfs dfsadmin"
 operator|+
 literal|" ["
 operator|+
@@ -7897,7 +7907,7 @@ name|err
 operator|.
 name|println
 argument_list|(
-literal|"Usage: java DFSAdmin"
+literal|"Usage: hdfs dfsadmin"
 operator|+
 literal|" [-refreshServiceAcl]"
 argument_list|)
@@ -7920,7 +7930,7 @@ name|err
 operator|.
 name|println
 argument_list|(
-literal|"Usage: java DFSAdmin"
+literal|"Usage: hdfs dfsadmin"
 operator|+
 literal|" [-refreshUserToGroupsMappings]"
 argument_list|)
@@ -7943,7 +7953,7 @@ name|err
 operator|.
 name|println
 argument_list|(
-literal|"Usage: java DFSAdmin"
+literal|"Usage: hdfs dfsadmin"
 operator|+
 literal|" [-refreshSuperUserGroupsConfiguration]"
 argument_list|)
@@ -7966,7 +7976,7 @@ name|err
 operator|.
 name|println
 argument_list|(
-literal|"Usage: java DFSAdmin"
+literal|"Usage: hdfs dfsadmin"
 operator|+
 literal|" [-refreshCallQueue]"
 argument_list|)
@@ -7989,7 +7999,7 @@ name|err
 operator|.
 name|println
 argument_list|(
-literal|"Usage: java DFSAdmin"
+literal|"Usage: hdfs dfsadmin"
 operator|+
 literal|" [-refresh<hostname:port><resource_identifier> [arg1..argn]"
 argument_list|)
@@ -8012,7 +8022,7 @@ name|err
 operator|.
 name|println
 argument_list|(
-literal|"Usage: java DFSAdmin"
+literal|"Usage: hdfs dfsadmin"
 operator|+
 literal|" [-printTopology]"
 argument_list|)
@@ -8035,7 +8045,7 @@ name|err
 operator|.
 name|println
 argument_list|(
-literal|"Usage: java DFSAdmin"
+literal|"Usage: hdfs dfsadmin"
 operator|+
 literal|" [-refreshNamenodes datanode-host:port]"
 argument_list|)
@@ -8058,7 +8068,7 @@ name|err
 operator|.
 name|println
 argument_list|(
-literal|"Usage: java DFSAdmin"
+literal|"Usage: hdfs dfsadmin"
 operator|+
 literal|" [-deleteBlockPool datanode-host:port blockpoolId [force]]"
 argument_list|)
@@ -8081,7 +8091,7 @@ name|err
 operator|.
 name|println
 argument_list|(
-literal|"Usage: java DFSAdmin"
+literal|"Usage: hdfs dfsadmin"
 operator|+
 literal|" [-setBalancerBandwidth<bandwidth in bytes per second>]"
 argument_list|)
@@ -8104,7 +8114,7 @@ name|err
 operator|.
 name|println
 argument_list|(
-literal|"Usage: java DFSAdmin"
+literal|"Usage: hdfs dfsadmin"
 operator|+
 literal|" [-fetchImage<local directory>]"
 argument_list|)
@@ -8127,7 +8137,7 @@ name|err
 operator|.
 name|println
 argument_list|(
-literal|"Usage: java DFSAdmin"
+literal|"Usage: hdfs dfsadmin"
 operator|+
 literal|" [-shutdownDatanode<datanode_host:ipc_port> [upgrade]]"
 argument_list|)
@@ -8150,7 +8160,7 @@ name|err
 operator|.
 name|println
 argument_list|(
-literal|"Usage: java DFSAdmin"
+literal|"Usage: hdfs dfsadmin"
 operator|+
 literal|" [-getDatanodeInfo<datanode_host:ipc_port>]"
 argument_list|)
@@ -8164,7 +8174,7 @@ name|err
 operator|.
 name|println
 argument_list|(
-literal|"Usage: java DFSAdmin"
+literal|"Usage: hdfs dfsadmin"
 argument_list|)
 expr_stmt|;
 name|System
@@ -8182,306 +8192,8 @@ name|err
 operator|.
 name|println
 argument_list|(
-literal|"           [-report]"
+name|commonUsageSummary
 argument_list|)
-expr_stmt|;
-name|System
-operator|.
-name|err
-operator|.
-name|println
-argument_list|(
-literal|"           [-safemode enter | leave | get | wait]"
-argument_list|)
-expr_stmt|;
-name|System
-operator|.
-name|err
-operator|.
-name|println
-argument_list|(
-literal|"           [-allowSnapshot<snapshotDir>]"
-argument_list|)
-expr_stmt|;
-name|System
-operator|.
-name|err
-operator|.
-name|println
-argument_list|(
-literal|"           [-disallowSnapshot<snapshotDir>]"
-argument_list|)
-expr_stmt|;
-name|System
-operator|.
-name|err
-operator|.
-name|println
-argument_list|(
-literal|"           [-saveNamespace]"
-argument_list|)
-expr_stmt|;
-name|System
-operator|.
-name|err
-operator|.
-name|println
-argument_list|(
-literal|"           [-rollEdits]"
-argument_list|)
-expr_stmt|;
-name|System
-operator|.
-name|err
-operator|.
-name|println
-argument_list|(
-literal|"           [-restoreFailedStorage true|false|check]"
-argument_list|)
-expr_stmt|;
-name|System
-operator|.
-name|err
-operator|.
-name|println
-argument_list|(
-literal|"           [-refreshNodes]"
-argument_list|)
-expr_stmt|;
-name|System
-operator|.
-name|err
-operator|.
-name|println
-argument_list|(
-literal|"           [-finalizeUpgrade]"
-argument_list|)
-expr_stmt|;
-name|System
-operator|.
-name|err
-operator|.
-name|println
-argument_list|(
-literal|"           ["
-operator|+
-name|RollingUpgradeCommand
-operator|.
-name|USAGE
-operator|+
-literal|"]"
-argument_list|)
-expr_stmt|;
-name|System
-operator|.
-name|err
-operator|.
-name|println
-argument_list|(
-literal|"           [-metasave filename]"
-argument_list|)
-expr_stmt|;
-name|System
-operator|.
-name|err
-operator|.
-name|println
-argument_list|(
-literal|"           [-refreshServiceAcl]"
-argument_list|)
-expr_stmt|;
-name|System
-operator|.
-name|err
-operator|.
-name|println
-argument_list|(
-literal|"           [-refreshUserToGroupsMappings]"
-argument_list|)
-expr_stmt|;
-name|System
-operator|.
-name|err
-operator|.
-name|println
-argument_list|(
-literal|"           [-refreshSuperUserGroupsConfiguration]"
-argument_list|)
-expr_stmt|;
-name|System
-operator|.
-name|err
-operator|.
-name|println
-argument_list|(
-literal|"           [-refreshCallQueue]"
-argument_list|)
-expr_stmt|;
-name|System
-operator|.
-name|err
-operator|.
-name|println
-argument_list|(
-literal|"           [-refresh]"
-argument_list|)
-expr_stmt|;
-name|System
-operator|.
-name|err
-operator|.
-name|println
-argument_list|(
-literal|"           [-printTopology]"
-argument_list|)
-expr_stmt|;
-name|System
-operator|.
-name|err
-operator|.
-name|println
-argument_list|(
-literal|"           [-refreshNamenodes datanodehost:port]"
-argument_list|)
-expr_stmt|;
-name|System
-operator|.
-name|err
-operator|.
-name|println
-argument_list|(
-literal|"           [-deleteBlockPool datanode-host:port blockpoolId [force]]"
-argument_list|)
-expr_stmt|;
-name|System
-operator|.
-name|err
-operator|.
-name|println
-argument_list|(
-literal|"           ["
-operator|+
-name|SetQuotaCommand
-operator|.
-name|USAGE
-operator|+
-literal|"]"
-argument_list|)
-expr_stmt|;
-name|System
-operator|.
-name|err
-operator|.
-name|println
-argument_list|(
-literal|"           ["
-operator|+
-name|ClearQuotaCommand
-operator|.
-name|USAGE
-operator|+
-literal|"]"
-argument_list|)
-expr_stmt|;
-name|System
-operator|.
-name|err
-operator|.
-name|println
-argument_list|(
-literal|"           ["
-operator|+
-name|SetSpaceQuotaCommand
-operator|.
-name|USAGE
-operator|+
-literal|"]"
-argument_list|)
-expr_stmt|;
-name|System
-operator|.
-name|err
-operator|.
-name|println
-argument_list|(
-literal|"           ["
-operator|+
-name|ClearSpaceQuotaCommand
-operator|.
-name|USAGE
-operator|+
-literal|"]"
-argument_list|)
-expr_stmt|;
-name|System
-operator|.
-name|err
-operator|.
-name|println
-argument_list|(
-literal|"           [-setBalancerBandwidth<bandwidth in bytes per second>]"
-argument_list|)
-expr_stmt|;
-name|System
-operator|.
-name|err
-operator|.
-name|println
-argument_list|(
-literal|"           [-fetchImage<local directory>]"
-argument_list|)
-expr_stmt|;
-name|System
-operator|.
-name|err
-operator|.
-name|println
-argument_list|(
-literal|"           [-shutdownDatanode<datanode_host:ipc_port> [upgrade]]"
-argument_list|)
-expr_stmt|;
-name|System
-operator|.
-name|err
-operator|.
-name|println
-argument_list|(
-literal|"           [-getDatanodeInfo<datanode_host:ipc_port>]"
-argument_list|)
-expr_stmt|;
-name|System
-operator|.
-name|err
-operator|.
-name|println
-argument_list|(
-literal|"           [-setStoragePolicy path policyName]"
-argument_list|)
-expr_stmt|;
-name|System
-operator|.
-name|err
-operator|.
-name|println
-argument_list|(
-literal|"           [-getStoragePolicy path]"
-argument_list|)
-expr_stmt|;
-name|System
-operator|.
-name|err
-operator|.
-name|println
-argument_list|(
-literal|"           [-help [cmd]]"
-argument_list|)
-expr_stmt|;
-name|System
-operator|.
-name|err
-operator|.
-name|println
-argument_list|()
 expr_stmt|;
 name|ToolRunner
 operator|.

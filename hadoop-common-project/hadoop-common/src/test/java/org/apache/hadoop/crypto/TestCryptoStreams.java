@@ -788,7 +788,8 @@ block|}
 block|}
 block|}
 DECL|class|FakeInputStream
-specifier|private
+specifier|public
+specifier|static
 class|class
 name|FakeInputStream
 extends|extends

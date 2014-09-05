@@ -2272,11 +2272,10 @@ name|cTime
 operator|=
 literal|0
 expr_stmt|;
-name|this
-operator|.
+name|setDatanodeUuid
+argument_list|(
 name|datanodeUuid
-operator|=
-name|datanodeUuid
+argument_list|)
 expr_stmt|;
 if|if
 condition|(

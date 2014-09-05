@@ -527,7 +527,7 @@ block|}
 name|String
 name|pattern
 init|=
-literal|"Usage: java DFSAdmin"
+literal|"Usage: hdfs dfsadmin"
 decl_stmt|;
 name|checkOutput
 argument_list|(

@@ -4468,6 +4468,28 @@ name|TIMELINE_SERVICE_PREFIX
 operator|+
 literal|"keytab"
 decl_stmt|;
+comment|/** Enables cross origin support for timeline server.*/
+DECL|field|TIMELINE_SERVICE_HTTP_CROSS_ORIGIN_ENABLED
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|TIMELINE_SERVICE_HTTP_CROSS_ORIGIN_ENABLED
+init|=
+name|TIMELINE_SERVICE_PREFIX
+operator|+
+literal|"http-cross-origin.enabled"
+decl_stmt|;
+comment|/** Default value for cross origin support for timeline server.*/
+specifier|public
+specifier|static
+specifier|final
+name|boolean
+DECL|field|TIMELINE_SERVICE_HTTP_CROSS_ORIGIN_ENABLED_DEFAULT
+name|TIMELINE_SERVICE_HTTP_CROSS_ORIGIN_ENABLED_DEFAULT
+init|=
+literal|false
+decl_stmt|;
 comment|////////////////////////////////
 comment|// Other Configs
 comment|////////////////////////////////

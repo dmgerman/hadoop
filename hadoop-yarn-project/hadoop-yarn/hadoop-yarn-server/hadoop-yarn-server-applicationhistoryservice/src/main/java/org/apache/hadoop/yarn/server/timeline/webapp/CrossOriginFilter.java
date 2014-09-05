@@ -430,6 +430,13 @@ name|String
 argument_list|>
 argument_list|()
 decl_stmt|;
+DECL|field|allowAllOrigins
+specifier|private
+name|boolean
+name|allowAllOrigins
+init|=
+literal|true
+decl_stmt|;
 DECL|field|maxAge
 specifier|private
 name|String
@@ -881,6 +888,15 @@ literal|"\\s*,\\s*"
 argument_list|)
 argument_list|)
 expr_stmt|;
+name|allowAllOrigins
+operator|=
+name|allowedOrigins
+operator|.
+name|contains
+argument_list|(
+literal|"*"
+argument_list|)
+expr_stmt|;
 name|LOG
 operator|.
 name|info
@@ -895,6 +911,15 @@ name|allowedOrigins
 argument_list|,
 literal|','
 argument_list|)
+argument_list|)
+expr_stmt|;
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"Allow All Origins: "
+operator|+
+name|allowAllOrigins
 argument_list|)
 expr_stmt|;
 block|}
@@ -1000,8 +1025,9 @@ operator|!=
 literal|null
 return|;
 block|}
+annotation|@
+name|VisibleForTesting
 DECL|method|isOriginAllowed (String origin)
-specifier|private
 name|boolean
 name|isOriginAllowed
 parameter_list|(
@@ -1010,6 +1036,8 @@ name|origin
 parameter_list|)
 block|{
 return|return
+name|allowAllOrigins
+operator|||
 name|allowedOrigins
 operator|.
 name|contains
@@ -1083,7 +1111,7 @@ literal|null
 condition|)
 block|{
 return|return
-literal|false
+literal|true
 return|;
 block|}
 return|return

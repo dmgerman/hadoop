@@ -7481,6 +7481,18 @@ expr_stmt|;
 if|if
 condition|(
 operator|!
+name|smallCpu
+condition|)
+name|msg
+operator|.
+name|append
+argument_list|(
+literal|" too much CPU;"
+argument_list|)
+expr_stmt|;
+if|if
+condition|(
+operator|!
 name|smallMemory
 condition|)
 name|msg
