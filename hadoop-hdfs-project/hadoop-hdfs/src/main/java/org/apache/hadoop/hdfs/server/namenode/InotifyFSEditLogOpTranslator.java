@@ -253,6 +253,13 @@ name|getPermission
 argument_list|()
 argument_list|)
 operator|.
+name|overwrite
+argument_list|(
+name|addOp
+operator|.
+name|overwrite
+argument_list|)
+operator|.
 name|iNodeType
 argument_list|(
 name|Event

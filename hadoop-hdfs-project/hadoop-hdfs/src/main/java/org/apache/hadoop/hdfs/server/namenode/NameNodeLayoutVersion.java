@@ -292,6 +292,17 @@ literal|57
 argument_list|,
 literal|"Extended attributes"
 argument_list|)
+block|,
+DECL|enumConstant|CREATE_OVERWRITE
+name|CREATE_OVERWRITE
+argument_list|(
+operator|-
+literal|58
+argument_list|,
+literal|"Use single editlog record for "
+operator|+
+literal|"creating file with overwrite"
+argument_list|)
 block|;
 DECL|field|info
 specifier|private
