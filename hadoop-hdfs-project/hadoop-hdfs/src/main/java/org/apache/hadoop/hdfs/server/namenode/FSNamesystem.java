@@ -4215,6 +4215,8 @@ argument_list|,
 name|resolveSymlink
 argument_list|,
 literal|false
+argument_list|,
+literal|false
 argument_list|)
 else|:
 literal|null
@@ -13972,6 +13974,8 @@ name|isReservedRawName
 argument_list|(
 name|srcArg
 argument_list|)
+argument_list|,
+literal|false
 argument_list|)
 expr_stmt|;
 block|}
@@ -20481,6 +20485,11 @@ argument_list|,
 name|pathComponents
 argument_list|)
 expr_stmt|;
+name|boolean
+name|isSuperUser
+init|=
+literal|true
+decl_stmt|;
 if|if
 condition|(
 name|isPermissionEnabled
@@ -20507,6 +20516,13 @@ argument_list|,
 name|resolveLink
 argument_list|)
 expr_stmt|;
+name|isSuperUser
+operator|=
+name|pc
+operator|.
+name|isSuperUser
+argument_list|()
+expr_stmt|;
 block|}
 name|stat
 operator|=
@@ -20524,6 +20540,8 @@ name|isReservedRawName
 argument_list|(
 name|srcArg
 argument_list|)
+argument_list|,
+name|isSuperUser
 argument_list|)
 expr_stmt|;
 block|}

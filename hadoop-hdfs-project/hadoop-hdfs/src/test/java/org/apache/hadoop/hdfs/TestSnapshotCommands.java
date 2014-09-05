@@ -17,44 +17,12 @@ package|;
 end_package
 
 begin_import
-import|import static
-name|org
-operator|.
-name|junit
-operator|.
-name|Assert
-operator|.
-name|*
-import|;
-end_import
-
-begin_import
-import|import
-name|java
-operator|.
-name|io
-operator|.
-name|ByteArrayOutputStream
-import|;
-end_import
-
-begin_import
 import|import
 name|java
 operator|.
 name|io
 operator|.
 name|IOException
-import|;
-end_import
-
-begin_import
-import|import
-name|java
-operator|.
-name|io
-operator|.
-name|PrintStream
 import|;
 end_import
 
@@ -96,93 +64,7 @@ name|hadoop
 operator|.
 name|fs
 operator|.
-name|FsShell
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|fs
-operator|.
 name|Path
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|hdfs
-operator|.
-name|DistributedFileSystem
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|hdfs
-operator|.
-name|HdfsConfiguration
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|hdfs
-operator|.
-name|tools
-operator|.
-name|DFSAdmin
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|util
-operator|.
-name|StringUtils
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|util
-operator|.
-name|Tool
 import|;
 end_import
 
@@ -502,327 +384,6 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-DECL|method|toolRun (Tool tool, String cmd, int retcode, String contain)
-specifier|private
-name|void
-name|toolRun
-parameter_list|(
-name|Tool
-name|tool
-parameter_list|,
-name|String
-name|cmd
-parameter_list|,
-name|int
-name|retcode
-parameter_list|,
-name|String
-name|contain
-parameter_list|)
-throws|throws
-name|Exception
-block|{
-name|String
-index|[]
-name|cmds
-init|=
-name|StringUtils
-operator|.
-name|split
-argument_list|(
-name|cmd
-argument_list|,
-literal|' '
-argument_list|)
-decl_stmt|;
-name|System
-operator|.
-name|out
-operator|.
-name|flush
-argument_list|()
-expr_stmt|;
-name|System
-operator|.
-name|err
-operator|.
-name|flush
-argument_list|()
-expr_stmt|;
-name|PrintStream
-name|origOut
-init|=
-name|System
-operator|.
-name|out
-decl_stmt|;
-name|PrintStream
-name|origErr
-init|=
-name|System
-operator|.
-name|err
-decl_stmt|;
-name|String
-name|output
-init|=
-literal|null
-decl_stmt|;
-name|int
-name|ret
-init|=
-literal|0
-decl_stmt|;
-try|try
-block|{
-name|ByteArrayOutputStream
-name|bs
-init|=
-operator|new
-name|ByteArrayOutputStream
-argument_list|(
-literal|1024
-argument_list|)
-decl_stmt|;
-name|PrintStream
-name|out
-init|=
-operator|new
-name|PrintStream
-argument_list|(
-name|bs
-argument_list|)
-decl_stmt|;
-name|System
-operator|.
-name|setOut
-argument_list|(
-name|out
-argument_list|)
-expr_stmt|;
-name|System
-operator|.
-name|setErr
-argument_list|(
-name|out
-argument_list|)
-expr_stmt|;
-name|ret
-operator|=
-name|tool
-operator|.
-name|run
-argument_list|(
-name|cmds
-argument_list|)
-expr_stmt|;
-name|System
-operator|.
-name|out
-operator|.
-name|flush
-argument_list|()
-expr_stmt|;
-name|System
-operator|.
-name|err
-operator|.
-name|flush
-argument_list|()
-expr_stmt|;
-name|out
-operator|.
-name|close
-argument_list|()
-expr_stmt|;
-name|output
-operator|=
-name|bs
-operator|.
-name|toString
-argument_list|()
-expr_stmt|;
-block|}
-finally|finally
-block|{
-name|System
-operator|.
-name|setOut
-argument_list|(
-name|origOut
-argument_list|)
-expr_stmt|;
-name|System
-operator|.
-name|setErr
-argument_list|(
-name|origErr
-argument_list|)
-expr_stmt|;
-block|}
-name|System
-operator|.
-name|out
-operator|.
-name|println
-argument_list|(
-literal|"Output for command: "
-operator|+
-name|cmd
-operator|+
-literal|" retcode: "
-operator|+
-name|ret
-argument_list|)
-expr_stmt|;
-if|if
-condition|(
-name|output
-operator|!=
-literal|null
-condition|)
-block|{
-name|System
-operator|.
-name|out
-operator|.
-name|println
-argument_list|(
-name|output
-argument_list|)
-expr_stmt|;
-block|}
-name|assertEquals
-argument_list|(
-name|retcode
-argument_list|,
-name|ret
-argument_list|)
-expr_stmt|;
-if|if
-condition|(
-name|contain
-operator|!=
-literal|null
-condition|)
-block|{
-name|assertTrue
-argument_list|(
-name|output
-operator|.
-name|contains
-argument_list|(
-name|contain
-argument_list|)
-argument_list|)
-expr_stmt|;
-block|}
-block|}
-DECL|method|FsShellRun (String cmd, int retcode, String contain)
-specifier|private
-name|void
-name|FsShellRun
-parameter_list|(
-name|String
-name|cmd
-parameter_list|,
-name|int
-name|retcode
-parameter_list|,
-name|String
-name|contain
-parameter_list|)
-throws|throws
-name|Exception
-block|{
-name|FsShell
-name|shell
-init|=
-operator|new
-name|FsShell
-argument_list|(
-operator|new
-name|Configuration
-argument_list|(
-name|conf
-argument_list|)
-argument_list|)
-decl_stmt|;
-name|toolRun
-argument_list|(
-name|shell
-argument_list|,
-name|cmd
-argument_list|,
-name|retcode
-argument_list|,
-name|contain
-argument_list|)
-expr_stmt|;
-block|}
-DECL|method|DFSAdminRun (String cmd, int retcode, String contain)
-specifier|private
-name|void
-name|DFSAdminRun
-parameter_list|(
-name|String
-name|cmd
-parameter_list|,
-name|int
-name|retcode
-parameter_list|,
-name|String
-name|contain
-parameter_list|)
-throws|throws
-name|Exception
-block|{
-name|DFSAdmin
-name|admin
-init|=
-operator|new
-name|DFSAdmin
-argument_list|(
-operator|new
-name|Configuration
-argument_list|(
-name|conf
-argument_list|)
-argument_list|)
-decl_stmt|;
-name|toolRun
-argument_list|(
-name|admin
-argument_list|,
-name|cmd
-argument_list|,
-name|retcode
-argument_list|,
-name|contain
-argument_list|)
-expr_stmt|;
-block|}
-DECL|method|FsShellRun (String cmd)
-specifier|private
-name|void
-name|FsShellRun
-parameter_list|(
-name|String
-name|cmd
-parameter_list|)
-throws|throws
-name|Exception
-block|{
-name|FsShellRun
-argument_list|(
-name|cmd
-argument_list|,
-literal|0
-argument_list|,
-literal|null
-argument_list|)
-expr_stmt|;
-block|}
 annotation|@
 name|Test
 DECL|method|testAllowSnapshot ()
@@ -834,6 +395,8 @@ throws|throws
 name|Exception
 block|{
 comment|// Idempotent test
+name|DFSTestUtil
+operator|.
 name|DFSAdminRun
 argument_list|(
 literal|"-allowSnapshot /sub1"
@@ -841,14 +404,22 @@ argument_list|,
 literal|0
 argument_list|,
 literal|"Allowing snaphot on /sub1 succeeded"
+argument_list|,
+name|conf
 argument_list|)
 expr_stmt|;
 comment|// allow normal dir success
+name|DFSTestUtil
+operator|.
 name|FsShellRun
 argument_list|(
 literal|"-mkdir /sub2"
+argument_list|,
+name|conf
 argument_list|)
 expr_stmt|;
+name|DFSTestUtil
+operator|.
 name|DFSAdminRun
 argument_list|(
 literal|"-allowSnapshot /sub2"
@@ -856,9 +427,13 @@ argument_list|,
 literal|0
 argument_list|,
 literal|"Allowing snaphot on /sub2 succeeded"
+argument_list|,
+name|conf
 argument_list|)
 expr_stmt|;
 comment|// allow non-exists dir failed
+name|DFSTestUtil
+operator|.
 name|DFSAdminRun
 argument_list|(
 literal|"-allowSnapshot /sub3"
@@ -867,6 +442,8 @@ operator|-
 literal|1
 argument_list|,
 literal|null
+argument_list|,
+name|conf
 argument_list|)
 expr_stmt|;
 block|}
@@ -881,6 +458,8 @@ throws|throws
 name|Exception
 block|{
 comment|// test createSnapshot
+name|DFSTestUtil
+operator|.
 name|FsShellRun
 argument_list|(
 literal|"-createSnapshot /sub1 sn0"
@@ -888,8 +467,12 @@ argument_list|,
 literal|0
 argument_list|,
 literal|"Created snapshot /sub1/.snapshot/sn0"
+argument_list|,
+name|conf
 argument_list|)
 expr_stmt|;
+name|DFSTestUtil
+operator|.
 name|FsShellRun
 argument_list|(
 literal|"-createSnapshot /sub1 sn0"
@@ -897,18 +480,30 @@ argument_list|,
 literal|1
 argument_list|,
 literal|"there is already a snapshot with the same name \"sn0\""
+argument_list|,
+name|conf
 argument_list|)
 expr_stmt|;
+name|DFSTestUtil
+operator|.
 name|FsShellRun
 argument_list|(
 literal|"-rmr /sub1/sub1sub2"
+argument_list|,
+name|conf
 argument_list|)
 expr_stmt|;
+name|DFSTestUtil
+operator|.
 name|FsShellRun
 argument_list|(
 literal|"-mkdir /sub1/sub1sub3"
+argument_list|,
+name|conf
 argument_list|)
 expr_stmt|;
+name|DFSTestUtil
+operator|.
 name|FsShellRun
 argument_list|(
 literal|"-createSnapshot /sub1 sn1"
@@ -916,9 +511,13 @@ argument_list|,
 literal|0
 argument_list|,
 literal|"Created snapshot /sub1/.snapshot/sn1"
+argument_list|,
+name|conf
 argument_list|)
 expr_stmt|;
 comment|// check snapshot contents
+name|DFSTestUtil
+operator|.
 name|FsShellRun
 argument_list|(
 literal|"-ls /sub1"
@@ -926,8 +525,12 @@ argument_list|,
 literal|0
 argument_list|,
 literal|"/sub1/sub1sub1"
+argument_list|,
+name|conf
 argument_list|)
 expr_stmt|;
+name|DFSTestUtil
+operator|.
 name|FsShellRun
 argument_list|(
 literal|"-ls /sub1"
@@ -935,8 +538,12 @@ argument_list|,
 literal|0
 argument_list|,
 literal|"/sub1/sub1sub3"
+argument_list|,
+name|conf
 argument_list|)
 expr_stmt|;
+name|DFSTestUtil
+operator|.
 name|FsShellRun
 argument_list|(
 literal|"-ls /sub1/.snapshot"
@@ -944,8 +551,12 @@ argument_list|,
 literal|0
 argument_list|,
 literal|"/sub1/.snapshot/sn0"
+argument_list|,
+name|conf
 argument_list|)
 expr_stmt|;
+name|DFSTestUtil
+operator|.
 name|FsShellRun
 argument_list|(
 literal|"-ls /sub1/.snapshot"
@@ -953,8 +564,12 @@ argument_list|,
 literal|0
 argument_list|,
 literal|"/sub1/.snapshot/sn1"
+argument_list|,
+name|conf
 argument_list|)
 expr_stmt|;
+name|DFSTestUtil
+operator|.
 name|FsShellRun
 argument_list|(
 literal|"-ls /sub1/.snapshot/sn0"
@@ -962,8 +577,12 @@ argument_list|,
 literal|0
 argument_list|,
 literal|"/sub1/.snapshot/sn0/sub1sub1"
+argument_list|,
+name|conf
 argument_list|)
 expr_stmt|;
+name|DFSTestUtil
+operator|.
 name|FsShellRun
 argument_list|(
 literal|"-ls /sub1/.snapshot/sn0"
@@ -971,8 +590,12 @@ argument_list|,
 literal|0
 argument_list|,
 literal|"/sub1/.snapshot/sn0/sub1sub2"
+argument_list|,
+name|conf
 argument_list|)
 expr_stmt|;
+name|DFSTestUtil
+operator|.
 name|FsShellRun
 argument_list|(
 literal|"-ls /sub1/.snapshot/sn1"
@@ -980,8 +603,12 @@ argument_list|,
 literal|0
 argument_list|,
 literal|"/sub1/.snapshot/sn1/sub1sub1"
+argument_list|,
+name|conf
 argument_list|)
 expr_stmt|;
+name|DFSTestUtil
+operator|.
 name|FsShellRun
 argument_list|(
 literal|"-ls /sub1/.snapshot/sn1"
@@ -989,6 +616,8 @@ argument_list|,
 literal|0
 argument_list|,
 literal|"/sub1/.snapshot/sn1/sub1sub3"
+argument_list|,
+name|conf
 argument_list|)
 expr_stmt|;
 block|}
@@ -1003,11 +632,17 @@ throws|throws
 name|Exception
 block|{
 comment|// test can not create dir with reserved name: .snapshot
+name|DFSTestUtil
+operator|.
 name|FsShellRun
 argument_list|(
 literal|"-ls /"
+argument_list|,
+name|conf
 argument_list|)
 expr_stmt|;
+name|DFSTestUtil
+operator|.
 name|FsShellRun
 argument_list|(
 literal|"-mkdir /.snapshot"
@@ -1015,8 +650,12 @@ argument_list|,
 literal|1
 argument_list|,
 literal|"File exists"
+argument_list|,
+name|conf
 argument_list|)
 expr_stmt|;
+name|DFSTestUtil
+operator|.
 name|FsShellRun
 argument_list|(
 literal|"-mkdir /sub1/.snapshot"
@@ -1024,14 +663,22 @@ argument_list|,
 literal|1
 argument_list|,
 literal|"File exists"
+argument_list|,
+name|conf
 argument_list|)
 expr_stmt|;
 comment|// mkdir -p ignore reserved name check if dir already exists
+name|DFSTestUtil
+operator|.
 name|FsShellRun
 argument_list|(
 literal|"-mkdir -p /sub1/.snapshot"
+argument_list|,
+name|conf
 argument_list|)
 expr_stmt|;
+name|DFSTestUtil
+operator|.
 name|FsShellRun
 argument_list|(
 literal|"-mkdir -p /sub1/sub1sub1/.snapshot"
@@ -1039,6 +686,8 @@ argument_list|,
 literal|1
 argument_list|,
 literal|"mkdir: \".snapshot\" is a reserved name."
+argument_list|,
+name|conf
 argument_list|)
 expr_stmt|;
 block|}
@@ -1052,16 +701,26 @@ parameter_list|()
 throws|throws
 name|Exception
 block|{
+name|DFSTestUtil
+operator|.
 name|FsShellRun
 argument_list|(
 literal|"-createSnapshot /sub1 sn.orig"
+argument_list|,
+name|conf
 argument_list|)
 expr_stmt|;
+name|DFSTestUtil
+operator|.
 name|FsShellRun
 argument_list|(
 literal|"-renameSnapshot /sub1 sn.orig sn.rename"
+argument_list|,
+name|conf
 argument_list|)
 expr_stmt|;
+name|DFSTestUtil
+operator|.
 name|FsShellRun
 argument_list|(
 literal|"-ls /sub1/.snapshot"
@@ -1069,8 +728,12 @@ argument_list|,
 literal|0
 argument_list|,
 literal|"/sub1/.snapshot/sn.rename"
+argument_list|,
+name|conf
 argument_list|)
 expr_stmt|;
+name|DFSTestUtil
+operator|.
 name|FsShellRun
 argument_list|(
 literal|"-ls /sub1/.snapshot/sn.rename"
@@ -1078,8 +741,12 @@ argument_list|,
 literal|0
 argument_list|,
 literal|"/sub1/.snapshot/sn.rename/sub1sub1"
+argument_list|,
+name|conf
 argument_list|)
 expr_stmt|;
+name|DFSTestUtil
+operator|.
 name|FsShellRun
 argument_list|(
 literal|"-ls /sub1/.snapshot/sn.rename"
@@ -1087,9 +754,13 @@ argument_list|,
 literal|0
 argument_list|,
 literal|"/sub1/.snapshot/sn.rename/sub1sub2"
+argument_list|,
+name|conf
 argument_list|)
 expr_stmt|;
 comment|//try renaming from a non-existing snapshot
+name|DFSTestUtil
+operator|.
 name|FsShellRun
 argument_list|(
 literal|"-renameSnapshot /sub1 sn.nonexist sn.rename"
@@ -1097,14 +768,22 @@ argument_list|,
 literal|1
 argument_list|,
 literal|"renameSnapshot: The snapshot sn.nonexist does not exist for directory /sub1"
+argument_list|,
+name|conf
 argument_list|)
 expr_stmt|;
 comment|//try renaming to existing snapshots
+name|DFSTestUtil
+operator|.
 name|FsShellRun
 argument_list|(
 literal|"-createSnapshot /sub1 sn.new"
+argument_list|,
+name|conf
 argument_list|)
 expr_stmt|;
+name|DFSTestUtil
+operator|.
 name|FsShellRun
 argument_list|(
 literal|"-renameSnapshot /sub1 sn.new sn.rename"
@@ -1112,8 +791,12 @@ argument_list|,
 literal|1
 argument_list|,
 literal|"renameSnapshot: The snapshot sn.rename already exists for directory /sub1"
+argument_list|,
+name|conf
 argument_list|)
 expr_stmt|;
+name|DFSTestUtil
+operator|.
 name|FsShellRun
 argument_list|(
 literal|"-renameSnapshot /sub1 sn.rename sn.new"
@@ -1121,6 +804,8 @@ argument_list|,
 literal|1
 argument_list|,
 literal|"renameSnapshot: The snapshot sn.new already exists for directory /sub1"
+argument_list|,
+name|conf
 argument_list|)
 expr_stmt|;
 block|}
@@ -1134,16 +819,26 @@ parameter_list|()
 throws|throws
 name|Exception
 block|{
+name|DFSTestUtil
+operator|.
 name|FsShellRun
 argument_list|(
 literal|"-createSnapshot /sub1 sn1"
+argument_list|,
+name|conf
 argument_list|)
 expr_stmt|;
+name|DFSTestUtil
+operator|.
 name|FsShellRun
 argument_list|(
 literal|"-deleteSnapshot /sub1 sn1"
+argument_list|,
+name|conf
 argument_list|)
 expr_stmt|;
+name|DFSTestUtil
+operator|.
 name|FsShellRun
 argument_list|(
 literal|"-deleteSnapshot /sub1 sn1"
@@ -1151,6 +846,8 @@ argument_list|,
 literal|1
 argument_list|,
 literal|"deleteSnapshot: Cannot delete snapshot sn1 from path /sub1: the snapshot does not exist."
+argument_list|,
+name|conf
 argument_list|)
 expr_stmt|;
 block|}
@@ -1164,12 +861,18 @@ parameter_list|()
 throws|throws
 name|Exception
 block|{
+name|DFSTestUtil
+operator|.
 name|FsShellRun
 argument_list|(
 literal|"-createSnapshot /sub1 sn1"
+argument_list|,
+name|conf
 argument_list|)
 expr_stmt|;
 comment|// cannot delete snapshotable dir
+name|DFSTestUtil
+operator|.
 name|FsShellRun
 argument_list|(
 literal|"-rmr /sub1"
@@ -1177,8 +880,12 @@ argument_list|,
 literal|1
 argument_list|,
 literal|"The directory /sub1 cannot be deleted since /sub1 is snapshottable and already has snapshots"
+argument_list|,
+name|conf
 argument_list|)
 expr_stmt|;
+name|DFSTestUtil
+operator|.
 name|DFSAdminRun
 argument_list|(
 literal|"-disallowSnapshot /sub1"
@@ -1187,13 +894,21 @@ operator|-
 literal|1
 argument_list|,
 literal|"disallowSnapshot: The directory /sub1 has snapshot(s). Please redo the operation after removing all the snapshots."
+argument_list|,
+name|conf
 argument_list|)
 expr_stmt|;
+name|DFSTestUtil
+operator|.
 name|FsShellRun
 argument_list|(
 literal|"-deleteSnapshot /sub1 sn1"
+argument_list|,
+name|conf
 argument_list|)
 expr_stmt|;
+name|DFSTestUtil
+operator|.
 name|DFSAdminRun
 argument_list|(
 literal|"-disallowSnapshot /sub1"
@@ -1201,9 +916,13 @@ argument_list|,
 literal|0
 argument_list|,
 literal|"Disallowing snaphot on /sub1 succeeded"
+argument_list|,
+name|conf
 argument_list|)
 expr_stmt|;
 comment|// Idempotent test
+name|DFSTestUtil
+operator|.
 name|DFSAdminRun
 argument_list|(
 literal|"-disallowSnapshot /sub1"
@@ -1211,12 +930,18 @@ argument_list|,
 literal|0
 argument_list|,
 literal|"Disallowing snaphot on /sub1 succeeded"
+argument_list|,
+name|conf
 argument_list|)
 expr_stmt|;
 comment|// now it can be deleted
+name|DFSTestUtil
+operator|.
 name|FsShellRun
 argument_list|(
 literal|"-rmr /sub1"
+argument_list|,
+name|conf
 argument_list|)
 expr_stmt|;
 block|}

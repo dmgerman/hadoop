@@ -7801,8 +7801,8 @@ name|numOfListing
 argument_list|)
 return|;
 block|}
-comment|/** Get the file info for a specific file.    * @param src The string representation of the path to the file    * @param resolveLink whether to throw UnresolvedLinkException    * @param isRawPath true if a /.reserved/raw pathname was passed by the user    * @return object containing information regarding the file    *         or null if file not found    */
-DECL|method|getFileInfo (String src, boolean resolveLink, boolean isRawPath)
+comment|/** Get the file info for a specific file.    * @param src The string representation of the path to the file    * @param resolveLink whether to throw UnresolvedLinkException    * @param isRawPath true if a /.reserved/raw pathname was passed by the user    * @param includeStoragePolicy whether to include storage policy    * @return object containing information regarding the file    *         or null if file not found    */
+DECL|method|getFileInfo (String src, boolean resolveLink, boolean isRawPath, boolean includeStoragePolicy)
 name|HdfsFileStatus
 name|getFileInfo
 parameter_list|(
@@ -7814,6 +7814,9 @@ name|resolveLink
 parameter_list|,
 name|boolean
 name|isRawPath
+parameter_list|,
+name|boolean
+name|includeStoragePolicy
 parameter_list|)
 throws|throws
 name|IOException
@@ -7872,6 +7875,24 @@ argument_list|(
 literal|0
 argument_list|)
 decl_stmt|;
+name|byte
+name|policyId
+init|=
+name|includeStoragePolicy
+operator|&&
+name|i
+operator|!=
+literal|null
+condition|?
+name|i
+operator|.
+name|getStoragePolicyID
+argument_list|()
+else|:
+name|BlockStoragePolicy
+operator|.
+name|ID_UNSPECIFIED
+decl_stmt|;
 return|return
 name|i
 operator|==
@@ -7887,9 +7908,7 @@ name|EMPTY_NAME
 argument_list|,
 name|i
 argument_list|,
-name|BlockStoragePolicy
-operator|.
-name|ID_UNSPECIFIED
+name|policyId
 argument_list|,
 name|inodesInPath
 operator|.
