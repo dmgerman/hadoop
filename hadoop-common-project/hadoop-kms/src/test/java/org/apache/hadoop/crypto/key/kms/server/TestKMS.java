@@ -7196,6 +7196,7 @@ argument_list|()
 argument_list|)
 decl_stmt|;
 comment|// proxyuser client using kerberos credentials
+specifier|final
 name|UserGroupInformation
 name|clientUgi
 init|=
@@ -7264,9 +7265,11 @@ name|fooUgi
 init|=
 name|UserGroupInformation
 operator|.
-name|createRemoteUser
+name|createProxyUser
 argument_list|(
 literal|"foo"
+argument_list|,
+name|clientUgi
 argument_list|)
 decl_stmt|;
 name|fooUgi
@@ -7322,9 +7325,11 @@ name|foo1Ugi
 init|=
 name|UserGroupInformation
 operator|.
-name|createRemoteUser
+name|createProxyUser
 argument_list|(
 literal|"foo1"
+argument_list|,
+name|clientUgi
 argument_list|)
 decl_stmt|;
 name|foo1Ugi
