@@ -884,7 +884,7 @@ else|else
 block|{
 name|LOG
 operator|.
-name|warn
+name|debug
 argument_list|(
 literal|"The property '"
 operator|+
