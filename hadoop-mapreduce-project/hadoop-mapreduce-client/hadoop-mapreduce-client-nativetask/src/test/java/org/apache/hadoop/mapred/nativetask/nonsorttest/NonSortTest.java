@@ -33,6 +33,18 @@ import|;
 end_import
 
 begin_import
+import|import static
+name|org
+operator|.
+name|junit
+operator|.
+name|Assert
+operator|.
+name|assertTrue
+import|;
+end_import
+
+begin_import
 import|import
 name|java
 operator|.
@@ -417,11 +429,14 @@ operator|.
 name|NATIVETASK_NONSORT_TEST_NATIVE_OUTPUT
 argument_list|)
 decl_stmt|;
+name|assertTrue
+argument_list|(
 name|nativeNonSort
 operator|.
 name|waitForCompletion
 argument_list|(
 literal|true
+argument_list|)
 argument_list|)
 expr_stmt|;
 name|Configuration
@@ -460,11 +475,14 @@ operator|.
 name|NATIVETASK_NONSORT_TEST_NORMAL_OUTPUT
 argument_list|)
 decl_stmt|;
+name|assertTrue
+argument_list|(
 name|hadoopWithSort
 operator|.
 name|waitForCompletion
 argument_list|(
 literal|true
+argument_list|)
 argument_list|)
 expr_stmt|;
 specifier|final
@@ -491,6 +509,15 @@ argument_list|,
 literal|true
 argument_list|,
 name|compareRet
+argument_list|)
+expr_stmt|;
+name|ResultVerifier
+operator|.
+name|verifyCounters
+argument_list|(
+name|hadoopWithSort
+argument_list|,
+name|nativeNonSort
 argument_list|)
 expr_stmt|;
 block|}
