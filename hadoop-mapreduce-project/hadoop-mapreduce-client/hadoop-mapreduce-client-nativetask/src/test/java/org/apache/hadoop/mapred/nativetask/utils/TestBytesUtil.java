@@ -50,9 +50,9 @@ end_import
 
 begin_import
 import|import
-name|junit
+name|org
 operator|.
-name|framework
+name|junit
 operator|.
 name|Assert
 import|;
@@ -60,11 +60,11 @@ end_import
 
 begin_import
 import|import
+name|org
+operator|.
 name|junit
 operator|.
-name|framework
-operator|.
-name|TestCase
+name|Test
 import|;
 end_import
 
@@ -87,20 +87,13 @@ import|;
 end_import
 
 begin_class
-annotation|@
-name|SuppressWarnings
-argument_list|(
-block|{
-literal|"deprecation"
-block|}
-argument_list|)
 DECL|class|TestBytesUtil
 specifier|public
 class|class
 name|TestBytesUtil
-extends|extends
-name|TestCase
 block|{
+annotation|@
+name|Test
 DECL|method|testBytesIntConversion ()
 specifier|public
 name|void
@@ -142,6 +135,8 @@ argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
+annotation|@
+name|Test
 DECL|method|testBytesLongConversion ()
 specifier|public
 name|void
@@ -183,6 +178,8 @@ argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
+annotation|@
+name|Test
 DECL|method|testBytesFloatConversion ()
 specifier|public
 name|void
@@ -219,9 +216,13 @@ name|toFloat
 argument_list|(
 name|floatBytes
 argument_list|)
+argument_list|,
+literal|0.0f
 argument_list|)
 expr_stmt|;
 block|}
+annotation|@
+name|Test
 DECL|method|testBytesDoubleConversion ()
 specifier|public
 name|void
@@ -258,9 +259,13 @@ name|toDouble
 argument_list|(
 name|doubleBytes
 argument_list|)
+argument_list|,
+literal|0.0
 argument_list|)
 expr_stmt|;
 block|}
+annotation|@
+name|Test
 DECL|method|testToStringBinary ()
 specifier|public
 name|void

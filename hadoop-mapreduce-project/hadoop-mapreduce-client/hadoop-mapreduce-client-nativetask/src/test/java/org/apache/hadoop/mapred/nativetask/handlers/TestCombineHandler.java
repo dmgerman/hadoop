@@ -32,26 +32,6 @@ end_import
 
 begin_import
 import|import
-name|junit
-operator|.
-name|framework
-operator|.
-name|Assert
-import|;
-end_import
-
-begin_import
-import|import
-name|junit
-operator|.
-name|framework
-operator|.
-name|TestCase
-import|;
-end_import
-
-begin_import
-import|import
 name|org
 operator|.
 name|apache
@@ -138,6 +118,36 @@ begin_import
 import|import
 name|org
 operator|.
+name|junit
+operator|.
+name|Assert
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|junit
+operator|.
+name|Before
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|junit
+operator|.
+name|Test
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
 name|mockito
 operator|.
 name|Matchers
@@ -170,8 +180,6 @@ DECL|class|TestCombineHandler
 specifier|public
 class|class
 name|TestCombineHandler
-extends|extends
-name|TestCase
 block|{
 DECL|field|handler
 specifier|private
@@ -199,7 +207,7 @@ name|CombinerRunner
 name|combinerRunner
 decl_stmt|;
 annotation|@
-name|Override
+name|Before
 DECL|method|setUp ()
 specifier|public
 name|void
@@ -284,6 +292,8 @@ argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
+annotation|@
+name|Test
 DECL|method|testCommandDispatcherSetting ()
 specifier|public
 name|void
@@ -357,6 +367,8 @@ argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
+annotation|@
+name|Test
 DECL|method|testCombine ()
 specifier|public
 name|void
@@ -496,6 +508,8 @@ name|close
 argument_list|()
 expr_stmt|;
 block|}
+annotation|@
+name|Test
 DECL|method|testOnCall ()
 specifier|public
 name|void

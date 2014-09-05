@@ -448,6 +448,13 @@ argument_list|>
 block|{
 annotation|@
 name|Override
+annotation|@
+name|SuppressWarnings
+argument_list|(
+block|{
+literal|"unchecked"
+block|}
+argument_list|)
 DECL|method|reduce (KTYPE key, Iterable<VTYPE> values, Context context)
 specifier|public
 name|void
@@ -589,8 +596,9 @@ name|Exception
 block|{
 name|job
 operator|=
-operator|new
 name|Job
+operator|.
+name|getInstance
 argument_list|(
 name|conf
 argument_list|,

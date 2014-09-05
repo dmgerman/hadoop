@@ -52,26 +52,6 @@ end_import
 
 begin_import
 import|import
-name|junit
-operator|.
-name|framework
-operator|.
-name|Assert
-import|;
-end_import
-
-begin_import
-import|import
-name|junit
-operator|.
-name|framework
-operator|.
-name|TestCase
-import|;
-end_import
-
-begin_import
-import|import
 name|org
 operator|.
 name|apache
@@ -354,7 +334,27 @@ name|org
 operator|.
 name|junit
 operator|.
+name|Assert
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|junit
+operator|.
 name|Before
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|junit
+operator|.
+name|Test
 import|;
 end_import
 
@@ -366,16 +366,12 @@ block|{
 literal|"rawtypes"
 block|,
 literal|"unchecked"
-block|,
-literal|"deprecation"
 block|}
 argument_list|)
 DECL|class|TestBufferPushPull
 specifier|public
 class|class
 name|TestBufferPushPull
-extends|extends
-name|TestCase
 block|{
 DECL|field|BUFFER_LENGTH
 specifier|public
@@ -406,8 +402,6 @@ index|[]
 name|dataInput
 decl_stmt|;
 annotation|@
-name|Override
-annotation|@
 name|Before
 DECL|method|setUp ()
 specifier|public
@@ -427,6 +421,8 @@ name|INPUT_KV_COUNT
 argument_list|)
 expr_stmt|;
 block|}
+annotation|@
+name|Test
 DECL|method|testPush ()
 specifier|public
 name|void
@@ -689,6 +685,8 @@ name|close
 argument_list|()
 expr_stmt|;
 block|}
+annotation|@
+name|Test
 DECL|method|testPull ()
 specifier|public
 name|void

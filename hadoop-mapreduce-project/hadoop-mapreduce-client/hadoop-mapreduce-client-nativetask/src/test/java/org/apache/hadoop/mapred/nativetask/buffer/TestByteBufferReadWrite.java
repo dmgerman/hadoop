@@ -76,9 +76,9 @@ end_import
 
 begin_import
 import|import
-name|junit
+name|org
 operator|.
-name|framework
+name|junit
 operator|.
 name|Assert
 import|;
@@ -86,11 +86,11 @@ end_import
 
 begin_import
 import|import
+name|org
+operator|.
 name|junit
 operator|.
-name|framework
-operator|.
-name|TestCase
+name|Test
 import|;
 end_import
 
@@ -109,9 +109,9 @@ DECL|class|TestByteBufferReadWrite
 specifier|public
 class|class
 name|TestByteBufferReadWrite
-extends|extends
-name|TestCase
 block|{
+annotation|@
+name|Test
 DECL|method|testReadWrite ()
 specifier|public
 name|void
@@ -556,6 +556,8 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|/**    * Test that Unicode characters outside the basic multilingual plane,    * such as this cat face, are properly encoded.    */
+annotation|@
+name|Test
 DECL|method|testCatFace ()
 specifier|public
 name|void
@@ -634,6 +636,8 @@ argument_list|(
 name|input
 argument_list|)
 decl_stmt|;
+name|Assert
+operator|.
 name|assertEquals
 argument_list|(
 name|catFace
@@ -665,6 +669,8 @@ operator|.
 name|readUTF
 argument_list|()
 decl_stmt|;
+name|Assert
+operator|.
 name|assertEquals
 argument_list|(
 name|catFace
@@ -673,6 +679,8 @@ name|fromJava
 argument_list|)
 expr_stmt|;
 block|}
+annotation|@
+name|Test
 DECL|method|testShortOfSpace ()
 specifier|public
 name|void
@@ -773,6 +781,8 @@ argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
+annotation|@
+name|Test
 DECL|method|testFlush ()
 specifier|public
 name|void
