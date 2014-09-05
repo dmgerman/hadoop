@@ -6559,6 +6559,16 @@ operator|.
 name|close
 argument_list|()
 expr_stmt|;
+comment|// OP_SET_STORAGE_POLICY 45
+name|filesystem
+operator|.
+name|setStoragePolicy
+argument_list|(
+name|pathFileCreate
+argument_list|,
+literal|"HOT"
+argument_list|)
+expr_stmt|;
 comment|// OP_RENAME_OLD 1
 specifier|final
 name|Path
