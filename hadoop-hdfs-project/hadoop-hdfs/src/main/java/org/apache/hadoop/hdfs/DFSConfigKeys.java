@@ -4166,6 +4166,15 @@ name|DFS_NAMESERVICE_ID
 init|=
 literal|"dfs.nameservice.id"
 decl_stmt|;
+DECL|field|DFS_INTERNAL_NAMESERVICES_KEY
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|DFS_INTERNAL_NAMESERVICES_KEY
+init|=
+literal|"dfs.internal.nameservices"
+decl_stmt|;
 DECL|field|DFS_NAMENODE_RESOURCE_CHECK_INTERVAL_KEY
 specifier|public
 specifier|static

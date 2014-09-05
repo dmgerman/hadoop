@@ -778,7 +778,7 @@ name|newAddressMap
 init|=
 name|DFSUtil
 operator|.
-name|getNNServiceRpcAddresses
+name|getNNServiceRpcAddressesForCluster
 argument_list|(
 name|conf
 argument_list|)
