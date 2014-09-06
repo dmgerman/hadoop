@@ -13489,7 +13489,12 @@ comment|// RECEIVED_BLOCK), we currently also decrease the approximate number.
 name|node
 operator|.
 name|decrementBlocksScheduled
+argument_list|(
+name|storageInfo
+operator|.
+name|getStorageType
 argument_list|()
+argument_list|)
 expr_stmt|;
 comment|// get the deletion hint node
 name|DatanodeDescriptor

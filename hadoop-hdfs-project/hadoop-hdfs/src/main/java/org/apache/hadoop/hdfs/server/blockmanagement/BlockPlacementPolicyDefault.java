@@ -397,35 +397,6 @@ specifier|protected
 name|int
 name|tolerateHeartbeatMultiplier
 decl_stmt|;
-DECL|method|BlockPlacementPolicyDefault (Configuration conf, FSClusterStats stats, NetworkTopology clusterMap, Host2NodesMap host2datanodeMap)
-specifier|protected
-name|BlockPlacementPolicyDefault
-parameter_list|(
-name|Configuration
-name|conf
-parameter_list|,
-name|FSClusterStats
-name|stats
-parameter_list|,
-name|NetworkTopology
-name|clusterMap
-parameter_list|,
-name|Host2NodesMap
-name|host2datanodeMap
-parameter_list|)
-block|{
-name|initialize
-argument_list|(
-name|conf
-argument_list|,
-name|stats
-argument_list|,
-name|clusterMap
-argument_list|,
-name|host2datanodeMap
-argument_list|)
-expr_stmt|;
-block|}
 DECL|method|BlockPlacementPolicyDefault ()
 specifier|protected
 name|BlockPlacementPolicyDefault
@@ -961,6 +932,28 @@ name|NotEnoughReplicasException
 name|nr
 parameter_list|)
 block|{
+if|if
+condition|(
+name|LOG
+operator|.
+name|isDebugEnabled
+argument_list|()
+condition|)
+block|{
+name|LOG
+operator|.
+name|debug
+argument_list|(
+literal|"Failed to choose with favored nodes (="
+operator|+
+name|favoredNodes
+operator|+
+literal|"), disregard favored nodes hint and retry."
+argument_list|,
+name|nr
+argument_list|)
+expr_stmt|;
+block|}
 comment|// Fall back to regular block placement disregarding favored nodes hint
 return|return
 name|chooseTarget
@@ -1592,6 +1585,24 @@ argument_list|(
 name|requiredStorageTypes
 argument_list|)
 decl_stmt|;
+if|if
+condition|(
+name|LOG
+operator|.
+name|isTraceEnabled
+argument_list|()
+condition|)
+block|{
+name|LOG
+operator|.
+name|trace
+argument_list|(
+literal|"storageTypes="
+operator|+
+name|storageTypes
+argument_list|)
+expr_stmt|;
+block|}
 try|try
 block|{
 if|if
@@ -1878,7 +1889,19 @@ literal|" to reach "
 operator|+
 name|totalReplicasExpected
 operator|+
-literal|"."
+literal|" (unavailableStorages="
+operator|+
+name|unavailableStorages
+operator|+
+literal|", storagePolicy="
+operator|+
+name|storagePolicy
+operator|+
+literal|", newBlock="
+operator|+
+name|newBlock
+operator|+
+literal|")"
 decl_stmt|;
 if|if
 condition|(
@@ -2450,16 +2473,22 @@ name|storageTypes
 argument_list|)
 return|;
 block|}
-comment|// choose one from the local rack
-try|try
-block|{
-return|return
-name|chooseRandom
-argument_list|(
+specifier|final
+name|String
+name|localRack
+init|=
 name|localMachine
 operator|.
 name|getNetworkLocation
 argument_list|()
+decl_stmt|;
+try|try
+block|{
+comment|// choose one from the local rack
+return|return
+name|chooseRandom
+argument_list|(
+name|localRack
 argument_list|,
 name|excludedNodes
 argument_list|,
@@ -2478,15 +2507,10 @@ block|}
 catch|catch
 parameter_list|(
 name|NotEnoughReplicasException
-name|e1
+name|e
 parameter_list|)
 block|{
-comment|// find the second replica
-name|DatanodeDescriptor
-name|newLocal
-init|=
-literal|null
-decl_stmt|;
+comment|// find the next replica and retry with its rack
 for|for
 control|(
 name|DatanodeStorageInfo
@@ -2510,29 +2534,155 @@ operator|!=
 name|localMachine
 condition|)
 block|{
-name|newLocal
-operator|=
+if|if
+condition|(
+name|LOG
+operator|.
+name|isDebugEnabled
+argument_list|()
+condition|)
+block|{
+name|LOG
+operator|.
+name|debug
+argument_list|(
+literal|"Failed to choose from local rack (location = "
+operator|+
+name|localRack
+operator|+
+literal|"), retry with the rack of the next replica (location = "
+operator|+
 name|nextNode
+operator|.
+name|getNetworkLocation
+argument_list|()
+operator|+
+literal|")"
+argument_list|,
+name|e
+argument_list|)
 expr_stmt|;
-break|break;
+block|}
+return|return
+name|chooseFromNextRack
+argument_list|(
+name|nextNode
+argument_list|,
+name|excludedNodes
+argument_list|,
+name|blocksize
+argument_list|,
+name|maxNodesPerRack
+argument_list|,
+name|results
+argument_list|,
+name|avoidStaleNodes
+argument_list|,
+name|storageTypes
+argument_list|)
+return|;
 block|}
 block|}
 if|if
 condition|(
-name|newLocal
-operator|!=
-literal|null
+name|LOG
+operator|.
+name|isDebugEnabled
+argument_list|()
 condition|)
 block|{
+name|LOG
+operator|.
+name|debug
+argument_list|(
+literal|"Failed to choose from local rack (location = "
+operator|+
+name|localRack
+operator|+
+literal|"); the second replica is not found, retry choosing ramdomly"
+argument_list|,
+name|e
+argument_list|)
+expr_stmt|;
+block|}
+comment|//the second replica is not found, randomly choose one from the network
+return|return
+name|chooseRandom
+argument_list|(
+name|NodeBase
+operator|.
+name|ROOT
+argument_list|,
+name|excludedNodes
+argument_list|,
+name|blocksize
+argument_list|,
+name|maxNodesPerRack
+argument_list|,
+name|results
+argument_list|,
+name|avoidStaleNodes
+argument_list|,
+name|storageTypes
+argument_list|)
+return|;
+block|}
+block|}
+DECL|method|chooseFromNextRack (Node next, Set<Node> excludedNodes, long blocksize, int maxNodesPerRack, List<DatanodeStorageInfo> results, boolean avoidStaleNodes, EnumMap<StorageType, Integer> storageTypes)
+specifier|private
+name|DatanodeStorageInfo
+name|chooseFromNextRack
+parameter_list|(
+name|Node
+name|next
+parameter_list|,
+name|Set
+argument_list|<
+name|Node
+argument_list|>
+name|excludedNodes
+parameter_list|,
+name|long
+name|blocksize
+parameter_list|,
+name|int
+name|maxNodesPerRack
+parameter_list|,
+name|List
+argument_list|<
+name|DatanodeStorageInfo
+argument_list|>
+name|results
+parameter_list|,
+name|boolean
+name|avoidStaleNodes
+parameter_list|,
+name|EnumMap
+argument_list|<
+name|StorageType
+argument_list|,
+name|Integer
+argument_list|>
+name|storageTypes
+parameter_list|)
+throws|throws
+name|NotEnoughReplicasException
+block|{
+specifier|final
+name|String
+name|nextRack
+init|=
+name|next
+operator|.
+name|getNetworkLocation
+argument_list|()
+decl_stmt|;
 try|try
 block|{
 return|return
 name|chooseRandom
 argument_list|(
-name|newLocal
-operator|.
-name|getNetworkLocation
-argument_list|()
+name|nextRack
 argument_list|,
 name|excludedNodes
 argument_list|,
@@ -2551,34 +2701,31 @@ block|}
 catch|catch
 parameter_list|(
 name|NotEnoughReplicasException
-name|e2
+name|e
 parameter_list|)
 block|{
-comment|//otherwise randomly choose one from the network
-return|return
-name|chooseRandom
-argument_list|(
-name|NodeBase
+if|if
+condition|(
+name|LOG
 operator|.
-name|ROOT
-argument_list|,
-name|excludedNodes
-argument_list|,
-name|blocksize
-argument_list|,
-name|maxNodesPerRack
-argument_list|,
-name|results
-argument_list|,
-name|avoidStaleNodes
-argument_list|,
-name|storageTypes
-argument_list|)
-return|;
-block|}
-block|}
-else|else
+name|isDebugEnabled
+argument_list|()
+condition|)
 block|{
+name|LOG
+operator|.
+name|debug
+argument_list|(
+literal|"Failed to choose from the next rack (location = "
+operator|+
+name|nextRack
+operator|+
+literal|"), retry choosing ramdomly"
+argument_list|,
+name|e
+argument_list|)
+expr_stmt|;
+block|}
 comment|//otherwise randomly choose one from the network
 return|return
 name|chooseRandom
@@ -2600,7 +2747,6 @@ argument_list|,
 name|storageTypes
 argument_list|)
 return|;
-block|}
 block|}
 block|}
 comment|/**     * Choose<i>numOfReplicas</i> nodes from the racks     * that<i>localMachine</i> is NOT on.    * if not enough nodes are available, choose the remaining ones     * from the local rack    */
@@ -2689,6 +2835,31 @@ name|NotEnoughReplicasException
 name|e
 parameter_list|)
 block|{
+if|if
+condition|(
+name|LOG
+operator|.
+name|isDebugEnabled
+argument_list|()
+condition|)
+block|{
+name|LOG
+operator|.
+name|debug
+argument_list|(
+literal|"Failed to choose remote rack (location = ~"
+operator|+
+name|localMachine
+operator|.
+name|getNetworkLocation
+argument_list|()
+operator|+
+literal|"), fallback to local rack"
+argument_list|,
+name|e
+argument_list|)
+expr_stmt|;
+block|}
 name|chooseRandom
 argument_list|(
 name|numOfReplicas
@@ -2920,6 +3091,37 @@ argument_list|)
 condition|)
 block|{
 comment|//was not in the excluded list
+if|if
+condition|(
+name|LOG
+operator|.
+name|isDebugEnabled
+argument_list|()
+condition|)
+block|{
+name|builder
+operator|.
+name|append
+argument_list|(
+literal|"\nNode "
+argument_list|)
+operator|.
+name|append
+argument_list|(
+name|NodeBase
+operator|.
+name|getPath
+argument_list|(
+name|chosenNode
+argument_list|)
+argument_list|)
+operator|.
+name|append
+argument_list|(
+literal|" ["
+argument_list|)
+expr_stmt|;
+block|}
 name|numOfAvailableNodes
 operator|--
 expr_stmt|;
@@ -3115,6 +3317,22 @@ break|break;
 block|}
 block|}
 block|}
+if|if
+condition|(
+name|LOG
+operator|.
+name|isDebugEnabled
+argument_list|()
+condition|)
+block|{
+name|builder
+operator|.
+name|append
+argument_list|(
+literal|"\n]"
+argument_list|)
+expr_stmt|;
+block|}
 comment|// If no candidate storage was found on this DN then set badTarget.
 name|badTarget
 operator|=
@@ -3161,11 +3379,6 @@ name|detail
 operator|=
 name|builder
 operator|.
-name|append
-argument_list|(
-literal|"]"
-argument_list|)
-operator|.
 name|toString
 argument_list|()
 expr_stmt|;
@@ -3178,10 +3391,12 @@ argument_list|)
 expr_stmt|;
 block|}
 else|else
+block|{
 name|detail
 operator|=
 literal|""
 expr_stmt|;
+block|}
 block|}
 throw|throw
 operator|new
@@ -3300,15 +3515,6 @@ name|isDebugEnabled
 argument_list|()
 condition|)
 block|{
-specifier|final
-name|DatanodeDescriptor
-name|node
-init|=
-name|storage
-operator|.
-name|getDatanodeDescriptor
-argument_list|()
-decl_stmt|;
 comment|// build the error message for later use.
 name|debugLoggingBuilder
 operator|.
@@ -3317,17 +3523,7 @@ argument_list|()
 operator|.
 name|append
 argument_list|(
-name|node
-argument_list|)
-operator|.
-name|append
-argument_list|(
-literal|": "
-argument_list|)
-operator|.
-name|append
-argument_list|(
-literal|"Storage "
+literal|"\n  Storage "
 argument_list|)
 operator|.
 name|append
@@ -3337,33 +3533,23 @@ argument_list|)
 operator|.
 name|append
 argument_list|(
-literal|"at node "
-argument_list|)
-operator|.
-name|append
-argument_list|(
-name|NodeBase
-operator|.
-name|getPath
-argument_list|(
-name|node
-argument_list|)
-argument_list|)
-operator|.
-name|append
-argument_list|(
-literal|" is not chosen because "
+literal|" is not chosen since "
 argument_list|)
 operator|.
 name|append
 argument_list|(
 name|reason
 argument_list|)
+operator|.
+name|append
+argument_list|(
+literal|"."
+argument_list|)
 expr_stmt|;
 block|}
 block|}
 comment|/**    * Determine if a storage is a good target.     *     * @param storage The target storage    * @param blockSize Size of block    * @param maxTargetPerRack Maximum number of targets per rack. The value of     *                       this parameter depends on the number of racks in     *                       the cluster and total number of replicas for a block    * @param considerLoad whether or not to consider load of the target node    * @param results A list containing currently chosen nodes. Used to check if     *                too many nodes has been chosen in the target rack.    * @param avoidStaleNodes Whether or not to avoid choosing stale nodes    * @return Return true if<i>node</i> has enough space,     *         does not have too much load,     *         and the rack does not have too many nodes.    */
-DECL|method|isGoodTarget (DatanodeStorageInfo storage, long blockSize, int maxTargetPerRack, boolean considerLoad, List<DatanodeStorageInfo> results, boolean avoidStaleNodes, StorageType storageType)
+DECL|method|isGoodTarget (DatanodeStorageInfo storage, long blockSize, int maxTargetPerRack, boolean considerLoad, List<DatanodeStorageInfo> results, boolean avoidStaleNodes, StorageType requiredStorageType)
 specifier|private
 name|boolean
 name|isGoodTarget
@@ -3390,7 +3576,7 @@ name|boolean
 name|avoidStaleNodes
 parameter_list|,
 name|StorageType
-name|storageType
+name|requiredStorageType
 parameter_list|)
 block|{
 if|if
@@ -3400,16 +3586,18 @@ operator|.
 name|getStorageType
 argument_list|()
 operator|!=
-name|storageType
+name|requiredStorageType
 condition|)
 block|{
 name|logNodeIsNotChosen
 argument_list|(
 name|storage
 argument_list|,
-literal|"storage types do not match, where the expected storage type is "
+literal|"storage types do not match,"
 operator|+
-name|storageType
+literal|" where the required storage type is "
+operator|+
+name|requiredStorageType
 argument_list|)
 expr_stmt|;
 return|return
@@ -3520,16 +3708,32 @@ operator|*
 name|node
 operator|.
 name|getBlocksScheduled
+argument_list|(
+name|storage
+operator|.
+name|getStorageType
 argument_list|()
+argument_list|)
+decl_stmt|;
+specifier|final
+name|long
+name|remaining
+init|=
+name|node
+operator|.
+name|getRemaining
+argument_list|(
+name|storage
+operator|.
+name|getStorageType
+argument_list|()
+argument_list|)
 decl_stmt|;
 if|if
 condition|(
 name|requiredSize
 operator|>
-name|node
-operator|.
-name|getRemaining
-argument_list|()
+name|remaining
 operator|-
 name|scheduledSize
 condition|)
@@ -3538,7 +3742,28 @@ name|logNodeIsNotChosen
 argument_list|(
 name|storage
 argument_list|,
-literal|"the node does not have enough space "
+literal|"the node does not have enough "
+operator|+
+name|storage
+operator|.
+name|getStorageType
+argument_list|()
+operator|+
+literal|" space"
+operator|+
+literal|" (required="
+operator|+
+name|requiredSize
+operator|+
+literal|", scheduled="
+operator|+
+name|scheduledSize
+operator|+
+literal|", remaining="
+operator|+
+name|remaining
+operator|+
+literal|")"
 argument_list|)
 expr_stmt|;
 return|return
@@ -3582,7 +3807,7 @@ name|logNodeIsNotChosen
 argument_list|(
 name|storage
 argument_list|,
-literal|"the node is too busy (load:"
+literal|"the node is too busy (load: "
 operator|+
 name|nodeLoad
 operator|+

@@ -1141,7 +1141,12 @@ name|getDatanodeDescriptor
 argument_list|()
 operator|.
 name|incrementBlocksScheduled
+argument_list|(
+name|s
+operator|.
+name|getStorageType
 argument_list|()
+argument_list|)
 expr_stmt|;
 block|}
 block|}
