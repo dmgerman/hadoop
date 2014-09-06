@@ -3356,7 +3356,7 @@ expr_stmt|;
 block|}
 block|}
 comment|/**     * Add open lease record to edit log.     * Records the block locations of the last block.    */
-DECL|method|logOpenFile (String path, INodeFile newNode, boolean toLogRpcIds)
+DECL|method|logOpenFile (String path, INodeFile newNode, boolean overwrite, boolean toLogRpcIds)
 specifier|public
 name|void
 name|logOpenFile
@@ -3366,6 +3366,9 @@ name|path
 parameter_list|,
 name|INodeFile
 name|newNode
+parameter_list|,
+name|boolean
+name|overwrite
 parameter_list|,
 name|boolean
 name|toLogRpcIds
@@ -3488,6 +3491,11 @@ argument_list|()
 operator|.
 name|getClientMachine
 argument_list|()
+argument_list|)
+operator|.
+name|setOverwrite
+argument_list|(
+name|overwrite
 argument_list|)
 decl_stmt|;
 name|AclFeature

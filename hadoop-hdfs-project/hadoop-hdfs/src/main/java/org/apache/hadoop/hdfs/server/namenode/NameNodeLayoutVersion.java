@@ -293,11 +293,22 @@ argument_list|,
 literal|"Extended attributes"
 argument_list|)
 block|,
+DECL|enumConstant|CREATE_OVERWRITE
+name|CREATE_OVERWRITE
+argument_list|(
+operator|-
+literal|58
+argument_list|,
+literal|"Use single editlog record for "
+operator|+
+literal|"creating file with overwrite"
+argument_list|)
+block|,
 DECL|enumConstant|LAZY_PERSIST_FILES
 name|LAZY_PERSIST_FILES
 argument_list|(
 operator|-
-literal|58
+literal|59
 argument_list|,
 literal|"Support for optional lazy persistence of "
 operator|+

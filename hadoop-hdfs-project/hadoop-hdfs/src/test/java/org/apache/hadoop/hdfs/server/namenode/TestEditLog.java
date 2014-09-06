@@ -1340,6 +1340,8 @@ argument_list|,
 name|inode
 argument_list|,
 literal|false
+argument_list|,
+literal|false
 argument_list|)
 expr_stmt|;
 name|editLog

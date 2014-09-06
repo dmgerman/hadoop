@@ -22,46 +22,6 @@ end_package
 
 begin_import
 import|import
-name|java
-operator|.
-name|io
-operator|.
-name|File
-import|;
-end_import
-
-begin_import
-import|import
-name|java
-operator|.
-name|io
-operator|.
-name|IOException
-import|;
-end_import
-
-begin_import
-import|import
-name|java
-operator|.
-name|net
-operator|.
-name|BindException
-import|;
-end_import
-
-begin_import
-import|import
-name|java
-operator|.
-name|util
-operator|.
-name|Random
-import|;
-end_import
-
-begin_import
-import|import
 name|org
 operator|.
 name|apache
@@ -192,6 +152,46 @@ name|Test
 import|;
 end_import
 
+begin_import
+import|import
+name|java
+operator|.
+name|io
+operator|.
+name|File
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|io
+operator|.
+name|IOException
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|net
+operator|.
+name|BindException
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
+name|Random
+import|;
+end_import
+
 begin_comment
 comment|/**  * This class tests the validation of the configuration object when passed   * to the NameNode  */
 end_comment
@@ -234,6 +234,10 @@ operator|=
 name|BindException
 operator|.
 name|class
+argument_list|,
+name|timeout
+operator|=
+literal|300000
 argument_list|)
 DECL|method|testThatMatchingRPCandHttpPortsThrowException ()
 specifier|public
@@ -366,6 +370,11 @@ block|}
 comment|/**    * Tests setting the rpc port to a different as the web port that an     * exception is NOT thrown     */
 annotation|@
 name|Test
+argument_list|(
+name|timeout
+operator|=
+literal|300000
+argument_list|)
 DECL|method|testThatDifferentRPCandHttpPortsAreOK ()
 specifier|public
 name|void
@@ -539,6 +548,11 @@ block|}
 comment|/**    * HDFS-3013: NameNode format command doesn't pick up    * dfs.namenode.name.dir.NameServiceId configuration.    */
 annotation|@
 name|Test
+argument_list|(
+name|timeout
+operator|=
+literal|300000
+argument_list|)
 DECL|method|testGenericKeysForNameNodeFormat ()
 specifier|public
 name|void
