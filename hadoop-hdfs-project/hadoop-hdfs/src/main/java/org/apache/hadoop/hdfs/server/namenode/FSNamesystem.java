@@ -6993,7 +6993,7 @@ argument_list|)
 return|;
 block|}
 DECL|method|loadFSImage (StartupOption startOpt)
-specifier|private
+specifier|protected
 name|void
 name|loadFSImage
 parameter_list|(
@@ -7236,7 +7236,7 @@ argument_list|()
 expr_stmt|;
 block|}
 DECL|method|startSecretManager ()
-specifier|private
+specifier|protected
 name|void
 name|startSecretManager
 parameter_list|()
@@ -7275,7 +7275,7 @@ block|}
 block|}
 block|}
 DECL|method|startSecretManagerIfNecessary ()
-specifier|private
+specifier|protected
 name|void
 name|startSecretManagerIfNecessary
 parameter_list|()
@@ -7844,7 +7844,7 @@ name|startingActiveService
 return|;
 block|}
 DECL|method|shouldUseDelegationTokens ()
-specifier|private
+specifier|protected
 name|boolean
 name|shouldUseDelegationTokens
 parameter_list|()
@@ -14931,6 +14931,7 @@ throw|;
 block|}
 block|}
 comment|/**    * Replace current node with a INodeUnderConstruction.    * Recreate in-memory lease record.    *     * @param src path to the file    * @param file existing file object    * @param leaseHolder identifier of the lease holder on this file    * @param clientMachine identifier of the client machine    * @param writeToEditLog whether to persist this change to the edit log    * @param logRetryCache whether to record RPC ids in editlog for retry cache    *                      rebuilding    * @return the last block locations if the block is partial or null otherwise    * @throws UnresolvedLinkException    * @throws IOException    */
+specifier|protected
 DECL|method|prepareFileForWrite (String src, INodeFile file, String leaseHolder, String clientMachine, boolean writeToEditLog, int latestSnapshot, boolean logRetryCache)
 name|LocatedBlock
 name|prepareFileForWrite
@@ -17026,6 +17027,7 @@ name|src
 argument_list|)
 return|;
 block|}
+specifier|protected
 DECL|method|makeLocatedBlock (Block blk, DatanodeStorageInfo[] locs, long offset)
 name|LocatedBlock
 name|makeLocatedBlock
@@ -17640,7 +17642,7 @@ literal|true
 return|;
 block|}
 DECL|method|checkLease (String src, String holder, INode inode, long fileId)
-specifier|private
+specifier|protected
 name|INodeFile
 name|checkLease
 parameter_list|(
@@ -22646,7 +22648,7 @@ argument_list|)
 return|;
 block|}
 DECL|method|commitOrCompleteLastBlock (final INodeFile fileINode, final Block commitBlock)
-specifier|private
+specifier|protected
 name|void
 name|commitOrCompleteLastBlock
 parameter_list|(
@@ -24193,6 +24195,7 @@ argument_list|)
 return|;
 block|}
 comment|/**    * The given node has reported in.  This method should:    * 1) Record the heartbeat, so the datanode isn't timed out    * 2) Adjust usage stats for future block allocation    *     * If a substantial amount of time passed since the last datanode     * heartbeat then request an immediate block report.      *     * @return an array of datanode commands     * @throws IOException    */
+specifier|protected
 DECL|method|handleHeartbeat (DatanodeRegistration nodeReg, StorageReport[] reports, long cacheCapacity, long cacheUsed, int xceiverCount, int xmitsInProgress, int failedVolumes)
 name|HeartbeatResponse
 name|handleHeartbeat
@@ -24346,7 +24349,7 @@ expr_stmt|;
 block|}
 comment|/**    * Persist the block list for the inode.    * @param path    * @param file    * @param logRetryCache    */
 DECL|method|persistBlocks (String path, INodeFile file, boolean logRetryCache)
-specifier|private
+specifier|protected
 name|void
 name|persistBlocks
 parameter_list|(
@@ -26494,7 +26497,7 @@ expr_stmt|;
 block|}
 comment|/**    * Persist the new block (the last block of the given file).    * @param path    * @param file    */
 DECL|method|persistNewBlock (String path, INodeFile file)
-specifier|private
+specifier|protected
 name|void
 name|persistNewBlock
 parameter_list|(
@@ -33428,7 +33431,7 @@ expr_stmt|;
 block|}
 comment|/**    *     * @return true if delegation token operation is allowed    */
 DECL|method|isAllowedDelegationTokenOp ()
-specifier|private
+specifier|protected
 name|boolean
 name|isAllowedDelegationTokenOp
 parameter_list|()
@@ -34028,24 +34031,56 @@ range|:
 name|live
 control|)
 block|{
+name|info
+operator|.
+name|put
+argument_list|(
+name|node
+operator|.
+name|getHostName
+argument_list|()
+argument_list|,
+name|getLiveNodeInfo
+argument_list|(
+name|node
+argument_list|)
+argument_list|)
+expr_stmt|;
+block|}
+return|return
+name|JSON
+operator|.
+name|toString
+argument_list|(
+name|info
+argument_list|)
+return|;
+block|}
+DECL|method|getLiveNodeInfo (DatanodeDescriptor node)
+specifier|protected
 name|Map
 argument_list|<
 name|String
 argument_list|,
 name|Object
 argument_list|>
-name|innerinfo
-init|=
+name|getLiveNodeInfo
+parameter_list|(
+name|DatanodeDescriptor
+name|node
+parameter_list|)
+block|{
+return|return
 name|ImmutableMap
 operator|.
 expr|<
 name|String
-decl_stmt|,
+operator|,
 name|Object
-decl|>
+operator|>
 name|builder
 argument_list|()
-decl|.
+operator|.
 name|put
 argument_list|(
 literal|"infoAddr"
@@ -34055,7 +34090,7 @@ operator|.
 name|getInfoAddr
 argument_list|()
 argument_list|)
-decl|.
+operator|.
 name|put
 argument_list|(
 literal|"infoSecureAddr"
@@ -34065,7 +34100,7 @@ operator|.
 name|getInfoSecureAddr
 argument_list|()
 argument_list|)
-decl|.
+operator|.
 name|put
 argument_list|(
 literal|"xferaddr"
@@ -34075,7 +34110,7 @@ operator|.
 name|getXferAddr
 argument_list|()
 argument_list|)
-decl|.
+operator|.
 name|put
 argument_list|(
 literal|"lastContact"
@@ -34085,7 +34120,7 @@ argument_list|(
 name|node
 argument_list|)
 argument_list|)
-decl|.
+operator|.
 name|put
 argument_list|(
 literal|"usedSpace"
@@ -34095,7 +34130,7 @@ argument_list|(
 name|node
 argument_list|)
 argument_list|)
-decl|.
+operator|.
 name|put
 argument_list|(
 literal|"adminState"
@@ -34108,7 +34143,7 @@ operator|.
 name|toString
 argument_list|()
 argument_list|)
-decl|.
+operator|.
 name|put
 argument_list|(
 literal|"nonDfsUsedSpace"
@@ -34118,7 +34153,7 @@ operator|.
 name|getNonDfsUsed
 argument_list|()
 argument_list|)
-decl|.
+operator|.
 name|put
 argument_list|(
 literal|"capacity"
@@ -34128,7 +34163,7 @@ operator|.
 name|getCapacity
 argument_list|()
 argument_list|)
-decl|.
+operator|.
 name|put
 argument_list|(
 literal|"numBlocks"
@@ -34138,7 +34173,7 @@ operator|.
 name|numBlocks
 argument_list|()
 argument_list|)
-decl|.
+operator|.
 name|put
 argument_list|(
 literal|"version"
@@ -34148,7 +34183,7 @@ operator|.
 name|getSoftwareVersion
 argument_list|()
 argument_list|)
-decl|.
+operator|.
 name|put
 argument_list|(
 literal|"used"
@@ -34158,7 +34193,7 @@ operator|.
 name|getDfsUsed
 argument_list|()
 argument_list|)
-decl|.
+operator|.
 name|put
 argument_list|(
 literal|"remaining"
@@ -34168,7 +34203,7 @@ operator|.
 name|getRemaining
 argument_list|()
 argument_list|)
-decl|.
+operator|.
 name|put
 argument_list|(
 literal|"blockScheduled"
@@ -34178,7 +34213,7 @@ operator|.
 name|getBlocksScheduled
 argument_list|()
 argument_list|)
-decl|.
+operator|.
 name|put
 argument_list|(
 literal|"blockPoolUsed"
@@ -34188,7 +34223,7 @@ operator|.
 name|getBlockPoolUsed
 argument_list|()
 argument_list|)
-decl|.
+operator|.
 name|put
 argument_list|(
 literal|"blockPoolUsedPercent"
@@ -34198,7 +34233,7 @@ operator|.
 name|getBlockPoolUsedPercent
 argument_list|()
 argument_list|)
-decl|.
+operator|.
 name|put
 argument_list|(
 literal|"volfails"
@@ -34208,30 +34243,9 @@ operator|.
 name|getVolumeFailures
 argument_list|()
 argument_list|)
-decl|.
+operator|.
 name|build
 argument_list|()
-decl_stmt|;
-name|info
-operator|.
-name|put
-argument_list|(
-name|node
-operator|.
-name|getHostName
-argument_list|()
-argument_list|,
-name|innerinfo
-argument_list|)
-expr_stmt|;
-block|}
-return|return
-name|JSON
-operator|.
-name|toString
-argument_list|(
-name|info
-argument_list|)
 return|;
 block|}
 comment|/**    * Returned information is a JSON representation of map with host name as the    * key and value is a map of dead node attribute keys to its values    */
@@ -35869,18 +35883,6 @@ return|;
 block|}
 annotation|@
 name|VisibleForTesting
-DECL|method|getSafeModeInfoForTests ()
-specifier|public
-name|SafeModeInfo
-name|getSafeModeInfoForTests
-parameter_list|()
-block|{
-return|return
-name|safeMode
-return|;
-block|}
-annotation|@
-name|VisibleForTesting
 DECL|method|setNNResourceChecker (NameNodeResourceChecker nnResourceChecker)
 specifier|public
 name|void
@@ -35896,6 +35898,16 @@ name|nnResourceChecker
 operator|=
 name|nnResourceChecker
 expr_stmt|;
+block|}
+DECL|method|getSafeModeInfo ()
+specifier|public
+name|SafeModeInfo
+name|getSafeModeInfo
+parameter_list|()
+block|{
+return|return
+name|safeMode
+return|;
 block|}
 annotation|@
 name|Override

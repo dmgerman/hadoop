@@ -707,6 +707,25 @@ argument_list|,
 name|excludeFile
 argument_list|)
 decl_stmt|;
+name|setHosts
+argument_list|(
+name|newIncludes
+argument_list|,
+name|newExcludes
+argument_list|)
+expr_stmt|;
+block|}
+DECL|method|setHosts (HostSet newIncludes, HostSet newExcludes)
+name|void
+name|setHosts
+parameter_list|(
+name|HostSet
+name|newIncludes
+parameter_list|,
+name|HostSet
+name|newExcludes
+parameter_list|)
+block|{
 synchronized|synchronized
 init|(
 name|this
