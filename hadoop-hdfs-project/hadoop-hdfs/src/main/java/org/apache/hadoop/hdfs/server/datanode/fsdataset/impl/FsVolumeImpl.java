@@ -150,6 +150,20 @@ end_import
 
 begin_import
 import|import
+name|java
+operator|.
+name|util
+operator|.
+name|concurrent
+operator|.
+name|atomic
+operator|.
+name|AtomicLong
+import|;
+end_import
+
+begin_import
+import|import
 name|com
 operator|.
 name|google
@@ -443,6 +457,12 @@ specifier|final
 name|long
 name|reserved
 decl_stmt|;
+comment|// Disk space reserved for open blocks.
+DECL|field|reservedForRbw
+specifier|private
+name|AtomicLong
+name|reservedForRbw
+decl_stmt|;
 comment|// Capacity configured. This is useful when we want to
 comment|// limit the visible capacity for tests. If negative, then we just
 comment|// query from the filesystem.
@@ -505,6 +525,16 @@ argument_list|,
 name|DFSConfigKeys
 operator|.
 name|DFS_DATANODE_DU_RESERVED_DEFAULT
+argument_list|)
+expr_stmt|;
+name|this
+operator|.
+name|reservedForRbw
+operator|=
+operator|new
+name|AtomicLong
+argument_list|(
+literal|0L
 argument_list|)
 expr_stmt|;
 name|this
@@ -859,6 +889,11 @@ argument_list|()
 operator|-
 name|getDfsUsed
 argument_list|()
+operator|-
+name|reservedForRbw
+operator|.
+name|get
+argument_list|()
 decl_stmt|;
 name|long
 name|available
@@ -890,6 +925,21 @@ condition|?
 name|remaining
 else|:
 literal|0
+return|;
+block|}
+annotation|@
+name|VisibleForTesting
+DECL|method|getReservedForRbw ()
+specifier|public
+name|long
+name|getReservedForRbw
+parameter_list|()
+block|{
+return|return
+name|reservedForRbw
+operator|.
+name|get
+argument_list|()
 return|;
 block|}
 DECL|method|getReserved ()
@@ -1078,6 +1128,155 @@ name|b
 argument_list|)
 return|;
 block|}
+annotation|@
+name|Override
+DECL|method|reserveSpaceForRbw (long bytesToReserve)
+specifier|public
+name|void
+name|reserveSpaceForRbw
+parameter_list|(
+name|long
+name|bytesToReserve
+parameter_list|)
+block|{
+if|if
+condition|(
+name|bytesToReserve
+operator|!=
+literal|0
+condition|)
+block|{
+if|if
+condition|(
+name|FsDatasetImpl
+operator|.
+name|LOG
+operator|.
+name|isDebugEnabled
+argument_list|()
+condition|)
+block|{
+name|FsDatasetImpl
+operator|.
+name|LOG
+operator|.
+name|debug
+argument_list|(
+literal|"Reserving "
+operator|+
+name|bytesToReserve
+operator|+
+literal|" on volume "
+operator|+
+name|getBasePath
+argument_list|()
+argument_list|)
+expr_stmt|;
+block|}
+name|reservedForRbw
+operator|.
+name|addAndGet
+argument_list|(
+name|bytesToReserve
+argument_list|)
+expr_stmt|;
+block|}
+block|}
+annotation|@
+name|Override
+DECL|method|releaseReservedSpace (long bytesToRelease)
+specifier|public
+name|void
+name|releaseReservedSpace
+parameter_list|(
+name|long
+name|bytesToRelease
+parameter_list|)
+block|{
+if|if
+condition|(
+name|bytesToRelease
+operator|!=
+literal|0
+condition|)
+block|{
+if|if
+condition|(
+name|FsDatasetImpl
+operator|.
+name|LOG
+operator|.
+name|isDebugEnabled
+argument_list|()
+condition|)
+block|{
+name|FsDatasetImpl
+operator|.
+name|LOG
+operator|.
+name|debug
+argument_list|(
+literal|"Releasing "
+operator|+
+name|bytesToRelease
+operator|+
+literal|" on volume "
+operator|+
+name|getBasePath
+argument_list|()
+argument_list|)
+expr_stmt|;
+block|}
+name|long
+name|oldReservation
+decl_stmt|,
+name|newReservation
+decl_stmt|;
+do|do
+block|{
+name|oldReservation
+operator|=
+name|reservedForRbw
+operator|.
+name|get
+argument_list|()
+expr_stmt|;
+name|newReservation
+operator|=
+name|oldReservation
+operator|-
+name|bytesToRelease
+expr_stmt|;
+if|if
+condition|(
+name|newReservation
+operator|<
+literal|0
+condition|)
+block|{
+comment|// Failsafe, this should never occur in practice, but if it does we don't
+comment|// want to start advertising more space than we have available.
+name|newReservation
+operator|=
+literal|0
+expr_stmt|;
+block|}
+block|}
+do|while
+condition|(
+operator|!
+name|reservedForRbw
+operator|.
+name|compareAndSet
+argument_list|(
+name|oldReservation
+argument_list|,
+name|newReservation
+argument_list|)
+condition|)
+do|;
+block|}
+block|}
 comment|/**    * RBW files. They get moved to the finalized block directory when    * the block is finalized.    */
 DECL|method|createRbwFile (String bpid, Block b)
 name|File
@@ -1092,6 +1291,14 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
+name|reserveSpaceForRbw
+argument_list|(
+name|b
+operator|.
+name|getNumBytes
+argument_list|()
+argument_list|)
+expr_stmt|;
 return|return
 name|getBlockPoolSlice
 argument_list|(
@@ -1104,9 +1311,10 @@ name|b
 argument_list|)
 return|;
 block|}
-DECL|method|addBlock (String bpid, Block b, File f)
+comment|/**    *    * @param bytesReservedForRbw Space that was reserved during    *     block creation. Now that the block is being finalized we    *     can free up this space.    * @return    * @throws IOException    */
+DECL|method|addFinalizedBlock (String bpid, Block b, File f, long bytesReservedForRbw)
 name|File
-name|addBlock
+name|addFinalizedBlock
 parameter_list|(
 name|String
 name|bpid
@@ -1116,17 +1324,25 @@ name|b
 parameter_list|,
 name|File
 name|f
+parameter_list|,
+name|long
+name|bytesReservedForRbw
 parameter_list|)
 throws|throws
 name|IOException
 block|{
+name|releaseReservedSpace
+argument_list|(
+name|bytesReservedForRbw
+argument_list|)
+expr_stmt|;
 return|return
 name|getBlockPoolSlice
 argument_list|(
 name|bpid
 argument_list|)
 operator|.
-name|addBlock
+name|addFinalizedBlock
 argument_list|(
 name|b
 argument_list|,

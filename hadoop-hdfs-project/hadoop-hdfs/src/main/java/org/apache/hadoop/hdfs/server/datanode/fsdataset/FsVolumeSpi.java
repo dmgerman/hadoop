@@ -134,6 +134,26 @@ name|boolean
 name|isTransientStorage
 parameter_list|()
 function_decl|;
+comment|/**    * Reserve disk space for an RBW block so a writer does not run out of    * space before the block is full.    */
+DECL|method|reserveSpaceForRbw (long bytesToReserve)
+specifier|public
+name|void
+name|reserveSpaceForRbw
+parameter_list|(
+name|long
+name|bytesToReserve
+parameter_list|)
+function_decl|;
+comment|/**    * Release disk space previously reserved for RBW block.    */
+DECL|method|releaseReservedSpace (long bytesToRelease)
+specifier|public
+name|void
+name|releaseReservedSpace
+parameter_list|(
+name|long
+name|bytesToRelease
+parameter_list|)
+function_decl|;
 block|}
 end_interface
 

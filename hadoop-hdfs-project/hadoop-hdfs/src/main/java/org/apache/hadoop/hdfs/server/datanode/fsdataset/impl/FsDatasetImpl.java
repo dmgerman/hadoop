@@ -3636,7 +3636,7 @@ name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"addBlock: Moved "
+literal|"addFinalizedBlock: Moved "
 operator|+
 name|srcmeta
 operator|+
@@ -4427,6 +4427,8 @@ name|Thread
 operator|.
 name|currentThread
 argument_list|()
+argument_list|,
+name|estimateBlockLen
 argument_list|)
 decl_stmt|;
 name|File
@@ -4612,6 +4614,18 @@ argument_list|(
 name|bpid
 argument_list|,
 name|newReplicaInfo
+argument_list|)
+expr_stmt|;
+name|v
+operator|.
+name|reserveSpaceForRbw
+argument_list|(
+name|estimateBlockLen
+operator|-
+name|replicaInfo
+operator|.
+name|getNumBytes
+argument_list|()
 argument_list|)
 expr_stmt|;
 return|return
@@ -5340,6 +5354,11 @@ name|f
 operator|.
 name|getParentFile
 argument_list|()
+argument_list|,
+name|b
+operator|.
+name|getNumBytes
+argument_list|()
 argument_list|)
 decl_stmt|;
 name|volumeMap
@@ -5920,6 +5939,8 @@ name|Thread
 operator|.
 name|currentThread
 argument_list|()
+argument_list|,
+literal|0
 argument_list|)
 decl_stmt|;
 name|rbw
@@ -6064,6 +6085,8 @@ name|f
 operator|.
 name|getParentFile
 argument_list|()
+argument_list|,
+literal|0
 argument_list|)
 decl_stmt|;
 name|volumeMap
@@ -6358,13 +6381,18 @@ name|dest
 init|=
 name|v
 operator|.
-name|addBlock
+name|addFinalizedBlock
 argument_list|(
 name|bpid
 argument_list|,
 name|replicaInfo
 argument_list|,
 name|f
+argument_list|,
+name|replicaInfo
+operator|.
+name|getBytesReserved
+argument_list|()
 argument_list|)
 decl_stmt|;
 name|newReplicaInfo

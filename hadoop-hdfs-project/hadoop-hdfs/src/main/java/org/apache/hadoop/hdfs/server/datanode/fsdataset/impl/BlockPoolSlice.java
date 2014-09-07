@@ -1246,9 +1246,9 @@ name|f
 argument_list|)
 return|;
 block|}
-DECL|method|addBlock (Block b, File f)
+DECL|method|addFinalizedBlock (Block b, File f)
 name|File
-name|addBlock
+name|addFinalizedBlock
 parameter_list|(
 name|Block
 name|b
@@ -2207,6 +2207,8 @@ operator|)
 condition|)
 block|{
 comment|// It didn't expire. Load the replica as a RBW.
+comment|// We don't know the expected block length, so just use 0
+comment|// and don't reserve any more space for writes.
 name|newReplica
 operator|=
 operator|new
@@ -2231,6 +2233,8 @@ name|getParentFile
 argument_list|()
 argument_list|,
 literal|null
+argument_list|,
+literal|0
 argument_list|)
 expr_stmt|;
 name|loadRwr
