@@ -747,6 +747,17 @@ parameter_list|()
 block|{
 comment|// no need to be unlinked
 block|}
+comment|/**    * Number of bytes reserved for this replica on disk.    */
+DECL|method|getBytesReserved ()
+specifier|public
+name|long
+name|getBytesReserved
+parameter_list|()
+block|{
+return|return
+literal|0
+return|;
+block|}
 comment|/**    * Copy specified file into a temporary file. Then rename the    * temporary file to the original name. This will cause any    * hardlinks to the original file to be removed. The temporary    * files are created in the same directory. The temporary files will    * be recovered (especially on Windows) on datanode restart.    */
 DECL|method|unlinkFile (File file, Block b)
 specifier|private
