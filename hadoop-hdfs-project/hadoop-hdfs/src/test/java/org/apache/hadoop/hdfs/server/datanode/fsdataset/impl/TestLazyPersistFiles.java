@@ -2559,7 +2559,13 @@ argument_list|()
 expr_stmt|;
 comment|// Make sure that the second file's block replica is on RAM_DISK, whereas
 comment|// the original file's block replica is now on disk.
-comment|//    ensureFileReplicasOnStorageType(path2, RAM_DISK);
+name|ensureFileReplicasOnStorageType
+argument_list|(
+name|path2
+argument_list|,
+name|RAM_DISK
+argument_list|)
+expr_stmt|;
 name|ensureFileReplicasOnStorageType
 argument_list|(
 name|path1

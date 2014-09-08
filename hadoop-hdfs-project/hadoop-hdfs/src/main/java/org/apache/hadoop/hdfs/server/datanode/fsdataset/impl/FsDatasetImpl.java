@@ -3658,10 +3658,11 @@ return|return
 name|dstfile
 return|;
 block|}
-comment|/**    * Copy the block and meta files for the given block from the given    * @return the new meta file.    * @throws IOException    */
+comment|/**    * Copy the block and meta files for the given block from the given    * @return the new meta and block files.    * @throws IOException    */
 DECL|method|copyBlockFiles (ReplicaInfo replicaInfo, File destRoot)
 specifier|static
 name|File
+index|[]
 name|copyBlockFiles
 parameter_list|(
 name|ReplicaInfo
@@ -3842,7 +3843,14 @@ argument_list|)
 expr_stmt|;
 block|}
 return|return
+operator|new
+name|File
+index|[]
+block|{
 name|dstMeta
+block|,
+name|dstFile
+block|}
 return|;
 block|}
 DECL|method|truncateBlock (File blockFile, File metaFile, long oldlen, long newlen)
@@ -11704,7 +11712,8 @@ name|targetVolume
 argument_list|)
 expr_stmt|;
 name|File
-name|savedBlockFile
+index|[]
+name|savedFiles
 init|=
 name|targetVolume
 operator|.
@@ -11726,7 +11735,15 @@ name|bpid
 argument_list|,
 name|blockId
 argument_list|,
-name|savedBlockFile
+name|savedFiles
+index|[
+literal|0
+index|]
+argument_list|,
+name|savedFiles
+index|[
+literal|1
+index|]
 argument_list|)
 expr_stmt|;
 if|if
@@ -11751,7 +11768,10 @@ name|bpid
 operator|+
 literal|" to file "
 operator|+
-name|savedBlockFile
+name|savedFiles
+index|[
+literal|1
+index|]
 argument_list|)
 expr_stmt|;
 block|}

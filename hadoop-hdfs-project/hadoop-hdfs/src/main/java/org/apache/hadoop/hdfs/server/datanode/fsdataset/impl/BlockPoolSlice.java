@@ -1351,9 +1351,10 @@ return|return
 name|blockFile
 return|;
 block|}
-comment|/**    * Save the given replica to persistent storage.    *    * @param replicaInfo    * @return The saved block file.    * @throws IOException    */
+comment|/**    * Save the given replica to persistent storage.    *    * @param replicaInfo    * @return The saved meta and block files, in that order.    * @throws IOException    */
 DECL|method|lazyPersistReplica (ReplicaInfo replicaInfo)
 name|File
+index|[]
 name|lazyPersistReplica
 parameter_list|(
 name|ReplicaInfo
@@ -1390,7 +1391,8 @@ argument_list|)
 expr_stmt|;
 block|}
 name|File
-name|metaFile
+name|targetFiles
+index|[]
 init|=
 name|FsDatasetImpl
 operator|.
@@ -1401,33 +1403,29 @@ argument_list|,
 name|lazypersistDir
 argument_list|)
 decl_stmt|;
-name|File
-name|blockFile
-init|=
-name|Block
-operator|.
-name|metaToBlockFile
-argument_list|(
-name|metaFile
-argument_list|)
-decl_stmt|;
 name|dfsUsage
 operator|.
 name|incDfsUsed
 argument_list|(
-name|replicaInfo
+name|targetFiles
+index|[
+literal|0
+index|]
 operator|.
-name|getNumBytes
+name|length
 argument_list|()
 operator|+
-name|metaFile
+name|targetFiles
+index|[
+literal|1
+index|]
 operator|.
 name|length
 argument_list|()
 argument_list|)
 expr_stmt|;
 return|return
-name|blockFile
+name|targetFiles
 return|;
 block|}
 comment|/**    * Move a persisted replica from lazypersist directory to a subdirectory    * under finalized.    */
@@ -2415,7 +2413,7 @@ name|bpid
 argument_list|,
 name|blockId
 argument_list|,
-literal|true
+literal|false
 argument_list|)
 expr_stmt|;
 block|}

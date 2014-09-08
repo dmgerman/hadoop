@@ -131,6 +131,10 @@ DECL|field|lazyPersistVolume
 name|FsVolumeImpl
 name|lazyPersistVolume
 decl_stmt|;
+DECL|field|savedMetaFile
+name|File
+name|savedMetaFile
+decl_stmt|;
 DECL|field|savedBlockFile
 name|File
 name|savedBlockFile
@@ -178,10 +182,65 @@ name|lazyPersistVolume
 operator|=
 literal|null
 expr_stmt|;
+name|savedMetaFile
+operator|=
+literal|null
+expr_stmt|;
 name|savedBlockFile
 operator|=
 literal|null
 expr_stmt|;
+block|}
+DECL|method|deleteSavedFiles ()
+name|void
+name|deleteSavedFiles
+parameter_list|()
+block|{
+try|try
+block|{
+if|if
+condition|(
+name|savedBlockFile
+operator|!=
+literal|null
+condition|)
+block|{
+name|savedBlockFile
+operator|.
+name|delete
+argument_list|()
+expr_stmt|;
+name|savedBlockFile
+operator|=
+literal|null
+expr_stmt|;
+block|}
+if|if
+condition|(
+name|savedMetaFile
+operator|!=
+literal|null
+condition|)
+block|{
+name|savedMetaFile
+operator|.
+name|delete
+argument_list|()
+expr_stmt|;
+name|savedMetaFile
+operator|=
+literal|null
+expr_stmt|;
+block|}
+block|}
+catch|catch
+parameter_list|(
+name|Throwable
+name|t
+parameter_list|)
+block|{
+comment|// Ignore any exceptions.
+block|}
 block|}
 annotation|@
 name|Override
@@ -572,7 +631,7 @@ operator|=
 name|checkpointVolume
 expr_stmt|;
 block|}
-DECL|method|recordEndLazyPersist ( final String bpid, final long blockId, File savedBlockFile)
+DECL|method|recordEndLazyPersist ( final String bpid, final long blockId, final File savedMetaFile, final File savedBlockFile)
 specifier|synchronized
 name|void
 name|recordEndLazyPersist
@@ -585,6 +644,11 @@ specifier|final
 name|long
 name|blockId
 parameter_list|,
+specifier|final
+name|File
+name|savedMetaFile
+parameter_list|,
+specifier|final
 name|File
 name|savedBlockFile
 parameter_list|)
@@ -642,6 +706,12 @@ operator|=
 name|State
 operator|.
 name|LAZY_PERSIST_COMPLETE
+expr_stmt|;
+name|replicaState
+operator|.
+name|savedMetaFile
+operator|=
+name|savedMetaFile
 expr_stmt|;
 name|replicaState
 operator|.
@@ -874,7 +944,7 @@ return|return
 literal|null
 return|;
 block|}
-DECL|method|discardReplica (ReplicaState replicaState, boolean force)
+DECL|method|discardReplica (ReplicaState replicaState, boolean deleteSavedCopies)
 name|void
 name|discardReplica
 parameter_list|(
@@ -882,7 +952,7 @@ name|ReplicaState
 name|replicaState
 parameter_list|,
 name|boolean
-name|force
+name|deleteSavedCopies
 parameter_list|)
 block|{
 name|discardReplica
@@ -895,11 +965,12 @@ name|replicaState
 operator|.
 name|blockId
 argument_list|,
-name|force
+name|deleteSavedCopies
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|discardReplica ( final String bpid, final long blockId, boolean force)
+comment|/**    * Discard any state we are tracking for the given replica. This could mean    * the block is either deleted from the block space or the replica is no longer    * on transient storage.    *    * @param deleteSavedCopies true if we should delete the saved copies on    *                          persistent storage. This should be set by the    *                          caller when the block is no longer needed.    */
+DECL|method|discardReplica ( final String bpid, final long blockId, boolean deleteSavedCopies)
 specifier|synchronized
 name|void
 name|discardReplica
@@ -913,7 +984,7 @@ name|long
 name|blockId
 parameter_list|,
 name|boolean
-name|force
+name|deleteSavedCopies
 parameter_list|)
 block|{
 name|Map
@@ -957,56 +1028,18 @@ operator|==
 literal|null
 condition|)
 block|{
-if|if
-condition|(
-name|force
-condition|)
-block|{
 return|return;
 block|}
-throw|throw
-operator|new
-name|IllegalStateException
-argument_list|(
-literal|"Unknown replica bpid="
-operator|+
-name|bpid
-operator|+
-literal|"; blockId="
-operator|+
-name|blockId
-argument_list|)
-throw|;
-block|}
 if|if
 condition|(
-name|replicaState
-operator|.
-name|state
-operator|!=
-name|State
-operator|.
-name|LAZY_PERSIST_COMPLETE
-operator|&&
-operator|!
-name|force
+name|deleteSavedCopies
 condition|)
 block|{
-throw|throw
-operator|new
-name|IllegalStateException
-argument_list|(
-literal|"Discarding replica without "
-operator|+
-literal|"saving it to disk bpid="
-operator|+
-name|bpid
-operator|+
-literal|"; blockId="
-operator|+
-name|blockId
-argument_list|)
-throw|;
+name|replicaState
+operator|.
+name|deleteSavedFiles
+argument_list|()
+expr_stmt|;
 block|}
 name|map
 operator|.
