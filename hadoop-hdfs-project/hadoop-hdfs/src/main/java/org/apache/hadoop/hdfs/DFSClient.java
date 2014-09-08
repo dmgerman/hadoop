@@ -14240,6 +14240,15 @@ argument_list|,
 name|datanodeId
 argument_list|)
 expr_stmt|;
+name|peer
+operator|.
+name|setReadTimeout
+argument_list|(
+name|dfsClientConf
+operator|.
+name|socketTimeout
+argument_list|)
+expr_stmt|;
 name|success
 operator|=
 literal|true
