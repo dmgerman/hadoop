@@ -3750,7 +3750,7 @@ name|source
 operator|==
 literal|null
 condition|?
-literal|"programatically"
+literal|"programmatically"
 else|:
 name|source
 operator|)
@@ -5442,7 +5442,7 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-comment|/**    * Gets information about why a property was set.  Typically this is the     * path to the resource objects (file, URL, etc.) the property came from, but    * it can also indicate that it was set programatically, or because of the    * command line.    *    * @param name - The property name to get the source of.    * @return null - If the property or its source wasn't found. Otherwise,     * returns a list of the sources of the resource.  The older sources are    * the first ones in the list.  So for example if a configuration is set from    * the command line, and then written out to a file that is read back in the    * first entry would indicate that it was set from the command line, while    * the second one would indicate the file that the new configuration was read    * in from.    */
+comment|/**    * Gets information about why a property was set.  Typically this is the     * path to the resource objects (file, URL, etc.) the property came from, but    * it can also indicate that it was set programmatically, or because of the    * command line.    *    * @param name - The property name to get the source of.    * @return null - If the property or its source wasn't found. Otherwise,     * returns a list of the sources of the resource.  The older sources are    * the first ones in the list.  So for example if a configuration is set from    * the command line, and then written out to a file that is read back in the    * first entry would indicate that it was set from the command line, while    * the second one would indicate the file that the new configuration was read    * in from.    */
 annotation|@
 name|InterfaceStability
 operator|.

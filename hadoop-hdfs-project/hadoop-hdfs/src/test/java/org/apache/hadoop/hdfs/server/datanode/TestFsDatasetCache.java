@@ -978,7 +978,6 @@ argument_list|)
 decl_stmt|;
 comment|// Most Linux installs allow a default of 64KB locked memory
 DECL|field|CACHE_CAPACITY
-specifier|private
 specifier|static
 specifier|final
 name|long

@@ -241,7 +241,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * OfflineImageViewer to dump the contents of an Hadoop image file to XML  * or the console.  Main entry point into utility, either via the  * command line or programatically.  */
+comment|/**  * OfflineImageViewer to dump the contents of an Hadoop image file to XML  * or the console.  Main entry point into utility, either via the  * command line or programmatically.  */
 end_comment
 
 begin_class
