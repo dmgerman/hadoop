@@ -399,7 +399,7 @@ argument_list|(
 name|val
 argument_list|)
 operator|&&
-literal|"programatically"
+literal|"programmatically"
 operator|.
 name|equals
 argument_list|(
