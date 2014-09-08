@@ -14576,6 +14576,16 @@ return|return
 name|HEDGED_READ_METRIC
 return|;
 block|}
+DECL|method|getKeyProvider ()
+specifier|public
+name|KeyProviderCryptoExtension
+name|getKeyProvider
+parameter_list|()
+block|{
+return|return
+name|provider
+return|;
+block|}
 block|}
 end_class
 

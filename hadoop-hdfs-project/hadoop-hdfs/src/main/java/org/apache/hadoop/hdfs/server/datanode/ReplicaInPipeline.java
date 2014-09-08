@@ -213,8 +213,14 @@ specifier|private
 name|Thread
 name|writer
 decl_stmt|;
-comment|/**    * Constructor for a zero length replica    * @param blockId block id    * @param genStamp replica generation stamp    * @param vol volume where replica is located    * @param dir directory path where block and meta files are located    */
-DECL|method|ReplicaInPipeline (long blockId, long genStamp, FsVolumeSpi vol, File dir)
+comment|/**    * Bytes reserved for this replica on the containing volume.    * Based off difference between the estimated maximum block length and    * the bytes already written to this block.    */
+DECL|field|bytesReserved
+specifier|private
+name|long
+name|bytesReserved
+decl_stmt|;
+comment|/**    * Constructor for a zero length replica    * @param blockId block id    * @param genStamp replica generation stamp    * @param vol volume where replica is located    * @param dir directory path where block and meta files are located    * @param bytesToReserve disk space to reserve for this replica, based on    *                       the estimated maximum block length.    */
+DECL|method|ReplicaInPipeline (long blockId, long genStamp, FsVolumeSpi vol, File dir, long bytesToReserve)
 specifier|public
 name|ReplicaInPipeline
 parameter_list|(
@@ -229,6 +235,9 @@ name|vol
 parameter_list|,
 name|File
 name|dir
+parameter_list|,
+name|long
+name|bytesToReserve
 parameter_list|)
 block|{
 name|this
@@ -247,6 +256,8 @@ name|Thread
 operator|.
 name|currentThread
 argument_list|()
+argument_list|,
+name|bytesToReserve
 argument_list|)
 expr_stmt|;
 block|}
@@ -289,11 +300,13 @@ argument_list|,
 name|dir
 argument_list|,
 name|writer
+argument_list|,
+literal|0L
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Constructor    * @param blockId block id    * @param len replica length    * @param genStamp replica generation stamp    * @param vol volume where replica is located    * @param dir directory path where block and meta files are located    * @param writer a thread that is writing to this replica    */
-DECL|method|ReplicaInPipeline (long blockId, long len, long genStamp, FsVolumeSpi vol, File dir, Thread writer )
+comment|/**    * Constructor    * @param blockId block id    * @param len replica length    * @param genStamp replica generation stamp    * @param vol volume where replica is located    * @param dir directory path where block and meta files are located    * @param writer a thread that is writing to this replica    * @param bytesToReserve disk space to reserve for this replica, based on    *                       the estimated maximum block length.    */
+DECL|method|ReplicaInPipeline (long blockId, long len, long genStamp, FsVolumeSpi vol, File dir, Thread writer, long bytesToReserve)
 name|ReplicaInPipeline
 parameter_list|(
 name|long
@@ -313,6 +326,9 @@ name|dir
 parameter_list|,
 name|Thread
 name|writer
+parameter_list|,
+name|long
+name|bytesToReserve
 parameter_list|)
 block|{
 name|super
@@ -345,6 +361,12 @@ operator|.
 name|writer
 operator|=
 name|writer
+expr_stmt|;
+name|this
+operator|.
+name|bytesReserved
+operator|=
+name|bytesToReserve
 expr_stmt|;
 block|}
 comment|/**    * Copy constructor.    * @param from where to copy from    */
@@ -386,6 +408,14 @@ operator|=
 name|from
 operator|.
 name|writer
+expr_stmt|;
+name|this
+operator|.
+name|bytesReserved
+operator|=
+name|from
+operator|.
+name|bytesReserved
 expr_stmt|;
 block|}
 annotation|@
@@ -441,11 +471,35 @@ name|long
 name|bytesAcked
 parameter_list|)
 block|{
+name|long
+name|newBytesAcked
+init|=
+name|bytesAcked
+operator|-
+name|this
+operator|.
+name|bytesAcked
+decl_stmt|;
 name|this
 operator|.
 name|bytesAcked
 operator|=
 name|bytesAcked
+expr_stmt|;
+comment|// Once bytes are ACK'ed we can release equivalent space from the
+comment|// volume's reservedForRbw count. We could have released it as soon
+comment|// as the write-to-disk completed but that would be inefficient.
+name|getVolume
+argument_list|()
+operator|.
+name|releaseReservedSpace
+argument_list|(
+name|newBytesAcked
+argument_list|)
+expr_stmt|;
+name|bytesReserved
+operator|-=
+name|newBytesAcked
 expr_stmt|;
 block|}
 annotation|@
@@ -459,6 +513,18 @@ parameter_list|()
 block|{
 return|return
 name|bytesOnDisk
+return|;
+block|}
+annotation|@
+name|Override
+DECL|method|getBytesReserved ()
+specifier|public
+name|long
+name|getBytesReserved
+parameter_list|()
+block|{
+return|return
+name|bytesReserved
 return|;
 block|}
 annotation|@

@@ -208,7 +208,7 @@ specifier|final
 name|int
 name|MIN_BLOCKS_FOR_WRITE
 init|=
-literal|5
+literal|1
 decl_stmt|;
 comment|// Long that indicates "leave current quota unchanged"
 DECL|field|QUOTA_DONT_SET

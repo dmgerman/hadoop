@@ -2639,6 +2639,28 @@ return|return
 literal|""
 return|;
 block|}
+annotation|@
+name|Override
+DECL|method|reserveSpaceForRbw (long bytesToReserve)
+specifier|public
+name|void
+name|reserveSpaceForRbw
+parameter_list|(
+name|long
+name|bytesToReserve
+parameter_list|)
+block|{     }
+annotation|@
+name|Override
+DECL|method|releaseReservedSpace (long bytesToRelease)
+specifier|public
+name|void
+name|releaseReservedSpace
+parameter_list|(
+name|long
+name|bytesToRelease
+parameter_list|)
+block|{     }
 block|}
 DECL|field|TEST_VOLUME
 specifier|private

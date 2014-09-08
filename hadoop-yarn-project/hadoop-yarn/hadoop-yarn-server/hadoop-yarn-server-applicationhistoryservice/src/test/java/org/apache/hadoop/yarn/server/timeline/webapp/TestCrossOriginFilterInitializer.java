@@ -147,10 +147,6 @@ name|filterParameters
 operator|.
 name|get
 argument_list|(
-name|CrossOriginFilterInitializer
-operator|.
-name|PREFIX
-operator|+
 literal|"rootparam"
 argument_list|)
 decl_stmt|;
@@ -161,10 +157,6 @@ name|filterParameters
 operator|.
 name|get
 argument_list|(
-name|CrossOriginFilterInitializer
-operator|.
-name|PREFIX
-operator|+
 literal|"nested.param"
 argument_list|)
 decl_stmt|;
