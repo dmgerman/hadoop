@@ -2020,8 +2020,9 @@ else|else
 block|{
 name|hasRemaining
 operator|=
-literal|true
+literal|false
 expr_stmt|;
+comment|// not able to schedule any move
 block|}
 block|}
 block|}
