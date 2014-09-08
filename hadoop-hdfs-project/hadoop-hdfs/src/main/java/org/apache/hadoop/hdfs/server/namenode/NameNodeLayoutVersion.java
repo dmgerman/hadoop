@@ -303,6 +303,15 @@ literal|"Use single editlog record for "
 operator|+
 literal|"creating file with overwrite"
 argument_list|)
+block|,
+DECL|enumConstant|XATTRS_NAMESPACE_EXT
+name|XATTRS_NAMESPACE_EXT
+argument_list|(
+operator|-
+literal|59
+argument_list|,
+literal|"Increase number of xattr namespaces"
+argument_list|)
 block|;
 DECL|field|info
 specifier|private

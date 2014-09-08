@@ -10485,7 +10485,7 @@ condition|)
 block|{
 name|ezManager
 operator|.
-name|addEncryptionZone
+name|unprotectedAddEncryptionZone
 argument_list|(
 name|inode
 operator|.
