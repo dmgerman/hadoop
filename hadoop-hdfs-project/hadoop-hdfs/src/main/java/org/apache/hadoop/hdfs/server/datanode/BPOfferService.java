@@ -888,11 +888,6 @@ argument_list|(
 name|block
 argument_list|)
 expr_stmt|;
-name|checkDelHint
-argument_list|(
-name|delHint
-argument_list|)
-expr_stmt|;
 name|ReceivedDeletedBlockInfo
 name|bInfo
 init|=
@@ -976,27 +971,6 @@ argument_list|()
 argument_list|,
 name|getBlockPoolId
 argument_list|()
-argument_list|)
-expr_stmt|;
-block|}
-DECL|method|checkDelHint (String delHint)
-specifier|private
-name|void
-name|checkDelHint
-parameter_list|(
-name|String
-name|delHint
-parameter_list|)
-block|{
-name|Preconditions
-operator|.
-name|checkArgument
-argument_list|(
-name|delHint
-operator|!=
-literal|null
-argument_list|,
-literal|"delHint is null"
 argument_list|)
 expr_stmt|;
 block|}

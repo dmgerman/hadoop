@@ -4840,7 +4840,7 @@ return|;
 block|}
 comment|// calls specific to BP
 DECL|method|notifyNamenodeReceivedBlock ( ExtendedBlock block, String delHint, String storageUuid)
-specifier|protected
+specifier|public
 name|void
 name|notifyNamenodeReceivedBlock
 parameter_list|(

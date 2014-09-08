@@ -6303,6 +6303,12 @@ operator|.
 name|size
 argument_list|()
 decl_stmt|;
+specifier|final
+name|int
+name|curDatanodesNumSaved
+init|=
+name|curDatanodesNum
+decl_stmt|;
 comment|// for mincluster's the default initialDelay for BRs is 0
 if|if
 condition|(
@@ -7112,11 +7118,11 @@ control|(
 name|int
 name|i
 init|=
-name|curDatanodesNum
+name|curDatanodesNumSaved
 init|;
 name|i
 operator|<
-name|curDatanodesNum
+name|curDatanodesNumSaved
 operator|+
 name|numDataNodes
 condition|;
