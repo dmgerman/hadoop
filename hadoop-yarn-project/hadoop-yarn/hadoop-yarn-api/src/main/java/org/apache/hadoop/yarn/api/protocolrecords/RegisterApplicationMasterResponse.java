@@ -36,6 +36,16 @@ name|java
 operator|.
 name|util
 operator|.
+name|EnumSet
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
 name|List
 import|;
 end_import
@@ -199,6 +209,24 @@ operator|.
 name|records
 operator|.
 name|Resource
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|proto
+operator|.
+name|YarnServiceProtos
+operator|.
+name|SchedulerResourceTypes
 import|;
 end_import
 
@@ -515,6 +543,39 @@ argument_list|<
 name|NMToken
 argument_list|>
 name|nmTokens
+parameter_list|)
+function_decl|;
+comment|/**    * Get a set of the resource types considered by the scheduler.    *    * @return a Map of RM settings    */
+annotation|@
+name|Public
+annotation|@
+name|Unstable
+DECL|method|getSchedulerResourceTypes ()
+specifier|public
+specifier|abstract
+name|EnumSet
+argument_list|<
+name|SchedulerResourceTypes
+argument_list|>
+name|getSchedulerResourceTypes
+parameter_list|()
+function_decl|;
+comment|/**    * Set the resource types used by the scheduler.    *    * @param types    *          a set of the resource types that the scheduler considers during    *          scheduling    */
+annotation|@
+name|Private
+annotation|@
+name|Unstable
+DECL|method|setSchedulerResourceTypes ( EnumSet<SchedulerResourceTypes> types)
+specifier|public
+specifier|abstract
+name|void
+name|setSchedulerResourceTypes
+parameter_list|(
+name|EnumSet
+argument_list|<
+name|SchedulerResourceTypes
+argument_list|>
+name|types
 parameter_list|)
 function_decl|;
 block|}
