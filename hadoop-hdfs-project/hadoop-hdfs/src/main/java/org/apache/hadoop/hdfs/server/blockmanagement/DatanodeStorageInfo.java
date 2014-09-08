@@ -1248,6 +1248,10 @@ operator|+
 literal|":"
 operator|+
 name|state
+operator|+
+literal|":"
+operator|+
+name|dn
 return|;
 block|}
 DECL|method|toStorageReport ()

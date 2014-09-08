@@ -5858,13 +5858,13 @@ name|assertArrayEquals
 argument_list|(
 literal|"Resource string returned for a set() property must be "
 operator|+
-literal|"\"programatically\""
+literal|"\"programmatically\""
 argument_list|,
 operator|new
 name|String
 index|[]
 block|{
-literal|"programatically"
+literal|"programmatically"
 block|}
 argument_list|,
 name|conf
@@ -7593,7 +7593,7 @@ argument_list|)
 expr_stmt|;
 name|assertEquals
 argument_list|(
-literal|"programatically"
+literal|"programmatically"
 argument_list|,
 name|confDump
 operator|.

@@ -455,6 +455,16 @@ parameter_list|)
 throws|throws
 name|IOException
 function_decl|;
+comment|/**      * Drains the Queue for the provided key.      *      * @param keyName the key to drain the Queue for      */
+DECL|method|drain (String keyName)
+specifier|public
+name|void
+name|drain
+parameter_list|(
+name|String
+name|keyName
+parameter_list|)
+function_decl|;
 comment|/**      * Generates a key material and encrypts it using the given key version name      * and initialization vector. The generated key material is of the same      * length as the<code>KeyVersion</code> material of the latest key version      * of the key and is encrypted using the same cipher.      *<p/>      * NOTE: The generated key is not stored by the<code>KeyProvider</code>      *       * @param encryptionKeyName      *          The latest KeyVersion of this key's material will be encrypted.      * @return EncryptedKeyVersion with the generated key material, the version      *         name is 'EEK' (for Encrypted Encryption Key)      * @throws IOException      *           thrown if the key material could not be generated      * @throws GeneralSecurityException      *           thrown if the key material could not be encrypted because of a      *           cryptographic issue.      */
 DECL|method|generateEncryptedKey ( String encryptionKeyName)
 specifier|public
@@ -1017,6 +1027,19 @@ name|keyNames
 parameter_list|)
 throws|throws
 name|IOException
+block|{
+comment|// NO-OP since the default version does not cache any keys
+block|}
+annotation|@
+name|Override
+DECL|method|drain (String keyName)
+specifier|public
+name|void
+name|drain
+parameter_list|(
+name|String
+name|keyName
+parameter_list|)
 block|{
 comment|// NO-OP since the default version does not cache any keys
 block|}
