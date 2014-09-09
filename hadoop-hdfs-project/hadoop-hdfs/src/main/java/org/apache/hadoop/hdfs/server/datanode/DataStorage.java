@@ -735,11 +735,7 @@ name|STORAGE_DIR_TMP
 init|=
 literal|"tmp"
 decl_stmt|;
-comment|// Set of bpids for which 'trash' is currently enabled.
-comment|// When trash is enabled block files are moved under a separate
-comment|// 'trash' folder instead of being deleted right away. This can
-comment|// be useful during rolling upgrades, for example.
-comment|// The set is backed by a concurrent HashMap.
+comment|/**    * Set of bpids for which 'trash' is currently enabled.    * When trash is enabled block files are moved under a separate    * 'trash' folder instead of being deleted right away. This can    * be useful during rolling upgrades, for example.    * The set is backed by a concurrent HashMap.    *    * Even if trash is enabled, it is not used if a layout upgrade    * is in progress for a storage directory i.e. if the previous    * directory exists.    */
 DECL|field|trashEnabledBpids
 specifier|private
 name|Set
@@ -911,7 +907,7 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-comment|/**    * Enable trash for the specified block pool storage.    */
+comment|/**    * Enable trash for the specified block pool storage. Even if trash is    * enabled by the caller, it is superseded by the 'previous' directory    * if a layout upgrade is in progress.    */
 DECL|method|enableTrash (String bpid)
 specifier|public
 name|void
@@ -1004,6 +1000,50 @@ argument_list|(
 name|bpid
 argument_list|)
 return|;
+block|}
+DECL|method|setRollingUpgradeMarker (String bpid)
+specifier|public
+name|void
+name|setRollingUpgradeMarker
+parameter_list|(
+name|String
+name|bpid
+parameter_list|)
+throws|throws
+name|IOException
+block|{
+name|getBPStorage
+argument_list|(
+name|bpid
+argument_list|)
+operator|.
+name|setRollingUpgradeMarkers
+argument_list|(
+name|storageDirs
+argument_list|)
+expr_stmt|;
+block|}
+DECL|method|clearRollingUpgradeMarker (String bpid)
+specifier|public
+name|void
+name|clearRollingUpgradeMarker
+parameter_list|(
+name|String
+name|bpid
+parameter_list|)
+throws|throws
+name|IOException
+block|{
+name|getBPStorage
+argument_list|(
+name|bpid
+argument_list|)
+operator|.
+name|clearRollingUpgradeMarkers
+argument_list|(
+name|storageDirs
+argument_list|)
+expr_stmt|;
 block|}
 comment|/**    * If rolling upgrades are in progress then do not delete block files    * immediately. Instead we move the block files to an intermediate    * 'trash' directory. If there is a subsequent rollback, then the block    * files will be restored from trash.    *    * @return trash directory if rolling upgrade is in progress, null    *         otherwise.    */
 DECL|method|getTrashDirectoryForBlockFile (String bpid, File blockFile)
@@ -3164,7 +3204,8 @@ argument_list|)
 condition|)
 block|{
 comment|// The VERSION file is already read in. Override the layoutVersion
-comment|// field and overwrite the file.
+comment|// field and overwrite the file. The upgrade work is handled by
+comment|// {@link BlockPoolSliceStorage#doUpgrade}
 name|LOG
 operator|.
 name|info

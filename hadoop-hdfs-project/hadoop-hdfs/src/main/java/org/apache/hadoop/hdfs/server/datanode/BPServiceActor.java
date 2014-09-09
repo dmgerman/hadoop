@@ -2787,6 +2787,8 @@ parameter_list|(
 name|HeartbeatResponse
 name|resp
 parameter_list|)
+throws|throws
+name|IOException
 block|{
 name|RollingUpgradeStatus
 name|rollingUpgradeStatus
