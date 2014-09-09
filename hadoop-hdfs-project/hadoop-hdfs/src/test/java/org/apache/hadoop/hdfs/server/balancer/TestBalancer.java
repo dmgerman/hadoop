@@ -638,7 +638,7 @@ specifier|static
 name|long
 name|CAPACITY
 init|=
-literal|500L
+literal|5000L
 decl_stmt|;
 DECL|field|RACK0
 specifier|final
@@ -727,7 +727,7 @@ specifier|final
 name|int
 name|DEFAULT_BLOCK_SIZE
 init|=
-literal|10
+literal|100
 decl_stmt|;
 DECL|field|r
 specifier|private
@@ -788,6 +788,17 @@ argument_list|(
 name|DFSConfigKeys
 operator|.
 name|DFS_HEARTBEAT_INTERVAL_KEY
+argument_list|,
+literal|1L
+argument_list|)
+expr_stmt|;
+name|conf
+operator|.
+name|setLong
+argument_list|(
+name|DFSConfigKeys
+operator|.
+name|DFS_NAMENODE_REPLICATION_INTERVAL_KEY
 argument_list|,
 literal|1L
 argument_list|)
