@@ -1498,15 +1498,23 @@ name|NEW
 argument_list|,
 name|RMAppState
 operator|.
-name|FAILED
+name|FINAL_SAVING
 argument_list|,
 name|RMAppEventType
 operator|.
 name|APP_REJECTED
 argument_list|,
 operator|new
+name|FinalSavingTransition
+argument_list|(
+operator|new
 name|AppRejectedTransition
 argument_list|()
+argument_list|,
+name|RMAppState
+operator|.
+name|FAILED
+argument_list|)
 argument_list|)
 comment|// Transitions from NEW_SAVING state
 operator|.
