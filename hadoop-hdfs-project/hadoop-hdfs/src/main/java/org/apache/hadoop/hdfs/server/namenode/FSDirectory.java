@@ -7402,6 +7402,12 @@ name|byte
 name|curPolicy
 init|=
 name|isSuperUser
+operator|&&
+operator|!
+name|cur
+operator|.
+name|isSymlink
+argument_list|()
 condition|?
 name|cur
 operator|.
@@ -7883,6 +7889,12 @@ operator|&&
 name|i
 operator|!=
 literal|null
+operator|&&
+operator|!
+name|i
+operator|.
+name|isSymlink
+argument_list|()
 condition|?
 name|i
 operator|.
