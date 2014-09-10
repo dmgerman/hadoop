@@ -1052,12 +1052,65 @@ block|}
 block|}
 argument_list|)
 decl_stmt|;
-comment|// waiting until the AM container is allocated
-while|while
+if|if
 condition|(
-literal|true
+name|response
+operator|!=
+literal|null
 condition|)
 block|{
+name|responseQueue
+operator|.
+name|put
+argument_list|(
+name|response
+argument_list|)
+expr_stmt|;
+block|}
+block|}
+annotation|@
+name|Override
+annotation|@
+name|SuppressWarnings
+argument_list|(
+literal|"unchecked"
+argument_list|)
+DECL|method|processResponseQueue ()
+specifier|protected
+name|void
+name|processResponseQueue
+parameter_list|()
+throws|throws
+name|InterruptedException
+throws|,
+name|YarnException
+throws|,
+name|IOException
+block|{
+comment|// Check whether receive the am container
+if|if
+condition|(
+operator|!
+name|isAMContainerRunning
+condition|)
+block|{
+if|if
+condition|(
+operator|!
+name|responseQueue
+operator|.
+name|isEmpty
+argument_list|()
+condition|)
+block|{
+name|AllocateResponse
+name|response
+init|=
+name|responseQueue
+operator|.
+name|take
+argument_list|()
+decl_stmt|;
 if|if
 condition|(
 name|response
@@ -1074,7 +1127,7 @@ name|isEmpty
 argument_list|()
 condition|)
 block|{
-comment|// get AM container
+comment|// Get AM container
 name|Container
 name|container
 init|=
@@ -1109,7 +1162,7 @@ operator|-
 literal|1L
 argument_list|)
 expr_stmt|;
-comment|// start AM container
+comment|// Start AM container
 name|amContainer
 operator|=
 name|container
@@ -1139,48 +1192,10 @@ name|isAMContainerRunning
 operator|=
 literal|true
 expr_stmt|;
-break|break;
-block|}
-comment|// this sleep time is different from HeartBeat
-name|Thread
-operator|.
-name|sleep
-argument_list|(
-literal|1000
-argument_list|)
-expr_stmt|;
-comment|// send out empty request
-name|sendContainerRequest
-argument_list|()
-expr_stmt|;
-name|response
-operator|=
-name|responseQueue
-operator|.
-name|take
-argument_list|()
-expr_stmt|;
 block|}
 block|}
-annotation|@
-name|Override
-annotation|@
-name|SuppressWarnings
-argument_list|(
-literal|"unchecked"
-argument_list|)
-DECL|method|processResponseQueue ()
-specifier|protected
-name|void
-name|processResponseQueue
-parameter_list|()
-throws|throws
-name|InterruptedException
-throws|,
-name|YarnException
-throws|,
-name|IOException
-block|{
+return|return;
+block|}
 while|while
 condition|(
 operator|!
@@ -1527,6 +1542,7 @@ name|isFinished
 operator|=
 literal|true
 expr_stmt|;
+break|break;
 block|}
 comment|// check allocated containers
 for|for

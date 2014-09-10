@@ -1346,7 +1346,7 @@ operator|.
 name|getNamesystem
 argument_list|()
 operator|.
-name|getSafeModeInfo
+name|getSafeModeInfoForTests
 argument_list|()
 decl_stmt|;
 if|if
