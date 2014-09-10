@@ -187,7 +187,9 @@ literal|"NativeLibraryChecker [-a|-h]\n"
 operator|+
 literal|"  -a  use -a to check all libraries are available\n"
 operator|+
-literal|"      by default just check hadoop library is available\n"
+literal|"      by default just check hadoop library (and\n"
+operator|+
+literal|"      winutils.exe on Windows OS) is available\n"
 operator|+
 literal|"      exit with error code 1 if check failed\n"
 operator|+
@@ -339,6 +341,11 @@ name|openSslLoaded
 init|=
 literal|false
 decl_stmt|;
+name|boolean
+name|winutilsExists
+init|=
+literal|false
+decl_stmt|;
 name|String
 name|openSslDetail
 init|=
@@ -368,6 +375,11 @@ name|String
 name|bzip2LibraryName
 init|=
 literal|""
+decl_stmt|;
+name|String
+name|winutilsPath
+init|=
+literal|null
 decl_stmt|;
 if|if
 condition|(
@@ -498,6 +510,33 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
+comment|// winutils.exe is required on Windows
+name|winutilsPath
+operator|=
+name|Shell
+operator|.
+name|getWinUtilsPath
+argument_list|()
+expr_stmt|;
+if|if
+condition|(
+name|winutilsPath
+operator|!=
+literal|null
+condition|)
+block|{
+name|winutilsExists
+operator|=
+literal|true
+expr_stmt|;
+block|}
+else|else
+block|{
+name|winutilsPath
+operator|=
+literal|""
+expr_stmt|;
+block|}
 name|System
 operator|.
 name|out
@@ -587,9 +626,41 @@ argument_list|)
 expr_stmt|;
 if|if
 condition|(
+name|Shell
+operator|.
+name|WINDOWS
+condition|)
+block|{
+name|System
+operator|.
+name|out
+operator|.
+name|printf
+argument_list|(
+literal|"winutils: %b %s\n"
+argument_list|,
+name|winutilsExists
+argument_list|,
+name|winutilsPath
+argument_list|)
+expr_stmt|;
+block|}
+if|if
+condition|(
 operator|(
 operator|!
 name|nativeHadoopLoaded
+operator|)
+operator|||
+operator|(
+name|Shell
+operator|.
+name|WINDOWS
+operator|&&
+operator|(
+operator|!
+name|winutilsExists
+operator|)
 operator|)
 operator|||
 operator|(
