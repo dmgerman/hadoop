@@ -304,11 +304,20 @@ operator|+
 literal|"creating file with overwrite"
 argument_list|)
 block|,
+DECL|enumConstant|XATTRS_NAMESPACE_EXT
+name|XATTRS_NAMESPACE_EXT
+argument_list|(
+operator|-
+literal|59
+argument_list|,
+literal|"Increase number of xattr namespaces"
+argument_list|)
+block|,
 DECL|enumConstant|BLOCK_STORAGE_POLICY
 name|BLOCK_STORAGE_POLICY
 argument_list|(
 operator|-
-literal|59
+literal|60
 argument_list|,
 literal|"Block Storage policy"
 argument_list|)

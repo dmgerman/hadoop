@@ -1277,6 +1277,30 @@ name|String
 name|bpid
 parameter_list|)
 function_decl|;
+comment|/**    * Create a marker file indicating that a rolling upgrade is in progress.    */
+DECL|method|setRollingUpgradeMarker (String bpid)
+specifier|public
+name|void
+name|setRollingUpgradeMarker
+parameter_list|(
+name|String
+name|bpid
+parameter_list|)
+throws|throws
+name|IOException
+function_decl|;
+comment|/**    * Delete the rolling upgrade marker file if it exists.    * @param bpid    */
+DECL|method|clearRollingUpgradeMarker (String bpid)
+specifier|public
+name|void
+name|clearRollingUpgradeMarker
+parameter_list|(
+name|String
+name|bpid
+parameter_list|)
+throws|throws
+name|IOException
+function_decl|;
 comment|/**    * submit a sync_file_range request to AsyncDiskService    */
 DECL|method|submitBackgroundSyncFileRangeRequest (final ExtendedBlock block, final FileDescriptor fd, final long offset, final long nbytes, final int flags)
 specifier|public

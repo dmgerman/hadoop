@@ -5231,6 +5231,28 @@ return|;
 block|}
 annotation|@
 name|Override
+DECL|method|setRollingUpgradeMarker (String bpid)
+specifier|public
+name|void
+name|setRollingUpgradeMarker
+parameter_list|(
+name|String
+name|bpid
+parameter_list|)
+block|{   }
+annotation|@
+name|Override
+DECL|method|clearRollingUpgradeMarker (String bpid)
+specifier|public
+name|void
+name|clearRollingUpgradeMarker
+parameter_list|(
+name|String
+name|bpid
+parameter_list|)
+block|{   }
+annotation|@
+name|Override
 DECL|method|checkAndUpdate (String bpid, long blockId, File diskFile, File diskMetaFile, FsVolumeSpi vol)
 specifier|public
 name|void

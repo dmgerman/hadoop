@@ -477,6 +477,26 @@ operator|.
 name|hasWriteLock
 argument_list|()
 assert|;
+name|unprotectedAddEncryptionZone
+argument_list|(
+name|inodeId
+argument_list|,
+name|keyName
+argument_list|)
+expr_stmt|;
+block|}
+comment|/**    * Add a new encryption zone.    *<p/>    * Does not assume that the FSDirectory lock is held.    *    * @param inodeId of the encryption zone    * @param keyName encryption zone key name    */
+DECL|method|unprotectedAddEncryptionZone (Long inodeId, String keyName)
+name|void
+name|unprotectedAddEncryptionZone
+parameter_list|(
+name|Long
+name|inodeId
+parameter_list|,
+name|String
+name|keyName
+parameter_list|)
+block|{
 specifier|final
 name|EncryptionZoneInt
 name|ez
