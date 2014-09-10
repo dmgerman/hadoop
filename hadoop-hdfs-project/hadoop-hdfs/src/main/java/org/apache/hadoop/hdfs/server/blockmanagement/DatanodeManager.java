@@ -4549,6 +4549,7 @@ expr_stmt|;
 block|}
 comment|/**    * 1. Added to hosts  --> no further work needed here.    * 2. Removed from hosts --> mark AdminState as decommissioned.     * 3. Added to exclude --> start decommission.    * 4. Removed from exclude --> stop decommission.    */
 DECL|method|refreshDatanodes ()
+specifier|private
 name|void
 name|refreshDatanodes
 parameter_list|()
@@ -6687,18 +6688,6 @@ name|shouldSendCachingCommands
 operator|=
 name|shouldSendCachingCommands
 expr_stmt|;
-block|}
-DECL|method|getHostFileManager ()
-specifier|public
-name|HostFileManager
-name|getHostFileManager
-parameter_list|()
-block|{
-return|return
-name|this
-operator|.
-name|hostFileManager
-return|;
 block|}
 block|}
 end_class

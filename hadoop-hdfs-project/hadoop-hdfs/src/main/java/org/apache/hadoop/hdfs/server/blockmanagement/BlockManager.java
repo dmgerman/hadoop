@@ -1307,8 +1307,17 @@ name|blocksMap
 decl_stmt|;
 comment|/** Replication thread. */
 DECL|field|replicationThread
+specifier|final
 name|Daemon
 name|replicationThread
+init|=
+operator|new
+name|Daemon
+argument_list|(
+operator|new
+name|ReplicationMonitor
+argument_list|()
+argument_list|)
 decl_stmt|;
 comment|/** Store blocks -> datanodedescriptor(s) map of corrupt replicas */
 DECL|field|corruptReplicas
@@ -1540,13 +1549,6 @@ name|datanodeManager
 operator|.
 name|getHeartbeatManager
 argument_list|()
-expr_stmt|;
-name|setReplicationMonitor
-argument_list|(
-operator|new
-name|ReplicationMonitor
-argument_list|()
-argument_list|)
 expr_stmt|;
 specifier|final
 name|long
@@ -2302,55 +2304,6 @@ name|encryptionAlgorithm
 argument_list|)
 return|;
 block|}
-block|}
-DECL|method|getReplicationRecheckInterval ()
-specifier|public
-name|long
-name|getReplicationRecheckInterval
-parameter_list|()
-block|{
-return|return
-name|replicationRecheckInterval
-return|;
-block|}
-DECL|method|excessBlocksCount ()
-specifier|public
-name|AtomicLong
-name|excessBlocksCount
-parameter_list|()
-block|{
-return|return
-name|excessBlocksCount
-return|;
-block|}
-DECL|method|clearInvalidateBlocks ()
-specifier|public
-name|void
-name|clearInvalidateBlocks
-parameter_list|()
-block|{
-name|invalidateBlocks
-operator|.
-name|clear
-argument_list|()
-expr_stmt|;
-block|}
-DECL|method|setReplicationMonitor (Runnable replicationMonitor)
-name|void
-name|setReplicationMonitor
-parameter_list|(
-name|Runnable
-name|replicationMonitor
-parameter_list|)
-block|{
-name|replicationThread
-operator|=
-operator|new
-name|Daemon
-argument_list|(
-name|replicationMonitor
-argument_list|)
-expr_stmt|;
 block|}
 DECL|method|setBlockPoolId (String blockPoolId)
 specifier|public
@@ -7887,6 +7840,7 @@ return|;
 block|}
 comment|/**    * If there were any replication requests that timed out, reap them    * and put them back into the neededReplication queue    */
 DECL|method|processPendingReplications ()
+specifier|private
 name|void
 name|processPendingReplications
 parameter_list|()
