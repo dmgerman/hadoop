@@ -963,7 +963,7 @@ name|DelegationTokenAuthenticatedURL
 operator|.
 name|DO_AS
 operator|.
-name|equals
+name|equalsIgnoreCase
 argument_list|(
 name|nv
 operator|.
