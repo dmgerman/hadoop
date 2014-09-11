@@ -4,7 +4,7 @@ comment|/**  * Licensed to the Apache Software Foundation (ASF) under one  * or 
 end_comment
 
 begin_package
-DECL|package|org.apache.hadoop.yarn.server.resourcemanager.rmapp
+DECL|package|org.apache.hadoop.yarn.server.resourcemanager.rmapp.attempt
 package|package
 name|org
 operator|.
@@ -19,6 +19,8 @@ operator|.
 name|resourcemanager
 operator|.
 name|rmapp
+operator|.
+name|attempt
 package|;
 end_package
 
@@ -30,60 +32,34 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|yarn
+name|classification
 operator|.
-name|api
+name|InterfaceAudience
 operator|.
-name|records
-operator|.
-name|Resource
+name|Private
 import|;
 end_import
 
 begin_class
-DECL|class|RMAppMetrics
+annotation|@
+name|Private
+DECL|class|AggregateAppResourceUsage
 specifier|public
 class|class
-name|RMAppMetrics
+name|AggregateAppResourceUsage
 block|{
-DECL|field|resourcePreempted
-specifier|final
-name|Resource
-name|resourcePreempted
-decl_stmt|;
-DECL|field|numNonAMContainersPreempted
-specifier|final
-name|int
-name|numNonAMContainersPreempted
-decl_stmt|;
-DECL|field|numAMContainersPreempted
-specifier|final
-name|int
-name|numAMContainersPreempted
-decl_stmt|;
 DECL|field|memorySeconds
-specifier|final
 name|long
 name|memorySeconds
 decl_stmt|;
 DECL|field|vcoreSeconds
-specifier|final
 name|long
 name|vcoreSeconds
 decl_stmt|;
-DECL|method|RMAppMetrics (Resource resourcePreempted, int numNonAMContainersPreempted, int numAMContainersPreempted, long memorySeconds, long vcoreSeconds)
+DECL|method|AggregateAppResourceUsage (long memorySeconds, long vcoreSeconds)
 specifier|public
-name|RMAppMetrics
+name|AggregateAppResourceUsage
 parameter_list|(
-name|Resource
-name|resourcePreempted
-parameter_list|,
-name|int
-name|numNonAMContainersPreempted
-parameter_list|,
-name|int
-name|numAMContainersPreempted
-parameter_list|,
 name|long
 name|memorySeconds
 parameter_list|,
@@ -93,24 +69,6 @@ parameter_list|)
 block|{
 name|this
 operator|.
-name|resourcePreempted
-operator|=
-name|resourcePreempted
-expr_stmt|;
-name|this
-operator|.
-name|numNonAMContainersPreempted
-operator|=
-name|numNonAMContainersPreempted
-expr_stmt|;
-name|this
-operator|.
-name|numAMContainersPreempted
-operator|=
-name|numAMContainersPreempted
-expr_stmt|;
-name|this
-operator|.
 name|memorySeconds
 operator|=
 name|memorySeconds
@@ -122,36 +80,7 @@ operator|=
 name|vcoreSeconds
 expr_stmt|;
 block|}
-DECL|method|getResourcePreempted ()
-specifier|public
-name|Resource
-name|getResourcePreempted
-parameter_list|()
-block|{
-return|return
-name|resourcePreempted
-return|;
-block|}
-DECL|method|getNumNonAMContainersPreempted ()
-specifier|public
-name|int
-name|getNumNonAMContainersPreempted
-parameter_list|()
-block|{
-return|return
-name|numNonAMContainersPreempted
-return|;
-block|}
-DECL|method|getNumAMContainersPreempted ()
-specifier|public
-name|int
-name|getNumAMContainersPreempted
-parameter_list|()
-block|{
-return|return
-name|numAMContainersPreempted
-return|;
-block|}
+comment|/**    * @return the memorySeconds    */
 DECL|method|getMemorySeconds ()
 specifier|public
 name|long
@@ -162,6 +91,24 @@ return|return
 name|memorySeconds
 return|;
 block|}
+comment|/**    * @param memorySeconds the memorySeconds to set    */
+DECL|method|setMemorySeconds (long memorySeconds)
+specifier|public
+name|void
+name|setMemorySeconds
+parameter_list|(
+name|long
+name|memorySeconds
+parameter_list|)
+block|{
+name|this
+operator|.
+name|memorySeconds
+operator|=
+name|memorySeconds
+expr_stmt|;
+block|}
+comment|/**    * @return the vcoreSeconds    */
 DECL|method|getVcoreSeconds ()
 specifier|public
 name|long
@@ -171,6 +118,23 @@ block|{
 return|return
 name|vcoreSeconds
 return|;
+block|}
+comment|/**    * @param vcoreSeconds the vcoreSeconds to set    */
+DECL|method|setVcoreSeconds (long vcoreSeconds)
+specifier|public
+name|void
+name|setVcoreSeconds
+parameter_list|(
+name|long
+name|vcoreSeconds
+parameter_list|)
+block|{
+name|this
+operator|.
+name|vcoreSeconds
+operator|=
+name|vcoreSeconds
+expr_stmt|;
 block|}
 block|}
 end_class

@@ -1233,6 +1233,11 @@ operator|new
 name|RMAppAttemptMetrics
 argument_list|(
 name|id
+argument_list|,
+name|resourceManager
+operator|.
+name|getRMContext
+argument_list|()
 argument_list|)
 argument_list|)
 expr_stmt|;
@@ -1405,6 +1410,11 @@ operator|new
 name|RMAppAttemptMetrics
 argument_list|(
 name|id
+argument_list|,
+name|resourceManager
+operator|.
+name|getRMContext
+argument_list|()
 argument_list|)
 argument_list|)
 expr_stmt|;

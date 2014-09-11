@@ -818,6 +818,12 @@ argument_list|,
 name|containerResource
 argument_list|)
 expr_stmt|;
+comment|// Clear resource utilization metrics cache.
+name|lastMemoryAggregateAllocationUpdateTime
+operator|=
+operator|-
+literal|1
+expr_stmt|;
 return|return
 literal|true
 return|;

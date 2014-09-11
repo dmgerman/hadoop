@@ -505,6 +505,16 @@ specifier|protected
 name|int
 name|runningContainers
 decl_stmt|;
+DECL|field|memorySeconds
+specifier|protected
+name|long
+name|memorySeconds
+decl_stmt|;
+DECL|field|vcoreSeconds
+specifier|protected
+name|long
+name|vcoreSeconds
+decl_stmt|;
 comment|// preemption info fields
 DECL|field|preemptedResourceMB
 specifier|protected
@@ -1072,6 +1082,20 @@ operator|.
 name|getVirtualCores
 argument_list|()
 expr_stmt|;
+name|memorySeconds
+operator|=
+name|appMetrics
+operator|.
+name|getMemorySeconds
+argument_list|()
+expr_stmt|;
+name|vcoreSeconds
+operator|=
+name|appMetrics
+operator|.
+name|getVcoreSeconds
+argument_list|()
+expr_stmt|;
 block|}
 block|}
 DECL|method|isTrackingUrlReady ()
@@ -1431,6 +1455,26 @@ parameter_list|()
 block|{
 return|return
 name|numAMContainerPreempted
+return|;
+block|}
+DECL|method|getMemorySeconds ()
+specifier|public
+name|long
+name|getMemorySeconds
+parameter_list|()
+block|{
+return|return
+name|memorySeconds
+return|;
+block|}
+DECL|method|getVcoreSeconds ()
+specifier|public
+name|long
+name|getVcoreSeconds
+parameter_list|()
+block|{
+return|return
+name|vcoreSeconds
 return|;
 block|}
 block|}

@@ -251,7 +251,7 @@ specifier|abstract
 class|class
 name|ApplicationAttemptStateData
 block|{
-DECL|method|newInstance ( ApplicationAttemptId attemptId, Container container, ByteBuffer attemptTokens, long startTime, RMAppAttemptState finalState, String finalTrackingUrl, String diagnostics, FinalApplicationStatus amUnregisteredFinalStatus, int exitStatus)
+DECL|method|newInstance ( ApplicationAttemptId attemptId, Container container, ByteBuffer attemptTokens, long startTime, RMAppAttemptState finalState, String finalTrackingUrl, String diagnostics, FinalApplicationStatus amUnregisteredFinalStatus, int exitStatus, long memorySeconds, long vcoreSeconds)
 specifier|public
 specifier|static
 name|ApplicationAttemptStateData
@@ -283,6 +283,12 @@ name|amUnregisteredFinalStatus
 parameter_list|,
 name|int
 name|exitStatus
+parameter_list|,
+name|long
+name|memorySeconds
+parameter_list|,
+name|long
+name|vcoreSeconds
 parameter_list|)
 block|{
 name|ApplicationAttemptStateData
@@ -358,6 +364,20 @@ operator|.
 name|setAMContainerExitStatus
 argument_list|(
 name|exitStatus
+argument_list|)
+expr_stmt|;
+name|attemptStateData
+operator|.
+name|setMemorySeconds
+argument_list|(
+name|memorySeconds
+argument_list|)
+expr_stmt|;
+name|attemptStateData
+operator|.
+name|setVcoreSeconds
+argument_list|(
+name|vcoreSeconds
 argument_list|)
 expr_stmt|;
 return|return
@@ -473,6 +493,16 @@ argument_list|,
 name|attemptState
 operator|.
 name|getAMContainerExitStatus
+argument_list|()
+argument_list|,
+name|attemptState
+operator|.
+name|getMemorySeconds
+argument_list|()
+argument_list|,
+name|attemptState
+operator|.
+name|getVcoreSeconds
 argument_list|()
 argument_list|)
 return|;
@@ -656,6 +686,58 @@ name|setAMContainerExitStatus
 parameter_list|(
 name|int
 name|exitStatus
+parameter_list|)
+function_decl|;
+comment|/**    * Get the<em>memory seconds</em> (in MB seconds) of the application.    * @return<em>memory seconds</em> (in MB seconds) of the application    */
+annotation|@
+name|Public
+annotation|@
+name|Unstable
+DECL|method|getMemorySeconds ()
+specifier|public
+specifier|abstract
+name|long
+name|getMemorySeconds
+parameter_list|()
+function_decl|;
+annotation|@
+name|Public
+annotation|@
+name|Unstable
+DECL|method|setMemorySeconds (long memorySeconds)
+specifier|public
+specifier|abstract
+name|void
+name|setMemorySeconds
+parameter_list|(
+name|long
+name|memorySeconds
+parameter_list|)
+function_decl|;
+comment|/**    * Get the<em>vcore seconds</em> of the application.    * @return<em>vcore seconds</em> of the application    */
+annotation|@
+name|Public
+annotation|@
+name|Unstable
+DECL|method|getVcoreSeconds ()
+specifier|public
+specifier|abstract
+name|long
+name|getVcoreSeconds
+parameter_list|()
+function_decl|;
+annotation|@
+name|Public
+annotation|@
+name|Unstable
+DECL|method|setVcoreSeconds (long vcoreSeconds)
+specifier|public
+specifier|abstract
+name|void
+name|setVcoreSeconds
+parameter_list|(
+name|long
+name|vcoreSeconds
 parameter_list|)
 function_decl|;
 block|}

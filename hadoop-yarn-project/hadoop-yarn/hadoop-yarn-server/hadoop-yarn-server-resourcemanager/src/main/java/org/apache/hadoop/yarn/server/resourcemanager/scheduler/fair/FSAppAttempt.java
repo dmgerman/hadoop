@@ -1022,6 +1022,12 @@ argument_list|(
 name|rmContainer
 argument_list|)
 expr_stmt|;
+comment|// Clear resource utilization metrics cache.
+name|lastMemoryAggregateAllocationUpdateTime
+operator|=
+operator|-
+literal|1
+expr_stmt|;
 block|}
 DECL|method|unreserveInternal ( Priority priority, FSSchedulerNode node)
 specifier|private
