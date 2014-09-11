@@ -1520,7 +1520,7 @@ name|conf
 operator|.
 name|get
 argument_list|(
-literal|"mapreduce.job.credentials.json"
+literal|"mapreduce.job.credentials.binary"
 argument_list|)
 decl_stmt|;
 name|assertNotNull

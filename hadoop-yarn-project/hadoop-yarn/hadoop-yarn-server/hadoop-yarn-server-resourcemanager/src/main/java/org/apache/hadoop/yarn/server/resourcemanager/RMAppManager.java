@@ -2367,7 +2367,7 @@ return|;
 block|}
 block|}
 DECL|method|parseCredentials (ApplicationSubmissionContext application)
-specifier|private
+specifier|protected
 name|Credentials
 name|parseCredentials
 parameter_list|(

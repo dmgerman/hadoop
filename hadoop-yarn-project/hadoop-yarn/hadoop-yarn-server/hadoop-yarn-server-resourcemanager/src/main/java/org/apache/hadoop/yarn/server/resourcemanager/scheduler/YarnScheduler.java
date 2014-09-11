@@ -38,6 +38,16 @@ name|java
 operator|.
 name|util
 operator|.
+name|EnumSet
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
 name|List
 import|;
 end_import
@@ -390,6 +400,24 @@ name|SchedulerEvent
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|proto
+operator|.
+name|YarnServiceProtos
+operator|.
+name|SchedulerResourceTypes
+import|;
+end_import
+
 begin_comment
 comment|/**  * This interface is used by the components to talk to the  * scheduler for allocating of resources, cleaning up resources.  *  */
 end_comment
@@ -685,6 +713,16 @@ name|queueName
 parameter_list|)
 throws|throws
 name|YarnException
+function_decl|;
+comment|/**    * Return a collection of the resource types that are considered when    * scheduling    *    * @return an EnumSet containing the resource types    */
+DECL|method|getSchedulingResourceTypes ()
+specifier|public
+name|EnumSet
+argument_list|<
+name|SchedulerResourceTypes
+argument_list|>
+name|getSchedulingResourceTypes
+parameter_list|()
 function_decl|;
 block|}
 end_interface

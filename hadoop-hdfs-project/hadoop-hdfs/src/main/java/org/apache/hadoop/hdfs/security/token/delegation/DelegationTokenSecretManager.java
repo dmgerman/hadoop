@@ -1942,22 +1942,9 @@ operator|==
 literal|null
 condition|)
 block|{
-throw|throw
-operator|new
-name|IOException
-argument_list|(
-literal|"Failed to get the token for "
-operator|+
-name|renewer
-operator|+
-literal|", user="
-operator|+
-name|ugi
-operator|.
-name|getShortUserName
-argument_list|()
-argument_list|)
-throw|;
+return|return
+literal|null
+return|;
 block|}
 specifier|final
 name|InetSocketAddress

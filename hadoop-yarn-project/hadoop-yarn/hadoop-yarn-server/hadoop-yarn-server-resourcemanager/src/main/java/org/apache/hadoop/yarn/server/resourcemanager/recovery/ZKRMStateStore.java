@@ -3400,6 +3400,16 @@ name|attemptStateData
 operator|.
 name|getAMContainerExitStatus
 argument_list|()
+argument_list|,
+name|attemptStateData
+operator|.
+name|getMemorySeconds
+argument_list|()
+argument_list|,
+name|attemptStateData
+operator|.
+name|getVcoreSeconds
+argument_list|()
 argument_list|)
 decl_stmt|;
 name|appState

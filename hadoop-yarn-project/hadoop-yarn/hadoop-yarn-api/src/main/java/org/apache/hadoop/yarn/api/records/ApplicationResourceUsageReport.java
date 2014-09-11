@@ -119,7 +119,7 @@ annotation|@
 name|Private
 annotation|@
 name|Unstable
-DECL|method|newInstance ( int numUsedContainers, int numReservedContainers, Resource usedResources, Resource reservedResources, Resource neededResources)
+DECL|method|newInstance ( int numUsedContainers, int numReservedContainers, Resource usedResources, Resource reservedResources, Resource neededResources, long memorySeconds, long vcoreSeconds)
 specifier|public
 specifier|static
 name|ApplicationResourceUsageReport
@@ -139,6 +139,12 @@ name|reservedResources
 parameter_list|,
 name|Resource
 name|neededResources
+parameter_list|,
+name|long
+name|memorySeconds
+parameter_list|,
+name|long
+name|vcoreSeconds
 parameter_list|)
 block|{
 name|ApplicationResourceUsageReport
@@ -186,6 +192,20 @@ operator|.
 name|setNeededResources
 argument_list|(
 name|neededResources
+argument_list|)
+expr_stmt|;
+name|report
+operator|.
+name|setMemorySeconds
+argument_list|(
+name|memorySeconds
+argument_list|)
+expr_stmt|;
+name|report
+operator|.
+name|setVcoreSeconds
+argument_list|(
+name|vcoreSeconds
 argument_list|)
 expr_stmt|;
 return|return
@@ -323,6 +343,60 @@ parameter_list|(
 name|Resource
 name|needed_resources
 parameter_list|)
+function_decl|;
+comment|/**    * Set the aggregated amount of memory (in megabytes) the application has    * allocated times the number of seconds the application has been running.    * @param memory_seconds the aggregated amount of memory seconds    */
+annotation|@
+name|Private
+annotation|@
+name|Unstable
+DECL|method|setMemorySeconds (long memory_seconds)
+specifier|public
+specifier|abstract
+name|void
+name|setMemorySeconds
+parameter_list|(
+name|long
+name|memory_seconds
+parameter_list|)
+function_decl|;
+comment|/**    * Get the aggregated amount of memory (in megabytes) the application has    * allocated times the number of seconds the application has been running.    * @return the aggregated amount of memory seconds    */
+annotation|@
+name|Public
+annotation|@
+name|Unstable
+DECL|method|getMemorySeconds ()
+specifier|public
+specifier|abstract
+name|long
+name|getMemorySeconds
+parameter_list|()
+function_decl|;
+comment|/**    * Set the aggregated number of vcores that the application has allocated    * times the number of seconds the application has been running.    * @param vcore_seconds the aggregated number of vcore seconds    */
+annotation|@
+name|Private
+annotation|@
+name|Unstable
+DECL|method|setVcoreSeconds (long vcore_seconds)
+specifier|public
+specifier|abstract
+name|void
+name|setVcoreSeconds
+parameter_list|(
+name|long
+name|vcore_seconds
+parameter_list|)
+function_decl|;
+comment|/**    * Get the aggregated number of vcores that the application has allocated    * times the number of seconds the application has been running.    * @return the aggregated number of vcore seconds    */
+annotation|@
+name|Public
+annotation|@
+name|Unstable
+DECL|method|getVcoreSeconds ()
+specifier|public
+specifier|abstract
+name|long
+name|getVcoreSeconds
+parameter_list|()
 function_decl|;
 block|}
 end_class

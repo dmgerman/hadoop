@@ -130,6 +130,24 @@ name|CONFIG_PREFIX
 init|=
 literal|"hadoop.kms."
 decl_stmt|;
+DECL|field|KEY_ACL_PREFIX
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|KEY_ACL_PREFIX
+init|=
+literal|"key.acl."
+decl_stmt|;
+DECL|field|DEFAULT_KEY_ACL_PREFIX
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|DEFAULT_KEY_ACL_PREFIX
+init|=
+literal|"default.key.acl."
+decl_stmt|;
 comment|// Property to Enable/Disable Caching
 DECL|field|KEY_CACHE_ENABLE
 specifier|public
@@ -222,6 +240,27 @@ name|long
 name|KMS_AUDIT_AGGREGATION_DELAY_DEFAULT
 init|=
 literal|10000
+decl_stmt|;
+comment|// Property to Enable/Disable per Key authorization
+DECL|field|KEY_AUTHORIZATION_ENABLE
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|KEY_AUTHORIZATION_ENABLE
+init|=
+name|CONFIG_PREFIX
+operator|+
+literal|"key.authorization.enable"
+decl_stmt|;
+DECL|field|KEY_AUTHORIZATION_ENABLE_DEFAULT
+specifier|public
+specifier|static
+specifier|final
+name|boolean
+name|KEY_AUTHORIZATION_ENABLE_DEFAULT
+init|=
+literal|true
 decl_stmt|;
 DECL|method|getConfiguration (boolean loadHadoopDefaults, String ... resources)
 specifier|static

@@ -61,7 +61,17 @@ specifier|final
 name|int
 name|numAMContainersPreempted
 decl_stmt|;
-DECL|method|RMAppMetrics (Resource resourcePreempted, int numNonAMContainersPreempted, int numAMContainersPreempted)
+DECL|field|memorySeconds
+specifier|final
+name|long
+name|memorySeconds
+decl_stmt|;
+DECL|field|vcoreSeconds
+specifier|final
+name|long
+name|vcoreSeconds
+decl_stmt|;
+DECL|method|RMAppMetrics (Resource resourcePreempted, int numNonAMContainersPreempted, int numAMContainersPreempted, long memorySeconds, long vcoreSeconds)
 specifier|public
 name|RMAppMetrics
 parameter_list|(
@@ -73,6 +83,12 @@ name|numNonAMContainersPreempted
 parameter_list|,
 name|int
 name|numAMContainersPreempted
+parameter_list|,
+name|long
+name|memorySeconds
+parameter_list|,
+name|long
+name|vcoreSeconds
 parameter_list|)
 block|{
 name|this
@@ -92,6 +108,18 @@ operator|.
 name|numAMContainersPreempted
 operator|=
 name|numAMContainersPreempted
+expr_stmt|;
+name|this
+operator|.
+name|memorySeconds
+operator|=
+name|memorySeconds
+expr_stmt|;
+name|this
+operator|.
+name|vcoreSeconds
+operator|=
+name|vcoreSeconds
 expr_stmt|;
 block|}
 DECL|method|getResourcePreempted ()
@@ -122,6 +150,26 @@ parameter_list|()
 block|{
 return|return
 name|numAMContainersPreempted
+return|;
+block|}
+DECL|method|getMemorySeconds ()
+specifier|public
+name|long
+name|getMemorySeconds
+parameter_list|()
+block|{
+return|return
+name|memorySeconds
+return|;
+block|}
+DECL|method|getVcoreSeconds ()
+specifier|public
+name|long
+name|getVcoreSeconds
+parameter_list|()
+block|{
+return|return
+name|vcoreSeconds
 return|;
 block|}
 block|}
