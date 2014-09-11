@@ -10467,6 +10467,8 @@ argument_list|()
 expr_stmt|;
 comment|// writelock is needed to set accesstime
 block|}
+try|try
+block|{
 name|src
 operator|=
 name|resolvePath
@@ -10476,8 +10478,6 @@ argument_list|,
 name|pathComponents
 argument_list|)
 expr_stmt|;
-try|try
-block|{
 if|if
 condition|(
 name|isReadOp

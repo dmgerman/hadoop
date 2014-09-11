@@ -8487,7 +8487,7 @@ argument_list|()
 expr_stmt|;
 block|}
 block|}
-comment|/**    * Helper function to create a key in the Key Provider.    *    * @param keyName The name of the key to create    * @param cluster The cluster to create it in    * @param conf Configuration to use    */
+comment|/**    * Helper function to create a key in the Key Provider. Defaults    * to the first indexed NameNode's Key Provider.    *    * @param keyName The name of the key to create    * @param cluster The cluster to create it in    * @param conf Configuration to use    */
 DECL|method|createKey (String keyName, MiniDFSCluster cluster, Configuration conf)
 specifier|public
 specifier|static
@@ -8508,13 +8508,56 @@ name|NoSuchAlgorithmException
 throws|,
 name|IOException
 block|{
-name|KeyProvider
-name|provider
+name|createKey
+argument_list|(
+name|keyName
+argument_list|,
+name|cluster
+argument_list|,
+literal|0
+argument_list|,
+name|conf
+argument_list|)
+expr_stmt|;
+block|}
+comment|/**    * Helper function to create a key in the Key Provider.    *    * @param keyName The name of the key to create    * @param cluster The cluster to create it in    * @param idx The NameNode index    * @param conf Configuration to use    */
+DECL|method|createKey (String keyName, MiniDFSCluster cluster, int idx, Configuration conf)
+specifier|public
+specifier|static
+name|void
+name|createKey
+parameter_list|(
+name|String
+name|keyName
+parameter_list|,
+name|MiniDFSCluster
+name|cluster
+parameter_list|,
+name|int
+name|idx
+parameter_list|,
+name|Configuration
+name|conf
+parameter_list|)
+throws|throws
+name|NoSuchAlgorithmException
+throws|,
+name|IOException
+block|{
+name|NameNode
+name|nn
 init|=
 name|cluster
 operator|.
 name|getNameNode
-argument_list|()
+argument_list|(
+name|idx
+argument_list|)
+decl_stmt|;
+name|KeyProvider
+name|provider
+init|=
+name|nn
 operator|.
 name|getNamesystem
 argument_list|()
