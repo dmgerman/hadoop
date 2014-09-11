@@ -4860,24 +4860,6 @@ return|return
 literal|false
 return|;
 block|}
-if|if
-condition|(
-operator|!
-name|target
-operator|.
-name|hasSpaceForScheduling
-argument_list|(
-name|block
-operator|.
-name|getNumBytes
-argument_list|()
-argument_list|)
-condition|)
-block|{
-return|return
-literal|false
-return|;
-block|}
 comment|// check if the block is moved or not
 if|if
 condition|(
