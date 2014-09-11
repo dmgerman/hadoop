@@ -374,6 +374,20 @@ name|hadoop
 operator|.
 name|hdfs
 operator|.
+name|DFSConfigKeys
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
 name|DFSUtil
 import|;
 end_import
@@ -895,18 +909,17 @@ name|MAX_NO_PENDING_MOVE_ITERATIONS
 init|=
 literal|5
 decl_stmt|;
-DECL|field|DELAY_AFTER_ERROR
+comment|/**    * the period of time to delay the usage of a DataNode after hitting    * errors when using it for migrating data    */
+DECL|field|delayAfterErrors
 specifier|private
 specifier|static
-specifier|final
 name|long
-name|DELAY_AFTER_ERROR
+name|delayAfterErrors
 init|=
 literal|10
 operator|*
-literal|1000L
+literal|1000
 decl_stmt|;
-comment|// 10 seconds
 DECL|field|nnc
 specifier|private
 specifier|final
@@ -1407,11 +1420,24 @@ name|Block
 name|b
 init|=
 name|block
+operator|!=
+literal|null
+condition|?
+name|block
 operator|.
 name|getBlock
 argument_list|()
+else|:
+literal|null
 decl_stmt|;
-return|return
+name|String
+name|bStr
+init|=
+name|b
+operator|!=
+literal|null
+condition|?
+operator|(
 name|b
 operator|+
 literal|" with size="
@@ -1421,7 +1447,15 @@ operator|.
 name|getNumBytes
 argument_list|()
 operator|+
-literal|" from "
+literal|" "
+operator|)
+else|:
+literal|" "
+decl_stmt|;
+return|return
+name|bStr
+operator|+
+literal|"from "
 operator|+
 name|source
 operator|.
@@ -1437,9 +1471,17 @@ argument_list|()
 operator|+
 literal|" through "
 operator|+
+operator|(
+name|proxySource
+operator|!=
+literal|null
+condition|?
 name|proxySource
 operator|.
 name|datanode
+else|:
+literal|""
+operator|)
 return|;
 block|}
 comment|/**      * Choose a block& a proxy source for this pendingMove whose source&      * target have already been chosen.      *       * @return true if a block and its proxy are chosen; false otherwise      */
@@ -2028,7 +2070,7 @@ name|proxySource
 operator|.
 name|activateDelay
 argument_list|(
-name|DELAY_AFTER_ERROR
+name|delayAfterErrors
 argument_list|)
 expr_stmt|;
 name|target
@@ -2038,7 +2080,7 @@ argument_list|()
 operator|.
 name|activateDelay
 argument_list|(
-name|DELAY_AFTER_ERROR
+name|delayAfterErrors
 argument_list|)
 expr_stmt|;
 block|}
@@ -5170,6 +5212,23 @@ name|time
 parameter_list|)
 block|{
 name|blockMoveWaitTime
+operator|=
+name|time
+expr_stmt|;
+block|}
+annotation|@
+name|VisibleForTesting
+DECL|method|setDelayAfterErrors (long time)
+specifier|public
+specifier|static
+name|void
+name|setDelayAfterErrors
+parameter_list|(
+name|long
+name|time
+parameter_list|)
+block|{
+name|delayAfterErrors
 operator|=
 name|time
 expr_stmt|;

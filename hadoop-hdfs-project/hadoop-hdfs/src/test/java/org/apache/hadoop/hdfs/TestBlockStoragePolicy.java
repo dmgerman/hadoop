@@ -1815,9 +1815,9 @@ name|StorageType
 argument_list|>
 name|chosen
 init|=
-name|Arrays
+name|Lists
 operator|.
-name|asList
+name|newArrayList
 argument_list|()
 decl_stmt|;
 name|method
@@ -2808,9 +2808,9 @@ name|StorageType
 argument_list|>
 name|chosen
 init|=
-name|Arrays
+name|Lists
 operator|.
-name|asList
+name|newArrayList
 argument_list|()
 decl_stmt|;
 name|checkChooseStorageTypes
@@ -3627,9 +3627,9 @@ name|StorageType
 argument_list|>
 name|chosen
 init|=
-name|Arrays
+name|Lists
 operator|.
-name|asList
+name|newArrayList
 argument_list|()
 decl_stmt|;
 name|method
@@ -4364,9 +4364,9 @@ name|StorageType
 argument_list|>
 name|chosen
 init|=
-name|Arrays
+name|Lists
 operator|.
-name|asList
+name|newArrayList
 argument_list|()
 decl_stmt|;
 name|checkChooseStorageTypes

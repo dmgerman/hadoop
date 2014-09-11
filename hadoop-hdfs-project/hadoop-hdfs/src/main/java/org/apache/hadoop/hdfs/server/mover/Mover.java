@@ -2016,14 +2016,6 @@ literal|1
 operator|)
 expr_stmt|;
 block|}
-else|else
-block|{
-name|hasRemaining
-operator|=
-literal|false
-expr_stmt|;
-comment|// not able to schedule any move
-block|}
 block|}
 block|}
 return|return
@@ -2714,8 +2706,6 @@ specifier|final
 name|long
 name|sleeptime
 init|=
-literal|2000
-operator|*
 name|conf
 operator|.
 name|getLong
@@ -2728,6 +2718,23 @@ name|DFSConfigKeys
 operator|.
 name|DFS_HEARTBEAT_INTERVAL_DEFAULT
 argument_list|)
+operator|*
+literal|2000
+operator|+
+name|conf
+operator|.
+name|getLong
+argument_list|(
+name|DFSConfigKeys
+operator|.
+name|DFS_NAMENODE_REPLICATION_INTERVAL_KEY
+argument_list|,
+name|DFSConfigKeys
+operator|.
+name|DFS_NAMENODE_REPLICATION_INTERVAL_DEFAULT
+argument_list|)
+operator|*
+literal|1000
 decl_stmt|;
 name|LOG
 operator|.

@@ -92,6 +92,20 @@ end_import
 
 begin_import
 import|import
+name|com
+operator|.
+name|google
+operator|.
+name|common
+operator|.
+name|annotations
+operator|.
+name|VisibleForTesting
+import|;
+end_import
+
+begin_import
+import|import
 name|org
 operator|.
 name|apache
@@ -156,6 +170,20 @@ name|hadoop
 operator|.
 name|fs
 operator|.
+name|FSDataOutputStream
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|fs
+operator|.
 name|FileSystem
 import|;
 end_import
@@ -185,6 +213,20 @@ operator|.
 name|fs
 operator|.
 name|Path
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|DFSConfigKeys
 import|;
 end_import
 
@@ -423,6 +465,14 @@ name|MAX_NOT_CHANGED_ITERATIONS
 init|=
 literal|5
 decl_stmt|;
+DECL|field|createIdFile
+specifier|private
+specifier|static
+name|boolean
+name|createIdFile
+init|=
+literal|true
+decl_stmt|;
 comment|/** Create {@link NameNodeConnector} for the given namenodes. */
 DECL|method|newNameNodeConnectors ( Collection<URI> namenodes, String name, Path idPath, Configuration conf)
 specifier|public
@@ -629,6 +679,23 @@ block|}
 return|return
 name|connectors
 return|;
+block|}
+annotation|@
+name|VisibleForTesting
+DECL|method|setCreateIdFile (boolean create)
+specifier|public
+specifier|static
+name|void
+name|setCreateIdFile
+parameter_list|(
+name|boolean
+name|create
+parameter_list|)
+block|{
+name|createIdFile
+operator|=
+name|create
+expr_stmt|;
 block|}
 DECL|field|nameNodeUri
 specifier|private
@@ -865,19 +932,26 @@ argument_list|,
 name|conf
 argument_list|)
 expr_stmt|;
-comment|// Exit if there is another one running.
+comment|// if it is for test, we do not create the id file
 name|out
 operator|=
+name|createIdFile
+condition|?
 name|checkAndMarkRunning
 argument_list|()
+else|:
+literal|null
 expr_stmt|;
 if|if
 condition|(
+name|createIdFile
+operator|&&
 name|out
 operator|==
 literal|null
 condition|)
 block|{
+comment|// Exit if there is another one running.
 throw|throw
 operator|new
 name|IOException
@@ -1052,7 +1126,7 @@ block|{
 try|try
 block|{
 specifier|final
-name|DataOutputStream
+name|FSDataOutputStream
 name|out
 init|=
 name|fs
@@ -1077,7 +1151,7 @@ argument_list|)
 expr_stmt|;
 name|out
 operator|.
-name|flush
+name|hflush
 argument_list|()
 expr_stmt|;
 return|return

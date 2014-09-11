@@ -7426,7 +7426,7 @@ name|storagePolicy
 argument_list|)
 return|;
 block|}
-comment|/**    * Choose target datanodes for creating a new block.    *     * @throws IOException    *           if the number of targets< minimum replication.    * @see BlockPlacementPolicy#chooseTarget(String, int, Node,    *      List, boolean, Set, long, StorageType)    */
+comment|/**    * Choose target datanodes for creating a new block.    *     * @throws IOException    *           if the number of targets< minimum replication.    * @see BlockPlacementPolicy#chooseTarget(String, int, Node,    *      Set, long, List, BlockStoragePolicy)    */
 DECL|method|chooseTarget4NewBlock (final String src, final int numOfReplicas, final DatanodeDescriptor client, final Set<Node> excludedNodes, final long blocksize, final List<String> favoredNodes, final byte storagePolicyID)
 specifier|public
 name|DatanodeStorageInfo
@@ -12900,7 +12900,7 @@ condition|(
 operator|!
 name|excessTypes
 operator|.
-name|remove
+name|contains
 argument_list|(
 name|delHint
 operator|.
