@@ -2876,6 +2876,27 @@ name|DEFAULT_NM_VCORES
 init|=
 literal|8
 decl_stmt|;
+comment|/** Percentage of overall CPU which can be allocated for containers. */
+DECL|field|NM_RESOURCE_PERCENTAGE_PHYSICAL_CPU_LIMIT
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|NM_RESOURCE_PERCENTAGE_PHYSICAL_CPU_LIMIT
+init|=
+name|NM_PREFIX
+operator|+
+literal|"resource.percentage-physical-cpu-limit"
+decl_stmt|;
+DECL|field|DEFAULT_NM_RESOURCE_PERCENTAGE_PHYSICAL_CPU_LIMIT
+specifier|public
+specifier|static
+specifier|final
+name|int
+name|DEFAULT_NM_RESOURCE_PERCENTAGE_PHYSICAL_CPU_LIMIT
+init|=
+literal|100
+decl_stmt|;
 comment|/** NM Webapp address.**/
 DECL|field|NM_WEBAPP_ADDRESS
 specifier|public
