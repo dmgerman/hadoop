@@ -3474,6 +3474,11 @@ operator|!=
 literal|null
 condition|)
 block|{
+comment|// Reset no pending move counter
+name|noPendingMoveIteration
+operator|=
+literal|0
+expr_stmt|;
 comment|// move the block
 name|moveExecutor
 operator|.
