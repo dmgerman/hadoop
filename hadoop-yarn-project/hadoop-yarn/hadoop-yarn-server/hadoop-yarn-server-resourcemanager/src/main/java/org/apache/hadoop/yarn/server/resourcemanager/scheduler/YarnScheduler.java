@@ -54,6 +54,16 @@ end_import
 
 begin_import
 import|import
+name|java
+operator|.
+name|util
+operator|.
+name|Set
+import|;
+end_import
+
+begin_import
+import|import
 name|org
 operator|.
 name|apache
@@ -394,6 +404,28 @@ name|resourcemanager
 operator|.
 name|scheduler
 operator|.
+name|common
+operator|.
+name|QueueEntitlement
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|server
+operator|.
+name|resourcemanager
+operator|.
+name|scheduler
+operator|.
 name|event
 operator|.
 name|SchedulerEvent
@@ -711,6 +743,54 @@ parameter_list|(
 name|String
 name|queueName
 parameter_list|)
+throws|throws
+name|YarnException
+function_decl|;
+comment|/**    * Remove an existing queue. Implementations might limit when a queue could be    * removed (e.g., must have zero entitlement, and no applications running, or    * must be a leaf, etc..).    *    * @param queueName name of the queue to remove    * @throws YarnException    */
+DECL|method|removeQueue (String queueName)
+name|void
+name|removeQueue
+parameter_list|(
+name|String
+name|queueName
+parameter_list|)
+throws|throws
+name|YarnException
+function_decl|;
+comment|/**    * Add to the scheduler a new Queue. Implementations might limit what type of    * queues can be dynamically added (e.g., Queue must be a leaf, must be    * attached to existing parent, must have zero entitlement).    *    * @param newQueue the queue being added.    * @throws YarnException    */
+DECL|method|addQueue (Queue newQueue)
+name|void
+name|addQueue
+parameter_list|(
+name|Queue
+name|newQueue
+parameter_list|)
+throws|throws
+name|YarnException
+function_decl|;
+comment|/**    * This method increase the entitlement for current queue (must respect    * invariants, e.g., no overcommit of parents, non negative, etc.).    * Entitlement is a general term for weights in FairScheduler, capacity for    * the CapacityScheduler, etc.    *    * @param queue the queue for which we change entitlement    * @param entitlement the new entitlement for the queue (capacity,    *              maxCapacity, etc..)    * @throws YarnException    */
+DECL|method|setEntitlement (String queue, QueueEntitlement entitlement)
+name|void
+name|setEntitlement
+parameter_list|(
+name|String
+name|queue
+parameter_list|,
+name|QueueEntitlement
+name|entitlement
+parameter_list|)
+throws|throws
+name|YarnException
+function_decl|;
+comment|/**    * Gets the list of names for queues managed by the Reservation System    * @return the list of queues which support reservations    */
+DECL|method|getPlanQueues ()
+specifier|public
+name|Set
+argument_list|<
+name|String
+argument_list|>
+name|getPlanQueues
+parameter_list|()
 throws|throws
 name|YarnException
 function_decl|;

@@ -917,12 +917,12 @@ name|float
 name|userLimitFactor
 decl_stmt|;
 DECL|field|maxApplications
-specifier|private
+specifier|protected
 name|int
 name|maxApplications
 decl_stmt|;
 DECL|field|maxApplicationsPerUser
-specifier|private
+specifier|protected
 name|int
 name|maxApplicationsPerUser
 decl_stmt|;
@@ -1253,21 +1253,8 @@ expr_stmt|;
 name|float
 name|capacity
 init|=
-operator|(
-name|float
-operator|)
-name|cs
-operator|.
-name|getConfiguration
+name|getCapacityFromConf
 argument_list|()
-operator|.
-name|getCapacity
-argument_list|(
-name|getQueuePath
-argument_list|()
-argument_list|)
-operator|/
-literal|100
 decl_stmt|;
 name|float
 name|absoluteCapacity
@@ -1655,6 +1642,31 @@ argument_list|(
 name|applicationComparator
 argument_list|)
 expr_stmt|;
+block|}
+comment|// externalizing in method, to allow overriding
+DECL|method|getCapacityFromConf ()
+specifier|protected
+name|float
+name|getCapacityFromConf
+parameter_list|()
+block|{
+return|return
+operator|(
+name|float
+operator|)
+name|scheduler
+operator|.
+name|getConfiguration
+argument_list|()
+operator|.
+name|getCapacity
+argument_list|(
+name|getQueuePath
+argument_list|()
+argument_list|)
+operator|/
+literal|100
+return|;
 block|}
 DECL|method|setupQueueConfigs ( Resource clusterResource, float capacity, float absoluteCapacity, float maximumCapacity, float absoluteMaxCapacity, int userLimit, float userLimitFactor, int maxApplications, float maxAMResourcePerQueuePercent, int maxApplicationsPerUser, int maxActiveApplications, int maxActiveApplicationsPerUser, QueueState state, Map<QueueACL, AccessControlList> acls, int nodeLocalityDelay, boolean continueLooking)
 specifier|private
@@ -2532,12 +2544,12 @@ name|userLimit
 expr_stmt|;
 block|}
 comment|/**    * Set user limit factor - used only for testing.    * @param userLimitFactor new user limit factor    */
-DECL|method|setUserLimitFactor (int userLimitFactor)
+DECL|method|setUserLimitFactor (float userLimitFactor)
 specifier|synchronized
 name|void
 name|setUserLimitFactor
 parameter_list|(
-name|int
+name|float
 name|userLimitFactor
 parameter_list|)
 block|{
@@ -8583,6 +8595,54 @@ name|rmContainer
 argument_list|)
 expr_stmt|;
 block|}
+block|}
+DECL|method|setCapacity (float capacity)
+specifier|public
+name|void
+name|setCapacity
+parameter_list|(
+name|float
+name|capacity
+parameter_list|)
+block|{
+name|this
+operator|.
+name|capacity
+operator|=
+name|capacity
+expr_stmt|;
+block|}
+DECL|method|setAbsoluteCapacity (float absoluteCapacity)
+specifier|public
+name|void
+name|setAbsoluteCapacity
+parameter_list|(
+name|float
+name|absoluteCapacity
+parameter_list|)
+block|{
+name|this
+operator|.
+name|absoluteCapacity
+operator|=
+name|absoluteCapacity
+expr_stmt|;
+block|}
+DECL|method|setMaxApplications (int maxApplications)
+specifier|public
+name|void
+name|setMaxApplications
+parameter_list|(
+name|int
+name|maxApplications
+parameter_list|)
+block|{
+name|this
+operator|.
+name|maxApplications
+operator|=
+name|maxApplications
+expr_stmt|;
 block|}
 block|}
 end_class

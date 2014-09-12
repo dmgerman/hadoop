@@ -3530,7 +3530,6 @@ argument_list|()
 expr_stmt|;
 block|}
 DECL|method|checkQueueCapacities (CapacityScheduler cs, float capacityA, float capacityB)
-specifier|private
 name|void
 name|checkQueueCapacities
 parameter_list|(

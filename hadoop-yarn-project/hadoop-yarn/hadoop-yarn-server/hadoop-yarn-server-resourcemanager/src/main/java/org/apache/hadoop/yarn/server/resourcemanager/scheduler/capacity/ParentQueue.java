@@ -704,7 +704,7 @@ init|=
 literal|0.0f
 decl_stmt|;
 DECL|field|childQueues
-specifier|private
+specifier|protected
 specifier|final
 name|Set
 argument_list|<
@@ -1160,7 +1160,7 @@ argument_list|)
 expr_stmt|;
 block|}
 DECL|method|setupQueueConfigs ( Resource clusterResource, float capacity, float absoluteCapacity, float maximumCapacity, float absoluteMaxCapacity, QueueState state, Map<QueueACL, AccessControlList> acls, boolean continueLooking )
-specifier|private
+specifier|protected
 specifier|synchronized
 name|void
 name|setupQueueConfigs
@@ -4309,6 +4309,21 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
+block|}
+DECL|method|getACLs ()
+specifier|public
+name|Map
+argument_list|<
+name|QueueACL
+argument_list|,
+name|AccessControlList
+argument_list|>
+name|getACLs
+parameter_list|()
+block|{
+return|return
+name|acls
+return|;
 block|}
 block|}
 end_class
