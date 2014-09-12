@@ -778,7 +778,9 @@ name|ALLOWED_METHODS_DEFAULT
 expr_stmt|;
 block|}
 name|allowedMethods
-operator|=
+operator|.
+name|addAll
+argument_list|(
 name|Arrays
 operator|.
 name|asList
@@ -791,6 +793,7 @@ operator|.
 name|split
 argument_list|(
 literal|"\\s*,\\s*"
+argument_list|)
 argument_list|)
 argument_list|)
 expr_stmt|;
@@ -837,7 +840,9 @@ name|ALLOWED_HEADERS_DEFAULT
 expr_stmt|;
 block|}
 name|allowedHeaders
-operator|=
+operator|.
+name|addAll
+argument_list|(
 name|Arrays
 operator|.
 name|asList
@@ -850,6 +855,7 @@ operator|.
 name|split
 argument_list|(
 literal|"\\s*,\\s*"
+argument_list|)
 argument_list|)
 argument_list|)
 expr_stmt|;
@@ -896,7 +902,9 @@ name|ALLOWED_ORIGINS_DEFAULT
 expr_stmt|;
 block|}
 name|allowedOrigins
-operator|=
+operator|.
+name|addAll
+argument_list|(
 name|Arrays
 operator|.
 name|asList
@@ -909,6 +917,7 @@ operator|.
 name|split
 argument_list|(
 literal|"\\s*,\\s*"
+argument_list|)
 argument_list|)
 argument_list|)
 expr_stmt|;
