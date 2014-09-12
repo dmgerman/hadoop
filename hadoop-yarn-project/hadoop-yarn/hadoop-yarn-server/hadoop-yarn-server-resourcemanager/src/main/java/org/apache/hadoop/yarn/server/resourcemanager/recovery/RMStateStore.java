@@ -64,6 +64,16 @@ end_import
 
 begin_import
 import|import
+name|java
+operator|.
+name|util
+operator|.
+name|TreeMap
+import|;
+end_import
+
+begin_import
+import|import
 name|javax
 operator|.
 name|crypto
@@ -2510,7 +2520,7 @@ argument_list|>
 name|appState
 init|=
 operator|new
-name|HashMap
+name|TreeMap
 argument_list|<
 name|ApplicationId
 argument_list|,
