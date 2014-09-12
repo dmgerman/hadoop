@@ -208,7 +208,7 @@ annotation|@
 name|Override
 DECL|method|getEpoch ()
 specifier|public
-name|int
+name|long
 name|getEpoch
 parameter_list|()
 block|{
@@ -222,27 +222,20 @@ else|:
 name|builder
 decl_stmt|;
 return|return
-call|(
-name|int
-call|)
-argument_list|(
 name|p
 operator|.
 name|getEpoch
 argument_list|()
-operator|&
-literal|0xffffffff
-argument_list|)
 return|;
 block|}
 annotation|@
 name|Override
-DECL|method|setEpoch (int sequentialNumber)
+DECL|method|setEpoch (long sequentialNumber)
 specifier|public
 name|void
 name|setEpoch
 parameter_list|(
-name|int
+name|long
 name|sequentialNumber
 parameter_list|)
 block|{

@@ -413,6 +413,12 @@ name|url
 init|=
 literal|null
 decl_stmt|;
+DECL|field|oUrl
+name|String
+name|oUrl
+init|=
+literal|null
+decl_stmt|;
 DECL|field|diagnostics
 name|StringBuilder
 name|diagnostics
@@ -906,6 +912,34 @@ operator|.
 name|url
 operator|=
 name|url
+expr_stmt|;
+block|}
+annotation|@
+name|Override
+DECL|method|getOriginalTrackingUrl ()
+specifier|public
+name|String
+name|getOriginalTrackingUrl
+parameter_list|()
+block|{
+return|return
+name|oUrl
+return|;
+block|}
+DECL|method|setOriginalTrackingUrl (String oUrl)
+specifier|public
+name|void
+name|setOriginalTrackingUrl
+parameter_list|(
+name|String
+name|oUrl
+parameter_list|)
+block|{
+name|this
+operator|.
+name|oUrl
+operator|=
+name|oUrl
 expr_stmt|;
 block|}
 annotation|@

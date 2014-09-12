@@ -4306,6 +4306,13 @@ parameter_list|()
 throws|throws
 name|IOException
 block|{
+comment|// Do not hold file lock on committedTxnId, because the containing
+comment|// directory will be renamed.  It will be reopened lazily on next access.
+name|committedTxnId
+operator|.
+name|close
+argument_list|()
+expr_stmt|;
 name|storage
 operator|.
 name|getJournalManager
@@ -4607,12 +4614,20 @@ return|;
 block|}
 DECL|method|doRollback ()
 specifier|public
+specifier|synchronized
 name|void
 name|doRollback
 parameter_list|()
 throws|throws
 name|IOException
 block|{
+comment|// Do not hold file lock on committedTxnId, because the containing
+comment|// directory will be renamed.  It will be reopened lazily on next access.
+name|committedTxnId
+operator|.
+name|close
+argument_list|()
+expr_stmt|;
 name|storage
 operator|.
 name|getJournalManager

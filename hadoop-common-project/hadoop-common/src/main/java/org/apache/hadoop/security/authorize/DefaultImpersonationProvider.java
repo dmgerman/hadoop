@@ -645,6 +645,10 @@ argument_list|)
 decl_stmt|;
 if|if
 condition|(
+name|MachineList
+operator|==
+literal|null
+operator|||
 operator|!
 name|MachineList
 operator|.

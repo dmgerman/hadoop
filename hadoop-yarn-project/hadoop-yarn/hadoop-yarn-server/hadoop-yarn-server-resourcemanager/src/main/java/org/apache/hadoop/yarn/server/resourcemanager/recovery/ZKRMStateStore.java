@@ -2357,7 +2357,7 @@ name|Override
 DECL|method|getAndIncrementEpoch ()
 specifier|public
 specifier|synchronized
-name|int
+name|long
 name|getAndIncrementEpoch
 parameter_list|()
 throws|throws
@@ -2373,7 +2373,7 @@ argument_list|,
 name|EPOCH_NODE
 argument_list|)
 decl_stmt|;
-name|int
+name|long
 name|currentEpoch
 init|=
 literal|0
@@ -3399,6 +3399,16 @@ argument_list|,
 name|attemptStateData
 operator|.
 name|getAMContainerExitStatus
+argument_list|()
+argument_list|,
+name|attemptStateData
+operator|.
+name|getMemorySeconds
+argument_list|()
+argument_list|,
+name|attemptStateData
+operator|.
+name|getVcoreSeconds
 argument_list|()
 argument_list|)
 decl_stmt|;

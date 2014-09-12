@@ -456,7 +456,7 @@ argument_list|)
 operator|.
 name|thenReturn
 argument_list|(
-literal|3
+literal|3L
 argument_list|)
 expr_stmt|;
 name|SchedulerApplicationAttempt
@@ -489,12 +489,12 @@ expr_stmt|;
 comment|// confirm that containerId is calculated based on epoch.
 name|assertEquals
 argument_list|(
+literal|0x30000000001L
+argument_list|,
 name|app
 operator|.
 name|getNewContainerId
 argument_list|()
-argument_list|,
-literal|0x00c00001
 argument_list|)
 expr_stmt|;
 comment|// Resource request

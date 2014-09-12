@@ -140,6 +140,11 @@ specifier|protected
 name|String
 name|trackingUrl
 decl_stmt|;
+DECL|field|originalTrackingUrl
+specifier|protected
+name|String
+name|originalTrackingUrl
+decl_stmt|;
 DECL|field|diagnosticsInfo
 specifier|protected
 name|String
@@ -199,6 +204,13 @@ operator|=
 name|appAttempt
 operator|.
 name|getTrackingUrl
+argument_list|()
+expr_stmt|;
+name|originalTrackingUrl
+operator|=
+name|appAttempt
+operator|.
+name|getOriginalTrackingUrl
 argument_list|()
 expr_stmt|;
 name|diagnosticsInfo
@@ -275,6 +287,16 @@ parameter_list|()
 block|{
 return|return
 name|trackingUrl
+return|;
+block|}
+DECL|method|getOriginalTrackingUrl ()
+specifier|public
+name|String
+name|getOriginalTrackingUrl
+parameter_list|()
+block|{
+return|return
+name|originalTrackingUrl
 return|;
 block|}
 DECL|method|getDiagnosticsInfo ()

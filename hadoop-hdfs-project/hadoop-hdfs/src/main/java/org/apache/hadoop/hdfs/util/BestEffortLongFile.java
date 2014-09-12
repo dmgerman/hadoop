@@ -453,6 +453,10 @@ operator|.
 name|close
 argument_list|()
 expr_stmt|;
+name|ch
+operator|=
+literal|null
+expr_stmt|;
 block|}
 block|}
 block|}

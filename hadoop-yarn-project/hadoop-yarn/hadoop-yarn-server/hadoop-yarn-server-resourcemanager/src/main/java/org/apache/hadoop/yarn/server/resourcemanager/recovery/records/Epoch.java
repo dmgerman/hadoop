@@ -105,13 +105,13 @@ specifier|abstract
 class|class
 name|Epoch
 block|{
-DECL|method|newInstance (int sequenceNumber)
+DECL|method|newInstance (long sequenceNumber)
 specifier|public
 specifier|static
 name|Epoch
 name|newInstance
 parameter_list|(
-name|int
+name|long
 name|sequenceNumber
 parameter_list|)
 block|{
@@ -141,17 +141,17 @@ block|}
 DECL|method|getEpoch ()
 specifier|public
 specifier|abstract
-name|int
+name|long
 name|getEpoch
 parameter_list|()
 function_decl|;
-DECL|method|setEpoch (int sequenceNumber)
+DECL|method|setEpoch (long sequenceNumber)
 specifier|public
 specifier|abstract
 name|void
 name|setEpoch
 parameter_list|(
-name|int
+name|long
 name|sequenceNumber
 parameter_list|)
 function_decl|;
@@ -186,28 +186,21 @@ name|int
 name|hashCode
 parameter_list|()
 block|{
-specifier|final
+return|return
+call|(
 name|int
-name|prime
-init|=
-literal|31
-decl_stmt|;
-name|int
-name|result
-init|=
-literal|1
-decl_stmt|;
-name|result
-operator|=
-name|prime
-operator|*
-name|result
-operator|+
+call|)
+argument_list|(
 name|getEpoch
 argument_list|()
-expr_stmt|;
-return|return
-name|result
+operator|^
+operator|(
+name|getEpoch
+argument_list|()
+operator|>>>
+literal|32
+operator|)
+argument_list|)
 return|;
 block|}
 annotation|@

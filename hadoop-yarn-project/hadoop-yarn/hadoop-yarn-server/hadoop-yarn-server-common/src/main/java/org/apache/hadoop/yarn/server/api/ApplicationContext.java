@@ -48,38 +48,6 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|classification
-operator|.
-name|InterfaceAudience
-operator|.
-name|Public
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|classification
-operator|.
-name|InterfaceStability
-operator|.
-name|Unstable
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
 name|yarn
 operator|.
 name|api
@@ -180,21 +148,29 @@ name|ContainerReport
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|exceptions
+operator|.
+name|YarnException
+import|;
+end_import
+
 begin_interface
-annotation|@
-name|Public
-annotation|@
-name|Unstable
 DECL|interface|ApplicationContext
 specifier|public
 interface|interface
 name|ApplicationContext
 block|{
-comment|/**    * This method returns Application {@link ApplicationReport} for the specified    * {@link ApplicationId}.    *     * @param appId    *     * @return {@link ApplicationReport} for the ApplicationId.    * @throws IOException    */
-annotation|@
-name|Public
-annotation|@
-name|Unstable
+comment|/**    * This method returns Application {@link ApplicationReport} for the specified    * {@link ApplicationId}.    *     * @param appId    *     * @return {@link ApplicationReport} for the ApplicationId.    * @throws YarnException    * @throws IOException    */
 DECL|method|getApplication (ApplicationId appId)
 name|ApplicationReport
 name|getApplication
@@ -203,13 +179,11 @@ name|ApplicationId
 name|appId
 parameter_list|)
 throws|throws
+name|YarnException
+throws|,
 name|IOException
 function_decl|;
-comment|/**    * This method returns all Application {@link ApplicationReport}s    *     * @return map of {@link ApplicationId} to {@link ApplicationReport}s.    * @throws IOException    */
-annotation|@
-name|Public
-annotation|@
-name|Unstable
+comment|/**    * This method returns all Application {@link ApplicationReport}s    *     * @return map of {@link ApplicationId} to {@link ApplicationReport}s.    * @throws YarnException    * @throws IOException    */
 DECL|method|getAllApplications ()
 name|Map
 argument_list|<
@@ -220,13 +194,11 @@ argument_list|>
 name|getAllApplications
 parameter_list|()
 throws|throws
+name|YarnException
+throws|,
 name|IOException
 function_decl|;
-comment|/**    * Application can have multiple application attempts    * {@link ApplicationAttemptReport}. This method returns the all    * {@link ApplicationAttemptReport}s for the Application.    *     * @param appId    *     * @return all {@link ApplicationAttemptReport}s for the Application.    * @throws IOException    */
-annotation|@
-name|Public
-annotation|@
-name|Unstable
+comment|/**    * Application can have multiple application attempts    * {@link ApplicationAttemptReport}. This method returns the all    * {@link ApplicationAttemptReport}s for the Application.    *     * @param appId    *     * @return all {@link ApplicationAttemptReport}s for the Application.    * @throws YarnException    * @throws IOException    */
 DECL|method|getApplicationAttempts ( ApplicationId appId)
 name|Map
 argument_list|<
@@ -240,13 +212,11 @@ name|ApplicationId
 name|appId
 parameter_list|)
 throws|throws
+name|YarnException
+throws|,
 name|IOException
 function_decl|;
-comment|/**    * This method returns {@link ApplicationAttemptReport} for specified    * {@link ApplicationId}.    *     * @param appAttemptId    *          {@link ApplicationAttemptId}    * @return {@link ApplicationAttemptReport} for ApplicationAttemptId    * @throws IOException    */
-annotation|@
-name|Public
-annotation|@
-name|Unstable
+comment|/**    * This method returns {@link ApplicationAttemptReport} for specified    * {@link ApplicationId}.    *     * @param appAttemptId    *          {@link ApplicationAttemptId}    * @return {@link ApplicationAttemptReport} for ApplicationAttemptId    * @throws YarnException    * @throws IOException    */
 DECL|method|getApplicationAttempt ( ApplicationAttemptId appAttemptId)
 name|ApplicationAttemptReport
 name|getApplicationAttempt
@@ -255,13 +225,11 @@ name|ApplicationAttemptId
 name|appAttemptId
 parameter_list|)
 throws|throws
+name|YarnException
+throws|,
 name|IOException
 function_decl|;
-comment|/**    * This method returns {@link ContainerReport} for specified    * {@link ContainerId}.    *     * @param containerId    *          {@link ContainerId}    * @return {@link ContainerReport} for ContainerId    * @throws IOException    */
-annotation|@
-name|Public
-annotation|@
-name|Unstable
+comment|/**    * This method returns {@link ContainerReport} for specified    * {@link ContainerId}.    *     * @param containerId    *          {@link ContainerId}    * @return {@link ContainerReport} for ContainerId    * @throws YarnException    * @throws IOException    */
 DECL|method|getContainer (ContainerId containerId)
 name|ContainerReport
 name|getContainer
@@ -270,13 +238,11 @@ name|ContainerId
 name|containerId
 parameter_list|)
 throws|throws
+name|YarnException
+throws|,
 name|IOException
 function_decl|;
-comment|/**    * This method returns {@link ContainerReport} for specified    * {@link ApplicationAttemptId}.    *     * @param appAttemptId    *          {@link ApplicationAttemptId}    * @return {@link ContainerReport} for ApplicationAttemptId    * @throws IOException    */
-annotation|@
-name|Public
-annotation|@
-name|Unstable
+comment|/**    * This method returns {@link ContainerReport} for specified    * {@link ApplicationAttemptId}.    *     * @param appAttemptId    *          {@link ApplicationAttemptId}    * @return {@link ContainerReport} for ApplicationAttemptId    * @throws YarnException    * @throws IOException    */
 DECL|method|getAMContainer (ApplicationAttemptId appAttemptId)
 name|ContainerReport
 name|getAMContainer
@@ -285,13 +251,11 @@ name|ApplicationAttemptId
 name|appAttemptId
 parameter_list|)
 throws|throws
+name|YarnException
+throws|,
 name|IOException
 function_decl|;
-comment|/**    * This method returns Map of {@link ContainerId} to {@link ContainerReport}    * for specified {@link ApplicationAttemptId}.    *     * @param appAttemptId    *          {@link ApplicationAttemptId}    * @return Map of {@link ContainerId} to {@link ContainerReport} for    *         ApplicationAttemptId    * @throws IOException    */
-annotation|@
-name|Public
-annotation|@
-name|Unstable
+comment|/**    * This method returns Map of {@link ContainerId} to {@link ContainerReport}    * for specified {@link ApplicationAttemptId}.    *     * @param appAttemptId    *          {@link ApplicationAttemptId}    * @return Map of {@link ContainerId} to {@link ContainerReport} for    *         ApplicationAttemptId    * @throws YarnException    * @throws IOException    */
 DECL|method|getContainers ( ApplicationAttemptId appAttemptId)
 name|Map
 argument_list|<
@@ -305,6 +269,8 @@ name|ApplicationAttemptId
 name|appAttemptId
 parameter_list|)
 throws|throws
+name|YarnException
+throws|,
 name|IOException
 function_decl|;
 block|}

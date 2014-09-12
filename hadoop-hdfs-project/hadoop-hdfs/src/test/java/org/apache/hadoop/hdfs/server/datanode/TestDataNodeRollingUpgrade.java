@@ -1034,7 +1034,21 @@ name|Pattern
 operator|.
 name|compile
 argument_list|(
-literal|"^(.*/current/.*/)(current)(/.*)$"
+name|String
+operator|.
+name|format
+argument_list|(
+literal|"^(.*%1$scurrent%1$s.*%1$s)(current)(%1$s.*)$"
+argument_list|,
+name|Pattern
+operator|.
+name|quote
+argument_list|(
+name|File
+operator|.
+name|separator
+argument_list|)
+argument_list|)
 argument_list|)
 decl_stmt|;
 name|Matcher
@@ -2254,7 +2268,7 @@ name|isTrashRootPresent
 argument_list|()
 argument_list|)
 expr_stmt|;
-comment|// Rollback and ensure that neither block file exists in trash or previous.
+comment|// Finalize and ensure that neither block file exists in trash or previous.
 name|finalizeRollingUpgrade
 argument_list|()
 expr_stmt|;

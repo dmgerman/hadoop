@@ -2602,6 +2602,17 @@ name|getShortUserName
 argument_list|()
 argument_list|)
 decl_stmt|;
+if|if
+condition|(
+name|c
+operator|==
+literal|null
+condition|)
+block|{
+return|return
+literal|null
+return|;
+block|}
 specifier|final
 name|Token
 argument_list|<

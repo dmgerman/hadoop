@@ -615,7 +615,7 @@ literal|0
 expr_stmt|;
 name|LOG
 operator|.
-name|warn
+name|debug
 argument_list|(
 literal|"Illegal progress value found, progress is Float.NaN. "
 operator|+
@@ -639,7 +639,7 @@ literal|0
 expr_stmt|;
 name|LOG
 operator|.
-name|warn
+name|debug
 argument_list|(
 literal|"Illegal progress value found, progress is "
 operator|+
@@ -661,7 +661,7 @@ literal|0
 expr_stmt|;
 name|LOG
 operator|.
-name|warn
+name|debug
 argument_list|(
 literal|"Illegal progress value found, progress is less than 0."
 operator|+
@@ -683,7 +683,7 @@ literal|1
 expr_stmt|;
 name|LOG
 operator|.
-name|warn
+name|debug
 argument_list|(
 literal|"Illegal progress value found, progress is larger than 1."
 operator|+
@@ -707,7 +707,7 @@ literal|1
 expr_stmt|;
 name|LOG
 operator|.
-name|warn
+name|debug
 argument_list|(
 literal|"Illegal progress value found, progress is "
 operator|+

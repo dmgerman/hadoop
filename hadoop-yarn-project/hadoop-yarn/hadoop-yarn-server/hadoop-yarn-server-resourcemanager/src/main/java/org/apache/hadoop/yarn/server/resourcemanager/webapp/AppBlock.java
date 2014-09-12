@@ -1151,6 +1151,28 @@ name|getNumNonAMContainersPreempted
 argument_list|()
 argument_list|)
 argument_list|)
+operator|.
+name|_
+argument_list|(
+literal|"Aggregate Resource Allocation:"
+argument_list|,
+name|String
+operator|.
+name|format
+argument_list|(
+literal|"%d MB-seconds, %d vcore-seconds"
+argument_list|,
+name|appMerics
+operator|.
+name|getMemorySeconds
+argument_list|()
+argument_list|,
+name|appMerics
+operator|.
+name|getVcoreSeconds
+argument_list|()
+argument_list|)
+argument_list|)
 expr_stmt|;
 name|pdiv
 operator|.

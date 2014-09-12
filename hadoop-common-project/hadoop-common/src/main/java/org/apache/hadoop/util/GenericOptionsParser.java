@@ -1295,7 +1295,7 @@ name|conf
 operator|.
 name|set
 argument_list|(
-literal|"mapreduce.job.credentials.json"
+literal|"mapreduce.job.credentials.binary"
 argument_list|,
 name|p
 operator|.

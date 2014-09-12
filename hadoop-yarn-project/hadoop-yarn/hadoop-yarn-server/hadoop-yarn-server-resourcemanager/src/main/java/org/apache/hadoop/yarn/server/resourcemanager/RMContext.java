@@ -150,6 +150,26 @@ name|server
 operator|.
 name|resourcemanager
 operator|.
+name|metrics
+operator|.
+name|SystemMetricsPublisher
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|server
+operator|.
+name|resourcemanager
+operator|.
 name|recovery
 operator|.
 name|RMStateStore
@@ -542,6 +562,19 @@ name|RMApplicationHistoryWriter
 name|rmApplicationHistoryWriter
 parameter_list|)
 function_decl|;
+DECL|method|setSystemMetricsPublisher (SystemMetricsPublisher systemMetricsPublisher)
+name|void
+name|setSystemMetricsPublisher
+parameter_list|(
+name|SystemMetricsPublisher
+name|systemMetricsPublisher
+parameter_list|)
+function_decl|;
+DECL|method|getSystemMetricsPublisher ()
+name|SystemMetricsPublisher
+name|getSystemMetricsPublisher
+parameter_list|()
+function_decl|;
 DECL|method|getConfigurationProvider ()
 name|ConfigurationProvider
 name|getConfigurationProvider
@@ -553,7 +586,7 @@ name|isWorkPreservingRecoveryEnabled
 parameter_list|()
 function_decl|;
 DECL|method|getEpoch ()
-name|int
+name|long
 name|getEpoch
 parameter_list|()
 function_decl|;

@@ -1093,7 +1093,7 @@ argument_list|)
 argument_list|)
 return|;
 block|}
-DECL|method|newContainerId (ApplicationAttemptId appAttemptId, int containerId)
+DECL|method|newContainerId (ApplicationAttemptId appAttemptId, long containerId)
 specifier|public
 specifier|static
 name|ContainerId
@@ -1102,7 +1102,7 @@ parameter_list|(
 name|ApplicationAttemptId
 name|appAttemptId
 parameter_list|,
-name|int
+name|long
 name|containerId
 parameter_list|)
 block|{
@@ -1117,7 +1117,7 @@ name|containerId
 argument_list|)
 return|;
 block|}
-DECL|method|newContainerId (int appId, int appAttemptId, long timestamp, int id)
+DECL|method|newContainerId (int appId, int appAttemptId, long timestamp, long id)
 specifier|public
 specifier|static
 name|ContainerId
@@ -1132,7 +1132,7 @@ parameter_list|,
 name|long
 name|timestamp
 parameter_list|,
-name|int
+name|long
 name|id
 parameter_list|)
 block|{
@@ -2611,7 +2611,7 @@ literal|null
 argument_list|)
 return|;
 block|}
-DECL|method|newApplicationResourceUsageReport ( int numUsedContainers, int numReservedContainers, Resource usedResources, Resource reservedResources, Resource neededResources)
+DECL|method|newApplicationResourceUsageReport ( int numUsedContainers, int numReservedContainers, Resource usedResources, Resource reservedResources, Resource neededResources, long memorySeconds, long vcoreSeconds)
 specifier|public
 specifier|static
 name|ApplicationResourceUsageReport
@@ -2631,6 +2631,12 @@ name|reservedResources
 parameter_list|,
 name|Resource
 name|neededResources
+parameter_list|,
+name|long
+name|memorySeconds
+parameter_list|,
+name|long
+name|vcoreSeconds
 parameter_list|)
 block|{
 name|ApplicationResourceUsageReport
@@ -2678,6 +2684,20 @@ operator|.
 name|setNeededResources
 argument_list|(
 name|neededResources
+argument_list|)
+expr_stmt|;
+name|report
+operator|.
+name|setMemorySeconds
+argument_list|(
+name|memorySeconds
+argument_list|)
+expr_stmt|;
+name|report
+operator|.
+name|setVcoreSeconds
+argument_list|(
+name|vcoreSeconds
 argument_list|)
 expr_stmt|;
 return|return

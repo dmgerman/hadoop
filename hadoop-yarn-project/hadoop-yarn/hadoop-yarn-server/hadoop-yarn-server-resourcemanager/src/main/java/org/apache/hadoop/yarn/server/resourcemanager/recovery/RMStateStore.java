@@ -620,6 +620,28 @@ name|rmapp
 operator|.
 name|attempt
 operator|.
+name|AggregateAppResourceUsage
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|server
+operator|.
+name|resourcemanager
+operator|.
+name|rmapp
+operator|.
+name|attempt
+operator|.
 name|RMAppAttempt
 import|;
 end_import
@@ -1821,7 +1843,15 @@ DECL|field|amUnregisteredFinalStatus
 name|FinalApplicationStatus
 name|amUnregisteredFinalStatus
 decl_stmt|;
-DECL|method|ApplicationAttemptState (ApplicationAttemptId attemptId, Container masterContainer, Credentials appAttemptCredentials, long startTime)
+DECL|field|memorySeconds
+name|long
+name|memorySeconds
+decl_stmt|;
+DECL|field|vcoreSeconds
+name|long
+name|vcoreSeconds
+decl_stmt|;
+DECL|method|ApplicationAttemptState (ApplicationAttemptId attemptId, Container masterContainer, Credentials appAttemptCredentials, long startTime, long memorySeconds, long vcoreSeconds)
 specifier|public
 name|ApplicationAttemptState
 parameter_list|(
@@ -1836,6 +1866,12 @@ name|appAttemptCredentials
 parameter_list|,
 name|long
 name|startTime
+parameter_list|,
+name|long
+name|memorySeconds
+parameter_list|,
+name|long
+name|vcoreSeconds
 parameter_list|)
 block|{
 name|this
@@ -1859,10 +1895,14 @@ argument_list|,
 name|ContainerExitStatus
 operator|.
 name|INVALID
+argument_list|,
+name|memorySeconds
+argument_list|,
+name|vcoreSeconds
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|ApplicationAttemptState (ApplicationAttemptId attemptId, Container masterContainer, Credentials appAttemptCredentials, long startTime, RMAppAttemptState state, String finalTrackingUrl, String diagnostics, FinalApplicationStatus amUnregisteredFinalStatus, int exitStatus)
+DECL|method|ApplicationAttemptState (ApplicationAttemptId attemptId, Container masterContainer, Credentials appAttemptCredentials, long startTime, RMAppAttemptState state, String finalTrackingUrl, String diagnostics, FinalApplicationStatus amUnregisteredFinalStatus, int exitStatus, long memorySeconds, long vcoreSeconds)
 specifier|public
 name|ApplicationAttemptState
 parameter_list|(
@@ -1892,6 +1932,12 @@ name|amUnregisteredFinalStatus
 parameter_list|,
 name|int
 name|exitStatus
+parameter_list|,
+name|long
+name|memorySeconds
+parameter_list|,
+name|long
+name|vcoreSeconds
 parameter_list|)
 block|{
 name|this
@@ -1953,6 +1999,18 @@ operator|.
 name|exitStatus
 operator|=
 name|exitStatus
+expr_stmt|;
+name|this
+operator|.
+name|memorySeconds
+operator|=
+name|memorySeconds
+expr_stmt|;
+name|this
+operator|.
+name|vcoreSeconds
+operator|=
+name|vcoreSeconds
 expr_stmt|;
 block|}
 DECL|method|getMasterContainer ()
@@ -2045,6 +2103,26 @@ return|return
 name|this
 operator|.
 name|exitStatus
+return|;
+block|}
+DECL|method|getMemorySeconds ()
+specifier|public
+name|long
+name|getMemorySeconds
+parameter_list|()
+block|{
+return|return
+name|memorySeconds
+return|;
+block|}
+DECL|method|getVcoreSeconds ()
+specifier|public
+name|long
+name|getVcoreSeconds
+parameter_list|()
+block|{
+return|return
+name|vcoreSeconds
 return|;
 block|}
 block|}
@@ -2774,7 +2852,7 @@ comment|/**    * Get the current epoch of RM and increment the value.    */
 DECL|method|getAndIncrementEpoch ()
 specifier|public
 specifier|abstract
-name|int
+name|long
 name|getAndIncrementEpoch
 parameter_list|()
 throws|throws
@@ -2943,6 +3021,17 @@ argument_list|(
 name|appAttempt
 argument_list|)
 decl_stmt|;
+name|AggregateAppResourceUsage
+name|resUsage
+init|=
+name|appAttempt
+operator|.
+name|getRMAppAttemptMetrics
+argument_list|()
+operator|.
+name|getAggregateAppResourceUsage
+argument_list|()
+decl_stmt|;
 name|ApplicationAttemptState
 name|attemptState
 init|=
@@ -2964,6 +3053,16 @@ argument_list|,
 name|appAttempt
 operator|.
 name|getStartTime
+argument_list|()
+argument_list|,
+name|resUsage
+operator|.
+name|getMemorySeconds
+argument_list|()
+argument_list|,
+name|resUsage
+operator|.
+name|getVcoreSeconds
 argument_list|()
 argument_list|)
 decl_stmt|;
@@ -3404,6 +3503,10 @@ name|appAttempt
 operator|.
 name|getStartTime
 argument_list|()
+argument_list|,
+literal|0
+argument_list|,
+literal|0
 argument_list|)
 decl_stmt|;
 name|appState
