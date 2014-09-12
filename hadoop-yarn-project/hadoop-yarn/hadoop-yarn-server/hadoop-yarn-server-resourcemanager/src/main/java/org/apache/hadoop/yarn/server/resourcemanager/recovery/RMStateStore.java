@@ -2852,7 +2852,7 @@ comment|/**    * Get the current epoch of RM and increment the value.    */
 DECL|method|getAndIncrementEpoch ()
 specifier|public
 specifier|abstract
-name|int
+name|long
 name|getAndIncrementEpoch
 parameter_list|()
 throws|throws

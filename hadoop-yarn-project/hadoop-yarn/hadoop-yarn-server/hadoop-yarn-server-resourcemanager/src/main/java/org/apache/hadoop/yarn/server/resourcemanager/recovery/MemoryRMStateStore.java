@@ -334,10 +334,10 @@ argument_list|()
 decl_stmt|;
 DECL|field|epoch
 specifier|private
-name|int
+name|long
 name|epoch
 init|=
-literal|0
+literal|0L
 decl_stmt|;
 annotation|@
 name|VisibleForTesting
@@ -366,13 +366,13 @@ name|Override
 DECL|method|getAndIncrementEpoch ()
 specifier|public
 specifier|synchronized
-name|int
+name|long
 name|getAndIncrementEpoch
 parameter_list|()
 throws|throws
 name|Exception
 block|{
-name|int
+name|long
 name|currentEpoch
 init|=
 name|epoch

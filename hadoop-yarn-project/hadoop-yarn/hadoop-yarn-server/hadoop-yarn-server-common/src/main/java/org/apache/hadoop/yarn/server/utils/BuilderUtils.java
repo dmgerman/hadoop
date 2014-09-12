@@ -1093,7 +1093,7 @@ argument_list|)
 argument_list|)
 return|;
 block|}
-DECL|method|newContainerId (ApplicationAttemptId appAttemptId, int containerId)
+DECL|method|newContainerId (ApplicationAttemptId appAttemptId, long containerId)
 specifier|public
 specifier|static
 name|ContainerId
@@ -1102,7 +1102,7 @@ parameter_list|(
 name|ApplicationAttemptId
 name|appAttemptId
 parameter_list|,
-name|int
+name|long
 name|containerId
 parameter_list|)
 block|{
@@ -1117,7 +1117,7 @@ name|containerId
 argument_list|)
 return|;
 block|}
-DECL|method|newContainerId (int appId, int appAttemptId, long timestamp, int id)
+DECL|method|newContainerId (int appId, int appAttemptId, long timestamp, long id)
 specifier|public
 specifier|static
 name|ContainerId
@@ -1132,7 +1132,7 @@ parameter_list|,
 name|long
 name|timestamp
 parameter_list|,
-name|int
+name|long
 name|id
 parameter_list|)
 block|{

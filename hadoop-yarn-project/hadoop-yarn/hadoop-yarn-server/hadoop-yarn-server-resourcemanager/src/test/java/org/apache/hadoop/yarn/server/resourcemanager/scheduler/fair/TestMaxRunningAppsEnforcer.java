@@ -400,7 +400,7 @@ argument_list|)
 operator|.
 name|thenReturn
 argument_list|(
-literal|0
+literal|0L
 argument_list|)
 expr_stmt|;
 block|}

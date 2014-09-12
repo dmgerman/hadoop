@@ -112,7 +112,7 @@ name|concurrent
 operator|.
 name|atomic
 operator|.
-name|AtomicInteger
+name|AtomicLong
 import|;
 end_import
 
@@ -423,16 +423,8 @@ comment|// TODO making containerIdCounter long
 DECL|field|containerIdCounter
 specifier|private
 specifier|final
-name|AtomicInteger
+name|AtomicLong
 name|containerIdCounter
-decl_stmt|;
-DECL|field|EPOCH_BIT_MASK
-specifier|private
-specifier|final
-name|int
-name|EPOCH_BIT_MASK
-init|=
-literal|0x3ff
 decl_stmt|;
 DECL|field|EPOCH_BIT_SHIFT
 specifier|private
@@ -440,7 +432,7 @@ specifier|final
 name|int
 name|EPOCH_BIT_SHIFT
 init|=
-literal|22
+literal|40
 decl_stmt|;
 DECL|field|priorities
 specifier|final
@@ -535,7 +527,7 @@ init|=
 literal|true
 decl_stmt|;
 comment|// for app metrics
-DECL|method|AppSchedulingInfo (ApplicationAttemptId appAttemptId, String user, Queue queue, ActiveUsersManager activeUsersManager, int epoch)
+DECL|method|AppSchedulingInfo (ApplicationAttemptId appAttemptId, String user, Queue queue, ActiveUsersManager activeUsersManager, long epoch)
 specifier|public
 name|AppSchedulingInfo
 parameter_list|(
@@ -551,7 +543,7 @@ parameter_list|,
 name|ActiveUsersManager
 name|activeUsersManager
 parameter_list|,
-name|int
+name|long
 name|epoch
 parameter_list|)
 block|{
@@ -602,13 +594,9 @@ operator|.
 name|containerIdCounter
 operator|=
 operator|new
-name|AtomicInteger
+name|AtomicLong
 argument_list|(
-operator|(
 name|epoch
-operator|&
-name|EPOCH_BIT_MASK
-operator|)
 operator|<<
 name|EPOCH_BIT_SHIFT
 argument_list|)
@@ -697,7 +685,7 @@ expr_stmt|;
 block|}
 DECL|method|getNewContainerId ()
 specifier|public
-name|int
+name|long
 name|getNewContainerId
 parameter_list|()
 block|{

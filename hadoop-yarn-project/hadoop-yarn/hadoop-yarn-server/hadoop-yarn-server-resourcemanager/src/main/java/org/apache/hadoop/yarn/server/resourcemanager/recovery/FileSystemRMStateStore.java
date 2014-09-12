@@ -1182,7 +1182,7 @@ name|Override
 DECL|method|getAndIncrementEpoch ()
 specifier|public
 specifier|synchronized
-name|int
+name|long
 name|getAndIncrementEpoch
 parameter_list|()
 throws|throws
@@ -1198,7 +1198,7 @@ argument_list|,
 name|EPOCH_NODE
 argument_list|)
 decl_stmt|;
-name|int
+name|long
 name|currentEpoch
 init|=
 literal|0

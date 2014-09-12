@@ -681,7 +681,7 @@ name|configurationProvider
 decl_stmt|;
 DECL|field|epoch
 specifier|private
-name|int
+name|long
 name|epoch
 decl_stmt|;
 comment|/**    * Default constructor. To be used in conjunction with setter methods for    * individual fields.    */
@@ -1594,7 +1594,7 @@ annotation|@
 name|Override
 DECL|method|getEpoch ()
 specifier|public
-name|int
+name|long
 name|getEpoch
 parameter_list|()
 block|{
@@ -1604,11 +1604,11 @@ operator|.
 name|epoch
 return|;
 block|}
-DECL|method|setEpoch (int epoch)
+DECL|method|setEpoch (long epoch)
 name|void
 name|setEpoch
 parameter_list|(
-name|int
+name|long
 name|epoch
 parameter_list|)
 block|{
