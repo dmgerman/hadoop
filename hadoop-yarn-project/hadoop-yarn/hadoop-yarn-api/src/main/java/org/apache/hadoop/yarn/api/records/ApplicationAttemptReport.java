@@ -103,7 +103,7 @@ annotation|@
 name|Private
 annotation|@
 name|Unstable
-DECL|method|newInstance ( ApplicationAttemptId applicationAttemptId, String host, int rpcPort, String url, String diagnostics, YarnApplicationAttemptState state, ContainerId amContainerId)
+DECL|method|newInstance ( ApplicationAttemptId applicationAttemptId, String host, int rpcPort, String url, String oUrl, String diagnostics, YarnApplicationAttemptState state, ContainerId amContainerId)
 specifier|public
 specifier|static
 name|ApplicationAttemptReport
@@ -120,6 +120,9 @@ name|rpcPort
 parameter_list|,
 name|String
 name|url
+parameter_list|,
+name|String
+name|oUrl
 parameter_list|,
 name|String
 name|diagnostics
@@ -169,6 +172,13 @@ operator|.
 name|setTrackingUrl
 argument_list|(
 name|url
+argument_list|)
+expr_stmt|;
+name|report
+operator|.
+name|setOriginalTrackingUrl
+argument_list|(
+name|oUrl
 argument_list|)
 expr_stmt|;
 name|report
@@ -324,6 +334,32 @@ name|setTrackingUrl
 parameter_list|(
 name|String
 name|url
+parameter_list|)
+function_decl|;
+comment|/**    * Get the<em>original tracking url</em> for the application attempt.    *     * @return<em>original tracking url</em> for the application attempt    */
+annotation|@
+name|Public
+annotation|@
+name|Unstable
+DECL|method|getOriginalTrackingUrl ()
+specifier|public
+specifier|abstract
+name|String
+name|getOriginalTrackingUrl
+parameter_list|()
+function_decl|;
+annotation|@
+name|Private
+annotation|@
+name|Unstable
+DECL|method|setOriginalTrackingUrl (String oUrl)
+specifier|public
+specifier|abstract
+name|void
+name|setOriginalTrackingUrl
+parameter_list|(
+name|String
+name|oUrl
 parameter_list|)
 function_decl|;
 comment|/**    * Get the<code>ApplicationAttemptId</code> of this attempt of the    * application    *     * @return<code>ApplicationAttemptId</code> of the attempt    */

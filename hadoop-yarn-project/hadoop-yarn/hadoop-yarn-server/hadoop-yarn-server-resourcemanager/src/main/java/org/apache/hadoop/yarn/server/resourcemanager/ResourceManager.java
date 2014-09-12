@@ -698,6 +698,26 @@ name|server
 operator|.
 name|resourcemanager
 operator|.
+name|metrics
+operator|.
+name|SystemMetricsPublisher
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|server
+operator|.
+name|resourcemanager
+operator|.
 name|monitor
 operator|.
 name|SchedulingEditPolicy
@@ -2306,6 +2326,18 @@ name|RMApplicationHistoryWriter
 argument_list|()
 return|;
 block|}
+DECL|method|createSystemMetricsPublisher ()
+specifier|protected
+name|SystemMetricsPublisher
+name|createSystemMetricsPublisher
+parameter_list|()
+block|{
+return|return
+operator|new
+name|SystemMetricsPublisher
+argument_list|()
+return|;
+block|}
 comment|// sanity check for configurations
 DECL|method|validateConfigs (Configuration conf)
 specifier|protected
@@ -2726,6 +2758,24 @@ operator|.
 name|setRMApplicationHistoryWriter
 argument_list|(
 name|rmApplicationHistoryWriter
+argument_list|)
+expr_stmt|;
+name|SystemMetricsPublisher
+name|systemMetricsPublisher
+init|=
+name|createSystemMetricsPublisher
+argument_list|()
+decl_stmt|;
+name|addService
+argument_list|(
+name|systemMetricsPublisher
+argument_list|)
+expr_stmt|;
+name|rmContext
+operator|.
+name|setSystemMetricsPublisher
+argument_list|(
+name|systemMetricsPublisher
 argument_list|)
 expr_stmt|;
 comment|// Register event handler for NodesListManager

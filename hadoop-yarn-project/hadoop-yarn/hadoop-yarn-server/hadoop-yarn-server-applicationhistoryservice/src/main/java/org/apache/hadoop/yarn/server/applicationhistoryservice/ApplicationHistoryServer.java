@@ -973,11 +973,60 @@ name|Configuration
 name|conf
 parameter_list|)
 block|{
+comment|// Backward compatibility:
+comment|// APPLICATION_HISTORY_STORE is neither null nor empty, it means that the
+comment|// user has enabled it explicitly.
+if|if
+condition|(
+name|conf
+operator|.
+name|get
+argument_list|(
+name|YarnConfiguration
+operator|.
+name|APPLICATION_HISTORY_STORE
+argument_list|)
+operator|==
+literal|null
+operator|||
+name|conf
+operator|.
+name|get
+argument_list|(
+name|YarnConfiguration
+operator|.
+name|APPLICATION_HISTORY_STORE
+argument_list|)
+operator|.
+name|length
+argument_list|()
+operator|==
+literal|0
+condition|)
+block|{
+return|return
+operator|new
+name|ApplicationHistoryManagerOnTimelineStore
+argument_list|(
+name|timelineDataManager
+argument_list|)
+return|;
+block|}
+else|else
+block|{
+name|LOG
+operator|.
+name|warn
+argument_list|(
+literal|"The filesystem based application history store is deprecated."
+argument_list|)
+expr_stmt|;
 return|return
 operator|new
 name|ApplicationHistoryManagerImpl
 argument_list|()
 return|;
+block|}
 block|}
 DECL|method|createTimelineStore ( Configuration conf)
 specifier|private

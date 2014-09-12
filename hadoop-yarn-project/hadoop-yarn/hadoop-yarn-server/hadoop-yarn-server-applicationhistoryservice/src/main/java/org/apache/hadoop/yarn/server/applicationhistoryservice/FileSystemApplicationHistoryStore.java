@@ -1094,6 +1094,15 @@ argument_list|(
 name|YarnConfiguration
 operator|.
 name|FS_APPLICATION_HISTORY_STORE_URI
+argument_list|,
+name|conf
+operator|.
+name|get
+argument_list|(
+literal|"hadoop.tmp.dir"
+argument_list|)
+operator|+
+literal|"/yarn/timeline/generic-history"
 argument_list|)
 argument_list|)
 decl_stmt|;

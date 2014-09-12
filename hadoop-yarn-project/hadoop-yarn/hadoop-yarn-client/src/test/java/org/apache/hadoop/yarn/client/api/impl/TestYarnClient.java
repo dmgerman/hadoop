@@ -3506,6 +3506,8 @@ literal|124
 argument_list|,
 literal|"url"
 argument_list|,
+literal|"oUrl"
+argument_list|,
 literal|"diagnostics"
 argument_list|,
 name|YarnApplicationAttemptState
@@ -3553,6 +3555,8 @@ argument_list|,
 literal|124
 argument_list|,
 literal|"url"
+argument_list|,
+literal|"oUrl"
 argument_list|,
 literal|"diagnostics"
 argument_list|,

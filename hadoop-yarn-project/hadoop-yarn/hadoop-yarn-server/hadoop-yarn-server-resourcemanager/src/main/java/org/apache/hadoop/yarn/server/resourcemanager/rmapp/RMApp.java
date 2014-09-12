@@ -394,6 +394,12 @@ name|String
 name|getTrackingUrl
 parameter_list|()
 function_decl|;
+comment|/**    * The original tracking url for the application master.    * @return the original tracking url for the application master.    */
+DECL|method|getOriginalTrackingUrl ()
+name|String
+name|getOriginalTrackingUrl
+parameter_list|()
+function_decl|;
 comment|/**    * the diagnostics information for the application master.    * @return the diagnostics information for the application master.    */
 DECL|method|getDiagnostics ()
 name|StringBuilder
