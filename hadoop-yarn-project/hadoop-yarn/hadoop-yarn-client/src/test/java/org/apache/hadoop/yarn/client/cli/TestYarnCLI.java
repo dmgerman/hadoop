@@ -746,6 +746,21 @@ parameter_list|()
 throws|throws
 name|Exception
 block|{
+for|for
+control|(
+name|int
+name|i
+init|=
+literal|0
+init|;
+name|i
+operator|<
+literal|2
+condition|;
+operator|++
+name|i
+control|)
+block|{
 name|ApplicationCLI
 name|cli
 init|=
@@ -767,6 +782,12 @@ decl_stmt|;
 name|ApplicationResourceUsageReport
 name|usageReport
 init|=
+name|i
+operator|==
+literal|0
+condition|?
+literal|null
+else|:
 name|ApplicationResourceUsageReport
 operator|.
 name|newInstance
@@ -895,6 +916,13 @@ expr_stmt|;
 name|verify
 argument_list|(
 name|client
+argument_list|,
+name|times
+argument_list|(
+literal|1
+operator|+
+name|i
+argument_list|)
 argument_list|)
 operator|.
 name|getApplicationReport
@@ -1020,7 +1048,17 @@ name|pw
 operator|.
 name|println
 argument_list|(
-literal|"\tAggregate Resource Allocation : 123456 MB-seconds, 4567 vcore-seconds"
+literal|"\tAggregate Resource Allocation : "
+operator|+
+operator|(
+name|i
+operator|==
+literal|0
+condition|?
+literal|"N/A"
+else|:
+literal|"123456 MB-seconds, 4567 vcore-seconds"
+operator|)
 argument_list|)
 expr_stmt|;
 name|pw
@@ -1057,6 +1095,11 @@ name|toString
 argument_list|()
 argument_list|)
 expr_stmt|;
+name|sysOutStream
+operator|.
+name|reset
+argument_list|()
+expr_stmt|;
 name|verify
 argument_list|(
 name|sysOut
@@ -1064,6 +1107,8 @@ argument_list|,
 name|times
 argument_list|(
 literal|1
+operator|+
+name|i
 argument_list|)
 argument_list|)
 operator|.
@@ -1077,6 +1122,7 @@ name|class
 argument_list|)
 argument_list|)
 expr_stmt|;
+block|}
 block|}
 annotation|@
 name|Test
