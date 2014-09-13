@@ -2255,6 +2255,18 @@ argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
+else|else
+block|{
+name|LOG
+operator|.
+name|error
+argument_list|(
+name|blockFile
+operator|+
+literal|" not found"
+argument_list|)
+expr_stmt|;
+block|}
 block|}
 block|}
 comment|// We should have found a persisted copy for each located block.
@@ -2491,6 +2503,8 @@ init|=
 literal|0XFADED
 decl_stmt|;
 comment|// Stop lazy writer to ensure block for path1 is not persisted to disk.
+name|FsDatasetTestUtil
+operator|.
 name|stopLazyWriter
 argument_list|(
 name|cluster
@@ -2811,6 +2825,8 @@ operator|.
 name|getMethodName
 argument_list|()
 decl_stmt|;
+name|FsDatasetTestUtil
+operator|.
 name|stopLazyWriter
 argument_list|(
 name|cluster
@@ -3797,6 +3813,8 @@ argument_list|,
 literal|1
 argument_list|)
 expr_stmt|;
+name|FsDatasetTestUtil
+operator|.
 name|stopLazyWriter
 argument_list|(
 name|cluster
@@ -4352,47 +4370,6 @@ block|}
 return|return
 name|locatedBlocks
 return|;
-block|}
-DECL|method|stopLazyWriter (DataNode dn)
-specifier|private
-name|void
-name|stopLazyWriter
-parameter_list|(
-name|DataNode
-name|dn
-parameter_list|)
-block|{
-comment|// Stop the lazyWriter daemon.
-name|FsDatasetImpl
-name|fsDataset
-init|=
-operator|(
-operator|(
-name|FsDatasetImpl
-operator|)
-name|dn
-operator|.
-name|getFSDataset
-argument_list|()
-operator|)
-decl_stmt|;
-operator|(
-operator|(
-name|FsDatasetImpl
-operator|.
-name|LazyWriter
-operator|)
-name|fsDataset
-operator|.
-name|lazyWriter
-operator|.
-name|getRunnable
-argument_list|()
-operator|)
-operator|.
-name|stop
-argument_list|()
-expr_stmt|;
 block|}
 DECL|method|makeRandomTestFile (Path path, long length, final boolean isLazyPersist, long seed)
 specifier|private

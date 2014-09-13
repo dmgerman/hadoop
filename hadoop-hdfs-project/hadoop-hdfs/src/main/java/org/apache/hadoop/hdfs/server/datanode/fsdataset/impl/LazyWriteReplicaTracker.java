@@ -631,7 +631,8 @@ operator|=
 name|checkpointVolume
 expr_stmt|;
 block|}
-DECL|method|recordEndLazyPersist ( final String bpid, final long blockId, final File savedMetaFile, final File savedBlockFile)
+comment|/**    * @param bpid    * @param blockId    * @param savedFiles The saved meta and block files, in that order.    */
+DECL|method|recordEndLazyPersist ( final String bpid, final long blockId, final File[] savedFiles)
 specifier|synchronized
 name|void
 name|recordEndLazyPersist
@@ -646,11 +647,8 @@ name|blockId
 parameter_list|,
 specifier|final
 name|File
-name|savedMetaFile
-parameter_list|,
-specifier|final
-name|File
-name|savedBlockFile
+index|[]
+name|savedFiles
 parameter_list|)
 block|{
 name|Map
@@ -711,13 +709,19 @@ name|replicaState
 operator|.
 name|savedMetaFile
 operator|=
-name|savedMetaFile
+name|savedFiles
+index|[
+literal|0
+index|]
 expr_stmt|;
 name|replicaState
 operator|.
 name|savedBlockFile
 operator|=
-name|savedBlockFile
+name|savedFiles
+index|[
+literal|1
+index|]
 expr_stmt|;
 if|if
 condition|(

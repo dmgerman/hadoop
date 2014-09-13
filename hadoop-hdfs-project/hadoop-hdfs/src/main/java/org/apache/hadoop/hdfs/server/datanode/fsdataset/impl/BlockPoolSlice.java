@@ -1351,14 +1351,23 @@ return|return
 name|blockFile
 return|;
 block|}
-comment|/**    * Save the given replica to persistent storage.    *    * @param replicaInfo    * @return The saved meta and block files, in that order.    * @throws IOException    */
-DECL|method|lazyPersistReplica (ReplicaInfo replicaInfo)
+comment|/**    * Save the given replica to persistent storage.    *    * @return The saved meta and block files, in that order.    * @throws IOException    */
+DECL|method|lazyPersistReplica (long blockId, long genStamp, File srcMeta, File srcFile)
 name|File
 index|[]
 name|lazyPersistReplica
 parameter_list|(
-name|ReplicaInfo
-name|replicaInfo
+name|long
+name|blockId
+parameter_list|,
+name|long
+name|genStamp
+parameter_list|,
+name|File
+name|srcMeta
+parameter_list|,
+name|File
+name|srcFile
 parameter_list|)
 throws|throws
 name|IOException
@@ -1398,7 +1407,13 @@ name|FsDatasetImpl
 operator|.
 name|copyBlockFiles
 argument_list|(
-name|replicaInfo
+name|blockId
+argument_list|,
+name|genStamp
+argument_list|,
+name|srcMeta
+argument_list|,
+name|srcFile
 argument_list|,
 name|lazypersistDir
 argument_list|)
@@ -2421,7 +2436,6 @@ block|}
 block|}
 comment|/**    * This method is invoked during DN startup when volumes are scanned to    * build up the volumeMap.    *    * Given two replicas, decide which one to keep. The preference is as    * follows:    *   1. Prefer the replica with the higher generation stamp.    *   2. If generation stamps are equal, prefer the replica with the    *      larger on-disk length.    *   3. If on-disk length is the same, prefer the replica on persistent    *      storage volume.    *   4. All other factors being equal, keep replica1.    *    * The other replica is removed from the volumeMap and is deleted from    * its storage volume.    *    * @param replica1    * @param replica2    * @param volumeMap    * @return the replica that is retained.    * @throws IOException    */
 DECL|method|resolveDuplicateReplicas ( final ReplicaInfo replica1, final ReplicaInfo replica2, final ReplicaMap volumeMap)
-specifier|private
 name|ReplicaInfo
 name|resolveDuplicateReplicas
 parameter_list|(
