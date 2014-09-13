@@ -3352,7 +3352,7 @@ name|TestDispatcher
 argument_list|()
 argument_list|)
 expr_stmt|;
-name|int
+name|long
 name|firstTimeEpoch
 init|=
 name|store
@@ -3369,7 +3369,7 @@ argument_list|,
 name|firstTimeEpoch
 argument_list|)
 expr_stmt|;
-name|int
+name|long
 name|secondTimeEpoch
 init|=
 name|store
@@ -3386,7 +3386,7 @@ argument_list|,
 name|secondTimeEpoch
 argument_list|)
 expr_stmt|;
-name|int
+name|long
 name|thirdTimeEpoch
 init|=
 name|store

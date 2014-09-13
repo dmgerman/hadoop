@@ -727,6 +727,22 @@ throw|;
 block|}
 annotation|@
 name|Override
+DECL|method|getOriginalTrackingUrl ()
+specifier|public
+name|String
+name|getOriginalTrackingUrl
+parameter_list|()
+block|{
+throw|throw
+operator|new
+name|UnsupportedOperationException
+argument_list|(
+literal|"Not supported yet."
+argument_list|)
+throw|;
+block|}
+annotation|@
+name|Override
 DECL|method|getMaxAppAttempts ()
 specifier|public
 name|int

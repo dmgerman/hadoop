@@ -1003,6 +1003,8 @@ operator|.
 name|getTrackingURL
 argument_list|()
 argument_list|,
+literal|null
+argument_list|,
 name|appAttemptHistory
 operator|.
 name|getDiagnosticsInfo

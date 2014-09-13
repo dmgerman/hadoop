@@ -1866,12 +1866,12 @@ comment|// *********** check appSchedulingInfo state ***********
 name|assertEquals
 argument_list|(
 operator|(
-literal|1
+literal|1L
 operator|<<
-literal|22
+literal|40
 operator|)
 operator|+
-literal|1
+literal|1L
 argument_list|,
 name|schedulerAttempt
 operator|.

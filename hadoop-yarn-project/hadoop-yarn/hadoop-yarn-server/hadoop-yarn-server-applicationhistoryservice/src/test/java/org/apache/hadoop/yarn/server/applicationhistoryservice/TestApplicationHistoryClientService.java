@@ -551,6 +551,17 @@ literal|"container_0_0001_01_000001/test user"
 expr_stmt|;
 name|config
 operator|.
+name|setBoolean
+argument_list|(
+name|YarnConfiguration
+operator|.
+name|APPLICATION_HISTORY_ENABLED
+argument_list|,
+literal|true
+argument_list|)
+expr_stmt|;
+name|config
+operator|.
 name|setClass
 argument_list|(
 name|YarnConfiguration

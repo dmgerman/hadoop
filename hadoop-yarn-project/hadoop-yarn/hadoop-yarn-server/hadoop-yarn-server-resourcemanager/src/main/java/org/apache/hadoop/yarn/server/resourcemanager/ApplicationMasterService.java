@@ -3671,6 +3671,20 @@ argument_list|()
 argument_list|)
 argument_list|)
 expr_stmt|;
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"The AMRMToken has been rolled-over. Send new AMRMToken back"
+operator|+
+literal|" to application: "
+operator|+
+name|appAttemptId
+operator|.
+name|getApplicationId
+argument_list|()
+argument_list|)
+expr_stmt|;
 block|}
 comment|/*        * As we are updating the response inside the lock object so we don't        * need to worry about unregister call occurring in between (which        * removes the lock object).        */
 name|lock

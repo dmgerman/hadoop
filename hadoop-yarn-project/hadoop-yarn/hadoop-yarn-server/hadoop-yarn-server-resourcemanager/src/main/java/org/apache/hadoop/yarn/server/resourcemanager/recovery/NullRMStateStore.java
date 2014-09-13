@@ -262,14 +262,14 @@ name|Override
 DECL|method|getAndIncrementEpoch ()
 specifier|public
 specifier|synchronized
-name|int
+name|long
 name|getAndIncrementEpoch
 parameter_list|()
 throws|throws
 name|Exception
 block|{
 return|return
-literal|0
+literal|0L
 return|;
 block|}
 annotation|@

@@ -343,7 +343,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * In-memory implementation of {@link TimelineStore}. This  * implementation is for test purpose only. If users improperly instantiate it,  * they may encounter reading and writing history data in different memory  * store.  *   */
+comment|/**  * In-memory implementation of {@link TimelineStore}. This  * implementation is for test purpose only. If users improperly instantiate it,  * they may encounter reading and writing history data in different memory  * store.  *   * The methods are synchronized to avoid concurrent modification on the memory.  *   */
 end_comment
 
 begin_class
@@ -418,6 +418,7 @@ annotation|@
 name|Override
 DECL|method|getEntities (String entityType, Long limit, Long windowStart, Long windowEnd, String fromId, Long fromTs, NameValuePair primaryFilter, Collection<NameValuePair> secondaryFilters, EnumSet<Field> fields)
 specifier|public
+specifier|synchronized
 name|TimelineEntities
 name|getEntities
 parameter_list|(
@@ -879,6 +880,7 @@ annotation|@
 name|Override
 DECL|method|getEntity (String entityId, String entityType, EnumSet<Field> fieldsToRetrieve)
 specifier|public
+specifier|synchronized
 name|TimelineEntity
 name|getEntity
 parameter_list|(
@@ -957,6 +959,7 @@ annotation|@
 name|Override
 DECL|method|getEntityTimelines (String entityType, SortedSet<String> entityIds, Long limit, Long windowStart, Long windowEnd, Set<String> eventTypes)
 specifier|public
+specifier|synchronized
 name|TimelineEvents
 name|getEntityTimelines
 parameter_list|(
@@ -1196,6 +1199,7 @@ annotation|@
 name|Override
 DECL|method|put (TimelineEntities data)
 specifier|public
+specifier|synchronized
 name|TimelinePutResponse
 name|put
 parameter_list|(

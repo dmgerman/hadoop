@@ -282,6 +282,20 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|io
+operator|.
+name|IOUtils
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|security
 operator|.
 name|Credentials
@@ -1168,7 +1182,7 @@ name|Override
 DECL|method|getAndIncrementEpoch ()
 specifier|public
 specifier|synchronized
-name|int
+name|long
 name|getAndIncrementEpoch
 parameter_list|()
 throws|throws
@@ -1184,7 +1198,7 @@ argument_list|,
 name|EPOCH_NODE
 argument_list|)
 decl_stmt|;
-name|int
+name|long
 name|currentEpoch
 init|=
 literal|0
@@ -3404,13 +3418,19 @@ block|{
 name|FSDataInputStream
 name|fsIn
 init|=
+literal|null
+decl_stmt|;
+try|try
+block|{
+name|fsIn
+operator|=
 name|fs
 operator|.
 name|open
 argument_list|(
 name|inputPath
 argument_list|)
-decl_stmt|;
+expr_stmt|;
 comment|// state data will not be that "long"
 name|byte
 index|[]
@@ -3432,14 +3452,22 @@ argument_list|(
 name|data
 argument_list|)
 expr_stmt|;
-name|fsIn
-operator|.
-name|close
-argument_list|()
-expr_stmt|;
 return|return
 name|data
 return|;
+block|}
+finally|finally
+block|{
+name|IOUtils
+operator|.
+name|cleanup
+argument_list|(
+name|LOG
+argument_list|,
+name|fsIn
+argument_list|)
+expr_stmt|;
+block|}
 block|}
 comment|/*    * In order to make this write atomic as a part of write we will first write    * data to .tmp file and then rename it. Here we are assuming that rename is    * atomic for underlying file system.    */
 DECL|method|writeFile (Path outputPath, byte[] data)
@@ -3483,6 +3511,8 @@ literal|null
 decl_stmt|;
 comment|// This file will be overwritten when app/attempt finishes for saving the
 comment|// final status.
+try|try
+block|{
 name|fsOut
 operator|=
 name|fs
@@ -3506,6 +3536,10 @@ operator|.
 name|close
 argument_list|()
 expr_stmt|;
+name|fsOut
+operator|=
+literal|null
+expr_stmt|;
 name|fs
 operator|.
 name|rename
@@ -3515,6 +3549,19 @@ argument_list|,
 name|outputPath
 argument_list|)
 expr_stmt|;
+block|}
+finally|finally
+block|{
+name|IOUtils
+operator|.
+name|cleanup
+argument_list|(
+name|LOG
+argument_list|,
+name|fsOut
+argument_list|)
+expr_stmt|;
+block|}
 block|}
 comment|/*    * In order to make this update atomic as a part of write we will first write    * data to .new file and then rename it. Here we are assuming that rename is    * atomic for underlying file system.    */
 DECL|method|updateFile (Path outputPath, byte[] data)

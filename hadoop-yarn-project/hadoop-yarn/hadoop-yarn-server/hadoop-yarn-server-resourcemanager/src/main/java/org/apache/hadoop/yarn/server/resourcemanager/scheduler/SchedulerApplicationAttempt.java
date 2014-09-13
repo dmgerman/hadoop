@@ -1177,7 +1177,7 @@ return|;
 block|}
 DECL|method|getNewContainerId ()
 specifier|public
-name|int
+name|long
 name|getNewContainerId
 parameter_list|()
 block|{

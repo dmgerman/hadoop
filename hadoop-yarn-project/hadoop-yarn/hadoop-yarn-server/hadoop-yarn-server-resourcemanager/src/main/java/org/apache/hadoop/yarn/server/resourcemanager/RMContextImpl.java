@@ -206,6 +206,26 @@ name|server
 operator|.
 name|resourcemanager
 operator|.
+name|metrics
+operator|.
+name|SystemMetricsPublisher
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|server
+operator|.
+name|resourcemanager
+operator|.
 name|recovery
 operator|.
 name|NullRMStateStore
@@ -649,6 +669,11 @@ specifier|private
 name|RMApplicationHistoryWriter
 name|rmApplicationHistoryWriter
 decl_stmt|;
+DECL|field|systemMetricsPublisher
+specifier|private
+name|SystemMetricsPublisher
+name|systemMetricsPublisher
+decl_stmt|;
 DECL|field|configurationProvider
 specifier|private
 name|ConfigurationProvider
@@ -656,7 +681,7 @@ name|configurationProvider
 decl_stmt|;
 DECL|field|epoch
 specifier|private
-name|int
+name|long
 name|epoch
 decl_stmt|;
 comment|/**    * Default constructor. To be used in conjunction with setter methods for    * individual fields.    */
@@ -1489,6 +1514,36 @@ return|;
 block|}
 annotation|@
 name|Override
+DECL|method|setSystemMetricsPublisher ( SystemMetricsPublisher systemMetricsPublisher)
+specifier|public
+name|void
+name|setSystemMetricsPublisher
+parameter_list|(
+name|SystemMetricsPublisher
+name|systemMetricsPublisher
+parameter_list|)
+block|{
+name|this
+operator|.
+name|systemMetricsPublisher
+operator|=
+name|systemMetricsPublisher
+expr_stmt|;
+block|}
+annotation|@
+name|Override
+DECL|method|getSystemMetricsPublisher ()
+specifier|public
+name|SystemMetricsPublisher
+name|getSystemMetricsPublisher
+parameter_list|()
+block|{
+return|return
+name|systemMetricsPublisher
+return|;
+block|}
+annotation|@
+name|Override
 DECL|method|setRMApplicationHistoryWriter ( RMApplicationHistoryWriter rmApplicationHistoryWriter)
 specifier|public
 name|void
@@ -1539,7 +1594,7 @@ annotation|@
 name|Override
 DECL|method|getEpoch ()
 specifier|public
-name|int
+name|long
 name|getEpoch
 parameter_list|()
 block|{
@@ -1549,11 +1604,11 @@ operator|.
 name|epoch
 return|;
 block|}
-DECL|method|setEpoch (int epoch)
+DECL|method|setEpoch (long epoch)
 name|void
 name|setEpoch
 parameter_list|(
-name|int
+name|long
 name|epoch
 parameter_list|)
 block|{

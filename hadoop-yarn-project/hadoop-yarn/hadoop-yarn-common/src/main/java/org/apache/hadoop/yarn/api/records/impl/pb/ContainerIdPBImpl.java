@@ -241,6 +241,9 @@ name|proto
 argument_list|)
 expr_stmt|;
 return|return
+operator|(
+name|int
+operator|)
 name|proto
 operator|.
 name|getId
@@ -249,12 +252,34 @@ return|;
 block|}
 annotation|@
 name|Override
-DECL|method|setId (int id)
+DECL|method|getContainerId ()
+specifier|public
+name|long
+name|getContainerId
+parameter_list|()
+block|{
+name|Preconditions
+operator|.
+name|checkNotNull
+argument_list|(
+name|proto
+argument_list|)
+expr_stmt|;
+return|return
+name|proto
+operator|.
+name|getId
+argument_list|()
+return|;
+block|}
+annotation|@
+name|Override
+DECL|method|setContainerId (long id)
 specifier|protected
 name|void
-name|setId
+name|setContainerId
 parameter_list|(
-name|int
+name|long
 name|id
 parameter_list|)
 block|{

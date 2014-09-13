@@ -660,6 +660,13 @@ operator|.
 name|DEFAULT_APPLICATION_HISTORY_ENABLED
 argument_list|)
 expr_stmt|;
+comment|// Only create the services when the history service is enabled, preventing
+comment|// wasting the system resources.
+if|if
+condition|(
+name|historyServiceEnabled
+condition|)
+block|{
 name|writer
 operator|=
 name|createApplicationHistoryStore
@@ -697,6 +704,7 @@ argument_list|(
 name|dispatcher
 argument_list|)
 expr_stmt|;
+block|}
 name|super
 operator|.
 name|serviceInit
