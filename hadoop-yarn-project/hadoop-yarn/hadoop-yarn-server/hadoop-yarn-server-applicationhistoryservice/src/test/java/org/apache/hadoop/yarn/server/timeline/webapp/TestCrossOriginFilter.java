@@ -424,10 +424,100 @@ name|assertTrue
 argument_list|(
 name|filter
 operator|.
-name|isOriginAllowed
+name|areOriginsAllowed
 argument_list|(
 literal|"example.com"
 argument_list|)
+argument_list|)
+expr_stmt|;
+block|}
+annotation|@
+name|Test
+DECL|method|testEncodeHeaders ()
+specifier|public
+name|void
+name|testEncodeHeaders
+parameter_list|()
+block|{
+name|String
+name|validOrigin
+init|=
+literal|"http://localhost:12345"
+decl_stmt|;
+name|String
+name|encodedValidOrigin
+init|=
+name|CrossOriginFilter
+operator|.
+name|encodeHeader
+argument_list|(
+name|validOrigin
+argument_list|)
+decl_stmt|;
+name|Assert
+operator|.
+name|assertEquals
+argument_list|(
+literal|"Valid origin encoding should match exactly"
+argument_list|,
+name|validOrigin
+argument_list|,
+name|encodedValidOrigin
+argument_list|)
+expr_stmt|;
+name|String
+name|httpResponseSplitOrigin
+init|=
+name|validOrigin
+operator|+
+literal|" \nSecondHeader: value"
+decl_stmt|;
+name|String
+name|encodedResponseSplitOrigin
+init|=
+name|CrossOriginFilter
+operator|.
+name|encodeHeader
+argument_list|(
+name|httpResponseSplitOrigin
+argument_list|)
+decl_stmt|;
+name|Assert
+operator|.
+name|assertEquals
+argument_list|(
+literal|"Http response split origin should be protected against"
+argument_list|,
+name|validOrigin
+argument_list|,
+name|encodedResponseSplitOrigin
+argument_list|)
+expr_stmt|;
+comment|// Test Origin List
+name|String
+name|validOriginList
+init|=
+literal|"http://foo.example.com:12345 http://bar.example.com:12345"
+decl_stmt|;
+name|String
+name|encodedValidOriginList
+init|=
+name|CrossOriginFilter
+operator|.
+name|encodeHeader
+argument_list|(
+name|validOriginList
+argument_list|)
+decl_stmt|;
+name|Assert
+operator|.
+name|assertEquals
+argument_list|(
+literal|"Valid origin list encoding should match exactly"
+argument_list|,
+name|validOriginList
+argument_list|,
+name|encodedValidOriginList
 argument_list|)
 expr_stmt|;
 block|}
@@ -503,7 +593,7 @@ name|assertFalse
 argument_list|(
 name|filter
 operator|.
-name|isOriginAllowed
+name|areOriginsAllowed
 argument_list|(
 literal|"example.com"
 argument_list|)
@@ -515,7 +605,7 @@ name|assertFalse
 argument_list|(
 name|filter
 operator|.
-name|isOriginAllowed
+name|areOriginsAllowed
 argument_list|(
 literal|"foo:example.com"
 argument_list|)
@@ -527,7 +617,7 @@ name|assertTrue
 argument_list|(
 name|filter
 operator|.
-name|isOriginAllowed
+name|areOriginsAllowed
 argument_list|(
 literal|"foo.example.com"
 argument_list|)
@@ -539,9 +629,48 @@ name|assertTrue
 argument_list|(
 name|filter
 operator|.
-name|isOriginAllowed
+name|areOriginsAllowed
 argument_list|(
 literal|"foo.bar.example.com"
+argument_list|)
+argument_list|)
+expr_stmt|;
+comment|// First origin is allowed
+name|Assert
+operator|.
+name|assertTrue
+argument_list|(
+name|filter
+operator|.
+name|areOriginsAllowed
+argument_list|(
+literal|"foo.example.com foo.nomatch.com"
+argument_list|)
+argument_list|)
+expr_stmt|;
+comment|// Second origin is allowed
+name|Assert
+operator|.
+name|assertTrue
+argument_list|(
+name|filter
+operator|.
+name|areOriginsAllowed
+argument_list|(
+literal|"foo.nomatch.com foo.example.com"
+argument_list|)
+argument_list|)
+expr_stmt|;
+comment|// No origin in list is allowed
+name|Assert
+operator|.
+name|assertFalse
+argument_list|(
+name|filter
+operator|.
+name|areOriginsAllowed
+argument_list|(
+literal|"foo.nomatch1.com foo.nomatch2.com"
 argument_list|)
 argument_list|)
 expr_stmt|;
@@ -1395,7 +1524,7 @@ name|assertTrue
 argument_list|(
 name|filter
 operator|.
-name|isOriginAllowed
+name|areOriginsAllowed
 argument_list|(
 literal|"example.com"
 argument_list|)
@@ -1507,7 +1636,7 @@ name|assertTrue
 argument_list|(
 name|filter
 operator|.
-name|isOriginAllowed
+name|areOriginsAllowed
 argument_list|(
 literal|"newexample.com"
 argument_list|)
