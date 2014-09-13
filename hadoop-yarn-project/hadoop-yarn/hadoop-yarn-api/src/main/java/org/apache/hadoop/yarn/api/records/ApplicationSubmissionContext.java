@@ -1019,6 +1019,33 @@ name|LogAggregationContext
 name|logAggregationContext
 parameter_list|)
 function_decl|;
+comment|/**    * Get the reservation id, that corresponds to a valid resource allocation in    * the scheduler (between start and end time of the corresponding reservation)    *     * @return the reservation id representing the unique id of the corresponding    *         reserved resource allocation in the scheduler    */
+annotation|@
+name|Public
+annotation|@
+name|Unstable
+DECL|method|getReservationID ()
+specifier|public
+specifier|abstract
+name|ReservationId
+name|getReservationID
+parameter_list|()
+function_decl|;
+comment|/**    * Set the reservation id, that correspond to a valid resource allocation in    * the scheduler (between start and end time of the corresponding reservation)    *     * @param reservationId representing the unique id of the    *          corresponding reserved resource allocation in the scheduler    */
+annotation|@
+name|Public
+annotation|@
+name|Unstable
+DECL|method|setReservationID (ReservationId reservationID)
+specifier|public
+specifier|abstract
+name|void
+name|setReservationID
+parameter_list|(
+name|ReservationId
+name|reservationID
+parameter_list|)
+function_decl|;
 block|}
 end_class
 
