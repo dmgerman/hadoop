@@ -251,7 +251,7 @@ specifier|abstract
 class|class
 name|ApplicationAttemptStateData
 block|{
-DECL|method|newInstance ( ApplicationAttemptId attemptId, Container container, ByteBuffer attemptTokens, long startTime, RMAppAttemptState finalState, String finalTrackingUrl, String diagnostics, FinalApplicationStatus amUnregisteredFinalStatus, int exitStatus, long memorySeconds, long vcoreSeconds)
+DECL|method|newInstance ( ApplicationAttemptId attemptId, Container container, ByteBuffer attemptTokens, long startTime, RMAppAttemptState finalState, String finalTrackingUrl, String diagnostics, FinalApplicationStatus amUnregisteredFinalStatus, int exitStatus, long finishTime, long memorySeconds, long vcoreSeconds)
 specifier|public
 specifier|static
 name|ApplicationAttemptStateData
@@ -283,6 +283,9 @@ name|amUnregisteredFinalStatus
 parameter_list|,
 name|int
 name|exitStatus
+parameter_list|,
+name|long
+name|finishTime
 parameter_list|,
 name|long
 name|memorySeconds
@@ -364,6 +367,13 @@ operator|.
 name|setAMContainerExitStatus
 argument_list|(
 name|exitStatus
+argument_list|)
+expr_stmt|;
+name|attemptStateData
+operator|.
+name|setFinishTime
+argument_list|(
+name|finishTime
 argument_list|)
 expr_stmt|;
 name|attemptStateData
@@ -493,6 +503,11 @@ argument_list|,
 name|attemptState
 operator|.
 name|getAMContainerExitStatus
+argument_list|()
+argument_list|,
+name|attemptState
+operator|.
+name|getFinishTime
 argument_list|()
 argument_list|,
 name|attemptState
@@ -688,7 +703,25 @@ name|int
 name|exitStatus
 parameter_list|)
 function_decl|;
-comment|/**    * Get the<em>memory seconds</em> (in MB seconds) of the application.    * @return<em>memory seconds</em> (in MB seconds) of the application    */
+comment|/**    * Get the<em>finish time</em> of the application attempt.    * @return<em>finish time</em> of the application attempt    */
+DECL|method|getFinishTime ()
+specifier|public
+specifier|abstract
+name|long
+name|getFinishTime
+parameter_list|()
+function_decl|;
+DECL|method|setFinishTime (long finishTime)
+specifier|public
+specifier|abstract
+name|void
+name|setFinishTime
+parameter_list|(
+name|long
+name|finishTime
+parameter_list|)
+function_decl|;
+comment|/**   * Get the<em>memory seconds</em> (in MB seconds) of the application.    * @return<em>memory seconds</em> (in MB seconds) of the application    */
 annotation|@
 name|Public
 annotation|@

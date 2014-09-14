@@ -4,24 +4,8 @@ comment|/** * Licensed to the Apache Software Foundation (ASF) under one * or mo
 end_comment
 
 begin_package
-DECL|package|org.apache.hadoop.mapreduce.v2.app
+DECL|package|org.apache.hadoop.yarn.util
 package|package
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|mapreduce
-operator|.
-name|v2
-operator|.
-name|app
-package|;
-end_package
-
-begin_import
-import|import
 name|org
 operator|.
 name|apache
@@ -31,10 +15,8 @@ operator|.
 name|yarn
 operator|.
 name|util
-operator|.
-name|Clock
-import|;
-end_import
+package|;
+end_package
 
 begin_class
 DECL|class|ControlledClock
