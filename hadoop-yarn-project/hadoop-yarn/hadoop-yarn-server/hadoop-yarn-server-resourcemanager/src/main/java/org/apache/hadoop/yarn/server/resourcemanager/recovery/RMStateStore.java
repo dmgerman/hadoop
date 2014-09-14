@@ -1826,6 +1826,12 @@ name|startTime
 init|=
 literal|0
 decl_stmt|;
+DECL|field|finishTime
+name|long
+name|finishTime
+init|=
+literal|0
+decl_stmt|;
 comment|// fields set when attempt completes
 DECL|field|state
 name|RMAppAttemptState
@@ -1906,13 +1912,15 @@ name|ContainerExitStatus
 operator|.
 name|INVALID
 argument_list|,
+literal|0
+argument_list|,
 name|memorySeconds
 argument_list|,
 name|vcoreSeconds
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|ApplicationAttemptState (ApplicationAttemptId attemptId, Container masterContainer, Credentials appAttemptCredentials, long startTime, RMAppAttemptState state, String finalTrackingUrl, String diagnostics, FinalApplicationStatus amUnregisteredFinalStatus, int exitStatus, long memorySeconds, long vcoreSeconds)
+DECL|method|ApplicationAttemptState (ApplicationAttemptId attemptId, Container masterContainer, Credentials appAttemptCredentials, long startTime, RMAppAttemptState state, String finalTrackingUrl, String diagnostics, FinalApplicationStatus amUnregisteredFinalStatus, int exitStatus, long finishTime, long memorySeconds, long vcoreSeconds)
 specifier|public
 name|ApplicationAttemptState
 parameter_list|(
@@ -1942,6 +1950,9 @@ name|amUnregisteredFinalStatus
 parameter_list|,
 name|int
 name|exitStatus
+parameter_list|,
+name|long
+name|finishTime
 parameter_list|,
 name|long
 name|memorySeconds
@@ -2009,6 +2020,12 @@ operator|.
 name|exitStatus
 operator|=
 name|exitStatus
+expr_stmt|;
+name|this
+operator|.
+name|finishTime
+operator|=
+name|finishTime
 expr_stmt|;
 name|this
 operator|.
@@ -2133,6 +2150,18 @@ parameter_list|()
 block|{
 return|return
 name|vcoreSeconds
+return|;
+block|}
+DECL|method|getFinishTime ()
+specifier|public
+name|long
+name|getFinishTime
+parameter_list|()
+block|{
+return|return
+name|this
+operator|.
+name|finishTime
 return|;
 block|}
 block|}

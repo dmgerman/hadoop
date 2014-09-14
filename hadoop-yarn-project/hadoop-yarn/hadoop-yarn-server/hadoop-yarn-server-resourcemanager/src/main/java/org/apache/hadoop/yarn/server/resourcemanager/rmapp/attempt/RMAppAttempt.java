@@ -485,6 +485,12 @@ name|RMAppAttemptMetrics
 name|getRMAppAttemptMetrics
 parameter_list|()
 function_decl|;
+comment|/**    * the finish time of the application attempt.    * @return the finish time of the application attempt.    */
+DECL|method|getFinishTime ()
+name|long
+name|getFinishTime
+parameter_list|()
+function_decl|;
 block|}
 end_interface
 
