@@ -12165,6 +12165,15 @@ argument_list|()
 decl_stmt|;
 if|if
 condition|(
+name|replicaState
+operator|==
+literal|null
+condition|)
+block|{
+break|break;
+block|}
+if|if
+condition|(
 name|LOG
 operator|.
 name|isDebugEnabled
