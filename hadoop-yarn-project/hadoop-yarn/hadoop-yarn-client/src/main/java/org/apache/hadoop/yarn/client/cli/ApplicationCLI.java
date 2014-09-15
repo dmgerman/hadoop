@@ -2922,6 +2922,14 @@ operator|.
 name|getApplicationResourceUsageReport
 argument_list|()
 decl_stmt|;
+if|if
+condition|(
+name|usageReport
+operator|!=
+literal|null
+condition|)
+block|{
+comment|//completed app report in the timeline server doesn't have usage report
 name|appReportStr
 operator|.
 name|print
@@ -2946,6 +2954,17 @@ operator|+
 literal|" vcore-seconds"
 argument_list|)
 expr_stmt|;
+block|}
+else|else
+block|{
+name|appReportStr
+operator|.
+name|println
+argument_list|(
+literal|"N/A"
+argument_list|)
+expr_stmt|;
+block|}
 name|appReportStr
 operator|.
 name|print

@@ -2250,6 +2250,11 @@ name|SUCCEEDED
 argument_list|,
 literal|100
 argument_list|,
+name|oldAttemptState
+operator|.
+name|getFinishTime
+argument_list|()
+argument_list|,
 literal|0
 argument_list|,
 literal|0
@@ -2374,6 +2379,11 @@ operator|.
 name|SUCCEEDED
 argument_list|,
 literal|111
+argument_list|,
+name|oldAttemptState
+operator|.
+name|getFinishTime
+argument_list|()
 argument_list|,
 literal|0
 argument_list|,
