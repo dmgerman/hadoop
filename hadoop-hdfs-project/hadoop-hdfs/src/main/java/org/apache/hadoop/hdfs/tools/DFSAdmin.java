@@ -2229,9 +2229,9 @@ literal|"\t[-getDatanodeInfo<datanode_host:ipc_port>]\n"
 operator|+
 literal|"\t[-metasave filename]\n"
 operator|+
-literal|"\t[-setStoragePolicy path policyName\n"
+literal|"\t[-setStoragePolicy path policyName]\n"
 operator|+
-literal|"\t[-getStoragePolicy path\n"
+literal|"\t[-getStoragePolicy path]\n"
 operator|+
 literal|"\t[-help [cmd]]\n"
 decl_stmt|;
