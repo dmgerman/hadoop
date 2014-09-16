@@ -471,6 +471,15 @@ name|CONFIG_PREFIX
 operator|+
 literal|"curator.client"
 decl_stmt|;
+DECL|field|JAAS_LOGIN_ENTRY_NAME
+specifier|private
+specifier|static
+specifier|final
+name|String
+name|JAAS_LOGIN_ENTRY_NAME
+init|=
+literal|"ZKSignerSecretProviderClient"
+decl_stmt|;
 DECL|field|LOG
 specifier|private
 specifier|static
@@ -1499,7 +1508,7 @@ name|ZooKeeperSaslClient
 operator|.
 name|LOGIN_CONTEXT_NAME_KEY
 argument_list|,
-literal|"ZKSignerSecretProviderClient"
+name|JAAS_LOGIN_ENTRY_NAME
 argument_list|)
 expr_stmt|;
 name|System
@@ -1666,7 +1675,7 @@ init|=
 operator|new
 name|JaasConfiguration
 argument_list|(
-literal|"Client"
+name|JAAS_LOGIN_ENTRY_NAME
 argument_list|,
 name|principal
 argument_list|,
