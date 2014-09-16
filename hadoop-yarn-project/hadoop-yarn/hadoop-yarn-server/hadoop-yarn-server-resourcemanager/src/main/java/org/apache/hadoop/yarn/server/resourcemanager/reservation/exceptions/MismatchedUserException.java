@@ -28,24 +28,6 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|yarn
-operator|.
-name|api
-operator|.
-name|protocolrecords
-operator|.
-name|ReservationSubmissionRequest
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
 name|classification
 operator|.
 name|InterfaceAudience
@@ -71,7 +53,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * Exception thrown by the admission control subsystem when there is a problem  * in trying to find an allocation for a user  * {@link ReservationSubmissionRequest}.  */
+comment|/**  * Exception thrown when an update to an existing reservation is performed  * by a user that is not the reservation owner.   */
 end_comment
 
 begin_class
@@ -79,12 +61,12 @@ annotation|@
 name|Public
 annotation|@
 name|Unstable
-DECL|class|PlanningException
+DECL|class|MismatchedUserException
 specifier|public
 class|class
-name|PlanningException
+name|MismatchedUserException
 extends|extends
-name|Exception
+name|PlanningException
 block|{
 DECL|field|serialVersionUID
 specifier|private
@@ -93,12 +75,11 @@ specifier|final
 name|long
 name|serialVersionUID
 init|=
-operator|-
-literal|684069387367879218L
+literal|8313222590561668413L
 decl_stmt|;
-DECL|method|PlanningException (String message)
+DECL|method|MismatchedUserException (String message)
 specifier|public
-name|PlanningException
+name|MismatchedUserException
 parameter_list|(
 name|String
 name|message
@@ -110,9 +91,9 @@ name|message
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|PlanningException (Throwable cause)
+DECL|method|MismatchedUserException (Throwable cause)
 specifier|public
-name|PlanningException
+name|MismatchedUserException
 parameter_list|(
 name|Throwable
 name|cause
@@ -124,9 +105,9 @@ name|cause
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|PlanningException (String message, Throwable cause)
+DECL|method|MismatchedUserException (String message, Throwable cause)
 specifier|public
-name|PlanningException
+name|MismatchedUserException
 parameter_list|(
 name|String
 name|message
