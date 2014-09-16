@@ -878,22 +878,6 @@ name|ConverterUtils
 import|;
 end_import
 
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|yarn
-operator|.
-name|util
-operator|.
-name|Records
-import|;
-end_import
-
 begin_comment
 comment|/**  * Client for Distributed Shell application submission to YARN.  *   *<p> The distributed shell client allows an application master to be launched that in turn would run   * the provided shell command on a set of containers.</p>  *   *<p>This client is meant to act as an example on how to write yarn-based applications.</p>  *   *<p> To submit an application, a client first needs to connect to the<code>ResourceManager</code>   * aka ApplicationsManager or ASM via the {@link ApplicationClientProtocol}. The {@link ApplicationClientProtocol}   * provides a way for the client to get access to cluster information and to request for a  * new {@link ApplicationId}.<p>  *   *<p> For the actual job submission, the client first has to create an {@link ApplicationSubmissionContext}.   * The {@link ApplicationSubmissionContext} defines the application details such as {@link ApplicationId}   * and application name, the priority assigned to the application and the queue  * to which this application needs to be assigned. In addition to this, the {@link ApplicationSubmissionContext}  * also defines the {@link ContainerLaunchContext} which describes the<code>Container</code> with which   * the {@link ApplicationMaster} is launched.</p>  *   *<p> The {@link ContainerLaunchContext} in this scenario defines the resources to be allocated for the   * {@link ApplicationMaster}'s container, the local resources (jars, configuration files) to be made available   * and the environment to be set for the {@link ApplicationMaster} and the commands to be executed to run the   * {@link ApplicationMaster}.<p>  *   *<p> Using the {@link ApplicationSubmissionContext}, the client submits the application to the   *<code>ResourceManager</code> and then monitors the application by requesting the<code>ResourceManager</code>   * for an {@link ApplicationReport} at regular time intervals. In case of the application taking too long, the client   * kills the application by submitting a {@link KillApplicationRequest} to the<code>ResourceManager</code>.</p>  *  */
 end_comment
@@ -1110,6 +1094,14 @@ name|boolean
 name|keepContainers
 init|=
 literal|false
+decl_stmt|;
+DECL|field|attemptFailuresValidityInterval
+specifier|private
+name|long
+name|attemptFailuresValidityInterval
+init|=
+operator|-
+literal|1
 decl_stmt|;
 comment|// Debug flag
 DECL|field|debugFlag
@@ -1602,6 +1594,25 @@ operator|+
 literal|" application attempt fails and these containers will be retrieved by"
 operator|+
 literal|" the new application attempt "
+argument_list|)
+expr_stmt|;
+name|opts
+operator|.
+name|addOption
+argument_list|(
+literal|"attempt_failures_validity_interval"
+argument_list|,
+literal|true
+argument_list|,
+literal|"when attempt_failures_validity_interval in milliseconds is set to> 0,"
+operator|+
+literal|"the failure number will not take failures which happen out of "
+operator|+
+literal|"the validityInterval into failure count. "
+operator|+
+literal|"If failure count reaches to maxAppAttempts, "
+operator|+
+literal|"the application will be failed."
 argument_list|)
 expr_stmt|;
 name|opts
@@ -2291,6 +2302,22 @@ literal|"600000"
 argument_list|)
 argument_list|)
 expr_stmt|;
+name|attemptFailuresValidityInterval
+operator|=
+name|Long
+operator|.
+name|parseLong
+argument_list|(
+name|cliParser
+operator|.
+name|getOptionValue
+argument_list|(
+literal|"attempt_failures_validity_interval"
+argument_list|,
+literal|"-1"
+argument_list|)
+argument_list|)
+expr_stmt|;
 name|log4jPropFile
 operator|=
 name|cliParser
@@ -2680,6 +2707,21 @@ argument_list|(
 name|appName
 argument_list|)
 expr_stmt|;
+if|if
+condition|(
+name|attemptFailuresValidityInterval
+operator|>=
+literal|0
+condition|)
+block|{
+name|appContext
+operator|.
+name|setAttemptFailuresValidityInterval
+argument_list|(
+name|attemptFailuresValidityInterval
+argument_list|)
+expr_stmt|;
+block|}
 comment|// set local resources for the application master
 comment|// local files or archives as needed
 comment|// In this scenario, the jar file for the application master is part of the local resources

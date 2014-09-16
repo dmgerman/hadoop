@@ -3027,7 +3027,7 @@ if|if
 condition|(
 name|requiredSize
 operator|>
-name|node
+name|storage
 operator|.
 name|getRemaining
 argument_list|()
