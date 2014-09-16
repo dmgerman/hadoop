@@ -1900,6 +1900,13 @@ throw|;
 block|}
 if|if
 condition|(
+name|lazypersistDir
+operator|.
+name|exists
+argument_list|()
+operator|&&
+operator|(
+operator|(
 operator|!
 name|DatanodeUtil
 operator|.
@@ -1915,6 +1922,8 @@ name|fullyDelete
 argument_list|(
 name|lazypersistDir
 argument_list|)
+operator|)
+operator|)
 condition|)
 block|{
 throw|throw

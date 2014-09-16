@@ -291,7 +291,7 @@ argument_list|()
 argument_list|,
 name|is
 argument_list|(
-literal|4
+literal|5
 argument_list|)
 argument_list|)
 expr_stmt|;
