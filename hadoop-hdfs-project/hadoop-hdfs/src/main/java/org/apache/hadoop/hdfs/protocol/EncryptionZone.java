@@ -79,7 +79,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * A simple class for representing an encryption zone. Presently an encryption  * zone only has a path (the root of the encryption zone) and a key name.  */
+comment|/**  * A simple class for representing an encryption zone. Presently an encryption  * zone only has a path (the root of the encryption zone), a key name, and a  * unique id. The id is used to implement batched listing of encryption zones.  */
 end_comment
 
 begin_class
@@ -108,7 +108,13 @@ specifier|final
 name|String
 name|keyName
 decl_stmt|;
-DECL|method|EncryptionZone (String path, String keyName)
+DECL|field|id
+specifier|private
+specifier|final
+name|long
+name|id
+decl_stmt|;
+DECL|method|EncryptionZone (String path, String keyName, long id)
 specifier|public
 name|EncryptionZone
 parameter_list|(
@@ -117,6 +123,9 @@ name|path
 parameter_list|,
 name|String
 name|keyName
+parameter_list|,
+name|long
+name|id
 parameter_list|)
 block|{
 name|this
@@ -130,6 +139,12 @@ operator|.
 name|keyName
 operator|=
 name|keyName
+expr_stmt|;
+name|this
+operator|.
+name|id
+operator|=
+name|id
 expr_stmt|;
 block|}
 DECL|method|getPath ()
@@ -150,6 +165,16 @@ parameter_list|()
 block|{
 return|return
 name|keyName
+return|;
+block|}
+DECL|method|getId ()
+specifier|public
+name|long
+name|getId
+parameter_list|()
+block|{
+return|return
+name|id
 return|;
 block|}
 annotation|@
@@ -177,6 +202,11 @@ operator|.
 name|append
 argument_list|(
 name|keyName
+argument_list|)
+operator|.
+name|append
+argument_list|(
+name|id
 argument_list|)
 operator|.
 name|toHashCode
@@ -262,6 +292,15 @@ operator|.
 name|keyName
 argument_list|)
 operator|.
+name|append
+argument_list|(
+name|id
+argument_list|,
+name|rhs
+operator|.
+name|id
+argument_list|)
+operator|.
 name|isEquals
 argument_list|()
 return|;
@@ -282,6 +321,10 @@ operator|+
 literal|", keyName="
 operator|+
 name|keyName
+operator|+
+literal|", id="
+operator|+
+name|id
 operator|+
 literal|"]"
 return|;
