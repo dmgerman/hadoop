@@ -68,6 +68,16 @@ end_import
 
 begin_import
 import|import
+name|javax
+operator|.
+name|servlet
+operator|.
+name|ServletContext
+import|;
+end_import
+
+begin_import
+import|import
 name|org
 operator|.
 name|apache
@@ -188,16 +198,19 @@ operator|=
 literal|false
 expr_stmt|;
 block|}
-comment|/**    * Initialize the SignerSecretProvider.  It initializes the current secret    * and starts the scheduler for the rollover to run at an interval of    * tokenValidity.    * @param config filter configuration    * @param tokenValidity The amount of time a token is valid for    * @throws Exception    */
+comment|/**    * Initialize the SignerSecretProvider.  It initializes the current secret    * and starts the scheduler for the rollover to run at an interval of    * tokenValidity.    * @param config configuration properties    * @param servletContext servlet context    * @param tokenValidity The amount of time a token is valid for    * @throws Exception    */
 annotation|@
 name|Override
-DECL|method|init (Properties config, long tokenValidity)
+DECL|method|init (Properties config, ServletContext servletContext, long tokenValidity)
 specifier|public
 name|void
 name|init
 parameter_list|(
 name|Properties
 name|config
+parameter_list|,
+name|ServletContext
+name|servletContext
 parameter_list|,
 name|long
 name|tokenValidity

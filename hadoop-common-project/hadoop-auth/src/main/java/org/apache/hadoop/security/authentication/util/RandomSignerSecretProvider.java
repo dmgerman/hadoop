@@ -22,6 +22,20 @@ end_package
 
 begin_import
 import|import
+name|com
+operator|.
+name|google
+operator|.
+name|common
+operator|.
+name|annotations
+operator|.
+name|VisibleForTesting
+import|;
+end_import
+
+begin_import
+import|import
 name|java
 operator|.
 name|util
@@ -59,7 +73,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * A SignerSecretProvider that uses a random number as it's secret.  It rolls  * the secret at a regular interval.  */
+comment|/**  * A SignerSecretProvider that uses a random number as its secret.  It rolls  * the secret at a regular interval.  */
 end_comment
 
 begin_class
@@ -100,6 +114,8 @@ argument_list|()
 expr_stmt|;
 block|}
 comment|/**    * This constructor lets you set the seed of the Random Number Generator and    * is meant for testing.    * @param seed the seed for the random number generator    */
+annotation|@
+name|VisibleForTesting
 DECL|method|RandomSignerSecretProvider (long seed)
 specifier|public
 name|RandomSignerSecretProvider
