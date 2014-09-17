@@ -234,7 +234,7 @@ name|hdfs
 operator|.
 name|protocol
 operator|.
-name|EncryptionZoneWithId
+name|EncryptionZone
 import|;
 end_import
 
@@ -9379,7 +9379,7 @@ name|newBuilder
 argument_list|()
 decl_stmt|;
 specifier|final
-name|EncryptionZoneWithId
+name|EncryptionZone
 name|ret
 init|=
 name|server
@@ -9446,7 +9446,7 @@ try|try
 block|{
 name|BatchedEntries
 argument_list|<
-name|EncryptionZoneWithId
+name|EncryptionZone
 argument_list|>
 name|entries
 init|=

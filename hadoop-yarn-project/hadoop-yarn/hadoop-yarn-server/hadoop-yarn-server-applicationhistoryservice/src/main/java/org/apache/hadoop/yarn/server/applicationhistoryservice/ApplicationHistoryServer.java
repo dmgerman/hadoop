@@ -330,6 +330,24 @@ name|yarn
 operator|.
 name|server
 operator|.
+name|security
+operator|.
+name|ApplicationACLsManager
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|server
+operator|.
 name|timeline
 operator|.
 name|LeveldbTimelineStore
@@ -558,6 +576,11 @@ specifier|private
 name|ApplicationHistoryClientService
 name|ahsClientService
 decl_stmt|;
+DECL|field|aclsManager
+specifier|private
+name|ApplicationACLsManager
+name|aclsManager
+decl_stmt|;
 DECL|field|historyManager
 specifier|private
 name|ApplicationHistoryManager
@@ -645,6 +668,13 @@ name|conf
 argument_list|)
 expr_stmt|;
 comment|// init generic history service afterwards
+name|aclsManager
+operator|=
+name|createApplicationACLsManager
+argument_list|(
+name|conf
+argument_list|)
+expr_stmt|;
 name|historyManager
 operator|=
 name|createApplicationHistoryManager
@@ -964,6 +994,23 @@ name|historyManager
 argument_list|)
 return|;
 block|}
+DECL|method|createApplicationACLsManager ( Configuration conf)
+specifier|private
+name|ApplicationACLsManager
+name|createApplicationACLsManager
+parameter_list|(
+name|Configuration
+name|conf
+parameter_list|)
+block|{
+return|return
+operator|new
+name|ApplicationACLsManager
+argument_list|(
+name|conf
+argument_list|)
+return|;
+block|}
 DECL|method|createApplicationHistoryManager ( Configuration conf)
 specifier|private
 name|ApplicationHistoryManager
@@ -1009,6 +1056,8 @@ operator|new
 name|ApplicationHistoryManagerOnTimelineStore
 argument_list|(
 name|timelineDataManager
+argument_list|,
+name|aclsManager
 argument_list|)
 return|;
 block|}

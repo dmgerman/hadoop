@@ -194,7 +194,7 @@ name|hdfs
 operator|.
 name|protocol
 operator|.
-name|EncryptionZoneWithId
+name|EncryptionZone
 import|;
 end_import
 
@@ -299,11 +299,11 @@ DECL|field|NULL_EZ
 specifier|private
 specifier|static
 specifier|final
-name|EncryptionZoneWithId
+name|EncryptionZone
 name|NULL_EZ
 init|=
 operator|new
-name|EncryptionZoneWithId
+name|EncryptionZone
 argument_list|(
 literal|""
 argument_list|,
@@ -744,9 +744,9 @@ return|return
 literal|null
 return|;
 block|}
-comment|/**    * Returns an EncryptionZoneWithId representing the ez for a given path.    * Returns an empty marker EncryptionZoneWithId if path is not in an ez.    *    * @param iip The INodesInPath of the path to check    * @return the EncryptionZoneWithId representing the ez for the path.    */
+comment|/**    * Returns an EncryptionZone representing the ez for a given path.    * Returns an empty marker EncryptionZone if path is not in an ez.    *    * @param iip The INodesInPath of the path to check    * @return the EncryptionZone representing the ez for the path.    */
 DECL|method|getEZINodeForPath (INodesInPath iip)
-name|EncryptionZoneWithId
+name|EncryptionZone
 name|getEZINodeForPath
 parameter_list|(
 name|INodesInPath
@@ -777,7 +777,7 @@ else|else
 block|{
 return|return
 operator|new
-name|EncryptionZoneWithId
+name|EncryptionZone
 argument_list|(
 name|getFullPathName
 argument_list|(
@@ -1193,7 +1193,7 @@ comment|/**    * Cursor-based listing of encryption zones.    *<p/>    * Called 
 DECL|method|listEncryptionZones (long prevId)
 name|BatchedListEntries
 argument_list|<
-name|EncryptionZoneWithId
+name|EncryptionZone
 argument_list|>
 name|listEncryptionZones
 parameter_list|(
@@ -1245,7 +1245,7 @@ decl_stmt|;
 specifier|final
 name|List
 argument_list|<
-name|EncryptionZoneWithId
+name|EncryptionZone
 argument_list|>
 name|zones
 init|=
@@ -1277,7 +1277,7 @@ operator|.
 name|add
 argument_list|(
 operator|new
-name|EncryptionZoneWithId
+name|EncryptionZone
 argument_list|(
 name|getFullPathName
 argument_list|(
@@ -1326,7 +1326,7 @@ return|return
 operator|new
 name|BatchedListEntries
 argument_list|<
-name|EncryptionZoneWithId
+name|EncryptionZone
 argument_list|>
 argument_list|(
 name|zones

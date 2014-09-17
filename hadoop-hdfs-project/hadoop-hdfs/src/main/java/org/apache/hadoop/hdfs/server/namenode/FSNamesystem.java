@@ -2320,7 +2320,7 @@ name|hdfs
 operator|.
 name|protocol
 operator|.
-name|EncryptionZoneWithId
+name|EncryptionZone
 import|;
 end_import
 
@@ -40512,7 +40512,7 @@ expr_stmt|;
 block|}
 comment|/**    * Get the encryption zone for the specified path.    *    * @param srcArg the path of a file or directory to get the EZ for.    * @return the EZ of the of the path or null if none.    * @throws AccessControlException  if the caller is not the superuser.    * @throws UnresolvedLinkException if the path can't be resolved.    */
 DECL|method|getEZForPath (final String srcArg)
-name|EncryptionZoneWithId
+name|EncryptionZone
 name|getEZForPath
 parameter_list|(
 specifier|final
@@ -40620,7 +40620,7 @@ literal|true
 argument_list|)
 decl_stmt|;
 specifier|final
-name|EncryptionZoneWithId
+name|EncryptionZone
 name|ret
 init|=
 name|dir
@@ -40670,7 +40670,7 @@ block|}
 DECL|method|listEncryptionZones (long prevId)
 name|BatchedListEntries
 argument_list|<
-name|EncryptionZoneWithId
+name|EncryptionZone
 argument_list|>
 name|listEncryptionZones
 parameter_list|(
@@ -40713,7 +40713,7 @@ expr_stmt|;
 specifier|final
 name|BatchedListEntries
 argument_list|<
-name|EncryptionZoneWithId
+name|EncryptionZone
 argument_list|>
 name|ret
 init|=

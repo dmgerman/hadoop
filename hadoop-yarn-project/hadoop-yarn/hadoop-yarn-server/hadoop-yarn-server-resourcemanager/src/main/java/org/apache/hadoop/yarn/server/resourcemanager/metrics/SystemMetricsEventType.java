@@ -35,6 +35,9 @@ block|,
 DECL|enumConstant|APP_FINISHED
 name|APP_FINISHED
 block|,
+DECL|enumConstant|APP_ACLS_UPDATED
+name|APP_ACLS_UPDATED
+block|,
 comment|// app attempt events
 DECL|enumConstant|APP_ATTEMPT_REGISTERED
 name|APP_ATTEMPT_REGISTERED

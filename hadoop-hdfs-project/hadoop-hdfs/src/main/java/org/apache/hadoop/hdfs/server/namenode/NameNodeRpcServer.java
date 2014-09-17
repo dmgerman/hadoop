@@ -926,7 +926,7 @@ name|hdfs
 operator|.
 name|protocol
 operator|.
-name|EncryptionZoneWithId
+name|EncryptionZone
 import|;
 end_import
 
@@ -8472,7 +8472,7 @@ annotation|@
 name|Override
 DECL|method|getEZForPath (String src)
 specifier|public
-name|EncryptionZoneWithId
+name|EncryptionZone
 name|getEZForPath
 parameter_list|(
 name|String
@@ -8496,7 +8496,7 @@ DECL|method|listEncryptionZones ( long prevId)
 specifier|public
 name|BatchedEntries
 argument_list|<
-name|EncryptionZoneWithId
+name|EncryptionZone
 argument_list|>
 name|listEncryptionZones
 parameter_list|(
