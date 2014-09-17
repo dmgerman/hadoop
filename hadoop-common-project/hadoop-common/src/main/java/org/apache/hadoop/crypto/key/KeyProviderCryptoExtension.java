@@ -275,13 +275,16 @@ operator|=
 name|encryptedKeyVersion
 expr_stmt|;
 block|}
-comment|/**      * Factory method to create a new EncryptedKeyVersion that can then be      * passed into {@link #decryptEncryptedKey}. Note that the fields of the      * returned EncryptedKeyVersion will only partially be populated; it is not      * necessarily suitable for operations besides decryption.      *      * @param encryptionKeyVersionName Version name of the encryption key used      *                                 to encrypt the encrypted key.      * @param encryptedKeyIv           Initialization vector of the encrypted      *                                 key. The IV of the encryption key used to      *                                 encrypt the encrypted key is derived from      *                                 this IV.      * @param encryptedKeyMaterial     Key material of the encrypted key.      * @return EncryptedKeyVersion suitable for decryption.      */
-DECL|method|createForDecryption (String encryptionKeyVersionName, byte[] encryptedKeyIv, byte[] encryptedKeyMaterial)
+comment|/**      * Factory method to create a new EncryptedKeyVersion that can then be      * passed into {@link #decryptEncryptedKey}. Note that the fields of the      * returned EncryptedKeyVersion will only partially be populated; it is not      * necessarily suitable for operations besides decryption.      *      * @param keyName Key name of the encryption key use to encrypt the      *                encrypted key.      * @param encryptionKeyVersionName Version name of the encryption key used      *                                 to encrypt the encrypted key.      * @param encryptedKeyIv           Initialization vector of the encrypted      *                                 key. The IV of the encryption key used to      *                                 encrypt the encrypted key is derived from      *                                 this IV.      * @param encryptedKeyMaterial     Key material of the encrypted key.      * @return EncryptedKeyVersion suitable for decryption.      */
+DECL|method|createForDecryption (String keyName, String encryptionKeyVersionName, byte[] encryptedKeyIv, byte[] encryptedKeyMaterial)
 specifier|public
 specifier|static
 name|EncryptedKeyVersion
 name|createForDecryption
 parameter_list|(
+name|String
+name|keyName
+parameter_list|,
 name|String
 name|encryptionKeyVersionName
 parameter_list|,
@@ -311,7 +314,7 @@ return|return
 operator|new
 name|EncryptedKeyVersion
 argument_list|(
-literal|null
+name|keyName
 argument_list|,
 name|encryptionKeyVersionName
 argument_list|,
