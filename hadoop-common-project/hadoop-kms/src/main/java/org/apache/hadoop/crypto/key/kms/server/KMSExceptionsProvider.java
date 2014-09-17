@@ -428,7 +428,7 @@ name|Response
 operator|.
 name|Status
 operator|.
-name|UNAUTHORIZED
+name|FORBIDDEN
 expr_stmt|;
 comment|// we don't audit here because we did it already when checking access
 name|doAudit
