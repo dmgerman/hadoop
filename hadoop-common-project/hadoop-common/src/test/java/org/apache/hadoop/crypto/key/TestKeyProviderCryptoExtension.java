@@ -741,6 +741,11 @@ name|createForDecryption
 argument_list|(
 name|eek
 operator|.
+name|getEncryptionKeyName
+argument_list|()
+argument_list|,
+name|eek
+operator|.
 name|getEncryptionKeyVersionName
 argument_list|()
 argument_list|,

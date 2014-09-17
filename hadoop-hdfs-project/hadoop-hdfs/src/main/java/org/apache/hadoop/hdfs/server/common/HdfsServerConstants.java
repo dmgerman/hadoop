@@ -1128,6 +1128,15 @@ name|CRYPTO_XATTR_FILE_ENCRYPTION_INFO
 init|=
 literal|"raw.hdfs.crypto.file.encryption.info"
 decl_stmt|;
+DECL|field|SECURITY_XATTR_UNREADABLE_BY_SUPERUSER
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|SECURITY_XATTR_UNREADABLE_BY_SUPERUSER
+init|=
+literal|"security.hdfs.unreadable.by.superuser"
+decl_stmt|;
 block|}
 end_class
 
