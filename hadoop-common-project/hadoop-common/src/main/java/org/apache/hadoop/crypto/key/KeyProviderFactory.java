@@ -190,6 +190,13 @@ argument_list|(
 name|KeyProviderFactory
 operator|.
 name|class
+argument_list|,
+name|KeyProviderFactory
+operator|.
+name|class
+operator|.
+name|getClassLoader
+argument_list|()
 argument_list|)
 decl_stmt|;
 comment|// Iterate through the serviceLoader to avoid lazy loading.
