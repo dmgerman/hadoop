@@ -3912,6 +3912,13 @@ argument_list|)
 expr_stmt|;
 name|excessTypes
 operator|.
+name|remove
+argument_list|(
+literal|0
+argument_list|)
+expr_stmt|;
+name|excessTypes
+operator|.
 name|add
 argument_list|(
 name|StorageType

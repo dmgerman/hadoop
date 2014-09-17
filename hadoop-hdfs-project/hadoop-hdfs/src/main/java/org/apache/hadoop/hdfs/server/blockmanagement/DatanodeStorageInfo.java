@@ -580,6 +580,7 @@ name|dfsUsed
 decl_stmt|;
 DECL|field|remaining
 specifier|private
+specifier|volatile
 name|long
 name|remaining
 decl_stmt|;
