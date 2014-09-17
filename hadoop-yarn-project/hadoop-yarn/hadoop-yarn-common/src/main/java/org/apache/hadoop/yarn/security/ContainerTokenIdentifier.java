@@ -635,13 +635,13 @@ argument_list|)
 expr_stmt|;
 name|out
 operator|.
-name|writeInt
+name|writeLong
 argument_list|(
 name|this
 operator|.
 name|containerId
 operator|.
-name|getId
+name|getContainerId
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -794,7 +794,7 @@ name|applicationAttemptId
 argument_list|,
 name|in
 operator|.
-name|readInt
+name|readLong
 argument_list|()
 argument_list|)
 expr_stmt|;
