@@ -929,8 +929,7 @@ name|conf
 return|;
 block|}
 DECL|method|writeConf (File confDir, Configuration conf)
-specifier|public
-specifier|static
+specifier|protected
 name|void
 name|writeConf
 parameter_list|(
@@ -1033,8 +1032,7 @@ argument_list|()
 expr_stmt|;
 block|}
 DECL|method|createKMSUri (URL kmsUrl)
-specifier|public
-specifier|static
+specifier|protected
 name|URI
 name|createKMSUri
 parameter_list|(
