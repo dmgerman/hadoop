@@ -3005,9 +3005,11 @@ operator|.
 name|getSimpleName
 argument_list|()
 operator|+
-literal|" [-p<space separated files/dirs> specify a list of files/dirs to migrate]"
+literal|" [-p<files/dirs> | -f<local file>]"
 operator|+
-literal|" [-f<local file name>            specify a local file containing files/dirs to migrate]"
+literal|"\n\t-p<files/dirs>\ta space separated list of HDFS files/dirs to migrate."
+operator|+
+literal|"\n\t-f<local file>\ta local file containing a list of HDFS files/dirs to migrate."
 decl_stmt|;
 DECL|method|buildCliOptions ()
 specifier|private

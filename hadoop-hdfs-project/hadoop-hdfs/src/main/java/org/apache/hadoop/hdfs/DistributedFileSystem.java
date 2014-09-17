@@ -2880,6 +2880,7 @@ name|absF
 argument_list|)
 return|;
 block|}
+comment|/**    * Set the source path to the specified storage policy.    *    * @param src The source path referring to either a directory or a file.    * @param policyName The name of the storage policy.    */
 DECL|method|setStoragePolicy (final Path src, final String policyName)
 specifier|public
 name|void
