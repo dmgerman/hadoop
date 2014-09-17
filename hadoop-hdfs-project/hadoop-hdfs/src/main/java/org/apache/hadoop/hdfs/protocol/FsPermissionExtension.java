@@ -49,7 +49,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * HDFS permission subclass used to indicate an ACL is present.  The ACL bit is  * not visible directly to users of {@link FsPermission} serialization.  This is  * done for backwards compatibility in case any existing clients assume the  * value of FsPermission is in a particular range.  */
+comment|/**  * HDFS permission subclass used to indicate an ACL is present and/or that the  * underlying file/dir is encrypted. The ACL/encrypted bits are not visible  * directly to users of {@link FsPermission} serialization.  This is  * done for backwards compatibility in case any existing clients assume the  * value of FsPermission is in a particular range.  */
 end_comment
 
 begin_class
@@ -57,10 +57,10 @@ annotation|@
 name|InterfaceAudience
 operator|.
 name|Private
-DECL|class|FsAclPermission
+DECL|class|FsPermissionExtension
 specifier|public
 class|class
-name|FsAclPermission
+name|FsPermissionExtension
 extends|extends
 name|FsPermission
 block|{
@@ -75,19 +75,42 @@ literal|1
 operator|<<
 literal|12
 decl_stmt|;
+DECL|field|ENCRYPTED_BIT
+specifier|private
+specifier|final
+specifier|static
+name|short
+name|ENCRYPTED_BIT
+init|=
+literal|1
+operator|<<
+literal|13
+decl_stmt|;
 DECL|field|aclBit
 specifier|private
 specifier|final
 name|boolean
 name|aclBit
 decl_stmt|;
-comment|/**    * Constructs a new FsAclPermission based on the given FsPermission.    *    * @param perm FsPermission containing permission bits    */
-DECL|method|FsAclPermission (FsPermission perm)
+DECL|field|encryptedBit
+specifier|private
+specifier|final
+name|boolean
+name|encryptedBit
+decl_stmt|;
+comment|/**    * Constructs a new FsPermissionExtension based on the given FsPermission.    *    * @param perm FsPermission containing permission bits    */
+DECL|method|FsPermissionExtension (FsPermission perm, boolean hasAcl, boolean isEncrypted)
 specifier|public
-name|FsAclPermission
+name|FsPermissionExtension
 parameter_list|(
 name|FsPermission
 name|perm
+parameter_list|,
+name|boolean
+name|hasAcl
+parameter_list|,
+name|boolean
+name|isEncrypted
 parameter_list|)
 block|{
 name|super
@@ -100,13 +123,17 @@ argument_list|)
 expr_stmt|;
 name|aclBit
 operator|=
-literal|true
+name|hasAcl
+expr_stmt|;
+name|encryptedBit
+operator|=
+name|isEncrypted
 expr_stmt|;
 block|}
-comment|/**    * Creates a new FsAclPermission by calling the base class constructor.    *    * @param perm short containing permission bits    */
-DECL|method|FsAclPermission (short perm)
+comment|/**    * Creates a new FsPermissionExtension by calling the base class constructor.    *    * @param perm short containing permission bits    */
+DECL|method|FsPermissionExtension (short perm)
 specifier|public
-name|FsAclPermission
+name|FsPermissionExtension
 parameter_list|(
 name|short
 name|perm
@@ -123,6 +150,16 @@ operator|(
 name|perm
 operator|&
 name|ACL_BIT
+operator|)
+operator|!=
+literal|0
+expr_stmt|;
+name|encryptedBit
+operator|=
+operator|(
+name|perm
+operator|&
+name|ENCRYPTED_BIT
 operator|)
 operator|!=
 literal|0
@@ -151,6 +188,14 @@ name|ACL_BIT
 else|:
 literal|0
 operator|)
+operator||
+operator|(
+name|encryptedBit
+condition|?
+name|ENCRYPTED_BIT
+else|:
+literal|0
+operator|)
 argument_list|)
 return|;
 block|}
@@ -164,6 +209,18 @@ parameter_list|()
 block|{
 return|return
 name|aclBit
+return|;
+block|}
+annotation|@
+name|Override
+DECL|method|getEncryptedBit ()
+specifier|public
+name|boolean
+name|getEncryptedBit
+parameter_list|()
+block|{
+return|return
+name|encryptedBit
 return|;
 block|}
 annotation|@
