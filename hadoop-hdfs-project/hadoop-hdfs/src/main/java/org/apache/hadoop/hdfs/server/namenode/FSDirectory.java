@@ -604,7 +604,7 @@ name|hdfs
 operator|.
 name|protocol
 operator|.
-name|EncryptionZoneWithId
+name|EncryptionZone
 import|;
 end_import
 
@@ -13617,7 +13617,7 @@ expr_stmt|;
 block|}
 block|}
 DECL|method|getEZForPath (INodesInPath iip)
-name|EncryptionZoneWithId
+name|EncryptionZone
 name|getEZForPath
 parameter_list|(
 name|INodesInPath
@@ -13648,7 +13648,7 @@ block|}
 DECL|method|listEncryptionZones (long prevId)
 name|BatchedListEntries
 argument_list|<
-name|EncryptionZoneWithId
+name|EncryptionZone
 argument_list|>
 name|listEncryptionZones
 parameter_list|(

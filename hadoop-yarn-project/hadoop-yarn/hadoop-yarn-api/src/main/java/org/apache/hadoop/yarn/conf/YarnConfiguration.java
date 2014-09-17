@@ -3388,6 +3388,27 @@ name|NM_PREFIX
 operator|+
 literal|"linux-container-executor.cgroups.mount-path"
 decl_stmt|;
+comment|/**    * Whether the apps should run in strict resource usage mode(not allowed to    * use spare CPU)    */
+DECL|field|NM_LINUX_CONTAINER_CGROUPS_STRICT_RESOURCE_USAGE
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|NM_LINUX_CONTAINER_CGROUPS_STRICT_RESOURCE_USAGE
+init|=
+name|NM_PREFIX
+operator|+
+literal|"linux-container-executor.cgroups.strict-resource-usage"
+decl_stmt|;
+DECL|field|DEFAULT_NM_LINUX_CONTAINER_CGROUPS_STRICT_RESOURCE_USAGE
+specifier|public
+specifier|static
+specifier|final
+name|boolean
+name|DEFAULT_NM_LINUX_CONTAINER_CGROUPS_STRICT_RESOURCE_USAGE
+init|=
+literal|false
+decl_stmt|;
 comment|/**    * Interval of time the linux container executor should try cleaning up    * cgroups entry when cleaning up a container. This is required due to what     * it seems a race condition because the SIGTERM/SIGKILL is asynch.    */
 DECL|field|NM_LINUX_CONTAINER_CGROUPS_DELETE_TIMEOUT
 specifier|public
@@ -3672,6 +3693,15 @@ DECL|field|YARN_SECURITY_SERVICE_AUTHORIZATION_RESOURCE_LOCALIZER
 name|YARN_SECURITY_SERVICE_AUTHORIZATION_RESOURCE_LOCALIZER
 init|=
 literal|"security.resourcelocalizer.protocol.acl"
+decl_stmt|;
+specifier|public
+specifier|static
+specifier|final
+name|String
+DECL|field|YARN_SECURITY_SERVICE_AUTHORIZATION_APPLICATIONHISTORY_PROTOCOL
+name|YARN_SECURITY_SERVICE_AUTHORIZATION_APPLICATIONHISTORY_PROTOCOL
+init|=
+literal|"security.applicationhistory.protocol.acl"
 decl_stmt|;
 comment|/** No. of milliseconds to wait between sending a SIGTERM and SIGKILL    * to a running container */
 DECL|field|NM_SLEEP_DELAY_BEFORE_SIGKILL_MS

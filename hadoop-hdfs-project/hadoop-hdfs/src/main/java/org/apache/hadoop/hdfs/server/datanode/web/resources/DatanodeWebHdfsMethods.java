@@ -1887,8 +1887,9 @@ try|try
 block|{
 name|out
 operator|=
-operator|new
-name|FSDataOutputStream
+name|dfsclient
+operator|.
+name|createWrappedOutputStream
 argument_list|(
 name|dfsclient
 operator|.
@@ -3110,8 +3111,9 @@ try|try
 block|{
 name|in
 operator|=
-operator|new
-name|HdfsDataInputStream
+name|dfsclient
+operator|.
+name|createWrappedInputStream
 argument_list|(
 name|dfsclient
 operator|.

@@ -50,7 +50,7 @@ name|proto
 operator|.
 name|EncryptionZonesProtos
 operator|.
-name|EncryptionZoneWithIdProto
+name|EncryptionZoneProto
 import|;
 end_import
 
@@ -676,7 +676,7 @@ name|hdfs
 operator|.
 name|protocol
 operator|.
-name|EncryptionZoneWithId
+name|EncryptionZone
 import|;
 end_import
 
@@ -17114,18 +17114,18 @@ name|build
 argument_list|()
 return|;
 block|}
-DECL|method|convert (EncryptionZoneWithId zone)
+DECL|method|convert (EncryptionZone zone)
 specifier|public
 specifier|static
-name|EncryptionZoneWithIdProto
+name|EncryptionZoneProto
 name|convert
 parameter_list|(
-name|EncryptionZoneWithId
+name|EncryptionZone
 name|zone
 parameter_list|)
 block|{
 return|return
-name|EncryptionZoneWithIdProto
+name|EncryptionZoneProto
 operator|.
 name|newBuilder
 argument_list|()
@@ -17158,19 +17158,19 @@ name|build
 argument_list|()
 return|;
 block|}
-DECL|method|convert (EncryptionZoneWithIdProto proto)
+DECL|method|convert (EncryptionZoneProto proto)
 specifier|public
 specifier|static
-name|EncryptionZoneWithId
+name|EncryptionZone
 name|convert
 parameter_list|(
-name|EncryptionZoneWithIdProto
+name|EncryptionZoneProto
 name|proto
 parameter_list|)
 block|{
 return|return
 operator|new
-name|EncryptionZoneWithId
+name|EncryptionZone
 argument_list|(
 name|proto
 operator|.

@@ -560,7 +560,7 @@ name|hdfs
 operator|.
 name|protocol
 operator|.
-name|EncryptionZoneWithId
+name|EncryptionZone
 import|;
 end_import
 
@@ -3024,7 +3024,7 @@ name|proto
 operator|.
 name|EncryptionZonesProtos
 operator|.
-name|EncryptionZoneWithIdProto
+name|EncryptionZoneProto
 import|;
 end_import
 
@@ -9006,7 +9006,7 @@ annotation|@
 name|Override
 DECL|method|getEZForPath (String src)
 specifier|public
-name|EncryptionZoneWithId
+name|EncryptionZone
 name|getEZForPath
 parameter_list|(
 name|String
@@ -9093,7 +9093,7 @@ DECL|method|listEncryptionZones (long id)
 specifier|public
 name|BatchedEntries
 argument_list|<
-name|EncryptionZoneWithId
+name|EncryptionZone
 argument_list|>
 name|listEncryptionZones
 parameter_list|(
@@ -9138,7 +9138,7 @@ argument_list|)
 decl_stmt|;
 name|List
 argument_list|<
-name|EncryptionZoneWithId
+name|EncryptionZone
 argument_list|>
 name|elements
 init|=
@@ -9154,7 +9154,7 @@ argument_list|)
 decl_stmt|;
 for|for
 control|(
-name|EncryptionZoneWithIdProto
+name|EncryptionZoneProto
 name|p
 range|:
 name|response
@@ -9180,7 +9180,7 @@ return|return
 operator|new
 name|BatchedListEntries
 argument_list|<
-name|EncryptionZoneWithId
+name|EncryptionZone
 argument_list|>
 argument_list|(
 name|elements

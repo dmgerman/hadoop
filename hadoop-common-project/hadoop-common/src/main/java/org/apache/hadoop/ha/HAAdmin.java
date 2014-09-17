@@ -820,6 +820,17 @@ block|}
 comment|/*  returns true if other target node is active or some exception occurred          and forceActive was not set  */
 if|if
 condition|(
+operator|!
+name|cmd
+operator|.
+name|hasOption
+argument_list|(
+name|FORCEACTIVE
+argument_list|)
+condition|)
+block|{
+if|if
+condition|(
 name|isOtherTargetNodeActive
 argument_list|(
 name|argv
@@ -840,6 +851,7 @@ return|return
 operator|-
 literal|1
 return|;
+block|}
 block|}
 name|HAServiceTarget
 name|target
