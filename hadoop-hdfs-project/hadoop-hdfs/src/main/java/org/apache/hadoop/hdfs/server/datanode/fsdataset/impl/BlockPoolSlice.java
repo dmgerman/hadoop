@@ -520,6 +520,12 @@ name|SHUTDOWN_HOOK_PRIORITY
 init|=
 literal|30
 decl_stmt|;
+DECL|field|deleteDuplicateReplicas
+specifier|private
+specifier|final
+name|boolean
+name|deleteDuplicateReplicas
+decl_stmt|;
 comment|// TODO:FEDERATION scalability issue - a thread per DU is needed
 DECL|field|dfsUsage
 specifier|private
@@ -635,6 +641,23 @@ argument_list|)
 throw|;
 block|}
 block|}
+name|this
+operator|.
+name|deleteDuplicateReplicas
+operator|=
+name|conf
+operator|.
+name|getBoolean
+argument_list|(
+name|DFSConfigKeys
+operator|.
+name|DFS_DATANODE_DUPLICATE_REPLICA_DELETION
+argument_list|,
+name|DFSConfigKeys
+operator|.
+name|DFS_DATANODE_DUPLICATE_REPLICA_DELETION_DEFAULT
+argument_list|)
+expr_stmt|;
 comment|// Files that were being written when the datanode was last shutdown
 comment|// are now moved back to the data directory. It is possible that
 comment|// in the future, we might want to do some sort of datanode-local
@@ -2454,6 +2477,17 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
+if|if
+condition|(
+operator|!
+name|deleteDuplicateReplicas
+condition|)
+block|{
+comment|// Leave both block replicas in place.
+return|return
+name|replica1
+return|;
+block|}
 name|ReplicaInfo
 name|replicaToKeep
 decl_stmt|;

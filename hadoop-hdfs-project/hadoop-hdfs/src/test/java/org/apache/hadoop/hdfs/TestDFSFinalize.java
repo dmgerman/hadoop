@@ -681,7 +681,7 @@ name|numDirs
 operator|++
 control|)
 block|{
-comment|/* This test requires that "current" directory not change after        * the upgrade. Actually it is ok for those contents to change.        * For now disabling block verification so that the contents are         * not changed.        */
+comment|/* This test requires that "current" directory not change after        * the upgrade. Actually it is ok for those contents to change.        * For now disabling block verification so that the contents are         * not changed.        * Disable duplicate replica deletion as the test intentionally        * mirrors the contents of storage directories.        */
 name|conf
 operator|=
 operator|new
@@ -698,6 +698,17 @@ name|DFS_DATANODE_SCAN_PERIOD_HOURS_KEY
 argument_list|,
 operator|-
 literal|1
+argument_list|)
+expr_stmt|;
+name|conf
+operator|.
+name|setBoolean
+argument_list|(
+name|DFSConfigKeys
+operator|.
+name|DFS_DATANODE_DUPLICATE_REPLICA_DELETION
+argument_list|,
+literal|false
 argument_list|)
 expr_stmt|;
 name|conf

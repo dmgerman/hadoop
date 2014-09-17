@@ -992,6 +992,25 @@ name|DFS_DATANODE_RAM_DISK_LOW_WATERMARK_REPLICAS_DEFAULT
 init|=
 literal|3
 decl_stmt|;
+comment|// This setting is for testing/internal use only.
+DECL|field|DFS_DATANODE_DUPLICATE_REPLICA_DELETION
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|DFS_DATANODE_DUPLICATE_REPLICA_DELETION
+init|=
+literal|"dfs.datanode.duplicate.replica.deletion"
+decl_stmt|;
+DECL|field|DFS_DATANODE_DUPLICATE_REPLICA_DELETION_DEFAULT
+specifier|public
+specifier|static
+specifier|final
+name|boolean
+name|DFS_DATANODE_DUPLICATE_REPLICA_DELETION_DEFAULT
+init|=
+literal|true
+decl_stmt|;
 DECL|field|DFS_NAMENODE_PATH_BASED_CACHE_BLOCK_MAP_ALLOCATION_PERCENT
 specifier|public
 specifier|static
