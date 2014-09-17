@@ -3841,7 +3841,8 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-comment|/**      * Run a Mover in command line.      *       * @param args Command line arguments      */
+block|}
+comment|/**    * Run a Mover in command line.    *    * @param args Command line arguments    */
 DECL|method|main (String[] args)
 specifier|public
 specifier|static
@@ -3861,6 +3862,8 @@ name|parseHelpArgument
 argument_list|(
 name|args
 argument_list|,
+name|Cli
+operator|.
 name|USAGE
 argument_list|,
 name|System
@@ -3934,7 +3937,6 @@ operator|-
 literal|1
 argument_list|)
 expr_stmt|;
-block|}
 block|}
 block|}
 block|}
