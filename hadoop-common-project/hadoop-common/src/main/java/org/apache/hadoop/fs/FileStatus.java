@@ -819,6 +819,20 @@ return|return
 name|permission
 return|;
 block|}
+comment|/**    * Tell whether the underlying file or directory is encrypted or not.    *    * @return true if the underlying file is encrypted.    */
+DECL|method|isEncrypted ()
+specifier|public
+name|boolean
+name|isEncrypted
+parameter_list|()
+block|{
+return|return
+name|permission
+operator|.
+name|getEncryptedBit
+argument_list|()
+return|;
+block|}
 comment|/**    * Get the owner of the file.    * @return owner of the file. The string could be empty if there is no    *         notion of owner of a file in a filesystem or if it could not     *         be determined (rare).    */
 DECL|method|getOwner ()
 specifier|public
