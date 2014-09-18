@@ -567,12 +567,10 @@ literal|100
 decl_stmt|;
 static|static
 block|{
-name|Dispatcher
+name|TestBalancer
 operator|.
-name|setBlockMoveWaitTime
-argument_list|(
-literal|1000L
-argument_list|)
+name|initTestSetup
+argument_list|()
 expr_stmt|;
 block|}
 DECL|method|createConf ()
