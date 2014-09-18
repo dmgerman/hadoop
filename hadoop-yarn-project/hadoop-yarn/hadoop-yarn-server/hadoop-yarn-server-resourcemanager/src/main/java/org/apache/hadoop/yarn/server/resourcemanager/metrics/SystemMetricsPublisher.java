@@ -1054,7 +1054,7 @@ name|SuppressWarnings
 argument_list|(
 literal|"unchecked"
 argument_list|)
-DECL|method|appAttemptFinished (RMAppAttempt appAttempt, RMAppAttemptState state, long finishedTime)
+DECL|method|appAttemptFinished (RMAppAttempt appAttempt, RMAppAttemptState appAttemtpState, RMApp app, long finishedTime)
 specifier|public
 name|void
 name|appAttemptFinished
@@ -1063,7 +1063,10 @@ name|RMAppAttempt
 name|appAttempt
 parameter_list|,
 name|RMAppAttemptState
-name|state
+name|appAttemtpState
+parameter_list|,
+name|RMApp
+name|app
 parameter_list|,
 name|long
 name|finishedTime
@@ -1104,7 +1107,9 @@ operator|.
 name|getDiagnostics
 argument_list|()
 argument_list|,
-name|appAttempt
+comment|// app will get the final status from app attempt, or create one
+comment|// based on app state if it doesn't exist
+name|app
 operator|.
 name|getFinalApplicationStatus
 argument_list|()
@@ -1113,7 +1118,7 @@ name|RMServerUtils
 operator|.
 name|createApplicationAttemptState
 argument_list|(
-name|state
+name|appAttemtpState
 argument_list|)
 argument_list|,
 name|finishedTime
