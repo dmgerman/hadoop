@@ -3484,8 +3484,9 @@ try|try
 block|{
 name|fis
 operator|=
-operator|new
-name|FSDataInputStream
+name|dfsClient
+operator|.
+name|createWrappedInputStream
 argument_list|(
 name|dfsClient
 operator|.

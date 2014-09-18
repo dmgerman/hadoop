@@ -14517,6 +14517,24 @@ return|return
 name|provider
 return|;
 block|}
+annotation|@
+name|VisibleForTesting
+DECL|method|setKeyProvider (KeyProviderCryptoExtension provider)
+specifier|public
+name|void
+name|setKeyProvider
+parameter_list|(
+name|KeyProviderCryptoExtension
+name|provider
+parameter_list|)
+block|{
+name|this
+operator|.
+name|provider
+operator|=
+name|provider
+expr_stmt|;
+block|}
 block|}
 end_class
 

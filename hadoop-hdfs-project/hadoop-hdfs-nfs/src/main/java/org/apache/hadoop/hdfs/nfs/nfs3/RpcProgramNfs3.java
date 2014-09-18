@@ -6447,8 +6447,9 @@ argument_list|)
 decl_stmt|;
 name|fos
 operator|=
-operator|new
-name|HdfsDataOutputStream
+name|dfsClient
+operator|.
+name|createWrappedOutputStream
 argument_list|(
 name|dfsClient
 operator|.
