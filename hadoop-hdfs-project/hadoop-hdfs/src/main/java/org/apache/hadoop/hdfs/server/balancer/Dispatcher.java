@@ -282,6 +282,20 @@ end_import
 
 begin_import
 import|import
+name|com
+operator|.
+name|google
+operator|.
+name|common
+operator|.
+name|annotations
+operator|.
+name|VisibleForTesting
+import|;
+end_import
+
+begin_import
+import|import
 name|org
 operator|.
 name|apache
@@ -360,7 +374,35 @@ name|hadoop
 operator|.
 name|hdfs
 operator|.
+name|DFSConfigKeys
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
 name|DFSUtil
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|DistributedFileSystem
 import|;
 end_import
 
@@ -867,18 +909,17 @@ name|MAX_NO_PENDING_MOVE_ITERATIONS
 init|=
 literal|5
 decl_stmt|;
-DECL|field|DELAY_AFTER_ERROR
+comment|/**    * the period of time to delay the usage of a DataNode after hitting    * errors when using it for migrating data    */
+DECL|field|delayAfterErrors
 specifier|private
 specifier|static
-specifier|final
 name|long
-name|DELAY_AFTER_ERROR
+name|delayAfterErrors
 init|=
 literal|10
 operator|*
-literal|1000L
+literal|1000
 decl_stmt|;
-comment|// 10 seconds
 DECL|field|nnc
 specifier|private
 specifier|final
@@ -967,10 +1008,16 @@ DECL|field|storageGroupMap
 specifier|private
 specifier|final
 name|StorageGroupMap
+argument_list|<
+name|StorageGroup
+argument_list|>
 name|storageGroupMap
 init|=
 operator|new
 name|StorageGroupMap
+argument_list|<
+name|StorageGroup
+argument_list|>
 argument_list|()
 decl_stmt|;
 DECL|field|cluster
@@ -1142,9 +1189,15 @@ block|}
 block|}
 block|}
 DECL|class|StorageGroupMap
+specifier|public
 specifier|static
 class|class
 name|StorageGroupMap
+parameter_list|<
+name|G
+extends|extends
+name|StorageGroup
+parameter_list|>
 block|{
 DECL|method|toKey (String datanodeUuid, StorageType storageType)
 specifier|private
@@ -1174,7 +1227,7 @@ name|Map
 argument_list|<
 name|String
 argument_list|,
-name|StorageGroup
+name|G
 argument_list|>
 name|map
 init|=
@@ -1183,12 +1236,13 @@ name|HashMap
 argument_list|<
 name|String
 argument_list|,
-name|StorageGroup
+name|G
 argument_list|>
 argument_list|()
 decl_stmt|;
 DECL|method|get (String datanodeUuid, StorageType storageType)
-name|StorageGroup
+specifier|public
+name|G
 name|get
 parameter_list|(
 name|String
@@ -1212,11 +1266,12 @@ argument_list|)
 argument_list|)
 return|;
 block|}
-DECL|method|put (StorageGroup g)
+DECL|method|put (G g)
+specifier|public
 name|void
 name|put
 parameter_list|(
-name|StorageGroup
+name|G
 name|g
 parameter_list|)
 block|{
@@ -1285,10 +1340,26 @@ name|clear
 argument_list|()
 expr_stmt|;
 block|}
+DECL|method|values ()
+specifier|public
+name|Collection
+argument_list|<
+name|G
+argument_list|>
+name|values
+parameter_list|()
+block|{
+return|return
+name|map
+operator|.
+name|values
+argument_list|()
+return|;
+block|}
 block|}
 comment|/** This class keeps track of a scheduled block move */
 DECL|class|PendingMove
-specifier|private
+specifier|public
 class|class
 name|PendingMove
 block|{
@@ -1312,11 +1383,30 @@ specifier|private
 name|StorageGroup
 name|target
 decl_stmt|;
-DECL|method|PendingMove ()
+DECL|method|PendingMove (Source source, StorageGroup target)
 specifier|private
 name|PendingMove
-parameter_list|()
-block|{     }
+parameter_list|(
+name|Source
+name|source
+parameter_list|,
+name|StorageGroup
+name|target
+parameter_list|)
+block|{
+name|this
+operator|.
+name|source
+operator|=
+name|source
+expr_stmt|;
+name|this
+operator|.
+name|target
+operator|=
+name|target
+expr_stmt|;
+block|}
 annotation|@
 name|Override
 DECL|method|toString ()
@@ -1330,11 +1420,24 @@ name|Block
 name|b
 init|=
 name|block
+operator|!=
+literal|null
+condition|?
+name|block
 operator|.
 name|getBlock
 argument_list|()
+else|:
+literal|null
 decl_stmt|;
-return|return
+name|String
+name|bStr
+init|=
+name|b
+operator|!=
+literal|null
+condition|?
+operator|(
 name|b
 operator|+
 literal|" with size="
@@ -1344,7 +1447,15 @@ operator|.
 name|getNumBytes
 argument_list|()
 operator|+
-literal|" from "
+literal|" "
+operator|)
+else|:
+literal|" "
+decl_stmt|;
+return|return
+name|bStr
+operator|+
+literal|"from "
 operator|+
 name|source
 operator|.
@@ -1360,9 +1471,17 @@ argument_list|()
 operator|+
 literal|" through "
 operator|+
+operator|(
+name|proxySource
+operator|!=
+literal|null
+condition|?
 name|proxySource
 operator|.
 name|datanode
+else|:
+literal|""
+operator|)
 return|;
 block|}
 comment|/**      * Choose a block& a proxy source for this pendingMove whose source&      * target have already been chosen.      *       * @return true if a block and its proxy are chosen; false otherwise      */
@@ -1372,6 +1491,16 @@ name|boolean
 name|chooseBlockAndProxy
 parameter_list|()
 block|{
+comment|// source and target must have the same storage type
+specifier|final
+name|StorageType
+name|t
+init|=
+name|source
+operator|.
+name|getStorageType
+argument_list|()
+decl_stmt|;
 comment|// iterate all source's blocks until find a good one
 for|for
 control|(
@@ -1401,6 +1530,8 @@ name|i
 operator|.
 name|next
 argument_list|()
+argument_list|,
+name|t
 argument_list|)
 condition|)
 block|{
@@ -1419,13 +1550,16 @@ literal|false
 return|;
 block|}
 comment|/**      * @return true if the given block is good for the tentative move.      */
-DECL|method|markMovedIfGoodBlock (DBlock block)
+DECL|method|markMovedIfGoodBlock (DBlock block, StorageType targetStorageType)
 specifier|private
 name|boolean
 name|markMovedIfGoodBlock
 parameter_list|(
 name|DBlock
 name|block
+parameter_list|,
+name|StorageType
+name|targetStorageType
 parameter_list|)
 block|{
 synchronized|synchronized
@@ -1445,6 +1579,8 @@ argument_list|(
 name|source
 argument_list|,
 name|target
+argument_list|,
+name|targetStorageType
 argument_list|,
 name|block
 argument_list|)
@@ -1918,6 +2054,14 @@ name|getMessage
 argument_list|()
 argument_list|)
 expr_stmt|;
+name|target
+operator|.
+name|getDDatanode
+argument_list|()
+operator|.
+name|setHasFailure
+argument_list|()
+expr_stmt|;
 comment|// Proxy or target may have some issues, delay before using these nodes
 comment|// further in order to avoid a potential storm of "threads quota
 comment|// exceeded" warnings when the dispatcher gets out of sync with work
@@ -1926,7 +2070,7 @@ name|proxySource
 operator|.
 name|activateDelay
 argument_list|(
-name|DELAY_AFTER_ERROR
+name|delayAfterErrors
 argument_list|)
 expr_stmt|;
 name|target
@@ -1936,7 +2080,7 @@ argument_list|()
 operator|.
 name|activateDelay
 argument_list|(
-name|DELAY_AFTER_ERROR
+name|delayAfterErrors
 argument_list|)
 expr_stmt|;
 block|}
@@ -2181,7 +2325,7 @@ block|}
 block|}
 comment|/** A class for keeping track of block locations in the dispatcher. */
 DECL|class|DBlock
-specifier|private
+specifier|public
 specifier|static
 class|class
 name|DBlock
@@ -2194,6 +2338,7 @@ name|StorageGroup
 argument_list|>
 block|{
 DECL|method|DBlock (Block block)
+specifier|public
 name|DBlock
 parameter_list|(
 name|Block
@@ -2205,6 +2350,54 @@ argument_list|(
 name|block
 argument_list|)
 expr_stmt|;
+block|}
+annotation|@
+name|Override
+DECL|method|isLocatedOn (StorageGroup loc)
+specifier|public
+specifier|synchronized
+name|boolean
+name|isLocatedOn
+parameter_list|(
+name|StorageGroup
+name|loc
+parameter_list|)
+block|{
+comment|// currently we only check if replicas are located on the same DataNodes
+comment|// since we do not have the capability to store two replicas in the same
+comment|// DataNode even though they are on two different storage types
+for|for
+control|(
+name|StorageGroup
+name|existing
+range|:
+name|locations
+control|)
+block|{
+if|if
+condition|(
+name|existing
+operator|.
+name|getDatanodeInfo
+argument_list|()
+operator|.
+name|equals
+argument_list|(
+name|loc
+operator|.
+name|getDatanodeInfo
+argument_list|()
+argument_list|)
+condition|)
+block|{
+return|return
+literal|true
+return|;
+block|}
+block|}
+return|return
+literal|false
+return|;
 block|}
 block|}
 comment|/** The class represents a desired move. */
@@ -2260,12 +2453,14 @@ block|}
 block|}
 comment|/** A class that keeps track of a datanode. */
 DECL|class|DDatanode
+specifier|public
 specifier|static
 class|class
 name|DDatanode
 block|{
 comment|/** A group of storages in a datanode with the same storage type. */
 DECL|class|StorageGroup
+specifier|public
 class|class
 name|StorageGroup
 block|{
@@ -2310,6 +2505,16 @@ operator|=
 name|maxSize2Move
 expr_stmt|;
 block|}
+DECL|method|getStorageType ()
+specifier|public
+name|StorageType
+name|getStorageType
+parameter_list|()
+block|{
+return|return
+name|storageType
+return|;
+block|}
 DECL|method|getDDatanode ()
 specifier|private
 name|DDatanode
@@ -2323,6 +2528,7 @@ name|this
 return|;
 block|}
 DECL|method|getDatanodeInfo ()
+specifier|public
 name|DatanodeInfo
 name|getDatanodeInfo
 parameter_list|()
@@ -2337,16 +2543,31 @@ return|;
 block|}
 comment|/** Decide if still need to move more bytes */
 DECL|method|hasSpaceForScheduling ()
-specifier|synchronized
 name|boolean
 name|hasSpaceForScheduling
 parameter_list|()
 block|{
 return|return
+name|hasSpaceForScheduling
+argument_list|(
+literal|0L
+argument_list|)
+return|;
+block|}
+DECL|method|hasSpaceForScheduling (long size)
+specifier|synchronized
+name|boolean
+name|hasSpaceForScheduling
+parameter_list|(
+name|long
+name|size
+parameter_list|)
+block|{
+return|return
 name|availableSizeToMove
 argument_list|()
 operator|>
-literal|0L
+name|size
 return|;
 block|}
 comment|/** @return the total number of bytes that need to be moved */
@@ -2364,6 +2585,7 @@ return|;
 block|}
 comment|/** increment scheduled size */
 DECL|method|incScheduledSize (long size)
+specifier|public
 specifier|synchronized
 name|void
 name|incScheduledSize
@@ -2400,6 +2622,73 @@ operator|=
 literal|0L
 expr_stmt|;
 block|}
+DECL|method|addPendingMove (DBlock block, final PendingMove pm)
+specifier|private
+name|PendingMove
+name|addPendingMove
+parameter_list|(
+name|DBlock
+name|block
+parameter_list|,
+specifier|final
+name|PendingMove
+name|pm
+parameter_list|)
+block|{
+if|if
+condition|(
+name|getDDatanode
+argument_list|()
+operator|.
+name|addPendingBlock
+argument_list|(
+name|pm
+argument_list|)
+condition|)
+block|{
+if|if
+condition|(
+name|pm
+operator|.
+name|markMovedIfGoodBlock
+argument_list|(
+name|block
+argument_list|,
+name|getStorageType
+argument_list|()
+argument_list|)
+condition|)
+block|{
+name|incScheduledSize
+argument_list|(
+name|pm
+operator|.
+name|block
+operator|.
+name|getNumBytes
+argument_list|()
+argument_list|)
+expr_stmt|;
+return|return
+name|pm
+return|;
+block|}
+else|else
+block|{
+name|getDDatanode
+argument_list|()
+operator|.
+name|removePendingBlock
+argument_list|(
+name|pm
+argument_list|)
+expr_stmt|;
+block|}
+block|}
+return|return
+literal|null
+return|;
+block|}
 comment|/** @return the name for display */
 DECL|method|getDisplayName ()
 name|String
@@ -2433,7 +2722,32 @@ specifier|final
 name|DatanodeInfo
 name|datanode
 decl_stmt|;
-DECL|field|storageMap
+DECL|field|sourceMap
+specifier|private
+specifier|final
+name|EnumMap
+argument_list|<
+name|StorageType
+argument_list|,
+name|Source
+argument_list|>
+name|sourceMap
+init|=
+operator|new
+name|EnumMap
+argument_list|<
+name|StorageType
+argument_list|,
+name|Source
+argument_list|>
+argument_list|(
+name|StorageType
+operator|.
+name|class
+argument_list|)
+decl_stmt|;
+DECL|field|targetMap
+specifier|private
 specifier|final
 name|EnumMap
 argument_list|<
@@ -2441,7 +2755,7 @@ name|StorageType
 argument_list|,
 name|StorageGroup
 argument_list|>
-name|storageMap
+name|targetMap
 init|=
 operator|new
 name|EnumMap
@@ -2473,6 +2787,14 @@ name|PendingMove
 argument_list|>
 name|pendings
 decl_stmt|;
+DECL|field|hasFailure
+specifier|private
+specifier|volatile
+name|boolean
+name|hasFailure
+init|=
+literal|false
+decl_stmt|;
 DECL|field|maxConcurrentMoves
 specifier|private
 specifier|final
@@ -2497,21 +2819,14 @@ operator|+
 literal|":"
 operator|+
 name|datanode
-operator|+
-literal|":"
-operator|+
-name|storageMap
-operator|.
-name|values
-argument_list|()
 return|;
 block|}
-DECL|method|DDatanode (DatanodeStorageReport r, int maxConcurrentMoves)
+DECL|method|DDatanode (DatanodeInfo datanode, int maxConcurrentMoves)
 specifier|private
 name|DDatanode
 parameter_list|(
-name|DatanodeStorageReport
-name|r
+name|DatanodeInfo
+name|datanode
 parameter_list|,
 name|int
 name|maxConcurrentMoves
@@ -2521,10 +2836,7 @@ name|this
 operator|.
 name|datanode
 operator|=
-name|r
-operator|.
-name|getDatanodeInfo
-argument_list|()
+name|datanode
 expr_stmt|;
 name|this
 operator|.
@@ -2546,23 +2858,47 @@ name|maxConcurrentMoves
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|put (StorageType storageType, StorageGroup g)
+DECL|method|getDatanodeInfo ()
+specifier|public
+name|DatanodeInfo
+name|getDatanodeInfo
+parameter_list|()
+block|{
+return|return
+name|datanode
+return|;
+block|}
+DECL|method|put (StorageType storageType, G g, EnumMap<StorageType, G> map)
 specifier|private
+specifier|static
+parameter_list|<
+name|G
+extends|extends
+name|StorageGroup
+parameter_list|>
 name|void
 name|put
 parameter_list|(
 name|StorageType
 name|storageType
 parameter_list|,
-name|StorageGroup
+name|G
 name|g
+parameter_list|,
+name|EnumMap
+argument_list|<
+name|StorageType
+argument_list|,
+name|G
+argument_list|>
+name|map
 parameter_list|)
 block|{
 specifier|final
 name|StorageGroup
 name|existing
 init|=
-name|storageMap
+name|map
 operator|.
 name|put
 argument_list|(
@@ -2581,9 +2917,10 @@ literal|null
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|addStorageGroup (StorageType storageType, long maxSize2Move)
+DECL|method|addTarget (StorageType storageType, long maxSize2Move)
+specifier|public
 name|StorageGroup
-name|addStorageGroup
+name|addTarget
 parameter_list|(
 name|StorageType
 name|storageType
@@ -2609,6 +2946,8 @@ argument_list|(
 name|storageType
 argument_list|,
 name|g
+argument_list|,
+name|targetMap
 argument_list|)
 expr_stmt|;
 return|return
@@ -2616,6 +2955,7 @@ name|g
 return|;
 block|}
 DECL|method|addSource (StorageType storageType, long maxSize2Move, Dispatcher d)
+specifier|public
 name|Source
 name|addSource
 parameter_list|(
@@ -2650,6 +2990,8 @@ argument_list|(
 name|storageType
 argument_list|,
 name|s
+argument_list|,
+name|sourceMap
 argument_list|)
 expr_stmt|;
 return|return
@@ -2791,9 +3133,22 @@ name|pendingBlock
 argument_list|)
 return|;
 block|}
+DECL|method|setHasFailure ()
+name|void
+name|setHasFailure
+parameter_list|()
+block|{
+name|this
+operator|.
+name|hasFailure
+operator|=
+literal|true
+expr_stmt|;
+block|}
 block|}
 comment|/** A node that can be the sources of a block move */
 DECL|class|Source
+specifier|public
 class|class
 name|Source
 extends|extends
@@ -3130,6 +3485,14 @@ name|DBlock
 name|block
 parameter_list|)
 block|{
+comment|// source and target must have the same storage type
+specifier|final
+name|StorageType
+name|sourceStorageType
+init|=
+name|getStorageType
+argument_list|()
+decl_stmt|;
 for|for
 control|(
 name|Task
@@ -3151,6 +3514,8 @@ argument_list|,
 name|t
 operator|.
 name|target
+argument_list|,
+name|sourceStorageType
 argument_list|,
 name|block
 argument_list|)
@@ -3212,12 +3577,19 @@ operator|.
 name|getDDatanode
 argument_list|()
 decl_stmt|;
+specifier|final
 name|PendingMove
 name|pendingBlock
 init|=
 operator|new
 name|PendingMove
-argument_list|()
+argument_list|(
+name|this
+argument_list|,
+name|task
+operator|.
+name|target
+argument_list|)
 decl_stmt|;
 if|if
 condition|(
@@ -3230,20 +3602,6 @@ argument_list|)
 condition|)
 block|{
 comment|// target is not busy, so do a tentative block allocation
-name|pendingBlock
-operator|.
-name|source
-operator|=
-name|this
-expr_stmt|;
-name|pendingBlock
-operator|.
-name|target
-operator|=
-name|task
-operator|.
-name|target
-expr_stmt|;
 if|if
 condition|(
 name|pendingBlock
@@ -3308,6 +3666,36 @@ block|}
 block|}
 return|return
 literal|null
+return|;
+block|}
+comment|/** Add a pending move */
+DECL|method|addPendingMove (DBlock block, StorageGroup target)
+specifier|public
+name|PendingMove
+name|addPendingMove
+parameter_list|(
+name|DBlock
+name|block
+parameter_list|,
+name|StorageGroup
+name|target
+parameter_list|)
+block|{
+return|return
+name|target
+operator|.
+name|addPendingMove
+argument_list|(
+name|block
+argument_list|,
+operator|new
+name|PendingMove
+argument_list|(
+name|this
+argument_list|,
+name|target
+argument_list|)
+argument_list|)
 return|;
 block|}
 comment|/** Iterate all source's blocks to remove moved ones */
@@ -3479,29 +3867,9 @@ name|noPendingMoveIteration
 operator|=
 literal|0
 expr_stmt|;
-comment|// move the block
-name|moveExecutor
-operator|.
-name|execute
+name|executePendingMove
 argument_list|(
-operator|new
-name|Runnable
-argument_list|()
-block|{
-annotation|@
-name|Override
-specifier|public
-name|void
-name|run
-parameter_list|()
-block|{
 name|p
-operator|.
-name|dispatch
-argument_list|()
-expr_stmt|;
-block|}
-block|}
 argument_list|)
 expr_stmt|;
 continue|continue;
@@ -3710,6 +4078,12 @@ name|this
 operator|.
 name|dispatchExecutor
 operator|=
+name|dispatcherThreads
+operator|==
+literal|0
+condition|?
+literal|null
+else|:
 name|Executors
 operator|.
 name|newFixedThreadPool
@@ -3765,8 +4139,25 @@ name|fallbackToSimpleAuthAllowed
 argument_list|)
 expr_stmt|;
 block|}
+DECL|method|getDistributedFileSystem ()
+specifier|public
+name|DistributedFileSystem
+name|getDistributedFileSystem
+parameter_list|()
+block|{
+return|return
+name|nnc
+operator|.
+name|getDistributedFileSystem
+argument_list|()
+return|;
+block|}
 DECL|method|getStorageGroupMap ()
+specifier|public
 name|StorageGroupMap
+argument_list|<
+name|StorageGroup
+argument_list|>
 name|getStorageGroupMap
 parameter_list|()
 block|{
@@ -3775,6 +4166,7 @@ name|storageGroupMap
 return|;
 block|}
 DECL|method|getCluster ()
+specifier|public
 name|NetworkTopology
 name|getCluster
 parameter_list|()
@@ -4007,6 +4399,7 @@ return|;
 block|}
 comment|/** Get live datanode storage reports and then build the network topology. */
 DECL|method|init ()
+specifier|public
 name|List
 argument_list|<
 name|DatanodeStorageReport
@@ -4093,24 +4486,60 @@ return|return
 name|trimmed
 return|;
 block|}
-DECL|method|newDatanode (DatanodeStorageReport r)
+DECL|method|newDatanode (DatanodeInfo datanode)
 specifier|public
 name|DDatanode
 name|newDatanode
 parameter_list|(
-name|DatanodeStorageReport
-name|r
+name|DatanodeInfo
+name|datanode
 parameter_list|)
 block|{
 return|return
 operator|new
 name|DDatanode
 argument_list|(
-name|r
+name|datanode
 argument_list|,
 name|maxConcurrentMovesPerNode
 argument_list|)
 return|;
+block|}
+DECL|method|executePendingMove (final PendingMove p)
+specifier|public
+name|void
+name|executePendingMove
+parameter_list|(
+specifier|final
+name|PendingMove
+name|p
+parameter_list|)
+block|{
+comment|// move the block
+name|moveExecutor
+operator|.
+name|execute
+argument_list|(
+operator|new
+name|Runnable
+argument_list|()
+block|{
+annotation|@
+name|Override
+specifier|public
+name|void
+name|run
+parameter_list|()
+block|{
+name|p
+operator|.
+name|dispatch
+argument_list|()
+expr_stmt|;
+block|}
+block|}
+argument_list|)
+expr_stmt|;
 block|}
 DECL|method|dispatchAndCheckContinue ()
 specifier|public
@@ -4278,7 +4707,9 @@ block|}
 block|}
 comment|// wait for all block moving to be done
 name|waitForMoveCompletion
-argument_list|()
+argument_list|(
+name|targets
+argument_list|)
 expr_stmt|;
 return|return
 name|bytesMoved
@@ -4298,28 +4729,27 @@ name|blockMoveWaitTime
 init|=
 literal|30000L
 decl_stmt|;
-comment|/** set the sleeping period for block move completion check */
-DECL|method|setBlockMoveWaitTime (long time)
+comment|/**    * Wait for all block move confirmations.    * @return true if there is failed move execution    */
+DECL|method|waitForMoveCompletion ( Iterable<? extends StorageGroup> targets)
+specifier|public
 specifier|static
-name|void
-name|setBlockMoveWaitTime
+name|boolean
+name|waitForMoveCompletion
 parameter_list|(
-name|long
-name|time
+name|Iterable
+argument_list|<
+name|?
+extends|extends
+name|StorageGroup
+argument_list|>
+name|targets
 parameter_list|)
 block|{
-name|blockMoveWaitTime
-operator|=
-name|time
-expr_stmt|;
-block|}
-comment|/** Wait for all block move confirmations. */
-DECL|method|waitForMoveCompletion ()
-specifier|private
-name|void
-name|waitForMoveCompletion
-parameter_list|()
-block|{
+name|boolean
+name|hasFailure
+init|=
+literal|false
+decl_stmt|;
 for|for
 control|(
 init|;
@@ -4357,14 +4787,28 @@ literal|false
 expr_stmt|;
 break|break;
 block|}
+else|else
+block|{
+name|hasFailure
+operator||=
+name|t
+operator|.
+name|getDDatanode
+argument_list|()
+operator|.
+name|hasFailure
+expr_stmt|;
+block|}
 block|}
 if|if
 condition|(
 name|empty
 condition|)
 block|{
-return|return;
-comment|//all pending queues are empty
+return|return
+name|hasFailure
+return|;
+comment|// all pending queues are empty
 block|}
 try|try
 block|{
@@ -4384,17 +4828,20 @@ parameter_list|)
 block|{       }
 block|}
 block|}
-comment|/**    * Decide if the block is a good candidate to be moved from source to target.    * A block is a good candidate if     * 1. the block is not in the process of being moved/has not been moved;    * 2. the block does not have a replica on the target;    * 3. doing the move does not reduce the number of racks that the block has    */
-DECL|method|isGoodBlockCandidate (Source source, StorageGroup target, DBlock block)
+comment|/**    * Decide if the block is a good candidate to be moved from source to target.    * A block is a good candidate if    * 1. the block is not in the process of being moved/has not been moved;    * 2. the block does not have a replica on the target;    * 3. doing the move does not reduce the number of racks that the block has    */
+DECL|method|isGoodBlockCandidate (StorageGroup source, StorageGroup target, StorageType targetStorageType, DBlock block)
 specifier|private
 name|boolean
 name|isGoodBlockCandidate
 parameter_list|(
-name|Source
+name|StorageGroup
 name|source
 parameter_list|,
 name|StorageGroup
 name|target
+parameter_list|,
+name|StorageType
+name|targetStorageType
 parameter_list|,
 name|DBlock
 name|block
@@ -4402,13 +4849,11 @@ parameter_list|)
 block|{
 if|if
 condition|(
-name|source
-operator|.
-name|storageType
-operator|!=
 name|target
 operator|.
 name|storageType
+operator|!=
+name|targetStorageType
 condition|)
 block|{
 return|return
@@ -4456,11 +4901,11 @@ argument_list|()
 operator|&&
 name|isOnSameNodeGroupWithReplicas
 argument_list|(
+name|source
+argument_list|,
 name|target
 argument_list|,
 name|block
-argument_list|,
-name|source
 argument_list|)
 condition|)
 block|{
@@ -4489,12 +4934,12 @@ literal|true
 return|;
 block|}
 comment|/**    * Determine whether moving the given block replica from source to target    * would reduce the number of racks of the block replicas.    */
-DECL|method|reduceNumOfRacks (Source source, StorageGroup target, DBlock block)
+DECL|method|reduceNumOfRacks (StorageGroup source, StorageGroup target, DBlock block)
 specifier|private
 name|boolean
 name|reduceNumOfRacks
 parameter_list|(
-name|Source
+name|StorageGroup
 name|source
 parameter_list|,
 name|StorageGroup
@@ -4630,20 +5075,20 @@ return|return
 literal|true
 return|;
 block|}
-comment|/**    * Check if there are any replica (other than source) on the same node group    * with target. If true, then target is not a good candidate for placing    * specific replica as we don't want 2 replicas under the same nodegroup.    *     * @return true if there are any replica (other than source) on the same node    *         group with target    */
-DECL|method|isOnSameNodeGroupWithReplicas ( StorageGroup target, DBlock block, Source source)
+comment|/**    * Check if there are any replica (other than source) on the same node group    * with target. If true, then target is not a good candidate for placing    * specific replica as we don't want 2 replicas under the same nodegroup.    *    * @return true if there are any replica (other than source) on the same node    *         group with target    */
+DECL|method|isOnSameNodeGroupWithReplicas (StorageGroup source, StorageGroup target, DBlock block)
 specifier|private
 name|boolean
 name|isOnSameNodeGroupWithReplicas
 parameter_list|(
 name|StorageGroup
+name|source
+parameter_list|,
+name|StorageGroup
 name|target
 parameter_list|,
 name|DBlock
 name|block
-parameter_list|,
-name|Source
-name|source
 parameter_list|)
 block|{
 specifier|final
@@ -4740,17 +5185,61 @@ name|cleanup
 argument_list|()
 expr_stmt|;
 block|}
+comment|/** set the sleeping period for block move completion check */
+annotation|@
+name|VisibleForTesting
+DECL|method|setBlockMoveWaitTime (long time)
+specifier|public
+specifier|static
+name|void
+name|setBlockMoveWaitTime
+parameter_list|(
+name|long
+name|time
+parameter_list|)
+block|{
+name|blockMoveWaitTime
+operator|=
+name|time
+expr_stmt|;
+block|}
+annotation|@
+name|VisibleForTesting
+DECL|method|setDelayAfterErrors (long time)
+specifier|public
+specifier|static
+name|void
+name|setDelayAfterErrors
+parameter_list|(
+name|long
+name|time
+parameter_list|)
+block|{
+name|delayAfterErrors
+operator|=
+name|time
+expr_stmt|;
+block|}
 comment|/** shutdown thread pools */
 DECL|method|shutdownNow ()
+specifier|public
 name|void
 name|shutdownNow
 parameter_list|()
+block|{
+if|if
+condition|(
+name|dispatchExecutor
+operator|!=
+literal|null
+condition|)
 block|{
 name|dispatchExecutor
 operator|.
 name|shutdownNow
 argument_list|()
 expr_stmt|;
+block|}
 name|moveExecutor
 operator|.
 name|shutdownNow

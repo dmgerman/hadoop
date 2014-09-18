@@ -8794,6 +8794,23 @@ name|asList
 argument_list|(
 name|targets
 argument_list|)
+operator|+
+literal|", target storage types="
+operator|+
+operator|(
+name|targetStorageTypes
+operator|==
+literal|null
+condition|?
+literal|"[]"
+else|:
+name|Arrays
+operator|.
+name|asList
+argument_list|(
+name|targetStorageTypes
+argument_list|)
+operator|)
 argument_list|)
 expr_stmt|;
 block|}

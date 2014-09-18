@@ -1312,6 +1312,11 @@ argument_list|,
 name|replication
 argument_list|,
 name|blockSize
+argument_list|,
+operator|(
+name|byte
+operator|)
+literal|0
 argument_list|)
 decl_stmt|;
 name|inode

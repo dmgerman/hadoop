@@ -164,6 +164,20 @@ name|hadoop
 operator|.
 name|hdfs
 operator|.
+name|BlockStoragePolicy
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
 name|AppendTestUtil
 import|;
 end_import
@@ -235,20 +249,6 @@ operator|.
 name|hdfs
 operator|.
 name|MiniDFSCluster
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|hdfs
-operator|.
-name|StorageType
 import|;
 end_import
 
@@ -813,7 +813,7 @@ name|BlockPlacementPolicyDefault
 block|{
 annotation|@
 name|Override
-DECL|method|chooseTarget (String srcPath, int numOfReplicas, Node writer, List<DatanodeStorageInfo> chosenNodes, boolean returnChosenNodes, Set<Node> excludedNodes, long blocksize, StorageType storageType)
+DECL|method|chooseTarget (String srcPath, int numOfReplicas, Node writer, List<DatanodeStorageInfo> chosenNodes, boolean returnChosenNodes, Set<Node> excludedNodes, long blocksize, final BlockStoragePolicy storagePolicy)
 specifier|public
 name|DatanodeStorageInfo
 index|[]
@@ -846,8 +846,9 @@ parameter_list|,
 name|long
 name|blocksize
 parameter_list|,
-name|StorageType
-name|storageType
+specifier|final
+name|BlockStoragePolicy
+name|storagePolicy
 parameter_list|)
 block|{
 name|DatanodeStorageInfo
@@ -872,7 +873,7 @@ name|excludedNodes
 argument_list|,
 name|blocksize
 argument_list|,
-name|storageType
+name|storagePolicy
 argument_list|)
 decl_stmt|;
 try|try

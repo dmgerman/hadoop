@@ -619,6 +619,23 @@ name|SEPARATOR
 operator|+
 name|DOT_SNAPSHOT_DIR
 decl_stmt|;
+DECL|field|SEPARATOR_DOT_SNAPSHOT_DIR_SEPARATOR
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|SEPARATOR_DOT_SNAPSHOT_DIR_SEPARATOR
+init|=
+name|Path
+operator|.
+name|SEPARATOR
+operator|+
+name|DOT_SNAPSHOT_DIR
+operator|+
+name|Path
+operator|.
+name|SEPARATOR
+decl_stmt|;
 block|}
 end_class
 

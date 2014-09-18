@@ -235,6 +235,12 @@ specifier|final
 name|int
 name|childrenNum
 decl_stmt|;
+DECL|field|storagePolicy
+specifier|private
+specifier|final
+name|byte
+name|storagePolicy
+decl_stmt|;
 DECL|field|EMPTY_NAME
 specifier|public
 specifier|static
@@ -250,7 +256,7 @@ literal|0
 index|]
 decl_stmt|;
 comment|/**    * Constructor    * @param length the number of bytes the file has    * @param isdir if the path is a directory    * @param block_replication the replication factor    * @param blocksize the block size    * @param modification_time modification time    * @param access_time access time    * @param permission permission    * @param owner the owner of the path    * @param group the group of the path    * @param path the local name in java UTF8 encoding the same as that in-memory    * @param fileId the file id    * @param feInfo the file's encryption info    */
-DECL|method|HdfsFileStatus (long length, boolean isdir, int block_replication, long blocksize, long modification_time, long access_time, FsPermission permission, String owner, String group, byte[] symlink, byte[] path, long fileId, int childrenNum, FileEncryptionInfo feInfo)
+DECL|method|HdfsFileStatus (long length, boolean isdir, int block_replication, long blocksize, long modification_time, long access_time, FsPermission permission, String owner, String group, byte[] symlink, byte[] path, long fileId, int childrenNum, FileEncryptionInfo feInfo, byte storagePolicy)
 specifier|public
 name|HdfsFileStatus
 parameter_list|(
@@ -297,6 +303,9 @@ name|childrenNum
 parameter_list|,
 name|FileEncryptionInfo
 name|feInfo
+parameter_list|,
+name|byte
+name|storagePolicy
 parameter_list|)
 block|{
 name|this
@@ -427,6 +436,12 @@ operator|.
 name|feInfo
 operator|=
 name|feInfo
+expr_stmt|;
+name|this
+operator|.
+name|storagePolicy
+operator|=
+name|storagePolicy
 expr_stmt|;
 block|}
 comment|/**    * Get the length of this file, in bytes.    * @return the length of this file, in bytes.    */
@@ -758,6 +773,18 @@ parameter_list|()
 block|{
 return|return
 name|childrenNum
+return|;
+block|}
+comment|/** @return the storage policy id */
+DECL|method|getStoragePolicy ()
+specifier|public
+specifier|final
+name|byte
+name|getStoragePolicy
+parameter_list|()
+block|{
+return|return
+name|storagePolicy
 return|;
 block|}
 DECL|method|makeQualified (URI defaultUri, Path path)

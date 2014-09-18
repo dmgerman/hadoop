@@ -280,6 +280,20 @@ name|hadoop
 operator|.
 name|hdfs
 operator|.
+name|StorageType
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
 name|protocol
 operator|.
 name|Block
@@ -2959,7 +2973,7 @@ expr_stmt|;
 block|}
 annotation|@
 name|Override
-DECL|method|chooseReplicaToDelete (BlockCollection inode, Block block, short replicationFactor, Collection<DatanodeStorageInfo> first, Collection<DatanodeStorageInfo> second)
+DECL|method|chooseReplicaToDelete (BlockCollection inode, Block block, short replicationFactor, Collection<DatanodeStorageInfo> first, Collection<DatanodeStorageInfo> second, List<StorageType> excessTypes)
 specifier|public
 name|DatanodeStorageInfo
 name|chooseReplicaToDelete
@@ -2984,6 +2998,12 @@ argument_list|<
 name|DatanodeStorageInfo
 argument_list|>
 name|second
+parameter_list|,
+name|List
+argument_list|<
+name|StorageType
+argument_list|>
+name|excessTypes
 parameter_list|)
 block|{
 name|Collection

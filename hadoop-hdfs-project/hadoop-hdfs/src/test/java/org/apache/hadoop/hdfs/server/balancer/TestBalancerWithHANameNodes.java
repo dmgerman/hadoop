@@ -263,12 +263,10 @@ name|client
 decl_stmt|;
 static|static
 block|{
-name|Dispatcher
+name|TestBalancer
 operator|.
-name|setBlockMoveWaitTime
-argument_list|(
-literal|1000L
-argument_list|)
+name|initTestSetup
+argument_list|()
 expr_stmt|;
 block|}
 comment|/**    * Test a cluster with even distribution, then a new empty node is added to    * the cluster. Test start a cluster with specified number of nodes, and fills    * it to be 30% full (with a single file replicated identically to all    * datanodes); It then adds one new empty node and starts balancing.    */

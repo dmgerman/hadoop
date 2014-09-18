@@ -4298,6 +4298,32 @@ return|;
 block|}
 annotation|@
 name|Override
+DECL|method|setStoragePolicy (String src, String policyName)
+specifier|public
+name|void
+name|setStoragePolicy
+parameter_list|(
+name|String
+name|src
+parameter_list|,
+name|String
+name|policyName
+parameter_list|)
+throws|throws
+name|IOException
+block|{
+name|namesystem
+operator|.
+name|setStoragePolicy
+argument_list|(
+name|src
+argument_list|,
+name|policyName
+argument_list|)
+expr_stmt|;
+block|}
+annotation|@
+name|Override
 comment|// ClientProtocol
 DECL|method|setPermission (String src, FsPermission permissions)
 specifier|public

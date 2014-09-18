@@ -136,6 +136,20 @@ name|hadoop
 operator|.
 name|hdfs
 operator|.
+name|BlockStoragePolicy
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
 name|DFSConfigKeys
 import|;
 end_import
@@ -328,7 +342,7 @@ expr_stmt|;
 block|}
 block|}
 comment|/**    * choose<i>numOfReplicas</i> data nodes for<i>writer</i>     * to re-replicate a block with size<i>blocksize</i>     * If not, return as many as we can.    *    * @param srcPath the file to which this chooseTargets is being invoked.    * @param numOfReplicas additional number of replicas wanted.    * @param writer the writer's machine, null if not in the cluster.    * @param chosen datanodes that have been chosen as targets.    * @param returnChosenNodes decide if the chosenNodes are returned.    * @param excludedNodes datanodes that should not be considered as targets.    * @param blocksize size of the data to be written.    * @return array of DatanodeDescriptor instances chosen as target    * and sorted as a pipeline.    */
-DECL|method|chooseTarget (String srcPath, int numOfReplicas, Node writer, List<DatanodeStorageInfo> chosen, boolean returnChosenNodes, Set<Node> excludedNodes, long blocksize, StorageType storageType)
+DECL|method|chooseTarget (String srcPath, int numOfReplicas, Node writer, List<DatanodeStorageInfo> chosen, boolean returnChosenNodes, Set<Node> excludedNodes, long blocksize, BlockStoragePolicy storagePolicy)
 specifier|public
 specifier|abstract
 name|DatanodeStorageInfo
@@ -362,12 +376,12 @@ parameter_list|,
 name|long
 name|blocksize
 parameter_list|,
-name|StorageType
-name|storageType
+name|BlockStoragePolicy
+name|storagePolicy
 parameter_list|)
 function_decl|;
 comment|/**    * Same as {@link #chooseTarget(String, int, Node, Set, long, List, StorageType)}    * with added parameter {@code favoredDatanodes}    * @param favoredNodes datanodes that should be favored as targets. This    *          is only a hint and due to cluster state, namenode may not be     *          able to place the blocks on these datanodes.    */
-DECL|method|chooseTarget (String src, int numOfReplicas, Node writer, Set<Node> excludedNodes, long blocksize, List<DatanodeDescriptor> favoredNodes, StorageType storageType)
+DECL|method|chooseTarget (String src, int numOfReplicas, Node writer, Set<Node> excludedNodes, long blocksize, List<DatanodeDescriptor> favoredNodes, BlockStoragePolicy storagePolicy)
 name|DatanodeStorageInfo
 index|[]
 name|chooseTarget
@@ -396,8 +410,8 @@ name|DatanodeDescriptor
 argument_list|>
 name|favoredNodes
 parameter_list|,
-name|StorageType
-name|storageType
+name|BlockStoragePolicy
+name|storagePolicy
 parameter_list|)
 block|{
 comment|// This class does not provide the functionality of placing
@@ -427,7 +441,7 @@ name|excludedNodes
 argument_list|,
 name|blocksize
 argument_list|,
-name|storageType
+name|storagePolicy
 argument_list|)
 return|;
 block|}
@@ -448,8 +462,8 @@ name|int
 name|numOfReplicas
 parameter_list|)
 function_decl|;
-comment|/**    * Decide whether deleting the specified replica of the block still makes     * the block conform to the configured block placement policy.    *     * @param srcBC block collection of file to which block-to-be-deleted belongs    * @param block The block to be deleted    * @param replicationFactor The required number of replicas for this block    * @param existingReplicas The replica locations of this block that are present                   on at least two unique racks.     * @param moreExistingReplicas Replica locations of this block that are not                    listed in the previous parameter.    * @return the replica that is the best candidate for deletion    */
-DECL|method|chooseReplicaToDelete ( BlockCollection srcBC, Block block, short replicationFactor, Collection<DatanodeStorageInfo> existingReplicas, Collection<DatanodeStorageInfo> moreExistingReplicas)
+comment|/**    * Decide whether deleting the specified replica of the block still makes     * the block conform to the configured block placement policy.    *     * @param srcBC block collection of file to which block-to-be-deleted belongs    * @param block The block to be deleted    * @param replicationFactor The required number of replicas for this block    * @param moreThanOne The replica locations of this block that are present    *                    on more than one unique racks.    * @param exactlyOne Replica locations of this block that  are present    *                    on exactly one unique racks.    * @param excessTypes The excess {@link StorageType}s according to the    *                    {@link BlockStoragePolicy}.    * @return the replica that is the best candidate for deletion    */
+DECL|method|chooseReplicaToDelete ( BlockCollection srcBC, Block block, short replicationFactor, Collection<DatanodeStorageInfo> moreThanOne, Collection<DatanodeStorageInfo> exactlyOne, List<StorageType> excessTypes)
 specifier|abstract
 specifier|public
 name|DatanodeStorageInfo
@@ -468,13 +482,19 @@ name|Collection
 argument_list|<
 name|DatanodeStorageInfo
 argument_list|>
-name|existingReplicas
+name|moreThanOne
 parameter_list|,
 name|Collection
 argument_list|<
 name|DatanodeStorageInfo
 argument_list|>
-name|moreExistingReplicas
+name|exactlyOne
+parameter_list|,
+name|List
+argument_list|<
+name|StorageType
+argument_list|>
+name|excessTypes
 parameter_list|)
 function_decl|;
 comment|/**    * Used to setup a BlockPlacementPolicy object. This should be defined by     * all implementations of a BlockPlacementPolicy.    *     * @param conf the configuration object    * @param stats retrieve cluster status from here    * @param clusterMap cluster topology    */

@@ -1055,6 +1055,38 @@ expr_stmt|;
 block|}
 annotation|@
 name|Override
+DECL|method|getStoragePolicyID ()
+specifier|public
+specifier|final
+name|byte
+name|getStoragePolicyID
+parameter_list|()
+block|{
+return|return
+name|referred
+operator|.
+name|getStoragePolicyID
+argument_list|()
+return|;
+block|}
+annotation|@
+name|Override
+DECL|method|getLocalStoragePolicyID ()
+specifier|public
+specifier|final
+name|byte
+name|getLocalStoragePolicyID
+parameter_list|()
+block|{
+return|return
+name|referred
+operator|.
+name|getLocalStoragePolicyID
+argument_list|()
+return|;
+block|}
+annotation|@
+name|Override
 DECL|method|recordModification (int latestSnapshotId)
 specifier|final
 name|void

@@ -486,6 +486,15 @@ operator|)
 literal|44
 argument_list|)
 block|,
+DECL|enumConstant|OP_SET_STORAGE_POLICY
+name|OP_SET_STORAGE_POLICY
+argument_list|(
+operator|(
+name|byte
+operator|)
+literal|45
+argument_list|)
+block|,
 comment|// Note that the current range of the valid OP code is 0~127
 DECL|enumConstant|OP_INVALID
 name|OP_INVALID

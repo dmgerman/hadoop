@@ -3555,6 +3555,11 @@ argument_list|,
 name|replication
 argument_list|,
 name|blockSize
+argument_list|,
+operator|(
+name|byte
+operator|)
+literal|0
 argument_list|)
 decl_stmt|;
 if|if
@@ -4078,6 +4083,11 @@ argument_list|,
 name|replication
 argument_list|,
 name|preferredBlockSize
+argument_list|,
+operator|(
+name|byte
+operator|)
+literal|0
 argument_list|,
 literal|null
 argument_list|)

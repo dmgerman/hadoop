@@ -87,6 +87,9 @@ name|DISK
 block|,
 DECL|enumConstant|SSD
 name|SSD
+block|,
+DECL|enumConstant|ARCHIVE
+name|ARCHIVE
 block|;
 DECL|field|DEFAULT
 specifier|public
