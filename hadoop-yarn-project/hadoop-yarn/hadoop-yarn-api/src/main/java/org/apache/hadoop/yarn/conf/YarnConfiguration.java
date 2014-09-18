@@ -1416,6 +1416,26 @@ name|DEFAULT_RM_WORK_PRESERVING_RECOVERY_ENABLED
 init|=
 literal|false
 decl_stmt|;
+DECL|field|RM_WORK_PRESERVING_RECOVERY_SCHEDULING_WAIT_MS
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|RM_WORK_PRESERVING_RECOVERY_SCHEDULING_WAIT_MS
+init|=
+name|RM_PREFIX
+operator|+
+literal|"work-preserving-recovery.scheduling-wait-ms"
+decl_stmt|;
+DECL|field|DEFAULT_RM_WORK_PRESERVING_RECOVERY_SCHEDULING_WAIT_MS
+specifier|public
+specifier|static
+specifier|final
+name|long
+name|DEFAULT_RM_WORK_PRESERVING_RECOVERY_SCHEDULING_WAIT_MS
+init|=
+literal|10000
+decl_stmt|;
 comment|/** Zookeeper interaction configs */
 DECL|field|RM_ZK_PREFIX
 specifier|public

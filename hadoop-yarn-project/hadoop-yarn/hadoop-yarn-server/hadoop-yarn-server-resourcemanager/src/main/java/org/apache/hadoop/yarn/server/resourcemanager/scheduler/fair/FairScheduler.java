@@ -5444,6 +5444,22 @@ name|FSSchedulerNode
 name|node
 parameter_list|)
 block|{
+if|if
+condition|(
+name|rmContext
+operator|.
+name|isWorkPreservingRecoveryEnabled
+argument_list|()
+operator|&&
+operator|!
+name|rmContext
+operator|.
+name|isSchedulerReadyForAllocatingContainers
+argument_list|()
+condition|)
+block|{
+return|return;
+block|}
 comment|// Assign new containers...
 comment|// 1. Check for reserved applications
 comment|// 2. Schedule if there are no reservations
