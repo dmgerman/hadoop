@@ -325,6 +325,34 @@ name|UNAUTHORIZED_USER
 init|=
 literal|"Unauthorized user"
 decl_stmt|;
+comment|// For Reservation system
+DECL|field|SUBMIT_RESERVATION_REQUEST
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|SUBMIT_RESERVATION_REQUEST
+init|=
+literal|"Submit Reservation Request"
+decl_stmt|;
+DECL|field|UPDATE_RESERVATION_REQUEST
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|UPDATE_RESERVATION_REQUEST
+init|=
+literal|"Update Reservation Request"
+decl_stmt|;
+DECL|field|DELETE_RESERVATION_REQUEST
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|DELETE_RESERVATION_REQUEST
+init|=
+literal|"Delete Reservation Request"
+decl_stmt|;
 block|}
 comment|/**    * A helper api for creating an audit log for a successful event.    */
 DECL|method|createSuccessLog (String user, String operation, String target, ApplicationId appId, ApplicationAttemptId attemptId, ContainerId containerId)

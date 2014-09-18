@@ -310,6 +310,26 @@ name|server
 operator|.
 name|resourcemanager
 operator|.
+name|reservation
+operator|.
+name|ReservationSystem
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|server
+operator|.
+name|resourcemanager
+operator|.
 name|rmapp
 operator|.
 name|RMApp
@@ -724,6 +744,11 @@ DECL|field|scheduler
 specifier|private
 name|ResourceScheduler
 name|scheduler
+decl_stmt|;
+DECL|field|reservationSystem
+specifier|private
+name|ReservationSystem
+name|reservationSystem
 decl_stmt|;
 DECL|field|nodesListManager
 specifier|private
@@ -1179,6 +1204,20 @@ return|;
 block|}
 annotation|@
 name|Override
+DECL|method|getReservationSystem ()
+specifier|public
+name|ReservationSystem
+name|getReservationSystem
+parameter_list|()
+block|{
+return|return
+name|this
+operator|.
+name|reservationSystem
+return|;
+block|}
+annotation|@
+name|Override
 DECL|method|getNodesListManager ()
 specifier|public
 name|NodesListManager
@@ -1477,6 +1516,21 @@ operator|.
 name|scheduler
 operator|=
 name|scheduler
+expr_stmt|;
+block|}
+DECL|method|setReservationSystem (ReservationSystem reservationSystem)
+name|void
+name|setReservationSystem
+parameter_list|(
+name|ReservationSystem
+name|reservationSystem
+parameter_list|)
+block|{
+name|this
+operator|.
+name|reservationSystem
+operator|=
+name|reservationSystem
 expr_stmt|;
 block|}
 DECL|method|setDelegationTokenRenewer ( DelegationTokenRenewer delegationTokenRenewer)

@@ -192,6 +192,24 @@ name|api
 operator|.
 name|records
 operator|.
+name|ReservationId
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|api
+operator|.
+name|records
+operator|.
 name|YarnApplicationState
 import|;
 end_import
@@ -458,6 +476,11 @@ comment|/**    * Get RMAppMetrics of the {@link RMApp}.    *     * @return metri
 DECL|method|getRMAppMetrics ()
 name|RMAppMetrics
 name|getRMAppMetrics
+parameter_list|()
+function_decl|;
+DECL|method|getReservationId ()
+name|ReservationId
+name|getReservationId
 parameter_list|()
 function_decl|;
 block|}

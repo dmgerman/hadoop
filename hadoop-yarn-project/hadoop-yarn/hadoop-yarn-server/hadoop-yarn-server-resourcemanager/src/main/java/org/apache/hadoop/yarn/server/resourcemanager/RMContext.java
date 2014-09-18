@@ -590,6 +590,11 @@ name|long
 name|getEpoch
 parameter_list|()
 function_decl|;
+DECL|method|getReservationSystem ()
+name|ReservationSystem
+name|getReservationSystem
+parameter_list|()
+function_decl|;
 DECL|method|isSchedulerReadyForAllocatingContainers ()
 name|boolean
 name|isSchedulerReadyForAllocatingContainers
