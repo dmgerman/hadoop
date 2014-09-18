@@ -316,12 +316,12 @@ name|KMSAuthenticationFilter
 extends|extends
 name|DelegationTokenAuthenticationFilter
 block|{
-DECL|field|CONF_PREFIX
-specifier|private
+DECL|field|CONFIG_PREFIX
+specifier|public
 specifier|static
 specifier|final
 name|String
-name|CONF_PREFIX
+name|CONFIG_PREFIX
 init|=
 name|KMSConfiguration
 operator|.
@@ -387,7 +387,7 @@ name|name
 operator|.
 name|startsWith
 argument_list|(
-name|CONF_PREFIX
+name|CONFIG_PREFIX
 argument_list|)
 condition|)
 block|{
@@ -407,7 +407,7 @@ name|name
 operator|.
 name|substring
 argument_list|(
-name|CONF_PREFIX
+name|CONFIG_PREFIX
 operator|.
 name|length
 argument_list|()

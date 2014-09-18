@@ -4662,6 +4662,15 @@ name|DFS_NAMENODE_LIST_ENCRYPTION_ZONES_NUM_RESPONSES
 init|=
 literal|"dfs.namenode.list.encryption.zones.num.responses"
 decl_stmt|;
+DECL|field|DFS_ENCRYPTION_KEY_PROVIDER_URI
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|DFS_ENCRYPTION_KEY_PROVIDER_URI
+init|=
+literal|"dfs.encryption.key.provider.uri"
+decl_stmt|;
 comment|// Journal-node related configs. These are read on the JN side.
 DECL|field|DFS_JOURNALNODE_EDITS_DIR_KEY
 specifier|public

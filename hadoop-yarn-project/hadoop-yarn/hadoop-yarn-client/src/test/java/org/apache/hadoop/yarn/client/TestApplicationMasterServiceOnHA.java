@@ -409,10 +409,11 @@ name|appToken
 operator|.
 name|setService
 argument_list|(
-operator|new
-name|Text
+name|ClientRMProxy
+operator|.
+name|getAMRMTokenService
 argument_list|(
-literal|"appToken service"
+name|conf
 argument_list|)
 argument_list|)
 expr_stmt|;

@@ -162,6 +162,18 @@ name|DEFAULT_KEY_ACL_PREFIX
 init|=
 literal|"default.key.acl."
 decl_stmt|;
+comment|// Property to set the backing KeyProvider
+DECL|field|KEY_PROVIDER_URI
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|KEY_PROVIDER_URI
+init|=
+name|CONFIG_PREFIX
+operator|+
+literal|"key.provider.uri"
+decl_stmt|;
 comment|// Property to Enable/Disable Caching
 DECL|field|KEY_CACHE_ENABLE
 specifier|public

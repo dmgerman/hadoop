@@ -1037,7 +1037,9 @@ name|kms
 operator|.
 name|set
 argument_list|(
-literal|"hadoop.security.key.provider.path"
+name|KMSConfiguration
+operator|.
+name|KEY_PROVIDER_URI
 argument_list|,
 literal|"jceks://file@"
 operator|+

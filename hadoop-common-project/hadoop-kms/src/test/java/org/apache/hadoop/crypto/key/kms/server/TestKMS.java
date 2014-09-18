@@ -896,7 +896,9 @@ name|conf
 operator|.
 name|set
 argument_list|(
-literal|"hadoop.security.key.provider.path"
+name|KMSConfiguration
+operator|.
+name|KEY_PROVIDER_URI
 argument_list|,
 literal|"jceks://file@"
 operator|+
@@ -929,7 +931,8 @@ name|conf
 return|;
 block|}
 DECL|method|writeConf (File confDir, Configuration conf)
-specifier|protected
+specifier|public
+specifier|static
 name|void
 name|writeConf
 parameter_list|(
@@ -1032,7 +1035,8 @@ argument_list|()
 expr_stmt|;
 block|}
 DECL|method|createKMSUri (URL kmsUrl)
-specifier|protected
+specifier|public
+specifier|static
 name|URI
 name|createKMSUri
 parameter_list|(

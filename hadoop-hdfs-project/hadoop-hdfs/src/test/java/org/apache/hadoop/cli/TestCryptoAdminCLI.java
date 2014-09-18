@@ -527,9 +527,9 @@ name|conf
 operator|.
 name|set
 argument_list|(
-name|KeyProviderFactory
+name|DFSConfigKeys
 operator|.
-name|KEY_PROVIDER_PATH
+name|DFS_ENCRYPTION_KEY_PROVIDER_URI
 argument_list|,
 name|JavaKeyStoreProvider
 operator|.
