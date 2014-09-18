@@ -3779,7 +3779,7 @@ name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"addBlock: Moved "
+literal|"Copied "
 operator|+
 name|srcMeta
 operator|+
@@ -3792,7 +3792,7 @@ name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"addBlock: Moved "
+literal|"Copied "
 operator|+
 name|srcFile
 operator|+
