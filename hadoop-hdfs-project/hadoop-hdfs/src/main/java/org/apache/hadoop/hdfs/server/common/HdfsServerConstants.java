@@ -406,6 +406,16 @@ name|UPGRADEONLY
 argument_list|(
 literal|"-upgradeOnly"
 argument_list|)
+block|,
+comment|// The -hotswap constant should not be used as a startup option, it is
+comment|// only used for StorageDirectory.analyzeStorage() in hot swap drive scenario.
+comment|// TODO refactor StorageDirectory.analyzeStorage() so that we can do away with
+comment|// this in StartupOption.
+DECL|enumConstant|HOTSWAP
+name|HOTSWAP
+argument_list|(
+literal|"-hotswap"
+argument_list|)
 block|;
 DECL|field|ENUM_WITH_ROLLING_UPGRADE_OPTION
 specifier|private

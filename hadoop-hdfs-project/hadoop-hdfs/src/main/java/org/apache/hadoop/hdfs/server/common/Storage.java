@@ -1523,6 +1523,11 @@ literal|null
 operator|:
 literal|"root is null"
 assert|;
+name|boolean
+name|hadMkdirs
+init|=
+literal|false
+decl_stmt|;
 name|String
 name|rootPath
 init|=
@@ -1551,6 +1556,12 @@ operator|!=
 name|StartupOption
 operator|.
 name|FORMAT
+operator|&&
+name|startOpt
+operator|!=
+name|StartupOption
+operator|.
+name|HOTSWAP
 condition|)
 block|{
 name|LOG
@@ -1596,6 +1607,10 @@ operator|+
 name|rootPath
 argument_list|)
 throw|;
+name|hadMkdirs
+operator|=
+literal|true
+expr_stmt|;
 block|}
 comment|// or is inaccessible
 if|if
@@ -1678,6 +1693,8 @@ name|lock
 argument_list|()
 expr_stmt|;
 comment|// lock storage if it exists
+comment|// If startOpt is HOTSWAP, it returns NOT_FORMATTED for empty directory,
+comment|// while it also checks the layout version.
 if|if
 condition|(
 name|startOpt
@@ -1687,6 +1704,16 @@ operator|.
 name|StartupOption
 operator|.
 name|FORMAT
+operator|||
+operator|(
+name|startOpt
+operator|==
+name|StartupOption
+operator|.
+name|HOTSWAP
+operator|&&
+name|hadMkdirs
+operator|)
 condition|)
 return|return
 name|StorageState

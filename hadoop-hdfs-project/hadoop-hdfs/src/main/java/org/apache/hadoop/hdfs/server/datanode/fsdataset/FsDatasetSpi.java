@@ -632,19 +632,27 @@ name|getVolumes
 parameter_list|()
 function_decl|;
 comment|/** Add an array of StorageLocation to FsDataset. */
-DECL|method|addVolumes (Collection<StorageLocation> volumes)
+DECL|method|addVolumes (List<StorageLocation> volumes, final Collection<String> bpids)
 specifier|public
-name|void
+name|List
+argument_list|<
+name|StorageLocation
+argument_list|>
 name|addVolumes
 parameter_list|(
-name|Collection
+name|List
 argument_list|<
 name|StorageLocation
 argument_list|>
 name|volumes
+parameter_list|,
+specifier|final
+name|Collection
+argument_list|<
+name|String
+argument_list|>
+name|bpids
 parameter_list|)
-throws|throws
-name|IOException
 function_decl|;
 comment|/** Removes a collection of volumes from FsDataset. */
 DECL|method|removeVolumes (Collection<StorageLocation> volumes)
