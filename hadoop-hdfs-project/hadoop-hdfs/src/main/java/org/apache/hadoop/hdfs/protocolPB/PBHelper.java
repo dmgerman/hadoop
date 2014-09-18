@@ -722,7 +722,7 @@ name|hdfs
 operator|.
 name|protocol
 operator|.
-name|FsAclPermission
+name|FsPermissionExtension
 import|;
 end_import
 
@@ -10558,7 +10558,7 @@ parameter_list|)
 block|{
 return|return
 operator|new
-name|FsAclPermission
+name|FsPermissionExtension
 argument_list|(
 operator|(
 name|short

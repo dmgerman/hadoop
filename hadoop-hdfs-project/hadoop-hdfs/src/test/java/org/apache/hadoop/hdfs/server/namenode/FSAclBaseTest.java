@@ -326,7 +326,7 @@ name|hdfs
 operator|.
 name|protocol
 operator|.
-name|FsAclPermission
+name|FsPermissionExtension
 import|;
 end_import
 
@@ -6952,7 +6952,7 @@ argument_list|(
 name|path
 argument_list|,
 operator|new
-name|FsAclPermission
+name|FsPermissionExtension
 argument_list|(
 name|FsPermission
 operator|.
@@ -6963,6 +6963,10 @@ name|short
 operator|)
 literal|0755
 argument_list|)
+argument_list|,
+literal|true
+argument_list|,
+literal|true
 argument_list|)
 argument_list|)
 expr_stmt|;
