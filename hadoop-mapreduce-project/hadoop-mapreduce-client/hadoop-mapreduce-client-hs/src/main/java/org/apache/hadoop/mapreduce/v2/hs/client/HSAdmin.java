@@ -104,6 +104,20 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|mapred
+operator|.
+name|JobConf
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|mapreduce
 operator|.
 name|v2
@@ -243,11 +257,11 @@ name|super
 argument_list|()
 expr_stmt|;
 block|}
-DECL|method|HSAdmin (Configuration conf)
+DECL|method|HSAdmin (JobConf conf)
 specifier|public
 name|HSAdmin
 parameter_list|(
-name|Configuration
+name|JobConf
 name|conf
 parameter_list|)
 block|{
@@ -1752,6 +1766,13 @@ parameter_list|)
 throws|throws
 name|Exception
 block|{
+name|JobConf
+name|conf
+init|=
+operator|new
+name|JobConf
+argument_list|()
+decl_stmt|;
 name|int
 name|result
 init|=
@@ -1761,7 +1782,9 @@ name|run
 argument_list|(
 operator|new
 name|HSAdmin
-argument_list|()
+argument_list|(
+name|conf
+argument_list|)
 argument_list|,
 name|args
 argument_list|)

@@ -388,6 +388,20 @@ name|Progress
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|util
+operator|.
+name|Time
+import|;
+end_import
+
 begin_class
 annotation|@
 name|InterfaceAudience
@@ -872,9 +886,9 @@ name|this
 operator|.
 name|startTime
 operator|=
-name|System
+name|Time
 operator|.
-name|currentTimeMillis
+name|monotonicNow
 argument_list|()
 expr_stmt|;
 name|lastProgressTime
@@ -1324,9 +1338,9 @@ argument_list|)
 expr_stmt|;
 name|lastProgressTime
 operator|=
-name|System
+name|Time
 operator|.
-name|currentTimeMillis
+name|monotonicNow
 argument_list|()
 expr_stmt|;
 name|LOG
@@ -1378,9 +1392,9 @@ name|long
 name|secsSinceStart
 init|=
 operator|(
-name|System
+name|Time
 operator|.
-name|currentTimeMillis
+name|monotonicNow
 argument_list|()
 operator|-
 name|startTime
@@ -1939,9 +1953,9 @@ call|(
 name|int
 call|)
 argument_list|(
-name|System
+name|Time
 operator|.
-name|currentTimeMillis
+name|monotonicNow
 argument_list|()
 operator|-
 name|lastProgressTime
@@ -2338,9 +2352,9 @@ name|shuffleStart
 operator|.
 name|set
 argument_list|(
-name|System
+name|Time
 operator|.
-name|currentTimeMillis
+name|monotonicNow
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -2613,9 +2627,9 @@ operator|+
 literal|" in "
 operator|+
 operator|(
-name|System
+name|Time
 operator|.
-name|currentTimeMillis
+name|monotonicNow
 argument_list|()
 operator|-
 name|shuffleStart
@@ -2726,9 +2740,9 @@ name|this
 operator|.
 name|endTime
 operator|=
-name|System
+name|Time
 operator|.
-name|currentTimeMillis
+name|monotonicNow
 argument_list|()
 operator|+
 name|delay
@@ -2750,9 +2764,9 @@ name|remainingTime
 init|=
 name|endTime
 operator|-
-name|System
+name|Time
 operator|.
-name|currentTimeMillis
+name|monotonicNow
 argument_list|()
 decl_stmt|;
 return|return

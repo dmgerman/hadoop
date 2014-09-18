@@ -1195,8 +1195,9 @@ name|inodePath
 argument_list|)
 decl_stmt|;
 return|return
-operator|new
-name|FSDataInputStream
+name|client
+operator|.
+name|createWrappedInputStream
 argument_list|(
 name|dis
 argument_list|)
