@@ -6066,7 +6066,11 @@ literal|0
 init|;
 name|i
 operator|<
-literal|10
+name|DFSOutputStream
+operator|.
+name|CREATE_RETRY_COUNT
+operator|+
+literal|1
 condition|;
 name|i
 operator|++

@@ -13769,59 +13769,7 @@ decl_stmt|;
 name|waitForLoadingFSImage
 argument_list|()
 expr_stmt|;
-comment|/*      * We want to avoid holding any locks while doing KeyProvider operations,      * since they can be very slow. Since the path can      * flip flop between being in an encryption zone and not in the meantime,      * we need to recheck the preconditions and redo KeyProvider operations      * in some situations.      *      * A special RetryStartFileException is used to indicate that we should      * retry creation of a FileEncryptionInfo.      */
-name|BlocksMapUpdateInfo
-name|toRemoveBlocks
-init|=
-literal|null
-decl_stmt|;
-try|try
-block|{
-name|boolean
-name|shouldContinue
-init|=
-literal|true
-decl_stmt|;
-name|int
-name|iters
-init|=
-literal|0
-decl_stmt|;
-while|while
-condition|(
-name|shouldContinue
-condition|)
-block|{
-name|skipSync
-operator|=
-literal|false
-expr_stmt|;
-if|if
-condition|(
-name|iters
-operator|>=
-literal|10
-condition|)
-block|{
-throw|throw
-operator|new
-name|IOException
-argument_list|(
-literal|"Too many retries because of encryption zone "
-operator|+
-literal|"operations, something might be broken!"
-argument_list|)
-throw|;
-block|}
-name|shouldContinue
-operator|=
-literal|false
-expr_stmt|;
-name|iters
-operator|++
-expr_stmt|;
-comment|// Optimistically determine CipherSuite and ezKeyName if the path is
-comment|// currently within an encryption zone
+comment|/**      * If the file is in an encryption zone, we optimistically create an      * EDEK for the file by calling out to the configured KeyProvider.      * Since this typically involves doing an RPC, we take the readLock      * initially, then drop it to do the RPC.      *       * Since the path can flip-flop between being in an encryption zone and not      * in the meantime, we need to recheck the preconditions when we retake the      * lock to do the create. If the preconditions are not met, we throw a      * special RetryStartFileException to ask the DFSClient to try the create      * again later.      */
 name|CipherSuite
 name|suite
 init|=
@@ -13971,7 +13919,13 @@ operator|.
 name|startFileAfterGenerateKey
 argument_list|()
 expr_stmt|;
-comment|// Try to create the file with the computed cipher suite and EDEK
+comment|// Proceed with the create, using the computed cipher suite and
+comment|// generated EDEK
+name|BlocksMapUpdateInfo
+name|toRemoveBlocks
+init|=
+literal|null
+decl_stmt|;
 name|writeLock
 argument_list|()
 expr_stmt|;
@@ -14066,47 +14020,11 @@ throw|throw
 name|se
 throw|;
 block|}
-catch|catch
-parameter_list|(
-name|RetryStartFileException
-name|e
-parameter_list|)
-block|{
-name|shouldContinue
-operator|=
-literal|true
-expr_stmt|;
-if|if
-condition|(
-name|LOG
-operator|.
-name|isTraceEnabled
-argument_list|()
-condition|)
-block|{
-name|LOG
-operator|.
-name|trace
-argument_list|(
-literal|"Preconditions failed, retrying creation of "
-operator|+
-literal|"FileEncryptionInfo"
-argument_list|,
-name|e
-argument_list|)
-expr_stmt|;
-block|}
-block|}
 finally|finally
 block|{
 name|writeUnlock
 argument_list|()
 expr_stmt|;
-block|}
-block|}
-block|}
-finally|finally
-block|{
 comment|// There might be transactions logged while trying to recover the lease.
 comment|// They need to be sync'ed even when an exception was thrown.
 if|if
