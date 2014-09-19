@@ -4427,7 +4427,7 @@ name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"Renaming directory to a itself is disallowed. src="
+literal|"Renaming directory to itself is disallowed. src="
 operator|+
 name|src
 operator|+
