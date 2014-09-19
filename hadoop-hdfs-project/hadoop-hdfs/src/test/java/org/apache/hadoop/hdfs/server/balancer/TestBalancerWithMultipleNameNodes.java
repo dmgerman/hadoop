@@ -609,12 +609,10 @@ argument_list|()
 decl_stmt|;
 static|static
 block|{
-name|Dispatcher
+name|TestBalancer
 operator|.
-name|setBlockMoveWaitTime
-argument_list|(
-literal|1000L
-argument_list|)
+name|initTestSetup
+argument_list|()
 expr_stmt|;
 block|}
 comment|/** Common objects used in various methods. */

@@ -244,6 +244,20 @@ name|hadoop
 operator|.
 name|hdfs
 operator|.
+name|TestBlockStoragePolicy
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
 name|protocol
 operator|.
 name|HdfsConstants
@@ -1405,9 +1419,9 @@ name|excludedNodes
 argument_list|,
 name|BLOCK_SIZE
 argument_list|,
-name|StorageType
+name|TestBlockStoragePolicy
 operator|.
-name|DEFAULT
+name|DEFAULT_STORAGE_POLICY
 argument_list|)
 return|;
 block|}
@@ -1883,9 +1897,9 @@ name|excludedNodes
 argument_list|,
 name|BLOCK_SIZE
 argument_list|,
-name|StorageType
+name|TestBlockStoragePolicy
 operator|.
-name|DEFAULT
+name|DEFAULT_STORAGE_POLICY
 argument_list|)
 expr_stmt|;
 name|assertEquals
@@ -2049,9 +2063,9 @@ name|excludedNodes
 argument_list|,
 name|BLOCK_SIZE
 argument_list|,
-name|StorageType
+name|TestBlockStoragePolicy
 operator|.
-name|DEFAULT
+name|DEFAULT_STORAGE_POLICY
 argument_list|)
 expr_stmt|;
 name|System
@@ -3687,6 +3701,28 @@ name|size
 argument_list|()
 argument_list|)
 expr_stmt|;
+name|List
+argument_list|<
+name|StorageType
+argument_list|>
+name|excessTypes
+init|=
+operator|new
+name|ArrayList
+argument_list|<
+name|StorageType
+argument_list|>
+argument_list|()
+decl_stmt|;
+name|excessTypes
+operator|.
+name|add
+argument_list|(
+name|StorageType
+operator|.
+name|DEFAULT
+argument_list|)
+expr_stmt|;
 name|DatanodeStorageInfo
 name|chosen
 init|=
@@ -3706,6 +3742,8 @@ argument_list|,
 name|first
 argument_list|,
 name|second
+argument_list|,
+name|excessTypes
 argument_list|)
 decl_stmt|;
 comment|// Within first set {dataNodes[0], dataNodes[1], dataNodes[2]},
@@ -3756,6 +3794,15 @@ argument_list|)
 expr_stmt|;
 comment|// Within first set {dataNodes[0], dataNodes[2]}, dataNodes[2] is chosen
 comment|// as less free space
+name|excessTypes
+operator|.
+name|add
+argument_list|(
+name|StorageType
+operator|.
+name|DEFAULT
+argument_list|)
+expr_stmt|;
 name|chosen
 operator|=
 name|replicator
@@ -3774,6 +3821,8 @@ argument_list|,
 name|first
 argument_list|,
 name|second
+argument_list|,
+name|excessTypes
 argument_list|)
 expr_stmt|;
 name|assertEquals
@@ -3820,6 +3869,15 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 comment|// Within second set, dataNodes[5] with less free space
+name|excessTypes
+operator|.
+name|add
+argument_list|(
+name|StorageType
+operator|.
+name|DEFAULT
+argument_list|)
+expr_stmt|;
 name|chosen
 operator|=
 name|replicator
@@ -3838,6 +3896,8 @@ argument_list|,
 name|first
 argument_list|,
 name|second
+argument_list|,
+name|excessTypes
 argument_list|)
 expr_stmt|;
 name|assertEquals

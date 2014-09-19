@@ -576,6 +576,11 @@ argument_list|,
 literal|0
 argument_list|,
 literal|null
+argument_list|,
+operator|(
+name|byte
+operator|)
+literal|0
 argument_list|)
 decl_stmt|;
 specifier|final

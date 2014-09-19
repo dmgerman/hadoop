@@ -122,6 +122,13 @@ name|short
 name|getBlockReplication
 parameter_list|()
 function_decl|;
+comment|/**     * @return the storage policy ID.    */
+DECL|method|getStoragePolicyID ()
+specifier|public
+name|byte
+name|getStoragePolicyID
+parameter_list|()
+function_decl|;
 comment|/**    * Get the name of the collection.    */
 DECL|method|getName ()
 specifier|public

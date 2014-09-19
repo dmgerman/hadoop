@@ -88,6 +88,9 @@ block|,
 DECL|enumConstant|SSD
 name|SSD
 block|,
+DECL|enumConstant|ARCHIVE
+name|ARCHIVE
+block|,
 DECL|enumConstant|RAM_DISK
 name|RAM_DISK
 block|;

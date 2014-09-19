@@ -742,11 +742,30 @@ argument_list|()
 decl_stmt|;
 static|static
 block|{
+name|initTestSetup
+argument_list|()
+expr_stmt|;
+block|}
+DECL|method|initTestSetup ()
+specifier|public
+specifier|static
+name|void
+name|initTestSetup
+parameter_list|()
+block|{
 name|Dispatcher
 operator|.
 name|setBlockMoveWaitTime
 argument_list|(
 literal|1000L
+argument_list|)
+expr_stmt|;
+comment|// do not create id file since it occupies the disk space
+name|NameNodeConnector
+operator|.
+name|setWrite2IdFile
+argument_list|(
+literal|false
 argument_list|)
 expr_stmt|;
 block|}

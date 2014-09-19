@@ -313,6 +313,15 @@ argument_list|,
 literal|"Increase number of xattr namespaces"
 argument_list|)
 block|,
+DECL|enumConstant|BLOCK_STORAGE_POLICY
+name|BLOCK_STORAGE_POLICY
+argument_list|(
+operator|-
+literal|60
+argument_list|,
+literal|"Block Storage policy"
+argument_list|)
+block|,
 DECL|enumConstant|LAZY_PERSIST_FILES
 name|LAZY_PERSIST_FILES
 argument_list|(

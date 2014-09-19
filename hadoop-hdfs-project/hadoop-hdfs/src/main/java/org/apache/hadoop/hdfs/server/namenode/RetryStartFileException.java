@@ -20,14 +20,79 @@ name|namenode
 package|;
 end_package
 
+begin_import
+import|import
+name|java
+operator|.
+name|io
+operator|.
+name|IOException
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|classification
+operator|.
+name|InterfaceAudience
+import|;
+end_import
+
 begin_class
+annotation|@
+name|InterfaceAudience
+operator|.
+name|Private
 DECL|class|RetryStartFileException
 specifier|public
 class|class
 name|RetryStartFileException
 extends|extends
-name|Exception
-block|{ }
+name|IOException
+block|{
+DECL|field|serialVersionUID
+specifier|private
+specifier|static
+specifier|final
+name|long
+name|serialVersionUID
+init|=
+literal|1L
+decl_stmt|;
+DECL|method|RetryStartFileException ()
+specifier|public
+name|RetryStartFileException
+parameter_list|()
+block|{
+name|super
+argument_list|(
+literal|"Preconditions for creating a file failed because of a "
+operator|+
+literal|"transient error, retry create later."
+argument_list|)
+expr_stmt|;
+block|}
+DECL|method|RetryStartFileException (String s)
+specifier|public
+name|RetryStartFileException
+parameter_list|(
+name|String
+name|s
+parameter_list|)
+block|{
+name|super
+argument_list|(
+name|s
+argument_list|)
+expr_stmt|;
+block|}
+block|}
 end_class
 
 end_unit

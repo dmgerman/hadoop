@@ -44,6 +44,20 @@ name|hadoop
 operator|.
 name|fs
 operator|.
+name|XAttr
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|fs
+operator|.
 name|permission
 operator|.
 name|PermissionStatus
@@ -60,11 +74,7 @@ name|hadoop
 operator|.
 name|hdfs
 operator|.
-name|server
-operator|.
-name|namenode
-operator|.
-name|XAttrFeature
+name|BlockStoragePolicy
 import|;
 end_import
 
@@ -79,6 +89,20 @@ operator|.
 name|base
 operator|.
 name|Preconditions
+import|;
+end_import
+
+begin_import
+import|import
+name|com
+operator|.
+name|google
+operator|.
+name|common
+operator|.
+name|collect
+operator|.
+name|ImmutableList
 import|;
 end_import
 

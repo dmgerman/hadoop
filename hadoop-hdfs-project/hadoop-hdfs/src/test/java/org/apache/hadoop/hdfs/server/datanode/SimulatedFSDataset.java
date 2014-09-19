@@ -5335,16 +5335,26 @@ throw|;
 block|}
 annotation|@
 name|Override
-DECL|method|addVolumes (Collection<StorageLocation> volumes)
+DECL|method|addVolumes (List<StorageLocation> volumes, final Collection<String> bpids)
 specifier|public
-name|void
+name|List
+argument_list|<
+name|StorageLocation
+argument_list|>
 name|addVolumes
 parameter_list|(
-name|Collection
+name|List
 argument_list|<
 name|StorageLocation
 argument_list|>
 name|volumes
+parameter_list|,
+specifier|final
+name|Collection
+argument_list|<
+name|String
+argument_list|>
+name|bpids
 parameter_list|)
 block|{
 throw|throw
