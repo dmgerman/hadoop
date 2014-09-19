@@ -391,8 +391,6 @@ argument_list|,
 name|replication
 argument_list|,
 name|blockSize
-argument_list|,
-literal|false
 argument_list|)
 decl_stmt|;
 name|inode
@@ -528,8 +526,6 @@ argument_list|,
 name|replication
 argument_list|,
 name|blockSize
-argument_list|,
-literal|false
 argument_list|)
 decl_stmt|;
 name|fileUc

@@ -3217,8 +3217,6 @@ argument_list|,
 name|REPLICATION
 argument_list|,
 name|PREFERRED_BLOCK_SIZE
-argument_list|,
-literal|false
 argument_list|)
 decl_stmt|;
 name|parent
