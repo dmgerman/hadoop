@@ -904,11 +904,11 @@ name|getLong
 argument_list|(
 name|KMSConfiguration
 operator|.
-name|KMS_AUDIT_AGGREGATION_DELAY
+name|KMS_AUDIT_AGGREGATION_WINDOW
 argument_list|,
 name|KMSConfiguration
 operator|.
-name|KMS_AUDIT_AGGREGATION_DELAY_DEFAULT
+name|KMS_AUDIT_AGGREGATION_WINDOW_DEFAULT
 argument_list|)
 argument_list|)
 expr_stmt|;

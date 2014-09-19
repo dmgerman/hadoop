@@ -211,16 +211,16 @@ operator|+
 literal|"current.key.cache.timeout.ms"
 decl_stmt|;
 comment|// Delay for Audit logs that need aggregation
-DECL|field|KMS_AUDIT_AGGREGATION_DELAY
+DECL|field|KMS_AUDIT_AGGREGATION_WINDOW
 specifier|public
 specifier|static
 specifier|final
 name|String
-name|KMS_AUDIT_AGGREGATION_DELAY
+name|KMS_AUDIT_AGGREGATION_WINDOW
 init|=
 name|CONFIG_PREFIX
 operator|+
-literal|"aggregation.delay.ms"
+literal|"audit.aggregation.window.ms"
 decl_stmt|;
 DECL|field|KEY_CACHE_ENABLE_DEFAULT
 specifier|public
@@ -258,12 +258,12 @@ operator|*
 literal|1000
 decl_stmt|;
 comment|// 10 secs
-DECL|field|KMS_AUDIT_AGGREGATION_DELAY_DEFAULT
+DECL|field|KMS_AUDIT_AGGREGATION_WINDOW_DEFAULT
 specifier|public
 specifier|static
 specifier|final
 name|long
-name|KMS_AUDIT_AGGREGATION_DELAY_DEFAULT
+name|KMS_AUDIT_AGGREGATION_WINDOW_DEFAULT
 init|=
 literal|10000
 decl_stmt|;
