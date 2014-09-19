@@ -5500,6 +5500,7 @@ name|Override
 comment|// FsDatasetSpi
 DECL|method|recoverClose (ExtendedBlock b, long newGS, long expectedBlockLen)
 specifier|public
+specifier|synchronized
 name|String
 name|recoverClose
 parameter_list|(
@@ -6527,6 +6528,60 @@ operator|!=
 literal|null
 condition|)
 block|{
+if|if
+condition|(
+name|replicaInfo
+operator|.
+name|getGenerationStamp
+argument_list|()
+operator|<
+name|b
+operator|.
+name|getGenerationStamp
+argument_list|()
+operator|&&
+name|replicaInfo
+operator|instanceof
+name|ReplicaInPipeline
+condition|)
+block|{
+comment|// Stop the previous writer
+operator|(
+operator|(
+name|ReplicaInPipeline
+operator|)
+name|replicaInfo
+operator|)
+operator|.
+name|stopWriter
+argument_list|(
+name|datanode
+operator|.
+name|getDnConf
+argument_list|()
+operator|.
+name|getXceiverStopTimeout
+argument_list|()
+argument_list|)
+expr_stmt|;
+name|invalidate
+argument_list|(
+name|b
+operator|.
+name|getBlockPoolId
+argument_list|()
+argument_list|,
+operator|new
+name|Block
+index|[]
+block|{
+name|replicaInfo
+block|}
+argument_list|)
+expr_stmt|;
+block|}
+else|else
+block|{
 throw|throw
 operator|new
 name|ReplicaAlreadyExistsException
@@ -6545,6 +6600,7 @@ operator|+
 literal|" and thus cannot be created."
 argument_list|)
 throw|;
+block|}
 block|}
 name|FsVolumeImpl
 name|v
