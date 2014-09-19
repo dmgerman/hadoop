@@ -1036,6 +1036,13 @@ index|]
 expr_stmt|;
 name|cluster
 operator|.
+name|setRandomSeed
+argument_list|(
+literal|0xDEADBEEF
+argument_list|)
+expr_stmt|;
+name|cluster
+operator|.
 name|sortByDistance
 argument_list|(
 name|dataNodes
@@ -1048,10 +1055,6 @@ argument_list|,
 name|testNodes
 operator|.
 name|length
-argument_list|,
-literal|0xDEADBEEF
-argument_list|,
-literal|false
 argument_list|)
 expr_stmt|;
 name|assertTrue
@@ -1156,6 +1159,13 @@ index|]
 expr_stmt|;
 name|cluster
 operator|.
+name|setRandomSeed
+argument_list|(
+literal|0xDEADBEEF
+argument_list|)
+expr_stmt|;
+name|cluster
+operator|.
 name|sortByDistance
 argument_list|(
 name|dataNodes
@@ -1170,10 +1180,6 @@ operator|.
 name|length
 operator|-
 literal|2
-argument_list|,
-literal|0xDEADBEEF
-argument_list|,
-literal|false
 argument_list|)
 expr_stmt|;
 name|assertTrue
@@ -1274,6 +1280,13 @@ index|]
 expr_stmt|;
 name|cluster
 operator|.
+name|setRandomSeed
+argument_list|(
+literal|0xDEADBEEF
+argument_list|)
+expr_stmt|;
+name|cluster
+operator|.
 name|sortByDistance
 argument_list|(
 name|dataNodes
@@ -1286,10 +1299,6 @@ argument_list|,
 name|testNodes
 operator|.
 name|length
-argument_list|,
-literal|0xDEADBEEF
-argument_list|,
-literal|false
 argument_list|)
 expr_stmt|;
 name|assertTrue
@@ -1364,6 +1373,13 @@ index|]
 expr_stmt|;
 name|cluster
 operator|.
+name|setRandomSeed
+argument_list|(
+literal|0xDEADBEEF
+argument_list|)
+expr_stmt|;
+name|cluster
+operator|.
 name|sortByDistance
 argument_list|(
 name|dataNodes
@@ -1376,10 +1392,6 @@ argument_list|,
 name|testNodes
 operator|.
 name|length
-argument_list|,
-literal|0xDEADBEEF
-argument_list|,
-literal|false
 argument_list|)
 expr_stmt|;
 name|assertTrue
@@ -1454,6 +1466,13 @@ index|]
 expr_stmt|;
 name|cluster
 operator|.
+name|setRandomSeed
+argument_list|(
+literal|0xDEADBEEF
+argument_list|)
+expr_stmt|;
+name|cluster
+operator|.
 name|sortByDistance
 argument_list|(
 name|dataNodes
@@ -1466,10 +1485,6 @@ argument_list|,
 name|testNodes
 operator|.
 name|length
-argument_list|,
-literal|0xDEADBEEF
-argument_list|,
-literal|false
 argument_list|)
 expr_stmt|;
 name|assertTrue
@@ -1544,6 +1559,13 @@ index|]
 expr_stmt|;
 name|cluster
 operator|.
+name|setRandomSeed
+argument_list|(
+literal|0xDEAD
+argument_list|)
+expr_stmt|;
+name|cluster
+operator|.
 name|sortByDistance
 argument_list|(
 name|dataNodes
@@ -1556,10 +1578,6 @@ argument_list|,
 name|testNodes
 operator|.
 name|length
-argument_list|,
-literal|0xDEAD
-argument_list|,
-literal|false
 argument_list|)
 expr_stmt|;
 comment|// sortByDistance does not take the "data center" layer into consideration
@@ -1603,8 +1621,8 @@ literal|3
 index|]
 argument_list|)
 expr_stmt|;
-comment|// Array is just local rack nodes
-comment|// Expect a random first node depending on the seed (normally the block ID).
+comment|// Array of just rack-local nodes
+comment|// Expect a random first node
 name|DatanodeDescriptor
 name|first
 init|=
@@ -1674,12 +1692,6 @@ argument_list|,
 name|testNodes
 operator|.
 name|length
-argument_list|,
-literal|0xBEADED
-operator|+
-name|i
-argument_list|,
-literal|false
 argument_list|)
 expr_stmt|;
 if|if
@@ -1724,9 +1736,8 @@ argument_list|,
 name|foundRandom
 argument_list|)
 expr_stmt|;
-comment|// Array of rack local nodes with randomizeBlockLocationsPerBlock set to
-comment|// true
-comment|// Expect random order of block locations for same block
+comment|// Array of just remote nodes
+comment|// Expect random first node
 name|first
 operator|=
 literal|null
@@ -1782,8 +1793,6 @@ name|sortByDistance
 argument_list|(
 name|dataNodes
 index|[
-literal|15
-operator|+
 name|i
 index|]
 argument_list|,
@@ -1792,10 +1801,6 @@ argument_list|,
 name|testNodes
 operator|.
 name|length
-argument_list|,
-literal|0xBEADED
-argument_list|,
-literal|true
 argument_list|)
 expr_stmt|;
 if|if
