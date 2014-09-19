@@ -568,6 +568,20 @@ name|RMContainer
 import|;
 end_import
 
+begin_import
+import|import
+name|com
+operator|.
+name|google
+operator|.
+name|common
+operator|.
+name|annotations
+operator|.
+name|VisibleForTesting
+import|;
+end_import
+
 begin_comment
 comment|/**  *<p>  * {@link ResourceManager} uses this class to write the information of  * {@link RMApp}, {@link RMAppAttempt} and {@link RMContainer}. These APIs are  * non-blocking, and just schedule a writing history event. An self-contained  * dispatcher vector will handle the event in separate threads, and extract the  * required fields that are going to be persisted. Then, the extracted  * information will be persisted via the implementation of  * {@link ApplicationHistoryStore}.  *</p>  */
 end_comment
@@ -605,13 +619,15 @@ specifier|private
 name|Dispatcher
 name|dispatcher
 decl_stmt|;
+annotation|@
+name|VisibleForTesting
 DECL|field|writer
-specifier|private
 name|ApplicationHistoryWriter
 name|writer
 decl_stmt|;
+annotation|@
+name|VisibleForTesting
 DECL|field|historyServiceEnabled
-specifier|private
 name|boolean
 name|historyServiceEnabled
 decl_stmt|;
@@ -660,8 +676,60 @@ operator|.
 name|DEFAULT_APPLICATION_HISTORY_ENABLED
 argument_list|)
 expr_stmt|;
-comment|// Only create the services when the history service is enabled, preventing
-comment|// wasting the system resources.
+if|if
+condition|(
+name|conf
+operator|.
+name|get
+argument_list|(
+name|YarnConfiguration
+operator|.
+name|APPLICATION_HISTORY_STORE
+argument_list|)
+operator|==
+literal|null
+operator|||
+name|conf
+operator|.
+name|get
+argument_list|(
+name|YarnConfiguration
+operator|.
+name|APPLICATION_HISTORY_STORE
+argument_list|)
+operator|.
+name|length
+argument_list|()
+operator|==
+literal|0
+operator|||
+name|conf
+operator|.
+name|get
+argument_list|(
+name|YarnConfiguration
+operator|.
+name|APPLICATION_HISTORY_STORE
+argument_list|)
+operator|.
+name|equals
+argument_list|(
+name|NullApplicationHistoryStore
+operator|.
+name|class
+operator|.
+name|getName
+argument_list|()
+argument_list|)
+condition|)
+block|{
+name|historyServiceEnabled
+operator|=
+literal|false
+expr_stmt|;
+block|}
+comment|// Only create the services when the history service is enabled and not
+comment|// using the null store, preventing wasting the system resources.
 if|if
 condition|(
 name|historyServiceEnabled
@@ -760,13 +828,6 @@ name|Configuration
 name|conf
 parameter_list|)
 block|{
-comment|// If the history writer is not enabled, a dummy store will be used to
-comment|// write nothing
-if|if
-condition|(
-name|historyServiceEnabled
-condition|)
-block|{
 try|try
 block|{
 name|Class
@@ -785,7 +846,7 @@ name|YarnConfiguration
 operator|.
 name|APPLICATION_HISTORY_STORE
 argument_list|,
-name|FileSystemApplicationHistoryStore
+name|NullApplicationHistoryStore
 operator|.
 name|class
 argument_list|,
@@ -820,7 +881,7 @@ name|YarnConfiguration
 operator|.
 name|APPLICATION_HISTORY_STORE
 argument_list|,
-name|FileSystemApplicationHistoryStore
+name|NullApplicationHistoryStore
 operator|.
 name|class
 operator|.
@@ -846,15 +907,6 @@ argument_list|,
 name|e
 argument_list|)
 throw|;
-block|}
-block|}
-else|else
-block|{
-return|return
-operator|new
-name|NullApplicationHistoryStore
-argument_list|()
-return|;
 block|}
 block|}
 DECL|method|handleWritingApplicationHistoryEvent ( WritingApplicationHistoryEvent event)
