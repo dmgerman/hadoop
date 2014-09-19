@@ -5198,6 +5198,7 @@ name|Override
 comment|// FsDatasetSpi
 DECL|method|recoverClose (ExtendedBlock b, long newGS, long expectedBlockLen)
 specifier|public
+specifier|synchronized
 name|String
 name|recoverClose
 parameter_list|(
