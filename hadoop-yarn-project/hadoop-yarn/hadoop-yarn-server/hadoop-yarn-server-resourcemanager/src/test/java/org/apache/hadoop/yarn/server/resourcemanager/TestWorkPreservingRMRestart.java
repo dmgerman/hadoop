@@ -1118,6 +1118,17 @@ argument_list|,
 literal|true
 argument_list|)
 expr_stmt|;
+name|conf
+operator|.
+name|setLong
+argument_list|(
+name|YarnConfiguration
+operator|.
+name|RM_WORK_PRESERVING_RECOVERY_SCHEDULING_WAIT_MS
+argument_list|,
+literal|0
+argument_list|)
+expr_stmt|;
 name|DefaultMetricsSystem
 operator|.
 name|setMiniClusterMode
