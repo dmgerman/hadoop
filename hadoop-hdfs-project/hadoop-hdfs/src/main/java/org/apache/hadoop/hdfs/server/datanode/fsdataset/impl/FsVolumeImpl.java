@@ -468,6 +468,7 @@ comment|// limit the visible capacity for tests. If negative, then we just
 comment|// query from the filesystem.
 DECL|field|configuredCapacity
 specifier|protected
+specifier|volatile
 name|long
 name|configuredCapacity
 decl_stmt|;
