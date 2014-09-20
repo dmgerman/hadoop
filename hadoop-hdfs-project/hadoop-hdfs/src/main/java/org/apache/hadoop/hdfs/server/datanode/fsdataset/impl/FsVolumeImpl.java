@@ -1146,33 +1146,6 @@ operator|!=
 literal|0
 condition|)
 block|{
-if|if
-condition|(
-name|FsDatasetImpl
-operator|.
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
-name|FsDatasetImpl
-operator|.
-name|LOG
-operator|.
-name|debug
-argument_list|(
-literal|"Reserving "
-operator|+
-name|bytesToReserve
-operator|+
-literal|" on volume "
-operator|+
-name|getBasePath
-argument_list|()
-argument_list|)
-expr_stmt|;
-block|}
 name|reservedForRbw
 operator|.
 name|addAndGet
@@ -1200,33 +1173,6 @@ operator|!=
 literal|0
 condition|)
 block|{
-if|if
-condition|(
-name|FsDatasetImpl
-operator|.
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
-name|FsDatasetImpl
-operator|.
-name|LOG
-operator|.
-name|debug
-argument_list|(
-literal|"Releasing "
-operator|+
-name|bytesToRelease
-operator|+
-literal|" on volume "
-operator|+
-name|getBasePath
-argument_list|()
-argument_list|)
-expr_stmt|;
-block|}
 name|long
 name|oldReservation
 decl_stmt|,
@@ -1385,7 +1331,7 @@ argument_list|()
 expr_stmt|;
 block|}
 block|}
-DECL|method|getVolumeMap (ReplicaMap volumeMap, final LazyWriteReplicaTracker lazyWriteReplicaMap)
+DECL|method|getVolumeMap (ReplicaMap volumeMap, final RamDiskReplicaTracker ramDiskReplicaMap)
 name|void
 name|getVolumeMap
 parameter_list|(
@@ -1393,8 +1339,8 @@ name|ReplicaMap
 name|volumeMap
 parameter_list|,
 specifier|final
-name|LazyWriteReplicaTracker
-name|lazyWriteReplicaMap
+name|RamDiskReplicaTracker
+name|ramDiskReplicaMap
 parameter_list|)
 throws|throws
 name|IOException
@@ -1416,12 +1362,12 @@ name|getVolumeMap
 argument_list|(
 name|volumeMap
 argument_list|,
-name|lazyWriteReplicaMap
+name|ramDiskReplicaMap
 argument_list|)
 expr_stmt|;
 block|}
 block|}
-DECL|method|getVolumeMap (String bpid, ReplicaMap volumeMap, final LazyWriteReplicaTracker lazyWriteReplicaMap)
+DECL|method|getVolumeMap (String bpid, ReplicaMap volumeMap, final RamDiskReplicaTracker ramDiskReplicaMap)
 name|void
 name|getVolumeMap
 parameter_list|(
@@ -1432,8 +1378,8 @@ name|ReplicaMap
 name|volumeMap
 parameter_list|,
 specifier|final
-name|LazyWriteReplicaTracker
-name|lazyWriteReplicaMap
+name|RamDiskReplicaTracker
+name|ramDiskReplicaMap
 parameter_list|)
 throws|throws
 name|IOException
@@ -1447,7 +1393,7 @@ name|getVolumeMap
 argument_list|(
 name|volumeMap
 argument_list|,
-name|lazyWriteReplicaMap
+name|ramDiskReplicaMap
 argument_list|)
 expr_stmt|;
 block|}

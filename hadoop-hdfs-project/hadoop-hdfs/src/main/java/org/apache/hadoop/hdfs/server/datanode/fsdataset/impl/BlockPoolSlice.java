@@ -1467,12 +1467,15 @@ name|targetFiles
 return|;
 block|}
 comment|/**    * Move a persisted replica from lazypersist directory to a subdirectory    * under finalized.    */
-DECL|method|activateSavedReplica (Block b, File blockFile)
+DECL|method|activateSavedReplica (Block b, File metaFile, File blockFile)
 name|File
 name|activateSavedReplica
 parameter_list|(
 name|Block
 name|b
+parameter_list|,
+name|File
+name|metaFile
 parameter_list|,
 name|File
 name|blockFile
@@ -1493,22 +1496,6 @@ argument_list|,
 name|b
 operator|.
 name|getBlockId
-argument_list|()
-argument_list|)
-decl_stmt|;
-specifier|final
-name|File
-name|metaFile
-init|=
-name|FsDatasetUtil
-operator|.
-name|getMetaFile
-argument_list|(
-name|blockFile
-argument_list|,
-name|b
-operator|.
-name|getGenerationStamp
 argument_list|()
 argument_list|)
 decl_stmt|;
@@ -1623,7 +1610,7 @@ name|rbwDir
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|getVolumeMap (ReplicaMap volumeMap, final LazyWriteReplicaTracker lazyWriteReplicaMap)
+DECL|method|getVolumeMap (ReplicaMap volumeMap, final RamDiskReplicaTracker lazyWriteReplicaMap)
 name|void
 name|getVolumeMap
 parameter_list|(
@@ -1631,7 +1618,7 @@ name|ReplicaMap
 name|volumeMap
 parameter_list|,
 specifier|final
-name|LazyWriteReplicaTracker
+name|RamDiskReplicaTracker
 name|lazyWriteReplicaMap
 parameter_list|)
 throws|throws
@@ -2015,7 +2002,7 @@ name|numRecovered
 return|;
 block|}
 comment|/**    * Add replicas under the given directory to the volume map    * @param volumeMap the replicas map    * @param dir an input directory    * @param lazyWriteReplicaMap Map of replicas on transient    *                                storage.    * @param isFinalized true if the directory has finalized replicas;    *                    false if the directory has rbw replicas    */
-DECL|method|addToReplicasMap (ReplicaMap volumeMap, File dir, final LazyWriteReplicaTracker lazyWriteReplicaMap, boolean isFinalized)
+DECL|method|addToReplicasMap (ReplicaMap volumeMap, File dir, final RamDiskReplicaTracker lazyWriteReplicaMap, boolean isFinalized)
 name|void
 name|addToReplicasMap
 parameter_list|(
@@ -2026,7 +2013,7 @@ name|File
 name|dir
 parameter_list|,
 specifier|final
-name|LazyWriteReplicaTracker
+name|RamDiskReplicaTracker
 name|lazyWriteReplicaMap
 parameter_list|,
 name|boolean
@@ -2434,6 +2421,9 @@ name|bpid
 argument_list|,
 name|blockId
 argument_list|,
+operator|(
+name|FsVolumeImpl
+operator|)
 name|newReplica
 operator|.
 name|getVolume

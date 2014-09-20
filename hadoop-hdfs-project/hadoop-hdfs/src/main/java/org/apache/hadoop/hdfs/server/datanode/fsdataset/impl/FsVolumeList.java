@@ -508,7 +508,7 @@ return|return
 name|remaining
 return|;
 block|}
-DECL|method|getAllVolumesMap (final String bpid, final ReplicaMap volumeMap, final LazyWriteReplicaTracker lazyWriteReplicaMap)
+DECL|method|getAllVolumesMap (final String bpid, final ReplicaMap volumeMap, final RamDiskReplicaTracker ramDiskReplicaMap)
 name|void
 name|getAllVolumesMap
 parameter_list|(
@@ -521,8 +521,8 @@ name|ReplicaMap
 name|volumeMap
 parameter_list|,
 specifier|final
-name|LazyWriteReplicaTracker
-name|lazyWriteReplicaMap
+name|RamDiskReplicaTracker
+name|ramDiskReplicaMap
 parameter_list|)
 throws|throws
 name|IOException
@@ -623,7 +623,7 @@ name|bpid
 argument_list|,
 name|volumeMap
 argument_list|,
-name|lazyWriteReplicaMap
+name|ramDiskReplicaMap
 argument_list|)
 expr_stmt|;
 name|long
