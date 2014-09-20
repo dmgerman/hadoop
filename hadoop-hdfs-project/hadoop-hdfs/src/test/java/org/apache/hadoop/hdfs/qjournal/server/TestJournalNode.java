@@ -1914,7 +1914,7 @@ name|assertJNFailsToStart
 argument_list|(
 name|conf
 argument_list|,
-literal|"Can not create directory"
+literal|"Cannot create directory"
 argument_list|)
 expr_stmt|;
 block|}
