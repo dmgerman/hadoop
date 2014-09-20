@@ -2983,7 +2983,7 @@ name|LOG
 operator|.
 name|error
 argument_list|(
-literal|"Unexcpected exception"
+literal|"Unexpected exception"
 argument_list|,
 name|e
 argument_list|)

@@ -542,11 +542,12 @@ argument_list|(
 name|KMS_LOGGER_NAME
 argument_list|)
 decl_stmt|;
-DECL|method|KMSAudit (long delay)
+comment|/**    * Create a new KMSAudit.    *    * @param windowMs Duplicate events within the aggregation window are quashed    *                 to reduce log traffic. A single message for aggregated    *                 events is printed at the end of the window, along with a    *                 count of the number of aggregated events.    */
+DECL|method|KMSAudit (long windowMs)
 name|KMSAudit
 parameter_list|(
 name|long
-name|delay
+name|windowMs
 parameter_list|)
 block|{
 name|cache
@@ -558,7 +559,7 @@ argument_list|()
 operator|.
 name|expireAfterWrite
 argument_list|(
-name|delay
+name|windowMs
 argument_list|,
 name|TimeUnit
 operator|.
@@ -706,11 +707,11 @@ expr_stmt|;
 block|}
 block|}
 argument_list|,
-name|delay
+name|windowMs
 operator|/
 literal|10
 argument_list|,
-name|delay
+name|windowMs
 operator|/
 literal|10
 argument_list|,

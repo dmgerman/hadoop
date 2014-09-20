@@ -142,6 +142,20 @@ end_import
 
 begin_import
 import|import
+name|java
+operator|.
+name|util
+operator|.
+name|concurrent
+operator|.
+name|atomic
+operator|.
+name|AtomicBoolean
+import|;
+end_import
+
+begin_import
+import|import
 name|javax
 operator|.
 name|security
@@ -496,11 +510,11 @@ operator|.
 name|class
 argument_list|)
 decl_stmt|;
-DECL|field|fallbackToSimpleAuthAllowed
+DECL|field|fallbackToSimpleAuth
 specifier|private
 specifier|final
-name|boolean
-name|fallbackToSimpleAuthAllowed
+name|AtomicBoolean
+name|fallbackToSimpleAuth
 decl_stmt|;
 DECL|field|saslPropsResolver
 specifier|private
@@ -514,8 +528,30 @@ specifier|final
 name|TrustedChannelResolver
 name|trustedChannelResolver
 decl_stmt|;
-comment|/**    * Creates a new SaslDataTransferClient.    *    * @param saslPropsResolver for determining properties of SASL negotiation    * @param trustedChannelResolver for identifying trusted connections that do    *   not require SASL negotiation    */
-DECL|method|SaslDataTransferClient (SaslPropertiesResolver saslPropsResolver, TrustedChannelResolver trustedChannelResolver, boolean fallbackToSimpleAuthAllowed)
+comment|/**    * Creates a new SaslDataTransferClient.  This constructor is used in cases    * where it is not relevant to track if a secure client did a fallback to    * simple auth.  For intra-cluster connections between data nodes in the same    * cluster, we can assume that all run under the same security configuration.    *    * @param saslPropsResolver for determining properties of SASL negotiation    * @param trustedChannelResolver for identifying trusted connections that do    *   not require SASL negotiation    */
+DECL|method|SaslDataTransferClient (SaslPropertiesResolver saslPropsResolver, TrustedChannelResolver trustedChannelResolver)
+specifier|public
+name|SaslDataTransferClient
+parameter_list|(
+name|SaslPropertiesResolver
+name|saslPropsResolver
+parameter_list|,
+name|TrustedChannelResolver
+name|trustedChannelResolver
+parameter_list|)
+block|{
+name|this
+argument_list|(
+name|saslPropsResolver
+argument_list|,
+name|trustedChannelResolver
+argument_list|,
+literal|null
+argument_list|)
+expr_stmt|;
+block|}
+comment|/**    * Creates a new SaslDataTransferClient.    *    * @param saslPropsResolver for determining properties of SASL negotiation    * @param trustedChannelResolver for identifying trusted connections that do    *   not require SASL negotiation    * @param fallbackToSimpleAuth checked on each attempt at general SASL    *   handshake, if true forces use of simple auth    */
+DECL|method|SaslDataTransferClient (SaslPropertiesResolver saslPropsResolver, TrustedChannelResolver trustedChannelResolver, AtomicBoolean fallbackToSimpleAuth)
 specifier|public
 name|SaslDataTransferClient
 parameter_list|(
@@ -525,15 +561,15 @@ parameter_list|,
 name|TrustedChannelResolver
 name|trustedChannelResolver
 parameter_list|,
-name|boolean
-name|fallbackToSimpleAuthAllowed
+name|AtomicBoolean
+name|fallbackToSimpleAuth
 parameter_list|)
 block|{
 name|this
 operator|.
-name|fallbackToSimpleAuthAllowed
+name|fallbackToSimpleAuth
 operator|=
-name|fallbackToSimpleAuthAllowed
+name|fallbackToSimpleAuth
 expr_stmt|;
 name|this
 operator|.
@@ -977,32 +1013,16 @@ block|}
 elseif|else
 if|if
 condition|(
-name|accessToken
+name|fallbackToSimpleAuth
+operator|!=
+literal|null
+operator|&&
+name|fallbackToSimpleAuth
 operator|.
-name|getIdentifier
+name|get
 argument_list|()
-operator|.
-name|length
-operator|==
-literal|0
 condition|)
 block|{
-if|if
-condition|(
-operator|!
-name|fallbackToSimpleAuthAllowed
-condition|)
-block|{
-throw|throw
-operator|new
-name|IOException
-argument_list|(
-literal|"No block access token was provided (insecure cluster), but this "
-operator|+
-literal|"client is configured to allow only secure connections."
-argument_list|)
-throw|;
-block|}
 name|LOG
 operator|.
 name|debug
@@ -1020,7 +1040,13 @@ return|return
 literal|null
 return|;
 block|}
-else|else
+elseif|else
+if|if
+condition|(
+name|saslPropsResolver
+operator|!=
+literal|null
+condition|)
 block|{
 name|LOG
 operator|.
@@ -1046,6 +1072,28 @@ name|accessToken
 argument_list|,
 name|datanodeId
 argument_list|)
+return|;
+block|}
+else|else
+block|{
+comment|// It's a secured cluster using non-privileged ports, but no SASL.  The
+comment|// only way this can happen is if the DataNode has
+comment|// ignore.secure.ports.for.testing configured, so this is a rare edge case.
+name|LOG
+operator|.
+name|debug
+argument_list|(
+literal|"SASL client skipping handshake in secured configuration with no SASL "
+operator|+
+literal|"protection configured for addr = {}, datanodeId = {}"
+argument_list|,
+name|addr
+argument_list|,
+name|datanodeId
+argument_list|)
+expr_stmt|;
+return|return
+literal|null
 return|;
 block|}
 block|}
@@ -1417,37 +1465,6 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
-if|if
-condition|(
-name|saslPropsResolver
-operator|==
-literal|null
-condition|)
-block|{
-throw|throw
-operator|new
-name|IOException
-argument_list|(
-name|String
-operator|.
-name|format
-argument_list|(
-literal|"Cannot create a secured "
-operator|+
-literal|"connection if DataNode listens on unprivileged port (%d) and no "
-operator|+
-literal|"protection is defined in configuration property %s."
-argument_list|,
-name|datanodeId
-operator|.
-name|getXferPort
-argument_list|()
-argument_list|,
-name|DFS_DATA_TRANSFER_PROTECTION_KEY
-argument_list|)
-argument_list|)
-throw|;
-block|}
 name|Map
 argument_list|<
 name|String

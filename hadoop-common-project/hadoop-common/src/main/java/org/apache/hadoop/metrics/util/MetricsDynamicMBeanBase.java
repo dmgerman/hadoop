@@ -1010,7 +1010,7 @@ name|LOG
 operator|.
 name|error
 argument_list|(
-literal|"Unexpected attrubute suffix"
+literal|"Unexpected attribute suffix"
 argument_list|)
 expr_stmt|;
 throw|throw

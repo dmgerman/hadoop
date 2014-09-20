@@ -499,6 +499,38 @@ import|;
 end_import
 
 begin_import
+import|import static
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|DFSConfigKeys
+operator|.
+name|IGNORE_SECURE_PORTS_FOR_TESTING_KEY
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|DFSConfigKeys
+operator|.
+name|IGNORE_SECURE_PORTS_FOR_TESTING_DEFAULT
+import|;
+end_import
+
+begin_import
 import|import
 name|org
 operator|.
@@ -734,6 +766,12 @@ DECL|field|trustedChannelResolver
 specifier|final
 name|TrustedChannelResolver
 name|trustedChannelResolver
+decl_stmt|;
+DECL|field|ignoreSecurePortsForTesting
+specifier|private
+specifier|final
+name|boolean
+name|ignoreSecurePortsForTesting
 decl_stmt|;
 DECL|field|xceiverStopTimeout
 specifier|final
@@ -1124,6 +1162,19 @@ argument_list|)
 expr_stmt|;
 name|this
 operator|.
+name|ignoreSecurePortsForTesting
+operator|=
+name|conf
+operator|.
+name|getBoolean
+argument_list|(
+name|IGNORE_SECURE_PORTS_FOR_TESTING_KEY
+argument_list|,
+name|IGNORE_SECURE_PORTS_FOR_TESTING_DEFAULT
+argument_list|)
+expr_stmt|;
+name|this
+operator|.
 name|xceiverStopTimeout
 operator|=
 name|conf
@@ -1238,6 +1289,17 @@ parameter_list|()
 block|{
 return|return
 name|trustedChannelResolver
+return|;
+block|}
+comment|/**    * Returns true if configuration is set to skip checking for proper    * port configuration in a secured cluster.  This is only intended for use in    * dev testing.    *    * @return true if configured to skip checking secured port configuration    */
+DECL|method|getIgnoreSecurePortsForTesting ()
+specifier|public
+name|boolean
+name|getIgnoreSecurePortsForTesting
+parameter_list|()
+block|{
+return|return
+name|ignoreSecurePortsForTesting
 return|;
 block|}
 block|}

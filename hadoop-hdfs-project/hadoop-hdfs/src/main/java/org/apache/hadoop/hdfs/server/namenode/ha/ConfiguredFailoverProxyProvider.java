@@ -697,6 +697,8 @@ argument_list|,
 name|ugi
 argument_list|,
 literal|false
+argument_list|,
+name|fallbackToSimpleAuth
 argument_list|)
 operator|.
 name|getProxy

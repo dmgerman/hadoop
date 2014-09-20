@@ -7770,12 +7770,15 @@ expr_stmt|;
 block|}
 finally|finally
 block|{
-name|writeUnlock
-argument_list|()
-expr_stmt|;
 name|startingActiveService
 operator|=
 literal|false
+expr_stmt|;
+name|checkSafeMode
+argument_list|()
+expr_stmt|;
+name|writeUnlock
+argument_list|()
 expr_stmt|;
 block|}
 block|}
@@ -27442,6 +27445,14 @@ assert|assert
 name|hasWriteLock
 argument_list|()
 assert|;
+if|if
+condition|(
+name|inTransitionToActive
+argument_list|()
+condition|)
+block|{
+return|return;
+block|}
 comment|// if smmthread is already running, the block threshold must have been
 comment|// reached before, there is no need to enter the safe mode again
 if|if

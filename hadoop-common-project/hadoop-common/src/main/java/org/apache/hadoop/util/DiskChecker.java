@@ -368,7 +368,7 @@ throw|throw
 operator|new
 name|DiskErrorException
 argument_list|(
-literal|"Can not create directory: "
+literal|"Cannot create directory: "
 operator|+
 name|dir
 operator|.

@@ -122,6 +122,20 @@ end_import
 
 begin_import
 import|import
+name|java
+operator|.
+name|util
+operator|.
+name|concurrent
+operator|.
+name|atomic
+operator|.
+name|AtomicBoolean
+import|;
+end_import
+
+begin_import
+import|import
 name|org
 operator|.
 name|apache
@@ -745,6 +759,17 @@ specifier|final
 name|KeyManager
 name|keyManager
 decl_stmt|;
+DECL|field|fallbackToSimpleAuth
+specifier|final
+name|AtomicBoolean
+name|fallbackToSimpleAuth
+init|=
+operator|new
+name|AtomicBoolean
+argument_list|(
+literal|false
+argument_list|)
+decl_stmt|;
 DECL|field|fs
 specifier|private
 specifier|final
@@ -877,6 +902,8 @@ argument_list|,
 name|ClientProtocol
 operator|.
 name|class
+argument_list|,
+name|fallbackToSimpleAuth
 argument_list|)
 operator|.
 name|getProxy

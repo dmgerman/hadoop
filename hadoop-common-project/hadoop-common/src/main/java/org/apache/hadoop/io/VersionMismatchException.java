@@ -114,7 +114,7 @@ name|toString
 parameter_list|()
 block|{
 return|return
-literal|"A record version mismatch occured. Expecting v"
+literal|"A record version mismatch occurred. Expecting v"
 operator|+
 name|expectedVersion
 operator|+

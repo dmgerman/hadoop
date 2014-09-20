@@ -5972,7 +5972,7 @@ name|LOG
 operator|.
 name|error
 argument_list|(
-literal|"Job not Successful!"
+literal|"Job not successful!"
 argument_list|)
 expr_stmt|;
 return|return
