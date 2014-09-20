@@ -672,6 +672,15 @@ argument_list|(
 name|config
 argument_list|)
 expr_stmt|;
+name|servletContext
+operator|.
+name|setAttribute
+argument_list|(
+name|ZOOKEEPER_SIGNER_SECRET_PROVIDER_CURATOR_CLIENT_ATTRIBUTE
+argument_list|,
+name|client
+argument_list|)
+expr_stmt|;
 block|}
 name|this
 operator|.

@@ -698,6 +698,8 @@ parameter_list|,
 name|long
 name|renewDate
 parameter_list|)
+throws|throws
+name|IOException
 block|{
 name|super
 operator|.
@@ -751,6 +753,8 @@ parameter_list|,
 name|long
 name|renewDate
 parameter_list|)
+throws|throws
+name|IOException
 block|{
 name|super
 operator|.
