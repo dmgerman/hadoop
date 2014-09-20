@@ -3293,12 +3293,15 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|/** Connect to the server and set up the I/O streams. It then sends      * a header to the server and starts      * the connection thread that waits for responses.      */
-DECL|method|setupIOstreams ()
+DECL|method|setupIOstreams ( AtomicBoolean fallbackToSimpleAuth)
 specifier|private
 specifier|synchronized
 name|void
 name|setupIOstreams
-parameter_list|()
+parameter_list|(
+name|AtomicBoolean
+name|fallbackToSimpleAuth
+parameter_list|)
 block|{
 if|if
 condition|(
@@ -3580,6 +3583,21 @@ operator|.
 name|saslQop
 argument_list|)
 expr_stmt|;
+if|if
+condition|(
+name|fallbackToSimpleAuth
+operator|!=
+literal|null
+condition|)
+block|{
+name|fallbackToSimpleAuth
+operator|.
+name|set
+argument_list|(
+literal|false
+argument_list|)
+expr_stmt|;
+block|}
 block|}
 elseif|else
 if|if
@@ -3588,7 +3606,10 @@ name|UserGroupInformation
 operator|.
 name|isSecurityEnabled
 argument_list|()
-operator|&&
+condition|)
+block|{
+if|if
+condition|(
 operator|!
 name|fallbackAllowed
 condition|)
@@ -3604,6 +3625,22 @@ operator|+
 literal|"connections."
 argument_list|)
 throw|;
+block|}
+if|if
+condition|(
+name|fallbackToSimpleAuth
+operator|!=
+literal|null
+condition|)
+block|{
+name|fallbackToSimpleAuth
+operator|.
+name|set
+argument_list|(
+literal|true
+argument_list|)
+expr_stmt|;
+block|}
 block|}
 block|}
 if|if
@@ -6075,7 +6112,47 @@ name|RPC_SERVICE_CLASS_DEFAULT
 argument_list|)
 return|;
 block|}
-comment|/**     * Make a call, passing<code>rpcRequest</code>, to the IPC server defined by    *<code>remoteId</code>, returning the rpc respond.    *     * @param rpcKind    * @param rpcRequest -  contains serialized method and method parameters    * @param remoteId - the target rpc server    * @param serviceClass - service class for RPC    * @returns the rpc response    * Throws exceptions if there are network problems or if the remote code     * threw an exception.    */
+comment|/**     * Make a call, passing<code>rpcRequest</code>, to the IPC server defined by    *<code>remoteId</code>, returning the rpc respond.    *    * @param rpcKind    * @param rpcRequest -  contains serialized method and method parameters    * @param remoteId - the target rpc server    * @param fallbackToSimpleAuth - set to true or false during this method to    *   indicate if a secure client falls back to simple auth    * @returns the rpc response    * Throws exceptions if there are network problems or if the remote code    * threw an exception.    */
+DECL|method|call (RPC.RpcKind rpcKind, Writable rpcRequest, ConnectionId remoteId, AtomicBoolean fallbackToSimpleAuth)
+specifier|public
+name|Writable
+name|call
+parameter_list|(
+name|RPC
+operator|.
+name|RpcKind
+name|rpcKind
+parameter_list|,
+name|Writable
+name|rpcRequest
+parameter_list|,
+name|ConnectionId
+name|remoteId
+parameter_list|,
+name|AtomicBoolean
+name|fallbackToSimpleAuth
+parameter_list|)
+throws|throws
+name|IOException
+block|{
+return|return
+name|call
+argument_list|(
+name|rpcKind
+argument_list|,
+name|rpcRequest
+argument_list|,
+name|remoteId
+argument_list|,
+name|RPC
+operator|.
+name|RPC_SERVICE_CLASS_DEFAULT
+argument_list|,
+name|fallbackToSimpleAuth
+argument_list|)
+return|;
+block|}
+comment|/**    * Make a call, passing<code>rpcRequest</code>, to the IPC server defined by    *<code>remoteId</code>, returning the rpc response.    *     * @param rpcKind    * @param rpcRequest -  contains serialized method and method parameters    * @param remoteId - the target rpc server    * @param serviceClass - service class for RPC    * @returns the rpc response    * Throws exceptions if there are network problems or if the remote code     * threw an exception.    */
 DECL|method|call (RPC.RpcKind rpcKind, Writable rpcRequest, ConnectionId remoteId, int serviceClass)
 specifier|public
 name|Writable
@@ -6094,6 +6171,47 @@ name|remoteId
 parameter_list|,
 name|int
 name|serviceClass
+parameter_list|)
+throws|throws
+name|IOException
+block|{
+return|return
+name|call
+argument_list|(
+name|rpcKind
+argument_list|,
+name|rpcRequest
+argument_list|,
+name|remoteId
+argument_list|,
+name|serviceClass
+argument_list|,
+literal|null
+argument_list|)
+return|;
+block|}
+comment|/**    * Make a call, passing<code>rpcRequest</code>, to the IPC server defined by    *<code>remoteId</code>, returning the rpc response.    *    * @param rpcKind    * @param rpcRequest -  contains serialized method and method parameters    * @param remoteId - the target rpc server    * @param serviceClass - service class for RPC    * @param fallbackToSimpleAuth - set to true or false during this method to    *   indicate if a secure client falls back to simple auth    * @returns the rpc response    * Throws exceptions if there are network problems or if the remote code    * threw an exception.    */
+DECL|method|call (RPC.RpcKind rpcKind, Writable rpcRequest, ConnectionId remoteId, int serviceClass, AtomicBoolean fallbackToSimpleAuth)
+specifier|public
+name|Writable
+name|call
+parameter_list|(
+name|RPC
+operator|.
+name|RpcKind
+name|rpcKind
+parameter_list|,
+name|Writable
+name|rpcRequest
+parameter_list|,
+name|ConnectionId
+name|remoteId
+parameter_list|,
+name|int
+name|serviceClass
+parameter_list|,
+name|AtomicBoolean
+name|fallbackToSimpleAuth
 parameter_list|)
 throws|throws
 name|IOException
@@ -6119,6 +6237,8 @@ argument_list|,
 name|call
 argument_list|,
 name|serviceClass
+argument_list|,
+name|fallbackToSimpleAuth
 argument_list|)
 decl_stmt|;
 try|try
@@ -6347,7 +6467,7 @@ return|;
 block|}
 block|}
 comment|/** Get a connection from the pool, or create a new one and add it to the    * pool.  Connections to a given ConnectionId are reused. */
-DECL|method|getConnection (ConnectionId remoteId, Call call, int serviceClass)
+DECL|method|getConnection (ConnectionId remoteId, Call call, int serviceClass, AtomicBoolean fallbackToSimpleAuth)
 specifier|private
 name|Connection
 name|getConnection
@@ -6360,6 +6480,9 @@ name|call
 parameter_list|,
 name|int
 name|serviceClass
+parameter_list|,
+name|AtomicBoolean
+name|fallbackToSimpleAuth
 parameter_list|)
 throws|throws
 name|IOException
@@ -6449,7 +6572,9 @@ comment|//entire system down.
 name|connection
 operator|.
 name|setupIOstreams
-argument_list|()
+argument_list|(
+name|fallbackToSimpleAuth
+argument_list|)
 expr_stmt|;
 return|return
 name|connection

@@ -260,6 +260,20 @@ end_import
 
 begin_import
 import|import
+name|java
+operator|.
+name|util
+operator|.
+name|concurrent
+operator|.
+name|atomic
+operator|.
+name|AtomicBoolean
+import|;
+end_import
+
+begin_import
+import|import
 name|org
 operator|.
 name|apache
@@ -1165,6 +1179,55 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
+return|return
+name|createProxy
+argument_list|(
+name|conf
+argument_list|,
+name|nameNodeUri
+argument_list|,
+name|xface
+argument_list|,
+literal|null
+argument_list|)
+return|;
+block|}
+comment|/**    * Creates the namenode proxy with the passed protocol. This will handle    * creation of either HA- or non-HA-enabled proxy objects, depending upon    * if the provided URI is a configured logical URI.    *    * @param conf the configuration containing the required IPC    *        properties, client failover configurations, etc.    * @param nameNodeUri the URI pointing either to a specific NameNode    *        or to a logical nameservice.    * @param xface the IPC interface which should be created    * @param fallbackToSimpleAuth set to true or false during calls to indicate if    *   a secure client falls back to simple auth    * @return an object containing both the proxy and the associated    *         delegation token service it corresponds to    * @throws IOException if there is an error creating the proxy    **/
+annotation|@
+name|SuppressWarnings
+argument_list|(
+literal|"unchecked"
+argument_list|)
+DECL|method|createProxy (Configuration conf, URI nameNodeUri, Class<T> xface, AtomicBoolean fallbackToSimpleAuth)
+specifier|public
+specifier|static
+parameter_list|<
+name|T
+parameter_list|>
+name|ProxyAndInfo
+argument_list|<
+name|T
+argument_list|>
+name|createProxy
+parameter_list|(
+name|Configuration
+name|conf
+parameter_list|,
+name|URI
+name|nameNodeUri
+parameter_list|,
+name|Class
+argument_list|<
+name|T
+argument_list|>
+name|xface
+parameter_list|,
+name|AtomicBoolean
+name|fallbackToSimpleAuth
+parameter_list|)
+throws|throws
+name|IOException
+block|{
 name|AbstractNNFailoverProxyProvider
 argument_list|<
 name|T
@@ -1180,6 +1243,8 @@ argument_list|,
 name|xface
 argument_list|,
 literal|true
+argument_list|,
+name|fallbackToSimpleAuth
 argument_list|)
 decl_stmt|;
 if|if
@@ -1210,6 +1275,8 @@ name|getCurrentUser
 argument_list|()
 argument_list|,
 literal|true
+argument_list|,
+name|fallbackToSimpleAuth
 argument_list|)
 return|;
 block|}
@@ -1328,13 +1395,13 @@ argument_list|)
 return|;
 block|}
 block|}
-comment|/**    * Generate a dummy namenode proxy instance that utilizes our hacked    * {@link LossyRetryInvocationHandler}. Proxy instance generated using this    * method will proactively drop RPC responses. Currently this method only    * support HA setup. null will be returned if the given configuration is not     * for HA.    *     * @param config the configuration containing the required IPC    *        properties, client failover configurations, etc.    * @param nameNodeUri the URI pointing either to a specific NameNode    *        or to a logical nameservice.    * @param xface the IPC interface which should be created    * @param numResponseToDrop The number of responses to drop for each RPC call    * @return an object containing both the proxy and the associated    *         delegation token service it corresponds to. Will return null of the    *         given configuration does not support HA.    * @throws IOException if there is an error creating the proxy    */
+comment|/**    * Generate a dummy namenode proxy instance that utilizes our hacked    * {@link LossyRetryInvocationHandler}. Proxy instance generated using this    * method will proactively drop RPC responses. Currently this method only    * support HA setup. null will be returned if the given configuration is not     * for HA.    *     * @param config the configuration containing the required IPC    *        properties, client failover configurations, etc.    * @param nameNodeUri the URI pointing either to a specific NameNode    *        or to a logical nameservice.    * @param xface the IPC interface which should be created    * @param numResponseToDrop The number of responses to drop for each RPC call    * @param fallbackToSimpleAuth set to true or false during calls to indicate if    *   a secure client falls back to simple auth    * @return an object containing both the proxy and the associated    *         delegation token service it corresponds to. Will return null of the    *         given configuration does not support HA.    * @throws IOException if there is an error creating the proxy    */
 annotation|@
 name|SuppressWarnings
 argument_list|(
 literal|"unchecked"
 argument_list|)
-DECL|method|createProxyWithLossyRetryHandler ( Configuration config, URI nameNodeUri, Class<T> xface, int numResponseToDrop)
+DECL|method|createProxyWithLossyRetryHandler ( Configuration config, URI nameNodeUri, Class<T> xface, int numResponseToDrop, AtomicBoolean fallbackToSimpleAuth)
 specifier|public
 specifier|static
 parameter_list|<
@@ -1360,6 +1427,9 @@ name|xface
 parameter_list|,
 name|int
 name|numResponseToDrop
+parameter_list|,
+name|AtomicBoolean
+name|fallbackToSimpleAuth
 parameter_list|)
 throws|throws
 name|IOException
@@ -1388,6 +1458,8 @@ argument_list|,
 name|xface
 argument_list|,
 literal|true
+argument_list|,
+name|fallbackToSimpleAuth
 argument_list|)
 decl_stmt|;
 if|if
@@ -1631,6 +1703,65 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
+return|return
+name|createNonHAProxy
+argument_list|(
+name|conf
+argument_list|,
+name|nnAddr
+argument_list|,
+name|xface
+argument_list|,
+name|ugi
+argument_list|,
+name|withRetries
+argument_list|,
+literal|null
+argument_list|)
+return|;
+block|}
+comment|/**    * Creates an explicitly non-HA-enabled proxy object. Most of the time you    * don't want to use this, and should instead use {@link NameNodeProxies#createProxy}.    *    * @param conf the configuration object    * @param nnAddr address of the remote NN to connect to    * @param xface the IPC interface which should be created    * @param ugi the user who is making the calls on the proxy object    * @param withRetries certain interfaces have a non-standard retry policy    * @param fallbackToSimpleAuth - set to true or false during this method to    *   indicate if a secure client falls back to simple auth    * @return an object containing both the proxy and the associated    *         delegation token service it corresponds to    * @throws IOException    */
+annotation|@
+name|SuppressWarnings
+argument_list|(
+literal|"unchecked"
+argument_list|)
+DECL|method|createNonHAProxy ( Configuration conf, InetSocketAddress nnAddr, Class<T> xface, UserGroupInformation ugi, boolean withRetries, AtomicBoolean fallbackToSimpleAuth)
+specifier|public
+specifier|static
+parameter_list|<
+name|T
+parameter_list|>
+name|ProxyAndInfo
+argument_list|<
+name|T
+argument_list|>
+name|createNonHAProxy
+parameter_list|(
+name|Configuration
+name|conf
+parameter_list|,
+name|InetSocketAddress
+name|nnAddr
+parameter_list|,
+name|Class
+argument_list|<
+name|T
+argument_list|>
+name|xface
+parameter_list|,
+name|UserGroupInformation
+name|ugi
+parameter_list|,
+name|boolean
+name|withRetries
+parameter_list|,
+name|AtomicBoolean
+name|fallbackToSimpleAuth
+parameter_list|)
+throws|throws
+name|IOException
+block|{
 name|Text
 name|dtService
 init|=
@@ -1667,6 +1798,8 @@ argument_list|,
 name|ugi
 argument_list|,
 name|withRetries
+argument_list|,
+name|fallbackToSimpleAuth
 argument_list|)
 expr_stmt|;
 block|}
@@ -2251,7 +2384,7 @@ argument_list|)
 return|;
 block|}
 block|}
-DECL|method|createNNProxyWithClientProtocol ( InetSocketAddress address, Configuration conf, UserGroupInformation ugi, boolean withRetries)
+DECL|method|createNNProxyWithClientProtocol ( InetSocketAddress address, Configuration conf, UserGroupInformation ugi, boolean withRetries, AtomicBoolean fallbackToSimpleAuth)
 specifier|private
 specifier|static
 name|ClientProtocol
@@ -2268,6 +2401,9 @@ name|ugi
 parameter_list|,
 name|boolean
 name|withRetries
+parameter_list|,
+name|AtomicBoolean
+name|fallbackToSimpleAuth
 parameter_list|)
 throws|throws
 name|IOException
@@ -2373,6 +2509,8 @@ name|conf
 argument_list|)
 argument_list|,
 name|defaultPolicy
+argument_list|,
+name|fallbackToSimpleAuth
 argument_list|)
 operator|.
 name|getProxy
@@ -2750,7 +2888,7 @@ block|}
 comment|/** Creates the Failover proxy provider instance*/
 annotation|@
 name|VisibleForTesting
-DECL|method|createFailoverProxyProvider ( Configuration conf, URI nameNodeUri, Class<T> xface, boolean checkPort)
+DECL|method|createFailoverProxyProvider ( Configuration conf, URI nameNodeUri, Class<T> xface, boolean checkPort, AtomicBoolean fallbackToSimpleAuth)
 specifier|public
 specifier|static
 parameter_list|<
@@ -2776,6 +2914,9 @@ name|xface
 parameter_list|,
 name|boolean
 name|checkPort
+parameter_list|,
+name|AtomicBoolean
+name|fallbackToSimpleAuth
 parameter_list|)
 throws|throws
 name|IOException
@@ -3043,6 +3184,13 @@ argument_list|)
 throw|;
 block|}
 block|}
+name|providerNN
+operator|.
+name|setFallbackToSimpleAuth
+argument_list|(
+name|fallbackToSimpleAuth
+argument_list|)
+expr_stmt|;
 return|return
 name|providerNN
 return|;

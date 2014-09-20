@@ -661,7 +661,16 @@ name|underlyingOut
 argument_list|)
 return|;
 block|}
-else|else
+elseif|else
+if|if
+condition|(
+name|dnConf
+operator|.
+name|getSaslPropsResolver
+argument_list|()
+operator|!=
+literal|null
+condition|)
 block|{
 name|LOG
 operator|.
@@ -686,6 +695,71 @@ argument_list|,
 name|datanodeId
 argument_list|)
 return|;
+block|}
+elseif|else
+if|if
+condition|(
+name|dnConf
+operator|.
+name|getIgnoreSecurePortsForTesting
+argument_list|()
+condition|)
+block|{
+comment|// It's a secured cluster using non-privileged ports, but no SASL.  The
+comment|// only way this can happen is if the DataNode has
+comment|// ignore.secure.ports.for.testing configured, so this is a rare edge case.
+name|LOG
+operator|.
+name|debug
+argument_list|(
+literal|"SASL server skipping handshake in secured configuration with no SASL "
+operator|+
+literal|"protection configured for peer = {}, datanodeId = {}"
+argument_list|,
+name|peer
+argument_list|,
+name|datanodeId
+argument_list|)
+expr_stmt|;
+return|return
+operator|new
+name|IOStreamPair
+argument_list|(
+name|underlyingIn
+argument_list|,
+name|underlyingOut
+argument_list|)
+return|;
+block|}
+else|else
+block|{
+comment|// The error message here intentionally does not mention
+comment|// ignore.secure.ports.for.testing.  That's intended for dev use only.
+comment|// This code path is not expected to execute ever, because DataNode startup
+comment|// checks for invalid configuration and aborts.
+throw|throw
+operator|new
+name|IOException
+argument_list|(
+name|String
+operator|.
+name|format
+argument_list|(
+literal|"Cannot create a secured "
+operator|+
+literal|"connection if DataNode listens on unprivileged port (%d) and no "
+operator|+
+literal|"protection is defined in configuration property %s."
+argument_list|,
+name|datanodeId
+operator|.
+name|getXferPort
+argument_list|()
+argument_list|,
+name|DFS_DATA_TRANSFER_PROTECTION_KEY
+argument_list|)
+argument_list|)
+throw|;
 block|}
 block|}
 comment|/**    * Receives SASL negotiation for specialized encrypted handshake.    *    * @param peer connection peer    * @param underlyingOut connection output stream    * @param underlyingIn connection input stream    * @return new pair of streams, wrapped after SASL negotiation    * @throws IOException for any error    */
@@ -1165,37 +1239,6 @@ operator|.
 name|getSaslPropsResolver
 argument_list|()
 decl_stmt|;
-if|if
-condition|(
-name|saslPropsResolver
-operator|==
-literal|null
-condition|)
-block|{
-throw|throw
-operator|new
-name|IOException
-argument_list|(
-name|String
-operator|.
-name|format
-argument_list|(
-literal|"Cannot create a secured "
-operator|+
-literal|"connection if DataNode listens on unprivileged port (%d) and no "
-operator|+
-literal|"protection is defined in configuration property %s."
-argument_list|,
-name|datanodeId
-operator|.
-name|getXferPort
-argument_list|()
-argument_list|,
-name|DFS_DATA_TRANSFER_PROTECTION_KEY
-argument_list|)
-argument_list|)
-throw|;
-block|}
 name|Map
 argument_list|<
 name|String

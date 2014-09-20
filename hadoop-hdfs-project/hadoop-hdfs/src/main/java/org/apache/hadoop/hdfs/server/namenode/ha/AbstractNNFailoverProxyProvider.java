@@ -24,6 +24,20 @@ end_package
 
 begin_import
 import|import
+name|java
+operator|.
+name|util
+operator|.
+name|concurrent
+operator|.
+name|atomic
+operator|.
+name|AtomicBoolean
+import|;
+end_import
+
+begin_import
+import|import
 name|org
 operator|.
 name|apache
@@ -67,6 +81,11 @@ argument_list|<
 name|T
 argument_list|>
 block|{
+DECL|field|fallbackToSimpleAuth
+specifier|protected
+name|AtomicBoolean
+name|fallbackToSimpleAuth
+decl_stmt|;
 comment|/**    * Inquire whether logical HA URI is used for the implementation. If it is    * used, a special token handling may be needed to make sure a token acquired     * from a node in the HA pair can be used against the other node.     *    * @return true if logical HA URI is used. false, if not used.    */
 DECL|method|useLogicalURI ()
 specifier|public
@@ -75,6 +94,23 @@ name|boolean
 name|useLogicalURI
 parameter_list|()
 function_decl|;
+comment|/**    * Set for tracking if a secure client falls back to simple auth.    *    * @param fallbackToSimpleAuth - set to true or false during this method to    *   indicate if a secure client falls back to simple auth    */
+DECL|method|setFallbackToSimpleAuth (AtomicBoolean fallbackToSimpleAuth)
+specifier|public
+name|void
+name|setFallbackToSimpleAuth
+parameter_list|(
+name|AtomicBoolean
+name|fallbackToSimpleAuth
+parameter_list|)
+block|{
+name|this
+operator|.
+name|fallbackToSimpleAuth
+operator|=
+name|fallbackToSimpleAuth
+expr_stmt|;
+block|}
 block|}
 end_class
 

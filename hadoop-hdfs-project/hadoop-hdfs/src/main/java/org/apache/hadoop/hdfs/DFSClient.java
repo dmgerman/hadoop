@@ -92,38 +92,6 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|fs
-operator|.
-name|CommonConfigurationKeys
-operator|.
-name|IPC_CLIENT_FALLBACK_TO_SIMPLE_AUTH_ALLOWED_DEFAULT
-import|;
-end_import
-
-begin_import
-import|import static
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|fs
-operator|.
-name|CommonConfigurationKeys
-operator|.
-name|IPC_CLIENT_FALLBACK_TO_SIMPLE_AUTH_ALLOWED_KEY
-import|;
-end_import
-
-begin_import
-import|import static
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
 name|hdfs
 operator|.
 name|DFSConfigKeys
@@ -1021,6 +989,20 @@ operator|.
 name|util
 operator|.
 name|Random
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
+name|concurrent
+operator|.
+name|atomic
+operator|.
+name|AtomicBoolean
 import|;
 end_import
 
@@ -4750,6 +4732,15 @@ name|proxyInfo
 init|=
 literal|null
 decl_stmt|;
+name|AtomicBoolean
+name|nnFallbackToSimpleAuth
+init|=
+operator|new
+name|AtomicBoolean
+argument_list|(
+literal|false
+argument_list|)
+decl_stmt|;
 if|if
 condition|(
 name|numResponseToDrop
@@ -4788,6 +4779,8 @@ operator|.
 name|class
 argument_list|,
 name|numResponseToDrop
+argument_list|,
+name|nnFallbackToSimpleAuth
 argument_list|)
 expr_stmt|;
 block|}
@@ -4872,6 +4865,8 @@ argument_list|,
 name|ClientProtocol
 operator|.
 name|class
+argument_list|,
+name|nnFallbackToSimpleAuth
 argument_list|)
 expr_stmt|;
 name|this
@@ -5151,14 +5146,7 @@ argument_list|(
 name|conf
 argument_list|)
 argument_list|,
-name|conf
-operator|.
-name|getBoolean
-argument_list|(
-name|IPC_CLIENT_FALLBACK_TO_SIMPLE_AUTH_ALLOWED_KEY
-argument_list|,
-name|IPC_CLIENT_FALLBACK_TO_SIMPLE_AUTH_ALLOWED_DEFAULT
-argument_list|)
+name|nnFallbackToSimpleAuth
 argument_list|)
 expr_stmt|;
 block|}
@@ -14599,6 +14587,17 @@ name|provider
 operator|=
 name|provider
 expr_stmt|;
+block|}
+comment|/**    * Returns the SaslDataTransferClient configured for this DFSClient.    *    * @return SaslDataTransferClient configured for this DFSClient    */
+DECL|method|getSaslDataTransferClient ()
+specifier|public
+name|SaslDataTransferClient
+name|getSaslDataTransferClient
+parameter_list|()
+block|{
+return|return
+name|saslClient
+return|;
 block|}
 block|}
 end_class
