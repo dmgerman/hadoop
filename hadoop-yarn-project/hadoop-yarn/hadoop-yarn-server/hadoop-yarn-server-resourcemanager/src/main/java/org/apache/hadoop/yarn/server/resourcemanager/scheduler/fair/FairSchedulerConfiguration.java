@@ -620,7 +620,7 @@ literal|15000
 decl_stmt|;
 comment|/** Whether to assign multiple containers in one check-in. */
 DECL|field|ASSIGN_MULTIPLE
-specifier|protected
+specifier|public
 specifier|static
 specifier|final
 name|String
