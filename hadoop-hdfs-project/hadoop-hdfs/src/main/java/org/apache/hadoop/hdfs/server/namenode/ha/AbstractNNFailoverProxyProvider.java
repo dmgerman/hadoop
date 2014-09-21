@@ -94,9 +94,10 @@ name|boolean
 name|useLogicalURI
 parameter_list|()
 function_decl|;
-comment|/**    * Set for tracking if a secure client falls back to simple auth.    *    * @param fallbackToSimpleAuth - set to true or false during this method to    *   indicate if a secure client falls back to simple auth    */
-DECL|method|setFallbackToSimpleAuth (AtomicBoolean fallbackToSimpleAuth)
+comment|/**    * Set for tracking if a secure client falls back to simple auth.  This method    * is synchronized only to stifle a Findbugs warning.    *    * @param fallbackToSimpleAuth - set to true or false during this method to    *   indicate if a secure client falls back to simple auth    */
+DECL|method|setFallbackToSimpleAuth ( AtomicBoolean fallbackToSimpleAuth)
 specifier|public
+specifier|synchronized
 name|void
 name|setFallbackToSimpleAuth
 parameter_list|(
