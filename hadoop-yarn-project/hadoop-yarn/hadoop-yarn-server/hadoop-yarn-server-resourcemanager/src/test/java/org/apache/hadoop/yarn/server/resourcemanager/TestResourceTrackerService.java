@@ -3315,6 +3315,8 @@ operator|.
 name|handleNMContainerStatus
 argument_list|(
 name|report
+argument_list|,
+literal|null
 argument_list|)
 expr_stmt|;
 name|verify
@@ -3406,6 +3408,8 @@ operator|.
 name|handleNMContainerStatus
 argument_list|(
 name|report
+argument_list|,
+literal|null
 argument_list|)
 expr_stmt|;
 name|verify
@@ -3498,6 +3502,8 @@ operator|.
 name|handleNMContainerStatus
 argument_list|(
 name|report
+argument_list|,
+literal|null
 argument_list|)
 expr_stmt|;
 block|}
@@ -3599,6 +3605,8 @@ operator|.
 name|handleNMContainerStatus
 argument_list|(
 name|report
+argument_list|,
+literal|null
 argument_list|)
 expr_stmt|;
 block|}

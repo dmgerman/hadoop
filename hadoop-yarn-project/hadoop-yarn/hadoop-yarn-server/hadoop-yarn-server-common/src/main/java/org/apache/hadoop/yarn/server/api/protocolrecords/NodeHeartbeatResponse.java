@@ -132,6 +132,14 @@ argument_list|>
 name|getContainersToCleanup
 parameter_list|()
 function_decl|;
+DECL|method|getFinishedContainersPulledByAM ()
+name|List
+argument_list|<
+name|ContainerId
+argument_list|>
+name|getFinishedContainersPulledByAM
+parameter_list|()
+function_decl|;
 DECL|method|getApplicationsToCleanup ()
 name|List
 argument_list|<
@@ -185,6 +193,19 @@ function_decl|;
 DECL|method|addAllContainersToCleanup (List<ContainerId> containers)
 name|void
 name|addAllContainersToCleanup
+parameter_list|(
+name|List
+argument_list|<
+name|ContainerId
+argument_list|>
+name|containers
+parameter_list|)
+function_decl|;
+comment|// This tells NM to remove finished containers only after the AM
+comment|// has actually received it in a previous allocate response
+DECL|method|addFinishedContainersPulledByAM (List<ContainerId> containers)
+name|void
+name|addFinishedContainersPulledByAM
 parameter_list|(
 name|List
 argument_list|<

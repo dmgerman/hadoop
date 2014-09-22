@@ -2683,6 +2683,11 @@ name|finishedEvent
 operator|.
 name|getRemoteContainerStatus
 argument_list|()
+argument_list|,
+name|container
+operator|.
+name|getAllocatedNode
+argument_list|()
 argument_list|)
 argument_list|)
 expr_stmt|;

@@ -1438,12 +1438,15 @@ literal|"unchecked"
 argument_list|)
 annotation|@
 name|VisibleForTesting
-DECL|method|handleNMContainerStatus (NMContainerStatus containerStatus)
+DECL|method|handleNMContainerStatus (NMContainerStatus containerStatus, NodeId nodeId)
 name|void
 name|handleNMContainerStatus
 parameter_list|(
 name|NMContainerStatus
 name|containerStatus
+parameter_list|,
+name|NodeId
+name|nodeId
 parameter_list|)
 block|{
 name|ApplicationAttemptId
@@ -1618,6 +1621,8 @@ argument_list|(
 name|appAttemptId
 argument_list|,
 name|status
+argument_list|,
+name|nodeId
 argument_list|)
 decl_stmt|;
 name|rmContext
@@ -2131,6 +2136,8 @@ block|{
 name|handleNMContainerStatus
 argument_list|(
 name|status
+argument_list|,
+name|nodeId
 argument_list|)
 expr_stmt|;
 block|}
