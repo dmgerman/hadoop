@@ -21708,7 +21708,7 @@ name|out
 operator|.
 name|println
 argument_list|(
-literal|"<maxAMShare>1.0</maxAMShare>"
+literal|"<maxAMShare>0.4</maxAMShare>"
 argument_list|)
 expr_stmt|;
 name|out
@@ -22009,8 +22009,6 @@ name|Arrays
 operator|.
 name|asList
 argument_list|(
-literal|"root.default"
-argument_list|,
 literal|"root.queue3"
 argument_list|,
 literal|"root.queue4"
@@ -22057,7 +22055,7 @@ name|Resource
 operator|.
 name|newInstance
 argument_list|(
-literal|2048
+literal|1024
 argument_list|,
 literal|1
 argument_list|)
@@ -22072,7 +22070,8 @@ operator|.
 name|getPriority
 argument_list|()
 decl_stmt|;
-comment|// Exceeds queue limit, but default maxAMShare is -1.0 so it doesn't matter
+comment|// The fair share is 2048 MB, and the default maxAMShare is 0.5f,
+comment|// so the AM is accepted.
 name|ApplicationAttemptId
 name|attId1
 init|=
@@ -22096,7 +22095,7 @@ argument_list|)
 expr_stmt|;
 name|createSchedulingRequestExistingApplication
 argument_list|(
-literal|2048
+literal|1024
 argument_list|,
 literal|1
 argument_list|,
@@ -22129,9 +22128,9 @@ argument_list|)
 expr_stmt|;
 name|assertEquals
 argument_list|(
-literal|"Application1's AM requests 2048 MB memory"
+literal|"Application1's AM requests 1024 MB memory"
 argument_list|,
-literal|2048
+literal|1024
 argument_list|,
 name|app1
 operator|.
@@ -22159,9 +22158,9 @@ argument_list|)
 expr_stmt|;
 name|assertEquals
 argument_list|(
-literal|"Queue1's AM resource usage should be 2048 MB memory"
+literal|"Queue1's AM resource usage should be 1024 MB memory"
 argument_list|,
-literal|2048
+literal|1024
 argument_list|,
 name|queue1
 operator|.
@@ -22172,7 +22171,8 @@ name|getMemory
 argument_list|()
 argument_list|)
 expr_stmt|;
-comment|// Exceeds queue limit, and maxAMShare is 1.0
+comment|// Now the fair share is 1639 MB, and the maxAMShare is 0.4f,
+comment|// so the AM is not accepted.
 name|ApplicationAttemptId
 name|attId2
 init|=
@@ -22196,7 +22196,7 @@ argument_list|)
 expr_stmt|;
 name|createSchedulingRequestExistingApplication
 argument_list|(
-literal|2048
+literal|1024
 argument_list|,
 literal|1
 argument_list|,
@@ -22229,9 +22229,9 @@ argument_list|)
 expr_stmt|;
 name|assertEquals
 argument_list|(
-literal|"Application2's AM requests 2048 MB memory"
+literal|"Application2's AM requests 1024 MB memory"
 argument_list|,
-literal|2048
+literal|1024
 argument_list|,
 name|app2
 operator|.
