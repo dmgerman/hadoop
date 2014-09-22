@@ -5057,6 +5057,14 @@ name|isUber
 argument_list|()
 condition|)
 block|{
+name|MRApps
+operator|.
+name|setupDistributedCacheLocal
+argument_list|(
+name|getConfig
+argument_list|()
+argument_list|)
+expr_stmt|;
 name|this
 operator|.
 name|containerAllocator

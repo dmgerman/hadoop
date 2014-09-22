@@ -1163,21 +1163,6 @@ name|testSleepJobWithSecurityOn
 argument_list|()
 expr_stmt|;
 block|}
-comment|// Add a test for distcache when uber mode is enabled. TODO
-annotation|@
-name|Override
-annotation|@
-name|Test
-DECL|method|testDistributedCache ()
-specifier|public
-name|void
-name|testDistributedCache
-parameter_list|()
-throws|throws
-name|Exception
-block|{
-comment|//
-block|}
 block|}
 end_class
 
