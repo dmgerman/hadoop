@@ -31,8 +31,6 @@ operator|.
 name|classification
 operator|.
 name|InterfaceAudience
-operator|.
-name|Private
 import|;
 end_import
 
@@ -88,7 +86,16 @@ end_import
 
 begin_class
 annotation|@
-name|Private
+name|InterfaceAudience
+operator|.
+name|LimitedPrivate
+argument_list|(
+block|{
+literal|"YARN"
+block|,
+literal|"MapReduce"
+block|}
+argument_list|)
 annotation|@
 name|Unstable
 DECL|class|Resources

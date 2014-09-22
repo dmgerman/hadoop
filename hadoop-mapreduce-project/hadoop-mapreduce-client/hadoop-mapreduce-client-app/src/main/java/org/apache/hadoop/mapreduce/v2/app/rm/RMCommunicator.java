@@ -58,6 +58,16 @@ name|java
 operator|.
 name|util
 operator|.
+name|EnumSet
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
 name|Map
 import|;
 end_import
@@ -646,6 +656,24 @@ name|VisibleForTesting
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|proto
+operator|.
+name|YarnServiceProtos
+operator|.
+name|SchedulerResourceTypes
+import|;
+end_import
+
 begin_comment
 comment|/**  * Registers/unregisters to RM and sends heartbeats to RM.  */
 end_comment
@@ -802,6 +830,14 @@ name|isApplicationMasterRegistered
 init|=
 literal|false
 decl_stmt|;
+DECL|field|schedulerResourceTypes
+specifier|private
+name|EnumSet
+argument_list|<
+name|SchedulerResourceTypes
+argument_list|>
+name|schedulerResourceTypes
+decl_stmt|;
 DECL|method|RMCommunicator (ClientService clientService, AppContext context)
 specifier|public
 name|RMCommunicator
@@ -868,6 +904,19 @@ argument_list|<
 name|Runnable
 argument_list|>
 argument_list|()
+expr_stmt|;
+name|this
+operator|.
+name|schedulerResourceTypes
+operator|=
+name|EnumSet
+operator|.
+name|of
+argument_list|(
+name|SchedulerResourceTypes
+operator|.
+name|MEMORY
+argument_list|)
 expr_stmt|;
 block|}
 annotation|@
@@ -1162,9 +1211,6 @@ argument_list|(
 literal|"maxContainerCapability: "
 operator|+
 name|maxContainerCapability
-operator|.
-name|getMemory
-argument_list|()
 argument_list|)
 expr_stmt|;
 name|String
@@ -1189,6 +1235,18 @@ operator|.
 name|setQueueName
 argument_list|(
 name|queue
+argument_list|)
+expr_stmt|;
+name|this
+operator|.
+name|schedulerResourceTypes
+operator|.
+name|addAll
+argument_list|(
+name|response
+operator|.
+name|getSchedulerResourceTypes
+argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
@@ -1974,6 +2032,19 @@ parameter_list|()
 block|{
 return|return
 name|isApplicationMasterRegistered
+return|;
+block|}
+DECL|method|getSchedulerResourceTypes ()
+specifier|public
+name|EnumSet
+argument_list|<
+name|SchedulerResourceTypes
+argument_list|>
+name|getSchedulerResourceTypes
+parameter_list|()
+block|{
+return|return
+name|schedulerResourceTypes
 return|;
 block|}
 block|}
