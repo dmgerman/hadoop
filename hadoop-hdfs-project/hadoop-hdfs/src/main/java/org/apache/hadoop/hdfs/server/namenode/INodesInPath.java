@@ -489,6 +489,7 @@ argument_list|)
 return|;
 block|}
 comment|/**    * Retrieve existing INodes from a path. If existing is big enough to store    * all path components (existing and non-existing), then existing INodes    * will be stored starting from the root INode into existing[0]; if    * existing is not big enough to store all path components, then only the    * last existing and non existing INodes will be stored so that    * existing[existing.length-1] refers to the INode of the final component.    *     * An UnresolvedPathException is always thrown when an intermediate path     * component refers to a symbolic link. If the final path component refers     * to a symbolic link then an UnresolvedPathException is only thrown if    * resolveLink is true.      *     *<p>    * Example:<br>    * Given the path /c1/c2/c3 where only /c1/c2 exists, resulting in the    * following path components: ["","c1","c2","c3"],    *     *<p>    *<code>getExistingPathINodes(["","c1","c2"], [?])</code> should fill the    * array with [c2]<br>    *<code>getExistingPathINodes(["","c1","c2","c3"], [?])</code> should fill the    * array with [null]    *     *<p>    *<code>getExistingPathINodes(["","c1","c2"], [?,?])</code> should fill the    * array with [c1,c2]<br>    *<code>getExistingPathINodes(["","c1","c2","c3"], [?,?])</code> should fill    * the array with [c2,null]    *     *<p>    *<code>getExistingPathINodes(["","c1","c2"], [?,?,?,?])</code> should fill    * the array with [rootINode,c1,c2,null],<br>    *<code>getExistingPathINodes(["","c1","c2","c3"], [?,?,?,?])</code> should    * fill the array with [rootINode,c1,c2,null]    *     * @param startingDir the starting directory    * @param components array of path component name    * @param numOfINodes number of INodes to return    * @param resolveLink indicates whether UnresolvedLinkException should    *        be thrown when the path refers to a symbolic link.    * @return the specified number of existing INodes in the path    */
+comment|// TODO: Eliminate null elements from inodes (to be provided by HDFS-7104)
 DECL|method|resolve (final INodeDirectory startingDir, final byte[][] components, final int numOfINodes, final boolean resolveLink)
 specifier|static
 name|INodesInPath
@@ -1326,7 +1327,7 @@ name|sid
 expr_stmt|;
 block|}
 block|}
-comment|/**    * @return the whole inodes array including the null elements.    */
+comment|/**    * @return the inodes array excluding the null elements.    */
 DECL|method|getINodes ()
 name|INode
 index|[]

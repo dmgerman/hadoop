@@ -126,14 +126,20 @@ name|byte
 index|[]
 name|iv
 decl_stmt|;
+DECL|field|keyName
+specifier|private
+specifier|final
+name|String
+name|keyName
+decl_stmt|;
 DECL|field|ezKeyVersionName
 specifier|private
 specifier|final
 name|String
 name|ezKeyVersionName
 decl_stmt|;
-comment|/**    * Create a FileEncryptionInfo.    *    * @param suite CipherSuite used to encrypt the file    * @param edek encrypted data encryption key (EDEK) of the file    * @param iv initialization vector (IV) used to encrypt the file    * @param ezKeyVersionName name of the KeyVersion used to encrypt the    *                         encrypted data encryption key.    */
-DECL|method|FileEncryptionInfo (final CipherSuite suite, final byte[] edek, final byte[] iv, final String ezKeyVersionName)
+comment|/**    * Create a FileEncryptionInfo.    *    * @param suite CipherSuite used to encrypt the file    * @param edek encrypted data encryption key (EDEK) of the file    * @param iv initialization vector (IV) used to encrypt the file    * @param keyName name of the key used for the encryption zone    * @param ezKeyVersionName name of the KeyVersion used to encrypt the    *                         encrypted data encryption key.    */
+DECL|method|FileEncryptionInfo (final CipherSuite suite, final byte[] edek, final byte[] iv, final String keyName, final String ezKeyVersionName)
 specifier|public
 name|FileEncryptionInfo
 parameter_list|(
@@ -153,6 +159,10 @@ name|iv
 parameter_list|,
 specifier|final
 name|String
+name|keyName
+parameter_list|,
+specifier|final
+name|String
 name|ezKeyVersionName
 parameter_list|)
 block|{
@@ -169,6 +179,11 @@ expr_stmt|;
 name|checkNotNull
 argument_list|(
 name|iv
+argument_list|)
+expr_stmt|;
+name|checkNotNull
+argument_list|(
+name|keyName
 argument_list|)
 expr_stmt|;
 name|checkNotNull
@@ -224,6 +239,12 @@ name|iv
 expr_stmt|;
 name|this
 operator|.
+name|keyName
+operator|=
+name|keyName
+expr_stmt|;
+name|this
+operator|.
 name|ezKeyVersionName
 operator|=
 name|ezKeyVersionName
@@ -262,6 +283,17 @@ parameter_list|()
 block|{
 return|return
 name|iv
+return|;
+block|}
+comment|/**    * @return name of the encryption zone key.    */
+DECL|method|getKeyName ()
+specifier|public
+name|String
+name|getKeyName
+parameter_list|()
+block|{
+return|return
+name|keyName
 return|;
 block|}
 comment|/**    * @return name of the encryption zone KeyVersion used to encrypt the    * encrypted data encryption key (EDEK).    */
@@ -327,6 +359,15 @@ name|encodeHexString
 argument_list|(
 name|iv
 argument_list|)
+argument_list|)
+expr_stmt|;
+name|builder
+operator|.
+name|append
+argument_list|(
+literal|", keyName: "
+operator|+
+name|keyName
 argument_list|)
 expr_stmt|;
 name|builder

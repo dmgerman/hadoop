@@ -78,6 +78,20 @@ name|InterfaceStability
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|crypto
+operator|.
+name|CipherSuite
+import|;
+end_import
+
 begin_comment
 comment|/**  * A simple class for representing an encryption zone. Presently an encryption  * zone only has a path (the root of the encryption zone), a key name, and a  * unique id. The id is used to implement batched listing of encryption zones.  */
 end_comment
@@ -96,11 +110,23 @@ specifier|public
 class|class
 name|EncryptionZone
 block|{
+DECL|field|id
+specifier|private
+specifier|final
+name|long
+name|id
+decl_stmt|;
 DECL|field|path
 specifier|private
 specifier|final
 name|String
 name|path
+decl_stmt|;
+DECL|field|suite
+specifier|private
+specifier|final
+name|CipherSuite
+name|suite
 decl_stmt|;
 DECL|field|keyName
 specifier|private
@@ -108,31 +134,40 @@ specifier|final
 name|String
 name|keyName
 decl_stmt|;
-DECL|field|id
-specifier|private
-specifier|final
-name|long
-name|id
-decl_stmt|;
-DECL|method|EncryptionZone (String path, String keyName, long id)
+DECL|method|EncryptionZone (long id, String path, CipherSuite suite, String keyName)
 specifier|public
 name|EncryptionZone
 parameter_list|(
+name|long
+name|id
+parameter_list|,
 name|String
 name|path
 parameter_list|,
+name|CipherSuite
+name|suite
+parameter_list|,
 name|String
 name|keyName
-parameter_list|,
-name|long
-name|id
 parameter_list|)
 block|{
 name|this
 operator|.
+name|id
+operator|=
+name|id
+expr_stmt|;
+name|this
+operator|.
 name|path
 operator|=
 name|path
+expr_stmt|;
+name|this
+operator|.
+name|suite
+operator|=
+name|suite
 expr_stmt|;
 name|this
 operator|.
@@ -140,12 +175,16 @@ name|keyName
 operator|=
 name|keyName
 expr_stmt|;
-name|this
-operator|.
+block|}
+DECL|method|getId ()
+specifier|public
+name|long
+name|getId
+parameter_list|()
+block|{
+return|return
 name|id
-operator|=
-name|id
-expr_stmt|;
+return|;
 block|}
 DECL|method|getPath ()
 specifier|public
@@ -157,6 +196,16 @@ return|return
 name|path
 return|;
 block|}
+DECL|method|getSuite ()
+specifier|public
+name|CipherSuite
+name|getSuite
+parameter_list|()
+block|{
+return|return
+name|suite
+return|;
+block|}
 DECL|method|getKeyName ()
 specifier|public
 name|String
@@ -165,16 +214,6 @@ parameter_list|()
 block|{
 return|return
 name|keyName
-return|;
-block|}
-DECL|method|getId ()
-specifier|public
-name|long
-name|getId
-parameter_list|()
-block|{
-return|return
-name|id
 return|;
 block|}
 annotation|@
@@ -196,17 +235,22 @@ argument_list|)
 operator|.
 name|append
 argument_list|(
+name|id
+argument_list|)
+operator|.
+name|append
+argument_list|(
 name|path
 argument_list|)
 operator|.
 name|append
 argument_list|(
-name|keyName
+name|suite
 argument_list|)
 operator|.
 name|append
 argument_list|(
-name|id
+name|keyName
 argument_list|)
 operator|.
 name|toHashCode
@@ -276,6 +320,15 @@ argument_list|()
 operator|.
 name|append
 argument_list|(
+name|id
+argument_list|,
+name|rhs
+operator|.
+name|id
+argument_list|)
+operator|.
+name|append
+argument_list|(
 name|path
 argument_list|,
 name|rhs
@@ -285,20 +338,20 @@ argument_list|)
 operator|.
 name|append
 argument_list|(
-name|keyName
+name|suite
 argument_list|,
 name|rhs
 operator|.
-name|keyName
+name|suite
 argument_list|)
 operator|.
 name|append
 argument_list|(
-name|id
+name|keyName
 argument_list|,
 name|rhs
 operator|.
-name|id
+name|keyName
 argument_list|)
 operator|.
 name|isEquals
@@ -314,17 +367,21 @@ name|toString
 parameter_list|()
 block|{
 return|return
-literal|"EncryptionZone [path="
+literal|"EncryptionZone [id="
+operator|+
+name|id
+operator|+
+literal|", path="
 operator|+
 name|path
+operator|+
+literal|", suite="
+operator|+
+name|suite
 operator|+
 literal|", keyName="
 operator|+
 name|keyName
-operator|+
-literal|", id="
-operator|+
-name|id
 operator|+
 literal|"]"
 return|;

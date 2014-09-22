@@ -1064,17 +1064,6 @@ argument_list|,
 literal|"simple"
 argument_list|)
 expr_stmt|;
-name|kms
-operator|.
-name|setBoolean
-argument_list|(
-name|KMSConfiguration
-operator|.
-name|KEY_AUTHORIZATION_ENABLE
-argument_list|,
-literal|false
-argument_list|)
-expr_stmt|;
 name|Writer
 name|writer
 init|=
