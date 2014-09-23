@@ -1471,6 +1471,13 @@ argument_list|)
 expr_stmt|;
 name|generateByNewInstance
 argument_list|(
+name|LogAggregationContext
+operator|.
+name|class
+argument_list|)
+expr_stmt|;
+name|generateByNewInstance
+argument_list|(
 name|ApplicationId
 operator|.
 name|class
