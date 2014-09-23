@@ -665,7 +665,7 @@ name|sleep
 argument_list|(
 name|DFS_DATANODE_SOCKET_REUSE_KEEPALIVE_DEFAULT
 operator|+
-literal|1
+literal|50
 argument_list|)
 expr_stmt|;
 name|assertXceiverCount
@@ -872,7 +872,7 @@ name|sleep
 argument_list|(
 name|CLIENT_EXPIRY_MS
 operator|+
-literal|1
+literal|50
 argument_list|)
 expr_stmt|;
 comment|// Taking out a peer which is expired should give a null.

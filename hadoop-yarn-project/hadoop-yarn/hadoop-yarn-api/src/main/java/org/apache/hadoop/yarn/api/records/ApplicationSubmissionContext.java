@@ -175,7 +175,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  *<p><code>ApplicationSubmissionContext</code> represents all of the  * information needed by the<code>ResourceManager</code> to launch   * the<code>ApplicationMaster</code> for an application.</p>  *   *<p>It includes details such as:  *<ul>  *<li>{@link ApplicationId} of the application.</li>  *<li>Application user.</li>  *<li>Application name.</li>  *<li>{@link Priority} of the application.</li>  *<li>  *       {@link ContainerLaunchContext} of the container in which the   *<code>ApplicationMaster</code> is executed.  *</li>  *<li>maxAppAttempts. The maximum number of application attempts.  *     It should be no larger than the global number of max attempts in the  *     Yarn configuration.</li>  *<li>attemptFailuresValidityInterval. The default value is -1.  *     when attemptFailuresValidityInterval in milliseconds is set to> 0,  *     the failure number will no take failures which happen out of the  *     validityInterval into failure count. If failure count reaches to  *     maxAppAttempts, the application will be failed.  *</li>  *</ul>  *</p>  *   * @see ContainerLaunchContext  * @see ApplicationClientProtocol#submitApplication(org.apache.hadoop.yarn.api.protocolrecords.SubmitApplicationRequest)  */
+comment|/**  *<p><code>ApplicationSubmissionContext</code> represents all of the  * information needed by the<code>ResourceManager</code> to launch   * the<code>ApplicationMaster</code> for an application.</p>  *   *<p>It includes details such as:  *<ul>  *<li>{@link ApplicationId} of the application.</li>  *<li>Application user.</li>  *<li>Application name.</li>  *<li>{@link Priority} of the application.</li>  *<li>  *       {@link ContainerLaunchContext} of the container in which the   *<code>ApplicationMaster</code> is executed.  *</li>  *<li>maxAppAttempts. The maximum number of application attempts.  *     It should be no larger than the global number of max attempts in the  *     Yarn configuration.</li>  *<li>attemptFailuresValidityInterval. The default value is -1.  *     when attemptFailuresValidityInterval in milliseconds is set to> 0,  *     the failure number will no take failures which happen out of the  *     validityInterval into failure count. If failure count reaches to  *     maxAppAttempts, the application will be failed.  *</li>  *<li>Optional, application-specific {@link LogAggregationContext}</li>  *</ul>  *</p>  *   * @see ContainerLaunchContext  * @see ApplicationClientProtocol#submitApplication(org.apache.hadoop.yarn.api.protocolrecords.SubmitApplicationRequest)  */
 end_comment
 
 begin_class
@@ -543,6 +543,92 @@ return|return
 name|context
 return|;
 block|}
+annotation|@
+name|Public
+annotation|@
+name|Stable
+DECL|method|newInstance ( ApplicationId applicationId, String applicationName, String queue, Priority priority, ContainerLaunchContext amContainer, boolean isUnmanagedAM, boolean cancelTokensWhenComplete, int maxAppAttempts, Resource resource, String applicationType, boolean keepContainers, LogAggregationContext logAggregationContext)
+specifier|public
+specifier|static
+name|ApplicationSubmissionContext
+name|newInstance
+parameter_list|(
+name|ApplicationId
+name|applicationId
+parameter_list|,
+name|String
+name|applicationName
+parameter_list|,
+name|String
+name|queue
+parameter_list|,
+name|Priority
+name|priority
+parameter_list|,
+name|ContainerLaunchContext
+name|amContainer
+parameter_list|,
+name|boolean
+name|isUnmanagedAM
+parameter_list|,
+name|boolean
+name|cancelTokensWhenComplete
+parameter_list|,
+name|int
+name|maxAppAttempts
+parameter_list|,
+name|Resource
+name|resource
+parameter_list|,
+name|String
+name|applicationType
+parameter_list|,
+name|boolean
+name|keepContainers
+parameter_list|,
+name|LogAggregationContext
+name|logAggregationContext
+parameter_list|)
+block|{
+name|ApplicationSubmissionContext
+name|context
+init|=
+name|newInstance
+argument_list|(
+name|applicationId
+argument_list|,
+name|applicationName
+argument_list|,
+name|queue
+argument_list|,
+name|priority
+argument_list|,
+name|amContainer
+argument_list|,
+name|isUnmanagedAM
+argument_list|,
+name|cancelTokensWhenComplete
+argument_list|,
+name|maxAppAttempts
+argument_list|,
+name|resource
+argument_list|,
+name|applicationType
+argument_list|,
+name|keepContainers
+argument_list|)
+decl_stmt|;
+name|context
+operator|.
+name|setLogAggregationContext
+argument_list|(
+name|logAggregationContext
+argument_list|)
+expr_stmt|;
+return|return
+name|context
+return|;
+block|}
 comment|/**    * Get the<code>ApplicationId</code> of the submitted application.    * @return<code>ApplicationId</code> of the submitted application    */
 annotation|@
 name|Public
@@ -904,6 +990,33 @@ name|setAttemptFailuresValidityInterval
 parameter_list|(
 name|long
 name|attemptFailuresValidityInterval
+parameter_list|)
+function_decl|;
+comment|/**    * Get<code>LogAggregationContext</code> of the application    *    * @return<code>LogAggregationContext</code> of the application    */
+annotation|@
+name|Public
+annotation|@
+name|Stable
+DECL|method|getLogAggregationContext ()
+specifier|public
+specifier|abstract
+name|LogAggregationContext
+name|getLogAggregationContext
+parameter_list|()
+function_decl|;
+comment|/**    * Set<code>LogAggregationContext</code> for the application    *    * @param logAggregationContext    *          for the application    */
+annotation|@
+name|Public
+annotation|@
+name|Stable
+DECL|method|setLogAggregationContext ( LogAggregationContext logAggregationContext)
+specifier|public
+specifier|abstract
+name|void
+name|setLogAggregationContext
+parameter_list|(
+name|LogAggregationContext
+name|logAggregationContext
 parameter_list|)
 function_decl|;
 block|}
