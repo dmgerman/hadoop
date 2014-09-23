@@ -2545,7 +2545,7 @@ annotation|@
 name|VisibleForTesting
 annotation|@
 name|Private
-DECL|method|removeCompletedContainersFromContext ( List<ContainerId>containerIds)
+DECL|method|removeCompletedContainersFromContext ( List<ContainerId> containerIds)
 specifier|public
 name|void
 name|removeCompletedContainersFromContext
