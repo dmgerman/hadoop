@@ -60,6 +60,10 @@ block|,
 DECL|enumConstant|CLEANUP_CONTAINER
 name|CLEANUP_CONTAINER
 block|,
+comment|// Source: RMAppAttempt
+DECL|enumConstant|FINISHED_CONTAINERS_PULLED_BY_AM
+name|FINISHED_CONTAINERS_PULLED_BY_AM
+block|,
 comment|// Source: NMLivelinessMonitor
 DECL|enumConstant|EXPIRE
 name|EXPIRE

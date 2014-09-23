@@ -1852,7 +1852,7 @@ init|=
 literal|null
 decl_stmt|;
 DECL|field|applications
-specifier|private
+specifier|protected
 specifier|final
 name|ConcurrentMap
 argument_list|<

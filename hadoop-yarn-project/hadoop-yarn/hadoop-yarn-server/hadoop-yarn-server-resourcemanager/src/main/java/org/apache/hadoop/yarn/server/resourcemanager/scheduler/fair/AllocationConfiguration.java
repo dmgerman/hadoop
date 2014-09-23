@@ -734,8 +734,7 @@ name|MAX_VALUE
 expr_stmt|;
 name|queueMaxAMShareDefault
 operator|=
-operator|-
-literal|1.0f
+literal|0.5f
 expr_stmt|;
 name|queueAcls
 operator|=

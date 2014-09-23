@@ -1211,6 +1211,11 @@ argument_list|(
 name|applicationAttemptId
 argument_list|,
 name|containerStatus
+argument_list|,
+name|nm1
+operator|.
+name|getNodeId
+argument_list|()
 argument_list|)
 argument_list|)
 expr_stmt|;

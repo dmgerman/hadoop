@@ -6607,8 +6607,6 @@ condition|)
 block|{
 name|boolean
 name|transferStateFromPreviousAttempt
-init|=
-literal|false
 decl_stmt|;
 name|RMAppFailedAttemptEvent
 name|failedEvent
@@ -6642,12 +6640,9 @@ expr_stmt|;
 comment|// Transfer the state from the previous attempt to the current attempt.
 comment|// Note that the previous failed attempt may still be collecting the
 comment|// container events from the scheduler and update its data structures
-comment|// before the new attempt is created.
-if|if
-condition|(
-name|transferStateFromPreviousAttempt
-condition|)
-block|{
+comment|// before the new attempt is created. We always transferState for
+comment|// finished containers so that they can be acked to NM,
+comment|// but when pulling finished container we will check this flag again.
 operator|(
 operator|(
 name|RMAppAttemptImpl
@@ -6662,7 +6657,6 @@ argument_list|(
 name|oldAttempt
 argument_list|)
 expr_stmt|;
-block|}
 return|return
 name|initialState
 return|;

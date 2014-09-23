@@ -36,6 +36,18 @@ end_import
 
 begin_import
 import|import
+name|java
+operator|.
+name|util
+operator|.
+name|concurrent
+operator|.
+name|ConcurrentMap
+import|;
+end_import
+
+begin_import
+import|import
 name|javax
 operator|.
 name|crypto
@@ -199,6 +211,24 @@ operator|.
 name|records
 operator|.
 name|FinalApplicationStatus
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|api
+operator|.
+name|records
+operator|.
+name|NodeId
 import|;
 end_import
 
@@ -390,13 +420,41 @@ argument_list|>
 name|pullJustFinishedContainers
 parameter_list|()
 function_decl|;
-comment|/**    * Return the list of last set of finished containers. This does not reset the    * finished containers.    * @return the list of just finished contianers, this does not reset the    * finished containers.    */
+comment|/**    * Returns a reference to the map of last set of finished containers to the    * corresponding node. This does not reset the finished containers.    * @return the list of just finished containers, this does not reset the    * finished containers.    */
+name|ConcurrentMap
+argument_list|<
+name|NodeId
+argument_list|,
+name|List
+argument_list|<
+name|ContainerStatus
+argument_list|>
+argument_list|>
+DECL|method|getJustFinishedContainersReference ()
+name|getJustFinishedContainersReference
+parameter_list|()
+function_decl|;
+comment|/**    * Return the list of last set of finished containers. This does not reset    * the finished containers.    * @return the list of just finished containers    */
 DECL|method|getJustFinishedContainers ()
 name|List
 argument_list|<
 name|ContainerStatus
 argument_list|>
 name|getJustFinishedContainers
+parameter_list|()
+function_decl|;
+comment|/**    * The map of conatiners per Node that are already sent to the AM.    * @return map of per node list of finished container status sent to AM    */
+name|ConcurrentMap
+argument_list|<
+name|NodeId
+argument_list|,
+name|List
+argument_list|<
+name|ContainerStatus
+argument_list|>
+argument_list|>
+DECL|method|getFinishedContainersSentToAMReference ()
+name|getFinishedContainersSentToAMReference
 parameter_list|()
 function_decl|;
 comment|/**    * The container on which the Application Master is running.    * @return the {@link Container} on which the application master is running.    */

@@ -1557,11 +1557,11 @@ literal|"  });"
 argument_list|,
 literal|"  $('#cs').bind('select_node.jstree', function(e, data) {"
 argument_list|,
-literal|"    var q = $('.q', data.rslt.obj).first().text();"
+literal|"    var queues = $('.q', data.rslt.obj);"
 argument_list|,
-literal|"    if (q == 'root') q = '';"
+literal|"    var q = '^' + queues.first().text();"
 argument_list|,
-literal|"    else q = '^' + q.substr(q.lastIndexOf('.') + 1) + '$';"
+literal|"    q += queues.length == 1 ? '$' : '\\\\.';"
 argument_list|,
 literal|"    $('#apps').dataTable().fnFilter(q, 4, true);"
 argument_list|,

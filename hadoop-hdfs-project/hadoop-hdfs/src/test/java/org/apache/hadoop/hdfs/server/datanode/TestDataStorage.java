@@ -398,6 +398,11 @@ parameter_list|()
 throws|throws
 name|IOException
 block|{
+name|storage
+operator|.
+name|unlockAll
+argument_list|()
+expr_stmt|;
 name|FileUtil
 operator|.
 name|fullyDelete
