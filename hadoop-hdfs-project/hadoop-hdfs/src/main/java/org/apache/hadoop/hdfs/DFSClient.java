@@ -1702,6 +1702,22 @@ name|hdfs
 operator|.
 name|protocol
 operator|.
+name|BlockStoragePolicy
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|protocol
+operator|.
 name|CacheDirectiveEntry
 import|;
 end_import
@@ -9345,6 +9361,23 @@ name|class
 argument_list|)
 throw|;
 block|}
+block|}
+comment|/**    * @return All the existing storage policies    */
+DECL|method|getStoragePolicySuite ()
+specifier|public
+name|BlockStoragePolicy
+index|[]
+name|getStoragePolicySuite
+parameter_list|()
+throws|throws
+name|IOException
+block|{
+return|return
+name|namenode
+operator|.
+name|getStoragePolicySuite
+argument_list|()
+return|;
 block|}
 comment|/**    * Rename file or directory.    * @see ClientProtocol#rename(String, String)    * @deprecated Use {@link #rename(String, String, Options.Rename...)} instead.    */
 annotation|@

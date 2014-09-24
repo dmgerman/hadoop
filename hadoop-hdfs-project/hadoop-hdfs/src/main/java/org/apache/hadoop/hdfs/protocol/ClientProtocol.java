@@ -869,6 +869,18 @@ name|SnapshotAccessControlException
 throws|,
 name|IOException
 function_decl|;
+comment|/**    * Get all the available block storage policies.    * @return All the in-use block storage policies currently.    */
+annotation|@
+name|Idempotent
+DECL|method|getStoragePolicySuite ()
+specifier|public
+name|BlockStoragePolicy
+index|[]
+name|getStoragePolicySuite
+parameter_list|()
+throws|throws
+name|IOException
+function_decl|;
 comment|/**    * Set the storage policy for a file/directory    * @param src Path of an existing file/directory.     * @param policyName The name of the storage policy    * @throws SnapshotAccessControlException If access is denied    * @throws UnresolvedLinkException if<code>src</code> contains a symlink    * @throws FileNotFoundException If file/dir<code>src</code> is not found    * @throws QuotaExceededException If changes violate the quota restriction    */
 annotation|@
 name|Idempotent

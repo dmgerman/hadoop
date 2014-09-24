@@ -206,7 +206,11 @@ name|hadoop
 operator|.
 name|hdfs
 operator|.
-name|BlockStoragePolicy
+name|server
+operator|.
+name|blockmanagement
+operator|.
+name|BlockStoragePolicySuite
 import|;
 end_import
 
@@ -2951,7 +2955,7 @@ name|EMPTY_NAME
 argument_list|,
 name|newFile
 argument_list|,
-name|BlockStoragePolicy
+name|BlockStoragePolicySuite
 operator|.
 name|ID_UNSPECIFIED
 argument_list|,

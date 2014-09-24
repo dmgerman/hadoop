@@ -90,6 +90,8 @@ name|hadoop
 operator|.
 name|hdfs
 operator|.
+name|protocol
+operator|.
 name|BlockStoragePolicy
 import|;
 end_import
@@ -193,6 +195,24 @@ operator|.
 name|delegation
 operator|.
 name|DelegationTokenIdentifier
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|server
+operator|.
+name|blockmanagement
+operator|.
+name|BlockStoragePolicySuite
 import|;
 end_import
 
@@ -2105,7 +2125,7 @@ argument_list|(
 literal|"storagePolicy"
 argument_list|)
 else|:
-name|BlockStoragePolicy
+name|BlockStoragePolicySuite
 operator|.
 name|ID_UNSPECIFIED
 decl_stmt|;

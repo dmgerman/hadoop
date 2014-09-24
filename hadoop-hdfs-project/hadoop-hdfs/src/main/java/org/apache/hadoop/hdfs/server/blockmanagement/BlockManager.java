@@ -288,6 +288,8 @@ name|hadoop
 operator|.
 name|hdfs
 operator|.
+name|protocol
+operator|.
 name|BlockStoragePolicy
 import|;
 end_import
@@ -1515,9 +1517,7 @@ decl_stmt|;
 DECL|field|storagePolicySuite
 specifier|private
 specifier|final
-name|BlockStoragePolicy
-operator|.
-name|Suite
+name|BlockStoragePolicySuite
 name|storagePolicySuite
 decl_stmt|;
 comment|/** Check whether name system is running before terminating */
@@ -1642,12 +1642,10 @@ argument_list|)
 expr_stmt|;
 name|storagePolicySuite
 operator|=
-name|BlockStoragePolicy
+name|BlockStoragePolicySuite
 operator|.
-name|readBlockStorageSuite
-argument_list|(
-name|conf
-argument_list|)
+name|createDefaultSuite
+argument_list|()
 expr_stmt|;
 name|pendingReplications
 operator|=
@@ -2353,6 +2351,20 @@ name|getPolicy
 argument_list|(
 name|policyName
 argument_list|)
+return|;
+block|}
+DECL|method|getStoragePolicySuite ()
+specifier|public
+name|BlockStoragePolicy
+index|[]
+name|getStoragePolicySuite
+parameter_list|()
+block|{
+return|return
+name|storagePolicySuite
+operator|.
+name|getAllPolicies
+argument_list|()
 return|;
 block|}
 DECL|method|setBlockPoolId (String blockPoolId)
@@ -16428,7 +16440,7 @@ operator|=
 literal|null
 expr_stmt|;
 block|}
-DECL|method|chooseTargets (BlockPlacementPolicy blockplacement, BlockStoragePolicy.Suite storagePolicySuite, Set<Node> excludedNodes)
+DECL|method|chooseTargets (BlockPlacementPolicy blockplacement, BlockStoragePolicySuite storagePolicySuite, Set<Node> excludedNodes)
 specifier|private
 name|void
 name|chooseTargets
@@ -16436,9 +16448,7 @@ parameter_list|(
 name|BlockPlacementPolicy
 name|blockplacement
 parameter_list|,
-name|BlockStoragePolicy
-operator|.
-name|Suite
+name|BlockStoragePolicySuite
 name|storagePolicySuite
 parameter_list|,
 name|Set

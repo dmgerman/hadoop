@@ -98,7 +98,7 @@ name|hadoop
 operator|.
 name|hdfs
 operator|.
-name|BlockStoragePolicy
+name|DFSUtil
 import|;
 end_import
 
@@ -112,7 +112,11 @@ name|hadoop
 operator|.
 name|hdfs
 operator|.
-name|DFSUtil
+name|server
+operator|.
+name|blockmanagement
+operator|.
+name|BlockStoragePolicySuite
 import|;
 end_import
 
@@ -306,7 +310,7 @@ name|childrenNum
 argument_list|,
 literal|null
 argument_list|,
-name|BlockStoragePolicy
+name|BlockStoragePolicySuite
 operator|.
 name|ID_UNSPECIFIED
 argument_list|)
