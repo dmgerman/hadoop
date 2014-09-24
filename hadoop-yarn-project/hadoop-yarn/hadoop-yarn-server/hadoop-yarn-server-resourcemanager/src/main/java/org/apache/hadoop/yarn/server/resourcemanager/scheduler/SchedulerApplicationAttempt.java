@@ -830,6 +830,11 @@ DECL|field|amResource
 specifier|private
 name|Resource
 name|amResource
+init|=
+name|Resources
+operator|.
+name|none
+argument_list|()
 decl_stmt|;
 DECL|field|unmanagedAM
 specifier|private
