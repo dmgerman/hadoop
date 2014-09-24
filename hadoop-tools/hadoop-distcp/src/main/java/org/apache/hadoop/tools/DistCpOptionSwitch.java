@@ -73,7 +73,7 @@ literal|"Ignore failures during copy"
 argument_list|)
 argument_list|)
 block|,
-comment|/**    * Preserves status of file/path in the target.    * Default behavior with -p, is to preserve replication,    * block size, user, group, permission and checksum type on the target file.    * Note that when preserving checksum type, block size is also preserved.    *    * If any of the optional switches are present among rbugpc, then    * only the corresponding file attribute is preserved.    *    */
+comment|/**    * Preserves status of file/path in the target.    * Default behavior with -p, is to preserve replication,    * block size, user, group, permission, checksum type and timestamps on the     * target file. Note that when preserving checksum type, block size is also     * preserved.    *    * @see PRESERVE_STATUS_DEFAULT    *    * If any of the optional switches are present among rbugpcaxt, then    * only the corresponding file attribute is preserved.    */
 DECL|enumConstant|PRESERVE_STATUS
 name|PRESERVE_STATUS
 argument_list|(
@@ -88,13 +88,15 @@ literal|"p"
 argument_list|,
 literal|true
 argument_list|,
-literal|"preserve status (rbugpcax)(replication, "
+literal|"preserve status (rbugpcaxt)(replication, "
 operator|+
-literal|"block-size, user, group, permission, checksum-type, ACL, XATTR).  "
+literal|"block-size, user, group, permission, checksum-type, ACL, XATTR, "
 operator|+
-literal|"If -p is specified with no<arg>, then preserves replication, "
+literal|"timestamps). If -p is specified with no<arg>, then preserves "
 operator|+
-literal|"block size, user, group, permission and checksum type."
+literal|"replication, block size, user, group, permission, checksum type "
+operator|+
+literal|"and timestamps. "
 operator|+
 literal|"raw.* xattrs are preserved when both the source and destination "
 operator|+
@@ -418,12 +420,13 @@ argument_list|)
 argument_list|)
 block|;
 DECL|field|PRESERVE_STATUS_DEFAULT
+specifier|public
 specifier|static
 specifier|final
 name|String
 name|PRESERVE_STATUS_DEFAULT
 init|=
-literal|"-prbugpc"
+literal|"-prbugpct"
 decl_stmt|;
 DECL|field|confLabel
 specifier|private

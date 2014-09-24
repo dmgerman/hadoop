@@ -2686,7 +2686,14 @@ name|assertEquals
 argument_list|(
 name|i
 argument_list|,
-literal|6
+name|DistCpOptionSwitch
+operator|.
+name|PRESERVE_STATUS_DEFAULT
+operator|.
+name|length
+argument_list|()
+operator|-
+literal|2
 argument_list|)
 expr_stmt|;
 try|try
