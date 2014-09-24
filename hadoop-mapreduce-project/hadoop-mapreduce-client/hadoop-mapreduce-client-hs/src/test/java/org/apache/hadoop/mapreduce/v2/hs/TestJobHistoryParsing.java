@@ -5591,7 +5591,7 @@ name|Test
 argument_list|(
 name|timeout
 operator|=
-literal|1000
+literal|3000
 argument_list|)
 DECL|method|testPartialJob ()
 specifier|public
