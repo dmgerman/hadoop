@@ -74,6 +74,20 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|conf
+operator|.
+name|ReconfigurationTaskStatus
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|hdfs
 operator|.
 name|DFSConfigKeys
@@ -299,6 +313,22 @@ comment|/**    * Obtains datanode info    *    * @return software/config version
 DECL|method|getDatanodeInfo ()
 name|DatanodeLocalInfo
 name|getDatanodeInfo
+parameter_list|()
+throws|throws
+name|IOException
+function_decl|;
+comment|/**    * Asynchronously reload configuration on disk and apply changes.    */
+DECL|method|startReconfiguration ()
+name|void
+name|startReconfiguration
+parameter_list|()
+throws|throws
+name|IOException
+function_decl|;
+comment|/**    * Get the status of the previously issued reconfig task.    * @see {@link org.apache.hadoop.conf.ReconfigurationTaskStatus}.    */
+DECL|method|getReconfigurationStatus ()
+name|ReconfigurationTaskStatus
+name|getReconfigurationStatus
 parameter_list|()
 throws|throws
 name|IOException
