@@ -750,9 +750,6 @@ name|excludesFile
 argument_list|)
 argument_list|)
 expr_stmt|;
-name|setDecomissionedNMsMetrics
-argument_list|()
-expr_stmt|;
 name|printConfiguredHosts
 argument_list|()
 expr_stmt|;
