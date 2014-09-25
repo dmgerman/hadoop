@@ -592,6 +592,20 @@ name|BLOCK_SIZE
 init|=
 literal|1024
 decl_stmt|;
+DECL|field|NEWLINE
+specifier|private
+specifier|static
+specifier|final
+name|String
+name|NEWLINE
+init|=
+name|System
+operator|.
+name|getProperty
+argument_list|(
+literal|"line.separator"
+argument_list|)
+decl_stmt|;
 DECL|field|conf
 name|Configuration
 name|conf
@@ -1209,7 +1223,9 @@ name|assertEquals
 argument_list|(
 literal|"Safe mode is ON. The reported blocks 0 needs additional "
 operator|+
-literal|"15 blocks to reach the threshold 0.9990 of total blocks 15.\n"
+literal|"15 blocks to reach the threshold 0.9990 of total blocks 15."
+operator|+
+name|NEWLINE
 operator|+
 literal|"The number of live datanodes 0 has reached the minimum number 0. "
 operator|+
@@ -2524,7 +2540,9 @@ name|contains
 argument_list|(
 literal|"The number of live datanodes 0 needs an additional "
 operator|+
-literal|"1 live datanodes to reach the minimum number 1.\n"
+literal|"1 live datanodes to reach the minimum number 1."
+operator|+
+name|NEWLINE
 operator|+
 literal|"Safe mode will be turned off automatically"
 argument_list|)
