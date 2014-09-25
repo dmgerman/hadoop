@@ -172,7 +172,11 @@ name|hadoop
 operator|.
 name|hdfs
 operator|.
-name|BlockStoragePolicy
+name|server
+operator|.
+name|blockmanagement
+operator|.
+name|BlockStoragePolicySuite
 import|;
 end_import
 
@@ -2135,7 +2139,7 @@ name|byte
 name|getStoragePolicyID
 parameter_list|()
 function_decl|;
-comment|/**    * @return the storage policy directly specified on the INode. Return    * {@link BlockStoragePolicy#ID_UNSPECIFIED} if no policy has    * been specified.    */
+comment|/**    * @return the storage policy directly specified on the INode. Return    * {@link BlockStoragePolicySuite#ID_UNSPECIFIED} if no policy has    * been specified.    */
 DECL|method|getLocalStoragePolicyID ()
 specifier|public
 specifier|abstract

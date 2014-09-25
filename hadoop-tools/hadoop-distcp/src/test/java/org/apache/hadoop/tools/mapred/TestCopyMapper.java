@@ -3789,6 +3789,17 @@ operator|.
 name|XATTR
 argument_list|)
 expr_stmt|;
+name|preserveStatus
+operator|.
+name|remove
+argument_list|(
+name|DistCpOptions
+operator|.
+name|FileAttribute
+operator|.
+name|TIMES
+argument_list|)
+expr_stmt|;
 name|context
 operator|.
 name|getConfiguration

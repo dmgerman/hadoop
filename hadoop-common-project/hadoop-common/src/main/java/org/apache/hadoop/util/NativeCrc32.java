@@ -40,6 +40,20 @@ name|ChecksumException
 import|;
 end_import
 
+begin_import
+import|import
+name|com
+operator|.
+name|google
+operator|.
+name|common
+operator|.
+name|annotations
+operator|.
+name|VisibleForTesting
+import|;
+end_import
+
 begin_comment
 comment|/**  * Wrapper around JNI support code to do checksum computation  * natively.  */
 end_comment
@@ -293,6 +307,47 @@ literal|false
 argument_list|)
 expr_stmt|;
 block|}
+comment|/**    * Verify the given buffers of data and checksums, and throw an exception    * if any checksum is invalid. The buffers given to this function should    * have their position initially at the start of the data, and their limit    * set at the end of the data. The position, limit, and mark are not    * modified.  This method is retained only for backwards-compatibility with    * prior jar versions that need the corresponding JNI function.    *    * @param bytesPerSum the chunk size (eg 512 bytes)    * @param checksumType the DataChecksum type constant    * @param sums the DirectByteBuffer pointing at the beginning of the    *             stored checksums    * @param sumsOffset start offset in sums buffer    * @param data the DirectByteBuffer pointing at the beginning of the    *             data to check    * @param dataOffset start offset in data buffer    * @param dataLength length of data buffer    * @param fileName the name of the file being verified    * @param basePos the position in the file where the data buffer starts     * @throws ChecksumException if there is an invalid checksum    * @deprecated use {@link #nativeComputeChunkedSums(int, int, ByteBuffer, int,    *   ByteBuffer, int, int, String, long, boolean)} instead    */
+annotation|@
+name|Deprecated
+annotation|@
+name|VisibleForTesting
+DECL|method|nativeVerifyChunkedSums ( int bytesPerSum, int checksumType, ByteBuffer sums, int sumsOffset, ByteBuffer data, int dataOffset, int dataLength, String fileName, long basePos)
+specifier|static
+specifier|native
+name|void
+name|nativeVerifyChunkedSums
+parameter_list|(
+name|int
+name|bytesPerSum
+parameter_list|,
+name|int
+name|checksumType
+parameter_list|,
+name|ByteBuffer
+name|sums
+parameter_list|,
+name|int
+name|sumsOffset
+parameter_list|,
+name|ByteBuffer
+name|data
+parameter_list|,
+name|int
+name|dataOffset
+parameter_list|,
+name|int
+name|dataLength
+parameter_list|,
+name|String
+name|fileName
+parameter_list|,
+name|long
+name|basePos
+parameter_list|)
+throws|throws
+name|ChecksumException
+function_decl|;
 DECL|method|nativeComputeChunkedSums ( int bytesPerSum, int checksumType, ByteBuffer sums, int sumsOffset, ByteBuffer data, int dataOffset, int dataLength, String fileName, long basePos, boolean verify)
 specifier|private
 specifier|static

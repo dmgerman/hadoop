@@ -376,22 +376,6 @@ name|hdfs
 operator|.
 name|inotify
 operator|.
-name|Event
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|hdfs
-operator|.
-name|inotify
-operator|.
 name|EventsList
 import|;
 end_import
@@ -471,24 +455,6 @@ operator|.
 name|delegation
 operator|.
 name|DelegationTokenSelector
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|hdfs
-operator|.
-name|server
-operator|.
-name|namenode
-operator|.
-name|FSEditLogOp
 import|;
 end_import
 
@@ -867,6 +833,18 @@ name|UnresolvedLinkException
 throws|,
 name|SnapshotAccessControlException
 throws|,
+name|IOException
+function_decl|;
+comment|/**    * Get all the available block storage policies.    * @return All the in-use block storage policies currently.    */
+annotation|@
+name|Idempotent
+DECL|method|getStoragePolicies ()
+specifier|public
+name|BlockStoragePolicy
+index|[]
+name|getStoragePolicies
+parameter_list|()
+throws|throws
 name|IOException
 function_decl|;
 comment|/**    * Set the storage policy for a file/directory    * @param src Path of an existing file/directory.     * @param policyName The name of the storage policy    * @throws SnapshotAccessControlException If access is denied    * @throws UnresolvedLinkException if<code>src</code> contains a symlink    * @throws FileNotFoundException If file/dir<code>src</code> is not found    * @throws QuotaExceededException If changes violate the quota restriction    */

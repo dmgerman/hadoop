@@ -164,6 +164,8 @@ name|hadoop
 operator|.
 name|hdfs
 operator|.
+name|protocol
+operator|.
 name|BlockStoragePolicy
 import|;
 end_import

@@ -575,7 +575,7 @@ name|clear
 argument_list|()
 expr_stmt|;
 block|}
-comment|/**     * Add a previously used master key to cache (when NN restarts),     * should be called before activate().    * */
+comment|/**     * Add a previously used master key to cache (when NN restarts),     * should be called before activate().     * */
 DECL|method|addKey (DelegationKey key)
 specifier|public
 specifier|synchronized
@@ -618,8 +618,15 @@ name|getKeyId
 argument_list|()
 expr_stmt|;
 block|}
-name|storeDelegationKey
+name|allKeys
+operator|.
+name|put
 argument_list|(
+name|key
+operator|.
+name|getKeyId
+argument_list|()
+argument_list|,
 name|key
 argument_list|)
 expr_stmt|;
@@ -968,7 +975,7 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * This method is intended to be used for recovering persisted delegation    * tokens    * @param identifier identifier read from persistent storage    * @param renewDate token renew time    * @throws IOException    */
+comment|/**    * This method is intended to be used for recovering persisted delegation    * tokens    * This method must be called before this secret manager is activated (before    * startThreads() is called)    * @param identifier identifier read from persistent storage    * @param renewDate token renew time    * @throws IOException    */
 DECL|method|addPersistedDelegationToken ( TokenIdent identifier, long renewDate)
 specifier|public
 specifier|synchronized
@@ -1009,7 +1016,9 @@ decl_stmt|;
 name|DelegationKey
 name|dKey
 init|=
-name|getDelegationKey
+name|allKeys
+operator|.
+name|get
 argument_list|(
 name|keyId
 argument_list|)
@@ -1052,12 +1061,6 @@ name|getKey
 argument_list|()
 argument_list|)
 decl_stmt|;
-name|int
-name|delegationTokenSeqNum
-init|=
-name|getDelegationTokenSeqNum
-argument_list|()
-decl_stmt|;
 if|if
 condition|(
 name|identifier
@@ -1065,16 +1068,15 @@ operator|.
 name|getSequenceNumber
 argument_list|()
 operator|>
-name|delegationTokenSeqNum
+name|delegationTokenSequenceNumber
 condition|)
 block|{
-name|setDelegationTokenSeqNum
-argument_list|(
+name|delegationTokenSequenceNumber
+operator|=
 name|identifier
 operator|.
 name|getSequenceNumber
 argument_list|()
-argument_list|)
 expr_stmt|;
 block|}
 if|if
@@ -1087,7 +1089,9 @@ operator|==
 literal|null
 condition|)
 block|{
-name|storeToken
+name|currentTokens
+operator|.
+name|put
 argument_list|(
 name|identifier
 argument_list|,
@@ -1172,11 +1176,6 @@ argument_list|)
 decl_stmt|;
 comment|//Log must be invoked outside the lock on 'this'
 name|logUpdateMasterKey
-argument_list|(
-name|newKey
-argument_list|)
-expr_stmt|;
-name|storeNewMasterKey
 argument_list|(
 name|newKey
 argument_list|)

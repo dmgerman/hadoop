@@ -70,6 +70,24 @@ name|ApplicationAccessType
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|api
+operator|.
+name|records
+operator|.
+name|LogAggregationContext
+import|;
+end_import
+
 begin_class
 DECL|class|ApplicationInitEvent
 specifier|public
@@ -89,6 +107,12 @@ name|String
 argument_list|>
 name|applicationACLs
 decl_stmt|;
+DECL|field|logAggregationContext
+specifier|private
+specifier|final
+name|LogAggregationContext
+name|logAggregationContext
+decl_stmt|;
 DECL|method|ApplicationInitEvent (ApplicationId appId, Map<ApplicationAccessType, String> acls)
 specifier|public
 name|ApplicationInitEvent
@@ -103,6 +127,35 @@ argument_list|,
 name|String
 argument_list|>
 name|acls
+parameter_list|)
+block|{
+name|this
+argument_list|(
+name|appId
+argument_list|,
+name|acls
+argument_list|,
+literal|null
+argument_list|)
+expr_stmt|;
+block|}
+DECL|method|ApplicationInitEvent (ApplicationId appId, Map<ApplicationAccessType, String> acls, LogAggregationContext logAggregationContext)
+specifier|public
+name|ApplicationInitEvent
+parameter_list|(
+name|ApplicationId
+name|appId
+parameter_list|,
+name|Map
+argument_list|<
+name|ApplicationAccessType
+argument_list|,
+name|String
+argument_list|>
+name|acls
+parameter_list|,
+name|LogAggregationContext
+name|logAggregationContext
 parameter_list|)
 block|{
 name|super
@@ -120,6 +173,12 @@ name|applicationACLs
 operator|=
 name|acls
 expr_stmt|;
+name|this
+operator|.
+name|logAggregationContext
+operator|=
+name|logAggregationContext
+expr_stmt|;
 block|}
 DECL|method|getApplicationACLs ()
 specifier|public
@@ -136,6 +195,18 @@ return|return
 name|this
 operator|.
 name|applicationACLs
+return|;
+block|}
+DECL|method|getLogAggregationContext ()
+specifier|public
+name|LogAggregationContext
+name|getLogAggregationContext
+parameter_list|()
+block|{
+return|return
+name|this
+operator|.
+name|logAggregationContext
 return|;
 block|}
 block|}

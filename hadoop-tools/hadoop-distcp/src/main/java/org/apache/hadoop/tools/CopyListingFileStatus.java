@@ -451,6 +451,21 @@ parameter_list|()
 block|{
 return|return
 name|xAttrs
+operator|!=
+literal|null
+condition|?
+name|xAttrs
+else|:
+name|Collections
+operator|.
+expr|<
+name|String
+operator|,
+name|byte
+index|[]
+operator|>
+name|emptyMap
+argument_list|()
 return|;
 block|}
 comment|/**    * Sets optional xAttrs.    *     * @param xAttrs Map<String, byte[]> containing all xAttrs    */

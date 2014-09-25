@@ -158,6 +158,46 @@ name|TimelineEvents
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|api
+operator|.
+name|records
+operator|.
+name|timeline
+operator|.
+name|TimelineDomain
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|api
+operator|.
+name|records
+operator|.
+name|timeline
+operator|.
+name|TimelineDomains
+import|;
+end_import
+
 begin_comment
 comment|/**  * This interface is for retrieving timeline information.  */
 end_comment
@@ -293,6 +333,28 @@ argument_list|<
 name|String
 argument_list|>
 name|eventTypes
+parameter_list|)
+throws|throws
+name|IOException
+function_decl|;
+comment|/**    * This method retrieves the domain information for a given ID.    *     * @return a {@link TimelineDomain} object.    * @throws IOException    */
+DECL|method|getDomain ( String domainId)
+name|TimelineDomain
+name|getDomain
+parameter_list|(
+name|String
+name|domainId
+parameter_list|)
+throws|throws
+name|IOException
+function_decl|;
+comment|/**    * This method retrieves all the domains that belong to a given owner.    * The domains are sorted according to the created time firstly and the    * modified time secondly in descending order.    *     * @param owner    *          the domain owner    * @return an {@link TimelineDomains} object.    * @throws IOException    */
+DECL|method|getDomains (String owner)
+name|TimelineDomains
+name|getDomains
+parameter_list|(
+name|String
+name|owner
 parameter_list|)
 throws|throws
 name|IOException

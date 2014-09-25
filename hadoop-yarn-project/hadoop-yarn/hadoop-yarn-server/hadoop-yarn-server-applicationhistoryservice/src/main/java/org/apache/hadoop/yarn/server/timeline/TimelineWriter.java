@@ -22,6 +22,16 @@ end_package
 
 begin_import
 import|import
+name|java
+operator|.
+name|io
+operator|.
+name|IOException
+import|;
+end_import
+
+begin_import
+import|import
 name|org
 operator|.
 name|apache
@@ -84,17 +94,27 @@ name|records
 operator|.
 name|timeline
 operator|.
-name|TimelinePutResponse
+name|TimelineDomain
 import|;
 end_import
 
 begin_import
 import|import
-name|java
+name|org
 operator|.
-name|io
+name|apache
 operator|.
-name|IOException
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|api
+operator|.
+name|records
+operator|.
+name|timeline
+operator|.
+name|TimelinePutResponse
 import|;
 end_import
 
@@ -116,13 +136,24 @@ specifier|public
 interface|interface
 name|TimelineWriter
 block|{
-comment|/**    * Stores entity information to the timeline store. Any errors occurring for    * individual put request objects will be reported in the response.    *     * @param data    *          An {@link TimelineEntities} object.    * @return An {@link TimelinePutResponse} object.    * @throws IOException    */
+comment|/**    * Stores entity information to the timeline store. Any errors occurring for    * individual put request objects will be reported in the response.    *     * @param data    *          a {@link TimelineEntities} object.    * @return a {@link TimelinePutResponse} object.    * @throws IOException    */
 DECL|method|put (TimelineEntities data)
 name|TimelinePutResponse
 name|put
 parameter_list|(
 name|TimelineEntities
 name|data
+parameter_list|)
+throws|throws
+name|IOException
+function_decl|;
+comment|/**    * Store domain information to the timeline store. If A domain of the    * same ID already exists in the timeline store, it will be COMPLETELY updated    * with the given domain.    *     * @param domain    *          a {@link TimelineDomain} object    * @throws IOException    */
+DECL|method|put (TimelineDomain domain)
+name|void
+name|put
+parameter_list|(
+name|TimelineDomain
+name|domain
 parameter_list|)
 throws|throws
 name|IOException

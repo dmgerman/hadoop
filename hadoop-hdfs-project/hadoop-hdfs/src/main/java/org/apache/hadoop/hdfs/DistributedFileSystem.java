@@ -612,6 +612,22 @@ name|hdfs
 operator|.
 name|protocol
 operator|.
+name|BlockStoragePolicy
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|protocol
+operator|.
 name|CacheDirectiveEntry
 import|;
 end_import
@@ -3018,6 +3034,30 @@ argument_list|,
 name|absF
 argument_list|)
 expr_stmt|;
+block|}
+comment|/** Get all the existing storage policies */
+DECL|method|getStoragePolicies ()
+specifier|public
+name|BlockStoragePolicy
+index|[]
+name|getStoragePolicies
+parameter_list|()
+throws|throws
+name|IOException
+block|{
+name|statistics
+operator|.
+name|incrementReadOps
+argument_list|(
+literal|1
+argument_list|)
+expr_stmt|;
+return|return
+name|dfs
+operator|.
+name|getStoragePolicies
+argument_list|()
+return|;
 block|}
 comment|/**    * Move blocks from srcs to trg and delete srcs afterwards.    * The file block sizes must be the same.    *     * @param trg existing file to append to    * @param psrcs list of files (same block size, same replication)    * @throws IOException    */
 annotation|@

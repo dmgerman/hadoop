@@ -836,6 +836,33 @@ name|lastReadTxid
 argument_list|)
 return|;
 block|}
+comment|/**    * Set the source path to the specified storage policy.    *    * @param src The source path referring to either a directory or a file.    * @param policyName The name of the storage policy.    */
+DECL|method|setStoragePolicy (final Path src, final String policyName)
+specifier|public
+name|void
+name|setStoragePolicy
+parameter_list|(
+specifier|final
+name|Path
+name|src
+parameter_list|,
+specifier|final
+name|String
+name|policyName
+parameter_list|)
+throws|throws
+name|IOException
+block|{
+name|dfs
+operator|.
+name|setStoragePolicy
+argument_list|(
+name|src
+argument_list|,
+name|policyName
+argument_list|)
+expr_stmt|;
+block|}
 block|}
 end_class
 
