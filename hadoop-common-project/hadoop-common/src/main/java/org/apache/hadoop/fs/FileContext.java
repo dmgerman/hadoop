@@ -4951,11 +4951,7 @@ literal|true
 argument_list|)
 expr_stmt|;
 block|}
-catch|catch
-parameter_list|(
-name|IOException
-name|e
-parameter_list|)
+finally|finally
 block|{
 name|IOUtils
 operator|.
@@ -4971,9 +4967,6 @@ argument_list|(
 name|in
 argument_list|)
 expr_stmt|;
-throw|throw
-name|e
-throw|;
 block|}
 block|}
 if|if
