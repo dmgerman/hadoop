@@ -141,6 +141,41 @@ name|ramDiskVolume
 argument_list|)
 expr_stmt|;
 block|}
+annotation|@
+name|Override
+DECL|method|hashCode ()
+specifier|public
+name|int
+name|hashCode
+parameter_list|()
+block|{
+return|return
+name|super
+operator|.
+name|hashCode
+argument_list|()
+return|;
+block|}
+annotation|@
+name|Override
+DECL|method|equals (Object other)
+specifier|public
+name|boolean
+name|equals
+parameter_list|(
+name|Object
+name|other
+parameter_list|)
+block|{
+return|return
+name|super
+operator|.
+name|equals
+argument_list|(
+name|other
+argument_list|)
+return|;
+block|}
 block|}
 comment|/**    * Map of blockpool ID to<map of blockID to ReplicaInfo>.    */
 DECL|field|replicaMaps
