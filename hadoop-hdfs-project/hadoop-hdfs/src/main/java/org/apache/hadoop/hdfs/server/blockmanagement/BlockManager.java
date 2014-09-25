@@ -2353,11 +2353,11 @@ name|policyName
 argument_list|)
 return|;
 block|}
-DECL|method|getStoragePolicySuite ()
+DECL|method|getStoragePolicies ()
 specifier|public
 name|BlockStoragePolicy
 index|[]
-name|getStoragePolicySuite
+name|getStoragePolicies
 parameter_list|()
 block|{
 return|return

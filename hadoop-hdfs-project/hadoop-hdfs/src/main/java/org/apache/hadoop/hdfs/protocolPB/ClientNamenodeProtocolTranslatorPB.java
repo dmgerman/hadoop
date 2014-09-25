@@ -1778,7 +1778,7 @@ name|proto
 operator|.
 name|ClientNamenodeProtocolProtos
 operator|.
-name|GetStoragePolicySuiteRequestProto
+name|GetStoragePoliciesRequestProto
 import|;
 end_import
 
@@ -1798,7 +1798,7 @@ name|proto
 operator|.
 name|ClientNamenodeProtocolProtos
 operator|.
-name|GetStoragePolicySuiteResponseProto
+name|GetStoragePoliciesResponseProto
 import|;
 end_import
 
@@ -3188,11 +3188,11 @@ decl_stmt|;
 specifier|private
 specifier|final
 specifier|static
-name|GetStoragePolicySuiteRequestProto
-DECL|field|VOID_GET_STORAGE_POLICY_SUITE_REQUEST
-name|VOID_GET_STORAGE_POLICY_SUITE_REQUEST
+name|GetStoragePoliciesRequestProto
+DECL|field|VOID_GET_STORAGE_POLICIES_REQUEST
+name|VOID_GET_STORAGE_POLICIES_REQUEST
 init|=
-name|GetStoragePolicySuiteRequestProto
+name|GetStoragePoliciesRequestProto
 operator|.
 name|newBuilder
 argument_list|()
@@ -9716,27 +9716,27 @@ block|}
 block|}
 annotation|@
 name|Override
-DECL|method|getStoragePolicySuite ()
+DECL|method|getStoragePolicies ()
 specifier|public
 name|BlockStoragePolicy
 index|[]
-name|getStoragePolicySuite
+name|getStoragePolicies
 parameter_list|()
 throws|throws
 name|IOException
 block|{
 try|try
 block|{
-name|GetStoragePolicySuiteResponseProto
+name|GetStoragePoliciesResponseProto
 name|response
 init|=
 name|rpcProxy
 operator|.
-name|getStoragePolicySuite
+name|getStoragePolicies
 argument_list|(
 literal|null
 argument_list|,
-name|VOID_GET_STORAGE_POLICY_SUITE_REQUEST
+name|VOID_GET_STORAGE_POLICIES_REQUEST
 argument_list|)
 decl_stmt|;
 return|return

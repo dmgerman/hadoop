@@ -585,7 +585,9 @@ name|put
 argument_list|(
 name|COLD
 argument_list|,
-literal|"BlockStoragePolicy{COLD:4, storageTypes=[ARCHIVE], creationFallbacks=[], replicationFallbacks=[]"
+literal|"BlockStoragePolicy{COLD:4, storageTypes=[ARCHIVE], "
+operator|+
+literal|"creationFallbacks=[], replicationFallbacks=[]}"
 argument_list|)
 expr_stmt|;
 name|expectedPolicyStrings
@@ -594,7 +596,9 @@ name|put
 argument_list|(
 name|WARM
 argument_list|,
-literal|"BlockStoragePolicy{WARM:8, storageTypes=[DISK, ARCHIVE], creationFallbacks=[DISK, ARCHIVE], replicationFallbacks=[DISK, ARCHIVE]"
+literal|"BlockStoragePolicy{WARM:8, storageTypes=[DISK, ARCHIVE], "
+operator|+
+literal|"creationFallbacks=[DISK, ARCHIVE], replicationFallbacks=[DISK, ARCHIVE]}"
 argument_list|)
 expr_stmt|;
 name|expectedPolicyStrings
@@ -603,7 +607,9 @@ name|put
 argument_list|(
 name|HOT
 argument_list|,
-literal|"BlockStoragePolicy{HOT:12, storageTypes=[DISK], creationFallbacks=[], replicationFallbacks=[ARCHIVE]"
+literal|"BlockStoragePolicy{HOT:12, storageTypes=[DISK], "
+operator|+
+literal|"creationFallbacks=[], replicationFallbacks=[ARCHIVE]}"
 argument_list|)
 expr_stmt|;
 for|for
@@ -8061,7 +8067,7 @@ name|policies
 init|=
 name|fs
 operator|.
-name|getStoragePolicySuite
+name|getStoragePolicies
 argument_list|()
 decl_stmt|;
 name|Assert

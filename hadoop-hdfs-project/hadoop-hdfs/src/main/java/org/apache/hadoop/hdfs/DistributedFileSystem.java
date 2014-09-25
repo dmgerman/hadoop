@@ -3036,11 +3036,11 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|/** Get all the existing storage policies */
-DECL|method|getStoragePolicySuite ()
+DECL|method|getStoragePolicies ()
 specifier|public
 name|BlockStoragePolicy
 index|[]
-name|getStoragePolicySuite
+name|getStoragePolicies
 parameter_list|()
 throws|throws
 name|IOException
@@ -3055,7 +3055,7 @@ expr_stmt|;
 return|return
 name|dfs
 operator|.
-name|getStoragePolicySuite
+name|getStoragePolicies
 argument_list|()
 return|;
 block|}

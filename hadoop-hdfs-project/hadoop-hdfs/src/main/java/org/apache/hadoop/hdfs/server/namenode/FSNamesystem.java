@@ -12865,10 +12865,10 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|/**    * @return All the existing block storage policies    */
-DECL|method|getStoragePolicySuite ()
+DECL|method|getStoragePolicies ()
 name|BlockStoragePolicy
 index|[]
-name|getStoragePolicySuite
+name|getStoragePolicies
 parameter_list|()
 throws|throws
 name|IOException
@@ -12898,7 +12898,7 @@ expr_stmt|;
 return|return
 name|blockManager
 operator|.
-name|getStoragePolicySuite
+name|getStoragePolicies
 argument_list|()
 return|;
 block|}

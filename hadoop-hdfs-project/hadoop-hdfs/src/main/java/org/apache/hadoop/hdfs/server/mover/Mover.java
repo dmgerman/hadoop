@@ -1090,7 +1090,7 @@ operator|.
 name|getDistributedFileSystem
 argument_list|()
 operator|.
-name|getStoragePolicySuite
+name|getStoragePolicies
 argument_list|()
 decl_stmt|;
 for|for
@@ -2364,12 +2364,7 @@ name|scheduleMoveReplica
 argument_list|(
 name|db
 argument_list|,
-name|storages
-operator|.
-name|getSource
-argument_list|(
-name|ml
-argument_list|)
+name|source
 argument_list|,
 name|targetTypes
 argument_list|)

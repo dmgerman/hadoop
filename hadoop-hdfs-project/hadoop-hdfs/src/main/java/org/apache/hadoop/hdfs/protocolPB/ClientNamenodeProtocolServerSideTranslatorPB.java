@@ -1968,7 +1968,7 @@ name|proto
 operator|.
 name|ClientNamenodeProtocolProtos
 operator|.
-name|GetStoragePolicySuiteRequestProto
+name|GetStoragePoliciesRequestProto
 import|;
 end_import
 
@@ -1988,7 +1988,7 @@ name|proto
 operator|.
 name|ClientNamenodeProtocolProtos
 operator|.
-name|GetStoragePolicySuiteResponseProto
+name|GetStoragePoliciesResponseProto
 import|;
 end_import
 
@@ -9993,15 +9993,15 @@ return|;
 block|}
 annotation|@
 name|Override
-DECL|method|getStoragePolicySuite ( RpcController controller, GetStoragePolicySuiteRequestProto request)
+DECL|method|getStoragePolicies ( RpcController controller, GetStoragePoliciesRequestProto request)
 specifier|public
-name|GetStoragePolicySuiteResponseProto
-name|getStoragePolicySuite
+name|GetStoragePoliciesResponseProto
+name|getStoragePolicies
 parameter_list|(
 name|RpcController
 name|controller
 parameter_list|,
-name|GetStoragePolicySuiteRequestProto
+name|GetStoragePoliciesRequestProto
 name|request
 parameter_list|)
 throws|throws
@@ -10015,15 +10015,15 @@ name|policies
 init|=
 name|server
 operator|.
-name|getStoragePolicySuite
+name|getStoragePolicies
 argument_list|()
 decl_stmt|;
-name|GetStoragePolicySuiteResponseProto
+name|GetStoragePoliciesResponseProto
 operator|.
 name|Builder
 name|builder
 init|=
-name|GetStoragePolicySuiteResponseProto
+name|GetStoragePoliciesResponseProto
 operator|.
 name|newBuilder
 argument_list|()

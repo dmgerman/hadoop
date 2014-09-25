@@ -376,22 +376,6 @@ name|hdfs
 operator|.
 name|inotify
 operator|.
-name|Event
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|hdfs
-operator|.
-name|inotify
-operator|.
 name|EventsList
 import|;
 end_import
@@ -471,24 +455,6 @@ operator|.
 name|delegation
 operator|.
 name|DelegationTokenSelector
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|hdfs
-operator|.
-name|server
-operator|.
-name|namenode
-operator|.
-name|FSEditLogOp
 import|;
 end_import
 
@@ -872,11 +838,11 @@ function_decl|;
 comment|/**    * Get all the available block storage policies.    * @return All the in-use block storage policies currently.    */
 annotation|@
 name|Idempotent
-DECL|method|getStoragePolicySuite ()
+DECL|method|getStoragePolicies ()
 specifier|public
 name|BlockStoragePolicy
 index|[]
-name|getStoragePolicySuite
+name|getStoragePolicies
 parameter_list|()
 throws|throws
 name|IOException

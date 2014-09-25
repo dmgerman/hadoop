@@ -3563,7 +3563,7 @@ name|policies
 init|=
 name|dfs
 operator|.
-name|getStoragePolicySuite
+name|getStoragePolicies
 argument_list|()
 decl_stmt|;
 for|for

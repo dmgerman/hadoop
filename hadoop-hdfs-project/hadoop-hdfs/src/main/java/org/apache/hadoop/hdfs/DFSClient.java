@@ -9363,11 +9363,11 @@ throw|;
 block|}
 block|}
 comment|/**    * @return All the existing storage policies    */
-DECL|method|getStoragePolicySuite ()
+DECL|method|getStoragePolicies ()
 specifier|public
 name|BlockStoragePolicy
 index|[]
-name|getStoragePolicySuite
+name|getStoragePolicies
 parameter_list|()
 throws|throws
 name|IOException
@@ -9375,7 +9375,7 @@ block|{
 return|return
 name|namenode
 operator|.
-name|getStoragePolicySuite
+name|getStoragePolicies
 argument_list|()
 return|;
 block|}

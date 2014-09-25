@@ -983,6 +983,8 @@ name|asList
 argument_list|(
 name|replicationFallbacks
 argument_list|)
+operator|+
+literal|"}"
 return|;
 block|}
 DECL|method|getId ()
