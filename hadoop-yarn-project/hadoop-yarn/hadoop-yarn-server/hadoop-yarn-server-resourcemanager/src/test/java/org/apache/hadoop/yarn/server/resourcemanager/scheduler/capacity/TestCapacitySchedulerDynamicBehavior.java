@@ -484,7 +484,7 @@ name|setBoolean
 argument_list|(
 name|YarnConfiguration
 operator|.
-name|RM_RESERVATIONS_ENABLE
+name|RM_RESERVATION_SYSTEM_ENABLE
 argument_list|,
 literal|false
 argument_list|)
@@ -1669,7 +1669,7 @@ argument_list|)
 expr_stmt|;
 name|conf
 operator|.
-name|setReservableQueue
+name|setReservable
 argument_list|(
 name|A
 argument_list|,

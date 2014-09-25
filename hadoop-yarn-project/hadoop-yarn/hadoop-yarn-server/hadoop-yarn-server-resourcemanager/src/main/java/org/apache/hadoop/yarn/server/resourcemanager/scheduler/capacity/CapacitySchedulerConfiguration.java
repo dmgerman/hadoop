@@ -888,7 +888,7 @@ specifier|final
 name|long
 name|DEFAULT_RESERVATION_WINDOW
 init|=
-literal|0L
+literal|86400000L
 decl_stmt|;
 annotation|@
 name|Private

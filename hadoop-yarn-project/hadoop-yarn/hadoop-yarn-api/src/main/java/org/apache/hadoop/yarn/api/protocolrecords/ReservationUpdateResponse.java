@@ -103,7 +103,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * {@link ReservationUpdateResponse} contains the answer of the admission  * control system in the {@link ResourceManager} to a reservation update  * operation. Currently response is empty if the operation was successful, if  * not an exception reporting reason for a failure.  *   * @see ReservationDefinition  *   */
+comment|/**  * {@link ReservationUpdateResponse} contains the answer of the admission  * control system in the {@code ResourceManager} to a reservation update  * operation. Currently response is empty if the operation was successful, if  * not an exception reporting reason for a failure.  *   * @see ReservationDefinition  *   */
 end_comment
 
 begin_class

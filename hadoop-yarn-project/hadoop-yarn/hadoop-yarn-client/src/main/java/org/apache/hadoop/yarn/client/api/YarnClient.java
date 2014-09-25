@@ -536,6 +536,24 @@ name|api
 operator|.
 name|records
 operator|.
+name|ReservationDefinition
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|api
+operator|.
+name|records
+operator|.
 name|ReservationId
 import|;
 end_import
@@ -1109,7 +1127,7 @@ name|YarnException
 throws|,
 name|IOException
 function_decl|;
-comment|/**    *<p>    * The interface used by clients to submit a new reservation to the    * {@link ResourceManager}.    *</p>    *     *<p>    * The client packages all details of its request in a    * {@link ReservationRequest} object. This contains information about the    * amount of capacity, temporal constraints, and gang needs. Furthermore, the    * reservation might be composed of multiple stages, with ordering    * dependencies among them.    *</p>    *     *<p>    * In order to respond, a new admission control component in the    * {@link ResourceManager} performs an analysis of the resources that have    * been committed over the period of time the user is requesting, verify that    * the user requests can be fulfilled, and that it respect a sharing policy    * (e.g., {@link CapacityOverTimePolicy}). Once it has positively determined    * that the ReservationRequest is satisfiable the {@link ResourceManager}    * answers with a {@link ReservationResponse} that include a    * {@link ReservationId}. Upon failure to find a valid allocation the response    * is an exception with the message detailing the reason of failure.    *</p>    *     *<p>    * The semantics guarantees that the ReservationId returned, corresponds to a    * valid reservation existing in the time-range request by the user. The    * amount of capacity dedicated to such reservation can vary overtime,    * depending of the allocation that has been determined. But it is guaranteed    * to satisfy all the constraint expressed by the user in the    * {@link ReservationRequest}    *</p>    *     * @param request request to submit a new Reservation    * @return response contains the {@link ReservationId} on accepting the    *         submission    * @throws YarnException if the reservation cannot be created successfully    * @throws IOException    *     */
+comment|/**    *<p>    * The interface used by clients to submit a new reservation to the    * {@code ResourceManager}.    *</p>    *     *<p>    * The client packages all details of its request in a    * {@link ReservationSubmissionRequest} object. This contains information    * about the amount of capacity, temporal constraints, and gang needs.    * Furthermore, the reservation might be composed of multiple stages, with    * ordering dependencies among them.    *</p>    *     *<p>    * In order to respond, a new admission control component in the    * {@code ResourceManager} performs an analysis of the resources that have    * been committed over the period of time the user is requesting, verify that    * the user requests can be fulfilled, and that it respect a sharing policy    * (e.g., {@code CapacityOverTimePolicy}). Once it has positively determined    * that the ReservationRequest is satisfiable the {@code ResourceManager}    * answers with a {@link ReservationSubmissionResponse} that includes a    * {@link ReservationId}. Upon failure to find a valid allocation the response    * is an exception with the message detailing the reason of failure.    *</p>    *     *<p>    * The semantics guarantees that the {@link ReservationId} returned,    * corresponds to a valid reservation existing in the time-range request by    * the user. The amount of capacity dedicated to such reservation can vary    * overtime, depending of the allocation that has been determined. But it is    * guaranteed to satisfy all the constraint expressed by the user in the    * {@link ReservationDefinition}    *</p>    *     * @param request request to submit a new Reservation    * @return response contains the {@link ReservationId} on accepting the    *         submission    * @throws YarnException if the reservation cannot be created successfully    * @throws IOException    *     */
 annotation|@
 name|Public
 annotation|@
@@ -1128,7 +1146,7 @@ name|YarnException
 throws|,
 name|IOException
 function_decl|;
-comment|/**    *<p>    * The interface used by clients to update an existing Reservation. This is    * referred to as a re-negotiation process, in which a user that has    * previously submitted a Reservation.    *</p>    *     *<p>    * The allocation is attempted by virtually substituting all previous    * allocations related to this Reservation with new ones, that satisfy the new    * {@link ReservationRequest}. Upon success the previous allocation is    * atomically substituted by the new one, and on failure (i.e., if the system    * cannot find a valid allocation for the updated request), the previous    * allocation remains valid.    *</p>    *     * @param request to update an existing Reservation (the ReservationRequest    *          should refer to an existing valid {@link ReservationId})    * @return response empty on successfully updating the existing reservation    * @throws YarnException if the request is invalid or reservation cannot be    *           updated successfully    * @throws IOException    *     */
+comment|/**    *<p>    * The interface used by clients to update an existing Reservation. This is    * referred to as a re-negotiation process, in which a user that has    * previously submitted a Reservation.    *</p>    *     *<p>    * The allocation is attempted by virtually substituting all previous    * allocations related to this Reservation with new ones, that satisfy the new    * {@link ReservationDefinition}. Upon success the previous allocation is    * atomically substituted by the new one, and on failure (i.e., if the system    * cannot find a valid allocation for the updated request), the previous    * allocation remains valid.    *</p>    *     * @param request to update an existing Reservation (the    *          {@link ReservationUpdateRequest} should refer to an existing valid    *          {@link ReservationId})    * @return response empty on successfully updating the existing reservation    * @throws YarnException if the request is invalid or reservation cannot be    *           updated successfully    * @throws IOException    *     */
 annotation|@
 name|Public
 annotation|@
@@ -1147,7 +1165,7 @@ name|YarnException
 throws|,
 name|IOException
 function_decl|;
-comment|/**    *<p>    * The interface used by clients to remove an existing Reservation.    *</p>    *     * @param request to remove an existing Reservation (the ReservationRequest    *          should refer to an existing valid {@link ReservationId})    * @return response empty on successfully deleting the existing reservation    * @throws YarnException if the request is invalid or reservation cannot be    *           deleted successfully    * @throws IOException    *     */
+comment|/**    *<p>    * The interface used by clients to remove an existing Reservation.    *</p>    *     * @param request to remove an existing Reservation (the    *          {@link ReservationDeleteRequest} should refer to an existing valid    *          {@link ReservationId})    * @return response empty on successfully deleting the existing reservation    * @throws YarnException if the request is invalid or reservation cannot be    *           deleted successfully    * @throws IOException    *     */
 annotation|@
 name|Public
 annotation|@

@@ -266,6 +266,24 @@ name|api
 operator|.
 name|records
 operator|.
+name|ReservationId
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|api
+operator|.
+name|records
+operator|.
 name|Resource
 import|;
 end_import
@@ -971,6 +989,22 @@ argument_list|,
 literal|0
 argument_list|)
 return|;
+block|}
+annotation|@
+name|Override
+DECL|method|getReservationId ()
+specifier|public
+name|ReservationId
+name|getReservationId
+parameter_list|()
+block|{
+throw|throw
+operator|new
+name|UnsupportedOperationException
+argument_list|(
+literal|"Not supported yet."
+argument_list|)
+throw|;
 block|}
 block|}
 DECL|method|newApplication (int i)

@@ -1031,7 +1031,7 @@ name|ReservationId
 name|getReservationID
 parameter_list|()
 function_decl|;
-comment|/**    * Set the reservation id, that correspond to a valid resource allocation in    * the scheduler (between start and end time of the corresponding reservation)    *     * @param reservationId representing the unique id of the    *          corresponding reserved resource allocation in the scheduler    */
+comment|/**    * Set the reservation id, that correspond to a valid resource allocation in    * the scheduler (between start and end time of the corresponding reservation)    *     * @param reservationID representing the unique id of the    *          corresponding reserved resource allocation in the scheduler    */
 annotation|@
 name|Public
 annotation|@

@@ -24,6 +24,16 @@ begin_import
 import|import
 name|java
 operator|.
+name|io
+operator|.
+name|IOException
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
 name|text
 operator|.
 name|NumberFormat
@@ -95,7 +105,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  *<p>  * {@link ReservationId} represents the<em>globally unique</em> identifier for  * a reservation.  *</p>  *   *<p>  * The globally unique nature of the identifier is achieved by using the  *<em>cluster timestamp</em> i.e. start-time of the {@link ResourceManager}  * along with a monotonically increasing counter for the reservation.  *</p>  */
+comment|/**  *<p>  * {@link ReservationId} represents the<em>globally unique</em> identifier for  * a reservation.  *</p>  *   *<p>  * The globally unique nature of the identifier is achieved by using the  *<em>cluster timestamp</em> i.e. start-time of the {@code ResourceManager}  * along with a monotonically increasing counter for the reservation.  *</p>  */
 end_comment
 
 begin_class
@@ -189,7 +199,7 @@ return|return
 name|reservationId
 return|;
 block|}
-comment|/**    * Get the long identifier of the {@link ReservationId} which is unique for    * all Reservations started by a particular instance of the    * {@link ResourceManager}.    *     * @return long identifier of the {@link ReservationId}    */
+comment|/**    * Get the long identifier of the {@link ReservationId} which is unique for    * all Reservations started by a particular instance of the    * {@code ResourceManager}.    *     * @return long identifier of the {@link ReservationId}    */
 annotation|@
 name|Public
 annotation|@
@@ -215,7 +225,7 @@ name|long
 name|id
 parameter_list|)
 function_decl|;
-comment|/**    * Get the<em>start time</em> of the {@link ResourceManager} which is used to    * generate globally unique {@link ReservationId}.    *     * @return<em>start time</em> of the {@link ResourceManager}    */
+comment|/**    * Get the<em>start time</em> of the {@code ResourceManager} which is used to    * generate globally unique {@link ReservationId}.    *     * @return<em>start time</em> of the {@code ResourceManager}    */
 annotation|@
 name|Public
 annotation|@
@@ -405,6 +415,110 @@ name|format
 argument_list|(
 name|getId
 argument_list|()
+argument_list|)
+return|;
+block|}
+comment|/**    * Parse the string argument as a {@link ReservationId}    *    * @param reservationId the string representation of the {@link ReservationId}    * @return the {@link ReservationId} corresponding to the input string if    *         valid, null if input is null    * @throws IOException if unable to parse the input string    */
+annotation|@
+name|Public
+annotation|@
+name|Unstable
+DECL|method|parseReservationId (String reservationId)
+specifier|public
+specifier|static
+name|ReservationId
+name|parseReservationId
+parameter_list|(
+name|String
+name|reservationId
+parameter_list|)
+throws|throws
+name|IOException
+block|{
+if|if
+condition|(
+name|reservationId
+operator|==
+literal|null
+condition|)
+block|{
+return|return
+literal|null
+return|;
+block|}
+if|if
+condition|(
+operator|!
+name|reservationId
+operator|.
+name|startsWith
+argument_list|(
+name|reserveIdStrPrefix
+argument_list|)
+condition|)
+block|{
+throw|throw
+operator|new
+name|IOException
+argument_list|(
+literal|"The specified reservation id is invalid: "
+operator|+
+name|reservationId
+argument_list|)
+throw|;
+block|}
+name|String
+index|[]
+name|resFields
+init|=
+name|reservationId
+operator|.
+name|split
+argument_list|(
+literal|"_"
+argument_list|)
+decl_stmt|;
+if|if
+condition|(
+name|resFields
+operator|.
+name|length
+operator|!=
+literal|3
+condition|)
+block|{
+throw|throw
+operator|new
+name|IOException
+argument_list|(
+literal|"The specified reservation id is not parseable: "
+operator|+
+name|reservationId
+argument_list|)
+throw|;
+block|}
+return|return
+name|newInstance
+argument_list|(
+name|Long
+operator|.
+name|parseLong
+argument_list|(
+name|resFields
+index|[
+literal|1
+index|]
+argument_list|)
+argument_list|,
+name|Long
+operator|.
+name|parseLong
+argument_list|(
+name|resFields
+index|[
+literal|2
+index|]
+argument_list|)
 argument_list|)
 return|;
 block|}

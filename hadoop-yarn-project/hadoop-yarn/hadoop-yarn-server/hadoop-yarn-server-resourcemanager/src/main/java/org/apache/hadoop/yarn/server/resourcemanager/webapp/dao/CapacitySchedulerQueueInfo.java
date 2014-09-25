@@ -257,7 +257,7 @@ specifier|private
 name|boolean
 name|hideReservationQueues
 init|=
-literal|true
+literal|false
 decl_stmt|;
 DECL|method|CapacitySchedulerQueueInfo ()
 name|CapacitySchedulerQueueInfo
@@ -407,6 +407,7 @@ name|q
 operator|instanceof
 name|PlanQueue
 operator|&&
+operator|!
 operator|(
 operator|(
 name|PlanQueue
@@ -420,7 +421,7 @@ condition|)
 block|{
 name|hideReservationQueues
 operator|=
-literal|false
+literal|true
 expr_stmt|;
 block|}
 block|}

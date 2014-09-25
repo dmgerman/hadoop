@@ -193,7 +193,7 @@ name|ReservationDefinition
 name|reservationDefinition
 parameter_list|)
 function_decl|;
-comment|/**    * Get the name of the {@link Plan} that corresponds to the name of the    * {@link QueueInfo} in the scheduler to which the reservation will be    * submitted to.    *     * @return the name of the {@link Plan} that corresponds to the name of the    *         {@link QueueInfo} in the scheduler to which the reservation will be    *         submitted to    */
+comment|/**    * Get the name of the {@code Plan} that corresponds to the name of the    * {@link QueueInfo} in the scheduler to which the reservation will be    * submitted to.    *     * @return the name of the {@code Plan} that corresponds to the name of the    *         {@link QueueInfo} in the scheduler to which the reservation will be    *         submitted to    */
 annotation|@
 name|Public
 annotation|@
@@ -205,7 +205,7 @@ name|String
 name|getQueue
 parameter_list|()
 function_decl|;
-comment|/**    * Set the name of the {@link Plan} that corresponds to the name of the    * {@link QueueInfo} in the scheduler to which the reservation will be    * submitted to    *     * @param the name of the parent {@link Plan} that corresponds to the name of    *          the {@link QueueInfo} in the scheduler to which the reservation    *          will be submitted to    */
+comment|/**    * Set the name of the {@code Plan} that corresponds to the name of the    * {@link QueueInfo} in the scheduler to which the reservation will be    * submitted to    *     * @param queueName the name of the parent {@code Plan} that corresponds to    *          the name of the {@link QueueInfo} in the scheduler to which the    *          reservation will be submitted to    */
 annotation|@
 name|Public
 annotation|@

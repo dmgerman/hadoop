@@ -158,7 +158,7 @@ argument_list|>
 name|getReservationResources
 parameter_list|()
 function_decl|;
-comment|/**    * Set the list of {@link ReservationRequest} representing the resources    * required by the application    *     * @param resources the list of {@link ReservationRequest}    */
+comment|/**    * Set the list of {@link ReservationRequest} representing the resources    * required by the application    *     * @param reservationResources the list of {@link ReservationRequest}    */
 annotation|@
 name|Public
 annotation|@

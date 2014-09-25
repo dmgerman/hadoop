@@ -120,22 +120,8 @@ name|Records
 import|;
 end_import
 
-begin_import
-import|import
-name|com
-operator|.
-name|sun
-operator|.
-name|naming
-operator|.
-name|internal
-operator|.
-name|ResourceManager
-import|;
-end_import
-
 begin_comment
-comment|/**  * {@link ReservationSubmissionResponse} contains the answer of the admission  * control system in the {@link ResourceManager} to a reservation create  * operation. Response contains a {@link ReservationId} if the operation was  * successful, if not an exception reporting reason for a failure.  *   * @see ReservationDefinition  *   */
+comment|/**  * {@link ReservationSubmissionResponse} contains the answer of the admission  * control system in the {@code ResourceManager} to a reservation create  * operation. Response contains a {@link ReservationId} if the operation was  * successful, if not an exception reporting reason for a failure.  *   * @see ReservationDefinition  *   */
 end_comment
 
 begin_class

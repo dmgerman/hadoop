@@ -232,7 +232,7 @@ name|ReservationRequests
 name|getReservationRequests
 parameter_list|()
 function_decl|;
-comment|/**    * Set the list of {@link ReservationRequests} representing the resources    * required by the application    *     * @param resources the list of {@link ReservationRequests}    */
+comment|/**    * Set the list of {@link ReservationRequests} representing the resources    * required by the application    *     * @param reservationRequests the list of {@link ReservationRequests}    */
 annotation|@
 name|Public
 annotation|@
