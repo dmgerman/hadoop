@@ -266,6 +266,15 @@ name|QUEUE_NAME
 init|=
 literal|"mapreduce.job.queuename"
 decl_stmt|;
+DECL|field|RESERVATION_ID
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|RESERVATION_ID
+init|=
+literal|"mapreduce.job.reservation.id"
+decl_stmt|;
 DECL|field|JOB_TAGS
 specifier|public
 specifier|static

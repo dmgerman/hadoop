@@ -282,6 +282,24 @@ name|StringUtils
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|api
+operator|.
+name|records
+operator|.
+name|ReservationId
+import|;
+end_import
+
 begin_comment
 comment|/**  * The job submitter's view of the Job.  *   *<p>It allows the user to configure the  * job, submit it, control its execution, and query the state. The set methods  * only work until the job is submitted, afterwards they will throw an   * IllegalStateException.</p>  *   *<p>  * Normally the user creates the application, describes various facets of the  * job via {@link Job} and then submits the job and monitor its progress.</p>  *   *<p>Here is an example on how to submit a job:</p>  *<p><blockquote><pre>  *     // Create a new Job  *     Job job = Job.getInstance();  *     job.setJarByClass(MyJob.class);  *       *     // Specify various job-specific parameters       *     job.setJobName("myjob");  *       *     job.setInputPath(new Path("in"));  *     job.setOutputPath(new Path("out"));  *       *     job.setMapperClass(MyJob.MyMapper.class);  *     job.setReducerClass(MyJob.MyReducer.class);  *  *     // Submit the job, then poll for progress until the job is complete  *     job.waitForCompletion(true);  *</pre></blockquote></p>  *   *   */
 end_comment
@@ -487,6 +505,11 @@ DECL|field|cluster
 specifier|private
 name|Cluster
 name|cluster
+decl_stmt|;
+DECL|field|reservationId
+specifier|private
+name|ReservationId
+name|reservationId
 decl_stmt|;
 comment|/**    * @deprecated Use {@link #getInstance()}    */
 annotation|@
@@ -5160,6 +5183,34 @@ operator|.
 name|isUber
 argument_list|()
 return|;
+block|}
+comment|/**    * Get the reservation to which the job is submitted to, if any    *    * @return the reservationId the identifier of the job's reservation, null if    *         the job does not have any reservation associated with it    */
+DECL|method|getReservationId ()
+specifier|public
+name|ReservationId
+name|getReservationId
+parameter_list|()
+block|{
+return|return
+name|reservationId
+return|;
+block|}
+comment|/**    * Set the reservation to which the job is submitted to    *    * @param reservationId the reservationId to set    */
+DECL|method|setReservationId (ReservationId reservationId)
+specifier|public
+name|void
+name|setReservationId
+parameter_list|(
+name|ReservationId
+name|reservationId
+parameter_list|)
+block|{
+name|this
+operator|.
+name|reservationId
+operator|=
+name|reservationId
+expr_stmt|;
 block|}
 block|}
 end_class
