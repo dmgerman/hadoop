@@ -1133,7 +1133,7 @@ name|t
 range|:
 name|StorageType
 operator|.
-name|asList
+name|getMovableTypes
 argument_list|()
 control|)
 block|{

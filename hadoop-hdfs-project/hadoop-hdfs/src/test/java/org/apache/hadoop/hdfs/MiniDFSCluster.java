@@ -6624,6 +6624,8 @@ else|:
 name|storageTypes
 index|[
 name|i
+operator|-
+name|curDatanodesNum
 index|]
 argument_list|)
 decl_stmt|;
