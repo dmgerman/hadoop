@@ -264,6 +264,42 @@ end_import
 
 begin_import
 import|import
+name|com
+operator|.
+name|sun
+operator|.
+name|jersey
+operator|.
+name|api
+operator|.
+name|client
+operator|.
+name|config
+operator|.
+name|ClientConfig
+import|;
+end_import
+
+begin_import
+import|import
+name|com
+operator|.
+name|sun
+operator|.
+name|jersey
+operator|.
+name|api
+operator|.
+name|client
+operator|.
+name|config
+operator|.
+name|DefaultClientConfig
+import|;
+end_import
+
+begin_import
+import|import
 name|org
 operator|.
 name|apache
@@ -1758,6 +1794,17 @@ operator|.
 name|GuiceFilter
 operator|.
 name|class
+argument_list|)
+operator|.
+name|clientConfig
+argument_list|(
+operator|new
+name|DefaultClientConfig
+argument_list|(
+name|JAXBContextResolver
+operator|.
+name|class
+argument_list|)
 argument_list|)
 operator|.
 name|contextPath
@@ -3661,7 +3708,7 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-comment|// Simple test - just post to /apps/id and validate the response
+comment|// Simple test - just post to /apps/new-application and validate the response
 annotation|@
 name|Test
 DECL|method|testGetNewApplication ()
@@ -3672,7 +3719,20 @@ parameter_list|()
 throws|throws
 name|Exception
 block|{
-comment|// client().addFilter(new LoggingFilter(System.out));
+name|client
+argument_list|()
+operator|.
+name|addFilter
+argument_list|(
+operator|new
+name|LoggingFilter
+argument_list|(
+name|System
+operator|.
+name|out
+argument_list|)
+argument_list|)
+expr_stmt|;
 name|rm
 operator|.
 name|start
@@ -4258,7 +4318,20 @@ name|Exception
 block|{
 comment|// create a test app and submit it via rest(after getting an app-id) then
 comment|// get the app details from the rmcontext and check that everything matches
-comment|// client().addFilter(new LoggingFilter(System.out));
+name|client
+argument_list|()
+operator|.
+name|addFilter
+argument_list|(
+operator|new
+name|LoggingFilter
+argument_list|(
+name|System
+operator|.
+name|out
+argument_list|)
+argument_list|)
+expr_stmt|;
 name|String
 name|lrKey
 init|=
