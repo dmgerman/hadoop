@@ -274,7 +274,7 @@ name|hadoop
 operator|.
 name|crypto
 operator|.
-name|CipherSuite
+name|CryptoProtocolVersion
 import|;
 end_import
 
@@ -4026,7 +4026,7 @@ block|}
 annotation|@
 name|Override
 comment|// ClientProtocol
-DECL|method|create (String src, FsPermission masked, String clientName, EnumSetWritable<CreateFlag> flag, boolean createParent, short replication, long blockSize, List<CipherSuite> cipherSuites)
+DECL|method|create (String src, FsPermission masked, String clientName, EnumSetWritable<CreateFlag> flag, boolean createParent, short replication, long blockSize, CryptoProtocolVersion[] supportedVersions)
 specifier|public
 name|HdfsFileStatus
 name|create
@@ -4055,11 +4055,9 @@ parameter_list|,
 name|long
 name|blockSize
 parameter_list|,
-name|List
-argument_list|<
-name|CipherSuite
-argument_list|>
-name|cipherSuites
+name|CryptoProtocolVersion
+index|[]
+name|supportedVersions
 parameter_list|)
 throws|throws
 name|IOException
@@ -4159,7 +4157,7 @@ name|replication
 argument_list|,
 name|blockSize
 argument_list|,
-name|cipherSuites
+name|supportedVersions
 argument_list|)
 decl_stmt|;
 name|metrics

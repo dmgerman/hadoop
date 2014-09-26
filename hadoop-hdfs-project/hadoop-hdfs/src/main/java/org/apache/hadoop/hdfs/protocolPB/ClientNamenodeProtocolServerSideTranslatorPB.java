@@ -4631,11 +4631,11 @@ argument_list|()
 argument_list|,
 name|PBHelper
 operator|.
-name|convertCipherSuiteProtos
+name|convertCryptoProtocolVersions
 argument_list|(
 name|req
 operator|.
-name|getCipherSuitesList
+name|getCryptoProtocolVersionList
 argument_list|()
 argument_list|)
 argument_list|)

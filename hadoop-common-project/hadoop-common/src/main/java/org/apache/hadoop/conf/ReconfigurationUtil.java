@@ -287,6 +287,30 @@ name|values
 argument_list|()
 return|;
 block|}
+DECL|method|parseChangedProperties ( Configuration newConf, Configuration oldConf)
+specifier|public
+name|Collection
+argument_list|<
+name|PropertyChange
+argument_list|>
+name|parseChangedProperties
+parameter_list|(
+name|Configuration
+name|newConf
+parameter_list|,
+name|Configuration
+name|oldConf
+parameter_list|)
+block|{
+return|return
+name|getChangedProperties
+argument_list|(
+name|newConf
+argument_list|,
+name|oldConf
+argument_list|)
+return|;
+block|}
 block|}
 end_class
 

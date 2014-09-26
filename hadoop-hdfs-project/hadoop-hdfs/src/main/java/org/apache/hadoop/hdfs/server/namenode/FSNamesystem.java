@@ -1646,6 +1646,20 @@ name|hadoop
 operator|.
 name|crypto
 operator|.
+name|CryptoProtocolVersion
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|crypto
+operator|.
 name|key
 operator|.
 name|KeyProvider
@@ -2116,7 +2130,7 @@ name|hadoop
 operator|.
 name|hdfs
 operator|.
-name|XAttrHelper
+name|UnknownCryptoProtocolVersionException
 import|;
 end_import
 
@@ -2130,7 +2144,7 @@ name|hadoop
 operator|.
 name|hdfs
 operator|.
-name|UnknownCipherSuiteException
+name|XAttrHelper
 import|;
 end_import
 
@@ -13229,55 +13243,57 @@ throw|;
 block|}
 block|}
 block|}
-comment|/**    * If the file is within an encryption zone, select the appropriate     * CipherSuite from the list provided by the client. Since the client may     * be newer, need to handle unknown CipherSuites.    *    * @param srcIIP path of the file    * @param cipherSuites client-provided list of supported CipherSuites,     *                     in desired order.    * @return chosen CipherSuite, or null if file is not in an EncryptionZone    * @throws IOException    */
-DECL|method|chooseCipherSuite (INodesInPath srcIIP, List<CipherSuite> cipherSuites)
+comment|/**    * If the file is within an encryption zone, select the appropriate     * CryptoProtocolVersion from the list provided by the client. Since the    * client may be newer, we need to handle unknown versions.    *    * @param zone EncryptionZone of the file    * @param supportedVersions List of supported protocol versions    * @return chosen protocol version    * @throws IOException    */
+DECL|method|chooseProtocolVersion (EncryptionZone zone, CryptoProtocolVersion[] supportedVersions)
 specifier|private
-name|CipherSuite
-name|chooseCipherSuite
+name|CryptoProtocolVersion
+name|chooseProtocolVersion
 parameter_list|(
-name|INodesInPath
-name|srcIIP
+name|EncryptionZone
+name|zone
 parameter_list|,
-name|List
-argument_list|<
-name|CipherSuite
-argument_list|>
-name|cipherSuites
+name|CryptoProtocolVersion
+index|[]
+name|supportedVersions
 parameter_list|)
 throws|throws
-name|UnknownCipherSuiteException
+name|UnknownCryptoProtocolVersionException
 throws|,
 name|UnresolvedLinkException
 throws|,
 name|SnapshotAccessControlException
 block|{
-comment|// Not in an EZ
-if|if
-condition|(
-operator|!
-name|dir
+name|Preconditions
 operator|.
-name|isInAnEZ
+name|checkNotNull
 argument_list|(
-name|srcIIP
+name|zone
 argument_list|)
-condition|)
-block|{
-return|return
-literal|null
-return|;
-block|}
-name|CipherSuite
-name|chosen
+expr_stmt|;
+name|Preconditions
+operator|.
+name|checkNotNull
+argument_list|(
+name|supportedVersions
+argument_list|)
+expr_stmt|;
+comment|// Right now, we only support a single protocol version,
+comment|// so simply look for it in the list of provided options
+specifier|final
+name|CryptoProtocolVersion
+name|required
 init|=
-literal|null
+name|zone
+operator|.
+name|getVersion
+argument_list|()
 decl_stmt|;
 for|for
 control|(
-name|CipherSuite
+name|CryptoProtocolVersion
 name|c
 range|:
-name|cipherSuites
+name|supportedVersions
 control|)
 block|{
 if|if
@@ -13286,7 +13302,7 @@ name|c
 operator|.
 name|equals
 argument_list|(
-name|CipherSuite
+name|CryptoProtocolVersion
 operator|.
 name|UNKNOWN
 argument_list|)
@@ -13304,7 +13320,9 @@ name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"Ignoring unknown CipherSuite provided by client: "
+literal|"Ignoring unknown CryptoProtocolVersion provided by "
+operator|+
+literal|"client: "
 operator|+
 name|c
 operator|.
@@ -13315,47 +13333,26 @@ expr_stmt|;
 block|}
 continue|continue;
 block|}
-for|for
-control|(
-name|CipherSuite
-name|supported
-range|:
-name|CipherSuite
-operator|.
-name|values
-argument_list|()
-control|)
-block|{
 if|if
 condition|(
-name|supported
+name|c
 operator|.
 name|equals
 argument_list|(
-name|c
+name|required
 argument_list|)
 condition|)
 block|{
-name|chosen
-operator|=
+return|return
 name|c
-expr_stmt|;
-break|break;
+return|;
 block|}
 block|}
-block|}
-if|if
-condition|(
-name|chosen
-operator|==
-literal|null
-condition|)
-block|{
 throw|throw
 operator|new
-name|UnknownCipherSuiteException
+name|UnknownCryptoProtocolVersionException
 argument_list|(
-literal|"No cipher suites provided by the client are supported."
+literal|"No crypto protocol versions provided by the client are supported."
 operator|+
 literal|" Client provided: "
 operator|+
@@ -13363,10 +13360,7 @@ name|Arrays
 operator|.
 name|toString
 argument_list|(
-name|cipherSuites
-operator|.
-name|toArray
-argument_list|()
+name|supportedVersions
 argument_list|)
 operator|+
 literal|" NameNode supports: "
@@ -13375,17 +13369,13 @@ name|Arrays
 operator|.
 name|toString
 argument_list|(
-name|CipherSuite
+name|CryptoProtocolVersion
 operator|.
 name|values
 argument_list|()
 argument_list|)
 argument_list|)
 throw|;
-block|}
-return|return
-name|chosen
-return|;
 block|}
 comment|/**    * Invoke KeyProvider APIs to generate an encrypted data encryption key for an    * encryption zone. Should not be called with any locks held.    *    * @param ezKeyName key name of an encryption zone    * @return New EDEK, or null if ezKeyName is null    * @throws IOException    */
 DECL|method|generateEncryptedDataEncryptionKey (String ezKeyName)
@@ -13453,7 +13443,7 @@ name|edek
 return|;
 block|}
 comment|/**    * Create a new file entry in the namespace.    *     * For description of parameters and exceptions thrown see    * {@link ClientProtocol#create}, except it returns valid file status upon    * success    */
-DECL|method|startFile (String src, PermissionStatus permissions, String holder, String clientMachine, EnumSet<CreateFlag> flag, boolean createParent, short replication, long blockSize, List<CipherSuite> cipherSuites)
+DECL|method|startFile (String src, PermissionStatus permissions, String holder, String clientMachine, EnumSet<CreateFlag> flag, boolean createParent, short replication, long blockSize, CryptoProtocolVersion[] supportedVersions)
 name|HdfsFileStatus
 name|startFile
 parameter_list|(
@@ -13484,11 +13474,9 @@ parameter_list|,
 name|long
 name|blockSize
 parameter_list|,
-name|List
-argument_list|<
-name|CipherSuite
-argument_list|>
-name|cipherSuites
+name|CryptoProtocolVersion
+index|[]
+name|supportedVersions
 parameter_list|)
 throws|throws
 name|AccessControlException
@@ -13566,7 +13554,7 @@ name|replication
 argument_list|,
 name|blockSize
 argument_list|,
-name|cipherSuites
+name|supportedVersions
 argument_list|,
 name|cacheEntry
 operator|!=
@@ -13613,7 +13601,7 @@ return|return
 name|status
 return|;
 block|}
-DECL|method|startFileInt (final String srcArg, PermissionStatus permissions, String holder, String clientMachine, EnumSet<CreateFlag> flag, boolean createParent, short replication, long blockSize, List<CipherSuite> cipherSuites, boolean logRetryCache)
+DECL|method|startFileInt (final String srcArg, PermissionStatus permissions, String holder, String clientMachine, EnumSet<CreateFlag> flag, boolean createParent, short replication, long blockSize, CryptoProtocolVersion[] supportedVersions, boolean logRetryCache)
 specifier|private
 name|HdfsFileStatus
 name|startFileInt
@@ -13646,11 +13634,9 @@ parameter_list|,
 name|long
 name|blockSize
 parameter_list|,
-name|List
-argument_list|<
-name|CipherSuite
-argument_list|>
-name|cipherSuites
+name|CryptoProtocolVersion
+index|[]
+name|supportedVersions
 parameter_list|,
 name|boolean
 name|logRetryCache
@@ -13732,12 +13718,12 @@ name|builder
 operator|.
 name|append
 argument_list|(
-literal|", cipherSuites="
+literal|", supportedVersions="
 argument_list|)
 expr_stmt|;
 if|if
 condition|(
-name|cipherSuites
+name|supportedVersions
 operator|!=
 literal|null
 condition|)
@@ -13750,10 +13736,7 @@ name|Arrays
 operator|.
 name|toString
 argument_list|(
-name|cipherSuites
-operator|.
-name|toArray
-argument_list|()
+name|supportedVersions
 argument_list|)
 argument_list|)
 expr_stmt|;
@@ -13915,6 +13898,11 @@ name|waitForLoadingFSImage
 argument_list|()
 expr_stmt|;
 comment|/**      * If the file is in an encryption zone, we optimistically create an      * EDEK for the file by calling out to the configured KeyProvider.      * Since this typically involves doing an RPC, we take the readLock      * initially, then drop it to do the RPC.      *       * Since the path can flip-flop between being in an encryption zone and not      * in the meantime, we need to recheck the preconditions when we retake the      * lock to do the create. If the preconditions are not met, we throw a      * special RetryStartFileException to ask the DFSClient to try the create      * again later.      */
+name|CryptoProtocolVersion
+name|protocolVersion
+init|=
+literal|null
+decl_stmt|;
 name|CipherSuite
 name|suite
 init|=
@@ -13960,22 +13948,55 @@ name|iip
 argument_list|)
 condition|)
 block|{
-name|suite
-operator|=
-name|chooseCipherSuite
+name|EncryptionZone
+name|zone
+init|=
+name|dir
+operator|.
+name|getEZForPath
 argument_list|(
 name|iip
+argument_list|)
+decl_stmt|;
+name|protocolVersion
+operator|=
+name|chooseProtocolVersion
+argument_list|(
+name|zone
 argument_list|,
-name|cipherSuites
+name|supportedVersions
 argument_list|)
 expr_stmt|;
-if|if
-condition|(
 name|suite
-operator|!=
-literal|null
-condition|)
-block|{
+operator|=
+name|zone
+operator|.
+name|getSuite
+argument_list|()
+expr_stmt|;
+name|ezKeyName
+operator|=
+name|dir
+operator|.
+name|getKeyName
+argument_list|(
+name|iip
+argument_list|)
+expr_stmt|;
+name|Preconditions
+operator|.
+name|checkNotNull
+argument_list|(
+name|protocolVersion
+argument_list|)
+expr_stmt|;
+name|Preconditions
+operator|.
+name|checkNotNull
+argument_list|(
+name|suite
+argument_list|)
+expr_stmt|;
 name|Preconditions
 operator|.
 name|checkArgument
@@ -13993,23 +14014,11 @@ argument_list|,
 literal|"Chose an UNKNOWN CipherSuite!"
 argument_list|)
 expr_stmt|;
-block|}
-name|ezKeyName
-operator|=
-name|dir
-operator|.
-name|getKeyName
-argument_list|(
-name|iip
-argument_list|)
-expr_stmt|;
 name|Preconditions
 operator|.
-name|checkState
+name|checkNotNull
 argument_list|(
 name|ezKeyName
-operator|!=
-literal|null
 argument_list|)
 expr_stmt|;
 block|}
@@ -14127,6 +14136,8 @@ name|isLazyPersist
 argument_list|,
 name|suite
 argument_list|,
+name|protocolVersion
+argument_list|,
 name|edek
 argument_list|,
 name|logRetryCache
@@ -14224,7 +14235,7 @@ name|stat
 return|;
 block|}
 comment|/**    * Create a new file or overwrite an existing file<br>    *     * Once the file is create the client then allocates a new block with the next    * call using {@link ClientProtocol#addBlock}.    *<p>    * For description of parameters and exceptions thrown see    * {@link ClientProtocol#create}    */
-DECL|method|startFileInternal (FSPermissionChecker pc, String src, PermissionStatus permissions, String holder, String clientMachine, boolean create, boolean overwrite, boolean createParent, short replication, long blockSize, boolean isLazyPersist, CipherSuite suite, EncryptedKeyVersion edek, boolean logRetryEntry)
+DECL|method|startFileInternal (FSPermissionChecker pc, String src, PermissionStatus permissions, String holder, String clientMachine, boolean create, boolean overwrite, boolean createParent, short replication, long blockSize, boolean isLazyPersist, CipherSuite suite, CryptoProtocolVersion version, EncryptedKeyVersion edek, boolean logRetryEntry)
 specifier|private
 name|BlocksMapUpdateInfo
 name|startFileInternal
@@ -14264,6 +14275,9 @@ name|isLazyPersist
 parameter_list|,
 name|CipherSuite
 name|suite
+parameter_list|,
+name|CryptoProtocolVersion
+name|version
 parameter_list|,
 name|EncryptedKeyVersion
 name|edek
@@ -14404,6 +14418,8 @@ operator|new
 name|FileEncryptionInfo
 argument_list|(
 name|suite
+argument_list|,
+name|version
 argument_list|,
 name|edek
 operator|.
@@ -40776,6 +40792,15 @@ argument_list|(
 name|cipher
 argument_list|)
 decl_stmt|;
+comment|// For now this is hardcoded, as we only support one method.
+specifier|final
+name|CryptoProtocolVersion
+name|version
+init|=
+name|CryptoProtocolVersion
+operator|.
+name|ENCRYPTION_ZONES
+decl_stmt|;
 specifier|final
 name|XAttr
 name|ezXAttr
@@ -40787,6 +40812,8 @@ argument_list|(
 name|src
 argument_list|,
 name|suite
+argument_list|,
+name|version
 argument_list|,
 name|keyName
 argument_list|)

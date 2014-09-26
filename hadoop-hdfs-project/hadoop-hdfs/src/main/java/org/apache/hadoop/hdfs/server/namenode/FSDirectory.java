@@ -280,6 +280,20 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|crypto
+operator|.
+name|CryptoProtocolVersion
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|fs
 operator|.
 name|ContentSummary
@@ -11030,6 +11044,16 @@ name|getSuite
 argument_list|()
 argument_list|)
 argument_list|,
+name|PBHelper
+operator|.
+name|convert
+argument_list|(
+name|ezProto
+operator|.
+name|getCryptoProtocolVersion
+argument_list|()
+argument_list|)
+argument_list|,
 name|ezProto
 operator|.
 name|getKeyName
@@ -13915,7 +13939,7 @@ argument_list|()
 expr_stmt|;
 block|}
 block|}
-DECL|method|createEncryptionZone (String src, CipherSuite suite, String keyName)
+DECL|method|createEncryptionZone (String src, CipherSuite suite, CryptoProtocolVersion version, String keyName)
 name|XAttr
 name|createEncryptionZone
 parameter_list|(
@@ -13924,6 +13948,9 @@ name|src
 parameter_list|,
 name|CipherSuite
 name|suite
+parameter_list|,
+name|CryptoProtocolVersion
+name|version
 parameter_list|,
 name|String
 name|keyName
@@ -13944,6 +13971,8 @@ argument_list|(
 name|src
 argument_list|,
 name|suite
+argument_list|,
+name|version
 argument_list|,
 name|keyName
 argument_list|)
@@ -14251,6 +14280,16 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
+specifier|final
+name|CryptoProtocolVersion
+name|version
+init|=
+name|encryptionZone
+operator|.
+name|getVersion
+argument_list|()
+decl_stmt|;
+specifier|final
 name|CipherSuite
 name|suite
 init|=
@@ -14259,6 +14298,7 @@ operator|.
 name|getSuite
 argument_list|()
 decl_stmt|;
+specifier|final
 name|String
 name|keyName
 init|=
@@ -14338,6 +14378,8 @@ argument_list|(
 name|fileProto
 argument_list|,
 name|suite
+argument_list|,
+name|version
 argument_list|,
 name|keyName
 argument_list|)
@@ -14581,6 +14623,16 @@ argument_list|(
 name|ezProto
 operator|.
 name|getSuite
+argument_list|()
+argument_list|)
+argument_list|,
+name|PBHelper
+operator|.
+name|convert
+argument_list|(
+name|ezProto
+operator|.
+name|getCryptoProtocolVersion
 argument_list|()
 argument_list|)
 argument_list|,

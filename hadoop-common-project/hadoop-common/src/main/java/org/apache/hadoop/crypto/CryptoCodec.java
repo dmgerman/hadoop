@@ -418,33 +418,9 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-if|if
-condition|(
-name|codec
-operator|!=
-literal|null
-condition|)
-block|{
 return|return
 name|codec
 return|;
-block|}
-throw|throw
-operator|new
-name|RuntimeException
-argument_list|(
-literal|"No available crypto codec which meets "
-operator|+
-literal|"the cipher suite "
-operator|+
-name|cipherSuite
-operator|.
-name|getName
-argument_list|()
-operator|+
-literal|"."
-argument_list|)
-throw|;
 block|}
 comment|/**    * Get crypto codec for algorithm/mode/padding in config value    * hadoop.security.crypto.cipher.suite    *     * @param conf    *          the configuration    * @return CryptoCodec the codec object Null value will be returned if no    *         crypto codec classes with cipher suite configured.    */
 DECL|method|getInstance (Configuration conf)

@@ -1330,6 +1330,7 @@ name|queueMgr
 decl_stmt|;
 DECL|field|clock
 specifier|private
+specifier|volatile
 name|Clock
 name|clock
 decl_stmt|;
@@ -3158,7 +3159,6 @@ return|;
 block|}
 DECL|method|getClock ()
 specifier|public
-specifier|synchronized
 name|Clock
 name|getClock
 parameter_list|()
@@ -3167,9 +3167,9 @@ return|return
 name|clock
 return|;
 block|}
+annotation|@
+name|VisibleForTesting
 DECL|method|setClock (Clock clock)
-specifier|protected
-specifier|synchronized
 name|void
 name|setClock
 parameter_list|(
@@ -6298,7 +6298,6 @@ expr_stmt|;
 block|}
 DECL|method|initScheduler (Configuration conf)
 specifier|private
-specifier|synchronized
 name|void
 name|initScheduler
 parameter_list|(
@@ -6307,6 +6306,11 @@ name|conf
 parameter_list|)
 throws|throws
 name|IOException
+block|{
+synchronized|synchronized
+init|(
+name|this
+init|)
 block|{
 name|this
 operator|.
@@ -6658,6 +6662,7 @@ literal|true
 argument_list|)
 expr_stmt|;
 block|}
+block|}
 name|allocsLoader
 operator|.
 name|init
@@ -6888,7 +6893,6 @@ annotation|@
 name|Override
 DECL|method|reinitialize (Configuration conf, RMContext rmContext)
 specifier|public
-specifier|synchronized
 name|void
 name|reinitialize
 parameter_list|(

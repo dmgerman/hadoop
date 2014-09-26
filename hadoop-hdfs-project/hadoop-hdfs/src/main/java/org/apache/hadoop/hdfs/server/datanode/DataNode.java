@@ -968,6 +968,20 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|conf
+operator|.
+name|ReconfigurationTaskStatus
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|fs
 operator|.
 name|CommonConfigurationKeys
@@ -3142,6 +3156,66 @@ specifier|private
 name|SpanReceiverHost
 name|spanReceiverHost
 decl_stmt|;
+comment|/**    * Creates a dummy DataNode for testing purpose.    */
+annotation|@
+name|VisibleForTesting
+annotation|@
+name|InterfaceAudience
+operator|.
+name|LimitedPrivate
+argument_list|(
+literal|"HDFS"
+argument_list|)
+DECL|method|DataNode (final Configuration conf)
+name|DataNode
+parameter_list|(
+specifier|final
+name|Configuration
+name|conf
+parameter_list|)
+block|{
+name|super
+argument_list|(
+name|conf
+argument_list|)
+expr_stmt|;
+name|this
+operator|.
+name|fileDescriptorPassingDisabledReason
+operator|=
+literal|null
+expr_stmt|;
+name|this
+operator|.
+name|maxNumberOfBlocksToLog
+operator|=
+literal|0
+expr_stmt|;
+name|this
+operator|.
+name|confVersion
+operator|=
+literal|null
+expr_stmt|;
+name|this
+operator|.
+name|usersWithLocalPathAccess
+operator|=
+literal|null
+expr_stmt|;
+name|this
+operator|.
+name|connectToDnViaHostname
+operator|=
+literal|false
+expr_stmt|;
+name|this
+operator|.
+name|getHdfsBlockLocationsEnabled
+operator|=
+literal|false
+expr_stmt|;
+block|}
 comment|/**    * Create the DataNode given a configuration, an array of dataDirs,    * and a namenode proxy    */
 DECL|method|DataNode (final Configuration conf, final List<StorageLocation> dataDirs, final SecureResources resources)
 name|DataNode
@@ -3788,16 +3862,6 @@ init|=
 name|getConf
 argument_list|()
 decl_stmt|;
-name|String
-name|oldVolumes
-init|=
-name|conf
-operator|.
-name|get
-argument_list|(
-name|DFS_DATANODE_DATA_DIR_KEY
-argument_list|)
-decl_stmt|;
 name|conf
 operator|.
 name|set
@@ -3835,6 +3899,13 @@ name|ChangedVolumes
 name|changedVolumes
 init|=
 name|parseChangedVolumes
+argument_list|()
+decl_stmt|;
+name|StringBuilder
+name|errorMessageBuilder
+init|=
+operator|new
+name|StringBuilder
 argument_list|()
 decl_stmt|;
 try|try
@@ -4048,6 +4119,13 @@ name|location
 argument_list|)
 condition|)
 block|{
+name|errorMessageBuilder
+operator|.
+name|append
+argument_list|(
+literal|"FAILED TO ADD:"
+argument_list|)
+expr_stmt|;
 name|failedVolumes
 operator|.
 name|add
@@ -4056,6 +4134,30 @@ name|location
 argument_list|)
 expr_stmt|;
 block|}
+else|else
+block|{
+name|errorMessageBuilder
+operator|.
+name|append
+argument_list|(
+literal|"ADDED:"
+argument_list|)
+expr_stmt|;
+block|}
+name|errorMessageBuilder
+operator|.
+name|append
+argument_list|(
+name|location
+argument_list|)
+expr_stmt|;
+name|errorMessageBuilder
+operator|.
+name|append
+argument_list|(
+literal|"\n"
+argument_list|)
+expr_stmt|;
 block|}
 name|storage
 operator|.
@@ -4124,6 +4226,27 @@ name|deactivateLocations
 argument_list|)
 expr_stmt|;
 block|}
+if|if
+condition|(
+name|errorMessageBuilder
+operator|.
+name|length
+argument_list|()
+operator|>
+literal|0
+condition|)
+block|{
+throw|throw
+operator|new
+name|IOException
+argument_list|(
+name|errorMessageBuilder
+operator|.
+name|toString
+argument_list|()
+argument_list|)
+throw|;
+block|}
 block|}
 catch|catch
 parameter_list|(
@@ -4135,15 +4258,7 @@ name|LOG
 operator|.
 name|warn
 argument_list|(
-literal|"There is IOException when refreshing volumes! "
-operator|+
-literal|"Recover configurations: "
-operator|+
-name|DFS_DATANODE_DATA_DIR_KEY
-operator|+
-literal|" = "
-operator|+
-name|oldVolumes
+literal|"There is IOException when refresh volumes! "
 argument_list|,
 name|e
 argument_list|)
@@ -8630,6 +8745,10 @@ operator|.
 name|shouldRun
 operator|=
 literal|false
+expr_stmt|;
+comment|// wait reconfiguration thread, if any, to exit
+name|shutdownReconfigurationTask
+argument_list|()
 expr_stmt|;
 comment|// wait for all data receiver threads to exit
 if|if
@@ -14068,6 +14187,43 @@ name|confVersion
 argument_list|,
 name|uptime
 argument_list|)
+return|;
+block|}
+annotation|@
+name|Override
+comment|// ClientDatanodeProtocol
+DECL|method|startReconfiguration ()
+specifier|public
+name|void
+name|startReconfiguration
+parameter_list|()
+throws|throws
+name|IOException
+block|{
+name|checkSuperuserPrivilege
+argument_list|()
+expr_stmt|;
+name|startReconfigurationTask
+argument_list|()
+expr_stmt|;
+block|}
+annotation|@
+name|Override
+comment|// ClientDatanodeProtocol
+DECL|method|getReconfigurationStatus ()
+specifier|public
+name|ReconfigurationTaskStatus
+name|getReconfigurationStatus
+parameter_list|()
+throws|throws
+name|IOException
+block|{
+name|checkSuperuserPrivilege
+argument_list|()
+expr_stmt|;
+return|return
+name|getReconfigurationTaskStatus
+argument_list|()
 return|;
 block|}
 comment|/**    * @param addr rpc address of the namenode    * @return true if the datanode is connected to a NameNode at the    * given address    */
