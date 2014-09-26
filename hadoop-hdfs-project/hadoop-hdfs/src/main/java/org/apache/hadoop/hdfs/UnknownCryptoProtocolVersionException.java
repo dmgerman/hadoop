@@ -54,10 +54,6 @@ name|InterfaceStability
 import|;
 end_import
 
-begin_comment
-comment|/**  * Thrown when an unknown cipher suite is encountered.  */
-end_comment
-
 begin_class
 annotation|@
 name|InterfaceAudience
@@ -66,17 +62,35 @@ name|Public
 annotation|@
 name|InterfaceStability
 operator|.
-name|Stable
-DECL|class|UnknownCipherSuiteException
+name|Evolving
+DECL|class|UnknownCryptoProtocolVersionException
 specifier|public
 class|class
-name|UnknownCipherSuiteException
+name|UnknownCryptoProtocolVersionException
 extends|extends
 name|IOException
 block|{
-DECL|method|UnknownCipherSuiteException (String msg)
+DECL|field|serialVersionUID
+specifier|private
+specifier|static
+specifier|final
+name|long
+name|serialVersionUID
+init|=
+literal|8957192l
+decl_stmt|;
+DECL|method|UnknownCryptoProtocolVersionException ()
 specifier|public
-name|UnknownCipherSuiteException
+name|UnknownCryptoProtocolVersionException
+parameter_list|()
+block|{
+name|super
+argument_list|()
+expr_stmt|;
+block|}
+DECL|method|UnknownCryptoProtocolVersionException (String msg)
+specifier|public
+name|UnknownCryptoProtocolVersionException
 parameter_list|(
 name|String
 name|msg

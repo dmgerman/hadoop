@@ -61,6 +61,20 @@ import|;
 end_import
 
 begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|crypto
+operator|.
+name|CryptoProtocolVersion
+import|;
+end_import
+
+begin_import
 import|import static
 name|com
 operator|.
@@ -112,6 +126,12 @@ specifier|final
 name|CipherSuite
 name|cipherSuite
 decl_stmt|;
+DECL|field|version
+specifier|private
+specifier|final
+name|CryptoProtocolVersion
+name|version
+decl_stmt|;
 DECL|field|edek
 specifier|private
 specifier|final
@@ -139,13 +159,17 @@ name|String
 name|ezKeyVersionName
 decl_stmt|;
 comment|/**    * Create a FileEncryptionInfo.    *    * @param suite CipherSuite used to encrypt the file    * @param edek encrypted data encryption key (EDEK) of the file    * @param iv initialization vector (IV) used to encrypt the file    * @param keyName name of the key used for the encryption zone    * @param ezKeyVersionName name of the KeyVersion used to encrypt the    *                         encrypted data encryption key.    */
-DECL|method|FileEncryptionInfo (final CipherSuite suite, final byte[] edek, final byte[] iv, final String keyName, final String ezKeyVersionName)
+DECL|method|FileEncryptionInfo (final CipherSuite suite, final CryptoProtocolVersion version, final byte[] edek, final byte[] iv, final String keyName, final String ezKeyVersionName)
 specifier|public
 name|FileEncryptionInfo
 parameter_list|(
 specifier|final
 name|CipherSuite
 name|suite
+parameter_list|,
+specifier|final
+name|CryptoProtocolVersion
+name|version
 parameter_list|,
 specifier|final
 name|byte
@@ -169,6 +193,11 @@ block|{
 name|checkNotNull
 argument_list|(
 name|suite
+argument_list|)
+expr_stmt|;
+name|checkNotNull
+argument_list|(
+name|version
 argument_list|)
 expr_stmt|;
 name|checkNotNull
@@ -227,6 +256,12 @@ name|suite
 expr_stmt|;
 name|this
 operator|.
+name|version
+operator|=
+name|version
+expr_stmt|;
+name|this
+operator|.
 name|edek
 operator|=
 name|edek
@@ -259,6 +294,17 @@ parameter_list|()
 block|{
 return|return
 name|cipherSuite
+return|;
+block|}
+comment|/**    * @return {@link org.apache.hadoop.crypto.CryptoProtocolVersion} to use    * to access the file.    */
+DECL|method|getCryptoProtocolVersion ()
+specifier|public
+name|CryptoProtocolVersion
+name|getCryptoProtocolVersion
+parameter_list|()
+block|{
+return|return
+name|version
 return|;
 block|}
 comment|/**    * @return encrypted data encryption key (EDEK) for the file    */
@@ -331,6 +377,15 @@ argument_list|(
 literal|"cipherSuite: "
 operator|+
 name|cipherSuite
+argument_list|)
+expr_stmt|;
+name|builder
+operator|.
+name|append
+argument_list|(
+literal|", cryptoProtocolVersion: "
+operator|+
+name|version
 argument_list|)
 expr_stmt|;
 name|builder

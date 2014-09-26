@@ -92,6 +92,20 @@ name|CipherSuite
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|crypto
+operator|.
+name|CryptoProtocolVersion
+import|;
+end_import
+
 begin_comment
 comment|/**  * A simple class for representing an encryption zone. Presently an encryption  * zone only has a path (the root of the encryption zone), a key name, and a  * unique id. The id is used to implement batched listing of encryption zones.  */
 end_comment
@@ -128,13 +142,19 @@ specifier|final
 name|CipherSuite
 name|suite
 decl_stmt|;
+DECL|field|version
+specifier|private
+specifier|final
+name|CryptoProtocolVersion
+name|version
+decl_stmt|;
 DECL|field|keyName
 specifier|private
 specifier|final
 name|String
 name|keyName
 decl_stmt|;
-DECL|method|EncryptionZone (long id, String path, CipherSuite suite, String keyName)
+DECL|method|EncryptionZone (long id, String path, CipherSuite suite, CryptoProtocolVersion version, String keyName)
 specifier|public
 name|EncryptionZone
 parameter_list|(
@@ -146,6 +166,9 @@ name|path
 parameter_list|,
 name|CipherSuite
 name|suite
+parameter_list|,
+name|CryptoProtocolVersion
+name|version
 parameter_list|,
 name|String
 name|keyName
@@ -168,6 +191,12 @@ operator|.
 name|suite
 operator|=
 name|suite
+expr_stmt|;
+name|this
+operator|.
+name|version
+operator|=
+name|version
 expr_stmt|;
 name|this
 operator|.
@@ -204,6 +233,16 @@ parameter_list|()
 block|{
 return|return
 name|suite
+return|;
+block|}
+DECL|method|getVersion ()
+specifier|public
+name|CryptoProtocolVersion
+name|getVersion
+parameter_list|()
+block|{
+return|return
+name|version
 return|;
 block|}
 DECL|method|getKeyName ()
@@ -246,6 +285,11 @@ operator|.
 name|append
 argument_list|(
 name|suite
+argument_list|)
+operator|.
+name|append
+argument_list|(
+name|version
 argument_list|)
 operator|.
 name|append
@@ -347,6 +391,15 @@ argument_list|)
 operator|.
 name|append
 argument_list|(
+name|version
+argument_list|,
+name|rhs
+operator|.
+name|version
+argument_list|)
+operator|.
+name|append
+argument_list|(
 name|keyName
 argument_list|,
 name|rhs
@@ -378,6 +431,10 @@ operator|+
 literal|", suite="
 operator|+
 name|suite
+operator|+
+literal|", version="
+operator|+
+name|version
 operator|+
 literal|", keyName="
 operator|+

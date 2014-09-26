@@ -134,6 +134,20 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|crypto
+operator|.
+name|CryptoProtocolVersion
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|fs
 operator|.
 name|UnresolvedLinkException
@@ -362,6 +376,10 @@ name|CipherSuite
 operator|.
 name|UNKNOWN
 argument_list|,
+name|CryptoProtocolVersion
+operator|.
+name|UNKNOWN
+argument_list|,
 literal|""
 argument_list|)
 decl_stmt|;
@@ -384,13 +402,19 @@ specifier|final
 name|CipherSuite
 name|suite
 decl_stmt|;
+DECL|field|version
+specifier|private
+specifier|final
+name|CryptoProtocolVersion
+name|version
+decl_stmt|;
 DECL|field|keyName
 specifier|private
 specifier|final
 name|String
 name|keyName
 decl_stmt|;
-DECL|method|EncryptionZoneInt (long inodeId, CipherSuite suite, String keyName)
+DECL|method|EncryptionZoneInt (long inodeId, CipherSuite suite, CryptoProtocolVersion version, String keyName)
 name|EncryptionZoneInt
 parameter_list|(
 name|long
@@ -399,10 +423,35 @@ parameter_list|,
 name|CipherSuite
 name|suite
 parameter_list|,
+name|CryptoProtocolVersion
+name|version
+parameter_list|,
 name|String
 name|keyName
 parameter_list|)
 block|{
+name|Preconditions
+operator|.
+name|checkArgument
+argument_list|(
+name|suite
+operator|!=
+name|CipherSuite
+operator|.
+name|UNKNOWN
+argument_list|)
+expr_stmt|;
+name|Preconditions
+operator|.
+name|checkArgument
+argument_list|(
+name|version
+operator|!=
+name|CryptoProtocolVersion
+operator|.
+name|UNKNOWN
+argument_list|)
+expr_stmt|;
 name|this
 operator|.
 name|inodeId
@@ -414,6 +463,12 @@ operator|.
 name|suite
 operator|=
 name|suite
+expr_stmt|;
+name|this
+operator|.
+name|version
+operator|=
+name|version
 expr_stmt|;
 name|this
 operator|.
@@ -438,6 +493,15 @@ parameter_list|()
 block|{
 return|return
 name|suite
+return|;
+block|}
+DECL|method|getVersion ()
+name|CryptoProtocolVersion
+name|getVersion
+parameter_list|()
+block|{
+return|return
+name|version
 return|;
 block|}
 DECL|method|getKeyName ()
@@ -536,7 +600,7 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|/**    * Add a new encryption zone.    *<p/>    * Called while holding the FSDirectory lock.    *    * @param inodeId of the encryption zone    * @param keyName encryption zone key name    */
-DECL|method|addEncryptionZone (Long inodeId, CipherSuite suite, String keyName)
+DECL|method|addEncryptionZone (Long inodeId, CipherSuite suite, CryptoProtocolVersion version, String keyName)
 name|void
 name|addEncryptionZone
 parameter_list|(
@@ -545,6 +609,9 @@ name|inodeId
 parameter_list|,
 name|CipherSuite
 name|suite
+parameter_list|,
+name|CryptoProtocolVersion
+name|version
 parameter_list|,
 name|String
 name|keyName
@@ -562,12 +629,14 @@ name|inodeId
 argument_list|,
 name|suite
 argument_list|,
+name|version
+argument_list|,
 name|keyName
 argument_list|)
 expr_stmt|;
 block|}
 comment|/**    * Add a new encryption zone.    *<p/>    * Does not assume that the FSDirectory lock is held.    *    * @param inodeId of the encryption zone    * @param keyName encryption zone key name    */
-DECL|method|unprotectedAddEncryptionZone (Long inodeId, CipherSuite suite, String keyName)
+DECL|method|unprotectedAddEncryptionZone (Long inodeId, CipherSuite suite, CryptoProtocolVersion version, String keyName)
 name|void
 name|unprotectedAddEncryptionZone
 parameter_list|(
@@ -576,6 +645,9 @@ name|inodeId
 parameter_list|,
 name|CipherSuite
 name|suite
+parameter_list|,
+name|CryptoProtocolVersion
+name|version
 parameter_list|,
 name|String
 name|keyName
@@ -591,6 +663,8 @@ argument_list|(
 name|inodeId
 argument_list|,
 name|suite
+argument_list|,
+name|version
 argument_list|,
 name|keyName
 argument_list|)
@@ -882,6 +956,11 @@ argument_list|()
 argument_list|,
 name|ezi
 operator|.
+name|getVersion
+argument_list|()
+argument_list|,
+name|ezi
+operator|.
 name|getKeyName
 argument_list|()
 argument_list|)
@@ -1102,7 +1181,7 @@ block|}
 block|}
 block|}
 comment|/**    * Create a new encryption zone.    *<p/>    * Called while holding the FSDirectory lock.    */
-DECL|method|createEncryptionZone (String src, CipherSuite suite, String keyName)
+DECL|method|createEncryptionZone (String src, CipherSuite suite, CryptoProtocolVersion version, String keyName)
 name|XAttr
 name|createEncryptionZone
 parameter_list|(
@@ -1111,6 +1190,9 @@ name|src
 parameter_list|,
 name|CipherSuite
 name|suite
+parameter_list|,
+name|CryptoProtocolVersion
+name|version
 parameter_list|,
 name|String
 name|keyName
@@ -1233,6 +1315,8 @@ operator|.
 name|convert
 argument_list|(
 name|suite
+argument_list|,
+name|version
 argument_list|,
 name|keyName
 argument_list|)
@@ -1448,6 +1532,11 @@ argument_list|,
 name|ezi
 operator|.
 name|getSuite
+argument_list|()
+argument_list|,
+name|ezi
+operator|.
+name|getVersion
 argument_list|()
 argument_list|,
 name|ezi
