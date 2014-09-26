@@ -280,6 +280,41 @@ name|Configuration
 name|conf
 parameter_list|)
 block|{
+if|if
+condition|(
+operator|!
+operator|(
+name|conf
+operator|instanceof
+name|CapacitySchedulerConfiguration
+operator|)
+condition|)
+block|{
+throw|throw
+operator|new
+name|IllegalArgumentException
+argument_list|(
+literal|"Unexpected conf type: "
+operator|+
+name|conf
+operator|.
+name|getClass
+argument_list|()
+operator|.
+name|getSimpleName
+argument_list|()
+operator|+
+literal|" only supported conf is: "
+operator|+
+name|CapacitySchedulerConfiguration
+operator|.
+name|class
+operator|.
+name|getSimpleName
+argument_list|()
+argument_list|)
+throw|;
+block|}
 name|this
 operator|.
 name|conf
@@ -855,7 +890,8 @@ return|;
 block|}
 comment|/**    * This class provides support for Resource-like book-keeping, based on    * long(s), as using Resource to store the "integral" of the allocation over    * time leads to integer overflows for large allocations/clusters. (Evolving    * Resource to use long is too disruptive at this point.)    *     * The comparison/multiplication behaviors of IntegralResource are consistent    * with the DefaultResourceCalculator.    */
 DECL|class|IntegralResource
-specifier|public
+specifier|private
+specifier|static
 class|class
 name|IntegralResource
 block|{

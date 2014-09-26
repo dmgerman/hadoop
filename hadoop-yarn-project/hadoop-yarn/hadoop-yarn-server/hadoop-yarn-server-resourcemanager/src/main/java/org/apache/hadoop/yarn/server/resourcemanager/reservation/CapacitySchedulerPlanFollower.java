@@ -1674,6 +1674,7 @@ return|;
 block|}
 DECL|class|ReservationAllocationComparator
 specifier|private
+specifier|static
 class|class
 name|ReservationAllocationComparator
 implements|implements

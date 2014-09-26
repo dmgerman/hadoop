@@ -970,7 +970,7 @@ name|userResourceAlloc
 operator|.
 name|remove
 argument_list|(
-name|resAlloc
+name|user
 argument_list|)
 expr_stmt|;
 block|}
@@ -1755,11 +1755,6 @@ argument_list|,
 name|tick
 argument_list|)
 expr_stmt|;
-name|readLock
-operator|.
-name|lock
-argument_list|()
-expr_stmt|;
 name|List
 argument_list|<
 name|InMemoryReservationAllocation
@@ -1773,6 +1768,11 @@ name|InMemoryReservationAllocation
 argument_list|>
 argument_list|()
 decl_stmt|;
+name|readLock
+operator|.
+name|lock
+argument_list|()
+expr_stmt|;
 comment|// archive reservations and delete the ones which are beyond
 comment|// the reservation policy "window"
 try|try
@@ -1935,11 +1935,6 @@ name|long
 name|tick
 parameter_list|)
 block|{
-name|readLock
-operator|.
-name|lock
-argument_list|()
-expr_stmt|;
 name|ReservationInterval
 name|searchInterval
 init|=
@@ -1953,6 +1948,11 @@ operator|.
 name|MAX_VALUE
 argument_list|)
 decl_stmt|;
+name|readLock
+operator|.
+name|lock
+argument_list|()
+expr_stmt|;
 try|try
 block|{
 name|SortedMap
