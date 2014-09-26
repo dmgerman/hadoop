@@ -113,7 +113,7 @@ specifier|public
 class|class
 name|ProgramDriver
 block|{
-comment|/**    * A description of a program based on its class and a     * human-readable description.    * @date april 2006    */
+comment|/**    * A description of a program based on its class and a     * human-readable description.    */
 DECL|field|programs
 name|Map
 argument_list|<
