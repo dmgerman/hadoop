@@ -12244,6 +12244,13 @@ argument_list|(
 name|snapshot
 argument_list|)
 expr_stmt|;
+name|blocksize
+operator|=
+name|fileNode
+operator|.
+name|getPreferredBlockSize
+argument_list|()
+expr_stmt|;
 name|isLazyPersist
 operator|=
 name|fileNode
