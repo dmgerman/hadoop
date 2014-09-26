@@ -1748,6 +1748,14 @@ name|getName
 argument_list|()
 argument_list|)
 decl_stmt|;
+comment|// if c can be found, or it will be skipped.
+if|if
+condition|(
+name|c
+operator|!=
+literal|null
+condition|)
+block|{
 name|c
 operator|.
 name|setValue
@@ -1758,6 +1766,7 @@ name|getValue
 argument_list|()
 argument_list|)
 expr_stmt|;
+block|}
 block|}
 block|}
 return|return

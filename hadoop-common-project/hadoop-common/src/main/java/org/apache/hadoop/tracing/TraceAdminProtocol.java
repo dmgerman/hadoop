@@ -4,7 +4,7 @@ comment|/**  * Licensed to the Apache Software Foundation (ASF) under one  * or 
 end_comment
 
 begin_package
-DECL|package|org.apache.hadoop.hdfs.server.protocol
+DECL|package|org.apache.hadoop.tracing
 package|package
 name|org
 operator|.
@@ -12,13 +12,39 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|hdfs
-operator|.
-name|server
-operator|.
-name|protocol
+name|tracing
 package|;
 end_package
+
+begin_import
+import|import
+name|java
+operator|.
+name|io
+operator|.
+name|IOException
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
+name|LinkedList
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
+name|List
+import|;
+end_import
 
 begin_import
 import|import
@@ -42,9 +68,9 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|ha
+name|classification
 operator|.
-name|HAServiceProtocol
+name|InterfaceStability
 import|;
 end_import
 
@@ -56,11 +82,9 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|hdfs
+name|fs
 operator|.
-name|protocol
-operator|.
-name|ClientProtocol
+name|CommonConfigurationKeys
 import|;
 end_import
 
@@ -72,11 +96,11 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|security
+name|io
 operator|.
-name|authorize
+name|retry
 operator|.
-name|RefreshAuthorizationPolicyProtocol
+name|AtMostOnce
 import|;
 end_import
 
@@ -88,23 +112,11 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|security
+name|io
 operator|.
-name|RefreshUserMappingsProtocol
-import|;
-end_import
-
-begin_import
-import|import
-name|org
+name|retry
 operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|ipc
-operator|.
-name|RefreshCallQueueProtocol
+name|Idempotent
 import|;
 end_import
 
@@ -118,7 +130,7 @@ name|hadoop
 operator|.
 name|ipc
 operator|.
-name|GenericRefreshProtocol
+name|ProtocolInfo
 import|;
 end_import
 
@@ -130,60 +142,89 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|tools
+name|security
 operator|.
-name|GetUserMappingsProtocol
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|tracing
-operator|.
-name|TraceAdminProtocol
+name|KerberosInfo
 import|;
 end_import
 
 begin_comment
-comment|/** The full set of RPC methods implemented by the Namenode.  */
+comment|/**  * Protocol interface that provides tracing.  */
 end_comment
 
 begin_interface
 annotation|@
+name|KerberosInfo
+argument_list|(
+name|serverPrincipal
+operator|=
+name|CommonConfigurationKeys
+operator|.
+name|HADOOP_SECURITY_SERVICE_USER_NAME_KEY
+argument_list|)
+annotation|@
 name|InterfaceAudience
 operator|.
-name|Private
-DECL|interface|NamenodeProtocols
+name|Public
+annotation|@
+name|InterfaceStability
+operator|.
+name|Evolving
+DECL|interface|TraceAdminProtocol
 specifier|public
 interface|interface
-name|NamenodeProtocols
-extends|extends
-name|ClientProtocol
-extends|,
-name|DatanodeProtocol
-extends|,
-name|NamenodeProtocol
-extends|,
-name|RefreshAuthorizationPolicyProtocol
-extends|,
-name|RefreshUserMappingsProtocol
-extends|,
-name|RefreshCallQueueProtocol
-extends|,
-name|GenericRefreshProtocol
-extends|,
-name|GetUserMappingsProtocol
-extends|,
-name|HAServiceProtocol
-extends|,
 name|TraceAdminProtocol
-block|{ }
+block|{
+DECL|field|versionID
+specifier|public
+specifier|static
+specifier|final
+name|long
+name|versionID
+init|=
+literal|1L
+decl_stmt|;
+comment|/**    * List the currently active trace span receivers.    *     * @throws IOException        On error.    */
+annotation|@
+name|Idempotent
+DECL|method|listSpanReceivers ()
+specifier|public
+name|SpanReceiverInfo
+index|[]
+name|listSpanReceivers
+parameter_list|()
+throws|throws
+name|IOException
+function_decl|;
+comment|/**    * Add a new trace span receiver.    *     * @param desc                The span receiver description.    * @return                    The ID of the new trace span receiver.    *    * @throws IOException        On error.    */
+annotation|@
+name|AtMostOnce
+DECL|method|addSpanReceiver (SpanReceiverInfo desc)
+specifier|public
+name|long
+name|addSpanReceiver
+parameter_list|(
+name|SpanReceiverInfo
+name|desc
+parameter_list|)
+throws|throws
+name|IOException
+function_decl|;
+comment|/**    * Remove a trace span receiver.    *    * @param spanReceiverId      The id of the span receiver to remove.    * @throws IOException        On error.    */
+annotation|@
+name|AtMostOnce
+DECL|method|removeSpanReceiver (long spanReceiverId)
+specifier|public
+name|void
+name|removeSpanReceiver
+parameter_list|(
+name|long
+name|spanReceiverId
+parameter_list|)
+throws|throws
+name|IOException
+function_decl|;
+block|}
 end_interface
 
 end_unit
