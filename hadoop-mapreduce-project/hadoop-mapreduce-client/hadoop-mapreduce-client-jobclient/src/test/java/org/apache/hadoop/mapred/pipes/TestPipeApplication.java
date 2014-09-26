@@ -2001,7 +2001,7 @@ argument_list|()
 operator|.
 name|contains
 argument_list|(
-literal|"-jt<local|jobtracker:port>    specify a job tracker"
+literal|"-jt<local|ResourceManager:port>    specify a ResourceManager"
 argument_list|)
 argument_list|)
 expr_stmt|;

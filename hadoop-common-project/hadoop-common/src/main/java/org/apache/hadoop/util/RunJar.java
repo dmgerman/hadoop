@@ -859,13 +859,11 @@ init|=
 operator|new
 name|File
 argument_list|(
-operator|new
-name|Configuration
-argument_list|()
+name|System
 operator|.
-name|get
+name|getProperty
 argument_list|(
-literal|"hadoop.tmp.dir"
+literal|"java.io.tmpdir"
 argument_list|)
 argument_list|)
 decl_stmt|;
@@ -908,7 +906,7 @@ name|err
 operator|.
 name|println
 argument_list|(
-literal|"Error creating temp dir in hadoop.tmp.dir "
+literal|"Error creating temp dir in java.io.tmpdir "
 operator|+
 name|tmpDir
 operator|+
