@@ -2505,9 +2505,10 @@ name|BindException
 condition|)
 block|{
 return|return
-operator|new
-name|BindException
+name|wrapWithMessage
 argument_list|(
+name|exception
+argument_list|,
 literal|"Problem binding to ["
 operator|+
 name|localHost
