@@ -756,7 +756,7 @@ argument_list|()
 argument_list|,
 name|tokenId
 operator|.
-name|getRMIdentifer
+name|getRMIdentifier
 argument_list|()
 argument_list|)
 expr_stmt|;
