@@ -1732,7 +1732,7 @@ name|MR_CLIENT_TO_AM_IPC_MAX_RETRIES_ON_TIMEOUTS
 init|=
 name|MR_PREFIX
 operator|+
-literal|"yarn.app.mapreduce.client-am.ipc.max-retries-on-timeouts"
+literal|"client-am.ipc.max-retries-on-timeouts"
 decl_stmt|;
 specifier|public
 specifier|static

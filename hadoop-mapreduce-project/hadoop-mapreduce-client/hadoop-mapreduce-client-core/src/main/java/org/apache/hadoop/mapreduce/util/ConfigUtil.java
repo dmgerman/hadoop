@@ -864,6 +864,16 @@ block|,
 operator|new
 name|DeprecationDelta
 argument_list|(
+literal|"yarn.app.mapreduce.yarn.app.mapreduce.client-am.ipc.max-retries-on-timeouts"
+argument_list|,
+name|MRJobConfig
+operator|.
+name|MR_CLIENT_TO_AM_IPC_MAX_RETRIES_ON_TIMEOUTS
+argument_list|)
+block|,
+operator|new
+name|DeprecationDelta
+argument_list|(
 literal|"job.end.notification.url"
 argument_list|,
 name|MRJobConfig

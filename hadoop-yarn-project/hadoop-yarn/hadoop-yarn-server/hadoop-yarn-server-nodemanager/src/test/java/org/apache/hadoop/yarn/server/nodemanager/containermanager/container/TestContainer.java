@@ -3691,7 +3691,9 @@ operator|&&
 name|wcf
 operator|.
 name|cId
-operator|==
+operator|.
+name|equals
+argument_list|(
 name|evt
 operator|.
 name|getContainer
@@ -3699,6 +3701,7 @@ argument_list|()
 operator|.
 name|getContainerId
 argument_list|()
+argument_list|)
 return|;
 block|}
 block|}
