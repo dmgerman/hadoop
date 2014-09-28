@@ -377,7 +377,9 @@ literal|"[-list-corruptfileblocks | "
 operator|+
 literal|"[-move | -delete | -openforwrite] "
 operator|+
-literal|"[-files [-blocks [-locations | -racks]]]] [-showprogress]\n"
+literal|"[-files [-blocks [-locations | -racks]]]] "
+operator|+
+literal|"[-includeSnapshots] [-showprogress]\n"
 operator|+
 literal|"\t<path>\tstart checking from this path\n"
 operator|+
