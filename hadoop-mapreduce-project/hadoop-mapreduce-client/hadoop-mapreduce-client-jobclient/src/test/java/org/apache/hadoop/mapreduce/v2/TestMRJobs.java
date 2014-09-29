@@ -1946,7 +1946,7 @@ name|systemClasses
 init|=
 name|ApplicationClassLoader
 operator|.
-name|DEFAULT_SYSTEM_CLASSES
+name|SYSTEM_CLASSES_DEFAULT
 decl_stmt|;
 comment|// exclude the custom classes from system classes
 name|systemClasses

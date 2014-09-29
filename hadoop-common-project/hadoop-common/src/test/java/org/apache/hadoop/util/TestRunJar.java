@@ -605,7 +605,7 @@ literal|","
 operator|+
 name|ApplicationClassLoader
 operator|.
-name|DEFAULT_SYSTEM_CLASSES
+name|SYSTEM_CLASSES_DEFAULT
 decl_stmt|;
 name|when
 argument_list|(
