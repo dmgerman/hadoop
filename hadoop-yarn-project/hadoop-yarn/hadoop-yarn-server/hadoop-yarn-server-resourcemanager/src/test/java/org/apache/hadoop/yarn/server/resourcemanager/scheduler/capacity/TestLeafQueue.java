@@ -80,6 +80,18 @@ name|mockito
 operator|.
 name|Matchers
 operator|.
+name|anyBoolean
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|mockito
+operator|.
+name|Matchers
+operator|.
 name|eq
 import|;
 end_import
@@ -2187,6 +2199,9 @@ name|CSQueue
 operator|.
 name|class
 argument_list|)
+argument_list|,
+name|anyBoolean
+argument_list|()
 argument_list|)
 expr_stmt|;
 return|return
@@ -2639,6 +2654,8 @@ argument_list|(
 name|clusterResource
 argument_list|,
 name|node_0
+argument_list|,
+literal|false
 argument_list|)
 expr_stmt|;
 name|assertEquals
@@ -3397,6 +3414,8 @@ argument_list|(
 name|clusterResource
 argument_list|,
 name|node_0
+argument_list|,
+literal|false
 argument_list|)
 expr_stmt|;
 name|assertEquals
@@ -3498,6 +3517,8 @@ argument_list|(
 name|clusterResource
 argument_list|,
 name|node_0
+argument_list|,
+literal|false
 argument_list|)
 expr_stmt|;
 name|assertEquals
@@ -3583,6 +3604,8 @@ argument_list|(
 name|clusterResource
 argument_list|,
 name|node_0
+argument_list|,
+literal|false
 argument_list|)
 expr_stmt|;
 name|assertEquals
@@ -3675,6 +3698,8 @@ argument_list|(
 name|clusterResource
 argument_list|,
 name|node_0
+argument_list|,
+literal|false
 argument_list|)
 expr_stmt|;
 name|assertEquals
@@ -3760,6 +3785,8 @@ argument_list|(
 name|clusterResource
 argument_list|,
 name|node_0
+argument_list|,
+literal|false
 argument_list|)
 expr_stmt|;
 name|assertEquals
@@ -3853,6 +3880,8 @@ argument_list|(
 name|clusterResource
 argument_list|,
 name|node_0
+argument_list|,
+literal|false
 argument_list|)
 expr_stmt|;
 name|assertEquals
@@ -3979,6 +4008,8 @@ operator|.
 name|KILL
 argument_list|,
 literal|null
+argument_list|,
+literal|true
 argument_list|)
 expr_stmt|;
 block|}
@@ -4106,6 +4137,8 @@ operator|.
 name|KILL
 argument_list|,
 literal|null
+argument_list|,
+literal|true
 argument_list|)
 expr_stmt|;
 block|}
@@ -4597,6 +4630,8 @@ argument_list|(
 name|clusterResource
 argument_list|,
 name|node_0
+argument_list|,
+literal|false
 argument_list|)
 expr_stmt|;
 name|assertEquals
@@ -4652,6 +4687,8 @@ argument_list|(
 name|clusterResource
 argument_list|,
 name|node_0
+argument_list|,
+literal|false
 argument_list|)
 expr_stmt|;
 name|assertEquals
@@ -4707,6 +4744,8 @@ argument_list|(
 name|clusterResource
 argument_list|,
 name|node_1
+argument_list|,
+literal|false
 argument_list|)
 expr_stmt|;
 name|assertEquals
@@ -5129,6 +5168,8 @@ argument_list|(
 name|clusterResource
 argument_list|,
 name|node_0
+argument_list|,
+literal|false
 argument_list|)
 expr_stmt|;
 name|assertEquals
@@ -5216,6 +5257,8 @@ argument_list|(
 name|clusterResource
 argument_list|,
 name|node_0
+argument_list|,
+literal|false
 argument_list|)
 expr_stmt|;
 name|assertEquals
@@ -5356,6 +5399,8 @@ argument_list|(
 name|clusterResource
 argument_list|,
 name|node_1
+argument_list|,
+literal|false
 argument_list|)
 expr_stmt|;
 name|assertEquals
@@ -5508,6 +5553,8 @@ argument_list|(
 name|clusterResource
 argument_list|,
 name|node_1
+argument_list|,
+literal|false
 argument_list|)
 expr_stmt|;
 name|assertEquals
@@ -5896,6 +5943,8 @@ argument_list|(
 name|clusterResource
 argument_list|,
 name|node_0
+argument_list|,
+literal|false
 argument_list|)
 expr_stmt|;
 name|assertEquals
@@ -5952,6 +6001,8 @@ argument_list|(
 name|clusterResource
 argument_list|,
 name|node_0
+argument_list|,
+literal|false
 argument_list|)
 expr_stmt|;
 name|assertEquals
@@ -6014,6 +6065,8 @@ argument_list|(
 name|clusterResource
 argument_list|,
 name|node_0
+argument_list|,
+literal|false
 argument_list|)
 expr_stmt|;
 name|assertEquals
@@ -6140,6 +6193,8 @@ argument_list|(
 name|clusterResource
 argument_list|,
 name|node_0
+argument_list|,
+literal|false
 argument_list|)
 expr_stmt|;
 name|assertEquals
@@ -6226,6 +6281,8 @@ argument_list|(
 name|clusterResource
 argument_list|,
 name|node_0
+argument_list|,
+literal|false
 argument_list|)
 expr_stmt|;
 name|assertEquals
@@ -6319,6 +6376,8 @@ argument_list|(
 name|clusterResource
 argument_list|,
 name|node_0
+argument_list|,
+literal|false
 argument_list|)
 expr_stmt|;
 name|assertEquals
@@ -6419,6 +6478,8 @@ argument_list|(
 name|clusterResource
 argument_list|,
 name|node_0
+argument_list|,
+literal|false
 argument_list|)
 expr_stmt|;
 name|assertEquals
@@ -6504,6 +6565,8 @@ argument_list|(
 name|clusterResource
 argument_list|,
 name|node_0
+argument_list|,
+literal|false
 argument_list|)
 expr_stmt|;
 name|assertEquals
@@ -6630,6 +6693,8 @@ operator|.
 name|KILL
 argument_list|,
 literal|null
+argument_list|,
+literal|true
 argument_list|)
 expr_stmt|;
 block|}
@@ -6757,6 +6822,8 @@ operator|.
 name|KILL
 argument_list|,
 literal|null
+argument_list|,
+literal|true
 argument_list|)
 expr_stmt|;
 block|}
@@ -6884,6 +6951,8 @@ operator|.
 name|KILL
 argument_list|,
 literal|null
+argument_list|,
+literal|true
 argument_list|)
 expr_stmt|;
 block|}
@@ -7245,6 +7314,8 @@ argument_list|(
 name|clusterResource
 argument_list|,
 name|node_0
+argument_list|,
+literal|false
 argument_list|)
 expr_stmt|;
 name|assertEquals
@@ -7346,6 +7417,8 @@ argument_list|(
 name|clusterResource
 argument_list|,
 name|node_0
+argument_list|,
+literal|false
 argument_list|)
 expr_stmt|;
 name|assertEquals
@@ -7431,6 +7504,8 @@ argument_list|(
 name|clusterResource
 argument_list|,
 name|node_0
+argument_list|,
+literal|false
 argument_list|)
 expr_stmt|;
 name|assertEquals
@@ -7590,6 +7665,8 @@ operator|.
 name|KILL
 argument_list|,
 literal|null
+argument_list|,
+literal|true
 argument_list|)
 expr_stmt|;
 name|a
@@ -7599,6 +7676,8 @@ argument_list|(
 name|clusterResource
 argument_list|,
 name|node_0
+argument_list|,
+literal|false
 argument_list|)
 expr_stmt|;
 name|assertEquals
@@ -7757,6 +7836,8 @@ operator|.
 name|KILL
 argument_list|,
 literal|null
+argument_list|,
+literal|true
 argument_list|)
 expr_stmt|;
 name|a
@@ -7766,6 +7847,8 @@ argument_list|(
 name|clusterResource
 argument_list|,
 name|node_0
+argument_list|,
+literal|false
 argument_list|)
 expr_stmt|;
 name|assertEquals
@@ -8245,6 +8328,8 @@ argument_list|(
 name|clusterResource
 argument_list|,
 name|node_0
+argument_list|,
+literal|false
 argument_list|)
 expr_stmt|;
 name|assertEquals
@@ -8345,6 +8430,8 @@ argument_list|(
 name|clusterResource
 argument_list|,
 name|node_0
+argument_list|,
+literal|false
 argument_list|)
 expr_stmt|;
 name|assertEquals
@@ -8475,6 +8562,8 @@ argument_list|(
 name|clusterResource
 argument_list|,
 name|node_1
+argument_list|,
+literal|false
 argument_list|)
 expr_stmt|;
 name|assertEquals
@@ -8634,6 +8723,8 @@ operator|.
 name|KILL
 argument_list|,
 literal|null
+argument_list|,
+literal|true
 argument_list|)
 expr_stmt|;
 name|a
@@ -8643,6 +8734,8 @@ argument_list|(
 name|clusterResource
 argument_list|,
 name|node_0
+argument_list|,
+literal|false
 argument_list|)
 expr_stmt|;
 name|assertEquals
@@ -9121,6 +9214,8 @@ argument_list|(
 name|clusterResource
 argument_list|,
 name|node_0
+argument_list|,
+literal|false
 argument_list|)
 expr_stmt|;
 name|assertEquals
@@ -9177,6 +9272,8 @@ argument_list|(
 name|clusterResource
 argument_list|,
 name|node_0
+argument_list|,
+literal|false
 argument_list|)
 expr_stmt|;
 name|assertEquals
@@ -9232,6 +9329,8 @@ argument_list|(
 name|clusterResource
 argument_list|,
 name|node_0
+argument_list|,
+literal|false
 argument_list|)
 expr_stmt|;
 name|assertEquals
@@ -9361,6 +9460,8 @@ operator|.
 name|KILL
 argument_list|,
 literal|null
+argument_list|,
+literal|true
 argument_list|)
 expr_stmt|;
 name|a
@@ -9370,6 +9471,8 @@ argument_list|(
 name|clusterResource
 argument_list|,
 name|node_0
+argument_list|,
+literal|false
 argument_list|)
 expr_stmt|;
 name|assertEquals
@@ -9467,6 +9570,8 @@ argument_list|(
 name|clusterResource
 argument_list|,
 name|node_0
+argument_list|,
+literal|false
 argument_list|)
 expr_stmt|;
 name|assertEquals
@@ -9564,6 +9669,8 @@ argument_list|(
 name|clusterResource
 argument_list|,
 name|node_1
+argument_list|,
+literal|false
 argument_list|)
 expr_stmt|;
 name|assertEquals
@@ -9706,6 +9813,8 @@ operator|.
 name|KILL
 argument_list|,
 literal|null
+argument_list|,
+literal|true
 argument_list|)
 expr_stmt|;
 name|CSAssignment
@@ -9718,6 +9827,8 @@ argument_list|(
 name|clusterResource
 argument_list|,
 name|node_0
+argument_list|,
+literal|false
 argument_list|)
 decl_stmt|;
 name|assertEquals
@@ -10192,6 +10303,8 @@ argument_list|(
 name|clusterResource
 argument_list|,
 name|node_2
+argument_list|,
+literal|false
 argument_list|)
 expr_stmt|;
 name|verify
@@ -10285,6 +10398,8 @@ argument_list|(
 name|clusterResource
 argument_list|,
 name|node_2
+argument_list|,
+literal|false
 argument_list|)
 expr_stmt|;
 name|verify
@@ -10378,6 +10493,8 @@ argument_list|(
 name|clusterResource
 argument_list|,
 name|node_2
+argument_list|,
+literal|false
 argument_list|)
 expr_stmt|;
 name|verify
@@ -10472,6 +10589,8 @@ argument_list|(
 name|clusterResource
 argument_list|,
 name|node_2
+argument_list|,
+literal|false
 argument_list|)
 expr_stmt|;
 name|verify
@@ -10562,6 +10681,8 @@ argument_list|(
 name|clusterResource
 argument_list|,
 name|node_0
+argument_list|,
+literal|false
 argument_list|)
 expr_stmt|;
 name|verify
@@ -10652,6 +10773,8 @@ argument_list|(
 name|clusterResource
 argument_list|,
 name|node_1
+argument_list|,
+literal|false
 argument_list|)
 expr_stmt|;
 name|verify
@@ -10880,6 +11003,8 @@ argument_list|(
 name|clusterResource
 argument_list|,
 name|node_3
+argument_list|,
+literal|false
 argument_list|)
 expr_stmt|;
 name|assertEquals
@@ -10929,6 +11054,8 @@ argument_list|(
 name|clusterResource
 argument_list|,
 name|node_3
+argument_list|,
+literal|false
 argument_list|)
 expr_stmt|;
 name|verify
@@ -11462,6 +11589,8 @@ argument_list|(
 name|clusterResource
 argument_list|,
 name|node_2
+argument_list|,
+literal|false
 argument_list|)
 expr_stmt|;
 name|verify
@@ -11605,6 +11734,8 @@ argument_list|(
 name|clusterResource
 argument_list|,
 name|node_2
+argument_list|,
+literal|false
 argument_list|)
 expr_stmt|;
 name|verify
@@ -11747,6 +11878,8 @@ argument_list|(
 name|clusterResource
 argument_list|,
 name|node_2
+argument_list|,
+literal|false
 argument_list|)
 expr_stmt|;
 name|verify
@@ -11886,6 +12019,8 @@ argument_list|(
 name|clusterResource
 argument_list|,
 name|node_0
+argument_list|,
+literal|false
 argument_list|)
 expr_stmt|;
 name|verify
@@ -12025,6 +12160,8 @@ argument_list|(
 name|clusterResource
 argument_list|,
 name|node_1
+argument_list|,
+literal|false
 argument_list|)
 expr_stmt|;
 name|verify
@@ -12557,6 +12694,8 @@ argument_list|(
 name|clusterResource
 argument_list|,
 name|node_0_0
+argument_list|,
+literal|false
 argument_list|)
 expr_stmt|;
 name|verify
@@ -12634,6 +12773,8 @@ argument_list|(
 name|clusterResource
 argument_list|,
 name|node_1_0
+argument_list|,
+literal|false
 argument_list|)
 expr_stmt|;
 name|verify
@@ -12755,6 +12896,8 @@ argument_list|(
 name|clusterResource
 argument_list|,
 name|node_0_1
+argument_list|,
+literal|false
 argument_list|)
 expr_stmt|;
 name|verify
@@ -12833,6 +12976,8 @@ argument_list|(
 name|clusterResource
 argument_list|,
 name|node_1_0
+argument_list|,
+literal|false
 argument_list|)
 expr_stmt|;
 name|verify
@@ -14261,6 +14406,8 @@ argument_list|(
 name|clusterResource
 argument_list|,
 name|node_0_1
+argument_list|,
+literal|false
 argument_list|)
 expr_stmt|;
 name|verify
@@ -14343,6 +14490,8 @@ argument_list|(
 name|clusterResource
 argument_list|,
 name|node_1_1
+argument_list|,
+literal|false
 argument_list|)
 expr_stmt|;
 name|verify
@@ -14476,6 +14625,8 @@ argument_list|(
 name|clusterResource
 argument_list|,
 name|node_1_1
+argument_list|,
+literal|false
 argument_list|)
 expr_stmt|;
 name|verify
@@ -14590,6 +14741,8 @@ argument_list|(
 name|clusterResource
 argument_list|,
 name|node_1_1
+argument_list|,
+literal|false
 argument_list|)
 expr_stmt|;
 name|verify
@@ -14698,6 +14851,8 @@ argument_list|(
 name|clusterResource
 argument_list|,
 name|node_1_1
+argument_list|,
+literal|false
 argument_list|)
 expr_stmt|;
 name|verify
@@ -14852,6 +15007,8 @@ argument_list|(
 name|clusterResource
 argument_list|,
 name|node_1_0
+argument_list|,
+literal|false
 argument_list|)
 expr_stmt|;
 name|verify
@@ -15394,6 +15551,8 @@ argument_list|(
 name|clusterResource
 argument_list|,
 name|node_0
+argument_list|,
+literal|false
 argument_list|)
 expr_stmt|;
 block|}

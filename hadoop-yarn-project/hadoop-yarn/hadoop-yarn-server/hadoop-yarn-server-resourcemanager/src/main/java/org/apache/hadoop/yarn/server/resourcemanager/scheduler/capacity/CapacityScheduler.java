@@ -5250,6 +5250,8 @@ argument_list|(
 name|clusterResource
 argument_list|,
 name|node
+argument_list|,
+literal|false
 argument_list|)
 decl_stmt|;
 name|RMContainer
@@ -5309,6 +5311,8 @@ operator|.
 name|RELEASED
 argument_list|,
 literal|null
+argument_list|,
+literal|true
 argument_list|)
 expr_stmt|;
 block|}
@@ -5379,6 +5383,8 @@ argument_list|(
 name|clusterResource
 argument_list|,
 name|node
+argument_list|,
+literal|false
 argument_list|)
 expr_stmt|;
 block|}
@@ -6173,6 +6179,8 @@ argument_list|,
 name|event
 argument_list|,
 literal|null
+argument_list|,
+literal|true
 argument_list|)
 expr_stmt|;
 name|LOG
@@ -6244,6 +6252,7 @@ operator|.
 name|class
 argument_list|)
 DECL|method|getNode (NodeId nodeId)
+specifier|public
 name|FiCaSchedulerNode
 name|getNode
 parameter_list|(

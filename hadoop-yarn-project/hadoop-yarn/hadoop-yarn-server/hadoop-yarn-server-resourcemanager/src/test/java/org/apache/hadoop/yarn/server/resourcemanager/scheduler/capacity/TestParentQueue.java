@@ -92,6 +92,18 @@ name|mockito
 operator|.
 name|Matchers
 operator|.
+name|anyBoolean
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|mockito
+operator|.
+name|Matchers
+operator|.
 name|eq
 import|;
 end_import
@@ -1143,6 +1155,11 @@ name|eq
 argument_list|(
 name|node
 argument_list|)
+argument_list|,
+name|eq
+argument_list|(
+literal|false
+argument_list|)
 argument_list|)
 expr_stmt|;
 comment|// Mock the node's resource availability
@@ -1203,6 +1220,11 @@ argument_list|,
 name|eq
 argument_list|(
 name|node
+argument_list|)
+argument_list|,
+name|eq
+argument_list|(
+literal|false
 argument_list|)
 argument_list|)
 expr_stmt|;
@@ -1545,6 +1567,8 @@ argument_list|(
 name|clusterResource
 argument_list|,
 name|node_0
+argument_list|,
+literal|false
 argument_list|)
 expr_stmt|;
 name|verifyQueueMetrics
@@ -1603,6 +1627,8 @@ argument_list|(
 name|clusterResource
 argument_list|,
 name|node_1
+argument_list|,
+literal|false
 argument_list|)
 expr_stmt|;
 name|InOrder
@@ -1635,6 +1661,9 @@ name|FiCaSchedulerNode
 operator|.
 name|class
 argument_list|)
+argument_list|,
+name|anyBoolean
+argument_list|()
 argument_list|)
 expr_stmt|;
 name|allocationOrder
@@ -1657,6 +1686,9 @@ name|FiCaSchedulerNode
 operator|.
 name|class
 argument_list|)
+argument_list|,
+name|anyBoolean
+argument_list|()
 argument_list|)
 expr_stmt|;
 name|verifyQueueMetrics
@@ -1716,6 +1748,8 @@ argument_list|(
 name|clusterResource
 argument_list|,
 name|node_0
+argument_list|,
+literal|false
 argument_list|)
 expr_stmt|;
 name|allocationOrder
@@ -1747,6 +1781,9 @@ name|FiCaSchedulerNode
 operator|.
 name|class
 argument_list|)
+argument_list|,
+name|anyBoolean
+argument_list|()
 argument_list|)
 expr_stmt|;
 name|allocationOrder
@@ -1769,6 +1806,9 @@ name|FiCaSchedulerNode
 operator|.
 name|class
 argument_list|)
+argument_list|,
+name|anyBoolean
+argument_list|()
 argument_list|)
 expr_stmt|;
 name|verifyQueueMetrics
@@ -1828,6 +1868,8 @@ argument_list|(
 name|clusterResource
 argument_list|,
 name|node_0
+argument_list|,
+literal|false
 argument_list|)
 expr_stmt|;
 name|allocationOrder
@@ -1859,6 +1901,9 @@ name|FiCaSchedulerNode
 operator|.
 name|class
 argument_list|)
+argument_list|,
+name|anyBoolean
+argument_list|()
 argument_list|)
 expr_stmt|;
 name|allocationOrder
@@ -1881,6 +1926,9 @@ name|FiCaSchedulerNode
 operator|.
 name|class
 argument_list|)
+argument_list|,
+name|anyBoolean
+argument_list|()
 argument_list|)
 expr_stmt|;
 name|verifyQueueMetrics
@@ -1940,6 +1988,8 @@ argument_list|(
 name|clusterResource
 argument_list|,
 name|node_1
+argument_list|,
+literal|false
 argument_list|)
 expr_stmt|;
 name|allocationOrder
@@ -1971,6 +2021,9 @@ name|FiCaSchedulerNode
 operator|.
 name|class
 argument_list|)
+argument_list|,
+name|anyBoolean
+argument_list|()
 argument_list|)
 expr_stmt|;
 name|allocationOrder
@@ -1993,6 +2046,9 @@ name|FiCaSchedulerNode
 operator|.
 name|class
 argument_list|)
+argument_list|,
+name|anyBoolean
+argument_list|()
 argument_list|)
 expr_stmt|;
 name|verifyQueueMetrics
@@ -3070,6 +3126,8 @@ argument_list|(
 name|clusterResource
 argument_list|,
 name|node_0
+argument_list|,
+literal|false
 argument_list|)
 expr_stmt|;
 name|verifyQueueMetrics
@@ -3179,6 +3237,8 @@ argument_list|(
 name|clusterResource
 argument_list|,
 name|node_1
+argument_list|,
+literal|false
 argument_list|)
 expr_stmt|;
 name|verifyQueueMetrics
@@ -3277,6 +3337,8 @@ argument_list|(
 name|clusterResource
 argument_list|,
 name|node_0
+argument_list|,
+literal|false
 argument_list|)
 expr_stmt|;
 name|InOrder
@@ -3311,6 +3373,9 @@ name|FiCaSchedulerNode
 operator|.
 name|class
 argument_list|)
+argument_list|,
+name|anyBoolean
+argument_list|()
 argument_list|)
 expr_stmt|;
 name|allocationOrder
@@ -3333,6 +3398,9 @@ name|FiCaSchedulerNode
 operator|.
 name|class
 argument_list|)
+argument_list|,
+name|anyBoolean
+argument_list|()
 argument_list|)
 expr_stmt|;
 name|allocationOrder
@@ -3355,6 +3423,9 @@ name|FiCaSchedulerNode
 operator|.
 name|class
 argument_list|)
+argument_list|,
+name|anyBoolean
+argument_list|()
 argument_list|)
 expr_stmt|;
 name|verifyQueueMetrics
@@ -3504,6 +3575,8 @@ argument_list|(
 name|clusterResource
 argument_list|,
 name|node_2
+argument_list|,
+literal|false
 argument_list|)
 expr_stmt|;
 name|allocationOrder
@@ -3541,6 +3614,9 @@ name|FiCaSchedulerNode
 operator|.
 name|class
 argument_list|)
+argument_list|,
+name|anyBoolean
+argument_list|()
 argument_list|)
 expr_stmt|;
 name|allocationOrder
@@ -3563,6 +3639,9 @@ name|FiCaSchedulerNode
 operator|.
 name|class
 argument_list|)
+argument_list|,
+name|anyBoolean
+argument_list|()
 argument_list|)
 expr_stmt|;
 name|allocationOrder
@@ -3585,6 +3664,9 @@ name|FiCaSchedulerNode
 operator|.
 name|class
 argument_list|)
+argument_list|,
+name|anyBoolean
+argument_list|()
 argument_list|)
 expr_stmt|;
 name|allocationOrder
@@ -3607,6 +3689,9 @@ name|FiCaSchedulerNode
 operator|.
 name|class
 argument_list|)
+argument_list|,
+name|anyBoolean
+argument_list|()
 argument_list|)
 expr_stmt|;
 name|verifyQueueMetrics
@@ -4261,6 +4346,8 @@ argument_list|(
 name|clusterResource
 argument_list|,
 name|node_0
+argument_list|,
+literal|false
 argument_list|)
 expr_stmt|;
 name|verifyQueueMetrics
@@ -4328,6 +4415,8 @@ argument_list|(
 name|clusterResource
 argument_list|,
 name|node_1
+argument_list|,
+literal|false
 argument_list|)
 expr_stmt|;
 name|InOrder
@@ -4360,6 +4449,9 @@ name|FiCaSchedulerNode
 operator|.
 name|class
 argument_list|)
+argument_list|,
+name|anyBoolean
+argument_list|()
 argument_list|)
 expr_stmt|;
 name|allocationOrder
@@ -4382,6 +4474,9 @@ name|FiCaSchedulerNode
 operator|.
 name|class
 argument_list|)
+argument_list|,
+name|anyBoolean
+argument_list|()
 argument_list|)
 expr_stmt|;
 name|verifyQueueMetrics
@@ -4450,6 +4545,8 @@ argument_list|(
 name|clusterResource
 argument_list|,
 name|node_0
+argument_list|,
+literal|false
 argument_list|)
 expr_stmt|;
 name|allocationOrder
@@ -4481,6 +4578,9 @@ name|FiCaSchedulerNode
 operator|.
 name|class
 argument_list|)
+argument_list|,
+name|anyBoolean
+argument_list|()
 argument_list|)
 expr_stmt|;
 name|allocationOrder
@@ -4503,6 +4603,9 @@ name|FiCaSchedulerNode
 operator|.
 name|class
 argument_list|)
+argument_list|,
+name|anyBoolean
+argument_list|()
 argument_list|)
 expr_stmt|;
 name|verifyQueueMetrics
@@ -4746,6 +4849,8 @@ argument_list|(
 name|clusterResource
 argument_list|,
 name|node_0
+argument_list|,
+literal|false
 argument_list|)
 expr_stmt|;
 name|verifyQueueMetrics
@@ -4813,6 +4918,8 @@ argument_list|(
 name|clusterResource
 argument_list|,
 name|node_1
+argument_list|,
+literal|false
 argument_list|)
 expr_stmt|;
 name|InOrder
@@ -4845,6 +4952,9 @@ name|FiCaSchedulerNode
 operator|.
 name|class
 argument_list|)
+argument_list|,
+name|anyBoolean
+argument_list|()
 argument_list|)
 expr_stmt|;
 name|allocationOrder
@@ -4867,6 +4977,9 @@ name|FiCaSchedulerNode
 operator|.
 name|class
 argument_list|)
+argument_list|,
+name|anyBoolean
+argument_list|()
 argument_list|)
 expr_stmt|;
 name|verifyQueueMetrics
@@ -4935,6 +5048,8 @@ argument_list|(
 name|clusterResource
 argument_list|,
 name|node_0
+argument_list|,
+literal|false
 argument_list|)
 expr_stmt|;
 name|allocationOrder
@@ -4966,6 +5081,9 @@ name|FiCaSchedulerNode
 operator|.
 name|class
 argument_list|)
+argument_list|,
+name|anyBoolean
+argument_list|()
 argument_list|)
 expr_stmt|;
 name|allocationOrder
@@ -4988,6 +5106,9 @@ name|FiCaSchedulerNode
 operator|.
 name|class
 argument_list|)
+argument_list|,
+name|anyBoolean
+argument_list|()
 argument_list|)
 expr_stmt|;
 name|verifyQueueMetrics

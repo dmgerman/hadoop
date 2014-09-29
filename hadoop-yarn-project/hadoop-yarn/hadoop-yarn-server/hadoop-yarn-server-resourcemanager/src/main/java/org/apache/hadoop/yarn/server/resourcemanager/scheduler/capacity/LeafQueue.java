@@ -662,6 +662,26 @@ name|resourcemanager
 operator|.
 name|scheduler
 operator|.
+name|SchedulerUtils
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|server
+operator|.
+name|resourcemanager
+operator|.
+name|scheduler
+operator|.
 name|SchedulerApplicationAttempt
 import|;
 end_import
@@ -1093,6 +1113,11 @@ specifier|private
 specifier|final
 name|ResourceCalculator
 name|resourceCalculator
+decl_stmt|;
+DECL|field|reservationsContinueLooking
+specifier|private
+name|boolean
+name|reservationsContinueLooking
 decl_stmt|;
 DECL|method|LeafQueue (CapacitySchedulerContext cs, String queueName, CSQueue parent, CSQueue old)
 specifier|public
@@ -1558,6 +1583,14 @@ argument_list|()
 operator|.
 name|getNodeLocalityDelay
 argument_list|()
+argument_list|,
+name|cs
+operator|.
+name|getConfiguration
+argument_list|()
+operator|.
+name|getReservationContinueLook
+argument_list|()
 argument_list|)
 expr_stmt|;
 if|if
@@ -1623,7 +1656,7 @@ name|applicationComparator
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|setupQueueConfigs ( Resource clusterResource, float capacity, float absoluteCapacity, float maximumCapacity, float absoluteMaxCapacity, int userLimit, float userLimitFactor, int maxApplications, float maxAMResourcePerQueuePercent, int maxApplicationsPerUser, int maxActiveApplications, int maxActiveApplicationsPerUser, QueueState state, Map<QueueACL, AccessControlList> acls, int nodeLocalityDelay)
+DECL|method|setupQueueConfigs ( Resource clusterResource, float capacity, float absoluteCapacity, float maximumCapacity, float absoluteMaxCapacity, int userLimit, float userLimitFactor, int maxApplications, float maxAMResourcePerQueuePercent, int maxApplicationsPerUser, int maxActiveApplications, int maxActiveApplicationsPerUser, QueueState state, Map<QueueACL, AccessControlList> acls, int nodeLocalityDelay, boolean continueLooking)
 specifier|private
 specifier|synchronized
 name|void
@@ -1678,6 +1711,9 @@ name|acls
 parameter_list|,
 name|int
 name|nodeLocalityDelay
+parameter_list|,
+name|boolean
+name|continueLooking
 parameter_list|)
 block|{
 comment|// Sanity check
@@ -1832,6 +1868,12 @@ operator|.
 name|nodeLocalityDelay
 operator|=
 name|nodeLocalityDelay
+expr_stmt|;
+name|this
+operator|.
+name|reservationsContinueLooking
+operator|=
+name|continueLooking
 expr_stmt|;
 name|StringBuilder
 name|aclsString
@@ -2081,6 +2123,12 @@ operator|+
 literal|"nodeLocalityDelay = "
 operator|+
 name|nodeLocalityDelay
+operator|+
+literal|"\n"
+operator|+
+literal|"reservationsContinueLooking = "
+operator|+
+name|reservationsContinueLooking
 operator|+
 literal|"\n"
 argument_list|)
@@ -2793,6 +2841,17 @@ return|return
 name|nodeLocalityDelay
 return|;
 block|}
+annotation|@
+name|Private
+DECL|method|getReservationContinueLooking ()
+name|boolean
+name|getReservationContinueLooking
+parameter_list|()
+block|{
+return|return
+name|reservationsContinueLooking
+return|;
+block|}
 DECL|method|toString ()
 specifier|public
 name|String
@@ -3116,6 +3175,10 @@ name|newlyParsedLeafQueue
 operator|.
 name|getNodeLocalityDelay
 argument_list|()
+argument_list|,
+name|newlyParsedLeafQueue
+operator|.
+name|reservationsContinueLooking
 argument_list|)
 expr_stmt|;
 comment|// queue metrics are updated, more resource may be available
@@ -3980,10 +4043,10 @@ argument_list|)
 decl_stmt|;
 annotation|@
 name|Override
+DECL|method|assignContainers (Resource clusterResource, FiCaSchedulerNode node, boolean needToUnreserve)
 specifier|public
 specifier|synchronized
 name|CSAssignment
-DECL|method|assignContainers (Resource clusterResource, FiCaSchedulerNode node)
 name|assignContainers
 parameter_list|(
 name|Resource
@@ -3991,6 +4054,9 @@ name|clusterResource
 parameter_list|,
 name|FiCaSchedulerNode
 name|node
+parameter_list|,
+name|boolean
+name|needToUnreserve
 parameter_list|)
 block|{
 if|if
@@ -4171,6 +4237,28 @@ decl_stmt|;
 comment|// Do we need containers at this 'priority'?
 if|if
 condition|(
+name|application
+operator|.
+name|getTotalRequiredResources
+argument_list|(
+name|priority
+argument_list|)
+operator|<=
+literal|0
+condition|)
+block|{
+continue|continue;
+block|}
+if|if
+condition|(
+operator|!
+name|this
+operator|.
+name|reservationsContinueLooking
+condition|)
+block|{
+if|if
+condition|(
 operator|!
 name|needContainers
 argument_list|(
@@ -4182,7 +4270,24 @@ name|required
 argument_list|)
 condition|)
 block|{
+if|if
+condition|(
+name|LOG
+operator|.
+name|isDebugEnabled
+argument_list|()
+condition|)
+block|{
+name|LOG
+operator|.
+name|debug
+argument_list|(
+literal|"doesn't need containers based on reservation algo!"
+argument_list|)
+expr_stmt|;
+block|}
 continue|continue;
+block|}
 block|}
 comment|// Compute user-limit& set headroom
 comment|// Note: We compute both user-limit& headroom with the highest
@@ -4210,6 +4315,10 @@ argument_list|(
 name|clusterResource
 argument_list|,
 name|required
+argument_list|,
+name|application
+argument_list|,
+literal|true
 argument_list|)
 condition|)
 block|{
@@ -4231,6 +4340,10 @@ name|getUser
 argument_list|()
 argument_list|,
 name|userLimit
+argument_list|,
+name|application
+argument_list|,
+literal|true
 argument_list|)
 condition|)
 block|{
@@ -4259,6 +4372,8 @@ argument_list|,
 name|priority
 argument_list|,
 literal|null
+argument_list|,
+name|needToUnreserve
 argument_list|)
 decl_stmt|;
 comment|// Did the application skip this node?
@@ -4334,6 +4449,22 @@ operator|.
 name|OFF_SWITCH
 condition|)
 block|{
+if|if
+condition|(
+name|LOG
+operator|.
+name|isDebugEnabled
+argument_list|()
+condition|)
+block|{
+name|LOG
+operator|.
+name|debug
+argument_list|(
+literal|"Resetting scheduling opportunities"
+argument_list|)
+expr_stmt|;
+block|}
 name|application
 operator|.
 name|resetSchedulingOpportunities
@@ -4448,6 +4579,8 @@ argument_list|,
 name|priority
 argument_list|,
 name|rmContainer
+argument_list|,
+literal|false
 argument_list|)
 expr_stmt|;
 comment|// Doesn't matter... since it's already charged for at time of reservation
@@ -4467,8 +4600,10 @@ name|NODE_LOCAL
 argument_list|)
 return|;
 block|}
-DECL|method|assignToQueue (Resource clusterResource, Resource required)
-specifier|private
+annotation|@
+name|Private
+DECL|method|assignToQueue (Resource clusterResource, Resource required, FiCaSchedulerApp application, boolean checkReservations)
+specifier|protected
 specifier|synchronized
 name|boolean
 name|assignToQueue
@@ -4478,8 +4613,26 @@ name|clusterResource
 parameter_list|,
 name|Resource
 name|required
+parameter_list|,
+name|FiCaSchedulerApp
+name|application
+parameter_list|,
+name|boolean
+name|checkReservations
 parameter_list|)
 block|{
+name|Resource
+name|potentialTotalResource
+init|=
+name|Resources
+operator|.
+name|add
+argument_list|(
+name|usedResources
+argument_list|,
+name|required
+argument_list|)
+decl_stmt|;
 comment|// Check how of the cluster's absolute capacity we are currently using...
 name|float
 name|potentialNewCapacity
@@ -4492,14 +4645,7 @@ name|resourceCalculator
 argument_list|,
 name|clusterResource
 argument_list|,
-name|Resources
-operator|.
-name|add
-argument_list|(
-name|usedResources
-argument_list|,
-name|required
-argument_list|)
+name|potentialTotalResource
 argument_list|,
 name|clusterResource
 argument_list|)
@@ -4511,6 +4657,121 @@ operator|>
 name|absoluteMaxCapacity
 condition|)
 block|{
+comment|// if enabled, check to see if could we potentially use this node instead
+comment|// of a reserved node if the application has reserved containers
+if|if
+condition|(
+name|this
+operator|.
+name|reservationsContinueLooking
+operator|&&
+name|checkReservations
+condition|)
+block|{
+name|float
+name|potentialNewWithoutReservedCapacity
+init|=
+name|Resources
+operator|.
+name|divide
+argument_list|(
+name|resourceCalculator
+argument_list|,
+name|clusterResource
+argument_list|,
+name|Resources
+operator|.
+name|subtract
+argument_list|(
+name|potentialTotalResource
+argument_list|,
+name|application
+operator|.
+name|getCurrentReservation
+argument_list|()
+argument_list|)
+argument_list|,
+name|clusterResource
+argument_list|)
+decl_stmt|;
+if|if
+condition|(
+name|potentialNewWithoutReservedCapacity
+operator|<=
+name|absoluteMaxCapacity
+condition|)
+block|{
+if|if
+condition|(
+name|LOG
+operator|.
+name|isDebugEnabled
+argument_list|()
+condition|)
+block|{
+name|LOG
+operator|.
+name|debug
+argument_list|(
+literal|"try to use reserved: "
+operator|+
+name|getQueueName
+argument_list|()
+operator|+
+literal|" usedResources: "
+operator|+
+name|usedResources
+operator|+
+literal|" clusterResources: "
+operator|+
+name|clusterResource
+operator|+
+literal|" reservedResources: "
+operator|+
+name|application
+operator|.
+name|getCurrentReservation
+argument_list|()
+operator|+
+literal|" currentCapacity "
+operator|+
+name|Resources
+operator|.
+name|divide
+argument_list|(
+name|resourceCalculator
+argument_list|,
+name|clusterResource
+argument_list|,
+name|usedResources
+argument_list|,
+name|clusterResource
+argument_list|)
+operator|+
+literal|" required "
+operator|+
+name|required
+operator|+
+literal|" potentialNewWithoutReservedCapacity: "
+operator|+
+name|potentialNewWithoutReservedCapacity
+operator|+
+literal|" ( "
+operator|+
+literal|" max-capacity: "
+operator|+
+name|absoluteMaxCapacity
+operator|+
+literal|")"
+argument_list|)
+expr_stmt|;
+block|}
+comment|// we could potentially use this node instead of reserved node
+return|return
+literal|true
+return|;
+block|}
+block|}
 if|if
 condition|(
 name|LOG
@@ -4995,8 +5256,10 @@ return|return
 name|limit
 return|;
 block|}
-DECL|method|assignToUser (Resource clusterResource, String userName, Resource limit)
-specifier|private
+annotation|@
+name|Private
+DECL|method|assignToUser (Resource clusterResource, String userName, Resource limit, FiCaSchedulerApp application, boolean checkReservations)
+specifier|protected
 specifier|synchronized
 name|boolean
 name|assignToUser
@@ -5009,6 +5272,12 @@ name|userName
 parameter_list|,
 name|Resource
 name|limit
+parameter_list|,
+name|FiCaSchedulerApp
+name|application
+parameter_list|,
+name|boolean
+name|checkReservations
 parameter_list|)
 block|{
 name|User
@@ -5040,6 +5309,94 @@ name|limit
 argument_list|)
 condition|)
 block|{
+comment|// if enabled, check to see if could we potentially use this node instead
+comment|// of a reserved node if the application has reserved containers
+if|if
+condition|(
+name|this
+operator|.
+name|reservationsContinueLooking
+operator|&&
+name|checkReservations
+condition|)
+block|{
+if|if
+condition|(
+name|Resources
+operator|.
+name|lessThanOrEqual
+argument_list|(
+name|resourceCalculator
+argument_list|,
+name|clusterResource
+argument_list|,
+name|Resources
+operator|.
+name|subtract
+argument_list|(
+name|user
+operator|.
+name|getConsumedResources
+argument_list|()
+argument_list|,
+name|application
+operator|.
+name|getCurrentReservation
+argument_list|()
+argument_list|)
+argument_list|,
+name|limit
+argument_list|)
+condition|)
+block|{
+if|if
+condition|(
+name|LOG
+operator|.
+name|isDebugEnabled
+argument_list|()
+condition|)
+block|{
+name|LOG
+operator|.
+name|debug
+argument_list|(
+literal|"User "
+operator|+
+name|userName
+operator|+
+literal|" in queue "
+operator|+
+name|getQueueName
+argument_list|()
+operator|+
+literal|" will exceed limit based on reservations - "
+operator|+
+literal|" consumed: "
+operator|+
+name|user
+operator|.
+name|getConsumedResources
+argument_list|()
+operator|+
+literal|" reserved: "
+operator|+
+name|application
+operator|.
+name|getCurrentReservation
+argument_list|()
+operator|+
+literal|" limit: "
+operator|+
+name|limit
+argument_list|)
+expr_stmt|;
+block|}
+return|return
+literal|true
+return|;
+block|}
+block|}
 if|if
 condition|(
 name|LOG
@@ -5244,7 +5601,7 @@ literal|0
 operator|)
 return|;
 block|}
-DECL|method|assignContainersOnNode (Resource clusterResource, FiCaSchedulerNode node, FiCaSchedulerApp application, Priority priority, RMContainer reservedContainer)
+DECL|method|assignContainersOnNode (Resource clusterResource, FiCaSchedulerNode node, FiCaSchedulerApp application, Priority priority, RMContainer reservedContainer, boolean needToUnreserve)
 specifier|private
 name|CSAssignment
 name|assignContainersOnNode
@@ -5263,6 +5620,9 @@ name|priority
 parameter_list|,
 name|RMContainer
 name|reservedContainer
+parameter_list|,
+name|boolean
+name|needToUnreserve
 parameter_list|)
 block|{
 name|Resource
@@ -5311,6 +5671,8 @@ argument_list|,
 name|priority
 argument_list|,
 name|reservedContainer
+argument_list|,
+name|needToUnreserve
 argument_list|)
 expr_stmt|;
 if|if
@@ -5396,6 +5758,8 @@ argument_list|,
 name|priority
 argument_list|,
 name|reservedContainer
+argument_list|,
+name|needToUnreserve
 argument_list|)
 expr_stmt|;
 if|if
@@ -5482,6 +5846,8 @@ argument_list|,
 name|priority
 argument_list|,
 name|reservedContainer
+argument_list|,
+name|needToUnreserve
 argument_list|)
 argument_list|,
 name|NodeType
@@ -5494,7 +5860,343 @@ return|return
 name|SKIP_ASSIGNMENT
 return|;
 block|}
-DECL|method|assignNodeLocalContainers ( Resource clusterResource, ResourceRequest nodeLocalResourceRequest, FiCaSchedulerNode node, FiCaSchedulerApp application, Priority priority, RMContainer reservedContainer)
+annotation|@
+name|Private
+DECL|method|findNodeToUnreserve (Resource clusterResource, FiCaSchedulerNode node, FiCaSchedulerApp application, Priority priority, Resource capability)
+specifier|protected
+name|boolean
+name|findNodeToUnreserve
+parameter_list|(
+name|Resource
+name|clusterResource
+parameter_list|,
+name|FiCaSchedulerNode
+name|node
+parameter_list|,
+name|FiCaSchedulerApp
+name|application
+parameter_list|,
+name|Priority
+name|priority
+parameter_list|,
+name|Resource
+name|capability
+parameter_list|)
+block|{
+comment|// need to unreserve some other container first
+name|NodeId
+name|idToUnreserve
+init|=
+name|application
+operator|.
+name|getNodeIdToUnreserve
+argument_list|(
+name|priority
+argument_list|,
+name|capability
+argument_list|)
+decl_stmt|;
+if|if
+condition|(
+name|idToUnreserve
+operator|==
+literal|null
+condition|)
+block|{
+if|if
+condition|(
+name|LOG
+operator|.
+name|isDebugEnabled
+argument_list|()
+condition|)
+block|{
+name|LOG
+operator|.
+name|debug
+argument_list|(
+literal|"checked to see if could unreserve for app but nothing "
+operator|+
+literal|"reserved that matches for this app"
+argument_list|)
+expr_stmt|;
+block|}
+return|return
+literal|false
+return|;
+block|}
+name|FiCaSchedulerNode
+name|nodeToUnreserve
+init|=
+name|scheduler
+operator|.
+name|getNode
+argument_list|(
+name|idToUnreserve
+argument_list|)
+decl_stmt|;
+if|if
+condition|(
+name|nodeToUnreserve
+operator|==
+literal|null
+condition|)
+block|{
+name|LOG
+operator|.
+name|error
+argument_list|(
+literal|"node to unreserve doesn't exist, nodeid: "
+operator|+
+name|idToUnreserve
+argument_list|)
+expr_stmt|;
+return|return
+literal|false
+return|;
+block|}
+if|if
+condition|(
+name|LOG
+operator|.
+name|isDebugEnabled
+argument_list|()
+condition|)
+block|{
+name|LOG
+operator|.
+name|debug
+argument_list|(
+literal|"unreserving for app: "
+operator|+
+name|application
+operator|.
+name|getApplicationId
+argument_list|()
+operator|+
+literal|" on nodeId: "
+operator|+
+name|idToUnreserve
+operator|+
+literal|" in order to replace reserved application and place it on node: "
+operator|+
+name|node
+operator|.
+name|getNodeID
+argument_list|()
+operator|+
+literal|" needing: "
+operator|+
+name|capability
+argument_list|)
+expr_stmt|;
+block|}
+comment|// headroom
+name|Resources
+operator|.
+name|addTo
+argument_list|(
+name|application
+operator|.
+name|getHeadroom
+argument_list|()
+argument_list|,
+name|nodeToUnreserve
+operator|.
+name|getReservedContainer
+argument_list|()
+operator|.
+name|getReservedResource
+argument_list|()
+argument_list|)
+expr_stmt|;
+comment|// Make sure to not have completedContainers sort the queues here since
+comment|// we are already inside an iterator loop for the queues and this would
+comment|// cause an concurrent modification exception.
+name|completedContainer
+argument_list|(
+name|clusterResource
+argument_list|,
+name|application
+argument_list|,
+name|nodeToUnreserve
+argument_list|,
+name|nodeToUnreserve
+operator|.
+name|getReservedContainer
+argument_list|()
+argument_list|,
+name|SchedulerUtils
+operator|.
+name|createAbnormalContainerStatus
+argument_list|(
+name|nodeToUnreserve
+operator|.
+name|getReservedContainer
+argument_list|()
+operator|.
+name|getContainerId
+argument_list|()
+argument_list|,
+name|SchedulerUtils
+operator|.
+name|UNRESERVED_CONTAINER
+argument_list|)
+argument_list|,
+name|RMContainerEventType
+operator|.
+name|RELEASED
+argument_list|,
+literal|null
+argument_list|,
+literal|false
+argument_list|)
+expr_stmt|;
+return|return
+literal|true
+return|;
+block|}
+annotation|@
+name|Private
+DECL|method|checkLimitsToReserve (Resource clusterResource, FiCaSchedulerApp application, Resource capability, boolean needToUnreserve)
+specifier|protected
+name|boolean
+name|checkLimitsToReserve
+parameter_list|(
+name|Resource
+name|clusterResource
+parameter_list|,
+name|FiCaSchedulerApp
+name|application
+parameter_list|,
+name|Resource
+name|capability
+parameter_list|,
+name|boolean
+name|needToUnreserve
+parameter_list|)
+block|{
+if|if
+condition|(
+name|needToUnreserve
+condition|)
+block|{
+if|if
+condition|(
+name|LOG
+operator|.
+name|isDebugEnabled
+argument_list|()
+condition|)
+block|{
+name|LOG
+operator|.
+name|debug
+argument_list|(
+literal|"we needed to unreserve to be able to allocate"
+argument_list|)
+expr_stmt|;
+block|}
+return|return
+literal|false
+return|;
+block|}
+comment|// we can't reserve if we got here based on the limit
+comment|// checks assuming we could unreserve!!!
+name|Resource
+name|userLimit
+init|=
+name|computeUserLimitAndSetHeadroom
+argument_list|(
+name|application
+argument_list|,
+name|clusterResource
+argument_list|,
+name|capability
+argument_list|)
+decl_stmt|;
+comment|// Check queue max-capacity limit
+if|if
+condition|(
+operator|!
+name|assignToQueue
+argument_list|(
+name|clusterResource
+argument_list|,
+name|capability
+argument_list|,
+name|application
+argument_list|,
+literal|false
+argument_list|)
+condition|)
+block|{
+if|if
+condition|(
+name|LOG
+operator|.
+name|isDebugEnabled
+argument_list|()
+condition|)
+block|{
+name|LOG
+operator|.
+name|debug
+argument_list|(
+literal|"was going to reserve but hit queue limit"
+argument_list|)
+expr_stmt|;
+block|}
+return|return
+literal|false
+return|;
+block|}
+comment|// Check user limit
+if|if
+condition|(
+operator|!
+name|assignToUser
+argument_list|(
+name|clusterResource
+argument_list|,
+name|application
+operator|.
+name|getUser
+argument_list|()
+argument_list|,
+name|userLimit
+argument_list|,
+name|application
+argument_list|,
+literal|false
+argument_list|)
+condition|)
+block|{
+if|if
+condition|(
+name|LOG
+operator|.
+name|isDebugEnabled
+argument_list|()
+condition|)
+block|{
+name|LOG
+operator|.
+name|debug
+argument_list|(
+literal|"was going to reserve but hit user limit"
+argument_list|)
+expr_stmt|;
+block|}
+return|return
+literal|false
+return|;
+block|}
+return|return
+literal|true
+return|;
+block|}
+DECL|method|assignNodeLocalContainers (Resource clusterResource, ResourceRequest nodeLocalResourceRequest, FiCaSchedulerNode node, FiCaSchedulerApp application, Priority priority, RMContainer reservedContainer, boolean needToUnreserve)
 specifier|private
 name|Resource
 name|assignNodeLocalContainers
@@ -5516,6 +6218,9 @@ name|priority
 parameter_list|,
 name|RMContainer
 name|reservedContainer
+parameter_list|,
+name|boolean
+name|needToUnreserve
 parameter_list|)
 block|{
 if|if
@@ -5554,6 +6259,8 @@ operator|.
 name|NODE_LOCAL
 argument_list|,
 name|reservedContainer
+argument_list|,
+name|needToUnreserve
 argument_list|)
 return|;
 block|}
@@ -5564,7 +6271,7 @@ name|none
 argument_list|()
 return|;
 block|}
-DECL|method|assignRackLocalContainers ( Resource clusterResource, ResourceRequest rackLocalResourceRequest, FiCaSchedulerNode node, FiCaSchedulerApp application, Priority priority, RMContainer reservedContainer)
+DECL|method|assignRackLocalContainers ( Resource clusterResource, ResourceRequest rackLocalResourceRequest, FiCaSchedulerNode node, FiCaSchedulerApp application, Priority priority, RMContainer reservedContainer, boolean needToUnreserve)
 specifier|private
 name|Resource
 name|assignRackLocalContainers
@@ -5586,6 +6293,9 @@ name|priority
 parameter_list|,
 name|RMContainer
 name|reservedContainer
+parameter_list|,
+name|boolean
+name|needToUnreserve
 parameter_list|)
 block|{
 if|if
@@ -5624,6 +6334,8 @@ operator|.
 name|RACK_LOCAL
 argument_list|,
 name|reservedContainer
+argument_list|,
+name|needToUnreserve
 argument_list|)
 return|;
 block|}
@@ -5634,7 +6346,7 @@ name|none
 argument_list|()
 return|;
 block|}
-DECL|method|assignOffSwitchContainers ( Resource clusterResource, ResourceRequest offSwitchResourceRequest, FiCaSchedulerNode node, FiCaSchedulerApp application, Priority priority, RMContainer reservedContainer)
+DECL|method|assignOffSwitchContainers ( Resource clusterResource, ResourceRequest offSwitchResourceRequest, FiCaSchedulerNode node, FiCaSchedulerApp application, Priority priority, RMContainer reservedContainer, boolean needToUnreserve)
 specifier|private
 name|Resource
 name|assignOffSwitchContainers
@@ -5656,6 +6368,9 @@ name|priority
 parameter_list|,
 name|RMContainer
 name|reservedContainer
+parameter_list|,
+name|boolean
+name|needToUnreserve
 parameter_list|)
 block|{
 if|if
@@ -5694,6 +6409,8 @@ operator|.
 name|OFF_SWITCH
 argument_list|,
 name|reservedContainer
+argument_list|,
+name|needToUnreserve
 argument_list|)
 return|;
 block|}
@@ -6048,7 +6765,7 @@ return|return
 name|container
 return|;
 block|}
-DECL|method|assignContainer (Resource clusterResource, FiCaSchedulerNode node, FiCaSchedulerApp application, Priority priority, ResourceRequest request, NodeType type, RMContainer rmContainer)
+DECL|method|assignContainer (Resource clusterResource, FiCaSchedulerNode node, FiCaSchedulerApp application, Priority priority, ResourceRequest request, NodeType type, RMContainer rmContainer, boolean needToUnreserve)
 specifier|private
 name|Resource
 name|assignContainer
@@ -6073,6 +6790,9 @@ name|type
 parameter_list|,
 name|RMContainer
 name|rmContainer
+parameter_list|,
+name|boolean
+name|needToUnreserve
 parameter_list|)
 block|{
 if|if
@@ -6115,6 +6835,10 @@ operator|+
 literal|" type="
 operator|+
 name|type
+operator|+
+literal|" needToUnreserve= "
+operator|+
+name|needToUnreserve
 argument_list|)
 expr_stmt|;
 block|}
@@ -6241,6 +6965,52 @@ name|none
 argument_list|()
 return|;
 block|}
+comment|// default to true since if reservation continue look feature isn't on
+comment|// needContainers is checked earlier and we wouldn't have gotten this far
+name|boolean
+name|canAllocContainer
+init|=
+literal|true
+decl_stmt|;
+if|if
+condition|(
+name|this
+operator|.
+name|reservationsContinueLooking
+condition|)
+block|{
+comment|// based on reservations can we allocate/reserve more or do we need
+comment|// to unreserve one first
+name|canAllocContainer
+operator|=
+name|needContainers
+argument_list|(
+name|application
+argument_list|,
+name|priority
+argument_list|,
+name|capability
+argument_list|)
+expr_stmt|;
+if|if
+condition|(
+name|LOG
+operator|.
+name|isDebugEnabled
+argument_list|()
+condition|)
+block|{
+name|LOG
+operator|.
+name|debug
+argument_list|(
+literal|"can alloc container is: "
+operator|+
+name|canAllocContainer
+argument_list|)
+expr_stmt|;
+block|}
+block|}
 comment|// Can we allocate a container on this node?
 name|int
 name|availableContainers
@@ -6281,6 +7051,88 @@ argument_list|,
 name|rmContainer
 argument_list|)
 expr_stmt|;
+block|}
+elseif|else
+if|if
+condition|(
+name|this
+operator|.
+name|reservationsContinueLooking
+operator|&&
+operator|(
+operator|!
+name|canAllocContainer
+operator|||
+name|needToUnreserve
+operator|)
+condition|)
+block|{
+comment|// need to unreserve some other container first
+name|boolean
+name|res
+init|=
+name|findNodeToUnreserve
+argument_list|(
+name|clusterResource
+argument_list|,
+name|node
+argument_list|,
+name|application
+argument_list|,
+name|priority
+argument_list|,
+name|capability
+argument_list|)
+decl_stmt|;
+if|if
+condition|(
+operator|!
+name|res
+condition|)
+block|{
+return|return
+name|Resources
+operator|.
+name|none
+argument_list|()
+return|;
+block|}
+block|}
+else|else
+block|{
+comment|// we got here by possibly ignoring queue capacity limits. If the
+comment|// parameter needToUnreserve is true it means we ignored one of those
+comment|// limits in the chance we could unreserve. If we are here we aren't
+comment|// trying to unreserve so we can't allocate anymore due to that parent
+comment|// limit.
+if|if
+condition|(
+name|needToUnreserve
+condition|)
+block|{
+if|if
+condition|(
+name|LOG
+operator|.
+name|isDebugEnabled
+argument_list|()
+condition|)
+block|{
+name|LOG
+operator|.
+name|debug
+argument_list|(
+literal|"we needed to unreserve to be able to allocate, skipping"
+argument_list|)
+expr_stmt|;
+block|}
+return|return
+name|Resources
+operator|.
+name|none
+argument_list|()
+return|;
+block|}
 block|}
 comment|// Inform the application
 name|RMContainer
@@ -6359,6 +7211,59 @@ return|;
 block|}
 else|else
 block|{
+comment|// if we are allowed to allocate but this node doesn't have space, reserve it or
+comment|// if this was an already a reserved container, reserve it again
+if|if
+condition|(
+operator|(
+name|canAllocContainer
+operator|)
+operator|||
+operator|(
+name|rmContainer
+operator|!=
+literal|null
+operator|)
+condition|)
+block|{
+if|if
+condition|(
+name|reservationsContinueLooking
+condition|)
+block|{
+comment|// we got here by possibly ignoring parent queue capacity limits. If
+comment|// the parameter needToUnreserve is true it means we ignored one of
+comment|// those limits in the chance we could unreserve. If we are here
+comment|// we aren't trying to unreserve so we can't allocate
+comment|// anymore due to that parent limit
+name|boolean
+name|res
+init|=
+name|checkLimitsToReserve
+argument_list|(
+name|clusterResource
+argument_list|,
+name|application
+argument_list|,
+name|capability
+argument_list|,
+name|needToUnreserve
+argument_list|)
+decl_stmt|;
+if|if
+condition|(
+operator|!
+name|res
+condition|)
+block|{
+return|return
+name|Resources
+operator|.
+name|none
+argument_list|()
+return|;
+block|}
+block|}
 comment|// Reserve by 'charging' in advance...
 name|reserve
 argument_list|(
@@ -6379,11 +7284,11 @@ name|info
 argument_list|(
 literal|"Reserved container "
 operator|+
-literal|" application attempt="
+literal|" application="
 operator|+
 name|application
 operator|.
-name|getApplicationAttemptId
+name|getApplicationId
 argument_list|()
 operator|+
 literal|" resource="
@@ -6400,11 +7305,21 @@ operator|.
 name|toString
 argument_list|()
 operator|+
-literal|" node="
+literal|" usedCapacity="
 operator|+
-name|node
+name|getUsedCapacity
+argument_list|()
 operator|+
-literal|" clusterResource="
+literal|" absoluteUsedCapacity="
+operator|+
+name|getAbsoluteUsedCapacity
+argument_list|()
+operator|+
+literal|" used="
+operator|+
+name|usedResources
+operator|+
+literal|" cluster="
 operator|+
 name|clusterResource
 argument_list|)
@@ -6413,6 +7328,13 @@ return|return
 name|request
 operator|.
 name|getCapability
+argument_list|()
+return|;
+block|}
+return|return
+name|Resources
+operator|.
+name|none
 argument_list|()
 return|;
 block|}
@@ -6560,7 +7482,7 @@ return|;
 block|}
 annotation|@
 name|Override
-DECL|method|completedContainer (Resource clusterResource, FiCaSchedulerApp application, FiCaSchedulerNode node, RMContainer rmContainer, ContainerStatus containerStatus, RMContainerEventType event, CSQueue childQueue)
+DECL|method|completedContainer (Resource clusterResource, FiCaSchedulerApp application, FiCaSchedulerNode node, RMContainer rmContainer, ContainerStatus containerStatus, RMContainerEventType event, CSQueue childQueue, boolean sortQueues)
 specifier|public
 name|void
 name|completedContainer
@@ -6585,6 +7507,9 @@ name|event
 parameter_list|,
 name|CSQueue
 name|childQueue
+parameter_list|,
+name|boolean
+name|sortQueues
 parameter_list|)
 block|{
 if|if
@@ -6732,6 +7657,8 @@ argument_list|,
 name|event
 argument_list|,
 name|this
+argument_list|,
+name|sortQueues
 argument_list|)
 expr_stmt|;
 block|}
@@ -6805,6 +7732,8 @@ argument_list|(
 name|resource
 argument_list|)
 expr_stmt|;
+comment|// Note this is a bit unconventional since it gets the object and modifies it here
+comment|// rather then using set routine
 name|Resources
 operator|.
 name|subtractFrom
