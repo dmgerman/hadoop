@@ -1070,17 +1070,20 @@ return|;
 block|}
 annotation|@
 name|Override
-DECL|method|serviceInit (Configuration conf)
+DECL|method|serviceStart ()
 specifier|public
 name|void
-name|serviceInit
-parameter_list|(
-name|Configuration
-name|conf
-parameter_list|)
+name|serviceStart
+parameter_list|()
 throws|throws
 name|Exception
 block|{
+name|Configuration
+name|conf
+init|=
+name|getConfig
+argument_list|()
+decl_stmt|;
 name|Path
 name|fsWorkingPath
 init|=
@@ -1177,10 +1180,8 @@ throw|;
 block|}
 name|super
 operator|.
-name|serviceInit
-argument_list|(
-name|conf
-argument_list|)
+name|serviceStart
+argument_list|()
 expr_stmt|;
 block|}
 annotation|@
