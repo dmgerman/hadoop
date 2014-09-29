@@ -608,7 +608,7 @@ name|endTime
 operator|=
 name|Time
 operator|.
-name|monotonicNow
+name|now
 argument_list|()
 expr_stmt|;
 name|this
@@ -733,7 +733,7 @@ name|startTime
 operator|=
 name|Time
 operator|.
-name|monotonicNow
+name|now
 argument_list|()
 expr_stmt|;
 block|}
