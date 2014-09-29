@@ -56,6 +56,18 @@ name|mockito
 operator|.
 name|Matchers
 operator|.
+name|anyBoolean
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|mockito
+operator|.
+name|Matchers
+operator|.
 name|eq
 import|;
 end_import
@@ -1185,6 +1197,9 @@ name|eq
 argument_list|(
 name|node
 argument_list|)
+argument_list|,
+name|anyBoolean
+argument_list|()
 argument_list|)
 expr_stmt|;
 comment|// Mock the node's resource availability
@@ -1246,6 +1261,9 @@ name|eq
 argument_list|(
 name|node
 argument_list|)
+argument_list|,
+name|anyBoolean
+argument_list|()
 argument_list|)
 expr_stmt|;
 name|doNothing
@@ -1789,7 +1807,6 @@ name|class
 argument_list|)
 argument_list|)
 expr_stmt|;
-comment|//
 name|Priority
 name|priority
 init|=
@@ -2032,6 +2049,8 @@ argument_list|(
 name|clusterResource
 argument_list|,
 name|node_0
+argument_list|,
+literal|false
 argument_list|)
 expr_stmt|;
 for|for
@@ -2108,6 +2127,8 @@ argument_list|(
 name|clusterResource
 argument_list|,
 name|node_0
+argument_list|,
+literal|false
 argument_list|)
 expr_stmt|;
 block|}
@@ -2185,6 +2206,8 @@ argument_list|(
 name|clusterResource
 argument_list|,
 name|node_0
+argument_list|,
+literal|false
 argument_list|)
 expr_stmt|;
 block|}
@@ -2262,6 +2285,8 @@ argument_list|(
 name|clusterResource
 argument_list|,
 name|node_0
+argument_list|,
+literal|false
 argument_list|)
 expr_stmt|;
 block|}
@@ -2361,6 +2386,8 @@ operator|.
 name|KILL
 argument_list|,
 literal|null
+argument_list|,
+literal|true
 argument_list|)
 expr_stmt|;
 block|}
@@ -2528,6 +2555,8 @@ argument_list|(
 name|clusterResource
 argument_list|,
 name|node_0
+argument_list|,
+literal|false
 argument_list|)
 expr_stmt|;
 block|}
@@ -2612,6 +2641,8 @@ operator|.
 name|KILL
 argument_list|,
 literal|null
+argument_list|,
+literal|true
 argument_list|)
 expr_stmt|;
 name|verifyQueueMetrics
@@ -2763,6 +2794,8 @@ argument_list|(
 name|clusterResource
 argument_list|,
 name|node_0
+argument_list|,
+literal|false
 argument_list|)
 expr_stmt|;
 name|verifyQueueMetrics
@@ -2846,6 +2879,8 @@ operator|.
 name|KILL
 argument_list|,
 literal|null
+argument_list|,
+literal|true
 argument_list|)
 expr_stmt|;
 name|verifyQueueMetrics
@@ -2997,6 +3032,8 @@ argument_list|(
 name|clusterResource
 argument_list|,
 name|node_0
+argument_list|,
+literal|false
 argument_list|)
 expr_stmt|;
 name|verifyQueueMetrics
@@ -3121,6 +3158,8 @@ argument_list|(
 name|clusterResource
 argument_list|,
 name|node_0
+argument_list|,
+literal|false
 argument_list|)
 expr_stmt|;
 name|InOrder
@@ -3153,6 +3192,9 @@ name|FiCaSchedulerNode
 operator|.
 name|class
 argument_list|)
+argument_list|,
+name|anyBoolean
+argument_list|()
 argument_list|)
 expr_stmt|;
 name|allocationOrder
@@ -3175,6 +3217,9 @@ name|FiCaSchedulerNode
 operator|.
 name|class
 argument_list|)
+argument_list|,
+name|anyBoolean
+argument_list|()
 argument_list|)
 expr_stmt|;
 name|verifyQueueMetrics

@@ -1744,6 +1744,11 @@ argument_list|(
 name|keyName
 argument_list|)
 expr_stmt|;
+name|provider
+operator|.
+name|flush
+argument_list|()
+expr_stmt|;
 name|out
 operator|.
 name|println
@@ -1752,11 +1757,6 @@ name|keyName
 operator|+
 literal|" has been successfully rolled."
 argument_list|)
-expr_stmt|;
-name|provider
-operator|.
-name|flush
-argument_list|()
 expr_stmt|;
 name|printProviderWritten
 argument_list|()
@@ -2046,6 +2046,11 @@ argument_list|(
 name|keyName
 argument_list|)
 expr_stmt|;
+name|provider
+operator|.
+name|flush
+argument_list|()
+expr_stmt|;
 name|out
 operator|.
 name|println
@@ -2054,11 +2059,6 @@ name|keyName
 operator|+
 literal|" has been successfully deleted."
 argument_list|)
-expr_stmt|;
-name|provider
-operator|.
-name|flush
-argument_list|()
 expr_stmt|;
 name|printProviderWritten
 argument_list|()
@@ -2269,6 +2269,11 @@ argument_list|,
 name|options
 argument_list|)
 expr_stmt|;
+name|provider
+operator|.
+name|flush
+argument_list|()
+expr_stmt|;
 name|out
 operator|.
 name|println
@@ -2284,11 +2289,6 @@ argument_list|()
 operator|+
 literal|"."
 argument_list|)
-expr_stmt|;
-name|provider
-operator|.
-name|flush
-argument_list|()
 expr_stmt|;
 name|printProviderWritten
 argument_list|()

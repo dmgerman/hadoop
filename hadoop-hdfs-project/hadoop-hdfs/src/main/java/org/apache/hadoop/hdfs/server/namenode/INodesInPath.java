@@ -489,7 +489,6 @@ argument_list|)
 return|;
 block|}
 comment|/**    * Retrieve existing INodes from a path. If existing is big enough to store    * all path components (existing and non-existing), then existing INodes    * will be stored starting from the root INode into existing[0]; if    * existing is not big enough to store all path components, then only the    * last existing and non existing INodes will be stored so that    * existing[existing.length-1] refers to the INode of the final component.    *     * An UnresolvedPathException is always thrown when an intermediate path     * component refers to a symbolic link. If the final path component refers     * to a symbolic link then an UnresolvedPathException is only thrown if    * resolveLink is true.      *     *<p>    * Example:<br>    * Given the path /c1/c2/c3 where only /c1/c2 exists, resulting in the    * following path components: ["","c1","c2","c3"],    *     *<p>    *<code>getExistingPathINodes(["","c1","c2"], [?])</code> should fill the    * array with [c2]<br>    *<code>getExistingPathINodes(["","c1","c2","c3"], [?])</code> should fill the    * array with [null]    *     *<p>    *<code>getExistingPathINodes(["","c1","c2"], [?,?])</code> should fill the    * array with [c1,c2]<br>    *<code>getExistingPathINodes(["","c1","c2","c3"], [?,?])</code> should fill    * the array with [c2,null]    *     *<p>    *<code>getExistingPathINodes(["","c1","c2"], [?,?,?,?])</code> should fill    * the array with [rootINode,c1,c2,null],<br>    *<code>getExistingPathINodes(["","c1","c2","c3"], [?,?,?,?])</code> should    * fill the array with [rootINode,c1,c2,null]    *     * @param startingDir the starting directory    * @param components array of path component name    * @param numOfINodes number of INodes to return    * @param resolveLink indicates whether UnresolvedLinkException should    *        be thrown when the path refers to a symbolic link.    * @return the specified number of existing INodes in the path    */
-comment|// TODO: Eliminate null elements from inodes (to be provided by HDFS-7104)
 DECL|method|resolve (final INodeDirectory startingDir, final byte[][] components, final int numOfINodes, final boolean resolveLink)
 specifier|static
 name|INodesInPath
@@ -1164,7 +1163,7 @@ specifier|private
 name|boolean
 name|isSnapshot
 decl_stmt|;
-comment|/**    * Index of {@link INodeDirectoryWithSnapshot} for snapshot path, else -1    */
+comment|/**    * index of the {@link Snapshot.Root} node in the inodes array,    * -1 for non-snapshot paths.    */
 DECL|field|snapshotRootIndex
 specifier|private
 name|int
@@ -1327,7 +1326,7 @@ name|sid
 expr_stmt|;
 block|}
 block|}
-comment|/**    * @return the inodes array excluding the null elements.    */
+comment|/**    * @return a new array of inodes excluding the null elements introduced by    * snapshot path elements. E.g., after resolving path "/dir/.snapshot",    * {@link #inodes} is {/, dir, null}, while the returned array only contains    * inodes of "/" and "dir". Note the length of the returned array is always    * equal to {@link #capacity}.    */
 DECL|method|getINodes ()
 name|INode
 index|[]
@@ -1337,12 +1336,16 @@ block|{
 if|if
 condition|(
 name|capacity
-operator|<
+operator|==
 name|inodes
 operator|.
 name|length
 condition|)
 block|{
+return|return
+name|inodes
+return|;
+block|}
 name|INode
 index|[]
 name|newNodes
@@ -1368,13 +1371,8 @@ argument_list|,
 name|capacity
 argument_list|)
 expr_stmt|;
-name|inodes
-operator|=
-name|newNodes
-expr_stmt|;
-block|}
 return|return
-name|inodes
+name|newNodes
 return|;
 block|}
 comment|/**    * @return the i-th inode if i>= 0;    *         otherwise, i< 0, return the (length + i)-th inode.    */
@@ -1439,7 +1437,7 @@ literal|1
 index|]
 return|;
 block|}
-comment|/**    * @return index of the {@link INodeDirectoryWithSnapshot} in    *         {@link #inodes} for snapshot path, else -1.    */
+comment|/**    * @return index of the {@link Snapshot.Root} node in the inodes array,    * -1 for non-snapshot paths.    */
 DECL|method|getSnapshotRootIndex ()
 name|int
 name|getSnapshotRootIndex

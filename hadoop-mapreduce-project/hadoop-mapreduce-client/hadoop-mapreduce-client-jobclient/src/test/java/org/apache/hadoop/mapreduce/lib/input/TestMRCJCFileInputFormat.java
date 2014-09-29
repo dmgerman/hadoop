@@ -308,7 +308,7 @@ name|set
 argument_list|(
 literal|"fs.defaultFS"
 argument_list|,
-literal|"s3://abc:xyz@hostname/"
+literal|"file:///abc/"
 argument_list|)
 expr_stmt|;
 specifier|final
@@ -322,18 +322,6 @@ argument_list|(
 name|conf
 argument_list|)
 decl_stmt|;
-name|j
-operator|.
-name|getConfiguration
-argument_list|()
-operator|.
-name|set
-argument_list|(
-literal|"fs.defaultFS"
-argument_list|,
-literal|"s3://abc:xyz@hostname/"
-argument_list|)
-expr_stmt|;
 comment|//setup default fs
 specifier|final
 name|FileSystem

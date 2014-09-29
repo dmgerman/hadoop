@@ -813,6 +813,11 @@ specifier|final
 name|ResourceCalculator
 name|resourceCalculator
 decl_stmt|;
+DECL|field|reservationsContinueLooking
+specifier|private
+name|boolean
+name|reservationsContinueLooking
+decl_stmt|;
 DECL|method|ParentQueue (CapacitySchedulerContext cs, String queueName, CSQueue parent, CSQueue old)
 specifier|public
 name|ParentQueue
@@ -1103,6 +1108,14 @@ argument_list|,
 name|state
 argument_list|,
 name|acls
+argument_list|,
+name|cs
+operator|.
+name|getConfiguration
+argument_list|()
+operator|.
+name|getReservationContinueLook
+argument_list|()
 argument_list|)
 expr_stmt|;
 name|this
@@ -1146,7 +1159,7 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|setupQueueConfigs ( Resource clusterResource, float capacity, float absoluteCapacity, float maximumCapacity, float absoluteMaxCapacity, QueueState state, Map<QueueACL, AccessControlList> acls )
+DECL|method|setupQueueConfigs ( Resource clusterResource, float capacity, float absoluteCapacity, float maximumCapacity, float absoluteMaxCapacity, QueueState state, Map<QueueACL, AccessControlList> acls, boolean continueLooking )
 specifier|private
 specifier|synchronized
 name|void
@@ -1177,6 +1190,9 @@ argument_list|,
 name|AccessControlList
 argument_list|>
 name|acls
+parameter_list|,
+name|boolean
+name|continueLooking
 parameter_list|)
 block|{
 comment|// Sanity check
@@ -1273,6 +1289,12 @@ operator|.
 name|state
 argument_list|)
 expr_stmt|;
+name|this
+operator|.
+name|reservationsContinueLooking
+operator|=
+name|continueLooking
+expr_stmt|;
 name|StringBuilder
 name|aclsString
 init|=
@@ -1364,6 +1386,10 @@ operator|+
 literal|", acls="
 operator|+
 name|aclsString
+operator|+
+literal|", reservationsContinueLooking="
+operator|+
+name|reservationsContinueLooking
 argument_list|)
 expr_stmt|;
 block|}
@@ -2125,6 +2151,10 @@ argument_list|,
 name|newlyParsedParentQueue
 operator|.
 name|acls
+argument_list|,
+name|newlyParsedParentQueue
+operator|.
+name|reservationsContinueLooking
 argument_list|)
 expr_stmt|;
 comment|// Re-configure existing child queues and add new ones
@@ -2799,7 +2829,7 @@ expr_stmt|;
 block|}
 annotation|@
 name|Override
-DECL|method|assignContainers ( Resource clusterResource, FiCaSchedulerNode node)
+DECL|method|assignContainers ( Resource clusterResource, FiCaSchedulerNode node, boolean needToUnreserve)
 specifier|public
 specifier|synchronized
 name|CSAssignment
@@ -2810,6 +2840,9 @@ name|clusterResource
 parameter_list|,
 name|FiCaSchedulerNode
 name|node
+parameter_list|,
+name|boolean
+name|needToUnreserve
 parameter_list|)
 block|{
 name|CSAssignment
@@ -2861,6 +2894,11 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
+name|boolean
+name|localNeedToUnreserve
+init|=
+literal|false
+decl_stmt|;
 comment|// Are we over maximum-capacity for this queue?
 if|if
 condition|(
@@ -2871,7 +2909,22 @@ name|clusterResource
 argument_list|)
 condition|)
 block|{
+comment|// check to see if we could if we unreserve first
+name|localNeedToUnreserve
+operator|=
+name|assignToQueueIfUnreserve
+argument_list|(
+name|clusterResource
+argument_list|)
+expr_stmt|;
+if|if
+condition|(
+operator|!
+name|localNeedToUnreserve
+condition|)
+block|{
 break|break;
+block|}
 block|}
 comment|// Schedule
 name|CSAssignment
@@ -2882,6 +2935,10 @@ argument_list|(
 name|clusterResource
 argument_list|,
 name|node
+argument_list|,
+name|localNeedToUnreserve
+operator||
+name|needToUnreserve
 argument_list|)
 decl_stmt|;
 name|assignment
@@ -3140,6 +3197,154 @@ return|return
 literal|true
 return|;
 block|}
+DECL|method|assignToQueueIfUnreserve (Resource clusterResource)
+specifier|private
+specifier|synchronized
+name|boolean
+name|assignToQueueIfUnreserve
+parameter_list|(
+name|Resource
+name|clusterResource
+parameter_list|)
+block|{
+if|if
+condition|(
+name|this
+operator|.
+name|reservationsContinueLooking
+condition|)
+block|{
+comment|// check to see if we could potentially use this node instead of a reserved
+comment|// node
+name|Resource
+name|reservedResources
+init|=
+name|Resources
+operator|.
+name|createResource
+argument_list|(
+name|getMetrics
+argument_list|()
+operator|.
+name|getReservedMB
+argument_list|()
+argument_list|,
+name|getMetrics
+argument_list|()
+operator|.
+name|getReservedVirtualCores
+argument_list|()
+argument_list|)
+decl_stmt|;
+name|float
+name|capacityWithoutReservedCapacity
+init|=
+name|Resources
+operator|.
+name|divide
+argument_list|(
+name|resourceCalculator
+argument_list|,
+name|clusterResource
+argument_list|,
+name|Resources
+operator|.
+name|subtract
+argument_list|(
+name|usedResources
+argument_list|,
+name|reservedResources
+argument_list|)
+argument_list|,
+name|clusterResource
+argument_list|)
+decl_stmt|;
+if|if
+condition|(
+name|capacityWithoutReservedCapacity
+operator|<=
+name|absoluteMaxCapacity
+condition|)
+block|{
+if|if
+condition|(
+name|LOG
+operator|.
+name|isDebugEnabled
+argument_list|()
+condition|)
+block|{
+name|LOG
+operator|.
+name|debug
+argument_list|(
+literal|"parent: try to use reserved: "
+operator|+
+name|getQueueName
+argument_list|()
+operator|+
+literal|" usedResources: "
+operator|+
+name|usedResources
+operator|.
+name|getMemory
+argument_list|()
+operator|+
+literal|" clusterResources: "
+operator|+
+name|clusterResource
+operator|.
+name|getMemory
+argument_list|()
+operator|+
+literal|" reservedResources: "
+operator|+
+name|reservedResources
+operator|.
+name|getMemory
+argument_list|()
+operator|+
+literal|" currentCapacity "
+operator|+
+operator|(
+operator|(
+name|float
+operator|)
+name|usedResources
+operator|.
+name|getMemory
+argument_list|()
+operator|)
+operator|/
+name|clusterResource
+operator|.
+name|getMemory
+argument_list|()
+operator|+
+literal|" potentialNewWithoutReservedCapacity: "
+operator|+
+name|capacityWithoutReservedCapacity
+operator|+
+literal|" ( "
+operator|+
+literal|" max-capacity: "
+operator|+
+name|absoluteMaxCapacity
+operator|+
+literal|")"
+argument_list|)
+expr_stmt|;
+block|}
+comment|// we could potentially use this node instead of reserved node
+return|return
+literal|true
+return|;
+block|}
+block|}
+return|return
+literal|false
+return|;
+block|}
 DECL|method|canAssign (Resource clusterResource, FiCaSchedulerNode node)
 specifier|private
 name|boolean
@@ -3179,7 +3384,7 @@ name|minimumAllocation
 argument_list|)
 return|;
 block|}
-DECL|method|assignContainersToChildQueues (Resource cluster, FiCaSchedulerNode node)
+DECL|method|assignContainersToChildQueues (Resource cluster, FiCaSchedulerNode node, boolean needToUnreserve)
 specifier|synchronized
 name|CSAssignment
 name|assignContainersToChildQueues
@@ -3189,6 +3394,9 @@ name|cluster
 parameter_list|,
 name|FiCaSchedulerNode
 name|node
+parameter_list|,
+name|boolean
+name|needToUnreserve
 parameter_list|)
 block|{
 name|CSAssignment
@@ -3277,6 +3485,8 @@ argument_list|(
 name|cluster
 argument_list|,
 name|node
+argument_list|,
+name|needToUnreserve
 argument_list|)
 expr_stmt|;
 if|if
@@ -3468,7 +3678,7 @@ block|}
 block|}
 annotation|@
 name|Override
-DECL|method|completedContainer (Resource clusterResource, FiCaSchedulerApp application, FiCaSchedulerNode node, RMContainer rmContainer, ContainerStatus containerStatus, RMContainerEventType event, CSQueue completedChildQueue)
+DECL|method|completedContainer (Resource clusterResource, FiCaSchedulerApp application, FiCaSchedulerNode node, RMContainer rmContainer, ContainerStatus containerStatus, RMContainerEventType event, CSQueue completedChildQueue, boolean sortQueues)
 specifier|public
 name|void
 name|completedContainer
@@ -3493,6 +3703,9 @@ name|event
 parameter_list|,
 name|CSQueue
 name|completedChildQueue
+parameter_list|,
+name|boolean
+name|sortQueues
 parameter_list|)
 block|{
 if|if
@@ -3553,6 +3766,14 @@ name|clusterResource
 argument_list|)
 expr_stmt|;
 block|}
+comment|// Note that this is using an iterator on the childQueues so this can't be
+comment|// called if already within an iterator for the childQueues. Like
+comment|// from assignContainersToChildQueues.
+if|if
+condition|(
+name|sortQueues
+condition|)
+block|{
 comment|// reinsert the updated queue
 for|for
 control|(
@@ -3623,6 +3844,7 @@ expr_stmt|;
 break|break;
 block|}
 block|}
+block|}
 comment|// Inform the parent
 if|if
 condition|(
@@ -3649,10 +3871,23 @@ argument_list|,
 name|event
 argument_list|,
 name|this
+argument_list|,
+name|sortQueues
 argument_list|)
 expr_stmt|;
 block|}
 block|}
+block|}
+annotation|@
+name|Private
+DECL|method|getReservationContinueLooking ()
+name|boolean
+name|getReservationContinueLooking
+parameter_list|()
+block|{
+return|return
+name|reservationsContinueLooking
+return|;
 block|}
 DECL|method|allocateResource (Resource clusterResource, Resource resource)
 specifier|synchronized

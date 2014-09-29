@@ -547,8 +547,8 @@ name|String
 name|queue
 parameter_list|)
 function_decl|;
-comment|/**    * Assign containers to applications in the queue or it's children (if any).    * @param clusterResource the resource of the cluster.    * @param node node on which resources are available    * @return the assignment    */
-DECL|method|assignContainers ( Resource clusterResource, FiCaSchedulerNode node)
+comment|/**    * Assign containers to applications in the queue or it's children (if any).    * @param clusterResource the resource of the cluster.    * @param node node on which resources are available    * @param needToUnreserve assign container only if it can unreserve one first    * @return the assignment    */
+DECL|method|assignContainers ( Resource clusterResource, FiCaSchedulerNode node, boolean needToUnreserve)
 specifier|public
 name|CSAssignment
 name|assignContainers
@@ -558,10 +558,13 @@ name|clusterResource
 parameter_list|,
 name|FiCaSchedulerNode
 name|node
+parameter_list|,
+name|boolean
+name|needToUnreserve
 parameter_list|)
 function_decl|;
-comment|/**    * A container assigned to the queue has completed.    * @param clusterResource the resource of the cluster    * @param application application to which the container was assigned    * @param node node on which the container completed    * @param container completed container,     *<code>null</code> if it was just a reservation    * @param containerStatus<code>ContainerStatus</code> for the completed     *                        container    * @param childQueue<code>CSQueue</code> to reinsert in childQueues     * @param event event to be sent to the container    */
-DECL|method|completedContainer (Resource clusterResource, FiCaSchedulerApp application, FiCaSchedulerNode node, RMContainer container, ContainerStatus containerStatus, RMContainerEventType event, CSQueue childQueue)
+comment|/**    * A container assigned to the queue has completed.    * @param clusterResource the resource of the cluster    * @param application application to which the container was assigned    * @param node node on which the container completed    * @param container completed container,     *<code>null</code> if it was just a reservation    * @param containerStatus<code>ContainerStatus</code> for the completed     *                        container    * @param childQueue<code>CSQueue</code> to reinsert in childQueues     * @param event event to be sent to the container    * @param sortQueues indicates whether it should re-sort the queues    */
+DECL|method|completedContainer (Resource clusterResource, FiCaSchedulerApp application, FiCaSchedulerNode node, RMContainer container, ContainerStatus containerStatus, RMContainerEventType event, CSQueue childQueue, boolean sortQueues)
 specifier|public
 name|void
 name|completedContainer
@@ -586,6 +589,9 @@ name|event
 parameter_list|,
 name|CSQueue
 name|childQueue
+parameter_list|,
+name|boolean
+name|sortQueues
 parameter_list|)
 function_decl|;
 comment|/**    * Get the number of applications in the queue.    * @return number of applications    */

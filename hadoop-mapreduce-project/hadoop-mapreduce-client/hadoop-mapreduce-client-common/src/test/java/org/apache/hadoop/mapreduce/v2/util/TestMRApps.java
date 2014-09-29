@@ -3930,7 +3930,7 @@ index|[]
 block|{
 literal|"/java/fake/Klass"
 block|,
-literal|"/javax/fake/Klass"
+literal|"/javax/management/fake/Klass"
 block|,
 literal|"/org/apache/commons/logging/fake/Klass"
 block|,
@@ -3985,7 +3985,7 @@ name|getTrimmedStrings
 argument_list|(
 name|ApplicationClassLoader
 operator|.
-name|DEFAULT_SYSTEM_CLASSES
+name|SYSTEM_CLASSES_DEFAULT
 argument_list|)
 argument_list|)
 decl_stmt|;

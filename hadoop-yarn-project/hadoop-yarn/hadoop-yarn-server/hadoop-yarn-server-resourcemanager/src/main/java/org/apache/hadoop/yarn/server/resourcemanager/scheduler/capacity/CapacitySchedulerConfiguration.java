@@ -431,6 +431,30 @@ literal|"state"
 decl_stmt|;
 annotation|@
 name|Private
+DECL|field|RESERVE_CONT_LOOK_ALL_NODES
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|RESERVE_CONT_LOOK_ALL_NODES
+init|=
+name|PREFIX
+operator|+
+literal|"reservations-continue-look-all-nodes"
+decl_stmt|;
+annotation|@
+name|Private
+DECL|field|DEFAULT_RESERVE_CONT_LOOK_ALL_NODES
+specifier|public
+specifier|static
+specifier|final
+name|boolean
+name|DEFAULT_RESERVE_CONT_LOOK_ALL_NODES
+init|=
+literal|true
+decl_stmt|;
+annotation|@
+name|Private
 DECL|field|DEFAULT_MAXIMUM_SYSTEM_APPLICATIIONS
 specifier|public
 specifier|static
@@ -1392,6 +1416,22 @@ else|:
 name|QueueState
 operator|.
 name|RUNNING
+return|;
+block|}
+comment|/*    * Returns whether we should continue to look at all heart beating nodes even    * after the reservation limit was hit. The node heart beating in could    * satisfy the request thus could be a better pick then waiting for the    * reservation to be fullfilled.  This config is refreshable.    */
+DECL|method|getReservationContinueLook ()
+specifier|public
+name|boolean
+name|getReservationContinueLook
+parameter_list|()
+block|{
+return|return
+name|getBoolean
+argument_list|(
+name|RESERVE_CONT_LOOK_ALL_NODES
+argument_list|,
+name|DEFAULT_RESERVE_CONT_LOOK_ALL_NODES
+argument_list|)
 return|;
 block|}
 DECL|method|getAclKey (QueueACL acl)
