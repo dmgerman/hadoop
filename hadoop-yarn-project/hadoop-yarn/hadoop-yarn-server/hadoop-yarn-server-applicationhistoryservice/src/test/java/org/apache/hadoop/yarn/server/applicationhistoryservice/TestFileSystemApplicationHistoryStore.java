@@ -446,16 +446,16 @@ operator|new
 name|RawLocalFileSystem
 argument_list|()
 expr_stmt|;
-name|initStore
+name|initAndStartStore
 argument_list|(
 name|fs
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|initStore (final FileSystem fs)
+DECL|method|initAndStartStore (final FileSystem fs)
 specifier|private
 name|void
-name|initStore
+name|initAndStartStore
 parameter_list|(
 specifier|final
 name|FileSystem
@@ -1673,7 +1673,7 @@ argument_list|)
 expr_stmt|;
 try|try
 block|{
-name|initStore
+name|initAndStartStore
 argument_list|(
 name|fs
 argument_list|)
@@ -1812,7 +1812,7 @@ argument_list|)
 expr_stmt|;
 try|try
 block|{
-name|initStore
+name|initAndStartStore
 argument_list|(
 name|fs
 argument_list|)
