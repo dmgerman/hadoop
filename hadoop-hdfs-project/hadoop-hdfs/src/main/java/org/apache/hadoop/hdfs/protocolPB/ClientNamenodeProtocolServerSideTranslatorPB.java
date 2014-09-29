@@ -9502,6 +9502,13 @@ name|getSrc
 argument_list|()
 argument_list|)
 decl_stmt|;
+if|if
+condition|(
+name|ret
+operator|!=
+literal|null
+condition|)
+block|{
 name|builder
 operator|.
 name|setZone
@@ -9514,6 +9521,7 @@ name|ret
 argument_list|)
 argument_list|)
 expr_stmt|;
+block|}
 return|return
 name|builder
 operator|.

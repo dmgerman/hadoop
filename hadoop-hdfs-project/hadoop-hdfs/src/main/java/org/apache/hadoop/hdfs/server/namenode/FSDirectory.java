@@ -14177,15 +14177,6 @@ condition|(
 name|encryptionZone
 operator|==
 literal|null
-operator|||
-name|encryptionZone
-operator|.
-name|equals
-argument_list|(
-name|EncryptionZoneManager
-operator|.
-name|NULL_EZ
-argument_list|)
 condition|)
 block|{
 comment|// not an encrypted file
