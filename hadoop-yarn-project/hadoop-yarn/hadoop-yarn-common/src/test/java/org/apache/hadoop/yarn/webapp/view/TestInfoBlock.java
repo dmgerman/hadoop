@@ -247,7 +247,7 @@ name|resInfo
 operator|.
 name|_
 argument_list|(
-literal|"Single_line_value"
+literal|"Multiple_line_value"
 argument_list|,
 literal|"This is one line."
 argument_list|)
@@ -373,7 +373,7 @@ literal|" "
 argument_list|)
 decl_stmt|;
 name|String
-name|expectedSinglelineData
+name|expectedMultilineData1
 init|=
 name|String
 operator|.
@@ -381,11 +381,13 @@ name|format
 argument_list|(
 literal|"<tr class=\"odd\">%n"
 operator|+
-literal|"<th>%n Single_line_value%n<td>%n This is one line.%n"
+literal|"<th>%n Multiple_line_value%n</th>%n"
+operator|+
+literal|"<td>%n This is one line.%n</td>%n"
 argument_list|)
 decl_stmt|;
 name|String
-name|expectedMultilineData
+name|expectedMultilineData2
 init|=
 name|String
 operator|.
@@ -393,7 +395,7 @@ name|format
 argument_list|(
 literal|"<tr class=\"even\">%n"
 operator|+
-literal|"<th>%n Multiple_line_value%n<td>%n<div>%n"
+literal|"<th>%n Multiple_line_value%n</th>%n<td>%n<div>%n"
 operator|+
 literal|" This is first line.%n</div>%n<div>%n"
 operator|+
@@ -406,14 +408,14 @@ name|output
 operator|.
 name|contains
 argument_list|(
-name|expectedSinglelineData
+name|expectedMultilineData1
 argument_list|)
 operator|&&
 name|output
 operator|.
 name|contains
 argument_list|(
-name|expectedMultilineData
+name|expectedMultilineData2
 argument_list|)
 argument_list|)
 expr_stmt|;
