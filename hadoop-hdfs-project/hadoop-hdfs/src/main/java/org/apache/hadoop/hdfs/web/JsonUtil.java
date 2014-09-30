@@ -2168,8 +2168,6 @@ name|replication
 argument_list|,
 name|blockSize
 argument_list|,
-name|isLazyPersist
-argument_list|,
 name|mTime
 argument_list|,
 name|aTime

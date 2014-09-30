@@ -186,12 +186,6 @@ specifier|final
 name|long
 name|blocksize
 decl_stmt|;
-DECL|field|isLazyPersist
-specifier|private
-specifier|final
-name|boolean
-name|isLazyPersist
-decl_stmt|;
 DECL|field|modification_time
 specifier|private
 specifier|final
@@ -262,7 +256,7 @@ literal|0
 index|]
 decl_stmt|;
 comment|/**    * Constructor    * @param length the number of bytes the file has    * @param isdir if the path is a directory    * @param block_replication the replication factor    * @param blocksize the block size    * @param modification_time modification time    * @param access_time access time    * @param permission permission    * @param owner the owner of the path    * @param group the group of the path    * @param path the local name in java UTF8 encoding the same as that in-memory    * @param fileId the file id    * @param feInfo the file's encryption info    */
-DECL|method|HdfsFileStatus (long length, boolean isdir, int block_replication, long blocksize, boolean isLazyPersist, long modification_time, long access_time, FsPermission permission, String owner, String group, byte[] symlink, byte[] path, long fileId, int childrenNum, FileEncryptionInfo feInfo, byte storagePolicy)
+DECL|method|HdfsFileStatus (long length, boolean isdir, int block_replication, long blocksize, long modification_time, long access_time, FsPermission permission, String owner, String group, byte[] symlink, byte[] path, long fileId, int childrenNum, FileEncryptionInfo feInfo, byte storagePolicy)
 specifier|public
 name|HdfsFileStatus
 parameter_list|(
@@ -277,9 +271,6 @@ name|block_replication
 parameter_list|,
 name|long
 name|blocksize
-parameter_list|,
-name|boolean
-name|isLazyPersist
 parameter_list|,
 name|long
 name|modification_time
@@ -343,12 +334,6 @@ operator|.
 name|blocksize
 operator|=
 name|blocksize
-expr_stmt|;
-name|this
-operator|.
-name|isLazyPersist
-operator|=
-name|isLazyPersist
 expr_stmt|;
 name|this
 operator|.
@@ -506,18 +491,6 @@ parameter_list|()
 block|{
 return|return
 name|blocksize
-return|;
-block|}
-comment|/**    * @return true if the file is lazyPersist.    */
-DECL|method|isLazyPersist ()
-specifier|final
-specifier|public
-name|boolean
-name|isLazyPersist
-parameter_list|()
-block|{
-return|return
-name|isLazyPersist
 return|;
 block|}
 comment|/**    * Get the replication factor of a file.    * @return the replication factor of a file.    */
@@ -841,9 +814,6 @@ name|getReplication
 argument_list|()
 argument_list|,
 name|getBlockSize
-argument_list|()
-argument_list|,
-name|isLazyPersist
 argument_list|()
 argument_list|,
 name|getModificationTime

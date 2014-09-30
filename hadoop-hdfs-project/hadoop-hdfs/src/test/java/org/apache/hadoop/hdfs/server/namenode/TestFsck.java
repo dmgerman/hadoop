@@ -6956,8 +6956,6 @@ name|blockReplication
 argument_list|,
 name|blockSize
 argument_list|,
-literal|false
-argument_list|,
 name|modTime
 argument_list|,
 name|accessTime

@@ -554,7 +554,7 @@ name|PREFERRED_BLOCK_SIZE
 operator|.
 name|BITS
 argument_list|,
-literal|11
+literal|12
 argument_list|,
 literal|1
 argument_list|)
@@ -569,18 +569,6 @@ argument_list|,
 name|BlockStoragePolicySuite
 operator|.
 name|ID_BIT_LENGTH
-argument_list|,
-literal|0
-argument_list|)
-block|,
-DECL|enumConstant|LAZY_PERSIST
-name|LAZY_PERSIST
-argument_list|(
-name|STORAGE_POLICY_ID
-operator|.
-name|BITS
-argument_list|,
-literal|1
 argument_list|,
 literal|0
 argument_list|)
@@ -664,32 +652,6 @@ name|header
 argument_list|)
 return|;
 block|}
-DECL|method|getLazyPersistFlag (long header)
-specifier|static
-name|boolean
-name|getLazyPersistFlag
-parameter_list|(
-name|long
-name|header
-parameter_list|)
-block|{
-return|return
-name|LAZY_PERSIST
-operator|.
-name|BITS
-operator|.
-name|retrieve
-argument_list|(
-name|header
-argument_list|)
-operator|==
-literal|0
-condition|?
-literal|false
-else|:
-literal|true
-return|;
-block|}
 DECL|method|getStoragePolicyID (long header)
 specifier|static
 name|byte
@@ -713,7 +675,7 @@ name|header
 argument_list|)
 return|;
 block|}
-DECL|method|toLong (long preferredBlockSize, short replication, boolean isLazyPersist, byte storagePolicyID)
+DECL|method|toLong (long preferredBlockSize, short replication, byte storagePolicyID)
 specifier|static
 name|long
 name|toLong
@@ -723,9 +685,6 @@ name|preferredBlockSize
 parameter_list|,
 name|short
 name|replication
-parameter_list|,
-name|boolean
-name|isLazyPersist
 parameter_list|,
 name|byte
 name|storagePolicyID
@@ -771,23 +730,6 @@ operator|.
 name|combine
 argument_list|(
 name|storagePolicyID
-argument_list|,
-name|h
-argument_list|)
-expr_stmt|;
-name|h
-operator|=
-name|LAZY_PERSIST
-operator|.
-name|BITS
-operator|.
-name|combine
-argument_list|(
-name|isLazyPersist
-condition|?
-literal|1
-else|:
-literal|0
 argument_list|,
 name|h
 argument_list|)
@@ -858,8 +800,6 @@ name|replication
 argument_list|,
 name|preferredBlockSize
 argument_list|,
-literal|false
-argument_list|,
 operator|(
 name|byte
 operator|)
@@ -867,7 +807,7 @@ literal|0
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|INodeFile (long id, byte[] name, PermissionStatus permissions, long mtime, long atime, BlockInfo[] blklist, short replication, long preferredBlockSize, boolean isLazyPersist, byte storagePolicyID)
+DECL|method|INodeFile (long id, byte[] name, PermissionStatus permissions, long mtime, long atime, BlockInfo[] blklist, short replication, long preferredBlockSize, byte storagePolicyID)
 name|INodeFile
 parameter_list|(
 name|long
@@ -896,9 +836,6 @@ parameter_list|,
 name|long
 name|preferredBlockSize
 parameter_list|,
-name|boolean
-name|isLazyPersist
-parameter_list|,
 name|byte
 name|storagePolicyID
 parameter_list|)
@@ -925,8 +862,6 @@ argument_list|(
 name|preferredBlockSize
 argument_list|,
 name|replication
-argument_list|,
-name|isLazyPersist
 argument_list|,
 name|storagePolicyID
 argument_list|)
@@ -1941,23 +1876,6 @@ return|return
 name|HeaderFormat
 operator|.
 name|getPreferredBlockSize
-argument_list|(
-name|header
-argument_list|)
-return|;
-block|}
-annotation|@
-name|Override
-DECL|method|getLazyPersistFlag ()
-specifier|public
-name|boolean
-name|getLazyPersistFlag
-parameter_list|()
-block|{
-return|return
-name|HeaderFormat
-operator|.
-name|getLazyPersistFlag
 argument_list|(
 name|header
 argument_list|)

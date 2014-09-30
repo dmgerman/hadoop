@@ -2353,6 +2353,25 @@ name|policyName
 argument_list|)
 return|;
 block|}
+DECL|method|getStoragePolicy (final byte policyId)
+specifier|public
+name|BlockStoragePolicy
+name|getStoragePolicy
+parameter_list|(
+specifier|final
+name|byte
+name|policyId
+parameter_list|)
+block|{
+return|return
+name|storagePolicySuite
+operator|.
+name|getPolicy
+argument_list|(
+name|policyId
+argument_list|)
+return|;
+block|}
 DECL|method|getStoragePolicies ()
 specifier|public
 name|BlockStoragePolicy

@@ -166,6 +166,16 @@ operator|=
 name|isTransient
 expr_stmt|;
 block|}
+DECL|method|isTransient ()
+specifier|public
+name|boolean
+name|isTransient
+parameter_list|()
+block|{
+return|return
+name|isTransient
+return|;
+block|}
 DECL|method|isMovable ()
 specifier|public
 name|boolean
@@ -173,9 +183,8 @@ name|isMovable
 parameter_list|()
 block|{
 return|return
+operator|!
 name|isTransient
-operator|==
-literal|false
 return|;
 block|}
 DECL|method|asList ()

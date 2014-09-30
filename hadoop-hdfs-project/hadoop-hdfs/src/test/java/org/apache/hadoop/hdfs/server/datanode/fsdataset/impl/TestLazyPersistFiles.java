@@ -574,6 +574,20 @@ begin_import
 import|import static
 name|org
 operator|.
+name|hamcrest
+operator|.
+name|core
+operator|.
+name|IsNot
+operator|.
+name|not
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
 name|junit
 operator|.
 name|Assert
@@ -676,6 +690,18 @@ name|ALL
 argument_list|)
 expr_stmt|;
 block|}
+DECL|field|LAZY_PERSIST_POLICY_ID
+specifier|private
+specifier|static
+specifier|final
+name|byte
+name|LAZY_PERSIST_POLICY_ID
+init|=
+operator|(
+name|byte
+operator|)
+literal|15
+decl_stmt|;
 DECL|field|THREADPOOL_SIZE
 specifier|private
 specifier|static
@@ -842,10 +868,10 @@ name|timeout
 operator|=
 literal|300000
 argument_list|)
-DECL|method|testFlagNotSetByDefault ()
+DECL|method|testPolicyNotSetByDefault ()
 specifier|public
 name|void
-name|testFlagNotSetByDefault
+name|testPolicyNotSetByDefault
 parameter_list|()
 throws|throws
 name|IOException
@@ -889,7 +915,8 @@ argument_list|,
 literal|false
 argument_list|)
 expr_stmt|;
-comment|// Stat the file and check that the lazyPersist flag is returned back.
+comment|// Stat the file and check that the LAZY_PERSIST policy is not
+comment|// returned back.
 name|HdfsFileStatus
 name|status
 init|=
@@ -907,12 +934,12 @@ name|assertThat
 argument_list|(
 name|status
 operator|.
-name|isLazyPersist
+name|getStoragePolicy
 argument_list|()
 argument_list|,
-name|is
+name|not
 argument_list|(
-literal|false
+name|LAZY_PERSIST_POLICY_ID
 argument_list|)
 argument_list|)
 expr_stmt|;
@@ -924,10 +951,10 @@ name|timeout
 operator|=
 literal|300000
 argument_list|)
-DECL|method|testFlagPropagation ()
+DECL|method|testPolicyPropagation ()
 specifier|public
 name|void
-name|testFlagPropagation
+name|testPolicyPropagation
 parameter_list|()
 throws|throws
 name|IOException
@@ -989,12 +1016,12 @@ name|assertThat
 argument_list|(
 name|status
 operator|.
-name|isLazyPersist
+name|getStoragePolicy
 argument_list|()
 argument_list|,
 name|is
 argument_list|(
-literal|true
+name|LAZY_PERSIST_POLICY_ID
 argument_list|)
 argument_list|)
 expr_stmt|;
@@ -1006,10 +1033,10 @@ name|timeout
 operator|=
 literal|300000
 argument_list|)
-DECL|method|testFlagPersistenceInEditLog ()
+DECL|method|testPolicyPersistenceInEditLog ()
 specifier|public
 name|void
-name|testFlagPersistenceInEditLog
+name|testPolicyPersistenceInEditLog
 parameter_list|()
 throws|throws
 name|IOException
@@ -1078,12 +1105,12 @@ name|assertThat
 argument_list|(
 name|status
 operator|.
-name|isLazyPersist
+name|getStoragePolicy
 argument_list|()
 argument_list|,
 name|is
 argument_list|(
-literal|true
+name|LAZY_PERSIST_POLICY_ID
 argument_list|)
 argument_list|)
 expr_stmt|;
@@ -1095,10 +1122,10 @@ name|timeout
 operator|=
 literal|300000
 argument_list|)
-DECL|method|testFlagPersistenceInFsImage ()
+DECL|method|testPolicyPersistenceInFsImage ()
 specifier|public
 name|void
-name|testFlagPersistenceInFsImage
+name|testPolicyPersistenceInFsImage
 parameter_list|()
 throws|throws
 name|IOException
@@ -1195,12 +1222,12 @@ name|assertThat
 argument_list|(
 name|status
 operator|.
-name|isLazyPersist
+name|getStoragePolicy
 argument_list|()
 argument_list|,
 name|is
 argument_list|(
-literal|true
+name|LAZY_PERSIST_POLICY_ID
 argument_list|)
 argument_list|)
 expr_stmt|;

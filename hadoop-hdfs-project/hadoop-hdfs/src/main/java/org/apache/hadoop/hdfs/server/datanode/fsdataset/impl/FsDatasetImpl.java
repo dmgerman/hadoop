@@ -2253,9 +2253,8 @@ comment|// storageMap and asyncDiskService, consistent.
 name|FsVolumeImpl
 name|fsVolume
 init|=
-name|FsVolumeImplAllocator
-operator|.
-name|createVolume
+operator|new
+name|FsVolumeImpl
 argument_list|(
 name|this
 argument_list|,

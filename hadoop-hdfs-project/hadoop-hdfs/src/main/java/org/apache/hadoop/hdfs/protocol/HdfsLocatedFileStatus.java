@@ -155,7 +155,7 @@ name|LocatedBlocks
 name|locations
 decl_stmt|;
 comment|/**    * Constructor    *     * @param length size    * @param isdir if this is directory    * @param block_replication the file's replication factor    * @param blocksize the file's block size    * @param modification_time most recent modification time    * @param access_time most recent access time    * @param permission permission    * @param owner owner    * @param group group    * @param symlink symbolic link    * @param path local path name in java UTF8 format     * @param fileId the file id    * @param locations block locations    * @param feInfo file encryption info    */
-DECL|method|HdfsLocatedFileStatus (long length, boolean isdir, int block_replication, long blocksize, boolean isLazyPersist, long modification_time, long access_time, FsPermission permission, String owner, String group, byte[] symlink, byte[] path, long fileId, LocatedBlocks locations, int childrenNum, FileEncryptionInfo feInfo, byte storagePolicy)
+DECL|method|HdfsLocatedFileStatus (long length, boolean isdir, int block_replication, long blocksize, long modification_time, long access_time, FsPermission permission, String owner, String group, byte[] symlink, byte[] path, long fileId, LocatedBlocks locations, int childrenNum, FileEncryptionInfo feInfo, byte storagePolicy)
 specifier|public
 name|HdfsLocatedFileStatus
 parameter_list|(
@@ -170,9 +170,6 @@ name|block_replication
 parameter_list|,
 name|long
 name|blocksize
-parameter_list|,
-name|boolean
-name|isLazyPersist
 parameter_list|,
 name|long
 name|modification_time
@@ -222,8 +219,6 @@ argument_list|,
 name|block_replication
 argument_list|,
 name|blocksize
-argument_list|,
-name|isLazyPersist
 argument_list|,
 name|modification_time
 argument_list|,
