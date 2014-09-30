@@ -641,6 +641,29 @@ return|;
 block|}
 annotation|@
 name|Override
+DECL|method|getFsStatus (final Path f)
+specifier|public
+name|FsStatus
+name|getFsStatus
+parameter_list|(
+specifier|final
+name|Path
+name|f
+parameter_list|)
+throws|throws
+name|IOException
+block|{
+return|return
+name|fsImpl
+operator|.
+name|getStatus
+argument_list|(
+name|f
+argument_list|)
+return|;
+block|}
+annotation|@
+name|Override
 DECL|method|getServerDefaults ()
 specifier|public
 name|FsServerDefaults
