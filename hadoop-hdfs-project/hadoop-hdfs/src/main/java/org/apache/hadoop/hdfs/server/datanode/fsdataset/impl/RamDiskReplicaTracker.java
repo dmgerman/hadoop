@@ -158,11 +158,39 @@ end_import
 
 begin_import
 import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|util
+operator|.
+name|Time
+import|;
+end_import
+
+begin_import
+import|import
 name|java
 operator|.
 name|io
 operator|.
 name|File
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
+name|concurrent
+operator|.
+name|atomic
+operator|.
+name|AtomicLong
 import|;
 end_import
 
@@ -232,6 +260,27 @@ specifier|private
 name|File
 name|savedMetaFile
 decl_stmt|;
+DECL|field|creationTime
+specifier|private
+name|long
+name|creationTime
+decl_stmt|;
+DECL|field|numReads
+specifier|protected
+name|AtomicLong
+name|numReads
+init|=
+operator|new
+name|AtomicLong
+argument_list|(
+literal|0
+argument_list|)
+decl_stmt|;
+DECL|field|isPersisted
+specifier|protected
+name|boolean
+name|isPersisted
+decl_stmt|;
 comment|/**      * RAM_DISK volume that holds the original replica.      */
 DECL|field|ramDiskVolume
 specifier|final
@@ -288,6 +337,17 @@ expr_stmt|;
 name|savedBlockFile
 operator|=
 literal|null
+expr_stmt|;
+name|creationTime
+operator|=
+name|Time
+operator|.
+name|monotonicNow
+argument_list|()
+expr_stmt|;
+name|isPersisted
+operator|=
+literal|false
 expr_stmt|;
 block|}
 DECL|method|getBlockId ()
@@ -359,6 +419,36 @@ parameter_list|()
 block|{
 return|return
 name|savedMetaFile
+return|;
+block|}
+DECL|method|getNumReads ()
+name|long
+name|getNumReads
+parameter_list|()
+block|{
+return|return
+name|numReads
+operator|.
+name|get
+argument_list|()
+return|;
+block|}
+DECL|method|getCreationTime ()
+name|long
+name|getCreationTime
+parameter_list|()
+block|{
+return|return
+name|creationTime
+return|;
+block|}
+DECL|method|getIsPersisted ()
+name|boolean
+name|getIsPersisted
+parameter_list|()
+block|{
+return|return
+name|isPersisted
 return|;
 block|}
 comment|/**      * Record the saved meta and block files on the given volume.      *      * @param files Meta and block files, in that order.      */
@@ -839,33 +929,21 @@ name|boolean
 name|deleteSavedCopies
 parameter_list|)
 function_decl|;
-DECL|method|discardReplica (RamDiskReplica replica, boolean deleteSavedCopies)
-name|void
-name|discardReplica
-parameter_list|(
+comment|/**    * Return RamDiskReplica info given block pool id and block id    * Return null if it does not exist in RamDisk    */
+DECL|method|getReplica ( final String bpid, final long blockId)
+specifier|abstract
 name|RamDiskReplica
-name|replica
+name|getReplica
+parameter_list|(
+specifier|final
+name|String
+name|bpid
 parameter_list|,
-name|boolean
-name|deleteSavedCopies
+specifier|final
+name|long
+name|blockId
 parameter_list|)
-block|{
-name|discardReplica
-argument_list|(
-name|replica
-operator|.
-name|getBlockPoolId
-argument_list|()
-argument_list|,
-name|replica
-operator|.
-name|getBlockId
-argument_list|()
-argument_list|,
-name|deleteSavedCopies
-argument_list|)
-expr_stmt|;
-block|}
+function_decl|;
 block|}
 end_class
 
