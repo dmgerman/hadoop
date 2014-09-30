@@ -2898,6 +2898,35 @@ operator|.
 name|getAttemptFailuresValidityInterval
 argument_list|()
 expr_stmt|;
+if|if
+condition|(
+name|this
+operator|.
+name|attemptFailuresValidityInterval
+operator|>
+literal|0
+condition|)
+block|{
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"The attemptFailuresValidityInterval for the application: "
+operator|+
+name|this
+operator|.
+name|applicationId
+operator|+
+literal|" is "
+operator|+
+name|this
+operator|.
+name|attemptFailuresValidityInterval
+operator|+
+literal|"."
+argument_list|)
+expr_stmt|;
+block|}
 name|ReentrantReadWriteLock
 name|lock
 init|=
@@ -6588,6 +6617,41 @@ operator|.
 name|getNumFailedAppAttempts
 argument_list|()
 decl_stmt|;
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"The number of failed attempts"
+operator|+
+operator|(
+name|app
+operator|.
+name|attemptFailuresValidityInterval
+operator|>
+literal|0
+condition|?
+literal|" in previous "
+operator|+
+name|app
+operator|.
+name|attemptFailuresValidityInterval
+operator|+
+literal|" milliseconds "
+else|:
+literal|" "
+operator|)
+operator|+
+literal|"is "
+operator|+
+name|numberOfFailure
+operator|+
+literal|". The max attempts is "
+operator|+
+name|app
+operator|.
+name|maxAppAttempts
+argument_list|)
+expr_stmt|;
 if|if
 condition|(
 operator|!
