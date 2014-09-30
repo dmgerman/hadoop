@@ -2513,7 +2513,6 @@ return|;
 block|}
 DECL|method|call (HttpURLConnection conn, Map jsonOutput, int expectedResponse, Class<T> klass)
 specifier|private
-specifier|static
 parameter_list|<
 name|T
 parameter_list|>
@@ -2581,6 +2580,35 @@ expr_stmt|;
 throw|throw
 name|ex
 throw|;
+block|}
+if|if
+condition|(
+name|conn
+operator|.
+name|getResponseCode
+argument_list|()
+operator|==
+name|HttpURLConnection
+operator|.
+name|HTTP_FORBIDDEN
+condition|)
+block|{
+comment|// Ideally, this should happen only when there is an Authentication
+comment|// failure. Unfortunately, the AuthenticationFilter returns 403 when it
+comment|// cannot authenticate (Since a 401 requires Server to send
+comment|// WWW-Authenticate header as well)..
+name|KMSClientProvider
+operator|.
+name|this
+operator|.
+name|authToken
+operator|=
+operator|new
+name|DelegationTokenAuthenticatedURL
+operator|.
+name|Token
+argument_list|()
+expr_stmt|;
 block|}
 name|HttpExceptionUtils
 operator|.

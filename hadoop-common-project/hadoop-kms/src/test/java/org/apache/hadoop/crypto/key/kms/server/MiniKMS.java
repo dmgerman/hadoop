@@ -284,7 +284,7 @@ specifier|public
 class|class
 name|MiniKMS
 block|{
-DECL|method|createJettyServer (String keyStore, String password)
+DECL|method|createJettyServer (String keyStore, String password, int inPort)
 specifier|private
 specifier|static
 name|Server
@@ -295,6 +295,9 @@ name|keyStore
 parameter_list|,
 name|String
 name|password
+parameter_list|,
+name|int
+name|inPort
 parameter_list|)
 block|{
 try|try
@@ -327,7 +330,15 @@ init|=
 operator|new
 name|ServerSocket
 argument_list|(
+operator|(
+name|inPort
+operator|<
 literal|0
+operator|)
+condition|?
+literal|0
+else|:
+name|inPort
 argument_list|,
 literal|50
 argument_list|,
@@ -602,6 +613,14 @@ specifier|private
 name|String
 name|keyStorePassword
 decl_stmt|;
+DECL|field|inPort
+specifier|private
+name|int
+name|inPort
+init|=
+operator|-
+literal|1
+decl_stmt|;
 DECL|method|Builder ()
 specifier|public
 name|Builder
@@ -684,6 +703,36 @@ operator|.
 name|log4jConfFile
 operator|=
 name|log4jConfFile
+expr_stmt|;
+return|return
+name|this
+return|;
+block|}
+DECL|method|setPort (int port)
+specifier|public
+name|Builder
+name|setPort
+parameter_list|(
+name|int
+name|port
+parameter_list|)
+block|{
+name|Preconditions
+operator|.
+name|checkArgument
+argument_list|(
+name|port
+operator|>
+literal|0
+argument_list|,
+literal|"input port must be greater than 0"
+argument_list|)
+expr_stmt|;
+name|this
+operator|.
+name|inPort
+operator|=
+name|port
 expr_stmt|;
 return|return
 name|this
@@ -790,6 +839,8 @@ else|:
 literal|null
 argument_list|,
 name|keyStorePassword
+argument_list|,
+name|inPort
 argument_list|)
 return|;
 block|}
@@ -819,12 +870,17 @@ specifier|private
 name|Server
 name|jetty
 decl_stmt|;
+DECL|field|inPort
+specifier|private
+name|int
+name|inPort
+decl_stmt|;
 DECL|field|kmsURL
 specifier|private
 name|URL
 name|kmsURL
 decl_stmt|;
-DECL|method|MiniKMS (String kmsConfDir, String log4ConfFile, String keyStore, String password)
+DECL|method|MiniKMS (String kmsConfDir, String log4ConfFile, String keyStore, String password, int inPort)
 specifier|public
 name|MiniKMS
 parameter_list|(
@@ -839,6 +895,9 @@ name|keyStore
 parameter_list|,
 name|String
 name|password
+parameter_list|,
+name|int
+name|inPort
 parameter_list|)
 block|{
 name|this
@@ -864,6 +923,12 @@ operator|.
 name|keyStorePassword
 operator|=
 name|password
+expr_stmt|;
+name|this
+operator|.
+name|inPort
+operator|=
+name|inPort
 expr_stmt|;
 block|}
 DECL|method|start ()
@@ -1102,6 +1167,8 @@ argument_list|(
 name|keyStore
 argument_list|,
 name|keyStorePassword
+argument_list|,
+name|inPort
 argument_list|)
 expr_stmt|;
 comment|// we need to do a special handling for MiniKMS to work when in a dir and
