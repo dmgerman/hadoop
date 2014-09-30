@@ -1631,6 +1631,16 @@ operator|.
 name|toString
 argument_list|()
 decl_stmt|;
+if|if
+condition|(
+name|appViewACLsStr
+operator|.
+name|length
+argument_list|()
+operator|>
+literal|0
+condition|)
+block|{
 name|appViewACLs
 operator|.
 name|put
@@ -1642,6 +1652,7 @@ argument_list|,
 name|appViewACLsStr
 argument_list|)
 expr_stmt|;
+block|}
 block|}
 if|if
 condition|(
