@@ -1622,10 +1622,8 @@ expr_stmt|;
 name|boolean
 name|hasRemaining
 init|=
-literal|true
+literal|false
 decl_stmt|;
-try|try
-block|{
 for|for
 control|(
 name|Path
@@ -1635,14 +1633,8 @@ name|targetPaths
 control|)
 block|{
 name|hasRemaining
-operator|=
-name|processDirRecursively
-argument_list|(
-literal|""
-argument_list|,
-name|dfs
-operator|.
-name|getFileInfo
+operator||=
+name|processPath
 argument_list|(
 name|target
 operator|.
@@ -1651,24 +1643,6 @@ argument_list|()
 operator|.
 name|getPath
 argument_list|()
-argument_list|)
-argument_list|)
-expr_stmt|;
-block|}
-block|}
-catch|catch
-parameter_list|(
-name|IOException
-name|e
-parameter_list|)
-block|{
-name|LOG
-operator|.
-name|warn
-argument_list|(
-literal|"Failed to get root directory status. Ignore and continue."
-argument_list|,
-name|e
 argument_list|)
 expr_stmt|;
 block|}
@@ -1692,10 +1666,10 @@ name|hasRemaining
 return|;
 block|}
 comment|/**      * @return whether there is still remaing migration work for the next      *         round      */
-DECL|method|processChildrenList (String fullPath)
+DECL|method|processPath (String fullPath)
 specifier|private
 name|boolean
-name|processChildrenList
+name|processPath
 parameter_list|(
 name|String
 name|fullPath
@@ -1786,7 +1760,7 @@ control|)
 block|{
 name|hasRemaining
 operator||=
-name|processDirRecursively
+name|processRecursively
 argument_list|(
 name|fullPath
 argument_list|,
@@ -1819,10 +1793,10 @@ block|}
 block|}
 block|}
 comment|/** @return whether the migration requires next round */
-DECL|method|processDirRecursively (String parent, HdfsFileStatus status)
+DECL|method|processRecursively (String parent, HdfsFileStatus status)
 specifier|private
 name|boolean
-name|processDirRecursively
+name|processRecursively
 parameter_list|(
 name|String
 name|parent
@@ -1878,7 +1852,7 @@ expr_stmt|;
 block|}
 name|hasRemaining
 operator|=
-name|processChildrenList
+name|processPath
 argument_list|(
 name|fullPath
 argument_list|)
@@ -1906,7 +1880,7 @@ name|DOT_SNAPSHOT_DIR
 decl_stmt|;
 name|hasRemaining
 operator||=
-name|processChildrenList
+name|processPath
 argument_list|(
 name|dirSnapshot
 argument_list|)
