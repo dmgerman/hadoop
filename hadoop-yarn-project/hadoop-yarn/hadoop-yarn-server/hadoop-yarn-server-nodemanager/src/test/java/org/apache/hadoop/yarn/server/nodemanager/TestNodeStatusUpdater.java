@@ -4481,7 +4481,7 @@ argument_list|)
 decl_stmt|;
 name|nhResponse
 operator|.
-name|addFinishedContainersPulledByAM
+name|addContainersToBeRemovedFromNM
 argument_list|(
 name|finishedContainersPulledByAM
 argument_list|)

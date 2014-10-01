@@ -3160,7 +3160,7 @@ name|removeCompletedContainersFromContext
 argument_list|(
 name|response
 operator|.
-name|getFinishedContainersPulledByAM
+name|getContainersToBeRemovedFromNM
 argument_list|()
 argument_list|)
 expr_stmt|;

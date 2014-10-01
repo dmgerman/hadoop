@@ -132,12 +132,12 @@ argument_list|>
 name|getContainersToCleanup
 parameter_list|()
 function_decl|;
-DECL|method|getFinishedContainersPulledByAM ()
+DECL|method|getContainersToBeRemovedFromNM ()
 name|List
 argument_list|<
 name|ContainerId
 argument_list|>
-name|getFinishedContainersPulledByAM
+name|getContainersToBeRemovedFromNM
 parameter_list|()
 function_decl|;
 DECL|method|getApplicationsToCleanup ()
@@ -201,11 +201,12 @@ argument_list|>
 name|containers
 parameter_list|)
 function_decl|;
-comment|// This tells NM to remove finished containers only after the AM
-comment|// has actually received it in a previous allocate response
-DECL|method|addFinishedContainersPulledByAM (List<ContainerId> containers)
+comment|// This tells NM to remove finished containers from its context. Currently, NM
+comment|// will remove finished containers from its context only after AM has actually
+comment|// received the finished containers in a previous allocate response
+DECL|method|addContainersToBeRemovedFromNM (List<ContainerId> containers)
 name|void
-name|addFinishedContainersPulledByAM
+name|addContainersToBeRemovedFromNM
 parameter_list|(
 name|List
 argument_list|<

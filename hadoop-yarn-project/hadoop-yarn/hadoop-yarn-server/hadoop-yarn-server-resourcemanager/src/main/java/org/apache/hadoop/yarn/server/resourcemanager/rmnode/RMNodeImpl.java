@@ -1001,15 +1001,15 @@ name|ContainerIdComparator
 argument_list|()
 argument_list|)
 decl_stmt|;
-comment|/* set of containers that were notified to AM about their completion */
-DECL|field|finishedContainersPulledByAM
+comment|/*    * set of containers to notify NM to remove them from its context. Currently,    * this includes containers that were notified to AM about their completion    */
+DECL|field|containersToBeRemovedFromNM
 specifier|private
 specifier|final
 name|Set
 argument_list|<
 name|ContainerId
 argument_list|>
-name|finishedContainersPulledByAM
+name|containersToBeRemovedFromNM
 init|=
 operator|new
 name|HashSet
@@ -1272,7 +1272,7 @@ operator|.
 name|FINISHED_CONTAINERS_PULLED_BY_AM
 argument_list|,
 operator|new
-name|FinishedContainersPulledByAMTransition
+name|AddContainersToBeRemovedFromNMTransition
 argument_list|()
 argument_list|)
 operator|.
@@ -1369,7 +1369,7 @@ operator|.
 name|FINISHED_CONTAINERS_PULLED_BY_AM
 argument_list|,
 operator|new
-name|FinishedContainersPulledByAMTransition
+name|AddContainersToBeRemovedFromNMTransition
 argument_list|()
 argument_list|)
 comment|//Transitions from LOST state
@@ -1408,7 +1408,7 @@ operator|.
 name|FINISHED_CONTAINERS_PULLED_BY_AM
 argument_list|,
 operator|new
-name|FinishedContainersPulledByAMTransition
+name|AddContainersToBeRemovedFromNMTransition
 argument_list|()
 argument_list|)
 comment|//Transitions from UNHEALTHY state
@@ -1601,7 +1601,7 @@ operator|.
 name|FINISHED_CONTAINERS_PULLED_BY_AM
 argument_list|,
 operator|new
-name|FinishedContainersPulledByAMTransition
+name|AddContainersToBeRemovedFromNMTransition
 argument_list|()
 argument_list|)
 comment|// create the topology tables
@@ -2254,7 +2254,7 @@ argument_list|)
 expr_stmt|;
 name|response
 operator|.
-name|addFinishedContainersPulledByAM
+name|addContainersToBeRemovedFromNM
 argument_list|(
 operator|new
 name|ArrayList
@@ -2264,7 +2264,7 @@ argument_list|>
 argument_list|(
 name|this
 operator|.
-name|finishedContainersPulledByAM
+name|containersToBeRemovedFromNM
 argument_list|)
 argument_list|)
 expr_stmt|;
@@ -2284,7 +2284,7 @@ argument_list|()
 expr_stmt|;
 name|this
 operator|.
-name|finishedContainersPulledByAM
+name|containersToBeRemovedFromNM
 operator|.
 name|clear
 argument_list|()
@@ -3619,11 +3619,11 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-DECL|class|FinishedContainersPulledByAMTransition
+DECL|class|AddContainersToBeRemovedFromNMTransition
 specifier|public
 specifier|static
 class|class
-name|FinishedContainersPulledByAMTransition
+name|AddContainersToBeRemovedFromNMTransition
 implements|implements
 name|SingleArcTransition
 argument_list|<
@@ -3648,7 +3648,7 @@ parameter_list|)
 block|{
 name|rmNode
 operator|.
-name|finishedContainersPulledByAM
+name|containersToBeRemovedFromNM
 operator|.
 name|addAll
 argument_list|(

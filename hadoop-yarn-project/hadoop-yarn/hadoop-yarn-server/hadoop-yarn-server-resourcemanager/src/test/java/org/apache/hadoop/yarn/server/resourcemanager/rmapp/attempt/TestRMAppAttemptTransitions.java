@@ -6254,7 +6254,7 @@ argument_list|)
 expr_stmt|;
 name|assertEquals
 argument_list|(
-literal|2
+literal|0
 argument_list|,
 name|applicationAttempt
 operator|.
@@ -6510,7 +6510,7 @@ argument_list|)
 expr_stmt|;
 name|assertEquals
 argument_list|(
-literal|1
+literal|0
 argument_list|,
 name|applicationAttempt
 operator|.
@@ -7558,7 +7558,7 @@ name|trackingUrl
 argument_list|,
 name|diagnostics
 argument_list|,
-literal|1
+literal|0
 argument_list|,
 literal|false
 argument_list|)
@@ -7736,7 +7736,7 @@ name|trackingUrl
 argument_list|,
 name|diagnostics
 argument_list|,
-literal|1
+literal|0
 argument_list|,
 literal|false
 argument_list|)
@@ -8645,7 +8645,7 @@ expr_stmt|;
 comment|// failed attempt captured the container finished event.
 name|assertEquals
 argument_list|(
-literal|1
+literal|0
 argument_list|,
 name|applicationAttempt
 operator|.
@@ -8698,7 +8698,7 @@ argument_list|)
 expr_stmt|;
 name|assertEquals
 argument_list|(
-literal|2
+literal|1
 argument_list|,
 name|applicationAttempt
 operator|.

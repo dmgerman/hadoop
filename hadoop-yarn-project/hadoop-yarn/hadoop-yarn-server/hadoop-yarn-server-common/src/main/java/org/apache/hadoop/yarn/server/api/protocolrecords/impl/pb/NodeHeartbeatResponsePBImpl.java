@@ -396,13 +396,13 @@ name|containersToCleanup
 init|=
 literal|null
 decl_stmt|;
-DECL|field|finishedContainersPulledByAM
+DECL|field|containersToBeRemovedFromNM
 specifier|private
 name|List
 argument_list|<
 name|ContainerId
 argument_list|>
-name|finishedContainersPulledByAM
+name|containersToBeRemovedFromNM
 init|=
 literal|null
 decl_stmt|;
@@ -526,12 +526,12 @@ if|if
 condition|(
 name|this
 operator|.
-name|finishedContainersPulledByAM
+name|containersToBeRemovedFromNM
 operator|!=
 literal|null
 condition|)
 block|{
-name|addFinishedContainersPulledByAMToProto
+name|addContainersToBeRemovedFromNMToProto
 argument_list|()
 expr_stmt|;
 block|}
@@ -1056,22 +1056,22 @@ return|;
 block|}
 annotation|@
 name|Override
-DECL|method|getFinishedContainersPulledByAM ()
+DECL|method|getContainersToBeRemovedFromNM ()
 specifier|public
 name|List
 argument_list|<
 name|ContainerId
 argument_list|>
-name|getFinishedContainersPulledByAM
+name|getContainersToBeRemovedFromNM
 parameter_list|()
 block|{
-name|initFinishedContainersPulledByAM
+name|initContainersToBeRemovedFromNM
 argument_list|()
 expr_stmt|;
 return|return
 name|this
 operator|.
-name|finishedContainersPulledByAM
+name|containersToBeRemovedFromNM
 return|;
 block|}
 DECL|method|initContainersToCleanup ()
@@ -1144,17 +1144,17 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-DECL|method|initFinishedContainersPulledByAM ()
+DECL|method|initContainersToBeRemovedFromNM ()
 specifier|private
 name|void
-name|initFinishedContainersPulledByAM
+name|initContainersToBeRemovedFromNM
 parameter_list|()
 block|{
 if|if
 condition|(
 name|this
 operator|.
-name|finishedContainersPulledByAM
+name|containersToBeRemovedFromNM
 operator|!=
 literal|null
 condition|)
@@ -1178,12 +1178,12 @@ name|list
 init|=
 name|p
 operator|.
-name|getFinishedContainersPulledByAmList
+name|getContainersToBeRemovedFromNmList
 argument_list|()
 decl_stmt|;
 name|this
 operator|.
-name|finishedContainersPulledByAM
+name|containersToBeRemovedFromNM
 operator|=
 operator|new
 name|ArrayList
@@ -1202,7 +1202,7 @@ control|)
 block|{
 name|this
 operator|.
-name|finishedContainersPulledByAM
+name|containersToBeRemovedFromNM
 operator|.
 name|add
 argument_list|(
@@ -1251,36 +1251,36 @@ expr_stmt|;
 block|}
 annotation|@
 name|Override
-DECL|method|addFinishedContainersPulledByAM ( final List<ContainerId> finishedContainersPulledByAM)
 specifier|public
 name|void
-name|addFinishedContainersPulledByAM
+DECL|method|addContainersToBeRemovedFromNM (final List<ContainerId> containers)
+name|addContainersToBeRemovedFromNM
 parameter_list|(
 specifier|final
 name|List
 argument_list|<
 name|ContainerId
 argument_list|>
-name|finishedContainersPulledByAM
+name|containers
 parameter_list|)
 block|{
 if|if
 condition|(
-name|finishedContainersPulledByAM
+name|containers
 operator|==
 literal|null
 condition|)
 return|return;
-name|initFinishedContainersPulledByAM
+name|initContainersToBeRemovedFromNM
 argument_list|()
 expr_stmt|;
 name|this
 operator|.
-name|finishedContainersPulledByAM
+name|containersToBeRemovedFromNM
 operator|.
 name|addAll
 argument_list|(
-name|finishedContainersPulledByAM
+name|containers
 argument_list|)
 expr_stmt|;
 block|}
@@ -1404,10 +1404,10 @@ name|iterable
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|addFinishedContainersPulledByAMToProto ()
+DECL|method|addContainersToBeRemovedFromNMToProto ()
 specifier|private
 name|void
-name|addFinishedContainersPulledByAMToProto
+name|addContainersToBeRemovedFromNMToProto
 parameter_list|()
 block|{
 name|maybeInitBuilder
@@ -1415,12 +1415,12 @@ argument_list|()
 expr_stmt|;
 name|builder
 operator|.
-name|clearFinishedContainersPulledByAm
+name|clearContainersToBeRemovedFromNm
 argument_list|()
 expr_stmt|;
 if|if
 condition|(
-name|finishedContainersPulledByAM
+name|containersToBeRemovedFromNM
 operator|==
 literal|null
 condition|)
@@ -1462,7 +1462,7 @@ name|ContainerId
 argument_list|>
 name|iter
 init|=
-name|finishedContainersPulledByAM
+name|containersToBeRemovedFromNM
 operator|.
 name|iterator
 argument_list|()
@@ -1518,7 +1518,7 @@ block|}
 decl_stmt|;
 name|builder
 operator|.
-name|addAllFinishedContainersPulledByAm
+name|addAllContainersToBeRemovedFromNm
 argument_list|(
 name|iterable
 argument_list|)

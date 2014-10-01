@@ -3557,6 +3557,13 @@ operator|.
 name|get
 argument_list|()
 expr_stmt|;
+name|LOG
+operator|.
+name|info
+argument_list|(
+name|appMessage
+argument_list|)
+expr_stmt|;
 name|success
 operator|=
 literal|false
