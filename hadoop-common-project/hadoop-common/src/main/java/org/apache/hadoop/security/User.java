@@ -215,6 +215,13 @@ argument_list|(
 literal|"Illegal principal name "
 operator|+
 name|name
+operator|+
+literal|": "
+operator|+
+name|ioe
+operator|.
+name|toString
+argument_list|()
 argument_list|,
 name|ioe
 argument_list|)
