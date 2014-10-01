@@ -1305,6 +1305,8 @@ argument_list|(
 name|appId
 argument_list|,
 name|logDirs
+argument_list|,
+name|user
 argument_list|)
 expr_stmt|;
 for|for
@@ -1828,6 +1830,8 @@ argument_list|(
 name|appId
 argument_list|,
 name|logDirs
+argument_list|,
+name|appSubmitter
 argument_list|)
 expr_stmt|;
 name|Path

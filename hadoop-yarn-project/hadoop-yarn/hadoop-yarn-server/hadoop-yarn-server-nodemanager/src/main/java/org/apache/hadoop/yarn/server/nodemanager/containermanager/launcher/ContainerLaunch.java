@@ -4412,6 +4412,25 @@ argument_list|,
 name|mergedEnv
 argument_list|)
 decl_stmt|;
+comment|// In a secure cluster the classpath jar must be localized to grant access
+name|this
+operator|.
+name|exec
+operator|.
+name|localizeClasspathJar
+argument_list|(
+operator|new
+name|Path
+argument_list|(
+name|classPathJar
+argument_list|)
+argument_list|,
+name|container
+operator|.
+name|getUser
+argument_list|()
+argument_list|)
+expr_stmt|;
 name|environment
 operator|.
 name|put

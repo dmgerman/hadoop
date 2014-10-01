@@ -520,7 +520,7 @@ init|=
 literal|260
 decl_stmt|;
 DECL|field|lfs
-specifier|private
+specifier|protected
 specifier|final
 name|FileContext
 name|lfs
@@ -569,6 +569,62 @@ operator|.
 name|lfs
 operator|=
 name|lfs
+expr_stmt|;
+block|}
+DECL|method|copyFile (Path src, Path dst, String owner)
+specifier|protected
+name|void
+name|copyFile
+parameter_list|(
+name|Path
+name|src
+parameter_list|,
+name|Path
+name|dst
+parameter_list|,
+name|String
+name|owner
+parameter_list|)
+throws|throws
+name|IOException
+block|{
+name|lfs
+operator|.
+name|util
+argument_list|()
+operator|.
+name|copy
+argument_list|(
+name|src
+argument_list|,
+name|dst
+argument_list|)
+expr_stmt|;
+block|}
+DECL|method|setScriptExecutable (Path script, String owner)
+specifier|protected
+name|void
+name|setScriptExecutable
+parameter_list|(
+name|Path
+name|script
+parameter_list|,
+name|String
+name|owner
+parameter_list|)
+throws|throws
+name|IOException
+block|{
+name|lfs
+operator|.
+name|setPermission
+argument_list|(
+name|script
+argument_list|,
+name|ContainerExecutor
+operator|.
+name|TASK_LAUNCH_SCRIPT_PERMISSION
+argument_list|)
 expr_stmt|;
 block|}
 annotation|@
@@ -679,6 +735,8 @@ argument_list|(
 name|appId
 argument_list|,
 name|logDirs
+argument_list|,
+name|user
 argument_list|)
 expr_stmt|;
 comment|// TODO: Why pick first app dir. The same in LCE why not random?
@@ -719,16 +777,13 @@ argument_list|,
 name|tokenFn
 argument_list|)
 decl_stmt|;
-name|lfs
-operator|.
-name|util
-argument_list|()
-operator|.
-name|copy
+name|copyFile
 argument_list|(
 name|nmPrivateContainerTokensPath
 argument_list|,
 name|tokenDst
+argument_list|,
+name|user
 argument_list|)
 expr_stmt|;
 name|LOG
@@ -934,6 +989,8 @@ argument_list|,
 name|dirPerm
 argument_list|,
 literal|true
+argument_list|,
+name|userName
 argument_list|)
 expr_stmt|;
 block|}
@@ -945,6 +1002,8 @@ argument_list|,
 name|containerIdStr
 argument_list|,
 name|logDirs
+argument_list|,
+name|userName
 argument_list|)
 expr_stmt|;
 name|Path
@@ -967,6 +1026,8 @@ argument_list|,
 name|dirPerm
 argument_list|,
 literal|false
+argument_list|,
+name|userName
 argument_list|)
 expr_stmt|;
 comment|// copy launch script to work dir
@@ -983,16 +1044,13 @@ operator|.
 name|CONTAINER_SCRIPT
 argument_list|)
 decl_stmt|;
-name|lfs
-operator|.
-name|util
-argument_list|()
-operator|.
-name|copy
+name|copyFile
 argument_list|(
 name|nmPrivateContainerScriptPath
 argument_list|,
 name|launchDst
+argument_list|,
+name|userName
 argument_list|)
 expr_stmt|;
 comment|// copy container tokens to work dir
@@ -1009,37 +1067,23 @@ operator|.
 name|FINAL_CONTAINER_TOKENS_FILE
 argument_list|)
 decl_stmt|;
-name|lfs
-operator|.
-name|util
-argument_list|()
-operator|.
-name|copy
+name|copyFile
 argument_list|(
 name|nmPrivateTokensPath
 argument_list|,
 name|tokenDst
+argument_list|,
+name|userName
 argument_list|)
 expr_stmt|;
 comment|// Create new local launch wrapper script
 name|LocalWrapperScriptBuilder
 name|sb
 init|=
-name|Shell
-operator|.
-name|WINDOWS
-condition|?
-operator|new
-name|WindowsLocalWrapperScriptBuilder
+name|getLocalWrapperScriptBuilder
 argument_list|(
 name|containerIdStr
 argument_list|,
-name|containerWorkDir
-argument_list|)
-else|:
-operator|new
-name|UnixLocalWrapperScriptBuilder
-argument_list|(
 name|containerWorkDir
 argument_list|)
 decl_stmt|;
@@ -1149,29 +1193,21 @@ literal|null
 decl_stmt|;
 try|try
 block|{
-name|lfs
-operator|.
-name|setPermission
+name|setScriptExecutable
 argument_list|(
 name|launchDst
 argument_list|,
-name|ContainerExecutor
-operator|.
-name|TASK_LAUNCH_SCRIPT_PERMISSION
+name|userName
 argument_list|)
 expr_stmt|;
-name|lfs
-operator|.
-name|setPermission
+name|setScriptExecutable
 argument_list|(
 name|sb
 operator|.
 name|getWrapperScriptPath
 argument_list|()
 argument_list|,
-name|ContainerExecutor
-operator|.
-name|TASK_LAUNCH_SCRIPT_PERMISSION
+name|userName
 argument_list|)
 expr_stmt|;
 comment|// Setup command to run
@@ -1190,6 +1226,10 @@ name|toString
 argument_list|()
 argument_list|,
 name|containerIdStr
+argument_list|,
+name|userName
+argument_list|,
+name|pidFile
 argument_list|,
 name|this
 operator|.
@@ -1529,8 +1569,40 @@ return|return
 literal|0
 return|;
 block|}
+DECL|method|getLocalWrapperScriptBuilder ( String containerIdStr, Path containerWorkDir)
+specifier|protected
+name|LocalWrapperScriptBuilder
+name|getLocalWrapperScriptBuilder
+parameter_list|(
+name|String
+name|containerIdStr
+parameter_list|,
+name|Path
+name|containerWorkDir
+parameter_list|)
+block|{
+return|return
+name|Shell
+operator|.
+name|WINDOWS
+condition|?
+operator|new
+name|WindowsLocalWrapperScriptBuilder
+argument_list|(
+name|containerIdStr
+argument_list|,
+name|containerWorkDir
+argument_list|)
+else|:
+operator|new
+name|UnixLocalWrapperScriptBuilder
+argument_list|(
+name|containerWorkDir
+argument_list|)
+return|;
+block|}
 DECL|class|LocalWrapperScriptBuilder
-specifier|private
+specifier|protected
 specifier|abstract
 class|class
 name|LocalWrapperScriptBuilder
@@ -2510,7 +2582,7 @@ operator|)
 literal|0710
 decl_stmt|;
 DECL|method|getFirstApplicationDir (List<String> localDirs, String user, String appId)
-specifier|private
+specifier|protected
 name|Path
 name|getFirstApplicationDir
 parameter_list|(
@@ -2665,8 +2737,8 @@ name|FILECACHE
 argument_list|)
 return|;
 block|}
-DECL|method|createDir (Path dirPath, FsPermission perms, boolean createParent)
-specifier|private
+DECL|method|createDir (Path dirPath, FsPermission perms, boolean createParent, String user)
+specifier|protected
 name|void
 name|createDir
 parameter_list|(
@@ -2678,6 +2750,9 @@ name|perms
 parameter_list|,
 name|boolean
 name|createParent
+parameter_list|,
+name|String
+name|user
 parameter_list|)
 throws|throws
 name|IOException
@@ -2781,6 +2856,8 @@ argument_list|,
 name|userperms
 argument_list|,
 literal|true
+argument_list|,
+name|user
 argument_list|)
 expr_stmt|;
 block|}
@@ -2919,6 +2996,8 @@ argument_list|,
 name|appCachePerms
 argument_list|,
 literal|true
+argument_list|,
+name|user
 argument_list|)
 expr_stmt|;
 name|appcacheDirStatus
@@ -2965,6 +3044,8 @@ argument_list|,
 name|fileperms
 argument_list|,
 literal|true
+argument_list|,
+name|user
 argument_list|)
 expr_stmt|;
 name|distributedCacheDirStatus
@@ -3096,6 +3177,8 @@ argument_list|,
 name|appperms
 argument_list|,
 literal|true
+argument_list|,
+name|user
 argument_list|)
 expr_stmt|;
 name|initAppDirStatus
@@ -3148,7 +3231,7 @@ throw|;
 block|}
 block|}
 comment|/**    * Create application log directories on all disks.    */
-DECL|method|createAppLogDirs (String appId, List<String> logDirs)
+DECL|method|createAppLogDirs (String appId, List<String> logDirs, String user)
 name|void
 name|createAppLogDirs
 parameter_list|(
@@ -3160,6 +3243,9 @@ argument_list|<
 name|String
 argument_list|>
 name|logDirs
+parameter_list|,
+name|String
+name|user
 parameter_list|)
 throws|throws
 name|IOException
@@ -3207,6 +3293,8 @@ argument_list|,
 name|appLogDirPerms
 argument_list|,
 literal|true
+argument_list|,
+name|user
 argument_list|)
 expr_stmt|;
 block|}
@@ -3254,7 +3342,7 @@ throw|;
 block|}
 block|}
 comment|/**    * Create application log directories on all disks.    */
-DECL|method|createContainerLogDirs (String appId, String containerId, List<String> logDirs)
+DECL|method|createContainerLogDirs (String appId, String containerId, List<String> logDirs, String user)
 name|void
 name|createContainerLogDirs
 parameter_list|(
@@ -3269,6 +3357,9 @@ argument_list|<
 name|String
 argument_list|>
 name|logDirs
+parameter_list|,
+name|String
+name|user
 parameter_list|)
 throws|throws
 name|IOException
@@ -3327,6 +3418,8 @@ argument_list|,
 name|containerLogDirPerms
 argument_list|,
 literal|true
+argument_list|,
+name|user
 argument_list|)
 expr_stmt|;
 block|}

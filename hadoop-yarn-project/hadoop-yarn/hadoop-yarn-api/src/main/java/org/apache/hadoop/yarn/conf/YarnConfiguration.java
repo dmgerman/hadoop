@@ -3450,6 +3450,18 @@ name|DEFAULT_NM_LINUX_CONTAINER_CGROUPS_DELETE_TIMEOUT
 init|=
 literal|1000
 decl_stmt|;
+comment|/**    /* The Windows group that the windows-secure-container-executor should run as.   */
+DECL|field|NM_WINDOWS_SECURE_CONTAINER_GROUP
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|NM_WINDOWS_SECURE_CONTAINER_GROUP
+init|=
+name|NM_PREFIX
+operator|+
+literal|"windows-secure-container-executor.group"
+decl_stmt|;
 comment|/** T-file compression types used to compress aggregated logs.*/
 DECL|field|NM_LOG_AGG_COMPRESSION_TYPE
 specifier|public
