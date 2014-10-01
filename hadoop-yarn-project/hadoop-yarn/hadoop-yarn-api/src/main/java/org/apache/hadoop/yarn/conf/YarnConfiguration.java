@@ -4602,6 +4602,82 @@ name|TIMELINE_SERVICE_HTTP_CROSS_ORIGIN_ENABLED_DEFAULT
 init|=
 literal|false
 decl_stmt|;
+comment|// ///////////////////////////////
+comment|// Shared Cache Configs
+comment|// ///////////////////////////////
+DECL|field|SHARED_CACHE_PREFIX
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|SHARED_CACHE_PREFIX
+init|=
+literal|"yarn.sharedcache."
+decl_stmt|;
+comment|// common configs
+comment|/** whether the shared cache is enabled/disabled */
+DECL|field|SHARED_CACHE_ENABLED
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|SHARED_CACHE_ENABLED
+init|=
+name|SHARED_CACHE_PREFIX
+operator|+
+literal|"enabled"
+decl_stmt|;
+DECL|field|DEFAULT_SHARED_CACHE_ENABLED
+specifier|public
+specifier|static
+specifier|final
+name|boolean
+name|DEFAULT_SHARED_CACHE_ENABLED
+init|=
+literal|false
+decl_stmt|;
+comment|/** The config key for the shared cache root directory. */
+DECL|field|SHARED_CACHE_ROOT
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|SHARED_CACHE_ROOT
+init|=
+name|SHARED_CACHE_PREFIX
+operator|+
+literal|"root-dir"
+decl_stmt|;
+DECL|field|DEFAULT_SHARED_CACHE_ROOT
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|DEFAULT_SHARED_CACHE_ROOT
+init|=
+literal|"/sharedcache"
+decl_stmt|;
+comment|/** The config key for the level of nested directories before getting to the    * checksum directory. */
+DECL|field|SHARED_CACHE_NESTED_LEVEL
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|SHARED_CACHE_NESTED_LEVEL
+init|=
+name|SHARED_CACHE_PREFIX
+operator|+
+literal|"nested-level"
+decl_stmt|;
+DECL|field|DEFAULT_SHARED_CACHE_NESTED_LEVEL
+specifier|public
+specifier|static
+specifier|final
+name|int
+name|DEFAULT_SHARED_CACHE_NESTED_LEVEL
+init|=
+literal|3
+decl_stmt|;
 comment|////////////////////////////////
 comment|// Other Configs
 comment|////////////////////////////////
