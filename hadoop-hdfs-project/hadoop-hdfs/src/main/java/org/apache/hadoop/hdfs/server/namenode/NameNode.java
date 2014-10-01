@@ -1248,6 +1248,18 @@ operator|.
 name|toLowerCase
 argument_list|()
 operator|+
+literal|"|"
+operator|+
+name|RollingUpgradeStartupOption
+operator|.
+name|STARTED
+operator|.
+name|name
+argument_list|()
+operator|.
+name|toLowerCase
+argument_list|()
+operator|+
 literal|"> ] | \n\t["
 operator|+
 name|StartupOption
