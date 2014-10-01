@@ -13944,7 +13944,7 @@ name|out
 operator|=
 name|response
 operator|.
-name|writeHeaderAndResponse
+name|serialize
 argument_list|(
 name|out
 argument_list|,

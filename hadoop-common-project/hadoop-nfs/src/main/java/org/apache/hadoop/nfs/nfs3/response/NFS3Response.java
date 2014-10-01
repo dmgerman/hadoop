@@ -123,10 +123,10 @@ name|status
 expr_stmt|;
 block|}
 comment|/**    * Write the response, along with the rpc header (including verifier), to the    * XDR.    */
-DECL|method|writeHeaderAndResponse (XDR out, int xid, Verifier verifier)
+DECL|method|serialize (XDR out, int xid, Verifier verifier)
 specifier|public
 name|XDR
-name|writeHeaderAndResponse
+name|serialize
 parameter_list|(
 name|XDR
 name|out

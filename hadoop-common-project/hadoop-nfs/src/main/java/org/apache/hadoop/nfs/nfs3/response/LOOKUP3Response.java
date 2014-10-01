@@ -307,10 +307,10 @@ expr_stmt|;
 block|}
 annotation|@
 name|Override
-DECL|method|writeHeaderAndResponse (XDR out, int xid, Verifier verifier)
+DECL|method|serialize (XDR out, int xid, Verifier verifier)
 specifier|public
 name|XDR
-name|writeHeaderAndResponse
+name|serialize
 parameter_list|(
 name|XDR
 name|out
@@ -324,7 +324,7 @@ parameter_list|)
 block|{
 name|super
 operator|.
-name|writeHeaderAndResponse
+name|serialize
 argument_list|(
 name|out
 argument_list|,

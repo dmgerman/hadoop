@@ -792,7 +792,7 @@ name|channel
 argument_list|,
 name|response
 operator|.
-name|writeHeaderAndResponse
+name|serialize
 argument_list|(
 operator|new
 name|XDR
@@ -1064,7 +1064,7 @@ name|channel
 argument_list|,
 name|response
 operator|.
-name|writeHeaderAndResponse
+name|serialize
 argument_list|(
 operator|new
 name|XDR
@@ -1218,7 +1218,7 @@ name|channel
 argument_list|,
 name|response
 operator|.
-name|writeHeaderAndResponse
+name|serialize
 argument_list|(
 operator|new
 name|XDR
@@ -1691,7 +1691,7 @@ name|channel
 argument_list|,
 name|response
 operator|.
-name|writeHeaderAndResponse
+name|serialize
 argument_list|(
 operator|new
 name|XDR
