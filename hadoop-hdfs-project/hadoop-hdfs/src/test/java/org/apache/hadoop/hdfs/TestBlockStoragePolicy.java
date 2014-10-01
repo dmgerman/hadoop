@@ -563,6 +563,17 @@ name|byte
 operator|)
 literal|12
 decl_stmt|;
+DECL|field|LAZY_PERSIST
+specifier|static
+specifier|final
+name|byte
+name|LAZY_PERSIST
+init|=
+operator|(
+name|byte
+operator|)
+literal|15
+decl_stmt|;
 annotation|@
 name|Test
 argument_list|(
@@ -797,6 +808,17 @@ argument_list|,
 literal|"BlockStoragePolicy{HOT:12, storageTypes=[DISK], "
 operator|+
 literal|"creationFallbacks=[], replicationFallbacks=[ARCHIVE]}"
+argument_list|)
+expr_stmt|;
+name|expectedPolicyStrings
+operator|.
+name|put
+argument_list|(
+name|LAZY_PERSIST
+argument_list|,
+literal|"BlockStoragePolicy{LAZY_PERSIST:15, storageTypes=[RAM_DISK, DISK], "
+operator|+
+literal|"creationFallbacks=[DISK], replicationFallbacks=[DISK]}"
 argument_list|)
 expr_stmt|;
 for|for
@@ -8261,7 +8283,7 @@ name|Assert
 operator|.
 name|assertEquals
 argument_list|(
-literal|3
+literal|4
 argument_list|,
 name|policies
 operator|.

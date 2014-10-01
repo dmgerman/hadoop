@@ -13037,16 +13037,6 @@ argument_list|,
 name|dir
 argument_list|)
 expr_stmt|;
-name|INode
-name|inode
-init|=
-name|dir
-operator|.
-name|getINode
-argument_list|(
-name|src
-argument_list|)
-decl_stmt|;
 comment|// get the corresponding policy and make sure the policy name is valid
 name|BlockStoragePolicy
 name|policy
