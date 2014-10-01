@@ -996,14 +996,14 @@ operator|new
 name|HdfsConfiguration
 argument_list|()
 decl_stmt|;
-comment|// don't waste time retrying if close fails
+comment|// retry one time, if close fails
 name|conf
 operator|.
 name|setInt
 argument_list|(
 name|DFS_CLIENT_BLOCK_WRITE_LOCATEFOLLOWINGBLOCK_RETRIES_KEY
 argument_list|,
-literal|0
+literal|1
 argument_list|)
 expr_stmt|;
 name|MiniDFSCluster
