@@ -3509,6 +3509,14 @@ name|setOverwrite
 argument_list|(
 name|overwrite
 argument_list|)
+operator|.
+name|setStoragePolicyId
+argument_list|(
+name|newNode
+operator|.
+name|getStoragePolicyID
+argument_list|()
+argument_list|)
 decl_stmt|;
 name|AclFeature
 name|f

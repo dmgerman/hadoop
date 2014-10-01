@@ -2919,6 +2919,10 @@ argument_list|,
 name|addCloseOp
 operator|.
 name|clientMachine
+argument_list|,
+name|addCloseOp
+operator|.
+name|storagePolicyId
 argument_list|)
 expr_stmt|;
 name|fsNamesys

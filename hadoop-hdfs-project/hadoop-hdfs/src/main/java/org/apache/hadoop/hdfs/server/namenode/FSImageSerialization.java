@@ -2244,6 +2244,29 @@ name|out
 argument_list|)
 expr_stmt|;
 block|}
+comment|/** write the byte value */
+DECL|method|writeByte (byte value, DataOutputStream out)
+specifier|static
+name|void
+name|writeByte
+parameter_list|(
+name|byte
+name|value
+parameter_list|,
+name|DataOutputStream
+name|out
+parameter_list|)
+throws|throws
+name|IOException
+block|{
+name|out
+operator|.
+name|write
+argument_list|(
+name|value
+argument_list|)
+expr_stmt|;
+block|}
 comment|/** read the int value */
 DECL|method|readInt (DataInput in)
 specifier|static
@@ -2470,6 +2493,25 @@ argument_list|)
 expr_stmt|;
 return|return
 name|bytes
+return|;
+block|}
+DECL|method|readByte (DataInput in)
+specifier|public
+specifier|static
+name|byte
+name|readByte
+parameter_list|(
+name|DataInput
+name|in
+parameter_list|)
+throws|throws
+name|IOException
+block|{
+return|return
+name|in
+operator|.
+name|readByte
+argument_list|()
 return|;
 block|}
 comment|/**    * Reading the path from the image and converting it to byte[][] directly    * this saves us an array copy and conversions to and from String    * @param in input to read from    * @return the array each element of which is a byte[] representation     *            of a path component    * @throws IOException    */
