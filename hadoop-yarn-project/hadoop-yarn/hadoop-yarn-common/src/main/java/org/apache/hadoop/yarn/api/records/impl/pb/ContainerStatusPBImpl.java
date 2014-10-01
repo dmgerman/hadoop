@@ -270,6 +270,7 @@ expr_stmt|;
 block|}
 DECL|method|getProto ()
 specifier|public
+specifier|synchronized
 name|ContainerStatusProto
 name|getProto
 parameter_list|()
@@ -512,6 +513,7 @@ block|}
 block|}
 DECL|method|mergeLocalToProto ()
 specifier|private
+specifier|synchronized
 name|void
 name|mergeLocalToProto
 parameter_list|()
@@ -540,6 +542,7 @@ expr_stmt|;
 block|}
 DECL|method|maybeInitBuilder ()
 specifier|private
+specifier|synchronized
 name|void
 name|maybeInitBuilder
 parameter_list|()
@@ -572,6 +575,7 @@ annotation|@
 name|Override
 DECL|method|getState ()
 specifier|public
+specifier|synchronized
 name|ContainerState
 name|getState
 parameter_list|()
@@ -612,6 +616,7 @@ annotation|@
 name|Override
 DECL|method|setState (ContainerState state)
 specifier|public
+specifier|synchronized
 name|void
 name|setState
 parameter_list|(
@@ -651,6 +656,7 @@ annotation|@
 name|Override
 DECL|method|getContainerId ()
 specifier|public
+specifier|synchronized
 name|ContainerId
 name|getContainerId
 parameter_list|()
@@ -714,6 +720,7 @@ annotation|@
 name|Override
 DECL|method|setContainerId (ContainerId containerId)
 specifier|public
+specifier|synchronized
 name|void
 name|setContainerId
 parameter_list|(
@@ -746,6 +753,7 @@ annotation|@
 name|Override
 DECL|method|getExitStatus ()
 specifier|public
+specifier|synchronized
 name|int
 name|getExitStatus
 parameter_list|()
@@ -770,6 +778,7 @@ annotation|@
 name|Override
 DECL|method|setExitStatus (int exitStatus)
 specifier|public
+specifier|synchronized
 name|void
 name|setExitStatus
 parameter_list|(
@@ -792,6 +801,7 @@ annotation|@
 name|Override
 DECL|method|getDiagnostics ()
 specifier|public
+specifier|synchronized
 name|String
 name|getDiagnostics
 parameter_list|()
@@ -818,6 +828,7 @@ annotation|@
 name|Override
 DECL|method|setDiagnostics (String diagnostics)
 specifier|public
+specifier|synchronized
 name|void
 name|setDiagnostics
 parameter_list|(

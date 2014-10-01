@@ -1961,14 +1961,25 @@ literal|"Illegal principal name "
 operator|+
 name|userName
 decl_stmt|;
-name|assertEquals
+name|assertTrue
 argument_list|(
+literal|"Did not find "
+operator|+
 name|expect
+operator|+
+literal|" in "
+operator|+
+name|e
 argument_list|,
 name|e
 operator|.
-name|getMessage
+name|toString
 argument_list|()
+operator|.
+name|contains
+argument_list|(
+name|expect
+argument_list|)
 argument_list|)
 expr_stmt|;
 block|}

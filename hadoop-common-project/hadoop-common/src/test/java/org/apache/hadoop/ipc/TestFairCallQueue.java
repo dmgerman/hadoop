@@ -118,6 +118,18 @@ name|util
 operator|.
 name|concurrent
 operator|.
+name|CountDownLatch
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
+name|concurrent
+operator|.
 name|TimeUnit
 import|;
 end_import
@@ -1446,7 +1458,13 @@ specifier|final
 name|int
 name|maxCalls
 decl_stmt|;
-DECL|method|Putter (BlockingQueue<Schedulable> aCq, int maxCalls, String tag)
+DECL|field|latch
+specifier|private
+specifier|final
+name|CountDownLatch
+name|latch
+decl_stmt|;
+DECL|method|Putter (BlockingQueue<Schedulable> aCq, int maxCalls, String tag, CountDownLatch latch)
 specifier|public
 name|Putter
 parameter_list|(
@@ -1461,6 +1479,9 @@ name|maxCalls
 parameter_list|,
 name|String
 name|tag
+parameter_list|,
+name|CountDownLatch
+name|latch
 parameter_list|)
 block|{
 name|this
@@ -1480,6 +1501,12 @@ operator|.
 name|tag
 operator|=
 name|tag
+expr_stmt|;
+name|this
+operator|.
+name|latch
+operator|=
+name|latch
 expr_stmt|;
 block|}
 DECL|method|getTag ()
@@ -1540,6 +1567,11 @@ argument_list|)
 expr_stmt|;
 name|callsAdded
 operator|++
+expr_stmt|;
+name|latch
+operator|.
+name|countDown
+argument_list|()
 expr_stmt|;
 block|}
 block|}
@@ -1603,12 +1635,18 @@ name|int
 name|maxCalls
 decl_stmt|;
 comment|// maximum calls to take
+DECL|field|latch
+specifier|private
+specifier|final
+name|CountDownLatch
+name|latch
+decl_stmt|;
 DECL|field|uip
 specifier|private
 name|IdentityProvider
 name|uip
 decl_stmt|;
-DECL|method|Taker (BlockingQueue<Schedulable> aCq, int maxCalls, String tag)
+DECL|method|Taker (BlockingQueue<Schedulable> aCq, int maxCalls, String tag, CountDownLatch latch)
 specifier|public
 name|Taker
 parameter_list|(
@@ -1623,6 +1661,9 @@ name|maxCalls
 parameter_list|,
 name|String
 name|tag
+parameter_list|,
+name|CountDownLatch
+name|latch
 parameter_list|)
 block|{
 name|this
@@ -1650,6 +1691,12 @@ operator|=
 operator|new
 name|UserIdentityProvider
 argument_list|()
+expr_stmt|;
+name|this
+operator|.
+name|latch
+operator|=
+name|latch
 expr_stmt|;
 block|}
 annotation|@
@@ -1722,6 +1769,11 @@ block|{
 name|callsTaken
 operator|++
 expr_stmt|;
+name|latch
+operator|.
+name|countDown
+argument_list|()
+expr_stmt|;
 name|lastResult
 operator|=
 name|res
@@ -1760,6 +1812,15 @@ parameter_list|)
 throws|throws
 name|InterruptedException
 block|{
+name|CountDownLatch
+name|latch
+init|=
+operator|new
+name|CountDownLatch
+argument_list|(
+name|numberOfTakes
+argument_list|)
+decl_stmt|;
 name|Taker
 name|taker
 init|=
@@ -1771,6 +1832,8 @@ argument_list|,
 name|takeAttempts
 argument_list|,
 literal|"default"
+argument_list|,
+name|latch
 argument_list|)
 decl_stmt|;
 name|Thread
@@ -1787,12 +1850,10 @@ operator|.
 name|start
 argument_list|()
 expr_stmt|;
-name|t
+name|latch
 operator|.
-name|join
-argument_list|(
-literal|100
-argument_list|)
+name|await
+argument_list|()
 expr_stmt|;
 name|assertEquals
 argument_list|(
@@ -1830,6 +1891,15 @@ parameter_list|)
 throws|throws
 name|InterruptedException
 block|{
+name|CountDownLatch
+name|latch
+init|=
+operator|new
+name|CountDownLatch
+argument_list|(
+name|numberOfPuts
+argument_list|)
+decl_stmt|;
 name|Putter
 name|putter
 init|=
@@ -1841,6 +1911,8 @@ argument_list|,
 name|putAttempts
 argument_list|,
 literal|null
+argument_list|,
+name|latch
 argument_list|)
 decl_stmt|;
 name|Thread
@@ -1857,12 +1929,10 @@ operator|.
 name|start
 argument_list|()
 expr_stmt|;
-name|t
+name|latch
 operator|.
-name|join
-argument_list|(
-literal|100
-argument_list|)
+name|await
+argument_list|()
 expr_stmt|;
 name|assertEquals
 argument_list|(

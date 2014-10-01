@@ -581,8 +581,10 @@ name|verify
 argument_list|(
 name|out
 argument_list|,
-name|never
-argument_list|()
+name|atLeast
+argument_list|(
+literal|1
+argument_list|)
 argument_list|)
 operator|.
 name|print
@@ -594,8 +596,10 @@ name|verify
 argument_list|(
 name|out
 argument_list|,
-name|never
-argument_list|()
+name|atLeast
+argument_list|(
+literal|1
+argument_list|)
 argument_list|)
 operator|.
 name|print

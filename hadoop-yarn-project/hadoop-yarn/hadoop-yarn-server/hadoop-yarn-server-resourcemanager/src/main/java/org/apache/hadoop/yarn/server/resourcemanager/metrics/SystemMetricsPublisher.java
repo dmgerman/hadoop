@@ -971,6 +971,12 @@ name|getApplicationId
 argument_list|()
 argument_list|,
 name|appViewACLs
+operator|==
+literal|null
+condition|?
+literal|""
+else|:
+name|appViewACLs
 argument_list|,
 name|updatedTime
 argument_list|)
