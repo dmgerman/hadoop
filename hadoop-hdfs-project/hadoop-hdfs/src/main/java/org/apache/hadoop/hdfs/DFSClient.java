@@ -1188,6 +1188,22 @@ name|crypto
 operator|.
 name|key
 operator|.
+name|KeyProvider
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|crypto
+operator|.
+name|key
+operator|.
 name|KeyProviderCryptoExtension
 import|;
 end_import
@@ -3161,7 +3177,7 @@ decl_stmt|;
 annotation|@
 name|VisibleForTesting
 DECL|field|provider
-name|KeyProviderCryptoExtension
+name|KeyProvider
 name|provider
 decl_stmt|;
 comment|/**    * DFSClient configuration     */
@@ -4621,7 +4637,7 @@ name|provider
 operator|=
 name|DFSUtil
 operator|.
-name|createKeyProviderCryptoExtension
+name|createKeyProvider
 argument_list|(
 name|conf
 argument_list|)
@@ -7588,8 +7604,18 @@ argument_list|)
 decl_stmt|;
 try|try
 block|{
-return|return
+name|KeyProviderCryptoExtension
+name|cryptoProvider
+init|=
+name|KeyProviderCryptoExtension
+operator|.
+name|createKeyProviderCryptoExtension
+argument_list|(
 name|provider
+argument_list|)
+decl_stmt|;
+return|return
+name|cryptoProvider
 operator|.
 name|decryptEncryptedKey
 argument_list|(
@@ -14639,7 +14665,7 @@ return|;
 block|}
 DECL|method|getKeyProvider ()
 specifier|public
-name|KeyProviderCryptoExtension
+name|KeyProvider
 name|getKeyProvider
 parameter_list|()
 block|{

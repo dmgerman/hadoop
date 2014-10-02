@@ -8421,12 +8421,12 @@ throw|;
 block|}
 block|}
 block|}
-comment|/**    * Creates a new KeyProviderCryptoExtension by wrapping the    * KeyProvider specified in the given Configuration.    *    * @param conf Configuration    * @return new KeyProviderCryptoExtension, or null if no provider was found.    * @throws IOException if the KeyProvider is improperly specified in    *                             the Configuration    */
-DECL|method|createKeyProviderCryptoExtension ( final Configuration conf)
+comment|/**    * Creates a new KeyProvider from the given Configuration.    *    * @param conf Configuration    * @return new KeyProvider, or null if no provider was found.    * @throws IOException if the KeyProvider is improperly specified in    *                             the Configuration    */
+DECL|method|createKeyProvider ( final Configuration conf)
 specifier|public
 specifier|static
-name|KeyProviderCryptoExtension
-name|createKeyProviderCryptoExtension
+name|KeyProvider
+name|createKeyProvider
 parameter_list|(
 specifier|final
 name|Configuration
@@ -8550,6 +8550,43 @@ operator|+
 literal|" was found but it is a transient provider."
 argument_list|)
 throw|;
+block|}
+return|return
+name|keyProvider
+return|;
+block|}
+comment|/**    * Creates a new KeyProviderCryptoExtension by wrapping the    * KeyProvider specified in the given Configuration.    *    * @param conf Configuration    * @return new KeyProviderCryptoExtension, or null if no provider was found.    * @throws IOException if the KeyProvider is improperly specified in    *                             the Configuration    */
+DECL|method|createKeyProviderCryptoExtension ( final Configuration conf)
+specifier|public
+specifier|static
+name|KeyProviderCryptoExtension
+name|createKeyProviderCryptoExtension
+parameter_list|(
+specifier|final
+name|Configuration
+name|conf
+parameter_list|)
+throws|throws
+name|IOException
+block|{
+name|KeyProvider
+name|keyProvider
+init|=
+name|createKeyProvider
+argument_list|(
+name|conf
+argument_list|)
+decl_stmt|;
+if|if
+condition|(
+name|keyProvider
+operator|==
+literal|null
+condition|)
+block|{
+return|return
+literal|null
+return|;
 block|}
 name|KeyProviderCryptoExtension
 name|cryptoProvider
