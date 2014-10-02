@@ -314,6 +314,11 @@ name|Object
 argument_list|>
 argument_list|()
 decl_stmt|;
+DECL|field|domainId
+specifier|private
+name|String
+name|domainId
+decl_stmt|;
 DECL|method|TimelineEntity ()
 specifier|public
 name|TimelineEntity
@@ -1011,6 +1016,41 @@ operator|.
 name|otherInfo
 operator|=
 name|otherInfo
+expr_stmt|;
+block|}
+comment|/**    * Get the ID of the domain that the entity is to be put    *     * @return the domain ID    */
+annotation|@
+name|XmlElement
+argument_list|(
+name|name
+operator|=
+literal|"domain"
+argument_list|)
+DECL|method|getDomainId ()
+specifier|public
+name|String
+name|getDomainId
+parameter_list|()
+block|{
+return|return
+name|domainId
+return|;
+block|}
+comment|/**    * Set the ID of the domain that the entity is to be put    *     * @param domainId    *          the name space ID    */
+DECL|method|setDomainId (String domainId)
+specifier|public
+name|void
+name|setDomainId
+parameter_list|(
+name|String
+name|domainId
+parameter_list|)
+block|{
+name|this
+operator|.
+name|domainId
+operator|=
+name|domainId
 expr_stmt|;
 block|}
 annotation|@

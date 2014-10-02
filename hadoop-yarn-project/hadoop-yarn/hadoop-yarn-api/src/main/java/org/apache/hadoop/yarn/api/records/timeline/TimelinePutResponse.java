@@ -335,6 +335,26 @@ name|ACCESS_DENIED
 init|=
 literal|4
 decl_stmt|;
+comment|/**      * Error code returned if the entity doesn't have an valid domain ID      */
+DECL|field|NO_DOMAIN
+specifier|public
+specifier|static
+specifier|final
+name|int
+name|NO_DOMAIN
+init|=
+literal|5
+decl_stmt|;
+comment|/**      * Error code returned if the user is denied to relate the entity to another      * one in different domain      */
+DECL|field|FORBIDDEN_RELATION
+specifier|public
+specifier|static
+specifier|final
+name|int
+name|FORBIDDEN_RELATION
+init|=
+literal|6
+decl_stmt|;
 DECL|field|entityId
 specifier|private
 name|String

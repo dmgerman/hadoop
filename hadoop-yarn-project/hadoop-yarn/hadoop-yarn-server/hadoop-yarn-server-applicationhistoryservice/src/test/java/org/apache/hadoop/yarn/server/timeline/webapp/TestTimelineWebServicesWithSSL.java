@@ -627,6 +627,13 @@ argument_list|(
 literal|"test entity id"
 argument_list|)
 expr_stmt|;
+name|expectedEntity
+operator|.
+name|setDomainId
+argument_list|(
+literal|"test domain id"
+argument_list|)
+expr_stmt|;
 name|TimelineEvent
 name|event
 init|=

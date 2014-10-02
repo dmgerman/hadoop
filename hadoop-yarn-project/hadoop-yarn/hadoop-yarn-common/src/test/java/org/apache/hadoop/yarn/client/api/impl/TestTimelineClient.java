@@ -1537,6 +1537,13 @@ argument_list|,
 literal|"oval2"
 argument_list|)
 expr_stmt|;
+name|entity
+operator|.
+name|setDomainId
+argument_list|(
+literal|"domain id 1"
+argument_list|)
+expr_stmt|;
 return|return
 name|entity
 return|;

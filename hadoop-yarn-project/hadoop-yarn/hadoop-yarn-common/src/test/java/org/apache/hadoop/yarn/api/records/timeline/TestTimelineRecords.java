@@ -440,6 +440,15 @@ argument_list|,
 literal|"oval2"
 argument_list|)
 expr_stmt|;
+name|entity
+operator|.
+name|setDomainId
+argument_list|(
+literal|"domain id "
+operator|+
+name|j
+argument_list|)
+expr_stmt|;
 name|entities
 operator|.
 name|addEntity
@@ -581,6 +590,18 @@ name|size
 argument_list|()
 argument_list|)
 expr_stmt|;
+name|Assert
+operator|.
+name|assertEquals
+argument_list|(
+literal|"domain id 0"
+argument_list|,
+name|entity1
+operator|.
+name|getDomainId
+argument_list|()
+argument_list|)
+expr_stmt|;
 name|TimelineEntity
 name|entity2
 init|=
@@ -675,6 +696,18 @@ name|getOtherInfo
 argument_list|()
 operator|.
 name|size
+argument_list|()
+argument_list|)
+expr_stmt|;
+name|Assert
+operator|.
+name|assertEquals
+argument_list|(
+literal|"domain id 1"
+argument_list|,
+name|entity2
+operator|.
+name|getDomainId
 argument_list|()
 argument_list|)
 expr_stmt|;

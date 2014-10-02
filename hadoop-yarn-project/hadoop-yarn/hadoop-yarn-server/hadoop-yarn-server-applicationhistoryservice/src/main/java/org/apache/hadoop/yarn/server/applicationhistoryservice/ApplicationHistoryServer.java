@@ -667,6 +667,11 @@ argument_list|(
 name|conf
 argument_list|)
 expr_stmt|;
+name|addService
+argument_list|(
+name|timelineDataManager
+argument_list|)
+expr_stmt|;
 comment|// init generic history service afterwards
 name|aclsManager
 operator|=
