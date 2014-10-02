@@ -907,6 +907,16 @@ return|return
 literal|true
 return|;
 block|}
+DECL|method|isNewlyCreated ()
+specifier|public
+name|boolean
+name|isNewlyCreated
+parameter_list|()
+block|{
+return|return
+literal|false
+return|;
+block|}
 comment|/**    * Load the state of applications    * @return recovered state for applications    * @throws IOException    */
 DECL|method|loadApplicationsState ()
 specifier|public

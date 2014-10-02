@@ -2319,6 +2319,11 @@ name|stateStore
 operator|.
 name|canRecover
 argument_list|()
+operator|||
+name|stateStore
+operator|.
+name|isNewlyCreated
+argument_list|()
 condition|)
 block|{
 name|cleanUpLocalDir

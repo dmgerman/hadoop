@@ -967,6 +967,11 @@ specifier|private
 name|DB
 name|db
 decl_stmt|;
+DECL|field|isNewlyCreated
+specifier|private
+name|boolean
+name|isNewlyCreated
+decl_stmt|;
 DECL|method|NMLeveldbStateStoreService ()
 specifier|public
 name|NMLeveldbStateStoreService
@@ -1016,6 +1021,18 @@ name|close
 argument_list|()
 expr_stmt|;
 block|}
+block|}
+annotation|@
+name|Override
+DECL|method|isNewlyCreated ()
+specifier|public
+name|boolean
+name|isNewlyCreated
+parameter_list|()
+block|{
+return|return
+name|isNewlyCreated
+return|;
 block|}
 annotation|@
 name|Override
@@ -4975,6 +4992,10 @@ literal|"Creating state database at "
 operator|+
 name|dbfile
 argument_list|)
+expr_stmt|;
+name|isNewlyCreated
+operator|=
+literal|true
 expr_stmt|;
 name|options
 operator|.

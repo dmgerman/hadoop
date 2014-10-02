@@ -71,6 +71,18 @@ import|;
 end_import
 
 begin_import
+import|import static
+name|org
+operator|.
+name|junit
+operator|.
+name|Assert
+operator|.
+name|assertFalse
+import|;
+end_import
+
+begin_import
 import|import
 name|java
 operator|.
@@ -1176,6 +1188,36 @@ name|getUserResources
 argument_list|()
 operator|.
 name|isEmpty
+argument_list|()
+argument_list|)
+expr_stmt|;
+block|}
+annotation|@
+name|Test
+DECL|method|testIsNewlyCreated ()
+specifier|public
+name|void
+name|testIsNewlyCreated
+parameter_list|()
+throws|throws
+name|IOException
+block|{
+name|assertTrue
+argument_list|(
+name|stateStore
+operator|.
+name|isNewlyCreated
+argument_list|()
+argument_list|)
+expr_stmt|;
+name|restartStateStore
+argument_list|()
+expr_stmt|;
+name|assertFalse
+argument_list|(
+name|stateStore
+operator|.
+name|isNewlyCreated
 argument_list|()
 argument_list|)
 expr_stmt|;
