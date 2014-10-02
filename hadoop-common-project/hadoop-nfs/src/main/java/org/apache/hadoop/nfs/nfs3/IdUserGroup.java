@@ -556,7 +556,7 @@ literal|"However when NFS gateway talks to HDFS, HDFS accepts only user and grou
 operator|+
 literal|"Therefore, same name means the same user or same group. To find the duplicated names/ids, one can do:\n"
 operator|+
-literal|"<getent passwd | cut -d: -f1,3> and<getent group | cut -d: -f1,3> on Linux systms,\n"
+literal|"<getent passwd | cut -d: -f1,3> and<getent group | cut -d: -f1,3> on Linux systems,\n"
 operator|+
 literal|"<dscl . -list /Users UniqueID> and<dscl . -list /Groups PrimaryGroupID> on MacOS."
 decl_stmt|;
