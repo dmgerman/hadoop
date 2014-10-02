@@ -5330,15 +5330,10 @@ condition|)
 block|{
 if|if
 condition|(
-name|Resources
-operator|.
-name|greaterThanOrEqual
-argument_list|(
 name|calculator
-argument_list|,
-name|getClusterResource
-argument_list|()
-argument_list|,
+operator|.
+name|computeAvailableContainers
+argument_list|(
 name|node
 operator|.
 name|getAvailableResource
@@ -5346,6 +5341,8 @@ argument_list|()
 argument_list|,
 name|minimumAllocation
 argument_list|)
+operator|>
+literal|0
 condition|)
 block|{
 if|if
