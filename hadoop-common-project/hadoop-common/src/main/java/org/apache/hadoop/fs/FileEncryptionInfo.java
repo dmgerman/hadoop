@@ -222,20 +222,6 @@ argument_list|)
 expr_stmt|;
 name|checkArgument
 argument_list|(
-name|edek
-operator|.
-name|length
-operator|==
-name|suite
-operator|.
-name|getAlgorithmBlockSize
-argument_list|()
-argument_list|,
-literal|"Unexpected key length"
-argument_list|)
-expr_stmt|;
-name|checkArgument
-argument_list|(
 name|iv
 operator|.
 name|length
