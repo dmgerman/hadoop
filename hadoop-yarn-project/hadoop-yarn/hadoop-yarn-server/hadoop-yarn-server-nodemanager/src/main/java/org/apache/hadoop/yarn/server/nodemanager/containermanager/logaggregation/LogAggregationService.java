@@ -350,6 +350,24 @@ name|api
 operator|.
 name|records
 operator|.
+name|LogAggregationContext
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|api
+operator|.
+name|records
+operator|.
 name|NodeId
 import|;
 end_import
@@ -647,6 +665,20 @@ operator|.
 name|event
 operator|.
 name|LogHandlerEvent
+import|;
+end_import
+
+begin_import
+import|import
+name|com
+operator|.
+name|google
+operator|.
+name|common
+operator|.
+name|annotations
+operator|.
+name|VisibleForTesting
 import|;
 end_import
 
@@ -1420,6 +1452,36 @@ name|remoteRootLogDirSuffix
 argument_list|)
 return|;
 block|}
+DECL|method|getRemoteAppLogDir (ApplicationId appId, String user)
+name|Path
+name|getRemoteAppLogDir
+parameter_list|(
+name|ApplicationId
+name|appId
+parameter_list|,
+name|String
+name|user
+parameter_list|)
+block|{
+return|return
+name|LogAggregationUtils
+operator|.
+name|getRemoteAppLogDir
+argument_list|(
+name|this
+operator|.
+name|remoteRootLogDir
+argument_list|,
+name|appId
+argument_list|,
+name|user
+argument_list|,
+name|this
+operator|.
+name|remoteRootLogDirSuffix
+argument_list|)
+return|;
+block|}
 DECL|method|createDir (FileSystem fs, Path path, FsPermission fsPerm)
 specifier|private
 name|void
@@ -1858,7 +1920,7 @@ name|SuppressWarnings
 argument_list|(
 literal|"unchecked"
 argument_list|)
-DECL|method|initApp (final ApplicationId appId, String user, Credentials credentials, ContainerLogsRetentionPolicy logRetentionPolicy, Map<ApplicationAccessType, String> appAcls)
+DECL|method|initApp (final ApplicationId appId, String user, Credentials credentials, ContainerLogsRetentionPolicy logRetentionPolicy, Map<ApplicationAccessType, String> appAcls, LogAggregationContext logAggregationContext)
 specifier|private
 name|void
 name|initApp
@@ -1883,6 +1945,9 @@ argument_list|,
 name|String
 argument_list|>
 name|appAcls
+parameter_list|,
+name|LogAggregationContext
+name|logAggregationContext
 parameter_list|)
 block|{
 name|ApplicationEvent
@@ -1907,6 +1972,8 @@ argument_list|,
 name|logRetentionPolicy
 argument_list|,
 name|appAcls
+argument_list|,
+name|logAggregationContext
 argument_list|)
 expr_stmt|;
 name|eventResponse
@@ -1963,7 +2030,7 @@ name|eventResponse
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|initAppAggregator (final ApplicationId appId, String user, Credentials credentials, ContainerLogsRetentionPolicy logRetentionPolicy, Map<ApplicationAccessType, String> appAcls)
+DECL|method|initAppAggregator (final ApplicationId appId, String user, Credentials credentials, ContainerLogsRetentionPolicy logRetentionPolicy, Map<ApplicationAccessType, String> appAcls, LogAggregationContext logAggregationContext)
 specifier|protected
 name|void
 name|initAppAggregator
@@ -1988,6 +2055,9 @@ argument_list|,
 name|String
 argument_list|>
 name|appAcls
+parameter_list|,
+name|LogAggregationContext
+name|logAggregationContext
 parameter_list|)
 block|{
 comment|// Get user's FileSystem credentials
@@ -2052,6 +2122,12 @@ argument_list|,
 name|logRetentionPolicy
 argument_list|,
 name|appAcls
+argument_list|,
+name|logAggregationContext
+argument_list|,
+name|this
+operator|.
+name|context
 argument_list|)
 decl_stmt|;
 if|if
@@ -2412,6 +2488,11 @@ name|appStartEvent
 operator|.
 name|getApplicationAcls
 argument_list|()
+argument_list|,
+name|appStartEvent
+operator|.
+name|getLogAggregationContext
+argument_list|()
 argument_list|)
 expr_stmt|;
 break|break;
@@ -2464,6 +2545,39 @@ default|default:
 empty_stmt|;
 comment|// Ignore
 block|}
+block|}
+annotation|@
+name|VisibleForTesting
+DECL|method|getAppLogAggregators ()
+specifier|public
+name|ConcurrentMap
+argument_list|<
+name|ApplicationId
+argument_list|,
+name|AppLogAggregator
+argument_list|>
+name|getAppLogAggregators
+parameter_list|()
+block|{
+return|return
+name|this
+operator|.
+name|appLogAggregators
+return|;
+block|}
+annotation|@
+name|VisibleForTesting
+DECL|method|getNodeId ()
+specifier|public
+name|NodeId
+name|getNodeId
+parameter_list|()
+block|{
+return|return
+name|this
+operator|.
+name|nodeId
+return|;
 block|}
 block|}
 end_class

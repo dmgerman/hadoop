@@ -114,6 +114,20 @@ name|YarnConfiguration
 import|;
 end_import
 
+begin_import
+import|import
+name|com
+operator|.
+name|google
+operator|.
+name|common
+operator|.
+name|annotations
+operator|.
+name|VisibleForTesting
+import|;
+end_import
+
 begin_class
 annotation|@
 name|Private
@@ -122,6 +136,15 @@ specifier|public
 class|class
 name|LogAggregationUtils
 block|{
+DECL|field|TMP_FILE_SUFFIX
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|TMP_FILE_SUFFIX
+init|=
+literal|".tmp"
+decl_stmt|;
 comment|/**    * Constructs the full filename for an application's log file per node.    * @param remoteRootLogDir    * @param appId    * @param user    * @param nodeId    * @param suffix    * @return the remote log file.    */
 DECL|method|getRemoteNodeLogFileForApp (Path remoteRootLogDir, ApplicationId appId, String user, NodeId nodeId, String suffix)
 specifier|public
@@ -314,8 +337,10 @@ argument_list|)
 return|;
 block|}
 comment|/**    * Converts a nodeId to a form used in the app log file name.    * @param nodeId    * @return the node string to be used to construct the file name.    */
+annotation|@
+name|VisibleForTesting
 DECL|method|getNodeString (NodeId nodeId)
-specifier|private
+specifier|public
 specifier|static
 name|String
 name|getNodeString
