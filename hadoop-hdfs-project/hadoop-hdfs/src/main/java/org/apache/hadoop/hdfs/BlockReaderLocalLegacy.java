@@ -386,6 +386,36 @@ name|DataChecksum
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|htrace
+operator|.
+name|Sampler
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|htrace
+operator|.
+name|Trace
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|htrace
+operator|.
+name|TraceScope
+import|;
+end_import
+
 begin_comment
 comment|/**  * BlockReaderLocalLegacy enables local short circuited reads. If the DFS client is on  * the same machine as the datanode, then the client can read files directly  * from the local file system rather than going through the datanode for better  * performance.<br>  *  * This is the legacy implementation based on HDFS-2246, which requires  * permissions on the datanode to be set so that clients can directly access the  * blocks. The new implementation based on HDFS-347 should be preferred on UNIX  * systems where the required native code has been implemented.<br>  *  * {@link BlockReaderLocalLegacy} works as follows:  *<ul>  *<li>The client performing short circuit reads must be configured at the  * datanode.</li>  *<li>The client gets the path to the file where block is stored using  * {@link org.apache.hadoop.hdfs.protocol.ClientDatanodeProtocol#getBlockLocalPathInfo(ExtendedBlock, Token)}  * RPC call</li>  *<li>Client uses kerberos authentication to connect to the datanode over RPC,  * if security is enabled.</li>  *</ul>  */
 end_comment
@@ -823,6 +853,11 @@ specifier|private
 specifier|final
 name|String
 name|filename
+decl_stmt|;
+DECL|field|blockId
+specifier|private
+name|long
+name|blockId
 decl_stmt|;
 comment|/**    * The only way this object can be instantiated.    */
 DECL|method|newBlockReader (DFSClient.Conf conf, UserGroupInformation userGroupInformation, Configuration configuration, String file, ExtendedBlock blk, Token<BlockTokenIdentifier> token, DatanodeInfo node, long startOffset, long length)
@@ -1651,6 +1686,15 @@ argument_list|,
 literal|0
 argument_list|)
 expr_stmt|;
+name|this
+operator|.
+name|blockId
+operator|=
+name|block
+operator|.
+name|getBlockId
+argument_list|()
+expr_stmt|;
 name|bytesPerChecksum
 operator|=
 name|this
@@ -1829,6 +1873,26 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
+name|TraceScope
+name|scope
+init|=
+name|Trace
+operator|.
+name|startSpan
+argument_list|(
+literal|"BlockReaderLocalLegacy#fillBuffer("
+operator|+
+name|blockId
+operator|+
+literal|")"
+argument_list|,
+name|Sampler
+operator|.
+name|NEVER
+argument_list|)
+decl_stmt|;
+try|try
+block|{
 name|int
 name|bytesRead
 init|=
@@ -1897,6 +1961,15 @@ block|}
 return|return
 name|bytesRead
 return|;
+block|}
+finally|finally
+block|{
+name|scope
+operator|.
+name|close
+argument_list|()
+expr_stmt|;
+block|}
 block|}
 comment|/**    * Utility method used by read(ByteBuffer) to partially copy a ByteBuffer into    * another.    */
 DECL|method|writeSlice (ByteBuffer from, ByteBuffer to, int length)

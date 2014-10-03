@@ -432,6 +432,36 @@ name|DataChecksum
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|htrace
+operator|.
+name|Sampler
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|htrace
+operator|.
+name|Trace
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|htrace
+operator|.
+name|TraceScope
+import|;
+end_import
+
 begin_comment
 comment|/**  * @deprecated this is an old implementation that is being left around  * in case any issues spring up with the new {@link RemoteBlockReader2} implementation.  * It will be removed in the next release.  */
 end_comment
@@ -505,6 +535,12 @@ DECL|field|startOffset
 specifier|private
 name|long
 name|startOffset
+decl_stmt|;
+DECL|field|blockId
+specifier|private
+specifier|final
+name|long
+name|blockId
 decl_stmt|;
 comment|/** offset in block of of first chunk - may be less than startOffset       if startOffset is not chunk-aligned */
 DECL|field|firstChunkOffset
@@ -993,6 +1029,76 @@ specifier|protected
 specifier|synchronized
 name|int
 name|readChunk
+parameter_list|(
+name|long
+name|pos
+parameter_list|,
+name|byte
+index|[]
+name|buf
+parameter_list|,
+name|int
+name|offset
+parameter_list|,
+name|int
+name|len
+parameter_list|,
+name|byte
+index|[]
+name|checksumBuf
+parameter_list|)
+throws|throws
+name|IOException
+block|{
+name|TraceScope
+name|scope
+init|=
+name|Trace
+operator|.
+name|startSpan
+argument_list|(
+literal|"RemoteBlockReader#readChunk("
+operator|+
+name|blockId
+operator|+
+literal|")"
+argument_list|,
+name|Sampler
+operator|.
+name|NEVER
+argument_list|)
+decl_stmt|;
+try|try
+block|{
+return|return
+name|readChunkImpl
+argument_list|(
+name|pos
+argument_list|,
+name|buf
+argument_list|,
+name|offset
+argument_list|,
+name|len
+argument_list|,
+name|checksumBuf
+argument_list|)
+return|;
+block|}
+finally|finally
+block|{
+name|scope
+operator|.
+name|close
+argument_list|()
+expr_stmt|;
+block|}
+block|}
+DECL|method|readChunkImpl (long pos, byte[] buf, int offset, int len, byte[] checksumBuf)
+specifier|private
+specifier|synchronized
+name|int
+name|readChunkImpl
 parameter_list|(
 name|long
 name|pos
@@ -1613,6 +1719,12 @@ argument_list|,
 literal|0
 argument_list|)
 expr_stmt|;
+name|this
+operator|.
+name|blockId
+operator|=
+name|blockId
+expr_stmt|;
 comment|// The total number of bytes that we need to transfer from the DN is
 comment|// the amount that the user wants (bytesToRead), plus the padding at
 comment|// the beginning in order to chunk-align. Note that the DN may elect
@@ -1669,7 +1781,7 @@ operator|=
 name|peerCache
 expr_stmt|;
 block|}
-comment|/**    * Create a new BlockReader specifically to satisfy a read.    * This method also sends the OP_READ_BLOCK request.    *    * @param sock  An established Socket to the DN. The BlockReader will not close it normally    * @param file  File location    * @param block  The block object    * @param blockToken  The block token for security    * @param startOffset  The read offset, relative to block head    * @param len  The number of bytes to read    * @param bufferSize  The IO buffer size (not the client buffer size)    * @param verifyChecksum  Whether to verify checksum    * @param clientName  Client name    * @return New BlockReader instance, or null on error.    */
+comment|/**    * Create a new BlockReader specifically to satisfy a read.    * This method also sends the OP_READ_BLOCK request.    *    * @param file  File location    * @param block  The block object    * @param blockToken  The block token for security    * @param startOffset  The read offset, relative to block head    * @param len  The number of bytes to read    * @param bufferSize  The IO buffer size (not the client buffer size)    * @param verifyChecksum  Whether to verify checksum    * @param clientName  Client name    * @return New BlockReader instance, or null on error.    */
 DECL|method|newBlockReader (String file, ExtendedBlock block, Token<BlockTokenIdentifier> blockToken, long startOffset, long len, int bufferSize, boolean verifyChecksum, String clientName, Peer peer, DatanodeID datanodeID, PeerCache peerCache, CachingStrategy cachingStrategy)
 specifier|public
 specifier|static
