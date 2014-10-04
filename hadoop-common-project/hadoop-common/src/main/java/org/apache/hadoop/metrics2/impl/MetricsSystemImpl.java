@@ -1535,7 +1535,7 @@ comment|// We want to re-register the source to pick up new config when the
 comment|// metrics system restarts.
 name|register
 argument_list|(
-name|name
+name|finalName
 argument_list|,
 operator|new
 name|AbstractCallback
