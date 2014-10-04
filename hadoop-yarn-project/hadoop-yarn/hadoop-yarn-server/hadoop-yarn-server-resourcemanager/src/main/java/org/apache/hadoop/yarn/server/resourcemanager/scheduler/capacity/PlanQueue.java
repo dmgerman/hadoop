@@ -556,6 +556,11 @@ name|newlyParsedParentQueue
 operator|.
 name|getACLs
 argument_list|()
+argument_list|,
+name|newlyParsedParentQueue
+operator|.
+name|getReservationContinueLooking
+argument_list|()
 argument_list|)
 expr_stmt|;
 name|updateQuotas

@@ -1669,7 +1669,7 @@ literal|100
 return|;
 block|}
 DECL|method|setupQueueConfigs ( Resource clusterResource, float capacity, float absoluteCapacity, float maximumCapacity, float absoluteMaxCapacity, int userLimit, float userLimitFactor, int maxApplications, float maxAMResourcePerQueuePercent, int maxApplicationsPerUser, int maxActiveApplications, int maxActiveApplicationsPerUser, QueueState state, Map<QueueACL, AccessControlList> acls, int nodeLocalityDelay, boolean continueLooking)
-specifier|private
+specifier|protected
 specifier|synchronized
 name|void
 name|setupQueueConfigs
