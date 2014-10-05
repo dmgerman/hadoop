@@ -394,7 +394,6 @@ annotation|@
 name|Override
 DECL|method|setInput (byte[] b, int off, int len)
 specifier|public
-specifier|synchronized
 name|void
 name|setInput
 parameter_list|(
@@ -485,7 +484,6 @@ argument_list|)
 expr_stmt|;
 block|}
 DECL|method|setInputFromSavedData ()
-specifier|synchronized
 name|void
 name|setInputFromSavedData
 parameter_list|()
@@ -546,7 +544,6 @@ annotation|@
 name|Override
 DECL|method|setDictionary (byte[] b, int off, int len)
 specifier|public
-specifier|synchronized
 name|void
 name|setDictionary
 parameter_list|(
@@ -623,7 +620,6 @@ annotation|@
 name|Override
 DECL|method|needsInput ()
 specifier|public
-specifier|synchronized
 name|boolean
 name|needsInput
 parameter_list|()
@@ -678,7 +674,6 @@ annotation|@
 name|Override
 DECL|method|needsDictionary ()
 specifier|public
-specifier|synchronized
 name|boolean
 name|needsDictionary
 parameter_list|()
@@ -691,7 +686,6 @@ annotation|@
 name|Override
 DECL|method|finished ()
 specifier|public
-specifier|synchronized
 name|boolean
 name|finished
 parameter_list|()
@@ -715,7 +709,6 @@ annotation|@
 name|Override
 DECL|method|decompress (byte[] b, int off, int len)
 specifier|public
-specifier|synchronized
 name|int
 name|decompress
 parameter_list|(
@@ -882,7 +875,6 @@ block|}
 comment|/**    * Returns the total number of uncompressed bytes output so far.    *    * @return the total (non-negative) number of uncompressed bytes output so far    */
 DECL|method|getBytesWritten ()
 specifier|public
-specifier|synchronized
 name|long
 name|getBytesWritten
 parameter_list|()
@@ -900,7 +892,6 @@ block|}
 comment|/**    * Returns the total number of compressed bytes input so far.</p>    *    * @return the total (non-negative) number of compressed bytes input so far    */
 DECL|method|getBytesRead ()
 specifier|public
-specifier|synchronized
 name|long
 name|getBytesRead
 parameter_list|()
@@ -920,7 +911,6 @@ annotation|@
 name|Override
 DECL|method|getRemaining ()
 specifier|public
-specifier|synchronized
 name|int
 name|getRemaining
 parameter_list|()
@@ -943,7 +933,6 @@ annotation|@
 name|Override
 DECL|method|reset ()
 specifier|public
-specifier|synchronized
 name|void
 name|reset
 parameter_list|()
@@ -995,7 +984,6 @@ annotation|@
 name|Override
 DECL|method|end ()
 specifier|public
-specifier|synchronized
 name|void
 name|end
 parameter_list|()
@@ -1411,7 +1399,6 @@ annotation|@
 name|Override
 DECL|method|decompress (ByteBuffer src, ByteBuffer dst)
 specifier|public
-specifier|synchronized
 name|void
 name|decompress
 parameter_list|(
@@ -1472,7 +1459,6 @@ annotation|@
 name|Override
 DECL|method|setDictionary (byte[] b, int off, int len)
 specifier|public
-specifier|synchronized
 name|void
 name|setDictionary
 parameter_list|(
@@ -1499,7 +1485,6 @@ annotation|@
 name|Override
 DECL|method|decompress (byte[] b, int off, int len)
 specifier|public
-specifier|synchronized
 name|int
 name|decompress
 parameter_list|(

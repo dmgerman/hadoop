@@ -355,7 +355,6 @@ annotation|@
 name|Override
 DECL|method|setInput (byte[] b, int off, int len)
 specifier|public
-specifier|synchronized
 name|void
 name|setInput
 parameter_list|(
@@ -447,7 +446,6 @@ expr_stmt|;
 block|}
 comment|/**    * If a write would exceed the capacity of the direct buffers, it is set    * aside to be loaded by this function while the compressed data are    * consumed.    */
 DECL|method|setInputFromSavedData ()
-specifier|synchronized
 name|void
 name|setInputFromSavedData
 parameter_list|()
@@ -500,7 +498,6 @@ annotation|@
 name|Override
 DECL|method|setDictionary (byte[] b, int off, int len)
 specifier|public
-specifier|synchronized
 name|void
 name|setDictionary
 parameter_list|(
@@ -522,7 +519,6 @@ annotation|@
 name|Override
 DECL|method|needsInput ()
 specifier|public
-specifier|synchronized
 name|boolean
 name|needsInput
 parameter_list|()
@@ -578,7 +574,6 @@ annotation|@
 name|Override
 DECL|method|needsDictionary ()
 specifier|public
-specifier|synchronized
 name|boolean
 name|needsDictionary
 parameter_list|()
@@ -592,7 +587,6 @@ annotation|@
 name|Override
 DECL|method|finished ()
 specifier|public
-specifier|synchronized
 name|boolean
 name|finished
 parameter_list|()
@@ -615,7 +609,6 @@ annotation|@
 name|Override
 DECL|method|decompress (byte[] b, int off, int len)
 specifier|public
-specifier|synchronized
 name|int
 name|decompress
 parameter_list|(
@@ -804,7 +797,6 @@ annotation|@
 name|Override
 DECL|method|getRemaining ()
 specifier|public
-specifier|synchronized
 name|int
 name|getRemaining
 parameter_list|()
@@ -818,7 +810,6 @@ annotation|@
 name|Override
 DECL|method|reset ()
 specifier|public
-specifier|synchronized
 name|void
 name|reset
 parameter_list|()
@@ -857,7 +848,6 @@ annotation|@
 name|Override
 DECL|method|end ()
 specifier|public
-specifier|synchronized
 name|void
 name|end
 parameter_list|()
@@ -1085,7 +1075,6 @@ annotation|@
 name|Override
 DECL|method|decompress (ByteBuffer src, ByteBuffer dst)
 specifier|public
-specifier|synchronized
 name|void
 name|decompress
 parameter_list|(
@@ -1146,7 +1135,6 @@ annotation|@
 name|Override
 DECL|method|setDictionary (byte[] b, int off, int len)
 specifier|public
-specifier|synchronized
 name|void
 name|setDictionary
 parameter_list|(
@@ -1173,7 +1161,6 @@ annotation|@
 name|Override
 DECL|method|decompress (byte[] b, int off, int len)
 specifier|public
-specifier|synchronized
 name|int
 name|decompress
 parameter_list|(
