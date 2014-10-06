@@ -7389,7 +7389,7 @@ argument_list|)
 return|;
 block|}
 comment|/** Choose target for getting additional datanodes for an existing pipeline. */
-DECL|method|chooseTarget4AdditionalDatanode (String src, int numAdditionalNodes, DatanodeDescriptor clientnode, List<DatanodeStorageInfo> chosen, Set<Node> excludes, long blocksize, byte storagePolicyID)
+DECL|method|chooseTarget4AdditionalDatanode (String src, int numAdditionalNodes, Node clientnode, List<DatanodeStorageInfo> chosen, Set<Node> excludes, long blocksize, byte storagePolicyID)
 specifier|public
 name|DatanodeStorageInfo
 index|[]
@@ -7401,7 +7401,7 @@ parameter_list|,
 name|int
 name|numAdditionalNodes
 parameter_list|,
-name|DatanodeDescriptor
+name|Node
 name|clientnode
 parameter_list|,
 name|List
@@ -7458,7 +7458,7 @@ argument_list|)
 return|;
 block|}
 comment|/**    * Choose target datanodes for creating a new block.    *     * @throws IOException    *           if the number of targets< minimum replication.    * @see BlockPlacementPolicy#chooseTarget(String, int, Node,    *      Set, long, List, BlockStoragePolicy)    */
-DECL|method|chooseTarget4NewBlock (final String src, final int numOfReplicas, final DatanodeDescriptor client, final Set<Node> excludedNodes, final long blocksize, final List<String> favoredNodes, final byte storagePolicyID)
+DECL|method|chooseTarget4NewBlock (final String src, final int numOfReplicas, final Node client, final Set<Node> excludedNodes, final long blocksize, final List<String> favoredNodes, final byte storagePolicyID)
 specifier|public
 name|DatanodeStorageInfo
 index|[]
@@ -7473,7 +7473,7 @@ name|int
 name|numOfReplicas
 parameter_list|,
 specifier|final
-name|DatanodeDescriptor
+name|Node
 name|client
 parameter_list|,
 specifier|final

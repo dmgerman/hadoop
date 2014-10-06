@@ -3219,16 +3219,13 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
-comment|// resolve its network location
 name|List
 argument_list|<
 name|String
 argument_list|>
 name|rName
 init|=
-name|dnsToSwitchMapping
-operator|.
-name|resolve
+name|resolveNetworkLocation
 argument_list|(
 name|names
 argument_list|)
@@ -3277,6 +3274,40 @@ expr_stmt|;
 block|}
 return|return
 name|networkLocation
+return|;
+block|}
+comment|/**    * Resolve network locations for specified hosts    *    * @param names    * @return Network locations if available, Else returns null    */
+DECL|method|resolveNetworkLocation (List<String> names)
+specifier|public
+name|List
+argument_list|<
+name|String
+argument_list|>
+name|resolveNetworkLocation
+parameter_list|(
+name|List
+argument_list|<
+name|String
+argument_list|>
+name|names
+parameter_list|)
+block|{
+comment|// resolve its network location
+name|List
+argument_list|<
+name|String
+argument_list|>
+name|rName
+init|=
+name|dnsToSwitchMapping
+operator|.
+name|resolve
+argument_list|(
+name|names
+argument_list|)
+decl_stmt|;
+return|return
+name|rName
 return|;
 block|}
 comment|/**    * Resolve a node's dependencies in the network. If the DNS to switch     * mapping fails then this method returns empty list of dependencies     * @param node to get dependencies for    * @return List of dependent host names    */
