@@ -14858,11 +14858,7 @@ name|byte
 index|[]
 name|PATH
 init|=
-operator|new
-name|String
-argument_list|(
 literal|"path"
-argument_list|)
 operator|.
 name|getBytes
 argument_list|(
