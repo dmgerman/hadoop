@@ -154,20 +154,6 @@ name|hadoop
 operator|.
 name|security
 operator|.
-name|SecurityUtil
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|security
-operator|.
 name|token
 operator|.
 name|Token
@@ -187,24 +173,6 @@ operator|.
 name|token
 operator|.
 name|TokenRenewer
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|security
-operator|.
-name|token
-operator|.
-name|delegation
-operator|.
-name|AbstractDelegationTokenIdentifier
 import|;
 end_import
 
@@ -304,22 +272,6 @@ name|hadoop
 operator|.
 name|yarn
 operator|.
-name|conf
-operator|.
-name|YarnConfiguration
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|yarn
-operator|.
 name|exceptions
 operator|.
 name|YarnException
@@ -356,7 +308,7 @@ specifier|public
 class|class
 name|RMDelegationTokenIdentifier
 extends|extends
-name|AbstractDelegationTokenIdentifier
+name|YARNDelegationTokenIdentifier
 block|{
 DECL|field|KIND_NAME
 specifier|public
@@ -375,7 +327,7 @@ DECL|method|RMDelegationTokenIdentifier ()
 specifier|public
 name|RMDelegationTokenIdentifier
 parameter_list|()
-block|{   }
+block|{}
 comment|/**    * Create a new delegation token identifier    * @param owner the effective username of the token owner    * @param renewer the username of the renewer    * @param realUser the real username of the token owner    */
 DECL|method|RMDelegationTokenIdentifier (Text owner, Text renewer, Text realUser)
 specifier|public

@@ -96,24 +96,6 @@ name|Token
 import|;
 end_import
 
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|security
-operator|.
-name|token
-operator|.
-name|delegation
-operator|.
-name|AbstractDelegationTokenIdentifier
-import|;
-end_import
-
 begin_class
 annotation|@
 name|Public
@@ -124,7 +106,7 @@ specifier|public
 class|class
 name|TimelineDelegationTokenIdentifier
 extends|extends
-name|AbstractDelegationTokenIdentifier
+name|YARNDelegationTokenIdentifier
 block|{
 DECL|field|KIND_NAME
 specifier|public
