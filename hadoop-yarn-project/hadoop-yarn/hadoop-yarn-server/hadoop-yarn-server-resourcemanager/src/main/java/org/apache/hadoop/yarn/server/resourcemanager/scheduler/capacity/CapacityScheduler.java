@@ -3025,6 +3025,14 @@ expr_stmt|;
 name|initializeQueueMappings
 argument_list|()
 expr_stmt|;
+comment|// Re-calculate headroom for active applications
+name|root
+operator|.
+name|updateClusterResource
+argument_list|(
+name|clusterResource
+argument_list|)
+expr_stmt|;
 block|}
 comment|/**    * Ensure all existing queues are present. Queues cannot be deleted    * @param queues existing queues    * @param newQueues new queues    */
 annotation|@
