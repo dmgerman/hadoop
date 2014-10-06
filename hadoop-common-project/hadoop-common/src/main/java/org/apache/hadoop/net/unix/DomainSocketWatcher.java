@@ -416,6 +416,11 @@ name|DomainSocket
 name|sock
 parameter_list|)
 block|{
+name|lock
+operator|.
+name|lock
+argument_list|()
+expr_stmt|;
 try|try
 block|{
 if|if
@@ -545,6 +550,14 @@ expr_stmt|;
 return|return
 literal|true
 return|;
+block|}
+finally|finally
+block|{
+name|lock
+operator|.
+name|unlock
+argument_list|()
+expr_stmt|;
 block|}
 block|}
 block|}
@@ -1158,6 +1171,11 @@ name|void
 name|kick
 parameter_list|()
 block|{
+name|lock
+operator|.
+name|lock
+argument_list|()
+expr_stmt|;
 try|try
 block|{
 name|notificationSockets
@@ -1198,6 +1216,14 @@ name|e
 argument_list|)
 expr_stmt|;
 block|}
+block|}
+finally|finally
+block|{
+name|lock
+operator|.
+name|unlock
+argument_list|()
+expr_stmt|;
 block|}
 block|}
 DECL|method|sendCallback (String caller, TreeMap<Integer, Entry> entries, FdSet fdSet, int fd)
