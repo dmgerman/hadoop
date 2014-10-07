@@ -977,6 +977,14 @@ name|disallowed
 init|=
 literal|false
 decl_stmt|;
+comment|// The number of replication work pending before targets are determined
+DECL|field|PendingReplicationWithoutTargets
+specifier|private
+name|int
+name|PendingReplicationWithoutTargets
+init|=
+literal|0
+decl_stmt|;
 comment|/**    * DatanodeDescriptor constructor    * @param nodeID id of the data node    */
 DECL|method|DatanodeDescriptor (DatanodeID nodeID)
 specifier|public
@@ -1836,6 +1844,24 @@ argument_list|)
 argument_list|)
 return|;
 block|}
+DECL|method|incrementPendingReplicationWithoutTargets ()
+name|void
+name|incrementPendingReplicationWithoutTargets
+parameter_list|()
+block|{
+name|PendingReplicationWithoutTargets
+operator|++
+expr_stmt|;
+block|}
+DECL|method|decrementPendingReplicationWithoutTargets ()
+name|void
+name|decrementPendingReplicationWithoutTargets
+parameter_list|()
+block|{
+name|PendingReplicationWithoutTargets
+operator|--
+expr_stmt|;
+block|}
 comment|/**    * Store block replication work.    */
 DECL|method|addBlockToBeReplicated (Block block, DatanodeStorageInfo[] targets)
 name|void
@@ -1977,6 +2003,8 @@ name|getNumberOfBlocksToBeReplicated
 parameter_list|()
 block|{
 return|return
+name|PendingReplicationWithoutTargets
+operator|+
 name|replicateBlocks
 operator|.
 name|size

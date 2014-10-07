@@ -16432,6 +16432,13 @@ name|srcNode
 expr_stmt|;
 name|this
 operator|.
+name|srcNode
+operator|.
+name|incrementPendingReplicationWithoutTargets
+argument_list|()
+expr_stmt|;
+name|this
+operator|.
 name|containingNodes
 operator|=
 name|containingNodes
@@ -16479,6 +16486,8 @@ argument_list|>
 name|excludedNodes
 parameter_list|)
 block|{
+try|try
+block|{
 name|targets
 operator|=
 name|blockplacement
@@ -16516,6 +16525,15 @@ argument_list|()
 argument_list|)
 argument_list|)
 expr_stmt|;
+block|}
+finally|finally
+block|{
+name|srcNode
+operator|.
+name|decrementPendingReplicationWithoutTargets
+argument_list|()
+expr_stmt|;
+block|}
 block|}
 block|}
 comment|/**    * A simple result enum for the result of    * {@link BlockManager#processMisReplicatedBlock(BlockInfo)}.    */
