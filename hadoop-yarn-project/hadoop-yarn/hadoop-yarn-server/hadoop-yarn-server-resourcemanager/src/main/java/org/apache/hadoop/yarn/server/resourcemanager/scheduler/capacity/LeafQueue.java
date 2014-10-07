@@ -4683,13 +4683,10 @@ name|Resource
 name|userLimit
 parameter_list|)
 block|{
+comment|/**       * Headroom is:      *    min(      *        min(userLimit, queueMaxCap) - userConsumed,      *        queueMaxCap - queueUsedResources      *       )      *       * ( which can be expressed as,       *  min (userLimit - userConsumed, queuMaxCap - userConsumed,       *    queueMaxCap - queueUsedResources)      *  )      *      * given that queueUsedResources>= userConsumed, this simplifies to      *      *>> min (userlimit - userConsumed,   queueMaxCap - queueUsedResources)<<       *      */
 name|Resource
 name|headroom
 init|=
-name|Resources
-operator|.
-name|subtract
-argument_list|(
 name|Resources
 operator|.
 name|min
@@ -4698,15 +4695,26 @@ name|resourceCalculator
 argument_list|,
 name|clusterResource
 argument_list|,
+name|Resources
+operator|.
+name|subtract
+argument_list|(
 name|userLimit
-argument_list|,
-name|queueMaxCap
-argument_list|)
 argument_list|,
 name|user
 operator|.
 name|getConsumedResources
 argument_list|()
+argument_list|)
+argument_list|,
+name|Resources
+operator|.
+name|subtract
+argument_list|(
+name|queueMaxCap
+argument_list|,
+name|usedResources
+argument_list|)
 argument_list|)
 decl_stmt|;
 return|return
@@ -4963,7 +4971,6 @@ name|class
 block|}
 argument_list|)
 DECL|method|computeUserLimitAndSetHeadroom ( FiCaSchedulerApp application, Resource clusterResource, Resource required)
-specifier|private
 name|Resource
 name|computeUserLimitAndSetHeadroom
 parameter_list|(
@@ -4993,7 +5000,6 @@ argument_list|(
 name|user
 argument_list|)
 decl_stmt|;
-comment|/**       * Headroom is min((userLimit, queue-max-cap) - consumed)      */
 name|Resource
 name|userLimit
 init|=
