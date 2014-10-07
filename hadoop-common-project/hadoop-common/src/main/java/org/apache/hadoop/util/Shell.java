@@ -2314,7 +2314,32 @@ parameter_list|(
 name|IllegalStateException
 name|ise
 parameter_list|)
-block|{ }
+block|{     }
+catch|catch
+parameter_list|(
+name|OutOfMemoryError
+name|oe
+parameter_list|)
+block|{
+name|LOG
+operator|.
+name|error
+argument_list|(
+literal|"Caught "
+operator|+
+name|oe
+operator|+
+literal|". One possible reason is that ulimit"
+operator|+
+literal|" setting of 'max user processes' is too low. If so, do"
+operator|+
+literal|" 'ulimit -u<largerNum>' and try again."
+argument_list|)
+expr_stmt|;
+throw|throw
+name|oe
+throw|;
+block|}
 try|try
 block|{
 name|parseExecResult
