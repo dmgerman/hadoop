@@ -527,6 +527,11 @@ specifier|private
 name|Authenticator
 name|authenticator
 decl_stmt|;
+DECL|field|connConfigurator
+specifier|private
+name|ConnectionConfigurator
+name|connConfigurator
+decl_stmt|;
 DECL|method|DelegationTokenAuthenticator (Authenticator authenticator)
 specifier|public
 name|DelegationTokenAuthenticator
@@ -559,6 +564,10 @@ name|setConnectionConfigurator
 argument_list|(
 name|configurator
 argument_list|)
+expr_stmt|;
+name|connConfigurator
+operator|=
+name|configurator
 expr_stmt|;
 block|}
 DECL|method|hasDelegationToken (URL url, AuthenticatedURL.Token token)
@@ -1139,6 +1148,8 @@ operator|new
 name|AuthenticatedURL
 argument_list|(
 name|this
+argument_list|,
+name|connConfigurator
 argument_list|)
 decl_stmt|;
 name|HttpURLConnection
