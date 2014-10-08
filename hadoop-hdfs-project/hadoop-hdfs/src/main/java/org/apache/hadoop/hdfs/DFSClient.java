@@ -8943,8 +8943,6 @@ block|}
 return|return
 name|callAppend
 argument_list|(
-name|stat
-argument_list|,
 name|src
 argument_list|,
 name|buffersize
@@ -9227,14 +9225,11 @@ throw|;
 block|}
 block|}
 comment|/** Method to get stream returned by append call */
-DECL|method|callAppend (HdfsFileStatus stat, String src, int buffersize, Progressable progress)
+DECL|method|callAppend (String src, int buffersize, Progressable progress)
 specifier|private
 name|DFSOutputStream
 name|callAppend
 parameter_list|(
-name|HdfsFileStatus
-name|stat
-parameter_list|,
 name|String
 name|src
 parameter_list|,
@@ -9307,6 +9302,14 @@ name|class
 argument_list|)
 throw|;
 block|}
+name|HdfsFileStatus
+name|newStat
+init|=
+name|getFileInfo
+argument_list|(
+name|src
+argument_list|)
+decl_stmt|;
 return|return
 name|DFSOutputStream
 operator|.
@@ -9322,7 +9325,7 @@ name|progress
 argument_list|,
 name|lastBlock
 argument_list|,
-name|stat
+name|newStat
 argument_list|,
 name|dfsClientConf
 operator|.
@@ -9405,44 +9408,12 @@ block|{
 name|checkOpen
 argument_list|()
 expr_stmt|;
-name|HdfsFileStatus
-name|stat
-init|=
-name|getFileInfo
-argument_list|(
-name|src
-argument_list|)
-decl_stmt|;
-if|if
-condition|(
-name|stat
-operator|==
-literal|null
-condition|)
-block|{
-comment|// No file found
-throw|throw
-operator|new
-name|FileNotFoundException
-argument_list|(
-literal|"failed to append to non-existent file "
-operator|+
-name|src
-operator|+
-literal|" on client "
-operator|+
-name|clientName
-argument_list|)
-throw|;
-block|}
 specifier|final
 name|DFSOutputStream
 name|result
 init|=
 name|callAppend
 argument_list|(
-name|stat
-argument_list|,
 name|src
 argument_list|,
 name|buffersize
