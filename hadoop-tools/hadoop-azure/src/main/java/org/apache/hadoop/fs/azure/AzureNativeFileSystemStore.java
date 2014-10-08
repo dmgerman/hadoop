@@ -52,16 +52,6 @@ name|java
 operator|.
 name|io
 operator|.
-name|ByteArrayInputStream
-import|;
-end_import
-
-begin_import
-import|import
-name|java
-operator|.
-name|io
-operator|.
 name|DataInputStream
 import|;
 end_import
@@ -110,6 +100,16 @@ begin_import
 import|import
 name|java
 operator|.
+name|io
+operator|.
+name|UnsupportedEncodingException
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
 name|net
 operator|.
 name|URI
@@ -123,6 +123,26 @@ operator|.
 name|net
 operator|.
 name|URISyntaxException
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|net
+operator|.
+name|URLDecoder
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|net
+operator|.
+name|URLEncoder
 import|;
 end_import
 
@@ -162,6 +182,16 @@ name|java
 operator|.
 name|util
 operator|.
+name|Collections
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
 name|Date
 import|;
 end_import
@@ -192,6 +222,16 @@ name|java
 operator|.
 name|util
 operator|.
+name|HashSet
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
 name|Iterator
 import|;
 end_import
@@ -212,7 +252,41 @@ name|java
 operator|.
 name|util
 operator|.
+name|Locale
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
 name|Map
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
+name|Set
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|commons
+operator|.
+name|lang
+operator|.
+name|StringUtils
 import|;
 end_import
 
@@ -282,6 +356,20 @@ name|hadoop
 operator|.
 name|fs
 operator|.
+name|FileSystem
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|fs
+operator|.
 name|azure
 operator|.
 name|StorageInterface
@@ -322,7 +410,61 @@ name|azure
 operator|.
 name|StorageInterface
 operator|.
+name|CloudBlobWrapper
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|fs
+operator|.
+name|azure
+operator|.
+name|StorageInterface
+operator|.
 name|CloudBlockBlobWrapper
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|fs
+operator|.
+name|azure
+operator|.
+name|StorageInterface
+operator|.
+name|CloudPageBlobWrapper
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|fs
+operator|.
+name|azure
+operator|.
+name|StorageInterfaceImpl
+operator|.
+name|CloudPageBlobWrapperImpl
 import|;
 end_import
 
@@ -1013,6 +1155,44 @@ name|OLD_LINK_BACK_TO_UPLOAD_IN_PROGRESS_METADATA_KEY
 init|=
 literal|"asv_tmpupload"
 decl_stmt|;
+comment|/**    * Configuration key to indicate the set of directories in WASB where we    * should store files as page blobs instead of block blobs.    *    * Entries should be plain directory names (i.e. not URIs) with no leading or    * trailing slashes. Delimit the entries with commas.    */
+DECL|field|KEY_PAGE_BLOB_DIRECTORIES
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|KEY_PAGE_BLOB_DIRECTORIES
+init|=
+literal|"fs.azure.page.blob.dir"
+decl_stmt|;
+comment|/**    * The set of directories where we should store files as page blobs.    */
+DECL|field|pageBlobDirs
+specifier|private
+name|Set
+argument_list|<
+name|String
+argument_list|>
+name|pageBlobDirs
+decl_stmt|;
+comment|/**    * Configuration key to indicate the set of directories in WASB where    * we should do atomic folder rename synchronized with createNonRecursive.    */
+DECL|field|KEY_ATOMIC_RENAME_DIRECTORIES
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|KEY_ATOMIC_RENAME_DIRECTORIES
+init|=
+literal|"fs.azure.atomic.rename.dir"
+decl_stmt|;
+comment|/**    * The set of directories where we should apply atomic folder rename    * synchronized with createNonRecursive.    */
+DECL|field|atomicRenameDirs
+specifier|private
+name|Set
+argument_list|<
+name|String
+argument_list|>
+name|atomicRenameDirs
+decl_stmt|;
 DECL|field|HTTP_SCHEME
 specifier|private
 specifier|static
@@ -1059,6 +1239,7 @@ init|=
 literal|8
 decl_stmt|;
 comment|// Concurrent reads reads of data written out of band are disable by default.
+comment|//
 DECL|field|DEFAULT_READ_TOLERATE_CONCURRENT_APPEND
 specifier|private
 specifier|static
@@ -1096,6 +1277,7 @@ operator|*
 literal|1024
 decl_stmt|;
 comment|// Retry parameter defaults.
+comment|//
 DECL|field|DEFAULT_MIN_BACKOFF_INTERVAL
 specifier|private
 specifier|static
@@ -1225,8 +1407,8 @@ name|bandwidthGaugeUpdater
 decl_stmt|;
 DECL|field|PERMISSION_JSON_SERIALIZER
 specifier|private
-specifier|static
 specifier|final
+specifier|static
 name|JSON
 name|PERMISSION_JSON_SERIALIZER
 init|=
@@ -1724,7 +1906,7 @@ return|return
 name|tolerateOobAppends
 return|;
 block|}
-comment|/**    * Method for the URI and configuration object necessary to create a storage    * session with an Azure session. It parses the scheme to ensure it matches    * the storage protocol supported by this file system.    *     * @param uri    *          - URI for target storage blob.    * @param conf    *          - reference to configuration object.    *     * @throws IllegalArgumentException    *           if URI or job object is null, or invalid scheme.    */
+comment|/**    * Method for the URI and configuration object necessary to create a storage    * session with an Azure session. It parses the scheme to ensure it matches    * the storage protocol supported by this file system.    *     * @param uri - URI for target storage blob.    * @param conf - reference to configuration object.    * @param instrumentation - the metrics source that will keep track of operations here.    *     * @throws IllegalArgumentException if URI or job object is null, or invalid scheme.    */
 annotation|@
 name|Override
 DECL|method|initialize (URI uri, Configuration conf, AzureFileSystemInstrumentation instrumentation)
@@ -1742,25 +1924,26 @@ name|AzureFileSystemInstrumentation
 name|instrumentation
 parameter_list|)
 throws|throws
+name|IllegalArgumentException
+throws|,
 name|AzureException
+throws|,
+name|IOException
 block|{
 if|if
 condition|(
 literal|null
 operator|==
-name|this
-operator|.
-name|storageInteractionLayer
+name|instrumentation
 condition|)
 block|{
-name|this
-operator|.
-name|storageInteractionLayer
-operator|=
+throw|throw
 operator|new
-name|StorageInterfaceImpl
-argument_list|()
-expr_stmt|;
+name|IllegalArgumentException
+argument_list|(
+literal|"Null instrumentation"
+argument_list|)
+throw|;
 block|}
 name|this
 operator|.
@@ -1846,6 +2029,159 @@ comment|//
 name|createAzureStorageSession
 argument_list|()
 expr_stmt|;
+comment|// Extract the directories that should contain page blobs
+name|pageBlobDirs
+operator|=
+name|getDirectorySet
+argument_list|(
+name|KEY_PAGE_BLOB_DIRECTORIES
+argument_list|)
+expr_stmt|;
+name|LOG
+operator|.
+name|debug
+argument_list|(
+literal|"Page blob directories:  "
+operator|+
+name|setToString
+argument_list|(
+name|pageBlobDirs
+argument_list|)
+argument_list|)
+expr_stmt|;
+comment|// Extract directories that should have atomic rename applied.
+name|atomicRenameDirs
+operator|=
+name|getDirectorySet
+argument_list|(
+name|KEY_ATOMIC_RENAME_DIRECTORIES
+argument_list|)
+expr_stmt|;
+name|String
+name|hbaseRoot
+decl_stmt|;
+try|try
+block|{
+comment|// Add to this the hbase root directory, or /hbase is that is not set.
+name|hbaseRoot
+operator|=
+name|verifyAndConvertToStandardFormat
+argument_list|(
+name|sessionConfiguration
+operator|.
+name|get
+argument_list|(
+literal|"hbase.rootdir"
+argument_list|,
+literal|"hbase"
+argument_list|)
+argument_list|)
+expr_stmt|;
+name|atomicRenameDirs
+operator|.
+name|add
+argument_list|(
+name|hbaseRoot
+argument_list|)
+expr_stmt|;
+block|}
+catch|catch
+parameter_list|(
+name|URISyntaxException
+name|e
+parameter_list|)
+block|{
+name|LOG
+operator|.
+name|warn
+argument_list|(
+literal|"Unable to initialize HBase root as an atomic rename directory."
+argument_list|)
+expr_stmt|;
+block|}
+name|LOG
+operator|.
+name|debug
+argument_list|(
+literal|"Atomic rename directories:  "
+operator|+
+name|setToString
+argument_list|(
+name|atomicRenameDirs
+argument_list|)
+argument_list|)
+expr_stmt|;
+block|}
+comment|/**    * Helper to format a string for log output from Set<String>    */
+DECL|method|setToString (Set<String> set)
+specifier|private
+name|String
+name|setToString
+parameter_list|(
+name|Set
+argument_list|<
+name|String
+argument_list|>
+name|set
+parameter_list|)
+block|{
+name|StringBuilder
+name|sb
+init|=
+operator|new
+name|StringBuilder
+argument_list|()
+decl_stmt|;
+name|int
+name|i
+init|=
+literal|1
+decl_stmt|;
+for|for
+control|(
+name|String
+name|s
+range|:
+name|set
+control|)
+block|{
+name|sb
+operator|.
+name|append
+argument_list|(
+literal|"/"
+operator|+
+name|s
+argument_list|)
+expr_stmt|;
+if|if
+condition|(
+name|i
+operator|!=
+name|set
+operator|.
+name|size
+argument_list|()
+condition|)
+block|{
+name|sb
+operator|.
+name|append
+argument_list|(
+literal|", "
+argument_list|)
+expr_stmt|;
+block|}
+name|i
+operator|++
+expr_stmt|;
+block|}
+return|return
+name|sb
+operator|.
+name|toString
+argument_list|()
+return|;
 block|}
 comment|/**    * Method to extract the account name from an Azure URI.    *     * @param uri    *          -- WASB blob URI    * @returns accountName -- the account name for the URI.    * @throws URISyntaxException    *           if the URI does not have an authority it is badly formed.    */
 DECL|method|getAccountFromAuthority (URI uri)
@@ -1891,8 +2227,7 @@ literal|"Expected URI with a valid authority"
 argument_list|)
 throw|;
 block|}
-comment|// Check if authority container the delimiter separating the account name
-comment|// from the
+comment|// Check if authority container the delimiter separating the account name from the
 comment|// the container.
 comment|//
 if|if
@@ -2041,8 +2376,7 @@ name|WASB_AUTHORITY_DELIMITER
 argument_list|)
 condition|)
 block|{
-comment|// The authority does not have a container name. Use the default container
-comment|// by
+comment|// The authority does not have a container name. Use the default container by
 comment|// setting the container name to the default Azure root container.
 comment|//
 return|return
@@ -2339,6 +2673,7 @@ argument_list|)
 argument_list|)
 expr_stmt|;
 comment|// Set up the exponential retry policy.
+comment|//
 name|minBackoff
 operator|=
 name|sessionConfiguration
@@ -2662,6 +2997,9 @@ name|StorageException
 throws|,
 name|AzureException
 block|{
+name|URI
+name|blobEndPoint
+decl_stmt|;
 if|if
 condition|(
 name|isStorageEmulatorAccount
@@ -2692,9 +3030,8 @@ expr_stmt|;
 block|}
 else|else
 block|{
-name|URI
 name|blobEndPoint
-init|=
+operator|=
 operator|new
 name|URI
 argument_list|(
@@ -2705,7 +3042,7 @@ literal|"://"
 operator|+
 name|accountName
 argument_list|)
-decl_stmt|;
+expr_stmt|;
 name|storageInteractionLayer
 operator|.
 name|createBlobClient
@@ -3039,6 +3376,8 @@ name|createAzureStorageSession
 parameter_list|()
 throws|throws
 name|AzureException
+throws|,
+name|IOException
 block|{
 comment|// Make sure this object was properly initialized with references to
 comment|// the sessionUri and sessionConfiguration.
@@ -3336,6 +3675,406 @@ block|,
 comment|/**      * We're accessing the container to read something then write, e.g. rename a      * file.      */
 DECL|enumConstant|ReadThenWrite
 name|ReadThenWrite
+block|}
+comment|/**    * Trims a suffix/prefix from the given string. For example if    * s is given as "/xy" and toTrim is "/", this method returns "xy"    */
+DECL|method|trim (String s, String toTrim)
+specifier|private
+specifier|static
+name|String
+name|trim
+parameter_list|(
+name|String
+name|s
+parameter_list|,
+name|String
+name|toTrim
+parameter_list|)
+block|{
+return|return
+name|StringUtils
+operator|.
+name|removeEnd
+argument_list|(
+name|StringUtils
+operator|.
+name|removeStart
+argument_list|(
+name|s
+argument_list|,
+name|toTrim
+argument_list|)
+argument_list|,
+name|toTrim
+argument_list|)
+return|;
+block|}
+comment|/**    * Checks if the given rawDir belongs to this account/container, and    * if so returns the canonicalized path for it. Otherwise return null.    */
+DECL|method|verifyAndConvertToStandardFormat (String rawDir)
+specifier|private
+name|String
+name|verifyAndConvertToStandardFormat
+parameter_list|(
+name|String
+name|rawDir
+parameter_list|)
+throws|throws
+name|URISyntaxException
+block|{
+name|URI
+name|asUri
+init|=
+operator|new
+name|URI
+argument_list|(
+name|rawDir
+argument_list|)
+decl_stmt|;
+if|if
+condition|(
+name|asUri
+operator|.
+name|getAuthority
+argument_list|()
+operator|==
+literal|null
+operator|||
+name|asUri
+operator|.
+name|getAuthority
+argument_list|()
+operator|.
+name|toLowerCase
+argument_list|(
+name|Locale
+operator|.
+name|US
+argument_list|)
+operator|.
+name|equalsIgnoreCase
+argument_list|(
+name|sessionUri
+operator|.
+name|getAuthority
+argument_list|()
+operator|.
+name|toLowerCase
+argument_list|(
+name|Locale
+operator|.
+name|US
+argument_list|)
+argument_list|)
+condition|)
+block|{
+comment|// Applies to me.
+return|return
+name|trim
+argument_list|(
+name|asUri
+operator|.
+name|getPath
+argument_list|()
+argument_list|,
+literal|"/"
+argument_list|)
+return|;
+block|}
+else|else
+block|{
+comment|// Doen't apply to me.
+return|return
+literal|null
+return|;
+block|}
+block|}
+comment|/**    * Take a comma-separated list of directories from a configuration variable    * and transform it to a set of directories.    */
+DECL|method|getDirectorySet (final String configVar)
+specifier|private
+name|Set
+argument_list|<
+name|String
+argument_list|>
+name|getDirectorySet
+parameter_list|(
+specifier|final
+name|String
+name|configVar
+parameter_list|)
+throws|throws
+name|AzureException
+block|{
+name|String
+index|[]
+name|rawDirs
+init|=
+name|sessionConfiguration
+operator|.
+name|getStrings
+argument_list|(
+name|configVar
+argument_list|,
+operator|new
+name|String
+index|[
+literal|0
+index|]
+argument_list|)
+decl_stmt|;
+name|Set
+argument_list|<
+name|String
+argument_list|>
+name|directorySet
+init|=
+operator|new
+name|HashSet
+argument_list|<
+name|String
+argument_list|>
+argument_list|()
+decl_stmt|;
+for|for
+control|(
+name|String
+name|currentDir
+range|:
+name|rawDirs
+control|)
+block|{
+name|String
+name|myDir
+decl_stmt|;
+try|try
+block|{
+name|myDir
+operator|=
+name|verifyAndConvertToStandardFormat
+argument_list|(
+name|currentDir
+argument_list|)
+expr_stmt|;
+block|}
+catch|catch
+parameter_list|(
+name|URISyntaxException
+name|ex
+parameter_list|)
+block|{
+throw|throw
+operator|new
+name|AzureException
+argument_list|(
+name|String
+operator|.
+name|format
+argument_list|(
+literal|"The directory %s specified in the configuration entry %s is not"
+operator|+
+literal|" a valid URI."
+argument_list|,
+name|currentDir
+argument_list|,
+name|configVar
+argument_list|)
+argument_list|)
+throw|;
+block|}
+if|if
+condition|(
+name|myDir
+operator|!=
+literal|null
+condition|)
+block|{
+name|directorySet
+operator|.
+name|add
+argument_list|(
+name|myDir
+argument_list|)
+expr_stmt|;
+block|}
+block|}
+return|return
+name|directorySet
+return|;
+block|}
+comment|/**    * Checks if the given key in Azure Storage should be stored as a page    * blob instead of block blob.    * @throws URISyntaxException    */
+DECL|method|isPageBlobKey (String key)
+specifier|public
+name|boolean
+name|isPageBlobKey
+parameter_list|(
+name|String
+name|key
+parameter_list|)
+block|{
+return|return
+name|isKeyForDirectorySet
+argument_list|(
+name|key
+argument_list|,
+name|pageBlobDirs
+argument_list|)
+return|;
+block|}
+comment|/**    * Checks if the given key in Azure storage should have synchronized    * atomic folder rename createNonRecursive implemented.    */
+annotation|@
+name|Override
+DECL|method|isAtomicRenameKey (String key)
+specifier|public
+name|boolean
+name|isAtomicRenameKey
+parameter_list|(
+name|String
+name|key
+parameter_list|)
+block|{
+return|return
+name|isKeyForDirectorySet
+argument_list|(
+name|key
+argument_list|,
+name|atomicRenameDirs
+argument_list|)
+return|;
+block|}
+DECL|method|isKeyForDirectorySet (String key, Set<String> dirSet)
+specifier|public
+name|boolean
+name|isKeyForDirectorySet
+parameter_list|(
+name|String
+name|key
+parameter_list|,
+name|Set
+argument_list|<
+name|String
+argument_list|>
+name|dirSet
+parameter_list|)
+block|{
+name|String
+name|defaultFS
+init|=
+name|FileSystem
+operator|.
+name|getDefaultUri
+argument_list|(
+name|sessionConfiguration
+argument_list|)
+operator|.
+name|toString
+argument_list|()
+decl_stmt|;
+for|for
+control|(
+name|String
+name|dir
+range|:
+name|dirSet
+control|)
+block|{
+if|if
+condition|(
+name|dir
+operator|.
+name|isEmpty
+argument_list|()
+operator|||
+name|key
+operator|.
+name|startsWith
+argument_list|(
+name|dir
+operator|+
+literal|"/"
+argument_list|)
+condition|)
+block|{
+return|return
+literal|true
+return|;
+block|}
+comment|// Allow for blob directories with paths relative to the default file
+comment|// system.
+comment|//
+try|try
+block|{
+name|URI
+name|uriPageBlobDir
+init|=
+operator|new
+name|URI
+argument_list|(
+name|dir
+argument_list|)
+decl_stmt|;
+if|if
+condition|(
+literal|null
+operator|==
+name|uriPageBlobDir
+operator|.
+name|getAuthority
+argument_list|()
+condition|)
+block|{
+comment|// Concatenate the default file system prefix with the relative
+comment|// page blob directory path.
+comment|//
+if|if
+condition|(
+name|key
+operator|.
+name|startsWith
+argument_list|(
+name|trim
+argument_list|(
+name|defaultFS
+argument_list|,
+literal|"/"
+argument_list|)
+operator|+
+literal|"/"
+operator|+
+name|dir
+operator|+
+literal|"/"
+argument_list|)
+condition|)
+block|{
+return|return
+literal|true
+return|;
+block|}
+block|}
+block|}
+catch|catch
+parameter_list|(
+name|URISyntaxException
+name|e
+parameter_list|)
+block|{
+name|LOG
+operator|.
+name|info
+argument_list|(
+name|String
+operator|.
+name|format
+argument_list|(
+literal|"URI syntax error creating URI for %s"
+argument_list|,
+name|dir
+argument_list|)
+argument_list|)
+expr_stmt|;
+block|}
+block|}
+return|return
+literal|false
+return|;
 block|}
 comment|/**    * This should be called from any method that does any modifications to the    * underlying container: it makes sure to put the WASB current version in the    * container's metadata if it's not already there.    */
 DECL|method|checkContainer (ContainerAccessType accessType)
@@ -3994,7 +4733,7 @@ operator|.
 name|PureWrite
 argument_list|)
 expr_stmt|;
-comment|/**        * Note: Windows Azure Blob Storage does not allow the creation of        * arbitrary directory paths under the default $root directory. This is by        * design to eliminate ambiguity in specifying a implicit blob address. A        * blob in the $root container cannot include a / in its name and must be        * careful not to include a trailing '/' when referencing blobs in the        * $root container. A '/; in the $root container permits ambiguous blob        * names as in the following example involving two containers $root and        * mycontainer: http://myaccount.blob.core.windows.net/$root        * http://myaccount.blob.core.windows.net/mycontainer If the URL        * "mycontainer/somefile.txt were allowed in $root then the URL:        * http://myaccount.blob.core.windows.net/mycontainer/myblob.txt could        * mean either: (1) container=mycontainer; blob=myblob.txt (2)        * container=$root; blob=mycontainer/myblob.txt        *         * To avoid this type of ambiguity the Azure blob storage prevents        * arbitrary path under $root. For a simple and more consistent user        * experience it was decided to eliminate the opportunity for creating        * such paths by making the $root container read-only under WASB.         */
+comment|/**        * Note: Windows Azure Blob Storage does not allow the creation of arbitrary directory        *      paths under the default $root directory.  This is by design to eliminate        *      ambiguity in specifying a implicit blob address. A blob in the $root conatiner        *      cannot include a / in its name and must be careful not to include a trailing        *      '/' when referencing  blobs in the $root container.        *      A '/; in the $root container permits ambiguous blob names as in the following        *      example involving two containers $root and mycontainer:        *                http://myaccount.blob.core.windows.net/$root        *                http://myaccount.blob.core.windows.net/mycontainer        *      If the URL "mycontainer/somefile.txt were allowed in $root then the URL:        *                http://myaccount.blob.core.windows.net/mycontainer/myblob.txt        *      could mean either:        *        (1) container=mycontainer; blob=myblob.txt        *        (2) container=$root; blob=mycontainer/myblob.txt        *         * To avoid this type of ambiguity the Azure blob storage prevents        * arbitrary path under $root. For a simple and more consistent user        * experience it was decided to eliminate the opportunity for creating        * such paths by making the $root container read-only under WASB.         */
 comment|// Check that no attempt is made to write to blobs on default
 comment|// $root containers.
 if|if
@@ -4039,9 +4778,9 @@ name|errMsg
 argument_list|)
 throw|;
 block|}
-comment|// Get the block blob reference from the store's container and
+comment|// Get the blob reference from the store's container and
 comment|// return it.
-name|CloudBlockBlobWrapper
+name|CloudBlobWrapper
 name|blob
 init|=
 name|getBlobReference
@@ -4057,26 +4796,20 @@ name|permissionStatus
 argument_list|)
 expr_stmt|;
 comment|// Create the output stream for the Azure blob.
+comment|//
 name|OutputStream
 name|outputStream
 init|=
-name|blob
-operator|.
 name|openOutputStream
 argument_list|(
-name|getUploadOptions
-argument_list|()
-argument_list|,
-name|getInstrumentedContext
-argument_list|()
+name|blob
 argument_list|)
 decl_stmt|;
-comment|// Return to caller with DataOutput stream.
 name|DataOutputStream
 name|dataOutStream
 init|=
 operator|new
-name|DataOutputStream
+name|SyncableDataOutputStream
 argument_list|(
 name|outputStream
 argument_list|)
@@ -4102,6 +4835,122 @@ argument_list|)
 throw|;
 block|}
 block|}
+comment|/**    * Opens a new output stream to the given blob (page or block blob)    * to populate it from scratch with data.    */
+DECL|method|openOutputStream (final CloudBlobWrapper blob)
+specifier|private
+name|OutputStream
+name|openOutputStream
+parameter_list|(
+specifier|final
+name|CloudBlobWrapper
+name|blob
+parameter_list|)
+throws|throws
+name|StorageException
+block|{
+if|if
+condition|(
+name|blob
+operator|instanceof
+name|CloudPageBlobWrapperImpl
+condition|)
+block|{
+return|return
+operator|new
+name|PageBlobOutputStream
+argument_list|(
+operator|(
+name|CloudPageBlobWrapper
+operator|)
+name|blob
+argument_list|,
+name|getInstrumentedContext
+argument_list|()
+argument_list|,
+name|sessionConfiguration
+argument_list|)
+return|;
+block|}
+else|else
+block|{
+comment|// Handle both ClouldBlockBlobWrapperImpl and (only for the test code path)
+comment|// MockCloudBlockBlobWrapper.
+return|return
+operator|(
+operator|(
+name|CloudBlockBlobWrapper
+operator|)
+name|blob
+operator|)
+operator|.
+name|openOutputStream
+argument_list|(
+name|getUploadOptions
+argument_list|()
+argument_list|,
+name|getInstrumentedContext
+argument_list|()
+argument_list|)
+return|;
+block|}
+block|}
+comment|/**    * Opens a new input stream for the given blob (page or block blob)    * to read its data.    */
+DECL|method|openInputStream (CloudBlobWrapper blob)
+specifier|private
+name|InputStream
+name|openInputStream
+parameter_list|(
+name|CloudBlobWrapper
+name|blob
+parameter_list|)
+throws|throws
+name|StorageException
+throws|,
+name|IOException
+block|{
+if|if
+condition|(
+name|blob
+operator|instanceof
+name|CloudBlockBlobWrapper
+condition|)
+block|{
+return|return
+name|blob
+operator|.
+name|openInputStream
+argument_list|(
+name|getDownloadOptions
+argument_list|()
+argument_list|,
+name|getInstrumentedContext
+argument_list|(
+name|isConcurrentOOBAppendAllowed
+argument_list|()
+argument_list|)
+argument_list|)
+return|;
+block|}
+else|else
+block|{
+return|return
+operator|new
+name|PageBlobInputStream
+argument_list|(
+operator|(
+name|CloudPageBlobWrapper
+operator|)
+name|blob
+argument_list|,
+name|getInstrumentedContext
+argument_list|(
+name|isConcurrentOOBAppendAllowed
+argument_list|()
+argument_list|)
+argument_list|)
+return|;
+block|}
+block|}
 comment|/**    * Default permission to use when no permission metadata is found.    *     * @return The default permission to use.    */
 DECL|method|defaultPermissionNoBlobMetadata ()
 specifier|private
@@ -4125,13 +4974,13 @@ argument_list|()
 argument_list|)
 return|;
 block|}
-DECL|method|storeMetadataAttribute (CloudBlockBlobWrapper blob, String key, String value)
+DECL|method|storeMetadataAttribute (CloudBlobWrapper blob, String key, String value)
 specifier|private
 specifier|static
 name|void
 name|storeMetadataAttribute
 parameter_list|(
-name|CloudBlockBlobWrapper
+name|CloudBlobWrapper
 name|blob
 parameter_list|,
 name|String
@@ -4190,13 +5039,13 @@ name|metadata
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|getMetadataAttribute (CloudBlockBlobWrapper blob, String... keyAlternatives)
+DECL|method|getMetadataAttribute (CloudBlobWrapper blob, String... keyAlternatives)
 specifier|private
 specifier|static
 name|String
 name|getMetadataAttribute
 parameter_list|(
-name|CloudBlockBlobWrapper
+name|CloudBlobWrapper
 name|blob
 parameter_list|,
 name|String
@@ -4260,13 +5109,13 @@ return|return
 literal|null
 return|;
 block|}
-DECL|method|removeMetadataAttribute (CloudBlockBlobWrapper blob, String key)
+DECL|method|removeMetadataAttribute (CloudBlobWrapper blob, String key)
 specifier|private
 specifier|static
 name|void
 name|removeMetadataAttribute
 parameter_list|(
-name|CloudBlockBlobWrapper
+name|CloudBlobWrapper
 name|blob
 parameter_list|,
 name|String
@@ -4309,12 +5158,13 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-DECL|method|storePermissionStatus (CloudBlockBlobWrapper blob, PermissionStatus permissionStatus)
+DECL|method|storePermissionStatus (CloudBlobWrapper blob, PermissionStatus permissionStatus)
 specifier|private
+specifier|static
 name|void
 name|storePermissionStatus
 parameter_list|(
-name|CloudBlockBlobWrapper
+name|CloudBlobWrapper
 name|blob
 parameter_list|,
 name|PermissionStatus
@@ -4344,12 +5194,12 @@ name|OLD_PERMISSION_METADATA_KEY
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|getPermissionStatus (CloudBlockBlobWrapper blob)
+DECL|method|getPermissionStatus (CloudBlobWrapper blob)
 specifier|private
 name|PermissionStatus
 name|getPermissionStatus
 parameter_list|(
-name|CloudBlockBlobWrapper
+name|CloudBlobWrapper
 name|blob
 parameter_list|)
 block|{
@@ -4389,13 +5239,13 @@ argument_list|()
 return|;
 block|}
 block|}
-DECL|method|storeFolderAttribute (CloudBlockBlobWrapper blob)
+DECL|method|storeFolderAttribute (CloudBlobWrapper blob)
 specifier|private
 specifier|static
 name|void
 name|storeFolderAttribute
 parameter_list|(
-name|CloudBlockBlobWrapper
+name|CloudBlobWrapper
 name|blob
 parameter_list|)
 block|{
@@ -4417,26 +5267,57 @@ name|OLD_IS_FOLDER_METADATA_KEY
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|storeLinkAttribute (CloudBlockBlobWrapper blob, String linkTarget)
+DECL|method|storeLinkAttribute (CloudBlobWrapper blob, String linkTarget)
 specifier|private
 specifier|static
 name|void
 name|storeLinkAttribute
 parameter_list|(
-name|CloudBlockBlobWrapper
+name|CloudBlobWrapper
 name|blob
 parameter_list|,
 name|String
 name|linkTarget
 parameter_list|)
+throws|throws
+name|UnsupportedEncodingException
 block|{
+comment|// We have to URL encode the link attribute as the link URI could
+comment|// have URI special characters which unless encoded will result
+comment|// in 403 errors from the server. This is due to metadata properties
+comment|// being sent in the HTTP header of the request which is in turn used
+comment|// on the server side to authorize the request.
+name|String
+name|encodedLinkTarget
+init|=
+literal|null
+decl_stmt|;
+if|if
+condition|(
+name|linkTarget
+operator|!=
+literal|null
+condition|)
+block|{
+name|encodedLinkTarget
+operator|=
+name|URLEncoder
+operator|.
+name|encode
+argument_list|(
+name|linkTarget
+argument_list|,
+literal|"UTF-8"
+argument_list|)
+expr_stmt|;
+block|}
 name|storeMetadataAttribute
 argument_list|(
 name|blob
 argument_list|,
 name|LINK_BACK_TO_UPLOAD_IN_PROGRESS_METADATA_KEY
 argument_list|,
-name|linkTarget
+name|encodedLinkTarget
 argument_list|)
 expr_stmt|;
 comment|// Remove the old metadata key if present
@@ -4448,17 +5329,21 @@ name|OLD_LINK_BACK_TO_UPLOAD_IN_PROGRESS_METADATA_KEY
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|getLinkAttributeValue (CloudBlockBlobWrapper blob)
+DECL|method|getLinkAttributeValue (CloudBlobWrapper blob)
 specifier|private
 specifier|static
 name|String
 name|getLinkAttributeValue
 parameter_list|(
-name|CloudBlockBlobWrapper
+name|CloudBlobWrapper
 name|blob
 parameter_list|)
+throws|throws
+name|UnsupportedEncodingException
 block|{
-return|return
+name|String
+name|encodedLinkTarget
+init|=
 name|getMetadataAttribute
 argument_list|(
 name|blob
@@ -4467,15 +5352,42 @@ name|LINK_BACK_TO_UPLOAD_IN_PROGRESS_METADATA_KEY
 argument_list|,
 name|OLD_LINK_BACK_TO_UPLOAD_IN_PROGRESS_METADATA_KEY
 argument_list|)
+decl_stmt|;
+name|String
+name|linkTarget
+init|=
+literal|null
+decl_stmt|;
+if|if
+condition|(
+name|encodedLinkTarget
+operator|!=
+literal|null
+condition|)
+block|{
+name|linkTarget
+operator|=
+name|URLDecoder
+operator|.
+name|decode
+argument_list|(
+name|encodedLinkTarget
+argument_list|,
+literal|"UTF-8"
+argument_list|)
+expr_stmt|;
+block|}
+return|return
+name|linkTarget
 return|;
 block|}
-DECL|method|retrieveFolderAttribute (CloudBlockBlobWrapper blob)
+DECL|method|retrieveFolderAttribute (CloudBlobWrapper blob)
 specifier|private
 specifier|static
 name|boolean
 name|retrieveFolderAttribute
 parameter_list|(
-name|CloudBlockBlobWrapper
+name|CloudBlobWrapper
 name|blob
 parameter_list|)
 block|{
@@ -4745,7 +5657,7 @@ operator|.
 name|PureWrite
 argument_list|)
 expr_stmt|;
-name|CloudBlockBlobWrapper
+name|CloudBlobWrapper
 name|blob
 init|=
 name|getBlobReference
@@ -4765,23 +5677,13 @@ argument_list|(
 name|blob
 argument_list|)
 expr_stmt|;
+name|openOutputStream
+argument_list|(
 name|blob
+argument_list|)
 operator|.
-name|upload
-argument_list|(
-operator|new
-name|ByteArrayInputStream
-argument_list|(
-operator|new
-name|byte
-index|[
-literal|0
-index|]
-argument_list|)
-argument_list|,
-name|getInstrumentedContext
+name|close
 argument_list|()
-argument_list|)
 expr_stmt|;
 block|}
 catch|catch
@@ -4878,7 +5780,7 @@ operator|.
 name|PureWrite
 argument_list|)
 expr_stmt|;
-name|CloudBlockBlobWrapper
+name|CloudBlobWrapper
 name|blob
 init|=
 name|getBlobReference
@@ -4900,23 +5802,13 @@ argument_list|,
 name|tempBlobKey
 argument_list|)
 expr_stmt|;
+name|openOutputStream
+argument_list|(
 name|blob
+argument_list|)
 operator|.
-name|upload
-argument_list|(
-operator|new
-name|ByteArrayInputStream
-argument_list|(
-operator|new
-name|byte
-index|[
-literal|0
-index|]
-argument_list|)
-argument_list|,
-name|getInstrumentedContext
+name|close
 argument_list|()
-argument_list|)
 expr_stmt|;
 block|}
 catch|catch
@@ -4987,7 +5879,7 @@ operator|.
 name|PureRead
 argument_list|)
 expr_stmt|;
-name|CloudBlockBlobWrapper
+name|CloudBlobWrapper
 name|blob
 init|=
 name|getBlobReference
@@ -5124,7 +6016,12 @@ name|StorageException
 throws|,
 name|URISyntaxException
 block|{
-return|return
+name|Iterable
+argument_list|<
+name|ListBlobItem
+argument_list|>
+name|list
+init|=
 name|rootDirectory
 operator|.
 name|listBlobs
@@ -5158,6 +6055,9 @@ argument_list|,
 name|getInstrumentedContext
 argument_list|()
 argument_list|)
+decl_stmt|;
+return|return
+name|list
 return|;
 block|}
 comment|/**    * This private method uses the root directory or the original container to    * list blobs under the directory or container given a specified prefix for    * the directory depending on whether the original file system object was    * constructed with a short- or long-form URI. It also uses the specified flat    * or hierarchical option, listing details options, request options, and    * operation context.    *     * @param aPrefix    *          string name representing the prefix of containing blobs.    * @param useFlatBlobListing    *          - the list is flat if true, or hierarchical otherwise.    * @param listingDetails    *          - determine whether snapshots, metadata, committed/uncommitted    *          data    * @param options    *          - object specifying additional options for the request. null =    *          default options    * @param opContext    *          - context of the current operation    * @returns blobItems : iterable collection of blob items.    * @throws URISyntaxException    *     */
@@ -5224,7 +6124,7 @@ block|}
 comment|/**    * This private method uses the root directory or the original container to    * get the block blob reference depending on whether the original file system    * object was constructed with a short- or long-form URI. If the root    * directory is non-null the URI in the file constructor was in the long form.    *     * @param aKey    *          : a key used to query Azure for the block blob.    * @returns blob : a reference to the Azure block blob corresponding to the    *          key.    * @throws URISyntaxException    *     */
 DECL|method|getBlobReference (String aKey)
 specifier|private
-name|CloudBlockBlobWrapper
+name|CloudBlobWrapper
 name|getBlobReference
 parameter_list|(
 name|String
@@ -5235,9 +6135,35 @@ name|StorageException
 throws|,
 name|URISyntaxException
 block|{
-name|CloudBlockBlobWrapper
+name|CloudBlobWrapper
 name|blob
 init|=
+literal|null
+decl_stmt|;
+if|if
+condition|(
+name|isPageBlobKey
+argument_list|(
+name|aKey
+argument_list|)
+condition|)
+block|{
+name|blob
+operator|=
+name|this
+operator|.
+name|container
+operator|.
+name|getPageBlobReference
+argument_list|(
+name|aKey
+argument_list|)
+expr_stmt|;
+block|}
+else|else
+block|{
+name|blob
+operator|=
 name|this
 operator|.
 name|container
@@ -5246,7 +6172,7 @@ name|getBlockBlobReference
 argument_list|(
 name|aKey
 argument_list|)
-decl_stmt|;
+expr_stmt|;
 name|blob
 operator|.
 name|setStreamMinimumReadSizeInBytes
@@ -5261,7 +6187,7 @@ argument_list|(
 name|uploadBlockSizeBytes
 argument_list|)
 expr_stmt|;
-comment|// Return with block blob.
+block|}
 return|return
 name|blob
 return|;
@@ -5317,12 +6243,12 @@ name|normKey
 return|;
 block|}
 comment|/**    * This private method normalizes the key by stripping the container name from    * the path and returns a path relative to the root directory of the    * container.    *     * @param blob    *          - adjust the key to this blob to a path relative to the root    *          directory    *     * @returns normKey    */
-DECL|method|normalizeKey (CloudBlockBlobWrapper blob)
+DECL|method|normalizeKey (CloudBlobWrapper blob)
 specifier|private
 name|String
 name|normalizeKey
 parameter_list|(
-name|CloudBlockBlobWrapper
+name|CloudBlobWrapper
 name|blob
 parameter_list|)
 block|{
@@ -5449,10 +6375,9 @@ argument_list|,
 name|bandwidthGaugeUpdater
 argument_list|)
 expr_stmt|;
-comment|// Bind operation context to receive send request callbacks on this
-comment|// operation.
-comment|// If reads concurrent to OOB writes are allowed, the interception will
-comment|// reset the conditional header on all Azure blob storage read requests.
+comment|// Bind operation context to receive send request callbacks on this operation.
+comment|// If reads concurrent to OOB writes are allowed, the interception will reset
+comment|// the conditional header on all Azure blob storage read requests.
 if|if
 condition|(
 name|bindConcurrentOOBIo
@@ -5619,7 +6544,7 @@ name|Implicit
 argument_list|)
 return|;
 block|}
-name|CloudBlockBlobWrapper
+name|CloudBlobWrapper
 name|blob
 init|=
 name|getBlobReference
@@ -5760,10 +6685,12 @@ argument_list|(
 name|key
 argument_list|,
 comment|// Always return denormalized key with metadata.
+name|getDataLength
+argument_list|(
+name|blob
+argument_list|,
 name|properties
-operator|.
-name|getLength
-argument_list|()
+argument_list|)
 argument_list|,
 name|properties
 operator|.
@@ -5784,6 +6711,7 @@ block|}
 comment|// There is no file with that key name, but maybe it is a folder.
 comment|// Query the underlying folder/container to list the blobs stored
 comment|// there under that key.
+comment|//
 name|Iterable
 argument_list|<
 name|ListBlobItem
@@ -5825,6 +6753,10 @@ condition|(
 name|blobItem
 operator|instanceof
 name|CloudBlockBlobWrapper
+operator|||
+name|blobItem
+operator|instanceof
+name|CloudPageBlobWrapper
 condition|)
 block|{
 name|LOG
@@ -5842,7 +6774,7 @@ expr_stmt|;
 name|blob
 operator|=
 operator|(
-name|CloudBlockBlobWrapper
+name|CloudBlobWrapper
 operator|)
 name|blobItem
 expr_stmt|;
@@ -5915,18 +6847,8 @@ name|key
 parameter_list|)
 throws|throws
 name|AzureException
-block|{
-name|InputStream
-name|inStream
-init|=
-literal|null
-decl_stmt|;
-name|BufferedInputStream
-name|inBufStream
-init|=
-literal|null
-decl_stmt|;
-try|try
+throws|,
+name|IOException
 block|{
 try|try
 block|{
@@ -5968,7 +6890,7 @@ name|PureRead
 argument_list|)
 expr_stmt|;
 comment|// Get blob reference and open the input buffer stream.
-name|CloudBlockBlobWrapper
+name|CloudBlobWrapper
 name|blob
 init|=
 name|getBlobReference
@@ -5976,30 +6898,18 @@ argument_list|(
 name|key
 argument_list|)
 decl_stmt|;
-name|inStream
-operator|=
-name|blob
-operator|.
-name|openInputStream
-argument_list|(
-name|getDownloadOptions
-argument_list|()
-argument_list|,
-name|getInstrumentedContext
-argument_list|(
-name|isConcurrentOOBAppendAllowed
-argument_list|()
-argument_list|)
-argument_list|)
-expr_stmt|;
+name|BufferedInputStream
 name|inBufStream
-operator|=
+init|=
 operator|new
 name|BufferedInputStream
 argument_list|(
-name|inStream
+name|openInputStream
+argument_list|(
+name|blob
 argument_list|)
-expr_stmt|;
+argument_list|)
+decl_stmt|;
 comment|// Return a data input stream.
 name|DataInputStream
 name|inDataStream
@@ -6013,45 +6923,6 @@ decl_stmt|;
 return|return
 name|inDataStream
 return|;
-block|}
-catch|catch
-parameter_list|(
-name|Exception
-name|e
-parameter_list|)
-block|{
-comment|// close the streams on error.
-comment|// We use nested try-catch as stream.close() can throw IOException.
-if|if
-condition|(
-name|inBufStream
-operator|!=
-literal|null
-condition|)
-block|{
-name|inBufStream
-operator|.
-name|close
-argument_list|()
-expr_stmt|;
-block|}
-if|if
-condition|(
-name|inStream
-operator|!=
-literal|null
-condition|)
-block|{
-name|inStream
-operator|.
-name|close
-argument_list|()
-expr_stmt|;
-block|}
-throw|throw
-name|e
-throw|;
-block|}
 block|}
 catch|catch
 parameter_list|(
@@ -6084,18 +6955,8 @@ name|startByteOffset
 parameter_list|)
 throws|throws
 name|AzureException
-block|{
-name|InputStream
-name|in
-init|=
-literal|null
-decl_stmt|;
-name|DataInputStream
-name|inDataStream
-init|=
-literal|null
-decl_stmt|;
-try|try
+throws|,
+name|IOException
 block|{
 try|try
 block|{
@@ -6137,7 +6998,7 @@ name|PureRead
 argument_list|)
 expr_stmt|;
 comment|// Get blob reference and open the input buffer stream.
-name|CloudBlockBlobWrapper
+name|CloudBlobWrapper
 name|blob
 init|=
 name|getBlobReference
@@ -6146,8 +7007,9 @@ name|key
 argument_list|)
 decl_stmt|;
 comment|// Open input stream and seek to the start offset.
+name|InputStream
 name|in
-operator|=
+init|=
 name|blob
 operator|.
 name|openInputStream
@@ -6161,83 +7023,30 @@ name|isConcurrentOOBAppendAllowed
 argument_list|()
 argument_list|)
 argument_list|)
-expr_stmt|;
+decl_stmt|;
 comment|// Create a data input stream.
+name|DataInputStream
 name|inDataStream
-operator|=
+init|=
 operator|new
 name|DataInputStream
 argument_list|(
 name|in
 argument_list|)
-expr_stmt|;
-name|long
-name|skippedBytes
-init|=
+decl_stmt|;
+comment|// Skip bytes and ignore return value. This is okay
+comment|// because if you try to skip too far you will be positioned
+comment|// at the end and reads will not return data.
 name|inDataStream
 operator|.
 name|skip
 argument_list|(
 name|startByteOffset
 argument_list|)
-decl_stmt|;
-if|if
-condition|(
-name|skippedBytes
-operator|!=
-name|startByteOffset
-condition|)
-block|{
-throw|throw
-operator|new
-name|IOException
-argument_list|(
-literal|"Couldn't skip the requested number of bytes"
-argument_list|)
-throw|;
-block|}
+expr_stmt|;
 return|return
 name|inDataStream
 return|;
-block|}
-catch|catch
-parameter_list|(
-name|Exception
-name|e
-parameter_list|)
-block|{
-comment|// close the streams on error.
-comment|// We use nested try-catch as stream.close() can throw IOException.
-if|if
-condition|(
-name|inDataStream
-operator|!=
-literal|null
-condition|)
-block|{
-name|inDataStream
-operator|.
-name|close
-argument_list|()
-expr_stmt|;
-block|}
-if|if
-condition|(
-name|in
-operator|!=
-literal|null
-condition|)
-block|{
-name|in
-operator|.
-name|close
-argument_list|()
-expr_stmt|;
-block|}
-throw|throw
-name|e
-throw|;
-block|}
 block|}
 catch|catch
 parameter_list|(
@@ -6557,6 +7366,10 @@ condition|(
 name|blobItem
 operator|instanceof
 name|CloudBlockBlobWrapper
+operator|||
+name|blobItem
+operator|instanceof
+name|CloudPageBlobWrapper
 condition|)
 block|{
 name|String
@@ -6564,11 +7377,11 @@ name|blobKey
 init|=
 literal|null
 decl_stmt|;
-name|CloudBlockBlobWrapper
+name|CloudBlobWrapper
 name|blob
 init|=
 operator|(
-name|CloudBlockBlobWrapper
+name|CloudBlobWrapper
 operator|)
 name|blobItem
 decl_stmt|;
@@ -6635,10 +7448,12 @@ name|FileMetadata
 argument_list|(
 name|blobKey
 argument_list|,
+name|getDataLength
+argument_list|(
+name|blob
+argument_list|,
 name|properties
-operator|.
-name|getLength
-argument_list|()
+argument_list|)
 argument_list|,
 name|properties
 operator|.
@@ -6813,7 +7628,9 @@ name|priorLastKey
 operator|=
 literal|null
 expr_stmt|;
-return|return
+name|PartialListing
+name|listing
+init|=
 operator|new
 name|PartialListing
 argument_list|(
@@ -6848,6 +7665,9 @@ block|{
 name|prefix
 block|}
 argument_list|)
+decl_stmt|;
+return|return
+name|listing
 return|;
 block|}
 catch|catch
@@ -6894,7 +7714,8 @@ throws|throws
 name|Exception
 block|{
 comment|// Push the blob directory onto the stack.
-name|LinkedList
+comment|//
+name|AzureLinkedStack
 argument_list|<
 name|Iterator
 argument_list|<
@@ -6904,7 +7725,7 @@ argument_list|>
 name|dirIteratorStack
 init|=
 operator|new
-name|LinkedList
+name|AzureLinkedStack
 argument_list|<
 name|Iterator
 argument_list|<
@@ -7048,11 +7869,16 @@ argument_list|()
 decl_stmt|;
 comment|// Add the file metadata to the list if this is not a blob
 comment|// directory item.
+comment|//
 if|if
 condition|(
 name|blobItem
 operator|instanceof
 name|CloudBlockBlobWrapper
+operator|||
+name|blobItem
+operator|instanceof
+name|CloudPageBlobWrapper
 condition|)
 block|{
 name|String
@@ -7060,11 +7886,11 @@ name|blobKey
 init|=
 literal|null
 decl_stmt|;
-name|CloudBlockBlobWrapper
+name|CloudBlobWrapper
 name|blob
 init|=
 operator|(
-name|CloudBlockBlobWrapper
+name|CloudBlobWrapper
 operator|)
 name|blobItem
 decl_stmt|;
@@ -7131,10 +7957,12 @@ name|FileMetadata
 argument_list|(
 name|blobKey
 argument_list|,
+name|getDataLength
+argument_list|(
+name|blob
+argument_list|,
 name|properties
-operator|.
-name|getLength
-argument_list|()
+argument_list|)
 argument_list|,
 name|properties
 operator|.
@@ -7292,6 +8120,7 @@ comment|//
 comment|// Note: Something smarter should be done about permissions. Maybe
 comment|// inherit the permissions of the first non-directory blob.
 comment|// Also, getting a proper value for last-modified is tricky.
+comment|//
 name|FileMetadata
 name|directoryMetadata
 init|=
@@ -7373,14 +8202,83 @@ block|}
 block|}
 block|}
 block|}
-comment|/**    * Deletes the given blob, taking special care that if we get a blob-not-found    * exception upon retrying the operation, we just swallow the error since what    * most probably happened is that the first operation succeeded on the server.    *     * @param blob    *          The blob to delete.    * @throws StorageException    */
-DECL|method|safeDelete (CloudBlockBlobWrapper blob)
+comment|/**    * Return the actual data length of the blob with the specified properties.    * If it is a page blob, you can't rely on the length from the properties    * argument and you must get it from the file. Otherwise, you can.    */
+DECL|method|getDataLength (CloudBlobWrapper blob, BlobProperties properties)
+specifier|private
+name|long
+name|getDataLength
+parameter_list|(
+name|CloudBlobWrapper
+name|blob
+parameter_list|,
+name|BlobProperties
+name|properties
+parameter_list|)
+throws|throws
+name|AzureException
+block|{
+if|if
+condition|(
+name|blob
+operator|instanceof
+name|CloudPageBlobWrapper
+condition|)
+block|{
+try|try
+block|{
+return|return
+name|PageBlobInputStream
+operator|.
+name|getPageBlobSize
+argument_list|(
+operator|(
+name|CloudPageBlobWrapper
+operator|)
+name|blob
+argument_list|,
+name|getInstrumentedContext
+argument_list|(
+name|isConcurrentOOBAppendAllowed
+argument_list|()
+argument_list|)
+argument_list|)
+return|;
+block|}
+catch|catch
+parameter_list|(
+name|Exception
+name|e
+parameter_list|)
+block|{
+throw|throw
+operator|new
+name|AzureException
+argument_list|(
+literal|"Unexpected exception getting page blob actual data size."
+argument_list|,
+name|e
+argument_list|)
+throw|;
+block|}
+block|}
+return|return
+name|properties
+operator|.
+name|getLength
+argument_list|()
+return|;
+block|}
+comment|/**    * Deletes the given blob, taking special care that if we get a    * blob-not-found exception upon retrying the operation, we just    * swallow the error since what most probably happened is that    * the first operation succeeded on the server.    * @param blob The blob to delete.    * @param leaseID A string identifying the lease, or null if no    *        lease is to be used.    * @throws StorageException    */
+DECL|method|safeDelete (CloudBlobWrapper blob, SelfRenewingLease lease)
 specifier|private
 name|void
 name|safeDelete
 parameter_list|(
-name|CloudBlockBlobWrapper
+name|CloudBlobWrapper
 name|blob
+parameter_list|,
+name|SelfRenewingLease
+name|lease
 parameter_list|)
 throws|throws
 name|StorageException
@@ -7398,6 +8296,8 @@ operator|.
 name|delete
 argument_list|(
 name|operationContext
+argument_list|,
+name|lease
 argument_list|)
 expr_stmt|;
 block|}
@@ -7486,16 +8386,35 @@ name|e
 throw|;
 block|}
 block|}
+finally|finally
+block|{
+if|if
+condition|(
+name|lease
+operator|!=
+literal|null
+condition|)
+block|{
+name|lease
+operator|.
+name|free
+argument_list|()
+expr_stmt|;
+block|}
+block|}
 block|}
 annotation|@
 name|Override
-DECL|method|delete (String key)
+DECL|method|delete (String key, SelfRenewingLease lease)
 specifier|public
 name|void
 name|delete
 parameter_list|(
 name|String
 name|key
+parameter_list|,
+name|SelfRenewingLease
+name|lease
 parameter_list|)
 throws|throws
 name|IOException
@@ -7519,8 +8438,8 @@ block|{
 comment|// Container doesn't exist, no need to do anything
 return|return;
 block|}
-comment|// Get the blob reference an delete it.
-name|CloudBlockBlobWrapper
+comment|// Get the blob reference and delete it.
+name|CloudBlobWrapper
 name|blob
 init|=
 name|getBlobReference
@@ -7542,6 +8461,8 @@ block|{
 name|safeDelete
 argument_list|(
 name|blob
+argument_list|,
+name|lease
 argument_list|)
 expr_stmt|;
 block|}
@@ -7564,6 +8485,27 @@ block|}
 block|}
 annotation|@
 name|Override
+DECL|method|delete (String key)
+specifier|public
+name|void
+name|delete
+parameter_list|(
+name|String
+name|key
+parameter_list|)
+throws|throws
+name|IOException
+block|{
+name|delete
+argument_list|(
+name|key
+argument_list|,
+literal|null
+argument_list|)
+expr_stmt|;
+block|}
+annotation|@
+name|Override
 DECL|method|rename (String srcKey, String dstKey)
 specifier|public
 name|void
@@ -7574,6 +8516,40 @@ name|srcKey
 parameter_list|,
 name|String
 name|dstKey
+parameter_list|)
+throws|throws
+name|IOException
+block|{
+name|rename
+argument_list|(
+name|srcKey
+argument_list|,
+name|dstKey
+argument_list|,
+literal|false
+argument_list|,
+literal|null
+argument_list|)
+expr_stmt|;
+block|}
+annotation|@
+name|Override
+DECL|method|rename (String srcKey, String dstKey, boolean acquireLease, SelfRenewingLease existingLease)
+specifier|public
+name|void
+name|rename
+parameter_list|(
+name|String
+name|srcKey
+parameter_list|,
+name|String
+name|dstKey
+parameter_list|,
+name|boolean
+name|acquireLease
+parameter_list|,
+name|SelfRenewingLease
+name|existingLease
 parameter_list|)
 throws|throws
 name|IOException
@@ -7599,6 +8575,23 @@ operator|+
 name|dstKey
 argument_list|)
 expr_stmt|;
+block|}
+if|if
+condition|(
+name|acquireLease
+operator|&&
+name|existingLease
+operator|!=
+literal|null
+condition|)
+block|{
+throw|throw
+operator|new
+name|IOException
+argument_list|(
+literal|"Cannot acquire new lease if one already exists."
+argument_list|)
+throw|;
 block|}
 try|try
 block|{
@@ -7642,7 +8635,8 @@ argument_list|)
 expr_stmt|;
 comment|// Get the source blob and assert its existence. If the source key
 comment|// needs to be normalized then normalize it.
-name|CloudBlockBlobWrapper
+comment|//
+name|CloudBlobWrapper
 name|srcBlob
 init|=
 name|getBlobReference
@@ -7674,14 +8668,69 @@ literal|" does not exist."
 argument_list|)
 throw|;
 block|}
+comment|/**        * Conditionally get a lease on the source blob to prevent other writers        * from changing it. This is used for correctness in HBase when log files        * are renamed. It generally should do no harm other than take a little        * more time for other rename scenarios. When the HBase master renames a        * log file folder, the lease locks out other writers.  This        * prevents a region server that the master thinks is dead, but is still        * alive, from committing additional updates.  This is different than        * when HBase runs on HDFS, where the region server recovers the lease        * on a log file, to gain exclusive access to it, before it splits it.        */
+name|SelfRenewingLease
+name|lease
+init|=
+literal|null
+decl_stmt|;
+if|if
+condition|(
+name|acquireLease
+condition|)
+block|{
+name|lease
+operator|=
+name|srcBlob
+operator|.
+name|acquireLease
+argument_list|()
+expr_stmt|;
+block|}
+elseif|else
+if|if
+condition|(
+name|existingLease
+operator|!=
+literal|null
+condition|)
+block|{
+name|lease
+operator|=
+name|existingLease
+expr_stmt|;
+block|}
 comment|// Get the destination blob. The destination key always needs to be
 comment|// normalized.
-name|CloudBlockBlobWrapper
+comment|//
+name|CloudBlobWrapper
 name|dstBlob
 init|=
 name|getBlobReference
 argument_list|(
 name|dstKey
+argument_list|)
+decl_stmt|;
+comment|// TODO: Remove at the time when we move to Azure Java SDK 1.2+.
+comment|// This is the workaround provided by Azure Java SDK team to
+comment|// mitigate the issue with un-encoded x-ms-copy-source HTTP
+comment|// request header. Azure sdk version before 1.2+ does not encode this
+comment|// header what causes all URIs that have special (category "other")
+comment|// characters in the URI not to work with startCopyFromBlob when
+comment|// specified as source (requests fail with HTTP 403).
+name|URI
+name|srcUri
+init|=
+operator|new
+name|URI
+argument_list|(
+name|srcBlob
+operator|.
+name|getUri
+argument_list|()
+operator|.
+name|toASCIIString
+argument_list|()
 argument_list|)
 decl_stmt|;
 comment|// Rename the source blob to the destination blob by copying it to
@@ -7691,7 +8740,7 @@ name|dstBlob
 operator|.
 name|startCopyFromBlob
 argument_list|(
-name|srcBlob
+name|srcUri
 argument_list|,
 name|getInstrumentedContext
 argument_list|()
@@ -7708,6 +8757,8 @@ expr_stmt|;
 name|safeDelete
 argument_list|(
 name|srcBlob
+argument_list|,
+name|lease
 argument_list|)
 expr_stmt|;
 block|}
@@ -7727,29 +8778,22 @@ argument_list|)
 throw|;
 block|}
 block|}
-DECL|method|waitForCopyToComplete (CloudBlockBlobWrapper blob, OperationContext opContext)
+DECL|method|waitForCopyToComplete (CloudBlobWrapper blob, OperationContext opContext)
 specifier|private
 name|void
 name|waitForCopyToComplete
 parameter_list|(
-name|CloudBlockBlobWrapper
+name|CloudBlobWrapper
 name|blob
 parameter_list|,
 name|OperationContext
 name|opContext
 parameter_list|)
-throws|throws
-name|AzureException
 block|{
 name|boolean
 name|copyInProgress
 init|=
 literal|true
-decl_stmt|;
-name|int
-name|exceptionCount
-init|=
-literal|0
 decl_stmt|;
 while|while
 condition|(
@@ -7771,30 +8815,8 @@ parameter_list|(
 name|StorageException
 name|se
 parameter_list|)
-block|{
-name|exceptionCount
-operator|++
-expr_stmt|;
-if|if
-condition|(
-name|exceptionCount
-operator|>
-literal|10
-condition|)
-block|{
-throw|throw
-operator|new
-name|AzureException
-argument_list|(
-literal|"Too many storage exceptions during waitForCopyToComplete"
-argument_list|,
-name|se
-argument_list|)
-throw|;
-block|}
-block|}
-comment|// test for null because mocked filesystem doesn't know about copystates
-comment|// yet.
+block|{       }
+comment|// test for null because mocked filesystem doesn't know about copystates yet.
 name|copyInProgress
 operator|=
 operator|(
@@ -7839,14 +8861,7 @@ name|InterruptedException
 name|ie
 parameter_list|)
 block|{
-name|Thread
-operator|.
-name|currentThread
-argument_list|()
-operator|.
-name|interrupt
-argument_list|()
-expr_stmt|;
+comment|//ignore
 block|}
 block|}
 block|}
@@ -7877,7 +8892,7 @@ operator|.
 name|ReadThenWrite
 argument_list|)
 expr_stmt|;
-name|CloudBlockBlobWrapper
+name|CloudBlobWrapper
 name|blob
 init|=
 name|getBlobReference
@@ -8050,9 +9065,73 @@ argument_list|)
 throw|;
 block|}
 block|}
+comment|/**    * Get a lease on the blob identified by key. This lease will be renewed    * indefinitely by a background thread.    */
 annotation|@
 name|Override
-DECL|method|updateFolderLastModifiedTime (String key, Date lastModified)
+DECL|method|acquireLease (String key)
+specifier|public
+name|SelfRenewingLease
+name|acquireLease
+parameter_list|(
+name|String
+name|key
+parameter_list|)
+throws|throws
+name|AzureException
+block|{
+name|LOG
+operator|.
+name|debug
+argument_list|(
+literal|"acquiring lease on "
+operator|+
+name|key
+argument_list|)
+expr_stmt|;
+try|try
+block|{
+name|checkContainer
+argument_list|(
+name|ContainerAccessType
+operator|.
+name|ReadThenWrite
+argument_list|)
+expr_stmt|;
+name|CloudBlobWrapper
+name|blob
+init|=
+name|getBlobReference
+argument_list|(
+name|key
+argument_list|)
+decl_stmt|;
+return|return
+name|blob
+operator|.
+name|acquireLease
+argument_list|()
+return|;
+block|}
+catch|catch
+parameter_list|(
+name|Exception
+name|e
+parameter_list|)
+block|{
+comment|// Caught exception while attempting to get lease. Re-throw as an
+comment|// Azure storage exception.
+throw|throw
+operator|new
+name|AzureException
+argument_list|(
+name|e
+argument_list|)
+throw|;
+block|}
+block|}
+annotation|@
+name|Override
+DECL|method|updateFolderLastModifiedTime (String key, Date lastModified, SelfRenewingLease folderLease)
 specifier|public
 name|void
 name|updateFolderLastModifiedTime
@@ -8062,6 +9141,9 @@ name|key
 parameter_list|,
 name|Date
 name|lastModified
+parameter_list|,
+name|SelfRenewingLease
+name|folderLease
 parameter_list|)
 throws|throws
 name|AzureException
@@ -8075,7 +9157,7 @@ operator|.
 name|ReadThenWrite
 argument_list|)
 expr_stmt|;
-name|CloudBlockBlobWrapper
+name|CloudBlobWrapper
 name|blob
 init|=
 name|getBlobReference
@@ -8099,6 +9181,8 @@ name|uploadProperties
 argument_list|(
 name|getInstrumentedContext
 argument_list|()
+argument_list|,
+name|folderLease
 argument_list|)
 expr_stmt|;
 block|}
@@ -8108,7 +9192,7 @@ name|Exception
 name|e
 parameter_list|)
 block|{
-comment|// Caught exception while attempting update the properties. Re-throw as an
+comment|// Caught exception while attempting to update the properties. Re-throw as an
 comment|// Azure storage exception.
 throw|throw
 operator|new
@@ -8121,13 +9205,16 @@ block|}
 block|}
 annotation|@
 name|Override
-DECL|method|updateFolderLastModifiedTime (String key)
+DECL|method|updateFolderLastModifiedTime (String key, SelfRenewingLease folderLease)
 specifier|public
 name|void
 name|updateFolderLastModifiedTime
 parameter_list|(
 name|String
 name|key
+parameter_list|,
+name|SelfRenewingLease
+name|folderLease
 parameter_list|)
 throws|throws
 name|AzureException
@@ -8167,6 +9254,8 @@ argument_list|(
 name|key
 argument_list|,
 name|lastModified
+argument_list|,
+name|folderLease
 argument_list|)
 expr_stmt|;
 block|}

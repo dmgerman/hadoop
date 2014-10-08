@@ -627,6 +627,24 @@ name|KEY_READ_TOLERATE_CONCURRENT_APPEND
 init|=
 literal|"fs.azure.io.read.tolerate.concurrent.append"
 decl_stmt|;
+DECL|field|DEFAULT_PAGE_BLOB_DIRECTORY
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|DEFAULT_PAGE_BLOB_DIRECTORY
+init|=
+literal|"pageBlobs"
+decl_stmt|;
+DECL|field|DEFAULT_ATOMIC_RENAME_DIRECTORIES
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|DEFAULT_ATOMIC_RENAME_DIRECTORIES
+init|=
+literal|"/atomicRenameDir1,/atomicRenameDir2"
+decl_stmt|;
 DECL|field|account
 specifier|private
 name|CloudStorageAccount
@@ -657,6 +675,11 @@ specifier|private
 name|MockStorageInterface
 name|mockStorage
 decl_stmt|;
+DECL|field|pageBlobDirectory
+specifier|private
+name|String
+name|pageBlobDirectory
+decl_stmt|;
 DECL|field|allMetrics
 specifier|private
 specifier|static
@@ -673,6 +696,14 @@ argument_list|<
 name|MetricsRecord
 argument_list|>
 argument_list|()
+decl_stmt|;
+DECL|field|metricsConfigSaved
+specifier|private
+specifier|static
+name|boolean
+name|metricsConfigSaved
+init|=
+literal|false
 decl_stmt|;
 DECL|method|AzureBlobStorageTestAccount (NativeAzureFileSystem fs, CloudStorageAccount account, CloudBlobContainer container)
 specifier|private
@@ -896,6 +927,44 @@ name|substring
 argument_list|(
 literal|1
 argument_list|)
+argument_list|)
+return|;
+block|}
+DECL|method|pageBlobPath ()
+specifier|public
+specifier|static
+name|Path
+name|pageBlobPath
+parameter_list|()
+block|{
+return|return
+operator|new
+name|Path
+argument_list|(
+literal|"/"
+operator|+
+name|DEFAULT_PAGE_BLOB_DIRECTORY
+argument_list|)
+return|;
+block|}
+DECL|method|pageBlobPath (String fileName)
+specifier|public
+specifier|static
+name|Path
+name|pageBlobPath
+parameter_list|(
+name|String
+name|fileName
+parameter_list|)
+block|{
+return|return
+operator|new
+name|Path
+argument_list|(
+name|pageBlobPath
+argument_list|()
+argument_list|,
+name|fileName
 argument_list|)
 return|;
 block|}
@@ -1166,6 +1235,56 @@ name|accessCondition
 argument_list|)
 expr_stmt|;
 block|}
+DECL|method|saveMetricsConfigFile ()
+specifier|private
+specifier|static
+name|void
+name|saveMetricsConfigFile
+parameter_list|()
+block|{
+if|if
+condition|(
+operator|!
+name|metricsConfigSaved
+condition|)
+block|{
+operator|new
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|metrics2
+operator|.
+name|impl
+operator|.
+name|ConfigBuilder
+argument_list|()
+operator|.
+name|add
+argument_list|(
+literal|"azure-file-system.sink.azuretestcollector.class"
+argument_list|,
+name|StandardCollector
+operator|.
+name|class
+operator|.
+name|getName
+argument_list|()
+argument_list|)
+operator|.
+name|save
+argument_list|(
+literal|"hadoop-metrics2-azure-file-system.properties"
+argument_list|)
+expr_stmt|;
+name|metricsConfigSaved
+operator|=
+literal|true
+expr_stmt|;
+block|}
+block|}
 DECL|method|createMock ()
 specifier|public
 specifier|static
@@ -1196,6 +1315,19 @@ parameter_list|)
 throws|throws
 name|Exception
 block|{
+name|saveMetricsConfigFile
+argument_list|()
+expr_stmt|;
+name|configurePageBlobDir
+argument_list|(
+name|conf
+argument_list|)
+expr_stmt|;
+name|configureAtomicRenameDir
+argument_list|(
+name|conf
+argument_list|)
+expr_stmt|;
 name|AzureNativeFileSystemStore
 name|store
 init|=
@@ -1226,11 +1358,6 @@ argument_list|(
 name|store
 argument_list|)
 decl_stmt|;
-name|addWasbToConfiguration
-argument_list|(
-name|conf
-argument_list|)
-expr_stmt|;
 name|setMockAccountKey
 argument_list|(
 name|conf
@@ -1265,6 +1392,84 @@ return|return
 name|testAcct
 return|;
 block|}
+comment|/**    * Set the page blob directories configuration to the default if it is not    * already set. Some tests may set it differently (e.g. the page blob    * tests in TestNativeAzureFSPageBlobLive).    * @param conf The configuration to conditionally update.    */
+DECL|method|configurePageBlobDir (Configuration conf)
+specifier|private
+specifier|static
+name|void
+name|configurePageBlobDir
+parameter_list|(
+name|Configuration
+name|conf
+parameter_list|)
+block|{
+if|if
+condition|(
+name|conf
+operator|.
+name|get
+argument_list|(
+name|AzureNativeFileSystemStore
+operator|.
+name|KEY_PAGE_BLOB_DIRECTORIES
+argument_list|)
+operator|==
+literal|null
+condition|)
+block|{
+name|conf
+operator|.
+name|set
+argument_list|(
+name|AzureNativeFileSystemStore
+operator|.
+name|KEY_PAGE_BLOB_DIRECTORIES
+argument_list|,
+literal|"/"
+operator|+
+name|DEFAULT_PAGE_BLOB_DIRECTORY
+argument_list|)
+expr_stmt|;
+block|}
+block|}
+comment|/** Do the same for the atomic rename directories configuration */
+DECL|method|configureAtomicRenameDir (Configuration conf)
+specifier|private
+specifier|static
+name|void
+name|configureAtomicRenameDir
+parameter_list|(
+name|Configuration
+name|conf
+parameter_list|)
+block|{
+if|if
+condition|(
+name|conf
+operator|.
+name|get
+argument_list|(
+name|AzureNativeFileSystemStore
+operator|.
+name|KEY_ATOMIC_RENAME_DIRECTORIES
+argument_list|)
+operator|==
+literal|null
+condition|)
+block|{
+name|conf
+operator|.
+name|set
+argument_list|(
+name|AzureNativeFileSystemStore
+operator|.
+name|KEY_ATOMIC_RENAME_DIRECTORIES
+argument_list|,
+name|DEFAULT_ATOMIC_RENAME_DIRECTORIES
+argument_list|)
+expr_stmt|;
+block|}
+block|}
 comment|/**    * Creates a test account that goes against the storage emulator.    *     * @return The test account, or null if the emulator isn't setup.    */
 DECL|method|createForEmulator ()
 specifier|public
@@ -1275,6 +1480,9 @@ parameter_list|()
 throws|throws
 name|Exception
 block|{
+name|saveMetricsConfigFile
+argument_list|()
+expr_stmt|;
 name|NativeAzureFileSystem
 name|fs
 init|=
@@ -1315,7 +1523,7 @@ literal|"Skipping emulator Azure test because configuration "
 operator|+
 literal|"doesn't indicate that it's running."
 operator|+
-literal|" Please see README.txt for guidance."
+literal|" Please see RunningLiveWasbTests.txt for guidance."
 argument_list|)
 expr_stmt|;
 return|return
@@ -1395,6 +1603,7 @@ name|conf
 argument_list|)
 expr_stmt|;
 comment|// Create test account initializing the appropriate member variables.
+comment|//
 name|AzureBlobStorageTestAccount
 name|testAcct
 init|=
@@ -1427,6 +1636,9 @@ parameter_list|)
 throws|throws
 name|Exception
 block|{
+name|saveMetricsConfigFile
+argument_list|()
+expr_stmt|;
 name|CloudBlobContainer
 name|container
 init|=
@@ -1598,6 +1810,7 @@ name|instrumentation
 argument_list|)
 expr_stmt|;
 comment|// Create test account initializing the appropriate member variables.
+comment|//
 name|AzureBlobStorageTestAccount
 name|testAcct
 init|=
@@ -1935,7 +2148,7 @@ return|;
 block|}
 block|}
 DECL|method|createTestConfiguration ()
-specifier|private
+specifier|public
 specifier|static
 name|Configuration
 name|createTestConfiguration
@@ -1949,7 +2162,7 @@ argument_list|)
 return|;
 block|}
 DECL|method|createTestConfiguration (Configuration conf)
-specifier|protected
+specifier|private
 specifier|static
 name|Configuration
 name|createTestConfiguration
@@ -1982,37 +2195,6 @@ expr_stmt|;
 return|return
 name|conf
 return|;
-block|}
-comment|// for programmatic setting of the wasb configuration.
-comment|// note that tests can also get the
-DECL|method|addWasbToConfiguration (Configuration conf)
-specifier|public
-specifier|static
-name|void
-name|addWasbToConfiguration
-parameter_list|(
-name|Configuration
-name|conf
-parameter_list|)
-block|{
-name|conf
-operator|.
-name|set
-argument_list|(
-literal|"fs.wasb.impl"
-argument_list|,
-literal|"org.apache.hadoop.fs.azure.NativeAzureFileSystem"
-argument_list|)
-expr_stmt|;
-name|conf
-operator|.
-name|set
-argument_list|(
-literal|"fs.wasbs.impl"
-argument_list|,
-literal|"org.apache.hadoop.fs.azure.NativeAzureFileSystem"
-argument_list|)
-expr_stmt|;
 block|}
 DECL|method|createTestAccount ()
 specifier|static
@@ -2070,7 +2252,7 @@ name|println
 argument_list|(
 literal|"Skipping live Azure test because of missing test account."
 operator|+
-literal|" Please see README.txt for guidance."
+literal|" Please see RunningLiveWasbTests.txt for guidance."
 argument_list|)
 expr_stmt|;
 return|return
@@ -2156,6 +2338,9 @@ parameter_list|)
 throws|throws
 name|Exception
 block|{
+name|saveMetricsConfigFile
+argument_list|()
+expr_stmt|;
 name|NativeAzureFileSystem
 name|fs
 init|=
@@ -2174,6 +2359,16 @@ argument_list|(
 name|initialConfiguration
 argument_list|)
 decl_stmt|;
+name|configurePageBlobDir
+argument_list|(
+name|conf
+argument_list|)
+expr_stmt|;
+name|configureAtomicRenameDir
+argument_list|(
+name|conf
+argument_list|)
+expr_stmt|;
 name|CloudStorageAccount
 name|account
 init|=
@@ -2399,6 +2594,7 @@ name|conf
 argument_list|)
 expr_stmt|;
 comment|// Create test account initializing the appropriate member variables.
+comment|//
 name|AzureBlobStorageTestAccount
 name|testAcct
 init|=
@@ -2567,6 +2763,7 @@ block|}
 else|else
 block|{
 comment|// Set READ and WRITE permissions.
+comment|//
 name|sasPolicy
 operator|.
 name|setPermissions
@@ -2693,6 +2890,7 @@ name|SharedAccessBlobPolicy
 argument_list|()
 decl_stmt|;
 comment|// Set READ and WRITE permissions.
+comment|//
 name|sasPolicy
 operator|.
 name|setPermissions
@@ -3226,6 +3424,7 @@ argument_list|)
 expr_stmt|;
 comment|// Create test account initializing the appropriate member variables.
 comment|// Set the container value to null for the default root container.
+comment|//
 name|AzureBlobStorageTestAccount
 name|testAcct
 init|=
@@ -3428,6 +3627,32 @@ name|void
 name|flush
 parameter_list|()
 block|{     }
+block|}
+DECL|method|setPageBlobDirectory (String directory)
+specifier|public
+name|void
+name|setPageBlobDirectory
+parameter_list|(
+name|String
+name|directory
+parameter_list|)
+block|{
+name|this
+operator|.
+name|pageBlobDirectory
+operator|=
+name|directory
+expr_stmt|;
+block|}
+DECL|method|getPageBlobDirectory ()
+specifier|public
+name|String
+name|getPageBlobDirectory
+parameter_list|()
+block|{
+return|return
+name|pageBlobDirectory
+return|;
 block|}
 block|}
 end_class

@@ -232,6 +232,22 @@ parameter_list|)
 throws|throws
 name|AzureException
 function_decl|;
+DECL|method|isPageBlobKey (String key)
+name|boolean
+name|isPageBlobKey
+parameter_list|(
+name|String
+name|key
+parameter_list|)
+function_decl|;
+DECL|method|isAtomicRenameKey (String key)
+name|boolean
+name|isAtomicRenameKey
+parameter_list|(
+name|String
+name|key
+parameter_list|)
+function_decl|;
 DECL|method|storeEmptyLinkFile (String key, String tempBlobKey, PermissionStatus permissionStatus)
 name|void
 name|storeEmptyLinkFile
@@ -354,7 +370,26 @@ parameter_list|)
 throws|throws
 name|IOException
 function_decl|;
-comment|/**    * Delete all keys with the given prefix. Used for testing.    *     * @throws IOException    */
+DECL|method|rename (String srcKey, String dstKey, boolean acquireLease, SelfRenewingLease existingLease)
+name|void
+name|rename
+parameter_list|(
+name|String
+name|srcKey
+parameter_list|,
+name|String
+name|dstKey
+parameter_list|,
+name|boolean
+name|acquireLease
+parameter_list|,
+name|SelfRenewingLease
+name|existingLease
+parameter_list|)
+throws|throws
+name|IOException
+function_decl|;
+comment|/**    * Delete all keys with the given prefix. Used for testing.    *    * @throws IOException    */
 annotation|@
 name|VisibleForTesting
 DECL|method|purge (String prefix)
@@ -367,7 +402,7 @@ parameter_list|)
 throws|throws
 name|IOException
 function_decl|;
-comment|/**    * Diagnostic method to dump state to the console.    *     * @throws IOException    */
+comment|/**    * Diagnostic method to dump state to the console.    *    * @throws IOException    */
 DECL|method|dump ()
 name|void
 name|dump
@@ -380,17 +415,20 @@ name|void
 name|close
 parameter_list|()
 function_decl|;
-DECL|method|updateFolderLastModifiedTime (String key)
+DECL|method|updateFolderLastModifiedTime (String key, SelfRenewingLease folderLease)
 name|void
 name|updateFolderLastModifiedTime
 parameter_list|(
 name|String
 name|key
+parameter_list|,
+name|SelfRenewingLease
+name|folderLease
 parameter_list|)
 throws|throws
 name|AzureException
 function_decl|;
-DECL|method|updateFolderLastModifiedTime (String key, Date lastModified)
+DECL|method|updateFolderLastModifiedTime (String key, Date lastModified, SelfRenewingLease folderLease)
 name|void
 name|updateFolderLastModifiedTime
 parameter_list|(
@@ -399,6 +437,32 @@ name|key
 parameter_list|,
 name|Date
 name|lastModified
+parameter_list|,
+name|SelfRenewingLease
+name|folderLease
+parameter_list|)
+throws|throws
+name|AzureException
+function_decl|;
+DECL|method|delete (String key, SelfRenewingLease lease)
+name|void
+name|delete
+parameter_list|(
+name|String
+name|key
+parameter_list|,
+name|SelfRenewingLease
+name|lease
+parameter_list|)
+throws|throws
+name|IOException
+function_decl|;
+DECL|method|acquireLease (String key)
+name|SelfRenewingLease
+name|acquireLease
+parameter_list|(
+name|String
+name|key
 parameter_list|)
 throws|throws
 name|AzureException

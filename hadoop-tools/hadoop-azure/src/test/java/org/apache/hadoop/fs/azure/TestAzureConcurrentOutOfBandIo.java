@@ -60,27 +60,7 @@ name|java
 operator|.
 name|io
 operator|.
-name|DataInputStream
-import|;
-end_import
-
-begin_import
-import|import
-name|java
-operator|.
-name|io
-operator|.
-name|DataOutputStream
-import|;
-end_import
-
-begin_import
-import|import
-name|java
-operator|.
-name|io
-operator|.
-name|IOException
+name|*
 import|;
 end_import
 
@@ -91,6 +71,22 @@ operator|.
 name|util
 operator|.
 name|Arrays
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|fs
+operator|.
+name|azure
+operator|.
+name|AzureException
 import|;
 end_import
 
@@ -369,7 +365,7 @@ index|[
 name|UPLOAD_BLOCK_SIZE
 index|]
 decl_stmt|;
-name|DataOutputStream
+name|OutputStream
 name|outputStream
 init|=
 literal|null
@@ -544,10 +540,9 @@ index|]
 decl_stmt|;
 comment|// Write to blob to make sure it exists.
 comment|//
-comment|// Write five 4 MB blocks to the blob. To ensure there is data in the blob
-comment|// before reading. This eliminates the race between the reader and writer
-comment|// threads.
-name|DataOutputStream
+comment|// Write five 4 MB blocks to the blob. To ensure there is data in the blob before
+comment|// reading.  This eliminates the race between the reader and writer threads.
+name|OutputStream
 name|outputStream
 init|=
 name|testAccount
@@ -672,8 +667,6 @@ operator|.
 name|retrieve
 argument_list|(
 literal|"WASB_String.txt"
-argument_list|,
-literal|0
 argument_list|)
 expr_stmt|;
 name|count

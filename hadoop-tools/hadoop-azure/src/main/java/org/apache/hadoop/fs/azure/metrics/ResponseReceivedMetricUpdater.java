@@ -145,7 +145,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * An event listener to the ResponseReceived event from Azure Storage that will  * update metrics appropriately.  *  */
+comment|/**  * An event listener to the ResponseReceived event from Azure Storage that will  * update metrics appropriately when it gets that event.  */
 end_comment
 
 begin_class

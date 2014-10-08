@@ -196,6 +196,12 @@ specifier|final
 name|float
 name|writeFactor
 decl_stmt|;
+DECL|field|operationContext
+specifier|private
+specifier|final
+name|OperationContext
+name|operationContext
+decl_stmt|;
 comment|// Concurrency: access to non-final members must be thread-safe
 DECL|field|lastE2Elatency
 specifier|private
@@ -216,6 +222,12 @@ name|float
 name|writeFactor
 parameter_list|)
 block|{
+name|this
+operator|.
+name|operationContext
+operator|=
+name|operationContext
+expr_stmt|;
 name|this
 operator|.
 name|readFactor

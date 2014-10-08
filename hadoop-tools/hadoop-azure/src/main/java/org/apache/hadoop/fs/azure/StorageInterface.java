@@ -74,6 +74,16 @@ name|java
 operator|.
 name|util
 operator|.
+name|ArrayList
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
 name|EnumSet
 import|;
 end_import
@@ -232,6 +242,22 @@ name|storage
 operator|.
 name|blob
 operator|.
+name|CloudBlob
+import|;
+end_import
+
+begin_import
+import|import
+name|com
+operator|.
+name|microsoft
+operator|.
+name|windowsazure
+operator|.
+name|storage
+operator|.
+name|blob
+operator|.
 name|CopyState
 import|;
 end_import
@@ -252,8 +278,24 @@ name|ListBlobItem
 import|;
 end_import
 
+begin_import
+import|import
+name|com
+operator|.
+name|microsoft
+operator|.
+name|windowsazure
+operator|.
+name|storage
+operator|.
+name|blob
+operator|.
+name|PageRange
+import|;
+end_import
+
 begin_comment
-comment|/**  * This is a very thin layer over the methods exposed by the Windows Azure  * Storage SDK that we need for WASB implementation. This base class has a real  * implementation that just simply redirects to the SDK, and a memory-backed one  * that's used for unit tests.  *   * IMPORTANT: all the methods here must remain very simple redirects since code  * written here can't be properly unit tested.  */
+comment|/**  * This is a very thin layer over the methods exposed by the Windows Azure  * Storage SDK that we need for WASB implementation. This base class has a real  * implementation that just simply redirects to the SDK, and a memory-backed one  * that's used for unit tests.  *  * IMPORTANT: all the methods here must remain very simple redirects since code  * written here can't be properly unit tested.  */
 end_comment
 
 begin_class
@@ -524,7 +566,7 @@ comment|/**      * Returns a wrapper for a CloudBlockBlob.      *       * @param
 DECL|method|getBlockBlobReference ( String relativePath)
 specifier|public
 specifier|abstract
-name|CloudBlockBlobWrapper
+name|CloudBlobWrapper
 name|getBlockBlobReference
 parameter_list|(
 name|String
@@ -535,33 +577,42 @@ name|URISyntaxException
 throws|,
 name|StorageException
 function_decl|;
+comment|/**      * Returns a wrapper for a CloudPageBlob.      *      * @param relativePath      *            A<code>String</code> that represents the name of the blob, relative to the container       *      * @throws StorageException      *             If a storage service error occurred.      *       * @throws URISyntaxException      *             If URI syntax exception occurred.                  */
+DECL|method|getPageBlobReference (String relativePath)
+specifier|public
+specifier|abstract
+name|CloudBlobWrapper
+name|getPageBlobReference
+parameter_list|(
+name|String
+name|relativePath
+parameter_list|)
+throws|throws
+name|URISyntaxException
+throws|,
+name|StorageException
+function_decl|;
 block|}
-comment|/**    * A thin wrapper over the {@link CloudBlockBlob} class that simply redirects    * calls to the real object except in unit tests.    */
+comment|/**    * A thin wrapper over the {@link CloudBlob} class that simply redirects calls    * to the real object except in unit tests.    */
 annotation|@
 name|InterfaceAudience
 operator|.
 name|Private
-DECL|class|CloudBlockBlobWrapper
+DECL|interface|CloudBlobWrapper
 specifier|public
-specifier|abstract
-specifier|static
-class|class
-name|CloudBlockBlobWrapper
-implements|implements
+interface|interface
+name|CloudBlobWrapper
+extends|extends
 name|ListBlobItem
 block|{
 comment|/**      * Returns the URI for this blob.      *       * @return A<code>java.net.URI</code> object that represents the URI for      *         the blob.      */
 DECL|method|getUri ()
-specifier|public
-specifier|abstract
 name|URI
 name|getUri
 parameter_list|()
 function_decl|;
 comment|/**      * Returns the metadata for the blob.      *       * @return A<code>java.util.HashMap</code> object that represents the      *         metadata for the blob.      */
 DECL|method|getMetadata ()
-specifier|public
-specifier|abstract
 name|HashMap
 argument_list|<
 name|String
@@ -573,8 +624,6 @@ parameter_list|()
 function_decl|;
 comment|/**      * Sets the metadata for the blob.      *       * @param metadata      *          A<code>java.util.HashMap</code> object that contains the      *          metadata being assigned to the blob.      */
 DECL|method|setMetadata (HashMap<String, String> metadata)
-specifier|public
-specifier|abstract
 name|void
 name|setMetadata
 parameter_list|(
@@ -587,15 +636,15 @@ argument_list|>
 name|metadata
 parameter_list|)
 function_decl|;
-comment|/**      * Copies an existing blob's contents, properties, and metadata to this      * instance of the<code>CloudBlob</code> class, using the specified      * operation context.      *       * @param sourceBlob      *          A<code>CloudBlob</code> object that represents the source blob      *          to copy.      * @param opContext      *          An {@link OperationContext} object that represents the context      *          for the current operation. This object is used to track requests      *          to the storage service, and to provide additional runtime      *          information about the operation.      *       * @throws StorageException      *           If a storage service error occurred.      * @throws URISyntaxException      *       */
-DECL|method|startCopyFromBlob (CloudBlockBlobWrapper sourceBlob, OperationContext opContext)
+comment|/**      * Copies an existing blob's contents, properties, and metadata to this instance of the<code>CloudBlob</code>      * class, using the specified operation context.      *      * @param source      *            A<code>java.net.URI</code> The URI of a source blob.      * @param opContext      *            An {@link OperationContext} object that represents the context for the current operation. This object      *            is used to track requests to the storage service, and to provide additional runtime information about      *            the operation.      *      * @throws StorageException      *             If a storage service error occurred.      * @throws URISyntaxException      *      */
+DECL|method|startCopyFromBlob (URI source, OperationContext opContext)
 specifier|public
 specifier|abstract
 name|void
 name|startCopyFromBlob
 parameter_list|(
-name|CloudBlockBlobWrapper
-name|sourceBlob
+name|URI
+name|source
 parameter_list|,
 name|OperationContext
 name|opContext
@@ -607,29 +656,56 @@ name|URISyntaxException
 function_decl|;
 comment|/**      * Returns the blob's copy state.      *       * @return A {@link CopyState} object that represents the copy state of the      *         blob.      */
 DECL|method|getCopyState ()
-specifier|public
-specifier|abstract
 name|CopyState
 name|getCopyState
 parameter_list|()
 function_decl|;
-comment|/**      * Deletes the blob using the specified operation context.      *<p>      * A blob that has snapshots cannot be deleted unless the snapshots are also      * deleted. If a blob has snapshots, use the      * {@link DeleteSnapshotsOption#DELETE_SNAPSHOTS_ONLY} or      * {@link DeleteSnapshotsOption#INCLUDE_SNAPSHOTS} value in the      *<code>deleteSnapshotsOption</code> parameter to specify how the snapshots      * should be handled when the blob is deleted.      *       * @param opContext      *          An {@link OperationContext} object that represents the context      *          for the current operation. This object is used to track requests      *          to the storage service, and to provide additional runtime      *          information about the operation.      *       * @throws StorageException      *           If a storage service error occurred.      */
-DECL|method|delete (OperationContext opContext)
-specifier|public
-specifier|abstract
+comment|/**      * Downloads a range of bytes from the blob to the given byte buffer, using the specified request options and      * operation context.      *      * @param offset      *            The byte offset to use as the starting point for the source.      * @param length      *            The number of bytes to read.      * @param buffer      *            The byte buffer, as an array of bytes, to which the blob bytes are downloaded.      * @param bufferOffset      *            The byte offset to use as the starting point for the target.      * @param options      *            A {@link BlobRequestOptions} object that specifies any additional options for the request. Specifying      *<code>null</code> will use the default request options from the associated service client (      *            {@link CloudBlobClient}).      * @param opContext      *            An {@link OperationContext} object that represents the context for the current operation. This object      *            is used to track requests to the storage service, and to provide additional runtime information about      *            the operation.      *      * @throws StorageException      *             If a storage service error occurred.      */
+DECL|method|downloadRange (final long offset, final long length, final OutputStream outStream, final BlobRequestOptions options, final OperationContext opContext)
 name|void
-name|delete
+name|downloadRange
 parameter_list|(
+specifier|final
+name|long
+name|offset
+parameter_list|,
+specifier|final
+name|long
+name|length
+parameter_list|,
+specifier|final
+name|OutputStream
+name|outStream
+parameter_list|,
+specifier|final
+name|BlobRequestOptions
+name|options
+parameter_list|,
+specifier|final
 name|OperationContext
 name|opContext
 parameter_list|)
 throws|throws
 name|StorageException
+throws|,
+name|IOException
 function_decl|;
-comment|/**      * Checks to see if the blob exists, using the specified operation context.      *       * @param opContext      *          An {@link OperationContext} object that represents the context      *          for the current operation. This object is used to track requests      *          to the storage service, and to provide additional runtime      *          information about the operation.      *       * @return<code>true</code> if the blob exists, other wise      *<code>false</code>.      *       * @throws StorageException      *           f a storage service error occurred.      */
+comment|/**      * Deletes the blob using the specified operation context.      *<p>      * A blob that has snapshots cannot be deleted unless the snapshots are also      * deleted. If a blob has snapshots, use the      * {@link DeleteSnapshotsOption#DELETE_SNAPSHOTS_ONLY} or      * {@link DeleteSnapshotsOption#INCLUDE_SNAPSHOTS} value in the      *<code>deleteSnapshotsOption</code> parameter to specify how the snapshots      * should be handled when the blob is deleted.      *       * @param opContext      *          An {@link OperationContext} object that represents the context      *          for the current operation. This object is used to track requests      *          to the storage service, and to provide additional runtime      *          information about the operation.      *       * @throws StorageException      *           If a storage service error occurred.      */
+DECL|method|delete (OperationContext opContext, SelfRenewingLease lease)
+name|void
+name|delete
+parameter_list|(
+name|OperationContext
+name|opContext
+parameter_list|,
+name|SelfRenewingLease
+name|lease
+parameter_list|)
+throws|throws
+name|StorageException
+function_decl|;
+comment|/**      * Checks to see if the blob exists, using the specified operation context.      *       * @param opContext      *          An {@link OperationContext} object that represents the context      *          for the current operation. This object is used to track requests      *          to the storage service, and to provide additional runtime      *          information about the operation.      *       * @return<code>true</code> if the blob exists, otherwise      *<code>false</code>.      *       * @throws StorageException      *           If a storage service error occurred.      */
 DECL|method|exists (OperationContext opContext)
-specifier|public
-specifier|abstract
 name|boolean
 name|exists
 parameter_list|(
@@ -641,8 +717,6 @@ name|StorageException
 function_decl|;
 comment|/**      * Populates a blob's properties and metadata using the specified operation      * context.      *<p>      * This method populates the blob's system properties and user-defined      * metadata. Before reading a blob's properties or metadata, call this      * method or its overload to retrieve the latest values for the blob's      * properties and metadata from the Windows Azure storage service.      *       * @param opContext      *          An {@link OperationContext} object that represents the context      *          for the current operation. This object is used to track requests      *          to the storage service, and to provide additional runtime      *          information about the operation.      *       * @throws StorageException      *           If a storage service error occurred.      */
 DECL|method|downloadAttributes (OperationContext opContext)
-specifier|public
-specifier|abstract
 name|void
 name|downloadAttributes
 parameter_list|(
@@ -654,16 +728,12 @@ name|StorageException
 function_decl|;
 comment|/**      * Returns the blob's properties.      *       * @return A {@link BlobProperties} object that represents the properties of      *         the blob.      */
 DECL|method|getProperties ()
-specifier|public
-specifier|abstract
 name|BlobProperties
 name|getProperties
 parameter_list|()
 function_decl|;
 comment|/**      * Opens a blob input stream to download the blob using the specified      * operation context.      *<p>      * Use {@link CloudBlobClient#setStreamMinimumReadSizeInBytes} to configure      * the read size.      *       * @param opContext      *          An {@link OperationContext} object that represents the context      *          for the current operation. This object is used to track requests      *          to the storage service, and to provide additional runtime      *          information about the operation.      *       * @return An<code>InputStream</code> object that represents the stream to      *         use for reading from the blob.      *       * @throws StorageException      *           If a storage service error occurred.      */
 DECL|method|openInputStream (BlobRequestOptions options, OperationContext opContext)
-specifier|public
-specifier|abstract
 name|InputStream
 name|openInputStream
 parameter_list|(
@@ -676,10 +746,72 @@ parameter_list|)
 throws|throws
 name|StorageException
 function_decl|;
-comment|/**      * Creates and opens an output stream to write data to the block blob using      * the specified operation context.      *       * @param opContext      *          An {@link OperationContext} object that represents the context      *          for the current operation. This object is used to track requests      *          to the storage service, and to provide additional runtime      *          information about the operation.      *       * @return A {@link BlobOutputStream} object used to write data to the blob.      *       * @throws StorageException      *           If a storage service error occurred.      */
-DECL|method|openOutputStream (BlobRequestOptions options, OperationContext opContext)
+comment|/**      * Uploads the blob's metadata to the storage service using the specified      * lease ID, request options, and operation context.      *       * @param opContext      *          An {@link OperationContext} object that represents the context      *          for the current operation. This object is used to track requests      *          to the storage service, and to provide additional runtime      *          information about the operation.      *       * @throws StorageException      *           If a storage service error occurred.      */
+DECL|method|uploadMetadata (OperationContext opContext)
+name|void
+name|uploadMetadata
+parameter_list|(
+name|OperationContext
+name|opContext
+parameter_list|)
+throws|throws
+name|StorageException
+function_decl|;
+DECL|method|uploadProperties (OperationContext opContext, SelfRenewingLease lease)
+name|void
+name|uploadProperties
+parameter_list|(
+name|OperationContext
+name|opContext
+parameter_list|,
+name|SelfRenewingLease
+name|lease
+parameter_list|)
+throws|throws
+name|StorageException
+function_decl|;
+DECL|method|acquireLease ()
+name|SelfRenewingLease
+name|acquireLease
+parameter_list|()
+throws|throws
+name|StorageException
+function_decl|;
+comment|/**      * Sets the minimum read block size to use with this Blob.      *       * @param minimumReadSizeBytes      *          The maximum block size, in bytes, for reading from a block blob      *          while using a {@link BlobInputStream} object, ranging from 512      *          bytes to 64 MB, inclusive.      */
+DECL|method|setStreamMinimumReadSizeInBytes ( int minimumReadSizeBytes)
+name|void
+name|setStreamMinimumReadSizeInBytes
+parameter_list|(
+name|int
+name|minimumReadSizeBytes
+parameter_list|)
+function_decl|;
+comment|/**      * Sets the write block size to use with this Blob.      *       * @param writeBlockSizeBytes      *          The maximum block size, in bytes, for writing to a block blob      *          while using a {@link BlobOutputStream} object, ranging from 1 MB      *          to 4 MB, inclusive.      *       * @throws IllegalArgumentException      *           If<code>writeBlockSizeInBytes</code> is less than 1 MB or      *           greater than 4 MB.      */
+DECL|method|setWriteBlockSizeInBytes (int writeBlockSizeBytes)
+name|void
+name|setWriteBlockSizeInBytes
+parameter_list|(
+name|int
+name|writeBlockSizeBytes
+parameter_list|)
+function_decl|;
+DECL|method|getBlob ()
+name|CloudBlob
+name|getBlob
+parameter_list|()
+function_decl|;
+block|}
+comment|/**    * A thin wrapper over the {@link CloudBlockBlob} class that simply redirects calls    * to the real object except in unit tests.    */
+DECL|interface|CloudBlockBlobWrapper
 specifier|public
 specifier|abstract
+interface|interface
+name|CloudBlockBlobWrapper
+extends|extends
+name|CloudBlobWrapper
+block|{
+comment|/**      * Creates and opens an output stream to write data to the block blob using the specified       * operation context.      *       * @param opContext      *            An {@link OperationContext} object that represents the context for the current operation. This object      *            is used to track requests to the storage service, and to provide additional runtime information about      *            the operation.      *       * @return A {@link BlobOutputStream} object used to write data to the blob.      *       * @throws StorageException      *             If a storage service error occurred.      */
+DECL|method|openOutputStream ( BlobRequestOptions options, OperationContext opContext)
 name|OutputStream
 name|openOutputStream
 parameter_list|(
@@ -692,15 +824,53 @@ parameter_list|)
 throws|throws
 name|StorageException
 function_decl|;
-comment|/**      * Uploads the source stream data to the blob, using the specified operation      * context.      *       * @param sourceStream      *          An<code>InputStream</code> object that represents the input      *          stream to write to the block blob.      * @param opContext      *          An {@link OperationContext} object that represents the context      *          for the current operation. This object is used to track requests      *          to the storage service, and to provide additional runtime      *          information about the operation.      *       * @throws IOException      *           If an I/O error occurred.      * @throws StorageException      *           If a storage service error occurred.      */
-DECL|method|upload (InputStream sourceStream, OperationContext opContext)
+block|}
+comment|/**    * A thin wrapper over the {@link CloudPageBlob} class that simply redirects calls    * to the real object except in unit tests.    */
+DECL|interface|CloudPageBlobWrapper
 specifier|public
 specifier|abstract
+interface|interface
+name|CloudPageBlobWrapper
+extends|extends
+name|CloudBlobWrapper
+block|{
+comment|/**      * Creates a page blob using the specified request options and operation context.      *      * @param length      *            The size, in bytes, of the page blob.      * @param options      *            A {@link BlobRequestOptions} object that specifies any additional options for the request. Specifying      *<code>null</code> will use the default request options from the associated service client (      *            {@link CloudBlobClient}).      * @param opContext      *            An {@link OperationContext} object that represents the context for the current operation. This object      *            is used to track requests to the storage service, and to provide additional runtime information about      *            the operation.      *      * @throws IllegalArgumentException      *             If the length is not a multiple of 512.      *      * @throws StorageException      *             If a storage service error occurred.      */
+DECL|method|create (final long length, BlobRequestOptions options, OperationContext opContext)
 name|void
-name|upload
+name|create
 parameter_list|(
+specifier|final
+name|long
+name|length
+parameter_list|,
+name|BlobRequestOptions
+name|options
+parameter_list|,
+name|OperationContext
+name|opContext
+parameter_list|)
+throws|throws
+name|StorageException
+function_decl|;
+comment|/**      * Uploads a range of contiguous pages, up to 4 MB in size, at the specified offset in the page blob, using the      * specified lease ID, request options, and operation context.      *       * @param sourceStream      *            An<code>InputStream</code> object that represents the input stream to write to the page blob.      * @param offset      *            The offset, in number of bytes, at which to begin writing the data. This value must be a multiple of      *            512.      * @param length      *            The length, in bytes, of the data to write. This value must be a multiple of 512.      * @param options      *            A {@link BlobRequestOptions} object that specifies any additional options for the request. Specifying      *<code>null</code> will use the default request options from the associated service client (      *            {@link CloudBlobClient}).      * @param opContext      *            An {@link OperationContext} object that represents the context for the current operation. This object      *            is used to track requests to the storage service, and to provide additional runtime information about      *            the operation.      *       * @throws IllegalArgumentException      *             If the offset or length are not multiples of 512, or if the length is greater than 4 MB.      * @throws IOException      *             If an I/O exception occurred.      * @throws StorageException      *             If a storage service error occurred.      */
+DECL|method|uploadPages (final InputStream sourceStream, final long offset, final long length, BlobRequestOptions options, OperationContext opContext)
+name|void
+name|uploadPages
+parameter_list|(
+specifier|final
 name|InputStream
 name|sourceStream
+parameter_list|,
+specifier|final
+name|long
+name|offset
+parameter_list|,
+specifier|final
+name|long
+name|length
+parameter_list|,
+name|BlobRequestOptions
+name|options
 parameter_list|,
 name|OperationContext
 name|opContext
@@ -710,10 +880,24 @@ name|StorageException
 throws|,
 name|IOException
 function_decl|;
-comment|/**      * Uploads the blob's metadata to the storage service using the specified      * lease ID, request options, and operation context.      *       * @param opContext      *          An {@link OperationContext} object that represents the context      *          for the current operation. This object is used to track requests      *          to the storage service, and to provide additional runtime      *          information about the operation.      *       * @throws StorageException      *           If a storage service error occurred.      */
+comment|/**      * Returns a collection of page ranges and their starting and ending byte offsets using the specified request      * options and operation context.      *      * @param options      *            A {@link BlobRequestOptions} object that specifies any additional options for the request. Specifying      *<code>null</code> will use the default request options from the associated service client (      *            {@link CloudBlobClient}).      * @param opContext      *            An {@link OperationContext} object that represents the context for the current operation. This object      *            is used to track requests to the storage service, and to provide additional runtime information about      *            the operation.      *      * @return An<code>ArrayList</code> object that represents the set of page ranges and their starting and ending      *         byte offsets.      *      * @throws StorageException      *             If a storage service error occurred.      */
+DECL|method|downloadPageRanges (BlobRequestOptions options, OperationContext opContext)
+name|ArrayList
+argument_list|<
+name|PageRange
+argument_list|>
+name|downloadPageRanges
+parameter_list|(
+name|BlobRequestOptions
+name|options
+parameter_list|,
+name|OperationContext
+name|opContext
+parameter_list|)
+throws|throws
+name|StorageException
+function_decl|;
 DECL|method|uploadMetadata (OperationContext opContext)
-specifier|public
-specifier|abstract
 name|void
 name|uploadMetadata
 parameter_list|(
@@ -722,40 +906,6 @@ name|opContext
 parameter_list|)
 throws|throws
 name|StorageException
-function_decl|;
-DECL|method|uploadProperties (OperationContext opContext)
-specifier|public
-specifier|abstract
-name|void
-name|uploadProperties
-parameter_list|(
-name|OperationContext
-name|opContext
-parameter_list|)
-throws|throws
-name|StorageException
-function_decl|;
-comment|/**      * Sets the minimum read block size to use with this Blob.      *       * @param minimumReadSizeBytes      *          The maximum block size, in bytes, for reading from a block blob      *          while using a {@link BlobInputStream} object, ranging from 512      *          bytes to 64 MB, inclusive.      */
-DECL|method|setStreamMinimumReadSizeInBytes ( int minimumReadSizeBytes)
-specifier|public
-specifier|abstract
-name|void
-name|setStreamMinimumReadSizeInBytes
-parameter_list|(
-name|int
-name|minimumReadSizeBytes
-parameter_list|)
-function_decl|;
-comment|/**      * Sets the write block size to use with this Blob.      *       * @param writeBlockSizeBytes      *          The maximum block size, in bytes, for writing to a block blob      *          while using a {@link BlobOutputStream} object, ranging from 1 MB      *          to 4 MB, inclusive.      *       * @throws IllegalArgumentException      *           If<code>writeBlockSizeInBytes</code> is less than 1 MB or      *           greater than 4 MB.      */
-DECL|method|setWriteBlockSizeInBytes (int writeBlockSizeBytes)
-specifier|public
-specifier|abstract
-name|void
-name|setWriteBlockSizeInBytes
-parameter_list|(
-name|int
-name|writeBlockSizeBytes
-parameter_list|)
 function_decl|;
 block|}
 block|}

@@ -20,29 +20,27 @@ end_package
 
 begin_import
 import|import
-name|java
-operator|.
-name|io
-operator|.
-name|IOException
-import|;
-end_import
-
-begin_import
-import|import
 name|org
 operator|.
-name|junit
+name|apache
 operator|.
-name|Ignore
+name|hadoop
+operator|.
+name|conf
+operator|.
+name|Configuration
 import|;
 end_import
 
+begin_comment
+comment|/**  * Run the base Azure file system tests strictly on page blobs to make sure fundamental  * operations on page blob files and folders work as expected.  * These operations include create, delete, rename, list, and so on.  */
+end_comment
+
 begin_class
-DECL|class|TestNativeAzureFileSystemMocked
+DECL|class|TestNativeAzureFSPageBlobLive
 specifier|public
 class|class
-name|TestNativeAzureFileSystemMocked
+name|TestNativeAzureFSPageBlobLive
 extends|extends
 name|NativeAzureFileSystemBaseTest
 block|{
@@ -56,77 +54,47 @@ parameter_list|()
 throws|throws
 name|Exception
 block|{
+name|Configuration
+name|conf
+init|=
+operator|new
+name|Configuration
+argument_list|()
+decl_stmt|;
+comment|// Configure the page blob directories key so every file created is a page blob.
+name|conf
+operator|.
+name|set
+argument_list|(
+name|AzureNativeFileSystemStore
+operator|.
+name|KEY_PAGE_BLOB_DIRECTORIES
+argument_list|,
+literal|"/"
+argument_list|)
+expr_stmt|;
+comment|// Configure the atomic rename directories key so every folder will have
+comment|// atomic rename applied.
+name|conf
+operator|.
+name|set
+argument_list|(
+name|AzureNativeFileSystemStore
+operator|.
+name|KEY_ATOMIC_RENAME_DIRECTORIES
+argument_list|,
+literal|"/"
+argument_list|)
+expr_stmt|;
 return|return
 name|AzureBlobStorageTestAccount
 operator|.
-name|createMock
-argument_list|()
+name|create
+argument_list|(
+name|conf
+argument_list|)
 return|;
 block|}
-comment|// Ignore the following tests because taking a lease requires a real
-comment|// (not mock) file system store. These tests don't work on the mock.
-annotation|@
-name|Override
-annotation|@
-name|Ignore
-DECL|method|testLeaseAsDistributedLock ()
-specifier|public
-name|void
-name|testLeaseAsDistributedLock
-parameter_list|()
-block|{   }
-annotation|@
-name|Override
-annotation|@
-name|Ignore
-DECL|method|testSelfRenewingLease ()
-specifier|public
-name|void
-name|testSelfRenewingLease
-parameter_list|()
-block|{   }
-annotation|@
-name|Override
-annotation|@
-name|Ignore
-DECL|method|testRedoFolderRenameAll ()
-specifier|public
-name|void
-name|testRedoFolderRenameAll
-parameter_list|()
-block|{   }
-annotation|@
-name|Override
-annotation|@
-name|Ignore
-DECL|method|testCreateNonRecursive ()
-specifier|public
-name|void
-name|testCreateNonRecursive
-parameter_list|()
-block|{   }
-annotation|@
-name|Override
-annotation|@
-name|Ignore
-DECL|method|testSelfRenewingLeaseFileDelete ()
-specifier|public
-name|void
-name|testSelfRenewingLeaseFileDelete
-parameter_list|()
-block|{   }
-annotation|@
-name|Override
-annotation|@
-name|Ignore
-DECL|method|testRenameRedoFolderAlreadyDone ()
-specifier|public
-name|void
-name|testRenameRedoFolderAlreadyDone
-parameter_list|()
-throws|throws
-name|IOException
-block|{   }
 block|}
 end_class
 

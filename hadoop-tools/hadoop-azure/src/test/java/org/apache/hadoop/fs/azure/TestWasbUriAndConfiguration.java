@@ -1814,6 +1814,14 @@ name|toString
 argument_list|()
 argument_list|)
 expr_stmt|;
+comment|// Add references to file system implementations for wasb and wasbs.
+name|conf
+operator|.
+name|addResource
+argument_list|(
+literal|"azure-test.xml"
+argument_list|)
+expr_stmt|;
 name|URI
 name|wantedUri
 init|=

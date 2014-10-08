@@ -285,9 +285,18 @@ argument_list|,
 name|String
 argument_list|>
 argument_list|()
+argument_list|,
+literal|false
+argument_list|,
+literal|0
 argument_list|)
 expr_stmt|;
 block|}
+annotation|@
+name|SuppressWarnings
+argument_list|(
+literal|"deprecation"
+argument_list|)
 annotation|@
 name|Test
 DECL|method|testImplicitFolderListed ()
@@ -340,7 +349,7 @@ index|[
 literal|0
 index|]
 operator|.
-name|isDirectory
+name|isDir
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -398,7 +407,7 @@ index|[
 literal|0
 index|]
 operator|.
-name|isDirectory
+name|isDir
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -445,7 +454,7 @@ name|assertTrue
 argument_list|(
 name|dirStatus
 operator|.
-name|isDirectory
+name|isDir
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -587,6 +596,11 @@ argument_list|)
 expr_stmt|;
 block|}
 annotation|@
+name|SuppressWarnings
+argument_list|(
+literal|"deprecation"
+argument_list|)
+annotation|@
 name|Test
 DECL|method|testFileAndImplicitFolderSameName ()
 specifier|public
@@ -638,7 +652,7 @@ index|[
 literal|0
 index|]
 operator|.
-name|isDirectory
+name|isDir
 argument_list|()
 argument_list|)
 expr_stmt|;
