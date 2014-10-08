@@ -5378,6 +5378,13 @@ parameter_list|()
 block|{
 try|try
 block|{
+if|if
+condition|(
+name|jmx
+operator|!=
+literal|null
+condition|)
+block|{
 name|jmx
 operator|.
 name|printAllMatchedAttributes
@@ -5385,6 +5392,7 @@ argument_list|(
 name|JMX_RAM_DISK_METRICS_PATTERN
 argument_list|)
 expr_stmt|;
+block|}
 block|}
 catch|catch
 parameter_list|(
