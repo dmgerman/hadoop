@@ -3256,7 +3256,9 @@ name|ACCEPTED
 argument_list|)
 expr_stmt|;
 block|}
-return|return
+name|RMApp
+name|rmApp
+init|=
 name|getRMContext
 argument_list|()
 operator|.
@@ -3267,6 +3269,34 @@ name|get
 argument_list|(
 name|appId
 argument_list|)
+decl_stmt|;
+comment|// unmanaged AM won't go to RMAppAttemptState.SCHEDULED.
+if|if
+condition|(
+name|waitForAccepted
+operator|&&
+operator|!
+name|unmanaged
+condition|)
+block|{
+name|waitForState
+argument_list|(
+name|rmApp
+operator|.
+name|getCurrentAppAttempt
+argument_list|()
+operator|.
+name|getAppAttemptId
+argument_list|()
+argument_list|,
+name|RMAppAttemptState
+operator|.
+name|SCHEDULED
+argument_list|)
+expr_stmt|;
+block|}
+return|return
+name|rmApp
 return|;
 block|}
 DECL|method|registerNode (String nodeIdStr, int memory)
