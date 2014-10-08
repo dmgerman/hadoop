@@ -3349,7 +3349,7 @@ condition|(
 operator|!
 name|subDir
 operator|.
-name|mkdir
+name|mkdirs
 argument_list|()
 operator|&&
 operator|!
@@ -3409,7 +3409,10 @@ decl_stmt|;
 if|if
 condition|(
 operator|!
-name|outputDir
+name|outputFile
+operator|.
+name|getParentFile
+argument_list|()
 operator|.
 name|exists
 argument_list|()
@@ -3418,7 +3421,10 @@ block|{
 if|if
 condition|(
 operator|!
-name|outputDir
+name|outputFile
+operator|.
+name|getParentFile
+argument_list|()
 operator|.
 name|mkdirs
 argument_list|()

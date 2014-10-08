@@ -3086,7 +3086,7 @@ init|=
 operator|new
 name|TarEntry
 argument_list|(
-literal|"foo"
+literal|"/bar/foo"
 argument_list|)
 decl_stmt|;
 name|byte
@@ -3165,7 +3165,7 @@ name|File
 argument_list|(
 name|tmp
 argument_list|,
-literal|"foo"
+literal|"/bar/foo"
 argument_list|)
 operator|.
 name|exists
@@ -3181,7 +3181,7 @@ name|File
 argument_list|(
 name|tmp
 argument_list|,
-literal|"foo"
+literal|"/bar/foo"
 argument_list|)
 operator|.
 name|length
