@@ -32,6 +32,16 @@ end_import
 
 begin_import
 import|import
+name|java
+operator|.
+name|util
+operator|.
+name|Set
+import|;
+end_import
+
+begin_import
+import|import
 name|org
 operator|.
 name|apache
@@ -145,7 +155,7 @@ annotation|@
 name|Private
 annotation|@
 name|Unstable
-DECL|method|newInstance (String queueName, float capacity, float maximumCapacity, float currentCapacity, List<QueueInfo> childQueues, List<ApplicationReport> applications, QueueState queueState)
+DECL|method|newInstance (String queueName, float capacity, float maximumCapacity, float currentCapacity, List<QueueInfo> childQueues, List<ApplicationReport> applications, QueueState queueState, Set<String> accessibleNodeLabels, String defaultNodeLabelExpression)
 specifier|public
 specifier|static
 name|QueueInfo
@@ -177,6 +187,15 @@ name|applications
 parameter_list|,
 name|QueueState
 name|queueState
+parameter_list|,
+name|Set
+argument_list|<
+name|String
+argument_list|>
+name|accessibleNodeLabels
+parameter_list|,
+name|String
+name|defaultNodeLabelExpression
 parameter_list|)
 block|{
 name|QueueInfo
@@ -238,6 +257,20 @@ operator|.
 name|setQueueState
 argument_list|(
 name|queueState
+argument_list|)
+expr_stmt|;
+name|queueInfo
+operator|.
+name|setAccessibleNodeLabels
+argument_list|(
+name|accessibleNodeLabels
+argument_list|)
+expr_stmt|;
+name|queueInfo
+operator|.
+name|setDefaultNodeLabelExpression
+argument_list|(
+name|defaultNodeLabelExpression
 argument_list|)
 expr_stmt|;
 return|return
@@ -436,6 +469,65 @@ name|setQueueState
 parameter_list|(
 name|QueueState
 name|queueState
+parameter_list|)
+function_decl|;
+comment|/**    * Get the<code>accessible node labels</code> of the queue.    * @return<code>accessible node labels</code> of the queue    */
+annotation|@
+name|Public
+annotation|@
+name|Stable
+DECL|method|getAccessibleNodeLabels ()
+specifier|public
+specifier|abstract
+name|Set
+argument_list|<
+name|String
+argument_list|>
+name|getAccessibleNodeLabels
+parameter_list|()
+function_decl|;
+comment|/**    * Set the<code>accessible node labels</code> of the queue.    */
+annotation|@
+name|Private
+annotation|@
+name|Unstable
+DECL|method|setAccessibleNodeLabels (Set<String> labels)
+specifier|public
+specifier|abstract
+name|void
+name|setAccessibleNodeLabels
+parameter_list|(
+name|Set
+argument_list|<
+name|String
+argument_list|>
+name|labels
+parameter_list|)
+function_decl|;
+comment|/**    * Get the<code>default node label expression</code> of the queue, this takes    * affect only when the<code>ApplicationSubmissionContext</code> and    *<code>ResourceRequest</code> don't specify their    *<code>NodeLabelExpression</code>.    *     * @return<code>default node label expression</code> of the queue    */
+annotation|@
+name|Public
+annotation|@
+name|Stable
+DECL|method|getDefaultNodeLabelExpression ()
+specifier|public
+specifier|abstract
+name|String
+name|getDefaultNodeLabelExpression
+parameter_list|()
+function_decl|;
+annotation|@
+name|Public
+annotation|@
+name|Stable
+DECL|method|setDefaultNodeLabelExpression ( String defaultLabelExpression)
+specifier|public
+specifier|abstract
+name|void
+name|setDefaultNodeLabelExpression
+parameter_list|(
+name|String
+name|defaultLabelExpression
 parameter_list|)
 function_decl|;
 block|}
