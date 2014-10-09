@@ -1669,15 +1669,18 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|/*    * Informing the name node could take a long long time! Should we wait    * till namenode is informed before responding with success to the    * client? For now we don't.    */
-DECL|method|notifyNamenodeBlockImmediately ( ReceivedDeletedBlockInfo bInfo, String storageUuid)
+DECL|method|notifyNamenodeBlock (ReceivedDeletedBlockInfo bInfo, String storageUuid, boolean now)
 name|void
-name|notifyNamenodeBlockImmediately
+name|notifyNamenodeBlock
 parameter_list|(
 name|ReceivedDeletedBlockInfo
 name|bInfo
 parameter_list|,
 name|String
 name|storageUuid
+parameter_list|,
+name|boolean
+name|now
 parameter_list|)
 block|{
 synchronized|synchronized
@@ -1704,11 +1707,19 @@ name|sendImmediateIBR
 operator|=
 literal|true
 expr_stmt|;
+comment|// If now is true, the report is sent right away.
+comment|// Otherwise, it will be sent out in the next heartbeat.
+if|if
+condition|(
+name|now
+condition|)
+block|{
 name|pendingIncrementalBRperStorage
 operator|.
 name|notifyAll
 argument_list|()
 expr_stmt|;
+block|}
 block|}
 block|}
 DECL|method|notifyNamenodeDeletedBlock ( ReceivedDeletedBlockInfo bInfo, String storageUuid)

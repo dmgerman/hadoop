@@ -554,11 +554,13 @@ argument_list|)
 decl_stmt|;
 name|actor
 operator|.
-name|notifyNamenodeBlockImmediately
+name|notifyNamenodeBlock
 argument_list|(
 name|rdbi
 argument_list|,
 name|storageUuid
+argument_list|,
+literal|true
 argument_list|)
 expr_stmt|;
 block|}
