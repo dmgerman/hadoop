@@ -600,10 +600,16 @@ name|password
 operator|=
 name|IOUtils
 operator|.
-name|toCharArray
+name|toString
 argument_list|(
 name|is
 argument_list|)
+operator|.
+name|trim
+argument_list|()
+operator|.
+name|toCharArray
+argument_list|()
 expr_stmt|;
 block|}
 finally|finally
