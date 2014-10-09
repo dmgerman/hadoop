@@ -1421,7 +1421,9 @@ name|Assert
 operator|.
 name|assertEquals
 argument_list|(
-literal|null
+name|ApplicationHistoryManagerOnTimelineStore
+operator|.
+name|UNAVAILABLE
 argument_list|,
 name|app
 operator|.
@@ -1446,7 +1448,9 @@ name|Assert
 operator|.
 name|assertEquals
 argument_list|(
-literal|null
+name|ApplicationHistoryManagerOnTimelineStore
+operator|.
+name|UNAVAILABLE
 argument_list|,
 name|app
 operator|.
@@ -1458,7 +1462,9 @@ name|Assert
 operator|.
 name|assertEquals
 argument_list|(
-literal|null
+name|ApplicationHistoryManagerOnTimelineStore
+operator|.
+name|UNAVAILABLE
 argument_list|,
 name|app
 operator|.
@@ -1470,7 +1476,7 @@ name|Assert
 operator|.
 name|assertEquals
 argument_list|(
-literal|null
+literal|""
 argument_list|,
 name|app
 operator|.
@@ -1516,7 +1522,6 @@ name|Assert
 operator|.
 name|assertEquals
 argument_list|(
-operator|-
 literal|100
 argument_list|,
 name|app
@@ -1807,7 +1812,6 @@ name|Assert
 operator|.
 name|assertEquals
 argument_list|(
-operator|-
 literal|100
 argument_list|,
 name|appAttempt
@@ -2105,7 +2109,6 @@ name|newInstance
 argument_list|(
 literal|"test host"
 argument_list|,
-operator|-
 literal|100
 argument_list|)
 argument_list|,
@@ -2174,7 +2177,7 @@ name|assertEquals
 argument_list|(
 literal|"http://0.0.0.0:8188/applicationhistory/logs/"
 operator|+
-literal|"test host:-100/container_0_0001_01_000001/"
+literal|"test host:100/container_0_0001_01_000001/"
 operator|+
 literal|"container_0_0001_01_000001/user1"
 argument_list|,
@@ -3295,7 +3298,6 @@ name|AppAttemptMetricsConstants
 operator|.
 name|RPC_PORT_EVENT_INFO
 argument_list|,
-operator|-
 literal|100
 argument_list|)
 expr_stmt|;
@@ -3589,7 +3591,6 @@ name|ContainerMetricsConstants
 operator|.
 name|ALLOCATED_PORT_ENTITY_INFO
 argument_list|,
-operator|-
 literal|100
 argument_list|)
 expr_stmt|;
