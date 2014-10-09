@@ -96,6 +96,16 @@ name|DISTRIBUTEDSHELLSCRIPTLEN
 init|=
 literal|"DISTRIBUTEDSHELLSCRIPTLEN"
 decl_stmt|;
+comment|/**    * Environment key name denoting the timeline domain ID.    */
+DECL|field|DISTRIBUTEDSHELLTIMELINEDOMAIN
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|DISTRIBUTEDSHELLTIMELINEDOMAIN
+init|=
+literal|"DISTRIBUTEDSHELLTIMELINEDOMAIN"
+decl_stmt|;
 block|}
 end_class
 
