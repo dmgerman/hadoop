@@ -6144,6 +6144,8 @@ parameter_list|()
 throws|throws
 name|IOException
 block|{
+try|try
+block|{
 if|if
 condition|(
 name|clientRunning
@@ -6170,6 +6172,23 @@ comment|// close connections to the namenode
 name|closeConnectionToNamenode
 argument_list|()
 expr_stmt|;
+block|}
+block|}
+finally|finally
+block|{
+if|if
+condition|(
+name|provider
+operator|!=
+literal|null
+condition|)
+block|{
+name|provider
+operator|.
+name|close
+argument_list|()
+expr_stmt|;
+block|}
 block|}
 block|}
 comment|/**    * Close all open streams, abandoning all of the leases and files being    * created.    * @param abort whether streams should be gracefully closed    */

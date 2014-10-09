@@ -4897,6 +4897,40 @@ return|return
 name|tokens
 return|;
 block|}
+comment|/**    * Shutdown valueQueue executor threads    */
+annotation|@
+name|Override
+DECL|method|close ()
+specifier|public
+name|void
+name|close
+parameter_list|()
+throws|throws
+name|IOException
+block|{
+try|try
+block|{
+name|encKeyVersionQueue
+operator|.
+name|shutdown
+argument_list|()
+expr_stmt|;
+block|}
+catch|catch
+parameter_list|(
+name|Exception
+name|e
+parameter_list|)
+block|{
+throw|throw
+operator|new
+name|IOException
+argument_list|(
+name|e
+argument_list|)
+throw|;
+block|}
+block|}
 block|}
 end_class
 

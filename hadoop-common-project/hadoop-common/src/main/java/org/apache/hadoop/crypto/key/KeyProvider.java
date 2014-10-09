@@ -2210,6 +2210,17 @@ parameter_list|)
 throws|throws
 name|IOException
 function_decl|;
+comment|/**    * Can be used by implementing classes to close any resources    * that require closing    */
+DECL|method|close ()
+specifier|public
+name|void
+name|close
+parameter_list|()
+throws|throws
+name|IOException
+block|{
+comment|// NOP
+block|}
 comment|/**    * Roll a new version of the given key generating the material for it.    *<p/>    * This implementation generates the key material and calls the    * {@link #rollNewVersion(String, byte[])} method.    *    * @param name the basename of the key    * @return the name of the new version of the key    * @throws IOException    */
 DECL|method|rollNewVersion (String name)
 specifier|public

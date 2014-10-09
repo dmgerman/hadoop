@@ -1178,6 +1178,32 @@ name|cryptoExtension
 argument_list|)
 return|;
 block|}
+annotation|@
+name|Override
+DECL|method|close ()
+specifier|public
+name|void
+name|close
+parameter_list|()
+throws|throws
+name|IOException
+block|{
+if|if
+condition|(
+name|getKeyProvider
+argument_list|()
+operator|!=
+literal|null
+condition|)
+block|{
+name|getKeyProvider
+argument_list|()
+operator|.
+name|close
+argument_list|()
+expr_stmt|;
+block|}
+block|}
 block|}
 end_class
 

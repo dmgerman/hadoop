@@ -325,6 +325,14 @@ specifier|final
 name|float
 name|lowWatermark
 decl_stmt|;
+DECL|field|executorThreadsStarted
+specifier|private
+specifier|volatile
+name|boolean
+name|executorThreadsStarted
+init|=
+literal|false
+decl_stmt|;
 comment|/**    * A<code>Runnable</code> which takes a string name.    */
 DECL|class|NamedRunnable
 specifier|private
@@ -786,13 +794,6 @@ name|build
 argument_list|()
 argument_list|)
 expr_stmt|;
-comment|// To ensure all requests are first queued, make coreThreads = maxThreads
-comment|// and pre-start all the Core Threads.
-name|executor
-operator|.
-name|prestartAllCoreThreads
-argument_list|()
-expr_stmt|;
 block|}
 DECL|method|ValueQueue (final int numValues, final float lowWaterMark, long expiry, int numFillerThreads, QueueRefiller<E> fetcher)
 specifier|public
@@ -1174,6 +1175,31 @@ parameter_list|)
 throws|throws
 name|InterruptedException
 block|{
+if|if
+condition|(
+operator|!
+name|executorThreadsStarted
+condition|)
+block|{
+synchronized|synchronized
+init|(
+name|this
+init|)
+block|{
+comment|// To ensure all requests are first queued, make coreThreads =
+comment|// maxThreads
+comment|// and pre-start all the Core Threads.
+name|executor
+operator|.
+name|prestartAllCoreThreads
+argument_list|()
+expr_stmt|;
+name|executorThreadsStarted
+operator|=
+literal|true
+expr_stmt|;
+block|}
+block|}
 comment|// The submit/execute method of the ThreadPoolExecutor is bypassed and
 comment|// the Runnable is directly put in the backing BlockingQueue so that we
 comment|// can control exactly how the runnable is inserted into the queue.
