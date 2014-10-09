@@ -1231,7 +1231,7 @@ name|HdfsAdmin
 name|dfsAdmin
 decl_stmt|;
 DECL|field|fs
-specifier|private
+specifier|protected
 name|DistributedFileSystem
 name|fs
 decl_stmt|;
@@ -1443,6 +1443,28 @@ argument_list|,
 name|conf
 argument_list|)
 expr_stmt|;
+name|setProvider
+argument_list|()
+expr_stmt|;
+comment|// Create a test key
+name|DFSTestUtil
+operator|.
+name|createKey
+argument_list|(
+name|TEST_KEY
+argument_list|,
+name|cluster
+argument_list|,
+name|conf
+argument_list|)
+expr_stmt|;
+block|}
+DECL|method|setProvider ()
+specifier|protected
+name|void
+name|setProvider
+parameter_list|()
+block|{
 comment|// Need to set the client's KeyProvider to the NN's for JKS,
 comment|// else the updates do not get flushed properly
 name|fs
@@ -1462,18 +1484,6 @@ argument_list|()
 operator|.
 name|getProvider
 argument_list|()
-expr_stmt|;
-comment|// Create a test key
-name|DFSTestUtil
-operator|.
-name|createKey
-argument_list|(
-name|TEST_KEY
-argument_list|,
-name|cluster
-argument_list|,
-name|conf
-argument_list|)
 expr_stmt|;
 block|}
 annotation|@
