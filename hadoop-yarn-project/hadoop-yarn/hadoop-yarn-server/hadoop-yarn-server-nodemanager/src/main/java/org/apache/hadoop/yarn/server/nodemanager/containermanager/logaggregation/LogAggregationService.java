@@ -2110,6 +2110,10 @@ name|appId
 argument_list|,
 name|userUgi
 argument_list|,
+name|this
+operator|.
+name|nodeId
+argument_list|,
 name|dirsHandler
 argument_list|,
 name|getRemoteNodeLogFileForApp
