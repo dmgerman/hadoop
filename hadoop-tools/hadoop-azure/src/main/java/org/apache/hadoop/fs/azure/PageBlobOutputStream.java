@@ -374,6 +374,22 @@ name|BlobRequestOptions
 import|;
 end_import
 
+begin_import
+import|import
+name|com
+operator|.
+name|microsoft
+operator|.
+name|windowsazure
+operator|.
+name|storage
+operator|.
+name|blob
+operator|.
+name|CloudPageBlob
+import|;
+end_import
+
 begin_comment
 comment|/**  * An output stream that write file data to a page blob stored using ASV's  * custom format.  */
 end_comment
@@ -449,6 +465,12 @@ specifier|volatile
 name|IOException
 name|lastError
 decl_stmt|;
+comment|/**    * Current size of the page blob in bytes. It may be extended if the file    * gets full.    */
+DECL|field|currentBlobSize
+specifier|private
+name|long
+name|currentBlobSize
+decl_stmt|;
 comment|/**    * The current byte offset we're at in the blob (how many bytes we've    * uploaded to the server).    */
 DECL|field|currentBlobOffset
 specifier|private
@@ -514,11 +536,12 @@ operator|.
 name|class
 argument_list|)
 decl_stmt|;
-comment|// Set the minimum page blob file size to 128MB, which is>> the default block size of 32MB.
-comment|// This default block size is often used as the hbase.regionserver.hlog.blocksize.
+comment|// Set the minimum page blob file size to 128MB, which is>> the default
+comment|// block size of 32MB. This default block size is often used as the
+comment|// hbase.regionserver.hlog.blocksize.
 comment|// The goal is to have a safe minimum size for HBase log files to allow them
-comment|// to be filled and rolled without exceeding the minimum size. A larger size can be
-comment|// used by setting the fs.azure.page.blob.size configuration variable.
+comment|// to be filled and rolled without exceeding the minimum size. A larger size
+comment|// can be used by setting the fs.azure.page.blob.size configuration variable.
 DECL|field|PAGE_BLOB_MIN_SIZE
 specifier|public
 specifier|static
@@ -531,6 +554,28 @@ operator|*
 literal|1024L
 operator|*
 literal|1024L
+decl_stmt|;
+comment|// The default and minimum amount to extend a page blob by if it starts
+comment|// to get full.
+specifier|public
+specifier|static
+specifier|final
+name|long
+DECL|field|PAGE_BLOB_DEFAULT_EXTENSION_SIZE
+name|PAGE_BLOB_DEFAULT_EXTENSION_SIZE
+init|=
+literal|128L
+operator|*
+literal|1024L
+operator|*
+literal|1024L
+decl_stmt|;
+comment|// The configured page blob extension size (either the default, or if greater,
+comment|// the value configured in fs.azure.page.blob.extension.size
+DECL|field|configuredPageBlobExtensionSize
+specifier|private
+name|long
+name|configuredPageBlobExtensionSize
 decl_stmt|;
 comment|/**    * Constructs an output stream over the given page blob.    *    * @param blob the blob that this stream is associated with.    * @param opContext an object used to track the execution of the operation    * @throws StorageException if anything goes wrong creating the blob.    */
 DECL|method|PageBlobOutputStream (final CloudPageBlobWrapper blob, final OperationContext opContext, final Configuration conf)
@@ -680,6 +725,54 @@ argument_list|,
 name|opContext
 argument_list|)
 expr_stmt|;
+name|currentBlobSize
+operator|=
+name|pageBlobSize
+expr_stmt|;
+comment|// Set the page blob extension size. It must be a minimum of the default
+comment|// value.
+name|configuredPageBlobExtensionSize
+operator|=
+name|conf
+operator|.
+name|getLong
+argument_list|(
+literal|"fs.azure.page.blob.extension.size"
+argument_list|,
+literal|0
+argument_list|)
+expr_stmt|;
+if|if
+condition|(
+name|configuredPageBlobExtensionSize
+operator|<
+name|PAGE_BLOB_DEFAULT_EXTENSION_SIZE
+condition|)
+block|{
+name|configuredPageBlobExtensionSize
+operator|=
+name|PAGE_BLOB_DEFAULT_EXTENSION_SIZE
+expr_stmt|;
+block|}
+comment|// make sure it is a multiple of the page size
+if|if
+condition|(
+name|configuredPageBlobExtensionSize
+operator|%
+name|PAGE_SIZE
+operator|!=
+literal|0
+condition|)
+block|{
+name|configuredPageBlobExtensionSize
+operator|+=
+name|PAGE_SIZE
+operator|-
+name|configuredPageBlobExtensionSize
+operator|%
+name|PAGE_SIZE
+expr_stmt|;
+block|}
 block|}
 DECL|method|checkStreamState ()
 specifier|private
@@ -1354,6 +1447,13 @@ literal|0
 index|]
 expr_stmt|;
 block|}
+comment|// Extend the file if we need more room in the file. This typically takes
+comment|// less than 200 milliseconds if it has to actually be done,
+comment|// so it is okay to include it in a write and won't cause a long pause.
+comment|// Other writes can be queued behind this write in any case.
+name|conditionalExtendFile
+argument_list|()
+expr_stmt|;
 block|}
 comment|/**      * Writes the given raw payload to Azure Storage at the current blob      * offset.      */
 DECL|method|writePayloadToServer (byte[] rawPayload)
@@ -1559,6 +1659,181 @@ operator|new
 name|ByteArrayOutputStream
 argument_list|()
 expr_stmt|;
+block|}
+comment|/**    * Extend the page blob file if we are close to the end.    */
+DECL|method|conditionalExtendFile ()
+specifier|private
+name|void
+name|conditionalExtendFile
+parameter_list|()
+block|{
+comment|// maximum allowed size of an Azure page blob (1 terabyte)
+specifier|final
+name|long
+name|MAX_PAGE_BLOB_SIZE
+init|=
+literal|1024L
+operator|*
+literal|1024L
+operator|*
+literal|1024L
+operator|*
+literal|1024L
+decl_stmt|;
+comment|// If blob is already at the maximum size, then don't try to extend it.
+if|if
+condition|(
+name|currentBlobSize
+operator|==
+name|MAX_PAGE_BLOB_SIZE
+condition|)
+block|{
+return|return;
+block|}
+comment|// If we are within the maximum write size of the end of the file,
+if|if
+condition|(
+name|currentBlobSize
+operator|-
+name|currentBlobOffset
+operator|<=
+name|MAX_RAW_BYTES_PER_REQUEST
+condition|)
+block|{
+comment|// Extend the file. Retry up to 3 times with back-off.
+name|CloudPageBlob
+name|cloudPageBlob
+init|=
+operator|(
+name|CloudPageBlob
+operator|)
+name|blob
+operator|.
+name|getBlob
+argument_list|()
+decl_stmt|;
+name|long
+name|newSize
+init|=
+name|currentBlobSize
+operator|+
+name|configuredPageBlobExtensionSize
+decl_stmt|;
+comment|// Make sure we don't exceed maximum blob size.
+if|if
+condition|(
+name|newSize
+operator|>
+name|MAX_PAGE_BLOB_SIZE
+condition|)
+block|{
+name|newSize
+operator|=
+name|MAX_PAGE_BLOB_SIZE
+expr_stmt|;
+block|}
+specifier|final
+name|int
+name|MAX_RETRIES
+init|=
+literal|3
+decl_stmt|;
+name|int
+name|retries
+init|=
+literal|1
+decl_stmt|;
+name|boolean
+name|resizeDone
+init|=
+literal|false
+decl_stmt|;
+while|while
+condition|(
+operator|!
+name|resizeDone
+operator|&&
+name|retries
+operator|<=
+name|MAX_RETRIES
+condition|)
+block|{
+try|try
+block|{
+name|cloudPageBlob
+operator|.
+name|resize
+argument_list|(
+name|newSize
+argument_list|)
+expr_stmt|;
+name|resizeDone
+operator|=
+literal|true
+expr_stmt|;
+name|currentBlobSize
+operator|=
+name|newSize
+expr_stmt|;
+block|}
+catch|catch
+parameter_list|(
+name|StorageException
+name|e
+parameter_list|)
+block|{
+name|LOG
+operator|.
+name|warn
+argument_list|(
+literal|"Failed to extend size of "
+operator|+
+name|cloudPageBlob
+operator|.
+name|getUri
+argument_list|()
+argument_list|)
+expr_stmt|;
+try|try
+block|{
+comment|// sleep 2, 8, 18 seconds for up to 3 retries
+name|Thread
+operator|.
+name|sleep
+argument_list|(
+literal|2000
+operator|*
+name|retries
+operator|*
+name|retries
+argument_list|)
+expr_stmt|;
+block|}
+catch|catch
+parameter_list|(
+name|InterruptedException
+name|e1
+parameter_list|)
+block|{
+comment|// Restore the interrupted status
+name|Thread
+operator|.
+name|currentThread
+argument_list|()
+operator|.
+name|interrupt
+argument_list|()
+expr_stmt|;
+block|}
+block|}
+finally|finally
+block|{
+name|retries
+operator|++
+expr_stmt|;
+block|}
+block|}
+block|}
 block|}
 comment|/**    * Flushes this output stream and forces any buffered output bytes to be    * written out. If any data remains in the buffer it is committed to the    * service. Data is queued for writing but not forced out to the service    * before the call returns.    */
 annotation|@
