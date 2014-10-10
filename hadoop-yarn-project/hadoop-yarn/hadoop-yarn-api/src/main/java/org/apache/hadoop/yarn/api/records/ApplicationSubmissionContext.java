@@ -362,6 +362,13 @@ argument_list|(
 name|appLabelExpression
 argument_list|)
 expr_stmt|;
+name|context
+operator|.
+name|setResource
+argument_list|(
+name|resource
+argument_list|)
+expr_stmt|;
 name|ResourceRequest
 name|amReq
 init|=
