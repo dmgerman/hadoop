@@ -133,10 +133,10 @@ annotation|@
 name|Private
 annotation|@
 name|Unstable
-DECL|class|SharedCacheStructureUtil
+DECL|class|SharedCacheUtil
 specifier|public
 class|class
-name|SharedCacheStructureUtil
+name|SharedCacheUtil
 block|{
 DECL|field|LOG
 specifier|private
@@ -149,7 +149,7 @@ name|LogFactory
 operator|.
 name|getLog
 argument_list|(
-name|SharedCacheStructureUtil
+name|SharedCacheUtil
 operator|.
 name|class
 argument_list|)
