@@ -3308,6 +3308,9 @@ DECL|field|traceSampler
 specifier|private
 specifier|final
 name|Sampler
+argument_list|<
+name|?
+argument_list|>
 name|traceSampler
 decl_stmt|;
 comment|/**    * DFSClient configuration     */

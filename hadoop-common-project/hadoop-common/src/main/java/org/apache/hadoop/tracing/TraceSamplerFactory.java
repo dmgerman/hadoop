@@ -130,6 +130,9 @@ DECL|method|createSampler (Configuration conf)
 specifier|public
 specifier|static
 name|Sampler
+argument_list|<
+name|?
+argument_list|>
 name|createSampler
 parameter_list|(
 name|Configuration
