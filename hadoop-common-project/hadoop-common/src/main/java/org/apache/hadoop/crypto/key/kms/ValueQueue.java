@@ -928,6 +928,30 @@ block|{
 comment|//NOP
 block|}
 block|}
+comment|/**    * Get size of the Queue for keyName    * @param keyName the key name    * @return int queue size    * @throws ExecutionException    */
+DECL|method|getSize (String keyName)
+specifier|public
+name|int
+name|getSize
+parameter_list|(
+name|String
+name|keyName
+parameter_list|)
+throws|throws
+name|ExecutionException
+block|{
+return|return
+name|keyQueues
+operator|.
+name|get
+argument_list|(
+name|keyName
+argument_list|)
+operator|.
+name|size
+argument_list|()
+return|;
+block|}
 comment|/**    * This removes the "num" values currently at the head of the Queue for the    * provided key. Will immediately fire the Queue filler function if key    * does not exist    * How many values are actually returned is governed by the    *<code>SyncGenerationPolicy</code> specified by the user.    * @param keyName String key name    * @param num Minimum number of values to return.    * @return List<E> values returned    * @throws IOException    * @throws ExecutionException    */
 DECL|method|getAtMost (String keyName, int num)
 specifier|public

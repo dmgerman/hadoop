@@ -14040,6 +14040,18 @@ name|ezKeyName
 init|=
 literal|null
 decl_stmt|;
+name|EncryptedKeyVersion
+name|edek
+init|=
+literal|null
+decl_stmt|;
+if|if
+condition|(
+name|provider
+operator|!=
+literal|null
+condition|)
+block|{
 name|readLock
 argument_list|()
 expr_stmt|;
@@ -14184,14 +14196,13 @@ literal|"Both suite and ezKeyName should both be null or not null"
 argument_list|)
 expr_stmt|;
 comment|// Generate EDEK if necessary while not holding the lock
-name|EncryptedKeyVersion
 name|edek
-init|=
+operator|=
 name|generateEncryptedDataEncryptionKey
 argument_list|(
 name|ezKeyName
 argument_list|)
-decl_stmt|;
+expr_stmt|;
 name|EncryptionFaultInjector
 operator|.
 name|getInstance
@@ -14200,6 +14211,7 @@ operator|.
 name|startFileAfterGenerateKey
 argument_list|()
 expr_stmt|;
+block|}
 comment|// Proceed with the create, using the computed cipher suite and
 comment|// generated EDEK
 name|BlocksMapUpdateInfo
@@ -41053,6 +41065,12 @@ literal|" doesn't exist."
 argument_list|)
 throw|;
 block|}
+comment|// If the provider supports pool for EDEKs, this will fill in the pool
+name|generateEncryptedDataEncryptionKey
+argument_list|(
+name|keyName
+argument_list|)
+expr_stmt|;
 name|createEncryptionZoneInt
 argument_list|(
 name|src

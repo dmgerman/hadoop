@@ -1226,7 +1226,7 @@ name|MiniDFSCluster
 name|cluster
 decl_stmt|;
 DECL|field|dfsAdmin
-specifier|private
+specifier|protected
 name|HdfsAdmin
 name|dfsAdmin
 decl_stmt|;
@@ -1241,7 +1241,7 @@ name|File
 name|testRootDir
 decl_stmt|;
 DECL|field|TEST_KEY
-specifier|private
+specifier|protected
 specifier|final
 name|String
 name|TEST_KEY
