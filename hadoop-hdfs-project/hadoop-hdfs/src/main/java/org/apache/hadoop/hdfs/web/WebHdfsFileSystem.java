@@ -2231,7 +2231,9 @@ argument_list|()
 operator|.
 name|startsWith
 argument_list|(
-literal|"Failed to obtain user group information:"
+name|SecurityUtil
+operator|.
+name|FAILED_TO_GET_UGI_MSG_HEADER
 argument_list|)
 condition|)
 block|{

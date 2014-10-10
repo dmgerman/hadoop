@@ -418,6 +418,15 @@ name|HOSTNAME_PATTERN
 init|=
 literal|"_HOST"
 decl_stmt|;
+DECL|field|FAILED_TO_GET_UGI_MSG_HEADER
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|FAILED_TO_GET_UGI_MSG_HEADER
+init|=
+literal|"Failed to obtain user group information:"
+decl_stmt|;
 comment|// controls whether buildTokenService will use an ip or host/ip as given
 comment|// by the user
 annotation|@

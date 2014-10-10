@@ -2490,7 +2490,11 @@ throw|throw
 operator|new
 name|SecurityException
 argument_list|(
-literal|"Failed to obtain user group information: "
+name|SecurityUtil
+operator|.
+name|FAILED_TO_GET_UGI_MSG_HEADER
+operator|+
+literal|" "
 operator|+
 name|e
 argument_list|,
