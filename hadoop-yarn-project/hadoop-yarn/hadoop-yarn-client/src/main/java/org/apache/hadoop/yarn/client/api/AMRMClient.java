@@ -479,6 +479,11 @@ specifier|final
 name|boolean
 name|relaxLocality
 decl_stmt|;
+DECL|field|nodeLabelsExpression
+specifier|final
+name|String
+name|nodeLabelsExpression
+decl_stmt|;
 comment|/**      * Instantiates a {@link ContainerRequest} with the given constraints and      * locality relaxation enabled.      *       * @param capability      *          The {@link Resource} to be requested for each container.      * @param nodes      *          Any hosts to request that the containers are placed on.      * @param racks      *          Any racks to request that the containers are placed on. The      *          racks corresponding to any hosts requested will be automatically      *          added to this list.      * @param priority      *          The priority at which to request the containers. Higher      *          priorities have lower numerical values.      */
 DECL|method|ContainerRequest (Resource capability, String[] nodes, String[] racks, Priority priority)
 specifier|public
@@ -510,6 +515,8 @@ argument_list|,
 name|priority
 argument_list|,
 literal|true
+argument_list|,
+literal|null
 argument_list|)
 expr_stmt|;
 block|}
@@ -534,6 +541,48 @@ name|priority
 parameter_list|,
 name|boolean
 name|relaxLocality
+parameter_list|)
+block|{
+name|this
+argument_list|(
+name|capability
+argument_list|,
+name|nodes
+argument_list|,
+name|racks
+argument_list|,
+name|priority
+argument_list|,
+name|relaxLocality
+argument_list|,
+literal|null
+argument_list|)
+expr_stmt|;
+block|}
+comment|/**      * Instantiates a {@link ContainerRequest} with the given constraints.      *       * @param capability      *          The {@link Resource} to be requested for each container.      * @param nodes      *          Any hosts to request that the containers are placed on.      * @param racks      *          Any racks to request that the containers are placed on. The      *          racks corresponding to any hosts requested will be automatically      *          added to this list.      * @param priority      *          The priority at which to request the containers. Higher      *          priorities have lower numerical values.      * @param relaxLocality      *          If true, containers for this request may be assigned on hosts      *          and racks other than the ones explicitly requested.      * @param nodeLabelsExpression      *          Set node labels to allocate resource      */
+DECL|method|ContainerRequest (Resource capability, String[] nodes, String[] racks, Priority priority, boolean relaxLocality, String nodeLabelsExpression)
+specifier|public
+name|ContainerRequest
+parameter_list|(
+name|Resource
+name|capability
+parameter_list|,
+name|String
+index|[]
+name|nodes
+parameter_list|,
+name|String
+index|[]
+name|racks
+parameter_list|,
+name|Priority
+name|priority
+parameter_list|,
+name|boolean
+name|relaxLocality
+parameter_list|,
+name|String
+name|nodeLabelsExpression
 parameter_list|)
 block|{
 comment|// Validate request
@@ -656,6 +705,12 @@ name|relaxLocality
 operator|=
 name|relaxLocality
 expr_stmt|;
+name|this
+operator|.
+name|nodeLabelsExpression
+operator|=
+name|nodeLabelsExpression
+expr_stmt|;
 block|}
 DECL|method|getCapability ()
 specifier|public
@@ -711,6 +766,16 @@ parameter_list|()
 block|{
 return|return
 name|relaxLocality
+return|;
+block|}
+DECL|method|getNodeLabelExpression ()
+specifier|public
+name|String
+name|getNodeLabelExpression
+parameter_list|()
+block|{
+return|return
+name|nodeLabelsExpression
 return|;
 block|}
 DECL|method|toString ()

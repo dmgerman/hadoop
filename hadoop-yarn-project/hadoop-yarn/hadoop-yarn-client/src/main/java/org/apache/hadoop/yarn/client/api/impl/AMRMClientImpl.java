@@ -1714,6 +1714,11 @@ name|r
 operator|.
 name|getRelaxLocality
 argument_list|()
+argument_list|,
+name|r
+operator|.
+name|getNodeLabelExpression
+argument_list|()
 argument_list|)
 argument_list|)
 expr_stmt|;
@@ -2650,6 +2655,11 @@ argument_list|,
 name|req
 argument_list|,
 literal|true
+argument_list|,
+name|req
+operator|.
+name|getNodeLabelExpression
+argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
@@ -2679,6 +2689,11 @@ argument_list|,
 name|req
 argument_list|,
 literal|true
+argument_list|,
+name|req
+operator|.
+name|getNodeLabelExpression
+argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
@@ -2712,6 +2727,11 @@ name|req
 operator|.
 name|getRelaxLocality
 argument_list|()
+argument_list|,
+name|req
+operator|.
+name|getNodeLabelExpression
+argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
@@ -2737,6 +2757,11 @@ argument_list|,
 name|req
 operator|.
 name|getRelaxLocality
+argument_list|()
+argument_list|,
+name|req
+operator|.
+name|getNodeLabelExpression
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -3489,9 +3514,9 @@ name|remoteRequest
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|addResourceRequest (Priority priority, String resourceName, Resource capability, T req, boolean relaxLocality)
 specifier|private
 name|void
+DECL|method|addResourceRequest (Priority priority, String resourceName, Resource capability, T req, boolean relaxLocality, String labelExpression)
 name|addResourceRequest
 parameter_list|(
 name|Priority
@@ -3508,6 +3533,9 @@ name|req
 parameter_list|,
 name|boolean
 name|relaxLocality
+parameter_list|,
+name|String
+name|labelExpression
 parameter_list|)
 block|{
 name|Map
@@ -3705,6 +3733,15 @@ name|req
 argument_list|)
 expr_stmt|;
 block|}
+name|resourceRequestInfo
+operator|.
+name|remoteRequest
+operator|.
+name|setNodeLabelExpression
+argument_list|(
+name|labelExpression
+argument_list|)
+expr_stmt|;
 comment|// Note this down for next interaction with ResourceManager
 name|addResourceRequestToAsk
 argument_list|(
