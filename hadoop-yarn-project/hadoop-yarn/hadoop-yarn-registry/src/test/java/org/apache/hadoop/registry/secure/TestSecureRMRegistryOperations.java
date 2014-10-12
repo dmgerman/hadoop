@@ -769,16 +769,6 @@ name|isClientSASLEnabled
 argument_list|()
 argument_list|)
 expr_stmt|;
-name|assertFalse
-argument_list|(
-literal|"ZooKeeperSaslClient.isEnabled()==true"
-argument_list|,
-name|ZooKeeperSaslClient
-operator|.
-name|isEnabled
-argument_list|()
-argument_list|)
-expr_stmt|;
 name|operations
 operator|.
 name|list

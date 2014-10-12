@@ -65,9 +65,7 @@ DECL|field|PROP_ZK_ENABLE_SASL_CLIENT
 name|String
 name|PROP_ZK_ENABLE_SASL_CLIENT
 init|=
-name|ZooKeeperSaslClient
-operator|.
-name|ENABLE_CLIENT_SASL_KEY
+literal|"zookeeper.sasl.client"
 decl_stmt|;
 comment|/**    * Default flag for the ZK client: {@value}.    */
 DECL|field|DEFAULT_ZK_ENABLE_SASL_CLIENT
