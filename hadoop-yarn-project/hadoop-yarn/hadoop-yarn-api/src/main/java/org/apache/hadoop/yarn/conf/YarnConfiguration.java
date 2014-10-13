@@ -2811,6 +2811,28 @@ literal|60
 operator|*
 literal|60
 decl_stmt|;
+comment|/**    * Define how often NMs wake up and upload log files    */
+DECL|field|NM_LOG_AGGREGATION_ROLL_MONITORING_INTERVAL_SECONDS
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|NM_LOG_AGGREGATION_ROLL_MONITORING_INTERVAL_SECONDS
+init|=
+name|NM_PREFIX
+operator|+
+literal|"log-aggregation.roll-monitoring-interval-seconds"
+decl_stmt|;
+specifier|public
+specifier|static
+specifier|final
+name|long
+DECL|field|DEFAULT_NM_LOG_AGGREGATION_ROLL_MONITORING_INTERVAL_SECONDS
+name|DEFAULT_NM_LOG_AGGREGATION_ROLL_MONITORING_INTERVAL_SECONDS
+init|=
+operator|-
+literal|1
+decl_stmt|;
 comment|/**    * Number of threads used in log cleanup. Only applicable if Log aggregation    * is disabled    */
 DECL|field|NM_LOG_DELETION_THREADS_COUNT
 specifier|public

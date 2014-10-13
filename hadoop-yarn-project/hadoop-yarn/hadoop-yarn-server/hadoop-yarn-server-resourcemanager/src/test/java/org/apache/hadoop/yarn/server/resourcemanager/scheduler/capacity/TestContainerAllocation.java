@@ -1569,12 +1569,6 @@ argument_list|)
 argument_list|)
 expr_stmt|;
 comment|// create a not-null LogAggregationContext
-specifier|final
-name|int
-name|interval
-init|=
-literal|2000
-decl_stmt|;
 name|LogAggregationContext
 name|logAggregationContext
 init|=
@@ -1585,8 +1579,6 @@ argument_list|(
 literal|"includePattern"
 argument_list|,
 literal|"excludePattern"
-argument_list|,
-name|interval
 argument_list|)
 decl_stmt|;
 name|LogAggregationContext
@@ -1622,18 +1614,6 @@ argument_list|,
 name|returned
 operator|.
 name|getExcludePattern
-argument_list|()
-argument_list|)
-expr_stmt|;
-name|Assert
-operator|.
-name|assertEquals
-argument_list|(
-name|interval
-argument_list|,
-name|returned
-operator|.
-name|getRollingIntervalSeconds
 argument_list|()
 argument_list|)
 expr_stmt|;

@@ -85,7 +85,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  *<p><code>LogAggregationContext</code> represents all of the  * information needed by the<code>NodeManager</code> to handle  * the logs for an application.</p>  *  *<p>It includes details such as:  *<ul>  *<li>includePattern. It uses Java Regex to filter the log files  *     which match the defined include pattern and those log files  *     will be uploaded.</li>  *<li>excludePattern. It uses Java Regex to filter the log files  *     which match the defined exclude pattern and those log files  *     will not be uploaded. If the log file name matches both the  *     include and the exclude pattern, this file will be excluded eventually</li>  *<li>rollingIntervalSeconds. The default value is -1. By default,  *     the logAggregationService only uploads container logs when  *     the application is finished. This configure defines  *     how often the logAggregationSerivce uploads container logs in seconds.  *     By setting this configure, the logAggregationSerivce can upload container  *     logs periodically when the application is running.  *</li>  *</ul>  *</p>  *  * @see ApplicationSubmissionContext  */
+comment|/**  *<p><code>LogAggregationContext</code> represents all of the  * information needed by the<code>NodeManager</code> to handle  * the logs for an application.</p>  *  *<p>It includes details such as:  *<ul>  *<li>includePattern. It uses Java Regex to filter the log files  *     which match the defined include pattern and those log files  *     will be uploaded.</li>  *<li>excludePattern. It uses Java Regex to filter the log files  *     which match the defined exclude pattern and those log files  *     will not be uploaded. If the log file name matches both the  *     include and the exclude pattern, this file will be excluded eventually</li>  *</ul>  *</p>  *  * @see ApplicationSubmissionContext  */
 end_comment
 
 begin_class
@@ -103,7 +103,7 @@ annotation|@
 name|Public
 annotation|@
 name|Unstable
-DECL|method|newInstance (String includePattern, String excludePattern, long rollingIntervalSeconds)
+DECL|method|newInstance (String includePattern, String excludePattern)
 specifier|public
 specifier|static
 name|LogAggregationContext
@@ -114,9 +114,6 @@ name|includePattern
 parameter_list|,
 name|String
 name|excludePattern
-parameter_list|,
-name|long
-name|rollingIntervalSeconds
 parameter_list|)
 block|{
 name|LogAggregationContext
@@ -143,13 +140,6 @@ operator|.
 name|setExcludePattern
 argument_list|(
 name|excludePattern
-argument_list|)
-expr_stmt|;
-name|context
-operator|.
-name|setRollingIntervalSeconds
-argument_list|(
-name|rollingIntervalSeconds
 argument_list|)
 expr_stmt|;
 return|return
@@ -208,33 +198,6 @@ name|setExcludePattern
 parameter_list|(
 name|String
 name|excludePattern
-parameter_list|)
-function_decl|;
-comment|/**    * Get rollingIntervalSeconds    *    * @return the rollingIntervalSeconds    */
-annotation|@
-name|Public
-annotation|@
-name|Unstable
-DECL|method|getRollingIntervalSeconds ()
-specifier|public
-specifier|abstract
-name|long
-name|getRollingIntervalSeconds
-parameter_list|()
-function_decl|;
-comment|/**    * Set rollingIntervalSeconds    *    * @param rollingIntervalSeconds    */
-annotation|@
-name|Public
-annotation|@
-name|Unstable
-DECL|method|setRollingIntervalSeconds (long rollingIntervalSeconds)
-specifier|public
-specifier|abstract
-name|void
-name|setRollingIntervalSeconds
-parameter_list|(
-name|long
-name|rollingIntervalSeconds
 parameter_list|)
 function_decl|;
 block|}
