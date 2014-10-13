@@ -6402,23 +6402,27 @@ break|break;
 case|case
 name|FETCH_FAILURE
 case|:
-name|LOG
-operator|.
-name|info
-argument_list|(
-literal|"DEBUG: FAILED "
-operator|+
-name|req
-operator|+
-literal|", "
-operator|+
+specifier|final
+name|String
+name|diagnostics
+init|=
 name|stat
 operator|.
 name|getException
 argument_list|()
 operator|.
-name|getMessage
+name|toString
 argument_list|()
+decl_stmt|;
+name|LOG
+operator|.
+name|warn
+argument_list|(
+name|req
+operator|+
+literal|" failed: "
+operator|+
+name|diagnostics
 argument_list|)
 expr_stmt|;
 name|response
@@ -6449,13 +6453,7 @@ name|ResourceFailedLocalizationEvent
 argument_list|(
 name|req
 argument_list|,
-name|stat
-operator|.
-name|getException
-argument_list|()
-operator|.
-name|getMessage
-argument_list|()
+name|diagnostics
 argument_list|)
 argument_list|)
 expr_stmt|;
