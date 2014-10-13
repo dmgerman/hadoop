@@ -100,6 +100,16 @@ name|java
 operator|.
 name|io
 operator|.
+name|Closeable
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|io
+operator|.
 name|IOException
 import|;
 end_import
@@ -878,6 +888,19 @@ argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
+comment|// tests here mock ContainerManagementProtocol which does not have close
+comment|// method. creating an interface that implements ContainerManagementProtocol
+comment|// and Closeable so the tests does not fail with NoSuchMethodException
+DECL|interface|ContainerManagementProtocolClient
+specifier|private
+specifier|static
+interface|interface
+name|ContainerManagementProtocolClient
+extends|extends
+name|ContainerManagementProtocol
+extends|,
+name|Closeable
+block|{   }
 DECL|class|ContainerLauncherImplUnderTest
 specifier|private
 specifier|static
@@ -1302,12 +1325,12 @@ name|cmAddress
 init|=
 literal|"127.0.0.1:8000"
 decl_stmt|;
-name|ContainerManagementProtocol
+name|ContainerManagementProtocolClient
 name|mockCM
 init|=
 name|mock
 argument_list|(
-name|ContainerManagementProtocol
+name|ContainerManagementProtocolClient
 operator|.
 name|class
 argument_list|)
@@ -1699,12 +1722,12 @@ argument_list|(
 name|mockEventHandler
 argument_list|)
 expr_stmt|;
-name|ContainerManagementProtocol
+name|ContainerManagementProtocolClient
 name|mockCM
 init|=
 name|mock
 argument_list|(
-name|ContainerManagementProtocol
+name|ContainerManagementProtocolClient
 operator|.
 name|class
 argument_list|)
@@ -2107,12 +2130,12 @@ argument_list|(
 name|mockEventHandler
 argument_list|)
 expr_stmt|;
-name|ContainerManagementProtocol
+name|ContainerManagementProtocolClient
 name|mockCM
 init|=
 name|mock
 argument_list|(
-name|ContainerManagementProtocol
+name|ContainerManagementProtocolClient
 operator|.
 name|class
 argument_list|)
@@ -2449,7 +2472,7 @@ argument_list|(
 name|mockEventHandler
 argument_list|)
 expr_stmt|;
-name|ContainerManagementProtocol
+name|ContainerManagementProtocolClient
 name|mockCM
 init|=
 operator|new
@@ -2943,7 +2966,7 @@ specifier|static
 class|class
 name|ContainerManagerForTest
 implements|implements
-name|ContainerManagementProtocol
+name|ContainerManagementProtocolClient
 block|{
 DECL|field|startLaunchBarrier
 specifier|private
@@ -3082,6 +3105,16 @@ return|return
 literal|null
 return|;
 block|}
+annotation|@
+name|Override
+DECL|method|close ()
+specifier|public
+name|void
+name|close
+parameter_list|()
+throws|throws
+name|IOException
+block|{     }
 block|}
 annotation|@
 name|SuppressWarnings
