@@ -139,6 +139,9 @@ block|,
 DECL|enumConstant|ENOTEMPTY
 name|ENOTEMPTY
 block|,
+DECL|enumConstant|EOVERFLOW
+name|EOVERFLOW
+block|,
 DECL|enumConstant|UNKNOWN
 name|UNKNOWN
 block|; }
