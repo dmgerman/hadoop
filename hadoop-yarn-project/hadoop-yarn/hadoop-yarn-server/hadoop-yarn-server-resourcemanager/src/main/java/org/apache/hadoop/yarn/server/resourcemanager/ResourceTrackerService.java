@@ -2236,7 +2236,7 @@ operator|.
 name|getNodeStatus
 argument_list|()
 decl_stmt|;
-comment|/**      * Here is the node heartbeat sequence...      * 1. Check if it's a registered node      * 2. Check if it's a valid (i.e. not excluded) node       * 3. Check if it's a 'fresh' heartbeat i.e. not duplicate heartbeat       * 4. Send healthStatus to RMNode      */
+comment|/**      * Here is the node heartbeat sequence...      * 1. Check if it's a valid (i.e. not excluded) node      * 2. Check if it's a registered node      * 3. Check if it's a 'fresh' heartbeat i.e. not duplicate heartbeat      * 4. Send healthStatus to RMNode      */
 name|NodeId
 name|nodeId
 init|=
@@ -2245,7 +2245,56 @@ operator|.
 name|getNodeId
 argument_list|()
 decl_stmt|;
-comment|// 1. Check if it's a registered node
+comment|// 1. Check if it's a valid (i.e. not excluded) node
+if|if
+condition|(
+operator|!
+name|this
+operator|.
+name|nodesListManager
+operator|.
+name|isValidNode
+argument_list|(
+name|nodeId
+operator|.
+name|getHost
+argument_list|()
+argument_list|)
+condition|)
+block|{
+name|String
+name|message
+init|=
+literal|"Disallowed NodeManager nodeId: "
+operator|+
+name|nodeId
+operator|+
+literal|" hostname: "
+operator|+
+name|nodeId
+operator|.
+name|getHost
+argument_list|()
+decl_stmt|;
+name|LOG
+operator|.
+name|info
+argument_list|(
+name|message
+argument_list|)
+expr_stmt|;
+name|shutDown
+operator|.
+name|setDiagnosticsMessage
+argument_list|(
+name|message
+argument_list|)
+expr_stmt|;
+return|return
+name|shutDown
+return|;
+block|}
+comment|// 2. Check if it's a registered node
 name|RMNode
 name|rmNode
 init|=
@@ -2307,78 +2356,6 @@ argument_list|(
 name|nodeId
 argument_list|)
 expr_stmt|;
-comment|// 2. Check if it's a valid (i.e. not excluded) node
-if|if
-condition|(
-operator|!
-name|this
-operator|.
-name|nodesListManager
-operator|.
-name|isValidNode
-argument_list|(
-name|rmNode
-operator|.
-name|getHostName
-argument_list|()
-argument_list|)
-condition|)
-block|{
-name|String
-name|message
-init|=
-literal|"Disallowed NodeManager nodeId: "
-operator|+
-name|nodeId
-operator|+
-literal|" hostname: "
-operator|+
-name|rmNode
-operator|.
-name|getNodeAddress
-argument_list|()
-decl_stmt|;
-name|LOG
-operator|.
-name|info
-argument_list|(
-name|message
-argument_list|)
-expr_stmt|;
-name|shutDown
-operator|.
-name|setDiagnosticsMessage
-argument_list|(
-name|message
-argument_list|)
-expr_stmt|;
-name|this
-operator|.
-name|rmContext
-operator|.
-name|getDispatcher
-argument_list|()
-operator|.
-name|getEventHandler
-argument_list|()
-operator|.
-name|handle
-argument_list|(
-operator|new
-name|RMNodeEvent
-argument_list|(
-name|nodeId
-argument_list|,
-name|RMNodeEventType
-operator|.
-name|DECOMMISSION
-argument_list|)
-argument_list|)
-expr_stmt|;
-return|return
-name|shutDown
-return|;
-block|}
 comment|// 3. Check if it's a 'fresh' heartbeat i.e. not duplicate heartbeat
 name|NodeHeartbeatResponse
 name|lastNodeHeartbeatResponse
