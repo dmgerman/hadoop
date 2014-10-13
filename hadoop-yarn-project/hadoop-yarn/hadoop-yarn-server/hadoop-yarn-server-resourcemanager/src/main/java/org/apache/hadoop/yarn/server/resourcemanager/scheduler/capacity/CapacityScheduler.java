@@ -3953,6 +3953,45 @@ operator|==
 literal|null
 condition|)
 block|{
+comment|//During a restart, this indicates a queue was removed, which is
+comment|//not presently supported
+if|if
+condition|(
+name|isAppRecovering
+condition|)
+block|{
+comment|//throwing RuntimeException because some other exceptions are caught
+comment|//(including YarnRuntimeException) and we want this to force an exit
+name|String
+name|queueErrorMsg
+init|=
+literal|"Queue named "
+operator|+
+name|queueName
+operator|+
+literal|" missing during application recovery."
+operator|+
+literal|" Queue removal during recovery is not presently supported by the"
+operator|+
+literal|" capacity scheduler, please restart with all queues configured"
+operator|+
+literal|" which were present before shutdown/restart."
+decl_stmt|;
+name|LOG
+operator|.
+name|fatal
+argument_list|(
+name|queueErrorMsg
+argument_list|)
+expr_stmt|;
+throw|throw
+operator|new
+name|RuntimeException
+argument_list|(
+name|queueErrorMsg
+argument_list|)
+throw|;
+block|}
 name|String
 name|message
 init|=
