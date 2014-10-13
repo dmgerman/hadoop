@@ -1134,6 +1134,11 @@ argument_list|,
 literal|"s2"
 argument_list|)
 expr_stmt|;
+name|cluster
+operator|.
+name|triggerBlockReports
+argument_list|()
+expr_stmt|;
 if|if
 condition|(
 name|saveNamespace
