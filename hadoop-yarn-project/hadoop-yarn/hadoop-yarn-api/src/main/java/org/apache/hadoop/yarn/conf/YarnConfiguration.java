@@ -3257,7 +3257,7 @@ name|NM_DISK_HEALTH_CHECK_PREFIX
 operator|+
 literal|"max-disk-utilization-per-disk-percentage"
 decl_stmt|;
-comment|/**    * By default, 100% of the disk can be used before it is marked as offline.    */
+comment|/**    * By default, 90% of the disk can be used before it is marked as offline.    */
 DECL|field|DEFAULT_NM_MAX_PER_DISK_UTILIZATION_PERCENTAGE
 specifier|public
 specifier|static
@@ -3265,7 +3265,7 @@ specifier|final
 name|float
 name|DEFAULT_NM_MAX_PER_DISK_UTILIZATION_PERCENTAGE
 init|=
-literal|100.0F
+literal|90.0F
 decl_stmt|;
 comment|/**    * The minimum space that must be available on a local dir for it to be used.    * This applies to nm-local-dirs and nm-log-dirs.    */
 DECL|field|NM_MIN_PER_DISK_FREE_SPACE_MB

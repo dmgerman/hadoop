@@ -532,7 +532,6 @@ name|Evolving
 comment|/*Evolving for a release,to be changed to Stable */
 DECL|class|FileContext
 specifier|public
-specifier|final
 class|class
 name|FileContext
 block|{
