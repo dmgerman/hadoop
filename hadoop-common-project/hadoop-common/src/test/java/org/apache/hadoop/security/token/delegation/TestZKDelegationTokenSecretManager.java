@@ -168,6 +168,11 @@ init|=
 literal|86400
 decl_stmt|;
 annotation|@
+name|SuppressWarnings
+argument_list|(
+literal|"unchecked"
+argument_list|)
+annotation|@
 name|Test
 DECL|method|testZKDelTokSecretManager ()
 specifier|public
@@ -345,6 +350,12 @@ name|DelegationTokenIdentifier
 argument_list|>
 name|token
 init|=
+operator|(
+name|Token
+argument_list|<
+name|DelegationTokenIdentifier
+argument_list|>
+operator|)
 name|tm1
 operator|.
 name|createToken
@@ -373,6 +384,12 @@ argument_list|)
 expr_stmt|;
 name|token
 operator|=
+operator|(
+name|Token
+argument_list|<
+name|DelegationTokenIdentifier
+argument_list|>
+operator|)
 name|tm2
 operator|.
 name|createToken

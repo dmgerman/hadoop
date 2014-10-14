@@ -1323,6 +1323,11 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
+annotation|@
+name|SuppressWarnings
+argument_list|(
+literal|"unchecked"
+argument_list|)
 DECL|method|testCancelToken ()
 specifier|private
 name|void
@@ -1463,6 +1468,12 @@ name|DelegationTokenIdentifier
 argument_list|>
 name|token
 init|=
+operator|(
+name|Token
+argument_list|<
+name|DelegationTokenIdentifier
+argument_list|>
+operator|)
 name|handler
 operator|.
 name|getTokenManager
@@ -1586,6 +1597,11 @@ argument_list|()
 expr_stmt|;
 block|}
 block|}
+annotation|@
+name|SuppressWarnings
+argument_list|(
+literal|"unchecked"
+argument_list|)
 DECL|method|testRenewToken ()
 specifier|private
 name|void
@@ -1852,6 +1868,12 @@ name|DelegationTokenIdentifier
 argument_list|>
 name|dToken
 init|=
+operator|(
+name|Token
+argument_list|<
+name|DelegationTokenIdentifier
+argument_list|>
+operator|)
 name|handler
 operator|.
 name|getTokenManager
@@ -1988,6 +2010,11 @@ name|testInvalidDelegationTokenHeader
 argument_list|()
 expr_stmt|;
 block|}
+annotation|@
+name|SuppressWarnings
+argument_list|(
+literal|"unchecked"
+argument_list|)
 DECL|method|testValidDelegationTokenQueryString ()
 specifier|private
 name|void
@@ -2026,6 +2053,12 @@ name|DelegationTokenIdentifier
 argument_list|>
 name|dToken
 init|=
+operator|(
+name|Token
+argument_list|<
+name|DelegationTokenIdentifier
+argument_list|>
+operator|)
 name|handler
 operator|.
 name|getTokenManager
@@ -2133,6 +2166,11 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
+annotation|@
+name|SuppressWarnings
+argument_list|(
+literal|"unchecked"
+argument_list|)
 DECL|method|testValidDelegationTokenHeader ()
 specifier|private
 name|void
@@ -2171,6 +2209,12 @@ name|DelegationTokenIdentifier
 argument_list|>
 name|dToken
 init|=
+operator|(
+name|Token
+argument_list|<
+name|DelegationTokenIdentifier
+argument_list|>
+operator|)
 name|handler
 operator|.
 name|getTokenManager

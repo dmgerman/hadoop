@@ -2740,6 +2740,28 @@ expr_stmt|;
 block|}
 block|}
 block|}
+comment|/**    * Decode the token identifier. The subclass can customize the way to decode    * the token identifier.    *     * @param token the token where to extract the identifier    * @return the delegation token identifier    * @throws IOException    */
+DECL|method|decodeTokenIdentifier (Token<TokenIdent> token)
+specifier|public
+name|TokenIdent
+name|decodeTokenIdentifier
+parameter_list|(
+name|Token
+argument_list|<
+name|TokenIdent
+argument_list|>
+name|token
+parameter_list|)
+throws|throws
+name|IOException
+block|{
+return|return
+name|token
+operator|.
+name|decodeIdentifier
+argument_list|()
+return|;
+block|}
 block|}
 end_class
 
