@@ -2636,7 +2636,7 @@ return|;
 block|}
 block|}
 decl_stmt|;
-comment|/**    * List the statuses of the files/directories in the given path if the path is    * a directory.    *     * @param f    *          given path    * @return the statuses of the files/directories in the given patch    * @throws IOException    */
+comment|/**    * List the statuses of the files/directories in the given path if the path is    * a directory.    *     * @param f    *          given path    * @return the statuses of the files/directories in the given path    * @throws IOException    */
 annotation|@
 name|Override
 DECL|method|listStatus (Path f)
