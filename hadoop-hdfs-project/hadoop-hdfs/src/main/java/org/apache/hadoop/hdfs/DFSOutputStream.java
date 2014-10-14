@@ -2666,7 +2666,9 @@ name|blockStoragePolicySuite
 operator|.
 name|getPolicy
 argument_list|(
-literal|"LAZY_PERSIST"
+name|HdfsConstants
+operator|.
+name|MEMORY_STORAGE_POLICY_NAME
 argument_list|)
 decl_stmt|;
 return|return

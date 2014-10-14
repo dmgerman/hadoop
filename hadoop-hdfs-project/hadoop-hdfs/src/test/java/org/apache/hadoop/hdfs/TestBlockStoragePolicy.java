@@ -536,10 +536,9 @@ specifier|final
 name|byte
 name|COLD
 init|=
-operator|(
-name|byte
-operator|)
-literal|4
+name|HdfsConstants
+operator|.
+name|COLD_STORAGE_POLICY_ID
 decl_stmt|;
 DECL|field|WARM
 specifier|static
@@ -547,10 +546,9 @@ specifier|final
 name|byte
 name|WARM
 init|=
-operator|(
-name|byte
-operator|)
-literal|8
+name|HdfsConstants
+operator|.
+name|WARM_STORAGE_POLICY_ID
 decl_stmt|;
 DECL|field|HOT
 specifier|static
@@ -558,10 +556,29 @@ specifier|final
 name|byte
 name|HOT
 init|=
-operator|(
+name|HdfsConstants
+operator|.
+name|HOT_STORAGE_POLICY_ID
+decl_stmt|;
+DECL|field|ONESSD
+specifier|static
+specifier|final
 name|byte
-operator|)
-literal|12
+name|ONESSD
+init|=
+name|HdfsConstants
+operator|.
+name|ONESSD_STORAGE_POLICY_ID
+decl_stmt|;
+DECL|field|ALLSSD
+specifier|static
+specifier|final
+name|byte
+name|ALLSSD
+init|=
+name|HdfsConstants
+operator|.
+name|ALLSSD_STORAGE_POLICY_ID
 decl_stmt|;
 DECL|field|LAZY_PERSIST
 specifier|static
@@ -569,10 +586,9 @@ specifier|final
 name|byte
 name|LAZY_PERSIST
 init|=
-operator|(
-name|byte
-operator|)
-literal|15
+name|HdfsConstants
+operator|.
+name|MEMORY_STORAGE_POLICY_ID
 decl_stmt|;
 annotation|@
 name|Test
@@ -646,7 +662,9 @@ argument_list|(
 literal|"/"
 argument_list|)
 argument_list|,
-literal|"COLD"
+name|HdfsConstants
+operator|.
+name|COLD_STORAGE_POLICY_NAME
 argument_list|)
 expr_stmt|;
 block|}
@@ -738,7 +756,9 @@ argument_list|(
 literal|"/"
 argument_list|)
 argument_list|,
-literal|"COLD"
+name|HdfsConstants
+operator|.
+name|COLD_STORAGE_POLICY_NAME
 argument_list|)
 expr_stmt|;
 block|}
@@ -783,7 +803,11 @@ name|put
 argument_list|(
 name|COLD
 argument_list|,
-literal|"BlockStoragePolicy{COLD:4, storageTypes=[ARCHIVE], "
+literal|"BlockStoragePolicy{COLD:"
+operator|+
+name|COLD
+operator|+
+literal|", storageTypes=[ARCHIVE], "
 operator|+
 literal|"creationFallbacks=[], replicationFallbacks=[]}"
 argument_list|)
@@ -794,9 +818,15 @@ name|put
 argument_list|(
 name|WARM
 argument_list|,
-literal|"BlockStoragePolicy{WARM:8, storageTypes=[DISK, ARCHIVE], "
+literal|"BlockStoragePolicy{WARM:"
 operator|+
-literal|"creationFallbacks=[DISK, ARCHIVE], replicationFallbacks=[DISK, ARCHIVE]}"
+name|WARM
+operator|+
+literal|", storageTypes=[DISK, ARCHIVE], "
+operator|+
+literal|"creationFallbacks=[DISK, ARCHIVE], "
+operator|+
+literal|"replicationFallbacks=[DISK, ARCHIVE]}"
 argument_list|)
 expr_stmt|;
 name|expectedPolicyStrings
@@ -805,7 +835,11 @@ name|put
 argument_list|(
 name|HOT
 argument_list|,
-literal|"BlockStoragePolicy{HOT:12, storageTypes=[DISK], "
+literal|"BlockStoragePolicy{HOT:"
+operator|+
+name|HOT
+operator|+
+literal|", storageTypes=[DISK], "
 operator|+
 literal|"creationFallbacks=[], replicationFallbacks=[ARCHIVE]}"
 argument_list|)
@@ -816,9 +850,43 @@ name|put
 argument_list|(
 name|LAZY_PERSIST
 argument_list|,
-literal|"BlockStoragePolicy{LAZY_PERSIST:15, storageTypes=[RAM_DISK, DISK], "
+literal|"BlockStoragePolicy{LAZY_PERSIST:"
+operator|+
+name|LAZY_PERSIST
+operator|+
+literal|", storageTypes=[RAM_DISK, DISK], "
 operator|+
 literal|"creationFallbacks=[DISK], replicationFallbacks=[DISK]}"
+argument_list|)
+expr_stmt|;
+name|expectedPolicyStrings
+operator|.
+name|put
+argument_list|(
+name|ONESSD
+argument_list|,
+literal|"BlockStoragePolicy{ONE_SSD:"
+operator|+
+name|ONESSD
+operator|+
+literal|", storageTypes=[SSD, DISK], creationFallbacks=[SSD, DISK], "
+operator|+
+literal|"replicationFallbacks=[SSD, DISK]}"
+argument_list|)
+expr_stmt|;
+name|expectedPolicyStrings
+operator|.
+name|put
+argument_list|(
+name|ALLSSD
+argument_list|,
+literal|"BlockStoragePolicy{ALL_SSD:"
+operator|+
+name|ALLSSD
+operator|+
+literal|", storageTypes=[SSD], creationFallbacks=[DISK], "
+operator|+
+literal|"replicationFallbacks=[DISK]}"
 argument_list|)
 expr_stmt|;
 for|for
@@ -6140,7 +6208,9 @@ name|setStoragePolicy
 argument_list|(
 name|invalidPath
 argument_list|,
-literal|"WARM"
+name|HdfsConstants
+operator|.
+name|WARM_STORAGE_POLICY_NAME
 argument_list|)
 expr_stmt|;
 name|Assert
@@ -6176,7 +6246,9 @@ name|setStoragePolicy
 argument_list|(
 name|fooFile
 argument_list|,
-literal|"COLD"
+name|HdfsConstants
+operator|.
+name|COLD_STORAGE_POLICY_NAME
 argument_list|)
 expr_stmt|;
 name|fs
@@ -6185,7 +6257,9 @@ name|setStoragePolicy
 argument_list|(
 name|barDir
 argument_list|,
-literal|"WARM"
+name|HdfsConstants
+operator|.
+name|WARM_STORAGE_POLICY_NAME
 argument_list|)
 expr_stmt|;
 name|fs
@@ -6194,7 +6268,9 @@ name|setStoragePolicy
 argument_list|(
 name|barFile2
 argument_list|,
-literal|"HOT"
+name|HdfsConstants
+operator|.
+name|HOT_STORAGE_POLICY_NAME
 argument_list|)
 expr_stmt|;
 name|dirList
@@ -6567,7 +6643,9 @@ name|setStoragePolicy
 argument_list|(
 name|fooDir
 argument_list|,
-literal|"WARM"
+name|HdfsConstants
+operator|.
+name|WARM_STORAGE_POLICY_NAME
 argument_list|)
 expr_stmt|;
 name|HdfsFileStatus
@@ -6657,7 +6735,9 @@ name|setStoragePolicy
 argument_list|(
 name|fooFile1
 argument_list|,
-literal|"COLD"
+name|HdfsConstants
+operator|.
+name|COLD_STORAGE_POLICY_NAME
 argument_list|)
 expr_stmt|;
 name|fooList
@@ -6809,7 +6889,9 @@ name|setStoragePolicy
 argument_list|(
 name|fooDir
 argument_list|,
-literal|"HOT"
+name|HdfsConstants
+operator|.
+name|HOT_STORAGE_POLICY_NAME
 argument_list|)
 expr_stmt|;
 comment|// /dir/foo is now hot
@@ -7644,7 +7726,9 @@ name|Exception
 block|{
 name|testChangeFileRep
 argument_list|(
-literal|"HOT"
+name|HdfsConstants
+operator|.
+name|HOT_STORAGE_POLICY_NAME
 argument_list|,
 name|HOT
 argument_list|,
@@ -7705,7 +7789,9 @@ name|Exception
 block|{
 name|testChangeFileRep
 argument_list|(
-literal|"WARM"
+name|HdfsConstants
+operator|.
+name|WARM_STORAGE_POLICY_NAME
 argument_list|,
 name|WARM
 argument_list|,
@@ -7766,7 +7852,9 @@ name|Exception
 block|{
 name|testChangeFileRep
 argument_list|(
-literal|"COLD"
+name|HdfsConstants
+operator|.
+name|COLD_STORAGE_POLICY_NAME
 argument_list|,
 name|COLD
 argument_list|,
@@ -8283,7 +8371,7 @@ name|Assert
 operator|.
 name|assertEquals
 argument_list|(
-literal|4
+literal|6
 argument_list|,
 name|policies
 operator|.

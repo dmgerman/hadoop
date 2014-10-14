@@ -7039,7 +7039,9 @@ name|setStoragePolicy
 argument_list|(
 name|pathFileCreate
 argument_list|,
-literal|"HOT"
+name|HdfsConstants
+operator|.
+name|HOT_STORAGE_POLICY_NAME
 argument_list|)
 expr_stmt|;
 comment|// OP_RENAME_OLD 1
