@@ -1224,43 +1224,14 @@ operator|.
 name|getName
 argument_list|()
 operator|+
-literal|"<"
+literal|" "
 operator|+
 name|RollingUpgradeStartupOption
 operator|.
-name|DOWNGRADE
-operator|.
-name|name
-argument_list|()
-operator|.
-name|toLowerCase
+name|getAllOptionString
 argument_list|()
 operator|+
-literal|"|"
-operator|+
-name|RollingUpgradeStartupOption
-operator|.
-name|ROLLBACK
-operator|.
-name|name
-argument_list|()
-operator|.
-name|toLowerCase
-argument_list|()
-operator|+
-literal|"|"
-operator|+
-name|RollingUpgradeStartupOption
-operator|.
-name|STARTED
-operator|.
-name|name
-argument_list|()
-operator|.
-name|toLowerCase
-argument_list|()
-operator|+
-literal|"> ] | \n\t["
+literal|" ] | \n\t["
 operator|+
 name|StartupOption
 operator|.
@@ -5831,6 +5802,29 @@ expr_stmt|;
 operator|++
 name|i
 expr_stmt|;
+if|if
+condition|(
+name|i
+operator|>=
+name|argsLen
+condition|)
+block|{
+name|LOG
+operator|.
+name|fatal
+argument_list|(
+literal|"Must specify a rolling upgrade startup option "
+operator|+
+name|RollingUpgradeStartupOption
+operator|.
+name|getAllOptionString
+argument_list|()
+argument_list|)
+expr_stmt|;
+return|return
+literal|null
+return|;
+block|}
 name|startOpt
 operator|.
 name|setRollingUpgradeStartupOption
@@ -7246,7 +7240,7 @@ name|LOG
 operator|.
 name|fatal
 argument_list|(
-literal|"Exception in namenode join"
+literal|"Failed to start namenode."
 argument_list|,
 name|e
 argument_list|)
