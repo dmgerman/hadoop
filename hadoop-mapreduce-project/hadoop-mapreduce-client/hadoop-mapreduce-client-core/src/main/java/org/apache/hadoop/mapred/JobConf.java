@@ -3512,9 +3512,9 @@ name|JobContext
 operator|.
 name|TASK_PROFILE_PARAMS
 argument_list|,
-literal|"-agentlib:hprof=cpu=samples,heap=sites,force=n,thread=y,"
-operator|+
-literal|"verbose=n,file=%s"
+name|MRJobConfig
+operator|.
+name|DEFAULT_TASK_PROFILE_PARAMS
 argument_list|)
 return|;
 block|}
