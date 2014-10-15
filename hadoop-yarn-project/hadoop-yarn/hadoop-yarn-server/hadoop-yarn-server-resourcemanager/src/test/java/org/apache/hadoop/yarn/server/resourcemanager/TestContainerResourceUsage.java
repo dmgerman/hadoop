@@ -1166,7 +1166,7 @@ operator|.
 name|getId
 argument_list|()
 operator|.
-name|getId
+name|getContainerId
 argument_list|()
 argument_list|,
 name|ContainerState
@@ -1238,7 +1238,7 @@ operator|.
 name|getId
 argument_list|()
 operator|.
-name|getId
+name|getContainerId
 argument_list|()
 operator|==
 literal|1
@@ -1258,7 +1258,7 @@ operator|.
 name|getId
 argument_list|()
 operator|.
-name|getId
+name|getContainerId
 argument_list|()
 argument_list|,
 name|ContainerState
@@ -1314,7 +1314,7 @@ argument_list|()
 argument_list|,
 name|cId
 operator|.
-name|getId
+name|getContainerId
 argument_list|()
 argument_list|,
 name|ContainerState
@@ -1792,7 +1792,7 @@ argument_list|()
 argument_list|,
 name|containerId2
 operator|.
-name|getId
+name|getContainerId
 argument_list|()
 argument_list|,
 name|ContainerState
@@ -1863,7 +1863,7 @@ argument_list|()
 argument_list|,
 name|amContainerId
 operator|.
-name|getId
+name|getContainerId
 argument_list|()
 argument_list|,
 name|ContainerState
@@ -2233,7 +2233,7 @@ argument_list|()
 argument_list|,
 name|amContainerId
 operator|.
-name|getId
+name|getContainerId
 argument_list|()
 argument_list|,
 name|ContainerState

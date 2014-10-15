@@ -765,7 +765,7 @@ name|vargs
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|getVMCommand ( InetSocketAddress taskAttemptListenerAddr, Task task, ID jvmID)
+DECL|method|getVMCommand ( InetSocketAddress taskAttemptListenerAddr, Task task, JVMId jvmID)
 specifier|public
 specifier|static
 name|List
@@ -780,7 +780,7 @@ parameter_list|,
 name|Task
 name|task
 parameter_list|,
-name|ID
+name|JVMId
 name|jvmID
 parameter_list|)
 block|{

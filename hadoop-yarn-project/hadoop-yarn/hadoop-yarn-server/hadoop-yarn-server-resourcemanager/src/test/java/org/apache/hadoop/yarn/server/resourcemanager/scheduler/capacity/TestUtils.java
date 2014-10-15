@@ -1267,6 +1267,11 @@ return|return
 name|node
 return|;
 block|}
+annotation|@
+name|SuppressWarnings
+argument_list|(
+literal|"deprecation"
+argument_list|)
 DECL|method|getMockContainerId (FiCaSchedulerApp application)
 specifier|public
 specifier|static

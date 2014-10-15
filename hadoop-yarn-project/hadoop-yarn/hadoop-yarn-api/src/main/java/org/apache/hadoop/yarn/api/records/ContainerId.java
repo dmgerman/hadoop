@@ -154,6 +154,15 @@ argument_list|<
 name|ContainerId
 argument_list|>
 block|{
+DECL|field|CONTAINER_ID_BITMASK
+specifier|public
+specifier|static
+specifier|final
+name|long
+name|CONTAINER_ID_BITMASK
+init|=
+literal|0xffffffffffL
+decl_stmt|;
 DECL|field|_SPLITTER
 specifier|private
 specifier|static
@@ -270,6 +279,8 @@ function_decl|;
 comment|/**    * Get the lower 32 bits of identifier of the<code>ContainerId</code>,    * which doesn't include epoch. Note that this method will be marked as    * deprecated, so please use<code>getContainerId</code> instead.    * @return lower 32 bits of identifier of the<code>ContainerId</code>    */
 annotation|@
 name|Public
+annotation|@
+name|Deprecated
 annotation|@
 name|Stable
 DECL|method|getId ()
@@ -764,7 +775,7 @@ argument_list|()
 operator|.
 name|format
 argument_list|(
-literal|0xffffffffffL
+name|CONTAINER_ID_BITMASK
 operator|&
 name|getContainerId
 argument_list|()

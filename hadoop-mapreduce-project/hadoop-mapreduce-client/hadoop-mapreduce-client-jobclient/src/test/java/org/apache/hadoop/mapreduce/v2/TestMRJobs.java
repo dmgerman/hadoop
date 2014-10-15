@@ -4819,10 +4819,16 @@ decl_stmt|;
 name|foundAppMaster
 operator|=
 operator|(
+operator|(
 name|cid
 operator|.
-name|getId
+name|getContainerId
 argument_list|()
+operator|&
+name|ContainerId
+operator|.
+name|CONTAINER_ID_BITMASK
+operator|)
 operator|==
 literal|1
 operator|)

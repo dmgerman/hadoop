@@ -28,7 +28,7 @@ name|WrappedJvmID
 extends|extends
 name|JVMId
 block|{
-DECL|method|WrappedJvmID (JobID jobID, boolean mapTask, int nextInt)
+DECL|method|WrappedJvmID (JobID jobID, boolean mapTask, long nextLong)
 specifier|public
 name|WrappedJvmID
 parameter_list|(
@@ -38,8 +38,8 @@ parameter_list|,
 name|boolean
 name|mapTask
 parameter_list|,
-name|int
-name|nextInt
+name|long
+name|nextLong
 parameter_list|)
 block|{
 name|super
@@ -48,7 +48,7 @@ name|jobID
 argument_list|,
 name|mapTask
 argument_list|,
-name|nextInt
+name|nextLong
 argument_list|)
 expr_stmt|;
 block|}

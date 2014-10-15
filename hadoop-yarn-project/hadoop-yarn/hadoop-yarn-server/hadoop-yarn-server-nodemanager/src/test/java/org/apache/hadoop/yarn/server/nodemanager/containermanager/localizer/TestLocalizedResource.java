@@ -504,12 +504,12 @@ specifier|public
 class|class
 name|TestLocalizedResource
 block|{
-DECL|method|getMockContainer (int id)
+DECL|method|getMockContainer (long id)
 specifier|static
 name|ContainerId
 name|getMockContainer
 parameter_list|(
-name|int
+name|long
 name|id
 parameter_list|)
 block|{
@@ -599,7 +599,7 @@ name|when
 argument_list|(
 name|container
 operator|.
-name|getId
+name|getContainerId
 argument_list|()
 argument_list|)
 operator|.
@@ -725,7 +725,7 @@ name|container0
 init|=
 name|getMockContainer
 argument_list|(
-literal|0
+literal|0L
 argument_list|)
 decl_stmt|;
 specifier|final
@@ -856,7 +856,7 @@ name|container1
 init|=
 name|getMockContainer
 argument_list|(
-literal|1
+literal|1L
 argument_list|)
 decl_stmt|;
 specifier|final
@@ -1036,7 +1036,7 @@ name|container2
 init|=
 name|getMockContainer
 argument_list|(
-literal|2
+literal|2L
 argument_list|)
 decl_stmt|;
 specifier|final
@@ -1075,7 +1075,7 @@ name|container3
 init|=
 name|getMockContainer
 argument_list|(
-literal|3
+literal|3L
 argument_list|)
 decl_stmt|;
 specifier|final
@@ -1304,7 +1304,7 @@ name|container4
 init|=
 name|getMockContainer
 argument_list|(
-literal|4
+literal|4L
 argument_list|)
 decl_stmt|;
 specifier|final

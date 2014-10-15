@@ -705,12 +705,12 @@ literal|2
 index|]
 argument_list|)
 decl_stmt|;
-name|int
-name|jvmIdInt
+name|long
+name|jvmIdLong
 init|=
-name|Integer
+name|Long
 operator|.
-name|parseInt
+name|parseLong
 argument_list|(
 name|args
 index|[
@@ -738,7 +738,7 @@ name|TaskType
 operator|.
 name|MAP
 argument_list|,
-name|jvmIdInt
+name|jvmIdLong
 argument_list|)
 decl_stmt|;
 comment|// initialize metrics

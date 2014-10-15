@@ -226,6 +226,8 @@ name|proto
 return|;
 block|}
 annotation|@
+name|Deprecated
+annotation|@
 name|Override
 DECL|method|getId ()
 specifier|public

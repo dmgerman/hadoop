@@ -925,7 +925,7 @@ name|responseId
 argument_list|)
 return|;
 block|}
-DECL|method|nodeHeartbeat (ApplicationAttemptId attemptId, int containerId, ContainerState containerState)
+DECL|method|nodeHeartbeat (ApplicationAttemptId attemptId, long containerId, ContainerState containerState)
 specifier|public
 name|NodeHeartbeatResponse
 name|nodeHeartbeat
@@ -933,7 +933,7 @@ parameter_list|(
 name|ApplicationAttemptId
 name|attemptId
 parameter_list|,
-name|int
+name|long
 name|containerId
 parameter_list|,
 name|ContainerState

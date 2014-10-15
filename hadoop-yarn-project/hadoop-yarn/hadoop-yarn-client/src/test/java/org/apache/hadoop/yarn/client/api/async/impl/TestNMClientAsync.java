@@ -1414,6 +1414,11 @@ argument_list|)
 expr_stmt|;
 block|}
 annotation|@
+name|SuppressWarnings
+argument_list|(
+literal|"deprecation"
+argument_list|)
+annotation|@
 name|Override
 DECL|method|onContainerStarted (ContainerId containerId, Map<String, ByteBuffer> allServiceResponse)
 specifier|public
@@ -1513,6 +1518,11 @@ argument_list|)
 throw|;
 block|}
 annotation|@
+name|SuppressWarnings
+argument_list|(
+literal|"deprecation"
+argument_list|)
+annotation|@
 name|Override
 DECL|method|onContainerStatusReceived (ContainerId containerId, ContainerStatus containerStatus)
 specifier|public
@@ -1588,6 +1598,11 @@ argument_list|)
 throw|;
 block|}
 annotation|@
+name|SuppressWarnings
+argument_list|(
+literal|"deprecation"
+argument_list|)
+annotation|@
 name|Override
 DECL|method|onContainerStopped (ContainerId containerId)
 specifier|public
@@ -1649,6 +1664,11 @@ literal|"Ignorable Exception"
 argument_list|)
 throw|;
 block|}
+annotation|@
+name|SuppressWarnings
+argument_list|(
+literal|"deprecation"
+argument_list|)
 annotation|@
 name|Override
 DECL|method|onStartContainerError (ContainerId containerId, Throwable t)
@@ -1749,6 +1769,11 @@ argument_list|)
 throw|;
 block|}
 annotation|@
+name|SuppressWarnings
+argument_list|(
+literal|"deprecation"
+argument_list|)
+annotation|@
 name|Override
 DECL|method|onStopContainerError (ContainerId containerId, Throwable t)
 specifier|public
@@ -1838,6 +1863,11 @@ literal|"Ignorable Exception"
 argument_list|)
 throw|;
 block|}
+annotation|@
+name|SuppressWarnings
+argument_list|(
+literal|"deprecation"
+argument_list|)
 annotation|@
 name|Override
 DECL|method|onGetContainerStatusError (ContainerId containerId, Throwable t)

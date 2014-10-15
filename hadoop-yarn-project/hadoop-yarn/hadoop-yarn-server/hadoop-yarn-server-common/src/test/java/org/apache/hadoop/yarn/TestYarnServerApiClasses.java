@@ -1323,7 +1323,7 @@ argument_list|)
 decl_stmt|;
 name|assertEquals
 argument_list|(
-literal|3
+literal|3L
 argument_list|,
 name|copy
 operator|.
@@ -1338,7 +1338,7 @@ operator|.
 name|getContainerId
 argument_list|()
 operator|.
-name|getId
+name|getContainerId
 argument_list|()
 argument_list|)
 expr_stmt|;
