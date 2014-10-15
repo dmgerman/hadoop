@@ -529,21 +529,16 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-comment|// Round the timestamp to second as Graphite accepts it in such format.
-name|int
+comment|// The record timestamp is in milliseconds while Graphite expects an epoc time in seconds.
+name|long
 name|timestamp
 init|=
-name|Math
-operator|.
-name|round
-argument_list|(
 name|record
 operator|.
 name|timestamp
 argument_list|()
 operator|/
-literal|1000.0f
-argument_list|)
+literal|1000L
 decl_stmt|;
 comment|// Collect datapoints.
 for|for
