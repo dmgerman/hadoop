@@ -933,13 +933,16 @@ name|getLoadedImageTxId
 argument_list|()
 return|;
 block|}
-DECL|method|load (File file)
+DECL|method|load (File file, boolean requireSameLayoutVersion)
 specifier|public
 name|void
 name|load
 parameter_list|(
 name|File
 name|file
+parameter_list|,
+name|boolean
+name|requireSameLayoutVersion
 parameter_list|)
 throws|throws
 name|IOException
@@ -1026,6 +1029,8 @@ argument_list|(
 name|conf
 argument_list|,
 name|fsn
+argument_list|,
+name|requireSameLayoutVersion
 argument_list|)
 decl_stmt|;
 name|impl

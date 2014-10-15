@@ -953,6 +953,8 @@ operator|.
 name|load
 argument_list|(
 name|imageFile
+argument_list|,
+literal|false
 argument_list|)
 expr_stmt|;
 name|FSImage

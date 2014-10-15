@@ -1797,6 +1797,8 @@ operator|.
 name|readProperties
 argument_list|(
 name|sd
+argument_list|,
+name|startOpt
 argument_list|)
 expr_stmt|;
 name|isFormatted
@@ -2981,7 +2983,6 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
-empty_stmt|;
 comment|/**    * Toss the current image and namesystem, reloading from the specified    * file.    */
 DECL|method|reloadFromImageFile (File file, FSNamesystem target)
 name|void
@@ -3017,6 +3018,8 @@ argument_list|,
 name|target
 argument_list|,
 literal|null
+argument_list|,
+literal|false
 argument_list|)
 expr_stmt|;
 block|}
@@ -3104,6 +3107,8 @@ operator|.
 name|readAndInspectDirs
 argument_list|(
 name|nnfs
+argument_list|,
+name|startOpt
 argument_list|)
 decl_stmt|;
 name|isUpgradeFinalized
@@ -3413,6 +3418,8 @@ argument_list|,
 name|recovery
 argument_list|,
 name|imageFile
+argument_list|,
+name|startOpt
 argument_list|)
 expr_stmt|;
 break|break;
@@ -3667,7 +3674,7 @@ argument_list|()
 expr_stmt|;
 block|}
 block|}
-DECL|method|loadFSImageFile (FSNamesystem target, MetaRecoveryContext recovery, FSImageFile imageFile)
+DECL|method|loadFSImageFile (FSNamesystem target, MetaRecoveryContext recovery, FSImageFile imageFile, StartupOption startupOption)
 name|void
 name|loadFSImageFile
 parameter_list|(
@@ -3679,6 +3686,9 @@ name|recovery
 parameter_list|,
 name|FSImageFile
 name|imageFile
+parameter_list|,
+name|StartupOption
+name|startupOption
 parameter_list|)
 throws|throws
 name|IOException
@@ -3704,6 +3714,8 @@ operator|.
 name|readProperties
 argument_list|(
 name|sdForProperties
+argument_list|,
+name|startupOption
 argument_list|)
 expr_stmt|;
 if|if
@@ -3725,6 +3737,18 @@ condition|)
 block|{
 comment|// For txid-based layout, we should have a .md5 file
 comment|// next to the image file
+name|boolean
+name|isRollingRollback
+init|=
+name|RollingUpgradeStartupOption
+operator|.
+name|ROLLBACK
+operator|.
+name|matches
+argument_list|(
+name|startupOption
+argument_list|)
+decl_stmt|;
 name|loadFSImage
 argument_list|(
 name|imageFile
@@ -3735,6 +3759,8 @@ argument_list|,
 name|target
 argument_list|,
 name|recovery
+argument_list|,
+name|isRollingRollback
 argument_list|)
 expr_stmt|;
 block|}
@@ -3816,6 +3842,8 @@ argument_list|,
 name|target
 argument_list|,
 name|recovery
+argument_list|,
+literal|false
 argument_list|)
 expr_stmt|;
 block|}
@@ -3834,6 +3862,8 @@ argument_list|,
 name|target
 argument_list|,
 name|recovery
+argument_list|,
+literal|false
 argument_list|)
 expr_stmt|;
 block|}
@@ -4588,7 +4618,7 @@ expr_stmt|;
 block|}
 block|}
 comment|/**    * Load the image namespace from the given image file, verifying    * it against the MD5 sum stored in its associated .md5 file.    */
-DECL|method|loadFSImage (File imageFile, FSNamesystem target, MetaRecoveryContext recovery)
+DECL|method|loadFSImage (File imageFile, FSNamesystem target, MetaRecoveryContext recovery, boolean requireSameLayoutVersion)
 specifier|private
 name|void
 name|loadFSImage
@@ -4601,6 +4631,9 @@ name|target
 parameter_list|,
 name|MetaRecoveryContext
 name|recovery
+parameter_list|,
+name|boolean
+name|requireSameLayoutVersion
 parameter_list|)
 throws|throws
 name|IOException
@@ -4641,11 +4674,13 @@ argument_list|,
 name|target
 argument_list|,
 name|recovery
+argument_list|,
+name|requireSameLayoutVersion
 argument_list|)
 expr_stmt|;
 block|}
 comment|/**    * Load in the filesystem image from file. It's a big list of    * filenames and blocks.    */
-DECL|method|loadFSImage (File curFile, MD5Hash expectedMd5, FSNamesystem target, MetaRecoveryContext recovery)
+DECL|method|loadFSImage (File curFile, MD5Hash expectedMd5, FSNamesystem target, MetaRecoveryContext recovery, boolean requireSameLayoutVersion)
 specifier|private
 name|void
 name|loadFSImage
@@ -4661,6 +4696,9 @@ name|target
 parameter_list|,
 name|MetaRecoveryContext
 name|recovery
+parameter_list|,
+name|boolean
+name|requireSameLayoutVersion
 parameter_list|)
 throws|throws
 name|IOException
@@ -4696,6 +4734,8 @@ operator|.
 name|load
 argument_list|(
 name|curFile
+argument_list|,
+name|requireSameLayoutVersion
 argument_list|)
 expr_stmt|;
 comment|// Check that the image digest we loaded matches up with what
@@ -5227,7 +5267,7 @@ name|writeAll
 argument_list|()
 expr_stmt|;
 block|}
-comment|/**    * @see #saveNamespace(FSNamesystem, Canceler)    */
+comment|/**    * @see #saveNamespace(FSNamesystem, NameNodeFile, Canceler)    */
 DECL|method|saveNamespace (FSNamesystem source)
 specifier|public
 specifier|synchronized
@@ -5368,7 +5408,7 @@ expr_stmt|;
 block|}
 block|}
 block|}
-comment|/**    * @see #saveFSImageInAllDirs(FSNamesystem, long, Canceler)    */
+comment|/**    * @see #saveFSImageInAllDirs(FSNamesystem, NameNodeFile, long, Canceler)    */
 DECL|method|saveFSImageInAllDirs (FSNamesystem source, long txid)
 specifier|protected
 specifier|synchronized
