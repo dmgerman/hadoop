@@ -598,6 +598,26 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|security
+operator|.
+name|token
+operator|.
+name|delegation
+operator|.
+name|web
+operator|.
+name|DelegationTokenAuthenticationHandler
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|yarn
 operator|.
 name|api
@@ -7181,7 +7201,7 @@ name|KerberosAuthenticationHandler
 operator|.
 name|TYPE
 operator|.
-name|equals
+name|equalsIgnoreCase
 argument_list|(
 name|authType
 argument_list|)
@@ -7192,7 +7212,44 @@ name|msg
 init|=
 literal|"Delegation token operations can only be carried out on a "
 operator|+
-literal|"Kerberos authenticated channel"
+literal|"Kerberos authenticated channel. Expected auth type is "
+operator|+
+name|KerberosAuthenticationHandler
+operator|.
+name|TYPE
+operator|+
+literal|", got type "
+operator|+
+name|authType
+decl_stmt|;
+throw|throw
+operator|new
+name|YarnException
+argument_list|(
+name|msg
+argument_list|)
+throw|;
+block|}
+if|if
+condition|(
+name|hsr
+operator|.
+name|getAttribute
+argument_list|(
+name|DelegationTokenAuthenticationHandler
+operator|.
+name|DELEGATION_TOKEN_UGI_ATTRIBUTE
+argument_list|)
+operator|!=
+literal|null
+condition|)
+block|{
+name|String
+name|msg
+init|=
+literal|"Delegation token operations cannot be carried out using delegation"
+operator|+
+literal|" token authentication."
 decl_stmt|;
 throw|throw
 operator|new

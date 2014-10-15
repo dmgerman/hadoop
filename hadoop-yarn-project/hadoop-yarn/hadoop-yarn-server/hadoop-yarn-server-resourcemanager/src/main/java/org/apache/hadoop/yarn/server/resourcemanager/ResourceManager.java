@@ -5009,6 +5009,16 @@ operator|.
 name|rmDTSecretManager
 argument_list|)
 expr_stmt|;
+name|RMAuthenticationFilter
+operator|.
+name|setDelegationTokenSecretManager
+argument_list|(
+name|getClientRMService
+argument_list|()
+operator|.
+name|rmDTSecretManager
+argument_list|)
+expr_stmt|;
 name|String
 name|yarnAuthKey
 init|=

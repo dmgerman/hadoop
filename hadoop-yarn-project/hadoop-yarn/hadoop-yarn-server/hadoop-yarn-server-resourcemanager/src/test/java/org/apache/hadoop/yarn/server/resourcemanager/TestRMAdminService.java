@@ -3810,6 +3810,13 @@ name|aclsString
 argument_list|)
 expr_stmt|;
 comment|// verify ProxyUsers and ProxyHosts
+name|ProxyUsers
+operator|.
+name|refreshSuperUserGroupsConfiguration
+argument_list|(
+name|configuration
+argument_list|)
+expr_stmt|;
 name|Assert
 operator|.
 name|assertTrue

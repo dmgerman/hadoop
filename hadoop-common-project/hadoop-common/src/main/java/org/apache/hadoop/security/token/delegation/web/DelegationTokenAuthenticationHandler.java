@@ -464,6 +464,7 @@ argument_list|>
 argument_list|()
 decl_stmt|;
 DECL|field|DELEGATION_TOKEN_UGI_ATTRIBUTE
+specifier|public
 specifier|static
 specifier|final
 name|String
