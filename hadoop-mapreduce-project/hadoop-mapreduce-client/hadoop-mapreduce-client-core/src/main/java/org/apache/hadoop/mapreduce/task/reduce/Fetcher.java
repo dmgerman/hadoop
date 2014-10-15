@@ -2806,9 +2806,9 @@ name|host
 argument_list|,
 name|compressedLength
 argument_list|,
-name|endTime
-operator|-
 name|startTime
+argument_list|,
+name|endTime
 argument_list|,
 name|mapOutput
 argument_list|)
