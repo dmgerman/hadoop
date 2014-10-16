@@ -392,6 +392,16 @@ name|java
 operator|.
 name|io
 operator|.
+name|FileNotFoundException
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|io
+operator|.
 name|IOException
 import|;
 end_import
@@ -1500,7 +1510,7 @@ name|getRealm
 argument_list|()
 return|;
 block|}
-comment|/**    * Log in, defaulting to the client context    * @param principal principal    * @param context context    * @param keytab keytab    * @return the logged in context    * @throws LoginException failure to log in    */
+comment|/**    * Log in, defaulting to the client context    * @param principal principal    * @param context context    * @param keytab keytab    * @return the logged in context    * @throws LoginException failure to log in    * @throws FileNotFoundException no keytab    */
 DECL|method|login (String principal, String context, File keytab)
 specifier|protected
 name|LoginContext
@@ -1517,6 +1527,8 @@ name|keytab
 parameter_list|)
 throws|throws
 name|LoginException
+throws|,
+name|FileNotFoundException
 block|{
 name|LOG
 operator|.
@@ -1531,6 +1543,26 @@ argument_list|,
 name|keytab
 argument_list|)
 expr_stmt|;
+if|if
+condition|(
+operator|!
+name|keytab
+operator|.
+name|exists
+argument_list|()
+condition|)
+block|{
+throw|throw
+operator|new
+name|FileNotFoundException
+argument_list|(
+name|keytab
+operator|.
+name|getAbsolutePath
+argument_list|()
+argument_list|)
+throw|;
+block|}
 name|Set
 argument_list|<
 name|Principal

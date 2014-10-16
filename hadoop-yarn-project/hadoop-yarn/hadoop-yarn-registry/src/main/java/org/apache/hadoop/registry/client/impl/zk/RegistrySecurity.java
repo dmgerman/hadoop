@@ -2189,6 +2189,8 @@ comment|// kerberos module
 operator|+
 literal|" keyTab=\"%s\"\n"
 operator|+
+literal|" debug=true\n"
+operator|+
 literal|" principal=\"%s\"\n"
 operator|+
 literal|" useKeyTab=true\n"
@@ -2261,6 +2263,26 @@ argument_list|,
 literal|"Keytab null or missing: "
 argument_list|)
 expr_stmt|;
+name|String
+name|keytabpath
+init|=
+name|keytab
+operator|.
+name|getAbsolutePath
+argument_list|()
+decl_stmt|;
+comment|// fix up for windows; no-op on unix
+name|keytabpath
+operator|=
+name|keytabpath
+operator|.
+name|replace
+argument_list|(
+literal|'\\'
+argument_list|,
+literal|'/'
+argument_list|)
+expr_stmt|;
 return|return
 name|String
 operator|.
@@ -2277,10 +2299,7 @@ argument_list|,
 name|getKerberosAuthModuleForJVM
 argument_list|()
 argument_list|,
-name|keytab
-operator|.
-name|getAbsolutePath
-argument_list|()
+name|keytabpath
 argument_list|,
 name|principal
 argument_list|)
@@ -2976,7 +2995,7 @@ name|builder
 operator|.
 name|append
 argument_list|(
-literal|"Access policy: "
+literal|"Curator service access policy: "
 argument_list|)
 operator|.
 name|append
@@ -2988,7 +3007,7 @@ name|builder
 operator|.
 name|append
 argument_list|(
-literal|", System ACLs: "
+literal|"; System ACLs: "
 argument_list|)
 operator|.
 name|append
@@ -3003,6 +3022,11 @@ name|builder
 operator|.
 name|append
 argument_list|(
+literal|"User: "
+argument_list|)
+operator|.
+name|append
+argument_list|(
 name|UgiInfo
 operator|.
 name|fromCurrentUser
@@ -3013,17 +3037,12 @@ name|builder
 operator|.
 name|append
 argument_list|(
-literal|" Kerberos Realm: "
+literal|"; Kerberos Realm: "
 argument_list|)
 operator|.
 name|append
 argument_list|(
 name|kerberosRealm
-argument_list|)
-operator|.
-name|append
-argument_list|(
-literal|" ; "
 argument_list|)
 expr_stmt|;
 name|builder
@@ -3081,7 +3100,7 @@ name|builder
 operator|.
 name|append
 argument_list|(
-literal|"JAAS Client Identity"
+literal|"; JAAS Client Identity"
 argument_list|)
 operator|.
 name|append

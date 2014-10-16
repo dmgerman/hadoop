@@ -1002,12 +1002,6 @@ name|class
 init|)
 block|{
 comment|// set the security options
-comment|//log them
-name|securityConnectionDiagnostics
-operator|=
-name|buildSecurityDiagnostics
-argument_list|()
-expr_stmt|;
 comment|// build up the curator itself
 name|CuratorFrameworkFactory
 operator|.
@@ -1057,6 +1051,12 @@ argument_list|(
 name|builder
 argument_list|)
 expr_stmt|;
+comment|//log them
+name|securityConnectionDiagnostics
+operator|=
+name|buildSecurityDiagnostics
+argument_list|()
+expr_stmt|;
 name|framework
 operator|=
 name|builder
@@ -1087,6 +1087,8 @@ name|super
 operator|.
 name|toString
 argument_list|()
+operator|+
+literal|" "
 operator|+
 name|bindingDiagnosticDetails
 argument_list|()
@@ -1415,6 +1417,10 @@ argument_list|,
 literal|"Authentication Failed: "
 operator|+
 name|exception
+operator|+
+literal|"; "
+operator|+
+name|securityConnectionDiagnostics
 argument_list|,
 name|exception
 argument_list|)
