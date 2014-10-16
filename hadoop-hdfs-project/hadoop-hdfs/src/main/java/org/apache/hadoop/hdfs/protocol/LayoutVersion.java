@@ -423,6 +423,8 @@ argument_list|,
 name|ADD_INODE_ID
 argument_list|,
 name|SNAPSHOT
+argument_list|,
+name|FSIMAGE_NAME_OPTIMIZATION
 argument_list|)
 block|,
 DECL|enumConstant|OPTIMIZE_SNAPSHOT_INODES
