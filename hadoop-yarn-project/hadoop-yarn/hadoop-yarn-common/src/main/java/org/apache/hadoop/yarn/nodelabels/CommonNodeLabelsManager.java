@@ -894,6 +894,15 @@ argument_list|>
 argument_list|()
 argument_list|)
 expr_stmt|;
+name|c
+operator|.
+name|labels
+operator|.
+name|addAll
+argument_list|(
+name|labels
+argument_list|)
+expr_stmt|;
 block|}
 else|else
 block|{
