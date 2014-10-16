@@ -66,6 +66,16 @@ name|java
 operator|.
 name|util
 operator|.
+name|HashSet
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
 name|Iterator
 import|;
 end_import
@@ -107,6 +117,16 @@ operator|.
 name|util
 operator|.
 name|Queue
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
+name|Set
 import|;
 end_import
 
@@ -985,6 +1005,14 @@ name|PendingReplicationWithoutTargets
 init|=
 literal|0
 decl_stmt|;
+comment|// HB processing can use it to tell if it is the first HB since DN restarted
+DECL|field|heartbeatedSinceRegistration
+specifier|private
+name|boolean
+name|heartbeatedSinceRegistration
+init|=
+literal|false
+decl_stmt|;
 comment|/**    * DatanodeDescriptor constructor    * @param nodeID id of the data node    */
 DECL|method|DatanodeDescriptor (DatanodeID nodeID)
 specifier|public
@@ -999,7 +1027,7 @@ argument_list|(
 name|nodeID
 argument_list|)
 expr_stmt|;
-name|updateHeartbeat
+name|updateHeartbeatState
 argument_list|(
 name|StorageReport
 operator|.
@@ -1034,7 +1062,7 @@ argument_list|,
 name|networkLocation
 argument_list|)
 expr_stmt|;
-name|updateHeartbeat
+name|updateHeartbeatState
 argument_list|(
 name|StorageReport
 operator|.
@@ -1479,6 +1507,47 @@ name|int
 name|volFailures
 parameter_list|)
 block|{
+name|updateHeartbeatState
+argument_list|(
+name|reports
+argument_list|,
+name|cacheCapacity
+argument_list|,
+name|cacheUsed
+argument_list|,
+name|xceiverCount
+argument_list|,
+name|volFailures
+argument_list|)
+expr_stmt|;
+name|heartbeatedSinceRegistration
+operator|=
+literal|true
+expr_stmt|;
+block|}
+comment|/**    * process datanode heartbeat or stats initialization.    */
+DECL|method|updateHeartbeatState (StorageReport[] reports, long cacheCapacity, long cacheUsed, int xceiverCount, int volFailures)
+specifier|public
+name|void
+name|updateHeartbeatState
+parameter_list|(
+name|StorageReport
+index|[]
+name|reports
+parameter_list|,
+name|long
+name|cacheCapacity
+parameter_list|,
+name|long
+name|cacheUsed
+parameter_list|,
+name|int
+name|xceiverCount
+parameter_list|,
+name|int
+name|volFailures
+parameter_list|)
+block|{
 name|long
 name|totalCapacity
 init|=
@@ -1499,6 +1568,80 @@ name|totalDfsUsed
 init|=
 literal|0
 decl_stmt|;
+name|Set
+argument_list|<
+name|DatanodeStorageInfo
+argument_list|>
+name|failedStorageInfos
+init|=
+literal|null
+decl_stmt|;
+comment|// Decide if we should check for any missing StorageReport and mark it as
+comment|// failed. There are different scenarios.
+comment|// 1. When DN is running, a storage failed. Given the current DN
+comment|//    implementation doesn't add recovered storage back to its storage list
+comment|//    until DN restart, we can assume volFailures won't decrease
+comment|//    during the current DN registration session.
+comment|//    When volumeFailures == this.volumeFailures, it implies there is no
+comment|//    state change. No need to check for failed storage. This is an
+comment|//    optimization.
+comment|// 2. After DN restarts, volFailures might not increase and it is possible
+comment|//    we still have new failed storage. For example, admins reduce
+comment|//    available storages in configuration. Another corner case
+comment|//    is the failed volumes might change after restart; a) there
+comment|//    is one good storage A, one restored good storage B, so there is
+comment|//    one element in storageReports and that is A. b) A failed. c) Before
+comment|//    DN sends HB to NN to indicate A has failed, DN restarts. d) After DN
+comment|//    restarts, storageReports has one element which is B.
+name|boolean
+name|checkFailedStorages
+init|=
+operator|(
+name|volFailures
+operator|>
+name|this
+operator|.
+name|volumeFailures
+operator|)
+operator|||
+operator|!
+name|heartbeatedSinceRegistration
+decl_stmt|;
+if|if
+condition|(
+name|checkFailedStorages
+condition|)
+block|{
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"Number of failed storage changes from "
+operator|+
+name|this
+operator|.
+name|volumeFailures
+operator|+
+literal|" to "
+operator|+
+name|volFailures
+argument_list|)
+expr_stmt|;
+name|failedStorageInfos
+operator|=
+operator|new
+name|HashSet
+argument_list|<
+name|DatanodeStorageInfo
+argument_list|>
+argument_list|(
+name|storageMap
+operator|.
+name|values
+argument_list|()
+argument_list|)
+expr_stmt|;
+block|}
 name|setCacheCapacity
 argument_list|(
 name|cacheCapacity
@@ -1547,6 +1690,19 @@ name|getStorage
 argument_list|()
 argument_list|)
 decl_stmt|;
+if|if
+condition|(
+name|checkFailedStorages
+condition|)
+block|{
+name|failedStorageInfos
+operator|.
+name|remove
+argument_list|(
+name|storage
+argument_list|)
+expr_stmt|;
+block|}
 name|storage
 operator|.
 name|receivedHeartbeat
@@ -1610,6 +1766,74 @@ argument_list|(
 name|totalDfsUsed
 argument_list|)
 expr_stmt|;
+if|if
+condition|(
+name|checkFailedStorages
+condition|)
+block|{
+name|updateFailedStorage
+argument_list|(
+name|failedStorageInfos
+argument_list|)
+expr_stmt|;
+block|}
+block|}
+DECL|method|updateFailedStorage ( Set<DatanodeStorageInfo> failedStorageInfos)
+specifier|private
+name|void
+name|updateFailedStorage
+parameter_list|(
+name|Set
+argument_list|<
+name|DatanodeStorageInfo
+argument_list|>
+name|failedStorageInfos
+parameter_list|)
+block|{
+for|for
+control|(
+name|DatanodeStorageInfo
+name|storageInfo
+range|:
+name|failedStorageInfos
+control|)
+block|{
+if|if
+condition|(
+name|storageInfo
+operator|.
+name|getState
+argument_list|()
+operator|!=
+name|DatanodeStorage
+operator|.
+name|State
+operator|.
+name|FAILED
+condition|)
+block|{
+name|LOG
+operator|.
+name|info
+argument_list|(
+name|storageInfo
+operator|+
+literal|" failed."
+argument_list|)
+expr_stmt|;
+name|storageInfo
+operator|.
+name|setState
+argument_list|(
+name|DatanodeStorage
+operator|.
+name|State
+operator|.
+name|FAILED
+argument_list|)
+expr_stmt|;
+block|}
+block|}
 block|}
 DECL|class|BlockIterator
 specifier|private
@@ -2664,6 +2888,10 @@ literal|0
 argument_list|)
 expr_stmt|;
 block|}
+name|heartbeatedSinceRegistration
+operator|=
+literal|false
+expr_stmt|;
 block|}
 comment|/**    * @return balancer bandwidth in bytes per second for this datanode    */
 DECL|method|getBalancerBandwidth ()

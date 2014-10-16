@@ -777,7 +777,7 @@ expr_stmt|;
 comment|//update its timestamp
 name|d
 operator|.
-name|updateHeartbeat
+name|updateHeartbeatState
 argument_list|(
 name|StorageReport
 operator|.
@@ -1003,7 +1003,7 @@ name|node
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Check if there are any expired heartbeats, and if so,    * whether any blocks have to be re-replicated.    * While removing dead datanodes, make sure that only one datanode is marked    * dead at a time within the synchronized section. Otherwise, a cascading    * effect causes more datanodes to be declared dead.    */
+comment|/**    * Check if there are any expired heartbeats, and if so,    * whether any blocks have to be re-replicated.    * While removing dead datanodes, make sure that only one datanode is marked    * dead at a time within the synchronized section. Otherwise, a cascading    * effect causes more datanodes to be declared dead.    * Check if there are any failed storage and if so,    * Remove all the blocks on the storage. It also covers the following less    * common scenarios. After DatanodeStorage is marked FAILED, it is still    * possible to receive IBR for this storage.    * 1) DN could deliver IBR for failed storage due to its implementation.    *    a) DN queues a pending IBR request.    *    b) The storage of the block fails.    *    c) DN first sends HB, NN will mark the storage FAILED.    *    d) DN then sends the pending IBR request.    * 2) SBN processes block request from pendingDNMessages.    *    It is possible to have messages in pendingDNMessages that refer    *    to some failed storage.    *    a) SBN receives a IBR and put it in pendingDNMessages.    *    b) The storage of the block fails.    *    c) Edit log replay get the IBR from pendingDNMessages.    * Alternatively, we can resolve these scenarios with the following approaches.    * A. Make sure DN don't deliver IBR for failed storage.    * B. Remove all blocks in PendingDataNodeMessages for the failed storage    *    when we remove all blocks from BlocksMap for that storage.    */
 DECL|method|heartbeatCheck ()
 name|void
 name|heartbeatCheck
@@ -1044,6 +1044,12 @@ block|{
 comment|// locate the first dead node.
 name|DatanodeID
 name|dead
+init|=
+literal|null
+decl_stmt|;
+comment|// locate the first failed storage that isn't on a dead node.
+name|DatanodeStorageInfo
+name|failedStorage
 init|=
 literal|null
 decl_stmt|;
@@ -1141,6 +1147,27 @@ name|numOfStaleStorages
 operator|++
 expr_stmt|;
 block|}
+if|if
+condition|(
+name|failedStorage
+operator|==
+literal|null
+operator|&&
+name|storageInfo
+operator|.
+name|areBlocksOnFailedStorage
+argument_list|()
+operator|&&
+name|d
+operator|!=
+name|dead
+condition|)
+block|{
+name|failedStorage
+operator|=
+name|storageInfo
+expr_stmt|;
+block|}
 block|}
 block|}
 comment|// Set the number of stale nodes in the DatanodeManager
@@ -1164,11 +1191,16 @@ operator|=
 name|dead
 operator|==
 literal|null
+operator|&&
+name|failedStorage
+operator|==
+literal|null
 expr_stmt|;
 if|if
 condition|(
-operator|!
-name|allAlive
+name|dead
+operator|!=
+literal|null
 condition|)
 block|{
 comment|// acquire the fsnamesystem lock, and then remove the dead node.
@@ -1199,6 +1231,54 @@ operator|.
 name|removeDeadDatanode
 argument_list|(
 name|dead
+argument_list|)
+expr_stmt|;
+block|}
+block|}
+finally|finally
+block|{
+name|namesystem
+operator|.
+name|writeUnlock
+argument_list|()
+expr_stmt|;
+block|}
+block|}
+if|if
+condition|(
+name|failedStorage
+operator|!=
+literal|null
+condition|)
+block|{
+comment|// acquire the fsnamesystem lock, and remove blocks on the storage.
+name|namesystem
+operator|.
+name|writeLock
+argument_list|()
+expr_stmt|;
+try|try
+block|{
+if|if
+condition|(
+name|namesystem
+operator|.
+name|isInStartupSafeMode
+argument_list|()
+condition|)
+block|{
+return|return;
+block|}
+synchronized|synchronized
+init|(
+name|this
+init|)
+block|{
+name|blockManager
+operator|.
+name|removeBlocksAssociatedTo
+argument_list|(
+name|failedStorage
 argument_list|)
 expr_stmt|;
 block|}

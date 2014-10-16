@@ -812,6 +812,39 @@ operator|.
 name|state
 return|;
 block|}
+DECL|method|setState (State state)
+name|void
+name|setState
+parameter_list|(
+name|State
+name|state
+parameter_list|)
+block|{
+name|this
+operator|.
+name|state
+operator|=
+name|state
+expr_stmt|;
+block|}
+DECL|method|areBlocksOnFailedStorage ()
+name|boolean
+name|areBlocksOnFailedStorage
+parameter_list|()
+block|{
+return|return
+name|getState
+argument_list|()
+operator|==
+name|State
+operator|.
+name|FAILED
+operator|&&
+name|numBlocks
+operator|!=
+literal|0
+return|;
+block|}
 DECL|method|getStorageID ()
 name|String
 name|getStorageID
