@@ -268,6 +268,16 @@ name|java
 operator|.
 name|util
 operator|.
+name|Set
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
 name|concurrent
 operator|.
 name|ConcurrentHashMap
@@ -283,16 +293,6 @@ operator|.
 name|concurrent
 operator|.
 name|ConcurrentMap
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|junit
-operator|.
-name|Assert
 import|;
 end_import
 
@@ -619,6 +619,26 @@ operator|.
 name|resourcemanager
 operator|.
 name|RMContext
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|server
+operator|.
+name|resourcemanager
+operator|.
+name|nodelabels
+operator|.
+name|RMNodeLabelsManager
 import|;
 end_import
 
@@ -1001,6 +1021,16 @@ operator|.
 name|junit
 operator|.
 name|After
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|junit
+operator|.
+name|Assert
 import|;
 end_import
 
@@ -1487,6 +1517,19 @@ operator|.
 name|thenReturn
 argument_list|(
 name|resourceCalculator
+argument_list|)
+expr_stmt|;
+name|when
+argument_list|(
+name|csContext
+operator|.
+name|getRMContext
+argument_list|()
+argument_list|)
+operator|.
+name|thenReturn
+argument_list|(
+name|rmContext
 argument_list|)
 expr_stmt|;
 name|RMContainerTokenSecretManager
@@ -5076,6 +5119,8 @@ argument_list|)
 operator|.
 name|getCapability
 argument_list|()
+argument_list|,
+literal|null
 argument_list|)
 expr_stmt|;
 comment|//maxqueue 16G, userlimit 13G, - 4G used = 9G
@@ -5210,6 +5255,8 @@ argument_list|)
 operator|.
 name|getCapability
 argument_list|()
+argument_list|,
+literal|null
 argument_list|)
 expr_stmt|;
 name|assertEquals
@@ -5328,6 +5375,8 @@ name|getResource
 argument_list|(
 name|u0Priority
 argument_list|)
+argument_list|,
+literal|null
 argument_list|)
 expr_stmt|;
 name|qb
@@ -5344,6 +5393,8 @@ name|getResource
 argument_list|(
 name|u1Priority
 argument_list|)
+argument_list|,
+literal|null
 argument_list|)
 expr_stmt|;
 name|qb
@@ -5549,6 +5600,8 @@ argument_list|)
 operator|.
 name|getCapability
 argument_list|()
+argument_list|,
+literal|null
 argument_list|)
 expr_stmt|;
 name|assertEquals
@@ -5703,6 +5756,8 @@ argument_list|)
 operator|.
 name|getCapability
 argument_list|()
+argument_list|,
+literal|null
 argument_list|)
 expr_stmt|;
 name|qb
@@ -5726,6 +5781,8 @@ argument_list|)
 operator|.
 name|getCapability
 argument_list|()
+argument_list|,
+literal|null
 argument_list|)
 expr_stmt|;
 comment|//app3 is user1, active from last test case
@@ -16739,6 +16796,19 @@ argument_list|,
 name|clusterResource
 argument_list|)
 decl_stmt|;
+name|when
+argument_list|(
+name|csContext
+operator|.
+name|getRMContext
+argument_list|()
+argument_list|)
+operator|.
+name|thenReturn
+argument_list|(
+name|rmContext
+argument_list|)
+expr_stmt|;
 name|csConf
 operator|.
 name|setFloat

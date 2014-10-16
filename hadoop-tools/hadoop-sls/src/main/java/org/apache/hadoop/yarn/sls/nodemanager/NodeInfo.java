@@ -42,6 +42,16 @@ end_import
 
 begin_import
 import|import
+name|java
+operator|.
+name|util
+operator|.
+name|Set
+import|;
+end_import
+
+begin_import
+import|import
 name|org
 operator|.
 name|apache
@@ -776,6 +786,21 @@ DECL|method|getNodeManagerVersion ()
 specifier|public
 name|String
 name|getNodeManagerVersion
+parameter_list|()
+block|{
+return|return
+literal|null
+return|;
+block|}
+annotation|@
+name|Override
+DECL|method|getNodeLabels ()
+specifier|public
+name|Set
+argument_list|<
+name|String
+argument_list|>
+name|getNodeLabels
 parameter_list|()
 block|{
 return|return

@@ -452,6 +452,24 @@ name|api
 operator|.
 name|records
 operator|.
+name|ResourceRequest
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|api
+operator|.
+name|records
+operator|.
 name|YarnApplicationState
 import|;
 end_import
@@ -1514,6 +1532,11 @@ DECL|field|recoveredFinalState
 specifier|private
 name|RMAppState
 name|recoveredFinalState
+decl_stmt|;
+DECL|field|amReq
+specifier|private
+name|ResourceRequest
+name|amReq
 decl_stmt|;
 DECL|field|transitionTodo
 name|Object
@@ -2683,7 +2706,7 @@ init|=
 operator|-
 literal|1
 decl_stmt|;
-DECL|method|RMAppImpl (ApplicationId applicationId, RMContext rmContext, Configuration config, String name, String user, String queue, ApplicationSubmissionContext submissionContext, YarnScheduler scheduler, ApplicationMasterService masterService, long submitTime, String applicationType, Set<String> applicationTags)
+DECL|method|RMAppImpl (ApplicationId applicationId, RMContext rmContext, Configuration config, String name, String user, String queue, ApplicationSubmissionContext submissionContext, YarnScheduler scheduler, ApplicationMasterService masterService, long submitTime, String applicationType, Set<String> applicationTags, ResourceRequest amReq)
 specifier|public
 name|RMAppImpl
 parameter_list|(
@@ -2725,6 +2748,9 @@ argument_list|<
 name|String
 argument_list|>
 name|applicationTags
+parameter_list|,
+name|ResourceRequest
+name|amReq
 parameter_list|)
 block|{
 name|this
@@ -2835,6 +2861,12 @@ operator|.
 name|applicationTags
 operator|=
 name|applicationTags
+expr_stmt|;
+name|this
+operator|.
+name|amReq
+operator|=
+name|amReq
 expr_stmt|;
 name|int
 name|globalMaxAppAttempts
@@ -4520,6 +4552,8 @@ argument_list|()
 operator|+
 literal|1
 operator|)
+argument_list|,
+name|amReq
 argument_list|)
 decl_stmt|;
 name|attempts

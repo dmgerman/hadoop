@@ -964,7 +964,7 @@ name|rm
 operator|.
 name|registerNode
 argument_list|(
-literal|"127.0.0.1:0"
+literal|"127.0.0.1:1"
 argument_list|,
 literal|2048
 argument_list|)

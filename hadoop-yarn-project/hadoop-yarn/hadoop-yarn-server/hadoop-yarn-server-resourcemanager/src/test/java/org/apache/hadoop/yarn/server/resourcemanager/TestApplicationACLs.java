@@ -1308,6 +1308,11 @@ name|verifyAdministerQueueUserAccess
 argument_list|()
 expr_stmt|;
 block|}
+annotation|@
+name|SuppressWarnings
+argument_list|(
+literal|"deprecation"
+argument_list|)
 DECL|method|submitAppAndGetAppId (AccessControlList viewACL, AccessControlList modifyACL)
 specifier|private
 name|ApplicationId

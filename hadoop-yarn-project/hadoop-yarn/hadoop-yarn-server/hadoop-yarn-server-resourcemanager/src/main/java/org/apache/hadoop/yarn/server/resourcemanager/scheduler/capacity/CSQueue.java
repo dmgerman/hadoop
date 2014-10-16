@@ -391,11 +391,18 @@ name|String
 name|getQueuePath
 parameter_list|()
 function_decl|;
-comment|/**    * Get the configured<em>capacity</em> of the queue.    * @return queue capacity    */
+comment|/**    * Get the configured<em>capacity</em> of the queue.    * @return configured queue capacity    */
 DECL|method|getCapacity ()
 specifier|public
 name|float
 name|getCapacity
+parameter_list|()
+function_decl|;
+comment|/**    * Get actual<em>capacity</em> of the queue, this may be different from    * configured capacity when mis-config take place, like add labels to the    * cluster    *     * @return actual queue capacity    */
+DECL|method|getAbsActualCapacity ()
+specifier|public
+name|float
+name|getAbsActualCapacity
 parameter_list|()
 function_decl|;
 comment|/**    * Get capacity of the parent of the queue as a function of the     * cumulative capacity in the cluster.    * @return capacity of the parent of the queue as a function of the     *         cumulative capacity in the cluster    */
@@ -426,14 +433,7 @@ name|float
 name|getAbsoluteUsedCapacity
 parameter_list|()
 function_decl|;
-comment|/**    * Get the current used capacity of the queue    * and it's children (if any).    * @return queue used capacity    */
-DECL|method|getUsedCapacity ()
-specifier|public
-name|float
-name|getUsedCapacity
-parameter_list|()
-function_decl|;
-comment|/**    * Set used capacity of the queue.    * @param usedCapacity used capacity of the queue    */
+comment|/**    * Set used capacity of the queue.    * @param usedCapacity    *          used capacity of the queue    */
 DECL|method|setUsedCapacity (float usedCapacity)
 specifier|public
 name|void
@@ -443,7 +443,7 @@ name|float
 name|usedCapacity
 parameter_list|)
 function_decl|;
-comment|/**    * Set absolute used capacity of the queue.    * @param absUsedCapacity absolute used capacity of the queue    */
+comment|/**    * Set absolute used capacity of the queue.    * @param absUsedCapacity    *          absolute used capacity of the queue    */
 DECL|method|setAbsoluteUsedCapacity (float absUsedCapacity)
 specifier|public
 name|void
@@ -453,7 +453,14 @@ name|float
 name|absUsedCapacity
 parameter_list|)
 function_decl|;
-comment|/**    * Get the currently utilized resources in the cluster     * by the queue and children (if any).    * @return used resources by the queue and it's children     */
+comment|/**    * Get the current used capacity of nodes without label(s) of the queue    * and it's children (if any).    * @return queue used capacity    */
+DECL|method|getUsedCapacity ()
+specifier|public
+name|float
+name|getUsedCapacity
+parameter_list|()
+function_decl|;
+comment|/**    * Get the currently utilized resources which allocated at nodes without any    * labels in the cluster by the queue and children (if any).    *     * @return used resources by the queue and it's children    */
 DECL|method|getUsedResources ()
 specifier|public
 name|Resource
@@ -676,6 +683,36 @@ name|application
 parameter_list|,
 name|RMContainer
 name|container
+parameter_list|)
+function_decl|;
+comment|/**    * Get absolute capacity by label of this queue can use     * @param nodeLabel    * @return absolute capacity by label of this queue can use    */
+DECL|method|getAbsoluteCapacityByNodeLabel (String nodeLabel)
+specifier|public
+name|float
+name|getAbsoluteCapacityByNodeLabel
+parameter_list|(
+name|String
+name|nodeLabel
+parameter_list|)
+function_decl|;
+comment|/**    * Get absolute max capacity by label of this queue can use     * @param nodeLabel    * @return absolute capacity by label of this queue can use    */
+DECL|method|getAbsoluteMaximumCapacityByNodeLabel (String nodeLabel)
+specifier|public
+name|float
+name|getAbsoluteMaximumCapacityByNodeLabel
+parameter_list|(
+name|String
+name|nodeLabel
+parameter_list|)
+function_decl|;
+comment|/**    * Get capacity by node label    * @param nodeLabel    * @return capacity by node label    */
+DECL|method|getCapacityByNodeLabel (String nodeLabel)
+specifier|public
+name|float
+name|getCapacityByNodeLabel
+parameter_list|(
+name|String
+name|nodeLabel
 parameter_list|)
 function_decl|;
 block|}

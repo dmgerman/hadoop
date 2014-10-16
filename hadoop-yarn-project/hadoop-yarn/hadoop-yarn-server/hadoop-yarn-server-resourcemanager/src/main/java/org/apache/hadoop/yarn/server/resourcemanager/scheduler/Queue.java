@@ -34,6 +34,16 @@ end_import
 
 begin_import
 import|import
+name|java
+operator|.
+name|util
+operator|.
+name|Set
+import|;
+end_import
+
+begin_import
+import|import
 name|org
 operator|.
 name|apache
@@ -251,6 +261,23 @@ parameter_list|,
 name|RMContainer
 name|rmContainer
 parameter_list|)
+function_decl|;
+comment|/**    * Get labels can be accessed of this queue    * labels={*}, means this queue can access any label    * labels={ }, means this queue cannot access any label except node without label    * labels={a, b, c} means this queue can access a or b or c      * @return labels    */
+DECL|method|getAccessibleNodeLabels ()
+specifier|public
+name|Set
+argument_list|<
+name|String
+argument_list|>
+name|getAccessibleNodeLabels
+parameter_list|()
+function_decl|;
+comment|/**    * Get default label expression of this queue. If label expression of    * ApplicationSubmissionContext and label expression of Resource Request not    * set, this will be used.    *     * @return default label expression    */
+DECL|method|getDefaultNodeLabelExpression ()
+specifier|public
+name|String
+name|getDefaultNodeLabelExpression
+parameter_list|()
 function_decl|;
 block|}
 end_interface

@@ -438,6 +438,26 @@ name|yarn
 operator|.
 name|server
 operator|.
+name|resourcemanager
+operator|.
+name|scheduler
+operator|.
+name|YarnScheduler
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|server
+operator|.
 name|utils
 operator|.
 name|BuilderUtils
@@ -645,7 +665,7 @@ name|results
 return|;
 block|}
 comment|/**    * Utility method to validate a list resource requests, by insuring that the    * requested memory/vcore is non-negative and not greater than max    */
-DECL|method|validateResourceRequests (List<ResourceRequest> ask, Resource maximumResource)
+DECL|method|validateResourceRequests (List<ResourceRequest> ask, Resource maximumResource, String queueName, YarnScheduler scheduler)
 specifier|public
 specifier|static
 name|void
@@ -659,6 +679,12 @@ name|ask
 parameter_list|,
 name|Resource
 name|maximumResource
+parameter_list|,
+name|String
+name|queueName
+parameter_list|,
+name|YarnScheduler
+name|scheduler
 parameter_list|)
 throws|throws
 name|InvalidResourceRequestException
@@ -678,6 +704,10 @@ argument_list|(
 name|resReq
 argument_list|,
 name|maximumResource
+argument_list|,
+name|queueName
+argument_list|,
+name|scheduler
 argument_list|)
 expr_stmt|;
 block|}
@@ -805,7 +835,6 @@ throw|;
 block|}
 block|}
 block|}
-comment|/**    * Utility method to verify if the current user has access based on the    * passed {@link AccessControlList}    * @param acl the {@link AccessControlList} to check against    * @param method the method name to be logged    * @param LOG the logger to use    * @return {@link UserGroupInformation} of the current user    * @throws IOException    */
 DECL|method|verifyAccess ( AccessControlList acl, String method, final Log LOG)
 specifier|public
 specifier|static
@@ -817,6 +846,43 @@ name|acl
 parameter_list|,
 name|String
 name|method
+parameter_list|,
+specifier|final
+name|Log
+name|LOG
+parameter_list|)
+throws|throws
+name|IOException
+block|{
+comment|// by default, this method will use AdminService as module name
+return|return
+name|verifyAccess
+argument_list|(
+name|acl
+argument_list|,
+name|method
+argument_list|,
+literal|"AdminService"
+argument_list|,
+name|LOG
+argument_list|)
+return|;
+block|}
+comment|/**    * Utility method to verify if the current user has access based on the    * passed {@link AccessControlList}    * @param acl the {@link AccessControlList} to check against    * @param method the method name to be logged    * @param module, like AdminService or NodeLabelManager    * @param LOG the logger to use    * @return {@link UserGroupInformation} of the current user    * @throws IOException    */
+DECL|method|verifyAccess ( AccessControlList acl, String method, String module, final Log LOG)
+specifier|public
+specifier|static
+name|UserGroupInformation
+name|verifyAccess
+parameter_list|(
+name|AccessControlList
+name|acl
+parameter_list|,
+name|String
+name|method
+parameter_list|,
+name|String
+name|module
 parameter_list|,
 specifier|final
 name|Log
@@ -922,7 +988,7 @@ operator|.
 name|toString
 argument_list|()
 argument_list|,
-literal|"AdminService"
+name|module
 argument_list|,
 name|RMAuditLogger
 operator|.

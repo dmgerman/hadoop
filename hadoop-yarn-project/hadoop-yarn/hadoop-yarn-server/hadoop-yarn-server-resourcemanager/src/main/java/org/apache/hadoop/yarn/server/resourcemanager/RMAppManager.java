@@ -2130,11 +2130,14 @@ operator|.
 name|getApplicationId
 argument_list|()
 decl_stmt|;
-name|validateResourceRequest
+name|ResourceRequest
+name|amReq
+init|=
+name|validateAndCreateResourceRequest
 argument_list|(
 name|submissionContext
 argument_list|)
-expr_stmt|;
+decl_stmt|;
 comment|// Create RMApp
 name|RMAppImpl
 name|application
@@ -2183,6 +2186,8 @@ name|submissionContext
 operator|.
 name|getApplicationTags
 argument_list|()
+argument_list|,
+name|amReq
 argument_list|)
 decl_stmt|;
 comment|// Concurrent app submissions with same applicationId will fail here
@@ -2287,10 +2292,10 @@ return|return
 name|application
 return|;
 block|}
-DECL|method|validateResourceRequest ( ApplicationSubmissionContext submissionContext)
+DECL|method|validateAndCreateResourceRequest ( ApplicationSubmissionContext submissionContext)
 specifier|private
-name|void
-name|validateResourceRequest
+name|ResourceRequest
+name|validateAndCreateResourceRequest
 parameter_list|(
 name|ApplicationSubmissionContext
 name|submissionContext
@@ -2314,7 +2319,29 @@ condition|)
 block|{
 name|ResourceRequest
 name|amReq
-init|=
+decl_stmt|;
+if|if
+condition|(
+name|submissionContext
+operator|.
+name|getAMContainerResourceRequest
+argument_list|()
+operator|!=
+literal|null
+condition|)
+block|{
+name|amReq
+operator|=
+name|submissionContext
+operator|.
+name|getAMContainerResourceRequest
+argument_list|()
+expr_stmt|;
+block|}
+else|else
+block|{
+name|amReq
+operator|=
 name|BuilderUtils
 operator|.
 name|newResourceRequest
@@ -2334,7 +2361,30 @@ argument_list|()
 argument_list|,
 literal|1
 argument_list|)
-decl_stmt|;
+expr_stmt|;
+block|}
+comment|// set label expression for AM container
+if|if
+condition|(
+literal|null
+operator|==
+name|amReq
+operator|.
+name|getNodeLabelExpression
+argument_list|()
+condition|)
+block|{
+name|amReq
+operator|.
+name|setNodeLabelExpression
+argument_list|(
+name|submissionContext
+operator|.
+name|getNodeLabelExpression
+argument_list|()
+argument_list|)
+expr_stmt|;
+block|}
 try|try
 block|{
 name|SchedulerUtils
@@ -2347,6 +2397,13 @@ name|scheduler
 operator|.
 name|getMaximumResourceCapability
 argument_list|()
+argument_list|,
+name|submissionContext
+operator|.
+name|getQueue
+argument_list|()
+argument_list|,
+name|scheduler
 argument_list|)
 expr_stmt|;
 block|}
@@ -2376,7 +2433,13 @@ throw|throw
 name|e
 throw|;
 block|}
+return|return
+name|amReq
+return|;
 block|}
+return|return
+literal|null
+return|;
 block|}
 DECL|method|isApplicationInFinalState (RMAppState rmAppState)
 specifier|private

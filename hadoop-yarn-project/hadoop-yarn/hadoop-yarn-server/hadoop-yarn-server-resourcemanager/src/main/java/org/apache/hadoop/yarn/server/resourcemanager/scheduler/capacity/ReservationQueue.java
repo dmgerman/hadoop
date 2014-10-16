@@ -185,6 +185,8 @@ parameter_list|,
 name|PlanQueue
 name|parent
 parameter_list|)
+throws|throws
+name|IOException
 block|{
 name|super
 argument_list|(

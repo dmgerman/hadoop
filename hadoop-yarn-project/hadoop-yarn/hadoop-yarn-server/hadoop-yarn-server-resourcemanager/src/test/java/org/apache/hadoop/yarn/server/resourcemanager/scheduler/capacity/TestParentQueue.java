@@ -775,6 +775,19 @@ argument_list|(
 name|resourceComparator
 argument_list|)
 expr_stmt|;
+name|when
+argument_list|(
+name|csContext
+operator|.
+name|getRMContext
+argument_list|()
+argument_list|)
+operator|.
+name|thenReturn
+argument_list|(
+name|rmContext
+argument_list|)
+expr_stmt|;
 block|}
 DECL|field|A
 specifier|private
@@ -1085,6 +1098,8 @@ argument_list|(
 name|clusterResource
 argument_list|,
 name|allocatedResource
+argument_list|,
+literal|null
 argument_list|)
 expr_stmt|;
 block|}
@@ -1114,6 +1129,8 @@ argument_list|,
 name|app1
 argument_list|,
 name|allocatedResource
+argument_list|,
+literal|null
 argument_list|)
 expr_stmt|;
 block|}

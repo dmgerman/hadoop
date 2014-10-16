@@ -1288,24 +1288,6 @@ name|yarn
 operator|.
 name|server
 operator|.
-name|utils
-operator|.
-name|BuilderUtils
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|yarn
-operator|.
-name|server
-operator|.
 name|webproxy
 operator|.
 name|ProxyUriUtils
@@ -1769,6 +1751,13 @@ DECL|field|attemptMetrics
 specifier|private
 name|RMAppAttemptMetrics
 name|attemptMetrics
+init|=
+literal|null
+decl_stmt|;
+DECL|field|amReq
+specifier|private
+name|ResourceRequest
+name|amReq
 init|=
 literal|null
 decl_stmt|;
@@ -3005,7 +2994,7 @@ operator|.
 name|installTopology
 argument_list|()
 decl_stmt|;
-DECL|method|RMAppAttemptImpl (ApplicationAttemptId appAttemptId, RMContext rmContext, YarnScheduler scheduler, ApplicationMasterService masterService, ApplicationSubmissionContext submissionContext, Configuration conf, boolean maybeLastAttempt)
+DECL|method|RMAppAttemptImpl (ApplicationAttemptId appAttemptId, RMContext rmContext, YarnScheduler scheduler, ApplicationMasterService masterService, ApplicationSubmissionContext submissionContext, Configuration conf, boolean maybeLastAttempt, ResourceRequest amReq)
 specifier|public
 name|RMAppAttemptImpl
 parameter_list|(
@@ -3029,6 +3018,9 @@ name|conf
 parameter_list|,
 name|boolean
 name|maybeLastAttempt
+parameter_list|,
+name|ResourceRequest
+name|amReq
 parameter_list|)
 block|{
 name|this
@@ -3141,6 +3133,12 @@ name|applicationAttemptId
 argument_list|,
 name|rmContext
 argument_list|)
+expr_stmt|;
+name|this
+operator|.
+name|amReq
+operator|=
+name|amReq
 expr_stmt|;
 block|}
 annotation|@
@@ -5002,8 +5000,10 @@ name|ResourceRequest
 argument_list|>
 argument_list|()
 decl_stmt|;
+annotation|@
+name|VisibleForTesting
 DECL|class|ScheduleTransition
-specifier|private
+specifier|public
 specifier|static
 specifier|final
 class|class
@@ -5032,42 +5032,67 @@ name|RMAppAttemptEvent
 name|event
 parameter_list|)
 block|{
-if|if
-condition|(
-operator|!
+name|ApplicationSubmissionContext
+name|subCtx
+init|=
 name|appAttempt
 operator|.
 name|submissionContext
+decl_stmt|;
+if|if
+condition|(
+operator|!
+name|subCtx
 operator|.
 name|getUnmanagedAM
 argument_list|()
 condition|)
 block|{
-comment|// Request a container for the AM.
-name|ResourceRequest
-name|request
-init|=
-name|BuilderUtils
+comment|// Need reset #containers before create new attempt, because this request
+comment|// will be passed to scheduler, and scheduler will deduct the number after
+comment|// AM container allocated
+comment|// Currently, following fields are all hard code,
+comment|// TODO: change these fields when we want to support
+comment|// priority/resource-name/relax-locality specification for AM containers
+comment|// allocation.
+name|appAttempt
 operator|.
-name|newResourceRequest
+name|amReq
+operator|.
+name|setNumContainers
+argument_list|(
+literal|1
+argument_list|)
+expr_stmt|;
+name|appAttempt
+operator|.
+name|amReq
+operator|.
+name|setPriority
 argument_list|(
 name|AM_CONTAINER_PRIORITY
-argument_list|,
+argument_list|)
+expr_stmt|;
+name|appAttempt
+operator|.
+name|amReq
+operator|.
+name|setResourceName
+argument_list|(
 name|ResourceRequest
 operator|.
 name|ANY
-argument_list|,
+argument_list|)
+expr_stmt|;
 name|appAttempt
 operator|.
-name|getSubmissionContext
-argument_list|()
+name|amReq
 operator|.
-name|getResource
-argument_list|()
-argument_list|,
-literal|1
+name|setRelaxLocality
+argument_list|(
+literal|true
 argument_list|)
-decl_stmt|;
+expr_stmt|;
 comment|// SchedulerUtils.validateResourceRequests is not necessary because
 comment|// AM resource has been checked when submission
 name|Allocation
@@ -5087,7 +5112,9 @@ name|Collections
 operator|.
 name|singletonList
 argument_list|(
-name|request
+name|appAttempt
+operator|.
+name|amReq
 argument_list|)
 argument_list|,
 name|EMPTY_CONTAINER_RELEASE_LIST

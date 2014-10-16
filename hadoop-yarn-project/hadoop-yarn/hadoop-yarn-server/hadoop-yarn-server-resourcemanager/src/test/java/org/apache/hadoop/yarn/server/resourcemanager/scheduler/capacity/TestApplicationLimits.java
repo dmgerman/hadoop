@@ -602,6 +602,12 @@ operator|new
 name|DefaultResourceCalculator
 argument_list|()
 decl_stmt|;
+DECL|field|rmContext
+name|RMContext
+name|rmContext
+init|=
+literal|null
+decl_stmt|;
 annotation|@
 name|Before
 DECL|method|setUp ()
@@ -630,6 +636,13 @@ name|setupQueueConfiguration
 argument_list|(
 name|csConf
 argument_list|)
+expr_stmt|;
+name|rmContext
+operator|=
+name|TestUtils
+operator|.
+name|getMockRMContext
+argument_list|()
 expr_stmt|;
 name|CapacitySchedulerContext
 name|csContext
@@ -776,6 +789,19 @@ operator|.
 name|thenReturn
 argument_list|(
 name|resourceCalculator
+argument_list|)
+expr_stmt|;
+name|when
+argument_list|(
+name|csContext
+operator|.
+name|getRMContext
+argument_list|()
+argument_list|)
+operator|.
+name|thenReturn
+argument_list|(
+name|rmContext
 argument_list|)
 expr_stmt|;
 name|RMContainerTokenSecretManager
@@ -1269,6 +1295,19 @@ operator|.
 name|thenReturn
 argument_list|(
 name|resourceCalculator
+argument_list|)
+expr_stmt|;
+name|when
+argument_list|(
+name|csContext
+operator|.
+name|getRMContext
+argument_list|()
+argument_list|)
+operator|.
+name|thenReturn
+argument_list|(
+name|rmContext
 argument_list|)
 expr_stmt|;
 comment|// Say cluster has 100 nodes of 16G each
@@ -3522,6 +3561,19 @@ operator|.
 name|thenReturn
 argument_list|(
 name|resourceCalculator
+argument_list|)
+expr_stmt|;
+name|when
+argument_list|(
+name|csContext
+operator|.
+name|getRMContext
+argument_list|()
+argument_list|)
+operator|.
+name|thenReturn
+argument_list|(
+name|rmContext
 argument_list|)
 expr_stmt|;
 comment|// Say cluster has 100 nodes of 16G each

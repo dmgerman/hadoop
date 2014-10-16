@@ -1172,6 +1172,11 @@ return|return
 name|used
 return|;
 block|}
+annotation|@
+name|SuppressWarnings
+argument_list|(
+literal|"deprecation"
+argument_list|)
 DECL|method|submit ()
 specifier|public
 specifier|synchronized

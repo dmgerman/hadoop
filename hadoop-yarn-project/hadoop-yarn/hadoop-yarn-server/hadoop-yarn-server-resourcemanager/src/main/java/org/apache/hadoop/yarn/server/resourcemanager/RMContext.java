@@ -170,6 +170,26 @@ name|server
 operator|.
 name|resourcemanager
 operator|.
+name|nodelabels
+operator|.
+name|RMNodeLabelsManager
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|server
+operator|.
+name|resourcemanager
+operator|.
 name|recovery
 operator|.
 name|RMStateStore
@@ -604,6 +624,20 @@ DECL|method|isWorkPreservingRecoveryEnabled ()
 name|boolean
 name|isWorkPreservingRecoveryEnabled
 parameter_list|()
+function_decl|;
+DECL|method|getNodeLabelManager ()
+name|RMNodeLabelsManager
+name|getNodeLabelManager
+parameter_list|()
+function_decl|;
+DECL|method|setNodeLabelManager (RMNodeLabelsManager mgr)
+specifier|public
+name|void
+name|setNodeLabelManager
+parameter_list|(
+name|RMNodeLabelsManager
+name|mgr
+parameter_list|)
 function_decl|;
 DECL|method|getEpoch ()
 name|long

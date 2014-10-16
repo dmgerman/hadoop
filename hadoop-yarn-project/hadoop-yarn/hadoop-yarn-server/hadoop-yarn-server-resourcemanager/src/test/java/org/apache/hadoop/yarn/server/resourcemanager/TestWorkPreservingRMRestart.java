@@ -2268,7 +2268,7 @@ name|getUser
 argument_list|()
 argument_list|)
 operator|.
-name|getConsumedResources
+name|getTotalConsumedResources
 argument_list|()
 argument_list|)
 expr_stmt|;

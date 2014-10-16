@@ -74,6 +74,16 @@ end_import
 
 begin_import
 import|import
+name|java
+operator|.
+name|io
+operator|.
+name|IOException
+import|;
+end_import
+
+begin_import
+import|import
 name|org
 operator|.
 name|apache
@@ -85,6 +95,24 @@ operator|.
 name|conf
 operator|.
 name|YarnConfiguration
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|server
+operator|.
+name|resourcemanager
+operator|.
+name|RMContext
 import|;
 end_import
 
@@ -247,6 +275,8 @@ specifier|public
 name|void
 name|setup
 parameter_list|()
+throws|throws
+name|IOException
 block|{
 comment|// setup a context / conf
 name|csConf
@@ -376,6 +406,27 @@ operator|.
 name|thenReturn
 argument_list|(
 name|resourceCalculator
+argument_list|)
+expr_stmt|;
+name|RMContext
+name|mockRMContext
+init|=
+name|TestUtils
+operator|.
+name|getMockRMContext
+argument_list|()
+decl_stmt|;
+name|when
+argument_list|(
+name|csContext
+operator|.
+name|getRMContext
+argument_list|()
+argument_list|)
+operator|.
+name|thenReturn
+argument_list|(
+name|mockRMContext
 argument_list|)
 expr_stmt|;
 comment|// create a queue

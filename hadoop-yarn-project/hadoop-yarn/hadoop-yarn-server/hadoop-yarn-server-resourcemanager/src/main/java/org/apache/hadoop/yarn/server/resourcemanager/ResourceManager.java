@@ -758,6 +758,26 @@ name|server
 operator|.
 name|resourcemanager
 operator|.
+name|nodelabels
+operator|.
+name|RMNodeLabelsManager
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|server
+operator|.
+name|resourcemanager
+operator|.
 name|recovery
 operator|.
 name|NullRMStateStore
@@ -2444,6 +2464,18 @@ name|rmDispatcher
 argument_list|)
 return|;
 block|}
+DECL|method|createNodeLabelManager ()
+specifier|protected
+name|RMNodeLabelsManager
+name|createNodeLabelManager
+parameter_list|()
+block|{
+return|return
+operator|new
+name|RMNodeLabelsManager
+argument_list|()
+return|;
+block|}
 DECL|method|createDelegationTokenRenewer ()
 specifier|protected
 name|DelegationTokenRenewer
@@ -2772,6 +2804,24 @@ operator|.
 name|setAMFinishingMonitor
 argument_list|(
 name|amFinishingMonitor
+argument_list|)
+expr_stmt|;
+name|RMNodeLabelsManager
+name|nlm
+init|=
+name|createNodeLabelManager
+argument_list|()
+decl_stmt|;
+name|addService
+argument_list|(
+name|nlm
+argument_list|)
+expr_stmt|;
+name|rmContext
+operator|.
+name|setNodeLabelManager
+argument_list|(
+name|nlm
 argument_list|)
 expr_stmt|;
 name|boolean
@@ -5331,6 +5381,7 @@ expr_stmt|;
 block|}
 comment|/**    * Helper method to create and init {@link #activeServices}. This creates an    * instance of {@link RMActiveServices} and initializes it.    * @throws Exception    */
 DECL|method|createAndInitActiveServices ()
+specifier|protected
 name|void
 name|createAndInitActiveServices
 parameter_list|()

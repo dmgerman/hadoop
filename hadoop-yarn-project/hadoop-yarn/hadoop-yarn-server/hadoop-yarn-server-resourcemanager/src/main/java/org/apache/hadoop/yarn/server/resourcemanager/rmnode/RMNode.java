@@ -34,6 +34,16 @@ end_import
 
 begin_import
 import|import
+name|java
+operator|.
+name|util
+operator|.
+name|Set
+import|;
+end_import
+
+begin_import
+import|import
 name|org
 operator|.
 name|apache
@@ -327,6 +337,16 @@ argument_list|<
 name|UpdatedContainerInfo
 argument_list|>
 name|pullContainerUpdates
+parameter_list|()
+function_decl|;
+comment|/**    * Get set of labels in this node    *     * @return labels in this node    */
+DECL|method|getNodeLabels ()
+specifier|public
+name|Set
+argument_list|<
+name|String
+argument_list|>
+name|getNodeLabels
 parameter_list|()
 function_decl|;
 block|}
