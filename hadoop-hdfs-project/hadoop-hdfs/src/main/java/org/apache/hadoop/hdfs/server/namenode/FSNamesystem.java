@@ -14155,16 +14155,7 @@ name|src
 argument_list|)
 decl_stmt|;
 comment|// Nothing to do if the path is not within an EZ
-if|if
-condition|(
-name|dir
-operator|.
-name|isInAnEZ
-argument_list|(
-name|iip
-argument_list|)
-condition|)
-block|{
+specifier|final
 name|EncryptionZone
 name|zone
 init|=
@@ -14175,6 +14166,13 @@ argument_list|(
 name|iip
 argument_list|)
 decl_stmt|;
+if|if
+condition|(
+name|zone
+operator|!=
+literal|null
+condition|)
+block|{
 name|protocolVersion
 operator|=
 name|chooseProtocolVersion
@@ -14193,12 +14191,10 @@ argument_list|()
 expr_stmt|;
 name|ezKeyName
 operator|=
-name|dir
+name|zone
 operator|.
 name|getKeyName
-argument_list|(
-name|iip
-argument_list|)
+argument_list|()
 expr_stmt|;
 name|Preconditions
 operator|.
@@ -14569,14 +14565,22 @@ name|feInfo
 init|=
 literal|null
 decl_stmt|;
-if|if
-condition|(
+specifier|final
+name|EncryptionZone
+name|zone
+init|=
 name|dir
 operator|.
-name|isInAnEZ
+name|getEZForPath
 argument_list|(
 name|iip
 argument_list|)
+decl_stmt|;
+if|if
+condition|(
+name|zone
+operator|!=
+literal|null
 condition|)
 block|{
 comment|// The path is now within an EZ, but we're missing encryption parameters
@@ -14599,15 +14603,14 @@ throw|;
 block|}
 comment|// Path is within an EZ and we have provided encryption parameters.
 comment|// Make sure that the generated EDEK matches the settings of the EZ.
+specifier|final
 name|String
 name|ezKeyName
 init|=
-name|dir
+name|zone
 operator|.
 name|getKeyName
-argument_list|(
-name|iip
-argument_list|)
+argument_list|()
 decl_stmt|;
 if|if
 condition|(
