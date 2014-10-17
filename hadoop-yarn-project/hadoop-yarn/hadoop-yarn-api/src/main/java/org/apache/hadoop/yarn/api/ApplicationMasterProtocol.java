@@ -84,6 +84,22 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|io
+operator|.
+name|retry
+operator|.
+name|Idempotent
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|yarn
 operator|.
 name|api
@@ -319,6 +335,8 @@ annotation|@
 name|Public
 annotation|@
 name|Stable
+annotation|@
+name|Idempotent
 DECL|method|registerApplicationMaster ( RegisterApplicationMasterRequest request)
 specifier|public
 name|RegisterApplicationMasterResponse
@@ -337,6 +355,8 @@ annotation|@
 name|Public
 annotation|@
 name|Stable
+annotation|@
+name|AtMostOnce
 DECL|method|finishApplicationMaster ( FinishApplicationMasterRequest request)
 specifier|public
 name|FinishApplicationMasterResponse
