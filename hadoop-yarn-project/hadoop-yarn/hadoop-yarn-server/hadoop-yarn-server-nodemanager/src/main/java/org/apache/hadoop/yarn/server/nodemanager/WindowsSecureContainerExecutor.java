@@ -685,11 +685,10 @@ argument_list|,
 name|user
 argument_list|)
 expr_stmt|;
-comment|// TODO: Why pick first app dir. The same in LCE why not random?
 name|Path
 name|appStorageDir
 init|=
-name|getFirstApplicationDir
+name|getWorkingDir
 argument_list|(
 name|localDirs
 argument_list|,

@@ -2591,44 +2591,6 @@ name|short
 operator|)
 literal|0710
 decl_stmt|;
-DECL|method|getFirstApplicationDir (List<String> localDirs, String user, String appId)
-specifier|protected
-name|Path
-name|getFirstApplicationDir
-parameter_list|(
-name|List
-argument_list|<
-name|String
-argument_list|>
-name|localDirs
-parameter_list|,
-name|String
-name|user
-parameter_list|,
-name|String
-name|appId
-parameter_list|)
-block|{
-return|return
-name|getApplicationDir
-argument_list|(
-operator|new
-name|Path
-argument_list|(
-name|localDirs
-operator|.
-name|get
-argument_list|(
-literal|0
-argument_list|)
-argument_list|)
-argument_list|,
-name|user
-argument_list|,
-name|appId
-argument_list|)
-return|;
-block|}
 DECL|method|getDiskFreeSpace (Path base)
 specifier|private
 name|long
@@ -2771,7 +2733,7 @@ argument_list|)
 return|;
 block|}
 DECL|method|getWorkingDir (List<String> localDirs, String user, String appId)
-specifier|private
+specifier|protected
 name|Path
 name|getWorkingDir
 parameter_list|(
