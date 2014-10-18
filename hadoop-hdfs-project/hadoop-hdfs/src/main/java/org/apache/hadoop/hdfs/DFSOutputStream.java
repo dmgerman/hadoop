@@ -1198,16 +1198,6 @@ name|Syncable
 implements|,
 name|CanSetDropBehind
 block|{
-DECL|field|MAX_PACKETS
-specifier|private
-specifier|static
-specifier|final
-name|int
-name|MAX_PACKETS
-init|=
-literal|80
-decl_stmt|;
-comment|// each packet 64K, total 5MB
 comment|/**    * Number of times to retry creating a file when there are transient     * errors (typically related to encryption zones and KeyProvider operations).    */
 annotation|@
 name|VisibleForTesting
@@ -8812,7 +8802,12 @@ operator|.
 name|size
 argument_list|()
 operator|>
-name|MAX_PACKETS
+name|dfsClient
+operator|.
+name|getConf
+argument_list|()
+operator|.
+name|writeMaxPackets
 condition|)
 block|{
 try|try
