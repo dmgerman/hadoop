@@ -3997,16 +3997,6 @@ name|stop
 argument_list|()
 expr_stmt|;
 block|}
-name|AHSWebApp
-operator|.
-name|resetInstance
-argument_list|()
-expr_stmt|;
-name|super
-operator|.
-name|serviceStop
-argument_list|()
-expr_stmt|;
 block|}
 block|}
 DECL|method|getApplicationHistoryServer ()

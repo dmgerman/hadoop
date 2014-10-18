@@ -775,11 +775,6 @@ name|stop
 argument_list|()
 expr_stmt|;
 block|}
-name|AHSWebApp
-operator|.
-name|resetInstance
-argument_list|()
-expr_stmt|;
 block|}
 annotation|@
 name|Test

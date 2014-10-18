@@ -615,11 +615,6 @@ parameter_list|()
 throws|throws
 name|Exception
 block|{
-name|AHSWebApp
-operator|.
-name|resetInstance
-argument_list|()
-expr_stmt|;
 name|historyServer
 operator|.
 name|stop

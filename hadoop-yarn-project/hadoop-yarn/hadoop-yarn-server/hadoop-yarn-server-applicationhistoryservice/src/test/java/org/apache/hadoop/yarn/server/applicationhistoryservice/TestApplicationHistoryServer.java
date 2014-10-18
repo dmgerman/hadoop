@@ -699,11 +699,6 @@ operator|.
 name|stop
 argument_list|()
 expr_stmt|;
-name|AHSWebApp
-operator|.
-name|resetInstance
-argument_list|()
-expr_stmt|;
 block|}
 block|}
 annotation|@
@@ -727,11 +722,6 @@ name|stop
 argument_list|()
 expr_stmt|;
 block|}
-name|AHSWebApp
-operator|.
-name|resetInstance
-argument_list|()
-expr_stmt|;
 block|}
 block|}
 end_class
