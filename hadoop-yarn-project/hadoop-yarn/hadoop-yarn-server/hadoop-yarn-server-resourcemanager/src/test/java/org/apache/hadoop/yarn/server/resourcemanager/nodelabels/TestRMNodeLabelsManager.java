@@ -284,7 +284,7 @@ literal|0
 argument_list|)
 decl_stmt|;
 DECL|field|mgr
-name|DummyRMNodeLabelsManager
+name|MemoryRMNodeLabelsManager
 name|mgr
 init|=
 literal|null
@@ -300,7 +300,7 @@ block|{
 name|mgr
 operator|=
 operator|new
-name|DummyRMNodeLabelsManager
+name|MemoryRMNodeLabelsManager
 argument_list|()
 expr_stmt|;
 name|mgr

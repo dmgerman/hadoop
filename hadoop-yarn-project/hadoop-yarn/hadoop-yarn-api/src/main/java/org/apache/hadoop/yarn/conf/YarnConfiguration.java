@@ -5099,26 +5099,29 @@ name|YARN_PREFIX
 operator|+
 literal|"node-labels."
 decl_stmt|;
-comment|/** URI for NodeLabelManager */
-DECL|field|FS_NODE_LABELS_STORE_URI
+comment|/**    * Class for RMNodeLabelsManager Please note this value should be consistent    * in client nodes and RM node(s)    */
+DECL|field|RM_NODE_LABELS_MANAGER_CLASS
 specifier|public
 specifier|static
 specifier|final
 name|String
-name|FS_NODE_LABELS_STORE_URI
+name|RM_NODE_LABELS_MANAGER_CLASS
 init|=
 name|NODE_LABELS_PREFIX
 operator|+
-literal|"fs-store.uri"
+literal|"manager-class"
 decl_stmt|;
-DECL|field|DEFAULT_FS_NODE_LABELS_STORE_URI
+comment|/** URI for NodeLabelManager */
+DECL|field|FS_NODE_LABELS_STORE_ROOT_DIR
 specifier|public
 specifier|static
 specifier|final
 name|String
-name|DEFAULT_FS_NODE_LABELS_STORE_URI
+name|FS_NODE_LABELS_STORE_ROOT_DIR
 init|=
-literal|"file:///tmp/"
+name|NODE_LABELS_PREFIX
+operator|+
+literal|"fs-store.root-dir"
 decl_stmt|;
 DECL|field|FS_NODE_LABELS_STORE_RETRY_POLICY_SPEC
 specifier|public

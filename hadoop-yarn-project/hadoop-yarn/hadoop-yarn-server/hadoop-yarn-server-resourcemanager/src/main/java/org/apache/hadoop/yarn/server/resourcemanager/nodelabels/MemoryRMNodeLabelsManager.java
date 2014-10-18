@@ -104,22 +104,6 @@ name|hadoop
 operator|.
 name|yarn
 operator|.
-name|event
-operator|.
-name|InlineDispatcher
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|yarn
-operator|.
 name|nodelabels
 operator|.
 name|NodeLabelsStore
@@ -127,10 +111,10 @@ import|;
 end_import
 
 begin_class
-DECL|class|DummyRMNodeLabelsManager
+DECL|class|MemoryRMNodeLabelsManager
 specifier|public
 class|class
-name|DummyRMNodeLabelsManager
+name|MemoryRMNodeLabelsManager
 extends|extends
 name|RMNodeLabelsManager
 block|{
@@ -283,9 +267,7 @@ name|super
 operator|.
 name|dispatcher
 operator|=
-operator|new
-name|InlineDispatcher
-argument_list|()
+literal|null
 expr_stmt|;
 block|}
 annotation|@

@@ -1268,6 +1268,13 @@ name|getConfig
 argument_list|()
 argument_list|)
 expr_stmt|;
+if|if
+condition|(
+literal|null
+operator|!=
+name|dispatcher
+condition|)
+block|{
 name|dispatcher
 operator|.
 name|register
@@ -1281,6 +1288,7 @@ name|ForwardingEventHandler
 argument_list|()
 argument_list|)
 expr_stmt|;
+block|}
 name|startDispatcher
 argument_list|()
 expr_stmt|;

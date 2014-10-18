@@ -297,7 +297,7 @@ name|set
 argument_list|(
 name|YarnConfiguration
 operator|.
-name|FS_NODE_LABELS_STORE_URI
+name|FS_NODE_LABELS_STORE_ROOT_DIR
 argument_list|,
 name|tempDir
 operator|.
@@ -338,7 +338,7 @@ argument_list|(
 name|getStore
 argument_list|()
 operator|.
-name|rootDirPath
+name|fsWorkingPath
 argument_list|,
 literal|true
 argument_list|)
