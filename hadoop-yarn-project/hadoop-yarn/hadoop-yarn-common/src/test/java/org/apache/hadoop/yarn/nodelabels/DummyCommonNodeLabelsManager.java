@@ -295,6 +295,22 @@ parameter_list|()
 block|{
 comment|// do nothing
 block|}
+annotation|@
+name|Override
+DECL|method|serviceStop ()
+specifier|protected
+name|void
+name|serviceStop
+parameter_list|()
+throws|throws
+name|Exception
+block|{
+name|super
+operator|.
+name|serviceStop
+argument_list|()
+expr_stmt|;
+block|}
 block|}
 end_class
 

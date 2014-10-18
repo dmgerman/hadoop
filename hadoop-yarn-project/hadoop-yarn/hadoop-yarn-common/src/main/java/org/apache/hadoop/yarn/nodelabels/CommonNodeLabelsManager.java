@@ -1328,11 +1328,20 @@ comment|// finalize store
 name|stopDispatcher
 argument_list|()
 expr_stmt|;
+comment|// only close store when we enabled store persistent
+if|if
+condition|(
+literal|null
+operator|!=
+name|store
+condition|)
+block|{
 name|store
 operator|.
 name|close
 argument_list|()
 expr_stmt|;
+block|}
 block|}
 comment|/**    * Add multiple node labels to repository    *     * @param labels    *          new node labels added    */
 annotation|@
