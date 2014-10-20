@@ -94,20 +94,6 @@ name|hadoop
 operator|.
 name|mapred
 operator|.
-name|FileAlreadyExistsException
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|mapred
-operator|.
 name|InvalidJobConfException
 import|;
 end_import
@@ -493,36 +479,6 @@ name|getConfiguration
 argument_list|()
 argument_list|)
 expr_stmt|;
-if|if
-condition|(
-name|outDir
-operator|.
-name|getFileSystem
-argument_list|(
-name|job
-operator|.
-name|getConfiguration
-argument_list|()
-argument_list|)
-operator|.
-name|exists
-argument_list|(
-name|outDir
-argument_list|)
-condition|)
-block|{
-throw|throw
-operator|new
-name|FileAlreadyExistsException
-argument_list|(
-literal|"Output directory "
-operator|+
-name|outDir
-operator|+
-literal|" already exists"
-argument_list|)
-throw|;
-block|}
 block|}
 DECL|method|getRecordWriter (TaskAttemptContext job )
 specifier|public
