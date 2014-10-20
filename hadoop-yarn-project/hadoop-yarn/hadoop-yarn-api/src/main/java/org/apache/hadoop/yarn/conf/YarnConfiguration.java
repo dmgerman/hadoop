@@ -4702,6 +4702,60 @@ name|TIMELINE_SERVICE_HTTP_CROSS_ORIGIN_ENABLED_DEFAULT
 init|=
 literal|false
 decl_stmt|;
+comment|/** Timeline client settings */
+DECL|field|TIMELINE_SERVICE_CLIENT_PREFIX
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|TIMELINE_SERVICE_CLIENT_PREFIX
+init|=
+name|TIMELINE_SERVICE_PREFIX
+operator|+
+literal|"client."
+decl_stmt|;
+comment|/** Timeline client call, max retries (-1 means no limit) */
+DECL|field|TIMELINE_SERVICE_CLIENT_MAX_RETRIES
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|TIMELINE_SERVICE_CLIENT_MAX_RETRIES
+init|=
+name|TIMELINE_SERVICE_CLIENT_PREFIX
+operator|+
+literal|"max-retries"
+decl_stmt|;
+DECL|field|DEFAULT_TIMELINE_SERVICE_CLIENT_MAX_RETRIES
+specifier|public
+specifier|static
+specifier|final
+name|int
+name|DEFAULT_TIMELINE_SERVICE_CLIENT_MAX_RETRIES
+init|=
+literal|30
+decl_stmt|;
+comment|/** Timeline client call, retry interval */
+DECL|field|TIMELINE_SERVICE_CLIENT_RETRY_INTERVAL_MS
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|TIMELINE_SERVICE_CLIENT_RETRY_INTERVAL_MS
+init|=
+name|TIMELINE_SERVICE_CLIENT_PREFIX
+operator|+
+literal|"retry-interval-ms"
+decl_stmt|;
+specifier|public
+specifier|static
+specifier|final
+name|long
+DECL|field|DEFAULT_TIMELINE_SERVICE_CLIENT_RETRY_INTERVAL_MS
+name|DEFAULT_TIMELINE_SERVICE_CLIENT_RETRY_INTERVAL_MS
+init|=
+literal|1000
+decl_stmt|;
 comment|// ///////////////////////////////
 comment|// Shared Cache Configs
 comment|// ///////////////////////////////
