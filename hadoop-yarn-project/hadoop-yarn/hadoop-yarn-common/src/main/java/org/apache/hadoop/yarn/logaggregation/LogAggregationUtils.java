@@ -363,6 +363,32 @@ literal|"_"
 argument_list|)
 return|;
 block|}
+annotation|@
+name|VisibleForTesting
+DECL|method|getNodeString (String nodeId)
+specifier|public
+specifier|static
+name|String
+name|getNodeString
+parameter_list|(
+name|String
+name|nodeId
+parameter_list|)
+block|{
+return|return
+name|nodeId
+operator|.
+name|toString
+argument_list|()
+operator|.
+name|replace
+argument_list|(
+literal|":"
+argument_list|,
+literal|"_"
+argument_list|)
+return|;
+block|}
 block|}
 end_class
 
