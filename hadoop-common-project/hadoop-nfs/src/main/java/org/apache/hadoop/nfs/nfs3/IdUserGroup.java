@@ -1960,8 +1960,6 @@ operator|+
 literal|". Use its string hashcode:"
 operator|+
 name|uid
-argument_list|,
-name|e
 argument_list|)
 expr_stmt|;
 block|}
@@ -2019,8 +2017,6 @@ operator|+
 literal|". Use its string hashcode:"
 operator|+
 name|gid
-argument_list|,
-name|e
 argument_list|)
 expr_stmt|;
 block|}

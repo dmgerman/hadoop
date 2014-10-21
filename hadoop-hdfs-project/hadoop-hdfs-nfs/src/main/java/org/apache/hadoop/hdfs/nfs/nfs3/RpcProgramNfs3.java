@@ -6606,6 +6606,8 @@ argument_list|,
 name|iug
 argument_list|,
 name|aixCompatMode
+argument_list|,
+name|config
 argument_list|)
 decl_stmt|;
 name|fileHandle

@@ -303,6 +303,24 @@ name|AIX_COMPAT_MODE_DEFAULT
 init|=
 literal|false
 decl_stmt|;
+DECL|field|LARGE_FILE_UPLOAD
+specifier|public
+specifier|final
+specifier|static
+name|String
+name|LARGE_FILE_UPLOAD
+init|=
+literal|"nfs.large.file.upload"
+decl_stmt|;
+DECL|field|LARGE_FILE_UPLOAD_DEFAULT
+specifier|public
+specifier|final
+specifier|static
+name|boolean
+name|LARGE_FILE_UPLOAD_DEFAULT
+init|=
+literal|true
+decl_stmt|;
 block|}
 end_class
 
