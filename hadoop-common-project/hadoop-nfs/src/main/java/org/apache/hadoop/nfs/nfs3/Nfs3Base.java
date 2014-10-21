@@ -237,7 +237,7 @@ operator|.
 name|addShutdownHook
 argument_list|(
 operator|new
-name|Unregister
+name|NfsShutdownHook
 argument_list|()
 argument_list|,
 name|SHUTDOWN_HOOK_PRIORITY
@@ -332,10 +332,10 @@ name|SHUTDOWN_HOOK_PRIORITY
 init|=
 literal|10
 decl_stmt|;
-DECL|class|Unregister
+DECL|class|NfsShutdownHook
 specifier|private
 class|class
-name|Unregister
+name|NfsShutdownHook
 implements|implements
 name|Runnable
 block|{
@@ -358,6 +358,11 @@ name|TRANSPORT_TCP
 argument_list|,
 name|nfsBoundPort
 argument_list|)
+expr_stmt|;
+name|rpcProgram
+operator|.
+name|stopDaemons
+argument_list|()
 expr_stmt|;
 block|}
 block|}

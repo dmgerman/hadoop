@@ -665,11 +665,17 @@ argument_list|)
 throw|;
 block|}
 block|}
-comment|// Start extra daemons
+comment|// Start extra daemons or services
 DECL|method|startDaemons ()
 specifier|public
 name|void
 name|startDaemons
+parameter_list|()
+block|{}
+DECL|method|stopDaemons ()
+specifier|public
+name|void
+name|stopDaemons
 parameter_list|()
 block|{}
 annotation|@
