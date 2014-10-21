@@ -604,7 +604,6 @@ block|}
 comment|/**    * Get a cached peer connected to the given DataNode.    * @param dnId         The DataNode to get a Peer for.    * @param isDomain     Whether to retrieve a DomainPeer or not.    *    * @return             An open Peer connected to the DN, or null if none    *                     was found.     */
 DECL|method|get (DatanodeID dnId, boolean isDomain)
 specifier|public
-specifier|synchronized
 name|Peer
 name|get
 parameter_list|(
@@ -627,6 +626,28 @@ return|return
 literal|null
 return|;
 block|}
+return|return
+name|getInternal
+argument_list|(
+name|dnId
+argument_list|,
+name|isDomain
+argument_list|)
+return|;
+block|}
+DECL|method|getInternal (DatanodeID dnId, boolean isDomain)
+specifier|private
+specifier|synchronized
+name|Peer
+name|getInternal
+parameter_list|(
+name|DatanodeID
+name|dnId
+parameter_list|,
+name|boolean
+name|isDomain
+parameter_list|)
+block|{
 name|List
 argument_list|<
 name|Value
@@ -770,7 +791,6 @@ block|}
 comment|/**    * Give an unused socket to the cache.    */
 DECL|method|put (DatanodeID dnId, Peer peer)
 specifier|public
-specifier|synchronized
 name|void
 name|put
 parameter_list|(
@@ -822,6 +842,27 @@ argument_list|)
 expr_stmt|;
 return|return;
 block|}
+name|putInternal
+argument_list|(
+name|dnId
+argument_list|,
+name|peer
+argument_list|)
+expr_stmt|;
+block|}
+DECL|method|putInternal (DatanodeID dnId, Peer peer)
+specifier|private
+specifier|synchronized
+name|void
+name|putInternal
+parameter_list|(
+name|DatanodeID
+name|dnId
+parameter_list|,
+name|Peer
+name|peer
+parameter_list|)
+block|{
 name|startExpiryDaemon
 argument_list|()
 expr_stmt|;
