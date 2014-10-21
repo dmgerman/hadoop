@@ -5333,11 +5333,12 @@ return|return
 name|fileNames
 return|;
 block|}
-comment|/**    * Create a jar file at the given path, containing a manifest with a classpath    * that references all specified entries.    *     * Some platforms may have an upper limit on command line length.  For example,    * the maximum command line length on Windows is 8191 characters, but the    * length of the classpath may exceed this.  To work around this limitation,    * use this method to create a small intermediate jar with a manifest that    * contains the full classpath.  It returns the absolute path to the new jar,    * which the caller may set as the classpath for a new process.    *     * Environment variable evaluation is not supported within a jar manifest, so    * this method expands environment variables before inserting classpath entries    * to the manifest.  The method parses environment variables according to    * platform-specific syntax (%VAR% on Windows, or $VAR otherwise).  On Windows,    * environment variables are case-insensitive.  For example, %VAR% and %var%    * evaluate to the same value.    *     * Specifying the classpath in a jar manifest does not support wildcards, so    * this method expands wildcards internally.  Any classpath entry that ends    * with * is translated to all files at that path with extension .jar or .JAR.    *     * @param inputClassPath String input classpath to bundle into the jar manifest    * @param pwd Path to working directory to save jar    * @param callerEnv Map<String, String> caller's environment variables to use    *   for expansion    * @return String absolute path to new jar    * @throws IOException if there is an I/O error while writing the jar file    */
+comment|/**    * Create a jar file at the given path, containing a manifest with a classpath    * that references all specified entries.    *     * Some platforms may have an upper limit on command line length.  For example,    * the maximum command line length on Windows is 8191 characters, but the    * length of the classpath may exceed this.  To work around this limitation,    * use this method to create a small intermediate jar with a manifest that    * contains the full classpath.  It returns the absolute path to the new jar,    * which the caller may set as the classpath for a new process.    *     * Environment variable evaluation is not supported within a jar manifest, so    * this method expands environment variables before inserting classpath entries    * to the manifest.  The method parses environment variables according to    * platform-specific syntax (%VAR% on Windows, or $VAR otherwise).  On Windows,    * environment variables are case-insensitive.  For example, %VAR% and %var%    * evaluate to the same value.    *     * Specifying the classpath in a jar manifest does not support wildcards, so    * this method expands wildcards internally.  Any classpath entry that ends    * with * is translated to all files at that path with extension .jar or .JAR.    *     * @param inputClassPath String input classpath to bundle into the jar manifest    * @param pwd Path to working directory to save jar    * @param callerEnv Map<String, String> caller's environment variables to use    *   for expansion    * @return String[] with absolute path to new jar in position 0 and    *   unexpanded wild card entry path in position 1    * @throws IOException if there is an I/O error while writing the jar file    */
 DECL|method|createJarWithClassPath (String inputClassPath, Path pwd, Map<String, String> callerEnv)
 specifier|public
 specifier|static
 name|String
+index|[]
 name|createJarWithClassPath
 parameter_list|(
 name|String
@@ -5472,6 +5473,13 @@ literal|", execution will continue"
 argument_list|)
 expr_stmt|;
 block|}
+name|StringBuilder
+name|unexpandedWildcardClasspath
+init|=
+operator|new
+name|StringBuilder
+argument_list|()
+decl_stmt|;
 comment|// Append all entries
 name|List
 argument_list|<
@@ -5520,6 +5528,11 @@ literal|"*"
 argument_list|)
 condition|)
 block|{
+name|boolean
+name|foundWildCardJar
+init|=
+literal|false
+decl_stmt|;
 comment|// Append all jars that match the wildcard
 name|Path
 name|globPath
@@ -5567,6 +5580,10 @@ range|:
 name|wildcardJars
 control|)
 block|{
+name|foundWildCardJar
+operator|=
+literal|true
+expr_stmt|;
 name|classPathEntryList
 operator|.
 name|add
@@ -5587,6 +5604,29 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
+block|}
+if|if
+condition|(
+operator|!
+name|foundWildCardJar
+condition|)
+block|{
+name|unexpandedWildcardClasspath
+operator|.
+name|append
+argument_list|(
+name|File
+operator|.
+name|pathSeparator
+argument_list|)
+expr_stmt|;
+name|unexpandedWildcardClasspath
+operator|.
+name|append
+argument_list|(
+name|classPathEntry
+argument_list|)
+expr_stmt|;
 block|}
 block|}
 else|else
@@ -5826,11 +5866,24 @@ name|fos
 argument_list|)
 expr_stmt|;
 block|}
-return|return
+name|String
+index|[]
+name|jarCp
+init|=
+block|{
 name|classPathJar
 operator|.
 name|getCanonicalPath
 argument_list|()
+block|,
+name|unexpandedWildcardClasspath
+operator|.
+name|toString
+argument_list|()
+block|}
+decl_stmt|;
+return|return
+name|jarCp
 return|;
 block|}
 block|}

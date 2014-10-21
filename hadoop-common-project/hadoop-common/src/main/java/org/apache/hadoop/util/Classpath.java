@@ -409,6 +409,9 @@ operator|.
 name|getenv
 argument_list|()
 argument_list|)
+index|[
+literal|0
+index|]
 expr_stmt|;
 block|}
 catch|catch

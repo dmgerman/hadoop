@@ -4398,7 +4398,8 @@ name|environment
 argument_list|)
 expr_stmt|;
 name|String
-name|classPathJar
+index|[]
+name|jarCp
 init|=
 name|FileUtil
 operator|.
@@ -4413,6 +4414,14 @@ name|pwd
 argument_list|,
 name|mergedEnv
 argument_list|)
+decl_stmt|;
+name|String
+name|classPathJar
+init|=
+name|jarCp
+index|[
+literal|0
+index|]
 decl_stmt|;
 comment|// In a secure cluster the classpath jar must be localized to grant access
 name|this
@@ -4433,6 +4442,16 @@ name|getUser
 argument_list|()
 argument_list|)
 expr_stmt|;
+name|String
+name|replacementClassPath
+init|=
+name|classPathJar
+operator|+
+name|jarCp
+index|[
+literal|1
+index|]
+decl_stmt|;
 name|environment
 operator|.
 name|put
@@ -4444,7 +4463,7 @@ operator|.
 name|name
 argument_list|()
 argument_list|,
-name|classPathJar
+name|replacementClassPath
 argument_list|)
 expr_stmt|;
 block|}
