@@ -184,7 +184,9 @@ return|return
 name|dirsHandler
 operator|.
 name|getDisksHealthReport
-argument_list|()
+argument_list|(
+literal|false
+argument_list|)
 return|;
 block|}
 else|else
@@ -199,7 +201,9 @@ operator|+
 name|dirsHandler
 operator|.
 name|getDisksHealthReport
-argument_list|()
+argument_list|(
+literal|false
+argument_list|)
 argument_list|)
 return|;
 block|}
