@@ -1052,17 +1052,54 @@ specifier|private
 name|boolean
 name|isEnabled
 decl_stmt|;
-DECL|field|retryFilter
-specifier|private
-name|TimelineJerseyRetryFilter
-name|retryFilter
+annotation|@
+name|Private
+annotation|@
+name|VisibleForTesting
+DECL|field|connectionRetry
+name|TimelineClientConnectionRetry
+name|connectionRetry
 decl_stmt|;
-DECL|class|TimelineJerseyRetryFilter
+comment|// Abstract class for an operation that should be retried by timeline client
+DECL|class|TimelineClientRetryOp
+specifier|private
+specifier|static
+specifier|abstract
+class|class
+name|TimelineClientRetryOp
+block|{
+comment|// The operation that should be retried
+DECL|method|run ()
+specifier|public
+specifier|abstract
+name|Object
+name|run
+parameter_list|()
+throws|throws
+name|IOException
+function_decl|;
+comment|// The method to indicate if we should retry given the incoming exception
+DECL|method|shouldRetryOn (Exception e)
+specifier|public
+specifier|abstract
+name|boolean
+name|shouldRetryOn
+parameter_list|(
+name|Exception
+name|e
+parameter_list|)
+function_decl|;
+block|}
+comment|// Class to handle retry
+comment|// Outside this class, only visible to tests
+annotation|@
+name|Private
+annotation|@
+name|VisibleForTesting
+DECL|class|TimelineClientConnectionRetry
 specifier|static
 class|class
-name|TimelineJerseyRetryFilter
-extends|extends
-name|ClientFilter
+name|TimelineClientConnectionRetry
 block|{
 comment|// maxRetries< 0 means keep trying
 annotation|@
@@ -1083,7 +1120,8 @@ specifier|public
 name|long
 name|retryInterval
 decl_stmt|;
-comment|// Indicates if retries happened last time
+comment|// Indicates if retries happened last time. Only tests should read it.
+comment|// In unit tests, retryOn() calls should _not_ be concurrent.
 annotation|@
 name|Private
 annotation|@
@@ -1096,17 +1134,14 @@ init|=
 literal|false
 decl_stmt|;
 comment|// Constructor with default retry settings
-DECL|method|TimelineJerseyRetryFilter (Configuration conf)
+DECL|method|TimelineClientConnectionRetry (Configuration conf)
 specifier|public
-name|TimelineJerseyRetryFilter
+name|TimelineClientConnectionRetry
 parameter_list|(
 name|Configuration
 name|conf
 parameter_list|)
 block|{
-name|super
-argument_list|()
-expr_stmt|;
 name|maxRetries
 operator|=
 name|conf
@@ -1138,18 +1173,18 @@ name|DEFAULT_TIMELINE_SERVICE_CLIENT_RETRY_INTERVAL_MS
 argument_list|)
 expr_stmt|;
 block|}
-annotation|@
-name|Override
-DECL|method|handle (ClientRequest cr)
+DECL|method|retryOn (TimelineClientRetryOp op)
 specifier|public
-name|ClientResponse
-name|handle
+name|Object
+name|retryOn
 parameter_list|(
-name|ClientRequest
-name|cr
+name|TimelineClientRetryOp
+name|op
 parameter_list|)
 throws|throws
-name|ClientHandlerException
+name|RuntimeException
+throws|,
+name|IOException
 block|{
 name|int
 name|leftRetries
@@ -1168,20 +1203,60 @@ condition|)
 block|{
 try|try
 block|{
-comment|// try pass the request on, if fail, keep retrying
+comment|// try perform the op, if fail, keep retrying
 return|return
-name|getNext
-argument_list|()
+name|op
 operator|.
-name|handle
-argument_list|(
-name|cr
-argument_list|)
+name|run
+argument_list|()
 return|;
 block|}
 catch|catch
 parameter_list|(
-name|ClientHandlerException
+name|IOException
+name|e
+parameter_list|)
+block|{
+comment|// We may only throw runtime and IO exceptions. After switching to
+comment|// Java 1.7, we can merge these two catch blocks into one.
+comment|// break if there's no retries left
+if|if
+condition|(
+name|leftRetries
+operator|==
+literal|0
+condition|)
+block|{
+break|break;
+block|}
+if|if
+condition|(
+name|op
+operator|.
+name|shouldRetryOn
+argument_list|(
+name|e
+argument_list|)
+condition|)
+block|{
+name|logException
+argument_list|(
+name|e
+argument_list|,
+name|leftRetries
+argument_list|)
+expr_stmt|;
+block|}
+else|else
+block|{
+throw|throw
+name|e
+throw|;
+block|}
+block|}
+catch|catch
+parameter_list|(
+name|RuntimeException
 name|e
 parameter_list|)
 block|{
@@ -1197,62 +1272,20 @@ break|break;
 block|}
 if|if
 condition|(
+name|op
+operator|.
+name|shouldRetryOn
+argument_list|(
 name|e
-operator|.
-name|getCause
-argument_list|()
-operator|instanceof
-name|ConnectException
+argument_list|)
 condition|)
 block|{
-if|if
-condition|(
-name|leftRetries
-operator|>
-literal|0
-condition|)
-block|{
-name|LOG
-operator|.
-name|info
+name|logException
 argument_list|(
-literal|"Connection Timeout ("
-operator|+
-name|cr
-operator|.
-name|getURI
-argument_list|()
-operator|+
-literal|"), will try "
-operator|+
+name|e
+argument_list|,
 name|leftRetries
-operator|+
-literal|" more time(s)."
 argument_list|)
-expr_stmt|;
-block|}
-else|else
-block|{
-comment|// note that maxRetries may be -1 at the very beginning
-comment|// maxRetries = -1 means keep trying
-name|LOG
-operator|.
-name|info
-argument_list|(
-literal|"Connection Timeout ("
-operator|+
-name|cr
-operator|.
-name|getURI
-argument_list|()
-operator|+
-literal|"), will keep retrying."
-argument_list|)
-expr_stmt|;
-block|}
-name|retried
-operator|=
-literal|true
 expr_stmt|;
 block|}
 else|else
@@ -1273,6 +1306,10 @@ name|leftRetries
 operator|--
 expr_stmt|;
 block|}
+name|retried
+operator|=
+literal|true
+expr_stmt|;
 try|try
 block|{
 comment|// sleep for the given time interval
@@ -1301,7 +1338,7 @@ block|}
 block|}
 throw|throw
 operator|new
-name|ClientHandlerException
+name|RuntimeException
 argument_list|(
 literal|"Failed to connect to timeline server. "
 operator|+
@@ -1312,6 +1349,175 @@ argument_list|)
 throw|;
 block|}
 empty_stmt|;
+DECL|method|logException (Exception e, int leftRetries)
+specifier|private
+name|void
+name|logException
+parameter_list|(
+name|Exception
+name|e
+parameter_list|,
+name|int
+name|leftRetries
+parameter_list|)
+block|{
+if|if
+condition|(
+name|leftRetries
+operator|>
+literal|0
+condition|)
+block|{
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"Exception caught by TimelineClientConnectionRetry,"
+operator|+
+literal|" will try "
+operator|+
+name|leftRetries
+operator|+
+literal|" more time(s).\nMessage: "
+operator|+
+name|e
+operator|.
+name|getMessage
+argument_list|()
+argument_list|)
+expr_stmt|;
+block|}
+else|else
+block|{
+comment|// note that maxRetries may be -1 at the very beginning
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"ConnectionException caught by TimelineClientConnectionRetry,"
+operator|+
+literal|" will keep retrying.\nMessage: "
+operator|+
+name|e
+operator|.
+name|getMessage
+argument_list|()
+argument_list|)
+expr_stmt|;
+block|}
+block|}
+block|}
+DECL|class|TimelineJerseyRetryFilter
+specifier|private
+class|class
+name|TimelineJerseyRetryFilter
+extends|extends
+name|ClientFilter
+block|{
+annotation|@
+name|Override
+DECL|method|handle (final ClientRequest cr)
+specifier|public
+name|ClientResponse
+name|handle
+parameter_list|(
+specifier|final
+name|ClientRequest
+name|cr
+parameter_list|)
+throws|throws
+name|ClientHandlerException
+block|{
+comment|// Set up the retry operation
+name|TimelineClientRetryOp
+name|jerseyRetryOp
+init|=
+operator|new
+name|TimelineClientRetryOp
+argument_list|()
+block|{
+annotation|@
+name|Override
+specifier|public
+name|Object
+name|run
+parameter_list|()
+block|{
+comment|// Try pass the request, if fail, keep retrying
+return|return
+name|getNext
+argument_list|()
+operator|.
+name|handle
+argument_list|(
+name|cr
+argument_list|)
+return|;
+block|}
+annotation|@
+name|Override
+specifier|public
+name|boolean
+name|shouldRetryOn
+parameter_list|(
+name|Exception
+name|e
+parameter_list|)
+block|{
+comment|// Only retry on connection exceptions
+return|return
+operator|(
+name|e
+operator|instanceof
+name|ClientHandlerException
+operator|)
+operator|&&
+operator|(
+name|e
+operator|.
+name|getCause
+argument_list|()
+operator|instanceof
+name|ConnectException
+operator|)
+return|;
+block|}
+block|}
+decl_stmt|;
+try|try
+block|{
+return|return
+operator|(
+name|ClientResponse
+operator|)
+name|connectionRetry
+operator|.
+name|retryOn
+argument_list|(
+name|jerseyRetryOp
+argument_list|)
+return|;
+block|}
+catch|catch
+parameter_list|(
+name|IOException
+name|e
+parameter_list|)
+block|{
+throw|throw
+operator|new
+name|ClientHandlerException
+argument_list|(
+literal|"Jersey retry failed!\nMessage: "
+operator|+
+name|e
+operator|.
+name|getMessage
+argument_list|()
+argument_list|)
+throw|;
+block|}
+block|}
 block|}
 DECL|method|TimelineClientImpl ()
 specifier|public
@@ -1428,6 +1634,22 @@ argument_list|(
 name|connConfigurator
 argument_list|)
 expr_stmt|;
+name|token
+operator|=
+operator|new
+name|DelegationTokenAuthenticatedURL
+operator|.
+name|Token
+argument_list|()
+expr_stmt|;
+name|connectionRetry
+operator|=
+operator|new
+name|TimelineClientConnectionRetry
+argument_list|(
+name|conf
+argument_list|)
+expr_stmt|;
 name|client
 operator|=
 operator|new
@@ -1444,22 +1666,13 @@ argument_list|,
 name|cc
 argument_list|)
 expr_stmt|;
-name|token
-operator|=
-operator|new
-name|DelegationTokenAuthenticatedURL
-operator|.
-name|Token
-argument_list|()
-expr_stmt|;
+name|TimelineJerseyRetryFilter
 name|retryFilter
-operator|=
+init|=
 operator|new
 name|TimelineJerseyRetryFilter
-argument_list|(
-name|conf
-argument_list|)
-expr_stmt|;
+argument_list|()
+decl_stmt|;
 name|client
 operator|.
 name|addFilter
@@ -1851,6 +2064,24 @@ name|IOException
 throws|,
 name|YarnException
 block|{
+comment|// Set up the retry operation
+name|TimelineClientRetryOp
+name|tokenRetryOp
+init|=
+operator|new
+name|TimelineClientRetryOp
+argument_list|()
+block|{
+annotation|@
+name|Override
+specifier|public
+name|Object
+name|run
+parameter_list|()
+throws|throws
+name|IOException
+block|{
+comment|// Try pass the request, if fail, keep retrying
 name|boolean
 name|isProxyAccess
 init|=
@@ -2000,17 +2231,39 @@ throw|;
 block|}
 block|}
 annotation|@
-name|Private
-annotation|@
-name|VisibleForTesting
-DECL|method|getRetryFilter ()
+name|Override
 specifier|public
-name|TimelineJerseyRetryFilter
-name|getRetryFilter
-parameter_list|()
+name|boolean
+name|shouldRetryOn
+parameter_list|(
+name|Exception
+name|e
+parameter_list|)
 block|{
+comment|// Only retry on connection exceptions
 return|return
-name|retryFilter
+operator|(
+name|e
+operator|instanceof
+name|ConnectException
+operator|)
+return|;
+block|}
+block|}
+decl_stmt|;
+return|return
+operator|(
+name|Token
+argument_list|<
+name|TimelineDelegationTokenIdentifier
+argument_list|>
+operator|)
+name|connectionRetry
+operator|.
+name|retryOn
+argument_list|(
+name|tokenRetryOp
+argument_list|)
 return|;
 block|}
 annotation|@
