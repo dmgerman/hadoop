@@ -661,11 +661,6 @@ operator|==
 literal|null
 condition|)
 block|{
-name|containerLogNotFound
-argument_list|(
-name|containerIdStr
-argument_list|)
-expr_stmt|;
 return|return
 operator|-
 literal|1
