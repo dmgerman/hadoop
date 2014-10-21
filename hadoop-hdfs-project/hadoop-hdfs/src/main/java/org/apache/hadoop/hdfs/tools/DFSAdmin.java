@@ -7495,6 +7495,9 @@ operator|+
 name|address
 argument_list|)
 expr_stmt|;
+return|return
+literal|0
+return|;
 block|}
 else|else
 block|{
@@ -7511,11 +7514,10 @@ operator|+
 literal|" does not support reconfiguration."
 argument_list|)
 expr_stmt|;
-block|}
 return|return
-operator|-
 literal|1
 return|;
+block|}
 block|}
 DECL|method|getReconfigurationStatus (String nodeType, String address, PrintStream out, PrintStream err)
 name|int
@@ -7783,7 +7785,6 @@ literal|"."
 argument_list|)
 expr_stmt|;
 return|return
-operator|-
 literal|1
 return|;
 block|}
@@ -7802,7 +7803,6 @@ literal|" does not support reconfiguration."
 argument_list|)
 expr_stmt|;
 return|return
-operator|-
 literal|1
 return|;
 block|}
