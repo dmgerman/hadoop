@@ -184,6 +184,22 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|security
+operator|.
+name|authorize
+operator|.
+name|ProxyUsers
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|util
 operator|.
 name|StringUtils
@@ -2232,6 +2248,18 @@ name|String
 name|DEFAULT_RM_NODEMANAGER_MINIMUM_VERSION
 init|=
 literal|"NONE"
+decl_stmt|;
+comment|/**    * RM proxy users' prefix    */
+DECL|field|RM_PROXY_USER_PREFIX
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|RM_PROXY_USER_PREFIX
+init|=
+name|RM_PREFIX
+operator|+
+literal|"proxyuser."
 decl_stmt|;
 comment|////////////////////////////////
 comment|// Node Manager Configs

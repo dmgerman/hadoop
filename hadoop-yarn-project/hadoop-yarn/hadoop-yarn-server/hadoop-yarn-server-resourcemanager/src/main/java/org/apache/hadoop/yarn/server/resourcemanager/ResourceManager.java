@@ -76,7 +76,27 @@ name|java
 operator|.
 name|util
 operator|.
+name|HashMap
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
 name|List
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
+name|Map
 import|;
 end_import
 
@@ -1941,6 +1961,15 @@ name|refresh
 argument_list|()
 expr_stmt|;
 comment|// Do refreshSuperUserGroupsConfiguration with loaded core-site.xml
+comment|// Or use RM specific configurations to overwrite the common ones first
+comment|// if they exist
+name|RMServerUtils
+operator|.
+name|processRMProxyUsersConf
+argument_list|(
+name|conf
+argument_list|)
+expr_stmt|;
 name|ProxyUsers
 operator|.
 name|refreshSuperUserGroupsConfiguration

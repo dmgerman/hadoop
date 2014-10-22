@@ -242,6 +242,22 @@ name|hadoop
 operator|.
 name|security
 operator|.
+name|authorize
+operator|.
+name|ProxyUsers
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|security
+operator|.
 name|token
 operator|.
 name|delegation
@@ -284,10 +300,6 @@ DECL|field|configPrefix
 name|String
 name|configPrefix
 decl_stmt|;
-DECL|field|proxyPrefix
-name|String
-name|proxyPrefix
-decl_stmt|;
 DECL|field|signatureSecretFileProperty
 name|String
 name|signatureSecretFileProperty
@@ -310,12 +322,6 @@ operator|.
 name|configPrefix
 operator|=
 literal|"hadoop.http.authentication."
-expr_stmt|;
-name|this
-operator|.
-name|proxyPrefix
-operator|=
-literal|"yarn.resourcemanager.webapp.proxyuser."
 expr_stmt|;
 name|this
 operator|.
@@ -385,6 +391,9 @@ argument_list|,
 name|cookiePath
 argument_list|)
 expr_stmt|;
+comment|// Before conf object is passed in, RM has already processed it and used RM
+comment|// specific configs to overwrite hadoop common ones. Hence we just need to
+comment|// source hadoop.proxyuser configs here.
 for|for
 control|(
 name|Map
@@ -458,7 +467,9 @@ name|propName
 operator|.
 name|startsWith
 argument_list|(
-name|proxyPrefix
+name|ProxyUsers
+operator|.
+name|CONF_HADOOP_PROXYUSER
 argument_list|)
 condition|)
 block|{
@@ -479,7 +490,7 @@ name|propName
 operator|.
 name|substring
 argument_list|(
-literal|"yarn.resourcemanager.webapp."
+literal|"hadoop."
 operator|.
 name|length
 argument_list|()

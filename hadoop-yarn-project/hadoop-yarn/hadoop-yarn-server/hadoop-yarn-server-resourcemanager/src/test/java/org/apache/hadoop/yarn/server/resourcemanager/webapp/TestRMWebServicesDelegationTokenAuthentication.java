@@ -1115,7 +1115,7 @@ name|rmconf
 operator|.
 name|set
 argument_list|(
-literal|"yarn.resourcemanager.webapp.proxyuser.client.hosts"
+literal|"yarn.resourcemanager.proxyuser.client.hosts"
 argument_list|,
 literal|"*"
 argument_list|)
@@ -1124,7 +1124,7 @@ name|rmconf
 operator|.
 name|set
 argument_list|(
-literal|"yarn.resourcemanager.webapp.proxyuser.client.groups"
+literal|"yarn.resourcemanager.proxyuser.client.groups"
 argument_list|,
 literal|"*"
 argument_list|)

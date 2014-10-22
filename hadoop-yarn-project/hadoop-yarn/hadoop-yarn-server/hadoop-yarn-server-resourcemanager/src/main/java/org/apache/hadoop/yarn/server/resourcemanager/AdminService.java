@@ -2683,6 +2683,8 @@ name|throwStandbyException
 argument_list|()
 expr_stmt|;
 block|}
+comment|// Accept hadoop common configs in core-site.xml as well as RM specific
+comment|// configurations in yarn-site.xml
 name|Configuration
 name|conf
 init|=
@@ -2697,8 +2699,19 @@ argument_list|,
 name|YarnConfiguration
 operator|.
 name|CORE_SITE_CONFIGURATION_FILE
+argument_list|,
+name|YarnConfiguration
+operator|.
+name|YARN_SITE_CONFIGURATION_FILE
 argument_list|)
 decl_stmt|;
+name|RMServerUtils
+operator|.
+name|processRMProxyUsersConf
+argument_list|(
+name|conf
+argument_list|)
+expr_stmt|;
 name|ProxyUsers
 operator|.
 name|refreshSuperUserGroupsConfiguration
@@ -3503,7 +3516,7 @@ return|return
 name|response
 return|;
 block|}
-DECL|method|getConfiguration (Configuration conf, String confFileName)
+DECL|method|getConfiguration (Configuration conf, String... confFileNames)
 specifier|private
 specifier|synchronized
 name|Configuration
@@ -3513,12 +3526,21 @@ name|Configuration
 name|conf
 parameter_list|,
 name|String
-name|confFileName
+modifier|...
+name|confFileNames
 parameter_list|)
 throws|throws
 name|YarnException
 throws|,
 name|IOException
+block|{
+for|for
+control|(
+name|String
+name|confFileName
+range|:
+name|confFileNames
+control|)
 block|{
 name|InputStream
 name|confFileInputStream
@@ -3551,6 +3573,7 @@ argument_list|(
 name|confFileInputStream
 argument_list|)
 expr_stmt|;
+block|}
 block|}
 return|return
 name|conf
