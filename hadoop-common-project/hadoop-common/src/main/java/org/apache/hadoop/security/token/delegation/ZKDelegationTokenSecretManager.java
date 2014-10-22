@@ -1625,6 +1625,7 @@ annotation|@
 name|Override
 DECL|method|startThreads ()
 specifier|public
+specifier|synchronized
 name|void
 name|startThreads
 parameter_list|()
@@ -2318,6 +2319,7 @@ annotation|@
 name|Override
 DECL|method|stopThreads ()
 specifier|public
+specifier|synchronized
 name|void
 name|stopThreads
 parameter_list|()
@@ -2477,6 +2479,7 @@ annotation|@
 name|Override
 DECL|method|getDelegationTokenSeqNum ()
 specifier|protected
+specifier|synchronized
 name|int
 name|getDelegationTokenSeqNum
 parameter_list|()
@@ -2492,6 +2495,7 @@ annotation|@
 name|Override
 DECL|method|incrementDelegationTokenSeqNum ()
 specifier|protected
+specifier|synchronized
 name|int
 name|incrementDelegationTokenSeqNum
 parameter_list|()
@@ -2542,6 +2546,7 @@ annotation|@
 name|Override
 DECL|method|setDelegationTokenSeqNum (int seqNum)
 specifier|protected
+specifier|synchronized
 name|void
 name|setDelegationTokenSeqNum
 parameter_list|(
@@ -2549,10 +2554,32 @@ name|int
 name|seqNum
 parameter_list|)
 block|{
-name|delegationTokenSequenceNumber
-operator|=
+try|try
+block|{
+name|seqCounter
+operator|.
+name|setCount
+argument_list|(
 name|seqNum
+argument_list|)
 expr_stmt|;
+block|}
+catch|catch
+parameter_list|(
+name|Exception
+name|e
+parameter_list|)
+block|{
+throw|throw
+operator|new
+name|RuntimeException
+argument_list|(
+literal|"Could not set shared counter !!"
+argument_list|,
+name|e
+argument_list|)
+throw|;
+block|}
 block|}
 annotation|@
 name|Override

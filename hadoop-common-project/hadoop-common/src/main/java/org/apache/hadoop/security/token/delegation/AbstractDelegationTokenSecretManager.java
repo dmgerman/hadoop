@@ -697,20 +697,6 @@ name|IOException
 block|{
 return|return;
 block|}
-comment|// for ZK based secretManager
-DECL|method|updateMasterKey (DelegationKey key)
-specifier|protected
-name|void
-name|updateMasterKey
-parameter_list|(
-name|DelegationKey
-name|key
-parameter_list|)
-throws|throws
-name|IOException
-block|{
-return|return;
-block|}
 comment|// RM
 DECL|method|removeStoredMasterKey (DelegationKey key)
 specifier|protected
@@ -772,6 +758,7 @@ block|}
 comment|/**    * For subclasses externalizing the storage, for example Zookeeper    * based implementations    */
 DECL|method|getDelegationTokenSeqNum ()
 specifier|protected
+specifier|synchronized
 name|int
 name|getDelegationTokenSeqNum
 parameter_list|()
@@ -783,6 +770,7 @@ block|}
 comment|/**    * For subclasses externalizing the storage, for example Zookeeper    * based implementations    */
 DECL|method|incrementDelegationTokenSeqNum ()
 specifier|protected
+specifier|synchronized
 name|int
 name|incrementDelegationTokenSeqNum
 parameter_list|()
@@ -795,6 +783,7 @@ block|}
 comment|/**    * For subclasses externalizing the storage, for example Zookeeper    * based implementations    */
 DECL|method|setDelegationTokenSeqNum (int seqNum)
 specifier|protected
+specifier|synchronized
 name|void
 name|setDelegationTokenSeqNum
 parameter_list|(
@@ -877,11 +866,6 @@ operator|.
 name|getKeyId
 argument_list|()
 argument_list|,
-name|key
-argument_list|)
-expr_stmt|;
-name|updateMasterKey
-argument_list|(
 name|key
 argument_list|)
 expr_stmt|;
