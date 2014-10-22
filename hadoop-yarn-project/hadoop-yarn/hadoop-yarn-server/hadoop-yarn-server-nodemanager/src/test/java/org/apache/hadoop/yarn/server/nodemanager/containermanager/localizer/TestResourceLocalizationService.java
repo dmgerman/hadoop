@@ -7018,14 +7018,7 @@ argument_list|)
 argument_list|,
 name|isA
 argument_list|(
-name|List
-operator|.
-name|class
-argument_list|)
-argument_list|,
-name|isA
-argument_list|(
-name|List
+name|LocalDirsHandlerService
 operator|.
 name|class
 argument_list|)

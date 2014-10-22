@@ -535,14 +535,17 @@ parameter_list|()
 throws|throws
 name|IOException
 function_decl|;
-comment|/**    * On Windows the ContainerLaunch creates a temporary empty jar to workaround the CLASSPATH length    * In a  secure cluster this jar must be localized so that the container has access to it    * This function localizes on-demand the jar.    *     * @param classPathJar    * @param owner    * @throws IOException    */
-DECL|method|localizeClasspathJar (Path classPathJar, String owner)
+comment|/**    * On Windows the ContainerLaunch creates a temporary special jar manifest of     * other jars to workaround the CLASSPATH length. In a  secure cluster this     * jar must be localized so that the container has access to it.     * This function localizes on-demand the jar.    *     * @param classPathJar    * @param owner    * @throws IOException    */
+DECL|method|localizeClasspathJar (Path classPathJar, Path pwd, String owner)
 specifier|public
-name|void
+name|Path
 name|localizeClasspathJar
 parameter_list|(
 name|Path
 name|classPathJar
+parameter_list|,
+name|Path
+name|pwd
 parameter_list|,
 name|String
 name|owner
@@ -550,11 +553,14 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
-comment|// For the default container this is a no-op
-comment|// The WindowsSecureContainerExecutor overrides this
+comment|// Non-secure executor simply use the classpath created
+comment|// in the NM fprivate folder
+return|return
+name|classPathJar
+return|;
 block|}
-comment|/**    * Prepare the environment for containers in this application to execute.    * For $x in local.dirs    *   create $x/$user/$appId    * Copy $nmLocal/appTokens -> $N/$user/$appId    * For $rsrc in private resources    *   Copy $rsrc -> $N/$user/filecache/[idef]    * For $rsrc in job resources    *   Copy $rsrc -> $N/$user/$appId/filecache/idef    * @param user user name of application owner    * @param appId id of the application    * @param nmPrivateContainerTokens path to localized credentials, rsrc by NM    * @param nmAddr RPC address to contact NM    * @param localDirs nm-local-dirs    * @param logDirs nm-log-dirs    * @throws IOException For most application init failures    * @throws InterruptedException If application init thread is halted by NM    */
-DECL|method|startLocalizer (Path nmPrivateContainerTokens, InetSocketAddress nmAddr, String user, String appId, String locId, List<String> localDirs, List<String> logDirs)
+comment|/**    * Prepare the environment for containers in this application to execute.    * For $x in local.dirs    *   create $x/$user/$appId    * Copy $nmLocal/appTokens -> $N/$user/$appId    * For $rsrc in private resources    *   Copy $rsrc -> $N/$user/filecache/[idef]    * For $rsrc in job resources    *   Copy $rsrc -> $N/$user/$appId/filecache/idef    * @param user user name of application owner    * @param appId id of the application    * @param nmPrivateContainerTokens path to localized credentials, rsrc by NM    * @param nmAddr RPC address to contact NM    * @param dirsHandler NM local dirs service, for nm-local-dirs and nm-log-dirs    * @throws IOException For most application init failures    * @throws InterruptedException If application init thread is halted by NM    */
+DECL|method|startLocalizer (Path nmPrivateContainerTokens, InetSocketAddress nmAddr, String user, String appId, String locId, LocalDirsHandlerService dirsHandler)
 specifier|public
 specifier|abstract
 name|void
@@ -575,17 +581,8 @@ parameter_list|,
 name|String
 name|locId
 parameter_list|,
-name|List
-argument_list|<
-name|String
-argument_list|>
-name|localDirs
-parameter_list|,
-name|List
-argument_list|<
-name|String
-argument_list|>
-name|logDirs
+name|LocalDirsHandlerService
+name|dirsHandler
 parameter_list|)
 throws|throws
 name|IOException

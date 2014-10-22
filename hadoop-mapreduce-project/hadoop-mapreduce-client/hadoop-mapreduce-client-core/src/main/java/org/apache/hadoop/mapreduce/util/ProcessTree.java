@@ -998,15 +998,10 @@ name|warn
 argument_list|(
 literal|"Error executing shell command "
 operator|+
-name|Arrays
-operator|.
-name|toString
-argument_list|(
 name|shexec
 operator|.
-name|getExecString
+name|toString
 argument_list|()
-argument_list|)
 operator|+
 name|ioe
 argument_list|)
@@ -1098,15 +1093,10 @@ name|warn
 argument_list|(
 literal|"Error executing shell command "
 operator|+
-name|Arrays
-operator|.
-name|toString
-argument_list|(
 name|shexec
 operator|.
-name|getExecString
+name|toString
 argument_list|()
-argument_list|)
 operator|+
 name|ioe
 argument_list|)

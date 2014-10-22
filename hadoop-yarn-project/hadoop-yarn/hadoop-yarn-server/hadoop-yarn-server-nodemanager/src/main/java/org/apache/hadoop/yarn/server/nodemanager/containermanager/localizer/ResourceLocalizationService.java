@@ -6748,9 +6748,7 @@ argument_list|)
 argument_list|,
 name|localizerId
 argument_list|,
-name|localDirs
-argument_list|,
-name|logDirs
+name|dirsHandler
 argument_list|)
 expr_stmt|;
 block|}

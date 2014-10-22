@@ -2791,6 +2791,38 @@ argument_list|()
 return|;
 block|}
 block|}
+DECL|interface|CommandExecutor
+specifier|public
+interface|interface
+name|CommandExecutor
+block|{
+DECL|method|execute ()
+name|void
+name|execute
+parameter_list|()
+throws|throws
+name|IOException
+function_decl|;
+DECL|method|getExitCode ()
+name|int
+name|getExitCode
+parameter_list|()
+throws|throws
+name|IOException
+function_decl|;
+DECL|method|getOutput ()
+name|String
+name|getOutput
+parameter_list|()
+throws|throws
+name|IOException
+function_decl|;
+DECL|method|close ()
+name|void
+name|close
+parameter_list|()
+function_decl|;
+block|}
 comment|/**    * A simple shell command executor.    *     *<code>ShellCommandExecutor</code>should be used in cases where the output     * of the command needs no explicit parsing and where the command, working     * directory and the environment remains unchanged. The output of the command     * is stored as-is and is expected to be small.    */
 DECL|class|ShellCommandExecutor
 specifier|public
@@ -2799,6 +2831,8 @@ class|class
 name|ShellCommandExecutor
 extends|extends
 name|Shell
+implements|implements
+name|CommandExecutor
 block|{
 DECL|field|command
 specifier|private
@@ -3147,6 +3181,14 @@ name|toString
 argument_list|()
 return|;
 block|}
+annotation|@
+name|Override
+DECL|method|close ()
+specifier|public
+name|void
+name|close
+parameter_list|()
+block|{     }
 block|}
 comment|/**    * To check if the passed script to shell command executor timed out or    * not.    *     * @return if the script timed out.    */
 DECL|method|isTimedOut ()

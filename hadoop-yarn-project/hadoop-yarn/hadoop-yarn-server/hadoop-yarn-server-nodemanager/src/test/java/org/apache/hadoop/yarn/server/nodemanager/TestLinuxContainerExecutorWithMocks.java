@@ -1262,14 +1262,6 @@ argument_list|,
 literal|"12345"
 argument_list|,
 name|dirsHandler
-operator|.
-name|getLocalDirs
-argument_list|()
-argument_list|,
-name|dirsHandler
-operator|.
-name|getLogDirs
-argument_list|()
 argument_list|)
 expr_stmt|;
 name|List

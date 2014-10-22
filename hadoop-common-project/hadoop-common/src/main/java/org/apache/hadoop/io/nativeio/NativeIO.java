@@ -74,6 +74,26 @@ name|java
 operator|.
 name|io
 operator|.
+name|InputStream
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|io
+operator|.
+name|OutputStream
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|io
+operator|.
 name|RandomAccessFile
 import|;
 end_import
@@ -213,6 +233,20 @@ operator|.
 name|fs
 operator|.
 name|HardLink
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|fs
+operator|.
+name|Path
 import|;
 end_import
 
@@ -2435,6 +2469,15 @@ name|long
 name|FILE_END
 init|=
 literal|2
+decl_stmt|;
+DECL|field|FILE_ATTRIBUTE_NORMAL
+specifier|public
+specifier|static
+specifier|final
+name|long
+name|FILE_ATTRIBUTE_NORMAL
+init|=
+literal|0x00000080L
 decl_stmt|;
 comment|/** Wrapper around CreateFile() on Windows */
 DECL|method|createFile (String path, long desiredAccess, long shareMode, long creationDisposition)

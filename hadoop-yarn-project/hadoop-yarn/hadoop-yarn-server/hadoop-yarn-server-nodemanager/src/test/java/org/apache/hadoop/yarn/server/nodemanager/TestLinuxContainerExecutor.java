@@ -1718,9 +1718,7 @@ name|appId
 argument_list|,
 name|locId
 argument_list|,
-name|localDirs
-argument_list|,
-name|logDirs
+name|dirsHandler
 argument_list|)
 expr_stmt|;
 name|String
@@ -1785,9 +1783,7 @@ name|appId
 argument_list|,
 name|locId2
 argument_list|,
-name|localDirs
-argument_list|,
-name|logDirs
+name|dirsHandler
 argument_list|)
 expr_stmt|;
 block|}

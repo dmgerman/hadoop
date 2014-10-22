@@ -5333,7 +5333,6 @@ return|return
 name|fileNames
 return|;
 block|}
-comment|/**    * Create a jar file at the given path, containing a manifest with a classpath    * that references all specified entries.    *     * Some platforms may have an upper limit on command line length.  For example,    * the maximum command line length on Windows is 8191 characters, but the    * length of the classpath may exceed this.  To work around this limitation,    * use this method to create a small intermediate jar with a manifest that    * contains the full classpath.  It returns the absolute path to the new jar,    * which the caller may set as the classpath for a new process.    *     * Environment variable evaluation is not supported within a jar manifest, so    * this method expands environment variables before inserting classpath entries    * to the manifest.  The method parses environment variables according to    * platform-specific syntax (%VAR% on Windows, or $VAR otherwise).  On Windows,    * environment variables are case-insensitive.  For example, %VAR% and %var%    * evaluate to the same value.    *     * Specifying the classpath in a jar manifest does not support wildcards, so    * this method expands wildcards internally.  Any classpath entry that ends    * with * is translated to all files at that path with extension .jar or .JAR.    *     * @param inputClassPath String input classpath to bundle into the jar manifest    * @param pwd Path to working directory to save jar    * @param callerEnv Map<String, String> caller's environment variables to use    *   for expansion    * @return String[] with absolute path to new jar in position 0 and    *   unexpanded wild card entry path in position 1    * @throws IOException if there is an I/O error while writing the jar file    */
 DECL|method|createJarWithClassPath (String inputClassPath, Path pwd, Map<String, String> callerEnv)
 specifier|public
 specifier|static
@@ -5346,6 +5345,47 @@ name|inputClassPath
 parameter_list|,
 name|Path
 name|pwd
+parameter_list|,
+name|Map
+argument_list|<
+name|String
+argument_list|,
+name|String
+argument_list|>
+name|callerEnv
+parameter_list|)
+throws|throws
+name|IOException
+block|{
+return|return
+name|createJarWithClassPath
+argument_list|(
+name|inputClassPath
+argument_list|,
+name|pwd
+argument_list|,
+name|pwd
+argument_list|,
+name|callerEnv
+argument_list|)
+return|;
+block|}
+comment|/**    * Create a jar file at the given path, containing a manifest with a classpath    * that references all specified entries.    *     * Some platforms may have an upper limit on command line length.  For example,    * the maximum command line length on Windows is 8191 characters, but the    * length of the classpath may exceed this.  To work around this limitation,    * use this method to create a small intermediate jar with a manifest that    * contains the full classpath.  It returns the absolute path to the new jar,    * which the caller may set as the classpath for a new process.    *     * Environment variable evaluation is not supported within a jar manifest, so    * this method expands environment variables before inserting classpath entries    * to the manifest.  The method parses environment variables according to    * platform-specific syntax (%VAR% on Windows, or $VAR otherwise).  On Windows,    * environment variables are case-insensitive.  For example, %VAR% and %var%    * evaluate to the same value.    *     * Specifying the classpath in a jar manifest does not support wildcards, so    * this method expands wildcards internally.  Any classpath entry that ends    * with * is translated to all files at that path with extension .jar or .JAR.    *     * @param inputClassPath String input classpath to bundle into the jar manifest    * @param pwd Path to working directory to save jar    * @param targetDir path to where the jar execution will have its working dir    * @param callerEnv Map<String, String> caller's environment variables to use    *   for expansion    * @return String[] with absolute path to new jar in position 0 and    *   unexpanded wild card entry path in position 1    * @throws IOException if there is an I/O error while writing the jar file    */
+DECL|method|createJarWithClassPath (String inputClassPath, Path pwd, Path targetDir, Map<String, String> callerEnv)
+specifier|public
+specifier|static
+name|String
+index|[]
+name|createJarWithClassPath
+parameter_list|(
+name|String
+name|inputClassPath
+parameter_list|,
+name|Path
+name|pwd
+parameter_list|,
+name|Path
+name|targetDir
 parameter_list|,
 name|Map
 argument_list|<
@@ -5655,7 +5695,10 @@ operator|=
 operator|new
 name|File
 argument_list|(
-name|workingDir
+name|targetDir
+operator|.
+name|toString
+argument_list|()
 argument_list|,
 name|classPathEntry
 argument_list|)
