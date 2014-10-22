@@ -2252,6 +2252,7 @@ operator|.
 name|size
 argument_list|()
 decl_stmt|;
+comment|// case 1: create file and call hflush after write
 name|FSDataOutputStream
 name|out
 init|=
@@ -2282,6 +2283,21 @@ argument_list|()
 expr_stmt|;
 comment|// Opening the file will report RBW replicas, but will be
 comment|// queued on the StandbyNode.
+comment|// However, the delivery of RBW messages is delayed by HDFS-7217 fix.
+comment|// Apply cluster.triggerBlockReports() to trigger the reporting sooner.
+comment|//
+name|cluster
+operator|.
+name|triggerBlockReports
+argument_list|()
+expr_stmt|;
+name|numQueued
+operator|+=
+name|numDN
+expr_stmt|;
+comment|// RBW messages
+comment|// The cluster.triggerBlockReports() call above does a full
+comment|// block report that incurs 3 extra RBW messages
 name|numQueued
 operator|+=
 name|numDN
@@ -2312,6 +2328,25 @@ name|numQueued
 operator|+=
 name|numDN
 expr_stmt|;
+name|assertEquals
+argument_list|(
+name|numQueued
+argument_list|,
+name|cluster
+operator|.
+name|getNameNode
+argument_list|(
+literal|1
+argument_list|)
+operator|.
+name|getNamesystem
+argument_list|()
+operator|.
+name|getPendingDataNodeMessageCount
+argument_list|()
+argument_list|)
+expr_stmt|;
+comment|// case 2: append to file and call hflush after write
 try|try
 block|{
 name|out
@@ -2334,14 +2369,94 @@ argument_list|,
 literal|10
 argument_list|)
 expr_stmt|;
-comment|// RBW replicas once it's opened for append
+name|out
+operator|.
+name|hflush
+argument_list|()
+expr_stmt|;
+name|cluster
+operator|.
+name|triggerBlockReports
+argument_list|()
+expr_stmt|;
+name|numQueued
+operator|+=
+name|numDN
+operator|*
+literal|2
+expr_stmt|;
+comment|// RBW messages, see comments in case 1
+block|}
+finally|finally
+block|{
+name|IOUtils
+operator|.
+name|closeStream
+argument_list|(
+name|out
+argument_list|)
+expr_stmt|;
 name|numQueued
 operator|+=
 name|numDN
 expr_stmt|;
+comment|// blockReceived
+block|}
+name|assertEquals
+argument_list|(
+name|numQueued
+argument_list|,
+name|cluster
+operator|.
+name|getNameNode
+argument_list|(
+literal|1
+argument_list|)
+operator|.
+name|getNamesystem
+argument_list|()
+operator|.
+name|getPendingDataNodeMessageCount
+argument_list|()
+argument_list|)
+expr_stmt|;
+comment|// case 3: similar to case 2, except no hflush is called.
+try|try
+block|{
+name|out
+operator|=
+name|fs
+operator|.
+name|append
+argument_list|(
+name|TEST_FILE_PATH
+argument_list|)
+expr_stmt|;
+name|AppendTestUtil
+operator|.
+name|write
+argument_list|(
+name|out
+argument_list|,
+literal|20
+argument_list|,
+literal|10
+argument_list|)
+expr_stmt|;
 block|}
 finally|finally
 block|{
+comment|// The write operation in the try block is buffered, thus no RBW message
+comment|// is reported yet until the closeStream call here. When closeStream is
+comment|// called, before HDFS-7217 fix, there would be three RBW messages
+comment|// (blockReceiving), plus three FINALIZED messages (blockReceived)
+comment|// delivered to NN. However, because of HDFS-7217 fix, the reporting of
+comment|// RBW  messages is postponed. In this case, they are even overwritten
+comment|// by the blockReceived messages of the same block when they are waiting
+comment|// to be delivered. All this happens within the closeStream() call.
+comment|// What's delivered to NN is the three blockReceived messages. See
+comment|//    BPServiceActor#addPendingReplicationBlockInfo
+comment|//
 name|IOUtils
 operator|.
 name|closeStream
@@ -2363,6 +2478,30 @@ expr_stmt|;
 name|numQueued
 operator|+=
 name|numDN
+expr_stmt|;
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"Expect "
+operator|+
+name|numQueued
+operator|+
+literal|" and got: "
+operator|+
+name|cluster
+operator|.
+name|getNameNode
+argument_list|(
+literal|1
+argument_list|)
+operator|.
+name|getNamesystem
+argument_list|()
+operator|.
+name|getPendingDataNodeMessageCount
+argument_list|()
+argument_list|)
 expr_stmt|;
 name|assertEquals
 argument_list|(
@@ -2458,7 +2597,7 @@ name|fs
 argument_list|,
 name|TEST_FILE_PATH
 argument_list|,
-literal|20
+literal|30
 argument_list|)
 expr_stmt|;
 block|}
