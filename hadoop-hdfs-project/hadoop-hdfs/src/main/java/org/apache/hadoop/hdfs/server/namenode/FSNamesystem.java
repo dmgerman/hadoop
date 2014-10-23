@@ -26133,6 +26133,31 @@ annotation|@
 name|Metric
 argument_list|(
 block|{
+literal|"MissingReplOneBlocks"
+block|,
+literal|"Number of missing blocks "
+operator|+
+literal|"with replication factor 1"
+block|}
+argument_list|)
+DECL|method|getMissingReplOneBlocksCount ()
+specifier|public
+name|long
+name|getMissingReplOneBlocksCount
+parameter_list|()
+block|{
+comment|// not locking
+return|return
+name|blockManager
+operator|.
+name|getMissingReplOneBlocksCount
+argument_list|()
+return|;
+block|}
+annotation|@
+name|Metric
+argument_list|(
+block|{
 literal|"ExpiredHeartbeats"
 block|,
 literal|"Number of expired heartbeats"
@@ -26328,6 +26353,16 @@ name|GET_STATS_MISSING_BLOCKS_IDX
 index|]
 operator|=
 name|getMissingBlocksCount
+argument_list|()
+expr_stmt|;
+name|stats
+index|[
+name|ClientProtocol
+operator|.
+name|GET_STATS_MISSING_REPL_ONE_BLOCKS_IDX
+index|]
+operator|=
+name|getMissingReplOneBlocksCount
 argument_list|()
 expr_stmt|;
 return|return
@@ -34771,6 +34806,20 @@ parameter_list|()
 block|{
 return|return
 name|getMissingBlocksCount
+argument_list|()
+return|;
+block|}
+annotation|@
+name|Override
+comment|// NameNodeMXBean
+DECL|method|getNumberOfMissingBlocksWithReplicationFactorOne ()
+specifier|public
+name|long
+name|getNumberOfMissingBlocksWithReplicationFactorOne
+parameter_list|()
+block|{
+return|return
+name|getMissingReplOneBlocksCount
 argument_list|()
 return|;
 block|}

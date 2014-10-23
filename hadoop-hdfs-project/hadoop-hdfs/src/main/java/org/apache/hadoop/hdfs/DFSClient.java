@@ -11773,6 +11773,27 @@ name|GET_STATS_MISSING_BLOCKS_IDX
 index|]
 return|;
 block|}
+comment|/**    * Returns count of blocks with replication factor 1 and have    * lost the only replica.    * @throws IOException    */
+DECL|method|getMissingReplOneBlocksCount ()
+specifier|public
+name|long
+name|getMissingReplOneBlocksCount
+parameter_list|()
+throws|throws
+name|IOException
+block|{
+return|return
+name|namenode
+operator|.
+name|getStats
+argument_list|()
+index|[
+name|ClientProtocol
+operator|.
+name|GET_STATS_MISSING_REPL_ONE_BLOCKS_IDX
+index|]
+return|;
+block|}
 comment|/**    * Returns count of blocks with one of more replica missing.    * @throws IOException    */
 DECL|method|getUnderReplicatedBlocksCount ()
 specifier|public

@@ -2645,6 +2645,20 @@ operator|.
 name|out
 operator|.
 name|println
+argument_list|(
+literal|"Missing blocks (with replication factor 1): "
+operator|+
+name|dfs
+operator|.
+name|getMissingReplOneBlocksCount
+argument_list|()
+argument_list|)
+expr_stmt|;
+name|System
+operator|.
+name|out
+operator|.
+name|println
 argument_list|()
 expr_stmt|;
 name|System

@@ -193,6 +193,14 @@ argument_list|(
 name|LEVEL
 argument_list|)
 decl_stmt|;
+comment|/** The number of corrupt blocks with replication factor 1 */
+DECL|field|corruptReplOneBlocks
+specifier|private
+name|int
+name|corruptReplOneBlocks
+init|=
+literal|0
+decl_stmt|;
 comment|/** Create an object. */
 DECL|method|UnderReplicatedBlocks ()
 name|UnderReplicatedBlocks
@@ -373,6 +381,17 @@ argument_list|)
 operator|.
 name|size
 argument_list|()
+return|;
+block|}
+comment|/** Return the number of corrupt blocks with replication factor 1 */
+DECL|method|getCorruptReplOneBlockSize ()
+specifier|synchronized
+name|int
+name|getCorruptReplOneBlockSize
+parameter_list|()
+block|{
+return|return
+name|corruptReplOneBlocks
 return|;
 block|}
 comment|/** Check if a block is in the neededReplication queue */
@@ -576,6 +595,21 @@ condition|)
 block|{
 if|if
 condition|(
+name|priLevel
+operator|==
+name|QUEUE_WITH_CORRUPT_BLOCKS
+operator|&&
+name|expectedReplicas
+operator|==
+literal|1
+condition|)
+block|{
+name|corruptReplOneBlocks
+operator|++
+expr_stmt|;
+block|}
+if|if
+condition|(
 name|NameNode
 operator|.
 name|blockStateChangeLog
@@ -651,13 +685,44 @@ argument_list|,
 name|oldExpectedReplicas
 argument_list|)
 decl_stmt|;
-return|return
+name|boolean
+name|removedBlock
+init|=
 name|remove
 argument_list|(
 name|block
 argument_list|,
 name|priLevel
 argument_list|)
+decl_stmt|;
+if|if
+condition|(
+name|priLevel
+operator|==
+name|QUEUE_WITH_CORRUPT_BLOCKS
+operator|&&
+name|oldExpectedReplicas
+operator|==
+literal|1
+operator|&&
+name|removedBlock
+condition|)
+block|{
+name|corruptReplOneBlocks
+operator|--
+expr_stmt|;
+assert|assert
+name|corruptReplOneBlocks
+operator|>=
+literal|0
+operator|:
+literal|"Number of corrupt blocks with replication factor 1 "
+operator|+
+literal|"should be non-negative"
+assert|;
+block|}
+return|return
+name|removedBlock
 return|;
 block|}
 comment|/**    * Remove a block from the under replication queues.    *    * The priLevel parameter is a hint of which queue to query    * first: if negative or&gt;= {@link #LEVEL} this shortcutting    * is not attmpted.    *    * If the block is not found in the nominated queue, an attempt is made to    * remove it from all queues.    *    *<i>Warning:</i> This is not a synchronized method.    * @param block block to remove    * @param priLevel expected privilege level    * @return true if the block was found and removed from one of the priority queues    */
@@ -976,6 +1041,54 @@ literal|" at priority level "
 operator|+
 name|curPri
 argument_list|)
+expr_stmt|;
+block|}
+block|}
+if|if
+condition|(
+name|oldPri
+operator|!=
+name|curPri
+operator|||
+name|expectedReplicasDelta
+operator|!=
+literal|0
+condition|)
+block|{
+comment|// corruptReplOneBlocks could possibly change
+if|if
+condition|(
+name|curPri
+operator|==
+name|QUEUE_WITH_CORRUPT_BLOCKS
+operator|&&
+name|curExpectedReplicas
+operator|==
+literal|1
+condition|)
+block|{
+comment|// add a new corrupt block with replication factor 1
+name|corruptReplOneBlocks
+operator|++
+expr_stmt|;
+block|}
+elseif|else
+if|if
+condition|(
+name|oldPri
+operator|==
+name|QUEUE_WITH_CORRUPT_BLOCKS
+operator|&&
+name|curExpectedReplicas
+operator|-
+name|expectedReplicasDelta
+operator|==
+literal|1
+condition|)
+block|{
+comment|// remove an existing corrupt block with replication factor 1
+name|corruptReplOneBlocks
+operator|--
 expr_stmt|;
 block|}
 block|}

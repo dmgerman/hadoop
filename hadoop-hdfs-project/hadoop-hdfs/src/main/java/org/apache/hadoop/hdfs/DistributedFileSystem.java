@@ -5045,6 +5045,22 @@ name|getMissingBlocksCount
 argument_list|()
 return|;
 block|}
+comment|/**    * Returns count of blocks with replication factor 1 and have    * lost the only replica.    *    * @throws IOException    */
+DECL|method|getMissingReplOneBlocksCount ()
+specifier|public
+name|long
+name|getMissingReplOneBlocksCount
+parameter_list|()
+throws|throws
+name|IOException
+block|{
+return|return
+name|dfs
+operator|.
+name|getMissingReplOneBlocksCount
+argument_list|()
+return|;
+block|}
 comment|/**    * Returns count of blocks with one of more replica missing.    *     * @throws IOException    */
 DECL|method|getUnderReplicatedBlocksCount ()
 specifier|public

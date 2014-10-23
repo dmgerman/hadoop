@@ -1919,6 +1919,15 @@ argument_list|,
 name|rb
 argument_list|)
 expr_stmt|;
+name|assertGauge
+argument_list|(
+literal|"MissingReplOneBlocks"
+argument_list|,
+literal|1L
+argument_list|,
+name|rb
+argument_list|)
+expr_stmt|;
 name|fs
 operator|.
 name|delete

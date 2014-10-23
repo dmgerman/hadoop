@@ -731,8 +731,8 @@ block|,
 operator|-
 literal|1L
 block|,
-name|getBlockPoolUsed
-argument_list|()
+operator|-
+literal|1L
 block|}
 return|;
 block|}

@@ -213,11 +213,18 @@ name|long
 name|getTotalFiles
 parameter_list|()
 function_decl|;
-comment|/**    * Gets the total number of missing blocks on the cluster    *     * @return the total number of files and blocks on the cluster    */
+comment|/**    * Gets the total number of missing blocks on the cluster    *     * @return the total number of missing blocks on the cluster    */
 DECL|method|getNumberOfMissingBlocks ()
 specifier|public
 name|long
 name|getNumberOfMissingBlocks
+parameter_list|()
+function_decl|;
+comment|/**    * Gets the total number of missing blocks on the cluster with    * replication factor 1    *    * @return the total number of missing blocks on the cluster with    * replication factor 1    */
+DECL|method|getNumberOfMissingBlocksWithReplicationFactorOne ()
+specifier|public
+name|long
+name|getNumberOfMissingBlocksWithReplicationFactorOne
 parameter_list|()
 function_decl|;
 comment|/**    * Gets the number of threads.    *     * @return the number of threads    */

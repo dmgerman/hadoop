@@ -15915,6 +15915,22 @@ name|getCorruptBlockSize
 argument_list|()
 return|;
 block|}
+DECL|method|getMissingReplOneBlocksCount ()
+specifier|public
+name|long
+name|getMissingReplOneBlocksCount
+parameter_list|()
+block|{
+comment|// not locking
+return|return
+name|this
+operator|.
+name|neededReplications
+operator|.
+name|getCorruptReplOneBlockSize
+argument_list|()
+return|;
+block|}
 DECL|method|addBlockCollection (BlockInfo block, BlockCollection bc)
 specifier|public
 name|BlockInfo
