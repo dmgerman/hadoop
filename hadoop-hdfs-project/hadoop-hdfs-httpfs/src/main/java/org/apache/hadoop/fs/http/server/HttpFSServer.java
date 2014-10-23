@@ -720,6 +720,18 @@ begin_import
 import|import
 name|javax
 operator|.
+name|servlet
+operator|.
+name|http
+operator|.
+name|HttpServletRequest
+import|;
+end_import
+
+begin_import
+import|import
+name|javax
+operator|.
 name|ws
 operator|.
 name|rs
@@ -1213,7 +1225,7 @@ name|MediaType
 operator|.
 name|APPLICATION_JSON
 argument_list|)
-DECL|method|getRoot (@ueryParamOperationParam.NAME) OperationParam op, @Context Parameters params)
+DECL|method|getRoot (@ueryParamOperationParam.NAME) OperationParam op, @Context Parameters params, @Context HttpServletRequest request)
 specifier|public
 name|Response
 name|getRoot
@@ -1232,6 +1244,11 @@ annotation|@
 name|Context
 name|Parameters
 name|params
+parameter_list|,
+annotation|@
+name|Context
+name|HttpServletRequest
+name|request
 parameter_list|)
 throws|throws
 name|IOException
@@ -1246,6 +1263,8 @@ argument_list|,
 name|op
 argument_list|,
 name|params
+argument_list|,
+name|request
 argument_list|)
 return|;
 block|}
@@ -1295,7 +1314,7 @@ operator|.
 name|APPLICATION_JSON
 block|}
 argument_list|)
-DECL|method|get (@athParamR) String path, @QueryParam(OperationParam.NAME) OperationParam op, @Context Parameters params)
+DECL|method|get (@athParamR) String path, @QueryParam(OperationParam.NAME) OperationParam op, @Context Parameters params, @Context HttpServletRequest request)
 specifier|public
 name|Response
 name|get
@@ -1322,6 +1341,11 @@ annotation|@
 name|Context
 name|Parameters
 name|params
+parameter_list|,
+annotation|@
+name|Context
+name|HttpServletRequest
+name|request
 parameter_list|)
 throws|throws
 name|IOException
@@ -1360,6 +1384,18 @@ name|value
 argument_list|()
 operator|.
 name|name
+argument_list|()
+argument_list|)
+expr_stmt|;
+name|MDC
+operator|.
+name|put
+argument_list|(
+literal|"hostname"
+argument_list|,
+name|request
+operator|.
+name|getRemoteAddr
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -2200,7 +2236,7 @@ name|MediaType
 operator|.
 name|APPLICATION_JSON
 argument_list|)
-DECL|method|delete (@athParamR) String path, @QueryParam(OperationParam.NAME) OperationParam op, @Context Parameters params)
+DECL|method|delete (@athParamR) String path, @QueryParam(OperationParam.NAME) OperationParam op, @Context Parameters params, @Context HttpServletRequest request)
 specifier|public
 name|Response
 name|delete
@@ -2227,6 +2263,11 @@ annotation|@
 name|Context
 name|Parameters
 name|params
+parameter_list|,
+annotation|@
+name|Context
+name|HttpServletRequest
+name|request
 parameter_list|)
 throws|throws
 name|IOException
@@ -2265,6 +2306,18 @@ name|value
 argument_list|()
 operator|.
 name|name
+argument_list|()
+argument_list|)
+expr_stmt|;
+name|MDC
+operator|.
+name|put
+argument_list|(
+literal|"hostname"
+argument_list|,
+name|request
+operator|.
+name|getRemoteAddr
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -2402,7 +2455,7 @@ operator|.
 name|APPLICATION_JSON
 block|}
 argument_list|)
-DECL|method|post (InputStream is, @Context UriInfo uriInfo, @PathParam(R) String path, @QueryParam(OperationParam.NAME) OperationParam op, @Context Parameters params)
+DECL|method|post (InputStream is, @Context UriInfo uriInfo, @PathParam(R) String path, @QueryParam(OperationParam.NAME) OperationParam op, @Context Parameters params, @Context HttpServletRequest request)
 specifier|public
 name|Response
 name|post
@@ -2437,6 +2490,11 @@ annotation|@
 name|Context
 name|Parameters
 name|params
+parameter_list|,
+annotation|@
+name|Context
+name|HttpServletRequest
+name|request
 parameter_list|)
 throws|throws
 name|IOException
@@ -2475,6 +2533,18 @@ name|value
 argument_list|()
 operator|.
 name|name
+argument_list|()
+argument_list|)
+expr_stmt|;
+name|MDC
+operator|.
+name|put
+argument_list|(
+literal|"hostname"
+argument_list|,
+name|request
+operator|.
+name|getRemoteAddr
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -2779,7 +2849,7 @@ operator|.
 name|APPLICATION_JSON
 block|}
 argument_list|)
-DECL|method|put (InputStream is, @Context UriInfo uriInfo, @PathParam(R) String path, @QueryParam(OperationParam.NAME) OperationParam op, @Context Parameters params)
+DECL|method|put (InputStream is, @Context UriInfo uriInfo, @PathParam(R) String path, @QueryParam(OperationParam.NAME) OperationParam op, @Context Parameters params, @Context HttpServletRequest request)
 specifier|public
 name|Response
 name|put
@@ -2814,6 +2884,11 @@ annotation|@
 name|Context
 name|Parameters
 name|params
+parameter_list|,
+annotation|@
+name|Context
+name|HttpServletRequest
+name|request
 parameter_list|)
 throws|throws
 name|IOException
@@ -2852,6 +2927,18 @@ name|value
 argument_list|()
 operator|.
 name|name
+argument_list|()
+argument_list|)
+expr_stmt|;
+name|MDC
+operator|.
+name|put
+argument_list|(
+literal|"hostname"
+argument_list|,
+name|request
+operator|.
+name|getRemoteAddr
 argument_list|()
 argument_list|)
 expr_stmt|;
