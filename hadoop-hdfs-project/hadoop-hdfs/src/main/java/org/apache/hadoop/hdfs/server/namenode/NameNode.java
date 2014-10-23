@@ -7676,6 +7676,22 @@ name|isSecurityEnabled
 argument_list|()
 return|;
 block|}
+annotation|@
+name|Override
+comment|// NameNodeStatusMXBean
+DECL|method|getLastHATransitionTime ()
+specifier|public
+name|long
+name|getLastHATransitionTime
+parameter_list|()
+block|{
+return|return
+name|state
+operator|.
+name|getLastHATransitionTime
+argument_list|()
+return|;
+block|}
 comment|/**    * Shutdown the NN immediately in an ungraceful way. Used when it would be    * unsafe for the NN to continue operating, e.g. during a failed HA state    * transition.    *     * @param t exception which warrants the shutdown. Printed to the NN log    *          before exit.    * @throws ExitException thrown only for testing.    */
 DECL|method|doImmediateShutdown (Throwable t)
 specifier|protected

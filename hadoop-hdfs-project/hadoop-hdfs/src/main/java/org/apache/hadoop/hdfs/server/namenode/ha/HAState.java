@@ -94,13 +94,9 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|hdfs
+name|ipc
 operator|.
-name|server
-operator|.
-name|namenode
-operator|.
-name|UnsupportedActionException
+name|StandbyException
 import|;
 end_import
 
@@ -112,9 +108,9 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|ipc
+name|util
 operator|.
-name|StandbyException
+name|Time
 import|;
 end_import
 
@@ -138,6 +134,11 @@ specifier|protected
 specifier|final
 name|HAServiceState
 name|state
+decl_stmt|;
+DECL|field|lastHATransitionTime
+specifier|private
+name|long
+name|lastHATransitionTime
 decl_stmt|;
 comment|/**    * Constructor    * @param name Name of the state.    */
 DECL|method|HAState (HAServiceState state)
@@ -222,6 +223,11 @@ argument_list|(
 name|context
 argument_list|)
 expr_stmt|;
+name|s
+operator|.
+name|updateLastHATransitionTime
+argument_list|()
+expr_stmt|;
 block|}
 finally|finally
 block|{
@@ -231,6 +237,31 @@ name|writeUnlock
 argument_list|()
 expr_stmt|;
 block|}
+block|}
+comment|/**    * Gets the most recent HA transition time in milliseconds from the epoch.    *    * @return the most recent HA transition time in milliseconds from the epoch.    */
+DECL|method|getLastHATransitionTime ()
+specifier|public
+name|long
+name|getLastHATransitionTime
+parameter_list|()
+block|{
+return|return
+name|lastHATransitionTime
+return|;
+block|}
+DECL|method|updateLastHATransitionTime ()
+specifier|private
+name|void
+name|updateLastHATransitionTime
+parameter_list|()
+block|{
+name|lastHATransitionTime
+operator|=
+name|Time
+operator|.
+name|now
+argument_list|()
+expr_stmt|;
 block|}
 comment|/**    * Method to be overridden by subclasses to prepare to enter a state.    * This method is called<em>without</em> the context being locked,    * and after {@link #prepareToExitState(HAContext)} has been called    * for the previous state, but before {@link #exitState(HAContext)}    * has been called for the previous state.    * @param context HA context    * @throws ServiceFailedException on precondition failure    */
 DECL|method|prepareToEnterState (final HAContext context)

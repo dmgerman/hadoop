@@ -94,6 +94,13 @@ name|boolean
 name|isSecurityEnabled
 parameter_list|()
 function_decl|;
+comment|/**    * Gets the most recent HA transition time in milliseconds from the epoch.    *    * @return the most recent HA transition time in milliseconds from the epoch.    */
+DECL|method|getLastHATransitionTime ()
+specifier|public
+name|long
+name|getLastHATransitionTime
+parameter_list|()
+function_decl|;
 block|}
 end_interface
 
