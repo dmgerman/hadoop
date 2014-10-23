@@ -48,6 +48,16 @@ name|InterfaceAudience
 import|;
 end_import
 
+begin_import
+import|import
+name|java
+operator|.
+name|io
+operator|.
+name|IOException
+import|;
+end_import
+
 begin_comment
 comment|/**  * Used for injecting faults in DFSClient and DFSOutputStream tests.  * Calls into this are a no-op in production code.   */
 end_comment
@@ -90,6 +100,14 @@ specifier|public
 name|void
 name|getHdfsBlocksMetadata
 parameter_list|()
+block|{}
+DECL|method|writeBlockAfterFlush ()
+specifier|public
+name|void
+name|writeBlockAfterFlush
+parameter_list|()
+throws|throws
+name|IOException
 block|{}
 block|}
 end_class

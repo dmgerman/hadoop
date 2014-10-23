@@ -446,6 +446,15 @@ name|Metric
 name|MutableCounterLong
 name|volumeFailures
 decl_stmt|;
+annotation|@
+name|Metric
+argument_list|(
+literal|"Count of network errors on the datanode"
+argument_list|)
+DECL|field|datanodeNetworkErrors
+name|MutableCounterLong
+name|datanodeNetworkErrors
+decl_stmt|;
 DECL|field|readBlockOp
 annotation|@
 name|Metric
@@ -1468,6 +1477,18 @@ name|incrVolumeFailures
 parameter_list|()
 block|{
 name|volumeFailures
+operator|.
+name|incr
+argument_list|()
+expr_stmt|;
+block|}
+DECL|method|incrDatanodeNetworkErrors ()
+specifier|public
+name|void
+name|incrDatanodeNetworkErrors
+parameter_list|()
+block|{
+name|datanodeNetworkErrors
 operator|.
 name|incr
 argument_list|()
