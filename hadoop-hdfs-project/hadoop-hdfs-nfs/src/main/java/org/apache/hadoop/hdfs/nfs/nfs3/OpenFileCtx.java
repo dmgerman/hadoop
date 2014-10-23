@@ -946,6 +946,7 @@ specifier|private
 name|FileOutputStream
 name|dumpOut
 decl_stmt|;
+comment|/** Tracks the data buffered in memory related to non sequential writes */
 DECL|field|nonSequentialWriteInMemory
 specifier|private
 name|AtomicLong
@@ -1063,7 +1064,7 @@ literal|0
 operator|)
 return|;
 block|}
-comment|// Increase or decrease the memory occupation of non-sequential writes
+comment|/** Increase or decrease the memory occupation of non-sequential writes */
 DECL|method|updateNonSequentialWriteInMemory (long count)
 specifier|private
 name|long
@@ -1113,7 +1114,11 @@ name|newValue
 operator|>=
 literal|0
 argument_list|,
-literal|"nonSequentialWriteInMemory is negative after update with count "
+literal|"nonSequentialWriteInMemory is negative "
+operator|+
+name|newValue
+operator|+
+literal|" after update with count "
 operator|+
 name|count
 argument_list|)
@@ -1273,12 +1278,8 @@ expr_stmt|;
 name|enabledDump
 operator|=
 name|dumpFilePath
-operator|==
+operator|!=
 literal|null
-condition|?
-literal|false
-else|:
-literal|true
 expr_stmt|;
 name|nextOffset
 operator|=
@@ -1370,10 +1371,10 @@ argument_list|()
 return|;
 block|}
 comment|// Check if need to dump the new writes
-DECL|method|checkDump ()
+DECL|method|waitForDump ()
 specifier|private
 name|void
-name|checkDump
+name|waitForDump
 parameter_list|()
 block|{
 if|if
@@ -1475,6 +1476,31 @@ name|notifyAll
 argument_list|()
 expr_stmt|;
 block|}
+block|}
+while|while
+condition|(
+name|nonSequentialWriteInMemory
+operator|.
+name|get
+argument_list|()
+operator|>=
+name|DUMP_WRITE_WATER_MARK
+condition|)
+block|{
+try|try
+block|{
+name|this
+operator|.
+name|wait
+argument_list|()
+expr_stmt|;
+block|}
+catch|catch
+parameter_list|(
+name|InterruptedException
+name|ignored
+parameter_list|)
+block|{         }
 block|}
 block|}
 block|}
@@ -1861,6 +1887,13 @@ operator|<
 name|DUMP_WRITE_WATER_MARK
 condition|)
 block|{
+name|OpenFileCtx
+operator|.
+name|this
+operator|.
+name|notifyAll
+argument_list|()
+expr_stmt|;
 try|try
 block|{
 name|OpenFileCtx
@@ -1938,6 +1971,22 @@ name|Throwable
 name|t
 parameter_list|)
 block|{
+comment|// unblock threads with new request
+synchronized|synchronized
+init|(
+name|OpenFileCtx
+operator|.
+name|this
+init|)
+block|{
+name|OpenFileCtx
+operator|.
+name|this
+operator|.
+name|notifyAll
+argument_list|()
+expr_stmt|;
+block|}
 name|LOG
 operator|.
 name|info
@@ -1956,6 +2005,10 @@ name|dumpFilePath
 argument_list|,
 name|t
 argument_list|)
+expr_stmt|;
+name|activeState
+operator|=
+literal|false
 expr_stmt|;
 block|}
 block|}
@@ -2854,11 +2907,56 @@ operator|==
 literal|null
 condition|)
 block|{
-name|addWrite
+name|pendingWrites
+operator|.
+name|put
 argument_list|(
+operator|new
+name|OffsetRange
+argument_list|(
+name|offset
+argument_list|,
+name|offset
+operator|+
+name|count
+argument_list|)
+argument_list|,
 name|writeCtx
 argument_list|)
 expr_stmt|;
+if|if
+condition|(
+name|LOG
+operator|.
+name|isDebugEnabled
+argument_list|()
+condition|)
+block|{
+name|LOG
+operator|.
+name|debug
+argument_list|(
+literal|"New write buffered with xid "
+operator|+
+name|xid
+operator|+
+literal|" nextOffset "
+operator|+
+name|cachedOffset
+operator|+
+literal|" req offset="
+operator|+
+name|offset
+operator|+
+literal|" mapsize="
+operator|+
+name|pendingWrites
+operator|.
+name|size
+argument_list|()
+argument_list|)
+expr_stmt|;
+block|}
 block|}
 else|else
 block|{
@@ -2868,10 +2966,16 @@ name|warn
 argument_list|(
 literal|"Got a repeated request, same range, with xid:"
 operator|+
-name|writeCtx
-operator|.
-name|getXid
-argument_list|()
+name|xid
+operator|+
+literal|" nextOffset "
+operator|+
+operator|+
+name|cachedOffset
+operator|+
+literal|" req offset="
+operator|+
+name|offset
 argument_list|)
 expr_stmt|;
 block|}
@@ -3285,7 +3389,7 @@ name|startWriting
 condition|)
 block|{
 comment|// offset> nextOffset. check if we need to dump data
-name|checkDump
+name|waitForDump
 argument_list|()
 expr_stmt|;
 comment|// In test, noticed some Linux client sends a batch (e.g., 1MB)
@@ -3441,8 +3545,6 @@ parameter_list|)
 block|{
 name|WRITE3Response
 name|response
-init|=
-literal|null
 decl_stmt|;
 comment|// Read the content back
 name|byte
@@ -4428,50 +4530,6 @@ name|COMMIT_STATUS
 operator|.
 name|COMMIT_WAIT
 return|;
-block|}
-DECL|method|addWrite (WriteCtx writeCtx)
-specifier|private
-name|void
-name|addWrite
-parameter_list|(
-name|WriteCtx
-name|writeCtx
-parameter_list|)
-block|{
-name|long
-name|offset
-init|=
-name|writeCtx
-operator|.
-name|getOffset
-argument_list|()
-decl_stmt|;
-name|int
-name|count
-init|=
-name|writeCtx
-operator|.
-name|getCount
-argument_list|()
-decl_stmt|;
-comment|// For the offset range (min, max), min is inclusive, and max is exclusive
-name|pendingWrites
-operator|.
-name|put
-argument_list|(
-operator|new
-name|OffsetRange
-argument_list|(
-name|offset
-argument_list|,
-name|offset
-operator|+
-name|count
-argument_list|)
-argument_list|,
-name|writeCtx
-argument_list|)
-expr_stmt|;
 block|}
 comment|/**    * Check stream status to decide if it should be closed    * @return true, remove stream; false, keep stream    */
 DECL|method|streamCleanup (long fileId, long streamTimeout)
@@ -5968,7 +6026,7 @@ block|}
 catch|catch
 parameter_list|(
 name|InterruptedException
-name|e
+name|ignored
 parameter_list|)
 block|{       }
 block|}

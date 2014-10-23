@@ -2572,8 +2572,6 @@ return|;
 block|}
 name|GETATTR3Request
 name|request
-init|=
-literal|null
 decl_stmt|;
 try|try
 block|{
@@ -3166,8 +3164,6 @@ return|;
 block|}
 name|SETATTR3Request
 name|request
-init|=
-literal|null
 decl_stmt|;
 try|try
 block|{
@@ -3682,8 +3678,6 @@ return|;
 block|}
 name|LOOKUP3Request
 name|request
-init|=
-literal|null
 decl_stmt|;
 try|try
 block|{
@@ -4073,8 +4067,6 @@ return|;
 block|}
 name|ACCESS3Request
 name|request
-init|=
-literal|null
 decl_stmt|;
 try|try
 block|{
@@ -4432,8 +4424,6 @@ return|;
 block|}
 name|READLINK3Request
 name|request
-init|=
-literal|null
 decl_stmt|;
 try|try
 block|{
@@ -4873,8 +4863,6 @@ return|;
 block|}
 name|READ3Request
 name|request
-init|=
-literal|null
 decl_stmt|;
 try|try
 block|{
@@ -5118,15 +5106,11 @@ block|{
 name|eof
 operator|=
 name|offset
-operator|<
+operator|>=
 name|attrs
 operator|.
 name|getSize
 argument_list|()
-condition|?
-literal|false
-else|:
-literal|true
 expr_stmt|;
 return|return
 operator|new
@@ -5334,8 +5318,11 @@ name|e
 operator|.
 name|getMessage
 argument_list|()
-operator|==
+operator|.
+name|equals
+argument_list|(
 literal|"Stream closed"
+argument_list|)
 condition|)
 block|{
 name|clientCache
@@ -5432,15 +5419,11 @@ name|offset
 operator|+
 name|readCount
 operator|)
-operator|<
+operator|>=
 name|attrs
 operator|.
 name|getSize
 argument_list|()
-condition|?
-literal|false
-else|:
-literal|true
 expr_stmt|;
 return|return
 operator|new
@@ -5645,8 +5628,6 @@ return|;
 block|}
 name|WRITE3Request
 name|request
-init|=
-literal|null
 decl_stmt|;
 try|try
 block|{
@@ -6153,8 +6134,6 @@ return|;
 block|}
 name|CREATE3Request
 name|request
-init|=
-literal|null
 decl_stmt|;
 try|try
 block|{
@@ -6996,8 +6975,6 @@ return|;
 block|}
 name|MKDIR3Request
 name|request
-init|=
-literal|null
 decl_stmt|;
 try|try
 block|{
@@ -7645,8 +7622,6 @@ return|;
 block|}
 name|REMOVE3Request
 name|request
-init|=
-literal|null
 decl_stmt|;
 try|try
 block|{
@@ -8138,8 +8113,6 @@ return|;
 block|}
 name|RMDIR3Request
 name|request
-init|=
-literal|null
 decl_stmt|;
 try|try
 block|{
@@ -9254,8 +9227,6 @@ return|;
 block|}
 name|SYMLINK3Request
 name|request
-init|=
-literal|null
 decl_stmt|;
 try|try
 block|{
@@ -9544,8 +9515,6 @@ name|IOException
 block|{
 name|DirectoryListing
 name|dlisting
-init|=
-literal|null
 decl_stmt|;
 try|try
 block|{
@@ -9741,8 +9710,6 @@ return|;
 block|}
 name|READDIR3Request
 name|request
-init|=
-literal|null
 decl_stmt|;
 try|try
 block|{
@@ -9886,18 +9853,12 @@ expr_stmt|;
 block|}
 name|HdfsFileStatus
 name|dirStatus
-init|=
-literal|null
 decl_stmt|;
 name|DirectoryListing
 name|dlisting
-init|=
-literal|null
 decl_stmt|;
 name|Nfs3FileAttributes
 name|postOpAttr
-init|=
-literal|null
 decl_stmt|;
 name|long
 name|dotdotFileId
@@ -10793,13 +10754,9 @@ name|dirStatus
 decl_stmt|;
 name|DirectoryListing
 name|dlisting
-init|=
-literal|null
 decl_stmt|;
 name|Nfs3FileAttributes
 name|postOpDirAttr
-init|=
-literal|null
 decl_stmt|;
 name|long
 name|dotdotFileId
@@ -11658,8 +11615,6 @@ return|;
 block|}
 name|FSSTAT3Request
 name|request
-init|=
-literal|null
 decl_stmt|;
 try|try
 block|{
@@ -12054,8 +12009,6 @@ return|;
 block|}
 name|FSINFO3Request
 name|request
-init|=
-literal|null
 decl_stmt|;
 try|try
 block|{
@@ -12419,8 +12372,6 @@ return|;
 block|}
 name|PATHCONF3Request
 name|request
-init|=
-literal|null
 decl_stmt|;
 try|try
 block|{
@@ -12731,8 +12682,6 @@ return|;
 block|}
 name|COMMIT3Request
 name|request
-init|=
-literal|null
 decl_stmt|;
 try|try
 block|{

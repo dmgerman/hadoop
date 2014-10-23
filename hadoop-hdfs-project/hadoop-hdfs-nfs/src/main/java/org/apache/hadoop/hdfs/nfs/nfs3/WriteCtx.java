@@ -220,7 +220,7 @@ name|NO_DUMP
 block|,
 DECL|enumConstant|DUMPED
 name|DUMPED
-block|;   }
+block|}
 DECL|field|handle
 specifier|private
 specifier|final
@@ -239,7 +239,7 @@ specifier|final
 name|int
 name|count
 decl_stmt|;
-comment|//Only needed for overlapped write, referring OpenFileCtx.addWritesToCache()
+comment|/**    * Some clients can send a write that includes previously written data along    * with new data. In such case the write request is changed to write from only    * the new data. {@code originalCount} tracks the number of bytes sent in the    * request before it was modified to write only the new data.     * @see OpenFileCtx#addWritesToCache for more details    */
 DECL|field|originalCount
 specifier|private
 specifier|final
@@ -692,8 +692,6 @@ argument_list|)
 expr_stmt|;
 name|ByteBuffer
 name|dataBuffer
-init|=
-literal|null
 decl_stmt|;
 try|try
 block|{

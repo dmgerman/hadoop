@@ -1125,10 +1125,6 @@ comment|// stop the dump thread
 if|if
 condition|(
 name|streamMonitor
-operator|!=
-literal|null
-operator|&&
-name|streamMonitor
 operator|.
 name|isAlive
 argument_list|()
@@ -1159,7 +1155,7 @@ block|}
 catch|catch
 parameter_list|(
 name|InterruptedException
-name|e
+name|ignored
 parameter_list|)
 block|{       }
 block|}
