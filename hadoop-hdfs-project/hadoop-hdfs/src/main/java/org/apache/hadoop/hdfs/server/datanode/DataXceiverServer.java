@@ -670,7 +670,7 @@ comment|// Log the event, Sleep for 30 seconds, other transfers may complete by
 comment|// then.
 name|LOG
 operator|.
-name|warn
+name|error
 argument_list|(
 literal|"DataNode is out of memory. Will retry in 30 seconds."
 argument_list|,
