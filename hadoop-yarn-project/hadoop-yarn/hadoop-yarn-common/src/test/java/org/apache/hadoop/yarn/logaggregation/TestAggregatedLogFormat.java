@@ -43,6 +43,18 @@ import|;
 end_import
 
 begin_import
+import|import static
+name|org
+operator|.
+name|mockito
+operator|.
+name|Mockito
+operator|.
+name|doThrow
+import|;
+end_import
+
+begin_import
 import|import
 name|java
 operator|.
@@ -1292,6 +1304,16 @@ name|numChars
 init|=
 literal|80000
 decl_stmt|;
+comment|// create file stderr and stdout in containerLogDir
+name|writeSrcFile
+argument_list|(
+name|srcFilePath
+argument_list|,
+literal|"stderr"
+argument_list|,
+name|numChars
+argument_list|)
+expr_stmt|;
 name|writeSrcFile
 argument_list|(
 name|srcFilePath
@@ -1355,13 +1377,62 @@ name|getShortUserName
 argument_list|()
 argument_list|)
 decl_stmt|;
+comment|// When we try to open FileInputStream for stderr, it will throw out an IOException.
+comment|// Skip the log aggregation for stderr.
+name|LogValue
+name|spyLogValue
+init|=
+name|spy
+argument_list|(
+name|logValue
+argument_list|)
+decl_stmt|;
+name|File
+name|errorFile
+init|=
+operator|new
+name|File
+argument_list|(
+operator|(
+operator|new
+name|Path
+argument_list|(
+name|srcFilePath
+argument_list|,
+literal|"stderr"
+argument_list|)
+operator|)
+operator|.
+name|toString
+argument_list|()
+argument_list|)
+decl_stmt|;
+name|doThrow
+argument_list|(
+operator|new
+name|IOException
+argument_list|(
+literal|"Mock can not open FileInputStream"
+argument_list|)
+argument_list|)
+operator|.
+name|when
+argument_list|(
+name|spyLogValue
+argument_list|)
+operator|.
+name|secureOpenFile
+argument_list|(
+name|errorFile
+argument_list|)
+expr_stmt|;
 name|logWriter
 operator|.
 name|append
 argument_list|(
 name|logKey
 argument_list|,
-name|logValue
+name|spyLogValue
 argument_list|)
 expr_stmt|;
 name|logWriter
@@ -1446,6 +1517,9 @@ argument_list|,
 name|writer
 argument_list|)
 expr_stmt|;
+comment|// We should only do the log aggregation for stdout.
+comment|// Since we could not open the fileInputStream for stderr, this file is not
+comment|// aggregated.
 name|String
 name|s
 init|=
@@ -1489,6 +1563,21 @@ operator|.
 name|contains
 argument_list|(
 literal|"LogType:stdout"
+argument_list|)
+argument_list|)
+expr_stmt|;
+name|Assert
+operator|.
+name|assertTrue
+argument_list|(
+literal|"log file:stderr should not be aggregated."
+argument_list|,
+operator|!
+name|s
+operator|.
+name|contains
+argument_list|(
+literal|"LogType:stderr"
 argument_list|)
 argument_list|)
 expr_stmt|;
