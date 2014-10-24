@@ -11568,6 +11568,37 @@ comment|// we put the following prerequisite for the operation
 comment|// replication and blocks sizes should be the same for ALL the blocks
 comment|// check the target
 specifier|final
+name|INodesInPath
+name|trgIip
+init|=
+name|dir
+operator|.
+name|getINodesInPath4Write
+argument_list|(
+name|target
+argument_list|)
+decl_stmt|;
+if|if
+condition|(
+name|dir
+operator|.
+name|getEZForPath
+argument_list|(
+name|trgIip
+argument_list|)
+operator|!=
+literal|null
+condition|)
+block|{
+throw|throw
+operator|new
+name|HadoopIllegalArgumentException
+argument_list|(
+literal|"concat can not be called for files in an encryption zone."
+argument_list|)
+throw|;
+block|}
+specifier|final
 name|INodeFile
 name|trgInode
 init|=
@@ -11575,12 +11606,10 @@ name|INodeFile
 operator|.
 name|valueOf
 argument_list|(
-name|dir
+name|trgIip
 operator|.
-name|getINode4Write
-argument_list|(
-name|target
-argument_list|)
+name|getLastINode
+argument_list|()
 argument_list|,
 name|target
 argument_list|)
