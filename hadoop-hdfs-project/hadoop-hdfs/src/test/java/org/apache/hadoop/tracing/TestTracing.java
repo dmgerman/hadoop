@@ -535,15 +535,15 @@ literal|"testWriteTraceHooks"
 block|,
 literal|"org.apache.hadoop.hdfs.protocol.ClientProtocol.create"
 block|,
-literal|"org.apache.hadoop.hdfs.protocol.proto.ClientNamenodeProtocolProtos.ClientNamenodeProtocol.BlockingInterface.create"
+literal|"ClientNamenodeProtocol#create"
 block|,
 literal|"org.apache.hadoop.hdfs.protocol.ClientProtocol.fsync"
 block|,
-literal|"org.apache.hadoop.hdfs.protocol.proto.ClientNamenodeProtocolProtos.ClientNamenodeProtocol.BlockingInterface.fsync"
+literal|"ClientNamenodeProtocol#fsync"
 block|,
 literal|"org.apache.hadoop.hdfs.protocol.ClientProtocol.complete"
 block|,
-literal|"org.apache.hadoop.hdfs.protocol.proto.ClientNamenodeProtocolProtos.ClientNamenodeProtocol.BlockingInterface.complete"
+literal|"ClientNamenodeProtocol#complete"
 block|,
 literal|"DFSOutputStream"
 block|,
@@ -551,7 +551,7 @@ literal|"OpWriteBlockProto"
 block|,
 literal|"org.apache.hadoop.hdfs.protocol.ClientProtocol.addBlock"
 block|,
-literal|"org.apache.hadoop.hdfs.protocol.proto.ClientNamenodeProtocolProtos.ClientNamenodeProtocol.BlockingInterface.addBlock"
+literal|"ClientNamenodeProtocol#addBlock"
 block|}
 decl_stmt|;
 name|assertSpanNamesFound
@@ -979,7 +979,7 @@ literal|"testReadTraceHooks"
 block|,
 literal|"org.apache.hadoop.hdfs.protocol.ClientProtocol.getBlockLocations"
 block|,
-literal|"org.apache.hadoop.hdfs.protocol.proto.ClientNamenodeProtocolProtos.ClientNamenodeProtocol.BlockingInterface.getBlockLocations"
+literal|"ClientNamenodeProtocol#getBlockLocations"
 block|,
 literal|"OpReadBlockProto"
 block|}
