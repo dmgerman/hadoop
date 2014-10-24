@@ -4281,9 +4281,11 @@ name|conf
 operator|.
 name|setInt
 argument_list|(
-name|DFS_DATANODE_RAM_DISK_LOW_WATERMARK_REPLICAS
+name|DFS_DATANODE_RAM_DISK_LOW_WATERMARK_BYTES
 argument_list|,
 name|EVICTION_LOW_WATERMARK
+operator|*
+name|BLOCK_SIZE
 argument_list|)
 expr_stmt|;
 name|conf

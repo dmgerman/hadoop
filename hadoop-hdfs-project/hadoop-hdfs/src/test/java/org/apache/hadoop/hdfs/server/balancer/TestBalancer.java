@@ -903,9 +903,9 @@ name|conf
 operator|.
 name|setInt
 argument_list|(
-name|DFS_DATANODE_RAM_DISK_LOW_WATERMARK_REPLICAS
+name|DFS_DATANODE_RAM_DISK_LOW_WATERMARK_BYTES
 argument_list|,
-literal|1
+name|DEFAULT_RAM_DISK_BLOCK_SIZE
 argument_list|)
 expr_stmt|;
 block|}
