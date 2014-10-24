@@ -844,7 +844,7 @@ condition|)
 block|{
 name|LOG
 operator|.
-name|info
+name|debug
 argument_list|(
 literal|"Shutting down CacheReplicationMonitor"
 argument_list|)
@@ -860,7 +860,7 @@ condition|)
 block|{
 name|LOG
 operator|.
-name|info
+name|debug
 argument_list|(
 literal|"Rescanning because of pending operations"
 argument_list|)
@@ -887,17 +887,15 @@ condition|)
 block|{
 name|LOG
 operator|.
-name|info
+name|debug
 argument_list|(
-literal|"Rescanning after "
-operator|+
+literal|"Rescanning after {} milliseconds"
+argument_list|,
 operator|(
 name|curTimeMs
 operator|-
 name|startTimeMs
 operator|)
-operator|+
-literal|" milliseconds"
 argument_list|)
 expr_stmt|;
 break|break;
@@ -982,27 +980,19 @@ expr_stmt|;
 block|}
 name|LOG
 operator|.
-name|info
+name|debug
 argument_list|(
-literal|"Scanned "
-operator|+
+literal|"Scanned {} directive(s) and {} block(s) in {} millisecond(s)."
+argument_list|,
 name|scannedDirectives
-operator|+
-literal|" directive(s) and "
-operator|+
+argument_list|,
 name|scannedBlocks
-operator|+
-literal|" block(s) in "
-operator|+
+argument_list|,
 operator|(
 name|curTimeMs
 operator|-
 name|startTimeMs
 operator|)
-operator|+
-literal|" "
-operator|+
-literal|"millisecond(s)."
 argument_list|)
 expr_stmt|;
 block|}
