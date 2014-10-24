@@ -58,6 +58,20 @@ name|hadoop
 operator|.
 name|io
 operator|.
+name|MD5Hash
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|io
+operator|.
 name|Text
 import|;
 end_import
@@ -78,7 +92,27 @@ name|java
 operator|.
 name|io
 operator|.
+name|ByteArrayOutputStream
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|io
+operator|.
 name|DataInputStream
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|io
+operator|.
+name|DataOutputStream
 import|;
 end_import
 
@@ -555,9 +589,10 @@ name|void
 name|reset
 parameter_list|()
 block|{
-name|currentId
-operator|=
+name|setCurrentKeyId
+argument_list|(
 literal|0
+argument_list|)
 expr_stmt|;
 name|allKeys
 operator|.
@@ -607,15 +642,17 @@ operator|.
 name|getKeyId
 argument_list|()
 operator|>
-name|currentId
+name|getCurrentKeyId
+argument_list|()
 condition|)
 block|{
-name|currentId
-operator|=
+name|setCurrentKeyId
+argument_list|(
 name|key
 operator|.
 name|getKeyId
 argument_list|()
+argument_list|)
 expr_stmt|;
 block|}
 name|allKeys
@@ -754,6 +791,47 @@ throws|throws
 name|IOException
 block|{
 return|return;
+block|}
+comment|/**    * For subclasses externalizing the storage, for example Zookeeper    * based implementations    */
+DECL|method|getCurrentKeyId ()
+specifier|protected
+specifier|synchronized
+name|int
+name|getCurrentKeyId
+parameter_list|()
+block|{
+return|return
+name|currentId
+return|;
+block|}
+comment|/**    * For subclasses externalizing the storage, for example Zookeeper    * based implementations    */
+DECL|method|incrementCurrentKeyId ()
+specifier|protected
+specifier|synchronized
+name|int
+name|incrementCurrentKeyId
+parameter_list|()
+block|{
+return|return
+operator|++
+name|currentId
+return|;
+block|}
+comment|/**    * For subclasses externalizing the storage, for example Zookeeper    * based implementations    */
+DECL|method|setCurrentKeyId (int keyId)
+specifier|protected
+specifier|synchronized
+name|void
+name|setCurrentKeyId
+parameter_list|(
+name|int
+name|keyId
+parameter_list|)
+block|{
+name|currentId
+operator|=
+name|keyId
+expr_stmt|;
 block|}
 comment|/**    * For subclasses externalizing the storage, for example Zookeeper    * based implementations    */
 DECL|method|getDelegationTokenSeqNum ()
@@ -1052,15 +1130,17 @@ operator|.
 name|getSequenceNumber
 argument_list|()
 operator|>
-name|delegationTokenSequenceNumber
+name|getDelegationTokenSeqNum
+argument_list|()
 condition|)
 block|{
-name|delegationTokenSequenceNumber
-operator|=
+name|setDelegationTokenSeqNum
+argument_list|(
 name|identifier
 operator|.
 name|getSequenceNumber
 argument_list|()
+argument_list|)
 expr_stmt|;
 block|}
 if|if
@@ -1132,9 +1212,8 @@ init|)
 block|{
 name|newCurrentId
 operator|=
-name|currentId
-operator|+
-literal|1
+name|incrementCurrentKeyId
+argument_list|()
 expr_stmt|;
 block|}
 name|DelegationKey
@@ -1169,13 +1248,6 @@ init|(
 name|this
 init|)
 block|{
-name|currentId
-operator|=
-name|newKey
-operator|.
-name|getKeyId
-argument_list|()
-expr_stmt|;
 name|currentKey
 operator|=
 name|newKey
@@ -1380,7 +1452,10 @@ name|identifier
 operator|.
 name|setMasterKeyId
 argument_list|(
-name|currentId
+name|currentKey
+operator|.
+name|getKeyId
+argument_list|()
 argument_list|)
 expr_stmt|;
 name|identifier
@@ -1394,9 +1469,26 @@ name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"Creating password for identifier: "
+literal|"Creating password for identifier: ["
 operator|+
+name|MD5Hash
+operator|.
+name|digest
+argument_list|(
 name|identifier
+operator|.
+name|getBytes
+argument_list|()
+argument_list|)
+operator|+
+literal|", "
+operator|+
+name|currentKey
+operator|.
+name|getKeyId
+argument_list|()
+operator|+
+literal|"]"
 argument_list|)
 expr_stmt|;
 name|byte
