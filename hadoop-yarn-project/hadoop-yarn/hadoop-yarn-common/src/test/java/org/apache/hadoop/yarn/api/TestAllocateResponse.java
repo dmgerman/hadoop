@@ -42,16 +42,6 @@ begin_import
 import|import
 name|org
 operator|.
-name|junit
-operator|.
-name|Assert
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
 name|apache
 operator|.
 name|hadoop
@@ -256,6 +246,16 @@ name|org
 operator|.
 name|junit
 operator|.
+name|Assert
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|junit
+operator|.
 name|Test
 import|;
 end_import
@@ -270,6 +270,11 @@ specifier|public
 class|class
 name|TestAllocateResponse
 block|{
+annotation|@
+name|SuppressWarnings
+argument_list|(
+literal|"deprecation"
+argument_list|)
 annotation|@
 name|Test
 DECL|method|testAllocateResponseWithIncDecContainers ()
@@ -576,6 +581,11 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
+annotation|@
+name|SuppressWarnings
+argument_list|(
+literal|"deprecation"
+argument_list|)
 annotation|@
 name|Test
 DECL|method|testAllocateResponseWithoutIncDecContainers ()

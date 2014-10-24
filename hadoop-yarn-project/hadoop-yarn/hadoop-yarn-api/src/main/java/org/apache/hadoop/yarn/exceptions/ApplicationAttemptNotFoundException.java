@@ -78,6 +78,40 @@ name|yarn
 operator|.
 name|api
 operator|.
+name|ApplicationMasterProtocol
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|api
+operator|.
+name|protocolrecords
+operator|.
+name|AllocateRequest
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|api
+operator|.
 name|protocolrecords
 operator|.
 name|GetApplicationAttemptReportRequest
@@ -85,7 +119,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * This exception is thrown on  * {@link ApplicationHistoryProtocol#getApplicationAttemptReport (GetApplicationAttemptReportRequest)}  * API when the Application Attempt doesn't exist in Application History Server  */
+comment|/**  * This exception is thrown on  * {@link ApplicationHistoryProtocol#getApplicationAttemptReport (GetApplicationAttemptReportRequest)}  * API when the Application Attempt doesn't exist in Application History Server or  * {@link ApplicationMasterProtocol#allocate(AllocateRequest)} if application  * doesn't exist in RM.  */
 end_comment
 
 begin_class

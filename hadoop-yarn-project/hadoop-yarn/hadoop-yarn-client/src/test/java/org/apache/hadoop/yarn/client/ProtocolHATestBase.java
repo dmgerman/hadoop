@@ -4843,9 +4843,7 @@ argument_list|,
 literal|2
 argument_list|)
 argument_list|,
-name|AMCommand
-operator|.
-name|AM_RESYNC
+literal|null
 argument_list|,
 literal|1
 argument_list|,

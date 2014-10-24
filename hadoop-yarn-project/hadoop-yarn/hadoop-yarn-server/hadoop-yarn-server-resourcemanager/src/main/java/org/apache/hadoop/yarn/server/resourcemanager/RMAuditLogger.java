@@ -288,6 +288,15 @@ name|REGISTER_AM
 init|=
 literal|"Register App Master"
 decl_stmt|;
+DECL|field|AM_ALLOCATE
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|AM_ALLOCATE
+init|=
+literal|"App Master Heartbeats"
+decl_stmt|;
 DECL|field|UNREGISTER_AM
 specifier|public
 specifier|static

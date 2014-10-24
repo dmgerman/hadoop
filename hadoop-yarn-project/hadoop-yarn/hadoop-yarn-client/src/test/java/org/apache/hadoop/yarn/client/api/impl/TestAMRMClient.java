@@ -6304,13 +6304,16 @@ name|amrmToken_2
 argument_list|)
 expr_stmt|;
 comment|// can do the allocate call with latest AMRMToken
+name|AllocateResponse
+name|response
+init|=
 name|amClient
 operator|.
 name|allocate
 argument_list|(
 literal|0.1f
 argument_list|)
-expr_stmt|;
+decl_stmt|;
 comment|// Verify latest AMRMToken can be used to send allocation request.
 name|UserGroupInformation
 name|testUser1
@@ -6429,6 +6432,28 @@ argument_list|(
 name|newVersionToken
 argument_list|)
 expr_stmt|;
+name|AllocateRequest
+name|request
+init|=
+name|Records
+operator|.
+name|newRecord
+argument_list|(
+name|AllocateRequest
+operator|.
+name|class
+argument_list|)
+decl_stmt|;
+name|request
+operator|.
+name|setResponseId
+argument_list|(
+name|response
+operator|.
+name|getResponseId
+argument_list|()
+argument_list|)
+expr_stmt|;
 name|testUser1
 operator|.
 name|doAs
@@ -6484,14 +6509,7 @@ argument_list|)
 operator|.
 name|allocate
 argument_list|(
-name|Records
-operator|.
-name|newRecord
-argument_list|(
-name|AllocateRequest
-operator|.
-name|class
-argument_list|)
+name|request
 argument_list|)
 expr_stmt|;
 comment|// Make sure previous token has been rolled-over

@@ -1394,6 +1394,11 @@ block|}
 block|}
 comment|/**    * Validate master-key-roll-over and that tokens are usable even after    * master-key-roll-over.    *     * @throws Exception    */
 annotation|@
+name|SuppressWarnings
+argument_list|(
+literal|"deprecation"
+argument_list|)
+annotation|@
 name|Test
 DECL|method|testMasterKeyRollOver ()
 specifier|public
