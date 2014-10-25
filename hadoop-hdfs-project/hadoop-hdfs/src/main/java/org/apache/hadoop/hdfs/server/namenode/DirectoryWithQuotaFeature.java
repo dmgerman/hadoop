@@ -84,6 +84,26 @@ name|QuotaExceededException
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|server
+operator|.
+name|namenode
+operator|.
+name|snapshot
+operator|.
+name|Snapshot
+import|;
+end_import
+
 begin_comment
 comment|/**  * Quota feature for {@link INodeDirectory}.   */
 end_comment
@@ -302,6 +322,10 @@ operator|.
 name|computeDirectoryContentSummary
 argument_list|(
 name|summary
+argument_list|,
+name|Snapshot
+operator|.
+name|CURRENT_STATE_ID
 argument_list|)
 expr_stmt|;
 comment|// Check only when the content has not changed in the middle.

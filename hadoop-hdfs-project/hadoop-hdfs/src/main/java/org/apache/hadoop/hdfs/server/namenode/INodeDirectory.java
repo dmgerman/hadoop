@@ -2973,16 +2973,24 @@ return|return
 name|computeDirectoryContentSummary
 argument_list|(
 name|summary
+argument_list|,
+name|Snapshot
+operator|.
+name|CURRENT_STATE_ID
 argument_list|)
 return|;
 block|}
 block|}
-DECL|method|computeDirectoryContentSummary ( ContentSummaryComputationContext summary)
+DECL|method|computeDirectoryContentSummary ( ContentSummaryComputationContext summary, int snapshotId)
+specifier|protected
 name|ContentSummaryComputationContext
 name|computeDirectoryContentSummary
 parameter_list|(
 name|ContentSummaryComputationContext
 name|summary
+parameter_list|,
+name|int
+name|snapshotId
 parameter_list|)
 block|{
 name|ReadOnlyList
@@ -2993,9 +3001,7 @@ name|childrenList
 init|=
 name|getChildrenList
 argument_list|(
-name|Snapshot
-operator|.
-name|CURRENT_STATE_ID
+name|snapshotId
 argument_list|)
 decl_stmt|;
 comment|// Explicit traversing is done to enable repositioning after relinquishing
@@ -3084,9 +3090,7 @@ name|childrenList
 operator|=
 name|getChildrenList
 argument_list|(
-name|Snapshot
-operator|.
-name|CURRENT_STATE_ID
+name|snapshotId
 argument_list|)
 expr_stmt|;
 comment|// Reposition in case the children list is changed. Decrement by 1
