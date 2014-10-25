@@ -402,24 +402,6 @@ end_import
 
 begin_import
 import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|yarn
-operator|.
-name|server
-operator|.
-name|sharedcachemanager
-operator|.
-name|SharedCacheManager
-import|;
-end_import
-
-begin_import
-import|import
 name|com
 operator|.
 name|google
@@ -535,11 +517,6 @@ specifier|private
 name|int
 name|stalenessMinutes
 decl_stmt|;
-DECL|field|appChecker
-specifier|private
-name|AppChecker
-name|appChecker
-decl_stmt|;
 DECL|field|scheduler
 specifier|private
 name|ScheduledExecutorService
@@ -555,10 +532,13 @@ specifier|private
 name|int
 name|checkPeriodMin
 decl_stmt|;
-DECL|method|InMemorySCMStore ()
+DECL|method|InMemorySCMStore (AppChecker appChecker)
 specifier|public
 name|InMemorySCMStore
-parameter_list|()
+parameter_list|(
+name|AppChecker
+name|appChecker
+parameter_list|)
 block|{
 name|super
 argument_list|(
@@ -568,6 +548,8 @@ name|class
 operator|.
 name|getName
 argument_list|()
+argument_list|,
+name|appChecker
 argument_list|)
 expr_stmt|;
 block|}
@@ -637,18 +619,6 @@ operator|=
 name|getStalenessPeriod
 argument_list|(
 name|conf
-argument_list|)
-expr_stmt|;
-name|appChecker
-operator|=
-name|createAppCheckerService
-argument_list|(
-name|conf
-argument_list|)
-expr_stmt|;
-name|addService
-argument_list|(
-name|appChecker
 argument_list|)
 expr_stmt|;
 name|bootstrap
@@ -851,25 +821,6 @@ operator|.
 name|serviceStop
 argument_list|()
 expr_stmt|;
-block|}
-annotation|@
-name|VisibleForTesting
-DECL|method|createAppCheckerService (Configuration conf)
-name|AppChecker
-name|createAppCheckerService
-parameter_list|(
-name|Configuration
-name|conf
-parameter_list|)
-block|{
-return|return
-name|SharedCacheManager
-operator|.
-name|createAppCheckerService
-argument_list|(
-name|conf
-argument_list|)
-return|;
 block|}
 DECL|method|bootstrap (Configuration conf)
 specifier|private
@@ -1107,45 +1058,18 @@ decl_stmt|;
 comment|// now traverse individual directories and process them
 comment|// the directory structure is specified by the nested level parameter
 comment|// (e.g. 9/c/d/<checksum>/file)
-name|StringBuilder
+name|String
 name|pattern
 init|=
-operator|new
-name|StringBuilder
-argument_list|()
-decl_stmt|;
-for|for
-control|(
-name|int
-name|i
-init|=
-literal|0
-init|;
-name|i
-operator|<
+name|SharedCacheUtil
+operator|.
+name|getCacheEntryGlobPattern
+argument_list|(
 name|nestedLevel
 operator|+
 literal|1
-condition|;
-name|i
-operator|++
-control|)
-block|{
-name|pattern
-operator|.
-name|append
-argument_list|(
-literal|"*/"
 argument_list|)
-expr_stmt|;
-block|}
-name|pattern
-operator|.
-name|append
-argument_list|(
-literal|"*"
-argument_list|)
-expr_stmt|;
+decl_stmt|;
 name|LOG
 operator|.
 name|info
@@ -1167,9 +1091,6 @@ argument_list|(
 name|root
 argument_list|,
 name|pattern
-operator|.
-name|toString
-argument_list|()
 argument_list|)
 argument_list|)
 decl_stmt|;
@@ -1745,6 +1666,42 @@ block|}
 block|}
 block|}
 block|}
+comment|/**    * Provides atomicity for the method.    */
+annotation|@
+name|Override
+DECL|method|cleanResourceReferences (String key)
+specifier|public
+name|void
+name|cleanResourceReferences
+parameter_list|(
+name|String
+name|key
+parameter_list|)
+throws|throws
+name|YarnException
+block|{
+name|String
+name|interned
+init|=
+name|intern
+argument_list|(
+name|key
+argument_list|)
+decl_stmt|;
+synchronized|synchronized
+init|(
+name|interned
+init|)
+block|{
+name|super
+operator|.
+name|cleanResourceReferences
+argument_list|(
+name|key
+argument_list|)
+expr_stmt|;
+block|}
+block|}
 comment|/**    * Removes the given resource from the store. Returns true if the resource is    * found and removed or if the resource is not found. Returns false if it was    * unable to remove the resource because the resource reference list was not    * empty.    */
 annotation|@
 name|Override
@@ -1999,11 +1956,11 @@ name|getInt
 argument_list|(
 name|YarnConfiguration
 operator|.
-name|IN_MEMORY_STALENESS_PERIOD
+name|IN_MEMORY_STALENESS_PERIOD_MINS
 argument_list|,
 name|YarnConfiguration
 operator|.
-name|DEFAULT_IN_MEMORY_STALENESS_PERIOD
+name|DEFAULT_IN_MEMORY_STALENESS_PERIOD_MINS
 argument_list|)
 decl_stmt|;
 comment|// non-positive value is invalid; use the default
@@ -2049,11 +2006,11 @@ name|getInt
 argument_list|(
 name|YarnConfiguration
 operator|.
-name|IN_MEMORY_INITIAL_DELAY
+name|IN_MEMORY_INITIAL_DELAY_MINS
 argument_list|,
 name|YarnConfiguration
 operator|.
-name|DEFAULT_IN_MEMORY_INITIAL_DELAY
+name|DEFAULT_IN_MEMORY_INITIAL_DELAY_MINS
 argument_list|)
 decl_stmt|;
 comment|// non-positive value is invalid; use the default
@@ -2099,11 +2056,11 @@ name|getInt
 argument_list|(
 name|YarnConfiguration
 operator|.
-name|IN_MEMORY_CHECK_PERIOD
+name|IN_MEMORY_CHECK_PERIOD_MINS
 argument_list|,
 name|YarnConfiguration
 operator|.
-name|DEFAULT_IN_MEMORY_CHECK_PERIOD
+name|DEFAULT_IN_MEMORY_CHECK_PERIOD_MINS
 argument_list|)
 decl_stmt|;
 comment|// non-positive value is invalid; use the default

@@ -347,6 +347,19 @@ argument_list|(
 name|store
 argument_list|)
 expr_stmt|;
+name|CleanerService
+name|cs
+init|=
+name|createCleanerService
+argument_list|(
+name|store
+argument_list|)
+decl_stmt|;
+name|addService
+argument_list|(
+name|cs
+argument_list|)
+expr_stmt|;
 comment|// init metrics
 name|DefaultMetricsSystem
 operator|.
@@ -464,6 +477,23 @@ argument_list|)
 decl_stmt|;
 return|return
 name|store
+return|;
+block|}
+DECL|method|createCleanerService (SCMStore store)
+specifier|private
+name|CleanerService
+name|createCleanerService
+parameter_list|(
+name|SCMStore
+name|store
+parameter_list|)
+block|{
+return|return
+operator|new
+name|CleanerService
+argument_list|(
+name|store
+argument_list|)
 return|;
 block|}
 annotation|@
