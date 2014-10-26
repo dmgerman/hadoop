@@ -1295,11 +1295,6 @@ name|masterKeyId
 init|=
 literal|4
 decl_stmt|;
-name|long
-name|renewDate
-init|=
-literal|5
-decl_stmt|;
 name|TimelineDelegationTokenIdentifier
 name|token
 init|=
@@ -1339,13 +1334,6 @@ operator|.
 name|setMasterKeyId
 argument_list|(
 name|masterKeyId
-argument_list|)
-expr_stmt|;
-name|token
-operator|.
-name|setRenewDate
-argument_list|(
-name|renewDate
 argument_list|)
 expr_stmt|;
 name|TimelineDelegationTokenIdentifier
@@ -1499,20 +1487,6 @@ name|getMasterKeyId
 argument_list|()
 argument_list|,
 name|masterKeyId
-argument_list|)
-expr_stmt|;
-name|Assert
-operator|.
-name|assertEquals
-argument_list|(
-literal|"renewDate from proto is not the same with original token"
-argument_list|,
-name|anotherToken
-operator|.
-name|getRenewDate
-argument_list|()
-argument_list|,
-name|renewDate
 argument_list|)
 expr_stmt|;
 block|}

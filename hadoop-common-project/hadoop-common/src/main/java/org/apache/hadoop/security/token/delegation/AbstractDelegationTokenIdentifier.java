@@ -715,6 +715,7 @@ name|masterKeyId
 return|;
 block|}
 DECL|method|isEqual (Object a, Object b)
+specifier|protected
 specifier|static
 name|boolean
 name|isEqual
