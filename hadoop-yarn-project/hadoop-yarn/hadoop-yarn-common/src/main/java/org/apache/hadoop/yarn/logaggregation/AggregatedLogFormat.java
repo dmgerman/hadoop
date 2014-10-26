@@ -1411,6 +1411,30 @@ range|:
 name|fileList
 control|)
 block|{
+comment|// We only aggregate top level files.
+comment|// Ignore anything inside sub-folders.
+if|if
+condition|(
+name|logFile
+operator|.
+name|isDirectory
+argument_list|()
+condition|)
+block|{
+name|LOG
+operator|.
+name|warn
+argument_list|(
+name|logFile
+operator|.
+name|getAbsolutePath
+argument_list|()
+operator|+
+literal|" is a directory. Ignore it."
+argument_list|)
+expr_stmt|;
+continue|continue;
+block|}
 name|FileInputStream
 name|in
 init|=

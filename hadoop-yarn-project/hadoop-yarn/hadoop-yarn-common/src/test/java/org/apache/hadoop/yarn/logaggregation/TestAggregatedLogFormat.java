@@ -1304,6 +1304,37 @@ name|numChars
 init|=
 literal|80000
 decl_stmt|;
+comment|// create a sub-folder under srcFilePath
+comment|// and create file logs in this sub-folder.
+comment|// We only aggregate top level files.
+comment|// So, this log file should be ignored.
+name|Path
+name|subDir
+init|=
+operator|new
+name|Path
+argument_list|(
+name|srcFilePath
+argument_list|,
+literal|"subDir"
+argument_list|)
+decl_stmt|;
+name|fs
+operator|.
+name|mkdirs
+argument_list|(
+name|subDir
+argument_list|)
+expr_stmt|;
+name|writeSrcFile
+argument_list|(
+name|subDir
+argument_list|,
+literal|"logs"
+argument_list|,
+name|numChars
+argument_list|)
+expr_stmt|;
 comment|// create file stderr and stdout in containerLogDir
 name|writeSrcFile
 argument_list|(
@@ -1590,6 +1621,21 @@ operator|.
 name|contains
 argument_list|(
 literal|"LogType:stderr"
+argument_list|)
+argument_list|)
+expr_stmt|;
+name|Assert
+operator|.
+name|assertTrue
+argument_list|(
+literal|"log file:logs should not be aggregated."
+argument_list|,
+operator|!
+name|s
+operator|.
+name|contains
+argument_list|(
+literal|"LogType:logs"
 argument_list|)
 argument_list|)
 expr_stmt|;
