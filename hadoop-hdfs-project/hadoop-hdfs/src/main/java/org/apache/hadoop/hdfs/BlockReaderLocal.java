@@ -365,6 +365,11 @@ specifier|private
 name|ExtendedBlock
 name|block
 decl_stmt|;
+DECL|field|storageType
+specifier|private
+name|StorageType
+name|storageType
+decl_stmt|;
 DECL|method|Builder (Conf conf)
 specifier|public
 name|Builder
@@ -551,6 +556,25 @@ return|return
 name|this
 return|;
 block|}
+DECL|method|setStorageType (StorageType storageType)
+specifier|public
+name|Builder
+name|setStorageType
+parameter_list|(
+name|StorageType
+name|storageType
+parameter_list|)
+block|{
+name|this
+operator|.
+name|storageType
+operator|=
+name|storageType
+expr_stmt|;
+return|return
+name|this
+return|;
+block|}
 DECL|method|build ()
 specifier|public
 name|BlockReaderLocal
@@ -681,6 +705,12 @@ DECL|field|checksumBuf
 specifier|private
 name|ByteBuffer
 name|checksumBuf
+decl_stmt|;
+comment|/**    * StorageType of replica on DataNode.    */
+DECL|field|storageType
+specifier|private
+name|StorageType
+name|storageType
 decl_stmt|;
 DECL|method|BlockReaderLocal (Builder builder)
 specifier|private
@@ -902,6 +932,14 @@ operator|=
 name|maxReadaheadChunks
 operator|*
 name|bytesPerChecksum
+expr_stmt|;
+name|this
+operator|.
+name|storageType
+operator|=
+name|builder
+operator|.
+name|storageType
 expr_stmt|;
 block|}
 DECL|method|createDataBufIfNeeded ()
@@ -1330,7 +1368,10 @@ expr_stmt|;
 name|long
 name|checksumPos
 init|=
-literal|7
+name|BlockMetadataHeader
+operator|.
+name|getHeaderSize
+argument_list|()
 operator|+
 operator|(
 operator|(
@@ -1455,12 +1496,34 @@ condition|(
 name|verifyChecksum
 condition|)
 block|{
+if|if
+condition|(
+name|storageType
+operator|!=
+literal|null
+operator|&&
+name|storageType
+operator|.
+name|isTransient
+argument_list|()
+condition|)
+block|{
+comment|// Checksums are not stored for replicas on transient storage.  We do not
+comment|// anchor, because we do not intend for client activity to block eviction
+comment|// from transient storage on the DataNode side.
+return|return
+literal|true
+return|;
+block|}
+else|else
+block|{
 return|return
 name|replica
 operator|.
 name|addNoChecksumAnchor
 argument_list|()
 return|;
+block|}
 block|}
 else|else
 block|{
@@ -1480,11 +1543,25 @@ condition|(
 name|verifyChecksum
 condition|)
 block|{
+if|if
+condition|(
+name|storageType
+operator|==
+literal|null
+operator|||
+operator|!
+name|storageType
+operator|.
+name|isTransient
+argument_list|()
+condition|)
+block|{
 name|replica
 operator|.
 name|removeNoChecksumAnchor
 argument_list|()
 expr_stmt|;
+block|}
 block|}
 block|}
 annotation|@

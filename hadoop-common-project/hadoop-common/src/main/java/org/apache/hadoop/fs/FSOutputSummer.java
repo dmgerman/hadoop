@@ -192,8 +192,6 @@ operator|=
 operator|new
 name|byte
 index|[
-name|sum
-operator|.
 name|getChecksumSize
 argument_list|()
 operator|*
@@ -634,6 +632,20 @@ return|return
 name|count
 return|;
 block|}
+comment|/** @return the size for a checksum. */
+DECL|method|getChecksumSize ()
+specifier|protected
+name|int
+name|getChecksumSize
+parameter_list|()
+block|{
+return|return
+name|sum
+operator|.
+name|getChecksumSize
+argument_list|()
+return|;
+block|}
 comment|/** Generate checksums for the given data chunks and output chunks& checksums    * to the underlying output stream.    */
 DECL|method|writeChecksumChunks (byte b[], int off, int len)
 specifier|private
@@ -714,8 +726,6 @@ operator|.
 name|getBytesPerChecksum
 argument_list|()
 operator|*
-name|sum
-operator|.
 name|getChecksumSize
 argument_list|()
 decl_stmt|;
@@ -733,8 +743,6 @@ name|checksum
 argument_list|,
 name|ckOffset
 argument_list|,
-name|sum
-operator|.
 name|getChecksumSize
 argument_list|()
 argument_list|)
@@ -906,25 +914,12 @@ operator|=
 operator|new
 name|byte
 index|[
-operator|(
-operator|(
-name|size
-operator|-
-literal|1
-operator|)
-operator|/
-name|sum
-operator|.
-name|getBytesPerChecksum
-argument_list|()
-operator|+
-literal|1
-operator|)
-operator|*
 name|sum
 operator|.
 name|getChecksumSize
-argument_list|()
+argument_list|(
+name|size
+argument_list|)
 index|]
 expr_stmt|;
 name|this

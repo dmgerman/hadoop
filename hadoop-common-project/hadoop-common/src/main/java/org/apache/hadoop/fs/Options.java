@@ -1049,19 +1049,19 @@ specifier|static
 class|class
 name|ChecksumOpt
 block|{
-DECL|field|crcBlockSize
-specifier|private
-specifier|final
-name|int
-name|crcBlockSize
-decl_stmt|;
-DECL|field|crcType
+DECL|field|checksumType
 specifier|private
 specifier|final
 name|DataChecksum
 operator|.
 name|Type
-name|crcType
+name|checksumType
+decl_stmt|;
+DECL|field|bytesPerChecksum
+specifier|private
+specifier|final
+name|int
+name|bytesPerChecksum
 decl_stmt|;
 comment|/**      * Create a uninitialized one      */
 DECL|method|ChecksumOpt ()
@@ -1069,18 +1069,17 @@ specifier|public
 name|ChecksumOpt
 parameter_list|()
 block|{
-name|crcBlockSize
-operator|=
-operator|-
-literal|1
-expr_stmt|;
-name|crcType
-operator|=
+name|this
+argument_list|(
 name|DataChecksum
 operator|.
 name|Type
 operator|.
 name|DEFAULT
+argument_list|,
+operator|-
+literal|1
+argument_list|)
 expr_stmt|;
 block|}
 comment|/**      * Normal ctor      * @param type checksum type      * @param size bytes per checksum      */
@@ -1097,13 +1096,13 @@ name|int
 name|size
 parameter_list|)
 block|{
-name|crcBlockSize
-operator|=
-name|size
-expr_stmt|;
-name|crcType
+name|checksumType
 operator|=
 name|type
+expr_stmt|;
+name|bytesPerChecksum
+operator|=
+name|size
 expr_stmt|;
 block|}
 DECL|method|getBytesPerChecksum ()
@@ -1113,7 +1112,7 @@ name|getBytesPerChecksum
 parameter_list|()
 block|{
 return|return
-name|crcBlockSize
+name|bytesPerChecksum
 return|;
 block|}
 DECL|method|getChecksumType ()
@@ -1125,7 +1124,23 @@ name|getChecksumType
 parameter_list|()
 block|{
 return|return
-name|crcType
+name|checksumType
+return|;
+block|}
+annotation|@
+name|Override
+DECL|method|toString ()
+specifier|public
+name|String
+name|toString
+parameter_list|()
+block|{
+return|return
+name|checksumType
+operator|+
+literal|":"
+operator|+
+name|bytesPerChecksum
 return|;
 block|}
 comment|/**      * Create a ChecksumOpts that disables checksum      */

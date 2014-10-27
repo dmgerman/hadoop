@@ -715,6 +715,12 @@ specifier|private
 name|DatanodeInfo
 name|datanode
 decl_stmt|;
+comment|/**    * StorageType of replica on DataNode.    */
+DECL|field|storageType
+specifier|private
+name|StorageType
+name|storageType
+decl_stmt|;
 comment|/**    * If false, we won't try short-circuit local reads.    */
 DECL|field|allowShortCircuitLocalReads
 specifier|private
@@ -936,6 +942,25 @@ operator|.
 name|datanode
 operator|=
 name|datanode
+expr_stmt|;
+return|return
+name|this
+return|;
+block|}
+DECL|method|setStorageType (StorageType storageType)
+specifier|public
+name|BlockReaderFactory
+name|setStorageType
+parameter_list|(
+name|StorageType
+name|storageType
+parameter_list|)
+block|{
+name|this
+operator|.
+name|storageType
+operator|=
+name|storageType
 expr_stmt|;
 return|return
 name|this
@@ -1394,6 +1419,8 @@ argument_list|,
 name|startOffset
 argument_list|,
 name|length
+argument_list|,
+name|storageType
 argument_list|)
 return|;
 block|}
@@ -1725,6 +1752,11 @@ operator|.
 name|setCachingStrategy
 argument_list|(
 name|cachingStrategy
+argument_list|)
+operator|.
+name|setStorageType
+argument_list|(
+name|storageType
 argument_list|)
 operator|.
 name|build

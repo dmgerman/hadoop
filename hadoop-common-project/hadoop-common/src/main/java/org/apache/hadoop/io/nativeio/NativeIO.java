@@ -3803,9 +3803,11 @@ name|Shell
 operator|.
 name|WINDOWS
 operator|||
+operator|(
 name|Shell
 operator|.
-name|LINUX
+name|isLinuxSendfileAvailable
+operator|)
 operator|)
 condition|)
 block|{

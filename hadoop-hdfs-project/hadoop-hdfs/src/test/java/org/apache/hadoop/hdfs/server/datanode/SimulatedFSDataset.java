@@ -1453,6 +1453,11 @@ argument_list|,
 name|crcStream
 argument_list|,
 name|requestedChecksum
+argument_list|,
+name|volume
+operator|.
+name|isTransientStorage
+argument_list|()
 argument_list|)
 return|;
 block|}

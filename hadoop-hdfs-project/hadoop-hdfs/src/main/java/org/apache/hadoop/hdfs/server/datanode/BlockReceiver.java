@@ -684,6 +684,7 @@ comment|// checksum we write to disk
 comment|/**    * In the case that the client is writing with a different    * checksum polynomial than the block is stored with on disk,    * the DataNode needs to recalculate checksums before writing.    */
 DECL|field|needsChecksumTranslation
 specifier|private
+specifier|final
 name|boolean
 name|needsChecksumTranslation
 decl_stmt|;
@@ -710,11 +711,13 @@ decl_stmt|;
 comment|// to crc file at local disk
 DECL|field|bytesPerChecksum
 specifier|private
+specifier|final
 name|int
 name|bytesPerChecksum
 decl_stmt|;
 DECL|field|checksumSize
 specifier|private
+specifier|final
 name|int
 name|checksumSize
 decl_stmt|;
@@ -773,13 +776,6 @@ DECL|field|srcDataNode
 specifier|private
 name|DatanodeInfo
 name|srcDataNode
-init|=
-literal|null
-decl_stmt|;
-DECL|field|partialCrc
-specifier|private
-name|Checksum
-name|partialCrc
 init|=
 literal|null
 decl_stmt|;
@@ -2633,6 +2629,7 @@ operator|.
 name|isLastPacketInBlock
 argument_list|()
 decl_stmt|;
+specifier|final
 name|int
 name|len
 init|=
@@ -2665,6 +2662,7 @@ literal|false
 expr_stmt|;
 block|}
 comment|// update received bytes
+specifier|final
 name|long
 name|firstByteInBlock
 init|=
@@ -2869,29 +2867,33 @@ block|}
 block|}
 else|else
 block|{
+specifier|final
 name|int
 name|checksumLen
 init|=
-operator|(
-operator|(
+name|diskChecksum
+operator|.
+name|getChecksumSize
+argument_list|(
 name|len
-operator|+
-name|bytesPerChecksum
-operator|-
-literal|1
-operator|)
-operator|/
-name|bytesPerChecksum
-operator|)
-operator|*
-name|checksumSize
+argument_list|)
 decl_stmt|;
-if|if
-condition|(
+specifier|final
+name|int
+name|checksumReceivedLen
+init|=
 name|checksumBuf
 operator|.
 name|capacity
 argument_list|()
+decl_stmt|;
+if|if
+condition|(
+name|checksumReceivedLen
+operator|>
+literal|0
+operator|&&
+name|checksumReceivedLen
 operator|!=
 name|checksumLen
 condition|)
@@ -2900,16 +2902,11 @@ throw|throw
 operator|new
 name|IOException
 argument_list|(
-literal|"Length of checksums in packet "
+literal|"Invalid checksum length: received length is "
 operator|+
-name|checksumBuf
-operator|.
-name|capacity
-argument_list|()
+name|checksumReceivedLen
 operator|+
-literal|" does not match calculated checksum "
-operator|+
-literal|"length "
+literal|" but expected length is "
 operator|+
 name|checksumLen
 argument_list|)
@@ -2917,6 +2914,10 @@ throw|;
 block|}
 if|if
 condition|(
+name|checksumReceivedLen
+operator|>
+literal|0
+operator|&&
 name|shouldVerifyChecksum
 argument_list|()
 condition|)
@@ -3013,10 +3014,52 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
+if|if
+condition|(
+name|checksumReceivedLen
+operator|==
+literal|0
+operator|&&
+operator|!
+name|streams
+operator|.
+name|isTransientStorage
+argument_list|()
+condition|)
+block|{
+comment|// checksum is missing, need to calculate it
+name|checksumBuf
+operator|=
+name|ByteBuffer
+operator|.
+name|allocate
+argument_list|(
+name|checksumLen
+argument_list|)
+expr_stmt|;
+name|diskChecksum
+operator|.
+name|calculateChunkedSums
+argument_list|(
+name|dataBuf
+argument_list|,
+name|checksumBuf
+argument_list|)
+expr_stmt|;
+block|}
 comment|// by this point, the data in the buffer uses the disk checksum
-name|byte
-index|[]
-name|lastChunkChecksum
+specifier|final
+name|boolean
+name|shouldNotWriteChecksum
+init|=
+name|checksumReceivedLen
+operator|==
+literal|0
+operator|&&
+name|streams
+operator|.
+name|isTransientStorage
+argument_list|()
 decl_stmt|;
 try|try
 block|{
@@ -3051,8 +3094,16 @@ argument_list|()
 expr_stmt|;
 block|}
 comment|// If this is a partial chunk, then read in pre-existing checksum
+name|Checksum
+name|partialCrc
+init|=
+literal|null
+decl_stmt|;
 if|if
 condition|(
+operator|!
+name|shouldNotWriteChecksum
+operator|&&
 name|firstByteInBlock
 operator|%
 name|bytesPerChecksum
@@ -3060,23 +3111,32 @@ operator|!=
 literal|0
 condition|)
 block|{
+if|if
+condition|(
 name|LOG
 operator|.
-name|info
+name|isDebugEnabled
+argument_list|()
+condition|)
+block|{
+name|LOG
+operator|.
+name|debug
 argument_list|(
-literal|"Packet starts at "
-operator|+
-name|firstByteInBlock
-operator|+
-literal|" for "
+literal|"receivePacket for "
 operator|+
 name|block
 operator|+
-literal|" which is not a multiple of bytesPerChecksum "
+literal|": bytesPerChecksum="
 operator|+
 name|bytesPerChecksum
+operator|+
+literal|" does not divide firstByteInBlock="
+operator|+
+name|firstByteInBlock
 argument_list|)
 expr_stmt|;
+block|}
 name|long
 name|offsetInChecksum
 init|=
@@ -3091,13 +3151,13 @@ name|bytesPerChecksum
 operator|*
 name|checksumSize
 decl_stmt|;
+name|partialCrc
+operator|=
 name|computePartialChunkCrc
 argument_list|(
 name|onDiskLen
 argument_list|,
 name|offsetInChecksum
-argument_list|,
-name|bytesPerChecksum
 argument_list|)
 expr_stmt|;
 block|}
@@ -3191,8 +3251,22 @@ literal|"ms)"
 argument_list|)
 expr_stmt|;
 block|}
-comment|// If this is a partial chunk, then verify that this is the only
-comment|// chunk in the packet. Calculate new crc for this chunk.
+specifier|final
+name|byte
+index|[]
+name|lastCrc
+decl_stmt|;
+if|if
+condition|(
+name|shouldNotWriteChecksum
+condition|)
+block|{
+name|lastCrc
+operator|=
+literal|null
+expr_stmt|;
+block|}
+elseif|else
 if|if
 condition|(
 name|partialCrc
@@ -3200,6 +3274,8 @@ operator|!=
 literal|null
 condition|)
 block|{
+comment|// If this is a partial chunk, then verify that this is the only
+comment|// chunk in the packet. Calculate new crc for this chunk.
 if|if
 condition|(
 name|len
@@ -3211,25 +3287,25 @@ throw|throw
 operator|new
 name|IOException
 argument_list|(
-literal|"Got wrong length during writeBlock("
+literal|"Unexpected packet data length for "
 operator|+
 name|block
 operator|+
-literal|") from "
+literal|" from "
 operator|+
 name|inAddr
 operator|+
-literal|" "
+literal|": a partial chunk must be "
 operator|+
-literal|"A packet can have only one partial chunk."
-operator|+
-literal|" len = "
+literal|" sent in an individual packet (data length = "
 operator|+
 name|len
 operator|+
-literal|" bytesPerChecksum "
+literal|"> bytesPerChecksum = "
 operator|+
 name|bytesPerChecksum
+operator|+
+literal|")"
 argument_list|)
 throw|;
 block|}
@@ -3260,18 +3336,12 @@ argument_list|,
 name|checksumSize
 argument_list|)
 decl_stmt|;
-name|lastChunkChecksum
+name|lastCrc
 operator|=
-name|Arrays
-operator|.
-name|copyOfRange
+name|copyLastChunkChecksum
 argument_list|(
 name|buf
 argument_list|,
-name|buf
-operator|.
-name|length
-operator|-
 name|checksumSize
 argument_list|,
 name|buf
@@ -3311,42 +3381,41 @@ expr_stmt|;
 block|}
 else|else
 block|{
-name|lastChunkChecksum
-operator|=
-name|Arrays
+comment|// write checksum
+specifier|final
+name|int
+name|offset
+init|=
+name|checksumBuf
 operator|.
-name|copyOfRange
+name|arrayOffset
+argument_list|()
+operator|+
+name|checksumBuf
+operator|.
+name|position
+argument_list|()
+decl_stmt|;
+specifier|final
+name|int
+name|end
+init|=
+name|offset
+operator|+
+name|checksumLen
+decl_stmt|;
+name|lastCrc
+operator|=
+name|copyLastChunkChecksum
 argument_list|(
 name|checksumBuf
 operator|.
 name|array
 argument_list|()
 argument_list|,
-name|checksumBuf
-operator|.
-name|arrayOffset
-argument_list|()
-operator|+
-name|checksumBuf
-operator|.
-name|position
-argument_list|()
-operator|+
-name|checksumLen
-operator|-
 name|checksumSize
 argument_list|,
-name|checksumBuf
-operator|.
-name|arrayOffset
-argument_list|()
-operator|+
-name|checksumBuf
-operator|.
-name|position
-argument_list|()
-operator|+
-name|checksumLen
+name|end
 argument_list|)
 expr_stmt|;
 name|checksumOut
@@ -3358,15 +3427,7 @@ operator|.
 name|array
 argument_list|()
 argument_list|,
-name|checksumBuf
-operator|.
-name|arrayOffset
-argument_list|()
-operator|+
-name|checksumBuf
-operator|.
-name|position
-argument_list|()
+name|offset
 argument_list|,
 name|checksumLen
 argument_list|)
@@ -3384,7 +3445,7 @@ name|setLastChecksumAndDataLen
 argument_list|(
 name|offsetInBlock
 argument_list|,
-name|lastChunkChecksum
+name|lastCrc
 argument_list|)
 expr_stmt|;
 name|datanode
@@ -3539,6 +3600,39 @@ operator|-
 literal|1
 else|:
 name|len
+return|;
+block|}
+DECL|method|copyLastChunkChecksum (byte[] array, int size, int end)
+specifier|private
+specifier|static
+name|byte
+index|[]
+name|copyLastChunkChecksum
+parameter_list|(
+name|byte
+index|[]
+name|array
+parameter_list|,
+name|int
+name|size
+parameter_list|,
+name|int
+name|end
+parameter_list|)
+block|{
+return|return
+name|Arrays
+operator|.
+name|copyOfRange
+argument_list|(
+name|array
+argument_list|,
+name|end
+operator|-
+name|size
+argument_list|,
+name|end
+argument_list|)
 return|;
 block|}
 DECL|method|manageWriterOsCache (long offsetInBlock)
@@ -4516,9 +4610,9 @@ name|crc
 return|;
 block|}
 comment|/**    * reads in the partial crc chunk and computes checksum    * of pre-existing data in partial chunk.    */
-DECL|method|computePartialChunkCrc (long blkoff, long ckoff, int bytesPerChecksum)
+DECL|method|computePartialChunkCrc (long blkoff, long ckoff)
 specifier|private
-name|void
+name|Checksum
 name|computePartialChunkCrc
 parameter_list|(
 name|long
@@ -4526,9 +4620,6 @@ name|blkoff
 parameter_list|,
 name|long
 name|ckoff
-parameter_list|,
-name|int
-name|bytesPerChecksum
 parameter_list|)
 throws|throws
 name|IOException
@@ -4547,41 +4638,42 @@ operator|%
 name|bytesPerChecksum
 argument_list|)
 decl_stmt|;
-name|int
-name|checksumSize
-init|=
-name|diskChecksum
-operator|.
-name|getChecksumSize
-argument_list|()
-decl_stmt|;
 name|blkoff
 operator|=
 name|blkoff
 operator|-
 name|sizePartialChunk
 expr_stmt|;
+if|if
+condition|(
 name|LOG
 operator|.
-name|info
+name|isDebugEnabled
+argument_list|()
+condition|)
+block|{
+name|LOG
+operator|.
+name|debug
 argument_list|(
-literal|"computePartialChunkCrc sizePartialChunk "
-operator|+
-name|sizePartialChunk
-operator|+
-literal|" "
+literal|"computePartialChunkCrc for "
 operator|+
 name|block
 operator|+
-literal|" block offset "
+literal|": sizePartialChunk="
+operator|+
+name|sizePartialChunk
+operator|+
+literal|", block offset="
 operator|+
 name|blkoff
 operator|+
-literal|" metafile offset "
+literal|", metafile offset="
 operator|+
 name|ckoff
 argument_list|)
 expr_stmt|;
+block|}
 comment|// create an input stream from the block file
 comment|// and read in partial crc chunk into temporary buffer
 comment|//
@@ -4674,8 +4766,10 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|// compute crc of partial chunk from data read in the block file.
+specifier|final
+name|Checksum
 name|partialCrc
-operator|=
+init|=
 name|DataChecksum
 operator|.
 name|newDataChecksum
@@ -4690,7 +4784,7 @@ operator|.
 name|getBytesPerChecksum
 argument_list|()
 argument_list|)
-expr_stmt|;
+decl_stmt|;
 name|partialCrc
 operator|.
 name|update
@@ -4702,15 +4796,24 @@ argument_list|,
 name|sizePartialChunk
 argument_list|)
 expr_stmt|;
+if|if
+condition|(
 name|LOG
 operator|.
-name|info
+name|isDebugEnabled
+argument_list|()
+condition|)
+block|{
+name|LOG
+operator|.
+name|debug
 argument_list|(
 literal|"Read in partial CRC chunk from disk for "
 operator|+
 name|block
 argument_list|)
 expr_stmt|;
+block|}
 comment|// paranoia! verify that the pre-computed crc matches what we
 comment|// recalculated just now
 if|if
@@ -4753,6 +4856,9 @@ name|msg
 argument_list|)
 throw|;
 block|}
+return|return
+name|partialCrc
+return|;
 block|}
 DECL|enum|PacketResponderType
 specifier|private

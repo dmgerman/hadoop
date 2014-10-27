@@ -748,7 +748,11 @@ name|RamDiskReplicaLru
 name|getNextCandidateForEviction
 parameter_list|()
 block|{
+specifier|final
 name|Iterator
+argument_list|<
+name|RamDiskReplicaLru
+argument_list|>
 name|it
 init|=
 name|replicasPersisted
@@ -767,12 +771,10 @@ name|hasNext
 argument_list|()
 condition|)
 block|{
+specifier|final
 name|RamDiskReplicaLru
 name|ramDiskReplicaLru
 init|=
-operator|(
-name|RamDiskReplicaLru
-operator|)
 name|it
 operator|.
 name|next

@@ -826,6 +826,7 @@ literal|0L
 decl_stmt|;
 comment|// the checksum that should actually be used -- this
 comment|// may differ from requestedChecksum for appends.
+specifier|final
 name|DataChecksum
 name|checksum
 decl_stmt|;
@@ -1081,6 +1082,12 @@ argument_list|,
 name|crcOut
 argument_list|,
 name|checksum
+argument_list|,
+name|getVolume
+argument_list|()
+operator|.
+name|isTransientStorage
+argument_list|()
 argument_list|)
 return|;
 block|}

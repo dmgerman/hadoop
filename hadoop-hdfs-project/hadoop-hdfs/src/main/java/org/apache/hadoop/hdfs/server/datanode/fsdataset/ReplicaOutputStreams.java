@@ -120,8 +120,14 @@ specifier|final
 name|DataChecksum
 name|checksum
 decl_stmt|;
+DECL|field|isTransientStorage
+specifier|private
+specifier|final
+name|boolean
+name|isTransientStorage
+decl_stmt|;
 comment|/**    * Create an object with a data output stream, a checksum output stream    * and a checksum.    */
-DECL|method|ReplicaOutputStreams (OutputStream dataOut, OutputStream checksumOut, DataChecksum checksum)
+DECL|method|ReplicaOutputStreams (OutputStream dataOut, OutputStream checksumOut, DataChecksum checksum, boolean isTransientStorage)
 specifier|public
 name|ReplicaOutputStreams
 parameter_list|(
@@ -133,6 +139,9 @@ name|checksumOut
 parameter_list|,
 name|DataChecksum
 name|checksum
+parameter_list|,
+name|boolean
+name|isTransientStorage
 parameter_list|)
 block|{
 name|this
@@ -152,6 +161,12 @@ operator|.
 name|checksum
 operator|=
 name|checksum
+expr_stmt|;
+name|this
+operator|.
+name|isTransientStorage
+operator|=
+name|isTransientStorage
 expr_stmt|;
 block|}
 comment|/** @return the data output stream. */
@@ -185,6 +200,17 @@ parameter_list|()
 block|{
 return|return
 name|checksum
+return|;
+block|}
+comment|/** @return is writing to a transient storage? */
+DECL|method|isTransientStorage ()
+specifier|public
+name|boolean
+name|isTransientStorage
+parameter_list|()
+block|{
+return|return
+name|isTransientStorage
 return|;
 block|}
 annotation|@

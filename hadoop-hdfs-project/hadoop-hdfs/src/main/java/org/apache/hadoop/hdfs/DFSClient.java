@@ -1094,6 +1094,18 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|HadoopIllegalArgumentException
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|classification
 operator|.
 name|InterfaceAudience
@@ -4423,8 +4435,6 @@ parameter_list|(
 name|ChecksumOpt
 name|userOpt
 parameter_list|)
-throws|throws
-name|IOException
 block|{
 comment|// Fill in any missing field with the default.
 name|ChecksumOpt
@@ -4466,17 +4476,17 @@ condition|)
 block|{
 throw|throw
 operator|new
-name|IOException
+name|HadoopIllegalArgumentException
 argument_list|(
-literal|"Invalid checksum type specified: "
+literal|"Invalid checksum type: userOpt="
 operator|+
-name|myOpt
-operator|.
-name|getChecksumType
-argument_list|()
-operator|.
-name|name
-argument_list|()
+name|userOpt
+operator|+
+literal|", default="
+operator|+
+name|defaultChecksumOpt
+operator|+
+literal|", effective=null"
 argument_list|)
 throw|;
 block|}

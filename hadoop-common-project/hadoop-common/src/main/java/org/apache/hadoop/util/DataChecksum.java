@@ -149,17 +149,6 @@ name|DataChecksum
 implements|implements
 name|Checksum
 block|{
-comment|// Misc constants
-DECL|field|HEADER_LEN
-specifier|public
-specifier|static
-specifier|final
-name|int
-name|HEADER_LEN
-init|=
-literal|5
-decl_stmt|;
-comment|/// 1 byte type and 4 byte len
 comment|// checksum types
 DECL|field|CHECKSUM_NULL
 specifier|public
@@ -476,7 +465,8 @@ name|length
 operator|<
 name|offset
 operator|+
-name|HEADER_LEN
+name|getChecksumHeaderSize
+argument_list|()
 condition|)
 block|{
 return|return
@@ -562,7 +552,7 @@ name|bytesPerChecksum
 argument_list|)
 return|;
 block|}
-comment|/**    * This constructucts a DataChecksum by reading HEADER_LEN bytes from    * input stream<i>in</i>    */
+comment|/**    * This constructs a DataChecksum by reading HEADER_LEN bytes from input    * stream<i>in</i>    */
 DECL|method|newDataChecksum ( DataInputStream in )
 specifier|public
 specifier|static
@@ -674,9 +664,8 @@ init|=
 operator|new
 name|byte
 index|[
-name|DataChecksum
-operator|.
-name|HEADER_LEN
+name|getChecksumHeaderSize
+argument_list|()
 index|]
 decl_stmt|;
 name|header
@@ -1168,7 +1157,7 @@ operator|=
 name|chunkSize
 expr_stmt|;
 block|}
-comment|// Accessors
+comment|/** @return the checksum algorithm type. */
 DECL|method|getChecksumType ()
 specifier|public
 name|Type
@@ -1179,6 +1168,7 @@ return|return
 name|type
 return|;
 block|}
+comment|/** @return the size for a checksum. */
 DECL|method|getChecksumSize ()
 specifier|public
 name|int
@@ -1189,6 +1179,34 @@ return|return
 name|type
 operator|.
 name|size
+return|;
+block|}
+comment|/** @return the required checksum size given the data length. */
+DECL|method|getChecksumSize (int dataSize)
+specifier|public
+name|int
+name|getChecksumSize
+parameter_list|(
+name|int
+name|dataSize
+parameter_list|)
+block|{
+return|return
+operator|(
+operator|(
+name|dataSize
+operator|-
+literal|1
+operator|)
+operator|/
+name|getBytesPerChecksum
+argument_list|()
+operator|+
+literal|1
+operator|)
+operator|*
+name|getChecksumSize
+argument_list|()
 return|;
 block|}
 DECL|method|getBytesPerChecksum ()

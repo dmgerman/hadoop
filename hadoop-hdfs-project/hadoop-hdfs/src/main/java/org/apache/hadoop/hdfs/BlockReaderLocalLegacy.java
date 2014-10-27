@@ -860,7 +860,7 @@ name|long
 name|blockId
 decl_stmt|;
 comment|/**    * The only way this object can be instantiated.    */
-DECL|method|newBlockReader (DFSClient.Conf conf, UserGroupInformation userGroupInformation, Configuration configuration, String file, ExtendedBlock blk, Token<BlockTokenIdentifier> token, DatanodeInfo node, long startOffset, long length)
+DECL|method|newBlockReader (DFSClient.Conf conf, UserGroupInformation userGroupInformation, Configuration configuration, String file, ExtendedBlock blk, Token<BlockTokenIdentifier> token, DatanodeInfo node, long startOffset, long length, StorageType storageType)
 specifier|static
 name|BlockReaderLocalLegacy
 name|newBlockReader
@@ -896,6 +896,9 @@ name|startOffset
 parameter_list|,
 name|long
 name|length
+parameter_list|,
+name|StorageType
+name|storageType
 parameter_list|)
 throws|throws
 name|IOException
@@ -965,6 +968,8 @@ argument_list|,
 name|conf
 operator|.
 name|connectToDnViaHostname
+argument_list|,
+name|storageType
 argument_list|)
 expr_stmt|;
 block|}
@@ -995,6 +1000,11 @@ init|=
 name|conf
 operator|.
 name|skipShortCircuitChecksums
+operator|||
+name|storageType
+operator|.
+name|isTransient
+argument_list|()
 decl_stmt|;
 try|try
 block|{
@@ -1084,61 +1094,22 @@ argument_list|(
 name|metafile
 argument_list|)
 expr_stmt|;
-comment|// read and handle the common header here. For now just a version
-name|BlockMetadataHeader
-name|header
+specifier|final
+name|DataChecksum
+name|checksum
 init|=
 name|BlockMetadataHeader
 operator|.
-name|readHeader
+name|readDataChecksum
 argument_list|(
 operator|new
 name|DataInputStream
 argument_list|(
 name|checksumIn
 argument_list|)
-argument_list|)
-decl_stmt|;
-name|short
-name|version
-init|=
-name|header
-operator|.
-name|getVersion
-argument_list|()
-decl_stmt|;
-if|if
-condition|(
-name|version
-operator|!=
-name|BlockMetadataHeader
-operator|.
-name|VERSION
-condition|)
-block|{
-name|LOG
-operator|.
-name|warn
-argument_list|(
-literal|"Wrong version ("
-operator|+
-name|version
-operator|+
-literal|") for metadata file for "
-operator|+
+argument_list|,
 name|blk
-operator|+
-literal|" ignoring ..."
 argument_list|)
-expr_stmt|;
-block|}
-name|DataChecksum
-name|checksum
-init|=
-name|header
-operator|.
-name|getChecksum
-argument_list|()
 decl_stmt|;
 name|long
 name|firstChunkOffset
@@ -1338,7 +1309,7 @@ return|return
 name|ldInfo
 return|;
 block|}
-DECL|method|getBlockPathInfo (UserGroupInformation ugi, ExtendedBlock blk, DatanodeInfo node, Configuration conf, int timeout, Token<BlockTokenIdentifier> token, boolean connectToDnViaHostname)
+DECL|method|getBlockPathInfo (UserGroupInformation ugi, ExtendedBlock blk, DatanodeInfo node, Configuration conf, int timeout, Token<BlockTokenIdentifier> token, boolean connectToDnViaHostname, StorageType storageType)
 specifier|private
 specifier|static
 name|BlockLocalPathInfo
@@ -1367,6 +1338,9 @@ name|token
 parameter_list|,
 name|boolean
 name|connectToDnViaHostname
+parameter_list|,
+name|StorageType
+name|storageType
 parameter_list|)
 throws|throws
 name|IOException
@@ -1419,11 +1393,25 @@ argument_list|,
 name|token
 argument_list|)
 expr_stmt|;
+comment|// We cannot cache the path information for a replica on transient storage.
+comment|// If the replica gets evicted, then it moves to a different path.  Then,
+comment|// our next attempt to read from the cached path would fail to find the
+comment|// file.  Additionally, the failure would cause us to disable legacy
+comment|// short-circuit read for all subsequent use in the ClientContext.  Unlike
+comment|// the newer short-circuit read implementation, we have no communication
+comment|// channel for the DataNode to notify the client that the path has been
+comment|// invalidated.  Therefore, our only option is to skip caching.
 if|if
 condition|(
 name|pathinfo
 operator|!=
 literal|null
+operator|&&
+operator|!
+name|storageType
+operator|.
+name|isTransient
+argument_list|()
 condition|)
 block|{
 if|if
