@@ -2171,11 +2171,9 @@ argument_list|)
 expr_stmt|;
 continue|continue;
 block|}
-name|float
-name|capacity
+name|String
+name|capacityPropertyName
 init|=
-name|getFloat
-argument_list|(
 name|getNodeLabelPrefix
 argument_list|(
 name|queue
@@ -2184,10 +2182,46 @@ name|label
 argument_list|)
 operator|+
 name|CAPACITY
+decl_stmt|;
+name|float
+name|capacity
+init|=
+name|getFloat
+argument_list|(
+name|capacityPropertyName
 argument_list|,
 name|UNDEFINED
 argument_list|)
 decl_stmt|;
+if|if
+condition|(
+name|capacity
+operator|==
+name|UNDEFINED
+condition|)
+block|{
+throw|throw
+operator|new
+name|IllegalArgumentException
+argument_list|(
+literal|"Configuration issue: "
+operator|+
+literal|" node-label="
+operator|+
+name|label
+operator|+
+literal|" is accessible from queue="
+operator|+
+name|queue
+operator|+
+literal|" but has no capacity set, you should set "
+operator|+
+name|capacityPropertyName
+operator|+
+literal|" in range of [0, 100]."
+argument_list|)
+throw|;
+block|}
 if|if
 condition|(
 name|capacity
@@ -2203,19 +2237,19 @@ throw|throw
 operator|new
 name|IllegalArgumentException
 argument_list|(
-literal|"Illegal "
-operator|+
-literal|"capacity of "
+literal|"Illegal capacity of "
 operator|+
 name|capacity
 operator|+
-literal|" for label="
+literal|" for node-label="
 operator|+
 name|label
 operator|+
 literal|" in queue="
 operator|+
 name|queue
+operator|+
+literal|", valid capacity should in range of [0, 100]."
 argument_list|)
 throw|;
 block|}
