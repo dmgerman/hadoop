@@ -90,6 +90,22 @@ name|hadoop
 operator|.
 name|hdfs
 operator|.
+name|client
+operator|.
+name|BlockReportOptions
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
 name|DFSConfigKeys
 import|;
 end_import
@@ -330,6 +346,17 @@ DECL|method|getReconfigurationStatus ()
 name|ReconfigurationTaskStatus
 name|getReconfigurationStatus
 parameter_list|()
+throws|throws
+name|IOException
+function_decl|;
+comment|/**    * Trigger a new block report.    */
+DECL|method|triggerBlockReport (BlockReportOptions options)
+name|void
+name|triggerBlockReport
+parameter_list|(
+name|BlockReportOptions
+name|options
+parameter_list|)
 throws|throws
 name|IOException
 function_decl|;
