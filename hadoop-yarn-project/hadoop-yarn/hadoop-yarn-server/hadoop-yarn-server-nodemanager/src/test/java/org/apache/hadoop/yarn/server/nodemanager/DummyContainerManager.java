@@ -694,26 +694,6 @@ name|yarn
 operator|.
 name|server
 operator|.
-name|nodemanager
-operator|.
-name|recovery
-operator|.
-name|NMNullStateStoreService
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|yarn
-operator|.
-name|server
-operator|.
 name|security
 operator|.
 name|ApplicationACLsManager
@@ -795,7 +775,7 @@ name|SuppressWarnings
 argument_list|(
 literal|"unchecked"
 argument_list|)
-DECL|method|createResourceLocalizationService ( ContainerExecutor exec, DeletionService deletionContext)
+DECL|method|createResourceLocalizationService ( ContainerExecutor exec, DeletionService deletionContext, Context context)
 specifier|protected
 name|ResourceLocalizationService
 name|createResourceLocalizationService
@@ -805,6 +785,9 @@ name|exec
 parameter_list|,
 name|DeletionService
 name|deletionContext
+parameter_list|,
+name|Context
+name|context
 parameter_list|)
 block|{
 return|return
@@ -823,9 +806,7 @@ name|super
 operator|.
 name|dirsHandler
 argument_list|,
-operator|new
-name|NMNullStateStoreService
-argument_list|()
+name|context
 argument_list|)
 block|{
 annotation|@

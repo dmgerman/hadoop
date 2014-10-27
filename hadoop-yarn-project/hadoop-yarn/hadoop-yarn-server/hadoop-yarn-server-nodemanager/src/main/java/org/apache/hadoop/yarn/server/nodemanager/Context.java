@@ -26,9 +26,33 @@ name|java
 operator|.
 name|util
 operator|.
+name|Map
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
 name|concurrent
 operator|.
 name|ConcurrentMap
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|security
+operator|.
+name|Credentials
 import|;
 end_import
 
@@ -274,6 +298,16 @@ argument_list|,
 name|Application
 argument_list|>
 name|getApplications
+parameter_list|()
+function_decl|;
+DECL|method|getSystemCredentialsForApps ()
+name|Map
+argument_list|<
+name|ApplicationId
+argument_list|,
+name|Credentials
+argument_list|>
+name|getSystemCredentialsForApps
 parameter_list|()
 function_decl|;
 DECL|method|getContainers ()

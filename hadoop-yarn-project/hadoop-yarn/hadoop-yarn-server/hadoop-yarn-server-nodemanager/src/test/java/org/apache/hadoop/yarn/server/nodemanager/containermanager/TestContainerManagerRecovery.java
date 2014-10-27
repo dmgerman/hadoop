@@ -2388,9 +2388,6 @@ argument_list|,
 literal|null
 argument_list|,
 name|context
-operator|.
-name|getNMStateStore
-argument_list|()
 argument_list|)
 block|{
 annotation|@
@@ -2541,6 +2538,9 @@ name|exec
 parameter_list|,
 name|DeletionService
 name|deletionContext
+parameter_list|,
+name|Context
+name|context
 parameter_list|)
 block|{
 return|return

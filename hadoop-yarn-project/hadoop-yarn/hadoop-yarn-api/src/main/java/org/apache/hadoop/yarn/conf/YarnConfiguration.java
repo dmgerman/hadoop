@@ -2778,6 +2778,25 @@ name|DEFAULT_RM_DELEGATION_TOKEN_RENEWER_THREAD_COUNT
 init|=
 literal|50
 decl_stmt|;
+DECL|field|RM_PROXY_USER_PRIVILEGES_ENABLED
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|RM_PROXY_USER_PRIVILEGES_ENABLED
+init|=
+name|RM_PREFIX
+operator|+
+literal|"proxy-user-privileges.enabled"
+decl_stmt|;
+DECL|field|DEFAULT_RM_PROXY_USER_PRIVILEGES_ENABLED
+specifier|public
+specifier|static
+name|boolean
+name|DEFAULT_RM_PROXY_USER_PRIVILEGES_ENABLED
+init|=
+literal|false
+decl_stmt|;
 comment|/** Whether to enable log aggregation */
 DECL|field|LOG_AGGREGATION_ENABLED
 specifier|public

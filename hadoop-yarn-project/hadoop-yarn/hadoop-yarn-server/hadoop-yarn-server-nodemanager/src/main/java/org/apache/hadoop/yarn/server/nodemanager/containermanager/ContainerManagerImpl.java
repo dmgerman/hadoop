@@ -2269,6 +2269,8 @@ argument_list|(
 name|exec
 argument_list|,
 name|deletionContext
+argument_list|,
+name|context
 argument_list|)
 expr_stmt|;
 name|addService
@@ -3287,7 +3289,7 @@ operator|.
 name|containersMonitor
 return|;
 block|}
-DECL|method|createResourceLocalizationService ( ContainerExecutor exec, DeletionService deletionContext)
+DECL|method|createResourceLocalizationService ( ContainerExecutor exec, DeletionService deletionContext, Context context)
 specifier|protected
 name|ResourceLocalizationService
 name|createResourceLocalizationService
@@ -3297,6 +3299,9 @@ name|exec
 parameter_list|,
 name|DeletionService
 name|deletionContext
+parameter_list|,
+name|Context
+name|context
 parameter_list|)
 block|{
 return|return
@@ -3314,9 +3319,6 @@ argument_list|,
 name|dirsHandler
 argument_list|,
 name|context
-operator|.
-name|getNMStateStore
-argument_list|()
 argument_list|)
 return|;
 block|}

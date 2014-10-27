@@ -1799,6 +1799,11 @@ name|submissionContext
 operator|.
 name|getCancelTokensWhenComplete
 argument_list|()
+argument_list|,
+name|application
+operator|.
+name|getUser
+argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
@@ -2023,6 +2028,11 @@ argument_list|,
 name|appContext
 operator|.
 name|getCancelTokensWhenComplete
+argument_list|()
+argument_list|,
+name|application
+operator|.
+name|getUser
 argument_list|()
 argument_list|)
 expr_stmt|;

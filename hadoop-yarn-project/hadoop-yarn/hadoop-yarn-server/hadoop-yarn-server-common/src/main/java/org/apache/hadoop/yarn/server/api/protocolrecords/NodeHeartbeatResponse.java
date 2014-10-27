@@ -26,9 +26,29 @@ begin_import
 import|import
 name|java
 operator|.
+name|nio
+operator|.
+name|ByteBuffer
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
 name|util
 operator|.
 name|List
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
+name|Map
 import|;
 end_import
 
@@ -250,6 +270,31 @@ name|setDiagnosticsMessage
 parameter_list|(
 name|String
 name|diagnosticsMessage
+parameter_list|)
+function_decl|;
+comment|// Credentials (i.e. hdfs tokens) needed by NodeManagers for application
+comment|// localizations and logAggreations.
+DECL|method|getSystemCredentialsForApps ()
+name|Map
+argument_list|<
+name|ApplicationId
+argument_list|,
+name|ByteBuffer
+argument_list|>
+name|getSystemCredentialsForApps
+parameter_list|()
+function_decl|;
+DECL|method|setSystemCredentialsForApps ( Map<ApplicationId, ByteBuffer> systemCredentials)
+name|void
+name|setSystemCredentialsForApps
+parameter_list|(
+name|Map
+argument_list|<
+name|ApplicationId
+argument_list|,
+name|ByteBuffer
+argument_list|>
+name|systemCredentials
 parameter_list|)
 function_decl|;
 block|}

@@ -24,6 +24,16 @@ begin_import
 import|import
 name|java
 operator|.
+name|nio
+operator|.
+name|ByteBuffer
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
 name|util
 operator|.
 name|concurrent
@@ -476,6 +486,16 @@ argument_list|,
 name|RMApp
 argument_list|>
 name|getRMApps
+parameter_list|()
+function_decl|;
+DECL|method|getSystemCredentialsForApps ()
+name|ConcurrentMap
+argument_list|<
+name|ApplicationId
+argument_list|,
+name|ByteBuffer
+argument_list|>
+name|getSystemCredentialsForApps
 parameter_list|()
 function_decl|;
 DECL|method|getInactiveRMNodes ()
