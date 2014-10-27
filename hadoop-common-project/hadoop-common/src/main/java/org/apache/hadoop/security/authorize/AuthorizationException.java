@@ -94,6 +94,8 @@ block|{
 literal|"HDFS"
 block|,
 literal|"MapReduce"
+block|,
+literal|"YARN"
 block|}
 argument_list|)
 annotation|@

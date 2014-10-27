@@ -24,18 +24,6 @@ begin_import
 import|import
 name|java
 operator|.
-name|lang
-operator|.
-name|reflect
-operator|.
-name|UndeclaredThrowableException
-import|;
-end_import
-
-begin_import
-import|import
-name|java
-operator|.
 name|security
 operator|.
 name|PrivilegedExceptionAction
@@ -123,6 +111,22 @@ operator|.
 name|security
 operator|.
 name|UserGroupInformation
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|security
+operator|.
+name|authorize
+operator|.
+name|AuthorizationException
 import|;
 end_import
 
@@ -726,15 +730,41 @@ name|Exception
 block|{
 name|store
 operator|=
+name|createStore
+argument_list|(
+name|SCALE
+argument_list|)
+expr_stmt|;
+block|}
+DECL|method|createStore (int scale)
+specifier|public
+specifier|static
+name|TimelineStore
+name|createStore
+parameter_list|(
+name|int
+name|scale
+parameter_list|)
+throws|throws
+name|Exception
+block|{
+name|TimelineStore
+name|store
+init|=
 operator|new
 name|MemoryTimelineStore
 argument_list|()
-expr_stmt|;
+decl_stmt|;
 name|prepareTimelineStore
 argument_list|(
 name|store
+argument_list|,
+name|scale
 argument_list|)
 expr_stmt|;
+return|return
+name|store
+return|;
 block|}
 annotation|@
 name|Before
@@ -935,7 +965,7 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-DECL|method|prepareTimelineStore (TimelineStore store)
+DECL|method|prepareTimelineStore (TimelineStore store, int scale)
 specifier|private
 specifier|static
 name|void
@@ -943,6 +973,9 @@ name|prepareTimelineStore
 parameter_list|(
 name|TimelineStore
 name|store
+parameter_list|,
+name|int
+name|scale
 parameter_list|)
 throws|throws
 name|Exception
@@ -956,7 +989,7 @@ literal|1
 init|;
 name|i
 operator|<=
-name|SCALE
+name|scale
 condition|;
 operator|++
 name|i
@@ -1032,7 +1065,7 @@ literal|1
 init|;
 name|j
 operator|<=
-name|SCALE
+name|scale
 condition|;
 operator|++
 name|j
@@ -1082,7 +1115,7 @@ literal|1
 init|;
 name|k
 operator|<=
-name|SCALE
+name|scale
 condition|;
 operator|++
 name|k
@@ -1712,7 +1745,7 @@ block|}
 block|}
 catch|catch
 parameter_list|(
-name|UndeclaredThrowableException
+name|AuthorizationException
 name|e
 parameter_list|)
 block|{
@@ -1733,25 +1766,8 @@ literal|"user3"
 argument_list|)
 condition|)
 block|{
-if|if
-condition|(
-name|e
-operator|.
-name|getCause
-argument_list|()
-operator|.
-name|getMessage
-argument_list|()
-operator|.
-name|contains
-argument_list|(
-literal|"does not have privilage to see this application"
-argument_list|)
-condition|)
-block|{
 comment|// The exception is expected
 return|return;
-block|}
 block|}
 throw|throw
 name|e
@@ -1993,7 +2009,7 @@ block|}
 block|}
 catch|catch
 parameter_list|(
-name|UndeclaredThrowableException
+name|AuthorizationException
 name|e
 parameter_list|)
 block|{
@@ -2014,25 +2030,8 @@ literal|"user3"
 argument_list|)
 condition|)
 block|{
-if|if
-condition|(
-name|e
-operator|.
-name|getCause
-argument_list|()
-operator|.
-name|getMessage
-argument_list|()
-operator|.
-name|contains
-argument_list|(
-literal|"does not have privilage to see this application"
-argument_list|)
-condition|)
-block|{
 comment|// The exception is expected
 return|return;
-block|}
 block|}
 throw|throw
 name|e
@@ -2355,7 +2354,7 @@ block|}
 block|}
 catch|catch
 parameter_list|(
-name|UndeclaredThrowableException
+name|AuthorizationException
 name|e
 parameter_list|)
 block|{
@@ -2376,25 +2375,8 @@ literal|"user3"
 argument_list|)
 condition|)
 block|{
-if|if
-condition|(
-name|e
-operator|.
-name|getCause
-argument_list|()
-operator|.
-name|getMessage
-argument_list|()
-operator|.
-name|contains
-argument_list|(
-literal|"does not have privilage to see this application"
-argument_list|)
-condition|)
-block|{
 comment|// The exception is expected
 return|return;
-block|}
 block|}
 throw|throw
 name|e
@@ -2551,7 +2533,7 @@ block|}
 block|}
 catch|catch
 parameter_list|(
-name|UndeclaredThrowableException
+name|AuthorizationException
 name|e
 parameter_list|)
 block|{
@@ -2572,25 +2554,8 @@ literal|"user3"
 argument_list|)
 condition|)
 block|{
-if|if
-condition|(
-name|e
-operator|.
-name|getCause
-argument_list|()
-operator|.
-name|getMessage
-argument_list|()
-operator|.
-name|contains
-argument_list|(
-literal|"does not have privilage to see this application"
-argument_list|)
-condition|)
-block|{
 comment|// The exception is expected
 return|return;
-block|}
 block|}
 throw|throw
 name|e
@@ -2732,7 +2697,7 @@ block|}
 block|}
 catch|catch
 parameter_list|(
-name|UndeclaredThrowableException
+name|AuthorizationException
 name|e
 parameter_list|)
 block|{
@@ -2753,25 +2718,8 @@ literal|"user3"
 argument_list|)
 condition|)
 block|{
-if|if
-condition|(
-name|e
-operator|.
-name|getCause
-argument_list|()
-operator|.
-name|getMessage
-argument_list|()
-operator|.
-name|contains
-argument_list|(
-literal|"does not have privilage to see this application"
-argument_list|)
-condition|)
-block|{
 comment|// The exception is expected
 return|return;
-block|}
 block|}
 throw|throw
 name|e

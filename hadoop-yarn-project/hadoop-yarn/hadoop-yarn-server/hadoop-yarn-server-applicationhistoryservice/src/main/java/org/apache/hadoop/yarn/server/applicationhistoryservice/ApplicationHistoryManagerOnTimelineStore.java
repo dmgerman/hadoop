@@ -106,6 +106,22 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|security
+operator|.
+name|authorize
+operator|.
+name|AuthorizationException
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|service
 operator|.
 name|AbstractService
@@ -3137,11 +3153,11 @@ block|}
 block|}
 catch|catch
 parameter_list|(
-name|YarnException
+name|AuthorizationException
 name|e
 parameter_list|)
 block|{
-comment|// YarnExcetpion is thrown because the user doesn't have access
+comment|// AuthorizationException is thrown because the user doesn't have access
 name|app
 operator|.
 name|appReport
@@ -3463,7 +3479,7 @@ condition|)
 block|{
 throw|throw
 operator|new
-name|YarnException
+name|AuthorizationException
 argument_list|(
 literal|"User "
 operator|+
