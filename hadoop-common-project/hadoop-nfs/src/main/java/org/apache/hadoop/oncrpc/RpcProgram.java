@@ -316,7 +316,7 @@ specifier|final
 name|DatagramSocket
 name|registrationSocket
 decl_stmt|;
-comment|/**    * Constructor    *     * @param program program name    * @param host host where the Rpc server program is started    * @param port port where the Rpc server program is listening to    * @param progNumber program number as defined in RFC 1050    * @param lowProgVersion lowest version of the specification supported    * @param highProgVersion highest version of the specification supported    * @param DatagramSocket registrationSocket if not null, use this socket to    *        register with portmap daemon    * @param allowInsecurePorts true to allow client connections from    *        unprivileged ports, false otherwise    */
+comment|/**    * Constructor    *     * @param program program name    * @param host host where the Rpc server program is started    * @param port port where the Rpc server program is listening to    * @param progNumber program number as defined in RFC 1050    * @param lowProgVersion lowest version of the specification supported    * @param highProgVersion highest version of the specification supported    * @param registrationSocket if not null, use this socket to register    *        with portmap daemon    * @param allowInsecurePorts true to allow client connections from    *        unprivileged ports, false otherwise    */
 DECL|method|RpcProgram (String program, String host, int port, int progNumber, int lowProgVersion, int highProgVersion, DatagramSocket registrationSocket, boolean allowInsecurePorts)
 specifier|protected
 name|RpcProgram
