@@ -14199,6 +14199,14 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
+if|if
+condition|(
+name|blockLog
+operator|.
+name|isDebugEnabled
+argument_list|()
+condition|)
+block|{
 name|blockLog
 operator|.
 name|debug
@@ -14226,6 +14234,7 @@ operator|+
 name|deleted
 argument_list|)
 expr_stmt|;
+block|}
 block|}
 comment|/**    * Return the number of nodes hosting a given block, grouped    * by the state of those replicas.    */
 DECL|method|countNodes (Block b)
