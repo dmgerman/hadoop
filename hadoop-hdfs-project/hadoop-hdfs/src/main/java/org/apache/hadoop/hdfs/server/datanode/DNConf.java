@@ -642,6 +642,11 @@ specifier|public
 class|class
 name|DNConf
 block|{
+DECL|field|conf
+specifier|final
+name|Configuration
+name|conf
+decl_stmt|;
 DECL|field|socketTimeout
 specifier|final
 name|int
@@ -796,6 +801,12 @@ name|Configuration
 name|conf
 parameter_list|)
 block|{
+name|this
+operator|.
+name|conf
+operator|=
+name|conf
+expr_stmt|;
 name|socketTimeout
 operator|=
 name|conf
@@ -1225,6 +1236,17 @@ return|return
 name|this
 operator|.
 name|minimumNameNodeVersion
+return|;
+block|}
+comment|/**    * Returns the configuration.    *     * @return Configuration the configuration    */
+DECL|method|getConf ()
+specifier|public
+name|Configuration
+name|getConf
+parameter_list|()
+block|{
+return|return
+name|conf
 return|;
 block|}
 comment|/**    * Returns true if encryption enabled for DataTransferProtocol.    *    * @return boolean true if encryption enabled for DataTransferProtocol    */

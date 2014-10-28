@@ -4076,6 +4076,8 @@ operator|=
 operator|new
 name|SaslDataTransferClient
 argument_list|(
+name|conf
+argument_list|,
 name|DataTransferSaslUtil
 operator|.
 name|getSaslPropertiesResolver

@@ -6642,6 +6642,10 @@ name|SaslDataTransferClient
 argument_list|(
 name|dnConf
 operator|.
+name|conf
+argument_list|,
+name|dnConf
+operator|.
 name|saslPropsResolver
 argument_list|,
 name|dnConf
