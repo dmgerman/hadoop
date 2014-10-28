@@ -3679,7 +3679,7 @@ specifier|final
 name|int
 name|fileSize
 init|=
-literal|0x8FFFFFF
+literal|0x8000000
 decl_stmt|;
 comment|// 128 MB
 specifier|final
@@ -3805,6 +3805,21 @@ argument_list|(
 name|srcFile
 argument_list|,
 name|dstFile
+argument_list|)
+expr_stmt|;
+name|Assert
+operator|.
+name|assertEquals
+argument_list|(
+name|srcFile
+operator|.
+name|length
+argument_list|()
+argument_list|,
+name|dstFile
+operator|.
+name|length
+argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
