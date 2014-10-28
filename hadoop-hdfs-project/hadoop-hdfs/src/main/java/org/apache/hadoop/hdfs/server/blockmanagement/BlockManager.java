@@ -16119,6 +16119,30 @@ name|block
 argument_list|)
 return|;
 block|}
+comment|/**   * Get reason for certain corrupted replicas for a given block and a given dn.   */
+DECL|method|getCorruptReason (Block block, DatanodeDescriptor node)
+specifier|public
+name|String
+name|getCorruptReason
+parameter_list|(
+name|Block
+name|block
+parameter_list|,
+name|DatanodeDescriptor
+name|node
+parameter_list|)
+block|{
+return|return
+name|corruptReplicas
+operator|.
+name|getCorruptReason
+argument_list|(
+name|block
+argument_list|,
+name|node
+argument_list|)
+return|;
+block|}
 comment|/** @return the size of UnderReplicatedBlocks */
 DECL|method|numOfUnderReplicatedBlocks ()
 specifier|public
