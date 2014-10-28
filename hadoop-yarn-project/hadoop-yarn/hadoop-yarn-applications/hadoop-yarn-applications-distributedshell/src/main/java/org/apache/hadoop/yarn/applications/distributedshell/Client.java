@@ -1114,6 +1114,13 @@ name|numContainers
 init|=
 literal|1
 decl_stmt|;
+DECL|field|nodeLabelExpression
+specifier|private
+name|String
+name|nodeLabelExpression
+init|=
+literal|null
+decl_stmt|;
 comment|// log4j.properties file
 comment|// if available, add to local resources and set into classpath
 DECL|field|log4jPropFile
@@ -1777,6 +1784,25 @@ argument_list|,
 literal|"Print usage"
 argument_list|)
 expr_stmt|;
+name|opts
+operator|.
+name|addOption
+argument_list|(
+literal|"node_label_expression"
+argument_list|,
+literal|true
+argument_list|,
+literal|"Node label expression to determine the nodes"
+operator|+
+literal|" where all the containers of this application"
+operator|+
+literal|" will be allocated, \"\" means containers"
+operator|+
+literal|" can be allocated anywhere, if you don't specify the option,"
+operator|+
+literal|" default node_label_expression of queue will be used."
+argument_list|)
+expr_stmt|;
 block|}
 comment|/**    */
 DECL|method|Client ()
@@ -2426,6 +2452,17 @@ name|numContainers
 argument_list|)
 throw|;
 block|}
+name|nodeLabelExpression
+operator|=
+name|cliParser
+operator|.
+name|getOptionValue
+argument_list|(
+literal|"node_label_expression"
+argument_list|,
+literal|null
+argument_list|)
+expr_stmt|;
 name|clientTimeout
 operator|=
 name|Integer
@@ -3550,6 +3587,21 @@ name|numContainers
 argument_list|)
 argument_list|)
 expr_stmt|;
+if|if
+condition|(
+literal|null
+operator|!=
+name|nodeLabelExpression
+condition|)
+block|{
+name|appContext
+operator|.
+name|setNodeLabelExpression
+argument_list|(
+name|nodeLabelExpression
+argument_list|)
+expr_stmt|;
+block|}
 name|vargs
 operator|.
 name|add
