@@ -3567,6 +3567,11 @@ operator|.
 name|shutdown
 argument_list|()
 expr_stmt|;
+name|sockDir
+operator|.
+name|close
+argument_list|()
+expr_stmt|;
 block|}
 comment|/**    * Test unlinking a file whose blocks we are caching in the DFSClient.    * The DataNode will notify the DFSClient that the replica is stale via the    * ShortCircuitShm.    */
 annotation|@

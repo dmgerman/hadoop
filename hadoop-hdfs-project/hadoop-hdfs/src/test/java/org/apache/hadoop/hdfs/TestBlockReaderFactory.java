@@ -2175,6 +2175,11 @@ operator|.
 name|shutdown
 argument_list|()
 expr_stmt|;
+name|sockDir
+operator|.
+name|close
+argument_list|()
+expr_stmt|;
 block|}
 comment|/**    * Test that a client which does not support short-circuit reads using    * shared memory can talk with a server which supports it.    */
 annotation|@
@@ -2398,6 +2403,11 @@ operator|.
 name|shutdown
 argument_list|()
 expr_stmt|;
+name|sockDir
+operator|.
+name|close
+argument_list|()
+expr_stmt|;
 block|}
 comment|/**    * Test shutting down the ShortCircuitCache while there are things in it.    */
 annotation|@
@@ -2619,6 +2629,11 @@ expr_stmt|;
 name|cluster
 operator|.
 name|shutdown
+argument_list|()
+expr_stmt|;
+name|sockDir
+operator|.
+name|close
 argument_list|()
 expr_stmt|;
 block|}
