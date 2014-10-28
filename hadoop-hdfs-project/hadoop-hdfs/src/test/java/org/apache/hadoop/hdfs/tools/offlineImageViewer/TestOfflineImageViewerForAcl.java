@@ -1181,11 +1181,7 @@ name|void
 name|testWebImageViewerForAcl
 parameter_list|()
 throws|throws
-name|IOException
-throws|,
-name|InterruptedException
-throws|,
-name|URISyntaxException
+name|Exception
 block|{
 name|WebImageViewer
 name|viewer
@@ -1446,7 +1442,7 @@ block|{
 comment|// shutdown the viewer
 name|viewer
 operator|.
-name|shutdown
+name|close
 argument_list|()
 expr_stmt|;
 block|}

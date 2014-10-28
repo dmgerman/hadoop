@@ -1740,7 +1740,7 @@ name|void
 name|testFileDistributionCalculatorWithOptions
 parameter_list|()
 throws|throws
-name|IOException
+name|Exception
 block|{
 name|int
 name|status
@@ -1898,11 +1898,7 @@ name|void
 name|testWebImageViewer
 parameter_list|()
 throws|throws
-name|IOException
-throws|,
-name|InterruptedException
-throws|,
-name|URISyntaxException
+name|Exception
 block|{
 name|WebImageViewer
 name|viewer
@@ -2250,7 +2246,7 @@ block|{
 comment|// shutdown the viewer
 name|viewer
 operator|.
-name|shutdown
+name|close
 argument_list|()
 expr_stmt|;
 block|}
