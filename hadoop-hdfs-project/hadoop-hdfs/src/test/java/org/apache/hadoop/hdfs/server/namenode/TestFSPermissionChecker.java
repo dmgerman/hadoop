@@ -308,6 +308,18 @@ begin_import
 import|import static
 name|org
 operator|.
+name|junit
+operator|.
+name|Assert
+operator|.
+name|assertTrue
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
 name|mockito
 operator|.
 name|Matchers
@@ -371,6 +383,20 @@ operator|.
 name|conf
 operator|.
 name|Configuration
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|fs
+operator|.
+name|Path
 import|;
 end_import
 
@@ -3257,7 +3283,55 @@ name|AccessControlException
 name|e
 parameter_list|)
 block|{
-comment|// expected
+name|assertTrue
+argument_list|(
+literal|"Permission denied messages must carry the username"
+argument_list|,
+name|e
+operator|.
+name|getMessage
+argument_list|()
+operator|.
+name|contains
+argument_list|(
+name|user
+operator|.
+name|getUserName
+argument_list|()
+operator|.
+name|toString
+argument_list|()
+argument_list|)
+argument_list|)
+expr_stmt|;
+name|assertTrue
+argument_list|(
+literal|"Permission denied messages must carry the path parent"
+argument_list|,
+name|e
+operator|.
+name|getMessage
+argument_list|()
+operator|.
+name|contains
+argument_list|(
+operator|new
+name|Path
+argument_list|(
+name|path
+argument_list|)
+operator|.
+name|getParent
+argument_list|()
+operator|.
+name|toUri
+argument_list|()
+operator|.
+name|getPath
+argument_list|()
+argument_list|)
+argument_list|)
+expr_stmt|;
 block|}
 block|}
 DECL|method|createINodeDirectory (INodeDirectory parent, String name, String owner, String group, short perm)

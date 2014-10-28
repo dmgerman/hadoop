@@ -1002,7 +1002,13 @@ throw|throw
 operator|new
 name|AccessControlException
 argument_list|(
-literal|"Permission denied"
+literal|"Permission denied. user="
+operator|+
+name|user
+operator|+
+literal|" is not the owner of inode="
+operator|+
+name|inode
 argument_list|)
 throw|;
 block|}
