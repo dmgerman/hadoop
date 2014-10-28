@@ -993,14 +993,14 @@ argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
-comment|/*     * Test if Datanode reports bad blocks during replication request    */
-annotation|@
-name|Test
-DECL|method|testBadBlockReportOnTransfer ()
-specifier|public
+DECL|method|testBadBlockReportOnTransfer ( boolean corruptBlockByDeletingBlockFile)
+specifier|private
 name|void
 name|testBadBlockReportOnTransfer
-parameter_list|()
+parameter_list|(
+name|boolean
+name|corruptBlockByDeletingBlockFile
+parameter_list|)
 throws|throws
 name|Exception
 block|{
@@ -1138,6 +1138,15 @@ decl_stmt|;
 name|int
 name|blockFilesCorrupted
 init|=
+name|corruptBlockByDeletingBlockFile
+condition|?
+name|cluster
+operator|.
+name|corruptBlockOnDataNodesByDeletingBlockFile
+argument_list|(
+name|block
+argument_list|)
+else|:
 name|cluster
 operator|.
 name|corruptBlockOnDataNodes
@@ -1276,6 +1285,40 @@ name|cluster
 operator|.
 name|shutdown
 argument_list|()
+expr_stmt|;
+block|}
+comment|/*     * Test if Datanode reports bad blocks during replication request    */
+annotation|@
+name|Test
+DECL|method|testBadBlockReportOnTransfer ()
+specifier|public
+name|void
+name|testBadBlockReportOnTransfer
+parameter_list|()
+throws|throws
+name|Exception
+block|{
+name|testBadBlockReportOnTransfer
+argument_list|(
+literal|false
+argument_list|)
+expr_stmt|;
+block|}
+comment|/*     * Test if Datanode reports bad blocks during replication request    * with missing block file    */
+annotation|@
+name|Test
+DECL|method|testBadBlockReportOnTransferMissingBlockFile ()
+specifier|public
+name|void
+name|testBadBlockReportOnTransferMissingBlockFile
+parameter_list|()
+throws|throws
+name|Exception
+block|{
+name|testBadBlockReportOnTransfer
+argument_list|(
+literal|true
+argument_list|)
 expr_stmt|;
 block|}
 comment|/**    * Tests replication in DFS.    */

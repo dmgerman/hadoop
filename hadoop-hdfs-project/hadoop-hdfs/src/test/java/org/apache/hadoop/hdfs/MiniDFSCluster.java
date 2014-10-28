@@ -8339,14 +8339,16 @@ argument_list|()
 expr_stmt|;
 block|}
 block|}
-comment|/**    * Return the contents of the given block on the given datanode.    *    * @param block block to be corrupted    * @throws IOException on error accessing the file for the given block    */
-DECL|method|corruptBlockOnDataNodes (ExtendedBlock block)
-specifier|public
+DECL|method|corruptBlockOnDataNodesHelper (ExtendedBlock block, boolean deleteBlockFile)
+specifier|private
 name|int
-name|corruptBlockOnDataNodes
+name|corruptBlockOnDataNodesHelper
 parameter_list|(
 name|ExtendedBlock
 name|block
+parameter_list|,
+name|boolean
+name|deleteBlockFile
 parameter_list|)
 throws|throws
 name|IOException
@@ -8375,10 +8377,24 @@ control|)
 block|{
 if|if
 condition|(
+operator|(
+name|deleteBlockFile
+operator|&&
+name|corruptBlockByDeletingBlockFile
+argument_list|(
+name|f
+argument_list|)
+operator|)
+operator|||
+operator|(
+operator|!
+name|deleteBlockFile
+operator|&&
 name|corruptBlock
 argument_list|(
 name|f
 argument_list|)
+operator|)
 condition|)
 block|{
 name|blocksCorrupted
@@ -8388,6 +8404,48 @@ block|}
 block|}
 return|return
 name|blocksCorrupted
+return|;
+block|}
+comment|/**    * Return the number of corrupted replicas of the given block.    *    * @param block block to be corrupted    * @throws IOException on error accessing the file for the given block    */
+DECL|method|corruptBlockOnDataNodes (ExtendedBlock block)
+specifier|public
+name|int
+name|corruptBlockOnDataNodes
+parameter_list|(
+name|ExtendedBlock
+name|block
+parameter_list|)
+throws|throws
+name|IOException
+block|{
+return|return
+name|corruptBlockOnDataNodesHelper
+argument_list|(
+name|block
+argument_list|,
+literal|false
+argument_list|)
+return|;
+block|}
+comment|/**    * Return the number of corrupted replicas of the given block.    *    * @param block block to be corrupted    * @throws IOException on error accessing the file for the given block    */
+DECL|method|corruptBlockOnDataNodesByDeletingBlockFile (ExtendedBlock block)
+specifier|public
+name|int
+name|corruptBlockOnDataNodesByDeletingBlockFile
+parameter_list|(
+name|ExtendedBlock
+name|block
+parameter_list|)
+throws|throws
+name|IOException
+block|{
+return|return
+name|corruptBlockOnDataNodesHelper
+argument_list|(
+name|block
+argument_list|,
+literal|true
+argument_list|)
 return|;
 block|}
 DECL|method|readBlockOnDataNode (int i, ExtendedBlock block)
@@ -8603,6 +8661,43 @@ argument_list|)
 expr_stmt|;
 return|return
 literal|true
+return|;
+block|}
+comment|/*    * Corrupt a block on a particular datanode by deleting the block file    */
+DECL|method|corruptBlockByDeletingBlockFile (File blockFile)
+specifier|public
+specifier|static
+name|boolean
+name|corruptBlockByDeletingBlockFile
+parameter_list|(
+name|File
+name|blockFile
+parameter_list|)
+throws|throws
+name|IOException
+block|{
+if|if
+condition|(
+name|blockFile
+operator|==
+literal|null
+operator|||
+operator|!
+name|blockFile
+operator|.
+name|exists
+argument_list|()
+condition|)
+block|{
+return|return
+literal|false
+return|;
+block|}
+return|return
+name|blockFile
+operator|.
+name|delete
+argument_list|()
 return|;
 block|}
 DECL|method|changeGenStampOfBlock (int dnIndex, ExtendedBlock blk, long newGenStamp)
