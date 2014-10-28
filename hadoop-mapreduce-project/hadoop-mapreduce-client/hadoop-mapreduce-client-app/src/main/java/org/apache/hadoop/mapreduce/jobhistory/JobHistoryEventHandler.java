@@ -1471,6 +1471,22 @@ operator|.
 name|DEFAULT_MR_AM_HISTORY_USE_BATCHED_FLUSH_QUEUE_SIZE_THRESHOLD
 argument_list|)
 expr_stmt|;
+if|if
+condition|(
+name|conf
+operator|.
+name|getBoolean
+argument_list|(
+name|MRJobConfig
+operator|.
+name|MAPREDUCE_JOB_EMIT_TIMELINE_DATA
+argument_list|,
+name|MRJobConfig
+operator|.
+name|DEFAULT_MAPREDUCE_JOB_EMIT_TIMELINE_DATA
+argument_list|)
+condition|)
+block|{
 name|timelineClient
 operator|=
 name|TimelineClient
@@ -1485,6 +1501,24 @@ argument_list|(
 name|conf
 argument_list|)
 expr_stmt|;
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"Emitting job history data to the timeline server is enabled"
+argument_list|)
+expr_stmt|;
+block|}
+else|else
+block|{
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"Emitting job history data to the timeline server is not enabled"
+argument_list|)
+expr_stmt|;
+block|}
 name|super
 operator|.
 name|serviceInit
@@ -1637,11 +1671,19 @@ parameter_list|()
 throws|throws
 name|Exception
 block|{
+if|if
+condition|(
+name|timelineClient
+operator|!=
+literal|null
+condition|)
+block|{
 name|timelineClient
 operator|.
 name|start
 argument_list|()
 expr_stmt|;
+block|}
 name|eventHandlingThread
 operator|=
 operator|new
@@ -2840,7 +2882,7 @@ block|}
 comment|// For all events
 comment|// (1) Write it out
 comment|// (2) Process it for JobSummary
-comment|// (3) Process it for ATS
+comment|// (3) Process it for ATS (if enabled)
 name|MetaInfo
 name|mi
 init|=
@@ -2900,6 +2942,13 @@ name|getJobID
 argument_list|()
 argument_list|)
 expr_stmt|;
+if|if
+condition|(
+name|timelineClient
+operator|!=
+literal|null
+condition|)
+block|{
 name|processEventForTimelineServer
 argument_list|(
 name|historyEvent
@@ -2915,6 +2964,7 @@ name|getTimestamp
 argument_list|()
 argument_list|)
 expr_stmt|;
+block|}
 if|if
 condition|(
 name|LOG
