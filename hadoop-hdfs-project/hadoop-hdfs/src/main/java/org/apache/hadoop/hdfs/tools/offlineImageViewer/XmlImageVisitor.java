@@ -40,6 +40,22 @@ name|LinkedList
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|util
+operator|.
+name|XMLUtils
+import|;
+end_import
+
 begin_comment
 comment|/**  * An XmlImageVisitor walks over an fsimage structure and writes out  * an equivalent XML document that contains the fsimage's components.  */
 end_comment
@@ -331,7 +347,12 @@ name|tag
 operator|+
 literal|">"
 operator|+
+name|XMLUtils
+operator|.
+name|mangleXmlString
+argument_list|(
 name|value
+argument_list|)
 operator|+
 literal|"</"
 operator|+

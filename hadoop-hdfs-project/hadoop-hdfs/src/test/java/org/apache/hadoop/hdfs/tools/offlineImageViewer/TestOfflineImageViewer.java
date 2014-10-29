@@ -80,6 +80,16 @@ name|java
 operator|.
 name|io
 operator|.
+name|FileWriter
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|io
+operator|.
 name|IOException
 import|;
 end_import
@@ -959,6 +969,23 @@ name|emptydir
 argument_list|)
 argument_list|)
 expr_stmt|;
+comment|//Create a directory whose name should be escaped in XML
+name|Path
+name|invalidXMLDir
+init|=
+operator|new
+name|Path
+argument_list|(
+literal|"/dirContainingInvalidXMLChar\u0000here"
+argument_list|)
+decl_stmt|;
+name|hdfs
+operator|.
+name|mkdirs
+argument_list|(
+name|invalidXMLDir
+argument_list|)
+expr_stmt|;
 comment|// Get delegation tokens so we log the delegation token op
 name|Token
 argument_list|<
@@ -1602,7 +1629,7 @@ name|assertEquals
 argument_list|(
 name|NUM_DIRS
 operator|+
-literal|3
+literal|4
 argument_list|,
 name|totalDirs
 argument_list|)
@@ -1993,7 +2020,7 @@ name|assertEquals
 argument_list|(
 name|NUM_DIRS
 operator|+
-literal|2
+literal|3
 argument_list|,
 name|statuses
 operator|.
