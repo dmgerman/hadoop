@@ -2228,6 +2228,13 @@ name|re
 operator|.
 name|getMessage
 argument_list|()
+operator|!=
+literal|null
+operator|&&
+name|re
+operator|.
+name|getMessage
+argument_list|()
 operator|.
 name|startsWith
 argument_list|(
