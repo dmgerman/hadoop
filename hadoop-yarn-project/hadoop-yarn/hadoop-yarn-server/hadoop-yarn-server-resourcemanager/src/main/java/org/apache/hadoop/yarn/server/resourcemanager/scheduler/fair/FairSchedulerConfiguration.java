@@ -1132,6 +1132,13 @@ name|AllocationConfigurationException
 block|{
 try|try
 block|{
+name|val
+operator|=
+name|val
+operator|.
+name|toLowerCase
+argument_list|()
+expr_stmt|;
 name|int
 name|memory
 init|=
@@ -1227,7 +1234,7 @@ name|Pattern
 operator|.
 name|compile
 argument_list|(
-literal|"(\\d+) ?"
+literal|"(\\d+)\\s*"
 operator|+
 name|units
 argument_list|)
