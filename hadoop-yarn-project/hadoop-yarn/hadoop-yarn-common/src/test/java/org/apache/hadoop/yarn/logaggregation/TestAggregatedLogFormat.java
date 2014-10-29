@@ -2005,6 +2005,8 @@ argument_list|)
 decl_stmt|;
 comment|// It is trying simulate a situation where first log file is owned by
 comment|// different user (probably symlink) and second one by the user itself.
+comment|// The first file should not be aggregated. Because this log file has the invalid
+comment|// user name.
 name|when
 argument_list|(
 name|logValue
@@ -2156,6 +2158,8 @@ name|adminsGroupString
 expr_stmt|;
 block|}
 block|}
+comment|// This file: stderr should not be aggregated.
+comment|// And we will not aggregate the log message.
 name|String
 name|stdoutFile1
 init|=
@@ -2203,23 +2207,7 @@ block|}
 argument_list|)
 argument_list|)
 decl_stmt|;
-name|String
-name|message1
-init|=
-literal|"Owner '"
-operator|+
-name|expectedOwner
-operator|+
-literal|"' for path "
-operator|+
-name|stdoutFile1
-operator|+
-literal|" did not match expected owner '"
-operator|+
-name|randomUser
-operator|+
-literal|"'"
-decl_stmt|;
+comment|// The file: stdout is expected to be aggregated.
 name|String
 name|stdoutFile2
 init|=
@@ -2287,18 +2275,6 @@ argument_list|()
 operator|+
 literal|"'"
 decl_stmt|;
-name|Assert
-operator|.
-name|assertTrue
-argument_list|(
-name|line
-operator|.
-name|contains
-argument_list|(
-name|message1
-argument_list|)
-argument_list|)
-expr_stmt|;
 name|Assert
 operator|.
 name|assertFalse
