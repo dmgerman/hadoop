@@ -733,6 +733,32 @@ operator|.
 name|isAvoidingStaleDataNodesForWrite
 argument_list|()
 decl_stmt|;
+name|int
+name|maxNodesAndReplicas
+index|[]
+init|=
+name|getMaxNodesPerRack
+argument_list|(
+literal|0
+argument_list|,
+name|numOfReplicas
+argument_list|)
+decl_stmt|;
+name|numOfReplicas
+operator|=
+name|maxNodesAndReplicas
+index|[
+literal|0
+index|]
+expr_stmt|;
+name|int
+name|maxNodesPerRack
+init|=
+name|maxNodesAndReplicas
+index|[
+literal|1
+index|]
+decl_stmt|;
 for|for
 control|(
 name|int
@@ -782,18 +808,7 @@ name|favoriteAndExcludedNodes
 argument_list|,
 name|blocksize
 argument_list|,
-name|getMaxNodesPerRack
-argument_list|(
-name|results
-operator|.
-name|size
-argument_list|()
-argument_list|,
-name|numOfReplicas
-argument_list|)
-index|[
-literal|1
-index|]
+name|maxNodesPerRack
 argument_list|,
 name|results
 argument_list|,
@@ -1223,6 +1238,7 @@ argument_list|)
 argument_list|)
 return|;
 block|}
+comment|/**    * Calculate the maximum number of replicas to allocate per rack. It also    * limits the total number of replicas to the total number of nodes in the    * cluster. Caller should adjust the replica count to the return value.    *    * @param numOfChosen The number of already chosen nodes.    * @param numOfReplicas The number of additional nodes to allocate.    * @return integer array. Index 0: The number of nodes allowed to allocate    *         in addition to already chosen nodes.    *         Index 1: The maximum allowed number of nodes per rack. This    *         is independent of the number of chosen nodes, as it is calculated    *         using the target number of replicas.    */
 DECL|method|getMaxNodesPerRack (int numOfChosen, int numOfReplicas)
 specifier|private
 name|int
@@ -1271,6 +1287,37 @@ operator|=
 name|clusterSize
 expr_stmt|;
 block|}
+comment|// No calculation needed when there is only one rack or picking one node.
+name|int
+name|numOfRacks
+init|=
+name|clusterMap
+operator|.
+name|getNumOfRacks
+argument_list|()
+decl_stmt|;
+if|if
+condition|(
+name|numOfRacks
+operator|==
+literal|1
+operator|||
+name|totalNumOfReplicas
+operator|<=
+literal|1
+condition|)
+block|{
+return|return
+operator|new
+name|int
+index|[]
+block|{
+name|numOfReplicas
+block|,
+name|totalNumOfReplicas
+block|}
+return|;
+block|}
 name|int
 name|maxNodesPerRack
 init|=
@@ -1280,13 +1327,31 @@ operator|-
 literal|1
 operator|)
 operator|/
-name|clusterMap
-operator|.
-name|getNumOfRacks
-argument_list|()
+name|numOfRacks
 operator|+
 literal|2
 decl_stmt|;
+comment|// At this point, there are more than one racks and more than one replicas
+comment|// to store. Avoid all replicas being in the same rack.
+comment|//
+comment|// maxNodesPerRack has the following properties at this stage.
+comment|//   1) maxNodesPerRack>= 2
+comment|//   2) (maxNodesPerRack-1) * numOfRacks> totalNumOfReplicas
+comment|//          when numOfRacks> 1
+comment|//
+comment|// Thus, the following adjustment will still result in a value that forces
+comment|// multi-rack allocation and gives enough number of total nodes.
+if|if
+condition|(
+name|maxNodesPerRack
+operator|==
+name|totalNumOfReplicas
+condition|)
+block|{
+name|maxNodesPerRack
+operator|--
+expr_stmt|;
+block|}
 return|return
 operator|new
 name|int

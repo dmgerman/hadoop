@@ -1721,11 +1721,12 @@ index|]
 argument_list|)
 argument_list|)
 expr_stmt|;
+comment|// Only up to two nodes can be picked per rack when there are two racks.
 name|assertEquals
 argument_list|(
-literal|"Should have three targets"
+literal|"Should have two targets"
 argument_list|,
-literal|3
+literal|2
 argument_list|,
 name|pipeline
 operator|.
