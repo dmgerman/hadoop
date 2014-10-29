@@ -1061,14 +1061,31 @@ argument_list|()
 argument_list|)
 argument_list|)
 operator|.
-name|_r
+name|_
 argument_list|(
-literal|"Active users: "
+literal|"Active Users: "
 argument_list|,
 name|activeUserList
 operator|.
 name|toString
 argument_list|()
+argument_list|)
+operator|.
+name|_r
+argument_list|(
+literal|"Accessible Node Labels:"
+argument_list|,
+name|StringUtils
+operator|.
+name|join
+argument_list|(
+literal|","
+argument_list|,
+name|lqinfo
+operator|.
+name|getNodeLabels
+argument_list|()
+argument_list|)
 argument_list|)
 decl_stmt|;
 name|html

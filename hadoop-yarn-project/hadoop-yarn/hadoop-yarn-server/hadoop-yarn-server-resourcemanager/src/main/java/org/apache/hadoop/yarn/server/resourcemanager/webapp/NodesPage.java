@@ -532,6 +532,13 @@ argument_list|()
 operator|.
 name|th
 argument_list|(
+literal|".nodelabels"
+argument_list|,
+literal|"Node Labels"
+argument_list|)
+operator|.
+name|th
+argument_list|(
 literal|".rack"
 argument_list|,
 literal|"Rack"
@@ -820,6 +827,21 @@ name|tbody
 operator|.
 name|tr
 argument_list|()
+operator|.
+name|td
+argument_list|(
+name|StringUtils
+operator|.
+name|join
+argument_list|(
+literal|","
+argument_list|,
+name|info
+operator|.
+name|getNodeLabels
+argument_list|()
+argument_list|)
+argument_list|)
 operator|.
 name|td
 argument_list|(
