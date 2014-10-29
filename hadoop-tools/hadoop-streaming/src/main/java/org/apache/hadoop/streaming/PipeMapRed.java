@@ -1188,17 +1188,31 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-DECL|method|addJobConfToEnvironment (JobConf conf, Properties env)
+DECL|method|addJobConfToEnvironment (JobConf jobconf, Properties env)
 name|void
 name|addJobConfToEnvironment
 parameter_list|(
 name|JobConf
-name|conf
+name|jobconf
 parameter_list|,
 name|Properties
 name|env
 parameter_list|)
 block|{
+name|JobConf
+name|conf
+init|=
+operator|new
+name|JobConf
+argument_list|(
+name|jobconf
+argument_list|)
+decl_stmt|;
+name|conf
+operator|.
+name|setDeprecatedProperties
+argument_list|()
+expr_stmt|;
 name|Iterator
 name|it
 init|=

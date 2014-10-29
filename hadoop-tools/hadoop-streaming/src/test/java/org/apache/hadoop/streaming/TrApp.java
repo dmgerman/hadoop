@@ -138,6 +138,31 @@ argument_list|)
 expr_stmt|;
 comment|// the FileSplit context properties are not available in local hadoop..
 comment|// so can't check them in this test.
+comment|// verify some deprecated properties appear for older stream jobs
+name|expect
+argument_list|(
+literal|"map_input_file"
+argument_list|,
+name|env
+operator|.
+name|getProperty
+argument_list|(
+literal|"mapreduce_map_input_file"
+argument_list|)
+argument_list|)
+expr_stmt|;
+name|expect
+argument_list|(
+literal|"map_input_length"
+argument_list|,
+name|env
+operator|.
+name|getProperty
+argument_list|(
+literal|"mapreduce_map_input_length"
+argument_list|)
+argument_list|)
+expr_stmt|;
 block|}
 comment|// this runs in a subprocess; won't use JUnit's assertTrue()
 DECL|method|expect (String evName, String evVal)
