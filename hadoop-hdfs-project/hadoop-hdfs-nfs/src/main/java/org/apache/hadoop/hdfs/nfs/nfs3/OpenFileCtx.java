@@ -366,22 +366,6 @@ name|nfs
 operator|.
 name|nfs3
 operator|.
-name|IdUserGroup
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|nfs
-operator|.
-name|nfs3
-operator|.
 name|Nfs3Constant
 import|;
 end_import
@@ -564,6 +548,20 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|security
+operator|.
+name|IdMappingServiceProvider
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|util
 operator|.
 name|Daemon
@@ -704,7 +702,7 @@ decl_stmt|;
 DECL|field|iug
 specifier|private
 specifier|final
-name|IdUserGroup
+name|IdMappingServiceProvider
 name|iug
 decl_stmt|;
 comment|// The stream status. False means the stream is closed.
@@ -1127,7 +1125,7 @@ return|return
 name|newValue
 return|;
 block|}
-DECL|method|OpenFileCtx (HdfsDataOutputStream fos, Nfs3FileAttributes latestAttr, String dumpFilePath, DFSClient client, IdUserGroup iug)
+DECL|method|OpenFileCtx (HdfsDataOutputStream fos, Nfs3FileAttributes latestAttr, String dumpFilePath, DFSClient client, IdMappingServiceProvider iug)
 name|OpenFileCtx
 parameter_list|(
 name|HdfsDataOutputStream
@@ -1142,7 +1140,7 @@ parameter_list|,
 name|DFSClient
 name|client
 parameter_list|,
-name|IdUserGroup
+name|IdMappingServiceProvider
 name|iug
 parameter_list|)
 block|{
@@ -1166,7 +1164,7 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|OpenFileCtx (HdfsDataOutputStream fos, Nfs3FileAttributes latestAttr, String dumpFilePath, DFSClient client, IdUserGroup iug, boolean aixCompatMode, NfsConfiguration config)
+DECL|method|OpenFileCtx (HdfsDataOutputStream fos, Nfs3FileAttributes latestAttr, String dumpFilePath, DFSClient client, IdMappingServiceProvider iug, boolean aixCompatMode, NfsConfiguration config)
 name|OpenFileCtx
 parameter_list|(
 name|HdfsDataOutputStream
@@ -1181,7 +1179,7 @@ parameter_list|,
 name|DFSClient
 name|client
 parameter_list|,
-name|IdUserGroup
+name|IdMappingServiceProvider
 name|iug
 parameter_list|,
 name|boolean
@@ -2107,7 +2105,7 @@ name|writeCtx
 return|;
 block|}
 block|}
-DECL|method|receivedNewWrite (DFSClient dfsClient, WRITE3Request request, Channel channel, int xid, AsyncDataService asyncDataService, IdUserGroup iug)
+DECL|method|receivedNewWrite (DFSClient dfsClient, WRITE3Request request, Channel channel, int xid, AsyncDataService asyncDataService, IdMappingServiceProvider iug)
 specifier|public
 name|void
 name|receivedNewWrite
@@ -2127,7 +2125,7 @@ parameter_list|,
 name|AsyncDataService
 name|asyncDataService
 parameter_list|,
-name|IdUserGroup
+name|IdMappingServiceProvider
 name|iug
 parameter_list|)
 block|{
@@ -2985,7 +2983,7 @@ return|;
 block|}
 block|}
 comment|/** Process an overwrite write request */
-DECL|method|processOverWrite (DFSClient dfsClient, WRITE3Request request, Channel channel, int xid, IdUserGroup iug)
+DECL|method|processOverWrite (DFSClient dfsClient, WRITE3Request request, Channel channel, int xid, IdMappingServiceProvider iug)
 specifier|private
 name|void
 name|processOverWrite
@@ -3002,7 +3000,7 @@ parameter_list|,
 name|int
 name|xid
 parameter_list|,
-name|IdUserGroup
+name|IdMappingServiceProvider
 name|iug
 parameter_list|)
 block|{
@@ -3286,7 +3284,7 @@ literal|false
 return|;
 block|}
 block|}
-DECL|method|receivedNewWriteInternal (DFSClient dfsClient, WRITE3Request request, Channel channel, int xid, AsyncDataService asyncDataService, IdUserGroup iug)
+DECL|method|receivedNewWriteInternal (DFSClient dfsClient, WRITE3Request request, Channel channel, int xid, AsyncDataService asyncDataService, IdMappingServiceProvider iug)
 specifier|private
 name|void
 name|receivedNewWriteInternal
@@ -3306,7 +3304,7 @@ parameter_list|,
 name|AsyncDataService
 name|asyncDataService
 parameter_list|,
-name|IdUserGroup
+name|IdMappingServiceProvider
 name|iug
 parameter_list|)
 block|{
@@ -3512,7 +3510,7 @@ block|}
 block|}
 block|}
 comment|/**    * Honor 2 kinds of overwrites: 1). support some application like touch(write    * the same content back to change mtime), 2) client somehow sends the same    * write again in a different RPC.    */
-DECL|method|processPerfectOverWrite (DFSClient dfsClient, long offset, int count, WriteStableHow stableHow, byte[] data, String path, WccData wccData, IdUserGroup iug)
+DECL|method|processPerfectOverWrite (DFSClient dfsClient, long offset, int count, WriteStableHow stableHow, byte[] data, String path, WccData wccData, IdMappingServiceProvider iug)
 specifier|private
 name|WRITE3Response
 name|processPerfectOverWrite
@@ -3539,7 +3537,7 @@ parameter_list|,
 name|WccData
 name|wccData
 parameter_list|,
-name|IdUserGroup
+name|IdMappingServiceProvider
 name|iug
 parameter_list|)
 block|{

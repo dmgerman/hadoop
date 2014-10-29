@@ -116,22 +116,6 @@ name|nfs
 operator|.
 name|nfs3
 operator|.
-name|IdUserGroup
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|nfs
-operator|.
-name|nfs3
-operator|.
 name|Nfs3Constant
 import|;
 end_import
@@ -199,6 +183,20 @@ operator|.
 name|oncrpc
 operator|.
 name|XDR
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|security
+operator|.
+name|IdMappingServiceProvider
 import|;
 end_import
 
@@ -345,7 +343,7 @@ name|fileIdPath
 argument_list|)
 return|;
 block|}
-DECL|method|getNfs3FileAttrFromFileStatus ( HdfsFileStatus fs, IdUserGroup iug)
+DECL|method|getNfs3FileAttrFromFileStatus ( HdfsFileStatus fs, IdMappingServiceProvider iug)
 specifier|public
 specifier|static
 name|Nfs3FileAttributes
@@ -354,7 +352,7 @@ parameter_list|(
 name|HdfsFileStatus
 name|fs
 parameter_list|,
-name|IdUserGroup
+name|IdMappingServiceProvider
 name|iug
 parameter_list|)
 block|{
@@ -452,7 +450,7 @@ argument_list|()
 argument_list|)
 return|;
 block|}
-DECL|method|getFileAttr (DFSClient client, String fileIdPath, IdUserGroup iug)
+DECL|method|getFileAttr (DFSClient client, String fileIdPath, IdMappingServiceProvider iug)
 specifier|public
 specifier|static
 name|Nfs3FileAttributes
@@ -464,7 +462,7 @@ parameter_list|,
 name|String
 name|fileIdPath
 parameter_list|,
-name|IdUserGroup
+name|IdMappingServiceProvider
 name|iug
 parameter_list|)
 throws|throws
@@ -620,7 +618,7 @@ argument_list|)
 return|;
 block|}
 comment|// TODO: maybe not efficient
-DECL|method|createWccData (final WccAttr preOpAttr, DFSClient dfsClient, final String fileIdPath, final IdUserGroup iug)
+DECL|method|createWccData (final WccAttr preOpAttr, DFSClient dfsClient, final String fileIdPath, final IdMappingServiceProvider iug)
 specifier|public
 specifier|static
 name|WccData
@@ -638,7 +636,7 @@ name|String
 name|fileIdPath
 parameter_list|,
 specifier|final
-name|IdUserGroup
+name|IdMappingServiceProvider
 name|iug
 parameter_list|)
 throws|throws

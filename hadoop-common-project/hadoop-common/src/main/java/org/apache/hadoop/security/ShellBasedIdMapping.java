@@ -4,7 +4,7 @@ comment|/**  * Licensed to the Apache Software Foundation (ASF) under one  * or 
 end_comment
 
 begin_package
-DECL|package|org.apache.hadoop.nfs.nfs3
+DECL|package|org.apache.hadoop.security
 package|package
 name|org
 operator|.
@@ -12,9 +12,7 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|nfs
-operator|.
-name|nfs3
+name|security
 package|;
 end_package
 
@@ -211,16 +209,19 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * Map id to user name or group name. It does update every 15 minutes. Only a  * single instance of this class is expected to be on the server.  */
+comment|/**  * A simple shell-based implementation of {@link IdMappingServiceProvider}   * Map id to user name or group name. It does update every 15 minutes. Only a  * single instance of this class is expected to be on the server.  */
 end_comment
 
 begin_class
-DECL|class|IdUserGroup
+DECL|class|ShellBasedIdMapping
 specifier|public
 class|class
-name|IdUserGroup
+name|ShellBasedIdMapping
+implements|implements
+name|IdMappingServiceProvider
 block|{
 DECL|field|LOG
+specifier|private
 specifier|static
 specifier|final
 name|Log
@@ -230,7 +231,7 @@ name|LogFactory
 operator|.
 name|getLog
 argument_list|(
-name|IdUserGroup
+name|ShellBasedIdMapping
 operator|.
 name|class
 argument_list|)
@@ -376,12 +377,16 @@ init|=
 literal|0
 decl_stmt|;
 comment|// Last time maps were updated
-DECL|method|IdUserGroup (Configuration conf)
+DECL|method|ShellBasedIdMapping (Configuration conf, final String defaultStaticIdMappingFile)
 specifier|public
-name|IdUserGroup
+name|ShellBasedIdMapping
 parameter_list|(
 name|Configuration
 name|conf
+parameter_list|,
+specifier|final
+name|String
+name|defaultStaticIdMappingFile
 parameter_list|)
 throws|throws
 name|IOException
@@ -393,13 +398,13 @@ name|conf
 operator|.
 name|getLong
 argument_list|(
-name|Nfs3Constant
+name|IdMappingConstant
 operator|.
-name|NFS_USERGROUP_UPDATE_MILLIS_KEY
+name|USERGROUPID_UPDATE_MILLIS_KEY
 argument_list|,
-name|Nfs3Constant
+name|IdMappingConstant
 operator|.
-name|NFS_USERGROUP_UPDATE_MILLIS_DEFAULT
+name|USERGROUPID_UPDATE_MILLIS_DEFAULT
 argument_list|)
 decl_stmt|;
 comment|// Minimal interval is 1 minute
@@ -407,9 +412,9 @@ if|if
 condition|(
 name|updateTime
 operator|<
-name|Nfs3Constant
+name|IdMappingConstant
 operator|.
-name|NFS_USERGROUP_UPDATE_MILLIS_MIN
+name|USERGROUPID_UPDATE_MILLIS_MIN
 condition|)
 block|{
 name|LOG
@@ -423,9 +428,9 @@ argument_list|)
 expr_stmt|;
 name|timeout
 operator|=
-name|Nfs3Constant
+name|IdMappingConstant
 operator|.
-name|NFS_USERGROUP_UPDATE_MILLIS_MIN
+name|USERGROUPID_UPDATE_MILLIS_MIN
 expr_stmt|;
 block|}
 else|else
@@ -442,13 +447,11 @@ name|conf
 operator|.
 name|get
 argument_list|(
-name|Nfs3Constant
+name|IdMappingConstant
 operator|.
-name|NFS_STATIC_MAPPING_FILE_KEY
+name|STATIC_ID_MAPPING_FILE_KEY
 argument_list|,
-name|Nfs3Constant
-operator|.
-name|NFS_STATIC_MAPPING_FILE_DEFAULT
+name|defaultStaticIdMappingFile
 argument_list|)
 decl_stmt|;
 name|staticMappingFile
@@ -461,6 +464,26 @@ argument_list|)
 expr_stmt|;
 name|updateMaps
 argument_list|()
+expr_stmt|;
+block|}
+DECL|method|ShellBasedIdMapping (Configuration conf)
+specifier|public
+name|ShellBasedIdMapping
+parameter_list|(
+name|Configuration
+name|conf
+parameter_list|)
+throws|throws
+name|IOException
+block|{
+name|this
+argument_list|(
+name|conf
+argument_list|,
+name|IdMappingConstant
+operator|.
+name|STATIC_ID_MAPPING_FILE_DEFAULT
+argument_list|)
 expr_stmt|;
 block|}
 annotation|@

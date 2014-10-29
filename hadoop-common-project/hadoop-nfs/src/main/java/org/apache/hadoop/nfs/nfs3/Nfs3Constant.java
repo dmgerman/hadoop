@@ -704,7 +704,8 @@ operator|*
 literal|1000
 decl_stmt|;
 comment|// 15 min
-comment|/** Do user/group update every 15 minutes by default, minimum 1 minute */
+annotation|@
+name|Deprecated
 DECL|field|NFS_USERGROUP_UPDATE_MILLIS_KEY
 specifier|public
 specifier|final
@@ -714,52 +715,9 @@ name|NFS_USERGROUP_UPDATE_MILLIS_KEY
 init|=
 literal|"nfs.usergroup.update.millis"
 decl_stmt|;
-DECL|field|NFS_USERGROUP_UPDATE_MILLIS_DEFAULT
-specifier|public
-specifier|final
-specifier|static
-name|long
-name|NFS_USERGROUP_UPDATE_MILLIS_DEFAULT
-init|=
-literal|15
-operator|*
-literal|60
-operator|*
-literal|1000
-decl_stmt|;
-comment|// ms
-DECL|field|NFS_USERGROUP_UPDATE_MILLIS_MIN
-specifier|final
-specifier|static
-name|long
-name|NFS_USERGROUP_UPDATE_MILLIS_MIN
-init|=
-literal|1
-operator|*
-literal|60
-operator|*
-literal|1000
-decl_stmt|;
-comment|// ms
-DECL|field|UNKNOWN_USER
-specifier|public
-specifier|final
-specifier|static
-name|String
-name|UNKNOWN_USER
-init|=
-literal|"nobody"
-decl_stmt|;
-DECL|field|UNKNOWN_GROUP
-specifier|public
-specifier|final
-specifier|static
-name|String
-name|UNKNOWN_GROUP
-init|=
-literal|"nobody"
-decl_stmt|;
 comment|// Used for finding the configured static mapping file.
+annotation|@
+name|Deprecated
 DECL|field|NFS_STATIC_MAPPING_FILE_KEY
 specifier|public
 specifier|static

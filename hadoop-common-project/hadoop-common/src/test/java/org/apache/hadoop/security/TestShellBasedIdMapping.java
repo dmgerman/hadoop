@@ -4,7 +4,7 @@ comment|/**  * Licensed to the Apache Software Foundation (ASF) under one  * or 
 end_comment
 
 begin_package
-DECL|package|org.apache.hadoop.nfs.nfs3
+DECL|package|org.apache.hadoop.security
 package|package
 name|org
 operator|.
@@ -12,9 +12,7 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|nfs
-operator|.
-name|nfs3
+name|security
 package|;
 end_package
 
@@ -114,11 +112,9 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|nfs
+name|security
 operator|.
-name|nfs3
-operator|.
-name|IdUserGroup
+name|ShellBasedIdMapping
 operator|.
 name|PassThroughMap
 import|;
@@ -132,11 +128,9 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|nfs
+name|security
 operator|.
-name|nfs3
-operator|.
-name|IdUserGroup
+name|ShellBasedIdMapping
 operator|.
 name|StaticMapping
 import|;
@@ -181,10 +175,10 @@ import|;
 end_import
 
 begin_class
-DECL|class|TestIdUserGroup
+DECL|class|TestShellBasedIdMapping
 specifier|public
 class|class
-name|TestIdUserGroup
+name|TestShellBasedIdMapping
 block|{
 DECL|field|EMPTY_PASS_THROUGH_MAP
 specifier|private
@@ -282,7 +276,7 @@ expr_stmt|;
 name|StaticMapping
 name|parsedMap
 init|=
-name|IdUserGroup
+name|ShellBasedIdMapping
 operator|.
 name|parseStaticMap
 argument_list|(
@@ -549,7 +543,7 @@ literal|"mapred2:x:498\""
 operator|+
 literal|" | cut -d: -f1,3"
 decl_stmt|;
-name|IdUserGroup
+name|ShellBasedIdMapping
 operator|.
 name|updateMapInternal
 argument_list|(
@@ -564,7 +558,7 @@ argument_list|,
 name|uidStaticMap
 argument_list|)
 expr_stmt|;
-name|IdUserGroup
+name|ShellBasedIdMapping
 operator|.
 name|updateMapInternal
 argument_list|(
@@ -805,7 +799,7 @@ operator|.
 name|create
 argument_list|()
 decl_stmt|;
-name|IdUserGroup
+name|ShellBasedIdMapping
 operator|.
 name|updateMapInternal
 argument_list|(
@@ -890,7 +884,7 @@ literal|1
 argument_list|)
 argument_list|)
 expr_stmt|;
-name|IdUserGroup
+name|ShellBasedIdMapping
 operator|.
 name|updateMapInternal
 argument_list|(
@@ -1031,7 +1025,7 @@ operator|.
 name|create
 argument_list|()
 decl_stmt|;
-name|IdUserGroup
+name|ShellBasedIdMapping
 operator|.
 name|updateMapInternal
 argument_list|(
@@ -1143,7 +1137,7 @@ literal|2
 argument_list|)
 argument_list|)
 expr_stmt|;
-name|IdUserGroup
+name|ShellBasedIdMapping
 operator|.
 name|updateMapInternal
 argument_list|(
@@ -1266,11 +1260,11 @@ parameter_list|()
 throws|throws
 name|IOException
 block|{
-name|IdUserGroup
+name|ShellBasedIdMapping
 name|iug
 init|=
 operator|new
-name|IdUserGroup
+name|ShellBasedIdMapping
 argument_list|(
 operator|new
 name|Configuration
@@ -1284,9 +1278,9 @@ operator|.
 name|getTimeout
 argument_list|()
 argument_list|,
-name|Nfs3Constant
+name|IdMappingConstant
 operator|.
-name|NFS_USERGROUP_UPDATE_MILLIS_DEFAULT
+name|USERGROUPID_UPDATE_MILLIS_DEFAULT
 argument_list|)
 expr_stmt|;
 name|Configuration
@@ -1300,9 +1294,9 @@ name|conf
 operator|.
 name|setLong
 argument_list|(
-name|Nfs3Constant
+name|IdMappingConstant
 operator|.
-name|NFS_USERGROUP_UPDATE_MILLIS_KEY
+name|USERGROUPID_UPDATE_MILLIS_KEY
 argument_list|,
 literal|0
 argument_list|)
@@ -1310,7 +1304,7 @@ expr_stmt|;
 name|iug
 operator|=
 operator|new
-name|IdUserGroup
+name|ShellBasedIdMapping
 argument_list|(
 name|conf
 argument_list|)
@@ -1322,22 +1316,22 @@ operator|.
 name|getTimeout
 argument_list|()
 argument_list|,
-name|Nfs3Constant
+name|IdMappingConstant
 operator|.
-name|NFS_USERGROUP_UPDATE_MILLIS_MIN
+name|USERGROUPID_UPDATE_MILLIS_MIN
 argument_list|)
 expr_stmt|;
 name|conf
 operator|.
 name|setLong
 argument_list|(
-name|Nfs3Constant
+name|IdMappingConstant
 operator|.
-name|NFS_USERGROUP_UPDATE_MILLIS_KEY
+name|USERGROUPID_UPDATE_MILLIS_KEY
 argument_list|,
-name|Nfs3Constant
+name|IdMappingConstant
 operator|.
-name|NFS_USERGROUP_UPDATE_MILLIS_DEFAULT
+name|USERGROUPID_UPDATE_MILLIS_DEFAULT
 operator|*
 literal|2
 argument_list|)
@@ -1345,7 +1339,7 @@ expr_stmt|;
 name|iug
 operator|=
 operator|new
-name|IdUserGroup
+name|ShellBasedIdMapping
 argument_list|(
 name|conf
 argument_list|)
@@ -1357,9 +1351,9 @@ operator|.
 name|getTimeout
 argument_list|()
 argument_list|,
-name|Nfs3Constant
+name|IdMappingConstant
 operator|.
-name|NFS_USERGROUP_UPDATE_MILLIS_DEFAULT
+name|USERGROUPID_UPDATE_MILLIS_DEFAULT
 operator|*
 literal|2
 argument_list|)

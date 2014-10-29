@@ -230,22 +230,6 @@ name|nfs
 operator|.
 name|nfs3
 operator|.
-name|IdUserGroup
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|nfs
-operator|.
-name|nfs3
-operator|.
 name|Nfs3Constant
 import|;
 end_import
@@ -388,6 +372,20 @@ begin_import
 import|import
 name|org
 operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|security
+operator|.
+name|IdMappingServiceProvider
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
 name|jboss
 operator|.
 name|netty
@@ -447,7 +445,7 @@ decl_stmt|;
 DECL|field|iug
 specifier|private
 specifier|final
-name|IdUserGroup
+name|IdMappingServiceProvider
 name|iug
 decl_stmt|;
 DECL|field|asyncDataService
@@ -540,10 +538,10 @@ name|ctx
 argument_list|)
 return|;
 block|}
-DECL|method|WriteManager (IdUserGroup iug, final NfsConfiguration config, boolean aixCompatMode)
+DECL|method|WriteManager (IdMappingServiceProvider iug, final NfsConfiguration config, boolean aixCompatMode)
 name|WriteManager
 parameter_list|(
-name|IdUserGroup
+name|IdMappingServiceProvider
 name|iug
 parameter_list|,
 specifier|final
@@ -1737,7 +1735,7 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|/**    * If the file is in cache, update the size based on the cached data size    */
-DECL|method|getFileAttr (DFSClient client, FileHandle fileHandle, IdUserGroup iug)
+DECL|method|getFileAttr (DFSClient client, FileHandle fileHandle, IdMappingServiceProvider iug)
 name|Nfs3FileAttributes
 name|getFileAttr
 parameter_list|(
@@ -1747,7 +1745,7 @@ parameter_list|,
 name|FileHandle
 name|fileHandle
 parameter_list|,
-name|IdUserGroup
+name|IdMappingServiceProvider
 name|iug
 parameter_list|)
 throws|throws

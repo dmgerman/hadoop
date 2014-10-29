@@ -290,22 +290,6 @@ name|nfs
 operator|.
 name|nfs3
 operator|.
-name|IdUserGroup
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|nfs
-operator|.
-name|nfs3
-operator|.
 name|Nfs3Constant
 import|;
 end_import
@@ -495,6 +479,20 @@ operator|.
 name|security
 operator|.
 name|SecurityHandler
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|security
+operator|.
+name|ShellBasedIdMapping
 import|;
 end_import
 
@@ -1319,7 +1317,7 @@ argument_list|,
 name|dfsClient
 argument_list|,
 operator|new
-name|IdUserGroup
+name|ShellBasedIdMapping
 argument_list|(
 name|conf
 argument_list|)
@@ -1900,7 +1898,7 @@ argument_list|,
 name|dfsClient
 argument_list|,
 operator|new
-name|IdUserGroup
+name|ShellBasedIdMapping
 argument_list|(
 name|conf
 argument_list|)
@@ -2490,7 +2488,7 @@ argument_list|,
 name|dfsClient
 argument_list|,
 operator|new
-name|IdUserGroup
+name|ShellBasedIdMapping
 argument_list|(
 operator|new
 name|NfsConfiguration
@@ -2735,7 +2733,7 @@ argument_list|,
 name|dfsClient
 argument_list|,
 operator|new
-name|IdUserGroup
+name|ShellBasedIdMapping
 argument_list|(
 name|config
 argument_list|)
@@ -2765,7 +2763,7 @@ operator|new
 name|WriteManager
 argument_list|(
 operator|new
-name|IdUserGroup
+name|ShellBasedIdMapping
 argument_list|(
 name|config
 argument_list|)
@@ -3406,7 +3404,7 @@ argument_list|,
 name|dfsClient
 argument_list|,
 operator|new
-name|IdUserGroup
+name|ShellBasedIdMapping
 argument_list|(
 name|config
 argument_list|)
@@ -3436,7 +3434,7 @@ operator|new
 name|WriteManager
 argument_list|(
 operator|new
-name|IdUserGroup
+name|ShellBasedIdMapping
 argument_list|(
 name|config
 argument_list|)
