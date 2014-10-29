@@ -234,6 +234,17 @@ argument_list|,
 literal|true
 argument_list|)
 expr_stmt|;
+name|conf
+operator|.
+name|setBoolean
+argument_list|(
+name|MRJobConfig
+operator|.
+name|MAPREDUCE_JOB_EMIT_TIMELINE_DATA
+argument_list|,
+literal|true
+argument_list|)
+expr_stmt|;
 name|MiniMRYarnCluster
 name|cluster
 init|=
