@@ -307,6 +307,7 @@ name|Object
 name|v
 parameter_list|)
 block|{
+specifier|final
 name|int
 name|hash
 init|=
@@ -324,15 +325,20 @@ init|=
 name|buffer
 operator|.
 name|length
-operator|/
-literal|2
+operator|>>
+literal|1
 decl_stmt|;
+comment|//computing modulo with the assumption buffer.length is power of 2
 name|int
 name|index
 init|=
 name|hash
-operator|%
+operator|&
+operator|(
 name|numEntries
+operator|-
+literal|1
+operator|)
 decl_stmt|;
 while|while
 condition|(
@@ -477,9 +483,10 @@ init|=
 name|buffer
 operator|.
 name|length
-operator|/
-literal|2
+operator|>>
+literal|1
 decl_stmt|;
+specifier|final
 name|int
 name|hash
 init|=
@@ -490,12 +497,17 @@ argument_list|(
 name|k
 argument_list|)
 decl_stmt|;
+comment|//computing modulo with the assumption buffer.length is power of 2
 name|int
 name|index
 init|=
 name|hash
-operator|%
+operator|&
+operator|(
 name|numEntries
+operator|-
+literal|1
+operator|)
 decl_stmt|;
 name|int
 name|firstIndex
