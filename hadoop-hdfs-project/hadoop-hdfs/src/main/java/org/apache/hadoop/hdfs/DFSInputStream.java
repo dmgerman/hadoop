@@ -3904,6 +3904,8 @@ name|locatedBlocks
 operator|.
 name|getFileLength
 argument_list|()
+operator|-
+name|pos
 argument_list|)
 expr_stmt|;
 block|}
