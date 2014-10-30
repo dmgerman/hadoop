@@ -2416,37 +2416,7 @@ operator|instanceof
 name|SocketTimeoutException
 condition|)
 block|{
-comment|/*          * writing to client timed out.  This happens if the client reads          * part of a block and then decides not to read the rest (but leaves          * the socket open).          */
-if|if
-condition|(
-name|LOG
-operator|.
-name|isTraceEnabled
-argument_list|()
-condition|)
-block|{
-name|LOG
-operator|.
-name|trace
-argument_list|(
-literal|"Failed to send data:"
-argument_list|,
-name|e
-argument_list|)
-expr_stmt|;
-block|}
-else|else
-block|{
-name|LOG
-operator|.
-name|info
-argument_list|(
-literal|"Failed to send data: "
-operator|+
-name|e
-argument_list|)
-expr_stmt|;
-block|}
+comment|/*          * writing to client timed out.  This happens if the client reads          * part of a block and then decides not to read the rest (but leaves          * the socket open).          *           * Reporting of this case is done in DataXceiver#run          */
 block|}
 else|else
 block|{
