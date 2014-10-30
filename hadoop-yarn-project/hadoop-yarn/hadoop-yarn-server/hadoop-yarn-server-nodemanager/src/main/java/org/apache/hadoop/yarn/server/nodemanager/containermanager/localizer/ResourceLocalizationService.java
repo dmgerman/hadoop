@@ -8096,6 +8096,11 @@ condition|(
 name|userDirStatus
 operator|!=
 literal|null
+operator|&&
+name|userDirStatus
+operator|.
+name|hasNext
+argument_list|()
 condition|)
 block|{
 name|List
