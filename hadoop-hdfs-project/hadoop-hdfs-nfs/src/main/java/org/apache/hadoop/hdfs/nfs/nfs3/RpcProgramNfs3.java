@@ -2062,9 +2062,9 @@ name|ShellBasedIdMapping
 argument_list|(
 name|config
 argument_list|,
-name|Nfs3Constant
+name|IdMappingConstant
 operator|.
-name|NFS_STATIC_MAPPING_FILE_DEFAULT
+name|STATIC_ID_MAPPING_FILE_DEFAULT
 argument_list|)
 expr_stmt|;
 name|aixCompatMode

@@ -99,7 +99,7 @@ specifier|final
 name|String
 name|STATIC_ID_MAPPING_FILE_DEFAULT
 init|=
-literal|"/etc/usergroupid.map"
+literal|"/etc/nfs.map"
 decl_stmt|;
 block|}
 end_class

@@ -164,9 +164,7 @@ block|,
 operator|new
 name|DeprecationDelta
 argument_list|(
-name|Nfs3Constant
-operator|.
-name|NFS_USERGROUP_UPDATE_MILLIS_KEY
+literal|"nfs.usergroup.update.millis"
 argument_list|,
 name|IdMappingConstant
 operator|.
@@ -176,9 +174,7 @@ block|,
 operator|new
 name|DeprecationDelta
 argument_list|(
-name|Nfs3Constant
-operator|.
-name|NFS_STATIC_MAPPING_FILE_KEY
+literal|"nfs.static.mapping.file"
 argument_list|,
 name|IdMappingConstant
 operator|.

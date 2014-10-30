@@ -704,38 +704,6 @@ operator|*
 literal|1000
 decl_stmt|;
 comment|// 15 min
-annotation|@
-name|Deprecated
-DECL|field|NFS_USERGROUP_UPDATE_MILLIS_KEY
-specifier|public
-specifier|final
-specifier|static
-name|String
-name|NFS_USERGROUP_UPDATE_MILLIS_KEY
-init|=
-literal|"nfs.usergroup.update.millis"
-decl_stmt|;
-comment|// Used for finding the configured static mapping file.
-annotation|@
-name|Deprecated
-DECL|field|NFS_STATIC_MAPPING_FILE_KEY
-specifier|public
-specifier|static
-specifier|final
-name|String
-name|NFS_STATIC_MAPPING_FILE_KEY
-init|=
-literal|"nfs.static.mapping.file"
-decl_stmt|;
-DECL|field|NFS_STATIC_MAPPING_FILE_DEFAULT
-specifier|public
-specifier|static
-specifier|final
-name|String
-name|NFS_STATIC_MAPPING_FILE_DEFAULT
-init|=
-literal|"/etc/nfs.map"
-decl_stmt|;
 block|}
 end_class
 
