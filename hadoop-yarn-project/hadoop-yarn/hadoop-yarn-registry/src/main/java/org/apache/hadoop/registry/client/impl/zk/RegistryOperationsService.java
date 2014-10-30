@@ -386,7 +386,7 @@ name|getClientACLs
 argument_list|()
 return|;
 block|}
-comment|/**    * Validate a path ... this includes checking that they are DNS-valid    * @param path path to validate    * @throws InvalidPathnameException if a path is considered invalid    */
+comment|/**    * Validate a path    * @param path path to validate    * @throws InvalidPathnameException if a path is considered invalid    */
 DECL|method|validatePath (String path)
 specifier|protected
 name|void
@@ -398,13 +398,7 @@ parameter_list|)
 throws|throws
 name|InvalidPathnameException
 block|{
-name|RegistryPathUtils
-operator|.
-name|validateElementsAsDNS
-argument_list|(
-name|path
-argument_list|)
-expr_stmt|;
+comment|// currently no checks are performed
 block|}
 annotation|@
 name|Override
