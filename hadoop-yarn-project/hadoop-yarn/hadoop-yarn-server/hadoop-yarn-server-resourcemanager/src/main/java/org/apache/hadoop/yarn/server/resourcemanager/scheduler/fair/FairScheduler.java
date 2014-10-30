@@ -2030,6 +2030,9 @@ operator|.
 name|recomputeShares
 argument_list|()
 expr_stmt|;
+name|updateRootQueueMetrics
+argument_list|()
+expr_stmt|;
 if|if
 condition|(
 name|LOG
