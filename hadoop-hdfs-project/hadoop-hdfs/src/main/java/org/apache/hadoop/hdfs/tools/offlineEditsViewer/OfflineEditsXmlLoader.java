@@ -992,6 +992,8 @@ name|cbuf
 operator|.
 name|toString
 argument_list|()
+argument_list|,
+literal|false
 argument_list|)
 operator|.
 name|trim

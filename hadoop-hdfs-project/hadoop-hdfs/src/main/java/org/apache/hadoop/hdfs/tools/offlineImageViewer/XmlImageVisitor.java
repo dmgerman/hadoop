@@ -352,6 +352,8 @@ operator|.
 name|mangleXmlString
 argument_list|(
 name|value
+argument_list|,
+literal|true
 argument_list|)
 operator|+
 literal|"</"
