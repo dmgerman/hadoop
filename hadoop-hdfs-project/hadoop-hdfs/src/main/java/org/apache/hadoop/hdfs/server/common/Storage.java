@@ -2954,6 +2954,54 @@ name|sd
 argument_list|)
 expr_stmt|;
 block|}
+comment|/**    * Returns true if the storage directory on the given directory is already    * loaded.    * @param root the root directory of a {@link StorageDirectory}    * @throws IOException if failed to get canonical path.    */
+DECL|method|containsStorageDir (File root)
+specifier|protected
+name|boolean
+name|containsStorageDir
+parameter_list|(
+name|File
+name|root
+parameter_list|)
+throws|throws
+name|IOException
+block|{
+for|for
+control|(
+name|StorageDirectory
+name|sd
+range|:
+name|storageDirs
+control|)
+block|{
+if|if
+condition|(
+name|sd
+operator|.
+name|getRoot
+argument_list|()
+operator|.
+name|getCanonicalPath
+argument_list|()
+operator|.
+name|equals
+argument_list|(
+name|root
+operator|.
+name|getCanonicalPath
+argument_list|()
+argument_list|)
+condition|)
+block|{
+return|return
+literal|true
+return|;
+block|}
+block|}
+return|return
+literal|false
+return|;
+block|}
 comment|/**    * Return true if the layout of the given storage directory is from a version    * of Hadoop prior to the introduction of the "current" and "previous"    * directories which allow upgrade and rollback.    */
 DECL|method|isPreUpgradableLayout (StorageDirectory sd)
 specifier|public

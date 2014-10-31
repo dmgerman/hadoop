@@ -885,8 +885,12 @@ argument_list|(
 name|numLocations
 argument_list|)
 expr_stmt|;
-try|try
-block|{
+name|List
+argument_list|<
+name|StorageLocation
+argument_list|>
+name|addedLocation
+init|=
 name|storage
 operator|.
 name|addStorageLocations
@@ -904,29 +908,15 @@ name|locations
 argument_list|,
 name|START_OPT
 argument_list|)
-expr_stmt|;
-name|fail
+decl_stmt|;
+name|assertTrue
 argument_list|(
-literal|"Expected to throw IOException: adding active directories."
-argument_list|)
-expr_stmt|;
-block|}
-catch|catch
-parameter_list|(
-name|IOException
-name|e
-parameter_list|)
-block|{
-name|GenericTestUtils
+name|addedLocation
 operator|.
-name|assertExceptionContains
-argument_list|(
-literal|"All specified directories are not accessible or do not exist."
-argument_list|,
-name|e
+name|isEmpty
+argument_list|()
 argument_list|)
 expr_stmt|;
-block|}
 comment|// The number of active storage dirs has not changed, since it tries to
 comment|// add the storage dirs that are under service.
 name|assertEquals
@@ -1031,7 +1021,7 @@ name|GenericTestUtils
 operator|.
 name|assertExceptionContains
 argument_list|(
-literal|"All specified directories are not accessible or do not exist."
+literal|"All specified directories are failed to load."
 argument_list|,
 name|e
 argument_list|)
@@ -1076,14 +1066,6 @@ argument_list|(
 name|numLocations
 argument_list|)
 decl_stmt|;
-name|String
-name|bpid
-init|=
-name|nsInfo
-operator|.
-name|getBlockPoolID
-argument_list|()
-decl_stmt|;
 comment|// Prepare volumes
 name|storage
 operator|.
@@ -1091,13 +1073,21 @@ name|recoverTransitionRead
 argument_list|(
 name|mockDN
 argument_list|,
-name|bpid
-argument_list|,
 name|nsInfo
 argument_list|,
 name|locations
 argument_list|,
 name|START_OPT
+argument_list|)
+expr_stmt|;
+name|assertEquals
+argument_list|(
+name|numLocations
+argument_list|,
+name|storage
+operator|.
+name|getNumStorageDirs
+argument_list|()
 argument_list|)
 expr_stmt|;
 comment|// Reset DataStorage
@@ -1127,8 +1117,6 @@ name|recoverTransitionRead
 argument_list|(
 name|mockDN
 argument_list|,
-name|bpid
-argument_list|,
 name|nsInfo
 argument_list|,
 name|locations
@@ -1152,7 +1140,7 @@ name|GenericTestUtils
 operator|.
 name|assertExceptionContains
 argument_list|(
-literal|"Incompatible clusterIDs"
+literal|"All specified directories"
 argument_list|,
 name|e
 argument_list|)
@@ -1160,7 +1148,7 @@ expr_stmt|;
 block|}
 name|assertEquals
 argument_list|(
-name|numLocations
+literal|0
 argument_list|,
 name|storage
 operator|.

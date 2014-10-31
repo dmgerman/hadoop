@@ -1107,6 +1107,22 @@ operator|=
 name|nsId
 expr_stmt|;
 block|}
+DECL|method|setServiceLayoutVersion (int lv)
+specifier|public
+name|void
+name|setServiceLayoutVersion
+parameter_list|(
+name|int
+name|lv
+parameter_list|)
+block|{
+name|this
+operator|.
+name|layoutVersion
+operator|=
+name|lv
+expr_stmt|;
+block|}
 DECL|method|getServiceLayoutVersion ()
 specifier|public
 name|int

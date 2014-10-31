@@ -528,6 +528,24 @@ name|server
 operator|.
 name|protocol
 operator|.
+name|NamespaceInfo
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|server
+operator|.
+name|protocol
+operator|.
 name|ReplicaRecoveryInfo
 import|;
 end_import
@@ -730,27 +748,24 @@ name|getVolumes
 parameter_list|()
 function_decl|;
 comment|/** Add an array of StorageLocation to FsDataset. */
-DECL|method|addVolumes (List<StorageLocation> volumes, final Collection<String> bpids)
+DECL|method|addVolume ( final StorageLocation location, final List<NamespaceInfo> nsInfos)
 specifier|public
-name|List
-argument_list|<
-name|StorageLocation
-argument_list|>
-name|addVolumes
+name|void
+name|addVolume
 parameter_list|(
-name|List
-argument_list|<
+specifier|final
 name|StorageLocation
-argument_list|>
-name|volumes
+name|location
 parameter_list|,
 specifier|final
-name|Collection
+name|List
 argument_list|<
-name|String
+name|NamespaceInfo
 argument_list|>
-name|bpids
+name|nsInfos
 parameter_list|)
+throws|throws
+name|IOException
 function_decl|;
 comment|/** Removes a collection of volumes from FsDataset. */
 DECL|method|removeVolumes (Collection<StorageLocation> volumes)
