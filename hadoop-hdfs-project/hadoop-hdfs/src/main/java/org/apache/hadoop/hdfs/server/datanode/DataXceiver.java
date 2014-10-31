@@ -594,6 +594,26 @@ name|hdfs
 operator|.
 name|protocol
 operator|.
+name|datatransfer
+operator|.
+name|sasl
+operator|.
+name|InvalidMagicNumberException
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|protocol
+operator|.
 name|proto
 operator|.
 name|DataTransferProtos
@@ -1482,6 +1502,8 @@ name|input
 init|=
 name|socketIn
 decl_stmt|;
+try|try
+block|{
 name|IOStreamPair
 name|saslStreams
 init|=
@@ -1523,6 +1545,35 @@ name|saslStreams
 operator|.
 name|out
 expr_stmt|;
+block|}
+catch|catch
+parameter_list|(
+name|InvalidMagicNumberException
+name|imne
+parameter_list|)
+block|{
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"Failed to read expected encryption handshake from client "
+operator|+
+literal|"at "
+operator|+
+name|peer
+operator|.
+name|getRemoteAddressString
+argument_list|()
+operator|+
+literal|". Perhaps the client "
+operator|+
+literal|"is running an older version of Hadoop which does not support "
+operator|+
+literal|"encryption"
+argument_list|)
+expr_stmt|;
+return|return;
+block|}
 name|super
 operator|.
 name|initialize

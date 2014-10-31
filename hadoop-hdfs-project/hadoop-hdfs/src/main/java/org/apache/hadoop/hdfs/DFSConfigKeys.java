@@ -4727,6 +4727,15 @@ name|DFS_ENCRYPT_DATA_TRANSFER_CIPHER_KEY_BITLENGTH_DEFAULT
 init|=
 literal|128
 decl_stmt|;
+DECL|field|DFS_ENCRYPT_DATA_TRANSFER_CIPHER_SUITES_KEY
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|DFS_ENCRYPT_DATA_TRANSFER_CIPHER_SUITES_KEY
+init|=
+literal|"dfs.encrypt.data.transfer.cipher.suites"
+decl_stmt|;
 DECL|field|DFS_DATA_ENCRYPTION_ALGORITHM_KEY
 specifier|public
 specifier|static

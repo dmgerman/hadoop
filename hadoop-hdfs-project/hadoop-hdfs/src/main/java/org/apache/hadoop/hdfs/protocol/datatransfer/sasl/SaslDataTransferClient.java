@@ -32,6 +32,22 @@ name|hadoop
 operator|.
 name|hdfs
 operator|.
+name|DFSConfigKeys
+operator|.
+name|DFS_ENCRYPT_DATA_TRANSFER_CIPHER_SUITES_KEY
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
 name|protocol
 operator|.
 name|datatransfer
@@ -1792,7 +1808,65 @@ name|saslProps
 argument_list|)
 condition|)
 block|{
-comment|// Negotiation cipher options
+comment|// Negotiate cipher suites if configured.  Currently, the only supported
+comment|// cipher suite is AES/CTR/NoPadding, but the protocol allows multiple
+comment|// values for future expansion.
+name|String
+name|cipherSuites
+init|=
+name|conf
+operator|.
+name|get
+argument_list|(
+name|DFS_ENCRYPT_DATA_TRANSFER_CIPHER_SUITES_KEY
+argument_list|)
+decl_stmt|;
+if|if
+condition|(
+name|cipherSuites
+operator|!=
+literal|null
+operator|&&
+operator|!
+name|cipherSuites
+operator|.
+name|isEmpty
+argument_list|()
+condition|)
+block|{
+if|if
+condition|(
+operator|!
+name|cipherSuites
+operator|.
+name|equals
+argument_list|(
+name|CipherSuite
+operator|.
+name|AES_CTR_NOPADDING
+operator|.
+name|getName
+argument_list|()
+argument_list|)
+condition|)
+block|{
+throw|throw
+operator|new
+name|IOException
+argument_list|(
+name|String
+operator|.
+name|format
+argument_list|(
+literal|"Invalid cipher suite, %s=%s"
+argument_list|,
+name|DFS_ENCRYPT_DATA_TRANSFER_CIPHER_SUITES_KEY
+argument_list|,
+name|cipherSuites
+argument_list|)
+argument_list|)
+throw|;
+block|}
 name|CipherOption
 name|option
 init|=
@@ -1820,6 +1894,7 @@ argument_list|(
 name|option
 argument_list|)
 expr_stmt|;
+block|}
 block|}
 name|sendSaslMessageAndNegotiationCipherOptions
 argument_list|(

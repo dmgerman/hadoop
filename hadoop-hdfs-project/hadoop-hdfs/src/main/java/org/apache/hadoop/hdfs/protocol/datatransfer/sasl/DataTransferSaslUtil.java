@@ -128,6 +128,22 @@ name|hadoop
 operator|.
 name|hdfs
 operator|.
+name|DFSConfigKeys
+operator|.
+name|DFS_ENCRYPT_DATA_TRANSFER_CIPHER_SUITES_KEY
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
 name|protocolPB
 operator|.
 name|PBHelper
@@ -1355,7 +1371,7 @@ argument_list|()
 return|;
 block|}
 block|}
-comment|/**    * Negotiate a cipher option which server supports.    *     * @param options the cipher options which client supports    * @return CipherOption negotiated cipher option    */
+comment|/**    * Negotiate a cipher option which server supports.    *     * @param conf the configuration    * @param options the cipher options which client supports    * @return CipherOption negotiated cipher option    */
 DECL|method|negotiateCipherOption (Configuration conf, List<CipherOption> options)
 specifier|public
 specifier|static
@@ -1371,7 +1387,71 @@ name|CipherOption
 argument_list|>
 name|options
 parameter_list|)
+throws|throws
+name|IOException
 block|{
+comment|// Negotiate cipher suites if configured.  Currently, the only supported
+comment|// cipher suite is AES/CTR/NoPadding, but the protocol allows multiple
+comment|// values for future expansion.
+name|String
+name|cipherSuites
+init|=
+name|conf
+operator|.
+name|get
+argument_list|(
+name|DFS_ENCRYPT_DATA_TRANSFER_CIPHER_SUITES_KEY
+argument_list|)
+decl_stmt|;
+if|if
+condition|(
+name|cipherSuites
+operator|==
+literal|null
+operator|||
+name|cipherSuites
+operator|.
+name|isEmpty
+argument_list|()
+condition|)
+block|{
+return|return
+literal|null
+return|;
+block|}
+if|if
+condition|(
+operator|!
+name|cipherSuites
+operator|.
+name|equals
+argument_list|(
+name|CipherSuite
+operator|.
+name|AES_CTR_NOPADDING
+operator|.
+name|getName
+argument_list|()
+argument_list|)
+condition|)
+block|{
+throw|throw
+operator|new
+name|IOException
+argument_list|(
+name|String
+operator|.
+name|format
+argument_list|(
+literal|"Invalid cipher suite, %s=%s"
+argument_list|,
+name|DFS_ENCRYPT_DATA_TRANSFER_CIPHER_SUITES_KEY
+argument_list|,
+name|cipherSuites
+argument_list|)
+argument_list|)
+throw|;
+block|}
 if|if
 condition|(
 name|options
@@ -1387,7 +1467,6 @@ range|:
 name|options
 control|)
 block|{
-comment|// Currently we support AES/CTR/NoPadding
 name|CipherSuite
 name|suite
 init|=

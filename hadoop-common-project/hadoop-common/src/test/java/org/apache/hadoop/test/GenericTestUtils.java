@@ -1423,6 +1423,50 @@ block|}
 block|}
 block|}
 block|}
+DECL|method|assertDoesNotMatch (String output, String pattern)
+specifier|public
+specifier|static
+name|void
+name|assertDoesNotMatch
+parameter_list|(
+name|String
+name|output
+parameter_list|,
+name|String
+name|pattern
+parameter_list|)
+block|{
+name|Assert
+operator|.
+name|assertFalse
+argument_list|(
+literal|"Expected output to match /"
+operator|+
+name|pattern
+operator|+
+literal|"/"
+operator|+
+literal|" but got:\n"
+operator|+
+name|output
+argument_list|,
+name|Pattern
+operator|.
+name|compile
+argument_list|(
+name|pattern
+argument_list|)
+operator|.
+name|matcher
+argument_list|(
+name|output
+argument_list|)
+operator|.
+name|find
+argument_list|()
+argument_list|)
+expr_stmt|;
+block|}
 DECL|method|assertMatches (String output, String pattern)
 specifier|public
 specifier|static
