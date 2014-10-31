@@ -3933,10 +3933,8 @@ name|MILLISECONDS
 argument_list|)
 condition|)
 empty_stmt|;
-name|Assert
-operator|.
-name|assertTrue
-argument_list|(
+try|try
+block|{
 name|pending
 operator|.
 name|get
@@ -3944,12 +3942,10 @@ argument_list|(
 name|rsrc
 argument_list|)
 operator|.
-name|isDone
+name|get
 argument_list|()
-argument_list|)
 expr_stmt|;
-try|try
-block|{
+comment|// see if there was an Exception during download
 name|FileStatus
 index|[]
 name|filesstatus
