@@ -4,7 +4,7 @@ comment|/**  * Licensed to the Apache Software Foundation (ASF) under one  * or 
 end_comment
 
 begin_package
-DECL|package|org.apache.hadoop.yarn.server.api.protocolrecords.impl.pb
+DECL|package|org.apache.hadoop.yarn.api.protocolrecords.impl.pb
 package|package
 name|org
 operator|.
@@ -13,8 +13,6 @@ operator|.
 name|hadoop
 operator|.
 name|yarn
-operator|.
-name|server
 operator|.
 name|api
 operator|.
@@ -36,31 +34,11 @@ name|hadoop
 operator|.
 name|yarn
 operator|.
-name|proto
-operator|.
-name|YarnServerResourceManagerServiceProtos
-operator|.
-name|GetNodesToLabelsRequestProto
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|yarn
-operator|.
-name|server
-operator|.
 name|api
 operator|.
 name|protocolrecords
 operator|.
-name|GetNodesToLabelsRequest
+name|GetClusterNodeLabelsRequest
 import|;
 end_import
 
@@ -76,25 +54,43 @@ name|TextFormat
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|proto
+operator|.
+name|YarnServiceProtos
+operator|.
+name|GetClusterNodeLabelsRequestProto
+import|;
+end_import
+
 begin_class
-DECL|class|GetNodesToLabelsRequestPBImpl
+DECL|class|GetClusterNodeLabelsRequestPBImpl
 specifier|public
 class|class
-name|GetNodesToLabelsRequestPBImpl
+name|GetClusterNodeLabelsRequestPBImpl
 extends|extends
-name|GetNodesToLabelsRequest
+name|GetClusterNodeLabelsRequest
 block|{
 DECL|field|proto
-name|GetNodesToLabelsRequestProto
+name|GetClusterNodeLabelsRequestProto
 name|proto
 init|=
-name|GetNodesToLabelsRequestProto
+name|GetClusterNodeLabelsRequestProto
 operator|.
 name|getDefaultInstance
 argument_list|()
 decl_stmt|;
 DECL|field|builder
-name|GetNodesToLabelsRequestProto
+name|GetClusterNodeLabelsRequestProto
 operator|.
 name|Builder
 name|builder
@@ -107,24 +103,24 @@ name|viaProto
 init|=
 literal|false
 decl_stmt|;
-DECL|method|GetNodesToLabelsRequestPBImpl ()
+DECL|method|GetClusterNodeLabelsRequestPBImpl ()
 specifier|public
-name|GetNodesToLabelsRequestPBImpl
+name|GetClusterNodeLabelsRequestPBImpl
 parameter_list|()
 block|{
 name|builder
 operator|=
-name|GetNodesToLabelsRequestProto
+name|GetClusterNodeLabelsRequestProto
 operator|.
 name|newBuilder
 argument_list|()
 expr_stmt|;
 block|}
-DECL|method|GetNodesToLabelsRequestPBImpl (GetNodesToLabelsRequestProto proto)
+DECL|method|GetClusterNodeLabelsRequestPBImpl (GetClusterNodeLabelsRequestProto proto)
 specifier|public
-name|GetNodesToLabelsRequestPBImpl
+name|GetClusterNodeLabelsRequestPBImpl
 parameter_list|(
-name|GetNodesToLabelsRequestProto
+name|GetClusterNodeLabelsRequestProto
 name|proto
 parameter_list|)
 block|{
@@ -141,7 +137,7 @@ expr_stmt|;
 block|}
 DECL|method|getProto ()
 specifier|public
-name|GetNodesToLabelsRequestProto
+name|GetClusterNodeLabelsRequestProto
 name|getProto
 parameter_list|()
 block|{

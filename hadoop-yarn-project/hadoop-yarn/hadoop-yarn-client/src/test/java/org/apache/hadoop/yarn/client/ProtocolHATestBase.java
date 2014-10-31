@@ -4107,6 +4107,8 @@ argument_list|,
 literal|null
 argument_list|,
 literal|1000l
+argument_list|,
+literal|null
 argument_list|)
 decl_stmt|;
 name|List

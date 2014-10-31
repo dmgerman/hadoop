@@ -1313,7 +1313,7 @@ name|port
 argument_list|)
 return|;
 block|}
-DECL|method|newNodeReport (NodeId nodeId, NodeState nodeState, String httpAddress, String rackName, Resource used, Resource capability, int numContainers, String healthReport, long lastHealthReportTime)
+DECL|method|newNodeReport (NodeId nodeId, NodeState nodeState, String httpAddress, String rackName, Resource used, Resource capability, int numContainers, String healthReport, long lastHealthReportTime, Set<String> nodeLabels)
 specifier|public
 specifier|static
 name|NodeReport
@@ -1345,6 +1345,12 @@ name|healthReport
 parameter_list|,
 name|long
 name|lastHealthReportTime
+parameter_list|,
+name|Set
+argument_list|<
+name|String
+argument_list|>
+name|nodeLabels
 parameter_list|)
 block|{
 name|NodeReport
@@ -1420,6 +1426,13 @@ operator|.
 name|setLastHealthReportTime
 argument_list|(
 name|lastHealthReportTime
+argument_list|)
+expr_stmt|;
+name|nodeReport
+operator|.
+name|setNodeLabels
+argument_list|(
+name|nodeLabels
 argument_list|)
 expr_stmt|;
 return|return

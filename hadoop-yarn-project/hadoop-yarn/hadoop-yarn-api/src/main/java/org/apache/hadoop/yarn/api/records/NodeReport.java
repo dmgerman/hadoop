@@ -22,6 +22,16 @@ end_package
 
 begin_import
 import|import
+name|java
+operator|.
+name|util
+operator|.
+name|Set
+import|;
+end_import
+
+begin_import
+import|import
 name|org
 operator|.
 name|apache
@@ -135,7 +145,7 @@ annotation|@
 name|Private
 annotation|@
 name|Unstable
-DECL|method|newInstance (NodeId nodeId, NodeState nodeState, String httpAddress, String rackName, Resource used, Resource capability, int numContainers, String healthReport, long lastHealthReportTime)
+DECL|method|newInstance (NodeId nodeId, NodeState nodeState, String httpAddress, String rackName, Resource used, Resource capability, int numContainers, String healthReport, long lastHealthReportTime, Set<String> nodeLabels)
 specifier|public
 specifier|static
 name|NodeReport
@@ -167,6 +177,12 @@ name|healthReport
 parameter_list|,
 name|long
 name|lastHealthReportTime
+parameter_list|,
+name|Set
+argument_list|<
+name|String
+argument_list|>
+name|nodeLabels
 parameter_list|)
 block|{
 name|NodeReport
@@ -480,6 +496,38 @@ name|setLastHealthReportTime
 parameter_list|(
 name|long
 name|lastHealthReport
+parameter_list|)
+function_decl|;
+comment|/**    * Get labels of this node    * @return labels of this node    */
+annotation|@
+name|Public
+annotation|@
+name|Stable
+DECL|method|getNodeLabels ()
+specifier|public
+specifier|abstract
+name|Set
+argument_list|<
+name|String
+argument_list|>
+name|getNodeLabels
+parameter_list|()
+function_decl|;
+annotation|@
+name|Private
+annotation|@
+name|Unstable
+DECL|method|setNodeLabels (Set<String> nodeLabels)
+specifier|public
+specifier|abstract
+name|void
+name|setNodeLabels
+parameter_list|(
+name|Set
+argument_list|<
+name|String
+argument_list|>
+name|nodeLabels
 parameter_list|)
 function_decl|;
 block|}
