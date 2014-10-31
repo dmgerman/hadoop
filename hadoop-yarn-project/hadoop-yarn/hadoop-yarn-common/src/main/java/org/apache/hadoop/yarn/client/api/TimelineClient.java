@@ -330,6 +330,46 @@ name|IOException
 throws|,
 name|YarnException
 function_decl|;
+comment|/**    *<p>    * Renew a timeline delegation token.    *</p>    *     * @param timelineDT    *          the delegation token to renew    * @return the new expiration time    * @throws IOException    * @throws YarnException    */
+annotation|@
+name|Public
+DECL|method|renewDelegationToken ( Token<TimelineDelegationTokenIdentifier> timelineDT)
+specifier|public
+specifier|abstract
+name|long
+name|renewDelegationToken
+parameter_list|(
+name|Token
+argument_list|<
+name|TimelineDelegationTokenIdentifier
+argument_list|>
+name|timelineDT
+parameter_list|)
+throws|throws
+name|IOException
+throws|,
+name|YarnException
+function_decl|;
+comment|/**    *<p>    * Cancel a timeline delegation token.    *</p>    *     * @param timelineDT    *          the delegation token to cancel    * @throws IOException    * @throws YarnException    */
+annotation|@
+name|Public
+DECL|method|cancelDelegationToken ( Token<TimelineDelegationTokenIdentifier> timelineDT)
+specifier|public
+specifier|abstract
+name|void
+name|cancelDelegationToken
+parameter_list|(
+name|Token
+argument_list|<
+name|TimelineDelegationTokenIdentifier
+argument_list|>
+name|timelineDT
+parameter_list|)
+throws|throws
+name|IOException
+throws|,
+name|YarnException
+function_decl|;
 block|}
 end_class
 
