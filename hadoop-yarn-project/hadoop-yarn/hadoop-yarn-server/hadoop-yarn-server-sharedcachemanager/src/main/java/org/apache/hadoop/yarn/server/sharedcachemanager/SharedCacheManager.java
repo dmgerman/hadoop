@@ -360,6 +360,19 @@ argument_list|(
 name|cs
 argument_list|)
 expr_stmt|;
+name|SharedCacheUploaderService
+name|nms
+init|=
+name|createNMCacheUploaderSCMProtocolService
+argument_list|(
+name|store
+argument_list|)
+decl_stmt|;
+name|addService
+argument_list|(
+name|nms
+argument_list|)
+expr_stmt|;
 comment|// init metrics
 name|DefaultMetricsSystem
 operator|.
@@ -491,6 +504,23 @@ block|{
 return|return
 operator|new
 name|CleanerService
+argument_list|(
+name|store
+argument_list|)
+return|;
+block|}
+specifier|private
+name|SharedCacheUploaderService
+DECL|method|createNMCacheUploaderSCMProtocolService (SCMStore store)
+name|createNMCacheUploaderSCMProtocolService
+parameter_list|(
+name|SCMStore
+name|store
+parameter_list|)
+block|{
+return|return
+operator|new
+name|SharedCacheUploaderService
 argument_list|(
 name|store
 argument_list|)
