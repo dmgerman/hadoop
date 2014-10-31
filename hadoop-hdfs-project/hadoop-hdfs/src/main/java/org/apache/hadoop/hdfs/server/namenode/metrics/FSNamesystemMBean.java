@@ -182,6 +182,12 @@ name|long
 name|getPendingDeletionBlocks
 parameter_list|()
 function_decl|;
+comment|/**    * Time when block deletions will begin    * @return time when block deletions will begin    */
+DECL|method|getBlockDeletionStartTime ()
+name|long
+name|getBlockDeletionStartTime
+parameter_list|()
+function_decl|;
 comment|/**    * Number of content stale storages.    * @return number of content stale storages    */
 DECL|method|getNumStaleStorages ()
 specifier|public

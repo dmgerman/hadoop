@@ -30928,6 +30928,23 @@ argument_list|()
 return|;
 block|}
 annotation|@
+name|Override
+DECL|method|getBlockDeletionStartTime ()
+specifier|public
+name|long
+name|getBlockDeletionStartTime
+parameter_list|()
+block|{
+return|return
+name|startTime
+operator|+
+name|blockManager
+operator|.
+name|getStartupDelayBlockDeletionInMs
+argument_list|()
+return|;
+block|}
+annotation|@
 name|Metric
 DECL|method|getExcessBlocks ()
 specifier|public

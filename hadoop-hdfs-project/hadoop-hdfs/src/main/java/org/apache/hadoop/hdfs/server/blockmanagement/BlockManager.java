@@ -1208,6 +1208,12 @@ argument_list|(
 literal|0L
 argument_list|)
 decl_stmt|;
+DECL|field|startupDelayBlockDeletionInMs
+specifier|private
+specifier|final
+name|long
+name|startupDelayBlockDeletionInMs
+decl_stmt|;
 comment|/** Used by metrics */
 DECL|method|getPendingReplicationBlocksCount ()
 specifier|public
@@ -1264,6 +1270,17 @@ name|invalidateBlocks
 operator|.
 name|numBlocks
 argument_list|()
+return|;
+block|}
+comment|/** Used by metrics */
+DECL|method|getStartupDelayBlockDeletionInMs ()
+specifier|public
+name|long
+name|getStartupDelayBlockDeletionInMs
+parameter_list|()
+block|{
+return|return
+name|startupDelayBlockDeletionInMs
 return|;
 block|}
 comment|/** Used by metrics */
@@ -1572,10 +1589,8 @@ operator|.
 name|getHeartbeatManager
 argument_list|()
 expr_stmt|;
-specifier|final
-name|long
-name|pendingPeriod
-init|=
+name|startupDelayBlockDeletionInMs
+operator|=
 name|conf
 operator|.
 name|getLong
@@ -1590,7 +1605,7 @@ name|DFS_NAMENODE_STARTUP_DELAY_BLOCK_DELETION_SEC_DEFAULT
 argument_list|)
 operator|*
 literal|1000L
-decl_stmt|;
+expr_stmt|;
 name|invalidateBlocks
 operator|=
 operator|new
@@ -1600,7 +1615,7 @@ name|datanodeManager
 operator|.
 name|blockInvalidateLimit
 argument_list|,
-name|pendingPeriod
+name|startupDelayBlockDeletionInMs
 argument_list|)
 expr_stmt|;
 comment|// Compute the map capacity by allocating 2% of total memory
