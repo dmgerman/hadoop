@@ -260,6 +260,13 @@ argument_list|(
 name|lastHealthReportTime
 argument_list|)
 expr_stmt|;
+name|nodeReport
+operator|.
+name|setNodeLabels
+argument_list|(
+name|nodeLabels
+argument_list|)
+expr_stmt|;
 return|return
 name|nodeReport
 return|;
