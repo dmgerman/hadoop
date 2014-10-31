@@ -2068,12 +2068,7 @@ name|IOUtils
 operator|.
 name|copyBytes
 argument_list|(
-name|fs
-operator|.
-name|open
-argument_list|(
-name|fileName
-argument_list|)
+name|in
 argument_list|,
 name|os
 argument_list|,
