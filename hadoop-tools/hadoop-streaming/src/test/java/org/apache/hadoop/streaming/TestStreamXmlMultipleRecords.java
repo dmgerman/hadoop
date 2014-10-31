@@ -164,14 +164,14 @@ specifier|private
 name|String
 name|myPerlMapper
 init|=
-literal|"perl -n -a -e 'print join(\"\\n\", map { \"$_\\t1\" } @F), \"\\n\";'"
+literal|"perl -n -a -e 'print join(qq(\\n), map { qq($_\\t1) } @F), qq(\\n);'"
 decl_stmt|;
 DECL|field|myPerlReducer
 specifier|private
 name|String
 name|myPerlReducer
 init|=
-literal|"perl -n -a -e '$freq{$F[0]}++; END { print \"is\\t$freq{is}\\n\"; }'"
+literal|"perl -n -a -e '$freq{$F[0]}++; END { print qq(is\\t$freq{is}\\n); }'"
 decl_stmt|;
 DECL|method|TestStreamXmlMultipleRecords ()
 specifier|public
