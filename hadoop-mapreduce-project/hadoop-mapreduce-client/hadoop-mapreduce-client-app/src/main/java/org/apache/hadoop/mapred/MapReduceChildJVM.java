@@ -84,6 +84,20 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|conf
+operator|.
+name|Configuration
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|fs
 operator|.
 name|Path
@@ -699,7 +713,7 @@ operator|+
 name|userClasspath
 return|;
 block|}
-DECL|method|setupLog4jProperties (Task task, Vector<String> vargs, long logSize)
+DECL|method|setupLog4jProperties (Task task, Vector<String> vargs, long logSize, Configuration conf)
 specifier|private
 specifier|static
 name|void
@@ -716,6 +730,9 @@ name|vargs
 parameter_list|,
 name|long
 name|logSize
+parameter_list|,
+name|Configuration
+name|conf
 parameter_list|)
 block|{
 name|String
@@ -762,6 +779,8 @@ argument_list|,
 name|numBackups
 argument_list|,
 name|vargs
+argument_list|,
+name|conf
 argument_list|)
 expr_stmt|;
 block|}
@@ -977,6 +996,8 @@ argument_list|,
 name|vargs
 argument_list|,
 name|logSize
+argument_list|,
+name|conf
 argument_list|)
 expr_stmt|;
 if|if

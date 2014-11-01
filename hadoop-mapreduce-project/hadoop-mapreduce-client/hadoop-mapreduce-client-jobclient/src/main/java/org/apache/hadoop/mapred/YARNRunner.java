@@ -2466,6 +2466,8 @@ argument_list|,
 name|numBackups
 argument_list|,
 name|vargs
+argument_list|,
+name|conf
 argument_list|)
 expr_stmt|;
 comment|// Check for Java Lib Path usage in MAP and REDUCE configs

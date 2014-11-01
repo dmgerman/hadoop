@@ -2802,6 +2802,15 @@ name|MAPREDUCE_APPLICATION_CLASSPATH
 init|=
 literal|"mapreduce.application.classpath"
 decl_stmt|;
+DECL|field|MAPREDUCE_JOB_LOG4J_PROPERTIES_FILE
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|MAPREDUCE_JOB_LOG4J_PROPERTIES_FILE
+init|=
+literal|"mapreduce.job.log4j-properties-file"
+decl_stmt|;
 comment|/**    * Path to MapReduce framework archive    */
 DECL|field|MAPREDUCE_APPLICATION_FRAMEWORK_PATH
 specifier|public

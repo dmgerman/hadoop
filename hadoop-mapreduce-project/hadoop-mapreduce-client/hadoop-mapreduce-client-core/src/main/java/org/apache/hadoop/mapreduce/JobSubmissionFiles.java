@@ -325,6 +325,27 @@ literal|"files"
 argument_list|)
 return|;
 block|}
+comment|/**    * Get the job distributed cache path for log4j properties.    * @param jobSubmitDir    */
+DECL|method|getJobLog4jFile (Path jobSubmitDir)
+specifier|public
+specifier|static
+name|Path
+name|getJobLog4jFile
+parameter_list|(
+name|Path
+name|jobSubmitDir
+parameter_list|)
+block|{
+return|return
+operator|new
+name|Path
+argument_list|(
+name|jobSubmitDir
+argument_list|,
+literal|"log4j"
+argument_list|)
+return|;
+block|}
 comment|/**    * Get the job distributed cache archives path.    * @param jobSubmitDir     */
 DECL|method|getJobDistCacheArchives (Path jobSubmitDir)
 specifier|public
