@@ -236,14 +236,7 @@ begin_class
 annotation|@
 name|InterfaceAudience
 operator|.
-name|LimitedPrivate
-argument_list|(
-block|{
-literal|"HDFS"
-block|,
-literal|"MapReduce"
-block|}
-argument_list|)
+name|Public
 annotation|@
 name|InterfaceStability
 operator|.
@@ -794,6 +787,7 @@ block|}
 block|}
 comment|/**    * Get the names of users allowed for this service.    * @return the set of user names. the set must not be modified.    */
 DECL|method|getUsers ()
+specifier|public
 name|Collection
 argument_list|<
 name|String
@@ -807,6 +801,7 @@ return|;
 block|}
 comment|/**    * Get the names of user groups allowed for this service.    * @return the set of group names. the set must not be modified.    */
 DECL|method|getGroups ()
+specifier|public
 name|Collection
 argument_list|<
 name|String
