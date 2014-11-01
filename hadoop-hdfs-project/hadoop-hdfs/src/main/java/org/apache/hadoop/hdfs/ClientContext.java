@@ -132,6 +132,22 @@ end_import
 
 begin_import
 import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|util
+operator|.
+name|ByteArrayManager
+import|;
+end_import
+
+begin_import
+import|import
 name|com
 operator|.
 name|google
@@ -247,6 +263,13 @@ name|disableLegacyBlockReaderLocal
 init|=
 literal|false
 decl_stmt|;
+comment|/** Creating byte[] for {@link DFSOutputStream}. */
+DECL|field|byteArrayManager
+specifier|private
+specifier|final
+name|ByteArrayManager
+name|byteArrayManager
+decl_stmt|;
 comment|/**    * Whether or not we complained about a DFSClient fetching a CacheContext that    * didn't match its config values yet.    */
 DECL|field|printedConfWarning
 specifier|private
@@ -349,6 +372,19 @@ operator|new
 name|DomainSocketFactory
 argument_list|(
 name|conf
+argument_list|)
+expr_stmt|;
+name|this
+operator|.
+name|byteArrayManager
+operator|=
+name|ByteArrayManager
+operator|.
+name|newInstance
+argument_list|(
+name|conf
+operator|.
+name|writeByteArrayManagerConf
 argument_list|)
 expr_stmt|;
 block|}
@@ -772,6 +808,16 @@ parameter_list|()
 block|{
 return|return
 name|domainSocketFactory
+return|;
+block|}
+DECL|method|getByteArrayManager ()
+specifier|public
+name|ByteArrayManager
+name|getByteArrayManager
+parameter_list|()
+block|{
+return|return
+name|byteArrayManager
 return|;
 block|}
 block|}
