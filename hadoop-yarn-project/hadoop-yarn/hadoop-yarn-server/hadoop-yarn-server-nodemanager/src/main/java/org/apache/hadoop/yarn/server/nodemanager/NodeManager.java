@@ -2349,10 +2349,10 @@ return|return
 name|systemCredentials
 return|;
 block|}
-DECL|method|setSystemCrendentials ( Map<ApplicationId, Credentials> systemCredentials)
+DECL|method|setSystemCrendentialsForApps ( Map<ApplicationId, Credentials> systemCredentials)
 specifier|public
 name|void
-name|setSystemCrendentials
+name|setSystemCrendentialsForApps
 parameter_list|(
 name|Map
 argument_list|<

@@ -6921,15 +6921,6 @@ return|return
 literal|null
 return|;
 block|}
-name|LOG
-operator|.
-name|info
-argument_list|(
-literal|"Adding new framework tokens from RM for "
-operator|+
-name|appId
-argument_list|)
-expr_stmt|;
 for|for
 control|(
 name|Token
@@ -6948,7 +6939,11 @@ name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"Adding new application-token for localization: "
+literal|"Adding new framework-token for "
+operator|+
+name|appId
+operator|+
+literal|" for localization: "
 operator|+
 name|token
 argument_list|)

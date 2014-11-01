@@ -3596,7 +3596,7 @@ operator|)
 name|context
 operator|)
 operator|.
-name|setSystemCrendentials
+name|setSystemCrendentialsForApps
 argument_list|(
 name|parseCredentials
 argument_list|(
