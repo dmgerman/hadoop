@@ -874,6 +874,14 @@ condition|)
 block|{
 continue|continue;
 block|}
+name|long
+name|logUploadedTime
+init|=
+name|thisNodeFile
+operator|.
+name|getModificationTime
+argument_list|()
+decl_stmt|;
 name|reader
 operator|=
 operator|new
@@ -1090,6 +1098,8 @@ argument_list|,
 name|logLimits
 argument_list|,
 name|desiredLogType
+argument_list|,
+name|logUploadedTime
 argument_list|)
 expr_stmt|;
 block|}
@@ -1209,7 +1219,7 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-DECL|method|readContainerLogs (Block html, AggregatedLogFormat.ContainerLogsReader logReader, LogLimits logLimits, String desiredLogType)
+DECL|method|readContainerLogs (Block html, AggregatedLogFormat.ContainerLogsReader logReader, LogLimits logLimits, String desiredLogType, long logUpLoadTime)
 specifier|private
 name|boolean
 name|readContainerLogs
@@ -1227,6 +1237,9 @@ name|logLimits
 parameter_list|,
 name|String
 name|desiredLogType
+parameter_list|,
+name|long
+name|logUpLoadTime
 parameter_list|)
 throws|throws
 name|IOException
@@ -1293,14 +1306,6 @@ operator|.
 name|getCurrentLogLength
 argument_list|()
 decl_stmt|;
-name|long
-name|logUpLoadTime
-init|=
-name|logReader
-operator|.
-name|getCurrentLogUpLoadTime
-argument_list|()
-decl_stmt|;
 if|if
 condition|(
 name|foundLog
@@ -1342,7 +1347,7 @@ argument_list|()
 operator|.
 name|_
 argument_list|(
-literal|"Log UpLoadTime: "
+literal|"Log Upload Time: "
 operator|+
 name|Times
 operator|.

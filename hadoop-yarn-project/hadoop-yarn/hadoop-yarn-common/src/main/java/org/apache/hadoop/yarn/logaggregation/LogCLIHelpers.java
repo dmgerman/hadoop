@@ -529,6 +529,11 @@ argument_list|,
 name|System
 operator|.
 name|out
+argument_list|,
+name|thisNodeFile
+operator|.
+name|getModificationTime
+argument_list|()
 argument_list|)
 operator|>
 operator|-
@@ -581,7 +586,7 @@ return|;
 block|}
 annotation|@
 name|Private
-DECL|method|dumpAContainerLogs (String containerIdStr, AggregatedLogFormat.LogReader reader, PrintStream out)
+DECL|method|dumpAContainerLogs (String containerIdStr, AggregatedLogFormat.LogReader reader, PrintStream out, long logUploadedTime)
 specifier|public
 name|int
 name|dumpAContainerLogs
@@ -596,6 +601,9 @@ name|reader
 parameter_list|,
 name|PrintStream
 name|out
+parameter_list|,
+name|long
+name|logUploadedTime
 parameter_list|)
 throws|throws
 name|IOException
@@ -666,6 +674,11 @@ operator|-
 literal|1
 return|;
 block|}
+name|boolean
+name|foundContainerLogs
+init|=
+literal|false
+decl_stmt|;
 while|while
 condition|(
 literal|true
@@ -680,7 +693,13 @@ argument_list|(
 name|valueStream
 argument_list|,
 name|out
+argument_list|,
+name|logUploadedTime
 argument_list|)
+expr_stmt|;
+name|foundContainerLogs
+operator|=
+literal|true
 expr_stmt|;
 block|}
 catch|catch
@@ -692,8 +711,18 @@ block|{
 break|break;
 block|}
 block|}
+if|if
+condition|(
+name|foundContainerLogs
+condition|)
+block|{
 return|return
 literal|0
+return|;
+block|}
+return|return
+operator|-
+literal|1
 return|;
 block|}
 annotation|@
@@ -975,6 +1004,11 @@ argument_list|(
 name|valueStream
 argument_list|,
 name|out
+argument_list|,
+name|thisNodeFile
+operator|.
+name|getModificationTime
+argument_list|()
 argument_list|)
 expr_stmt|;
 name|foundAnyLogs
