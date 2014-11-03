@@ -397,7 +397,7 @@ name|getUsageString
 parameter_list|()
 block|{
 return|return
-literal|"Usage: DFSHAAdmin [-ns<nameserviceId>]"
+literal|"Usage: haadmin"
 return|;
 block|}
 annotation|@
