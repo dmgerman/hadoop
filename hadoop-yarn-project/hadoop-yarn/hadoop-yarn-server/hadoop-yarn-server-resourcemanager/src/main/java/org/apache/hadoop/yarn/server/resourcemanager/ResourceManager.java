@@ -76,27 +76,7 @@ name|java
 operator|.
 name|util
 operator|.
-name|HashMap
-import|;
-end_import
-
-begin_import
-import|import
-name|java
-operator|.
-name|util
-operator|.
 name|List
-import|;
-end_import
-
-begin_import
-import|import
-name|java
-operator|.
-name|util
-operator|.
-name|Map
 import|;
 end_import
 
@@ -1882,6 +1862,40 @@ operator|new
 name|RMContextImpl
 argument_list|()
 expr_stmt|;
+comment|// Set UGI and do login
+comment|// If security is enabled, use login user
+comment|// If security is not enabled, use current user
+name|this
+operator|.
+name|rmLoginUGI
+operator|=
+name|UserGroupInformation
+operator|.
+name|getCurrentUser
+argument_list|()
+expr_stmt|;
+try|try
+block|{
+name|doSecureLogin
+argument_list|()
+expr_stmt|;
+block|}
+catch|catch
+parameter_list|(
+name|IOException
+name|ie
+parameter_list|)
+block|{
+throw|throw
+operator|new
+name|YarnRuntimeException
+argument_list|(
+literal|"Failed to login"
+argument_list|,
+name|ie
+argument_list|)
+throw|;
+block|}
 name|this
 operator|.
 name|configurationProvider
@@ -2119,15 +2133,6 @@ operator|.
 name|conf
 argument_list|)
 argument_list|)
-expr_stmt|;
-name|this
-operator|.
-name|rmLoginUGI
-operator|=
-name|UserGroupInformation
-operator|.
-name|getCurrentUser
-argument_list|()
 expr_stmt|;
 name|super
 operator|.
@@ -5631,9 +5636,6 @@ argument_list|(
 literal|"Transitioning to active state"
 argument_list|)
 expr_stmt|;
-comment|// use rmLoginUGI to startActiveServices.
-comment|// in non-secure model, rmLoginUGI will be current UGI
-comment|// in secure model, rmLoginUGI will be LoginUser UGI
 name|this
 operator|.
 name|rmLoginUGI
@@ -5804,28 +5806,6 @@ parameter_list|()
 throws|throws
 name|Exception
 block|{
-try|try
-block|{
-name|doSecureLogin
-argument_list|()
-expr_stmt|;
-block|}
-catch|catch
-parameter_list|(
-name|IOException
-name|ie
-parameter_list|)
-block|{
-throw|throw
-operator|new
-name|YarnRuntimeException
-argument_list|(
-literal|"Failed to login"
-argument_list|,
-name|ie
-argument_list|)
-throw|;
-block|}
 if|if
 condition|(
 name|this

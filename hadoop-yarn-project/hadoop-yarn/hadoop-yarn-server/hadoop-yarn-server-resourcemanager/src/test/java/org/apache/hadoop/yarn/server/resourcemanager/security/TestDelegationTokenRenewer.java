@@ -4915,6 +4915,19 @@ name|MockRM
 argument_list|(
 name|conf
 argument_list|)
+block|{
+annotation|@
+name|Override
+specifier|protected
+name|void
+name|doSecureLogin
+parameter_list|()
+throws|throws
+name|IOException
+block|{
+comment|// Skip the login.
+block|}
+block|}
 decl_stmt|;
 name|ByteBuffer
 name|tokens

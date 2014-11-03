@@ -498,6 +498,13 @@ operator|new
 name|YarnConfiguration
 argument_list|()
 decl_stmt|;
+name|UserGroupInformation
+operator|.
+name|setConfiguration
+argument_list|(
+name|conf
+argument_list|)
+expr_stmt|;
 name|resourceManager
 operator|=
 operator|new
@@ -1653,6 +1660,19 @@ operator|=
 operator|new
 name|ResourceManager
 argument_list|()
+block|{
+annotation|@
+name|Override
+specifier|protected
+name|void
+name|doSecureLogin
+parameter_list|()
+throws|throws
+name|IOException
+block|{
+comment|// Skip the login.
+block|}
+block|}
 expr_stmt|;
 name|Configuration
 name|conf
