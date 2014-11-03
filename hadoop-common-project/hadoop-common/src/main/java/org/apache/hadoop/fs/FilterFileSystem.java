@@ -993,6 +993,32 @@ name|f
 argument_list|)
 return|;
 block|}
+comment|/** Return a remote iterator for listing in a directory */
+annotation|@
+name|Override
+DECL|method|listStatusIterator (Path f)
+specifier|public
+name|RemoteIterator
+argument_list|<
+name|FileStatus
+argument_list|>
+name|listStatusIterator
+parameter_list|(
+name|Path
+name|f
+parameter_list|)
+throws|throws
+name|IOException
+block|{
+return|return
+name|fs
+operator|.
+name|listStatusIterator
+argument_list|(
+name|f
+argument_list|)
+return|;
+block|}
 annotation|@
 name|Override
 DECL|method|getHomeDirectory ()

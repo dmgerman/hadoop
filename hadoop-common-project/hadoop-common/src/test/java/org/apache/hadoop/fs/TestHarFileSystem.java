@@ -924,6 +924,18 @@ name|PathFilter
 name|filter
 parameter_list|)
 function_decl|;
+DECL|method|listStatusIterator (Path f)
+specifier|public
+name|Iterator
+argument_list|<
+name|FileStatus
+argument_list|>
+name|listStatusIterator
+parameter_list|(
+name|Path
+name|f
+parameter_list|)
+function_decl|;
 DECL|method|copyFromLocalFile (Path src, Path dst)
 specifier|public
 name|void
