@@ -1432,6 +1432,17 @@ parameter_list|()
 throws|throws
 name|Exception
 block|{
+comment|// This test relies on denying access to data volumes to simulate data volume
+comment|// failure.  This doesn't work on Windows, because an owner of an object
+comment|// always has the ability to read and change permissions on the object.
+name|assumeTrue
+argument_list|(
+operator|!
+name|Path
+operator|.
+name|WINDOWS
+argument_list|)
+expr_stmt|;
 comment|// Bring up one more datanode
 name|cluster
 operator|.
