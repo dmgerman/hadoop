@@ -2874,15 +2874,10 @@ init|=
 literal|100
 decl_stmt|;
 comment|// loop waiting for pid file to show up
-comment|// until either the completed flag is set which means something bad
-comment|// happened or our timer expires in which case we admit defeat
+comment|// until our timer expires in which case we admit defeat
 while|while
 condition|(
-operator|!
-name|completed
-operator|.
-name|get
-argument_list|()
+literal|true
 condition|)
 block|{
 name|processId
