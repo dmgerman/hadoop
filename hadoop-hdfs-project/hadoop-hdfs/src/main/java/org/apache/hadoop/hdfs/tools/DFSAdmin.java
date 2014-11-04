@@ -2113,7 +2113,9 @@ name|out
 operator|.
 name|println
 argument_list|(
-literal|"There is no rolling upgrade in progress."
+literal|"There is no rolling upgrade in progress or rolling "
+operator|+
+literal|"upgrade has already been finalized."
 argument_list|)
 expr_stmt|;
 block|}
@@ -2239,6 +2241,10 @@ name|Preconditions
 operator|.
 name|checkState
 argument_list|(
+name|info
+operator|==
+literal|null
+operator|||
 name|info
 operator|.
 name|isFinalized

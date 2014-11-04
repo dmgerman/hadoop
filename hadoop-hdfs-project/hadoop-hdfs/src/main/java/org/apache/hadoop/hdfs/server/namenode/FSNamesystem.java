@@ -38258,6 +38258,16 @@ operator|.
 name|WRITE
 argument_list|)
 expr_stmt|;
+if|if
+condition|(
+name|isRollingUpgrade
+argument_list|()
+condition|)
+block|{
+return|return
+name|rollingUpgradeInfo
+return|;
+block|}
 name|long
 name|startTime
 init|=
@@ -38661,7 +38671,7 @@ throw|;
 block|}
 block|}
 DECL|method|finalizeRollingUpgrade ()
-name|RollingUpgradeInfo
+name|void
 name|finalizeRollingUpgrade
 parameter_list|()
 throws|throws
@@ -38693,6 +38703,15 @@ operator|.
 name|WRITE
 argument_list|)
 expr_stmt|;
+if|if
+condition|(
+operator|!
+name|isRollingUpgrade
+argument_list|()
+condition|)
+block|{
+return|return;
+block|}
 name|checkNameNodeSafeMode
 argument_list|(
 literal|"Failed to finalize rolling upgrade"
@@ -38796,9 +38815,7 @@ literal|null
 argument_list|)
 expr_stmt|;
 block|}
-return|return
-name|returnInfo
-return|;
+return|return;
 block|}
 DECL|method|finalizeRollingUpgradeInternal (long finalizeTime)
 name|RollingUpgradeInfo
@@ -38810,21 +38827,6 @@ parameter_list|)
 throws|throws
 name|RollingUpgradeException
 block|{
-if|if
-condition|(
-operator|!
-name|isRollingUpgrade
-argument_list|()
-condition|)
-block|{
-throw|throw
-operator|new
-name|RollingUpgradeException
-argument_list|(
-literal|"Failed to finalize rolling upgrade since there is no rolling upgrade in progress."
-argument_list|)
-throw|;
-block|}
 specifier|final
 name|long
 name|startTime

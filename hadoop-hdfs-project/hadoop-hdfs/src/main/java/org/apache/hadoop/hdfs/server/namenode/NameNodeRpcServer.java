@@ -6221,11 +6221,13 @@ return|;
 case|case
 name|FINALIZE
 case|:
-return|return
 name|namesystem
 operator|.
 name|finalizeRollingUpgrade
 argument_list|()
+expr_stmt|;
+return|return
+literal|null
 return|;
 default|default:
 throw|throw
