@@ -116,6 +116,20 @@ specifier|public
 class|class
 name|TestTraceAdmin
 block|{
+DECL|field|NEWLINE
+specifier|private
+specifier|static
+specifier|final
+name|String
+name|NEWLINE
+init|=
+name|System
+operator|.
+name|getProperty
+argument_list|(
+literal|"line.separator"
+argument_list|)
+decl_stmt|;
 DECL|method|runTraceCommand (TraceAdmin trace, String... cmd)
 specifier|private
 name|String
@@ -350,7 +364,9 @@ name|Assert
 operator|.
 name|assertEquals
 argument_list|(
-literal|"ret:0, [no span receivers found]\n"
+literal|"ret:0, [no span receivers found]"
+operator|+
+name|NEWLINE
 argument_list|,
 name|runTraceCommand
 argument_list|(
@@ -377,7 +393,7 @@ literal|"configuration local-file-span-receiver.path = "
 operator|+
 name|tracePath
 operator|+
-literal|"\n"
+name|NEWLINE
 argument_list|,
 name|runTraceCommand
 argument_list|(
@@ -447,7 +463,9 @@ name|Assert
 operator|.
 name|assertEquals
 argument_list|(
-literal|"ret:0, Removed trace span receiver 1\n"
+literal|"ret:0, Removed trace span receiver 1"
+operator|+
+name|NEWLINE
 argument_list|,
 name|runTraceCommand
 argument_list|(
@@ -470,7 +488,9 @@ name|Assert
 operator|.
 name|assertEquals
 argument_list|(
-literal|"ret:0, [no span receivers found]\n"
+literal|"ret:0, [no span receivers found]"
+operator|+
+name|NEWLINE
 argument_list|,
 name|runTraceCommand
 argument_list|(
@@ -497,7 +517,7 @@ literal|"configuration local-file-span-receiver.path = "
 operator|+
 name|tracePath
 operator|+
-literal|"\n"
+name|NEWLINE
 argument_list|,
 name|runTraceCommand
 argument_list|(
@@ -526,7 +546,9 @@ name|Assert
 operator|.
 name|assertEquals
 argument_list|(
-literal|"ret:0, Removed trace span receiver 2\n"
+literal|"ret:0, Removed trace span receiver 2"
+operator|+
+name|NEWLINE
 argument_list|,
 name|runTraceCommand
 argument_list|(
