@@ -3569,6 +3569,10 @@ operator|.
 name|MaxDirectoryItemsExceededException
 operator|.
 name|class
+argument_list|,
+name|UnresolvedPathException
+operator|.
+name|class
 argument_list|)
 expr_stmt|;
 block|}
