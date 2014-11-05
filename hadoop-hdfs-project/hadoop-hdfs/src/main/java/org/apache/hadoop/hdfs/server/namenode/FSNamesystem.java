@@ -17374,13 +17374,6 @@ index|]
 operator|=
 literal|null
 expr_stmt|;
-name|checkOperation
-argument_list|(
-name|OperationCategory
-operator|.
-name|WRITE
-argument_list|)
-expr_stmt|;
 name|checkNameNodeSafeMode
 argument_list|(
 literal|"Cannot add block to "
