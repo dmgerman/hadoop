@@ -3795,6 +3795,20 @@ name|e
 argument_list|)
 expr_stmt|;
 block|}
+else|else
+block|{
+name|setLastException
+argument_list|(
+operator|new
+name|IOException
+argument_list|(
+literal|"DataStreamer Exception: "
+argument_list|,
+name|e
+argument_list|)
+argument_list|)
+expr_stmt|;
+block|}
 name|hasError
 operator|=
 literal|true
