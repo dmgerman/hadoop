@@ -4791,6 +4791,13 @@ operator|.
 name|AM_CLIENT_TOKEN_MASTER_KEY_NAME
 argument_list|)
 decl_stmt|;
+if|if
+condition|(
+name|clientTokenMasterKeyBytes
+operator|!=
+literal|null
+condition|)
+block|{
 name|clientTokenMasterKey
 operator|=
 name|rmContext
@@ -4805,6 +4812,7 @@ argument_list|,
 name|clientTokenMasterKeyBytes
 argument_list|)
 expr_stmt|;
+block|}
 block|}
 name|this
 operator|.

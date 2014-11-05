@@ -1026,6 +1026,26 @@ name|resourcemanager
 operator|.
 name|scheduler
 operator|.
+name|QueueNotFoundException
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|server
+operator|.
+name|resourcemanager
+operator|.
+name|scheduler
+operator|.
 name|SchedulerApplication
 import|;
 end_import
@@ -4238,8 +4258,6 @@ condition|(
 name|isAppRecovering
 condition|)
 block|{
-comment|//throwing RuntimeException because some other exceptions are caught
-comment|//(including YarnRuntimeException) and we want this to force an exit
 name|String
 name|queueErrorMsg
 init|=
@@ -4264,7 +4282,7 @@ argument_list|)
 expr_stmt|;
 throw|throw
 operator|new
-name|RuntimeException
+name|QueueNotFoundException
 argument_list|(
 name|queueErrorMsg
 argument_list|)
