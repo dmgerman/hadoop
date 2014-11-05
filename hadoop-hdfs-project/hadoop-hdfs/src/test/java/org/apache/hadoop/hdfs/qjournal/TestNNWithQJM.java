@@ -281,7 +281,7 @@ init|=
 operator|new
 name|Path
 argument_list|(
-literal|"/test-dir"
+literal|"/test-dir-2"
 argument_list|)
 decl_stmt|;
 annotation|@
