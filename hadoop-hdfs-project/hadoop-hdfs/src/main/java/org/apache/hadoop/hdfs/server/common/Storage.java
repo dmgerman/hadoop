@@ -2610,11 +2610,15 @@ name|LOG
 operator|.
 name|error
 argument_list|(
-literal|"It appears that another namenode"
+literal|"It appears that another node "
 operator|+
 name|lockingJvmName
 operator|+
-literal|" has already locked the storage directory"
+literal|" has already locked the storage directory: "
+operator|+
+name|root
+argument_list|,
+name|oe
 argument_list|)
 expr_stmt|;
 name|file
