@@ -2699,16 +2699,12 @@ argument_list|)
 decl_stmt|;
 if|if
 condition|(
-name|FSNamesystem
-operator|.
 name|LOG
 operator|.
 name|isDebugEnabled
 argument_list|()
 condition|)
 block|{
-name|FSNamesystem
-operator|.
 name|LOG
 operator|.
 name|debug

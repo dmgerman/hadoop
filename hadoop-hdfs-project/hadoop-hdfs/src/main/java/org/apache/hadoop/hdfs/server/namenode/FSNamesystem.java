@@ -16723,7 +16723,7 @@ name|stateChangeLog
 operator|.
 name|debug
 argument_list|(
-literal|"BLOCK* NameSystem.getAdditionalBlock: "
+literal|"BLOCK* getAdditionalBlock: "
 operator|+
 name|src
 operator|+
@@ -17714,6 +17714,8 @@ condition|(
 operator|!
 name|checkFileProgress
 argument_list|(
+name|src
+argument_list|,
 name|pendingFile
 argument_list|,
 literal|false
@@ -19021,6 +19023,8 @@ condition|(
 operator|!
 name|checkFileProgress
 argument_list|(
+name|src
+argument_list|,
 name|pendingFile
 argument_list|,
 literal|false
@@ -19044,6 +19048,8 @@ condition|(
 operator|!
 name|checkFileProgress
 argument_list|(
+name|src
+argument_list|,
 name|pendingFile
 argument_list|,
 literal|true
@@ -19116,18 +19122,13 @@ name|stateChangeLog
 operator|.
 name|info
 argument_list|(
-literal|"BLOCK* allocateBlock: "
-operator|+
-name|src
-operator|+
-literal|". "
-operator|+
-name|getBlockPoolId
-argument_list|()
-operator|+
-literal|" "
+literal|"BLOCK* allocate "
 operator|+
 name|b
+operator|+
+literal|" for "
+operator|+
+name|src
 argument_list|)
 expr_stmt|;
 name|DatanodeStorageInfo
@@ -19183,10 +19184,14 @@ name|b
 return|;
 block|}
 comment|/**    * Check that the indicated file's blocks are present and    * replicated.  If not, return false. If checkall is true, then check    * all blocks, otherwise check only penultimate block.    */
-DECL|method|checkFileProgress (INodeFile v, boolean checkall)
+DECL|method|checkFileProgress (String src, INodeFile v, boolean checkall)
+specifier|private
 name|boolean
 name|checkFileProgress
 parameter_list|(
+name|String
+name|src
+parameter_list|,
 name|INodeFile
 name|v
 parameter_list|,
@@ -19204,9 +19209,7 @@ condition|(
 name|checkall
 condition|)
 block|{
-comment|//
 comment|// check all blocks of the file.
-comment|//
 for|for
 control|(
 name|BlockInfo
@@ -19221,27 +19224,18 @@ block|{
 if|if
 condition|(
 operator|!
-name|block
-operator|.
-name|isComplete
-argument_list|()
-condition|)
-block|{
-name|LOG
-operator|.
-name|info
+name|isCompleteBlock
 argument_list|(
-literal|"BLOCK* checkFileProgress: "
-operator|+
+name|src
+argument_list|,
 name|block
-operator|+
-literal|" has not reached minimal replication "
-operator|+
+argument_list|,
 name|blockManager
 operator|.
 name|minReplication
 argument_list|)
-expr_stmt|;
+condition|)
+block|{
 return|return
 literal|false
 return|;
@@ -19250,9 +19244,7 @@ block|}
 block|}
 else|else
 block|{
-comment|//
 comment|// check the penultimate block of this file
-comment|//
 name|BlockInfo
 name|b
 init|=
@@ -19268,27 +19260,18 @@ operator|!=
 literal|null
 operator|&&
 operator|!
-name|b
-operator|.
-name|isComplete
-argument_list|()
-condition|)
-block|{
-name|LOG
-operator|.
-name|warn
+name|isCompleteBlock
 argument_list|(
-literal|"BLOCK* checkFileProgress: "
-operator|+
+name|src
+argument_list|,
 name|b
-operator|+
-literal|" has not reached minimal replication "
-operator|+
+argument_list|,
 name|blockManager
 operator|.
 name|minReplication
 argument_list|)
-expr_stmt|;
+condition|)
+block|{
 return|return
 literal|false
 return|;
@@ -19304,6 +19287,95 @@ name|readUnlock
 argument_list|()
 expr_stmt|;
 block|}
+block|}
+DECL|method|isCompleteBlock (String src, BlockInfo b, int minRepl)
+specifier|private
+specifier|static
+name|boolean
+name|isCompleteBlock
+parameter_list|(
+name|String
+name|src
+parameter_list|,
+name|BlockInfo
+name|b
+parameter_list|,
+name|int
+name|minRepl
+parameter_list|)
+block|{
+if|if
+condition|(
+operator|!
+name|b
+operator|.
+name|isComplete
+argument_list|()
+condition|)
+block|{
+specifier|final
+name|BlockInfoUnderConstruction
+name|uc
+init|=
+operator|(
+name|BlockInfoUnderConstruction
+operator|)
+name|b
+decl_stmt|;
+specifier|final
+name|int
+name|numNodes
+init|=
+name|b
+operator|.
+name|numNodes
+argument_list|()
+decl_stmt|;
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"BLOCK* "
+operator|+
+name|b
+operator|+
+literal|" is not COMPLETE (ucState = "
+operator|+
+name|uc
+operator|.
+name|getBlockUCState
+argument_list|()
+operator|+
+literal|", replication# = "
+operator|+
+name|numNodes
+operator|+
+operator|(
+name|numNodes
+operator|<
+name|minRepl
+condition|?
+literal|"< "
+else|:
+literal|">= "
+operator|)
+operator|+
+literal|" minimum = "
+operator|+
+name|minRepl
+operator|+
+literal|") in file "
+operator|+
+name|src
+argument_list|)
+expr_stmt|;
+return|return
+literal|false
+return|;
+block|}
+return|return
+literal|true
+return|;
 block|}
 comment|////////////////////////////////////////////////////////////////
 comment|// Here's how to handle block-copy failure during client write:
@@ -25518,8 +25590,6 @@ name|isInSafeMode
 argument_list|()
 condition|)
 block|{
-name|FSNamesystem
-operator|.
 name|LOG
 operator|.
 name|warn
@@ -25532,8 +25602,6 @@ expr_stmt|;
 block|}
 else|else
 block|{
-name|FSNamesystem
-operator|.
 name|LOG
 operator|.
 name|warn
@@ -32427,11 +32495,14 @@ name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"updatePipeline(block="
+literal|"updatePipeline("
 operator|+
 name|oldBlock
+operator|.
+name|getLocalBlock
+argument_list|()
 operator|+
-literal|", newGenerationStamp="
+literal|", newGS="
 operator|+
 name|newBlock
 operator|.
@@ -32454,7 +32525,7 @@ argument_list|(
 name|newNodes
 argument_list|)
 operator|+
-literal|", clientName="
+literal|", client="
 operator|+
 name|clientName
 operator|+
@@ -32555,10 +32626,18 @@ argument_list|(
 literal|"updatePipeline("
 operator|+
 name|oldBlock
+operator|.
+name|getLocalBlock
+argument_list|()
 operator|+
-literal|") successfully to "
+literal|" => "
 operator|+
 name|newBlock
+operator|.
+name|getLocalBlock
+argument_list|()
+operator|+
+literal|") success"
 argument_list|)
 expr_stmt|;
 block|}

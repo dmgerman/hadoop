@@ -677,8 +677,6 @@ name|IOUtils
 operator|.
 name|cleanup
 argument_list|(
-name|FSNamesystem
-operator|.
 name|LOG
 argument_list|,
 name|fc
@@ -961,16 +959,12 @@ expr_stmt|;
 block|}
 if|if
 condition|(
-name|FSNamesystem
-operator|.
 name|LOG
 operator|.
 name|isDebugEnabled
 argument_list|()
 condition|)
 block|{
-name|FSNamesystem
-operator|.
 name|LOG
 operator|.
 name|debug

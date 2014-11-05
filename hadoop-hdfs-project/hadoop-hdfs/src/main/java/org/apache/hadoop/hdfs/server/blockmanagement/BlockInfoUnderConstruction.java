@@ -404,7 +404,7 @@ name|sb
 operator|.
 name|append
 argument_list|(
-literal|"ReplicaUnderConstruction["
+literal|"ReplicaUC["
 argument_list|)
 operator|.
 name|append
@@ -1387,7 +1387,7 @@ name|sb
 operator|.
 name|append
 argument_list|(
-literal|"{blockUCState="
+literal|"{UCState="
 argument_list|)
 operator|.
 name|append
