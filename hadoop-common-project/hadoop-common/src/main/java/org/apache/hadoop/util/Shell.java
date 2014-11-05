@@ -2002,7 +2002,7 @@ name|interval
 operator|>
 name|Time
 operator|.
-name|now
+name|monotonicNow
 argument_list|()
 condition|)
 return|return;
@@ -2561,7 +2561,7 @@ name|lastTime
 operator|=
 name|Time
 operator|.
-name|now
+name|monotonicNow
 argument_list|()
 expr_stmt|;
 block|}
