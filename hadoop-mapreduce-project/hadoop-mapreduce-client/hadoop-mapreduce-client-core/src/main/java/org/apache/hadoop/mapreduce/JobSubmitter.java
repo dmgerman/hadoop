@@ -1653,7 +1653,8 @@ operator|.
 name|toUri
 argument_list|()
 decl_stmt|;
-comment|// If the job jar is already in fs, we don't need to copy it from local fs
+comment|// If the job jar is already in a global fs,
+comment|// we don't need to copy it from local fs
 if|if
 condition|(
 name|jobJarURI
@@ -1665,45 +1666,13 @@ literal|null
 operator|||
 name|jobJarURI
 operator|.
-name|getAuthority
-argument_list|()
-operator|==
-literal|null
-operator|||
-operator|!
-operator|(
-name|jobJarURI
-operator|.
 name|getScheme
 argument_list|()
 operator|.
 name|equals
 argument_list|(
-name|jtFs
-operator|.
-name|getUri
-argument_list|()
-operator|.
-name|getScheme
-argument_list|()
+literal|"file"
 argument_list|)
-operator|&&
-name|jobJarURI
-operator|.
-name|getAuthority
-argument_list|()
-operator|.
-name|equals
-argument_list|(
-name|jtFs
-operator|.
-name|getUri
-argument_list|()
-operator|.
-name|getAuthority
-argument_list|()
-argument_list|)
-operator|)
 condition|)
 block|{
 name|copyJar
