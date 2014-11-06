@@ -2646,7 +2646,7 @@ argument_list|()
 expr_stmt|;
 block|}
 DECL|method|rename (Path src, Path dst, boolean renameSucceeded, boolean srcExists, boolean dstExists)
-specifier|private
+specifier|protected
 name|void
 name|rename
 parameter_list|(
@@ -2670,13 +2670,7 @@ name|IOException
 block|{
 name|assertEquals
 argument_list|(
-literal|"mv "
-operator|+
-name|src
-operator|+
-literal|" "
-operator|+
-name|dst
+literal|"Rename result"
 argument_list|,
 name|renameSucceeded
 argument_list|,
@@ -2692,9 +2686,7 @@ argument_list|)
 expr_stmt|;
 name|assertEquals
 argument_list|(
-literal|"Source exists: "
-operator|+
-name|src
+literal|"Source exists"
 argument_list|,
 name|srcExists
 argument_list|,

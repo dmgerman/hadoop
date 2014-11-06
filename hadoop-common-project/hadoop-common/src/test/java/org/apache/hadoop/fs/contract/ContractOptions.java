@@ -84,6 +84,13 @@ name|RENAME_RETURNS_FALSE_IF_SOURCE_MISSING
 init|=
 literal|"rename-returns-false-if-source-missing"
 decl_stmt|;
+comment|/**    * Flag to indicate that the FS remove dest first if it is an empty directory    * mean the FS honors POSIX rename behavior.    * @{value}    */
+DECL|field|RENAME_REMOVE_DEST_IF_EMPTY_DIR
+name|String
+name|RENAME_REMOVE_DEST_IF_EMPTY_DIR
+init|=
+literal|"rename-remove-dest-if-empty-dir"
+decl_stmt|;
 comment|/**    * Flag to indicate that append is supported    * @{value}    */
 DECL|field|SUPPORTS_APPEND
 name|String

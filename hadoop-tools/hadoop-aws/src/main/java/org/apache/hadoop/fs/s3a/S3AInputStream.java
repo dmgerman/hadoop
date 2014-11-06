@@ -90,6 +90,20 @@ name|hadoop
 operator|.
 name|fs
 operator|.
+name|FSExceptionMessages
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|fs
+operator|.
 name|FSInputStream
 import|;
 end_import
@@ -377,7 +391,11 @@ throw|throw
 operator|new
 name|EOFException
 argument_list|(
-literal|"Trying to seek to a negative offset "
+name|FSExceptionMessages
+operator|.
+name|NEGATIVE_SEEK
+operator|+
+literal|" "
 operator|+
 name|pos
 argument_list|)
@@ -400,17 +418,19 @@ throw|throw
 operator|new
 name|EOFException
 argument_list|(
-literal|"Trying to seek to an offset "
+name|FSExceptionMessages
+operator|.
+name|CANNOT_SEEK_PAST_EOF
+operator|+
+literal|" "
 operator|+
 name|pos
-operator|+
-literal|" past the end of the file"
 argument_list|)
 throw|;
 block|}
 name|LOG
 operator|.
-name|info
+name|debug
 argument_list|(
 literal|"Actually opening file "
 operator|+
@@ -510,6 +530,9 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
+name|checkNotClosed
+argument_list|()
+expr_stmt|;
 if|if
 condition|(
 name|this
@@ -523,7 +546,7 @@ return|return;
 block|}
 name|LOG
 operator|.
-name|info
+name|debug
 argument_list|(
 literal|"Reopening "
 operator|+
@@ -576,19 +599,9 @@ parameter_list|()
 throws|throws
 name|IOException
 block|{
-if|if
-condition|(
-name|closed
-condition|)
-block|{
-throw|throw
-operator|new
-name|IOException
-argument_list|(
-literal|"Stream closed"
-argument_list|)
-throw|;
-block|}
+name|checkNotClosed
+argument_list|()
+expr_stmt|;
 name|openIfNeeded
 argument_list|()
 expr_stmt|;
@@ -697,15 +710,15 @@ return|;
 block|}
 annotation|@
 name|Override
-DECL|method|read (byte buf[], int off, int len)
+DECL|method|read (byte[] buf, int off, int len)
 specifier|public
 specifier|synchronized
 name|int
 name|read
 parameter_list|(
 name|byte
-name|buf
 index|[]
+name|buf
 parameter_list|,
 name|int
 name|off
@@ -716,19 +729,9 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
-if|if
-condition|(
-name|closed
-condition|)
-block|{
-throw|throw
-operator|new
-name|IOException
-argument_list|(
-literal|"Stream closed"
-argument_list|)
-throw|;
-block|}
+name|checkNotClosed
+argument_list|()
+expr_stmt|;
 name|openIfNeeded
 argument_list|()
 expr_stmt|;
@@ -854,6 +857,30 @@ return|return
 name|byteRead
 return|;
 block|}
+DECL|method|checkNotClosed ()
+specifier|private
+name|void
+name|checkNotClosed
+parameter_list|()
+throws|throws
+name|IOException
+block|{
+if|if
+condition|(
+name|closed
+condition|)
+block|{
+throw|throw
+operator|new
+name|IOException
+argument_list|(
+name|FSExceptionMessages
+operator|.
+name|STREAM_IS_CLOSED
+argument_list|)
+throw|;
+block|}
+block|}
 annotation|@
 name|Override
 DECL|method|close ()
@@ -899,19 +926,9 @@ parameter_list|()
 throws|throws
 name|IOException
 block|{
-if|if
-condition|(
-name|closed
-condition|)
-block|{
-throw|throw
-operator|new
-name|IOException
-argument_list|(
-literal|"Stream closed"
-argument_list|)
-throw|;
-block|}
+name|checkNotClosed
+argument_list|()
+expr_stmt|;
 name|long
 name|remaining
 init|=

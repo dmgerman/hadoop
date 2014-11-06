@@ -550,9 +550,17 @@ name|closed
 operator|=
 literal|false
 expr_stmt|;
+if|if
+condition|(
 name|LOG
 operator|.
-name|info
+name|isDebugEnabled
+argument_list|()
+condition|)
+block|{
+name|LOG
+operator|.
+name|debug
 argument_list|(
 literal|"OutputStream for key '"
 operator|+
@@ -565,6 +573,7 @@ operator|.
 name|backupFile
 argument_list|)
 expr_stmt|;
+block|}
 name|this
 operator|.
 name|backupStream
@@ -619,9 +628,17 @@ operator|.
 name|close
 argument_list|()
 expr_stmt|;
+if|if
+condition|(
 name|LOG
 operator|.
-name|info
+name|isDebugEnabled
+argument_list|()
+condition|)
+block|{
+name|LOG
+operator|.
+name|debug
 argument_list|(
 literal|"OutputStream for key '"
 operator|+
@@ -632,7 +649,7 @@ argument_list|)
 expr_stmt|;
 name|LOG
 operator|.
-name|info
+name|debug
 argument_list|(
 literal|"Minimum upload part size: "
 operator|+
@@ -643,6 +660,7 @@ operator|+
 name|partSizeThreshold
 argument_list|)
 expr_stmt|;
+block|}
 try|try
 block|{
 name|TransferManagerConfiguration
@@ -863,8 +881,8 @@ name|LOG
 operator|.
 name|warn
 argument_list|(
-literal|"Could not delete temporary s3a file: "
-operator|+
+literal|"Could not delete temporary s3a file: {}"
+argument_list|,
 name|backupFile
 argument_list|)
 expr_stmt|;
@@ -879,9 +897,17 @@ operator|=
 literal|true
 expr_stmt|;
 block|}
+if|if
+condition|(
 name|LOG
 operator|.
-name|info
+name|isDebugEnabled
+argument_list|()
+condition|)
+block|{
+name|LOG
+operator|.
+name|debug
 argument_list|(
 literal|"OutputStream for key '"
 operator|+
@@ -890,6 +916,7 @@ operator|+
 literal|"' upload complete"
 argument_list|)
 expr_stmt|;
+block|}
 block|}
 annotation|@
 name|Override

@@ -639,32 +639,7 @@ argument_list|)
 expr_stmt|;
 comment|// 100 MB
 block|}
-annotation|@
-name|Test
-DECL|method|testExtraLargeUpload ()
-specifier|public
-name|void
-name|testExtraLargeUpload
-parameter_list|()
-throws|throws
-name|IOException
-throws|,
-name|NoSuchAlgorithmException
-block|{
-comment|// Multipart upload, multipart copy
-name|writeRenameReadCompare
-argument_list|(
-operator|new
-name|Path
-argument_list|(
-literal|"/test/xlarge"
-argument_list|)
-argument_list|,
-literal|5368709121L
-argument_list|)
-expr_stmt|;
-comment|// 5GB+1byte
-block|}
+comment|/*   Enable Multipart upload to run this test   @Test   public void testExtraLargeUpload()       throws IOException, NoSuchAlgorithmException {     // Multipart upload, multipart copy     writeRenameReadCompare(new Path("/test/xlarge"), 5368709121L); // 5GB+1byte   }   */
 block|}
 end_class
 

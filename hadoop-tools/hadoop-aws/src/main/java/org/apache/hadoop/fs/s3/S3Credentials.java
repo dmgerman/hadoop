@@ -238,7 +238,7 @@ name|accessKey
 operator|=
 name|conf
 operator|.
-name|get
+name|getTrimmed
 argument_list|(
 name|accessKeyProperty
 argument_list|)
@@ -255,7 +255,7 @@ name|secretAccessKey
 operator|=
 name|conf
 operator|.
-name|get
+name|getTrimmed
 argument_list|(
 name|secretAccessKeyProperty
 argument_list|)

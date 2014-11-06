@@ -614,6 +614,87 @@ literal|true
 argument_list|)
 expr_stmt|;
 block|}
+annotation|@
+name|Test
+DECL|method|testMkdirSlashHandling ()
+specifier|public
+name|void
+name|testMkdirSlashHandling
+parameter_list|()
+throws|throws
+name|Throwable
+block|{
+name|describe
+argument_list|(
+literal|"verify mkdir slash handling"
+argument_list|)
+expr_stmt|;
+name|FileSystem
+name|fs
+init|=
+name|getFileSystem
+argument_list|()
+decl_stmt|;
+comment|// No trailing slash
+name|assertTrue
+argument_list|(
+name|fs
+operator|.
+name|mkdirs
+argument_list|(
+name|path
+argument_list|(
+literal|"testmkdir/a"
+argument_list|)
+argument_list|)
+argument_list|)
+expr_stmt|;
+name|assertPathExists
+argument_list|(
+literal|"mkdir without trailing slash failed"
+argument_list|,
+name|path
+argument_list|(
+literal|"testmkdir/a"
+argument_list|)
+argument_list|)
+expr_stmt|;
+comment|// With trailing slash
+name|assertTrue
+argument_list|(
+name|fs
+operator|.
+name|mkdirs
+argument_list|(
+name|path
+argument_list|(
+literal|"testmkdir/b/"
+argument_list|)
+argument_list|)
+argument_list|)
+expr_stmt|;
+name|assertPathExists
+argument_list|(
+literal|"mkdir with trailing slash failed"
+argument_list|,
+name|path
+argument_list|(
+literal|"testmkdir/b/"
+argument_list|)
+argument_list|)
+expr_stmt|;
+comment|// Mismatched slashes
+name|assertPathExists
+argument_list|(
+literal|"check path existence without trailing slash failed"
+argument_list|,
+name|path
+argument_list|(
+literal|"testmkdir/b"
+argument_list|)
+argument_list|)
+expr_stmt|;
+block|}
 block|}
 end_class
 
