@@ -66,26 +66,8 @@ name|ServiceRecord
 import|;
 end_import
 
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|registry
-operator|.
-name|client
-operator|.
-name|types
-operator|.
-name|ServiceRecordHeader
-import|;
-end_import
-
 begin_comment
-comment|/**  * Raised if there is no {@link ServiceRecord} resolved at the end  * of the specified path, for reasons such as:  *<ul>  *<li>There wasn't enough data to contain a Service Record.</li>  *<li>The start of the data did not match the {@link ServiceRecordHeader}  *   header.</li>  *</ul>  *  * There may be valid data of some form at the end of the path, but it does  * not appear to be a Service Record.  */
+comment|/**  * Raised if there is no {@link ServiceRecord} resolved at the end  * of the specified path.  *<p>  * There may be valid data of some form at the end of the path, but it does  * not appear to be a Service Record.  */
 end_comment
 
 begin_class

@@ -73,19 +73,12 @@ name|PROTOCOL_FILESYSTEM
 init|=
 literal|"hadoop/filesystem"
 decl_stmt|;
-comment|/**    * Classic Hadoop IPC : {@value}.    */
+comment|/**    * Hadoop IPC,  "classic" or protobuf : {@value}.    */
 DECL|field|PROTOCOL_HADOOP_IPC
 name|String
 name|PROTOCOL_HADOOP_IPC
 init|=
 literal|"hadoop/IPC"
-decl_stmt|;
-comment|/**    * Hadoop protocol buffers IPC: {@value}.    */
-DECL|field|PROTOCOL_HADOOP_IPC_PROTOBUF
-name|String
-name|PROTOCOL_HADOOP_IPC_PROTOBUF
-init|=
-literal|"hadoop/protobuf"
 decl_stmt|;
 comment|/**    * Corba IIOP: {@value}.    */
 DECL|field|PROTOCOL_IIOP

@@ -268,24 +268,6 @@ begin_import
 import|import
 name|org
 operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|registry
-operator|.
-name|client
-operator|.
-name|types
-operator|.
-name|ServiceRecordHeader
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
 name|slf4j
 operator|.
 name|Logger
@@ -1115,9 +1097,11 @@ name|stat
 operator|.
 name|size
 operator|>
-name|ServiceRecordHeader
+name|ServiceRecord
 operator|.
-name|getLength
+name|RECORD_TYPE
+operator|.
+name|length
 argument_list|()
 condition|)
 block|{
@@ -1237,7 +1221,7 @@ return|return
 name|results
 return|;
 block|}
-comment|/**    * Extract all service records under a list of stat operations...this    * non-atomic action skips entries that are too short or simply not matching.    *<p>    * @param operations operation support for fetches    * @param parentpath path of the parent of all the entries    * @param stats a map of name:value mappings.    * @return a possibly empty map of fullpath:record.    * @throws IOException for any IO Operation that wasn't ignored.    */
+comment|/**    * Extract all service records under a list of stat operations...this    * non-atomic action skips entries that are too short or simply not matching.    *<p>    * @param operations operation support for fetches    * @param parentpath path of the parent of all the entries    * @return a possibly empty map of fullpath:record.    * @throws IOException for any IO Operation that wasn't ignored.    */
 DECL|method|extractServiceRecords ( RegistryOperations operations, String parentpath, Map<String , RegistryPathStatus> stats)
 specifier|public
 specifier|static
@@ -1280,7 +1264,7 @@ argument_list|()
 argument_list|)
 return|;
 block|}
-comment|/**    * Extract all service records under a list of stat operations...this    * non-atomic action skips entries that are too short or simply not matching.    *<p>    * @param operations operation support for fetches    * @param parentpath path of the parent of all the entries    * @param stats a map of name:value mappings.    * @return a possibly empty map of fullpath:record.    * @throws IOException for any IO Operation that wasn't ignored.    */
+comment|/**    * Extract all service records under a list of stat operations...this    * non-atomic action skips entries that are too short or simply not matching.    *<p>    * @param operations operation support for fetches    * @param parentpath path of the parent of all the entries    * @return a possibly empty map of fullpath:record.    * @throws IOException for any IO Operation that wasn't ignored.    */
 DECL|method|extractServiceRecords ( RegistryOperations operations, String parentpath)
 specifier|public
 specifier|static
@@ -1342,11 +1326,6 @@ argument_list|(
 name|ServiceRecord
 operator|.
 name|class
-argument_list|,
-name|ServiceRecordHeader
-operator|.
-name|getData
-argument_list|()
 argument_list|)
 expr_stmt|;
 block|}

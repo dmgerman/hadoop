@@ -76,6 +76,24 @@ name|ADDRESS_HOSTNAME_AND_PORT
 init|=
 literal|"host/port"
 decl_stmt|;
+DECL|field|ADDRESS_HOSTNAME_FIELD
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|ADDRESS_HOSTNAME_FIELD
+init|=
+literal|"host"
+decl_stmt|;
+DECL|field|ADDRESS_PORT_FIELD
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|ADDRESS_PORT_FIELD
+init|=
+literal|"port"
+decl_stmt|;
 comment|/**    * Path<code>/a/b/c</code> style: {@value}.    * The entire path is encoded in a single entry    *    *<pre>    *   ["/users/example/dataset"]    *</pre>    */
 DECL|field|ADDRESS_PATH
 specifier|public

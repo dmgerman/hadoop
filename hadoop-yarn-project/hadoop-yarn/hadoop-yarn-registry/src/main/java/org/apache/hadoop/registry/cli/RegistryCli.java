@@ -90,6 +90,16 @@ end_import
 
 begin_import
 import|import
+name|java
+operator|.
+name|util
+operator|.
+name|Map
+import|;
+end_import
+
+begin_import
+import|import
 name|com
 operator|.
 name|google
@@ -1241,60 +1251,9 @@ operator|.
 name|external
 control|)
 block|{
-if|if
-condition|(
-operator|(
-name|endpoint
-operator|.
-name|protocolType
-operator|.
-name|equals
-argument_list|(
-name|ProtocolTypes
-operator|.
-name|PROTOCOL_WEBUI
-argument_list|)
-operator|)
-operator|||
-operator|(
-name|endpoint
-operator|.
-name|protocolType
-operator|.
-name|equals
-argument_list|(
-name|ProtocolTypes
-operator|.
-name|PROTOCOL_REST
-argument_list|)
-operator|)
-condition|)
-block|{
 name|sysout
 operator|.
-name|print
-argument_list|(
-literal|" Endpoint(ProtocolType="
-operator|+
-name|endpoint
-operator|.
-name|protocolType
-operator|+
-literal|", Api="
-operator|+
-name|endpoint
-operator|.
-name|api
-operator|+
-literal|"); Uris are: "
-argument_list|)
-expr_stmt|;
-block|}
-else|else
-block|{
-name|sysout
-operator|.
-name|print
+name|println
 argument_list|(
 literal|" Endpoint(ProtocolType="
 operator|+
@@ -1319,14 +1278,15 @@ operator|+
 literal|") are: "
 argument_list|)
 expr_stmt|;
-block|}
 for|for
 control|(
-name|List
+name|Map
 argument_list|<
 name|String
+argument_list|,
+name|String
 argument_list|>
-name|a
+name|address
 range|:
 name|endpoint
 operator|.
@@ -1335,11 +1295,56 @@ control|)
 block|{
 name|sysout
 operator|.
-name|print
+name|println
 argument_list|(
-name|a
+literal|"  [ "
+argument_list|)
+expr_stmt|;
+for|for
+control|(
+name|Map
+operator|.
+name|Entry
+argument_list|<
+name|String
+argument_list|,
+name|String
+argument_list|>
+name|entry
+range|:
+name|address
+operator|.
+name|entrySet
+argument_list|()
+control|)
+block|{
+name|sysout
+operator|.
+name|println
+argument_list|(
+literal|"    "
 operator|+
-literal|" "
+name|entry
+operator|.
+name|getKey
+argument_list|()
+operator|+
+literal|": \""
+operator|+
+name|entry
+operator|.
+name|getValue
+argument_list|()
+operator|+
+literal|"\""
+argument_list|)
+expr_stmt|;
+block|}
+name|sysout
+operator|.
+name|println
+argument_list|(
+literal|"  ]"
 argument_list|)
 expr_stmt|;
 block|}

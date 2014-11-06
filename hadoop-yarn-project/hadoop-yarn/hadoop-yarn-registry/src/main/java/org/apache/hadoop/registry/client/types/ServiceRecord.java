@@ -66,6 +66,24 @@ begin_import
 import|import
 name|org
 operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|registry
+operator|.
+name|client
+operator|.
+name|exceptions
+operator|.
+name|InvalidRecordException
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
 name|codehaus
 operator|.
 name|jackson
@@ -177,6 +195,24 @@ name|ServiceRecord
 implements|implements
 name|Cloneable
 block|{
+comment|/**    * A type string which MUST be in the serialized json. This permits    * fast discarding of invalid entries    */
+DECL|field|RECORD_TYPE
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|RECORD_TYPE
+init|=
+literal|"JSONServiceRecord"
+decl_stmt|;
+comment|/**    * The type field. This must be the string {@link #RECORD_TYPE}    */
+DECL|field|type
+specifier|public
+name|String
+name|type
+init|=
+name|RECORD_TYPE
+decl_stmt|;
 comment|/**    * Description string    */
 DECL|field|description
 specifier|public
@@ -880,37 +916,6 @@ operator|.
 name|clone
 argument_list|()
 return|;
-block|}
-comment|/**    * Validate the record by checking for null fields and other invalid    * conditions    * @throws NullPointerException if a field is null when it    * MUST be set.    * @throws RuntimeException on invalid entries    */
-DECL|method|validate ()
-specifier|public
-name|void
-name|validate
-parameter_list|()
-block|{
-for|for
-control|(
-name|Endpoint
-name|endpoint
-range|:
-name|external
-control|)
-block|{
-name|Preconditions
-operator|.
-name|checkNotNull
-argument_list|(
-literal|"null endpoint"
-argument_list|,
-name|endpoint
-argument_list|)
-expr_stmt|;
-name|endpoint
-operator|.
-name|validate
-argument_list|()
-expr_stmt|;
-block|}
 block|}
 block|}
 end_class
