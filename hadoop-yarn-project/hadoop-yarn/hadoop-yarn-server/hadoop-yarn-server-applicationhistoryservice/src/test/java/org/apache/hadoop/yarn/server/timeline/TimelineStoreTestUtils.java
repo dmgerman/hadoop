@@ -7618,6 +7618,29 @@ literal|1
 argument_list|)
 argument_list|)
 expr_stmt|;
+comment|// owner without any domain
+name|actualDomains
+operator|=
+name|store
+operator|.
+name|getDomains
+argument_list|(
+literal|"owner_4"
+argument_list|)
+expr_stmt|;
+name|assertEquals
+argument_list|(
+literal|0
+argument_list|,
+name|actualDomains
+operator|.
+name|getDomains
+argument_list|()
+operator|.
+name|size
+argument_list|()
+argument_list|)
+expr_stmt|;
 block|}
 DECL|method|verifyDomainInfo ( TimelineDomain expected, TimelineDomain actual)
 specifier|private
