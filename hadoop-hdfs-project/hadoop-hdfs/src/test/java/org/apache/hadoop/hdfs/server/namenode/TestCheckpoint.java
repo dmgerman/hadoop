@@ -4518,7 +4518,7 @@ literal|null
 expr_stmt|;
 block|}
 block|}
-comment|/**    * Test that, an attempt to lock a storage that is already locked by a nodename,    * logs error message that includes JVM name of the namenode that locked it.    */
+comment|/**    * Test that, an attempt to lock a storage that is already locked by nodename,    * logs error message that includes JVM name of the namenode that locked it.    */
 annotation|@
 name|Test
 DECL|method|testStorageAlreadyLockedErrorMessage ()
@@ -4632,7 +4632,9 @@ argument_list|()
 expr_stmt|;
 name|fail
 argument_list|(
-literal|"Namenode should not be able to lock a storage that is already locked"
+literal|"Namenode should not be able to lock a storage"
+operator|+
+literal|" that is already locked"
 argument_list|)
 expr_stmt|;
 block|}
@@ -4665,7 +4667,7 @@ decl_stmt|;
 name|String
 name|expectedLogMessage
 init|=
-literal|"It appears that another namenode"
+literal|"It appears that another node "
 operator|+
 name|lockingJvmName
 operator|+
