@@ -3736,6 +3736,8 @@ name|createPermissionsDiagnosisString
 argument_list|(
 name|data_dir
 argument_list|)
+argument_list|,
+name|ioe
 argument_list|)
 expr_stmt|;
 throw|throw
