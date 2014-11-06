@@ -888,6 +888,21 @@ name|expectedPolicyStrings
 operator|.
 name|put
 argument_list|(
+name|EC
+argument_list|,
+literal|"BlockStoragePolicy{EC:"
+operator|+
+name|EC
+operator|+
+literal|", storageTypes=[DISK], "
+operator|+
+literal|"creationFallbacks=[], replicationFallbacks=[ARCHIVE]}"
+argument_list|)
+expr_stmt|;
+name|expectedPolicyStrings
+operator|.
+name|put
+argument_list|(
 name|WARM
 argument_list|,
 literal|"BlockStoragePolicy{WARM:"
