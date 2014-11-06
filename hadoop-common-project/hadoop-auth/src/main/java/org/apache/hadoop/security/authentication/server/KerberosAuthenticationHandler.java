@@ -1418,8 +1418,6 @@ name|response
 operator|.
 name|setHeader
 argument_list|(
-name|KerberosAuthenticator
-operator|.
 name|WWW_AUTHENTICATE
 argument_list|,
 name|KerberosAuthenticator

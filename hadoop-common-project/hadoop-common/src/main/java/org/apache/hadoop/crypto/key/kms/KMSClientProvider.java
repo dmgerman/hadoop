@@ -718,6 +718,15 @@ name|KeyProviderDelegationTokenExtension
 operator|.
 name|DelegationTokenExtension
 block|{
+DECL|field|INVALID_SIGNATURE
+specifier|private
+specifier|static
+specifier|final
+name|String
+name|INVALID_SIGNATURE
+init|=
+literal|"Invalid signature"
+decl_stmt|;
 DECL|field|ANONYMOUS_REQUESTS_DISALLOWED
 specifier|private
 specifier|static
@@ -2779,6 +2788,7 @@ name|HttpURLConnection
 operator|.
 name|HTTP_FORBIDDEN
 operator|&&
+operator|(
 name|conn
 operator|.
 name|getResponseMessage
@@ -2788,6 +2798,17 @@ name|equals
 argument_list|(
 name|ANONYMOUS_REQUESTS_DISALLOWED
 argument_list|)
+operator|||
+name|conn
+operator|.
+name|getResponseMessage
+argument_list|()
+operator|.
+name|contains
+argument_list|(
+name|INVALID_SIGNATURE
+argument_list|)
+operator|)
 operator|)
 operator|||
 name|conn

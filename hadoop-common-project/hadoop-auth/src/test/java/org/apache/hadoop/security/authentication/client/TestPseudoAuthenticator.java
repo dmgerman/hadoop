@@ -348,7 +348,7 @@ name|assertEquals
 argument_list|(
 name|HttpURLConnection
 operator|.
-name|HTTP_FORBIDDEN
+name|HTTP_UNAUTHORIZED
 argument_list|,
 name|conn
 operator|.
@@ -358,9 +358,24 @@ argument_list|)
 expr_stmt|;
 name|Assert
 operator|.
+name|assertTrue
+argument_list|(
+name|conn
+operator|.
+name|getHeaderFields
+argument_list|()
+operator|.
+name|containsKey
+argument_list|(
+literal|"WWW-Authenticate"
+argument_list|)
+argument_list|)
+expr_stmt|;
+name|Assert
+operator|.
 name|assertEquals
 argument_list|(
-literal|"Anonymous requests are disallowed"
+literal|"Authentication required"
 argument_list|,
 name|conn
 operator|.

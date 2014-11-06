@@ -102,6 +102,15 @@ specifier|public
 interface|interface
 name|AuthenticationHandler
 block|{
+DECL|field|WWW_AUTHENTICATE
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|WWW_AUTHENTICATE
+init|=
+literal|"WWW-Authenticate"
+decl_stmt|;
 comment|/**    * Returns the authentication type of the authentication handler.    *<p/>    * This should be a name that uniquely identifies the authentication type.    * For example 'simple' or 'kerberos'.    *    * @return the authentication type of the authentication handler.    */
 DECL|method|getType ()
 specifier|public
