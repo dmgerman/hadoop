@@ -309,6 +309,9 @@ argument_list|(
 literal|1L
 argument_list|)
 argument_list|,
+operator|(
+name|short
+operator|)
 literal|1
 argument_list|)
 decl_stmt|;
@@ -324,6 +327,9 @@ argument_list|(
 literal|2L
 argument_list|)
 argument_list|,
+operator|(
+name|short
+operator|)
 literal|2
 argument_list|)
 decl_stmt|;

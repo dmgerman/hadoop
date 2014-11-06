@@ -145,11 +145,11 @@ index|[]
 name|triplets
 decl_stmt|;
 comment|/**    * Construct an entry for blocksmap    * @param replication the block's replication factor    */
-DECL|method|BlockInfo (int replication)
+DECL|method|BlockInfo (short replication)
 specifier|public
 name|BlockInfo
 parameter_list|(
-name|int
+name|short
 name|replication
 parameter_list|)
 block|{
@@ -172,14 +172,14 @@ operator|=
 literal|null
 expr_stmt|;
 block|}
-DECL|method|BlockInfo (Block blk, int replication)
+DECL|method|BlockInfo (Block blk, short replication)
 specifier|public
 name|BlockInfo
 parameter_list|(
 name|Block
 name|blk
 parameter_list|,
-name|int
+name|short
 name|replication
 parameter_list|)
 block|{

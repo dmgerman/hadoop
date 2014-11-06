@@ -2320,6 +2320,9 @@ name|BlockInfo
 argument_list|(
 name|block
 argument_list|,
+operator|(
+name|short
+operator|)
 literal|3
 argument_list|)
 decl_stmt|;

@@ -430,14 +430,14 @@ expr_stmt|;
 block|}
 block|}
 comment|/**    * Create block and set its state to    * {@link BlockUCState#UNDER_CONSTRUCTION}.    */
-DECL|method|BlockInfoUnderConstruction (Block blk, int replication)
+DECL|method|BlockInfoUnderConstruction (Block blk, short replication)
 specifier|public
 name|BlockInfoUnderConstruction
 parameter_list|(
 name|Block
 name|blk
 parameter_list|,
-name|int
+name|short
 name|replication
 parameter_list|)
 block|{
@@ -456,14 +456,14 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|/**    * Create a block that is currently being constructed.    */
-DECL|method|BlockInfoUnderConstruction (Block blk, int replication, BlockUCState state, DatanodeStorageInfo[] targets)
+DECL|method|BlockInfoUnderConstruction (Block blk, short replication, BlockUCState state, DatanodeStorageInfo[] targets)
 specifier|public
 name|BlockInfoUnderConstruction
 parameter_list|(
 name|Block
 name|blk
 parameter_list|,
-name|int
+name|short
 name|replication
 parameter_list|,
 name|BlockUCState

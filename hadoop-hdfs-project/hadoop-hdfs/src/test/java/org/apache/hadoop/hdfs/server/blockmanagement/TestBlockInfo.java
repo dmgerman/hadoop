@@ -242,6 +242,9 @@ init|=
 operator|new
 name|BlockInfo
 argument_list|(
+operator|(
+name|short
+operator|)
 literal|3
 argument_list|)
 decl_stmt|;
@@ -373,6 +376,9 @@ operator|=
 operator|new
 name|BlockInfo
 argument_list|(
+operator|(
+name|short
+operator|)
 literal|3
 argument_list|)
 expr_stmt|;
@@ -560,6 +566,9 @@ argument_list|(
 name|i
 argument_list|)
 argument_list|,
+operator|(
+name|short
+operator|)
 literal|3
 argument_list|)
 argument_list|)

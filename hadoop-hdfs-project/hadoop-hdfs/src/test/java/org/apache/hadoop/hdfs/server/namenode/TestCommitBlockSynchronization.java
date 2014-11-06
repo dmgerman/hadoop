@@ -378,6 +378,9 @@ name|BlockInfoUnderConstruction
 argument_list|(
 name|block
 argument_list|,
+operator|(
+name|short
+operator|)
 literal|1
 argument_list|,
 name|HdfsServerConstants
@@ -636,6 +639,9 @@ name|BlockInfo
 argument_list|(
 name|block
 argument_list|,
+operator|(
+name|short
+operator|)
 literal|1
 argument_list|)
 decl_stmt|;
@@ -1031,6 +1037,9 @@ name|BlockInfo
 argument_list|(
 name|block
 argument_list|,
+operator|(
+name|short
+operator|)
 literal|1
 argument_list|)
 decl_stmt|;

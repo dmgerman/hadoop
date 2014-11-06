@@ -7456,6 +7456,9 @@ name|BlockInfoUnderConstruction
 argument_list|(
 name|block1
 argument_list|,
+operator|(
+name|short
+operator|)
 literal|1
 argument_list|)
 decl_stmt|;
@@ -7714,6 +7717,9 @@ name|BlockInfo
 argument_list|(
 name|block1
 argument_list|,
+operator|(
+name|short
+operator|)
 literal|1
 argument_list|)
 decl_stmt|;

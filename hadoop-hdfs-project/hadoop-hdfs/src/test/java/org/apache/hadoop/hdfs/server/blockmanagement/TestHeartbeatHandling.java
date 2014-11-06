@@ -1348,6 +1348,9 @@ operator|.
 name|LAST_RESERVED_STAMP
 argument_list|)
 argument_list|,
+operator|(
+name|short
+operator|)
 literal|3
 argument_list|,
 name|BlockUCState
@@ -1548,6 +1551,9 @@ operator|.
 name|LAST_RESERVED_STAMP
 argument_list|)
 argument_list|,
+operator|(
+name|short
+operator|)
 literal|3
 argument_list|,
 name|BlockUCState
@@ -1742,6 +1748,9 @@ operator|.
 name|LAST_RESERVED_STAMP
 argument_list|)
 argument_list|,
+operator|(
+name|short
+operator|)
 literal|3
 argument_list|,
 name|BlockUCState
