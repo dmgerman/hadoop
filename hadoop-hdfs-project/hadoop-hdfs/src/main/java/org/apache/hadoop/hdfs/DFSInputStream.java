@@ -276,20 +276,6 @@ end_import
 
 begin_import
 import|import
-name|java
-operator|.
-name|util
-operator|.
-name|concurrent
-operator|.
-name|atomic
-operator|.
-name|AtomicLong
-import|;
-end_import
-
-begin_import
-import|import
 name|org
 operator|.
 name|apache
@@ -1239,13 +1225,6 @@ name|DatanodeInfo
 argument_list|>
 argument_list|()
 decl_stmt|;
-DECL|field|buffersize
-specifier|private
-name|int
-name|buffersize
-init|=
-literal|1
-decl_stmt|;
 DECL|field|oneByteBuf
 specifier|private
 specifier|final
@@ -1278,7 +1257,7 @@ name|dnInfo
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|DFSInputStream (DFSClient dfsClient, String src, int buffersize, boolean verifyChecksum )
+DECL|method|DFSInputStream (DFSClient dfsClient, String src, boolean verifyChecksum )
 name|DFSInputStream
 parameter_list|(
 name|DFSClient
@@ -1286,9 +1265,6 @@ name|dfsClient
 parameter_list|,
 name|String
 name|src
-parameter_list|,
-name|int
-name|buffersize
 parameter_list|,
 name|boolean
 name|verifyChecksum
@@ -1309,12 +1285,6 @@ operator|.
 name|verifyChecksum
 operator|=
 name|verifyChecksum
-expr_stmt|;
-name|this
-operator|.
-name|buffersize
-operator|=
-name|buffersize
 expr_stmt|;
 name|this
 operator|.

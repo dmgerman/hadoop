@@ -8418,8 +8418,6 @@ name|this
 argument_list|,
 name|src
 argument_list|,
-name|buffersize
-argument_list|,
 name|verifyChecksum
 argument_list|)
 return|;
