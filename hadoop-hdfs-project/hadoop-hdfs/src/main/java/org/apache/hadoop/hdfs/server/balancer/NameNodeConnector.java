@@ -136,6 +136,20 @@ end_import
 
 begin_import
 import|import
+name|java
+operator|.
+name|util
+operator|.
+name|concurrent
+operator|.
+name|atomic
+operator|.
+name|AtomicLong
+import|;
+end_import
+
+begin_import
+import|import
 name|org
 operator|.
 name|apache
@@ -797,6 +811,16 @@ name|Path
 argument_list|>
 name|targetPaths
 decl_stmt|;
+DECL|field|bytesMoved
+specifier|private
+specifier|final
+name|AtomicLong
+name|bytesMoved
+init|=
+operator|new
+name|AtomicLong
+argument_list|()
+decl_stmt|;
 DECL|field|notChangedIterations
 specifier|private
 name|int
@@ -1023,6 +1047,15 @@ parameter_list|()
 block|{
 return|return
 name|blockpoolID
+return|;
+block|}
+DECL|method|getBytesMoved ()
+name|AtomicLong
+name|getBytesMoved
+parameter_list|()
+block|{
+return|return
+name|bytesMoved
 return|;
 block|}
 comment|/** @return blocks with locations. */
