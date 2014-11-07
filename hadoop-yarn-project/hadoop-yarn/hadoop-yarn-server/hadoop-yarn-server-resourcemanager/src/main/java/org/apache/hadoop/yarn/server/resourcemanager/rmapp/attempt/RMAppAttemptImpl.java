@@ -5547,6 +5547,28 @@ name|rmApp
 argument_list|)
 condition|)
 block|{
+comment|// Add the previous finished attempt to scheduler synchronously so
+comment|// that scheduler knows the previous attempt.
+name|appAttempt
+operator|.
+name|scheduler
+operator|.
+name|handle
+argument_list|(
+operator|new
+name|AppAttemptAddedSchedulerEvent
+argument_list|(
+name|appAttempt
+operator|.
+name|getAppAttemptId
+argument_list|()
+argument_list|,
+literal|false
+argument_list|,
+literal|true
+argument_list|)
+argument_list|)
+expr_stmt|;
 operator|(
 operator|new
 name|BaseFinalTransition
