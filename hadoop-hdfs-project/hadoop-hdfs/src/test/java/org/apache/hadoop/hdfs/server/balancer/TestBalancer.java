@@ -7324,7 +7324,7 @@ name|createFile
 argument_list|(
 name|fs
 argument_list|,
-name|path1
+name|path2
 argument_list|,
 literal|true
 argument_list|,
