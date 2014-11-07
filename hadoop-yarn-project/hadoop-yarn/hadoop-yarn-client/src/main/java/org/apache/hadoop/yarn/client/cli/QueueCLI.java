@@ -329,21 +329,6 @@ operator|new
 name|Options
 argument_list|()
 decl_stmt|;
-name|int
-name|exitCode
-init|=
-operator|-
-literal|1
-decl_stmt|;
-if|if
-condition|(
-name|args
-operator|.
-name|length
-operator|>
-literal|0
-condition|)
-block|{
 name|opts
 operator|.
 name|addOption
@@ -378,20 +363,6 @@ argument_list|(
 literal|"Queue Name"
 argument_list|)
 expr_stmt|;
-block|}
-else|else
-block|{
-name|syserr
-operator|.
-name|println
-argument_list|(
-literal|"Invalid Command usage. Command must start with 'queue'"
-argument_list|)
-expr_stmt|;
-return|return
-name|exitCode
-return|;
-block|}
 name|CommandLine
 name|cliParser
 init|=
@@ -432,7 +403,8 @@ name|opts
 argument_list|)
 expr_stmt|;
 return|return
-name|exitCode
+operator|-
+literal|1
 return|;
 block|}
 if|if
@@ -451,7 +423,7 @@ name|args
 operator|.
 name|length
 operator|!=
-literal|3
+literal|2
 condition|)
 block|{
 name|printUsage
@@ -460,9 +432,11 @@ name|opts
 argument_list|)
 expr_stmt|;
 return|return
-name|exitCode
+operator|-
+literal|1
 return|;
 block|}
+return|return
 name|listQueue
 argument_list|(
 name|cliParser
@@ -472,7 +446,7 @@ argument_list|(
 name|STATUS_CMD
 argument_list|)
 argument_list|)
-expr_stmt|;
+return|;
 block|}
 elseif|else
 if|if
@@ -508,10 +482,11 @@ argument_list|(
 name|opts
 argument_list|)
 expr_stmt|;
-block|}
 return|return
-literal|0
+operator|-
+literal|1
 return|;
+block|}
 block|}
 comment|/**    * It prints the usage of the command    *     * @param opts    */
 annotation|@
@@ -539,7 +514,7 @@ block|}
 comment|/**    * Lists the Queue Information matching the given queue name    *     * @param queueName    * @throws YarnException    * @throws IOException    */
 DECL|method|listQueue (String queueName)
 specifier|private
-name|void
+name|int
 name|listQueue
 parameter_list|(
 name|String
@@ -550,6 +525,9 @@ name|YarnException
 throws|,
 name|IOException
 block|{
+name|int
+name|rc
+decl_stmt|;
 name|PrintWriter
 name|writer
 init|=
@@ -569,6 +547,13 @@ argument_list|(
 name|queueName
 argument_list|)
 decl_stmt|;
+if|if
+condition|(
+name|queueInfo
+operator|!=
+literal|null
+condition|)
+block|{
 name|writer
 operator|.
 name|println
@@ -583,11 +568,38 @@ argument_list|,
 name|queueInfo
 argument_list|)
 expr_stmt|;
+name|rc
+operator|=
+literal|0
+expr_stmt|;
+block|}
+else|else
+block|{
+name|writer
+operator|.
+name|println
+argument_list|(
+literal|"Cannot get queue from RM by queueName = "
+operator|+
+name|queueName
+operator|+
+literal|", please check."
+argument_list|)
+expr_stmt|;
+name|rc
+operator|=
+operator|-
+literal|1
+expr_stmt|;
+block|}
 name|writer
 operator|.
 name|flush
 argument_list|()
 expr_stmt|;
+return|return
+name|rc
+return|;
 block|}
 DECL|method|printQueueInfo (PrintWriter writer, QueueInfo queueInfo)
 specifier|private
