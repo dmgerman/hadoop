@@ -215,6 +215,14 @@ literal|"bar_group"
 block|}
 argument_list|)
 decl_stmt|;
+DECL|field|ipAddress
+specifier|private
+specifier|final
+name|String
+name|ipAddress
+init|=
+literal|"127.0.0.1"
+decl_stmt|;
 annotation|@
 name|Parameterized
 operator|.
@@ -289,7 +297,7 @@ name|set
 argument_list|(
 literal|"hadoop.proxyuser.foo.hosts"
 argument_list|,
-literal|"localhost"
+name|ipAddress
 argument_list|)
 expr_stmt|;
 name|conf
@@ -321,7 +329,7 @@ name|set
 argument_list|(
 literal|"yarn.resourcemanager.proxyuser.foo.hosts"
 argument_list|,
-literal|"localhost"
+name|ipAddress
 argument_list|)
 expr_stmt|;
 name|conf
@@ -381,7 +389,7 @@ name|set
 argument_list|(
 literal|"yarn.resourcemanager.proxyuser.foo.hosts"
 argument_list|,
-literal|"localhost"
+name|ipAddress
 argument_list|)
 expr_stmt|;
 name|conf
@@ -471,7 +479,7 @@ name|authorize
 argument_list|(
 name|proxyUser
 argument_list|,
-literal|"localhost"
+name|ipAddress
 argument_list|)
 expr_stmt|;
 block|}
