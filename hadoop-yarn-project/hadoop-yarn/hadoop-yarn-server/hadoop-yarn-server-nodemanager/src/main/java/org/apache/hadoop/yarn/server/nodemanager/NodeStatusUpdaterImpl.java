@@ -746,9 +746,7 @@ name|nodemanager
 operator|.
 name|containermanager
 operator|.
-name|application
-operator|.
-name|ApplicationState
+name|ContainerManagerImpl
 import|;
 end_import
 
@@ -768,7 +766,9 @@ name|nodemanager
 operator|.
 name|containermanager
 operator|.
-name|ContainerManagerImpl
+name|application
+operator|.
+name|ApplicationState
 import|;
 end_import
 
@@ -1036,6 +1036,20 @@ init|=
 name|ResourceManagerConstants
 operator|.
 name|RM_INVALID_IDENTIFIER
+decl_stmt|;
+DECL|field|pendingContainersToRemove
+name|Set
+argument_list|<
+name|ContainerId
+argument_list|>
+name|pendingContainersToRemove
+init|=
+operator|new
+name|HashSet
+argument_list|<
+name|ContainerId
+argument_list|>
+argument_list|()
 decl_stmt|;
 DECL|method|NodeStatusUpdaterImpl (Context context, Dispatcher dispatcher, NodeHealthCheckerService healthChecker, NodeManagerMetrics metrics)
 specifier|public
@@ -2716,10 +2730,10 @@ annotation|@
 name|VisibleForTesting
 annotation|@
 name|Private
-DECL|method|removeCompletedContainersFromContext ( List<ContainerId> containerIds)
+DECL|method|removeOrTrackCompletedContainersFromContext ( List<ContainerId> containerIds)
 specifier|public
 name|void
-name|removeCompletedContainersFromContext
+name|removeOrTrackCompletedContainersFromContext
 parameter_list|(
 name|List
 argument_list|<
@@ -2743,14 +2757,88 @@ name|ContainerId
 argument_list|>
 argument_list|()
 decl_stmt|;
-comment|// If the AM has pulled the completedContainer it can be removed
-for|for
-control|(
+name|pendingContainersToRemove
+operator|.
+name|addAll
+argument_list|(
+name|containerIds
+argument_list|)
+expr_stmt|;
+name|Iterator
+argument_list|<
+name|ContainerId
+argument_list|>
+name|iter
+init|=
+name|pendingContainersToRemove
+operator|.
+name|iterator
+argument_list|()
+decl_stmt|;
+while|while
+condition|(
+name|iter
+operator|.
+name|hasNext
+argument_list|()
+condition|)
+block|{
 name|ContainerId
 name|containerId
-range|:
-name|containerIds
-control|)
+init|=
+name|iter
+operator|.
+name|next
+argument_list|()
+decl_stmt|;
+comment|// remove the container only if the container is at DONE state
+name|Container
+name|nmContainer
+init|=
+name|context
+operator|.
+name|getContainers
+argument_list|()
+operator|.
+name|get
+argument_list|(
+name|containerId
+argument_list|)
+decl_stmt|;
+if|if
+condition|(
+name|nmContainer
+operator|!=
+literal|null
+operator|&&
+name|nmContainer
+operator|.
+name|getContainerState
+argument_list|()
+operator|.
+name|equals
+argument_list|(
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|server
+operator|.
+name|nodemanager
+operator|.
+name|containermanager
+operator|.
+name|container
+operator|.
+name|ContainerState
+operator|.
+name|DONE
+argument_list|)
+condition|)
 block|{
 name|context
 operator|.
@@ -2769,6 +2857,12 @@ argument_list|(
 name|containerId
 argument_list|)
 expr_stmt|;
+name|iter
+operator|.
+name|remove
+argument_list|()
+expr_stmt|;
+block|}
 block|}
 if|if
 condition|(
@@ -3460,7 +3554,7 @@ comment|// don't want to remove the completed containers before resync
 comment|// because these completed containers will be reported back to RM
 comment|// when NM re-registers with RM.
 comment|// Only remove the cleanedup containers that are acked
-name|removeCompletedContainersFromContext
+name|removeOrTrackCompletedContainersFromContext
 argument_list|(
 name|response
 operator|.
