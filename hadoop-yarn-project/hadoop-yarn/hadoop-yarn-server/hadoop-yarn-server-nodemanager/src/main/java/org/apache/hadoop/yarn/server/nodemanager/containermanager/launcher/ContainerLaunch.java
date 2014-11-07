@@ -840,6 +840,24 @@ name|server
 operator|.
 name|nodemanager
 operator|.
+name|WindowsSecureContainerExecutor
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|server
+operator|.
+name|nodemanager
+operator|.
 name|util
 operator|.
 name|ProcessIdFileReader
@@ -4412,6 +4430,31 @@ argument_list|(
 name|environment
 argument_list|)
 expr_stmt|;
+comment|// this is hacky and temporary - it's to preserve the windows secure
+comment|// behavior but enable non-secure windows to properly build the class
+comment|// path for access to job.jar/lib/xyz and friends (see YARN-2803)
+name|Path
+name|jarDir
+decl_stmt|;
+if|if
+condition|(
+name|exec
+operator|instanceof
+name|WindowsSecureContainerExecutor
+condition|)
+block|{
+name|jarDir
+operator|=
+name|nmPrivateClasspathJarDir
+expr_stmt|;
+block|}
+else|else
+block|{
+name|jarDir
+operator|=
+name|pwd
+expr_stmt|;
+block|}
 name|String
 index|[]
 name|jarCp
@@ -4425,7 +4468,7 @@ operator|.
 name|toString
 argument_list|()
 argument_list|,
-name|nmPrivateClasspathJarDir
+name|jarDir
 argument_list|,
 name|pwd
 argument_list|,
