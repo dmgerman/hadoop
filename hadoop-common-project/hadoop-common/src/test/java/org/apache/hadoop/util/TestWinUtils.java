@@ -1926,7 +1926,7 @@ expr_stmt|;
 comment|// Test a new file created in a chmod'ed directory has expected permission
 name|testNewFileChmodInternal
 argument_list|(
-literal|"-rwx------"
+literal|"-rwxr-xr-x"
 argument_list|)
 expr_stmt|;
 block|}
