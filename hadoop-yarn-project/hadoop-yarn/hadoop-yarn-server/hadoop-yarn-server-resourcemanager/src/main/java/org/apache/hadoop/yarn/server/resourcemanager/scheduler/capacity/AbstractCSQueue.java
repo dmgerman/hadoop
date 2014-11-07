@@ -719,6 +719,7 @@ operator|.
 name|getAccessibleNodeLabels
 argument_list|()
 expr_stmt|;
+block|}
 name|SchedulerUtils
 operator|.
 name|checkIfLabelInClusterNodeLabels
@@ -730,7 +731,6 @@ operator|.
 name|accessibleLabels
 argument_list|)
 expr_stmt|;
-block|}
 comment|// inherit from parent if labels not set
 if|if
 condition|(
