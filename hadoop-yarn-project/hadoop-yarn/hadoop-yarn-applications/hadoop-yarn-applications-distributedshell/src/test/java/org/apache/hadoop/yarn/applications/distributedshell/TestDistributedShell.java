@@ -702,6 +702,15 @@ name|conf
 operator|.
 name|set
 argument_list|(
+literal|"yarn.scheduler.capacity.root.accessible-node-labels.x.capacity"
+argument_list|,
+literal|"100"
+argument_list|)
+expr_stmt|;
+name|conf
+operator|.
+name|set
+argument_list|(
 literal|"yarn.scheduler.capacity.root.default.accessible-node-labels"
 argument_list|,
 literal|"x"
