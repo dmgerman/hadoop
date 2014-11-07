@@ -2792,11 +2792,6 @@ name|Configuration
 name|other
 parameter_list|)
 block|{
-synchronized|synchronized
-init|(
-name|other
-init|)
-block|{
 name|this
 operator|.
 name|resources
@@ -2814,6 +2809,11 @@ operator|.
 name|clone
 argument_list|()
 expr_stmt|;
+synchronized|synchronized
+init|(
+name|other
+init|)
+block|{
 if|if
 condition|(
 name|other
@@ -2895,6 +2895,24 @@ operator|.
 name|finalParameters
 argument_list|)
 expr_stmt|;
+block|}
+synchronized|synchronized
+init|(
+name|Configuration
+operator|.
+name|class
+init|)
+block|{
+name|REGISTRY
+operator|.
+name|put
+argument_list|(
+name|this
+argument_list|,
+literal|null
+argument_list|)
+expr_stmt|;
+block|}
 name|this
 operator|.
 name|classLoader
@@ -2919,24 +2937,6 @@ name|getQuietMode
 argument_list|()
 argument_list|)
 expr_stmt|;
-block|}
-synchronized|synchronized
-init|(
-name|Configuration
-operator|.
-name|class
-init|)
-block|{
-name|REGISTRY
-operator|.
-name|put
-argument_list|(
-name|this
-argument_list|,
-literal|null
-argument_list|)
-expr_stmt|;
-block|}
 block|}
 comment|/**    * Add a default resource. Resources are loaded in the order of the resources     * added.    * @param name file name. File should be present in the classpath.    */
 DECL|method|addDefaultResource (String name)
@@ -3876,11 +3876,6 @@ else|:
 name|source
 operator|)
 decl_stmt|;
-synchronized|synchronized
-init|(
-name|this
-init|)
-block|{
 if|if
 condition|(
 operator|!
@@ -4044,7 +4039,6 @@ name|altSource
 block|}
 argument_list|)
 expr_stmt|;
-block|}
 block|}
 block|}
 block|}
@@ -8279,7 +8273,6 @@ block|}
 comment|/**    * Get the set of parameters marked final.    *    * @return final parameter set.    */
 DECL|method|getFinalParameters ()
 specifier|public
-specifier|synchronized
 name|Set
 argument_list|<
 name|String
@@ -9907,11 +9900,6 @@ argument_list|,
 name|value
 argument_list|)
 expr_stmt|;
-synchronized|synchronized
-init|(
-name|this
-init|)
-block|{
 name|updatingResource
 operator|.
 name|put
@@ -9921,7 +9909,6 @@ argument_list|,
 name|source
 argument_list|)
 expr_stmt|;
-block|}
 block|}
 elseif|else
 if|if
@@ -9960,11 +9947,6 @@ condition|(
 name|finalParameter
 condition|)
 block|{
-synchronized|synchronized
-init|(
-name|this
-init|)
-block|{
 name|finalParameters
 operator|.
 name|add
@@ -9972,7 +9954,6 @@ argument_list|(
 name|attr
 argument_list|)
 expr_stmt|;
-block|}
 block|}
 block|}
 comment|/**     * Write out the non-default properties in this configuration to the given    * {@link OutputStream} using UTF-8 encoding.    *     * @param out the output stream to write to.    */
@@ -10815,7 +10796,6 @@ annotation|@
 name|Override
 DECL|method|readFields (DataInput in)
 specifier|public
-specifier|synchronized
 name|void
 name|readFields
 parameter_list|(
@@ -10918,11 +10898,11 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
+comment|//@Override
 annotation|@
 name|Override
 DECL|method|write (DataOutput out)
 specifier|public
-specifier|synchronized
 name|void
 name|write
 parameter_list|(
