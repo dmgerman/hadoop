@@ -4500,7 +4500,7 @@ expr_stmt|;
 block|}
 block|}
 comment|/**    * Put a single entity.  If there is an error, add a TimelinePutError to the    * given response.    */
-DECL|method|put (TimelineEntity entity, TimelinePutResponse response)
+DECL|method|put (TimelineEntity entity, TimelinePutResponse response, boolean allowEmptyDomainId)
 specifier|private
 name|void
 name|put
@@ -4510,6 +4510,9 @@ name|entity
 parameter_list|,
 name|TimelinePutResponse
 name|response
+parameter_list|,
+name|boolean
+name|allowEmptyDomainId
 parameter_list|)
 block|{
 name|LockMap
@@ -4979,6 +4982,7 @@ continue|continue;
 block|}
 else|else
 block|{
+comment|// This is the existing entity
 name|byte
 index|[]
 name|domainIdBytes
@@ -4997,16 +5001,39 @@ name|relatedEntityStartTime
 argument_list|)
 argument_list|)
 decl_stmt|;
-comment|// This is the existing entity
+comment|// The timeline data created by the server before 2.6 won't have
+comment|// the domain field. We assume this timeline data is in the
+comment|// default timeline domain.
 name|String
 name|domainId
 init|=
+literal|null
+decl_stmt|;
+if|if
+condition|(
+name|domainIdBytes
+operator|==
+literal|null
+condition|)
+block|{
+name|domainId
+operator|=
+name|TimelineDataManager
+operator|.
+name|DEFAULT_DOMAIN_ID
+expr_stmt|;
+block|}
+else|else
+block|{
+name|domainId
+operator|=
 operator|new
 name|String
 argument_list|(
 name|domainIdBytes
 argument_list|)
-decl_stmt|;
+expr_stmt|;
+block|}
 if|if
 condition|(
 operator|!
@@ -5339,6 +5366,12 @@ operator|==
 literal|0
 condition|)
 block|{
+if|if
+condition|(
+operator|!
+name|allowEmptyDomainId
+condition|)
+block|{
 name|TimelinePutError
 name|error
 init|=
@@ -5383,6 +5416,7 @@ name|error
 argument_list|)
 expr_stmt|;
 return|return;
+block|}
 block|}
 else|else
 block|{
@@ -5936,6 +5970,75 @@ argument_list|(
 name|entity
 argument_list|,
 name|response
+argument_list|,
+literal|false
+argument_list|)
+expr_stmt|;
+block|}
+return|return
+name|response
+return|;
+block|}
+finally|finally
+block|{
+name|deleteLock
+operator|.
+name|readLock
+argument_list|()
+operator|.
+name|unlock
+argument_list|()
+expr_stmt|;
+block|}
+block|}
+annotation|@
+name|Private
+annotation|@
+name|VisibleForTesting
+DECL|method|putWithNoDomainId (TimelineEntities entities)
+specifier|public
+name|TimelinePutResponse
+name|putWithNoDomainId
+parameter_list|(
+name|TimelineEntities
+name|entities
+parameter_list|)
+block|{
+try|try
+block|{
+name|deleteLock
+operator|.
+name|readLock
+argument_list|()
+operator|.
+name|lock
+argument_list|()
+expr_stmt|;
+name|TimelinePutResponse
+name|response
+init|=
+operator|new
+name|TimelinePutResponse
+argument_list|()
+decl_stmt|;
+for|for
+control|(
+name|TimelineEntity
+name|entity
+range|:
+name|entities
+operator|.
+name|getEntities
+argument_list|()
+control|)
+block|{
+name|put
+argument_list|(
+name|entity
+argument_list|,
+name|response
+argument_list|,
+literal|true
 argument_list|)
 expr_stmt|;
 block|}

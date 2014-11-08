@@ -705,6 +705,11 @@ operator|.
 name|next
 argument_list|()
 decl_stmt|;
+name|addDefaultDomainIdIfAbsent
+argument_list|(
+name|entity
+argument_list|)
+expr_stmt|;
 try|try
 block|{
 comment|// check ACLs
@@ -841,6 +846,11 @@ operator|!=
 literal|null
 condition|)
 block|{
+name|addDefaultDomainIdIfAbsent
+argument_list|(
+name|entity
+argument_list|)
+expr_stmt|;
 comment|// check ACLs
 if|if
 condition|(
@@ -1001,6 +1011,11 @@ name|PRIMARY_FILTERS
 argument_list|)
 argument_list|)
 decl_stmt|;
+name|addDefaultDomainIdIfAbsent
+argument_list|(
+name|entity
+argument_list|)
+expr_stmt|;
 comment|// check ACLs
 if|if
 condition|(
@@ -1248,7 +1263,15 @@ condition|(
 name|existingEntity
 operator|!=
 literal|null
-operator|&&
+condition|)
+block|{
+name|addDefaultDomainIdIfAbsent
+argument_list|(
+name|existingEntity
+argument_list|)
+expr_stmt|;
+if|if
+condition|(
 operator|!
 name|existingEntity
 operator|.
@@ -1275,6 +1298,7 @@ operator|+
 literal|" is not allowed to be changed."
 argument_list|)
 throw|;
+block|}
 block|}
 if|if
 condition|(
@@ -1714,6 +1738,36 @@ operator|new
 name|TimelineDomains
 argument_list|()
 return|;
+block|}
+block|}
+DECL|method|addDefaultDomainIdIfAbsent (TimelineEntity entity)
+specifier|private
+specifier|static
+name|void
+name|addDefaultDomainIdIfAbsent
+parameter_list|(
+name|TimelineEntity
+name|entity
+parameter_list|)
+block|{
+comment|// be compatible with the timeline data created before 2.6
+if|if
+condition|(
+name|entity
+operator|.
+name|getDomainId
+argument_list|()
+operator|==
+literal|null
+condition|)
+block|{
+name|entity
+operator|.
+name|setDomainId
+argument_list|(
+name|DEFAULT_DOMAIN_ID
+argument_list|)
+expr_stmt|;
 block|}
 block|}
 block|}
