@@ -284,6 +284,28 @@ name|String
 argument_list|>
 name|tags
 decl_stmt|;
+annotation|@
+name|XmlElement
+argument_list|(
+name|name
+operator|=
+literal|"app-node-label-expression"
+argument_list|)
+DECL|field|appNodeLabelExpression
+name|String
+name|appNodeLabelExpression
+decl_stmt|;
+annotation|@
+name|XmlElement
+argument_list|(
+name|name
+operator|=
+literal|"am-container-node-label-expression"
+argument_list|)
+DECL|field|amContainerNodeLabelExpression
+name|String
+name|amContainerNodeLabelExpression
+decl_stmt|;
 DECL|method|ApplicationSubmissionContextInfo ()
 specifier|public
 name|ApplicationSubmissionContextInfo
@@ -342,6 +364,14 @@ argument_list|<
 name|String
 argument_list|>
 argument_list|()
+expr_stmt|;
+name|appNodeLabelExpression
+operator|=
+literal|""
+expr_stmt|;
+name|amContainerNodeLabelExpression
+operator|=
+literal|""
 expr_stmt|;
 block|}
 DECL|method|getApplicationId ()
@@ -465,6 +495,26 @@ parameter_list|()
 block|{
 return|return
 name|tags
+return|;
+block|}
+DECL|method|getAppNodeLabelExpression ()
+specifier|public
+name|String
+name|getAppNodeLabelExpression
+parameter_list|()
+block|{
+return|return
+name|appNodeLabelExpression
+return|;
+block|}
+DECL|method|getAMContainerNodeLabelExpression ()
+specifier|public
+name|String
+name|getAMContainerNodeLabelExpression
+parameter_list|()
+block|{
+return|return
+name|amContainerNodeLabelExpression
 return|;
 block|}
 DECL|method|setApplicationId (String applicationId)
@@ -660,6 +710,38 @@ operator|.
 name|tags
 operator|=
 name|tags
+expr_stmt|;
+block|}
+DECL|method|setAppNodeLabelExpression (String appNodeLabelExpression)
+specifier|public
+name|void
+name|setAppNodeLabelExpression
+parameter_list|(
+name|String
+name|appNodeLabelExpression
+parameter_list|)
+block|{
+name|this
+operator|.
+name|appNodeLabelExpression
+operator|=
+name|appNodeLabelExpression
+expr_stmt|;
+block|}
+DECL|method|setAMContainerNodeLabelExpression (String nodeLabelExpression)
+specifier|public
+name|void
+name|setAMContainerNodeLabelExpression
+parameter_list|(
+name|String
+name|nodeLabelExpression
+parameter_list|)
+block|{
+name|this
+operator|.
+name|amContainerNodeLabelExpression
+operator|=
+name|nodeLabelExpression
 expr_stmt|;
 block|}
 block|}
