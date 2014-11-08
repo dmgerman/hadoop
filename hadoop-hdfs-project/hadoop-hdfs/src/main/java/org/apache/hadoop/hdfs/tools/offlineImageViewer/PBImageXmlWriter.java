@@ -572,15 +572,15 @@ end_import
 
 begin_import
 import|import
-name|com
+name|org
 operator|.
-name|google
+name|apache
 operator|.
-name|common
+name|hadoop
 operator|.
-name|collect
+name|util
 operator|.
-name|Lists
+name|LimitInputStream
 import|;
 end_import
 
@@ -592,9 +592,9 @@ name|google
 operator|.
 name|common
 operator|.
-name|io
+name|collect
 operator|.
-name|LimitInputStream
+name|Lists
 import|;
 end_import
 

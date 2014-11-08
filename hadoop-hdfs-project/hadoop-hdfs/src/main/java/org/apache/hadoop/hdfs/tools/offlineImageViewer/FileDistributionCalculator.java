@@ -208,15 +208,15 @@ end_import
 
 begin_import
 import|import
-name|com
+name|org
 operator|.
-name|google
+name|apache
 operator|.
-name|common
+name|hadoop
 operator|.
-name|base
+name|util
 operator|.
-name|Preconditions
+name|LimitInputStream
 import|;
 end_import
 
@@ -228,9 +228,9 @@ name|google
 operator|.
 name|common
 operator|.
-name|io
+name|base
 operator|.
-name|LimitInputStream
+name|Preconditions
 import|;
 end_import
 

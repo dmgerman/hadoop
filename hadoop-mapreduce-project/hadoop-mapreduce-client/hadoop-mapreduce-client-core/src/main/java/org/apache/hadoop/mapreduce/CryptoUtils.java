@@ -280,13 +280,13 @@ end_import
 
 begin_import
 import|import
-name|com
+name|org
 operator|.
-name|google
+name|apache
 operator|.
-name|common
+name|hadoop
 operator|.
-name|io
+name|util
 operator|.
 name|LimitInputStream
 import|;
