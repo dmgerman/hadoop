@@ -1839,7 +1839,7 @@ name|containerId
 init|=
 name|ContainerId
 operator|.
-name|newInstance
+name|newContainerId
 argument_list|(
 name|ApplicationAttemptId
 operator|.
@@ -2598,7 +2598,7 @@ name|thenReturn
 argument_list|(
 name|ContainerId
 operator|.
-name|newInstance
+name|newContainerId
 argument_list|(
 name|appAttemptId
 argument_list|,

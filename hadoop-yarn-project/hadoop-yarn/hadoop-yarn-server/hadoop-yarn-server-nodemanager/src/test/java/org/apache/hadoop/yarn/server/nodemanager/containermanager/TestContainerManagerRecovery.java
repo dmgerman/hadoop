@@ -1176,7 +1176,7 @@ name|cid
 init|=
 name|ContainerId
 operator|.
-name|newInstance
+name|newContainerId
 argument_list|(
 name|attemptId
 argument_list|,

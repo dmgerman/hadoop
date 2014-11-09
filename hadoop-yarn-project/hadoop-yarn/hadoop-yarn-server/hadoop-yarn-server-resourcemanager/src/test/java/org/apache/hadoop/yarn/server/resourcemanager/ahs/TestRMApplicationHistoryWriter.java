@@ -1234,7 +1234,7 @@ name|thenReturn
 argument_list|(
 name|ContainerId
 operator|.
-name|newInstance
+name|newContainerId
 argument_list|(
 name|appAttemptId
 argument_list|,
@@ -1983,7 +1983,7 @@ name|assertEquals
 argument_list|(
 name|ContainerId
 operator|.
-name|newInstance
+name|newContainerId
 argument_list|(
 name|ApplicationAttemptId
 operator|.
@@ -2152,7 +2152,7 @@ name|createRMContainer
 argument_list|(
 name|ContainerId
 operator|.
-name|newInstance
+name|newContainerId
 argument_list|(
 name|ApplicationAttemptId
 operator|.
@@ -2209,7 +2209,7 @@ name|getContainer
 argument_list|(
 name|ContainerId
 operator|.
-name|newInstance
+name|newContainerId
 argument_list|(
 name|ApplicationAttemptId
 operator|.
@@ -2355,7 +2355,7 @@ name|getContainer
 argument_list|(
 name|ContainerId
 operator|.
-name|newInstance
+name|newContainerId
 argument_list|(
 name|ApplicationAttemptId
 operator|.
@@ -2586,7 +2586,7 @@ name|containerId
 init|=
 name|ContainerId
 operator|.
-name|newInstance
+name|newContainerId
 argument_list|(
 name|appAttemptId
 argument_list|,

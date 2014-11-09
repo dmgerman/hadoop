@@ -1601,7 +1601,7 @@ name|validContainerId
 init|=
 name|ContainerId
 operator|.
-name|newInstance
+name|newContainerId
 argument_list|(
 name|validAppAttemptId
 argument_list|,
@@ -2105,7 +2105,7 @@ name|validContainerId2
 init|=
 name|ContainerId
 operator|.
-name|newInstance
+name|newContainerId
 argument_list|(
 name|validAppAttemptId2
 argument_list|,
@@ -2599,7 +2599,7 @@ name|createContainerToken
 argument_list|(
 name|ContainerId
 operator|.
-name|newInstance
+name|newContainerId
 argument_list|(
 name|attempt2
 argument_list|,
@@ -3903,7 +3903,7 @@ name|cId
 init|=
 name|ContainerId
 operator|.
-name|newInstance
+name|newContainerId
 argument_list|(
 name|appAttemptId
 argument_list|,
@@ -4171,7 +4171,7 @@ name|cId2
 init|=
 name|ContainerId
 operator|.
-name|newInstance
+name|newContainerId
 argument_list|(
 name|appAttemptId
 argument_list|,
@@ -4383,7 +4383,7 @@ name|cId
 init|=
 name|ContainerId
 operator|.
-name|newInstance
+name|newContainerId
 argument_list|(
 name|appAttemptId
 argument_list|,

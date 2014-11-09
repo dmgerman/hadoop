@@ -1709,7 +1709,7 @@ name|containerId
 init|=
 name|ContainerId
 operator|.
-name|newInstance
+name|newContainerId
 argument_list|(
 name|appAttemptId
 argument_list|,
@@ -2468,7 +2468,7 @@ name|id
 init|=
 name|ContainerId
 operator|.
-name|newInstance
+name|newContainerId
 argument_list|(
 name|appAttemptId
 argument_list|,
@@ -3838,7 +3838,7 @@ name|containerId
 init|=
 name|ContainerId
 operator|.
-name|newInstance
+name|newContainerId
 argument_list|(
 name|appAttemptId
 argument_list|,

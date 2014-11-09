@@ -1485,7 +1485,7 @@ name|containerId
 init|=
 name|ContainerIdPBImpl
 operator|.
-name|newInstance
+name|newContainerId
 argument_list|(
 name|getApplicationAttemptId
 argument_list|(

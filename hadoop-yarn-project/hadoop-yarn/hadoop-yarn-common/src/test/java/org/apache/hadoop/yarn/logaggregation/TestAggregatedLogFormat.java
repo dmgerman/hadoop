@@ -1939,7 +1939,7 @@ name|testContainerId1
 init|=
 name|ContainerId
 operator|.
-name|newInstance
+name|newContainerId
 argument_list|(
 name|applicationAttemptId
 argument_list|,

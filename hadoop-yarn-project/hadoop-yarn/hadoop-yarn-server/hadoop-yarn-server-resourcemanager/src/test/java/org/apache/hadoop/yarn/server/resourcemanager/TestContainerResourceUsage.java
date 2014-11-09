@@ -1354,7 +1354,7 @@ name|cId
 init|=
 name|ContainerId
 operator|.
-name|newInstance
+name|newContainerId
 argument_list|(
 name|attempt0
 operator|.
@@ -1832,7 +1832,7 @@ name|containerId2
 init|=
 name|ContainerId
 operator|.
-name|newInstance
+name|newContainerId
 argument_list|(
 name|am0
 operator|.

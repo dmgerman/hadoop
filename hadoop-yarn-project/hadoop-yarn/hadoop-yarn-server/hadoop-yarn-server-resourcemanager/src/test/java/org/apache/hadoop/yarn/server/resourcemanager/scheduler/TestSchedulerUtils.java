@@ -3581,7 +3581,7 @@ name|createAbnormalContainerStatus
 argument_list|(
 name|ContainerId
 operator|.
-name|newInstance
+name|newContainerId
 argument_list|(
 name|ApplicationAttemptId
 operator|.
@@ -3640,7 +3640,7 @@ name|createPreemptedContainerStatus
 argument_list|(
 name|ContainerId
 operator|.
-name|newInstance
+name|newContainerId
 argument_list|(
 name|ApplicationAttemptId
 operator|.

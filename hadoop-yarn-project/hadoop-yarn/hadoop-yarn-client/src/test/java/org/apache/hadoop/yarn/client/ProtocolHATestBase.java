@@ -4036,7 +4036,7 @@ block|{
 return|return
 name|ContainerId
 operator|.
-name|newInstance
+name|newContainerId
 argument_list|(
 name|createFakeApplicationAttemptId
 argument_list|()

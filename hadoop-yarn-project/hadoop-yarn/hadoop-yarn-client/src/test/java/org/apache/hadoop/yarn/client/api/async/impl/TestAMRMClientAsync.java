@@ -2663,7 +2663,7 @@ decl_stmt|;
 return|return
 name|ContainerId
 operator|.
-name|newInstance
+name|newContainerId
 argument_list|(
 name|applicationAttemptId
 argument_list|,

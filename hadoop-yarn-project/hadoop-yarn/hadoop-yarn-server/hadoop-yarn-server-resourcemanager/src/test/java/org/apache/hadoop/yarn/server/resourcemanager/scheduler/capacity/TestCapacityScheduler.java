@@ -8063,7 +8063,7 @@ name|containerId1
 init|=
 name|ContainerId
 operator|.
-name|newInstance
+name|newContainerId
 argument_list|(
 name|am1
 operator|.
@@ -8257,7 +8257,7 @@ name|containerId2
 init|=
 name|ContainerId
 operator|.
-name|newInstance
+name|newContainerId
 argument_list|(
 name|am1
 operator|.

@@ -2043,7 +2043,7 @@ name|firstContainerID
 init|=
 name|ContainerId
 operator|.
-name|newInstance
+name|newContainerId
 argument_list|(
 name|appAttemptID
 argument_list|,
@@ -2258,7 +2258,7 @@ name|secondContainerID
 init|=
 name|ContainerId
 operator|.
-name|newInstance
+name|newContainerId
 argument_list|(
 name|appAttemptID
 argument_list|,
@@ -5245,7 +5245,7 @@ name|cId
 init|=
 name|ContainerId
 operator|.
-name|newInstance
+name|newContainerId
 argument_list|(
 name|appAttemptId
 argument_list|,
@@ -5495,7 +5495,7 @@ name|cId
 init|=
 name|ContainerId
 operator|.
-name|newInstance
+name|newContainerId
 argument_list|(
 name|appAttemptId
 argument_list|,
@@ -5629,7 +5629,7 @@ name|runningContainerId
 init|=
 name|ContainerId
 operator|.
-name|newInstance
+name|newContainerId
 argument_list|(
 name|appAttemptId
 argument_list|,
@@ -6016,7 +6016,7 @@ name|cId
 init|=
 name|ContainerId
 operator|.
-name|newInstance
+name|newContainerId
 argument_list|(
 name|appAttemptId
 argument_list|,
@@ -8847,7 +8847,7 @@ name|contaierId
 init|=
 name|ContainerId
 operator|.
-name|newInstance
+name|newContainerId
 argument_list|(
 name|applicationAttemptId
 argument_list|,

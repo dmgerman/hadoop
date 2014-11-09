@@ -5931,7 +5931,7 @@ name|runningContainer
 init|=
 name|ContainerId
 operator|.
-name|newInstance
+name|newContainerId
 argument_list|(
 name|am1
 operator|.

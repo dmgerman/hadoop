@@ -251,7 +251,7 @@ name|containerId
 init|=
 name|ContainerId
 operator|.
-name|newInstance
+name|newContainerId
 argument_list|(
 name|ApplicationAttemptId
 operator|.

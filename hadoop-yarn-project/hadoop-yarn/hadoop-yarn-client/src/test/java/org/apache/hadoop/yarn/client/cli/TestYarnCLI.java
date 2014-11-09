@@ -1325,7 +1325,7 @@ name|FINISHED
 argument_list|,
 name|ContainerId
 operator|.
-name|newInstance
+name|newContainerId
 argument_list|(
 name|attemptId
 argument_list|,
@@ -1589,7 +1589,7 @@ name|FINISHED
 argument_list|,
 name|ContainerId
 operator|.
-name|newInstance
+name|newContainerId
 argument_list|(
 name|attemptId
 argument_list|,
@@ -1622,7 +1622,7 @@ name|FINISHED
 argument_list|,
 name|ContainerId
 operator|.
-name|newInstance
+name|newContainerId
 argument_list|(
 name|attemptId1
 argument_list|,
@@ -1896,7 +1896,7 @@ name|containerId
 init|=
 name|ContainerId
 operator|.
-name|newInstance
+name|newContainerId
 argument_list|(
 name|attemptId
 argument_list|,
@@ -2166,7 +2166,7 @@ name|containerId
 init|=
 name|ContainerId
 operator|.
-name|newInstance
+name|newContainerId
 argument_list|(
 name|attemptId
 argument_list|,
@@ -2178,7 +2178,7 @@ name|containerId1
 init|=
 name|ContainerId
 operator|.
-name|newInstance
+name|newContainerId
 argument_list|(
 name|attemptId
 argument_list|,
@@ -6142,7 +6142,7 @@ name|containerId
 init|=
 name|ContainerId
 operator|.
-name|newInstance
+name|newContainerId
 argument_list|(
 name|appAttemptId
 argument_list|,
