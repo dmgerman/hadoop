@@ -581,8 +581,8 @@ operator|=
 name|dnConf
 expr_stmt|;
 block|}
-comment|/**    * Receives SASL negotiation from a peer on behalf of a server.    *    * @param peer connection peer    * @param underlyingOut connection output stream    * @param underlyingIn connection input stream    * @param datanodeId ID of DataNode accepting connection    * @return new pair of streams, wrapped after SASL negotiation    * @throws IOException for any error    */
-DECL|method|receive (Peer peer, OutputStream underlyingOut, InputStream underlyingIn, DatanodeID datanodeId)
+comment|/**    * Receives SASL negotiation from a peer on behalf of a server.    *    * @param peer connection peer    * @param underlyingOut connection output stream    * @param underlyingIn connection input stream    * @param int xferPort data transfer port of DataNode accepting connection    * @param datanodeId ID of DataNode accepting connection    * @return new pair of streams, wrapped after SASL negotiation    * @throws IOException for any error    */
+DECL|method|receive (Peer peer, OutputStream underlyingOut, InputStream underlyingIn, int xferPort, DatanodeID datanodeId)
 specifier|public
 name|IOStreamPair
 name|receive
@@ -595,6 +595,9 @@ name|underlyingOut
 parameter_list|,
 name|InputStream
 name|underlyingIn
+parameter_list|,
+name|int
+name|xferPort
 parameter_list|,
 name|DatanodeID
 name|datanodeId
@@ -668,10 +671,7 @@ block|}
 elseif|else
 if|if
 condition|(
-name|datanodeId
-operator|.
-name|getXferPort
-argument_list|()
+name|xferPort
 operator|<
 literal|1024
 condition|)
@@ -680,7 +680,7 @@ name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"SASL server skipping handshake in unsecured configuration for "
+literal|"SASL server skipping handshake in secured configuration for "
 operator|+
 literal|"peer = {}, datanodeId = {}"
 argument_list|,
@@ -729,8 +729,6 @@ argument_list|,
 name|underlyingOut
 argument_list|,
 name|underlyingIn
-argument_list|,
-name|datanodeId
 argument_list|)
 return|;
 block|}
@@ -1247,8 +1245,8 @@ name|nonce
 argument_list|)
 return|;
 block|}
-comment|/**    * Receives SASL negotiation for general-purpose handshake.    *    * @param peer connection peer    * @param underlyingOut connection output stream    * @param underlyingIn connection input stream    * @param datanodeId ID of DataNode accepting connection    * @return new pair of streams, wrapped after SASL negotiation    * @throws IOException for any error    */
-DECL|method|getSaslStreams (Peer peer, OutputStream underlyingOut, InputStream underlyingIn, final DatanodeID datanodeId)
+comment|/**    * Receives SASL negotiation for general-purpose handshake.    *    * @param peer connection peer    * @param underlyingOut connection output stream    * @param underlyingIn connection input stream    * @return new pair of streams, wrapped after SASL negotiation    * @throws IOException for any error    */
+DECL|method|getSaslStreams (Peer peer, OutputStream underlyingOut, InputStream underlyingIn)
 specifier|private
 name|IOStreamPair
 name|getSaslStreams
@@ -1261,10 +1259,6 @@ name|underlyingOut
 parameter_list|,
 name|InputStream
 name|underlyingIn
-parameter_list|,
-specifier|final
-name|DatanodeID
-name|datanodeId
 parameter_list|)
 throws|throws
 name|IOException

@@ -1521,6 +1521,14 @@ name|socketIn
 argument_list|,
 name|datanode
 operator|.
+name|getXferAddress
+argument_list|()
+operator|.
+name|getPort
+argument_list|()
+argument_list|,
+name|datanode
+operator|.
 name|getDatanodeId
 argument_list|()
 argument_list|)
