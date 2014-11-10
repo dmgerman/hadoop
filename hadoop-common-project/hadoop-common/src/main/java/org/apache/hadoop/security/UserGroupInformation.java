@@ -757,6 +757,14 @@ name|TICKET_RENEW_WINDOW
 init|=
 literal|0.80f
 decl_stmt|;
+DECL|field|shouldRenewImmediatelyForTests
+specifier|private
+specifier|static
+name|boolean
+name|shouldRenewImmediatelyForTests
+init|=
+literal|false
+decl_stmt|;
 DECL|field|HADOOP_USER_NAME
 specifier|static
 specifier|final
@@ -773,6 +781,23 @@ name|HADOOP_PROXY_USER
 init|=
 literal|"HADOOP_PROXY_USER"
 decl_stmt|;
+comment|/**    * For the purposes of unit tests, we want to test login    * from keytab and don't want to wait until the renew    * window (controlled by TICKET_RENEW_WINDOW).    * @param immediate true if we should login without waiting for ticket window    */
+annotation|@
+name|VisibleForTesting
+DECL|method|setShouldRenewImmediatelyForTests (boolean immediate)
+specifier|static
+name|void
+name|setShouldRenewImmediatelyForTests
+parameter_list|(
+name|boolean
+name|immediate
+parameter_list|)
+block|{
+name|shouldRenewImmediatelyForTests
+operator|=
+name|immediate
+expr_stmt|;
+block|}
 comment|/**     * UgiMetrics maintains UGI activity statistics    * and publishes them through the metrics interfaces.    */
 annotation|@
 name|Metrics
@@ -3057,6 +3082,47 @@ name|login
 argument_list|)
 expr_stmt|;
 block|}
+DECL|field|KEY_TAB_CLASS
+specifier|private
+specifier|static
+name|Class
+argument_list|<
+name|?
+argument_list|>
+name|KEY_TAB_CLASS
+init|=
+name|KerberosKey
+operator|.
+name|class
+decl_stmt|;
+static|static
+block|{
+try|try
+block|{
+comment|// We use KEY_TAB_CLASS to determine if the UGI is logged in from
+comment|// keytab. In JDK6 and JDK7, if useKeyTab and storeKey are specified
+comment|// in the Krb5LoginModule, then some number of KerberosKey objects
+comment|// are added to the Subject's private credentials. However, in JDK8,
+comment|// a KeyTab object is added instead. More details in HADOOP-10786.
+name|KEY_TAB_CLASS
+operator|=
+name|Class
+operator|.
+name|forName
+argument_list|(
+literal|"javax.security.auth.kerberos.KeyTab"
+argument_list|)
+expr_stmt|;
+block|}
+catch|catch
+parameter_list|(
+name|ClassNotFoundException
+name|cnfe
+parameter_list|)
+block|{
+comment|// Ignore. javax.security.auth.kerberos.KeyTab does not exist in JDK6.
+block|}
+block|}
 comment|/**    * Create a UserGroupInformation for the given subject.    * This does not change the subject or acquire new credentials.    * @param subject the user's subject    */
 DECL|method|UserGroupInformation (Subject subject)
 name|UserGroupInformation
@@ -3099,9 +3165,7 @@ name|subject
 operator|.
 name|getPrivateCredentials
 argument_list|(
-name|KerberosKey
-operator|.
-name|class
+name|KEY_TAB_CLASS
 argument_list|)
 operator|.
 name|isEmpty
@@ -4649,6 +4713,9 @@ name|tgt
 operator|!=
 literal|null
 operator|&&
+operator|!
+name|shouldRenewImmediatelyForTests
+operator|&&
 name|Time
 operator|.
 name|now
@@ -4714,6 +4781,9 @@ decl_stmt|;
 if|if
 condition|(
 operator|!
+name|shouldRenewImmediatelyForTests
+operator|&&
+operator|!
 name|hasSufficientTimeElapsed
 argument_list|(
 name|now
@@ -4734,6 +4804,9 @@ condition|(
 name|tgt
 operator|!=
 literal|null
+operator|&&
+operator|!
+name|shouldRenewImmediatelyForTests
 operator|&&
 name|now
 operator|<
