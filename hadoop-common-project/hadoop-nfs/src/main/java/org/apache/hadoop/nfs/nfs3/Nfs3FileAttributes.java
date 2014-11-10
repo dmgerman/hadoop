@@ -153,7 +153,7 @@ specifier|private
 name|NfsTime
 name|ctime
 decl_stmt|;
-comment|/*    * The interpretation of the two words depends on the type of file system    * object. For a block special (NF3BLK) or character special (NF3CHR) file,    * specdata1 and specdata2 are the major and minor device numbers,    * respectively. (This is obviously a UNIX-specific interpretation.) For all    * other file types, these two elements should either be set to 0 or the    * values should be agreed upon by the client and server. If the client and    * server do not agree upon the values, the client should treat these fields    * as if they are set to 0.    *<br>    * For Hadoop, currently this field is always zero.    */
+comment|/*    * The interpretation of the two words depends on the type of file system    * object. For a block special (NF3BLK) or character special (NF3CHR) file,    * specdata1 and specdata2 are the major and minor device numbers,    * respectively. (This is obviously a UNIX-specific interpretation.) For all    * other file types, these two elements should either be set to 0 or the    * values should be agreed upon by the client and server. If the client and    * server do not agree upon the values, the client should treat these fields    * as if they are set to 0.    */
 DECL|class|Specdata3
 specifier|public
 specifier|static
@@ -260,7 +260,7 @@ name|NfsFileType
 operator|.
 name|NFSREG
 argument_list|,
-literal|0
+literal|1
 argument_list|,
 operator|(
 name|short
@@ -280,10 +280,14 @@ argument_list|,
 literal|0
 argument_list|,
 literal|0
+argument_list|,
+operator|new
+name|Specdata3
+argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|Nfs3FileAttributes (NfsFileType nfsType, int nlink, short mode, int uid, int gid, long size, long fsid, long fileId, long mtime, long atime)
+DECL|method|Nfs3FileAttributes (NfsFileType nfsType, int nlink, short mode, int uid, int gid, long size, long fsid, long fileId, long mtime, long atime, Specdata3 rdev)
 specifier|public
 name|Nfs3FileAttributes
 parameter_list|(
@@ -316,6 +320,9 @@ name|mtime
 parameter_list|,
 name|long
 name|atime
+parameter_list|,
+name|Specdata3
+name|rdev
 parameter_list|)
 block|{
 name|this
@@ -337,24 +344,7 @@ name|this
 operator|.
 name|nlink
 operator|=
-operator|(
-name|type
-operator|==
-name|NfsFileType
-operator|.
-name|NFSDIR
-operator|.
-name|toValue
-argument_list|()
-operator|)
-condition|?
-operator|(
 name|nlink
-operator|+
-literal|2
-operator|)
-else|:
-literal|1
 expr_stmt|;
 name|this
 operator|.
@@ -374,28 +364,6 @@ name|size
 operator|=
 name|size
 expr_stmt|;
-if|if
-condition|(
-name|type
-operator|==
-name|NfsFileType
-operator|.
-name|NFSDIR
-operator|.
-name|toValue
-argument_list|()
-condition|)
-block|{
-name|this
-operator|.
-name|size
-operator|=
-name|getDirSize
-argument_list|(
-name|nlink
-argument_list|)
-expr_stmt|;
-block|}
 name|this
 operator|.
 name|used
@@ -459,6 +427,12 @@ operator|=
 name|this
 operator|.
 name|mtime
+expr_stmt|;
+name|this
+operator|.
+name|rdev
+operator|=
+name|rdev
 expr_stmt|;
 block|}
 DECL|method|Nfs3FileAttributes (Nfs3FileAttributes other)
@@ -792,24 +766,23 @@ operator|.
 name|readHyper
 argument_list|()
 expr_stmt|;
-comment|// Ignore rdev
-name|xdr
-operator|.
-name|readInt
-argument_list|()
-expr_stmt|;
-name|xdr
-operator|.
-name|readInt
-argument_list|()
-expr_stmt|;
 name|attr
 operator|.
 name|rdev
 operator|=
 operator|new
 name|Specdata3
+argument_list|(
+name|xdr
+operator|.
+name|readInt
 argument_list|()
+argument_list|,
+name|xdr
+operator|.
+name|readInt
+argument_list|()
+argument_list|)
 expr_stmt|;
 name|attr
 operator|.
@@ -1089,26 +1062,31 @@ operator|.
 name|gid
 return|;
 block|}
-comment|/**    * HDFS directory size is always zero. Try to return something meaningful    * here. Assume each child take 32bytes.    */
-DECL|method|getDirSize (int childNum)
+DECL|method|getRdev ()
 specifier|public
-specifier|static
-name|long
-name|getDirSize
-parameter_list|(
-name|int
-name|childNum
-parameter_list|)
+name|Specdata3
+name|getRdev
+parameter_list|()
 block|{
 return|return
-operator|(
-name|childNum
-operator|+
-literal|2
-operator|)
-operator|*
-literal|32
+name|rdev
 return|;
+block|}
+DECL|method|setRdev (Specdata3 rdev)
+specifier|public
+name|void
+name|setRdev
+parameter_list|(
+name|Specdata3
+name|rdev
+parameter_list|)
+block|{
+name|this
+operator|.
+name|rdev
+operator|=
+name|rdev
+expr_stmt|;
 block|}
 block|}
 end_class
