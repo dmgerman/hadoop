@@ -614,7 +614,7 @@ name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"Malfromed RPC request from "
+literal|"Malformed RPC request from "
 operator|+
 name|e
 operator|.
