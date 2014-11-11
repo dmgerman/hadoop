@@ -1024,6 +1024,9 @@ name|parts
 index|[
 literal|0
 index|]
+operator|.
+name|trim
+argument_list|()
 argument_list|,
 name|Integer
 operator|.
