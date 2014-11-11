@@ -2754,6 +2754,24 @@ name|server
 operator|.
 name|blockmanagement
 operator|.
+name|BlockIdManager
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|server
+operator|.
+name|blockmanagement
+operator|.
 name|BlockInfo
 import|;
 end_import
@@ -2863,42 +2881,6 @@ operator|.
 name|blockmanagement
 operator|.
 name|DatanodeStorageInfo
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|hdfs
-operator|.
-name|server
-operator|.
-name|blockmanagement
-operator|.
-name|OutOfV1GenerationStampsException
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|hdfs
-operator|.
-name|server
-operator|.
-name|common
-operator|.
-name|GenerationStamp
 import|;
 end_import
 
@@ -4259,6 +4241,12 @@ return|;
 block|}
 block|}
 decl_stmt|;
+DECL|field|blockIdManager
+specifier|private
+specifier|final
+name|BlockIdManager
+name|blockIdManager
+decl_stmt|;
 annotation|@
 name|VisibleForTesting
 DECL|method|isAuditEnabled ()
@@ -4943,47 +4931,6 @@ name|long
 name|maxBlocksPerFile
 decl_stmt|;
 comment|// maximum # of blocks per file
-comment|/**    * The global generation stamp for legacy blocks with randomly    * generated block IDs.    */
-DECL|field|generationStampV1
-specifier|private
-specifier|final
-name|GenerationStamp
-name|generationStampV1
-init|=
-operator|new
-name|GenerationStamp
-argument_list|()
-decl_stmt|;
-comment|/**    * The global generation stamp for this file system.    */
-DECL|field|generationStampV2
-specifier|private
-specifier|final
-name|GenerationStamp
-name|generationStampV2
-init|=
-operator|new
-name|GenerationStamp
-argument_list|()
-decl_stmt|;
-comment|/**    * The value of the generation stamp when the first switch to sequential    * block IDs was made. Blocks with generation stamps below this value    * have randomly allocated block IDs. Blocks with generation stamps above    * this value had sequentially allocated block IDs. Read from the fsImage    * (or initialized as an offset from the V1 (legacy) generation stamp on    * upgrade).    */
-DECL|field|generationStampV1Limit
-specifier|private
-name|long
-name|generationStampV1Limit
-init|=
-name|GenerationStamp
-operator|.
-name|GRANDFATHER_GENERATION_STAMP
-decl_stmt|;
-comment|/**    * The global block ID space for this file system.    */
-annotation|@
-name|VisibleForTesting
-DECL|field|blockIdGenerator
-specifier|private
-specifier|final
-name|SequentialBlockIdGenerator
-name|blockIdGenerator
-decl_stmt|;
 comment|// precision of access times.
 DECL|field|accessTimePrecision
 specifier|private
@@ -5320,38 +5267,10 @@ operator|.
 name|reset
 argument_list|()
 expr_stmt|;
-name|generationStampV1
+name|blockIdManager
 operator|.
-name|setCurrentValue
-argument_list|(
-name|GenerationStamp
-operator|.
-name|LAST_RESERVED_STAMP
-argument_list|)
-expr_stmt|;
-name|generationStampV2
-operator|.
-name|setCurrentValue
-argument_list|(
-name|GenerationStamp
-operator|.
-name|LAST_RESERVED_STAMP
-argument_list|)
-expr_stmt|;
-name|blockIdGenerator
-operator|.
-name|setCurrentValue
-argument_list|(
-name|SequentialBlockIdGenerator
-operator|.
-name|LAST_RESERVED_BLOCK_ID
-argument_list|)
-expr_stmt|;
-name|generationStampV1Limit
-operator|=
-name|GenerationStamp
-operator|.
-name|GRANDFATHER_GENERATION_STAMP
+name|clear
+argument_list|()
 expr_stmt|;
 name|leaseManager
 operator|.
@@ -5987,13 +5906,11 @@ argument_list|()
 expr_stmt|;
 name|this
 operator|.
-name|blockIdGenerator
+name|blockIdManager
 operator|=
 operator|new
-name|SequentialBlockIdGenerator
+name|BlockIdManager
 argument_list|(
-name|this
-operator|.
 name|blockManager
 argument_list|)
 expr_stmt|;
@@ -8440,7 +8357,6 @@ block|}
 block|}
 comment|/**    * @throws RetriableException    *           If 1) The NameNode is in SafeMode, 2) HA is enabled, and 3)    *           NameNode is in active state    * @throws SafeModeException    *           Otherwise if NameNode is in SafeMode.    */
 DECL|method|checkNameNodeSafeMode (String errorMsg)
-specifier|private
 name|void
 name|checkNameNodeSafeMode
 parameter_list|(
@@ -23298,6 +23214,8 @@ name|blockRecoveryId
 init|=
 name|nextGenerationStamp
 argument_list|(
+name|blockIdManager
+operator|.
 name|isLegacyBlock
 argument_list|(
 name|uc
@@ -31542,190 +31460,6 @@ name|getNumStaleStorages
 argument_list|()
 return|;
 block|}
-comment|/**    * Sets the current generation stamp for legacy blocks    */
-DECL|method|setGenerationStampV1 (long stamp)
-name|void
-name|setGenerationStampV1
-parameter_list|(
-name|long
-name|stamp
-parameter_list|)
-block|{
-name|generationStampV1
-operator|.
-name|setCurrentValue
-argument_list|(
-name|stamp
-argument_list|)
-expr_stmt|;
-block|}
-comment|/**    * Gets the current generation stamp for legacy blocks    */
-DECL|method|getGenerationStampV1 ()
-name|long
-name|getGenerationStampV1
-parameter_list|()
-block|{
-return|return
-name|generationStampV1
-operator|.
-name|getCurrentValue
-argument_list|()
-return|;
-block|}
-comment|/**    * Gets the current generation stamp for this filesystem    */
-DECL|method|setGenerationStampV2 (long stamp)
-name|void
-name|setGenerationStampV2
-parameter_list|(
-name|long
-name|stamp
-parameter_list|)
-block|{
-name|generationStampV2
-operator|.
-name|setCurrentValue
-argument_list|(
-name|stamp
-argument_list|)
-expr_stmt|;
-block|}
-comment|/**    * Gets the current generation stamp for this filesystem    */
-DECL|method|getGenerationStampV2 ()
-name|long
-name|getGenerationStampV2
-parameter_list|()
-block|{
-return|return
-name|generationStampV2
-operator|.
-name|getCurrentValue
-argument_list|()
-return|;
-block|}
-comment|/**    * Upgrades the generation stamp for the filesystem    * by reserving a sufficient range for all existing blocks.    * Should be invoked only during the first upgrade to    * sequential block IDs.    */
-DECL|method|upgradeGenerationStampToV2 ()
-name|long
-name|upgradeGenerationStampToV2
-parameter_list|()
-block|{
-name|Preconditions
-operator|.
-name|checkState
-argument_list|(
-name|generationStampV2
-operator|.
-name|getCurrentValue
-argument_list|()
-operator|==
-name|GenerationStamp
-operator|.
-name|LAST_RESERVED_STAMP
-argument_list|)
-expr_stmt|;
-name|generationStampV2
-operator|.
-name|skipTo
-argument_list|(
-name|generationStampV1
-operator|.
-name|getCurrentValue
-argument_list|()
-operator|+
-name|HdfsConstants
-operator|.
-name|RESERVED_GENERATION_STAMPS_V1
-argument_list|)
-expr_stmt|;
-name|generationStampV1Limit
-operator|=
-name|generationStampV2
-operator|.
-name|getCurrentValue
-argument_list|()
-expr_stmt|;
-return|return
-name|generationStampV2
-operator|.
-name|getCurrentValue
-argument_list|()
-return|;
-block|}
-comment|/**    * Sets the generation stamp that delineates random and sequentially    * allocated block IDs.    * @param stamp set generation stamp limit to this value    */
-DECL|method|setGenerationStampV1Limit (long stamp)
-name|void
-name|setGenerationStampV1Limit
-parameter_list|(
-name|long
-name|stamp
-parameter_list|)
-block|{
-name|Preconditions
-operator|.
-name|checkState
-argument_list|(
-name|generationStampV1Limit
-operator|==
-name|GenerationStamp
-operator|.
-name|GRANDFATHER_GENERATION_STAMP
-argument_list|)
-expr_stmt|;
-name|generationStampV1Limit
-operator|=
-name|stamp
-expr_stmt|;
-block|}
-comment|/**    * Gets the value of the generation stamp that delineates sequential    * and random block IDs.    */
-DECL|method|getGenerationStampAtblockIdSwitch ()
-name|long
-name|getGenerationStampAtblockIdSwitch
-parameter_list|()
-block|{
-return|return
-name|generationStampV1Limit
-return|;
-block|}
-annotation|@
-name|VisibleForTesting
-DECL|method|getBlockIdGenerator ()
-name|SequentialBlockIdGenerator
-name|getBlockIdGenerator
-parameter_list|()
-block|{
-return|return
-name|blockIdGenerator
-return|;
-block|}
-comment|/**    * Sets the maximum allocated block ID for this filesystem. This is    * the basis for allocating new block IDs.    */
-DECL|method|setLastAllocatedBlockId (long blockId)
-name|void
-name|setLastAllocatedBlockId
-parameter_list|(
-name|long
-name|blockId
-parameter_list|)
-block|{
-name|blockIdGenerator
-operator|.
-name|skipTo
-argument_list|(
-name|blockId
-argument_list|)
-expr_stmt|;
-block|}
-comment|/**    * Gets the maximum sequentially allocated block ID for this filesystem    */
-DECL|method|getLastAllocatedBlockId ()
-name|long
-name|getLastAllocatedBlockId
-parameter_list|()
-block|{
-return|return
-name|blockIdGenerator
-operator|.
-name|getCurrentValue
-argument_list|()
-return|;
-block|}
 comment|/**    * Increments, logs and then returns the stamp    */
 DECL|method|nextGenerationStamp (boolean legacyBlock)
 name|long
@@ -31750,17 +31484,19 @@ argument_list|)
 expr_stmt|;
 name|long
 name|gs
+init|=
+name|blockIdManager
+operator|.
+name|nextGenerationStamp
+argument_list|(
+name|legacyBlock
+argument_list|)
 decl_stmt|;
 if|if
 condition|(
 name|legacyBlock
 condition|)
 block|{
-name|gs
-operator|=
-name|getNextGenerationStampV1
-argument_list|()
-expr_stmt|;
 name|getEditLog
 argument_list|()
 operator|.
@@ -31772,11 +31508,6 @@ expr_stmt|;
 block|}
 else|else
 block|{
-name|gs
-operator|=
-name|getNextGenerationStampV2
-argument_list|()
-expr_stmt|;
 name|getEditLog
 argument_list|()
 operator|.
@@ -31789,86 +31520,6 @@ block|}
 comment|// NB: callers sync the log
 return|return
 name|gs
-return|;
-block|}
-annotation|@
-name|VisibleForTesting
-DECL|method|getNextGenerationStampV1 ()
-name|long
-name|getNextGenerationStampV1
-parameter_list|()
-throws|throws
-name|IOException
-block|{
-name|long
-name|genStampV1
-init|=
-name|generationStampV1
-operator|.
-name|nextValue
-argument_list|()
-decl_stmt|;
-if|if
-condition|(
-name|genStampV1
-operator|>=
-name|generationStampV1Limit
-condition|)
-block|{
-comment|// We ran out of generation stamps for legacy blocks. In practice, it
-comment|// is extremely unlikely as we reserved 1T v1 generation stamps. The
-comment|// result is that we can no longer append to the legacy blocks that
-comment|// were created before the upgrade to sequential block IDs.
-throw|throw
-operator|new
-name|OutOfV1GenerationStampsException
-argument_list|()
-throw|;
-block|}
-return|return
-name|genStampV1
-return|;
-block|}
-annotation|@
-name|VisibleForTesting
-DECL|method|getNextGenerationStampV2 ()
-name|long
-name|getNextGenerationStampV2
-parameter_list|()
-block|{
-return|return
-name|generationStampV2
-operator|.
-name|nextValue
-argument_list|()
-return|;
-block|}
-DECL|method|getGenerationStampV1Limit ()
-name|long
-name|getGenerationStampV1Limit
-parameter_list|()
-block|{
-return|return
-name|generationStampV1Limit
-return|;
-block|}
-comment|/**    * Determine whether the block ID was randomly generated (legacy) or    * sequentially generated. The generation stamp value is used to    * make the distinction.    * @return true if the block ID was randomly generated, false otherwise.    */
-DECL|method|isLegacyBlock (Block block)
-name|boolean
-name|isLegacyBlock
-parameter_list|(
-name|Block
-name|block
-parameter_list|)
-block|{
-return|return
-name|block
-operator|.
-name|getGenerationStamp
-argument_list|()
-operator|<
-name|getGenerationStampV1Limit
-argument_list|()
 return|;
 block|}
 comment|/**    * Increments, logs and then returns the block ID    */
@@ -31893,9 +31544,9 @@ specifier|final
 name|long
 name|blockId
 init|=
-name|blockIdGenerator
+name|blockIdManager
 operator|.
-name|nextValue
+name|nextBlockId
 argument_list|()
 decl_stmt|;
 name|getEditLog
@@ -32381,6 +32032,8 @@ name|setGenerationStamp
 argument_list|(
 name|nextGenerationStamp
 argument_list|(
+name|blockIdManager
+operator|.
 name|isLegacyBlock
 argument_list|(
 name|block
@@ -36506,6 +36159,16 @@ return|return
 name|blockManager
 return|;
 block|}
+DECL|method|getBlockIdManager ()
+specifier|public
+name|BlockIdManager
+name|getBlockIdManager
+parameter_list|()
+block|{
+return|return
+name|blockIdManager
+return|;
+block|}
 comment|/** @return the FSDirectory. */
 DECL|method|getFSDirectory ()
 specifier|public
@@ -36784,36 +36447,14 @@ name|Block
 name|block
 parameter_list|)
 block|{
-if|if
-condition|(
-name|isLegacyBlock
+return|return
+name|blockIdManager
+operator|.
+name|isGenStampInFuture
 argument_list|(
 name|block
 argument_list|)
-condition|)
-block|{
-return|return
-name|block
-operator|.
-name|getGenerationStamp
-argument_list|()
-operator|>
-name|getGenerationStampV1
-argument_list|()
 return|;
-block|}
-else|else
-block|{
-return|return
-name|block
-operator|.
-name|getGenerationStamp
-argument_list|()
-operator|>
-name|getGenerationStampV2
-argument_list|()
-return|;
-block|}
 block|}
 annotation|@
 name|VisibleForTesting

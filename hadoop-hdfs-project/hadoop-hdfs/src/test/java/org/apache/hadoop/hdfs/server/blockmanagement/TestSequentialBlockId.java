@@ -4,7 +4,7 @@ comment|/**  * Licensed to the Apache Software Foundation (ASF) under one  * or 
 end_comment
 
 begin_package
-DECL|package|org.apache.hadoop.hdfs.server.namenode
+DECL|package|org.apache.hadoop.hdfs.server.blockmanagement
 package|package
 name|org
 operator|.
@@ -16,7 +16,7 @@ name|hdfs
 operator|.
 name|server
 operator|.
-name|namenode
+name|blockmanagement
 package|;
 end_package
 
@@ -27,16 +27,6 @@ operator|.
 name|io
 operator|.
 name|IOException
-import|;
-end_import
-
-begin_import
-import|import
-name|java
-operator|.
-name|net
-operator|.
-name|InetSocketAddress
 import|;
 end_import
 
@@ -204,7 +194,7 @@ name|hdfs
 operator|.
 name|protocol
 operator|.
-name|DatanodeID
+name|LocatedBlock
 import|;
 end_import
 
@@ -218,23 +208,11 @@ name|hadoop
 operator|.
 name|hdfs
 operator|.
-name|protocol
+name|server
 operator|.
-name|LocatedBlock
-import|;
-end_import
-
-begin_import
-import|import
-name|org
+name|namenode
 operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|util
-operator|.
-name|DataChecksum
+name|FSNamesystem
 import|;
 end_import
 
@@ -308,26 +286,6 @@ argument_list|(
 literal|"TestSequentialBlockId"
 argument_list|)
 decl_stmt|;
-DECL|field|DEFAULT_CHECKSUM
-specifier|private
-specifier|static
-specifier|final
-name|DataChecksum
-name|DEFAULT_CHECKSUM
-init|=
-name|DataChecksum
-operator|.
-name|newDataChecksum
-argument_list|(
-name|DataChecksum
-operator|.
-name|Type
-operator|.
-name|CRC32C
-argument_list|,
-literal|512
-argument_list|)
-decl_stmt|;
 DECL|field|BLOCK_SIZE
 specifier|final
 name|int
@@ -355,14 +313,6 @@ name|long
 name|SEED
 init|=
 literal|0
-decl_stmt|;
-DECL|field|datanode
-name|DatanodeID
-name|datanode
-decl_stmt|;
-DECL|field|dnAddr
-name|InetSocketAddress
-name|dnAddr
 decl_stmt|;
 comment|/**    * Test that block IDs are generated sequentially.    *    * @throws IOException    */
 annotation|@
@@ -714,6 +664,9 @@ name|blockIdGenerator
 init|=
 name|fsn
 operator|.
+name|getBlockIdManager
+argument_list|()
+operator|.
 name|getBlockIdGenerator
 argument_list|()
 decl_stmt|;
@@ -846,12 +799,12 @@ name|IOException
 block|{
 comment|// Setup a mock object and stub out a few routines to
 comment|// retrieve the generation stamp counters.
-name|FSNamesystem
-name|fsn
+name|BlockIdManager
+name|bid
 init|=
 name|mock
 argument_list|(
-name|FSNamesystem
+name|BlockIdManager
 operator|.
 name|class
 argument_list|)
@@ -864,7 +817,7 @@ literal|10000
 decl_stmt|;
 name|when
 argument_list|(
-name|fsn
+name|bid
 operator|.
 name|getGenerationStampV1Limit
 argument_list|()
@@ -929,7 +882,7 @@ comment|// Make sure that isLegacyBlock() can correctly detect
 comment|// legacy and new blocks.
 name|when
 argument_list|(
-name|fsn
+name|bid
 operator|.
 name|isLegacyBlock
 argument_list|(
@@ -947,7 +900,7 @@ argument_list|()
 expr_stmt|;
 name|assertThat
 argument_list|(
-name|fsn
+name|bid
 operator|.
 name|isLegacyBlock
 argument_list|(
@@ -962,7 +915,7 @@ argument_list|)
 expr_stmt|;
 name|assertThat
 argument_list|(
-name|fsn
+name|bid
 operator|.
 name|isLegacyBlock
 argument_list|(
@@ -989,22 +942,12 @@ name|IOException
 block|{
 comment|// Setup a mock object and stub out a few routines to
 comment|// retrieve the generation stamp counters.
-name|FSNamesystem
-name|fsn
+name|BlockIdManager
+name|bid
 init|=
 name|mock
 argument_list|(
-name|FSNamesystem
-operator|.
-name|class
-argument_list|)
-decl_stmt|;
-name|FSEditLog
-name|editLog
-init|=
-name|mock
-argument_list|(
-name|FSEditLog
+name|BlockIdManager
 operator|.
 name|class
 argument_list|)
@@ -1023,7 +966,7 @@ literal|20000
 decl_stmt|;
 name|when
 argument_list|(
-name|fsn
+name|bid
 operator|.
 name|getNextGenerationStampV1
 argument_list|()
@@ -1036,7 +979,7 @@ argument_list|)
 expr_stmt|;
 name|when
 argument_list|(
-name|fsn
+name|bid
 operator|.
 name|getNextGenerationStampV2
 argument_list|()
@@ -1051,7 +994,7 @@ comment|// Make sure that the generation stamp is set correctly for both
 comment|// kinds of blocks.
 name|when
 argument_list|(
-name|fsn
+name|bid
 operator|.
 name|nextGenerationStamp
 argument_list|(
@@ -1063,35 +1006,9 @@ operator|.
 name|thenCallRealMethod
 argument_list|()
 expr_stmt|;
-name|when
-argument_list|(
-name|fsn
-operator|.
-name|hasWriteLock
-argument_list|()
-argument_list|)
-operator|.
-name|thenReturn
-argument_list|(
-literal|true
-argument_list|)
-expr_stmt|;
-name|when
-argument_list|(
-name|fsn
-operator|.
-name|getEditLog
-argument_list|()
-argument_list|)
-operator|.
-name|thenReturn
-argument_list|(
-name|editLog
-argument_list|)
-expr_stmt|;
 name|assertThat
 argument_list|(
-name|fsn
+name|bid
 operator|.
 name|nextGenerationStamp
 argument_list|(
@@ -1106,7 +1023,7 @@ argument_list|)
 expr_stmt|;
 name|assertThat
 argument_list|(
-name|fsn
+name|bid
 operator|.
 name|nextGenerationStamp
 argument_list|(

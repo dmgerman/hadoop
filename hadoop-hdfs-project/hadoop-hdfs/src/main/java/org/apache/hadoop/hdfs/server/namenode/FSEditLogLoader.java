@@ -3872,6 +3872,9 @@ name|op
 decl_stmt|;
 name|fsNamesys
 operator|.
+name|getBlockIdManager
+argument_list|()
+operator|.
 name|setGenerationStampV1
 argument_list|(
 name|setGenstampV1Op
@@ -4765,6 +4768,9 @@ name|op
 decl_stmt|;
 name|fsNamesys
 operator|.
+name|getBlockIdManager
+argument_list|()
+operator|.
 name|setGenerationStampV2
 argument_list|(
 name|setGenstampV2Op
@@ -4787,6 +4793,9 @@ operator|)
 name|op
 decl_stmt|;
 name|fsNamesys
+operator|.
+name|getBlockIdManager
+argument_list|()
 operator|.
 name|setLastAllocatedBlockId
 argument_list|(

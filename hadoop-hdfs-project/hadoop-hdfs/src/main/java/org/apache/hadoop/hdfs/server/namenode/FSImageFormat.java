@@ -1463,6 +1463,9 @@ argument_list|()
 decl_stmt|;
 name|namesystem
 operator|.
+name|getBlockIdManager
+argument_list|()
+operator|.
 name|setGenerationStampV1
 argument_list|(
 name|genstamp
@@ -1494,6 +1497,9 @@ argument_list|()
 expr_stmt|;
 name|namesystem
 operator|.
+name|getBlockIdManager
+argument_list|()
+operator|.
 name|setGenerationStampV2
 argument_list|(
 name|genstamp
@@ -1511,6 +1517,9 @@ argument_list|()
 decl_stmt|;
 name|namesystem
 operator|.
+name|getBlockIdManager
+argument_list|()
+operator|.
 name|setGenerationStampV1Limit
 argument_list|(
 name|stampAtIdSwitch
@@ -1527,6 +1536,9 @@ argument_list|()
 decl_stmt|;
 name|namesystem
 operator|.
+name|getBlockIdManager
+argument_list|()
+operator|.
 name|setLastAllocatedBlockId
 argument_list|(
 name|maxSequentialBlockId
@@ -1539,6 +1551,9 @@ name|long
 name|startingGenStamp
 init|=
 name|namesystem
+operator|.
+name|getBlockIdManager
+argument_list|()
 operator|.
 name|upgradeGenerationStampToV2
 argument_list|()
@@ -5932,6 +5947,9 @@ name|writeLong
 argument_list|(
 name|sourceNamesystem
 operator|.
+name|getBlockIdManager
+argument_list|()
+operator|.
 name|getGenerationStampV1
 argument_list|()
 argument_list|)
@@ -5941,6 +5959,9 @@ operator|.
 name|writeLong
 argument_list|(
 name|sourceNamesystem
+operator|.
+name|getBlockIdManager
+argument_list|()
 operator|.
 name|getGenerationStampV2
 argument_list|()
@@ -5952,6 +5973,9 @@ name|writeLong
 argument_list|(
 name|sourceNamesystem
 operator|.
+name|getBlockIdManager
+argument_list|()
+operator|.
 name|getGenerationStampAtblockIdSwitch
 argument_list|()
 argument_list|)
@@ -5961,6 +5985,9 @@ operator|.
 name|writeLong
 argument_list|(
 name|sourceNamesystem
+operator|.
+name|getBlockIdManager
+argument_list|()
 operator|.
 name|getLastAllocatedBlockId
 argument_list|()
