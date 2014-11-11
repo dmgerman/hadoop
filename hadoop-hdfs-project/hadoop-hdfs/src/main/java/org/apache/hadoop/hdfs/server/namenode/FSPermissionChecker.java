@@ -1644,6 +1644,7 @@ name|foundMatch
 operator|=
 literal|true
 expr_stmt|;
+break|break;
 block|}
 block|}
 elseif|else
