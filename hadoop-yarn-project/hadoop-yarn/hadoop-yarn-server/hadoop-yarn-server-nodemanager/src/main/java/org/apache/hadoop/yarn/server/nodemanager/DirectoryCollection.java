@@ -536,14 +536,6 @@ expr_stmt|;
 name|diskUtilizationPercentageCutoff
 operator|=
 name|utilizationPercentageCutOff
-expr_stmt|;
-name|diskUtilizationSpaceCutoff
-operator|=
-name|utilizationSpaceCutOff
-expr_stmt|;
-name|diskUtilizationPercentageCutoff
-operator|=
-name|utilizationPercentageCutOff
 operator|<
 literal|0.0F
 condition|?
