@@ -106,6 +106,7 @@ operator|.
 name|class
 argument_list|)
 decl_stmt|;
+comment|// This format should match the one used in yarn.dt.plugins.js
 DECL|field|dateFormat
 specifier|static
 specifier|final
@@ -133,7 +134,7 @@ return|return
 operator|new
 name|SimpleDateFormat
 argument_list|(
-literal|"d-MMM-yyyy HH:mm:ss"
+literal|"EEE MMM dd HH:mm:ss Z yyyy"
 argument_list|)
 return|;
 block|}
