@@ -50,6 +50,16 @@ name|java
 operator|.
 name|io
 operator|.
+name|EOFException
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|io
+operator|.
 name|File
 import|;
 end_import
@@ -4824,6 +4834,24 @@ block|{
 name|heartBeatID
 operator|++
 expr_stmt|;
+if|if
+condition|(
+name|heartBeatID
+operator|==
+literal|1
+condition|)
+block|{
+comment|// EOFException should be retried as well.
+throw|throw
+operator|new
+name|EOFException
+argument_list|(
+literal|"NodeHeartbeat exception"
+argument_list|)
+throw|;
+block|}
+else|else
+block|{
 throw|throw
 operator|new
 name|java
@@ -4835,6 +4863,7 @@ argument_list|(
 literal|"NodeHeartbeat exception"
 argument_list|)
 throw|;
+block|}
 block|}
 block|}
 DECL|class|MyResourceTracker6
