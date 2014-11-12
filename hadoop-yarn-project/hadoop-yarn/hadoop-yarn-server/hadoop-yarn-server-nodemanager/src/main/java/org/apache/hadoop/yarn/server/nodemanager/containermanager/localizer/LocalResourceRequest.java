@@ -703,6 +703,37 @@ return|;
 block|}
 annotation|@
 name|Override
+DECL|method|getShouldBeUploadedToSharedCache ()
+specifier|public
+name|boolean
+name|getShouldBeUploadedToSharedCache
+parameter_list|()
+block|{
+throw|throw
+operator|new
+name|UnsupportedOperationException
+argument_list|()
+throw|;
+block|}
+annotation|@
+name|Override
+DECL|method|setShouldBeUploadedToSharedCache ( boolean shouldBeUploadedToSharedCache)
+specifier|public
+name|void
+name|setShouldBeUploadedToSharedCache
+parameter_list|(
+name|boolean
+name|shouldBeUploadedToSharedCache
+parameter_list|)
+block|{
+throw|throw
+operator|new
+name|UnsupportedOperationException
+argument_list|()
+throw|;
+block|}
+annotation|@
+name|Override
 DECL|method|setResource (URL resource)
 specifier|public
 name|void

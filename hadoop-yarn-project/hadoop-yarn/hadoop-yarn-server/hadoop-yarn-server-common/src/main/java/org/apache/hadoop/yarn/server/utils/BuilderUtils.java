@@ -739,6 +739,8 @@ comment|/**  * Builder utilities to construct various objects.  *  */
 end_comment
 
 begin_class
+annotation|@
+name|Private
 DECL|class|BuilderUtils
 specifier|public
 class|class
@@ -836,7 +838,7 @@ argument_list|)
 return|;
 block|}
 block|}
-DECL|method|newLocalResource (URL url, LocalResourceType type, LocalResourceVisibility visibility, long size, long timestamp)
+DECL|method|newLocalResource (URL url, LocalResourceType type, LocalResourceVisibility visibility, long size, long timestamp, boolean shouldBeUploadedToSharedCache)
 specifier|public
 specifier|static
 name|LocalResource
@@ -856,6 +858,9 @@ name|size
 parameter_list|,
 name|long
 name|timestamp
+parameter_list|,
+name|boolean
+name|shouldBeUploadedToSharedCache
 parameter_list|)
 block|{
 name|LocalResource
@@ -905,11 +910,18 @@ argument_list|(
 name|timestamp
 argument_list|)
 expr_stmt|;
+name|resource
+operator|.
+name|setShouldBeUploadedToSharedCache
+argument_list|(
+name|shouldBeUploadedToSharedCache
+argument_list|)
+expr_stmt|;
 return|return
 name|resource
 return|;
 block|}
-DECL|method|newLocalResource (URI uri, LocalResourceType type, LocalResourceVisibility visibility, long size, long timestamp)
+DECL|method|newLocalResource (URI uri, LocalResourceType type, LocalResourceVisibility visibility, long size, long timestamp, boolean shouldBeUploadedToSharedCache)
 specifier|public
 specifier|static
 name|LocalResource
@@ -929,6 +941,9 @@ name|size
 parameter_list|,
 name|long
 name|timestamp
+parameter_list|,
+name|boolean
+name|shouldBeUploadedToSharedCache
 parameter_list|)
 block|{
 return|return
@@ -948,6 +963,8 @@ argument_list|,
 name|size
 argument_list|,
 name|timestamp
+argument_list|,
+name|shouldBeUploadedToSharedCache
 argument_list|)
 return|;
 block|}
@@ -1842,8 +1859,6 @@ name|service
 argument_list|)
 return|;
 block|}
-annotation|@
-name|Private
 annotation|@
 name|VisibleForTesting
 DECL|method|newContainerToken (NodeId nodeId, byte[] password, ContainerTokenIdentifier tokenIdentifier)

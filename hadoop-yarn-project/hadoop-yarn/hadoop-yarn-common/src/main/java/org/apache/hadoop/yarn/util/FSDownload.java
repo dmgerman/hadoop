@@ -182,6 +182,22 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|classification
+operator|.
+name|InterfaceAudience
+operator|.
+name|Private
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|conf
 operator|.
 name|Configuration
@@ -873,8 +889,9 @@ return|;
 block|}
 comment|/**    * Returns a boolean to denote whether a cache file is visible to all (public)    * or not    *    * @return true if the path in the current path is visible to all, false    * otherwise    */
 annotation|@
-name|VisibleForTesting
+name|Private
 DECL|method|isPublic (FileSystem fs, Path current, FileStatus sStat, LoadingCache<Path,Future<FileStatus>> statCache)
+specifier|public
 specifier|static
 name|boolean
 name|isPublic

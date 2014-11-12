@@ -12382,6 +12382,8 @@ literal|1024
 argument_list|)
 operator|+
 literal|2048L
+argument_list|,
+literal|false
 argument_list|)
 decl_stmt|;
 return|return
