@@ -3421,6 +3421,40 @@ name|NM_PREFIX
 operator|+
 literal|"health-checker.script.opts"
 decl_stmt|;
+comment|/** The Docker image name(For DockerContainerExecutor).*/
+DECL|field|NM_DOCKER_CONTAINER_EXECUTOR_IMAGE_NAME
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|NM_DOCKER_CONTAINER_EXECUTOR_IMAGE_NAME
+init|=
+name|NM_PREFIX
+operator|+
+literal|"docker-container-executor.image-name"
+decl_stmt|;
+comment|/** The name of the docker executor (For DockerContainerExecutor).*/
+DECL|field|NM_DOCKER_CONTAINER_EXECUTOR_EXEC_NAME
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|NM_DOCKER_CONTAINER_EXECUTOR_EXEC_NAME
+init|=
+name|NM_PREFIX
+operator|+
+literal|"docker-container-executor.exec-name"
+decl_stmt|;
+comment|/** The default docker executor (For DockerContainerExecutor).*/
+DECL|field|NM_DEFAULT_DOCKER_CONTAINER_EXECUTOR_EXEC_NAME
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|NM_DEFAULT_DOCKER_CONTAINER_EXECUTOR_EXEC_NAME
+init|=
+literal|"/usr/bin/docker"
+decl_stmt|;
 comment|/** The path to the Linux container executor.*/
 DECL|field|NM_LINUX_CONTAINER_EXECUTOR_PATH
 specifier|public
