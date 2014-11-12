@@ -6921,23 +6921,17 @@ return|return
 literal|null
 return|;
 block|}
-for|for
-control|(
-name|Token
-argument_list|<
-name|?
-argument_list|>
-name|token
-range|:
-name|systemCredentials
+if|if
+condition|(
+name|LOG
 operator|.
-name|getAllTokens
+name|isDebugEnabled
 argument_list|()
-control|)
+condition|)
 block|{
 name|LOG
 operator|.
-name|info
+name|debug
 argument_list|(
 literal|"Adding new framework-token for "
 operator|+
@@ -6945,7 +6939,10 @@ name|appId
 operator|+
 literal|" for localization: "
 operator|+
-name|token
+name|systemCredentials
+operator|.
+name|getAllTokens
+argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
