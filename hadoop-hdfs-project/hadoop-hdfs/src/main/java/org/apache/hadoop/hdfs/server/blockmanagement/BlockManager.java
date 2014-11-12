@@ -686,24 +686,6 @@ name|server
 operator|.
 name|namenode
 operator|.
-name|FSClusterStats
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|hdfs
-operator|.
-name|server
-operator|.
-name|namenode
-operator|.
 name|NameNode
 import|;
 end_import
@@ -1545,17 +1527,13 @@ name|checkNSRunning
 init|=
 literal|true
 decl_stmt|;
-DECL|method|BlockManager (final Namesystem namesystem, final FSClusterStats stats, final Configuration conf)
+DECL|method|BlockManager (final Namesystem namesystem, final Configuration conf)
 specifier|public
 name|BlockManager
 parameter_list|(
 specifier|final
 name|Namesystem
 name|namesystem
-parameter_list|,
-specifier|final
-name|FSClusterStats
-name|stats
 parameter_list|,
 specifier|final
 name|Configuration
@@ -1642,7 +1620,10 @@ name|getInstance
 argument_list|(
 name|conf
 argument_list|,
-name|stats
+name|datanodeManager
+operator|.
+name|getFSClusterStats
+argument_list|()
 argument_list|,
 name|datanodeManager
 operator|.

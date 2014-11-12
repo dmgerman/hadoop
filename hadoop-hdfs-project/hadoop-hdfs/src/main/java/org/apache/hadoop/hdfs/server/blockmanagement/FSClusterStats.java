@@ -4,7 +4,7 @@ comment|/**  * Licensed to the Apache Software Foundation (ASF) under one  * or 
 end_comment
 
 begin_package
-DECL|package|org.apache.hadoop.hdfs.server.namenode
+DECL|package|org.apache.hadoop.hdfs.server.blockmanagement
 package|package
 name|org
 operator|.
@@ -16,7 +16,7 @@ name|hdfs
 operator|.
 name|server
 operator|.
-name|namenode
+name|blockmanagement
 package|;
 end_package
 
@@ -35,7 +35,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**   * This interface is used for retrieving the load related statistics of   * the cluster.  */
+comment|/**  * This interface is used for retrieving the load related statistics of  * the cluster.  */
 end_comment
 
 begin_interface
@@ -48,14 +48,14 @@ specifier|public
 interface|interface
 name|FSClusterStats
 block|{
-comment|/**    * an indication of the total load of the cluster.    *     * @return a count of the total number of block transfers and block    *         writes that are currently occuring on the cluster.    */
+comment|/**    * an indication of the total load of the cluster.    *    * @return a count of the total number of block transfers and block    *         writes that are currently occuring on the cluster.    */
 DECL|method|getTotalLoad ()
 specifier|public
 name|int
 name|getTotalLoad
 parameter_list|()
 function_decl|;
-comment|/**    * Indicate whether or not the cluster is now avoiding     * to use stale DataNodes for writing.    *     * @return True if the cluster is currently avoiding using stale DataNodes     *         for writing targets, and false otherwise.    */
+comment|/**    * Indicate whether or not the cluster is now avoiding    * to use stale DataNodes for writing.    *    * @return True if the cluster is currently avoiding using stale DataNodes    *         for writing targets, and false otherwise.    */
 DECL|method|isAvoidingStaleDataNodesForWrite ()
 specifier|public
 name|boolean
@@ -69,7 +69,7 @@ name|int
 name|getNumDatanodesInService
 parameter_list|()
 function_decl|;
-comment|/**    * an indication of the average load of non-decommission(ing|ed) nodes    * eligible for block placement    *     * @return average of the in service number of block transfers and block    *         writes that are currently occurring on the cluster.    */
+comment|/**    * an indication of the average load of non-decommission(ing|ed) nodes    * eligible for block placement    *    * @return average of the in service number of block transfers and block    *         writes that are currently occurring on the cluster.    */
 DECL|method|getInServiceXceiverAverage ()
 specifier|public
 name|double

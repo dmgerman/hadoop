@@ -934,7 +934,10 @@ name|load
 operator|/
 literal|6
 argument_list|,
-name|fsn
+name|dnManager
+operator|.
+name|getFSClusterStats
+argument_list|()
 operator|.
 name|getInServiceXceiverAverage
 argument_list|()
@@ -996,7 +999,10 @@ name|load
 operator|/
 literal|3
 argument_list|,
-name|fsn
+name|dnManager
+operator|.
+name|getFSClusterStats
+argument_list|()
 operator|.
 name|getInServiceXceiverAverage
 argument_list|()

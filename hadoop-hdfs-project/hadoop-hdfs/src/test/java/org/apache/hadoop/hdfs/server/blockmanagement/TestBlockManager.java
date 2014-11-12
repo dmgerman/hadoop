@@ -655,11 +655,6 @@ literal|64
 operator|*
 literal|1024
 decl_stmt|;
-DECL|field|conf
-specifier|private
-name|Configuration
-name|conf
-decl_stmt|;
 DECL|field|fsn
 specifier|private
 name|FSNamesystem
@@ -680,12 +675,13 @@ parameter_list|()
 throws|throws
 name|IOException
 block|{
+name|Configuration
 name|conf
-operator|=
+init|=
 operator|new
 name|HdfsConfiguration
 argument_list|()
-expr_stmt|;
+decl_stmt|;
 name|conf
 operator|.
 name|set
@@ -728,8 +724,6 @@ operator|=
 operator|new
 name|BlockManager
 argument_list|(
-name|fsn
-argument_list|,
 name|fsn
 argument_list|,
 name|conf
