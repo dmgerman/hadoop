@@ -564,12 +564,11 @@ operator|.
 name|LAST_RESERVED_BLOCK_ID
 argument_list|)
 expr_stmt|;
-name|setGenerationStampV1Limit
-argument_list|(
+name|generationStampV1Limit
+operator|=
 name|GenerationStamp
 operator|.
 name|GRANDFATHER_GENERATION_STAMP
-argument_list|)
 expr_stmt|;
 block|}
 block|}
