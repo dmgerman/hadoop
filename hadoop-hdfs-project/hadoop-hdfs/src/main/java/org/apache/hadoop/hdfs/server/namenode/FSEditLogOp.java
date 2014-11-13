@@ -3608,6 +3608,35 @@ name|OP_CLOSE
 operator|)
 assert|;
 block|}
+DECL|method|reset ()
+parameter_list|<
+name|T
+extends|extends
+name|AddCloseOp
+parameter_list|>
+name|T
+name|reset
+parameter_list|()
+block|{
+name|this
+operator|.
+name|aclEntries
+operator|=
+literal|null
+expr_stmt|;
+name|this
+operator|.
+name|xAttrs
+operator|=
+literal|null
+expr_stmt|;
+return|return
+operator|(
+name|T
+operator|)
+name|this
+return|;
+block|}
 DECL|method|setInodeId (long inodeId)
 parameter_list|<
 name|T
@@ -9139,6 +9168,27 @@ name|get
 argument_list|(
 name|OP_MKDIR
 argument_list|)
+return|;
+block|}
+DECL|method|reset ()
+name|MkdirOp
+name|reset
+parameter_list|()
+block|{
+name|this
+operator|.
+name|aclEntries
+operator|=
+literal|null
+expr_stmt|;
+name|this
+operator|.
+name|xAttrs
+operator|=
+literal|null
+expr_stmt|;
+return|return
+name|this
 return|;
 block|}
 DECL|method|setInodeId (long inodeId)

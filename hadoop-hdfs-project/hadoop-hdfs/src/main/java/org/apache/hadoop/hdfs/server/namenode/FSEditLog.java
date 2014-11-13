@@ -3425,6 +3425,9 @@ name|get
 argument_list|()
 argument_list|)
 operator|.
+name|reset
+argument_list|()
+operator|.
 name|setInodeId
 argument_list|(
 name|newNode
@@ -3879,6 +3882,9 @@ operator|.
 name|get
 argument_list|()
 argument_list|)
+operator|.
+name|reset
+argument_list|()
 operator|.
 name|setInodeId
 argument_list|(
