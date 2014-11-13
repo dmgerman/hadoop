@@ -317,13 +317,6 @@ argument_list|(
 literal|"HADOOP_HDFS_HOME"
 argument_list|)
 block|,
-comment|/**      * $HADOOP_MAPRED_HOME      */
-DECL|enumConstant|HADOOP_MAPRED_HOME
-name|HADOOP_MAPRED_HOME
-argument_list|(
-literal|"HADOOP_MAPRED_HOME"
-argument_list|)
-block|,
 comment|/**      * $MALLOC_ARENA_MAX      */
 DECL|enumConstant|MALLOC_ARENA_MAX
 name|MALLOC_ARENA_MAX
