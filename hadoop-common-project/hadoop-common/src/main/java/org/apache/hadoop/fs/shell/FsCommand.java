@@ -98,6 +98,24 @@ name|Path
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|fs
+operator|.
+name|shell
+operator|.
+name|find
+operator|.
+name|Find
+import|;
+end_import
+
 begin_comment
 comment|/**  * Base class for all "hadoop fs" commands  */
 end_comment
@@ -174,6 +192,15 @@ operator|.
 name|registerCommands
 argument_list|(
 name|Display
+operator|.
+name|class
+argument_list|)
+expr_stmt|;
+name|factory
+operator|.
+name|registerCommands
+argument_list|(
+name|Find
 operator|.
 name|class
 argument_list|)

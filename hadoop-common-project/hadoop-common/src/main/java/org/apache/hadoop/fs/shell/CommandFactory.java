@@ -463,6 +463,13 @@ argument_list|(
 name|cmdName
 argument_list|)
 expr_stmt|;
+name|instance
+operator|.
+name|setCommandFactory
+argument_list|(
+name|this
+argument_list|)
+expr_stmt|;
 block|}
 block|}
 return|return

@@ -377,6 +377,14 @@ name|System
 operator|.
 name|err
 decl_stmt|;
+comment|/** allows the command factory to be used if necessary */
+DECL|field|commandFactory
+specifier|private
+name|CommandFactory
+name|commandFactory
+init|=
+literal|null
+decl_stmt|;
 comment|/** Constructor */
 DECL|method|Command ()
 specifier|protected
@@ -539,6 +547,36 @@ block|}
 block|}
 return|return
 name|exitCode
+return|;
+block|}
+comment|/** sets the command factory for later use */
+DECL|method|setCommandFactory (CommandFactory factory)
+specifier|public
+name|void
+name|setCommandFactory
+parameter_list|(
+name|CommandFactory
+name|factory
+parameter_list|)
+block|{
+name|this
+operator|.
+name|commandFactory
+operator|=
+name|factory
+expr_stmt|;
+block|}
+comment|/** retrieves the command factory */
+DECL|method|getCommandFactory ()
+specifier|protected
+name|CommandFactory
+name|getCommandFactory
+parameter_list|()
+block|{
+return|return
+name|this
+operator|.
+name|commandFactory
 return|;
 block|}
 comment|/**    * Invokes the command handler.  The default behavior is to process options,    * expand arguments, and then process each argument.    *<pre>    * run    * |-> {@link #processOptions(LinkedList)}    * \-> {@link #processRawArguments(LinkedList)}    *      |-> {@link #expandArguments(LinkedList)}    *      |   \-> {@link #expandArgument(String)}*    *      \-> {@link #processArguments(LinkedList)}    *          |-> {@link #processArgument(PathData)}*    *          |   |-> {@link #processPathArgument(PathData)}    *          |   \-> {@link #processPaths(PathData, PathData...)}    *          |        \-> {@link #processPath(PathData)}*    *          \-> {@link #processNonexistentPath(PathData)}    *</pre>    * Most commands will chose to implement just    * {@link #processOptions(LinkedList)} and {@link #processPath(PathData)}    *     * @param argv the list of command line arguments    * @return the exit code for the command    * @throws IllegalArgumentException if called with invalid arguments    */
@@ -982,12 +1020,10 @@ if|if
 condition|(
 name|recursive
 operator|&&
+name|isPathRecursable
+argument_list|(
 name|item
-operator|.
-name|stat
-operator|.
-name|isDirectory
-argument_list|()
+argument_list|)
 condition|)
 block|{
 name|recursePath
@@ -1015,6 +1051,27 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
+block|}
+comment|/**    * Determines whether a {@link PathData} item is recursable. Default    * implementation is to recurse directories but can be overridden to recurse    * through symbolic links.    *    * @param item    *          a {@link PathData} object    * @return true if the item is recursable, false otherwise    * @throws IOException    *           if anything goes wrong in the user-implementation    */
+DECL|method|isPathRecursable (PathData item)
+specifier|protected
+name|boolean
+name|isPathRecursable
+parameter_list|(
+name|PathData
+name|item
+parameter_list|)
+throws|throws
+name|IOException
+block|{
+return|return
+name|item
+operator|.
+name|stat
+operator|.
+name|isDirectory
+argument_list|()
+return|;
 block|}
 comment|/**    * Hook for commands to implement an operation to be applied on each    * path for the command.  Note implementation of this method is optional    * if earlier methods in the chain handle the operation.    * @param item a {@link PathData} object    * @throws RuntimeException if invoked but not implemented    * @throws IOException if anything else goes wrong in the user-implementation    */
 DECL|method|processPath (PathData item)
