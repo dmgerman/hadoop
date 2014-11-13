@@ -56,6 +56,16 @@ name|java
 operator|.
 name|util
 operator|.
+name|LinkedHashMap
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
 name|List
 import|;
 end_import
@@ -900,7 +910,7 @@ argument_list|>
 name|apps
 init|=
 operator|new
-name|HashMap
+name|LinkedHashMap
 argument_list|<
 name|ApplicationId
 argument_list|,
@@ -1066,7 +1076,7 @@ argument_list|>
 name|appAttempts
 init|=
 operator|new
-name|HashMap
+name|LinkedHashMap
 argument_list|<
 name|ApplicationAttemptId
 argument_list|,
@@ -1447,7 +1457,7 @@ argument_list|>
 name|containers
 init|=
 operator|new
-name|HashMap
+name|LinkedHashMap
 argument_list|<
 name|ContainerId
 argument_list|,
