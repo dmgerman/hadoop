@@ -1825,6 +1825,7 @@ name|chunksPerPkt
 expr_stmt|;
 block|}
 DECL|method|writeData (byte[] inarray, int off, int len)
+specifier|synchronized
 name|void
 name|writeData
 parameter_list|(
@@ -1838,7 +1839,12 @@ parameter_list|,
 name|int
 name|len
 parameter_list|)
+throws|throws
+name|ClosedChannelException
 block|{
+name|checkBuffer
+argument_list|()
+expr_stmt|;
 if|if
 condition|(
 name|dataPos
@@ -1877,6 +1883,7 @@ name|len
 expr_stmt|;
 block|}
 DECL|method|writeChecksum (byte[] inarray, int off, int len)
+specifier|synchronized
 name|void
 name|writeChecksum
 parameter_list|(
@@ -1890,7 +1897,12 @@ parameter_list|,
 name|int
 name|len
 parameter_list|)
+throws|throws
+name|ClosedChannelException
 block|{
+name|checkBuffer
+argument_list|()
+expr_stmt|;
 if|if
 condition|(
 name|len
@@ -1937,6 +1949,7 @@ expr_stmt|;
 block|}
 comment|/**      * Write the full packet, including the header, to the given output stream.      */
 DECL|method|writeTo (DataOutputStream stm)
+specifier|synchronized
 name|void
 name|writeTo
 parameter_list|(
@@ -1946,6 +1959,9 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
+name|checkBuffer
+argument_list|()
+expr_stmt|;
 specifier|final
 name|int
 name|dataLen
@@ -2176,8 +2192,32 @@ literal|0xff
 expr_stmt|;
 block|}
 block|}
+DECL|method|checkBuffer ()
+specifier|private
+specifier|synchronized
+name|void
+name|checkBuffer
+parameter_list|()
+throws|throws
+name|ClosedChannelException
+block|{
+if|if
+condition|(
+name|buf
+operator|==
+literal|null
+condition|)
+block|{
+throw|throw
+operator|new
+name|ClosedChannelException
+argument_list|()
+throw|;
+block|}
+block|}
 DECL|method|releaseBuffer (ByteArrayManager bam)
 specifier|private
+specifier|synchronized
 name|void
 name|releaseBuffer
 parameter_list|(
@@ -3868,9 +3908,8 @@ name|streamerClosed
 operator|=
 literal|true
 expr_stmt|;
-name|closed
-operator|=
-literal|true
+name|setClosed
+argument_list|()
 expr_stmt|;
 synchronized|synchronized
 init|(
@@ -7878,6 +7917,8 @@ return|return
 name|sock
 return|;
 block|}
+annotation|@
+name|Override
 DECL|method|checkClosed ()
 specifier|protected
 name|void
@@ -7888,7 +7929,8 @@ name|IOException
 block|{
 if|if
 condition|(
-name|closed
+name|isClosed
+argument_list|()
 condition|)
 block|{
 name|IOException
@@ -9058,7 +9100,8 @@ comment|// If queue is full, then wait till we have enough space
 while|while
 condition|(
 operator|!
-name|closed
+name|isClosed
+argument_list|()
 operator|&&
 name|dataQueue
 operator|.
@@ -9719,9 +9762,22 @@ operator|++
 argument_list|)
 expr_stmt|;
 block|}
-else|else
+elseif|else
+if|if
+condition|(
+name|currentPacket
+operator|!=
+literal|null
+condition|)
 block|{
 comment|// just discard the current packet since it is already been sent.
+name|currentPacket
+operator|.
+name|releaseBuffer
+argument_list|(
+name|byteArrayManager
+argument_list|)
+expr_stmt|;
 name|currentPacket
 operator|=
 literal|null
@@ -9929,7 +9985,8 @@ block|{
 if|if
 condition|(
 operator|!
-name|closed
+name|isClosed
+argument_list|()
 condition|)
 block|{
 name|lastException
@@ -10124,7 +10181,8 @@ block|{
 while|while
 condition|(
 operator|!
-name|closed
+name|isClosed
+argument_list|()
 condition|)
 block|{
 name|checkClosed
@@ -10237,7 +10295,8 @@ name|IOException
 block|{
 if|if
 condition|(
-name|closed
+name|isClosed
+argument_list|()
 condition|)
 block|{
 return|return;
@@ -10275,6 +10334,83 @@ name|endFileLease
 argument_list|(
 name|fileId
 argument_list|)
+expr_stmt|;
+block|}
+DECL|method|isClosed ()
+name|boolean
+name|isClosed
+parameter_list|()
+block|{
+return|return
+name|closed
+return|;
+block|}
+DECL|method|setClosed ()
+name|void
+name|setClosed
+parameter_list|()
+block|{
+name|closed
+operator|=
+literal|true
+expr_stmt|;
+synchronized|synchronized
+init|(
+name|dataQueue
+init|)
+block|{
+name|releaseBuffer
+argument_list|(
+name|dataQueue
+argument_list|,
+name|byteArrayManager
+argument_list|)
+expr_stmt|;
+name|releaseBuffer
+argument_list|(
+name|ackQueue
+argument_list|,
+name|byteArrayManager
+argument_list|)
+expr_stmt|;
+block|}
+block|}
+DECL|method|releaseBuffer (List<Packet> packets, ByteArrayManager bam)
+specifier|private
+specifier|static
+name|void
+name|releaseBuffer
+parameter_list|(
+name|List
+argument_list|<
+name|Packet
+argument_list|>
+name|packets
+parameter_list|,
+name|ByteArrayManager
+name|bam
+parameter_list|)
+block|{
+for|for
+control|(
+name|Packet
+name|p
+range|:
+name|packets
+control|)
+block|{
+name|p
+operator|.
+name|releaseBuffer
+argument_list|(
+name|bam
+argument_list|)
+expr_stmt|;
+block|}
+name|packets
+operator|.
+name|clear
+argument_list|()
 expr_stmt|;
 block|}
 comment|// shutdown datastreamer and responseprocessor threads.
@@ -10342,9 +10478,8 @@ name|s
 operator|=
 literal|null
 expr_stmt|;
-name|closed
-operator|=
-literal|true
+name|setClosed
+argument_list|()
 expr_stmt|;
 block|}
 block|}
@@ -10362,7 +10497,8 @@ name|IOException
 block|{
 if|if
 condition|(
-name|closed
+name|isClosed
+argument_list|()
 condition|)
 block|{
 name|IOException
@@ -10478,9 +10614,8 @@ parameter_list|)
 block|{     }
 finally|finally
 block|{
-name|closed
-operator|=
-literal|true
+name|setClosed
+argument_list|()
 expr_stmt|;
 block|}
 block|}

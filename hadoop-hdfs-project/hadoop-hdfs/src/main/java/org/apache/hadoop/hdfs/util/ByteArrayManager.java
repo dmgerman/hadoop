@@ -832,36 +832,9 @@ name|this
 argument_list|)
 expr_stmt|;
 block|}
-if|if
-condition|(
-name|numAllocated
-operator|==
-name|maxAllocated
-condition|)
-block|{
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
-name|debugMessage
-operator|.
-name|get
-argument_list|()
-operator|.
-name|append
-argument_list|(
-literal|", notifyAll"
-argument_list|)
-expr_stmt|;
-block|}
-name|notifyAll
+name|notify
 argument_list|()
 expr_stmt|;
-block|}
 name|numAllocated
 operator|--
 expr_stmt|;
@@ -1299,7 +1272,7 @@ name|countLimit
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**      * Allocate a byte array, where the length of the allocated array      * is the least power of two of the given length      * unless the given length is less than {@link #MIN_ARRAY_LENGTH}.      * In such case, the returned array length is equal to {@link #MIN_ARRAY_LENGTH}.      *      * If the number of allocated arrays exceeds the capacity,      * the current thread is blocked until      * the number of allocated arrays drops to below the capacity.      *       * The byte array allocated by this method must be returned for recycling      * via the {@link ByteArrayManager#recycle(byte[])} method.      *      * @return a byte array with length larger than or equal to the given length.      */
+comment|/**      * Allocate a byte array, where the length of the allocated array      * is the least power of two of the given length      * unless the given length is less than {@link #MIN_ARRAY_LENGTH}.      * In such case, the returned array length is equal to {@link #MIN_ARRAY_LENGTH}.      *      * If the number of allocated arrays exceeds the capacity,      * the current thread is blocked until      * the number of allocated arrays drops to below the capacity.      *       * The byte array allocated by this method must be returned for recycling      * via the {@link Impl#release(byte[])} method.      *      * @return a byte array with length larger than or equal to the given length.      */
 annotation|@
 name|Override
 DECL|method|newByteArray (final int arrayLength)
@@ -1315,6 +1288,15 @@ parameter_list|)
 throws|throws
 name|InterruptedException
 block|{
+name|Preconditions
+operator|.
+name|checkArgument
+argument_list|(
+name|arrayLength
+operator|>=
+literal|0
+argument_list|)
+expr_stmt|;
 if|if
 condition|(
 name|LOG
@@ -1477,6 +1459,28 @@ name|isDebugEnabled
 argument_list|()
 condition|)
 block|{
+name|debugMessage
+operator|.
+name|get
+argument_list|()
+operator|.
+name|append
+argument_list|(
+literal|", return byte["
+argument_list|)
+operator|.
+name|append
+argument_list|(
+name|array
+operator|.
+name|length
+argument_list|)
+operator|.
+name|append
+argument_list|(
+literal|"]"
+argument_list|)
+expr_stmt|;
 name|logDebugMessage
 argument_list|()
 expr_stmt|;
@@ -1485,7 +1489,7 @@ return|return
 name|array
 return|;
 block|}
-comment|/**      * Recycle the given byte array.      *       * The byte array may or may not be allocated      * by the {@link ByteArrayManager#allocate(int)} method.      */
+comment|/**      * Recycle the given byte array.      *       * The byte array may or may not be allocated      * by the {@link Impl#newByteArray(int)} method.      *       * This is a non-blocking call.      */
 annotation|@
 name|Override
 DECL|method|release (final byte[] array)

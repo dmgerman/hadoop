@@ -1839,9 +1839,6 @@ name|assertTrue
 argument_list|(
 name|Thread
 operator|.
-name|currentThread
-argument_list|()
-operator|.
 name|interrupted
 argument_list|()
 argument_list|)
@@ -1866,9 +1863,6 @@ block|}
 name|assertFalse
 argument_list|(
 name|Thread
-operator|.
-name|currentThread
-argument_list|()
 operator|.
 name|interrupted
 argument_list|()
@@ -1931,9 +1925,6 @@ name|assertTrue
 argument_list|(
 name|Thread
 operator|.
-name|currentThread
-argument_list|()
-operator|.
 name|interrupted
 argument_list|()
 argument_list|)
@@ -1959,9 +1950,6 @@ name|assertFalse
 argument_list|(
 name|Thread
 operator|.
-name|currentThread
-argument_list|()
-operator|.
 name|interrupted
 argument_list|()
 argument_list|)
@@ -1982,7 +1970,7 @@ name|fs
 argument_list|,
 name|p
 argument_list|,
-name|fileLen
+literal|4
 argument_list|,
 name|fileContents
 argument_list|,
