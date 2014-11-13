@@ -2489,6 +2489,18 @@ name|isAppFinalStateStored
 argument_list|()
 condition|)
 block|{
+name|LOG
+operator|.
+name|info
+argument_list|(
+name|rmApp
+operator|.
+name|getApplicationId
+argument_list|()
+operator|+
+literal|" unregistered successfully. "
+argument_list|)
+expr_stmt|;
 return|return
 name|FinishApplicationMasterResponse
 operator|.
