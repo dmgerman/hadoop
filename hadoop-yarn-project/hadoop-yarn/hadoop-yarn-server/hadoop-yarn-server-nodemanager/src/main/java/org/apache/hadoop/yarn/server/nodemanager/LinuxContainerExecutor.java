@@ -2160,6 +2160,8 @@ name|containerId
 parameter_list|)
 throws|throws
 name|IOException
+throws|,
+name|InterruptedException
 block|{
 try|try
 block|{

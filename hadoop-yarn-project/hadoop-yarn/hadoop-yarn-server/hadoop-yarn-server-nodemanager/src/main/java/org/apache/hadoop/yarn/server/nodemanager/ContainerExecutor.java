@@ -713,7 +713,7 @@ parameter_list|)
 throws|throws
 name|IOException
 function_decl|;
-comment|/**    * Recover an already existing container. This is a blocking call and returns    * only when the container exits.  Note that the container must have been    * activated prior to this call.    * @param user the user of the container    * @param containerId The ID of the container to reacquire    * @return The exit code of the pre-existing container    * @throws IOException    */
+comment|/**    * Recover an already existing container. This is a blocking call and returns    * only when the container exits.  Note that the container must have been    * activated prior to this call.    * @param user the user of the container    * @param containerId The ID of the container to reacquire    * @return The exit code of the pre-existing container    * @throws IOException    * @throws InterruptedException     */
 DECL|method|reacquireContainer (String user, ContainerId containerId)
 specifier|public
 name|int
@@ -727,6 +727,8 @@ name|containerId
 parameter_list|)
 throws|throws
 name|IOException
+throws|,
+name|InterruptedException
 block|{
 name|Path
 name|pidPath
@@ -805,8 +807,6 @@ operator|+
 name|pid
 argument_list|)
 expr_stmt|;
-try|try
-block|{
 while|while
 condition|(
 name|isContainerProcessAlive
@@ -824,27 +824,6 @@ argument_list|(
 literal|1000
 argument_list|)
 expr_stmt|;
-block|}
-block|}
-catch|catch
-parameter_list|(
-name|InterruptedException
-name|e
-parameter_list|)
-block|{
-throw|throw
-operator|new
-name|IOException
-argument_list|(
-literal|"Interrupted while waiting for process "
-operator|+
-name|pid
-operator|+
-literal|" to exit"
-argument_list|,
-name|e
-argument_list|)
-throw|;
 block|}
 comment|// wait for exit code file to appear
 name|String
@@ -920,8 +899,6 @@ name|getExitCode
 argument_list|()
 return|;
 block|}
-try|try
-block|{
 name|Thread
 operator|.
 name|sleep
@@ -929,25 +906,6 @@ argument_list|(
 name|sleepMsec
 argument_list|)
 expr_stmt|;
-block|}
-catch|catch
-parameter_list|(
-name|InterruptedException
-name|e
-parameter_list|)
-block|{
-throw|throw
-operator|new
-name|IOException
-argument_list|(
-literal|"Interrupted while waiting for exit code from "
-operator|+
-name|containerId
-argument_list|,
-name|e
-argument_list|)
-throw|;
-block|}
 name|msecLeft
 operator|-=
 name|sleepMsec
