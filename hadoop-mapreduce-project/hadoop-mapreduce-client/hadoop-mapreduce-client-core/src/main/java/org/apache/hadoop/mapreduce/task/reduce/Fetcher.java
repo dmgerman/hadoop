@@ -2113,7 +2113,7 @@ literal|"after "
 operator|+
 name|fetchRetryTimeout
 operator|+
-literal|"milliseconds."
+literal|" milliseconds."
 argument_list|)
 expr_stmt|;
 throw|throw
@@ -3045,7 +3045,7 @@ literal|"after "
 operator|+
 name|fetchRetryTimeout
 operator|+
-literal|"milliseconds."
+literal|" milliseconds."
 argument_list|)
 expr_stmt|;
 block|}
@@ -3353,6 +3353,24 @@ name|connectionTimeout
 argument_list|)
 expr_stmt|;
 block|}
+name|long
+name|startTime
+init|=
+name|Time
+operator|.
+name|monotonicNow
+argument_list|()
+decl_stmt|;
+name|long
+name|lastTime
+init|=
+name|startTime
+decl_stmt|;
+name|int
+name|attempts
+init|=
+literal|0
+decl_stmt|;
 comment|// set the connect timeout to the unit-connect-timeout
 name|connection
 operator|.
@@ -3368,6 +3386,9 @@ condition|)
 block|{
 try|try
 block|{
+name|attempts
+operator|++
+expr_stmt|;
 name|connection
 operator|.
 name|connect
@@ -3381,20 +3402,69 @@ name|IOException
 name|ioe
 parameter_list|)
 block|{
-comment|// update the total remaining connect-timeout
+name|long
+name|currentTime
+init|=
+name|Time
+operator|.
+name|monotonicNow
+argument_list|()
+decl_stmt|;
+name|long
+name|retryTime
+init|=
+name|currentTime
+operator|-
+name|startTime
+decl_stmt|;
+name|long
+name|leftTime
+init|=
 name|connectionTimeout
-operator|-=
-name|unit
-expr_stmt|;
+operator|-
+name|retryTime
+decl_stmt|;
+name|long
+name|timeSinceLastIteration
+init|=
+name|currentTime
+operator|-
+name|lastTime
+decl_stmt|;
 comment|// throw an exception if we have waited for timeout amount of time
 comment|// note that the updated value if timeout is used here
 if|if
 condition|(
-name|connectionTimeout
-operator|==
+name|leftTime
+operator|<=
 literal|0
 condition|)
 block|{
+name|int
+name|retryTimeInSeconds
+init|=
+operator|(
+name|int
+operator|)
+name|retryTime
+operator|/
+literal|1000
+decl_stmt|;
+name|LOG
+operator|.
+name|error
+argument_list|(
+literal|"Connection retry failed with "
+operator|+
+name|attempts
+operator|+
+literal|" attempts in "
+operator|+
+name|retryTimeInSeconds
+operator|+
+literal|" seconds"
+argument_list|)
+expr_stmt|;
 throw|throw
 name|ioe
 throw|;
@@ -3402,14 +3472,17 @@ block|}
 comment|// reset the connect timeout for the last try
 if|if
 condition|(
-name|connectionTimeout
+name|leftTime
 operator|<
 name|unit
 condition|)
 block|{
 name|unit
 operator|=
-name|connectionTimeout
+operator|(
+name|int
+operator|)
+name|leftTime
 expr_stmt|;
 comment|// reset the connect time out for the final connect
 name|connection
@@ -3420,6 +3493,54 @@ name|unit
 argument_list|)
 expr_stmt|;
 block|}
+if|if
+condition|(
+name|timeSinceLastIteration
+operator|<
+name|unit
+condition|)
+block|{
+try|try
+block|{
+comment|// sleep the left time of unit
+name|sleep
+argument_list|(
+name|unit
+operator|-
+name|timeSinceLastIteration
+argument_list|)
+expr_stmt|;
+block|}
+catch|catch
+parameter_list|(
+name|InterruptedException
+name|e
+parameter_list|)
+block|{
+name|LOG
+operator|.
+name|warn
+argument_list|(
+literal|"Sleep in connection retry get interrupted."
+argument_list|)
+expr_stmt|;
+if|if
+condition|(
+name|stopped
+condition|)
+block|{
+return|return;
+block|}
+block|}
+block|}
+comment|// update the total remaining connect-timeout
+name|lastTime
+operator|=
+name|Time
+operator|.
+name|monotonicNow
+argument_list|()
+expr_stmt|;
 block|}
 block|}
 block|}
