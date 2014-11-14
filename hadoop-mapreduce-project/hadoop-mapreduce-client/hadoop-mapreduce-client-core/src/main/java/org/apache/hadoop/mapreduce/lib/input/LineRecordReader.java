@@ -1278,6 +1278,10 @@ argument_list|(
 name|decompressor
 argument_list|)
 expr_stmt|;
+name|decompressor
+operator|=
+literal|null
+expr_stmt|;
 block|}
 block|}
 block|}

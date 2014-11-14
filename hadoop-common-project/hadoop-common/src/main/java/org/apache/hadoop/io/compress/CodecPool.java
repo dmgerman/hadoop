@@ -24,7 +24,7 @@ name|java
 operator|.
 name|util
 operator|.
-name|ArrayList
+name|HashSet
 import|;
 end_import
 
@@ -44,7 +44,7 @@ name|java
 operator|.
 name|util
 operator|.
-name|List
+name|Set
 import|;
 end_import
 
@@ -244,7 +244,7 @@ argument_list|<
 name|Compressor
 argument_list|>
 argument_list|,
-name|List
+name|Set
 argument_list|<
 name|Compressor
 argument_list|>
@@ -259,7 +259,7 @@ argument_list|<
 name|Compressor
 argument_list|>
 argument_list|,
-name|List
+name|Set
 argument_list|<
 name|Compressor
 argument_list|>
@@ -278,7 +278,7 @@ argument_list|<
 name|Decompressor
 argument_list|>
 argument_list|,
-name|List
+name|Set
 argument_list|<
 name|Decompressor
 argument_list|>
@@ -293,7 +293,7 @@ argument_list|<
 name|Decompressor
 argument_list|>
 argument_list|,
-name|List
+name|Set
 argument_list|<
 name|Decompressor
 argument_list|>
@@ -415,7 +415,7 @@ operator|.
 name|class
 argument_list|)
 decl_stmt|;
-DECL|method|borrow (Map<Class<T>, List<T>> pool, Class<? extends T> codecClass)
+DECL|method|borrow (Map<Class<T>, Set<T>> pool, Class<? extends T> codecClass)
 specifier|private
 specifier|static
 parameter_list|<
@@ -431,7 +431,7 @@ argument_list|<
 name|T
 argument_list|>
 argument_list|,
-name|List
+name|Set
 argument_list|<
 name|T
 argument_list|>
@@ -453,18 +453,18 @@ init|=
 literal|null
 decl_stmt|;
 comment|// Check if an appropriate codec is available
-name|List
+name|Set
 argument_list|<
 name|T
 argument_list|>
-name|codecList
+name|codecSet
 decl_stmt|;
 synchronized|synchronized
 init|(
 name|pool
 init|)
 block|{
-name|codecList
+name|codecSet
 operator|=
 name|pool
 operator|.
@@ -476,20 +476,20 @@ expr_stmt|;
 block|}
 if|if
 condition|(
-name|codecList
+name|codecSet
 operator|!=
 literal|null
 condition|)
 block|{
 synchronized|synchronized
 init|(
-name|codecList
+name|codecSet
 init|)
 block|{
 if|if
 condition|(
 operator|!
-name|codecList
+name|codecSet
 operator|.
 name|isEmpty
 argument_list|()
@@ -497,16 +497,19 @@ condition|)
 block|{
 name|codec
 operator|=
-name|codecList
+name|codecSet
+operator|.
+name|iterator
+argument_list|()
+operator|.
+name|next
+argument_list|()
+expr_stmt|;
+name|codecSet
 operator|.
 name|remove
 argument_list|(
-name|codecList
-operator|.
-name|size
-argument_list|()
-operator|-
-literal|1
+name|codec
 argument_list|)
 expr_stmt|;
 block|}
@@ -516,13 +519,13 @@ return|return
 name|codec
 return|;
 block|}
-DECL|method|payback (Map<Class<T>, List<T>> pool, T codec)
+DECL|method|payback (Map<Class<T>, Set<T>> pool, T codec)
 specifier|private
 specifier|static
 parameter_list|<
 name|T
 parameter_list|>
-name|void
+name|boolean
 name|payback
 parameter_list|(
 name|Map
@@ -532,7 +535,7 @@ argument_list|<
 name|T
 argument_list|>
 argument_list|,
-name|List
+name|Set
 argument_list|<
 name|T
 argument_list|>
@@ -563,18 +566,18 @@ argument_list|(
 name|codec
 argument_list|)
 decl_stmt|;
-name|List
+name|Set
 argument_list|<
 name|T
 argument_list|>
-name|codecList
+name|codecSet
 decl_stmt|;
 synchronized|synchronized
 init|(
 name|pool
 init|)
 block|{
-name|codecList
+name|codecSet
 operator|=
 name|pool
 operator|.
@@ -585,15 +588,15 @@ argument_list|)
 expr_stmt|;
 if|if
 condition|(
-name|codecList
+name|codecSet
 operator|==
 literal|null
 condition|)
 block|{
-name|codecList
+name|codecSet
 operator|=
 operator|new
-name|ArrayList
+name|HashSet
 argument_list|<
 name|T
 argument_list|>
@@ -605,25 +608,29 @@ name|put
 argument_list|(
 name|codecClass
 argument_list|,
-name|codecList
+name|codecSet
 argument_list|)
 expr_stmt|;
 block|}
 block|}
 synchronized|synchronized
 init|(
-name|codecList
+name|codecSet
 init|)
 block|{
-name|codecList
+return|return
+name|codecSet
 operator|.
 name|add
 argument_list|(
 name|codec
 argument_list|)
-expr_stmt|;
+return|;
 block|}
 block|}
+return|return
+literal|false
+return|;
 block|}
 annotation|@
 name|SuppressWarnings
@@ -980,13 +987,16 @@ operator|.
 name|reset
 argument_list|()
 expr_stmt|;
+if|if
+condition|(
 name|payback
 argument_list|(
 name|compressorPool
 argument_list|,
 name|compressor
 argument_list|)
-expr_stmt|;
+condition|)
+block|{
 name|updateLeaseCount
 argument_list|(
 name|compressorCounts
@@ -997,6 +1007,7 @@ operator|-
 literal|1
 argument_list|)
 expr_stmt|;
+block|}
 block|}
 comment|/**    * Return the {@link Decompressor} to the pool.    *     * @param decompressor the<code>Decompressor</code> to be returned to the     *                     pool    */
 DECL|method|returnDecompressor (Decompressor decompressor)
@@ -1041,13 +1052,16 @@ operator|.
 name|reset
 argument_list|()
 expr_stmt|;
+if|if
+condition|(
 name|payback
 argument_list|(
 name|decompressorPool
 argument_list|,
 name|decompressor
 argument_list|)
-expr_stmt|;
+condition|)
+block|{
 name|updateLeaseCount
 argument_list|(
 name|decompressorCounts
@@ -1058,6 +1072,7 @@ operator|-
 literal|1
 argument_list|)
 expr_stmt|;
+block|}
 block|}
 comment|/**    * Return the number of leased {@link Compressor}s for this    * {@link CompressionCodec}    */
 DECL|method|getLeasedCompressorsCount (CompressionCodec codec)
