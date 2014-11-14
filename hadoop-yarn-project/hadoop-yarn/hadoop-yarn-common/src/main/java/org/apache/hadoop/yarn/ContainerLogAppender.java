@@ -153,6 +153,13 @@ name|tail
 init|=
 literal|null
 decl_stmt|;
+DECL|field|closing
+specifier|private
+name|boolean
+name|closing
+init|=
+literal|false
+decl_stmt|;
 annotation|@
 name|Override
 DECL|method|activateOptions ()
@@ -229,6 +236,14 @@ init|)
 block|{
 if|if
 condition|(
+name|closing
+condition|)
+block|{
+comment|// When closing drop any new/transitive CLA appending
+return|return;
+block|}
+if|if
+condition|(
 name|tail
 operator|==
 literal|null
@@ -301,6 +316,10 @@ name|void
 name|close
 parameter_list|()
 block|{
+name|closing
+operator|=
+literal|true
+expr_stmt|;
 if|if
 condition|(
 name|tail
