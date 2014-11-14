@@ -2251,6 +2251,44 @@ name|isEmpty
 argument_list|()
 argument_list|)
 expr_stmt|;
+comment|// store a new container record without StartContainerRequest
+name|ContainerId
+name|containerId1
+init|=
+name|ContainerId
+operator|.
+name|newContainerId
+argument_list|(
+name|appAttemptId
+argument_list|,
+literal|6
+argument_list|)
+decl_stmt|;
+name|stateStore
+operator|.
+name|storeContainerLaunched
+argument_list|(
+name|containerId1
+argument_list|)
+expr_stmt|;
+name|recoveredContainers
+operator|=
+name|stateStore
+operator|.
+name|loadContainersState
+argument_list|()
+expr_stmt|;
+comment|// check whether the new container record is discarded
+name|assertEquals
+argument_list|(
+literal|1
+argument_list|,
+name|recoveredContainers
+operator|.
+name|size
+argument_list|()
+argument_list|)
+expr_stmt|;
 comment|// launch the container, add some diagnostics, and verify recovered
 name|StringBuilder
 name|diags
