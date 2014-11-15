@@ -1058,6 +1058,15 @@ name|getEscapedURI
 argument_list|()
 argument_list|)
 decl_stmt|;
+name|method
+operator|.
+name|setRequestHeader
+argument_list|(
+literal|"Connection"
+argument_list|,
+literal|"close"
+argument_list|)
+expr_stmt|;
 annotation|@
 name|SuppressWarnings
 argument_list|(
