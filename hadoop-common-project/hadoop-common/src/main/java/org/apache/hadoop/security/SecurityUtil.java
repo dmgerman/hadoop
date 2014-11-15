@@ -2388,6 +2388,24 @@ argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
+comment|/*    * Check if a given port is privileged.    * The ports with number smaller than 1024 are treated as privileged ports in    * unix/linux system. For other operating systems, use this method with care.    * For example, Windows doesn't have the concept of privileged ports.    * However, it may be used at Windows client to check port of linux server.    *     * @param port the port number    * @return true for privileged ports, false otherwise    *     */
+DECL|method|isPrivilegedPort (final int port)
+specifier|public
+specifier|static
+name|boolean
+name|isPrivilegedPort
+parameter_list|(
+specifier|final
+name|int
+name|port
+parameter_list|)
+block|{
+return|return
+name|port
+operator|<
+literal|1024
+return|;
+block|}
 block|}
 end_class
 
