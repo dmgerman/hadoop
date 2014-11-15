@@ -2759,12 +2759,12 @@ parameter_list|()
 throws|throws
 name|Exception
 block|{
-name|closeInternal
-argument_list|()
-expr_stmt|;
 name|dispatcher
 operator|.
 name|stop
+argument_list|()
+expr_stmt|;
+name|closeInternal
 argument_list|()
 expr_stmt|;
 block|}
