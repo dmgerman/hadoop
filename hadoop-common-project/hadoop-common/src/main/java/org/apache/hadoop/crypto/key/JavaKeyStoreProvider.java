@@ -20,6 +20,20 @@ end_package
 
 begin_import
 import|import
+name|com
+operator|.
+name|google
+operator|.
+name|common
+operator|.
+name|base
+operator|.
+name|Preconditions
+import|;
+end_import
+
+begin_import
+import|import
 name|org
 operator|.
 name|apache
@@ -2166,6 +2180,25 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
+name|Preconditions
+operator|.
+name|checkArgument
+argument_list|(
+name|name
+operator|.
+name|equals
+argument_list|(
+name|name
+operator|.
+name|toLowerCase
+argument_list|()
+argument_list|)
+argument_list|,
+literal|"Uppercase key names are unsupported: %s"
+argument_list|,
+name|name
+argument_list|)
+expr_stmt|;
 name|writeLock
 operator|.
 name|lock
