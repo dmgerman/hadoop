@@ -3272,7 +3272,7 @@ condition|)
 block|{
 name|LOG
 operator|.
-name|warn
+name|info
 argument_list|(
 name|this
 operator|+
@@ -3571,7 +3571,7 @@ condition|)
 block|{
 name|LOG
 operator|.
-name|warn
+name|info
 argument_list|(
 name|this
 operator|+
