@@ -2239,6 +2239,7 @@ expr_stmt|;
 block|}
 comment|// get the packet's last byte's offset in the block
 DECL|method|getLastByteOffsetBlock ()
+specifier|synchronized
 name|long
 name|getLastByteOffsetBlock
 parameter_list|()
