@@ -104,6 +104,20 @@ name|ResourceScheduler
 import|;
 end_import
 
+begin_import
+import|import
+name|com
+operator|.
+name|google
+operator|.
+name|common
+operator|.
+name|annotations
+operator|.
+name|VisibleForTesting
+import|;
+end_import
+
 begin_class
 DECL|class|QueueACLsManager
 specifier|public
@@ -120,6 +134,23 @@ specifier|private
 name|boolean
 name|isACLsEnable
 decl_stmt|;
+annotation|@
+name|VisibleForTesting
+DECL|method|QueueACLsManager ()
+specifier|public
+name|QueueACLsManager
+parameter_list|()
+block|{
+name|this
+argument_list|(
+literal|null
+argument_list|,
+operator|new
+name|Configuration
+argument_list|()
+argument_list|)
+expr_stmt|;
+block|}
 DECL|method|QueueACLsManager (ResourceScheduler scheduler, Configuration conf)
 specifier|public
 name|QueueACLsManager

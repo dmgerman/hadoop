@@ -244,6 +244,20 @@ name|AdminACLsManager
 import|;
 end_import
 
+begin_import
+import|import
+name|com
+operator|.
+name|google
+operator|.
+name|common
+operator|.
+name|annotations
+operator|.
+name|VisibleForTesting
+import|;
+end_import
+
 begin_class
 annotation|@
 name|InterfaceAudience
@@ -326,6 +340,21 @@ argument_list|>
 argument_list|>
 argument_list|()
 decl_stmt|;
+annotation|@
+name|VisibleForTesting
+DECL|method|ApplicationACLsManager ()
+specifier|public
+name|ApplicationACLsManager
+parameter_list|()
+block|{
+name|this
+argument_list|(
+operator|new
+name|Configuration
+argument_list|()
+argument_list|)
+expr_stmt|;
+block|}
 DECL|method|ApplicationACLsManager (Configuration conf)
 specifier|public
 name|ApplicationACLsManager
