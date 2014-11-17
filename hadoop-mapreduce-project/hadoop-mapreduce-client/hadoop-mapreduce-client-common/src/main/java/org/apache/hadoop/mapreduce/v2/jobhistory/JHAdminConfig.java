@@ -598,6 +598,15 @@ name|MR_HS_SECURITY_SERVICE_AUTHORIZATION
 init|=
 literal|"security.mrhs.client.protocol.acl"
 decl_stmt|;
+DECL|field|MR_HS_SECURITY_SERVICE_AUTHORIZATION_ADMIN_REFRESH
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|MR_HS_SECURITY_SERVICE_AUTHORIZATION_ADMIN_REFRESH
+init|=
+literal|"security.mrhs.admin.refresh.protocol.acl"
+decl_stmt|;
 comment|/**    * The HistoryStorage class to use to cache history data.    */
 DECL|field|MR_HISTORY_STORAGE
 specifier|public

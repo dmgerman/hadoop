@@ -4,7 +4,7 @@ comment|/**  * Licensed to the Apache Software Foundation (ASF) under one  * or 
 end_comment
 
 begin_package
-DECL|package|org.apache.hadoop.mapreduce.v2.hs.protocolPB
+DECL|package|org.apache.hadoop.mapreduce.v2.api
 package|package
 name|org
 operator|.
@@ -16,11 +16,19 @@ name|mapreduce
 operator|.
 name|v2
 operator|.
-name|hs
-operator|.
-name|protocolPB
+name|api
 package|;
 end_package
+
+begin_import
+import|import
+name|java
+operator|.
+name|io
+operator|.
+name|IOException
+import|;
+end_import
 
 begin_import
 import|import
@@ -74,42 +82,6 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|ipc
-operator|.
-name|ProtocolInfo
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|mapreduce
-operator|.
-name|v2
-operator|.
-name|hs
-operator|.
-name|proto
-operator|.
-name|HSAdminRefreshProtocolProtos
-operator|.
-name|HSAdminRefreshProtocolService
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
 name|security
 operator|.
 name|KerberosInfo
@@ -127,31 +99,53 @@ operator|.
 name|HADOOP_SECURITY_SERVICE_USER_NAME_KEY
 argument_list|)
 annotation|@
-name|ProtocolInfo
-argument_list|(
-name|protocolName
-operator|=
-literal|"org.apache.hadoop.mapreduce.v2.hs.protocol.HSAdminRefreshProtocol"
-argument_list|,
-name|protocolVersion
-operator|=
-literal|1
-argument_list|)
-annotation|@
 name|Private
 annotation|@
 name|InterfaceStability
 operator|.
 name|Evolving
-DECL|interface|HSAdminRefreshProtocolPB
+DECL|interface|HSAdminRefreshProtocol
 specifier|public
 interface|interface
-name|HSAdminRefreshProtocolPB
-extends|extends
-name|HSAdminRefreshProtocolService
-operator|.
-name|BlockingInterface
-block|{ }
+name|HSAdminRefreshProtocol
+block|{
+comment|/**    * Refresh admin acls.    *     * @throws IOException    */
+DECL|method|refreshAdminAcls ()
+specifier|public
+name|void
+name|refreshAdminAcls
+parameter_list|()
+throws|throws
+name|IOException
+function_decl|;
+comment|/**    * Refresh loaded job cache    * @throws IOException    */
+DECL|method|refreshLoadedJobCache ()
+specifier|public
+name|void
+name|refreshLoadedJobCache
+parameter_list|()
+throws|throws
+name|IOException
+function_decl|;
+comment|/**    * Refresh job retention settings.    *     * @throws IOException    */
+DECL|method|refreshJobRetentionSettings ()
+specifier|public
+name|void
+name|refreshJobRetentionSettings
+parameter_list|()
+throws|throws
+name|IOException
+function_decl|;
+comment|/**    * Refresh log retention settings.    *     * @throws IOException    */
+DECL|method|refreshLogRetentionSettings ()
+specifier|public
+name|void
+name|refreshLogRetentionSettings
+parameter_list|()
+throws|throws
+name|IOException
+function_decl|;
+block|}
 end_interface
 
 end_unit

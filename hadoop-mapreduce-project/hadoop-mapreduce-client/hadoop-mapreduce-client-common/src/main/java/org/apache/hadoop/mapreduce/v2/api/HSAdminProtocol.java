@@ -4,7 +4,7 @@ comment|/**  * Licensed to the Apache Software Foundation (ASF) under one  * or 
 end_comment
 
 begin_package
-DECL|package|org.apache.hadoop.mapreduce.v2.hs.protocol
+DECL|package|org.apache.hadoop.mapreduce.v2.api
 package|package
 name|org
 operator|.
@@ -16,9 +16,7 @@ name|mapreduce
 operator|.
 name|v2
 operator|.
-name|hs
-operator|.
-name|protocol
+name|api
 package|;
 end_package
 
@@ -107,10 +105,6 @@ operator|.
 name|GetUserMappingsProtocol
 import|;
 end_import
-
-begin_comment
-comment|/**  * Protocol use  *   */
-end_comment
 
 begin_interface
 annotation|@
