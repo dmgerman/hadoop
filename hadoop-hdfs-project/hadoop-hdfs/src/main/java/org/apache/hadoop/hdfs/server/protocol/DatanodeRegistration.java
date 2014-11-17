@@ -324,6 +324,11 @@ operator|+
 name|getInfoPort
 argument_list|()
 operator|+
+literal|", infoSecurePort="
+operator|+
+name|getInfoSecurePort
+argument_list|()
+operator|+
 literal|", ipcPort="
 operator|+
 name|getIpcPort

@@ -321,6 +321,10 @@ name|equals
 argument_list|(
 name|str
 argument_list|)
+operator|||
+name|str
+operator|==
+literal|null
 condition|?
 literal|null
 else|:

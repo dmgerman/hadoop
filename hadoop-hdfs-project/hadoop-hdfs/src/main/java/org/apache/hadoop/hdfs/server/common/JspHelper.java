@@ -479,8 +479,8 @@ specifier|private
 name|JspHelper
 parameter_list|()
 block|{}
-DECL|method|getDefaultWebUserName (Configuration conf )
-specifier|private
+DECL|method|getDefaultWebUserName (Configuration conf)
+specifier|public
 specifier|static
 name|String
 name|getDefaultWebUserName
@@ -1196,7 +1196,7 @@ return|;
 block|}
 comment|/**    * Expected user name should be a short name.    */
 DECL|method|checkUsername (final String expected, final String name )
-specifier|private
+specifier|public
 specifier|static
 name|void
 name|checkUsername

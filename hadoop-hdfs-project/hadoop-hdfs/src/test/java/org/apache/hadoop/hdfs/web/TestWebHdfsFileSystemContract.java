@@ -1944,9 +1944,9 @@ argument_list|,
 operator|new
 name|LengthParam
 argument_list|(
-name|Long
-operator|.
-name|valueOf
+call|(
+name|long
+call|)
 argument_list|(
 name|content
 operator|.

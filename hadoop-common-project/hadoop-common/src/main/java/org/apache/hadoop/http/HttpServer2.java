@@ -942,6 +942,7 @@ init|=
 literal|"hadoop.http.filter.initializers"
 decl_stmt|;
 DECL|field|HTTP_MAX_THREADS
+specifier|public
 specifier|static
 specifier|final
 name|String
