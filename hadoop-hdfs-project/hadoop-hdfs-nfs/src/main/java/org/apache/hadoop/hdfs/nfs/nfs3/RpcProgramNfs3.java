@@ -2061,10 +2061,6 @@ operator|new
 name|ShellBasedIdMapping
 argument_list|(
 name|config
-argument_list|,
-name|IdMappingConstant
-operator|.
-name|STATIC_ID_MAPPING_FILE_DEFAULT
 argument_list|)
 expr_stmt|;
 name|aixCompatMode
