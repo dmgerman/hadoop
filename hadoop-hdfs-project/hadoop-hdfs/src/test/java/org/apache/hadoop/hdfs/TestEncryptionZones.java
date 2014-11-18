@@ -1246,7 +1246,7 @@ specifier|final
 name|String
 name|TEST_KEY
 init|=
-literal|"testKey"
+literal|"test_key"
 decl_stmt|;
 DECL|field|fsWrapper
 specifier|protected
@@ -6284,7 +6284,7 @@ specifier|final
 name|String
 name|otherKey
 init|=
-literal|"otherKey"
+literal|"other_key"
 decl_stmt|;
 name|DFSTestUtil
 operator|.
@@ -6411,7 +6411,7 @@ specifier|final
 name|String
 name|anotherKey
 init|=
-literal|"anotherKey"
+literal|"another_key"
 decl_stmt|;
 name|DFSTestUtil
 operator|.

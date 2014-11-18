@@ -281,7 +281,7 @@ specifier|final
 name|String
 name|TEST_KEY
 init|=
-literal|"testKey"
+literal|"test_key"
 decl_stmt|;
 annotation|@
 name|Before

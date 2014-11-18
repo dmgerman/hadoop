@@ -427,7 +427,7 @@ specifier|final
 name|String
 name|TEST_KEY
 init|=
-literal|"testKey"
+literal|"test_key"
 decl_stmt|;
 DECL|field|fsWrapper
 specifier|protected

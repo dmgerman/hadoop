@@ -9749,6 +9749,18 @@ argument_list|,
 literal|"DEFAULT"
 argument_list|)
 expr_stmt|;
+specifier|final
+name|String
+name|keyA
+init|=
+literal|"key_a"
+decl_stmt|;
+specifier|final
+name|String
+name|keyD
+init|=
+literal|"key_d"
+decl_stmt|;
 name|conf
 operator|.
 name|set
@@ -9757,7 +9769,9 @@ name|KeyAuthorizationKeyProvider
 operator|.
 name|KEY_ACL
 operator|+
-literal|"kA.ALL"
+name|keyA
+operator|+
+literal|".ALL"
 argument_list|,
 literal|"*"
 argument_list|)
@@ -9770,7 +9784,9 @@ name|KeyAuthorizationKeyProvider
 operator|.
 name|KEY_ACL
 operator|+
-literal|"kD.ALL"
+name|keyD
+operator|+
+literal|".ALL"
 argument_list|,
 literal|"*"
 argument_list|)
@@ -9869,7 +9885,7 @@ name|kp
 operator|.
 name|createKey
 argument_list|(
-literal|"kA"
+name|keyA
 argument_list|,
 operator|new
 name|KeyProvider
@@ -9981,7 +9997,7 @@ name|kp
 operator|.
 name|createKey
 argument_list|(
-literal|"kA"
+name|keyA
 argument_list|,
 operator|new
 name|KeyProvider
@@ -10047,7 +10063,7 @@ name|kp
 operator|.
 name|createKey
 argument_list|(
-literal|"kD"
+name|keyD
 argument_list|,
 operator|new
 name|KeyProvider
@@ -10813,7 +10829,7 @@ name|KeyAuthorizationKeyProvider
 operator|.
 name|KEY_ACL
 operator|+
-literal|"kAA.ALL"
+literal|"kaa.ALL"
 argument_list|,
 literal|"client"
 argument_list|)
@@ -10826,7 +10842,7 @@ name|KeyAuthorizationKeyProvider
 operator|.
 name|KEY_ACL
 operator|+
-literal|"kBB.ALL"
+literal|"kbb.ALL"
 argument_list|,
 literal|"foo"
 argument_list|)
@@ -10839,7 +10855,7 @@ name|KeyAuthorizationKeyProvider
 operator|.
 name|KEY_ACL
 operator|+
-literal|"kCC.ALL"
+literal|"kcc.ALL"
 argument_list|,
 literal|"foo1"
 argument_list|)
@@ -10852,7 +10868,7 @@ name|KeyAuthorizationKeyProvider
 operator|.
 name|KEY_ACL
 operator|+
-literal|"kDD.ALL"
+literal|"kdd.ALL"
 argument_list|,
 literal|"bar"
 argument_list|)
@@ -10997,7 +11013,7 @@ name|kp
 operator|.
 name|createKey
 argument_list|(
-literal|"kAA"
+literal|"kaa"
 argument_list|,
 operator|new
 name|KeyProvider
@@ -11049,7 +11065,7 @@ name|kp
 operator|.
 name|createKey
 argument_list|(
-literal|"kBB"
+literal|"kbb"
 argument_list|,
 operator|new
 name|KeyProvider
@@ -11107,7 +11123,7 @@ name|kp
 operator|.
 name|createKey
 argument_list|(
-literal|"kCC"
+literal|"kcc"
 argument_list|,
 operator|new
 name|KeyProvider
@@ -11197,7 +11213,7 @@ name|kp
 operator|.
 name|createKey
 argument_list|(
-literal|"kDD"
+literal|"kdd"
 argument_list|,
 operator|new
 name|KeyProvider
@@ -11392,7 +11408,7 @@ name|KeyAuthorizationKeyProvider
 operator|.
 name|KEY_ACL
 operator|+
-literal|"kAA.ALL"
+literal|"kaa.ALL"
 argument_list|,
 literal|"foo"
 argument_list|)
@@ -11405,7 +11421,7 @@ name|KeyAuthorizationKeyProvider
 operator|.
 name|KEY_ACL
 operator|+
-literal|"kBB.ALL"
+literal|"kbb.ALL"
 argument_list|,
 literal|"foo1"
 argument_list|)
@@ -11418,7 +11434,7 @@ name|KeyAuthorizationKeyProvider
 operator|.
 name|KEY_ACL
 operator|+
-literal|"kCC.ALL"
+literal|"kcc.ALL"
 argument_list|,
 literal|"bar"
 argument_list|)
@@ -11599,7 +11615,7 @@ name|kp
 operator|.
 name|createKey
 argument_list|(
-literal|"kAA"
+literal|"kaa"
 argument_list|,
 operator|new
 name|KeyProvider
@@ -11668,7 +11684,7 @@ name|kp
 operator|.
 name|createKey
 argument_list|(
-literal|"kBB"
+literal|"kbb"
 argument_list|,
 operator|new
 name|KeyProvider
@@ -11771,7 +11787,7 @@ name|kp
 operator|.
 name|createKey
 argument_list|(
-literal|"kCC"
+literal|"kcc"
 argument_list|,
 operator|new
 name|KeyProvider
