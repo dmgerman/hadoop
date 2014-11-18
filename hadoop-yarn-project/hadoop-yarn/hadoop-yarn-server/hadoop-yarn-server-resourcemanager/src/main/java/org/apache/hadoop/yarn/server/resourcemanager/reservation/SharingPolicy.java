@@ -62,20 +62,6 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|conf
-operator|.
-name|Configuration
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
 name|yarn
 operator|.
 name|server
@@ -108,7 +94,7 @@ interface|interface
 name|SharingPolicy
 block|{
 comment|/**    * Initialize this policy    *     * @param planQueuePath the name of the queue for this plan    * @param conf the system configuration    */
-DECL|method|init (String planQueuePath, Configuration conf)
+DECL|method|init (String planQueuePath, ReservationSchedulerConfiguration conf)
 specifier|public
 name|void
 name|init
@@ -116,7 +102,7 @@ parameter_list|(
 name|String
 name|planQueuePath
 parameter_list|,
-name|Configuration
+name|ReservationSchedulerConfiguration
 name|conf
 parameter_list|)
 function_decl|;

@@ -40,20 +40,6 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|conf
-operator|.
-name|Configuration
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
 name|yarn
 operator|.
 name|api
@@ -111,14 +97,14 @@ throws|throws
 name|PlanningException
 function_decl|;
 comment|/**    * Initialize the replanner    *    * @param planQueueName the name of the queue for this plan    * @param conf the scheduler configuration    */
-DECL|method|init (String planQueueName, Configuration conf)
+DECL|method|init (String planQueueName, ReservationSchedulerConfiguration conf)
 name|void
 name|init
 parameter_list|(
 name|String
 name|planQueueName
 parameter_list|,
-name|Configuration
+name|ReservationSchedulerConfiguration
 name|conf
 parameter_list|)
 function_decl|;

@@ -332,6 +332,26 @@ name|hadoop
 operator|.
 name|yarn
 operator|.
+name|server
+operator|.
+name|resourcemanager
+operator|.
+name|reservation
+operator|.
+name|ReservationSchedulerConfiguration
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
 name|util
 operator|.
 name|resource
@@ -396,7 +416,7 @@ specifier|public
 class|class
 name|CapacitySchedulerConfiguration
 extends|extends
-name|Configuration
+name|ReservationSchedulerConfiguration
 block|{
 DECL|field|LOG
 specifier|private
@@ -1031,17 +1051,6 @@ literal|"instantaneous-max-capacity"
 decl_stmt|;
 annotation|@
 name|Private
-DECL|field|DEFAULT_RESERVATION_WINDOW
-specifier|public
-specifier|static
-specifier|final
-name|long
-name|DEFAULT_RESERVATION_WINDOW
-init|=
-literal|86400000L
-decl_stmt|;
-annotation|@
-name|Private
 DECL|field|RESERVATION_ADMISSION_POLICY
 specifier|public
 specifier|static
@@ -1075,28 +1084,6 @@ literal|"show-reservations-as-queues"
 decl_stmt|;
 annotation|@
 name|Private
-DECL|field|DEFAULT_RESERVATION_ADMISSION_POLICY
-specifier|public
-specifier|static
-specifier|final
-name|String
-name|DEFAULT_RESERVATION_ADMISSION_POLICY
-init|=
-literal|"org.apache.hadoop.yarn.server.resourcemanager.reservation.CapacityOverTimePolicy"
-decl_stmt|;
-annotation|@
-name|Private
-DECL|field|DEFAULT_RESERVATION_AGENT_NAME
-specifier|public
-specifier|static
-specifier|final
-name|String
-name|DEFAULT_RESERVATION_AGENT_NAME
-init|=
-literal|"org.apache.hadoop.yarn.server.resourcemanager.reservation.GreedyReservationAgent"
-decl_stmt|;
-annotation|@
-name|Private
 DECL|field|RESERVATION_PLANNER_NAME
 specifier|public
 specifier|static
@@ -1105,17 +1092,6 @@ name|String
 name|RESERVATION_PLANNER_NAME
 init|=
 literal|"reservation-planner"
-decl_stmt|;
-annotation|@
-name|Private
-DECL|field|DEFAULT_RESERVATION_PLANNER_NAME
-specifier|public
-specifier|static
-specifier|final
-name|String
-name|DEFAULT_RESERVATION_PLANNER_NAME
-init|=
-literal|"org.apache.hadoop.yarn.server.resourcemanager.reservation.SimpleCapacityReplanner"
 decl_stmt|;
 annotation|@
 name|Private
@@ -1130,17 +1106,6 @@ literal|"reservation-move-on-expiry"
 decl_stmt|;
 annotation|@
 name|Private
-DECL|field|DEFAULT_RESERVATION_MOVE_ON_EXPIRY
-specifier|public
-specifier|static
-specifier|final
-name|boolean
-name|DEFAULT_RESERVATION_MOVE_ON_EXPIRY
-init|=
-literal|true
-decl_stmt|;
-annotation|@
-name|Private
 DECL|field|RESERVATION_ENFORCEMENT_WINDOW
 specifier|public
 specifier|static
@@ -1149,18 +1114,6 @@ name|String
 name|RESERVATION_ENFORCEMENT_WINDOW
 init|=
 literal|"reservation-enforcement-window"
-decl_stmt|;
-comment|// default to 1h lookahead enforcement
-annotation|@
-name|Private
-DECL|field|DEFAULT_RESERVATION_ENFORCEMENT_WINDOW
-specifier|public
-specifier|static
-specifier|final
-name|long
-name|DEFAULT_RESERVATION_ENFORCEMENT_WINDOW
-init|=
-literal|3600000
 decl_stmt|;
 DECL|method|CapacitySchedulerConfiguration ()
 specifier|public
@@ -3456,6 +3409,8 @@ argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
+annotation|@
+name|Override
 DECL|method|getReservationWindow (String queue)
 specifier|public
 name|long
@@ -3484,6 +3439,8 @@ return|return
 name|reservationWindow
 return|;
 block|}
+annotation|@
+name|Override
 DECL|method|getAverageCapacity (String queue)
 specifier|public
 name|float
@@ -3512,6 +3469,8 @@ return|return
 name|avgCapacity
 return|;
 block|}
+annotation|@
+name|Override
 DECL|method|getInstantaneousMaxCapacity (String queue)
 specifier|public
 name|float
@@ -3615,6 +3574,8 @@ name|avgCapacity
 argument_list|)
 expr_stmt|;
 block|}
+annotation|@
+name|Override
 DECL|method|getReservationAdmissionPolicy (String queue)
 specifier|public
 name|String
@@ -3668,6 +3629,8 @@ name|reservationPolicy
 argument_list|)
 expr_stmt|;
 block|}
+annotation|@
+name|Override
 DECL|method|getReservationAgent (String queue)
 specifier|public
 name|String
@@ -3721,6 +3684,8 @@ name|reservationPolicy
 argument_list|)
 expr_stmt|;
 block|}
+annotation|@
+name|Override
 DECL|method|getShowReservationAsQueues (String queuePath)
 specifier|public
 name|boolean
@@ -3742,13 +3707,15 @@ argument_list|)
 operator|+
 name|RESERVATION_SHOW_RESERVATION_AS_QUEUE
 argument_list|,
-literal|false
+name|DEFAULT_SHOW_RESERVATIONS_AS_QUEUES
 argument_list|)
 decl_stmt|;
 return|return
 name|showReservationAsQueues
 return|;
 block|}
+annotation|@
+name|Override
 DECL|method|getReplanner (String queue)
 specifier|public
 name|String
@@ -3777,6 +3744,8 @@ return|return
 name|replanner
 return|;
 block|}
+annotation|@
+name|Override
 DECL|method|getMoveOnExpiry (String queue)
 specifier|public
 name|boolean
@@ -3805,6 +3774,8 @@ return|return
 name|killOnExpiry
 return|;
 block|}
+annotation|@
+name|Override
 DECL|method|getEnforcementWindow (String queue)
 specifier|public
 name|long
