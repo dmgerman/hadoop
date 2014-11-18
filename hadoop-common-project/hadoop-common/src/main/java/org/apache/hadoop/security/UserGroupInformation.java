@@ -3824,6 +3824,50 @@ return|return
 name|loginUser
 return|;
 block|}
+comment|/**    * remove the login method that is followed by a space from the username    * e.g. "jack (auth:SIMPLE)" -> "jack"    *    * @param userName    * @return userName without login method    */
+DECL|method|trimLoginMethod (String userName)
+specifier|public
+specifier|static
+name|String
+name|trimLoginMethod
+parameter_list|(
+name|String
+name|userName
+parameter_list|)
+block|{
+name|int
+name|spaceIndex
+init|=
+name|userName
+operator|.
+name|indexOf
+argument_list|(
+literal|' '
+argument_list|)
+decl_stmt|;
+if|if
+condition|(
+name|spaceIndex
+operator|>=
+literal|0
+condition|)
+block|{
+name|userName
+operator|=
+name|userName
+operator|.
+name|substring
+argument_list|(
+literal|0
+argument_list|,
+name|spaceIndex
+argument_list|)
+expr_stmt|;
+block|}
+return|return
+name|userName
+return|;
+block|}
 comment|/**    * Log in a user using the given subject    * @parma subject the subject to use when logging in a user, or null to     * create a new subject.    * @throws IOException if login fails    */
 annotation|@
 name|InterfaceAudience
