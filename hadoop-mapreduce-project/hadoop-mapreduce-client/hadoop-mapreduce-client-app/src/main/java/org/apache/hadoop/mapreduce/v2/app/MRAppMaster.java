@@ -4224,7 +4224,16 @@ name|LOG
 operator|.
 name|warn
 argument_list|(
-literal|"Graceful stop failed "
+literal|"Graceful stop failed. Exiting.. "
+argument_list|,
+name|t
+argument_list|)
+expr_stmt|;
+name|ExitUtil
+operator|.
+name|terminate
+argument_list|(
+literal|1
 argument_list|,
 name|t
 argument_list|)
