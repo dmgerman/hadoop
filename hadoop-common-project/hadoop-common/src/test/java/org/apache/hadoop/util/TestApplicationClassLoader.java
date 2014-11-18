@@ -615,11 +615,42 @@ name|void
 name|testIsSystemClass
 parameter_list|()
 block|{
+name|testIsSystemClassInternal
+argument_list|(
+literal|""
+argument_list|)
+expr_stmt|;
+block|}
+annotation|@
+name|Test
+DECL|method|testIsSystemNestedClass ()
+specifier|public
+name|void
+name|testIsSystemNestedClass
+parameter_list|()
+block|{
+name|testIsSystemClassInternal
+argument_list|(
+literal|"$Klass"
+argument_list|)
+expr_stmt|;
+block|}
+DECL|method|testIsSystemClassInternal (String nestedClass)
+specifier|private
+name|void
+name|testIsSystemClassInternal
+parameter_list|(
+name|String
+name|nestedClass
+parameter_list|)
+block|{
 name|assertFalse
 argument_list|(
 name|isSystemClass
 argument_list|(
 literal|"org.example.Foo"
+operator|+
+name|nestedClass
 argument_list|,
 literal|null
 argument_list|)
@@ -630,6 +661,8 @@ argument_list|(
 name|isSystemClass
 argument_list|(
 literal|"org.example.Foo"
+operator|+
+name|nestedClass
 argument_list|,
 name|classes
 argument_list|(
@@ -643,6 +676,8 @@ argument_list|(
 name|isSystemClass
 argument_list|(
 literal|"/org.example.Foo"
+operator|+
+name|nestedClass
 argument_list|,
 name|classes
 argument_list|(
@@ -656,6 +691,8 @@ argument_list|(
 name|isSystemClass
 argument_list|(
 literal|"org.example.Foo"
+operator|+
+name|nestedClass
 argument_list|,
 name|classes
 argument_list|(
@@ -669,6 +706,8 @@ argument_list|(
 name|isSystemClass
 argument_list|(
 literal|"net.example.Foo"
+operator|+
+name|nestedClass
 argument_list|,
 name|classes
 argument_list|(
@@ -682,6 +721,8 @@ argument_list|(
 name|isSystemClass
 argument_list|(
 literal|"org.example.Foo"
+operator|+
+name|nestedClass
 argument_list|,
 name|classes
 argument_list|(
@@ -695,6 +736,8 @@ argument_list|(
 name|isSystemClass
 argument_list|(
 literal|"org.example.Bar"
+operator|+
+name|nestedClass
 argument_list|,
 name|classes
 argument_list|(
