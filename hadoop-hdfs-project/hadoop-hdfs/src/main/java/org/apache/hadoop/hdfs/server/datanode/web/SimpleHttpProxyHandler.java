@@ -308,6 +308,24 @@ name|codec
 operator|.
 name|http
 operator|.
+name|HttpHeaders
+operator|.
+name|Values
+import|;
+end_import
+
+begin_import
+import|import static
+name|io
+operator|.
+name|netty
+operator|.
+name|handler
+operator|.
+name|codec
+operator|.
+name|http
+operator|.
 name|HttpResponseStatus
 operator|.
 name|INTERNAL_SERVER_ERROR
@@ -772,6 +790,8 @@ name|set
 argument_list|(
 name|CONNECTION
 argument_list|,
+name|Values
+operator|.
 name|CLOSE
 argument_list|)
 expr_stmt|;
@@ -808,6 +828,8 @@ name|set
 argument_list|(
 name|CONNECTION
 argument_list|,
+name|Values
+operator|.
 name|CLOSE
 argument_list|)
 expr_stmt|;
