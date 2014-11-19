@@ -3701,7 +3701,36 @@ name|node
 operator|.
 name|isDecommissionInProgress
 argument_list|()
-operator|&&
+condition|)
+block|{
+if|if
+condition|(
+operator|!
+name|node
+operator|.
+name|isAlive
+condition|)
+block|{
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"Dead node "
+operator|+
+name|node
+operator|+
+literal|" is decommissioned immediately."
+argument_list|)
+expr_stmt|;
+name|node
+operator|.
+name|setDecommissioned
+argument_list|()
+expr_stmt|;
+block|}
+elseif|else
+if|if
+condition|(
 operator|!
 name|node
 operator|.
@@ -3766,6 +3795,7 @@ argument_list|(
 name|node
 argument_list|)
 expr_stmt|;
+block|}
 block|}
 block|}
 comment|/** Stop decommissioning the specified datanodes. */
@@ -4384,11 +4414,6 @@ argument_list|(
 name|nodeDescr
 argument_list|)
 expr_stmt|;
-name|checkDecommissioning
-argument_list|(
-name|nodeDescr
-argument_list|)
-expr_stmt|;
 comment|// also treat the registration message as a heartbeat
 comment|// no need to update its timestamp
 comment|// because its is done when the descriptor is created
@@ -4399,10 +4424,6 @@ argument_list|(
 name|nodeDescr
 argument_list|)
 expr_stmt|;
-name|success
-operator|=
-literal|true
-expr_stmt|;
 name|incrementVersionCount
 argument_list|(
 name|nodeReg
@@ -4410,6 +4431,15 @@ operator|.
 name|getSoftwareVersion
 argument_list|()
 argument_list|)
+expr_stmt|;
+name|checkDecommissioning
+argument_list|(
+name|nodeDescr
+argument_list|)
+expr_stmt|;
+name|success
+operator|=
+literal|true
 expr_stmt|;
 block|}
 finally|finally
