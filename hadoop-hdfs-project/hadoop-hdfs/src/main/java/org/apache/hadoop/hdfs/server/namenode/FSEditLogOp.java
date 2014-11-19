@@ -1852,28 +1852,50 @@ decl_stmt|;
 DECL|field|txid
 name|long
 name|txid
-init|=
-name|HdfsConstants
-operator|.
-name|INVALID_TXID
 decl_stmt|;
 DECL|field|rpcClientId
 name|byte
 index|[]
 name|rpcClientId
-init|=
-name|RpcConstants
-operator|.
-name|DUMMY_CLIENT_ID
 decl_stmt|;
 DECL|field|rpcCallId
 name|int
 name|rpcCallId
-init|=
+decl_stmt|;
+DECL|method|reset ()
+specifier|final
+name|void
+name|reset
+parameter_list|()
+block|{
+name|txid
+operator|=
+name|HdfsConstants
+operator|.
+name|INVALID_TXID
+expr_stmt|;
+name|rpcClientId
+operator|=
+name|RpcConstants
+operator|.
+name|DUMMY_CLIENT_ID
+expr_stmt|;
+name|rpcCallId
+operator|=
 name|RpcConstants
 operator|.
 name|INVALID_CALL_ID
-decl_stmt|;
+expr_stmt|;
+name|resetSubFields
+argument_list|()
+expr_stmt|;
+block|}
+DECL|method|resetSubFields ()
+specifier|abstract
+name|void
+name|resetSubFields
+parameter_list|()
+function_decl|;
 DECL|class|OpInstanceCache
 specifier|final
 specifier|public
@@ -2512,6 +2534,9 @@ operator|.
 name|opCode
 operator|=
 name|opCode
+expr_stmt|;
+name|reset
+argument_list|()
 expr_stmt|;
 block|}
 DECL|method|getTransactionId ()
@@ -3608,34 +3633,73 @@ name|OP_CLOSE
 operator|)
 assert|;
 block|}
-DECL|method|reset ()
-parameter_list|<
-name|T
-extends|extends
-name|AddCloseOp
-parameter_list|>
-name|T
-name|reset
+annotation|@
+name|Override
+DECL|method|resetSubFields ()
+name|void
+name|resetSubFields
 parameter_list|()
 block|{
-name|this
-operator|.
+name|length
+operator|=
+literal|0
+expr_stmt|;
+name|inodeId
+operator|=
+literal|0L
+expr_stmt|;
+name|path
+operator|=
+literal|null
+expr_stmt|;
+name|replication
+operator|=
+literal|0
+expr_stmt|;
+name|mtime
+operator|=
+literal|0L
+expr_stmt|;
+name|atime
+operator|=
+literal|0L
+expr_stmt|;
+name|blockSize
+operator|=
+literal|0L
+expr_stmt|;
+name|blocks
+operator|=
+literal|null
+expr_stmt|;
+name|permissions
+operator|=
+literal|null
+expr_stmt|;
 name|aclEntries
 operator|=
 literal|null
 expr_stmt|;
-name|this
-operator|.
 name|xAttrs
 operator|=
 literal|null
 expr_stmt|;
-return|return
-operator|(
-name|T
-operator|)
-name|this
-return|;
+name|clientName
+operator|=
+literal|null
+expr_stmt|;
+name|clientMachine
+operator|=
+literal|null
+expr_stmt|;
+name|overwrite
+operator|=
+literal|false
+expr_stmt|;
+name|storagePolicyId
+operator|=
+literal|0
+expr_stmt|;
 block|}
 DECL|method|setInodeId (long inodeId)
 parameter_list|<
@@ -5856,6 +5920,26 @@ name|OP_ADD_BLOCK
 argument_list|)
 return|;
 block|}
+annotation|@
+name|Override
+DECL|method|resetSubFields ()
+name|void
+name|resetSubFields
+parameter_list|()
+block|{
+name|path
+operator|=
+literal|null
+expr_stmt|;
+name|penultimateBlock
+operator|=
+literal|null
+expr_stmt|;
+name|lastBlock
+operator|=
+literal|null
+expr_stmt|;
+block|}
 DECL|method|setPath (String path)
 name|AddBlockOp
 name|setPath
@@ -6404,6 +6488,22 @@ name|OP_UPDATE_BLOCKS
 argument_list|)
 return|;
 block|}
+annotation|@
+name|Override
+DECL|method|resetSubFields ()
+name|void
+name|resetSubFields
+parameter_list|()
+block|{
+name|path
+operator|=
+literal|null
+expr_stmt|;
+name|blocks
+operator|=
+literal|null
+expr_stmt|;
+block|}
 DECL|method|setPath (String path)
 name|UpdateBlocksOp
 name|setPath
@@ -6824,6 +6924,22 @@ name|OP_SET_REPLICATION
 argument_list|)
 return|;
 block|}
+annotation|@
+name|Override
+DECL|method|resetSubFields ()
+name|void
+name|resetSubFields
+parameter_list|()
+block|{
+name|path
+operator|=
+literal|null
+expr_stmt|;
+name|replication
+operator|=
+literal|0
+expr_stmt|;
+block|}
 DECL|method|setPath (String path)
 name|SetReplicationOp
 name|setPath
@@ -7196,6 +7312,30 @@ argument_list|(
 name|OP_CONCAT_DELETE
 argument_list|)
 return|;
+block|}
+annotation|@
+name|Override
+DECL|method|resetSubFields ()
+name|void
+name|resetSubFields
+parameter_list|()
+block|{
+name|length
+operator|=
+literal|0
+expr_stmt|;
+name|trg
+operator|=
+literal|null
+expr_stmt|;
+name|srcs
+operator|=
+literal|null
+expr_stmt|;
+name|timestamp
+operator|=
+literal|0L
+expr_stmt|;
 block|}
 DECL|method|setTarget (String trg)
 name|ConcatDeleteOp
@@ -8102,6 +8242,30 @@ name|OP_RENAME_OLD
 argument_list|)
 return|;
 block|}
+annotation|@
+name|Override
+DECL|method|resetSubFields ()
+name|void
+name|resetSubFields
+parameter_list|()
+block|{
+name|length
+operator|=
+literal|0
+expr_stmt|;
+name|src
+operator|=
+literal|null
+expr_stmt|;
+name|dst
+operator|=
+literal|null
+expr_stmt|;
+name|timestamp
+operator|=
+literal|0L
+expr_stmt|;
+block|}
 DECL|method|setSource (String src)
 name|RenameOldOp
 name|setSource
@@ -8662,6 +8826,26 @@ name|OP_DELETE
 argument_list|)
 return|;
 block|}
+annotation|@
+name|Override
+DECL|method|resetSubFields ()
+name|void
+name|resetSubFields
+parameter_list|()
+block|{
+name|length
+operator|=
+literal|0
+expr_stmt|;
+name|path
+operator|=
+literal|null
+expr_stmt|;
+name|timestamp
+operator|=
+literal|0L
+expr_stmt|;
+block|}
 DECL|method|setPath (String path)
 name|DeleteOp
 name|setPath
@@ -9170,26 +9354,41 @@ name|OP_MKDIR
 argument_list|)
 return|;
 block|}
-DECL|method|reset ()
-name|MkdirOp
-name|reset
+annotation|@
+name|Override
+DECL|method|resetSubFields ()
+name|void
+name|resetSubFields
 parameter_list|()
 block|{
-name|this
-operator|.
+name|length
+operator|=
+literal|0
+expr_stmt|;
+name|inodeId
+operator|=
+literal|0L
+expr_stmt|;
+name|path
+operator|=
+literal|null
+expr_stmt|;
+name|timestamp
+operator|=
+literal|0L
+expr_stmt|;
+name|permissions
+operator|=
+literal|null
+expr_stmt|;
 name|aclEntries
 operator|=
 literal|null
 expr_stmt|;
-name|this
-operator|.
 name|xAttrs
 operator|=
 literal|null
 expr_stmt|;
-return|return
-name|this
-return|;
 block|}
 DECL|method|setInodeId (long inodeId)
 name|MkdirOp
@@ -10072,6 +10271,18 @@ name|OP_SET_GENSTAMP_V1
 argument_list|)
 return|;
 block|}
+annotation|@
+name|Override
+DECL|method|resetSubFields ()
+name|void
+name|resetSubFields
+parameter_list|()
+block|{
+name|genStampV1
+operator|=
+literal|0L
+expr_stmt|;
+block|}
 DECL|method|setGenerationStamp (long genStamp)
 name|SetGenstampV1Op
 name|setGenerationStamp
@@ -10315,6 +10526,18 @@ name|OP_SET_GENSTAMP_V2
 argument_list|)
 return|;
 block|}
+annotation|@
+name|Override
+DECL|method|resetSubFields ()
+name|void
+name|resetSubFields
+parameter_list|()
+block|{
+name|genStampV2
+operator|=
+literal|0L
+expr_stmt|;
+block|}
 DECL|method|setGenerationStamp (long genStamp)
 name|SetGenstampV2Op
 name|setGenerationStamp
@@ -10557,6 +10780,18 @@ argument_list|(
 name|OP_ALLOCATE_BLOCK_ID
 argument_list|)
 return|;
+block|}
+annotation|@
+name|Override
+DECL|method|resetSubFields ()
+name|void
+name|resetSubFields
+parameter_list|()
+block|{
+name|blockId
+operator|=
+literal|0L
+expr_stmt|;
 block|}
 DECL|method|setBlockId (long blockId)
 name|AllocateBlockIdOp
@@ -10804,6 +11039,22 @@ argument_list|(
 name|OP_SET_PERMISSIONS
 argument_list|)
 return|;
+block|}
+annotation|@
+name|Override
+DECL|method|resetSubFields ()
+name|void
+name|resetSubFields
+parameter_list|()
+block|{
+name|src
+operator|=
+literal|null
+expr_stmt|;
+name|permissions
+operator|=
+literal|null
+expr_stmt|;
 block|}
 DECL|method|setSource (String src)
 name|SetPermissionsOp
@@ -11137,6 +11388,26 @@ argument_list|(
 name|OP_SET_OWNER
 argument_list|)
 return|;
+block|}
+annotation|@
+name|Override
+DECL|method|resetSubFields ()
+name|void
+name|resetSubFields
+parameter_list|()
+block|{
+name|src
+operator|=
+literal|null
+expr_stmt|;
+name|username
+operator|=
+literal|null
+expr_stmt|;
+name|groupname
+operator|=
+literal|null
+expr_stmt|;
 block|}
 DECL|method|setSource (String src)
 name|SetOwnerOp
@@ -11574,6 +11845,22 @@ return|;
 block|}
 annotation|@
 name|Override
+DECL|method|resetSubFields ()
+name|void
+name|resetSubFields
+parameter_list|()
+block|{
+name|src
+operator|=
+literal|null
+expr_stmt|;
+name|nsQuota
+operator|=
+literal|0L
+expr_stmt|;
+block|}
+annotation|@
+name|Override
 specifier|public
 DECL|method|writeFields (DataOutputStream out)
 name|void
@@ -11843,6 +12130,18 @@ return|;
 block|}
 annotation|@
 name|Override
+DECL|method|resetSubFields ()
+name|void
+name|resetSubFields
+parameter_list|()
+block|{
+name|src
+operator|=
+literal|null
+expr_stmt|;
+block|}
+annotation|@
+name|Override
 specifier|public
 DECL|method|writeFields (DataOutputStream out)
 name|void
@@ -12061,6 +12360,26 @@ argument_list|(
 name|OP_SET_QUOTA
 argument_list|)
 return|;
+block|}
+annotation|@
+name|Override
+DECL|method|resetSubFields ()
+name|void
+name|resetSubFields
+parameter_list|()
+block|{
+name|src
+operator|=
+literal|null
+expr_stmt|;
+name|nsQuota
+operator|=
+literal|0L
+expr_stmt|;
+name|dsQuota
+operator|=
+literal|0L
+expr_stmt|;
 block|}
 DECL|method|setSource (String src)
 name|SetQuotaOp
@@ -12474,6 +12793,30 @@ argument_list|(
 name|OP_TIMES
 argument_list|)
 return|;
+block|}
+annotation|@
+name|Override
+DECL|method|resetSubFields ()
+name|void
+name|resetSubFields
+parameter_list|()
+block|{
+name|length
+operator|=
+literal|0
+expr_stmt|;
+name|path
+operator|=
+literal|null
+expr_stmt|;
+name|mtime
+operator|=
+literal|0L
+expr_stmt|;
+name|atime
+operator|=
+literal|0L
+expr_stmt|;
 block|}
 DECL|method|setPath (String path)
 name|TimesOp
@@ -13027,6 +13370,42 @@ argument_list|(
 name|OP_SYMLINK
 argument_list|)
 return|;
+block|}
+annotation|@
+name|Override
+DECL|method|resetSubFields ()
+name|void
+name|resetSubFields
+parameter_list|()
+block|{
+name|length
+operator|=
+literal|0
+expr_stmt|;
+name|inodeId
+operator|=
+literal|0L
+expr_stmt|;
+name|path
+operator|=
+literal|null
+expr_stmt|;
+name|value
+operator|=
+literal|null
+expr_stmt|;
+name|mtime
+operator|=
+literal|0L
+expr_stmt|;
+name|atime
+operator|=
+literal|0L
+expr_stmt|;
+name|permissionStatus
+operator|=
+literal|null
+expr_stmt|;
 block|}
 DECL|method|setId (long inodeId)
 name|SymlinkOp
@@ -13870,6 +14249,34 @@ argument_list|(
 name|OP_RENAME
 argument_list|)
 return|;
+block|}
+annotation|@
+name|Override
+DECL|method|resetSubFields ()
+name|void
+name|resetSubFields
+parameter_list|()
+block|{
+name|length
+operator|=
+literal|0
+expr_stmt|;
+name|src
+operator|=
+literal|null
+expr_stmt|;
+name|dst
+operator|=
+literal|null
+expr_stmt|;
+name|timestamp
+operator|=
+literal|0L
+expr_stmt|;
+name|options
+operator|=
+literal|null
+expr_stmt|;
 block|}
 DECL|method|setSource (String src)
 name|RenameOp
@@ -14804,6 +15211,26 @@ name|OP_REASSIGN_LEASE
 argument_list|)
 return|;
 block|}
+annotation|@
+name|Override
+DECL|method|resetSubFields ()
+name|void
+name|resetSubFields
+parameter_list|()
+block|{
+name|leaseHolder
+operator|=
+literal|null
+expr_stmt|;
+name|path
+operator|=
+literal|null
+expr_stmt|;
+name|newHolder
+operator|=
+literal|null
+expr_stmt|;
+block|}
 DECL|method|setLeaseHolder (String leaseHolder)
 name|ReassignLeaseOp
 name|setLeaseHolder
@@ -15189,6 +15616,22 @@ name|OP_GET_DELEGATION_TOKEN
 argument_list|)
 return|;
 block|}
+annotation|@
+name|Override
+DECL|method|resetSubFields ()
+name|void
+name|resetSubFields
+parameter_list|()
+block|{
+name|token
+operator|=
+literal|null
+expr_stmt|;
+name|expiryTime
+operator|=
+literal|0L
+expr_stmt|;
+block|}
 DECL|method|setDelegationTokenIdentifier ( DelegationTokenIdentifier token)
 name|GetDelegationTokenOp
 name|setDelegationTokenIdentifier
@@ -15549,6 +15992,22 @@ name|OP_RENEW_DELEGATION_TOKEN
 argument_list|)
 return|;
 block|}
+annotation|@
+name|Override
+DECL|method|resetSubFields ()
+name|void
+name|resetSubFields
+parameter_list|()
+block|{
+name|token
+operator|=
+literal|null
+expr_stmt|;
+name|expiryTime
+operator|=
+literal|0L
+expr_stmt|;
+block|}
 DECL|method|setDelegationTokenIdentifier ( DelegationTokenIdentifier token)
 name|RenewDelegationTokenOp
 name|setDelegationTokenIdentifier
@@ -15905,6 +16364,18 @@ name|OP_CANCEL_DELEGATION_TOKEN
 argument_list|)
 return|;
 block|}
+annotation|@
+name|Override
+DECL|method|resetSubFields ()
+name|void
+name|resetSubFields
+parameter_list|()
+block|{
+name|token
+operator|=
+literal|null
+expr_stmt|;
+block|}
 DECL|method|setDelegationTokenIdentifier ( DelegationTokenIdentifier token)
 name|CancelDelegationTokenOp
 name|setDelegationTokenIdentifier
@@ -16146,6 +16617,18 @@ argument_list|(
 name|OP_UPDATE_MASTER_KEY
 argument_list|)
 return|;
+block|}
+annotation|@
+name|Override
+DECL|method|resetSubFields ()
+name|void
+name|resetSubFields
+parameter_list|()
+block|{
+name|key
+operator|=
+literal|null
+expr_stmt|;
 block|}
 DECL|method|setDelegationKey (DelegationKey key)
 name|UpdateMasterKeyOp
@@ -16406,6 +16889,15 @@ return|;
 block|}
 annotation|@
 name|Override
+DECL|method|resetSubFields ()
+name|void
+name|resetSubFields
+parameter_list|()
+block|{
+comment|// no data stored in these ops yet
+block|}
+annotation|@
+name|Override
 DECL|method|readFields (DataInputStream in, int logVersion)
 specifier|public
 name|void
@@ -16563,6 +17055,13 @@ name|OP_INVALID
 argument_list|)
 return|;
 block|}
+annotation|@
+name|Override
+DECL|method|resetSubFields ()
+name|void
+name|resetSubFields
+parameter_list|()
+block|{     }
 annotation|@
 name|Override
 specifier|public
@@ -16727,6 +17226,22 @@ argument_list|(
 name|OP_CREATE_SNAPSHOT
 argument_list|)
 return|;
+block|}
+annotation|@
+name|Override
+DECL|method|resetSubFields ()
+name|void
+name|resetSubFields
+parameter_list|()
+block|{
+name|snapshotRoot
+operator|=
+literal|null
+expr_stmt|;
+name|snapshotName
+operator|=
+literal|null
+expr_stmt|;
 block|}
 DECL|method|setSnapshotName (String snapName)
 name|CreateSnapshotOp
@@ -17040,6 +17555,22 @@ argument_list|(
 name|OP_DELETE_SNAPSHOT
 argument_list|)
 return|;
+block|}
+annotation|@
+name|Override
+DECL|method|resetSubFields ()
+name|void
+name|resetSubFields
+parameter_list|()
+block|{
+name|snapshotRoot
+operator|=
+literal|null
+expr_stmt|;
+name|snapshotName
+operator|=
+literal|null
+expr_stmt|;
 block|}
 DECL|method|setSnapshotName (String snapName)
 name|DeleteSnapshotOp
@@ -17356,6 +17887,26 @@ argument_list|(
 name|OP_RENAME_SNAPSHOT
 argument_list|)
 return|;
+block|}
+annotation|@
+name|Override
+DECL|method|resetSubFields ()
+name|void
+name|resetSubFields
+parameter_list|()
+block|{
+name|snapshotRoot
+operator|=
+literal|null
+expr_stmt|;
+name|snapshotOldName
+operator|=
+literal|null
+expr_stmt|;
+name|snapshotNewName
+operator|=
+literal|null
+expr_stmt|;
 block|}
 DECL|method|setSnapshotOldName (String snapshotOldName)
 name|RenameSnapshotOp
@@ -17757,6 +18308,18 @@ name|OP_ALLOW_SNAPSHOT
 argument_list|)
 return|;
 block|}
+annotation|@
+name|Override
+DECL|method|resetSubFields ()
+name|void
+name|resetSubFields
+parameter_list|()
+block|{
+name|snapshotRoot
+operator|=
+literal|null
+expr_stmt|;
+block|}
 DECL|method|setSnapshotRoot (String snapRoot)
 specifier|public
 name|AllowSnapshotOp
@@ -17976,6 +18539,16 @@ name|OP_DISALLOW_SNAPSHOT
 argument_list|)
 return|;
 block|}
+DECL|method|resetSubFields ()
+name|void
+name|resetSubFields
+parameter_list|()
+block|{
+name|snapshotRoot
+operator|=
+literal|null
+expr_stmt|;
+block|}
 DECL|method|setSnapshotRoot (String snapRoot)
 specifier|public
 name|DisallowSnapshotOp
@@ -18175,6 +18748,18 @@ argument_list|(
 name|OP_ADD_CACHE_DIRECTIVE
 argument_list|)
 return|;
+block|}
+annotation|@
+name|Override
+DECL|method|resetSubFields ()
+name|void
+name|resetSubFields
+parameter_list|()
+block|{
+name|directive
+operator|=
+literal|null
+expr_stmt|;
 block|}
 DECL|method|setDirective ( CacheDirectiveInfo directive)
 specifier|public
@@ -18534,6 +19119,18 @@ argument_list|(
 name|OP_MODIFY_CACHE_DIRECTIVE
 argument_list|)
 return|;
+block|}
+annotation|@
+name|Override
+DECL|method|resetSubFields ()
+name|void
+name|resetSubFields
+parameter_list|()
+block|{
+name|directive
+operator|=
+literal|null
+expr_stmt|;
 block|}
 DECL|method|setDirective ( CacheDirectiveInfo directive)
 specifier|public
@@ -18923,6 +19520,18 @@ name|OP_REMOVE_CACHE_DIRECTIVE
 argument_list|)
 return|;
 block|}
+annotation|@
+name|Override
+DECL|method|resetSubFields ()
+name|void
+name|resetSubFields
+parameter_list|()
+block|{
+name|id
+operator|=
+literal|0L
+expr_stmt|;
+block|}
 DECL|method|setId (long id)
 specifier|public
 name|RemoveCacheDirectiveInfoOp
@@ -19184,6 +19793,18 @@ argument_list|(
 name|OP_ADD_CACHE_POOL
 argument_list|)
 return|;
+block|}
+annotation|@
+name|Override
+DECL|method|resetSubFields ()
+name|void
+name|resetSubFields
+parameter_list|()
+block|{
+name|info
+operator|=
+literal|null
+expr_stmt|;
 block|}
 DECL|method|setPool (CachePoolInfo info)
 specifier|public
@@ -19549,6 +20170,18 @@ argument_list|(
 name|OP_MODIFY_CACHE_POOL
 argument_list|)
 return|;
+block|}
+annotation|@
+name|Override
+DECL|method|resetSubFields ()
+name|void
+name|resetSubFields
+parameter_list|()
+block|{
+name|info
+operator|=
+literal|null
+expr_stmt|;
 block|}
 DECL|method|setInfo (CachePoolInfo info)
 specifier|public
@@ -19934,6 +20567,18 @@ name|OP_REMOVE_CACHE_POOL
 argument_list|)
 return|;
 block|}
+annotation|@
+name|Override
+DECL|method|resetSubFields ()
+name|void
+name|resetSubFields
+parameter_list|()
+block|{
+name|poolName
+operator|=
+literal|null
+expr_stmt|;
+block|}
 DECL|method|setPoolName (String poolName)
 specifier|public
 name|RemoveCachePoolOp
@@ -20178,6 +20823,22 @@ return|;
 block|}
 annotation|@
 name|Override
+DECL|method|resetSubFields ()
+name|void
+name|resetSubFields
+parameter_list|()
+block|{
+name|xAttrs
+operator|=
+literal|null
+expr_stmt|;
+name|src
+operator|=
+literal|null
+expr_stmt|;
+block|}
+annotation|@
+name|Override
 DECL|method|readFields (DataInputStream in, int logVersion)
 name|void
 name|readFields
@@ -20415,6 +21076,22 @@ operator|new
 name|SetXAttrOp
 argument_list|()
 return|;
+block|}
+annotation|@
+name|Override
+DECL|method|resetSubFields ()
+name|void
+name|resetSubFields
+parameter_list|()
+block|{
+name|xAttrs
+operator|=
+literal|null
+expr_stmt|;
+name|src
+operator|=
+literal|null
+expr_stmt|;
 block|}
 annotation|@
 name|Override
@@ -20660,6 +21337,22 @@ operator|new
 name|SetAclOp
 argument_list|()
 return|;
+block|}
+annotation|@
+name|Override
+DECL|method|resetSubFields ()
+name|void
+name|resetSubFields
+parameter_list|()
+block|{
+name|aclEntries
+operator|=
+literal|null
+expr_stmt|;
+name|src
+operator|=
+literal|null
+expr_stmt|;
 block|}
 annotation|@
 name|Override
@@ -21122,6 +21815,18 @@ name|OP_ROLLING_UPGRADE_FINALIZE
 argument_list|)
 return|;
 block|}
+annotation|@
+name|Override
+DECL|method|resetSubFields ()
+name|void
+name|resetSubFields
+parameter_list|()
+block|{
+name|time
+operator|=
+literal|0L
+expr_stmt|;
+block|}
 DECL|method|getTime ()
 name|long
 name|getTime
@@ -21362,6 +22067,22 @@ argument_list|(
 name|OP_SET_STORAGE_POLICY
 argument_list|)
 return|;
+block|}
+annotation|@
+name|Override
+DECL|method|resetSubFields ()
+name|void
+name|resetSubFields
+parameter_list|()
+block|{
+name|path
+operator|=
+literal|null
+expr_stmt|;
+name|policyId
+operator|=
+literal|0
+expr_stmt|;
 block|}
 DECL|method|setPath (String path)
 name|SetStoragePolicyOp

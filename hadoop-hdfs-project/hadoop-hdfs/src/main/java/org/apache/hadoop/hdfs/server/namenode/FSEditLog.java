@@ -2564,6 +2564,14 @@ parameter_list|)
 block|{
 comment|// All journals failed, it is handled in logSync.
 block|}
+finally|finally
+block|{
+name|op
+operator|.
+name|reset
+argument_list|()
+expr_stmt|;
+block|}
 name|endTransaction
 argument_list|(
 name|start
@@ -3425,9 +3433,6 @@ name|get
 argument_list|()
 argument_list|)
 operator|.
-name|reset
-argument_list|()
-operator|.
 name|setInodeId
 argument_list|(
 name|newNode
@@ -3882,9 +3887,6 @@ operator|.
 name|get
 argument_list|()
 argument_list|)
-operator|.
-name|reset
-argument_list|()
 operator|.
 name|setInodeId
 argument_list|(

@@ -1018,6 +1018,15 @@ expr_stmt|;
 block|}
 annotation|@
 name|Override
+DECL|method|resetSubFields ()
+name|void
+name|resetSubFields
+parameter_list|()
+block|{
+comment|// nop
+block|}
+annotation|@
+name|Override
 DECL|method|readFields (DataInputStream in, int logVersion)
 name|void
 name|readFields
