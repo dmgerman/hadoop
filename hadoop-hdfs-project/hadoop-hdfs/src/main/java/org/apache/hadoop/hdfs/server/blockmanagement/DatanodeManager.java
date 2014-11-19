@@ -2803,6 +2803,18 @@ argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
+comment|// Also remove all block invalidation tasks under this node
+name|blockManager
+operator|.
+name|removeFromInvalidates
+argument_list|(
+operator|new
+name|DatanodeInfo
+argument_list|(
+name|node
+argument_list|)
+argument_list|)
+expr_stmt|;
 if|if
 condition|(
 name|LOG
