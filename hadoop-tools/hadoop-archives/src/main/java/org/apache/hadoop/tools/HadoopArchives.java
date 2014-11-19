@@ -824,7 +824,7 @@ name|usage
 init|=
 literal|"archive"
 operator|+
-literal|" -archiveName NAME -p<parent path> [-r<replication factor>]"
+literal|" -archiveName<NAME>.har -p<parent path> [-r<replication factor>]"
 operator|+
 literal|"<src>*<dest>"
 operator|+
@@ -1970,12 +1970,12 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
-comment|//add all the directories
+comment|// extract paths from absolute URI's
 name|List
 argument_list|<
 name|Path
 argument_list|>
-name|justDirs
+name|justPaths
 init|=
 operator|new
 name|ArrayList
@@ -1992,24 +1992,7 @@ range|:
 name|paths
 control|)
 block|{
-if|if
-condition|(
-operator|!
-name|p
-operator|.
-name|getFileSystem
-argument_list|(
-name|getConf
-argument_list|()
-argument_list|)
-operator|.
-name|isFile
-argument_list|(
-name|p
-argument_list|)
-condition|)
-block|{
-name|justDirs
+name|justPaths
 operator|.
 name|add
 argument_list|(
@@ -2026,30 +2009,6 @@ argument_list|()
 argument_list|)
 argument_list|)
 expr_stmt|;
-block|}
-else|else
-block|{
-name|justDirs
-operator|.
-name|add
-argument_list|(
-operator|new
-name|Path
-argument_list|(
-name|p
-operator|.
-name|getParent
-argument_list|()
-operator|.
-name|toUri
-argument_list|()
-operator|.
-name|getPath
-argument_list|()
-argument_list|)
-argument_list|)
-expr_stmt|;
-block|}
 block|}
 comment|/* find all the common parents of paths that are valid archive      * paths. The below is done so that we do not add a common path      * twice and also we need to only add valid child of a path that      * are specified the user.      */
 name|TreeMap
@@ -2134,7 +2093,7 @@ control|(
 name|Path
 name|p
 range|:
-name|justDirs
+name|justPaths
 control|)
 block|{
 if|if
@@ -2256,7 +2215,7 @@ expr_stmt|;
 block|}
 block|}
 block|}
-name|justDirs
+name|justPaths
 operator|=
 name|parents
 expr_stmt|;
