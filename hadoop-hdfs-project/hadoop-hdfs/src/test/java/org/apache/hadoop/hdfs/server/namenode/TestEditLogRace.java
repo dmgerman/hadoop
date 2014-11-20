@@ -412,6 +412,24 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|hdfs
+operator|.
+name|server
+operator|.
+name|protocol
+operator|.
+name|NamenodeProtocols
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|util
 operator|.
 name|Time
@@ -599,10 +617,10 @@ name|Transactions
 implements|implements
 name|Runnable
 block|{
-DECL|field|namesystem
+DECL|field|nn
 specifier|final
-name|FSNamesystem
-name|namesystem
+name|NamenodeProtocols
+name|nn
 decl_stmt|;
 DECL|field|replication
 name|short
@@ -636,10 +654,10 @@ name|Throwable
 argument_list|>
 name|caught
 decl_stmt|;
-DECL|method|Transactions (FSNamesystem ns, AtomicReference<Throwable> caught)
+DECL|method|Transactions (NamenodeProtocols ns, AtomicReference<Throwable> caught)
 name|Transactions
 parameter_list|(
-name|FSNamesystem
+name|NamenodeProtocols
 name|ns
 parameter_list|,
 name|AtomicReference
@@ -649,7 +667,7 @@ argument_list|>
 name|caught
 parameter_list|)
 block|{
-name|namesystem
+name|nn
 operator|=
 name|ns
 expr_stmt|;
@@ -676,13 +694,9 @@ operator|.
 name|currentThread
 argument_list|()
 expr_stmt|;
-name|PermissionStatus
+name|FsPermission
 name|p
 init|=
-name|namesystem
-operator|.
-name|createFsOwnerPermissions
-argument_list|(
 operator|new
 name|FsPermission
 argument_list|(
@@ -690,7 +704,6 @@ operator|(
 name|short
 operator|)
 literal|0777
-argument_list|)
 argument_list|)
 decl_stmt|;
 name|int
@@ -720,7 +733,7 @@ literal|"-dir-"
 operator|+
 name|i
 decl_stmt|;
-name|namesystem
+name|nn
 operator|.
 name|mkdirs
 argument_list|(
@@ -731,7 +744,7 @@ argument_list|,
 literal|true
 argument_list|)
 expr_stmt|;
-name|namesystem
+name|nn
 operator|.
 name|delete
 argument_list|(
@@ -802,12 +815,12 @@ name|thr
 return|;
 block|}
 block|}
-DECL|method|startTransactionWorkers (FSNamesystem namesystem, AtomicReference<Throwable> caughtErr)
+DECL|method|startTransactionWorkers (NamenodeProtocols namesystem, AtomicReference<Throwable> caughtErr)
 specifier|private
 name|void
 name|startTransactionWorkers
 parameter_list|(
-name|FSNamesystem
+name|NamenodeProtocols
 name|namesystem
 parameter_list|,
 name|AtomicReference
@@ -920,7 +933,7 @@ block|}
 catch|catch
 parameter_list|(
 name|InterruptedException
-name|ie
+name|ignored
 parameter_list|)
 block|{}
 block|}
@@ -1000,18 +1013,24 @@ name|getFileSystem
 argument_list|()
 expr_stmt|;
 specifier|final
-name|FSNamesystem
-name|namesystem
+name|NamenodeProtocols
+name|nn
 init|=
 name|cluster
 operator|.
-name|getNamesystem
+name|getNameNode
+argument_list|()
+operator|.
+name|getRpcServer
 argument_list|()
 decl_stmt|;
 name|FSImage
 name|fsimage
 init|=
-name|namesystem
+name|cluster
+operator|.
+name|getNamesystem
+argument_list|()
 operator|.
 name|getFSImage
 argument_list|()
@@ -1031,7 +1050,7 @@ argument_list|)
 decl_stmt|;
 name|startTransactionWorkers
 argument_list|(
-name|namesystem
+name|nn
 argument_list|,
 name|caughtErr
 argument_list|)
@@ -1093,7 +1112,7 @@ expr_stmt|;
 name|CheckpointSignature
 name|sig
 init|=
-name|namesystem
+name|nn
 operator|.
 name|rollEditLog
 argument_list|()
@@ -1123,7 +1142,10 @@ name|previousLogTxId
 operator|+=
 name|verifyEditLogs
 argument_list|(
-name|namesystem
+name|cluster
+operator|.
+name|getNamesystem
+argument_list|()
 argument_list|,
 name|fsimage
 argument_list|,
@@ -1439,6 +1461,15 @@ operator|.
 name|getNamesystem
 argument_list|()
 decl_stmt|;
+specifier|final
+name|NamenodeProtocols
+name|nn
+init|=
+name|cluster
+operator|.
+name|getNameNodeRpc
+argument_list|()
+decl_stmt|;
 name|FSImage
 name|fsimage
 init|=
@@ -1457,7 +1488,7 @@ argument_list|()
 decl_stmt|;
 name|startTransactionWorkers
 argument_list|(
-name|namesystem
+name|nn
 argument_list|,
 name|caughtErr
 argument_list|)
@@ -1497,7 +1528,7 @@ block|}
 catch|catch
 parameter_list|(
 name|InterruptedException
-name|e
+name|ignored
 parameter_list|)
 block|{}
 name|LOG
@@ -2267,7 +2298,7 @@ name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"Closing namesystem"
+literal|"Closing nn"
 argument_list|)
 expr_stmt|;
 if|if
@@ -2759,7 +2790,7 @@ name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"Closing namesystem"
+literal|"Closing nn"
 argument_list|)
 expr_stmt|;
 if|if
