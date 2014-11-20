@@ -40,6 +40,18 @@ name|junit
 operator|.
 name|Assert
 operator|.
+name|assertFalse
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|junit
+operator|.
+name|Assert
+operator|.
 name|assertTrue
 import|;
 end_import
@@ -2225,9 +2237,46 @@ expr_stmt|;
 comment|// Verify that the DN remains in DECOMMISSION_INPROGRESS state.
 name|assertTrue
 argument_list|(
-literal|"the node is in decommissioned state "
+literal|"the node should be DECOMMISSION_IN_PROGRESSS"
 argument_list|,
-operator|!
+name|dead
+operator|.
+name|get
+argument_list|(
+literal|0
+argument_list|)
+operator|.
+name|isDecommissionInProgress
+argument_list|()
+argument_list|)
+expr_stmt|;
+comment|// Delete the under-replicated file, which should let the
+comment|// DECOMMISSION_IN_PROGRESS node become DECOMMISSIONED
+name|cleanupFile
+argument_list|(
+name|fileSys
+argument_list|,
+name|f
+argument_list|)
+expr_stmt|;
+name|BlockManagerTestUtil
+operator|.
+name|checkDecommissionState
+argument_list|(
+name|dm
+argument_list|,
+name|dead
+operator|.
+name|get
+argument_list|(
+literal|0
+argument_list|)
+argument_list|)
+expr_stmt|;
+name|assertTrue
+argument_list|(
+literal|"the node should be decommissioned"
+argument_list|,
 name|dead
 operator|.
 name|get
@@ -2271,13 +2320,6 @@ operator|.
 name|refreshNodes
 argument_list|(
 name|conf
-argument_list|)
-expr_stmt|;
-name|cleanupFile
-argument_list|(
-name|fileSys
-argument_list|,
-name|f
 argument_list|)
 expr_stmt|;
 block|}

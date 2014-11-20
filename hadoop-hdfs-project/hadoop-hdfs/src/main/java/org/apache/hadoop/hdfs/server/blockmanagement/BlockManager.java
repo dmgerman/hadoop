@@ -15114,6 +15114,34 @@ operator|.
 name|isAlive
 condition|)
 block|{
+name|updateState
+argument_list|()
+expr_stmt|;
+if|if
+condition|(
+name|pendingReplicationBlocksCount
+operator|==
+literal|0
+operator|&&
+name|underReplicatedBlocksCount
+operator|==
+literal|0
+condition|)
+block|{
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"srcNode {} is dead and there are no under-replicated"
+operator|+
+literal|" blocks or blocks pending replication. Marking as "
+operator|+
+literal|"decommissioned."
+argument_list|)
+expr_stmt|;
+block|}
+else|else
+block|{
 name|LOG
 operator|.
 name|warn
@@ -15124,9 +15152,9 @@ name|srcNode
 operator|+
 literal|" is dead "
 operator|+
-literal|"when decommission is in progress. Continue to mark "
+literal|"while decommission is in progress. Continuing to mark "
 operator|+
-literal|"it as decommission in progress. In that way, when it rejoins the "
+literal|"it as decommission in progress so when it rejoins the "
 operator|+
 literal|"cluster it can continue the decommission process."
 argument_list|)
@@ -15135,6 +15163,7 @@ name|status
 operator|=
 literal|true
 expr_stmt|;
+block|}
 block|}
 name|srcNode
 operator|.
