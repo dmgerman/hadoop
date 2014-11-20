@@ -657,6 +657,18 @@ argument_list|(
 name|buffer
 argument_list|)
 expr_stmt|;
+name|buffer
+operator|.
+name|reset
+argument_list|(
+literal|null
+argument_list|,
+literal|0
+argument_list|,
+literal|0
+argument_list|)
+expr_stmt|;
+comment|// clean up reference
 block|}
 catch|catch
 parameter_list|(
