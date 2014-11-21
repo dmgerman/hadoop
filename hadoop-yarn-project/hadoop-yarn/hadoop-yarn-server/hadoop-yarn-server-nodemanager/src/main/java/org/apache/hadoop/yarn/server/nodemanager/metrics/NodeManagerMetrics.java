@@ -126,6 +126,22 @@ name|hadoop
 operator|.
 name|metrics2
 operator|.
+name|lib
+operator|.
+name|MutableRate
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|metrics2
+operator|.
 name|source
 operator|.
 name|JvmMetrics
@@ -244,6 +260,15 @@ annotation|@
 name|Metric
 name|MutableGaugeInt
 name|availableVCores
+decl_stmt|;
+annotation|@
+name|Metric
+argument_list|(
+literal|"Container launch duration"
+argument_list|)
+DECL|field|containerLaunchDuration
+name|MutableRate
+name|containerLaunchDuration
 decl_stmt|;
 DECL|method|create ()
 specifier|public
@@ -537,6 +562,23 @@ name|res
 operator|.
 name|getVirtualCores
 argument_list|()
+argument_list|)
+expr_stmt|;
+block|}
+DECL|method|addContainerLaunchDuration (long value)
+specifier|public
+name|void
+name|addContainerLaunchDuration
+parameter_list|(
+name|long
+name|value
+parameter_list|)
+block|{
+name|containerLaunchDuration
+operator|.
+name|add
+argument_list|(
+name|value
 argument_list|)
 expr_stmt|;
 block|}

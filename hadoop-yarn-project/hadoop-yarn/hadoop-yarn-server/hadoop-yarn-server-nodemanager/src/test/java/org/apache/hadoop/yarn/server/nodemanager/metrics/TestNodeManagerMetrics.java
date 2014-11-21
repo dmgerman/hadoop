@@ -283,6 +283,13 @@ operator|.
 name|runningContainer
 argument_list|()
 expr_stmt|;
+name|metrics
+operator|.
+name|addContainerLaunchDuration
+argument_list|(
+literal|1
+argument_list|)
+expr_stmt|;
 name|checkMetrics
 argument_list|(
 literal|5
