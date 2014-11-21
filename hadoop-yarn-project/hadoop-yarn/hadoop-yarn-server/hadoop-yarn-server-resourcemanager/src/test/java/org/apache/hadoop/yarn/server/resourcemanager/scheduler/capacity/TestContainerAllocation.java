@@ -1067,7 +1067,7 @@ block|{
 literal|"*"
 block|}
 argument_list|,
-literal|3
+literal|2
 operator|*
 name|GB
 argument_list|,
@@ -2108,7 +2108,7 @@ name|Test
 argument_list|(
 name|timeout
 operator|=
-literal|20000
+literal|30000
 argument_list|)
 DECL|method|testAMContainerAllocationWhenDNSUnavailable ()
 specifier|public
