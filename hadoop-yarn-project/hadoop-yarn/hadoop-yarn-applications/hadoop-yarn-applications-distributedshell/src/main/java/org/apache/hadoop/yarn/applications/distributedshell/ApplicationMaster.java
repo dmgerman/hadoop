@@ -2847,6 +2847,22 @@ literal|"0"
 argument_list|)
 argument_list|)
 expr_stmt|;
+if|if
+condition|(
+name|conf
+operator|.
+name|getBoolean
+argument_list|(
+name|YarnConfiguration
+operator|.
+name|TIMELINE_SERVICE_ENABLED
+argument_list|,
+name|YarnConfiguration
+operator|.
+name|DEFAULT_TIMELINE_SERVICE_ENABLED
+argument_list|)
+condition|)
+block|{
 comment|// Creating the Timeline Client
 name|timelineClient
 operator|=
@@ -2867,6 +2883,21 @@ operator|.
 name|start
 argument_list|()
 expr_stmt|;
+block|}
+else|else
+block|{
+name|timelineClient
+operator|=
+literal|null
+expr_stmt|;
+name|LOG
+operator|.
+name|warn
+argument_list|(
+literal|"Timeline service is not enabled"
+argument_list|)
+expr_stmt|;
+block|}
 return|return
 literal|true
 return|;
@@ -3071,6 +3102,13 @@ argument_list|(
 name|credentials
 argument_list|)
 expr_stmt|;
+if|if
+condition|(
+name|timelineClient
+operator|!=
+literal|null
+condition|)
+block|{
 name|publishApplicationAttemptEvent
 argument_list|(
 name|timelineClient
@@ -3089,6 +3127,7 @@ argument_list|,
 name|appSubmitterUgi
 argument_list|)
 expr_stmt|;
+block|}
 name|AMRMClientAsync
 operator|.
 name|CallbackHandler
@@ -3364,6 +3403,13 @@ argument_list|(
 name|numTotalContainers
 argument_list|)
 expr_stmt|;
+if|if
+condition|(
+name|timelineClient
+operator|!=
+literal|null
+condition|)
+block|{
 name|publishApplicationAttemptEvent
 argument_list|(
 name|timelineClient
@@ -3382,6 +3428,7 @@ argument_list|,
 name|appSubmitterUgi
 argument_list|)
 expr_stmt|;
+block|}
 block|}
 annotation|@
 name|VisibleForTesting
@@ -3644,6 +3691,20 @@ operator|.
 name|stop
 argument_list|()
 expr_stmt|;
+comment|// Stop Timeline Client
+if|if
+condition|(
+name|timelineClient
+operator|!=
+literal|null
+condition|)
+block|{
+name|timelineClient
+operator|.
+name|stop
+argument_list|()
+expr_stmt|;
+block|}
 return|return
 name|success
 return|;
@@ -3825,6 +3886,13 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
+if|if
+condition|(
+name|timelineClient
+operator|!=
+literal|null
+condition|)
+block|{
 name|publishContainerEndEvent
 argument_list|(
 name|timelineClient
@@ -3836,6 +3904,7 @@ argument_list|,
 name|appSubmitterUgi
 argument_list|)
 expr_stmt|;
+block|}
 block|}
 comment|// ask for more containers if any failed
 name|int
@@ -4343,6 +4412,15 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
+if|if
+condition|(
+name|applicationMaster
+operator|.
+name|timelineClient
+operator|!=
+literal|null
+condition|)
+block|{
 name|ApplicationMaster
 operator|.
 name|publishContainerStartEvent
@@ -4362,6 +4440,7 @@ operator|.
 name|appSubmitterUgi
 argument_list|)
 expr_stmt|;
+block|}
 block|}
 annotation|@
 name|Override
