@@ -684,6 +684,8 @@ specifier|public
 name|void
 name|setUp
 parameter_list|()
+throws|throws
+name|IOException
 block|{
 name|Configuration
 name|conf
