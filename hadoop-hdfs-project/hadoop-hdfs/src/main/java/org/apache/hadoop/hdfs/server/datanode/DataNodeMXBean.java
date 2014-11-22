@@ -48,6 +48,16 @@ name|InterfaceStability
 import|;
 end_import
 
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
+name|Map
+import|;
+end_import
+
 begin_comment
 comment|/**  *   * This is the JMX management interface for data node information  */
 end_comment
@@ -113,6 +123,23 @@ DECL|method|getXceiverCount ()
 specifier|public
 name|int
 name|getXceiverCount
+parameter_list|()
+function_decl|;
+comment|/**    * Gets the network error counts on a per-Datanode basis.    */
+DECL|method|getDatanodeNetworkCounts ()
+specifier|public
+name|Map
+argument_list|<
+name|String
+argument_list|,
+name|Map
+argument_list|<
+name|String
+argument_list|,
+name|Long
+argument_list|>
+argument_list|>
+name|getDatanodeNetworkCounts
 parameter_list|()
 function_decl|;
 block|}

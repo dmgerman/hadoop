@@ -1129,6 +1129,26 @@ name|DFS_DATANODE_RAM_DISK_LOW_WATERMARK_BYTES_DEFAULT
 init|=
 name|DFS_BLOCK_SIZE_DEFAULT
 decl_stmt|;
+DECL|field|DFS_DATANODE_NETWORK_COUNTS_CACHE_MAX_SIZE_KEY
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|DFS_DATANODE_NETWORK_COUNTS_CACHE_MAX_SIZE_KEY
+init|=
+literal|"dfs.datanode.network.counts.cache.max.size"
+decl_stmt|;
+DECL|field|DFS_DATANODE_NETWORK_COUNTS_CACHE_MAX_SIZE_DEFAULT
+specifier|public
+specifier|static
+specifier|final
+name|int
+name|DFS_DATANODE_NETWORK_COUNTS_CACHE_MAX_SIZE_DEFAULT
+init|=
+name|Integer
+operator|.
+name|MAX_VALUE
+decl_stmt|;
 comment|// This setting is for testing/internal use only.
 DECL|field|DFS_DATANODE_DUPLICATE_REPLICA_DELETION
 specifier|public

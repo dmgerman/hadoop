@@ -1110,6 +1110,13 @@ name|String
 name|remoteAddress
 decl_stmt|;
 comment|// address of remote side
+DECL|field|remoteAddressWithoutPort
+specifier|private
+specifier|final
+name|String
+name|remoteAddressWithoutPort
+decl_stmt|;
+comment|// only the address, no port
 DECL|field|localAddress
 specifier|private
 specifier|final
@@ -1279,6 +1286,36 @@ name|peer
 operator|.
 name|getRemoteAddressString
 argument_list|()
+expr_stmt|;
+specifier|final
+name|int
+name|colonIdx
+init|=
+name|remoteAddress
+operator|.
+name|indexOf
+argument_list|(
+literal|':'
+argument_list|)
+decl_stmt|;
+name|remoteAddressWithoutPort
+operator|=
+operator|(
+name|colonIdx
+operator|<
+literal|0
+operator|)
+condition|?
+name|remoteAddress
+else|:
+name|remoteAddress
+operator|.
+name|substring
+argument_list|(
+literal|0
+argument_list|,
+name|colonIdx
+argument_list|)
 expr_stmt|;
 name|localAddress
 operator|=
@@ -1713,10 +1750,6 @@ block|}
 block|}
 else|else
 block|{
-name|datanode
-operator|.
-name|metrics
-operator|.
 name|incrDatanodeNetworkErrors
 argument_list|()
 expr_stmt|;
@@ -3383,10 +3416,6 @@ argument_list|(
 name|out
 argument_list|)
 expr_stmt|;
-name|datanode
-operator|.
-name|metrics
-operator|.
 name|incrDatanodeNetworkErrors
 argument_list|()
 expr_stmt|;
@@ -3504,10 +3533,6 @@ argument_list|,
 name|ioe
 argument_list|)
 expr_stmt|;
-name|datanode
-operator|.
-name|metrics
-operator|.
 name|incrDatanodeNetworkErrors
 argument_list|()
 expr_stmt|;
@@ -4474,10 +4499,6 @@ argument_list|,
 name|e
 argument_list|)
 expr_stmt|;
-name|datanode
-operator|.
-name|metrics
-operator|.
 name|incrDatanodeNetworkErrors
 argument_list|()
 expr_stmt|;
@@ -4722,10 +4743,6 @@ operator|+
 name|ioe
 argument_list|)
 expr_stmt|;
-name|datanode
-operator|.
-name|metrics
-operator|.
 name|incrDatanodeNetworkErrors
 argument_list|()
 expr_stmt|;
@@ -4928,10 +4945,6 @@ operator|+
 name|ioe
 argument_list|)
 expr_stmt|;
-name|datanode
-operator|.
-name|metrics
-operator|.
 name|incrDatanodeNetworkErrors
 argument_list|()
 expr_stmt|;
@@ -5550,10 +5563,6 @@ operator|+
 name|ioe
 argument_list|)
 expr_stmt|;
-name|datanode
-operator|.
-name|metrics
-operator|.
 name|incrDatanodeNetworkErrors
 argument_list|()
 expr_stmt|;
@@ -5895,10 +5904,6 @@ operator|+
 name|ioe
 argument_list|)
 expr_stmt|;
-name|datanode
-operator|.
-name|metrics
-operator|.
 name|incrDatanodeNetworkErrors
 argument_list|()
 expr_stmt|;
@@ -6611,10 +6616,6 @@ name|IoeDuringCopyBlockOperation
 condition|)
 block|{
 comment|// Don't double count IO errors
-name|datanode
-operator|.
-name|metrics
-operator|.
 name|incrDatanodeNetworkErrors
 argument_list|()
 expr_stmt|;
@@ -6685,10 +6686,6 @@ name|getRemoteAddressString
 argument_list|()
 argument_list|)
 expr_stmt|;
-name|datanode
-operator|.
-name|metrics
-operator|.
 name|incrDatanodeNetworkErrors
 argument_list|()
 expr_stmt|;
@@ -6915,6 +6912,20 @@ name|out
 operator|.
 name|flush
 argument_list|()
+expr_stmt|;
+block|}
+DECL|method|incrDatanodeNetworkErrors ()
+specifier|private
+name|void
+name|incrDatanodeNetworkErrors
+parameter_list|()
+block|{
+name|datanode
+operator|.
+name|incrDatanodeNetworkErrors
+argument_list|(
+name|remoteAddressWithoutPort
+argument_list|)
 expr_stmt|;
 block|}
 DECL|method|checkAccess (OutputStream out, final boolean reply, final ExtendedBlock blk, final Token<BlockTokenIdentifier> t, final Op op, final BlockTokenSecretManager.AccessMode mode)
