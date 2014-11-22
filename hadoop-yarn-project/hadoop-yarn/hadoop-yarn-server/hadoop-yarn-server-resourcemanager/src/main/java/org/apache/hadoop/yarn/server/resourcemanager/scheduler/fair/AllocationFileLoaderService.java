@@ -2525,6 +2525,30 @@ argument_list|)
 decl_stmt|;
 if|if
 condition|(
+name|queueName
+operator|.
+name|contains
+argument_list|(
+literal|"."
+argument_list|)
+condition|)
+block|{
+throw|throw
+operator|new
+name|AllocationConfigurationException
+argument_list|(
+literal|"Bad fair scheduler config "
+operator|+
+literal|"file: queue name ("
+operator|+
+name|queueName
+operator|+
+literal|") shouldn't contain period."
+argument_list|)
+throw|;
+block|}
+if|if
+condition|(
 name|parentName
 operator|!=
 literal|null
