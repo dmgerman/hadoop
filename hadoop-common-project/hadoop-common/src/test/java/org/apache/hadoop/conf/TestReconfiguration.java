@@ -1976,6 +1976,12 @@ argument_list|,
 literal|"NEW3"
 argument_list|,
 literal|"OLD3"
+argument_list|,
+operator|new
+name|IOException
+argument_list|(
+literal|"io exception"
+argument_list|)
 argument_list|)
 argument_list|)
 operator|.
@@ -2137,7 +2143,7 @@ argument_list|()
 argument_list|,
 name|containsString
 argument_list|(
-literal|"NAME3"
+literal|"io exception"
 argument_list|)
 argument_list|)
 expr_stmt|;

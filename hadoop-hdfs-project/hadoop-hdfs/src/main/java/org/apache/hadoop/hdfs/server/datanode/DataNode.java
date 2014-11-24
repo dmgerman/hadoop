@@ -3787,7 +3787,7 @@ expr_stmt|;
 block|}
 catch|catch
 parameter_list|(
-name|Exception
+name|IOException
 name|e
 parameter_list|)
 block|{
@@ -4476,15 +4476,23 @@ argument_list|(
 literal|"FAILED TO ADD: %s: %s\n"
 argument_list|,
 name|volume
-operator|.
-name|toString
-argument_list|()
 argument_list|,
 name|ioe
 operator|.
 name|getMessage
 argument_list|()
 argument_list|)
+argument_list|)
+expr_stmt|;
+name|LOG
+operator|.
+name|error
+argument_list|(
+literal|"Failed to add volume: "
+operator|+
+name|volume
+argument_list|,
+name|ioe
 argument_list|)
 expr_stmt|;
 block|}
@@ -4500,19 +4508,16 @@ name|toString
 argument_list|()
 argument_list|)
 expr_stmt|;
-block|}
 name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"Storage directory is loaded: "
+literal|"Successfully added volume: "
 operator|+
 name|volume
-operator|.
-name|toString
-argument_list|()
 argument_list|)
 expr_stmt|;
+block|}
 block|}
 catch|catch
 parameter_list|(
@@ -4531,9 +4536,6 @@ argument_list|(
 literal|"FAILED to ADD: %s: %s\n"
 argument_list|,
 name|volume
-operator|.
-name|toString
-argument_list|()
 argument_list|,
 name|e
 operator|.
