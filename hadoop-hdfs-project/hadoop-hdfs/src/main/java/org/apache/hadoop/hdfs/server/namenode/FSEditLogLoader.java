@@ -3646,10 +3646,12 @@ name|logVersion
 argument_list|)
 expr_stmt|;
 block|}
-name|fsDir
+name|FSDirConcatOp
 operator|.
 name|unprotectedConcat
 argument_list|(
+name|fsDir
+argument_list|,
 name|trg
 argument_list|,
 name|srcs
