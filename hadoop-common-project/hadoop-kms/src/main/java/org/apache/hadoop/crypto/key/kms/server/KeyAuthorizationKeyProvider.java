@@ -570,9 +570,7 @@ name|isACLPresent
 argument_list|(
 name|aclName
 argument_list|,
-name|KeyOpType
-operator|.
-name|MANAGEMENT
+name|opType
 argument_list|)
 operator|&&
 operator|(
