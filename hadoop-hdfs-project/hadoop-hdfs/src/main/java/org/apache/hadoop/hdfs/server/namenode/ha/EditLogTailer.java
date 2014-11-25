@@ -950,6 +950,8 @@ name|Exception
 block|{
 try|try
 block|{
+comment|// It is already under the full name system lock and the checkpointer
+comment|// thread is already stopped. No need to acqure any other lock.
 name|doTailEdits
 argument_list|()
 expr_stmt|;
@@ -1400,9 +1402,28 @@ condition|)
 block|{
 break|break;
 block|}
+comment|// Prevent reading of name system while being modified. The full
+comment|// name system lock will be acquired to further block even the block
+comment|// state updates.
+name|namesystem
+operator|.
+name|cpLockInterruptibly
+argument_list|()
+expr_stmt|;
+try|try
+block|{
 name|doTailEdits
 argument_list|()
 expr_stmt|;
+block|}
+finally|finally
+block|{
+name|namesystem
+operator|.
+name|cpUnlock
+argument_list|()
+expr_stmt|;
+block|}
 block|}
 catch|catch
 parameter_list|(

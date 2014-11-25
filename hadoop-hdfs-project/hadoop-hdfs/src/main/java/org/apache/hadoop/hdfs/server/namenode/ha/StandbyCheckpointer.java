@@ -912,9 +912,12 @@ specifier|final
 name|NameNodeFile
 name|imageType
 decl_stmt|;
+comment|// Acquire cpLock to make sure no one is modifying the name system.
+comment|// It does not need the full namesystem write lock, since the only thing
+comment|// that modifies namesystem on standby node is edit log replaying.
 name|namesystem
 operator|.
-name|longReadLockInterruptibly
+name|cpLockInterruptibly
 argument_list|()
 expr_stmt|;
 try|try
@@ -1094,7 +1097,7 @@ finally|finally
 block|{
 name|namesystem
 operator|.
-name|longReadUnlock
+name|cpUnlock
 argument_list|()
 expr_stmt|;
 block|}
@@ -1236,6 +1239,13 @@ parameter_list|)
 throws|throws
 name|ServiceFailedException
 block|{
+synchronized|synchronized
+init|(
+name|cancelLock
+init|)
+block|{
+comment|// The checkpointer thread takes this lock and checks if checkpointing is
+comment|// postponed.
 name|thread
 operator|.
 name|preventCheckpointsFor
@@ -1243,11 +1253,6 @@ argument_list|(
 name|PREVENT_AFTER_CANCEL_MS
 argument_list|)
 expr_stmt|;
-synchronized|synchronized
-init|(
-name|cancelLock
-init|)
-block|{
 comment|// Before beginning a checkpoint, the checkpointer thread
 comment|// takes this lock, and creates a canceler object.
 comment|// If the canceler is non-null, then a checkpoint is in

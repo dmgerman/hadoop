@@ -5607,6 +5607,15 @@ init|=
 operator|-
 literal|51
 decl_stmt|;
+DECL|field|CHECK_CANCEL_INTERVAL
+specifier|public
+specifier|static
+specifier|final
+name|int
+name|CHECK_CANCEL_INTERVAL
+init|=
+literal|4096
+decl_stmt|;
 DECL|field|context
 specifier|private
 specifier|final
@@ -5620,6 +5629,13 @@ name|boolean
 name|saved
 init|=
 literal|false
+decl_stmt|;
+DECL|field|checkCancelCounter
+specifier|private
+name|long
+name|checkCancelCounter
+init|=
+literal|0
 decl_stmt|;
 comment|/** The MD5 checksum of the file that was written */
 DECL|field|savedDigest
@@ -6268,11 +6284,6 @@ name|dirNum
 init|=
 literal|0
 decl_stmt|;
-name|int
-name|i
-init|=
-literal|0
-decl_stmt|;
 for|for
 control|(
 name|INode
@@ -6349,10 +6360,10 @@ expr_stmt|;
 block|}
 if|if
 condition|(
-name|i
+name|checkCancelCounter
 operator|++
 operator|%
-literal|50
+name|CHECK_CANCEL_INTERVAL
 operator|==
 literal|0
 condition|)

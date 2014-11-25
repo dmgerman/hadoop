@@ -4953,6 +4953,13 @@ specifier|final
 name|FSNamesystemLock
 name|fsLock
 decl_stmt|;
+comment|/**     * Checkpoint lock to protect FSNamesystem modification on standby NNs.    * Unlike fsLock, it does not affect block updates. On active NNs, this lock    * does not provide proper protection, because there are operations that    * modify both block and name system state.  Even on standby, fsLock is     * used when block state changes need to be blocked.    */
+DECL|field|cpLock
+specifier|private
+specifier|final
+name|ReentrantLock
+name|cpLock
+decl_stmt|;
 comment|/**    * Used when this NN is in standby state to read from the shared edit log.    */
 DECL|field|editLogTailer
 specifier|private
@@ -5865,6 +5872,12 @@ name|writeLock
 argument_list|()
 operator|.
 name|newCondition
+argument_list|()
+expr_stmt|;
+name|cpLock
+operator|=
+operator|new
+name|ReentrantLock
 argument_list|()
 expr_stmt|;
 name|this
@@ -9342,6 +9355,53 @@ operator|.
 name|getWriteHoldCount
 argument_list|()
 return|;
+block|}
+comment|/** Lock the checkpoint lock */
+DECL|method|cpLock ()
+specifier|public
+name|void
+name|cpLock
+parameter_list|()
+block|{
+name|this
+operator|.
+name|cpLock
+operator|.
+name|lock
+argument_list|()
+expr_stmt|;
+block|}
+comment|/** Lock the checkpoint lock interrupibly */
+DECL|method|cpLockInterruptibly ()
+specifier|public
+name|void
+name|cpLockInterruptibly
+parameter_list|()
+throws|throws
+name|InterruptedException
+block|{
+name|this
+operator|.
+name|cpLock
+operator|.
+name|lockInterruptibly
+argument_list|()
+expr_stmt|;
+block|}
+comment|/** Unlock the checkpoint lock */
+DECL|method|cpUnlock ()
+specifier|public
+name|void
+name|cpUnlock
+parameter_list|()
+block|{
+name|this
+operator|.
+name|cpLock
+operator|.
+name|unlock
+argument_list|()
+expr_stmt|;
 block|}
 DECL|method|getNamespaceInfo ()
 name|NamespaceInfo
@@ -26069,6 +26129,10 @@ expr_stmt|;
 name|checkSuperuserPrivilege
 argument_list|()
 expr_stmt|;
+name|cpLock
+argument_list|()
+expr_stmt|;
+comment|// Block if a checkpointing is in progress on standby.
 name|readLock
 argument_list|()
 expr_stmt|;
@@ -26112,6 +26176,9 @@ block|{
 name|readUnlock
 argument_list|()
 expr_stmt|;
+name|cpUnlock
+argument_list|()
+expr_stmt|;
 block|}
 name|LOG
 operator|.
@@ -26144,6 +26211,10 @@ operator|.
 name|UNCHECKED
 argument_list|)
 expr_stmt|;
+name|cpLock
+argument_list|()
+expr_stmt|;
+comment|// Block if a checkpointing is in progress on standby.
 name|writeLock
 argument_list|()
 expr_stmt|;
@@ -26207,6 +26278,9 @@ block|{
 name|writeUnlock
 argument_list|()
 expr_stmt|;
+name|cpUnlock
+argument_list|()
+expr_stmt|;
 block|}
 block|}
 DECL|method|getStartTime ()
@@ -26239,6 +26313,10 @@ operator|.
 name|UNCHECKED
 argument_list|)
 expr_stmt|;
+name|cpLock
+argument_list|()
+expr_stmt|;
+comment|// Block if a checkpointing is in progress on standby.
 name|writeLock
 argument_list|()
 expr_stmt|;
@@ -26269,6 +26347,9 @@ block|}
 finally|finally
 block|{
 name|writeUnlock
+argument_list|()
+expr_stmt|;
+name|cpUnlock
 argument_list|()
 expr_stmt|;
 block|}
@@ -35249,6 +35330,18 @@ return|return
 name|fsLock
 operator|.
 name|longReadLock
+return|;
+block|}
+annotation|@
+name|VisibleForTesting
+DECL|method|getCpLockForTests ()
+specifier|public
+name|ReentrantLock
+name|getCpLockForTests
+parameter_list|()
+block|{
+return|return
+name|cpLock
 return|;
 block|}
 annotation|@
