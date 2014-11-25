@@ -428,6 +428,11 @@ argument_list|(
 name|conf
 argument_list|)
 operator|.
+name|numDataNodes
+argument_list|(
+literal|2
+argument_list|)
+operator|.
 name|build
 argument_list|()
 expr_stmt|;
@@ -794,8 +799,8 @@ name|liveNodes
 operator|.
 name|size
 argument_list|()
-operator|>
-literal|0
+operator|==
+literal|2
 argument_list|)
 expr_stmt|;
 for|for
