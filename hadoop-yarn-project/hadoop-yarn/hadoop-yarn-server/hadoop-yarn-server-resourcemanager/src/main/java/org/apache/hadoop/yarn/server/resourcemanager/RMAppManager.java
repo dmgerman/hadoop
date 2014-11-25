@@ -368,28 +368,6 @@ name|recovery
 operator|.
 name|RMStateStore
 operator|.
-name|ApplicationState
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|yarn
-operator|.
-name|server
-operator|.
-name|resourcemanager
-operator|.
-name|recovery
-operator|.
-name|RMStateStore
-operator|.
 name|RMState
 import|;
 end_import
@@ -411,6 +389,28 @@ operator|.
 name|recovery
 operator|.
 name|Recoverable
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|server
+operator|.
+name|resourcemanager
+operator|.
+name|recovery
+operator|.
+name|records
+operator|.
+name|ApplicationStateData
 import|;
 end_import
 
@@ -1988,12 +1988,12 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-DECL|method|recoverApplication (ApplicationState appState, RMState rmState)
+DECL|method|recoverApplication (ApplicationStateData appState, RMState rmState)
 specifier|protected
 name|void
 name|recoverApplication
 parameter_list|(
-name|ApplicationState
+name|ApplicationStateData
 name|appState
 parameter_list|,
 name|RMState
@@ -2013,9 +2013,9 @@ decl_stmt|;
 name|ApplicationId
 name|appId
 init|=
-name|appState
+name|appContext
 operator|.
-name|getAppId
+name|getApplicationId
 argument_list|()
 decl_stmt|;
 comment|// create and recover app.
@@ -2485,7 +2485,7 @@ name|Map
 argument_list|<
 name|ApplicationId
 argument_list|,
-name|ApplicationState
+name|ApplicationStateData
 argument_list|>
 name|appStates
 init|=
@@ -2510,7 +2510,7 @@ argument_list|)
 expr_stmt|;
 for|for
 control|(
-name|ApplicationState
+name|ApplicationStateData
 name|appState
 range|:
 name|appStates

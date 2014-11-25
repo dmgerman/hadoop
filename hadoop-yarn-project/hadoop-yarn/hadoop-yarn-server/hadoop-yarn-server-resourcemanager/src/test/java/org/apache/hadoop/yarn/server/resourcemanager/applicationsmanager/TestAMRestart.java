@@ -414,9 +414,9 @@ name|resourcemanager
 operator|.
 name|recovery
 operator|.
-name|RMStateStore
+name|records
 operator|.
-name|ApplicationState
+name|ApplicationStateData
 import|;
 end_import
 
@@ -2758,7 +2758,7 @@ operator|.
 name|ACCEPTED
 argument_list|)
 expr_stmt|;
-name|ApplicationState
+name|ApplicationStateData
 name|appState
 init|=
 name|memStore
@@ -3547,7 +3547,7 @@ name|ACCEPTED
 argument_list|)
 expr_stmt|;
 comment|// state store has 1 attempt stored.
-name|ApplicationState
+name|ApplicationStateData
 name|appState
 init|=
 name|memStore
@@ -3926,7 +3926,7 @@ operator|.
 name|start
 argument_list|()
 expr_stmt|;
-name|ApplicationState
+name|ApplicationStateData
 name|appState
 init|=
 name|memStore

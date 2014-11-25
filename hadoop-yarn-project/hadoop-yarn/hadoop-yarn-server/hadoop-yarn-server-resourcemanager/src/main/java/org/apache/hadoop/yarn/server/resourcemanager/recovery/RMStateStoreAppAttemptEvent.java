@@ -38,9 +38,9 @@ name|resourcemanager
 operator|.
 name|recovery
 operator|.
-name|RMStateStore
+name|records
 operator|.
-name|ApplicationAttemptState
+name|ApplicationAttemptStateData
 import|;
 end_import
 
@@ -53,14 +53,14 @@ extends|extends
 name|RMStateStoreEvent
 block|{
 DECL|field|attemptState
-name|ApplicationAttemptState
+name|ApplicationAttemptStateData
 name|attemptState
 decl_stmt|;
-DECL|method|RMStateStoreAppAttemptEvent (ApplicationAttemptState attemptState)
+DECL|method|RMStateStoreAppAttemptEvent (ApplicationAttemptStateData attemptState)
 specifier|public
 name|RMStateStoreAppAttemptEvent
 parameter_list|(
-name|ApplicationAttemptState
+name|ApplicationAttemptStateData
 name|attemptState
 parameter_list|)
 block|{
@@ -80,7 +80,7 @@ expr_stmt|;
 block|}
 DECL|method|getAppAttemptState ()
 specifier|public
-name|ApplicationAttemptState
+name|ApplicationAttemptStateData
 name|getAppAttemptState
 parameter_list|()
 block|{

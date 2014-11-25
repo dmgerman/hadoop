@@ -1008,50 +1008,6 @@ name|recovery
 operator|.
 name|RMStateStore
 operator|.
-name|ApplicationAttemptState
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|yarn
-operator|.
-name|server
-operator|.
-name|resourcemanager
-operator|.
-name|recovery
-operator|.
-name|RMStateStore
-operator|.
-name|ApplicationState
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|yarn
-operator|.
-name|server
-operator|.
-name|resourcemanager
-operator|.
-name|recovery
-operator|.
-name|RMStateStore
-operator|.
 name|RMState
 import|;
 end_import
@@ -1675,7 +1631,7 @@ name|Map
 argument_list|<
 name|ApplicationId
 argument_list|,
-name|ApplicationState
+name|ApplicationStateData
 argument_list|>
 name|rmAppState
 init|=
@@ -1825,7 +1781,7 @@ literal|200
 argument_list|)
 decl_stmt|;
 comment|// assert app1 info is saved
-name|ApplicationState
+name|ApplicationStateData
 name|appState
 init|=
 name|rmAppState
@@ -1926,7 +1882,7 @@ name|getAttemptCount
 argument_list|()
 argument_list|)
 expr_stmt|;
-name|ApplicationAttemptState
+name|ApplicationAttemptStateData
 name|attemptState
 init|=
 name|appState
@@ -3312,7 +3268,7 @@ name|Map
 argument_list|<
 name|ApplicationId
 argument_list|,
-name|ApplicationState
+name|ApplicationStateData
 argument_list|>
 name|rmAppState
 init|=
@@ -3435,7 +3391,7 @@ operator|.
 name|FAILED
 argument_list|)
 expr_stmt|;
-name|ApplicationState
+name|ApplicationStateData
 name|appState
 init|=
 name|rmAppState
@@ -3610,7 +3566,7 @@ name|Map
 argument_list|<
 name|ApplicationId
 argument_list|,
-name|ApplicationState
+name|ApplicationStateData
 argument_list|>
 name|rmAppState
 init|=
@@ -4786,7 +4742,7 @@ name|Map
 argument_list|<
 name|ApplicationId
 argument_list|,
-name|ApplicationState
+name|ApplicationStateData
 argument_list|>
 name|rmAppState
 init|=
@@ -5035,7 +4991,7 @@ name|Map
 argument_list|<
 name|ApplicationId
 argument_list|,
-name|ApplicationState
+name|ApplicationStateData
 argument_list|>
 name|rmAppState
 init|=
@@ -5145,7 +5101,7 @@ name|FAILED
 argument_list|)
 expr_stmt|;
 comment|// assert the app/attempt failed state is saved.
-name|ApplicationState
+name|ApplicationStateData
 name|appState
 init|=
 name|rmAppState
@@ -5355,7 +5311,7 @@ name|Map
 argument_list|<
 name|ApplicationId
 argument_list|,
-name|ApplicationState
+name|ApplicationStateData
 argument_list|>
 name|rmAppState
 init|=
@@ -5464,7 +5420,7 @@ name|KILLED
 argument_list|)
 expr_stmt|;
 comment|// killed state is saved.
-name|ApplicationState
+name|ApplicationStateData
 name|appState
 init|=
 name|rmAppState
@@ -5885,7 +5841,7 @@ name|Map
 argument_list|<
 name|ApplicationId
 argument_list|,
-name|ApplicationState
+name|ApplicationStateData
 argument_list|>
 name|rmAppState
 init|=
@@ -5985,7 +5941,7 @@ name|req
 argument_list|)
 expr_stmt|;
 comment|// check the state store about the unregistered info.
-name|ApplicationState
+name|ApplicationStateData
 name|appState
 init|=
 name|rmAppState
@@ -5998,7 +5954,7 @@ name|getApplicationId
 argument_list|()
 argument_list|)
 decl_stmt|;
-name|ApplicationAttemptState
+name|ApplicationAttemptStateData
 name|attemptState0
 init|=
 name|appState
@@ -7004,7 +6960,7 @@ name|Map
 argument_list|<
 name|ApplicationId
 argument_list|,
-name|ApplicationState
+name|ApplicationStateData
 argument_list|>
 name|rmAppState
 init|=
@@ -7071,7 +7027,7 @@ name|FINISHED
 argument_list|)
 expr_stmt|;
 comment|// check that app/attempt is saved with the final state
-name|ApplicationState
+name|ApplicationStateData
 name|appState
 init|=
 name|rmAppState
@@ -7175,7 +7131,7 @@ name|Map
 argument_list|<
 name|ApplicationId
 argument_list|,
-name|ApplicationState
+name|ApplicationStateData
 argument_list|>
 name|rmAppState
 init|=
@@ -7286,7 +7242,7 @@ literal|null
 argument_list|)
 decl_stmt|;
 comment|// assert app1 info is saved
-name|ApplicationState
+name|ApplicationStateData
 name|appState
 init|=
 name|rmAppState
@@ -7386,7 +7342,7 @@ name|getAttemptCount
 argument_list|()
 argument_list|)
 expr_stmt|;
-name|ApplicationAttemptState
+name|ApplicationAttemptStateData
 name|attemptState
 init|=
 name|appState
@@ -7641,7 +7597,7 @@ name|Map
 argument_list|<
 name|ApplicationId
 argument_list|,
-name|ApplicationState
+name|ApplicationStateData
 argument_list|>
 name|rmAppState
 init|=
@@ -7875,7 +7831,7 @@ name|ts
 argument_list|)
 decl_stmt|;
 comment|// assert app info is saved
-name|ApplicationState
+name|ApplicationStateData
 name|appState
 init|=
 name|rmAppState
@@ -8166,7 +8122,7 @@ name|Map
 argument_list|<
 name|ApplicationId
 argument_list|,
-name|ApplicationState
+name|ApplicationStateData
 argument_list|>
 name|rmAppState
 init|=
@@ -8239,7 +8195,7 @@ literal|"default"
 argument_list|)
 decl_stmt|;
 comment|// assert app info is saved
-name|ApplicationState
+name|ApplicationStateData
 name|appState
 init|=
 name|rmAppState
@@ -8295,7 +8251,7 @@ name|ALLOCATED
 argument_list|)
 expr_stmt|;
 comment|// assert attempt info is saved
-name|ApplicationAttemptState
+name|ApplicationAttemptStateData
 name|attemptState
 init|=
 name|appState
@@ -8354,7 +8310,7 @@ name|savedCredentials
 init|=
 name|attemptState
 operator|.
-name|getAppAttemptCredentials
+name|getAppAttemptTokens
 argument_list|()
 decl_stmt|;
 name|Assert
@@ -8589,7 +8545,7 @@ name|Map
 argument_list|<
 name|ApplicationId
 argument_list|,
-name|ApplicationState
+name|ApplicationStateData
 argument_list|>
 name|rmAppState
 init|=
@@ -8796,7 +8752,7 @@ name|ts
 argument_list|)
 decl_stmt|;
 comment|// assert app info is saved
-name|ApplicationState
+name|ApplicationStateData
 name|appState
 init|=
 name|rmAppState
@@ -9756,7 +9712,7 @@ name|Map
 argument_list|<
 name|ApplicationId
 argument_list|,
-name|ApplicationState
+name|ApplicationStateData
 argument_list|>
 name|rmAppState
 init|=
@@ -9796,7 +9752,7 @@ range|:
 name|appList
 control|)
 block|{
-name|ApplicationState
+name|ApplicationStateData
 name|appState
 init|=
 name|rmAppState
@@ -10022,7 +9978,7 @@ name|Map
 argument_list|<
 name|ApplicationId
 argument_list|,
-name|ApplicationState
+name|ApplicationStateData
 argument_list|>
 name|rmAppState
 init|=
@@ -10791,12 +10747,22 @@ name|i
 operator|--
 control|)
 block|{
-name|ApplicationState
+name|ApplicationStateData
 name|appState
 init|=
 name|mock
 argument_list|(
-name|ApplicationState
+name|ApplicationStateData
+operator|.
+name|class
+argument_list|)
+decl_stmt|;
+name|ApplicationSubmissionContext
+name|context
+init|=
+name|mock
+argument_list|(
+name|ApplicationSubmissionContext
 operator|.
 name|class
 argument_list|)
@@ -10805,7 +10771,20 @@ name|when
 argument_list|(
 name|appState
 operator|.
-name|getAppId
+name|getApplicationSubmissionContext
+argument_list|()
+argument_list|)
+operator|.
+name|thenReturn
+argument_list|(
+name|context
+argument_list|)
+expr_stmt|;
+name|when
+argument_list|(
+name|context
+operator|.
+name|getApplicationId
 argument_list|()
 argument_list|)
 operator|.
@@ -10833,7 +10812,10 @@ name|put
 argument_list|(
 name|appState
 operator|.
-name|getAppId
+name|getApplicationSubmissionContext
+argument_list|()
+operator|.
+name|getApplicationId
 argument_list|()
 argument_list|,
 name|appState
@@ -10938,7 +10920,7 @@ specifier|protected
 name|void
 name|recoverApplication
 parameter_list|(
-name|ApplicationState
+name|ApplicationStateData
 name|appState
 parameter_list|,
 name|RMState
@@ -10969,7 +10951,10 @@ name|assertTrue
 argument_list|(
 name|appState
 operator|.
-name|getAppId
+name|getApplicationSubmissionContext
+argument_list|()
+operator|.
+name|getApplicationId
 argument_list|()
 operator|.
 name|compareTo
@@ -10984,7 +10969,10 @@ name|prevId
 operator|=
 name|appState
 operator|.
-name|getAppId
+name|getApplicationSubmissionContext
+argument_list|()
+operator|.
+name|getApplicationId
 argument_list|()
 expr_stmt|;
 block|}

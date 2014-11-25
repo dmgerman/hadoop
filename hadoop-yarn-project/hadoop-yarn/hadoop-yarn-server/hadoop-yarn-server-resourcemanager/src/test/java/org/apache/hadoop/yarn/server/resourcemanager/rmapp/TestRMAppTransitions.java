@@ -23,6 +23,28 @@ package|;
 end_package
 
 begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|server
+operator|.
+name|resourcemanager
+operator|.
+name|recovery
+operator|.
+name|records
+operator|.
+name|ApplicationStateData
+import|;
+end_import
+
+begin_import
 import|import static
 name|org
 operator|.
@@ -657,28 +679,6 @@ operator|.
 name|recovery
 operator|.
 name|RMStateStore
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|yarn
-operator|.
-name|server
-operator|.
-name|resourcemanager
-operator|.
-name|recovery
-operator|.
-name|RMStateStore
-operator|.
-name|ApplicationState
 import|;
 end_import
 
@@ -2444,7 +2444,7 @@ name|updateApplicationState
 argument_list|(
 name|any
 argument_list|(
-name|ApplicationState
+name|ApplicationStateData
 operator|.
 name|class
 argument_list|)
@@ -2474,7 +2474,7 @@ name|updateApplicationState
 argument_list|(
 name|any
 argument_list|(
-name|ApplicationState
+name|ApplicationStateData
 operator|.
 name|class
 argument_list|)
@@ -2851,11 +2851,12 @@ operator|new
 name|RMState
 argument_list|()
 decl_stmt|;
-name|ApplicationState
+name|ApplicationStateData
 name|appState
 init|=
-operator|new
-name|ApplicationState
+name|ApplicationStateData
+operator|.
+name|newInstance
 argument_list|(
 literal|123
 argument_list|,
@@ -5754,7 +5755,7 @@ name|Map
 argument_list|<
 name|ApplicationId
 argument_list|,
-name|ApplicationState
+name|ApplicationStateData
 argument_list|>
 name|applicationState
 init|=
@@ -5792,7 +5793,7 @@ argument_list|)
 expr_stmt|;
 for|for
 control|(
-name|ApplicationState
+name|ApplicationStateData
 name|appState
 range|:
 name|applicationState
@@ -5810,12 +5811,12 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-DECL|method|testRecoverApplication (ApplicationState appState, RMState rmState)
+DECL|method|testRecoverApplication (ApplicationStateData appState, RMState rmState)
 specifier|public
 name|void
 name|testRecoverApplication
 parameter_list|(
-name|ApplicationState
+name|ApplicationStateData
 name|appState
 parameter_list|,
 name|RMState
@@ -5840,7 +5841,10 @@ name|RMAppImpl
 argument_list|(
 name|appState
 operator|.
-name|getAppId
+name|getApplicationSubmissionContext
+argument_list|()
+operator|.
+name|getApplicationId
 argument_list|()
 argument_list|,
 name|rmContext
@@ -5980,7 +5984,7 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|createRMStateForApplications ( Map<ApplicationId, ApplicationState> applicationState, RMAppState rmAppState)
+DECL|method|createRMStateForApplications ( Map<ApplicationId, ApplicationStateData> applicationState, RMAppState rmAppState)
 specifier|public
 name|void
 name|createRMStateForApplications
@@ -5989,7 +5993,7 @@ name|Map
 argument_list|<
 name|ApplicationId
 argument_list|,
-name|ApplicationState
+name|ApplicationStateData
 argument_list|>
 name|applicationState
 parameter_list|,
@@ -6005,11 +6009,12 @@ argument_list|(
 literal|null
 argument_list|)
 decl_stmt|;
-name|ApplicationState
+name|ApplicationStateData
 name|appState
 init|=
-operator|new
-name|ApplicationState
+name|ApplicationStateData
+operator|.
+name|newInstance
 argument_list|(
 name|app
 operator|.
@@ -6023,12 +6028,12 @@ argument_list|()
 argument_list|,
 name|app
 operator|.
-name|getApplicationSubmissionContext
+name|getUser
 argument_list|()
 argument_list|,
 name|app
 operator|.
-name|getUser
+name|getApplicationSubmissionContext
 argument_list|()
 argument_list|,
 name|rmAppState

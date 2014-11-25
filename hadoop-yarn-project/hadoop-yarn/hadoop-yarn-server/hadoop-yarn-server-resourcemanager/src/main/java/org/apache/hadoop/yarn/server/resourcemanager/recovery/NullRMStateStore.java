@@ -328,12 +328,12 @@ comment|// Do nothing
 block|}
 annotation|@
 name|Override
-DECL|method|removeApplicationStateInternal (ApplicationState appState)
+DECL|method|removeApplicationStateInternal (ApplicationStateData appState)
 specifier|protected
 name|void
 name|removeApplicationStateInternal
 parameter_list|(
-name|ApplicationState
+name|ApplicationStateData
 name|appState
 parameter_list|)
 throws|throws

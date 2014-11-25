@@ -38,9 +38,9 @@ name|resourcemanager
 operator|.
 name|recovery
 operator|.
-name|RMStateStore
+name|records
 operator|.
-name|ApplicationState
+name|ApplicationStateData
 import|;
 end_import
 
@@ -55,14 +55,14 @@ block|{
 DECL|field|appState
 specifier|private
 specifier|final
-name|ApplicationState
+name|ApplicationStateData
 name|appState
 decl_stmt|;
-DECL|method|RMStateUpdateAppEvent (ApplicationState appState)
+DECL|method|RMStateUpdateAppEvent (ApplicationStateData appState)
 specifier|public
 name|RMStateUpdateAppEvent
 parameter_list|(
-name|ApplicationState
+name|ApplicationStateData
 name|appState
 parameter_list|)
 block|{
@@ -82,7 +82,7 @@ expr_stmt|;
 block|}
 DECL|method|getAppState ()
 specifier|public
-name|ApplicationState
+name|ApplicationStateData
 name|getAppState
 parameter_list|()
 block|{

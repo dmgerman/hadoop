@@ -968,9 +968,9 @@ name|resourcemanager
 operator|.
 name|recovery
 operator|.
-name|RMStateStore
+name|records
 operator|.
-name|ApplicationAttemptState
+name|ApplicationAttemptStateData
 import|;
 end_import
 
@@ -9594,7 +9594,7 @@ name|updateApplicationAttemptState
 argument_list|(
 name|any
 argument_list|(
-name|ApplicationAttemptState
+name|ApplicationAttemptStateData
 operator|.
 name|class
 argument_list|)
