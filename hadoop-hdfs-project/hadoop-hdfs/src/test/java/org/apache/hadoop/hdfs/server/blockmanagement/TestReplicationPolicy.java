@@ -7943,7 +7943,11 @@ argument_list|)
 operator|.
 name|thenReturn
 argument_list|(
-literal|true
+name|DatanodeStorageInfo
+operator|.
+name|AddBlockResult
+operator|.
+name|ADDED
 argument_list|)
 expr_stmt|;
 name|ucBlock
