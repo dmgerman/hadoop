@@ -373,6 +373,19 @@ argument_list|(
 name|nms
 argument_list|)
 expr_stmt|;
+name|ClientProtocolService
+name|cps
+init|=
+name|createClientProtocolService
+argument_list|(
+name|store
+argument_list|)
+decl_stmt|;
+name|addService
+argument_list|(
+name|cps
+argument_list|)
+expr_stmt|;
 comment|// init metrics
 name|DefaultMetricsSystem
 operator|.
@@ -521,6 +534,23 @@ block|{
 return|return
 operator|new
 name|SharedCacheUploaderService
+argument_list|(
+name|store
+argument_list|)
+return|;
+block|}
+DECL|method|createClientProtocolService (SCMStore store)
+specifier|private
+name|ClientProtocolService
+name|createClientProtocolService
+parameter_list|(
+name|SCMStore
+name|store
+parameter_list|)
+block|{
+return|return
+operator|new
+name|ClientProtocolService
 argument_list|(
 name|store
 argument_list|)
