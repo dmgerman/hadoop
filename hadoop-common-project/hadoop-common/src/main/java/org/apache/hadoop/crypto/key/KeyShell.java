@@ -1569,7 +1569,7 @@ literal|": "
 operator|+
 name|e
 operator|.
-name|getMessage
+name|toString
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -1779,6 +1779,13 @@ operator|+
 literal|" within KeyProvider: "
 operator|+
 name|provider
+operator|+
+literal|". "
+operator|+
+name|e
+operator|.
+name|toString
+argument_list|()
 argument_list|)
 expr_stmt|;
 throw|throw
@@ -1803,6 +1810,13 @@ operator|+
 literal|" within KeyProvider: "
 operator|+
 name|provider
+operator|+
+literal|". "
+operator|+
+name|e1
+operator|.
+name|toString
+argument_list|()
 argument_list|)
 expr_stmt|;
 throw|throw
@@ -2076,7 +2090,12 @@ name|println
 argument_list|(
 name|keyName
 operator|+
-literal|" has not been deleted."
+literal|" has not been deleted. "
+operator|+
+name|e
+operator|.
+name|toString
+argument_list|()
 argument_list|)
 expr_stmt|;
 throw|throw
@@ -2310,7 +2329,7 @@ literal|" has not been created. "
 operator|+
 name|e
 operator|.
-name|getMessage
+name|toString
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -2334,7 +2353,7 @@ literal|" has not been created. "
 operator|+
 name|e
 operator|.
-name|getMessage
+name|toString
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -2358,7 +2377,7 @@ literal|" has not been created. "
 operator|+
 name|e
 operator|.
-name|getMessage
+name|toString
 argument_list|()
 argument_list|)
 expr_stmt|;
