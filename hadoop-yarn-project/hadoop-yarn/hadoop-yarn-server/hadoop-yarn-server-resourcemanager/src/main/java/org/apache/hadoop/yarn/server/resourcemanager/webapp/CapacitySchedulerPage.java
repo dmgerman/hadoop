@@ -1061,7 +1061,7 @@ argument_list|()
 argument_list|)
 argument_list|)
 operator|.
-name|_
+name|_r
 argument_list|(
 literal|"Active Users: "
 argument_list|,
@@ -1071,7 +1071,7 @@ name|toString
 argument_list|()
 argument_list|)
 operator|.
-name|_r
+name|_
 argument_list|(
 literal|"Accessible Node Labels:"
 argument_list|,
