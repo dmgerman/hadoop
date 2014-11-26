@@ -1305,13 +1305,6 @@ argument_list|,
 name|locations
 argument_list|)
 decl_stmt|;
-name|ucBlock
-operator|.
-name|setBlockCollection
-argument_list|(
-name|this
-argument_list|)
-expr_stmt|;
 name|setBlock
 argument_list|(
 name|numBlocks

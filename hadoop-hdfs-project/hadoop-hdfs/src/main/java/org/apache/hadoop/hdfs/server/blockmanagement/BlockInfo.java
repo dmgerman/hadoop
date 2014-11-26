@@ -1581,7 +1581,9 @@ name|isComplete
 argument_list|()
 condition|)
 block|{
-return|return
+name|BlockInfoUnderConstruction
+name|ucBlock
+init|=
 operator|new
 name|BlockInfoUnderConstruction
 argument_list|(
@@ -1597,6 +1599,17 @@ name|s
 argument_list|,
 name|targets
 argument_list|)
+decl_stmt|;
+name|ucBlock
+operator|.
+name|setBlockCollection
+argument_list|(
+name|getBlockCollection
+argument_list|()
+argument_list|)
+expr_stmt|;
+return|return
+name|ucBlock
 return|;
 block|}
 comment|// the block is already under construction
@@ -1620,6 +1633,14 @@ operator|.
 name|setExpectedLocations
 argument_list|(
 name|targets
+argument_list|)
+expr_stmt|;
+name|ucBlock
+operator|.
+name|setBlockCollection
+argument_list|(
+name|getBlockCollection
+argument_list|()
 argument_list|)
 expr_stmt|;
 return|return
