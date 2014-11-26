@@ -626,6 +626,26 @@ name|server
 operator|.
 name|blockmanagement
 operator|.
+name|DatanodeStorageInfo
+operator|.
+name|AddBlockResult
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|server
+operator|.
+name|blockmanagement
+operator|.
 name|PendingDataNodeMessages
 operator|.
 name|ReportedBlockInfo
@@ -9573,8 +9593,8 @@ operator|)
 literal|1
 argument_list|)
 decl_stmt|;
-name|boolean
-name|added
+name|AddBlockResult
+name|result
 init|=
 name|storageInfo
 operator|.
@@ -9584,7 +9604,11 @@ name|delimiter
 argument_list|)
 decl_stmt|;
 assert|assert
-name|added
+name|result
+operator|==
+name|AddBlockResult
+operator|.
+name|ADDED
 operator|:
 literal|"Delimiting block cannot be present in the node"
 assert|;
@@ -11101,8 +11125,8 @@ operator|:
 literal|"Block must belong to a file"
 assert|;
 comment|// add block to the datanode
-name|boolean
-name|added
+name|AddBlockResult
+name|result
 init|=
 name|storageInfo
 operator|.
@@ -11116,7 +11140,11 @@ name|curReplicaDelta
 decl_stmt|;
 if|if
 condition|(
-name|added
+name|result
+operator|==
+name|AddBlockResult
+operator|.
+name|ADDED
 condition|)
 block|{
 name|curReplicaDelta
@@ -11136,6 +11164,43 @@ name|node
 argument_list|)
 expr_stmt|;
 block|}
+block|}
+elseif|else
+if|if
+condition|(
+name|result
+operator|==
+name|AddBlockResult
+operator|.
+name|REPLACED
+condition|)
+block|{
+name|curReplicaDelta
+operator|=
+literal|0
+expr_stmt|;
+name|blockLog
+operator|.
+name|warn
+argument_list|(
+literal|"BLOCK* addStoredBlock: "
+operator|+
+literal|"block "
+operator|+
+name|storedBlock
+operator|+
+literal|" moved to storageType "
+operator|+
+name|storageInfo
+operator|.
+name|getStorageType
+argument_list|()
+operator|+
+literal|" on node "
+operator|+
+name|node
+argument_list|)
+expr_stmt|;
 block|}
 else|else
 block|{
@@ -11247,7 +11312,11 @@ operator|.
 name|isComplete
 argument_list|()
 operator|&&
-name|added
+name|result
+operator|==
+name|AddBlockResult
+operator|.
+name|ADDED
 condition|)
 block|{
 comment|// check whether safe replication is reached for the block

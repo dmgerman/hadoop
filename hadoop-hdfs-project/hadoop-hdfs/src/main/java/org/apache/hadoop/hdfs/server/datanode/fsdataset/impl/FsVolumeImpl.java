@@ -741,6 +741,26 @@ name|getLazypersistDir
 argument_list|()
 return|;
 block|}
+DECL|method|getTmpDir (String bpid)
+name|File
+name|getTmpDir
+parameter_list|(
+name|String
+name|bpid
+parameter_list|)
+throws|throws
+name|IOException
+block|{
+return|return
+name|getBlockPoolSlice
+argument_list|(
+name|bpid
+argument_list|)
+operator|.
+name|getTmpDir
+argument_list|()
+return|;
+block|}
 DECL|method|decDfsUsed (String bpid, long value)
 name|void
 name|decDfsUsed

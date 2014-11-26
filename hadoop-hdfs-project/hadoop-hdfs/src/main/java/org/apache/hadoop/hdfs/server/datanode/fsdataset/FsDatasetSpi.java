@@ -372,6 +372,24 @@ name|server
 operator|.
 name|datanode
 operator|.
+name|ReplicaInfo
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|server
+operator|.
+name|datanode
+operator|.
 name|ReplicaNotFoundException
 import|;
 end_import
@@ -1528,6 +1546,22 @@ parameter_list|,
 name|long
 name|blockId
 parameter_list|)
+function_decl|;
+comment|/**      * Move block from one storage to another storage      */
+DECL|method|moveBlockAcrossStorage (final ExtendedBlock block, StorageType targetStorageType)
+specifier|public
+name|ReplicaInfo
+name|moveBlockAcrossStorage
+parameter_list|(
+specifier|final
+name|ExtendedBlock
+name|block
+parameter_list|,
+name|StorageType
+name|targetStorageType
+parameter_list|)
+throws|throws
+name|IOException
 function_decl|;
 block|}
 end_interface

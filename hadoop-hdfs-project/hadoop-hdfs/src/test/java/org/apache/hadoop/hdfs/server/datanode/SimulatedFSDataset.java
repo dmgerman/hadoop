@@ -5969,6 +5969,27 @@ name|UnsupportedOperationException
 argument_list|()
 throw|;
 block|}
+annotation|@
+name|Override
+DECL|method|moveBlockAcrossStorage (ExtendedBlock block, StorageType targetStorageType)
+specifier|public
+name|ReplicaInfo
+name|moveBlockAcrossStorage
+parameter_list|(
+name|ExtendedBlock
+name|block
+parameter_list|,
+name|StorageType
+name|targetStorageType
+parameter_list|)
+throws|throws
+name|IOException
+block|{
+comment|// TODO Auto-generated method stub
+return|return
+literal|null
+return|;
+block|}
 block|}
 end_class
 

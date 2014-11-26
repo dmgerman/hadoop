@@ -1006,6 +1006,8 @@ argument_list|,
 name|blockFile
 argument_list|,
 name|lazyPersistDir
+argument_list|,
+literal|true
 argument_list|)
 decl_stmt|;
 comment|// Lock FsDataSetImpl during onCompleteLazyPersist callback

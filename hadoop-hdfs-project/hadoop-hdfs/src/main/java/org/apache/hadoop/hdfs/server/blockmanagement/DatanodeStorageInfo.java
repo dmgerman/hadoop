@@ -901,7 +901,7 @@ return|;
 block|}
 DECL|method|addBlock (BlockInfo b)
 specifier|public
-name|boolean
+name|AddBlockResult
 name|addBlock
 parameter_list|(
 name|BlockInfo
@@ -910,10 +910,12 @@ parameter_list|)
 block|{
 comment|// First check whether the block belongs to a different storage
 comment|// on the same DN.
-name|boolean
-name|replaced
+name|AddBlockResult
+name|result
 init|=
-literal|false
+name|AddBlockResult
+operator|.
+name|ADDED
 decl_stmt|;
 name|DatanodeStorageInfo
 name|otherStorage
@@ -948,16 +950,20 @@ argument_list|(
 name|b
 argument_list|)
 expr_stmt|;
-name|replaced
+name|result
 operator|=
-literal|true
+name|AddBlockResult
+operator|.
+name|REPLACED
 expr_stmt|;
 block|}
 else|else
 block|{
 comment|// The block is already associated with this storage.
 return|return
-literal|false
+name|AddBlockResult
+operator|.
+name|ALREADY_EXIST
 return|;
 block|}
 block|}
@@ -984,8 +990,7 @@ name|numBlocks
 operator|++
 expr_stmt|;
 return|return
-operator|!
-name|replaced
+name|result
 return|;
 block|}
 DECL|method|removeBlock (BlockInfo b)
@@ -1479,6 +1484,20 @@ return|return
 literal|null
 return|;
 block|}
+DECL|enum|AddBlockResult
+specifier|static
+enum|enum
+name|AddBlockResult
+block|{
+DECL|enumConstant|ADDED
+DECL|enumConstant|REPLACED
+DECL|enumConstant|ALREADY_EXIST
+name|ADDED
+block|,
+name|REPLACED
+block|,
+name|ALREADY_EXIST
+block|;   }
 block|}
 end_class
 

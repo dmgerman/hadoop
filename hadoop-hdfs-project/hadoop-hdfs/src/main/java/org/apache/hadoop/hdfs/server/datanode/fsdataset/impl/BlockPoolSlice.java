@@ -930,6 +930,15 @@ return|return
 name|rbwDir
 return|;
 block|}
+DECL|method|getTmpDir ()
+name|File
+name|getTmpDir
+parameter_list|()
+block|{
+return|return
+name|tmpDir
+return|;
+block|}
 comment|/** Run DU on local drives.  It must be synchronized from caller. */
 DECL|method|decDfsUsed (long value)
 name|void

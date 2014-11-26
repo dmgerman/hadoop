@@ -1598,6 +1598,29 @@ operator|.
 name|getDatanodeInfo
 argument_list|()
 decl_stmt|;
+comment|// if source and target are same nodes then no need of proxy
+if|if
+condition|(
+name|source
+operator|.
+name|getDatanodeInfo
+argument_list|()
+operator|.
+name|equals
+argument_list|(
+name|targetDN
+argument_list|)
+operator|&&
+name|addTo
+argument_list|(
+name|source
+argument_list|)
+condition|)
+block|{
+return|return
+literal|true
+return|;
+block|}
 comment|// if node group is supported, first try add nodes in the same node group
 if|if
 condition|(
@@ -2301,54 +2324,6 @@ argument_list|(
 name|block
 argument_list|)
 expr_stmt|;
-block|}
-annotation|@
-name|Override
-DECL|method|isLocatedOn (StorageGroup loc)
-specifier|public
-specifier|synchronized
-name|boolean
-name|isLocatedOn
-parameter_list|(
-name|StorageGroup
-name|loc
-parameter_list|)
-block|{
-comment|// currently we only check if replicas are located on the same DataNodes
-comment|// since we do not have the capability to store two replicas in the same
-comment|// DataNode even though they are on two different storage types
-for|for
-control|(
-name|StorageGroup
-name|existing
-range|:
-name|locations
-control|)
-block|{
-if|if
-condition|(
-name|existing
-operator|.
-name|getDatanodeInfo
-argument_list|()
-operator|.
-name|equals
-argument_list|(
-name|loc
-operator|.
-name|getDatanodeInfo
-argument_list|()
-argument_list|)
-condition|)
-block|{
-return|return
-literal|true
-return|;
-block|}
-block|}
-return|return
-literal|false
-return|;
 block|}
 block|}
 comment|/** The class represents a desired move. */
