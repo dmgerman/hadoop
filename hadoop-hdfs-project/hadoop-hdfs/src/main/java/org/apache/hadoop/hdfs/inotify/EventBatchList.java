@@ -43,7 +43,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * Contains a set of events, the transaction ID in the edit log up to which we  * read to produce these events, and the first txid we observed when producing  * these events (the last of which is for the purpose of determining whether we  * have missed events due to edit deletion). Also contains the most recent txid  * that the NameNode has sync'ed, so the client can determine how far behind in  * the edit log it is.  */
+comment|/**  * Contains a list of event batches, the transaction ID in the edit log up to  * which we read to produce these events, and the first txid we observed when  * producing these events (the last of which is for the purpose of determining  * whether we have missed events due to edit deletion). Also contains the most  * recent txid that the NameNode has sync'ed, so the client can determine how  * far behind in the edit log it is.  */
 end_comment
 
 begin_class
@@ -51,18 +51,18 @@ annotation|@
 name|InterfaceAudience
 operator|.
 name|Private
-DECL|class|EventsList
+DECL|class|EventBatchList
 specifier|public
 class|class
-name|EventsList
+name|EventBatchList
 block|{
-DECL|field|events
+DECL|field|batches
 specifier|private
 name|List
 argument_list|<
-name|Event
+name|EventBatch
 argument_list|>
-name|events
+name|batches
 decl_stmt|;
 DECL|field|firstTxid
 specifier|private
@@ -79,15 +79,15 @@ specifier|private
 name|long
 name|syncTxid
 decl_stmt|;
-DECL|method|EventsList (List<Event> events, long firstTxid, long lastTxid, long syncTxid)
+DECL|method|EventBatchList (List<EventBatch> batches, long firstTxid, long lastTxid, long syncTxid)
 specifier|public
-name|EventsList
+name|EventBatchList
 parameter_list|(
 name|List
 argument_list|<
-name|Event
+name|EventBatch
 argument_list|>
-name|events
+name|batches
 parameter_list|,
 name|long
 name|firstTxid
@@ -101,9 +101,9 @@ parameter_list|)
 block|{
 name|this
 operator|.
-name|events
+name|batches
 operator|=
-name|events
+name|batches
 expr_stmt|;
 name|this
 operator|.
@@ -124,17 +124,17 @@ operator|=
 name|syncTxid
 expr_stmt|;
 block|}
-DECL|method|getEvents ()
+DECL|method|getBatches ()
 specifier|public
 name|List
 argument_list|<
-name|Event
+name|EventBatch
 argument_list|>
-name|getEvents
+name|getBatches
 parameter_list|()
 block|{
 return|return
-name|events
+name|batches
 return|;
 block|}
 DECL|method|getFirstTxid ()

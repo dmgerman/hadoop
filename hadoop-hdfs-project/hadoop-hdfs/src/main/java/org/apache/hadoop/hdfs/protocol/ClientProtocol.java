@@ -376,7 +376,7 @@ name|hdfs
 operator|.
 name|inotify
 operator|.
-name|EventsList
+name|EventBatchList
 import|;
 end_import
 
@@ -2393,12 +2393,12 @@ parameter_list|()
 throws|throws
 name|IOException
 function_decl|;
-comment|/**    * Get an ordered list of events corresponding to the edit log transactions    * from txid onwards.    */
+comment|/**    * Get an ordered list of batches of events corresponding to the edit log    * transactions for txids equal to or greater than txid.    */
 annotation|@
 name|Idempotent
 DECL|method|getEditsFromTxid (long txid)
 specifier|public
-name|EventsList
+name|EventBatchList
 name|getEditsFromTxid
 parameter_list|(
 name|long

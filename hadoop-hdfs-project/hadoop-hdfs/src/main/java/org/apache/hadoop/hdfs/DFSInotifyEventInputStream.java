@@ -32,22 +32,6 @@ end_import
 
 begin_import
 import|import
-name|com
-operator|.
-name|google
-operator|.
-name|common
-operator|.
-name|util
-operator|.
-name|concurrent
-operator|.
-name|UncheckedExecutionException
-import|;
-end_import
-
-begin_import
-import|import
 name|org
 operator|.
 name|apache
@@ -86,7 +70,7 @@ name|hdfs
 operator|.
 name|inotify
 operator|.
-name|Event
+name|EventBatch
 import|;
 end_import
 
@@ -102,7 +86,7 @@ name|hdfs
 operator|.
 name|inotify
 operator|.
-name|EventsList
+name|EventBatchList
 import|;
 end_import
 
@@ -210,79 +194,7 @@ name|util
 operator|.
 name|concurrent
 operator|.
-name|Callable
-import|;
-end_import
-
-begin_import
-import|import
-name|java
-operator|.
-name|util
-operator|.
-name|concurrent
-operator|.
-name|ExecutionException
-import|;
-end_import
-
-begin_import
-import|import
-name|java
-operator|.
-name|util
-operator|.
-name|concurrent
-operator|.
-name|ExecutorService
-import|;
-end_import
-
-begin_import
-import|import
-name|java
-operator|.
-name|util
-operator|.
-name|concurrent
-operator|.
-name|Executors
-import|;
-end_import
-
-begin_import
-import|import
-name|java
-operator|.
-name|util
-operator|.
-name|concurrent
-operator|.
-name|Future
-import|;
-end_import
-
-begin_import
-import|import
-name|java
-operator|.
-name|util
-operator|.
-name|concurrent
-operator|.
 name|TimeUnit
-import|;
-end_import
-
-begin_import
-import|import
-name|java
-operator|.
-name|util
-operator|.
-name|concurrent
-operator|.
-name|TimeoutException
 import|;
 end_import
 
@@ -329,7 +241,7 @@ DECL|field|it
 specifier|private
 name|Iterator
 argument_list|<
-name|Event
+name|EventBatch
 argument_list|>
 name|it
 decl_stmt|;
@@ -418,10 +330,10 @@ operator|=
 name|lastReadTxid
 expr_stmt|;
 block|}
-comment|/**    * Returns the next event in the stream or null if no new events are currently    * available.    *    * @throws IOException because of network error or edit log    * corruption. Also possible if JournalNodes are unresponsive in the    * QJM setting (even one unresponsive JournalNode is enough in rare cases),    * so catching this exception and retrying at least a few times is    * recommended.    * @throws MissingEventsException if we cannot return the next event in the    * stream because the data for the event (and possibly some subsequent events)    * has been deleted (generally because this stream is a very large number of    * events behind the current state of the NameNode). It is safe to continue    * reading from the stream after this exception is thrown -- the next    * available event will be returned.    */
+comment|/**    * Returns the next batch of events in the stream or null if no new    * batches are currently available.    *    * @throws IOException because of network error or edit log    * corruption. Also possible if JournalNodes are unresponsive in the    * QJM setting (even one unresponsive JournalNode is enough in rare cases),    * so catching this exception and retrying at least a few times is    * recommended.    * @throws MissingEventsException if we cannot return the next batch in the    * stream because the data for the events (and possibly some subsequent    * events) has been deleted (generally because this stream is a very large    * number of transactions behind the current state of the NameNode). It is    * safe to continue reading from the stream after this exception is thrown    * The next available batch of events will be returned.    */
 DECL|method|poll ()
 specifier|public
-name|Event
+name|EventBatch
 name|poll
 parameter_list|()
 throws|throws
@@ -465,7 +377,7 @@ name|hasNext
 argument_list|()
 condition|)
 block|{
-name|EventsList
+name|EventBatchList
 name|el
 init|=
 name|namenode
@@ -503,7 +415,7 @@ name|it
 operator|=
 name|el
 operator|.
-name|getEvents
+name|getBatches
 argument_list|()
 operator|.
 name|iterator
@@ -591,11 +503,11 @@ literal|null
 return|;
 block|}
 block|}
-comment|/**    * Return a estimate of how many events behind the NameNode's current state    * this stream is. Clients should periodically call this method and check if    * its result is steadily increasing, which indicates that they are falling    * behind (i.e. events are being generated faster than the client is reading    * them). If a client falls too far behind events may be deleted before the    * client can read them.    *<p/>    * A return value of -1 indicates that an estimate could not be produced, and    * should be ignored. The value returned by this method is really only useful    * when compared to previous or subsequent returned values.    */
-DECL|method|getEventsBehindEstimate ()
+comment|/**    * Return a estimate of how many transaction IDs behind the NameNode's    * current state this stream is. Clients should periodically call this method    * and check if its result is steadily increasing, which indicates that they    * are falling behind (i.e. transaction are being generated faster than the    * client is reading them). If a client falls too far behind events may be    * deleted before the client can read them.    *<p/>    * A return value of -1 indicates that an estimate could not be produced, and    * should be ignored. The value returned by this method is really only useful    * when compared to previous or subsequent returned values.    */
+DECL|method|getTxidsBehindEstimate ()
 specifier|public
 name|long
-name|getEventsBehindEstimate
+name|getTxidsBehindEstimate
 parameter_list|()
 block|{
 if|if
@@ -627,10 +539,10 @@ name|lastReadTxid
 return|;
 block|}
 block|}
-comment|/**    * Returns the next event in the stream, waiting up to the specified amount of    * time for a new event. Returns null if a new event is not available at the    * end of the specified amount of time. The time before the method returns may    * exceed the specified amount of time by up to the time required for an RPC    * to the NameNode.    *    * @param time number of units of the given TimeUnit to wait    * @param tu the desired TimeUnit    * @throws IOException see {@link DFSInotifyEventInputStream#poll()}    * @throws MissingEventsException    * see {@link DFSInotifyEventInputStream#poll()}    * @throws InterruptedException if the calling thread is interrupted    */
+comment|/**    * Returns the next event batch in the stream, waiting up to the specified    * amount of time for a new batch. Returns null if one is not available at the    * end of the specified amount of time. The time before the method returns may    * exceed the specified amount of time by up to the time required for an RPC    * to the NameNode.    *    * @param time number of units of the given TimeUnit to wait    * @param tu the desired TimeUnit    * @throws IOException see {@link DFSInotifyEventInputStream#poll()}    * @throws MissingEventsException    * see {@link DFSInotifyEventInputStream#poll()}    * @throws InterruptedException if the calling thread is interrupted    */
 DECL|method|poll (long time, TimeUnit tu)
 specifier|public
-name|Event
+name|EventBatch
 name|poll
 parameter_list|(
 name|long
@@ -673,7 +585,7 @@ name|nextWait
 init|=
 name|INITIAL_WAIT_MS
 decl_stmt|;
-name|Event
+name|EventBatch
 name|next
 init|=
 literal|null
@@ -763,10 +675,10 @@ return|return
 name|next
 return|;
 block|}
-comment|/**    * Returns the next event in the stream, waiting indefinitely if a new event    * is not immediately available.    *    * @throws IOException see {@link DFSInotifyEventInputStream#poll()}    * @throws MissingEventsException see    * {@link DFSInotifyEventInputStream#poll()}    * @throws InterruptedException if the calling thread is interrupted    */
+comment|/**    * Returns the next batch of events in the stream, waiting indefinitely if    * a new batch  is not immediately available.    *    * @throws IOException see {@link DFSInotifyEventInputStream#poll()}    * @throws MissingEventsException see    * {@link DFSInotifyEventInputStream#poll()}    * @throws InterruptedException if the calling thread is interrupted    */
 DECL|method|take ()
 specifier|public
-name|Event
+name|EventBatch
 name|take
 parameter_list|()
 throws|throws
@@ -776,7 +688,7 @@ name|InterruptedException
 throws|,
 name|MissingEventsException
 block|{
-name|Event
+name|EventBatch
 name|next
 init|=
 literal|null

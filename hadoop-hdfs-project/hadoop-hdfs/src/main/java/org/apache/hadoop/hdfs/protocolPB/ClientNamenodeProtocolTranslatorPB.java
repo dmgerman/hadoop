@@ -382,7 +382,7 @@ name|hdfs
 operator|.
 name|inotify
 operator|.
-name|EventsList
+name|EventBatchList
 import|;
 end_import
 
@@ -9887,7 +9887,7 @@ annotation|@
 name|Override
 DECL|method|getEditsFromTxid (long txid)
 specifier|public
-name|EventsList
+name|EventBatchList
 name|getEditsFromTxid
 parameter_list|(
 name|long
