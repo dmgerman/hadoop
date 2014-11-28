@@ -1006,6 +1006,22 @@ name|hdfs
 operator|.
 name|protocol
 operator|.
+name|LastBlockWithStatus
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|protocol
+operator|.
 name|HdfsConstants
 operator|.
 name|DatanodeReportType
@@ -4528,7 +4544,7 @@ name|Override
 comment|// ClientProtocol
 DECL|method|append (String src, String clientName)
 specifier|public
-name|LocatedBlock
+name|LastBlockWithStatus
 name|append
 parameter_list|(
 name|String
@@ -4598,7 +4614,7 @@ condition|)
 block|{
 return|return
 operator|(
-name|LocatedBlock
+name|LastBlockWithStatus
 operator|)
 name|cacheEntry
 operator|.
@@ -4606,7 +4622,7 @@ name|getPayload
 argument_list|()
 return|;
 block|}
-name|LocatedBlock
+name|LastBlockWithStatus
 name|info
 init|=
 literal|null

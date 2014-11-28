@@ -354,7 +354,7 @@ name|hdfs
 operator|.
 name|protocol
 operator|.
-name|LocatedBlock
+name|LastBlockWithStatus
 import|;
 end_import
 
@@ -1454,7 +1454,7 @@ comment|// Retried append requests succeed
 name|newCall
 argument_list|()
 expr_stmt|;
-name|LocatedBlock
+name|LastBlockWithStatus
 name|b
 init|=
 name|nnRpc

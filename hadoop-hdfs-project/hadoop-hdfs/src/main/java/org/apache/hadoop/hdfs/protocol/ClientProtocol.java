@@ -775,12 +775,12 @@ name|SnapshotAccessControlException
 throws|,
 name|IOException
 function_decl|;
-comment|/**    * Append to the end of the file.     * @param src path of the file being created.    * @param clientName name of the current client.    * @return information about the last partial block if any.    * @throws AccessControlException if permission to append file is     * denied by the system. As usually on the client side the exception will     * be wrapped into {@link org.apache.hadoop.ipc.RemoteException}.    * Allows appending to an existing file if the server is    * configured with the parameter dfs.support.append set to true, otherwise    * throws an IOException.    *     * @throws AccessControlException If permission to append to file is denied    * @throws FileNotFoundException If file<code>src</code> is not found    * @throws DSQuotaExceededException If append violates disk space quota     *           restriction    * @throws SafeModeException append not allowed in safemode    * @throws UnresolvedLinkException If<code>src</code> contains a symlink    * @throws SnapshotAccessControlException if path is in RO snapshot    * @throws IOException If an I/O error occurred.    *    * RuntimeExceptions:    * @throws UnsupportedOperationException if append is not supported    */
+comment|/**    * Append to the end of the file.     * @param src path of the file being created.    * @param clientName name of the current client.    * @return wrapper with information about the last partial block and file    *    status if any    * @throws AccessControlException if permission to append file is     * denied by the system. As usually on the client side the exception will     * be wrapped into {@link org.apache.hadoop.ipc.RemoteException}.    * Allows appending to an existing file if the server is    * configured with the parameter dfs.support.append set to true, otherwise    * throws an IOException.    *     * @throws AccessControlException If permission to append to file is denied    * @throws FileNotFoundException If file<code>src</code> is not found    * @throws DSQuotaExceededException If append violates disk space quota     *           restriction    * @throws SafeModeException append not allowed in safemode    * @throws UnresolvedLinkException If<code>src</code> contains a symlink    * @throws SnapshotAccessControlException if path is in RO snapshot    * @throws IOException If an I/O error occurred.    *    * RuntimeExceptions:    * @throws UnsupportedOperationException if append is not supported    */
 annotation|@
 name|AtMostOnce
 DECL|method|append (String src, String clientName)
 specifier|public
-name|LocatedBlock
+name|LastBlockWithStatus
 name|append
 parameter_list|(
 name|String

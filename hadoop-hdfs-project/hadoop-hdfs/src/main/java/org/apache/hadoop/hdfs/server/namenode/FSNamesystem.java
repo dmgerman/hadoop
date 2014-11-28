@@ -2416,6 +2416,22 @@ name|hdfs
 operator|.
 name|protocol
 operator|.
+name|LastBlockWithStatus
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|protocol
+operator|.
 name|HdfsConstants
 operator|.
 name|DatanodeReportType
@@ -15415,7 +15431,7 @@ block|}
 block|}
 comment|/**    * Append to an existing file in the namespace.    */
 DECL|method|appendFile ( String src, String holder, String clientMachine, boolean logRetryCache)
-name|LocatedBlock
+name|LastBlockWithStatus
 name|appendFile
 parameter_list|(
 name|String
@@ -15470,7 +15486,7 @@ block|}
 block|}
 DECL|method|appendFileInt (final String srcArg, String holder, String clientMachine, boolean logRetryCache)
 specifier|private
-name|LocatedBlock
+name|LastBlockWithStatus
 name|appendFileInt
 parameter_list|(
 specifier|final
@@ -15544,6 +15560,11 @@ name|lb
 init|=
 literal|null
 decl_stmt|;
+name|HdfsFileStatus
+name|stat
+init|=
+literal|null
+decl_stmt|;
 name|FSPermissionChecker
 name|pc
 init|=
@@ -15614,6 +15635,26 @@ argument_list|,
 name|clientMachine
 argument_list|,
 name|logRetryCache
+argument_list|)
+expr_stmt|;
+name|stat
+operator|=
+name|dir
+operator|.
+name|getFileInfo
+argument_list|(
+name|src
+argument_list|,
+literal|false
+argument_list|,
+name|FSDirectory
+operator|.
+name|isReservedRawName
+argument_list|(
+name|srcArg
+argument_list|)
+argument_list|,
+literal|true
 argument_list|)
 expr_stmt|;
 block|}
@@ -15717,7 +15758,13 @@ name|srcArg
 argument_list|)
 expr_stmt|;
 return|return
+operator|new
+name|LastBlockWithStatus
+argument_list|(
 name|lb
+argument_list|,
+name|stat
+argument_list|)
 return|;
 block|}
 DECL|method|getExtendedBlock (Block blk)

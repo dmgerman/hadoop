@@ -660,6 +660,22 @@ name|hdfs
 operator|.
 name|protocol
 operator|.
+name|LastBlockWithStatus
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|protocol
+operator|.
 name|LocatedBlock
 import|;
 end_import
@@ -2685,7 +2701,7 @@ name|fileName
 decl_stmt|;
 DECL|field|lbk
 specifier|private
-name|LocatedBlock
+name|LastBlockWithStatus
 name|lbk
 decl_stmt|;
 DECL|method|AppendOp (DFSClient client, String fileName)
