@@ -1903,6 +1903,48 @@ name|getNodeId
 argument_list|()
 argument_list|)
 decl_stmt|;
+name|assertTrue
+argument_list|(
+literal|"SchedulerNode#toString is not in expected format"
+argument_list|,
+name|schedulerNode1
+operator|.
+name|toString
+argument_list|()
+operator|.
+name|contains
+argument_list|(
+name|schedulerNode1
+operator|.
+name|getAvailableResource
+argument_list|()
+operator|.
+name|toString
+argument_list|()
+argument_list|)
+argument_list|)
+expr_stmt|;
+name|assertTrue
+argument_list|(
+literal|"SchedulerNode#toString is not in expected format"
+argument_list|,
+name|schedulerNode1
+operator|.
+name|toString
+argument_list|()
+operator|.
+name|contains
+argument_list|(
+name|schedulerNode1
+operator|.
+name|getUsedResource
+argument_list|()
+operator|.
+name|toString
+argument_list|()
+argument_list|)
+argument_list|)
+expr_stmt|;
 comment|// ********* check scheduler node state.*******
 comment|// 2 running containers.
 name|Resource
