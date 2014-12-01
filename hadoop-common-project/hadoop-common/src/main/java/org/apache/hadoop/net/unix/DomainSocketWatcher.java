@@ -426,6 +426,10 @@ operator|)
 assert|;
 try|try
 block|{
+name|kicked
+operator|=
+literal|false
+expr_stmt|;
 if|if
 condition|(
 name|LOG
@@ -761,6 +765,14 @@ DECL|field|closed
 specifier|private
 name|boolean
 name|closed
+init|=
+literal|false
+decl_stmt|;
+comment|/**    * True if we have written a byte to the notification socket. We should not    * write anything else to the socket until the notification handler has had a    * chance to run. Otherwise, our thread might block, causing deadlock.     * See HADOOP-11333 for details.    */
+DECL|field|kicked
+specifier|private
+name|boolean
+name|kicked
 init|=
 literal|false
 decl_stmt|;
@@ -1174,6 +1186,13 @@ name|isHeldByCurrentThread
 argument_list|()
 operator|)
 assert|;
+if|if
+condition|(
+name|kicked
+condition|)
+block|{
+return|return;
+block|}
 try|try
 block|{
 name|notificationSockets
@@ -1188,6 +1207,10 @@ name|write
 argument_list|(
 literal|0
 argument_list|)
+expr_stmt|;
+name|kicked
+operator|=
+literal|true
 expr_stmt|;
 block|}
 catch|catch
