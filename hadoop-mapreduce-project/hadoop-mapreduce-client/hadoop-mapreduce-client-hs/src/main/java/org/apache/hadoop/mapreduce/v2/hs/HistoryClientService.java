@@ -1704,7 +1704,7 @@ name|getBindAddress
 argument_list|()
 return|;
 block|}
-DECL|method|verifyAndGetJob (final JobId jobID)
+DECL|method|verifyAndGetJob (final JobId jobID, boolean exceptionThrow)
 specifier|private
 name|Job
 name|verifyAndGetJob
@@ -1712,6 +1712,9 @@ parameter_list|(
 specifier|final
 name|JobId
 name|jobID
+parameter_list|,
+name|boolean
+name|exceptionThrow
 parameter_list|)
 throws|throws
 name|IOException
@@ -1792,6 +1795,25 @@ block|}
 if|if
 condition|(
 name|job
+operator|==
+literal|null
+operator|&&
+name|exceptionThrow
+condition|)
+block|{
+throw|throw
+operator|new
+name|IOException
+argument_list|(
+literal|"Unknown Job "
+operator|+
+name|jobID
+argument_list|)
+throw|;
+block|}
+if|if
+condition|(
+name|job
 operator|!=
 literal|null
 condition|)
@@ -1842,6 +1864,8 @@ init|=
 name|verifyAndGetJob
 argument_list|(
 name|jobId
+argument_list|,
+literal|true
 argument_list|)
 decl_stmt|;
 name|GetCountersResponse
@@ -1902,6 +1926,8 @@ init|=
 name|verifyAndGetJob
 argument_list|(
 name|jobId
+argument_list|,
+literal|false
 argument_list|)
 decl_stmt|;
 name|GetJobReportResponse
@@ -1981,6 +2007,8 @@ argument_list|()
 operator|.
 name|getJobId
 argument_list|()
+argument_list|,
+literal|true
 argument_list|)
 decl_stmt|;
 name|GetTaskAttemptReportResponse
@@ -2052,6 +2080,8 @@ name|taskId
 operator|.
 name|getJobId
 argument_list|()
+argument_list|,
+literal|true
 argument_list|)
 decl_stmt|;
 name|GetTaskReportResponse
@@ -2128,6 +2158,8 @@ init|=
 name|verifyAndGetJob
 argument_list|(
 name|jobId
+argument_list|,
+literal|true
 argument_list|)
 decl_stmt|;
 name|GetTaskAttemptCompletionEventsResponse
@@ -2261,6 +2293,8 @@ argument_list|()
 operator|.
 name|getJobId
 argument_list|()
+argument_list|,
+literal|true
 argument_list|)
 decl_stmt|;
 name|GetDiagnosticsResponse
@@ -2370,6 +2404,8 @@ init|=
 name|verifyAndGetJob
 argument_list|(
 name|jobId
+argument_list|,
+literal|true
 argument_list|)
 decl_stmt|;
 name|Collection

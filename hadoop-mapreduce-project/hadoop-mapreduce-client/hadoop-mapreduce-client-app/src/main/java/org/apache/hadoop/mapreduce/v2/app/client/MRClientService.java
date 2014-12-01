@@ -1705,7 +1705,7 @@ name|getBindAddress
 argument_list|()
 return|;
 block|}
-DECL|method|verifyAndGetJob (JobId jobID, JobACL accessType)
+DECL|method|verifyAndGetJob (JobId jobID, JobACL accessType, boolean exceptionThrow)
 specifier|private
 name|Job
 name|verifyAndGetJob
@@ -1715,6 +1715,9 @@ name|jobID
 parameter_list|,
 name|JobACL
 name|accessType
+parameter_list|,
+name|boolean
+name|exceptionThrow
 parameter_list|)
 throws|throws
 name|IOException
@@ -1729,6 +1732,25 @@ argument_list|(
 name|jobID
 argument_list|)
 decl_stmt|;
+if|if
+condition|(
+name|job
+operator|==
+literal|null
+operator|&&
+name|exceptionThrow
+condition|)
+block|{
+throw|throw
+operator|new
+name|IOException
+argument_list|(
+literal|"Unknown Job "
+operator|+
+name|jobID
+argument_list|)
+throw|;
+block|}
 name|UserGroupInformation
 name|ugi
 init|=
@@ -1739,6 +1761,10 @@ argument_list|()
 decl_stmt|;
 if|if
 condition|(
+name|job
+operator|!=
+literal|null
+operator|&&
 operator|!
 name|job
 operator|.
@@ -1803,6 +1829,8 @@ name|getJobId
 argument_list|()
 argument_list|,
 name|accessType
+argument_list|,
+literal|true
 argument_list|)
 operator|.
 name|getTask
@@ -1915,6 +1943,8 @@ argument_list|,
 name|JobACL
 operator|.
 name|VIEW_JOB
+argument_list|,
+literal|true
 argument_list|)
 decl_stmt|;
 name|GetCountersResponse
@@ -1969,6 +1999,7 @@ operator|.
 name|getJobId
 argument_list|()
 decl_stmt|;
+comment|// false is for retain compatibility
 name|Job
 name|job
 init|=
@@ -1979,6 +2010,8 @@ argument_list|,
 name|JobACL
 operator|.
 name|VIEW_JOB
+argument_list|,
+literal|false
 argument_list|)
 decl_stmt|;
 name|GetJobReportResponse
@@ -2180,6 +2213,8 @@ argument_list|,
 name|JobACL
 operator|.
 name|VIEW_JOB
+argument_list|,
+literal|true
 argument_list|)
 decl_stmt|;
 name|GetTaskAttemptCompletionEventsResponse
@@ -2283,6 +2318,8 @@ argument_list|,
 name|JobACL
 operator|.
 name|MODIFY_JOB
+argument_list|,
+literal|false
 argument_list|)
 expr_stmt|;
 name|appContext
@@ -2788,6 +2825,8 @@ argument_list|,
 name|JobACL
 operator|.
 name|VIEW_JOB
+argument_list|,
+literal|true
 argument_list|)
 decl_stmt|;
 name|Collection
