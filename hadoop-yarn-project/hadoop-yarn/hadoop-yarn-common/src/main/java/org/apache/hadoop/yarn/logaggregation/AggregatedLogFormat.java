@@ -4072,6 +4072,21 @@ name|n
 argument_list|)
 return|;
 block|}
+DECL|method|read ()
+specifier|public
+name|int
+name|read
+parameter_list|()
+throws|throws
+name|IOException
+block|{
+return|return
+name|currentLogData
+operator|.
+name|read
+argument_list|()
+return|;
+block|}
 DECL|method|read (byte[] buf, int off, int len)
 specifier|public
 name|int

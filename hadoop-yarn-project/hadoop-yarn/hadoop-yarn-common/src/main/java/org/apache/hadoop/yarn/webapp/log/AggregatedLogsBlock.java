@@ -1570,8 +1570,26 @@ decl_stmt|;
 if|if
 condition|(
 name|ret
-operator|<
+operator|==
 literal|0
+condition|)
+block|{
+comment|//Read one byte
+name|int
+name|nextByte
+init|=
+name|logReader
+operator|.
+name|read
+argument_list|()
+decl_stmt|;
+comment|// Check if we have reached EOF
+if|if
+condition|(
+name|nextByte
+operator|==
+operator|-
+literal|1
 condition|)
 block|{
 throw|throw
@@ -1581,6 +1599,11 @@ argument_list|(
 literal|"Premature EOF from container log"
 argument_list|)
 throw|;
+block|}
+name|ret
+operator|=
+literal|1
+expr_stmt|;
 block|}
 name|totalSkipped
 operator|+=
