@@ -42,6 +42,9 @@ name|UPDATE_APP_ATTEMPT
 block|,
 DECL|enumConstant|REMOVE_APP
 name|REMOVE_APP
+block|,
+DECL|enumConstant|FENCED
+name|FENCED
 block|}
 end_enum
 

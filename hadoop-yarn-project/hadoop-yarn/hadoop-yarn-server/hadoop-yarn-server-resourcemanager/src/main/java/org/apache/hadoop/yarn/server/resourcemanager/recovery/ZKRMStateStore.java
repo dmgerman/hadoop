@@ -5475,6 +5475,14 @@ condition|(
 literal|true
 condition|)
 block|{
+if|if
+condition|(
+name|isFencedState
+argument_list|()
+condition|)
+block|{
+break|break;
+block|}
 name|doMultiWithRetries
 argument_list|(
 name|emptyOpList
@@ -6005,6 +6013,23 @@ name|boolean
 name|isUpdate
 parameter_list|)
 block|{
+if|if
+condition|(
+name|isFencedState
+argument_list|()
+condition|)
+block|{
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"State store is in Fenced state. Can't store/update "
+operator|+
+literal|"AMRMToken Secret Manager state."
+argument_list|)
+expr_stmt|;
+return|return;
+block|}
 name|AMRMTokenSecretManagerState
 name|data
 init|=
