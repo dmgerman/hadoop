@@ -2066,6 +2066,17 @@ name|DEFAULT_FS_RM_STATE_STORE_RETRY_POLICY_SPEC
 init|=
 literal|"2000, 500"
 decl_stmt|;
+DECL|field|RM_LEVELDB_STORE_PATH
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|RM_LEVELDB_STORE_PATH
+init|=
+name|RM_PREFIX
+operator|+
+literal|"leveldb-state-store.path"
+decl_stmt|;
 comment|/** The maximum number of completed applications RM keeps. */
 DECL|field|RM_MAX_COMPLETED_APPLICATIONS
 specifier|public
