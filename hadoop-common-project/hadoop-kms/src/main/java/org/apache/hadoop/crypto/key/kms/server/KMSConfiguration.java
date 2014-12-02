@@ -162,6 +162,15 @@ name|DEFAULT_KEY_ACL_PREFIX
 init|=
 literal|"default.key.acl."
 decl_stmt|;
+DECL|field|WHITELIST_KEY_ACL_PREFIX
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|WHITELIST_KEY_ACL_PREFIX
+init|=
+literal|"whitelist.key.acl."
+decl_stmt|;
 comment|// Property to set the backing KeyProvider
 DECL|field|KEY_PROVIDER_URI
 specifier|public
