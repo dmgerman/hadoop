@@ -2937,22 +2937,6 @@ return|return
 name|editLog
 return|;
 block|}
-annotation|@
-name|VisibleForTesting
-DECL|method|setEditLogForTesting (FSEditLog newLog)
-specifier|public
-name|void
-name|setEditLogForTesting
-parameter_list|(
-name|FSEditLog
-name|newLog
-parameter_list|)
-block|{
-name|editLog
-operator|=
-name|newLog
-expr_stmt|;
-block|}
 DECL|method|openEditLogForWrite ()
 name|void
 name|openEditLogForWrite

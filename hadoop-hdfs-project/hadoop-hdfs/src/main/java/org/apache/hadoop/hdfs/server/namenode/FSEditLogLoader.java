@@ -3774,10 +3774,12 @@ argument_list|,
 name|logVersion
 argument_list|)
 decl_stmt|;
-name|fsDir
+name|FSDirRenameOp
 operator|.
 name|unprotectedRenameTo
 argument_list|(
+name|fsDir
+argument_list|,
 name|src
 argument_list|,
 name|dst
@@ -4242,10 +4244,12 @@ name|RenameOp
 operator|)
 name|op
 decl_stmt|;
-name|fsDir
+name|FSDirRenameOp
 operator|.
 name|unprotectedRenameTo
 argument_list|(
+name|fsDir
+argument_list|,
 name|renameReservedPathsOnUpgrade
 argument_list|(
 name|renameOp
