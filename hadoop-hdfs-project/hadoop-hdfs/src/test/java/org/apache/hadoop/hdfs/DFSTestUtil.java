@@ -1650,14 +1650,14 @@ literal|"127.0.0.1:12346"
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|setEditLogForTesting (NameNode nn, FSEditLog newLog)
+DECL|method|setEditLogForTesting (FSNamesystem fsn, FSEditLog newLog)
 specifier|public
 specifier|static
 name|void
 name|setEditLogForTesting
 parameter_list|(
-name|NameNode
-name|nn
+name|FSNamesystem
+name|fsn
 parameter_list|,
 name|FSEditLog
 name|newLog
@@ -1667,7 +1667,7 @@ name|Whitebox
 operator|.
 name|setInternalState
 argument_list|(
-name|nn
+name|fsn
 operator|.
 name|getFSImage
 argument_list|()
@@ -1681,10 +1681,7 @@ name|Whitebox
 operator|.
 name|setInternalState
 argument_list|(
-name|nn
-operator|.
-name|getNamesystem
-argument_list|()
+name|fsn
 operator|.
 name|getFSDirectory
 argument_list|()

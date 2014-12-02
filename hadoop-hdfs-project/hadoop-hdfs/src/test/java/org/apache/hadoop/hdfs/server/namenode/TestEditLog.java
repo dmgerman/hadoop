@@ -1405,6 +1405,8 @@ name|INodeFile
 argument_list|(
 name|namesystem
 operator|.
+name|dir
+operator|.
 name|allocateNewInodeId
 argument_list|()
 argument_list|,
@@ -2229,6 +2231,8 @@ name|originalLastInodeId
 init|=
 name|namesystem
 operator|.
+name|dir
+operator|.
 name|getLastInodeId
 argument_list|()
 decl_stmt|;
@@ -2386,6 +2390,8 @@ comment|// If there were any corruptions, it is likely that the reading in
 comment|// of these transactions will throw an exception.
 comment|//
 name|namesystem
+operator|.
+name|dir
 operator|.
 name|resetLastInodeIdWithoutChecking
 argument_list|(

@@ -1173,6 +1173,9 @@ operator|.
 name|setEditLogForTesting
 argument_list|(
 name|nn
+operator|.
+name|getNamesystem
+argument_list|()
 argument_list|,
 name|spyEditLog
 argument_list|)

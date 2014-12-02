@@ -1631,6 +1631,8 @@ argument_list|()
 decl_stmt|;
 name|namesystem
 operator|.
+name|dir
+operator|.
 name|resetLastInodeId
 argument_list|(
 name|lastInodeId
@@ -3269,6 +3271,8 @@ name|readLong
 argument_list|()
 else|:
 name|namesystem
+operator|.
+name|dir
 operator|.
 name|allocateNewInodeId
 argument_list|()
@@ -6024,6 +6028,8 @@ operator|.
 name|writeLong
 argument_list|(
 name|sourceNamesystem
+operator|.
+name|dir
 operator|.
 name|getLastInodeId
 argument_list|()

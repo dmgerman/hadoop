@@ -1731,6 +1731,8 @@ argument_list|)
 decl_stmt|;
 name|fsn
 operator|.
+name|dir
+operator|.
 name|resetLastInodeId
 argument_list|(
 name|s
@@ -3630,6 +3632,8 @@ operator|.
 name|setLastInodeId
 argument_list|(
 name|fsn
+operator|.
+name|dir
 operator|.
 name|getLastInodeId
 argument_list|()

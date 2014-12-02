@@ -1914,6 +1914,8 @@ name|lastInodeId
 init|=
 name|fsNamesys
 operator|.
+name|dir
+operator|.
 name|getLastInodeId
 argument_list|()
 decl_stmt|;
@@ -2459,6 +2461,8 @@ finally|finally
 block|{
 name|fsNamesys
 operator|.
+name|dir
+operator|.
 name|resetLastInodeId
 argument_list|(
 name|lastInodeId
@@ -2586,6 +2590,8 @@ name|inodeId
 operator|=
 name|fsNamesys
 operator|.
+name|dir
+operator|.
 name|allocateNewInodeId
 argument_list|()
 expr_stmt|;
@@ -2602,6 +2608,8 @@ name|lastInodeId
 condition|)
 block|{
 name|fsNamesys
+operator|.
+name|dir
 operator|.
 name|resetLastInodeId
 argument_list|(
@@ -3886,10 +3894,12 @@ argument_list|,
 name|lastInodeId
 argument_list|)
 expr_stmt|;
-name|fsDir
+name|FSDirMkdirOp
 operator|.
 name|unprotectedMkdir
 argument_list|(
+name|fsDir
+argument_list|,
 name|inodeId
 argument_list|,
 name|renameReservedPathsOnUpgrade

@@ -2381,11 +2381,14 @@ name|getEditLog
 argument_list|()
 argument_list|)
 decl_stmt|;
-name|fsimage
+name|DFSTestUtil
 operator|.
+name|setEditLogForTesting
+argument_list|(
+name|namesystem
+argument_list|,
 name|editLog
-operator|=
-name|editLog
+argument_list|)
 expr_stmt|;
 specifier|final
 name|AtomicReference

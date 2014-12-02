@@ -882,6 +882,9 @@ literal|1
 argument_list|,
 name|fsn
 operator|.
+name|getFSDirectory
+argument_list|()
+operator|.
 name|getLastInodeId
 argument_list|()
 operator|+

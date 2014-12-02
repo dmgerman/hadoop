@@ -2207,6 +2207,8 @@ name|lastId
 init|=
 name|fsn
 operator|.
+name|dir
+operator|.
 name|getLastInodeId
 argument_list|()
 decl_stmt|;
@@ -2295,6 +2297,8 @@ name|expectedLastInodeId
 argument_list|,
 name|fsn
 operator|.
+name|dir
+operator|.
 name|getLastInodeId
 argument_list|()
 argument_list|)
@@ -2350,6 +2354,8 @@ operator|++
 name|expectedLastInodeId
 argument_list|,
 name|fsn
+operator|.
+name|dir
 operator|.
 name|getLastInodeId
 argument_list|()
@@ -2417,6 +2423,8 @@ argument_list|(
 name|expectedLastInodeId
 argument_list|,
 name|fsn
+operator|.
+name|dir
 operator|.
 name|getLastInodeId
 argument_list|()
@@ -2546,6 +2554,8 @@ name|expectedLastInodeId
 argument_list|,
 name|fsn
 operator|.
+name|dir
+operator|.
 name|getLastInodeId
 argument_list|()
 argument_list|)
@@ -2586,6 +2596,8 @@ argument_list|(
 name|expectedLastInodeId
 argument_list|,
 name|fsn
+operator|.
+name|dir
 operator|.
 name|getLastInodeId
 argument_list|()
@@ -2648,6 +2660,8 @@ name|expectedLastInodeId
 argument_list|,
 name|fsn
 operator|.
+name|dir
+operator|.
 name|getLastInodeId
 argument_list|()
 argument_list|)
@@ -2701,6 +2715,8 @@ name|expectedLastInodeId
 argument_list|,
 name|fsn
 operator|.
+name|dir
+operator|.
 name|getLastInodeId
 argument_list|()
 argument_list|)
@@ -2753,6 +2769,8 @@ argument_list|(
 name|expectedLastInodeId
 argument_list|,
 name|fsn
+operator|.
+name|dir
 operator|.
 name|getLastInodeId
 argument_list|()
@@ -2816,6 +2834,8 @@ argument_list|(
 name|expectedLastInodeId
 argument_list|,
 name|fsn
+operator|.
+name|dir
 operator|.
 name|getLastInodeId
 argument_list|()

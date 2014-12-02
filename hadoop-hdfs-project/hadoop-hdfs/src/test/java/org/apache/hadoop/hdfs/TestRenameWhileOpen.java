@@ -505,7 +505,7 @@ name|setEditLogForTesting
 argument_list|(
 name|cluster
 operator|.
-name|getNameNode
+name|getNamesystem
 argument_list|()
 argument_list|,
 name|spyLog

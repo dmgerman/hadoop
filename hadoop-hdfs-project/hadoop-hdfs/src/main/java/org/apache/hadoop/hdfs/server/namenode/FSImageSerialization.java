@@ -793,6 +793,8 @@ argument_list|()
 else|:
 name|fsNamesys
 operator|.
+name|dir
+operator|.
 name|allocateNewInodeId
 argument_list|()
 decl_stmt|;
