@@ -297,7 +297,7 @@ argument_list|)
 operator|.
 name|numDataNodes
 argument_list|(
-literal|0
+literal|1
 argument_list|)
 operator|.
 name|manageNameDfsSharedDirs
