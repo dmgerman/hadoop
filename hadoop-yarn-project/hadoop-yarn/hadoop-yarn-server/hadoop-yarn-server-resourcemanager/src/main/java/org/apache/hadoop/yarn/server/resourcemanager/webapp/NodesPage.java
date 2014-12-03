@@ -180,24 +180,6 @@ name|server
 operator|.
 name|resourcemanager
 operator|.
-name|RMContext
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|yarn
-operator|.
-name|server
-operator|.
-name|resourcemanager
-operator|.
 name|ResourceManager
 import|;
 end_import
@@ -418,11 +400,6 @@ name|NodesBlock
 extends|extends
 name|HtmlBlock
 block|{
-DECL|field|rmContext
-specifier|final
-name|RMContext
-name|rmContext
-decl_stmt|;
 DECL|field|rm
 specifier|final
 name|ResourceManager
@@ -441,12 +418,9 @@ literal|1024
 decl_stmt|;
 annotation|@
 name|Inject
-DECL|method|NodesBlock (RMContext context, ResourceManager rm, ViewContext ctx)
+DECL|method|NodesBlock (ResourceManager rm, ViewContext ctx)
 name|NodesBlock
 parameter_list|(
-name|RMContext
-name|context
-parameter_list|,
 name|ResourceManager
 name|rm
 parameter_list|,
@@ -458,12 +432,6 @@ name|super
 argument_list|(
 name|ctx
 argument_list|)
-expr_stmt|;
-name|this
-operator|.
-name|rmContext
-operator|=
-name|context
 expr_stmt|;
 name|this
 operator|.
@@ -669,7 +637,10 @@ name|rmNodes
 init|=
 name|this
 operator|.
-name|rmContext
+name|rm
+operator|.
+name|getRMContext
+argument_list|()
 operator|.
 name|getRMNodes
 argument_list|()
@@ -707,7 +678,10 @@ name|rmNodes
 operator|=
 name|this
 operator|.
-name|rmContext
+name|rm
+operator|.
+name|getRMContext
+argument_list|()
 operator|.
 name|getInactiveRMNodes
 argument_list|()

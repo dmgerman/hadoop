@@ -208,7 +208,7 @@ name|server
 operator|.
 name|resourcemanager
 operator|.
-name|RMContext
+name|ResourceManager
 import|;
 end_import
 
@@ -383,13 +383,13 @@ specifier|final
 name|Configuration
 name|conf
 decl_stmt|;
-DECL|method|AppsBlock (RMContext rmContext, ViewContext ctx, Configuration conf)
 annotation|@
 name|Inject
+DECL|method|AppsBlock (ResourceManager rm, ViewContext ctx, Configuration conf)
 name|AppsBlock
 parameter_list|(
-name|RMContext
-name|rmContext
+name|ResourceManager
+name|rm
 parameter_list|,
 name|ViewContext
 name|ctx
@@ -405,7 +405,10 @@ argument_list|)
 expr_stmt|;
 name|apps
 operator|=
-name|rmContext
+name|rm
+operator|.
+name|getRMContext
+argument_list|()
 operator|.
 name|getRMApps
 argument_list|()

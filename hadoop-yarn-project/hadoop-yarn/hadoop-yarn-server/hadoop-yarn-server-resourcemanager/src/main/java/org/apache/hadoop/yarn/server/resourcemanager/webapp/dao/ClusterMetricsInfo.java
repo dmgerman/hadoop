@@ -98,24 +98,6 @@ name|server
 operator|.
 name|resourcemanager
 operator|.
-name|RMContext
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|yarn
-operator|.
-name|server
-operator|.
-name|resourcemanager
-operator|.
 name|ResourceManager
 import|;
 end_import
@@ -301,17 +283,13 @@ name|ClusterMetricsInfo
 parameter_list|()
 block|{   }
 comment|// JAXB needs this
-DECL|method|ClusterMetricsInfo (final ResourceManager rm, final RMContext rmContext)
+DECL|method|ClusterMetricsInfo (final ResourceManager rm)
 specifier|public
 name|ClusterMetricsInfo
 parameter_list|(
 specifier|final
 name|ResourceManager
 name|rm
-parameter_list|,
-specifier|final
-name|RMContext
-name|rmContext
 parameter_list|)
 block|{
 name|ResourceScheduler

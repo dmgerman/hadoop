@@ -248,24 +248,6 @@ name|server
 operator|.
 name|resourcemanager
 operator|.
-name|RMContext
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|yarn
-operator|.
-name|server
-operator|.
-name|resourcemanager
-operator|.
 name|ResourceManager
 import|;
 end_import
@@ -514,15 +496,12 @@ specifier|final
 name|Configuration
 name|conf
 decl_stmt|;
-DECL|method|FairSchedulerAppsBlock (RMContext rmContext, ResourceManager rm, ViewContext ctx, Configuration conf)
 annotation|@
 name|Inject
+DECL|method|FairSchedulerAppsBlock (ResourceManager rm, ViewContext ctx, Configuration conf)
 specifier|public
 name|FairSchedulerAppsBlock
 parameter_list|(
-name|RMContext
-name|rmContext
-parameter_list|,
 name|ResourceManager
 name|rm
 parameter_list|,
@@ -580,7 +559,10 @@ name|RMApp
 argument_list|>
 name|entry
 range|:
-name|rmContext
+name|rm
+operator|.
+name|getRMContext
+argument_list|()
 operator|.
 name|getRMApps
 argument_list|()

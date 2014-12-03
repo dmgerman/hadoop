@@ -264,17 +264,13 @@ name|UserMetricsInfo
 parameter_list|()
 block|{   }
 comment|// JAXB needs this
-DECL|method|UserMetricsInfo (final ResourceManager rm, final RMContext rmContext, final String user)
+DECL|method|UserMetricsInfo (final ResourceManager rm, final String user)
 specifier|public
 name|UserMetricsInfo
 parameter_list|(
 specifier|final
 name|ResourceManager
 name|rm
-parameter_list|,
-specifier|final
-name|RMContext
-name|rmContext
 parameter_list|,
 specifier|final
 name|String

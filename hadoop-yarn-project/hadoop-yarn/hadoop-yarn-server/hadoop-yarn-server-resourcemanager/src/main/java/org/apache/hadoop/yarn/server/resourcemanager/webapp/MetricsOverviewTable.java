@@ -50,24 +50,6 @@ name|server
 operator|.
 name|resourcemanager
 operator|.
-name|RMContext
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|yarn
-operator|.
-name|server
-operator|.
-name|resourcemanager
-operator|.
 name|ResourceManager
 import|;
 end_import
@@ -207,12 +189,6 @@ literal|1024
 operator|*
 literal|1024
 decl_stmt|;
-DECL|field|rmContext
-specifier|private
-specifier|final
-name|RMContext
-name|rmContext
-decl_stmt|;
 DECL|field|rm
 specifier|private
 specifier|final
@@ -221,12 +197,9 @@ name|rm
 decl_stmt|;
 annotation|@
 name|Inject
-DECL|method|MetricsOverviewTable (RMContext context, ResourceManager rm, ViewContext ctx)
+DECL|method|MetricsOverviewTable (ResourceManager rm, ViewContext ctx)
 name|MetricsOverviewTable
 parameter_list|(
-name|RMContext
-name|context
-parameter_list|,
 name|ResourceManager
 name|rm
 parameter_list|,
@@ -238,12 +211,6 @@ name|super
 argument_list|(
 name|ctx
 argument_list|)
-expr_stmt|;
-name|this
-operator|.
-name|rmContext
-operator|=
-name|context
 expr_stmt|;
 name|this
 operator|.
@@ -281,10 +248,6 @@ argument_list|(
 name|this
 operator|.
 name|rm
-argument_list|,
-name|this
-operator|.
-name|rmContext
 argument_list|)
 decl_stmt|;
 name|DIV
@@ -912,10 +875,6 @@ argument_list|(
 name|this
 operator|.
 name|rm
-argument_list|,
-name|this
-operator|.
-name|rmContext
 argument_list|,
 name|user
 argument_list|)

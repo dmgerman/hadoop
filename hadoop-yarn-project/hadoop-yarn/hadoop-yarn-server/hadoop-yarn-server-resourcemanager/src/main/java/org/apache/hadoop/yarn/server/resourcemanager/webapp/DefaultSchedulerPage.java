@@ -54,24 +54,6 @@ name|server
 operator|.
 name|resourcemanager
 operator|.
-name|RMContext
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|yarn
-operator|.
-name|server
-operator|.
-name|resourcemanager
-operator|.
 name|ResourceManager
 import|;
 end_import
@@ -309,14 +291,11 @@ specifier|final
 name|FifoSchedulerInfo
 name|sinfo
 decl_stmt|;
-DECL|method|QueueInfoBlock (RMContext context, ViewContext ctx, ResourceManager rm)
 annotation|@
 name|Inject
+DECL|method|QueueInfoBlock (ViewContext ctx, ResourceManager rm)
 name|QueueInfoBlock
 parameter_list|(
-name|RMContext
-name|context
-parameter_list|,
 name|ViewContext
 name|ctx
 parameter_list|,

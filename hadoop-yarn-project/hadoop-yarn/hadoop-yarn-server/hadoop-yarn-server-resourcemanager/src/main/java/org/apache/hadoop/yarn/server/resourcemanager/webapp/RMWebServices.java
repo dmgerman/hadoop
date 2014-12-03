@@ -2408,13 +2408,6 @@ argument_list|(
 name|this
 operator|.
 name|rm
-argument_list|,
-name|this
-operator|.
-name|rm
-operator|.
-name|getRMContext
-argument_list|()
 argument_list|)
 return|;
 block|}
