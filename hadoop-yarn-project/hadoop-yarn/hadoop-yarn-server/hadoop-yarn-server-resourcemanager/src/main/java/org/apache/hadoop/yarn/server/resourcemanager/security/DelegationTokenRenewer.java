@@ -48,16 +48,6 @@ name|java
 operator|.
 name|security
 operator|.
-name|PrivilegedAction
-import|;
-end_import
-
-begin_import
-import|import
-name|java
-operator|.
-name|security
-operator|.
 name|PrivilegedExceptionAction
 import|;
 end_import
@@ -243,6 +233,20 @@ operator|.
 name|concurrent
 operator|.
 name|TimeUnit
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
+name|concurrent
+operator|.
+name|atomic
+operator|.
+name|AtomicBoolean
 import|;
 end_import
 
@@ -2436,10 +2440,14 @@ name|dttr
 decl_stmt|;
 DECL|field|cancelled
 specifier|private
-name|boolean
+name|AtomicBoolean
 name|cancelled
 init|=
+operator|new
+name|AtomicBoolean
+argument_list|(
 literal|false
+argument_list|)
 decl_stmt|;
 DECL|method|RenewalTimerTask (DelegationTokenToRenew t)
 name|RenewalTimerTask
@@ -2457,7 +2465,6 @@ annotation|@
 name|Override
 DECL|method|run ()
 specifier|public
-specifier|synchronized
 name|void
 name|run
 parameter_list|()
@@ -2465,6 +2472,9 @@ block|{
 if|if
 condition|(
 name|cancelled
+operator|.
+name|get
+argument_list|()
 condition|)
 block|{
 return|return;
@@ -2561,14 +2571,16 @@ annotation|@
 name|Override
 DECL|method|cancel ()
 specifier|public
-specifier|synchronized
 name|boolean
 name|cancel
 parameter_list|()
 block|{
 name|cancelled
-operator|=
+operator|.
+name|set
+argument_list|(
 literal|true
+argument_list|)
 expr_stmt|;
 return|return
 name|super
