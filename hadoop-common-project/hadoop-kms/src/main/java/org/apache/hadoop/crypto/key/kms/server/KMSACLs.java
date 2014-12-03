@@ -1010,6 +1010,28 @@ condition|)
 block|{
 if|if
 condition|(
+name|keyOp
+operator|==
+name|KeyOpType
+operator|.
+name|ALL
+condition|)
+block|{
+comment|// Ignore All operation for default key acl
+name|LOG
+operator|.
+name|warn
+argument_list|(
+literal|"Should not configure default key ACL for KEY_OP '{}'"
+argument_list|,
+name|keyOp
+argument_list|)
+expr_stmt|;
+block|}
+else|else
+block|{
+if|if
+condition|(
 name|aclStr
 operator|.
 name|equals
@@ -1041,6 +1063,7 @@ name|aclStr
 argument_list|)
 argument_list|)
 expr_stmt|;
+block|}
 block|}
 block|}
 if|if
@@ -1082,6 +1105,28 @@ condition|)
 block|{
 if|if
 condition|(
+name|keyOp
+operator|==
+name|KeyOpType
+operator|.
+name|ALL
+condition|)
+block|{
+comment|// Ignore All operation for whitelist key acl
+name|LOG
+operator|.
+name|warn
+argument_list|(
+literal|"Should not configure whitelist key ACL for KEY_OP '{}'"
+argument_list|,
+name|keyOp
+argument_list|)
+expr_stmt|;
+block|}
+else|else
+block|{
+if|if
+condition|(
 name|aclStr
 operator|.
 name|equals
@@ -1113,6 +1158,7 @@ name|aclStr
 argument_list|)
 argument_list|)
 expr_stmt|;
+block|}
 block|}
 block|}
 block|}
@@ -1614,6 +1660,13 @@ name|keyName
 argument_list|)
 operator|||
 name|defaultKeyAcls
+operator|.
+name|containsKey
+argument_list|(
+name|opType
+argument_list|)
+operator|||
+name|whitelistKeyAcls
 operator|.
 name|containsKey
 argument_list|(
