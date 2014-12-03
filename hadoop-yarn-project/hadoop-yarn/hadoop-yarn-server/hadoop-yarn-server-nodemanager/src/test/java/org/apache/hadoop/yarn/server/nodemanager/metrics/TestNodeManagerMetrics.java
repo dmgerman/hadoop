@@ -171,11 +171,10 @@ name|resource
 operator|.
 name|setMemory
 argument_list|(
-literal|1
-operator|*
-name|GiB
+literal|512
 argument_list|)
 expr_stmt|;
+comment|//512MiB
 name|resource
 operator|.
 name|setVirtualCores
@@ -195,7 +194,7 @@ control|(
 name|int
 name|i
 init|=
-literal|5
+literal|10
 init|;
 name|i
 operator|--
@@ -204,6 +203,7 @@ literal|0
 condition|;
 control|)
 block|{
+comment|// allocate 10 containers(allocatedGB: 5GiB, availableGB: 3GiB)
 name|metrics
 operator|.
 name|launchedContainer
@@ -237,6 +237,7 @@ operator|.
 name|endRunningContainer
 argument_list|()
 expr_stmt|;
+comment|// Releasing 3 containers(allocatedGB: 3.5GiB, availableGB: 4.5GiB)
 name|metrics
 operator|.
 name|completedContainer
@@ -290,9 +291,13 @@ argument_list|(
 literal|1
 argument_list|)
 expr_stmt|;
+comment|// availableGB is expected to be floored,
+comment|// while allocatedGB is expected to be ceiled.
+comment|// allocatedGB: 3.5GB allocated memory is shown as 4GB
+comment|// availableGB: 4.5GB available memory is shown as 4GB
 name|checkMetrics
 argument_list|(
-literal|5
+literal|10
 argument_list|,
 literal|1
 argument_list|,
@@ -303,16 +308,16 @@ argument_list|,
 literal|1
 argument_list|,
 literal|1
-argument_list|,
-literal|2
-argument_list|,
-literal|2
-argument_list|,
-literal|6
 argument_list|,
 literal|4
 argument_list|,
-literal|12
+literal|7
+argument_list|,
+literal|4
+argument_list|,
+literal|14
+argument_list|,
+literal|2
 argument_list|)
 expr_stmt|;
 block|}
