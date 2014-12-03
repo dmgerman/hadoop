@@ -103,6 +103,11 @@ specifier|private
 name|String
 name|containerLogDir
 decl_stmt|;
+DECL|field|containerLogFile
+specifier|private
+name|String
+name|containerLogFile
+decl_stmt|;
 annotation|@
 name|Override
 DECL|method|activateOptions ()
@@ -125,7 +130,7 @@ name|this
 operator|.
 name|containerLogDir
 argument_list|,
-literal|"syslog"
+name|containerLogFile
 argument_list|)
 operator|.
 name|toString
@@ -193,6 +198,32 @@ operator|.
 name|containerLogDir
 operator|=
 name|containerLogDir
+expr_stmt|;
+block|}
+DECL|method|getContainerLogFile ()
+specifier|public
+name|String
+name|getContainerLogFile
+parameter_list|()
+block|{
+return|return
+name|containerLogFile
+return|;
+block|}
+DECL|method|setContainerLogFile (String containerLogFile)
+specifier|public
+name|void
+name|setContainerLogFile
+parameter_list|(
+name|String
+name|containerLogFile
+parameter_list|)
+block|{
+name|this
+operator|.
+name|containerLogFile
+operator|=
+name|containerLogFile
 expr_stmt|;
 block|}
 block|}

@@ -2588,6 +2588,23 @@ name|conf
 parameter_list|)
 block|{
 return|return
+name|getTaskLogLimitBytes
+argument_list|(
+name|conf
+argument_list|)
+return|;
+block|}
+DECL|method|getTaskLogLimitBytes (Configuration conf)
+specifier|public
+specifier|static
+name|long
+name|getTaskLogLimitBytes
+parameter_list|(
+name|Configuration
+name|conf
+parameter_list|)
+block|{
+return|return
 name|conf
 operator|.
 name|getLong

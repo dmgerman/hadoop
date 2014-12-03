@@ -101,6 +101,13 @@ argument_list|)
 expr_stmt|;
 name|claAppender
 operator|.
+name|setContainerLogFile
+argument_list|(
+literal|"syslog"
+argument_list|)
+expr_stmt|;
+name|claAppender
+operator|.
 name|setTotalLogFileSize
 argument_list|(
 literal|1000
