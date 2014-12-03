@@ -840,40 +840,15 @@ specifier|final
 name|String
 name|src
 decl_stmt|;
-DECL|field|blockReader
-specifier|private
-name|BlockReader
-name|blockReader
-init|=
-literal|null
-decl_stmt|;
 DECL|field|verifyChecksum
 specifier|private
 specifier|final
 name|boolean
 name|verifyChecksum
 decl_stmt|;
-DECL|field|locatedBlocks
-specifier|private
-name|LocatedBlocks
-name|locatedBlocks
-init|=
-literal|null
-decl_stmt|;
-DECL|field|lastBlockBeingWrittenLength
-specifier|private
-name|long
-name|lastBlockBeingWrittenLength
-init|=
-literal|0
-decl_stmt|;
-DECL|field|fileEncryptionInfo
-specifier|private
-name|FileEncryptionInfo
-name|fileEncryptionInfo
-init|=
-literal|null
-decl_stmt|;
+comment|// state by stateful read only:
+comment|// (protected by lock on this)
+comment|/////
 DECL|field|currentNode
 specifier|private
 name|DatanodeInfo
@@ -903,11 +878,44 @@ init|=
 operator|-
 literal|1
 decl_stmt|;
+DECL|field|blockReader
+specifier|private
+name|BlockReader
+name|blockReader
+init|=
+literal|null
+decl_stmt|;
+comment|////
+comment|// state shared by stateful and positional read:
+comment|// (protected by lock on infoLock)
+comment|////
+DECL|field|locatedBlocks
+specifier|private
+name|LocatedBlocks
+name|locatedBlocks
+init|=
+literal|null
+decl_stmt|;
+DECL|field|lastBlockBeingWrittenLength
+specifier|private
+name|long
+name|lastBlockBeingWrittenLength
+init|=
+literal|0
+decl_stmt|;
+DECL|field|fileEncryptionInfo
+specifier|private
+name|FileEncryptionInfo
+name|fileEncryptionInfo
+init|=
+literal|null
+decl_stmt|;
 DECL|field|cachingStrategy
 specifier|private
 name|CachingStrategy
 name|cachingStrategy
 decl_stmt|;
+comment|////
 DECL|field|readStatistics
 specifier|private
 specifier|final
@@ -916,6 +924,19 @@ name|readStatistics
 init|=
 operator|new
 name|ReadStatistics
+argument_list|()
+decl_stmt|;
+comment|// lock for state shared between read and pread
+comment|// Note: Never acquire a lock on<this> with this lock held to avoid deadlocks
+comment|//       (it's OK to acquire this lock when the lock on<this> is held)
+DECL|field|infoLock
+specifier|private
+specifier|final
+name|Object
+name|infoLock
+init|=
+operator|new
+name|Object
 argument_list|()
 decl_stmt|;
 comment|/**    * Track the ByteBuffers that we have handed out to readers.    *     * The value type can be either ByteBufferPool or ClientMmap, depending on    * whether we this is a memory-mapped buffer or not.    */
@@ -1292,6 +1313,11 @@ name|src
 operator|=
 name|src
 expr_stmt|;
+synchronized|synchronized
+init|(
+name|infoLock
+init|)
+block|{
 name|this
 operator|.
 name|cachingStrategy
@@ -1301,13 +1327,13 @@ operator|.
 name|getDefaultReadCachingStrategy
 argument_list|()
 expr_stmt|;
+block|}
 name|openInfo
 argument_list|()
 expr_stmt|;
 block|}
 comment|/**    * Grab the open-file info from namenode    */
 DECL|method|openInfo ()
-specifier|synchronized
 name|void
 name|openInfo
 parameter_list|()
@@ -1315,6 +1341,11 @@ throws|throws
 name|IOException
 throws|,
 name|UnresolvedLinkException
+block|{
+synchronized|synchronized
+init|(
+name|infoLock
+init|)
 block|{
 name|lastBlockBeingWrittenLength
 operator|=
@@ -1405,6 +1436,7 @@ argument_list|(
 literal|"Could not obtain the last block locations."
 argument_list|)
 throw|;
+block|}
 block|}
 block|}
 DECL|method|waitFor (int waitTime)
@@ -1687,10 +1719,6 @@ operator|.
 name|getFileEncryptionInfo
 argument_list|()
 expr_stmt|;
-name|currentNode
-operator|=
-literal|null
-expr_stmt|;
 return|return
 name|lastBlockBeingWrittenLength
 return|;
@@ -1908,10 +1936,14 @@ throw|;
 block|}
 DECL|method|getFileLength ()
 specifier|public
-specifier|synchronized
 name|long
 name|getFileLength
 parameter_list|()
+block|{
+synchronized|synchronized
+init|(
+name|infoLock
+init|)
 block|{
 return|return
 name|locatedBlocks
@@ -1928,13 +1960,18 @@ operator|+
 name|lastBlockBeingWrittenLength
 return|;
 block|}
+block|}
 comment|// Short circuit local reads are forbidden for files that are
 comment|// under construction.  See HDFS-2757.
 DECL|method|shortCircuitForbidden ()
-specifier|synchronized
 name|boolean
 name|shortCircuitForbidden
 parameter_list|()
+block|{
+synchronized|synchronized
+init|(
+name|infoLock
+init|)
 block|{
 return|return
 name|locatedBlocks
@@ -1943,9 +1980,11 @@ name|isUnderConstruction
 argument_list|()
 return|;
 block|}
+block|}
 comment|/**    * Returns the datanode from which the stream is currently reading.    */
 DECL|method|getCurrentDatanode ()
 specifier|public
+specifier|synchronized
 name|DatanodeInfo
 name|getCurrentDatanode
 parameter_list|()
@@ -2006,7 +2045,6 @@ block|}
 comment|/**    * Get block at the specified position.    * Fetch it from the namenode if not cached.    *     * @param offset block corresponding to this offset in file is returned    * @param updatePosition whether to update current position    * @return located block    * @throws IOException    */
 DECL|method|getBlockAt (long offset, boolean updatePosition)
 specifier|private
-specifier|synchronized
 name|LocatedBlock
 name|getBlockAt
 parameter_list|(
@@ -2018,6 +2056,11 @@ name|updatePosition
 parameter_list|)
 throws|throws
 name|IOException
+block|{
+synchronized|synchronized
+init|(
+name|infoLock
+init|)
 block|{
 assert|assert
 operator|(
@@ -2169,6 +2212,13 @@ condition|(
 name|updatePosition
 condition|)
 block|{
+comment|// synchronized not strictly needed, since we only get here
+comment|// from synchronized caller methods
+synchronized|synchronized
+init|(
+name|this
+init|)
+block|{
 name|pos
 operator|=
 name|offset
@@ -2192,14 +2242,15 @@ operator|=
 name|blk
 expr_stmt|;
 block|}
+block|}
 return|return
 name|blk
 return|;
 block|}
+block|}
 comment|/** Fetch a block from namenode and cache it */
 DECL|method|fetchBlockAt (long offset)
 specifier|private
-specifier|synchronized
 name|void
 name|fetchBlockAt
 parameter_list|(
@@ -2208,6 +2259,11 @@ name|offset
 parameter_list|)
 throws|throws
 name|IOException
+block|{
+synchronized|synchronized
+init|(
+name|infoLock
+init|)
 block|{
 name|int
 name|targetBlockIdx
@@ -2281,10 +2337,10 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
+block|}
 comment|/**    * Get blocks in the specified range.    * Fetch them from the namenode if not cached. This function    * will not get a read request beyond the EOF.    * @param offset starting offset in file    * @param length length of data    * @return consequent segment of located blocks    * @throws IOException    */
 DECL|method|getBlockRange (long offset, long length)
 specifier|private
-specifier|synchronized
 name|List
 argument_list|<
 name|LocatedBlock
@@ -2325,6 +2381,11 @@ argument_list|()
 argument_list|)
 throw|;
 block|}
+synchronized|synchronized
+init|(
+name|infoLock
+init|)
+block|{
 specifier|final
 name|List
 argument_list|<
@@ -2419,10 +2480,10 @@ return|return
 name|blocks
 return|;
 block|}
+block|}
 comment|/**    * Get blocks in the specified range.    * Includes only the complete blocks.    * Fetch them from the namenode if not cached.    */
 DECL|method|getFinalizedBlockRange ( long offset, long length)
 specifier|private
-specifier|synchronized
 name|List
 argument_list|<
 name|LocatedBlock
@@ -2437,6 +2498,11 @@ name|length
 parameter_list|)
 throws|throws
 name|IOException
+block|{
+synchronized|synchronized
+init|(
+name|infoLock
+init|)
 block|{
 assert|assert
 operator|(
@@ -2621,6 +2687,7 @@ return|return
 name|blockRange
 return|;
 block|}
+block|}
 comment|/**    * Open a DataInputStream to a DataNode so that it can be read from.    * We get block ID and the IDs of the destinations at startup, from the namenode.    */
 DECL|method|blockSeekTo (long target)
 specifier|private
@@ -2787,6 +2854,27 @@ operator|.
 name|getBlockToken
 argument_list|()
 decl_stmt|;
+name|CachingStrategy
+name|curCachingStrategy
+decl_stmt|;
+name|boolean
+name|shortCircuitForbidden
+decl_stmt|;
+synchronized|synchronized
+init|(
+name|infoLock
+init|)
+block|{
+name|curCachingStrategy
+operator|=
+name|cachingStrategy
+expr_stmt|;
+name|shortCircuitForbidden
+operator|=
+name|shortCircuitForbidden
+argument_list|()
+expr_stmt|;
+block|}
 name|blockReader
 operator|=
 operator|new
@@ -2862,14 +2950,13 @@ argument_list|)
 operator|.
 name|setCachingStrategy
 argument_list|(
-name|cachingStrategy
+name|curCachingStrategy
 argument_list|)
 operator|.
 name|setAllowShortCircuitLocalReads
 argument_list|(
 operator|!
 name|shortCircuitForbidden
-argument_list|()
 argument_list|)
 operator|.
 name|setClientCacheContext
@@ -3727,6 +3814,7 @@ block|}
 block|}
 DECL|method|readWithStrategy (ReaderStrategy strategy, int off, int len)
 specifier|private
+specifier|synchronized
 name|int
 name|readWithStrategy
 parameter_list|(
@@ -3851,6 +3939,11 @@ literal|1L
 operator|)
 argument_list|)
 decl_stmt|;
+synchronized|synchronized
+init|(
+name|infoLock
+init|)
+block|{
 if|if
 condition|(
 name|locatedBlocks
@@ -3878,6 +3971,7 @@ operator|-
 name|pos
 argument_list|)
 expr_stmt|;
+block|}
 block|}
 name|int
 name|result
@@ -5216,11 +5310,6 @@ decl_stmt|;
 name|boolean
 name|allowShortCircuitLocalReads
 decl_stmt|;
-synchronized|synchronized
-init|(
-name|this
-init|)
-block|{
 name|block
 operator|=
 name|getBlockAt
@@ -5233,6 +5322,11 @@ argument_list|,
 literal|false
 argument_list|)
 expr_stmt|;
+synchronized|synchronized
+init|(
+name|infoLock
+init|)
+block|{
 name|curCachingStrategy
 operator|=
 name|cachingStrategy
@@ -7293,7 +7387,6 @@ block|}
 comment|/**    * Same as {@link #seekToNewSource(long)} except that it does not exclude    * the current datanode and might connect to the same node.    */
 DECL|method|seekToBlockSource (long targetPos)
 specifier|private
-specifier|synchronized
 name|boolean
 name|seekToBlockSource
 parameter_list|(
@@ -7587,18 +7680,22 @@ return|;
 block|}
 DECL|method|getFileEncryptionInfo ()
 specifier|public
-specifier|synchronized
 name|FileEncryptionInfo
 name|getFileEncryptionInfo
 parameter_list|()
+block|{
+synchronized|synchronized
+init|(
+name|infoLock
+init|)
 block|{
 return|return
 name|fileEncryptionInfo
 return|;
 block|}
+block|}
 DECL|method|closeCurrentBlockReader ()
 specifier|private
-specifier|synchronized
 name|void
 name|closeCurrentBlockReader
 parameter_list|()
@@ -7657,6 +7754,11 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
+synchronized|synchronized
+init|(
+name|infoLock
+init|)
+block|{
 name|this
 operator|.
 name|cachingStrategy
@@ -7679,6 +7781,7 @@ operator|.
 name|build
 argument_list|()
 expr_stmt|;
+block|}
 name|closeCurrentBlockReader
 argument_list|()
 expr_stmt|;
@@ -7696,6 +7799,11 @@ name|dropBehind
 parameter_list|)
 throws|throws
 name|IOException
+block|{
+synchronized|synchronized
+init|(
+name|infoLock
+init|)
 block|{
 name|this
 operator|.
@@ -7719,6 +7827,7 @@ operator|.
 name|build
 argument_list|()
 expr_stmt|;
+block|}
 name|closeCurrentBlockReader
 argument_list|()
 expr_stmt|;

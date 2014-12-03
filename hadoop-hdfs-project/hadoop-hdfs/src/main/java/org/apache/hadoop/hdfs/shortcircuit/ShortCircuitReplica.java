@@ -758,12 +758,10 @@ name|refCount
 operator|==
 literal|0
 argument_list|,
-literal|"tried to close replica with refCount "
-operator|+
+literal|"tried to close replica with refCount %d: %s"
+argument_list|,
 name|refCount
-operator|+
-literal|": "
-operator|+
+argument_list|,
 name|this
 argument_list|)
 expr_stmt|;
@@ -778,8 +776,8 @@ name|checkState
 argument_list|(
 name|purged
 argument_list|,
-literal|"tried to close unpurged replica "
-operator|+
+literal|"tried to close unpurged replica %s"
+argument_list|,
 name|this
 argument_list|)
 expr_stmt|;
@@ -792,10 +790,19 @@ block|{
 name|munmap
 argument_list|()
 expr_stmt|;
+if|if
+condition|(
+name|LOG
+operator|.
+name|isTraceEnabled
+argument_list|()
+condition|)
+block|{
 name|suffix
 operator|+=
 literal|"  munmapped."
 expr_stmt|;
+block|}
 block|}
 name|IOUtils
 operator|.
@@ -822,6 +829,14 @@ argument_list|(
 name|slot
 argument_list|)
 expr_stmt|;
+if|if
+condition|(
+name|LOG
+operator|.
+name|isTraceEnabled
+argument_list|()
+condition|)
+block|{
 name|suffix
 operator|+=
 literal|"  scheduling "
@@ -830,6 +845,7 @@ name|slot
 operator|+
 literal|" for later release."
 expr_stmt|;
+block|}
 block|}
 if|if
 condition|(

@@ -1780,12 +1780,10 @@ name|refCount
 operator|>
 literal|0
 argument_list|,
-literal|"can't ref "
-operator|+
+literal|"can't ref %s because its refCount reached %d"
+argument_list|,
 name|replica
-operator|+
-literal|" because its refCount reached "
-operator|+
+argument_list|,
 name|replica
 operator|.
 name|refCount
@@ -2069,13 +2067,9 @@ name|replica
 operator|.
 name|purged
 argument_list|,
-literal|"Replica "
-operator|+
+literal|"Replica %s reached a refCount of 0 without being purged"
+argument_list|,
 name|replica
-operator|+
-literal|" reached a refCount of 0 without "
-operator|+
-literal|"being purged"
 argument_list|)
 expr_stmt|;
 name|replica
@@ -2103,20 +2097,16 @@ operator|.
 name|getEvictableTimeNs
 argument_list|()
 argument_list|,
-literal|"Replica "
+literal|"Replica %s had a refCount higher than 1, "
 operator|+
+literal|"but was still evictable (evictableTimeNs = %d)"
+argument_list|,
 name|replica
-operator|+
-literal|" had a refCount higher than 1, "
-operator|+
-literal|"but was still evictable (evictableTimeNs = "
-operator|+
+argument_list|,
 name|replica
 operator|.
 name|getEvictableTimeNs
 argument_list|()
-operator|+
-literal|")"
 argument_list|)
 expr_stmt|;
 if|if
@@ -2191,17 +2181,15 @@ name|refCount
 operator|>=
 literal|0
 argument_list|,
-literal|"replica's refCount went negative (refCount = "
+literal|"replica's refCount went negative (refCount = %d"
 operator|+
+literal|" for %s)"
+argument_list|,
 name|replica
 operator|.
 name|refCount
-operator|+
-literal|" for "
-operator|+
+argument_list|,
 name|replica
-operator|+
-literal|")"
 argument_list|)
 expr_stmt|;
 block|}
@@ -2692,11 +2680,9 @@ name|removed
 operator|==
 name|replica
 argument_list|,
-literal|"failed to make "
-operator|+
+literal|"failed to make %s unevictable"
+argument_list|,
 name|replica
-operator|+
-literal|" unevictable"
 argument_list|)
 expr_stmt|;
 name|replica
@@ -3902,8 +3888,8 @@ name|checkState
 argument_list|(
 literal|false
 argument_list|,
-literal|"invalid mmapData type "
-operator|+
+literal|"invalid mmapData type %s"
+argument_list|,
 name|replica
 operator|.
 name|mmapData

@@ -132,24 +132,21 @@ name|underConstruction
 decl_stmt|;
 DECL|field|lastLocatedBlock
 specifier|private
+specifier|final
 name|LocatedBlock
 name|lastLocatedBlock
-init|=
-literal|null
 decl_stmt|;
 DECL|field|isLastBlockComplete
 specifier|private
+specifier|final
 name|boolean
 name|isLastBlockComplete
-init|=
-literal|false
 decl_stmt|;
 DECL|field|fileEncryptionInfo
 specifier|private
+specifier|final
 name|FileEncryptionInfo
 name|fileEncryptionInfo
-init|=
-literal|null
 decl_stmt|;
 DECL|method|LocatedBlocks ()
 specifier|public
@@ -167,6 +164,18 @@ expr_stmt|;
 name|underConstruction
 operator|=
 literal|false
+expr_stmt|;
+name|lastLocatedBlock
+operator|=
+literal|null
+expr_stmt|;
+name|isLastBlockComplete
+operator|=
+literal|false
+expr_stmt|;
+name|fileEncryptionInfo
+operator|=
+literal|null
 expr_stmt|;
 block|}
 DECL|method|LocatedBlocks (long flength, boolean isUnderConstuction, List<LocatedBlock> blks, LocatedBlock lastBlock, boolean isLastBlockCompleted, FileEncryptionInfo feInfo)
