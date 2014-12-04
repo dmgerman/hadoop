@@ -1986,6 +1986,13 @@ specifier|private
 name|JvmPauseMonitor
 name|pauseMonitor
 decl_stmt|;
+DECL|field|infoServer
+specifier|private
+name|Nfs3HttpServer
+name|infoServer
+init|=
+literal|null
+decl_stmt|;
 DECL|method|RpcProgramNfs3 (NfsConfiguration config, DatagramSocket registrationSocket, boolean allowInsecurePorts)
 specifier|public
 name|RpcProgramNfs3
@@ -2237,6 +2244,14 @@ argument_list|,
 literal|256
 argument_list|)
 expr_stmt|;
+name|infoServer
+operator|=
+operator|new
+name|Nfs3HttpServer
+argument_list|(
+name|config
+argument_list|)
+expr_stmt|;
 block|}
 DECL|method|clearDirectory (String writeDumpDir)
 specifier|private
@@ -2362,6 +2377,30 @@ operator|.
 name|startAsyncDataSerivce
 argument_list|()
 expr_stmt|;
+try|try
+block|{
+name|infoServer
+operator|.
+name|start
+argument_list|()
+expr_stmt|;
+block|}
+catch|catch
+parameter_list|(
+name|IOException
+name|e
+parameter_list|)
+block|{
+name|LOG
+operator|.
+name|error
+argument_list|(
+literal|"failed to start web server"
+argument_list|,
+name|e
+argument_list|)
+expr_stmt|;
+block|}
 block|}
 annotation|@
 name|Override
@@ -2397,6 +2436,52 @@ name|stop
 argument_list|()
 expr_stmt|;
 block|}
+comment|// Stop the web server
+if|if
+condition|(
+name|infoServer
+operator|!=
+literal|null
+condition|)
+block|{
+try|try
+block|{
+name|infoServer
+operator|.
+name|stop
+argument_list|()
+expr_stmt|;
+block|}
+catch|catch
+parameter_list|(
+name|Exception
+name|e
+parameter_list|)
+block|{
+name|LOG
+operator|.
+name|warn
+argument_list|(
+literal|"Exception shutting down web server"
+argument_list|,
+name|e
+argument_list|)
+expr_stmt|;
+block|}
+block|}
+block|}
+annotation|@
+name|VisibleForTesting
+DECL|method|getInfoServer ()
+name|Nfs3HttpServer
+name|getInfoServer
+parameter_list|()
+block|{
+return|return
+name|this
+operator|.
+name|infoServer
+return|;
 block|}
 comment|// Checks the type of IOException and maps it to appropriate Nfs3Status code.
 DECL|method|mapErrorStatus (IOException e)
