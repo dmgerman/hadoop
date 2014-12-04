@@ -50,6 +50,20 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|conf
+operator|.
+name|Configuration
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|ha
 operator|.
 name|HAServiceProtocol
@@ -672,6 +686,11 @@ function_decl|;
 DECL|method|isSchedulerReadyForAllocatingContainers ()
 name|boolean
 name|isSchedulerReadyForAllocatingContainers
+parameter_list|()
+function_decl|;
+DECL|method|getYarnConfiguration ()
+name|Configuration
+name|getYarnConfiguration
 parameter_list|()
 function_decl|;
 block|}

@@ -66,6 +66,20 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|conf
+operator|.
+name|Configuration
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|classification
 operator|.
 name|InterfaceStability
@@ -581,6 +595,11 @@ DECL|field|activeServiceContext
 specifier|private
 name|RMActiveServiceContext
 name|activeServiceContext
+decl_stmt|;
+DECL|field|yarnConfiguration
+specifier|private
+name|Configuration
+name|yarnConfiguration
 decl_stmt|;
 comment|/**    * Default constructor. To be used in conjunction with setter methods for    * individual fields.    */
 DECL|method|RMContextImpl ()
@@ -1660,6 +1679,36 @@ operator|.
 name|activeServiceContext
 operator|=
 name|activeServiceContext
+expr_stmt|;
+block|}
+annotation|@
+name|Override
+DECL|method|getYarnConfiguration ()
+specifier|public
+name|Configuration
+name|getYarnConfiguration
+parameter_list|()
+block|{
+return|return
+name|this
+operator|.
+name|yarnConfiguration
+return|;
+block|}
+DECL|method|setYarnConfiguration (Configuration yarnConfiguration)
+specifier|public
+name|void
+name|setYarnConfiguration
+parameter_list|(
+name|Configuration
+name|yarnConfiguration
+parameter_list|)
+block|{
+name|this
+operator|.
+name|yarnConfiguration
+operator|=
+name|yarnConfiguration
 expr_stmt|;
 block|}
 block|}

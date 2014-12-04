@@ -2008,6 +2008,13 @@ argument_list|(
 name|adminService
 argument_list|)
 expr_stmt|;
+name|rmContext
+operator|.
+name|setYarnConfiguration
+argument_list|(
+name|conf
+argument_list|)
+expr_stmt|;
 name|createAndInitActiveServices
 argument_list|()
 expr_stmt|;
