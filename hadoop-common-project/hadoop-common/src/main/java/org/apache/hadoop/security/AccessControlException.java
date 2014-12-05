@@ -18,6 +18,16 @@ end_package
 
 begin_import
 import|import
+name|java
+operator|.
+name|io
+operator|.
+name|IOException
+import|;
+end_import
+
+begin_import
+import|import
 name|org
 operator|.
 name|apache
@@ -69,17 +79,7 @@ specifier|public
 class|class
 name|AccessControlException
 extends|extends
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|fs
-operator|.
-name|permission
-operator|.
-name|AccessControlException
+name|IOException
 block|{
 comment|//Required by {@link java.io.Serializable}.
 DECL|field|serialVersionUID
