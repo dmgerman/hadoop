@@ -58,6 +58,20 @@ name|google
 operator|.
 name|common
 operator|.
+name|base
+operator|.
+name|Preconditions
+import|;
+end_import
+
+begin_import
+import|import
+name|com
+operator|.
+name|google
+operator|.
+name|common
+operator|.
 name|collect
 operator|.
 name|ImmutableList
@@ -100,20 +114,16 @@ decl_stmt|;
 DECL|field|entries
 specifier|private
 specifier|final
-name|ImmutableList
-argument_list|<
-name|AclEntry
-argument_list|>
+name|int
+index|[]
 name|entries
 decl_stmt|;
-DECL|method|AclFeature (ImmutableList<AclEntry> entries)
+DECL|method|AclFeature (int[] entries)
 specifier|public
 name|AclFeature
 parameter_list|(
-name|ImmutableList
-argument_list|<
-name|AclEntry
-argument_list|>
+name|int
+index|[]
 name|entries
 parameter_list|)
 block|{
@@ -124,17 +134,45 @@ operator|=
 name|entries
 expr_stmt|;
 block|}
-DECL|method|getEntries ()
-specifier|public
-name|ImmutableList
-argument_list|<
-name|AclEntry
-argument_list|>
-name|getEntries
+comment|/**    * Get the number of entries present    */
+DECL|method|getEntriesSize ()
+name|int
+name|getEntriesSize
 parameter_list|()
 block|{
 return|return
 name|entries
+operator|.
+name|length
+return|;
+block|}
+comment|/**    * Get the entry at the specified position    * @param pos Position of the entry to be obtained    * @return integer representation of AclEntry    * @throws IndexOutOfBoundsException if pos out of bound    */
+DECL|method|getEntryAt (int pos)
+name|int
+name|getEntryAt
+parameter_list|(
+name|int
+name|pos
+parameter_list|)
+block|{
+name|Preconditions
+operator|.
+name|checkPositionIndex
+argument_list|(
+name|pos
+argument_list|,
+name|entries
+operator|.
+name|length
+argument_list|,
+literal|"Invalid position for AclEntry"
+argument_list|)
+expr_stmt|;
+return|return
+name|entries
+index|[
+name|pos
+index|]
 return|;
 block|}
 block|}
