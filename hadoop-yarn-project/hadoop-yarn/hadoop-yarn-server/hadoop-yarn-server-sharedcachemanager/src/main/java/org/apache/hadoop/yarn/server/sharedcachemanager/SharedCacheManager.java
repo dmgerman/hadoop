@@ -386,6 +386,19 @@ argument_list|(
 name|cps
 argument_list|)
 expr_stmt|;
+name|SCMAdminProtocolService
+name|saps
+init|=
+name|createSCMAdminProtocolService
+argument_list|(
+name|cs
+argument_list|)
+decl_stmt|;
+name|addService
+argument_list|(
+name|saps
+argument_list|)
+expr_stmt|;
 comment|// init metrics
 name|DefaultMetricsSystem
 operator|.
@@ -553,6 +566,23 @@ operator|new
 name|ClientProtocolService
 argument_list|(
 name|store
+argument_list|)
+return|;
+block|}
+DECL|method|createSCMAdminProtocolService ( CleanerService cleanerService)
+specifier|private
+name|SCMAdminProtocolService
+name|createSCMAdminProtocolService
+parameter_list|(
+name|CleanerService
+name|cleanerService
+parameter_list|)
+block|{
+return|return
+operator|new
+name|SCMAdminProtocolService
+argument_list|(
+name|cleanerService
 argument_list|)
 return|;
 block|}
