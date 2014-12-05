@@ -3235,7 +3235,7 @@ name|PROCFS_USE_SMAPS_BASED_RSS_ENABLED
 init|=
 name|NM_PREFIX
 operator|+
-literal|".container-monitor.procfs-tree.smaps-based-rss.enabled"
+literal|"container-monitor.procfs-tree.smaps-based-rss.enabled"
 decl_stmt|;
 DECL|field|DEFAULT_PROCFS_USE_SMAPS_BASED_RSS_ENABLED
 specifier|public
