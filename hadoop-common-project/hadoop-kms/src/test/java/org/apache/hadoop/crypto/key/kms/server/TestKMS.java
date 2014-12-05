@@ -3602,6 +3602,46 @@ argument_list|(
 literal|"k1"
 argument_list|)
 expr_stmt|;
+comment|// Check decryption after Key deletion
+try|try
+block|{
+name|kpExt
+operator|.
+name|decryptEncryptedKey
+argument_list|(
+name|ek1
+argument_list|)
+expr_stmt|;
+name|Assert
+operator|.
+name|fail
+argument_list|(
+literal|"Should not be allowed !!"
+argument_list|)
+expr_stmt|;
+block|}
+catch|catch
+parameter_list|(
+name|Exception
+name|e
+parameter_list|)
+block|{
+name|Assert
+operator|.
+name|assertTrue
+argument_list|(
+name|e
+operator|.
+name|getMessage
+argument_list|()
+operator|.
+name|contains
+argument_list|(
+literal|"'k1@1' not found"
+argument_list|)
+argument_list|)
+expr_stmt|;
+block|}
 comment|// getKey()
 name|Assert
 operator|.
