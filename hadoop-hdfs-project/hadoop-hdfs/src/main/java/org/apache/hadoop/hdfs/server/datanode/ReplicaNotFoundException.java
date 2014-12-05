@@ -110,7 +110,7 @@ specifier|static
 name|String
 name|UNEXPECTED_GS_REPLICA
 init|=
-literal|"Cannot append to a replica with unexpeted generation stamp "
+literal|"Cannot append to a replica with unexpected generation stamp "
 decl_stmt|;
 DECL|method|ReplicaNotFoundException ()
 specifier|public
