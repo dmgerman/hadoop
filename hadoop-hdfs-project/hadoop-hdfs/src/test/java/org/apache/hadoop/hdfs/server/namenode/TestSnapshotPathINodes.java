@@ -318,23 +318,11 @@ argument_list|,
 literal|"file2"
 argument_list|)
 decl_stmt|;
-DECL|field|conf
-specifier|static
-specifier|private
-name|Configuration
-name|conf
-decl_stmt|;
 DECL|field|cluster
 specifier|static
 specifier|private
 name|MiniDFSCluster
 name|cluster
-decl_stmt|;
-DECL|field|fsn
-specifier|static
-specifier|private
-name|FSNamesystem
-name|fsn
 decl_stmt|;
 DECL|field|fsdir
 specifier|static
@@ -359,12 +347,13 @@ parameter_list|()
 throws|throws
 name|Exception
 block|{
+name|Configuration
 name|conf
-operator|=
+init|=
 operator|new
 name|Configuration
 argument_list|()
-expr_stmt|;
+decl_stmt|;
 name|cluster
 operator|=
 operator|new
@@ -388,13 +377,14 @@ operator|.
 name|waitActive
 argument_list|()
 expr_stmt|;
+name|FSNamesystem
 name|fsn
-operator|=
+init|=
 name|cluster
 operator|.
 name|getNamesystem
 argument_list|()
-expr_stmt|;
+decl_stmt|;
 name|fsdir
 operator|=
 name|fsn
@@ -816,7 +806,7 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**     * Test {@link INodeDirectory#getExistingPathINodes(byte[][], int, boolean)}     * for normal (non-snapshot) file.    */
+comment|/**     * for normal (non-snapshot) file.    */
 annotation|@
 name|Test
 argument_list|(
@@ -1133,7 +1123,7 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**     * Test {@link INodeDirectory#getExistingPathINodes(byte[][], int, boolean)}     * for snapshot file.    */
+comment|/**     * for snapshot file.    */
 annotation|@
 name|Test
 argument_list|(
@@ -1636,7 +1626,7 @@ name|sub1
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**     * Test {@link INodeDirectory#getExistingPathINodes(byte[][], int, boolean)}     * for snapshot file after deleting the original file.    */
+comment|/**     * for snapshot file after deleting the original file.    */
 annotation|@
 name|Test
 argument_list|(
@@ -1980,13 +1970,7 @@ name|sub1
 argument_list|)
 expr_stmt|;
 block|}
-DECL|field|s4
-specifier|static
-specifier|private
-name|Snapshot
-name|s4
-decl_stmt|;
-comment|/**     * Test {@link INodeDirectory#getExistingPathINodes(byte[][], int, boolean)}     * for snapshot file while adding a new file after snapshot.    */
+comment|/**    * for snapshot file while adding a new file after snapshot.    */
 annotation|@
 name|Test
 argument_list|(
@@ -2048,6 +2032,9 @@ argument_list|,
 name|seed
 argument_list|)
 expr_stmt|;
+name|Snapshot
+name|s4
+decl_stmt|;
 block|{
 comment|// Check the inodes for /TestSnapshot/sub1/.snapshot/s4/file3
 name|String
@@ -2325,7 +2312,7 @@ name|sub1
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**     * Test {@link INodeDirectory#getExistingPathINodes(byte[][], int, boolean)}     * for snapshot file while modifying file after snapshot.    */
+comment|/**     * for snapshot file while modifying file after snapshot.    */
 annotation|@
 name|Test
 argument_list|(

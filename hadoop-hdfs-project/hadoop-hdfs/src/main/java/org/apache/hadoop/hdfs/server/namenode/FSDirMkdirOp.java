@@ -387,6 +387,16 @@ argument_list|,
 name|pathComponents
 argument_list|)
 expr_stmt|;
+name|INodesInPath
+name|iip
+init|=
+name|fsd
+operator|.
+name|getINodesInPath4Write
+argument_list|(
+name|src
+argument_list|)
+decl_stmt|;
 if|if
 condition|(
 name|fsd
@@ -401,7 +411,7 @@ name|checkTraverse
 argument_list|(
 name|pc
 argument_list|,
-name|src
+name|iip
 argument_list|)
 expr_stmt|;
 block|}
@@ -412,7 +422,7 @@ name|isDirMutable
 argument_list|(
 name|fsd
 argument_list|,
-name|src
+name|iip
 argument_list|)
 condition|)
 block|{
@@ -430,7 +440,7 @@ name|checkAncestorAccess
 argument_list|(
 name|pc
 argument_list|,
-name|src
+name|iip
 argument_list|,
 name|FsAction
 operator|.
@@ -448,6 +458,8 @@ name|fsd
 operator|.
 name|verifyParentDir
 argument_list|(
+name|iip
+argument_list|,
 name|src
 argument_list|)
 expr_stmt|;
@@ -1088,7 +1100,7 @@ literal|true
 return|;
 block|}
 comment|/**    * Check whether the path specifies a directory    * @throws SnapshotAccessControlException if path is in RO snapshot    */
-DECL|method|isDirMutable ( FSDirectory fsd, String src)
+DECL|method|isDirMutable (FSDirectory fsd, INodesInPath iip)
 specifier|private
 specifier|static
 name|boolean
@@ -1097,23 +1109,12 @@ parameter_list|(
 name|FSDirectory
 name|fsd
 parameter_list|,
-name|String
-name|src
+name|INodesInPath
+name|iip
 parameter_list|)
 throws|throws
-name|UnresolvedLinkException
-throws|,
 name|SnapshotAccessControlException
 block|{
-name|src
-operator|=
-name|FSDirectory
-operator|.
-name|normalizePath
-argument_list|(
-name|src
-argument_list|)
-expr_stmt|;
 name|fsd
 operator|.
 name|readLock
@@ -1124,14 +1125,10 @@ block|{
 name|INode
 name|node
 init|=
-name|fsd
+name|iip
 operator|.
-name|getINode4Write
-argument_list|(
-name|src
-argument_list|,
-literal|false
-argument_list|)
+name|getLastINode
+argument_list|()
 decl_stmt|;
 return|return
 name|node

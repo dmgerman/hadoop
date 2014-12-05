@@ -2596,13 +2596,25 @@ decl_stmt|;
 comment|// Rename does not operates on link targets
 comment|// Do not resolveLink when checking permissions of src and dst
 comment|// Check write access to parent of src
+name|INodesInPath
+name|srcIIP
+init|=
+name|fsd
+operator|.
+name|getINodesInPath
+argument_list|(
+name|src
+argument_list|,
+literal|false
+argument_list|)
+decl_stmt|;
 name|fsd
 operator|.
 name|checkPermission
 argument_list|(
 name|pc
 argument_list|,
-name|src
+name|srcIIP
 argument_list|,
 literal|false
 argument_list|,
@@ -2617,10 +2629,20 @@ argument_list|,
 literal|null
 argument_list|,
 literal|false
+argument_list|)
+expr_stmt|;
+name|INodesInPath
+name|dstIIP
+init|=
+name|fsd
+operator|.
+name|getINodesInPath
+argument_list|(
+name|actualdst
 argument_list|,
 literal|false
 argument_list|)
-expr_stmt|;
+decl_stmt|;
 comment|// Check write access to ancestor of dst
 name|fsd
 operator|.
@@ -2628,7 +2650,7 @@ name|checkPermission
 argument_list|(
 name|pc
 argument_list|,
-name|actualdst
+name|dstIIP
 argument_list|,
 literal|false
 argument_list|,
@@ -2641,8 +2663,6 @@ argument_list|,
 literal|null
 argument_list|,
 literal|null
-argument_list|,
-literal|false
 argument_list|,
 literal|false
 argument_list|)
@@ -2747,13 +2767,25 @@ block|{
 comment|// Rename does not operates on link targets
 comment|// Do not resolveLink when checking permissions of src and dst
 comment|// Check write access to parent of src
+name|INodesInPath
+name|srcIIP
+init|=
+name|fsd
+operator|.
+name|getINodesInPath
+argument_list|(
+name|src
+argument_list|,
+literal|false
+argument_list|)
+decl_stmt|;
 name|fsd
 operator|.
 name|checkPermission
 argument_list|(
 name|pc
 argument_list|,
-name|src
+name|srcIIP
 argument_list|,
 literal|false
 argument_list|,
@@ -2766,20 +2798,30 @@ argument_list|,
 literal|null
 argument_list|,
 literal|null
-argument_list|,
-literal|false
 argument_list|,
 literal|false
 argument_list|)
 expr_stmt|;
 comment|// Check write access to ancestor of dst
+name|INodesInPath
+name|dstIIP
+init|=
+name|fsd
+operator|.
+name|getINodesInPath
+argument_list|(
+name|dst
+argument_list|,
+literal|false
+argument_list|)
+decl_stmt|;
 name|fsd
 operator|.
 name|checkPermission
 argument_list|(
 name|pc
 argument_list|,
-name|dst
+name|dstIIP
 argument_list|,
 literal|false
 argument_list|,
@@ -2792,8 +2834,6 @@ argument_list|,
 literal|null
 argument_list|,
 literal|null
-argument_list|,
-literal|false
 argument_list|,
 literal|false
 argument_list|)

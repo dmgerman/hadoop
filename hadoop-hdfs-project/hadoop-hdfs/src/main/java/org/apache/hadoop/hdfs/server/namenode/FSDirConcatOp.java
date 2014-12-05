@@ -328,6 +328,17 @@ argument_list|)
 throw|;
 block|}
 block|}
+specifier|final
+name|INodesInPath
+name|trgIip
+init|=
+name|fsd
+operator|.
+name|getINodesInPath4Write
+argument_list|(
+name|target
+argument_list|)
+decl_stmt|;
 comment|// write permission for the target
 if|if
 condition|(
@@ -351,7 +362,7 @@ name|checkPathAccess
 argument_list|(
 name|pc
 argument_list|,
-name|target
+name|trgIip
 argument_list|,
 name|FsAction
 operator|.
@@ -367,13 +378,24 @@ range|:
 name|srcs
 control|)
 block|{
+specifier|final
+name|INodesInPath
+name|srcIip
+init|=
+name|fsd
+operator|.
+name|getINodesInPath4Write
+argument_list|(
+name|aSrc
+argument_list|)
+decl_stmt|;
 name|fsd
 operator|.
 name|checkPathAccess
 argument_list|(
 name|pc
 argument_list|,
-name|aSrc
+name|srcIip
 argument_list|,
 name|FsAction
 operator|.
@@ -387,7 +409,7 @@ name|checkParentAccess
 argument_list|(
 name|pc
 argument_list|,
-name|aSrc
+name|srcIip
 argument_list|,
 name|FsAction
 operator|.
@@ -414,17 +436,6 @@ decl_stmt|;
 comment|// we put the following prerequisite for the operation
 comment|// replication and blocks sizes should be the same for ALL the blocks
 comment|// check the target
-specifier|final
-name|INodesInPath
-name|trgIip
-init|=
-name|fsd
-operator|.
-name|getINodesInPath4Write
-argument_list|(
-name|target
-argument_list|)
-decl_stmt|;
 if|if
 condition|(
 name|fsd

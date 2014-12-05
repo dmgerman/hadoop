@@ -869,19 +869,28 @@ name|d
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**   * Find the source root directory where the snapshot will be taken   * for a given path.   *   * @param path The directory path where the snapshot will be taken.   * @return Snapshottable directory.   * @throws IOException   *           Throw IOException when the given path does not lead to an   *           existing snapshottable directory.   */
-DECL|method|getSnapshottableRoot (final String path)
+comment|/**   * Find the source root directory where the snapshot will be taken   * for a given path.   *   * @return Snapshottable directory.   * @throws IOException   *           Throw IOException when the given path does not lead to an   *           existing snapshottable directory.   */
+DECL|method|getSnapshottableRoot (final INodesInPath iip)
 specifier|public
 name|INodeDirectory
 name|getSnapshottableRoot
 parameter_list|(
 specifier|final
-name|String
-name|path
+name|INodesInPath
+name|iip
 parameter_list|)
 throws|throws
 name|IOException
 block|{
+specifier|final
+name|String
+name|path
+init|=
+name|iip
+operator|.
+name|getPath
+argument_list|()
+decl_stmt|;
 specifier|final
 name|INodeDirectory
 name|dir
@@ -890,12 +899,7 @@ name|INodeDirectory
 operator|.
 name|valueOf
 argument_list|(
-name|fsdir
-operator|.
-name|getINodesInPath4Write
-argument_list|(
-name|path
-argument_list|)
+name|iip
 operator|.
 name|getLastINode
 argument_list|()
@@ -926,15 +930,18 @@ return|return
 name|dir
 return|;
 block|}
-comment|/**    * Create a snapshot of the given path.    * It is assumed that the caller will perform synchronization.    *    * @param path    *          The directory path where the snapshot will be taken.    * @param snapshotName    *          The name of the snapshot.    * @throws IOException    *           Throw IOException when 1) the given path does not lead to an    *           existing snapshottable directory, and/or 2) there exists a    *           snapshot with the given name for the directory, and/or 3)    *           snapshot number exceeds quota    */
-DECL|method|createSnapshot (final String path, String snapshotName )
+comment|/**    * Create a snapshot of the given path.    * It is assumed that the caller will perform synchronization.    *    * @param iip the INodes resolved from the snapshottable directory's path    * @param snapshotName    *          The name of the snapshot.    * @throws IOException    *           Throw IOException when 1) the given path does not lead to an    *           existing snapshottable directory, and/or 2) there exists a    *           snapshot with the given name for the directory, and/or 3)    *           snapshot number exceeds quota    */
+DECL|method|createSnapshot (final INodesInPath iip, String snapshotRoot, String snapshotName)
 specifier|public
 name|String
 name|createSnapshot
 parameter_list|(
 specifier|final
+name|INodesInPath
+name|iip
+parameter_list|,
 name|String
-name|path
+name|snapshotRoot
 parameter_list|,
 name|String
 name|snapshotName
@@ -947,7 +954,7 @@ name|srcRoot
 init|=
 name|getSnapshottableRoot
 argument_list|(
-name|path
+name|iip
 argument_list|)
 decl_stmt|;
 if|if
@@ -995,21 +1002,21 @@ name|Snapshot
 operator|.
 name|getSnapshotPath
 argument_list|(
-name|path
+name|snapshotRoot
 argument_list|,
 name|snapshotName
 argument_list|)
 return|;
 block|}
-comment|/**    * Delete a snapshot for a snapshottable directory    * @param path Path to the directory where the snapshot was taken    * @param snapshotName Name of the snapshot to be deleted    * @param collectedBlocks Used to collect information to update blocksMap     * @throws IOException    */
-DECL|method|deleteSnapshot (final String path, final String snapshotName, BlocksMapUpdateInfo collectedBlocks, final List<INode> removedINodes)
+comment|/**    * Delete a snapshot for a snapshottable directory    * @param snapshotName Name of the snapshot to be deleted    * @param collectedBlocks Used to collect information to update blocksMap     * @throws IOException    */
+DECL|method|deleteSnapshot (final INodesInPath iip, final String snapshotName, BlocksMapUpdateInfo collectedBlocks, final List<INode> removedINodes)
 specifier|public
 name|void
 name|deleteSnapshot
 parameter_list|(
 specifier|final
-name|String
-name|path
+name|INodesInPath
+name|iip
 parameter_list|,
 specifier|final
 name|String
@@ -1028,15 +1035,12 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
-comment|// parse the path, and check if the path is a snapshot path
-comment|// the INodeDirectorySnapshottable#valueOf method will throw Exception
-comment|// if the path is not for a snapshottable directory
 name|INodeDirectory
 name|srcRoot
 init|=
 name|getSnapshottableRoot
 argument_list|(
-name|path
+name|iip
 argument_list|)
 decl_stmt|;
 name|srcRoot
@@ -1056,15 +1060,19 @@ name|getAndDecrement
 argument_list|()
 expr_stmt|;
 block|}
-comment|/**    * Rename the given snapshot    * @param path    *          The directory path where the snapshot was taken    * @param oldSnapshotName    *          Old name of the snapshot    * @param newSnapshotName    *          New name of the snapshot    * @throws IOException    *           Throw IOException when 1) the given path does not lead to an    *           existing snapshottable directory, and/or 2) the snapshot with the    *           old name does not exist for the directory, and/or 3) there exists    *           a snapshot with the new name for the directory    */
-DECL|method|renameSnapshot (final String path, final String oldSnapshotName, final String newSnapshotName)
+comment|/**    * Rename the given snapshot    * @param oldSnapshotName    *          Old name of the snapshot    * @param newSnapshotName    *          New name of the snapshot    * @throws IOException    *           Throw IOException when 1) the given path does not lead to an    *           existing snapshottable directory, and/or 2) the snapshot with the    *           old name does not exist for the directory, and/or 3) there exists    *           a snapshot with the new name for the directory    */
+DECL|method|renameSnapshot (final INodesInPath iip, final String snapshotRoot, final String oldSnapshotName, final String newSnapshotName)
 specifier|public
 name|void
 name|renameSnapshot
 parameter_list|(
 specifier|final
+name|INodesInPath
+name|iip
+parameter_list|,
+specifier|final
 name|String
-name|path
+name|snapshotRoot
 parameter_list|,
 specifier|final
 name|String
@@ -1077,24 +1085,20 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
-comment|// Find the source root directory path where the snapshot was taken.
-comment|// All the check for path has been included in the valueOf method.
 specifier|final
 name|INodeDirectory
 name|srcRoot
 init|=
 name|getSnapshottableRoot
 argument_list|(
-name|path
+name|iip
 argument_list|)
 decl_stmt|;
-comment|// Note that renameSnapshot and createSnapshot are synchronized externally
-comment|// through FSNamesystem's write lock
 name|srcRoot
 operator|.
 name|renameSnapshot
 argument_list|(
-name|path
+name|snapshotRoot
 argument_list|,
 name|oldSnapshotName
 argument_list|,
@@ -1554,14 +1558,18 @@ argument_list|)
 return|;
 block|}
 comment|/**    * Compute the difference between two snapshots of a directory, or between a    * snapshot of the directory and its current tree.    */
-DECL|method|diff (final String path, final String from, final String to)
+DECL|method|diff (final INodesInPath iip, final String snapshotRootPath, final String from, final String to)
 specifier|public
 name|SnapshotDiffReport
 name|diff
 parameter_list|(
 specifier|final
+name|INodesInPath
+name|iip
+parameter_list|,
+specifier|final
 name|String
-name|path
+name|snapshotRootPath
 parameter_list|,
 specifier|final
 name|String
@@ -1582,7 +1590,7 @@ name|snapshotRoot
 init|=
 name|getSnapshottableRoot
 argument_list|(
-name|path
+name|iip
 argument_list|)
 decl_stmt|;
 if|if
@@ -1615,7 +1623,7 @@ return|return
 operator|new
 name|SnapshotDiffReport
 argument_list|(
-name|path
+name|snapshotRootPath
 argument_list|,
 name|from
 argument_list|,
@@ -1662,7 +1670,7 @@ else|:
 operator|new
 name|SnapshotDiffReport
 argument_list|(
-name|path
+name|snapshotRootPath
 argument_list|,
 name|from
 argument_list|,

@@ -226,11 +226,9 @@ parameter_list|)
 block|{
 return|return
 name|pathComponent
-operator|==
+operator|!=
 literal|null
-condition|?
-literal|false
-else|:
+operator|&&
 name|Arrays
 operator|.
 name|equals
@@ -767,8 +765,6 @@ name|CURRENT_STATE_ID
 decl_stmt|;
 name|DirectoryWithSnapshotFeature
 name|sf
-init|=
-literal|null
 decl_stmt|;
 if|if
 condition|(
@@ -821,11 +817,7 @@ operator|(
 operator|!
 name|lastComp
 operator|||
-operator|(
-name|lastComp
-operator|&&
 name|resolveLink
-operator|)
 operator|)
 condition|)
 block|{
@@ -983,8 +975,6 @@ name|isDotSnapshotDir
 argument_list|(
 name|childName
 argument_list|)
-operator|&&
-name|isDir
 operator|&&
 name|dir
 operator|.
@@ -1437,6 +1427,22 @@ literal|1
 index|]
 return|;
 block|}
+comment|/** @return the full path in string form */
+DECL|method|getPath ()
+specifier|public
+name|String
+name|getPath
+parameter_list|()
+block|{
+return|return
+name|DFSUtil
+operator|.
+name|byteArray2PathString
+argument_list|(
+name|path
+argument_list|)
+return|;
+block|}
 comment|/**    * @return index of the {@link Snapshot.Root} node in the inodes array,    * -1 for non-snapshot paths.    */
 DECL|method|getSnapshotRootIndex ()
 name|int
@@ -1618,7 +1624,7 @@ condition|(
 name|vaildateObject
 condition|)
 block|{
-name|vaildate
+name|validate
 argument_list|()
 expr_stmt|;
 block|}
@@ -1819,9 +1825,9 @@ name|toString
 argument_list|()
 return|;
 block|}
-DECL|method|vaildate ()
+DECL|method|validate ()
 name|void
-name|vaildate
+name|validate
 parameter_list|()
 block|{
 comment|// check parent up to snapshotRootIndex or numNonNull

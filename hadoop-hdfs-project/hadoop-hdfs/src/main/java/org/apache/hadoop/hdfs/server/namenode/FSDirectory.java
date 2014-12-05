@@ -2677,7 +2677,7 @@ return|return
 literal|true
 return|;
 block|}
-comment|/**    * This is a wrapper for resolvePath(). If the path passed    * is prefixed with /.reserved/raw, then it checks to ensure that the caller    * has super user has super user privileges.    *    * @param pc The permission checker used when resolving path.    * @param path The path to resolve.    * @param pathComponents path components corresponding to the path    * @return if the path indicates an inode, return path after replacing up to    *<inodeid> with the corresponding path of the inode, else the path    *         in {@code src} as is. If the path refers to a path in the "raw"    *         directory, return the non-raw pathname.    * @throws FileNotFoundException    * @throws AccessControlException    */
+comment|/**    * This is a wrapper for resolvePath(). If the path passed    * is prefixed with /.reserved/raw, then it checks to ensure that the caller    * has super user privileges.    *    * @param pc The permission checker used when resolving path.    * @param path The path to resolve.    * @param pathComponents path components corresponding to the path    * @return if the path indicates an inode, return path after replacing up to    *<inodeid> with the corresponding path of the inode, else the path    *         in {@code src} as is. If the path refers to a path in the "raw"    *         directory, return the non-raw pathname.    * @throws FileNotFoundException    * @throws AccessControlException    */
 DECL|method|resolvePath (FSPermissionChecker pc, String path, byte[][] pathComponents)
 name|String
 name|resolvePath
@@ -2980,12 +2980,12 @@ argument_list|()
 return|;
 block|}
 comment|/** Set block storage policy for a directory */
-DECL|method|setStoragePolicy (String src, byte policyId)
+DECL|method|setStoragePolicy (INodesInPath iip, byte policyId)
 name|void
 name|setStoragePolicy
 parameter_list|(
-name|String
-name|src
+name|INodesInPath
+name|iip
 parameter_list|,
 name|byte
 name|policyId
@@ -3000,7 +3000,7 @@ try|try
 block|{
 name|unprotectedSetStoragePolicy
 argument_list|(
-name|src
+name|iip
 argument_list|,
 name|policyId
 argument_list|)
@@ -3013,12 +3013,12 @@ argument_list|()
 expr_stmt|;
 block|}
 block|}
-DECL|method|unprotectedSetStoragePolicy (String src, byte policyId)
+DECL|method|unprotectedSetStoragePolicy (INodesInPath iip, byte policyId)
 name|void
 name|unprotectedSetStoragePolicy
 parameter_list|(
-name|String
-name|src
+name|INodesInPath
+name|iip
 parameter_list|,
 name|byte
 name|policyId
@@ -3030,17 +3030,6 @@ assert|assert
 name|hasWriteLock
 argument_list|()
 assert|;
-specifier|final
-name|INodesInPath
-name|iip
-init|=
-name|getINodesInPath4Write
-argument_list|(
-name|src
-argument_list|,
-literal|true
-argument_list|)
-decl_stmt|;
 specifier|final
 name|INode
 name|inode
@@ -3063,7 +3052,10 @@ name|FileNotFoundException
 argument_list|(
 literal|"File/Directory does not exist: "
 operator|+
-name|src
+name|iip
+operator|.
+name|getPath
+argument_list|()
 argument_list|)
 throw|;
 block|}
@@ -3197,7 +3189,10 @@ throw|throw
 operator|new
 name|FileNotFoundException
 argument_list|(
-name|src
+name|iip
+operator|.
+name|getPath
+argument_list|()
 operator|+
 literal|" is not a file or directory"
 argument_list|)
@@ -3857,15 +3852,13 @@ literal|true
 return|;
 block|}
 comment|/**    * @return true if the path is a non-empty directory; otherwise, return false.    */
-DECL|method|isNonEmptyDirectory (String path)
+DECL|method|isNonEmptyDirectory (INodesInPath inodesInPath)
 name|boolean
 name|isNonEmptyDirectory
 parameter_list|(
-name|String
-name|path
+name|INodesInPath
+name|inodesInPath
 parameter_list|)
-throws|throws
-name|UnresolvedLinkException
 block|{
 name|readLock
 argument_list|()
@@ -3873,26 +3866,27 @@ expr_stmt|;
 try|try
 block|{
 specifier|final
-name|INodesInPath
-name|inodesInPath
+name|INode
+index|[]
+name|inodes
 init|=
-name|getLastINodeInPath
-argument_list|(
-name|path
-argument_list|,
-literal|false
-argument_list|)
+name|inodesInPath
+operator|.
+name|getINodes
+argument_list|()
 decl_stmt|;
 specifier|final
 name|INode
 name|inode
 init|=
-name|inodesInPath
+name|inodes
+index|[
+name|inodes
 operator|.
-name|getINode
-argument_list|(
-literal|0
-argument_list|)
+name|length
+operator|-
+literal|1
+index|]
 decl_stmt|;
 if|if
 condition|(
@@ -4307,9 +4301,9 @@ name|debug
 argument_list|(
 literal|"DIR* FSDirectory.unprotectedDelete: "
 operator|+
-name|targetNode
+name|iip
 operator|.
-name|getFullPathName
+name|getPath
 argument_list|()
 operator|+
 literal|" is removed"
@@ -8975,26 +8969,6 @@ argument_list|()
 expr_stmt|;
 try|try
 block|{
-if|if
-condition|(
-name|iip
-operator|==
-literal|null
-condition|)
-block|{
-name|iip
-operator|=
-name|getINodesInPath
-argument_list|(
-name|inode
-operator|.
-name|getFullPathName
-argument_list|()
-argument_list|,
-literal|true
-argument_list|)
-expr_stmt|;
-block|}
 name|EncryptionZone
 name|encryptionZone
 init|=
@@ -9116,9 +9090,9 @@ name|warn
 argument_list|(
 literal|"Could not find encryption XAttr for file "
 operator|+
-name|inode
+name|iip
 operator|.
-name|getFullPathName
+name|getPath
 argument_list|()
 operator|+
 literal|" in encryption zone "
@@ -11067,26 +11041,24 @@ argument_list|)
 throw|;
 block|}
 block|}
-DECL|method|checkOwner (FSPermissionChecker pc, String path)
+DECL|method|checkOwner (FSPermissionChecker pc, INodesInPath iip)
 name|void
 name|checkOwner
 parameter_list|(
 name|FSPermissionChecker
 name|pc
 parameter_list|,
-name|String
-name|path
+name|INodesInPath
+name|iip
 parameter_list|)
 throws|throws
 name|AccessControlException
-throws|,
-name|UnresolvedLinkException
 block|{
 name|checkPermission
 argument_list|(
 name|pc
 argument_list|,
-name|path
+name|iip
 argument_list|,
 literal|true
 argument_list|,
@@ -11100,29 +11072,27 @@ literal|null
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|checkPathAccess (FSPermissionChecker pc, String path, FsAction access)
+DECL|method|checkPathAccess (FSPermissionChecker pc, INodesInPath iip, FsAction access)
 name|void
 name|checkPathAccess
 parameter_list|(
 name|FSPermissionChecker
 name|pc
 parameter_list|,
-name|String
-name|path
+name|INodesInPath
+name|iip
 parameter_list|,
 name|FsAction
 name|access
 parameter_list|)
 throws|throws
 name|AccessControlException
-throws|,
-name|UnresolvedLinkException
 block|{
 name|checkPermission
 argument_list|(
 name|pc
 argument_list|,
-name|path
+name|iip
 argument_list|,
 literal|false
 argument_list|,
@@ -11136,29 +11106,27 @@ literal|null
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|checkParentAccess ( FSPermissionChecker pc, String path, FsAction access)
+DECL|method|checkParentAccess (FSPermissionChecker pc, INodesInPath iip, FsAction access)
 name|void
 name|checkParentAccess
 parameter_list|(
 name|FSPermissionChecker
 name|pc
 parameter_list|,
-name|String
-name|path
+name|INodesInPath
+name|iip
 parameter_list|,
 name|FsAction
 name|access
 parameter_list|)
 throws|throws
 name|AccessControlException
-throws|,
-name|UnresolvedLinkException
 block|{
 name|checkPermission
 argument_list|(
 name|pc
 argument_list|,
-name|path
+name|iip
 argument_list|,
 literal|false
 argument_list|,
@@ -11172,29 +11140,27 @@ literal|null
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|checkAncestorAccess ( FSPermissionChecker pc, String path, FsAction access)
+DECL|method|checkAncestorAccess (FSPermissionChecker pc, INodesInPath iip, FsAction access)
 name|void
 name|checkAncestorAccess
 parameter_list|(
 name|FSPermissionChecker
 name|pc
 parameter_list|,
-name|String
-name|path
+name|INodesInPath
+name|iip
 parameter_list|,
 name|FsAction
 name|access
 parameter_list|)
 throws|throws
 name|AccessControlException
-throws|,
-name|UnresolvedLinkException
 block|{
 name|checkPermission
 argument_list|(
 name|pc
 argument_list|,
-name|path
+name|iip
 argument_list|,
 literal|false
 argument_list|,
@@ -11208,26 +11174,24 @@ literal|null
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|checkTraverse (FSPermissionChecker pc, String path)
+DECL|method|checkTraverse (FSPermissionChecker pc, INodesInPath iip)
 name|void
 name|checkTraverse
 parameter_list|(
 name|FSPermissionChecker
 name|pc
 parameter_list|,
-name|String
-name|path
+name|INodesInPath
+name|iip
 parameter_list|)
 throws|throws
 name|AccessControlException
-throws|,
-name|UnresolvedLinkException
 block|{
 name|checkPermission
 argument_list|(
 name|pc
 argument_list|,
-name|path
+name|iip
 argument_list|,
 literal|false
 argument_list|,
@@ -11242,15 +11206,15 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|/**    * Check whether current user have permissions to access the path. For more    * details of the parameters, see    * {@link FSPermissionChecker#checkPermission}.    */
-DECL|method|checkPermission ( FSPermissionChecker pc, String path, boolean doCheckOwner, FsAction ancestorAccess, FsAction parentAccess, FsAction access, FsAction subAccess)
+DECL|method|checkPermission (FSPermissionChecker pc, INodesInPath iip, boolean doCheckOwner, FsAction ancestorAccess, FsAction parentAccess, FsAction access, FsAction subAccess)
 name|void
 name|checkPermission
 parameter_list|(
 name|FSPermissionChecker
 name|pc
 parameter_list|,
-name|String
-name|path
+name|INodesInPath
+name|iip
 parameter_list|,
 name|boolean
 name|doCheckOwner
@@ -11269,14 +11233,12 @@ name|subAccess
 parameter_list|)
 throws|throws
 name|AccessControlException
-throws|,
-name|UnresolvedLinkException
 block|{
 name|checkPermission
 argument_list|(
 name|pc
 argument_list|,
-name|path
+name|iip
 argument_list|,
 name|doCheckOwner
 argument_list|,
@@ -11289,21 +11251,19 @@ argument_list|,
 name|subAccess
 argument_list|,
 literal|false
-argument_list|,
-literal|true
 argument_list|)
 expr_stmt|;
 block|}
 comment|/**    * Check whether current user have permissions to access the path. For more    * details of the parameters, see    * {@link FSPermissionChecker#checkPermission}.    */
-DECL|method|checkPermission ( FSPermissionChecker pc, String path, boolean doCheckOwner, FsAction ancestorAccess, FsAction parentAccess, FsAction access, FsAction subAccess, boolean ignoreEmptyDir, boolean resolveLink)
+DECL|method|checkPermission (FSPermissionChecker pc, INodesInPath iip, boolean doCheckOwner, FsAction ancestorAccess, FsAction parentAccess, FsAction access, FsAction subAccess, boolean ignoreEmptyDir)
 name|void
 name|checkPermission
 parameter_list|(
 name|FSPermissionChecker
 name|pc
 parameter_list|,
-name|String
-name|path
+name|INodesInPath
+name|iip
 parameter_list|,
 name|boolean
 name|doCheckOwner
@@ -11322,14 +11282,9 @@ name|subAccess
 parameter_list|,
 name|boolean
 name|ignoreEmptyDir
-parameter_list|,
-name|boolean
-name|resolveLink
 parameter_list|)
 throws|throws
 name|AccessControlException
-throws|,
-name|UnresolvedLinkException
 block|{
 if|if
 condition|(
@@ -11349,9 +11304,7 @@ name|pc
 operator|.
 name|checkPermission
 argument_list|(
-name|path
-argument_list|,
-name|this
+name|iip
 argument_list|,
 name|doCheckOwner
 argument_list|,
@@ -11364,8 +11317,6 @@ argument_list|,
 name|subAccess
 argument_list|,
 name|ignoreEmptyDir
-argument_list|,
-name|resolveLink
 argument_list|)
 expr_stmt|;
 block|}
@@ -11422,10 +11373,13 @@ literal|null
 return|;
 block|}
 comment|/**    * Verify that parent directory of src exists.    */
-DECL|method|verifyParentDir (String src)
+DECL|method|verifyParentDir (INodesInPath iip, String src)
 name|void
 name|verifyParentDir
 parameter_list|(
+name|INodesInPath
+name|iip
+parameter_list|,
 name|String
 name|src
 parameter_list|)
@@ -11433,8 +11387,6 @@ throws|throws
 name|FileNotFoundException
 throws|,
 name|ParentNotDirectoryException
-throws|,
-name|UnresolvedLinkException
 block|{
 name|Path
 name|parent
@@ -11459,12 +11411,12 @@ specifier|final
 name|INode
 name|parentNode
 init|=
+name|iip
+operator|.
 name|getINode
 argument_list|(
-name|parent
-operator|.
-name|toString
-argument_list|()
+operator|-
+literal|2
 argument_list|)
 decl_stmt|;
 if|if
@@ -11539,7 +11491,7 @@ name|getCurrentValue
 argument_list|()
 return|;
 block|}
-comment|/**    * Set the last allocated inode id when fsimage or editlog is loaded.    * @param newValue    */
+comment|/**    * Set the last allocated inode id when fsimage or editlog is loaded.    */
 DECL|method|resetLastInodeId (long newValue)
 name|void
 name|resetLastInodeId
@@ -11575,7 +11527,7 @@ argument_list|)
 throw|;
 block|}
 block|}
-comment|/** Should only be used for tests to reset to any value    * @param newValue*/
+comment|/** Should only be used for tests to reset to any value */
 DECL|method|resetLastInodeIdWithoutChecking (long newValue)
 name|void
 name|resetLastInodeIdWithoutChecking
