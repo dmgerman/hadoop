@@ -5352,10 +5352,12 @@ name|SetAclOp
 operator|)
 name|op
 decl_stmt|;
-name|fsDir
+name|FSDirAclOp
 operator|.
 name|unprotectedSetAcl
 argument_list|(
+name|fsDir
+argument_list|,
 name|setAclOp
 operator|.
 name|src
