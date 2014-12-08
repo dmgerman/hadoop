@@ -1739,7 +1739,7 @@ name|DFSConfigKeys
 operator|.
 name|DFS_NAMENODE_MAX_DIRECTORY_ITEMS_KEY
 operator|+
-literal|" to a value less than 0 or greater than "
+literal|" to a value less than 1 or greater than "
 operator|+
 name|MAX_DIR_ITEMS
 argument_list|)
