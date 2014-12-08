@@ -78,6 +78,20 @@ name|google
 operator|.
 name|common
 operator|.
+name|base
+operator|.
+name|Preconditions
+import|;
+end_import
+
+begin_import
+import|import
+name|com
+operator|.
+name|google
+operator|.
+name|common
+operator|.
 name|collect
 operator|.
 name|Lists
@@ -129,6 +143,12 @@ name|AclEntry
 argument_list|>
 name|entries
 decl_stmt|;
+DECL|field|permission
+specifier|private
+specifier|final
+name|FsPermission
+name|permission
+decl_stmt|;
 comment|/**    * Returns the file owner.    *    * @return String file owner    */
 DECL|method|getOwner ()
 specifier|public
@@ -174,6 +194,17 @@ parameter_list|()
 block|{
 return|return
 name|entries
+return|;
+block|}
+comment|/**    * Returns the permission set for the path    * @return {@link FsPermission} for the path    */
+DECL|method|getPermission ()
+specifier|public
+name|FsPermission
+name|getPermission
+parameter_list|()
+block|{
+return|return
+name|permission
 return|;
 block|}
 annotation|@
@@ -387,6 +418,13 @@ operator|.
 name|newArrayList
 argument_list|()
 decl_stmt|;
+DECL|field|permission
+specifier|private
+name|FsPermission
+name|permission
+init|=
+literal|null
+decl_stmt|;
 comment|/**      * Sets the file owner.      *      * @param owner String file owner      * @return Builder this builder, for call chaining      */
 DECL|method|owner (String owner)
 specifier|public
@@ -503,6 +541,26 @@ return|return
 name|this
 return|;
 block|}
+comment|/**      * Sets the permission for the file.      * @param permission      */
+DECL|method|setPermission (FsPermission permission)
+specifier|public
+name|Builder
+name|setPermission
+parameter_list|(
+name|FsPermission
+name|permission
+parameter_list|)
+block|{
+name|this
+operator|.
+name|permission
+operator|=
+name|permission
+expr_stmt|;
+return|return
+name|this
+return|;
+block|}
 comment|/**      * Builds a new AclStatus populated with the set properties.      *      * @return AclStatus new AclStatus      */
 DECL|method|build ()
 specifier|public
@@ -521,12 +579,14 @@ argument_list|,
 name|stickyBit
 argument_list|,
 name|entries
+argument_list|,
+name|permission
 argument_list|)
 return|;
 block|}
 block|}
-comment|/**    * Private constructor.    *    * @param file Path file associated to this ACL    * @param owner String file owner    * @param group String file group    * @param stickyBit the sticky bit    * @param entries the ACL entries    */
-DECL|method|AclStatus (String owner, String group, boolean stickyBit, Iterable<AclEntry> entries)
+comment|/**    * Private constructor.    *    * @param file Path file associated to this ACL    * @param owner String file owner    * @param group String file group    * @param stickyBit the sticky bit    * @param entries the ACL entries    * @param permission permission of the path    */
+DECL|method|AclStatus (String owner, String group, boolean stickyBit, Iterable<AclEntry> entries, FsPermission permission)
 specifier|private
 name|AclStatus
 parameter_list|(
@@ -544,6 +604,9 @@ argument_list|<
 name|AclEntry
 argument_list|>
 name|entries
+parameter_list|,
+name|FsPermission
+name|permission
 parameter_list|)
 block|{
 name|this
@@ -575,6 +638,216 @@ argument_list|(
 name|entries
 argument_list|)
 expr_stmt|;
+name|this
+operator|.
+name|permission
+operator|=
+name|permission
+expr_stmt|;
+block|}
+comment|/**    * Get the effective permission for the AclEntry    * @param entry AclEntry to get the effective action    */
+DECL|method|getEffectivePermission (AclEntry entry)
+specifier|public
+name|FsAction
+name|getEffectivePermission
+parameter_list|(
+name|AclEntry
+name|entry
+parameter_list|)
+block|{
+return|return
+name|getEffectivePermission
+argument_list|(
+name|entry
+argument_list|,
+name|permission
+argument_list|)
+return|;
+block|}
+comment|/**    * Get the effective permission for the AclEntry.<br>    * Recommended to use this API ONLY if client communicates with the old    * NameNode, needs to pass the Permission for the path to get effective    * permission, else use {@link AclStatus#getEffectivePermission(AclEntry)}.    * @param entry AclEntry to get the effective action    * @param permArg Permission for the path. However if the client is NOT    *          communicating with old namenode, then this argument will not have    *          any preference.    * @return Returns the effective permission for the entry.    * @throws IllegalArgumentException If the client communicating with old    *           namenode and permission is not passed as an argument.    */
+DECL|method|getEffectivePermission (AclEntry entry, FsPermission permArg)
+specifier|public
+name|FsAction
+name|getEffectivePermission
+parameter_list|(
+name|AclEntry
+name|entry
+parameter_list|,
+name|FsPermission
+name|permArg
+parameter_list|)
+throws|throws
+name|IllegalArgumentException
+block|{
+comment|// At least one permission bits should be available.
+name|Preconditions
+operator|.
+name|checkArgument
+argument_list|(
+name|this
+operator|.
+name|permission
+operator|!=
+literal|null
+operator|||
+name|permArg
+operator|!=
+literal|null
+argument_list|,
+literal|"Permission bits are not available to calculate effective permission"
+argument_list|)
+expr_stmt|;
+if|if
+condition|(
+name|this
+operator|.
+name|permission
+operator|!=
+literal|null
+condition|)
+block|{
+comment|// permission bits from server response will have the priority for
+comment|// accuracy.
+name|permArg
+operator|=
+name|this
+operator|.
+name|permission
+expr_stmt|;
+block|}
+if|if
+condition|(
+operator|(
+name|entry
+operator|.
+name|getName
+argument_list|()
+operator|!=
+literal|null
+operator|||
+name|entry
+operator|.
+name|getType
+argument_list|()
+operator|==
+name|AclEntryType
+operator|.
+name|GROUP
+operator|)
+condition|)
+block|{
+if|if
+condition|(
+name|entry
+operator|.
+name|getScope
+argument_list|()
+operator|==
+name|AclEntryScope
+operator|.
+name|ACCESS
+condition|)
+block|{
+name|FsAction
+name|entryPerm
+init|=
+name|entry
+operator|.
+name|getPermission
+argument_list|()
+decl_stmt|;
+return|return
+name|entryPerm
+operator|.
+name|and
+argument_list|(
+name|permArg
+operator|.
+name|getGroupAction
+argument_list|()
+argument_list|)
+return|;
+block|}
+else|else
+block|{
+name|Preconditions
+operator|.
+name|checkArgument
+argument_list|(
+name|this
+operator|.
+name|entries
+operator|.
+name|contains
+argument_list|(
+name|entry
+argument_list|)
+operator|&&
+name|this
+operator|.
+name|entries
+operator|.
+name|size
+argument_list|()
+operator|>=
+literal|3
+argument_list|,
+literal|"Passed default ACL entry not found in the list of ACLs"
+argument_list|)
+expr_stmt|;
+comment|// default mask entry for effective permission calculation will be the
+comment|// penultimate entry. This can be mask entry in case of extended ACLs.
+comment|// In case of minimal ACL, this is the owner group entry, and we end up
+comment|// intersecting group FsAction with itself, which is a no-op.
+name|FsAction
+name|defaultMask
+init|=
+name|this
+operator|.
+name|entries
+operator|.
+name|get
+argument_list|(
+name|this
+operator|.
+name|entries
+operator|.
+name|size
+argument_list|()
+operator|-
+literal|2
+argument_list|)
+operator|.
+name|getPermission
+argument_list|()
+decl_stmt|;
+name|FsAction
+name|entryPerm
+init|=
+name|entry
+operator|.
+name|getPermission
+argument_list|()
+decl_stmt|;
+return|return
+name|entryPerm
+operator|.
+name|and
+argument_list|(
+name|defaultMask
+argument_list|)
+return|;
+block|}
+block|}
+else|else
+block|{
+return|return
+name|entry
+operator|.
+name|getPermission
+argument_list|()
+return|;
+block|}
 block|}
 block|}
 end_class

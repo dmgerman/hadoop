@@ -530,6 +530,20 @@ operator|)
 argument_list|)
 expr_stmt|;
 block|}
+name|AclStatus
+name|aclStatus
+init|=
+name|item
+operator|.
+name|fs
+operator|.
+name|getAclStatus
+argument_list|(
+name|item
+operator|.
+name|path
+argument_list|)
+decl_stmt|;
 name|List
 argument_list|<
 name|AclEntry
@@ -541,16 +555,7 @@ operator|.
 name|getAclBit
 argument_list|()
 condition|?
-name|item
-operator|.
-name|fs
-operator|.
-name|getAclStatus
-argument_list|(
-name|item
-operator|.
-name|path
-argument_list|)
+name|aclStatus
 operator|.
 name|getEntries
 argument_list|()
@@ -581,6 +586,10 @@ argument_list|)
 decl_stmt|;
 name|printAclEntriesForSingleScope
 argument_list|(
+name|aclStatus
+argument_list|,
+name|perm
+argument_list|,
 name|scopedEntries
 operator|.
 name|getAccessEntries
@@ -589,6 +598,10 @@ argument_list|)
 expr_stmt|;
 name|printAclEntriesForSingleScope
 argument_list|(
+name|aclStatus
+argument_list|,
+name|perm
+argument_list|,
 name|scopedEntries
 operator|.
 name|getDefaultEntries
@@ -601,12 +614,18 @@ name|println
 argument_list|()
 expr_stmt|;
 block|}
-comment|/**      * Prints all the ACL entries in a single scope.      *      * @param entries List<AclEntry> containing ACL entries of file      */
-DECL|method|printAclEntriesForSingleScope (List<AclEntry> entries)
+comment|/**      * Prints all the ACL entries in a single scope.      * @param aclStatus AclStatus for the path      * @param fsPerm FsPermission for the path      * @param entries List<AclEntry> containing ACL entries of file      */
+DECL|method|printAclEntriesForSingleScope (AclStatus aclStatus, FsPermission fsPerm, List<AclEntry> entries)
 specifier|private
 name|void
 name|printAclEntriesForSingleScope
 parameter_list|(
+name|AclStatus
+name|aclStatus
+parameter_list|,
+name|FsPermission
+name|fsPerm
+parameter_list|,
 name|List
 argument_list|<
 name|AclEntry
@@ -653,25 +672,6 @@ block|}
 block|}
 else|else
 block|{
-comment|// ACL sort order guarantees mask is the second-to-last entry.
-name|FsAction
-name|maskPerm
-init|=
-name|entries
-operator|.
-name|get
-argument_list|(
-name|entries
-operator|.
-name|size
-argument_list|()
-operator|-
-literal|2
-argument_list|)
-operator|.
-name|getPermission
-argument_list|()
-decl_stmt|;
 for|for
 control|(
 name|AclEntry
@@ -682,25 +682,30 @@ control|)
 block|{
 name|printExtendedAclEntry
 argument_list|(
-name|entry
+name|aclStatus
 argument_list|,
-name|maskPerm
+name|fsPerm
+argument_list|,
+name|entry
 argument_list|)
 expr_stmt|;
 block|}
 block|}
 block|}
-comment|/**      * Prints a single extended ACL entry.  If the mask restricts the      * permissions of the entry, then also prints the restricted version as the      * effective permissions.  The mask applies to all named entries and also      * the unnamed group entry.      *      * @param entry AclEntry extended ACL entry to print      * @param maskPerm FsAction permissions in the ACL's mask entry      */
-DECL|method|printExtendedAclEntry (AclEntry entry, FsAction maskPerm)
+comment|/**      * Prints a single extended ACL entry.  If the mask restricts the      * permissions of the entry, then also prints the restricted version as the      * effective permissions.  The mask applies to all named entries and also      * the unnamed group entry.      * @param aclStatus AclStatus for the path      * @param fsPerm FsPermission for the path      * @param entry AclEntry extended ACL entry to print      */
+DECL|method|printExtendedAclEntry (AclStatus aclStatus, FsPermission fsPerm, AclEntry entry)
 specifier|private
 name|void
 name|printExtendedAclEntry
 parameter_list|(
+name|AclStatus
+name|aclStatus
+parameter_list|,
+name|FsPermission
+name|fsPerm
+parameter_list|,
 name|AclEntry
 name|entry
-parameter_list|,
-name|FsAction
-name|maskPerm
 parameter_list|)
 block|{
 if|if
@@ -733,11 +738,13 @@ decl_stmt|;
 name|FsAction
 name|effectivePerm
 init|=
-name|entryPerm
+name|aclStatus
 operator|.
-name|and
+name|getEffectivePermission
 argument_list|(
-name|maskPerm
+name|entry
+argument_list|,
+name|fsPerm
 argument_list|)
 decl_stmt|;
 if|if
