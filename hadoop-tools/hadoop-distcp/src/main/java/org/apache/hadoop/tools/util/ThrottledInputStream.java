@@ -434,7 +434,7 @@ parameter_list|()
 throws|throws
 name|IOException
 block|{
-if|if
+while|while
 condition|(
 name|getBytesPerSec
 argument_list|()
