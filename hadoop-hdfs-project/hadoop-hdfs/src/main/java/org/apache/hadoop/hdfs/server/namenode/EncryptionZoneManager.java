@@ -1334,10 +1334,12 @@ argument_list|)
 expr_stmt|;
 comment|// updating the xattr will call addEncryptionZone,
 comment|// done this way to handle edit log loading
-name|dir
+name|FSDirXAttrOp
 operator|.
 name|unprotectedSetXAttrs
 argument_list|(
+name|dir
+argument_list|,
 name|src
 argument_list|,
 name|xattrs

@@ -5381,10 +5381,12 @@ name|SetXAttrOp
 operator|)
 name|op
 decl_stmt|;
-name|fsDir
+name|FSDirXAttrOp
 operator|.
 name|unprotectedSetXAttrs
 argument_list|(
+name|fsDir
+argument_list|,
 name|setXAttrOp
 operator|.
 name|src
@@ -5440,10 +5442,12 @@ name|RemoveXAttrOp
 operator|)
 name|op
 decl_stmt|;
-name|fsDir
+name|FSDirXAttrOp
 operator|.
 name|unprotectedRemoveXAttrs
 argument_list|(
+name|fsDir
+argument_list|,
 name|removeXAttrOp
 operator|.
 name|src
