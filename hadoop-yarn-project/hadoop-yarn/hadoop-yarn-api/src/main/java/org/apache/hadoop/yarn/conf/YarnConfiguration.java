@@ -5050,7 +5050,7 @@ specifier|final
 name|String
 name|IN_MEMORY_STORE_PREFIX
 init|=
-name|SHARED_CACHE_PREFIX
+name|SCM_STORE_PREFIX
 operator|+
 literal|"in-memory."
 decl_stmt|;
