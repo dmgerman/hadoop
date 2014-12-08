@@ -1334,16 +1334,6 @@ block|,
 operator|new
 name|DeprecationDelta
 argument_list|(
-literal|"mapred.child.tmp"
-argument_list|,
-name|MRJobConfig
-operator|.
-name|TASK_TEMP_DIR
-argument_list|)
-block|,
-operator|new
-name|DeprecationDelta
-argument_list|(
 literal|"mapred.debug.out.lines"
 argument_list|,
 name|MRJobConfig

@@ -697,15 +697,6 @@ name|PRESERVE_FILES_PATTERN
 init|=
 literal|"mapreduce.task.files.preserve.filepattern"
 decl_stmt|;
-DECL|field|TASK_TEMP_DIR
-specifier|public
-specifier|static
-specifier|final
-name|String
-name|TASK_TEMP_DIR
-init|=
-literal|"mapreduce.task.tmp.dir"
-decl_stmt|;
 DECL|field|TASK_DEBUGOUT_LINES
 specifier|public
 specifier|static
