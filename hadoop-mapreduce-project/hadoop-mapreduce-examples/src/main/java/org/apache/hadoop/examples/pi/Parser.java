@@ -1053,6 +1053,7 @@ name|values
 argument_list|()
 control|)
 block|{
+comment|//note: results would never be null due to the design of Util.combine
 specifier|final
 name|List
 argument_list|<
@@ -1083,22 +1084,6 @@ argument_list|,
 name|p
 argument_list|)
 expr_stmt|;
-if|if
-condition|(
-name|results
-operator|==
-literal|null
-condition|)
-name|Util
-operator|.
-name|out
-operator|.
-name|println
-argument_list|(
-literal|"null"
-argument_list|)
-expr_stmt|;
-elseif|else
 if|if
 condition|(
 name|results
