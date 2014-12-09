@@ -5225,6 +5225,14 @@ argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
+comment|// In case this is not a newly initialized nm state, ensure
+comment|// initialized local/log dirs similar to LocalizerRunner
+name|getInitializedLocalDirs
+argument_list|()
+expr_stmt|;
+name|getInitializedLogDirs
+argument_list|()
+expr_stmt|;
 comment|// explicitly synchronize pending here to avoid future task
 comment|// completing and being dequeued before pending updated
 synchronized|synchronized
