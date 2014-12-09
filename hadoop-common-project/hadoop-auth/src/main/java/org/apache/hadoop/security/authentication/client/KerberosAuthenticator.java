@@ -325,7 +325,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * The {@link KerberosAuthenticator} implements the Kerberos SPNEGO authentication sequence.  *<p/>  * It uses the default principal for the Kerberos cache (normally set via kinit).  *<p/>  * It falls back to the {@link PseudoAuthenticator} if the HTTP endpoint does not trigger an SPNEGO authentication  * sequence.  */
+comment|/**  * The {@link KerberosAuthenticator} implements the Kerberos SPNEGO authentication sequence.  *<p>  * It uses the default principal for the Kerberos cache (normally set via kinit).  *<p>  * It falls back to the {@link PseudoAuthenticator} if the HTTP endpoint does not trigger an SPNEGO authentication  * sequence.  */
 end_comment
 
 begin_class
@@ -767,7 +767,7 @@ operator|=
 name|configurator
 expr_stmt|;
 block|}
-comment|/**    * Performs SPNEGO authentication against the specified URL.    *<p/>    * If a token is given it does a NOP and returns the given token.    *<p/>    * If no token is given, it will perform the SPNEGO authentication sequence using an    * HTTP<code>OPTIONS</code> request.    *    * @param url the URl to authenticate against.    * @param token the authentication token being used for the user.    *    * @throws IOException if an IO error occurred.    * @throws AuthenticationException if an authentication error occurred.    */
+comment|/**    * Performs SPNEGO authentication against the specified URL.    *<p>    * If a token is given it does a NOP and returns the given token.    *<p>    * If no token is given, it will perform the SPNEGO authentication sequence using an    * HTTP<code>OPTIONS</code> request.    *    * @param url the URl to authenticate against.    * @param token the authentication token being used for the user.    *    * @throws IOException if an IO error occurred.    * @throws AuthenticationException if an authentication error occurred.    */
 annotation|@
 name|Override
 DECL|method|authenticate (URL url, AuthenticatedURL.Token token)
@@ -940,7 +940,7 @@ expr_stmt|;
 block|}
 block|}
 block|}
-comment|/**    * If the specified URL does not support SPNEGO authentication, a fallback {@link Authenticator} will be used.    *<p/>    * This implementation returns a {@link PseudoAuthenticator}.    *    * @return the fallback {@link Authenticator}.    */
+comment|/**    * If the specified URL does not support SPNEGO authentication, a fallback {@link Authenticator} will be used.    *<p>    * This implementation returns a {@link PseudoAuthenticator}.    *    * @return the fallback {@link Authenticator}.    */
 DECL|method|getFallBackAuthenticator ()
 specifier|protected
 name|Authenticator

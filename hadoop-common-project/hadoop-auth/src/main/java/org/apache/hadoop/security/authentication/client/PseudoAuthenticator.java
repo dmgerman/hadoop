@@ -51,7 +51,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * The {@link PseudoAuthenticator} implementation provides an authentication equivalent to Hadoop's  * Simple authentication, it trusts the value of the 'user.name' Java System property.  *<p/>  * The 'user.name' value is propagated using an additional query string parameter {@link #USER_NAME} ('user.name').  */
+comment|/**  * The {@link PseudoAuthenticator} implementation provides an authentication equivalent to Hadoop's  * Simple authentication, it trusts the value of the 'user.name' Java System property.  *<p>  * The 'user.name' value is propagated using an additional query string parameter {@link #USER_NAME} ('user.name').  */
 end_comment
 
 begin_class
@@ -105,7 +105,7 @@ operator|=
 name|configurator
 expr_stmt|;
 block|}
-comment|/**    * Performs simple authentication against the specified URL.    *<p/>    * If a token is given it does a NOP and returns the given token.    *<p/>    * If no token is given, it will perform an HTTP<code>OPTIONS</code> request injecting an additional    * parameter {@link #USER_NAME} in the query string with the value returned by the {@link #getUserName()}    * method.    *<p/>    * If the response is successful it will update the authentication token.    *    * @param url the URl to authenticate against.    * @param token the authencation token being used for the user.    *    * @throws IOException if an IO error occurred.    * @throws AuthenticationException if an authentication error occurred.    */
+comment|/**    * Performs simple authentication against the specified URL.    *<p>    * If a token is given it does a NOP and returns the given token.    *<p>    * If no token is given, it will perform an HTTP<code>OPTIONS</code> request injecting an additional    * parameter {@link #USER_NAME} in the query string with the value returned by the {@link #getUserName()}    * method.    *<p>    * If the response is successful it will update the authentication token.    *    * @param url the URl to authenticate against.    * @param token the authencation token being used for the user.    *    * @throws IOException if an IO error occurred.    * @throws AuthenticationException if an authentication error occurred.    */
 annotation|@
 name|Override
 DECL|method|authenticate (URL url, AuthenticatedURL.Token token)
@@ -217,7 +217,7 @@ name|token
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Returns the current user name.    *<p/>    * This implementation returns the value of the Java system property 'user.name'    *    * @return the current user name.    */
+comment|/**    * Returns the current user name.    *<p>    * This implementation returns the value of the Java system property 'user.name'    *    * @return the current user name.    */
 DECL|method|getUserName ()
 specifier|protected
 name|String

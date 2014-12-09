@@ -670,7 +670,7 @@ index|]
 argument_list|)
 return|;
 block|}
-comment|/**    * Get all the unique principals from keytabfile which matches a pattern.    *     * @param keytab     *          Name of the keytab file to be read.    * @param pattern     *         pattern to be matched.    * @return list of unique principals which matches the pattern.    * @throws IOException     */
+comment|/**    * Get all the unique principals from keytabfile which matches a pattern.    *     * @param keytab Name of the keytab file to be read.    * @param pattern pattern to be matched.    * @return list of unique principals which matches the pattern.    * @throws IOException if cannot get the principal name    */
 DECL|method|getPrincipalNames (String keytab, Pattern pattern)
 specifier|public
 specifier|static

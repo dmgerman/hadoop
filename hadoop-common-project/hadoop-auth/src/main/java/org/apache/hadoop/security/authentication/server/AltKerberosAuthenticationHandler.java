@@ -93,7 +93,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * The {@link AltKerberosAuthenticationHandler} behaves exactly the same way as  * the {@link KerberosAuthenticationHandler}, except that it allows for an  * alternative form of authentication for browsers while still using Kerberos  * for Java access.  This is an abstract class that should be subclassed  * to allow a developer to implement their own custom authentication for browser  * access.  The alternateAuthenticate method will be called whenever a request  * comes from a browser.  *<p/>  */
+comment|/**  * The {@link AltKerberosAuthenticationHandler} behaves exactly the same way as  * the {@link KerberosAuthenticationHandler}, except that it allows for an  * alternative form of authentication for browsers while still using Kerberos  * for Java access.  This is an abstract class that should be subclassed  * to allow a developer to implement their own custom authentication for browser  * access.  The alternateAuthenticate method will be called whenever a request  * comes from a browser.  */
 end_comment
 
 begin_class
@@ -142,7 +142,7 @@ name|String
 index|[]
 name|nonBrowserUserAgents
 decl_stmt|;
-comment|/**    * Returns the authentication type of the authentication handler,    * 'alt-kerberos'.    *<p/>    *    * @return the authentication type of the authentication handler,    * 'alt-kerberos'.    */
+comment|/**    * Returns the authentication type of the authentication handler,    * 'alt-kerberos'.    *    * @return the authentication type of the authentication handler,    * 'alt-kerberos'.    */
 annotation|@
 name|Override
 DECL|method|getType ()
@@ -223,7 +223,7 @@ argument_list|()
 expr_stmt|;
 block|}
 block|}
-comment|/**    * It enforces the the Kerberos SPNEGO authentication sequence returning an    * {@link AuthenticationToken} only after the Kerberos SPNEGO sequence has    * completed successfully (in the case of Java access) and only after the    * custom authentication implemented by the subclass in alternateAuthenticate    * has completed successfully (in the case of browser access).    *<p/>    *    * @param request the HTTP client request.    * @param response the HTTP client response.    *    * @return an authentication token if the request is authorized or null    *    * @throws IOException thrown if an IO error occurred    * @throws AuthenticationException thrown if an authentication error occurred    */
+comment|/**    * It enforces the the Kerberos SPNEGO authentication sequence returning an    * {@link AuthenticationToken} only after the Kerberos SPNEGO sequence has    * completed successfully (in the case of Java access) and only after the    * custom authentication implemented by the subclass in alternateAuthenticate    * has completed successfully (in the case of browser access).    *    * @param request the HTTP client request.    * @param response the HTTP client response.    *    * @return an authentication token if the request is authorized or null    *    * @throws IOException thrown if an IO error occurred    * @throws AuthenticationException thrown if an authentication error occurred    */
 annotation|@
 name|Override
 DECL|method|authenticate (HttpServletRequest request, HttpServletResponse response)
@@ -286,7 +286,7 @@ return|return
 name|token
 return|;
 block|}
-comment|/**    * This method parses the User-Agent String and returns whether or not it    * refers to a browser.  If its not a browser, then Kerberos authentication    * will be used; if it is a browser, alternateAuthenticate from the subclass    * will be used.    *<p/>    * A User-Agent String is considered to be a browser if it does not contain    * any of the values from alt-kerberos.non-browser.user-agents; the default    * behavior is to consider everything a browser unless it contains one of:    * "java", "curl", "wget", or "perl".  Subclasses can optionally override    * this method to use different behavior.    *    * @param userAgent The User-Agent String, or null if there isn't one    * @return true if the User-Agent String refers to a browser, false if not    */
+comment|/**    * This method parses the User-Agent String and returns whether or not it    * refers to a browser.  If its not a browser, then Kerberos authentication    * will be used; if it is a browser, alternateAuthenticate from the subclass    * will be used.    *<p>    * A User-Agent String is considered to be a browser if it does not contain    * any of the values from alt-kerberos.non-browser.user-agents; the default    * behavior is to consider everything a browser unless it contains one of:    * "java", "curl", "wget", or "perl".  Subclasses can optionally override    * this method to use different behavior.    *    * @param userAgent The User-Agent String, or null if there isn't one    * @return true if the User-Agent String refers to a browser, false if not    */
 DECL|method|isBrowser (String userAgent)
 specifier|protected
 name|boolean

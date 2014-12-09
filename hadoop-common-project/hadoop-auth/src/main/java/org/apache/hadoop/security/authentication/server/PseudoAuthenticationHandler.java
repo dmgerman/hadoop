@@ -161,7 +161,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * The<code>PseudoAuthenticationHandler</code> provides a pseudo authentication mechanism that accepts  * the user name specified as a query string parameter.  *<p/>  * This mimics the model of Hadoop Simple authentication which trust the 'user.name' property provided in  * the configuration object.  *<p/>  * This handler can be configured to support anonymous users.  *<p/>  * The only supported configuration property is:  *<ul>  *<li>simple.anonymous.allowed:<code>true|false</code>, default value is<code>false</code></li>  *</ul>  */
+comment|/**  * The<code>PseudoAuthenticationHandler</code> provides a pseudo authentication mechanism that accepts  * the user name specified as a query string parameter.  *<p>  * This mimics the model of Hadoop Simple authentication which trust the 'user.name' property provided in  * the configuration object.  *<p>  * This handler can be configured to support anonymous users.  *<p>  * The only supported configuration property is:  *<ul>  *<li>simple.anonymous.allowed:<code>true|false</code>, default value is<code>false</code></li>  *</ul>  */
 end_comment
 
 begin_class
@@ -255,7 +255,7 @@ operator|=
 name|type
 expr_stmt|;
 block|}
-comment|/**    * Initializes the authentication handler instance.    *<p/>    * This method is invoked by the {@link AuthenticationFilter#init} method.    *    * @param config configuration properties to initialize the handler.    *    * @throws ServletException thrown if the handler could not be initialized.    */
+comment|/**    * Initializes the authentication handler instance.    *<p>    * This method is invoked by the {@link AuthenticationFilter#init} method.    *    * @param config configuration properties to initialize the handler.    *    * @throws ServletException thrown if the handler could not be initialized.    */
 annotation|@
 name|Override
 DECL|method|init (Properties config)
@@ -297,7 +297,7 @@ return|return
 name|acceptAnonymous
 return|;
 block|}
-comment|/**    * Releases any resources initialized by the authentication handler.    *<p/>    * This implementation does a NOP.    */
+comment|/**    * Releases any resources initialized by the authentication handler.    *<p>    * This implementation does a NOP.    */
 annotation|@
 name|Override
 DECL|method|destroy ()
@@ -306,7 +306,7 @@ name|void
 name|destroy
 parameter_list|()
 block|{   }
-comment|/**    * Returns the authentication type of the authentication handler, 'simple'.    *<p/>    *    * @return the authentication type of the authentication handler, 'simple'.    */
+comment|/**    * Returns the authentication type of the authentication handler, 'simple'.    *    * @return the authentication type of the authentication handler, 'simple'.    */
 annotation|@
 name|Override
 DECL|method|getType ()
@@ -415,7 +415,7 @@ return|return
 literal|null
 return|;
 block|}
-comment|/**    * Authenticates an HTTP client request.    *<p/>    * It extracts the {@link PseudoAuthenticator#USER_NAME} parameter from the query string and creates    * an {@link AuthenticationToken} with it.    *<p/>    * If the HTTP client request does not contain the {@link PseudoAuthenticator#USER_NAME} parameter and    * the handler is configured to allow anonymous users it returns the {@link AuthenticationToken#ANONYMOUS}    * token.    *<p/>    * If the HTTP client request does not contain the {@link PseudoAuthenticator#USER_NAME} parameter and    * the handler is configured to disallow anonymous users it throws an {@link AuthenticationException}.    *    * @param request the HTTP client request.    * @param response the HTTP client response.    *    * @return an authentication token if the HTTP client request is accepted and credentials are valid.    *    * @throws IOException thrown if an IO error occurred.    * @throws AuthenticationException thrown if HTTP client request was not accepted as an authentication request.    */
+comment|/**    * Authenticates an HTTP client request.    *<p>    * It extracts the {@link PseudoAuthenticator#USER_NAME} parameter from the query string and creates    * an {@link AuthenticationToken} with it.    *<p>    * If the HTTP client request does not contain the {@link PseudoAuthenticator#USER_NAME} parameter and    * the handler is configured to allow anonymous users it returns the {@link AuthenticationToken#ANONYMOUS}    * token.    *<p>    * If the HTTP client request does not contain the {@link PseudoAuthenticator#USER_NAME} parameter and    * the handler is configured to disallow anonymous users it throws an {@link AuthenticationException}.    *    * @param request the HTTP client request.    * @param response the HTTP client response.    *    * @return an authentication token if the HTTP client request is accepted and credentials are valid.    *    * @throws IOException thrown if an IO error occurred.    * @throws AuthenticationException thrown if HTTP client request was not accepted as an authentication request.    */
 annotation|@
 name|Override
 DECL|method|authenticate (HttpServletRequest request, HttpServletResponse response)

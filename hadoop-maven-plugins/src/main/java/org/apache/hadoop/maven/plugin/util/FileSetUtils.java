@@ -143,7 +143,7 @@ name|toString
 argument_list|()
 return|;
 block|}
-comment|/**    * Converts a Maven FileSet to a list of File objects.    *     * @param source FileSet to convert    * @return List<File> containing every element of the FileSet as a File    * @throws IOException if an I/O error occurs while trying to find the files    */
+comment|/**    * Converts a Maven FileSet to a list of File objects.    *     * @param source FileSet to convert    * @return List containing every element of the FileSet as a File    * @throws IOException if an I/O error occurs while trying to find the files    */
 annotation|@
 name|SuppressWarnings
 argument_list|(

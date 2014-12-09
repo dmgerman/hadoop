@@ -897,7 +897,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * Mini KDC based on Apache Directory Server that can be embedded in testcases  * or used from command line as a standalone KDC.  *<p/>  *<b>From within testcases:</b>  *<p/>  * MiniKdc sets 2 System properties when started and un-sets them when stopped:  *<ul>  *<li>java.security.krb5.conf: set to the MiniKDC real/host/port</li>  *<li>sun.security.krb5.debug: set to the debug value provided in the  *   configuration</li>  *</ul>  * Because of this, multiple MiniKdc instances cannot be started in parallel.  * For example, running testcases in parallel that start a KDC each. To  * accomplish this a single MiniKdc should be used for all testcases running  * in parallel.  *<p/>  * MiniKdc default configuration values are:  *<ul>  *<li>org.name=EXAMPLE (used to create the REALM)</li>  *<li>org.domain=COM (used to create the REALM)</li>  *<li>kdc.bind.address=localhost</li>  *<li>kdc.port=0 (ephemeral port)</li>  *<li>instance=DefaultKrbServer</li>  *<li>max.ticket.lifetime=86400000 (1 day)</li>  *<li>max.renewable.lifetime=604800000 (7 days)</li>  *<li>transport=TCP</li>  *<li>debug=false</li>  *</ul>  * The generated krb5.conf forces TCP connections.  *<p/>  */
+comment|/**  * Mini KDC based on Apache Directory Server that can be embedded in testcases  * or used from command line as a standalone KDC.  *<p>  *<b>From within testcases:</b>  *<p>  * MiniKdc sets 2 System properties when started and un-sets them when stopped:  *<ul>  *<li>java.security.krb5.conf: set to the MiniKDC real/host/port</li>  *<li>sun.security.krb5.debug: set to the debug value provided in the  *   configuration</li>  *</ul>  * Because of this, multiple MiniKdc instances cannot be started in parallel.  * For example, running testcases in parallel that start a KDC each. To  * accomplish this a single MiniKdc should be used for all testcases running  * in parallel.  *<p>  * MiniKdc default configuration values are:  *<ul>  *<li>org.name=EXAMPLE (used to create the REALM)</li>  *<li>org.domain=COM (used to create the REALM)</li>  *<li>kdc.bind.address=localhost</li>  *<li>kdc.port=0 (ephemeral port)</li>  *<li>instance=DefaultKrbServer</li>  *<li>max.ticket.lifetime=86400000 (1 day)</li>  *<li>max.renewable.lifetime=604800000 (7 days)</li>  *<li>transport=TCP</li>  *<li>debug=false</li>  *</ul>  * The generated krb5.conf forces TCP connections.  */
 end_comment
 
 begin_class
@@ -1678,7 +1678,7 @@ literal|"false"
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Convenience method that returns MiniKdc default configuration.    *<p/>    * The returned configuration is a copy, it can be customized before using    * it to create a MiniKdc.    * @return a MiniKdc default configuration.    */
+comment|/**    * Convenience method that returns MiniKdc default configuration.    *<p>    * The returned configuration is a copy, it can be customized before using    * it to create a MiniKdc.    * @return a MiniKdc default configuration.    */
 DECL|method|createConf ()
 specifier|public
 specifier|static
@@ -3268,7 +3268,7 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Stops the MiniKdc    * @throws Exception    */
+comment|/**    * Stops the MiniKdc    */
 DECL|method|stop ()
 specifier|public
 specifier|synchronized

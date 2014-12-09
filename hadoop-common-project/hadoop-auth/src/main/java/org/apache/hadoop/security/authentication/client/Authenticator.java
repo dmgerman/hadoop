@@ -41,7 +41,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * Interface for client authentication mechanisms.  *<p/>  * Implementations are use-once instances, they don't need to be thread safe.  */
+comment|/**  * Interface for client authentication mechanisms.  *<p>  * Implementations are use-once instances, they don't need to be thread safe.  */
 end_comment
 
 begin_interface

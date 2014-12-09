@@ -421,7 +421,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * The {@link KerberosAuthenticationHandler} implements the Kerberos SPNEGO authentication mechanism for HTTP.  *<p/>  * The supported configuration properties are:  *<ul>  *<li>kerberos.principal: the Kerberos principal to used by the server. As stated by the Kerberos SPNEGO  * specification, it should be<code>HTTP/${HOSTNAME}@{REALM}</code>. The realm can be omitted from the  * principal as the JDK GSS libraries will use the realm name of the configured default realm.  * It does not have a default value.</li>  *<li>kerberos.keytab: the keytab file containing the credentials for the Kerberos principal.  * It does not have a default value.</li>  *<li>kerberos.name.rules: kerberos names rules to resolve principal names, see   * {@link KerberosName#setRules(String)}</li>  *</ul>  */
+comment|/**  * The {@link KerberosAuthenticationHandler} implements the Kerberos SPNEGO authentication mechanism for HTTP.  *<p>  * The supported configuration properties are:  *<ul>  *<li>kerberos.principal: the Kerberos principal to used by the server. As stated by the Kerberos SPNEGO  * specification, it should be<code>HTTP/${HOSTNAME}@{REALM}</code>. The realm can be omitted from the  * principal as the JDK GSS libraries will use the realm name of the configured default realm.  * It does not have a default value.</li>  *<li>kerberos.keytab: the keytab file containing the credentials for the Kerberos principal.  * It does not have a default value.</li>  *<li>kerberos.name.rules: kerberos names rules to resolve principal names, see   * {@link KerberosName#setRules(String)}</li>  *</ul>  */
 end_comment
 
 begin_class
@@ -876,7 +876,7 @@ operator|=
 name|type
 expr_stmt|;
 block|}
-comment|/**    * Initializes the authentication handler instance.    *<p/>    * It creates a Kerberos context using the principal and keytab specified in the configuration.    *<p/>    * This method is invoked by the {@link AuthenticationFilter#init} method.    *    * @param config configuration properties to initialize the handler.    *    * @throws ServletException thrown if the handler could not be initialized.    */
+comment|/**    * Initializes the authentication handler instance.    *<p>    * It creates a Kerberos context using the principal and keytab specified in the configuration.    *<p>    * This method is invoked by the {@link AuthenticationFilter#init} method.    *    * @param config configuration properties to initialize the handler.    *    * @throws ServletException thrown if the handler could not be initialized.    */
 annotation|@
 name|Override
 DECL|method|init (Properties config)
@@ -1230,7 +1230,7 @@ argument_list|)
 throw|;
 block|}
 block|}
-comment|/**    * Releases any resources initialized by the authentication handler.    *<p/>    * It destroys the Kerberos context.    */
+comment|/**    * Releases any resources initialized by the authentication handler.    *<p>    * It destroys the Kerberos context.    */
 annotation|@
 name|Override
 DECL|method|destroy ()
@@ -1289,7 +1289,7 @@ name|clear
 argument_list|()
 expr_stmt|;
 block|}
-comment|/**    * Returns the authentication type of the authentication handler, 'kerberos'.    *<p/>    *    * @return the authentication type of the authentication handler, 'kerberos'.    */
+comment|/**    * Returns the authentication type of the authentication handler, 'kerberos'.    *<p>    *    * @return the authentication type of the authentication handler, 'kerberos'.    */
 annotation|@
 name|Override
 DECL|method|getType ()
@@ -1360,7 +1360,7 @@ return|return
 literal|true
 return|;
 block|}
-comment|/**    * It enforces the the Kerberos SPNEGO authentication sequence returning an {@link AuthenticationToken} only    * after the Kerberos SPNEGO sequence has completed successfully.    *<p/>    *    * @param request the HTTP client request.    * @param response the HTTP client response.    *    * @return an authentication token if the Kerberos SPNEGO sequence is complete and valid,    *<code>null</code> if it is in progress (in this case the handler handles the response to the client).    *    * @throws IOException thrown if an IO error occurred.    * @throws AuthenticationException thrown if Kerberos SPNEGO sequence failed.    */
+comment|/**    * It enforces the the Kerberos SPNEGO authentication sequence returning an {@link AuthenticationToken} only    * after the Kerberos SPNEGO sequence has completed successfully.    *    * @param request the HTTP client request.    * @param response the HTTP client response.    *    * @return an authentication token if the Kerberos SPNEGO sequence is complete and valid,    *<code>null</code> if it is in progress (in this case the handler handles the response to the client).    *    * @throws IOException thrown if an IO error occurred.    * @throws AuthenticationException thrown if Kerberos SPNEGO sequence failed.    */
 annotation|@
 name|Override
 DECL|method|authenticate (HttpServletRequest request, final HttpServletResponse response)

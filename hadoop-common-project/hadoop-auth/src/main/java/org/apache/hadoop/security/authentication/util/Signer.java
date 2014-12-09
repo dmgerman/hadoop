@@ -111,7 +111,7 @@ operator|=
 name|secretProvider
 expr_stmt|;
 block|}
-comment|/**    * Returns a signed string.    *<p/>    * The signature '&s=SIGNATURE' is appended at the end of the string.    *    * @param str string to sign.    *    * @return the signed string.    */
+comment|/**    * Returns a signed string.    *    * @param str string to sign.    *    * @return the signed string.    */
 DECL|method|sign (String str)
 specifier|public
 specifier|synchronized

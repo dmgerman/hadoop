@@ -307,7 +307,7 @@ literal|""
 expr_stmt|;
 block|}
 block|}
-comment|/**    * Create a name from the full Kerberos principal name.    * @param name    */
+comment|/**    * Create a name from the full Kerberos principal name.    * @param name full Kerberos principal name.    */
 DECL|method|KerberosName (String name)
 specifier|public
 name|KerberosName
@@ -1539,7 +1539,7 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-comment|/**    * Get the translation of the principal name into an operating system    * user name.    * @return the short name    * @throws IOException    */
+comment|/**    * Get the translation of the principal name into an operating system    * user name.    * @return the short name    * @throws IOException throws if something is wrong with the rules    */
 DECL|method|getShortName ()
 specifier|public
 name|String
