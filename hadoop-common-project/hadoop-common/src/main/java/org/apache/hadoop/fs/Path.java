@@ -244,7 +244,7 @@ name|URI
 name|uri
 decl_stmt|;
 comment|// a hierarchical uri
-comment|/**    * Pathnames with scheme and relative path are illegal.    * @param path to be checked    */
+comment|/**    * Pathnames with scheme and relative path are illegal.    */
 DECL|method|checkNotSchemeWithRelative ()
 name|void
 name|checkNotSchemeWithRelative
