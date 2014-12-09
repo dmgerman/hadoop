@@ -308,20 +308,6 @@ name|auth
 operator|.
 name|kerberos
 operator|.
-name|KerberosKey
-import|;
-end_import
-
-begin_import
-import|import
-name|javax
-operator|.
-name|security
-operator|.
-name|auth
-operator|.
-name|kerberos
-operator|.
 name|KerberosPrincipal
 import|;
 end_import
@@ -337,6 +323,20 @@ operator|.
 name|kerberos
 operator|.
 name|KerberosTicket
+import|;
+end_import
+
+begin_import
+import|import
+name|javax
+operator|.
+name|security
+operator|.
+name|auth
+operator|.
+name|kerberos
+operator|.
+name|KeyTab
 import|;
 end_import
 
@@ -3082,47 +3082,6 @@ name|login
 argument_list|)
 expr_stmt|;
 block|}
-DECL|field|KEY_TAB_CLASS
-specifier|private
-specifier|static
-name|Class
-argument_list|<
-name|?
-argument_list|>
-name|KEY_TAB_CLASS
-init|=
-name|KerberosKey
-operator|.
-name|class
-decl_stmt|;
-static|static
-block|{
-try|try
-block|{
-comment|// We use KEY_TAB_CLASS to determine if the UGI is logged in from
-comment|// keytab. In JDK6 and JDK7, if useKeyTab and storeKey are specified
-comment|// in the Krb5LoginModule, then some number of KerberosKey objects
-comment|// are added to the Subject's private credentials. However, in JDK8,
-comment|// a KeyTab object is added instead. More details in HADOOP-10786.
-name|KEY_TAB_CLASS
-operator|=
-name|Class
-operator|.
-name|forName
-argument_list|(
-literal|"javax.security.auth.kerberos.KeyTab"
-argument_list|)
-expr_stmt|;
-block|}
-catch|catch
-parameter_list|(
-name|ClassNotFoundException
-name|cnfe
-parameter_list|)
-block|{
-comment|// Ignore. javax.security.auth.kerberos.KeyTab does not exist in JDK6.
-block|}
-block|}
 comment|/**    * Create a UserGroupInformation for the given subject.    * This does not change the subject or acquire new credentials.    * @param subject the user's subject    */
 DECL|method|UserGroupInformation (Subject subject)
 name|UserGroupInformation
@@ -3165,7 +3124,9 @@ name|subject
 operator|.
 name|getPrivateCredentials
 argument_list|(
-name|KEY_TAB_CLASS
+name|KeyTab
+operator|.
+name|class
 argument_list|)
 operator|.
 name|isEmpty
