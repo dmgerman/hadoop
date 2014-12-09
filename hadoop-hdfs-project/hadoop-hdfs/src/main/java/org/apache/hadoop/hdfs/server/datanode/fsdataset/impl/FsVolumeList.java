@@ -188,6 +188,15 @@ name|volumes
 init|=
 literal|null
 decl_stmt|;
+DECL|field|checkDirsMutex
+specifier|private
+name|Object
+name|checkDirsMutex
+init|=
+operator|new
+name|Object
+argument_list|()
+decl_stmt|;
 DECL|field|blockChooser
 specifier|private
 specifier|final
@@ -780,15 +789,19 @@ literal|"ms"
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Calls {@link FsVolumeImpl#checkDirs()} on each volume, removing any    * volumes from the active list that result in a DiskErrorException.    *     * This method is synchronized to allow only one instance of checkDirs()     * call    * @return list of all the removed volumes.    */
+comment|/**    * Calls {@link FsVolumeImpl#checkDirs()} on each volume, removing any    * volumes from the active list that result in a DiskErrorException.    *     * Use checkDirsMutext to allow only one instance of checkDirs() call    *    * @return list of all the removed volumes.    */
 DECL|method|checkDirs ()
-specifier|synchronized
 name|List
 argument_list|<
 name|FsVolumeImpl
 argument_list|>
 name|checkDirs
 parameter_list|()
+block|{
+synchronized|synchronized
+init|(
+name|checkDirsMutex
+init|)
 block|{
 name|ArrayList
 argument_list|<
@@ -899,17 +912,14 @@ argument_list|(
 name|fsv
 argument_list|)
 expr_stmt|;
+name|removeVolume
+argument_list|(
 name|fsv
 operator|.
-name|shutdown
+name|getBasePath
 argument_list|()
+argument_list|)
 expr_stmt|;
-name|i
-operator|.
-name|remove
-argument_list|()
-expr_stmt|;
-comment|// Remove the volume
 name|numFailedVolumes
 operator|++
 expr_stmt|;
@@ -929,16 +939,6 @@ operator|>
 literal|0
 condition|)
 block|{
-comment|// Replace volume list
-name|volumes
-operator|=
-name|Collections
-operator|.
-name|unmodifiableList
-argument_list|(
-name|volumeList
-argument_list|)
-expr_stmt|;
 name|FsDatasetImpl
 operator|.
 name|LOG
@@ -961,6 +961,7 @@ block|}
 return|return
 name|removedVols
 return|;
+block|}
 block|}
 annotation|@
 name|Override
