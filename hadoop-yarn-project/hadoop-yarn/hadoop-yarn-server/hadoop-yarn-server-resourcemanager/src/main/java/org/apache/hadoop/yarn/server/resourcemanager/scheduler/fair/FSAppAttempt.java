@@ -1152,7 +1152,6 @@ annotation|@
 name|Override
 DECL|method|getHeadroom ()
 specifier|public
-specifier|synchronized
 name|Resource
 name|getHeadroom
 parameter_list|()
