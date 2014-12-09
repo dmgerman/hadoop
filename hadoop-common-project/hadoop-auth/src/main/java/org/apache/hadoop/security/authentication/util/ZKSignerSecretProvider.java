@@ -48,6 +48,18 @@ begin_import
 import|import
 name|java
 operator|.
+name|nio
+operator|.
+name|charset
+operator|.
+name|Charset
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
 name|util
 operator|.
 name|Collections
@@ -1429,7 +1441,14 @@ argument_list|()
 argument_list|)
 operator|.
 name|getBytes
-argument_list|()
+argument_list|(
+name|Charset
+operator|.
+name|forName
+argument_list|(
+literal|"UTF-8"
+argument_list|)
+argument_list|)
 return|;
 block|}
 comment|/**    * This method creates the Curator client and connects to ZooKeeper.    * @param config configuration properties    * @return A Curator client    * @throws Exception    */

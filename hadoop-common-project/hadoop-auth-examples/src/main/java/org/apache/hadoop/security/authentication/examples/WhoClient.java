@@ -78,6 +78,18 @@ name|URL
 import|;
 end_import
 
+begin_import
+import|import
+name|java
+operator|.
+name|nio
+operator|.
+name|charset
+operator|.
+name|Charset
+import|;
+end_import
+
 begin_comment
 comment|/**  * Example that uses<code>AuthenticatedURL</code>.  */
 end_comment
@@ -236,6 +248,13 @@ name|conn
 operator|.
 name|getInputStream
 argument_list|()
+argument_list|,
+name|Charset
+operator|.
+name|forName
+argument_list|(
+literal|"UTF-8"
+argument_list|)
 argument_list|)
 argument_list|)
 decl_stmt|;
