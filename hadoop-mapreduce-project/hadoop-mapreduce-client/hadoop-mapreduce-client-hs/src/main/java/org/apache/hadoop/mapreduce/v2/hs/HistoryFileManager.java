@@ -4498,10 +4498,6 @@ block|}
 elseif|else
 if|if
 condition|(
-name|old
-operator|!=
-literal|null
-operator|&&
 operator|!
 name|old
 operator|.

@@ -748,11 +748,6 @@ specifier|final
 name|ClientService
 name|clientService
 decl_stmt|;
-DECL|field|lastResponseID
-specifier|protected
-name|int
-name|lastResponseID
-decl_stmt|;
 DECL|field|maxContainerCapability
 specifier|private
 name|Resource
