@@ -26,22 +26,6 @@ name|apache
 operator|.
 name|commons
 operator|.
-name|lang
-operator|.
-name|exception
-operator|.
-name|ExceptionUtils
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|commons
-operator|.
 name|logging
 operator|.
 name|Log
@@ -124,6 +108,20 @@ name|CloudBlob
 import|;
 end_import
 
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
+name|concurrent
+operator|.
+name|atomic
+operator|.
+name|AtomicInteger
+import|;
+end_import
+
 begin_comment
 comment|/**  * An Azure blob lease that automatically renews itself indefinitely  * using a background thread. Use it to synchronize distributed processes,  * or to prevent writes to the blob by other processes that don't  * have the lease.  *  * Creating a new Lease object blocks the caller until the Azure blob lease is  * acquired.  *  * Attempting to get a lease on a non-existent blob throws StorageException.  *  * Call free() to release the Lease.  *  * You can use this Lease like a distributed lock. If the holder process  * dies, the lease will time out since it won't be renewed.  */
 end_comment
@@ -197,11 +195,14 @@ comment|// Used to allocate thread serial numbers in thread name
 DECL|field|threadNumber
 specifier|private
 specifier|static
-specifier|volatile
-name|int
+name|AtomicInteger
 name|threadNumber
 init|=
+operator|new
+name|AtomicInteger
+argument_list|(
 literal|0
+argument_list|)
 decl_stmt|;
 comment|// Time to wait to retry getting the lease in milliseconds
 DECL|field|LEASE_ACQUIRE_RETRY_INTERVAL
@@ -375,7 +376,9 @@ argument_list|(
 literal|"AzureLeaseRenewer-"
 operator|+
 name|threadNumber
-operator|++
+operator|.
+name|getAndIncrement
+argument_list|()
 argument_list|)
 expr_stmt|;
 name|renewer

@@ -887,7 +887,7 @@ name|String
 operator|.
 name|format
 argument_list|(
-literal|"[%04d] %2x %s\n"
+literal|"[%04d] %2x %s%n"
 argument_list|,
 name|i
 argument_list|,
@@ -909,7 +909,7 @@ name|String
 operator|.
 name|format
 argument_list|(
-literal|"[%04d] %2x %s -expected %2x %s\n"
+literal|"[%04d] %2x %s -expected %2x %s%n"
 argument_list|,
 name|i
 argument_list|,

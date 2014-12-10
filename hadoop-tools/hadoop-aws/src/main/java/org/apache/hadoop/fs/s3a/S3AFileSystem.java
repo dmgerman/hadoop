@@ -4364,6 +4364,8 @@ literal|1
 argument_list|)
 expr_stmt|;
 break|break;
+default|default:
+break|break;
 block|}
 block|}
 block|}
@@ -4629,6 +4631,8 @@ argument_list|(
 literal|1
 argument_list|)
 expr_stmt|;
+break|break;
+default|default:
 break|break;
 block|}
 block|}
