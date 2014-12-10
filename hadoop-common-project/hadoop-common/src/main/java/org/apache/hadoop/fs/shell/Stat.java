@@ -184,12 +184,10 @@ literal|"filename (%n), block size (%o), replication (%r), user name of owner(%u
 decl_stmt|;
 DECL|field|timeFmt
 specifier|protected
-specifier|static
 specifier|final
 name|SimpleDateFormat
 name|timeFmt
 decl_stmt|;
-static|static
 block|{
 name|timeFmt
 operator|=

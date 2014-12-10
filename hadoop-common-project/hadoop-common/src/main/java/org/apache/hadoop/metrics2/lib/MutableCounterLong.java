@@ -74,6 +74,20 @@ name|MetricsRecordBuilder
 import|;
 end_import
 
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
+name|concurrent
+operator|.
+name|atomic
+operator|.
+name|AtomicLong
+import|;
+end_import
+
 begin_comment
 comment|/**  * A mutable long counter  */
 end_comment
@@ -96,9 +110,12 @@ name|MutableCounter
 block|{
 DECL|field|value
 specifier|private
-specifier|volatile
-name|long
+name|AtomicLong
 name|value
+init|=
+operator|new
+name|AtomicLong
+argument_list|()
 decl_stmt|;
 DECL|method|MutableCounterLong (MetricsInfo info, long initValue)
 name|MutableCounterLong
@@ -118,30 +135,30 @@ expr_stmt|;
 name|this
 operator|.
 name|value
-operator|=
+operator|.
+name|set
+argument_list|(
 name|initValue
+argument_list|)
 expr_stmt|;
 block|}
 annotation|@
 name|Override
 DECL|method|incr ()
 specifier|public
-specifier|synchronized
 name|void
 name|incr
 parameter_list|()
 block|{
-operator|++
-name|value
-expr_stmt|;
-name|setChanged
-argument_list|()
+name|incr
+argument_list|(
+literal|1
+argument_list|)
 expr_stmt|;
 block|}
 comment|/**    * Increment the value by a delta    * @param delta of the increment    */
 DECL|method|incr (long delta)
 specifier|public
-specifier|synchronized
 name|void
 name|incr
 parameter_list|(
@@ -150,8 +167,11 @@ name|delta
 parameter_list|)
 block|{
 name|value
-operator|+=
+operator|.
+name|addAndGet
+argument_list|(
 name|delta
+argument_list|)
 expr_stmt|;
 name|setChanged
 argument_list|()
@@ -165,6 +185,9 @@ parameter_list|()
 block|{
 return|return
 name|value
+operator|.
+name|get
+argument_list|()
 return|;
 block|}
 annotation|@
@@ -197,6 +220,7 @@ name|info
 argument_list|()
 argument_list|,
 name|value
+argument_list|()
 argument_list|)
 expr_stmt|;
 name|clearChanged

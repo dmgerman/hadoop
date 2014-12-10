@@ -74,6 +74,20 @@ name|MetricsRecordBuilder
 import|;
 end_import
 
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
+name|concurrent
+operator|.
+name|atomic
+operator|.
+name|AtomicInteger
+import|;
+end_import
+
 begin_comment
 comment|/**  * A mutable int gauge  */
 end_comment
@@ -96,9 +110,12 @@ name|MutableGauge
 block|{
 DECL|field|value
 specifier|private
-specifier|volatile
-name|int
+name|AtomicInteger
 name|value
+init|=
+operator|new
+name|AtomicInteger
+argument_list|()
 decl_stmt|;
 DECL|method|MutableGaugeInt (MetricsInfo info, int initValue)
 name|MutableGaugeInt
@@ -118,8 +135,11 @@ expr_stmt|;
 name|this
 operator|.
 name|value
-operator|=
+operator|.
+name|set
+argument_list|(
 name|initValue
+argument_list|)
 expr_stmt|;
 block|}
 DECL|method|value ()
@@ -130,28 +150,28 @@ parameter_list|()
 block|{
 return|return
 name|value
+operator|.
+name|get
+argument_list|()
 return|;
 block|}
 annotation|@
 name|Override
 DECL|method|incr ()
 specifier|public
-specifier|synchronized
 name|void
 name|incr
 parameter_list|()
 block|{
-operator|++
-name|value
-expr_stmt|;
-name|setChanged
-argument_list|()
+name|incr
+argument_list|(
+literal|1
+argument_list|)
 expr_stmt|;
 block|}
 comment|/**    * Increment by delta    * @param delta of the increment    */
 DECL|method|incr (int delta)
 specifier|public
-specifier|synchronized
 name|void
 name|incr
 parameter_list|(
@@ -160,8 +180,11 @@ name|delta
 parameter_list|)
 block|{
 name|value
-operator|+=
+operator|.
+name|addAndGet
+argument_list|(
 name|delta
+argument_list|)
 expr_stmt|;
 name|setChanged
 argument_list|()
@@ -171,22 +194,19 @@ annotation|@
 name|Override
 DECL|method|decr ()
 specifier|public
-specifier|synchronized
 name|void
 name|decr
 parameter_list|()
 block|{
-operator|--
-name|value
-expr_stmt|;
-name|setChanged
-argument_list|()
+name|decr
+argument_list|(
+literal|1
+argument_list|)
 expr_stmt|;
 block|}
 comment|/**    * decrement by delta    * @param delta of the decrement    */
 DECL|method|decr (int delta)
 specifier|public
-specifier|synchronized
 name|void
 name|decr
 parameter_list|(
@@ -195,8 +215,12 @@ name|delta
 parameter_list|)
 block|{
 name|value
-operator|-=
+operator|.
+name|addAndGet
+argument_list|(
+operator|-
 name|delta
+argument_list|)
 expr_stmt|;
 name|setChanged
 argument_list|()
@@ -215,8 +239,11 @@ block|{
 name|this
 operator|.
 name|value
-operator|=
+operator|.
+name|set
+argument_list|(
 name|value
+argument_list|)
 expr_stmt|;
 name|setChanged
 argument_list|()
@@ -252,6 +279,7 @@ name|info
 argument_list|()
 argument_list|,
 name|value
+argument_list|()
 argument_list|)
 expr_stmt|;
 name|clearChanged

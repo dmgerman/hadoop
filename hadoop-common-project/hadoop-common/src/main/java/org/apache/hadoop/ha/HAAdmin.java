@@ -931,33 +931,6 @@ argument_list|(
 name|targetNodeToActivate
 argument_list|)
 decl_stmt|;
-if|if
-condition|(
-name|targetIds
-operator|==
-literal|null
-condition|)
-block|{
-name|errOut
-operator|.
-name|println
-argument_list|(
-literal|"transitionToActive: No target node in the "
-operator|+
-literal|"current configuration"
-argument_list|)
-expr_stmt|;
-name|printUsage
-argument_list|(
-name|errOut
-argument_list|,
-literal|"-transitionToActive"
-argument_list|)
-expr_stmt|;
-return|return
-literal|true
-return|;
-block|}
 name|targetIds
 operator|.
 name|remove

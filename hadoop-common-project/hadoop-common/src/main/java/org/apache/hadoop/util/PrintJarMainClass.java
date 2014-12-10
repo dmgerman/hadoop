@@ -87,7 +87,7 @@ name|args
 parameter_list|)
 block|{
 try|try
-block|{
+init|(
 name|JarFile
 name|jar_file
 init|=
@@ -99,13 +99,7 @@ index|[
 literal|0
 index|]
 argument_list|)
-decl_stmt|;
-if|if
-condition|(
-name|jar_file
-operator|!=
-literal|null
-condition|)
+init|)
 block|{
 name|Manifest
 name|manifest
@@ -159,7 +153,6 @@ argument_list|)
 argument_list|)
 expr_stmt|;
 return|return;
-block|}
 block|}
 block|}
 block|}

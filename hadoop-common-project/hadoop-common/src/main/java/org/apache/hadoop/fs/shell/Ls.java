@@ -227,7 +227,6 @@ literal|"-R:  Recursively list the contents of directories."
 decl_stmt|;
 DECL|field|dateFormat
 specifier|protected
-specifier|static
 specifier|final
 name|SimpleDateFormat
 name|dateFormat

@@ -165,10 +165,6 @@ argument_list|)
 expr_stmt|;
 if|if
 condition|(
-name|in
-operator|==
-literal|null
-operator|||
 name|decompressor
 operator|==
 literal|null

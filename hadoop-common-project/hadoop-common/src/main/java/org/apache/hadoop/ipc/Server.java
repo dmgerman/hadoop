@@ -3793,6 +3793,8 @@ argument_list|()
 expr_stmt|;
 try|try
 block|{
+name|super
+operator|.
 name|join
 argument_list|()
 expr_stmt|;
@@ -5912,15 +5914,16 @@ name|Call
 argument_list|>
 name|responseQueue
 decl_stmt|;
+comment|// number of outstanding rpcs
 DECL|field|rpcCount
 specifier|private
-specifier|volatile
-name|int
+name|AtomicInteger
 name|rpcCount
 init|=
-literal|0
+operator|new
+name|AtomicInteger
+argument_list|()
 decl_stmt|;
-comment|// number of outstanding rpcs
 DECL|field|lastContact
 specifier|private
 name|long
@@ -6324,6 +6327,9 @@ parameter_list|()
 block|{
 return|return
 name|rpcCount
+operator|.
+name|get
+argument_list|()
 operator|==
 literal|0
 return|;
@@ -6336,7 +6342,9 @@ name|decRpcCount
 parameter_list|()
 block|{
 name|rpcCount
-operator|--
+operator|.
+name|decrementAndGet
+argument_list|()
 expr_stmt|;
 block|}
 comment|/* Increment the outstanding RPC count */
@@ -6347,7 +6355,9 @@ name|incRpcCount
 parameter_list|()
 block|{
 name|rpcCount
-operator|++
+operator|.
+name|incrementAndGet
+argument_list|()
 expr_stmt|;
 block|}
 DECL|method|getAuthorizedUgi (String authorizedId)
@@ -9862,35 +9872,25 @@ name|isOpen
 argument_list|()
 condition|)
 block|{
-try|try
-block|{
+name|IOUtils
+operator|.
+name|cleanup
+argument_list|(
+literal|null
+argument_list|,
 name|channel
-operator|.
-name|close
-argument_list|()
+argument_list|)
 expr_stmt|;
 block|}
-catch|catch
-parameter_list|(
-name|Exception
-name|e
-parameter_list|)
-block|{}
-block|}
-try|try
-block|{
+name|IOUtils
+operator|.
+name|cleanup
+argument_list|(
+literal|null
+argument_list|,
 name|socket
-operator|.
-name|close
-argument_list|()
+argument_list|)
 expr_stmt|;
-block|}
-catch|catch
-parameter_list|(
-name|Exception
-name|e
-parameter_list|)
-block|{}
 block|}
 block|}
 comment|/** Handles queued calls . */

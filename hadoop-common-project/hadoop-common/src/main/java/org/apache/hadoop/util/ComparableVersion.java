@@ -602,6 +602,8 @@ operator|=
 literal|"milestone"
 expr_stmt|;
 break|break;
+default|default:
+break|break;
 block|}
 block|}
 name|this

@@ -275,7 +275,7 @@ block|}
 return|return
 name|Long
 operator|.
-name|valueOf
+name|parseLong
 argument_list|(
 name|paramStr
 argument_list|)

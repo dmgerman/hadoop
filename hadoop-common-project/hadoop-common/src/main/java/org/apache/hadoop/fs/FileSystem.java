@@ -7598,26 +7598,6 @@ argument_list|,
 name|conf
 argument_list|)
 decl_stmt|;
-if|if
-condition|(
-name|clazz
-operator|==
-literal|null
-condition|)
-block|{
-throw|throw
-operator|new
-name|IOException
-argument_list|(
-literal|"No FileSystem for scheme: "
-operator|+
-name|uri
-operator|.
-name|getScheme
-argument_list|()
-argument_list|)
-throw|;
-block|}
 name|FileSystem
 name|fs
 init|=

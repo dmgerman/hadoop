@@ -2430,6 +2430,8 @@ name|TRAIL_BYTE
 expr_stmt|;
 block|}
 break|break;
+default|default:
+break|break;
 block|}
 comment|// switch (state)
 name|count

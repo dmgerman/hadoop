@@ -526,24 +526,9 @@ name|toString
 parameter_list|()
 block|{
 return|return
-name|super
-operator|.
-name|toString
-argument_list|()
-operator|+
-literal|", "
-operator|+
-name|dependencyScriptName
-operator|!=
-literal|null
-condition|?
-operator|(
 literal|"dependency script "
 operator|+
 name|dependencyScriptName
-operator|)
-else|:
-name|NO_SCRIPT
 return|;
 block|}
 block|}

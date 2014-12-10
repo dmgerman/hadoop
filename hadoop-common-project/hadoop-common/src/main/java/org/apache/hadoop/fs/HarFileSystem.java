@@ -851,27 +851,6 @@ operator|.
 name|getAuthority
 argument_list|()
 decl_stmt|;
-if|if
-condition|(
-name|authority
-operator|==
-literal|null
-condition|)
-block|{
-throw|throw
-operator|new
-name|IOException
-argument_list|(
-literal|"URI: "
-operator|+
-name|rawURI
-operator|+
-literal|" is an invalid Har URI since authority==null."
-operator|+
-literal|"  Expecting har://<scheme>-<host>/<path>."
-argument_list|)
-throw|;
-block|}
 name|int
 name|i
 init|=
@@ -1926,23 +1905,7 @@ specifier|static
 class|class
 name|Store
 block|{
-DECL|method|Store ()
-specifier|public
-name|Store
-parameter_list|()
-block|{
-name|begin
-operator|=
-name|end
-operator|=
-name|startHash
-operator|=
-name|endHash
-operator|=
-literal|0
-expr_stmt|;
-block|}
-DECL|method|Store (long begin, long end, int startHash, int endHash)
+DECL|method|Store (long begin, long end)
 specifier|public
 name|Store
 parameter_list|(
@@ -1951,12 +1914,6 @@ name|begin
 parameter_list|,
 name|long
 name|end
-parameter_list|,
-name|int
-name|startHash
-parameter_list|,
-name|int
-name|endHash
 parameter_list|)
 block|{
 name|this
@@ -1971,18 +1928,6 @@ name|end
 operator|=
 name|end
 expr_stmt|;
-name|this
-operator|.
-name|startHash
-operator|=
-name|startHash
-expr_stmt|;
-name|this
-operator|.
-name|endHash
-operator|=
-name|endHash
-expr_stmt|;
 block|}
 DECL|field|begin
 specifier|public
@@ -1993,16 +1938,6 @@ DECL|field|end
 specifier|public
 name|long
 name|end
-decl_stmt|;
-DECL|field|startHash
-specifier|public
-name|int
-name|startHash
-decl_stmt|;
-DECL|field|endHash
-specifier|public
-name|int
-name|endHash
 decl_stmt|;
 block|}
 comment|/**    * Get filestatuses of all the children of a given directory. This just reads    * through index file and reads line by line to get all statuses for children    * of a directory. Its a brute force way of getting all such filestatuses    *     * @param parent    *          the parent path directory    * @param statuses    *          the list to add the children filestatuses to    */
@@ -2462,10 +2397,6 @@ index|[
 literal|1
 index|]
 argument_list|)
-condition|?
-literal|true
-else|:
-literal|false
 expr_stmt|;
 comment|// this is equal to "none" if its a directory
 name|this
@@ -4858,32 +4789,6 @@ argument_list|(
 literal|" "
 argument_list|)
 expr_stmt|;
-name|int
-name|startHash
-init|=
-name|Integer
-operator|.
-name|parseInt
-argument_list|(
-name|readStr
-index|[
-literal|0
-index|]
-argument_list|)
-decl_stmt|;
-name|int
-name|endHash
-init|=
-name|Integer
-operator|.
-name|parseInt
-argument_list|(
-name|readStr
-index|[
-literal|1
-index|]
-argument_list|)
-decl_stmt|;
 name|stores
 operator|.
 name|add
@@ -4910,10 +4815,6 @@ index|[
 literal|3
 index|]
 argument_list|)
-argument_list|,
-name|startHash
-argument_list|,
-name|endHash
 argument_list|)
 argument_list|)
 expr_stmt|;

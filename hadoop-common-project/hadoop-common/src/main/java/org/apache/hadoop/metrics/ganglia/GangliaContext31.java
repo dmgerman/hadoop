@@ -380,33 +380,6 @@ argument_list|(
 name|name
 argument_list|)
 decl_stmt|;
-if|if
-condition|(
-name|units
-operator|==
-literal|null
-condition|)
-block|{
-name|LOG
-operator|.
-name|warn
-argument_list|(
-literal|"Metric name "
-operator|+
-name|name
-operator|+
-literal|", value "
-operator|+
-name|value
-operator|+
-literal|" had 'null' units"
-argument_list|)
-expr_stmt|;
-name|units
-operator|=
-literal|""
-expr_stmt|;
-block|}
 name|int
 name|slope
 init|=
