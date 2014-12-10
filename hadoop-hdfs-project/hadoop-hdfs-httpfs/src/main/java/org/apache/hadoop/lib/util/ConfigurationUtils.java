@@ -416,7 +416,7 @@ name|resolved
 return|;
 block|}
 comment|// Canibalized from FileSystemAccess<code>Configuration.loadResource()</code>.
-comment|/**    * Create a configuration from an InputStream.    *<p/>    * ERROR canibalized from<code>Configuration.loadResource()</code>.    *    * @param is inputstream to read the configuration from.    *    * @throws IOException thrown if the configuration could not be read.    */
+comment|/**    * Create a configuration from an InputStream.    *<p>    * ERROR canibalized from<code>Configuration.loadResource()</code>.    *    * @param is inputstream to read the configuration from.    *    * @throws IOException thrown if the configuration could not be read.    */
 DECL|method|load (Configuration conf, InputStream is)
 specifier|public
 specifier|static

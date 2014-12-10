@@ -751,7 +751,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * HttpFSServer implementation of the FileSystemAccess FileSystem.  *<p/>  * This implementation allows a user to access HDFS over HTTP via a HttpFSServer server.  */
+comment|/**  * HttpFSServer implementation of the FileSystemAccess FileSystem.  *<p>  * This implementation allows a user to access HDFS over HTTP via a HttpFSServer server.  */
 end_comment
 
 begin_class
@@ -1693,7 +1693,7 @@ decl_stmt|;
 end_decl_stmt
 
 begin_comment
-comment|/**    * Convenience method that creates a<code>HttpURLConnection</code> for the    * HttpFSServer file system operations.    *<p/>    * This methods performs and injects any needed authentication credentials    * via the {@link #getConnection(URL, String)} method    *    * @param method the HTTP method.    * @param params the query string parameters.    * @param path the file path    * @param makeQualified if the path should be 'makeQualified'    *    * @return a<code>HttpURLConnection</code> for the HttpFSServer server,    *         authenticated and ready to use for the specified path and file system operation.    *    * @throws IOException thrown if an IO error occurrs.    */
+comment|/**    * Convenience method that creates a<code>HttpURLConnection</code> for the    * HttpFSServer file system operations.    *<p>    * This methods performs and injects any needed authentication credentials    * via the {@link #getConnection(URL, String)} method    *    * @param method the HTTP method.    * @param params the query string parameters.    * @param path the file path    * @param makeQualified if the path should be 'makeQualified'    *    * @return a<code>HttpURLConnection</code> for the HttpFSServer server,    *         authenticated and ready to use for the specified path and file system operation.    *    * @throws IOException thrown if an IO error occurrs.    */
 end_comment
 
 begin_function
@@ -1884,7 +1884,7 @@ block|}
 end_function
 
 begin_comment
-comment|/**    * Convenience method that creates a<code>HttpURLConnection</code> for the specified URL.    *<p/>    * This methods performs and injects any needed authentication credentials.    *    * @param url url to connect to.    * @param method the HTTP method.    *    * @return a<code>HttpURLConnection</code> for the HttpFSServer server, authenticated and ready to use for    *         the specified path and file system operation.    *    * @throws IOException thrown if an IO error occurrs.    */
+comment|/**    * Convenience method that creates a<code>HttpURLConnection</code> for the specified URL.    *<p>    * This methods performs and injects any needed authentication credentials.    *    * @param url url to connect to.    * @param method the HTTP method.    *    * @return a<code>HttpURLConnection</code> for the HttpFSServer server, authenticated and ready to use for    *         the specified path and file system operation.    *    * @throws IOException thrown if an IO error occurrs.    */
 end_comment
 
 begin_function
@@ -2170,7 +2170,7 @@ block|}
 end_function
 
 begin_comment
-comment|/**    * HttpFSServer subclass of the<code>FSDataInputStream</code>.    *<p/>    * This implementation does not support the    *<code>PositionReadable</code> and<code>Seekable</code> methods.    */
+comment|/**    * HttpFSServer subclass of the<code>FSDataInputStream</code>.    *<p>    * This implementation does not support the    *<code>PositionReadable</code> and<code>Seekable</code> methods.    */
 end_comment
 
 begin_class
@@ -2348,7 +2348,7 @@ block|}
 end_class
 
 begin_comment
-comment|/**    * Opens an FSDataInputStream at the indicated Path.    *</p>    * IMPORTANT: the returned<code><FSDataInputStream/code> does not support the    *<code>PositionReadable</code> and<code>Seekable</code> methods.    *    * @param f the file name to open    * @param bufferSize the size of the buffer to be used.    */
+comment|/**    * Opens an FSDataInputStream at the indicated Path.    *<p>    * IMPORTANT: the returned<code>FSDataInputStream</code> does not support the    *<code>PositionReadable</code> and<code>Seekable</code> methods.    *    * @param f the file name to open    * @param bufferSize the size of the buffer to be used.    */
 end_comment
 
 begin_function
@@ -2449,7 +2449,7 @@ block|}
 end_function
 
 begin_comment
-comment|/**    * HttpFSServer subclass of the<code>FSDataOutputStream</code>.    *<p/>    * This implementation closes the underlying HTTP connection validating the Http connection status    * at closing time.    */
+comment|/**    * HttpFSServer subclass of the<code>FSDataOutputStream</code>.    *<p>    * This implementation closes the underlying HTTP connection validating the Http connection status    * at closing time.    */
 end_comment
 
 begin_class
@@ -2830,7 +2830,7 @@ block|}
 end_function
 
 begin_comment
-comment|/**    * Opens an FSDataOutputStream at the indicated Path with write-progress    * reporting.    *<p/>    * IMPORTANT: The<code>Progressable</code> parameter is not used.    *    * @param f the file name to open.    * @param permission file permission.    * @param overwrite if a file with this name already exists, then if true,    * the file will be overwritten, and if false an error will be thrown.    * @param bufferSize the size of the buffer to be used.    * @param replication required block replication for the file.    * @param blockSize block size.    * @param progress progressable.    *    * @throws IOException    * @see #setPermission(Path, FsPermission)    */
+comment|/**    * Opens an FSDataOutputStream at the indicated Path with write-progress    * reporting.    *<p>    * IMPORTANT: The<code>Progressable</code> parameter is not used.    *    * @param f the file name to open.    * @param permission file permission.    * @param overwrite if a file with this name already exists, then if true,    * the file will be overwritten, and if false an error will be thrown.    * @param bufferSize the size of the buffer to be used.    * @param replication required block replication for the file.    * @param blockSize block size.    * @param progress progressable.    *    * @throws IOException    * @see #setPermission(Path, FsPermission)    */
 end_comment
 
 begin_function
@@ -2975,7 +2975,7 @@ block|}
 end_function
 
 begin_comment
-comment|/**    * Append to an existing file (optional operation).    *<p/>    * IMPORTANT: The<code>Progressable</code> parameter is not used.    *    * @param f the existing file to be appended.    * @param bufferSize the size of the buffer to be used.    * @param progress for reporting progress if it is not null.    *    * @throws IOException    */
+comment|/**    * Append to an existing file (optional operation).    *<p>    * IMPORTANT: The<code>Progressable</code> parameter is not used.    *    * @param f the existing file to be appended.    * @param bufferSize the size of the buffer to be used.    * @param progress for reporting progress if it is not null.    *    * @throws IOException    */
 end_comment
 
 begin_function
@@ -4530,7 +4530,7 @@ block|}
 end_function
 
 begin_comment
-comment|/**    * Modify the ACL entries for a file.    *    * @param path Path to modify    * @param aclSpec List<AclEntry> describing modifications    * @throws IOException    */
+comment|/**    * Modify the ACL entries for a file.    *    * @param path Path to modify    * @param aclSpec describing modifications    * @throws IOException    */
 end_comment
 
 begin_function
@@ -4632,7 +4632,7 @@ block|}
 end_function
 
 begin_comment
-comment|/**    * Remove the specified ACL entries from a file    * @param path Path to modify    * @param aclSpec List<AclEntry> describing entries to remove    * @throws IOException    */
+comment|/**    * Remove the specified ACL entries from a file    * @param path Path to modify    * @param aclSpec describing entries to remove    * @throws IOException    */
 end_comment
 
 begin_function
@@ -4898,7 +4898,7 @@ block|}
 end_function
 
 begin_comment
-comment|/**    * Set the ACLs for the given file    * @param path Path to modify    * @param aclSpec List<AclEntry> describing modifications, must include    *                entries for user, group, and others for compatibility    *                with permission bits.    * @throws IOException    */
+comment|/**    * Set the ACLs for the given file    * @param path Path to modify    * @param aclSpec describing modifications, must include    *                entries for user, group, and others for compatibility    *                with permission bits.    * @throws IOException    */
 end_comment
 
 begin_function

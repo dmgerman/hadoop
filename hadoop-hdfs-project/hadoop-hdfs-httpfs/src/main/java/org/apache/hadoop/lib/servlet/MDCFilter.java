@@ -135,7 +135,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * Filter that sets request contextual information for the slf4j MDC.  *<p/>  * It sets the following values:  *<ul>  *<li>hostname: if the {@link HostnameFilter} is present and configured  * before this filter</li>  *<li>user: the<code>HttpServletRequest.getUserPrincipal().getName()</code></li>  *<li>method: the HTTP method fo the request (GET, POST, ...)</li>  *<li>path: the path of the request URL</li>  *</ul>  */
+comment|/**  * Filter that sets request contextual information for the slf4j MDC.  *<p>  * It sets the following values:  *<ul>  *<li>hostname: if the {@link HostnameFilter} is present and configured  * before this filter</li>  *<li>user: the<code>HttpServletRequest.getUserPrincipal().getName()</code></li>  *<li>method: the HTTP method fo the request (GET, POST, ...)</li>  *<li>path: the path of the request URL</li>  *</ul>  */
 end_comment
 
 begin_class
@@ -150,7 +150,7 @@ name|MDCFilter
 implements|implements
 name|Filter
 block|{
-comment|/**    * Initializes the filter.    *<p/>    * This implementation is a NOP.    *    * @param config filter configuration.    *    * @throws ServletException thrown if the filter could not be initialized.    */
+comment|/**    * Initializes the filter.    *<p>    * This implementation is a NOP.    *    * @param config filter configuration.    *    * @throws ServletException thrown if the filter could not be initialized.    */
 annotation|@
 name|Override
 DECL|method|init (FilterConfig config)
@@ -320,7 +320,7 @@ argument_list|()
 expr_stmt|;
 block|}
 block|}
-comment|/**    * Destroys the filter.    *<p/>    * This implementation is a NOP.    */
+comment|/**    * Destroys the filter.    *<p>    * This implementation is a NOP.    */
 annotation|@
 name|Override
 DECL|method|destroy ()

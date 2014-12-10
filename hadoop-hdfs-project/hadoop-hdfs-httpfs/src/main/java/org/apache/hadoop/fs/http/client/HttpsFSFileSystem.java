@@ -21,7 +21,7 @@ package|;
 end_package
 
 begin_comment
-comment|/**  * HttpFSServer implementation of the FileSystemAccess FileSystem for SSL.  *<p/>  * This implementation allows a user to access HDFS over HTTPS via a  * HttpFSServer server.  */
+comment|/**  *<p>HttpFSServer implementation of the FileSystemAccess FileSystem for SSL.  *</p>  *<p>This implementation allows a user to access HDFS over HTTPS via a  * HttpFSServer server.</p>  */
 end_comment
 
 begin_class

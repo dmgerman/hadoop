@@ -67,7 +67,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * Class that contains all parsed JAX-RS parameters.  *<p/>  * Instances are created by the {@link ParametersProvider} class.  */
+comment|/**  * Class that contains all parsed JAX-RS parameters.  *<p>  * Instances are created by the {@link ParametersProvider} class.  */
 end_comment
 
 begin_class
@@ -215,7 +215,7 @@ return|return
 literal|null
 return|;
 block|}
-comment|/**    * Returns the values of a request parsed parameter.    *    * @param name parameter name.    * @param klass class of the parameter, used for value casting.    * @return List<V> the values of the parameter.    */
+comment|/**    * Returns the values of a request parsed parameter.    *    * @param name parameter name.    * @param klass class of the parameter, used for value casting.    * @return the values of the parameter.    */
 annotation|@
 name|SuppressWarnings
 argument_list|(

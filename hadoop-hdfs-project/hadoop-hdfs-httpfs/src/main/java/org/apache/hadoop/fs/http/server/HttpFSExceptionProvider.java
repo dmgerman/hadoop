@@ -206,7 +206,7 @@ operator|.
 name|class
 argument_list|)
 decl_stmt|;
-comment|/**    * Maps different exceptions thrown by HttpFSServer to HTTP status codes.    *<p/>    *<ul>    *<li>SecurityException : HTTP UNAUTHORIZED</li>    *<li>FileNotFoundException : HTTP NOT_FOUND</li>    *<li>IOException : INTERNAL_HTTP SERVER_ERROR</li>    *<li>UnsupporteOperationException : HTTP BAD_REQUEST</li>    *<li>all other exceptions : HTTP INTERNAL_SERVER_ERROR</li>    *</ul>    *    * @param throwable exception thrown.    *    * @return mapped HTTP status code    */
+comment|/**    * Maps different exceptions thrown by HttpFSServer to HTTP status codes.    *<ul>    *<li>SecurityException : HTTP UNAUTHORIZED</li>    *<li>FileNotFoundException : HTTP NOT_FOUND</li>    *<li>IOException : INTERNAL_HTTP SERVER_ERROR</li>    *<li>UnsupporteOperationException : HTTP BAD_REQUEST</li>    *<li>all other exceptions : HTTP INTERNAL_SERVER_ERROR</li>    *</ul>    *    * @param throwable exception thrown.    *    * @return mapped HTTP status code    */
 annotation|@
 name|Override
 DECL|method|toResponse (Throwable throwable)

@@ -141,7 +141,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * Bootstrap class that manages the initialization and destruction of the  * HttpFSServer server, it is a<code>javax.servlet.ServletContextListener  *</code> implementation that is wired in HttpFSServer's WAR  *<code>WEB-INF/web.xml</code>.  *<p/>  * It provides acces to the server context via the singleton {@link #get}.  *<p/>  * All the configuration is loaded from configuration properties prefixed  * with<code>httpfs.</code>.  */
+comment|/**  * Bootstrap class that manages the initialization and destruction of the  * HttpFSServer server, it is a<code>javax.servlet.ServletContextListener  *</code> implementation that is wired in HttpFSServer's WAR  *<code>WEB-INF/web.xml</code>.  *<p>  * It provides acces to the server context via the singleton {@link #get}.  *<p>  * All the configuration is loaded from configuration properties prefixed  * with<code>httpfs.</code>.  */
 end_comment
 
 begin_class

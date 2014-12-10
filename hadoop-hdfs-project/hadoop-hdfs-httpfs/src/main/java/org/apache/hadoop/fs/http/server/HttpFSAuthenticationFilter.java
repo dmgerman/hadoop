@@ -192,7 +192,7 @@ name|SIGNATURE_SECRET
 operator|+
 literal|".file"
 decl_stmt|;
-comment|/**    * Returns the hadoop-auth configuration from HttpFSServer's configuration.    *<p/>    * It returns all HttpFSServer's configuration properties prefixed with    *<code>httpfs.authentication</code>. The<code>httpfs.authentication</code>    * prefix is removed from the returned property names.    *    * @param configPrefix parameter not used.    * @param filterConfig parameter not used.    *    * @return hadoop-auth configuration read from HttpFSServer's configuration.    */
+comment|/**    * Returns the hadoop-auth configuration from HttpFSServer's configuration.    *<p>    * It returns all HttpFSServer's configuration properties prefixed with    *<code>httpfs.authentication</code>. The<code>httpfs.authentication</code>    * prefix is removed from the returned property names.    *    * @param configPrefix parameter not used.    * @param filterConfig parameter not used.    *    * @return hadoop-auth configuration read from HttpFSServer's configuration.    */
 annotation|@
 name|Override
 DECL|method|getConfiguration (String configPrefix, FilterConfig filterConfig)

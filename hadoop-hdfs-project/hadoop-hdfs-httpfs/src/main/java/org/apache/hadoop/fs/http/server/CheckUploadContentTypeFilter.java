@@ -230,7 +230,7 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Initializes the filter.    *<p/>    * This implementation is a NOP.    *    * @param config filter configuration.    *    * @throws ServletException thrown if the filter could not be initialized.    */
+comment|/**    * Initializes the filter.    *<p>    * This implementation is a NOP.    *    * @param config filter configuration.    *    * @throws ServletException thrown if the filter could not be initialized.    */
 annotation|@
 name|Override
 DECL|method|init (FilterConfig config)
@@ -418,7 +418,7 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-comment|/**    * Destroys the filter.    *<p/>    * This implementation is a NOP.    */
+comment|/**    * Destroys the filter.    *<p>    * This implementation is a NOP.    */
 annotation|@
 name|Override
 DECL|method|destroy ()

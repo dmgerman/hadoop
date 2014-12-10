@@ -190,7 +190,7 @@ operator|.
 name|class
 argument_list|)
 decl_stmt|;
-comment|/**    * Initializes the filter.    *<p/>    * This implementation is a NOP.    *    * @param config filter configuration.    *    * @throws ServletException thrown if the filter could not be initialized.    */
+comment|/**    * Initializes the filter.    *<p>    * This implementation is a NOP.    *    * @param config filter configuration.    *    * @throws ServletException thrown if the filter could not be initialized.    */
 annotation|@
 name|Override
 DECL|method|init (FilterConfig config)
@@ -204,7 +204,7 @@ parameter_list|)
 throws|throws
 name|ServletException
 block|{   }
-comment|/**    * Resolves the requester hostname and delegates the request to the chain.    *<p/>    * The requester hostname is available via the {@link #get} method.    *    * @param request servlet request.    * @param response servlet response.    * @param chain filter chain.    *    * @throws IOException thrown if an IO error occurrs.    * @throws ServletException thrown if a servet error occurrs.    */
+comment|/**    * Resolves the requester hostname and delegates the request to the chain.    *<p>    * The requester hostname is available via the {@link #get} method.    *    * @param request servlet request.    * @param response servlet response.    * @param chain filter chain.    *    * @throws IOException thrown if an IO error occurrs.    * @throws ServletException thrown if a servet error occurrs.    */
 annotation|@
 name|Override
 DECL|method|doFilter (ServletRequest request, ServletResponse response, FilterChain chain)
@@ -342,7 +342,7 @@ name|get
 argument_list|()
 return|;
 block|}
-comment|/**    * Destroys the filter.    *<p/>    * This implementation is a NOP.    */
+comment|/**    * Destroys the filter.    *<p>    * This implementation is a NOP.    */
 annotation|@
 name|Override
 DECL|method|destroy ()

@@ -133,7 +133,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * The<code>FileSystemReleaseFilter</code> releases back to the  * {@link FileSystemAccess} service a<code>FileSystem</code> instance.  *<p/>  * This filter is useful in situations where a servlet request  * is streaming out HDFS data and the corresponding filesystem  * instance have to be closed after the streaming completes.  */
+comment|/**  * The<code>FileSystemReleaseFilter</code> releases back to the  * {@link FileSystemAccess} service a<code>FileSystem</code> instance.  *<p>  * This filter is useful in situations where a servlet request  * is streaming out HDFS data and the corresponding filesystem  * instance have to be closed after the streaming completes.  */
 end_comment
 
 begin_class
@@ -166,7 +166,7 @@ name|FileSystem
 argument_list|>
 argument_list|()
 decl_stmt|;
-comment|/**    * Initializes the filter.    *<p/>    * This implementation is a NOP.    *    * @param filterConfig filter configuration.    *    * @throws ServletException thrown if the filter could not be initialized.    */
+comment|/**    * Initializes the filter.    *<p>    * This implementation is a NOP.    *    * @param filterConfig filter configuration.    *    * @throws ServletException thrown if the filter could not be initialized.    */
 annotation|@
 name|Override
 DECL|method|init (FilterConfig filterConfig)
@@ -247,7 +247,7 @@ expr_stmt|;
 block|}
 block|}
 block|}
-comment|/**    * Destroys the filter.    *<p/>    * This implementation is a NOP.    */
+comment|/**    * Destroys the filter.    *<p>    * This implementation is a NOP.    */
 annotation|@
 name|Override
 DECL|method|destroy ()

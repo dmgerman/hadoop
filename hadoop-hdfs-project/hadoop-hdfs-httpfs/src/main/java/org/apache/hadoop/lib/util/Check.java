@@ -65,7 +65,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * Utility methods to check preconditions.  *<p/>  * Commonly used for method arguments preconditions.  */
+comment|/**  * Utility methods to check preconditions.  *<p>  * Commonly used for method arguments preconditions.  */
 end_comment
 
 begin_class

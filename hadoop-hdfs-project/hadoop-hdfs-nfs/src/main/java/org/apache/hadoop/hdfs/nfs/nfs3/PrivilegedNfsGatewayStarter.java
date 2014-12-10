@@ -105,7 +105,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * This class is used to allow the initial registration of the NFS gateway with  * the system portmap daemon to come from a privileged (< 1024) port. This is  * necessary on certain operating systems to work around this bug in rpcbind:  *   * Red Hat: https://bugzilla.redhat.com/show_bug.cgi?id=731542  * SLES: https://bugzilla.novell.com/show_bug.cgi?id=823364  * Debian: https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=594880  */
+comment|/**  * This class is used to allow the initial registration of the NFS gateway with  * the system portmap daemon to come from a privileged (&lt; 1024) port. This is  * necessary on certain operating systems to work around this bug in rpcbind:  *   * Red Hat: https://bugzilla.redhat.com/show_bug.cgi?id=731542  * SLES: https://bugzilla.novell.com/show_bug.cgi?id=823364  * Debian: https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=594880  */
 end_comment
 
 begin_class

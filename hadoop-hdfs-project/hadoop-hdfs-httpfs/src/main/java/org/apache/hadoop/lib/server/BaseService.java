@@ -120,7 +120,7 @@ operator|=
 name|prefix
 expr_stmt|;
 block|}
-comment|/**    * Initializes the service.    *<p/>    * It collects all service properties (properties having the    *<code>#SERVER#.#SERVICE#.</code> prefix). The property names are then    * trimmed from the<code>#SERVER#.#SERVICE#.</code> prefix.    *<p/>    * After collecting  the service properties it delegates to the    * {@link #init()} method.    *    * @param server the server initializing the service, give access to the    * server context.    *    * @throws ServiceException thrown if the service could not be initialized.    */
+comment|/**    * Initializes the service.    *<p>    * It collects all service properties (properties having the    *<code>#SERVER#.#SERVICE#.</code> prefix). The property names are then    * trimmed from the<code>#SERVER#.#SERVICE#.</code> prefix.    *<p>    * After collecting  the service properties it delegates to the    * {@link #init()} method.    *    * @param server the server initializing the service, give access to the    * server context.    *    * @throws ServiceException thrown if the service could not be initialized.    */
 annotation|@
 name|Override
 DECL|method|init (Server server)
@@ -224,7 +224,7 @@ name|init
 argument_list|()
 expr_stmt|;
 block|}
-comment|/**    * Post initializes the service. This method is called by the    * {@link Server} after all services of the server have been initialized.    *<p/>    * This method does a NOP.    *    * @throws ServiceException thrown if the service could not be    * post-initialized.    */
+comment|/**    * Post initializes the service. This method is called by the    * {@link Server} after all services of the server have been initialized.    *<p>    * This method does a NOP.    *    * @throws ServiceException thrown if the service could not be    * post-initialized.    */
 annotation|@
 name|Override
 DECL|method|postInit ()
@@ -235,7 +235,7 @@ parameter_list|()
 throws|throws
 name|ServiceException
 block|{   }
-comment|/**    * Destroy the services.  This method is called once, when the    * {@link Server} owning the service is being destroyed.    *<p/>    * This method does a NOP.    */
+comment|/**    * Destroy the services.  This method is called once, when the    * {@link Server} owning the service is being destroyed.    *<p>    * This method does a NOP.    */
 annotation|@
 name|Override
 DECL|method|destroy ()
@@ -244,7 +244,7 @@ name|void
 name|destroy
 parameter_list|()
 block|{   }
-comment|/**    * Returns the service dependencies of this service. The service will be    * instantiated only if all the service dependencies are already initialized.    *<p/>    * This method returns an empty array (size 0)    *    * @return an empty array (size 0).    */
+comment|/**    * Returns the service dependencies of this service. The service will be    * instantiated only if all the service dependencies are already initialized.    *<p>    * This method returns an empty array (size 0)    *    * @return an empty array (size 0).    */
 annotation|@
 name|Override
 DECL|method|getServiceDependencies ()
@@ -262,7 +262,7 @@ literal|0
 index|]
 return|;
 block|}
-comment|/**    * Notification callback when the server changes its status.    *<p/>    * This method returns an empty array (size 0)    *    * @param oldStatus old server status.    * @param newStatus new server status.    *    * @throws ServiceException thrown if the service could not process the status change.    */
+comment|/**    * Notification callback when the server changes its status.    *<p>    * This method returns an empty array (size 0)    *    * @param oldStatus old server status.    * @param newStatus new server status.    *    * @throws ServiceException thrown if the service could not process the status change.    */
 annotation|@
 name|Override
 DECL|method|serverStatusChange (Server.Status oldStatus, Server.Status newStatus)
@@ -328,7 +328,7 @@ name|name
 argument_list|)
 return|;
 block|}
-comment|/**    * Returns the service configuration properties. Property    * names are trimmed off from its prefix.    *<p/>    * The sevice configuration properties are all properties    * with names starting with<code>#SERVER#.#SERVICE#.</code>    * in the server configuration.    *    * @return the service configuration properties with names    *         trimmed off from their<code>#SERVER#.#SERVICE#.</code>    *         prefix.    */
+comment|/**    * Returns the service configuration properties. Property    * names are trimmed off from its prefix.    *<p>    * The sevice configuration properties are all properties    * with names starting with<code>#SERVER#.#SERVICE#.</code>    * in the server configuration.    *    * @return the service configuration properties with names    *         trimmed off from their<code>#SERVER#.#SERVICE#.</code>    *         prefix.    */
 DECL|method|getServiceConfig ()
 specifier|protected
 name|Configuration
@@ -339,7 +339,7 @@ return|return
 name|serviceConfig
 return|;
 block|}
-comment|/**    * Initializes the server.    *<p/>    * This method is called by {@link #init(Server)} after all service properties    * (properties prefixed with    *    * @throws ServiceException thrown if the service could not be initialized.    */
+comment|/**    * Initializes the server.    *<p>    * This method is called by {@link #init(Server)} after all service properties    * (properties prefixed with    *    * @throws ServiceException thrown if the service could not be initialized.    */
 DECL|method|init ()
 specifier|protected
 specifier|abstract

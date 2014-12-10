@@ -123,7 +123,7 @@ operator|=
 name|error
 expr_stmt|;
 block|}
-comment|/**    * Creates an XException using another XException as cause.    *<p/>    * The error code and error message are extracted from the cause.    *    * @param cause exception cause.    */
+comment|/**    * Creates an XException using another XException as cause.    *<p>    * The error code and error message are extracted from the cause.    *    * @param cause exception cause.    */
 DECL|method|XException (XException cause)
 specifier|public
 name|XException
@@ -204,7 +204,7 @@ return|return
 name|error
 return|;
 block|}
-comment|/**    * Creates a message using a error message template and arguments.    *<p/>    * The template must be in JDK<code>MessageFormat</code> syntax    * (using {#} positional parameters).    *    * @param error error code, to get the template from.    * @param args arguments to use for creating the message.    *    * @return the resolved error message.    */
+comment|/**    * Creates a message using a error message template and arguments.    *<p>    * The template must be in JDK<code>MessageFormat</code> syntax    * (using {#} positional parameters).    *    * @param error error code, to get the template from.    * @param args arguments to use for creating the message.    *    * @return the resolved error message.    */
 DECL|method|format (ERROR error, Object... args)
 specifier|private
 specifier|static

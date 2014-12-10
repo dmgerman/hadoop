@@ -339,7 +339,7 @@ name|config
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Constructor. Subclasses must have a default constructor specifying    * the server name.    *<p/>    * The server name is used to resolve the Java System properties that define    * the server home, config, log and temp directories.    *<p/>    * The home directory is looked in the Java System property    *<code>#SERVER_NAME#.home.dir</code>.    *<p/>    * The config directory is looked in the Java System property    *<code>#SERVER_NAME#.config.dir</code>, if not defined it resolves to    * the<code>#SERVER_HOME_DIR#/conf</code> directory.    *<p/>    * The log directory is looked in the Java System property    *<code>#SERVER_NAME#.log.dir</code>, if not defined it resolves to    * the<code>#SERVER_HOME_DIR#/log</code> directory.    *<p/>    * The temp directory is looked in the Java System property    *<code>#SERVER_NAME#.temp.dir</code>, if not defined it resolves to    * the<code>#SERVER_HOME_DIR#/temp</code> directory.    *    * @param name server name.    */
+comment|/**    * Constructor. Subclasses must have a default constructor specifying    * the server name.    *<p>    * The server name is used to resolve the Java System properties that define    * the server home, config, log and temp directories.    *<p>    * The home directory is looked in the Java System property    *<code>#SERVER_NAME#.home.dir</code>.    *<p>    * The config directory is looked in the Java System property    *<code>#SERVER_NAME#.config.dir</code>, if not defined it resolves to    * the<code>#SERVER_HOME_DIR#/conf</code> directory.    *<p>    * The log directory is looked in the Java System property    *<code>#SERVER_NAME#.log.dir</code>, if not defined it resolves to    * the<code>#SERVER_HOME_DIR#/log</code> directory.    *<p>    * The temp directory is looked in the Java System property    *<code>#SERVER_NAME#.temp.dir</code>, if not defined it resolves to    * the<code>#SERVER_HOME_DIR#/temp</code> directory.    *    * @param name server name.    */
 DECL|method|ServerWebApp (String name)
 specifier|public
 name|ServerWebApp
@@ -403,7 +403,7 @@ literal|null
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Returns the server home directory.    *<p/>    * It is looked up in the Java System property    *<code>#SERVER_NAME#.home.dir</code>.    *    * @param name the server home directory.    *    * @return the server home directory.    */
+comment|/**    * Returns the server home directory.    *<p>    * It is looked up in the Java System property    *<code>#SERVER_NAME#.home.dir</code>.    *    * @param name the server home directory.    *    * @return the server home directory.    */
 DECL|method|getHomeDir (String name)
 specifier|static
 name|String
@@ -553,7 +553,7 @@ argument_list|)
 throw|;
 block|}
 block|}
-comment|/**    * Resolves the host& port InetSocketAddress the web server is listening to.    *<p/>    * This implementation looks for the following 2 properties:    *<ul>    *<li>#SERVER_NAME#.http.hostname</li>    *<li>#SERVER_NAME#.http.port</li>    *</ul>    *    * @return the host& port InetSocketAddress the web server is listening to.    * @throws ServerException thrown if any of the above 2 properties is not defined.    */
+comment|/**    * Resolves the host and port InetSocketAddress the web server is listening to.    *<p>    * This implementation looks for the following 2 properties:    *<ul>    *<li>#SERVER_NAME#.http.hostname</li>    *<li>#SERVER_NAME#.http.port</li>    *</ul>    *    * @return the host and port InetSocketAddress the web server is listening to.    * @throws ServerException thrown if any of the above 2 properties is not defined.    */
 DECL|method|resolveAuthority ()
 specifier|protected
 name|InetSocketAddress
@@ -746,7 +746,7 @@ return|return
 name|authority
 return|;
 block|}
-comment|/**    * Sets an alternate hostname:port InetSocketAddress to use.    *<p/>    * For testing purposes.    *     * @param authority alterante authority.    */
+comment|/**    * Sets an alternate hostname:port InetSocketAddress to use.    *<p>    * For testing purposes.    *     * @param authority alterante authority.    */
 annotation|@
 name|VisibleForTesting
 DECL|method|setAuthority (InetSocketAddress authority)

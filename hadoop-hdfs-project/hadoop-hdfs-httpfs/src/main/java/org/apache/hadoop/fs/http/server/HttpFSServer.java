@@ -987,7 +987,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * Main class of HttpFSServer server.  *<p/>  * The<code>HttpFSServer</code> class uses Jersey JAX-RS to binds HTTP requests to the  * different operations.  */
+comment|/**  * Main class of HttpFSServer server.  *<p>  * The<code>HttpFSServer</code> class uses Jersey JAX-RS to binds HTTP requests to the  * different operations.  */
 end_comment
 
 begin_class
@@ -1094,7 +1094,7 @@ name|executor
 argument_list|)
 return|;
 block|}
-comment|/**    * Returns a filesystem instance. The fileystem instance is wired for release at the completion of    * the current Servlet request via the {@link FileSystemReleaseFilter}.    *<p/>    * If a do-as user is specified, the current user must be a valid proxyuser, otherwise an    *<code>AccessControlException</code> will be thrown.    *    * @param ugi principal for whom the filesystem instance is.    *    * @return a filesystem for the specified user or do-as user.    *    * @throws IOException thrown if an IO error occurred. Thrown exceptions are    * handled by {@link HttpFSExceptionProvider}.    * @throws FileSystemAccessException thrown if a FileSystemAccess releated error occurred. Thrown    * exceptions are handled by {@link HttpFSExceptionProvider}.    */
+comment|/**    * Returns a filesystem instance. The fileystem instance is wired for release at the completion of    * the current Servlet request via the {@link FileSystemReleaseFilter}.    *<p>    * If a do-as user is specified, the current user must be a valid proxyuser, otherwise an    *<code>AccessControlException</code> will be thrown.    *    * @param ugi principal for whom the filesystem instance is.    *    * @return a filesystem for the specified user or do-as user.    *    * @throws IOException thrown if an IO error occurred. Thrown exceptions are    * handled by {@link HttpFSExceptionProvider}.    * @throws FileSystemAccessException thrown if a FileSystemAccess releated error occurred. Thrown    * exceptions are handled by {@link HttpFSExceptionProvider}.    */
 DECL|method|createFileSystem (UserGroupInformation ugi)
 specifier|private
 name|FileSystem
