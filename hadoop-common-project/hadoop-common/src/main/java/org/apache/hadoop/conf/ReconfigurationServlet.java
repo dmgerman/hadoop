@@ -288,7 +288,7 @@ name|out
 operator|.
 name|printf
 argument_list|(
-literal|"<title>%s Reconfiguration Utility</title>\n"
+literal|"<title>%s Reconfiguration Utility</title>%n"
 argument_list|,
 name|StringEscapeUtils
 operator|.
@@ -309,7 +309,7 @@ name|out
 operator|.
 name|printf
 argument_list|(
-literal|"<h1>%s Reconfiguration Utility</h1>\n"
+literal|"<h1>%s Reconfiguration Utility</h1>%n"
 argument_list|,
 name|StringEscapeUtils
 operator|.

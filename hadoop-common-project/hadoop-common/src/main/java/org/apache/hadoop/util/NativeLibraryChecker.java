@@ -552,7 +552,7 @@ name|out
 operator|.
 name|printf
 argument_list|(
-literal|"hadoop:  %b %s\n"
+literal|"hadoop:  %b %s%n"
 argument_list|,
 name|nativeHadoopLoaded
 argument_list|,
@@ -565,7 +565,7 @@ name|out
 operator|.
 name|printf
 argument_list|(
-literal|"zlib:    %b %s\n"
+literal|"zlib:    %b %s%n"
 argument_list|,
 name|zlibLoaded
 argument_list|,
@@ -578,7 +578,7 @@ name|out
 operator|.
 name|printf
 argument_list|(
-literal|"snappy:  %b %s\n"
+literal|"snappy:  %b %s%n"
 argument_list|,
 name|snappyLoaded
 argument_list|,
@@ -591,7 +591,7 @@ name|out
 operator|.
 name|printf
 argument_list|(
-literal|"lz4:     %b %s\n"
+literal|"lz4:     %b %s%n"
 argument_list|,
 name|lz4Loaded
 argument_list|,
@@ -604,7 +604,7 @@ name|out
 operator|.
 name|printf
 argument_list|(
-literal|"bzip2:   %b %s\n"
+literal|"bzip2:   %b %s%n"
 argument_list|,
 name|bzip2Loaded
 argument_list|,
@@ -617,7 +617,7 @@ name|out
 operator|.
 name|printf
 argument_list|(
-literal|"openssl: %b %s\n"
+literal|"openssl: %b %s%n"
 argument_list|,
 name|openSslLoaded
 argument_list|,
@@ -637,7 +637,7 @@ name|out
 operator|.
 name|printf
 argument_list|(
-literal|"winutils: %b %s\n"
+literal|"winutils: %b %s%n"
 argument_list|,
 name|winutilsExists
 argument_list|,

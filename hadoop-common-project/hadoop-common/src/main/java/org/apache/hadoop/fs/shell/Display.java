@@ -1138,7 +1138,7 @@ name|out
 operator|.
 name|printf
 argument_list|(
-literal|"%s\tNONE\t\n"
+literal|"%s\tNONE\t%n"
 argument_list|,
 name|item
 operator|.
@@ -1173,7 +1173,7 @@ name|out
 operator|.
 name|printf
 argument_list|(
-literal|"%s\t%s\t%s\n"
+literal|"%s\t%s\t%s%n"
 argument_list|,
 name|item
 operator|.

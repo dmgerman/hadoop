@@ -1351,7 +1351,7 @@ name|out
 operator|.
 name|printf
 argument_list|(
-literal|"%s : %s\n"
+literal|"%s : %s%n"
 argument_list|,
 name|Align
 operator|.
@@ -1533,7 +1533,7 @@ name|out
 operator|.
 name|printf
 argument_list|(
-literal|"%s %s %s %s %s %s\n"
+literal|"%s %s %s %s %s %s%n"
 argument_list|,
 name|Align
 operator|.
@@ -2120,7 +2120,7 @@ name|out
 operator|.
 name|printf
 argument_list|(
-literal|"%s %s %s %s %s\n"
+literal|"%s %s %s %s %s%n"
 argument_list|,
 name|Align
 operator|.
@@ -2270,7 +2270,7 @@ name|out
 operator|.
 name|printf
 argument_list|(
-literal|"%s %s %s %s %s\n"
+literal|"%s %s %s %s %s%n"
 argument_list|,
 name|Align
 operator|.

@@ -7274,7 +7274,7 @@ name|out
 operator|.
 name|printf
 argument_list|(
-literal|"TFile Dumper (TFile %s, BCFile %s)\n"
+literal|"TFile Dumper (TFile %s, BCFile %s)%n"
 argument_list|,
 name|TFile
 operator|.

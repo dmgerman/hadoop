@@ -706,7 +706,7 @@ name|String
 operator|.
 name|format
 argument_list|(
-literal|"new entry (%d, %s), existing entry: (%d, %s).\n%s\n%s"
+literal|"new entry (%d, %s), existing entry: (%d, %s).%n%s%n%s"
 argument_list|,
 name|key
 argument_list|,
