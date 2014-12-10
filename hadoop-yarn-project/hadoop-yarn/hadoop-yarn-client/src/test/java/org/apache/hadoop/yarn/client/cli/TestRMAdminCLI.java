@@ -2756,7 +2756,7 @@ name|of
 argument_list|(
 literal|"x"
 argument_list|,
-literal|"y"
+literal|"Y"
 argument_list|)
 argument_list|)
 expr_stmt|;
@@ -2767,7 +2767,7 @@ init|=
 block|{
 literal|"-replaceLabelsOnNode"
 block|,
-literal|"node1,x,y node2,y"
+literal|"node1,x,Y node2,Y"
 block|,
 literal|"-directlyAccessNodeLabelStore"
 block|}
