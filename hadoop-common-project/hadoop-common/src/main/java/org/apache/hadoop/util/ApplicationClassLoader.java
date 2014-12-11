@@ -1100,6 +1100,7 @@ return|return
 name|c
 return|;
 block|}
+comment|/**    * Checks if a class should be included as a system class.    *    * A class is a system class if and only if it matches one of the positive    * patterns and none of the negative ones.    *    * @param name the class name to check    * @param systemClasses a list of system class configurations.    * @return true if the class is a system class    */
 DECL|method|isSystemClass (String name, List<String> systemClasses)
 specifier|public
 specifier|static
@@ -1116,6 +1117,11 @@ argument_list|>
 name|systemClasses
 parameter_list|)
 block|{
+name|boolean
+name|result
+init|=
+literal|false
+decl_stmt|;
 if|if
 condition|(
 name|systemClasses
@@ -1164,7 +1170,7 @@ name|systemClasses
 control|)
 block|{
 name|boolean
-name|result
+name|shouldInclude
 init|=
 literal|true
 decl_stmt|;
@@ -1187,7 +1193,7 @@ argument_list|(
 literal|1
 argument_list|)
 expr_stmt|;
-name|result
+name|shouldInclude
 operator|=
 literal|false
 expr_stmt|;
@@ -1247,15 +1253,28 @@ operator|==
 literal|'$'
 condition|)
 block|{
-return|return
+if|if
+condition|(
+name|shouldInclude
+condition|)
+block|{
 name|result
+operator|=
+literal|true
+expr_stmt|;
+block|}
+else|else
+block|{
+return|return
+literal|false
 return|;
 block|}
 block|}
 block|}
 block|}
+block|}
 return|return
-literal|false
+name|result
 return|;
 block|}
 block|}
