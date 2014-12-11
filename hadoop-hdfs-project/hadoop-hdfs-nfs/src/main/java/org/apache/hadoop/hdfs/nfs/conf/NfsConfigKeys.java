@@ -397,6 +397,24 @@ literal|"0.0.0.0:"
 operator|+
 name|NFS_HTTPS_PORT_DEFAULT
 decl_stmt|;
+DECL|field|NFS_METRICS_PERCENTILES_INTERVALS_KEY
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|NFS_METRICS_PERCENTILES_INTERVALS_KEY
+init|=
+literal|"nfs.metrics.percentiles.intervals"
+decl_stmt|;
+DECL|field|NFS_METRICS_PERCENTILES_INTERVALS_DEFAULT
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|NFS_METRICS_PERCENTILES_INTERVALS_DEFAULT
+init|=
+literal|""
+decl_stmt|;
 block|}
 end_class
 

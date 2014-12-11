@@ -193,8 +193,9 @@ name|IOException
 block|{
 name|super
 argument_list|(
-operator|new
 name|RpcProgramNfs3
+operator|.
+name|createRpcProgramNfs3
 argument_list|(
 name|conf
 argument_list|,

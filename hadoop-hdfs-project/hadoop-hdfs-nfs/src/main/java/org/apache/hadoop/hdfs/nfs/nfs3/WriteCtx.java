@@ -312,6 +312,12 @@ specifier|volatile
 name|DataState
 name|dataState
 decl_stmt|;
+DECL|field|startTime
+specifier|public
+specifier|final
+name|long
+name|startTime
+decl_stmt|;
 DECL|method|getDataState ()
 specifier|public
 name|DataState
@@ -958,6 +964,15 @@ expr_stmt|;
 name|raf
 operator|=
 literal|null
+expr_stmt|;
+name|this
+operator|.
+name|startTime
+operator|=
+name|System
+operator|.
+name|nanoTime
+argument_list|()
 expr_stmt|;
 block|}
 annotation|@

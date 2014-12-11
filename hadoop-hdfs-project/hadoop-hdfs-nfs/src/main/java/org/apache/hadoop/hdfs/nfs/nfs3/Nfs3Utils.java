@@ -1345,6 +1345,25 @@ return|return
 name|data
 return|;
 block|}
+DECL|method|getElapsedTime (long startTimeNano)
+specifier|public
+specifier|static
+name|long
+name|getElapsedTime
+parameter_list|(
+name|long
+name|startTimeNano
+parameter_list|)
+block|{
+return|return
+name|System
+operator|.
+name|nanoTime
+argument_list|()
+operator|-
+name|startTimeNano
+return|;
+block|}
 block|}
 end_class
 

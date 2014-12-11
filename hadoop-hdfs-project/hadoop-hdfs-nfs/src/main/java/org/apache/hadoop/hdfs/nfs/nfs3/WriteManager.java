@@ -1350,6 +1350,7 @@ expr_stmt|;
 block|}
 else|else
 block|{
+comment|// commit request triggered by read won't create pending comment obj
 name|COMMIT_STATUS
 name|ret
 init|=
@@ -1480,6 +1481,14 @@ name|Nfs3FileAttributes
 name|preOpAttr
 parameter_list|)
 block|{
+name|long
+name|startTime
+init|=
+name|System
+operator|.
+name|nanoTime
+argument_list|()
+decl_stmt|;
 name|int
 name|status
 decl_stmt|;
@@ -1709,6 +1718,20 @@ operator|.
 name|WRITE_COMMIT_VERF
 argument_list|)
 decl_stmt|;
+name|RpcProgramNfs3
+operator|.
+name|metrics
+operator|.
+name|addCommit
+argument_list|(
+name|Nfs3Utils
+operator|.
+name|getElapsedTime
+argument_list|(
+name|startTime
+argument_list|)
+argument_list|)
+expr_stmt|;
 name|Nfs3Utils
 operator|.
 name|writeChannelCommit
