@@ -8586,6 +8586,14 @@ decl_stmt|;
 name|DatanodeDescriptor
 name|node
 decl_stmt|;
+name|Collection
+argument_list|<
+name|Block
+argument_list|>
+name|invalidatedBlocks
+init|=
+literal|null
+decl_stmt|;
 try|try
 block|{
 name|node
@@ -8710,6 +8718,8 @@ expr_stmt|;
 block|}
 else|else
 block|{
+name|invalidatedBlocks
+operator|=
 name|processReport
 argument_list|(
 name|storageInfo
@@ -8776,6 +8786,45 @@ operator|.
 name|writeUnlock
 argument_list|()
 expr_stmt|;
+block|}
+if|if
+condition|(
+name|invalidatedBlocks
+operator|!=
+literal|null
+condition|)
+block|{
+for|for
+control|(
+name|Block
+name|b
+range|:
+name|invalidatedBlocks
+control|)
+block|{
+name|blockLog
+operator|.
+name|info
+argument_list|(
+literal|"BLOCK* processReport: "
+operator|+
+name|b
+operator|+
+literal|" on "
+operator|+
+name|node
+operator|+
+literal|" size "
+operator|+
+name|b
+operator|.
+name|getNumBytes
+argument_list|()
+operator|+
+literal|" does not belong to any file"
+argument_list|)
+expr_stmt|;
+block|}
 block|}
 comment|// Log the block report processing stats from Namenode perspective
 specifier|final
@@ -8999,9 +9048,12 @@ expr_stmt|;
 block|}
 block|}
 block|}
-DECL|method|processReport (final DatanodeStorageInfo storageInfo, final BlockListAsLongs report)
+DECL|method|processReport ( final DatanodeStorageInfo storageInfo, final BlockListAsLongs report)
 specifier|private
-name|void
+name|Collection
+argument_list|<
+name|Block
+argument_list|>
 name|processReport
 parameter_list|(
 specifier|final
@@ -9203,28 +9255,6 @@ range|:
 name|toInvalidate
 control|)
 block|{
-name|blockLog
-operator|.
-name|info
-argument_list|(
-literal|"BLOCK* processReport: "
-operator|+
-name|b
-operator|+
-literal|" on "
-operator|+
-name|node
-operator|+
-literal|" size "
-operator|+
-name|b
-operator|.
-name|getNumBytes
-argument_list|()
-operator|+
-literal|" does not belong to any file"
-argument_list|)
-expr_stmt|;
 name|addToInvalidates
 argument_list|(
 name|b
@@ -9251,6 +9281,9 @@ name|node
 argument_list|)
 expr_stmt|;
 block|}
+return|return
+name|toInvalidate
+return|;
 block|}
 comment|/**    * processFirstBlockReport is intended only for processing "initial" block    * reports, the first block report received from a DN after it registers.    * It just adds all the valid replicas to the datanode, without calculating     * a toRemove list (since there won't be any).  It also silently discards     * any invalid blocks, thereby deferring their processing until     * the next block report.    * @param storageInfo - DatanodeStorageInfo that sent the report    * @param report - the initial block report, to be processed    * @throws IOException     */
 DECL|method|processFirstBlockReport ( final DatanodeStorageInfo storageInfo, final BlockListAsLongs report)
