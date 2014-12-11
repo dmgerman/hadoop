@@ -66,7 +66,7 @@ name|java
 operator|.
 name|io
 operator|.
-name|PrintWriter
+name|PrintStream
 import|;
 end_import
 
@@ -564,20 +564,6 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|io
-operator|.
-name|IOUtils
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
 name|util
 operator|.
 name|LimitInputStream
@@ -622,7 +608,7 @@ decl_stmt|;
 DECL|field|out
 specifier|private
 specifier|final
-name|PrintWriter
+name|PrintStream
 name|out
 decl_stmt|;
 DECL|field|stringTable
@@ -631,14 +617,14 @@ name|String
 index|[]
 name|stringTable
 decl_stmt|;
-DECL|method|PBImageXmlWriter (Configuration conf, PrintWriter out)
+DECL|method|PBImageXmlWriter (Configuration conf, PrintStream out)
 specifier|public
 name|PBImageXmlWriter
 parameter_list|(
 name|Configuration
 name|conf
 parameter_list|,
-name|PrintWriter
+name|PrintStream
 name|out
 parameter_list|)
 block|{
@@ -695,15 +681,11 @@ argument_list|(
 name|file
 argument_list|)
 decl_stmt|;
+try|try
+init|(
 name|FileInputStream
 name|fin
 init|=
-literal|null
-decl_stmt|;
-try|try
-block|{
-name|fin
-operator|=
 operator|new
 name|FileInputStream
 argument_list|(
@@ -712,7 +694,8 @@ operator|.
 name|getFD
 argument_list|()
 argument_list|)
-expr_stmt|;
+init|)
+block|{
 name|out
 operator|.
 name|print
@@ -1010,18 +993,6 @@ operator|.
 name|print
 argument_list|(
 literal|"</fsimage>\n"
-argument_list|)
-expr_stmt|;
-block|}
-finally|finally
-block|{
-name|IOUtils
-operator|.
-name|cleanup
-argument_list|(
-literal|null
-argument_list|,
-name|fin
 argument_list|)
 expr_stmt|;
 block|}

@@ -4538,11 +4538,6 @@ name|metaOut
 init|=
 literal|null
 decl_stmt|;
-name|InputStream
-name|dataIn
-init|=
-literal|null
-decl_stmt|;
 try|try
 block|{
 name|File
@@ -4617,8 +4612,16 @@ argument_list|,
 name|checksum
 argument_list|)
 expr_stmt|;
+name|int
+name|offset
+init|=
+literal|0
+decl_stmt|;
+try|try
+init|(
+name|InputStream
 name|dataIn
-operator|=
+init|=
 name|isNativeIOAvailable
 condition|?
 name|NativeIO
@@ -4633,12 +4636,8 @@ name|FileInputStream
 argument_list|(
 name|blockFile
 argument_list|)
-expr_stmt|;
-name|int
-name|offset
-init|=
-literal|0
-decl_stmt|;
+init|)
+block|{
 for|for
 control|(
 name|int
@@ -4752,6 +4751,7 @@ expr_stmt|;
 block|}
 block|}
 block|}
+block|}
 comment|// calculate and write the last crc
 name|checksum
 operator|.
@@ -4787,8 +4787,6 @@ operator|.
 name|cleanup
 argument_list|(
 name|LOG
-argument_list|,
-name|dataIn
 argument_list|,
 name|metaOut
 argument_list|)
@@ -8819,31 +8817,6 @@ operator|.
 name|getVolume
 argument_list|()
 expr_stmt|;
-if|if
-condition|(
-name|f
-operator|==
-literal|null
-condition|)
-block|{
-name|errors
-operator|.
-name|add
-argument_list|(
-literal|"Failed to delete replica "
-operator|+
-name|invalidBlks
-index|[
-name|i
-index|]
-operator|+
-literal|": File not found, volume="
-operator|+
-name|v
-argument_list|)
-expr_stmt|;
-continue|continue;
-block|}
 if|if
 condition|(
 name|v

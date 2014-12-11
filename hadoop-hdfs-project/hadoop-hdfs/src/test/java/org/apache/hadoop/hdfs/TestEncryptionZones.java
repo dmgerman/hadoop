@@ -8328,18 +8328,18 @@ argument_list|)
 throw|;
 block|}
 comment|// Run the XML OIV processor
-name|StringWriter
+name|ByteArrayOutputStream
 name|output
 init|=
 operator|new
-name|StringWriter
+name|ByteArrayOutputStream
 argument_list|()
 decl_stmt|;
-name|PrintWriter
+name|PrintStream
 name|pw
 init|=
 operator|new
-name|PrintWriter
+name|PrintStream
 argument_list|(
 name|output
 argument_list|)
@@ -8375,9 +8375,6 @@ name|String
 name|xml
 init|=
 name|output
-operator|.
-name|getBuffer
-argument_list|()
 operator|.
 name|toString
 argument_list|()

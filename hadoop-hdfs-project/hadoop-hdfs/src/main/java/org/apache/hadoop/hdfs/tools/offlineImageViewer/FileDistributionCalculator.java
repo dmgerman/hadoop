@@ -66,7 +66,7 @@ name|java
 operator|.
 name|io
 operator|.
-name|PrintWriter
+name|PrintStream
 import|;
 end_import
 
@@ -200,20 +200,6 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|io
-operator|.
-name|IOUtils
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
 name|util
 operator|.
 name|LimitInputStream
@@ -295,7 +281,7 @@ decl_stmt|;
 DECL|field|out
 specifier|private
 specifier|final
-name|PrintWriter
+name|PrintStream
 name|out
 decl_stmt|;
 DECL|field|distribution
@@ -330,7 +316,7 @@ specifier|private
 name|long
 name|maxFileSize
 decl_stmt|;
-DECL|method|FileDistributionCalculator (Configuration conf, long maxSize, int steps, PrintWriter out)
+DECL|method|FileDistributionCalculator (Configuration conf, long maxSize, int steps, PrintStream out)
 name|FileDistributionCalculator
 parameter_list|(
 name|Configuration
@@ -342,7 +328,7 @@ parameter_list|,
 name|int
 name|steps
 parameter_list|,
-name|PrintWriter
+name|PrintStream
 name|out
 parameter_list|)
 block|{
@@ -474,15 +460,11 @@ argument_list|(
 name|file
 argument_list|)
 decl_stmt|;
+try|try
+init|(
 name|FileInputStream
 name|in
 init|=
-literal|null
-decl_stmt|;
-try|try
-block|{
-name|in
-operator|=
 operator|new
 name|FileInputStream
 argument_list|(
@@ -491,7 +473,8 @@ operator|.
 name|getFD
 argument_list|()
 argument_list|)
-expr_stmt|;
+init|)
+block|{
 for|for
 control|(
 name|FileSummary
@@ -576,18 +559,6 @@ name|output
 argument_list|()
 expr_stmt|;
 block|}
-block|}
-finally|finally
-block|{
-name|IOUtils
-operator|.
-name|cleanup
-argument_list|(
-literal|null
-argument_list|,
-name|in
-argument_list|)
-expr_stmt|;
 block|}
 block|}
 DECL|method|run (InputStream in)

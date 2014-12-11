@@ -1148,6 +1148,11 @@ argument_list|,
 name|jid
 argument_list|)
 expr_stmt|;
+assert|assert
+name|jid
+operator|!=
+literal|null
+assert|;
 return|return
 operator|new
 name|File

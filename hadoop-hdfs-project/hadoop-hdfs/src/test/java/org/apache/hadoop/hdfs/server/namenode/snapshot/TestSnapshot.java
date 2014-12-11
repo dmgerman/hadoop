@@ -108,7 +108,7 @@ name|java
 operator|.
 name|io
 operator|.
-name|PrintWriter
+name|PrintStream
 import|;
 end_import
 
@@ -119,16 +119,6 @@ operator|.
 name|io
 operator|.
 name|RandomAccessFile
-import|;
-end_import
-
-begin_import
-import|import
-name|java
-operator|.
-name|io
-operator|.
-name|StringWriter
 import|;
 end_import
 
@@ -179,6 +169,22 @@ operator|.
 name|util
 operator|.
 name|Random
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|commons
+operator|.
+name|io
+operator|.
+name|output
+operator|.
+name|NullOutputStream
 import|;
 end_import
 
@@ -557,6 +563,20 @@ operator|.
 name|offlineImageViewer
 operator|.
 name|PBImageXmlWriter
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|io
+operator|.
+name|IOUtils
 import|;
 end_import
 
@@ -1534,20 +1554,15 @@ argument_list|,
 name|originalFsimage
 argument_list|)
 expr_stmt|;
-name|StringWriter
-name|output
-init|=
-operator|new
-name|StringWriter
-argument_list|()
-decl_stmt|;
-name|PrintWriter
+name|PrintStream
 name|o
 init|=
 operator|new
-name|PrintWriter
+name|PrintStream
 argument_list|(
-name|output
+name|NullOutputStream
+operator|.
+name|NULL_OUTPUT_STREAM
 argument_list|)
 decl_stmt|;
 name|PBImageXmlWriter

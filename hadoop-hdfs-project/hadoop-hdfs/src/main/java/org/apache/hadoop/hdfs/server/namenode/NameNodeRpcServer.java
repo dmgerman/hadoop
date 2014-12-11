@@ -6380,25 +6380,6 @@ argument_list|(
 name|type
 argument_list|)
 decl_stmt|;
-if|if
-condition|(
-name|results
-operator|==
-literal|null
-condition|)
-block|{
-throw|throw
-operator|new
-name|IOException
-argument_list|(
-literal|"Failed to get datanode report for "
-operator|+
-name|type
-operator|+
-literal|" datanodes."
-argument_list|)
-throw|;
-block|}
 return|return
 name|results
 return|;
@@ -6430,25 +6411,6 @@ argument_list|(
 name|type
 argument_list|)
 decl_stmt|;
-if|if
-condition|(
-name|reports
-operator|==
-literal|null
-condition|)
-block|{
-throw|throw
-operator|new
-name|IOException
-argument_list|(
-literal|"Failed to get datanode storage report for "
-operator|+
-name|type
-operator|+
-literal|" datanodes."
-argument_list|)
-throw|;
-block|}
 return|return
 name|reports
 return|;

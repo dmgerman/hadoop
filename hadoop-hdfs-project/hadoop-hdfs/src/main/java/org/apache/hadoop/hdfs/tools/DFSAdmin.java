@@ -8003,7 +8003,7 @@ name|out
 operator|.
 name|printf
 argument_list|(
-literal|"Change property %s\n\tFrom: \"%s\"\n\tTo: \"%s\"\n"
+literal|"Change property %s%n\tFrom: \"%s\"%n\tTo: \"%s\"%n"
 argument_list|,
 name|result
 operator|.

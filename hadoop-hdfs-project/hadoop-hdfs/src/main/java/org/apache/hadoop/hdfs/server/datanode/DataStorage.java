@@ -2182,7 +2182,7 @@ name|String
 operator|.
 name|format
 argument_list|(
-literal|"Failed to remove %s: %s\n"
+literal|"Failed to remove %s: %s%n"
 argument_list|,
 name|sd
 operator|.

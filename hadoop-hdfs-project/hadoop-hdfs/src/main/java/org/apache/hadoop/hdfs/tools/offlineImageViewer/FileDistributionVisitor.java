@@ -661,7 +661,7 @@ name|replication
 operator|=
 name|Integer
 operator|.
-name|valueOf
+name|parseInt
 argument_list|(
 name|value
 argument_list|)
@@ -676,7 +676,7 @@ name|fileSize
 operator|+=
 name|Long
 operator|.
-name|valueOf
+name|parseLong
 argument_list|(
 name|value
 argument_list|)

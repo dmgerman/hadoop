@@ -4473,7 +4473,7 @@ name|String
 operator|.
 name|format
 argument_list|(
-literal|"FAILED TO ADD: %s: %s\n"
+literal|"FAILED TO ADD: %s: %s%n"
 argument_list|,
 name|volume
 argument_list|,
@@ -4533,13 +4533,13 @@ name|String
 operator|.
 name|format
 argument_list|(
-literal|"FAILED to ADD: %s: %s\n"
+literal|"FAILED to ADD: %s: %s%n"
 argument_list|,
 name|volume
 argument_list|,
 name|e
 operator|.
-name|getMessage
+name|toString
 argument_list|()
 argument_list|)
 argument_list|)

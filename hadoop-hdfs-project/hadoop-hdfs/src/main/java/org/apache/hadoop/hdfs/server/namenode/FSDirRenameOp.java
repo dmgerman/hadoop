@@ -2353,11 +2353,6 @@ name|removedDst
 argument_list|)
 expr_stmt|;
 block|}
-assert|assert
-name|removedDst
-operator|!=
-literal|null
-assert|;
 if|if
 condition|(
 name|removedDst

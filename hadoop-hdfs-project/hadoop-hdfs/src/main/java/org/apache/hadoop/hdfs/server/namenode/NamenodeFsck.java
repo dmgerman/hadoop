@@ -4163,27 +4163,6 @@ argument_list|,
 literal|true
 argument_list|)
 expr_stmt|;
-if|if
-condition|(
-name|fos
-operator|==
-literal|null
-condition|)
-block|{
-throw|throw
-operator|new
-name|IOException
-argument_list|(
-literal|"Failed to copy "
-operator|+
-name|fullName
-operator|+
-literal|" to /lost+found: could not store chain "
-operator|+
-name|chain
-argument_list|)
-throw|;
-block|}
 name|chain
 operator|++
 expr_stmt|;

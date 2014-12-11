@@ -256,6 +256,20 @@ name|concurrent
 operator|.
 name|atomic
 operator|.
+name|AtomicInteger
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
+name|concurrent
+operator|.
+name|atomic
+operator|.
 name|AtomicReference
 import|;
 end_import
@@ -1743,7 +1757,7 @@ DECL|field|dataPos
 name|int
 name|dataPos
 decl_stmt|;
-comment|/**      * Create a new packet.      *       * @param pktSize maximum size of the packet,       *                including checksum data and actual data.      * @param chunksPerPkt maximum number of chunks per packet.      * @param offsetInBlock offset in bytes into the HDFS block.      */
+comment|/**      * Create a new packet.      *       * @param chunksPerPkt maximum number of chunks per packet.      * @param offsetInBlock offset in bytes into the HDFS block.      */
 DECL|method|Packet (byte[] buf, int chunksPerPkt, long offsetInBlock, long seqno, int checksumSize)
 specifier|private
 name|Packet
@@ -2509,15 +2523,18 @@ init|=
 operator|-
 literal|1
 decl_stmt|;
+comment|// Restarting node index
 DECL|field|restartingNodeIndex
-specifier|volatile
-name|int
+name|AtomicInteger
 name|restartingNodeIndex
 init|=
+operator|new
+name|AtomicInteger
+argument_list|(
 operator|-
 literal|1
+argument_list|)
 decl_stmt|;
-comment|// Restarting node index
 DECL|field|restartDeadline
 specifier|private
 name|long
@@ -3156,6 +3173,9 @@ operator|>=
 literal|0
 operator|||
 name|restartingNodeIndex
+operator|.
+name|get
+argument_list|()
 operator|>=
 literal|0
 operator|)
@@ -3803,6 +3823,9 @@ comment|// Log warning if there was a real error.
 if|if
 condition|(
 name|restartingNodeIndex
+operator|.
+name|get
+argument_list|()
 operator|==
 operator|-
 literal|1
@@ -3862,6 +3885,9 @@ operator|-
 literal|1
 operator|&&
 name|restartingNodeIndex
+operator|.
+name|get
+argument_list|()
 operator|==
 operator|-
 literal|1
@@ -4157,8 +4183,11 @@ name|idx
 parameter_list|)
 block|{
 name|restartingNodeIndex
-operator|=
+operator|.
+name|set
+argument_list|(
 name|idx
+argument_list|)
 expr_stmt|;
 comment|// If the data streamer has already set the primary node
 comment|// bad, clear it. It is likely that the write failed due to
@@ -4189,6 +4218,9 @@ operator|)
 operator|&&
 operator|(
 name|restartingNodeIndex
+operator|.
+name|get
+argument_list|()
 operator|==
 operator|-
 literal|1
@@ -4801,6 +4833,9 @@ block|}
 if|if
 condition|(
 name|restartingNodeIndex
+operator|.
+name|get
+argument_list|()
 operator|==
 operator|-
 literal|1
@@ -5793,6 +5828,9 @@ comment|// starts back up.
 if|if
 condition|(
 name|restartingNodeIndex
+operator|.
+name|get
+argument_list|()
 operator|>=
 literal|0
 condition|)
@@ -5847,6 +5885,9 @@ operator|+
 name|nodes
 index|[
 name|restartingNodeIndex
+operator|.
+name|get
+argument_list|()
 index|]
 argument_list|)
 argument_list|)
@@ -6074,6 +6115,9 @@ comment|// Just took care of a node error while waiting for a node restart
 if|if
 condition|(
 name|restartingNodeIndex
+operator|.
+name|get
+argument_list|()
 operator|>=
 literal|0
 condition|)
@@ -6085,12 +6129,18 @@ condition|(
 name|errorIndex
 operator|>
 name|restartingNodeIndex
+operator|.
+name|get
+argument_list|()
 condition|)
 block|{
 name|restartingNodeIndex
-operator|=
+operator|.
+name|set
+argument_list|(
 operator|-
 literal|1
+argument_list|)
 expr_stmt|;
 block|}
 elseif|else
@@ -6099,11 +6149,16 @@ condition|(
 name|errorIndex
 operator|<
 name|restartingNodeIndex
+operator|.
+name|get
+argument_list|()
 condition|)
 block|{
 comment|// the node index has shifted.
 name|restartingNodeIndex
-operator|--
+operator|.
+name|decrementAndGet
+argument_list|()
 expr_stmt|;
 block|}
 else|else
@@ -6117,6 +6172,9 @@ block|}
 if|if
 condition|(
 name|restartingNodeIndex
+operator|.
+name|get
+argument_list|()
 operator|==
 operator|-
 literal|1
@@ -6304,6 +6362,9 @@ block|}
 if|if
 condition|(
 name|restartingNodeIndex
+operator|.
+name|get
+argument_list|()
 operator|>=
 literal|0
 condition|)
@@ -6319,6 +6380,9 @@ condition|(
 name|errorIndex
 operator|==
 name|restartingNodeIndex
+operator|.
+name|get
+argument_list|()
 condition|)
 block|{
 comment|// ignore, if came from the restarting node
@@ -6351,11 +6415,17 @@ name|int
 name|expiredNodeIndex
 init|=
 name|restartingNodeIndex
+operator|.
+name|get
+argument_list|()
 decl_stmt|;
 name|restartingNodeIndex
-operator|=
+operator|.
+name|set
+argument_list|(
 operator|-
 literal|1
+argument_list|)
 expr_stmt|;
 name|DFSClient
 operator|.
@@ -7122,6 +7192,9 @@ name|pipelineStatus
 argument_list|)
 operator|&&
 name|restartingNodeIndex
+operator|.
+name|get
+argument_list|()
 operator|==
 operator|-
 literal|1
@@ -7195,9 +7268,12 @@ literal|true
 expr_stmt|;
 comment|// success
 name|restartingNodeIndex
-operator|=
+operator|.
+name|set
+argument_list|(
 operator|-
 literal|1
+argument_list|)
 expr_stmt|;
 name|hasError
 operator|=
@@ -7213,6 +7289,9 @@ block|{
 if|if
 condition|(
 name|restartingNodeIndex
+operator|.
+name|get
+argument_list|()
 operator|==
 operator|-
 literal|1
@@ -7365,8 +7444,11 @@ name|now
 argument_list|()
 expr_stmt|;
 name|restartingNodeIndex
-operator|=
+operator|.
+name|set
+argument_list|(
 name|errorIndex
+argument_list|)
 expr_stmt|;
 name|errorIndex
 operator|=
@@ -7384,6 +7466,9 @@ operator|+
 name|nodes
 index|[
 name|restartingNodeIndex
+operator|.
+name|get
+argument_list|()
 index|]
 argument_list|)
 expr_stmt|;

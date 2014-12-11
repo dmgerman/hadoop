@@ -2879,13 +2879,6 @@ expr_stmt|;
 if|if
 condition|(
 name|curPeer
-operator|==
-literal|null
-condition|)
-break|break;
-if|if
-condition|(
-name|curPeer
 operator|.
 name|fromCache
 condition|)
@@ -3026,9 +3019,6 @@ expr_stmt|;
 block|}
 block|}
 block|}
-return|return
-literal|null
-return|;
 block|}
 DECL|class|BlockReaderPeer
 specifier|public

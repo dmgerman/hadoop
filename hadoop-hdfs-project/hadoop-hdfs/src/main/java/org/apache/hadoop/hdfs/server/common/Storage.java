@@ -2662,10 +2662,6 @@ throw|;
 block|}
 if|if
 condition|(
-name|res
-operator|!=
-literal|null
-operator|&&
 operator|!
 name|deletionHookAdded
 condition|)

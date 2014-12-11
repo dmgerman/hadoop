@@ -368,10 +368,6 @@ assert|;
 if|if
 condition|(
 name|xAttrs
-operator|==
-literal|null
-operator|||
-name|xAttrs
 operator|.
 name|isEmpty
 argument_list|()

@@ -28,6 +28,20 @@ begin_import
 import|import
 name|com
 operator|.
+name|google
+operator|.
+name|common
+operator|.
+name|base
+operator|.
+name|Charsets
+import|;
+end_import
+
+begin_import
+import|import
+name|com
+operator|.
 name|sun
 operator|.
 name|jersey
@@ -358,7 +372,7 @@ name|webhdfs
 operator|.
 name|WebHdfsHandler
 operator|.
-name|APPLICATION_JSON
+name|APPLICATION_JSON_UTF8
 import|;
 end_import
 
@@ -616,7 +630,11 @@ name|e
 argument_list|)
 operator|.
 name|getBytes
-argument_list|()
+argument_list|(
+name|Charsets
+operator|.
+name|UTF_8
+argument_list|)
 decl_stmt|;
 name|DefaultFullHttpResponse
 name|resp
@@ -645,7 +663,7 @@ name|set
 argument_list|(
 name|CONTENT_TYPE
 argument_list|,
-name|APPLICATION_JSON
+name|APPLICATION_JSON_UTF8
 argument_list|)
 expr_stmt|;
 name|resp
