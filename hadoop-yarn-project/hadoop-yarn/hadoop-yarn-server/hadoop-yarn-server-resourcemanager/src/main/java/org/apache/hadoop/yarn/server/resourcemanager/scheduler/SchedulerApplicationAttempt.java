@@ -978,9 +978,9 @@ name|Preconditions
 operator|.
 name|checkNotNull
 argument_list|(
-literal|"RMContext should not be null"
-argument_list|,
 name|rmContext
+argument_list|,
+literal|"RMContext should not be null"
 argument_list|)
 expr_stmt|;
 name|this
