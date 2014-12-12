@@ -229,16 +229,7 @@ specifier|final
 name|String
 name|TEST_ROOT_DIR
 init|=
-name|System
-operator|.
-name|getProperty
-argument_list|(
-literal|"test.build.data"
-argument_list|,
-literal|"build/test/data/"
-argument_list|)
-operator|+
-literal|"/testText"
+literal|"/test/data/testText"
 decl_stmt|;
 DECL|field|AVRO_FILENAME
 specifier|private
