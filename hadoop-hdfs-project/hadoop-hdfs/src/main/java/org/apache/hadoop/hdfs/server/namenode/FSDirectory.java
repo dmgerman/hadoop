@@ -2114,10 +2114,13 @@ argument_list|)
 return|;
 block|}
 comment|/**    * Add the given filename to the fs.    * @throws FileAlreadyExistsException    * @throws QuotaExceededException    * @throws UnresolvedLinkException    * @throws SnapshotAccessControlException     */
-DECL|method|addFile (String path, PermissionStatus permissions, short replication, long preferredBlockSize, String clientName, String clientMachine)
+DECL|method|addFile (INodesInPath iip, String path, PermissionStatus permissions, short replication, long preferredBlockSize, String clientName, String clientMachine)
 name|INodeFile
 name|addFile
 parameter_list|(
+name|INodesInPath
+name|iip
+parameter_list|,
 name|String
 name|path
 parameter_list|,
@@ -2195,7 +2198,7 @@ name|added
 operator|=
 name|addINode
 argument_list|(
-name|path
+name|iip
 argument_list|,
 name|newNode
 argument_list|)
@@ -2256,15 +2259,15 @@ return|return
 name|newNode
 return|;
 block|}
-DECL|method|unprotectedAddFile ( long id, String path, PermissionStatus permissions, List<AclEntry> aclEntries, List<XAttr> xAttrs, short replication, long modificationTime, long atime, long preferredBlockSize, boolean underConstruction, String clientName, String clientMachine, byte storagePolicyId)
+DECL|method|unprotectedAddFile (long id, INodesInPath iip, PermissionStatus permissions, List<AclEntry> aclEntries, List<XAttr> xAttrs, short replication, long modificationTime, long atime, long preferredBlockSize, boolean underConstruction, String clientName, String clientMachine, byte storagePolicyId)
 name|INodeFile
 name|unprotectedAddFile
 parameter_list|(
 name|long
 name|id
 parameter_list|,
-name|String
-name|path
+name|INodesInPath
+name|iip
 parameter_list|,
 name|PermissionStatus
 name|permissions
@@ -2376,7 +2379,7 @@ if|if
 condition|(
 name|addINode
 argument_list|(
-name|path
+name|iip
 argument_list|,
 name|newNode
 argument_list|)
@@ -2453,7 +2456,10 @@ name|debug
 argument_list|(
 literal|"DIR* FSDirectory.unprotectedAddFile: exception when add "
 operator|+
-name|path
+name|iip
+operator|.
+name|getPath
+argument_list|()
 operator|+
 literal|" to the file system"
 argument_list|,
@@ -2609,12 +2615,15 @@ expr_stmt|;
 block|}
 block|}
 comment|/**    * Remove a block from the file.    * @return Whether the block exists in the corresponding file    */
-DECL|method|removeBlock (String path, INodeFile fileNode, Block block)
+DECL|method|removeBlock (String path, INodesInPath iip, INodeFile fileNode, Block block)
 name|boolean
 name|removeBlock
 parameter_list|(
 name|String
 name|path
+parameter_list|,
+name|INodesInPath
+name|iip
 parameter_list|,
 name|INodeFile
 name|fileNode
@@ -2645,6 +2654,8 @@ name|unprotectedRemoveBlock
 argument_list|(
 name|path
 argument_list|,
+name|iip
+argument_list|,
 name|fileNode
 argument_list|,
 name|block
@@ -2658,12 +2669,15 @@ argument_list|()
 expr_stmt|;
 block|}
 block|}
-DECL|method|unprotectedRemoveBlock (String path, INodeFile fileNode, Block block)
+DECL|method|unprotectedRemoveBlock (String path, INodesInPath iip, INodeFile fileNode, Block block)
 name|boolean
 name|unprotectedRemoveBlock
 parameter_list|(
 name|String
 name|path
+parameter_list|,
+name|INodesInPath
+name|iip
 parameter_list|,
 name|INodeFile
 name|fileNode
@@ -2733,17 +2747,6 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|// update space consumed
-specifier|final
-name|INodesInPath
-name|iip
-init|=
-name|getINodesInPath4Write
-argument_list|(
-name|path
-argument_list|,
-literal|true
-argument_list|)
-decl_stmt|;
 name|updateCount
 argument_list|(
 name|iip
@@ -3372,48 +3375,6 @@ name|latestSnapshotId
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * @param path the file path    * @return the block size of the file.     */
-DECL|method|getPreferredBlockSize (String path)
-name|long
-name|getPreferredBlockSize
-parameter_list|(
-name|String
-name|path
-parameter_list|)
-throws|throws
-name|IOException
-block|{
-name|readLock
-argument_list|()
-expr_stmt|;
-try|try
-block|{
-return|return
-name|INodeFile
-operator|.
-name|valueOf
-argument_list|(
-name|getNode
-argument_list|(
-name|path
-argument_list|,
-literal|false
-argument_list|)
-argument_list|,
-name|path
-argument_list|)
-operator|.
-name|getPreferredBlockSize
-argument_list|()
-return|;
-block|}
-finally|finally
-block|{
-name|readUnlock
-argument_list|()
-expr_stmt|;
-block|}
-block|}
 DECL|method|setPermission (String src, FsPermission permission)
 name|void
 name|setPermission
@@ -3680,13 +3641,13 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-comment|/**    * Delete the target directory and collect the blocks under it    *     * @param src Path of a directory to delete    * @param collectedBlocks Blocks under the deleted directory    * @param removedINodes INodes that should be removed from {@link #inodeMap}    * @return the number of files that have been removed    */
-DECL|method|delete (String src, BlocksMapUpdateInfo collectedBlocks, List<INode> removedINodes, long mtime)
+comment|/**    * Delete the target directory and collect the blocks under it    *    * @param iip the INodesInPath instance containing all the INodes for the path    * @param collectedBlocks Blocks under the deleted directory    * @param removedINodes INodes that should be removed from {@link #inodeMap}    * @return the number of files that have been removed    */
+DECL|method|delete (INodesInPath iip, BlocksMapUpdateInfo collectedBlocks, List<INode> removedINodes, long mtime)
 name|long
 name|delete
 parameter_list|(
-name|String
-name|src
+name|INodesInPath
+name|iip
 parameter_list|,
 name|BlocksMapUpdateInfo
 name|collectedBlocks
@@ -3721,7 +3682,10 @@ name|debug
 argument_list|(
 literal|"DIR* FSDirectory.delete: "
 operator|+
-name|src
+name|iip
+operator|.
+name|getPath
+argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
@@ -3734,28 +3698,17 @@ argument_list|()
 expr_stmt|;
 try|try
 block|{
-specifier|final
-name|INodesInPath
-name|inodesInPath
-init|=
-name|getINodesInPath4Write
-argument_list|(
-name|normalizePath
-argument_list|(
-name|src
-argument_list|)
-argument_list|,
-literal|false
-argument_list|)
-decl_stmt|;
 if|if
 condition|(
 operator|!
 name|deleteAllowed
 argument_list|(
-name|inodesInPath
+name|iip
 argument_list|,
-name|src
+name|iip
+operator|.
+name|getPath
+argument_list|()
 argument_list|)
 condition|)
 block|{
@@ -3784,7 +3737,7 @@ name|FSDirSnapshotOp
 operator|.
 name|checkSnapshot
 argument_list|(
-name|inodesInPath
+name|iip
 operator|.
 name|getLastINode
 argument_list|()
@@ -3796,7 +3749,7 @@ name|filesRemoved
 operator|=
 name|unprotectedDelete
 argument_list|(
-name|inodesInPath
+name|iip
 argument_list|,
 name|collectedBlocks
 argument_list|,
@@ -4393,264 +4346,18 @@ else|:
 name|parentPolicy
 return|;
 block|}
-DECL|method|getINode4DotSnapshot (String src)
-name|INode
-name|getINode4DotSnapshot
-parameter_list|(
-name|String
-name|src
-parameter_list|)
-throws|throws
-name|UnresolvedLinkException
-block|{
-name|Preconditions
-operator|.
-name|checkArgument
-argument_list|(
-name|src
-operator|.
-name|endsWith
-argument_list|(
-name|HdfsConstants
-operator|.
-name|SEPARATOR_DOT_SNAPSHOT_DIR
-argument_list|)
-argument_list|,
-literal|"%s does not end with %s"
-argument_list|,
-name|src
-argument_list|,
-name|HdfsConstants
-operator|.
-name|SEPARATOR_DOT_SNAPSHOT_DIR
-argument_list|)
-expr_stmt|;
-specifier|final
-name|String
-name|dirPath
-init|=
-name|normalizePath
-argument_list|(
-name|src
-operator|.
-name|substring
-argument_list|(
-literal|0
-argument_list|,
-name|src
-operator|.
-name|length
-argument_list|()
-operator|-
-name|HdfsConstants
-operator|.
-name|DOT_SNAPSHOT_DIR
-operator|.
-name|length
-argument_list|()
-argument_list|)
-argument_list|)
-decl_stmt|;
-specifier|final
-name|INode
-name|node
-init|=
-name|this
-operator|.
-name|getINode
-argument_list|(
-name|dirPath
-argument_list|)
-decl_stmt|;
-if|if
-condition|(
-name|node
-operator|!=
-literal|null
-operator|&&
-name|node
-operator|.
-name|isDirectory
-argument_list|()
-operator|&&
-name|node
-operator|.
-name|asDirectory
-argument_list|()
-operator|.
-name|isSnapshottable
-argument_list|()
-condition|)
-block|{
-return|return
-name|node
-return|;
-block|}
-return|return
-literal|null
-return|;
-block|}
-DECL|method|getExistingPathINodes (byte[][] components)
-name|INodesInPath
-name|getExistingPathINodes
-parameter_list|(
-name|byte
-index|[]
-index|[]
-name|components
-parameter_list|)
-throws|throws
-name|UnresolvedLinkException
-block|{
-return|return
-name|INodesInPath
-operator|.
-name|resolve
-argument_list|(
-name|rootDir
-argument_list|,
-name|components
-argument_list|)
-return|;
-block|}
-comment|/**    * Get {@link INode} associated with the file / directory.    */
-DECL|method|getINode (String src)
-specifier|public
-name|INode
-name|getINode
-parameter_list|(
-name|String
-name|src
-parameter_list|)
-throws|throws
-name|UnresolvedLinkException
-block|{
-return|return
-name|getLastINodeInPath
-argument_list|(
-name|src
-argument_list|)
-operator|.
-name|getINode
-argument_list|(
-literal|0
-argument_list|)
-return|;
-block|}
-comment|/**    * Get {@link INode} associated with the file / directory.    */
-DECL|method|getLastINodeInPath (String src)
-specifier|public
-name|INodesInPath
-name|getLastINodeInPath
-parameter_list|(
-name|String
-name|src
-parameter_list|)
-throws|throws
-name|UnresolvedLinkException
-block|{
-name|readLock
-argument_list|()
-expr_stmt|;
-try|try
-block|{
-return|return
-name|getLastINodeInPath
-argument_list|(
-name|src
-argument_list|,
-literal|true
-argument_list|)
-return|;
-block|}
-finally|finally
-block|{
-name|readUnlock
-argument_list|()
-expr_stmt|;
-block|}
-block|}
-comment|/**    * Get {@link INode} associated with the file / directory.    */
-DECL|method|getINodesInPath4Write (String src )
-specifier|public
-name|INodesInPath
-name|getINodesInPath4Write
-parameter_list|(
-name|String
-name|src
-parameter_list|)
-throws|throws
-name|UnresolvedLinkException
-throws|,
-name|SnapshotAccessControlException
-block|{
-name|readLock
-argument_list|()
-expr_stmt|;
-try|try
-block|{
-return|return
-name|getINodesInPath4Write
-argument_list|(
-name|src
-argument_list|,
-literal|true
-argument_list|)
-return|;
-block|}
-finally|finally
-block|{
-name|readUnlock
-argument_list|()
-expr_stmt|;
-block|}
-block|}
-comment|/**    * Get {@link INode} associated with the file / directory.    * @throws SnapshotAccessControlException if path is in RO snapshot    */
-DECL|method|getINode4Write (String src)
-specifier|public
-name|INode
-name|getINode4Write
-parameter_list|(
-name|String
-name|src
-parameter_list|)
-throws|throws
-name|UnresolvedLinkException
-throws|,
-name|SnapshotAccessControlException
-block|{
-name|readLock
-argument_list|()
-expr_stmt|;
-try|try
-block|{
-return|return
-name|getINode4Write
-argument_list|(
-name|src
-argument_list|,
-literal|true
-argument_list|)
-return|;
-block|}
-finally|finally
-block|{
-name|readUnlock
-argument_list|()
-expr_stmt|;
-block|}
-block|}
 comment|/**     * Check whether the filepath could be created    * @throws SnapshotAccessControlException if path is in RO snapshot    */
-DECL|method|isValidToCreate (String src)
+DECL|method|isValidToCreate (String src, INodesInPath iip)
 name|boolean
 name|isValidToCreate
 parameter_list|(
 name|String
 name|src
+parameter_list|,
+name|INodesInPath
+name|iip
 parameter_list|)
 throws|throws
-name|UnresolvedLinkException
-throws|,
 name|SnapshotAccessControlException
 block|{
 name|String
@@ -4661,11 +4368,6 @@ argument_list|(
 name|src
 argument_list|)
 decl_stmt|;
-name|readLock
-argument_list|()
-expr_stmt|;
-try|try
-block|{
 return|return
 name|srcs
 operator|.
@@ -4682,22 +4384,13 @@ argument_list|(
 literal|"/"
 argument_list|)
 operator|&&
-name|getINode4Write
-argument_list|(
-name|srcs
-argument_list|,
-literal|false
-argument_list|)
+name|iip
+operator|.
+name|getLastINode
+argument_list|()
 operator|==
 literal|null
 return|;
-block|}
-finally|finally
-block|{
-name|readUnlock
-argument_list|()
-expr_stmt|;
-block|}
 block|}
 comment|/**    * Check whether the path specifies a directory    */
 DECL|method|isDir (String src)
@@ -4725,7 +4418,7 @@ block|{
 name|INode
 name|node
 init|=
-name|getNode
+name|getINode
 argument_list|(
 name|src
 argument_list|,
@@ -4750,13 +4443,13 @@ argument_list|()
 expr_stmt|;
 block|}
 block|}
-comment|/** Updates namespace and diskspace consumed for all    * directories until the parent directory of file represented by path.    *     * @param path path for the file.    * @param nsDelta the delta change of namespace    * @param dsDelta the delta change of diskspace    * @throws QuotaExceededException if the new count violates any quota limit    * @throws FileNotFoundException if path does not exist.    */
-DECL|method|updateSpaceConsumed (String path, long nsDelta, long dsDelta)
+comment|/** Updates namespace and diskspace consumed for all    * directories until the parent directory of file represented by path.    *    * @param iip the INodesInPath instance containing all the INodes for    *            updating quota usage    * @param nsDelta the delta change of namespace    * @param dsDelta the delta change of diskspace    * @throws QuotaExceededException if the new count violates any quota limit    * @throws FileNotFoundException if path does not exist.    */
+DECL|method|updateSpaceConsumed (INodesInPath iip, long nsDelta, long dsDelta)
 name|void
 name|updateSpaceConsumed
 parameter_list|(
-name|String
-name|path
+name|INodesInPath
+name|iip
 parameter_list|,
 name|long
 name|nsDelta
@@ -4778,17 +4471,6 @@ argument_list|()
 expr_stmt|;
 try|try
 block|{
-specifier|final
-name|INodesInPath
-name|iip
-init|=
-name|getINodesInPath4Write
-argument_list|(
-name|path
-argument_list|,
-literal|false
-argument_list|)
-decl_stmt|;
 if|if
 condition|(
 name|iip
@@ -4805,7 +4487,10 @@ name|FileNotFoundException
 argument_list|(
 literal|"Path not found: "
 operator|+
-name|path
+name|iip
+operator|.
+name|getPath
+argument_list|()
 argument_list|)
 throw|;
 block|}
@@ -5373,14 +5058,14 @@ literal|1
 argument_list|)
 return|;
 block|}
-comment|/**    * Add the given child to the namespace.    * @param src The full path name of the child node.    * @throws QuotaExceededException is thrown if it violates quota limit    */
-DECL|method|addINode (String src, INode child)
+comment|/**    * Add the given child to the namespace.    * @param iip the INodesInPath instance containing all the ancestral INodes    * @throws QuotaExceededException is thrown if it violates quota limit    */
+DECL|method|addINode (INodesInPath iip, INode child)
 specifier|private
 name|boolean
 name|addINode
 parameter_list|(
-name|String
-name|src
+name|INodesInPath
+name|iip
 parameter_list|,
 name|INode
 name|child
@@ -5390,30 +5075,14 @@ name|QuotaExceededException
 throws|,
 name|UnresolvedLinkException
 block|{
-name|byte
-index|[]
-index|[]
-name|components
-init|=
-name|INode
-operator|.
-name|getPathComponents
-argument_list|(
-name|src
-argument_list|)
-decl_stmt|;
 name|child
 operator|.
 name|setLocalName
 argument_list|(
-name|components
-index|[
-name|components
+name|iip
 operator|.
-name|length
-operator|-
-literal|1
-index|]
+name|getLastLocalName
+argument_list|()
 argument_list|)
 expr_stmt|;
 name|cacheName
@@ -5426,15 +5095,6 @@ argument_list|()
 expr_stmt|;
 try|try
 block|{
-specifier|final
-name|INodesInPath
-name|iip
-init|=
-name|getExistingPathINodes
-argument_list|(
-name|components
-argument_list|)
-decl_stmt|;
 return|return
 name|addLastINode
 argument_list|(
@@ -7188,9 +6848,11 @@ specifier|final
 name|INodesInPath
 name|i
 init|=
-name|getLastINodeInPath
+name|getINodesInPath
 argument_list|(
 name|src
+argument_list|,
+literal|true
 argument_list|)
 decl_stmt|;
 return|return
@@ -7382,15 +7044,15 @@ expr_stmt|;
 block|}
 block|}
 comment|/**    * Add the specified path into the namespace.    */
-DECL|method|addSymlink (long id, String path, String target, long mtime, long atime, PermissionStatus perm)
+DECL|method|addSymlink (INodesInPath iip, long id, String target, long mtime, long atime, PermissionStatus perm)
 name|INodeSymlink
 name|addSymlink
 parameter_list|(
+name|INodesInPath
+name|iip
+parameter_list|,
 name|long
 name|id
-parameter_list|,
-name|String
-name|path
 parameter_list|,
 name|String
 name|target
@@ -7417,9 +7079,9 @@ block|{
 return|return
 name|unprotectedAddSymlink
 argument_list|(
-name|id
+name|iip
 argument_list|,
-name|path
+name|id
 argument_list|,
 name|target
 argument_list|,
@@ -7438,15 +7100,15 @@ argument_list|()
 expr_stmt|;
 block|}
 block|}
-DECL|method|unprotectedAddSymlink (long id, String path, String target, long mtime, long atime, PermissionStatus perm)
+DECL|method|unprotectedAddSymlink (INodesInPath iip, long id, String target, long mtime, long atime, PermissionStatus perm)
 name|INodeSymlink
 name|unprotectedAddSymlink
 parameter_list|(
+name|INodesInPath
+name|iip
+parameter_list|,
 name|long
 name|id
-parameter_list|,
-name|String
-name|path
 parameter_list|,
 name|String
 name|target
@@ -7492,7 +7154,7 @@ decl_stmt|;
 return|return
 name|addINode
 argument_list|(
-name|path
+name|iip
 argument_list|,
 name|symlink
 argument_list|)
@@ -8015,14 +7677,11 @@ argument_list|()
 expr_stmt|;
 block|}
 block|}
-DECL|method|resolveLastINode (String src, INodesInPath iip)
+DECL|method|resolveLastINode (INodesInPath iip)
 specifier|static
 name|INode
 name|resolveLastINode
 parameter_list|(
-name|String
-name|src
-parameter_list|,
 name|INodesInPath
 name|iip
 parameter_list|)
@@ -8050,7 +7709,10 @@ name|FileNotFoundException
 argument_list|(
 literal|"cannot find "
 operator|+
-name|src
+name|iip
+operator|.
+name|getPath
+argument_list|()
 argument_list|)
 throw|;
 block|}
@@ -8797,16 +8459,111 @@ name|toString
 argument_list|()
 return|;
 block|}
-comment|/** @return the {@link INodesInPath} containing only the last inode. */
-DECL|method|getLastINodeInPath ( String path, boolean resolveLink)
-name|INodesInPath
-name|getLastINodeInPath
+DECL|method|getINode4DotSnapshot (String src)
+name|INode
+name|getINode4DotSnapshot
 parameter_list|(
 name|String
-name|path
-parameter_list|,
-name|boolean
-name|resolveLink
+name|src
+parameter_list|)
+throws|throws
+name|UnresolvedLinkException
+block|{
+name|Preconditions
+operator|.
+name|checkArgument
+argument_list|(
+name|src
+operator|.
+name|endsWith
+argument_list|(
+name|HdfsConstants
+operator|.
+name|SEPARATOR_DOT_SNAPSHOT_DIR
+argument_list|)
+argument_list|,
+literal|"%s does not end with %s"
+argument_list|,
+name|src
+argument_list|,
+name|HdfsConstants
+operator|.
+name|SEPARATOR_DOT_SNAPSHOT_DIR
+argument_list|)
+expr_stmt|;
+specifier|final
+name|String
+name|dirPath
+init|=
+name|normalizePath
+argument_list|(
+name|src
+operator|.
+name|substring
+argument_list|(
+literal|0
+argument_list|,
+name|src
+operator|.
+name|length
+argument_list|()
+operator|-
+name|HdfsConstants
+operator|.
+name|DOT_SNAPSHOT_DIR
+operator|.
+name|length
+argument_list|()
+argument_list|)
+argument_list|)
+decl_stmt|;
+specifier|final
+name|INode
+name|node
+init|=
+name|this
+operator|.
+name|getINode
+argument_list|(
+name|dirPath
+argument_list|)
+decl_stmt|;
+if|if
+condition|(
+name|node
+operator|!=
+literal|null
+operator|&&
+name|node
+operator|.
+name|isDirectory
+argument_list|()
+operator|&&
+name|node
+operator|.
+name|asDirectory
+argument_list|()
+operator|.
+name|isSnapshottable
+argument_list|()
+condition|)
+block|{
+return|return
+name|node
+return|;
+block|}
+return|return
+literal|null
+return|;
+block|}
+DECL|method|getExistingPathINodes (byte[][] components)
+name|INodesInPath
+name|getExistingPathINodes
+parameter_list|(
+name|byte
+index|[]
+index|[]
+name|components
 parameter_list|)
 throws|throws
 name|UnresolvedLinkException
@@ -8818,21 +8575,64 @@ name|resolve
 argument_list|(
 name|rootDir
 argument_list|,
-name|INode
-operator|.
-name|getPathComponents
-argument_list|(
-name|path
-argument_list|)
+name|components
 argument_list|,
-literal|1
-argument_list|,
-name|resolveLink
+literal|false
 argument_list|)
 return|;
 block|}
+comment|/**    * Get {@link INode} associated with the file / directory.    */
+DECL|method|getINodesInPath4Write (String src)
+specifier|public
+name|INodesInPath
+name|getINodesInPath4Write
+parameter_list|(
+name|String
+name|src
+parameter_list|)
+throws|throws
+name|UnresolvedLinkException
+throws|,
+name|SnapshotAccessControlException
+block|{
+return|return
+name|getINodesInPath4Write
+argument_list|(
+name|src
+argument_list|,
+literal|true
+argument_list|)
+return|;
+block|}
+comment|/**    * Get {@link INode} associated with the file / directory.    * @throws SnapshotAccessControlException if path is in RO snapshot    */
+DECL|method|getINode4Write (String src)
+specifier|public
+name|INode
+name|getINode4Write
+parameter_list|(
+name|String
+name|src
+parameter_list|)
+throws|throws
+name|UnresolvedLinkException
+throws|,
+name|SnapshotAccessControlException
+block|{
+return|return
+name|getINodesInPath4Write
+argument_list|(
+name|src
+argument_list|,
+literal|true
+argument_list|)
+operator|.
+name|getLastINode
+argument_list|()
+return|;
+block|}
 comment|/** @return the {@link INodesInPath} containing all inodes in the path. */
-DECL|method|getINodesInPath (String path, boolean resolveLink )
+DECL|method|getINodesInPath (String path, boolean resolveLink)
+specifier|public
 name|INodesInPath
 name|getINodesInPath
 parameter_list|(
@@ -8867,68 +8667,55 @@ name|rootDir
 argument_list|,
 name|components
 argument_list|,
-name|components
-operator|.
-name|length
-argument_list|,
 name|resolveLink
 argument_list|)
 return|;
 block|}
 comment|/** @return the last inode in the path. */
-DECL|method|getNode (String path, boolean resolveLink)
+DECL|method|getINode (String path, boolean resolveLink)
 name|INode
-name|getNode
-parameter_list|(
-name|String
-name|path
-parameter_list|,
-name|boolean
-name|resolveLink
-parameter_list|)
-throws|throws
-name|UnresolvedLinkException
-block|{
-return|return
-name|getLastINodeInPath
-argument_list|(
-name|path
-argument_list|,
-name|resolveLink
-argument_list|)
-operator|.
 name|getINode
-argument_list|(
-literal|0
-argument_list|)
-return|;
-block|}
-comment|/**    * @return the INode of the last component in src, or null if the last    * component does not exist.    * @throws UnresolvedLinkException if symlink can't be resolved    * @throws SnapshotAccessControlException if path is in RO snapshot    */
-DECL|method|getINode4Write (String src, boolean resolveLink)
-name|INode
-name|getINode4Write
 parameter_list|(
 name|String
-name|src
+name|path
 parameter_list|,
 name|boolean
 name|resolveLink
 parameter_list|)
 throws|throws
 name|UnresolvedLinkException
-throws|,
-name|SnapshotAccessControlException
 block|{
 return|return
-name|getINodesInPath4Write
+name|getINodesInPath
 argument_list|(
-name|src
+name|path
 argument_list|,
 name|resolveLink
 argument_list|)
 operator|.
 name|getLastINode
 argument_list|()
+return|;
+block|}
+comment|/**    * Get {@link INode} associated with the file / directory.    */
+DECL|method|getINode (String src)
+specifier|public
+name|INode
+name|getINode
+parameter_list|(
+name|String
+name|src
+parameter_list|)
+throws|throws
+name|UnresolvedLinkException
+block|{
+return|return
+name|getINode
+argument_list|(
+name|src
+argument_list|,
+literal|true
+argument_list|)
 return|;
 block|}
 comment|/**    * @return the INodesInPath of the components in src    * @throws UnresolvedLinkException if symlink can't be resolved    * @throws SnapshotAccessControlException if path is in RO snapshot    */
@@ -8970,10 +8757,6 @@ argument_list|(
 name|rootDir
 argument_list|,
 name|components
-argument_list|,
-name|components
-operator|.
-name|length
 argument_list|,
 name|resolveLink
 argument_list|)

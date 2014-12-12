@@ -581,12 +581,20 @@ condition|)
 block|{
 if|if
 condition|(
-name|fsd
+name|iip
 operator|.
-name|isDir
-argument_list|(
-name|src
-argument_list|)
+name|getLastINode
+argument_list|()
+operator|!=
+literal|null
+operator|&&
+name|iip
+operator|.
+name|getLastINode
+argument_list|()
+operator|.
+name|isDirectory
+argument_list|()
 condition|)
 block|{
 name|fsd
@@ -627,6 +635,8 @@ return|return
 name|getListing
 argument_list|(
 name|fsd
+argument_list|,
+name|iip
 argument_list|,
 name|src
 argument_list|,
@@ -944,7 +954,7 @@ name|getINodesInPath
 argument_list|(
 name|src
 argument_list|,
-literal|true
+literal|false
 argument_list|)
 decl_stmt|;
 if|if
@@ -982,12 +992,12 @@ name|getContentSummaryInt
 argument_list|(
 name|fsd
 argument_list|,
-name|src
+name|iip
 argument_list|)
 return|;
 block|}
-comment|/**    * Get a partial listing of the indicated directory    *    * We will stop when any of the following conditions is met:    * 1) this.lsLimit files have been added    * 2) needLocation is true AND enough files have been added such    * that at least this.lsLimit block locations are in the response    *    * @param fsd FSDirectory    * @param src the directory name    * @param startAfter the name to start listing after    * @param needLocation if block locations are returned    * @return a partial listing starting after startAfter    */
-DECL|method|getListing ( FSDirectory fsd, String src, byte[] startAfter, boolean needLocation, boolean isSuperUser)
+comment|/**    * Get a partial listing of the indicated directory    *    * We will stop when any of the following conditions is met:    * 1) this.lsLimit files have been added    * 2) needLocation is true AND enough files have been added such    * that at least this.lsLimit block locations are in the response    *    * @param fsd FSDirectory    * @param iip the INodesInPath instance containing all the INodes along the    *            path    * @param src the directory name    * @param startAfter the name to start listing after    * @param needLocation if block locations are returned    * @return a partial listing starting after startAfter    */
+DECL|method|getListing (FSDirectory fsd, INodesInPath iip, String src, byte[] startAfter, boolean needLocation, boolean isSuperUser)
 specifier|private
 specifier|static
 name|DirectoryListing
@@ -995,6 +1005,9 @@ name|getListing
 parameter_list|(
 name|FSDirectory
 name|fsd
+parameter_list|,
+name|INodesInPath
+name|iip
 parameter_list|,
 name|String
 name|src
@@ -1064,23 +1077,10 @@ argument_list|)
 return|;
 block|}
 specifier|final
-name|INodesInPath
-name|inodesInPath
-init|=
-name|fsd
-operator|.
-name|getINodesInPath
-argument_list|(
-name|srcs
-argument_list|,
-literal|true
-argument_list|)
-decl_stmt|;
-specifier|final
 name|int
 name|snapshot
 init|=
-name|inodesInPath
+name|iip
 operator|.
 name|getPathSnapshotId
 argument_list|()
@@ -1089,7 +1089,7 @@ specifier|final
 name|INode
 name|targetNode
 init|=
-name|inodesInPath
+name|iip
 operator|.
 name|getLastINode
 argument_list|()
@@ -1152,7 +1152,7 @@ name|snapshot
 argument_list|,
 name|isRawPath
 argument_list|,
-name|inodesInPath
+name|iip
 argument_list|)
 block|}
 argument_list|,
@@ -1325,7 +1325,7 @@ name|snapshot
 argument_list|,
 name|isRawPath
 argument_list|,
-name|inodesInPath
+name|iip
 argument_list|)
 expr_stmt|;
 name|listingCnt
@@ -2726,7 +2726,7 @@ return|return
 name|perm
 return|;
 block|}
-DECL|method|getContentSummaryInt ( FSDirectory fsd, String src)
+DECL|method|getContentSummaryInt (FSDirectory fsd, INodesInPath iip)
 specifier|private
 specifier|static
 name|ContentSummary
@@ -2735,22 +2735,12 @@ parameter_list|(
 name|FSDirectory
 name|fsd
 parameter_list|,
-name|String
-name|src
+name|INodesInPath
+name|iip
 parameter_list|)
 throws|throws
 name|IOException
 block|{
-name|String
-name|srcs
-init|=
-name|FSDirectory
-operator|.
-name|normalizePath
-argument_list|(
-name|src
-argument_list|)
-decl_stmt|;
 name|fsd
 operator|.
 name|readLock
@@ -2761,14 +2751,10 @@ block|{
 name|INode
 name|targetNode
 init|=
-name|fsd
+name|iip
 operator|.
-name|getNode
-argument_list|(
-name|srcs
-argument_list|,
-literal|false
-argument_list|)
+name|getLastINode
+argument_list|()
 decl_stmt|;
 if|if
 condition|(
@@ -2783,7 +2769,10 @@ name|FileNotFoundException
 argument_list|(
 literal|"File does not exist: "
 operator|+
-name|srcs
+name|iip
+operator|.
+name|getPath
+argument_list|()
 argument_list|)
 throw|;
 block|}

@@ -7010,7 +7010,7 @@ operator|.
 name|getFSDirectory
 argument_list|()
 operator|.
-name|getNode
+name|getINode
 argument_list|(
 name|path
 operator|.
@@ -11549,7 +11549,7 @@ operator|.
 name|getFSDirectory
 argument_list|()
 operator|.
-name|getNode
+name|getINode
 argument_list|(
 name|pathToCheck
 operator|.

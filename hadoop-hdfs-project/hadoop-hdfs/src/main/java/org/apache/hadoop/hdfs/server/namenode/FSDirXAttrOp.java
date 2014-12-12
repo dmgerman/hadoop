@@ -1207,8 +1207,6 @@ name|FSDirectory
 operator|.
 name|resolveLastINode
 argument_list|(
-name|src
-argument_list|,
 name|iip
 argument_list|)
 decl_stmt|;
@@ -1557,8 +1555,6 @@ name|FSDirectory
 operator|.
 name|resolveLastINode
 argument_list|(
-name|src
-argument_list|,
 name|iip
 argument_list|)
 decl_stmt|;
@@ -2476,7 +2472,7 @@ name|iip
 init|=
 name|fsd
 operator|.
-name|getLastINodeInPath
+name|getINodesInPath
 argument_list|(
 name|srcs
 argument_list|,
@@ -2490,8 +2486,6 @@ name|FSDirectory
 operator|.
 name|resolveLastINode
 argument_list|(
-name|src
-argument_list|,
 name|iip
 argument_list|)
 decl_stmt|;

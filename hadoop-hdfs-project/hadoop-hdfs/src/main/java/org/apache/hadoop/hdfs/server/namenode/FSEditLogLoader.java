@@ -2768,7 +2768,6 @@ comment|// 1. OP_ADD to create a new file
 comment|// 2. OP_ADD to update file blocks
 comment|// 3. OP_ADD to open file for append
 comment|// See if the file already exists (persistBlocks call)
-specifier|final
 name|INodesInPath
 name|iip
 init|=
@@ -2888,7 +2887,7 @@ name|unprotectedAddFile
 argument_list|(
 name|inodeId
 argument_list|,
-name|path
+name|iip
 argument_list|,
 name|addCloseOp
 operator|.
@@ -2929,6 +2928,24 @@ argument_list|,
 name|addCloseOp
 operator|.
 name|storagePolicyId
+argument_list|)
+expr_stmt|;
+name|iip
+operator|=
+name|INodesInPath
+operator|.
+name|replace
+argument_list|(
+name|iip
+argument_list|,
+name|iip
+operator|.
+name|length
+argument_list|()
+operator|-
+literal|1
+argument_list|,
+name|newFile
 argument_list|)
 expr_stmt|;
 name|fsNamesys
@@ -3032,6 +3049,8 @@ literal|"for append"
 argument_list|)
 expr_stmt|;
 block|}
+comment|// Note we do not replace the INodeFile when converting it to
+comment|// under-construction
 name|LocatedBlock
 name|lb
 init|=
@@ -3041,7 +3060,7 @@ name|prepareFileForWrite
 argument_list|(
 name|path
 argument_list|,
-name|oldFile
+name|iip
 argument_list|,
 name|addCloseOp
 operator|.
@@ -3053,32 +3072,9 @@ name|clientMachine
 argument_list|,
 literal|false
 argument_list|,
-name|iip
-operator|.
-name|getLatestSnapshotId
-argument_list|()
-argument_list|,
 literal|false
 argument_list|)
 decl_stmt|;
-name|newFile
-operator|=
-name|INodeFile
-operator|.
-name|valueOf
-argument_list|(
-name|fsDir
-operator|.
-name|getINode
-argument_list|(
-name|path
-argument_list|)
-argument_list|,
-name|path
-argument_list|,
-literal|true
-argument_list|)
-expr_stmt|;
 comment|// add the op into retry cache is necessary
 if|if
 condition|(
@@ -3175,6 +3171,8 @@ name|fsDir
 argument_list|,
 name|addCloseOp
 argument_list|,
+name|iip
+argument_list|,
 name|newFile
 argument_list|)
 expr_stmt|;
@@ -3257,9 +3255,11 @@ name|iip
 init|=
 name|fsDir
 operator|.
-name|getLastINodeInPath
+name|getINodesInPath
 argument_list|(
 name|path
+argument_list|,
+literal|true
 argument_list|)
 decl_stmt|;
 specifier|final
@@ -3272,10 +3272,8 @@ name|valueOf
 argument_list|(
 name|iip
 operator|.
-name|getINode
-argument_list|(
-literal|0
-argument_list|)
+name|getLastINode
+argument_list|()
 argument_list|,
 name|path
 argument_list|)
@@ -3312,6 +3310,8 @@ argument_list|(
 name|fsDir
 argument_list|,
 name|addCloseOp
+argument_list|,
+name|iip
 argument_list|,
 name|file
 argument_list|)
@@ -3436,6 +3436,18 @@ name|length
 argument_list|)
 expr_stmt|;
 block|}
+name|INodesInPath
+name|iip
+init|=
+name|fsDir
+operator|.
+name|getINodesInPath
+argument_list|(
+name|path
+argument_list|,
+literal|true
+argument_list|)
+decl_stmt|;
 name|INodeFile
 name|oldFile
 init|=
@@ -3443,12 +3455,10 @@ name|INodeFile
 operator|.
 name|valueOf
 argument_list|(
-name|fsDir
+name|iip
 operator|.
-name|getINode
-argument_list|(
-name|path
-argument_list|)
+name|getLastINode
+argument_list|()
 argument_list|,
 name|path
 argument_list|)
@@ -3459,6 +3469,8 @@ argument_list|(
 name|fsDir
 argument_list|,
 name|updateOp
+argument_list|,
+name|iip
 argument_list|,
 name|oldFile
 argument_list|)
@@ -4175,12 +4187,10 @@ argument_list|,
 name|lastInodeId
 argument_list|)
 expr_stmt|;
-name|fsDir
-operator|.
-name|unprotectedAddSymlink
-argument_list|(
-name|inodeId
-argument_list|,
+specifier|final
+name|String
+name|path
+init|=
 name|renameReservedPathsOnUpgrade
 argument_list|(
 name|symlinkOp
@@ -4189,6 +4199,27 @@ name|path
 argument_list|,
 name|logVersion
 argument_list|)
+decl_stmt|;
+specifier|final
+name|INodesInPath
+name|iip
+init|=
+name|fsDir
+operator|.
+name|getINodesInPath
+argument_list|(
+name|path
+argument_list|,
+literal|false
+argument_list|)
+decl_stmt|;
+name|fsDir
+operator|.
+name|unprotectedAddSymlink
+argument_list|(
+name|iip
+argument_list|,
+name|inodeId
 argument_list|,
 name|symlinkOp
 operator|.
@@ -5873,7 +5904,7 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|/**    * Update in-memory data structures with new block information.    * @throws IOException    */
-DECL|method|updateBlocks (FSDirectory fsDir, BlockListUpdatingOp op, INodeFile file)
+DECL|method|updateBlocks (FSDirectory fsDir, BlockListUpdatingOp op, INodesInPath iip, INodeFile file)
 specifier|private
 name|void
 name|updateBlocks
@@ -5883,6 +5914,9 @@ name|fsDir
 parameter_list|,
 name|BlockListUpdatingOp
 name|op
+parameter_list|,
+name|INodesInPath
+name|iip
 parameter_list|,
 name|INodeFile
 name|file
@@ -6208,6 +6242,8 @@ operator|.
 name|unprotectedRemoveBlock
 argument_list|(
 name|path
+argument_list|,
+name|iip
 argument_list|,
 name|file
 argument_list|,

@@ -2583,7 +2583,7 @@ name|namesystem
 operator|.
 name|dir
 operator|.
-name|getNode
+name|getINode
 argument_list|(
 name|parentPath
 argument_list|,
@@ -4426,9 +4426,11 @@ name|iip
 init|=
 name|fsDir
 operator|.
-name|getLastINodeInPath
+name|getINodesInPath
 argument_list|(
 name|path
+argument_list|,
+literal|true
 argument_list|)
 decl_stmt|;
 name|oldnode
@@ -4439,10 +4441,8 @@ name|valueOf
 argument_list|(
 name|iip
 operator|.
-name|getINode
-argument_list|(
-literal|0
-argument_list|)
+name|getLastINode
+argument_list|()
 argument_list|,
 name|path
 argument_list|)

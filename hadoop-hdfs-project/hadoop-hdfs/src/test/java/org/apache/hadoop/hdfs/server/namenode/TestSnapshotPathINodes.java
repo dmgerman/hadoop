@@ -40,18 +40,6 @@ name|junit
 operator|.
 name|Assert
 operator|.
-name|assertFalse
-import|;
-end_import
-
-begin_import
-import|import static
-name|org
-operator|.
-name|junit
-operator|.
-name|Assert
-operator|.
 name|assertNull
 import|;
 end_import
@@ -853,6 +841,8 @@ operator|.
 name|rootDir
 argument_list|,
 name|components
+argument_list|,
+literal|false
 argument_list|)
 decl_stmt|;
 comment|// The number of inodes should be equal to components.length
@@ -972,8 +962,6 @@ name|toString
 argument_list|()
 argument_list|)
 expr_stmt|;
-comment|// Call getExistingPathINodes and request only one INode. This is used
-comment|// when identifying the INode for a given path.
 name|nodesInPath
 operator|=
 name|INodesInPath
@@ -986,8 +974,6 @@ name|rootDir
 argument_list|,
 name|components
 argument_list|,
-literal|1
-argument_list|,
 literal|false
 argument_list|)
 expr_stmt|;
@@ -998,7 +984,9 @@ operator|.
 name|length
 argument_list|()
 argument_list|,
-literal|1
+name|components
+operator|.
+name|length
 argument_list|)
 expr_stmt|;
 name|assertSnapshot
@@ -1017,92 +1005,13 @@ name|assertEquals
 argument_list|(
 name|nodesInPath
 operator|.
-name|getINode
-argument_list|(
-literal|0
-argument_list|)
+name|getLastINode
+argument_list|()
 operator|.
 name|getFullPathName
 argument_list|()
 argument_list|,
 name|file1
-operator|.
-name|toString
-argument_list|()
-argument_list|)
-expr_stmt|;
-comment|// Call getExistingPathINodes and request 2 INodes. This is usually used
-comment|// when identifying the parent INode of a given path.
-name|nodesInPath
-operator|=
-name|INodesInPath
-operator|.
-name|resolve
-argument_list|(
-name|fsdir
-operator|.
-name|rootDir
-argument_list|,
-name|components
-argument_list|,
-literal|2
-argument_list|,
-literal|false
-argument_list|)
-expr_stmt|;
-name|assertEquals
-argument_list|(
-name|nodesInPath
-operator|.
-name|length
-argument_list|()
-argument_list|,
-literal|2
-argument_list|)
-expr_stmt|;
-name|assertSnapshot
-argument_list|(
-name|nodesInPath
-argument_list|,
-literal|false
-argument_list|,
-literal|null
-argument_list|,
-operator|-
-literal|1
-argument_list|)
-expr_stmt|;
-name|assertEquals
-argument_list|(
-name|nodesInPath
-operator|.
-name|getINode
-argument_list|(
-literal|1
-argument_list|)
-operator|.
-name|getFullPathName
-argument_list|()
-argument_list|,
-name|file1
-operator|.
-name|toString
-argument_list|()
-argument_list|)
-expr_stmt|;
-name|assertEquals
-argument_list|(
-name|nodesInPath
-operator|.
-name|getINode
-argument_list|(
-literal|0
-argument_list|)
-operator|.
-name|getFullPathName
-argument_list|()
-argument_list|,
-name|sub1
 operator|.
 name|toString
 argument_list|()
@@ -1190,6 +1099,8 @@ operator|.
 name|rootDir
 argument_list|,
 name|components
+argument_list|,
+literal|false
 argument_list|)
 decl_stmt|;
 comment|// Length of inodes should be (components.length - 1), since we will ignore
@@ -1273,8 +1184,6 @@ name|rootDir
 argument_list|,
 name|components
 argument_list|,
-literal|1
-argument_list|,
 literal|false
 argument_list|)
 expr_stmt|;
@@ -1285,64 +1194,13 @@ operator|.
 name|length
 argument_list|()
 argument_list|,
-literal|1
-argument_list|)
-expr_stmt|;
-comment|// The snapshotroot (s1) is not included in inodes. Thus the
-comment|// snapshotRootIndex should be -1.
-name|assertSnapshot
-argument_list|(
-name|nodesInPath
-argument_list|,
-literal|true
-argument_list|,
-name|snapshot
-argument_list|,
+name|components
+operator|.
+name|length
 operator|-
 literal|1
 argument_list|)
 expr_stmt|;
-comment|// Check the INode for file1 (snapshot file)
-name|assertINodeFile
-argument_list|(
-name|nodesInPath
-operator|.
-name|getLastINode
-argument_list|()
-argument_list|,
-name|file1
-argument_list|)
-expr_stmt|;
-comment|// Call getExistingPathINodes and request 2 INodes.
-name|nodesInPath
-operator|=
-name|INodesInPath
-operator|.
-name|resolve
-argument_list|(
-name|fsdir
-operator|.
-name|rootDir
-argument_list|,
-name|components
-argument_list|,
-literal|2
-argument_list|,
-literal|false
-argument_list|)
-expr_stmt|;
-name|assertEquals
-argument_list|(
-name|nodesInPath
-operator|.
-name|length
-argument_list|()
-argument_list|,
-literal|2
-argument_list|)
-expr_stmt|;
-comment|// There should be two INodes in inodes: s1 and snapshot of file1. Thus the
-comment|// SnapshotRootIndex should be 0.
 name|assertSnapshot
 argument_list|(
 name|nodesInPath
@@ -1351,9 +1209,10 @@ literal|true
 argument_list|,
 name|snapshot
 argument_list|,
-literal|0
+literal|3
 argument_list|)
 expr_stmt|;
+comment|// Check the INode for file1 (snapshot file)
 name|assertINodeFile
 argument_list|(
 name|nodesInPath
@@ -1404,6 +1263,8 @@ operator|.
 name|rootDir
 argument_list|,
 name|components
+argument_list|,
+literal|false
 argument_list|)
 expr_stmt|;
 comment|// The number of INodes returned should still be components.length
@@ -1678,6 +1539,8 @@ operator|.
 name|rootDir
 argument_list|,
 name|components
+argument_list|,
+literal|false
 argument_list|)
 decl_stmt|;
 comment|// Length of inodes should be (components.length - 1), since we will ignore
@@ -1793,6 +1656,8 @@ operator|.
 name|rootDir
 argument_list|,
 name|components
+argument_list|,
+literal|false
 argument_list|)
 decl_stmt|;
 comment|// The length of inodes should be equal to components.length
@@ -2089,6 +1954,8 @@ operator|.
 name|rootDir
 argument_list|,
 name|components
+argument_list|,
+literal|false
 argument_list|)
 decl_stmt|;
 comment|// Length of inodes should be (components.length - 1), since we will ignore
@@ -2202,6 +2069,8 @@ operator|.
 name|rootDir
 argument_list|,
 name|components
+argument_list|,
+literal|false
 argument_list|)
 decl_stmt|;
 comment|// The number of inodes should be equal to components.length
@@ -2369,6 +2238,8 @@ operator|.
 name|rootDir
 argument_list|,
 name|components
+argument_list|,
+literal|false
 argument_list|)
 decl_stmt|;
 comment|// The number of inodes should be equal to components.length
@@ -2498,6 +2369,8 @@ operator|.
 name|rootDir
 argument_list|,
 name|components
+argument_list|,
+literal|false
 argument_list|)
 decl_stmt|;
 comment|// Length of ssInodes should be (components.length - 1), since we will
@@ -2624,6 +2497,8 @@ operator|.
 name|rootDir
 argument_list|,
 name|components
+argument_list|,
+literal|false
 argument_list|)
 decl_stmt|;
 name|assertSnapshot

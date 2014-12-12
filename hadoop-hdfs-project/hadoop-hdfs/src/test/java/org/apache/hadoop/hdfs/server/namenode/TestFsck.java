@@ -5185,7 +5185,7 @@ argument_list|()
 operator|.
 name|dir
 operator|.
-name|getNode
+name|getINode
 argument_list|(
 name|fileName
 argument_list|,
