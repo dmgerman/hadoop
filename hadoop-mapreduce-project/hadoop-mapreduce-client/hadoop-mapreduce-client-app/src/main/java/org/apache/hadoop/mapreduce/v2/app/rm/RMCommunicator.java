@@ -700,7 +700,7 @@ name|LogFactory
 operator|.
 name|getLog
 argument_list|(
-name|RMContainerAllocator
+name|RMCommunicator
 operator|.
 name|class
 argument_list|)
