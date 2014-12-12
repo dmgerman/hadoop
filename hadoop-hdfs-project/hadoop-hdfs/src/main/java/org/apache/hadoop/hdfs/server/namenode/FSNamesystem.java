@@ -10322,17 +10322,6 @@ expr_stmt|;
 if|if
 condition|(
 name|res
-operator|==
-literal|null
-condition|)
-block|{
-return|return
-literal|null
-return|;
-block|}
-if|if
-condition|(
-name|res
 operator|.
 name|updateAccessTime
 argument_list|()
