@@ -44,7 +44,7 @@ name|java
 operator|.
 name|io
 operator|.
-name|FileWriter
+name|FileOutputStream
 import|;
 end_import
 
@@ -64,7 +64,7 @@ name|java
 operator|.
 name|io
 operator|.
-name|PrintWriter
+name|PrintStream
 import|;
 end_import
 
@@ -213,7 +213,7 @@ literal|"filename"
 decl_stmt|;
 DECL|field|writer
 specifier|private
-name|PrintWriter
+name|PrintStream
 name|writer
 decl_stmt|;
 annotation|@
@@ -245,28 +245,26 @@ name|filename
 operator|==
 literal|null
 condition|?
-operator|new
-name|PrintWriter
-argument_list|(
 name|System
 operator|.
 name|out
-argument_list|)
 else|:
 operator|new
-name|PrintWriter
+name|PrintStream
 argument_list|(
 operator|new
-name|FileWriter
+name|FileOutputStream
 argument_list|(
 operator|new
 name|File
 argument_list|(
 name|filename
 argument_list|)
+argument_list|)
 argument_list|,
 literal|true
-argument_list|)
+argument_list|,
+literal|"UTF-8"
 argument_list|)
 expr_stmt|;
 block|}

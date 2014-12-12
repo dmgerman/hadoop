@@ -92,6 +92,20 @@ name|org
 operator|.
 name|apache
 operator|.
+name|commons
+operator|.
+name|io
+operator|.
+name|Charsets
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
 name|hadoop
 operator|.
 name|classification
@@ -482,6 +496,10 @@ operator|new
 name|PrintStream
 argument_list|(
 name|configStream
+argument_list|,
+literal|false
+argument_list|,
+literal|"UTF-8"
 argument_list|)
 decl_stmt|;
 name|SpanReceiverInfoBuilder
@@ -656,6 +674,16 @@ operator|=
 literal|", "
 expr_stmt|;
 block|}
+name|String
+name|configStreamStr
+init|=
+name|configStream
+operator|.
+name|toString
+argument_list|(
+literal|"UTF-8"
+argument_list|)
+decl_stmt|;
 try|try
 block|{
 name|long
@@ -683,10 +711,7 @@ name|id
 operator|+
 literal|" with configuration "
 operator|+
-name|configStream
-operator|.
-name|toString
-argument_list|()
+name|configStreamStr
 argument_list|)
 expr_stmt|;
 block|}
@@ -704,10 +729,7 @@ name|println
 argument_list|(
 literal|"addSpanReceiver error with configuration "
 operator|+
-name|configStream
-operator|.
-name|toString
-argument_list|()
+name|configStreamStr
 argument_list|)
 expr_stmt|;
 throw|throw

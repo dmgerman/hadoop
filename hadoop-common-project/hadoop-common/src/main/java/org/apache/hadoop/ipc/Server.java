@@ -570,6 +570,20 @@ name|apache
 operator|.
 name|commons
 operator|.
+name|io
+operator|.
+name|Charsets
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|commons
+operator|.
 name|logging
 operator|.
 name|Log
@@ -1610,7 +1624,11 @@ argument_list|(
 literal|"GET "
 operator|.
 name|getBytes
-argument_list|()
+argument_list|(
+name|Charsets
+operator|.
+name|UTF_8
+argument_list|)
 argument_list|)
 decl_stmt|;
 comment|/**    * An HTTP response to send back if we detect an HTTP request to our IPC    * port.    */
@@ -8442,7 +8460,11 @@ argument_list|(
 name|RECEIVED_HTTP_REQ_RESPONSE
 operator|.
 name|getBytes
-argument_list|()
+argument_list|(
+name|Charsets
+operator|.
+name|UTF_8
+argument_list|)
 argument_list|)
 argument_list|)
 expr_stmt|;

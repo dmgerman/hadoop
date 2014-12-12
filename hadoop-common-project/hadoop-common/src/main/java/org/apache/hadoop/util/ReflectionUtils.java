@@ -42,7 +42,27 @@ name|java
 operator|.
 name|io
 operator|.
+name|PrintStream
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|io
+operator|.
 name|PrintWriter
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|io
+operator|.
+name|UnsupportedEncodingException
 import|;
 end_import
 
@@ -115,6 +135,18 @@ operator|.
 name|reflect
 operator|.
 name|Method
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|nio
+operator|.
+name|charset
+operator|.
+name|Charset
 import|;
 end_import
 
@@ -758,14 +790,14 @@ literal|")"
 return|;
 block|}
 comment|/**    * Print all of the thread's information and stack traces.    *     * @param stream the stream to    * @param title a string title for the stack trace    */
-DECL|method|printThreadInfo (PrintWriter stream, String title)
+DECL|method|printThreadInfo (PrintStream stream, String title)
 specifier|public
 specifier|synchronized
 specifier|static
 name|void
 name|printThreadInfo
 parameter_list|(
-name|PrintWriter
+name|PrintStream
 name|stream
 parameter_list|,
 name|String
@@ -1132,6 +1164,8 @@ condition|(
 name|dumpStack
 condition|)
 block|{
+try|try
+block|{
 name|ByteArrayOutputStream
 name|buffer
 init|=
@@ -1142,9 +1176,13 @@ decl_stmt|;
 name|printThreadInfo
 argument_list|(
 operator|new
-name|PrintWriter
+name|PrintStream
 argument_list|(
 name|buffer
+argument_list|,
+literal|false
+argument_list|,
+literal|"UTF-8"
 argument_list|)
 argument_list|,
 name|title
@@ -1157,9 +1195,24 @@ argument_list|(
 name|buffer
 operator|.
 name|toString
+argument_list|(
+name|Charset
+operator|.
+name|defaultCharset
+argument_list|()
+operator|.
+name|name
 argument_list|()
 argument_list|)
+argument_list|)
 expr_stmt|;
+block|}
+catch|catch
+parameter_list|(
+name|UnsupportedEncodingException
+name|ignored
+parameter_list|)
+block|{         }
 block|}
 block|}
 block|}

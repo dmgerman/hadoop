@@ -530,6 +530,20 @@ end_import
 
 begin_import
 import|import
+name|com
+operator|.
+name|google
+operator|.
+name|common
+operator|.
+name|base
+operator|.
+name|Charsets
+import|;
+end_import
+
+begin_import
+import|import
 name|org
 operator|.
 name|apache
@@ -8245,6 +8259,10 @@ name|url
 operator|.
 name|openStream
 argument_list|()
+argument_list|,
+name|Charsets
+operator|.
+name|UTF_8
 argument_list|)
 return|;
 block|}

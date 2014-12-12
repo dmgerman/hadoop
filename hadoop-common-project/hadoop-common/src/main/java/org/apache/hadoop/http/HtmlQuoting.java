@@ -18,6 +18,20 @@ end_package
 
 begin_import
 import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|commons
+operator|.
+name|io
+operator|.
+name|Charsets
+import|;
+end_import
+
+begin_import
+import|import
 name|java
 operator|.
 name|io
@@ -67,7 +81,11 @@ init|=
 literal|"&amp;"
 operator|.
 name|getBytes
-argument_list|()
+argument_list|(
+name|Charsets
+operator|.
+name|UTF_8
+argument_list|)
 decl_stmt|;
 DECL|field|aposBytes
 specifier|private
@@ -80,7 +98,11 @@ init|=
 literal|"&apos;"
 operator|.
 name|getBytes
-argument_list|()
+argument_list|(
+name|Charsets
+operator|.
+name|UTF_8
+argument_list|)
 decl_stmt|;
 DECL|field|gtBytes
 specifier|private
@@ -93,7 +115,11 @@ init|=
 literal|"&gt;"
 operator|.
 name|getBytes
-argument_list|()
+argument_list|(
+name|Charsets
+operator|.
+name|UTF_8
+argument_list|)
 decl_stmt|;
 DECL|field|ltBytes
 specifier|private
@@ -106,7 +132,11 @@ init|=
 literal|"&lt;"
 operator|.
 name|getBytes
-argument_list|()
+argument_list|(
+name|Charsets
+operator|.
+name|UTF_8
+argument_list|)
 decl_stmt|;
 DECL|field|quotBytes
 specifier|private
@@ -119,7 +149,11 @@ init|=
 literal|"&quot;"
 operator|.
 name|getBytes
-argument_list|()
+argument_list|(
+name|Charsets
+operator|.
+name|UTF_8
+argument_list|)
 decl_stmt|;
 comment|/**    * Does the given string need to be quoted?    * @param data the string to check    * @param off the starting position    * @param len the number of bytes to check    * @return does the string contain any of the active html characters?    */
 DECL|method|needsQuoting (byte[] data, int off, int len)
@@ -219,7 +253,11 @@ init|=
 name|str
 operator|.
 name|getBytes
-argument_list|()
+argument_list|(
+name|Charsets
+operator|.
+name|UTF_8
+argument_list|)
 decl_stmt|;
 return|return
 name|needsQuoting
@@ -381,7 +419,11 @@ init|=
 name|item
 operator|.
 name|getBytes
-argument_list|()
+argument_list|(
+name|Charsets
+operator|.
+name|UTF_8
+argument_list|)
 decl_stmt|;
 if|if
 condition|(
@@ -419,6 +461,14 @@ operator|.
 name|length
 argument_list|)
 expr_stmt|;
+return|return
+name|buffer
+operator|.
+name|toString
+argument_list|(
+literal|"UTF-8"
+argument_list|)
+return|;
 block|}
 catch|catch
 parameter_list|(
@@ -427,13 +477,10 @@ name|ioe
 parameter_list|)
 block|{
 comment|// Won't happen, since it is a bytearrayoutputstream
-block|}
 return|return
-name|buffer
-operator|.
-name|toString
-argument_list|()
+literal|null
 return|;
+block|}
 block|}
 else|else
 block|{

@@ -1550,6 +1550,8 @@ operator|new
 name|ByteArrayOutputStream
 argument_list|()
 decl_stmt|;
+try|try
+block|{
 name|PrintStream
 name|ps
 init|=
@@ -1557,6 +1559,10 @@ operator|new
 name|PrintStream
 argument_list|(
 name|buffer
+argument_list|,
+literal|false
+argument_list|,
+literal|"UTF-8"
 argument_list|)
 decl_stmt|;
 name|PropertiesConfiguration
@@ -1573,8 +1579,6 @@ argument_list|(
 name|c
 argument_list|)
 expr_stmt|;
-try|try
-block|{
 name|tmp
 operator|.
 name|save
@@ -1582,6 +1586,14 @@ argument_list|(
 name|ps
 argument_list|)
 expr_stmt|;
+return|return
+name|buffer
+operator|.
+name|toString
+argument_list|(
+literal|"UTF-8"
+argument_list|)
+return|;
 block|}
 catch|catch
 parameter_list|(
@@ -1597,12 +1609,6 @@ name|e
 argument_list|)
 throw|;
 block|}
-return|return
-name|buffer
-operator|.
-name|toString
-argument_list|()
-return|;
 block|}
 block|}
 end_class

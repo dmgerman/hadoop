@@ -1359,13 +1359,9 @@ name|ReflectionUtils
 operator|.
 name|printThreadInfo
 argument_list|(
-operator|new
-name|PrintWriter
-argument_list|(
 name|System
 operator|.
 name|err
-argument_list|)
 argument_list|,
 literal|"Thread dumps"
 argument_list|)
