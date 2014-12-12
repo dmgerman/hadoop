@@ -2250,6 +2250,31 @@ name|isDecommissionInProgress
 argument_list|()
 argument_list|)
 expr_stmt|;
+comment|// Check DatanodeManager#getDecommissionNodes, make sure it returns
+comment|// the node as decommissioning, even if it's dead
+name|List
+argument_list|<
+name|DatanodeDescriptor
+argument_list|>
+name|decomlist
+init|=
+name|dm
+operator|.
+name|getDecommissioningNodes
+argument_list|()
+decl_stmt|;
+name|assertTrue
+argument_list|(
+literal|"The node should be be decommissioning"
+argument_list|,
+name|decomlist
+operator|.
+name|size
+argument_list|()
+operator|==
+literal|1
+argument_list|)
+expr_stmt|;
 comment|// Delete the under-replicated file, which should let the
 comment|// DECOMMISSION_IN_PROGRESS node become DECOMMISSIONED
 name|cleanupFile
