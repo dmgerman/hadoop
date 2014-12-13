@@ -561,7 +561,9 @@ argument_list|)
 operator|.
 name|_
 argument_list|(
-literal|"This page works best with javascript enabled."
+literal|"This page will not function without javascript enabled."
+operator|+
+literal|" Please enable javascript on your browser."
 argument_list|)
 operator|.
 name|_
