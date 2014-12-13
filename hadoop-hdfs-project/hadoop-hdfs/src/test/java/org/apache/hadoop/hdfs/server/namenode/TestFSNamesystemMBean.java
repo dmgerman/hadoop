@@ -532,6 +532,23 @@ literal|"NumStaleStorages"
 argument_list|)
 argument_list|)
 decl_stmt|;
+name|String
+name|topUsers
+init|=
+call|(
+name|String
+call|)
+argument_list|(
+name|mbs
+operator|.
+name|getAttribute
+argument_list|(
+name|mxbeanNameFsns
+argument_list|,
+literal|"TopUserOpCounts"
+argument_list|)
+argument_list|)
+decl_stmt|;
 comment|// Metrics that belong to "NameNodeInfo".
 comment|// These are metrics that FSNamesystem registers directly with MBeanServer.
 name|ObjectName

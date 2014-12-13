@@ -195,6 +195,13 @@ name|int
 name|getNumStaleStorages
 parameter_list|()
 function_decl|;
+comment|/**    * Returns a nested JSON object listing the top users for different RPC     * operations over tracked time windows.    *     * @return JSON string    */
+DECL|method|getTopUserOpCounts ()
+specifier|public
+name|String
+name|getTopUserOpCounts
+parameter_list|()
+function_decl|;
 block|}
 end_interface
 

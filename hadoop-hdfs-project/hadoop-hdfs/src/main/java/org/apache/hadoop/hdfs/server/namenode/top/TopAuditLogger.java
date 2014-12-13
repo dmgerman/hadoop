@@ -34,6 +34,20 @@ end_import
 
 begin_import
 import|import
+name|com
+operator|.
+name|google
+operator|.
+name|common
+operator|.
+name|base
+operator|.
+name|Preconditions
+import|;
+end_import
+
+begin_import
+import|import
 name|org
 operator|.
 name|apache
@@ -166,6 +180,38 @@ operator|.
 name|class
 argument_list|)
 decl_stmt|;
+DECL|field|topMetrics
+specifier|private
+specifier|final
+name|TopMetrics
+name|topMetrics
+decl_stmt|;
+DECL|method|TopAuditLogger (TopMetrics topMetrics)
+specifier|public
+name|TopAuditLogger
+parameter_list|(
+name|TopMetrics
+name|topMetrics
+parameter_list|)
+block|{
+name|Preconditions
+operator|.
+name|checkNotNull
+argument_list|(
+name|topMetrics
+argument_list|,
+literal|"Cannot init with a null "
+operator|+
+literal|"TopMetrics"
+argument_list|)
+expr_stmt|;
+name|this
+operator|.
+name|topMetrics
+operator|=
+name|topMetrics
+expr_stmt|;
+block|}
 annotation|@
 name|Override
 DECL|method|initialize (Configuration conf)
@@ -206,22 +252,9 @@ name|FileStatus
 name|status
 parameter_list|)
 block|{
-name|TopMetrics
-name|instance
-init|=
-name|TopMetrics
-operator|.
-name|getInstance
-argument_list|()
-decl_stmt|;
-if|if
-condition|(
-name|instance
-operator|!=
-literal|null
-condition|)
+try|try
 block|{
-name|instance
+name|topMetrics
 operator|.
 name|report
 argument_list|(
@@ -241,13 +274,23 @@ name|status
 argument_list|)
 expr_stmt|;
 block|}
-else|else
+catch|catch
+parameter_list|(
+name|Throwable
+name|t
+parameter_list|)
 block|{
 name|LOG
 operator|.
 name|error
 argument_list|(
-literal|"TopMetrics is not initialized yet!"
+literal|"An error occurred while reflecting the event in top service, "
+operator|+
+literal|"event: (cmd={},userName={})"
+argument_list|,
+name|cmd
+argument_list|,
+name|userName
 argument_list|)
 expr_stmt|;
 block|}
