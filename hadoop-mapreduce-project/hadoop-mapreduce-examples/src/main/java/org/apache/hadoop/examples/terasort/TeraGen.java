@@ -1509,34 +1509,6 @@ literal|1
 index|]
 argument_list|)
 decl_stmt|;
-if|if
-condition|(
-name|outputDir
-operator|.
-name|getFileSystem
-argument_list|(
-name|getConf
-argument_list|()
-argument_list|)
-operator|.
-name|exists
-argument_list|(
-name|outputDir
-argument_list|)
-condition|)
-block|{
-throw|throw
-operator|new
-name|IOException
-argument_list|(
-literal|"Output directory "
-operator|+
-name|outputDir
-operator|+
-literal|" already exists."
-argument_list|)
-throw|;
-block|}
 name|FileOutputFormat
 operator|.
 name|setOutputPath
