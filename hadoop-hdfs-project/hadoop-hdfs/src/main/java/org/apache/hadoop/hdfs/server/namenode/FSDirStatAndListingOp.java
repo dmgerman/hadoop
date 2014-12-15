@@ -996,6 +996,31 @@ name|iip
 argument_list|)
 return|;
 block|}
+DECL|method|getStoragePolicyID (byte inodePolicy, byte parentPolicy)
+specifier|private
+specifier|static
+name|byte
+name|getStoragePolicyID
+parameter_list|(
+name|byte
+name|inodePolicy
+parameter_list|,
+name|byte
+name|parentPolicy
+parameter_list|)
+block|{
+return|return
+name|inodePolicy
+operator|!=
+name|BlockStoragePolicySuite
+operator|.
+name|ID_UNSPECIFIED
+condition|?
+name|inodePolicy
+else|:
+name|parentPolicy
+return|;
+block|}
 comment|/**    * Get a partial listing of the indicated directory    *    * We will stop when any of the following conditions is met:    * 1) this.lsLimit files have been added    * 2) needLocation is true AND enough files have been added such    * that at least this.lsLimit block locations are in the response    *    * @param fsd FSDirectory    * @param iip the INodesInPath instance containing all the INodes along the    *            path    * @param src the directory name    * @param startAfter the name to start listing after    * @param needLocation if block locations are returned    * @return a partial listing starting after startAfter    */
 DECL|method|getListing (FSDirectory fsd, INodesInPath iip, String src, byte[] startAfter, boolean needLocation, boolean isSuperUser)
 specifier|private
@@ -1312,8 +1337,6 @@ name|cur
 argument_list|,
 name|needLocation
 argument_list|,
-name|fsd
-operator|.
 name|getStoragePolicyID
 argument_list|(
 name|curPolicy
