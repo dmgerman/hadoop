@@ -2387,6 +2387,11 @@ name|collectorClasses
 operator|.
 name|length
 decl_stmt|;
+name|Exception
+name|lastException
+init|=
+literal|null
+decl_stmt|;
 for|for
 control|(
 name|Class
@@ -2530,6 +2535,10 @@ operator|+
 literal|" more collector(s) to try)"
 expr_stmt|;
 block|}
+name|lastException
+operator|=
+name|e
+expr_stmt|;
 name|LOG
 operator|.
 name|warn
@@ -2545,7 +2554,16 @@ throw|throw
 operator|new
 name|IOException
 argument_list|(
-literal|"Unable to initialize any output collector"
+literal|"Initialization of all the collectors failed. "
+operator|+
+literal|"Error in last collector was :"
+operator|+
+name|lastException
+operator|.
+name|getMessage
+argument_list|()
+argument_list|,
+name|lastException
 argument_list|)
 throw|;
 block|}
