@@ -94,13 +94,6 @@ name|void
 name|init
 parameter_list|()
 block|{
-name|CleanerMetrics
-operator|.
-name|initSingleton
-argument_list|(
-name|conf
-argument_list|)
-expr_stmt|;
 name|cleanerMetrics
 operator|=
 name|CleanerMetrics

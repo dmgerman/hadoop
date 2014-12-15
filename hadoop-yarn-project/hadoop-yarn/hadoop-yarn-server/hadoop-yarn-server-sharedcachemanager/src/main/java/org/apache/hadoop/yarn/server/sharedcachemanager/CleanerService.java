@@ -534,10 +534,8 @@ name|metrics
 operator|=
 name|CleanerMetrics
 operator|.
-name|initSingleton
-argument_list|(
-name|conf
-argument_list|)
+name|getInstance
+argument_list|()
 expr_stmt|;
 comment|// Start dependent services (i.e. AppChecker)
 name|super

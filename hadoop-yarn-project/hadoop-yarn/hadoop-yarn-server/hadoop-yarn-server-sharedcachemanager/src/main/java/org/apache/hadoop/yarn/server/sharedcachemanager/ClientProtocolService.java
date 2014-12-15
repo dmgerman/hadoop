@@ -643,10 +643,8 @@ name|metrics
 operator|=
 name|ClientSCMMetrics
 operator|.
-name|initSingleton
-argument_list|(
-name|conf
-argument_list|)
+name|getInstance
+argument_list|()
 expr_stmt|;
 name|YarnRPC
 name|rpc
