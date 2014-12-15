@@ -350,7 +350,39 @@ name|yarn
 operator|.
 name|exceptions
 operator|.
+name|ApplicationAttemptNotFoundException
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|exceptions
+operator|.
 name|ApplicationNotFoundException
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|exceptions
+operator|.
+name|ContainerNotFoundException
 import|;
 end_import
 
@@ -1136,6 +1168,8 @@ name|APPLICATION
 argument_list|)
 condition|)
 block|{
+name|exitCode
+operator|=
 name|printApplicationReport
 argument_list|(
 name|cliParser
@@ -1161,6 +1195,8 @@ name|APPLICATION_ATTEMPT
 argument_list|)
 condition|)
 block|{
+name|exitCode
+operator|=
 name|printApplicationAttemptReport
 argument_list|(
 name|cliParser
@@ -1186,6 +1222,8 @@ name|CONTAINER
 argument_list|)
 condition|)
 block|{
+name|exitCode
+operator|=
 name|printContainerReport
 argument_list|(
 name|cliParser
@@ -1197,6 +1235,9 @@ argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
+return|return
+name|exitCode
+return|;
 block|}
 elseif|else
 if|if
@@ -1714,10 +1755,10 @@ name|opts
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Prints the application attempt report for an application attempt id.    *     * @param applicationAttemptId    * @throws YarnException    */
+comment|/**    * Prints the application attempt report for an application attempt id.    *     * @param applicationAttemptId    * @return exitCode    * @throws YarnException    */
 DECL|method|printApplicationAttemptReport (String applicationAttemptId)
 specifier|private
-name|void
+name|int
 name|printApplicationAttemptReport
 parameter_list|(
 name|String
@@ -1731,6 +1772,12 @@ block|{
 name|ApplicationAttemptReport
 name|appAttemptReport
 init|=
+literal|null
+decl_stmt|;
+try|try
+block|{
+name|appAttemptReport
+operator|=
 name|client
 operator|.
 name|getApplicationAttemptReport
@@ -1742,7 +1789,52 @@ argument_list|(
 name|applicationAttemptId
 argument_list|)
 argument_list|)
-decl_stmt|;
+expr_stmt|;
+block|}
+catch|catch
+parameter_list|(
+name|ApplicationNotFoundException
+name|e
+parameter_list|)
+block|{
+name|sysout
+operator|.
+name|println
+argument_list|(
+literal|"Application for AppAttempt with id '"
+operator|+
+name|applicationAttemptId
+operator|+
+literal|"' doesn't exist in RM or Timeline Server."
+argument_list|)
+expr_stmt|;
+return|return
+operator|-
+literal|1
+return|;
+block|}
+catch|catch
+parameter_list|(
+name|ApplicationAttemptNotFoundException
+name|e
+parameter_list|)
+block|{
+name|sysout
+operator|.
+name|println
+argument_list|(
+literal|"Application Attempt with id '"
+operator|+
+name|applicationAttemptId
+operator|+
+literal|"' doesn't exist in RM or Timeline Server."
+argument_list|)
+expr_stmt|;
+return|return
+operator|-
+literal|1
+return|;
+block|}
 comment|// Use PrintWriter.println, which uses correct platform line ending.
 name|ByteArrayOutputStream
 name|baos
@@ -1907,9 +1999,30 @@ literal|"Application Attempt with id '"
 operator|+
 name|applicationAttemptId
 operator|+
-literal|"' doesn't exist in History Server."
+literal|"' doesn't exist in Timeline Server."
 argument_list|)
 expr_stmt|;
+name|appAttemptReportStr
+operator|.
+name|close
+argument_list|()
+expr_stmt|;
+name|sysout
+operator|.
+name|println
+argument_list|(
+name|baos
+operator|.
+name|toString
+argument_list|(
+literal|"UTF-8"
+argument_list|)
+argument_list|)
+expr_stmt|;
+return|return
+operator|-
+literal|1
+return|;
 block|}
 name|appAttemptReportStr
 operator|.
@@ -1928,11 +2041,14 @@ literal|"UTF-8"
 argument_list|)
 argument_list|)
 expr_stmt|;
+return|return
+literal|0
+return|;
 block|}
-comment|/**    * Prints the container report for an container id.    *     * @param containerId    * @throws YarnException    */
+comment|/**    * Prints the container report for an container id.    *     * @param containerId    * @return exitCode    * @throws YarnException    */
 DECL|method|printContainerReport (String containerId)
 specifier|private
-name|void
+name|int
 name|printContainerReport
 parameter_list|(
 name|String
@@ -1946,6 +2062,12 @@ block|{
 name|ContainerReport
 name|containerReport
 init|=
+literal|null
+decl_stmt|;
+try|try
+block|{
+name|containerReport
+operator|=
 name|client
 operator|.
 name|getContainerReport
@@ -1959,7 +2081,74 @@ name|containerId
 argument_list|)
 operator|)
 argument_list|)
-decl_stmt|;
+expr_stmt|;
+block|}
+catch|catch
+parameter_list|(
+name|ApplicationNotFoundException
+name|e
+parameter_list|)
+block|{
+name|sysout
+operator|.
+name|println
+argument_list|(
+literal|"Application for Container with id '"
+operator|+
+name|containerId
+operator|+
+literal|"' doesn't exist in RM or Timeline Server."
+argument_list|)
+expr_stmt|;
+return|return
+operator|-
+literal|1
+return|;
+block|}
+catch|catch
+parameter_list|(
+name|ApplicationAttemptNotFoundException
+name|e
+parameter_list|)
+block|{
+name|sysout
+operator|.
+name|println
+argument_list|(
+literal|"Application Attempt for Container with id '"
+operator|+
+name|containerId
+operator|+
+literal|"' doesn't exist in RM or Timeline Server."
+argument_list|)
+expr_stmt|;
+return|return
+operator|-
+literal|1
+return|;
+block|}
+catch|catch
+parameter_list|(
+name|ContainerNotFoundException
+name|e
+parameter_list|)
+block|{
+name|sysout
+operator|.
+name|println
+argument_list|(
+literal|"Container with id '"
+operator|+
+name|containerId
+operator|+
+literal|"' doesn't exist in RM or Timeline Server."
+argument_list|)
+expr_stmt|;
+return|return
+operator|-
+literal|1
+return|;
+block|}
 comment|// Use PrintWriter.println, which uses correct platform line ending.
 name|ByteArrayOutputStream
 name|baos
@@ -2121,9 +2310,30 @@ literal|"Container with id '"
 operator|+
 name|containerId
 operator|+
-literal|"' doesn't exist in Hostory Server."
+literal|"' doesn't exist in Timeline Server."
 argument_list|)
 expr_stmt|;
+name|containerReportStr
+operator|.
+name|close
+argument_list|()
+expr_stmt|;
+name|sysout
+operator|.
+name|println
+argument_list|(
+name|baos
+operator|.
+name|toString
+argument_list|(
+literal|"UTF-8"
+argument_list|)
+argument_list|)
+expr_stmt|;
+return|return
+operator|-
+literal|1
+return|;
 block|}
 name|containerReportStr
 operator|.
@@ -2142,6 +2352,9 @@ literal|"UTF-8"
 argument_list|)
 argument_list|)
 expr_stmt|;
+return|return
+literal|0
+return|;
 block|}
 comment|/**    * Lists the applications matching the given application Types And application    * States present in the Resource Manager    *     * @param appTypes    * @param appStates    * @throws YarnException    * @throws IOException    */
 DECL|method|listApplications (Set<String> appTypes, EnumSet<YarnApplicationState> appStates)
@@ -2623,10 +2836,10 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-comment|/**    * Prints the application report for an application id.    *     * @param applicationId    * @throws YarnException    */
+comment|/**    * Prints the application report for an application id.    *     * @param applicationId    * @return exitCode    * @throws YarnException    */
 DECL|method|printApplicationReport (String applicationId)
 specifier|private
-name|void
+name|int
 name|printApplicationReport
 parameter_list|(
 name|String
@@ -2640,6 +2853,12 @@ block|{
 name|ApplicationReport
 name|appReport
 init|=
+literal|null
+decl_stmt|;
+try|try
+block|{
+name|appReport
+operator|=
 name|client
 operator|.
 name|getApplicationReport
@@ -2651,7 +2870,30 @@ argument_list|(
 name|applicationId
 argument_list|)
 argument_list|)
-decl_stmt|;
+expr_stmt|;
+block|}
+catch|catch
+parameter_list|(
+name|ApplicationNotFoundException
+name|e
+parameter_list|)
+block|{
+name|sysout
+operator|.
+name|println
+argument_list|(
+literal|"Application with id '"
+operator|+
+name|applicationId
+operator|+
+literal|"' doesn't exist in RM or Timeline Server."
+argument_list|)
+expr_stmt|;
+return|return
+operator|-
+literal|1
+return|;
+block|}
 comment|// Use PrintWriter.println, which uses correct platform line ending.
 name|ByteArrayOutputStream
 name|baos
@@ -3012,6 +3254,27 @@ operator|+
 literal|"' doesn't exist in RM."
 argument_list|)
 expr_stmt|;
+name|appReportStr
+operator|.
+name|close
+argument_list|()
+expr_stmt|;
+name|sysout
+operator|.
+name|println
+argument_list|(
+name|baos
+operator|.
+name|toString
+argument_list|(
+literal|"UTF-8"
+argument_list|)
+argument_list|)
+expr_stmt|;
+return|return
+operator|-
+literal|1
+return|;
 block|}
 name|appReportStr
 operator|.
@@ -3030,6 +3293,9 @@ literal|"UTF-8"
 argument_list|)
 argument_list|)
 expr_stmt|;
+return|return
+literal|0
+return|;
 block|}
 DECL|method|getAllValidApplicationStates ()
 specifier|private
