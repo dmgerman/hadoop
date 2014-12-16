@@ -1715,7 +1715,7 @@ name|isClosed
 init|=
 literal|false
 decl_stmt|;
-DECL|method|ChecksumFSOutputSummer (ChecksumFileSystem fs, Path file, boolean overwrite, int bufferSize, short replication, long blockSize, Progressable progress)
+DECL|method|ChecksumFSOutputSummer (ChecksumFileSystem fs, Path file, boolean overwrite, int bufferSize, short replication, long blockSize, Progressable progress, FsPermission permission)
 specifier|public
 name|ChecksumFSOutputSummer
 parameter_list|(
@@ -1739,6 +1739,9 @@ name|blockSize
 parameter_list|,
 name|Progressable
 name|progress
+parameter_list|,
+name|FsPermission
+name|permission
 parameter_list|)
 throws|throws
 name|IOException
@@ -1783,6 +1786,8 @@ name|create
 argument_list|(
 name|file
 argument_list|,
+name|permission
+argument_list|,
 name|overwrite
 argument_list|,
 name|bufferSize
@@ -1824,6 +1829,8 @@ argument_list|(
 name|file
 argument_list|)
 argument_list|,
+name|permission
+argument_list|,
 literal|true
 argument_list|,
 name|sumBufferSize
@@ -1831,6 +1838,8 @@ argument_list|,
 name|replication
 argument_list|,
 name|blockSize
+argument_list|,
+literal|null
 argument_list|)
 expr_stmt|;
 name|sums
@@ -2150,6 +2159,8 @@ argument_list|,
 name|blockSize
 argument_list|,
 name|progress
+argument_list|,
+name|permission
 argument_list|)
 argument_list|,
 literal|null
@@ -2208,21 +2219,6 @@ literal|true
 argument_list|)
 expr_stmt|;
 block|}
-block|}
-if|if
-condition|(
-name|permission
-operator|!=
-literal|null
-condition|)
-block|{
-name|setPermission
-argument_list|(
-name|f
-argument_list|,
-name|permission
-argument_list|)
-expr_stmt|;
 block|}
 return|return
 name|out

@@ -2457,6 +2457,50 @@ name|FILE_ATTRIBUTE_NORMAL
 init|=
 literal|0x00000080L
 decl_stmt|;
+comment|/**      * Create a directory with permissions set to the specified mode.  By setting      * permissions at creation time, we avoid issues related to the user lacking      * WRITE_DAC rights on subsequent chmod calls.  One example where this can      * occur is writing to an SMB share where the user does not have Full Control      * rights, and therefore WRITE_DAC is denied.      *      * @param path directory to create      * @param mode permissions of new directory      * @throws IOException if there is an I/O error      */
+DECL|method|createDirectoryWithMode (File path, int mode)
+specifier|public
+specifier|static
+name|void
+name|createDirectoryWithMode
+parameter_list|(
+name|File
+name|path
+parameter_list|,
+name|int
+name|mode
+parameter_list|)
+throws|throws
+name|IOException
+block|{
+name|createDirectoryWithMode0
+argument_list|(
+name|path
+operator|.
+name|getAbsolutePath
+argument_list|()
+argument_list|,
+name|mode
+argument_list|)
+expr_stmt|;
+block|}
+comment|/** Wrapper around CreateDirectory() on Windows */
+DECL|method|createDirectoryWithMode0 (String path, int mode)
+specifier|private
+specifier|static
+specifier|native
+name|void
+name|createDirectoryWithMode0
+parameter_list|(
+name|String
+name|path
+parameter_list|,
+name|int
+name|mode
+parameter_list|)
+throws|throws
+name|NativeIOException
+function_decl|;
 comment|/** Wrapper around CreateFile() on Windows */
 DECL|method|createFile (String path, long desiredAccess, long shareMode, long creationDisposition)
 specifier|public
@@ -2479,6 +2523,94 @@ name|creationDisposition
 parameter_list|)
 throws|throws
 name|IOException
+function_decl|;
+comment|/**      * Create a file for write with permissions set to the specified mode.  By      * setting permissions at creation time, we avoid issues related to the user      * lacking WRITE_DAC rights on subsequent chmod calls.  One example where      * this can occur is writing to an SMB share where the user does not have      * Full Control rights, and therefore WRITE_DAC is denied.      *      * This method mimics the semantics implemented by the JDK in      * {@link java.io.FileOutputStream}.  The file is opened for truncate or      * append, the sharing mode allows other readers and writers, and paths      * longer than MAX_PATH are supported.  (See io_util_md.c in the JDK.)      *      * @param path file to create      * @param append if true, then open file for append      * @param mode permissions of new directory      * @return FileOutputStream of opened file      * @throws IOException if there is an I/O error      */
+DECL|method|createFileOutputStreamWithMode (File path, boolean append, int mode)
+specifier|public
+specifier|static
+name|FileOutputStream
+name|createFileOutputStreamWithMode
+parameter_list|(
+name|File
+name|path
+parameter_list|,
+name|boolean
+name|append
+parameter_list|,
+name|int
+name|mode
+parameter_list|)
+throws|throws
+name|IOException
+block|{
+name|long
+name|desiredAccess
+init|=
+name|GENERIC_WRITE
+decl_stmt|;
+name|long
+name|shareMode
+init|=
+name|FILE_SHARE_READ
+operator||
+name|FILE_SHARE_WRITE
+decl_stmt|;
+name|long
+name|creationDisposition
+init|=
+name|append
+condition|?
+name|OPEN_ALWAYS
+else|:
+name|CREATE_ALWAYS
+decl_stmt|;
+return|return
+operator|new
+name|FileOutputStream
+argument_list|(
+name|createFileWithMode0
+argument_list|(
+name|path
+operator|.
+name|getAbsolutePath
+argument_list|()
+argument_list|,
+name|desiredAccess
+argument_list|,
+name|shareMode
+argument_list|,
+name|creationDisposition
+argument_list|,
+name|mode
+argument_list|)
+argument_list|)
+return|;
+block|}
+comment|/** Wrapper around CreateFile() with security descriptor on Windows */
+DECL|method|createFileWithMode0 (String path, long desiredAccess, long shareMode, long creationDisposition, int mode)
+specifier|private
+specifier|static
+specifier|native
+name|FileDescriptor
+name|createFileWithMode0
+parameter_list|(
+name|String
+name|path
+parameter_list|,
+name|long
+name|desiredAccess
+parameter_list|,
+name|long
+name|shareMode
+parameter_list|,
+name|long
+name|creationDisposition
+parameter_list|,
+name|int
+name|mode
+parameter_list|)
+throws|throws
+name|NativeIOException
 function_decl|;
 comment|/** Wrapper around SetFilePointer() on Windows */
 DECL|method|setFilePointer (FileDescriptor fd, long distanceToMove, long moveMethod)

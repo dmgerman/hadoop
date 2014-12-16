@@ -194,7 +194,7 @@ name|org
 operator|.
 name|junit
 operator|.
-name|AfterClass
+name|After
 import|;
 end_import
 
@@ -214,7 +214,7 @@ name|org
 operator|.
 name|junit
 operator|.
-name|BeforeClass
+name|Before
 import|;
 end_import
 
@@ -273,10 +273,9 @@ literal|"testfile"
 argument_list|)
 decl_stmt|;
 annotation|@
-name|BeforeClass
+name|Before
 DECL|method|setup ()
 specifier|public
-specifier|static
 name|void
 name|setup
 parameter_list|()
@@ -295,10 +294,9 @@ argument_list|()
 expr_stmt|;
 block|}
 annotation|@
-name|AfterClass
+name|After
 DECL|method|teardown ()
 specifier|public
-specifier|static
 name|void
 name|teardown
 parameter_list|()
