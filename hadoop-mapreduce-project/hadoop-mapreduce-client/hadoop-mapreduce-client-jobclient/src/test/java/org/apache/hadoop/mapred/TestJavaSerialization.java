@@ -502,7 +502,7 @@ name|fs
 operator|.
 name|delete
 argument_list|(
-name|INPUT_FILE
+name|INPUT_DIR
 argument_list|,
 literal|true
 argument_list|)
