@@ -973,6 +973,23 @@ name|s
 argument_list|)
 return|;
 block|}
+comment|/**    * Call heartbeat check function of HeartbeatManager    * @param bm the BlockManager to manipulate    */
+DECL|method|rescanPostponedMisreplicatedBlocks (BlockManager bm)
+specifier|public
+specifier|static
+name|void
+name|rescanPostponedMisreplicatedBlocks
+parameter_list|(
+name|BlockManager
+name|bm
+parameter_list|)
+block|{
+name|bm
+operator|.
+name|rescanPostponedMisreplicatedBlocks
+argument_list|()
+expr_stmt|;
+block|}
 DECL|method|getLocalDatanodeDescriptor ( boolean initializeStorage)
 specifier|public
 specifier|static

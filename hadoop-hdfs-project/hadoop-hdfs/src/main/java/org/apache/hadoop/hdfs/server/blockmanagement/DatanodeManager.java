@@ -735,6 +735,13 @@ specifier|volatile
 name|int
 name|numStaleStorages
 decl_stmt|;
+comment|/**    * Number of blocks to check for each postponedMisreplicatedBlocks iteration    */
+DECL|field|blocksPerPostponedMisreplicatedBlocksRescan
+specifier|private
+specifier|final
+name|long
+name|blocksPerPostponedMisreplicatedBlocksRescan
+decl_stmt|;
 comment|/**    * Whether or not this cluster has ever consisted of more than 1 rack,    * according to the NetworkTopology.    */
 DECL|field|hasClusterEverBeenMultiRack
 specifier|private
@@ -1333,6 +1340,23 @@ argument_list|,
 name|DFSConfigKeys
 operator|.
 name|DFS_NAMENODE_PATH_BASED_CACHE_RETRY_INTERVAL_MS_DEFAULT
+argument_list|)
+expr_stmt|;
+name|this
+operator|.
+name|blocksPerPostponedMisreplicatedBlocksRescan
+operator|=
+name|conf
+operator|.
+name|getLong
+argument_list|(
+name|DFSConfigKeys
+operator|.
+name|DFS_NAMENODE_BLOCKS_PER_POSTPONEDBLOCKS_RESCAN_KEY
+argument_list|,
+name|DFSConfigKeys
+operator|.
+name|DFS_NAMENODE_BLOCKS_PER_POSTPONEDBLOCKS_RESCAN_KEY_DEFAULT
 argument_list|)
 expr_stmt|;
 block|}
@@ -4813,6 +4837,16 @@ argument_list|()
 operator|*
 name|ratioUseStaleDataNodesForWrite
 operator|)
+return|;
+block|}
+DECL|method|getBlocksPerPostponedMisreplicatedBlocksRescan ()
+specifier|public
+name|long
+name|getBlocksPerPostponedMisreplicatedBlocksRescan
+parameter_list|()
+block|{
+return|return
+name|blocksPerPostponedMisreplicatedBlocksRescan
 return|;
 block|}
 comment|/**    * @return The time interval used to mark DataNodes as stale.    */

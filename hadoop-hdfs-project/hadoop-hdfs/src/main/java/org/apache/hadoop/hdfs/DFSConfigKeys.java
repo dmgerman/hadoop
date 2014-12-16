@@ -2401,6 +2401,25 @@ name|DFS_NAMENODE_USE_STALE_DATANODE_FOR_WRITE_RATIO_DEFAULT
 init|=
 literal|0.5f
 decl_stmt|;
+comment|// Number of blocks to rescan for each iteration of postponedMisreplicatedBlocks.
+DECL|field|DFS_NAMENODE_BLOCKS_PER_POSTPONEDBLOCKS_RESCAN_KEY
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|DFS_NAMENODE_BLOCKS_PER_POSTPONEDBLOCKS_RESCAN_KEY
+init|=
+literal|"dfs.namenode.blocks.per.postponedblocks.rescan"
+decl_stmt|;
+DECL|field|DFS_NAMENODE_BLOCKS_PER_POSTPONEDBLOCKS_RESCAN_KEY_DEFAULT
+specifier|public
+specifier|static
+specifier|final
+name|long
+name|DFS_NAMENODE_BLOCKS_PER_POSTPONEDBLOCKS_RESCAN_KEY_DEFAULT
+init|=
+literal|10000
+decl_stmt|;
 comment|// Replication monitoring related keys
 DECL|field|DFS_NAMENODE_INVALIDATE_WORK_PCT_PER_ITERATION
 specifier|public
