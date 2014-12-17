@@ -160,6 +160,18 @@ name|util
 operator|.
 name|concurrent
 operator|.
+name|TimeUnit
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
+name|concurrent
+operator|.
 name|TimeoutException
 import|;
 end_import
@@ -723,7 +735,7 @@ specifier|final
 name|long
 name|DN_RESCAN_INTERVAL
 init|=
-literal|5000
+literal|1
 decl_stmt|;
 DECL|field|DN_RESCAN_EXTRA_WAIT
 specifier|private
@@ -732,7 +744,7 @@ specifier|final
 name|long
 name|DN_RESCAN_EXTRA_WAIT
 init|=
-literal|2
+literal|3
 operator|*
 name|DN_RESCAN_INTERVAL
 decl_stmt|;
@@ -1905,7 +1917,14 @@ block|}
 block|}
 name|waitTil
 argument_list|(
+name|TimeUnit
+operator|.
+name|SECONDS
+operator|.
+name|toMillis
+argument_list|(
 name|DN_RESCAN_EXTRA_WAIT
+argument_list|)
 argument_list|)
 expr_stmt|;
 comment|// all blocks belong to the same file, hence same BP

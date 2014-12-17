@@ -2521,19 +2521,6 @@ argument_list|,
 name|e
 argument_list|)
 expr_stmt|;
-comment|//Something might be wrong with the block. Make this block the high
-comment|//priority block for verification.
-name|datanode
-operator|.
-name|blockScanner
-operator|.
-name|addBlock
-argument_list|(
-name|block
-argument_list|,
-literal|true
-argument_list|)
-expr_stmt|;
 block|}
 block|}
 throw|throw

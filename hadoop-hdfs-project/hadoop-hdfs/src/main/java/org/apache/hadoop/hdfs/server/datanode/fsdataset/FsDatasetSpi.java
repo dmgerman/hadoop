@@ -758,21 +758,6 @@ literal|false
 return|;
 block|}
 block|}
-comment|/**    * Create rolling logs.    *    * @param prefix the prefix of the log names.    * @return rolling logs    */
-DECL|method|createRollingLogs (String bpid, String prefix )
-specifier|public
-name|RollingLogs
-name|createRollingLogs
-parameter_list|(
-name|String
-name|bpid
-parameter_list|,
-name|String
-name|prefix
-parameter_list|)
-throws|throws
-name|IOException
-function_decl|;
 comment|/** @return a list of volumes. */
 DECL|method|getVolumes ()
 specifier|public
@@ -783,7 +768,7 @@ argument_list|>
 name|getVolumes
 parameter_list|()
 function_decl|;
-comment|/** Add an array of StorageLocation to FsDataset. */
+comment|/**    * Add a new volume to the FsDataset.<p/>    *    * If the FSDataset supports block scanning, this function registers    * the new volume with the block scanner.    *    * @param location      The storage location for the new volume.    * @param nsInfos       Namespace information for the new volume.    */
 DECL|method|addVolume ( final StorageLocation location, final List<NamespaceInfo> nsInfos)
 specifier|public
 name|void
@@ -803,7 +788,7 @@ parameter_list|)
 throws|throws
 name|IOException
 function_decl|;
-comment|/** Removes a collection of volumes from FsDataset. */
+comment|/**    * Removes a collection of volumes from FsDataset.    *    * If the FSDataset supports block scanning, this function removes    * the volumes from the block scanner.    *    * @param volumes      The storage locations of the volumes to remove.    */
 DECL|method|removeVolumes (Collection<StorageLocation> volumes)
 specifier|public
 name|void

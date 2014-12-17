@@ -232,20 +232,6 @@ name|hadoop
 operator|.
 name|hdfs
 operator|.
-name|TestDatanodeBlockScanner
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|hdfs
-operator|.
 name|protocol
 operator|.
 name|Block
@@ -414,6 +400,17 @@ name|setLong
 argument_list|(
 name|DFSConfigKeys
 operator|.
+name|DFS_DATANODE_SCAN_PERIOD_HOURS_KEY
+argument_list|,
+literal|100L
+argument_list|)
+expr_stmt|;
+name|conf
+operator|.
+name|setLong
+argument_list|(
+name|DFSConfigKeys
+operator|.
 name|DFS_BLOCKREPORT_INTERVAL_MSEC_KEY
 argument_list|,
 literal|1000L
@@ -543,8 +540,11 @@ argument_list|)
 decl_stmt|;
 comment|// remove block scanner log to trigger block scanning
 name|File
-name|scanLog
+name|scanCursor
 init|=
+operator|new
+name|File
+argument_list|(
 operator|new
 name|File
 argument_list|(
@@ -572,11 +572,12 @@ argument_list|)
 operator|.
 name|getParent
 argument_list|()
+argument_list|)
 operator|.
-name|toString
+name|getParent
 argument_list|()
-operator|+
-literal|"/../dncp_block_verification.log.prev"
+argument_list|,
+literal|"scanner.cursor"
 argument_list|)
 decl_stmt|;
 comment|//wait for one minute for deletion to succeed;
@@ -588,7 +589,7 @@ init|=
 literal|0
 init|;
 operator|!
-name|scanLog
+name|scanCursor
 operator|.
 name|delete
 argument_list|()
@@ -599,7 +600,14 @@ control|)
 block|{
 name|assertTrue
 argument_list|(
-literal|"Could not delete log file in one minute"
+literal|"Could not delete "
+operator|+
+name|scanCursor
+operator|.
+name|getAbsolutePath
+argument_list|()
+operator|+
+literal|" in one minute"
 argument_list|,
 name|i
 operator|<

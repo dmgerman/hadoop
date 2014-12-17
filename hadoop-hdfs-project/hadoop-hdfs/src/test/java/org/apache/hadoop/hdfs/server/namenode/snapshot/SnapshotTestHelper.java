@@ -414,7 +414,7 @@ name|server
 operator|.
 name|datanode
 operator|.
-name|DataBlockScanner
+name|BlockScanner
 import|;
 end_import
 
@@ -818,7 +818,7 @@ name|GenericTestUtils
 operator|.
 name|disableLog
 argument_list|(
-name|DataBlockScanner
+name|BlockScanner
 operator|.
 name|LOG
 argument_list|)

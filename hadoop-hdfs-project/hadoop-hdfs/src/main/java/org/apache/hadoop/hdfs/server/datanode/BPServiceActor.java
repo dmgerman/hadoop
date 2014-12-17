@@ -3301,30 +3301,6 @@ name|cmd
 block|}
 argument_list|)
 expr_stmt|;
-comment|// Now safe to start scanning the block pool.
-comment|// If it has already been started, this is a no-op.
-if|if
-condition|(
-name|dn
-operator|.
-name|blockScanner
-operator|!=
-literal|null
-condition|)
-block|{
-name|dn
-operator|.
-name|blockScanner
-operator|.
-name|addBlockPool
-argument_list|(
-name|bpos
-operator|.
-name|getBlockPoolId
-argument_list|()
-argument_list|)
-expr_stmt|;
-block|}
 comment|//
 comment|// There is no work to do;  sleep until hearbeat timer elapses,
 comment|// or work arrives, and then iterate again.

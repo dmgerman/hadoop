@@ -2642,7 +2642,7 @@ control|)
 block|{
 if|if
 condition|(
-name|TestDatanodeBlockScanner
+name|DFSTestUtil
 operator|.
 name|changeReplicaLength
 argument_list|(

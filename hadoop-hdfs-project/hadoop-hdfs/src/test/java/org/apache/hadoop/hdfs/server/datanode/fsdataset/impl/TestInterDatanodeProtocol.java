@@ -1272,13 +1272,14 @@ argument_list|,
 name|useDnHostname
 argument_list|)
 decl_stmt|;
-comment|//stop block scanner, so we could compare lastScanTime
-name|DataNodeTestUtils
-operator|.
-name|shutdownBlockScanner
-argument_list|(
+comment|// Stop the block scanners.
 name|datanode
-argument_list|)
+operator|.
+name|getBlockScanner
+argument_list|()
+operator|.
+name|removeAllVolumeScanners
+argument_list|()
 expr_stmt|;
 comment|//verify BlockMetaDataInfo
 name|ExtendedBlock
