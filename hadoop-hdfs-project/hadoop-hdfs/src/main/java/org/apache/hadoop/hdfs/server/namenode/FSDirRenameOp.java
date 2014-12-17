@@ -234,7 +234,7 @@ name|hdfs
 operator|.
 name|util
 operator|.
-name|ChunkedArrayList
+name|ReadOnlyList
 import|;
 end_import
 
@@ -246,11 +246,9 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|hdfs
-operator|.
 name|util
 operator|.
-name|ReadOnlyList
+name|ChunkedArrayList
 import|;
 end_import
 

@@ -1414,7 +1414,7 @@ name|hdfs
 operator|.
 name|util
 operator|.
-name|ChunkedArrayList
+name|Holder
 import|;
 end_import
 
@@ -1426,11 +1426,9 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|hdfs
-operator|.
 name|util
 operator|.
-name|Holder
+name|ChunkedArrayList
 import|;
 end_import
 

@@ -310,7 +310,7 @@ name|hdfs
 operator|.
 name|util
 operator|.
-name|ChunkedArrayList
+name|Diff
 import|;
 end_import
 
@@ -322,11 +322,9 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|hdfs
-operator|.
 name|util
 operator|.
-name|Diff
+name|ChunkedArrayList
 import|;
 end_import
 
