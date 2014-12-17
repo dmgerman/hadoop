@@ -4225,10 +4225,12 @@ argument_list|,
 literal|false
 argument_list|)
 decl_stmt|;
-name|fsDir
+name|FSDirSymlinkOp
 operator|.
 name|unprotectedAddSymlink
 argument_list|(
+name|fsDir
+argument_list|,
 name|iip
 argument_list|,
 name|inodeId

@@ -7153,12 +7153,7 @@ block|{
 return|return;
 comment|// Return previous response
 block|}
-name|metrics
-operator|.
-name|incrCreateSymlinkOps
-argument_list|()
-expr_stmt|;
-comment|/* We enforce the MAX_PATH_LENGTH limit even though a symlink target       * URI may refer to a non-HDFS file system.       */
+comment|/* We enforce the MAX_PATH_LENGTH limit even though a symlink target      * URI may refer to a non-HDFS file system.       */
 if|if
 condition|(
 operator|!
@@ -7177,24 +7172,6 @@ operator|+
 name|MAX_PATH_LENGTH
 operator|+
 literal|" character limit"
-argument_list|)
-throw|;
-block|}
-if|if
-condition|(
-literal|""
-operator|.
-name|equals
-argument_list|(
-name|target
-argument_list|)
-condition|)
-block|{
-throw|throw
-operator|new
-name|IOException
-argument_list|(
-literal|"Invalid symlink target"
 argument_list|)
 throw|;
 block|}
