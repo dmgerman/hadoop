@@ -1346,6 +1346,9 @@ name|unlock
 argument_list|()
 expr_stmt|;
 block|}
+comment|// Release write lock here for better performance and avoiding deadlocks.
+comment|// runnableApps can be in unsorted state because of this section,
+comment|// but we can accept it in practice since the probability is low.
 name|readLock
 operator|.
 name|lock
