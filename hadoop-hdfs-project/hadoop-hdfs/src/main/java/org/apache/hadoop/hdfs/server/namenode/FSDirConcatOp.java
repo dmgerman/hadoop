@@ -934,9 +934,7 @@ name|fsd
 operator|.
 name|getAuditFileInfo
 argument_list|(
-name|target
-argument_list|,
-literal|false
+name|trgIip
 argument_list|)
 return|;
 block|}

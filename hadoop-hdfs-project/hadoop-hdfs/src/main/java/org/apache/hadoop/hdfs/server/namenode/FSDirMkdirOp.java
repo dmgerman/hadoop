@@ -307,12 +307,6 @@ operator|.
 name|getFSDirectory
 argument_list|()
 decl_stmt|;
-specifier|final
-name|String
-name|srcArg
-init|=
-name|src
-decl_stmt|;
 if|if
 condition|(
 name|NameNode
@@ -472,8 +466,8 @@ operator|.
 name|checkFsObjectLimit
 argument_list|()
 expr_stmt|;
-if|if
-condition|(
+name|iip
+operator|=
 name|mkdirsRecursively
 argument_list|(
 name|fsd
@@ -487,6 +481,10 @@ argument_list|,
 name|now
 argument_list|()
 argument_list|)
+expr_stmt|;
+if|if
+condition|(
+name|iip
 operator|==
 literal|null
 condition|)
@@ -507,9 +505,7 @@ name|fsd
 operator|.
 name|getAuditFileInfo
 argument_list|(
-name|srcArg
-argument_list|,
-literal|false
+name|iip
 argument_list|)
 return|;
 block|}

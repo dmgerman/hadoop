@@ -305,6 +305,9 @@ argument_list|(
 name|link
 argument_list|)
 decl_stmt|;
+name|INodesInPath
+name|iip
+decl_stmt|;
 name|fsd
 operator|.
 name|writeLock
@@ -325,10 +328,8 @@ argument_list|,
 name|pathComponents
 argument_list|)
 expr_stmt|;
-specifier|final
-name|INodesInPath
 name|iip
-init|=
+operator|=
 name|fsd
 operator|.
 name|getINodesInPath4Write
@@ -337,7 +338,7 @@ name|link
 argument_list|,
 literal|false
 argument_list|)
-decl_stmt|;
+expr_stmt|;
 if|if
 condition|(
 operator|!
@@ -447,9 +448,7 @@ name|fsd
 operator|.
 name|getAuditFileInfo
 argument_list|(
-name|link
-argument_list|,
-literal|false
+name|iip
 argument_list|)
 return|;
 block|}

@@ -7667,15 +7667,12 @@ expr_stmt|;
 block|}
 block|}
 block|}
-DECL|method|getAuditFileInfo (String path, boolean resolveSymlink)
+DECL|method|getAuditFileInfo (INodesInPath iip)
 name|HdfsFileStatus
 name|getAuditFileInfo
 parameter_list|(
-name|String
-name|path
-parameter_list|,
-name|boolean
-name|resolveSymlink
+name|INodesInPath
+name|iip
 parameter_list|)
 throws|throws
 name|IOException
@@ -7699,9 +7696,7 @@ name|getFileInfo
 argument_list|(
 name|this
 argument_list|,
-name|path
-argument_list|,
-name|resolveSymlink
+name|iip
 argument_list|,
 literal|false
 argument_list|,
