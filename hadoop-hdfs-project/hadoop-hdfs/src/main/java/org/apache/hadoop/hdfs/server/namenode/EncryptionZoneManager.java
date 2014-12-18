@@ -1017,6 +1017,25 @@ operator|!
 name|dstInEZ
 condition|)
 block|{
+if|if
+condition|(
+name|srcEZI
+operator|.
+name|getINodeId
+argument_list|()
+operator|==
+name|srcIIP
+operator|.
+name|getLastINode
+argument_list|()
+operator|.
+name|getId
+argument_list|()
+condition|)
+block|{
+comment|// src is ez root and dest is not in an ez. Allow the rename.
+return|return;
+block|}
 throw|throw
 operator|new
 name|IOException
