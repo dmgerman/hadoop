@@ -3054,6 +3054,20 @@ name|close
 argument_list|()
 expr_stmt|;
 block|}
+comment|// Something went wrong and did not finish reading.
+comment|// Remove the temporary files.
+if|if
+condition|(
+operator|!
+name|finishedReceiving
+condition|)
+block|{
+name|deleteTmpFiles
+argument_list|(
+name|localPaths
+argument_list|)
+expr_stmt|;
+block|}
 if|if
 condition|(
 name|finishedReceiving
@@ -3066,6 +3080,11 @@ block|{
 comment|// only throw this exception if we think we read all of it on our end
 comment|// -- otherwise a client-side IOException would be masked by this
 comment|// exception that makes it look like a server-side problem!
+name|deleteTmpFiles
+argument_list|(
+name|localPaths
+argument_list|)
+expr_stmt|;
 throw|throw
 operator|new
 name|IOException
@@ -3170,6 +3189,11 @@ name|advertisedDigest
 argument_list|)
 condition|)
 block|{
+name|deleteTmpFiles
+argument_list|(
+name|localPaths
+argument_list|)
+expr_stmt|;
 throw|throw
 operator|new
 name|IOException
@@ -3197,6 +3221,53 @@ block|{
 return|return
 literal|null
 return|;
+block|}
+block|}
+DECL|method|deleteTmpFiles (List<File> files)
+specifier|private
+specifier|static
+name|void
+name|deleteTmpFiles
+parameter_list|(
+name|List
+argument_list|<
+name|File
+argument_list|>
+name|files
+parameter_list|)
+block|{
+if|if
+condition|(
+name|files
+operator|==
+literal|null
+condition|)
+block|{
+return|return;
+block|}
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"Deleting temporary files: "
+operator|+
+name|files
+argument_list|)
+expr_stmt|;
+for|for
+control|(
+name|File
+name|file
+range|:
+name|files
+control|)
+block|{
+name|file
+operator|.
+name|delete
+argument_list|()
+expr_stmt|;
+comment|// ignore the return value
 block|}
 block|}
 DECL|method|parseMD5Header (HttpURLConnection connection)
