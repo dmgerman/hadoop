@@ -1048,15 +1048,7 @@ init|=
 operator|new
 name|ThreadPoolExecutor
 argument_list|(
-operator|(
-literal|5
-operator|<
 name|nThreads
-condition|?
-literal|5
-else|:
-name|nThreads
-operator|)
 argument_list|,
 name|nThreads
 argument_list|,
