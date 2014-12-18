@@ -76,7 +76,7 @@ name|mockito
 operator|.
 name|Mockito
 operator|.
-name|mock
+name|spy
 import|;
 end_import
 
@@ -545,11 +545,11 @@ expr_stmt|;
 name|AppChecker
 name|appChecker
 init|=
-name|mock
+name|spy
 argument_list|(
-name|AppChecker
-operator|.
-name|class
+operator|new
+name|DummyAppChecker
+argument_list|()
 argument_list|)
 decl_stmt|;
 name|store

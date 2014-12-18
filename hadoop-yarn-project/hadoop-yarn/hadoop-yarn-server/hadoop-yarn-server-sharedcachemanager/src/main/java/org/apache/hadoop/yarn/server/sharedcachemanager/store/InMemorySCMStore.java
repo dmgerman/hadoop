@@ -532,6 +532,24 @@ specifier|private
 name|int
 name|checkPeriodMin
 decl_stmt|;
+DECL|method|InMemorySCMStore ()
+specifier|public
+name|InMemorySCMStore
+parameter_list|()
+block|{
+name|super
+argument_list|(
+name|InMemorySCMStore
+operator|.
+name|class
+operator|.
+name|getName
+argument_list|()
+argument_list|)
+expr_stmt|;
+block|}
+annotation|@
+name|VisibleForTesting
 DECL|method|InMemorySCMStore (AppChecker appChecker)
 specifier|public
 name|InMemorySCMStore
@@ -757,6 +775,29 @@ name|LOG
 operator|.
 name|info
 argument_list|(
+literal|"Stopping the "
+operator|+
+name|InMemorySCMStore
+operator|.
+name|class
+operator|.
+name|getSimpleName
+argument_list|()
+operator|+
+literal|" service."
+argument_list|)
+expr_stmt|;
+if|if
+condition|(
+name|scheduler
+operator|!=
+literal|null
+condition|)
+block|{
+name|LOG
+operator|.
+name|info
+argument_list|(
 literal|"Shutting down the background thread."
 argument_list|)
 expr_stmt|;
@@ -816,6 +857,7 @@ argument_list|(
 literal|"The background thread stopped."
 argument_list|)
 expr_stmt|;
+block|}
 name|super
 operator|.
 name|serviceStop

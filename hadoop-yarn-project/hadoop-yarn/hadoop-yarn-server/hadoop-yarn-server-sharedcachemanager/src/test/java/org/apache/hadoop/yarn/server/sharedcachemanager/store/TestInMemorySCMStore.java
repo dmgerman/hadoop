@@ -278,22 +278,6 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|classification
-operator|.
-name|InterfaceAudience
-operator|.
-name|Private
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
 name|conf
 operator|.
 name|Configuration
@@ -356,9 +340,11 @@ name|hadoop
 operator|.
 name|yarn
 operator|.
-name|exceptions
+name|server
 operator|.
-name|YarnException
+name|sharedcachemanager
+operator|.
+name|AppChecker
 import|;
 end_import
 
@@ -376,7 +362,7 @@ name|server
 operator|.
 name|sharedcachemanager
 operator|.
-name|AppChecker
+name|DummyAppChecker
 import|;
 end_import
 
@@ -415,6 +401,8 @@ DECL|class|TestInMemorySCMStore
 specifier|public
 class|class
 name|TestInMemorySCMStore
+extends|extends
+name|SCMStoreBaseTest
 block|{
 DECL|field|store
 specifier|private
@@ -426,6 +414,24 @@ specifier|private
 name|AppChecker
 name|checker
 decl_stmt|;
+annotation|@
+name|Override
+DECL|method|getStoreClass ()
+name|Class
+argument_list|<
+name|?
+extends|extends
+name|SCMStore
+argument_list|>
+name|getStoreClass
+parameter_list|()
+block|{
+return|return
+name|InMemorySCMStore
+operator|.
+name|class
+return|;
+block|}
 annotation|@
 name|Before
 DECL|method|setup ()
@@ -2067,53 +2073,6 @@ argument_list|,
 name|id
 argument_list|)
 return|;
-block|}
-DECL|class|DummyAppChecker
-class|class
-name|DummyAppChecker
-extends|extends
-name|AppChecker
-block|{
-annotation|@
-name|Override
-annotation|@
-name|Private
-DECL|method|isApplicationActive (ApplicationId id)
-specifier|public
-name|boolean
-name|isApplicationActive
-parameter_list|(
-name|ApplicationId
-name|id
-parameter_list|)
-throws|throws
-name|YarnException
-block|{
-comment|// stub
-return|return
-literal|false
-return|;
-block|}
-annotation|@
-name|Override
-annotation|@
-name|Private
-DECL|method|getActiveApplications ()
-specifier|public
-name|Collection
-argument_list|<
-name|ApplicationId
-argument_list|>
-name|getActiveApplications
-parameter_list|()
-throws|throws
-name|YarnException
-block|{
-comment|// stub
-return|return
-literal|null
-return|;
-block|}
 block|}
 block|}
 end_class
