@@ -2760,6 +2760,8 @@ argument_list|,
 literal|0
 argument_list|,
 literal|null
+argument_list|,
+literal|true
 argument_list|)
 return|;
 block|}
@@ -2829,6 +2831,8 @@ argument_list|,
 name|attemptFailuresValidityInterval
 argument_list|,
 literal|null
+argument_list|,
+literal|true
 argument_list|)
 return|;
 block|}
@@ -2916,14 +2920,11 @@ argument_list|,
 literal|0
 argument_list|,
 literal|null
+argument_list|,
+literal|true
 argument_list|)
 return|;
 block|}
-annotation|@
-name|SuppressWarnings
-argument_list|(
-literal|"deprecation"
-argument_list|)
 DECL|method|submitApp (int masterMemory, LogAggregationContext logAggregationContext)
 specifier|public
 name|RMApp
@@ -2990,15 +2991,12 @@ argument_list|,
 literal|0
 argument_list|,
 name|logAggregationContext
+argument_list|,
+literal|true
 argument_list|)
 return|;
 block|}
-annotation|@
-name|SuppressWarnings
-argument_list|(
-literal|"deprecation"
-argument_list|)
-DECL|method|submitApp (int masterMemory, String name, String user, Map<ApplicationAccessType, String> acls, boolean unmanaged, String queue, int maxAppAttempts, Credentials ts, String appType, boolean waitForAccepted, boolean keepContainers, boolean isAppIdProvided, ApplicationId applicationId, long attemptFailuresValidityInterval, LogAggregationContext logAggregationContext)
+DECL|method|submitApp (int masterMemory, String name, String user, Map<ApplicationAccessType, String> acls, boolean unmanaged, String queue, int maxAppAttempts, Credentials ts, String appType, boolean waitForAccepted, boolean keepContainers, boolean isAppIdProvided, ApplicationId applicationId, long attemptFailuresValidityInterval, LogAggregationContext logAggregationContext, boolean cancelTokensWhenComplete)
 specifier|public
 name|RMApp
 name|submitApp
@@ -3052,6 +3050,9 @@ name|attemptFailuresValidityInterval
 parameter_list|,
 name|LogAggregationContext
 name|logAggregationContext
+parameter_list|,
+name|boolean
+name|cancelTokensWhenComplete
 parameter_list|)
 throws|throws
 name|Exception
@@ -3318,6 +3319,13 @@ name|logAggregationContext
 argument_list|)
 expr_stmt|;
 block|}
+name|sub
+operator|.
+name|setCancelTokensWhenComplete
+argument_list|(
+name|cancelTokensWhenComplete
+argument_list|)
+expr_stmt|;
 name|req
 operator|.
 name|setApplicationSubmissionContext
