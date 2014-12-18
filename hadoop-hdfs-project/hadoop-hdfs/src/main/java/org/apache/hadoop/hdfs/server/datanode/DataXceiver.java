@@ -1597,6 +1597,14 @@ name|InvalidMagicNumberException
 name|imne
 parameter_list|)
 block|{
+if|if
+condition|(
+name|imne
+operator|.
+name|isHandshake4Encryption
+argument_list|()
+condition|)
+block|{
 name|LOG
 operator|.
 name|info
@@ -1617,6 +1625,28 @@ operator|+
 literal|"encryption"
 argument_list|)
 expr_stmt|;
+block|}
+else|else
+block|{
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"Failed to read expected SASL data transfer protection "
+operator|+
+literal|"handshake from client at "
+operator|+
+name|peer
+operator|.
+name|getRemoteAddressString
+argument_list|()
+operator|+
+literal|". Perhaps the client is running an older version of Hadoop "
+operator|+
+literal|"which does not support SASL data transfer protection"
+argument_list|)
+expr_stmt|;
+block|}
 return|return;
 block|}
 name|super

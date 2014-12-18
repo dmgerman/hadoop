@@ -1558,6 +1558,11 @@ operator|new
 name|InvalidMagicNumberException
 argument_list|(
 name|magicNumber
+argument_list|,
+name|dnConf
+operator|.
+name|getEncryptDataTransfer
+argument_list|()
 argument_list|)
 throw|;
 block|}

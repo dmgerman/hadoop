@@ -93,13 +93,24 @@ name|serialVersionUID
 init|=
 literal|1L
 decl_stmt|;
+DECL|field|handshake4Encryption
+specifier|private
+specifier|final
+name|boolean
+name|handshake4Encryption
+decl_stmt|;
 comment|/**    * Creates a new InvalidMagicNumberException.    *    * @param magicNumber expected value    */
-DECL|method|InvalidMagicNumberException (int magicNumber)
+DECL|method|InvalidMagicNumberException (final int magicNumber, final boolean handshake4Encryption)
 specifier|public
 name|InvalidMagicNumberException
 parameter_list|(
+specifier|final
 name|int
 name|magicNumber
+parameter_list|,
+specifier|final
+name|boolean
+name|handshake4Encryption
 parameter_list|)
 block|{
 name|super
@@ -116,6 +127,23 @@ name|SASL_TRANSFER_MAGIC_NUMBER
 argument_list|)
 argument_list|)
 expr_stmt|;
+name|this
+operator|.
+name|handshake4Encryption
+operator|=
+name|handshake4Encryption
+expr_stmt|;
+block|}
+comment|/**    * Return true if it's handshake for encryption    *     * @return boolean true if it's handshake for encryption    */
+DECL|method|isHandshake4Encryption ()
+specifier|public
+name|boolean
+name|isHandshake4Encryption
+parameter_list|()
+block|{
+return|return
+name|handshake4Encryption
+return|;
 block|}
 block|}
 end_class
