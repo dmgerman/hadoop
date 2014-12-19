@@ -2206,6 +2206,8 @@ argument_list|(
 name|f
 argument_list|)
 decl_stmt|;
+try|try
+block|{
 name|byte
 index|[]
 name|seq
@@ -2249,6 +2251,15 @@ return|return
 literal|false
 return|;
 block|}
+block|}
+block|}
+finally|finally
+block|{
+name|in
+operator|.
+name|close
+argument_list|()
+expr_stmt|;
 block|}
 return|return
 literal|true
