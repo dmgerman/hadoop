@@ -548,6 +548,13 @@ argument_list|(
 name|in
 argument_list|)
 expr_stmt|;
+name|CryptoStreamUtils
+operator|.
+name|checkCodec
+argument_list|(
+name|codec
+argument_list|)
+expr_stmt|;
 name|this
 operator|.
 name|bufferSize

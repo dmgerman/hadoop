@@ -230,6 +230,38 @@ name|HADOOP_SECURITY_CRYPTO_BUFFER_SIZE_DEFAULT
 argument_list|)
 return|;
 block|}
+comment|/** AES/CTR/NoPadding is required */
+DECL|method|checkCodec (CryptoCodec codec)
+specifier|public
+specifier|static
+name|void
+name|checkCodec
+parameter_list|(
+name|CryptoCodec
+name|codec
+parameter_list|)
+block|{
+if|if
+condition|(
+name|codec
+operator|.
+name|getCipherSuite
+argument_list|()
+operator|!=
+name|CipherSuite
+operator|.
+name|AES_CTR_NOPADDING
+condition|)
+block|{
+throw|throw
+operator|new
+name|UnsupportedCodecException
+argument_list|(
+literal|"AES/CTR/NoPadding is required"
+argument_list|)
+throw|;
+block|}
+block|}
 comment|/** Check and floor buffer size */
 DECL|method|checkBufferSize (CryptoCodec codec, int bufferSize)
 specifier|public
