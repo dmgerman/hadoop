@@ -1067,10 +1067,15 @@ name|toString
 parameter_list|()
 block|{
 return|return
-name|volumes
+name|Arrays
 operator|.
 name|toString
+argument_list|(
+name|volumes
+operator|.
+name|get
 argument_list|()
+argument_list|)
 return|;
 block|}
 comment|/**    * Dynamically add new volumes to the existing volumes that this DN manages.    * @param newVolume the instance of new FsVolumeImpl.    */
