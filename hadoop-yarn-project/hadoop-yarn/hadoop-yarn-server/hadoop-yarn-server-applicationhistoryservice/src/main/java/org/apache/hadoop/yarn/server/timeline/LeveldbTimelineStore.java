@@ -9081,7 +9081,7 @@ name|TIMELINE_STORE_VERSION_KEY
 argument_list|)
 argument_list|)
 decl_stmt|;
-comment|// if version is not stored previously, treat it as 1.0.
+comment|// if version is not stored previously, treat it as CURRENT_VERSION_INFO.
 if|if
 condition|(
 name|data
@@ -9096,14 +9096,8 @@ literal|0
 condition|)
 block|{
 return|return
-name|Version
-operator|.
-name|newInstance
-argument_list|(
-literal|1
-argument_list|,
-literal|0
-argument_list|)
+name|getCurrentVersion
+argument_list|()
 return|;
 block|}
 name|Version
