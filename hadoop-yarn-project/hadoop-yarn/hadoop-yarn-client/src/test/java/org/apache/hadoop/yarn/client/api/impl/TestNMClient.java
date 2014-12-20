@@ -2244,7 +2244,7 @@ comment|// getContainerStatus can be called after stopContainer
 try|try
 block|{
 comment|// O is possible if CLEANUP_CONTAINER is executed too late
-comment|// 137 is possible if the container is not terminated but killed
+comment|// -105 is possible if the container is not terminated but killed
 name|testGetContainerStatus
 argument_list|(
 name|container
@@ -2268,6 +2268,10 @@ block|{
 name|ContainerExitStatus
 operator|.
 name|KILLED_BY_APPMASTER
+block|,
+name|ContainerExitStatus
+operator|.
+name|SUCCESS
 block|}
 argument_list|)
 argument_list|)
@@ -2455,6 +2459,17 @@ argument_list|)
 expr_stmt|;
 name|assertTrue
 argument_list|(
+literal|"Exit Statuses are supposed to be in: "
+operator|+
+name|exitStatuses
+operator|+
+literal|", but the actual exit status code is: "
+operator|+
+name|status
+operator|.
+name|getExitStatus
+argument_list|()
+argument_list|,
 name|exitStatuses
 operator|.
 name|contains
