@@ -767,12 +767,11 @@ operator|.
 name|getQueue
 argument_list|()
 operator|.
-name|getRunnableAppSchedulables
-argument_list|()
-operator|.
-name|add
+name|addApp
 argument_list|(
 name|appSched
+argument_list|,
+literal|true
 argument_list|)
 expr_stmt|;
 name|noLongerPendingApps
@@ -824,10 +823,7 @@ operator|.
 name|getQueue
 argument_list|()
 operator|.
-name|getNonRunnableAppSchedulables
-argument_list|()
-operator|.
-name|remove
+name|removeNonRunnableApp
 argument_list|(
 name|appSched
 argument_list|)
@@ -1056,7 +1052,7 @@ operator|)
 name|queue
 operator|)
 operator|.
-name|getNonRunnableAppSchedulables
+name|getCopyOfNonRunnableAppSchedulables
 argument_list|()
 argument_list|)
 expr_stmt|;

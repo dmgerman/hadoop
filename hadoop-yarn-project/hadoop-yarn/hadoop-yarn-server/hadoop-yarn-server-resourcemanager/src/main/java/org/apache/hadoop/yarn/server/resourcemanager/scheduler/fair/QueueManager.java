@@ -1269,11 +1269,10 @@ literal|0
 operator|&&
 name|leafQueue
 operator|.
-name|getNonRunnableAppSchedulables
+name|getNumNonRunnableApps
 argument_list|()
-operator|.
-name|isEmpty
-argument_list|()
+operator|==
+literal|0
 return|;
 block|}
 else|else
