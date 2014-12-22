@@ -993,6 +993,8 @@ argument_list|,
 name|src
 argument_list|,
 name|aclSpec
+argument_list|,
+literal|false
 argument_list|)
 decl_stmt|;
 name|fsd
@@ -1265,7 +1267,7 @@ argument_list|()
 expr_stmt|;
 block|}
 block|}
-DECL|method|unprotectedSetAcl ( FSDirectory fsd, String src, List<AclEntry> aclSpec)
+DECL|method|unprotectedSetAcl ( FSDirectory fsd, String src, List<AclEntry> aclSpec, boolean fromEdits)
 specifier|static
 name|List
 argument_list|<
@@ -1284,6 +1286,9 @@ argument_list|<
 name|AclEntry
 argument_list|>
 name|aclSpec
+parameter_list|,
+name|boolean
+name|fromEdits
 parameter_list|)
 throws|throws
 name|IOException
@@ -1356,6 +1361,20 @@ name|List
 argument_list|<
 name|AclEntry
 argument_list|>
+name|newAcl
+init|=
+name|aclSpec
+decl_stmt|;
+if|if
+condition|(
+operator|!
+name|fromEdits
+condition|)
+block|{
+name|List
+argument_list|<
+name|AclEntry
+argument_list|>
 name|existingAcl
 init|=
 name|AclStorage
@@ -1365,12 +1384,8 @@ argument_list|(
 name|inode
 argument_list|)
 decl_stmt|;
-name|List
-argument_list|<
-name|AclEntry
-argument_list|>
 name|newAcl
-init|=
+operator|=
 name|AclTransformation
 operator|.
 name|replaceAclEntries
@@ -1379,7 +1394,8 @@ name|existingAcl
 argument_list|,
 name|aclSpec
 argument_list|)
-decl_stmt|;
+expr_stmt|;
+block|}
 name|AclStorage
 operator|.
 name|updateINodeAcl

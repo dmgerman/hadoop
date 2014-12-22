@@ -5396,6 +5396,8 @@ argument_list|,
 name|setAclOp
 operator|.
 name|aclEntries
+argument_list|,
+literal|true
 argument_list|)
 expr_stmt|;
 break|break;
