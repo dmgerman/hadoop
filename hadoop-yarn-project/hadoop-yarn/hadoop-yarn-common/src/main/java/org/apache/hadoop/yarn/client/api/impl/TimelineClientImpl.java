@@ -1131,17 +1131,26 @@ name|retryInterval
 decl_stmt|;
 comment|// Indicates if retries happened last time. Only tests should read it.
 comment|// In unit tests, retryOn() calls should _not_ be concurrent.
-annotation|@
-name|Private
-annotation|@
-name|VisibleForTesting
 DECL|field|retried
-specifier|public
+specifier|private
 name|boolean
 name|retried
 init|=
 literal|false
 decl_stmt|;
+annotation|@
+name|Private
+annotation|@
+name|VisibleForTesting
+DECL|method|getRetired ()
+name|boolean
+name|getRetired
+parameter_list|()
+block|{
+return|return
+name|retried
+return|;
+block|}
 comment|// Constructor with default retry settings
 DECL|method|TimelineClientConnectionRetry (Configuration conf)
 specifier|public

@@ -24,7 +24,7 @@ name|java
 operator|.
 name|io
 operator|.
-name|FileWriter
+name|FileOutputStream
 import|;
 end_import
 
@@ -35,6 +35,28 @@ operator|.
 name|io
 operator|.
 name|IOException
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|io
+operator|.
+name|OutputStreamWriter
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|nio
+operator|.
+name|charset
+operator|.
+name|Charset
 import|;
 end_import
 
@@ -738,7 +760,7 @@ name|String
 operator|.
 name|format
 argument_list|(
-literal|"graph [ label=%s, fontsize=24, fontname=Helvetica];\n"
+literal|"graph [ label=%s, fontsize=24, fontname=Helvetica];%n"
 argument_list|,
 name|wrapSafeString
 argument_list|(
@@ -831,7 +853,7 @@ name|String
 operator|.
 name|format
 argument_list|(
-literal|"%s%s [ label = %s ];\n"
+literal|"%s%s [ label = %s ];%n"
 argument_list|,
 name|indent
 argument_list|,
@@ -878,7 +900,7 @@ name|String
 operator|.
 name|format
 argument_list|(
-literal|"%s%s -> %s [ label = %s ];\n"
+literal|"%s%s -> %s [ label = %s ];%n"
 argument_list|,
 name|indent
 argument_list|,
@@ -951,13 +973,24 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
-name|FileWriter
+name|OutputStreamWriter
 name|fout
 init|=
 operator|new
-name|FileWriter
+name|OutputStreamWriter
+argument_list|(
+operator|new
+name|FileOutputStream
 argument_list|(
 name|filepath
+argument_list|)
+argument_list|,
+name|Charset
+operator|.
+name|forName
+argument_list|(
+literal|"UTF-8"
+argument_list|)
 argument_list|)
 decl_stmt|;
 name|fout

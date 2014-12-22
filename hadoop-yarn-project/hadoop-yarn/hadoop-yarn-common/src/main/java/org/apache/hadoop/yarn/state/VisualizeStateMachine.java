@@ -264,7 +264,7 @@ name|err
 operator|.
 name|printf
 argument_list|(
-literal|"Usage: %s<GraphName><class[,class[,...]]><OutputFile>\n"
+literal|"Usage: %s<GraphName><class[,class[,...]]><OutputFile>%n"
 argument_list|,
 name|VisualizeStateMachine
 operator|.

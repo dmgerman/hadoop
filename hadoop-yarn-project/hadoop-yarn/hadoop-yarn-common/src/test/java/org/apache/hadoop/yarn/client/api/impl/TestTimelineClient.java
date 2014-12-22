@@ -1239,7 +1239,8 @@ name|client
 operator|.
 name|connectionRetry
 operator|.
-name|retried
+name|getRetired
+argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
@@ -1587,7 +1588,8 @@ name|client
 operator|.
 name|connectionRetry
 operator|.
-name|retried
+name|getRetired
+argument_list|()
 argument_list|)
 expr_stmt|;
 block|}

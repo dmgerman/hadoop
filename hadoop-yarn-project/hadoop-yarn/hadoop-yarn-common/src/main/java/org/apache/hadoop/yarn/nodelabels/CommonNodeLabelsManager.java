@@ -657,7 +657,7 @@ class|class
 name|Label
 block|{
 DECL|field|resource
-specifier|public
+specifier|private
 name|Resource
 name|resource
 decl_stmt|;
@@ -679,6 +679,18 @@ argument_list|,
 literal|0
 argument_list|)
 expr_stmt|;
+block|}
+DECL|method|getResource ()
+specifier|public
+name|Resource
+name|getResource
+parameter_list|()
+block|{
+return|return
+name|this
+operator|.
+name|resource
+return|;
 block|}
 block|}
 comment|/**    * A<code>Host</code> can have multiple<code>Node</code>s     */

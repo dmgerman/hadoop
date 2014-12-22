@@ -115,11 +115,6 @@ specifier|final
 name|CommonNodeLabelsManager
 name|mgr
 decl_stmt|;
-DECL|field|conf
-specifier|protected
-name|Configuration
-name|conf
-decl_stmt|;
 DECL|method|NodeLabelsStore (CommonNodeLabelsManager mgr)
 specifier|public
 name|NodeLabelsStore
@@ -208,14 +203,7 @@ name|conf
 parameter_list|)
 throws|throws
 name|Exception
-block|{
-name|this
-operator|.
-name|conf
-operator|=
-name|conf
-expr_stmt|;
-block|}
+block|{}
 DECL|method|getNodeLabelsManager ()
 specifier|public
 name|CommonNodeLabelsManager

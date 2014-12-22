@@ -1837,7 +1837,8 @@ name|subtractFrom
 argument_list|(
 name|label
 operator|.
-name|resource
+name|getResource
+argument_list|()
 argument_list|,
 name|oldNM
 operator|.
@@ -1907,7 +1908,8 @@ name|subtractFrom
 argument_list|(
 name|label
 operator|.
-name|resource
+name|getResource
+argument_list|()
 argument_list|,
 name|oldNM
 operator|.
@@ -2014,7 +2016,8 @@ name|addTo
 argument_list|(
 name|label
 operator|.
-name|resource
+name|getResource
+argument_list|()
 argument_list|,
 name|newNM
 operator|.
@@ -2075,7 +2078,8 @@ name|addTo
 argument_list|(
 name|label
 operator|.
-name|resource
+name|getResource
+argument_list|()
 argument_list|,
 name|newNM
 operator|.
@@ -2177,7 +2181,8 @@ argument_list|(
 name|label
 argument_list|)
 operator|.
-name|resource
+name|getResource
+argument_list|()
 return|;
 block|}
 finally|finally

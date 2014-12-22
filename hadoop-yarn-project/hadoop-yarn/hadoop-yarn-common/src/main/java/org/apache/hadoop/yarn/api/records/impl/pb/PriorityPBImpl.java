@@ -293,14 +293,11 @@ block|{
 return|return
 name|Integer
 operator|.
-name|valueOf
+name|toString
 argument_list|(
 name|getPriority
 argument_list|()
 argument_list|)
-operator|.
-name|toString
-argument_list|()
 return|;
 block|}
 block|}

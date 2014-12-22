@@ -130,28 +130,6 @@ name|ResourceCalculatorPlugin
 extends|extends
 name|Configured
 block|{
-DECL|field|processPid
-specifier|protected
-name|String
-name|processPid
-init|=
-literal|null
-decl_stmt|;
-comment|/**    * set the pid of the process for which<code>getProcResourceValues</code>    * will be invoked    *     * @param pid    */
-DECL|method|setProcessPid (String pid)
-specifier|public
-name|void
-name|setProcessPid
-parameter_list|(
-name|String
-name|pid
-parameter_list|)
-block|{
-name|processPid
-operator|=
-name|pid
-expr_stmt|;
-block|}
 comment|/**    * Obtain the total size of the virtual memory present in the system.    *    * @return virtual memory size in bytes.    */
 DECL|method|getVirtualMemorySize ()
 specifier|public

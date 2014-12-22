@@ -803,7 +803,7 @@ literal|"\t|- PID "
 operator|+
 literal|"CPU_TIME(MILLIS) "
 operator|+
-literal|"VMEM(BYTES) WORKING_SET(BYTES)\n"
+literal|"VMEM(BYTES) WORKING_SET(BYTES)%n"
 argument_list|)
 argument_list|)
 expr_stmt|;
@@ -833,7 +833,7 @@ name|String
 operator|.
 name|format
 argument_list|(
-literal|"\t|- %s %d %d %d\n"
+literal|"\t|- %s %d %d %d%n"
 argument_list|,
 name|p
 operator|.
