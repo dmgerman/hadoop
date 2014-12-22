@@ -52,16 +52,6 @@ name|java
 operator|.
 name|io
 operator|.
-name|FileReader
-import|;
-end_import
-
-begin_import
-import|import
-name|java
-operator|.
-name|io
-operator|.
 name|IOException
 import|;
 end_import
@@ -148,20 +138,6 @@ name|apache
 operator|.
 name|commons
 operator|.
-name|io
-operator|.
-name|IOUtils
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|commons
-operator|.
 name|logging
 operator|.
 name|Log
@@ -183,7 +159,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * FileBasedIPList loads a list of subnets in CIDR format and ip addresses from a file.  *  * Given an ip address, isIn  method returns true if ip belongs to one of the subnets.  *  * Thread safe.  */
+comment|/**  * FileBasedIPList loads a list of subnets in CIDR format and ip addresses from  * a file.  *  * Given an ip address, isIn  method returns true if ip belongs to one of the  * subnets.  *  * Thread safe.  */
 end_comment
 
 begin_class
@@ -240,11 +216,33 @@ name|String
 index|[]
 name|lines
 init|=
+operator|new
+name|String
+index|[
+literal|0
+index|]
+decl_stmt|;
+try|try
+block|{
+name|lines
+operator|=
 name|readLines
 argument_list|(
 name|fileName
 argument_list|)
-decl_stmt|;
+expr_stmt|;
+block|}
+catch|catch
+parameter_list|(
+name|IOException
+name|e
+parameter_list|)
+block|{
+name|lines
+operator|=
+literal|null
+expr_stmt|;
+block|}
 if|if
 condition|(
 name|lines
@@ -330,7 +328,7 @@ name|ipAddress
 argument_list|)
 return|;
 block|}
-comment|/**    * reads the lines in a file.    * @param fileName    * @return lines in a String array; null if the file does not exist or if the    * file name is null    * @throws IOException    */
+comment|/**    * Reads the lines in a file.    * @param fileName    * @return lines in a String array; null if the file does not exist or if the    * file name is null    * @throws IOException    */
 DECL|method|readLines (String fileName)
 specifier|private
 specifier|static
@@ -341,6 +339,8 @@ parameter_list|(
 name|String
 name|fileName
 parameter_list|)
+throws|throws
+name|IOException
 block|{
 try|try
 block|{
@@ -368,6 +368,8 @@ name|exists
 argument_list|()
 condition|)
 block|{
+try|try
+init|(
 name|Reader
 name|fileReader
 init|=
@@ -384,16 +386,9 @@ name|Charsets
 operator|.
 name|UTF_8
 argument_list|)
-decl_stmt|;
-name|BufferedReader
-name|bufferedReader
-init|=
-operator|new
-name|BufferedReader
-argument_list|(
-name|fileReader
-argument_list|)
-decl_stmt|;
+init|;               BufferedReader bufferedReader = new BufferedReader(fileReader)
+block|)
+block|{
 name|List
 argument_list|<
 name|String
@@ -434,11 +429,14 @@ name|line
 argument_list|)
 expr_stmt|;
 block|}
-name|bufferedReader
+if|if
+condition|(
+name|LOG
 operator|.
-name|close
+name|isDebugEnabled
 argument_list|()
-expr_stmt|;
+condition|)
+block|{
 name|LOG
 operator|.
 name|debug
@@ -455,6 +453,7 @@ operator|+
 name|fileName
 argument_list|)
 expr_stmt|;
+block|}
 return|return
 operator|(
 name|lines
@@ -473,6 +472,7 @@ argument_list|)
 operator|)
 return|;
 block|}
+block|}
 else|else
 block|{
 name|LOG
@@ -489,24 +489,27 @@ block|}
 block|}
 catch|catch
 parameter_list|(
-name|Throwable
-name|t
+name|IOException
+name|ioe
 parameter_list|)
 block|{
 name|LOG
 operator|.
 name|error
 argument_list|(
-name|t
+name|ioe
 argument_list|)
 expr_stmt|;
+throw|throw
+name|ioe
+throw|;
 block|}
 return|return
 literal|null
 return|;
 block|}
-block|}
 end_class
 
+unit|}
 end_unit
 
