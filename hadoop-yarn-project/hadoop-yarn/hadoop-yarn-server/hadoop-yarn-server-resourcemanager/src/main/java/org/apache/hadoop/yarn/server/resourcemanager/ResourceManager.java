@@ -2843,6 +2843,13 @@ init|=
 name|createNodeLabelManager
 argument_list|()
 decl_stmt|;
+name|nlm
+operator|.
+name|setRMContext
+argument_list|(
+name|rmContext
+argument_list|)
+expr_stmt|;
 name|addService
 argument_list|(
 name|nlm

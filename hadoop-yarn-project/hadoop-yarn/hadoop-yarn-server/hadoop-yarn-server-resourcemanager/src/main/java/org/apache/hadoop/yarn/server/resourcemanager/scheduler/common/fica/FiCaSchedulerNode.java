@@ -28,6 +28,16 @@ end_package
 
 begin_import
 import|import
+name|java
+operator|.
+name|util
+operator|.
+name|Set
+import|;
+end_import
+
+begin_import
+import|import
 name|org
 operator|.
 name|apache
@@ -100,13 +110,9 @@ name|hadoop
 operator|.
 name|yarn
 operator|.
-name|server
+name|nodelabels
 operator|.
-name|resourcemanager
-operator|.
-name|rmcontainer
-operator|.
-name|RMContainer
+name|CommonNodeLabelsManager
 import|;
 end_import
 
@@ -126,7 +132,7 @@ name|resourcemanager
 operator|.
 name|rmcontainer
 operator|.
-name|RMContainerState
+name|RMContainer
 import|;
 end_import
 
@@ -214,6 +220,33 @@ operator|.
 name|class
 argument_list|)
 decl_stmt|;
+DECL|method|FiCaSchedulerNode (RMNode node, boolean usePortForNodeName, Set<String> nodeLabels)
+specifier|public
+name|FiCaSchedulerNode
+parameter_list|(
+name|RMNode
+name|node
+parameter_list|,
+name|boolean
+name|usePortForNodeName
+parameter_list|,
+name|Set
+argument_list|<
+name|String
+argument_list|>
+name|nodeLabels
+parameter_list|)
+block|{
+name|super
+argument_list|(
+name|node
+argument_list|,
+name|usePortForNodeName
+argument_list|,
+name|nodeLabels
+argument_list|)
+expr_stmt|;
+block|}
 DECL|method|FiCaSchedulerNode (RMNode node, boolean usePortForNodeName)
 specifier|public
 name|FiCaSchedulerNode
@@ -225,11 +258,15 @@ name|boolean
 name|usePortForNodeName
 parameter_list|)
 block|{
-name|super
+name|this
 argument_list|(
 name|node
 argument_list|,
 name|usePortForNodeName
+argument_list|,
+name|CommonNodeLabelsManager
+operator|.
+name|EMPTY_STRING_SET
 argument_list|)
 expr_stmt|;
 block|}

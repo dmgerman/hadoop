@@ -467,6 +467,16 @@ name|Resource
 name|getUsedResources
 parameter_list|()
 function_decl|;
+comment|/**    * Get the currently utilized resources which allocated at nodes with label    * specified    *     * @return used resources by the queue and it's children    */
+DECL|method|getUsedResourceByLabel (String nodeLabel)
+specifier|public
+name|Resource
+name|getUsedResourceByLabel
+parameter_list|(
+name|String
+name|nodeLabel
+parameter_list|)
+function_decl|;
 comment|/**    * Get the current run-state of the queue    * @return current run-state    */
 DECL|method|getState ()
 specifier|public

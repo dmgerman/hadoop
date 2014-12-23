@@ -2164,6 +2164,26 @@ return|return
 name|acls
 return|;
 block|}
+annotation|@
+name|Private
+DECL|method|getUsedResourceByLabel (String nodeLabel)
+specifier|public
+name|Resource
+name|getUsedResourceByLabel
+parameter_list|(
+name|String
+name|nodeLabel
+parameter_list|)
+block|{
+return|return
+name|usedResourcesByNodeLabels
+operator|.
+name|get
+argument_list|(
+name|nodeLabel
+argument_list|)
+return|;
+block|}
 block|}
 end_class
 

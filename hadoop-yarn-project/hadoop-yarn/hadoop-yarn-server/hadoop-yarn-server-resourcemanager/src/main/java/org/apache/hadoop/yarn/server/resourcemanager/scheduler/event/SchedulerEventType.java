@@ -43,6 +43,9 @@ block|,
 DECL|enumConstant|NODE_RESOURCE_UPDATE
 name|NODE_RESOURCE_UPDATE
 block|,
+DECL|enumConstant|NODE_LABELS_UPDATE
+name|NODE_LABELS_UPDATE
+block|,
 comment|// Source: RMApp
 DECL|enumConstant|APP_ADDED
 name|APP_ADDED
