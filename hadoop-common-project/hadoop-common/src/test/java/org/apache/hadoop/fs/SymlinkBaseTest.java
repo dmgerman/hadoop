@@ -3429,14 +3429,13 @@ operator|instanceof
 name|FileContextTestWrapper
 condition|)
 block|{
-name|assertEquals
+name|GenericTestUtils
+operator|.
+name|assertExceptionContains
 argument_list|(
-literal|"No AbstractFileSystem for scheme: null"
+literal|"No AbstractFileSystem configured for scheme: null"
 argument_list|,
 name|e
-operator|.
-name|getMessage
-argument_list|()
 argument_list|)
 expr_stmt|;
 block|}

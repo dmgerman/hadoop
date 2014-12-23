@@ -80,6 +80,20 @@ name|org
 operator|.
 name|apache
 operator|.
+name|commons
+operator|.
+name|io
+operator|.
+name|Charsets
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
 name|hadoop
 operator|.
 name|HadoopIllegalArgumentException
@@ -939,6 +953,28 @@ operator|.
 name|HdfsServerConstants
 operator|.
 name|CRYPTO_XATTR_FILE_ENCRYPTION_INFO
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|server
+operator|.
+name|namenode
+operator|.
+name|snapshot
+operator|.
+name|Snapshot
+operator|.
+name|CURRENT_STATE_ID
 import|;
 end_import
 
@@ -2171,16 +2207,16 @@ name|storagePolicyId
 argument_list|)
 return|;
 block|}
-comment|/**    * Add the given filename to the fs.    * @throws FileAlreadyExistsException    * @throws QuotaExceededException    * @throws UnresolvedLinkException    * @throws SnapshotAccessControlException     */
-DECL|method|addFile (INodesInPath iip, String path, PermissionStatus permissions, short replication, long preferredBlockSize, String clientName, String clientMachine)
-name|INodeFile
+comment|/**    * Add the given filename to the fs.    * @return the new INodesInPath instance that contains the new INode    */
+DECL|method|addFile (INodesInPath existing, String localName, PermissionStatus permissions, short replication, long preferredBlockSize, String clientName, String clientMachine)
+name|INodesInPath
 name|addFile
 parameter_list|(
 name|INodesInPath
-name|iip
+name|existing
 parameter_list|,
 name|String
-name|path
+name|localName
 parameter_list|,
 name|PermissionStatus
 name|permissions
@@ -2235,6 +2271,20 @@ argument_list|)
 decl_stmt|;
 name|newNode
 operator|.
+name|setLocalName
+argument_list|(
+name|localName
+operator|.
+name|getBytes
+argument_list|(
+name|Charsets
+operator|.
+name|UTF_8
+argument_list|)
+argument_list|)
+expr_stmt|;
+name|newNode
+operator|.
 name|toUnderConstruction
 argument_list|(
 name|clientName
@@ -2242,21 +2292,19 @@ argument_list|,
 name|clientMachine
 argument_list|)
 expr_stmt|;
-name|boolean
-name|added
-init|=
-literal|false
+name|INodesInPath
+name|newiip
 decl_stmt|;
 name|writeLock
 argument_list|()
 expr_stmt|;
 try|try
 block|{
-name|added
+name|newiip
 operator|=
 name|addINode
 argument_list|(
-name|iip
+name|existing
 argument_list|,
 name|newNode
 argument_list|)
@@ -2270,8 +2318,9 @@ expr_stmt|;
 block|}
 if|if
 condition|(
-operator|!
-name|added
+name|newiip
+operator|==
+literal|null
 condition|)
 block|{
 name|NameNode
@@ -2282,7 +2331,14 @@ name|info
 argument_list|(
 literal|"DIR* addFile: failed to add "
 operator|+
-name|path
+name|existing
+operator|.
+name|getPath
+argument_list|()
+operator|+
+literal|"/"
+operator|+
+name|localName
 argument_list|)
 expr_stmt|;
 return|return
@@ -2307,25 +2363,29 @@ name|debug
 argument_list|(
 literal|"DIR* addFile: "
 operator|+
-name|path
+name|localName
 operator|+
 literal|" is added"
 argument_list|)
 expr_stmt|;
 block|}
 return|return
-name|newNode
+name|newiip
 return|;
 block|}
-DECL|method|unprotectedAddFile (long id, INodesInPath iip, PermissionStatus permissions, List<AclEntry> aclEntries, List<XAttr> xAttrs, short replication, long modificationTime, long atime, long preferredBlockSize, boolean underConstruction, String clientName, String clientMachine, byte storagePolicyId)
+DECL|method|addFileForEditLog (long id, INodesInPath existing, byte[] localName, PermissionStatus permissions, List<AclEntry> aclEntries, List<XAttr> xAttrs, short replication, long modificationTime, long atime, long preferredBlockSize, boolean underConstruction, String clientName, String clientMachine, byte storagePolicyId)
 name|INodeFile
-name|unprotectedAddFile
+name|addFileForEditLog
 parameter_list|(
 name|long
 name|id
 parameter_list|,
 name|INodesInPath
-name|iip
+name|existing
+parameter_list|,
+name|byte
+index|[]
+name|localName
 parameter_list|,
 name|PermissionStatus
 name|permissions
@@ -2431,16 +2491,30 @@ name|storagePolicyId
 argument_list|)
 expr_stmt|;
 block|}
+name|newNode
+operator|.
+name|setLocalName
+argument_list|(
+name|localName
+argument_list|)
+expr_stmt|;
 try|try
 block|{
-if|if
-condition|(
+name|INodesInPath
+name|iip
+init|=
 name|addINode
 argument_list|(
-name|iip
+name|existing
 argument_list|,
 name|newNode
 argument_list|)
+decl_stmt|;
+if|if
+condition|(
+name|iip
+operator|!=
+literal|null
 condition|)
 block|{
 if|if
@@ -2458,8 +2532,6 @@ name|newNode
 argument_list|,
 name|aclEntries
 argument_list|,
-name|Snapshot
-operator|.
 name|CURRENT_STATE_ID
 argument_list|)
 expr_stmt|;
@@ -2479,8 +2551,6 @@ name|newNode
 argument_list|,
 name|xAttrs
 argument_list|,
-name|Snapshot
-operator|.
 name|CURRENT_STATE_ID
 argument_list|)
 expr_stmt|;
@@ -2514,7 +2584,7 @@ name|debug
 argument_list|(
 literal|"DIR* FSDirectory.unprotectedAddFile: exception when add "
 operator|+
-name|iip
+name|existing
 operator|.
 name|getPath
 argument_list|()
@@ -3471,8 +3541,6 @@ name|targetNode
 operator|.
 name|cleanSubtree
 argument_list|(
-name|Snapshot
-operator|.
 name|CURRENT_STATE_ID
 argument_list|,
 name|latestSnapshot
@@ -4265,13 +4333,13 @@ literal|1
 argument_list|)
 return|;
 block|}
-comment|/**    * Add the given child to the namespace.    * @param iip the INodesInPath instance containing all the ancestral INodes    * @throws QuotaExceededException is thrown if it violates quota limit    */
-DECL|method|addINode (INodesInPath iip, INode child)
-name|boolean
+comment|/**    * Add the given child to the namespace.    * @param existing the INodesInPath containing all the ancestral INodes    * @param child the new INode to add    * @return a new INodesInPath instance containing the new child INode. Null    * if the adding fails.    * @throws QuotaExceededException is thrown if it violates quota limit    */
+DECL|method|addINode (INodesInPath existing, INode child)
+name|INodesInPath
 name|addINode
 parameter_list|(
 name|INodesInPath
-name|iip
+name|existing
 parameter_list|,
 name|INode
 name|child
@@ -4281,16 +4349,6 @@ name|QuotaExceededException
 throws|,
 name|UnresolvedLinkException
 block|{
-name|child
-operator|.
-name|setLocalName
-argument_list|(
-name|iip
-operator|.
-name|getLastLocalName
-argument_list|()
-argument_list|)
-expr_stmt|;
 name|cacheName
 argument_list|(
 name|child
@@ -4304,7 +4362,7 @@ block|{
 return|return
 name|addLastINode
 argument_list|(
-name|iip
+name|existing
 argument_list|,
 name|child
 argument_list|,
@@ -4666,8 +4724,6 @@ name|parent
 operator|.
 name|getChildrenList
 argument_list|(
-name|Snapshot
-operator|.
 name|CURRENT_STATE_ID
 argument_list|)
 operator|.
@@ -4732,14 +4788,13 @@ expr_stmt|;
 block|}
 block|}
 block|}
-comment|/**    * The same as {@link #addChild(INodesInPath, int, INode, boolean)}    * with pos = length - 1.    */
-DECL|method|addLastINode (INodesInPath inodesInPath, INode inode, boolean checkQuota)
-specifier|private
-name|boolean
+comment|/**    * Add a child to the end of the path specified by INodesInPath.    * @return an INodesInPath instance containing the new INode    */
+DECL|method|addLastINode (INodesInPath existing, INode inode, boolean checkQuota)
+name|INodesInPath
 name|addLastINode
 parameter_list|(
 name|INodesInPath
-name|inodesInPath
+name|existing
 parameter_list|,
 name|INode
 name|inode
@@ -4750,50 +4805,31 @@ parameter_list|)
 throws|throws
 name|QuotaExceededException
 block|{
+assert|assert
+name|existing
+operator|.
+name|getLastINode
+argument_list|()
+operator|!=
+literal|null
+operator|&&
+name|existing
+operator|.
+name|getLastINode
+argument_list|()
+operator|.
+name|isDirectory
+argument_list|()
+assert|;
 specifier|final
 name|int
 name|pos
 init|=
-name|inodesInPath
+name|existing
 operator|.
 name|length
 argument_list|()
-operator|-
-literal|1
 decl_stmt|;
-return|return
-name|addChild
-argument_list|(
-name|inodesInPath
-argument_list|,
-name|pos
-argument_list|,
-name|inode
-argument_list|,
-name|checkQuota
-argument_list|)
-return|;
-block|}
-comment|/** Add a node child to the inodes at index pos.     * Its ancestors are stored at [0, pos-1].    * @return false if the child with this name already exists;     *         otherwise return true;    * @throws QuotaExceededException is thrown if it violates quota limit    */
-DECL|method|addChild (INodesInPath iip, int pos, INode child, boolean checkQuota)
-name|boolean
-name|addChild
-parameter_list|(
-name|INodesInPath
-name|iip
-parameter_list|,
-name|int
-name|pos
-parameter_list|,
-name|INode
-name|child
-parameter_list|,
-name|boolean
-name|checkQuota
-parameter_list|)
-throws|throws
-name|QuotaExceededException
-block|{
 comment|// Disallow creation of /.reserved. This may be created when loading
 comment|// editlog/fsimage during upgrade since /.reserved was a valid name in older
 comment|// release. This may also be called when a user tries to create a file
@@ -4804,7 +4840,7 @@ name|pos
 operator|==
 literal|1
 operator|&&
-name|iip
+name|existing
 operator|.
 name|getINode
 argument_list|(
@@ -4815,7 +4851,7 @@ name|rootDir
 operator|&&
 name|isReservedName
 argument_list|(
-name|child
+name|inode
 argument_list|)
 condition|)
 block|{
@@ -4825,7 +4861,7 @@ name|HadoopIllegalArgumentException
 argument_list|(
 literal|"File name \""
 operator|+
-name|child
+name|inode
 operator|.
 name|getLocalName
 argument_list|()
@@ -4844,7 +4880,7 @@ specifier|final
 name|INodeDirectory
 name|parent
 init|=
-name|iip
+name|existing
 operator|.
 name|getINode
 argument_list|(
@@ -4871,7 +4907,7 @@ specifier|final
 name|String
 name|parentPath
 init|=
-name|iip
+name|existing
 operator|.
 name|getPath
 argument_list|(
@@ -4882,7 +4918,7 @@ argument_list|)
 decl_stmt|;
 name|verifyMaxComponentLength
 argument_list|(
-name|child
+name|inode
 operator|.
 name|getLocalNameBytes
 argument_list|()
@@ -4901,7 +4937,7 @@ block|}
 comment|// always verify inode name
 name|verifyINodeName
 argument_list|(
-name|child
+name|inode
 operator|.
 name|getLocalNameBytes
 argument_list|()
@@ -4913,14 +4949,14 @@ operator|.
 name|Counts
 name|counts
 init|=
-name|child
+name|inode
 operator|.
 name|computeQuotaUsage
 argument_list|()
 decl_stmt|;
 name|updateCount
 argument_list|(
-name|iip
+name|existing
 argument_list|,
 name|pos
 argument_list|,
@@ -4949,7 +4985,7 @@ name|boolean
 name|isRename
 init|=
 operator|(
-name|child
+name|inode
 operator|.
 name|getParent
 argument_list|()
@@ -4968,11 +5004,11 @@ name|parent
 operator|.
 name|addChild
 argument_list|(
-name|child
+name|inode
 argument_list|,
 literal|true
 argument_list|,
-name|iip
+name|existing
 operator|.
 name|getLatestSnapshotId
 argument_list|()
@@ -4987,7 +5023,7 @@ parameter_list|)
 block|{
 name|updateCountNoQuotaCheck
 argument_list|(
-name|iip
+name|existing
 argument_list|,
 name|pos
 argument_list|,
@@ -5024,7 +5060,7 @@ condition|)
 block|{
 name|updateCountNoQuotaCheck
 argument_list|(
-name|iip
+name|existing
 argument_list|,
 name|pos
 argument_list|,
@@ -5049,6 +5085,9 @@ name|DISKSPACE
 argument_list|)
 argument_list|)
 expr_stmt|;
+return|return
+literal|null
+return|;
 block|}
 else|else
 block|{
@@ -5062,26 +5101,38 @@ name|AclStorage
 operator|.
 name|copyINodeDefaultAcl
 argument_list|(
-name|child
+name|inode
 argument_list|)
 expr_stmt|;
 block|}
 name|addToInodeMap
 argument_list|(
-name|child
+name|inode
 argument_list|)
 expr_stmt|;
 block|}
 return|return
-name|added
+name|INodesInPath
+operator|.
+name|append
+argument_list|(
+name|existing
+argument_list|,
+name|inode
+argument_list|,
+name|inode
+operator|.
+name|getLocalNameBytes
+argument_list|()
+argument_list|)
 return|;
 block|}
-DECL|method|addLastINodeNoQuotaCheck (INodesInPath inodesInPath, INode i)
-name|boolean
+DECL|method|addLastINodeNoQuotaCheck (INodesInPath existing, INode i)
+name|INodesInPath
 name|addLastINodeNoQuotaCheck
 parameter_list|(
 name|INodesInPath
-name|inodesInPath
+name|existing
 parameter_list|,
 name|INode
 name|i
@@ -5092,7 +5143,7 @@ block|{
 return|return
 name|addLastINode
 argument_list|(
-name|inodesInPath
+name|existing
 argument_list|,
 name|i
 argument_list|,
@@ -5119,7 +5170,7 @@ argument_list|)
 expr_stmt|;
 block|}
 return|return
-literal|false
+literal|null
 return|;
 block|}
 comment|/**    * Remove the last inode in the path from the namespace.    * Count of each ancestor with quota is also updated.    * @return -1 for failing to remove;    *          0 for removing a reference whose referred inode has other     *            reference nodes;    *>0 otherwise.     */

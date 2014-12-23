@@ -814,12 +814,13 @@ specifier|public
 class|class
 name|TestRenameWithSnapshots
 block|{
+static|static
 block|{
 name|SnapshotTestHelper
 operator|.
 name|disableLogs
-parameter_list|()
-constructor_decl|;
+argument_list|()
+expr_stmt|;
 block|}
 DECL|field|LOG
 specifier|private
@@ -15482,7 +15483,7 @@ literal|true
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * This test demonstrates that     * {@link INodeDirectory#removeChild(INode, Snapshot)}    * and     * {@link INodeDirectory#addChild(INode, boolean, Snapshot)}    * should use {@link INode#isInLatestSnapshot(Snapshot)} to check if the     * added/removed child should be recorded in snapshots.    */
+comment|/**    * This test demonstrates that     * {@link INodeDirectory#removeChild}    * and     * {@link INodeDirectory#addChild}    * should use {@link INode#isInLatestSnapshot} to check if the    * added/removed child should be recorded in snapshots.    */
 annotation|@
 name|Test
 DECL|method|testRenameDirAndDeleteSnapshot_5 ()
