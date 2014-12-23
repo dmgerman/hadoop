@@ -1058,6 +1058,7 @@ block|}
 annotation|@
 name|Override
 DECL|method|getAclFeature (int snapshotId)
+specifier|public
 specifier|final
 name|AclFeature
 name|getAclFeature
@@ -1595,6 +1596,13 @@ argument_list|(
 name|f
 argument_list|)
 expr_stmt|;
+name|AclStorage
+operator|.
+name|removeAclFeature
+argument_list|(
+name|f
+argument_list|)
+expr_stmt|;
 block|}
 DECL|method|addAclFeature (AclFeature f)
 specifier|public
@@ -1626,7 +1634,12 @@ argument_list|)
 throw|;
 name|addFeature
 argument_list|(
+name|AclStorage
+operator|.
+name|addAclFeature
+argument_list|(
 name|f
+argument_list|)
 argument_list|)
 expr_stmt|;
 block|}

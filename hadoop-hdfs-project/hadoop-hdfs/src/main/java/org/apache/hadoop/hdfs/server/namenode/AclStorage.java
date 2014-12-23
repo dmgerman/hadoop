@@ -240,6 +240,22 @@ name|QuotaExceededException
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|util
+operator|.
+name|ReferenceCountMap
+import|;
+end_import
+
 begin_comment
 comment|/**  * AclStorage contains utility methods that define how ACL data is stored in the  * namespace.  *  * If an inode has an ACL, then the ACL bit is set in the inode's  * {@link FsPermission} and the inode also contains an {@link AclFeature}.  For  * the access ACL, the owner and other entries are identical to the owner and  * other bits stored in FsPermission, so we reuse those.  The access mask entry  * is stored into the group permission bits of FsPermission.  This is consistent  * with other file systems' implementations of ACLs and eliminates the need for  * special handling in various parts of the codebase.  For example, if a user  * calls chmod to change group permission bits on a file with an ACL, then the  * expected behavior is to change the ACL's mask entry.  By saving the mask entry  * into the group permission bits, chmod continues to work correctly without  * special handling.  All remaining access entries (named users and named groups)  * are stored as explicit {@link AclEntry} instances in a list inside the  * AclFeature.  Additionally, all default entries are stored in the AclFeature.  *  * The methods in this class encapsulate these rules for reading or writing the  * ACL entries to the appropriate location.  *  * The methods in this class assume that input ACL entry lists have already been  * validated and sorted according to the rules enforced by  * {@link AclTransformation}.  */
 end_comment
@@ -250,10 +266,28 @@ name|InterfaceAudience
 operator|.
 name|Private
 DECL|class|AclStorage
+specifier|public
 specifier|final
 class|class
 name|AclStorage
 block|{
+DECL|field|UNIQUE_ACL_FEATURES
+specifier|private
+specifier|final
+specifier|static
+name|ReferenceCountMap
+argument_list|<
+name|AclFeature
+argument_list|>
+name|UNIQUE_ACL_FEATURES
+init|=
+operator|new
+name|ReferenceCountMap
+argument_list|<
+name|AclFeature
+argument_list|>
+argument_list|()
+decl_stmt|;
 comment|/**    * If a default ACL is defined on a parent directory, then copies that default    * ACL to a newly created child file or directory.    *    * @param child INode newly created child    */
 DECL|method|copyINodeDefaultAcl (INode child)
 specifier|public
@@ -1504,6 +1538,61 @@ name|getStickyBit
 argument_list|()
 argument_list|)
 return|;
+block|}
+annotation|@
+name|VisibleForTesting
+DECL|method|getUniqueAclFeatures ()
+specifier|public
+specifier|static
+name|ReferenceCountMap
+argument_list|<
+name|AclFeature
+argument_list|>
+name|getUniqueAclFeatures
+parameter_list|()
+block|{
+return|return
+name|UNIQUE_ACL_FEATURES
+return|;
+block|}
+comment|/**    * Add reference for the said AclFeature    *     * @param aclFeature    * @return Referenced AclFeature    */
+DECL|method|addAclFeature (AclFeature aclFeature)
+specifier|public
+specifier|static
+name|AclFeature
+name|addAclFeature
+parameter_list|(
+name|AclFeature
+name|aclFeature
+parameter_list|)
+block|{
+return|return
+name|UNIQUE_ACL_FEATURES
+operator|.
+name|put
+argument_list|(
+name|aclFeature
+argument_list|)
+return|;
+block|}
+comment|/**    * Remove reference to the AclFeature    *     * @param aclFeature    */
+DECL|method|removeAclFeature (AclFeature aclFeature)
+specifier|public
+specifier|static
+name|void
+name|removeAclFeature
+parameter_list|(
+name|AclFeature
+name|aclFeature
+parameter_list|)
+block|{
+name|UNIQUE_ACL_FEATURES
+operator|.
+name|remove
+argument_list|(
+name|aclFeature
+argument_list|)
+expr_stmt|;
 block|}
 block|}
 end_class
