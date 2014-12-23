@@ -4464,6 +4464,13 @@ name|AccessControlException
 name|ace
 parameter_list|)
 block|{
+comment|// Ignore the exception for recovered app as the app was previously accepted
+if|if
+condition|(
+operator|!
+name|isAppRecovering
+condition|)
+block|{
 name|LOG
 operator|.
 name|info
@@ -4508,6 +4515,7 @@ argument_list|)
 argument_list|)
 expr_stmt|;
 return|return;
+block|}
 block|}
 comment|// update the metrics
 name|queue

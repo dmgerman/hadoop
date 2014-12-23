@@ -3705,6 +3705,15 @@ argument_list|(
 name|app2
 argument_list|)
 expr_stmt|;
+name|csConf
+operator|.
+name|set
+argument_list|(
+literal|"yarn.scheduler.capacity.root.Default.QueueB.state"
+argument_list|,
+literal|"STOPPED"
+argument_list|)
+expr_stmt|;
 comment|// Re-start RM
 name|rm2
 operator|=
