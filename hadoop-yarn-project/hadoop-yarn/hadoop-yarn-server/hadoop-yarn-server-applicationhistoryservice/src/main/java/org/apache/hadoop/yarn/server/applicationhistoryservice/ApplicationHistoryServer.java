@@ -786,12 +786,12 @@ name|ie
 argument_list|)
 throw|;
 block|}
-name|startWebApp
-argument_list|()
-expr_stmt|;
 name|super
 operator|.
 name|serviceStart
+argument_list|()
+expr_stmt|;
+name|startWebApp
 argument_list|()
 expr_stmt|;
 block|}

@@ -4120,7 +4120,7 @@ operator|+
 literal|"/share/hadoop/yarn/lib/*"
 block|}
 decl_stmt|;
-comment|/**    *<p>    * Default platform-specific CLASSPATH for YARN applications. A    * comma-separated list of CLASSPATH entries constructed based on the client    * OS environment expansion syntax.    *</p>    *<p>    * Note: Use {@link DEFAULT_YARN_CROSS_PLATFORM_APPLICATION_CLASSPATH} for    * cross-platform practice i.e. submit an application from a Windows client to    * a Linux/Unix server or vice versa.    *</p>    */
+comment|/**    *<p>    * Default platform-specific CLASSPATH for YARN applications. A    * comma-separated list of CLASSPATH entries constructed based on the client    * OS environment expansion syntax.    *</p>    *<p>    * Note: Use {@link #DEFAULT_YARN_CROSS_PLATFORM_APPLICATION_CLASSPATH} for    * cross-platform practice i.e. submit an application from a Windows client to    * a Linux/Unix server or vice versa.    *</p>    */
 DECL|field|DEFAULT_YARN_APPLICATION_CLASSPATH
 specifier|public
 specifier|static
@@ -4860,6 +4860,62 @@ DECL|field|DEFAULT_TIMELINE_SERVICE_CLIENT_RETRY_INTERVAL_MS
 name|DEFAULT_TIMELINE_SERVICE_CLIENT_RETRY_INTERVAL_MS
 init|=
 literal|1000
+decl_stmt|;
+comment|/** Flag to enable recovery of timeline service */
+DECL|field|TIMELINE_SERVICE_RECOVERY_ENABLED
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|TIMELINE_SERVICE_RECOVERY_ENABLED
+init|=
+name|TIMELINE_SERVICE_PREFIX
+operator|+
+literal|"recovery.enabled"
+decl_stmt|;
+DECL|field|DEFAULT_TIMELINE_SERVICE_RECOVERY_ENABLED
+specifier|public
+specifier|static
+specifier|final
+name|boolean
+name|DEFAULT_TIMELINE_SERVICE_RECOVERY_ENABLED
+init|=
+literal|false
+decl_stmt|;
+comment|/** Timeline service state store class */
+DECL|field|TIMELINE_SERVICE_STATE_STORE_CLASS
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|TIMELINE_SERVICE_STATE_STORE_CLASS
+init|=
+name|TIMELINE_SERVICE_PREFIX
+operator|+
+literal|"state-store-class"
+decl_stmt|;
+DECL|field|TIMELINE_SERVICE_LEVELDB_STATE_STORE_PREFIX
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|TIMELINE_SERVICE_LEVELDB_STATE_STORE_PREFIX
+init|=
+name|TIMELINE_SERVICE_PREFIX
+operator|+
+literal|"leveldb-state-store."
+decl_stmt|;
+comment|/** Timeline service state store leveldb path */
+DECL|field|TIMELINE_SERVICE_LEVELDB_STATE_STORE_PATH
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|TIMELINE_SERVICE_LEVELDB_STATE_STORE_PATH
+init|=
+name|TIMELINE_SERVICE_LEVELDB_STATE_STORE_PREFIX
+operator|+
+literal|"path"
 decl_stmt|;
 comment|// ///////////////////////////////
 comment|// Shared Cache Configs
