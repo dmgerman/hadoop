@@ -3920,7 +3920,7 @@ operator|.
 name|getStateStore
 argument_list|()
 operator|.
-name|storeOrUpdateAMRMTokenSecretManagerState
+name|storeOrUpdateAMRMTokenSecretManager
 argument_list|(
 name|state1
 argument_list|,
@@ -4036,7 +4036,7 @@ operator|.
 name|getStateStore
 argument_list|()
 operator|.
-name|storeOrUpdateAMRMTokenSecretManagerState
+name|storeOrUpdateAMRMTokenSecretManager
 argument_list|(
 name|state2
 argument_list|,

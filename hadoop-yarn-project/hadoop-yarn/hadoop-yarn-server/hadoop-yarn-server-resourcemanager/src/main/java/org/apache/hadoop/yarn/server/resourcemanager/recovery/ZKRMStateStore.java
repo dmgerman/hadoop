@@ -4066,6 +4066,7 @@ annotation|@
 name|Override
 DECL|method|updateRMDelegationTokenAndSequenceNumberInternal ( RMDelegationTokenIdentifier rmDTIdentifier, Long renewDate, int latestSequenceNumber)
 specifier|protected
+specifier|synchronized
 name|void
 name|updateRMDelegationTokenAndSequenceNumberInternal
 parameter_list|(
@@ -6012,24 +6013,9 @@ parameter_list|,
 name|boolean
 name|isUpdate
 parameter_list|)
+throws|throws
+name|Exception
 block|{
-if|if
-condition|(
-name|isFencedState
-argument_list|()
-condition|)
-block|{
-name|LOG
-operator|.
-name|info
-argument_list|(
-literal|"State store is in Fenced state. Can't store/update "
-operator|+
-literal|"AMRMToken Secret Manager state."
-argument_list|)
-expr_stmt|;
-return|return;
-block|}
 name|AMRMTokenSecretManagerState
 name|data
 init|=
@@ -6052,8 +6038,6 @@ operator|.
 name|toByteArray
 argument_list|()
 decl_stmt|;
-try|try
-block|{
 name|setDataWithRetries
 argument_list|(
 name|amrmTokenSecretManagerRoot
@@ -6064,28 +6048,6 @@ operator|-
 literal|1
 argument_list|)
 expr_stmt|;
-block|}
-catch|catch
-parameter_list|(
-name|Exception
-name|ex
-parameter_list|)
-block|{
-name|LOG
-operator|.
-name|info
-argument_list|(
-literal|"Error storing info for AMRMTokenSecretManager"
-argument_list|,
-name|ex
-argument_list|)
-expr_stmt|;
-name|notifyStoreOperationFailed
-argument_list|(
-name|ex
-argument_list|)
-expr_stmt|;
-block|}
 block|}
 block|}
 end_class

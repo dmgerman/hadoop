@@ -45,6 +45,25 @@ name|REMOVE_APP
 block|,
 DECL|enumConstant|FENCED
 name|FENCED
+block|,
+comment|// Below events should be called synchronously
+DECL|enumConstant|STORE_MASTERKEY
+name|STORE_MASTERKEY
+block|,
+DECL|enumConstant|REMOVE_MASTERKEY
+name|REMOVE_MASTERKEY
+block|,
+DECL|enumConstant|STORE_DELEGATION_TOKEN
+name|STORE_DELEGATION_TOKEN
+block|,
+DECL|enumConstant|REMOVE_DELEGATION_TOKEN
+name|REMOVE_DELEGATION_TOKEN
+block|,
+DECL|enumConstant|UPDATE_DELEGATION_TOKEN
+name|UPDATE_DELEGATION_TOKEN
+block|,
+DECL|enumConstant|UPDATE_AMRM_TOKEN
+name|UPDATE_AMRM_TOKEN
 block|}
 end_enum
 

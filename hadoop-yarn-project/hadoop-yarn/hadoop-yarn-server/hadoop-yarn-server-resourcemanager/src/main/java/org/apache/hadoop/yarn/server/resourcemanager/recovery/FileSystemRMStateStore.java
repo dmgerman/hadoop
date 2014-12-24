@@ -3589,6 +3589,8 @@ parameter_list|,
 name|boolean
 name|isUpdate
 parameter_list|)
+throws|throws
+name|Exception
 block|{
 name|Path
 name|nodeCreatePath
@@ -3622,8 +3624,6 @@ operator|.
 name|toByteArray
 argument_list|()
 decl_stmt|;
-try|try
-block|{
 if|if
 condition|(
 name|isUpdate
@@ -3644,28 +3644,6 @@ argument_list|(
 name|nodeCreatePath
 argument_list|,
 name|stateData
-argument_list|)
-expr_stmt|;
-block|}
-block|}
-catch|catch
-parameter_list|(
-name|Exception
-name|ex
-parameter_list|)
-block|{
-name|LOG
-operator|.
-name|info
-argument_list|(
-literal|"Error storing info for AMRMTokenSecretManager"
-argument_list|,
-name|ex
-argument_list|)
-expr_stmt|;
-name|notifyStoreOperationFailed
-argument_list|(
-name|ex
 argument_list|)
 expr_stmt|;
 block|}
