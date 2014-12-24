@@ -1744,6 +1744,18 @@ expr_stmt|;
 name|ResourceBlacklistRequest
 name|blacklistRequest
 init|=
+operator|(
+name|blacklistToAdd
+operator|!=
+literal|null
+operator|)
+operator|||
+operator|(
+name|blacklistToRemove
+operator|!=
+literal|null
+operator|)
+condition|?
 name|ResourceBlacklistRequest
 operator|.
 name|newInstance
@@ -1752,6 +1764,8 @@ name|blacklistToAdd
 argument_list|,
 name|blacklistToRemove
 argument_list|)
+else|:
+literal|null
 decl_stmt|;
 name|allocateRequest
 operator|=
