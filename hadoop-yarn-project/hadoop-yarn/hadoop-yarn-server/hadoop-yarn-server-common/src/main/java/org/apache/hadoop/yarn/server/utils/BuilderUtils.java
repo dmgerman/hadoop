@@ -993,7 +993,7 @@ name|clustertimestamp
 argument_list|,
 name|Integer
 operator|.
-name|valueOf
+name|parseInt
 argument_list|(
 name|id
 operator|.
@@ -1100,7 +1100,7 @@ name|clustertimestamp
 argument_list|,
 name|Integer
 operator|.
-name|valueOf
+name|parseInt
 argument_list|(
 name|id
 operator|.

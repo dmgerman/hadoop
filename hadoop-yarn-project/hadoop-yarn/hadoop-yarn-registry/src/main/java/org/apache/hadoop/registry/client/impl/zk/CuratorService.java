@@ -1812,13 +1812,15 @@ argument_list|()
 expr_stmt|;
 try|try
 block|{
-return|return
+comment|// if zkStat(path) returns without throwing an exception, the return value
+comment|// is guaranteed to be not null
 name|zkStat
 argument_list|(
 name|path
 argument_list|)
-operator|!=
-literal|null
+expr_stmt|;
+return|return
+literal|true
 return|;
 block|}
 catch|catch

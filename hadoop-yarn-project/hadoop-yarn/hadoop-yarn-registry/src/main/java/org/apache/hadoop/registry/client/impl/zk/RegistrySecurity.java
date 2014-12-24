@@ -2182,26 +2182,26 @@ specifier|final
 name|String
 name|JAAS_ENTRY
 init|=
-literal|"%s { \n"
+literal|"%s { %n"
 operator|+
-literal|" %s required\n"
+literal|" %s required%n"
 comment|// kerberos module
 operator|+
-literal|" keyTab=\"%s\"\n"
+literal|" keyTab=\"%s\"%n"
 operator|+
-literal|" debug=true\n"
+literal|" debug=true%n"
 operator|+
-literal|" principal=\"%s\"\n"
+literal|" principal=\"%s\"%n"
 operator|+
-literal|" useKeyTab=true\n"
+literal|" useKeyTab=true%n"
 operator|+
-literal|" useTicketCache=false\n"
+literal|" useTicketCache=false%n"
 operator|+
-literal|" doNotPrompt=true\n"
+literal|" doNotPrompt=true%n"
 operator|+
-literal|" storeKey=true;\n"
+literal|" storeKey=true;%n"
 operator|+
-literal|"}; \n"
+literal|"}; %n"
 decl_stmt|;
 comment|/**    * Create a JAAS entry for insertion    * @param context context of the entry    * @param principal kerberos principal    * @param keytab keytab    * @return a context    */
 DECL|method|createJAASEntry ( String context, String principal, File keytab)
