@@ -162,17 +162,23 @@ name|java
 operator|.
 name|util
 operator|.
-name|Random
+name|Map
 import|;
 end_import
 
 begin_import
 import|import
-name|java
+name|org
 operator|.
-name|util
+name|apache
 operator|.
-name|Map
+name|commons
+operator|.
+name|lang
+operator|.
+name|math
+operator|.
+name|RandomUtils
 import|;
 end_import
 
@@ -201,20 +207,6 @@ operator|.
 name|logging
 operator|.
 name|LogFactory
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|conf
-operator|.
-name|Configuration
 import|;
 end_import
 
@@ -1818,6 +1810,10 @@ operator|new
 name|PrintStream
 argument_list|(
 name|out
+argument_list|,
+literal|false
+argument_list|,
+literal|"UTF-8"
 argument_list|)
 expr_stmt|;
 name|writeLocalWrapperScript
@@ -2115,6 +2111,10 @@ operator|new
 name|PrintStream
 argument_list|(
 name|out
+argument_list|,
+literal|false
+argument_list|,
+literal|"UTF-8"
 argument_list|)
 expr_stmt|;
 comment|// We need to do a move as writing to a file is not atomic
@@ -3012,25 +3012,13 @@ throw|;
 block|}
 comment|// make probability to pick a directory proportional to
 comment|// the available space on the directory.
-name|Random
-name|r
-init|=
-operator|new
-name|Random
-argument_list|()
-decl_stmt|;
 name|long
 name|randomPosition
 init|=
-name|Math
-operator|.
-name|abs
-argument_list|(
-name|r
+name|RandomUtils
 operator|.
 name|nextLong
 argument_list|()
-argument_list|)
 operator|%
 name|totalAvailable
 decl_stmt|;

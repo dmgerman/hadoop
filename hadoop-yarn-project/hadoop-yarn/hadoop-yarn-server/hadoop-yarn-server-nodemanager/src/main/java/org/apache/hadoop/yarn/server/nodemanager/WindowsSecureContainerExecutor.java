@@ -144,6 +144,18 @@ begin_import
 import|import
 name|java
 operator|.
+name|nio
+operator|.
+name|charset
+operator|.
+name|Charset
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
 name|util
 operator|.
 name|ArrayList
@@ -2402,6 +2414,13 @@ operator|new
 name|InputStreamReader
 argument_list|(
 name|stream
+argument_list|,
+name|Charset
+operator|.
+name|forName
+argument_list|(
+literal|"UTF-8"
+argument_list|)
 argument_list|)
 argument_list|)
 decl_stmt|;
@@ -3619,7 +3638,7 @@ name|String
 operator|.
 name|format
 argument_list|(
-literal|"An exception occured during the cleanup of localizer job %s:\n%s"
+literal|"An exception occured during the cleanup of localizer job %s:%n%s"
 argument_list|,
 name|localizerPid
 argument_list|,

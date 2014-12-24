@@ -1140,6 +1140,10 @@ operator|new
 name|PrintStream
 argument_list|(
 name|out
+argument_list|,
+literal|false
+argument_list|,
+literal|"UTF-8"
 argument_list|)
 expr_stmt|;
 name|sb
