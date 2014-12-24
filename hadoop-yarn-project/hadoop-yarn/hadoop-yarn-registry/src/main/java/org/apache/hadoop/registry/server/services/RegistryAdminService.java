@@ -964,11 +964,11 @@ name|ENGLISH
 argument_list|,
 literal|"Failed to create root paths {%s};"
 operator|+
-literal|"\ndiagnostics={%s}"
+literal|"%ndiagnostics={%s}"
 operator|+
-literal|"\ncurrent registry is:"
+literal|"%ncurrent registry is:"
 operator|+
-literal|"\n{%s}"
+literal|"%n{%s}"
 argument_list|,
 name|e
 argument_list|,

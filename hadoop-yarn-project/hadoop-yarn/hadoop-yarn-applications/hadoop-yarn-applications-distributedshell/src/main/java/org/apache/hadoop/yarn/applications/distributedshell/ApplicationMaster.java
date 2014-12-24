@@ -2655,7 +2655,7 @@ name|shellScriptPathTimestamp
 operator|=
 name|Long
 operator|.
-name|valueOf
+name|parseLong
 argument_list|(
 name|envs
 operator|.
@@ -2684,7 +2684,7 @@ name|shellScriptPathLen
 operator|=
 name|Long
 operator|.
-name|valueOf
+name|parseLong
 argument_list|(
 name|envs
 operator|.
