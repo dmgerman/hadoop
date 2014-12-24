@@ -1782,7 +1782,13 @@ literal|"UserGroupsConfiguration] [-refreshUserToGroupsMappings] "
 operator|+
 literal|"[-refreshAdminAcls] [-refreshServiceAcl] [-getGroup"
 operator|+
-literal|" [username]] [-help [cmd]]"
+literal|" [username]] [[-addToClusterNodeLabels [label1,label2,label3]]"
+operator|+
+literal|" [-removeFromClusterNodeLabels [label1,label2,label3]] [-replaceLabelsOnNode "
+operator|+
+literal|"[node1:port,label1,label2 node2:port,label1] [-directlyAccessNodeLabelStore]] "
+operator|+
+literal|"[-help [cmd]]"
 argument_list|)
 argument_list|)
 expr_stmt|;
@@ -2181,13 +2187,19 @@ literal|"UserGroupsConfiguration] [-refreshUserToGroupsMappings] "
 operator|+
 literal|"[-refreshAdminAcls] [-refreshServiceAcl] [-getGroup"
 operator|+
-literal|" [username]] [-help [cmd]] [-transitionToActive<serviceId>"
+literal|" [username]] [[-addToClusterNodeLabels [label1,label2,label3]]"
 operator|+
-literal|" [--forceactive]] [-transitionToStandby<serviceId>] [-failover"
+literal|" [-removeFromClusterNodeLabels [label1,label2,label3]] [-replaceLabelsOnNode "
+operator|+
+literal|"[node1:port,label1,label2 node2:port,label1] [-directlyAccessNodeLabelStore]] "
+operator|+
+literal|"[-transitionToActive<serviceId> [--forceactive]] "
+operator|+
+literal|"[-transitionToStandby<serviceId>] [-failover"
 operator|+
 literal|" [--forcefence] [--forceactive]<serviceId><serviceId>] "
 operator|+
-literal|"[-getServiceState<serviceId>] [-checkHealth<serviceId>]"
+literal|"[-getServiceState<serviceId>] [-checkHealth<serviceId>] [-help [cmd]]"
 argument_list|)
 argument_list|)
 expr_stmt|;

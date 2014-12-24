@@ -810,21 +810,6 @@ argument_list|)
 decl|.
 name|put
 argument_list|(
-literal|"-help"
-argument_list|,
-operator|new
-name|UsageInfo
-argument_list|(
-literal|"[cmd]"
-argument_list|,
-literal|"Displays help for the given command or all commands if none "
-operator|+
-literal|"is specified."
-argument_list|)
-argument_list|)
-decl|.
-name|put
-argument_list|(
 literal|"-addToClusterNodeLabels"
 argument_list|,
 operator|new
@@ -1288,6 +1273,15 @@ expr_stmt|;
 block|}
 block|}
 block|}
+name|builder
+operator|.
+name|append
+argument_list|(
+literal|"   -help"
+operator|+
+literal|" [cmd]\n"
+argument_list|)
+expr_stmt|;
 block|}
 DECL|method|printHelp (String cmd, boolean isHAEnabled)
 specifier|private
@@ -1340,7 +1334,13 @@ literal|" [-refreshServiceAcl]"
 operator|+
 literal|" [-getGroup [username]]"
 operator|+
-literal|" [-help [cmd]]"
+literal|" [[-addToClusterNodeLabels [label1,label2,label3]]"
+operator|+
+literal|" [-removeFromClusterNodeLabels [label1,label2,label3]]"
+operator|+
+literal|" [-replaceLabelsOnNode [node1:port,label1,label2 node2:port,label1]"
+operator|+
+literal|" [-directlyAccessNodeLabelStore]]"
 argument_list|)
 expr_stmt|;
 if|if
@@ -1354,6 +1354,13 @@ name|summary
 argument_list|)
 expr_stmt|;
 block|}
+name|summary
+operator|.
+name|append
+argument_list|(
+literal|" [-help [cmd]]"
+argument_list|)
+expr_stmt|;
 name|summary
 operator|.
 name|append
@@ -1447,6 +1454,15 @@ expr_stmt|;
 block|}
 block|}
 block|}
+name|helpBuilder
+operator|.
+name|append
+argument_list|(
+literal|"   -help [cmd]: Displays help for the given command or all commands"
+operator|+
+literal|" if none is specified."
+argument_list|)
+expr_stmt|;
 name|System
 operator|.
 name|out
