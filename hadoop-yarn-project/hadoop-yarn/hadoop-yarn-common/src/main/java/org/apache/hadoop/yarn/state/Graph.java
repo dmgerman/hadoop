@@ -973,6 +973,8 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
+try|try
+init|(
 name|OutputStreamWriter
 name|fout
 init|=
@@ -992,7 +994,9 @@ argument_list|(
 literal|"UTF-8"
 argument_list|)
 argument_list|)
-decl_stmt|;
+init|;
+init|)
+block|{
 name|fout
 operator|.
 name|write
@@ -1001,11 +1005,7 @@ name|generateGraphViz
 argument_list|()
 argument_list|)
 expr_stmt|;
-name|fout
-operator|.
-name|close
-argument_list|()
-expr_stmt|;
+block|}
 block|}
 DECL|method|combineEdges (List<Edge> edges)
 specifier|public
