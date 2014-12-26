@@ -1675,10 +1675,7 @@ name|options
 argument_list|)
 condition|)
 block|{
-name|fsd
-operator|.
-name|getFSNamesystem
-argument_list|()
+name|FSDirDeleteOp
 operator|.
 name|incrDeletedFileCount
 argument_list|(
@@ -4082,11 +4079,9 @@ operator|.
 name|getFSNamesystem
 argument_list|()
 operator|.
-name|removePathAndBlocks
+name|removeLeasesAndINodes
 argument_list|(
 name|src
-argument_list|,
-literal|null
 argument_list|,
 name|removedINodes
 argument_list|,

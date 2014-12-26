@@ -2827,10 +2827,12 @@ name|overwrite
 condition|)
 block|{
 comment|// This is OP_ADD with overwrite
-name|fsDir
+name|FSDirDeleteOp
 operator|.
-name|unprotectedDelete
+name|deleteForEditLog
 argument_list|(
+name|fsDir
+argument_list|,
 name|path
 argument_list|,
 name|addCloseOp
@@ -3874,10 +3876,12 @@ name|DeleteOp
 operator|)
 name|op
 decl_stmt|;
-name|fsDir
+name|FSDirDeleteOp
 operator|.
-name|unprotectedDelete
+name|deleteForEditLog
 argument_list|(
+name|fsDir
+argument_list|,
 name|renameReservedPathsOnUpgrade
 argument_list|(
 name|deleteOp
