@@ -215,12 +215,6 @@ expr_stmt|;
 name|String
 index|[]
 name|lines
-init|=
-operator|new
-name|String
-index|[
-literal|0
-index|]
 decl_stmt|;
 try|try
 block|{
