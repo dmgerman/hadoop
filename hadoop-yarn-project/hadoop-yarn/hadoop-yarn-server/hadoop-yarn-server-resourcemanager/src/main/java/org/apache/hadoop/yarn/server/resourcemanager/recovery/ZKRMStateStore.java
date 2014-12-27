@@ -5651,6 +5651,12 @@ case|:
 case|case
 name|OPERATIONTIMEOUT
 case|:
+case|case
+name|SESSIONEXPIRED
+case|:
+case|case
+name|SESSIONMOVED
+case|:
 return|return
 literal|true
 return|;
@@ -5783,6 +5789,9 @@ name|sleep
 argument_list|(
 name|zkRetryInterval
 argument_list|)
+expr_stmt|;
+name|createConnection
+argument_list|()
 expr_stmt|;
 continue|continue;
 block|}
