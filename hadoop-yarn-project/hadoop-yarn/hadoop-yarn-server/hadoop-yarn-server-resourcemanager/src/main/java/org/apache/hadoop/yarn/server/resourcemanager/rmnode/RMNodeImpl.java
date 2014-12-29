@@ -2546,6 +2546,14 @@ name|decrNumUnhealthyNMs
 argument_list|()
 expr_stmt|;
 break|break;
+default|default:
+name|LOG
+operator|.
+name|debug
+argument_list|(
+literal|"Unexpected previous node state"
+argument_list|)
+expr_stmt|;
 block|}
 block|}
 DECL|method|updateMetricsForDeactivatedNode (NodeState initialState, NodeState finalState)
@@ -2591,6 +2599,14 @@ name|decrNumUnhealthyNMs
 argument_list|()
 expr_stmt|;
 break|break;
+default|default:
+name|LOG
+operator|.
+name|debug
+argument_list|(
+literal|"Unexpected inital state"
+argument_list|)
+expr_stmt|;
 block|}
 switch|switch
 condition|(
@@ -2633,6 +2649,14 @@ name|incrNumUnhealthyNMs
 argument_list|()
 expr_stmt|;
 break|break;
+default|default:
+name|LOG
+operator|.
+name|debug
+argument_list|(
+literal|"Unexpected final state"
+argument_list|)
+expr_stmt|;
 block|}
 block|}
 DECL|method|handleRunningAppOnNode (RMNodeImpl rmNode, RMContext context, ApplicationId appId, NodeId nodeId)
@@ -3217,6 +3241,14 @@ name|decrNumUnhealthyNMs
 argument_list|()
 expr_stmt|;
 break|break;
+default|default:
+name|LOG
+operator|.
+name|debug
+argument_list|(
+literal|"Unexpected Rmnode state"
+argument_list|)
+expr_stmt|;
 block|}
 name|rmNode
 operator|.

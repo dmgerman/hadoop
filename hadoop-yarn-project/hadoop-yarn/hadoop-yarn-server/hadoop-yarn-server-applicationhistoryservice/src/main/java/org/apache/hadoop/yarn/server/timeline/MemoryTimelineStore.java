@@ -2429,7 +2429,7 @@ name|getId
 argument_list|()
 argument_list|)
 decl_stmt|;
-name|long
+name|Long
 name|currentTimestamp
 init|=
 name|System

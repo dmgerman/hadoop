@@ -694,6 +694,14 @@ operator|=
 literal|true
 expr_stmt|;
 break|break;
+default|default:
+name|LOG
+operator|.
+name|debug
+argument_list|(
+literal|"Unexpected state filter for inactive RM node"
+argument_list|)
+expr_stmt|;
 block|}
 block|}
 for|for
