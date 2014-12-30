@@ -210,6 +210,22 @@ argument_list|)
 operator|.
 name|_
 argument_list|()
+operator|.
+name|li
+argument_list|()
+operator|.
+name|a
+argument_list|(
+name|url
+argument_list|(
+literal|"nodelabels"
+argument_list|)
+argument_list|,
+literal|"Node Labels"
+argument_list|)
+operator|.
+name|_
+argument_list|()
 decl_stmt|;
 name|UL
 argument_list|<
