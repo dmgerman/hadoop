@@ -5871,7 +5871,7 @@ name|Test
 argument_list|(
 name|timeout
 operator|=
-literal|30000
+literal|50000
 argument_list|)
 DECL|method|testReleasedContainerNotRecovered ()
 specifier|public

@@ -380,6 +380,17 @@ argument_list|,
 literal|"queue"
 argument_list|)
 expr_stmt|;
+name|route
+argument_list|(
+literal|"/nodelabels"
+argument_list|,
+name|RmController
+operator|.
+name|class
+argument_list|,
+literal|"nodelabels"
+argument_list|)
+expr_stmt|;
 block|}
 annotation|@
 name|Override

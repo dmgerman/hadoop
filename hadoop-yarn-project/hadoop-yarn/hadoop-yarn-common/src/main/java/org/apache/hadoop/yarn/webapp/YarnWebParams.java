@@ -109,6 +109,12 @@ name|NODE_STATE
 init|=
 literal|"node.state"
 decl_stmt|;
+DECL|field|NODE_LABEL
+name|String
+name|NODE_LABEL
+init|=
+literal|"node.label"
+decl_stmt|;
 block|}
 end_interface
 
