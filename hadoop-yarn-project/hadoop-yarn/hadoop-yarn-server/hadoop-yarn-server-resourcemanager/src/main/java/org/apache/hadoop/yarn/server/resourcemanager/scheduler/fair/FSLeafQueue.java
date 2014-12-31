@@ -2362,7 +2362,7 @@ name|Resources
 operator|.
 name|min
 argument_list|(
-name|FairScheduler
+name|scheduler
 operator|.
 name|getResourceCalculator
 argument_list|()
@@ -2383,7 +2383,7 @@ name|Resources
 operator|.
 name|lessThan
 argument_list|(
-name|FairScheduler
+name|scheduler
 operator|.
 name|getResourceCalculator
 argument_list|()

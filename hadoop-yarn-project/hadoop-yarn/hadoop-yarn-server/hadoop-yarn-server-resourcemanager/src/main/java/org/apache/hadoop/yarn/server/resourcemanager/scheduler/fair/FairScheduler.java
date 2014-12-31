@@ -5822,9 +5822,10 @@ name|appAttemptId
 argument_list|)
 return|;
 block|}
+annotation|@
+name|Override
 DECL|method|getResourceCalculator ()
 specifier|public
-specifier|static
 name|ResourceCalculator
 name|getResourceCalculator
 parameter_list|()

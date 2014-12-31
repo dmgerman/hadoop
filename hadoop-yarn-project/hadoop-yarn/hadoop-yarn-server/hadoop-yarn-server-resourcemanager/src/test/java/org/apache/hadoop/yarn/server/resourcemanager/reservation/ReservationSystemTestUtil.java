@@ -878,6 +878,7 @@ argument_list|)
 expr_stmt|;
 block|}
 DECL|method|setupFSAllocationFile (String allocationFile)
+specifier|public
 specifier|static
 name|void
 name|setupFSAllocationFile
@@ -1048,6 +1049,7 @@ argument_list|()
 expr_stmt|;
 block|}
 DECL|method|updateFSAllocationFile (String allocationFile)
+specifier|public
 specifier|static
 name|void
 name|updateFSAllocationFile

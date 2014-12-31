@@ -450,6 +450,24 @@ name|SchedulerResourceTypes
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|util
+operator|.
+name|resource
+operator|.
+name|ResourceCalculator
+import|;
+end_import
+
 begin_comment
 comment|/**  * This interface is used by the components to talk to the  * scheduler for allocating of resources, cleaning up resources.  *  */
 end_comment
@@ -535,6 +553,18 @@ DECL|method|getMaximumResourceCapability ()
 specifier|public
 name|Resource
 name|getMaximumResourceCapability
+parameter_list|()
+function_decl|;
+annotation|@
+name|LimitedPrivate
+argument_list|(
+literal|"yarn"
+argument_list|)
+annotation|@
+name|Evolving
+DECL|method|getResourceCalculator ()
+name|ResourceCalculator
+name|getResourceCalculator
 parameter_list|()
 function_decl|;
 comment|/**    * Get the number of nodes available in the cluster.    * @return the number of available nodes.    */

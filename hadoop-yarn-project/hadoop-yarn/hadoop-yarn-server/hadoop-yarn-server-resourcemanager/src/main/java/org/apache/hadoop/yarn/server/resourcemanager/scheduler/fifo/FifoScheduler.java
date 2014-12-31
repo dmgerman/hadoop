@@ -5061,6 +5061,18 @@ literal|null
 argument_list|)
 return|;
 block|}
+annotation|@
+name|Override
+DECL|method|getResourceCalculator ()
+specifier|public
+name|ResourceCalculator
+name|getResourceCalculator
+parameter_list|()
+block|{
+return|return
+name|resourceCalculator
+return|;
+block|}
 DECL|method|addNode (RMNode nodeManager)
 specifier|private
 specifier|synchronized
