@@ -1,6 +1,6 @@
 begin_unit|revision:0.9.5;language:Java;cregit-version:0.0.1
 begin_comment
-comment|/**  * Licensed to the Apache Software Foundation (ASF) under one  * or more contributor license agreements.  See the NOTICE file  * distributed with this work for additional information  * regarding copyright ownership.  The ASF licenses this file  * to you under the Apache License, Version 2.0 (the  * "License"); you may not use this file except in compliance  * with the License.  You may obtain a copy of the License at  *  *     http://www.apache.org/licenses/LICENSE-2.0  *  * Unless required by applicable law or agreed to in writing, software  * distributed under the License is distributed on an "AS IS" BASIS,  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.  * See the License for the specific language governing permissions and  * limitations under the License.  */
+comment|/** * Licensed to the Apache Software Foundation (ASF) under one * or more contributor license agreements.  See the NOTICE file * distributed with this work for additional information * regarding copyright ownership.  The ASF licenses this file * to you under the Apache License, Version 2.0 (the * "License"); you may not use this file except in compliance * with the License.  You may obtain a copy of the License at * *     http://www.apache.org/licenses/LICENSE-2.0 * * Unless required by applicable law or agreed to in writing, software * distributed under the License is distributed on an "AS IS" BASIS, * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. * See the License for the specific language governing permissions and * limitations under the License. */
 end_comment
 
 begin_package
@@ -32,29 +32,15 @@ name|hadoop
 operator|.
 name|yarn
 operator|.
+name|server
+operator|.
+name|resourcemanager
+operator|.
 name|webapp
 operator|.
-name|YarnWebParams
+name|RMWebApp
 operator|.
 name|NODE_STATE
-import|;
-end_import
-
-begin_import
-import|import static
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|yarn
-operator|.
-name|webapp
-operator|.
-name|YarnWebParams
-operator|.
-name|NODE_LABEL
 import|;
 end_import
 
@@ -190,47 +176,11 @@ name|hadoop
 operator|.
 name|yarn
 operator|.
-name|nodelabels
-operator|.
-name|CommonNodeLabelsManager
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|yarn
-operator|.
 name|server
 operator|.
 name|resourcemanager
 operator|.
 name|ResourceManager
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|yarn
-operator|.
-name|server
-operator|.
-name|resourcemanager
-operator|.
-name|nodelabels
-operator|.
-name|RMNodeLabelsManager
 import|;
 end_import
 
@@ -526,21 +476,6 @@ argument_list|(
 name|NODE_STATE
 argument_list|)
 decl_stmt|;
-name|String
-name|labelFilter
-init|=
-name|$
-argument_list|(
-name|NODE_LABEL
-argument_list|,
-name|CommonNodeLabelsManager
-operator|.
-name|ANY
-argument_list|)
-operator|.
-name|trim
-argument_list|()
-decl_stmt|;
 name|TBODY
 argument_list|<
 name|TABLE
@@ -822,63 +757,6 @@ operator|.
 name|UNHEALTHY
 condition|)
 block|{
-continue|continue;
-block|}
-block|}
-comment|// Besides state, we need to filter label as well.
-if|if
-condition|(
-operator|!
-name|labelFilter
-operator|.
-name|equals
-argument_list|(
-name|RMNodeLabelsManager
-operator|.
-name|ANY
-argument_list|)
-condition|)
-block|{
-if|if
-condition|(
-name|labelFilter
-operator|.
-name|isEmpty
-argument_list|()
-condition|)
-block|{
-comment|// Empty label filter means only shows nodes without label
-if|if
-condition|(
-operator|!
-name|ni
-operator|.
-name|getNodeLabels
-argument_list|()
-operator|.
-name|isEmpty
-argument_list|()
-condition|)
-block|{
-continue|continue;
-block|}
-block|}
-elseif|else
-if|if
-condition|(
-operator|!
-name|ni
-operator|.
-name|getNodeLabels
-argument_list|()
-operator|.
-name|contains
-argument_list|(
-name|labelFilter
-argument_list|)
-condition|)
-block|{
-comment|// Only nodes have given label can show on web page.
 continue|continue;
 block|}
 block|}
@@ -1195,9 +1073,9 @@ argument_list|()
 expr_stmt|;
 block|}
 block|}
+DECL|method|preHead (Page.HTML<_> html)
 annotation|@
 name|Override
-DECL|method|preHead (Page.HTML<_> html)
 specifier|protected
 name|void
 name|preHead
@@ -1290,9 +1168,9 @@ literal|".healthReport {width:10em}"
 argument_list|)
 expr_stmt|;
 block|}
+DECL|method|content ()
 annotation|@
 name|Override
-DECL|method|content ()
 specifier|protected
 name|Class
 argument_list|<

@@ -202,6 +202,22 @@ name|yarn
 operator|.
 name|webapp
 operator|.
+name|WebAppException
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|webapp
+operator|.
 name|YarnWebParams
 import|;
 end_import
@@ -472,25 +488,6 @@ block|{
 name|setTitle
 argument_list|(
 literal|"Application Submission Not Allowed"
-argument_list|)
-expr_stmt|;
-block|}
-DECL|method|nodelabels ()
-specifier|public
-name|void
-name|nodelabels
-parameter_list|()
-block|{
-name|setTitle
-argument_list|(
-literal|"Node Labels"
-argument_list|)
-expr_stmt|;
-name|render
-argument_list|(
-name|NodeLabelsPage
-operator|.
-name|class
 argument_list|)
 expr_stmt|;
 block|}
