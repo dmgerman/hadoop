@@ -273,7 +273,11 @@ comment|// Tabs instead of spaces.
 literal|"\n"
 operator|+
 comment|// Entirely empty line.
-literal|"gid 12 202"
+literal|"gid 12 202\n"
+operator|+
+literal|"uid 4294967294 123\n"
+operator|+
+literal|"gid 4294967295 321"
 decl_stmt|;
 name|OutputStream
 name|out
@@ -460,6 +464,42 @@ operator|.
 name|get
 argument_list|(
 literal|1000
+argument_list|)
+argument_list|)
+expr_stmt|;
+name|assertEquals
+argument_list|(
+operator|-
+literal|2
+argument_list|,
+operator|(
+name|int
+operator|)
+name|parsedMap
+operator|.
+name|uidMapping
+operator|.
+name|get
+argument_list|(
+literal|123
+argument_list|)
+argument_list|)
+expr_stmt|;
+name|assertEquals
+argument_list|(
+operator|-
+literal|1
+argument_list|,
+operator|(
+name|int
+operator|)
+name|parsedMap
+operator|.
+name|gidMapping
+operator|.
+name|get
+argument_list|(
+literal|321
 argument_list|)
 argument_list|)
 expr_stmt|;

@@ -2546,9 +2546,7 @@ decl_stmt|;
 name|int
 name|remoteId
 init|=
-name|Integer
-operator|.
-name|parseInt
+name|parseId
 argument_list|(
 name|lineMatcher
 operator|.
@@ -2561,9 +2559,7 @@ decl_stmt|;
 name|int
 name|localId
 init|=
-name|Integer
-operator|.
-name|parseInt
+name|parseId
 argument_list|(
 name|lineMatcher
 operator|.
