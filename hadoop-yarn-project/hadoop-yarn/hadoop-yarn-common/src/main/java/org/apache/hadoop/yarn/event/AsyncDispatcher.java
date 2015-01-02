@@ -200,6 +200,20 @@ name|YarnRuntimeException
 import|;
 end_import
 
+begin_import
+import|import
+name|com
+operator|.
+name|google
+operator|.
+name|common
+operator|.
+name|annotations
+operator|.
+name|VisibleForTesting
+import|;
+end_import
+
 begin_comment
 comment|/**  * Dispatches {@link Event}s in a separate thread. Currently only single thread  * does that. Potentially there could be multiple channels for each event type  * class and a thread pool can be used to dispatch the events.  */
 end_comment
@@ -1283,6 +1297,20 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
+return|;
+block|}
+annotation|@
+name|VisibleForTesting
+DECL|method|isDrained ()
+specifier|protected
+name|boolean
+name|isDrained
+parameter_list|()
+block|{
+return|return
+name|this
+operator|.
+name|drained
 return|;
 block|}
 block|}
