@@ -8883,6 +8883,7 @@ block|}
 comment|// return a single Resource capturing the overal amount of pending resources
 DECL|method|getTotalResourcePending ()
 specifier|public
+specifier|synchronized
 name|Resource
 name|getTotalResourcePending
 parameter_list|()
@@ -8928,6 +8929,7 @@ annotation|@
 name|Override
 DECL|method|collectSchedulerApplications ( Collection<ApplicationAttemptId> apps)
 specifier|public
+specifier|synchronized
 name|void
 name|collectSchedulerApplications
 parameter_list|(
