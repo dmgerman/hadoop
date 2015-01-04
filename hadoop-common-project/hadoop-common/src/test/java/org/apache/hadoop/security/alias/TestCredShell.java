@@ -263,6 +263,18 @@ argument_list|,
 literal|"keystore.jceks"
 argument_list|)
 decl_stmt|;
+operator|new
+name|File
+argument_list|(
+name|jksPath
+operator|.
+name|toString
+argument_list|()
+argument_list|)
+operator|.
+name|delete
+argument_list|()
+expr_stmt|;
 name|jceksProvider
 operator|=
 literal|"jceks://file"
@@ -422,6 +434,8 @@ block|{
 literal|"delete"
 block|,
 literal|"credential1"
+block|,
+literal|"-f"
 block|,
 literal|"-provider"
 block|,
@@ -685,6 +699,8 @@ block|{
 literal|"delete"
 block|,
 literal|"credential1"
+block|,
+literal|"-f"
 block|,
 literal|"-provider"
 block|,
@@ -1057,6 +1073,8 @@ block|{
 literal|"delete"
 block|,
 literal|"credential1"
+block|,
+literal|"-f"
 block|,
 literal|"-provider"
 block|,

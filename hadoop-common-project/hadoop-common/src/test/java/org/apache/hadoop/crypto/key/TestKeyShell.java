@@ -385,6 +385,8 @@ literal|"delete"
 block|,
 name|keyName
 block|,
+literal|"-f"
+block|,
 literal|"-provider"
 block|,
 name|jceksProvider

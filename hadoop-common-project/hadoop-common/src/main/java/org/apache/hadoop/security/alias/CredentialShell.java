@@ -207,7 +207,7 @@ specifier|private
 name|boolean
 name|interactive
 init|=
-literal|false
+literal|true
 decl_stmt|;
 DECL|field|command
 specifier|private
@@ -557,7 +557,7 @@ index|]
 operator|.
 name|equals
 argument_list|(
-literal|"-i"
+literal|"-f"
 argument_list|)
 operator|||
 operator|(
@@ -568,14 +568,14 @@ index|]
 operator|.
 name|equals
 argument_list|(
-literal|"-interactive"
+literal|"-force"
 argument_list|)
 operator|)
 condition|)
 block|{
 name|interactive
 operator|=
-literal|true
+literal|false
 expr_stmt|;
 block|}
 elseif|else
@@ -1128,7 +1128,7 @@ specifier|final
 name|String
 name|USAGE
 init|=
-literal|"delete<alias> [-provider] [-help]"
+literal|"delete<alias> [-provider] [-f] [-help]"
 decl_stmt|;
 DECL|field|DESC
 specifier|public
@@ -1137,11 +1137,13 @@ specifier|final
 name|String
 name|DESC
 init|=
-literal|"The delete subcommand deletes the credenital\n"
+literal|"The delete subcommand deletes the credential\n"
 operator|+
 literal|"specified as the<alias> argument from within the provider\n"
 operator|+
-literal|"indicated through the -provider argument"
+literal|"indicated through the -provider argument. The command asks for\n"
+operator|+
+literal|"confirmation unless the -f option is specified."
 decl_stmt|;
 DECL|field|alias
 name|String
@@ -1240,7 +1242,7 @@ name|ToolRunner
 operator|.
 name|confirmPrompt
 argument_list|(
-literal|"You are about to DELETE the credential: "
+literal|"You are about to DELETE the credential "
 operator|+
 name|alias
 operator|+
@@ -1251,7 +1253,7 @@ operator|.
 name|toString
 argument_list|()
 operator|+
-literal|". Continue?:"
+literal|". Continue? "
 argument_list|)
 expr_stmt|;
 if|if
@@ -1371,7 +1373,7 @@ name|println
 argument_list|(
 name|alias
 operator|+
-literal|"has NOT been deleted."
+literal|" has NOT been deleted."
 argument_list|)
 expr_stmt|;
 throw|throw

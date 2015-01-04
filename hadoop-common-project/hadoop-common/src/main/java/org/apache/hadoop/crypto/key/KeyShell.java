@@ -260,7 +260,7 @@ specifier|private
 name|boolean
 name|interactive
 init|=
-literal|false
+literal|true
 decl_stmt|;
 DECL|field|command
 specifier|private
@@ -933,7 +933,7 @@ block|}
 elseif|else
 if|if
 condition|(
-literal|"-i"
+literal|"-f"
 operator|.
 name|equals
 argument_list|(
@@ -944,7 +944,7 @@ index|]
 argument_list|)
 operator|||
 operator|(
-literal|"-interactive"
+literal|"-force"
 operator|.
 name|equals
 argument_list|(
@@ -958,7 +958,7 @@ condition|)
 block|{
 name|interactive
 operator|=
-literal|true
+literal|false
 expr_stmt|;
 block|}
 elseif|else
@@ -1855,7 +1855,7 @@ specifier|final
 name|String
 name|USAGE
 init|=
-literal|"delete<keyname> [-provider<provider>] [-help]"
+literal|"delete<keyname> [-provider<provider>] [-f] [-help]"
 decl_stmt|;
 DECL|field|DESC
 specifier|public
@@ -1868,7 +1868,9 @@ literal|"The delete subcommand deletes all versions of the key\n"
 operator|+
 literal|"specified by the<keyname> argument from within the\n"
 operator|+
-literal|"provider specified -provider."
+literal|"provider specified -provider. The command asks for\n"
+operator|+
+literal|"user confirmation unless -f is specified."
 decl_stmt|;
 DECL|field|keyName
 name|String
@@ -1965,7 +1967,7 @@ name|confirmPrompt
 argument_list|(
 literal|"You are about to DELETE all versions of "
 operator|+
-literal|" key: "
+literal|" key "
 operator|+
 name|keyName
 operator|+
@@ -1973,7 +1975,7 @@ literal|" from KeyProvider "
 operator|+
 name|provider
 operator|+
-literal|". Continue?:"
+literal|". Continue? "
 argument_list|)
 expr_stmt|;
 if|if
@@ -1986,7 +1988,9 @@ name|out
 operator|.
 name|println
 argument_list|(
-literal|"Nothing has been be deleted."
+name|keyName
+operator|+
+literal|" has not been deleted."
 argument_list|)
 expr_stmt|;
 block|}
