@@ -708,22 +708,6 @@ end_import
 
 begin_import
 import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|yarn
-operator|.
-name|util
-operator|.
-name|ConverterUtils
-import|;
-end_import
-
-begin_import
-import|import
 name|com
 operator|.
 name|google
@@ -2730,31 +2714,26 @@ expr_stmt|;
 block|}
 annotation|@
 name|Override
-DECL|method|storeRMDelegationTokenAndSequenceNumberState ( RMDelegationTokenIdentifier identifier, Long renewDate, int latestSequenceNumber)
+DECL|method|storeRMDelegationTokenState ( RMDelegationTokenIdentifier identifier, Long renewDate)
 specifier|public
 specifier|synchronized
 name|void
-name|storeRMDelegationTokenAndSequenceNumberState
+name|storeRMDelegationTokenState
 parameter_list|(
 name|RMDelegationTokenIdentifier
 name|identifier
 parameter_list|,
 name|Long
 name|renewDate
-parameter_list|,
-name|int
-name|latestSequenceNumber
 parameter_list|)
 throws|throws
 name|Exception
 block|{
-name|storeOrUpdateRMDelegationTokenAndSequenceNumberState
+name|storeOrUpdateRMDelegationTokenState
 argument_list|(
 name|identifier
 argument_list|,
 name|renewDate
-argument_list|,
-name|latestSequenceNumber
 argument_list|,
 literal|false
 argument_list|)
@@ -2809,48 +2788,40 @@ expr_stmt|;
 block|}
 annotation|@
 name|Override
-DECL|method|updateRMDelegationTokenAndSequenceNumberInternal ( RMDelegationTokenIdentifier rmDTIdentifier, Long renewDate, int latestSequenceNumber)
+DECL|method|updateRMDelegationTokenState ( RMDelegationTokenIdentifier rmDTIdentifier, Long renewDate)
 specifier|protected
 name|void
-name|updateRMDelegationTokenAndSequenceNumberInternal
+name|updateRMDelegationTokenState
 parameter_list|(
 name|RMDelegationTokenIdentifier
 name|rmDTIdentifier
 parameter_list|,
 name|Long
 name|renewDate
-parameter_list|,
-name|int
-name|latestSequenceNumber
 parameter_list|)
 throws|throws
 name|Exception
 block|{
-name|storeOrUpdateRMDelegationTokenAndSequenceNumberState
+name|storeOrUpdateRMDelegationTokenState
 argument_list|(
 name|rmDTIdentifier
 argument_list|,
 name|renewDate
 argument_list|,
-name|latestSequenceNumber
-argument_list|,
 literal|true
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|storeOrUpdateRMDelegationTokenAndSequenceNumberState ( RMDelegationTokenIdentifier identifier, Long renewDate, int latestSequenceNumber, boolean isUpdate)
+DECL|method|storeOrUpdateRMDelegationTokenState ( RMDelegationTokenIdentifier identifier, Long renewDate, boolean isUpdate)
 specifier|private
 name|void
-name|storeOrUpdateRMDelegationTokenAndSequenceNumberState
+name|storeOrUpdateRMDelegationTokenState
 parameter_list|(
 name|RMDelegationTokenIdentifier
 name|identifier
 parameter_list|,
 name|Long
 name|renewDate
-parameter_list|,
-name|int
-name|latestSequenceNumber
 parameter_list|,
 name|boolean
 name|isUpdate
@@ -2936,7 +2907,6 @@ name|toByteArray
 argument_list|()
 argument_list|)
 expr_stmt|;
-block|}
 comment|// store sequence number
 name|Path
 name|latestSequenceNumberPath
@@ -2947,7 +2917,10 @@ name|rmDTSecretManagerRoot
 argument_list|,
 name|DELEGATION_TOKEN_SEQUENCE_NUMBER_PREFIX
 operator|+
-name|latestSequenceNumber
+name|identifier
+operator|.
+name|getSequenceNumber
+argument_list|()
 argument_list|)
 decl_stmt|;
 name|LOG
@@ -2958,7 +2931,10 @@ literal|"Storing "
 operator|+
 name|DELEGATION_TOKEN_SEQUENCE_NUMBER_PREFIX
 operator|+
-name|latestSequenceNumber
+name|identifier
+operator|.
+name|getSequenceNumber
+argument_list|()
 argument_list|)
 expr_stmt|;
 if|if
@@ -3016,6 +2992,7 @@ name|dtSequenceNumberPath
 operator|=
 name|latestSequenceNumberPath
 expr_stmt|;
+block|}
 block|}
 annotation|@
 name|Override

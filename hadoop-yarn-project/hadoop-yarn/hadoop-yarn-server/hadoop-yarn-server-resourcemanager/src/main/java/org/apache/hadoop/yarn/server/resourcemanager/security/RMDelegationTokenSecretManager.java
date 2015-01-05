@@ -156,24 +156,6 @@ name|security
 operator|.
 name|token
 operator|.
-name|SecretManager
-operator|.
-name|InvalidToken
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|security
-operator|.
-name|token
-operator|.
 name|delegation
 operator|.
 name|AbstractDelegationTokenSecretManager
@@ -195,26 +177,6 @@ operator|.
 name|delegation
 operator|.
 name|DelegationKey
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|security
-operator|.
-name|token
-operator|.
-name|delegation
-operator|.
-name|AbstractDelegationTokenSecretManager
-operator|.
-name|DelegationTokenInformation
 import|;
 end_import
 
@@ -587,16 +549,11 @@ operator|.
 name|getStateStore
 argument_list|()
 operator|.
-name|storeRMDelegationTokenAndSequenceNumber
+name|storeRMDelegationToken
 argument_list|(
 name|identifier
 argument_list|,
 name|renewDate
-argument_list|,
-name|identifier
-operator|.
-name|getSequenceNumber
-argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
@@ -662,16 +619,11 @@ operator|.
 name|getStateStore
 argument_list|()
 operator|.
-name|updateRMDelegationTokenAndSequenceNumber
+name|updateRMDelegationToken
 argument_list|(
 name|id
 argument_list|,
 name|renewDate
-argument_list|,
-name|id
-operator|.
-name|getSequenceNumber
-argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
@@ -685,7 +637,9 @@ name|LOG
 operator|.
 name|error
 argument_list|(
-literal|"Error in updating persisted RMDelegationToken with sequence number: "
+literal|"Error in updating persisted RMDelegationToken"
+operator|+
+literal|" with sequence number: "
 operator|+
 name|id
 operator|.
@@ -739,8 +693,6 @@ operator|.
 name|removeRMDelegationToken
 argument_list|(
 name|ident
-argument_list|,
-name|delegationTokenSequenceNumber
 argument_list|)
 expr_stmt|;
 block|}

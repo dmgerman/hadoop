@@ -58,11 +58,6 @@ specifier|private
 name|Long
 name|renewDate
 decl_stmt|;
-DECL|field|latestSequenceNumber
-specifier|private
-name|int
-name|latestSequenceNumber
-decl_stmt|;
 DECL|method|RMStateStoreRMDTEvent (RMStateStoreEventType type)
 specifier|public
 name|RMStateStoreRMDTEvent
@@ -77,7 +72,7 @@ name|type
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|RMStateStoreRMDTEvent (RMDelegationTokenIdentifier rmDTIdentifier, Long renewDate, int latestSequenceNumber, RMStateStoreEventType type)
+DECL|method|RMStateStoreRMDTEvent (RMDelegationTokenIdentifier rmDTIdentifier, Long renewDate, RMStateStoreEventType type)
 specifier|public
 name|RMStateStoreRMDTEvent
 parameter_list|(
@@ -86,9 +81,6 @@ name|rmDTIdentifier
 parameter_list|,
 name|Long
 name|renewDate
-parameter_list|,
-name|int
-name|latestSequenceNumber
 parameter_list|,
 name|RMStateStoreEventType
 name|type
@@ -110,12 +102,6 @@ operator|.
 name|renewDate
 operator|=
 name|renewDate
-expr_stmt|;
-name|this
-operator|.
-name|latestSequenceNumber
-operator|=
-name|latestSequenceNumber
 expr_stmt|;
 block|}
 DECL|method|getRmDTIdentifier ()
@@ -136,16 +122,6 @@ parameter_list|()
 block|{
 return|return
 name|renewDate
-return|;
-block|}
-DECL|method|getLatestSequenceNumber ()
-specifier|public
-name|int
-name|getLatestSequenceNumber
-parameter_list|()
-block|{
-return|return
-name|latestSequenceNumber
 return|;
 block|}
 block|}

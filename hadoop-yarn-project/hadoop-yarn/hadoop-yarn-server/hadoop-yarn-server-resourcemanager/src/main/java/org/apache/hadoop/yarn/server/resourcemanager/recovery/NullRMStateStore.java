@@ -343,19 +343,16 @@ comment|// Do nothing
 block|}
 annotation|@
 name|Override
-DECL|method|storeRMDelegationTokenAndSequenceNumberState ( RMDelegationTokenIdentifier rmDTIdentifier, Long renewDate, int latestSequenceNumber)
+DECL|method|storeRMDelegationTokenState ( RMDelegationTokenIdentifier rmDTIdentifier, Long renewDate)
 specifier|public
 name|void
-name|storeRMDelegationTokenAndSequenceNumberState
+name|storeRMDelegationTokenState
 parameter_list|(
 name|RMDelegationTokenIdentifier
 name|rmDTIdentifier
 parameter_list|,
 name|Long
 name|renewDate
-parameter_list|,
-name|int
-name|latestSequenceNumber
 parameter_list|)
 throws|throws
 name|Exception
@@ -379,19 +376,16 @@ comment|// Do nothing
 block|}
 annotation|@
 name|Override
-DECL|method|updateRMDelegationTokenAndSequenceNumberInternal ( RMDelegationTokenIdentifier rmDTIdentifier, Long renewDate, int latestSequenceNumber)
+DECL|method|updateRMDelegationTokenState ( RMDelegationTokenIdentifier rmDTIdentifier, Long renewDate)
 specifier|protected
 name|void
-name|updateRMDelegationTokenAndSequenceNumberInternal
+name|updateRMDelegationTokenState
 parameter_list|(
 name|RMDelegationTokenIdentifier
 name|rmDTIdentifier
 parameter_list|,
 name|Long
 name|renewDate
-parameter_list|,
-name|int
-name|latestSequenceNumber
 parameter_list|)
 throws|throws
 name|Exception

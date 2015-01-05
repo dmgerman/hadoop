@@ -2018,7 +2018,7 @@ argument_list|)
 expr_stmt|;
 name|store
 operator|.
-name|storeRMDelegationTokenAndSequenceNumberState
+name|storeRMDelegationTokenState
 argument_list|(
 name|dtEvent
 operator|.
@@ -2028,11 +2028,6 @@ argument_list|,
 name|dtEvent
 operator|.
 name|getRenewDate
-argument_list|()
-argument_list|,
-name|dtEvent
-operator|.
-name|getLatestSequenceNumber
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -2238,7 +2233,7 @@ argument_list|)
 expr_stmt|;
 name|store
 operator|.
-name|updateRMDelegationTokenAndSequenceNumberInternal
+name|updateRMDelegationTokenState
 argument_list|(
 name|dtEvent
 operator|.
@@ -2248,11 +2243,6 @@ argument_list|,
 name|dtEvent
 operator|.
 name|getRenewDate
-argument_list|()
-argument_list|,
-name|dtEvent
-operator|.
-name|getLatestSequenceNumber
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -3400,19 +3390,16 @@ throws|throws
 name|Exception
 function_decl|;
 comment|/**    * RMDTSecretManager call this to store the state of a delegation token    * and sequence number    */
-DECL|method|storeRMDelegationTokenAndSequenceNumber ( RMDelegationTokenIdentifier rmDTIdentifier, Long renewDate, int latestSequenceNumber)
+DECL|method|storeRMDelegationToken ( RMDelegationTokenIdentifier rmDTIdentifier, Long renewDate)
 specifier|public
 name|void
-name|storeRMDelegationTokenAndSequenceNumber
+name|storeRMDelegationToken
 parameter_list|(
 name|RMDelegationTokenIdentifier
 name|rmDTIdentifier
 parameter_list|,
 name|Long
 name|renewDate
-parameter_list|,
-name|int
-name|latestSequenceNumber
 parameter_list|)
 block|{
 name|handleStoreEvent
@@ -3424,8 +3411,6 @@ name|rmDTIdentifier
 argument_list|,
 name|renewDate
 argument_list|,
-name|latestSequenceNumber
-argument_list|,
 name|RMStateStoreEventType
 operator|.
 name|STORE_DELEGATION_TOKEN
@@ -3434,35 +3419,29 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|/**    * Blocking API    * Derived classes must implement this method to store the state of    * RMDelegationToken and sequence number    */
-DECL|method|storeRMDelegationTokenAndSequenceNumberState ( RMDelegationTokenIdentifier rmDTIdentifier, Long renewDate, int latestSequenceNumber)
+DECL|method|storeRMDelegationTokenState ( RMDelegationTokenIdentifier rmDTIdentifier, Long renewDate)
 specifier|protected
 specifier|abstract
 name|void
-name|storeRMDelegationTokenAndSequenceNumberState
+name|storeRMDelegationTokenState
 parameter_list|(
 name|RMDelegationTokenIdentifier
 name|rmDTIdentifier
 parameter_list|,
 name|Long
 name|renewDate
-parameter_list|,
-name|int
-name|latestSequenceNumber
 parameter_list|)
 throws|throws
 name|Exception
 function_decl|;
 comment|/**    * RMDTSecretManager call this to remove the state of a delegation token    */
-DECL|method|removeRMDelegationToken ( RMDelegationTokenIdentifier rmDTIdentifier, int sequenceNumber)
+DECL|method|removeRMDelegationToken ( RMDelegationTokenIdentifier rmDTIdentifier)
 specifier|public
 name|void
 name|removeRMDelegationToken
 parameter_list|(
 name|RMDelegationTokenIdentifier
 name|rmDTIdentifier
-parameter_list|,
-name|int
-name|sequenceNumber
 parameter_list|)
 block|{
 name|handleStoreEvent
@@ -3473,8 +3452,6 @@ argument_list|(
 name|rmDTIdentifier
 argument_list|,
 literal|null
-argument_list|,
-name|sequenceNumber
 argument_list|,
 name|RMStateStoreEventType
 operator|.
@@ -3497,19 +3474,16 @@ throws|throws
 name|Exception
 function_decl|;
 comment|/**    * RMDTSecretManager call this to update the state of a delegation token    * and sequence number    */
-DECL|method|updateRMDelegationTokenAndSequenceNumber ( RMDelegationTokenIdentifier rmDTIdentifier, Long renewDate, int latestSequenceNumber)
+DECL|method|updateRMDelegationToken ( RMDelegationTokenIdentifier rmDTIdentifier, Long renewDate)
 specifier|public
 name|void
-name|updateRMDelegationTokenAndSequenceNumber
+name|updateRMDelegationToken
 parameter_list|(
 name|RMDelegationTokenIdentifier
 name|rmDTIdentifier
 parameter_list|,
 name|Long
 name|renewDate
-parameter_list|,
-name|int
-name|latestSequenceNumber
 parameter_list|)
 block|{
 name|handleStoreEvent
@@ -3521,8 +3495,6 @@ name|rmDTIdentifier
 argument_list|,
 name|renewDate
 argument_list|,
-name|latestSequenceNumber
-argument_list|,
 name|RMStateStoreEventType
 operator|.
 name|UPDATE_DELEGATION_TOKEN
@@ -3531,20 +3503,17 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|/**    * Blocking API    * Derived classes must implement this method to update the state of    * RMDelegationToken and sequence number    */
-DECL|method|updateRMDelegationTokenAndSequenceNumberInternal ( RMDelegationTokenIdentifier rmDTIdentifier, Long renewDate, int latestSequenceNumber)
+DECL|method|updateRMDelegationTokenState ( RMDelegationTokenIdentifier rmDTIdentifier, Long renewDate)
 specifier|protected
 specifier|abstract
 name|void
-name|updateRMDelegationTokenAndSequenceNumberInternal
+name|updateRMDelegationTokenState
 parameter_list|(
 name|RMDelegationTokenIdentifier
 name|rmDTIdentifier
 parameter_list|,
 name|Long
 name|renewDate
-parameter_list|,
-name|int
-name|latestSequenceNumber
 parameter_list|)
 throws|throws
 name|Exception

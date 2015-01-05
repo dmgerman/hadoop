@@ -3915,20 +3915,17 @@ expr_stmt|;
 block|}
 annotation|@
 name|Override
-DECL|method|storeRMDelegationTokenAndSequenceNumberState ( RMDelegationTokenIdentifier rmDTIdentifier, Long renewDate, int latestSequenceNumber)
+DECL|method|storeRMDelegationTokenState ( RMDelegationTokenIdentifier rmDTIdentifier, Long renewDate)
 specifier|protected
 specifier|synchronized
 name|void
-name|storeRMDelegationTokenAndSequenceNumberState
+name|storeRMDelegationTokenState
 parameter_list|(
 name|RMDelegationTokenIdentifier
 name|rmDTIdentifier
 parameter_list|,
 name|Long
 name|renewDate
-parameter_list|,
-name|int
-name|latestSequenceNumber
 parameter_list|)
 throws|throws
 name|Exception
@@ -3953,8 +3950,6 @@ argument_list|,
 name|rmDTIdentifier
 argument_list|,
 name|renewDate
-argument_list|,
-name|latestSequenceNumber
 argument_list|,
 literal|false
 argument_list|)
@@ -4076,20 +4071,17 @@ expr_stmt|;
 block|}
 annotation|@
 name|Override
-DECL|method|updateRMDelegationTokenAndSequenceNumberInternal ( RMDelegationTokenIdentifier rmDTIdentifier, Long renewDate, int latestSequenceNumber)
+DECL|method|updateRMDelegationTokenState ( RMDelegationTokenIdentifier rmDTIdentifier, Long renewDate)
 specifier|protected
 specifier|synchronized
 name|void
-name|updateRMDelegationTokenAndSequenceNumberInternal
+name|updateRMDelegationTokenState
 parameter_list|(
 name|RMDelegationTokenIdentifier
 name|rmDTIdentifier
 parameter_list|,
 name|Long
 name|renewDate
-parameter_list|,
-name|int
-name|latestSequenceNumber
 parameter_list|)
 throws|throws
 name|Exception
@@ -4143,8 +4135,6 @@ name|rmDTIdentifier
 argument_list|,
 name|renewDate
 argument_list|,
-name|latestSequenceNumber
-argument_list|,
 literal|false
 argument_list|)
 expr_stmt|;
@@ -4169,8 +4159,6 @@ name|rmDTIdentifier
 argument_list|,
 name|renewDate
 argument_list|,
-name|latestSequenceNumber
-argument_list|,
 literal|true
 argument_list|)
 expr_stmt|;
@@ -4181,7 +4169,7 @@ name|opList
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|addStoreOrUpdateOps (ArrayList<Op> opList, RMDelegationTokenIdentifier rmDTIdentifier, Long renewDate, int latestSequenceNumber, boolean isUpdate)
+DECL|method|addStoreOrUpdateOps (ArrayList<Op> opList, RMDelegationTokenIdentifier rmDTIdentifier, Long renewDate, boolean isUpdate)
 specifier|private
 name|void
 name|addStoreOrUpdateOps
@@ -4197,9 +4185,6 @@ name|rmDTIdentifier
 parameter_list|,
 name|Long
 name|renewDate
-parameter_list|,
-name|int
-name|latestSequenceNumber
 parameter_list|,
 name|boolean
 name|isUpdate
@@ -4332,12 +4317,15 @@ name|PERSISTENT
 argument_list|)
 argument_list|)
 expr_stmt|;
-block|}
+comment|// Update Sequence number only while storing DT
 name|seqOut
 operator|.
 name|writeInt
 argument_list|(
-name|latestSequenceNumber
+name|rmDTIdentifier
+operator|.
+name|getSequenceNumber
+argument_list|()
 argument_list|)
 expr_stmt|;
 if|if
@@ -4364,7 +4352,10 @@ name|dtSequenceNumberPath
 operator|+
 literal|". SequenceNumber: "
 operator|+
-name|latestSequenceNumber
+name|rmDTIdentifier
+operator|.
+name|getSequenceNumber
+argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
@@ -4388,6 +4379,7 @@ literal|1
 argument_list|)
 argument_list|)
 expr_stmt|;
+block|}
 block|}
 finally|finally
 block|{
