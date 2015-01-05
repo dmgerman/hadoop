@@ -290,6 +290,26 @@ name|server
 operator|.
 name|resourcemanager
 operator|.
+name|resource
+operator|.
+name|ResourceWeights
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|server
+operator|.
+name|resourcemanager
+operator|.
 name|rmcontainer
 operator|.
 name|RMContainer
@@ -2282,6 +2302,34 @@ name|now
 argument_list|)
 expr_stmt|;
 block|}
+block|}
+comment|/** Allows setting weight for a dynamically created queue    * Currently only used for reservation based queues    * @param weight queue weight    */
+DECL|method|setWeights (float weight)
+specifier|public
+name|void
+name|setWeights
+parameter_list|(
+name|float
+name|weight
+parameter_list|)
+block|{
+name|scheduler
+operator|.
+name|getAllocationConfiguration
+argument_list|()
+operator|.
+name|setQueueWeight
+argument_list|(
+name|getName
+argument_list|()
+argument_list|,
+operator|new
+name|ResourceWeights
+argument_list|(
+name|weight
+argument_list|)
+argument_list|)
+expr_stmt|;
 block|}
 comment|/**    * Helper method to check if the queue should preempt containers    *    * @return true if check passes (can preempt) or false otherwise    */
 DECL|method|preemptContainerPreCheck ()

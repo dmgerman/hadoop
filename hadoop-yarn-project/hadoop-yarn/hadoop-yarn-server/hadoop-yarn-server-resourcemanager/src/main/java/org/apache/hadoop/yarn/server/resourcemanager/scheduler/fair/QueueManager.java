@@ -421,6 +421,34 @@ operator|)
 name|queue
 return|;
 block|}
+comment|/**    * Remove a leaf queue if empty    * @param name name of the queue    * @return true if queue was removed or false otherwise    */
+DECL|method|removeLeafQueue (String name)
+specifier|public
+name|boolean
+name|removeLeafQueue
+parameter_list|(
+name|String
+name|name
+parameter_list|)
+block|{
+name|name
+operator|=
+name|ensureRootPrefix
+argument_list|(
+name|name
+argument_list|)
+expr_stmt|;
+return|return
+name|removeEmptyIncompatibleQueues
+argument_list|(
+name|name
+argument_list|,
+name|FSQueueType
+operator|.
+name|PARENT
+argument_list|)
+return|;
+block|}
 comment|/**    * Get a parent queue by name, creating it if the create param is true and is necessary.    * If the queue is not or can not be a parent queue, i.e. it already exists as a    * leaf queue, or one of the parents in its name is already a leaf queue,    * null is returned.    *     * The root part of the name is optional, so a queue underneath the root     * named "queue1" could be referred to  as just "queue1", and a queue named    * "queue2" underneath a parent named "parent1" that is underneath the root     * could be referred to as just "parent1.queue2".    */
 DECL|method|getParentQueue (String name, boolean create)
 specifier|public

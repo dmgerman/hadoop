@@ -154,15 +154,6 @@ name|PlanQueue
 extends|extends
 name|ParentQueue
 block|{
-DECL|field|DEFAULT_QUEUE_SUFFIX
-specifier|public
-specifier|static
-specifier|final
-name|String
-name|DEFAULT_QUEUE_SUFFIX
-init|=
-literal|"-default"
-decl_stmt|;
 DECL|field|LOG
 specifier|private
 specifier|static

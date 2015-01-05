@@ -539,7 +539,7 @@ expr_stmt|;
 block|}
 block|}
 DECL|field|TEST_DIR
-specifier|protected
+specifier|public
 specifier|final
 specifier|static
 name|String
@@ -607,7 +607,7 @@ name|resourceManager
 decl_stmt|;
 comment|// Helper methods
 DECL|method|createConfiguration ()
-specifier|protected
+specifier|public
 name|Configuration
 name|createConfiguration
 parameter_list|()

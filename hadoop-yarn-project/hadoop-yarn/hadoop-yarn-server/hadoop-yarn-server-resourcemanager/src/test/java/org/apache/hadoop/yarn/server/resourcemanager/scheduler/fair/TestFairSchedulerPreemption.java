@@ -390,10 +390,8 @@ literal|1
 expr_stmt|;
 block|}
 block|}
-annotation|@
-name|Override
 DECL|method|createConfiguration ()
-specifier|protected
+specifier|public
 name|Configuration
 name|createConfiguration
 parameter_list|()
