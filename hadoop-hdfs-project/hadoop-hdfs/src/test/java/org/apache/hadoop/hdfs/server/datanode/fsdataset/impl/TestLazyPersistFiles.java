@@ -3349,6 +3349,9 @@ operator|.
 name|waitActive
 argument_list|()
 expr_stmt|;
+name|triggerBlockReport
+argument_list|()
+expr_stmt|;
 comment|// Ensure that the replica is now on persistent storage.
 name|ensureFileReplicasOnStorageType
 argument_list|(
