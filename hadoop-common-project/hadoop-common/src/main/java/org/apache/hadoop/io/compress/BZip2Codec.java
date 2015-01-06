@@ -655,7 +655,7 @@ name|in
 operator|.
 name|getPos
 argument_list|()
-operator|<=
+operator|<
 name|start
 condition|)
 block|{

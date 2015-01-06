@@ -609,6 +609,54 @@ literal|136498
 argument_list|)
 expr_stmt|;
 block|}
+comment|//This test ensures record reader doesn't lose records when it starts
+comment|//exactly at the starting byte of a bz2 compressed block
+annotation|@
+name|Test
+DECL|method|testBzip2SplitStartAtBlockMarker ()
+specifier|public
+name|void
+name|testBzip2SplitStartAtBlockMarker
+parameter_list|()
+throws|throws
+name|IOException
+block|{
+comment|//136504 in blockEndingInCR.txt.bz2 is the byte at which the bz2 block ends
+comment|//In the following test cases record readers should iterate over all the records
+comment|//and should not miss any record.
+comment|//Start next split at just the start of the block.
+name|testSplitRecords
+argument_list|(
+literal|"blockEndingInCR.txt.bz2"
+argument_list|,
+literal|136504
+argument_list|)
+expr_stmt|;
+comment|//Start next split a byte forward in next block.
+name|testSplitRecords
+argument_list|(
+literal|"blockEndingInCR.txt.bz2"
+argument_list|,
+literal|136505
+argument_list|)
+expr_stmt|;
+comment|//Start next split 3 bytes forward in next block.
+name|testSplitRecords
+argument_list|(
+literal|"blockEndingInCR.txt.bz2"
+argument_list|,
+literal|136508
+argument_list|)
+expr_stmt|;
+comment|//Start next split 10 bytes from behind the end marker.
+name|testSplitRecords
+argument_list|(
+literal|"blockEndingInCR.txt.bz2"
+argument_list|,
+literal|136494
+argument_list|)
+expr_stmt|;
+block|}
 comment|// Use the LineRecordReader to read records from the file
 DECL|method|readRecords (URL testFileUrl, int splitSize)
 specifier|public
