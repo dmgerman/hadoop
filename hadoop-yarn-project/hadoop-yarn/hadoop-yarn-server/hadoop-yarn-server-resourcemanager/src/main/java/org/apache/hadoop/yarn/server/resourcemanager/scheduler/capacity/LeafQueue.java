@@ -1339,20 +1339,6 @@ argument_list|,
 name|userLimitFactor
 argument_list|)
 decl_stmt|;
-name|this
-operator|.
-name|queueInfo
-operator|.
-name|setChildQueues
-argument_list|(
-operator|new
-name|ArrayList
-argument_list|<
-name|QueueInfo
-argument_list|>
-argument_list|()
-argument_list|)
-expr_stmt|;
 name|QueueState
 name|state
 init|=
@@ -1761,8 +1747,6 @@ literal|"Invalid default label expression of "
 operator|+
 literal|" queue="
 operator|+
-name|queueInfo
-operator|.
 name|getQueueName
 argument_list|()
 operator|+
@@ -1787,8 +1771,6 @@ operator|+
 literal|". Queue labels="
 operator|+
 operator|(
-name|queueInfo
-operator|.
 name|getAccessibleNodeLabels
 argument_list|()
 operator|==
@@ -1800,8 +1782,6 @@ name|StringUtils
 operator|.
 name|join
 argument_list|(
-name|queueInfo
-operator|.
 name|getAccessibleNodeLabels
 argument_list|()
 operator|.
@@ -2442,13 +2422,12 @@ name|boolean
 name|recursive
 parameter_list|)
 block|{
+name|QueueInfo
 name|queueInfo
-operator|.
-name|setCurrentCapacity
-argument_list|(
-name|usedCapacity
-argument_list|)
-expr_stmt|;
+init|=
+name|getQueueInfo
+argument_list|()
+decl_stmt|;
 return|return
 name|queueInfo
 return|;
