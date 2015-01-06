@@ -1307,7 +1307,7 @@ expr_stmt|;
 comment|// slight race condition, but won't hurt
 name|canonicalizedHostCache
 operator|.
-name|put
+name|putIfAbsent
 argument_list|(
 name|host
 argument_list|,

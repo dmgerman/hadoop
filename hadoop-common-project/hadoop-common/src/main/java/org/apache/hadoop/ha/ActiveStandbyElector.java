@@ -3758,6 +3758,9 @@ argument_list|()
 expr_stmt|;
 try|try
 block|{
+if|if
+condition|(
+operator|!
 name|hasSetZooKeeper
 operator|.
 name|await
@@ -3768,7 +3771,16 @@ name|TimeUnit
 operator|.
 name|MILLISECONDS
 argument_list|)
+condition|)
+block|{
+name|LOG
+operator|.
+name|debug
+argument_list|(
+literal|"Event received with stale zk"
+argument_list|)
 expr_stmt|;
+block|}
 name|ActiveStandbyElector
 operator|.
 name|this

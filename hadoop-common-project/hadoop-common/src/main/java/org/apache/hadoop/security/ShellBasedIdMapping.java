@@ -1253,6 +1253,7 @@ return|;
 block|}
 DECL|method|initStaticMapping ()
 specifier|private
+specifier|synchronized
 name|void
 name|initStaticMapping
 parameter_list|()
