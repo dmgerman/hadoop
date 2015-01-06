@@ -966,9 +966,14 @@ name|Assert
 operator|.
 name|assertEquals
 argument_list|(
-literal|"copy task(attempt_test_0000_m_000000_0 succeeded at 1.00 MB/s)"
-operator|+
-literal|" Aggregated copy rate(1 of 10 at 1.00 MB/s)"
+name|copyMessage
+argument_list|(
+literal|1
+argument_list|,
+literal|1
+argument_list|,
+literal|1
+argument_list|)
 argument_list|,
 name|progress
 operator|.
@@ -1050,9 +1055,14 @@ name|Assert
 operator|.
 name|assertEquals
 argument_list|(
-literal|"copy task(attempt_test_0000_m_000001_1 succeeded at 1.00 MB/s)"
-operator|+
-literal|" Aggregated copy rate(2 of 10 at 1.00 MB/s)"
+name|copyMessage
+argument_list|(
+literal|2
+argument_list|,
+literal|1
+argument_list|,
+literal|1
+argument_list|)
 argument_list|,
 name|progress
 operator|.
@@ -1135,9 +1145,14 @@ name|Assert
 operator|.
 name|assertEquals
 argument_list|(
-literal|"copy task(attempt_test_0000_m_000002_2 succeeded at 2.00 MB/s)"
-operator|+
-literal|" Aggregated copy rate(3 of 10 at 2.00 MB/s)"
+name|copyMessage
+argument_list|(
+literal|3
+argument_list|,
+literal|2
+argument_list|,
+literal|2
+argument_list|)
 argument_list|,
 name|progress
 operator|.
@@ -1219,9 +1234,14 @@ name|Assert
 operator|.
 name|assertEquals
 argument_list|(
-literal|"copy task(attempt_test_0000_m_000003_3 succeeded at 0.50 MB/s)"
-operator|+
-literal|" Aggregated copy rate(4 of 10 at 1.00 MB/s)"
+name|copyMessage
+argument_list|(
+literal|4
+argument_list|,
+literal|0.5
+argument_list|,
+literal|1
+argument_list|)
 argument_list|,
 name|progress
 operator|.
@@ -1303,9 +1323,14 @@ name|Assert
 operator|.
 name|assertEquals
 argument_list|(
-literal|"copy task(attempt_test_0000_m_000004_4 succeeded at 1.00 MB/s)"
-operator|+
-literal|" Aggregated copy rate(5 of 10 at 1.00 MB/s)"
+name|copyMessage
+argument_list|(
+literal|5
+argument_list|,
+literal|1
+argument_list|,
+literal|1
+argument_list|)
 argument_list|,
 name|progress
 operator|.
@@ -1387,9 +1412,14 @@ name|Assert
 operator|.
 name|assertEquals
 argument_list|(
-literal|"copy task(attempt_test_0000_m_000005_5 succeeded at 1.00 MB/s)"
-operator|+
-literal|" Aggregated copy rate(6 of 10 at 1.00 MB/s)"
+name|copyMessage
+argument_list|(
+literal|6
+argument_list|,
+literal|1
+argument_list|,
+literal|1
+argument_list|)
 argument_list|,
 name|progress
 operator|.
@@ -1471,9 +1501,14 @@ name|Assert
 operator|.
 name|assertEquals
 argument_list|(
-literal|"copy task(attempt_test_0000_m_000006_6 succeeded at 1.00 MB/s)"
-operator|+
-literal|" Aggregated copy rate(7 of 10 at 1.00 MB/s)"
+name|copyMessage
+argument_list|(
+literal|7
+argument_list|,
+literal|1
+argument_list|,
+literal|1
+argument_list|)
 argument_list|,
 name|progress
 operator|.
@@ -1555,9 +1590,14 @@ name|Assert
 operator|.
 name|assertEquals
 argument_list|(
-literal|"copy task(attempt_test_0000_m_000007_7 succeeded at 0.50 MB/s)"
-operator|+
-literal|" Aggregated copy rate(8 of 10 at 1.00 MB/s)"
+name|copyMessage
+argument_list|(
+literal|8
+argument_list|,
+literal|0.5
+argument_list|,
+literal|1
+argument_list|)
 argument_list|,
 name|progress
 operator|.
@@ -1639,9 +1679,14 @@ name|Assert
 operator|.
 name|assertEquals
 argument_list|(
-literal|"copy task(attempt_test_0000_m_000008_8 succeeded at 1.00 MB/s)"
-operator|+
-literal|" Aggregated copy rate(9 of 10 at 1.00 MB/s)"
+name|copyMessage
+argument_list|(
+literal|9
+argument_list|,
+literal|1
+argument_list|,
+literal|1
+argument_list|)
 argument_list|,
 name|progress
 operator|.
@@ -1723,9 +1768,14 @@ name|Assert
 operator|.
 name|assertEquals
 argument_list|(
-literal|"copy task(attempt_test_0000_m_000009_9 succeeded at 1.00 MB/s)"
-operator|+
-literal|" Aggregated copy rate(10 of 10 at 2.00 MB/s)"
+name|copyMessage
+argument_list|(
+literal|10
+argument_list|,
+literal|1
+argument_list|,
+literal|2
+argument_list|)
 argument_list|,
 name|progress
 operator|.
@@ -1733,6 +1783,50 @@ name|toString
 argument_list|()
 argument_list|)
 expr_stmt|;
+block|}
+DECL|method|copyMessage (int attemptNo, double rate1, double rate2)
+specifier|private
+specifier|static
+name|String
+name|copyMessage
+parameter_list|(
+name|int
+name|attemptNo
+parameter_list|,
+name|double
+name|rate1
+parameter_list|,
+name|double
+name|rate2
+parameter_list|)
+block|{
+name|int
+name|attemptZero
+init|=
+name|attemptNo
+operator|-
+literal|1
+decl_stmt|;
+return|return
+name|String
+operator|.
+name|format
+argument_list|(
+literal|"copy task(attempt_test_0000_m_%06d_%d succeeded at %1.2f MB/s)"
+operator|+
+literal|" Aggregated copy rate(%d of 10 at %1.2f MB/s)"
+argument_list|,
+name|attemptZero
+argument_list|,
+name|attemptZero
+argument_list|,
+name|rate1
+argument_list|,
+name|attemptNo
+argument_list|,
+name|rate2
+argument_list|)
+return|;
 block|}
 block|}
 end_class
