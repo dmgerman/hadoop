@@ -3262,12 +3262,27 @@ range|:
 name|files
 control|)
 block|{
+if|if
+condition|(
+operator|!
 name|file
 operator|.
 name|delete
 argument_list|()
+condition|)
+block|{
+name|LOG
+operator|.
+name|warn
+argument_list|(
+literal|"Deleting "
+operator|+
+name|file
+operator|+
+literal|" has failed"
+argument_list|)
 expr_stmt|;
-comment|// ignore the return value
+block|}
 block|}
 block|}
 DECL|method|parseMD5Header (HttpURLConnection connection)
