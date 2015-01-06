@@ -1169,6 +1169,11 @@ literal|"forget to set off-switch request should be handled"
 argument_list|)
 expr_stmt|;
 block|}
+name|rm
+operator|.
+name|stop
+argument_list|()
+expr_stmt|;
 block|}
 annotation|@
 name|Test

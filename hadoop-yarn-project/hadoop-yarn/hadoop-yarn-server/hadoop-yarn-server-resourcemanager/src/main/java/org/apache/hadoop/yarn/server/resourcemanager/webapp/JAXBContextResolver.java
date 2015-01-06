@@ -333,6 +333,10 @@ block|,
 name|DelegationToken
 operator|.
 name|class
+block|,
+name|AppQueue
+operator|.
+name|class
 block|}
 decl_stmt|;
 name|this
