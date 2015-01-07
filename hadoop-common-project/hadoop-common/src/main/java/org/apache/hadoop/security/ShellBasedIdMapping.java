@@ -322,6 +322,15 @@ name|staticMapping
 init|=
 literal|null
 decl_stmt|;
+comment|// Last time the static map was modified, measured time difference in
+comment|// milliseconds since midnight, January 1, 1970 UTC
+DECL|field|lastModificationTimeStaticMap
+specifier|private
+name|long
+name|lastModificationTimeStaticMap
+init|=
+literal|0
+decl_stmt|;
 DECL|field|constructFullMapAtInit
 specifier|private
 name|boolean
@@ -511,6 +520,9 @@ name|File
 argument_list|(
 name|staticFilePath
 argument_list|)
+expr_stmt|;
+name|updateStaticMapping
+argument_list|()
 expr_stmt|;
 name|updateMaps
 argument_list|()
@@ -1251,14 +1263,92 @@ return|return
 literal|true
 return|;
 block|}
-DECL|method|initStaticMapping ()
+DECL|method|updateStaticMapping ()
 specifier|private
 specifier|synchronized
 name|void
-name|initStaticMapping
+name|updateStaticMapping
 parameter_list|()
 throws|throws
 name|IOException
+block|{
+specifier|final
+name|boolean
+name|init
+init|=
+operator|(
+name|staticMapping
+operator|==
+literal|null
+operator|)
+decl_stmt|;
+comment|//
+comment|// if the static mapping file
+comment|//   - was modified after last update, load the map again;
+comment|//   - did not exist but was added since last update, load the map;
+comment|//   - existed before but deleted since last update, clear the map
+comment|//
+if|if
+condition|(
+name|staticMappingFile
+operator|.
+name|exists
+argument_list|()
+condition|)
+block|{
+comment|// check modification time, reload the file if the last modification
+comment|// time changed since prior load.
+name|long
+name|lmTime
+init|=
+name|staticMappingFile
+operator|.
+name|lastModified
+argument_list|()
+decl_stmt|;
+if|if
+condition|(
+name|lmTime
+operator|!=
+name|lastModificationTimeStaticMap
+condition|)
+block|{
+name|LOG
+operator|.
+name|info
+argument_list|(
+name|init
+condition|?
+literal|"Using "
+else|:
+literal|"Reloading "
+operator|+
+literal|"'"
+operator|+
+name|staticMappingFile
+operator|+
+literal|"' for static UID/GID mapping..."
+argument_list|)
+expr_stmt|;
+name|lastModificationTimeStaticMap
+operator|=
+name|lmTime
+expr_stmt|;
+name|staticMapping
+operator|=
+name|parseStaticMap
+argument_list|(
+name|staticMappingFile
+argument_list|)
+expr_stmt|;
+block|}
+block|}
+else|else
+block|{
+if|if
+condition|(
+name|init
+condition|)
 block|{
 name|staticMapping
 operator|=
@@ -1284,35 +1374,18 @@ argument_list|>
 argument_list|()
 argument_list|)
 expr_stmt|;
+block|}
 if|if
 condition|(
-name|staticMappingFile
-operator|.
-name|exists
-argument_list|()
+name|lastModificationTimeStaticMap
+operator|!=
+literal|0
+operator|||
+name|init
 condition|)
 block|{
-name|LOG
-operator|.
-name|info
-argument_list|(
-literal|"Using '"
-operator|+
-name|staticMappingFile
-operator|+
-literal|"' for static UID/GID mapping..."
-argument_list|)
-expr_stmt|;
-name|staticMapping
-operator|=
-name|parseStaticMap
-argument_list|(
-name|staticMappingFile
-argument_list|)
-expr_stmt|;
-block|}
-else|else
-block|{
+comment|// print the following log at initialization or when the static
+comment|// mapping file was deleted after prior load
 name|LOG
 operator|.
 name|info
@@ -1325,8 +1398,18 @@ literal|"' does not exist."
 argument_list|)
 expr_stmt|;
 block|}
+name|lastModificationTimeStaticMap
+operator|=
+literal|0
+expr_stmt|;
+name|staticMapping
+operator|.
+name|clear
+argument_list|()
+expr_stmt|;
 block|}
-comment|/*    * Reset the maps to empty.    * For testing code, a full map may be re-constructed here when the object    * was created with constructFullMapAtInit being set to true.    */
+block|}
+comment|/*    * Refresh static map, and reset the other maps to empty.    * For testing code, a full map may be re-constructed here when the object    * was created with constructFullMapAtInit being set to true.    */
 DECL|method|updateMaps ()
 specifier|synchronized
 specifier|public
@@ -1353,9 +1436,18 @@ block|{
 name|loadFullMaps
 argument_list|()
 expr_stmt|;
+comment|// set constructFullMapAtInit to false to allow testing code to
+comment|// do incremental update to maps after initial construction
+name|constructFullMapAtInit
+operator|=
+literal|false
+expr_stmt|;
 block|}
 else|else
 block|{
+name|updateStaticMapping
+argument_list|()
+expr_stmt|;
 name|clearNameMaps
 argument_list|()
 expr_stmt|;
@@ -1370,17 +1462,6 @@ parameter_list|()
 throws|throws
 name|IOException
 block|{
-if|if
-condition|(
-name|staticMapping
-operator|==
-literal|null
-condition|)
-block|{
-name|initStaticMapping
-argument_list|()
-expr_stmt|;
-block|}
 name|BiMap
 argument_list|<
 name|Integer
@@ -1459,17 +1540,6 @@ parameter_list|()
 throws|throws
 name|IOException
 block|{
-if|if
-condition|(
-name|staticMapping
-operator|==
-literal|null
-condition|)
-block|{
-name|initStaticMapping
-argument_list|()
-expr_stmt|;
-block|}
 name|BiMap
 argument_list|<
 name|Integer
@@ -1548,9 +1618,6 @@ parameter_list|()
 throws|throws
 name|IOException
 block|{
-name|initStaticMapping
-argument_list|()
-expr_stmt|;
 name|loadFullUserMap
 argument_list|()
 expr_stmt|;
@@ -1847,17 +1914,9 @@ name|updated
 init|=
 literal|false
 decl_stmt|;
-if|if
-condition|(
-name|staticMapping
-operator|==
-literal|null
-condition|)
-block|{
-name|initStaticMapping
+name|updateStaticMapping
 argument_list|()
 expr_stmt|;
-block|}
 if|if
 condition|(
 name|OS
@@ -2024,17 +2083,9 @@ name|updated
 init|=
 literal|false
 decl_stmt|;
-if|if
-condition|(
-name|staticMapping
-operator|==
-literal|null
-condition|)
-block|{
-name|initStaticMapping
+name|updateStaticMapping
 argument_list|()
 expr_stmt|;
-block|}
 if|if
 condition|(
 name|OS
@@ -2381,6 +2432,45 @@ argument_list|(
 name|gidMapping
 argument_list|)
 expr_stmt|;
+block|}
+DECL|method|clear ()
+specifier|public
+name|void
+name|clear
+parameter_list|()
+block|{
+name|uidMapping
+operator|.
+name|clear
+argument_list|()
+expr_stmt|;
+name|gidMapping
+operator|.
+name|clear
+argument_list|()
+expr_stmt|;
+block|}
+DECL|method|isNonEmpty ()
+specifier|public
+name|boolean
+name|isNonEmpty
+parameter_list|()
+block|{
+return|return
+name|uidMapping
+operator|.
+name|size
+argument_list|()
+operator|>
+literal|0
+operator|||
+name|gidMapping
+operator|.
+name|size
+argument_list|()
+operator|>
+literal|0
+return|;
 block|}
 block|}
 DECL|method|parseStaticMap (File staticMapFile)
