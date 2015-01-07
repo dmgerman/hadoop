@@ -6487,6 +6487,7 @@ block|}
 block|}
 DECL|method|resolveReservationQueueName (String queueName, ApplicationId applicationId, ReservationId reservationID)
 specifier|private
+specifier|synchronized
 name|String
 name|resolveReservationQueueName
 parameter_list|(

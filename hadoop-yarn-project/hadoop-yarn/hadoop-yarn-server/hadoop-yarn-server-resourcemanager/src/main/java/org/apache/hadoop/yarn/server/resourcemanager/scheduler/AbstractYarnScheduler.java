@@ -1376,8 +1376,9 @@ argument_list|()
 expr_stmt|;
 block|}
 block|}
-DECL|method|containerLaunchedOnNode (ContainerId containerId, SchedulerNode node)
+DECL|method|containerLaunchedOnNode ( ContainerId containerId, SchedulerNode node)
 specifier|protected
+specifier|synchronized
 name|void
 name|containerLaunchedOnNode
 parameter_list|(

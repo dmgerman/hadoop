@@ -2242,9 +2242,10 @@ return|;
 block|}
 annotation|@
 name|Override
-DECL|method|getContainerTokenSecretManager ()
 specifier|public
+specifier|synchronized
 name|RMContainerTokenSecretManager
+DECL|method|getContainerTokenSecretManager ()
 name|getContainerTokenSecretManager
 parameter_list|()
 block|{
