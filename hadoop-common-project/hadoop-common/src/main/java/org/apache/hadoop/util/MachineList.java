@@ -194,6 +194,15 @@ operator|.
 name|class
 argument_list|)
 decl_stmt|;
+DECL|field|WILDCARD_VALUE
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|WILDCARD_VALUE
+init|=
+literal|"*"
+decl_stmt|;
 comment|/**    * InetAddressFactory is used to obtain InetAddress from host.    * This class makes it easy to simulate host to ip mappings during testing.    *    */
 DECL|class|InetAddressFactory
 specifier|public
@@ -359,7 +368,7 @@ name|hostEntries
 operator|.
 name|contains
 argument_list|(
-literal|"*"
+name|WILDCARD_VALUE
 argument_list|)
 operator|)
 condition|)
