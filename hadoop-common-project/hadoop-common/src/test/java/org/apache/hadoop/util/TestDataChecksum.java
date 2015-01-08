@@ -50,6 +50,20 @@ end_import
 
 begin_import
 import|import
+name|com
+operator|.
+name|google
+operator|.
+name|common
+operator|.
+name|base
+operator|.
+name|Stopwatch
+import|;
+end_import
+
+begin_import
+import|import
 name|org
 operator|.
 name|apache
@@ -767,11 +781,11 @@ name|i
 operator|++
 control|)
 block|{
-name|StopWatch
+name|Stopwatch
 name|s
 init|=
 operator|new
-name|StopWatch
+name|Stopwatch
 argument_list|()
 operator|.
 name|start
@@ -810,7 +824,7 @@ literal|": "
 operator|+
 name|s
 operator|.
-name|now
+name|elapsedTime
 argument_list|(
 name|TimeUnit
 operator|.
@@ -823,7 +837,7 @@ expr_stmt|;
 name|s
 operator|=
 operator|new
-name|StopWatch
+name|Stopwatch
 argument_list|()
 operator|.
 name|start
@@ -866,7 +880,7 @@ literal|": "
 operator|+
 name|s
 operator|.
-name|now
+name|elapsedTime
 argument_list|(
 name|TimeUnit
 operator|.
