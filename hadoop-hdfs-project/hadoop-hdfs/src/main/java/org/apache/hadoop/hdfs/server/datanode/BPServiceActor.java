@@ -72,7 +72,37 @@ name|java
 operator|.
 name|util
 operator|.
-name|*
+name|ArrayList
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
+name|Collection
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
+name|List
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
+name|Map
 import|;
 end_import
 
@@ -1968,6 +1998,7 @@ return|return
 literal|null
 return|;
 block|}
+specifier|final
 name|ArrayList
 argument_list|<
 name|DatanodeCommand
@@ -2100,6 +2131,18 @@ block|}
 comment|// Send the reports to the NN.
 name|int
 name|numReportsSent
+init|=
+literal|0
+decl_stmt|;
+name|int
+name|numRPCs
+init|=
+literal|0
+decl_stmt|;
+name|boolean
+name|success
+init|=
+literal|false
 decl_stmt|;
 name|long
 name|brSendStartTime
@@ -2107,6 +2150,8 @@ init|=
 name|now
 argument_list|()
 decl_stmt|;
+try|try
+block|{
 if|if
 condition|(
 name|totalBlockCount
@@ -2117,10 +2162,6 @@ name|blockReportSplitThreshold
 condition|)
 block|{
 comment|// Below split threshold, send all reports in a single message.
-name|numReportsSent
-operator|=
-literal|1
-expr_stmt|;
 name|DatanodeCommand
 name|cmd
 init|=
@@ -2138,6 +2179,16 @@ argument_list|,
 name|reports
 argument_list|)
 decl_stmt|;
+name|numRPCs
+operator|=
+literal|1
+expr_stmt|;
+name|numReportsSent
+operator|=
+name|reports
+operator|.
+name|length
+expr_stmt|;
 if|if
 condition|(
 name|cmd
@@ -2157,10 +2208,6 @@ block|}
 else|else
 block|{
 comment|// Send one block report per message.
-name|numReportsSent
-operator|=
-name|i
-expr_stmt|;
 for|for
 control|(
 name|StorageBlockReport
@@ -2194,6 +2241,12 @@ argument_list|,
 name|singleReport
 argument_list|)
 decl_stmt|;
+name|numReportsSent
+operator|++
+expr_stmt|;
+name|numRPCs
+operator|++
+expr_stmt|;
 if|if
 condition|(
 name|cmd
@@ -2211,6 +2264,13 @@ expr_stmt|;
 block|}
 block|}
 block|}
+name|success
+operator|=
+literal|true
+expr_stmt|;
+block|}
+finally|finally
+block|{
 comment|// Log the block report processing stats from Datanode perspective
 name|long
 name|brSendCost
@@ -2237,19 +2297,46 @@ argument_list|(
 name|brSendCost
 argument_list|)
 expr_stmt|;
+specifier|final
+name|int
+name|nCmds
+init|=
+name|cmds
+operator|.
+name|size
+argument_list|()
+decl_stmt|;
 name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"Sent "
+operator|(
+name|success
+condition|?
+literal|"S"
+else|:
+literal|"Uns"
+operator|)
+operator|+
+literal|"uccessfully sent "
 operator|+
 name|numReportsSent
 operator|+
-literal|" blockreports "
+literal|" of "
+operator|+
+name|reports
+operator|.
+name|length
+operator|+
+literal|" blockreports for "
 operator|+
 name|totalBlockCount
 operator|+
-literal|" blocks total. Took "
+literal|" total blocks using "
+operator|+
+name|numRPCs
+operator|+
+literal|" RPCs. This took "
 operator|+
 name|brCreateCost
 operator|+
@@ -2257,20 +2344,40 @@ literal|" msec to generate and "
 operator|+
 name|brSendCost
 operator|+
-literal|" msecs for RPC and NN processing. "
+literal|" msecs for RPC and NN processing."
 operator|+
-literal|" Got back commands "
+literal|" Got back "
 operator|+
 operator|(
-name|cmds
-operator|.
-name|size
-argument_list|()
+operator|(
+name|nCmds
 operator|==
 literal|0
+operator|)
 condition|?
-literal|"none"
+literal|"no commands"
 else|:
+operator|(
+operator|(
+name|nCmds
+operator|==
+literal|1
+operator|)
+condition|?
+literal|"one command: "
+operator|+
+name|cmds
+operator|.
+name|get
+argument_list|(
+literal|0
+argument_list|)
+else|:
+operator|(
+name|nCmds
+operator|+
+literal|" commands: "
+operator|+
 name|Joiner
 operator|.
 name|on
@@ -2283,8 +2390,13 @@ argument_list|(
 name|cmds
 argument_list|)
 operator|)
+operator|)
+operator|)
+operator|+
+literal|"."
 argument_list|)
 expr_stmt|;
+block|}
 name|scheduleNextBlockReport
 argument_list|(
 name|startTime
@@ -4103,7 +4215,7 @@ return|return
 name|blocksPut
 return|;
 block|}
-comment|/**      * Add pending incremental block report for a single block.      * @param blockID      * @param blockInfo      */
+comment|/**      * Add pending incremental block report for a single block.      * @param blockInfo      */
 DECL|method|putBlockInfo (ReceivedDeletedBlockInfo blockInfo)
 name|void
 name|putBlockInfo
