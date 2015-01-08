@@ -498,6 +498,7 @@ annotation|@
 name|Override
 DECL|method|storeApplicationStateInternal ( ApplicationId appId, ApplicationStateData appState)
 specifier|public
+specifier|synchronized
 name|void
 name|storeApplicationStateInternal
 parameter_list|(
@@ -524,8 +525,9 @@ expr_stmt|;
 block|}
 annotation|@
 name|Override
-DECL|method|updateApplicationStateInternal (ApplicationId appId, ApplicationStateData appState)
+DECL|method|updateApplicationStateInternal ( ApplicationId appId, ApplicationStateData appState)
 specifier|public
+specifier|synchronized
 name|void
 name|updateApplicationStateInternal
 parameter_list|(
@@ -991,6 +993,7 @@ annotation|@
 name|Override
 DECL|method|updateRMDelegationTokenState ( RMDelegationTokenIdentifier rmDTIdentifier, Long renewDate)
 specifier|protected
+specifier|synchronized
 name|void
 name|updateRMDelegationTokenState
 parameter_list|(
@@ -1221,6 +1224,7 @@ annotation|@
 name|Override
 DECL|method|storeOrUpdateAMRMTokenSecretManagerState ( AMRMTokenSecretManagerState amrmTokenSecretManagerState, boolean isUpdate)
 specifier|public
+specifier|synchronized
 name|void
 name|storeOrUpdateAMRMTokenSecretManagerState
 parameter_list|(
