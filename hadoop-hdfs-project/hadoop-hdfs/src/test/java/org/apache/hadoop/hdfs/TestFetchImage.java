@@ -110,6 +110,20 @@ name|hadoop
 operator|.
 name|fs
 operator|.
+name|FileUtil
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|fs
+operator|.
 name|Path
 import|;
 end_import
@@ -184,6 +198,16 @@ name|org
 operator|.
 name|junit
 operator|.
+name|AfterClass
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|junit
+operator|.
 name|Test
 import|;
 end_import
@@ -208,10 +232,10 @@ name|System
 operator|.
 name|getProperty
 argument_list|(
-literal|"build.test.dir"
+literal|"test.build.dir"
 argument_list|)
 argument_list|,
-literal|"fetched-image-dir"
+literal|"target/fetched-image-dir"
 argument_list|)
 decl_stmt|;
 comment|// Shamelessly stolen from NNStorage.
@@ -229,6 +253,23 @@ argument_list|(
 literal|"fsimage_(\\d+)"
 argument_list|)
 decl_stmt|;
+annotation|@
+name|AfterClass
+DECL|method|cleanup ()
+specifier|public
+specifier|static
+name|void
+name|cleanup
+parameter_list|()
+block|{
+name|FileUtil
+operator|.
+name|fullyDelete
+argument_list|(
+name|FETCHED_IMAGE_FILE
+argument_list|)
+expr_stmt|;
+block|}
 comment|/**    * Download a few fsimages using `hdfs dfsadmin -fetchImage ...' and verify    * the results.    */
 annotation|@
 name|Test
