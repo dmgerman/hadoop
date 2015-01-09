@@ -172,16 +172,6 @@ end_import
 
 begin_import
 import|import
-name|java
-operator|.
-name|io
-operator|.
-name|PrintWriter
-import|;
-end_import
-
-begin_import
-import|import
 name|org
 operator|.
 name|apache
@@ -369,20 +359,6 @@ operator|.
 name|base
 operator|.
 name|Supplier
-import|;
-end_import
-
-begin_import
-import|import
-name|com
-operator|.
-name|google
-operator|.
-name|common
-operator|.
-name|io
-operator|.
-name|NullOutputStream
 import|;
 end_import
 
@@ -1268,6 +1244,8 @@ argument_list|(
 name|stm
 argument_list|,
 operator|new
+name|IOUtils
+operator|.
 name|NullOutputStream
 argument_list|()
 argument_list|,
