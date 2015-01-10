@@ -3358,17 +3358,6 @@ argument_list|(
 name|nodeReg
 argument_list|)
 expr_stmt|;
-name|assertEquals
-argument_list|(
-literal|0
-argument_list|,
-name|ds
-operator|.
-name|getBlockReportCount
-argument_list|()
-argument_list|)
-expr_stmt|;
-comment|// ready for report again
 comment|// send block report, should be processed after restart
 name|reset
 argument_list|(
@@ -3398,6 +3387,18 @@ argument_list|,
 literal|null
 argument_list|)
 argument_list|)
+expr_stmt|;
+comment|// Reinitialize as registration with empty storage list pruned
+comment|// node.storageMap.
+name|ds
+operator|=
+name|node
+operator|.
+name|getStorageInfos
+argument_list|()
+index|[
+literal|0
+index|]
 expr_stmt|;
 name|assertEquals
 argument_list|(

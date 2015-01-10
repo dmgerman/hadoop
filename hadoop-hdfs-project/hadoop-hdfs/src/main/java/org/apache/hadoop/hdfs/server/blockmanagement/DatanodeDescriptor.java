@@ -1777,6 +1777,194 @@ name|failedStorageInfos
 argument_list|)
 expr_stmt|;
 block|}
+if|if
+condition|(
+name|storageMap
+operator|.
+name|size
+argument_list|()
+operator|!=
+name|reports
+operator|.
+name|length
+condition|)
+block|{
+name|pruneStorageMap
+argument_list|(
+name|reports
+argument_list|)
+expr_stmt|;
+block|}
+block|}
+comment|/**    * Remove stale storages from storageMap. We must not remove any storages    * as long as they have associated block replicas.    */
+DECL|method|pruneStorageMap (final StorageReport[] reports)
+specifier|private
+name|void
+name|pruneStorageMap
+parameter_list|(
+specifier|final
+name|StorageReport
+index|[]
+name|reports
+parameter_list|)
+block|{
+if|if
+condition|(
+name|LOG
+operator|.
+name|isDebugEnabled
+argument_list|()
+condition|)
+block|{
+name|LOG
+operator|.
+name|debug
+argument_list|(
+literal|"Number of storages reported in heartbeat="
+operator|+
+name|reports
+operator|.
+name|length
+operator|+
+literal|"; Number of storages in storageMap="
+operator|+
+name|storageMap
+operator|.
+name|size
+argument_list|()
+argument_list|)
+expr_stmt|;
+block|}
+name|HashMap
+argument_list|<
+name|String
+argument_list|,
+name|DatanodeStorageInfo
+argument_list|>
+name|excessStorages
+decl_stmt|;
+synchronized|synchronized
+init|(
+name|storageMap
+init|)
+block|{
+comment|// Init excessStorages with all known storages.
+name|excessStorages
+operator|=
+operator|new
+name|HashMap
+argument_list|<
+name|String
+argument_list|,
+name|DatanodeStorageInfo
+argument_list|>
+argument_list|(
+name|storageMap
+argument_list|)
+expr_stmt|;
+comment|// Remove storages that the DN reported in the heartbeat.
+for|for
+control|(
+specifier|final
+name|StorageReport
+name|report
+range|:
+name|reports
+control|)
+block|{
+name|excessStorages
+operator|.
+name|remove
+argument_list|(
+name|report
+operator|.
+name|getStorage
+argument_list|()
+operator|.
+name|getStorageID
+argument_list|()
+argument_list|)
+expr_stmt|;
+block|}
+comment|// For each remaining storage, remove it if there are no associated
+comment|// blocks.
+for|for
+control|(
+specifier|final
+name|DatanodeStorageInfo
+name|storageInfo
+range|:
+name|excessStorages
+operator|.
+name|values
+argument_list|()
+control|)
+block|{
+if|if
+condition|(
+name|storageInfo
+operator|.
+name|numBlocks
+argument_list|()
+operator|==
+literal|0
+condition|)
+block|{
+name|storageMap
+operator|.
+name|remove
+argument_list|(
+name|storageInfo
+operator|.
+name|getStorageID
+argument_list|()
+argument_list|)
+expr_stmt|;
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"Removed storage "
+operator|+
+name|storageInfo
+operator|+
+literal|" from DataNode"
+operator|+
+name|this
+argument_list|)
+expr_stmt|;
+block|}
+elseif|else
+if|if
+condition|(
+name|LOG
+operator|.
+name|isDebugEnabled
+argument_list|()
+condition|)
+block|{
+comment|// This can occur until all block reports are received.
+name|LOG
+operator|.
+name|debug
+argument_list|(
+literal|"Deferring removal of stale storage "
+operator|+
+name|storageInfo
+operator|+
+literal|" with "
+operator|+
+name|storageInfo
+operator|.
+name|numBlocks
+argument_list|()
+operator|+
+literal|" blocks"
+argument_list|)
+expr_stmt|;
+block|}
+block|}
+block|}
 block|}
 DECL|method|updateFailedStorage ( Set<DatanodeStorageInfo> failedStorageInfos)
 specifier|private
@@ -3149,8 +3337,6 @@ block|{
 comment|// For backwards compatibility, make sure that the type and
 comment|// state are updated. Some reports from older datanodes do
 comment|// not include these fields so we may have assumed defaults.
-comment|// This check can be removed in the next major release after
-comment|// 2.4.
 name|storage
 operator|.
 name|updateFromStorage
