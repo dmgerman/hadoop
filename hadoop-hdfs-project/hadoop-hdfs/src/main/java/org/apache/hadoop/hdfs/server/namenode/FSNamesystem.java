@@ -4731,6 +4731,7 @@ name|nameserviceId
 decl_stmt|;
 DECL|field|rollingUpgradeInfo
 specifier|private
+specifier|volatile
 name|RollingUpgradeInfo
 name|rollingUpgradeInfo
 init|=
@@ -33117,11 +33118,6 @@ name|Bean
 name|getRollingUpgradeStatus
 parameter_list|()
 block|{
-name|readLock
-argument_list|()
-expr_stmt|;
-try|try
-block|{
 name|RollingUpgradeInfo
 name|upgradeInfo
 init|=
@@ -33148,13 +33144,6 @@ block|}
 return|return
 literal|null
 return|;
-block|}
-finally|finally
-block|{
-name|readUnlock
-argument_list|()
-expr_stmt|;
-block|}
 block|}
 comment|/** Is rolling upgrade in progress? */
 DECL|method|isRollingUpgrade ()
