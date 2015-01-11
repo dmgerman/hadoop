@@ -4,7 +4,7 @@ comment|/**  * Licensed to the Apache Software Foundation (ASF) under one  * or 
 end_comment
 
 begin_package
-DECL|package|org.apache.hadoop.hdfs
+DECL|package|org.apache.hadoop.hdfs.tools
 package|package
 name|org
 operator|.
@@ -13,6 +13,8 @@ operator|.
 name|hadoop
 operator|.
 name|hdfs
+operator|.
+name|tools
 package|;
 end_package
 
@@ -51,6 +53,62 @@ operator|.
 name|fs
 operator|.
 name|Path
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|DFSTestUtil
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|DistributedFileSystem
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|HdfsConfiguration
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|MiniDFSCluster
 import|;
 end_import
 
@@ -119,7 +177,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * Test storage policy related DFSAdmin commands  */
+comment|/**  * Test StoragePolicyAdmin commands  */
 end_comment
 
 begin_class
@@ -295,11 +353,23 @@ argument_list|,
 literal|0
 argument_list|)
 expr_stmt|;
+specifier|final
+name|StoragePolicyAdmin
+name|admin
+init|=
+operator|new
+name|StoragePolicyAdmin
+argument_list|(
+name|conf
+argument_list|)
+decl_stmt|;
 name|DFSTestUtil
 operator|.
-name|DFSAdminRun
+name|toolRun
 argument_list|(
-literal|"-getStoragePolicy /foo"
+name|admin
+argument_list|,
+literal|"-getStoragePolicy -path /foo"
 argument_list|,
 literal|0
 argument_list|,
@@ -311,15 +381,15 @@ name|toString
 argument_list|()
 operator|+
 literal|" is unspecified"
-argument_list|,
-name|conf
 argument_list|)
 expr_stmt|;
 name|DFSTestUtil
 operator|.
-name|DFSAdminRun
+name|toolRun
 argument_list|(
-literal|"-getStoragePolicy /foo/bar"
+name|admin
+argument_list|,
+literal|"-getStoragePolicy -path /foo/bar"
 argument_list|,
 literal|0
 argument_list|,
@@ -331,15 +401,15 @@ name|toString
 argument_list|()
 operator|+
 literal|" is unspecified"
-argument_list|,
-name|conf
 argument_list|)
 expr_stmt|;
 name|DFSTestUtil
 operator|.
-name|DFSAdminRun
+name|toolRun
 argument_list|(
-literal|"-setStoragePolicy /foo WARM"
+name|admin
+argument_list|,
+literal|"-setStoragePolicy -path /foo -policy WARM"
 argument_list|,
 literal|0
 argument_list|,
@@ -349,15 +419,15 @@ name|foo
 operator|.
 name|toString
 argument_list|()
-argument_list|,
-name|conf
 argument_list|)
 expr_stmt|;
 name|DFSTestUtil
 operator|.
-name|DFSAdminRun
+name|toolRun
 argument_list|(
-literal|"-setStoragePolicy /foo/bar COLD"
+name|admin
+argument_list|,
+literal|"-setStoragePolicy -path /foo/bar -policy COLD"
 argument_list|,
 literal|0
 argument_list|,
@@ -367,22 +437,19 @@ name|bar
 operator|.
 name|toString
 argument_list|()
-argument_list|,
-name|conf
 argument_list|)
 expr_stmt|;
 name|DFSTestUtil
 operator|.
-name|DFSAdminRun
+name|toolRun
 argument_list|(
-literal|"-setStoragePolicy /fooz WARM"
+name|admin
 argument_list|,
-operator|-
-literal|1
+literal|"-setStoragePolicy -path /fooz -policy WARM"
+argument_list|,
+literal|2
 argument_list|,
 literal|"File/Directory does not exist: /fooz"
-argument_list|,
-name|conf
 argument_list|)
 expr_stmt|;
 specifier|final
@@ -418,9 +485,11 @@ argument_list|)
 decl_stmt|;
 name|DFSTestUtil
 operator|.
-name|DFSAdminRun
+name|toolRun
 argument_list|(
-literal|"-getStoragePolicy /foo"
+name|admin
+argument_list|,
+literal|"-getStoragePolicy -path /foo"
 argument_list|,
 literal|0
 argument_list|,
@@ -434,15 +503,15 @@ operator|+
 literal|":\n"
 operator|+
 name|warm
-argument_list|,
-name|conf
 argument_list|)
 expr_stmt|;
 name|DFSTestUtil
 operator|.
-name|DFSAdminRun
+name|toolRun
 argument_list|(
-literal|"-getStoragePolicy /foo/bar"
+name|admin
+argument_list|,
+literal|"-getStoragePolicy -path /foo/bar"
 argument_list|,
 literal|0
 argument_list|,
@@ -456,22 +525,19 @@ operator|+
 literal|":\n"
 operator|+
 name|cold
-argument_list|,
-name|conf
 argument_list|)
 expr_stmt|;
 name|DFSTestUtil
 operator|.
-name|DFSAdminRun
+name|toolRun
 argument_list|(
-literal|"-getStoragePolicy /fooz"
+name|admin
 argument_list|,
-operator|-
-literal|1
+literal|"-getStoragePolicy -path /fooz"
+argument_list|,
+literal|2
 argument_list|,
 literal|"File/Directory does not exist: /fooz"
-argument_list|,
-name|conf
 argument_list|)
 expr_stmt|;
 block|}
