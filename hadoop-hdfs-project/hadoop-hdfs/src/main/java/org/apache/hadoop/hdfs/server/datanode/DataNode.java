@@ -8882,6 +8882,8 @@ operator|!=
 literal|null
 condition|)
 block|{
+try|try
+block|{
 name|xserver
 operator|.
 name|sendOOBToPeers
@@ -8909,6 +8911,15 @@ operator|.
 name|interrupt
 argument_list|()
 expr_stmt|;
+block|}
+catch|catch
+parameter_list|(
+name|Throwable
+name|e
+parameter_list|)
+block|{
+comment|// Ignore, since the out of band messaging is advisory.
+block|}
 block|}
 comment|// Interrupt the checkDiskErrorThread and terminate it.
 if|if
