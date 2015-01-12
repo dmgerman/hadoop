@@ -3246,7 +3246,7 @@ name|nodeMemory
 init|=
 name|node
 operator|.
-name|getAvailableResource
+name|getTotalResource
 argument_list|()
 operator|.
 name|getMemory
@@ -3286,7 +3286,7 @@ name|nodeVCores
 init|=
 name|node
 operator|.
-name|getAvailableResource
+name|getTotalResource
 argument_list|()
 operator|.
 name|getVirtualCores
@@ -3331,7 +3331,7 @@ name|maxNodeMemory
 operator|==
 name|node
 operator|.
-name|getAvailableResource
+name|getTotalResource
 argument_list|()
 operator|.
 name|getMemory
@@ -3350,7 +3350,7 @@ name|maxNodeVCores
 operator|==
 name|node
 operator|.
-name|getAvailableResource
+name|getTotalResource
 argument_list|()
 operator|.
 name|getVirtualCores
@@ -3404,7 +3404,7 @@ operator|.
 name|getValue
 argument_list|()
 operator|.
-name|getAvailableResource
+name|getTotalResource
 argument_list|()
 operator|.
 name|getMemory
@@ -3430,7 +3430,7 @@ operator|.
 name|getValue
 argument_list|()
 operator|.
-name|getAvailableResource
+name|getTotalResource
 argument_list|()
 operator|.
 name|getVirtualCores
