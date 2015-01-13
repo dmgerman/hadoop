@@ -1426,6 +1426,17 @@ operator|new
 name|DefaultResourceCalculator
 argument_list|()
 decl_stmt|;
+DECL|field|DOMINANT_RESOURCE_CALCULATOR
+specifier|private
+specifier|static
+specifier|final
+name|ResourceCalculator
+name|DOMINANT_RESOURCE_CALCULATOR
+init|=
+operator|new
+name|DominantResourceCalculator
+argument_list|()
+decl_stmt|;
 comment|// Value that container assignment methods return when a container is
 comment|// reserved
 DECL|field|CONTAINER_RESERVED
@@ -4834,9 +4845,7 @@ name|normalizeRequests
 argument_list|(
 name|ask
 argument_list|,
-operator|new
-name|DominantResourceCalculator
-argument_list|()
+name|DOMINANT_RESOURCE_CALCULATOR
 argument_list|,
 name|clusterResource
 argument_list|,
