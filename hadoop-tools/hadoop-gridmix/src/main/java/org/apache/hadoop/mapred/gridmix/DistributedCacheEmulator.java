@@ -330,6 +330,18 @@ begin_import
 import|import
 name|java
 operator|.
+name|nio
+operator|.
+name|charset
+operator|.
+name|Charset
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
 name|util
 operator|.
 name|ArrayList
@@ -495,6 +507,20 @@ name|Configuration
 name|conf
 decl_stmt|;
 comment|// gridmix configuration
+DECL|field|charsetUTF8
+specifier|private
+specifier|static
+specifier|final
+name|Charset
+name|charsetUTF8
+init|=
+name|Charset
+operator|.
+name|forName
+argument_list|(
+literal|"UTF-8"
+argument_list|)
+decl_stmt|;
 comment|// Pseudo local file system where local FS based distributed cache files are
 comment|// created by gridmix.
 DECL|field|pseudoLocalFs
@@ -1558,7 +1584,7 @@ name|LongWritable
 argument_list|(
 name|Long
 operator|.
-name|valueOf
+name|parseLong
 argument_list|(
 name|entry
 operator|.
@@ -1585,7 +1611,9 @@ name|toString
 argument_list|()
 operator|.
 name|getBytes
-argument_list|()
+argument_list|(
+name|charsetUTF8
+argument_list|)
 argument_list|)
 decl_stmt|;
 name|byteCount
@@ -1939,7 +1967,7 @@ name|fileSize
 init|=
 name|Long
 operator|.
-name|valueOf
+name|parseLong
 argument_list|(
 name|fileSizes
 index|[

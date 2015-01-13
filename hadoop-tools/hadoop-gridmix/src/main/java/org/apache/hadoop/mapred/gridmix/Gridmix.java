@@ -3222,7 +3222,7 @@ name|out
 operator|.
 name|printf
 argument_list|(
-literal|"       %-48s : Output directory\n"
+literal|"       %-48s : Output directory%n"
 argument_list|,
 name|GRIDMIX_OUT_DIR
 argument_list|)
@@ -3231,7 +3231,7 @@ name|out
 operator|.
 name|printf
 argument_list|(
-literal|"       %-48s : Submitting threads\n"
+literal|"       %-48s : Submitting threads%n"
 argument_list|,
 name|GRIDMIX_SUB_THR
 argument_list|)
@@ -3240,7 +3240,7 @@ name|out
 operator|.
 name|printf
 argument_list|(
-literal|"       %-48s : Queued job desc\n"
+literal|"       %-48s : Queued job desc%n"
 argument_list|,
 name|GRIDMIX_QUE_DEP
 argument_list|)
@@ -3249,7 +3249,7 @@ name|out
 operator|.
 name|printf
 argument_list|(
-literal|"       %-48s : User resolution class\n"
+literal|"       %-48s : User resolution class%n"
 argument_list|,
 name|GRIDMIX_USR_RSV
 argument_list|)
@@ -3258,7 +3258,7 @@ name|out
 operator|.
 name|printf
 argument_list|(
-literal|"       %-48s : Job types (%s)\n"
+literal|"       %-48s : Job types (%s)%n"
 argument_list|,
 name|JobCreator
 operator|.
@@ -3279,7 +3279,7 @@ name|out
 operator|.
 name|printf
 argument_list|(
-literal|"       %-48s : Default queue\n"
+literal|"       %-48s : Default queue%n"
 argument_list|,
 name|GridmixJob
 operator|.
@@ -3290,7 +3290,7 @@ name|out
 operator|.
 name|printf
 argument_list|(
-literal|"       %-48s : Enable/disable using queues in trace\n"
+literal|"       %-48s : Enable/disable using queues in trace%n"
 argument_list|,
 name|GridmixJob
 operator|.
@@ -3301,7 +3301,7 @@ name|out
 operator|.
 name|printf
 argument_list|(
-literal|"       %-48s : Job submission policy (%s)\n"
+literal|"       %-48s : Job submission policy (%s)%n"
 argument_list|,
 name|GridmixJobSubmissionPolicy
 operator|.
@@ -3322,7 +3322,7 @@ name|out
 operator|.
 name|printf
 argument_list|(
-literal|"       %-48s : Key fraction of rec\n"
+literal|"       %-48s : Key fraction of rec%n"
 argument_list|,
 name|AvgRecordFactory
 operator|.
@@ -3340,7 +3340,7 @@ name|out
 operator|.
 name|printf
 argument_list|(
-literal|"       %-48s : Whether to ignore reduce tasks\n"
+literal|"       %-48s : Whether to ignore reduce tasks%n"
 argument_list|,
 name|SleepJob
 operator|.
@@ -3351,7 +3351,7 @@ name|out
 operator|.
 name|printf
 argument_list|(
-literal|"       %-48s : Number of fake locations for map tasks\n"
+literal|"       %-48s : Number of fake locations for map tasks%n"
 argument_list|,
 name|JobCreator
 operator|.
@@ -3362,7 +3362,7 @@ name|out
 operator|.
 name|printf
 argument_list|(
-literal|"       %-48s : Maximum map task runtime in mili-sec\n"
+literal|"       %-48s : Maximum map task runtime in mili-sec%n"
 argument_list|,
 name|SleepJob
 operator|.
@@ -3373,7 +3373,7 @@ name|out
 operator|.
 name|printf
 argument_list|(
-literal|"       %-48s : Maximum reduce task runtime in mili-sec (merge+reduce)\n"
+literal|"       %-48s : Maximum reduce task runtime in mili-sec (merge+reduce)%n"
 argument_list|,
 name|SleepJob
 operator|.
@@ -3391,7 +3391,7 @@ name|out
 operator|.
 name|printf
 argument_list|(
-literal|"       %-48s : jobs vs task-tracker ratio\n"
+literal|"       %-48s : jobs vs task-tracker ratio%n"
 argument_list|,
 name|StressJobFactory
 operator|.
@@ -3402,7 +3402,7 @@ name|out
 operator|.
 name|printf
 argument_list|(
-literal|"       %-48s : maps vs map-slot ratio\n"
+literal|"       %-48s : maps vs map-slot ratio%n"
 argument_list|,
 name|StressJobFactory
 operator|.
@@ -3413,7 +3413,7 @@ name|out
 operator|.
 name|printf
 argument_list|(
-literal|"       %-48s : reduces vs reduce-slot ratio\n"
+literal|"       %-48s : reduces vs reduce-slot ratio%n"
 argument_list|,
 name|StressJobFactory
 operator|.
@@ -3424,7 +3424,7 @@ name|out
 operator|.
 name|printf
 argument_list|(
-literal|"       %-48s : map-slot share per job\n"
+literal|"       %-48s : map-slot share per job%n"
 argument_list|,
 name|StressJobFactory
 operator|.
@@ -3435,7 +3435,7 @@ name|out
 operator|.
 name|printf
 argument_list|(
-literal|"       %-48s : reduce-slot share per job\n"
+literal|"       %-48s : reduce-slot share per job%n"
 argument_list|,
 name|StressJobFactory
 operator|.
