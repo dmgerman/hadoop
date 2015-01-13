@@ -219,7 +219,7 @@ specifier|final
 name|int
 name|MAX_CACHE_SIZE
 init|=
-literal|2
+literal|1
 decl_stmt|;
 name|DFSClientCache
 name|cache
@@ -295,11 +295,9 @@ name|c1
 argument_list|)
 argument_list|)
 expr_stmt|;
-name|assertEquals
+name|assertTrue
 argument_list|(
-name|MAX_CACHE_SIZE
-operator|-
-literal|1
+literal|"cache size should be the max size or less"
 argument_list|,
 name|cache
 operator|.
@@ -307,6 +305,8 @@ name|clientCache
 operator|.
 name|size
 argument_list|()
+operator|<=
+name|MAX_CACHE_SIZE
 argument_list|)
 expr_stmt|;
 block|}
