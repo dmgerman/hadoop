@@ -651,7 +651,7 @@ name|curHeader
 operator|.
 name|setFieldsFromData
 argument_list|(
-name|dataPlusChecksumLen
+name|payloadLen
 argument_list|,
 name|headerBuf
 argument_list|)

@@ -105,6 +105,20 @@ import|;
 end_import
 
 begin_import
+import|import
+name|com
+operator|.
+name|google
+operator|.
+name|common
+operator|.
+name|primitives
+operator|.
+name|Ints
+import|;
+end_import
+
+begin_import
 import|import static
 name|org
 operator|.
@@ -184,7 +198,9 @@ name|sums
 operator|.
 name|length
 operator|+
-literal|4
+name|Ints
+operator|.
+name|BYTES
 decl_stmt|;
 name|PacketHeader
 name|header
@@ -458,6 +474,22 @@ argument_list|,
 name|header
 operator|.
 name|getOffsetInBlock
+argument_list|()
+argument_list|)
+expr_stmt|;
+name|assertEquals
+argument_list|(
+name|dataLen
+operator|+
+name|checksumsLen
+operator|+
+name|Ints
+operator|.
+name|BYTES
+argument_list|,
+name|header
+operator|.
+name|getPacketLen
 argument_list|()
 argument_list|)
 expr_stmt|;
