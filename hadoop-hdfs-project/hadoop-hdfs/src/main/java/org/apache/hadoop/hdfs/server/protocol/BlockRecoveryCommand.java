@@ -175,6 +175,11 @@ name|RecoveringBlock
 extends|extends
 name|LocatedBlock
 block|{
+DECL|field|truncate
+specifier|private
+name|boolean
+name|truncate
+decl_stmt|;
 DECL|field|newGenerationStamp
 specifier|private
 specifier|final
@@ -217,6 +222,41 @@ operator|=
 name|newGS
 expr_stmt|;
 block|}
+comment|/**      * RecoveryingBlock with truncate option.      */
+DECL|method|RecoveringBlock (ExtendedBlock b, DatanodeInfo[] locs, long newGS, boolean truncate)
+specifier|public
+name|RecoveringBlock
+parameter_list|(
+name|ExtendedBlock
+name|b
+parameter_list|,
+name|DatanodeInfo
+index|[]
+name|locs
+parameter_list|,
+name|long
+name|newGS
+parameter_list|,
+name|boolean
+name|truncate
+parameter_list|)
+block|{
+name|this
+argument_list|(
+name|b
+argument_list|,
+name|locs
+argument_list|,
+name|newGS
+argument_list|)
+expr_stmt|;
+name|this
+operator|.
+name|truncate
+operator|=
+name|truncate
+expr_stmt|;
+block|}
 comment|/**      * Return the new generation stamp of the block,      * which also plays role of the recovery id.      */
 DECL|method|getNewGenerationStamp ()
 specifier|public
@@ -226,6 +266,17 @@ parameter_list|()
 block|{
 return|return
 name|newGenerationStamp
+return|;
+block|}
+comment|/**      * Return whether to truncate the block to the ExtendedBlock's length.      */
+DECL|method|getTruncateFlag ()
+specifier|public
+name|boolean
+name|getTruncateFlag
+parameter_list|()
+block|{
+return|return
+name|truncate
 return|;
 block|}
 block|}

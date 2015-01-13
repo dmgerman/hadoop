@@ -470,7 +470,7 @@ name|Assert
 operator|.
 name|assertEquals
 argument_list|(
-literal|47
+literal|48
 argument_list|,
 name|FSEditLogOpCodes
 operator|.

@@ -7399,6 +7399,37 @@ argument_list|,
 name|pathConcatFiles
 argument_list|)
 expr_stmt|;
+comment|// OP_TRUNCATE 46
+name|length
+operator|=
+name|blockSize
+operator|*
+literal|2
+expr_stmt|;
+name|DFSTestUtil
+operator|.
+name|createFile
+argument_list|(
+name|filesystem
+argument_list|,
+name|pathFileCreate
+argument_list|,
+name|length
+argument_list|,
+name|replication
+argument_list|,
+name|seed
+argument_list|)
+expr_stmt|;
+name|filesystem
+operator|.
+name|truncate
+argument_list|(
+name|pathFileCreate
+argument_list|,
+name|blockSize
+argument_list|)
+expr_stmt|;
 comment|// OP_SYMLINK 17
 name|Path
 name|pathSymlink

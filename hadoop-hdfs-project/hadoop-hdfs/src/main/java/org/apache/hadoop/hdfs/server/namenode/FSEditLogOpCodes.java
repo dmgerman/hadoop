@@ -495,6 +495,15 @@ operator|)
 literal|45
 argument_list|)
 block|,
+DECL|enumConstant|OP_TRUNCATE
+name|OP_TRUNCATE
+argument_list|(
+operator|(
+name|byte
+operator|)
+literal|46
+argument_list|)
+block|,
 comment|// Note that the current range of the valid OP code is 0~127
 DECL|enumConstant|OP_INVALID
 name|OP_INVALID

@@ -6255,6 +6255,14 @@ name|getNewGenerationStamp
 argument_list|()
 argument_list|)
 operator|.
+name|setTruncateFlag
+argument_list|(
+name|b
+operator|.
+name|getTruncateFlag
+argument_list|()
+argument_list|)
+operator|.
 name|build
 argument_list|()
 return|;
@@ -6309,6 +6317,11 @@ argument_list|,
 name|b
 operator|.
 name|getNewGenStamp
+argument_list|()
+argument_list|,
+name|b
+operator|.
+name|getTruncateFlag
 argument_list|()
 argument_list|)
 return|;

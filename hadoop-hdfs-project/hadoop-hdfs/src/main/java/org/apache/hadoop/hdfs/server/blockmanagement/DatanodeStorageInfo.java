@@ -994,6 +994,7 @@ name|result
 return|;
 block|}
 DECL|method|removeBlock (BlockInfo b)
+specifier|public
 name|boolean
 name|removeBlock
 parameter_list|(

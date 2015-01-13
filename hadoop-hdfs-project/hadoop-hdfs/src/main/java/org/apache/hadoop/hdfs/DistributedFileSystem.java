@@ -3698,6 +3698,43 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
+comment|/**    * Truncate the file in the indicated path to the indicated size.    * @param f The path to the file to be truncated    * @param newLength The size the file is to be truncated to    *    * @return true if and client does not need to wait for block recovery,    * false if client needs to wait for block recovery.    */
+DECL|method|truncate (Path f, final long newLength)
+specifier|public
+name|boolean
+name|truncate
+parameter_list|(
+name|Path
+name|f
+parameter_list|,
+specifier|final
+name|long
+name|newLength
+parameter_list|)
+throws|throws
+name|IOException
+block|{
+name|statistics
+operator|.
+name|incrementWriteOps
+argument_list|(
+literal|1
+argument_list|)
+expr_stmt|;
+return|return
+name|dfs
+operator|.
+name|truncate
+argument_list|(
+name|getPathName
+argument_list|(
+name|f
+argument_list|)
+argument_list|,
+name|newLength
+argument_list|)
+return|;
+block|}
 annotation|@
 name|Override
 DECL|method|delete (Path f, final boolean recursive)

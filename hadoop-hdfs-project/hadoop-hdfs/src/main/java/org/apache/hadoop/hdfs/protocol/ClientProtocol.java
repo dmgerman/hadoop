@@ -1184,6 +1184,36 @@ name|SnapshotAccessControlException
 throws|,
 name|IOException
 function_decl|;
+comment|/**    * Truncate file src to new size.    *<ul>    *<li>Fails if src is a directory.    *<li>Fails if src does not exist.    *<li>Fails if src is not closed.    *<li>Fails if new size is greater than current size.    *</ul>    *<p>    * This implementation of truncate is purely a namespace operation if truncate    * occurs at a block boundary. Requires DataNode block recovery otherwise.    *<p>    * @param src  existing file    * @param newLength  the target size    *    * @return true if and client does not need to wait for block recovery,    * false if client needs to wait for block recovery.    *    * @throws AccessControlException If access is denied    * @throws FileNotFoundException If file<code>src</code> is not found    * @throws SafeModeException truncate not allowed in safemode    * @throws UnresolvedLinkException If<code>src</code> contains a symlink    * @throws SnapshotAccessControlException if path is in RO snapshot    * @throws IOException If an I/O error occurred    */
+annotation|@
+name|Idempotent
+DECL|method|truncate (String src, long newLength, String clientName)
+specifier|public
+name|boolean
+name|truncate
+parameter_list|(
+name|String
+name|src
+parameter_list|,
+name|long
+name|newLength
+parameter_list|,
+name|String
+name|clientName
+parameter_list|)
+throws|throws
+name|AccessControlException
+throws|,
+name|FileNotFoundException
+throws|,
+name|SafeModeException
+throws|,
+name|UnresolvedLinkException
+throws|,
+name|SnapshotAccessControlException
+throws|,
+name|IOException
+function_decl|;
 comment|/**    * Delete the given file or directory from the file system.    *<p>    * same as delete but provides a way to avoid accidentally     * deleting non empty directories programmatically.     * @param src existing name    * @param recursive if true deletes a non empty directory recursively,    * else throws an exception.    * @return true only if the existing file or directory was actually removed     * from the file system.    *     * @throws AccessControlException If access is denied    * @throws FileNotFoundException If file<code>src</code> is not found    * @throws SafeModeException create not allowed in safemode    * @throws UnresolvedLinkException If<code>src</code> contains a symlink    * @throws SnapshotAccessControlException if path is in RO snapshot    * @throws IOException If an I/O error occurred    */
 annotation|@
 name|AtMostOnce

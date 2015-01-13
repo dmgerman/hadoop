@@ -330,6 +330,12 @@ name|Metric
 name|MutableCounterLong
 name|filesRenamed
 decl_stmt|;
+DECL|field|filesTruncated
+annotation|@
+name|Metric
+name|MutableCounterLong
+name|filesTruncated
+decl_stmt|;
 DECL|field|getListingOps
 annotation|@
 name|Metric
@@ -940,6 +946,18 @@ name|incrFilesRenamed
 parameter_list|()
 block|{
 name|filesRenamed
+operator|.
+name|incr
+argument_list|()
+expr_stmt|;
+block|}
+DECL|method|incrFilesTruncated ()
+specifier|public
+name|void
+name|incrFilesTruncated
+parameter_list|()
+block|{
+name|filesTruncated
 operator|.
 name|incr
 argument_list|()
