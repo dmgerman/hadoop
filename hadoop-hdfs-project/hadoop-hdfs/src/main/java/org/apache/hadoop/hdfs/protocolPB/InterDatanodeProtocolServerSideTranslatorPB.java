@@ -405,6 +405,11 @@ argument_list|()
 argument_list|,
 name|request
 operator|.
+name|getNewBlockId
+argument_list|()
+argument_list|,
+name|request
+operator|.
 name|getNewLength
 argument_list|()
 argument_list|)

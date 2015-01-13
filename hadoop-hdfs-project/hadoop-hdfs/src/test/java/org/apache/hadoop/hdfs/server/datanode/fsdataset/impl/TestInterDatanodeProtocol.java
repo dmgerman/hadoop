@@ -1382,6 +1382,11 @@ name|b
 argument_list|,
 name|recoveryId
 argument_list|,
+name|b
+operator|.
+name|getBlockId
+argument_list|()
+argument_list|,
 name|newblock
 operator|.
 name|getNumBytes
@@ -2398,6 +2403,11 @@ name|tmp
 argument_list|,
 name|recoveryid
 argument_list|,
+name|tmp
+operator|.
+name|getBlockId
+argument_list|()
+argument_list|,
 name|newlength
 argument_list|)
 expr_stmt|;
@@ -2447,6 +2457,11 @@ name|rri
 argument_list|)
 argument_list|,
 name|recoveryid
+argument_list|,
+name|rri
+operator|.
+name|getBlockId
+argument_list|()
 argument_list|,
 name|newlength
 argument_list|)

@@ -2562,7 +2562,9 @@ argument_list|(
 name|fileNode
 operator|.
 name|getBlocks
-argument_list|()
+argument_list|(
+name|snapshot
+argument_list|)
 argument_list|,
 name|fileSize
 argument_list|,

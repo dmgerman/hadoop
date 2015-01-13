@@ -296,6 +296,22 @@ name|hdfs
 operator|.
 name|protocol
 operator|.
+name|Block
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|protocol
+operator|.
 name|CacheDirectiveInfo
 import|;
 end_import
@@ -4456,7 +4472,7 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|/**    * Add truncate file record to edit log    */
-DECL|method|logTruncate (String src, String clientName, String clientMachine, long size, long timestamp)
+DECL|method|logTruncate (String src, String clientName, String clientMachine, long size, long timestamp, Block truncateBlock)
 name|void
 name|logTruncate
 parameter_list|(
@@ -4474,6 +4490,9 @@ name|size
 parameter_list|,
 name|long
 name|timestamp
+parameter_list|,
+name|Block
+name|truncateBlock
 parameter_list|)
 block|{
 name|TruncateOp
@@ -4512,6 +4531,11 @@ operator|.
 name|setTimestamp
 argument_list|(
 name|timestamp
+argument_list|)
+operator|.
+name|setTruncateBlock
+argument_list|(
+name|truncateBlock
 argument_list|)
 decl_stmt|;
 name|logEdit

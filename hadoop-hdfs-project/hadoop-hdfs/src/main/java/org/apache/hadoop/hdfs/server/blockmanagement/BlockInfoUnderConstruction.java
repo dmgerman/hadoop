@@ -178,6 +178,12 @@ name|blockRecoveryId
 init|=
 literal|0
 decl_stmt|;
+comment|/**    * The block source to use in the event of copy-on-write truncate.    */
+DECL|field|truncateBlock
+specifier|private
+name|Block
+name|truncateBlock
+decl_stmt|;
 comment|/**    * ReplicaUnderConstruction contains information about replicas while    * they are under construction.    * The GS, the length and the state of the replica is as reported by     * the data-node.    * It is not guaranteed, but expected, that data-nodes actually have    * corresponding replicas.    */
 DECL|class|ReplicaUnderConstruction
 specifier|static
@@ -724,6 +730,33 @@ return|return
 name|blockRecoveryId
 return|;
 block|}
+comment|/** Get recover block */
+DECL|method|getTruncateBlock ()
+specifier|public
+name|Block
+name|getTruncateBlock
+parameter_list|()
+block|{
+return|return
+name|truncateBlock
+return|;
+block|}
+DECL|method|setTruncateBlock (Block recoveryBlock)
+specifier|public
+name|void
+name|setTruncateBlock
+parameter_list|(
+name|Block
+name|recoveryBlock
+parameter_list|)
+block|{
+name|this
+operator|.
+name|truncateBlock
+operator|=
+name|recoveryBlock
+expr_stmt|;
+block|}
 comment|/**    * Process the recorded replicas. When about to commit or finish the    * pipeline recovery sort out bad replicas.    * @param genStamp  The final generation stamp for the block.    */
 DECL|method|setGenerationStampAndVerifyReplicas (long genStamp)
 specifier|public
@@ -878,31 +911,11 @@ name|long
 name|recoveryId
 parameter_list|)
 block|{
-name|initializeBlockRecovery
+name|setBlockUCState
 argument_list|(
 name|BlockUCState
 operator|.
 name|UNDER_RECOVERY
-argument_list|,
-name|recoveryId
-argument_list|)
-expr_stmt|;
-block|}
-DECL|method|initializeBlockRecovery (BlockUCState s, long recoveryId)
-specifier|public
-name|void
-name|initializeBlockRecovery
-parameter_list|(
-name|BlockUCState
-name|s
-parameter_list|,
-name|long
-name|recoveryId
-parameter_list|)
-block|{
-name|setBlockUCState
-argument_list|(
-name|s
 argument_list|)
 expr_stmt|;
 name|blockRecoveryId

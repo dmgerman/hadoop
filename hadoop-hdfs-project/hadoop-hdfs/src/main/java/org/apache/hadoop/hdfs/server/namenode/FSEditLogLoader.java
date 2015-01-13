@@ -5600,6 +5600,10 @@ argument_list|,
 name|truncateOp
 operator|.
 name|timestamp
+argument_list|,
+name|truncateOp
+operator|.
+name|truncateBlock
 argument_list|)
 expr_stmt|;
 break|break;

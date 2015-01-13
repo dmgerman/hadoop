@@ -80,6 +80,22 @@ name|hdfs
 operator|.
 name|protocol
 operator|.
+name|Block
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|protocol
+operator|.
 name|DatanodeInfo
 import|;
 end_import
@@ -175,16 +191,17 @@ name|RecoveringBlock
 extends|extends
 name|LocatedBlock
 block|{
-DECL|field|truncate
-specifier|private
-name|boolean
-name|truncate
-decl_stmt|;
 DECL|field|newGenerationStamp
 specifier|private
 specifier|final
 name|long
 name|newGenerationStamp
+decl_stmt|;
+DECL|field|recoveryBlock
+specifier|private
+specifier|final
+name|Block
+name|recoveryBlock
 decl_stmt|;
 comment|/**      * Create RecoveringBlock.      */
 DECL|method|RecoveringBlock (ExtendedBlock b, DatanodeInfo[] locs, long newGS)
@@ -221,9 +238,15 @@ name|newGenerationStamp
 operator|=
 name|newGS
 expr_stmt|;
+name|this
+operator|.
+name|recoveryBlock
+operator|=
+literal|null
+expr_stmt|;
 block|}
-comment|/**      * RecoveryingBlock with truncate option.      */
-DECL|method|RecoveringBlock (ExtendedBlock b, DatanodeInfo[] locs, long newGS, boolean truncate)
+comment|/**      * Create RecoveringBlock with copy-on-truncate option.      */
+DECL|method|RecoveringBlock (ExtendedBlock b, DatanodeInfo[] locs, Block recoveryBlock)
 specifier|public
 name|RecoveringBlock
 parameter_list|(
@@ -234,27 +257,37 @@ name|DatanodeInfo
 index|[]
 name|locs
 parameter_list|,
-name|long
-name|newGS
-parameter_list|,
-name|boolean
-name|truncate
+name|Block
+name|recoveryBlock
 parameter_list|)
 block|{
-name|this
+name|super
 argument_list|(
 name|b
 argument_list|,
 name|locs
 argument_list|,
-name|newGS
+operator|-
+literal|1
+argument_list|,
+literal|false
 argument_list|)
+expr_stmt|;
+comment|// startOffset is unknown
+name|this
+operator|.
+name|newGenerationStamp
+operator|=
+name|recoveryBlock
+operator|.
+name|getGenerationStamp
+argument_list|()
 expr_stmt|;
 name|this
 operator|.
-name|truncate
+name|recoveryBlock
 operator|=
-name|truncate
+name|recoveryBlock
 expr_stmt|;
 block|}
 comment|/**      * Return the new generation stamp of the block,      * which also plays role of the recovery id.      */
@@ -268,15 +301,15 @@ return|return
 name|newGenerationStamp
 return|;
 block|}
-comment|/**      * Return whether to truncate the block to the ExtendedBlock's length.      */
-DECL|method|getTruncateFlag ()
+comment|/**      * Return the new block.      */
+DECL|method|getNewBlock ()
 specifier|public
-name|boolean
-name|getTruncateFlag
+name|Block
+name|getNewBlock
 parameter_list|()
 block|{
 return|return
-name|truncate
+name|recoveryBlock
 return|;
 block|}
 block|}

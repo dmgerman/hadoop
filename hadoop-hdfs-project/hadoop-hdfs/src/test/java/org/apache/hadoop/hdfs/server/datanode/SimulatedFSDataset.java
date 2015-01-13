@@ -5300,7 +5300,7 @@ block|}
 annotation|@
 name|Override
 comment|// FsDatasetSpi
-DECL|method|updateReplicaUnderRecovery (ExtendedBlock oldBlock, long recoveryId, long newlength)
+DECL|method|updateReplicaUnderRecovery (ExtendedBlock oldBlock, long recoveryId, long newBlockId, long newlength)
 specifier|public
 name|String
 name|updateReplicaUnderRecovery
@@ -5310,6 +5310,9 @@ name|oldBlock
 parameter_list|,
 name|long
 name|recoveryId
+parameter_list|,
+name|long
+name|newBlockId
 parameter_list|,
 name|long
 name|newlength

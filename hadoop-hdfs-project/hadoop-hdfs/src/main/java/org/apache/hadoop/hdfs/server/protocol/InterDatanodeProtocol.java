@@ -203,7 +203,7 @@ throws|throws
 name|IOException
 function_decl|;
 comment|/**    * Update replica with the new generation stamp and length.      */
-DECL|method|updateReplicaUnderRecovery (ExtendedBlock oldBlock, long recoveryId, long newLength)
+DECL|method|updateReplicaUnderRecovery (ExtendedBlock oldBlock, long recoveryId, long newBlockId, long newLength)
 name|String
 name|updateReplicaUnderRecovery
 parameter_list|(
@@ -212,6 +212,9 @@ name|oldBlock
 parameter_list|,
 name|long
 name|recoveryId
+parameter_list|,
+name|long
+name|newBlockId
 parameter_list|,
 name|long
 name|newLength

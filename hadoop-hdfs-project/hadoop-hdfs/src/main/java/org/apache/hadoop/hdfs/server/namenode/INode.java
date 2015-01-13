@@ -909,6 +909,12 @@ operator|==
 name|Snapshot
 operator|.
 name|CURRENT_STATE_ID
+operator|||
+name|latestSnapshotId
+operator|==
+name|Snapshot
+operator|.
+name|NO_SNAPSHOT_ID
 condition|)
 block|{
 return|return
@@ -2644,13 +2650,13 @@ name|Block
 name|toDelete
 parameter_list|)
 block|{
-if|if
-condition|(
+assert|assert
 name|toDelete
 operator|!=
 literal|null
-condition|)
-block|{
+operator|:
+literal|"toDelete is null"
+assert|;
 name|toDeleteList
 operator|.
 name|add
@@ -2659,6 +2665,29 @@ name|toDelete
 argument_list|)
 expr_stmt|;
 block|}
+DECL|method|removeDeleteBlock (Block block)
+specifier|public
+name|void
+name|removeDeleteBlock
+parameter_list|(
+name|Block
+name|block
+parameter_list|)
+block|{
+assert|assert
+name|block
+operator|!=
+literal|null
+operator|:
+literal|"block is null"
+assert|;
+name|toDeleteList
+operator|.
+name|remove
+argument_list|(
+name|block
+argument_list|)
+expr_stmt|;
 block|}
 comment|/**      * Clear {@link BlocksMapUpdateInfo#toDeleteList}      */
 DECL|method|clear ()

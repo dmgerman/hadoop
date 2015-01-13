@@ -484,20 +484,6 @@ name|hadoop
 operator|.
 name|hdfs
 operator|.
-name|MiniDFSNNTopology
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|hdfs
-operator|.
 name|StorageType
 import|;
 end_import
@@ -1796,6 +1782,9 @@ argument_list|()
 argument_list|,
 name|anyLong
 argument_list|()
+argument_list|,
+name|anyLong
+argument_list|()
 argument_list|)
 argument_list|)
 operator|.
@@ -1814,6 +1803,9 @@ operator|(
 name|ExtendedBlock
 operator|)
 name|anyObject
+argument_list|()
+argument_list|,
+name|anyLong
 argument_list|()
 argument_list|,
 name|anyLong
@@ -1953,6 +1945,8 @@ name|block
 argument_list|,
 name|RECOVERY_ID
 argument_list|,
+name|BLOCK_ID
+argument_list|,
 name|REPLICA_LEN1
 argument_list|)
 expr_stmt|;
@@ -1966,6 +1960,8 @@ argument_list|(
 name|block
 argument_list|,
 name|RECOVERY_ID
+argument_list|,
+name|BLOCK_ID
 argument_list|,
 name|REPLICA_LEN1
 argument_list|)
@@ -2168,6 +2164,8 @@ name|block
 argument_list|,
 name|RECOVERY_ID
 argument_list|,
+name|BLOCK_ID
+argument_list|,
 name|REPLICA_LEN1
 argument_list|)
 expr_stmt|;
@@ -2181,6 +2179,8 @@ argument_list|(
 name|block
 argument_list|,
 name|RECOVERY_ID
+argument_list|,
+name|BLOCK_ID
 argument_list|,
 name|REPLICA_LEN1
 argument_list|)
@@ -2264,6 +2264,8 @@ name|block
 argument_list|,
 name|RECOVERY_ID
 argument_list|,
+name|BLOCK_ID
+argument_list|,
 name|REPLICA_LEN1
 argument_list|)
 expr_stmt|;
@@ -2280,6 +2282,8 @@ argument_list|(
 name|block
 argument_list|,
 name|RECOVERY_ID
+argument_list|,
+name|BLOCK_ID
 argument_list|,
 name|REPLICA_LEN1
 argument_list|)
@@ -2400,6 +2404,8 @@ name|block
 argument_list|,
 name|RECOVERY_ID
 argument_list|,
+name|BLOCK_ID
+argument_list|,
 name|REPLICA_LEN1
 argument_list|)
 expr_stmt|;
@@ -2416,6 +2422,8 @@ argument_list|(
 name|block
 argument_list|,
 name|RECOVERY_ID
+argument_list|,
+name|BLOCK_ID
 argument_list|,
 name|REPLICA_LEN1
 argument_list|)
@@ -2499,6 +2507,8 @@ name|block
 argument_list|,
 name|RECOVERY_ID
 argument_list|,
+name|BLOCK_ID
+argument_list|,
 name|REPLICA_LEN1
 argument_list|)
 expr_stmt|;
@@ -2515,6 +2525,8 @@ argument_list|(
 name|block
 argument_list|,
 name|RECOVERY_ID
+argument_list|,
+name|BLOCK_ID
 argument_list|,
 name|REPLICA_LEN1
 argument_list|)
@@ -2646,6 +2658,8 @@ name|block
 argument_list|,
 name|RECOVERY_ID
 argument_list|,
+name|BLOCK_ID
+argument_list|,
 name|minLen
 argument_list|)
 expr_stmt|;
@@ -2659,6 +2673,8 @@ argument_list|(
 name|block
 argument_list|,
 name|RECOVERY_ID
+argument_list|,
+name|BLOCK_ID
 argument_list|,
 name|minLen
 argument_list|)
@@ -2778,6 +2794,8 @@ name|block
 argument_list|,
 name|RECOVERY_ID
 argument_list|,
+name|BLOCK_ID
+argument_list|,
 name|REPLICA_LEN1
 argument_list|)
 expr_stmt|;
@@ -2794,6 +2812,8 @@ argument_list|(
 name|block
 argument_list|,
 name|RECOVERY_ID
+argument_list|,
+name|BLOCK_ID
 argument_list|,
 name|REPLICA_LEN1
 argument_list|)
@@ -2925,6 +2945,8 @@ name|block
 argument_list|,
 name|RECOVERY_ID
 argument_list|,
+name|BLOCK_ID
+argument_list|,
 name|minLen
 argument_list|)
 expr_stmt|;
@@ -2938,6 +2960,8 @@ argument_list|(
 name|block
 argument_list|,
 name|RECOVERY_ID
+argument_list|,
+name|BLOCK_ID
 argument_list|,
 name|minLen
 argument_list|)
@@ -3542,6 +3566,8 @@ argument_list|(
 name|block
 argument_list|,
 name|RECOVERY_ID
+argument_list|,
+name|BLOCK_ID
 argument_list|,
 name|block
 operator|.
@@ -4260,6 +4286,14 @@ name|getGenerationStamp
 argument_list|()
 operator|+
 literal|1
+argument_list|,
+name|block
+operator|.
+name|getBlock
+argument_list|()
+operator|.
+name|getBlockId
+argument_list|()
 argument_list|,
 name|block
 operator|.

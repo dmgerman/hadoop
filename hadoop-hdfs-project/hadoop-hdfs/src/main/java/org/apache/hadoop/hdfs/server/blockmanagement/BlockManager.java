@@ -3549,14 +3549,17 @@ literal|true
 argument_list|)
 return|;
 block|}
-comment|/**    * Convert the last block of the file to an under construction block.<p>    * The block is converted only if the file has blocks and the last one    * is a partial block (its size is less than the preferred block size).    * The converted block is returned to the client.    * The client uses the returned block locations to form the data pipeline    * for this block.<br>    * The methods returns null if there is no partial block at the end.    * The client is supposed to allocate a new block with the next call.    *    * @param bc file    * @return the last block locations if the block is partial or null otherwise    */
-DECL|method|convertLastBlockToUnderConstruction ( BlockCollection bc)
+comment|/**    * Convert the last block of the file to an under construction block.<p>    * The block is converted only if the file has blocks and the last one    * is a partial block (its size is less than the preferred block size).    * The converted block is returned to the client.    * The client uses the returned block locations to form the data pipeline    * for this block.<br>    * The methods returns null if there is no partial block at the end.    * The client is supposed to allocate a new block with the next call.    *    * @param bc file    * @param bytesToRemove num of bytes to remove from block    * @return the last block locations if the block is partial or null otherwise    */
+DECL|method|convertLastBlockToUnderConstruction ( BlockCollection bc, long bytesToRemove)
 specifier|public
 name|LocatedBlock
 name|convertLastBlockToUnderConstruction
 parameter_list|(
 name|BlockCollection
 name|bc
+parameter_list|,
+name|long
+name|bytesToRemove
 parameter_list|)
 throws|throws
 name|IOException
@@ -3584,6 +3587,8 @@ name|oldBlock
 operator|.
 name|getNumBytes
 argument_list|()
+operator|-
+name|bytesToRemove
 condition|)
 return|return
 literal|null

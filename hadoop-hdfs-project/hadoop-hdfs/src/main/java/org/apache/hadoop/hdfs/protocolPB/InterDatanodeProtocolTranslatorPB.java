@@ -641,7 +641,7 @@ return|;
 block|}
 annotation|@
 name|Override
-DECL|method|updateReplicaUnderRecovery (ExtendedBlock oldBlock, long recoveryId, long newLength)
+DECL|method|updateReplicaUnderRecovery (ExtendedBlock oldBlock, long recoveryId, long newBlockId, long newLength)
 specifier|public
 name|String
 name|updateReplicaUnderRecovery
@@ -651,6 +651,9 @@ name|oldBlock
 parameter_list|,
 name|long
 name|recoveryId
+parameter_list|,
+name|long
+name|newBlockId
 parameter_list|,
 name|long
 name|newLength
@@ -679,6 +682,11 @@ operator|.
 name|setNewLength
 argument_list|(
 name|newLength
+argument_list|)
+operator|.
+name|setNewBlockId
+argument_list|(
+name|newBlockId
 argument_list|)
 operator|.
 name|setRecoveryId

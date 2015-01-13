@@ -321,6 +321,15 @@ literal|60
 argument_list|,
 literal|"Block Storage policy"
 argument_list|)
+block|,
+DECL|enumConstant|TRUNCATE
+name|TRUNCATE
+argument_list|(
+operator|-
+literal|61
+argument_list|,
+literal|"Truncate"
+argument_list|)
 block|;
 DECL|field|info
 specifier|private

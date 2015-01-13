@@ -1345,7 +1345,7 @@ throws|throws
 name|IOException
 function_decl|;
 comment|/**    * Update replica's generation stamp and length and finalize it.    * @return the ID of storage that stores the block    */
-DECL|method|updateReplicaUnderRecovery (ExtendedBlock oldBlock, long recoveryId, long newLength)
+DECL|method|updateReplicaUnderRecovery (ExtendedBlock oldBlock, long recoveryId, long newBlockId, long newLength)
 specifier|public
 name|String
 name|updateReplicaUnderRecovery
@@ -1355,6 +1355,9 @@ name|oldBlock
 parameter_list|,
 name|long
 name|recoveryId
+parameter_list|,
+name|long
+name|newBlockId
 parameter_list|,
 name|long
 name|newLength

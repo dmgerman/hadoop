@@ -793,7 +793,7 @@ return|;
 block|}
 comment|/**    * Find the latest snapshot before a given snapshot.    * @param anchorId The returned snapshot's id must be<= or< this given     *                 snapshot id.    * @param exclusive True means the returned snapshot's id must be< the given    *                  id, otherwise<=.    * @return The id of the latest snapshot before the given snapshot.    */
 DECL|method|getPrior (int anchorId, boolean exclusive)
-specifier|private
+specifier|public
 specifier|final
 name|int
 name|getPrior
@@ -814,9 +814,27 @@ operator|.
 name|CURRENT_STATE_ID
 condition|)
 block|{
-return|return
+name|int
+name|last
+init|=
 name|getLastSnapshotId
 argument_list|()
+decl_stmt|;
+if|if
+condition|(
+name|exclusive
+operator|&&
+name|last
+operator|==
+name|anchorId
+condition|)
+return|return
+name|Snapshot
+operator|.
+name|NO_SNAPSHOT_ID
+return|;
+return|return
+name|last
 return|;
 block|}
 specifier|final
@@ -1439,7 +1457,7 @@ block|}
 comment|/** Save the snapshot copy to the latest snapshot. */
 DECL|method|saveSelf2Snapshot (int latestSnapshotId, N currentINode, A snapshotCopy)
 specifier|public
-name|void
+name|D
 name|saveSelf2Snapshot
 parameter_list|(
 name|int
@@ -1454,6 +1472,11 @@ parameter_list|)
 throws|throws
 name|QuotaExceededException
 block|{
+name|D
+name|diff
+init|=
+literal|null
+decl_stmt|;
 if|if
 condition|(
 name|latestSnapshotId
@@ -1463,16 +1486,15 @@ operator|.
 name|CURRENT_STATE_ID
 condition|)
 block|{
-name|D
 name|diff
-init|=
+operator|=
 name|checkAndAddLatestSnapshotDiff
 argument_list|(
 name|latestSnapshotId
 argument_list|,
 name|currentINode
 argument_list|)
-decl_stmt|;
+expr_stmt|;
 if|if
 condition|(
 name|diff
@@ -1506,6 +1528,9 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
+return|return
+name|diff
+return|;
 block|}
 annotation|@
 name|Override

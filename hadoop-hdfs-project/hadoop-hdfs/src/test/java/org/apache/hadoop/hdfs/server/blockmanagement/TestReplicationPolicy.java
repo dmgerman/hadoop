@@ -7988,6 +7988,8 @@ operator|.
 name|convertLastBlockToUnderConstruction
 argument_list|(
 name|mbc
+argument_list|,
+literal|0L
 argument_list|)
 expr_stmt|;
 comment|// Choose 1 block from UnderReplicatedBlocks. Then it should pick 1 block
