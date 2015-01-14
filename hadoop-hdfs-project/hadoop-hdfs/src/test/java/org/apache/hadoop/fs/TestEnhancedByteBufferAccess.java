@@ -945,7 +945,18 @@ specifier|final
 name|int
 name|BLOCK_SIZE
 init|=
-literal|4096
+operator|(
+name|int
+operator|)
+name|NativeIO
+operator|.
+name|POSIX
+operator|.
+name|getCacheManipulator
+argument_list|()
+operator|.
+name|getOperatingSystemPageSize
+argument_list|()
 decl_stmt|;
 DECL|method|initZeroCopyTest ()
 specifier|public
@@ -1129,7 +1140,9 @@ specifier|final
 name|int
 name|TEST_FILE_LENGTH
 init|=
-literal|12345
+literal|3
+operator|*
+name|BLOCK_SIZE
 decl_stmt|;
 name|FileSystem
 name|fs
@@ -1294,7 +1307,7 @@ name|read
 argument_list|(
 literal|null
 argument_list|,
-literal|4096
+name|BLOCK_SIZE
 argument_list|,
 name|EnumSet
 operator|.
@@ -1310,7 +1323,7 @@ name|Assert
 operator|.
 name|assertEquals
 argument_list|(
-literal|4096
+name|BLOCK_SIZE
 argument_list|,
 name|result
 operator|.
@@ -1330,7 +1343,7 @@ name|Assert
 operator|.
 name|assertEquals
 argument_list|(
-literal|4096
+name|BLOCK_SIZE
 argument_list|,
 name|dfsIn
 operator|.
@@ -1345,7 +1358,7 @@ name|Assert
 operator|.
 name|assertEquals
 argument_list|(
-literal|4096
+name|BLOCK_SIZE
 argument_list|,
 name|dfsIn
 operator|.
@@ -1368,7 +1381,7 @@ name|original
 argument_list|,
 literal|0
 argument_list|,
-literal|4096
+name|BLOCK_SIZE
 argument_list|)
 argument_list|,
 name|byteBufferToArray
@@ -1462,7 +1475,9 @@ specifier|final
 name|int
 name|TEST_FILE_LENGTH
 init|=
-literal|12345
+literal|3
+operator|*
+name|BLOCK_SIZE
 decl_stmt|;
 name|FileSystem
 name|fs
@@ -1618,7 +1633,7 @@ argument_list|(
 name|TEST_PATH
 argument_list|)
 expr_stmt|;
-comment|// Try to read 8192, but only get 4096 because of the block size.
+comment|// Try to read (2 * ${BLOCK_SIZE}), but only get ${BLOCK_SIZE} because of the block size.
 name|HdfsDataInputStream
 name|dfsIn
 init|=
@@ -1636,7 +1651,9 @@ name|read
 argument_list|(
 literal|null
 argument_list|,
-literal|8192
+literal|2
+operator|*
+name|BLOCK_SIZE
 argument_list|,
 name|EnumSet
 operator|.
@@ -1652,7 +1669,7 @@ name|Assert
 operator|.
 name|assertEquals
 argument_list|(
-literal|4096
+name|BLOCK_SIZE
 argument_list|,
 name|result
 operator|.
@@ -1664,7 +1681,7 @@ name|Assert
 operator|.
 name|assertEquals
 argument_list|(
-literal|4096
+name|BLOCK_SIZE
 argument_list|,
 name|dfsIn
 operator|.
@@ -1679,7 +1696,7 @@ name|Assert
 operator|.
 name|assertEquals
 argument_list|(
-literal|4096
+name|BLOCK_SIZE
 argument_list|,
 name|dfsIn
 operator|.
@@ -1702,7 +1719,7 @@ name|original
 argument_list|,
 literal|0
 argument_list|,
-literal|4096
+name|BLOCK_SIZE
 argument_list|)
 argument_list|,
 name|byteBufferToArray
@@ -1718,7 +1735,7 @@ argument_list|(
 name|result
 argument_list|)
 expr_stmt|;
-comment|// Try to read 4097, but only get 4096 because of the block size.
+comment|// Try to read (1 + ${BLOCK_SIZE}), but only get ${BLOCK_SIZE} because of the block size.
 name|result
 operator|=
 name|dfsIn
@@ -1727,7 +1744,9 @@ name|read
 argument_list|(
 literal|null
 argument_list|,
-literal|4097
+literal|1
+operator|+
+name|BLOCK_SIZE
 argument_list|,
 name|EnumSet
 operator|.
@@ -1743,7 +1762,7 @@ name|Assert
 operator|.
 name|assertEquals
 argument_list|(
-literal|4096
+name|BLOCK_SIZE
 argument_list|,
 name|result
 operator|.
@@ -1761,9 +1780,11 @@ name|copyOfRange
 argument_list|(
 name|original
 argument_list|,
-literal|4096
+name|BLOCK_SIZE
 argument_list|,
-literal|8192
+literal|2
+operator|*
+name|BLOCK_SIZE
 argument_list|)
 argument_list|,
 name|byteBufferToArray
@@ -1857,7 +1878,9 @@ specifier|final
 name|int
 name|TEST_FILE_LENGTH
 init|=
-literal|12345
+literal|3
+operator|*
+name|BLOCK_SIZE
 decl_stmt|;
 name|FileSystem
 name|fs
@@ -2034,7 +2057,9 @@ name|read
 argument_list|(
 literal|null
 argument_list|,
-literal|4097
+name|BLOCK_SIZE
+operator|+
+literal|1
 argument_list|,
 name|EnumSet
 operator|.
@@ -2070,7 +2095,7 @@ name|read
 argument_list|(
 literal|null
 argument_list|,
-literal|4096
+name|BLOCK_SIZE
 argument_list|,
 name|EnumSet
 operator|.
@@ -2086,7 +2111,7 @@ name|Assert
 operator|.
 name|assertEquals
 argument_list|(
-literal|4096
+name|BLOCK_SIZE
 argument_list|,
 name|result
 operator|.
@@ -2098,7 +2123,7 @@ name|Assert
 operator|.
 name|assertEquals
 argument_list|(
-literal|4096
+name|BLOCK_SIZE
 argument_list|,
 name|dfsIn
 operator|.
@@ -2113,7 +2138,7 @@ name|Assert
 operator|.
 name|assertEquals
 argument_list|(
-literal|4096
+name|BLOCK_SIZE
 argument_list|,
 name|dfsIn
 operator|.
@@ -2136,7 +2161,7 @@ name|original
 argument_list|,
 literal|0
 argument_list|,
-literal|4096
+name|BLOCK_SIZE
 argument_list|)
 argument_list|,
 name|byteBufferToArray
@@ -2413,7 +2438,9 @@ specifier|final
 name|int
 name|TEST_FILE_LENGTH
 init|=
-literal|16385
+literal|5
+operator|*
+name|BLOCK_SIZE
 decl_stmt|;
 specifier|final
 name|int
@@ -2659,7 +2686,7 @@ name|read
 argument_list|(
 literal|null
 argument_list|,
-literal|4096
+name|BLOCK_SIZE
 argument_list|,
 name|EnumSet
 operator|.
@@ -2689,7 +2716,7 @@ name|read
 argument_list|(
 literal|null
 argument_list|,
-literal|4096
+name|BLOCK_SIZE
 argument_list|,
 name|EnumSet
 operator|.
@@ -2831,7 +2858,7 @@ name|read
 argument_list|(
 literal|null
 argument_list|,
-literal|4096
+name|BLOCK_SIZE
 argument_list|,
 name|EnumSet
 operator|.
@@ -2854,7 +2881,7 @@ name|read
 argument_list|(
 literal|null
 argument_list|,
-literal|4096
+name|BLOCK_SIZE
 argument_list|,
 name|EnumSet
 operator|.
@@ -4006,7 +4033,7 @@ specifier|final
 name|int
 name|TEST_FILE_LENGTH
 init|=
-literal|16385
+name|BLOCK_SIZE
 decl_stmt|;
 specifier|final
 name|Path
@@ -4070,7 +4097,18 @@ name|roundUpToMultiple
 argument_list|(
 name|TEST_FILE_LENGTH
 argument_list|,
-literal|4096
+operator|(
+name|int
+operator|)
+name|NativeIO
+operator|.
+name|POSIX
+operator|.
+name|getCacheManipulator
+argument_list|()
+operator|.
+name|getOperatingSystemPageSize
+argument_list|()
 argument_list|)
 argument_list|)
 expr_stmt|;
