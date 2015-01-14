@@ -130,16 +130,6 @@ specifier|protected
 name|int
 name|maxApplicationsPerUser
 decl_stmt|;
-DECL|field|maxActiveApplications
-specifier|protected
-name|int
-name|maxActiveApplications
-decl_stmt|;
-DECL|field|maxActiveApplicationsPerUser
-specifier|protected
-name|int
-name|maxActiveApplicationsPerUser
-decl_stmt|;
 DECL|field|userLimit
 specifier|protected
 name|int
@@ -155,6 +145,16 @@ DECL|field|userLimitFactor
 specifier|protected
 name|float
 name|userLimitFactor
+decl_stmt|;
+DECL|field|aMResourceLimit
+specifier|protected
+name|ResourceInfo
+name|aMResourceLimit
+decl_stmt|;
+DECL|field|userAMResourceLimit
+specifier|protected
+name|ResourceInfo
+name|userAMResourceLimit
 decl_stmt|;
 DECL|method|CapacitySchedulerLeafQueueInfo ()
 name|CapacitySchedulerLeafQueueInfo
@@ -208,20 +208,6 @@ operator|.
 name|getMaxApplicationsPerUser
 argument_list|()
 expr_stmt|;
-name|maxActiveApplications
-operator|=
-name|q
-operator|.
-name|getMaximumActiveApplications
-argument_list|()
-expr_stmt|;
-name|maxActiveApplicationsPerUser
-operator|=
-name|q
-operator|.
-name|getMaximumActiveApplicationsPerUser
-argument_list|()
-expr_stmt|;
 name|userLimit
 operator|=
 name|q
@@ -246,6 +232,28 @@ name|q
 operator|.
 name|getUserLimitFactor
 argument_list|()
+expr_stmt|;
+name|aMResourceLimit
+operator|=
+operator|new
+name|ResourceInfo
+argument_list|(
+name|q
+operator|.
+name|getAMResourceLimit
+argument_list|()
+argument_list|)
+expr_stmt|;
+name|userAMResourceLimit
+operator|=
+operator|new
+name|ResourceInfo
+argument_list|(
+name|q
+operator|.
+name|getUserAMResourceLimit
+argument_list|()
+argument_list|)
 expr_stmt|;
 block|}
 DECL|method|getNumActiveApplications ()
@@ -298,26 +306,6 @@ return|return
 name|maxApplicationsPerUser
 return|;
 block|}
-DECL|method|getMaxActiveApplications ()
-specifier|public
-name|int
-name|getMaxActiveApplications
-parameter_list|()
-block|{
-return|return
-name|maxActiveApplications
-return|;
-block|}
-DECL|method|getMaxActiveApplicationsPerUser ()
-specifier|public
-name|int
-name|getMaxActiveApplicationsPerUser
-parameter_list|()
-block|{
-return|return
-name|maxActiveApplicationsPerUser
-return|;
-block|}
 DECL|method|getUserLimit ()
 specifier|public
 name|int
@@ -347,6 +335,26 @@ parameter_list|()
 block|{
 return|return
 name|userLimitFactor
+return|;
+block|}
+DECL|method|getAMResourceLimit ()
+specifier|public
+name|ResourceInfo
+name|getAMResourceLimit
+parameter_list|()
+block|{
+return|return
+name|aMResourceLimit
+return|;
+block|}
+DECL|method|getUserAMResourceLimit ()
+specifier|public
+name|ResourceInfo
+name|getUserAMResourceLimit
+parameter_list|()
+block|{
+return|return
+name|userAMResourceLimit
 return|;
 block|}
 block|}

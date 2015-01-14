@@ -234,6 +234,24 @@ name|api
 operator|.
 name|records
 operator|.
+name|ResourceRequest
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|api
+operator|.
+name|records
+operator|.
 name|YarnApplicationState
 import|;
 end_import
@@ -454,6 +472,10 @@ name|int
 name|maxAppAttempts
 init|=
 literal|1
+decl_stmt|;
+DECL|field|amReq
+name|ResourceRequest
+name|amReq
 decl_stmt|;
 DECL|method|MockRMApp (int newid, long time, RMAppState newState)
 specifier|public
@@ -1180,6 +1202,20 @@ argument_list|(
 literal|"Not supported yet."
 argument_list|)
 throw|;
+block|}
+annotation|@
+name|Override
+DECL|method|getAMResourceRequest ()
+specifier|public
+name|ResourceRequest
+name|getAMResourceRequest
+parameter_list|()
+block|{
+return|return
+name|this
+operator|.
+name|amReq
+return|;
 block|}
 block|}
 end_class

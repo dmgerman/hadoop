@@ -819,7 +819,7 @@ annotation|@
 name|Private
 annotation|@
 name|Unstable
-DECL|method|RMActiveServiceContext (Dispatcher rmDispatcher, ContainerAllocationExpirer containerAllocationExpirer, AMLivelinessMonitor amLivelinessMonitor, AMLivelinessMonitor amFinishingMonitor, DelegationTokenRenewer delegationTokenRenewer, AMRMTokenSecretManager appTokenSecretManager, RMContainerTokenSecretManager containerTokenSecretManager, NMTokenSecretManagerInRM nmTokenSecretManager, ClientToAMTokenSecretManagerInRM clientToAMTokenSecretManager, RMApplicationHistoryWriter rmApplicationHistoryWriter)
+DECL|method|RMActiveServiceContext (Dispatcher rmDispatcher, ContainerAllocationExpirer containerAllocationExpirer, AMLivelinessMonitor amLivelinessMonitor, AMLivelinessMonitor amFinishingMonitor, DelegationTokenRenewer delegationTokenRenewer, AMRMTokenSecretManager appTokenSecretManager, RMContainerTokenSecretManager containerTokenSecretManager, NMTokenSecretManagerInRM nmTokenSecretManager, ClientToAMTokenSecretManagerInRM clientToAMTokenSecretManager, RMApplicationHistoryWriter rmApplicationHistoryWriter, ResourceScheduler scheduler)
 specifier|public
 name|RMActiveServiceContext
 parameter_list|(
@@ -852,6 +852,9 @@ name|clientToAMTokenSecretManager
 parameter_list|,
 name|RMApplicationHistoryWriter
 name|rmApplicationHistoryWriter
+parameter_list|,
+name|ResourceScheduler
+name|scheduler
 parameter_list|)
 block|{
 name|this
@@ -918,6 +921,13 @@ operator|.
 name|setRMApplicationHistoryWriter
 argument_list|(
 name|rmApplicationHistoryWriter
+argument_list|)
+expr_stmt|;
+name|this
+operator|.
+name|setScheduler
+argument_list|(
+name|scheduler
 argument_list|)
 expr_stmt|;
 name|RMStateStore

@@ -210,6 +210,24 @@ name|api
 operator|.
 name|records
 operator|.
+name|ResourceRequest
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|api
+operator|.
+name|records
+operator|.
 name|YarnApplicationState
 import|;
 end_import
@@ -481,6 +499,11 @@ function_decl|;
 DECL|method|getReservationId ()
 name|ReservationId
 name|getReservationId
+parameter_list|()
+function_decl|;
+DECL|method|getAMResourceRequest ()
+name|ResourceRequest
+name|getAMResourceRequest
 parameter_list|()
 function_decl|;
 block|}

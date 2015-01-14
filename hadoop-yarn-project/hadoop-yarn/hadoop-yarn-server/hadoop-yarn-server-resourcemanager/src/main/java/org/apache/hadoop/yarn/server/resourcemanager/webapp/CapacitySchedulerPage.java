@@ -969,32 +969,28 @@ argument_list|)
 operator|.
 name|_
 argument_list|(
-literal|"Max Schedulable Applications:"
+literal|"Max Application Master Resources:"
 argument_list|,
-name|Integer
-operator|.
-name|toString
-argument_list|(
 name|lqinfo
 operator|.
-name|getMaxActiveApplications
+name|getAMResourceLimit
 argument_list|()
-argument_list|)
+operator|.
+name|toString
+argument_list|()
 argument_list|)
 operator|.
 name|_
 argument_list|(
-literal|"Max Schedulable Applications Per User:"
+literal|"Max Application Master Resources Per User:"
 argument_list|,
-name|Integer
-operator|.
-name|toString
-argument_list|(
 name|lqinfo
 operator|.
-name|getMaxActiveApplicationsPerUser
+name|getUserAMResourceLimit
 argument_list|()
-argument_list|)
+operator|.
+name|toString
+argument_list|()
 argument_list|)
 operator|.
 name|_

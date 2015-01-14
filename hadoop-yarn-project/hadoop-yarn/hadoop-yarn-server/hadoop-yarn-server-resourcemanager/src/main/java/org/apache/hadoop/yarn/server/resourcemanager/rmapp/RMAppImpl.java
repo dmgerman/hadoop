@@ -7458,6 +7458,20 @@ name|getReservationID
 argument_list|()
 return|;
 block|}
+annotation|@
+name|Override
+DECL|method|getAMResourceRequest ()
+specifier|public
+name|ResourceRequest
+name|getAMResourceRequest
+parameter_list|()
+block|{
+return|return
+name|this
+operator|.
+name|amReq
+return|;
+block|}
 DECL|method|parseCredentials ()
 specifier|protected
 name|Credentials
