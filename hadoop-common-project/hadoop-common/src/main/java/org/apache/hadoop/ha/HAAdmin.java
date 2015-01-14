@@ -420,11 +420,11 @@ argument_list|,
 operator|new
 name|UsageInfo
 argument_list|(
-literal|"<serviceId> [--"
+literal|"[--"
 operator|+
 name|FORCEACTIVE
 operator|+
-literal|"]"
+literal|"]<serviceId>"
 argument_list|,
 literal|"Transitions the service into Active state"
 argument_list|)
@@ -462,13 +462,15 @@ literal|"]<serviceId><serviceId>"
 argument_list|,
 literal|"Failover from the first service to the second.\n"
 operator|+
-literal|"Unconditionally fence services if the "
+literal|"Unconditionally fence services if the --"
 operator|+
 name|FORCEFENCE
 operator|+
 literal|" option is used.\n"
 operator|+
 literal|"Try to failover to the target service even if it is not ready if the "
+operator|+
+literal|"--"
 operator|+
 name|FORCEACTIVE
 operator|+
@@ -1208,7 +1210,7 @@ literal|"a split-brain scenario or other incorrect state.\n"
 operator|+
 literal|"If you are very sure you know what you are doing, please \n"
 operator|+
-literal|"specify the "
+literal|"specify the --"
 operator|+
 name|FORCEMANUAL
 operator|+
@@ -2321,7 +2323,7 @@ name|ToolRunner
 operator|.
 name|confirmPrompt
 argument_list|(
-literal|"You have specified the "
+literal|"You have specified the --"
 operator|+
 name|FORCEMANUAL
 operator|+
