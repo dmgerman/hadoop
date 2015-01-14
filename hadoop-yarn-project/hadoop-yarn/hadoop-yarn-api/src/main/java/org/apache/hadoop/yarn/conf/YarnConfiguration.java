@@ -1509,7 +1509,7 @@ specifier|final
 name|boolean
 name|DEFAULT_RM_WORK_PRESERVING_RECOVERY_ENABLED
 init|=
-literal|false
+literal|true
 decl_stmt|;
 DECL|field|RM_WORK_PRESERVING_RECOVERY_SCHEDULING_WAIT_MS
 specifier|public
