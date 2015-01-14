@@ -652,8 +652,6 @@ operator|new
 name|BlockListAsLongs
 argument_list|(
 name|blocks
-argument_list|,
-literal|null
 argument_list|)
 decl_stmt|;
 name|FsVolumeSpi

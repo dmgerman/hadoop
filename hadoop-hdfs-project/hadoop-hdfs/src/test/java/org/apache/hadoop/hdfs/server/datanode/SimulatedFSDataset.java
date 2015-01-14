@@ -2824,14 +2824,14 @@ block|{
 specifier|final
 name|List
 argument_list|<
-name|Block
+name|Replica
 argument_list|>
 name|blocks
 init|=
 operator|new
 name|ArrayList
 argument_list|<
-name|Block
+name|Replica
 argument_list|>
 argument_list|()
 decl_stmt|;
@@ -2882,8 +2882,6 @@ operator|.
 name|add
 argument_list|(
 name|b
-operator|.
-name|theBlock
 argument_list|)
 expr_stmt|;
 block|}
