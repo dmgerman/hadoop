@@ -3860,7 +3860,7 @@ operator|.
 name|getContext
 argument_list|()
 operator|.
-name|getApplicationID
+name|getApplicationAttemptId
 argument_list|()
 argument_list|,
 name|e
