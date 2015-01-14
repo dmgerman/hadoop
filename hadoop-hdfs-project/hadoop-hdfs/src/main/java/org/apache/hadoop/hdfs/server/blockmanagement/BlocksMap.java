@@ -349,6 +349,19 @@ name|void
 name|close
 parameter_list|()
 block|{
+name|clear
+argument_list|()
+expr_stmt|;
+name|blocks
+operator|=
+literal|null
+expr_stmt|;
+block|}
+DECL|method|clear ()
+name|void
+name|clear
+parameter_list|()
+block|{
 if|if
 condition|(
 name|blocks
@@ -360,10 +373,6 @@ name|blocks
 operator|.
 name|clear
 argument_list|()
-expr_stmt|;
-name|blocks
-operator|=
-literal|null
 expr_stmt|;
 block|}
 block|}
