@@ -68,22 +68,6 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|classification
-operator|.
-name|InterfaceAudience
-operator|.
-name|Private
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
 name|conf
 operator|.
 name|Configuration
@@ -2068,6 +2052,32 @@ expr_stmt|;
 return|return
 name|meta
 return|;
+block|}
+catch|catch
+parameter_list|(
+name|ClassCastException
+name|e
+parameter_list|)
+block|{
+throw|throw
+operator|new
+name|IOException
+argument_list|(
+literal|"Can't cast key for "
+operator|+
+name|name
+operator|+
+literal|" in keystore "
+operator|+
+name|path
+operator|+
+literal|" to a KeyMetadata. Key may have been added using "
+operator|+
+literal|" keytool or some other non-Hadoop method."
+argument_list|,
+name|e
+argument_list|)
+throw|;
 block|}
 catch|catch
 parameter_list|(
