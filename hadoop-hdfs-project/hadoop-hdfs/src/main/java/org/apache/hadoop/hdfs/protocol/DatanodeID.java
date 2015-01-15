@@ -135,6 +135,19 @@ name|int
 name|ipcPort
 decl_stmt|;
 comment|// IPC server port
+DECL|field|xferAddr
+specifier|private
+name|String
+name|xferAddr
+decl_stmt|;
+DECL|field|hashCode
+specifier|private
+name|int
+name|hashCode
+init|=
+operator|-
+literal|1
+decl_stmt|;
 comment|/**    * UUID identifying a given datanode. For upgraded Datanodes this is the    * same as the StorageID that was previously used by this Datanode.     * For newly formatted Datanodes it is a UUID.    */
 DECL|field|datanodeUuid
 specifier|private
@@ -271,6 +284,9 @@ name|ipcPort
 operator|=
 name|ipcPort
 expr_stmt|;
+name|updateXferAddrAndInvalidateHashCode
+argument_list|()
+expr_stmt|;
 block|}
 DECL|method|setIpAddr (String ipAddr)
 specifier|public
@@ -286,6 +302,9 @@ operator|.
 name|ipAddr
 operator|=
 name|ipAddr
+expr_stmt|;
+name|updateXferAddrAndInvalidateHashCode
+argument_list|()
 expr_stmt|;
 block|}
 DECL|method|setPeerHostName (String peerHostName)
@@ -331,6 +350,9 @@ operator|.
 name|datanodeUuid
 operator|=
 name|datanodeUuid
+expr_stmt|;
+name|updateXferAddrAndInvalidateHashCode
+argument_list|()
 expr_stmt|;
 block|}
 DECL|method|checkDatanodeUuid (String uuid)
@@ -406,11 +428,7 @@ name|getXferAddr
 parameter_list|()
 block|{
 return|return
-name|ipAddr
-operator|+
-literal|":"
-operator|+
-name|xferPort
+name|xferAddr
 return|;
 block|}
 comment|/**    * @return IP:ipcPort string    */
@@ -651,9 +669,18 @@ name|int
 name|hashCode
 parameter_list|()
 block|{
-return|return
-name|getXferAddr
-argument_list|()
+if|if
+condition|(
+name|hashCode
+operator|==
+operator|-
+literal|1
+condition|)
+block|{
+name|int
+name|newHashCode
+init|=
+name|xferAddr
 operator|.
 name|hashCode
 argument_list|()
@@ -662,6 +689,18 @@ name|datanodeUuid
 operator|.
 name|hashCode
 argument_list|()
+decl_stmt|;
+name|hashCode
+operator|=
+name|newHashCode
+operator|&
+name|Integer
+operator|.
+name|MAX_VALUE
+expr_stmt|;
+block|}
+return|return
+name|hashCode
 return|;
 block|}
 annotation|@
@@ -736,6 +775,9 @@ operator|.
 name|getIpcPort
 argument_list|()
 expr_stmt|;
+name|updateXferAddrAndInvalidateHashCode
+argument_list|()
+expr_stmt|;
 block|}
 comment|/**    * Compare based on data transfer address.    *    * @param that datanode to compare with    * @return as specified by Comparable    */
 annotation|@
@@ -761,6 +803,30 @@ name|getXferAddr
 argument_list|()
 argument_list|)
 return|;
+block|}
+comment|// NOTE: mutable hash codes are dangerous, however this class chooses to
+comment|// use them.  this method must be called when a value mutates that is used
+comment|// to compute the hash, equality, or comparison of instances.
+DECL|method|updateXferAddrAndInvalidateHashCode ()
+specifier|private
+name|void
+name|updateXferAddrAndInvalidateHashCode
+parameter_list|()
+block|{
+name|xferAddr
+operator|=
+name|ipAddr
+operator|+
+literal|":"
+operator|+
+name|xferPort
+expr_stmt|;
+comment|// can't compute new hash yet because uuid might still null...
+name|hashCode
+operator|=
+operator|-
+literal|1
+expr_stmt|;
 block|}
 block|}
 end_class
