@@ -438,6 +438,46 @@ name|Maps
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|htrace
+operator|.
+name|Sampler
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|htrace
+operator|.
+name|Span
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|htrace
+operator|.
+name|Trace
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|htrace
+operator|.
+name|TraceScope
+import|;
+end_import
+
 begin_class
 annotation|@
 name|InterfaceAudience
@@ -467,7 +507,7 @@ name|class
 argument_list|)
 decl_stmt|;
 comment|/**    * Create a list of {@link VolumeBlockLocationCallable} corresponding to a set    * of datanodes and blocks. The blocks must all correspond to the same    * block pool.    *     * @param datanodeBlocks    *          Map of datanodes to block replicas at each datanode    * @return callables Used to query each datanode for location information on    *         the block replicas at the datanode    */
-DECL|method|createVolumeBlockLocationCallables ( Configuration conf, Map<DatanodeInfo, List<LocatedBlock>> datanodeBlocks, int timeout, boolean connectToDnViaHostname)
+DECL|method|createVolumeBlockLocationCallables ( Configuration conf, Map<DatanodeInfo, List<LocatedBlock>> datanodeBlocks, int timeout, boolean connectToDnViaHostname, Span parent)
 specifier|private
 specifier|static
 name|List
@@ -495,6 +535,9 @@ name|timeout
 parameter_list|,
 name|boolean
 name|connectToDnViaHostname
+parameter_list|,
+name|Span
+name|parent
 parameter_list|)
 block|{
 if|if
@@ -738,6 +781,8 @@ argument_list|,
 name|timeout
 argument_list|,
 name|connectToDnViaHostname
+argument_list|,
+name|parent
 argument_list|)
 decl_stmt|;
 name|callables
@@ -804,6 +849,11 @@ argument_list|,
 name|timeoutMs
 argument_list|,
 name|connectToDnViaHostname
+argument_list|,
+name|Trace
+operator|.
+name|currentSpan
+argument_list|()
 argument_list|)
 decl_stmt|;
 comment|// Use a thread pool to execute the Callables in parallel
@@ -1788,7 +1838,13 @@ specifier|final
 name|boolean
 name|connectToDnViaHostname
 decl_stmt|;
-DECL|method|VolumeBlockLocationCallable (Configuration configuration, DatanodeInfo datanode, String poolId, long []blockIds, List<Token<BlockTokenIdentifier>> dnTokens, int timeout, boolean connectToDnViaHostname)
+DECL|field|parentSpan
+specifier|private
+specifier|final
+name|Span
+name|parentSpan
+decl_stmt|;
+DECL|method|VolumeBlockLocationCallable (Configuration configuration, DatanodeInfo datanode, String poolId, long []blockIds, List<Token<BlockTokenIdentifier>> dnTokens, int timeout, boolean connectToDnViaHostname, Span parentSpan)
 name|VolumeBlockLocationCallable
 parameter_list|(
 name|Configuration
@@ -1818,6 +1874,9 @@ name|timeout
 parameter_list|,
 name|boolean
 name|connectToDnViaHostname
+parameter_list|,
+name|Span
+name|parentSpan
 parameter_list|)
 block|{
 name|this
@@ -1862,6 +1921,12 @@ name|connectToDnViaHostname
 operator|=
 name|connectToDnViaHostname
 expr_stmt|;
+name|this
+operator|.
+name|parentSpan
+operator|=
+name|parentSpan
+expr_stmt|;
 block|}
 DECL|method|getDatanodeInfo ()
 specifier|public
@@ -1893,6 +1958,18 @@ name|ClientDatanodeProtocol
 name|cdp
 init|=
 literal|null
+decl_stmt|;
+name|TraceScope
+name|scope
+init|=
+name|Trace
+operator|.
+name|startSpan
+argument_list|(
+literal|"getHdfsBlocksMetadata"
+argument_list|,
+name|parentSpan
+argument_list|)
 decl_stmt|;
 try|try
 block|{
@@ -1938,6 +2015,11 @@ throw|;
 block|}
 finally|finally
 block|{
+name|scope
+operator|.
+name|close
+argument_list|()
+expr_stmt|;
 if|if
 condition|(
 name|cdp

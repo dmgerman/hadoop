@@ -1026,6 +1026,16 @@ begin_import
 import|import
 name|org
 operator|.
+name|htrace
+operator|.
+name|Sampler
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
 name|junit
 operator|.
 name|After
@@ -5847,6 +5857,10 @@ argument_list|(
 name|nnRpc
 argument_list|,
 literal|null
+argument_list|,
+name|Sampler
+operator|.
+name|NEVER
 argument_list|)
 decl_stmt|;
 for|for

@@ -112,6 +112,36 @@ name|Preconditions
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|htrace
+operator|.
+name|Sampler
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|htrace
+operator|.
+name|Trace
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|htrace
+operator|.
+name|TraceScope
+import|;
+end_import
+
 begin_comment
 comment|/**  * CacheDirectiveIterator is a remote iterator that iterates cache directives.  * It supports retrying in case of namenode failover.  */
 end_comment
@@ -148,7 +178,16 @@ specifier|final
 name|ClientProtocol
 name|namenode
 decl_stmt|;
-DECL|method|CacheDirectiveIterator (ClientProtocol namenode, CacheDirectiveInfo filter)
+DECL|field|traceSampler
+specifier|private
+specifier|final
+name|Sampler
+argument_list|<
+name|?
+argument_list|>
+name|traceSampler
+decl_stmt|;
+DECL|method|CacheDirectiveIterator (ClientProtocol namenode, CacheDirectiveInfo filter, Sampler<?> traceSampler)
 specifier|public
 name|CacheDirectiveIterator
 parameter_list|(
@@ -157,6 +196,12 @@ name|namenode
 parameter_list|,
 name|CacheDirectiveInfo
 name|filter
+parameter_list|,
+name|Sampler
+argument_list|<
+name|?
+argument_list|>
+name|traceSampler
 parameter_list|)
 block|{
 name|super
@@ -175,6 +220,12 @@ operator|.
 name|filter
 operator|=
 name|filter
+expr_stmt|;
+name|this
+operator|.
+name|traceSampler
+operator|=
+name|traceSampler
 expr_stmt|;
 block|}
 DECL|method|removeIdFromFilter (CacheDirectiveInfo filter)
@@ -323,6 +374,18 @@ name|entries
 init|=
 literal|null
 decl_stmt|;
+name|TraceScope
+name|scope
+init|=
+name|Trace
+operator|.
+name|startSpan
+argument_list|(
+literal|"listCacheDirectives"
+argument_list|,
+name|traceSampler
+argument_list|)
+decl_stmt|;
 try|try
 block|{
 name|entries
@@ -464,6 +527,14 @@ block|}
 throw|throw
 name|e
 throw|;
+block|}
+finally|finally
+block|{
+name|scope
+operator|.
+name|close
+argument_list|()
+expr_stmt|;
 block|}
 name|Preconditions
 operator|.
