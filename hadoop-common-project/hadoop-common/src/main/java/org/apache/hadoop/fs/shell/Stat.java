@@ -111,7 +111,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * Print statistics about path in specified format.  * Format sequences:  *   %b: Size of file in blocks  *   %g: Group name of owner  *   %n: Filename  *   %o: Block size  *   %r: replication  *   %u: User name of owner  *   %y: UTC date as&quot;yyyy-MM-dd HH:mm:ss&quot;  *   %Y: Milliseconds since January 1, 1970 UTC  */
+comment|/**  * Print statistics about path in specified format.  * Format sequences:<br>  *   %b: Size of file in blocks<br>  *   %F: Type<br>  *   %g: Group name of owner<br>  *   %n: Filename<br>  *   %o: Block size<br>  *   %r: replication<br>  *   %u: User name of owner<br>  *   %y: UTC date as&quot;yyyy-MM-dd HH:mm:ss&quot;<br>  *   %Y: Milliseconds since January 1, 1970 UTC<br>  * If the format is not specified, %y is used by default.  */
 end_comment
 
 begin_class
@@ -151,6 +151,20 @@ literal|"-stat"
 argument_list|)
 expr_stmt|;
 block|}
+DECL|field|NEWLINE
+specifier|private
+specifier|static
+specifier|final
+name|String
+name|NEWLINE
+init|=
+name|System
+operator|.
+name|getProperty
+argument_list|(
+literal|"line.separator"
+argument_list|)
+decl_stmt|;
 DECL|field|NAME
 specifier|public
 specifier|static
@@ -176,11 +190,37 @@ specifier|final
 name|String
 name|DESCRIPTION
 init|=
-literal|"Print statistics about the file/directory at<path> "
+literal|"Print statistics about the file/directory at<path>"
 operator|+
-literal|"in the specified format. Format accepts filesize in blocks (%b), group name of owner(%g), "
+name|NEWLINE
 operator|+
-literal|"filename (%n), block size (%o), replication (%r), user name of owner(%u), modification date (%y, %Y)\n"
+literal|"in the specified format. Format accepts filesize in"
+operator|+
+name|NEWLINE
+operator|+
+literal|"blocks (%b), type (%F), group name of owner (%g),"
+operator|+
+name|NEWLINE
+operator|+
+literal|"name (%n), block size (%o), replication (%r), user name"
+operator|+
+name|NEWLINE
+operator|+
+literal|"of owner (%u), modification date (%y, %Y)."
+operator|+
+name|NEWLINE
+operator|+
+literal|"%y shows UTC date as \"yyyy-MM-dd HH:mm:ss\" and"
+operator|+
+name|NEWLINE
+operator|+
+literal|"%Y shows milliseconds since January 1, 1970 UTC."
+operator|+
+name|NEWLINE
+operator|+
+literal|"If the format is not specified, %y is used by default."
+operator|+
+name|NEWLINE
 decl_stmt|;
 DECL|field|timeFmt
 specifier|protected
