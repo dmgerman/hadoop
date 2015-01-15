@@ -24,6 +24,16 @@ name|org
 operator|.
 name|junit
 operator|.
+name|Ignore
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|junit
+operator|.
 name|Test
 import|;
 end_import
@@ -316,6 +326,241 @@ block|}
 argument_list|)
 expr_stmt|;
 block|}
+comment|/**    * Test adding metrics with whitespace in the name    */
+annotation|@
+name|Test
+DECL|method|testMetricsRegistryIllegalMetricNames ()
+specifier|public
+name|void
+name|testMetricsRegistryIllegalMetricNames
+parameter_list|()
+block|{
+specifier|final
+name|MetricsRegistry
+name|r
+init|=
+operator|new
+name|MetricsRegistry
+argument_list|(
+literal|"test"
+argument_list|)
+decl_stmt|;
+comment|// Fill up with some basics
+name|r
+operator|.
+name|newCounter
+argument_list|(
+literal|"c1"
+argument_list|,
+literal|"c1 desc"
+argument_list|,
+literal|1
+argument_list|)
+expr_stmt|;
+name|r
+operator|.
+name|newGauge
+argument_list|(
+literal|"g1"
+argument_list|,
+literal|"g1 desc"
+argument_list|,
+literal|1
+argument_list|)
+expr_stmt|;
+name|r
+operator|.
+name|newQuantiles
+argument_list|(
+literal|"q1"
+argument_list|,
+literal|"q1 desc"
+argument_list|,
+literal|"q1 name"
+argument_list|,
+literal|"q1 val type"
+argument_list|,
+literal|1
+argument_list|)
+expr_stmt|;
+comment|// Add some illegal names
+name|expectMetricsException
+argument_list|(
+literal|"Metric name 'badcount 2' contains "
+operator|+
+literal|"illegal whitespace character"
+argument_list|,
+operator|new
+name|Runnable
+argument_list|()
+block|{
+annotation|@
+name|Override
+specifier|public
+name|void
+name|run
+parameter_list|()
+block|{
+name|r
+operator|.
+name|newCounter
+argument_list|(
+literal|"badcount 2"
+argument_list|,
+literal|"c2 desc"
+argument_list|,
+literal|2
+argument_list|)
+expr_stmt|;
+block|}
+block|}
+argument_list|)
+expr_stmt|;
+name|expectMetricsException
+argument_list|(
+literal|"Metric name 'badcount3  ' contains "
+operator|+
+literal|"illegal whitespace character"
+argument_list|,
+operator|new
+name|Runnable
+argument_list|()
+block|{
+annotation|@
+name|Override
+specifier|public
+name|void
+name|run
+parameter_list|()
+block|{
+name|r
+operator|.
+name|newCounter
+argument_list|(
+literal|"badcount3  "
+argument_list|,
+literal|"c3 desc"
+argument_list|,
+literal|3
+argument_list|)
+expr_stmt|;
+block|}
+block|}
+argument_list|)
+expr_stmt|;
+name|expectMetricsException
+argument_list|(
+literal|"Metric name '  badcount4' contains "
+operator|+
+literal|"illegal whitespace character"
+argument_list|,
+operator|new
+name|Runnable
+argument_list|()
+block|{
+annotation|@
+name|Override
+specifier|public
+name|void
+name|run
+parameter_list|()
+block|{
+name|r
+operator|.
+name|newCounter
+argument_list|(
+literal|"  badcount4"
+argument_list|,
+literal|"c4 desc"
+argument_list|,
+literal|4
+argument_list|)
+expr_stmt|;
+block|}
+block|}
+argument_list|)
+expr_stmt|;
+name|expectMetricsException
+argument_list|(
+literal|"Metric name 'withtab5	' contains "
+operator|+
+literal|"illegal whitespace character"
+argument_list|,
+operator|new
+name|Runnable
+argument_list|()
+block|{
+annotation|@
+name|Override
+specifier|public
+name|void
+name|run
+parameter_list|()
+block|{
+name|r
+operator|.
+name|newCounter
+argument_list|(
+literal|"withtab5	"
+argument_list|,
+literal|"c5 desc"
+argument_list|,
+literal|5
+argument_list|)
+expr_stmt|;
+block|}
+block|}
+argument_list|)
+expr_stmt|;
+name|expectMetricsException
+argument_list|(
+literal|"Metric name 'withnewline6\n' contains "
+operator|+
+literal|"illegal whitespace character"
+argument_list|,
+operator|new
+name|Runnable
+argument_list|()
+block|{
+annotation|@
+name|Override
+specifier|public
+name|void
+name|run
+parameter_list|()
+block|{
+name|r
+operator|.
+name|newCounter
+argument_list|(
+literal|"withnewline6\n"
+argument_list|,
+literal|"c6 desc"
+argument_list|,
+literal|6
+argument_list|)
+expr_stmt|;
+block|}
+block|}
+argument_list|)
+expr_stmt|;
+comment|// Final validation
+name|assertEquals
+argument_list|(
+literal|"num metrics in registry"
+argument_list|,
+literal|3
+argument_list|,
+name|r
+operator|.
+name|metrics
+argument_list|()
+operator|.
+name|size
+argument_list|()
+argument_list|)
+expr_stmt|;
+block|}
 comment|/**    * Test the add by name method    */
 DECL|method|testAddByName ()
 annotation|@
@@ -475,6 +720,8 @@ block|}
 argument_list|)
 expr_stmt|;
 block|}
+annotation|@
+name|Ignore
 DECL|method|expectMetricsException (String prefix, Runnable fun)
 specifier|private
 name|void
