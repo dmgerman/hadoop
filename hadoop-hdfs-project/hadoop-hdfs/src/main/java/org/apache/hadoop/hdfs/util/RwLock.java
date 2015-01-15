@@ -35,21 +35,6 @@ name|void
 name|readLock
 parameter_list|()
 function_decl|;
-comment|/**    * Acquire the long read lock, unless interrupted while waiting. The long    * read lock should also serve to block all concurrent writers.    **/
-DECL|method|longReadLockInterruptibly ()
-name|void
-name|longReadLockInterruptibly
-parameter_list|()
-throws|throws
-name|InterruptedException
-function_decl|;
-comment|/** Release the long read lock. */
-DECL|method|longReadUnlock ()
-specifier|public
-name|void
-name|longReadUnlock
-parameter_list|()
-function_decl|;
 comment|/** Release read lock. */
 DECL|method|readUnlock ()
 specifier|public
