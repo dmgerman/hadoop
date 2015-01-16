@@ -1402,7 +1402,7 @@ decl_stmt|;
 name|String
 name|fadvisedFileName
 init|=
-name|MiniDFSCluster
+name|cluster
 operator|.
 name|getBlockFile
 argument_list|(
@@ -1673,7 +1673,7 @@ decl_stmt|;
 name|String
 name|fadvisedFileName
 init|=
-name|MiniDFSCluster
+name|cluster
 operator|.
 name|getBlockFile
 argument_list|(
@@ -1927,7 +1927,7 @@ decl_stmt|;
 name|String
 name|fadvisedFileName
 init|=
-name|MiniDFSCluster
+name|cluster
 operator|.
 name|getBlockFile
 argument_list|(
@@ -2194,7 +2194,7 @@ decl_stmt|;
 name|String
 name|fadvisedFileName
 init|=
-name|MiniDFSCluster
+name|cluster
 operator|.
 name|getBlockFile
 argument_list|(

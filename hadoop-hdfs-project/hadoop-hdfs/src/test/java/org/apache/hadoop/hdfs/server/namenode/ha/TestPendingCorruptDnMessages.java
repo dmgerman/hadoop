@@ -435,7 +435,7 @@ argument_list|)
 decl_stmt|;
 name|assertTrue
 argument_list|(
-name|MiniDFSCluster
+name|cluster
 operator|.
 name|changeGenStampOfBlock
 argument_list|(

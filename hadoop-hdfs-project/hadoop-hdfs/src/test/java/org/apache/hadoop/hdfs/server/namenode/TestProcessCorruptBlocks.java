@@ -1416,7 +1416,7 @@ comment|// the indexes change once the nodes are restarted.
 comment|// But the datadirectory will not change
 name|assertTrue
 argument_list|(
-name|MiniDFSCluster
+name|cluster
 operator|.
 name|corruptReplica
 argument_list|(
@@ -1467,7 +1467,7 @@ decl_stmt|;
 name|File
 name|storageDir
 init|=
-name|MiniDFSCluster
+name|cluster
 operator|.
 name|getStorageDir
 argument_list|(

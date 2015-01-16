@@ -1011,7 +1011,7 @@ decl_stmt|;
 name|File
 name|dataFile
 init|=
-name|MiniDFSCluster
+name|cluster
 operator|.
 name|getBlockFile
 argument_list|(
@@ -1023,7 +1023,7 @@ decl_stmt|;
 name|File
 name|metaFile
 init|=
-name|MiniDFSCluster
+name|cluster
 operator|.
 name|getBlockMetadataFile
 argument_list|(

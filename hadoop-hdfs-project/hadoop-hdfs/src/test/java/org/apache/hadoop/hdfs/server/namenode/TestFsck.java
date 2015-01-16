@@ -2744,7 +2744,9 @@ block|{
 name|ctFile
 operator|.
 name|removeBlocks
-argument_list|()
+argument_list|(
+name|cluster
+argument_list|)
 expr_stmt|;
 block|}
 comment|// Wait for fsck to discover all the missing blocks
@@ -3225,11 +3227,14 @@ return|return
 name|content
 return|;
 block|}
-DECL|method|removeBlocks ()
+DECL|method|removeBlocks (MiniDFSCluster cluster)
 specifier|public
 name|void
 name|removeBlocks
-parameter_list|()
+parameter_list|(
+name|MiniDFSCluster
+name|cluster
+parameter_list|)
 throws|throws
 name|AccessControlException
 throws|,
@@ -3295,7 +3300,7 @@ block|{
 name|File
 name|blockFile
 init|=
-name|MiniDFSCluster
+name|cluster
 operator|.
 name|getBlockFile
 argument_list|(
@@ -3841,7 +3846,7 @@ block|{
 name|File
 name|blockFile
 init|=
-name|MiniDFSCluster
+name|cluster
 operator|.
 name|getBlockFile
 argument_list|(
@@ -4768,7 +4773,7 @@ comment|// corrupt replicas
 name|File
 name|blockFile
 init|=
-name|MiniDFSCluster
+name|cluster
 operator|.
 name|getBlockFile
 argument_list|(
@@ -8955,7 +8960,7 @@ expr_stmt|;
 name|File
 name|blockFile
 init|=
-name|MiniDFSCluster
+name|cluster
 operator|.
 name|getBlockFile
 argument_list|(

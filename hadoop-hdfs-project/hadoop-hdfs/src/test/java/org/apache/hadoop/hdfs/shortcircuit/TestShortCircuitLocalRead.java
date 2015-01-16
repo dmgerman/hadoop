@@ -3116,7 +3116,7 @@ decl_stmt|;
 name|File
 name|dataFile
 init|=
-name|MiniDFSCluster
+name|cluster
 operator|.
 name|getBlockFile
 argument_list|(

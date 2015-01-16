@@ -2112,10 +2112,6 @@ operator|.
 name|shutdown
 argument_list|()
 expr_stmt|;
-name|cluster
-operator|=
-literal|null
-expr_stmt|;
 for|for
 control|(
 name|int
@@ -2163,7 +2159,7 @@ block|{
 name|File
 name|blockFile
 init|=
-name|MiniDFSCluster
+name|cluster
 operator|.
 name|getBlockFile
 argument_list|(
@@ -2650,6 +2646,8 @@ name|TestDatanodeBlockScanner
 operator|.
 name|changeReplicaLength
 argument_list|(
+name|cluster
+argument_list|,
 name|block
 argument_list|,
 name|i

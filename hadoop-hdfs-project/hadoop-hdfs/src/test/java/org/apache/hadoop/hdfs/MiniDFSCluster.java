@@ -8520,7 +8520,6 @@ block|}
 comment|/**    * Corrupt a block on a particular datanode.    *    * @param i index of the datanode    * @param blk name of the block    * @throws IOException on error accessing the given block or if    * the contents of the block (on the same datanode) differ.    * @return true if a replica was corrupted, false otherwise    * Types: delete, write bad data, truncate    */
 DECL|method|corruptReplica (int i, ExtendedBlock blk)
 specifier|public
-specifier|static
 name|boolean
 name|corruptReplica
 parameter_list|(
@@ -8704,7 +8703,6 @@ return|;
 block|}
 DECL|method|changeGenStampOfBlock (int dnIndex, ExtendedBlock blk, long newGenStamp)
 specifier|public
-specifier|static
 name|boolean
 name|changeGenStampOfBlock
 parameter_list|(
@@ -10840,7 +10838,6 @@ block|}
 comment|/**    * Get a storage directory for a datanode.    *<ol>    *<li><base directory>/data/data<2*dnIndex + 1></li>    *<li><base directory>/data/data<2*dnIndex + 2></li>    *</ol>    *    * @param dnIndex datanode index (starts from 0)    * @param dirIndex directory index.    * @return Storage directory    */
 DECL|method|getStorageDir (int dnIndex, int dirIndex)
 specifier|public
-specifier|static
 name|File
 name|getStorageDir
 parameter_list|(
@@ -10870,7 +10867,6 @@ block|}
 comment|/**    * Calculate the DN instance-specific path for appending to the base dir    * to determine the location of the storage of a DN instance in the mini cluster    * @param dnIndex datanode index    * @param dirIndex directory index.    * @return storage directory path    */
 DECL|method|getStorageDirPath (int dnIndex, int dirIndex)
 specifier|private
-specifier|static
 name|String
 name|getStorageDirPath
 parameter_list|(
@@ -10885,7 +10881,7 @@ return|return
 literal|"data/data"
 operator|+
 operator|(
-literal|2
+name|storagesPerDatanode
 operator|*
 name|dnIndex
 operator|+
@@ -11401,7 +11397,6 @@ block|}
 comment|/**    * Get the block data file for a block from a given datanode    * @param dnIndex Index of the datanode to get block files for    * @param block block for which corresponding files are needed    */
 DECL|method|getBlockFile (int dnIndex, ExtendedBlock block)
 specifier|public
-specifier|static
 name|File
 name|getBlockFile
 parameter_list|(
@@ -11431,8 +11426,6 @@ block|{
 name|File
 name|storageDir
 init|=
-name|MiniDFSCluster
-operator|.
 name|getStorageDir
 argument_list|(
 name|dnIndex
@@ -11470,7 +11463,6 @@ block|}
 comment|/**    * Get the block metadata file for a block from a given datanode    *     * @param dnIndex Index of the datanode to get block files for    * @param block block for which corresponding files are needed    */
 DECL|method|getBlockMetadataFile (int dnIndex, ExtendedBlock block)
 specifier|public
-specifier|static
 name|File
 name|getBlockMetadataFile
 parameter_list|(
@@ -11500,8 +11492,6 @@ block|{
 name|File
 name|storageDir
 init|=
-name|MiniDFSCluster
-operator|.
 name|getStorageDir
 argument_list|(
 name|dnIndex

@@ -1077,32 +1077,6 @@ name|shutdown
 argument_list|()
 expr_stmt|;
 block|}
-DECL|method|corruptReplica (ExtendedBlock blk, int replica)
-specifier|public
-specifier|static
-name|boolean
-name|corruptReplica
-parameter_list|(
-name|ExtendedBlock
-name|blk
-parameter_list|,
-name|int
-name|replica
-parameter_list|)
-throws|throws
-name|IOException
-block|{
-return|return
-name|MiniDFSCluster
-operator|.
-name|corruptReplica
-argument_list|(
-name|replica
-argument_list|,
-name|blk
-argument_list|)
-return|;
-block|}
 annotation|@
 name|Test
 DECL|method|testBlockCorruptionPolicy ()
@@ -1254,7 +1228,7 @@ expr_stmt|;
 comment|// Corrupt random replica of block
 name|assertTrue
 argument_list|(
-name|MiniDFSCluster
+name|cluster
 operator|.
 name|corruptReplica
 argument_list|(
@@ -1305,7 +1279,7 @@ comment|// Corrupt all replicas. Now, block should be marked as corrupt
 comment|// and we should get all the replicas
 name|assertTrue
 argument_list|(
-name|MiniDFSCluster
+name|cluster
 operator|.
 name|corruptReplica
 argument_list|(
@@ -1317,7 +1291,7 @@ argument_list|)
 expr_stmt|;
 name|assertTrue
 argument_list|(
-name|MiniDFSCluster
+name|cluster
 operator|.
 name|corruptReplica
 argument_list|(
@@ -1329,7 +1303,7 @@ argument_list|)
 expr_stmt|;
 name|assertTrue
 argument_list|(
-name|MiniDFSCluster
+name|cluster
 operator|.
 name|corruptReplica
 argument_list|(
@@ -1680,11 +1654,13 @@ control|)
 block|{
 if|if
 condition|(
+name|cluster
+operator|.
 name|corruptReplica
 argument_list|(
-name|block
-argument_list|,
 name|i
+argument_list|,
+name|block
 argument_list|)
 condition|)
 block|{
@@ -2152,6 +2128,8 @@ condition|(
 operator|!
 name|changeReplicaLength
 argument_list|(
+name|cluster
+argument_list|,
 name|block
 argument_list|,
 literal|0
@@ -2277,6 +2255,8 @@ expr_stmt|;
 comment|// Make sure that truncated block will be deleted
 name|waitForBlockDeleted
 argument_list|(
+name|cluster
+argument_list|,
 name|block
 argument_list|,
 literal|0
@@ -2295,11 +2275,14 @@ expr_stmt|;
 block|}
 block|}
 comment|/**    * Change the length of a block at datanode dnIndex    */
-DECL|method|changeReplicaLength (ExtendedBlock blk, int dnIndex, int lenDelta)
+DECL|method|changeReplicaLength (MiniDFSCluster cluster, ExtendedBlock blk, int dnIndex, int lenDelta)
 specifier|static
 name|boolean
 name|changeReplicaLength
 parameter_list|(
+name|MiniDFSCluster
+name|cluster
+parameter_list|,
 name|ExtendedBlock
 name|blk
 parameter_list|,
@@ -2315,7 +2298,7 @@ block|{
 name|File
 name|blockFile
 init|=
-name|MiniDFSCluster
+name|cluster
 operator|.
 name|getBlockFile
 argument_list|(
@@ -2381,12 +2364,15 @@ return|return
 literal|false
 return|;
 block|}
-DECL|method|waitForBlockDeleted (ExtendedBlock blk, int dnIndex, long timeout)
+DECL|method|waitForBlockDeleted (MiniDFSCluster cluster, ExtendedBlock blk, int dnIndex, long timeout)
 specifier|private
 specifier|static
 name|void
 name|waitForBlockDeleted
 parameter_list|(
+name|MiniDFSCluster
+name|cluster
+parameter_list|,
 name|ExtendedBlock
 name|blk
 parameter_list|,
@@ -2404,7 +2390,7 @@ block|{
 name|File
 name|blockFile
 init|=
-name|MiniDFSCluster
+name|cluster
 operator|.
 name|getBlockFile
 argument_list|(
@@ -2490,7 +2476,7 @@ argument_list|)
 expr_stmt|;
 name|blockFile
 operator|=
-name|MiniDFSCluster
+name|cluster
 operator|.
 name|getBlockFile
 argument_list|(

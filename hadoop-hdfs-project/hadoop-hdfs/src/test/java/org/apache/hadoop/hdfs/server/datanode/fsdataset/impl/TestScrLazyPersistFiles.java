@@ -1039,7 +1039,7 @@ expr_stmt|;
 name|File
 name|metaFile
 init|=
-name|MiniDFSCluster
+name|cluster
 operator|.
 name|getBlockMetadataFile
 argument_list|(
@@ -1102,7 +1102,7 @@ argument_list|)
 expr_stmt|;
 name|metaFile
 operator|=
-name|MiniDFSCluster
+name|cluster
 operator|.
 name|getBlockMetadataFile
 argument_list|(
@@ -1180,7 +1180,7 @@ argument_list|)
 expr_stmt|;
 name|metaFile
 operator|=
-name|MiniDFSCluster
+name|cluster
 operator|.
 name|getBlockMetadataFile
 argument_list|(
@@ -1431,7 +1431,7 @@ argument_list|,
 name|DEFAULT
 argument_list|)
 expr_stmt|;
-name|MiniDFSCluster
+name|cluster
 operator|.
 name|corruptReplica
 argument_list|(
@@ -1647,7 +1647,7 @@ expr_stmt|;
 name|File
 name|metaFile
 init|=
-name|MiniDFSCluster
+name|cluster
 operator|.
 name|getBlockMetadataFile
 argument_list|(
