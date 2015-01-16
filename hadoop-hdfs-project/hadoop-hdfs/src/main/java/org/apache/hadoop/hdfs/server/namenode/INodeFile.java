@@ -2147,10 +2147,7 @@ argument_list|()
 operator|.
 name|findLaterSnapshotBlocks
 argument_list|(
-name|diff
-operator|.
-name|getSnapshotId
-argument_list|()
+name|snapshot
 argument_list|)
 expr_stmt|;
 return|return
