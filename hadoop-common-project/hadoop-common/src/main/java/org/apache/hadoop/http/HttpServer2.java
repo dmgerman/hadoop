@@ -1651,6 +1651,15 @@ argument_list|()
 decl_stmt|;
 name|c
 operator|.
+name|setHeaderBufferSize
+argument_list|(
+literal|1024
+operator|*
+literal|64
+argument_list|)
+expr_stmt|;
+name|c
+operator|.
 name|setNeedClientAuth
 argument_list|(
 name|needsClientAuth
