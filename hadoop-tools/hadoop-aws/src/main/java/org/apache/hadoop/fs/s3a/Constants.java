@@ -62,6 +62,16 @@ name|DEFAULT_SECURE_CONNECTIONS
 init|=
 literal|true
 decl_stmt|;
+comment|//use a custom endpoint?
+DECL|field|ENDPOINT
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|ENDPOINT
+init|=
+literal|"fs.s3a.endpoint"
+decl_stmt|;
 comment|// number of times we should retry errors
 DECL|field|MAX_ERROR_RETRIES
 specifier|public
