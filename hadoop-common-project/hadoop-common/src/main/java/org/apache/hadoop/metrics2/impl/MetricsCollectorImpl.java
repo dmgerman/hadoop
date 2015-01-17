@@ -345,7 +345,12 @@ name|iterator
 argument_list|()
 return|;
 block|}
+annotation|@
+name|InterfaceAudience
+operator|.
+name|Private
 DECL|method|clear ()
+specifier|public
 name|void
 name|clear
 parameter_list|()
