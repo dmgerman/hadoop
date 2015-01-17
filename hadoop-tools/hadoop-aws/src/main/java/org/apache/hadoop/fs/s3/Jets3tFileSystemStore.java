@@ -971,9 +971,15 @@ argument_list|()
 argument_list|)
 condition|)
 block|{
-return|return
-literal|null
-return|;
+throw|throw
+operator|new
+name|IOException
+argument_list|(
+name|key
+operator|+
+literal|" doesn't exist"
+argument_list|)
+throw|;
 block|}
 if|if
 condition|(
