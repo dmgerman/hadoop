@@ -906,6 +906,15 @@ return|return
 name|localTarget
 return|;
 block|}
+DECL|method|getServiceState ()
+name|HAServiceState
+name|getServiceState
+parameter_list|()
+block|{
+return|return
+name|serviceState
+return|;
+block|}
 DECL|method|run (final String[] args)
 specifier|public
 name|int

@@ -852,10 +852,10 @@ parameter_list|)
 throws|throws
 name|Exception
 block|{
-name|DummyHAService
+name|DummyZKFC
 name|svc
 init|=
-name|getService
+name|getZkfc
 argument_list|(
 name|idx
 argument_list|)
@@ -864,7 +864,8 @@ while|while
 condition|(
 name|svc
 operator|.
-name|state
+name|getServiceState
+argument_list|()
 operator|!=
 name|state
 condition|)
