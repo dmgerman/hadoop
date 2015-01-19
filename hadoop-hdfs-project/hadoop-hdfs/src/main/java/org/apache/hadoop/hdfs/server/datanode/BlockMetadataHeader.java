@@ -674,6 +674,7 @@ block|}
 block|}
 comment|/**    * Read the header at the beginning of the given block meta file.    * The current file position will be altered by this method.    * If an error occurs, the file is<em>not</em> closed.    */
 DECL|method|readHeader (RandomAccessFile raf)
+specifier|public
 specifier|static
 name|BlockMetadataHeader
 name|readHeader

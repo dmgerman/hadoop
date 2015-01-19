@@ -26,6 +26,7 @@ end_comment
 
 begin_class
 DECL|class|ChunkChecksum
+specifier|public
 class|class
 name|ChunkChecksum
 block|{
@@ -44,6 +45,7 @@ index|[]
 name|checksum
 decl_stmt|;
 DECL|method|ChunkChecksum (long dataLength, byte[] checksum)
+specifier|public
 name|ChunkChecksum
 parameter_list|(
 name|long

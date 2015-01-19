@@ -4,7 +4,7 @@ comment|/**  * Licensed to the Apache Software Foundation (ASF) under one  * or 
 end_comment
 
 begin_package
-DECL|package|org.apache.hadoop.hdfs.server.datanode.fsdataset
+DECL|package|org.apache.hadoop.hdfs.server.datanode.extdataset
 package|package
 name|org
 operator|.
@@ -18,7 +18,7 @@ name|server
 operator|.
 name|datanode
 operator|.
-name|fsdataset
+name|extdataset
 package|;
 end_package
 
@@ -28,57 +28,7 @@ name|java
 operator|.
 name|io
 operator|.
-name|EOFException
-import|;
-end_import
-
-begin_import
-import|import
-name|java
-operator|.
-name|io
-operator|.
-name|File
-import|;
-end_import
-
-begin_import
-import|import
-name|java
-operator|.
-name|io
-operator|.
-name|FileDescriptor
-import|;
-end_import
-
-begin_import
-import|import
-name|java
-operator|.
-name|io
-operator|.
-name|FileNotFoundException
-import|;
-end_import
-
-begin_import
-import|import
-name|java
-operator|.
-name|io
-operator|.
-name|IOException
-import|;
-end_import
-
-begin_import
-import|import
-name|java
-operator|.
-name|io
-operator|.
-name|InputStream
+name|*
 import|;
 end_import
 
@@ -88,41 +38,7 @@ name|java
 operator|.
 name|util
 operator|.
-name|Collection
-import|;
-end_import
-
-begin_import
-import|import
-name|java
-operator|.
-name|util
-operator|.
-name|List
-import|;
-end_import
-
-begin_import
-import|import
-name|java
-operator|.
-name|util
-operator|.
-name|Map
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|classification
-operator|.
-name|InterfaceAudience
+name|*
 import|;
 end_import
 
@@ -137,20 +53,6 @@ operator|.
 name|conf
 operator|.
 name|Configuration
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|hdfs
-operator|.
-name|DFSConfigKeys
 import|;
 end_import
 
@@ -282,151 +184,7 @@ name|server
 operator|.
 name|datanode
 operator|.
-name|DataNode
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|hdfs
-operator|.
-name|server
-operator|.
-name|datanode
-operator|.
-name|DataStorage
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|hdfs
-operator|.
-name|server
-operator|.
-name|datanode
-operator|.
-name|FinalizedReplica
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|hdfs
-operator|.
-name|server
-operator|.
-name|datanode
-operator|.
-name|Replica
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|hdfs
-operator|.
-name|server
-operator|.
-name|datanode
-operator|.
-name|ReplicaInPipelineInterface
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|hdfs
-operator|.
-name|server
-operator|.
-name|datanode
-operator|.
-name|ReplicaInfo
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|hdfs
-operator|.
-name|server
-operator|.
-name|datanode
-operator|.
-name|ReplicaNotFoundException
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|hdfs
-operator|.
-name|server
-operator|.
-name|datanode
-operator|.
-name|StorageLocation
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|hdfs
-operator|.
-name|server
-operator|.
-name|datanode
-operator|.
-name|UnexpectedReplicaStateException
+name|*
 import|;
 end_import
 
@@ -446,9 +204,7 @@ name|datanode
 operator|.
 name|fsdataset
 operator|.
-name|impl
-operator|.
-name|FsDatasetFactory
+name|FsDatasetSpi
 import|;
 end_import
 
@@ -468,9 +224,7 @@ name|datanode
 operator|.
 name|fsdataset
 operator|.
-name|impl
-operator|.
-name|FsVolumeImpl
+name|FsVolumeSpi
 import|;
 end_import
 
@@ -488,9 +242,69 @@ name|server
 operator|.
 name|datanode
 operator|.
-name|metrics
+name|fsdataset
 operator|.
-name|FSDatasetMBean
+name|LengthInputStream
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|server
+operator|.
+name|datanode
+operator|.
+name|fsdataset
+operator|.
+name|ReplicaInputStreams
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|server
+operator|.
+name|datanode
+operator|.
+name|fsdataset
+operator|.
+name|ReplicaOutputStreams
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|server
+operator|.
+name|datanode
+operator|.
+name|fsdataset
+operator|.
+name|RollingLogs
 import|;
 end_import
 
@@ -597,8 +411,6 @@ operator|.
 name|util
 operator|.
 name|DiskChecker
-operator|.
-name|DiskErrorException
 import|;
 end_import
 
@@ -612,136 +424,51 @@ name|hadoop
 operator|.
 name|util
 operator|.
-name|ReflectionUtils
+name|DiskChecker
+operator|.
+name|DiskErrorException
 import|;
 end_import
 
-begin_comment
-comment|/**  * This is a service provider interface for the underlying storage that  * stores replicas for a data node.  * The default implementation stores replicas on local drives.   */
-end_comment
-
-begin_interface
-annotation|@
-name|InterfaceAudience
-operator|.
-name|Private
-DECL|interface|FsDatasetSpi
+begin_class
+DECL|class|ExternalDatasetImpl
 specifier|public
-interface|interface
-name|FsDatasetSpi
-parameter_list|<
-name|V
-extends|extends
-name|FsVolumeSpi
-parameter_list|>
-extends|extends
-name|FSDatasetMBean
-block|{
-comment|/**    * A factory for creating {@link FsDatasetSpi} objects.    */
-DECL|class|Factory
-specifier|public
-specifier|static
-specifier|abstract
 class|class
-name|Factory
-parameter_list|<
-name|D
-extends|extends
+name|ExternalDatasetImpl
+implements|implements
 name|FsDatasetSpi
-parameter_list|<
-name|?
-parameter_list|>
-parameter_list|>
-block|{
-comment|/** @return the configured factory. */
-DECL|method|getFactory (Configuration conf)
-specifier|public
-specifier|static
-name|Factory
 argument_list|<
-name|?
+name|ExternalVolumeImpl
 argument_list|>
-name|getFactory
-parameter_list|(
-name|Configuration
-name|conf
-parameter_list|)
 block|{
-annotation|@
-name|SuppressWarnings
-argument_list|(
-literal|"rawtypes"
-argument_list|)
+DECL|field|storage
+specifier|private
 specifier|final
-name|Class
-argument_list|<
-name|?
-extends|extends
-name|Factory
-argument_list|>
-name|clazz
+name|DatanodeStorage
+name|storage
 init|=
-name|conf
-operator|.
-name|getClass
+operator|new
+name|DatanodeStorage
 argument_list|(
-name|DFSConfigKeys
+name|DatanodeStorage
 operator|.
-name|DFS_DATANODE_FSDATASET_FACTORY_KEY
+name|generateUuid
+argument_list|()
 argument_list|,
-name|FsDatasetFactory
+name|DatanodeStorage
 operator|.
-name|class
+name|State
+operator|.
+name|NORMAL
 argument_list|,
-name|Factory
+name|StorageType
 operator|.
-name|class
+name|DEFAULT
 argument_list|)
 decl_stmt|;
-return|return
-name|ReflectionUtils
-operator|.
-name|newInstance
-argument_list|(
-name|clazz
-argument_list|,
-name|conf
-argument_list|)
-return|;
-block|}
-comment|/** Create a new object. */
-DECL|method|newInstance (DataNode datanode, DataStorage storage, Configuration conf)
-specifier|public
-specifier|abstract
-name|D
-name|newInstance
-parameter_list|(
-name|DataNode
-name|datanode
-parameter_list|,
-name|DataStorage
-name|storage
-parameter_list|,
-name|Configuration
-name|conf
-parameter_list|)
-throws|throws
-name|IOException
-function_decl|;
-comment|/** Does the factory create simulated objects? */
-DECL|method|isSimulated ()
-specifier|public
-name|boolean
-name|isSimulated
-parameter_list|()
-block|{
-return|return
-literal|false
-return|;
-block|}
-block|}
-comment|/**    * Create rolling logs.    *    * @param prefix the prefix of the log names.    * @return rolling logs    */
-DECL|method|createRollingLogs (String bpid, String prefix )
+annotation|@
+name|Override
+DECL|method|createRollingLogs (String bpid, String prefix)
 specifier|public
 name|RollingLogs
 name|createRollingLogs
@@ -754,28 +481,38 @@ name|prefix
 parameter_list|)
 throws|throws
 name|IOException
-function_decl|;
-comment|/** @return a list of volumes. */
+block|{
+return|return
+operator|new
+name|ExternalRollingLogs
+argument_list|()
+return|;
+block|}
+annotation|@
+name|Override
 DECL|method|getVolumes ()
 specifier|public
 name|List
 argument_list|<
-name|V
+name|ExternalVolumeImpl
 argument_list|>
 name|getVolumes
 parameter_list|()
-function_decl|;
-comment|/** Add an array of StorageLocation to FsDataset. */
-DECL|method|addVolume ( final StorageLocation location, final List<NamespaceInfo> nsInfos)
+block|{
+return|return
+literal|null
+return|;
+block|}
+annotation|@
+name|Override
+DECL|method|addVolume (StorageLocation location, List<NamespaceInfo> nsInfos)
 specifier|public
 name|void
 name|addVolume
 parameter_list|(
-specifier|final
 name|StorageLocation
 name|location
 parameter_list|,
-specifier|final
 name|List
 argument_list|<
 name|NamespaceInfo
@@ -784,8 +521,9 @@ name|nsInfos
 parameter_list|)
 throws|throws
 name|IOException
-function_decl|;
-comment|/** Removes a collection of volumes from FsDataset. */
+block|{    }
+annotation|@
+name|Override
 DECL|method|removeVolumes (Collection<StorageLocation> volumes)
 specifier|public
 name|void
@@ -797,19 +535,24 @@ name|StorageLocation
 argument_list|>
 name|volumes
 parameter_list|)
-function_decl|;
-comment|/** @return a storage with the given storage ID */
-DECL|method|getStorage (final String storageUuid)
+block|{    }
+annotation|@
+name|Override
+DECL|method|getStorage (String storageUuid)
 specifier|public
 name|DatanodeStorage
 name|getStorage
 parameter_list|(
-specifier|final
 name|String
 name|storageUuid
 parameter_list|)
-function_decl|;
-comment|/** @return one or more storage reports for attached volumes. */
+block|{
+return|return
+literal|null
+return|;
+block|}
+annotation|@
+name|Override
 DECL|method|getStorageReports (String bpid)
 specifier|public
 name|StorageReport
@@ -821,18 +564,59 @@ name|bpid
 parameter_list|)
 throws|throws
 name|IOException
-function_decl|;
-comment|/** @return the volume that contains a replica of the block. */
+block|{
+name|StorageReport
+index|[]
+name|result
+init|=
+operator|new
+name|StorageReport
+index|[
+literal|1
+index|]
+decl_stmt|;
+name|result
+index|[
+literal|0
+index|]
+operator|=
+operator|new
+name|StorageReport
+argument_list|(
+name|storage
+argument_list|,
+literal|false
+argument_list|,
+literal|0
+argument_list|,
+literal|0
+argument_list|,
+literal|0
+argument_list|,
+literal|0
+argument_list|)
+expr_stmt|;
+return|return
+name|result
+return|;
+block|}
+annotation|@
+name|Override
 DECL|method|getVolume (ExtendedBlock b)
 specifier|public
-name|V
+name|ExternalVolumeImpl
 name|getVolume
 parameter_list|(
 name|ExtendedBlock
 name|b
 parameter_list|)
-function_decl|;
-comment|/** @return a volume information map (name => info). */
+block|{
+return|return
+literal|null
+return|;
+block|}
+annotation|@
+name|Override
 DECL|method|getVolumeInfoMap ()
 specifier|public
 name|Map
@@ -843,8 +627,13 @@ name|Object
 argument_list|>
 name|getVolumeInfoMap
 parameter_list|()
-function_decl|;
-comment|/** @return a list of finalized blocks for the given block pool. */
+block|{
+return|return
+literal|null
+return|;
+block|}
+annotation|@
+name|Override
 DECL|method|getFinalizedBlocks (String bpid)
 specifier|public
 name|List
@@ -856,8 +645,13 @@ parameter_list|(
 name|String
 name|bpid
 parameter_list|)
-function_decl|;
-comment|/** @return a list of finalized blocks for the given block pool. */
+block|{
+return|return
+literal|null
+return|;
+block|}
+annotation|@
+name|Override
 DECL|method|getFinalizedBlocksOnPersistentStorage (String bpid)
 specifier|public
 name|List
@@ -869,8 +663,13 @@ parameter_list|(
 name|String
 name|bpid
 parameter_list|)
-function_decl|;
-comment|/**    * Check whether the in-memory block record matches the block on the disk,    * and, in case that they are not matched, update the record or mark it    * as corrupted.    */
+block|{
+return|return
+literal|null
+return|;
+block|}
+annotation|@
+name|Override
 DECL|method|checkAndUpdate (String bpid, long blockId, File diskFile, File diskMetaFile, FsVolumeSpi vol)
 specifier|public
 name|void
@@ -891,11 +690,10 @@ parameter_list|,
 name|FsVolumeSpi
 name|vol
 parameter_list|)
-throws|throws
-name|IOException
-function_decl|;
-comment|/**    * @param b - the block    * @return a stream if the meta-data of the block exists;    *         otherwise, return null.    * @throws IOException    */
-DECL|method|getMetaDataInputStream (ExtendedBlock b )
+block|{   }
+annotation|@
+name|Override
+DECL|method|getMetaDataInputStream (ExtendedBlock b)
 specifier|public
 name|LengthInputStream
 name|getMetaDataInputStream
@@ -905,8 +703,19 @@ name|b
 parameter_list|)
 throws|throws
 name|IOException
-function_decl|;
-comment|/**    * Returns the specified block's on-disk length (excluding metadata)    * @return   the specified block's on-disk length (excluding metadta)    * @throws IOException on error    */
+block|{
+return|return
+operator|new
+name|LengthInputStream
+argument_list|(
+literal|null
+argument_list|,
+literal|0
+argument_list|)
+return|;
+block|}
+annotation|@
+name|Override
 DECL|method|getLength (ExtendedBlock b)
 specifier|public
 name|long
@@ -917,8 +726,13 @@ name|b
 parameter_list|)
 throws|throws
 name|IOException
-function_decl|;
-comment|/**    * Get reference to the replica meta info in the replicasMap.     * To be called from methods that are synchronized on {@link FSDataset}    * @return replica from the replicas map    */
+block|{
+return|return
+literal|0
+return|;
+block|}
+annotation|@
+name|Override
 annotation|@
 name|Deprecated
 DECL|method|getReplica (String bpid, long blockId)
@@ -932,8 +746,15 @@ parameter_list|,
 name|long
 name|blockId
 parameter_list|)
-function_decl|;
-comment|/**    * @return replica meta information    */
+block|{
+return|return
+operator|new
+name|ExternalReplica
+argument_list|()
+return|;
+block|}
+annotation|@
+name|Override
 DECL|method|getReplicaString (String bpid, long blockId)
 specifier|public
 name|String
@@ -945,8 +766,13 @@ parameter_list|,
 name|long
 name|blockId
 parameter_list|)
-function_decl|;
-comment|/**    * @return the generation stamp stored with the block.    */
+block|{
+return|return
+literal|null
+return|;
+block|}
+annotation|@
+name|Override
 DECL|method|getStoredBlock (String bpid, long blkid)
 specifier|public
 name|Block
@@ -960,8 +786,15 @@ name|blkid
 parameter_list|)
 throws|throws
 name|IOException
-function_decl|;
-comment|/**    * Returns an input stream at specified offset of the specified block    * @param b block    * @param seekOffset offset with in the block to seek to    * @return an input stream to read the contents of the specified block,    *  starting at the offset    * @throws IOException    */
+block|{
+return|return
+operator|new
+name|Block
+argument_list|()
+return|;
+block|}
+annotation|@
+name|Override
 DECL|method|getBlockInputStream (ExtendedBlock b, long seekOffset)
 specifier|public
 name|InputStream
@@ -975,8 +808,13 @@ name|seekOffset
 parameter_list|)
 throws|throws
 name|IOException
-function_decl|;
-comment|/**    * Returns an input stream at specified offset of the specified block    * The block is still in the tmp directory and is not finalized    * @return an input stream to read the contents of the specified block,    *  starting at the offset    * @throws IOException    */
+block|{
+return|return
+literal|null
+return|;
+block|}
+annotation|@
+name|Override
 DECL|method|getTmpInputStreams (ExtendedBlock b, long blkoff, long ckoff)
 specifier|public
 name|ReplicaInputStreams
@@ -993,41 +831,70 @@ name|ckoff
 parameter_list|)
 throws|throws
 name|IOException
-function_decl|;
-comment|/**    * Creates a temporary replica and returns the meta information of the replica    *     * @param b block    * @return the meta info of the replica which is being written to    * @throws IOException if an error occurs    */
-DECL|method|createTemporary (StorageType storageType, ExtendedBlock b)
+block|{
+return|return
+operator|new
+name|ReplicaInputStreams
+argument_list|(
+name|FileDescriptor
+operator|.
+name|in
+argument_list|,
+name|FileDescriptor
+operator|.
+name|in
+argument_list|)
+return|;
+block|}
+annotation|@
+name|Override
+DECL|method|createTemporary (StorageType t, ExtendedBlock b)
 specifier|public
 name|ReplicaInPipelineInterface
 name|createTemporary
 parameter_list|(
 name|StorageType
-name|storageType
+name|t
 parameter_list|,
 name|ExtendedBlock
 name|b
 parameter_list|)
 throws|throws
 name|IOException
-function_decl|;
-comment|/**    * Creates a RBW replica and returns the meta info of the replica    *     * @param b block    * @return the meta info of the replica which is being written to    * @throws IOException if an error occurs    */
-DECL|method|createRbw (StorageType storageType, ExtendedBlock b, boolean allowLazyPersist)
+block|{
+return|return
+operator|new
+name|ExternalReplicaInPipeline
+argument_list|()
+return|;
+block|}
+annotation|@
+name|Override
+DECL|method|createRbw (StorageType t, ExtendedBlock b, boolean tf)
 specifier|public
 name|ReplicaInPipelineInterface
 name|createRbw
 parameter_list|(
 name|StorageType
-name|storageType
+name|t
 parameter_list|,
 name|ExtendedBlock
 name|b
 parameter_list|,
 name|boolean
-name|allowLazyPersist
+name|tf
 parameter_list|)
 throws|throws
 name|IOException
-function_decl|;
-comment|/**    * Recovers a RBW replica and returns the meta info of the replica    *     * @param b block    * @param newGS the new generation stamp for the replica    * @param minBytesRcvd the minimum number of bytes that the replica could have    * @param maxBytesRcvd the maximum number of bytes that the replica could have    * @return the meta info of the replica which is being written to    * @throws IOException if an error occurs    */
+block|{
+return|return
+operator|new
+name|ExternalReplicaInPipeline
+argument_list|()
+return|;
+block|}
+annotation|@
+name|Override
 DECL|method|recoverRbw (ExtendedBlock b, long newGS, long minBytesRcvd, long maxBytesRcvd)
 specifier|public
 name|ReplicaInPipelineInterface
@@ -1047,8 +914,15 @@ name|maxBytesRcvd
 parameter_list|)
 throws|throws
 name|IOException
-function_decl|;
-comment|/**    * Covert a temporary replica to a RBW.    * @param temporary the temporary replica being converted    * @return the result RBW    */
+block|{
+return|return
+operator|new
+name|ExternalReplicaInPipeline
+argument_list|()
+return|;
+block|}
+annotation|@
+name|Override
 DECL|method|convertTemporaryToRbw ( ExtendedBlock temporary)
 specifier|public
 name|ReplicaInPipelineInterface
@@ -1059,8 +933,15 @@ name|temporary
 parameter_list|)
 throws|throws
 name|IOException
-function_decl|;
-comment|/**    * Append to a finalized replica and returns the meta info of the replica    *     * @param b block    * @param newGS the new generation stamp for the replica    * @param expectedBlockLen the number of bytes the replica is expected to have    * @return the meata info of the replica which is being written to    * @throws IOException    */
+block|{
+return|return
+operator|new
+name|ExternalReplicaInPipeline
+argument_list|()
+return|;
+block|}
+annotation|@
+name|Override
 DECL|method|append (ExtendedBlock b, long newGS, long expectedBlockLen)
 specifier|public
 name|ReplicaInPipelineInterface
@@ -1077,8 +958,15 @@ name|expectedBlockLen
 parameter_list|)
 throws|throws
 name|IOException
-function_decl|;
-comment|/**    * Recover a failed append to a finalized replica    * and returns the meta info of the replica    *     * @param b block    * @param newGS the new generation stamp for the replica    * @param expectedBlockLen the number of bytes the replica is expected to have    * @return the meta info of the replica which is being written to    * @throws IOException    */
+block|{
+return|return
+operator|new
+name|ExternalReplicaInPipeline
+argument_list|()
+return|;
+block|}
+annotation|@
+name|Override
 DECL|method|recoverAppend (ExtendedBlock b, long newGS, long expectedBlockLen)
 specifier|public
 name|ReplicaInPipelineInterface
@@ -1095,9 +983,16 @@ name|expectedBlockLen
 parameter_list|)
 throws|throws
 name|IOException
-function_decl|;
-comment|/**    * Recover a failed pipeline close    * It bumps the replica's generation stamp and finalize it if RBW replica    *     * @param b block    * @param newGS the new generation stamp for the replica    * @param expectedBlockLen the number of bytes the replica is expected to have    * @return the storage uuid of the replica.    * @throws IOException    */
-DECL|method|recoverClose (ExtendedBlock b, long newGS, long expectedBlockLen )
+block|{
+return|return
+operator|new
+name|ExternalReplicaInPipeline
+argument_list|()
+return|;
+block|}
+annotation|@
+name|Override
+DECL|method|recoverClose (ExtendedBlock b, long newGS, long expectedBlockLen)
 specifier|public
 name|String
 name|recoverClose
@@ -1113,8 +1008,13 @@ name|expectedBlockLen
 parameter_list|)
 throws|throws
 name|IOException
-function_decl|;
-comment|/**    * Finalizes the block previously opened for writing using writeToBlock.    * The block size is what is in the parameter b and it must match the amount    *  of data written    * @throws IOException    * @throws ReplicaNotFoundException if the replica can not be found when the    * block is been finalized. For instance, the block resides on an HDFS volume    * that has been removed.    */
+block|{
+return|return
+literal|null
+return|;
+block|}
+annotation|@
+name|Override
 DECL|method|finalizeBlock (ExtendedBlock b)
 specifier|public
 name|void
@@ -1125,8 +1025,9 @@ name|b
 parameter_list|)
 throws|throws
 name|IOException
-function_decl|;
-comment|/**    * Unfinalizes the block previously opened for writing using writeToBlock.    * The temporary file associated with this block is deleted.    * @throws IOException    */
+block|{   }
+annotation|@
+name|Override
 DECL|method|unfinalizeBlock (ExtendedBlock b)
 specifier|public
 name|void
@@ -1137,8 +1038,9 @@ name|b
 parameter_list|)
 throws|throws
 name|IOException
-function_decl|;
-comment|/**    * Returns one block report per volume.    * @param bpid Block Pool Id    * @return - a map of DatanodeStorage to block report for the volume.    */
+block|{   }
+annotation|@
+name|Override
 DECL|method|getBlockReports (String bpid)
 specifier|public
 name|Map
@@ -1152,8 +1054,46 @@ parameter_list|(
 name|String
 name|bpid
 parameter_list|)
-function_decl|;
-comment|/**    * Returns the cache report - the full list of cached block IDs of a    * block pool.    * @param   bpid Block Pool Id    * @return  the cache report - the full list of cached block IDs.    */
+block|{
+specifier|final
+name|Map
+argument_list|<
+name|DatanodeStorage
+argument_list|,
+name|BlockListAsLongs
+argument_list|>
+name|result
+init|=
+operator|new
+name|HashMap
+argument_list|<
+name|DatanodeStorage
+argument_list|,
+name|BlockListAsLongs
+argument_list|>
+argument_list|()
+decl_stmt|;
+name|result
+operator|.
+name|put
+argument_list|(
+name|storage
+argument_list|,
+operator|new
+name|BlockListAsLongs
+argument_list|(
+literal|null
+argument_list|,
+literal|null
+argument_list|)
+argument_list|)
+expr_stmt|;
+return|return
+name|result
+return|;
+block|}
+annotation|@
+name|Override
 DECL|method|getCacheReport (String bpid)
 specifier|public
 name|List
@@ -1165,8 +1105,13 @@ parameter_list|(
 name|String
 name|bpid
 parameter_list|)
-function_decl|;
-comment|/** Does the dataset contain the block? */
+block|{
+return|return
+literal|null
+return|;
+block|}
+annotation|@
+name|Override
 DECL|method|contains (ExtendedBlock block)
 specifier|public
 name|boolean
@@ -1175,8 +1120,13 @@ parameter_list|(
 name|ExtendedBlock
 name|block
 parameter_list|)
-function_decl|;
-comment|/**    * Check if a block is valid.    *    * @param b           The block to check.    * @param minLength   The minimum length that the block must have.  May be 0.    * @param state       If this is null, it is ignored.  If it is non-null, we    *                        will check that the replica has this state.    *    * @throws ReplicaNotFoundException          If the replica is not found    *    * @throws UnexpectedReplicaStateException   If the replica is not in the     *                                             expected state.    * @throws FileNotFoundException             If the block file is not found or there     *                                              was an error locating it.    * @throws EOFException                      If the replica length is too short.    *     * @throws IOException                       May be thrown from the methods called.     */
+block|{
+return|return
+literal|false
+return|;
+block|}
+annotation|@
+name|Override
 DECL|method|checkBlock (ExtendedBlock b, long minLength, ReplicaState state)
 specifier|public
 name|void
@@ -1201,8 +1151,9 @@ throws|,
 name|EOFException
 throws|,
 name|IOException
-function_decl|;
-comment|/**    * Is the block valid?    * @return - true if the specified block is valid    */
+block|{    }
+annotation|@
+name|Override
 DECL|method|isValidBlock (ExtendedBlock b)
 specifier|public
 name|boolean
@@ -1211,8 +1162,13 @@ parameter_list|(
 name|ExtendedBlock
 name|b
 parameter_list|)
-function_decl|;
-comment|/**    * Is the block a valid RBW?    * @return - true if the specified block is a valid RBW    */
+block|{
+return|return
+literal|false
+return|;
+block|}
+annotation|@
+name|Override
 DECL|method|isValidRbw (ExtendedBlock b)
 specifier|public
 name|boolean
@@ -1221,9 +1177,14 @@ parameter_list|(
 name|ExtendedBlock
 name|b
 parameter_list|)
-function_decl|;
-comment|/**    * Invalidates the specified blocks    * @param bpid Block pool Id    * @param invalidBlks - the blocks to be invalidated    * @throws IOException    */
-DECL|method|invalidate (String bpid, Block invalidBlks[])
+block|{
+return|return
+literal|false
+return|;
+block|}
+annotation|@
+name|Override
+DECL|method|invalidate (String bpid, Block[] invalidBlks)
 specifier|public
 name|void
 name|invalidate
@@ -1232,13 +1193,14 @@ name|String
 name|bpid
 parameter_list|,
 name|Block
-name|invalidBlks
 index|[]
+name|invalidBlks
 parameter_list|)
 throws|throws
 name|IOException
-function_decl|;
-comment|/**    * Caches the specified blocks    * @param bpid Block pool id    * @param blockIds - block ids to cache    */
+block|{   }
+annotation|@
+name|Override
 DECL|method|cache (String bpid, long[] blockIds)
 specifier|public
 name|void
@@ -1251,8 +1213,9 @@ name|long
 index|[]
 name|blockIds
 parameter_list|)
-function_decl|;
-comment|/**    * Uncaches the specified blocks    * @param bpid Block pool id    * @param blockIds - blocks ids to uncache    */
+block|{   }
+annotation|@
+name|Override
 DECL|method|uncache (String bpid, long[] blockIds)
 specifier|public
 name|void
@@ -1265,8 +1228,9 @@ name|long
 index|[]
 name|blockIds
 parameter_list|)
-function_decl|;
-comment|/**    * Determine if the specified block is cached.    * @param bpid Block pool id    * @param blockIds - block id    * @return true if the block is cached    */
+block|{   }
+annotation|@
+name|Override
 DECL|method|isCached (String bpid, long blockId)
 specifier|public
 name|boolean
@@ -1278,8 +1242,13 @@ parameter_list|,
 name|long
 name|blockId
 parameter_list|)
-function_decl|;
-comment|/**      * Check if all the data directories are healthy      * @throws DiskErrorException      */
+block|{
+return|return
+literal|false
+return|;
+block|}
+annotation|@
+name|Override
 DECL|method|checkDataDir ()
 specifier|public
 name|void
@@ -1287,15 +1256,27 @@ name|checkDataDir
 parameter_list|()
 throws|throws
 name|DiskErrorException
-function_decl|;
-comment|/**    * Shutdown the FSDataset    */
+block|{
+throw|throw
+operator|new
+name|DiskChecker
+operator|.
+name|DiskErrorException
+argument_list|(
+literal|null
+argument_list|)
+throw|;
+block|}
+annotation|@
+name|Override
 DECL|method|shutdown ()
 specifier|public
 name|void
 name|shutdown
 parameter_list|()
-function_decl|;
-comment|/**    * Sets the file pointer of the checksum stream so that the last checksum    * will be overwritten    * @param b block    * @param outs The streams for the data file and checksum file    * @param checksumSize number of bytes each checksum has    * @throws IOException    */
+block|{   }
+annotation|@
+name|Override
 DECL|method|adjustCrcChannelPosition (ExtendedBlock b, ReplicaOutputStreams outs, int checksumSize)
 specifier|public
 name|void
@@ -1312,28 +1293,39 @@ name|checksumSize
 parameter_list|)
 throws|throws
 name|IOException
-function_decl|;
-comment|/**    * Checks how many valid storage volumes there are in the DataNode.    * @return true if more than the minimum number of valid volumes are left     * in the FSDataSet.    */
+block|{   }
+annotation|@
+name|Override
 DECL|method|hasEnoughResource ()
 specifier|public
 name|boolean
 name|hasEnoughResource
 parameter_list|()
-function_decl|;
-comment|/**    * Get visible length of the specified replica.    */
-DECL|method|getReplicaVisibleLength (final ExtendedBlock block)
+block|{
+return|return
+literal|false
+return|;
+block|}
+annotation|@
+name|Override
+DECL|method|getReplicaVisibleLength (ExtendedBlock block)
+specifier|public
 name|long
 name|getReplicaVisibleLength
 parameter_list|(
-specifier|final
 name|ExtendedBlock
 name|block
 parameter_list|)
 throws|throws
 name|IOException
-function_decl|;
-comment|/**    * Initialize a replica recovery.    * @return actual state of the replica on this data-node or     * null if data-node does not have the replica.    */
-DECL|method|initReplicaRecovery (RecoveringBlock rBlock )
+block|{
+return|return
+literal|0
+return|;
+block|}
+annotation|@
+name|Override
+DECL|method|initReplicaRecovery (RecoveringBlock rBlock)
 specifier|public
 name|ReplicaRecoveryInfo
 name|initReplicaRecovery
@@ -1343,8 +1335,25 @@ name|rBlock
 parameter_list|)
 throws|throws
 name|IOException
-function_decl|;
-comment|/**    * Update replica's generation stamp and length and finalize it.    * @return the ID of storage that stores the block    */
+block|{
+return|return
+operator|new
+name|ReplicaRecoveryInfo
+argument_list|(
+literal|0
+argument_list|,
+literal|0
+argument_list|,
+literal|0
+argument_list|,
+name|ReplicaState
+operator|.
+name|FINALIZED
+argument_list|)
+return|;
+block|}
+annotation|@
+name|Override
 DECL|method|updateReplicaUnderRecovery (ExtendedBlock oldBlock, long recoveryId, long newBlockId, long newLength)
 specifier|public
 name|String
@@ -1364,8 +1373,13 @@ name|newLength
 parameter_list|)
 throws|throws
 name|IOException
-function_decl|;
-comment|/**    * add new block pool ID    * @param bpid Block pool Id    * @param conf Configuration    */
+block|{
+return|return
+literal|null
+return|;
+block|}
+annotation|@
+name|Override
 DECL|method|addBlockPool (String bpid, Configuration conf)
 specifier|public
 name|void
@@ -1379,8 +1393,9 @@ name|conf
 parameter_list|)
 throws|throws
 name|IOException
-function_decl|;
-comment|/**    * Shutdown and remove the block pool from underlying storage.    * @param bpid Block pool Id to be removed    */
+block|{   }
+annotation|@
+name|Override
 DECL|method|shutdownBlockPool (String bpid)
 specifier|public
 name|void
@@ -1389,8 +1404,9 @@ parameter_list|(
 name|String
 name|bpid
 parameter_list|)
-function_decl|;
-comment|/**    * Deletes the block pool directories. If force is false, directories are     * deleted only if no block files exist for the block pool. If force     * is true entire directory for the blockpool is deleted along with its    * contents.    * @param bpid BlockPool Id to be deleted.    * @param force If force is false, directories are deleted only if no    *        block files exist for the block pool, otherwise entire     *        directory for the blockpool is deleted along with its contents.    * @throws IOException    */
+block|{   }
+annotation|@
+name|Override
 DECL|method|deleteBlockPool (String bpid, boolean force)
 specifier|public
 name|void
@@ -1404,9 +1420,10 @@ name|force
 parameter_list|)
 throws|throws
 name|IOException
-function_decl|;
-comment|/**    * Get {@link BlockLocalPathInfo} for the given block.    */
-DECL|method|getBlockLocalPathInfo (ExtendedBlock b )
+block|{   }
+annotation|@
+name|Override
+DECL|method|getBlockLocalPathInfo (ExtendedBlock b)
 specifier|public
 name|BlockLocalPathInfo
 name|getBlockLocalPathInfo
@@ -1416,8 +1433,21 @@ name|b
 parameter_list|)
 throws|throws
 name|IOException
-function_decl|;
-comment|/**    * Get a {@link HdfsBlocksMetadata} corresponding to the list of blocks in     *<code>blocks</code>.    *     * @param bpid pool to query    * @param blockIds List of block ids for which to return metadata    * @return metadata Metadata for the list of blocks    * @throws IOException    */
+block|{
+return|return
+operator|new
+name|BlockLocalPathInfo
+argument_list|(
+literal|null
+argument_list|,
+literal|"file"
+argument_list|,
+literal|"metafile"
+argument_list|)
+return|;
+block|}
+annotation|@
+name|Override
 DECL|method|getHdfsBlocksMetadata (String bpid, long[] blockIds)
 specifier|public
 name|HdfsBlocksMetadata
@@ -1432,8 +1462,23 @@ name|blockIds
 parameter_list|)
 throws|throws
 name|IOException
-function_decl|;
-comment|/**    * Enable 'trash' for the given dataset. When trash is enabled, files are    * moved to a separate trash directory instead of being deleted immediately.    * This can be useful for example during rolling upgrades.    */
+block|{
+return|return
+operator|new
+name|HdfsBlocksMetadata
+argument_list|(
+literal|null
+argument_list|,
+literal|null
+argument_list|,
+literal|null
+argument_list|,
+literal|null
+argument_list|)
+return|;
+block|}
+annotation|@
+name|Override
 DECL|method|enableTrash (String bpid)
 specifier|public
 name|void
@@ -1442,8 +1487,9 @@ parameter_list|(
 name|String
 name|bpid
 parameter_list|)
-function_decl|;
-comment|/**    * Restore trash    */
+block|{    }
+annotation|@
+name|Override
 DECL|method|restoreTrash (String bpid)
 specifier|public
 name|void
@@ -1452,8 +1498,9 @@ parameter_list|(
 name|String
 name|bpid
 parameter_list|)
-function_decl|;
-comment|/**    * @return true when trash is enabled    */
+block|{    }
+annotation|@
+name|Override
 DECL|method|trashEnabled (String bpid)
 specifier|public
 name|boolean
@@ -1462,8 +1509,13 @@ parameter_list|(
 name|String
 name|bpid
 parameter_list|)
-function_decl|;
-comment|/**    * Create a marker file indicating that a rolling upgrade is in progress.    */
+block|{
+return|return
+literal|false
+return|;
+block|}
+annotation|@
+name|Override
 DECL|method|setRollingUpgradeMarker (String bpid)
 specifier|public
 name|void
@@ -1474,8 +1526,9 @@ name|bpid
 parameter_list|)
 throws|throws
 name|IOException
-function_decl|;
-comment|/**    * Delete the rolling upgrade marker file if it exists.    * @param bpid    */
+block|{    }
+annotation|@
+name|Override
 DECL|method|clearRollingUpgradeMarker (String bpid)
 specifier|public
 name|void
@@ -1486,36 +1539,33 @@ name|bpid
 parameter_list|)
 throws|throws
 name|IOException
-function_decl|;
-comment|/**    * submit a sync_file_range request to AsyncDiskService    */
-DECL|method|submitBackgroundSyncFileRangeRequest (final ExtendedBlock block, final FileDescriptor fd, final long offset, final long nbytes, final int flags)
+block|{    }
+annotation|@
+name|Override
+DECL|method|submitBackgroundSyncFileRangeRequest (ExtendedBlock block, FileDescriptor fd, long offset, long nbytes, int flags)
 specifier|public
 name|void
 name|submitBackgroundSyncFileRangeRequest
 parameter_list|(
-specifier|final
 name|ExtendedBlock
 name|block
 parameter_list|,
-specifier|final
 name|FileDescriptor
 name|fd
 parameter_list|,
-specifier|final
 name|long
 name|offset
 parameter_list|,
-specifier|final
 name|long
 name|nbytes
 parameter_list|,
-specifier|final
 name|int
 name|flags
 parameter_list|)
-function_decl|;
-comment|/**    * Callback from RamDiskAsyncLazyPersistService upon async lazy persist task end    */
-DECL|method|onCompleteLazyPersist (String bpId, long blockId, long creationTime, File[] savedFiles, V targetVolume)
+block|{    }
+annotation|@
+name|Override
+DECL|method|onCompleteLazyPersist (String bpId, long blockId, long creationTime, File[] savedFiles, ExternalVolumeImpl targetVolume)
 specifier|public
 name|void
 name|onCompleteLazyPersist
@@ -1533,11 +1583,12 @@ name|File
 index|[]
 name|savedFiles
 parameter_list|,
-name|V
+name|ExternalVolumeImpl
 name|targetVolume
 parameter_list|)
-function_decl|;
-comment|/**     * Callback from RamDiskAsyncLazyPersistService upon async lazy persist task fail     */
+block|{    }
+annotation|@
+name|Override
 DECL|method|onFailLazyPersist (String bpId, long blockId)
 specifier|public
 name|void
@@ -1549,14 +1600,14 @@ parameter_list|,
 name|long
 name|blockId
 parameter_list|)
-function_decl|;
-comment|/**      * Move block from one storage to another storage      */
-DECL|method|moveBlockAcrossStorage (final ExtendedBlock block, StorageType targetStorageType)
+block|{    }
+annotation|@
+name|Override
+DECL|method|moveBlockAcrossStorage (ExtendedBlock block, StorageType targetStorageType)
 specifier|public
 name|ReplicaInfo
 name|moveBlockAcrossStorage
 parameter_list|(
-specifier|final
 name|ExtendedBlock
 name|block
 parameter_list|,
@@ -1565,9 +1616,156 @@ name|targetStorageType
 parameter_list|)
 throws|throws
 name|IOException
-function_decl|;
+block|{
+return|return
+literal|null
+return|;
 block|}
-end_interface
+annotation|@
+name|Override
+DECL|method|getBlockPoolUsed (String bpid)
+specifier|public
+name|long
+name|getBlockPoolUsed
+parameter_list|(
+name|String
+name|bpid
+parameter_list|)
+throws|throws
+name|IOException
+block|{
+return|return
+literal|0
+return|;
+block|}
+annotation|@
+name|Override
+DECL|method|getDfsUsed ()
+specifier|public
+name|long
+name|getDfsUsed
+parameter_list|()
+throws|throws
+name|IOException
+block|{
+return|return
+literal|0
+return|;
+block|}
+annotation|@
+name|Override
+DECL|method|getCapacity ()
+specifier|public
+name|long
+name|getCapacity
+parameter_list|()
+throws|throws
+name|IOException
+block|{
+return|return
+literal|0
+return|;
+block|}
+annotation|@
+name|Override
+DECL|method|getRemaining ()
+specifier|public
+name|long
+name|getRemaining
+parameter_list|()
+throws|throws
+name|IOException
+block|{
+return|return
+literal|0
+return|;
+block|}
+annotation|@
+name|Override
+DECL|method|getStorageInfo ()
+specifier|public
+name|String
+name|getStorageInfo
+parameter_list|()
+block|{
+return|return
+literal|null
+return|;
+block|}
+annotation|@
+name|Override
+DECL|method|getNumFailedVolumes ()
+specifier|public
+name|int
+name|getNumFailedVolumes
+parameter_list|()
+block|{
+return|return
+literal|0
+return|;
+block|}
+annotation|@
+name|Override
+DECL|method|getCacheUsed ()
+specifier|public
+name|long
+name|getCacheUsed
+parameter_list|()
+block|{
+return|return
+literal|0
+return|;
+block|}
+annotation|@
+name|Override
+DECL|method|getCacheCapacity ()
+specifier|public
+name|long
+name|getCacheCapacity
+parameter_list|()
+block|{
+return|return
+literal|0
+return|;
+block|}
+annotation|@
+name|Override
+DECL|method|getNumBlocksCached ()
+specifier|public
+name|long
+name|getNumBlocksCached
+parameter_list|()
+block|{
+return|return
+literal|0
+return|;
+block|}
+annotation|@
+name|Override
+DECL|method|getNumBlocksFailedToCache ()
+specifier|public
+name|long
+name|getNumBlocksFailedToCache
+parameter_list|()
+block|{
+return|return
+literal|0
+return|;
+block|}
+annotation|@
+name|Override
+DECL|method|getNumBlocksFailedToUncache ()
+specifier|public
+name|long
+name|getNumBlocksFailedToUncache
+parameter_list|()
+block|{
+return|return
+literal|0
+return|;
+block|}
+block|}
+end_class
 
 end_unit
 

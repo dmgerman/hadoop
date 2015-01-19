@@ -5922,7 +5922,7 @@ throw|;
 block|}
 annotation|@
 name|Override
-DECL|method|onCompleteLazyPersist (String bpId, long blockId, long creationTime, File[] savedFiles, FsVolumeImpl targetVolume)
+DECL|method|onCompleteLazyPersist (String bpId, long blockId, long creationTime, File[] savedFiles, FsVolumeSpi targetVolume)
 specifier|public
 name|void
 name|onCompleteLazyPersist
@@ -5940,7 +5940,7 @@ name|File
 index|[]
 name|savedFiles
 parameter_list|,
-name|FsVolumeImpl
+name|FsVolumeSpi
 name|targetVolume
 parameter_list|)
 block|{

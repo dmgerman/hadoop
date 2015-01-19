@@ -986,6 +986,18 @@ name|succeeded
 init|=
 literal|false
 decl_stmt|;
+specifier|final
+name|FsDatasetImpl
+name|dataset
+init|=
+operator|(
+name|FsDatasetImpl
+operator|)
+name|datanode
+operator|.
+name|getFSDataset
+argument_list|()
+decl_stmt|;
 try|try
 block|{
 comment|// No FsDatasetImpl lock for the file copy
@@ -1011,10 +1023,7 @@ literal|true
 argument_list|)
 decl_stmt|;
 comment|// Lock FsDataSetImpl during onCompleteLazyPersist callback
-name|datanode
-operator|.
-name|getFSDataset
-argument_list|()
+name|dataset
 operator|.
 name|onCompleteLazyPersist
 argument_list|(
@@ -1066,10 +1075,7 @@ operator|!
 name|succeeded
 condition|)
 block|{
-name|datanode
-operator|.
-name|getFSDataset
-argument_list|()
+name|dataset
 operator|.
 name|onFailLazyPersist
 argument_list|(
