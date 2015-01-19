@@ -6276,6 +6276,10 @@ operator|.
 name|startsWith
 argument_list|(
 name|DOT_RESERVED_PATH_PREFIX
+operator|+
+name|Path
+operator|.
+name|SEPARATOR
 argument_list|)
 return|;
 block|}
