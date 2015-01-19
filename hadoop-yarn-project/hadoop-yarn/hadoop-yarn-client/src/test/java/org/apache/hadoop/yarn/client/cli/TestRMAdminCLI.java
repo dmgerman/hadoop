@@ -2032,9 +2032,9 @@ block|,
 literal|"-transitionToActive"
 block|}
 argument_list|,
-literal|"Usage: yarn rmadmin [-transitionToActive<serviceId>"
+literal|"Usage: yarn rmadmin [-transitionToActive [--forceactive]"
 operator|+
-literal|" [--forceactive]]"
+literal|"<serviceId>]"
 argument_list|,
 name|dataErr
 argument_list|,
@@ -2172,15 +2172,9 @@ argument_list|(
 name|dataOut
 argument_list|)
 expr_stmt|;
-name|assertTrue
-argument_list|(
-name|dataOut
-operator|.
-name|toString
-argument_list|()
-operator|.
-name|contains
-argument_list|(
+name|String
+name|expectedHelpMsg
+init|=
 literal|"yarn rmadmin [-refreshQueues] [-refreshNodes] [-refreshSuper"
 operator|+
 literal|"UserGroupsConfiguration] [-refreshUserToGroupsMappings] "
@@ -2193,13 +2187,44 @@ literal|" [-removeFromClusterNodeLabels [label1,label2,label3]] [-replaceLabelsO
 operator|+
 literal|"[node1:port,label1,label2 node2:port,label1] [-directlyAccessNodeLabelStore]] "
 operator|+
-literal|"[-transitionToActive<serviceId> [--forceactive]] "
+literal|"[-transitionToActive [--forceactive]<serviceId>] "
 operator|+
 literal|"[-transitionToStandby<serviceId>] [-failover"
 operator|+
 literal|" [--forcefence] [--forceactive]<serviceId><serviceId>] "
 operator|+
 literal|"[-getServiceState<serviceId>] [-checkHealth<serviceId>] [-help [cmd]]"
+decl_stmt|;
+name|String
+name|actualHelpMsg
+init|=
+name|dataOut
+operator|.
+name|toString
+argument_list|()
+decl_stmt|;
+name|assertTrue
+argument_list|(
+name|String
+operator|.
+name|format
+argument_list|(
+literal|"Help messages: %n "
+operator|+
+name|actualHelpMsg
+operator|+
+literal|" %n doesn't include expected "
+operator|+
+literal|"messages: %n"
+operator|+
+name|expectedHelpMsg
+argument_list|)
+argument_list|,
+name|actualHelpMsg
+operator|.
+name|contains
+argument_list|(
+name|expectedHelpMsg
 argument_list|)
 argument_list|)
 expr_stmt|;
@@ -3183,20 +3208,49 @@ parameter_list|)
 throws|throws
 name|Exception
 block|{
-name|assertEquals
-argument_list|(
-name|resultCode
-argument_list|,
+name|int
+name|actualResultCode
+init|=
 name|rmAdminCLI
 operator|.
 name|run
 argument_list|(
 name|args
 argument_list|)
+decl_stmt|;
+name|assertEquals
+argument_list|(
+literal|"Expected result code: "
+operator|+
+name|resultCode
+operator|+
+literal|", actual result code is: "
+operator|+
+name|actualResultCode
+argument_list|,
+name|resultCode
+argument_list|,
+name|actualResultCode
 argument_list|)
 expr_stmt|;
 name|assertTrue
 argument_list|(
+name|String
+operator|.
+name|format
+argument_list|(
+literal|"Expected error message: %n"
+operator|+
+name|template
+operator|+
+literal|" is not included in messages: %n"
+operator|+
+name|data
+operator|.
+name|toString
+argument_list|()
+argument_list|)
+argument_list|,
 name|data
 operator|.
 name|toString
