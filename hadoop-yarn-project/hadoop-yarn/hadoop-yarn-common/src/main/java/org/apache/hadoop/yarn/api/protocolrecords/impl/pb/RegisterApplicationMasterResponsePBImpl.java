@@ -1216,6 +1216,9 @@ name|ByteBuffer
 name|key
 parameter_list|)
 block|{
+name|maybeInitBuilder
+argument_list|()
+expr_stmt|;
 if|if
 condition|(
 name|key
@@ -1230,9 +1233,6 @@ argument_list|()
 expr_stmt|;
 return|return;
 block|}
-name|maybeInitBuilder
-argument_list|()
-expr_stmt|;
 name|builder
 operator|.
 name|setClientToAmTokenMasterKey
@@ -1585,6 +1585,9 @@ argument_list|>
 name|nmTokens
 parameter_list|)
 block|{
+name|maybeInitBuilder
+argument_list|()
+expr_stmt|;
 if|if
 condition|(
 name|nmTokens
