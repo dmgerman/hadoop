@@ -2864,13 +2864,13 @@ if|if
 condition|(
 name|LOG
 operator|.
-name|isTraceEnabled
+name|isDebugEnabled
 argument_list|()
 condition|)
 block|{
 name|LOG
 operator|.
-name|trace
+name|debug
 argument_list|(
 literal|"GETATTR for fileId: "
 operator|+
@@ -2878,6 +2878,10 @@ name|handle
 operator|.
 name|getFileId
 argument_list|()
+operator|+
+literal|" client:"
+operator|+
+name|remoteAddress
 argument_list|)
 expr_stmt|;
 block|}
@@ -3470,6 +3474,10 @@ name|handle
 operator|.
 name|getFileId
 argument_list|()
+operator|+
+literal|" client:"
+operator|+
+name|remoteAddress
 argument_list|)
 expr_stmt|;
 block|}
@@ -3993,6 +4001,10 @@ operator|+
 literal|" name: "
 operator|+
 name|fileName
+operator|+
+literal|" client:"
+operator|+
+name|remoteAddress
 argument_list|)
 expr_stmt|;
 block|}
@@ -4373,6 +4385,10 @@ name|handle
 operator|.
 name|getFileId
 argument_list|()
+operator|+
+literal|" client:"
+operator|+
+name|remoteAddress
 argument_list|)
 expr_stmt|;
 block|}
@@ -4727,6 +4743,10 @@ name|handle
 operator|.
 name|getFileId
 argument_list|()
+operator|+
+literal|" client:"
+operator|+
+name|remoteAddress
 argument_list|)
 expr_stmt|;
 block|}
@@ -5211,6 +5231,10 @@ operator|+
 literal|" count: "
 operator|+
 name|count
+operator|+
+literal|" client:"
+operator|+
+name|remoteAddress
 argument_list|)
 expr_stmt|;
 block|}
@@ -6040,6 +6064,10 @@ operator|+
 literal|" xid:"
 operator|+
 name|xid
+operator|+
+literal|" client:"
+operator|+
+name|remoteAddress
 argument_list|)
 expr_stmt|;
 block|}
@@ -6477,6 +6505,10 @@ operator|+
 literal|" filename: "
 operator|+
 name|fileName
+operator|+
+literal|" client:"
+operator|+
+name|remoteAddress
 argument_list|)
 expr_stmt|;
 block|}
@@ -7298,6 +7330,35 @@ argument_list|()
 decl_stmt|;
 if|if
 condition|(
+name|LOG
+operator|.
+name|isDebugEnabled
+argument_list|()
+condition|)
+block|{
+name|LOG
+operator|.
+name|debug
+argument_list|(
+literal|"NFS MKDIR dirId: "
+operator|+
+name|dirHandle
+operator|.
+name|getFileId
+argument_list|()
+operator|+
+literal|" filename: "
+operator|+
+name|fileName
+operator|+
+literal|" client:"
+operator|+
+name|remoteAddress
+argument_list|)
+expr_stmt|;
+block|}
+if|if
+condition|(
 name|request
 operator|.
 name|getObjAttr
@@ -7965,6 +8026,10 @@ operator|+
 literal|" fileName: "
 operator|+
 name|fileName
+operator|+
+literal|" client:"
+operator|+
+name|remoteAddress
 argument_list|)
 expr_stmt|;
 block|}
@@ -8456,6 +8521,10 @@ operator|+
 literal|" fileName: "
 operator|+
 name|fileName
+operator|+
+literal|" client:"
+operator|+
+name|remoteAddress
 argument_list|)
 expr_stmt|;
 block|}
@@ -8999,6 +9068,10 @@ operator|+
 literal|"/"
 operator|+
 name|toName
+operator|+
+literal|" client:"
+operator|+
+name|remoteAddress
 argument_list|)
 expr_stmt|;
 block|}
@@ -9598,6 +9671,10 @@ operator|+
 literal|" link: "
 operator|+
 name|linkIdPath
+operator|+
+literal|" client:"
+operator|+
+name|remoteAddress
 argument_list|)
 expr_stmt|;
 block|}
@@ -10124,6 +10201,10 @@ operator|+
 literal|" count: "
 operator|+
 name|count
+operator|+
+literal|" client:"
+operator|+
+name|remoteAddress
 argument_list|)
 expr_stmt|;
 block|}
@@ -11024,6 +11105,10 @@ operator|+
 literal|" maxCount: "
 operator|+
 name|maxCount
+operator|+
+literal|" client:"
+operator|+
+name|remoteAddress
 argument_list|)
 expr_stmt|;
 block|}
@@ -11957,6 +12042,10 @@ name|handle
 operator|.
 name|getFileId
 argument_list|()
+operator|+
+literal|" client:"
+operator|+
+name|remoteAddress
 argument_list|)
 expr_stmt|;
 block|}
@@ -12351,6 +12440,10 @@ name|handle
 operator|.
 name|getFileId
 argument_list|()
+operator|+
+literal|" client:"
+operator|+
+name|remoteAddress
 argument_list|)
 expr_stmt|;
 block|}
@@ -12717,6 +12810,10 @@ name|handle
 operator|.
 name|getFileId
 argument_list|()
+operator|+
+literal|" client:"
+operator|+
+name|remoteAddress
 argument_list|)
 expr_stmt|;
 block|}
@@ -13041,6 +13138,10 @@ name|request
 operator|.
 name|getCount
 argument_list|()
+operator|+
+literal|" client:"
+operator|+
+name|remoteAddress
 argument_list|)
 expr_stmt|;
 block|}
