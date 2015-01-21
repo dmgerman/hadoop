@@ -983,7 +983,7 @@ name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"Waiting for svc0 to enter standby state"
+literal|"Waiting for svc0 to enter initializing state"
 argument_list|)
 expr_stmt|;
 name|cluster
@@ -994,7 +994,7 @@ literal|0
 argument_list|,
 name|HAServiceState
 operator|.
-name|STANDBY
+name|INITIALIZING
 argument_list|)
 expr_stmt|;
 name|cluster
@@ -1480,7 +1480,7 @@ literal|0
 argument_list|,
 name|HAServiceState
 operator|.
-name|STANDBY
+name|INITIALIZING
 argument_list|)
 expr_stmt|;
 name|cluster
@@ -2700,7 +2700,7 @@ literal|0
 argument_list|,
 name|HAServiceState
 operator|.
-name|STANDBY
+name|INITIALIZING
 argument_list|)
 expr_stmt|;
 name|cluster
@@ -2751,7 +2751,7 @@ literal|0
 argument_list|,
 name|HAServiceState
 operator|.
-name|STANDBY
+name|INITIALIZING
 argument_list|)
 expr_stmt|;
 name|cluster

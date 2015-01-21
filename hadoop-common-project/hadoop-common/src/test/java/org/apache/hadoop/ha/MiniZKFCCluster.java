@@ -837,7 +837,7 @@ operator|=
 name|unreachable
 expr_stmt|;
 block|}
-comment|/**    * Wait for the given HA service to enter the given HA state.    */
+comment|/**    * Wait for the given HA service to enter the given HA state.    * This is based on the state of ZKFC, not the state of HA service.    * There could be difference between the two. For example,    * When the service becomes unhealthy, ZKFC will quit ZK election and    * transition to HAServiceState.INITIALIZING and remain in that state    * until the service becomes healthy.    */
 DECL|method|waitForHAState (int idx, HAServiceState state)
 specifier|public
 name|void
