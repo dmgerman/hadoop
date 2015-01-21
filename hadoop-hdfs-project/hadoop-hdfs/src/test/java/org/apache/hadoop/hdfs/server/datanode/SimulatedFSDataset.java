@@ -74,6 +74,18 @@ begin_import
 import|import
 name|java
 operator|.
+name|nio
+operator|.
+name|channels
+operator|.
+name|ClosedChannelException
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
 name|util
 operator|.
 name|ArrayList
@@ -324,9 +336,11 @@ name|hdfs
 operator|.
 name|server
 operator|.
-name|common
+name|datanode
 operator|.
-name|Storage
+name|fsdataset
+operator|.
+name|FsDatasetSpi
 import|;
 end_import
 
@@ -346,7 +360,7 @@ name|datanode
 operator|.
 name|fsdataset
 operator|.
-name|FsDatasetSpi
+name|FsVolumeReference
 import|;
 end_import
 
@@ -2158,6 +2172,20 @@ expr_stmt|;
 block|}
 annotation|@
 name|Override
+DECL|method|obtainReference ()
+specifier|public
+name|FsVolumeReference
+name|obtainReference
+parameter_list|()
+throws|throws
+name|ClosedChannelException
+block|{
+return|return
+literal|null
+return|;
+block|}
+annotation|@
+name|Override
 DECL|method|getStorageID ()
 specifier|public
 name|String
@@ -3838,10 +3866,10 @@ block|}
 annotation|@
 name|Override
 comment|// FsDatasetSpi
-DECL|method|append (ExtendedBlock b, long newGS, long expectedBlockLen)
+DECL|method|append ( ExtendedBlock b, long newGS, long expectedBlockLen)
 specifier|public
 specifier|synchronized
-name|ReplicaInPipelineInterface
+name|ReplicaHandler
 name|append
 parameter_list|(
 name|ExtendedBlock
@@ -3917,16 +3945,22 @@ name|unfinalizeBlock
 argument_list|()
 expr_stmt|;
 return|return
+operator|new
+name|ReplicaHandler
+argument_list|(
 name|binfo
+argument_list|,
+literal|null
+argument_list|)
 return|;
 block|}
 annotation|@
 name|Override
 comment|// FsDatasetSpi
-DECL|method|recoverAppend (ExtendedBlock b, long newGS, long expectedBlockLen)
+DECL|method|recoverAppend ( ExtendedBlock b, long newGS, long expectedBlockLen)
 specifier|public
 specifier|synchronized
-name|ReplicaInPipelineInterface
+name|ReplicaHandler
 name|recoverAppend
 parameter_list|(
 name|ExtendedBlock
@@ -4032,7 +4066,13 @@ name|binfo
 argument_list|)
 expr_stmt|;
 return|return
+operator|new
+name|ReplicaHandler
+argument_list|(
 name|binfo
+argument_list|,
+literal|null
+argument_list|)
 return|;
 block|}
 annotation|@
@@ -4169,10 +4209,10 @@ block|}
 annotation|@
 name|Override
 comment|// FsDatasetSpi
-DECL|method|recoverRbw (ExtendedBlock b, long newGS, long minBytesRcvd, long maxBytesRcvd)
+DECL|method|recoverRbw ( ExtendedBlock b, long newGS, long minBytesRcvd, long maxBytesRcvd)
 specifier|public
 specifier|synchronized
-name|ReplicaInPipelineInterface
+name|ReplicaHandler
 name|recoverRbw
 parameter_list|(
 name|ExtendedBlock
@@ -4287,7 +4327,13 @@ name|binfo
 argument_list|)
 expr_stmt|;
 return|return
+operator|new
+name|ReplicaHandler
+argument_list|(
 name|binfo
+argument_list|,
+literal|null
+argument_list|)
 return|;
 block|}
 annotation|@
@@ -4296,7 +4342,7 @@ comment|// FsDatasetSpi
 DECL|method|createRbw ( StorageType storageType, ExtendedBlock b, boolean allowLazyPersist)
 specifier|public
 specifier|synchronized
-name|ReplicaInPipelineInterface
+name|ReplicaHandler
 name|createRbw
 parameter_list|(
 name|StorageType
@@ -4326,7 +4372,7 @@ comment|// FsDatasetSpi
 DECL|method|createTemporary ( StorageType storageType, ExtendedBlock b)
 specifier|public
 specifier|synchronized
-name|ReplicaInPipelineInterface
+name|ReplicaHandler
 name|createTemporary
 parameter_list|(
 name|StorageType
@@ -4426,7 +4472,13 @@ name|binfo
 argument_list|)
 expr_stmt|;
 return|return
+operator|new
+name|ReplicaHandler
+argument_list|(
 name|binfo
+argument_list|,
+literal|null
+argument_list|)
 return|;
 block|}
 DECL|method|getBlockInputStream (ExtendedBlock b )

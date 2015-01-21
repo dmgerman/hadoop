@@ -433,7 +433,7 @@ name|Override
 DECL|method|createRbw ( StorageType storageType, ExtendedBlock b, boolean allowLazyPersist)
 specifier|public
 specifier|synchronized
-name|ReplicaInPipelineInterface
+name|ReplicaHandler
 name|createRbw
 parameter_list|(
 name|StorageType

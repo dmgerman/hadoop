@@ -44,6 +44,18 @@ end_import
 
 begin_import
 import|import
+name|java
+operator|.
+name|nio
+operator|.
+name|channels
+operator|.
+name|ClosedChannelException
+import|;
+end_import
+
+begin_import
+import|import
 name|org
 operator|.
 name|apache
@@ -66,6 +78,14 @@ specifier|public
 interface|interface
 name|FsVolumeSpi
 block|{
+comment|/**    * Obtain a reference object that had increased 1 reference count of the    * volume.    *    * It is caller's responsibility to close {@link FsVolumeReference} to decrease    * the reference count on the volume.    */
+DECL|method|obtainReference ()
+name|FsVolumeReference
+name|obtainReference
+parameter_list|()
+throws|throws
+name|ClosedChannelException
+function_decl|;
 comment|/** @return the StorageUuid of the volume */
 DECL|method|getStorageID ()
 specifier|public

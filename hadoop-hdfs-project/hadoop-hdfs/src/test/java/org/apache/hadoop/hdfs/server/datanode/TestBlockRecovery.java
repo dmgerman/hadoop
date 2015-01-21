@@ -3803,6 +3803,9 @@ name|block
 argument_list|,
 literal|false
 argument_list|)
+operator|.
+name|getReplica
+argument_list|()
 decl_stmt|;
 name|ReplicaOutputStreams
 name|streams

@@ -266,6 +266,24 @@ name|server
 operator|.
 name|datanode
 operator|.
+name|ReplicaHandler
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|server
+operator|.
+name|datanode
+operator|.
 name|StorageLocation
 import|;
 end_import
@@ -1347,6 +1365,11 @@ expr_stmt|;
 block|}
 annotation|@
 name|Test
+argument_list|(
+name|timeout
+operator|=
+literal|30000
+argument_list|)
 DECL|method|testRemoveVolumes ()
 specifier|public
 name|void
@@ -1400,6 +1423,11 @@ argument_list|,
 name|i
 argument_list|)
 decl_stmt|;
+try|try
+init|(
+name|ReplicaHandler
+name|replica
+init|=
 name|dataset
 operator|.
 name|createRbw
@@ -1412,7 +1440,8 @@ name|eb
 argument_list|,
 literal|false
 argument_list|)
-expr_stmt|;
+init|)
+block|{       }
 block|}
 specifier|final
 name|String

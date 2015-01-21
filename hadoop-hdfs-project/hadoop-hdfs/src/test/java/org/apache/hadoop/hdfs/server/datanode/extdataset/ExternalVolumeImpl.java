@@ -44,6 +44,18 @@ end_import
 
 begin_import
 import|import
+name|java
+operator|.
+name|nio
+operator|.
+name|channels
+operator|.
+name|ClosedChannelException
+import|;
+end_import
+
+begin_import
+import|import
 name|org
 operator|.
 name|apache
@@ -53,6 +65,26 @@ operator|.
 name|hdfs
 operator|.
 name|StorageType
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|server
+operator|.
+name|datanode
+operator|.
+name|fsdataset
+operator|.
+name|FsVolumeReference
 import|;
 end_import
 
@@ -84,6 +116,20 @@ name|ExternalVolumeImpl
 implements|implements
 name|FsVolumeSpi
 block|{
+annotation|@
+name|Override
+DECL|method|obtainReference ()
+specifier|public
+name|FsVolumeReference
+name|obtainReference
+parameter_list|()
+throws|throws
+name|ClosedChannelException
+block|{
+return|return
+literal|null
+return|;
+block|}
 annotation|@
 name|Override
 DECL|method|getBlockPoolList ()

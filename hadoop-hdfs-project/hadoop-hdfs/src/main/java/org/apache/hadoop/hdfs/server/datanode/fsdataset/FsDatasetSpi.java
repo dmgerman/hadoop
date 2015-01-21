@@ -372,6 +372,24 @@ name|server
 operator|.
 name|datanode
 operator|.
+name|ReplicaHandler
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|server
+operator|.
+name|datanode
+operator|.
 name|ReplicaInfo
 import|;
 end_import
@@ -997,7 +1015,7 @@ function_decl|;
 comment|/**    * Creates a temporary replica and returns the meta information of the replica    *     * @param b block    * @return the meta info of the replica which is being written to    * @throws IOException if an error occurs    */
 DECL|method|createTemporary (StorageType storageType, ExtendedBlock b)
 specifier|public
-name|ReplicaInPipelineInterface
+name|ReplicaHandler
 name|createTemporary
 parameter_list|(
 name|StorageType
@@ -1012,7 +1030,7 @@ function_decl|;
 comment|/**    * Creates a RBW replica and returns the meta info of the replica    *     * @param b block    * @return the meta info of the replica which is being written to    * @throws IOException if an error occurs    */
 DECL|method|createRbw (StorageType storageType, ExtendedBlock b, boolean allowLazyPersist)
 specifier|public
-name|ReplicaInPipelineInterface
+name|ReplicaHandler
 name|createRbw
 parameter_list|(
 name|StorageType
@@ -1030,7 +1048,7 @@ function_decl|;
 comment|/**    * Recovers a RBW replica and returns the meta info of the replica    *     * @param b block    * @param newGS the new generation stamp for the replica    * @param minBytesRcvd the minimum number of bytes that the replica could have    * @param maxBytesRcvd the maximum number of bytes that the replica could have    * @return the meta info of the replica which is being written to    * @throws IOException if an error occurs    */
 DECL|method|recoverRbw (ExtendedBlock b, long newGS, long minBytesRcvd, long maxBytesRcvd)
 specifier|public
-name|ReplicaInPipelineInterface
+name|ReplicaHandler
 name|recoverRbw
 parameter_list|(
 name|ExtendedBlock
@@ -1063,7 +1081,7 @@ function_decl|;
 comment|/**    * Append to a finalized replica and returns the meta info of the replica    *     * @param b block    * @param newGS the new generation stamp for the replica    * @param expectedBlockLen the number of bytes the replica is expected to have    * @return the meata info of the replica which is being written to    * @throws IOException    */
 DECL|method|append (ExtendedBlock b, long newGS, long expectedBlockLen)
 specifier|public
-name|ReplicaInPipelineInterface
+name|ReplicaHandler
 name|append
 parameter_list|(
 name|ExtendedBlock
@@ -1079,9 +1097,9 @@ throws|throws
 name|IOException
 function_decl|;
 comment|/**    * Recover a failed append to a finalized replica    * and returns the meta info of the replica    *     * @param b block    * @param newGS the new generation stamp for the replica    * @param expectedBlockLen the number of bytes the replica is expected to have    * @return the meta info of the replica which is being written to    * @throws IOException    */
-DECL|method|recoverAppend (ExtendedBlock b, long newGS, long expectedBlockLen)
+DECL|method|recoverAppend ( ExtendedBlock b, long newGS, long expectedBlockLen)
 specifier|public
-name|ReplicaInPipelineInterface
+name|ReplicaHandler
 name|recoverAppend
 parameter_list|(
 name|ExtendedBlock

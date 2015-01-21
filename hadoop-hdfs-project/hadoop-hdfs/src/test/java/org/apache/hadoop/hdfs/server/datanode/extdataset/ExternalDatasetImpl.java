@@ -843,6 +843,8 @@ argument_list|,
 name|FileDescriptor
 operator|.
 name|in
+argument_list|,
+literal|null
 argument_list|)
 return|;
 block|}
@@ -850,7 +852,7 @@ annotation|@
 name|Override
 DECL|method|createTemporary (StorageType t, ExtendedBlock b)
 specifier|public
-name|ReplicaInPipelineInterface
+name|ReplicaHandler
 name|createTemporary
 parameter_list|(
 name|StorageType
@@ -864,15 +866,21 @@ name|IOException
 block|{
 return|return
 operator|new
+name|ReplicaHandler
+argument_list|(
+operator|new
 name|ExternalReplicaInPipeline
 argument_list|()
+argument_list|,
+literal|null
+argument_list|)
 return|;
 block|}
 annotation|@
 name|Override
 DECL|method|createRbw (StorageType t, ExtendedBlock b, boolean tf)
 specifier|public
-name|ReplicaInPipelineInterface
+name|ReplicaHandler
 name|createRbw
 parameter_list|(
 name|StorageType
@@ -889,15 +897,21 @@ name|IOException
 block|{
 return|return
 operator|new
+name|ReplicaHandler
+argument_list|(
+operator|new
 name|ExternalReplicaInPipeline
 argument_list|()
+argument_list|,
+literal|null
+argument_list|)
 return|;
 block|}
 annotation|@
 name|Override
 DECL|method|recoverRbw (ExtendedBlock b, long newGS, long minBytesRcvd, long maxBytesRcvd)
 specifier|public
-name|ReplicaInPipelineInterface
+name|ReplicaHandler
 name|recoverRbw
 parameter_list|(
 name|ExtendedBlock
@@ -917,8 +931,14 @@ name|IOException
 block|{
 return|return
 operator|new
+name|ReplicaHandler
+argument_list|(
+operator|new
 name|ExternalReplicaInPipeline
 argument_list|()
+argument_list|,
+literal|null
+argument_list|)
 return|;
 block|}
 annotation|@
@@ -944,7 +964,7 @@ annotation|@
 name|Override
 DECL|method|append (ExtendedBlock b, long newGS, long expectedBlockLen)
 specifier|public
-name|ReplicaInPipelineInterface
+name|ReplicaHandler
 name|append
 parameter_list|(
 name|ExtendedBlock
@@ -961,15 +981,21 @@ name|IOException
 block|{
 return|return
 operator|new
+name|ReplicaHandler
+argument_list|(
+operator|new
 name|ExternalReplicaInPipeline
 argument_list|()
+argument_list|,
+literal|null
+argument_list|)
 return|;
 block|}
 annotation|@
 name|Override
 DECL|method|recoverAppend (ExtendedBlock b, long newGS, long expectedBlockLen)
 specifier|public
-name|ReplicaInPipelineInterface
+name|ReplicaHandler
 name|recoverAppend
 parameter_list|(
 name|ExtendedBlock
@@ -986,8 +1012,14 @@ name|IOException
 block|{
 return|return
 operator|new
+name|ReplicaHandler
+argument_list|(
+operator|new
 name|ExternalReplicaInPipeline
 argument_list|()
+argument_list|,
+literal|null
+argument_list|)
 return|;
 block|}
 annotation|@

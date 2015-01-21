@@ -72,6 +72,38 @@ end_import
 
 begin_import
 import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|server
+operator|.
+name|datanode
+operator|.
+name|fsdataset
+operator|.
+name|FsVolumeReference
+import|;
+end_import
+
+begin_import
+import|import
+name|javax
+operator|.
+name|ws
+operator|.
+name|rs
+operator|.
+name|HEAD
+import|;
+end_import
+
+begin_import
+import|import
 name|java
 operator|.
 name|io
@@ -686,7 +718,7 @@ expr_stmt|;
 block|}
 block|}
 comment|/**    * Asynchronously lazy persist the block from the RamDisk to Disk.    */
-DECL|method|submitLazyPersistTask (String bpId, long blockId, long genStamp, long creationTime, File metaFile, File blockFile, FsVolumeImpl targetVolume)
+DECL|method|submitLazyPersistTask (String bpId, long blockId, long genStamp, long creationTime, File metaFile, File blockFile, FsVolumeReference target)
 name|void
 name|submitLazyPersistTask
 parameter_list|(
@@ -708,8 +740,8 @@ parameter_list|,
 name|File
 name|blockFile
 parameter_list|,
-name|FsVolumeImpl
-name|targetVolume
+name|FsVolumeReference
+name|target
 parameter_list|)
 throws|throws
 name|IOException
@@ -736,10 +768,21 @@ name|blockId
 argument_list|)
 expr_stmt|;
 block|}
+name|FsVolumeImpl
+name|volume
+init|=
+operator|(
+name|FsVolumeImpl
+operator|)
+name|target
+operator|.
+name|getVolume
+argument_list|()
+decl_stmt|;
 name|File
 name|lazyPersistDir
 init|=
-name|targetVolume
+name|volume
 operator|.
 name|getLazyPersistDir
 argument_list|(
@@ -803,14 +846,14 @@ name|blockFile
 argument_list|,
 name|metaFile
 argument_list|,
-name|targetVolume
+name|target
 argument_list|,
 name|lazyPersistDir
 argument_list|)
 decl_stmt|;
 name|execute
 argument_list|(
-name|targetVolume
+name|volume
 operator|.
 name|getCurrentDir
 argument_list|()
@@ -857,7 +900,7 @@ name|metaFile
 decl_stmt|;
 DECL|field|targetVolume
 specifier|final
-name|FsVolumeImpl
+name|FsVolumeReference
 name|targetVolume
 decl_stmt|;
 DECL|field|lazyPersistDir
@@ -865,7 +908,7 @@ specifier|final
 name|File
 name|lazyPersistDir
 decl_stmt|;
-DECL|method|ReplicaLazyPersistTask (String bpId, long blockId, long genStamp, long creationTime, File blockFile, File metaFile, FsVolumeImpl targetVolume, File lazyPersistDir)
+DECL|method|ReplicaLazyPersistTask (String bpId, long blockId, long genStamp, long creationTime, File blockFile, File metaFile, FsVolumeReference targetVolume, File lazyPersistDir)
 name|ReplicaLazyPersistTask
 parameter_list|(
 name|String
@@ -886,7 +929,7 @@ parameter_list|,
 name|File
 name|metaFile
 parameter_list|,
-name|FsVolumeImpl
+name|FsVolumeReference
 name|targetVolume
 parameter_list|,
 name|File
@@ -999,6 +1042,14 @@ name|getFSDataset
 argument_list|()
 decl_stmt|;
 try|try
+init|(
+name|FsVolumeReference
+name|ref
+init|=
+name|this
+operator|.
+name|targetVolume
+init|)
 block|{
 comment|// No FsDatasetImpl lock for the file copy
 name|File
@@ -1035,7 +1086,13 @@ name|creationTime
 argument_list|,
 name|targetFiles
 argument_list|,
-name|targetVolume
+operator|(
+name|FsVolumeImpl
+operator|)
+name|ref
+operator|.
+name|getVolume
+argument_list|()
 argument_list|)
 expr_stmt|;
 name|succeeded
