@@ -718,22 +718,6 @@ name|hdfs
 operator|.
 name|inotify
 operator|.
-name|Event
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|hdfs
-operator|.
-name|inotify
-operator|.
 name|EventBatch
 import|;
 end_import
@@ -3855,6 +3839,9 @@ name|size
 argument_list|)
 throw|;
 block|}
+name|checkNNStartup
+argument_list|()
+expr_stmt|;
 name|namesystem
 operator|.
 name|checkSuperuserPrivilege
@@ -3885,6 +3872,9 @@ parameter_list|()
 throws|throws
 name|IOException
 block|{
+name|checkNNStartup
+argument_list|()
+expr_stmt|;
 name|namesystem
 operator|.
 name|checkSuperuserPrivilege
@@ -3920,6 +3910,9 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
+name|checkNNStartup
+argument_list|()
+expr_stmt|;
 name|namesystem
 operator|.
 name|checkOperation
@@ -3982,6 +3975,9 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
+name|checkNNStartup
+argument_list|()
+expr_stmt|;
 name|namesystem
 operator|.
 name|checkSuperuserPrivilege
@@ -4030,6 +4026,9 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
+name|checkNNStartup
+argument_list|()
+expr_stmt|;
 name|namesystem
 operator|.
 name|checkSuperuserPrivilege
@@ -4152,6 +4151,9 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
+name|checkNNStartup
+argument_list|()
+expr_stmt|;
 name|namesystem
 operator|.
 name|checkSuperuserPrivilege
@@ -4233,6 +4235,9 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
+name|checkNNStartup
+argument_list|()
+expr_stmt|;
 return|return
 name|namesystem
 operator|.
@@ -4261,6 +4266,9 @@ name|InvalidToken
 throws|,
 name|IOException
 block|{
+name|checkNNStartup
+argument_list|()
+expr_stmt|;
 return|return
 name|namesystem
 operator|.
@@ -4287,6 +4295,9 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
+name|checkNNStartup
+argument_list|()
+expr_stmt|;
 name|namesystem
 operator|.
 name|cancelDelegationToken
@@ -4315,6 +4326,9 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
+name|checkNNStartup
+argument_list|()
+expr_stmt|;
 name|metrics
 operator|.
 name|incrGetBlockLocations
@@ -4347,6 +4361,9 @@ parameter_list|()
 throws|throws
 name|IOException
 block|{
+name|checkNNStartup
+argument_list|()
+expr_stmt|;
 return|return
 name|namesystem
 operator|.
@@ -4393,6 +4410,9 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
+name|checkNNStartup
+argument_list|()
+expr_stmt|;
 name|String
 name|clientMachine
 init|=
@@ -4588,6 +4608,9 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
+name|checkNNStartup
+argument_list|()
+expr_stmt|;
 name|String
 name|clientMachine
 init|=
@@ -4728,6 +4751,9 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
+name|checkNNStartup
+argument_list|()
+expr_stmt|;
 name|String
 name|clientMachine
 init|=
@@ -4764,6 +4790,9 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
+name|checkNNStartup
+argument_list|()
+expr_stmt|;
 return|return
 name|namesystem
 operator|.
@@ -4791,6 +4820,9 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
+name|checkNNStartup
+argument_list|()
+expr_stmt|;
 name|namesystem
 operator|.
 name|setStoragePolicy
@@ -4812,6 +4844,9 @@ parameter_list|()
 throws|throws
 name|IOException
 block|{
+name|checkNNStartup
+argument_list|()
+expr_stmt|;
 return|return
 name|namesystem
 operator|.
@@ -4836,6 +4871,9 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
+name|checkNNStartup
+argument_list|()
+expr_stmt|;
 name|namesystem
 operator|.
 name|setPermission
@@ -4866,6 +4904,9 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
+name|checkNNStartup
+argument_list|()
+expr_stmt|;
 name|namesystem
 operator|.
 name|setOwner
@@ -4908,6 +4949,9 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
+name|checkNNStartup
+argument_list|()
+expr_stmt|;
 if|if
 condition|(
 name|stateChangeLog
@@ -5081,6 +5125,9 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
+name|checkNNStartup
+argument_list|()
+expr_stmt|;
 if|if
 condition|(
 name|LOG
@@ -5230,6 +5277,9 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
+name|checkNNStartup
+argument_list|()
+expr_stmt|;
 if|if
 condition|(
 name|stateChangeLog
@@ -5303,6 +5353,9 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
+name|checkNNStartup
+argument_list|()
+expr_stmt|;
 if|if
 condition|(
 name|stateChangeLog
@@ -5360,6 +5413,9 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
+name|checkNNStartup
+argument_list|()
+expr_stmt|;
 name|namesystem
 operator|.
 name|reportBadBlocks
@@ -5385,6 +5441,9 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
+name|checkNNStartup
+argument_list|()
+expr_stmt|;
 return|return
 name|namesystem
 operator|.
@@ -5424,6 +5483,9 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
+name|checkNNStartup
+argument_list|()
+expr_stmt|;
 name|CacheEntry
 name|cacheEntry
 init|=
@@ -5527,6 +5589,9 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
+name|checkNNStartup
+argument_list|()
+expr_stmt|;
 name|namesystem
 operator|.
 name|commitBlockSynchronization
@@ -5561,6 +5626,9 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
+name|checkNNStartup
+argument_list|()
+expr_stmt|;
 return|return
 name|namesystem
 operator|.
@@ -5589,6 +5657,9 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
+name|checkNNStartup
+argument_list|()
+expr_stmt|;
 if|if
 condition|(
 name|stateChangeLog
@@ -5731,6 +5802,9 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
+name|checkNNStartup
+argument_list|()
+expr_stmt|;
 name|CacheEntry
 name|cacheEntry
 init|=
@@ -5817,6 +5891,9 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
+name|checkNNStartup
+argument_list|()
+expr_stmt|;
 if|if
 condition|(
 name|stateChangeLog
@@ -5954,6 +6031,9 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
+name|checkNNStartup
+argument_list|()
+expr_stmt|;
 if|if
 condition|(
 name|stateChangeLog
@@ -6028,6 +6108,9 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
+name|checkNNStartup
+argument_list|()
+expr_stmt|;
 if|if
 condition|(
 name|stateChangeLog
@@ -6182,6 +6265,9 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
+name|checkNNStartup
+argument_list|()
+expr_stmt|;
 if|if
 condition|(
 name|stateChangeLog
@@ -6264,6 +6350,9 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
+name|checkNNStartup
+argument_list|()
+expr_stmt|;
 name|namesystem
 operator|.
 name|renewLease
@@ -6293,6 +6382,9 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
+name|checkNNStartup
+argument_list|()
+expr_stmt|;
 name|DirectoryListing
 name|files
 init|=
@@ -6350,6 +6442,9 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
+name|checkNNStartup
+argument_list|()
+expr_stmt|;
 name|metrics
 operator|.
 name|incrFileInfoOps
@@ -6380,6 +6475,9 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
+name|checkNNStartup
+argument_list|()
+expr_stmt|;
 return|return
 name|namesystem
 operator|.
@@ -6403,6 +6501,9 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
+name|checkNNStartup
+argument_list|()
+expr_stmt|;
 name|metrics
 operator|.
 name|incrFileInfoOps
@@ -6431,6 +6532,9 @@ parameter_list|()
 throws|throws
 name|IOException
 block|{
+name|checkNNStartup
+argument_list|()
+expr_stmt|;
 name|namesystem
 operator|.
 name|checkOperation
@@ -6462,6 +6566,9 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
+name|checkNNStartup
+argument_list|()
+expr_stmt|;
 name|DatanodeInfo
 name|results
 index|[]
@@ -6492,6 +6599,9 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
+name|checkNNStartup
+argument_list|()
+expr_stmt|;
 specifier|final
 name|DatanodeStorageReport
 index|[]
@@ -6525,6 +6635,9 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
+name|checkNNStartup
+argument_list|()
+expr_stmt|;
 name|OperationCategory
 name|opCategory
 init|=
@@ -6593,6 +6706,9 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
+name|checkNNStartup
+argument_list|()
+expr_stmt|;
 return|return
 name|namesystem
 operator|.
@@ -6613,6 +6729,9 @@ parameter_list|()
 throws|throws
 name|IOException
 block|{
+name|checkNNStartup
+argument_list|()
+expr_stmt|;
 name|CacheEntry
 name|cacheEntry
 init|=
@@ -6681,6 +6800,9 @@ name|AccessControlException
 throws|,
 name|IOException
 block|{
+name|checkNNStartup
+argument_list|()
+expr_stmt|;
 name|CheckpointSignature
 name|sig
 init|=
@@ -6707,6 +6829,9 @@ parameter_list|()
 throws|throws
 name|IOException
 block|{
+name|checkNNStartup
+argument_list|()
+expr_stmt|;
 name|namesystem
 operator|.
 name|refreshNodes
@@ -6724,6 +6849,9 @@ parameter_list|()
 throws|throws
 name|IOException
 block|{
+name|checkNNStartup
+argument_list|()
+expr_stmt|;
 name|namesystem
 operator|.
 name|checkOperation
@@ -6759,6 +6887,9 @@ parameter_list|()
 throws|throws
 name|IOException
 block|{
+name|checkNNStartup
+argument_list|()
+expr_stmt|;
 name|namesystem
 operator|.
 name|checkOperation
@@ -6794,6 +6925,9 @@ parameter_list|()
 throws|throws
 name|IOException
 block|{
+name|checkNNStartup
+argument_list|()
+expr_stmt|;
 name|namesystem
 operator|.
 name|checkSuperuserPrivilege
@@ -6820,6 +6954,9 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
+name|checkNNStartup
+argument_list|()
+expr_stmt|;
 name|namesystem
 operator|.
 name|checkOperation
@@ -6857,6 +6994,9 @@ parameter_list|()
 throws|throws
 name|IOException
 block|{
+name|checkNNStartup
+argument_list|()
+expr_stmt|;
 name|namesystem
 operator|.
 name|finalizeUpgrade
@@ -6877,6 +7017,9 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
+name|checkNNStartup
+argument_list|()
+expr_stmt|;
 name|LOG
 operator|.
 name|info
@@ -6946,6 +7089,9 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
+name|checkNNStartup
+argument_list|()
+expr_stmt|;
 name|namesystem
 operator|.
 name|metaSave
@@ -6971,6 +7117,9 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
+name|checkNNStartup
+argument_list|()
+expr_stmt|;
 name|String
 index|[]
 name|cookieTab
@@ -7066,6 +7215,9 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
+name|checkNNStartup
+argument_list|()
+expr_stmt|;
 name|namesystem
 operator|.
 name|setBalancerBandwidth
@@ -7088,6 +7240,9 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
+name|checkNNStartup
+argument_list|()
+expr_stmt|;
 return|return
 name|namesystem
 operator|.
@@ -7117,6 +7272,9 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
+name|checkNNStartup
+argument_list|()
+expr_stmt|;
 name|namesystem
 operator|.
 name|setQuota
@@ -7152,6 +7310,9 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
+name|checkNNStartup
+argument_list|()
+expr_stmt|;
 name|namesystem
 operator|.
 name|fsync
@@ -7186,6 +7347,9 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
+name|checkNNStartup
+argument_list|()
+expr_stmt|;
 name|namesystem
 operator|.
 name|setTimes
@@ -7221,6 +7385,9 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
+name|checkNNStartup
+argument_list|()
+expr_stmt|;
 name|CacheEntry
 name|cacheEntry
 init|=
@@ -7347,6 +7514,9 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
+name|checkNNStartup
+argument_list|()
+expr_stmt|;
 name|metrics
 operator|.
 name|incrGetLinkTargetOps
@@ -7462,6 +7632,9 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
+name|checkNNStartup
+argument_list|()
+expr_stmt|;
 name|verifySoftwareVersion
 argument_list|(
 name|nodeReg
@@ -7511,6 +7684,9 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
+name|checkNNStartup
+argument_list|()
+expr_stmt|;
 name|verifyRequest
 argument_list|(
 name|nodeReg
@@ -7558,6 +7734,9 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
+name|checkNNStartup
+argument_list|()
+expr_stmt|;
 name|verifyRequest
 argument_list|(
 name|nodeReg
@@ -7710,6 +7889,9 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
+name|checkNNStartup
+argument_list|()
+expr_stmt|;
 name|verifyRequest
 argument_list|(
 name|nodeReg
@@ -7781,6 +7963,9 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
+name|checkNNStartup
+argument_list|()
+expr_stmt|;
 name|verifyRequest
 argument_list|(
 name|nodeReg
@@ -7858,6 +8043,9 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
+name|checkNNStartup
+argument_list|()
+expr_stmt|;
 name|String
 name|dnName
 init|=
@@ -7991,6 +8179,9 @@ parameter_list|()
 throws|throws
 name|IOException
 block|{
+name|checkNNStartup
+argument_list|()
+expr_stmt|;
 name|namesystem
 operator|.
 name|checkSuperuserPrivilege
@@ -8088,6 +8279,9 @@ parameter_list|()
 throws|throws
 name|IOException
 block|{
+name|checkNNStartup
+argument_list|()
+expr_stmt|;
 if|if
 condition|(
 operator|!
@@ -8338,7 +8532,12 @@ throws|throws
 name|HealthCheckFailedException
 throws|,
 name|AccessControlException
+throws|,
+name|IOException
 block|{
+name|checkNNStartup
+argument_list|()
+expr_stmt|;
 name|nn
 operator|.
 name|monitorHealth
@@ -8361,7 +8560,12 @@ throws|throws
 name|ServiceFailedException
 throws|,
 name|AccessControlException
+throws|,
+name|IOException
 block|{
+name|checkNNStartup
+argument_list|()
+expr_stmt|;
 name|nn
 operator|.
 name|checkHaStateChange
@@ -8391,7 +8595,12 @@ throws|throws
 name|ServiceFailedException
 throws|,
 name|AccessControlException
+throws|,
+name|IOException
 block|{
+name|checkNNStartup
+argument_list|()
+expr_stmt|;
 name|nn
 operator|.
 name|checkHaStateChange
@@ -8418,7 +8627,12 @@ throws|throws
 name|AccessControlException
 throws|,
 name|ServiceFailedException
+throws|,
+name|IOException
 block|{
+name|checkNNStartup
+argument_list|()
+expr_stmt|;
 return|return
 name|nn
 operator|.
@@ -8695,6 +8909,9 @@ parameter_list|()
 throws|throws
 name|IOException
 block|{
+name|checkNNStartup
+argument_list|()
+expr_stmt|;
 return|return
 name|namesystem
 operator|.
@@ -8721,6 +8938,9 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
+name|checkNNStartup
+argument_list|()
+expr_stmt|;
 if|if
 condition|(
 operator|!
@@ -8844,6 +9064,9 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
+name|checkNNStartup
+argument_list|()
+expr_stmt|;
 name|metrics
 operator|.
 name|incrDeleteSnapshotOps
@@ -8926,6 +9149,9 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
+name|checkNNStartup
+argument_list|()
+expr_stmt|;
 name|metrics
 operator|.
 name|incrAllowSnapshotOps
@@ -8953,6 +9179,9 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
+name|checkNNStartup
+argument_list|()
+expr_stmt|;
 name|metrics
 operator|.
 name|incrDisAllowSnapshotOps
@@ -8968,6 +9197,7 @@ expr_stmt|;
 block|}
 annotation|@
 name|Override
+comment|// ClientProtocol
 DECL|method|renameSnapshot (String snapshotRoot, String snapshotOldName, String snapshotNewName)
 specifier|public
 name|void
@@ -8985,6 +9215,9 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
+name|checkNNStartup
+argument_list|()
+expr_stmt|;
 if|if
 condition|(
 name|snapshotNewName
@@ -9087,6 +9320,9 @@ parameter_list|()
 throws|throws
 name|IOException
 block|{
+name|checkNNStartup
+argument_list|()
+expr_stmt|;
 name|SnapshottableDirectoryStatus
 index|[]
 name|status
@@ -9107,6 +9343,7 @@ return|;
 block|}
 annotation|@
 name|Override
+comment|// ClientProtocol
 DECL|method|getSnapshotDiffReport (String snapshotRoot, String earlierSnapshotName, String laterSnapshotName)
 specifier|public
 name|SnapshotDiffReport
@@ -9124,6 +9361,9 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
+name|checkNNStartup
+argument_list|()
+expr_stmt|;
 name|SnapshotDiffReport
 name|report
 init|=
@@ -9149,6 +9389,7 @@ return|;
 block|}
 annotation|@
 name|Override
+comment|// ClientProtocol
 DECL|method|addCacheDirective ( CacheDirectiveInfo path, EnumSet<CacheFlag> flags)
 specifier|public
 name|long
@@ -9166,6 +9407,9 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
+name|checkNNStartup
+argument_list|()
+expr_stmt|;
 name|CacheEntryWithPayload
 name|cacheEntry
 init|=
@@ -9252,6 +9496,7 @@ return|;
 block|}
 annotation|@
 name|Override
+comment|// ClientProtocol
 DECL|method|modifyCacheDirective ( CacheDirectiveInfo directive, EnumSet<CacheFlag> flags)
 specifier|public
 name|void
@@ -9269,6 +9514,9 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
+name|checkNNStartup
+argument_list|()
+expr_stmt|;
 name|CacheEntry
 name|cacheEntry
 init|=
@@ -9333,6 +9581,7 @@ block|}
 block|}
 annotation|@
 name|Override
+comment|// ClientProtocol
 DECL|method|removeCacheDirective (long id)
 specifier|public
 name|void
@@ -9344,6 +9593,9 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
+name|checkNNStartup
+argument_list|()
+expr_stmt|;
 name|CacheEntry
 name|cacheEntry
 init|=
@@ -9406,6 +9658,7 @@ block|}
 block|}
 annotation|@
 name|Override
+comment|// ClientProtocol
 DECL|method|listCacheDirectives (long prevId, CacheDirectiveInfo filter)
 specifier|public
 name|BatchedEntries
@@ -9423,6 +9676,9 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
+name|checkNNStartup
+argument_list|()
+expr_stmt|;
 if|if
 condition|(
 name|filter
@@ -9455,6 +9711,7 @@ return|;
 block|}
 annotation|@
 name|Override
+comment|//ClientProtocol
 DECL|method|addCachePool (CachePoolInfo info)
 specifier|public
 name|void
@@ -9466,6 +9723,9 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
+name|checkNNStartup
+argument_list|()
+expr_stmt|;
 name|CacheEntry
 name|cacheEntry
 init|=
@@ -9529,6 +9789,7 @@ block|}
 block|}
 annotation|@
 name|Override
+comment|// ClientProtocol
 DECL|method|modifyCachePool (CachePoolInfo info)
 specifier|public
 name|void
@@ -9540,6 +9801,9 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
+name|checkNNStartup
+argument_list|()
+expr_stmt|;
 name|CacheEntry
 name|cacheEntry
 init|=
@@ -9603,6 +9867,7 @@ block|}
 block|}
 annotation|@
 name|Override
+comment|// ClientProtocol
 DECL|method|removeCachePool (String cachePoolName)
 specifier|public
 name|void
@@ -9614,6 +9879,9 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
+name|checkNNStartup
+argument_list|()
+expr_stmt|;
 name|CacheEntry
 name|cacheEntry
 init|=
@@ -9676,6 +9944,7 @@ block|}
 block|}
 annotation|@
 name|Override
+comment|// ClientProtocol
 DECL|method|listCachePools (String prevKey)
 specifier|public
 name|BatchedEntries
@@ -9690,6 +9959,9 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
+name|checkNNStartup
+argument_list|()
+expr_stmt|;
 return|return
 name|namesystem
 operator|.
@@ -9707,6 +9979,7 @@ return|;
 block|}
 annotation|@
 name|Override
+comment|// ClientProtocol
 DECL|method|modifyAclEntries (String src, List<AclEntry> aclSpec)
 specifier|public
 name|void
@@ -9724,6 +9997,9 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
+name|checkNNStartup
+argument_list|()
+expr_stmt|;
 name|namesystem
 operator|.
 name|modifyAclEntries
@@ -9736,6 +10012,7 @@ expr_stmt|;
 block|}
 annotation|@
 name|Override
+comment|// ClienProtocol
 DECL|method|removeAclEntries (String src, List<AclEntry> aclSpec)
 specifier|public
 name|void
@@ -9753,6 +10030,9 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
+name|checkNNStartup
+argument_list|()
+expr_stmt|;
 name|namesystem
 operator|.
 name|removeAclEntries
@@ -9765,6 +10045,7 @@ expr_stmt|;
 block|}
 annotation|@
 name|Override
+comment|// ClientProtocol
 DECL|method|removeDefaultAcl (String src)
 specifier|public
 name|void
@@ -9776,6 +10057,9 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
+name|checkNNStartup
+argument_list|()
+expr_stmt|;
 name|namesystem
 operator|.
 name|removeDefaultAcl
@@ -9786,6 +10070,7 @@ expr_stmt|;
 block|}
 annotation|@
 name|Override
+comment|// ClientProtocol
 DECL|method|removeAcl (String src)
 specifier|public
 name|void
@@ -9797,6 +10082,9 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
+name|checkNNStartup
+argument_list|()
+expr_stmt|;
 name|namesystem
 operator|.
 name|removeAcl
@@ -9807,6 +10095,7 @@ expr_stmt|;
 block|}
 annotation|@
 name|Override
+comment|// ClientProtocol
 DECL|method|setAcl (String src, List<AclEntry> aclSpec)
 specifier|public
 name|void
@@ -9824,6 +10113,9 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
+name|checkNNStartup
+argument_list|()
+expr_stmt|;
 name|namesystem
 operator|.
 name|setAcl
@@ -9836,6 +10128,7 @@ expr_stmt|;
 block|}
 annotation|@
 name|Override
+comment|// ClientProtocol
 DECL|method|getAclStatus (String src)
 specifier|public
 name|AclStatus
@@ -9847,6 +10140,9 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
+name|checkNNStartup
+argument_list|()
+expr_stmt|;
 return|return
 name|namesystem
 operator|.
@@ -9858,6 +10154,7 @@ return|;
 block|}
 annotation|@
 name|Override
+comment|// ClientProtocol
 DECL|method|createEncryptionZone (String src, String keyName)
 specifier|public
 name|void
@@ -9872,6 +10169,9 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
+name|checkNNStartup
+argument_list|()
+expr_stmt|;
 specifier|final
 name|CacheEntry
 name|cacheEntry
@@ -9937,6 +10237,7 @@ block|}
 block|}
 annotation|@
 name|Override
+comment|// ClientProtocol
 DECL|method|getEZForPath (String src)
 specifier|public
 name|EncryptionZone
@@ -9948,6 +10249,9 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
+name|checkNNStartup
+argument_list|()
+expr_stmt|;
 return|return
 name|namesystem
 operator|.
@@ -9959,6 +10263,7 @@ return|;
 block|}
 annotation|@
 name|Override
+comment|// ClientProtocol
 DECL|method|listEncryptionZones ( long prevId)
 specifier|public
 name|BatchedEntries
@@ -9973,6 +10278,9 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
+name|checkNNStartup
+argument_list|()
+expr_stmt|;
 return|return
 name|namesystem
 operator|.
@@ -9984,6 +10292,7 @@ return|;
 block|}
 annotation|@
 name|Override
+comment|// ClientProtocol
 DECL|method|setXAttr (String src, XAttr xAttr, EnumSet<XAttrSetFlag> flag)
 specifier|public
 name|void
@@ -10004,6 +10313,9 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
+name|checkNNStartup
+argument_list|()
+expr_stmt|;
 name|CacheEntry
 name|cacheEntry
 init|=
@@ -10071,6 +10383,7 @@ block|}
 block|}
 annotation|@
 name|Override
+comment|// ClientProtocol
 DECL|method|getXAttrs (String src, List<XAttr> xAttrs)
 specifier|public
 name|List
@@ -10091,6 +10404,9 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
+name|checkNNStartup
+argument_list|()
+expr_stmt|;
 return|return
 name|namesystem
 operator|.
@@ -10104,6 +10420,7 @@ return|;
 block|}
 annotation|@
 name|Override
+comment|// ClientProtocol
 DECL|method|listXAttrs (String src)
 specifier|public
 name|List
@@ -10118,6 +10435,9 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
+name|checkNNStartup
+argument_list|()
+expr_stmt|;
 return|return
 name|namesystem
 operator|.
@@ -10129,6 +10449,7 @@ return|;
 block|}
 annotation|@
 name|Override
+comment|// ClientProtocol
 DECL|method|removeXAttr (String src, XAttr xAttr)
 specifier|public
 name|void
@@ -10143,6 +10464,9 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
+name|checkNNStartup
+argument_list|()
+expr_stmt|;
 name|CacheEntry
 name|cacheEntry
 init|=
@@ -10206,8 +10530,44 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
+DECL|method|checkNNStartup ()
+specifier|private
+name|void
+name|checkNNStartup
+parameter_list|()
+throws|throws
+name|IOException
+block|{
+if|if
+condition|(
+operator|!
+name|this
+operator|.
+name|nn
+operator|.
+name|isStarted
+argument_list|()
+condition|)
+block|{
+throw|throw
+operator|new
+name|IOException
+argument_list|(
+name|this
+operator|.
+name|nn
+operator|.
+name|getRole
+argument_list|()
+operator|+
+literal|" still not started"
+argument_list|)
+throw|;
+block|}
+block|}
 annotation|@
 name|Override
+comment|// ClientProtocol
 DECL|method|checkAccess (String path, FsAction mode)
 specifier|public
 name|void
@@ -10222,6 +10582,9 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
+name|checkNNStartup
+argument_list|()
+expr_stmt|;
 name|namesystem
 operator|.
 name|checkAccess
@@ -10243,6 +10606,9 @@ parameter_list|()
 throws|throws
 name|IOException
 block|{
+name|checkNNStartup
+argument_list|()
+expr_stmt|;
 name|namesystem
 operator|.
 name|checkOperation
@@ -10362,6 +10728,9 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
+name|checkNNStartup
+argument_list|()
+expr_stmt|;
 name|namesystem
 operator|.
 name|checkOperation
@@ -10730,6 +11099,7 @@ return|;
 block|}
 annotation|@
 name|Override
+comment|// TraceAdminProtocol
 DECL|method|listSpanReceivers ()
 specifier|public
 name|SpanReceiverInfo
@@ -10739,6 +11109,9 @@ parameter_list|()
 throws|throws
 name|IOException
 block|{
+name|checkNNStartup
+argument_list|()
+expr_stmt|;
 name|namesystem
 operator|.
 name|checkSuperuserPrivilege
@@ -10755,6 +11128,7 @@ return|;
 block|}
 annotation|@
 name|Override
+comment|// TraceAdminProtocol
 DECL|method|addSpanReceiver (SpanReceiverInfo info)
 specifier|public
 name|long
@@ -10766,6 +11140,9 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
+name|checkNNStartup
+argument_list|()
+expr_stmt|;
 name|namesystem
 operator|.
 name|checkSuperuserPrivilege
@@ -10784,6 +11161,7 @@ return|;
 block|}
 annotation|@
 name|Override
+comment|// TraceAdminProtocol
 DECL|method|removeSpanReceiver (long id)
 specifier|public
 name|void
@@ -10795,6 +11173,9 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
+name|checkNNStartup
+argument_list|()
+expr_stmt|;
 name|namesystem
 operator|.
 name|checkSuperuserPrivilege

@@ -867,6 +867,20 @@ import|;
 end_import
 
 begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
+name|concurrent
+operator|.
+name|atomic
+operator|.
+name|AtomicBoolean
+import|;
+end_import
+
+begin_import
 import|import static
 name|org
 operator|.
@@ -1618,6 +1632,17 @@ specifier|protected
 specifier|final
 name|boolean
 name|allowStaleStandbyReads
+decl_stmt|;
+DECL|field|started
+specifier|private
+name|AtomicBoolean
+name|started
+init|=
+operator|new
+name|AtomicBoolean
+argument_list|(
+literal|false
+argument_list|)
 decl_stmt|;
 comment|/** httpServer */
 DECL|field|httpServer
@@ -3577,6 +3602,15 @@ throw|throw
 name|e
 throw|;
 block|}
+name|this
+operator|.
+name|started
+operator|.
+name|set
+argument_list|(
+literal|true
+argument_list|)
+expr_stmt|;
 block|}
 DECL|method|createHAState (StartupOption startOpt)
 specifier|protected
@@ -8065,6 +8099,21 @@ argument_list|(
 name|ACTIVE_STATE
 argument_list|)
 operator|)
+return|;
+block|}
+comment|/**    * Returns whether the NameNode is completely started    */
+DECL|method|isStarted ()
+name|boolean
+name|isStarted
+parameter_list|()
+block|{
+return|return
+name|this
+operator|.
+name|started
+operator|.
+name|get
+argument_list|()
 return|;
 block|}
 comment|/**    * Check that a request to change this node's HA state is valid.    * In particular, verifies that, if auto failover is enabled, non-forced    * requests from the HAAdmin CLI are rejected, and vice versa.    *    * @param req the request to check    * @throws AccessControlException if the request is disallowed    */
