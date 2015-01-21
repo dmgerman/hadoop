@@ -4661,6 +4661,8 @@ operator|.
 name|addBlock
 argument_list|(
 name|block
+argument_list|,
+literal|false
 argument_list|)
 expr_stmt|;
 return|return
@@ -10958,6 +10960,8 @@ name|bpid
 argument_list|,
 name|diskBlockInfo
 argument_list|)
+argument_list|,
+literal|false
 argument_list|)
 expr_stmt|;
 block|}

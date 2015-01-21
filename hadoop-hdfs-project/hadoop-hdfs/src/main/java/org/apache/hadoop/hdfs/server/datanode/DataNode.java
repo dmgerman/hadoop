@@ -11079,6 +11079,8 @@ operator|.
 name|addBlock
 argument_list|(
 name|block
+argument_list|,
+literal|false
 argument_list|)
 expr_stmt|;
 block|}

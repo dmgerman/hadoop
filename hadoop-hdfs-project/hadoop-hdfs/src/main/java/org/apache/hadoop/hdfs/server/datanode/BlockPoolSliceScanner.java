@@ -752,6 +752,17 @@ name|isNewPeriod
 init|=
 literal|true
 decl_stmt|;
+DECL|field|lastScanTimeDifference
+specifier|private
+name|int
+name|lastScanTimeDifference
+init|=
+literal|5
+operator|*
+literal|60
+operator|*
+literal|1000
+decl_stmt|;
 DECL|field|verificationLog
 specifier|private
 specifier|final
@@ -778,6 +789,9 @@ specifier|static
 enum|enum
 name|ScanType
 block|{
+DECL|enumConstant|IMMEDIATE_SCAN
+name|IMMEDIATE_SCAN
+block|,
 DECL|enumConstant|VERIFICATION_SCAN
 name|VERIFICATION_SCAN
 block|,
@@ -833,6 +847,22 @@ name|right
 parameter_list|)
 block|{
 specifier|final
+name|ScanType
+name|leftNextScanType
+init|=
+name|left
+operator|.
+name|nextScanType
+decl_stmt|;
+specifier|final
+name|ScanType
+name|rightNextScanType
+init|=
+name|right
+operator|.
+name|nextScanType
+decl_stmt|;
+specifier|final
 name|long
 name|l
 init|=
@@ -848,10 +878,35 @@ name|right
 operator|.
 name|lastScanTime
 decl_stmt|;
+comment|// Compare by nextScanType if they are same then compare by
+comment|// lastScanTimes
 comment|// compare blocks itself if scantimes are same to avoid.
 comment|// because TreeMap uses comparator if available to check existence of
 comment|// the object.
+name|int
+name|compareByNextScanType
+init|=
+name|leftNextScanType
+operator|.
+name|compareTo
+argument_list|(
+name|rightNextScanType
+argument_list|)
+decl_stmt|;
 return|return
+name|compareByNextScanType
+operator|<
+literal|0
+condition|?
+operator|-
+literal|1
+else|:
+name|compareByNextScanType
+operator|>
+literal|0
+condition|?
+literal|1
+else|:
 name|l
 operator|<
 name|r
@@ -899,6 +954,14 @@ DECL|field|next
 specifier|private
 name|LinkedElement
 name|next
+decl_stmt|;
+DECL|field|nextScanType
+name|ScanType
+name|nextScanType
+init|=
+name|ScanType
+operator|.
+name|VERIFICATION_SCAN
 decl_stmt|;
 DECL|method|BlockScanInfo (Block block)
 name|BlockScanInfo
@@ -1458,6 +1521,17 @@ argument_list|(
 name|info
 argument_list|)
 expr_stmt|;
+if|if
+condition|(
+name|info
+operator|.
+name|nextScanType
+operator|!=
+name|ScanType
+operator|.
+name|IMMEDIATE_SCAN
+condition|)
+block|{
 name|info
 operator|.
 name|lastScanTime
@@ -1466,6 +1540,7 @@ name|e
 operator|.
 name|verificationTime
 expr_stmt|;
+block|}
 name|info
 operator|.
 name|lastScanType
@@ -1549,14 +1624,17 @@ name|periodInt
 argument_list|)
 return|;
 block|}
-comment|/** Adds block to list of blocks */
-DECL|method|addBlock (ExtendedBlock block)
+comment|/** Adds block to list of blocks     * @param scanNow - true if we want to make that particular block a high     * priority one to scan immediately    **/
+DECL|method|addBlock (ExtendedBlock block, boolean scanNow)
 specifier|synchronized
 name|void
 name|addBlock
 parameter_list|(
 name|ExtendedBlock
 name|block
+parameter_list|,
+name|boolean
+name|scanNow
 parameter_list|)
 block|{
 name|BlockScanInfo
@@ -1572,6 +1650,43 @@ name|getLocalBlock
 argument_list|()
 argument_list|)
 decl_stmt|;
+name|long
+name|lastScanTime
+init|=
+literal|0
+decl_stmt|;
+if|if
+condition|(
+name|info
+operator|!=
+literal|null
+condition|)
+block|{
+name|lastScanTime
+operator|=
+name|info
+operator|.
+name|lastScanTime
+expr_stmt|;
+block|}
+comment|// If the particular block is scanned in last 5 minutes, the  no need to
+comment|// verify that block again
+if|if
+condition|(
+name|scanNow
+operator|&&
+name|Time
+operator|.
+name|monotonicNow
+argument_list|()
+operator|-
+name|lastScanTime
+operator|<
+name|lastScanTimeDifference
+condition|)
+block|{
+return|return;
+block|}
 if|if
 condition|(
 name|info
@@ -1612,6 +1727,31 @@ operator|=
 name|getNewBlockScanTime
 argument_list|()
 expr_stmt|;
+if|if
+condition|(
+name|scanNow
+condition|)
+block|{
+comment|// Create a new BlockScanInfo object and set the lastScanTime to 0
+comment|// which will make it the high priority block
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"Adding block for immediate verification "
+operator|+
+name|block
+argument_list|)
+expr_stmt|;
+name|info
+operator|.
+name|nextScanType
+operator|=
+name|ScanType
+operator|.
+name|IMMEDIATE_SCAN
+expr_stmt|;
+block|}
 name|addBlockInfo
 argument_list|(
 name|info
@@ -1785,6 +1925,14 @@ name|lastScanOk
 operator|=
 name|scanOk
 expr_stmt|;
+name|info
+operator|.
+name|nextScanType
+operator|=
+name|ScanType
+operator|.
+name|VERIFICATION_SCAN
+expr_stmt|;
 name|addBlockInfo
 argument_list|(
 name|info
@@ -1875,6 +2023,24 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
+block|}
+annotation|@
+name|VisibleForTesting
+DECL|method|setLastScanTimeDifference (int lastScanTimeDifference)
+specifier|synchronized
+name|void
+name|setLastScanTimeDifference
+parameter_list|(
+name|int
+name|lastScanTimeDifference
+parameter_list|)
+block|{
+name|this
+operator|.
+name|lastScanTimeDifference
+operator|=
+name|lastScanTimeDifference
+expr_stmt|;
 block|}
 DECL|class|LogEntry
 specifier|static
@@ -2520,6 +2686,24 @@ name|isEmpty
 argument_list|()
 condition|)
 block|{
+if|if
+condition|(
+name|blockInfoSet
+operator|.
+name|first
+argument_list|()
+operator|.
+name|nextScanType
+operator|==
+name|ScanType
+operator|.
+name|IMMEDIATE_SCAN
+condition|)
+block|{
+return|return
+literal|false
+return|;
+block|}
 name|long
 name|blockId
 init|=
