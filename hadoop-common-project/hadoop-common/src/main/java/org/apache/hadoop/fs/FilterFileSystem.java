@@ -890,6 +890,34 @@ name|dst
 argument_list|)
 return|;
 block|}
+annotation|@
+name|Override
+DECL|method|truncate (Path f, final long newLength)
+specifier|public
+name|boolean
+name|truncate
+parameter_list|(
+name|Path
+name|f
+parameter_list|,
+specifier|final
+name|long
+name|newLength
+parameter_list|)
+throws|throws
+name|IOException
+block|{
+return|return
+name|fs
+operator|.
+name|truncate
+argument_list|(
+name|f
+argument_list|,
+name|newLength
+argument_list|)
+return|;
+block|}
 comment|/** Delete a file */
 annotation|@
 name|Override

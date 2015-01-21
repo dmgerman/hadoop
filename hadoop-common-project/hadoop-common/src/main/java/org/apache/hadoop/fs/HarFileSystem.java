@@ -3098,6 +3098,31 @@ block|}
 comment|/**    * Not implemented.    */
 annotation|@
 name|Override
+DECL|method|truncate (Path f, long newLength)
+specifier|public
+name|boolean
+name|truncate
+parameter_list|(
+name|Path
+name|f
+parameter_list|,
+name|long
+name|newLength
+parameter_list|)
+throws|throws
+name|IOException
+block|{
+throw|throw
+operator|new
+name|IOException
+argument_list|(
+literal|"Har: truncate not allowed"
+argument_list|)
+throw|;
+block|}
+comment|/**    * Not implemented.    */
+annotation|@
+name|Override
 DECL|method|delete (Path f, boolean recursive)
 specifier|public
 name|boolean

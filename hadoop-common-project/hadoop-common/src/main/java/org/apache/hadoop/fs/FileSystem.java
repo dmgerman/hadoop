@@ -4263,6 +4263,37 @@ argument_list|)
 throw|;
 block|}
 block|}
+comment|/**    * Truncate the file in the indicated path to the indicated size.    *<ul>    *<li>Fails if path is a directory.    *<li>Fails if path does not exist.    *<li>Fails if path is not closed.    *<li>Fails if new size is greater than current size.    *</ul>    * @param f The path to the file to be truncated    * @param newLength The size the file is to be truncated to    *    * @return<code>true</code> if the file has been truncated to the desired    *<code>newLength</code> and is immediately available to be reused for    * write operations such as<code>append</code>, or    *<code>false</code> if a background process of adjusting the length of    * the last block has been started, and clients should wait for it to    * complete before proceeding with further file updates.    */
+DECL|method|truncate (Path f, long newLength)
+specifier|public
+name|boolean
+name|truncate
+parameter_list|(
+name|Path
+name|f
+parameter_list|,
+name|long
+name|newLength
+parameter_list|)
+throws|throws
+name|IOException
+block|{
+throw|throw
+operator|new
+name|UnsupportedOperationException
+argument_list|(
+literal|"Not implemented by the "
+operator|+
+name|getClass
+argument_list|()
+operator|.
+name|getSimpleName
+argument_list|()
+operator|+
+literal|" FileSystem implementation"
+argument_list|)
+throw|;
+block|}
 comment|/**    * Delete a file     * @deprecated Use {@link #delete(Path, boolean)} instead.    */
 annotation|@
 name|Deprecated

@@ -1642,6 +1642,30 @@ literal|"Not supported"
 argument_list|)
 throw|;
 block|}
+annotation|@
+name|Override
+DECL|method|truncate (Path f, long newLength)
+specifier|public
+name|boolean
+name|truncate
+parameter_list|(
+name|Path
+name|f
+parameter_list|,
+name|long
+name|newLength
+parameter_list|)
+throws|throws
+name|IOException
+block|{
+throw|throw
+operator|new
+name|IOException
+argument_list|(
+literal|"Not supported"
+argument_list|)
+throw|;
+block|}
 comment|/**    * Calculated the length of the checksum file in bytes.    * @param size the length of the data file in bytes    * @param bytesPerSum the number of bytes in a checksum block    * @return the number of bytes in the checksum file    */
 DECL|method|getChecksumLength (long size, int bytesPerSum)
 specifier|public

@@ -3698,7 +3698,8 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-comment|/**    * Truncate the file in the indicated path to the indicated size.    * @param f The path to the file to be truncated    * @param newLength The size the file is to be truncated to    *    * @return true if and client does not need to wait for block recovery,    * false if client needs to wait for block recovery.    */
+annotation|@
+name|Override
 DECL|method|truncate (Path f, final long newLength)
 specifier|public
 name|boolean
