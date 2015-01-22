@@ -1150,7 +1150,7 @@ name|println
 argument_list|(
 name|remoteAppLogDir
 operator|+
-literal|"does not exist."
+literal|" does not exist."
 argument_list|)
 expr_stmt|;
 name|System
@@ -1181,7 +1181,7 @@ name|println
 argument_list|(
 name|remoteAppLogDir
 operator|+
-literal|"does not have any log files."
+literal|" does not have any log files."
 argument_list|)
 expr_stmt|;
 block|}
