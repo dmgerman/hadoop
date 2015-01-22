@@ -845,7 +845,6 @@ decl_stmt|;
 comment|/** the reference of the volume where the block receiver writes to */
 DECL|field|replicaHandler
 specifier|private
-specifier|final
 name|ReplicaHandler
 name|replicaHandler
 decl_stmt|;
@@ -1933,6 +1932,10 @@ literal|null
 argument_list|,
 name|replicaHandler
 argument_list|)
+expr_stmt|;
+name|replicaHandler
+operator|=
+literal|null
 expr_stmt|;
 block|}
 if|if
