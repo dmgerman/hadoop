@@ -78,16 +78,6 @@ name|java
 operator|.
 name|io
 operator|.
-name|FileInputStream
-import|;
-end_import
-
-begin_import
-import|import
-name|java
-operator|.
-name|io
-operator|.
 name|FileOutputStream
 import|;
 end_import
@@ -578,6 +568,24 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
+DECL|interface|ClusterVerifier
+specifier|public
+interface|interface
+name|ClusterVerifier
+block|{
+DECL|method|verifyClusterPostUpgrade (final MiniDFSCluster cluster)
+specifier|public
+name|void
+name|verifyClusterPostUpgrade
+parameter_list|(
+specifier|final
+name|MiniDFSCluster
+name|cluster
+parameter_list|)
+throws|throws
+name|IOException
+function_decl|;
+block|}
 DECL|field|refList
 specifier|final
 name|LinkedList
@@ -788,7 +796,7 @@ name|line
 operator|.
 name|split
 argument_list|(
-literal|"\\s+\t\\s+"
+literal|"\\s+"
 argument_list|)
 decl_stmt|;
 if|if
@@ -1639,6 +1647,8 @@ name|numDataNodes
 argument_list|(
 literal|4
 argument_list|)
+argument_list|,
+literal|null
 argument_list|)
 expr_stmt|;
 block|}
@@ -1749,6 +1759,8 @@ name|numDataNodes
 argument_list|(
 literal|4
 argument_list|)
+argument_list|,
+literal|null
 argument_list|)
 expr_stmt|;
 name|fail
@@ -3011,7 +3023,7 @@ argument_list|()
 condition|)
 do|;
 block|}
-DECL|method|upgradeAndVerify (MiniDFSCluster.Builder bld)
+DECL|method|upgradeAndVerify (MiniDFSCluster.Builder bld, ClusterVerifier verifier)
 name|void
 name|upgradeAndVerify
 parameter_list|(
@@ -3019,6 +3031,9 @@ name|MiniDFSCluster
 operator|.
 name|Builder
 name|bld
+parameter_list|,
+name|ClusterVerifier
+name|verifier
 parameter_list|)
 throws|throws
 name|IOException
@@ -3131,6 +3146,21 @@ argument_list|(
 name|dfs
 argument_list|)
 expr_stmt|;
+if|if
+condition|(
+name|verifier
+operator|!=
+literal|null
+condition|)
+block|{
+name|verifier
+operator|.
+name|verifyClusterPostUpgrade
+argument_list|(
+name|cluster
+argument_list|)
+expr_stmt|;
+block|}
 block|}
 finally|finally
 block|{
@@ -3234,6 +3264,8 @@ name|manageDataDfsDirs
 argument_list|(
 literal|false
 argument_list|)
+argument_list|,
+literal|null
 argument_list|)
 expr_stmt|;
 block|}

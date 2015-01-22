@@ -308,6 +308,24 @@ name|hdfs
 operator|.
 name|server
 operator|.
+name|blockmanagement
+operator|.
+name|DatanodeStorageInfo
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|server
+operator|.
 name|common
 operator|.
 name|HdfsServerConstants
@@ -960,25 +978,36 @@ operator|=
 name|newDatanodeUuid
 expr_stmt|;
 block|}
-comment|/** Create an ID for this storage. */
-DECL|method|createStorageID (StorageDirectory sd)
+comment|/** Create an ID for this storage.    * @return true if a new storage ID was generated.    * */
+DECL|method|createStorageID ( StorageDirectory sd, boolean regenerateStorageIds)
 specifier|public
 specifier|synchronized
-name|void
+name|boolean
 name|createStorageID
 parameter_list|(
 name|StorageDirectory
 name|sd
+parameter_list|,
+name|boolean
+name|regenerateStorageIds
 parameter_list|)
 block|{
-if|if
-condition|(
+specifier|final
+name|String
+name|oldStorageID
+init|=
 name|sd
 operator|.
 name|getStorageUuid
 argument_list|()
+decl_stmt|;
+if|if
+condition|(
+name|oldStorageID
 operator|==
 literal|null
+operator|||
+name|regenerateStorageIds
 condition|)
 block|{
 name|sd
@@ -991,7 +1020,46 @@ name|generateUuid
 argument_list|()
 argument_list|)
 expr_stmt|;
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"Generated new storageID "
+operator|+
+name|sd
+operator|.
+name|getStorageUuid
+argument_list|()
+operator|+
+literal|" for directory "
+operator|+
+name|sd
+operator|.
+name|getRoot
+argument_list|()
+operator|+
+operator|(
+name|oldStorageID
+operator|==
+literal|null
+condition|?
+literal|""
+else|:
+operator|(
+literal|" to replace "
+operator|+
+name|oldStorageID
+operator|)
+operator|)
+argument_list|)
+expr_stmt|;
+return|return
+literal|true
+return|;
 block|}
+return|return
+literal|false
+return|;
 block|}
 comment|/**    * Enable trash for the specified block pool storage. Even if trash is    * enabled by the caller, it is superseded by the 'previous' directory    * if a layout upgrade is in progress.    */
 DECL|method|enableTrash (String bpid)
@@ -3319,8 +3387,35 @@ argument_list|()
 argument_list|)
 throw|;
 block|}
-comment|// After addition of the federation feature, ctime check is only
-comment|// meaningful at BlockPoolSliceStorage level.
+comment|// Clusters previously upgraded from layout versions earlier than
+comment|// ADD_DATANODE_AND_STORAGE_UUIDS failed to correctly generate a
+comment|// new storage ID. We check for that and fix it now.
+name|boolean
+name|haveValidStorageId
+init|=
+name|DataNodeLayoutVersion
+operator|.
+name|supports
+argument_list|(
+name|LayoutVersion
+operator|.
+name|Feature
+operator|.
+name|ADD_DATANODE_AND_STORAGE_UUIDS
+argument_list|,
+name|layoutVersion
+argument_list|)
+operator|&&
+name|DatanodeStorage
+operator|.
+name|isValidStorageId
+argument_list|(
+name|sd
+operator|.
+name|getStorageUuid
+argument_list|()
+argument_list|)
+decl_stmt|;
 comment|// regular start up.
 if|if
 condition|(
@@ -3336,6 +3431,9 @@ block|{
 name|createStorageID
 argument_list|(
 name|sd
+argument_list|,
+operator|!
+name|haveValidStorageId
 argument_list|)
 expr_stmt|;
 return|return;
@@ -3366,6 +3464,9 @@ comment|// upgrade
 name|createStorageID
 argument_list|(
 name|sd
+argument_list|,
+operator|!
+name|haveValidStorageId
 argument_list|)
 expr_stmt|;
 return|return;

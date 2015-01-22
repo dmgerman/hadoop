@@ -2440,6 +2440,8 @@ operator|.
 name|createStorageID
 argument_list|(
 name|sd
+argument_list|,
+literal|false
 argument_list|)
 expr_stmt|;
 name|storage
