@@ -2681,7 +2681,7 @@ name|GenericTestUtils
 operator|.
 name|SleepAnswer
 argument_list|(
-literal|2
+literal|5
 argument_list|)
 argument_list|)
 operator|.

@@ -623,28 +623,6 @@ name|IMAGE_FILE_TYPE
 init|=
 literal|"imageFile"
 decl_stmt|;
-DECL|field|currentlyDownloadingCheckpoints
-specifier|private
-specifier|static
-specifier|final
-name|Set
-argument_list|<
-name|Long
-argument_list|>
-name|currentlyDownloadingCheckpoints
-init|=
-name|Collections
-operator|.
-name|synchronizedSet
-argument_list|(
-operator|new
-name|HashSet
-argument_list|<
-name|Long
-argument_list|>
-argument_list|()
-argument_list|)
-decl_stmt|;
 annotation|@
 name|Override
 DECL|method|doGet (final HttpServletRequest request, final HttpServletResponse response)
@@ -2608,9 +2586,9 @@ decl_stmt|;
 if|if
 condition|(
 operator|!
-name|currentlyDownloadingCheckpoints
+name|nnImage
 operator|.
-name|add
+name|addToCheckpointing
 argument_list|(
 name|txid
 argument_list|)
@@ -2624,9 +2602,11 @@ name|HttpServletResponse
 operator|.
 name|SC_CONFLICT
 argument_list|,
-literal|"Another checkpointer is already in the process of uploading a"
+literal|"Either current namenode is checkpointing or another"
 operator|+
-literal|" checkpoint made at transaction ID "
+literal|" checkpointer is already in the process of "
+operator|+
+literal|"uploading a checkpoint made at transaction ID "
 operator|+
 name|txid
 argument_list|)
@@ -2662,9 +2642,11 @@ name|HttpServletResponse
 operator|.
 name|SC_CONFLICT
 argument_list|,
-literal|"Another checkpointer already uploaded an checkpoint "
+literal|"Either current namenode has checkpointed or "
 operator|+
-literal|"for txid "
+literal|"another checkpointer already uploaded an "
+operator|+
+literal|"checkpoint for txid "
 operator|+
 name|txid
 argument_list|)
@@ -2774,9 +2756,9 @@ block|}
 block|}
 finally|finally
 block|{
-name|currentlyDownloadingCheckpoints
+name|nnImage
 operator|.
-name|remove
+name|removeFromCheckpointing
 argument_list|(
 name|txid
 argument_list|)
