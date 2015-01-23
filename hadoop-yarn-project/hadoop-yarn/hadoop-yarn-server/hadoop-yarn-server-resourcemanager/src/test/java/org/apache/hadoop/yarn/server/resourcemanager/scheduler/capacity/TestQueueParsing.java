@@ -142,7 +142,7 @@ name|resourcemanager
 operator|.
 name|nodelabels
 operator|.
-name|MemoryRMNodeLabelsManager
+name|NullRMNodeLabelsManager
 import|;
 end_import
 
@@ -317,7 +317,7 @@ block|{
 name|nodeLabelManager
 operator|=
 operator|new
-name|MemoryRMNodeLabelsManager
+name|NullRMNodeLabelsManager
 argument_list|()
 expr_stmt|;
 name|nodeLabelManager
@@ -3811,7 +3811,7 @@ name|RMNodeLabelsManager
 name|nodeLabelsManager
 init|=
 operator|new
-name|MemoryRMNodeLabelsManager
+name|NullRMNodeLabelsManager
 argument_list|()
 decl_stmt|;
 name|nodeLabelsManager
@@ -3960,7 +3960,7 @@ name|RMNodeLabelsManager
 name|nodeLabelsManager
 init|=
 operator|new
-name|MemoryRMNodeLabelsManager
+name|NullRMNodeLabelsManager
 argument_list|()
 decl_stmt|;
 name|nodeLabelsManager
@@ -4109,7 +4109,7 @@ name|RMNodeLabelsManager
 name|nodeLabelsManager
 init|=
 operator|new
-name|MemoryRMNodeLabelsManager
+name|NullRMNodeLabelsManager
 argument_list|()
 decl_stmt|;
 name|nodeLabelsManager
@@ -4258,7 +4258,7 @@ name|RMNodeLabelsManager
 name|nodeLabelsManager
 init|=
 operator|new
-name|MemoryRMNodeLabelsManager
+name|NullRMNodeLabelsManager
 argument_list|()
 decl_stmt|;
 name|nodeLabelsManager

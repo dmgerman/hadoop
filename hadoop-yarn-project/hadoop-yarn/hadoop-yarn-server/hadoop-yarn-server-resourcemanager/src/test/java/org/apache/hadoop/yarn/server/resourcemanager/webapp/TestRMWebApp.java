@@ -338,7 +338,7 @@ name|resourcemanager
 operator|.
 name|nodelabels
 operator|.
-name|MemoryRMNodeLabelsManager
+name|NullRMNodeLabelsManager
 import|;
 end_import
 
@@ -1394,7 +1394,7 @@ operator|.
 name|setNodeLabelManager
 argument_list|(
 operator|new
-name|MemoryRMNodeLabelsManager
+name|NullRMNodeLabelsManager
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -1601,7 +1601,7 @@ operator|.
 name|setNodeLabelManager
 argument_list|(
 operator|new
-name|MemoryRMNodeLabelsManager
+name|NullRMNodeLabelsManager
 argument_list|()
 argument_list|)
 expr_stmt|;

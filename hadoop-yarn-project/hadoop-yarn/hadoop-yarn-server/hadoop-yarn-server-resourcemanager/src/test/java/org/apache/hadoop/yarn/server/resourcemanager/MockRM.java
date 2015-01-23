@@ -696,7 +696,7 @@ name|resourcemanager
 operator|.
 name|nodelabels
 operator|.
-name|MemoryRMNodeLabelsManager
+name|NullRMNodeLabelsManager
 import|;
 end_import
 
@@ -1374,7 +1374,7 @@ name|RMNodeLabelsManager
 name|mgr
 init|=
 operator|new
-name|MemoryRMNodeLabelsManager
+name|NullRMNodeLabelsManager
 argument_list|()
 decl_stmt|;
 name|mgr

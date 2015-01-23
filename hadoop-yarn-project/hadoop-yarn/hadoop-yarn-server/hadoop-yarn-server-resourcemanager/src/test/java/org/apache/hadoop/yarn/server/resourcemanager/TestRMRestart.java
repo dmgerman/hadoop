@@ -13160,6 +13160,17 @@ argument_list|(
 name|conf
 argument_list|)
 expr_stmt|;
+name|conf
+operator|.
+name|setBoolean
+argument_list|(
+name|YarnConfiguration
+operator|.
+name|NODE_LABELS_ENABLED
+argument_list|,
+literal|true
+argument_list|)
+expr_stmt|;
 name|MockRM
 name|rm1
 init|=

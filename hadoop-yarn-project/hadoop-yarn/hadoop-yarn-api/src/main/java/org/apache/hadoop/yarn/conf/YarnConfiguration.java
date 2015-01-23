@@ -5769,6 +5769,7 @@ operator|.
 name|name
 argument_list|()
 decl_stmt|;
+comment|/**    * Node-labels configurations    */
 DECL|field|NODE_LABELS_PREFIX
 specifier|public
 specifier|static
@@ -5779,18 +5780,6 @@ init|=
 name|YARN_PREFIX
 operator|+
 literal|"node-labels."
-decl_stmt|;
-comment|/**    * Class for RMNodeLabelsManager Please note this value should be consistent    * in client nodes and RM node(s)    */
-DECL|field|RM_NODE_LABELS_MANAGER_CLASS
-specifier|public
-specifier|static
-specifier|final
-name|String
-name|RM_NODE_LABELS_MANAGER_CLASS
-init|=
-name|NODE_LABELS_PREFIX
-operator|+
-literal|"manager-class"
 decl_stmt|;
 comment|/** URI for NodeLabelManager */
 DECL|field|FS_NODE_LABELS_STORE_ROOT_DIR
@@ -5823,6 +5812,27 @@ name|String
 name|DEFAULT_FS_NODE_LABELS_STORE_RETRY_POLICY_SPEC
 init|=
 literal|"2000, 500"
+decl_stmt|;
+comment|/**    * Flag to indicate if the node labels feature enabled, by default it's    * disabled    */
+DECL|field|NODE_LABELS_ENABLED
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|NODE_LABELS_ENABLED
+init|=
+name|NODE_LABELS_PREFIX
+operator|+
+literal|"enabled"
+decl_stmt|;
+DECL|field|DEFAULT_NODE_LABELS_ENABLED
+specifier|public
+specifier|static
+specifier|final
+name|boolean
+name|DEFAULT_NODE_LABELS_ENABLED
+init|=
+literal|false
 decl_stmt|;
 DECL|method|YarnConfiguration ()
 specifier|public

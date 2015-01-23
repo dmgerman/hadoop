@@ -104,6 +104,22 @@ name|hadoop
 operator|.
 name|yarn
 operator|.
+name|conf
+operator|.
+name|YarnConfiguration
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
 name|nodelabels
 operator|.
 name|NodeLabelsStore
@@ -111,10 +127,10 @@ import|;
 end_import
 
 begin_class
-DECL|class|MemoryRMNodeLabelsManager
+DECL|class|NullRMNodeLabelsManager
 specifier|public
 class|class
-name|MemoryRMNodeLabelsManager
+name|NullRMNodeLabelsManager
 extends|extends
 name|RMNodeLabelsManager
 block|{
@@ -289,6 +305,39 @@ name|stopDispatcher
 parameter_list|()
 block|{
 comment|// do nothing
+block|}
+annotation|@
+name|Override
+DECL|method|serviceInit (Configuration conf)
+specifier|protected
+name|void
+name|serviceInit
+parameter_list|(
+name|Configuration
+name|conf
+parameter_list|)
+throws|throws
+name|Exception
+block|{
+comment|// always enable node labels while using MemoryRMNodeLabelsManager
+name|conf
+operator|.
+name|setBoolean
+argument_list|(
+name|YarnConfiguration
+operator|.
+name|NODE_LABELS_ENABLED
+argument_list|,
+literal|true
+argument_list|)
+expr_stmt|;
+name|super
+operator|.
+name|serviceInit
+argument_list|(
+name|conf
+argument_list|)
+expr_stmt|;
 block|}
 block|}
 end_class

@@ -612,6 +612,17 @@ name|getName
 argument_list|()
 argument_list|)
 expr_stmt|;
+name|conf
+operator|.
+name|setBoolean
+argument_list|(
+name|YarnConfiguration
+operator|.
+name|NODE_LABELS_ENABLED
+argument_list|,
+literal|true
+argument_list|)
+expr_stmt|;
 if|if
 condition|(
 name|yarnCluster
