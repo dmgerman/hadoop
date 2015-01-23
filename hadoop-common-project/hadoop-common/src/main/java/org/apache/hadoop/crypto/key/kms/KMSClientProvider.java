@@ -4899,7 +4899,7 @@ block|}
 block|}
 annotation|@
 name|Override
-DECL|method|addDelegationTokens (String renewer, Credentials credentials)
+DECL|method|addDelegationTokens (final String renewer, Credentials credentials)
 specifier|public
 name|Token
 argument_list|<
@@ -4908,6 +4908,7 @@ argument_list|>
 index|[]
 name|addDelegationTokens
 parameter_list|(
+specifier|final
 name|String
 name|renewer
 parameter_list|,
@@ -4952,6 +4953,7 @@ operator|==
 literal|null
 condition|)
 block|{
+specifier|final
 name|URL
 name|url
 init|=
@@ -4966,6 +4968,7 @@ argument_list|,
 literal|null
 argument_list|)
 decl_stmt|;
+specifier|final
 name|DelegationTokenAuthenticatedURL
 name|authUrl
 init|=
@@ -4977,19 +4980,94 @@ argument_list|)
 decl_stmt|;
 try|try
 block|{
+comment|// 'actualUGI' is the UGI of the user creating the client
+comment|// It is possible that the creator of the KMSClientProvier
+comment|// calls this method on behalf of a proxyUser (the doAsUser).
+comment|// In which case this call has to be made as the proxy user.
+name|UserGroupInformation
+name|currentUgi
+init|=
+name|UserGroupInformation
+operator|.
+name|getCurrentUser
+argument_list|()
+decl_stmt|;
+specifier|final
+name|String
+name|doAsUser
+init|=
+operator|(
+name|currentUgi
+operator|.
+name|getAuthenticationMethod
+argument_list|()
+operator|==
+name|UserGroupInformation
+operator|.
+name|AuthenticationMethod
+operator|.
+name|PROXY
+operator|)
+condition|?
+name|currentUgi
+operator|.
+name|getShortUserName
+argument_list|()
+else|:
+literal|null
+decl_stmt|;
 name|token
 operator|=
+name|actualUgi
+operator|.
+name|doAs
+argument_list|(
+operator|new
+name|PrivilegedExceptionAction
+argument_list|<
+name|Token
+argument_list|<
+name|?
+argument_list|>
+argument_list|>
+argument_list|()
+block|{
+annotation|@
+name|Override
+specifier|public
+name|Token
+argument_list|<
+name|?
+argument_list|>
+name|run
+parameter_list|()
+throws|throws
+name|Exception
+block|{
+comment|// Not using the cached token here.. Creating a new token here
+comment|// everytime.
+return|return
 name|authUrl
 operator|.
 name|getDelegationToken
 argument_list|(
 name|url
 argument_list|,
-name|authToken
+operator|new
+name|DelegationTokenAuthenticatedURL
+operator|.
+name|Token
+argument_list|()
 argument_list|,
 name|renewer
+argument_list|,
+name|doAsUser
 argument_list|)
-expr_stmt|;
+return|;
+block|}
+block|}
+block|)
+empty_stmt|;
 if|if
 condition|(
 name|token
@@ -5035,15 +5113,30 @@ block|}
 block|}
 catch|catch
 parameter_list|(
-name|AuthenticationException
-name|ex
+name|InterruptedException
+name|e
+parameter_list|)
+block|{
+name|Thread
+operator|.
+name|currentThread
+argument_list|()
+operator|.
+name|interrupt
+argument_list|()
+expr_stmt|;
+block|}
+catch|catch
+parameter_list|(
+name|Exception
+name|e
 parameter_list|)
 block|{
 throw|throw
 operator|new
 name|IOException
 argument_list|(
-name|ex
+name|e
 argument_list|)
 throw|;
 block|}
@@ -5052,6 +5145,9 @@ return|return
 name|tokens
 return|;
 block|}
+end_class
+
+begin_function
 DECL|method|getDelegationTokenService ()
 specifier|private
 name|Text
@@ -5100,7 +5196,13 @@ return|return
 name|dtService
 return|;
 block|}
+end_function
+
+begin_comment
 comment|/**    * Shutdown valueQueue executor threads    */
+end_comment
+
+begin_function
 annotation|@
 name|Override
 DECL|method|close ()
@@ -5150,8 +5252,8 @@ expr_stmt|;
 block|}
 block|}
 block|}
-block|}
-end_class
+end_function
 
+unit|}
 end_unit
 
