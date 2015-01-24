@@ -10290,6 +10290,25 @@ block|{
 name|checkOpen
 argument_list|()
 expr_stmt|;
+if|if
+condition|(
+name|newLength
+operator|<
+literal|0
+condition|)
+block|{
+throw|throw
+operator|new
+name|HadoopIllegalArgumentException
+argument_list|(
+literal|"Cannot truncate to a negative file size: "
+operator|+
+name|newLength
+operator|+
+literal|"."
+argument_list|)
+throw|;
+block|}
 name|TraceScope
 name|scope
 init|=
