@@ -89,13 +89,16 @@ class|class
 name|FileSetUtils
 block|{
 comment|/**    * Returns a string containing every element of the given list, with each    * element separated by a comma.    *     * @param list List of all elements    * @return String containing every element, comma-separated    */
-DECL|method|getCommaSeparatedList (List list)
+DECL|method|getCommaSeparatedList (List<String> list)
 specifier|private
 specifier|static
 name|String
 name|getCommaSeparatedList
 parameter_list|(
 name|List
+argument_list|<
+name|String
+argument_list|>
 name|list
 parameter_list|)
 block|{
