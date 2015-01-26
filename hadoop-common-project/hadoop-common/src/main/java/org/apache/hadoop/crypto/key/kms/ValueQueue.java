@@ -1210,6 +1210,12 @@ init|(
 name|this
 init|)
 block|{
+if|if
+condition|(
+operator|!
+name|executorThreadsStarted
+condition|)
+block|{
 comment|// To ensure all requests are first queued, make coreThreads =
 comment|// maxThreads
 comment|// and pre-start all the Core Threads.
@@ -1222,6 +1228,7 @@ name|executorThreadsStarted
 operator|=
 literal|true
 expr_stmt|;
+block|}
 block|}
 block|}
 comment|// The submit/execute method of the ThreadPoolExecutor is bypassed and
