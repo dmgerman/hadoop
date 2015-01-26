@@ -1933,6 +1933,8 @@ literal|" stream is null."
 argument_list|)
 throw|;
 block|}
+try|try
+block|{
 specifier|final
 name|String
 name|contentType
@@ -2020,6 +2022,15 @@ name|UTF_8
 argument_list|)
 argument_list|)
 return|;
+block|}
+finally|finally
+block|{
+name|in
+operator|.
+name|close
+argument_list|()
+expr_stmt|;
+block|}
 block|}
 DECL|method|validateResponse (final HttpOpParam.Op op, final HttpURLConnection conn, boolean unwrapException)
 specifier|private
