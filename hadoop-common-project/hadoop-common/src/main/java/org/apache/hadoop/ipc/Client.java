@@ -3985,6 +3985,29 @@ throw|throw
 name|ioe
 throw|;
 block|}
+comment|// Throw the exception if the thread is interrupted
+if|if
+condition|(
+name|Thread
+operator|.
+name|currentThread
+argument_list|()
+operator|.
+name|isInterrupted
+argument_list|()
+condition|)
+block|{
+name|LOG
+operator|.
+name|warn
+argument_list|(
+literal|"Interrupted while trying for connection"
+argument_list|)
+expr_stmt|;
+throw|throw
+name|ioe
+throw|;
+block|}
 try|try
 block|{
 name|Thread

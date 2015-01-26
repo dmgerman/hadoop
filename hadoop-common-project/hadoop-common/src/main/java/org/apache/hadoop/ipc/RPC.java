@@ -1690,6 +1690,26 @@ throw|throw
 name|ioe
 throw|;
 block|}
+if|if
+condition|(
+name|Thread
+operator|.
+name|currentThread
+argument_list|()
+operator|.
+name|isInterrupted
+argument_list|()
+condition|)
+block|{
+comment|// interrupted during some IO; this may not have been caught
+throw|throw
+operator|new
+name|InterruptedIOException
+argument_list|(
+literal|"Interrupted waiting for the proxy"
+argument_list|)
+throw|;
+block|}
 comment|// wait for retry
 try|try
 block|{
@@ -1707,7 +1727,29 @@ name|InterruptedException
 name|ie
 parameter_list|)
 block|{
-comment|// IGNORE
+name|Thread
+operator|.
+name|currentThread
+argument_list|()
+operator|.
+name|interrupt
+argument_list|()
+expr_stmt|;
+throw|throw
+operator|(
+name|IOException
+operator|)
+operator|new
+name|InterruptedIOException
+argument_list|(
+literal|"Interrupted waiting for the proxy"
+argument_list|)
+operator|.
+name|initCause
+argument_list|(
+name|ioe
+argument_list|)
+throw|;
 block|}
 block|}
 block|}

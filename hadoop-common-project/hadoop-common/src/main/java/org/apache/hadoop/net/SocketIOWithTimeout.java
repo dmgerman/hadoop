@@ -1090,6 +1090,35 @@ return|return
 name|ret
 return|;
 block|}
+if|if
+condition|(
+name|Thread
+operator|.
+name|currentThread
+argument_list|()
+operator|.
+name|isInterrupted
+argument_list|()
+condition|)
+block|{
+throw|throw
+operator|new
+name|InterruptedIOException
+argument_list|(
+literal|"Interrupted while waiting for "
+operator|+
+literal|"IO on channel "
+operator|+
+name|channel
+operator|+
+literal|". "
+operator|+
+name|timeout
+operator|+
+literal|" millis timeout left."
+argument_list|)
+throw|;
+block|}
 comment|/* Sometimes select() returns 0 much before timeout for             * unknown reasons. So select again if required.            */
 if|if
 condition|(
@@ -1118,35 +1147,6 @@ return|return
 literal|0
 return|;
 block|}
-block|}
-if|if
-condition|(
-name|Thread
-operator|.
-name|currentThread
-argument_list|()
-operator|.
-name|isInterrupted
-argument_list|()
-condition|)
-block|{
-throw|throw
-operator|new
-name|InterruptedIOException
-argument_list|(
-literal|"Interruped while waiting for "
-operator|+
-literal|"IO on channel "
-operator|+
-name|channel
-operator|+
-literal|". "
-operator|+
-name|timeout
-operator|+
-literal|" millis timeout left."
-argument_list|)
-throw|;
 block|}
 block|}
 block|}
