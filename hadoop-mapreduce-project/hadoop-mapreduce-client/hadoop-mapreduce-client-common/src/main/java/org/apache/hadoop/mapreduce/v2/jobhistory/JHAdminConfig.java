@@ -664,6 +664,18 @@ name|MR_HISTORY_PREFIX
 operator|+
 literal|"recovery.store.fs.uri"
 decl_stmt|;
+comment|/**    * The local path where server state will be stored when    * HistoryServerLeveldbStateStoreService is configured as the state store    */
+DECL|field|MR_HS_LEVELDB_STATE_STORE_PATH
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|MR_HS_LEVELDB_STATE_STORE_PATH
+init|=
+name|MR_HISTORY_PREFIX
+operator|+
+literal|"recovery.store.leveldb.path"
+decl_stmt|;
 comment|/** Whether to use fixed ports with the minicluster. */
 DECL|field|MR_HISTORY_MINICLUSTER_FIXED_PORTS
 specifier|public
