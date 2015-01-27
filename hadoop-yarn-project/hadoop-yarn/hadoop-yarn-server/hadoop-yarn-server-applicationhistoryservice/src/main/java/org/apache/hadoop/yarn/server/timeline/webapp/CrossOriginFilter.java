@@ -582,6 +582,22 @@ name|originsList
 argument_list|)
 condition|)
 block|{
+if|if
+condition|(
+name|LOG
+operator|.
+name|isDebugEnabled
+argument_list|()
+condition|)
+block|{
+name|LOG
+operator|.
+name|debug
+argument_list|(
+literal|"Header origin is null. Returning"
+argument_list|)
+expr_stmt|;
+block|}
 return|return;
 block|}
 if|if
@@ -593,6 +609,26 @@ name|originsList
 argument_list|)
 condition|)
 block|{
+if|if
+condition|(
+name|LOG
+operator|.
+name|isDebugEnabled
+argument_list|()
+condition|)
+block|{
+name|LOG
+operator|.
+name|debug
+argument_list|(
+literal|"Header origins '"
+operator|+
+name|originsList
+operator|+
+literal|"' not allowed. Returning"
+argument_list|)
+expr_stmt|;
+block|}
 return|return;
 block|}
 name|String
@@ -614,6 +650,26 @@ name|accessControlRequestMethod
 argument_list|)
 condition|)
 block|{
+if|if
+condition|(
+name|LOG
+operator|.
+name|isDebugEnabled
+argument_list|()
+condition|)
+block|{
+name|LOG
+operator|.
+name|debug
+argument_list|(
+literal|"Access control method '"
+operator|+
+name|accessControlRequestMethod
+operator|+
+literal|"' not allowed. Returning"
+argument_list|)
+expr_stmt|;
+block|}
 return|return;
 block|}
 name|String
@@ -635,7 +691,45 @@ name|accessControlRequestHeaders
 argument_list|)
 condition|)
 block|{
+if|if
+condition|(
+name|LOG
+operator|.
+name|isDebugEnabled
+argument_list|()
+condition|)
+block|{
+name|LOG
+operator|.
+name|debug
+argument_list|(
+literal|"Access control headers '"
+operator|+
+name|accessControlRequestHeaders
+operator|+
+literal|"' not allowed. Returning"
+argument_list|)
+expr_stmt|;
+block|}
 return|return;
+block|}
+if|if
+condition|(
+name|LOG
+operator|.
+name|isDebugEnabled
+argument_list|()
+condition|)
+block|{
+name|LOG
+operator|.
+name|debug
+argument_list|(
+literal|"Completed cross origin filter checks. Populating "
+operator|+
+literal|"HttpServletResponse"
+argument_list|)
+expr_stmt|;
 block|}
 name|res
 operator|.
