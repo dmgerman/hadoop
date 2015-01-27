@@ -8761,7 +8761,7 @@ argument_list|)
 argument_list|)
 return|;
 block|}
-comment|/*    * Shutdown a particular datanode    */
+comment|/*    * Shutdown a particular datanode    * @param i node index    * @return null if the node index is out of range, else the properties of the    * removed node    */
 DECL|method|stopDataNode (int i)
 specifier|public
 specifier|synchronized
@@ -8844,7 +8844,7 @@ return|return
 name|dnprop
 return|;
 block|}
-comment|/*    * Shutdown a datanode by name.    */
+comment|/*    * Shutdown a datanode by name.    * @return the removed datanode or null if there was no match    */
 DECL|method|stopDataNode (String dnName)
 specifier|public
 specifier|synchronized
@@ -8856,12 +8856,16 @@ name|dnName
 parameter_list|)
 block|{
 name|int
-name|i
+name|node
+init|=
+operator|-
+literal|1
 decl_stmt|;
 for|for
 control|(
+name|int
 name|i
-operator|=
+init|=
 literal|0
 init|;
 name|i
@@ -8923,13 +8927,17 @@ argument_list|()
 argument_list|)
 condition|)
 block|{
+name|node
+operator|=
+name|i
+expr_stmt|;
 break|break;
 block|}
 block|}
 return|return
 name|stopDataNode
 argument_list|(
-name|i
+name|node
 argument_list|)
 return|;
 block|}
