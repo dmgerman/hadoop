@@ -2471,7 +2471,7 @@ name|YarnConfiguration
 operator|.
 name|NODE_LABELS_ENABLED
 argument_list|,
-literal|true
+literal|false
 argument_list|)
 expr_stmt|;
 name|mgr
@@ -2486,6 +2486,11 @@ operator|.
 name|start
 argument_list|()
 expr_stmt|;
+name|boolean
+name|caught
+init|=
+literal|false
+decl_stmt|;
 comment|// add labels
 try|try
 block|{
@@ -2513,7 +2518,23 @@ argument_list|(
 name|e
 argument_list|)
 expr_stmt|;
+name|caught
+operator|=
+literal|true
+expr_stmt|;
 block|}
+comment|// check exception caught
+name|Assert
+operator|.
+name|assertTrue
+argument_list|(
+name|caught
+argument_list|)
+expr_stmt|;
+name|caught
+operator|=
+literal|false
+expr_stmt|;
 comment|// remove labels
 try|try
 block|{
@@ -2541,7 +2562,23 @@ argument_list|(
 name|e
 argument_list|)
 expr_stmt|;
+name|caught
+operator|=
+literal|true
+expr_stmt|;
 block|}
+comment|// check exception caught
+name|Assert
+operator|.
+name|assertTrue
+argument_list|(
+name|caught
+argument_list|)
+expr_stmt|;
+name|caught
+operator|=
+literal|false
+expr_stmt|;
 comment|// add labels to node
 try|try
 block|{
@@ -2580,7 +2617,23 @@ argument_list|(
 name|e
 argument_list|)
 expr_stmt|;
+name|caught
+operator|=
+literal|true
+expr_stmt|;
 block|}
+comment|// check exception caught
+name|Assert
+operator|.
+name|assertTrue
+argument_list|(
+name|caught
+argument_list|)
+expr_stmt|;
+name|caught
+operator|=
+literal|false
+expr_stmt|;
 comment|// remove labels from node
 try|try
 block|{
@@ -2619,7 +2672,23 @@ argument_list|(
 name|e
 argument_list|)
 expr_stmt|;
+name|caught
+operator|=
+literal|true
+expr_stmt|;
 block|}
+comment|// check exception caught
+name|Assert
+operator|.
+name|assertTrue
+argument_list|(
+name|caught
+argument_list|)
+expr_stmt|;
+name|caught
+operator|=
+literal|false
+expr_stmt|;
 comment|// replace labels on node
 try|try
 block|{
@@ -2658,7 +2727,23 @@ argument_list|(
 name|e
 argument_list|)
 expr_stmt|;
+name|caught
+operator|=
+literal|true
+expr_stmt|;
 block|}
+comment|// check exception caught
+name|Assert
+operator|.
+name|assertTrue
+argument_list|(
+name|caught
+argument_list|)
+expr_stmt|;
+name|caught
+operator|=
+literal|false
+expr_stmt|;
 name|mgr
 operator|.
 name|close

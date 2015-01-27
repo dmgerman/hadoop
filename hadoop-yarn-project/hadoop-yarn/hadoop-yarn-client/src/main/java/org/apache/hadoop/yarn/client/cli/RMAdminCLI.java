@@ -841,7 +841,7 @@ argument_list|,
 operator|new
 name|UsageInfo
 argument_list|(
-literal|"[node1:port,label1,label2 node2:port,label1,label2]"
+literal|"[node1[:port]=label1,label2 node2[:port]=label1,label2]"
 argument_list|,
 literal|"replace labels on nodes"
 argument_list|)
@@ -1338,7 +1338,7 @@ literal|" [[-addToClusterNodeLabels [label1,label2,label3]]"
 operator|+
 literal|" [-removeFromClusterNodeLabels [label1,label2,label3]]"
 operator|+
-literal|" [-replaceLabelsOnNode [node1:port,label1,label2 node2:port,label1]"
+literal|" [-replaceLabelsOnNode [node1[:port]=label1,label2 node2[:port]=label1]"
 operator|+
 literal|" [-directlyAccessNodeLabelStore]]"
 argument_list|)
@@ -2292,6 +2292,7 @@ condition|)
 block|{
 continue|continue;
 block|}
+comment|// "," also supported for compatibility
 name|String
 index|[]
 name|splits
@@ -2300,9 +2301,37 @@ name|nodeToLabels
 operator|.
 name|split
 argument_list|(
-literal|","
+literal|"="
 argument_list|)
 decl_stmt|;
+name|int
+name|index
+init|=
+literal|0
+decl_stmt|;
+if|if
+condition|(
+name|splits
+operator|.
+name|length
+operator|!=
+literal|2
+condition|)
+block|{
+name|splits
+operator|=
+name|nodeToLabels
+operator|.
+name|split
+argument_list|(
+literal|","
+argument_list|)
+expr_stmt|;
+name|index
+operator|=
+literal|1
+expr_stmt|;
+block|}
 name|String
 name|nodeIdStr
 init|=
@@ -2311,6 +2340,26 @@ index|[
 literal|0
 index|]
 decl_stmt|;
+if|if
+condition|(
+name|index
+operator|==
+literal|0
+condition|)
+block|{
+name|splits
+operator|=
+name|splits
+index|[
+literal|1
+index|]
+operator|.
+name|split
+argument_list|(
+literal|","
+argument_list|)
+expr_stmt|;
+block|}
 if|if
 condition|(
 name|nodeIdStr
@@ -2359,7 +2408,7 @@ control|(
 name|int
 name|i
 init|=
-literal|1
+name|index
 init|;
 name|i
 operator|<
