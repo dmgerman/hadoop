@@ -1481,6 +1481,19 @@ argument_list|(
 name|dirSearchTimeout
 argument_list|)
 expr_stmt|;
+comment|// Limit the attributes returned to only those required to speed up the search. See HADOOP-10626 for more details.
+name|SEARCH_CONTROLS
+operator|.
+name|setReturningAttributes
+argument_list|(
+operator|new
+name|String
+index|[]
+block|{
+name|groupNameAttr
+block|}
+argument_list|)
+expr_stmt|;
 name|this
 operator|.
 name|conf
