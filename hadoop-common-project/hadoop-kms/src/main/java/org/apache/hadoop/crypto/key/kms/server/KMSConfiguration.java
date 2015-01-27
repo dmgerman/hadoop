@@ -153,6 +153,15 @@ name|KEY_ACL_PREFIX
 init|=
 literal|"key.acl."
 decl_stmt|;
+DECL|field|KEY_ACL_PREFIX_REGEX
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|KEY_ACL_PREFIX_REGEX
+init|=
+literal|"^key\\.acl\\..+"
+decl_stmt|;
 DECL|field|DEFAULT_KEY_ACL_PREFIX
 specifier|public
 specifier|static

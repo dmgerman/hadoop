@@ -264,6 +264,20 @@ name|Pattern
 import|;
 end_import
 
+begin_import
+import|import
+name|com
+operator|.
+name|google
+operator|.
+name|common
+operator|.
+name|annotations
+operator|.
+name|VisibleForTesting
+import|;
+end_import
+
 begin_comment
 comment|/**  * Provides access to the<code>AccessControlList</code>s used by KMS,  * hot-reloading them if the<code>kms-acls.xml</code> file where the ACLs  * are defined has been updated.  */
 end_comment
@@ -429,8 +443,9 @@ name|AccessControlList
 argument_list|>
 name|blacklistedAcls
 decl_stmt|;
+annotation|@
+name|VisibleForTesting
 DECL|field|keyAcls
-specifier|private
 specifier|volatile
 name|Map
 argument_list|<
@@ -734,14 +749,9 @@ name|conf
 operator|.
 name|getValByRegex
 argument_list|(
-name|Pattern
-operator|.
-name|quote
-argument_list|(
 name|KMSConfiguration
 operator|.
-name|KEY_ACL_PREFIX
-argument_list|)
+name|KEY_ACL_PREFIX_REGEX
 argument_list|)
 decl_stmt|;
 for|for
