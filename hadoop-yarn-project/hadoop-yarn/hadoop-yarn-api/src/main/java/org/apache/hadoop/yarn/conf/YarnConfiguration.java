@@ -4353,6 +4353,31 @@ name|DEFAULT_YARN_MINICLUSTER_CONTROL_RESOURCE_MONITORING
 init|=
 literal|false
 decl_stmt|;
+comment|/** Allow changing the memory for the NodeManager in the MiniYARNCluster */
+DECL|field|YARN_MINICLUSTER_NM_PMEM_MB
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|YARN_MINICLUSTER_NM_PMEM_MB
+init|=
+name|YARN_MC_PREFIX
+operator|+
+name|YarnConfiguration
+operator|.
+name|NM_PMEM_MB
+decl_stmt|;
+DECL|field|DEFAULT_YARN_MINICLUSTER_NM_PMEM_MB
+specifier|public
+specifier|static
+specifier|final
+name|int
+name|DEFAULT_YARN_MINICLUSTER_NM_PMEM_MB
+init|=
+literal|4
+operator|*
+literal|1024
+decl_stmt|;
 comment|/** The log directory for the containers */
 DECL|field|YARN_APP_CONTAINER_LOG_DIR
 specifier|public

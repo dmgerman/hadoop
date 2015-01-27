@@ -3017,7 +3017,6 @@ argument_list|,
 name|logDirsString
 argument_list|)
 expr_stmt|;
-comment|// By default AM + 2 containers
 name|config
 operator|.
 name|setInt
@@ -3026,9 +3025,18 @@ name|YarnConfiguration
 operator|.
 name|NM_PMEM_MB
 argument_list|,
-literal|4
-operator|*
-literal|1024
+name|config
+operator|.
+name|getInt
+argument_list|(
+name|YarnConfiguration
+operator|.
+name|YARN_MINICLUSTER_NM_PMEM_MB
+argument_list|,
+name|YarnConfiguration
+operator|.
+name|DEFAULT_YARN_MINICLUSTER_NM_PMEM_MB
+argument_list|)
 argument_list|)
 expr_stmt|;
 name|config
