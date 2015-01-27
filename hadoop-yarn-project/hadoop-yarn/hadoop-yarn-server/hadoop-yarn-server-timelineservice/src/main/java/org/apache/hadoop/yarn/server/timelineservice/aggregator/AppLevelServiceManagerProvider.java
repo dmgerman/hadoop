@@ -4,7 +4,7 @@ comment|/**  * Licensed to the Apache Software Foundation (ASF) under one  * or 
 end_comment
 
 begin_package
-DECL|package|org.apache.hadoop.yarn.server.timelineservice
+DECL|package|org.apache.hadoop.yarn.server.timelineservice.aggregator
 package|package
 name|org
 operator|.
@@ -17,15 +17,54 @@ operator|.
 name|server
 operator|.
 name|timelineservice
+operator|.
+name|aggregator
 package|;
 end_package
 
+begin_import
+import|import
+name|com
+operator|.
+name|google
+operator|.
+name|inject
+operator|.
+name|Provider
+import|;
+end_import
+
+begin_comment
+comment|/**  * A guice provider that provides a global singleton instance of  * AppLevelServiceManager.  */
+end_comment
+
 begin_class
-DECL|class|TimelineAggregator
+DECL|class|AppLevelServiceManagerProvider
 specifier|public
 class|class
-name|TimelineAggregator
-block|{  }
+name|AppLevelServiceManagerProvider
+implements|implements
+name|Provider
+argument_list|<
+name|AppLevelServiceManager
+argument_list|>
+block|{
+annotation|@
+name|Override
+DECL|method|get ()
+specifier|public
+name|AppLevelServiceManager
+name|get
+parameter_list|()
+block|{
+return|return
+name|AppLevelServiceManager
+operator|.
+name|getInstance
+argument_list|()
+return|;
+block|}
+block|}
 end_class
 
 end_unit

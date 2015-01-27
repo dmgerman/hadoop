@@ -4,7 +4,7 @@ comment|/**  * Licensed to the Apache Software Foundation (ASF) under one  * or 
 end_comment
 
 begin_package
-DECL|package|org.apache.hadoop.yarn.server.timelineservice
+DECL|package|org.apache.hadoop.yarn.server.timelineservice.aggregator
 package|package
 name|org
 operator|.
@@ -17,14 +17,16 @@ operator|.
 name|server
 operator|.
 name|timelineservice
+operator|.
+name|aggregator
 package|;
 end_package
 
 begin_class
-DECL|class|TestTimelineAggregator
+DECL|class|TestBaseAggregatorService
 specifier|public
 class|class
-name|TestTimelineAggregator
+name|TestBaseAggregatorService
 block|{  }
 end_class
 
