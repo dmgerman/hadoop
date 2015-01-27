@@ -571,12 +571,12 @@ expr_stmt|;
 comment|// OP_ADD to create file
 comment|// OP_ADD_BLOCK for first block
 comment|// OP_CLOSE to close file
-comment|// OP_ADD to reopen file
+comment|// OP_APPEND to reopen file
 comment|// OP_ADD_BLOCK for second block
 comment|// OP_CLOSE to close file
 name|assertEquals
 argument_list|(
-literal|2
+literal|1
 argument_list|,
 operator|(
 name|int
@@ -588,6 +588,25 @@ argument_list|(
 name|FSEditLogOpCodes
 operator|.
 name|OP_ADD
+argument_list|)
+operator|.
+name|held
+argument_list|)
+expr_stmt|;
+name|assertEquals
+argument_list|(
+literal|1
+argument_list|,
+operator|(
+name|int
+operator|)
+name|counts
+operator|.
+name|get
+argument_list|(
+name|FSEditLogOpCodes
+operator|.
+name|OP_APPEND
 argument_list|)
 operator|.
 name|held
@@ -665,7 +684,7 @@ expr_stmt|;
 comment|// OP_ADD to create file
 comment|// OP_ADD_BLOCK for first block
 comment|// OP_CLOSE to close file
-comment|// OP_ADD to re-establish the lease
+comment|// OP_APPEND to re-establish the lease
 comment|// OP_UPDATE_BLOCKS from the updatePipeline call (increments genstamp of last block)
 comment|// OP_ADD_BLOCK at the start of the second block
 comment|// OP_CLOSE to close file
@@ -673,8 +692,6 @@ comment|// Total: 2 OP_ADDs, 1 OP_UPDATE_BLOCKS, 2 OP_ADD_BLOCKs, and 2 OP_CLOSE
 comment|//       in addition to the ones above
 name|assertEquals
 argument_list|(
-literal|2
-operator|+
 literal|2
 argument_list|,
 operator|(
@@ -687,6 +704,25 @@ argument_list|(
 name|FSEditLogOpCodes
 operator|.
 name|OP_ADD
+argument_list|)
+operator|.
+name|held
+argument_list|)
+expr_stmt|;
+name|assertEquals
+argument_list|(
+literal|2
+argument_list|,
+operator|(
+name|int
+operator|)
+name|counts
+operator|.
+name|get
+argument_list|(
+name|FSEditLogOpCodes
+operator|.
+name|OP_APPEND
 argument_list|)
 operator|.
 name|held

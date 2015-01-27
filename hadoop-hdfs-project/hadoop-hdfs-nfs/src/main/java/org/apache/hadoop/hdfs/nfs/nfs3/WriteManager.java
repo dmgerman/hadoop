@@ -32,6 +32,16 @@ end_import
 
 begin_import
 import|import
+name|java
+operator|.
+name|util
+operator|.
+name|EnumSet
+import|;
+end_import
+
+begin_import
+import|import
 name|org
 operator|.
 name|apache
@@ -69,6 +79,20 @@ operator|.
 name|fs
 operator|.
 name|CommonConfigurationKeysPublic
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|fs
+operator|.
+name|CreateFlag
 import|;
 end_import
 
@@ -922,6 +946,15 @@ argument_list|(
 name|fileIdPath
 argument_list|,
 name|bufferSize
+argument_list|,
+name|EnumSet
+operator|.
+name|of
+argument_list|(
+name|CreateFlag
+operator|.
+name|APPEND
+argument_list|)
 argument_list|,
 literal|null
 argument_list|,

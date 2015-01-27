@@ -68,6 +68,20 @@ name|hadoop
 operator|.
 name|fs
 operator|.
+name|CreateFlag
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|fs
+operator|.
 name|FileSystem
 import|;
 end_import
@@ -470,7 +484,7 @@ name|Assert
 operator|.
 name|assertEquals
 argument_list|(
-literal|48
+literal|49
 argument_list|,
 name|FSEditLogOpCodes
 operator|.
@@ -778,6 +792,15 @@ argument_list|(
 literal|"/file2"
 argument_list|,
 name|BLOCK_SIZE
+argument_list|,
+name|EnumSet
+operator|.
+name|of
+argument_list|(
+name|CreateFlag
+operator|.
+name|APPEND
+argument_list|)
 argument_list|,
 literal|null
 argument_list|,
@@ -1478,7 +1501,7 @@ operator|>
 literal|0
 argument_list|)
 expr_stmt|;
-comment|// AddOp
+comment|// AppendOp
 name|batch
 operator|=
 name|waitForNextEvents
@@ -1558,6 +1581,16 @@ argument_list|,
 name|append2
 operator|.
 name|getPath
+argument_list|()
+argument_list|)
+expr_stmt|;
+name|Assert
+operator|.
+name|assertFalse
+argument_list|(
+name|append2
+operator|.
+name|toNewBlock
 argument_list|()
 argument_list|)
 expr_stmt|;

@@ -407,6 +407,10 @@ block|{
 comment|/**      * When doing sync to DataNodes, also update the metadata (block length) in      * the NameNode.      */
 DECL|enumConstant|UPDATE_LENGTH
 name|UPDATE_LENGTH
+block|,
+comment|/**      * Sync the data to DataNode, close the current block, and allocate a new      * block      */
+DECL|enumConstant|END_BLOCK
+name|END_BLOCK
 block|;   }
 block|}
 end_class

@@ -1626,6 +1626,11 @@ specifier|private
 name|String
 name|path
 decl_stmt|;
+DECL|field|newBlock
+specifier|private
+name|boolean
+name|newBlock
+decl_stmt|;
 DECL|class|Builder
 specifier|public
 specifier|static
@@ -1636,6 +1641,11 @@ DECL|field|path
 specifier|private
 name|String
 name|path
+decl_stmt|;
+DECL|field|newBlock
+specifier|private
+name|boolean
+name|newBlock
 decl_stmt|;
 DECL|method|path (String path)
 specifier|public
@@ -1651,6 +1661,25 @@ operator|.
 name|path
 operator|=
 name|path
+expr_stmt|;
+return|return
+name|this
+return|;
+block|}
+DECL|method|newBlock (boolean newBlock)
+specifier|public
+name|Builder
+name|newBlock
+parameter_list|(
+name|boolean
+name|newBlock
+parameter_list|)
+block|{
+name|this
+operator|.
+name|newBlock
+operator|=
+name|newBlock
 expr_stmt|;
 return|return
 name|this
@@ -1694,6 +1723,14 @@ name|b
 operator|.
 name|path
 expr_stmt|;
+name|this
+operator|.
+name|newBlock
+operator|=
+name|b
+operator|.
+name|newBlock
+expr_stmt|;
 block|}
 DECL|method|getPath ()
 specifier|public
@@ -1703,6 +1740,16 @@ parameter_list|()
 block|{
 return|return
 name|path
+return|;
+block|}
+DECL|method|toNewBlock ()
+specifier|public
+name|boolean
+name|toNewBlock
+parameter_list|()
+block|{
+return|return
+name|newBlock
 return|;
 block|}
 block|}

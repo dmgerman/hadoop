@@ -3652,6 +3652,20 @@ name|hadoop
 operator|.
 name|io
 operator|.
+name|EnumSetWritable
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|io
+operator|.
 name|IOUtils
 import|;
 end_import
@@ -13947,8 +13961,8 @@ expr_stmt|;
 block|}
 block|}
 block|}
-comment|/**    * Append to an existing file for append.    *<p>    *     * The method returns the last block of the file if this is a partial block,    * which can still be used for writing more data. The client uses the returned    * block locations to form the data pipeline for this block.<br>    * The method returns null if the last block is full. The client then    * allocates a new block with the next call using    * {@link ClientProtocol#addBlock}.    *<p>    *     * For description of parameters and exceptions thrown see    * {@link ClientProtocol#append(String, String)}    *     * @return the last block locations if the block is partial or null otherwise    */
-DECL|method|appendFileInternal (FSPermissionChecker pc, INodesInPath iip, String holder, String clientMachine, boolean logRetryCache)
+comment|/**    * Append to an existing file for append.    *<p>    *     * The method returns the last block of the file if this is a partial block,    * which can still be used for writing more data. The client uses the returned    * block locations to form the data pipeline for this block.<br>    * The method returns null if the last block is full. The client then    * allocates a new block with the next call using    * {@link ClientProtocol#addBlock}.    *<p>    *     * For description of parameters and exceptions thrown see    * {@link ClientProtocol#append(String, String, EnumSetWritable)}    *    * @return the last block locations if the block is partial or null otherwise    */
+DECL|method|appendFileInternal (FSPermissionChecker pc, INodesInPath iip, String holder, String clientMachine, boolean newBlock, boolean logRetryCache)
 specifier|private
 name|LocatedBlock
 name|appendFileInternal
@@ -13964,6 +13978,9 @@ name|holder
 parameter_list|,
 name|String
 name|clientMachine
+parameter_list|,
+name|boolean
+name|newBlock
 parameter_list|,
 name|boolean
 name|logRetryCache
@@ -14174,7 +14191,7 @@ argument_list|)
 throw|;
 block|}
 return|return
-name|prepareFileForWrite
+name|prepareFileForAppend
 argument_list|(
 name|src
 argument_list|,
@@ -14183,6 +14200,8 @@ argument_list|,
 name|holder
 argument_list|,
 name|clientMachine
+argument_list|,
+name|newBlock
 argument_list|,
 literal|true
 argument_list|,
@@ -14215,10 +14234,10 @@ name|ie
 throw|;
 block|}
 block|}
-comment|/**    * Convert current node to under construction.    * Recreate in-memory lease record.    *     * @param src path to the file    * @param leaseHolder identifier of the lease holder on this file    * @param clientMachine identifier of the client machine    * @param writeToEditLog whether to persist this change to the edit log    * @param logRetryCache whether to record RPC ids in editlog for retry cache    *                      rebuilding    * @return the last block locations if the block is partial or null otherwise    * @throws UnresolvedLinkException    * @throws IOException    */
-DECL|method|prepareFileForWrite (String src, INodesInPath iip, String leaseHolder, String clientMachine, boolean writeToEditLog, boolean logRetryCache)
+comment|/**    * Convert current node to under construction.    * Recreate in-memory lease record.    *     * @param src path to the file    * @param leaseHolder identifier of the lease holder on this file    * @param clientMachine identifier of the client machine    * @param newBlock if the data is appended to a new block    * @param writeToEditLog whether to persist this change to the edit log    * @param logRetryCache whether to record RPC ids in editlog for retry cache    *                      rebuilding    * @return the last block locations if the block is partial or null otherwise    * @throws UnresolvedLinkException    * @throws IOException    */
+DECL|method|prepareFileForAppend (String src, INodesInPath iip, String leaseHolder, String clientMachine, boolean newBlock, boolean writeToEditLog, boolean logRetryCache)
 name|LocatedBlock
-name|prepareFileForWrite
+name|prepareFileForAppend
 parameter_list|(
 name|String
 name|src
@@ -14231,6 +14250,9 @@ name|leaseHolder
 parameter_list|,
 name|String
 name|clientMachine
+parameter_list|,
+name|boolean
+name|newBlock
 parameter_list|,
 name|boolean
 name|writeToEditLog
@@ -14290,6 +14312,16 @@ expr_stmt|;
 name|LocatedBlock
 name|ret
 init|=
+literal|null
+decl_stmt|;
+if|if
+condition|(
+operator|!
+name|newBlock
+condition|)
+block|{
+name|ret
+operator|=
 name|blockManager
 operator|.
 name|convertLastBlockToUnderConstruction
@@ -14298,7 +14330,7 @@ name|file
 argument_list|,
 literal|0
 argument_list|)
-decl_stmt|;
+expr_stmt|;
 if|if
 condition|(
 name|ret
@@ -14338,6 +14370,54 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
+block|}
+else|else
+block|{
+name|BlockInfo
+name|lastBlock
+init|=
+name|file
+operator|.
+name|getLastBlock
+argument_list|()
+decl_stmt|;
+if|if
+condition|(
+name|lastBlock
+operator|!=
+literal|null
+condition|)
+block|{
+name|ExtendedBlock
+name|blk
+init|=
+operator|new
+name|ExtendedBlock
+argument_list|(
+name|this
+operator|.
+name|getBlockPoolId
+argument_list|()
+argument_list|,
+name|lastBlock
+argument_list|)
+decl_stmt|;
+name|ret
+operator|=
+operator|new
+name|LocatedBlock
+argument_list|(
+name|blk
+argument_list|,
+operator|new
+name|DatanodeInfo
+index|[
+literal|0
+index|]
+argument_list|)
+expr_stmt|;
+block|}
+block|}
 if|if
 condition|(
 name|writeToEditLog
@@ -14346,13 +14426,13 @@ block|{
 name|getEditLog
 argument_list|()
 operator|.
-name|logOpenFile
+name|logAppendFile
 argument_list|(
 name|src
 argument_list|,
 name|file
 argument_list|,
-literal|false
+name|newBlock
 argument_list|,
 name|logRetryCache
 argument_list|)
@@ -14957,7 +15037,7 @@ block|}
 block|}
 block|}
 comment|/**    * Append to an existing file in the namespace.    */
-DECL|method|appendFile ( String src, String holder, String clientMachine, boolean logRetryCache)
+DECL|method|appendFile (String src, String holder, String clientMachine, EnumSet<CreateFlag> flag, boolean logRetryCache)
 name|LastBlockWithStatus
 name|appendFile
 parameter_list|(
@@ -14969,6 +15049,12 @@ name|holder
 parameter_list|,
 name|String
 name|clientMachine
+parameter_list|,
+name|EnumSet
+argument_list|<
+name|CreateFlag
+argument_list|>
+name|flag
 parameter_list|,
 name|boolean
 name|logRetryCache
@@ -14986,6 +15072,15 @@ argument_list|,
 name|holder
 argument_list|,
 name|clientMachine
+argument_list|,
+name|flag
+operator|.
+name|contains
+argument_list|(
+name|CreateFlag
+operator|.
+name|NEW_BLOCK
+argument_list|)
 argument_list|,
 name|logRetryCache
 argument_list|)
@@ -15011,7 +15106,7 @@ name|e
 throw|;
 block|}
 block|}
-DECL|method|appendFileInt (final String srcArg, String holder, String clientMachine, boolean logRetryCache)
+DECL|method|appendFileInt (final String srcArg, String holder, String clientMachine, boolean newBlock, boolean logRetryCache)
 specifier|private
 name|LastBlockWithStatus
 name|appendFileInt
@@ -15025,6 +15120,9 @@ name|holder
 parameter_list|,
 name|String
 name|clientMachine
+parameter_list|,
+name|boolean
+name|newBlock
 parameter_list|,
 name|boolean
 name|logRetryCache
@@ -15161,6 +15259,8 @@ argument_list|,
 name|holder
 argument_list|,
 name|clientMachine
+argument_list|,
+name|newBlock
 argument_list|,
 name|logRetryCache
 argument_list|)

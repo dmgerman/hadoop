@@ -8903,7 +8903,7 @@ literal|null
 argument_list|)
 return|;
 block|}
-comment|/**    * Create a new dfs file with the specified block replication     * with write-progress reporting and return an output stream for writing    * into the file.      *     * @param src File name    * @param permission The permission of the directory being created.    *          If null, use default permission {@link FsPermission#getFileDefault()}    * @param flag indicates create a new file or create/overwrite an    *          existing file or append to an existing file    * @param createParent create missing parent directory if true    * @param replication block replication    * @param blockSize maximum block size    * @param progress interface for reporting client progress    * @param buffersize underlying buffer size     * @param checksumOpt checksum options    *     * @return output stream    *     * @see ClientProtocol#create(String, FsPermission, String, EnumSetWritable,    * boolean, short, long) for detailed description of exceptions thrown    */
+comment|/**    * Create a new dfs file with the specified block replication     * with write-progress reporting and return an output stream for writing    * into the file.      *     * @param src File name    * @param permission The permission of the directory being created.    *          If null, use default permission {@link FsPermission#getFileDefault()}    * @param flag indicates create a new file or create/overwrite an    *          existing file or append to an existing file    * @param createParent create missing parent directory if true    * @param replication block replication    * @param blockSize maximum block size    * @param progress interface for reporting client progress    * @param buffersize underlying buffer size     * @param checksumOpt checksum options    *     * @return output stream    *    * @see ClientProtocol#create for detailed description of exceptions thrown    */
 DECL|method|create (String src, FsPermission permission, EnumSet<CreateFlag> flag, boolean createParent, short replication, long blockSize, Progressable progress, int buffersize, ChecksumOpt checksumOpt)
 specifier|public
 name|DFSOutputStream
@@ -9266,6 +9266,8 @@ name|src
 argument_list|,
 name|buffersize
 argument_list|,
+name|flag
+argument_list|,
 name|progress
 argument_list|)
 return|;
@@ -9580,7 +9582,7 @@ expr_stmt|;
 block|}
 block|}
 comment|/** Method to get stream returned by append call */
-DECL|method|callAppend (String src, int buffersize, Progressable progress)
+DECL|method|callAppend (String src, int buffersize, EnumSet<CreateFlag> flag, Progressable progress)
 specifier|private
 name|DFSOutputStream
 name|callAppend
@@ -9591,21 +9593,30 @@ parameter_list|,
 name|int
 name|buffersize
 parameter_list|,
+name|EnumSet
+argument_list|<
+name|CreateFlag
+argument_list|>
+name|flag
+parameter_list|,
 name|Progressable
 name|progress
 parameter_list|)
 throws|throws
 name|IOException
 block|{
-name|LastBlockWithStatus
-name|lastBlockWithStatus
-init|=
-literal|null
-decl_stmt|;
+name|CreateFlag
+operator|.
+name|validateForAppend
+argument_list|(
+name|flag
+argument_list|)
+expr_stmt|;
 try|try
 block|{
-name|lastBlockWithStatus
-operator|=
+name|LastBlockWithStatus
+name|blkWithStatus
+init|=
 name|namenode
 operator|.
 name|append
@@ -9613,8 +9624,57 @@ argument_list|(
 name|src
 argument_list|,
 name|clientName
+argument_list|,
+operator|new
+name|EnumSetWritable
+argument_list|<>
+argument_list|(
+name|flag
+argument_list|,
+name|CreateFlag
+operator|.
+name|class
 argument_list|)
-expr_stmt|;
+argument_list|)
+decl_stmt|;
+return|return
+name|DFSOutputStream
+operator|.
+name|newStreamForAppend
+argument_list|(
+name|this
+argument_list|,
+name|src
+argument_list|,
+name|flag
+operator|.
+name|contains
+argument_list|(
+name|CreateFlag
+operator|.
+name|NEW_BLOCK
+argument_list|)
+argument_list|,
+name|buffersize
+argument_list|,
+name|progress
+argument_list|,
+name|blkWithStatus
+operator|.
+name|getLastBlock
+argument_list|()
+argument_list|,
+name|blkWithStatus
+operator|.
+name|getFileStatus
+argument_list|()
+argument_list|,
+name|dfsClientConf
+operator|.
+name|createChecksum
+argument_list|()
+argument_list|)
+return|;
 block|}
 catch|catch
 parameter_list|(
@@ -9657,43 +9717,9 @@ name|class
 argument_list|)
 throw|;
 block|}
-name|HdfsFileStatus
-name|newStat
-init|=
-name|lastBlockWithStatus
-operator|.
-name|getFileStatus
-argument_list|()
-decl_stmt|;
-return|return
-name|DFSOutputStream
-operator|.
-name|newStreamForAppend
-argument_list|(
-name|this
-argument_list|,
-name|src
-argument_list|,
-name|buffersize
-argument_list|,
-name|progress
-argument_list|,
-name|lastBlockWithStatus
-operator|.
-name|getLastBlock
-argument_list|()
-argument_list|,
-name|newStat
-argument_list|,
-name|dfsClientConf
-operator|.
-name|createChecksum
-argument_list|()
-argument_list|)
-return|;
 block|}
-comment|/**    * Append to an existing HDFS file.      *     * @param src file name    * @param buffersize buffer size    * @param progress for reporting write-progress; null is acceptable.    * @param statistics file system statistics; null is acceptable.    * @return an output stream for writing into the file    *     * @see ClientProtocol#append(String, String)     */
-DECL|method|append (final String src, final int buffersize, final Progressable progress, final FileSystem.Statistics statistics )
+comment|/**    * Append to an existing HDFS file.      *     * @param src file name    * @param buffersize buffer size    * @param flag indicates whether to append data to a new block instead of    *             the last block    * @param progress for reporting write-progress; null is acceptable.    * @param statistics file system statistics; null is acceptable.    * @return an output stream for writing into the file    *     * @see ClientProtocol#append(String, String, EnumSetWritable)    */
+DECL|method|append (final String src, final int buffersize, EnumSet<CreateFlag> flag, final Progressable progress, final FileSystem.Statistics statistics)
 specifier|public
 name|HdfsDataOutputStream
 name|append
@@ -9705,6 +9731,12 @@ parameter_list|,
 specifier|final
 name|int
 name|buffersize
+parameter_list|,
+name|EnumSet
+argument_list|<
+name|CreateFlag
+argument_list|>
+name|flag
 parameter_list|,
 specifier|final
 name|Progressable
@@ -9729,6 +9761,8 @@ name|src
 argument_list|,
 name|buffersize
 argument_list|,
+name|flag
+argument_list|,
 name|progress
 argument_list|)
 decl_stmt|;
@@ -9746,7 +9780,7 @@ argument_list|()
 argument_list|)
 return|;
 block|}
-DECL|method|append (String src, int buffersize, Progressable progress)
+DECL|method|append (String src, int buffersize, EnumSet<CreateFlag> flag, Progressable progress)
 specifier|private
 name|DFSOutputStream
 name|append
@@ -9756,6 +9790,12 @@ name|src
 parameter_list|,
 name|int
 name|buffersize
+parameter_list|,
+name|EnumSet
+argument_list|<
+name|CreateFlag
+argument_list|>
+name|flag
 parameter_list|,
 name|Progressable
 name|progress
@@ -9775,6 +9815,8 @@ argument_list|(
 name|src
 argument_list|,
 name|buffersize
+argument_list|,
+name|flag
 argument_list|,
 name|progress
 argument_list|)
@@ -10087,7 +10129,7 @@ argument_list|()
 expr_stmt|;
 block|}
 block|}
-comment|/**    * Move blocks from src to trg and delete src    * See {@link ClientProtocol#concat(String, String [])}.     */
+comment|/**    * Move blocks from src to trg and delete src    * See {@link ClientProtocol#concat}.    */
 DECL|method|concat (String trg, String [] srcs)
 specifier|public
 name|void
@@ -10272,7 +10314,7 @@ argument_list|()
 expr_stmt|;
 block|}
 block|}
-comment|/**    * Truncate a file to an indicated size    * See {@link ClientProtocol#truncate(String, long)}.     */
+comment|/**    * Truncate a file to an indicated size    * See {@link ClientProtocol#truncate}.    */
 DECL|method|truncate (String src, long newLength)
 specifier|public
 name|boolean
@@ -14240,7 +14282,7 @@ argument_list|()
 expr_stmt|;
 block|}
 block|}
-comment|/**    * Get {@link ContentSummary} rooted at the specified directory.    * @param path The string representation of the path    *     * @see ClientProtocol#getContentSummary(String)    */
+comment|/**    * Get {@link ContentSummary} rooted at the specified directory.    * @param src The string representation of the path    *     * @see ClientProtocol#getContentSummary(String)    */
 DECL|method|getContentSummary (String src)
 name|ContentSummary
 name|getContentSummary

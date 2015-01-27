@@ -330,6 +330,15 @@ literal|61
 argument_list|,
 literal|"Truncate"
 argument_list|)
+block|,
+DECL|enumConstant|APPEND_NEW_BLOCK
+name|APPEND_NEW_BLOCK
+argument_list|(
+operator|-
+literal|62
+argument_list|,
+literal|"Support appending to new block"
+argument_list|)
 block|;
 DECL|field|info
 specifier|private

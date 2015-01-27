@@ -7038,6 +7038,26 @@ operator|.
 name|close
 argument_list|()
 expr_stmt|;
+comment|// OP_APPEND 47
+name|FSDataOutputStream
+name|s2
+init|=
+name|filesystem
+operator|.
+name|append
+argument_list|(
+name|pathFileCreate
+argument_list|,
+literal|4096
+argument_list|,
+literal|null
+argument_list|)
+decl_stmt|;
+name|s2
+operator|.
+name|close
+argument_list|()
+expr_stmt|;
 comment|// OP_SET_STORAGE_POLICY 45
 name|filesystem
 operator|.

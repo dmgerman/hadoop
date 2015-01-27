@@ -4594,7 +4594,7 @@ block|}
 annotation|@
 name|Override
 comment|// ClientProtocol
-DECL|method|append (String src, String clientName)
+DECL|method|append (String src, String clientName, EnumSetWritable<CreateFlag> flag)
 specifier|public
 name|LastBlockWithStatus
 name|append
@@ -4604,6 +4604,12 @@ name|src
 parameter_list|,
 name|String
 name|clientName
+parameter_list|,
+name|EnumSetWritable
+argument_list|<
+name|CreateFlag
+argument_list|>
+name|flag
 parameter_list|)
 throws|throws
 name|IOException
@@ -4700,6 +4706,11 @@ argument_list|,
 name|clientName
 argument_list|,
 name|clientMachine
+argument_list|,
+name|flag
+operator|.
+name|get
+argument_list|()
 argument_list|,
 name|cacheEntry
 operator|!=

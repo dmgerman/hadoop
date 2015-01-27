@@ -72,6 +72,16 @@ end_import
 
 begin_import
 import|import
+name|java
+operator|.
+name|util
+operator|.
+name|EnumSet
+import|;
+end_import
+
+begin_import
+import|import
 name|org
 operator|.
 name|apache
@@ -81,6 +91,20 @@ operator|.
 name|conf
 operator|.
 name|Configuration
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|fs
+operator|.
+name|CreateFlag
 import|;
 end_import
 
@@ -345,6 +369,20 @@ operator|.
 name|namenode
 operator|.
 name|NameNodeAdapter
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|io
+operator|.
+name|EnumSetWritable
 import|;
 end_import
 
@@ -848,6 +886,20 @@ operator|.
 name|dfs
 operator|.
 name|clientName
+argument_list|,
+operator|new
+name|EnumSetWritable
+argument_list|<>
+argument_list|(
+name|EnumSet
+operator|.
+name|of
+argument_list|(
+name|CreateFlag
+operator|.
+name|APPEND
+argument_list|)
+argument_list|)
 argument_list|)
 expr_stmt|;
 comment|// expire lease to trigger block recovery.

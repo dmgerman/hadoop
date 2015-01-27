@@ -2618,12 +2618,15 @@ name|Span
 name|traceSpan
 decl_stmt|;
 comment|/**      * construction with tracing info      */
-DECL|method|DataStreamer (HdfsFileStatus stat, Span span)
+DECL|method|DataStreamer (HdfsFileStatus stat, ExtendedBlock block, Span span)
 specifier|private
 name|DataStreamer
 parameter_list|(
 name|HdfsFileStatus
 name|stat
+parameter_list|,
+name|ExtendedBlock
+name|block
 parameter_list|,
 name|Span
 name|span
@@ -2640,6 +2643,12 @@ argument_list|(
 name|stat
 argument_list|)
 expr_stmt|;
+name|this
+operator|.
+name|block
+operator|=
+name|block
+expr_stmt|;
 name|stage
 operator|=
 name|BlockConstructionStage
@@ -2651,7 +2660,7 @@ operator|=
 name|span
 expr_stmt|;
 block|}
-comment|/**      * Construct a data streamer for append      * @param lastBlock last block of the file to be appended      * @param stat status of the file to be appended      * @param bytesPerChecksum number of bytes per checksum      * @throws IOException if error occurs      */
+comment|/**      * Construct a data streamer for appending to the last partial block      * @param lastBlock last block of the file to be appended      * @param stat status of the file to be appended      * @param bytesPerChecksum number of bytes per checksum      * @throws IOException if error occurs      */
 DECL|method|DataStreamer (LocatedBlock lastBlock, HdfsFileStatus stat, int bytesPerChecksum, Span span)
 specifier|private
 name|DataStreamer
@@ -8507,6 +8516,8 @@ name|DataStreamer
 argument_list|(
 name|stat
 argument_list|,
+literal|null
+argument_list|,
 name|traceSpan
 argument_list|)
 expr_stmt|;
@@ -8785,7 +8796,7 @@ name|out
 return|;
 block|}
 comment|/** Construct a new output stream for append. */
-DECL|method|DFSOutputStream (DFSClient dfsClient, String src, Progressable progress, LocatedBlock lastBlock, HdfsFileStatus stat, DataChecksum checksum)
+DECL|method|DFSOutputStream (DFSClient dfsClient, String src, boolean toNewBlock, Progressable progress, LocatedBlock lastBlock, HdfsFileStatus stat, DataChecksum checksum)
 specifier|private
 name|DFSOutputStream
 parameter_list|(
@@ -8794,6 +8805,9 @@ name|dfsClient
 parameter_list|,
 name|String
 name|src
+parameter_list|,
+name|boolean
+name|toNewBlock
 parameter_list|,
 name|Progressable
 name|progress
@@ -8866,6 +8880,9 @@ block|}
 comment|// The last partial block of the file has to be filled.
 if|if
 condition|(
+operator|!
+name|toNewBlock
+operator|&&
 name|lastBlock
 operator|!=
 literal|null
@@ -8915,6 +8932,17 @@ name|DataStreamer
 argument_list|(
 name|stat
 argument_list|,
+name|lastBlock
+operator|!=
+literal|null
+condition|?
+name|lastBlock
+operator|.
+name|getBlock
+argument_list|()
+else|:
+literal|null
+argument_list|,
 name|traceSpan
 argument_list|)
 expr_stmt|;
@@ -8929,7 +8957,7 @@ name|getFileEncryptionInfo
 argument_list|()
 expr_stmt|;
 block|}
-DECL|method|newStreamForAppend (DFSClient dfsClient, String src, int buffersize, Progressable progress, LocatedBlock lastBlock, HdfsFileStatus stat, DataChecksum checksum)
+DECL|method|newStreamForAppend (DFSClient dfsClient, String src, boolean toNewBlock, int bufferSize, Progressable progress, LocatedBlock lastBlock, HdfsFileStatus stat, DataChecksum checksum)
 specifier|static
 name|DFSOutputStream
 name|newStreamForAppend
@@ -8940,8 +8968,11 @@ parameter_list|,
 name|String
 name|src
 parameter_list|,
+name|boolean
+name|toNewBlock
+parameter_list|,
 name|int
-name|buffersize
+name|bufferSize
 parameter_list|,
 name|Progressable
 name|progress
@@ -8968,6 +8999,8 @@ argument_list|(
 name|dfsClient
 argument_list|,
 name|src
+argument_list|,
+name|toNewBlock
 argument_list|,
 name|progress
 argument_list|,
@@ -9727,18 +9760,32 @@ operator|.
 name|UPDATE_LENGTH
 argument_list|)
 decl_stmt|;
+name|boolean
+name|endBlock
+init|=
+name|syncFlags
+operator|.
+name|contains
+argument_list|(
+name|SyncFlag
+operator|.
+name|END_BLOCK
+argument_list|)
+decl_stmt|;
 synchronized|synchronized
 init|(
 name|this
 init|)
 block|{
-comment|// flush checksum buffer, but keep checksum buffer intact
+comment|// flush checksum buffer, but keep checksum buffer intact if we do not
+comment|// need to end the current block
 name|int
 name|numKept
 init|=
 name|flushBuffer
 argument_list|(
-literal|true
+operator|!
+name|endBlock
 argument_list|,
 literal|true
 argument_list|)
@@ -9760,15 +9807,19 @@ name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"DFSClient flush() :"
+literal|"DFSClient flush():"
 operator|+
-literal|" bytesCurBlock "
+literal|" bytesCurBlock="
 operator|+
 name|bytesCurBlock
 operator|+
-literal|" lastFlushOffset "
+literal|" lastFlushOffset="
 operator|+
 name|lastFlushOffset
+operator|+
+literal|" createNewBlock="
+operator|+
+name|endBlock
 argument_list|)
 expr_stmt|;
 block|}
@@ -9797,11 +9848,14 @@ operator|&&
 name|currentPacket
 operator|==
 literal|null
+operator|&&
+operator|!
+name|endBlock
 condition|)
 block|{
 comment|// Nothing to send right now,
 comment|// but sync was requested.
-comment|// Send an empty packet
+comment|// Send an empty packet if we do not end the block right now
 name|currentPacket
 operator|=
 name|createPacket
@@ -9827,12 +9881,15 @@ operator|&&
 name|bytesCurBlock
 operator|>
 literal|0
+operator|&&
+operator|!
+name|endBlock
 condition|)
 block|{
 comment|// Nothing to send right now,
 comment|// and the block was partially written,
 comment|// and sync was requested.
-comment|// So send an empty sync packet.
+comment|// So send an empty sync packet if we do not end the block right now
 name|currentPacket
 operator|=
 name|createPacket
@@ -9887,13 +9944,66 @@ name|waitAndQueueCurrentPacket
 argument_list|()
 expr_stmt|;
 block|}
+if|if
+condition|(
+name|endBlock
+operator|&&
+name|bytesCurBlock
+operator|>
+literal|0
+condition|)
+block|{
+comment|// Need to end the current block, thus send an empty packet to
+comment|// indicate this is the end of the block and reset bytesCurBlock
+name|currentPacket
+operator|=
+name|createPacket
+argument_list|(
+literal|0
+argument_list|,
+literal|0
+argument_list|,
+name|bytesCurBlock
+argument_list|,
+name|currentSeqno
+operator|++
+argument_list|)
+expr_stmt|;
+name|currentPacket
+operator|.
+name|lastPacketInBlock
+operator|=
+literal|true
+expr_stmt|;
+name|currentPacket
+operator|.
+name|syncBlock
+operator|=
+name|shouldSyncBlock
+operator|||
+name|isSync
+expr_stmt|;
+name|waitAndQueueCurrentPacket
+argument_list|()
+expr_stmt|;
+name|bytesCurBlock
+operator|=
+literal|0
+expr_stmt|;
+name|lastFlushOffset
+operator|=
+literal|0
+expr_stmt|;
+block|}
+else|else
+block|{
 comment|// Restore state of stream. Record the last flush offset
 comment|// of the last full chunk that was flushed.
-comment|//
 name|bytesCurBlock
 operator|-=
 name|numKept
 expr_stmt|;
+block|}
 name|toWaitFor
 operator|=
 name|lastQueuedSeqno

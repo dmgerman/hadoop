@@ -2623,7 +2623,7 @@ literal|0
 argument_list|,
 name|fileINode
 operator|.
-name|getBlockDiskspace
+name|getPreferredBlockDiskspace
 argument_list|()
 argument_list|,
 literal|true
@@ -2850,7 +2850,7 @@ argument_list|,
 operator|-
 name|fileNode
 operator|.
-name|getBlockDiskspace
+name|getPreferredBlockDiskspace
 argument_list|()
 argument_list|,
 literal|true

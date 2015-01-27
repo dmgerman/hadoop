@@ -87,7 +87,7 @@ import|;
 end_import
 
 begin_comment
-comment|/****************************************************************  * CreateFlag specifies the file create semantic. Users can combine flags like:<br>  *<code>  * EnumSet.of(CreateFlag.CREATE, CreateFlag.APPEND)  *<code>  *<p>  *   * Use the CreateFlag as follows:  *<ol>  *<li> CREATE - to create a file if it does not exist,   * else throw FileAlreadyExists.</li>  *<li> APPEND - to append to a file if it exists,   * else throw FileNotFoundException.</li>  *<li> OVERWRITE - to truncate a file if it exists,   * else throw FileNotFoundException.</li>  *<li> CREATE|APPEND - to create a file if it does not exist,   * else append to an existing file.</li>  *<li> CREATE|OVERWRITE - to create a file if it does not exist,   * else overwrite an existing file.</li>  *<li> SYNC_BLOCK - to force closed blocks to the disk device.  * In addition {@link Syncable#hsync()} should be called after each write,  * if true synchronous behavior is required.</li>  *</ol>  *   * Following combination is not valid and will result in   * {@link HadoopIllegalArgumentException}:  *<ol>  *<li> APPEND|OVERWRITE</li>  *<li> CREATE|APPEND|OVERWRITE</li>  *</ol>  *****************************************************************/
+comment|/****************************************************************  * CreateFlag specifies the file create semantic. Users can combine flags like:<br>  *<code>  * EnumSet.of(CreateFlag.CREATE, CreateFlag.APPEND)  *<code>  *<p>  *   * Use the CreateFlag as follows:  *<ol>  *<li> CREATE - to create a file if it does not exist,   * else throw FileAlreadyExists.</li>  *<li> APPEND - to append to a file if it exists,   * else throw FileNotFoundException.</li>  *<li> OVERWRITE - to truncate a file if it exists,   * else throw FileNotFoundException.</li>  *<li> CREATE|APPEND - to create a file if it does not exist,   * else append to an existing file.</li>  *<li> CREATE|OVERWRITE - to create a file if it does not exist,   * else overwrite an existing file.</li>  *<li> SYNC_BLOCK - to force closed blocks to the disk device.  * In addition {@link Syncable#hsync()} should be called after each write,  * if true synchronous behavior is required.</li>  *<li> LAZY_PERSIST - Create the block on transient storage (RAM) if  * available.</li>  *<li> APPEND_NEWBLOCK - Append data to a new block instead of end of the last  * partial block.</li>  *</ol>  *   * Following combination is not valid and will result in   * {@link HadoopIllegalArgumentException}:  *<ol>  *<li> APPEND|OVERWRITE</li>  *<li> CREATE|APPEND|OVERWRITE</li>  *</ol>  *****************************************************************/
 end_comment
 
 begin_enum
@@ -152,6 +152,16 @@ operator|(
 name|short
 operator|)
 literal|0x10
+argument_list|)
+block|,
+comment|/**    * Append data to a new block instead of the end of the last partial block.    * This is only useful for APPEND.    */
+DECL|enumConstant|NEW_BLOCK
+name|NEW_BLOCK
+argument_list|(
+operator|(
+name|short
+operator|)
+literal|0x20
 argument_list|)
 block|;
 DECL|field|mode
@@ -369,6 +379,47 @@ operator|+
 literal|". Create option is not specified in "
 operator|+
 name|flag
+argument_list|)
+throw|;
+block|}
+block|}
+comment|/**    * Validate the CreateFlag for the append operation. The flag must contain    * APPEND, and cannot contain OVERWRITE.    */
+DECL|method|validateForAppend (EnumSet<CreateFlag> flag)
+specifier|public
+specifier|static
+name|void
+name|validateForAppend
+parameter_list|(
+name|EnumSet
+argument_list|<
+name|CreateFlag
+argument_list|>
+name|flag
+parameter_list|)
+block|{
+name|validate
+argument_list|(
+name|flag
+argument_list|)
+expr_stmt|;
+if|if
+condition|(
+operator|!
+name|flag
+operator|.
+name|contains
+argument_list|(
+name|APPEND
+argument_list|)
+condition|)
+block|{
+throw|throw
+operator|new
+name|HadoopIllegalArgumentException
+argument_list|(
+name|flag
+operator|+
+literal|" does not contain APPEND"
 argument_list|)
 throw|;
 block|}

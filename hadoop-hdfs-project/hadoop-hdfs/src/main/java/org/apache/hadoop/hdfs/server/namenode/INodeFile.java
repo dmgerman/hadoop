@@ -2046,10 +2046,10 @@ name|header
 return|;
 block|}
 comment|/** @return the diskspace required for a full block. */
-DECL|method|getBlockDiskspace ()
+DECL|method|getPreferredBlockDiskspace ()
 specifier|final
 name|long
-name|getBlockDiskspace
+name|getPreferredBlockDiskspace
 parameter_list|()
 block|{
 return|return
