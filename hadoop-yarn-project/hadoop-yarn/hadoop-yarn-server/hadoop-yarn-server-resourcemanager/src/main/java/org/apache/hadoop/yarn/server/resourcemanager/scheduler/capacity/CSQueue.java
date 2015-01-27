@@ -725,6 +725,13 @@ name|String
 name|nodeLabel
 parameter_list|)
 function_decl|;
+comment|/**    * Check whether<em>disable_preemption</em> property is set for this queue    * @return true if<em>disable_preemption</em> is set, false if not    */
+DECL|method|getPreemptionDisabled ()
+specifier|public
+name|boolean
+name|getPreemptionDisabled
+parameter_list|()
+function_decl|;
 block|}
 end_interface
 

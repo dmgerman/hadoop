@@ -206,6 +206,22 @@ name|hadoop
 operator|.
 name|yarn
 operator|.
+name|conf
+operator|.
+name|YarnConfiguration
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
 name|factories
 operator|.
 name|RecordFactory
@@ -519,6 +535,11 @@ DECL|field|reservationsContinueLooking
 name|boolean
 name|reservationsContinueLooking
 decl_stmt|;
+DECL|field|preemptionDisabled
+specifier|private
+name|boolean
+name|preemptionDisabled
+decl_stmt|;
 DECL|field|recordFactory
 specifier|private
 specifier|final
@@ -531,6 +552,11 @@ name|getRecordFactory
 argument_list|(
 literal|null
 argument_list|)
+decl_stmt|;
+DECL|field|csContext
+specifier|private
+name|CapacitySchedulerContext
+name|csContext
 decl_stmt|;
 DECL|method|AbstractCSQueue (CapacitySchedulerContext cs, String queueName, CSQueue parent, CSQueue old)
 specifier|public
@@ -776,6 +802,12 @@ name|accessibleLabels
 argument_list|,
 name|labelManager
 argument_list|)
+expr_stmt|;
+name|this
+operator|.
+name|csContext
+operator|=
+name|cs
 expr_stmt|;
 block|}
 annotation|@
@@ -1502,6 +1534,15 @@ name|reservationsContinueLooking
 operator|=
 name|reservationContinueLooking
 expr_stmt|;
+name|this
+operator|.
+name|preemptionDisabled
+operator|=
+name|isQueueHierarchyPreemptionDisabled
+argument_list|(
+name|this
+argument_list|)
+expr_stmt|;
 block|}
 DECL|method|getQueueInfo ()
 specifier|protected
@@ -2172,6 +2213,115 @@ operator|.
 name|get
 argument_list|(
 name|nodeLabel
+argument_list|)
+return|;
+block|}
+annotation|@
+name|Private
+DECL|method|getPreemptionDisabled ()
+specifier|public
+name|boolean
+name|getPreemptionDisabled
+parameter_list|()
+block|{
+return|return
+name|preemptionDisabled
+return|;
+block|}
+comment|/**    * The specified queue is preemptable if system-wide preemption is turned on    * unless any queue in the<em>qPath</em> hierarchy has explicitly turned    * preemption off.    * NOTE: Preemptability is inherited from a queue's parent.    *     * @return true if queue has preemption disabled, false otherwise    */
+DECL|method|isQueueHierarchyPreemptionDisabled (CSQueue q)
+specifier|private
+name|boolean
+name|isQueueHierarchyPreemptionDisabled
+parameter_list|(
+name|CSQueue
+name|q
+parameter_list|)
+block|{
+name|CapacitySchedulerConfiguration
+name|csConf
+init|=
+name|csContext
+operator|.
+name|getConfiguration
+argument_list|()
+decl_stmt|;
+name|boolean
+name|systemWidePreemption
+init|=
+name|csConf
+operator|.
+name|getBoolean
+argument_list|(
+name|YarnConfiguration
+operator|.
+name|RM_SCHEDULER_ENABLE_MONITORS
+argument_list|,
+name|YarnConfiguration
+operator|.
+name|DEFAULT_RM_SCHEDULER_ENABLE_MONITORS
+argument_list|)
+decl_stmt|;
+name|CSQueue
+name|parentQ
+init|=
+name|q
+operator|.
+name|getParent
+argument_list|()
+decl_stmt|;
+comment|// If the system-wide preemption switch is turned off, all of the queues in
+comment|// the qPath hierarchy have preemption disabled, so return true.
+if|if
+condition|(
+operator|!
+name|systemWidePreemption
+condition|)
+return|return
+literal|true
+return|;
+comment|// If q is the root queue and the system-wide preemption switch is turned
+comment|// on, then q does not have preemption disabled (default=false, below)
+comment|// unless the preemption_disabled property is explicitly set.
+if|if
+condition|(
+name|parentQ
+operator|==
+literal|null
+condition|)
+block|{
+return|return
+name|csConf
+operator|.
+name|getPreemptionDisabled
+argument_list|(
+name|q
+operator|.
+name|getQueuePath
+argument_list|()
+argument_list|,
+literal|false
+argument_list|)
+return|;
+block|}
+comment|// If this is not the root queue, inherit the default value for the
+comment|// preemption_disabled property from the parent. Preemptability will be
+comment|// inherited from the parent's hierarchy unless explicitly overridden at
+comment|// this level.
+return|return
+name|csConf
+operator|.
+name|getPreemptionDisabled
+argument_list|(
+name|q
+operator|.
+name|getQueuePath
+argument_list|()
+argument_list|,
+name|parentQ
+operator|.
+name|getPreemptionDisabled
+argument_list|()
 argument_list|)
 return|;
 block|}

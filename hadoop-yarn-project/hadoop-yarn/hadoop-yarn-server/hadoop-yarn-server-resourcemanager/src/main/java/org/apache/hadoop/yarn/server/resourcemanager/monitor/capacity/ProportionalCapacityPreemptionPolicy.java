@@ -704,24 +704,6 @@ name|NATURAL_TERMINATION_FACTOR
 init|=
 literal|"yarn.resourcemanager.monitor.capacity.preemption.natural_termination_factor"
 decl_stmt|;
-DECL|field|BASE_YARN_RM_PREEMPTION
-specifier|public
-specifier|static
-specifier|final
-name|String
-name|BASE_YARN_RM_PREEMPTION
-init|=
-literal|"yarn.scheduler.capacity."
-decl_stmt|;
-DECL|field|SUFFIX_DISABLE_PREEMPTION
-specifier|public
-specifier|static
-specifier|final
-name|String
-name|SUFFIX_DISABLE_PREEMPTION
-init|=
-literal|".disable_preemption"
-decl_stmt|;
 comment|// the dispatcher to send preempt and kill events
 DECL|field|dispatcher
 specifier|public
@@ -1228,8 +1210,6 @@ argument_list|(
 name|root
 argument_list|,
 name|clusterResources
-argument_list|,
-literal|false
 argument_list|)
 expr_stmt|;
 block|}
@@ -3476,8 +3456,8 @@ return|return
 literal|"ProportionalCapacityPreemptionPolicy"
 return|;
 block|}
-comment|/**    * This method walks a tree of CSQueue and clones the portion of the state    * relevant for preemption in TempQueue(s). It also maintains a pointer to    * the leaves. Finally it aggregates pending resources in each queue and rolls    * it up to higher levels.    *    * @param root the root of the CapacityScheduler queue hierarchy    * @param clusterResources the total amount of resources in the cluster    * @param parentDisablePreempt true if disable preemption is set for parent    * @return the root of the cloned queue hierarchy    */
-DECL|method|cloneQueues (CSQueue root, Resource clusterResources, boolean parentDisablePreempt)
+comment|/**    * This method walks a tree of CSQueue and clones the portion of the state    * relevant for preemption in TempQueue(s). It also maintains a pointer to    * the leaves. Finally it aggregates pending resources in each queue and rolls    * it up to higher levels.    *    * @param root the root of the CapacityScheduler queue hierarchy    * @param clusterResources the total amount of resources in the cluster    * @return the root of the cloned queue hierarchy    */
+DECL|method|cloneQueues (CSQueue root, Resource clusterResources)
 specifier|private
 name|TempQueue
 name|cloneQueues
@@ -3487,9 +3467,6 @@ name|root
 parameter_list|,
 name|Resource
 name|clusterResources
-parameter_list|,
-name|boolean
-name|parentDisablePreempt
 parameter_list|)
 block|{
 name|TempQueue
@@ -3568,37 +3545,6 @@ argument_list|,
 name|absMaxCap
 argument_list|)
 decl_stmt|;
-name|boolean
-name|queueDisablePreemption
-init|=
-literal|false
-decl_stmt|;
-name|String
-name|queuePropName
-init|=
-name|BASE_YARN_RM_PREEMPTION
-operator|+
-name|root
-operator|.
-name|getQueuePath
-argument_list|()
-operator|+
-name|SUFFIX_DISABLE_PREEMPTION
-decl_stmt|;
-name|queueDisablePreemption
-operator|=
-name|scheduler
-operator|.
-name|getConfiguration
-argument_list|()
-operator|.
-name|getBoolean
-argument_list|(
-name|queuePropName
-argument_list|,
-name|parentDisablePreempt
-argument_list|)
-expr_stmt|;
 name|Resource
 name|extra
 init|=
@@ -3680,7 +3626,10 @@ argument_list|)
 expr_stmt|;
 if|if
 condition|(
-name|queueDisablePreemption
+name|root
+operator|.
+name|getPreemptionDisabled
+argument_list|()
 condition|)
 block|{
 name|ret
@@ -3771,8 +3720,6 @@ argument_list|(
 name|c
 argument_list|,
 name|clusterResources
-argument_list|,
-name|queueDisablePreemption
 argument_list|)
 decl_stmt|;
 name|Resources

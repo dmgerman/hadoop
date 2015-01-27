@@ -44,30 +44,6 @@ name|capacity
 operator|.
 name|ProportionalCapacityPreemptionPolicy
 operator|.
-name|BASE_YARN_RM_PREEMPTION
-import|;
-end_import
-
-begin_import
-import|import static
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|yarn
-operator|.
-name|server
-operator|.
-name|resourcemanager
-operator|.
-name|monitor
-operator|.
-name|capacity
-operator|.
-name|ProportionalCapacityPreemptionPolicy
-operator|.
 name|MAX_IGNORED_OVER_CAPACITY
 import|;
 end_import
@@ -141,30 +117,6 @@ operator|.
 name|ProportionalCapacityPreemptionPolicy
 operator|.
 name|OBSERVE_ONLY
-import|;
-end_import
-
-begin_import
-import|import static
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|yarn
-operator|.
-name|server
-operator|.
-name|resourcemanager
-operator|.
-name|monitor
-operator|.
-name|capacity
-operator|.
-name|ProportionalCapacityPreemptionPolicy
-operator|.
-name|SUFFIX_DISABLE_PREEMPTION
 import|;
 end_import
 
@@ -523,6 +475,16 @@ operator|.
 name|util
 operator|.
 name|Set
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
+name|StringTokenizer
 import|;
 end_import
 
@@ -2888,13 +2850,9 @@ block|}
 decl_stmt|;
 name|schedConf
 operator|.
-name|setBoolean
+name|setPreemptionDisabled
 argument_list|(
-name|BASE_YARN_RM_PREEMPTION
-operator|+
 literal|"root.queueB"
-operator|+
-name|SUFFIX_DISABLE_PREEMPTION
 argument_list|,
 literal|true
 argument_list|)
@@ -2912,7 +2870,7 @@ operator|.
 name|editSchedule
 argument_list|()
 expr_stmt|;
-comment|// With PREEMPTION_DISABLED set for queueB, get resources from queueC
+comment|// Since queueB is not preemptable, get resources from queueC
 name|verify
 argument_list|(
 name|mDisp
@@ -2955,12 +2913,21 @@ argument_list|)
 argument_list|)
 argument_list|)
 expr_stmt|;
-comment|// With no PREEMPTION_DISABLED set for queueB, resources will be preempted
-comment|// from both queueB and queueC. Test must be reset for so that the mDisp
+comment|// Since queueB is preemptable, resources will be preempted
+comment|// from both queueB and queueC. Test must be reset so that the mDisp
 comment|// event handler will count only events from the following test and not the
 comment|// previous one.
 name|setup
 argument_list|()
+expr_stmt|;
+name|schedConf
+operator|.
+name|setPreemptionDisabled
+argument_list|(
+literal|"root.queueB"
+argument_list|,
+literal|false
+argument_list|)
 expr_stmt|;
 name|ProportionalCapacityPreemptionPolicy
 name|policy2
@@ -2970,19 +2937,6 @@ argument_list|(
 name|qData
 argument_list|)
 decl_stmt|;
-name|schedConf
-operator|.
-name|setBoolean
-argument_list|(
-name|BASE_YARN_RM_PREEMPTION
-operator|+
-literal|"root.queueB"
-operator|+
-name|SUFFIX_DISABLE_PREEMPTION
-argument_list|,
-literal|false
-argument_list|)
-expr_stmt|;
 name|policy2
 operator|.
 name|editSchedule
@@ -3272,16 +3226,12 @@ comment|// Need to call setup() again to reset mDisp
 name|setup
 argument_list|()
 expr_stmt|;
-comment|// Disable preemption for queueB and it's children
+comment|// Turn off preemption for queueB and it's children
 name|schedConf
 operator|.
-name|setBoolean
+name|setPreemptionDisabled
 argument_list|(
-name|BASE_YARN_RM_PREEMPTION
-operator|+
 literal|"root.queueA.queueB"
-operator|+
-name|SUFFIX_DISABLE_PREEMPTION
 argument_list|,
 literal|true
 argument_list|)
@@ -3690,16 +3640,12 @@ comment|// Need to call setup() again to reset mDisp
 name|setup
 argument_list|()
 expr_stmt|;
-comment|// Disable preemption for queueB(appA)
+comment|// Turn off preemption for queueB(appA)
 name|schedConf
 operator|.
-name|setBoolean
+name|setPreemptionDisabled
 argument_list|(
-name|BASE_YARN_RM_PREEMPTION
-operator|+
 literal|"root.queueA.queueB"
-operator|+
-name|SUFFIX_DISABLE_PREEMPTION
 argument_list|,
 literal|true
 argument_list|)
@@ -3764,29 +3710,21 @@ expr_stmt|;
 name|setup
 argument_list|()
 expr_stmt|;
-comment|// Disable preemption for two of the 3 queues with over-capacity.
+comment|// Turn off preemption for two of the 3 queues with over-capacity.
 name|schedConf
 operator|.
-name|setBoolean
+name|setPreemptionDisabled
 argument_list|(
-name|BASE_YARN_RM_PREEMPTION
-operator|+
 literal|"root.queueD.queueE"
-operator|+
-name|SUFFIX_DISABLE_PREEMPTION
 argument_list|,
 literal|true
 argument_list|)
 expr_stmt|;
 name|schedConf
 operator|.
-name|setBoolean
+name|setPreemptionDisabled
 argument_list|(
-name|BASE_YARN_RM_PREEMPTION
-operator|+
 literal|"root.queueA.queueB"
-operator|+
-name|SUFFIX_DISABLE_PREEMPTION
 argument_list|,
 literal|true
 argument_list|)
@@ -4167,7 +4105,7 @@ argument_list|)
 argument_list|)
 argument_list|)
 expr_stmt|;
-comment|// Disable preemption for queueA and it's children. queueF(appC)'s request
+comment|// Turn off preemption for queueA and it's children. queueF(appC)'s request
 comment|// should starve.
 name|setup
 argument_list|()
@@ -4175,13 +4113,9 @@ expr_stmt|;
 comment|// Call setup() to reset mDisp
 name|schedConf
 operator|.
-name|setBoolean
+name|setPreemptionDisabled
 argument_list|(
-name|BASE_YARN_RM_PREEMPTION
-operator|+
 literal|"root.queueA"
-operator|+
-name|SUFFIX_DISABLE_PREEMPTION
 argument_list|,
 literal|true
 argument_list|)
@@ -4480,13 +4414,9 @@ block|}
 decl_stmt|;
 name|schedConf
 operator|.
-name|setBoolean
+name|setPreemptionDisabled
 argument_list|(
-name|BASE_YARN_RM_PREEMPTION
-operator|+
 literal|"root.queueA.queueC"
-operator|+
-name|SUFFIX_DISABLE_PREEMPTION
 argument_list|,
 literal|true
 argument_list|)
@@ -4740,6 +4670,15 @@ block|,
 comment|// subqueues
 block|}
 decl_stmt|;
+name|schedConf
+operator|.
+name|setPreemptionDisabled
+argument_list|(
+literal|"root"
+argument_list|,
+literal|true
+argument_list|)
+expr_stmt|;
 name|ProportionalCapacityPreemptionPolicy
 name|policy
 init|=
@@ -4748,19 +4687,6 @@ argument_list|(
 name|qData
 argument_list|)
 decl_stmt|;
-name|schedConf
-operator|.
-name|setBoolean
-argument_list|(
-name|BASE_YARN_RM_PREEMPTION
-operator|+
-literal|"root"
-operator|+
-name|SUFFIX_DISABLE_PREEMPTION
-argument_list|,
-literal|true
-argument_list|)
-expr_stmt|;
 name|policy
 operator|.
 name|editSchedule
@@ -7929,6 +7855,27 @@ argument_list|(
 literal|"root"
 argument_list|)
 expr_stmt|;
+name|boolean
+name|preemptionDisabled
+init|=
+name|mockPreemptionStatus
+argument_list|(
+literal|"root"
+argument_list|)
+decl_stmt|;
+name|when
+argument_list|(
+name|root
+operator|.
+name|getPreemptionDisabled
+argument_list|()
+argument_list|)
+operator|.
+name|thenReturn
+argument_list|(
+name|preemptionDisabled
+argument_list|)
+expr_stmt|;
 for|for
 control|(
 name|int
@@ -8160,6 +8107,26 @@ argument_list|(
 name|queuePathName
 argument_list|)
 expr_stmt|;
+name|preemptionDisabled
+operator|=
+name|mockPreemptionStatus
+argument_list|(
+name|queuePathName
+argument_list|)
+expr_stmt|;
+name|when
+argument_list|(
+name|q
+operator|.
+name|getPreemptionDisabled
+argument_list|()
+argument_list|)
+operator|.
+name|thenReturn
+argument_list|(
+name|preemptionDisabled
+argument_list|)
+expr_stmt|;
 block|}
 assert|assert
 literal|0
@@ -8171,6 +8138,75 @@ argument_list|()
 assert|;
 return|return
 name|root
+return|;
+block|}
+comment|// Determine if any of the elements in the queupath have preemption disabled.
+comment|// Also must handle the case where preemption disabled property is explicitly
+comment|// set to something other than the default. Assumes system-wide preemption
+comment|// property is true.
+DECL|method|mockPreemptionStatus (String queuePathName)
+specifier|private
+name|boolean
+name|mockPreemptionStatus
+parameter_list|(
+name|String
+name|queuePathName
+parameter_list|)
+block|{
+name|boolean
+name|preemptionDisabled
+init|=
+literal|false
+decl_stmt|;
+name|StringTokenizer
+name|tokenizer
+init|=
+operator|new
+name|StringTokenizer
+argument_list|(
+name|queuePathName
+argument_list|,
+literal|"."
+argument_list|)
+decl_stmt|;
+name|String
+name|qName
+init|=
+literal|""
+decl_stmt|;
+while|while
+condition|(
+name|tokenizer
+operator|.
+name|hasMoreTokens
+argument_list|()
+condition|)
+block|{
+name|qName
+operator|+=
+name|tokenizer
+operator|.
+name|nextToken
+argument_list|()
+expr_stmt|;
+name|preemptionDisabled
+operator|=
+name|schedConf
+operator|.
+name|getPreemptionDisabled
+argument_list|(
+name|qName
+argument_list|,
+name|preemptionDisabled
+argument_list|)
+expr_stmt|;
+name|qName
+operator|+=
+literal|"."
+expr_stmt|;
+block|}
+return|return
+name|preemptionDisabled
 return|;
 block|}
 DECL|method|mockParentQueue (ParentQueue p, int subqueues, Deque<ParentQueue> pqs)

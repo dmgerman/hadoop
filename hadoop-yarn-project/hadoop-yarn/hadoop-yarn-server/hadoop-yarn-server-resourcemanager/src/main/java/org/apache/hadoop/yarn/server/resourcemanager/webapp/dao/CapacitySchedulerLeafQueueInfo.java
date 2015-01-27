@@ -156,6 +156,11 @@ specifier|protected
 name|ResourceInfo
 name|userAMResourceLimit
 decl_stmt|;
+DECL|field|preemptionDisabled
+specifier|protected
+name|boolean
+name|preemptionDisabled
+decl_stmt|;
 DECL|method|CapacitySchedulerLeafQueueInfo ()
 name|CapacitySchedulerLeafQueueInfo
 parameter_list|()
@@ -254,6 +259,13 @@ operator|.
 name|getUserAMResourceLimit
 argument_list|()
 argument_list|)
+expr_stmt|;
+name|preemptionDisabled
+operator|=
+name|q
+operator|.
+name|getPreemptionDisabled
+argument_list|()
 expr_stmt|;
 block|}
 DECL|method|getNumActiveApplications ()
@@ -355,6 +367,16 @@ parameter_list|()
 block|{
 return|return
 name|userAMResourceLimit
+return|;
+block|}
+DECL|method|getPreemptionDisabled ()
+specifier|public
+name|boolean
+name|getPreemptionDisabled
+parameter_list|()
+block|{
+return|return
+name|preemptionDisabled
 return|;
 block|}
 block|}

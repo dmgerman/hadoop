@@ -2001,6 +2001,13 @@ operator|+
 name|reservationsContinueLooking
 operator|+
 literal|"\n"
+operator|+
+literal|"preemptionDisabled = "
+operator|+
+name|getPreemptionDisabled
+argument_list|()
+operator|+
+literal|"\n"
 argument_list|)
 expr_stmt|;
 block|}
