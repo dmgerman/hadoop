@@ -3304,12 +3304,6 @@ DECL|field|provider
 name|KeyProvider
 name|provider
 decl_stmt|;
-DECL|field|spanReceiverHost
-specifier|private
-specifier|final
-name|SpanReceiverHost
-name|spanReceiverHost
-decl_stmt|;
 DECL|field|traceSampler
 specifier|private
 specifier|final
@@ -4773,8 +4767,6 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
-name|spanReceiverHost
-operator|=
 name|SpanReceiverHost
 operator|.
 name|getInstance
