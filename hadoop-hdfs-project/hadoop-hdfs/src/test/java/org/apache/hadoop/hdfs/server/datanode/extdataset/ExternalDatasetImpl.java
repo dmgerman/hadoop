@@ -794,13 +794,9 @@ return|return
 operator|new
 name|ReplicaInputStreams
 argument_list|(
-name|FileDescriptor
-operator|.
-name|in
+literal|null
 argument_list|,
-name|FileDescriptor
-operator|.
-name|in
+literal|null
 argument_list|,
 literal|null
 argument_list|)

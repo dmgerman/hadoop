@@ -107,15 +107,15 @@ name|FsVolumeReference
 name|volumeRef
 decl_stmt|;
 comment|/** Create an object with a data input stream and a checksum input stream. */
-DECL|method|ReplicaInputStreams (FileDescriptor dataFd, FileDescriptor checksumFd, FsVolumeReference volumeRef)
+DECL|method|ReplicaInputStreams (InputStream dataStream, InputStream checksumStream, FsVolumeReference volumeRef)
 specifier|public
 name|ReplicaInputStreams
 parameter_list|(
-name|FileDescriptor
-name|dataFd
+name|InputStream
+name|dataStream
 parameter_list|,
-name|FileDescriptor
-name|checksumFd
+name|InputStream
+name|checksumStream
 parameter_list|,
 name|FsVolumeReference
 name|volumeRef
@@ -131,21 +131,13 @@ name|this
 operator|.
 name|dataIn
 operator|=
-operator|new
-name|FileInputStream
-argument_list|(
-name|dataFd
-argument_list|)
+name|dataStream
 expr_stmt|;
 name|this
 operator|.
 name|checksumIn
 operator|=
-operator|new
-name|FileInputStream
-argument_list|(
-name|checksumFd
-argument_list|)
+name|checksumStream
 expr_stmt|;
 block|}
 comment|/** @return the data input stream. */
