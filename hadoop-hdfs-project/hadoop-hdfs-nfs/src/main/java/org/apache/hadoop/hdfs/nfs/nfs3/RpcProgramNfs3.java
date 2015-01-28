@@ -2006,11 +2006,6 @@ specifier|final
 name|boolean
 name|aixCompatMode
 decl_stmt|;
-DECL|field|statistics
-specifier|private
-name|Statistics
-name|statistics
-decl_stmt|;
 DECL|field|writeDumpDir
 specifier|private
 name|String
@@ -2504,7 +2499,7 @@ expr_stmt|;
 block|}
 name|writeManager
 operator|.
-name|startAsyncDataSerivce
+name|startAsyncDataService
 argument_list|()
 expr_stmt|;
 try|try
@@ -2879,7 +2874,7 @@ operator|.
 name|getFileId
 argument_list|()
 operator|+
-literal|" client:"
+literal|" client: "
 operator|+
 name|remoteAddress
 argument_list|)
@@ -3010,7 +3005,7 @@ name|LOG
 operator|.
 name|error
 argument_list|(
-literal|"Can't get path for fileId:"
+literal|"Can't get path for fileId: "
 operator|+
 name|handle
 operator|.
@@ -3101,7 +3096,7 @@ name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"set new mode:"
+literal|"set new mode: "
 operator|+
 name|newAttr
 operator|.
@@ -3292,12 +3287,12 @@ name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"set atime:"
+literal|"set atime: "
 operator|+
 operator|+
 name|atime
 operator|+
-literal|" mtime:"
+literal|" mtime: "
 operator|+
 name|mtime
 argument_list|)
@@ -3475,7 +3470,7 @@ operator|.
 name|getFileId
 argument_list|()
 operator|+
-literal|" client:"
+literal|" client: "
 operator|+
 name|remoteAddress
 argument_list|)
@@ -3565,7 +3560,7 @@ name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"Can't get path for fileId:"
+literal|"Can't get path for fileId: "
 operator|+
 name|handle
 operator|.
@@ -4002,7 +3997,7 @@ literal|" name: "
 operator|+
 name|fileName
 operator|+
-literal|" client:"
+literal|" client: "
 operator|+
 name|remoteAddress
 argument_list|)
@@ -4060,7 +4055,7 @@ operator|.
 name|getFileId
 argument_list|()
 operator|+
-literal|" name:"
+literal|" name: "
 operator|+
 name|fileName
 operator|+
@@ -4123,7 +4118,7 @@ name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"Can't get path for dir fileId:"
+literal|"Can't get path for dir fileId: "
 operator|+
 name|dirHandle
 operator|.
@@ -4386,7 +4381,7 @@ operator|.
 name|getFileId
 argument_list|()
 operator|+
-literal|" client:"
+literal|" client: "
 operator|+
 name|remoteAddress
 argument_list|)
@@ -4419,7 +4414,7 @@ name|LOG
 operator|.
 name|error
 argument_list|(
-literal|"Can't get path for fileId:"
+literal|"Can't get path for fileId: "
 operator|+
 name|handle
 operator|.
@@ -4744,7 +4739,7 @@ operator|.
 name|getFileId
 argument_list|()
 operator|+
-literal|" client:"
+literal|" client: "
 operator|+
 name|remoteAddress
 argument_list|)
@@ -4797,7 +4792,7 @@ name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"Can't get path for fileId:"
+literal|"Can't get path for fileId: "
 operator|+
 name|handle
 operator|.
@@ -4834,7 +4829,7 @@ name|LOG
 operator|.
 name|error
 argument_list|(
-literal|"Not a symlink, fileId:"
+literal|"Not a symlink, fileId: "
 operator|+
 name|handle
 operator|.
@@ -4863,7 +4858,7 @@ name|LOG
 operator|.
 name|error
 argument_list|(
-literal|"Symlink target should not be null, fileId:"
+literal|"Symlink target should not be null, fileId: "
 operator|+
 name|handle
 operator|.
@@ -5232,7 +5227,7 @@ literal|" count: "
 operator|+
 name|count
 operator|+
-literal|" client:"
+literal|" client: "
 operator|+
 name|remoteAddress
 argument_list|)
@@ -5292,7 +5287,7 @@ name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"Get error accessing file, fileId:"
+literal|"Get error accessing file, fileId: "
 operator|+
 name|handle
 operator|.
@@ -5332,7 +5327,7 @@ name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"Can't get path for fileId:"
+literal|"Can't get path for fileId: "
 operator|+
 name|handle
 operator|.
@@ -5671,19 +5666,19 @@ name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"Partical read. Asked offset:"
+literal|"Partical read. Asked offset: "
 operator|+
 name|offset
 operator|+
-literal|" count:"
+literal|" count: "
 operator|+
 name|count
 operator|+
-literal|" and read back:"
+literal|" and read back: "
 operator|+
 name|readCount
 operator|+
-literal|"file size:"
+literal|" file size: "
 operator|+
 name|attrs
 operator|.
@@ -6050,22 +6045,22 @@ literal|" offset: "
 operator|+
 name|offset
 operator|+
-literal|" length:"
+literal|" length: "
 operator|+
 name|count
 operator|+
-literal|" stableHow:"
+literal|" stableHow: "
 operator|+
 name|stableHow
 operator|.
 name|getValue
 argument_list|()
 operator|+
-literal|" xid:"
+literal|" xid: "
 operator|+
 name|xid
 operator|+
-literal|" client:"
+literal|" client: "
 operator|+
 name|remoteAddress
 argument_list|)
@@ -6102,7 +6097,7 @@ name|LOG
 operator|.
 name|error
 argument_list|(
-literal|"Can't get path for fileId:"
+literal|"Can't get path for fileId: "
 operator|+
 name|handle
 operator|.
@@ -6176,7 +6171,7 @@ name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"requesed offset="
+literal|"requested offset="
 operator|+
 name|offset
 operator|+
@@ -6506,7 +6501,7 @@ literal|" filename: "
 operator|+
 name|fileName
 operator|+
-literal|" client:"
+literal|" client: "
 operator|+
 name|remoteAddress
 argument_list|)
@@ -6564,7 +6559,7 @@ literal|"Setting file size is not supported when creating file: "
 operator|+
 name|fileName
 operator|+
-literal|" dir fileId:"
+literal|" dir fileId: "
 operator|+
 name|dirHandle
 operator|.
@@ -6643,7 +6638,7 @@ name|LOG
 operator|.
 name|error
 argument_list|(
-literal|"Can't get path for dirHandle:"
+literal|"Can't get path for dirHandle: "
 operator|+
 name|dirHandle
 argument_list|)
@@ -6829,7 +6824,7 @@ argument_list|,
 literal|null
 argument_list|)
 argument_list|,
-name|statistics
+literal|null
 argument_list|)
 expr_stmt|;
 if|if
@@ -7022,11 +7017,11 @@ name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"Opened stream for file:"
+literal|"Opened stream for file: "
 operator|+
 name|fileName
 operator|+
-literal|", fileId:"
+literal|", fileId: "
 operator|+
 name|fileHandle
 operator|.
@@ -7077,7 +7072,7 @@ name|LOG
 operator|.
 name|error
 argument_list|(
-literal|"Can't close stream for dirFileId:"
+literal|"Can't close stream for dirFileId: "
 operator|+
 name|dirHandle
 operator|.
@@ -7133,7 +7128,7 @@ name|LOG
 operator|.
 name|error
 argument_list|(
-literal|"Can't get postOpDirAttr for dirFileId:"
+literal|"Can't get postOpDirAttr for dirFileId: "
 operator|+
 name|dirHandle
 operator|.
@@ -7351,7 +7346,7 @@ literal|" filename: "
 operator|+
 name|fileName
 operator|+
-literal|" client:"
+literal|" client: "
 operator|+
 name|remoteAddress
 argument_list|)
@@ -7454,7 +7449,7 @@ name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"Can't get path for dir fileId:"
+literal|"Can't get path for dir fileId: "
 operator|+
 name|dirHandle
 operator|.
@@ -8027,7 +8022,7 @@ literal|" fileName: "
 operator|+
 name|fileName
 operator|+
-literal|" client:"
+literal|" client: "
 operator|+
 name|remoteAddress
 argument_list|)
@@ -8079,7 +8074,7 @@ name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"Can't get path for dir fileId:"
+literal|"Can't get path for dir fileId: "
 operator|+
 name|dirHandle
 operator|.
@@ -8522,7 +8517,7 @@ literal|" fileName: "
 operator|+
 name|fileName
 operator|+
-literal|" client:"
+literal|" client: "
 operator|+
 name|remoteAddress
 argument_list|)
@@ -8574,7 +8569,7 @@ name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"Can't get path for dir fileId:"
+literal|"Can't get path for dir fileId: "
 operator|+
 name|dirHandle
 operator|.
@@ -9069,7 +9064,7 @@ literal|"/"
 operator|+
 name|toName
 operator|+
-literal|" client:"
+literal|" client: "
 operator|+
 name|remoteAddress
 argument_list|)
@@ -9141,7 +9136,7 @@ name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"Can't get path for fromHandle fileId:"
+literal|"Can't get path for fromHandle fileId: "
 operator|+
 name|fromHandle
 operator|.
@@ -9183,7 +9178,7 @@ name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"Can't get path for toHandle fileId:"
+literal|"Can't get path for toHandle fileId: "
 operator|+
 name|toHandle
 operator|.
@@ -9672,7 +9667,7 @@ literal|" link: "
 operator|+
 name|linkIdPath
 operator|+
-literal|" client:"
+literal|" client: "
 operator|+
 name|remoteAddress
 argument_list|)
@@ -9791,7 +9786,7 @@ name|LOG
 operator|.
 name|warn
 argument_list|(
-literal|"Exception:"
+literal|"Exception: "
 operator|+
 name|e
 argument_list|)
@@ -10126,7 +10121,7 @@ name|LOG
 operator|.
 name|error
 argument_list|(
-literal|"Invalid READDIR request, with negitve cookie:"
+literal|"Invalid READDIR request, with negative cookie: "
 operator|+
 name|cookie
 argument_list|)
@@ -10160,7 +10155,7 @@ name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"Nonpositive count in invalid READDIR request:"
+literal|"Nonpositive count in invalid READDIR request: "
 operator|+
 name|count
 argument_list|)
@@ -10202,7 +10197,7 @@ literal|" count: "
 operator|+
 name|count
 operator|+
-literal|" client:"
+literal|" client: "
 operator|+
 name|remoteAddress
 argument_list|)
@@ -10254,7 +10249,7 @@ name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"Can't get path for fileId:"
+literal|"Can't get path for fileId: "
 operator|+
 name|handle
 operator|.
@@ -10285,7 +10280,7 @@ name|LOG
 operator|.
 name|error
 argument_list|(
-literal|"Can't readdir for regular file, fileId:"
+literal|"Can't readdir for regular file, fileId: "
 operator|+
 name|handle
 operator|.
@@ -10420,7 +10415,7 @@ throw|throw
 operator|new
 name|IOException
 argument_list|(
-literal|"Can't get path for handle path:"
+literal|"Can't get path for handle path: "
 operator|+
 name|dotdotFileIdPath
 argument_list|)
@@ -10515,7 +10510,7 @@ name|LOG
 operator|.
 name|error
 argument_list|(
-literal|"Can't get path for fileId:"
+literal|"Can't get path for fileId: "
 operator|+
 name|handle
 operator|.
@@ -10992,7 +10987,7 @@ name|LOG
 operator|.
 name|error
 argument_list|(
-literal|"Invalid READDIRPLUS request, with negitve cookie:"
+literal|"Invalid READDIRPLUS request, with negative cookie: "
 operator|+
 name|cookie
 argument_list|)
@@ -11026,7 +11021,7 @@ name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"Nonpositive dircount in invalid READDIRPLUS request:"
+literal|"Nonpositive dircount in invalid READDIRPLUS request: "
 operator|+
 name|dirCount
 argument_list|)
@@ -11060,7 +11055,7 @@ name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"Nonpositive maxcount in invalid READDIRPLUS request:"
+literal|"Nonpositive maxcount in invalid READDIRPLUS request: "
 operator|+
 name|maxCount
 argument_list|)
@@ -11106,7 +11101,7 @@ literal|" maxCount: "
 operator|+
 name|maxCount
 operator|+
-literal|" client:"
+literal|" client: "
 operator|+
 name|remoteAddress
 argument_list|)
@@ -11163,7 +11158,7 @@ name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"Can't get path for fileId:"
+literal|"Can't get path for fileId: "
 operator|+
 name|handle
 operator|.
@@ -11194,7 +11189,7 @@ name|LOG
 operator|.
 name|error
 argument_list|(
-literal|"Can't readdirplus for regular file, fileId:"
+literal|"Can't readdirplus for regular file, fileId: "
 operator|+
 name|handle
 operator|.
@@ -11326,7 +11321,7 @@ throw|throw
 operator|new
 name|IOException
 argument_list|(
-literal|"Can't get path for handle path:"
+literal|"Can't get path for handle path: "
 operator|+
 name|dotdotFileIdPath
 argument_list|)
@@ -11421,7 +11416,7 @@ name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"Can't get path for fileId:"
+literal|"Can't get path for fileId: "
 operator|+
 name|handle
 operator|.
@@ -11673,7 +11668,7 @@ name|LOG
 operator|.
 name|error
 argument_list|(
-literal|"Can't get file attributes for fileId:"
+literal|"Can't get file attributes for fileId: "
 operator|+
 name|fileId
 argument_list|,
@@ -11791,7 +11786,7 @@ name|LOG
 operator|.
 name|error
 argument_list|(
-literal|"Can't get file attributes for fileId:"
+literal|"Can't get file attributes for fileId: "
 operator|+
 name|fileId
 argument_list|,
@@ -12043,7 +12038,7 @@ operator|.
 name|getFileId
 argument_list|()
 operator|+
-literal|" client:"
+literal|" client: "
 operator|+
 name|remoteAddress
 argument_list|)
@@ -12100,7 +12095,7 @@ name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"Can't get path for fileId:"
+literal|"Can't get path for fileId: "
 operator|+
 name|handle
 operator|.
@@ -12441,7 +12436,7 @@ operator|.
 name|getFileId
 argument_list|()
 operator|+
-literal|" client:"
+literal|" client: "
 operator|+
 name|remoteAddress
 argument_list|)
@@ -12527,7 +12522,7 @@ name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"Can't get path for fileId:"
+literal|"Can't get path for fileId: "
 operator|+
 name|handle
 operator|.
@@ -12811,7 +12806,7 @@ operator|.
 name|getFileId
 argument_list|()
 operator|+
-literal|" client:"
+literal|" client: "
 operator|+
 name|remoteAddress
 argument_list|)
@@ -12848,7 +12843,7 @@ name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"Can't get path for fileId:"
+literal|"Can't get path for fileId: "
 operator|+
 name|handle
 operator|.
@@ -13139,7 +13134,7 @@ operator|.
 name|getCount
 argument_list|()
 operator|+
-literal|" client:"
+literal|" client: "
 operator|+
 name|remoteAddress
 argument_list|)
@@ -13186,7 +13181,7 @@ name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"Can't get path for fileId:"
+literal|"Can't get path for fileId: "
 operator|+
 name|handle
 operator|.

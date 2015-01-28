@@ -76,22 +76,6 @@ name|apache
 operator|.
 name|commons
 operator|.
-name|lang
-operator|.
-name|exception
-operator|.
-name|ExceptionUtils
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|commons
-operator|.
 name|logging
 operator|.
 name|Log
@@ -113,7 +97,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * This class is a thread pool to easily schedule async data operations.Current  * async data operation is write back operation. In the future, we could use it  * for readahead operations too.  */
+comment|/**  * This class is a thread pool to easily schedule async data operations. Current  * async data operation is write back operation. In the future, we could use it  * for readahead operations too.  */
 end_comment
 
 begin_class
@@ -304,7 +288,7 @@ operator|.
 name|getActiveCount
 argument_list|()
 operator|+
-literal|" queue size:"
+literal|" queue size: "
 operator|+
 name|executor
 operator|.
@@ -314,7 +298,7 @@ operator|.
 name|size
 argument_list|()
 operator|+
-literal|" scheduled task number:"
+literal|" scheduled task number: "
 operator|+
 name|executor
 operator|.
@@ -429,7 +413,7 @@ name|wbTask
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * A task for write data back to HDFS for a file. Since only one thread can    * write for a file, any time there should be only one task(in queue or    * executing) for one file existing, and this should be guaranteed by the    * caller.    */
+comment|/**    * A task to write data back to HDFS for a file. Since only one thread can    * write to a file, there should only be one task at any time for a file    * (in queue or executing), and this should be guaranteed by the caller.    */
 DECL|class|WriteBackTask
 specifier|static
 class|class
@@ -518,7 +502,7 @@ name|LOG
 operator|.
 name|error
 argument_list|(
-literal|"Asyn data service got error:"
+literal|"Async data service got error: "
 argument_list|,
 name|t
 argument_list|)

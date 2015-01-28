@@ -2288,19 +2288,19 @@ name|toString
 parameter_list|()
 block|{
 return|return
-literal|"packet seqno:"
+literal|"packet seqno: "
 operator|+
 name|this
 operator|.
 name|seqno
 operator|+
-literal|" offsetInBlock:"
+literal|" offsetInBlock: "
 operator|+
 name|this
 operator|.
 name|offsetInBlock
 operator|+
-literal|" lastPacketInBlock:"
+literal|" lastPacketInBlock: "
 operator|+
 name|this
 operator|.
@@ -9807,7 +9807,7 @@ name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"DFSClient flush():"
+literal|"DFSClient flush(): "
 operator|+
 literal|" bytesCurBlock="
 operator|+
@@ -10192,7 +10192,7 @@ argument_list|(
 operator|new
 name|IOException
 argument_list|(
-literal|"IOException flush:"
+literal|"IOException flush: "
 operator|+
 name|e
 argument_list|)

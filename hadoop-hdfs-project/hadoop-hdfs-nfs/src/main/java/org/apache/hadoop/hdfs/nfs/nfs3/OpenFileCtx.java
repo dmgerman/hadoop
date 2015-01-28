@@ -1097,7 +1097,7 @@ literal|"Update nonSequentialWriteInMemory by "
 operator|+
 name|count
 operator|+
-literal|" new value:"
+literal|" new value: "
 operator|+
 name|newValue
 argument_list|)
@@ -1526,7 +1526,7 @@ name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"Create dump file:"
+literal|"Create dump file: "
 operator|+
 name|dumpFilePath
 argument_list|)
@@ -1793,15 +1793,15 @@ name|LOG
 operator|.
 name|error
 argument_list|(
-literal|"Dump data failed:"
+literal|"Dump data failed: "
 operator|+
 name|writeCtx
 operator|+
-literal|" with error:"
+literal|" with error: "
 operator|+
 name|e
 operator|+
-literal|" OpenFileCtx state:"
+literal|" OpenFileCtx state: "
 operator|+
 name|activeState
 argument_list|)
@@ -2085,11 +2085,11 @@ name|LOG
 operator|.
 name|warn
 argument_list|(
-literal|"Got a repeated request, same range, with a different xid:"
+literal|"Got a repeated request, same range, with a different xid: "
 operator|+
 name|xid
 operator|+
-literal|" xid in old request:"
+literal|" xid in old request: "
 operator|+
 name|writeCtx
 operator|.
@@ -2138,7 +2138,7 @@ name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"OpenFileCtx is inactive, fileId:"
+literal|"OpenFileCtx is inactive, fileId: "
 operator|+
 name|request
 operator|.
@@ -2610,7 +2610,7 @@ name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"requesed offset="
+literal|"requested offset="
 operator|+
 name|offset
 operator|+
@@ -2757,7 +2757,7 @@ name|LOG
 operator|.
 name|warn
 argument_list|(
-literal|"(offset,count,nextOffset):"
+literal|"(offset,count,nextOffset): "
 operator|+
 literal|"("
 operator|+
@@ -2857,7 +2857,7 @@ literal|"Add new write to the list with nextOffset "
 operator|+
 name|cachedOffset
 operator|+
-literal|" and requesed offset="
+literal|" and requested offset="
 operator|+
 name|offset
 argument_list|)
@@ -2961,7 +2961,7 @@ name|LOG
 operator|.
 name|warn
 argument_list|(
-literal|"Got a repeated request, same range, with xid:"
+literal|"Got a repeated request, same range, with xid: "
 operator|+
 name|xid
 operator|+
@@ -3367,7 +3367,7 @@ expr_stmt|;
 block|}
 else|else
 block|{
-comment|// The writes is added to pendingWrites.
+comment|// The write is added to pendingWrites.
 comment|// Check and start writing back if necessary
 name|boolean
 name|startWriting
@@ -3406,7 +3406,7 @@ name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"Have to change stable write to unstable write:"
+literal|"Have to change stable write to unstable write: "
 operator|+
 name|request
 operator|.
@@ -3628,7 +3628,7 @@ literal|"hsync failed when processing possible perfect overwrite, path="
 operator|+
 name|path
 operator|+
-literal|" error:"
+literal|" error: "
 operator|+
 name|e
 argument_list|)
@@ -3699,7 +3699,7 @@ literal|"Can't read back "
 operator|+
 name|count
 operator|+
-literal|" bytes, partial read size:"
+literal|" bytes, partial read size: "
 operator|+
 name|readCount
 argument_list|)
@@ -3893,7 +3893,7 @@ literal|"Got error when processing perfect overwrite, path="
 operator|+
 name|path
 operator|+
-literal|" error:"
+literal|" error: "
 operator|+
 name|e
 argument_list|)
@@ -4128,7 +4128,7 @@ name|LOG
 operator|.
 name|error
 argument_list|(
-literal|"Got stream error during data sync:"
+literal|"Got stream error during data sync: "
 operator|+
 name|e
 argument_list|)
@@ -4890,7 +4890,7 @@ name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"stream can be closed for fileId:"
+literal|"stream can be closed for fileId: "
 operator|+
 name|fileId
 argument_list|)
@@ -4933,7 +4933,7 @@ name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"The asyn write task has no pending writes, fileId: "
+literal|"The async write task has no pending writes, fileId: "
 operator|+
 name|latestAttr
 operator|.
@@ -5095,14 +5095,14 @@ name|LOG
 operator|.
 name|warn
 argument_list|(
-literal|"Got a overlapping write ("
+literal|"Got an overlapping write ("
 operator|+
 name|range
 operator|.
 name|getMin
 argument_list|()
 operator|+
-literal|","
+literal|", "
 operator|+
 name|range
 operator|.
@@ -5213,7 +5213,7 @@ return|return
 literal|null
 return|;
 block|}
-comment|/** Invoked by AsynDataService to write back to HDFS */
+comment|/** Invoked by AsyncDataService to write back to HDFS */
 DECL|method|executeWriteBack ()
 name|void
 name|executeWriteBack
@@ -5225,7 +5225,7 @@ name|checkState
 argument_list|(
 name|asyncStatus
 argument_list|,
-literal|"openFileCtx has false asyncStatus, fileId:"
+literal|"openFileCtx has false asyncStatus, fileId: "
 operator|+
 name|latestAttr
 operator|.
@@ -5326,24 +5326,24 @@ name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"Another asyn task is already started before this one"
+literal|"Another async task is already started before this one"
 operator|+
-literal|" is finalized. fileId:"
+literal|" is finalized. fileId: "
 operator|+
 name|latestAttr
 operator|.
 name|getFileId
 argument_list|()
 operator|+
-literal|" asyncStatus:"
+literal|" asyncStatus: "
 operator|+
 name|asyncStatus
 operator|+
-literal|" original startOffset:"
+literal|" original startOffset: "
 operator|+
 name|startOffset
 operator|+
-literal|" new startOffset:"
+literal|" new startOffset: "
 operator|+
 name|asyncWriteBackStartOffset
 operator|+
@@ -5490,7 +5490,7 @@ name|LOG
 operator|.
 name|error
 argument_list|(
-literal|"Got stream error during data sync:"
+literal|"Got stream error during data sync: "
 argument_list|,
 name|e
 argument_list|)
@@ -5722,7 +5722,7 @@ operator|.
 name|getFileId
 argument_list|()
 operator|+
-literal|" Service time:"
+literal|" Service time: "
 operator|+
 name|Nfs3Utils
 operator|.
@@ -5733,7 +5733,7 @@ operator|.
 name|startTime
 argument_list|)
 operator|+
-literal|"ns. Sent response for commit:"
+literal|"ns. Sent response for commit: "
 operator|+
 name|commit
 argument_list|)
@@ -5829,11 +5829,11 @@ literal|" offset: "
 operator|+
 name|offset
 operator|+
-literal|" length:"
+literal|" length: "
 operator|+
 name|count
 operator|+
-literal|" stableHow:"
+literal|" stableHow: "
 operator|+
 name|stableHow
 operator|.
@@ -5974,7 +5974,7 @@ literal|" at offset "
 operator|+
 name|offset
 operator|+
-literal|", updated the memory count, new value:"
+literal|", updated the memory count, new value: "
 operator|+
 name|nonSequentialWriteInMemory
 operator|.
@@ -6008,7 +6008,7 @@ name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"Do sync for stable write:"
+literal|"Do sync for stable write: "
 operator|+
 name|writeCtx
 argument_list|)
@@ -6042,7 +6042,7 @@ name|WriteStableHow
 operator|.
 name|FILE_SYNC
 argument_list|,
-literal|"Unknown WriteStableHow:"
+literal|"Unknown WriteStableHow: "
 operator|+
 name|stableHow
 argument_list|)
@@ -6074,7 +6074,7 @@ name|LOG
 operator|.
 name|error
 argument_list|(
-literal|"hsync failed with writeCtx:"
+literal|"hsync failed with writeCtx: "
 operator|+
 name|writeCtx
 argument_list|,
@@ -6121,14 +6121,14 @@ name|LOG
 operator|.
 name|warn
 argument_list|(
-literal|"Return original count:"
+literal|"Return original count: "
 operator|+
 name|writeCtx
 operator|.
 name|getOriginalCount
 argument_list|()
 operator|+
-literal|" instead of real data count:"
+literal|" instead of real data count: "
 operator|+
 name|count
 argument_list|)
@@ -6396,14 +6396,14 @@ name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"Can't close stream for fileId:"
+literal|"Can't close stream for fileId: "
 operator|+
 name|latestAttr
 operator|.
 name|getFileId
 argument_list|()
 operator|+
-literal|", error:"
+literal|", error: "
 operator|+
 name|e
 argument_list|)
@@ -6460,7 +6460,7 @@ operator|.
 name|getMin
 argument_list|()
 operator|+
-literal|","
+literal|", "
 operator|+
 name|key
 operator|.

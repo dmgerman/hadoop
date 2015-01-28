@@ -686,9 +686,9 @@ name|streamTimeout
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|startAsyncDataSerivce ()
+DECL|method|startAsyncDataService ()
 name|void
-name|startAsyncDataSerivce
+name|startAsyncDataService
 parameter_list|()
 block|{
 if|if
@@ -888,7 +888,7 @@ name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"No opened stream for fileId:"
+literal|"No opened stream for fileId: "
 operator|+
 name|fileHandle
 operator|.
@@ -1000,11 +1000,11 @@ name|LOG
 operator|.
 name|warn
 argument_list|(
-literal|"Can't append file:"
+literal|"Can't append file: "
 operator|+
 name|fileIdPath
 operator|+
-literal|". Possibly the file is being closed. Drop the request:"
+literal|". Possibly the file is being closed. Drop the request: "
 operator|+
 name|request
 operator|+
@@ -1027,7 +1027,7 @@ name|LOG
 operator|.
 name|error
 argument_list|(
-literal|"Can't apapend to file:"
+literal|"Can't append to file: "
 operator|+
 name|fileIdPath
 argument_list|,
@@ -1193,7 +1193,7 @@ name|LOG
 operator|.
 name|error
 argument_list|(
-literal|"Can't close stream for fileId:"
+literal|"Can't close stream for fileId: "
 operator|+
 name|handle
 operator|.
@@ -1281,7 +1281,7 @@ name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"Opened stream for appending file:"
+literal|"Opened stream for appending file: "
 operator|+
 name|fileHandle
 operator|.
@@ -1359,7 +1359,7 @@ name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"No opened stream for fileId:"
+literal|"No opened stream for fileId: "
 operator|+
 name|fileHandle
 operator|.
@@ -1465,7 +1465,7 @@ name|LOG
 operator|.
 name|error
 argument_list|(
-literal|"Should not get commit return code:"
+literal|"Should not get commit return code: "
 operator|+
 name|ret
 operator|.
@@ -1477,7 +1477,7 @@ throw|throw
 operator|new
 name|RuntimeException
 argument_list|(
-literal|"Should not get commit return code:"
+literal|"Should not get commit return code: "
 operator|+
 name|ret
 operator|.
@@ -1546,7 +1546,7 @@ name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"No opened stream for fileId:"
+literal|"No opened stream for fileId: "
 operator|+
 name|fileHandle
 operator|.
@@ -1650,7 +1650,7 @@ name|LOG
 operator|.
 name|error
 argument_list|(
-literal|"Should not get commit return code:"
+literal|"Should not get commit return code: "
 operator|+
 name|ret
 operator|.
@@ -1662,7 +1662,7 @@ throw|throw
 operator|new
 name|RuntimeException
 argument_list|(
-literal|"Should not get commit return code:"
+literal|"Should not get commit return code: "
 operator|+
 name|ret
 operator|.
