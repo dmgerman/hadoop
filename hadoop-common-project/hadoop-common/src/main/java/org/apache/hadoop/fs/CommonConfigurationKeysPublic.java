@@ -1069,7 +1069,7 @@ name|HADOOP_SECURITY_IMPERSONATION_PROVIDER_CLASS
 init|=
 literal|"hadoop.security.impersonation.provider.class"
 decl_stmt|;
-comment|//<!--- KMSClientProvider configurations â>
+comment|//<!-- KMSClientProvider configurations -->
 comment|/** See<a href="{@docRoot}/../core-default.html">core-default.xml</a> */
 DECL|field|KMS_CLIENT_ENC_KEY_CACHE_SIZE
 specifier|public

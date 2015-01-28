@@ -44,14 +44,6 @@ comment|//   2. Removed author tags to clear hadoop author tag warning
 end_comment
 
 begin_comment
-comment|//        author<a href="mailto:kenney@apache.org">Kenney Westerhof</a>
-end_comment
-
-begin_comment
-comment|//        author<a href="mailto:hboutemy@apache.org">HervÃ© Boutemy</a>
-end_comment
-
-begin_comment
 comment|//
 end_comment
 
