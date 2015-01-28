@@ -5842,11 +5842,24 @@ operator|>
 literal|10
 condition|)
 block|{
+specifier|final
+name|String
+name|msg
+init|=
+literal|"Timed out waiting for Mini HDFS Cluster to start"
+decl_stmt|;
+name|LOG
+operator|.
+name|error
+argument_list|(
+name|msg
+argument_list|)
+expr_stmt|;
 throw|throw
 operator|new
 name|IOException
 argument_list|(
-literal|"Timed out waiting for Mini HDFS Cluster to start"
+name|msg
 argument_list|)
 throw|;
 block|}

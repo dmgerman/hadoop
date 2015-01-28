@@ -3440,6 +3440,18 @@ name|error
 argument_list|)
 throw|;
 block|}
+else|else
+block|{
+comment|// update the quota count if necessary
+name|fsd
+operator|.
+name|updateCountForDelete
+argument_list|(
+name|srcChild
+argument_list|,
+name|srcIIP
+argument_list|)
+expr_stmt|;
 name|srcIIP
 operator|=
 name|INodesInPath
@@ -3461,6 +3473,7 @@ expr_stmt|;
 return|return
 name|removedNum
 return|;
+block|}
 block|}
 DECL|method|removeSrc4OldRename ()
 name|boolean
@@ -3515,6 +3528,16 @@ return|;
 block|}
 else|else
 block|{
+comment|// update the quota count if necessary
+name|fsd
+operator|.
+name|updateCountForDelete
+argument_list|(
+name|srcChild
+argument_list|,
+name|srcIIP
+argument_list|)
+expr_stmt|;
 name|srcIIP
 operator|=
 name|INodesInPath
@@ -3569,6 +3592,16 @@ name|dstIIP
 operator|.
 name|getLastINode
 argument_list|()
+expr_stmt|;
+comment|// update the quota count if necessary
+name|fsd
+operator|.
+name|updateCountForDelete
+argument_list|(
+name|oldDstChild
+argument_list|,
+name|dstIIP
+argument_list|)
 expr_stmt|;
 name|dstIIP
 operator|=

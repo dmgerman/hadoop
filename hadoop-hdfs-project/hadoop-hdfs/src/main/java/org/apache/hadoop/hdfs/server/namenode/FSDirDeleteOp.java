@@ -1022,6 +1022,15 @@ argument_list|,
 name|latestSnapshot
 argument_list|)
 expr_stmt|;
+name|fsd
+operator|.
+name|updateCountForDelete
+argument_list|(
+name|targetNode
+argument_list|,
+name|iip
+argument_list|)
+expr_stmt|;
 if|if
 condition|(
 name|removed
@@ -1033,7 +1042,7 @@ return|return
 literal|0
 return|;
 block|}
-comment|// collect block
+comment|// collect block and update quota
 if|if
 condition|(
 operator|!
@@ -1077,10 +1086,25 @@ argument_list|,
 literal|true
 argument_list|)
 decl_stmt|;
-name|parent
+name|removed
+operator|=
+name|counts
 operator|.
-name|addSpaceConsumed
+name|get
 argument_list|(
+name|Quota
+operator|.
+name|NAMESPACE
+argument_list|)
+expr_stmt|;
+comment|// TODO: quota verification may fail the deletion here. We should not
+comment|// count the snapshot diff into quota usage in the future.
+name|fsd
+operator|.
+name|updateCount
+argument_list|(
+name|iip
+argument_list|,
 operator|-
 name|counts
 operator|.
@@ -1102,17 +1126,6 @@ name|DISKSPACE
 argument_list|)
 argument_list|,
 literal|true
-argument_list|)
-expr_stmt|;
-name|removed
-operator|=
-name|counts
-operator|.
-name|get
-argument_list|(
-name|Quota
-operator|.
-name|NAMESPACE
 argument_list|)
 expr_stmt|;
 block|}
