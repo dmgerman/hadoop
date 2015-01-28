@@ -295,6 +295,14 @@ literal|"  * Web: Run a viewer to expose read-only WebHDFS API.\n"
 operator|+
 literal|"    -addr specifies the address to listen. (localhost:5978 by default)\n"
 operator|+
+literal|"  * Delimited: Generate a text file with all of the elements common\n"
+operator|+
+literal|"    to both inodes and inodes-under-construction, separated by a\n"
+operator|+
+literal|"    delimiter. The default delimiter is \\t, though this may be\n"
+operator|+
+literal|"    changed via the -delimiter argument.\n"
+operator|+
 literal|"\n"
 operator|+
 literal|"Required command line arguments:\n"
@@ -313,9 +321,17 @@ literal|"                       (output to stdout by default)\n"
 operator|+
 literal|"-p,--processor<arg>   Select which type of processor to apply\n"
 operator|+
-literal|"                       against image file. (XML|FileDistribution|Web)\n"
+literal|"                       against image file. (XML|FileDistribution|Web|Delimited)\n"
 operator|+
 literal|"                       (Web by default)\n"
+operator|+
+literal|"-delimiter<arg>       Delimiting string to use with Delimited processor\n"
+operator|+
+literal|"-t,--temp<arg>        Use temporary dir to cache intermediate result to generate\n"
+operator|+
+literal|"                       Delimited outputs. If not set, Delimited processor constructs\n"
+operator|+
+literal|"                       the namespace in memory before outputting text."
 operator|+
 literal|"-h,--help              Display usage information and exit\n"
 decl_stmt|;
@@ -431,6 +447,30 @@ operator|.
 name|addOption
 argument_list|(
 literal|"addr"
+argument_list|,
+literal|true
+argument_list|,
+literal|""
+argument_list|)
+expr_stmt|;
+name|options
+operator|.
+name|addOption
+argument_list|(
+literal|"delimiter"
+argument_list|,
+literal|true
+argument_list|,
+literal|""
+argument_list|)
+expr_stmt|;
+name|options
+operator|.
+name|addOption
+argument_list|(
+literal|"t"
+argument_list|,
+literal|"temp"
 argument_list|,
 literal|true
 argument_list|,
@@ -605,6 +645,32 @@ argument_list|,
 literal|"-"
 argument_list|)
 decl_stmt|;
+name|String
+name|delimiter
+init|=
+name|cmd
+operator|.
+name|getOptionValue
+argument_list|(
+literal|"delimiter"
+argument_list|,
+name|PBImageDelimitedTextWriter
+operator|.
+name|DEFAULT_DELIMITER
+argument_list|)
+decl_stmt|;
+name|String
+name|tempPath
+init|=
+name|cmd
+operator|.
+name|getOptionValue
+argument_list|(
+literal|"t"
+argument_list|,
+literal|""
+argument_list|)
+decl_stmt|;
 name|Configuration
 name|conf
 init|=
@@ -763,6 +829,40 @@ operator|.
 name|start
 argument_list|(
 name|inputFile
+argument_list|)
+expr_stmt|;
+block|}
+break|break;
+case|case
+literal|"Delimited"
+case|:
+try|try
+init|(
+name|PBImageDelimitedTextWriter
+name|writer
+init|=
+operator|new
+name|PBImageDelimitedTextWriter
+argument_list|(
+name|out
+argument_list|,
+name|delimiter
+argument_list|,
+name|tempPath
+argument_list|)
+init|)
+block|{
+name|writer
+operator|.
+name|visit
+argument_list|(
+operator|new
+name|RandomAccessFile
+argument_list|(
+name|inputFile
+argument_list|,
+literal|"r"
+argument_list|)
 argument_list|)
 expr_stmt|;
 block|}

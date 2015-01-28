@@ -1601,7 +1601,6 @@ name|inodes
 return|;
 block|}
 DECL|method|loadStringTable (InputStream in)
-specifier|private
 specifier|static
 name|String
 index|[]
@@ -3232,7 +3231,7 @@ return|;
 block|}
 block|}
 DECL|method|getFileSize (FsImageProto.INodeSection.INodeFile f)
-specifier|private
+specifier|static
 name|long
 name|getFileSize
 parameter_list|(
