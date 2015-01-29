@@ -704,7 +704,7 @@ argument_list|()
 operator|.
 name|a
 argument_list|(
-literal|"/metrics"
+literal|"/jmx?qry=Hadoop:*"
 argument_list|,
 literal|"Server metrics"
 argument_list|)

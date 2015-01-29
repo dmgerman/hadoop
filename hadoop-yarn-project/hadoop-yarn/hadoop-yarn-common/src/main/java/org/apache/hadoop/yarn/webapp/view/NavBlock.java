@@ -149,7 +149,7 @@ argument_list|()
 operator|.
 name|a
 argument_list|(
-literal|"/metrics"
+literal|"/jmx?qry=Hadoop:*"
 argument_list|,
 literal|"Metrics"
 argument_list|)
