@@ -2197,6 +2197,7 @@ name|conf
 return|;
 block|}
 DECL|method|createTestAccount ()
+specifier|public
 specifier|static
 name|CloudStorageAccount
 name|createTestAccount

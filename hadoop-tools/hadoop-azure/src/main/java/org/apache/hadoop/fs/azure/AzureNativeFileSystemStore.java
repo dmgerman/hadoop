@@ -3226,7 +3226,10 @@ argument_list|)
 argument_list|)
 return|;
 block|}
+annotation|@
+name|VisibleForTesting
 DECL|method|getAccountKeyFromConfiguration (String accountName, Configuration conf)
+specifier|public
 specifier|static
 name|String
 name|getAccountKeyFromConfiguration
