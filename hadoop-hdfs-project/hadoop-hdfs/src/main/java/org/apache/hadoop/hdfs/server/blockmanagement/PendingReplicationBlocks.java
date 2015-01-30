@@ -122,20 +122,6 @@ name|org
 operator|.
 name|apache
 operator|.
-name|commons
-operator|.
-name|logging
-operator|.
-name|Log
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
 name|hadoop
 operator|.
 name|hdfs
@@ -160,6 +146,16 @@ name|Daemon
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|slf4j
+operator|.
+name|Logger
+import|;
+end_import
+
 begin_comment
 comment|/***************************************************  * PendingReplicationBlocks does the bookkeeping of all  * blocks that are getting replicated.  *  * It does the following:  * 1)  record blocks that are getting replicated at this instant.  * 2)  a coarse grain timer to track age of replication request  * 3)  a thread that periodically identifies replication-requests  *     that never made it.  *  ***************************************************/
 end_comment
@@ -173,7 +169,7 @@ DECL|field|LOG
 specifier|private
 specifier|static
 specifier|final
-name|Log
+name|Logger
 name|LOG
 init|=
 name|BlockManager

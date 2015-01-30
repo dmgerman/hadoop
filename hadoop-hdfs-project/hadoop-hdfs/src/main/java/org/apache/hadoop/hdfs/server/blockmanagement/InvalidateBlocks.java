@@ -106,20 +106,6 @@ name|org
 operator|.
 name|apache
 operator|.
-name|commons
-operator|.
-name|logging
-operator|.
-name|Log
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
 name|hadoop
 operator|.
 name|classification
@@ -250,6 +236,16 @@ name|VisibleForTesting
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|slf4j
+operator|.
+name|Logger
+import|;
+end_import
+
 begin_comment
 comment|/**  * Keeps a Collection for every named machine containing blocks  * that have recently been invalidated and are thought to live  * on the machine in question.  */
 end_comment
@@ -354,13 +350,13 @@ name|LOG
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|printBlockDeletionTime (final Log log)
+DECL|method|printBlockDeletionTime (final Logger log)
 specifier|private
 name|void
 name|printBlockDeletionTime
 parameter_list|(
 specifier|final
-name|Log
+name|Logger
 name|log
 parameter_list|)
 block|{

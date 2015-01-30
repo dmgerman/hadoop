@@ -230,20 +230,6 @@ name|org
 operator|.
 name|apache
 operator|.
-name|commons
-operator|.
-name|logging
-operator|.
-name|LogFactory
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
 name|hadoop
 operator|.
 name|HadoopIllegalArgumentException
@@ -1062,6 +1048,26 @@ name|Sets
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|slf4j
+operator|.
+name|Logger
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|slf4j
+operator|.
+name|LoggerFactory
+import|;
+end_import
+
 begin_comment
 comment|/**  * Keeps information related to the blocks stored in the Hadoop cluster.  */
 end_comment
@@ -1079,12 +1085,12 @@ block|{
 DECL|field|LOG
 specifier|static
 specifier|final
-name|Log
+name|Logger
 name|LOG
 init|=
-name|LogFactory
+name|LoggerFactory
 operator|.
-name|getLog
+name|getLogger
 argument_list|(
 name|BlockManager
 operator|.
@@ -16620,7 +16626,7 @@ break|break;
 block|}
 name|LOG
 operator|.
-name|fatal
+name|error
 argument_list|(
 literal|"ReplicationMonitor thread received Runtime exception. "
 argument_list|,
