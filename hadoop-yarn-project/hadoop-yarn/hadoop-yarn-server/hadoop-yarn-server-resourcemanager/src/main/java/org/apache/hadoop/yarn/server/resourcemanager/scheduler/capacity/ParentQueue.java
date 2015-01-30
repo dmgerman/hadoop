@@ -1779,7 +1779,10 @@ literal|", "
 operator|+
 literal|"usedResources="
 operator|+
-name|usedResources
+name|queueUsage
+operator|.
+name|getUsed
+argument_list|()
 operator|+
 literal|"usedCapacity="
 operator|+
@@ -2660,7 +2663,10 @@ argument_list|()
 operator|+
 literal|" used="
 operator|+
-name|usedResources
+name|queueUsage
+operator|.
+name|getUsed
+argument_list|()
 operator|+
 literal|" cluster="
 operator|+
@@ -2848,32 +2854,6 @@ range|:
 name|labelCanAccess
 control|)
 block|{
-if|if
-condition|(
-operator|!
-name|usedResourcesByNodeLabels
-operator|.
-name|containsKey
-argument_list|(
-name|label
-argument_list|)
-condition|)
-block|{
-name|usedResourcesByNodeLabels
-operator|.
-name|put
-argument_list|(
-name|label
-argument_list|,
-name|Resources
-operator|.
-name|createResource
-argument_list|(
-literal|0
-argument_list|)
-argument_list|)
-expr_stmt|;
-block|}
 name|float
 name|currentAbsoluteLabelUsedCapacity
 init|=
@@ -2885,9 +2865,9 @@ name|resourceCalculator
 argument_list|,
 name|clusterResource
 argument_list|,
-name|usedResourcesByNodeLabels
+name|queueUsage
 operator|.
-name|get
+name|getUsed
 argument_list|(
 name|label
 argument_list|)
@@ -2930,13 +2910,16 @@ argument_list|()
 operator|+
 literal|" used="
 operator|+
-name|usedResources
+name|queueUsage
+operator|.
+name|getUsed
+argument_list|()
 operator|+
 literal|" current-capacity ("
 operator|+
-name|usedResourcesByNodeLabels
+name|queueUsage
 operator|.
-name|get
+name|getUsed
 argument_list|(
 name|label
 argument_list|)
@@ -3023,7 +3006,10 @@ name|Resources
 operator|.
 name|subtract
 argument_list|(
-name|usedResources
+name|queueUsage
+operator|.
+name|getUsed
+argument_list|()
 argument_list|,
 name|reservedResources
 argument_list|)
@@ -3057,7 +3043,10 @@ argument_list|()
 operator|+
 literal|" usedResources: "
 operator|+
-name|usedResources
+name|queueUsage
+operator|.
+name|getUsed
+argument_list|()
 operator|.
 name|getMemory
 argument_list|()
@@ -3082,7 +3071,10 @@ operator|(
 operator|(
 name|float
 operator|)
-name|usedResources
+name|queueUsage
+operator|.
+name|getUsed
+argument_list|()
 operator|.
 name|getMemory
 argument_list|()
@@ -3558,7 +3550,10 @@ argument_list|()
 operator|+
 literal|" used="
 operator|+
-name|usedResources
+name|queueUsage
+operator|.
+name|getUsed
+argument_list|()
 operator|+
 literal|" cluster="
 operator|+
@@ -3971,7 +3966,10 @@ argument_list|()
 operator|+
 literal|" used="
 operator|+
-name|usedResources
+name|queueUsage
+operator|.
+name|getUsed
+argument_list|()
 operator|+
 literal|" cluster="
 operator|+
@@ -4083,7 +4081,10 @@ argument_list|()
 operator|+
 literal|" used="
 operator|+
-name|usedResources
+name|queueUsage
+operator|.
+name|getUsed
+argument_list|()
 operator|+
 literal|" cluster="
 operator|+
