@@ -794,6 +794,26 @@ init|=
 literal|true
 decl_stmt|;
 comment|/** See<a href="{@docRoot}/../core-default.html">core-default.xml</a> */
+DECL|field|IPC_SERVER_MAX_CONNECTIONS_KEY
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|IPC_SERVER_MAX_CONNECTIONS_KEY
+init|=
+literal|"ipc.server.max.connections"
+decl_stmt|;
+comment|/** Default value for IPC_SERVER_MAX_CONNECTIONS_KEY */
+DECL|field|IPC_SERVER_MAX_CONNECTIONS_DEFAULT
+specifier|public
+specifier|static
+specifier|final
+name|int
+name|IPC_SERVER_MAX_CONNECTIONS_DEFAULT
+init|=
+literal|0
+decl_stmt|;
+comment|/** See<a href="{@docRoot}/../core-default.html">core-default.xml</a> */
 DECL|field|HADOOP_RPC_SOCKET_FACTORY_CLASS_DEFAULT_KEY
 specifier|public
 specifier|static
