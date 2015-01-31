@@ -414,15 +414,7 @@ begin_import
 import|import
 name|org
 operator|.
-name|htrace
-operator|.
-name|Sampler
-import|;
-end_import
-
-begin_import
-import|import
-name|org
+name|apache
 operator|.
 name|htrace
 operator|.
@@ -433,6 +425,8 @@ end_import
 begin_import
 import|import
 name|org
+operator|.
+name|apache
 operator|.
 name|htrace
 operator|.

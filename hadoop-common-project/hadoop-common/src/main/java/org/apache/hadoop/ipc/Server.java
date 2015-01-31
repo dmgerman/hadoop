@@ -1318,6 +1318,8 @@ begin_import
 import|import
 name|org
 operator|.
+name|apache
+operator|.
 name|htrace
 operator|.
 name|Span
@@ -1327,6 +1329,8 @@ end_import
 begin_import
 import|import
 name|org
+operator|.
+name|apache
 operator|.
 name|htrace
 operator|.
@@ -1338,6 +1342,8 @@ begin_import
 import|import
 name|org
 operator|.
+name|apache
+operator|.
 name|htrace
 operator|.
 name|TraceInfo
@@ -1347,6 +1353,8 @@ end_import
 begin_import
 import|import
 name|org
+operator|.
+name|apache
 operator|.
 name|htrace
 operator|.

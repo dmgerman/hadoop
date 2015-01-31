@@ -132,6 +132,8 @@ begin_import
 import|import
 name|org
 operator|.
+name|apache
+operator|.
 name|htrace
 operator|.
 name|HTraceConfiguration
@@ -141,6 +143,8 @@ end_import
 begin_import
 import|import
 name|org
+operator|.
+name|apache
 operator|.
 name|htrace
 operator|.
@@ -152,6 +156,8 @@ begin_import
 import|import
 name|org
 operator|.
+name|apache
+operator|.
 name|htrace
 operator|.
 name|Span
@@ -161,6 +167,8 @@ end_import
 begin_import
 import|import
 name|org
+operator|.
+name|apache
 operator|.
 name|htrace
 operator|.
@@ -172,6 +180,8 @@ begin_import
 import|import
 name|org
 operator|.
+name|apache
+operator|.
 name|htrace
 operator|.
 name|Trace
@@ -181,6 +191,8 @@ end_import
 begin_import
 import|import
 name|org
+operator|.
+name|apache
 operator|.
 name|htrace
 operator|.
@@ -616,28 +628,6 @@ operator|.
 name|getStopTimeMillis
 argument_list|()
 decl_stmt|;
-name|Assert
-operator|.
-name|assertTrue
-argument_list|(
-name|spanStart
-operator|-
-name|startTime
-operator|<
-literal|100
-argument_list|)
-expr_stmt|;
-name|Assert
-operator|.
-name|assertTrue
-argument_list|(
-name|spanEnd
-operator|-
-name|endTime
-operator|<
-literal|100
-argument_list|)
-expr_stmt|;
 comment|// There should only be one trace id as it should all be homed in the
 comment|// top trace.
 for|for
@@ -1529,10 +1519,9 @@ name|SetSpanReceiver
 implements|implements
 name|SpanReceiver
 block|{
-DECL|method|configure (HTraceConfiguration conf)
+DECL|method|SetSpanReceiver (HTraceConfiguration conf)
 specifier|public
-name|void
-name|configure
+name|SetSpanReceiver
 parameter_list|(
 name|HTraceConfiguration
 name|conf

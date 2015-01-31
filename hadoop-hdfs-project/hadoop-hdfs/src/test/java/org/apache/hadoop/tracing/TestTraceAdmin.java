@@ -410,7 +410,7 @@ argument_list|)
 argument_list|,
 literal|"-class"
 argument_list|,
-literal|"org.htrace.impl.LocalFileSpanReceiver"
+literal|"org.apache.htrace.impl.LocalFileSpanReceiver"
 argument_list|,
 literal|"-Clocal-file-span-receiver.path="
 operator|+
@@ -455,7 +455,7 @@ name|list
 operator|.
 name|contains
 argument_list|(
-literal|"1   org.htrace.impl.LocalFileSpanReceiver"
+literal|"1   org.apache.htrace.impl.LocalFileSpanReceiver"
 argument_list|)
 argument_list|)
 expr_stmt|;

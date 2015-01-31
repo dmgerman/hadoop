@@ -2900,7 +2900,7 @@ name|hadoop
 operator|.
 name|tracing
 operator|.
-name|TraceSamplerFactory
+name|TraceUtils
 import|;
 end_import
 
@@ -2980,6 +2980,8 @@ begin_import
 import|import
 name|org
 operator|.
+name|apache
+operator|.
 name|htrace
 operator|.
 name|Sampler
@@ -2989,6 +2991,20 @@ end_import
 begin_import
 import|import
 name|org
+operator|.
+name|apache
+operator|.
+name|htrace
+operator|.
+name|SamplerBuilder
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
 operator|.
 name|htrace
 operator|.
@@ -3000,6 +3016,8 @@ begin_import
 import|import
 name|org
 operator|.
+name|apache
+operator|.
 name|htrace
 operator|.
 name|Trace
@@ -3009,6 +3027,8 @@ end_import
 begin_import
 import|import
 name|org
+operator|.
+name|apache
 operator|.
 name|htrace
 operator|.
@@ -4776,12 +4796,19 @@ argument_list|)
 expr_stmt|;
 name|traceSampler
 operator|=
-name|TraceSamplerFactory
+operator|new
+name|SamplerBuilder
+argument_list|(
+name|TraceUtils
 operator|.
-name|createSampler
+name|wrapHadoopConf
 argument_list|(
 name|conf
 argument_list|)
+argument_list|)
+operator|.
+name|build
+argument_list|()
 expr_stmt|;
 comment|// Copy only the required DFSClient configuration
 name|this
