@@ -58,6 +58,22 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|hdfs
+operator|.
+name|protocol
+operator|.
+name|HdfsConstants
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|util
 operator|.
 name|SequentialNumber
@@ -65,7 +81,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * Generate the next valid block ID by incrementing the maximum block  * ID allocated so far, starting at 2^30+1.  *  * Block IDs used to be allocated randomly in the past. Hence we may  * find some conflicts while stepping through the ID space sequentially.  * However given the sparsity of the ID space, conflicts should be rare  * and can be skipped over when detected.  */
+comment|/**  * Generate the next valid block group ID by incrementing the maximum block  * group ID allocated so far, with the first 2^10 block group IDs reserved.  * HDFS-EC introduces a hierarchical protocol to name blocks and groups:  * Contiguous: {reserved block IDs | flag | block ID}  * Striped: {reserved block IDs | flag | block group ID | index in group}  *  * Following n bits of reserved block IDs, The (n+1)th bit in an ID  * distinguishes contiguous (0) and striped (1) blocks. For a striped block,  * bits (n+2) to (64-m) represent the ID of its block group, while the last m  * bits represent its index of the group. The value m is determined by the  * maximum number of blocks in a group (MAX_BLOCKS_IN_GROUP).  */
 end_comment
 
 begin_class
@@ -73,35 +89,21 @@ annotation|@
 name|InterfaceAudience
 operator|.
 name|Private
-DECL|class|SequentialBlockIdGenerator
+DECL|class|SequentialBlockGroupIdGenerator
 specifier|public
 class|class
-name|SequentialBlockIdGenerator
+name|SequentialBlockGroupIdGenerator
 extends|extends
 name|SequentialNumber
 block|{
-comment|/**    * The last reserved block ID.    */
-DECL|field|LAST_RESERVED_BLOCK_ID
-specifier|public
-specifier|static
-specifier|final
-name|long
-name|LAST_RESERVED_BLOCK_ID
-init|=
-literal|1024L
-operator|*
-literal|1024
-operator|*
-literal|1024
-decl_stmt|;
 DECL|field|blockManager
 specifier|private
 specifier|final
 name|BlockManager
 name|blockManager
 decl_stmt|;
-DECL|method|SequentialBlockIdGenerator (BlockManager blockManagerRef)
-name|SequentialBlockIdGenerator
+DECL|method|SequentialBlockGroupIdGenerator (BlockManager blockManagerRef)
+name|SequentialBlockGroupIdGenerator
 parameter_list|(
 name|BlockManager
 name|blockManagerRef
@@ -109,7 +111,9 @@ parameter_list|)
 block|{
 name|super
 argument_list|(
-name|LAST_RESERVED_BLOCK_ID
+name|Long
+operator|.
+name|MIN_VALUE
 argument_list|)
 expr_stmt|;
 name|this
@@ -128,46 +132,61 @@ name|long
 name|nextValue
 parameter_list|()
 block|{
-name|Block
-name|b
-init|=
-operator|new
-name|Block
-argument_list|(
+comment|// Skip to next legitimate block group ID based on the naming protocol
+while|while
+condition|(
+name|super
+operator|.
+name|getCurrentValue
+argument_list|()
+operator|%
+name|HdfsConstants
+operator|.
+name|MAX_BLOCKS_IN_GROUP
+operator|>
+literal|0
+condition|)
+block|{
 name|super
 operator|.
 name|nextValue
 argument_list|()
-argument_list|)
-decl_stmt|;
-comment|// There may be an occasional conflict with randomly generated
-comment|// block IDs. Skip over the conflicts.
+expr_stmt|;
+block|}
+comment|// Make sure there's no conflict with existing random block IDs
 while|while
 condition|(
-name|isValidBlock
+name|hasValidBlockInRange
 argument_list|(
-name|b
+name|super
+operator|.
+name|getCurrentValue
+argument_list|()
 argument_list|)
 condition|)
 block|{
-name|b
+name|super
 operator|.
-name|setBlockId
+name|skipTo
 argument_list|(
 name|super
 operator|.
-name|nextValue
+name|getCurrentValue
 argument_list|()
+operator|+
+name|HdfsConstants
+operator|.
+name|MAX_BLOCKS_IN_GROUP
 argument_list|)
 expr_stmt|;
 block|}
 if|if
 condition|(
-name|b
+name|super
 operator|.
-name|getBlockId
+name|getCurrentValue
 argument_list|()
-operator|<
+operator|>=
 literal|0
 condition|)
 block|{
@@ -177,33 +196,61 @@ name|LOG
 operator|.
 name|warn
 argument_list|(
-literal|"All positive block IDs are used, "
+literal|"All negative block group IDs are used, "
 operator|+
-literal|"wrapping to negative IDs, "
+literal|"growing into positive IDs, "
 operator|+
-literal|"which might conflict with erasure coded block groups."
+literal|"which might conflict with non-erasure coded blocks."
 argument_list|)
 expr_stmt|;
 block|}
 return|return
-name|b
+name|super
 operator|.
-name|getBlockId
+name|getCurrentValue
 argument_list|()
 return|;
 block|}
-comment|/**    * Returns whether the given block is one pointed-to by a file.    */
-DECL|method|isValidBlock (Block b)
+comment|/**    *    * @param id The starting ID of the range    * @return true if any ID in the range    *      {id, id+HdfsConstants.MAX_BLOCKS_IN_GROUP} is pointed-to by a file    */
+DECL|method|hasValidBlockInRange (long id)
 specifier|private
 name|boolean
-name|isValidBlock
+name|hasValidBlockInRange
 parameter_list|(
-name|Block
-name|b
+name|long
+name|id
 parameter_list|)
 block|{
-return|return
-operator|(
+for|for
+control|(
+name|int
+name|i
+init|=
+literal|0
+init|;
+name|i
+operator|<
+name|HdfsConstants
+operator|.
+name|MAX_BLOCKS_IN_GROUP
+condition|;
+name|i
+operator|++
+control|)
+block|{
+name|Block
+name|b
+init|=
+operator|new
+name|Block
+argument_list|(
+name|id
+operator|+
+name|i
+argument_list|)
+decl_stmt|;
+if|if
+condition|(
 name|blockManager
 operator|.
 name|getBlockCollection
@@ -212,7 +259,15 @@ name|b
 argument_list|)
 operator|!=
 literal|null
-operator|)
+condition|)
+block|{
+return|return
+literal|true
+return|;
+block|}
+block|}
+return|return
+literal|false
 return|;
 block|}
 block|}

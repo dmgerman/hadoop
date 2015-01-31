@@ -11762,7 +11762,12 @@ name|shouldCopyOnTruncate
 operator|)
 condition|?
 name|createNewBlock
+argument_list|(
+name|file
+operator|.
+name|isStriped
 argument_list|()
+argument_list|)
 else|:
 operator|new
 name|Block
@@ -16153,7 +16158,7 @@ return|return
 name|success
 return|;
 block|}
-comment|/**    * Create new block with a unique block id and a new generation stamp.    */
+comment|/**    * Create new block with a unique block id and a new generation stamp.    * @param isStriped is the file under striping or contiguous layout?    */
 DECL|method|createNewBlock ()
 name|Block
 name|createNewBlock
@@ -16172,7 +16177,9 @@ operator|new
 name|Block
 argument_list|(
 name|nextBlockId
-argument_list|()
+argument_list|(
+name|isStriped
+argument_list|)
 argument_list|,
 literal|0
 argument_list|,
@@ -25958,12 +25965,15 @@ return|return
 name|gs
 return|;
 block|}
-comment|/**    * Increments, logs and then returns the block ID    */
-DECL|method|nextBlockId ()
+comment|/**    * Increments, logs and then returns the block ID    * @param isStriped is the file under striping or contiguous layout?    */
+DECL|method|nextBlockId (boolean isStriped)
 specifier|private
 name|long
 name|nextBlockId
-parameter_list|()
+parameter_list|(
+name|boolean
+name|isStriped
+parameter_list|)
 throws|throws
 name|IOException
 block|{
@@ -25980,6 +25990,13 @@ specifier|final
 name|long
 name|blockId
 init|=
+name|isStriped
+condition|?
+name|blockIdManager
+operator|.
+name|nextBlockGroupId
+argument_list|()
+else|:
 name|blockIdManager
 operator|.
 name|nextBlockId

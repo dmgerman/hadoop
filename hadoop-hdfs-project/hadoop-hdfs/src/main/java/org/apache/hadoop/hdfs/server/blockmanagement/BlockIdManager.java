@@ -171,6 +171,12 @@ specifier|final
 name|SequentialBlockIdGenerator
 name|blockIdGenerator
 decl_stmt|;
+DECL|field|blockGroupIdGenerator
+specifier|private
+specifier|final
+name|SequentialBlockGroupIdGenerator
+name|blockGroupIdGenerator
+decl_stmt|;
 DECL|method|BlockIdManager (BlockManager blockManager)
 specifier|public
 name|BlockIdManager
@@ -193,6 +199,16 @@ name|blockIdGenerator
 operator|=
 operator|new
 name|SequentialBlockIdGenerator
+argument_list|(
+name|blockManager
+argument_list|)
+expr_stmt|;
+name|this
+operator|.
+name|blockGroupIdGenerator
+operator|=
+operator|new
+name|SequentialBlockGroupIdGenerator
 argument_list|(
 name|blockManager
 argument_list|)
@@ -503,6 +519,19 @@ parameter_list|()
 block|{
 return|return
 name|blockIdGenerator
+operator|.
+name|nextValue
+argument_list|()
+return|;
+block|}
+DECL|method|nextBlockGroupId ()
+specifier|public
+name|long
+name|nextBlockGroupId
+parameter_list|()
+block|{
+return|return
+name|blockGroupIdGenerator
 operator|.
 name|nextValue
 argument_list|()

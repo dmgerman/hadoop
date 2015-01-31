@@ -240,6 +240,22 @@ name|hdfs
 operator|.
 name|protocol
 operator|.
+name|HdfsConstants
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|protocol
+operator|.
 name|QuotaExceededException
 import|;
 end_import
@@ -331,6 +347,24 @@ operator|.
 name|blockmanagement
 operator|.
 name|DatanodeStorageInfo
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|server
+operator|.
+name|common
+operator|.
+name|HdfsServerConstants
 import|;
 end_import
 
@@ -4575,6 +4609,25 @@ name|contains
 argument_list|(
 name|block
 argument_list|)
+return|;
+block|}
+annotation|@
+name|VisibleForTesting
+comment|/**    * @return true if the file is in the striping layout.    */
+comment|// TODO: move erasure coding policy to file XAttr (HDFS-7337)
+DECL|method|isStriped ()
+specifier|public
+name|boolean
+name|isStriped
+parameter_list|()
+block|{
+return|return
+name|getStoragePolicyID
+argument_list|()
+operator|==
+name|HdfsConstants
+operator|.
+name|EC_STORAGE_POLICY_ID
 return|;
 block|}
 block|}
