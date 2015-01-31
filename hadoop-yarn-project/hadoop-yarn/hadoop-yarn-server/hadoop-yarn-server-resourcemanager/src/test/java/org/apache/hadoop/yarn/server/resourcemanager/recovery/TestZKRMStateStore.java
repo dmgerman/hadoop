@@ -850,7 +850,7 @@ argument_list|()
 decl_stmt|;
 name|workingZnode
 operator|=
-literal|"/Test"
+literal|"/jira/issue/3077/rmstore"
 expr_stmt|;
 name|conf
 operator|.
@@ -1158,7 +1158,7 @@ argument_list|()
 decl_stmt|;
 name|workingZnode
 operator|=
-literal|"/Test"
+literal|"/jira/issue/3077/rmstore"
 expr_stmt|;
 name|conf
 operator|.
