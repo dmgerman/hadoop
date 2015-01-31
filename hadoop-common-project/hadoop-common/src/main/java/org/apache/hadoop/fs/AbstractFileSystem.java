@@ -368,20 +368,6 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|fs
-operator|.
-name|InvalidPathException
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
 name|security
 operator|.
 name|AccessControlException
@@ -429,6 +415,20 @@ operator|.
 name|util
 operator|.
 name|Progressable
+import|;
+end_import
+
+begin_import
+import|import
+name|com
+operator|.
+name|google
+operator|.
+name|common
+operator|.
+name|annotations
+operator|.
+name|VisibleForTesting
 import|;
 end_import
 
@@ -552,6 +552,16 @@ DECL|field|statistics
 specifier|protected
 name|Statistics
 name|statistics
+decl_stmt|;
+annotation|@
+name|VisibleForTesting
+DECL|field|NO_ABSTRACT_FS_ERROR
+specifier|static
+specifier|final
+name|String
+name|NO_ABSTRACT_FS_ERROR
+init|=
+literal|"No AbstractFileSystem configured for scheme"
 decl_stmt|;
 DECL|field|myUri
 specifier|private
@@ -822,9 +832,11 @@ name|String
 operator|.
 name|format
 argument_list|(
-literal|"%s=null: No AbstractFileSystem configured for scheme: %s"
+literal|"%s=null: %s: %s"
 argument_list|,
 name|fsImplConf
+argument_list|,
+name|NO_ABSTRACT_FS_ERROR
 argument_list|,
 name|uri
 operator|.

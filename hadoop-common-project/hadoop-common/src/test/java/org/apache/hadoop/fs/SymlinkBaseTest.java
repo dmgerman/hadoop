@@ -3433,7 +3433,9 @@ name|GenericTestUtils
 operator|.
 name|assertExceptionContains
 argument_list|(
-literal|"No AbstractFileSystem configured for scheme: null"
+name|AbstractFileSystem
+operator|.
+name|NO_ABSTRACT_FS_ERROR
 argument_list|,
 name|e
 argument_list|)
