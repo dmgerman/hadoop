@@ -2891,6 +2891,7 @@ annotation|@
 name|Override
 DECL|method|read (byte[] buf, int off, int len)
 specifier|public
+specifier|synchronized
 name|int
 name|read
 parameter_list|(
@@ -2906,11 +2907,6 @@ name|len
 parameter_list|)
 throws|throws
 name|IOException
-block|{
-synchronized|synchronized
-init|(
-name|unwrappedRpcBuffer
-init|)
 block|{
 comment|// fill the buffer with the next RPC message
 if|if
@@ -2957,7 +2953,6 @@ expr_stmt|;
 return|return
 name|readLen
 return|;
-block|}
 block|}
 comment|// all messages must be RPC SASL wrapped, else an exception is thrown
 DECL|method|readNextRpcPacket ()
