@@ -1034,16 +1034,6 @@ block|,
 operator|new
 name|DeprecationDelta
 argument_list|(
-literal|"mapred.speculative.execution.slowNodeThreshold"
-argument_list|,
-name|MRJobConfig
-operator|.
-name|SPECULATIVE_SLOWNODE_THRESHOLD
-argument_list|)
-block|,
-operator|new
-name|DeprecationDelta
-argument_list|(
 literal|"mapred.speculative.execution.slowTaskThreshold"
 argument_list|,
 name|MRJobConfig
@@ -1058,7 +1048,7 @@ literal|"mapred.speculative.execution.speculativeCap"
 argument_list|,
 name|MRJobConfig
 operator|.
-name|SPECULATIVECAP
+name|SPECULATIVECAP_RUNNING_TASKS
 argument_list|)
 block|,
 operator|new
