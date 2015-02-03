@@ -2152,7 +2152,7 @@ argument_list|()
 expr_stmt|;
 name|LOG
 operator|.
-name|fatal
+name|error
 argument_list|(
 name|errorMsg
 argument_list|)

@@ -2289,7 +2289,7 @@ name|NameNode
 operator|.
 name|stateChangeLog
 operator|.
-name|fatal
+name|error
 argument_list|(
 literal|"BLOCK* NameSystem.getDatanode: "
 operator|+

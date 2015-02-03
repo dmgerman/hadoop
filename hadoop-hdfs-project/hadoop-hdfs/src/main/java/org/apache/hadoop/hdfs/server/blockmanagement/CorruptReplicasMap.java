@@ -272,24 +272,22 @@ name|blockStateChangeLog
 operator|.
 name|info
 argument_list|(
-literal|"BLOCK NameSystem.addToCorruptReplicasMap: "
+literal|"BLOCK NameSystem.addToCorruptReplicasMap: {} added as corrupt on "
 operator|+
+literal|"{} by {} {}"
+argument_list|,
 name|blk
 operator|.
 name|getBlockName
 argument_list|()
-operator|+
-literal|" added as corrupt on "
-operator|+
+argument_list|,
 name|dn
-operator|+
-literal|" by "
-operator|+
+argument_list|,
 name|Server
 operator|.
 name|getRemoteIp
 argument_list|()
-operator|+
+argument_list|,
 name|reasonText
 argument_list|)
 expr_stmt|;
@@ -302,28 +300,22 @@ name|blockStateChangeLog
 operator|.
 name|info
 argument_list|(
-literal|"BLOCK NameSystem.addToCorruptReplicasMap: "
+literal|"BLOCK NameSystem.addToCorruptReplicasMap: duplicate requested for"
 operator|+
-literal|"duplicate requested for "
-operator|+
+literal|" {} to add as corrupt on {} by {} {}"
+argument_list|,
 name|blk
 operator|.
 name|getBlockName
 argument_list|()
-operator|+
-literal|" to add as corrupt "
-operator|+
-literal|"on "
-operator|+
+argument_list|,
 name|dn
-operator|+
-literal|" by "
-operator|+
+argument_list|,
 name|Server
 operator|.
 name|getRemoteIp
 argument_list|()
-operator|+
+argument_list|,
 name|reasonText
 argument_list|)
 expr_stmt|;

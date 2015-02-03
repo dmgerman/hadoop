@@ -818,8 +818,8 @@ name|info
 argument_list|(
 literal|"BLOCK* Removing stale replica "
 operator|+
-literal|"from location: "
-operator|+
+literal|"from location: {}"
+argument_list|,
 name|r
 operator|.
 name|getExpectedStorageLocation
@@ -1182,12 +1182,10 @@ name|blockStateChangeLog
 operator|.
 name|info
 argument_list|(
-literal|"BLOCK* "
-operator|+
+literal|"BLOCK* {} recovery started, primary={}"
+argument_list|,
 name|this
-operator|+
-literal|" recovery started, primary="
-operator|+
+argument_list|,
 name|primary
 argument_list|)
 expr_stmt|;

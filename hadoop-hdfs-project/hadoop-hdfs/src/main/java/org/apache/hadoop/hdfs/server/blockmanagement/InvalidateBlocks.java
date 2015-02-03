@@ -592,20 +592,16 @@ name|blockStateChangeLog
 operator|.
 name|info
 argument_list|(
-literal|"BLOCK* "
-operator|+
+literal|"BLOCK* {}: add {} to {}"
+argument_list|,
 name|getClass
 argument_list|()
 operator|.
 name|getSimpleName
 argument_list|()
-operator|+
-literal|": add "
-operator|+
+argument_list|,
 name|block
-operator|+
-literal|" to "
-operator|+
+argument_list|,
 name|datanode
 argument_list|)
 expr_stmt|;

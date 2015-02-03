@@ -246,20 +246,6 @@ name|org
 operator|.
 name|apache
 operator|.
-name|commons
-operator|.
-name|logging
-operator|.
-name|Log
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
 name|hadoop
 operator|.
 name|HadoopIllegalArgumentException
@@ -2496,6 +2482,16 @@ end_import
 
 begin_import
 import|import
+name|org
+operator|.
+name|slf4j
+operator|.
+name|Logger
+import|;
+end_import
+
+begin_import
+import|import
 name|com
 operator|.
 name|google
@@ -2535,7 +2531,7 @@ DECL|field|LOG
 specifier|private
 specifier|static
 specifier|final
-name|Log
+name|Logger
 name|LOG
 init|=
 name|NameNode
@@ -2546,7 +2542,7 @@ DECL|field|stateChangeLog
 specifier|private
 specifier|static
 specifier|final
-name|Log
+name|Logger
 name|stateChangeLog
 init|=
 name|NameNode
@@ -2557,7 +2553,7 @@ DECL|field|blockStateChangeLog
 specifier|private
 specifier|static
 specifier|final
-name|Log
+name|Logger
 name|blockStateChangeLog
 init|=
 name|NameNode
@@ -8841,6 +8837,11 @@ name|LOG
 operator|.
 name|warn
 argument_list|(
+name|ive
+operator|.
+name|toString
+argument_list|()
+argument_list|,
 name|ive
 argument_list|)
 expr_stmt|;

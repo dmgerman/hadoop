@@ -608,42 +608,27 @@ name|corruptReplOneBlocks
 operator|++
 expr_stmt|;
 block|}
-if|if
-condition|(
-name|NameNode
-operator|.
-name|blockStateChangeLog
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|NameNode
 operator|.
 name|blockStateChangeLog
 operator|.
 name|debug
 argument_list|(
-literal|"BLOCK* NameSystem.UnderReplicationBlock.add:"
+literal|"BLOCK* NameSystem.UnderReplicationBlock.add: {}"
 operator|+
+literal|" has only {} replicas and need {} replicas so is added to"
+operator|+
+literal|" neededReplications at priority level {}"
+argument_list|,
 name|block
-operator|+
-literal|" has only "
-operator|+
+argument_list|,
 name|curReplicas
-operator|+
-literal|" replicas and need "
-operator|+
+argument_list|,
 name|expectedReplicas
-operator|+
-literal|" replicas so is added to neededReplications"
-operator|+
-literal|" at priority level "
-operator|+
+argument_list|,
 name|priLevel
 argument_list|)
 expr_stmt|;
-block|}
 return|return
 literal|true
 return|;
@@ -760,34 +745,21 @@ name|block
 argument_list|)
 condition|)
 block|{
-if|if
-condition|(
-name|NameNode
-operator|.
-name|blockStateChangeLog
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|NameNode
 operator|.
 name|blockStateChangeLog
 operator|.
 name|debug
 argument_list|(
-literal|"BLOCK* NameSystem.UnderReplicationBlock.remove: "
+literal|"BLOCK* NameSystem.UnderReplicationBlock.remove: Removing block {}"
 operator|+
-literal|"Removing block "
-operator|+
+literal|" from priority queue {}"
+argument_list|,
 name|block
-operator|+
-literal|" from priority queue "
-operator|+
+argument_list|,
 name|priLevel
 argument_list|)
 expr_stmt|;
-block|}
 return|return
 literal|true
 return|;
@@ -826,34 +798,21 @@ name|block
 argument_list|)
 condition|)
 block|{
-if|if
-condition|(
-name|NameNode
-operator|.
-name|blockStateChangeLog
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|NameNode
 operator|.
 name|blockStateChangeLog
 operator|.
 name|debug
 argument_list|(
-literal|"BLOCK* NameSystem.UnderReplicationBlock.remove: "
+literal|"BLOCK* NameSystem.UnderReplicationBlock.remove: Removing block"
 operator|+
-literal|"Removing block "
-operator|+
+literal|" {} from priority queue {}"
+argument_list|,
 name|block
-operator|+
-literal|" from priority queue "
-operator|+
-name|i
+argument_list|,
+name|priLevel
 argument_list|)
 expr_stmt|;
-block|}
 return|return
 literal|true
 return|;
@@ -1007,42 +966,27 @@ name|block
 argument_list|)
 condition|)
 block|{
-if|if
-condition|(
-name|NameNode
-operator|.
-name|blockStateChangeLog
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|NameNode
 operator|.
 name|blockStateChangeLog
 operator|.
 name|debug
 argument_list|(
-literal|"BLOCK* NameSystem.UnderReplicationBlock.update:"
+literal|"BLOCK* NameSystem.UnderReplicationBlock.update: {} has only {} "
 operator|+
+literal|"replicas and needs {} replicas so is added to "
+operator|+
+literal|"neededReplications at priority level {}"
+argument_list|,
 name|block
-operator|+
-literal|" has only "
-operator|+
+argument_list|,
 name|curReplicas
-operator|+
-literal|" replicas and needs "
-operator|+
+argument_list|,
 name|curExpectedReplicas
-operator|+
-literal|" replicas so is added to neededReplications"
-operator|+
-literal|" at priority level "
-operator|+
+argument_list|,
 name|curPri
 argument_list|)
 expr_stmt|;
-block|}
 block|}
 if|if
 condition|(

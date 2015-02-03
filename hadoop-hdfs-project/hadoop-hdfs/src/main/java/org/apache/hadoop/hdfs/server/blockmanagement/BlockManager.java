@@ -1083,6 +1083,7 @@ class|class
 name|BlockManager
 block|{
 DECL|field|LOG
+specifier|public
 specifier|static
 specifier|final
 name|Logger
@@ -1101,7 +1102,7 @@ DECL|field|blockLog
 specifier|public
 specifier|static
 specifier|final
-name|Log
+name|Logger
 name|blockLog
 init|=
 name|NameNode
@@ -5182,10 +5183,10 @@ name|blockLog
 operator|.
 name|warn
 argument_list|(
-literal|"BLOCK* getBlocks: "
+literal|"BLOCK* getBlocks: Asking for blocks from an"
 operator|+
-literal|"Asking for blocks from an unrecorded node "
-operator|+
+literal|" unrecorded node {}"
+argument_list|,
 name|datanode
 argument_list|)
 expr_stmt|;
@@ -5685,13 +5686,14 @@ name|blockLog
 operator|.
 name|info
 argument_list|(
-literal|"BLOCK* addToInvalidates: "
-operator|+
+literal|"BLOCK* addToInvalidates: {} {}"
+argument_list|,
 name|b
-operator|+
-literal|" "
-operator|+
+argument_list|,
 name|datanodes
+operator|.
+name|toString
+argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
@@ -5781,11 +5783,9 @@ name|blockLog
 operator|.
 name|info
 argument_list|(
-literal|"BLOCK* findAndMarkBlockAsCorrupt: "
-operator|+
+literal|"BLOCK* findAndMarkBlockAsCorrupt: {} not found"
+argument_list|,
 name|blk
-operator|+
-literal|" not found"
 argument_list|)
 expr_stmt|;
 return|return;
@@ -5906,11 +5906,11 @@ name|blockLog
 operator|.
 name|info
 argument_list|(
-literal|"BLOCK markBlockAsCorrupt: "
+literal|"BLOCK markBlockAsCorrupt: {} cannot be marked as"
 operator|+
+literal|" corrupt as it does not belong to any file"
+argument_list|,
 name|b
-operator|+
-literal|" cannot be marked as corrupt as it does not belong to any file"
 argument_list|)
 expr_stmt|;
 name|addToInvalidates
@@ -6105,12 +6105,10 @@ name|blockLog
 operator|.
 name|info
 argument_list|(
-literal|"BLOCK* invalidateBlock: "
-operator|+
+literal|"BLOCK* invalidateBlock: {} on {}"
+argument_list|,
 name|b
-operator|+
-literal|" on "
-operator|+
+argument_list|,
 name|dn
 argument_list|)
 expr_stmt|;
@@ -6195,6 +6193,26 @@ operator|+
 literal|"with potentially out-of-date block reports"
 argument_list|)
 expr_stmt|;
+name|blockLog
+operator|.
+name|info
+argument_list|(
+literal|"BLOCK* invalidateBlocks: postponing "
+operator|+
+literal|"invalidation of {} on {} because {} replica(s) are located on "
+operator|+
+literal|"nodes with potentially out-of-date block reports"
+argument_list|,
+name|b
+argument_list|,
+name|dn
+argument_list|,
+name|nr
+operator|.
+name|replicasOnStaleNodes
+argument_list|()
+argument_list|)
+expr_stmt|;
 name|postponeBlock
 argument_list|(
 name|b
@@ -6236,30 +6254,17 @@ argument_list|,
 name|node
 argument_list|)
 expr_stmt|;
-if|if
-condition|(
-name|blockLog
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|blockLog
 operator|.
 name|debug
 argument_list|(
-literal|"BLOCK* invalidateBlocks: "
-operator|+
+literal|"BLOCK* invalidateBlocks: {} on {} listed for deletion."
+argument_list|,
 name|b
-operator|+
-literal|" on "
-operator|+
+argument_list|,
 name|dn
-operator|+
-literal|" listed for deletion."
 argument_list|)
 expr_stmt|;
-block|}
 return|return
 literal|true
 return|;
@@ -6270,15 +6275,13 @@ name|blockLog
 operator|.
 name|info
 argument_list|(
-literal|"BLOCK* invalidateBlocks: "
+literal|"BLOCK* invalidateBlocks: {} on {} is the only copy and"
 operator|+
+literal|" was not deleted"
+argument_list|,
 name|b
-operator|+
-literal|" on "
-operator|+
+argument_list|,
 name|dn
-operator|+
-literal|" is the only copy and was not deleted"
 argument_list|)
 expr_stmt|;
 return|return
@@ -6802,11 +6805,11 @@ name|blockLog
 operator|.
 name|info
 argument_list|(
-literal|"BLOCK* Removing "
+literal|"BLOCK* Removing {} from neededReplications as"
 operator|+
+literal|" it has enough replicas"
+argument_list|,
 name|block
-operator|+
-literal|" from neededReplications as it has enough replicas"
 argument_list|)
 expr_stmt|;
 continue|continue;
@@ -7130,11 +7133,11 @@ name|blockLog
 operator|.
 name|info
 argument_list|(
-literal|"BLOCK* Removing "
+literal|"BLOCK* Removing {} from neededReplications as"
 operator|+
+literal|" it has enough replicas"
+argument_list|,
 name|block
-operator|+
-literal|" from neededReplications as it has enough replicas"
 argument_list|)
 expr_stmt|;
 continue|continue;
@@ -7227,26 +7230,17 @@ name|targets
 argument_list|)
 argument_list|)
 expr_stmt|;
-if|if
-condition|(
-name|blockLog
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|blockLog
 operator|.
 name|debug
 argument_list|(
-literal|"BLOCK* block "
+literal|"BLOCK* block {} is moved from neededReplications to "
 operator|+
+literal|"pendingReplications"
+argument_list|,
 name|block
-operator|+
-literal|" is moved from neededReplications to pendingReplications"
 argument_list|)
 expr_stmt|;
-block|}
 comment|// remove from neededReplications
 if|if
 condition|(
@@ -7370,54 +7364,39 @@ name|blockLog
 operator|.
 name|info
 argument_list|(
-literal|"BLOCK* ask "
-operator|+
+literal|"BLOCK* ask {} to replicate {} to {}"
+argument_list|,
 name|rw
 operator|.
 name|srcNode
-operator|+
-literal|" to replicate "
-operator|+
+argument_list|,
 name|rw
 operator|.
 name|block
-operator|+
-literal|" to "
-operator|+
+argument_list|,
 name|targetList
 argument_list|)
 expr_stmt|;
 block|}
 block|}
 block|}
-if|if
-condition|(
-name|blockLog
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|blockLog
 operator|.
 name|debug
 argument_list|(
-literal|"BLOCK* neededReplications = "
-operator|+
+literal|"BLOCK* neededReplications = {} pendingReplications = {}"
+argument_list|,
 name|neededReplications
 operator|.
 name|size
 argument_list|()
-operator|+
-literal|" pendingReplications = "
-operator|+
+argument_list|,
 name|pendingReplications
 operator|.
 name|size
 argument_list|()
 argument_list|)
 expr_stmt|;
-block|}
 return|return
 name|scheduledWork
 return|;
@@ -8648,11 +8627,11 @@ name|info
 argument_list|(
 literal|"BLOCK* processReport: "
 operator|+
-literal|"discarded non-initial block report from "
-operator|+
-name|nodeID
+literal|"discarded non-initial block report from {}"
 operator|+
 literal|" because namenode still in startup phase"
+argument_list|,
+name|nodeID
 argument_list|)
 expr_stmt|;
 return|return
@@ -8735,22 +8714,18 @@ name|blockLog
 operator|.
 name|info
 argument_list|(
-literal|"BLOCK* processReport: "
+literal|"BLOCK* processReport: {} on node {} size {} does not "
 operator|+
+literal|"belong to any file"
+argument_list|,
 name|b
-operator|+
-literal|" on "
-operator|+
+argument_list|,
 name|node
-operator|+
-literal|" size "
-operator|+
+argument_list|,
 name|b
 operator|.
 name|getNumBytes
 argument_list|()
-operator|+
-literal|" does not belong to any file"
 argument_list|)
 expr_stmt|;
 block|}
@@ -8791,40 +8766,32 @@ name|blockLog
 operator|.
 name|info
 argument_list|(
-literal|"BLOCK* processReport: from storage "
+literal|"BLOCK* processReport: from storage {} node {}, "
 operator|+
+literal|"blocks: {}, hasStaleStorage: {}, processing time: {} msecs"
+argument_list|,
 name|storage
 operator|.
 name|getStorageID
 argument_list|()
-operator|+
-literal|" node "
-operator|+
+argument_list|,
 name|nodeID
-operator|+
-literal|", blocks: "
-operator|+
+argument_list|,
 name|newReport
 operator|.
 name|getNumberOfBlocks
 argument_list|()
-operator|+
-literal|", hasStaleStorages: "
-operator|+
+argument_list|,
 name|node
 operator|.
 name|hasStaleStorages
 argument_list|()
-operator|+
-literal|", processing time: "
-operator|+
+argument_list|,
 operator|(
 name|endTime
 operator|-
 name|startTime
 operator|)
-operator|+
-literal|" msecs"
 argument_list|)
 expr_stmt|;
 return|return
@@ -9345,15 +9312,13 @@ name|blockLog
 operator|.
 name|info
 argument_list|(
-literal|"BLOCK* processReport: logged info for "
+literal|"BLOCK* processReport: logged info for {} of {} "
 operator|+
+literal|"reported."
+argument_list|,
 name|maxNumBlocksToLog
-operator|+
-literal|" of "
-operator|+
+argument_list|,
 name|numBlocksLogged
-operator|+
-literal|" reported."
 argument_list|)
 expr_stmt|;
 block|}
@@ -11228,22 +11193,18 @@ name|blockLog
 operator|.
 name|info
 argument_list|(
-literal|"BLOCK* addStoredBlock: "
+literal|"BLOCK* addStoredBlock: {} on {} size {} but it does not"
 operator|+
+literal|" belong to any file"
+argument_list|,
 name|block
-operator|+
-literal|" on "
-operator|+
+argument_list|,
 name|node
-operator|+
-literal|" size "
-operator|+
+argument_list|,
 name|block
 operator|.
 name|getNumBytes
 argument_list|()
-operator|+
-literal|" but it does not belong to any file"
 argument_list|)
 expr_stmt|;
 comment|// we could add this block to invalidate set of this datanode.
@@ -11344,6 +11305,24 @@ operator|+
 name|node
 argument_list|)
 expr_stmt|;
+name|blockLog
+operator|.
+name|warn
+argument_list|(
+literal|"BLOCK* addStoredBlock: block {} moved to storageType "
+operator|+
+literal|"{} on node {}"
+argument_list|,
+name|storedBlock
+argument_list|,
+name|storageInfo
+operator|.
+name|getStorageType
+argument_list|()
+argument_list|,
+name|node
+argument_list|)
+expr_stmt|;
 block|}
 else|else
 block|{
@@ -11371,18 +11350,14 @@ name|blockLog
 operator|.
 name|warn
 argument_list|(
-literal|"BLOCK* addStoredBlock: "
+literal|"BLOCK* addStoredBlock: Redundant addStoredBlock request"
 operator|+
-literal|"Redundant addStoredBlock request received for "
-operator|+
+literal|" received for {} on node {} size {}"
+argument_list|,
 name|storedBlock
-operator|+
-literal|" on "
-operator|+
+argument_list|,
 name|node
-operator|+
-literal|" size "
-operator|+
+argument_list|,
 name|storedBlock
 operator|.
 name|getNumBytes
@@ -11716,6 +11691,9 @@ operator|.
 name|info
 argument_list|(
 name|sb
+operator|.
+name|toString
+argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
@@ -11818,14 +11796,12 @@ name|blockLog
 operator|.
 name|info
 argument_list|(
-literal|"invalidateCorruptReplicas "
+literal|"invalidateCorruptReplicas error in deleting bad block"
 operator|+
-literal|"error in deleting bad block "
-operator|+
+literal|" {} on {}"
+argument_list|,
 name|blk
-operator|+
-literal|" on "
-operator|+
+argument_list|,
 name|node
 argument_list|,
 name|e
@@ -13208,15 +13184,11 @@ name|info
 argument_list|(
 literal|"BLOCK* chooseExcessReplicates: "
 operator|+
-literal|"("
-operator|+
+literal|"({}, {}) is added to invalidated blocks set"
+argument_list|,
 name|cur
-operator|+
-literal|", "
-operator|+
+argument_list|,
 name|b
-operator|+
-literal|") is added to invalidated blocks set"
 argument_list|)
 expr_stmt|;
 block|}
@@ -13416,32 +13388,19 @@ operator|.
 name|incrementAndGet
 argument_list|()
 expr_stmt|;
-if|if
-condition|(
-name|blockLog
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|blockLog
 operator|.
 name|debug
 argument_list|(
-literal|"BLOCK* addToExcessReplicate:"
+literal|"BLOCK* addToExcessReplicate: ({}, {}) is added to"
 operator|+
-literal|" ("
-operator|+
+literal|" excessReplicateMap"
+argument_list|,
 name|dn
-operator|+
-literal|", "
-operator|+
+argument_list|,
 name|block
-operator|+
-literal|") is added to excessReplicateMap"
 argument_list|)
 expr_stmt|;
-block|}
 block|}
 block|}
 comment|/**    * Modify (block-->datanode) map. Possibly generate replication tasks, if the    * removed block is still valid.    */
@@ -13457,28 +13416,17 @@ name|DatanodeDescriptor
 name|node
 parameter_list|)
 block|{
-if|if
-condition|(
-name|blockLog
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|blockLog
 operator|.
 name|debug
 argument_list|(
-literal|"BLOCK* removeStoredBlock: "
-operator|+
+literal|"BLOCK* removeStoredBlock: {} from {}"
+argument_list|,
 name|block
-operator|+
-literal|" from "
-operator|+
+argument_list|,
 name|node
 argument_list|)
 expr_stmt|;
-block|}
 assert|assert
 operator|(
 name|namesystem
@@ -13501,28 +13449,19 @@ name|node
 argument_list|)
 condition|)
 block|{
-if|if
-condition|(
-name|blockLog
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|blockLog
 operator|.
 name|debug
 argument_list|(
-literal|"BLOCK* removeStoredBlock: "
+literal|"BLOCK* removeStoredBlock: {} has already been"
 operator|+
+literal|" removed from node {}"
+argument_list|,
 name|block
-operator|+
-literal|" has already been removed from node "
-operator|+
+argument_list|,
 name|node
 argument_list|)
 expr_stmt|;
-block|}
 return|return;
 block|}
 comment|//
@@ -13608,26 +13547,17 @@ operator|.
 name|decrementAndGet
 argument_list|()
 expr_stmt|;
-if|if
-condition|(
-name|blockLog
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|blockLog
 operator|.
 name|debug
 argument_list|(
-literal|"BLOCK* removeStoredBlock: "
+literal|"BLOCK* removeStoredBlock: {} is removed from "
 operator|+
+literal|"excessBlocks"
+argument_list|,
 name|block
-operator|+
-literal|" is removed from excessBlocks"
 argument_list|)
 expr_stmt|;
-block|}
 if|if
 condition|(
 name|excessBlocks
@@ -13915,12 +13845,12 @@ name|blockLog
 operator|.
 name|warn
 argument_list|(
-literal|"BLOCK* blockReceived: "
+literal|"BLOCK* blockReceived: {} is expected to be removed "
 operator|+
+literal|"from an unrecorded node {}"
+argument_list|,
 name|block
-operator|+
-literal|" is expected to be removed from an unrecorded node "
-operator|+
+argument_list|,
 name|delHint
 argument_list|)
 expr_stmt|;
@@ -14135,15 +14065,11 @@ name|blockLog
 operator|.
 name|info
 argument_list|(
-literal|"BLOCK* addBlock: logged info for "
-operator|+
+literal|"BLOCK* addBlock: logged info for {} of {} reported."
+argument_list|,
 name|maxNumBlocksToLog
-operator|+
-literal|" of "
-operator|+
+argument_list|,
 name|numBlocksLogged
-operator|+
-literal|" reported."
 argument_list|)
 expr_stmt|;
 block|}
@@ -14159,22 +14085,18 @@ name|blockLog
 operator|.
 name|info
 argument_list|(
-literal|"BLOCK* addBlock: block "
+literal|"BLOCK* addBlock: block {} on node {} size {} does not "
 operator|+
+literal|"belong to any file"
+argument_list|,
 name|b
-operator|+
-literal|" on "
-operator|+
+argument_list|,
 name|node
-operator|+
-literal|" size "
-operator|+
+argument_list|,
 name|b
 operator|.
 name|getNumBytes
 argument_list|()
-operator|+
-literal|" does not belong to any file"
 argument_list|)
 expr_stmt|;
 name|addToInvalidates
@@ -14271,8 +14193,8 @@ name|warn
 argument_list|(
 literal|"BLOCK* processIncrementalBlockReport"
 operator|+
-literal|" is received from dead or unregistered node "
-operator|+
+literal|" is received from dead or unregistered node {}"
+argument_list|,
 name|nodeID
 argument_list|)
 expr_stmt|;
@@ -14433,77 +14355,43 @@ assert|;
 comment|// if assertions are enabled, throw.
 break|break;
 block|}
-if|if
-condition|(
-name|blockLog
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|blockLog
 operator|.
 name|debug
 argument_list|(
-literal|"BLOCK* block "
-operator|+
-operator|(
+literal|"BLOCK* block {}: {} is received from {}"
+argument_list|,
 name|rdbi
 operator|.
 name|getStatus
 argument_list|()
-operator|)
-operator|+
-literal|": "
-operator|+
+argument_list|,
 name|rdbi
 operator|.
 name|getBlock
 argument_list|()
-operator|+
-literal|" is received from "
-operator|+
+argument_list|,
 name|nodeID
 argument_list|)
 expr_stmt|;
 block|}
-block|}
-if|if
-condition|(
-name|blockLog
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|blockLog
 operator|.
 name|debug
 argument_list|(
-literal|"*BLOCK* NameNode.processIncrementalBlockReport: "
+literal|"*BLOCK* NameNode.processIncrementalBlockReport: from "
 operator|+
-literal|"from "
-operator|+
+literal|"{} receiving: {}, received: {}, deleted: {}"
+argument_list|,
 name|nodeID
-operator|+
-literal|" receiving: "
-operator|+
+argument_list|,
 name|receiving
-operator|+
-literal|", "
-operator|+
-literal|" received: "
-operator|+
+argument_list|,
 name|received
-operator|+
-literal|", "
-operator|+
-literal|" deleted: "
-operator|+
+argument_list|,
 name|deleted
 argument_list|)
 expr_stmt|;
-block|}
 block|}
 comment|/**    * Return the number of nodes hosting a given block, grouped    * by the state of those replicas.    */
 DECL|method|countNodes (Block b)
@@ -16006,36 +15894,23 @@ name|writeUnlock
 argument_list|()
 expr_stmt|;
 block|}
-if|if
-condition|(
-name|blockLog
-operator|.
-name|isInfoEnabled
-argument_list|()
-condition|)
-block|{
 name|blockLog
 operator|.
 name|info
 argument_list|(
-literal|"BLOCK* "
-operator|+
+literal|"BLOCK* {}: ask {} to delete {}"
+argument_list|,
 name|getClass
 argument_list|()
 operator|.
 name|getSimpleName
 argument_list|()
-operator|+
-literal|": ask "
-operator|+
+argument_list|,
 name|dn
-operator|+
-literal|" to delete "
-operator|+
+argument_list|,
 name|toInvalidate
 argument_list|)
 expr_stmt|;
-block|}
 return|return
 name|toInvalidate
 operator|.
