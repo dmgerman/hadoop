@@ -1368,6 +1368,16 @@ operator|.
 name|getResourcePreempted
 argument_list|()
 argument_list|)
+operator|.
+name|add
+argument_list|(
+literal|"applicationType"
+argument_list|,
+name|app
+operator|.
+name|getApplicationType
+argument_list|()
+argument_list|)
 decl_stmt|;
 return|return
 name|summary
