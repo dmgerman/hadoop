@@ -1644,8 +1644,9 @@ block|{
 name|Job
 name|job
 init|=
-operator|new
 name|Job
+operator|.
+name|getInstance
 argument_list|(
 name|jconf
 argument_list|)

@@ -1802,8 +1802,9 @@ specifier|final
 name|Job
 name|job
 init|=
-operator|new
 name|Job
+operator|.
+name|getInstance
 argument_list|(
 name|conf
 argument_list|,

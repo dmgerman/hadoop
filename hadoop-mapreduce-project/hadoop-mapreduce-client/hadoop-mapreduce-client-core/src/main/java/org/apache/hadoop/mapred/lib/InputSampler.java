@@ -287,8 +287,9 @@ name|InterruptedException
 block|{
 name|writePartitionFile
 argument_list|(
-operator|new
 name|Job
+operator|.
+name|getInstance
 argument_list|(
 name|job
 argument_list|)

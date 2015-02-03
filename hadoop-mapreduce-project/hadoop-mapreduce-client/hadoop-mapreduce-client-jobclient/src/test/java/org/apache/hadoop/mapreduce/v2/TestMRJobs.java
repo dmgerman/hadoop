@@ -3941,8 +3941,9 @@ comment|//reduce the number of attempts
 name|Job
 name|job
 init|=
-operator|new
 name|Job
+operator|.
+name|getInstance
 argument_list|(
 name|myConf
 argument_list|)

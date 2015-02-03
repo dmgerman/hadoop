@@ -372,8 +372,9 @@ name|IOException
 block|{
 name|this
 argument_list|(
-operator|new
 name|Job
+operator|.
+name|getInstance
 argument_list|(
 name|conf
 argument_list|)

@@ -371,8 +371,9 @@ name|super
 operator|.
 name|getSplits
 argument_list|(
-operator|new
 name|Job
+operator|.
+name|getInstance
 argument_list|(
 name|job
 argument_list|)
@@ -615,8 +616,9 @@ name|super
 operator|.
 name|listStatus
 argument_list|(
-operator|new
 name|Job
+operator|.
+name|getInstance
 argument_list|(
 name|job
 argument_list|)

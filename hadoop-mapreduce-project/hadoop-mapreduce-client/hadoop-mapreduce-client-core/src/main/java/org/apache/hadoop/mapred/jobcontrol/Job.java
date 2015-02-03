@@ -273,7 +273,6 @@ name|IOException
 block|{
 name|super
 argument_list|(
-operator|new
 name|org
 operator|.
 name|apache
@@ -283,6 +282,8 @@ operator|.
 name|mapreduce
 operator|.
 name|Job
+operator|.
+name|getInstance
 argument_list|(
 name|jobConf
 argument_list|)
@@ -409,7 +410,6 @@ name|super
 operator|.
 name|setJob
 argument_list|(
-operator|new
 name|org
 operator|.
 name|apache
@@ -419,6 +419,8 @@ operator|.
 name|mapreduce
 operator|.
 name|Job
+operator|.
+name|getInstance
 argument_list|(
 name|jobConf
 argument_list|)

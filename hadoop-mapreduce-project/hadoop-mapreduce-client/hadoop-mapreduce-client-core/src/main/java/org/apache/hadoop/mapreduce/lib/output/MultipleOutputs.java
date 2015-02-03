@@ -1539,8 +1539,9 @@ comment|// the job thus supporting arbitrary output formats.
 name|Job
 name|job
 init|=
-operator|new
 name|Job
+operator|.
+name|getInstance
 argument_list|(
 name|context
 operator|.

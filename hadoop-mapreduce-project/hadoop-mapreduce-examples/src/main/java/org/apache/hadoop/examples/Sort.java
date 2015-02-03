@@ -900,8 +900,9 @@ block|}
 comment|// Set user-supplied (possibly default) job configs
 name|job
 operator|=
-operator|new
 name|Job
+operator|.
+name|getInstance
 argument_list|(
 name|conf
 argument_list|)

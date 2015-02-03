@@ -411,8 +411,9 @@ expr_stmt|;
 name|Job
 name|grepJob
 init|=
-operator|new
 name|Job
+operator|.
+name|getInstance
 argument_list|(
 name|conf
 argument_list|)
@@ -520,8 +521,9 @@ expr_stmt|;
 name|Job
 name|sortJob
 init|=
-operator|new
 name|Job
+operator|.
+name|getInstance
 argument_list|(
 name|conf
 argument_list|)

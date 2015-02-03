@@ -524,8 +524,12 @@ block|{
 name|this
 argument_list|(
 operator|new
+name|JobConf
+argument_list|(
+operator|new
 name|Configuration
 argument_list|()
+argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
@@ -570,7 +574,11 @@ name|IOException
 block|{
 name|this
 argument_list|(
+operator|new
+name|JobConf
+argument_list|(
 name|conf
+argument_list|)
 argument_list|)
 expr_stmt|;
 name|setJobName

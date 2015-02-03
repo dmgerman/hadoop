@@ -1136,8 +1136,9 @@ specifier|final
 name|Job
 name|baseJob
 init|=
-operator|new
 name|Job
+operator|.
+name|getInstance
 argument_list|(
 name|mrCluster
 operator|.
