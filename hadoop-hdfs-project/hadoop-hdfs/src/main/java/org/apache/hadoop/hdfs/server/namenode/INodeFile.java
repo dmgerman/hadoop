@@ -1606,8 +1606,6 @@ specifier|final
 name|int
 name|latestSnapshotId
 parameter_list|)
-throws|throws
-name|QuotaExceededException
 block|{
 name|recordModification
 argument_list|(
@@ -1629,8 +1627,6 @@ parameter_list|,
 name|boolean
 name|withBlocks
 parameter_list|)
-throws|throws
-name|QuotaExceededException
 block|{
 if|if
 condition|(
@@ -2417,7 +2413,7 @@ expr_stmt|;
 block|}
 annotation|@
 name|Override
-DECL|method|cleanSubtree (final int snapshot, int priorSnapshotId, final BlocksMapUpdateInfo collectedBlocks, final List<INode> removedINodes, final boolean countDiffChange)
+DECL|method|cleanSubtree (final int snapshot, int priorSnapshotId, final BlocksMapUpdateInfo collectedBlocks, final List<INode> removedINodes)
 specifier|public
 name|Quota
 operator|.
@@ -2441,13 +2437,7 @@ argument_list|<
 name|INode
 argument_list|>
 name|removedINodes
-parameter_list|,
-specifier|final
-name|boolean
-name|countDiffChange
 parameter_list|)
-throws|throws
-name|QuotaExceededException
 block|{
 name|FileWithSnapshotFeature
 name|sf
@@ -2476,8 +2466,6 @@ argument_list|,
 name|collectedBlocks
 argument_list|,
 name|removedINodes
-argument_list|,
-name|countDiffChange
 argument_list|)
 return|;
 block|}
@@ -2746,17 +2734,6 @@ operator|.
 name|getLastSnapshotId
 argument_list|()
 decl_stmt|;
-name|List
-argument_list|<
-name|FileDiff
-argument_list|>
-name|diffs
-init|=
-name|fileDiffList
-operator|.
-name|asList
-argument_list|()
-decl_stmt|;
 if|if
 condition|(
 name|lastSnapshotId
@@ -2772,13 +2749,6 @@ operator|.
 name|CURRENT_STATE_ID
 condition|)
 block|{
-name|nsDelta
-operator|+=
-name|diffs
-operator|.
-name|size
-argument_list|()
-expr_stmt|;
 name|dsDelta
 operator|=
 name|diskspaceConsumed

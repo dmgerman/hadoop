@@ -3161,8 +3161,6 @@ specifier|final
 name|INodesInPath
 name|iip
 parameter_list|)
-throws|throws
-name|QuotaExceededException
 block|{
 if|if
 condition|(
@@ -3194,9 +3192,16 @@ operator|.
 name|computeQuotaUsage
 argument_list|()
 decl_stmt|;
-name|updateCount
+name|unprotectedUpdateCount
 argument_list|(
 name|iip
+argument_list|,
+name|iip
+operator|.
+name|length
+argument_list|()
+operator|-
+literal|1
 argument_list|,
 operator|-
 name|counts
@@ -3217,8 +3222,6 @@ name|Quota
 operator|.
 name|DISKSPACE
 argument_list|)
-argument_list|,
-literal|false
 argument_list|)
 expr_stmt|;
 block|}
@@ -3355,7 +3358,6 @@ expr_stmt|;
 block|}
 comment|/**     * update quota of each inode and check to see if quota is exceeded.     * See {@link #updateCount(INodesInPath, long, long, boolean)}    */
 DECL|method|updateCountNoQuotaCheck (INodesInPath inodesInPath, int numOfINodes, long nsDelta, long dsDelta)
-specifier|private
 name|void
 name|updateCountNoQuotaCheck
 parameter_list|(
@@ -4223,7 +4225,10 @@ block|}
 block|}
 block|}
 comment|/**    * Add a child to the end of the path specified by INodesInPath.    * @return an INodesInPath instance containing the new INode    */
+annotation|@
+name|VisibleForTesting
 DECL|method|addLastINode (INodesInPath existing, INode inode, boolean checkQuota)
+specifier|public
 name|INodesInPath
 name|addLastINode
 parameter_list|(
@@ -4608,7 +4613,10 @@ literal|null
 return|;
 block|}
 comment|/**    * Remove the last inode in the path from the namespace.    * Note: the caller needs to update the ancestors' quota count.    *    * @return -1 for failing to remove;    *          0 for removing a reference whose referred inode has other     *            reference nodes;    *          1 otherwise.    */
+annotation|@
+name|VisibleForTesting
 DECL|method|removeLastINode (final INodesInPath iip)
+specifier|public
 name|long
 name|removeLastINode
 parameter_list|(
@@ -4616,8 +4624,6 @@ specifier|final
 name|INodesInPath
 name|iip
 parameter_list|)
-throws|throws
-name|QuotaExceededException
 block|{
 specifier|final
 name|int

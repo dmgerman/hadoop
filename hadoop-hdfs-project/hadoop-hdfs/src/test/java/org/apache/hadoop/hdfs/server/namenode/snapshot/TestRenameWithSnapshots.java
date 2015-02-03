@@ -444,7 +444,7 @@ name|hdfs
 operator|.
 name|protocol
 operator|.
-name|QuotaExceededException
+name|NSQuotaExceededException
 import|;
 end_import
 
@@ -658,6 +658,24 @@ name|server
 operator|.
 name|namenode
 operator|.
+name|INodesInPath
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|server
+operator|.
+name|namenode
+operator|.
 name|Quota
 import|;
 end_import
@@ -801,6 +819,22 @@ operator|.
 name|mockito
 operator|.
 name|Mockito
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|mockito
+operator|.
+name|internal
+operator|.
+name|util
+operator|.
+name|reflection
+operator|.
+name|Whitebox
 import|;
 end_import
 
@@ -8919,7 +8953,7 @@ argument_list|()
 decl_stmt|;
 name|assertEquals
 argument_list|(
-literal|4
+literal|3
 argument_list|,
 name|q
 operator|.
@@ -11853,15 +11887,15 @@ argument_list|,
 literal|"s2"
 argument_list|)
 expr_stmt|;
-comment|// set ns quota of dir2 to 5, so the current remaining is 2 (already has
-comment|// dir2, subdir2, and s2)
+comment|// set ns quota of dir2 to 4, so the current remaining is 2 (already has
+comment|// dir2, and subdir2)
 name|hdfs
 operator|.
 name|setQuota
 argument_list|(
 name|dir2
 argument_list|,
-literal|5
+literal|4
 argument_list|,
 name|Long
 operator|.
@@ -11885,10 +11919,71 @@ name|getName
 argument_list|()
 argument_list|)
 decl_stmt|;
+name|FSDirectory
+name|fsdir2
+init|=
+name|Mockito
+operator|.
+name|spy
+argument_list|(
+name|fsdir
+argument_list|)
+decl_stmt|;
+name|Mockito
+operator|.
+name|doThrow
+argument_list|(
+operator|new
+name|NSQuotaExceededException
+argument_list|(
+literal|"fake exception"
+argument_list|)
+argument_list|)
+operator|.
+name|when
+argument_list|(
+name|fsdir2
+argument_list|)
+operator|.
+name|addLastINode
+argument_list|(
+operator|(
+name|INodesInPath
+operator|)
+name|Mockito
+operator|.
+name|anyObject
+argument_list|()
+argument_list|,
+operator|(
+name|INode
+operator|)
+name|Mockito
+operator|.
+name|anyObject
+argument_list|()
+argument_list|,
+name|Mockito
+operator|.
+name|anyBoolean
+argument_list|()
+argument_list|)
+expr_stmt|;
+name|Whitebox
+operator|.
+name|setInternalState
+argument_list|(
+name|fsn
+argument_list|,
+literal|"dir"
+argument_list|,
+name|fsdir2
+argument_list|)
+expr_stmt|;
 comment|// rename /test/dir1/foo to /test/dir2/subdir2/foo.
-comment|// FSDirectory#verifyQuota4Rename will pass since foo/bar only be counted
-comment|// as 2 in NS quota. However, the rename operation will fail when adding
-comment|// foo to subdir2, since we will create a snapshot diff for subdir2.
+comment|// FSDirectory#verifyQuota4Rename will pass since the remaining quota is 2.
+comment|// However, the rename operation will fail since we let addLastINode throw
+comment|// NSQuotaExceededException
 name|boolean
 name|rename
 init|=
@@ -11930,7 +12025,7 @@ expr_stmt|;
 name|INodeDirectory
 name|dir1Node
 init|=
-name|fsdir
+name|fsdir2
 operator|.
 name|getINode4Write
 argument_list|(
@@ -11999,7 +12094,7 @@ expr_stmt|;
 name|INode
 name|barNode
 init|=
-name|fsdir
+name|fsdir2
 operator|.
 name|getINode4Write
 argument_list|(
@@ -12105,7 +12200,7 @@ comment|// check dir2
 name|INodeDirectory
 name|dir2Node
 init|=
-name|fsdir
+name|fsdir2
 operator|.
 name|getINode4Write
 argument_list|(
@@ -12138,7 +12233,7 @@ argument_list|()
 decl_stmt|;
 name|assertEquals
 argument_list|(
-literal|3
+literal|2
 argument_list|,
 name|counts
 operator|.
@@ -12219,7 +12314,7 @@ name|assertSame
 argument_list|(
 name|subdir2Node
 argument_list|,
-name|fsdir
+name|fsdir2
 operator|.
 name|getINode4Write
 argument_list|(
@@ -12420,8 +12515,8 @@ argument_list|,
 literal|"s2"
 argument_list|)
 expr_stmt|;
-comment|// set ns quota of dir2 to 4, so the current remaining is 0 (already has
-comment|// dir2, sub_dir2, subsub_dir2, and s2)
+comment|// set ns quota of dir2 to 4, so the current remaining is 1 (already has
+comment|// dir2, sub_dir2, and subsub_dir2)
 name|hdfs
 operator|.
 name|setQuota
@@ -12437,10 +12532,58 @@ operator|-
 literal|1
 argument_list|)
 expr_stmt|;
+name|FSDirectory
+name|fsdir2
+init|=
+name|Mockito
+operator|.
+name|spy
+argument_list|(
+name|fsdir
+argument_list|)
+decl_stmt|;
+name|Mockito
+operator|.
+name|doThrow
+argument_list|(
+operator|new
+name|RuntimeException
+argument_list|(
+literal|"fake exception"
+argument_list|)
+argument_list|)
+operator|.
+name|when
+argument_list|(
+name|fsdir2
+argument_list|)
+operator|.
+name|removeLastINode
+argument_list|(
+operator|(
+name|INodesInPath
+operator|)
+name|Mockito
+operator|.
+name|anyObject
+argument_list|()
+argument_list|)
+expr_stmt|;
+name|Whitebox
+operator|.
+name|setInternalState
+argument_list|(
+name|fsn
+argument_list|,
+literal|"dir"
+argument_list|,
+name|fsdir2
+argument_list|)
+expr_stmt|;
 comment|// rename /test/dir1/foo to /test/dir2/sub_dir2/subsub_dir2.
 comment|// FSDirectory#verifyQuota4Rename will pass since foo only be counted
 comment|// as 1 in NS quota. However, the rename operation will fail when removing
-comment|// subsub_dir2 since this step tries to add a snapshot diff in sub_dir2.
+comment|// subsub_dir2.
 try|try
 block|{
 name|hdfs
@@ -12464,18 +12607,14 @@ expr_stmt|;
 block|}
 catch|catch
 parameter_list|(
-name|QuotaExceededException
+name|Exception
 name|e
 parameter_list|)
 block|{
 name|String
 name|msg
 init|=
-literal|"Failed to record modification for snapshot: "
-operator|+
-literal|"The NameSpace quota (directories and files)"
-operator|+
-literal|" is exceeded: quota=4 file count=5"
+literal|"fake exception"
 decl_stmt|;
 name|GenericTestUtils
 operator|.
@@ -12501,7 +12640,7 @@ expr_stmt|;
 name|INodeDirectory
 name|dir1Node
 init|=
-name|fsdir
+name|fsdir2
 operator|.
 name|getINode4Write
 argument_list|(
@@ -12651,7 +12790,7 @@ comment|// check dir2
 name|INodeDirectory
 name|dir2Node
 init|=
-name|fsdir
+name|fsdir2
 operator|.
 name|getINode4Write
 argument_list|(
@@ -12684,7 +12823,7 @@ argument_list|()
 decl_stmt|;
 name|assertEquals
 argument_list|(
-literal|4
+literal|3
 argument_list|,
 name|counts
 operator|.
@@ -12751,17 +12890,6 @@ argument_list|(
 literal|0
 argument_list|)
 decl_stmt|;
-name|assertTrue
-argument_list|(
-name|subdir2Node
-operator|.
-name|asDirectory
-argument_list|()
-operator|.
-name|isWithSnapshot
-argument_list|()
-argument_list|)
-expr_stmt|;
 name|assertSame
 argument_list|(
 name|dir2Node
@@ -12776,7 +12904,7 @@ name|assertSame
 argument_list|(
 name|subdir2Node
 argument_list|,
-name|fsdir
+name|fsdir2
 operator|.
 name|getINode4Write
 argument_list|(
@@ -12790,7 +12918,7 @@ expr_stmt|;
 name|INode
 name|subsubdir2Node
 init|=
-name|fsdir
+name|fsdir2
 operator|.
 name|getINode4Write
 argument_list|(
@@ -12886,29 +13014,6 @@ name|DELETED
 argument_list|)
 operator|.
 name|isEmpty
-argument_list|()
-argument_list|)
-expr_stmt|;
-name|diffList
-operator|=
-name|subdir2Node
-operator|.
-name|asDirectory
-argument_list|()
-operator|.
-name|getDiffs
-argument_list|()
-operator|.
-name|asList
-argument_list|()
-expr_stmt|;
-name|assertEquals
-argument_list|(
-literal|0
-argument_list|,
-name|diffList
-operator|.
-name|size
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -13561,7 +13666,7 @@ argument_list|()
 decl_stmt|;
 name|assertEquals
 argument_list|(
-literal|7
+literal|4
 argument_list|,
 name|counts
 operator|.
@@ -14578,7 +14683,7 @@ argument_list|()
 decl_stmt|;
 name|assertEquals
 argument_list|(
-literal|4
+literal|3
 argument_list|,
 name|q1
 operator|.
@@ -14622,7 +14727,7 @@ argument_list|()
 decl_stmt|;
 name|assertEquals
 argument_list|(
-literal|2
+literal|1
 argument_list|,
 name|q2
 operator|.
@@ -15103,7 +15208,7 @@ argument_list|()
 decl_stmt|;
 name|assertEquals
 argument_list|(
-literal|9
+literal|7
 argument_list|,
 name|q1
 operator|.
@@ -15147,7 +15252,7 @@ argument_list|()
 decl_stmt|;
 name|assertEquals
 argument_list|(
-literal|2
+literal|1
 argument_list|,
 name|q2
 operator|.

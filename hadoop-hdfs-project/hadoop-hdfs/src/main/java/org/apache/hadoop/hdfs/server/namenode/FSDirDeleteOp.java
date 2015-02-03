@@ -60,22 +60,6 @@ name|hadoop
 operator|.
 name|hdfs
 operator|.
-name|protocol
-operator|.
-name|QuotaExceededException
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|hdfs
-operator|.
 name|server
 operator|.
 name|namenode
@@ -932,8 +916,6 @@ parameter_list|,
 name|long
 name|mtime
 parameter_list|)
-throws|throws
-name|QuotaExceededException
 block|{
 assert|assert
 name|fsd
@@ -1082,8 +1064,6 @@ argument_list|,
 name|collectedBlocks
 argument_list|,
 name|removedINodes
-argument_list|,
-literal|true
 argument_list|)
 decl_stmt|;
 name|removed
@@ -1097,13 +1077,18 @@ operator|.
 name|NAMESPACE
 argument_list|)
 expr_stmt|;
-comment|// TODO: quota verification may fail the deletion here. We should not
-comment|// count the snapshot diff into quota usage in the future.
 name|fsd
 operator|.
-name|updateCount
+name|updateCountNoQuotaCheck
 argument_list|(
 name|iip
+argument_list|,
+name|iip
+operator|.
+name|length
+argument_list|()
+operator|-
+literal|1
 argument_list|,
 operator|-
 name|counts
@@ -1124,8 +1109,6 @@ name|Quota
 operator|.
 name|DISKSPACE
 argument_list|)
-argument_list|,
-literal|true
 argument_list|)
 expr_stmt|;
 block|}

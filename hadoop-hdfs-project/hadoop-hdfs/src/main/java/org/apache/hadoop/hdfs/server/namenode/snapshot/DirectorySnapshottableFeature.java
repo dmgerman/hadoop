@@ -1194,8 +1194,6 @@ argument_list|,
 name|collectedBlocks
 argument_list|,
 name|removedINodes
-argument_list|,
-literal|true
 argument_list|)
 decl_stmt|;
 name|INodeDirectory

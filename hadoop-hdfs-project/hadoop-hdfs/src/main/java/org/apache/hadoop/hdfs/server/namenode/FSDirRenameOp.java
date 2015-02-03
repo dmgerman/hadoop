@@ -3479,8 +3479,6 @@ DECL|method|removeSrc4OldRename ()
 name|boolean
 name|removeSrc4OldRename
 parameter_list|()
-throws|throws
-name|IOException
 block|{
 specifier|final
 name|long
@@ -3565,8 +3563,6 @@ DECL|method|removeDst ()
 name|long
 name|removeDst
 parameter_list|()
-throws|throws
-name|IOException
 block|{
 name|long
 name|removedNum
@@ -4093,8 +4089,6 @@ argument_list|,
 name|collectedBlocks
 argument_list|,
 name|removedINodes
-argument_list|,
-literal|true
 argument_list|)
 operator|.
 name|get

@@ -520,7 +520,6 @@ block|}
 comment|/**      * Replace the given child from the created/deleted list.      * @return true if the child is replaced; false if the child is not found.      */
 DECL|method|replace (final ListType type, final INode oldChild, final INode newChild)
 specifier|private
-specifier|final
 name|boolean
 name|replace
 parameter_list|(
@@ -617,7 +616,6 @@ return|;
 block|}
 DECL|method|removeChild (ListType type, final INode child)
 specifier|private
-specifier|final
 name|boolean
 name|removeChild
 parameter_list|(
@@ -2359,8 +2357,6 @@ argument_list|,
 name|collectedBlocks
 argument_list|,
 name|removedINodes
-argument_list|,
-literal|true
 argument_list|)
 expr_stmt|;
 block|}
@@ -2408,8 +2404,6 @@ argument_list|,
 name|collectedBlocks
 argument_list|,
 name|removedINodes
-argument_list|,
-literal|true
 argument_list|)
 expr_stmt|;
 block|}
@@ -2534,8 +2528,6 @@ argument_list|,
 name|collectedBlocks
 argument_list|,
 name|removedINodes
-argument_list|,
-literal|true
 argument_list|)
 expr_stmt|;
 block|}
@@ -2626,7 +2618,7 @@ block|}
 block|}
 block|}
 comment|/**    * Clean an inode while we move it from the deleted list of post to the    * deleted list of prior.    * @param inode The inode to clean.    * @param post The post snapshot.    * @param prior The id of the prior snapshot.    * @param collectedBlocks Used to collect blocks for later deletion.    * @return Quota usage update.    */
-DECL|method|cleanDeletedINode (INode inode, final int post, final int prior, final BlocksMapUpdateInfo collectedBlocks, final List<INode> removedINodes, final boolean countDiffChange)
+DECL|method|cleanDeletedINode (INode inode, final int post, final int prior, final BlocksMapUpdateInfo collectedBlocks, final List<INode> removedINodes)
 specifier|private
 specifier|static
 name|Quota
@@ -2655,13 +2647,7 @@ argument_list|<
 name|INode
 argument_list|>
 name|removedINodes
-parameter_list|,
-specifier|final
-name|boolean
-name|countDiffChange
 parameter_list|)
-throws|throws
-name|QuotaExceededException
 block|{
 name|Quota
 operator|.
@@ -2754,8 +2740,6 @@ argument_list|,
 name|collectedBlocks
 argument_list|,
 name|removedINodes
-argument_list|,
-name|countDiffChange
 argument_list|)
 expr_stmt|;
 block|}
@@ -2807,8 +2791,6 @@ argument_list|,
 name|collectedBlocks
 argument_list|,
 name|removedINodes
-argument_list|,
-name|countDiffChange
 argument_list|)
 argument_list|)
 expr_stmt|;
@@ -3141,8 +3123,6 @@ parameter_list|,
 name|int
 name|latestSnapshotId
 parameter_list|)
-throws|throws
-name|QuotaExceededException
 block|{
 comment|// For a directory that is not a renamed node, if isInLatestSnapshot returns
 comment|// false, the directory is not in the latest snapshot, thus we do not need
@@ -3344,8 +3324,6 @@ specifier|final
 name|INode
 name|snapshotCopy
 parameter_list|)
-throws|throws
-name|QuotaExceededException
 block|{
 name|Preconditions
 operator|.
@@ -3526,23 +3504,6 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-name|counts
-operator|.
-name|add
-argument_list|(
-name|Quota
-operator|.
-name|NAMESPACE
-argument_list|,
-name|diffs
-operator|.
-name|asList
-argument_list|()
-operator|.
-name|size
-argument_list|()
-argument_list|)
-expr_stmt|;
 return|return
 name|counts
 return|;
@@ -3875,7 +3836,7 @@ literal|false
 return|;
 block|}
 block|}
-DECL|method|cleanDirectory (final INodeDirectory currentINode, final int snapshot, int prior, final BlocksMapUpdateInfo collectedBlocks, final List<INode> removedINodes, final boolean countDiffChange)
+DECL|method|cleanDirectory (final INodeDirectory currentINode, final int snapshot, int prior, final BlocksMapUpdateInfo collectedBlocks, final List<INode> removedINodes)
 specifier|public
 name|Quota
 operator|.
@@ -3903,13 +3864,7 @@ argument_list|<
 name|INode
 argument_list|>
 name|removedINodes
-parameter_list|,
-specifier|final
-name|boolean
-name|countDiffChange
 parameter_list|)
-throws|throws
-name|QuotaExceededException
 block|{
 name|Quota
 operator|.
@@ -4012,8 +3967,6 @@ argument_list|,
 name|removedINodes
 argument_list|,
 name|priorDeleted
-argument_list|,
-name|countDiffChange
 argument_list|)
 argument_list|)
 expr_stmt|;
@@ -4139,8 +4092,6 @@ argument_list|,
 name|collectedBlocks
 argument_list|,
 name|removedINodes
-argument_list|,
-name|countDiffChange
 argument_list|)
 argument_list|)
 expr_stmt|;
@@ -4161,8 +4112,6 @@ argument_list|,
 name|removedINodes
 argument_list|,
 name|priorDeleted
-argument_list|,
-name|countDiffChange
 argument_list|)
 argument_list|)
 expr_stmt|;
@@ -4261,8 +4210,6 @@ argument_list|,
 name|collectedBlocks
 argument_list|,
 name|removedINodes
-argument_list|,
-name|countDiffChange
 argument_list|)
 argument_list|)
 expr_stmt|;
@@ -4323,8 +4270,6 @@ argument_list|,
 name|collectedBlocks
 argument_list|,
 name|removedINodes
-argument_list|,
-name|countDiffChange
 argument_list|)
 argument_list|)
 expr_stmt|;

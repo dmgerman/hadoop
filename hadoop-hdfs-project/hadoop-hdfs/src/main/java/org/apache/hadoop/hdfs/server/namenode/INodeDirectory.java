@@ -144,22 +144,6 @@ name|hadoop
 operator|.
 name|hdfs
 operator|.
-name|protocol
-operator|.
-name|BlockStoragePolicy
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|hdfs
-operator|.
 name|DFSUtil
 import|;
 end_import
@@ -1875,8 +1859,6 @@ parameter_list|(
 name|int
 name|latestSnapshotId
 parameter_list|)
-throws|throws
-name|QuotaExceededException
 block|{
 if|if
 condition|(
@@ -1949,8 +1931,6 @@ specifier|final
 name|INode
 name|snapshotCopy
 parameter_list|)
-throws|throws
-name|QuotaExceededException
 block|{
 if|if
 condition|(
@@ -2324,8 +2304,6 @@ parameter_list|,
 name|int
 name|latestSnapshotId
 parameter_list|)
-throws|throws
-name|QuotaExceededException
 block|{
 if|if
 condition|(
@@ -3394,7 +3372,7 @@ argument_list|()
 expr_stmt|;
 block|}
 comment|/** Call cleanSubtree(..) recursively down the subtree. */
-DECL|method|cleanSubtreeRecursively (final int snapshot, int prior, final BlocksMapUpdateInfo collectedBlocks, final List<INode> removedINodes, final Map<INode, INode> excludedNodes, final boolean countDiffChange)
+DECL|method|cleanSubtreeRecursively (final int snapshot, int prior, final BlocksMapUpdateInfo collectedBlocks, final List<INode> removedINodes, final Map<INode, INode> excludedNodes)
 specifier|public
 name|Quota
 operator|.
@@ -3427,13 +3405,7 @@ argument_list|,
 name|INode
 argument_list|>
 name|excludedNodes
-parameter_list|,
-specifier|final
-name|boolean
-name|countDiffChange
 parameter_list|)
-throws|throws
-name|QuotaExceededException
 block|{
 name|Quota
 operator|.
@@ -3522,8 +3494,6 @@ argument_list|,
 name|collectedBlocks
 argument_list|,
 name|removedINodes
-argument_list|,
-name|countDiffChange
 argument_list|)
 decl_stmt|;
 name|counts
@@ -3637,7 +3607,7 @@ expr_stmt|;
 block|}
 annotation|@
 name|Override
-DECL|method|cleanSubtree (final int snapshotId, int priorSnapshotId, final BlocksMapUpdateInfo collectedBlocks, final List<INode> removedINodes, final boolean countDiffChange)
+DECL|method|cleanSubtree (final int snapshotId, int priorSnapshotId, final BlocksMapUpdateInfo collectedBlocks, final List<INode> removedINodes)
 specifier|public
 name|Quota
 operator|.
@@ -3661,13 +3631,7 @@ argument_list|<
 name|INode
 argument_list|>
 name|removedINodes
-parameter_list|,
-specifier|final
-name|boolean
-name|countDiffChange
 parameter_list|)
-throws|throws
-name|QuotaExceededException
 block|{
 name|DirectoryWithSnapshotFeature
 name|sf
@@ -3697,8 +3661,6 @@ argument_list|,
 name|collectedBlocks
 argument_list|,
 name|removedINodes
-argument_list|,
-name|countDiffChange
 argument_list|)
 return|;
 block|}
@@ -3770,8 +3732,6 @@ argument_list|,
 name|removedINodes
 argument_list|,
 literal|null
-argument_list|,
-name|countDiffChange
 argument_list|)
 decl_stmt|;
 if|if

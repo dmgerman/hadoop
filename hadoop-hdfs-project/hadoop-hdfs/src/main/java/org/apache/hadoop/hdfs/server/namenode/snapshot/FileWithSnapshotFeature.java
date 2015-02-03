@@ -56,22 +56,6 @@ name|hadoop
 operator|.
 name|hdfs
 operator|.
-name|protocol
-operator|.
-name|QuotaExceededException
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|hdfs
-operator|.
 name|server
 operator|.
 name|blockmanagement
@@ -594,7 +578,7 @@ operator|+
 name|diffs
 return|;
 block|}
-DECL|method|cleanFile (final INodeFile file, final int snapshotId, int priorSnapshotId, final BlocksMapUpdateInfo collectedBlocks, final List<INode> removedINodes, final boolean countDiffChange)
+DECL|method|cleanFile (final INodeFile file, final int snapshotId, int priorSnapshotId, final BlocksMapUpdateInfo collectedBlocks, final List<INode> removedINodes)
 specifier|public
 name|Quota
 operator|.
@@ -622,13 +606,7 @@ argument_list|<
 name|INode
 argument_list|>
 name|removedINodes
-parameter_list|,
-specifier|final
-name|boolean
-name|countDiffChange
 parameter_list|)
-throws|throws
-name|QuotaExceededException
 block|{
 if|if
 condition|(
@@ -705,8 +683,6 @@ argument_list|,
 name|collectedBlocks
 argument_list|,
 name|removedINodes
-argument_list|,
-name|countDiffChange
 argument_list|)
 return|;
 block|}

@@ -1855,7 +1855,7 @@ name|checkQuotaUsageComputation
 argument_list|(
 name|dir
 argument_list|,
-literal|9L
+literal|8
 argument_list|,
 name|BLOCKSIZE
 operator|*
@@ -1947,7 +1947,7 @@ name|checkQuotaUsageComputation
 argument_list|(
 name|dir
 argument_list|,
-literal|14L
+literal|9L
 argument_list|,
 name|BLOCKSIZE
 operator|*
@@ -2029,7 +2029,7 @@ name|checkQuotaUsageComputation
 argument_list|(
 name|dir
 argument_list|,
-literal|17L
+literal|9L
 argument_list|,
 name|BLOCKSIZE
 operator|*
@@ -2356,7 +2356,7 @@ name|checkQuotaUsageComputation
 argument_list|(
 name|dir
 argument_list|,
-literal|18L
+literal|10L
 argument_list|,
 name|BLOCKSIZE
 operator|*
@@ -2380,7 +2380,7 @@ name|checkQuotaUsageComputation
 argument_list|(
 name|dir
 argument_list|,
-literal|19L
+literal|9L
 argument_list|,
 name|BLOCKSIZE
 operator|*
@@ -2904,7 +2904,7 @@ name|checkQuotaUsageComputation
 argument_list|(
 name|sub
 argument_list|,
-literal|4
+literal|3
 argument_list|,
 name|BLOCKSIZE
 operator|*
@@ -2950,7 +2950,7 @@ name|checkQuotaUsageComputation
 argument_list|(
 name|sub
 argument_list|,
-literal|4
+literal|3
 argument_list|,
 name|BLOCKSIZE
 operator|*
@@ -3005,7 +3005,7 @@ name|checkQuotaUsageComputation
 argument_list|(
 name|sub
 argument_list|,
-literal|6
+literal|4
 argument_list|,
 name|BLOCKSIZE
 operator|*
@@ -3053,7 +3053,7 @@ name|checkQuotaUsageComputation
 argument_list|(
 name|sub
 argument_list|,
-literal|5
+literal|4
 argument_list|,
 name|BLOCKSIZE
 operator|*
@@ -3270,7 +3270,7 @@ name|checkQuotaUsageComputation
 argument_list|(
 name|dir
 argument_list|,
-literal|8
+literal|7
 argument_list|,
 literal|3
 operator|*
@@ -3294,7 +3294,7 @@ name|checkQuotaUsageComputation
 argument_list|(
 name|dir
 argument_list|,
-literal|10
+literal|7
 argument_list|,
 literal|3
 operator|*
@@ -3329,7 +3329,7 @@ name|checkQuotaUsageComputation
 argument_list|(
 name|dir
 argument_list|,
-literal|11
+literal|7
 argument_list|,
 literal|3
 operator|*
@@ -3352,7 +3352,7 @@ name|checkQuotaUsageComputation
 argument_list|(
 name|dir
 argument_list|,
-literal|12
+literal|7
 argument_list|,
 literal|3
 operator|*
@@ -3378,7 +3378,7 @@ name|checkQuotaUsageComputation
 argument_list|(
 name|dir
 argument_list|,
-literal|7
+literal|6
 argument_list|,
 literal|2
 operator|*
@@ -4387,7 +4387,7 @@ name|checkQuotaUsageComputation
 argument_list|(
 name|dir
 argument_list|,
-literal|11
+literal|7
 argument_list|,
 name|BLOCKSIZE
 operator|*
@@ -4420,7 +4420,7 @@ name|checkQuotaUsageComputation
 argument_list|(
 name|dir
 argument_list|,
-literal|14
+literal|7
 argument_list|,
 name|BLOCKSIZE
 operator|*
@@ -4445,7 +4445,7 @@ name|checkQuotaUsageComputation
 argument_list|(
 name|dir
 argument_list|,
-literal|8
+literal|4
 argument_list|,
 literal|0
 argument_list|)
@@ -4541,19 +4541,6 @@ name|snapshotRoot
 argument_list|,
 name|modDirStr
 argument_list|)
-decl_stmt|;
-specifier|final
-name|int
-name|delta
-init|=
-name|modDirStr
-operator|.
-name|isEmpty
-argument_list|()
-condition|?
-literal|0
-else|:
-literal|1
 decl_stmt|;
 name|Path
 name|file10
@@ -4699,7 +4686,7 @@ name|snapshotRoot
 argument_list|,
 name|dirNodeNum
 operator|+
-literal|5
+literal|4
 argument_list|,
 literal|8
 operator|*
@@ -4722,9 +4709,7 @@ name|snapshotRoot
 argument_list|,
 name|dirNodeNum
 operator|+
-literal|6
-operator|+
-name|delta
+literal|4
 argument_list|,
 literal|8
 operator|*
@@ -4747,9 +4732,7 @@ name|snapshotRoot
 argument_list|,
 name|dirNodeNum
 operator|+
-literal|7
-operator|+
-name|delta
+literal|4
 argument_list|,
 literal|9
 operator|*
@@ -4772,9 +4755,7 @@ name|snapshotRoot
 argument_list|,
 name|dirNodeNum
 operator|+
-literal|8
-operator|+
-name|delta
+literal|4
 argument_list|,
 literal|10
 operator|*
@@ -4803,9 +4784,7 @@ name|snapshotRoot
 argument_list|,
 name|dirNodeNum
 operator|+
-literal|9
-operator|+
-name|delta
+literal|5
 argument_list|,
 literal|13
 operator|*
@@ -4834,9 +4813,7 @@ name|snapshotRoot
 argument_list|,
 name|dirNodeNum
 operator|+
-literal|10
-operator|+
-name|delta
+literal|6
 argument_list|,
 literal|16
 operator|*
@@ -4859,9 +4836,7 @@ name|snapshotRoot
 argument_list|,
 name|dirNodeNum
 operator|+
-literal|11
-operator|+
-name|delta
+literal|6
 argument_list|,
 literal|16
 operator|*
@@ -4890,11 +4865,7 @@ name|snapshotRoot
 argument_list|,
 name|dirNodeNum
 operator|+
-literal|12
-operator|+
-name|delta
-operator|*
-literal|2
+literal|7
 argument_list|,
 literal|19
 operator|*
@@ -4917,11 +4888,7 @@ name|snapshotRoot
 argument_list|,
 name|dirNodeNum
 operator|+
-literal|13
-operator|+
-name|delta
-operator|*
-literal|2
+literal|7
 argument_list|,
 literal|19
 operator|*
@@ -4951,11 +4918,7 @@ name|snapshotRoot
 argument_list|,
 name|dirNodeNum
 operator|+
-literal|14
-operator|+
-name|delta
-operator|*
-literal|2
+literal|7
 argument_list|,
 literal|19
 operator|*
@@ -4978,11 +4941,7 @@ name|snapshotRoot
 argument_list|,
 name|dirNodeNum
 operator|+
-literal|15
-operator|+
-name|delta
-operator|*
-literal|2
+literal|7
 argument_list|,
 literal|19
 operator|*
@@ -5005,11 +4964,7 @@ name|snapshotRoot
 argument_list|,
 name|dirNodeNum
 operator|+
-literal|16
-operator|+
-name|delta
-operator|*
-literal|2
+literal|7
 argument_list|,
 literal|19
 operator|*
@@ -5032,11 +4987,7 @@ name|snapshotRoot
 argument_list|,
 name|dirNodeNum
 operator|+
-literal|17
-operator|+
-name|delta
-operator|*
-literal|2
+literal|7
 argument_list|,
 literal|19
 operator|*
@@ -5059,11 +5010,7 @@ name|snapshotRoot
 argument_list|,
 name|dirNodeNum
 operator|+
-literal|18
-operator|+
-name|delta
-operator|*
-literal|2
+literal|7
 argument_list|,
 literal|20
 operator|*
@@ -5266,9 +5213,7 @@ name|snapshotRoot
 argument_list|,
 name|dirNodeNum
 operator|+
-literal|12
-operator|+
-name|delta
+literal|6
 argument_list|,
 literal|14
 operator|*
@@ -5642,7 +5587,7 @@ name|checkQuotaUsageComputation
 argument_list|(
 name|sub
 argument_list|,
-literal|3
+literal|2
 argument_list|,
 name|BLOCKSIZE
 operator|*
@@ -5664,7 +5609,7 @@ name|checkQuotaUsageComputation
 argument_list|(
 name|sub
 argument_list|,
-literal|3
+literal|2
 argument_list|,
 name|BLOCKSIZE
 operator|*
@@ -5685,7 +5630,7 @@ name|checkQuotaUsageComputation
 argument_list|(
 name|sub
 argument_list|,
-literal|4
+literal|2
 argument_list|,
 name|BLOCKSIZE
 operator|*
@@ -5706,7 +5651,7 @@ name|checkQuotaUsageComputation
 argument_list|(
 name|sub
 argument_list|,
-literal|5
+literal|2
 argument_list|,
 name|BLOCKSIZE
 operator|*
@@ -5728,7 +5673,7 @@ name|checkQuotaUsageComputation
 argument_list|(
 name|sub
 argument_list|,
-literal|5
+literal|2
 argument_list|,
 name|BLOCKSIZE
 operator|*
@@ -5749,7 +5694,7 @@ name|checkQuotaUsageComputation
 argument_list|(
 name|sub
 argument_list|,
-literal|4
+literal|2
 argument_list|,
 name|BLOCKSIZE
 operator|*
@@ -5811,7 +5756,7 @@ name|checkQuotaUsageComputation
 argument_list|(
 name|sub
 argument_list|,
-literal|3
+literal|2
 argument_list|,
 name|BLOCKSIZE
 operator|*
@@ -6168,7 +6113,7 @@ name|checkQuotaUsageComputation
 argument_list|(
 name|sub
 argument_list|,
-literal|5
+literal|4
 argument_list|,
 name|BLOCKSIZE
 operator|*
@@ -6234,7 +6179,7 @@ name|checkQuotaUsageComputation
 argument_list|(
 name|sub
 argument_list|,
-literal|8
+literal|6
 argument_list|,
 name|BLOCKSIZE
 operator|*
@@ -6257,7 +6202,7 @@ name|checkQuotaUsageComputation
 argument_list|(
 name|sub
 argument_list|,
-literal|9
+literal|6
 argument_list|,
 name|BLOCKSIZE
 operator|*
@@ -6280,7 +6225,7 @@ name|checkQuotaUsageComputation
 argument_list|(
 name|dir
 argument_list|,
-literal|11
+literal|7
 argument_list|,
 name|BLOCKSIZE
 operator|*
@@ -6291,7 +6236,7 @@ name|checkQuotaUsageComputation
 argument_list|(
 name|sub
 argument_list|,
-literal|9
+literal|6
 argument_list|,
 name|BLOCKSIZE
 operator|*
@@ -6323,7 +6268,7 @@ name|checkQuotaUsageComputation
 argument_list|(
 name|dir
 argument_list|,
-literal|13
+literal|7
 argument_list|,
 name|BLOCKSIZE
 operator|*
@@ -6334,7 +6279,7 @@ name|checkQuotaUsageComputation
 argument_list|(
 name|sub
 argument_list|,
-literal|11
+literal|6
 argument_list|,
 name|BLOCKSIZE
 operator|*
@@ -6359,7 +6304,7 @@ argument_list|(
 literal|"/"
 argument_list|)
 argument_list|,
-literal|16
+literal|8
 argument_list|,
 name|BLOCKSIZE
 operator|*
@@ -6370,7 +6315,7 @@ name|checkQuotaUsageComputation
 argument_list|(
 name|dir
 argument_list|,
-literal|15
+literal|7
 argument_list|,
 name|BLOCKSIZE
 operator|*
@@ -6381,7 +6326,7 @@ name|checkQuotaUsageComputation
 argument_list|(
 name|sub
 argument_list|,
-literal|13
+literal|6
 argument_list|,
 name|BLOCKSIZE
 operator|*
@@ -6563,7 +6508,7 @@ argument_list|(
 literal|"/"
 argument_list|)
 argument_list|,
-literal|14
+literal|8
 argument_list|,
 name|BLOCKSIZE
 operator|*
@@ -6574,7 +6519,7 @@ name|checkQuotaUsageComputation
 argument_list|(
 name|dir
 argument_list|,
-literal|13
+literal|7
 argument_list|,
 name|BLOCKSIZE
 operator|*
@@ -6585,7 +6530,7 @@ name|checkQuotaUsageComputation
 argument_list|(
 name|sub
 argument_list|,
-literal|12
+literal|6
 argument_list|,
 name|BLOCKSIZE
 operator|*

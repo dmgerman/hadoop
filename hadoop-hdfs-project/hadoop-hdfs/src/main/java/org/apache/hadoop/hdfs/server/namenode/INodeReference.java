@@ -172,6 +172,18 @@ name|Preconditions
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|mortbay
+operator|.
+name|log
+operator|.
+name|Log
+import|;
+end_import
+
 begin_comment
 comment|/**  * An anonymous reference to an inode.  *  * This class and its subclasses are used to support multiple access paths.  * A file/directory may have multiple access paths when it is stored in some  * snapshots and it is renamed/moved to other locations.  *   * For example,  * (1) Suppose we have /abc/foo, say the inode of foo is inode(id=1000,name=foo)  * (2) create snapshot s0 for /abc  * (3) mv /abc/foo /xyz/bar, i.e. inode(id=1000,name=...) is renamed from "foo"  *     to "bar" and its parent becomes /xyz.  *   * Then, /xyz/bar and /abc/.snapshot/s0/foo are two different access paths to  * the same inode, inode(id=1000,name=bar).  *  * With references, we have the following  * - /abc has a child ref(id=1001,name=foo).  * - /xyz has a child ref(id=1002)   * - Both ref(id=1001,name=foo) and ref(id=1002) point to another reference,  *   ref(id=1003,count=2).  * - Finally, ref(id=1003,count=2) points to inode(id=1000,name=bar).  *   * Note 1: For a reference without name, e.g. ref(id=1002), it uses the name  *         of the referred inode.  * Note 2: getParent() always returns the parent in the current state, e.g.  *         inode(id=1000,name=bar).getParent() returns /xyz but not /abc.  */
 end_comment
@@ -978,8 +990,6 @@ parameter_list|,
 name|int
 name|latestSnapshotId
 parameter_list|)
-throws|throws
-name|QuotaExceededException
 block|{
 return|return
 name|referred
@@ -1095,8 +1105,6 @@ parameter_list|(
 name|int
 name|latestSnapshotId
 parameter_list|)
-throws|throws
-name|QuotaExceededException
 block|{
 name|referred
 operator|.
@@ -1109,7 +1117,7 @@ block|}
 annotation|@
 name|Override
 comment|// used by WithCount
-DECL|method|cleanSubtree (int snapshot, int prior, BlocksMapUpdateInfo collectedBlocks, final List<INode> removedINodes, final boolean countDiffChange)
+DECL|method|cleanSubtree (int snapshot, int prior, BlocksMapUpdateInfo collectedBlocks, final List<INode> removedINodes)
 specifier|public
 name|Quota
 operator|.
@@ -1131,13 +1139,7 @@ argument_list|<
 name|INode
 argument_list|>
 name|removedINodes
-parameter_list|,
-specifier|final
-name|boolean
-name|countDiffChange
 parameter_list|)
-throws|throws
-name|QuotaExceededException
 block|{
 return|return
 name|referred
@@ -1151,8 +1153,6 @@ argument_list|,
 name|collectedBlocks
 argument_list|,
 name|removedINodes
-argument_list|,
-name|countDiffChange
 argument_list|)
 return|;
 block|}
@@ -2240,7 +2240,7 @@ return|;
 block|}
 annotation|@
 name|Override
-DECL|method|cleanSubtree (final int snapshot, int prior, final BlocksMapUpdateInfo collectedBlocks, final List<INode> removedINodes, final boolean countDiffChange)
+DECL|method|cleanSubtree (final int snapshot, int prior, final BlocksMapUpdateInfo collectedBlocks, final List<INode> removedINodes)
 specifier|public
 name|Quota
 operator|.
@@ -2264,13 +2264,7 @@ argument_list|<
 name|INode
 argument_list|>
 name|removedINodes
-parameter_list|,
-specifier|final
-name|boolean
-name|countDiffChange
 parameter_list|)
-throws|throws
-name|QuotaExceededException
 block|{
 comment|// since WithName node resides in deleted list acting as a snapshot copy,
 comment|// the parameter snapshot must be non-null
@@ -2352,8 +2346,6 @@ argument_list|,
 name|collectedBlocks
 argument_list|,
 name|removedINodes
-argument_list|,
-literal|false
 argument_list|)
 decl_stmt|;
 name|INodeReference
@@ -2371,6 +2363,8 @@ name|ref
 operator|!=
 literal|null
 condition|)
+block|{
+try|try
 block|{
 name|ref
 operator|.
@@ -2399,6 +2393,21 @@ argument_list|,
 literal|true
 argument_list|)
 expr_stmt|;
+block|}
+catch|catch
+parameter_list|(
+name|QuotaExceededException
+name|e
+parameter_list|)
+block|{
+name|Log
+operator|.
+name|warn
+argument_list|(
+literal|"Should not have QuotaExceededException"
+argument_list|)
+expr_stmt|;
+block|}
 block|}
 if|if
 condition|(
@@ -2543,8 +2552,6 @@ argument_list|,
 name|collectedBlocks
 argument_list|,
 name|removedINodes
-argument_list|,
-literal|false
 argument_list|)
 decl_stmt|;
 name|INodeReference
@@ -2780,7 +2787,7 @@ expr_stmt|;
 block|}
 annotation|@
 name|Override
-DECL|method|cleanSubtree (int snapshot, int prior, BlocksMapUpdateInfo collectedBlocks, List<INode> removedINodes, final boolean countDiffChange)
+DECL|method|cleanSubtree (int snapshot, int prior, BlocksMapUpdateInfo collectedBlocks, List<INode> removedINodes)
 specifier|public
 name|Quota
 operator|.
@@ -2801,13 +2808,7 @@ argument_list|<
 name|INode
 argument_list|>
 name|removedINodes
-parameter_list|,
-specifier|final
-name|boolean
-name|countDiffChange
 parameter_list|)
-throws|throws
-name|QuotaExceededException
 block|{
 if|if
 condition|(
@@ -2930,8 +2931,6 @@ argument_list|,
 name|collectedBlocks
 argument_list|,
 name|removedINodes
-argument_list|,
-name|countDiffChange
 argument_list|)
 return|;
 block|}
@@ -3059,8 +3058,6 @@ operator|.
 name|deleteCurrentFile
 argument_list|()
 expr_stmt|;
-try|try
-block|{
 comment|// when calling cleanSubtree of the referred node, since we
 comment|// compute quota usage updates before calling this destroy
 comment|// function, we use true for countDiffChange
@@ -3075,27 +3072,8 @@ argument_list|,
 name|collectedBlocks
 argument_list|,
 name|removedINodes
-argument_list|,
-literal|true
 argument_list|)
 expr_stmt|;
-block|}
-catch|catch
-parameter_list|(
-name|QuotaExceededException
-name|e
-parameter_list|)
-block|{
-name|LOG
-operator|.
-name|error
-argument_list|(
-literal|"should not exceed quota while snapshot deletion"
-argument_list|,
-name|e
-argument_list|)
-expr_stmt|;
-block|}
 block|}
 elseif|else
 if|if
