@@ -636,6 +636,20 @@ name|ToolRunner
 import|;
 end_import
 
+begin_import
+import|import
+name|com
+operator|.
+name|google
+operator|.
+name|common
+operator|.
+name|base
+operator|.
+name|Charsets
+import|;
+end_import
+
 begin_comment
 comment|/**  * a archive creation utility.  * This class provides methods that can be used   * to create hadoop archives. For understanding of   * Hadoop archives look at {@link HarFileSystem}.  */
 end_comment
@@ -1462,13 +1476,6 @@ operator|new
 name|HarEntry
 argument_list|()
 decl_stmt|;
-name|SequenceFile
-operator|.
-name|Reader
-name|reader
-init|=
-literal|null
-decl_stmt|;
 comment|// the remaining bytes in the file split
 name|long
 name|remaining
@@ -1506,9 +1513,12 @@ decl_stmt|;
 comment|// create splits of size target size so that all the maps
 comment|// have equals sized data to read and write to.
 try|try
-block|{
+init|(
+name|SequenceFile
+operator|.
+name|Reader
 name|reader
-operator|=
+init|=
 operator|new
 name|SequenceFile
 operator|.
@@ -1520,7 +1530,8 @@ name|src
 argument_list|,
 name|jconf
 argument_list|)
-expr_stmt|;
+init|)
+block|{
 while|while
 condition|(
 name|reader
@@ -1637,14 +1648,6 @@ argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
-block|}
-finally|finally
-block|{
-name|reader
-operator|.
-name|close
-argument_list|()
-expr_stmt|;
 block|}
 return|return
 name|splits
@@ -4270,7 +4273,11 @@ argument_list|(
 name|version
 operator|.
 name|getBytes
-argument_list|()
+argument_list|(
+name|Charsets
+operator|.
+name|UTF_8
+argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
@@ -4362,7 +4369,11 @@ argument_list|(
 name|towrite
 operator|.
 name|getBytes
-argument_list|()
+argument_list|(
+name|Charsets
+operator|.
+name|UTF_8
+argument_list|)
 argument_list|)
 expr_stmt|;
 name|written
@@ -4423,7 +4434,11 @@ argument_list|(
 name|masterWrite
 operator|.
 name|getBytes
-argument_list|()
+argument_list|(
+name|Charsets
+operator|.
+name|UTF_8
+argument_list|)
 argument_list|)
 expr_stmt|;
 name|startPos
@@ -4489,7 +4504,11 @@ argument_list|(
 name|masterWrite
 operator|.
 name|getBytes
-argument_list|()
+argument_list|(
+name|Charsets
+operator|.
+name|UTF_8
+argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
