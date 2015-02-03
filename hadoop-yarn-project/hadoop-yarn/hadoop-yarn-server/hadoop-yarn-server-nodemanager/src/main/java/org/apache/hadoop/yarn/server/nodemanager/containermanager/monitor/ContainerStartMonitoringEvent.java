@@ -62,7 +62,13 @@ specifier|final
 name|long
 name|pmemLimit
 decl_stmt|;
-DECL|method|ContainerStartMonitoringEvent (ContainerId containerId, long vmemLimit, long pmemLimit)
+DECL|field|cpuVcores
+specifier|private
+specifier|final
+name|int
+name|cpuVcores
+decl_stmt|;
+DECL|method|ContainerStartMonitoringEvent (ContainerId containerId, long vmemLimit, long pmemLimit, int cpuVcores)
 specifier|public
 name|ContainerStartMonitoringEvent
 parameter_list|(
@@ -74,6 +80,9 @@ name|vmemLimit
 parameter_list|,
 name|long
 name|pmemLimit
+parameter_list|,
+name|int
+name|cpuVcores
 parameter_list|)
 block|{
 name|super
@@ -96,6 +105,12 @@ operator|.
 name|pmemLimit
 operator|=
 name|pmemLimit
+expr_stmt|;
+name|this
+operator|.
+name|cpuVcores
+operator|=
+name|cpuVcores
 expr_stmt|;
 block|}
 DECL|method|getVmemLimit ()
@@ -120,6 +135,18 @@ return|return
 name|this
 operator|.
 name|pmemLimit
+return|;
+block|}
+DECL|method|getCpuVcores ()
+specifier|public
+name|int
+name|getCpuVcores
+parameter_list|()
+block|{
+return|return
+name|this
+operator|.
+name|cpuVcores
 return|;
 block|}
 block|}

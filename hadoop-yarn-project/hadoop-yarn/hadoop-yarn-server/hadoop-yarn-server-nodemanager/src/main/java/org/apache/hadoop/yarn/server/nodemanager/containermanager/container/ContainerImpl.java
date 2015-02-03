@@ -3025,6 +3025,15 @@ operator|*
 name|pmemBytes
 argument_list|)
 decl_stmt|;
+name|int
+name|cpuVcores
+init|=
+name|getResource
+argument_list|()
+operator|.
+name|getVirtualCores
+argument_list|()
+decl_stmt|;
 name|dispatcher
 operator|.
 name|getEventHandler
@@ -3040,6 +3049,8 @@ argument_list|,
 name|vmemBytes
 argument_list|,
 name|pmemBytes
+argument_list|,
+name|cpuVcores
 argument_list|)
 argument_list|)
 expr_stmt|;
