@@ -788,6 +788,26 @@ name|int
 name|getClusterNodeCount
 parameter_list|()
 function_decl|;
+comment|/**    * Update application's blacklist with addition or removal resources.    *    * @param blacklistAdditions list of resources which should be added to the    *        application blacklist    * @param blacklistRemovals list of resources which should be removed from the    *        application blacklist    */
+DECL|method|updateBlacklist (List<String> blacklistAdditions, List<String> blacklistRemovals)
+specifier|public
+specifier|abstract
+name|void
+name|updateBlacklist
+parameter_list|(
+name|List
+argument_list|<
+name|String
+argument_list|>
+name|blacklistAdditions
+parameter_list|,
+name|List
+argument_list|<
+name|String
+argument_list|>
+name|blacklistRemovals
+parameter_list|)
+function_decl|;
 comment|/**    * Wait for<code>check</code> to return true for each 1000 ms.    * See also {@link #waitFor(com.google.common.base.Supplier, int)}    * and {@link #waitFor(com.google.common.base.Supplier, int, int)}    * @param check    */
 DECL|method|waitFor (Supplier<Boolean> check)
 specifier|public

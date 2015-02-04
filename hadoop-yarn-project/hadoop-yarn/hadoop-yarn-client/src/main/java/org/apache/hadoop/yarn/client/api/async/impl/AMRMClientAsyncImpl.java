@@ -966,6 +966,35 @@ name|getClusterNodeCount
 argument_list|()
 return|;
 block|}
+comment|/**    * Update application's blacklist with addition or removal resources.    *    * @param blacklistAdditions list of resources which should be added to the    *        application blacklist    * @param blacklistRemovals list of resources which should be removed from the    *        application blacklist    */
+DECL|method|updateBlacklist (List<String> blacklistAdditions, List<String> blacklistRemovals)
+specifier|public
+name|void
+name|updateBlacklist
+parameter_list|(
+name|List
+argument_list|<
+name|String
+argument_list|>
+name|blacklistAdditions
+parameter_list|,
+name|List
+argument_list|<
+name|String
+argument_list|>
+name|blacklistRemovals
+parameter_list|)
+block|{
+name|client
+operator|.
+name|updateBlacklist
+argument_list|(
+name|blacklistAdditions
+argument_list|,
+name|blacklistRemovals
+argument_list|)
+expr_stmt|;
+block|}
 DECL|class|HeartbeatThread
 specifier|private
 class|class
