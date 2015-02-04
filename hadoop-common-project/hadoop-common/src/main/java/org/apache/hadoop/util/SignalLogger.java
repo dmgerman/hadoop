@@ -118,15 +118,7 @@ block|{
 DECL|field|LOG
 specifier|final
 specifier|private
-name|org
-operator|.
-name|apache
-operator|.
-name|commons
-operator|.
-name|logging
-operator|.
-name|Log
+name|LogAdapter
 name|LOG
 decl_stmt|;
 DECL|field|prevHandler
@@ -135,13 +127,13 @@ specifier|private
 name|SignalHandler
 name|prevHandler
 decl_stmt|;
-DECL|method|Handler (String name, Log LOG)
+DECL|method|Handler (String name, LogAdapter LOG)
 name|Handler
 parameter_list|(
 name|String
 name|name
 parameter_list|,
-name|Log
+name|LogAdapter
 name|LOG
 parameter_list|)
 block|{
@@ -215,6 +207,26 @@ name|register
 parameter_list|(
 specifier|final
 name|Log
+name|LOG
+parameter_list|)
+block|{
+name|register
+argument_list|(
+name|LogAdapter
+operator|.
+name|create
+argument_list|(
+name|LOG
+argument_list|)
+argument_list|)
+expr_stmt|;
+block|}
+DECL|method|register (final LogAdapter LOG)
+name|void
+name|register
+parameter_list|(
+specifier|final
+name|LogAdapter
 name|LOG
 parameter_list|)
 block|{
