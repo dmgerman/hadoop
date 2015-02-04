@@ -490,11 +490,11 @@ name|YarnConfiguration
 operator|.
 name|RM_CONTAINER_TOKEN_MASTER_KEY_ROLLING_INTERVAL_SECS
 operator|+
-literal|" should be more than 2 X "
+literal|" should be more than 3 X "
 operator|+
 name|YarnConfiguration
 operator|.
-name|RM_CONTAINER_TOKEN_MASTER_KEY_ROLLING_INTERVAL_SECS
+name|RM_NM_EXPIRY_INTERVAL_MS
 argument_list|)
 throw|;
 block|}

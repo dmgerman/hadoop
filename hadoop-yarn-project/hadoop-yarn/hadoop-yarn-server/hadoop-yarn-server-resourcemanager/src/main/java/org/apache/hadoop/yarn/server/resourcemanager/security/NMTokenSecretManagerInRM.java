@@ -480,7 +480,7 @@ name|YarnConfiguration
 operator|.
 name|RM_NMTOKEN_MASTER_KEY_ROLLING_INTERVAL_SECS
 operator|+
-literal|" should be more than 2 X "
+literal|" should be more than 3 X "
 operator|+
 name|YarnConfiguration
 operator|.
