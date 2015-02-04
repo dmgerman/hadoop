@@ -934,24 +934,6 @@ name|NFS_EXPORTS_ALLOWED_HOSTS_KEY_DEFAULT
 init|=
 literal|"* rw"
 decl_stmt|;
-DECL|field|HADOOP_TRACE_SAMPLER
-specifier|public
-specifier|static
-specifier|final
-name|String
-name|HADOOP_TRACE_SAMPLER
-init|=
-literal|"hadoop.htrace.sampler"
-decl_stmt|;
-DECL|field|HADOOP_TRACE_SAMPLER_DEFAULT
-specifier|public
-specifier|static
-specifier|final
-name|String
-name|HADOOP_TRACE_SAMPLER_DEFAULT
-init|=
-literal|"NeverSampler"
-decl_stmt|;
 block|}
 end_class
 
