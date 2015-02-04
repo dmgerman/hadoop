@@ -94,6 +94,26 @@ name|YarnApplicationState
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|server
+operator|.
+name|resourcemanager
+operator|.
+name|rmapp
+operator|.
+name|RMAppMetrics
+import|;
+end_import
+
 begin_class
 DECL|class|ApplicationFinishedEvent
 specifier|public
@@ -128,7 +148,12 @@ specifier|private
 name|ApplicationAttemptId
 name|latestAppAttemptId
 decl_stmt|;
-DECL|method|ApplicationFinishedEvent ( ApplicationId appId, String diagnosticsInfo, FinalApplicationStatus appStatus, YarnApplicationState state, ApplicationAttemptId latestAppAttemptId, long finishedTime)
+DECL|field|appMetrics
+specifier|private
+name|RMAppMetrics
+name|appMetrics
+decl_stmt|;
+DECL|method|ApplicationFinishedEvent ( ApplicationId appId, String diagnosticsInfo, FinalApplicationStatus appStatus, YarnApplicationState state, ApplicationAttemptId latestAppAttemptId, long finishedTime, RMAppMetrics appMetrics)
 specifier|public
 name|ApplicationFinishedEvent
 parameter_list|(
@@ -149,6 +174,9 @@ name|latestAppAttemptId
 parameter_list|,
 name|long
 name|finishedTime
+parameter_list|,
+name|RMAppMetrics
+name|appMetrics
 parameter_list|)
 block|{
 name|super
@@ -189,6 +217,12 @@ operator|.
 name|state
 operator|=
 name|state
+expr_stmt|;
+name|this
+operator|.
+name|appMetrics
+operator|=
+name|appMetrics
 expr_stmt|;
 block|}
 annotation|@
@@ -254,6 +288,16 @@ parameter_list|()
 block|{
 return|return
 name|latestAppAttemptId
+return|;
+block|}
+DECL|method|getAppMetrics ()
+specifier|public
+name|RMAppMetrics
+name|getAppMetrics
+parameter_list|()
+block|{
+return|return
+name|appMetrics
 return|;
 block|}
 block|}
