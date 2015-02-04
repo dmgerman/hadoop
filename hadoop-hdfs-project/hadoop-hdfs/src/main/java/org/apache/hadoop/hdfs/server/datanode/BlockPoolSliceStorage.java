@@ -1184,18 +1184,34 @@ name|bpSdir
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Remove storage directories.    * @param storageDirs a set of storage directories to be removed.    */
-DECL|method|removeVolumes (Set<File> storageDirs)
+comment|/**    * Remove block pool level storage directory.    * @param absPathToRemove the absolute path of the root for the block pool    *                        level storage to remove.    */
+DECL|method|remove (File absPathToRemove)
 name|void
-name|removeVolumes
+name|remove
 parameter_list|(
-name|Set
-argument_list|<
 name|File
-argument_list|>
-name|storageDirs
+name|absPathToRemove
 parameter_list|)
 block|{
+name|Preconditions
+operator|.
+name|checkArgument
+argument_list|(
+name|absPathToRemove
+operator|.
+name|isAbsolute
+argument_list|()
+argument_list|)
+expr_stmt|;
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"Removing block level storage: "
+operator|+
+name|absPathToRemove
+argument_list|)
+expr_stmt|;
 for|for
 control|(
 name|Iterator
@@ -1228,14 +1244,17 @@ argument_list|()
 decl_stmt|;
 if|if
 condition|(
-name|storageDirs
-operator|.
-name|contains
-argument_list|(
 name|sd
 operator|.
 name|getRoot
 argument_list|()
+operator|.
+name|getAbsoluteFile
+argument_list|()
+operator|.
+name|equals
+argument_list|(
+name|absPathToRemove
 argument_list|)
 condition|)
 block|{
@@ -1244,6 +1263,7 @@ operator|.
 name|remove
 argument_list|()
 expr_stmt|;
+break|break;
 block|}
 block|}
 block|}
