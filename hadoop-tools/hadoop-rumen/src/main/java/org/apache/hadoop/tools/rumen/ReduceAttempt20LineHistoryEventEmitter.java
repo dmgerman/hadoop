@@ -326,10 +326,6 @@ argument_list|)
 decl_stmt|;
 if|if
 condition|(
-name|finishTime
-operator|!=
-literal|null
-operator|&&
 name|shuffleFinish
 operator|!=
 literal|null

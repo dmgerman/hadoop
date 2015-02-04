@@ -22,6 +22,18 @@ begin_import
 import|import
 name|java
 operator|.
+name|nio
+operator|.
+name|charset
+operator|.
+name|Charset
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
 name|security
 operator|.
 name|MessageDigest
@@ -89,6 +101,20 @@ argument_list|(
 name|RandomSeedGenerator
 operator|.
 name|class
+argument_list|)
+decl_stmt|;
+DECL|field|UTF_8
+specifier|private
+specifier|static
+specifier|final
+name|Charset
+name|UTF_8
+init|=
+name|Charset
+operator|.
+name|forName
+argument_list|(
+literal|"UTF-8"
 argument_list|)
 decl_stmt|;
 comment|/** MD5 algorithm instance, one for each thread. */
@@ -205,7 +231,9 @@ argument_list|(
 name|str
 operator|.
 name|getBytes
-argument_list|()
+argument_list|(
+name|UTF_8
+argument_list|)
 argument_list|)
 decl_stmt|;
 comment|// Create a long from the first 8 bytes of the digest

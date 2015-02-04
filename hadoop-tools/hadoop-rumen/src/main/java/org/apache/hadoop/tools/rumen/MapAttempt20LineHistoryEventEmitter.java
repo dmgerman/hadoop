@@ -315,10 +315,6 @@ name|thatg
 decl_stmt|;
 if|if
 condition|(
-name|finishTime
-operator|!=
-literal|null
-operator|&&
 literal|"success"
 operator|.
 name|equalsIgnoreCase

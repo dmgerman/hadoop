@@ -2716,9 +2716,7 @@ argument_list|)
 argument_list|)
 expr_stmt|;
 return|return
-name|input
-operator|!=
-literal|null
+literal|true
 return|;
 block|}
 DECL|method|readInputLine ()
