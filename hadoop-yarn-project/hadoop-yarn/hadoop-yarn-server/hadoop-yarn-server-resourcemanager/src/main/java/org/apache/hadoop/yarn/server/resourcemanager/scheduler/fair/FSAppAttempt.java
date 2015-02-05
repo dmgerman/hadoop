@@ -2781,6 +2781,27 @@ return|;
 block|}
 else|else
 block|{
+if|if
+condition|(
+operator|!
+name|FairScheduler
+operator|.
+name|fitsInMaxShare
+argument_list|(
+name|getQueue
+argument_list|()
+argument_list|,
+name|capability
+argument_list|)
+condition|)
+block|{
+return|return
+name|Resources
+operator|.
+name|none
+argument_list|()
+return|;
+block|}
 comment|// The desired container won't fit here, so reserve
 name|reserve
 argument_list|(
