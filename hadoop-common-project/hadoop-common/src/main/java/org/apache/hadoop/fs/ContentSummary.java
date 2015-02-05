@@ -450,34 +450,74 @@ name|readLong
 argument_list|()
 expr_stmt|;
 block|}
-comment|/**     * Output format:    *<----12----><----12----><-------18------->    *    DIR_COUNT   FILE_COUNT       CONTENT_SIZE FILE_NAME        */
-DECL|field|STRING_FORMAT
+comment|/**    * Output format:    *<----12----><----12----><-------18------->    *    DIR_COUNT   FILE_COUNT       CONTENT_SIZE    */
+DECL|field|SUMMARY_FORMAT
 specifier|private
 specifier|static
 specifier|final
 name|String
-name|STRING_FORMAT
+name|SUMMARY_FORMAT
 init|=
 literal|"%12s %12s %18s "
 decl_stmt|;
-comment|/**     * Output format:    *<----12----><----15----><----15----><----15----><----12----><----12----><-------18------->    *    QUOTA   REMAINING_QUATA SPACE_QUOTA SPACE_QUOTA_REM DIR_COUNT   FILE_COUNT   CONTENT_SIZE     FILE_NAME        */
-DECL|field|QUOTA_STRING_FORMAT
+comment|/**    * Output format:    *<----12----><------15-----><------15-----><------15----->    *        QUOTA       REM_QUOTA     SPACE_QUOTA REM_SPACE_QUOTA    *<----12----><----12----><-------18------->    *    DIR_COUNT   FILE_COUNT       CONTENT_SIZE    */
+DECL|field|QUOTA_SUMMARY_FORMAT
 specifier|private
 specifier|static
 specifier|final
 name|String
-name|QUOTA_STRING_FORMAT
+name|QUOTA_SUMMARY_FORMAT
 init|=
 literal|"%12s %15s "
 decl_stmt|;
-DECL|field|SPACE_QUOTA_STRING_FORMAT
+DECL|field|SPACE_QUOTA_SUMMARY_FORMAT
 specifier|private
 specifier|static
 specifier|final
 name|String
-name|SPACE_QUOTA_STRING_FORMAT
+name|SPACE_QUOTA_SUMMARY_FORMAT
 init|=
 literal|"%15s %15s "
+decl_stmt|;
+DECL|field|HEADER_FIELDS
+specifier|private
+specifier|static
+specifier|final
+name|String
+index|[]
+name|HEADER_FIELDS
+init|=
+operator|new
+name|String
+index|[]
+block|{
+literal|"DIR_COUNT"
+block|,
+literal|"FILE_COUNT"
+block|,
+literal|"CONTENT_SIZE"
+block|}
+decl_stmt|;
+DECL|field|QUOTA_HEADER_FIELDS
+specifier|private
+specifier|static
+specifier|final
+name|String
+index|[]
+name|QUOTA_HEADER_FIELDS
+init|=
+operator|new
+name|String
+index|[]
+block|{
+literal|"QUOTA"
+block|,
+literal|"REM_QUOTA"
+block|,
+literal|"SPACE_QUOTA"
+block|,
+literal|"REM_SPACE_QUOTA"
+block|}
 decl_stmt|;
 comment|/** The header string */
 DECL|field|HEADER
@@ -491,20 +531,13 @@ name|String
 operator|.
 name|format
 argument_list|(
-name|STRING_FORMAT
-operator|.
-name|replace
-argument_list|(
-literal|'d'
+name|SUMMARY_FORMAT
 argument_list|,
-literal|'s'
-argument_list|)
-argument_list|,
-literal|"directories"
-argument_list|,
-literal|"files"
-argument_list|,
-literal|"bytes"
+operator|(
+name|Object
+index|[]
+operator|)
+name|HEADER_FIELDS
 argument_list|)
 decl_stmt|;
 DECL|field|QUOTA_HEADER
@@ -518,17 +551,15 @@ name|String
 operator|.
 name|format
 argument_list|(
-name|QUOTA_STRING_FORMAT
+name|QUOTA_SUMMARY_FORMAT
 operator|+
-name|SPACE_QUOTA_STRING_FORMAT
+name|SPACE_QUOTA_SUMMARY_FORMAT
 argument_list|,
-literal|"name quota"
-argument_list|,
-literal|"rem name quota"
-argument_list|,
-literal|"space quota"
-argument_list|,
-literal|"rem space quota"
+operator|(
+name|Object
+index|[]
+operator|)
+name|QUOTA_HEADER_FIELDS
 argument_list|)
 operator|+
 name|HEADER
@@ -550,6 +581,32 @@ condition|?
 name|QUOTA_HEADER
 else|:
 name|HEADER
+return|;
+block|}
+comment|/**    * Returns the names of the fields from the summary header.    *     * @return names of fields as displayed in the header    */
+DECL|method|getHeaderFields ()
+specifier|public
+specifier|static
+name|String
+index|[]
+name|getHeaderFields
+parameter_list|()
+block|{
+return|return
+name|HEADER_FIELDS
+return|;
+block|}
+comment|/**    * Returns the names of the fields used in the quota summary.    *     * @return names of quota fields as displayed in the header    */
+DECL|method|getQuotaHeaderFields ()
+specifier|public
+specifier|static
+name|String
+index|[]
+name|getQuotaHeaderFields
+parameter_list|()
+block|{
+return|return
+name|QUOTA_HEADER_FIELDS
 return|;
 block|}
 annotation|@
@@ -695,9 +752,9 @@ name|String
 operator|.
 name|format
 argument_list|(
-name|QUOTA_STRING_FORMAT
+name|QUOTA_SUMMARY_FORMAT
 operator|+
-name|SPACE_QUOTA_STRING_FORMAT
+name|SPACE_QUOTA_SUMMARY_FORMAT
 argument_list|,
 name|quotaStr
 argument_list|,
@@ -716,7 +773,7 @@ name|String
 operator|.
 name|format
 argument_list|(
-name|STRING_FORMAT
+name|SUMMARY_FORMAT
 argument_list|,
 name|formatSize
 argument_list|(

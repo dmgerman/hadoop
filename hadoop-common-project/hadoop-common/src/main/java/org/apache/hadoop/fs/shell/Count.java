@@ -54,6 +54,20 @@ name|org
 operator|.
 name|apache
 operator|.
+name|commons
+operator|.
+name|lang
+operator|.
+name|StringUtils
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
 name|hadoop
 operator|.
 name|classification
@@ -179,6 +193,15 @@ name|OPTION_HUMAN
 init|=
 literal|"h"
 decl_stmt|;
+DECL|field|OPTION_HEADER
+specifier|private
+specifier|static
+specifier|final
+name|String
+name|OPTION_HEADER
+init|=
+literal|"v"
+decl_stmt|;
 DECL|field|NAME
 specifier|public
 specifier|static
@@ -203,6 +226,10 @@ literal|"] [-"
 operator|+
 name|OPTION_HUMAN
 operator|+
+literal|"] [-"
+operator|+
+name|OPTION_HEADER
+operator|+
 literal|"]<path> ..."
 decl_stmt|;
 DECL|field|DESCRIPTION
@@ -216,13 +243,67 @@ literal|"Count the number of directories, files and bytes under the paths\n"
 operator|+
 literal|"that match the specified file pattern.  The output columns are:\n"
 operator|+
-literal|"DIR_COUNT FILE_COUNT CONTENT_SIZE FILE_NAME or\n"
+name|StringUtils
+operator|.
+name|join
+argument_list|(
+name|ContentSummary
+operator|.
+name|getHeaderFields
+argument_list|()
+argument_list|,
+literal|' '
+argument_list|)
 operator|+
-literal|"QUOTA REMAINING_QUOTA SPACE_QUOTA REMAINING_SPACE_QUOTA \n"
+literal|" PATHNAME\n"
 operator|+
-literal|"      DIR_COUNT FILE_COUNT CONTENT_SIZE FILE_NAME\n"
+literal|"or, with the -"
 operator|+
-literal|"The -h option shows file sizes in human readable format."
+name|OPTION_QUOTA
+operator|+
+literal|" option:\n"
+operator|+
+name|StringUtils
+operator|.
+name|join
+argument_list|(
+name|ContentSummary
+operator|.
+name|getQuotaHeaderFields
+argument_list|()
+argument_list|,
+literal|' '
+argument_list|)
+operator|+
+literal|"\n"
+operator|+
+literal|"      "
+operator|+
+name|StringUtils
+operator|.
+name|join
+argument_list|(
+name|ContentSummary
+operator|.
+name|getHeaderFields
+argument_list|()
+argument_list|,
+literal|' '
+argument_list|)
+operator|+
+literal|" PATHNAME\n"
+operator|+
+literal|"The -"
+operator|+
+name|OPTION_HUMAN
+operator|+
+literal|" option shows file sizes in human readable format.\n"
+operator|+
+literal|"The -"
+operator|+
+name|OPTION_HEADER
+operator|+
+literal|" option displays a header line."
 decl_stmt|;
 DECL|field|showQuotas
 specifier|private
@@ -240,7 +321,7 @@ specifier|public
 name|Count
 parameter_list|()
 block|{}
-comment|/** Constructor    * @deprecated invoke via {@link FsShell}    * @param cmd the count command    * @param pos the starting index of the arguments     * @param conf configuration    */
+comment|/** Constructor    * @deprecated invoke via {@link FsShell}    * @param cmd the count command    * @param pos the starting index of the arguments    * @param conf configuration    */
 annotation|@
 name|Deprecated
 DECL|method|Count (String[] cmd, int pos, Configuration conf)
@@ -310,6 +391,8 @@ argument_list|,
 name|OPTION_QUOTA
 argument_list|,
 name|OPTION_HUMAN
+argument_list|,
+name|OPTION_HEADER
 argument_list|)
 decl_stmt|;
 name|cf
@@ -354,6 +437,31 @@ argument_list|(
 name|OPTION_HUMAN
 argument_list|)
 expr_stmt|;
+if|if
+condition|(
+name|cf
+operator|.
+name|getOpt
+argument_list|(
+name|OPTION_HEADER
+argument_list|)
+condition|)
+block|{
+name|out
+operator|.
+name|println
+argument_list|(
+name|ContentSummary
+operator|.
+name|getHeader
+argument_list|(
+name|showQuotas
+argument_list|)
+operator|+
+literal|"PATHNAME"
+argument_list|)
+expr_stmt|;
+block|}
 block|}
 annotation|@
 name|Override

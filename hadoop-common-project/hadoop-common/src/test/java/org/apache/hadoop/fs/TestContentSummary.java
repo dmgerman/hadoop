@@ -774,9 +774,9 @@ block|{
 name|String
 name|header
 init|=
-literal|"  name quota  rem name quota     space quota "
+literal|"       QUOTA       REM_QUOTA     SPACE_QUOTA "
 operator|+
-literal|"rem space quota  directories        files              bytes "
+literal|"REM_SPACE_QUOTA    DIR_COUNT   FILE_COUNT       CONTENT_SIZE "
 decl_stmt|;
 name|assertEquals
 argument_list|(
@@ -803,7 +803,7 @@ block|{
 name|String
 name|header
 init|=
-literal|" directories        files              bytes "
+literal|"   DIR_COUNT   FILE_COUNT       CONTENT_SIZE "
 decl_stmt|;
 name|assertEquals
 argument_list|(
