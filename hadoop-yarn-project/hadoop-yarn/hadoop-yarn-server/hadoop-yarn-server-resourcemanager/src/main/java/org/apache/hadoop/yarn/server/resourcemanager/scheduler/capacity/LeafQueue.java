@@ -995,7 +995,6 @@ name|pendingApplications
 decl_stmt|;
 DECL|field|minimumAllocationFactor
 specifier|private
-specifier|final
 name|float
 name|minimumAllocationFactor
 decl_stmt|;
@@ -1381,6 +1380,17 @@ argument_list|()
 operator|.
 name|getReservationContinueLook
 argument_list|()
+argument_list|,
+name|cs
+operator|.
+name|getConfiguration
+argument_list|()
+operator|.
+name|getMaximumAllocationPerQueue
+argument_list|(
+name|getQueuePath
+argument_list|()
+argument_list|)
 argument_list|)
 expr_stmt|;
 if|if
@@ -1471,7 +1481,7 @@ operator|/
 literal|100
 return|;
 block|}
-DECL|method|setupQueueConfigs ( Resource clusterResource, float capacity, float absoluteCapacity, float maximumCapacity, float absoluteMaxCapacity, int userLimit, float userLimitFactor, int maxApplications, float maxAMResourcePerQueuePercent, int maxApplicationsPerUser, QueueState state, Map<QueueACL, AccessControlList> acls, int nodeLocalityDelay, Set<String> labels, String defaultLabelExpression, Map<String, Float> capacitieByLabel, Map<String, Float> maximumCapacitiesByLabel, boolean revervationContinueLooking)
+DECL|method|setupQueueConfigs ( Resource clusterResource, float capacity, float absoluteCapacity, float maximumCapacity, float absoluteMaxCapacity, int userLimit, float userLimitFactor, int maxApplications, float maxAMResourcePerQueuePercent, int maxApplicationsPerUser, QueueState state, Map<QueueACL, AccessControlList> acls, int nodeLocalityDelay, Set<String> labels, String defaultLabelExpression, Map<String, Float> capacitieByLabel, Map<String, Float> maximumCapacitiesByLabel, boolean revervationContinueLooking, Resource maxAllocation)
 specifier|protected
 specifier|synchronized
 name|void
@@ -1548,6 +1558,9 @@ name|maximumCapacitiesByLabel
 parameter_list|,
 name|boolean
 name|revervationContinueLooking
+parameter_list|,
+name|Resource
+name|maxAllocation
 parameter_list|)
 throws|throws
 name|IOException
@@ -1579,6 +1592,8 @@ argument_list|,
 name|maximumCapacitiesByLabel
 argument_list|,
 name|revervationContinueLooking
+argument_list|,
+name|maxAllocation
 argument_list|)
 expr_stmt|;
 comment|// Sanity check
@@ -1753,6 +1768,29 @@ operator|.
 name|nodeLocalityDelay
 operator|=
 name|nodeLocalityDelay
+expr_stmt|;
+comment|// re-init this since max allocation could have changed
+name|this
+operator|.
+name|minimumAllocationFactor
+operator|=
+name|Resources
+operator|.
+name|ratio
+argument_list|(
+name|resourceCalculator
+argument_list|,
+name|Resources
+operator|.
+name|subtract
+argument_list|(
+name|maximumAllocation
+argument_list|,
+name|minimumAllocation
+argument_list|)
+argument_list|,
+name|maximumAllocation
+argument_list|)
 expr_stmt|;
 name|StringBuilder
 name|aclsString
@@ -1951,6 +1989,14 @@ operator|+
 literal|" [= (float)(maximumAllocationMemory - minimumAllocationMemory) / "
 operator|+
 literal|"maximumAllocationMemory ]"
+operator|+
+literal|"\n"
+operator|+
+literal|"maximumAllocation = "
+operator|+
+name|maximumAllocation
+operator|+
+literal|" [= configuredMaxAllocation ]"
 operator|+
 literal|"\n"
 operator|+
@@ -2718,6 +2764,66 @@ name|LeafQueue
 operator|)
 name|newlyParsedQueue
 decl_stmt|;
+comment|// don't allow the maximum allocation to be decreased in size
+comment|// since we have already told running AM's the size
+name|Resource
+name|oldMax
+init|=
+name|getMaximumAllocation
+argument_list|()
+decl_stmt|;
+name|Resource
+name|newMax
+init|=
+name|newlyParsedLeafQueue
+operator|.
+name|getMaximumAllocation
+argument_list|()
+decl_stmt|;
+if|if
+condition|(
+name|newMax
+operator|.
+name|getMemory
+argument_list|()
+operator|<
+name|oldMax
+operator|.
+name|getMemory
+argument_list|()
+operator|||
+name|newMax
+operator|.
+name|getVirtualCores
+argument_list|()
+operator|<
+name|oldMax
+operator|.
+name|getVirtualCores
+argument_list|()
+condition|)
+block|{
+throw|throw
+operator|new
+name|IOException
+argument_list|(
+literal|"Trying to reinitialize "
+operator|+
+name|getQueuePath
+argument_list|()
+operator|+
+literal|" the maximum allocation size can not be decreased!"
+operator|+
+literal|" Current setting: "
+operator|+
+name|oldMax
+operator|+
+literal|", trying to set it to: "
+operator|+
+name|newMax
+argument_list|)
+throw|;
+block|}
 name|setupQueueConfigs
 argument_list|(
 name|clusterResource
@@ -2791,6 +2897,11 @@ argument_list|,
 name|newlyParsedLeafQueue
 operator|.
 name|reservationsContinueLooking
+argument_list|,
+name|newlyParsedLeafQueue
+operator|.
+name|getMaximumAllocation
+argument_list|()
 argument_list|)
 expr_stmt|;
 comment|// queue metrics are updated, more resource may be available

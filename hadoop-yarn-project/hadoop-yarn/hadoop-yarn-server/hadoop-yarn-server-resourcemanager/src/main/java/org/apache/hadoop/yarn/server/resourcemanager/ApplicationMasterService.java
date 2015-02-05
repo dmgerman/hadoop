@@ -2178,7 +2178,12 @@ argument_list|(
 name|rScheduler
 operator|.
 name|getMaximumResourceCapability
+argument_list|(
+name|app
+operator|.
+name|getQueue
 argument_list|()
+argument_list|)
 argument_list|)
 expr_stmt|;
 name|response

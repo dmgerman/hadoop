@@ -447,7 +447,6 @@ name|Resource
 name|minimumAllocation
 decl_stmt|;
 DECL|field|maximumAllocation
-specifier|final
 name|Resource
 name|maximumAllocation
 decl_stmt|;
@@ -1196,7 +1195,7 @@ return|return
 name|defaultLabelExpression
 return|;
 block|}
-DECL|method|setupQueueConfigs (Resource clusterResource, float capacity, float absoluteCapacity, float maximumCapacity, float absoluteMaxCapacity, QueueState state, Map<QueueACL, AccessControlList> acls, Set<String> labels, String defaultLabelExpression, Map<String, Float> nodeLabelCapacities, Map<String, Float> maximumNodeLabelCapacities, boolean reservationContinueLooking)
+DECL|method|setupQueueConfigs (Resource clusterResource, float capacity, float absoluteCapacity, float maximumCapacity, float absoluteMaxCapacity, QueueState state, Map<QueueACL, AccessControlList> acls, Set<String> labels, String defaultLabelExpression, Map<String, Float> nodeLabelCapacities, Map<String, Float> maximumNodeLabelCapacities, boolean reservationContinueLooking, Resource maxAllocation)
 specifier|synchronized
 name|void
 name|setupQueueConfigs
@@ -1254,6 +1253,9 @@ name|maximumNodeLabelCapacities
 parameter_list|,
 name|boolean
 name|reservationContinueLooking
+parameter_list|,
+name|Resource
+name|maxAllocation
 parameter_list|)
 throws|throws
 name|IOException
@@ -1559,6 +1561,12 @@ argument_list|(
 name|this
 argument_list|)
 expr_stmt|;
+name|this
+operator|.
+name|maximumAllocation
+operator|=
+name|maxAllocation
+expr_stmt|;
 block|}
 DECL|method|getQueueInfo ()
 specifier|protected
@@ -1636,6 +1644,7 @@ annotation|@
 name|Private
 DECL|method|getMaximumAllocation ()
 specifier|public
+specifier|synchronized
 name|Resource
 name|getMaximumAllocation
 parameter_list|()

@@ -544,7 +544,7 @@ name|Resource
 name|getMinimumResourceCapability
 parameter_list|()
 function_decl|;
-comment|/**    * Get maximum allocatable {@link Resource}.    * @return maximum allocatable resource    */
+comment|/**    * Get maximum allocatable {@link Resource} at the cluster level.    * @return maximum allocatable resource    */
 annotation|@
 name|Public
 annotation|@
@@ -554,6 +554,20 @@ specifier|public
 name|Resource
 name|getMaximumResourceCapability
 parameter_list|()
+function_decl|;
+comment|/**    * Get maximum allocatable {@link Resource} for the queue specified.    * @param queueName queue name    * @return maximum allocatable resource    */
+annotation|@
+name|Public
+annotation|@
+name|Stable
+DECL|method|getMaximumResourceCapability (String queueName)
+specifier|public
+name|Resource
+name|getMaximumResourceCapability
+parameter_list|(
+name|String
+name|queueName
+parameter_list|)
 function_decl|;
 annotation|@
 name|LimitedPrivate

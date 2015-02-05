@@ -213,6 +213,14 @@ name|Resource
 name|getMaximumResourceCapability
 parameter_list|()
 function_decl|;
+DECL|method|getMaximumResourceCapability (String queueName)
+name|Resource
+name|getMaximumResourceCapability
+parameter_list|(
+name|String
+name|queueName
+parameter_list|)
+function_decl|;
 DECL|method|getContainerTokenSecretManager ()
 name|RMContainerTokenSecretManager
 name|getContainerTokenSecretManager

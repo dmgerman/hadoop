@@ -1117,6 +1117,8 @@ argument_list|,
 name|maximumCapacitiesByLabel
 argument_list|,
 name|reservationContinueLooking
+argument_list|,
+name|maximumAllocation
 argument_list|)
 expr_stmt|;
 name|StringBuilder
