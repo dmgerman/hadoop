@@ -217,7 +217,6 @@ annotation|@
 name|Override
 DECL|method|seek (long desired)
 specifier|public
-specifier|synchronized
 name|void
 name|seek
 parameter_list|(

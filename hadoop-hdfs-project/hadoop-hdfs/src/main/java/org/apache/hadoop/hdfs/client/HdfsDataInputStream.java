@@ -325,7 +325,6 @@ block|}
 comment|/**    * Get the collection of blocks that has already been located.    */
 DECL|method|getAllBlocks ()
 specifier|public
-specifier|synchronized
 name|List
 argument_list|<
 name|LocatedBlock
