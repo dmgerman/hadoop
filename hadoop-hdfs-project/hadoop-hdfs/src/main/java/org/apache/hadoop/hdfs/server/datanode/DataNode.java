@@ -1462,6 +1462,24 @@ name|protocol
 operator|.
 name|datatransfer
 operator|.
+name|PipelineAck
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|protocol
+operator|.
+name|datatransfer
+operator|.
 name|Sender
 import|;
 end_import
@@ -3204,6 +3222,12 @@ specifier|final
 name|long
 name|maxNumberOfBlocksToLog
 decl_stmt|;
+DECL|field|pipelineSupportECN
+specifier|private
+specifier|final
+name|boolean
+name|pipelineSupportECN
+decl_stmt|;
 DECL|field|usersWithLocalPathAccess
 specifier|private
 specifier|final
@@ -3373,6 +3397,12 @@ argument_list|,
 name|conf
 argument_list|)
 expr_stmt|;
+name|this
+operator|.
+name|pipelineSupportECN
+operator|=
+literal|false
+expr_stmt|;
 block|}
 comment|/**    * Create the DataNode given a configuration, an array of dataDirs,    * and a namenode proxy    */
 DECL|method|DataNode (final Configuration conf, final List<StorageLocation> dataDirs, final SecureResources resources)
@@ -3516,6 +3546,23 @@ argument_list|,
 name|DFSConfigKeys
 operator|.
 name|DFS_PERMISSIONS_ENABLED_DEFAULT
+argument_list|)
+expr_stmt|;
+name|this
+operator|.
+name|pipelineSupportECN
+operator|=
+name|conf
+operator|.
+name|getBoolean
+argument_list|(
+name|DFSConfigKeys
+operator|.
+name|DFS_PIPELINE_ECN_ENABLED
+argument_list|,
+name|DFSConfigKeys
+operator|.
+name|DFS_PIPELINE_ECN_ENABLED_DEFAULT
 argument_list|)
 expr_stmt|;
 name|confVersion
@@ -3888,6 +3935,31 @@ argument_list|)
 decl_stmt|;
 return|return
 name|reconfigurable
+return|;
+block|}
+comment|/**    * The ECN bit for the DataNode. The DataNode should return:    *<ul>    *<li>ECN.DISABLED when ECN is disabled.</li>    *<li>ECN.SUPPORTED when ECN is enabled but the DN still has capacity.</li>    *<li>ECN.CONGESTED when ECN is enabled and the DN is congested.</li>    *</ul>    */
+DECL|method|getECN ()
+specifier|public
+name|PipelineAck
+operator|.
+name|ECN
+name|getECN
+parameter_list|()
+block|{
+return|return
+name|pipelineSupportECN
+condition|?
+name|PipelineAck
+operator|.
+name|ECN
+operator|.
+name|SUPPORTED
+else|:
+name|PipelineAck
+operator|.
+name|ECN
+operator|.
+name|DISABLED
 return|;
 block|}
 comment|/**    * Contains the StorageLocations for changed data volumes.    */

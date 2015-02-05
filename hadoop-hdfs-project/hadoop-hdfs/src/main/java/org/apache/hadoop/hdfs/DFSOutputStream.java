@@ -4550,11 +4550,16 @@ specifier|final
 name|Status
 name|reply
 init|=
+name|PipelineAck
+operator|.
+name|getStatusFromHeader
+argument_list|(
 name|ack
 operator|.
 name|getReply
 argument_list|(
 name|i
+argument_list|)
 argument_list|)
 decl_stmt|;
 comment|// Restart will not be treated differently unless it is

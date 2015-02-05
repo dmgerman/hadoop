@@ -5688,6 +5688,24 @@ block|,
 literal|"25"
 block|}
 decl_stmt|;
+DECL|field|DFS_PIPELINE_ECN_ENABLED
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|DFS_PIPELINE_ECN_ENABLED
+init|=
+literal|"dfs.pipeline.ecn"
+decl_stmt|;
+DECL|field|DFS_PIPELINE_ECN_ENABLED_DEFAULT
+specifier|public
+specifier|static
+specifier|final
+name|boolean
+name|DFS_PIPELINE_ECN_ENABLED_DEFAULT
+init|=
+literal|false
+decl_stmt|;
 block|}
 end_class
 
