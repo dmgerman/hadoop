@@ -1231,7 +1231,7 @@ throw|throw
 operator|new
 name|IllegalArgumentException
 argument_list|(
-literal|"Invalid AppAttemptId: "
+literal|"Invalid ApplicationId: "
 operator|+
 name|appIdStr
 argument_list|,
