@@ -2378,6 +2378,7 @@ annotation|@
 name|Override
 DECL|method|publishMetricsNow ()
 specifier|public
+specifier|synchronized
 name|void
 name|publishMetricsNow
 parameter_list|()

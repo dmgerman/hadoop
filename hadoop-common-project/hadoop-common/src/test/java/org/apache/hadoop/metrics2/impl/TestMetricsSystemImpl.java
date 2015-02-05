@@ -1449,7 +1449,7 @@ parameter_list|)
 block|{
 try|try
 block|{
-name|barrier1
+name|barrier
 operator|.
 name|await
 argument_list|(
