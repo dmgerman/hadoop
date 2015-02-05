@@ -363,7 +363,6 @@ block|}
 comment|/**    * Get statistics about the reads which this DFSInputStream has done.    * Note that because HdfsDataInputStream is buffered, these stats may    * be higher than you would expect just by adding up the number of    * bytes read through HdfsDataInputStream.    */
 DECL|method|getReadStatistics ()
 specifier|public
-specifier|synchronized
 name|DFSInputStream
 operator|.
 name|ReadStatistics
@@ -377,6 +376,19 @@ operator|.
 name|getReadStatistics
 argument_list|()
 return|;
+block|}
+DECL|method|clearReadStatistics ()
+specifier|public
+name|void
+name|clearReadStatistics
+parameter_list|()
+block|{
+name|getDFSInputStream
+argument_list|()
+operator|.
+name|clearReadStatistics
+argument_list|()
+expr_stmt|;
 block|}
 block|}
 end_class

@@ -997,29 +997,8 @@ specifier|public
 name|ReadStatistics
 parameter_list|()
 block|{
-name|this
-operator|.
-name|totalBytesRead
-operator|=
-literal|0
-expr_stmt|;
-name|this
-operator|.
-name|totalLocalBytesRead
-operator|=
-literal|0
-expr_stmt|;
-name|this
-operator|.
-name|totalShortCircuitBytesRead
-operator|=
-literal|0
-expr_stmt|;
-name|this
-operator|.
-name|totalZeroCopyBytesRead
-operator|=
-literal|0
+name|clear
+argument_list|()
 expr_stmt|;
 block|}
 DECL|method|ReadStatistics (ReadStatistics rhs)
@@ -1218,6 +1197,36 @@ operator|.
 name|totalZeroCopyBytesRead
 operator|+=
 name|amt
+expr_stmt|;
+block|}
+DECL|method|clear ()
+name|void
+name|clear
+parameter_list|()
+block|{
+name|this
+operator|.
+name|totalBytesRead
+operator|=
+literal|0
+expr_stmt|;
+name|this
+operator|.
+name|totalLocalBytesRead
+operator|=
+literal|0
+expr_stmt|;
+name|this
+operator|.
+name|totalShortCircuitBytesRead
+operator|=
+literal|0
+expr_stmt|;
+name|this
+operator|.
+name|totalZeroCopyBytesRead
+operator|=
+literal|0
 expr_stmt|;
 block|}
 DECL|field|totalBytesRead
@@ -2046,7 +2055,6 @@ block|}
 comment|/**    * Return collection of blocks that has already been located.    */
 DECL|method|getAllBlocks ()
 specifier|public
-specifier|synchronized
 name|List
 argument_list|<
 name|LocatedBlock
@@ -3346,7 +3354,7 @@ specifier|private
 interface|interface
 name|ReaderStrategy
 block|{
-DECL|method|doRead (BlockReader blockReader, int off, int len, ReadStatistics readStatistics)
+DECL|method|doRead (BlockReader blockReader, int off, int len)
 specifier|public
 name|int
 name|doRead
@@ -3359,9 +3367,6 @@ name|off
 parameter_list|,
 name|int
 name|len
-parameter_list|,
-name|ReadStatistics
-name|readStatistics
 parameter_list|)
 throws|throws
 name|ChecksumException
@@ -3371,7 +3376,6 @@ function_decl|;
 block|}
 DECL|method|updateReadStatistics (ReadStatistics readStatistics, int nRead, BlockReader blockReader)
 specifier|private
-specifier|static
 name|void
 name|updateReadStatistics
 parameter_list|(
@@ -3392,6 +3396,11 @@ operator|<=
 literal|0
 condition|)
 return|return;
+synchronized|synchronized
+init|(
+name|infoLock
+init|)
+block|{
 if|if
 condition|(
 name|blockReader
@@ -3436,10 +3445,10 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
+block|}
 comment|/**    * Used to read bytes into a byte[]    */
 DECL|class|ByteArrayStrategy
 specifier|private
-specifier|static
 class|class
 name|ByteArrayStrategy
 implements|implements
@@ -3469,7 +3478,7 @@ expr_stmt|;
 block|}
 annotation|@
 name|Override
-DECL|method|doRead (BlockReader blockReader, int off, int len, ReadStatistics readStatistics)
+DECL|method|doRead (BlockReader blockReader, int off, int len)
 specifier|public
 name|int
 name|doRead
@@ -3482,9 +3491,6 @@ name|off
 parameter_list|,
 name|int
 name|len
-parameter_list|,
-name|ReadStatistics
-name|readStatistics
 parameter_list|)
 throws|throws
 name|ChecksumException
@@ -3522,7 +3528,6 @@ block|}
 comment|/**    * Used to read bytes into a user-supplied ByteBuffer    */
 DECL|class|ByteBufferStrategy
 specifier|private
-specifier|static
 class|class
 name|ByteBufferStrategy
 implements|implements
@@ -3549,7 +3554,7 @@ expr_stmt|;
 block|}
 annotation|@
 name|Override
-DECL|method|doRead (BlockReader blockReader, int off, int len, ReadStatistics readStatistics)
+DECL|method|doRead (BlockReader blockReader, int off, int len)
 specifier|public
 name|int
 name|doRead
@@ -3562,9 +3567,6 @@ name|off
 parameter_list|,
 name|int
 name|len
-parameter_list|,
-name|ReadStatistics
-name|readStatistics
 parameter_list|)
 throws|throws
 name|ChecksumException
@@ -3705,8 +3707,6 @@ argument_list|,
 name|off
 argument_list|,
 name|len
-argument_list|,
-name|readStatistics
 argument_list|)
 return|;
 block|}
@@ -7714,10 +7714,14 @@ block|}
 comment|/**    * Get statistics about the reads which this DFSInputStream has done.    */
 DECL|method|getReadStatistics ()
 specifier|public
-specifier|synchronized
 name|ReadStatistics
 name|getReadStatistics
 parameter_list|()
+block|{
+synchronized|synchronized
+init|(
+name|infoLock
+init|)
 block|{
 return|return
 operator|new
@@ -7726,6 +7730,26 @@ argument_list|(
 name|readStatistics
 argument_list|)
 return|;
+block|}
+block|}
+comment|/**    * Clear statistics about the reads which this DFSInputStream has done.    */
+DECL|method|clearReadStatistics ()
+specifier|public
+name|void
+name|clearReadStatistics
+parameter_list|()
+block|{
+synchronized|synchronized
+init|(
+name|infoLock
+init|)
+block|{
+name|readStatistics
+operator|.
+name|clear
+argument_list|()
+expr_stmt|;
+block|}
 block|}
 DECL|method|getFileEncryptionInfo ()
 specifier|public
@@ -8507,6 +8531,11 @@ argument_list|,
 name|clientMmap
 argument_list|)
 expr_stmt|;
+synchronized|synchronized
+init|(
+name|infoLock
+init|)
+block|{
 name|readStatistics
 operator|.
 name|addZeroCopyBytes
@@ -8514,6 +8543,7 @@ argument_list|(
 name|length
 argument_list|)
 expr_stmt|;
+block|}
 if|if
 condition|(
 name|DFSClient
