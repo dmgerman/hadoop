@@ -1537,9 +1537,6 @@ name|void
 name|conf
 parameter_list|()
 block|{
-name|requireJob
-argument_list|()
-expr_stmt|;
 try|try
 block|{
 name|requireJob
