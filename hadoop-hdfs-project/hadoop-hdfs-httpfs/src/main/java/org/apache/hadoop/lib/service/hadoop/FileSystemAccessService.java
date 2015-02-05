@@ -1123,9 +1123,11 @@ argument_list|()
 decl_stmt|;
 if|if
 condition|(
+operator|!
 name|hadoopConfDir
-operator|==
-literal|null
+operator|.
+name|exists
+argument_list|()
 condition|)
 block|{
 name|hadoopConfDir
