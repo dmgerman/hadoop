@@ -275,6 +275,17 @@ name|setInt
 argument_list|(
 name|MRJobConfig
 operator|.
+name|MAP_MEMORY_MB
+argument_list|,
+literal|2048
+argument_list|)
+expr_stmt|;
+name|conf
+operator|.
+name|setInt
+argument_list|(
+name|MRJobConfig
+operator|.
 name|IO_SORT_MB
 argument_list|,
 name|ioSortMb
