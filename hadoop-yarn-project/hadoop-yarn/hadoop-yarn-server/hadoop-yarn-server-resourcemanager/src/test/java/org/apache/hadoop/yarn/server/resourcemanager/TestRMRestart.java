@@ -13336,8 +13336,6 @@ name|n1
 argument_list|,
 name|toSet
 argument_list|(
-literal|"x"
-argument_list|,
 literal|"y"
 argument_list|)
 argument_list|)
@@ -13446,8 +13444,6 @@ name|equals
 argument_list|(
 name|toSet
 argument_list|(
-literal|"x"
-argument_list|,
 literal|"y"
 argument_list|)
 argument_list|)
@@ -13569,8 +13565,6 @@ name|equals
 argument_list|(
 name|toSet
 argument_list|(
-literal|"x"
-argument_list|,
 literal|"y"
 argument_list|)
 argument_list|)

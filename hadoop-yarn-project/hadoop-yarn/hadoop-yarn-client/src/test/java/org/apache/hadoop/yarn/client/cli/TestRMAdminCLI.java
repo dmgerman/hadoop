@@ -2983,7 +2983,7 @@ init|=
 block|{
 literal|"-replaceLabelsOnNode"
 block|,
-literal|"node1:8000,x,y node2:8000=y node3,x,Y node4=Y"
+literal|"node1:8000,x node2:8000=y node3,x node4=Y"
 block|,
 literal|"-directlyAccessNodeLabelStore"
 block|}
@@ -3161,6 +3161,56 @@ block|,
 literal|", "
 block|}
 expr_stmt|;
+name|assertTrue
+argument_list|(
+literal|0
+operator|!=
+name|rmAdminCLI
+operator|.
+name|run
+argument_list|(
+name|args
+argument_list|)
+argument_list|)
+expr_stmt|;
+block|}
+annotation|@
+name|Test
+DECL|method|testReplaceMultipleLabelsOnSingleNode ()
+specifier|public
+name|void
+name|testReplaceMultipleLabelsOnSingleNode
+parameter_list|()
+throws|throws
+name|Exception
+block|{
+comment|// Successfully replace labels
+name|dummyNodeLabelsManager
+operator|.
+name|addToCluserNodeLabels
+argument_list|(
+name|ImmutableSet
+operator|.
+name|of
+argument_list|(
+literal|"x"
+argument_list|,
+literal|"y"
+argument_list|)
+argument_list|)
+expr_stmt|;
+name|String
+index|[]
+name|args
+init|=
+block|{
+literal|"-replaceLabelsOnNode"
+block|,
+literal|"node1,x,y"
+block|,
+literal|"-directlyAccessNodeLabelStore"
+block|}
+decl_stmt|;
 name|assertTrue
 argument_list|(
 literal|0

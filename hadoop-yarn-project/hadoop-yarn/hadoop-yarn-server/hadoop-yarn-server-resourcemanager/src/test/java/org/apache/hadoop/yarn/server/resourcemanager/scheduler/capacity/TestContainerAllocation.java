@@ -863,6 +863,11 @@ parameter_list|()
 throws|throws
 name|Exception
 block|{
+annotation|@
+name|SuppressWarnings
+argument_list|(
+literal|"resource"
+argument_list|)
 name|MockRM
 name|rm
 init|=
@@ -2782,6 +2787,11 @@ expr_stmt|;
 block|}
 block|}
 block|}
+annotation|@
+name|SuppressWarnings
+argument_list|(
+literal|"unchecked"
+argument_list|)
 DECL|method|toSet (E... elements)
 specifier|private
 parameter_list|<
@@ -3361,9 +3371,6 @@ literal|8000
 argument_list|)
 decl_stmt|;
 comment|// label = x
-name|MockNM
-name|nm2
-init|=
 name|rm1
 operator|.
 name|registerNode
@@ -3372,7 +3379,7 @@ literal|"h2:1234"
 argument_list|,
 literal|8000
 argument_list|)
-decl_stmt|;
+expr_stmt|;
 comment|// label = y
 name|MockNM
 name|nm3
@@ -3631,7 +3638,7 @@ parameter_list|()
 throws|throws
 name|Exception
 block|{
-comment|/*      * Queue structure:      *                      root (*)      *                  ________________      *                 /                \      *               a x(100%), y(50%)   b y(50%), z(100%)      *               ________________    ______________      *              /                   /              \      *             a1 (x,y)         b1(no)              b2(y,z)      *               100%                          y = 100%, z = 100%      *                                 * Node structure:      * h1 : x      * h2 : x, y      * h3 : y      * h4 : y, z      * h5 : NO      *       * Total resource:      * x: 4G      * y: 6G      * z: 2G      * *: 2G      *       * Resource of      * a1: x=4G, y=3G, NO=0.2G      * b1: NO=0.9G (max=1G)      * b2: y=3, z=2G, NO=0.9G (max=1G)      *       * Each node can only allocate two containers      */
+comment|/*      * Queue structure:      *                      root (*)      *                  ________________      *                 /                \      *               a x(100%), y(50%)   b y(50%), z(100%)      *               ________________    ______________      *              /                   /              \      *             a1 (x,y)         b1(no)              b2(y,z)      *               100%                          y = 100%, z = 100%      *                                 * Node structure:      * h1 : x      * h2 : y      * h3 : y      * h4 : z      * h5 : NO      *       * Total resource:      * x: 4G      * y: 6G      * z: 2G      * *: 2G      *       * Resource of      * a1: x=4G, y=3G, NO=0.2G      * b1: NO=0.9G (max=1G)      * b2: y=3, z=2G, NO=0.9G (max=1G)      *       * Each node can only allocate two containers      */
 comment|// set node -> label
 name|mgr
 operator|.
@@ -3682,8 +3689,6 @@ argument_list|)
 argument_list|,
 name|toSet
 argument_list|(
-literal|"x"
-argument_list|,
 literal|"y"
 argument_list|)
 argument_list|,
@@ -3712,8 +3717,6 @@ argument_list|)
 argument_list|,
 name|toSet
 argument_list|(
-literal|"y"
-argument_list|,
 literal|"z"
 argument_list|)
 argument_list|,
@@ -3870,7 +3873,7 @@ argument_list|,
 name|nm1
 argument_list|)
 decl_stmt|;
-comment|// request a container (label = x&& y). can only allocate on nm2
+comment|// request a container (label = y). can be allocated on nm2
 name|am1
 operator|.
 name|allocate
@@ -3888,7 +3891,7 @@ name|ContainerId
 argument_list|>
 argument_list|()
 argument_list|,
-literal|"x&& y"
+literal|"y"
 argument_list|)
 expr_stmt|;
 name|containerId
@@ -3902,29 +3905,7 @@ operator|.
 name|getApplicationAttemptId
 argument_list|()
 argument_list|,
-literal|2
-argument_list|)
-expr_stmt|;
-name|Assert
-operator|.
-name|assertFalse
-argument_list|(
-name|rm1
-operator|.
-name|waitForState
-argument_list|(
-name|nm1
-argument_list|,
-name|containerId
-argument_list|,
-name|RMContainerState
-operator|.
-name|ALLOCATED
-argument_list|,
-literal|10
-operator|*
-literal|1000
-argument_list|)
+literal|2L
 argument_list|)
 expr_stmt|;
 name|Assert
@@ -4203,8 +4184,8 @@ argument_list|,
 literal|"h3"
 argument_list|)
 expr_stmt|;
-comment|// try to allocate container (request label = y&& z) on nm3 (label = y) and
-comment|// nm4 (label = y,z). Will sucessfully allocate on nm4 only.
+comment|// try to allocate container (request label = z) on nm4 (label = y,z).
+comment|// Will successfully allocate on nm4 only.
 name|am3
 operator|.
 name|allocate
@@ -4222,7 +4203,7 @@ name|ContainerId
 argument_list|>
 argument_list|()
 argument_list|,
-literal|"y&& z"
+literal|"z"
 argument_list|)
 expr_stmt|;
 name|containerId
@@ -4236,29 +4217,7 @@ operator|.
 name|getApplicationAttemptId
 argument_list|()
 argument_list|,
-literal|3
-argument_list|)
-expr_stmt|;
-name|Assert
-operator|.
-name|assertFalse
-argument_list|(
-name|rm1
-operator|.
-name|waitForState
-argument_list|(
-name|nm3
-argument_list|,
-name|containerId
-argument_list|,
-name|RMContainerState
-operator|.
-name|ALLOCATED
-argument_list|,
-literal|10
-operator|*
-literal|1000
-argument_list|)
+literal|3L
 argument_list|)
 expr_stmt|;
 name|Assert

@@ -3174,7 +3174,7 @@ argument_list|(
 name|applicationId
 argument_list|)
 decl_stmt|;
-comment|// set label expression for Resource Requests
+comment|// set label expression for Resource Requests if resourceName=ANY
 name|ApplicationSubmissionContext
 name|asc
 init|=
@@ -3199,6 +3199,18 @@ name|req
 operator|.
 name|getNodeLabelExpression
 argument_list|()
+operator|&&
+name|ResourceRequest
+operator|.
+name|ANY
+operator|.
+name|equals
+argument_list|(
+name|req
+operator|.
+name|getResourceName
+argument_list|()
+argument_list|)
 condition|)
 block|{
 name|req

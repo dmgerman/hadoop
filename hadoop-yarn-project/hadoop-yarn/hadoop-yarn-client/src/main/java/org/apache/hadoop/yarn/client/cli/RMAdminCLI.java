@@ -626,6 +626,20 @@ name|google
 operator|.
 name|common
 operator|.
+name|base
+operator|.
+name|Preconditions
+import|;
+end_import
+
+begin_import
+import|import
+name|com
+operator|.
+name|google
+operator|.
+name|common
+operator|.
 name|collect
 operator|.
 name|ImmutableMap
@@ -844,6 +858,10 @@ argument_list|(
 literal|"[node1[:port]=label1,label2 node2[:port]=label1,label2]"
 argument_list|,
 literal|"replace labels on nodes"
+operator|+
+literal|" (please note that we do not support specifying multiple"
+operator|+
+literal|" labels on a single host for now.)"
 argument_list|)
 argument_list|)
 decl|.
@@ -2229,8 +2247,6 @@ parameter_list|(
 name|String
 name|args
 parameter_list|)
-throws|throws
-name|IOException
 block|{
 name|Map
 argument_list|<
@@ -2360,8 +2376,11 @@ literal|","
 argument_list|)
 expr_stmt|;
 block|}
-if|if
-condition|(
+name|Preconditions
+operator|.
+name|checkArgument
+argument_list|(
+operator|!
 name|nodeIdStr
 operator|.
 name|trim
@@ -2369,16 +2388,10 @@ argument_list|()
 operator|.
 name|isEmpty
 argument_list|()
-condition|)
-block|{
-throw|throw
-operator|new
-name|IOException
-argument_list|(
+argument_list|,
 literal|"node name cannot be empty"
 argument_list|)
-throw|;
-block|}
+expr_stmt|;
 name|NodeId
 name|nodeId
 init|=
@@ -2455,6 +2468,38 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
+name|int
+name|nLabels
+init|=
+name|map
+operator|.
+name|get
+argument_list|(
+name|nodeId
+argument_list|)
+operator|.
+name|size
+argument_list|()
+decl_stmt|;
+name|Preconditions
+operator|.
+name|checkArgument
+argument_list|(
+name|nLabels
+operator|<=
+literal|1
+argument_list|,
+literal|"%d labels specified on host=%s"
+operator|+
+literal|", please note that we do not support specifying multiple"
+operator|+
+literal|" labels on a single host for now."
+argument_list|,
+name|nLabels
+argument_list|,
+name|nodeIdStr
+argument_list|)
+expr_stmt|;
 block|}
 if|if
 condition|(

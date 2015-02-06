@@ -1619,7 +1619,7 @@ argument_list|,
 literal|1
 argument_list|)
 decl_stmt|;
-comment|/*      * Node->Labels:      *   host1 : red, blue      *   host2 : blue, yellow      *   host3 : yellow      *   host4 :      */
+comment|/*      * Node->Labels:      *   host1 : red      *   host2 : blue      *   host3 : yellow      *   host4 :      */
 name|mgr
 operator|.
 name|addToCluserNodeLabels
@@ -1650,8 +1650,6 @@ argument_list|,
 name|toSet
 argument_list|(
 literal|"red"
-argument_list|,
-literal|"blue"
 argument_list|)
 argument_list|)
 argument_list|)
@@ -1672,8 +1670,6 @@ argument_list|,
 name|toSet
 argument_list|(
 literal|"blue"
-argument_list|,
-literal|"yellow"
 argument_list|)
 argument_list|)
 argument_list|)
@@ -1935,7 +1931,7 @@ name|multiply
 argument_list|(
 name|SMALL_RESOURCE
 argument_list|,
-literal|4
+literal|3
 argument_list|)
 argument_list|,
 name|mgr
@@ -1960,7 +1956,7 @@ name|multiply
 argument_list|(
 name|SMALL_RESOURCE
 argument_list|,
-literal|3
+literal|2
 argument_list|)
 argument_list|,
 name|mgr
@@ -2028,49 +2024,17 @@ name|of
 argument_list|(
 name|toNodeId
 argument_list|(
-literal|"host1"
-argument_list|)
-argument_list|,
-name|toSet
-argument_list|(
-literal|"red"
-argument_list|)
-argument_list|,
-name|toNodeId
-argument_list|(
 literal|"host2"
 argument_list|)
 argument_list|,
 name|toSet
 argument_list|(
 literal|"blue"
-argument_list|,
-literal|"yellow"
 argument_list|)
 argument_list|)
 argument_list|)
 expr_stmt|;
-name|mgr
-operator|.
-name|addLabelsToNode
-argument_list|(
-name|ImmutableMap
-operator|.
-name|of
-argument_list|(
-name|toNodeId
-argument_list|(
-literal|"host3"
-argument_list|)
-argument_list|,
-name|toSet
-argument_list|(
-literal|"red"
-argument_list|)
-argument_list|)
-argument_list|)
-expr_stmt|;
-comment|/*      * Check resource after changes some labels      * Node->Labels:      *   host1 : blue (was: red, blue)      *   host2 : (was: blue, yellow)      *   host3 : red, yellow (was: yellow)      *   host4 :      */
+comment|/*      * Check resource after changes some labels      * Node->Labels:      *   host1 : red      *   host2 : (was: blue)      *   host3 : yellow      *   host4 :      */
 comment|// check resource
 name|Assert
 operator|.
@@ -2082,7 +2046,7 @@ name|multiply
 argument_list|(
 name|SMALL_RESOURCE
 argument_list|,
-literal|4
+literal|3
 argument_list|)
 argument_list|,
 name|mgr
@@ -2107,7 +2071,7 @@ name|multiply
 argument_list|(
 name|SMALL_RESOURCE
 argument_list|,
-literal|4
+literal|3
 argument_list|)
 argument_list|,
 name|mgr
@@ -2190,7 +2154,7 @@ name|clusterResource
 argument_list|)
 argument_list|)
 expr_stmt|;
-comment|/*      * Check resource after deactive/active some nodes       * Node->Labels:      *   (deactived) host1 : blue      *   host2 :      *   (deactived and then actived) host3 : red, yellow      *   host4 :      */
+comment|/*      * Check resource after deactive/active some nodes       * Node->Labels:      *   (deactived) host1 : red      *   host2 :      *   (deactived and then actived) host3 : yellow      *   host4 :      */
 name|mgr
 operator|.
 name|deactivateNode
@@ -2246,7 +2210,7 @@ name|multiply
 argument_list|(
 name|SMALL_RESOURCE
 argument_list|,
-literal|3
+literal|2
 argument_list|)
 argument_list|,
 name|mgr
@@ -2486,7 +2450,7 @@ name|multiply
 argument_list|(
 name|SMALL_RESOURCE
 argument_list|,
-literal|3
+literal|2
 argument_list|)
 argument_list|,
 name|mgr
@@ -2511,7 +2475,7 @@ name|multiply
 argument_list|(
 name|SMALL_RESOURCE
 argument_list|,
-literal|3
+literal|2
 argument_list|)
 argument_list|,
 name|mgr
@@ -2569,7 +2533,7 @@ name|clusterResource
 argument_list|)
 argument_list|)
 expr_stmt|;
-comment|/*      * Active NMs in nodes already have NM      * Node->Labels:      *   host2 :      *   host3 : red, yellow (3 NMs)      *   host4 : (2 NMs)      */
+comment|/*      * Active NMs in nodes already have NM      * Node->Labels:      *   host2 :      *   host3 : yellow (3 NMs)      *   host4 : (2 NMs)      */
 name|mgr
 operator|.
 name|activateNode
@@ -2654,7 +2618,7 @@ name|multiply
 argument_list|(
 name|SMALL_RESOURCE
 argument_list|,
-literal|6
+literal|3
 argument_list|)
 argument_list|,
 name|mgr
@@ -2679,7 +2643,7 @@ name|multiply
 argument_list|(
 name|SMALL_RESOURCE
 argument_list|,
-literal|6
+literal|3
 argument_list|)
 argument_list|,
 name|mgr
@@ -2737,7 +2701,7 @@ name|clusterResource
 argument_list|)
 argument_list|)
 expr_stmt|;
-comment|/*      * Deactive NMs in nodes already have NMs      * Node->Labels:      *   host2 :      *   host3 : red, yellow (2 NMs)      *   host4 : (0 NMs)      */
+comment|/*      * Deactive NMs in nodes already have NMs      * Node->Labels:      *   host2 :      *   host3 : yellow (2 NMs)      *   host4 : (0 NMs)      */
 name|mgr
 operator|.
 name|deactivateNode
@@ -2816,7 +2780,7 @@ name|multiply
 argument_list|(
 name|SMALL_RESOURCE
 argument_list|,
-literal|3
+literal|1
 argument_list|)
 argument_list|,
 name|mgr
@@ -2841,7 +2805,7 @@ name|multiply
 argument_list|(
 name|SMALL_RESOURCE
 argument_list|,
-literal|3
+literal|1
 argument_list|)
 argument_list|,
 name|mgr

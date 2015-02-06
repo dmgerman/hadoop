@@ -1151,6 +1151,20 @@ range|:
 name|hosts
 control|)
 block|{
+comment|// only add host/rack request when asked host isn't ANY
+if|if
+condition|(
+operator|!
+name|host
+operator|.
+name|equals
+argument_list|(
+name|ResourceRequest
+operator|.
+name|ANY
+argument_list|)
+condition|)
+block|{
 name|ResourceRequest
 name|hostReq
 init|=
@@ -1197,6 +1211,7 @@ argument_list|(
 name|rackReq
 argument_list|)
 expr_stmt|;
+block|}
 block|}
 name|ResourceRequest
 name|offRackReq
