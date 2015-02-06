@@ -152,6 +152,20 @@ specifier|public
 class|class
 name|TestTableMapping
 block|{
+DECL|field|hostName1
+specifier|private
+name|String
+name|hostName1
+init|=
+literal|"1.2.3.4"
+decl_stmt|;
+DECL|field|hostName2
+specifier|private
+name|String
+name|hostName2
+init|=
+literal|"5.6.7.8"
+decl_stmt|;
 annotation|@
 name|Test
 DECL|method|testResolve ()
@@ -184,9 +198,13 @@ name|Files
 operator|.
 name|write
 argument_list|(
-literal|"a.b.c /rack1\n"
+name|hostName1
 operator|+
-literal|"1.2.3.4\t/rack2\n"
+literal|" /rack1\n"
+operator|+
+name|hostName2
+operator|+
+literal|"\t/rack2\n"
 argument_list|,
 name|mapFile
 argument_list|,
@@ -250,14 +268,14 @@ name|names
 operator|.
 name|add
 argument_list|(
-literal|"a.b.c"
+name|hostName1
 argument_list|)
 expr_stmt|;
 name|names
 operator|.
 name|add
 argument_list|(
-literal|"1.2.3.4"
+name|hostName2
 argument_list|)
 expr_stmt|;
 name|List
@@ -343,9 +361,13 @@ name|Files
 operator|.
 name|write
 argument_list|(
-literal|"a.b.c /rack1\n"
+name|hostName1
 operator|+
-literal|"1.2.3.4\t/rack2\n"
+literal|" /rack1\n"
+operator|+
+name|hostName2
+operator|+
+literal|"\t/rack2\n"
 argument_list|,
 name|mapFile
 argument_list|,
@@ -409,14 +431,14 @@ name|names
 operator|.
 name|add
 argument_list|(
-literal|"a.b.c"
+name|hostName1
 argument_list|)
 expr_stmt|;
 name|names
 operator|.
 name|add
 argument_list|(
-literal|"1.2.3.4"
+name|hostName2
 argument_list|)
 expr_stmt|;
 name|List
@@ -546,14 +568,14 @@ name|names
 operator|.
 name|add
 argument_list|(
-literal|"a.b.c"
+name|hostName1
 argument_list|)
 expr_stmt|;
 name|names
 operator|.
 name|add
 argument_list|(
-literal|"1.2.3.4"
+name|hostName2
 argument_list|)
 expr_stmt|;
 name|List
@@ -666,14 +688,14 @@ name|names
 operator|.
 name|add
 argument_list|(
-literal|"a.b.c"
+name|hostName1
 argument_list|)
 expr_stmt|;
 name|names
 operator|.
 name|add
 argument_list|(
-literal|"1.2.3.4"
+name|hostName2
 argument_list|)
 expr_stmt|;
 name|List
@@ -763,9 +785,13 @@ name|Files
 operator|.
 name|write
 argument_list|(
-literal|"a.b.c /rack1\n"
+name|hostName1
 operator|+
-literal|"1.2.3.4\t/rack2\n"
+literal|" /rack1\n"
+operator|+
+name|hostName2
+operator|+
+literal|"\t/rack2\n"
 argument_list|,
 name|mapFile
 argument_list|,
@@ -829,14 +855,14 @@ name|names
 operator|.
 name|add
 argument_list|(
-literal|"a.b.c"
+name|hostName1
 argument_list|)
 expr_stmt|;
 name|names
 operator|.
 name|add
 argument_list|(
-literal|"1.2.3.4"
+name|hostName2
 argument_list|)
 expr_stmt|;
 name|List
@@ -920,14 +946,14 @@ name|names
 operator|.
 name|add
 argument_list|(
-literal|"a.b.c"
+name|hostName1
 argument_list|)
 expr_stmt|;
 name|names
 operator|.
 name|add
 argument_list|(
-literal|"1.2.3.4"
+name|hostName2
 argument_list|)
 expr_stmt|;
 name|result
@@ -1082,14 +1108,14 @@ name|names
 operator|.
 name|add
 argument_list|(
-literal|"a.b.c"
+name|hostName1
 argument_list|)
 expr_stmt|;
 name|names
 operator|.
 name|add
 argument_list|(
-literal|"1.2.3.4"
+name|hostName2
 argument_list|)
 expr_stmt|;
 name|List
