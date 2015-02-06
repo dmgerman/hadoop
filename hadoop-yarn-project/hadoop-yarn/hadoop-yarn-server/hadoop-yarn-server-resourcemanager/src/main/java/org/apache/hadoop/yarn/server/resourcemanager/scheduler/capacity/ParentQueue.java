@@ -1260,6 +1260,7 @@ literal|0.0005f
 decl_stmt|;
 comment|// 0.05% precision
 DECL|method|setChildQueues (Collection<CSQueue> childQueues)
+specifier|synchronized
 name|void
 name|setChildQueues
 parameter_list|(
@@ -3562,9 +3563,8 @@ operator|+
 name|clusterResource
 argument_list|)
 expr_stmt|;
-block|}
-comment|// Note that this is using an iterator on the childQueues so this can't be
-comment|// called if already within an iterator for the childQueues. Like
+comment|// Note that this is using an iterator on the childQueues so this can't
+comment|// be called if already within an iterator for the childQueues. Like
 comment|// from assignContainersToChildQueues.
 if|if
 condition|(
@@ -3639,6 +3639,7 @@ name|csqueue
 argument_list|)
 expr_stmt|;
 break|break;
+block|}
 block|}
 block|}
 block|}
@@ -3858,6 +3859,7 @@ annotation|@
 name|Override
 DECL|method|collectSchedulerApplications ( Collection<ApplicationAttemptId> apps)
 specifier|public
+specifier|synchronized
 name|void
 name|collectSchedulerApplications
 parameter_list|(
