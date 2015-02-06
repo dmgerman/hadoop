@@ -4937,6 +4937,27 @@ name|DEFAULT_TIMELINE_SERVICE_CLIENT_RETRY_INTERVAL_MS
 init|=
 literal|1000
 decl_stmt|;
+comment|/** Timeline client policy for whether connections are fatal */
+DECL|field|TIMELINE_SERVICE_CLIENT_BEST_EFFORT
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|TIMELINE_SERVICE_CLIENT_BEST_EFFORT
+init|=
+name|TIMELINE_SERVICE_CLIENT_PREFIX
+operator|+
+literal|"best-effort"
+decl_stmt|;
+specifier|public
+specifier|static
+specifier|final
+name|boolean
+DECL|field|DEFAULT_TIMELINE_SERVICE_CLIENT_BEST_EFFORT
+name|DEFAULT_TIMELINE_SERVICE_CLIENT_BEST_EFFORT
+init|=
+literal|false
+decl_stmt|;
 comment|/** Flag to enable recovery of timeline service */
 DECL|field|TIMELINE_SERVICE_RECOVERY_ENABLED
 specifier|public
