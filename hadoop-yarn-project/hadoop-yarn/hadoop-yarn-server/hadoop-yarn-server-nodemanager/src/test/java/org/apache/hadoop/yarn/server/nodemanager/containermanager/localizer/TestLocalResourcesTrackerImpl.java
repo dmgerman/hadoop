@@ -97,6 +97,18 @@ import|;
 end_import
 
 begin_import
+import|import static
+name|org
+operator|.
+name|mockito
+operator|.
+name|Mockito
+operator|.
+name|timeout
+import|;
+end_import
+
+begin_import
 import|import
 name|java
 operator|.
@@ -2292,6 +2304,11 @@ name|verify
 argument_list|(
 name|containerEventHandler
 argument_list|,
+name|timeout
+argument_list|(
+literal|1000
+argument_list|)
+operator|.
 name|times
 argument_list|(
 literal|2
@@ -2594,6 +2611,11 @@ name|verify
 argument_list|(
 name|containerEventHandler
 argument_list|,
+name|timeout
+argument_list|(
+literal|1000
+argument_list|)
+operator|.
 name|times
 argument_list|(
 literal|1
