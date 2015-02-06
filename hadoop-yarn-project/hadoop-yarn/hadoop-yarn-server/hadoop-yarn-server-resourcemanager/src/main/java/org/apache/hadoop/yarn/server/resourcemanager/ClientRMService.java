@@ -3188,11 +3188,11 @@ throw|throw
 operator|new
 name|ApplicationAttemptNotFoundException
 argument_list|(
-literal|"ApplicationAttempt "
+literal|"ApplicationAttempt with id '"
 operator|+
 name|appAttemptId
 operator|+
-literal|" Not Found in RM"
+literal|"' doesn't exist in RM."
 argument_list|)
 throw|;
 block|}
@@ -3633,11 +3633,11 @@ throw|throw
 operator|new
 name|ApplicationAttemptNotFoundException
 argument_list|(
-literal|"ApplicationAttempt "
+literal|"ApplicationAttempt with id '"
 operator|+
 name|appAttemptId
 operator|+
-literal|" Not Found in RM"
+literal|"' doesn't exist in RM."
 argument_list|)
 throw|;
 block|}
@@ -3667,11 +3667,11 @@ throw|throw
 operator|new
 name|ContainerNotFoundException
 argument_list|(
-literal|"Container with id "
+literal|"Container with id '"
 operator|+
 name|containerId
 operator|+
-literal|" not found"
+literal|"' doesn't exist in RM."
 argument_list|)
 throw|;
 block|}
@@ -3869,11 +3869,11 @@ throw|throw
 operator|new
 name|ApplicationAttemptNotFoundException
 argument_list|(
-literal|"ApplicationAttempt "
+literal|"ApplicationAttempt with id '"
 operator|+
 name|appAttemptId
 operator|+
-literal|" Not Found in RM"
+literal|"' doesn't exist in RM."
 argument_list|)
 throw|;
 block|}
