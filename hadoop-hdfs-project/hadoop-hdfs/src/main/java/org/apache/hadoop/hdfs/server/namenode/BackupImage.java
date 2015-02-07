@@ -475,20 +475,6 @@ throw|;
 block|}
 block|}
 block|}
-comment|/**    * Save meta-data into fsimage files.    * and create empty edits.    */
-DECL|method|saveCheckpoint ()
-name|void
-name|saveCheckpoint
-parameter_list|()
-throws|throws
-name|IOException
-block|{
-name|saveNamespace
-argument_list|(
-name|namesystem
-argument_list|)
-expr_stmt|;
-block|}
 comment|/**    * Receive a batch of edits from the NameNode.    *     * Depending on bnState, different actions are taken. See    * {@link BackupImage.BNState}    *     * @param firstTxId first txid in batch    * @param numTxns number of transactions    * @param data serialized journal records.    * @throws IOException    * @see #convergeJournalSpool()    */
 DECL|method|journal (long firstTxId, int numTxns, byte[] data)
 specifier|synchronized
