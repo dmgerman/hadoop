@@ -2779,6 +2779,8 @@ argument_list|,
 name|fileContents
 argument_list|,
 literal|"Failed to deal with thread interruptions"
+argument_list|,
+literal|false
 argument_list|)
 expr_stmt|;
 block|}

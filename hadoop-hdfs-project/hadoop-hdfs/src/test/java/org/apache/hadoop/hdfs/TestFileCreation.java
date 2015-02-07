@@ -658,22 +658,6 @@ name|hdfs
 operator|.
 name|protocol
 operator|.
-name|AlreadyBeingCreatedException
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|hdfs
-operator|.
-name|protocol
-operator|.
 name|Block
 import|;
 end_import
@@ -1001,20 +985,6 @@ operator|.
 name|io
 operator|.
 name|IOUtils
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|metrics2
-operator|.
-name|MetricsRecordBuilder
 import|;
 end_import
 
@@ -2708,7 +2678,7 @@ name|GenericTestUtils
 operator|.
 name|assertExceptionContains
 argument_list|(
-literal|"already being created by"
+literal|"Failed to CREATE_FILE"
 argument_list|,
 name|abce
 argument_list|)

@@ -682,6 +682,7 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|// do a sanity check. Read the file
+comment|// do not check file status since the file is not yet closed.
 name|AppendTestUtil
 operator|.
 name|checkFullFile
@@ -701,6 +702,8 @@ argument_list|,
 name|expected
 argument_list|,
 literal|"Read 1"
+argument_list|,
+literal|false
 argument_list|)
 expr_stmt|;
 block|}

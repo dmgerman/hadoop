@@ -3210,26 +3210,6 @@ name|namenode
 operator|.
 name|snapshot
 operator|.
-name|DirectoryWithSnapshotFeature
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|hdfs
-operator|.
-name|server
-operator|.
-name|namenode
-operator|.
-name|snapshot
-operator|.
 name|Snapshot
 import|;
 end_import
@@ -11204,9 +11184,13 @@ name|src
 argument_list|)
 throw|;
 block|}
-comment|// Opening an existing file for write. May need lease recovery.
+comment|// Opening an existing file for truncate. May need lease recovery.
 name|recoverLeaseInternal
 argument_list|(
+name|RecoverLeaseOp
+operator|.
+name|TRUNCATE_FILE
+argument_list|,
 name|iip
 argument_list|,
 name|src
@@ -13604,6 +13588,10 @@ block|{
 comment|// If lease soft limit time is expired, recover the lease
 name|recoverLeaseInternal
 argument_list|(
+name|RecoverLeaseOp
+operator|.
+name|CREATE_FILE
+argument_list|,
 name|iip
 argument_list|,
 name|src
@@ -14149,9 +14137,13 @@ name|src
 argument_list|)
 throw|;
 block|}
-comment|// Opening an existing file for write - may need to recover lease.
+comment|// Opening an existing file for append - may need to recover lease.
 name|recoverLeaseInternal
 argument_list|(
+name|RecoverLeaseOp
+operator|.
+name|APPEND_FILE
+argument_list|,
 name|iip
 argument_list|,
 name|src
@@ -14623,6 +14615,10 @@ expr_stmt|;
 block|}
 name|recoverLeaseInternal
 argument_list|(
+name|RecoverLeaseOp
+operator|.
+name|RECOVER_LEASE
+argument_list|,
 name|iip
 argument_list|,
 name|src
@@ -14674,10 +14670,71 @@ return|return
 literal|false
 return|;
 block|}
-DECL|method|recoverLeaseInternal (INodesInPath iip, String src, String holder, String clientMachine, boolean force)
+DECL|enum|RecoverLeaseOp
+specifier|private
+enum|enum
+name|RecoverLeaseOp
+block|{
+DECL|enumConstant|CREATE_FILE
+name|CREATE_FILE
+block|,
+DECL|enumConstant|APPEND_FILE
+name|APPEND_FILE
+block|,
+DECL|enumConstant|TRUNCATE_FILE
+name|TRUNCATE_FILE
+block|,
+DECL|enumConstant|RECOVER_LEASE
+name|RECOVER_LEASE
+block|;
+DECL|method|getExceptionMessage (String src, String holder, String clientMachine, String reason)
+specifier|private
+name|String
+name|getExceptionMessage
+parameter_list|(
+name|String
+name|src
+parameter_list|,
+name|String
+name|holder
+parameter_list|,
+name|String
+name|clientMachine
+parameter_list|,
+name|String
+name|reason
+parameter_list|)
+block|{
+return|return
+literal|"Failed to "
+operator|+
+name|this
+operator|+
+literal|" "
+operator|+
+name|src
+operator|+
+literal|" for "
+operator|+
+name|holder
+operator|+
+literal|" on "
+operator|+
+name|clientMachine
+operator|+
+literal|" because "
+operator|+
+name|reason
+return|;
+block|}
+block|}
+DECL|method|recoverLeaseInternal (RecoverLeaseOp op, INodesInPath iip, String src, String holder, String clientMachine, boolean force)
 name|void
 name|recoverLeaseInternal
 parameter_list|(
+name|RecoverLeaseOp
+name|op
+parameter_list|,
 name|INodesInPath
 name|iip
 parameter_list|,
@@ -14737,10 +14794,6 @@ argument_list|(
 name|holder
 argument_list|)
 decl_stmt|;
-comment|//
-comment|// We found the lease for this file. And surprisingly the original
-comment|// holder is trying to recreate this file. This should never occur.
-comment|//
 if|if
 condition|(
 operator|!
@@ -14775,23 +14828,26 @@ name|lease
 argument_list|)
 condition|)
 block|{
+comment|// We found the lease for this file but the original
+comment|// holder is trying to obtain it again.
 throw|throw
 operator|new
 name|AlreadyBeingCreatedException
 argument_list|(
-literal|"failed to create file "
-operator|+
+name|op
+operator|.
+name|getExceptionMessage
+argument_list|(
 name|src
-operator|+
-literal|" for "
-operator|+
+argument_list|,
+name|holder
+argument_list|,
+name|clientMachine
+argument_list|,
 name|holder
 operator|+
-literal|" for client "
-operator|+
-name|clientMachine
-operator|+
-literal|" because current leaseholder is trying to recreate file."
+literal|" is already the current lease holder."
+argument_list|)
 argument_list|)
 throw|;
 block|}
@@ -14835,19 +14891,18 @@ throw|throw
 operator|new
 name|AlreadyBeingCreatedException
 argument_list|(
-literal|"failed to create file "
-operator|+
+name|op
+operator|.
+name|getExceptionMessage
+argument_list|(
 name|src
-operator|+
-literal|" for "
-operator|+
+argument_list|,
 name|holder
-operator|+
-literal|" for client "
-operator|+
+argument_list|,
 name|clientMachine
-operator|+
-literal|" because pendingCreates is non-null but no leases found."
+argument_list|,
+literal|"the file is under construction but no leases found."
+argument_list|)
 argument_list|)
 throw|;
 block|}
@@ -14963,11 +15018,18 @@ throw|throw
 operator|new
 name|RecoveryInProgressException
 argument_list|(
-literal|"Failed to close file "
-operator|+
+name|op
+operator|.
+name|getExceptionMessage
+argument_list|(
 name|src
-operator|+
-literal|". Lease recovery is in progress. Try again later."
+argument_list|,
+name|holder
+argument_list|,
+name|clientMachine
+argument_list|,
+literal|"lease recovery is in progress. Try again later."
+argument_list|)
 argument_list|)
 throw|;
 block|}
@@ -15002,20 +15064,27 @@ throw|throw
 operator|new
 name|RecoveryInProgressException
 argument_list|(
-literal|"Recovery in progress, file ["
-operator|+
-name|src
-operator|+
-literal|"], "
-operator|+
-literal|"lease owner ["
-operator|+
-name|lease
+name|op
 operator|.
-name|getHolder
-argument_list|()
+name|getExceptionMessage
+argument_list|(
+name|src
+argument_list|,
+name|holder
+argument_list|,
+name|clientMachine
+argument_list|,
+literal|"another recovery is in progress by "
 operator|+
-literal|"]"
+name|clientName
+operator|+
+literal|" on "
+operator|+
+name|uc
+operator|.
+name|getClientMachine
+argument_list|()
+argument_list|)
 argument_list|)
 throw|;
 block|}
@@ -15025,30 +15094,27 @@ throw|throw
 operator|new
 name|AlreadyBeingCreatedException
 argument_list|(
-literal|"Failed to create file ["
-operator|+
+name|op
+operator|.
+name|getExceptionMessage
+argument_list|(
 name|src
-operator|+
-literal|"] for ["
-operator|+
+argument_list|,
 name|holder
-operator|+
-literal|"] for client ["
-operator|+
+argument_list|,
 name|clientMachine
-operator|+
-literal|"], because this file is already being created by ["
+argument_list|,
+literal|"this file lease is currently owned by "
 operator|+
 name|clientName
 operator|+
-literal|"] on ["
+literal|" on "
 operator|+
 name|uc
 operator|.
 name|getClientMachine
 argument_list|()
-operator|+
-literal|"]"
+argument_list|)
 argument_list|)
 throw|;
 block|}
