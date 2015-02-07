@@ -4680,6 +4680,24 @@ name|DFS_STORAGE_POLICY_ENABLED_DEFAULT
 init|=
 literal|true
 decl_stmt|;
+DECL|field|DFS_QUOTA_BY_STORAGETYPE_ENABLED_KEY
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|DFS_QUOTA_BY_STORAGETYPE_ENABLED_KEY
+init|=
+literal|"dfs.quota.by.storage.type.enabled"
+decl_stmt|;
+DECL|field|DFS_QUOTA_BY_STORAGETYPE_ENABLED_DEFAULT
+specifier|public
+specifier|static
+specifier|final
+name|boolean
+name|DFS_QUOTA_BY_STORAGETYPE_ENABLED_DEFAULT
+init|=
+literal|true
+decl_stmt|;
 comment|// HA related configuration
 DECL|field|DFS_HA_NAMENODES_KEY_PREFIX
 specifier|public

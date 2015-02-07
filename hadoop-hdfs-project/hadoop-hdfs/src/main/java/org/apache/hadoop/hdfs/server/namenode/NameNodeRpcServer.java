@@ -702,6 +702,20 @@ name|hadoop
 operator|.
 name|hdfs
 operator|.
+name|StorageType
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
 name|inotify
 operator|.
 name|EventBatch
@@ -7262,7 +7276,7 @@ block|}
 annotation|@
 name|Override
 comment|// ClientProtocol
-DECL|method|setQuota (String path, long namespaceQuota, long diskspaceQuota)
+DECL|method|setQuota (String path, long namespaceQuota, long diskspaceQuota, StorageType type)
 specifier|public
 name|void
 name|setQuota
@@ -7275,6 +7289,9 @@ name|namespaceQuota
 parameter_list|,
 name|long
 name|diskspaceQuota
+parameter_list|,
+name|StorageType
+name|type
 parameter_list|)
 throws|throws
 name|IOException
@@ -7282,6 +7299,21 @@ block|{
 name|checkNNStartup
 argument_list|()
 expr_stmt|;
+if|if
+condition|(
+name|type
+operator|!=
+literal|null
+condition|)
+block|{
+throw|throw
+operator|new
+name|UnsupportedActionException
+argument_list|(
+literal|"Quota by storage type support is not fully supported by namenode yet."
+argument_list|)
+throw|;
+block|}
 name|namesystem
 operator|.
 name|setQuota

@@ -520,6 +520,20 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|hdfs
+operator|.
+name|StorageType
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|io
 operator|.
 name|EnumSetWritable
@@ -1689,10 +1703,10 @@ name|UnresolvedLinkException
 throws|,
 name|IOException
 function_decl|;
-comment|/**    * Set the quota for a directory.    * @param path  The string representation of the path to the directory    * @param namespaceQuota Limit on the number of names in the tree rooted     *                       at the directory    * @param diskspaceQuota Limit on disk space occupied all the files under    *                       this directory.     *<br><br>    *                           * The quota can have three types of values : (1) 0 or more will set     * the quota to that value, (2) {@link HdfsConstants#QUOTA_DONT_SET}  implies     * the quota will not be changed, and (3) {@link HdfsConstants#QUOTA_RESET}     * implies the quota will be reset. Any other value is a runtime error.    *     * @throws AccessControlException permission denied    * @throws FileNotFoundException file<code>path</code> is not found    * @throws QuotaExceededException if the directory size     *           is greater than the given quota    * @throws UnresolvedLinkException if the<code>path</code> contains a symlink.     * @throws SnapshotAccessControlException if path is in RO snapshot    * @throws IOException If an I/O error occurred    */
+comment|/**    * Set the quota for a directory.    * @param path  The string representation of the path to the directory    * @param namespaceQuota Limit on the number of names in the tree rooted     *                       at the directory    * @param diskspaceQuota Limit on disk space occupied all the files under    *                       this directory.    * @param type StorageType that the space quota is intended to be set on.    *             It may be null when called by traditional space/namespace quota.    *<br><br>    *                           * The quota can have three types of values : (1) 0 or more will set     * the quota to that value, (2) {@link HdfsConstants#QUOTA_DONT_SET}  implies     * the quota will not be changed, and (3) {@link HdfsConstants#QUOTA_RESET}     * implies the quota will be reset. Any other value is a runtime error.    *     * @throws AccessControlException permission denied    * @throws FileNotFoundException file<code>path</code> is not found    * @throws QuotaExceededException if the directory size     *           is greater than the given quota    * @throws UnresolvedLinkException if the<code>path</code> contains a symlink.     * @throws SnapshotAccessControlException if path is in RO snapshot    * @throws IOException If an I/O error occurred    */
 annotation|@
 name|Idempotent
-DECL|method|setQuota (String path, long namespaceQuota, long diskspaceQuota)
+DECL|method|setQuota (String path, long namespaceQuota, long diskspaceQuota, StorageType type)
 specifier|public
 name|void
 name|setQuota
@@ -1705,6 +1719,9 @@ name|namespaceQuota
 parameter_list|,
 name|long
 name|diskspaceQuota
+parameter_list|,
+name|StorageType
+name|type
 parameter_list|)
 throws|throws
 name|AccessControlException

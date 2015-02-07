@@ -740,6 +740,20 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|hdfs
+operator|.
+name|StorageType
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|ipc
 operator|.
 name|GenericRefreshProtocol
@@ -1494,7 +1508,7 @@ literal|"-"
 operator|+
 name|NAME
 operator|+
-literal|"<dirname>...<dirname>"
+literal|"<dirname>...<dirname> -storageType<storagetype>"
 decl_stmt|;
 DECL|field|DESCRIPTION
 specifier|private
@@ -1515,7 +1529,14 @@ literal|"\t\t1. the directory does not exist or is a file, or\n"
 operator|+
 literal|"\t\t2. user is not an administrator.\n"
 operator|+
-literal|"\t\tIt does not fault if the directory has no quota."
+literal|"\t\tIt does not fault if the directory has no quota.\n"
+operator|+
+literal|"\t\tThe storage type specific quota is cleared when -storageType option is specified."
+decl_stmt|;
+DECL|field|type
+specifier|private
+name|StorageType
+name|type
 decl_stmt|;
 comment|/** Constructor */
 DECL|method|ClearSpaceQuotaCommand (String[] args, int pos, FileSystem fs)
@@ -1565,6 +1586,37 @@ argument_list|,
 name|pos
 argument_list|)
 decl_stmt|;
+name|String
+name|storageTypeString
+init|=
+name|StringUtils
+operator|.
+name|popOptionWithArgument
+argument_list|(
+literal|"-storageType"
+argument_list|,
+name|parameters
+argument_list|)
+decl_stmt|;
+if|if
+condition|(
+name|storageTypeString
+operator|!=
+literal|null
+condition|)
+block|{
+name|this
+operator|.
+name|type
+operator|=
+name|StorageType
+operator|.
+name|parseStorageType
+argument_list|(
+name|storageTypeString
+argument_list|)
+expr_stmt|;
+block|}
 name|this
 operator|.
 name|args
@@ -1633,6 +1685,29 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
+if|if
+condition|(
+name|type
+operator|!=
+literal|null
+condition|)
+block|{
+name|dfs
+operator|.
+name|setQuotaByStorageType
+argument_list|(
+name|path
+argument_list|,
+name|type
+argument_list|,
+name|HdfsConstants
+operator|.
+name|QUOTA_RESET
+argument_list|)
+expr_stmt|;
+block|}
+else|else
+block|{
 name|dfs
 operator|.
 name|setQuota
@@ -1648,6 +1723,7 @@ operator|.
 name|QUOTA_RESET
 argument_list|)
 expr_stmt|;
+block|}
 block|}
 block|}
 comment|/** A class that supports command setQuota */
@@ -1679,7 +1755,7 @@ literal|"-"
 operator|+
 name|NAME
 operator|+
-literal|"<quota><dirname>...<dirname>"
+literal|"<quota><dirname>...<dirname> -storageType<storagetype>"
 decl_stmt|;
 DECL|field|DESCRIPTION
 specifier|private
@@ -1712,7 +1788,9 @@ literal|"\t\t1. N is not a positive integer, or\n"
 operator|+
 literal|"\t\t2. user is not an administrator, or\n"
 operator|+
-literal|"\t\t3. the directory does not exist or is a file, or\n"
+literal|"\t\t3. the directory does not exist or is a file.\n"
+operator|+
+literal|"\t\tThe storage type specific quota is set when -storageType option is specified.\n"
 decl_stmt|;
 DECL|field|quota
 specifier|private
@@ -1720,6 +1798,11 @@ name|long
 name|quota
 decl_stmt|;
 comment|// the quota to be set
+DECL|field|type
+specifier|private
+name|StorageType
+name|type
+decl_stmt|;
 comment|/** Constructor */
 DECL|method|SetSpaceQuotaCommand (String[] args, int pos, FileSystem fs)
 name|SetSpaceQuotaCommand
@@ -1813,6 +1896,37 @@ literal|"\" is not a valid value for a quota."
 argument_list|)
 throw|;
 block|}
+name|String
+name|storageTypeString
+init|=
+name|StringUtils
+operator|.
+name|popOptionWithArgument
+argument_list|(
+literal|"-storageType"
+argument_list|,
+name|parameters
+argument_list|)
+decl_stmt|;
+if|if
+condition|(
+name|storageTypeString
+operator|!=
+literal|null
+condition|)
+block|{
+name|this
+operator|.
+name|type
+operator|=
+name|StorageType
+operator|.
+name|parseStorageType
+argument_list|(
+name|storageTypeString
+argument_list|)
+expr_stmt|;
+block|}
 name|this
 operator|.
 name|args
@@ -1881,6 +1995,27 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
+if|if
+condition|(
+name|type
+operator|!=
+literal|null
+condition|)
+block|{
+name|dfs
+operator|.
+name|setQuotaByStorageType
+argument_list|(
+name|path
+argument_list|,
+name|type
+argument_list|,
+name|quota
+argument_list|)
+expr_stmt|;
+block|}
+else|else
+block|{
 name|dfs
 operator|.
 name|setQuota
@@ -1894,6 +2029,7 @@ argument_list|,
 name|quota
 argument_list|)
 expr_stmt|;
+block|}
 block|}
 block|}
 DECL|class|RollingUpgradeCommand
