@@ -56,7 +56,7 @@ name|server
 operator|.
 name|blockmanagement
 operator|.
-name|BlockInfo
+name|BlockInfoContiguous
 import|;
 end_import
 
@@ -272,7 +272,7 @@ expr_stmt|;
 block|}
 DECL|method|findEarlierSnapshotBlocks (int snapshotId)
 specifier|public
-name|BlockInfo
+name|BlockInfoContiguous
 index|[]
 name|findEarlierSnapshotBlocks
 parameter_list|(
@@ -325,7 +325,7 @@ argument_list|,
 name|snapshotId
 argument_list|)
 decl_stmt|;
-name|BlockInfo
+name|BlockInfoContiguous
 index|[]
 name|blocks
 init|=
@@ -383,7 +383,7 @@ return|;
 block|}
 DECL|method|findLaterSnapshotBlocks (int snapshotId)
 specifier|public
-name|BlockInfo
+name|BlockInfoContiguous
 index|[]
 name|findLaterSnapshotBlocks
 parameter_list|(
@@ -436,7 +436,7 @@ argument_list|,
 name|snapshotId
 argument_list|)
 decl_stmt|;
-name|BlockInfo
+name|BlockInfoContiguous
 index|[]
 name|blocks
 init|=
@@ -517,7 +517,7 @@ argument_list|>
 name|removedINodes
 parameter_list|)
 block|{
-name|BlockInfo
+name|BlockInfoContiguous
 index|[]
 name|removedBlocks
 init|=
@@ -611,7 +611,7 @@ argument_list|(
 name|removedBlocks
 argument_list|)
 expr_stmt|;
-name|BlockInfo
+name|BlockInfoContiguous
 index|[]
 name|earlierBlocks
 init|=
@@ -621,7 +621,7 @@ operator|==
 literal|null
 condition|?
 operator|new
-name|BlockInfo
+name|BlockInfoContiguous
 index|[]
 block|{}
 else|:
@@ -632,7 +632,7 @@ argument_list|()
 operator|)
 decl_stmt|;
 comment|// Find later snapshot (or file itself) with blocks
-name|BlockInfo
+name|BlockInfoContiguous
 index|[]
 name|laterBlocks
 init|=

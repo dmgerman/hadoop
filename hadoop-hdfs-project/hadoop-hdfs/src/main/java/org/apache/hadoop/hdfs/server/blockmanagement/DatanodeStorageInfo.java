@@ -466,18 +466,18 @@ name|BlockIterator
 implements|implements
 name|Iterator
 argument_list|<
-name|BlockInfo
+name|BlockInfoContiguous
 argument_list|>
 block|{
 DECL|field|current
 specifier|private
-name|BlockInfo
+name|BlockInfoContiguous
 name|current
 decl_stmt|;
-DECL|method|BlockIterator (BlockInfo head)
+DECL|method|BlockIterator (BlockInfoContiguous head)
 name|BlockIterator
 parameter_list|(
-name|BlockInfo
+name|BlockInfoContiguous
 name|head
 parameter_list|)
 block|{
@@ -502,11 +502,11 @@ return|;
 block|}
 DECL|method|next ()
 specifier|public
-name|BlockInfo
+name|BlockInfoContiguous
 name|next
 parameter_list|()
 block|{
-name|BlockInfo
+name|BlockInfoContiguous
 name|res
 init|=
 name|current
@@ -592,7 +592,7 @@ decl_stmt|;
 DECL|field|blockList
 specifier|private
 specifier|volatile
-name|BlockInfo
+name|BlockInfoContiguous
 name|blockList
 init|=
 literal|null
@@ -899,12 +899,12 @@ return|return
 name|blockPoolUsed
 return|;
 block|}
-DECL|method|addBlock (BlockInfo b)
+DECL|method|addBlock (BlockInfoContiguous b)
 specifier|public
 name|AddBlockResult
 name|addBlock
 parameter_list|(
-name|BlockInfo
+name|BlockInfoContiguous
 name|b
 parameter_list|)
 block|{
@@ -993,12 +993,12 @@ return|return
 name|result
 return|;
 block|}
-DECL|method|removeBlock (BlockInfo b)
+DECL|method|removeBlock (BlockInfoContiguous b)
 specifier|public
 name|boolean
 name|removeBlock
 parameter_list|(
-name|BlockInfo
+name|BlockInfoContiguous
 name|b
 parameter_list|)
 block|{
@@ -1049,7 +1049,7 @@ block|}
 DECL|method|getBlockIterator ()
 name|Iterator
 argument_list|<
-name|BlockInfo
+name|BlockInfoContiguous
 argument_list|>
 name|getBlockIterator
 parameter_list|()
@@ -1063,11 +1063,11 @@ argument_list|)
 return|;
 block|}
 comment|/**    * Move block to the head of the list of blocks belonging to the data-node.    * @return the index of the head of the blockList    */
-DECL|method|moveBlockToHead (BlockInfo b, int curIndex, int headIndex)
+DECL|method|moveBlockToHead (BlockInfoContiguous b, int curIndex, int headIndex)
 name|int
 name|moveBlockToHead
 parameter_list|(
-name|BlockInfo
+name|BlockInfoContiguous
 name|b
 parameter_list|,
 name|int
@@ -1100,7 +1100,7 @@ comment|/**    * Used for testing only    * @return the head of the blockList   
 annotation|@
 name|VisibleForTesting
 DECL|method|getBlockListHeadForTesting ()
-name|BlockInfo
+name|BlockInfoContiguous
 name|getBlockListHeadForTesting
 parameter_list|()
 block|{

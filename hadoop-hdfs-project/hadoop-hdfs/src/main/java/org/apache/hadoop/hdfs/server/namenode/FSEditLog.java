@@ -382,7 +382,7 @@ name|server
 operator|.
 name|blockmanagement
 operator|.
-name|BlockInfo
+name|BlockInfoContiguous
 import|;
 end_import
 
@@ -521,26 +521,6 @@ operator|.
 name|FSEditLogOp
 operator|.
 name|AddCachePoolOp
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|hdfs
-operator|.
-name|server
-operator|.
-name|namenode
-operator|.
-name|FSEditLogOp
-operator|.
-name|AddCloseOp
 import|;
 end_import
 
@@ -3859,7 +3839,7 @@ name|isUnderConstruction
 argument_list|()
 argument_list|)
 expr_stmt|;
-name|BlockInfo
+name|BlockInfoContiguous
 index|[]
 name|blocks
 init|=
@@ -3883,7 +3863,7 @@ operator|>
 literal|0
 argument_list|)
 expr_stmt|;
-name|BlockInfo
+name|BlockInfoContiguous
 name|pBlock
 init|=
 name|blocks
@@ -3903,7 +3883,7 @@ index|]
 else|:
 literal|null
 decl_stmt|;
-name|BlockInfo
+name|BlockInfoContiguous
 name|lastBlock
 init|=
 name|blocks

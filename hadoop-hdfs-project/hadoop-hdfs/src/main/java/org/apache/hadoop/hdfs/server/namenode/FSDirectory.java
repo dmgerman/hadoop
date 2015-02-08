@@ -556,7 +556,7 @@ name|server
 operator|.
 name|blockmanagement
 operator|.
-name|BlockInfo
+name|BlockInfoContiguous
 import|;
 end_import
 
@@ -574,7 +574,7 @@ name|server
 operator|.
 name|blockmanagement
 operator|.
-name|BlockInfoUnderConstruction
+name|BlockInfoContiguousUnderConstruction
 import|;
 end_import
 
@@ -2161,7 +2161,7 @@ name|mtime
 argument_list|,
 name|atime
 argument_list|,
-name|BlockInfo
+name|BlockInfoContiguous
 operator|.
 name|EMPTY_ARRAY
 argument_list|,
@@ -2568,7 +2568,7 @@ return|;
 block|}
 comment|/**    * Add a block to the file. Returns a reference to the added block.    */
 DECL|method|addBlock (String path, INodesInPath inodesInPath, Block block, DatanodeStorageInfo[] targets)
-name|BlockInfo
+name|BlockInfoContiguous
 name|addBlock
 parameter_list|(
 name|String
@@ -2630,11 +2630,11 @@ literal|true
 argument_list|)
 expr_stmt|;
 comment|// associate new last block for the file
-name|BlockInfoUnderConstruction
+name|BlockInfoContiguousUnderConstruction
 name|blockInfo
 init|=
 operator|new
-name|BlockInfoUnderConstruction
+name|BlockInfoContiguousUnderConstruction
 argument_list|(
 name|block
 argument_list|,
@@ -4863,7 +4863,7 @@ operator|!
 name|onBlockBoundary
 condition|)
 block|{
-name|BlockInfo
+name|BlockInfoContiguous
 name|oldBlock
 init|=
 name|file

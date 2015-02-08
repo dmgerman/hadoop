@@ -1634,7 +1634,7 @@ name|INodeFile
 name|file
 parameter_list|)
 block|{
-name|BlockInfo
+name|BlockInfoContiguous
 index|[]
 name|blockInfos
 init|=
@@ -1739,7 +1739,7 @@ literal|0
 decl_stmt|;
 for|for
 control|(
-name|BlockInfo
+name|BlockInfoContiguous
 name|blockInfo
 range|:
 name|blockInfos
@@ -2010,7 +2010,7 @@ name|neededTotal
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|findReasonForNotCaching (CachedBlock cblock, BlockInfo blockInfo)
+DECL|method|findReasonForNotCaching (CachedBlock cblock, BlockInfoContiguous blockInfo)
 specifier|private
 name|String
 name|findReasonForNotCaching
@@ -2018,7 +2018,7 @@ parameter_list|(
 name|CachedBlock
 name|cblock
 parameter_list|,
-name|BlockInfo
+name|BlockInfoContiguous
 name|blockInfo
 parameter_list|)
 block|{
@@ -2273,7 +2273,7 @@ argument_list|()
 expr_stmt|;
 block|}
 block|}
-name|BlockInfo
+name|BlockInfoContiguous
 name|blockInfo
 init|=
 name|blockManager
@@ -2781,7 +2781,7 @@ parameter_list|)
 block|{
 comment|// To figure out which replicas can be cached, we consult the
 comment|// blocksMap.  We don't want to try to cache a corrupt replica, though.
-name|BlockInfo
+name|BlockInfoContiguous
 name|blockInfo
 init|=
 name|blockManager
@@ -3008,7 +3008,7 @@ operator|.
 name|next
 argument_list|()
 decl_stmt|;
-name|BlockInfo
+name|BlockInfoContiguous
 name|info
 init|=
 name|blockManager
@@ -3068,7 +3068,7 @@ operator|.
 name|next
 argument_list|()
 decl_stmt|;
-name|BlockInfo
+name|BlockInfoContiguous
 name|info
 init|=
 name|blockManager

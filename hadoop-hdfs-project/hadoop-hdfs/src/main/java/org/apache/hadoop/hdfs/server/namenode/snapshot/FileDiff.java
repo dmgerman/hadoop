@@ -76,7 +76,7 @@ name|server
 operator|.
 name|blockmanagement
 operator|.
-name|BlockInfo
+name|BlockInfoContiguous
 import|;
 end_import
 
@@ -241,7 +241,7 @@ decl_stmt|;
 comment|/** A copy of the INodeFile block list. Used in truncate. */
 DECL|field|blocks
 specifier|private
-name|BlockInfo
+name|BlockInfoContiguous
 index|[]
 name|blocks
 decl_stmt|;
@@ -325,12 +325,12 @@ name|fileSize
 return|;
 block|}
 comment|/**    * Copy block references into the snapshot    * up to the current {@link #fileSize}.    * Should be done only once.    */
-DECL|method|setBlocks (BlockInfo[] blocks)
+DECL|method|setBlocks (BlockInfoContiguous[] blocks)
 specifier|public
 name|void
 name|setBlocks
 parameter_list|(
-name|BlockInfo
+name|BlockInfoContiguous
 index|[]
 name|blocks
 parameter_list|)
@@ -395,7 +395,7 @@ expr_stmt|;
 block|}
 DECL|method|getBlocks ()
 specifier|public
-name|BlockInfo
+name|BlockInfoContiguous
 index|[]
 name|getBlocks
 parameter_list|()
@@ -618,7 +618,7 @@ condition|)
 return|return;
 for|for
 control|(
-name|BlockInfo
+name|BlockInfoContiguous
 name|blk
 range|:
 name|blocks

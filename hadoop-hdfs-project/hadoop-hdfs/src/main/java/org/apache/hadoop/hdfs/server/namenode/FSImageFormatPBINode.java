@@ -320,7 +320,7 @@ name|server
 operator|.
 name|blockmanagement
 operator|.
-name|BlockInfo
+name|BlockInfoContiguous
 import|;
 end_import
 
@@ -338,7 +338,7 @@ name|server
 operator|.
 name|blockmanagement
 operator|.
-name|BlockInfoUnderConstruction
+name|BlockInfoContiguousUnderConstruction
 import|;
 end_import
 
@@ -1481,7 +1481,7 @@ parameter_list|)
 block|{
 comment|// Add file->block mapping
 specifier|final
-name|BlockInfo
+name|BlockInfoContiguous
 index|[]
 name|blocks
 init|=
@@ -2139,12 +2139,12 @@ operator|.
 name|getLoaderContext
 argument_list|()
 decl_stmt|;
-name|BlockInfo
+name|BlockInfoContiguous
 index|[]
 name|blocks
 init|=
 operator|new
-name|BlockInfo
+name|BlockInfoContiguous
 index|[
 name|bp
 operator|.
@@ -2180,7 +2180,7 @@ name|i
 index|]
 operator|=
 operator|new
-name|BlockInfo
+name|BlockInfoContiguous
 argument_list|(
 name|PBHelper
 operator|.
@@ -2384,7 +2384,7 @@ operator|>
 literal|0
 condition|)
 block|{
-name|BlockInfo
+name|BlockInfoContiguous
 name|lastBlk
 init|=
 name|file
@@ -2405,7 +2405,7 @@ operator|-
 literal|1
 argument_list|,
 operator|new
-name|BlockInfoUnderConstruction
+name|BlockInfoContiguousUnderConstruction
 argument_list|(
 name|lastBlk
 argument_list|,

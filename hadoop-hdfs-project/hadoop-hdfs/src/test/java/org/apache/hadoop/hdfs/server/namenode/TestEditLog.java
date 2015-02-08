@@ -690,7 +690,7 @@ name|server
 operator|.
 name|blockmanagement
 operator|.
-name|BlockInfo
+name|BlockInfoContiguous
 import|;
 end_import
 
@@ -1418,7 +1418,7 @@ literal|0L
 argument_list|,
 literal|0L
 argument_list|,
-name|BlockInfo
+name|BlockInfoContiguous
 operator|.
 name|EMPTY_ARRAY
 argument_list|,

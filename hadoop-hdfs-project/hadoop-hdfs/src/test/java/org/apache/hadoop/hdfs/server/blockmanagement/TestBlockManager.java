@@ -1002,7 +1002,7 @@ argument_list|(
 name|origStorages
 argument_list|)
 decl_stmt|;
-name|BlockInfo
+name|BlockInfoContiguous
 name|blockInfo
 init|=
 name|addBlockOnNodes
@@ -1154,7 +1154,7 @@ argument_list|(
 name|origStorages
 argument_list|)
 decl_stmt|;
-name|BlockInfo
+name|BlockInfoContiguous
 name|blockInfo
 init|=
 name|addBlockOnNodes
@@ -1385,7 +1385,7 @@ argument_list|(
 name|origStorages
 argument_list|)
 decl_stmt|;
-name|BlockInfo
+name|BlockInfoContiguous
 name|blockInfo
 init|=
 name|addBlockOnNodes
@@ -1658,7 +1658,7 @@ argument_list|(
 name|origStorages
 argument_list|)
 decl_stmt|;
-name|BlockInfo
+name|BlockInfoContiguous
 name|blockInfo
 init|=
 name|addBlockOnNodes
@@ -1960,7 +1960,7 @@ name|origNodes
 init|=
 name|rackA
 decl_stmt|;
-name|BlockInfo
+name|BlockInfoContiguous
 name|blockInfo
 init|=
 name|addBlockOnNodes
@@ -2222,12 +2222,12 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|/**    * Tell the block manager that replication is completed for the given    * pipeline.    */
-DECL|method|fulfillPipeline (BlockInfo blockInfo, DatanodeStorageInfo[] pipeline)
+DECL|method|fulfillPipeline (BlockInfoContiguous blockInfo, DatanodeStorageInfo[] pipeline)
 specifier|private
 name|void
 name|fulfillPipeline
 parameter_list|(
-name|BlockInfo
+name|BlockInfoContiguous
 name|blockInfo
 parameter_list|,
 name|DatanodeStorageInfo
@@ -2284,7 +2284,7 @@ block|}
 block|}
 DECL|method|blockOnNodes (long blkId, List<DatanodeDescriptor> nodes)
 specifier|private
-name|BlockInfo
+name|BlockInfoContiguous
 name|blockOnNodes
 parameter_list|(
 name|long
@@ -2306,11 +2306,11 @@ argument_list|(
 name|blkId
 argument_list|)
 decl_stmt|;
-name|BlockInfo
+name|BlockInfoContiguous
 name|blockInfo
 init|=
 operator|new
-name|BlockInfo
+name|BlockInfoContiguous
 argument_list|(
 name|block
 argument_list|,
@@ -2541,7 +2541,7 @@ return|;
 block|}
 DECL|method|addBlockOnNodes (long blockId, List<DatanodeDescriptor> nodes)
 specifier|private
-name|BlockInfo
+name|BlockInfoContiguous
 name|addBlockOnNodes
 parameter_list|(
 name|long
@@ -2584,7 +2584,7 @@ operator|.
 name|getBlockReplication
 argument_list|()
 expr_stmt|;
-name|BlockInfo
+name|BlockInfoContiguous
 name|blockInfo
 init|=
 name|blockOnNodes

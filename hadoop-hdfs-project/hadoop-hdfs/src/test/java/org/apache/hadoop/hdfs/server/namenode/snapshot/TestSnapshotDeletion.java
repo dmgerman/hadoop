@@ -332,7 +332,7 @@ name|server
 operator|.
 name|blockmanagement
 operator|.
-name|BlockInfo
+name|BlockInfoContiguous
 import|;
 end_import
 
@@ -1832,7 +1832,7 @@ argument_list|,
 name|blockmanager
 argument_list|)
 decl_stmt|;
-name|BlockInfo
+name|BlockInfoContiguous
 index|[]
 name|blocks
 init|=
@@ -1867,7 +1867,7 @@ expr_stmt|;
 comment|// check blocks of tempFile
 for|for
 control|(
-name|BlockInfo
+name|BlockInfoContiguous
 name|b
 range|:
 name|blocks
@@ -2391,7 +2391,7 @@ argument_list|)
 expr_stmt|;
 for|for
 control|(
-name|BlockInfo
+name|BlockInfoContiguous
 name|b
 range|:
 name|blocks
@@ -3245,7 +3245,7 @@ argument_list|,
 name|blockmanager
 argument_list|)
 decl_stmt|;
-name|BlockInfo
+name|BlockInfoContiguous
 index|[]
 name|blocks
 init|=
@@ -3391,7 +3391,7 @@ argument_list|)
 expr_stmt|;
 for|for
 control|(
-name|BlockInfo
+name|BlockInfoContiguous
 name|b
 range|:
 name|blocks
@@ -5172,7 +5172,7 @@ argument_list|,
 name|blockmanager
 argument_list|)
 decl_stmt|;
-name|BlockInfo
+name|BlockInfoContiguous
 index|[]
 name|blocks_14
 init|=
@@ -5432,7 +5432,7 @@ argument_list|)
 expr_stmt|;
 for|for
 control|(
-name|BlockInfo
+name|BlockInfoContiguous
 name|b
 range|:
 name|blocks_14

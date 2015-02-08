@@ -742,7 +742,7 @@ name|server
 operator|.
 name|blockmanagement
 operator|.
-name|BlockInfoUnderConstruction
+name|BlockInfoContiguousUnderConstruction
 import|;
 end_import
 
@@ -4475,11 +4475,11 @@ operator|.
 name|asFile
 argument_list|()
 decl_stmt|;
-name|BlockInfoUnderConstruction
+name|BlockInfoContiguousUnderConstruction
 name|blkUC
 init|=
 call|(
-name|BlockInfoUnderConstruction
+name|BlockInfoContiguousUnderConstruction
 call|)
 argument_list|(
 name|fileNode

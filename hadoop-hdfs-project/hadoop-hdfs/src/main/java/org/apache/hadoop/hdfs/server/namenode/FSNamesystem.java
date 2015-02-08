@@ -2706,7 +2706,7 @@ name|server
 operator|.
 name|blockmanagement
 operator|.
-name|BlockInfo
+name|BlockInfoContiguous
 import|;
 end_import
 
@@ -2724,7 +2724,7 @@ name|server
 operator|.
 name|blockmanagement
 operator|.
-name|BlockInfoUnderConstruction
+name|BlockInfoContiguousUnderConstruction
 import|;
 end_import
 
@@ -11422,7 +11422,7 @@ operator|==
 literal|null
 operator|)
 decl_stmt|;
-name|BlockInfo
+name|BlockInfoContiguous
 name|oldBlock
 init|=
 name|file
@@ -11481,7 +11481,7 @@ argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
-name|BlockInfoUnderConstruction
+name|BlockInfoContiguousUnderConstruction
 name|truncatedBlockUC
 decl_stmt|;
 if|if
@@ -11494,7 +11494,7 @@ comment|// use oldBlock as a source for copy-on-truncate recovery
 name|truncatedBlockUC
 operator|=
 operator|new
-name|BlockInfoUnderConstruction
+name|BlockInfoContiguousUnderConstruction
 argument_list|(
 name|newBlock
 argument_list|,
@@ -11606,7 +11606,7 @@ assert|;
 name|truncatedBlockUC
 operator|=
 operator|(
-name|BlockInfoUnderConstruction
+name|BlockInfoContiguousUnderConstruction
 operator|)
 name|oldBlock
 expr_stmt|;
@@ -11723,14 +11723,14 @@ name|newBlock
 return|;
 block|}
 comment|/**    * Defines if a replica needs to be copied on truncate or    * can be truncated in place.    */
-DECL|method|shouldCopyOnTruncate (INodeFile file, BlockInfo blk)
+DECL|method|shouldCopyOnTruncate (INodeFile file, BlockInfoContiguous blk)
 name|boolean
 name|shouldCopyOnTruncate
 parameter_list|(
 name|INodeFile
 name|file
 parameter_list|,
-name|BlockInfo
+name|BlockInfoContiguous
 name|blk
 parameter_list|)
 block|{
@@ -14156,7 +14156,7 @@ literal|false
 argument_list|)
 expr_stmt|;
 specifier|final
-name|BlockInfo
+name|BlockInfoContiguous
 name|lastBlock
 init|=
 name|myFile
@@ -14385,7 +14385,7 @@ block|}
 block|}
 else|else
 block|{
-name|BlockInfo
+name|BlockInfoContiguous
 name|lastBlock
 init|=
 name|file
@@ -15036,7 +15036,7 @@ block|}
 else|else
 block|{
 specifier|final
-name|BlockInfo
+name|BlockInfoContiguous
 name|lastBlock
 init|=
 name|file
@@ -15966,7 +15966,7 @@ block|}
 else|else
 block|{
 comment|// add new chosen targets to already allocated block and return
-name|BlockInfo
+name|BlockInfoContiguous
 name|lastBlockInFile
 init|=
 name|pendingFile
@@ -15976,7 +15976,7 @@ argument_list|()
 decl_stmt|;
 operator|(
 operator|(
-name|BlockInfoUnderConstruction
+name|BlockInfoContiguousUnderConstruction
 operator|)
 name|lastBlockInFile
 operator|)
@@ -16382,7 +16382,7 @@ argument_list|,
 name|fileId
 argument_list|)
 decl_stmt|;
-name|BlockInfo
+name|BlockInfoContiguous
 name|lastBlockInFile
 init|=
 name|pendingFile
@@ -16428,7 +16428,7 @@ comment|//    There are no means to distinguish between the first and
 comment|//    the second attempts in Part I, because the first one hasn't
 comment|//    changed the namesystem state yet.
 comment|//    We run this analysis again in Part II where case 4 is impossible.
-name|BlockInfo
+name|BlockInfoContiguous
 name|penultimateBlock
 init|=
 name|pendingFile
@@ -16572,7 +16572,7 @@ name|lastBlockInFile
 argument_list|,
 operator|(
 operator|(
-name|BlockInfoUnderConstruction
+name|BlockInfoContiguousUnderConstruction
 operator|)
 name|lastBlockInFile
 operator|)
@@ -18041,7 +18041,7 @@ return|;
 block|}
 comment|/**    * Save allocated block at the given pending filename    *     * @param src path to the file    * @param inodesInPath representing each of the components of src.    *                     The last INode is the INode for {@code src} file.    * @param newBlock newly allocated block to be save    * @param targets target datanodes where replicas of the new block is placed    * @throws QuotaExceededException If addition of block exceeds space quota    */
 DECL|method|saveAllocatedBlock (String src, INodesInPath inodesInPath, Block newBlock, DatanodeStorageInfo[] targets)
-name|BlockInfo
+name|BlockInfoContiguous
 name|saveAllocatedBlock
 parameter_list|(
 name|String
@@ -18064,7 +18064,7 @@ assert|assert
 name|hasWriteLock
 argument_list|()
 assert|;
-name|BlockInfo
+name|BlockInfoContiguous
 name|b
 init|=
 name|dir
@@ -18176,7 +18176,7 @@ block|{
 comment|// check all blocks of the file.
 for|for
 control|(
-name|BlockInfo
+name|BlockInfoContiguous
 name|block
 range|:
 name|v
@@ -18209,7 +18209,7 @@ block|}
 else|else
 block|{
 comment|// check the penultimate block of this file
-name|BlockInfo
+name|BlockInfoContiguous
 name|b
 init|=
 name|v
@@ -18252,7 +18252,7 @@ argument_list|()
 expr_stmt|;
 block|}
 block|}
-DECL|method|isCompleteBlock (String src, BlockInfo b, int minRepl)
+DECL|method|isCompleteBlock (String src, BlockInfoContiguous b, int minRepl)
 specifier|private
 specifier|static
 name|boolean
@@ -18261,7 +18261,7 @@ parameter_list|(
 name|String
 name|src
 parameter_list|,
-name|BlockInfo
+name|BlockInfoContiguous
 name|b
 parameter_list|,
 name|int
@@ -18278,11 +18278,11 @@ argument_list|()
 condition|)
 block|{
 specifier|final
-name|BlockInfoUnderConstruction
+name|BlockInfoContiguousUnderConstruction
 name|uc
 init|=
 operator|(
-name|BlockInfoUnderConstruction
+name|BlockInfoContiguousUnderConstruction
 operator|)
 name|b
 decl_stmt|;
@@ -19043,7 +19043,7 @@ condition|(
 name|trackBlockCounts
 condition|)
 block|{
-name|BlockInfo
+name|BlockInfoContiguous
 name|bi
 init|=
 name|getStoredBlock
@@ -19834,7 +19834,7 @@ operator|.
 name|numBlocks
 argument_list|()
 decl_stmt|;
-name|BlockInfo
+name|BlockInfoContiguous
 index|[]
 name|blocks
 init|=
@@ -19846,7 +19846,7 @@ decl_stmt|;
 name|int
 name|nrCompleteBlocks
 decl_stmt|;
-name|BlockInfo
+name|BlockInfoContiguous
 name|curBlock
 init|=
 literal|null
@@ -19995,7 +19995,7 @@ block|}
 comment|// The last block is not COMPLETE, and
 comment|// that the penultimate block if exists is either COMPLETE or COMMITTED
 specifier|final
-name|BlockInfo
+name|BlockInfoContiguous
 name|lastBlock
 init|=
 name|pendingFile
@@ -20011,7 +20011,7 @@ operator|.
 name|getBlockUCState
 argument_list|()
 decl_stmt|;
-name|BlockInfo
+name|BlockInfoContiguous
 name|penultimateBlock
 init|=
 name|pendingFile
@@ -20136,11 +20136,11 @@ case|case
 name|UNDER_RECOVERY
 case|:
 specifier|final
-name|BlockInfoUnderConstruction
+name|BlockInfoContiguousUnderConstruction
 name|uc
 init|=
 operator|(
-name|BlockInfoUnderConstruction
+name|BlockInfoContiguousUnderConstruction
 operator|)
 name|lastBlock
 decl_stmt|;
@@ -20692,7 +20692,7 @@ block|}
 annotation|@
 name|VisibleForTesting
 DECL|method|getStoredBlock (Block block)
-name|BlockInfo
+name|BlockInfoContiguous
 name|getStoredBlock
 parameter_list|(
 name|Block
@@ -20710,12 +20710,12 @@ return|;
 block|}
 annotation|@
 name|Override
-DECL|method|isInSnapshot (BlockInfoUnderConstruction blockUC)
+DECL|method|isInSnapshot (BlockInfoContiguousUnderConstruction blockUC)
 specifier|public
 name|boolean
 name|isInSnapshot
 parameter_list|(
-name|BlockInfoUnderConstruction
+name|BlockInfoContiguousUnderConstruction
 name|blockUC
 parameter_list|)
 block|{
@@ -20924,7 +20924,7 @@ literal|"Cannot commitBlockSynchronization while in safe mode"
 argument_list|)
 expr_stmt|;
 specifier|final
-name|BlockInfo
+name|BlockInfoContiguous
 name|storedBlock
 init|=
 name|getStoredBlock
@@ -21120,11 +21120,11 @@ expr_stmt|;
 block|}
 return|return;
 block|}
-name|BlockInfoUnderConstruction
+name|BlockInfoContiguousUnderConstruction
 name|truncatedBlock
 init|=
 operator|(
-name|BlockInfoUnderConstruction
+name|BlockInfoContiguousUnderConstruction
 operator|)
 name|iFile
 operator|.
@@ -21668,14 +21668,14 @@ block|}
 comment|/**    * @param pendingFile open file that needs to be closed    * @param storedBlock last block    * @return Path of the file that was closed.    * @throws IOException on error    */
 annotation|@
 name|VisibleForTesting
-DECL|method|closeFileCommitBlocks (INodeFile pendingFile, BlockInfo storedBlock)
+DECL|method|closeFileCommitBlocks (INodeFile pendingFile, BlockInfoContiguous storedBlock)
 name|String
 name|closeFileCommitBlocks
 parameter_list|(
 name|INodeFile
 name|pendingFile
 parameter_list|,
-name|BlockInfo
+name|BlockInfoContiguous
 name|storedBlock
 parameter_list|)
 throws|throws
@@ -22664,7 +22664,7 @@ operator|.
 name|next
 argument_list|()
 decl_stmt|;
-name|BlockInfo
+name|BlockInfoContiguous
 name|blockInfo
 init|=
 name|blockManager
@@ -26200,7 +26200,7 @@ literal|null
 condition|)
 comment|// mostly true
 return|return;
-name|BlockInfo
+name|BlockInfoContiguous
 name|storedBlock
 init|=
 name|getStoredBlock
@@ -28083,7 +28083,7 @@ name|block
 argument_list|)
 expr_stmt|;
 comment|// check stored block state
-name|BlockInfo
+name|BlockInfoContiguous
 name|storedBlock
 init|=
 name|getStoredBlock
@@ -28672,11 +28672,11 @@ name|clientName
 argument_list|)
 decl_stmt|;
 specifier|final
-name|BlockInfoUnderConstruction
+name|BlockInfoContiguousUnderConstruction
 name|blockinfo
 init|=
 operator|(
-name|BlockInfoUnderConstruction
+name|BlockInfoContiguousUnderConstruction
 operator|)
 name|pendingFile
 operator|.

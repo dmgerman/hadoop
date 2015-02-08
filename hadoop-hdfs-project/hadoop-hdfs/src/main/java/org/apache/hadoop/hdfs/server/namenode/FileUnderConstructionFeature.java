@@ -58,7 +58,7 @@ name|server
 operator|.
 name|blockmanagement
 operator|.
-name|BlockInfo
+name|BlockInfoContiguous
 import|;
 end_import
 
@@ -76,25 +76,7 @@ name|server
 operator|.
 name|blockmanagement
 operator|.
-name|BlockInfoUnderConstruction
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|hdfs
-operator|.
-name|server
-operator|.
-name|blockmanagement
-operator|.
-name|DatanodeDescriptor
+name|BlockInfoContiguousUnderConstruction
 import|;
 end_import
 
@@ -223,7 +205,7 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
-name|BlockInfo
+name|BlockInfoContiguous
 name|lastBlock
 init|=
 name|f
@@ -251,7 +233,7 @@ assert|assert
 operator|(
 name|lastBlock
 operator|instanceof
-name|BlockInfoUnderConstruction
+name|BlockInfoContiguousUnderConstruction
 operator|)
 operator|:
 literal|"The last block for path "
@@ -286,7 +268,7 @@ name|collectedBlocks
 parameter_list|)
 block|{
 specifier|final
-name|BlockInfo
+name|BlockInfoContiguous
 index|[]
 name|blocks
 init|=
@@ -316,14 +298,14 @@ operator|-
 literal|1
 index|]
 operator|instanceof
-name|BlockInfoUnderConstruction
+name|BlockInfoContiguousUnderConstruction
 condition|)
 block|{
-name|BlockInfoUnderConstruction
+name|BlockInfoContiguousUnderConstruction
 name|lastUC
 init|=
 operator|(
-name|BlockInfoUnderConstruction
+name|BlockInfoContiguousUnderConstruction
 operator|)
 name|blocks
 index|[

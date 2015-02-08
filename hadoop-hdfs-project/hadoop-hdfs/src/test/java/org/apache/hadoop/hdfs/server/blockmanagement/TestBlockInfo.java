@@ -256,11 +256,11 @@ parameter_list|()
 throws|throws
 name|Exception
 block|{
-name|BlockInfo
+name|BlockInfoContiguous
 name|blockInfo
 init|=
 operator|new
-name|BlockInfo
+name|BlockInfoContiguous
 argument_list|(
 operator|(
 name|short
@@ -362,12 +362,12 @@ name|NUM_BLOCKS
 init|=
 literal|10
 decl_stmt|;
-name|BlockInfo
+name|BlockInfoContiguous
 index|[]
 name|blockInfos
 init|=
 operator|new
-name|BlockInfo
+name|BlockInfoContiguous
 index|[
 name|NUM_BLOCKS
 index|]
@@ -394,7 +394,7 @@ name|i
 index|]
 operator|=
 operator|new
-name|BlockInfo
+name|BlockInfoContiguous
 argument_list|(
 operator|(
 name|short
@@ -520,14 +520,14 @@ argument_list|)
 decl_stmt|;
 name|ArrayList
 argument_list|<
-name|BlockInfo
+name|BlockInfoContiguous
 argument_list|>
 name|blockInfoList
 init|=
 operator|new
 name|ArrayList
 argument_list|<
-name|BlockInfo
+name|BlockInfoContiguous
 argument_list|>
 argument_list|()
 decl_stmt|;
@@ -581,7 +581,7 @@ operator|.
 name|add
 argument_list|(
 operator|new
-name|BlockInfo
+name|BlockInfoContiguous
 argument_list|(
 name|blockList
 operator|.
@@ -652,7 +652,7 @@ argument_list|)
 expr_stmt|;
 name|Iterator
 argument_list|<
-name|BlockInfo
+name|BlockInfoContiguous
 argument_list|>
 name|it
 init|=
@@ -785,7 +785,7 @@ argument_list|(
 literal|"Moving head to the head..."
 argument_list|)
 expr_stmt|;
-name|BlockInfo
+name|BlockInfoContiguous
 name|temp
 init|=
 name|dd

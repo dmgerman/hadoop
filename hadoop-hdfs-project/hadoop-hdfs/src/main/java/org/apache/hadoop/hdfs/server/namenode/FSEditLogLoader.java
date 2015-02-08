@@ -360,7 +360,7 @@ name|server
 operator|.
 name|blockmanagement
 operator|.
-name|BlockInfo
+name|BlockInfoContiguous
 import|;
 end_import
 
@@ -378,7 +378,7 @@ name|server
 operator|.
 name|blockmanagement
 operator|.
-name|BlockInfoUnderConstruction
+name|BlockInfoContiguousUnderConstruction
 import|;
 end_import
 
@@ -6096,7 +6096,7 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
-name|BlockInfo
+name|BlockInfoContiguous
 index|[]
 name|oldBlocks
 init|=
@@ -6215,7 +6215,7 @@ if|if
 condition|(
 name|oldLastBlock
 operator|instanceof
-name|BlockInfoUnderConstruction
+name|BlockInfoContiguousUnderConstruction
 condition|)
 block|{
 name|fsNamesys
@@ -6228,7 +6228,7 @@ argument_list|(
 name|file
 argument_list|,
 operator|(
-name|BlockInfoUnderConstruction
+name|BlockInfoContiguousUnderConstruction
 operator|)
 name|oldLastBlock
 argument_list|)
@@ -6265,11 +6265,11 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|// add the new block
-name|BlockInfo
+name|BlockInfoContiguous
 name|newBI
 init|=
 operator|new
-name|BlockInfoUnderConstruction
+name|BlockInfoContiguousUnderConstruction
 argument_list|(
 name|newBlock
 argument_list|,
@@ -6331,7 +6331,7 @@ throws|throws
 name|IOException
 block|{
 comment|// Update its block list
-name|BlockInfo
+name|BlockInfoContiguous
 index|[]
 name|oldBlocks
 init|=
@@ -6393,7 +6393,7 @@ name|i
 operator|++
 control|)
 block|{
-name|BlockInfo
+name|BlockInfoContiguous
 name|oldBlock
 init|=
 name|oldBlocks
@@ -6519,7 +6519,7 @@ if|if
 condition|(
 name|oldBlock
 operator|instanceof
-name|BlockInfoUnderConstruction
+name|BlockInfoContiguousUnderConstruction
 operator|&&
 operator|(
 operator|!
@@ -6546,7 +6546,7 @@ argument_list|(
 name|file
 argument_list|,
 operator|(
-name|BlockInfoUnderConstruction
+name|BlockInfoContiguousUnderConstruction
 operator|)
 name|oldBlock
 argument_list|)
@@ -6720,7 +6720,7 @@ index|[
 name|i
 index|]
 decl_stmt|;
-name|BlockInfo
+name|BlockInfoContiguous
 name|newBI
 decl_stmt|;
 if|if
@@ -6738,7 +6738,7 @@ comment|// until several blocks in?
 name|newBI
 operator|=
 operator|new
-name|BlockInfoUnderConstruction
+name|BlockInfoContiguousUnderConstruction
 argument_list|(
 name|newBlock
 argument_list|,
@@ -6758,7 +6758,7 @@ comment|// OP_ADD operations as each block is allocated.
 name|newBI
 operator|=
 operator|new
-name|BlockInfo
+name|BlockInfoContiguous
 argument_list|(
 name|newBlock
 argument_list|,

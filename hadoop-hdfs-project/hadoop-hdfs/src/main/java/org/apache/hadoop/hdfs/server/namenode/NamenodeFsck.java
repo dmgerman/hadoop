@@ -626,7 +626,7 @@ name|server
 operator|.
 name|blockmanagement
 operator|.
-name|BlockInfo
+name|BlockInfoContiguous
 import|;
 end_import
 
@@ -1601,7 +1601,7 @@ argument_list|)
 argument_list|)
 decl_stmt|;
 comment|//find which file this block belongs to
-name|BlockInfo
+name|BlockInfoContiguous
 name|blockInfo
 init|=
 name|bm

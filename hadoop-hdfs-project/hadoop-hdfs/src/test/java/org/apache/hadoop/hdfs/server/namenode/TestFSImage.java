@@ -248,7 +248,7 @@ name|server
 operator|.
 name|blockmanagement
 operator|.
-name|BlockInfo
+name|BlockInfoContiguous
 import|;
 end_import
 
@@ -640,7 +640,7 @@ name|isUnderConstruction
 argument_list|()
 argument_list|)
 expr_stmt|;
-name|BlockInfo
+name|BlockInfoContiguous
 index|[]
 name|blks
 init|=

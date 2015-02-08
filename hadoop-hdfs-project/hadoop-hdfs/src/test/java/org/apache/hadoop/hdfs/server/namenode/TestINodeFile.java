@@ -572,7 +572,7 @@ name|server
 operator|.
 name|blockmanagement
 operator|.
-name|BlockInfo
+name|BlockInfoContiguous
 import|;
 end_import
 
@@ -1781,11 +1781,11 @@ name|i
 argument_list|)
 argument_list|)
 expr_stmt|;
-name|BlockInfo
+name|BlockInfoContiguous
 name|newblock
 init|=
 operator|new
-name|BlockInfo
+name|BlockInfoContiguous
 argument_list|(
 name|replication
 argument_list|)

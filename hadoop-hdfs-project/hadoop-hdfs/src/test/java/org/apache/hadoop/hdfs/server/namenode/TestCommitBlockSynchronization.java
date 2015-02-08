@@ -96,7 +96,7 @@ name|server
 operator|.
 name|blockmanagement
 operator|.
-name|BlockInfo
+name|BlockInfoContiguous
 import|;
 end_import
 
@@ -114,7 +114,7 @@ name|server
 operator|.
 name|blockmanagement
 operator|.
-name|BlockInfoUnderConstruction
+name|BlockInfoContiguousUnderConstruction
 import|;
 end_import
 
@@ -398,11 +398,11 @@ argument_list|(
 name|namesystem
 argument_list|)
 decl_stmt|;
-name|BlockInfoUnderConstruction
+name|BlockInfoContiguousUnderConstruction
 name|blockInfo
 init|=
 operator|new
-name|BlockInfoUnderConstruction
+name|BlockInfoContiguousUnderConstruction
 argument_list|(
 name|block
 argument_list|,
@@ -528,7 +528,7 @@ argument_list|)
 argument_list|,
 name|any
 argument_list|(
-name|BlockInfo
+name|BlockInfoContiguous
 operator|.
 name|class
 argument_list|)
@@ -672,11 +672,11 @@ literal|null
 argument_list|)
 expr_stmt|;
 comment|// Simulate 'completing' the block.
-name|BlockInfo
+name|BlockInfoContiguous
 name|completedBlockInfo
 init|=
 operator|new
-name|BlockInfo
+name|BlockInfoContiguous
 argument_list|(
 name|block
 argument_list|,
@@ -1083,11 +1083,11 @@ argument_list|,
 literal|null
 argument_list|)
 expr_stmt|;
-name|BlockInfo
+name|BlockInfoContiguous
 name|completedBlockInfo
 init|=
 operator|new
-name|BlockInfo
+name|BlockInfoContiguous
 argument_list|(
 name|block
 argument_list|,

@@ -424,7 +424,7 @@ name|server
 operator|.
 name|blockmanagement
 operator|.
-name|BlockInfo
+name|BlockInfoContiguous
 import|;
 end_import
 
@@ -442,7 +442,7 @@ name|server
 operator|.
 name|blockmanagement
 operator|.
-name|BlockInfoUnderConstruction
+name|BlockInfoContiguousUnderConstruction
 import|;
 end_import
 
@@ -3012,7 +3012,7 @@ parameter_list|)
 block|{
 comment|// Add file->block mapping
 specifier|final
-name|BlockInfo
+name|BlockInfoContiguous
 index|[]
 name|blocks
 init|=
@@ -3359,12 +3359,12 @@ condition|)
 block|{
 comment|// file
 comment|// read blocks
-name|BlockInfo
+name|BlockInfoContiguous
 index|[]
 name|blocks
 init|=
 operator|new
-name|BlockInfo
+name|BlockInfoContiguous
 index|[
 name|numBlocks
 index|]
@@ -3390,7 +3390,7 @@ name|j
 index|]
 operator|=
 operator|new
-name|BlockInfo
+name|BlockInfoContiguous
 argument_list|(
 name|replication
 argument_list|)
@@ -3499,7 +3499,7 @@ operator|>
 literal|0
 condition|)
 block|{
-name|BlockInfo
+name|BlockInfoContiguous
 name|lastBlk
 init|=
 name|blocks
@@ -3521,7 +3521,7 @@ literal|1
 index|]
 operator|=
 operator|new
-name|BlockInfoUnderConstruction
+name|BlockInfoContiguousUnderConstruction
 argument_list|(
 name|lastBlk
 argument_list|,
@@ -4481,7 +4481,7 @@ operator|>
 literal|0
 condition|)
 block|{
-name|BlockInfo
+name|BlockInfoContiguous
 name|ucBlock
 init|=
 name|cons
@@ -4490,7 +4490,7 @@ name|getLastBlock
 argument_list|()
 decl_stmt|;
 comment|// we do not replace the inode, just replace the last block of oldnode
-name|BlockInfo
+name|BlockInfoContiguous
 name|info
 init|=
 name|namesystem

@@ -139,12 +139,12 @@ comment|/**  * Represents a block that is currently being constructed.<br>  * Th
 end_comment
 
 begin_class
-DECL|class|BlockInfoUnderConstruction
+DECL|class|BlockInfoContiguousUnderConstruction
 specifier|public
 class|class
-name|BlockInfoUnderConstruction
+name|BlockInfoContiguousUnderConstruction
 extends|extends
-name|BlockInfo
+name|BlockInfoContiguous
 block|{
 comment|/** Block state. See {@link BlockUCState} */
 DECL|field|blockUCState
@@ -436,9 +436,9 @@ expr_stmt|;
 block|}
 block|}
 comment|/**    * Create block and set its state to    * {@link BlockUCState#UNDER_CONSTRUCTION}.    */
-DECL|method|BlockInfoUnderConstruction (Block blk, short replication)
+DECL|method|BlockInfoContiguousUnderConstruction (Block blk, short replication)
 specifier|public
-name|BlockInfoUnderConstruction
+name|BlockInfoContiguousUnderConstruction
 parameter_list|(
 name|Block
 name|blk
@@ -462,9 +462,9 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|/**    * Create a block that is currently being constructed.    */
-DECL|method|BlockInfoUnderConstruction (Block blk, short replication, BlockUCState state, DatanodeStorageInfo[] targets)
+DECL|method|BlockInfoContiguousUnderConstruction (Block blk, short replication, BlockUCState state, DatanodeStorageInfo[] targets)
 specifier|public
-name|BlockInfoUnderConstruction
+name|BlockInfoContiguousUnderConstruction
 parameter_list|(
 name|Block
 name|blk
@@ -511,7 +511,7 @@ expr_stmt|;
 block|}
 comment|/**    * Convert an under construction block to a complete block.    *     * @return BlockInfo - a complete block.    * @throws IOException if the state of the block     * (the generation stamp and the length) has not been committed by     * the client or it does not have at least a minimal number of replicas     * reported from data-nodes.     */
 DECL|method|convertToCompleteBlock ()
-name|BlockInfo
+name|BlockInfoContiguous
 name|convertToCompleteBlock
 parameter_list|()
 throws|throws
@@ -529,7 +529,7 @@ literal|"Trying to convert a COMPLETE block"
 assert|;
 return|return
 operator|new
-name|BlockInfo
+name|BlockInfoContiguous
 argument_list|(
 name|this
 argument_list|)

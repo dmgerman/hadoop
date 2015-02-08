@@ -328,7 +328,7 @@ name|server
 operator|.
 name|blockmanagement
 operator|.
-name|BlockInfo
+name|BlockInfoContiguous
 import|;
 end_import
 
@@ -1919,12 +1919,12 @@ operator|.
 name|getBlocksList
 argument_list|()
 decl_stmt|;
-name|BlockInfo
+name|BlockInfoContiguous
 index|[]
 name|blocks
 init|=
 operator|new
-name|BlockInfo
+name|BlockInfoContiguous
 index|[
 name|bpl
 operator|.
@@ -1969,7 +1969,7 @@ name|j
 argument_list|)
 argument_list|)
 decl_stmt|;
-name|BlockInfo
+name|BlockInfoContiguous
 name|storedBlock
 init|=
 name|fsn
@@ -1999,7 +1999,7 @@ operator|.
 name|addBlockCollection
 argument_list|(
 operator|new
-name|BlockInfo
+name|BlockInfoContiguous
 argument_list|(
 name|blk
 argument_list|,

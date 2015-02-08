@@ -614,7 +614,7 @@ name|server
 operator|.
 name|blockmanagement
 operator|.
-name|BlockInfo
+name|BlockInfoContiguous
 import|;
 end_import
 
@@ -5198,7 +5198,7 @@ literal|true
 argument_list|)
 decl_stmt|;
 specifier|final
-name|BlockInfo
+name|BlockInfoContiguous
 index|[]
 name|blocks
 init|=

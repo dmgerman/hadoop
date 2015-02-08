@@ -102,7 +102,7 @@ name|server
 operator|.
 name|blockmanagement
 operator|.
-name|BlockInfo
+name|BlockInfoContiguous
 import|;
 end_import
 
@@ -267,12 +267,12 @@ argument_list|,
 name|dirInode
 argument_list|)
 expr_stmt|;
-name|BlockInfo
+name|BlockInfoContiguous
 index|[]
 name|blocks
 init|=
 operator|new
-name|BlockInfo
+name|BlockInfoContiguous
 index|[
 name|blocksPerFile
 index|]
@@ -298,7 +298,7 @@ name|iB
 index|]
 operator|=
 operator|new
-name|BlockInfo
+name|BlockInfoContiguous
 argument_list|(
 operator|new
 name|Block
@@ -519,7 +519,7 @@ literal|0L
 argument_list|,
 literal|0L
 argument_list|,
-name|BlockInfo
+name|BlockInfoContiguous
 operator|.
 name|EMPTY_ARRAY
 argument_list|,

@@ -103,10 +103,10 @@ annotation|@
 name|InterfaceAudience
 operator|.
 name|Private
-DECL|class|BlockInfo
+DECL|class|BlockInfoContiguous
 specifier|public
 class|class
-name|BlockInfo
+name|BlockInfoContiguous
 extends|extends
 name|Block
 implements|implements
@@ -118,7 +118,7 @@ DECL|field|EMPTY_ARRAY
 specifier|public
 specifier|static
 specifier|final
-name|BlockInfo
+name|BlockInfoContiguous
 index|[]
 name|EMPTY_ARRAY
 init|=
@@ -145,9 +145,9 @@ index|[]
 name|triplets
 decl_stmt|;
 comment|/**    * Construct an entry for blocksmap    * @param replication the block's replication factor    */
-DECL|method|BlockInfo (short replication)
+DECL|method|BlockInfoContiguous (short replication)
 specifier|public
-name|BlockInfo
+name|BlockInfoContiguous
 parameter_list|(
 name|short
 name|replication
@@ -172,9 +172,9 @@ operator|=
 literal|null
 expr_stmt|;
 block|}
-DECL|method|BlockInfo (Block blk, short replication)
+DECL|method|BlockInfoContiguous (Block blk, short replication)
 specifier|public
-name|BlockInfo
+name|BlockInfoContiguous
 parameter_list|(
 name|Block
 name|blk
@@ -208,11 +208,11 @@ literal|null
 expr_stmt|;
 block|}
 comment|/**    * Copy construction.    * This is used to convert BlockInfoUnderConstruction    * @param from BlockInfo to copy from.    */
-DECL|method|BlockInfo (BlockInfo from)
+DECL|method|BlockInfoContiguous (BlockInfoContiguous from)
 specifier|protected
-name|BlockInfo
+name|BlockInfoContiguous
 parameter_list|(
-name|BlockInfo
+name|BlockInfoContiguous
 name|from
 parameter_list|)
 block|{
@@ -339,7 +339,7 @@ return|;
 block|}
 DECL|method|getPrevious (int index)
 specifier|private
-name|BlockInfo
+name|BlockInfoContiguous
 name|getPrevious
 parameter_list|(
 name|int
@@ -372,11 +372,11 @@ name|length
 operator|:
 literal|"Index is out of bound"
 assert|;
-name|BlockInfo
+name|BlockInfoContiguous
 name|info
 init|=
 operator|(
-name|BlockInfo
+name|BlockInfoContiguous
 operator|)
 name|triplets
 index|[
@@ -402,7 +402,7 @@ argument_list|()
 operator|.
 name|startsWith
 argument_list|(
-name|BlockInfo
+name|BlockInfoContiguous
 operator|.
 name|class
 operator|.
@@ -421,7 +421,7 @@ name|info
 return|;
 block|}
 DECL|method|getNext (int index)
-name|BlockInfo
+name|BlockInfoContiguous
 name|getNext
 parameter_list|(
 name|int
@@ -454,11 +454,11 @@ name|length
 operator|:
 literal|"Index is out of bound"
 assert|;
-name|BlockInfo
+name|BlockInfoContiguous
 name|info
 init|=
 operator|(
-name|BlockInfo
+name|BlockInfoContiguous
 operator|)
 name|triplets
 index|[
@@ -484,7 +484,7 @@ argument_list|()
 operator|.
 name|startsWith
 argument_list|(
-name|BlockInfo
+name|BlockInfoContiguous
 operator|.
 name|class
 operator|.
@@ -549,15 +549,15 @@ name|storage
 expr_stmt|;
 block|}
 comment|/**    * Return the previous block on the block list for the datanode at    * position index. Set the previous block on the list to "to".    *    * @param index - the datanode index    * @param to - block to be set to previous on the list of blocks    * @return current previous block on the list of blocks    */
-DECL|method|setPrevious (int index, BlockInfo to)
+DECL|method|setPrevious (int index, BlockInfoContiguous to)
 specifier|private
-name|BlockInfo
+name|BlockInfoContiguous
 name|setPrevious
 parameter_list|(
 name|int
 name|index
 parameter_list|,
-name|BlockInfo
+name|BlockInfoContiguous
 name|to
 parameter_list|)
 block|{
@@ -587,11 +587,11 @@ name|length
 operator|:
 literal|"Index is out of bound"
 assert|;
-name|BlockInfo
+name|BlockInfoContiguous
 name|info
 init|=
 operator|(
-name|BlockInfo
+name|BlockInfoContiguous
 operator|)
 name|triplets
 index|[
@@ -618,15 +618,15 @@ name|info
 return|;
 block|}
 comment|/**    * Return the next block on the block list for the datanode at    * position index. Set the next block on the list to "to".    *    * @param index - the datanode index    * @param to - block to be set to next on the list of blocks    *    * @return current next block on the list of blocks    */
-DECL|method|setNext (int index, BlockInfo to)
+DECL|method|setNext (int index, BlockInfoContiguous to)
 specifier|private
-name|BlockInfo
+name|BlockInfoContiguous
 name|setNext
 parameter_list|(
 name|int
 name|index
 parameter_list|,
-name|BlockInfo
+name|BlockInfoContiguous
 name|to
 parameter_list|)
 block|{
@@ -656,11 +656,11 @@ name|length
 operator|:
 literal|"Index is out of bound"
 assert|;
-name|BlockInfo
+name|BlockInfoContiguous
 name|info
 init|=
 operator|(
-name|BlockInfo
+name|BlockInfoContiguous
 operator|)
 name|triplets
 index|[
@@ -1190,16 +1190,20 @@ name|cur
 operator|==
 name|storageInfo
 condition|)
+block|{
 return|return
 name|idx
 return|;
+block|}
 if|if
 condition|(
 name|cur
 operator|==
 literal|null
 condition|)
+block|{
 break|break;
+block|}
 block|}
 return|return
 operator|-
@@ -1207,11 +1211,11 @@ literal|1
 return|;
 block|}
 comment|/**    * Insert this block into the head of the list of blocks     * related to the specified DatanodeStorageInfo.    * If the head is null then form a new list.    * @return current block as the new head of the list.    */
-DECL|method|listInsert (BlockInfo head, DatanodeStorageInfo storage)
-name|BlockInfo
+DECL|method|listInsert (BlockInfoContiguous head, DatanodeStorageInfo storage)
+name|BlockInfoContiguous
 name|listInsert
 parameter_list|(
-name|BlockInfo
+name|BlockInfoContiguous
 name|head
 parameter_list|,
 name|DatanodeStorageInfo
@@ -1295,11 +1299,11 @@ name|this
 return|;
 block|}
 comment|/**    * Remove this block from the list of blocks     * related to the specified DatanodeStorageInfo.    * If this block is the head of the list then return the next block as     * the new head.    * @return the new head of the list or null if the list becomes    * empy after deletion.    */
-DECL|method|listRemove (BlockInfo head, DatanodeStorageInfo storage)
-name|BlockInfo
+DECL|method|listRemove (BlockInfoContiguous head, DatanodeStorageInfo storage)
+name|BlockInfoContiguous
 name|listRemove
 parameter_list|(
-name|BlockInfo
+name|BlockInfoContiguous
 name|head
 parameter_list|,
 name|DatanodeStorageInfo
@@ -1335,7 +1339,7 @@ comment|// this block is not on the data-node list
 return|return
 name|head
 return|;
-name|BlockInfo
+name|BlockInfoContiguous
 name|next
 init|=
 name|this
@@ -1345,7 +1349,7 @@ argument_list|(
 name|dnIndex
 argument_list|)
 decl_stmt|;
-name|BlockInfo
+name|BlockInfoContiguous
 name|prev
 init|=
 name|this
@@ -1429,12 +1433,12 @@ name|head
 return|;
 block|}
 comment|/**    * Remove this block from the list of blocks related to the specified    * DatanodeDescriptor. Insert it into the head of the list of blocks.    *    * @return the new head of the list.    */
-DECL|method|moveBlockToHead (BlockInfo head, DatanodeStorageInfo storage, int curIndex, int headIndex)
+DECL|method|moveBlockToHead (BlockInfoContiguous head, DatanodeStorageInfo storage, int curIndex, int headIndex)
 specifier|public
-name|BlockInfo
+name|BlockInfoContiguous
 name|moveBlockToHead
 parameter_list|(
-name|BlockInfo
+name|BlockInfoContiguous
 name|head
 parameter_list|,
 name|DatanodeStorageInfo
@@ -1458,7 +1462,7 @@ return|return
 name|this
 return|;
 block|}
-name|BlockInfo
+name|BlockInfoContiguous
 name|next
 init|=
 name|this
@@ -1470,7 +1474,7 @@ argument_list|,
 name|head
 argument_list|)
 decl_stmt|;
-name|BlockInfo
+name|BlockInfoContiguous
 name|prev
 init|=
 name|this
@@ -1511,6 +1515,7 @@ name|next
 operator|!=
 literal|null
 condition|)
+block|{
 name|next
 operator|.
 name|setPrevious
@@ -1525,11 +1530,12 @@ argument_list|,
 name|prev
 argument_list|)
 expr_stmt|;
+block|}
 return|return
 name|this
 return|;
 block|}
-comment|/**    * BlockInfo represents a block that is not being constructed.    * In order to start modifying the block, the BlockInfo should be converted    * to {@link BlockInfoUnderConstruction}.    * @return {@link BlockUCState#COMPLETE}    */
+comment|/**    * BlockInfo represents a block that is not being constructed.    * In order to start modifying the block, the BlockInfo should be converted    * to {@link BlockInfoContiguousUnderConstruction}.    * @return {@link BlockUCState#COMPLETE}    */
 DECL|method|getBlockUCState ()
 specifier|public
 name|BlockUCState
@@ -1564,7 +1570,7 @@ block|}
 comment|/**    * Convert a complete block to an under construction block.    * @return BlockInfoUnderConstruction -  an under construction block.    */
 DECL|method|convertToBlockUnderConstruction ( BlockUCState s, DatanodeStorageInfo[] targets)
 specifier|public
-name|BlockInfoUnderConstruction
+name|BlockInfoContiguousUnderConstruction
 name|convertToBlockUnderConstruction
 parameter_list|(
 name|BlockUCState
@@ -1581,11 +1587,11 @@ name|isComplete
 argument_list|()
 condition|)
 block|{
-name|BlockInfoUnderConstruction
+name|BlockInfoContiguousUnderConstruction
 name|ucBlock
 init|=
 operator|new
-name|BlockInfoUnderConstruction
+name|BlockInfoContiguousUnderConstruction
 argument_list|(
 name|this
 argument_list|,
@@ -1613,11 +1619,11 @@ name|ucBlock
 return|;
 block|}
 comment|// the block is already under construction
-name|BlockInfoUnderConstruction
+name|BlockInfoContiguousUnderConstruction
 name|ucBlock
 init|=
 operator|(
-name|BlockInfoUnderConstruction
+name|BlockInfoContiguousUnderConstruction
 operator|)
 name|this
 decl_stmt|;

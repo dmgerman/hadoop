@@ -470,7 +470,7 @@ name|server
 operator|.
 name|blockmanagement
 operator|.
-name|BlockInfo
+name|BlockInfoContiguous
 import|;
 end_import
 
@@ -488,7 +488,7 @@ name|server
 operator|.
 name|blockmanagement
 operator|.
-name|BlockInfoUnderConstruction
+name|BlockInfoContiguousUnderConstruction
 import|;
 end_import
 
@@ -9008,7 +9008,7 @@ operator|.
 name|getBlockManager
 argument_list|()
 decl_stmt|;
-name|BlockInfo
+name|BlockInfoContiguous
 name|storedBlock
 init|=
 name|bm0
@@ -9035,14 +9035,14 @@ name|storedBlock
 argument_list|,
 name|storedBlock
 operator|instanceof
-name|BlockInfoUnderConstruction
+name|BlockInfoContiguousUnderConstruction
 argument_list|)
 expr_stmt|;
-name|BlockInfoUnderConstruction
+name|BlockInfoContiguousUnderConstruction
 name|ucBlock
 init|=
 operator|(
-name|BlockInfoUnderConstruction
+name|BlockInfoContiguousUnderConstruction
 operator|)
 name|storedBlock
 decl_stmt|;

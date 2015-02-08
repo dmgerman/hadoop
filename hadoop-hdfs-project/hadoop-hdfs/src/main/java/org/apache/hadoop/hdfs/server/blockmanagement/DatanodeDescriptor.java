@@ -896,14 +896,14 @@ specifier|private
 specifier|final
 name|BlockQueue
 argument_list|<
-name|BlockInfoUnderConstruction
+name|BlockInfoContiguousUnderConstruction
 argument_list|>
 name|recoverBlocks
 init|=
 operator|new
 name|BlockQueue
 argument_list|<
-name|BlockInfoUnderConstruction
+name|BlockInfoContiguousUnderConstruction
 argument_list|>
 argument_list|()
 decl_stmt|;
@@ -1247,11 +1247,11 @@ return|;
 block|}
 block|}
 comment|/**    * Remove block from the list of blocks belonging to the data-node. Remove    * data-node from the block.    */
-DECL|method|removeBlock (BlockInfo b)
+DECL|method|removeBlock (BlockInfoContiguous b)
 name|boolean
 name|removeBlock
 parameter_list|(
-name|BlockInfo
+name|BlockInfoContiguous
 name|b
 parameter_list|)
 block|{
@@ -1288,14 +1288,14 @@ literal|false
 return|;
 block|}
 comment|/**    * Remove block from the list of blocks belonging to the data-node. Remove    * data-node from the block.    */
-DECL|method|removeBlock (String storageID, BlockInfo b)
+DECL|method|removeBlock (String storageID, BlockInfoContiguous b)
 name|boolean
 name|removeBlock
 parameter_list|(
 name|String
 name|storageID
 parameter_list|,
-name|BlockInfo
+name|BlockInfoContiguous
 name|b
 parameter_list|)
 block|{
@@ -2031,7 +2031,7 @@ name|BlockIterator
 implements|implements
 name|Iterator
 argument_list|<
-name|BlockInfo
+name|BlockInfoContiguous
 argument_list|>
 block|{
 DECL|field|index
@@ -2048,7 +2048,7 @@ name|List
 argument_list|<
 name|Iterator
 argument_list|<
-name|BlockInfo
+name|BlockInfoContiguous
 argument_list|>
 argument_list|>
 name|iterators
@@ -2067,7 +2067,7 @@ name|List
 argument_list|<
 name|Iterator
 argument_list|<
-name|BlockInfo
+name|BlockInfoContiguous
 argument_list|>
 argument_list|>
 name|iterators
@@ -2077,7 +2077,7 @@ name|ArrayList
 argument_list|<
 name|Iterator
 argument_list|<
-name|BlockInfo
+name|BlockInfoContiguous
 argument_list|>
 argument_list|>
 argument_list|()
@@ -2146,7 +2146,7 @@ annotation|@
 name|Override
 DECL|method|next ()
 specifier|public
-name|BlockInfo
+name|BlockInfoContiguous
 name|next
 parameter_list|()
 block|{
@@ -2219,7 +2219,7 @@ block|}
 DECL|method|getBlockIterator ()
 name|Iterator
 argument_list|<
-name|BlockInfo
+name|BlockInfoContiguous
 argument_list|>
 name|getBlockIterator
 parameter_list|()
@@ -2236,7 +2236,7 @@ block|}
 DECL|method|getBlockIterator (final String storageID)
 name|Iterator
 argument_list|<
-name|BlockInfo
+name|BlockInfoContiguous
 argument_list|>
 name|getBlockIterator
 parameter_list|(
@@ -2319,11 +2319,11 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|/**    * Store block recovery work.    */
-DECL|method|addBlockToBeRecovered (BlockInfoUnderConstruction block)
+DECL|method|addBlockToBeRecovered (BlockInfoContiguousUnderConstruction block)
 name|void
 name|addBlockToBeRecovered
 parameter_list|(
-name|BlockInfoUnderConstruction
+name|BlockInfoContiguousUnderConstruction
 name|block
 parameter_list|)
 block|{
@@ -2465,7 +2465,7 @@ return|;
 block|}
 DECL|method|getLeaseRecoveryCommand (int maxTransfers)
 specifier|public
-name|BlockInfoUnderConstruction
+name|BlockInfoContiguousUnderConstruction
 index|[]
 name|getLeaseRecoveryCommand
 parameter_list|(
@@ -2475,7 +2475,7 @@ parameter_list|)
 block|{
 name|List
 argument_list|<
-name|BlockInfoUnderConstruction
+name|BlockInfoContiguousUnderConstruction
 argument_list|>
 name|blocks
 init|=
@@ -2501,7 +2501,7 @@ operator|.
 name|toArray
 argument_list|(
 operator|new
-name|BlockInfoUnderConstruction
+name|BlockInfoContiguousUnderConstruction
 index|[
 name|blocks
 operator|.

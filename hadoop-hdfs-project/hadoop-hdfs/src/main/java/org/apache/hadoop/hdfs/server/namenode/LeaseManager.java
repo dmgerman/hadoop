@@ -246,7 +246,7 @@ name|server
 operator|.
 name|blockmanagement
 operator|.
-name|BlockInfo
+name|BlockInfoContiguous
 import|;
 end_import
 
@@ -576,7 +576,7 @@ literal|"Lease files should reside on this FS"
 argument_list|)
 throw|;
 block|}
-name|BlockInfo
+name|BlockInfoContiguous
 index|[]
 name|blocks
 init|=
@@ -594,7 +594,7 @@ condition|)
 continue|continue;
 for|for
 control|(
-name|BlockInfo
+name|BlockInfoContiguous
 name|b
 range|:
 name|blocks

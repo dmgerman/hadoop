@@ -204,11 +204,11 @@ name|isAlive
 operator|=
 literal|true
 expr_stmt|;
-name|BlockInfoUnderConstruction
+name|BlockInfoContiguousUnderConstruction
 name|blockInfo
 init|=
 operator|new
-name|BlockInfoUnderConstruction
+name|BlockInfoContiguousUnderConstruction
 argument_list|(
 operator|new
 name|Block
@@ -292,7 +292,7 @@ argument_list|(
 literal|1
 argument_list|)
 expr_stmt|;
-name|BlockInfoUnderConstruction
+name|BlockInfoContiguousUnderConstruction
 index|[]
 name|blockInfoRecovery
 init|=
