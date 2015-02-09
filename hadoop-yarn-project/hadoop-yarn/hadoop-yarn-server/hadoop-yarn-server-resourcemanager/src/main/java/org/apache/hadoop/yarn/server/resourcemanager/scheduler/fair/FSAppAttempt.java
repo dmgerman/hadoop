@@ -2824,6 +2824,27 @@ name|CONTAINER_RESERVED
 return|;
 block|}
 block|}
+DECL|method|hasNodeOrRackLocalRequests (Priority priority)
+specifier|private
+name|boolean
+name|hasNodeOrRackLocalRequests
+parameter_list|(
+name|Priority
+name|priority
+parameter_list|)
+block|{
+return|return
+name|getResourceRequests
+argument_list|(
+name|priority
+argument_list|)
+operator|.
+name|size
+argument_list|()
+operator|>
+literal|1
+return|;
+block|}
 DECL|method|assignContainer (FSSchedulerNode node, boolean reserved)
 specifier|private
 name|Resource
@@ -3217,7 +3238,16 @@ name|getNumContainers
 argument_list|()
 operator|!=
 literal|0
-operator|&&
+condition|)
+block|{
+if|if
+condition|(
+operator|!
+name|hasNodeOrRackLocalRequests
+argument_list|(
+name|priority
+argument_list|)
+operator|||
 name|allowedLocality
 operator|.
 name|equals
@@ -3242,6 +3272,7 @@ argument_list|,
 name|reserved
 argument_list|)
 return|;
+block|}
 block|}
 block|}
 block|}
