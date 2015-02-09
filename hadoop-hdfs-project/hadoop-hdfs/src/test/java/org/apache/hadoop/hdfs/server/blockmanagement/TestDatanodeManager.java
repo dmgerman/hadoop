@@ -262,8 +262,6 @@ name|hadoop
 operator|.
 name|hdfs
 operator|.
-name|server
-operator|.
 name|protocol
 operator|.
 name|DatanodeInfoWithStorage
@@ -1601,7 +1599,7 @@ name|blocks
 argument_list|)
 expr_stmt|;
 comment|// check that storage IDs/types are aligned with datanode locs
-name|DatanodeInfoWithStorage
+name|DatanodeInfo
 index|[]
 name|sortedLocs
 init|=
@@ -1679,10 +1677,15 @@ control|)
 block|{
 name|assertThat
 argument_list|(
+operator|(
+operator|(
+name|DatanodeInfoWithStorage
+operator|)
 name|sortedLocs
 index|[
 name|i
 index|]
+operator|)
 operator|.
 name|getStorageID
 argument_list|()
@@ -1698,10 +1701,15 @@ argument_list|)
 expr_stmt|;
 name|assertThat
 argument_list|(
+operator|(
+operator|(
+name|DatanodeInfoWithStorage
+operator|)
 name|sortedLocs
 index|[
 name|i
 index|]
+operator|)
 operator|.
 name|getStorageType
 argument_list|()

@@ -4,7 +4,7 @@ comment|/**  * Licensed to the Apache Software Foundation (ASF) under one  * or 
 end_comment
 
 begin_package
-DECL|package|org.apache.hadoop.hdfs.server.protocol
+DECL|package|org.apache.hadoop.hdfs.protocol
 package|package
 name|org
 operator|.
@@ -14,11 +14,37 @@ name|hadoop
 operator|.
 name|hdfs
 operator|.
-name|server
-operator|.
 name|protocol
 package|;
 end_package
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|classification
+operator|.
+name|InterfaceAudience
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|classification
+operator|.
+name|InterfaceStability
+import|;
+end_import
 
 begin_import
 import|import
@@ -51,6 +77,14 @@ import|;
 end_import
 
 begin_class
+annotation|@
+name|InterfaceAudience
+operator|.
+name|Private
+annotation|@
+name|InterfaceStability
+operator|.
+name|Evolving
 DECL|class|DatanodeInfoWithStorage
 specifier|public
 class|class

@@ -128,8 +128,6 @@ name|hadoop
 operator|.
 name|hdfs
 operator|.
-name|server
-operator|.
 name|protocol
 operator|.
 name|DatanodeInfoWithStorage
@@ -729,7 +727,7 @@ block|}
 comment|/**    * Returns the locations associated with this block. The returned array is not    * expected to be modified. If it is, caller must immediately invoke    * {@link org.apache.hadoop.hdfs.protocol.LocatedBlock#invalidateCachedStorageInfo}    * to invalidate the cached Storage ID/Type arrays.    */
 DECL|method|getLocations ()
 specifier|public
-name|DatanodeInfoWithStorage
+name|DatanodeInfo
 index|[]
 name|getLocations
 parameter_list|()
