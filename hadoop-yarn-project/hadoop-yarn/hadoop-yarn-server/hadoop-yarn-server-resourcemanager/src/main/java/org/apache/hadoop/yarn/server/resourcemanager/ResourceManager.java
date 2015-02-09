@@ -3389,6 +3389,13 @@ condition|)
 block|{
 try|try
 block|{
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"Recovery started"
+argument_list|)
+expr_stmt|;
 name|rmStore
 operator|.
 name|checkVersion
@@ -3424,6 +3431,13 @@ decl_stmt|;
 name|recover
 argument_list|(
 name|state
+argument_list|)
+expr_stmt|;
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"Recovery ended"
 argument_list|)
 expr_stmt|;
 block|}
