@@ -618,6 +618,47 @@ operator|.
 name|GRANDFATHER_GENERATION_STAMP
 expr_stmt|;
 block|}
+DECL|method|isStripedBlockID (long id)
+specifier|public
+specifier|static
+name|boolean
+name|isStripedBlockID
+parameter_list|(
+name|long
+name|id
+parameter_list|)
+block|{
+return|return
+name|id
+operator|<
+literal|0
+return|;
+block|}
+DECL|method|convertToGroupID (long id)
+specifier|public
+specifier|static
+name|long
+name|convertToGroupID
+parameter_list|(
+name|long
+name|id
+parameter_list|)
+block|{
+return|return
+name|id
+operator|&
+operator|(
+operator|~
+operator|(
+name|HdfsConstants
+operator|.
+name|MAX_BLOCKS_IN_GROUP
+operator|-
+literal|1
+operator|)
+operator|)
+return|;
+block|}
 block|}
 end_class
 
