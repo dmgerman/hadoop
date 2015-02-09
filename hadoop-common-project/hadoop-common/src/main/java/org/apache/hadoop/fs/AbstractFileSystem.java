@@ -2730,6 +2730,28 @@ name|UnresolvedLinkException
 throws|,
 name|IOException
 function_decl|;
+comment|/**    * The specification of this method matches that of    * {@link FileContext#truncate(Path, long)} except that Path f must be for    * this file system.    */
+DECL|method|truncate (Path f, long newLength)
+specifier|public
+specifier|abstract
+name|boolean
+name|truncate
+parameter_list|(
+name|Path
+name|f
+parameter_list|,
+name|long
+name|newLength
+parameter_list|)
+throws|throws
+name|AccessControlException
+throws|,
+name|FileNotFoundException
+throws|,
+name|UnresolvedLinkException
+throws|,
+name|IOException
+function_decl|;
 comment|/**    * The specification of this method matches that of    * {@link FileContext#setReplication(Path, short)} except that Path f must be    * for this file system.    */
 DECL|method|setReplication (final Path f, final short replication)
 specifier|public
