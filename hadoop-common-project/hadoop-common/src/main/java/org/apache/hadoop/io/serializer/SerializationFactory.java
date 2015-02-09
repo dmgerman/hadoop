@@ -306,7 +306,7 @@ name|serializerName
 range|:
 name|conf
 operator|.
-name|getStrings
+name|getTrimmedStrings
 argument_list|(
 name|CommonConfigurationKeys
 operator|.
