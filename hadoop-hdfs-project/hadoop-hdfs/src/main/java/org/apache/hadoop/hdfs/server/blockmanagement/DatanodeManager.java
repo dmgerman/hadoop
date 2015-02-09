@@ -1901,6 +1901,12 @@ argument_list|,
 name|activeLen
 argument_list|)
 expr_stmt|;
+comment|// must invalidate cache since we modified locations array
+name|b
+operator|.
+name|invalidateCachedStorageInfo
+argument_list|()
+expr_stmt|;
 block|}
 block|}
 DECL|method|getDatanodeCyclicIteration ( final String firstkey)

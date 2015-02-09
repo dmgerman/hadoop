@@ -3649,8 +3649,11 @@ block|{
 if|if
 condition|(
 name|reader
-operator|==
+operator|.
+name|equals
+argument_list|(
 name|node
+argument_list|)
 condition|)
 block|{
 name|weight
