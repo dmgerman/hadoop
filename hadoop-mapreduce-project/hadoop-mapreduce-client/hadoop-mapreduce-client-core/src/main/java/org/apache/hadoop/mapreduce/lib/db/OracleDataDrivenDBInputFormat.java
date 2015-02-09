@@ -509,7 +509,7 @@ name|inputClass
 argument_list|,
 name|conf
 argument_list|,
-name|getConnection
+name|createConnection
 argument_list|()
 argument_list|,
 name|dbConf

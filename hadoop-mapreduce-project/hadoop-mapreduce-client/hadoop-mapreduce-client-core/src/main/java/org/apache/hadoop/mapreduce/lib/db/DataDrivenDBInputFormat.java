@@ -817,12 +817,6 @@ name|statement
 init|=
 literal|null
 decl_stmt|;
-name|Connection
-name|connection
-init|=
-name|getConnection
-argument_list|()
-decl_stmt|;
 try|try
 block|{
 name|statement
@@ -1310,7 +1304,7 @@ name|inputClass
 argument_list|,
 name|conf
 argument_list|,
-name|getConnection
+name|createConnection
 argument_list|()
 argument_list|,
 name|dbConf
@@ -1348,7 +1342,7 @@ name|inputClass
 argument_list|,
 name|conf
 argument_list|,
-name|getConnection
+name|createConnection
 argument_list|()
 argument_list|,
 name|dbConf
