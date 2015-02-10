@@ -303,17 +303,6 @@ return|return
 name|aclsEnabled
 return|;
 block|}
-comment|/**    * Returns the internal structure used to maintain administrator ACLs    *    * @return Structure used to maintain administrator access    */
-DECL|method|getAdminAcl ()
-specifier|public
-name|AccessControlList
-name|getAdminAcl
-parameter_list|()
-block|{
-return|return
-name|adminAcl
-return|;
-block|}
 comment|/**    * Returns whether the specified user/group is an administrator    *    * @param callerUGI user/group to to check    * @return<tt>true</tt> if the UserGroupInformation specified    *         is a member of the access control list for administrators    */
 DECL|method|isAdmin (UserGroupInformation callerUGI)
 specifier|public
@@ -328,36 +317,6 @@ return|return
 name|adminAcl
 operator|.
 name|isUserAllowed
-argument_list|(
-name|callerUGI
-argument_list|)
-return|;
-block|}
-comment|/**    * Returns whether the specified user/group has administrator access    *    * @param callerUGI user/group to to check    * @return<tt>true</tt> if the UserGroupInformation specified    *         is a member of the access control list for administrators    *         and ACLs are enabled for this cluster    *    * @see #getAdminAcl    * @see #areACLsEnabled    */
-DECL|method|checkAccess (UserGroupInformation callerUGI)
-specifier|public
-name|boolean
-name|checkAccess
-parameter_list|(
-name|UserGroupInformation
-name|callerUGI
-parameter_list|)
-block|{
-comment|// Any user may perform this operation if authorization is not enabled
-if|if
-condition|(
-operator|!
-name|areACLsEnabled
-argument_list|()
-condition|)
-block|{
-return|return
-literal|true
-return|;
-block|}
-comment|// Administrators may perform any operation
-return|return
-name|isAdmin
 argument_list|(
 name|callerUGI
 argument_list|)

@@ -420,6 +420,22 @@ name|hadoop
 operator|.
 name|yarn
 operator|.
+name|security
+operator|.
+name|YarnAuthorizationProvider
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
 name|server
 operator|.
 name|resourcemanager
@@ -901,14 +917,14 @@ throw|;
 block|}
 block|}
 block|}
-DECL|method|verifyAccess ( AccessControlList acl, String method, final Log LOG)
+DECL|method|verifyAdminAccess ( YarnAuthorizationProvider authorizer, String method, final Log LOG)
 specifier|public
 specifier|static
 name|UserGroupInformation
-name|verifyAccess
+name|verifyAdminAccess
 parameter_list|(
-name|AccessControlList
-name|acl
+name|YarnAuthorizationProvider
+name|authorizer
 parameter_list|,
 name|String
 name|method
@@ -922,9 +938,9 @@ name|IOException
 block|{
 comment|// by default, this method will use AdminService as module name
 return|return
-name|verifyAccess
+name|verifyAdminAccess
 argument_list|(
-name|acl
+name|authorizer
 argument_list|,
 name|method
 argument_list|,
@@ -934,15 +950,15 @@ name|LOG
 argument_list|)
 return|;
 block|}
-comment|/**    * Utility method to verify if the current user has access based on the    * passed {@link AccessControlList}    * @param acl the {@link AccessControlList} to check against    * @param method the method name to be logged    * @param module, like AdminService or NodeLabelManager    * @param LOG the logger to use    * @return {@link UserGroupInformation} of the current user    * @throws IOException    */
-DECL|method|verifyAccess ( AccessControlList acl, String method, String module, final Log LOG)
+comment|/**    * Utility method to verify if the current user has access based on the    * passed {@link AccessControlList}    * @param authorizer the {@link AccessControlList} to check against    * @param method the method name to be logged    * @param module like AdminService or NodeLabelManager    * @param LOG the logger to use    * @return {@link UserGroupInformation} of the current user    * @throws IOException    */
+DECL|method|verifyAdminAccess ( YarnAuthorizationProvider authorizer, String method, String module, final Log LOG)
 specifier|public
 specifier|static
 name|UserGroupInformation
-name|verifyAccess
+name|verifyAdminAccess
 parameter_list|(
-name|AccessControlList
-name|acl
+name|YarnAuthorizationProvider
+name|authorizer
 parameter_list|,
 name|String
 name|method
@@ -993,10 +1009,7 @@ literal|"UNKNOWN"
 argument_list|,
 name|method
 argument_list|,
-name|acl
-operator|.
-name|toString
-argument_list|()
+literal|""
 argument_list|,
 literal|"AdminService"
 argument_list|,
@@ -1010,9 +1023,9 @@ block|}
 if|if
 condition|(
 operator|!
-name|acl
+name|authorizer
 operator|.
-name|isUserAllowed
+name|isAdmin
 argument_list|(
 name|user
 argument_list|)
@@ -1049,10 +1062,7 @@ argument_list|()
 argument_list|,
 name|method
 argument_list|,
-name|acl
-operator|.
-name|toString
-argument_list|()
+literal|""
 argument_list|,
 name|module
 argument_list|,

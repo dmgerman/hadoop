@@ -456,6 +456,22 @@ name|hadoop
 operator|.
 name|yarn
 operator|.
+name|security
+operator|.
+name|AccessType
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
 name|server
 operator|.
 name|resourcemanager
@@ -943,7 +959,7 @@ argument_list|)
 decl_stmt|;
 name|Map
 argument_list|<
-name|QueueACL
+name|AccessType
 argument_list|,
 name|AccessControlList
 argument_list|>
@@ -1028,7 +1044,7 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|setupQueueConfigs (Resource clusterResource, float capacity, float absoluteCapacity, float maximumCapacity, float absoluteMaxCapacity, QueueState state, Map<QueueACL, AccessControlList> acls, Set<String> accessibleLabels, String defaultLabelExpression, Map<String, Float> nodeLabelCapacities, Map<String, Float> maximumCapacitiesByLabel, boolean reservationContinueLooking)
+DECL|method|setupQueueConfigs (Resource clusterResource, float capacity, float absoluteCapacity, float maximumCapacity, float absoluteMaxCapacity, QueueState state, Map<AccessType, AccessControlList> acls, Set<String> accessibleLabels, String defaultLabelExpression, Map<String, Float> nodeLabelCapacities, Map<String, Float> maximumCapacitiesByLabel, boolean reservationContinueLooking)
 specifier|synchronized
 name|void
 name|setupQueueConfigs
@@ -1053,7 +1069,7 @@ name|state
 parameter_list|,
 name|Map
 argument_list|<
-name|QueueACL
+name|AccessType
 argument_list|,
 name|AccessControlList
 argument_list|>
@@ -1134,7 +1150,7 @@ name|Map
 operator|.
 name|Entry
 argument_list|<
-name|QueueACL
+name|AccessType
 argument_list|,
 name|AccessControlList
 argument_list|>

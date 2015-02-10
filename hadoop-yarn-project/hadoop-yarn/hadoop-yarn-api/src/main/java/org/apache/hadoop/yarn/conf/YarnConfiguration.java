@@ -1784,6 +1784,17 @@ name|DEFAULT_RM_CONFIGURATION_PROVIDER_CLASS
 init|=
 literal|"org.apache.hadoop.yarn.LocalConfigurationProvider"
 decl_stmt|;
+DECL|field|YARN_AUTHORIZATION_PROVIDER
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|YARN_AUTHORIZATION_PROVIDER
+init|=
+name|YARN_PREFIX
+operator|+
+literal|"authorization-provider"
+decl_stmt|;
 DECL|field|RM_SERVICES_ADDRESS_CONF_KEYS_HTTP
 specifier|private
 specifier|static
