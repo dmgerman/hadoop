@@ -3123,9 +3123,7 @@ operator|.
 name|proxiedTrackingUrl
 operator|=
 name|generateProxyUriWithScheme
-argument_list|(
-literal|null
-argument_list|)
+argument_list|()
 expr_stmt|;
 name|this
 operator|.
@@ -3450,15 +3448,11 @@ argument_list|()
 expr_stmt|;
 block|}
 block|}
-DECL|method|generateProxyUriWithScheme ( final String trackingUriWithoutScheme)
+DECL|method|generateProxyUriWithScheme ()
 specifier|private
 name|String
 name|generateProxyUriWithScheme
-parameter_list|(
-specifier|final
-name|String
-name|trackingUriWithoutScheme
-parameter_list|)
+parameter_list|()
 block|{
 name|this
 operator|.
@@ -3478,27 +3472,6 @@ operator|.
 name|getHttpSchemePrefix
 argument_list|(
 name|conf
-argument_list|)
-decl_stmt|;
-name|URI
-name|trackingUri
-init|=
-name|StringUtils
-operator|.
-name|isEmpty
-argument_list|(
-name|trackingUriWithoutScheme
-argument_list|)
-condition|?
-literal|null
-else|:
-name|ProxyUriUtils
-operator|.
-name|getUriFromAMUrl
-argument_list|(
-name|scheme
-argument_list|,
-name|trackingUriWithoutScheme
 argument_list|)
 decl_stmt|;
 name|String
@@ -3530,7 +3503,7 @@ name|ProxyUriUtils
 operator|.
 name|getProxyUri
 argument_list|(
-name|trackingUri
+literal|null
 argument_list|,
 name|proxyUri
 argument_list|,
@@ -3557,15 +3530,18 @@ name|LOG
 operator|.
 name|warn
 argument_list|(
-literal|"Could not proxify "
+literal|"Could not proxify the uri for "
 operator|+
-name|trackingUriWithoutScheme
+name|applicationAttemptId
+operator|.
+name|getApplicationId
+argument_list|()
 argument_list|,
 name|e
 argument_list|)
 expr_stmt|;
 return|return
-name|trackingUriWithoutScheme
+literal|null
 return|;
 block|}
 finally|finally
@@ -4671,15 +4647,6 @@ name|attemptState
 operator|.
 name|getFinalTrackingUrl
 argument_list|()
-expr_stmt|;
-name|this
-operator|.
-name|proxiedTrackingUrl
-operator|=
-name|generateProxyUriWithScheme
-argument_list|(
-name|originalTrackingUrl
-argument_list|)
 expr_stmt|;
 name|this
 operator|.
@@ -6906,19 +6873,6 @@ name|getTrackingurl
 argument_list|()
 argument_list|)
 expr_stmt|;
-name|appAttempt
-operator|.
-name|proxiedTrackingUrl
-operator|=
-name|appAttempt
-operator|.
-name|generateProxyUriWithScheme
-argument_list|(
-name|appAttempt
-operator|.
-name|originalTrackingUrl
-argument_list|)
-expr_stmt|;
 comment|// Let the app know
 name|appAttempt
 operator|.
@@ -7798,13 +7752,6 @@ name|unregisterEvent
 operator|.
 name|getFinalTrackingUrl
 argument_list|()
-argument_list|)
-expr_stmt|;
-name|proxiedTrackingUrl
-operator|=
-name|generateProxyUriWithScheme
-argument_list|(
-name|originalTrackingUrl
 argument_list|)
 expr_stmt|;
 name|finalStatus
