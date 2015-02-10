@@ -42,6 +42,16 @@ name|java
 operator|.
 name|io
 operator|.
+name|EOFException
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|io
+operator|.
 name|IOException
 import|;
 end_import
@@ -3552,6 +3562,37 @@ name|bpRegistration
 argument_list|)
 expr_stmt|;
 break|break;
+block|}
+catch|catch
+parameter_list|(
+name|EOFException
+name|e
+parameter_list|)
+block|{
+comment|// namenode might have just restarted
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"Problem connecting to server: "
+operator|+
+name|nnAddr
+operator|+
+literal|" :"
+operator|+
+name|e
+operator|.
+name|getLocalizedMessage
+argument_list|()
+argument_list|)
+expr_stmt|;
+name|sleepAndLogInterrupts
+argument_list|(
+literal|1000
+argument_list|,
+literal|"connecting to server"
+argument_list|)
+expr_stmt|;
 block|}
 catch|catch
 parameter_list|(
