@@ -18,6 +18,18 @@ end_package
 
 begin_import
 import|import
+name|java
+operator|.
+name|util
+operator|.
+name|concurrent
+operator|.
+name|TimeUnit
+import|;
+end_import
+
+begin_import
+import|import
 name|org
 operator|.
 name|apache
@@ -5723,6 +5735,33 @@ name|boolean
 name|DFS_PIPELINE_ECN_ENABLED_DEFAULT
 init|=
 literal|false
+decl_stmt|;
+comment|// Key Provider Cache Expiry
+DECL|field|DFS_CLIENT_KEY_PROVIDER_CACHE_EXPIRY_MS
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|DFS_CLIENT_KEY_PROVIDER_CACHE_EXPIRY_MS
+init|=
+literal|"dfs.client.key.provider.cache.expiry"
+decl_stmt|;
+comment|// 10 days
+DECL|field|DFS_CLIENT_KEY_PROVIDER_CACHE_EXPIRY_DEFAULT
+specifier|public
+specifier|static
+specifier|final
+name|long
+name|DFS_CLIENT_KEY_PROVIDER_CACHE_EXPIRY_DEFAULT
+init|=
+name|TimeUnit
+operator|.
+name|DAYS
+operator|.
+name|toMillis
+argument_list|(
+literal|10
+argument_list|)
 decl_stmt|;
 block|}
 end_class

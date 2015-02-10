@@ -411,7 +411,8 @@ operator|.
 name|getClient
 argument_list|()
 operator|.
-name|provider
+name|getKeyProvider
+argument_list|()
 operator|)
 operator|.
 name|getEncKeyQueueSize

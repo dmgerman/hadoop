@@ -160,6 +160,20 @@ name|VisibleForTesting
 import|;
 end_import
 
+begin_import
+import|import
+name|com
+operator|.
+name|google
+operator|.
+name|common
+operator|.
+name|cache
+operator|.
+name|Cache
+import|;
+end_import
+
 begin_comment
 comment|/**  * ClientContext contains context information for a client.  *   * This allows us to share caches such as the socket cache across  * DFSClient instances.  */
 end_comment
@@ -246,6 +260,13 @@ specifier|private
 specifier|final
 name|DomainSocketFactory
 name|domainSocketFactory
+decl_stmt|;
+comment|/**    * Caches key Providers for the DFSClient    */
+DECL|field|keyProviderCache
+specifier|private
+specifier|final
+name|KeyProviderCache
+name|keyProviderCache
 decl_stmt|;
 comment|/**    * True if we should use the legacy BlockReaderLocal.    */
 DECL|field|useLegacyBlockReaderLocal
@@ -354,6 +375,18 @@ argument_list|,
 name|conf
 operator|.
 name|socketCacheExpiry
+argument_list|)
+expr_stmt|;
+name|this
+operator|.
+name|keyProviderCache
+operator|=
+operator|new
+name|KeyProviderCache
+argument_list|(
+name|conf
+operator|.
+name|keyProviderCacheExpiryMs
 argument_list|)
 expr_stmt|;
 name|this
@@ -549,6 +582,18 @@ argument_list|(
 name|conf
 operator|.
 name|shortCircuitSharedMemoryWatcherInterruptCheckMs
+argument_list|)
+operator|.
+name|append
+argument_list|(
+literal|", keyProviderCacheExpiryMs = "
+argument_list|)
+operator|.
+name|append
+argument_list|(
+name|conf
+operator|.
+name|keyProviderCacheExpiryMs
 argument_list|)
 expr_stmt|;
 return|return
@@ -767,6 +812,16 @@ parameter_list|()
 block|{
 return|return
 name|peerCache
+return|;
+block|}
+DECL|method|getKeyProviderCache ()
+specifier|public
+name|KeyProviderCache
+name|getKeyProviderCache
+parameter_list|()
+block|{
+return|return
+name|keyProviderCache
 return|;
 block|}
 DECL|method|getUseLegacyBlockReaderLocal ()

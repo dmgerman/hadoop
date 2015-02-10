@@ -607,8 +607,8 @@ operator|.
 name|getClient
 argument_list|()
 operator|.
-name|provider
-operator|=
+name|setKeyProvider
+argument_list|(
 name|cluster
 operator|.
 name|getNameNode
@@ -619,6 +619,7 @@ argument_list|()
 operator|.
 name|getProvider
 argument_list|()
+argument_list|)
 expr_stmt|;
 name|DFSTestUtil
 operator|.

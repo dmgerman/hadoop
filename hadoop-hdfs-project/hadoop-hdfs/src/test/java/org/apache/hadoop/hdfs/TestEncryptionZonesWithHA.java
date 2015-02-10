@@ -520,9 +520,10 @@ operator|.
 name|getClient
 argument_list|()
 operator|.
-name|provider
-operator|=
+name|setKeyProvider
+argument_list|(
 name|nn0Provider
+argument_list|)
 expr_stmt|;
 block|}
 annotation|@
