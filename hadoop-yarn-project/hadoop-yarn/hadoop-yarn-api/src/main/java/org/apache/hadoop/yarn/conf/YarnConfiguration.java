@@ -3705,6 +3705,27 @@ name|DEFAULT_NM_LINUX_CONTAINER_CGROUPS_DELETE_TIMEOUT
 init|=
 literal|1000
 decl_stmt|;
+comment|/**    * Delay between attempts to remove linux cgroup.    */
+DECL|field|NM_LINUX_CONTAINER_CGROUPS_DELETE_DELAY
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|NM_LINUX_CONTAINER_CGROUPS_DELETE_DELAY
+init|=
+name|NM_PREFIX
+operator|+
+literal|"linux-container-executor.cgroups.delete-delay-ms"
+decl_stmt|;
+DECL|field|DEFAULT_NM_LINUX_CONTAINER_CGROUPS_DELETE_DELAY
+specifier|public
+specifier|static
+specifier|final
+name|long
+name|DEFAULT_NM_LINUX_CONTAINER_CGROUPS_DELETE_DELAY
+init|=
+literal|20
+decl_stmt|;
 comment|/**    /* The Windows group that the windows-secure-container-executor should run as.   */
 DECL|field|NM_WINDOWS_SECURE_CONTAINER_GROUP
 specifier|public
