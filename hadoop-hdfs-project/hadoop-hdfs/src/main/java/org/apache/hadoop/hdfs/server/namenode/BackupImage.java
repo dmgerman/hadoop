@@ -300,7 +300,18 @@ operator|.
 name|DROP_UNTIL_NEXT_ROLL
 expr_stmt|;
 block|}
+DECL|method|getNamesystem ()
+specifier|synchronized
+name|FSNamesystem
+name|getNamesystem
+parameter_list|()
+block|{
+return|return
+name|namesystem
+return|;
+block|}
 DECL|method|setNamesystem (FSNamesystem fsn)
+specifier|synchronized
 name|void
 name|setNamesystem
 parameter_list|(
@@ -308,12 +319,21 @@ name|FSNamesystem
 name|fsn
 parameter_list|)
 block|{
+comment|// Avoids overriding this.namesystem object
+if|if
+condition|(
+name|namesystem
+operator|==
+literal|null
+condition|)
+block|{
 name|this
 operator|.
 name|namesystem
 operator|=
 name|fsn
 expr_stmt|;
+block|}
 block|}
 comment|/**    * Analyze backup storage directories for consistency.<br>    * Recover from incomplete checkpoints if required.<br>    * Read VERSION and fstime files if exist.<br>    * Do not load image or edits.    *    * @throws IOException if the node should shutdown.    */
 DECL|method|recoverCreateRead ()
@@ -653,7 +673,8 @@ init|=
 operator|new
 name|FSEditLogLoader
 argument_list|(
-name|namesystem
+name|getNamesystem
+argument_list|()
 argument_list|,
 name|lastAppliedTxId
 argument_list|)
@@ -731,11 +752,13 @@ name|FSImage
 operator|.
 name|updateCountForQuota
 argument_list|(
-name|namesystem
+name|getNamesystem
+argument_list|()
 operator|.
 name|dir
 operator|.
-name|rootDir
+name|getRoot
+argument_list|()
 argument_list|)
 expr_stmt|;
 comment|// inefficient!
@@ -931,7 +954,8 @@ name|loadEdits
 argument_list|(
 name|editStreams
 argument_list|,
-name|namesystem
+name|getNamesystem
+argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
@@ -1080,7 +1104,8 @@ init|=
 operator|new
 name|FSEditLogLoader
 argument_list|(
-name|namesystem
+name|getNamesystem
+argument_list|()
 argument_list|,
 name|lastAppliedTxId
 argument_list|)
