@@ -1997,6 +1997,7 @@ operator|.
 name|getBlocksList
 argument_list|()
 decl_stmt|;
+comment|// TODO: also persist striped blocks
 name|BlockInfoContiguous
 index|[]
 name|blocks
@@ -2050,6 +2051,9 @@ decl_stmt|;
 name|BlockInfoContiguous
 name|storedBlock
 init|=
+operator|(
+name|BlockInfoContiguous
+operator|)
 name|fsn
 operator|.
 name|getBlockManager

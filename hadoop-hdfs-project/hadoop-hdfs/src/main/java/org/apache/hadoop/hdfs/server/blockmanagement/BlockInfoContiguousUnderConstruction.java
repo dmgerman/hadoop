@@ -184,257 +184,6 @@ specifier|private
 name|Block
 name|truncateBlock
 decl_stmt|;
-comment|/**    * ReplicaUnderConstruction contains information about replicas while    * they are under construction.    * The GS, the length and the state of the replica is as reported by     * the data-node.    * It is not guaranteed, but expected, that data-nodes actually have    * corresponding replicas.    */
-DECL|class|ReplicaUnderConstruction
-specifier|static
-class|class
-name|ReplicaUnderConstruction
-extends|extends
-name|Block
-block|{
-DECL|field|expectedLocation
-specifier|private
-specifier|final
-name|DatanodeStorageInfo
-name|expectedLocation
-decl_stmt|;
-DECL|field|state
-specifier|private
-name|ReplicaState
-name|state
-decl_stmt|;
-DECL|field|chosenAsPrimary
-specifier|private
-name|boolean
-name|chosenAsPrimary
-decl_stmt|;
-DECL|method|ReplicaUnderConstruction (Block block, DatanodeStorageInfo target, ReplicaState state)
-name|ReplicaUnderConstruction
-parameter_list|(
-name|Block
-name|block
-parameter_list|,
-name|DatanodeStorageInfo
-name|target
-parameter_list|,
-name|ReplicaState
-name|state
-parameter_list|)
-block|{
-name|super
-argument_list|(
-name|block
-argument_list|)
-expr_stmt|;
-name|this
-operator|.
-name|expectedLocation
-operator|=
-name|target
-expr_stmt|;
-name|this
-operator|.
-name|state
-operator|=
-name|state
-expr_stmt|;
-name|this
-operator|.
-name|chosenAsPrimary
-operator|=
-literal|false
-expr_stmt|;
-block|}
-comment|/**      * Expected block replica location as assigned when the block was allocated.      * This defines the pipeline order.      * It is not guaranteed, but expected, that the data-node actually has      * the replica.      */
-DECL|method|getExpectedStorageLocation ()
-specifier|private
-name|DatanodeStorageInfo
-name|getExpectedStorageLocation
-parameter_list|()
-block|{
-return|return
-name|expectedLocation
-return|;
-block|}
-comment|/**      * Get replica state as reported by the data-node.      */
-DECL|method|getState ()
-name|ReplicaState
-name|getState
-parameter_list|()
-block|{
-return|return
-name|state
-return|;
-block|}
-comment|/**      * Whether the replica was chosen for recovery.      */
-DECL|method|getChosenAsPrimary ()
-name|boolean
-name|getChosenAsPrimary
-parameter_list|()
-block|{
-return|return
-name|chosenAsPrimary
-return|;
-block|}
-comment|/**      * Set replica state.      */
-DECL|method|setState (ReplicaState s)
-name|void
-name|setState
-parameter_list|(
-name|ReplicaState
-name|s
-parameter_list|)
-block|{
-name|state
-operator|=
-name|s
-expr_stmt|;
-block|}
-comment|/**      * Set whether this replica was chosen for recovery.      */
-DECL|method|setChosenAsPrimary (boolean chosenAsPrimary)
-name|void
-name|setChosenAsPrimary
-parameter_list|(
-name|boolean
-name|chosenAsPrimary
-parameter_list|)
-block|{
-name|this
-operator|.
-name|chosenAsPrimary
-operator|=
-name|chosenAsPrimary
-expr_stmt|;
-block|}
-comment|/**      * Is data-node the replica belongs to alive.      */
-DECL|method|isAlive ()
-name|boolean
-name|isAlive
-parameter_list|()
-block|{
-return|return
-name|expectedLocation
-operator|.
-name|getDatanodeDescriptor
-argument_list|()
-operator|.
-name|isAlive
-return|;
-block|}
-annotation|@
-name|Override
-comment|// Block
-DECL|method|hashCode ()
-specifier|public
-name|int
-name|hashCode
-parameter_list|()
-block|{
-return|return
-name|super
-operator|.
-name|hashCode
-argument_list|()
-return|;
-block|}
-annotation|@
-name|Override
-comment|// Block
-DECL|method|equals (Object obj)
-specifier|public
-name|boolean
-name|equals
-parameter_list|(
-name|Object
-name|obj
-parameter_list|)
-block|{
-comment|// Sufficient to rely on super's implementation
-return|return
-operator|(
-name|this
-operator|==
-name|obj
-operator|)
-operator|||
-name|super
-operator|.
-name|equals
-argument_list|(
-name|obj
-argument_list|)
-return|;
-block|}
-annotation|@
-name|Override
-DECL|method|toString ()
-specifier|public
-name|String
-name|toString
-parameter_list|()
-block|{
-specifier|final
-name|StringBuilder
-name|b
-init|=
-operator|new
-name|StringBuilder
-argument_list|(
-literal|50
-argument_list|)
-decl_stmt|;
-name|appendStringTo
-argument_list|(
-name|b
-argument_list|)
-expr_stmt|;
-return|return
-name|b
-operator|.
-name|toString
-argument_list|()
-return|;
-block|}
-annotation|@
-name|Override
-DECL|method|appendStringTo (StringBuilder sb)
-specifier|public
-name|void
-name|appendStringTo
-parameter_list|(
-name|StringBuilder
-name|sb
-parameter_list|)
-block|{
-name|sb
-operator|.
-name|append
-argument_list|(
-literal|"ReplicaUC["
-argument_list|)
-operator|.
-name|append
-argument_list|(
-name|expectedLocation
-argument_list|)
-operator|.
-name|append
-argument_list|(
-literal|"|"
-argument_list|)
-operator|.
-name|append
-argument_list|(
-name|state
-argument_list|)
-operator|.
-name|append
-argument_list|(
-literal|"]"
-argument_list|)
-expr_stmt|;
-block|}
-block|}
 comment|/**    * Create block and set its state to    * {@link BlockUCState#UNDER_CONSTRUCTION}.    */
 DECL|method|BlockInfoContiguousUnderConstruction (Block blk, short replication)
 specifier|public
@@ -565,9 +314,7 @@ name|replicas
 operator|=
 operator|new
 name|ArrayList
-argument_list|<
-name|ReplicaUnderConstruction
-argument_list|>
+argument_list|<>
 argument_list|(
 name|numLocations
 argument_list|)
@@ -586,6 +333,7 @@ condition|;
 name|i
 operator|++
 control|)
+block|{
 name|replicas
 operator|.
 name|add
@@ -606,6 +354,7 @@ name|RBW
 argument_list|)
 argument_list|)
 expr_stmt|;
+block|}
 block|}
 comment|/**    * Create array of expected replica locations    * (as has been assigned by chooseTargets()).    */
 DECL|method|getExpectedStorageLocations ()
@@ -653,6 +402,7 @@ condition|;
 name|i
 operator|++
 control|)
+block|{
 name|storages
 index|[
 name|i
@@ -668,6 +418,7 @@ operator|.
 name|getExpectedStorageLocation
 argument_list|()
 expr_stmt|;
+block|}
 return|return
 name|storages
 return|;
@@ -953,31 +704,16 @@ literal|true
 decl_stmt|;
 for|for
 control|(
-name|int
-name|i
-init|=
-literal|0
-init|;
-name|i
-operator|<
+name|ReplicaUnderConstruction
+name|replica
+range|:
 name|replicas
-operator|.
-name|size
-argument_list|()
-condition|;
-name|i
-operator|++
 control|)
 block|{
 comment|// Check if all replicas have been tried or not.
 if|if
 condition|(
-name|replicas
-operator|.
-name|get
-argument_list|(
-name|i
-argument_list|)
+name|replica
 operator|.
 name|isAlive
 argument_list|()
@@ -988,12 +724,7 @@ operator|=
 operator|(
 name|allLiveReplicasTriedAsPrimary
 operator|&&
-name|replicas
-operator|.
-name|get
-argument_list|(
-name|i
-argument_list|)
+name|replica
 operator|.
 name|getChosenAsPrimary
 argument_list|()
@@ -1009,28 +740,13 @@ block|{
 comment|// Just set all the replicas to be chosen whether they are alive or not.
 for|for
 control|(
-name|int
-name|i
-init|=
-literal|0
-init|;
-name|i
-operator|<
+name|ReplicaUnderConstruction
+name|replica
+range|:
 name|replicas
-operator|.
-name|size
-argument_list|()
-condition|;
-name|i
-operator|++
 control|)
 block|{
-name|replicas
-operator|.
-name|get
-argument_list|(
-name|i
-argument_list|)
+name|replica
 operator|.
 name|setChosenAsPrimary
 argument_list|(
@@ -1305,51 +1021,6 @@ name|rState
 argument_list|)
 argument_list|)
 expr_stmt|;
-block|}
-annotation|@
-name|Override
-comment|// BlockInfo
-comment|// BlockInfoUnderConstruction participates in maps the same way as BlockInfo
-DECL|method|hashCode ()
-specifier|public
-name|int
-name|hashCode
-parameter_list|()
-block|{
-return|return
-name|super
-operator|.
-name|hashCode
-argument_list|()
-return|;
-block|}
-annotation|@
-name|Override
-comment|// BlockInfo
-DECL|method|equals (Object obj)
-specifier|public
-name|boolean
-name|equals
-parameter_list|(
-name|Object
-name|obj
-parameter_list|)
-block|{
-comment|// Sufficient to rely on super's implementation
-return|return
-operator|(
-name|this
-operator|==
-name|obj
-operator|)
-operator|||
-name|super
-operator|.
-name|equals
-argument_list|(
-name|obj
-argument_list|)
-return|;
 block|}
 annotation|@
 name|Override

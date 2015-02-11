@@ -90,6 +90,22 @@ name|hdfs
 operator|.
 name|protocol
 operator|.
+name|Block
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|protocol
+operator|.
 name|DatanodeInfo
 import|;
 end_import
@@ -514,18 +530,18 @@ name|BlockIterator
 implements|implements
 name|Iterator
 argument_list|<
-name|BlockInfoContiguous
+name|BlockInfo
 argument_list|>
 block|{
 DECL|field|current
 specifier|private
-name|BlockInfoContiguous
+name|BlockInfo
 name|current
 decl_stmt|;
-DECL|method|BlockIterator (BlockInfoContiguous head)
+DECL|method|BlockIterator (BlockInfo head)
 name|BlockIterator
 parameter_list|(
-name|BlockInfoContiguous
+name|BlockInfo
 name|head
 parameter_list|)
 block|{
@@ -550,11 +566,11 @@ return|;
 block|}
 DECL|method|next ()
 specifier|public
-name|BlockInfoContiguous
+name|BlockInfo
 name|next
 parameter_list|()
 block|{
-name|BlockInfoContiguous
+name|BlockInfo
 name|res
 init|=
 name|current
@@ -640,7 +656,7 @@ decl_stmt|;
 DECL|field|blockList
 specifier|private
 specifier|volatile
-name|BlockInfoContiguous
+name|BlockInfo
 name|blockList
 init|=
 literal|null
@@ -982,13 +998,16 @@ return|return
 name|blockPoolUsed
 return|;
 block|}
-DECL|method|addBlock (BlockInfoContiguous b)
+DECL|method|addBlock (BlockInfo b, Block reportedBlock)
 specifier|public
 name|AddBlockResult
 name|addBlock
 parameter_list|(
-name|BlockInfoContiguous
+name|BlockInfo
 name|b
+parameter_list|,
+name|Block
+name|reportedBlock
 parameter_list|)
 block|{
 comment|// First check whether the block belongs to a different storage
@@ -1056,8 +1075,45 @@ operator|.
 name|addStorage
 argument_list|(
 name|this
+argument_list|,
+name|reportedBlock
 argument_list|)
 expr_stmt|;
+name|insertToList
+argument_list|(
+name|b
+argument_list|)
+expr_stmt|;
+return|return
+name|result
+return|;
+block|}
+DECL|method|addBlock (BlockInfoContiguous b)
+name|AddBlockResult
+name|addBlock
+parameter_list|(
+name|BlockInfoContiguous
+name|b
+parameter_list|)
+block|{
+return|return
+name|addBlock
+argument_list|(
+name|b
+argument_list|,
+name|b
+argument_list|)
+return|;
+block|}
+DECL|method|insertToList (BlockInfo b)
+specifier|public
+name|void
+name|insertToList
+parameter_list|(
+name|BlockInfo
+name|b
+parameter_list|)
+block|{
 name|blockList
 operator|=
 name|b
@@ -1072,16 +1128,13 @@ expr_stmt|;
 name|numBlocks
 operator|++
 expr_stmt|;
-return|return
-name|result
-return|;
 block|}
-DECL|method|removeBlock (BlockInfoContiguous b)
+DECL|method|removeBlock (BlockInfo b)
 specifier|public
 name|boolean
 name|removeBlock
 parameter_list|(
-name|BlockInfoContiguous
+name|BlockInfo
 name|b
 parameter_list|)
 block|{
@@ -1132,7 +1185,7 @@ block|}
 DECL|method|getBlockIterator ()
 name|Iterator
 argument_list|<
-name|BlockInfoContiguous
+name|BlockInfo
 argument_list|>
 name|getBlockIterator
 parameter_list|()
@@ -1146,11 +1199,11 @@ argument_list|)
 return|;
 block|}
 comment|/**    * Move block to the head of the list of blocks belonging to the data-node.    * @return the index of the head of the blockList    */
-DECL|method|moveBlockToHead (BlockInfoContiguous b, int curIndex, int headIndex)
+DECL|method|moveBlockToHead (BlockInfo b, int curIndex, int headIndex)
 name|int
 name|moveBlockToHead
 parameter_list|(
-name|BlockInfoContiguous
+name|BlockInfo
 name|b
 parameter_list|,
 name|int
@@ -1183,7 +1236,7 @@ comment|/**    * Used for testing only    * @return the head of the blockList   
 annotation|@
 name|VisibleForTesting
 DECL|method|getBlockListHeadForTesting ()
-name|BlockInfoContiguous
+name|BlockInfo
 name|getBlockListHeadForTesting
 parameter_list|()
 block|{
@@ -1581,7 +1634,7 @@ block|,
 name|REPLACED
 block|,
 name|ALREADY_EXIST
-block|;   }
+block|}
 block|}
 end_class
 

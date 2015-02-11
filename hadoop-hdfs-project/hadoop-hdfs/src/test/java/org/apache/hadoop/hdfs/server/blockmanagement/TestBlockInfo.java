@@ -366,6 +366,8 @@ operator|.
 name|addStorage
 argument_list|(
 name|storage
+argument_list|,
+name|blockInfo
 argument_list|)
 decl_stmt|;
 name|Assert
@@ -804,7 +806,7 @@ argument_list|)
 expr_stmt|;
 name|Iterator
 argument_list|<
-name|BlockInfoContiguous
+name|BlockInfo
 argument_list|>
 name|it
 init|=
@@ -937,7 +939,7 @@ argument_list|(
 literal|"Moving head to the head..."
 argument_list|)
 expr_stmt|;
-name|BlockInfoContiguous
+name|BlockInfo
 name|temp
 init|=
 name|dd

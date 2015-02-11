@@ -3346,7 +3346,7 @@ block|}
 comment|/**    * Convert a specified block of the file to a complete block.    * @param bc file    * @param blkIndex  block index in the file    * @throws IOException if the block does not have at least a minimal number    * of replicas reported from data-nodes.    */
 DECL|method|completeBlock (final BlockCollection bc, final int blkIndex, boolean force)
 specifier|private
-name|BlockInfoContiguous
+name|BlockInfo
 name|completeBlock
 parameter_list|(
 specifier|final
@@ -3393,6 +3393,7 @@ condition|)
 return|return
 name|curBlock
 return|;
+comment|// TODO: support BlockInfoStripedUC
 name|BlockInfoContiguousUnderConstruction
 name|ucBlock
 init|=
@@ -3505,9 +3506,10 @@ name|completeBlock
 argument_list|)
 return|;
 block|}
-DECL|method|completeBlock (final BlockCollection bc, final BlockInfoContiguous block, boolean force)
+comment|// TODO: support BlockInfoStrippedUC
+DECL|method|completeBlock (final BlockCollection bc, final BlockInfo block, boolean force)
 specifier|private
-name|BlockInfoContiguous
+name|BlockInfo
 name|completeBlock
 parameter_list|(
 specifier|final
@@ -3515,7 +3517,7 @@ name|BlockCollection
 name|bc
 parameter_list|,
 specifier|final
-name|BlockInfoContiguous
+name|BlockInfo
 name|block
 parameter_list|,
 name|boolean
@@ -3549,6 +3551,7 @@ condition|;
 name|idx
 operator|++
 control|)
+block|{
 if|if
 condition|(
 name|fileBlocks
@@ -3570,6 +3573,7 @@ name|force
 argument_list|)
 return|;
 block|}
+block|}
 return|return
 name|block
 return|;
@@ -3577,7 +3581,7 @@ block|}
 comment|/**    * Force the given block in the given file to be marked as complete,    * regardless of whether enough replicas are present. This is necessary    * when tailing edit logs as a Standby.    */
 DECL|method|forceCompleteBlock (final BlockCollection bc, final BlockInfoContiguousUnderConstruction block)
 specifier|public
-name|BlockInfoContiguous
+name|BlockInfo
 name|forceCompleteBlock
 parameter_list|(
 specifier|final
@@ -5289,7 +5293,7 @@ return|;
 block|}
 name|Iterator
 argument_list|<
-name|BlockInfoContiguous
+name|BlockInfo
 argument_list|>
 name|iter
 init|=
@@ -5352,7 +5356,7 @@ name|totalSize
 init|=
 literal|0
 decl_stmt|;
-name|BlockInfoContiguous
+name|BlockInfo
 name|curBlock
 decl_stmt|;
 while|while
@@ -5815,15 +5819,21 @@ name|hasWriteLock
 argument_list|()
 assert|;
 specifier|final
-name|BlockInfoContiguous
-name|storedBlock
+name|Block
+name|reportedBlock
 init|=
-name|getStoredBlock
-argument_list|(
 name|blk
 operator|.
 name|getLocalBlock
 argument_list|()
+decl_stmt|;
+specifier|final
+name|BlockInfo
+name|storedBlock
+init|=
+name|getStoredBlock
+argument_list|(
+name|reportedBlock
 argument_list|)
 decl_stmt|;
 if|if
@@ -5894,6 +5904,8 @@ argument_list|(
 operator|new
 name|BlockToMarkCorrupt
 argument_list|(
+name|reportedBlock
+argument_list|,
 name|storedBlock
 argument_list|,
 name|blk
@@ -6003,6 +6015,10 @@ argument_list|(
 name|b
 operator|.
 name|stored
+argument_list|,
+name|b
+operator|.
+name|reportedBlock
 argument_list|)
 expr_stmt|;
 block|}
@@ -8368,6 +8384,46 @@ name|reportedState
 expr_stmt|;
 block|}
 block|}
+DECL|class|BlockInfoToAdd
+specifier|private
+specifier|static
+class|class
+name|BlockInfoToAdd
+block|{
+DECL|field|stored
+specifier|final
+name|BlockInfo
+name|stored
+decl_stmt|;
+DECL|field|reported
+specifier|final
+name|Block
+name|reported
+decl_stmt|;
+DECL|method|BlockInfoToAdd (BlockInfo stored, Block reported)
+name|BlockInfoToAdd
+parameter_list|(
+name|BlockInfo
+name|stored
+parameter_list|,
+name|Block
+name|reported
+parameter_list|)
+block|{
+name|this
+operator|.
+name|stored
+operator|=
+name|stored
+expr_stmt|;
+name|this
+operator|.
+name|reported
+operator|=
+name|reported
+expr_stmt|;
+block|}
+block|}
 comment|/**    * BlockToMarkCorrupt is used to build the "toCorrupt" list, which is a    * list of blocks that should be considered corrupt due to a block report.    */
 DECL|class|BlockToMarkCorrupt
 specifier|private
@@ -8378,14 +8434,20 @@ block|{
 comment|/** The corrupted block in a datanode. */
 DECL|field|corrupted
 specifier|final
-name|BlockInfoContiguous
+name|BlockInfo
 name|corrupted
 decl_stmt|;
 comment|/** The corresponding block stored in the BlockManager. */
 DECL|field|stored
 specifier|final
-name|BlockInfoContiguous
+name|BlockInfo
 name|stored
+decl_stmt|;
+comment|/** The block reported from a datanode */
+DECL|field|reportedBlock
+specifier|final
+name|Block
+name|reportedBlock
 decl_stmt|;
 comment|/** The reason to mark corrupt. */
 DECL|field|reason
@@ -8399,13 +8461,16 @@ specifier|final
 name|Reason
 name|reasonCode
 decl_stmt|;
-DECL|method|BlockToMarkCorrupt (BlockInfoContiguous corrupted, BlockInfoContiguous stored, String reason, Reason reasonCode)
+DECL|method|BlockToMarkCorrupt (Block reported, BlockInfo corrupted, BlockInfo stored, String reason, Reason reasonCode)
 name|BlockToMarkCorrupt
 parameter_list|(
-name|BlockInfoContiguous
+name|Block
+name|reported
+parameter_list|,
+name|BlockInfo
 name|corrupted
 parameter_list|,
-name|BlockInfoContiguous
+name|BlockInfo
 name|stored
 parameter_list|,
 name|String
@@ -8415,6 +8480,15 @@ name|Reason
 name|reasonCode
 parameter_list|)
 block|{
+name|Preconditions
+operator|.
+name|checkNotNull
+argument_list|(
+name|reported
+argument_list|,
+literal|"reported is null"
+argument_list|)
+expr_stmt|;
 name|Preconditions
 operator|.
 name|checkNotNull
@@ -8435,6 +8509,12 @@ argument_list|)
 expr_stmt|;
 name|this
 operator|.
+name|reportedBlock
+operator|=
+name|reported
+expr_stmt|;
+name|this
+operator|.
 name|corrupted
 operator|=
 name|corrupted
@@ -8458,10 +8538,13 @@ operator|=
 name|reasonCode
 expr_stmt|;
 block|}
-DECL|method|BlockToMarkCorrupt (BlockInfoContiguous stored, String reason, Reason reasonCode)
+DECL|method|BlockToMarkCorrupt (Block reported, BlockInfo stored, String reason, Reason reasonCode)
 name|BlockToMarkCorrupt
 parameter_list|(
-name|BlockInfoContiguous
+name|Block
+name|reported
+parameter_list|,
+name|BlockInfo
 name|stored
 parameter_list|,
 name|String
@@ -8473,6 +8556,8 @@ parameter_list|)
 block|{
 name|this
 argument_list|(
+name|reported
+argument_list|,
 name|stored
 argument_list|,
 name|stored
@@ -8483,10 +8568,13 @@ name|reasonCode
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|BlockToMarkCorrupt (BlockInfoContiguous stored, long gs, String reason, Reason reasonCode)
+DECL|method|BlockToMarkCorrupt (Block reported, BlockInfo stored, long gs, String reason, Reason reasonCode)
 name|BlockToMarkCorrupt
 parameter_list|(
-name|BlockInfoContiguous
+name|Block
+name|reported
+parameter_list|,
+name|BlockInfo
 name|stored
 parameter_list|,
 name|long
@@ -8501,8 +8589,11 @@ parameter_list|)
 block|{
 name|this
 argument_list|(
-operator|new
-name|BlockInfoContiguous
+name|reported
+argument_list|,
+name|BlockInfo
+operator|.
+name|copyOf
 argument_list|(
 name|stored
 argument_list|)
@@ -9343,7 +9434,7 @@ condition|)
 block|{
 break|break;
 block|}
-name|BlockInfoContiguous
+name|BlockInfo
 name|bi
 init|=
 name|getStoredBlock
@@ -9518,15 +9609,13 @@ comment|// between the old and new block report.
 comment|//
 name|Collection
 argument_list|<
-name|BlockInfoContiguous
+name|BlockInfoToAdd
 argument_list|>
 name|toAdd
 init|=
 operator|new
 name|LinkedList
-argument_list|<
-name|BlockInfoContiguous
-argument_list|>
+argument_list|<>
 argument_list|()
 decl_stmt|;
 name|Collection
@@ -9646,7 +9735,7 @@ literal|0
 decl_stmt|;
 for|for
 control|(
-name|BlockInfoContiguous
+name|BlockInfoToAdd
 name|b
 range|:
 name|toAdd
@@ -9655,6 +9744,12 @@ block|{
 name|addStoredBlock
 argument_list|(
 name|b
+operator|.
+name|stored
+argument_list|,
+name|b
+operator|.
+name|reported
 argument_list|,
 name|storageInfo
 argument_list|,
@@ -10049,7 +10144,7 @@ argument_list|)
 expr_stmt|;
 continue|continue;
 block|}
-name|BlockInfoContiguous
+name|BlockInfo
 name|storedBlock
 init|=
 name|getStoredBlock
@@ -10218,13 +10313,15 @@ name|addStoredBlockImmediate
 argument_list|(
 name|storedBlock
 argument_list|,
+name|iblk
+argument_list|,
 name|storageInfo
 argument_list|)
 expr_stmt|;
 block|}
 block|}
 block|}
-DECL|method|reportDiff (DatanodeStorageInfo storageInfo, BlockListAsLongs newReport, Collection<BlockInfoContiguous> toAdd, Collection<Block> toRemove, Collection<Block> toInvalidate, Collection<BlockToMarkCorrupt> toCorrupt, Collection<StatefulBlockInfo> toUC)
+DECL|method|reportDiff (DatanodeStorageInfo storageInfo, BlockListAsLongs newReport, Collection<BlockInfoToAdd> toAdd, Collection<Block> toRemove, Collection<Block> toInvalidate, Collection<BlockToMarkCorrupt> toCorrupt, Collection<StatefulBlockInfo> toUC)
 specifier|private
 name|void
 name|reportDiff
@@ -10237,7 +10334,7 @@ name|newReport
 parameter_list|,
 name|Collection
 argument_list|<
-name|BlockInfoContiguous
+name|BlockInfoToAdd
 argument_list|>
 name|toAdd
 parameter_list|,
@@ -10273,15 +10370,20 @@ block|{
 comment|// add to under-construction list
 comment|// place a delimiter in the list which separates blocks
 comment|// that have been reported from those that have not
+name|Block
+name|delimiterBlock
+init|=
+operator|new
+name|Block
+argument_list|()
+decl_stmt|;
 name|BlockInfoContiguous
 name|delimiter
 init|=
 operator|new
 name|BlockInfoContiguous
 argument_list|(
-operator|new
-name|Block
-argument_list|()
+name|delimiterBlock
 argument_list|,
 operator|(
 name|short
@@ -10297,6 +10399,8 @@ operator|.
 name|addBlock
 argument_list|(
 name|delimiter
+argument_list|,
+name|delimiterBlock
 argument_list|)
 decl_stmt|;
 assert|assert
@@ -10348,7 +10452,7 @@ operator|.
 name|getState
 argument_list|()
 decl_stmt|;
-name|BlockInfoContiguous
+name|BlockInfo
 name|storedBlock
 init|=
 name|processReportedBlock
@@ -10408,7 +10512,7 @@ comment|// collect blocks that have not been reported
 comment|// all of them are next to the delimiter
 name|Iterator
 argument_list|<
-name|BlockInfoContiguous
+name|BlockInfo
 argument_list|>
 name|it
 init|=
@@ -10451,9 +10555,9 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|/**    * Process a block replica reported by the data-node.    * No side effects except adding to the passed-in Collections.    *     *<ol>    *<li>If the block is not known to the system (not in blocksMap) then the    * data-node should be notified to invalidate this block.</li>    *<li>If the reported replica is valid that is has the same generation stamp    * and length as recorded on the name-node, then the replica location should    * be added to the name-node.</li>    *<li>If the reported replica is not valid, then it is marked as corrupt,    * which triggers replication of the existing valid replicas.    * Corrupt replicas are removed from the system when the block    * is fully replicated.</li>    *<li>If the reported replica is for a block currently marked "under    * construction" in the NN, then it should be added to the     * BlockInfoUnderConstruction's list of replicas.</li>    *</ol>    *     * @param storageInfo DatanodeStorageInfo that sent the report.    * @param block reported block replica    * @param reportedState reported replica state    * @param toAdd add to DatanodeDescriptor    * @param toInvalidate missing blocks (not in the blocks map)    *        should be removed from the data-node    * @param toCorrupt replicas with unexpected length or generation stamp;    *        add to corrupt replicas    * @param toUC replicas of blocks currently under construction    * @return the up-to-date stored block, if it should be kept.    *         Otherwise, null.    */
-DECL|method|processReportedBlock ( final DatanodeStorageInfo storageInfo, final Block block, final ReplicaState reportedState, final Collection<BlockInfoContiguous> toAdd, final Collection<Block> toInvalidate, final Collection<BlockToMarkCorrupt> toCorrupt, final Collection<StatefulBlockInfo> toUC)
+DECL|method|processReportedBlock ( final DatanodeStorageInfo storageInfo, final Block block, final ReplicaState reportedState, final Collection<BlockInfoToAdd> toAdd, final Collection<Block> toInvalidate, final Collection<BlockToMarkCorrupt> toCorrupt, final Collection<StatefulBlockInfo> toUC)
 specifier|private
-name|BlockInfoContiguous
+name|BlockInfo
 name|processReportedBlock
 parameter_list|(
 specifier|final
@@ -10471,7 +10575,7 @@ parameter_list|,
 specifier|final
 name|Collection
 argument_list|<
-name|BlockInfoContiguous
+name|BlockInfoToAdd
 argument_list|>
 name|toAdd
 parameter_list|,
@@ -10566,7 +10670,7 @@ literal|null
 return|;
 block|}
 comment|// find block by blockId
-name|BlockInfoContiguous
+name|BlockInfo
 name|storedBlock
 init|=
 name|getStoredBlock
@@ -10777,7 +10881,13 @@ name|toAdd
 operator|.
 name|add
 argument_list|(
+operator|new
+name|BlockInfoToAdd
+argument_list|(
 name|storedBlock
+argument_list|,
+name|block
+argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
@@ -11057,7 +11167,7 @@ literal|0
 assert|;
 block|}
 comment|/**    * The next two methods test the various cases under which we must conclude    * the replica is corrupt, or under construction.  These are laid out    * as switch statements, on the theory that it is easier to understand    * the combinatorics of reportedState and ucState that way.  It should be    * at least as efficient as boolean expressions.    *     * @return a BlockToMarkCorrupt object, or null if the replica is not corrupt    */
-DECL|method|checkReplicaCorrupt ( Block reported, ReplicaState reportedState, BlockInfoContiguous storedBlock, BlockUCState ucState, DatanodeDescriptor dn)
+DECL|method|checkReplicaCorrupt ( Block reported, ReplicaState reportedState, BlockInfo storedBlock, BlockUCState ucState, DatanodeDescriptor dn)
 specifier|private
 name|BlockToMarkCorrupt
 name|checkReplicaCorrupt
@@ -11068,7 +11178,7 @@ parameter_list|,
 name|ReplicaState
 name|reportedState
 parameter_list|,
-name|BlockInfoContiguous
+name|BlockInfo
 name|storedBlock
 parameter_list|,
 name|BlockUCState
@@ -11123,6 +11233,8 @@ return|return
 operator|new
 name|BlockToMarkCorrupt
 argument_list|(
+name|reported
+argument_list|,
 name|storedBlock
 argument_list|,
 name|reportedGS
@@ -11166,6 +11278,8 @@ return|return
 operator|new
 name|BlockToMarkCorrupt
 argument_list|(
+name|reported
+argument_list|,
 name|storedBlock
 argument_list|,
 literal|"block is "
@@ -11230,6 +11344,8 @@ return|return
 operator|new
 name|BlockToMarkCorrupt
 argument_list|(
+name|reported
+argument_list|,
 name|storedBlock
 argument_list|,
 name|reportedGS
@@ -11314,6 +11430,8 @@ return|return
 operator|new
 name|BlockToMarkCorrupt
 argument_list|(
+name|reported
+argument_list|,
 name|storedBlock
 argument_list|,
 name|reportedGS
@@ -11382,6 +11500,8 @@ return|return
 operator|new
 name|BlockToMarkCorrupt
 argument_list|(
+name|reported
+argument_list|,
 name|storedBlock
 argument_list|,
 literal|"reported replica has invalid state "
@@ -11438,6 +11558,8 @@ return|return
 operator|new
 name|BlockToMarkCorrupt
 argument_list|(
+name|reported
+argument_list|,
 name|storedBlock
 argument_list|,
 name|msg
@@ -11449,12 +11571,12 @@ argument_list|)
 return|;
 block|}
 block|}
-DECL|method|isBlockUnderConstruction (BlockInfoContiguous storedBlock, BlockUCState ucState, ReplicaState reportedState)
+DECL|method|isBlockUnderConstruction (BlockInfo storedBlock, BlockUCState ucState, ReplicaState reportedState)
 specifier|private
 name|boolean
 name|isBlockUnderConstruction
 parameter_list|(
-name|BlockInfoContiguous
+name|BlockInfo
 name|storedBlock
 parameter_list|,
 name|BlockUCState
@@ -11581,6 +11703,10 @@ name|addStoredBlock
 argument_list|(
 name|block
 argument_list|,
+name|ucBlock
+operator|.
+name|reportedBlock
+argument_list|,
 name|storageInfo
 argument_list|,
 literal|null
@@ -11591,13 +11717,16 @@ expr_stmt|;
 block|}
 block|}
 comment|/**    * Faster version of {@link #addStoredBlock},    * intended for use with initial block report at startup. If not in startup    * safe mode, will call standard addStoredBlock(). Assumes this method is    * called "immediately" so there is no need to refresh the storedBlock from    * blocksMap. Doesn't handle underReplication/overReplication, or worry about    * pendingReplications or corruptReplicas, because it's in startup safe mode.    * Doesn't log every block, because there are typically millions of them.    *     * @throws IOException    */
-DECL|method|addStoredBlockImmediate (BlockInfoContiguous storedBlock, DatanodeStorageInfo storageInfo)
+DECL|method|addStoredBlockImmediate (BlockInfo storedBlock, Block reported, DatanodeStorageInfo storageInfo)
 specifier|private
 name|void
 name|addStoredBlockImmediate
 parameter_list|(
-name|BlockInfoContiguous
+name|BlockInfo
 name|storedBlock
+parameter_list|,
+name|Block
+name|reported
 parameter_list|,
 name|DatanodeStorageInfo
 name|storageInfo
@@ -11635,6 +11764,8 @@ name|addStoredBlock
 argument_list|(
 name|storedBlock
 argument_list|,
+name|reported
+argument_list|,
 name|storageInfo
 argument_list|,
 literal|null
@@ -11653,6 +11784,8 @@ operator|.
 name|addBlock
 argument_list|(
 name|storedBlock
+argument_list|,
+name|reported
 argument_list|)
 decl_stmt|;
 comment|// Now check for completion of blocks and safe block count
@@ -11722,14 +11855,18 @@ expr_stmt|;
 block|}
 block|}
 comment|/**    * Modify (block-->datanode) map. Remove block from set of    * needed replications if this takes care of the problem.    * @return the block that is stored in blockMap.    */
-DECL|method|addStoredBlock (final BlockInfoContiguous block, DatanodeStorageInfo storageInfo, DatanodeDescriptor delNodeHint, boolean logEveryBlock)
+DECL|method|addStoredBlock (final BlockInfo block, final Block reportedBlock, DatanodeStorageInfo storageInfo, DatanodeDescriptor delNodeHint, boolean logEveryBlock)
 specifier|private
 name|Block
 name|addStoredBlock
 parameter_list|(
 specifier|final
-name|BlockInfoContiguous
+name|BlockInfo
 name|block
+parameter_list|,
+specifier|final
+name|Block
+name|reportedBlock
 parameter_list|,
 name|DatanodeStorageInfo
 name|storageInfo
@@ -11753,7 +11890,7 @@ operator|.
 name|hasWriteLock
 argument_list|()
 assert|;
-name|BlockInfoContiguous
+name|BlockInfo
 name|storedBlock
 decl_stmt|;
 name|DatanodeDescriptor
@@ -11848,6 +11985,8 @@ operator|.
 name|addBlock
 argument_list|(
 name|storedBlock
+argument_list|,
+name|reportedBlock
 argument_list|)
 decl_stmt|;
 name|int
@@ -12195,21 +12334,25 @@ operator|>=
 name|fileReplication
 operator|)
 condition|)
+block|{
 name|invalidateCorruptReplicas
 argument_list|(
 name|storedBlock
+argument_list|,
+name|reportedBlock
 argument_list|)
 expr_stmt|;
+block|}
 return|return
 name|storedBlock
 return|;
 block|}
-DECL|method|logAddStoredBlock (BlockInfoContiguous storedBlock, DatanodeDescriptor node)
+DECL|method|logAddStoredBlock (BlockInfo storedBlock, DatanodeDescriptor node)
 specifier|private
 name|void
 name|logAddStoredBlock
 parameter_list|(
-name|BlockInfoContiguous
+name|BlockInfo
 name|storedBlock
 parameter_list|,
 name|DatanodeDescriptor
@@ -12287,13 +12430,16 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|/**    * Invalidate corrupt replicas.    *<p>    * This will remove the replicas from the block's location list,    * add them to {@link #invalidateBlocks} so that they could be further    * deleted from the respective data-nodes,    * and remove the block from corruptReplicasMap.    *<p>    * This method should be called when the block has sufficient    * number of live replicas.    *    * @param blk Block whose corrupt replicas need to be invalidated    */
-DECL|method|invalidateCorruptReplicas (BlockInfoContiguous blk)
+DECL|method|invalidateCorruptReplicas (BlockInfo blk, Block reported)
 specifier|private
 name|void
 name|invalidateCorruptReplicas
 parameter_list|(
-name|BlockInfoContiguous
+name|BlockInfo
 name|blk
+parameter_list|,
+name|Block
+name|reported
 parameter_list|)
 block|{
 name|Collection
@@ -12356,6 +12502,8 @@ argument_list|(
 operator|new
 name|BlockToMarkCorrupt
 argument_list|(
+name|reported
+argument_list|,
 name|blk
 argument_list|,
 literal|null
@@ -12596,7 +12744,7 @@ argument_list|()
 decl_stmt|;
 name|Iterator
 argument_list|<
-name|BlockInfoContiguous
+name|BlockInfo
 argument_list|>
 name|blocksItr
 init|=
@@ -12687,7 +12835,7 @@ name|hasNext
 argument_list|()
 condition|)
 block|{
-name|BlockInfoContiguous
+name|BlockInfo
 name|block
 init|=
 name|blocksItr
@@ -12962,12 +13110,12 @@ name|replicationQueuesInitProgress
 return|;
 block|}
 comment|/**    * Process a single possibly misreplicated block. This adds it to the    * appropriate queues if necessary, and returns a result code indicating    * what happened with it.    */
-DECL|method|processMisReplicatedBlock (BlockInfoContiguous block)
+DECL|method|processMisReplicatedBlock (BlockInfo block)
 specifier|private
 name|MisReplicationResult
 name|processMisReplicatedBlock
 parameter_list|(
-name|BlockInfoContiguous
+name|BlockInfo
 name|block
 parameter_list|)
 block|{
@@ -14538,15 +14686,13 @@ block|{
 comment|// blockReceived reports a finalized block
 name|Collection
 argument_list|<
-name|BlockInfoContiguous
+name|BlockInfoToAdd
 argument_list|>
 name|toAdd
 init|=
 operator|new
 name|LinkedList
-argument_list|<
-name|BlockInfoContiguous
-argument_list|>
+argument_list|<>
 argument_list|()
 decl_stmt|;
 name|Collection
@@ -14664,7 +14810,7 @@ literal|0
 decl_stmt|;
 for|for
 control|(
-name|BlockInfoContiguous
+name|BlockInfoToAdd
 name|b
 range|:
 name|toAdd
@@ -14673,6 +14819,12 @@ block|{
 name|addStoredBlock
 argument_list|(
 name|b
+operator|.
+name|stored
+argument_list|,
+name|b
+operator|.
+name|reported
 argument_list|,
 name|storageInfo
 argument_list|,
@@ -15230,11 +15382,11 @@ argument_list|)
 return|;
 block|}
 comment|/**     * Simpler, faster form of {@link #countNodes(Block)} that only returns the number    * of live nodes.  If in startup safemode (or its 30-sec extension period),    * then it gains speed by ignoring issues of excess replicas or nodes    * that are decommissioned or in process of becoming decommissioned.    * If not in startup, then it calls {@link #countNodes(Block)} instead.    *     * @param b - the block being tested    * @return count of live nodes for this block    */
-DECL|method|countLiveNodes (BlockInfoContiguous b)
+DECL|method|countLiveNodes (BlockInfo b)
 name|int
 name|countLiveNodes
 parameter_list|(
-name|BlockInfoContiguous
+name|BlockInfo
 name|b
 parameter_list|)
 block|{
@@ -15566,13 +15718,13 @@ name|size
 argument_list|()
 return|;
 block|}
-DECL|method|getStorages (BlockInfoContiguous block)
+DECL|method|getStorages (BlockInfo block)
 specifier|public
 name|DatanodeStorageInfo
 index|[]
 name|getStorages
 parameter_list|(
-name|BlockInfoContiguous
+name|BlockInfo
 name|block
 parameter_list|)
 block|{
@@ -15709,14 +15861,14 @@ block|}
 block|}
 DECL|method|getStoredBlock (Block block)
 specifier|public
-name|BlockInfoContiguous
+name|BlockInfo
 name|getStoredBlock
 parameter_list|(
 name|Block
 name|block
 parameter_list|)
 block|{
-name|BlockInfoContiguous
+name|BlockInfo
 name|info
 init|=
 literal|null
@@ -16546,7 +16698,11 @@ name|BlockCollection
 name|bc
 parameter_list|)
 block|{
+comment|// TODO
 return|return
+operator|(
+name|BlockInfoContiguous
+operator|)
 name|blocksMap
 operator|.
 name|addBlockCollection
@@ -17421,7 +17577,7 @@ expr_stmt|;
 block|}
 block|}
 block|}
-comment|/**    * A simple result enum for the result of    * {@link BlockManager#processMisReplicatedBlock(BlockInfoContiguous)}.    */
+comment|/**    * A simple result enum for the result of    * {@link BlockManager#processMisReplicatedBlock}.    */
 DECL|enum|MisReplicationResult
 enum|enum
 name|MisReplicationResult

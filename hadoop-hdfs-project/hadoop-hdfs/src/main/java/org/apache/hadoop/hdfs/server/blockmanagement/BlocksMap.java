@@ -58,26 +58,6 @@ name|hdfs
 operator|.
 name|server
 operator|.
-name|blockmanagement
-operator|.
-name|DatanodeStorageInfo
-operator|.
-name|AddBlockResult
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|hdfs
-operator|.
-name|server
-operator|.
 name|protocol
 operator|.
 name|DatanodeStorage
@@ -109,20 +89,6 @@ operator|.
 name|util
 operator|.
 name|LightWeightGSet
-import|;
-end_import
-
-begin_import
-import|import
-name|com
-operator|.
-name|google
-operator|.
-name|common
-operator|.
-name|base
-operator|.
-name|Preconditions
 import|;
 end_import
 
@@ -177,7 +143,7 @@ block|{
 DECL|field|blockInfo
 specifier|private
 specifier|final
-name|BlockInfoContiguous
+name|BlockInfo
 name|blockInfo
 decl_stmt|;
 DECL|field|nextIdx
@@ -187,10 +153,10 @@ name|nextIdx
 init|=
 literal|0
 decl_stmt|;
-DECL|method|StorageIterator (BlockInfoContiguous blkInfo)
+DECL|method|StorageIterator (BlockInfo blkInfo)
 name|StorageIterator
 parameter_list|(
-name|BlockInfoContiguous
+name|BlockInfo
 name|blkInfo
 parameter_list|)
 block|{
@@ -279,7 +245,7 @@ name|GSet
 argument_list|<
 name|Block
 argument_list|,
-name|BlockInfoContiguous
+name|BlockInfo
 argument_list|>
 name|blocks
 decl_stmt|;
@@ -306,7 +272,7 @@ name|LightWeightGSet
 argument_list|<
 name|Block
 argument_list|,
-name|BlockInfoContiguous
+name|BlockInfo
 argument_list|>
 argument_list|(
 name|capacity
@@ -317,7 +283,7 @@ name|Override
 specifier|public
 name|Iterator
 argument_list|<
-name|BlockInfoContiguous
+name|BlockInfo
 argument_list|>
 name|iterator
 parameter_list|()
@@ -384,7 +350,7 @@ name|Block
 name|b
 parameter_list|)
 block|{
-name|BlockInfoContiguous
+name|BlockInfo
 name|info
 init|=
 name|blocks
@@ -410,18 +376,18 @@ literal|null
 return|;
 block|}
 comment|/**    * Add block b belonging to the specified block collection to the map.    */
-DECL|method|addBlockCollection (BlockInfoContiguous b, BlockCollection bc)
-name|BlockInfoContiguous
+DECL|method|addBlockCollection (BlockInfo b, BlockCollection bc)
+name|BlockInfo
 name|addBlockCollection
 parameter_list|(
-name|BlockInfoContiguous
+name|BlockInfo
 name|b
 parameter_list|,
 name|BlockCollection
 name|bc
 parameter_list|)
 block|{
-name|BlockInfoContiguous
+name|BlockInfo
 name|info
 init|=
 name|blocks
@@ -470,7 +436,7 @@ name|Block
 name|block
 parameter_list|)
 block|{
-name|BlockInfoContiguous
+name|BlockInfo
 name|blockInfo
 init|=
 name|blocks
@@ -494,6 +460,7 @@ argument_list|(
 literal|null
 argument_list|)
 expr_stmt|;
+comment|// TODO: fix this logic for block group
 for|for
 control|(
 name|int
@@ -536,7 +503,7 @@ block|}
 block|}
 comment|/** Returns the block object it it exists in the map. */
 DECL|method|getStoredBlock (Block b)
-name|BlockInfoContiguous
+name|BlockInfo
 name|getStoredBlock
 parameter_list|(
 name|Block
@@ -640,7 +607,7 @@ argument_list|)
 return|;
 block|}
 comment|/**    * For a block that has already been retrieved from the BlocksMap    * returns {@link Iterable} of the storages the block belongs to.    */
-DECL|method|getStorages (final BlockInfoContiguous storedBlock)
+DECL|method|getStorages (final BlockInfo storedBlock)
 name|Iterable
 argument_list|<
 name|DatanodeStorageInfo
@@ -648,7 +615,7 @@ argument_list|>
 name|getStorages
 parameter_list|(
 specifier|final
-name|BlockInfoContiguous
+name|BlockInfo
 name|storedBlock
 parameter_list|)
 block|{
@@ -690,7 +657,7 @@ name|Block
 name|b
 parameter_list|)
 block|{
-name|BlockInfoContiguous
+name|BlockInfo
 name|info
 init|=
 name|blocks
@@ -725,7 +692,7 @@ name|DatanodeDescriptor
 name|node
 parameter_list|)
 block|{
-name|BlockInfoContiguous
+name|BlockInfo
 name|info
 init|=
 name|blocks
@@ -802,7 +769,7 @@ block|}
 DECL|method|getBlocks ()
 name|Iterable
 argument_list|<
-name|BlockInfoContiguous
+name|BlockInfo
 argument_list|>
 name|getBlocks
 parameter_list|()
@@ -822,15 +789,15 @@ name|capacity
 return|;
 block|}
 comment|/**    * Replace a block in the block map by a new block.    * The new block and the old one have the same key.    * @param newBlock - block for replacement    * @return new block    */
-DECL|method|replaceBlock (BlockInfoContiguous newBlock)
-name|BlockInfoContiguous
+DECL|method|replaceBlock (BlockInfo newBlock)
+name|BlockInfo
 name|replaceBlock
 parameter_list|(
-name|BlockInfoContiguous
+name|BlockInfo
 name|newBlock
 parameter_list|)
 block|{
-name|BlockInfoContiguous
+name|BlockInfo
 name|currentBlock
 init|=
 name|blocks
@@ -848,93 +815,13 @@ operator|:
 literal|"the block if not in blocksMap"
 assert|;
 comment|// replace block in data-node lists
-for|for
-control|(
-name|int
-name|i
-init|=
 name|currentBlock
 operator|.
-name|numNodes
-argument_list|()
-operator|-
-literal|1
-init|;
-name|i
-operator|>=
-literal|0
-condition|;
-name|i
-operator|--
-control|)
-block|{
-specifier|final
-name|DatanodeDescriptor
-name|dn
-init|=
-name|currentBlock
-operator|.
-name|getDatanode
-argument_list|(
-name|i
-argument_list|)
-decl_stmt|;
-specifier|final
-name|DatanodeStorageInfo
-name|storage
-init|=
-name|currentBlock
-operator|.
-name|findStorageInfo
-argument_list|(
-name|dn
-argument_list|)
-decl_stmt|;
-specifier|final
-name|boolean
-name|removed
-init|=
-name|storage
-operator|.
-name|removeBlock
-argument_list|(
-name|currentBlock
-argument_list|)
-decl_stmt|;
-name|Preconditions
-operator|.
-name|checkState
-argument_list|(
-name|removed
-argument_list|,
-literal|"currentBlock not found."
-argument_list|)
-expr_stmt|;
-specifier|final
-name|AddBlockResult
-name|result
-init|=
-name|storage
-operator|.
-name|addBlock
+name|replaceBlock
 argument_list|(
 name|newBlock
 argument_list|)
-decl_stmt|;
-name|Preconditions
-operator|.
-name|checkState
-argument_list|(
-name|result
-operator|==
-name|AddBlockResult
-operator|.
-name|ADDED
-argument_list|,
-literal|"newBlock already exists."
-argument_list|)
 expr_stmt|;
-block|}
 comment|// replace block in the map itself
 name|blocks
 operator|.

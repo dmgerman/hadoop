@@ -1580,11 +1580,11 @@ name|zombies
 return|;
 block|}
 comment|/**    * Remove block from the list of blocks belonging to the data-node. Remove    * data-node from the block.    */
-DECL|method|removeBlock (BlockInfoContiguous b)
+DECL|method|removeBlock (BlockInfo b)
 name|boolean
 name|removeBlock
 parameter_list|(
-name|BlockInfoContiguous
+name|BlockInfo
 name|b
 parameter_list|)
 block|{
@@ -1621,14 +1621,14 @@ literal|false
 return|;
 block|}
 comment|/**    * Remove block from the list of blocks belonging to the data-node. Remove    * data-node from the block.    */
-DECL|method|removeBlock (String storageID, BlockInfoContiguous b)
+DECL|method|removeBlock (String storageID, BlockInfo b)
 name|boolean
 name|removeBlock
 parameter_list|(
 name|String
 name|storageID
 parameter_list|,
-name|BlockInfoContiguous
+name|BlockInfo
 name|b
 parameter_list|)
 block|{
@@ -1640,24 +1640,17 @@ argument_list|(
 name|storageID
 argument_list|)
 decl_stmt|;
-if|if
-condition|(
+return|return
 name|s
 operator|!=
 literal|null
-condition|)
-block|{
-return|return
+operator|&&
 name|s
 operator|.
 name|removeBlock
 argument_list|(
 name|b
 argument_list|)
-return|;
-block|}
-return|return
-literal|false
 return|;
 block|}
 DECL|method|resetBlocks ()
@@ -2442,7 +2435,7 @@ name|BlockIterator
 implements|implements
 name|Iterator
 argument_list|<
-name|BlockInfoContiguous
+name|BlockInfo
 argument_list|>
 block|{
 DECL|field|index
@@ -2459,7 +2452,7 @@ name|List
 argument_list|<
 name|Iterator
 argument_list|<
-name|BlockInfoContiguous
+name|BlockInfo
 argument_list|>
 argument_list|>
 name|iterators
@@ -2478,19 +2471,14 @@ name|List
 argument_list|<
 name|Iterator
 argument_list|<
-name|BlockInfoContiguous
+name|BlockInfo
 argument_list|>
 argument_list|>
 name|iterators
 init|=
 operator|new
 name|ArrayList
-argument_list|<
-name|Iterator
-argument_list|<
-name|BlockInfoContiguous
-argument_list|>
-argument_list|>
+argument_list|<>
 argument_list|()
 decl_stmt|;
 for|for
@@ -2557,7 +2545,7 @@ annotation|@
 name|Override
 DECL|method|next ()
 specifier|public
-name|BlockInfoContiguous
+name|BlockInfo
 name|next
 parameter_list|()
 block|{
@@ -2630,7 +2618,7 @@ block|}
 DECL|method|getBlockIterator ()
 name|Iterator
 argument_list|<
-name|BlockInfoContiguous
+name|BlockInfo
 argument_list|>
 name|getBlockIterator
 parameter_list|()
@@ -2647,7 +2635,7 @@ block|}
 DECL|method|getBlockIterator (final String storageID)
 name|Iterator
 argument_list|<
-name|BlockInfoContiguous
+name|BlockInfo
 argument_list|>
 name|getBlockIterator
 parameter_list|(

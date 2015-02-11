@@ -89,14 +89,14 @@ name|BlockStoragePolicySuite
 name|bsps
 parameter_list|)
 function_decl|;
-comment|/**    * @return the number of blocks    */
+comment|/**    * @return the number of blocks or block groups    */
 DECL|method|numBlocks ()
 specifier|public
 name|int
 name|numBlocks
 parameter_list|()
 function_decl|;
-comment|/**    * Get the blocks.    */
+comment|/**    * Get the blocks or block groups.    */
 DECL|method|getBlocks ()
 specifier|public
 name|BlockInfoContiguous
@@ -111,7 +111,7 @@ name|long
 name|getPreferredBlockSize
 parameter_list|()
 function_decl|;
-comment|/**    * Get block replication for the collection     * @return block replication value    */
+comment|/**    * Get block replication for the collection.    * @return block replication value. Return 0 if the file is erasure coded.    */
 DECL|method|getPreferredBlockReplication ()
 specifier|public
 name|short
@@ -132,7 +132,7 @@ name|String
 name|getName
 parameter_list|()
 function_decl|;
-comment|/**    * Set the block at the given index.    */
+comment|/**    * Set the block/block-group at the given index.    */
 DECL|method|setBlock (int index, BlockInfoContiguous blk)
 specifier|public
 name|void
@@ -146,7 +146,7 @@ name|blk
 parameter_list|)
 function_decl|;
 comment|/**    * Convert the last block of the collection to an under-construction block    * and set the locations.    */
-DECL|method|setLastBlock (BlockInfoContiguous lastBlock, DatanodeStorageInfo[] targets)
+DECL|method|setLastBlock ( BlockInfoContiguous lastBlock, DatanodeStorageInfo[] targets)
 specifier|public
 name|BlockInfoContiguousUnderConstruction
 name|setLastBlock

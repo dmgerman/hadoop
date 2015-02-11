@@ -18644,9 +18644,8 @@ name|pendingFile
 argument_list|)
 expr_stmt|;
 block|}
-annotation|@
-name|VisibleForTesting
 DECL|method|getStoredBlock (Block block)
+specifier|public
 name|BlockInfoContiguous
 name|getStoredBlock
 parameter_list|(
@@ -18655,6 +18654,9 @@ name|block
 parameter_list|)
 block|{
 return|return
+operator|(
+name|BlockInfoContiguous
+operator|)
 name|blockManager
 operator|.
 name|getStoredBlock
@@ -19419,6 +19421,8 @@ operator|.
 name|addBlock
 argument_list|(
 name|truncatedBlock
+argument_list|,
+name|truncatedBlock
 argument_list|)
 expr_stmt|;
 block|}
@@ -19428,6 +19432,8 @@ name|storageInfo
 operator|.
 name|addBlock
 argument_list|(
+name|storedBlock
+argument_list|,
 name|storedBlock
 argument_list|)
 expr_stmt|;
@@ -20602,8 +20608,6 @@ decl_stmt|;
 name|BlockInfoContiguous
 name|blockInfo
 init|=
-name|blockManager
-operator|.
 name|getStoredBlock
 argument_list|(
 name|b

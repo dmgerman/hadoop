@@ -1740,7 +1740,10 @@ comment|//find which file this block belongs to
 name|BlockInfoContiguous
 name|blockInfo
 init|=
-name|bm
+name|namenode
+operator|.
+name|getNamesystem
+argument_list|()
 operator|.
 name|getStoredBlock
 argument_list|(
