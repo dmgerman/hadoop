@@ -500,12 +500,12 @@ operator|.
 name|class
 argument_list|)
 decl_stmt|;
-DECL|field|MAX_NOT_CHANGED_ITERATIONS
-specifier|private
+DECL|field|DEFAULT_MAX_IDLE_ITERATIONS
+specifier|public
 specifier|static
 specifier|final
 name|int
-name|MAX_NOT_CHANGED_ITERATIONS
+name|DEFAULT_MAX_IDLE_ITERATIONS
 init|=
 literal|5
 decl_stmt|;
@@ -518,7 +518,7 @@ init|=
 literal|true
 decl_stmt|;
 comment|/** Create {@link NameNodeConnector} for the given namenodes. */
-DECL|method|newNameNodeConnectors ( Collection<URI> namenodes, String name, Path idPath, Configuration conf)
+DECL|method|newNameNodeConnectors ( Collection<URI> namenodes, String name, Path idPath, Configuration conf, int maxIdleIterations)
 specifier|public
 specifier|static
 name|List
@@ -541,6 +541,9 @@ name|idPath
 parameter_list|,
 name|Configuration
 name|conf
+parameter_list|,
+name|int
+name|maxIdleIterations
 parameter_list|)
 throws|throws
 name|IOException
@@ -587,6 +590,8 @@ argument_list|,
 literal|null
 argument_list|,
 name|conf
+argument_list|,
+name|maxIdleIterations
 argument_list|)
 decl_stmt|;
 name|nnc
@@ -609,7 +614,7 @@ return|return
 name|connectors
 return|;
 block|}
-DECL|method|newNameNodeConnectors ( Map<URI, List<Path>> namenodes, String name, Path idPath, Configuration conf)
+DECL|method|newNameNodeConnectors ( Map<URI, List<Path>> namenodes, String name, Path idPath, Configuration conf, int maxIdleIterations)
 specifier|public
 specifier|static
 name|List
@@ -637,6 +642,9 @@ name|idPath
 parameter_list|,
 name|Configuration
 name|conf
+parameter_list|,
+name|int
+name|maxIdleIterations
 parameter_list|)
 throws|throws
 name|IOException
@@ -702,6 +710,8 @@ name|getValue
 argument_list|()
 argument_list|,
 name|conf
+argument_list|,
+name|maxIdleIterations
 argument_list|)
 decl_stmt|;
 name|nnc
@@ -821,6 +831,12 @@ operator|new
 name|AtomicLong
 argument_list|()
 decl_stmt|;
+DECL|field|maxNotChangedIterations
+specifier|private
+specifier|final
+name|int
+name|maxNotChangedIterations
+decl_stmt|;
 DECL|field|notChangedIterations
 specifier|private
 name|int
@@ -828,7 +844,7 @@ name|notChangedIterations
 init|=
 literal|0
 decl_stmt|;
-DECL|method|NameNodeConnector (String name, URI nameNodeUri, Path idPath, List<Path> targetPaths, Configuration conf)
+DECL|method|NameNodeConnector (String name, URI nameNodeUri, Path idPath, List<Path> targetPaths, Configuration conf, int maxNotChangedIterations)
 specifier|public
 name|NameNodeConnector
 parameter_list|(
@@ -849,6 +865,9 @@ name|targetPaths
 parameter_list|,
 name|Configuration
 name|conf
+parameter_list|,
+name|int
+name|maxNotChangedIterations
 parameter_list|)
 throws|throws
 name|IOException
@@ -890,6 +909,12 @@ argument_list|)
 argument_list|)
 else|:
 name|targetPaths
+expr_stmt|;
+name|this
+operator|.
+name|maxNotChangedIterations
+operator|=
+name|maxNotChangedIterations
 expr_stmt|;
 name|this
 operator|.
@@ -1159,9 +1184,51 @@ operator|++
 expr_stmt|;
 if|if
 condition|(
+name|LOG
+operator|.
+name|isDebugEnabled
+argument_list|()
+condition|)
+block|{
+name|LOG
+operator|.
+name|debug
+argument_list|(
+literal|"No block has been moved for "
+operator|+
+name|notChangedIterations
+operator|+
+literal|" iterations, "
+operator|+
+literal|"maximum notChangedIterations before exit is: "
+operator|+
+operator|(
+operator|(
+name|maxNotChangedIterations
+operator|>=
+literal|0
+operator|)
+condition|?
+name|maxNotChangedIterations
+else|:
+literal|"Infinite"
+operator|)
+argument_list|)
+expr_stmt|;
+block|}
+if|if
+condition|(
+operator|(
+name|maxNotChangedIterations
+operator|>=
+literal|0
+operator|)
+operator|&&
+operator|(
 name|notChangedIterations
 operator|>=
-name|MAX_NOT_CHANGED_ITERATIONS
+name|maxNotChangedIterations
+operator|)
 condition|)
 block|{
 name|System

@@ -3157,6 +3157,10 @@ argument_list|,
 name|MOVER_ID_PATH
 argument_list|,
 name|conf
+argument_list|,
+name|NameNodeConnector
+operator|.
+name|DEFAULT_MAX_IDLE_ITERATIONS
 argument_list|)
 expr_stmt|;
 while|while

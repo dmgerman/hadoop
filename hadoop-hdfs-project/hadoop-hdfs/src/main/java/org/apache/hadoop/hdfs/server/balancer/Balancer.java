@@ -573,7 +573,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**<p>The balancer is a tool that balances disk space usage on an HDFS cluster  * when some datanodes become full or when new empty nodes join the cluster.  * The tool is deployed as an application program that can be run by the   * cluster administrator on a live HDFS cluster while applications  * adding and deleting files.  *   *<p>SYNOPSIS  *<pre>  * To start:  *      bin/start-balancer.sh [-threshold<threshold>]  *      Example: bin/ start-balancer.sh   *                     start the balancer with a default threshold of 10%  *               bin/ start-balancer.sh -threshold 5  *                     start the balancer with a threshold of 5%  * To stop:  *      bin/ stop-balancer.sh  *</pre>  *   *<p>DESCRIPTION  *<p>The threshold parameter is a fraction in the range of (1%, 100%) with a   * default value of 10%. The threshold sets a target for whether the cluster   * is balanced. A cluster is balanced if for each datanode, the utilization   * of the node (ratio of used space at the node to total capacity of the node)   * differs from the utilization of the (ratio of used space in the cluster   * to total capacity of the cluster) by no more than the threshold value.   * The smaller the threshold, the more balanced a cluster will become.   * It takes more time to run the balancer for small threshold values.   * Also for a very small threshold the cluster may not be able to reach the   * balanced state when applications write and delete files concurrently.  *   *<p>The tool moves blocks from highly utilized datanodes to poorly   * utilized datanodes iteratively. In each iteration a datanode moves or   * receives no more than the lesser of 10G bytes or the threshold fraction   * of its capacity. Each iteration runs no more than 20 minutes.  * At the end of each iteration, the balancer obtains updated datanodes  * information from the namenode.  *   *<p>A system property that limits the balancer's use of bandwidth is   * defined in the default configuration file:  *<pre>  *<property>  *<name>dfs.balance.bandwidthPerSec</name>  *<value>1048576</value>  *<description>  Specifies the maximum bandwidth that each datanode   * can utilize for the balancing purpose in term of the number of bytes   * per second.</description>  *</property>  *</pre>  *   *<p>This property determines the maximum speed at which a block will be   * moved from one datanode to another. The default value is 1MB/s. The higher   * the bandwidth, the faster a cluster can reach the balanced state,   * but with greater competition with application processes. If an   * administrator changes the value of this property in the configuration   * file, the change is observed when HDFS is next restarted.  *   *<p>MONITERING BALANCER PROGRESS  *<p>After the balancer is started, an output file name where the balancer   * progress will be recorded is printed on the screen.  The administrator   * can monitor the running of the balancer by reading the output file.   * The output shows the balancer's status iteration by iteration. In each   * iteration it prints the starting time, the iteration number, the total   * number of bytes that have been moved in the previous iterations,   * the total number of bytes that are left to move in order for the cluster   * to be balanced, and the number of bytes that are being moved in this   * iteration. Normally "Bytes Already Moved" is increasing while "Bytes Left   * To Move" is decreasing.  *   *<p>Running multiple instances of the balancer in an HDFS cluster is   * prohibited by the tool.  *   *<p>The balancer automatically exits when any of the following five   * conditions is satisfied:  *<ol>  *<li>The cluster is balanced;  *<li>No block can be moved;  *<li>No block has been moved for five consecutive iterations;  *<li>An IOException occurs while communicating with the namenode;  *<li>Another balancer is running.  *</ol>  *   *<p>Upon exit, a balancer returns an exit code and prints one of the   * following messages to the output file in corresponding to the above exit   * reasons:  *<ol>  *<li>The cluster is balanced. Exiting  *<li>No block can be moved. Exiting...  *<li>No block has been moved for 5 iterations. Exiting...  *<li>Received an IO exception: failure reason. Exiting...  *<li>Another balancer is running. Exiting...  *</ol>  *   *<p>The administrator can interrupt the execution of the balancer at any   * time by running the command "stop-balancer.sh" on the machine where the   * balancer is running.  */
+comment|/**<p>The balancer is a tool that balances disk space usage on an HDFS cluster  * when some datanodes become full or when new empty nodes join the cluster.  * The tool is deployed as an application program that can be run by the   * cluster administrator on a live HDFS cluster while applications  * adding and deleting files.  *   *<p>SYNOPSIS  *<pre>  * To start:  *      bin/start-balancer.sh [-threshold<threshold>]  *      Example: bin/ start-balancer.sh   *                     start the balancer with a default threshold of 10%  *               bin/ start-balancer.sh -threshold 5  *                     start the balancer with a threshold of 5%  *               bin/ start-balancer.sh -idleiterations 20  *                     start the balancer with maximum 20 consecutive idle iterations  *               bin/ start-balancer.sh -idleiterations -1  *                     run the balancer with default threshold infinitely  * To stop:  *      bin/ stop-balancer.sh  *</pre>  *   *<p>DESCRIPTION  *<p>The threshold parameter is a fraction in the range of (1%, 100%) with a   * default value of 10%. The threshold sets a target for whether the cluster   * is balanced. A cluster is balanced if for each datanode, the utilization   * of the node (ratio of used space at the node to total capacity of the node)   * differs from the utilization of the (ratio of used space in the cluster   * to total capacity of the cluster) by no more than the threshold value.   * The smaller the threshold, the more balanced a cluster will become.   * It takes more time to run the balancer for small threshold values.   * Also for a very small threshold the cluster may not be able to reach the   * balanced state when applications write and delete files concurrently.  *   *<p>The tool moves blocks from highly utilized datanodes to poorly   * utilized datanodes iteratively. In each iteration a datanode moves or   * receives no more than the lesser of 10G bytes or the threshold fraction   * of its capacity. Each iteration runs no more than 20 minutes.  * At the end of each iteration, the balancer obtains updated datanodes  * information from the namenode.  *   *<p>A system property that limits the balancer's use of bandwidth is   * defined in the default configuration file:  *<pre>  *<property>  *<name>dfs.balance.bandwidthPerSec</name>  *<value>1048576</value>  *<description>  Specifies the maximum bandwidth that each datanode   * can utilize for the balancing purpose in term of the number of bytes   * per second.</description>  *</property>  *</pre>  *   *<p>This property determines the maximum speed at which a block will be   * moved from one datanode to another. The default value is 1MB/s. The higher   * the bandwidth, the faster a cluster can reach the balanced state,   * but with greater competition with application processes. If an   * administrator changes the value of this property in the configuration   * file, the change is observed when HDFS is next restarted.  *   *<p>MONITERING BALANCER PROGRESS  *<p>After the balancer is started, an output file name where the balancer   * progress will be recorded is printed on the screen.  The administrator   * can monitor the running of the balancer by reading the output file.   * The output shows the balancer's status iteration by iteration. In each   * iteration it prints the starting time, the iteration number, the total   * number of bytes that have been moved in the previous iterations,   * the total number of bytes that are left to move in order for the cluster   * to be balanced, and the number of bytes that are being moved in this   * iteration. Normally "Bytes Already Moved" is increasing while "Bytes Left   * To Move" is decreasing.  *   *<p>Running multiple instances of the balancer in an HDFS cluster is   * prohibited by the tool.  *   *<p>The balancer automatically exits when any of the following five   * conditions is satisfied:  *<ol>  *<li>The cluster is balanced;  *<li>No block can be moved;  *<li>No block has been moved for specified consecutive iterations (5 by default);  *<li>An IOException occurs while communicating with the namenode;  *<li>Another balancer is running.  *</ol>  *   *<p>Upon exit, a balancer returns an exit code and prints one of the   * following messages to the output file in corresponding to the above exit   * reasons:  *<ol>  *<li>The cluster is balanced. Exiting  *<li>No block can be moved. Exiting...  *<li>No block has been moved for specified iterations (5 by default). Exiting...  *<li>Received an IO exception: failure reason. Exiting...  *<li>Another balancer is running. Exiting...  *</ol>  *   *<p>The administrator can interrupt the execution of the balancer at any   * time by running the command "stop-balancer.sh" on the machine where the   * balancer is running.  */
 end_comment
 
 begin_class
@@ -683,6 +683,10 @@ operator|+
 literal|"\n\t[-include [-f<hosts-file> | comma-sperated list of hosts]]"
 operator|+
 literal|"\tIncludes only the specified datanodes."
+operator|+
+literal|"\n\t[-idleiterations<idleiterations>]"
+operator|+
+literal|"\tNumber of consecutive idle iterations (-1 for Infinite) before exit."
 decl_stmt|;
 DECL|field|dispatcher
 specifier|private
@@ -2690,6 +2694,10 @@ argument_list|,
 name|BALANCER_ID_PATH
 argument_list|,
 name|conf
+argument_list|,
+name|p
+operator|.
+name|maxIdleIteration
 argument_list|)
 expr_stmt|;
 name|boolean
@@ -2981,6 +2989,10 @@ name|INSTANCE
 argument_list|,
 literal|10.0
 argument_list|,
+name|NameNodeConnector
+operator|.
+name|DEFAULT_MAX_IDLE_ITERATIONS
+argument_list|,
 name|Collections
 operator|.
 expr|<
@@ -3008,6 +3020,11 @@ specifier|final
 name|double
 name|threshold
 decl_stmt|;
+DECL|field|maxIdleIteration
+specifier|final
+name|int
+name|maxIdleIteration
+decl_stmt|;
 comment|// exclude the nodes in this set from balancing operations
 DECL|field|nodesToBeExcluded
 name|Set
@@ -3024,7 +3041,7 @@ name|String
 argument_list|>
 name|nodesToBeIncluded
 decl_stmt|;
-DECL|method|Parameters (BalancingPolicy policy, double threshold, Set<String> nodesToBeExcluded, Set<String> nodesToBeIncluded)
+DECL|method|Parameters (BalancingPolicy policy, double threshold, int maxIdleIteration, Set<String> nodesToBeExcluded, Set<String> nodesToBeIncluded)
 name|Parameters
 parameter_list|(
 name|BalancingPolicy
@@ -3032,6 +3049,9 @@ name|policy
 parameter_list|,
 name|double
 name|threshold
+parameter_list|,
+name|int
+name|maxIdleIteration
 parameter_list|,
 name|Set
 argument_list|<
@@ -3057,6 +3077,12 @@ operator|.
 name|threshold
 operator|=
 name|threshold
+expr_stmt|;
+name|this
+operator|.
+name|maxIdleIteration
+operator|=
+name|maxIdleIteration
 expr_stmt|;
 name|this
 operator|.
@@ -3102,6 +3128,10 @@ operator|+
 literal|", threshold="
 operator|+
 name|threshold
+operator|+
+literal|", max idle iteration = "
+operator|+
+name|maxIdleIteration
 operator|+
 literal|", number of nodes to be excluded = "
 operator|+
@@ -3320,6 +3350,15 @@ operator|.
 name|DEFAULT
 operator|.
 name|threshold
+decl_stmt|;
+name|int
+name|maxIdleIteration
+init|=
+name|Parameters
+operator|.
+name|DEFAULT
+operator|.
+name|maxIdleIteration
 decl_stmt|;
 name|Set
 argument_list|<
@@ -3738,6 +3777,61 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
+elseif|else
+if|if
+condition|(
+literal|"-idleiterations"
+operator|.
+name|equalsIgnoreCase
+argument_list|(
+name|args
+index|[
+name|i
+index|]
+argument_list|)
+condition|)
+block|{
+name|checkArgument
+argument_list|(
+operator|++
+name|i
+operator|<
+name|args
+operator|.
+name|length
+argument_list|,
+literal|"idleiterations value is missing: args = "
+operator|+
+name|Arrays
+operator|.
+name|toString
+argument_list|(
+name|args
+argument_list|)
+argument_list|)
+expr_stmt|;
+name|maxIdleIteration
+operator|=
+name|Integer
+operator|.
+name|parseInt
+argument_list|(
+name|args
+index|[
+name|i
+index|]
+argument_list|)
+expr_stmt|;
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"Using a idleiterations of "
+operator|+
+name|maxIdleIteration
+argument_list|)
+expr_stmt|;
+block|}
 else|else
 block|{
 throw|throw
@@ -3797,6 +3891,8 @@ argument_list|(
 name|policy
 argument_list|,
 name|threshold
+argument_list|,
+name|maxIdleIteration
 argument_list|,
 name|nodesTobeExcluded
 argument_list|,
