@@ -456,6 +456,20 @@ name|hadoop
 operator|.
 name|fs
 operator|.
+name|FSError
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|fs
+operator|.
 name|FileAlreadyExistsException
 import|;
 end_import
@@ -6622,6 +6636,11 @@ name|nmPrivateCTokensPath
 init|=
 literal|null
 decl_stmt|;
+name|Throwable
+name|exception
+init|=
+literal|null
+decl_stmt|;
 try|try
 block|{
 comment|// Get nmPrivateDir
@@ -6739,9 +6758,34 @@ comment|// TODO handle ExitCodeException separately?
 block|}
 catch|catch
 parameter_list|(
+name|FSError
+name|fe
+parameter_list|)
+block|{
+name|exception
+operator|=
+name|fe
+expr_stmt|;
+block|}
+catch|catch
+parameter_list|(
 name|Exception
 name|e
 parameter_list|)
+block|{
+name|exception
+operator|=
+name|e
+expr_stmt|;
+block|}
+finally|finally
+block|{
+if|if
+condition|(
+name|exception
+operator|!=
+literal|null
+condition|)
 block|{
 name|LOG
 operator|.
@@ -6749,11 +6793,11 @@ name|info
 argument_list|(
 literal|"Localizer failed"
 argument_list|,
-name|e
+name|exception
 argument_list|)
 expr_stmt|;
-comment|// 3) on error, report failure to Container and signal ABORT
-comment|// 3.1) notify resource of failed localization
+comment|// On error, report failure to Container and signal ABORT
+comment|// Notify resource of failed localization
 name|ContainerId
 name|cId
 init|=
@@ -6776,7 +6820,7 @@ name|cId
 argument_list|,
 literal|null
 argument_list|,
-name|e
+name|exception
 operator|.
 name|getMessage
 argument_list|()
@@ -6784,8 +6828,6 @@ argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
-finally|finally
-block|{
 for|for
 control|(
 name|LocalizerResourceRequestEvent
