@@ -5763,6 +5763,24 @@ argument_list|(
 literal|10
 argument_list|)
 decl_stmt|;
+DECL|field|DFS_DATANODE_BLOCK_PINNING_ENABLED
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|DFS_DATANODE_BLOCK_PINNING_ENABLED
+init|=
+literal|"dfs.datanode.block-pinning.enabled"
+decl_stmt|;
+DECL|field|DFS_DATANODE_BLOCK_PINNING_ENABLED_DEFAULT
+specifier|public
+specifier|static
+specifier|final
+name|boolean
+name|DFS_DATANODE_BLOCK_PINNING_ENABLED_DEFAULT
+init|=
+literal|false
+decl_stmt|;
 block|}
 end_class
 

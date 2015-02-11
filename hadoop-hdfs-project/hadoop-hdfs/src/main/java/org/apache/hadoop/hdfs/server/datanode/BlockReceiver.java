@@ -876,7 +876,12 @@ name|replyOut
 init|=
 literal|null
 decl_stmt|;
-DECL|method|BlockReceiver (final ExtendedBlock block, final StorageType storageType, final DataInputStream in, final String inAddr, final String myAddr, final BlockConstructionStage stage, final long newGs, final long minBytesRcvd, final long maxBytesRcvd, final String clientname, final DatanodeInfo srcDataNode, final DataNode datanode, DataChecksum requestedChecksum, CachingStrategy cachingStrategy, final boolean allowLazyPersist)
+DECL|field|pinning
+specifier|private
+name|boolean
+name|pinning
+decl_stmt|;
+DECL|method|BlockReceiver (final ExtendedBlock block, final StorageType storageType, final DataInputStream in, final String inAddr, final String myAddr, final BlockConstructionStage stage, final long newGs, final long minBytesRcvd, final long maxBytesRcvd, final String clientname, final DatanodeInfo srcDataNode, final DataNode datanode, DataChecksum requestedChecksum, CachingStrategy cachingStrategy, final boolean allowLazyPersist, final boolean pinning)
 name|BlockReceiver
 parameter_list|(
 specifier|final
@@ -936,6 +941,10 @@ parameter_list|,
 specifier|final
 name|boolean
 name|allowLazyPersist
+parameter_list|,
+specifier|final
+name|boolean
+name|pinning
 parameter_list|)
 throws|throws
 name|IOException
@@ -1071,6 +1080,12 @@ name|BlockConstructionStage
 operator|.
 name|TRANSFER_FINALIZED
 expr_stmt|;
+name|this
+operator|.
+name|pinning
+operator|=
+name|pinning
+expr_stmt|;
 if|if
 condition|(
 name|LOG
@@ -1120,6 +1135,10 @@ operator|+
 literal|"\n  cachingStrategy = "
 operator|+
 name|cachingStrategy
+operator|+
+literal|"\n  pinning="
+operator|+
+name|pinning
 argument_list|)
 expr_stmt|;
 block|}
@@ -6107,6 +6126,21 @@ argument_list|(
 name|block
 argument_list|)
 expr_stmt|;
+if|if
+condition|(
+name|pinning
+condition|)
+block|{
+name|datanode
+operator|.
+name|data
+operator|.
+name|setPinning
+argument_list|(
+name|block
+argument_list|)
+expr_stmt|;
+block|}
 name|datanode
 operator|.
 name|closeBlock

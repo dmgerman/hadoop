@@ -1750,6 +1750,36 @@ return|return
 literal|0
 return|;
 block|}
+annotation|@
+name|Override
+DECL|method|setPinning (ExtendedBlock block)
+specifier|public
+name|void
+name|setPinning
+parameter_list|(
+name|ExtendedBlock
+name|block
+parameter_list|)
+throws|throws
+name|IOException
+block|{       }
+annotation|@
+name|Override
+DECL|method|getPinning (ExtendedBlock block)
+specifier|public
+name|boolean
+name|getPinning
+parameter_list|(
+name|ExtendedBlock
+name|block
+parameter_list|)
+throws|throws
+name|IOException
+block|{
+return|return
+literal|false
+return|;
+block|}
 block|}
 end_class
 

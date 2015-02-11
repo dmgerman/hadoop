@@ -867,7 +867,7 @@ expr_stmt|;
 block|}
 annotation|@
 name|Override
-DECL|method|writeBlock (final ExtendedBlock blk, final StorageType storageType, final Token<BlockTokenIdentifier> blockToken, final String clientName, final DatanodeInfo[] targets, final StorageType[] targetStorageTypes, final DatanodeInfo source, final BlockConstructionStage stage, final int pipelineSize, final long minBytesRcvd, final long maxBytesRcvd, final long latestGenerationStamp, DataChecksum requestedChecksum, final CachingStrategy cachingStrategy, final boolean allowLazyPersist)
+DECL|method|writeBlock (final ExtendedBlock blk, final StorageType storageType, final Token<BlockTokenIdentifier> blockToken, final String clientName, final DatanodeInfo[] targets, final StorageType[] targetStorageTypes, final DatanodeInfo source, final BlockConstructionStage stage, final int pipelineSize, final long minBytesRcvd, final long maxBytesRcvd, final long latestGenerationStamp, DataChecksum requestedChecksum, final CachingStrategy cachingStrategy, final boolean allowLazyPersist, final boolean pinning, final boolean[] targetPinnings)
 specifier|public
 name|void
 name|writeBlock
@@ -935,6 +935,15 @@ parameter_list|,
 specifier|final
 name|boolean
 name|allowLazyPersist
+parameter_list|,
+specifier|final
+name|boolean
+name|pinning
+parameter_list|,
+specifier|final
+name|boolean
+index|[]
+name|targetPinnings
 parameter_list|)
 throws|throws
 name|IOException
@@ -1056,6 +1065,23 @@ operator|.
 name|setAllowLazyPersist
 argument_list|(
 name|allowLazyPersist
+argument_list|)
+operator|.
+name|setPinning
+argument_list|(
+name|pinning
+argument_list|)
+operator|.
+name|addAllTargetPinnings
+argument_list|(
+name|PBHelper
+operator|.
+name|convert
+argument_list|(
+name|targetPinnings
+argument_list|,
+literal|1
+argument_list|)
 argument_list|)
 decl_stmt|;
 if|if

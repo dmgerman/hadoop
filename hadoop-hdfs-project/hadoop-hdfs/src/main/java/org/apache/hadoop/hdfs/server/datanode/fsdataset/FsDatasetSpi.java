@@ -1569,6 +1569,30 @@ parameter_list|)
 throws|throws
 name|IOException
 function_decl|;
+comment|/**    * Set a block to be pinned on this datanode so that it cannot be moved    * by Balancer/Mover.    *    * It is a no-op when dfs.datanode.block-pinning.enabled is set to false.    */
+DECL|method|setPinning (ExtendedBlock block)
+specifier|public
+name|void
+name|setPinning
+parameter_list|(
+name|ExtendedBlock
+name|block
+parameter_list|)
+throws|throws
+name|IOException
+function_decl|;
+comment|/**    * Check whether the block was pinned    */
+DECL|method|getPinning (ExtendedBlock block)
+specifier|public
+name|boolean
+name|getPinning
+parameter_list|(
+name|ExtendedBlock
+name|block
+parameter_list|)
+throws|throws
+name|IOException
+function_decl|;
 block|}
 end_interface
 

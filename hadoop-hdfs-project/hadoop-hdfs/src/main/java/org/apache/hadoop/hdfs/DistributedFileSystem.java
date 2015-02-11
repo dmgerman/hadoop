@@ -2153,7 +2153,7 @@ literal|null
 argument_list|)
 return|;
 block|}
-comment|/**    * Same as      * {@link #create(Path, FsPermission, boolean, int, short, long,     * Progressable)} with the addition of favoredNodes that is a hint to     * where the namenode should place the file blocks.    * The favored nodes hint is not persisted in HDFS. Hence it may be honored    * at the creation time only. HDFS could move the blocks during balancing or    * replication, to move the blocks from favored nodes. A value of null means    * no favored nodes for this create    */
+comment|/**    * Same as      * {@link #create(Path, FsPermission, boolean, int, short, long,     * Progressable)} with the addition of favoredNodes that is a hint to     * where the namenode should place the file blocks.    * The favored nodes hint is not persisted in HDFS. Hence it may be honored    * at the creation time only. And with favored nodes, blocks will be pinned    * on the datanodes to prevent balancing move the block. HDFS could move the    * blocks during replication, to move the blocks from favored nodes. A value    * of null means no favored nodes for this create    */
 DECL|method|create (final Path f, final FsPermission permission, final boolean overwrite, final int bufferSize, final short replication, final long blockSize, final Progressable progress, final InetSocketAddress[] favoredNodes)
 specifier|public
 name|HdfsDataOutputStream
