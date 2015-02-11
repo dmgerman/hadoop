@@ -166,6 +166,24 @@ name|hdfs
 operator|.
 name|server
 operator|.
+name|blockmanagement
+operator|.
+name|BlockStoragePolicySuite
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|server
+operator|.
 name|namenode
 operator|.
 name|Content
@@ -356,7 +374,7 @@ name|server
 operator|.
 name|namenode
 operator|.
-name|Quota
+name|QuotaCounts
 import|;
 end_import
 
@@ -1081,11 +1099,14 @@ name|s
 return|;
 block|}
 comment|/**    * Remove the snapshot with the given name from {@link #snapshotsByNames},    * and delete all the corresponding DirectoryDiff.    *    * @param snapshotRoot The directory where we take snapshots    * @param snapshotName The name of the snapshot to be removed    * @param collectedBlocks Used to collect information to update blocksMap    * @return The removed snapshot. Null if no snapshot with the given name    *         exists.    */
-DECL|method|removeSnapshot (INodeDirectory snapshotRoot, String snapshotName, BlocksMapUpdateInfo collectedBlocks, final List<INode> removedINodes)
+DECL|method|removeSnapshot (BlockStoragePolicySuite bsps, INodeDirectory snapshotRoot, String snapshotName, BlocksMapUpdateInfo collectedBlocks, final List<INode> removedINodes)
 specifier|public
 name|Snapshot
 name|removeSnapshot
 parameter_list|(
+name|BlockStoragePolicySuite
+name|bsps
+parameter_list|,
 name|INodeDirectory
 name|snapshotRoot
 parameter_list|,
@@ -1175,15 +1196,15 @@ argument_list|)
 decl_stmt|;
 try|try
 block|{
-name|Quota
-operator|.
-name|Counts
+name|QuotaCounts
 name|counts
 init|=
 name|snapshotRoot
 operator|.
 name|cleanSubtree
 argument_list|(
+name|bsps
+argument_list|,
 name|snapshot
 operator|.
 name|getId
@@ -1217,25 +1238,10 @@ name|parent
 operator|.
 name|addSpaceConsumed
 argument_list|(
-operator|-
 name|counts
 operator|.
-name|get
-argument_list|(
-name|Quota
-operator|.
-name|NAMESPACE
-argument_list|)
-argument_list|,
-operator|-
-name|counts
-operator|.
-name|get
-argument_list|(
-name|Quota
-operator|.
-name|DISKSPACE
-argument_list|)
+name|negation
+argument_list|()
 argument_list|,
 literal|true
 argument_list|)
@@ -1273,11 +1279,15 @@ name|snapshot
 return|;
 block|}
 block|}
-DECL|method|computeContentSummary ( final INodeDirectory snapshotRoot, final ContentSummaryComputationContext summary)
+DECL|method|computeContentSummary ( final BlockStoragePolicySuite bsps, final INodeDirectory snapshotRoot, final ContentSummaryComputationContext summary)
 specifier|public
 name|ContentSummaryComputationContext
 name|computeContentSummary
 parameter_list|(
+specifier|final
+name|BlockStoragePolicySuite
+name|bsps
+parameter_list|,
 specifier|final
 name|INodeDirectory
 name|snapshotRoot

@@ -48,6 +48,24 @@ name|InterfaceStability
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|server
+operator|.
+name|blockmanagement
+operator|.
+name|BlockStoragePolicySuite
+import|;
+end_import
+
 begin_class
 annotation|@
 name|InterfaceAudience
@@ -393,6 +411,22 @@ parameter_list|()
 block|{
 return|return
 name|counts
+return|;
+block|}
+DECL|method|getBlockStoragePolicySuite ()
+specifier|public
+name|BlockStoragePolicySuite
+name|getBlockStoragePolicySuite
+parameter_list|()
+block|{
+return|return
+name|fsn
+operator|.
+name|getBlockManager
+argument_list|()
+operator|.
+name|getStoragePolicySuite
+argument_list|()
 return|;
 block|}
 block|}

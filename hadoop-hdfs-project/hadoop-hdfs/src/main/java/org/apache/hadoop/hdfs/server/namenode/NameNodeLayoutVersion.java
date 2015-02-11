@@ -339,6 +339,15 @@ literal|62
 argument_list|,
 literal|"Support appending to new block"
 argument_list|)
+block|,
+DECL|enumConstant|QUOTA_BY_STORAGE_TYPE
+name|QUOTA_BY_STORAGE_TYPE
+argument_list|(
+operator|-
+literal|63
+argument_list|,
+literal|"Support quota for specific storage types"
+argument_list|)
 block|;
 DECL|field|info
 specifier|private

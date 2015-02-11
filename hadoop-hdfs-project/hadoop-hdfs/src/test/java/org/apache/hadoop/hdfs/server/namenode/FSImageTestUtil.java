@@ -3129,12 +3129,8 @@ operator|.
 name|getQuotaCounts
 argument_list|()
 operator|.
-name|get
-argument_list|(
-name|Quota
-operator|.
-name|NAMESPACE
-argument_list|)
+name|getNameSpace
+argument_list|()
 return|;
 block|}
 DECL|method|assertNNFilesMatch (MiniDFSCluster cluster)

@@ -92,6 +92,24 @@ name|hdfs
 operator|.
 name|server
 operator|.
+name|blockmanagement
+operator|.
+name|BlockStoragePolicySuite
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|server
+operator|.
 name|namenode
 operator|.
 name|FSImageSerialization
@@ -186,7 +204,7 @@ name|server
 operator|.
 name|namenode
 operator|.
-name|Quota
+name|QuotaCounts
 import|;
 end_import
 
@@ -406,12 +424,13 @@ return|;
 block|}
 annotation|@
 name|Override
-DECL|method|combinePosteriorAndCollectBlocks (INodeFile currentINode, FileDiff posterior, BlocksMapUpdateInfo collectedBlocks, final List<INode> removedINodes)
-name|Quota
-operator|.
-name|Counts
+DECL|method|combinePosteriorAndCollectBlocks ( BlockStoragePolicySuite bsps, INodeFile currentINode, FileDiff posterior, BlocksMapUpdateInfo collectedBlocks, final List<INode> removedINodes)
+name|QuotaCounts
 name|combinePosteriorAndCollectBlocks
 parameter_list|(
+name|BlockStoragePolicySuite
+name|bsps
+parameter_list|,
 name|INodeFile
 name|currentINode
 parameter_list|,
@@ -449,6 +468,8 @@ name|sf
 operator|.
 name|updateQuotaAndCollectBlocks
 argument_list|(
+name|bsps
+argument_list|,
 name|currentINode
 argument_list|,
 name|posterior
@@ -558,12 +579,13 @@ block|}
 block|}
 annotation|@
 name|Override
-DECL|method|destroyDiffAndCollectBlocks (INodeFile currentINode, BlocksMapUpdateInfo collectedBlocks, final List<INode> removedINodes)
-name|Quota
-operator|.
-name|Counts
+DECL|method|destroyDiffAndCollectBlocks (BlockStoragePolicySuite bsps, INodeFile currentINode, BlocksMapUpdateInfo collectedBlocks, final List<INode> removedINodes)
+name|QuotaCounts
 name|destroyDiffAndCollectBlocks
 parameter_list|(
+name|BlockStoragePolicySuite
+name|bsps
+parameter_list|,
 name|INodeFile
 name|currentINode
 parameter_list|,
@@ -586,6 +608,8 @@ argument_list|()
 operator|.
 name|updateQuotaAndCollectBlocks
 argument_list|(
+name|bsps
+argument_list|,
 name|currentINode
 argument_list|,
 name|this

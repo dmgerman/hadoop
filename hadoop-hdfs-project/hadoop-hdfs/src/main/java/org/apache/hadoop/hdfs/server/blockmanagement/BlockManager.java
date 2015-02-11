@@ -2419,6 +2419,16 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
+DECL|method|getStoragePolicySuite ()
+specifier|public
+name|BlockStoragePolicySuite
+name|getStoragePolicySuite
+parameter_list|()
+block|{
+return|return
+name|storagePolicySuite
+return|;
+block|}
 comment|/** get the BlockTokenSecretManager */
 annotation|@
 name|VisibleForTesting

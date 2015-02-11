@@ -1047,6 +1047,11 @@ name|srcRoot
 operator|.
 name|removeSnapshot
 argument_list|(
+name|fsdir
+operator|.
+name|getBlockStoragePolicySuite
+argument_list|()
+argument_list|,
 name|snapshotName
 argument_list|,
 name|collectedBlocks

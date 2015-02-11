@@ -3650,6 +3650,20 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|hdfs
+operator|.
+name|StorageType
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|io
 operator|.
 name|EnumSetWritable
@@ -11711,7 +11725,7 @@ argument_list|,
 literal|0
 argument_list|,
 name|diff
-operator|*
+argument_list|,
 name|file
 operator|.
 name|getBlockReplication
@@ -14374,7 +14388,7 @@ argument_list|,
 literal|0
 argument_list|,
 name|diff
-operator|*
+argument_list|,
 name|file
 operator|.
 name|getBlockReplication
@@ -19498,8 +19512,8 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-comment|/**    * Set the namespace quota and diskspace quota for a directory.    * See {@link ClientProtocol#setQuota(String, long, long)} for the     * contract.    *     * Note: This does not support ".inodes" relative path.    */
-DECL|method|setQuota (String src, long nsQuota, long dsQuota)
+comment|/**    * Set the namespace quota and diskspace quota for a directory.    * See {@link ClientProtocol#setQuota(String, long, long, StorageType)} for the    * contract.    *     * Note: This does not support ".inodes" relative path.    */
+DECL|method|setQuota (String src, long nsQuota, long dsQuota, StorageType type)
 name|void
 name|setQuota
 parameter_list|(
@@ -19511,6 +19525,9 @@ name|nsQuota
 parameter_list|,
 name|long
 name|dsQuota
+parameter_list|,
+name|StorageType
+name|type
 parameter_list|)
 throws|throws
 name|IOException
@@ -19552,6 +19569,8 @@ argument_list|,
 name|nsQuota
 argument_list|,
 name|dsQuota
+argument_list|,
+name|type
 argument_list|)
 expr_stmt|;
 block|}
@@ -20576,7 +20595,7 @@ literal|0
 argument_list|,
 operator|-
 name|diff
-operator|*
+argument_list|,
 name|fileINode
 operator|.
 name|getFileReplication

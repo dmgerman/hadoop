@@ -961,6 +961,14 @@ name|FSImage
 operator|.
 name|updateCountForQuota
 argument_list|(
+name|fsn
+operator|.
+name|getBlockManager
+argument_list|()
+operator|.
+name|getStoragePolicySuite
+argument_list|()
+argument_list|,
 name|INodeDirectory
 operator|.
 name|valueOf

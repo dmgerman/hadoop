@@ -72,6 +72,24 @@ name|hdfs
 operator|.
 name|server
 operator|.
+name|blockmanagement
+operator|.
+name|BlockStoragePolicySuite
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|server
+operator|.
 name|namenode
 operator|.
 name|INode
@@ -497,10 +515,13 @@ name|blocks
 return|;
 block|}
 comment|/**    * Copy blocks from the removed snapshot into the previous snapshot    * up to the file length of the latter.    * Collect unused blocks of the removed snapshot.    */
-DECL|method|combineAndCollectSnapshotBlocks (INodeFile file, FileDiff removed, BlocksMapUpdateInfo collectedBlocks, List<INode> removedINodes)
+DECL|method|combineAndCollectSnapshotBlocks (BlockStoragePolicySuite bsps, INodeFile file, FileDiff removed, BlocksMapUpdateInfo collectedBlocks, List<INode> removedINodes)
 name|void
 name|combineAndCollectSnapshotBlocks
 parameter_list|(
+name|BlockStoragePolicySuite
+name|bsps
+parameter_list|,
 name|INodeFile
 name|file
 parameter_list|,
@@ -559,6 +580,8 @@ name|sf
 operator|.
 name|collectBlocksAndClear
 argument_list|(
+name|bsps
+argument_list|,
 name|file
 argument_list|,
 name|collectedBlocks

@@ -757,8 +757,15 @@ argument_list|()
 operator|.
 name|dir
 operator|.
-name|getRoot
+name|getBlockStoragePolicySuite
 argument_list|()
+argument_list|,
+name|getNamesystem
+argument_list|()
+operator|.
+name|dir
+operator|.
+name|rootDir
 argument_list|)
 expr_stmt|;
 comment|// inefficient!

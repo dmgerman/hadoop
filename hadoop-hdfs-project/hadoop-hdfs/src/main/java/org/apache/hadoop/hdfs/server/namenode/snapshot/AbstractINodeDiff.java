@@ -64,6 +64,24 @@ name|hdfs
 operator|.
 name|server
 operator|.
+name|blockmanagement
+operator|.
+name|BlockStoragePolicySuite
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|server
+operator|.
 name|namenode
 operator|.
 name|INode
@@ -122,7 +140,7 @@ name|server
 operator|.
 name|namenode
 operator|.
-name|Quota
+name|QuotaCounts
 import|;
 end_import
 
@@ -415,13 +433,15 @@ block|}
 block|}
 block|}
 comment|/** Combine the posterior diff and collect blocks for deletion. */
-DECL|method|combinePosteriorAndCollectBlocks (final N currentINode, final D posterior, final BlocksMapUpdateInfo collectedBlocks, final List<INode> removedINodes)
+DECL|method|combinePosteriorAndCollectBlocks ( final BlockStoragePolicySuite bsps, final N currentINode, final D posterior, final BlocksMapUpdateInfo collectedBlocks, final List<INode> removedINodes)
 specifier|abstract
-name|Quota
-operator|.
-name|Counts
+name|QuotaCounts
 name|combinePosteriorAndCollectBlocks
 parameter_list|(
+specifier|final
+name|BlockStoragePolicySuite
+name|bsps
+parameter_list|,
 specifier|final
 name|N
 name|currentINode
@@ -442,14 +462,16 @@ argument_list|>
 name|removedINodes
 parameter_list|)
 function_decl|;
-comment|/**    * Delete and clear self.    * @param currentINode The inode where the deletion happens.    * @param collectedBlocks Used to collect blocks for deletion.    * @return quota usage delta    */
-DECL|method|destroyDiffAndCollectBlocks (final N currentINode, final BlocksMapUpdateInfo collectedBlocks, final List<INode> removedINodes)
+comment|/**    * Delete and clear self.    * @param bsps The block storage policy suite used to retrieve storage policy    * @param currentINode The inode where the deletion happens.    * @param collectedBlocks Used to collect blocks for deletion.    * @param removedINodes INodes removed    * @return quota usage delta    */
+DECL|method|destroyDiffAndCollectBlocks ( final BlockStoragePolicySuite bsps, final N currentINode, final BlocksMapUpdateInfo collectedBlocks, final List<INode> removedINodes)
 specifier|abstract
-name|Quota
-operator|.
-name|Counts
+name|QuotaCounts
 name|destroyDiffAndCollectBlocks
 parameter_list|(
+specifier|final
+name|BlockStoragePolicySuite
+name|bsps
+parameter_list|,
 specifier|final
 name|N
 name|currentINode

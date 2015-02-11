@@ -144,6 +144,24 @@ name|hdfs
 operator|.
 name|server
 operator|.
+name|blockmanagement
+operator|.
+name|BlockStoragePolicySuite
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|server
+operator|.
 name|namenode
 operator|.
 name|AclStorage
@@ -328,7 +346,7 @@ name|server
 operator|.
 name|namenode
 operator|.
-name|Quota
+name|QuotaCounts
 import|;
 end_import
 
@@ -685,13 +703,15 @@ literal|false
 return|;
 block|}
 comment|/** clear the created list */
-DECL|method|destroyCreatedList (final INodeDirectory currentINode, final BlocksMapUpdateInfo collectedBlocks, final List<INode> removedINodes)
+DECL|method|destroyCreatedList ( final BlockStoragePolicySuite bsps, final INodeDirectory currentINode, final BlocksMapUpdateInfo collectedBlocks, final List<INode> removedINodes)
 specifier|private
-name|Quota
-operator|.
-name|Counts
+name|QuotaCounts
 name|destroyCreatedList
 parameter_list|(
+specifier|final
+name|BlockStoragePolicySuite
+name|bsps
+parameter_list|,
 specifier|final
 name|INodeDirectory
 name|currentINode
@@ -708,16 +728,16 @@ argument_list|>
 name|removedINodes
 parameter_list|)
 block|{
-name|Quota
-operator|.
-name|Counts
+name|QuotaCounts
 name|counts
 init|=
-name|Quota
+operator|new
+name|QuotaCounts
 operator|.
-name|Counts
+name|Builder
+argument_list|()
 operator|.
-name|newInstance
+name|build
 argument_list|()
 decl_stmt|;
 specifier|final
@@ -746,6 +766,8 @@ name|c
 operator|.
 name|computeQuotaUsage
 argument_list|(
+name|bsps
+argument_list|,
 name|counts
 argument_list|,
 literal|true
@@ -755,6 +777,8 @@ name|c
 operator|.
 name|destroyAndCollectBlocks
 argument_list|(
+name|bsps
+argument_list|,
 name|collectedBlocks
 argument_list|,
 name|removedINodes
@@ -779,13 +803,15 @@ name|counts
 return|;
 block|}
 comment|/** clear the deleted list */
-DECL|method|destroyDeletedList ( final BlocksMapUpdateInfo collectedBlocks, final List<INode> removedINodes)
+DECL|method|destroyDeletedList ( final BlockStoragePolicySuite bsps, final BlocksMapUpdateInfo collectedBlocks, final List<INode> removedINodes)
 specifier|private
-name|Quota
-operator|.
-name|Counts
+name|QuotaCounts
 name|destroyDeletedList
 parameter_list|(
+specifier|final
+name|BlockStoragePolicySuite
+name|bsps
+parameter_list|,
 specifier|final
 name|BlocksMapUpdateInfo
 name|collectedBlocks
@@ -798,16 +824,16 @@ argument_list|>
 name|removedINodes
 parameter_list|)
 block|{
-name|Quota
-operator|.
-name|Counts
+name|QuotaCounts
 name|counts
 init|=
-name|Quota
+operator|new
+name|QuotaCounts
 operator|.
-name|Counts
+name|Builder
+argument_list|()
 operator|.
-name|newInstance
+name|build
 argument_list|()
 decl_stmt|;
 specifier|final
@@ -836,6 +862,8 @@ name|d
 operator|.
 name|computeQuotaUsage
 argument_list|(
+name|bsps
+argument_list|,
 name|counts
 argument_list|,
 literal|false
@@ -845,6 +873,8 @@ name|d
 operator|.
 name|destroyAndCollectBlocks
 argument_list|(
+name|bsps
+argument_list|,
 name|collectedBlocks
 argument_list|,
 name|removedINodes
@@ -1260,12 +1290,14 @@ return|;
 block|}
 annotation|@
 name|Override
-DECL|method|combinePosteriorAndCollectBlocks ( final INodeDirectory currentDir, final DirectoryDiff posterior, final BlocksMapUpdateInfo collectedBlocks, final List<INode> removedINodes)
-name|Quota
-operator|.
-name|Counts
+DECL|method|combinePosteriorAndCollectBlocks ( final BlockStoragePolicySuite bsps, final INodeDirectory currentDir, final DirectoryDiff posterior, final BlocksMapUpdateInfo collectedBlocks, final List<INode> removedINodes)
+name|QuotaCounts
 name|combinePosteriorAndCollectBlocks
 parameter_list|(
+specifier|final
+name|BlockStoragePolicySuite
+name|bsps
+parameter_list|,
 specifier|final
 name|INodeDirectory
 name|currentDir
@@ -1287,16 +1319,16 @@ name|removedINodes
 parameter_list|)
 block|{
 specifier|final
-name|Quota
-operator|.
-name|Counts
+name|QuotaCounts
 name|counts
 init|=
-name|Quota
+operator|new
+name|QuotaCounts
 operator|.
-name|Counts
+name|Builder
+argument_list|()
 operator|.
-name|newInstance
+name|build
 argument_list|()
 decl_stmt|;
 name|diff
@@ -1338,6 +1370,8 @@ name|inode
 operator|.
 name|computeQuotaUsage
 argument_list|(
+name|bsps
+argument_list|,
 name|counts
 argument_list|,
 literal|false
@@ -1347,6 +1381,8 @@ name|inode
 operator|.
 name|destroyAndCollectBlocks
 argument_list|(
+name|bsps
+argument_list|,
 name|collectedBlocks
 argument_list|,
 name|removedINodes
@@ -1764,12 +1800,13 @@ expr_stmt|;
 block|}
 annotation|@
 name|Override
-DECL|method|destroyDiffAndCollectBlocks (INodeDirectory currentINode, BlocksMapUpdateInfo collectedBlocks, final List<INode> removedINodes)
-name|Quota
-operator|.
-name|Counts
+DECL|method|destroyDiffAndCollectBlocks ( BlockStoragePolicySuite bsps, INodeDirectory currentINode, BlocksMapUpdateInfo collectedBlocks, final List<INode> removedINodes)
+name|QuotaCounts
 name|destroyDiffAndCollectBlocks
 parameter_list|(
+name|BlockStoragePolicySuite
+name|bsps
+parameter_list|,
 name|INodeDirectory
 name|currentINode
 parameter_list|,
@@ -1785,16 +1822,16 @@ name|removedINodes
 parameter_list|)
 block|{
 comment|// this diff has been deleted
-name|Quota
-operator|.
-name|Counts
+name|QuotaCounts
 name|counts
 init|=
-name|Quota
+operator|new
+name|QuotaCounts
 operator|.
-name|Counts
+name|Builder
+argument_list|()
 operator|.
-name|newInstance
+name|build
 argument_list|()
 decl_stmt|;
 name|counts
@@ -1805,6 +1842,8 @@ name|diff
 operator|.
 name|destroyDeletedList
 argument_list|(
+name|bsps
+argument_list|,
 name|collectedBlocks
 argument_list|,
 name|removedINodes
@@ -2279,12 +2318,16 @@ name|map
 return|;
 block|}
 comment|/**    * Destroy a subtree under a DstReference node.    */
-DECL|method|destroyDstSubtree (INode inode, final int snapshot, final int prior, final BlocksMapUpdateInfo collectedBlocks, final List<INode> removedINodes)
+DECL|method|destroyDstSubtree ( final BlockStoragePolicySuite bsps, INode inode, final int snapshot, final int prior, final BlocksMapUpdateInfo collectedBlocks, final List<INode> removedINodes)
 specifier|public
 specifier|static
 name|void
 name|destroyDstSubtree
 parameter_list|(
+specifier|final
+name|BlockStoragePolicySuite
+name|bsps
+parameter_list|,
 name|INode
 name|inode
 parameter_list|,
@@ -2350,6 +2393,8 @@ name|inode
 operator|.
 name|cleanSubtree
 argument_list|(
+name|bsps
+argument_list|,
 name|snapshot
 argument_list|,
 name|prior
@@ -2365,6 +2410,8 @@ block|{
 comment|// for DstReference node, continue this process to its subtree
 name|destroyDstSubtree
 argument_list|(
+name|bsps
+argument_list|,
 name|inode
 operator|.
 name|asReference
@@ -2397,6 +2444,8 @@ name|inode
 operator|.
 name|cleanSubtree
 argument_list|(
+name|bsps
+argument_list|,
 name|snapshot
 argument_list|,
 name|prior
@@ -2519,6 +2568,8 @@ name|diffList
 operator|.
 name|deleteSnapshotDiff
 argument_list|(
+name|bsps
+argument_list|,
 name|snapshot
 argument_list|,
 name|prior
@@ -2560,6 +2611,8 @@ name|diff
 operator|.
 name|destroyCreatedList
 argument_list|(
+name|bsps
+argument_list|,
 name|dir
 argument_list|,
 name|collectedBlocks
@@ -2603,6 +2656,8 @@ continue|continue;
 block|}
 name|destroyDstSubtree
 argument_list|(
+name|bsps
+argument_list|,
 name|child
 argument_list|,
 name|snapshot
@@ -2617,15 +2672,17 @@ expr_stmt|;
 block|}
 block|}
 block|}
-comment|/**    * Clean an inode while we move it from the deleted list of post to the    * deleted list of prior.    * @param inode The inode to clean.    * @param post The post snapshot.    * @param prior The id of the prior snapshot.    * @param collectedBlocks Used to collect blocks for later deletion.    * @return Quota usage update.    */
-DECL|method|cleanDeletedINode (INode inode, final int post, final int prior, final BlocksMapUpdateInfo collectedBlocks, final List<INode> removedINodes)
+comment|/**    * Clean an inode while we move it from the deleted list of post to the    * deleted list of prior.    * @param bsps The block storage policy suite.    * @param inode The inode to clean.    * @param post The post snapshot.    * @param prior The id of the prior snapshot.    * @param collectedBlocks Used to collect blocks for later deletion.    * @return Quota usage update.    */
+DECL|method|cleanDeletedINode ( final BlockStoragePolicySuite bsps, INode inode, final int post, final int prior, final BlocksMapUpdateInfo collectedBlocks, final List<INode> removedINodes)
 specifier|private
 specifier|static
-name|Quota
-operator|.
-name|Counts
+name|QuotaCounts
 name|cleanDeletedINode
 parameter_list|(
+specifier|final
+name|BlockStoragePolicySuite
+name|bsps
+parameter_list|,
 name|INode
 name|inode
 parameter_list|,
@@ -2649,16 +2706,16 @@ argument_list|>
 name|removedINodes
 parameter_list|)
 block|{
-name|Quota
-operator|.
-name|Counts
+name|QuotaCounts
 name|counts
 init|=
-name|Quota
+operator|new
+name|QuotaCounts
 operator|.
-name|Counts
+name|Builder
+argument_list|()
 operator|.
-name|newInstance
+name|build
 argument_list|()
 decl_stmt|;
 name|Deque
@@ -2733,6 +2790,8 @@ name|wn
 operator|.
 name|cleanSubtree
 argument_list|(
+name|bsps
+argument_list|,
 name|post
 argument_list|,
 name|prior
@@ -2782,6 +2841,8 @@ argument_list|()
 operator|.
 name|deleteSnapshotDiff
 argument_list|(
+name|bsps
+argument_list|,
 name|post
 argument_list|,
 name|prior
@@ -2876,6 +2937,8 @@ name|priorChildrenDiff
 operator|.
 name|destroyCreatedList
 argument_list|(
+name|bsps
+argument_list|,
 name|dir
 argument_list|,
 name|collectedBlocks
@@ -3403,11 +3466,14 @@ return|return
 name|child
 return|;
 block|}
-DECL|method|clear (INodeDirectory currentINode, final BlocksMapUpdateInfo collectedBlocks, final List<INode> removedINodes)
+DECL|method|clear (BlockStoragePolicySuite bsps, INodeDirectory currentINode, final BlocksMapUpdateInfo collectedBlocks, final List<INode> removedINodes)
 specifier|public
 name|void
 name|clear
 parameter_list|(
+name|BlockStoragePolicySuite
+name|bsps
+parameter_list|,
 name|INodeDirectory
 name|currentINode
 parameter_list|,
@@ -3436,6 +3502,8 @@ name|diff
 operator|.
 name|destroyDiffAndCollectBlocks
 argument_list|(
+name|bsps
+argument_list|,
 name|currentINode
 argument_list|,
 name|collectedBlocks
@@ -3450,16 +3518,15 @@ name|clear
 argument_list|()
 expr_stmt|;
 block|}
-DECL|method|computeQuotaUsage4CurrentDirectory (Quota.Counts counts)
+DECL|method|computeQuotaUsage4CurrentDirectory ( BlockStoragePolicySuite bsps, QuotaCounts counts)
 specifier|public
-name|Quota
-operator|.
-name|Counts
+name|QuotaCounts
 name|computeQuotaUsage4CurrentDirectory
 parameter_list|(
-name|Quota
-operator|.
-name|Counts
+name|BlockStoragePolicySuite
+name|bsps
+parameter_list|,
+name|QuotaCounts
 name|counts
 parameter_list|)
 block|{
@@ -3493,6 +3560,8 @@ name|deleted
 operator|.
 name|computeQuotaUsage
 argument_list|(
+name|bsps
+argument_list|,
 name|counts
 argument_list|,
 literal|false
@@ -3508,11 +3577,15 @@ return|return
 name|counts
 return|;
 block|}
-DECL|method|computeContentSummary4Snapshot (final Content.Counts counts)
+DECL|method|computeContentSummary4Snapshot (final BlockStoragePolicySuite bsps, final Content.Counts counts)
 specifier|public
 name|void
 name|computeContentSummary4Snapshot
 parameter_list|(
+specifier|final
+name|BlockStoragePolicySuite
+name|bsps
+parameter_list|,
 specifier|final
 name|Content
 operator|.
@@ -3836,13 +3909,15 @@ literal|false
 return|;
 block|}
 block|}
-DECL|method|cleanDirectory (final INodeDirectory currentINode, final int snapshot, int prior, final BlocksMapUpdateInfo collectedBlocks, final List<INode> removedINodes)
+DECL|method|cleanDirectory (final BlockStoragePolicySuite bsps, final INodeDirectory currentINode, final int snapshot, int prior, final BlocksMapUpdateInfo collectedBlocks, final List<INode> removedINodes)
 specifier|public
-name|Quota
-operator|.
-name|Counts
+name|QuotaCounts
 name|cleanDirectory
 parameter_list|(
+specifier|final
+name|BlockStoragePolicySuite
+name|bsps
+parameter_list|,
 specifier|final
 name|INodeDirectory
 name|currentINode
@@ -3866,16 +3941,16 @@ argument_list|>
 name|removedINodes
 parameter_list|)
 block|{
-name|Quota
-operator|.
-name|Counts
+name|QuotaCounts
 name|counts
 init|=
-name|Quota
+operator|new
+name|QuotaCounts
 operator|.
-name|Counts
+name|Builder
+argument_list|()
 operator|.
-name|newInstance
+name|build
 argument_list|()
 decl_stmt|;
 name|Map
@@ -3941,6 +4016,8 @@ name|diff
 operator|.
 name|destroyCreatedList
 argument_list|(
+name|bsps
+argument_list|,
 name|currentINode
 argument_list|,
 name|collectedBlocks
@@ -3958,6 +4035,8 @@ name|currentINode
 operator|.
 name|cleanSubtreeRecursively
 argument_list|(
+name|bsps
+argument_list|,
 name|snapshot
 argument_list|,
 name|prior
@@ -4083,6 +4162,8 @@ argument_list|()
 operator|.
 name|deleteSnapshotDiff
 argument_list|(
+name|bsps
+argument_list|,
 name|snapshot
 argument_list|,
 name|prior
@@ -4103,6 +4184,8 @@ name|currentINode
 operator|.
 name|cleanSubtreeRecursively
 argument_list|(
+name|bsps
+argument_list|,
 name|snapshot
 argument_list|,
 name|prior
@@ -4201,6 +4284,8 @@ name|cNode
 operator|.
 name|cleanSubtree
 argument_list|(
+name|bsps
+argument_list|,
 name|snapshot
 argument_list|,
 name|Snapshot
@@ -4261,6 +4346,8 @@ name|add
 argument_list|(
 name|cleanDeletedINode
 argument_list|(
+name|bsps
+argument_list|,
 name|dNode
 argument_list|,
 name|snapshot
@@ -4293,25 +4380,10 @@ argument_list|()
 operator|.
 name|addSpaceConsumed2Cache
 argument_list|(
-operator|-
 name|counts
 operator|.
-name|get
-argument_list|(
-name|Quota
-operator|.
-name|NAMESPACE
-argument_list|)
-argument_list|,
-operator|-
-name|counts
-operator|.
-name|get
-argument_list|(
-name|Quota
-operator|.
-name|DISKSPACE
-argument_list|)
+name|negation
+argument_list|()
 argument_list|)
 expr_stmt|;
 block|}

@@ -172,6 +172,22 @@ name|hadoop
 operator|.
 name|hdfs
 operator|.
+name|protocol
+operator|.
+name|HdfsConstants
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
 name|server
 operator|.
 name|blockmanagement
@@ -1256,15 +1272,17 @@ argument_list|()
 argument_list|)
 throw|;
 block|}
-comment|/**    * Clean the subtree under this inode and collect the blocks from the descents    * for further block deletion/update. The current inode can either resides in    * the current tree or be stored as a snapshot copy.    *     *<pre>    * In general, we have the following rules.     * 1. When deleting a file/directory in the current tree, we have different     * actions according to the type of the node to delete.     *     * 1.1 The current inode (this) is an {@link INodeFile}.     * 1.1.1 If {@code prior} is null, there is no snapshot taken on ancestors     * before. Thus we simply destroy (i.e., to delete completely, no need to save     * snapshot copy) the current INode and collect its blocks for further     * cleansing.    * 1.1.2 Else do nothing since the current INode will be stored as a snapshot    * copy.    *     * 1.2 The current inode is an {@link INodeDirectory}.    * 1.2.1 If {@code prior} is null, there is no snapshot taken on ancestors     * before. Similarly, we destroy the whole subtree and collect blocks.    * 1.2.2 Else do nothing with the current INode. Recursively clean its     * children.    *     * 1.3 The current inode is a file with snapshot.    * Call recordModification(..) to capture the current states.    * Mark the INode as deleted.    *     * 1.4 The current inode is an {@link INodeDirectory} with snapshot feature.    * Call recordModification(..) to capture the current states.     * Destroy files/directories created after the latest snapshot     * (i.e., the inodes stored in the created list of the latest snapshot).    * Recursively clean remaining children.     *    * 2. When deleting a snapshot.    * 2.1 To clean {@link INodeFile}: do nothing.    * 2.2 To clean {@link INodeDirectory}: recursively clean its children.    * 2.3 To clean INodeFile with snapshot: delete the corresponding snapshot in    * its diff list.    * 2.4 To clean {@link INodeDirectory} with snapshot: delete the corresponding     * snapshot in its diff list. Recursively clean its children.    *</pre>    *     * @param snapshotId    *          The id of the snapshot to delete.     *          {@link Snapshot#CURRENT_STATE_ID} means to delete the current    *          file/directory.    * @param priorSnapshotId    *          The id of the latest snapshot before the to-be-deleted snapshot.    *          When deleting a current inode, this parameter captures the latest    *          snapshot.    * @param collectedBlocks    *          blocks collected from the descents for further block    *          deletion/update will be added to the given map.    * @param removedINodes    *          INodes collected from the descents for further cleaning up of     *          inodeMap    * @return quota usage delta when deleting a snapshot    */
-DECL|method|cleanSubtree (final int snapshotId, int priorSnapshotId, BlocksMapUpdateInfo collectedBlocks, List<INode> removedINodes)
+comment|/**    * Clean the subtree under this inode and collect the blocks from the descents    * for further block deletion/update. The current inode can either resides in    * the current tree or be stored as a snapshot copy.    *     *<pre>    * In general, we have the following rules.     * 1. When deleting a file/directory in the current tree, we have different     * actions according to the type of the node to delete.     *     * 1.1 The current inode (this) is an {@link INodeFile}.     * 1.1.1 If {@code prior} is null, there is no snapshot taken on ancestors     * before. Thus we simply destroy (i.e., to delete completely, no need to save     * snapshot copy) the current INode and collect its blocks for further     * cleansing.    * 1.1.2 Else do nothing since the current INode will be stored as a snapshot    * copy.    *     * 1.2 The current inode is an {@link INodeDirectory}.    * 1.2.1 If {@code prior} is null, there is no snapshot taken on ancestors     * before. Similarly, we destroy the whole subtree and collect blocks.    * 1.2.2 Else do nothing with the current INode. Recursively clean its     * children.    *     * 1.3 The current inode is a file with snapshot.    * Call recordModification(..) to capture the current states.    * Mark the INode as deleted.    *     * 1.4 The current inode is an {@link INodeDirectory} with snapshot feature.    * Call recordModification(..) to capture the current states.     * Destroy files/directories created after the latest snapshot     * (i.e., the inodes stored in the created list of the latest snapshot).    * Recursively clean remaining children.     *    * 2. When deleting a snapshot.    * 2.1 To clean {@link INodeFile}: do nothing.    * 2.2 To clean {@link INodeDirectory}: recursively clean its children.    * 2.3 To clean INodeFile with snapshot: delete the corresponding snapshot in    * its diff list.    * 2.4 To clean {@link INodeDirectory} with snapshot: delete the corresponding     * snapshot in its diff list. Recursively clean its children.    *</pre>    *    * @param bsps    *          block storage policy suite to calculate intended storage type usage    * @param snapshotId    *          The id of the snapshot to delete.     *          {@link Snapshot#CURRENT_STATE_ID} means to delete the current    *          file/directory.    * @param priorSnapshotId    *          The id of the latest snapshot before the to-be-deleted snapshot.    *          When deleting a current inode, this parameter captures the latest    *          snapshot.    * @param collectedBlocks    *          blocks collected from the descents for further block    *          deletion/update will be added to the given map.    * @param removedINodes    *          INodes collected from the descents for further cleaning up of     *          inodeMap    * @return quota usage delta when deleting a snapshot    */
+DECL|method|cleanSubtree (final BlockStoragePolicySuite bsps, final int snapshotId, int priorSnapshotId, BlocksMapUpdateInfo collectedBlocks, List<INode> removedINodes)
 specifier|public
 specifier|abstract
-name|Quota
-operator|.
-name|Counts
+name|QuotaCounts
 name|cleanSubtree
 parameter_list|(
+specifier|final
+name|BlockStoragePolicySuite
+name|bsps
+parameter_list|,
 specifier|final
 name|int
 name|snapshotId
@@ -1282,13 +1300,16 @@ argument_list|>
 name|removedINodes
 parameter_list|)
 function_decl|;
-comment|/**    * Destroy self and clear everything! If the INode is a file, this method    * collects its blocks for further block deletion. If the INode is a    * directory, the method goes down the subtree and collects blocks from the    * descents, and clears its parent/children references as well. The method    * also clears the diff list if the INode contains snapshot diff list.    *     * @param collectedBlocks    *          blocks collected from the descents for further block    *          deletion/update will be added to this map.    * @param removedINodes    *          INodes collected from the descents for further cleaning up of    *          inodeMap    */
-DECL|method|destroyAndCollectBlocks ( BlocksMapUpdateInfo collectedBlocks, List<INode> removedINodes)
+comment|/**    * Destroy self and clear everything! If the INode is a file, this method    * collects its blocks for further block deletion. If the INode is a    * directory, the method goes down the subtree and collects blocks from the    * descents, and clears its parent/children references as well. The method    * also clears the diff list if the INode contains snapshot diff list.    *    * @param bsps    *          block storage policy suite to calculate intended storage type usage    *          This is needed because INodeReference#destroyAndCollectBlocks() needs    *          to call INode#cleanSubtree(), which calls INode#computeQuotaUsage().    * @param collectedBlocks    *          blocks collected from the descents for further block    *          deletion/update will be added to this map.    * @param removedINodes    *          INodes collected from the descents for further cleaning up of    *          inodeMap    */
+DECL|method|destroyAndCollectBlocks ( BlockStoragePolicySuite bsps, BlocksMapUpdateInfo collectedBlocks, List<INode> removedINodes)
 specifier|public
 specifier|abstract
 name|void
 name|destroyAndCollectBlocks
 parameter_list|(
+name|BlockStoragePolicySuite
+name|bsps
+parameter_list|,
 name|BlocksMapUpdateInfo
 name|collectedBlocks
 parameter_list|,
@@ -1341,9 +1362,7 @@ name|getCounts
 argument_list|()
 decl_stmt|;
 specifier|final
-name|Quota
-operator|.
-name|Counts
+name|QuotaCounts
 name|q
 init|=
 name|getQuotaCounts
@@ -1391,12 +1410,8 @@ argument_list|)
 argument_list|,
 name|q
 operator|.
-name|get
-argument_list|(
-name|Quota
-operator|.
-name|NAMESPACE
-argument_list|)
+name|getNameSpace
+argument_list|()
 argument_list|,
 name|counts
 operator|.
@@ -1409,14 +1424,11 @@ argument_list|)
 argument_list|,
 name|q
 operator|.
-name|get
-argument_list|(
-name|Quota
-operator|.
-name|DISKSPACE
-argument_list|)
+name|getDiskSpace
+argument_list|()
 argument_list|)
 return|;
+comment|// TODO: storage type quota reporting HDFS-7701.
 block|}
 comment|/**    * Count subtree content summary with a {@link Content.Counts}.    *    * @param summary the context object holding counts for the subtree.    * @return The same objects as summary.    */
 DECL|method|computeContentSummary ( ContentSummaryComputationContext summary)
@@ -1429,17 +1441,14 @@ name|ContentSummaryComputationContext
 name|summary
 parameter_list|)
 function_decl|;
-comment|/**    * Check and add namespace/diskspace consumed to itself and the ancestors.    * @throws QuotaExceededException if quote is violated.    */
-DECL|method|addSpaceConsumed (long nsDelta, long dsDelta, boolean verify)
+comment|/**    * Check and add namespace/diskspace/storagetype consumed to itself and the ancestors.    * @throws QuotaExceededException if quote is violated.    */
+DECL|method|addSpaceConsumed (QuotaCounts counts, boolean verify)
 specifier|public
 name|void
 name|addSpaceConsumed
 parameter_list|(
-name|long
-name|nsDelta
-parameter_list|,
-name|long
-name|dsDelta
+name|QuotaCounts
+name|counts
 parameter_list|,
 name|boolean
 name|verify
@@ -1449,24 +1458,19 @@ name|QuotaExceededException
 block|{
 name|addSpaceConsumed2Parent
 argument_list|(
-name|nsDelta
-argument_list|,
-name|dsDelta
+name|counts
 argument_list|,
 name|verify
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Check and add namespace/diskspace consumed to itself and the ancestors.    * @throws QuotaExceededException if quote is violated.    */
-DECL|method|addSpaceConsumed2Parent (long nsDelta, long dsDelta, boolean verify)
+comment|/**    * Check and add namespace/diskspace/storagetype consumed to itself and the ancestors.    * @throws QuotaExceededException if quote is violated.    */
+DECL|method|addSpaceConsumed2Parent (QuotaCounts counts, boolean verify)
 name|void
 name|addSpaceConsumed2Parent
 parameter_list|(
-name|long
-name|nsDelta
-parameter_list|,
-name|long
-name|dsDelta
+name|QuotaCounts
+name|counts
 parameter_list|,
 name|boolean
 name|verify
@@ -1485,9 +1489,7 @@ name|parent
 operator|.
 name|addSpaceConsumed
 argument_list|(
-name|nsDelta
-argument_list|,
-name|dsDelta
+name|counts
 argument_list|,
 name|verify
 argument_list|)
@@ -1497,25 +1499,40 @@ block|}
 comment|/**    * Get the quota set for this inode    * @return the quota counts.  The count is -1 if it is not set.    */
 DECL|method|getQuotaCounts ()
 specifier|public
-name|Quota
-operator|.
-name|Counts
+name|QuotaCounts
 name|getQuotaCounts
 parameter_list|()
 block|{
 return|return
-name|Quota
+operator|new
+name|QuotaCounts
 operator|.
-name|Counts
+name|Builder
+argument_list|()
 operator|.
-name|newInstance
+name|nameCount
 argument_list|(
-operator|-
-literal|1
-argument_list|,
-operator|-
-literal|1
+name|HdfsConstants
+operator|.
+name|QUOTA_RESET
 argument_list|)
+operator|.
+name|spaceCount
+argument_list|(
+name|HdfsConstants
+operator|.
+name|QUOTA_RESET
+argument_list|)
+operator|.
+name|typeCounts
+argument_list|(
+name|HdfsConstants
+operator|.
+name|QUOTA_RESET
+argument_list|)
+operator|.
+name|build
+argument_list|()
 return|;
 block|}
 DECL|method|isQuotaSet ()
@@ -1526,73 +1543,68 @@ name|isQuotaSet
 parameter_list|()
 block|{
 specifier|final
-name|Quota
-operator|.
-name|Counts
-name|q
+name|QuotaCounts
+name|qc
 init|=
 name|getQuotaCounts
 argument_list|()
 decl_stmt|;
 return|return
-name|q
+name|qc
 operator|.
-name|get
+name|anyNsSpCountGreaterOrEqual
 argument_list|(
-name|Quota
-operator|.
-name|NAMESPACE
-argument_list|)
-operator|>=
 literal|0
+argument_list|)
 operator|||
-name|q
+name|qc
 operator|.
-name|get
+name|anyTypeCountGreaterOrEqual
 argument_list|(
-name|Quota
-operator|.
-name|DISKSPACE
-argument_list|)
-operator|>=
 literal|0
+argument_list|)
 return|;
 block|}
 comment|/**    * Count subtree {@link Quota#NAMESPACE} and {@link Quota#DISKSPACE} usages.    */
-DECL|method|computeQuotaUsage ()
+DECL|method|computeQuotaUsage (BlockStoragePolicySuite bsps)
 specifier|public
 specifier|final
-name|Quota
-operator|.
-name|Counts
+name|QuotaCounts
 name|computeQuotaUsage
-parameter_list|()
+parameter_list|(
+name|BlockStoragePolicySuite
+name|bsps
+parameter_list|)
 block|{
 return|return
 name|computeQuotaUsage
 argument_list|(
+name|bsps
+argument_list|,
 operator|new
-name|Quota
+name|QuotaCounts
 operator|.
-name|Counts
+name|Builder
+argument_list|()
+operator|.
+name|build
 argument_list|()
 argument_list|,
 literal|true
 argument_list|)
 return|;
 block|}
-comment|/**    * Count subtree {@link Quota#NAMESPACE} and {@link Quota#DISKSPACE} usages.    *     * With the existence of {@link INodeReference}, the same inode and its    * subtree may be referred by multiple {@link WithName} nodes and a    * {@link DstReference} node. To avoid circles while quota usage computation,    * we have the following rules:    *     *<pre>    * 1. For a {@link DstReference} node, since the node must be in the current    * tree (or has been deleted as the end point of a series of rename     * operations), we compute the quota usage of the referred node (and its     * subtree) in the regular manner, i.e., including every inode in the current    * tree and in snapshot copies, as well as the size of diff list.    *     * 2. For a {@link WithName} node, since the node must be in a snapshot, we     * only count the quota usage for those nodes that still existed at the     * creation time of the snapshot associated with the {@link WithName} node.    * We do not count in the size of the diff list.      *<pre>    *     * @param counts The subtree counts for returning.    * @param useCache Whether to use cached quota usage. Note that     *                 {@link WithName} node never uses cache for its subtree.    * @param lastSnapshotId {@link Snapshot#CURRENT_STATE_ID} indicates the     *                       computation is in the current tree. Otherwise the id    *                       indicates the computation range for a     *                       {@link WithName} node.    * @return The same objects as the counts parameter.    */
-DECL|method|computeQuotaUsage (Quota.Counts counts, boolean useCache, int lastSnapshotId)
+comment|/**    * Count subtree {@link Quota#NAMESPACE} and {@link Quota#DISKSPACE} usages.    *     * With the existence of {@link INodeReference}, the same inode and its    * subtree may be referred by multiple {@link WithName} nodes and a    * {@link DstReference} node. To avoid circles while quota usage computation,    * we have the following rules:    *     *<pre>    * 1. For a {@link DstReference} node, since the node must be in the current    * tree (or has been deleted as the end point of a series of rename     * operations), we compute the quota usage of the referred node (and its     * subtree) in the regular manner, i.e., including every inode in the current    * tree and in snapshot copies, as well as the size of diff list.    *     * 2. For a {@link WithName} node, since the node must be in a snapshot, we     * only count the quota usage for those nodes that still existed at the     * creation time of the snapshot associated with the {@link WithName} node.    * We do not count in the size of the diff list.      *<pre>    *    * @param bsps Block storage policy suite to calculate intended storage type usage    * @param counts The subtree counts for returning.    * @param useCache Whether to use cached quota usage. Note that     *                 {@link WithName} node never uses cache for its subtree.    * @param lastSnapshotId {@link Snapshot#CURRENT_STATE_ID} indicates the     *                       computation is in the current tree. Otherwise the id    *                       indicates the computation range for a     *                       {@link WithName} node.    * @return The same objects as the counts parameter.    */
+DECL|method|computeQuotaUsage ( BlockStoragePolicySuite bsps, QuotaCounts counts, boolean useCache, int lastSnapshotId)
 specifier|public
 specifier|abstract
-name|Quota
-operator|.
-name|Counts
+name|QuotaCounts
 name|computeQuotaUsage
 parameter_list|(
-name|Quota
-operator|.
-name|Counts
+name|BlockStoragePolicySuite
+name|bsps
+parameter_list|,
+name|QuotaCounts
 name|counts
 parameter_list|,
 name|boolean
@@ -1602,17 +1614,16 @@ name|int
 name|lastSnapshotId
 parameter_list|)
 function_decl|;
-DECL|method|computeQuotaUsage (Quota.Counts counts, boolean useCache)
+DECL|method|computeQuotaUsage ( BlockStoragePolicySuite bsps, QuotaCounts counts, boolean useCache)
 specifier|public
 specifier|final
-name|Quota
-operator|.
-name|Counts
+name|QuotaCounts
 name|computeQuotaUsage
 parameter_list|(
-name|Quota
-operator|.
-name|Counts
+name|BlockStoragePolicySuite
+name|bsps
+parameter_list|,
+name|QuotaCounts
 name|counts
 parameter_list|,
 name|boolean
@@ -1622,6 +1633,8 @@ block|{
 return|return
 name|computeQuotaUsage
 argument_list|(
+name|bsps
+argument_list|,
 name|counts
 argument_list|,
 name|useCache

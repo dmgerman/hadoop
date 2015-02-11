@@ -7336,6 +7336,20 @@ operator|.
 name|QUOTA_DONT_SET
 argument_list|)
 expr_stmt|;
+comment|// OP_SET_QUOTA_BY_STORAGETYPE
+name|filesystem
+operator|.
+name|setQuotaByStorageType
+argument_list|(
+name|pathDirectoryMkdir
+argument_list|,
+name|StorageType
+operator|.
+name|SSD
+argument_list|,
+literal|888L
+argument_list|)
+expr_stmt|;
 comment|// OP_RENAME 15
 name|fc
 operator|.

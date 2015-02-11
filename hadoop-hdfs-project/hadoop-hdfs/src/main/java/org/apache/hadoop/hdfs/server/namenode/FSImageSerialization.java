@@ -1361,15 +1361,13 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|writeQuota (Quota.Counts quota, DataOutput out)
+DECL|method|writeQuota (QuotaCounts quota, DataOutput out)
 specifier|private
 specifier|static
 name|void
 name|writeQuota
 parameter_list|(
-name|Quota
-operator|.
-name|Counts
+name|QuotaCounts
 name|quota
 parameter_list|,
 name|DataOutput
@@ -1384,12 +1382,8 @@ name|writeLong
 argument_list|(
 name|quota
 operator|.
-name|get
-argument_list|(
-name|Quota
-operator|.
-name|NAMESPACE
-argument_list|)
+name|getNameSpace
+argument_list|()
 argument_list|)
 expr_stmt|;
 name|out
@@ -1398,12 +1392,8 @@ name|writeLong
 argument_list|(
 name|quota
 operator|.
-name|get
-argument_list|(
-name|Quota
-operator|.
-name|DISKSPACE
-argument_list|)
+name|getDiskSpace
+argument_list|()
 argument_list|)
 expr_stmt|;
 block|}

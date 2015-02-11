@@ -74,6 +74,24 @@ name|hdfs
 operator|.
 name|server
 operator|.
+name|blockmanagement
+operator|.
+name|BlockStoragePolicySuite
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|server
+operator|.
 name|namenode
 operator|.
 name|INode
@@ -132,7 +150,7 @@ name|server
 operator|.
 name|namenode
 operator|.
-name|Quota
+name|QuotaCounts
 import|;
 end_import
 
@@ -245,14 +263,15 @@ name|currentINode
 parameter_list|)
 function_decl|;
 comment|/**    * Delete a snapshot. The synchronization of the diff list will be done     * outside. If the diff to remove is not the first one in the diff list, we     * need to combine the diff with its previous one.    *     * @param snapshot The id of the snapshot to be deleted    * @param prior The id of the snapshot taken before the to-be-deleted snapshot    * @param collectedBlocks Used to collect information for blocksMap update    * @return delta in namespace.     */
-DECL|method|deleteSnapshotDiff (final int snapshot, final int prior, final N currentINode, final BlocksMapUpdateInfo collectedBlocks, final List<INode> removedINodes)
+DECL|method|deleteSnapshotDiff (BlockStoragePolicySuite bsps, final int snapshot, final int prior, final N currentINode, final BlocksMapUpdateInfo collectedBlocks, final List<INode> removedINodes)
 specifier|public
 specifier|final
-name|Quota
-operator|.
-name|Counts
+name|QuotaCounts
 name|deleteSnapshotDiff
 parameter_list|(
+name|BlockStoragePolicySuite
+name|bsps
+parameter_list|,
 specifier|final
 name|int
 name|snapshot
@@ -289,16 +308,16 @@ argument_list|,
 name|snapshot
 argument_list|)
 decl_stmt|;
-name|Quota
-operator|.
-name|Counts
+name|QuotaCounts
 name|counts
 init|=
-name|Quota
+operator|new
+name|QuotaCounts
 operator|.
-name|Counts
+name|Builder
+argument_list|()
 operator|.
-name|newInstance
+name|build
 argument_list|()
 decl_stmt|;
 name|D
@@ -357,6 +376,8 @@ name|removed
 operator|.
 name|destroyDiffAndCollectBlocks
 argument_list|(
+name|bsps
+argument_list|,
 name|currentINode
 argument_list|,
 name|collectedBlocks
@@ -456,6 +477,8 @@ name|previous
 operator|.
 name|combinePosteriorAndCollectBlocks
 argument_list|(
+name|bsps
+argument_list|,
 name|currentINode
 argument_list|,
 name|removed
