@@ -388,7 +388,6 @@ literal|"      display and sorting."
 decl_stmt|;
 DECL|field|dateFormat
 specifier|protected
-specifier|static
 specifier|final
 name|SimpleDateFormat
 name|dateFormat
