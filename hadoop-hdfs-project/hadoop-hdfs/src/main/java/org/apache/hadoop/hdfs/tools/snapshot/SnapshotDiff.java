@@ -294,7 +294,7 @@ block|{
 name|String
 name|description
 init|=
-literal|"SnapshotDiff<snapshotDir><from><to>:\n"
+literal|"hdfs snapshotDiff<snapshotDir><from><to>:\n"
 operator|+
 literal|"\tGet the difference between two snapshots, \n"
 operator|+

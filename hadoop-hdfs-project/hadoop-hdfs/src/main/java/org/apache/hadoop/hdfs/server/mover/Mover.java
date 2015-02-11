@@ -3326,16 +3326,9 @@ specifier|final
 name|String
 name|USAGE
 init|=
-literal|"Usage: java "
+literal|"Usage: hdfs mover "
 operator|+
-name|Mover
-operator|.
-name|class
-operator|.
-name|getSimpleName
-argument_list|()
-operator|+
-literal|" [-p<files/dirs> | -f<local file>]"
+literal|"[-p<files/dirs> | -f<local file>]"
 operator|+
 literal|"\n\t-p<files/dirs>\ta space separated list of HDFS files/dirs to migrate."
 operator|+

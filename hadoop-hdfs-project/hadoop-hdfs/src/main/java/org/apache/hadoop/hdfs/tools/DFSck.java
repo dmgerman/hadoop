@@ -385,7 +385,7 @@ specifier|final
 name|String
 name|USAGE
 init|=
-literal|"Usage: DFSck<path> "
+literal|"Usage: hdfs fsck<path> "
 operator|+
 literal|"[-list-corruptfileblocks | "
 operator|+

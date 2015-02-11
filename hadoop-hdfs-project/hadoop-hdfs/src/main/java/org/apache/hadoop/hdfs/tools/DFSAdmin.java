@@ -3149,7 +3149,7 @@ block|}
 block|}
 block|}
 block|}
-comment|/**    * Safe mode maintenance command.    * Usage: java DFSAdmin -safemode [enter | leave | get]    * @param argv List of of command line parameters.    * @param idx The index of the command that is being processed.    * @exception IOException if the filesystem does not exist.    */
+comment|/**    * Safe mode maintenance command.    * Usage: hdfs dfsadmin -safemode [enter | leave | get]    * @param argv List of of command line parameters.    * @param idx The index of the command that is being processed.    * @exception IOException if the filesystem does not exist.    */
 DECL|method|setSafeMode (String[] argv, int idx)
 specifier|public
 name|void
@@ -3823,7 +3823,7 @@ return|return
 literal|0
 return|;
 block|}
-comment|/**    * Allow snapshot on a directory.    * Usage: java DFSAdmin -allowSnapshot snapshotDir    * @param argv List of of command line parameters.    * @exception IOException    */
+comment|/**    * Allow snapshot on a directory.    * Usage: hdfs dfsadmin -allowSnapshot snapshotDir    * @param argv List of of command line parameters.    * @exception IOException    */
 DECL|method|allowSnapshot (String[] argv)
 specifier|public
 name|void
@@ -3901,7 +3901,7 @@ literal|" succeeded"
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Allow snapshot on a directory.    * Usage: java DFSAdmin -disallowSnapshot snapshotDir    * @param argv List of of command line parameters.    * @exception IOException    */
+comment|/**    * Allow snapshot on a directory.    * Usage: hdfs dfsadmin -disallowSnapshot snapshotDir    * @param argv List of of command line parameters.    * @exception IOException    */
 DECL|method|disallowSnapshot (String[] argv)
 specifier|public
 name|void
@@ -8655,7 +8655,7 @@ name|err
 operator|.
 name|println
 argument_list|(
-literal|"Usage: java DFSAdmin"
+literal|"Usage: hdfs dfsadmin"
 operator|+
 literal|" [-reconfig<datanode|...><host:port><start|status>]"
 argument_list|)
@@ -8862,7 +8862,7 @@ name|err
 operator|.
 name|println
 argument_list|(
-literal|"Usage: java DFSAdmin"
+literal|"Usage: hdfs dfsadmin"
 operator|+
 literal|" [-triggerBlockReport [-incremental]<datanode_host:ipc_port>]"
 argument_list|)

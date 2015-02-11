@@ -179,7 +179,7 @@ block|{
 name|String
 name|description
 init|=
-literal|"LsSnapshottableDir: \n"
+literal|"hdfs lsSnapshottableDir: \n"
 operator|+
 literal|"\tGet the list of snapshottable directories that are owned by the current user.\n"
 operator|+
