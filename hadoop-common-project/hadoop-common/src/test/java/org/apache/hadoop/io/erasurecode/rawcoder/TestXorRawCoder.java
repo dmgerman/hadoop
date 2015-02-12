@@ -62,16 +62,6 @@ name|TestXorRawCoder
 extends|extends
 name|TestRawCoderBase
 block|{
-DECL|field|RAND
-specifier|private
-specifier|static
-name|Random
-name|RAND
-init|=
-operator|new
-name|Random
-argument_list|()
-decl_stmt|;
 annotation|@
 name|Before
 DECL|method|setup ()

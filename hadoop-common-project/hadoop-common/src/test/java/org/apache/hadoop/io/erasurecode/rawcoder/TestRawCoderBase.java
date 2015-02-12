@@ -85,7 +85,7 @@ name|RawErasureDecoder
 argument_list|>
 name|decoderClass
 decl_stmt|;
-comment|/**    * Generating source data, encoding, recovering and then verifying.    * RawErasureCoder mainly uses ECChunk to pass input and output data buffers,    * it supports two kinds of ByteBuffers, one is array backed, the other is    * direct ByteBuffer. Have usingDirectBuffer to indicate which case to test.    * @param usingDirectBuffer    */
+comment|/**    * Generating source data, encoding, recovering and then verifying.    * RawErasureCoder mainly uses ECChunk to pass input and output data buffers,    * it supports two kinds of ByteBuffers, one is array backed, the other is    * direct ByteBuffer. Use usingDirectBuffer indicate which case to test.    *    * @param usingDirectBuffer    */
 DECL|method|testCoding (boolean usingDirectBuffer)
 specifier|protected
 name|void
@@ -95,6 +95,12 @@ name|boolean
 name|usingDirectBuffer
 parameter_list|)
 block|{
+name|this
+operator|.
+name|usingDirectBuffer
+operator|=
+name|usingDirectBuffer
+expr_stmt|;
 comment|// Generate data and encode
 name|ECChunk
 index|[]

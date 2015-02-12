@@ -74,7 +74,7 @@ name|boolean
 name|preferNativeBuffer
 parameter_list|()
 function_decl|;
-comment|/**    * Should be called when release this coder. Good chance to release encoding    * or decoding buffers    */
+comment|/**    * Should be called when release this blockcoder. Good chance to release encoding    * or decoding buffers    */
 DECL|method|release ()
 specifier|public
 name|void
