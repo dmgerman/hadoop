@@ -9104,7 +9104,7 @@ name|getFileEncryptionInfo
 argument_list|()
 expr_stmt|;
 block|}
-DECL|method|newStreamForAppend (DFSClient dfsClient, String src, boolean toNewBlock, int bufferSize, Progressable progress, LocatedBlock lastBlock, HdfsFileStatus stat, DataChecksum checksum)
+DECL|method|newStreamForAppend (DFSClient dfsClient, String src, boolean toNewBlock, int bufferSize, Progressable progress, LocatedBlock lastBlock, HdfsFileStatus stat, DataChecksum checksum, String[] favoredNodes)
 specifier|static
 name|DFSOutputStream
 name|newStreamForAppend
@@ -9132,6 +9132,10 @@ name|stat
 parameter_list|,
 name|DataChecksum
 name|checksum
+parameter_list|,
+name|String
+index|[]
+name|favoredNodes
 parameter_list|)
 throws|throws
 name|IOException
@@ -9158,6 +9162,29 @@ argument_list|,
 name|checksum
 argument_list|)
 decl_stmt|;
+if|if
+condition|(
+name|favoredNodes
+operator|!=
+literal|null
+operator|&&
+name|favoredNodes
+operator|.
+name|length
+operator|!=
+literal|0
+condition|)
+block|{
+name|out
+operator|.
+name|streamer
+operator|.
+name|setFavoredNodes
+argument_list|(
+name|favoredNodes
+argument_list|)
+expr_stmt|;
+block|}
 name|out
 operator|.
 name|start
