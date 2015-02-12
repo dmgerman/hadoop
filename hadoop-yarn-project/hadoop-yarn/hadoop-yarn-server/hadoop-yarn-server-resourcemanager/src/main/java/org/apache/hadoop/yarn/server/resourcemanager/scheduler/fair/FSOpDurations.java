@@ -206,6 +206,18 @@ name|MutableRate
 import|;
 end_import
 
+begin_import
+import|import
+name|javax
+operator|.
+name|annotation
+operator|.
+name|concurrent
+operator|.
+name|ThreadSafe
+import|;
+end_import
+
 begin_comment
 comment|/**  * Class to capture the performance metrics of FairScheduler.  * This should be a singleton.  */
 end_comment
@@ -226,6 +238,8 @@ name|context
 operator|=
 literal|"fairscheduler-op-durations"
 argument_list|)
+annotation|@
+name|ThreadSafe
 DECL|class|FSOpDurations
 specifier|public
 class|class

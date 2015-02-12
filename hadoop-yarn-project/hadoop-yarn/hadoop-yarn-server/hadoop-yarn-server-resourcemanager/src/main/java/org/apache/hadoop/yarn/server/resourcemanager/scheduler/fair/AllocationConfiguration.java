@@ -216,7 +216,21 @@ name|VisibleForTesting
 import|;
 end_import
 
+begin_import
+import|import
+name|javax
+operator|.
+name|annotation
+operator|.
+name|concurrent
+operator|.
+name|ThreadSafe
+import|;
+end_import
+
 begin_class
+annotation|@
+name|ThreadSafe
 DECL|class|AllocationConfiguration
 specifier|public
 class|class
@@ -1101,6 +1115,11 @@ name|String
 name|queue
 parameter_list|)
 block|{
+synchronized|synchronized
+init|(
+name|queueWeights
+init|)
+block|{
 name|ResourceWeights
 name|weight
 init|=
@@ -1125,6 +1144,7 @@ else|:
 name|weight
 return|;
 block|}
+block|}
 DECL|method|setQueueWeight (String queue, ResourceWeights weight)
 specifier|public
 name|void
@@ -1137,6 +1157,11 @@ name|ResourceWeights
 name|weight
 parameter_list|)
 block|{
+synchronized|synchronized
+init|(
+name|queueWeights
+init|)
+block|{
 name|queueWeights
 operator|.
 name|put
@@ -1146,6 +1171,7 @@ argument_list|,
 name|weight
 argument_list|)
 expr_stmt|;
+block|}
 block|}
 DECL|method|getUserMaxApps (String user)
 specifier|public
