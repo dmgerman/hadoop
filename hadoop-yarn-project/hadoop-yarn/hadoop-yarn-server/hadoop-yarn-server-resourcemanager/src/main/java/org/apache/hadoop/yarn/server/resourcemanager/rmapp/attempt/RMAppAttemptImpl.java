@@ -3555,11 +3555,14 @@ argument_list|()
 expr_stmt|;
 block|}
 block|}
-DECL|method|setTrackingUrlToRMAppPage ()
+DECL|method|setTrackingUrlToRMAppPage (RMAppAttemptState stateToBeStored)
 specifier|private
 name|void
 name|setTrackingUrlToRMAppPage
-parameter_list|()
+parameter_list|(
+name|RMAppAttemptState
+name|stateToBeStored
+parameter_list|)
 block|{
 name|originalTrackingUrl
 operator|=
@@ -3583,10 +3586,25 @@ name|getApplicationId
 argument_list|()
 argument_list|)
 expr_stmt|;
+switch|switch
+condition|(
+name|stateToBeStored
+condition|)
+block|{
+case|case
+name|KILLED
+case|:
+case|case
+name|FAILED
+case|:
 name|proxiedTrackingUrl
 operator|=
 name|originalTrackingUrl
 expr_stmt|;
+break|break;
+default|default:
+break|break;
+block|}
 block|}
 DECL|method|invalidateAMHostAndPort ()
 specifier|private
@@ -5723,10 +5741,17 @@ name|diags
 init|=
 literal|null
 decl_stmt|;
+comment|// don't leave the tracking URL pointing to a non-existent AM
+name|setTrackingUrlToRMAppPage
+argument_list|(
+name|stateToBeStored
+argument_list|)
+expr_stmt|;
 name|String
 name|finalTrackingUrl
 init|=
-literal|null
+name|getOriginalTrackingUrl
+argument_list|()
 decl_stmt|;
 name|FinalApplicationStatus
 name|finalStatus
@@ -5794,6 +5819,7 @@ operator|.
 name|getDiagnostics
 argument_list|()
 expr_stmt|;
+comment|// reset finalTrackingUrl to url sent by am
 name|finalTrackingUrl
 operator|=
 name|sanitizeTrackingUrl
@@ -6230,12 +6256,6 @@ case|case
 name|KILLED
 case|:
 block|{
-comment|// don't leave the tracking URL pointing to a non-existent AM
-name|appAttempt
-operator|.
-name|setTrackingUrlToRMAppPage
-argument_list|()
-expr_stmt|;
 name|appAttempt
 operator|.
 name|invalidateAMHostAndPort
@@ -6263,12 +6283,6 @@ case|case
 name|FAILED
 case|:
 block|{
-comment|// don't leave the tracking URL pointing to a non-existent AM
-name|appAttempt
-operator|.
-name|setTrackingUrlToRMAppPage
-argument_list|()
-expr_stmt|;
 name|appAttempt
 operator|.
 name|invalidateAMHostAndPort

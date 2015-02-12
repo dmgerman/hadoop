@@ -9410,7 +9410,7 @@ name|contains
 argument_list|(
 name|applicationAttempt
 operator|.
-name|getWebProxyBase
+name|getTrackingUrl
 argument_list|()
 argument_list|)
 argument_list|)
