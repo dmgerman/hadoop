@@ -5398,7 +5398,7 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Return value matching this enumerated type.    * @param name Property name    * @param defaultValue Value returned if no mapping exists    * @throws IllegalArgumentException If mapping is illegal for the type    * provided    */
+comment|/**    * Return value matching this enumerated type.    * Note that the returned value is trimmed by this method.    * @param name Property name    * @param defaultValue Value returned if no mapping exists    * @throws IllegalArgumentException If mapping is illegal for the type    * provided    */
 DECL|method|getEnum (String name, T defaultValue)
 specifier|public
 parameter_list|<
@@ -5423,7 +5423,7 @@ specifier|final
 name|String
 name|val
 init|=
-name|get
+name|getTrimmed
 argument_list|(
 name|name
 argument_list|)
@@ -5865,7 +5865,7 @@ argument_list|()
 argument_list|)
 return|;
 block|}
-comment|/**    * Get the value of the<code>name</code> property as a<code>Pattern</code>.    * If no such property is specified, or if the specified value is not a valid    *<code>Pattern</code>, then<code>DefaultValue</code> is returned.    *    * @param name property name    * @param defaultValue default value    * @return property value as a compiled Pattern, or defaultValue    */
+comment|/**    * Get the value of the<code>name</code> property as a<code>Pattern</code>.    * If no such property is specified, or if the specified value is not a valid    *<code>Pattern</code>, then<code>DefaultValue</code> is returned.    * Note that the returned value is NOT trimmed by this method.    *    * @param name property name    * @param defaultValue default value    * @return property value as a compiled Pattern, or defaultValue    */
 DECL|method|getPattern (String name, Pattern defaultValue)
 specifier|public
 name|Pattern
@@ -7288,7 +7288,7 @@ specifier|final
 name|String
 name|address
 init|=
-name|get
+name|getTrimmed
 argument_list|(
 name|name
 argument_list|,
