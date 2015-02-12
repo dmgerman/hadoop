@@ -1833,7 +1833,7 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-name|checkAndInformJobTracker
+name|checkAndInformMRAppMaster
 argument_list|(
 name|failures
 argument_list|,
@@ -1947,13 +1947,13 @@ name|ioe
 argument_list|)
 expr_stmt|;
 block|}
-comment|// Notify the JobTracker
+comment|// Notify the MRAppMaster
 comment|// after every read error, if 'reportReadErrorImmediately' is true or
 comment|// after every 'maxFetchFailuresBeforeReporting' failures
-DECL|method|checkAndInformJobTracker ( int failures, TaskAttemptID mapId, boolean readError, boolean connectExcpt, boolean hostFailed)
+DECL|method|checkAndInformMRAppMaster ( int failures, TaskAttemptID mapId, boolean readError, boolean connectExcpt, boolean hostFailed)
 specifier|private
 name|void
-name|checkAndInformJobTracker
+name|checkAndInformMRAppMaster
 parameter_list|(
 name|int
 name|failures
@@ -2002,7 +2002,7 @@ literal|"Reporting fetch failure for "
 operator|+
 name|mapId
 operator|+
-literal|" to jobtracker."
+literal|" to MRAppMaster."
 argument_list|)
 expr_stmt|;
 name|status
