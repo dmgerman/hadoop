@@ -56,6 +56,16 @@ end_import
 
 begin_import
 import|import
+name|java
+operator|.
+name|util
+operator|.
+name|NoSuchElementException
+import|;
+end_import
+
+begin_import
+import|import
 name|org
 operator|.
 name|apache
@@ -1039,6 +1049,24 @@ operator|+
 name|containerIdStr
 argument_list|,
 name|n
+argument_list|)
+throw|;
+block|}
+catch|catch
+parameter_list|(
+name|NoSuchElementException
+name|e
+parameter_list|)
+block|{
+throw|throw
+operator|new
+name|IllegalArgumentException
+argument_list|(
+literal|"Invalid ContainerId: "
+operator|+
+name|containerIdStr
+argument_list|,
+name|e
 argument_list|)
 throw|;
 block|}
