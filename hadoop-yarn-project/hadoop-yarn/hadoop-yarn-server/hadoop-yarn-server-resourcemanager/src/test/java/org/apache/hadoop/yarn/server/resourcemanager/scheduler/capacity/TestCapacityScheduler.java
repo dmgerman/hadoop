@@ -3394,7 +3394,7 @@ name|MAXIMUM_CAPACITY_VALUE
 argument_list|,
 name|conf
 operator|.
-name|getMaximumCapacity
+name|getNonLabeledQueueMaximumCapacity
 argument_list|(
 name|A
 argument_list|)
@@ -3417,7 +3417,7 @@ literal|50.0f
 argument_list|,
 name|conf
 operator|.
-name|getMaximumCapacity
+name|getNonLabeledQueueMaximumCapacity
 argument_list|(
 name|A
 argument_list|)
@@ -3443,7 +3443,7 @@ name|MAXIMUM_CAPACITY_VALUE
 argument_list|,
 name|conf
 operator|.
-name|getMaximumCapacity
+name|getNonLabeledQueueMaximumCapacity
 argument_list|(
 name|A
 argument_list|)

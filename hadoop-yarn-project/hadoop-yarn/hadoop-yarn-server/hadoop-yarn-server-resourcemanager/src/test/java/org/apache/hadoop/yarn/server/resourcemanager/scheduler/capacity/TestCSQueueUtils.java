@@ -1391,7 +1391,7 @@ expr_stmt|;
 comment|//some usage, but below the base capacity
 name|root
 operator|.
-name|getResourceUsage
+name|getQueueResourceUsage
 argument_list|()
 operator|.
 name|incUsed
@@ -1408,7 +1408,7 @@ argument_list|)
 expr_stmt|;
 name|l1q2
 operator|.
-name|getResourceUsage
+name|getQueueResourceUsage
 argument_list|()
 operator|.
 name|incUsed
@@ -1457,7 +1457,7 @@ expr_stmt|;
 comment|//usage gt base on parent sibling
 name|root
 operator|.
-name|getResourceUsage
+name|getQueueResourceUsage
 argument_list|()
 operator|.
 name|incUsed
@@ -1474,7 +1474,7 @@ argument_list|)
 expr_stmt|;
 name|l1q2
 operator|.
-name|getResourceUsage
+name|getQueueResourceUsage
 argument_list|()
 operator|.
 name|incUsed
@@ -1523,7 +1523,7 @@ expr_stmt|;
 comment|//same as last, but with usage also on direct parent
 name|root
 operator|.
-name|getResourceUsage
+name|getQueueResourceUsage
 argument_list|()
 operator|.
 name|incUsed
@@ -1540,7 +1540,7 @@ argument_list|)
 expr_stmt|;
 name|l1q1
 operator|.
-name|getResourceUsage
+name|getQueueResourceUsage
 argument_list|()
 operator|.
 name|incUsed
@@ -1589,7 +1589,7 @@ expr_stmt|;
 comment|//add to direct sibling, below the threshold of effect at present
 name|root
 operator|.
-name|getResourceUsage
+name|getQueueResourceUsage
 argument_list|()
 operator|.
 name|incUsed
@@ -1606,7 +1606,7 @@ argument_list|)
 expr_stmt|;
 name|l1q1
 operator|.
-name|getResourceUsage
+name|getQueueResourceUsage
 argument_list|()
 operator|.
 name|incUsed
@@ -1623,7 +1623,7 @@ argument_list|)
 expr_stmt|;
 name|l2q1
 operator|.
-name|getResourceUsage
+name|getQueueResourceUsage
 argument_list|()
 operator|.
 name|incUsed
@@ -1673,7 +1673,7 @@ comment|//add to direct sibling, now above the threshold of effect
 comment|//(it's cumulative with prior tests)
 name|root
 operator|.
-name|getResourceUsage
+name|getQueueResourceUsage
 argument_list|()
 operator|.
 name|incUsed
@@ -1690,7 +1690,7 @@ argument_list|)
 expr_stmt|;
 name|l1q1
 operator|.
-name|getResourceUsage
+name|getQueueResourceUsage
 argument_list|()
 operator|.
 name|incUsed
@@ -1707,7 +1707,7 @@ argument_list|)
 expr_stmt|;
 name|l2q1
 operator|.
-name|getResourceUsage
+name|getQueueResourceUsage
 argument_list|()
 operator|.
 name|incUsed

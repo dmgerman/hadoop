@@ -298,6 +298,26 @@ name|resourcemanager
 operator|.
 name|scheduler
 operator|.
+name|ResourceUsage
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|server
+operator|.
+name|resourcemanager
+operator|.
+name|scheduler
+operator|.
 name|common
 operator|.
 name|fica
@@ -398,13 +418,6 @@ name|float
 name|getCapacity
 parameter_list|()
 function_decl|;
-comment|/**    * Get actual<em>capacity</em> of the queue, this may be different from    * configured capacity when mis-config take place, like add labels to the    * cluster    *     * @return actual queue capacity    */
-DECL|method|getAbsActualCapacity ()
-specifier|public
-name|float
-name|getAbsActualCapacity
-parameter_list|()
-function_decl|;
 comment|/**    * Get capacity of the parent of the queue as a function of the     * cumulative capacity in the cluster.    * @return capacity of the parent of the queue as a function of the     *         cumulative capacity in the cluster    */
 DECL|method|getAbsoluteCapacity ()
 specifier|public
@@ -466,16 +479,6 @@ specifier|public
 name|Resource
 name|getUsedResources
 parameter_list|()
-function_decl|;
-comment|/**    * Get the currently utilized resources which allocated at nodes with label    * specified    *     * @return used resources by the queue and it's children    */
-DECL|method|getUsedResourceByLabel (String nodeLabel)
-specifier|public
-name|Resource
-name|getUsedResourceByLabel
-parameter_list|(
-name|String
-name|nodeLabel
-parameter_list|)
 function_decl|;
 comment|/**    * Get the current run-state of the queue    * @return current run-state    */
 DECL|method|getState ()
@@ -695,41 +698,25 @@ name|RMContainer
 name|container
 parameter_list|)
 function_decl|;
-comment|/**    * Get absolute capacity by label of this queue can use     * @param nodeLabel    * @return absolute capacity by label of this queue can use    */
-DECL|method|getAbsoluteCapacityByNodeLabel (String nodeLabel)
-specifier|public
-name|float
-name|getAbsoluteCapacityByNodeLabel
-parameter_list|(
-name|String
-name|nodeLabel
-parameter_list|)
-function_decl|;
-comment|/**    * Get absolute max capacity by label of this queue can use     * @param nodeLabel    * @return absolute capacity by label of this queue can use    */
-DECL|method|getAbsoluteMaximumCapacityByNodeLabel (String nodeLabel)
-specifier|public
-name|float
-name|getAbsoluteMaximumCapacityByNodeLabel
-parameter_list|(
-name|String
-name|nodeLabel
-parameter_list|)
-function_decl|;
-comment|/**    * Get capacity by node label    * @param nodeLabel    * @return capacity by node label    */
-DECL|method|getCapacityByNodeLabel (String nodeLabel)
-specifier|public
-name|float
-name|getCapacityByNodeLabel
-parameter_list|(
-name|String
-name|nodeLabel
-parameter_list|)
-function_decl|;
 comment|/**    * Check whether<em>disable_preemption</em> property is set for this queue    * @return true if<em>disable_preemption</em> is set, false if not    */
 DECL|method|getPreemptionDisabled ()
 specifier|public
 name|boolean
 name|getPreemptionDisabled
+parameter_list|()
+function_decl|;
+comment|/**    * Get QueueCapacities of this queue    * @return queueCapacities    */
+DECL|method|getQueueCapacities ()
+specifier|public
+name|QueueCapacities
+name|getQueueCapacities
+parameter_list|()
+function_decl|;
+comment|/**    * Get ResourceUsage of this queue    * @return resourceUsage    */
+DECL|method|getQueueResourceUsage ()
+specifier|public
+name|ResourceUsage
+name|getQueueResourceUsage
 parameter_list|()
 function_decl|;
 block|}

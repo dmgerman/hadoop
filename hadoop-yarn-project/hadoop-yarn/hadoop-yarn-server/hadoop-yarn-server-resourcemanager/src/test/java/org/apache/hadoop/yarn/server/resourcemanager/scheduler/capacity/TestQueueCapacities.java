@@ -520,7 +520,9 @@ name|qc
 init|=
 operator|new
 name|QueueCapacities
-argument_list|()
+argument_list|(
+literal|false
+argument_list|)
 decl_stmt|;
 comment|// First get returns 0 always
 name|Assert

@@ -3016,7 +3016,7 @@ literal|"capacity doesn't match"
 argument_list|,
 name|csConf
 operator|.
-name|getCapacity
+name|getNonLabeledQueueCapacity
 argument_list|(
 name|q
 argument_list|)
@@ -3033,7 +3033,7 @@ name|expectCapacity
 init|=
 name|csConf
 operator|.
-name|getMaximumCapacity
+name|getNonLabeledQueueMaximumCapacity
 argument_list|(
 name|q
 argument_list|)

@@ -676,7 +676,10 @@ name|memory
 argument_list|,
 name|queue
 operator|.
-name|getUsedResourceByLabel
+name|getQueueResourceUsage
+argument_list|()
+operator|.
+name|getUsed
 argument_list|(
 name|label
 argument_list|)
