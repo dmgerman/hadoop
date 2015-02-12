@@ -149,6 +149,8 @@ implements|,
 name|CanSetReadahead
 implements|,
 name|HasEnhancedByteBufferAccess
+implements|,
+name|CanUnbuffer
 block|{
 comment|/**    * Map ByteBuffers that we have handed out to readers to ByteBufferPool     * objects    */
 specifier|private
@@ -827,6 +829,44 @@ argument_list|(
 name|buffer
 argument_list|)
 expr_stmt|;
+block|}
+block|}
+annotation|@
+name|Override
+DECL|method|unbuffer ()
+specifier|public
+name|void
+name|unbuffer
+parameter_list|()
+block|{
+try|try
+block|{
+operator|(
+operator|(
+name|CanUnbuffer
+operator|)
+name|in
+operator|)
+operator|.
+name|unbuffer
+argument_list|()
+expr_stmt|;
+block|}
+catch|catch
+parameter_list|(
+name|ClassCastException
+name|e
+parameter_list|)
+block|{
+throw|throw
+operator|new
+name|UnsupportedOperationException
+argument_list|(
+literal|"this stream does not "
+operator|+
+literal|"support unbuffering."
+argument_list|)
+throw|;
 block|}
 block|}
 block|}
