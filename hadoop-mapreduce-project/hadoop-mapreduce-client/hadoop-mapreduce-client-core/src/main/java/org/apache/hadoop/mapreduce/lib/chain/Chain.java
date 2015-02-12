@@ -3043,7 +3043,7 @@ init|=
 literal|null
 decl_stmt|;
 try|try
-block|{
+init|(
 name|Stringifier
 argument_list|<
 name|Configuration
@@ -3062,7 +3062,9 @@ name|Configuration
 operator|.
 name|class
 argument_list|)
-decl_stmt|;
+init|;
+init|)
+block|{
 name|String
 name|confString
 init|=
