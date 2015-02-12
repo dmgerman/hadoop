@@ -224,6 +224,24 @@ name|hadoop
 operator|.
 name|yarn
 operator|.
+name|proto
+operator|.
+name|YarnServerNodemanagerRecoveryProtos
+operator|.
+name|LogDeleterProto
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
 name|server
 operator|.
 name|api
@@ -707,6 +725,53 @@ name|removeContainerToken
 parameter_list|(
 name|ContainerId
 name|containerId
+parameter_list|)
+throws|throws
+name|IOException
+block|{   }
+annotation|@
+name|Override
+DECL|method|loadLogDeleterState ()
+specifier|public
+name|RecoveredLogDeleterState
+name|loadLogDeleterState
+parameter_list|()
+throws|throws
+name|IOException
+block|{
+throw|throw
+operator|new
+name|UnsupportedOperationException
+argument_list|(
+literal|"Recovery not supported by this state store"
+argument_list|)
+throw|;
+block|}
+annotation|@
+name|Override
+DECL|method|storeLogDeleter (ApplicationId appId, LogDeleterProto proto)
+specifier|public
+name|void
+name|storeLogDeleter
+parameter_list|(
+name|ApplicationId
+name|appId
+parameter_list|,
+name|LogDeleterProto
+name|proto
+parameter_list|)
+throws|throws
+name|IOException
+block|{   }
+annotation|@
+name|Override
+DECL|method|removeLogDeleter (ApplicationId appId)
+specifier|public
+name|void
+name|removeLogDeleter
+parameter_list|(
+name|ApplicationId
+name|appId
 parameter_list|)
 throws|throws
 name|IOException

@@ -292,6 +292,24 @@ name|hadoop
 operator|.
 name|yarn
 operator|.
+name|proto
+operator|.
+name|YarnServerNodemanagerRecoveryProtos
+operator|.
+name|LogDeleterProto
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
 name|server
 operator|.
 name|api
@@ -391,6 +409,16 @@ DECL|field|containerTokenState
 specifier|private
 name|RecoveredContainerTokensState
 name|containerTokenState
+decl_stmt|;
+DECL|field|logDeleterState
+specifier|private
+name|Map
+argument_list|<
+name|ApplicationId
+argument_list|,
+name|LogDeleterProto
+argument_list|>
+name|logDeleterState
 decl_stmt|;
 DECL|method|NMMemoryStateStoreService ()
 specifier|public
@@ -510,6 +538,17 @@ name|DeletionServiceDeleteTaskProto
 argument_list|>
 argument_list|()
 expr_stmt|;
+name|logDeleterState
+operator|=
+operator|new
+name|HashMap
+argument_list|<
+name|ApplicationId
+argument_list|,
+name|LogDeleterProto
+argument_list|>
+argument_list|()
+expr_stmt|;
 block|}
 annotation|@
 name|Override
@@ -531,6 +570,7 @@ annotation|@
 name|Override
 DECL|method|loadApplicationsState ()
 specifier|public
+specifier|synchronized
 name|RecoveredApplicationsState
 name|loadApplicationsState
 parameter_list|()
@@ -581,6 +621,7 @@ annotation|@
 name|Override
 DECL|method|storeApplication (ApplicationId appId, ContainerManagerApplicationProto proto)
 specifier|public
+specifier|synchronized
 name|void
 name|storeApplication
 parameter_list|(
@@ -620,6 +661,7 @@ annotation|@
 name|Override
 DECL|method|storeFinishedApplication (ApplicationId appId)
 specifier|public
+specifier|synchronized
 name|void
 name|storeFinishedApplication
 parameter_list|(
@@ -639,6 +681,7 @@ annotation|@
 name|Override
 DECL|method|removeApplication (ApplicationId appId)
 specifier|public
+specifier|synchronized
 name|void
 name|removeApplication
 parameter_list|(
@@ -667,6 +710,7 @@ annotation|@
 name|Override
 DECL|method|loadContainersState ()
 specifier|public
+specifier|synchronized
 name|List
 argument_list|<
 name|RecoveredContainerState
@@ -774,6 +818,7 @@ annotation|@
 name|Override
 DECL|method|storeContainer (ContainerId containerId, StartContainerRequest startRequest)
 specifier|public
+specifier|synchronized
 name|void
 name|storeContainer
 parameter_list|(
@@ -813,6 +858,7 @@ annotation|@
 name|Override
 DECL|method|storeContainerDiagnostics (ContainerId containerId, StringBuilder diagnostics)
 specifier|public
+specifier|synchronized
 name|void
 name|storeContainerDiagnostics
 parameter_list|(
@@ -847,6 +893,7 @@ annotation|@
 name|Override
 DECL|method|storeContainerLaunched (ContainerId containerId)
 specifier|public
+specifier|synchronized
 name|void
 name|storeContainerLaunched
 parameter_list|(
@@ -896,6 +943,7 @@ annotation|@
 name|Override
 DECL|method|storeContainerKilled (ContainerId containerId)
 specifier|public
+specifier|synchronized
 name|void
 name|storeContainerKilled
 parameter_list|(
@@ -924,6 +972,7 @@ annotation|@
 name|Override
 DECL|method|storeContainerCompleted (ContainerId containerId, int exitCode)
 specifier|public
+specifier|synchronized
 name|void
 name|storeContainerCompleted
 parameter_list|(
@@ -963,6 +1012,7 @@ annotation|@
 name|Override
 DECL|method|removeContainer (ContainerId containerId)
 specifier|public
+specifier|synchronized
 name|void
 name|removeContainer
 parameter_list|(
@@ -1477,6 +1527,7 @@ annotation|@
 name|Override
 DECL|method|loadDeletionServiceState ()
 specifier|public
+specifier|synchronized
 name|RecoveredDeletionServiceState
 name|loadDeletionServiceState
 parameter_list|()
@@ -1563,6 +1614,7 @@ annotation|@
 name|Override
 DECL|method|loadNMTokensState ()
 specifier|public
+specifier|synchronized
 name|RecoveredNMTokensState
 name|loadNMTokensState
 parameter_list|()
@@ -1618,6 +1670,7 @@ annotation|@
 name|Override
 DECL|method|storeNMTokenCurrentMasterKey (MasterKey key)
 specifier|public
+specifier|synchronized
 name|void
 name|storeNMTokenCurrentMasterKey
 parameter_list|(
@@ -1653,6 +1706,7 @@ annotation|@
 name|Override
 DECL|method|storeNMTokenPreviousMasterKey (MasterKey key)
 specifier|public
+specifier|synchronized
 name|void
 name|storeNMTokenPreviousMasterKey
 parameter_list|(
@@ -1686,8 +1740,9 @@ expr_stmt|;
 block|}
 annotation|@
 name|Override
-DECL|method|storeNMTokenApplicationMasterKey (ApplicationAttemptId attempt, MasterKey key)
+DECL|method|storeNMTokenApplicationMasterKey ( ApplicationAttemptId attempt, MasterKey key)
 specifier|public
+specifier|synchronized
 name|void
 name|storeNMTokenApplicationMasterKey
 parameter_list|(
@@ -1729,8 +1784,9 @@ expr_stmt|;
 block|}
 annotation|@
 name|Override
-DECL|method|removeNMTokenApplicationMasterKey (ApplicationAttemptId attempt)
+DECL|method|removeNMTokenApplicationMasterKey ( ApplicationAttemptId attempt)
 specifier|public
+specifier|synchronized
 name|void
 name|removeNMTokenApplicationMasterKey
 parameter_list|(
@@ -1754,6 +1810,7 @@ annotation|@
 name|Override
 DECL|method|loadContainerTokensState ()
 specifier|public
+specifier|synchronized
 name|RecoveredContainerTokensState
 name|loadContainerTokensState
 parameter_list|()
@@ -1809,6 +1866,7 @@ annotation|@
 name|Override
 DECL|method|storeContainerTokenCurrentMasterKey (MasterKey key)
 specifier|public
+specifier|synchronized
 name|void
 name|storeContainerTokenCurrentMasterKey
 parameter_list|(
@@ -1844,6 +1902,7 @@ annotation|@
 name|Override
 DECL|method|storeContainerTokenPreviousMasterKey (MasterKey key)
 specifier|public
+specifier|synchronized
 name|void
 name|storeContainerTokenPreviousMasterKey
 parameter_list|(
@@ -1879,6 +1938,7 @@ annotation|@
 name|Override
 DECL|method|storeContainerToken (ContainerId containerId, Long expirationTime)
 specifier|public
+specifier|synchronized
 name|void
 name|storeContainerToken
 parameter_list|(
@@ -1907,6 +1967,7 @@ annotation|@
 name|Override
 DECL|method|removeContainerToken (ContainerId containerId)
 specifier|public
+specifier|synchronized
 name|void
 name|removeContainerToken
 parameter_list|(
@@ -1923,6 +1984,92 @@ operator|.
 name|remove
 argument_list|(
 name|containerId
+argument_list|)
+expr_stmt|;
+block|}
+annotation|@
+name|Override
+DECL|method|loadLogDeleterState ()
+specifier|public
+specifier|synchronized
+name|RecoveredLogDeleterState
+name|loadLogDeleterState
+parameter_list|()
+throws|throws
+name|IOException
+block|{
+name|RecoveredLogDeleterState
+name|state
+init|=
+operator|new
+name|RecoveredLogDeleterState
+argument_list|()
+decl_stmt|;
+name|state
+operator|.
+name|logDeleterMap
+operator|=
+operator|new
+name|HashMap
+argument_list|<
+name|ApplicationId
+argument_list|,
+name|LogDeleterProto
+argument_list|>
+argument_list|(
+name|logDeleterState
+argument_list|)
+expr_stmt|;
+return|return
+name|state
+return|;
+block|}
+annotation|@
+name|Override
+DECL|method|storeLogDeleter (ApplicationId appId, LogDeleterProto proto)
+specifier|public
+specifier|synchronized
+name|void
+name|storeLogDeleter
+parameter_list|(
+name|ApplicationId
+name|appId
+parameter_list|,
+name|LogDeleterProto
+name|proto
+parameter_list|)
+throws|throws
+name|IOException
+block|{
+name|logDeleterState
+operator|.
+name|put
+argument_list|(
+name|appId
+argument_list|,
+name|proto
+argument_list|)
+expr_stmt|;
+block|}
+annotation|@
+name|Override
+DECL|method|removeLogDeleter (ApplicationId appId)
+specifier|public
+specifier|synchronized
+name|void
+name|removeLogDeleter
+parameter_list|(
+name|ApplicationId
+name|appId
+parameter_list|)
+throws|throws
+name|IOException
+block|{
+name|logDeleterState
+operator|.
+name|remove
+argument_list|(
+name|appId
 argument_list|)
 expr_stmt|;
 block|}

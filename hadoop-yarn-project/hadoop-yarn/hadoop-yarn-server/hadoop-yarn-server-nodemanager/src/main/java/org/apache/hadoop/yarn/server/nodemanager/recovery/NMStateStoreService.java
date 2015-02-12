@@ -318,6 +318,24 @@ name|hadoop
 operator|.
 name|yarn
 operator|.
+name|proto
+operator|.
+name|YarnServerNodemanagerRecoveryProtos
+operator|.
+name|LogDeleterProto
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
 name|server
 operator|.
 name|api
@@ -847,6 +865,37 @@ name|activeTokens
 return|;
 block|}
 block|}
+DECL|class|RecoveredLogDeleterState
+specifier|public
+specifier|static
+class|class
+name|RecoveredLogDeleterState
+block|{
+DECL|field|logDeleterMap
+name|Map
+argument_list|<
+name|ApplicationId
+argument_list|,
+name|LogDeleterProto
+argument_list|>
+name|logDeleterMap
+decl_stmt|;
+DECL|method|getLogDeleterMap ()
+specifier|public
+name|Map
+argument_list|<
+name|ApplicationId
+argument_list|,
+name|LogDeleterProto
+argument_list|>
+name|getLogDeleterMap
+parameter_list|()
+block|{
+return|return
+name|logDeleterMap
+return|;
+block|}
+block|}
 comment|/** Initialize the state storage */
 annotation|@
 name|Override
@@ -1304,6 +1353,45 @@ name|removeContainerToken
 parameter_list|(
 name|ContainerId
 name|containerId
+parameter_list|)
+throws|throws
+name|IOException
+function_decl|;
+comment|/**    * Load the state of log deleters    * @return recovered log deleter state    * @throws IOException    */
+DECL|method|loadLogDeleterState ()
+specifier|public
+specifier|abstract
+name|RecoveredLogDeleterState
+name|loadLogDeleterState
+parameter_list|()
+throws|throws
+name|IOException
+function_decl|;
+comment|/**    * Store the state of a log deleter    * @param appId the application ID for the log deleter    * @param proto the serialized state of the log deleter    * @throws IOException    */
+DECL|method|storeLogDeleter (ApplicationId appId, LogDeleterProto proto)
+specifier|public
+specifier|abstract
+name|void
+name|storeLogDeleter
+parameter_list|(
+name|ApplicationId
+name|appId
+parameter_list|,
+name|LogDeleterProto
+name|proto
+parameter_list|)
+throws|throws
+name|IOException
+function_decl|;
+comment|/**    * Remove the state of a log deleter    * @param appId the application ID for the log deleter    * @throws IOException    */
+DECL|method|removeLogDeleter (ApplicationId appId)
+specifier|public
+specifier|abstract
+name|void
+name|removeLogDeleter
+parameter_list|(
+name|ApplicationId
+name|appId
 parameter_list|)
 throws|throws
 name|IOException
