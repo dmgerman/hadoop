@@ -46,34 +46,6 @@ name|org
 operator|.
 name|apache
 operator|.
-name|commons
-operator|.
-name|logging
-operator|.
-name|Log
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|commons
-operator|.
-name|logging
-operator|.
-name|LogFactory
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
 name|hadoop
 operator|.
 name|conf
@@ -218,6 +190,26 @@ name|VisibleForTesting
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|slf4j
+operator|.
+name|Logger
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|slf4j
+operator|.
+name|LoggerFactory
+import|;
+end_import
+
 begin_class
 DECL|class|WebAppProxy
 specifier|public
@@ -257,12 +249,12 @@ DECL|field|LOG
 specifier|private
 specifier|static
 specifier|final
-name|Log
+name|Logger
 name|LOG
 init|=
-name|LogFactory
+name|LoggerFactory
 operator|.
-name|getLog
+name|getLogger
 argument_list|(
 name|WebAppProxy
 operator|.
@@ -721,7 +713,7 @@ parameter_list|)
 block|{
 name|LOG
 operator|.
-name|fatal
+name|error
 argument_list|(
 literal|"Could not start proxy web server"
 argument_list|,
@@ -729,13 +721,7 @@ name|e
 argument_list|)
 expr_stmt|;
 throw|throw
-operator|new
-name|YarnRuntimeException
-argument_list|(
-literal|"Could not start proxy web server"
-argument_list|,
 name|e
-argument_list|)
 throw|;
 block|}
 name|super
@@ -777,7 +763,7 @@ parameter_list|)
 block|{
 name|LOG
 operator|.
-name|fatal
+name|error
 argument_list|(
 literal|"Error stopping proxy web server"
 argument_list|,
@@ -844,7 +830,9 @@ parameter_list|(
 name|InterruptedException
 name|e
 parameter_list|)
-block|{       }
+block|{
+comment|// ignored
+block|}
 block|}
 block|}
 annotation|@

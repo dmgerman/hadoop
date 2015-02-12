@@ -162,6 +162,16 @@ end_import
 
 begin_import
 import|import
+name|java
+operator|.
+name|util
+operator|.
+name|Set
+import|;
+end_import
+
+begin_import
+import|import
 name|javax
 operator|.
 name|servlet
@@ -309,34 +319,6 @@ operator|.
 name|params
 operator|.
 name|HttpClientParams
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|commons
-operator|.
-name|logging
-operator|.
-name|Log
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|commons
-operator|.
-name|logging
-operator|.
-name|LogFactory
 import|;
 end_import
 
@@ -538,6 +520,26 @@ name|WebAppUtils
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|slf4j
+operator|.
+name|Logger
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|slf4j
+operator|.
+name|LoggerFactory
+import|;
+end_import
+
 begin_class
 DECL|class|WebAppProxyServlet
 specifier|public
@@ -559,12 +561,12 @@ DECL|field|LOG
 specifier|private
 specifier|static
 specifier|final
-name|Log
+name|Logger
 name|LOG
 init|=
-name|LogFactory
+name|LoggerFactory
 operator|.
-name|getLog
+name|getLogger
 argument_list|(
 name|WebAppProxyServlet
 operator|.
@@ -575,7 +577,7 @@ DECL|field|passThroughHeaders
 specifier|private
 specifier|static
 specifier|final
-name|HashSet
+name|Set
 argument_list|<
 name|String
 argument_list|>
@@ -583,9 +585,7 @@ name|passThroughHeaders
 init|=
 operator|new
 name|HashSet
-argument_list|<
-name|String
-argument_list|>
+argument_list|<>
 argument_list|(
 name|Arrays
 operator|.
@@ -684,11 +684,7 @@ block|{
 return|return
 operator|new
 name|HTML
-argument_list|<
-name|WebAppProxyServlet
-operator|.
-name|_
-argument_list|>
+argument_list|<>
 argument_list|(
 literal|"html"
 argument_list|,
@@ -775,48 +771,14 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
-name|resp
+name|ProxyUtils
 operator|.
-name|setStatus
-argument_list|(
-name|HttpServletResponse
-operator|.
-name|SC_NOT_FOUND
-argument_list|)
-expr_stmt|;
-name|resp
-operator|.
-name|setContentType
-argument_list|(
-name|MimeType
-operator|.
-name|HTML
-argument_list|)
-expr_stmt|;
-name|Page
-name|p
-init|=
-operator|new
-name|Page
+name|notFound
 argument_list|(
 name|resp
-operator|.
-name|getWriter
-argument_list|()
-argument_list|)
-decl_stmt|;
-name|p
-operator|.
-name|html
-argument_list|()
-operator|.
-name|h1
-argument_list|(
+argument_list|,
 name|message
 argument_list|)
-operator|.
-name|_
-argument_list|()
 expr_stmt|;
 block|}
 comment|/**    * Warn the user that the link may not be safe!    * @param resp the http response    * @param link the link to point to    * @param user the user that owns the link.    * @throws IOException on any error.    */
@@ -1039,12 +1001,9 @@ name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"local InetAddress for proxy host: "
-operator|+
+literal|"local InetAddress for proxy host: {}"
+argument_list|,
 name|localAddress
-operator|.
-name|toString
-argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
@@ -1128,19 +1087,26 @@ argument_list|(
 name|name
 argument_list|)
 decl_stmt|;
+if|if
+condition|(
+name|LOG
+operator|.
+name|isDebugEnabled
+argument_list|()
+condition|)
+block|{
 name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"REQ HEADER: "
-operator|+
+literal|"REQ HEADER: {} : {}"
+argument_list|,
 name|name
-operator|+
-literal|" : "
-operator|+
+argument_list|,
 name|value
 argument_list|)
 expr_stmt|;
+block|}
 name|method
 operator|.
 name|setRequestHeader
@@ -1397,16 +1363,13 @@ operator|.
 name|IS_SECURITY_ENABLED_ATTRIBUTE
 argument_list|)
 decl_stmt|;
-if|if
-condition|(
+return|return
 name|b
 operator|!=
 literal|null
-condition|)
-return|return
+condition|?
 name|b
-return|;
-return|return
+else|:
 literal|false
 return|;
 block|}
@@ -1508,18 +1471,12 @@ decl_stmt|;
 name|boolean
 name|userApproved
 init|=
-operator|(
-name|userApprovedParamS
-operator|!=
-literal|null
-operator|&&
 name|Boolean
 operator|.
 name|valueOf
 argument_list|(
 name|userApprovedParamS
 argument_list|)
-operator|)
 decl_stmt|;
 name|boolean
 name|securityEnabled
@@ -1546,8 +1503,8 @@ name|getPathInfo
 argument_list|()
 decl_stmt|;
 name|String
-name|parts
 index|[]
+name|parts
 init|=
 name|pathInfo
 operator|.
@@ -1571,10 +1528,10 @@ name|LOG
 operator|.
 name|warn
 argument_list|(
+literal|"{} gave an invalid proxy path {}"
+argument_list|,
 name|remoteUser
-operator|+
-literal|" Gave an invalid proxy path "
-operator|+
+argument_list|,
 name|pathInfo
 argument_list|)
 expr_stmt|;
@@ -1633,16 +1590,11 @@ name|LOG
 operator|.
 name|warn
 argument_list|(
-name|req
-operator|.
-name|getRemoteUser
-argument_list|()
-operator|+
-literal|" Attempting to access "
-operator|+
+literal|"{} attempting to access {} that is invalid"
+argument_list|,
+name|remoteUser
+argument_list|,
 name|appId
-operator|+
-literal|" that is invalid"
 argument_list|)
 expr_stmt|;
 name|notFound
@@ -1744,8 +1696,6 @@ operator|)
 decl_stmt|;
 name|ApplicationReport
 name|applicationReport
-init|=
-literal|null
 decl_stmt|;
 try|try
 block|{
@@ -1779,16 +1729,11 @@ name|LOG
 operator|.
 name|warn
 argument_list|(
-name|req
-operator|.
-name|getRemoteUser
-argument_list|()
-operator|+
-literal|" Attempting to access "
-operator|+
+literal|"{} attempting to access {} that was not found"
+argument_list|,
+name|remoteUser
+argument_list|,
 name|id
-operator|+
-literal|" that was not found"
 argument_list|)
 expr_stmt|;
 name|URI
@@ -1812,19 +1757,18 @@ operator|!=
 literal|null
 condition|)
 block|{
-name|resp
+name|ProxyUtils
 operator|.
 name|sendRedirect
 argument_list|(
+name|req
+argument_list|,
 name|resp
-operator|.
-name|encodeRedirectURL
-argument_list|(
+argument_list|,
 name|toFetch
 operator|.
 name|toString
 argument_list|()
-argument_list|)
 argument_list|)
 expr_stmt|;
 return|return;
@@ -1854,8 +1798,6 @@ argument_list|()
 decl_stmt|;
 name|URI
 name|trackingUri
-init|=
-literal|null
 decl_stmt|;
 comment|// fallback to ResourceManager's app page if no tracking URI provided
 if|if
@@ -1872,14 +1814,14 @@ literal|"N/A"
 argument_list|)
 condition|)
 block|{
-name|resp
+name|ProxyUtils
 operator|.
 name|sendRedirect
 argument_list|(
+name|req
+argument_list|,
 name|resp
-operator|.
-name|encodeRedirectURL
-argument_list|(
+argument_list|,
 name|StringHelper
 operator|.
 name|pjoin
@@ -1890,7 +1832,6 @@ name|id
 operator|.
 name|toString
 argument_list|()
-argument_list|)
 argument_list|)
 argument_list|)
 expr_stmt|;
@@ -1965,18 +1906,14 @@ name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"Asking "
+literal|"Asking {} if they want to connect to the "
 operator|+
+literal|"app master GUI of {} owned by {}"
+argument_list|,
 name|remoteUser
-operator|+
-literal|" if they want to connect to the "
-operator|+
-literal|"app master GUI of "
-operator|+
+argument_list|,
 name|appId
-operator|+
-literal|" owned by "
-operator|+
+argument_list|,
 name|runningUser
 argument_list|)
 expr_stmt|;
@@ -2047,21 +1984,16 @@ name|LOG
 operator|.
 name|info
 argument_list|(
-name|req
-operator|.
-name|getRemoteUser
-argument_list|()
+literal|"{} is accessing unchecked {}"
 operator|+
-literal|" is accessing unchecked "
-operator|+
+literal|" which is the app master GUI of {} owned by {}"
+argument_list|,
+name|remoteUser
+argument_list|,
 name|toFetch
-operator|+
-literal|" which is the app master GUI of "
-operator|+
+argument_list|,
 name|appId
-operator|+
-literal|" owned by "
-operator|+
+argument_list|,
 name|runningUser
 argument_list|)
 expr_stmt|;
@@ -2082,22 +2014,23 @@ case|:
 case|case
 name|FAILED
 case|:
-name|resp
+name|ProxyUtils
 operator|.
 name|sendRedirect
 argument_list|(
+name|req
+argument_list|,
 name|resp
-operator|.
-name|encodeRedirectURL
-argument_list|(
+argument_list|,
 name|toFetch
 operator|.
 name|toString
 argument_list|()
 argument_list|)
-argument_list|)
 expr_stmt|;
 return|return;
+default|default:
+comment|// fall out of the switch
 block|}
 name|Cookie
 name|c
@@ -2139,19 +2072,7 @@ block|}
 catch|catch
 parameter_list|(
 name|URISyntaxException
-name|e
-parameter_list|)
-block|{
-throw|throw
-operator|new
-name|IOException
-argument_list|(
-name|e
-argument_list|)
-throw|;
-block|}
-catch|catch
-parameter_list|(
+decl||
 name|YarnException
 name|e
 parameter_list|)
@@ -2165,6 +2086,7 @@ argument_list|)
 throw|;
 block|}
 block|}
+comment|/**    * This method is used by Java object deserialization, to fill in the    * transient {@link #trackingUriPlugins} field.    * See {@link ObjectInputStream#defaultReadObject()}    *<p>    *<I>Do not remove</I>    *<p>    * Yarn isn't currently serializing this class, but findbugs    * complains in its absence.    *     *     * @param input source    * @throws IOException IO failure    * @throws ClassNotFoundException classloader fun    */
 DECL|method|readObject (ObjectInputStream input)
 specifier|private
 name|void
