@@ -712,7 +712,6 @@ expr_stmt|;
 block|}
 DECL|method|printUsage (PrintStream errOut, String cmd)
 specifier|private
-specifier|static
 name|void
 name|printUsage
 parameter_list|(
@@ -754,7 +753,10 @@ name|errOut
 operator|.
 name|println
 argument_list|(
-literal|"Usage: HAAdmin ["
+name|getUsageString
+argument_list|()
+operator|+
+literal|" ["
 operator|+
 name|cmd
 operator|+

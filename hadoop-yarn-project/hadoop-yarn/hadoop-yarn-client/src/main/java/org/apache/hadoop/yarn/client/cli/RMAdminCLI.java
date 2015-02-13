@@ -34,6 +34,16 @@ begin_import
 import|import
 name|java
 operator|.
+name|io
+operator|.
+name|PrintStream
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
 name|util
 operator|.
 name|ArrayList
@@ -918,6 +928,22 @@ name|super
 argument_list|(
 name|conf
 argument_list|)
+expr_stmt|;
+block|}
+DECL|method|setErrOut (PrintStream errOut)
+specifier|protected
+name|void
+name|setErrOut
+parameter_list|(
+name|PrintStream
+name|errOut
+parameter_list|)
+block|{
+name|this
+operator|.
+name|errOut
+operator|=
+name|errOut
 expr_stmt|;
 block|}
 DECL|method|appendHAUsage (final StringBuilder usageBuilder)
@@ -3699,6 +3725,18 @@ name|rmId
 argument_list|)
 throw|;
 block|}
+block|}
+annotation|@
+name|Override
+DECL|method|getUsageString ()
+specifier|protected
+name|String
+name|getUsageString
+parameter_list|()
+block|{
+return|return
+literal|"Usage: rmadmin"
+return|;
 block|}
 DECL|method|main (String[] args)
 specifier|public
