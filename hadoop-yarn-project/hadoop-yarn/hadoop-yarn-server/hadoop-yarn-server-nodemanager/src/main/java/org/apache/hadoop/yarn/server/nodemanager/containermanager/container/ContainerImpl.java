@@ -1113,7 +1113,7 @@ name|LogFactory
 operator|.
 name|getLog
 argument_list|(
-name|Container
+name|ContainerImpl
 operator|.
 name|class
 argument_list|)
