@@ -1534,7 +1534,7 @@ operator|.
 name|getContainerId
 argument_list|()
 operator|+
-literal|"for unknown application "
+literal|" for unknown application "
 operator|+
 name|appAttemptId
 operator|.
@@ -1569,7 +1569,7 @@ name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"Ignoring container completion status for unmanaged AM"
+literal|"Ignoring container completion status for unmanaged AM "
 operator|+
 name|rmApp
 operator|.
