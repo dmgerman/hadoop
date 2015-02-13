@@ -1152,8 +1152,10 @@ literal|"0"
 else|:
 name|String
 operator|.
-name|valueOf
+name|format
 argument_list|(
+literal|"%,d"
+argument_list|,
 name|mc
 operator|.
 name|getValue
@@ -1171,8 +1173,10 @@ literal|"0"
 else|:
 name|String
 operator|.
-name|valueOf
+name|format
 argument_list|(
+literal|"%,d"
+argument_list|,
 name|rc
 operator|.
 name|getValue
@@ -1187,8 +1191,10 @@ name|td
 argument_list|(
 name|String
 operator|.
-name|valueOf
+name|format
 argument_list|(
+literal|"%,d"
+argument_list|,
 name|counter
 operator|.
 name|getValue
