@@ -5201,7 +5201,7 @@ name|createSocketAddr
 argument_list|(
 name|conf
 operator|.
-name|get
+name|getTrimmed
 argument_list|(
 name|DFS_DATANODE_IPC_ADDRESS_KEY
 argument_list|)
@@ -7656,7 +7656,7 @@ name|createSocketAddr
 argument_list|(
 name|conf
 operator|.
-name|get
+name|getTrimmed
 argument_list|(
 name|DFS_DATANODE_HTTP_ADDRESS_KEY
 argument_list|,
@@ -14221,7 +14221,7 @@ name|createSocketAddr
 argument_list|(
 name|conf
 operator|.
-name|get
+name|getTrimmed
 argument_list|(
 name|DFS_DATANODE_ADDRESS_KEY
 argument_list|,

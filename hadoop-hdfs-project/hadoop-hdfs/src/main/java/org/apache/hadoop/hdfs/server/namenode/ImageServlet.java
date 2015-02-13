@@ -1520,7 +1520,7 @@ name|DFS_NAMENODE_SECONDARY_HTTP_ADDRESS_KEY
 argument_list|,
 name|conf
 operator|.
-name|get
+name|getTrimmed
 argument_list|(
 name|DFSConfigKeys
 operator|.

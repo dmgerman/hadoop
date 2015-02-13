@@ -2762,7 +2762,7 @@ name|addr
 init|=
 name|conf
 operator|.
-name|get
+name|getTrimmed
 argument_list|(
 name|DFS_NAMENODE_SERVICE_RPC_ADDRESS_KEY
 argument_list|)
@@ -3268,7 +3268,7 @@ name|createSocketAddr
 argument_list|(
 name|conf
 operator|.
-name|get
+name|getTrimmed
 argument_list|(
 name|DFS_NAMENODE_HTTP_ADDRESS_KEY
 argument_list|,

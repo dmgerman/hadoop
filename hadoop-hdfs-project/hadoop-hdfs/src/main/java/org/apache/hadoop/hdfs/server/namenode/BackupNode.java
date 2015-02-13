@@ -679,7 +679,7 @@ name|addr
 init|=
 name|conf
 operator|.
-name|get
+name|getTrimmed
 argument_list|(
 name|BN_ADDRESS_NAME_KEY
 argument_list|,
@@ -711,7 +711,7 @@ name|addr
 init|=
 name|conf
 operator|.
-name|get
+name|getTrimmed
 argument_list|(
 name|BN_SERVICE_RPC_ADDRESS_KEY
 argument_list|)
@@ -826,7 +826,7 @@ name|addr
 init|=
 name|conf
 operator|.
-name|get
+name|getTrimmed
 argument_list|(
 name|BN_HTTP_ADDRESS_NAME_KEY
 argument_list|,

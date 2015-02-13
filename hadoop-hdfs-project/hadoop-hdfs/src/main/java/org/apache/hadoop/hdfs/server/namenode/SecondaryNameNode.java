@@ -1337,7 +1337,7 @@ name|createSocketAddr
 argument_list|(
 name|conf
 operator|.
-name|get
+name|getTrimmed
 argument_list|(
 name|DFSConfigKeys
 operator|.
@@ -1591,7 +1591,7 @@ name|httpsAddrString
 init|=
 name|conf
 operator|.
-name|get
+name|getTrimmed
 argument_list|(
 name|DFSConfigKeys
 operator|.
