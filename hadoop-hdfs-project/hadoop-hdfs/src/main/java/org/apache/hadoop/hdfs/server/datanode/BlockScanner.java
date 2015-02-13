@@ -152,6 +152,22 @@ name|hadoop
 operator|.
 name|hdfs
 operator|.
+name|protocol
+operator|.
+name|ExtendedBlock
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
 name|server
 operator|.
 name|datanode
@@ -1287,6 +1303,85 @@ name|p
 argument_list|)
 expr_stmt|;
 block|}
+block|}
+comment|/**    * Mark a block as "suspect."    *    * This means that we should try to rescan it soon.  Note that the    * VolumeScanner keeps a list of recently suspicious blocks, which    * it uses to avoid rescanning the same block over and over in a short    * time frame.    *    * @param storageId     The ID of the storage where the block replica    *                      is being stored.    * @param block         The block's ID and block pool id.    */
+DECL|method|markSuspectBlock (String storageId, ExtendedBlock block)
+specifier|synchronized
+name|void
+name|markSuspectBlock
+parameter_list|(
+name|String
+name|storageId
+parameter_list|,
+name|ExtendedBlock
+name|block
+parameter_list|)
+block|{
+if|if
+condition|(
+operator|!
+name|isEnabled
+argument_list|()
+condition|)
+block|{
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"Not scanning suspicious block {} on {}, because the block "
+operator|+
+literal|"scanner is disabled."
+argument_list|,
+name|block
+argument_list|,
+name|storageId
+argument_list|)
+expr_stmt|;
+return|return;
+block|}
+name|VolumeScanner
+name|scanner
+init|=
+name|scanners
+operator|.
+name|get
+argument_list|(
+name|storageId
+argument_list|)
+decl_stmt|;
+if|if
+condition|(
+name|scanner
+operator|==
+literal|null
+condition|)
+block|{
+comment|// This could happen if the volume is in the process of being removed.
+comment|// The removal process shuts down the VolumeScanner, but the volume
+comment|// object stays around as long as there are references to it (which
+comment|// should not be that long.)
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"Not scanning suspicious block {} on {}, because there is no "
+operator|+
+literal|"volume scanner for that storageId."
+argument_list|,
+name|block
+argument_list|,
+name|storageId
+argument_list|)
+expr_stmt|;
+return|return;
+block|}
+name|scanner
+operator|.
+name|markSuspectBlock
+argument_list|(
+name|block
+argument_list|)
+expr_stmt|;
 block|}
 annotation|@
 name|InterfaceAudience
