@@ -851,13 +851,6 @@ name|helpText
 argument_list|)
 throw|;
 block|}
-name|target
-operator|=
-name|target
-operator|.
-name|trim
-argument_list|()
-expr_stmt|;
 name|boolean
 name|hasScheme
 init|=
