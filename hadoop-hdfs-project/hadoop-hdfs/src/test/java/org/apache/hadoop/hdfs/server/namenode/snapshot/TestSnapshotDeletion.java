@@ -1513,7 +1513,7 @@ name|expectedDs
 argument_list|,
 name|q
 operator|.
-name|getDiskSpace
+name|getStorageSpace
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -1575,7 +1575,7 @@ name|expectedDs
 argument_list|,
 name|counts
 operator|.
-name|getDiskSpace
+name|getStorageSpace
 argument_list|()
 argument_list|)
 expr_stmt|;

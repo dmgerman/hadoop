@@ -1146,11 +1146,11 @@ operator|.
 name|DEFAULT_NAMESPACE_QUOTA
 argument_list|)
 operator|.
-name|spaceQuota
+name|storageSpaceQuota
 argument_list|(
 name|DirectoryWithQuotaFeature
 operator|.
-name|DEFAULT_SPACE_QUOTA
+name|DEFAULT_STORAGE_SPACE_QUOTA
 argument_list|)
 operator|.
 name|build
@@ -3242,8 +3242,8 @@ argument_list|()
 expr_stmt|;
 block|}
 block|}
-comment|/** Updates namespace and diskspace consumed for all    * directories until the parent directory of file represented by path.    *    * @param iip the INodesInPath instance containing all the INodes for    *            updating quota usage    * @param nsDelta the delta change of namespace    * @param dsDelta the delta change of space consumed without replication    * @param replication the replication factor of the block consumption change    * @throws QuotaExceededException if the new count violates any quota limit    * @throws FileNotFoundException if path does not exist.    */
-DECL|method|updateSpaceConsumed (INodesInPath iip, long nsDelta, long dsDelta, short replication)
+comment|/** Updates namespace, storagespace and typespaces consumed for all    * directories until the parent directory of file represented by path.    *    * @param iip the INodesInPath instance containing all the INodes for    *            updating quota usage    * @param nsDelta the delta change of namespace    * @param ssDelta the delta change of storage space consumed without replication    * @param replication the replication factor of the block consumption change    * @throws QuotaExceededException if the new count violates any quota limit    * @throws FileNotFoundException if path does not exist.    */
+DECL|method|updateSpaceConsumed (INodesInPath iip, long nsDelta, long ssDelta, short replication)
 name|void
 name|updateSpaceConsumed
 parameter_list|(
@@ -3254,7 +3254,7 @@ name|long
 name|nsDelta
 parameter_list|,
 name|long
-name|dsDelta
+name|ssDelta
 parameter_list|,
 name|short
 name|replication
@@ -3302,7 +3302,7 @@ name|iip
 argument_list|,
 name|nsDelta
 argument_list|,
-name|dsDelta
+name|ssDelta
 argument_list|,
 name|replication
 argument_list|,
@@ -3382,7 +3382,7 @@ expr_stmt|;
 block|}
 block|}
 comment|/**    * Update usage count without replication factor change    */
-DECL|method|updateCount (INodesInPath iip, long nsDelta, long dsDelta, short replication, boolean checkQuota)
+DECL|method|updateCount (INodesInPath iip, long nsDelta, long ssDelta, short replication, boolean checkQuota)
 name|void
 name|updateCount
 parameter_list|(
@@ -3393,7 +3393,7 @@ name|long
 name|nsDelta
 parameter_list|,
 name|long
-name|dsDelta
+name|ssDelta
 parameter_list|,
 name|short
 name|replication
@@ -3429,7 +3429,7 @@ operator|.
 name|getStoragePolicyID
 argument_list|()
 argument_list|,
-name|dsDelta
+name|ssDelta
 argument_list|,
 name|replication
 argument_list|,
@@ -3454,19 +3454,19 @@ operator|.
 name|Builder
 argument_list|()
 operator|.
-name|nameCount
+name|nameSpace
 argument_list|(
 name|nsDelta
 argument_list|)
 operator|.
-name|spaceCount
+name|storageSpace
 argument_list|(
-name|dsDelta
+name|ssDelta
 operator|*
 name|replication
 argument_list|)
 operator|.
-name|typeCounts
+name|typeSpaces
 argument_list|(
 name|typeSpaceDeltas
 argument_list|)
@@ -3479,7 +3479,7 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|/**    * Update usage count with replication factor change due to setReplication    */
-DECL|method|updateCount (INodesInPath iip, long nsDelta, long dsDelta, short oldRep, short newRep, boolean checkQuota)
+DECL|method|updateCount (INodesInPath iip, long nsDelta, long ssDelta, short oldRep, short newRep, boolean checkQuota)
 name|void
 name|updateCount
 parameter_list|(
@@ -3490,7 +3490,7 @@ name|long
 name|nsDelta
 parameter_list|,
 name|long
-name|dsDelta
+name|ssDelta
 parameter_list|,
 name|short
 name|oldRep
@@ -3529,7 +3529,7 @@ operator|.
 name|getStoragePolicyID
 argument_list|()
 argument_list|,
-name|dsDelta
+name|ssDelta
 argument_list|,
 name|oldRep
 argument_list|,
@@ -3553,14 +3553,14 @@ operator|.
 name|Builder
 argument_list|()
 operator|.
-name|nameCount
+name|nameSpace
 argument_list|(
 name|nsDelta
 argument_list|)
 operator|.
-name|spaceCount
+name|storageSpace
 argument_list|(
-name|dsDelta
+name|ssDelta
 operator|*
 operator|(
 name|newRep
@@ -3569,7 +3569,7 @@ name|oldRep
 operator|)
 argument_list|)
 operator|.
-name|typeCounts
+name|typeSpaces
 argument_list|(
 name|typeSpaceDeltas
 argument_list|)
@@ -4278,7 +4278,7 @@ argument_list|()
 expr_stmt|;
 block|}
 block|}
-comment|/**    * Verify quota for adding or moving a new INode with required     * namespace and diskspace to a given position.    *      * @param iip INodes corresponding to a path    * @param pos position where a new INode will be added    * @param deltas needed namespace, diskspace and storage types    * @param commonAncestor Last node in inodes array that is a common ancestor    *          for a INode that is being moved from one location to the other.    *          Pass null if a node is not being moved.    * @throws QuotaExceededException if quota limit is exceeded.    */
+comment|/**    * Verify quota for adding or moving a new INode with required     * namespace and storagespace to a given position.    *      * @param iip INodes corresponding to a path    * @param pos position where a new INode will be added    * @param deltas needed namespace, storagespace and storage types    * @param commonAncestor Last node in inodes array that is a common ancestor    *          for a INode that is being moved from one location to the other.    *          Pass null if a node is not being moved.    * @throws QuotaExceededException if quota limit is exceeded.    */
 DECL|method|verifyQuota (INodesInPath iip, int pos, QuotaCounts deltas, INode commonAncestor)
 specifier|static
 name|void
@@ -4310,7 +4310,7 @@ literal|0
 operator|&&
 name|deltas
 operator|.
-name|getDiskSpace
+name|getStorageSpace
 argument_list|()
 operator|<=
 literal|0
@@ -5502,7 +5502,7 @@ name|oldDiskspaceNoRep
 init|=
 name|file
 operator|.
-name|diskspaceConsumedNoReplication
+name|storagespaceConsumedNoReplication
 argument_list|()
 decl_stmt|;
 name|long
@@ -5541,7 +5541,7 @@ literal|0
 argument_list|,
 name|file
 operator|.
-name|diskspaceConsumedNoReplication
+name|storagespaceConsumedNoReplication
 argument_list|()
 operator|-
 name|oldDiskspaceNoRep

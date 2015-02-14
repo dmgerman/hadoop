@@ -1424,7 +1424,7 @@ argument_list|)
 argument_list|,
 name|q
 operator|.
-name|getDiskSpace
+name|getStorageSpace
 argument_list|()
 argument_list|)
 return|;
@@ -1441,7 +1441,7 @@ name|ContentSummaryComputationContext
 name|summary
 parameter_list|)
 function_decl|;
-comment|/**    * Check and add namespace/diskspace/storagetype consumed to itself and the ancestors.    * @throws QuotaExceededException if quote is violated.    */
+comment|/**    * Check and add namespace/storagespace/storagetype consumed to itself and the ancestors.    * @throws QuotaExceededException if quote is violated.    */
 DECL|method|addSpaceConsumed (QuotaCounts counts, boolean verify)
 specifier|public
 name|void
@@ -1464,7 +1464,7 @@ name|verify
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Check and add namespace/diskspace/storagetype consumed to itself and the ancestors.    * @throws QuotaExceededException if quote is violated.    */
+comment|/**    * Check and add namespace/storagespace/storagetype consumed to itself and the ancestors.    * @throws QuotaExceededException if quote is violated.    */
 DECL|method|addSpaceConsumed2Parent (QuotaCounts counts, boolean verify)
 name|void
 name|addSpaceConsumed2Parent
@@ -1510,21 +1510,21 @@ operator|.
 name|Builder
 argument_list|()
 operator|.
-name|nameCount
+name|nameSpace
 argument_list|(
 name|HdfsConstants
 operator|.
 name|QUOTA_RESET
 argument_list|)
 operator|.
-name|spaceCount
+name|storageSpace
 argument_list|(
 name|HdfsConstants
 operator|.
 name|QUOTA_RESET
 argument_list|)
 operator|.
-name|typeCounts
+name|typeSpaces
 argument_list|(
 name|HdfsConstants
 operator|.
@@ -1552,20 +1552,20 @@ decl_stmt|;
 return|return
 name|qc
 operator|.
-name|anyNsSpCountGreaterOrEqual
+name|anyNsSsCountGreaterOrEqual
 argument_list|(
 literal|0
 argument_list|)
 operator|||
 name|qc
 operator|.
-name|anyTypeCountGreaterOrEqual
+name|anyTypeSpaceCountGreaterOrEqual
 argument_list|(
 literal|0
 argument_list|)
 return|;
 block|}
-comment|/**    * Count subtree {@link Quota#NAMESPACE} and {@link Quota#DISKSPACE} usages.    */
+comment|/**    * Count subtree {@link Quota#NAMESPACE} and {@link Quota#STORAGESPACE} usages.    */
 DECL|method|computeQuotaUsage (BlockStoragePolicySuite bsps)
 specifier|public
 specifier|final
@@ -1594,7 +1594,7 @@ literal|true
 argument_list|)
 return|;
 block|}
-comment|/**    * Count subtree {@link Quota#NAMESPACE} and {@link Quota#DISKSPACE} usages.    *     * With the existence of {@link INodeReference}, the same inode and its    * subtree may be referred by multiple {@link WithName} nodes and a    * {@link DstReference} node. To avoid circles while quota usage computation,    * we have the following rules:    *     *<pre>    * 1. For a {@link DstReference} node, since the node must be in the current    * tree (or has been deleted as the end point of a series of rename     * operations), we compute the quota usage of the referred node (and its     * subtree) in the regular manner, i.e., including every inode in the current    * tree and in snapshot copies, as well as the size of diff list.    *     * 2. For a {@link WithName} node, since the node must be in a snapshot, we     * only count the quota usage for those nodes that still existed at the     * creation time of the snapshot associated with the {@link WithName} node.    * We do not count in the size of the diff list.      *<pre>    *    * @param bsps Block storage policy suite to calculate intended storage type usage    * @param counts The subtree counts for returning.    * @param useCache Whether to use cached quota usage. Note that     *                 {@link WithName} node never uses cache for its subtree.    * @param lastSnapshotId {@link Snapshot#CURRENT_STATE_ID} indicates the     *                       computation is in the current tree. Otherwise the id    *                       indicates the computation range for a     *                       {@link WithName} node.    * @return The same objects as the counts parameter.    */
+comment|/**    * Count subtree {@link Quota#NAMESPACE} and {@link Quota#STORAGESPACE} usages.    *     * With the existence of {@link INodeReference}, the same inode and its    * subtree may be referred by multiple {@link WithName} nodes and a    * {@link DstReference} node. To avoid circles while quota usage computation,    * we have the following rules:    *     *<pre>    * 1. For a {@link DstReference} node, since the node must be in the current    * tree (or has been deleted as the end point of a series of rename     * operations), we compute the quota usage of the referred node (and its     * subtree) in the regular manner, i.e., including every inode in the current    * tree and in snapshot copies, as well as the size of diff list.    *     * 2. For a {@link WithName} node, since the node must be in a snapshot, we     * only count the quota usage for those nodes that still existed at the     * creation time of the snapshot associated with the {@link WithName} node.    * We do not count in the size of the diff list.      *<pre>    *    * @param bsps Block storage policy suite to calculate intended storage type usage    * @param counts The subtree counts for returning.    * @param useCache Whether to use cached quota usage. Note that     *                 {@link WithName} node never uses cache for its subtree.    * @param lastSnapshotId {@link Snapshot#CURRENT_STATE_ID} indicates the     *                       computation is in the current tree. Otherwise the id    *                       indicates the computation range for a     *                       {@link WithName} node.    * @return The same objects as the counts parameter.    */
 DECL|method|computeQuotaUsage ( BlockStoragePolicySuite bsps, QuotaCounts counts, boolean useCache, int lastSnapshotId)
 specifier|public
 specifier|abstract

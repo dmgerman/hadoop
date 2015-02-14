@@ -2009,7 +2009,7 @@ name|dsQuota
 init|=
 name|q
 operator|.
-name|getDiskSpace
+name|getStorageSpace
 argument_list|()
 decl_stmt|;
 name|FSDirectory
@@ -3768,7 +3768,7 @@ argument_list|(
 name|nsQuota
 argument_list|)
 operator|.
-name|spaceQuota
+name|storageSpaceQuota
 argument_list|(
 name|dsQuota
 argument_list|)
@@ -4198,7 +4198,10 @@ operator|.
 name|readLong
 argument_list|()
 decl_stmt|;
-comment|//read quotas
+comment|// Read quotas: quota by storage type does not need to be processed below.
+comment|// It is handled only in protobuf based FsImagePBINode class for newer
+comment|// fsImages. Tools using this class such as legacy-mode of offline image viewer
+comment|// should only load legacy FSImages without newer features.
 specifier|final
 name|long
 name|nsQuota

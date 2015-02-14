@@ -1432,8 +1432,8 @@ argument_list|()
 expr_stmt|;
 block|}
 block|}
-comment|/**    * Set the namespace quota, diskspace and typeSpace quota for a directory.    *    * Note: This does not support ".inodes" relative path.    */
-DECL|method|setQuota (FSDirectory fsd, String src, long nsQuota, long dsQuota, StorageType type)
+comment|/**    * Set the namespace, storagespace and typespace quota for a directory.    *    * Note: This does not support ".inodes" relative path.    */
+DECL|method|setQuota (FSDirectory fsd, String src, long nsQuota, long ssQuota, StorageType type)
 specifier|static
 name|void
 name|setQuota
@@ -1448,7 +1448,7 @@ name|long
 name|nsQuota
 parameter_list|,
 name|long
-name|dsQuota
+name|ssQuota
 parameter_list|,
 name|StorageType
 name|type
@@ -1496,7 +1496,7 @@ name|src
 argument_list|,
 name|nsQuota
 argument_list|,
-name|dsQuota
+name|ssQuota
 argument_list|,
 name|type
 argument_list|)
@@ -1540,7 +1540,7 @@ argument_list|()
 argument_list|,
 name|q
 operator|.
-name|getDiskSpace
+name|getStorageSpace
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -1907,7 +1907,7 @@ argument_list|)
 return|;
 block|}
 comment|/**    * See {@link org.apache.hadoop.hdfs.protocol.ClientProtocol#setQuota(String,    *     long, long, StorageType)}    * for the contract.    * Sets quota for for a directory.    * @return INodeDirectory if any of the quotas have changed. null otherwise.    * @throws FileNotFoundException if the path does not exist.    * @throws PathIsNotDirectoryException if the path is not a directory.    * @throws QuotaExceededException if the directory tree size is    *                                greater than the given quota    * @throws UnresolvedLinkException if a symlink is encountered in src.    * @throws SnapshotAccessControlException if path is in RO snapshot    */
-DECL|method|unprotectedSetQuota ( FSDirectory fsd, String src, long nsQuota, long dsQuota, StorageType type)
+DECL|method|unprotectedSetQuota ( FSDirectory fsd, String src, long nsQuota, long ssQuota, StorageType type)
 specifier|static
 name|INodeDirectory
 name|unprotectedSetQuota
@@ -1922,7 +1922,7 @@ name|long
 name|nsQuota
 parameter_list|,
 name|long
-name|dsQuota
+name|ssQuota
 parameter_list|,
 name|StorageType
 name|type
@@ -1968,17 +1968,17 @@ name|QUOTA_RESET
 operator|)
 operator|||
 operator|(
-name|dsQuota
+name|ssQuota
 operator|<
 literal|0
 operator|&&
-name|dsQuota
+name|ssQuota
 operator|!=
 name|HdfsConstants
 operator|.
 name|QUOTA_DONT_SET
 operator|&&
-name|dsQuota
+name|ssQuota
 operator|!=
 name|HdfsConstants
 operator|.
@@ -1992,13 +1992,13 @@ name|IllegalArgumentException
 argument_list|(
 literal|"Illegal value for nsQuota or "
 operator|+
-literal|"dsQuota : "
+literal|"ssQuota : "
 operator|+
 name|nsQuota
 operator|+
 literal|" and "
 operator|+
-name|dsQuota
+name|ssQuota
 argument_list|)
 throw|;
 block|}
@@ -2130,11 +2130,11 @@ argument_list|()
 decl_stmt|;
 specifier|final
 name|long
-name|oldDsQuota
+name|oldSsQuota
 init|=
 name|oldQuota
 operator|.
-name|getDiskSpace
+name|getStorageSpace
 argument_list|()
 decl_stmt|;
 if|if
@@ -2153,16 +2153,16 @@ expr_stmt|;
 block|}
 if|if
 condition|(
-name|dsQuota
+name|ssQuota
 operator|==
 name|HdfsConstants
 operator|.
 name|QUOTA_DONT_SET
 condition|)
 block|{
-name|dsQuota
+name|ssQuota
 operator|=
-name|oldDsQuota
+name|oldSsQuota
 expr_stmt|;
 block|}
 comment|// unchanged space/namespace quota
@@ -2176,9 +2176,9 @@ name|oldNsQuota
 operator|==
 name|nsQuota
 operator|&&
-name|oldDsQuota
+name|oldSsQuota
 operator|==
-name|dsQuota
+name|ssQuota
 condition|)
 block|{
 return|return
@@ -2217,7 +2217,7 @@ argument_list|(
 name|type
 argument_list|)
 operator|==
-name|dsQuota
+name|ssQuota
 condition|)
 block|{
 return|return
@@ -2252,7 +2252,7 @@ argument_list|()
 argument_list|,
 name|nsQuota
 argument_list|,
-name|dsQuota
+name|ssQuota
 argument_list|,
 name|type
 argument_list|)
@@ -2365,7 +2365,7 @@ name|dsDelta
 init|=
 name|file
 operator|.
-name|diskspaceConsumed
+name|storagespaceConsumed
 argument_list|()
 operator|/
 name|oldBR
@@ -2422,7 +2422,7 @@ name|dsDelta
 init|=
 name|file
 operator|.
-name|diskspaceConsumed
+name|storagespaceConsumed
 argument_list|()
 operator|/
 name|newBR

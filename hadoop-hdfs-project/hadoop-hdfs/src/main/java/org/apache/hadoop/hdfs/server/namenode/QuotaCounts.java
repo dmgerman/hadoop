@@ -51,7 +51,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * Counters for namespace, space and storage type quota and usage.  */
+comment|/**  * Counters for namespace, storage space and storage type space quota and usage.  */
 end_comment
 
 begin_class
@@ -60,21 +60,24 @@ specifier|public
 class|class
 name|QuotaCounts
 block|{
-DECL|field|nsSpCounts
+comment|// Name space and storage space counts (HDFS-7775 refactors the original disk
+comment|// space count to storage space counts)
+DECL|field|nsSsCounts
 specifier|private
 name|EnumCounters
 argument_list|<
 name|Quota
 argument_list|>
-name|nsSpCounts
+name|nsSsCounts
 decl_stmt|;
-DECL|field|typeCounts
+comment|// Storage type space counts
+DECL|field|tsCounts
 specifier|private
 name|EnumCounters
 argument_list|<
 name|StorageType
 argument_list|>
-name|typeCounts
+name|tsCounts
 decl_stmt|;
 DECL|class|Builder
 specifier|public
@@ -82,21 +85,21 @@ specifier|static
 class|class
 name|Builder
 block|{
-DECL|field|nsSpCounts
+DECL|field|nsSsCounts
 specifier|private
 name|EnumCounters
 argument_list|<
 name|Quota
 argument_list|>
-name|nsSpCounts
+name|nsSsCounts
 decl_stmt|;
-DECL|field|typeCounts
+DECL|field|tsCounts
 specifier|private
 name|EnumCounters
 argument_list|<
 name|StorageType
 argument_list|>
-name|typeCounts
+name|tsCounts
 decl_stmt|;
 DECL|method|Builder ()
 specifier|public
@@ -105,7 +108,7 @@ parameter_list|()
 block|{
 name|this
 operator|.
-name|nsSpCounts
+name|nsSsCounts
 operator|=
 operator|new
 name|EnumCounters
@@ -120,7 +123,7 @@ argument_list|)
 expr_stmt|;
 name|this
 operator|.
-name|typeCounts
+name|tsCounts
 operator|=
 operator|new
 name|EnumCounters
@@ -134,10 +137,10 @@ name|class
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|nameCount (long val)
+DECL|method|nameSpace (long val)
 specifier|public
 name|Builder
-name|nameCount
+name|nameSpace
 parameter_list|(
 name|long
 name|val
@@ -145,7 +148,7 @@ parameter_list|)
 block|{
 name|this
 operator|.
-name|nsSpCounts
+name|nsSsCounts
 operator|.
 name|set
 argument_list|(
@@ -160,10 +163,10 @@ return|return
 name|this
 return|;
 block|}
-DECL|method|spaceCount (long val)
+DECL|method|storageSpace (long val)
 specifier|public
 name|Builder
-name|spaceCount
+name|storageSpace
 parameter_list|(
 name|long
 name|val
@@ -171,13 +174,13 @@ parameter_list|)
 block|{
 name|this
 operator|.
-name|nsSpCounts
+name|nsSsCounts
 operator|.
 name|set
 argument_list|(
 name|Quota
 operator|.
-name|DISKSPACE
+name|STORAGESPACE
 argument_list|,
 name|val
 argument_list|)
@@ -186,10 +189,10 @@ return|return
 name|this
 return|;
 block|}
-DECL|method|typeCounts (EnumCounters<StorageType> val)
+DECL|method|typeSpaces (EnumCounters<StorageType> val)
 specifier|public
 name|Builder
-name|typeCounts
+name|typeSpaces
 parameter_list|(
 name|EnumCounters
 argument_list|<
@@ -207,7 +210,7 @@ condition|)
 block|{
 name|this
 operator|.
-name|typeCounts
+name|tsCounts
 operator|.
 name|set
 argument_list|(
@@ -219,10 +222,10 @@ return|return
 name|this
 return|;
 block|}
-DECL|method|typeCounts (long val)
+DECL|method|typeSpaces (long val)
 specifier|public
 name|Builder
-name|typeCounts
+name|typeSpaces
 parameter_list|(
 name|long
 name|val
@@ -230,7 +233,7 @@ parameter_list|)
 block|{
 name|this
 operator|.
-name|typeCounts
+name|tsCounts
 operator|.
 name|reset
 argument_list|(
@@ -252,24 +255,24 @@ parameter_list|)
 block|{
 name|this
 operator|.
-name|nsSpCounts
+name|nsSsCounts
 operator|.
 name|set
 argument_list|(
 name|that
 operator|.
-name|nsSpCounts
+name|nsSsCounts
 argument_list|)
 expr_stmt|;
 name|this
 operator|.
-name|typeCounts
+name|tsCounts
 operator|.
 name|set
 argument_list|(
 name|that
 operator|.
-name|typeCounts
+name|tsCounts
 argument_list|)
 expr_stmt|;
 return|return
@@ -301,19 +304,19 @@ parameter_list|)
 block|{
 name|this
 operator|.
-name|nsSpCounts
+name|nsSsCounts
 operator|=
 name|builder
 operator|.
-name|nsSpCounts
+name|nsSsCounts
 expr_stmt|;
 name|this
 operator|.
-name|typeCounts
+name|tsCounts
 operator|=
 name|builder
 operator|.
-name|typeCounts
+name|tsCounts
 expr_stmt|;
 block|}
 DECL|method|add (QuotaCounts that)
@@ -327,24 +330,24 @@ parameter_list|)
 block|{
 name|this
 operator|.
-name|nsSpCounts
+name|nsSsCounts
 operator|.
 name|add
 argument_list|(
 name|that
 operator|.
-name|nsSpCounts
+name|nsSsCounts
 argument_list|)
 expr_stmt|;
 name|this
 operator|.
-name|typeCounts
+name|tsCounts
 operator|.
 name|add
 argument_list|(
 name|that
 operator|.
-name|typeCounts
+name|tsCounts
 argument_list|)
 expr_stmt|;
 block|}
@@ -359,24 +362,24 @@ parameter_list|)
 block|{
 name|this
 operator|.
-name|nsSpCounts
+name|nsSsCounts
 operator|.
 name|subtract
 argument_list|(
 name|that
 operator|.
-name|nsSpCounts
+name|nsSsCounts
 argument_list|)
 expr_stmt|;
 name|this
 operator|.
-name|typeCounts
+name|tsCounts
 operator|.
 name|subtract
 argument_list|(
 name|that
 operator|.
-name|typeCounts
+name|tsCounts
 argument_list|)
 expr_stmt|;
 block|}
@@ -406,14 +409,14 @@ argument_list|()
 decl_stmt|;
 name|ret
 operator|.
-name|nsSpCounts
+name|nsSsCounts
 operator|.
 name|negation
 argument_list|()
 expr_stmt|;
 name|ret
 operator|.
-name|typeCounts
+name|tsCounts
 operator|.
 name|negation
 argument_list|()
@@ -429,7 +432,7 @@ name|getNameSpace
 parameter_list|()
 block|{
 return|return
-name|nsSpCounts
+name|nsSsCounts
 operator|.
 name|get
 argument_list|(
@@ -450,7 +453,7 @@ parameter_list|)
 block|{
 name|this
 operator|.
-name|nsSpCounts
+name|nsSsCounts
 operator|.
 name|set
 argument_list|(
@@ -473,7 +476,7 @@ parameter_list|)
 block|{
 name|this
 operator|.
-name|nsSpCounts
+name|nsSsCounts
 operator|.
 name|add
 argument_list|(
@@ -485,27 +488,27 @@ name|nsDelta
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|getDiskSpace ()
+DECL|method|getStorageSpace ()
 specifier|public
 name|long
-name|getDiskSpace
+name|getStorageSpace
 parameter_list|()
 block|{
 return|return
-name|nsSpCounts
+name|nsSsCounts
 operator|.
 name|get
 argument_list|(
 name|Quota
 operator|.
-name|DISKSPACE
+name|STORAGESPACE
 argument_list|)
 return|;
 block|}
-DECL|method|setDiskSpace (long spaceCount)
+DECL|method|setStorageSpace (long spaceCount)
 specifier|public
 name|void
-name|setDiskSpace
+name|setStorageSpace
 parameter_list|(
 name|long
 name|spaceCount
@@ -513,22 +516,22 @@ parameter_list|)
 block|{
 name|this
 operator|.
-name|nsSpCounts
+name|nsSsCounts
 operator|.
 name|set
 argument_list|(
 name|Quota
 operator|.
-name|DISKSPACE
+name|STORAGESPACE
 argument_list|,
 name|spaceCount
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|addDiskSpace (long dsDelta)
+DECL|method|addStorageSpace (long dsDelta)
 specifier|public
 name|void
-name|addDiskSpace
+name|addStorageSpace
 parameter_list|(
 name|long
 name|dsDelta
@@ -536,13 +539,13 @@ parameter_list|)
 block|{
 name|this
 operator|.
-name|nsSpCounts
+name|nsSsCounts
 operator|.
 name|add
 argument_list|(
 name|Quota
 operator|.
-name|DISKSPACE
+name|STORAGESPACE
 argument_list|,
 name|dsDelta
 argument_list|)
@@ -578,7 +581,7 @@ name|ret
 operator|.
 name|set
 argument_list|(
-name|typeCounts
+name|tsCounts
 argument_list|)
 expr_stmt|;
 return|return
@@ -605,7 +608,7 @@ condition|)
 block|{
 name|this
 operator|.
-name|typeCounts
+name|tsCounts
 operator|.
 name|set
 argument_list|(
@@ -625,7 +628,7 @@ block|{
 return|return
 name|this
 operator|.
-name|typeCounts
+name|tsCounts
 operator|.
 name|get
 argument_list|(
@@ -646,7 +649,7 @@ parameter_list|)
 block|{
 name|this
 operator|.
-name|typeCounts
+name|tsCounts
 operator|.
 name|set
 argument_list|(
@@ -670,7 +673,7 @@ parameter_list|)
 block|{
 name|this
 operator|.
-name|typeCounts
+name|tsCounts
 operator|.
 name|add
 argument_list|(
@@ -680,39 +683,17 @@ name|delta
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|addTypeSpaces (EnumCounters<StorageType> deltas)
-specifier|public
-name|void
-name|addTypeSpaces
-parameter_list|(
-name|EnumCounters
-argument_list|<
-name|StorageType
-argument_list|>
-name|deltas
-parameter_list|)
-block|{
-name|this
-operator|.
-name|typeCounts
-operator|.
-name|add
-argument_list|(
-name|deltas
-argument_list|)
-expr_stmt|;
-block|}
-DECL|method|anyNsSpCountGreaterOrEqual (long val)
+DECL|method|anyNsSsCountGreaterOrEqual (long val)
 specifier|public
 name|boolean
-name|anyNsSpCountGreaterOrEqual
+name|anyNsSsCountGreaterOrEqual
 parameter_list|(
 name|long
 name|val
 parameter_list|)
 block|{
 return|return
-name|nsSpCounts
+name|nsSsCounts
 operator|.
 name|anyGreaterOrEqual
 argument_list|(
@@ -720,17 +701,17 @@ name|val
 argument_list|)
 return|;
 block|}
-DECL|method|anyTypeCountGreaterOrEqual (long val)
+DECL|method|anyTypeSpaceCountGreaterOrEqual (long val)
 specifier|public
 name|boolean
-name|anyTypeCountGreaterOrEqual
+name|anyTypeSpaceCountGreaterOrEqual
 parameter_list|(
 name|long
 name|val
 parameter_list|)
 block|{
 return|return
-name|typeCounts
+name|tsCounts
 operator|.
 name|anyGreaterOrEqual
 argument_list|(
@@ -791,24 +772,24 @@ decl_stmt|;
 return|return
 name|this
 operator|.
-name|nsSpCounts
+name|nsSsCounts
 operator|.
 name|equals
 argument_list|(
 name|that
 operator|.
-name|nsSpCounts
+name|nsSsCounts
 argument_list|)
 operator|&&
 name|this
 operator|.
-name|typeCounts
+name|tsCounts
 operator|.
 name|equals
 argument_list|(
 name|that
 operator|.
-name|typeCounts
+name|tsCounts
 argument_list|)
 return|;
 block|}

@@ -4187,7 +4187,7 @@ argument_list|)
 return|;
 block|}
 comment|/** Set a directory's quotas    * @see org.apache.hadoop.hdfs.protocol.ClientProtocol#setQuota(String, long, long, StorageType)    */
-DECL|method|setQuota (Path src, final long namespaceQuota, final long diskspaceQuota)
+DECL|method|setQuota (Path src, final long namespaceQuota, final long storagespaceQuota)
 specifier|public
 name|void
 name|setQuota
@@ -4201,7 +4201,7 @@ name|namespaceQuota
 parameter_list|,
 specifier|final
 name|long
-name|diskspaceQuota
+name|storagespaceQuota
 parameter_list|)
 throws|throws
 name|IOException
@@ -4247,7 +4247,7 @@ argument_list|)
 argument_list|,
 name|namespaceQuota
 argument_list|,
-name|diskspaceQuota
+name|storagespaceQuota
 argument_list|)
 expr_stmt|;
 return|return
@@ -4290,8 +4290,8 @@ name|absF
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Set the per type storage quota of a directory.    *    * @param src target directory whose quota is to be modified.    * @param type storage type of the specific storage type quota to be modified.    * @param spaceQuota value of the specific storage type quota to be modified.    * Maybe {@link HdfsConstants#QUOTA_RESET} to clear quota by storage type.    */
-DECL|method|setQuotaByStorageType ( Path src, final StorageType type, final long spaceQuota)
+comment|/**    * Set the per type storage quota of a directory.    *    * @param src target directory whose quota is to be modified.    * @param type storage type of the specific storage type quota to be modified.    * @param quota value of the specific storage type quota to be modified.    * Maybe {@link HdfsConstants#QUOTA_RESET} to clear quota by storage type.    */
+DECL|method|setQuotaByStorageType ( Path src, final StorageType type, final long quota)
 specifier|public
 name|void
 name|setQuotaByStorageType
@@ -4305,7 +4305,7 @@ name|type
 parameter_list|,
 specifier|final
 name|long
-name|spaceQuota
+name|quota
 parameter_list|)
 throws|throws
 name|IOException
@@ -4351,7 +4351,7 @@ argument_list|)
 argument_list|,
 name|type
 argument_list|,
-name|spaceQuota
+name|quota
 argument_list|)
 expr_stmt|;
 return|return

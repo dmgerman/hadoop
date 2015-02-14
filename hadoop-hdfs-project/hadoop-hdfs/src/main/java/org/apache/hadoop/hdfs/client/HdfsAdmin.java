@@ -463,7 +463,7 @@ name|QUOTA_DONT_SET
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Set the disk space quota (size of files) for a directory. Note that    * directories and sym links do not occupy disk space.    *     * @param src the path to set the space quota of    * @param spaceQuota the value to set for the space quota    * @throws IOException in the event of error    */
+comment|/**    * Set the storage space quota (size of files) for a directory. Note that    * directories and sym links do not occupy storage space.    *     * @param src the path to set the space quota of    * @param spaceQuota the value to set for the space quota    * @throws IOException in the event of error    */
 DECL|method|setSpaceQuota (Path src, long spaceQuota)
 specifier|public
 name|void
@@ -492,7 +492,7 @@ name|spaceQuota
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Clear the disk space quota (size of files) for a directory. Note that    * directories and sym links do not occupy disk space.    *     * @param src the path to clear the space quota of    * @throws IOException in the event of error    */
+comment|/**    * Clear the storage space quota (size of files) for a directory. Note that    * directories and sym links do not occupy storage space.    *     * @param src the path to clear the space quota of    * @throws IOException in the event of error    */
 DECL|method|clearSpaceQuota (Path src)
 specifier|public
 name|void
@@ -520,8 +520,8 @@ name|QUOTA_RESET
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Set the quota by storage type for a directory. Note that    * directories and sym links do not occupy disk space.    *    * @param src the target directory to set the quota by storage type    * @param type the storage type to set for quota by storage type    * @param spaceQuota the value to set for quota by storage type    * @throws IOException in the event of error    */
-DECL|method|setQuotaByStorageType (Path src, StorageType type, long spaceQuota)
+comment|/**    * Set the quota by storage type for a directory. Note that    * directories and sym links do not occupy storage type quota.    *    * @param src the target directory to set the quota by storage type    * @param type the storage type to set for quota by storage type    * @param quota the value to set for quota by storage type    * @throws IOException in the event of error    */
+DECL|method|setQuotaByStorageType (Path src, StorageType type, long quota)
 specifier|public
 name|void
 name|setQuotaByStorageType
@@ -533,7 +533,7 @@ name|StorageType
 name|type
 parameter_list|,
 name|long
-name|spaceQuota
+name|quota
 parameter_list|)
 throws|throws
 name|IOException
@@ -546,11 +546,11 @@ name|src
 argument_list|,
 name|type
 argument_list|,
-name|spaceQuota
+name|quota
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Clear the space quota by storage type for a directory. Note that    * directories and sym links do not occupy disk space.    *    * @param src the target directory to clear the quota by storage type    * @param type the storage type to clear for quota by storage type    * @throws IOException in the event of error    */
+comment|/**    * Clear the space quota by storage type for a directory. Note that    * directories and sym links do not occupy storage type quota.    *    * @param src the target directory to clear the quota by storage type    * @param type the storage type to clear for quota by storage type    * @throws IOException in the event of error    */
 DECL|method|clearQuotaByStorageType (Path src, StorageType type)
 specifier|public
 name|void

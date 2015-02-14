@@ -2125,7 +2125,7 @@ name|ContentSummaryComputationContext
 name|summary
 parameter_list|)
 block|{
-comment|//only count diskspace for WithName
+comment|//only count storagespace for WithName
 specifier|final
 name|QuotaCounts
 name|q
@@ -2166,7 +2166,7 @@ name|DISKSPACE
 argument_list|,
 name|q
 operator|.
-name|getDiskSpace
+name|getStorageSpace
 argument_list|()
 argument_list|)
 expr_stmt|;

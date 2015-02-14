@@ -50,9 +50,9 @@ comment|/** The namespace usage, i.e. the number of name objects. */
 DECL|enumConstant|NAMESPACE
 name|NAMESPACE
 block|,
-comment|/** The diskspace usage in bytes including replication. */
-DECL|enumConstant|DISKSPACE
-name|DISKSPACE
+comment|/** The storage space usage in bytes including replication. */
+DECL|enumConstant|STORAGESPACE
+name|STORAGESPACE
 block|;
 comment|/** Counters for quota counts. */
 DECL|class|Counts
@@ -66,8 +66,8 @@ argument_list|<
 name|Quota
 argument_list|>
 block|{
-comment|/** @return a new counter with the given namespace and diskspace usages. */
-DECL|method|newInstance (long namespace, long diskspace)
+comment|/** @return a new counter with the given namespace and storagespace usages. */
+DECL|method|newInstance (long namespace, long storagespace)
 specifier|public
 specifier|static
 name|Counts
@@ -77,7 +77,7 @@ name|long
 name|namespace
 parameter_list|,
 name|long
-name|diskspace
+name|storagespace
 parameter_list|)
 block|{
 specifier|final
@@ -101,9 +101,9 @@ name|c
 operator|.
 name|set
 argument_list|(
-name|DISKSPACE
+name|STORAGESPACE
 argument_list|,
-name|diskspace
+name|storagespace
 argument_list|)
 expr_stmt|;
 return|return

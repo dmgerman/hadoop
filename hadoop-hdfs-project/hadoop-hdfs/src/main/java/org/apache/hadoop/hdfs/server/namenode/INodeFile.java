@@ -2071,11 +2071,11 @@ return|return
 name|header
 return|;
 block|}
-comment|/** @return the diskspace required for a full block. */
-DECL|method|getPreferredBlockDiskspace ()
+comment|/** @return the storagespace required for a full block. */
+DECL|method|getPreferredBlockStoragespace ()
 specifier|final
 name|long
-name|getPreferredBlockDiskspace
+name|getPreferredBlockStoragespace
 parameter_list|()
 block|{
 return|return
@@ -2744,10 +2744,10 @@ literal|1
 decl_stmt|;
 specifier|final
 name|long
-name|dsDeltaNoReplication
+name|ssDeltaNoReplication
 decl_stmt|;
 name|short
-name|dsReplication
+name|replication
 decl_stmt|;
 name|FileWithSnapshotFeature
 name|sf
@@ -2793,12 +2793,12 @@ operator|.
 name|CURRENT_STATE_ID
 condition|)
 block|{
-name|dsDeltaNoReplication
+name|ssDeltaNoReplication
 operator|=
-name|diskspaceConsumedNoReplication
+name|storagespaceConsumedNoReplication
 argument_list|()
 expr_stmt|;
-name|dsReplication
+name|replication
 operator|=
 name|getBlockReplication
 argument_list|()
@@ -2812,7 +2812,7 @@ operator|<
 name|lastSnapshotId
 condition|)
 block|{
-name|dsDeltaNoReplication
+name|ssDeltaNoReplication
 operator|=
 name|computeFileSize
 argument_list|(
@@ -2821,7 +2821,7 @@ argument_list|,
 literal|false
 argument_list|)
 expr_stmt|;
-name|dsReplication
+name|replication
 operator|=
 name|getFileReplication
 argument_list|()
@@ -2839,14 +2839,14 @@ argument_list|(
 name|lastSnapshotId
 argument_list|)
 decl_stmt|;
-name|dsDeltaNoReplication
+name|ssDeltaNoReplication
 operator|=
-name|diskspaceConsumedNoReplication
+name|storagespaceConsumedNoReplication
 argument_list|(
 name|sid
 argument_list|)
 expr_stmt|;
-name|dsReplication
+name|replication
 operator|=
 name|getReplication
 argument_list|(
@@ -2857,12 +2857,12 @@ block|}
 block|}
 else|else
 block|{
-name|dsDeltaNoReplication
+name|ssDeltaNoReplication
 operator|=
-name|diskspaceConsumedNoReplication
+name|storagespaceConsumedNoReplication
 argument_list|()
 expr_stmt|;
-name|dsReplication
+name|replication
 operator|=
 name|getBlockReplication
 argument_list|()
@@ -2877,11 +2877,11 @@ argument_list|)
 expr_stmt|;
 name|counts
 operator|.
-name|addDiskSpace
+name|addStorageSpace
 argument_list|(
-name|dsDeltaNoReplication
+name|ssDeltaNoReplication
 operator|*
-name|dsReplication
+name|replication
 argument_list|)
 expr_stmt|;
 if|if
@@ -2915,7 +2915,7 @@ name|bsp
 operator|.
 name|chooseStorageTypes
 argument_list|(
-name|dsReplication
+name|replication
 argument_list|)
 decl_stmt|;
 for|for
@@ -2943,7 +2943,7 @@ name|addTypeSpace
 argument_list|(
 name|t
 argument_list|,
-name|dsDeltaNoReplication
+name|ssDeltaNoReplication
 argument_list|)
 expr_stmt|;
 block|}
@@ -3101,7 +3101,7 @@ name|Content
 operator|.
 name|DISKSPACE
 argument_list|,
-name|diskspaceConsumed
+name|storagespaceConsumed
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -3328,26 +3328,26 @@ name|size
 return|;
 block|}
 comment|/**    * Compute size consumed by all blocks of the current file,    * including blocks in its snapshots.    * Use preferred block size for the last block if it is under construction.    */
-DECL|method|diskspaceConsumed ()
+DECL|method|storagespaceConsumed ()
 specifier|public
 specifier|final
 name|long
-name|diskspaceConsumed
+name|storagespaceConsumed
 parameter_list|()
 block|{
 return|return
-name|diskspaceConsumedNoReplication
+name|storagespaceConsumedNoReplication
 argument_list|()
 operator|*
 name|getBlockReplication
 argument_list|()
 return|;
 block|}
-DECL|method|diskspaceConsumedNoReplication ()
+DECL|method|storagespaceConsumedNoReplication ()
 specifier|public
 specifier|final
 name|long
-name|diskspaceConsumedNoReplication
+name|storagespaceConsumedNoReplication
 parameter_list|()
 block|{
 name|FileWithSnapshotFeature
@@ -3500,11 +3500,11 @@ return|return
 name|size
 return|;
 block|}
-DECL|method|diskspaceConsumed (int lastSnapshotId)
+DECL|method|storagespaceConsumed (int lastSnapshotId)
 specifier|public
 specifier|final
 name|long
-name|diskspaceConsumed
+name|storagespaceConsumed
 parameter_list|(
 name|int
 name|lastSnapshotId
@@ -3532,7 +3532,7 @@ block|}
 else|else
 block|{
 return|return
-name|diskspaceConsumed
+name|storagespaceConsumed
 argument_list|()
 return|;
 block|}
@@ -3569,11 +3569,11 @@ argument_list|()
 return|;
 block|}
 block|}
-DECL|method|diskspaceConsumedNoReplication (int lastSnapshotId)
+DECL|method|storagespaceConsumedNoReplication (int lastSnapshotId)
 specifier|public
 specifier|final
 name|long
-name|diskspaceConsumedNoReplication
+name|storagespaceConsumedNoReplication
 parameter_list|(
 name|int
 name|lastSnapshotId
@@ -3596,7 +3596,7 @@ block|}
 else|else
 block|{
 return|return
-name|diskspaceConsumedNoReplication
+name|storagespaceConsumedNoReplication
 argument_list|()
 return|;
 block|}

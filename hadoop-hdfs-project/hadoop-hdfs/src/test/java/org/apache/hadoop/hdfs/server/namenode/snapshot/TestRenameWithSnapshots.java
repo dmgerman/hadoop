@@ -8965,7 +8965,7 @@ literal|0
 argument_list|,
 name|q
 operator|.
-name|getDiskSpace
+name|getStorageSpace
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -9012,7 +9012,7 @@ literal|0
 argument_list|,
 name|q
 operator|.
-name|getDiskSpace
+name|getStorageSpace
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -12232,7 +12232,7 @@ literal|0
 argument_list|,
 name|counts
 operator|.
-name|getDiskSpace
+name|getStorageSpace
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -12817,7 +12817,7 @@ literal|0
 argument_list|,
 name|counts
 operator|.
-name|getDiskSpace
+name|getStorageSpace
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -13659,7 +13659,7 @@ literal|2
 argument_list|,
 name|counts
 operator|.
-name|getDiskSpace
+name|getStorageSpace
 argument_list|()
 argument_list|)
 expr_stmt|;

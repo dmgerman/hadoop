@@ -7373,7 +7373,7 @@ argument_list|()
 argument_list|,
 name|req
 operator|.
-name|getDiskspaceQuota
+name|getStoragespaceQuota
 argument_list|()
 argument_list|,
 name|req

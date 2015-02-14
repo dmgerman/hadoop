@@ -1574,7 +1574,7 @@ argument_list|(
 name|nsQuota
 argument_list|)
 operator|.
-name|spaceQuota
+name|storageSpaceQuota
 argument_list|(
 name|dsQuota
 argument_list|)
@@ -2915,7 +2915,7 @@ name|dsQuota
 init|=
 name|q
 operator|.
-name|getDiskSpace
+name|getStorageSpace
 argument_list|()
 decl_stmt|;
 if|if
@@ -3715,7 +3715,7 @@ name|setDsQuota
 argument_list|(
 name|quota
 operator|.
-name|getDiskSpace
+name|getStorageSpace
 argument_list|()
 argument_list|)
 operator|.

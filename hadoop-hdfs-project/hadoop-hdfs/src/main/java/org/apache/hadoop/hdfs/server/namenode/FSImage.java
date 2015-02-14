@@ -4470,11 +4470,11 @@ argument_list|()
 decl_stmt|;
 specifier|final
 name|long
-name|parentDiskspace
+name|parentStoragespace
 init|=
 name|counts
 operator|.
-name|getDiskSpace
+name|getStorageSpace
 argument_list|()
 decl_stmt|;
 specifier|final
@@ -4623,22 +4623,22 @@ expr_stmt|;
 block|}
 specifier|final
 name|long
-name|diskspace
+name|ssConsumed
 init|=
 name|counts
 operator|.
-name|getDiskSpace
+name|getStorageSpace
 argument_list|()
 operator|-
-name|parentDiskspace
+name|parentStoragespace
 decl_stmt|;
 specifier|final
 name|long
-name|dsQuota
+name|ssQuota
 init|=
 name|q
 operator|.
-name|getDiskSpace
+name|getStorageSpace
 argument_list|()
 decl_stmt|;
 if|if
@@ -4647,9 +4647,9 @@ name|Quota
 operator|.
 name|isViolated
 argument_list|(
-name|dsQuota
+name|ssQuota
 argument_list|,
-name|diskspace
+name|ssConsumed
 argument_list|)
 condition|)
 block|{
@@ -4657,7 +4657,7 @@ name|LOG
 operator|.
 name|error
 argument_list|(
-literal|"BUG: Diskspace quota violation in image for "
+literal|"BUG: Storagespace quota violation in image for "
 operator|+
 name|dir
 operator|.
@@ -4666,11 +4666,11 @@ argument_list|()
 operator|+
 literal|" quota = "
 operator|+
-name|dsQuota
+name|ssQuota
 operator|+
 literal|"< consumed = "
 operator|+
-name|diskspace
+name|ssConsumed
 argument_list|)
 expr_stmt|;
 block|}
@@ -4754,7 +4754,7 @@ name|LOG
 operator|.
 name|error
 argument_list|(
-literal|"BUG Disk quota by storage type violation in image for "
+literal|"BUG: Storage type quota violation in image for "
 operator|+
 name|dir
 operator|.
@@ -4788,7 +4788,7 @@ name|setSpaceConsumed
 argument_list|(
 name|namespace
 argument_list|,
-name|diskspace
+name|ssConsumed
 argument_list|,
 name|typeSpaces
 argument_list|)

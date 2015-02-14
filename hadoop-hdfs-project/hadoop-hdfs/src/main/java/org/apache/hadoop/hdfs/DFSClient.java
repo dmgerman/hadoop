@@ -14443,7 +14443,7 @@ expr_stmt|;
 block|}
 block|}
 comment|/**    * Sets or resets quotas for a directory.    * @see ClientProtocol#setQuota(String, long, long, StorageType)    */
-DECL|method|setQuota (String src, long namespaceQuota, long diskspaceQuota)
+DECL|method|setQuota (String src, long namespaceQuota, long storagespaceQuota)
 name|void
 name|setQuota
 parameter_list|(
@@ -14454,7 +14454,7 @@ name|long
 name|namespaceQuota
 parameter_list|,
 name|long
-name|diskspaceQuota
+name|storagespaceQuota
 parameter_list|)
 throws|throws
 name|IOException
@@ -14481,17 +14481,17 @@ name|QUOTA_RESET
 operator|)
 operator|||
 operator|(
-name|diskspaceQuota
+name|storagespaceQuota
 operator|<=
 literal|0
 operator|&&
-name|diskspaceQuota
+name|storagespaceQuota
 operator|!=
 name|HdfsConstants
 operator|.
 name|QUOTA_DONT_SET
 operator|&&
-name|diskspaceQuota
+name|storagespaceQuota
 operator|!=
 name|HdfsConstants
 operator|.
@@ -14509,7 +14509,7 @@ name|namespaceQuota
 operator|+
 literal|" and "
 operator|+
-name|diskspaceQuota
+name|storagespaceQuota
 argument_list|)
 throw|;
 block|}
@@ -14525,7 +14525,7 @@ argument_list|)
 decl_stmt|;
 try|try
 block|{
-comment|// Pass null as storage type for traditional space/namespace quota.
+comment|// Pass null as storage type for traditional namespace/storagespace quota.
 name|namenode
 operator|.
 name|setQuota
@@ -14534,7 +14534,7 @@ name|src
 argument_list|,
 name|namespaceQuota
 argument_list|,
-name|diskspaceQuota
+name|storagespaceQuota
 argument_list|,
 literal|null
 argument_list|)
@@ -14587,7 +14587,7 @@ expr_stmt|;
 block|}
 block|}
 comment|/**    * Sets or resets quotas by storage type for a directory.    * @see ClientProtocol#setQuota(String, long, long, StorageType)    */
-DECL|method|setQuotaByStorageType (String src, StorageType type, long spaceQuota)
+DECL|method|setQuotaByStorageType (String src, StorageType type, long quota)
 name|void
 name|setQuotaByStorageType
 parameter_list|(
@@ -14598,24 +14598,24 @@ name|StorageType
 name|type
 parameter_list|,
 name|long
-name|spaceQuota
+name|quota
 parameter_list|)
 throws|throws
 name|IOException
 block|{
 if|if
 condition|(
-name|spaceQuota
+name|quota
 operator|<=
 literal|0
 operator|&&
-name|spaceQuota
+name|quota
 operator|!=
 name|HdfsConstants
 operator|.
 name|QUOTA_DONT_SET
 operator|&&
-name|spaceQuota
+name|quota
 operator|!=
 name|HdfsConstants
 operator|.
@@ -14628,7 +14628,7 @@ name|IllegalArgumentException
 argument_list|(
 literal|"Invalid values for quota :"
 operator|+
-name|spaceQuota
+name|quota
 argument_list|)
 throw|;
 block|}
@@ -14681,7 +14681,7 @@ name|HdfsConstants
 operator|.
 name|QUOTA_DONT_SET
 argument_list|,
-name|spaceQuota
+name|quota
 argument_list|,
 name|type
 argument_list|)

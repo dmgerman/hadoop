@@ -19512,8 +19512,8 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-comment|/**    * Set the namespace quota and diskspace quota for a directory.    * See {@link ClientProtocol#setQuota(String, long, long, StorageType)} for the    * contract.    *     * Note: This does not support ".inodes" relative path.    */
-DECL|method|setQuota (String src, long nsQuota, long dsQuota, StorageType type)
+comment|/**    * Set the namespace quota and storage space quota for a directory.    * See {@link ClientProtocol#setQuota(String, long, long, StorageType)} for the    * contract.    *     * Note: This does not support ".inodes" relative path.    */
+DECL|method|setQuota (String src, long nsQuota, long ssQuota, StorageType type)
 name|void
 name|setQuota
 parameter_list|(
@@ -19524,7 +19524,7 @@ name|long
 name|nsQuota
 parameter_list|,
 name|long
-name|dsQuota
+name|ssQuota
 parameter_list|,
 name|StorageType
 name|type
@@ -19568,7 +19568,7 @@ name|src
 argument_list|,
 name|nsQuota
 argument_list|,
-name|dsQuota
+name|ssQuota
 argument_list|,
 name|type
 argument_list|)

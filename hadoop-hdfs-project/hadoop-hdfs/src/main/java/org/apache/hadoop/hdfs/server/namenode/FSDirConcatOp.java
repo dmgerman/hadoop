@@ -932,7 +932,7 @@ condition|)
 block|{
 name|deltas
 operator|.
-name|addDiskSpace
+name|addStorageSpace
 argument_list|(
 name|fileSize
 operator|*

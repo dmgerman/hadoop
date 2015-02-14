@@ -176,12 +176,12 @@ name|Long
 operator|.
 name|MAX_VALUE
 decl_stmt|;
-DECL|field|DEFAULT_SPACE_QUOTA
+DECL|field|DEFAULT_STORAGE_SPACE_QUOTA
 specifier|public
 specifier|static
 specifier|final
 name|long
-name|DEFAULT_SPACE_QUOTA
+name|DEFAULT_STORAGE_SPACE_QUOTA
 init|=
 name|HdfsConstants
 operator|.
@@ -228,19 +228,19 @@ operator|.
 name|Builder
 argument_list|()
 operator|.
-name|nameCount
+name|nameSpace
 argument_list|(
 name|DEFAULT_NAMESPACE_QUOTA
 argument_list|)
 operator|.
-name|spaceCount
+name|storageSpace
 argument_list|(
-name|DEFAULT_SPACE_QUOTA
+name|DEFAULT_STORAGE_SPACE_QUOTA
 argument_list|)
 operator|.
-name|typeCounts
+name|typeSpaces
 argument_list|(
-name|DEFAULT_SPACE_QUOTA
+name|DEFAULT_STORAGE_SPACE_QUOTA
 argument_list|)
 operator|.
 name|build
@@ -256,7 +256,7 @@ operator|.
 name|Builder
 argument_list|()
 operator|.
-name|nameCount
+name|nameSpace
 argument_list|(
 literal|1
 argument_list|)
@@ -287,10 +287,10 @@ return|return
 name|this
 return|;
 block|}
-DECL|method|spaceQuota (long spaceQuota)
+DECL|method|storageSpaceQuota (long spaceQuota)
 specifier|public
 name|Builder
-name|spaceQuota
+name|storageSpaceQuota
 parameter_list|(
 name|long
 name|spaceQuota
@@ -300,7 +300,7 @@ name|this
 operator|.
 name|quota
 operator|.
-name|setDiskSpace
+name|setStorageSpace
 argument_list|(
 name|spaceQuota
 argument_list|)
@@ -425,8 +425,8 @@ name|build
 argument_list|()
 return|;
 block|}
-comment|/** Set this directory's quota    *     * @param nsQuota Namespace quota to be set    * @param dsQuota Diskspace quota to be set    * @param type Storage type quota to be set    * * To set traditional space/namespace quota, type must be null    */
-DECL|method|setQuota (long nsQuota, long dsQuota, StorageType type)
+comment|/** Set this directory's quota    *     * @param nsQuota Namespace quota to be set    * @param ssQuota Storagespace quota to be set    * @param type Storage type of the storage space quota to be set.    *             To set storagespace/namespace quota, type must be null.    */
+DECL|method|setQuota (long nsQuota, long ssQuota, StorageType type)
 name|void
 name|setQuota
 parameter_list|(
@@ -434,7 +434,7 @@ name|long
 name|nsQuota
 parameter_list|,
 name|long
-name|dsQuota
+name|ssQuota
 parameter_list|,
 name|StorageType
 name|type
@@ -455,7 +455,7 @@ name|setTypeSpace
 argument_list|(
 name|type
 argument_list|,
-name|dsQuota
+name|ssQuota
 argument_list|)
 expr_stmt|;
 block|}
@@ -465,12 +465,12 @@ name|setQuota
 argument_list|(
 name|nsQuota
 argument_list|,
-name|dsQuota
+name|ssQuota
 argument_list|)
 expr_stmt|;
 block|}
 block|}
-DECL|method|setQuota (long nsQuota, long dsQuota)
+DECL|method|setQuota (long nsQuota, long ssQuota)
 name|void
 name|setQuota
 parameter_list|(
@@ -478,7 +478,7 @@ name|long
 name|nsQuota
 parameter_list|,
 name|long
-name|dsQuota
+name|ssQuota
 parameter_list|)
 block|{
 name|this
@@ -494,18 +494,18 @@ name|this
 operator|.
 name|quota
 operator|.
-name|setDiskSpace
+name|setStorageSpace
 argument_list|(
-name|dsQuota
+name|ssQuota
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|setQuota (long dsQuota, StorageType type)
+DECL|method|setQuota (long quota, StorageType type)
 name|void
 name|setQuota
 parameter_list|(
 name|long
-name|dsQuota
+name|quota
 parameter_list|,
 name|StorageType
 name|type
@@ -519,12 +519,12 @@ name|setTypeSpace
 argument_list|(
 name|type
 argument_list|,
-name|dsQuota
+name|quota
 argument_list|)
 expr_stmt|;
 block|}
-comment|// Set in a batch only during FSImage load
-DECL|method|setQuota (EnumCounters<StorageType> typeQuotas)
+comment|/** Set storage type quota in a batch. (Only used by FSImage load)    *    * @param tsQuotas type space counts for all storage types supporting quota    */
+DECL|method|setQuota (EnumCounters<StorageType> tsQuotas)
 name|void
 name|setQuota
 parameter_list|(
@@ -532,7 +532,7 @@ name|EnumCounters
 argument_list|<
 name|StorageType
 argument_list|>
-name|typeQuotas
+name|tsQuotas
 parameter_list|)
 block|{
 name|this
@@ -541,13 +541,14 @@ name|quota
 operator|.
 name|setTypeSpaces
 argument_list|(
-name|typeQuotas
+name|tsQuotas
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|addNamespaceDiskspace (QuotaCounts counts)
+comment|/**    * Add current quota usage to counts and return the updated counts    * @param counts counts to be added with current quota usage    * @return counts that have been added with the current qutoa usage    */
+DECL|method|AddCurrentSpaceUsage (QuotaCounts counts)
 name|QuotaCounts
-name|addNamespaceDiskspace
+name|AddCurrentSpaceUsage
 parameter_list|(
 name|QuotaCounts
 name|counts
@@ -625,7 +626,7 @@ name|getYieldCount
 argument_list|()
 condition|)
 block|{
-name|checkDiskspace
+name|checkStoragespace
 argument_list|(
 name|dir
 argument_list|,
@@ -649,10 +650,10 @@ return|return
 name|summary
 return|;
 block|}
-DECL|method|checkDiskspace (final INodeDirectory dir, final long computed)
+DECL|method|checkStoragespace (final INodeDirectory dir, final long computed)
 specifier|private
 name|void
-name|checkDiskspace
+name|checkStoragespace
 parameter_list|(
 specifier|final
 name|INodeDirectory
@@ -670,12 +671,12 @@ literal|1
 operator|!=
 name|quota
 operator|.
-name|getDiskSpace
+name|getStorageSpace
 argument_list|()
 operator|&&
 name|usage
 operator|.
-name|getDiskSpace
+name|getStorageSpace
 argument_list|()
 operator|!=
 name|computed
@@ -687,7 +688,7 @@ name|LOG
 operator|.
 name|error
 argument_list|(
-literal|"BUG: Inconsistent diskspace for directory "
+literal|"BUG: Inconsistent storagespace for directory "
 operator|+
 name|dir
 operator|.
@@ -698,7 +699,7 @@ literal|". Cached = "
 operator|+
 name|usage
 operator|.
-name|getDiskSpace
+name|getStorageSpace
 argument_list|()
 operator|+
 literal|" != Computed = "
@@ -797,8 +798,8 @@ name|delta
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**     * Sets namespace and diskspace take by the directory rooted     * at this INode. This should be used carefully. It does not check     * for quota violations.    *     * @param namespace size of the directory to be set    * @param diskspace disk space take by all the nodes under this directory    * @param typeUsed counters of storage type usage    */
-DECL|method|setSpaceConsumed (long namespace, long diskspace, EnumCounters<StorageType> typeUsed)
+comment|/**     * Sets namespace and storagespace take by the directory rooted    * at this INode. This should be used carefully. It does not check     * for quota violations.    *     * @param namespace size of the directory to be set    * @param storagespace storage space take by all the nodes under this directory    * @param typespaces counters of storage type usage    */
+DECL|method|setSpaceConsumed (long namespace, long storagespace, EnumCounters<StorageType> typespaces)
 name|void
 name|setSpaceConsumed
 parameter_list|(
@@ -806,13 +807,13 @@ name|long
 name|namespace
 parameter_list|,
 name|long
-name|diskspace
+name|storagespace
 parameter_list|,
 name|EnumCounters
 argument_list|<
 name|StorageType
 argument_list|>
-name|typeUsed
+name|typespaces
 parameter_list|)
 block|{
 name|usage
@@ -824,16 +825,16 @@ argument_list|)
 expr_stmt|;
 name|usage
 operator|.
-name|setDiskSpace
+name|setStorageSpace
 argument_list|(
-name|diskspace
+name|storagespace
 argument_list|)
 expr_stmt|;
 name|usage
 operator|.
 name|setTypeSpaces
 argument_list|(
-name|typeUsed
+name|typespaces
 argument_list|)
 expr_stmt|;
 block|}
@@ -857,11 +858,11 @@ argument_list|)
 expr_stmt|;
 name|usage
 operator|.
-name|setDiskSpace
+name|setStorageSpace
 argument_list|(
 name|c
 operator|.
-name|getDiskSpace
+name|getStorageSpace
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -876,7 +877,7 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
-comment|/** @return the namespace and diskspace consumed. */
+comment|/** @return the namespace and storagespace and typespace consumed. */
 DECL|method|getSpaceConsumed ()
 specifier|public
 name|QuotaCounts
@@ -950,11 +951,11 @@ argument_list|)
 throw|;
 block|}
 block|}
-comment|/** Verify if the diskspace quota is violated after applying delta. */
-DECL|method|verifyDiskspaceQuota (long delta)
+comment|/** Verify if the storagespace quota is violated after applying delta. */
+DECL|method|verifyStoragespaceQuota (long delta)
 specifier|private
 name|void
-name|verifyDiskspaceQuota
+name|verifyStoragespaceQuota
 parameter_list|(
 name|long
 name|delta
@@ -970,12 +971,12 @@ name|isViolated
 argument_list|(
 name|quota
 operator|.
-name|getDiskSpace
+name|getStorageSpace
 argument_list|()
 argument_list|,
 name|usage
 operator|.
-name|getDiskSpace
+name|getStorageSpace
 argument_list|()
 argument_list|,
 name|delta
@@ -988,12 +989,12 @@ name|DSQuotaExceededException
 argument_list|(
 name|quota
 operator|.
-name|getDiskSpace
+name|getStorageSpace
 argument_list|()
 argument_list|,
 name|usage
 operator|.
-name|getDiskSpace
+name|getStorageSpace
 argument_list|()
 operator|+
 name|delta
@@ -1106,7 +1107,7 @@ throw|;
 block|}
 block|}
 block|}
-comment|/**    * @throws QuotaExceededException if namespace, diskspace or storage type quotas    * is violated after applying the deltas.    */
+comment|/**    * @throws QuotaExceededException if namespace, storagespace or storage type    * space quota is violated after applying the deltas.    */
 DECL|method|verifyQuota (QuotaCounts counts)
 name|void
 name|verifyQuota
@@ -1125,11 +1126,11 @@ name|getNameSpace
 argument_list|()
 argument_list|)
 expr_stmt|;
-name|verifyDiskspaceQuota
+name|verifyStoragespaceQuota
 argument_list|(
 name|counts
 operator|.
-name|getDiskSpace
+name|getStorageSpace
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -1150,14 +1151,14 @@ block|{
 return|return
 name|quota
 operator|.
-name|anyNsSpCountGreaterOrEqual
+name|anyNsSsCountGreaterOrEqual
 argument_list|(
 literal|0
 argument_list|)
 operator|||
 name|quota
 operator|.
-name|anyTypeCountGreaterOrEqual
+name|anyTypeSpaceCountGreaterOrEqual
 argument_list|(
 literal|0
 argument_list|)
@@ -1171,7 +1172,7 @@ block|{
 return|return
 name|quota
 operator|.
-name|anyTypeCountGreaterOrEqual
+name|anyTypeSpaceCountGreaterOrEqual
 argument_list|(
 literal|0
 argument_list|)
@@ -1229,19 +1230,19 @@ argument_list|()
 operator|)
 return|;
 block|}
-DECL|method|diskspaceString ()
+DECL|method|storagespaceString ()
 specifier|private
 name|String
-name|diskspaceString
+name|storagespaceString
 parameter_list|()
 block|{
 return|return
-literal|"diskspace: "
+literal|"storagespace: "
 operator|+
 operator|(
 name|quota
 operator|.
-name|getDiskSpace
+name|getStorageSpace
 argument_list|()
 operator|<
 literal|0
@@ -1250,22 +1251,22 @@ literal|"-"
 else|:
 name|usage
 operator|.
-name|getDiskSpace
+name|getStorageSpace
 argument_list|()
 operator|+
 literal|"/"
 operator|+
 name|quota
 operator|.
-name|getDiskSpace
+name|getStorageSpace
 argument_list|()
 operator|)
 return|;
 block|}
-DECL|method|quotaByStorageTypeString ()
+DECL|method|typeSpaceString ()
 specifier|private
 name|String
-name|quotaByStorageTypeString
+name|typeSpaceString
 parameter_list|()
 block|{
 name|StringBuilder
@@ -1348,12 +1349,12 @@ argument_list|()
 operator|+
 literal|", "
 operator|+
-name|diskspaceString
+name|storagespaceString
 argument_list|()
 operator|+
 literal|", "
 operator|+
-name|quotaByStorageTypeString
+name|typeSpaceString
 argument_list|()
 operator|+
 literal|"]"

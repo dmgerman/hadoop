@@ -1392,7 +1392,7 @@ name|writeLong
 argument_list|(
 name|quota
 operator|.
-name|getDiskSpace
+name|getStorageSpace
 argument_list|()
 argument_list|)
 expr_stmt|;

@@ -541,7 +541,7 @@ name|REPLICATION
 argument_list|,
 name|cnt
 operator|.
-name|getDiskSpace
+name|getStorageSpace
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -696,7 +696,7 @@ name|ds
 init|=
 name|quota
 operator|.
-name|getDiskSpace
+name|getStorageSpace
 argument_list|()
 decl_stmt|;
 name|assertEquals
@@ -773,7 +773,7 @@ name|ds
 operator|=
 name|quota
 operator|.
-name|getDiskSpace
+name|getStorageSpace
 argument_list|()
 expr_stmt|;
 name|assertEquals
@@ -863,7 +863,7 @@ name|ds
 operator|=
 name|quota
 operator|.
-name|getDiskSpace
+name|getStorageSpace
 argument_list|()
 expr_stmt|;
 name|assertEquals
@@ -1062,7 +1062,7 @@ name|ds
 init|=
 name|quota
 operator|.
-name|getDiskSpace
+name|getStorageSpace
 argument_list|()
 decl_stmt|;
 name|assertEquals
@@ -1139,7 +1139,7 @@ name|ds
 operator|=
 name|quota
 operator|.
-name|getDiskSpace
+name|getStorageSpace
 argument_list|()
 expr_stmt|;
 name|assertEquals
@@ -1197,7 +1197,7 @@ name|ds
 operator|=
 name|quota
 operator|.
-name|getDiskSpace
+name|getStorageSpace
 argument_list|()
 expr_stmt|;
 name|assertEquals

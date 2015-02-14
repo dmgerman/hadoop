@@ -369,7 +369,7 @@ operator|.
 name|Builder
 argument_list|()
 operator|.
-name|nameCount
+name|nameSpace
 argument_list|(
 literal|1
 argument_list|)

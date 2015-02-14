@@ -784,7 +784,7 @@ operator|.
 name|ID_UNSPECIFIED
 return|;
 block|}
-DECL|method|setQuota (BlockStoragePolicySuite bsps, long nsQuota, long dsQuota, StorageType type)
+DECL|method|setQuota (BlockStoragePolicySuite bsps, long nsQuota, long ssQuota, StorageType type)
 name|void
 name|setQuota
 parameter_list|(
@@ -795,7 +795,7 @@ name|long
 name|nsQuota
 parameter_list|,
 name|long
-name|dsQuota
+name|ssQuota
 parameter_list|,
 name|StorageType
 name|type
@@ -826,7 +826,7 @@ name|quota
 operator|.
 name|setQuota
 argument_list|(
-name|dsQuota
+name|ssQuota
 argument_list|,
 name|type
 argument_list|)
@@ -840,7 +840,7 @@ name|setQuota
 argument_list|(
 name|nsQuota
 argument_list|,
-name|dsQuota
+name|ssQuota
 argument_list|)
 expr_stmt|;
 block|}
@@ -902,7 +902,7 @@ name|typeQuota
 argument_list|(
 name|type
 argument_list|,
-name|dsQuota
+name|ssQuota
 argument_list|)
 expr_stmt|;
 block|}
@@ -910,9 +910,9 @@ else|else
 block|{
 name|builder
 operator|.
-name|spaceQuota
+name|storageSpaceQuota
 argument_list|(
-name|dsQuota
+name|ssQuota
 argument_list|)
 expr_stmt|;
 block|}
@@ -2819,7 +2819,7 @@ comment|// use the cached quota
 return|return
 name|q
 operator|.
-name|addNamespaceDiskspace
+name|AddCurrentSpaceUsage
 argument_list|(
 name|counts
 argument_list|)

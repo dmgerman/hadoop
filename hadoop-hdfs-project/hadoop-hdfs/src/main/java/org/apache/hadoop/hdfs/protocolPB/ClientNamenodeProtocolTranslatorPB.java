@@ -6370,7 +6370,7 @@ block|}
 block|}
 annotation|@
 name|Override
-DECL|method|setQuota (String path, long namespaceQuota, long diskspaceQuota, StorageType type)
+DECL|method|setQuota (String path, long namespaceQuota, long storagespaceQuota, StorageType type)
 specifier|public
 name|void
 name|setQuota
@@ -6382,7 +6382,7 @@ name|long
 name|namespaceQuota
 parameter_list|,
 name|long
-name|diskspaceQuota
+name|storagespaceQuota
 parameter_list|,
 name|StorageType
 name|type
@@ -6417,9 +6417,9 @@ argument_list|(
 name|namespaceQuota
 argument_list|)
 operator|.
-name|setDiskspaceQuota
+name|setStoragespaceQuota
 argument_list|(
-name|diskspaceQuota
+name|storagespaceQuota
 argument_list|)
 decl_stmt|;
 if|if
