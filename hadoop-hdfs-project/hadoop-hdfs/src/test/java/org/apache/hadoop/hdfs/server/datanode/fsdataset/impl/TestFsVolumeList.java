@@ -243,10 +243,10 @@ import|;
 end_import
 
 begin_class
-DECL|class|FsVolumeListTest
+DECL|class|TestFsVolumeList
 specifier|public
 class|class
-name|FsVolumeListTest
+name|TestFsVolumeList
 block|{
 DECL|field|conf
 specifier|private
