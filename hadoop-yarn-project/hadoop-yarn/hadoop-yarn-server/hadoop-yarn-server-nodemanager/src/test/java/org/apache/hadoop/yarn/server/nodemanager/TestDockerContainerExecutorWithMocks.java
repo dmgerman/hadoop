@@ -500,10 +500,9 @@ parameter_list|()
 block|{
 name|assumeTrue
 argument_list|(
-operator|!
-name|Path
+name|Shell
 operator|.
-name|WINDOWS
+name|LINUX
 argument_list|)
 expr_stmt|;
 name|File
@@ -714,6 +713,13 @@ parameter_list|()
 block|{
 try|try
 block|{
+if|if
+condition|(
+name|lfs
+operator|!=
+literal|null
+condition|)
+block|{
 name|lfs
 operator|.
 name|delete
@@ -723,6 +729,7 @@ argument_list|,
 literal|true
 argument_list|)
 expr_stmt|;
+block|}
 block|}
 catch|catch
 parameter_list|(
