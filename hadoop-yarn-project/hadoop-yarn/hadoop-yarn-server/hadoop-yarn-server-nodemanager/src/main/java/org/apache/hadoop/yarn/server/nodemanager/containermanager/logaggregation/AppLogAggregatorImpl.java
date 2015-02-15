@@ -980,6 +980,19 @@ specifier|final
 name|NodeId
 name|nodeId
 decl_stmt|;
+comment|// This variable is only for testing
+DECL|field|waiting
+specifier|private
+specifier|final
+name|AtomicBoolean
+name|waiting
+init|=
+operator|new
+name|AtomicBoolean
+argument_list|(
+literal|false
+argument_list|)
+decl_stmt|;
 DECL|field|containerLogAggregators
 specifier|private
 specifier|final
@@ -2337,6 +2350,13 @@ init|)
 block|{
 try|try
 block|{
+name|waiting
+operator|.
+name|set
+argument_list|(
+literal|true
+argument_list|)
+expr_stmt|;
 if|if
 condition|(
 name|this
@@ -2859,6 +2879,11 @@ annotation|@
 name|Private
 annotation|@
 name|VisibleForTesting
+comment|// This is only used for testing.
+comment|// This will wake the log aggregation thread that is waiting for
+comment|// rollingMonitorInterval.
+comment|// To use this method, make sure the log aggregation thread is running
+comment|// and waiting for rollingMonitorInterval.
 DECL|method|doLogAggregationOutOfBand ()
 specifier|public
 specifier|synchronized
@@ -2866,6 +2891,32 @@ name|void
 name|doLogAggregationOutOfBand
 parameter_list|()
 block|{
+while|while
+condition|(
+operator|!
+name|waiting
+operator|.
+name|get
+argument_list|()
+condition|)
+block|{
+try|try
+block|{
+name|wait
+argument_list|(
+literal|200
+argument_list|)
+expr_stmt|;
+block|}
+catch|catch
+parameter_list|(
+name|InterruptedException
+name|e
+parameter_list|)
+block|{
+comment|// Do Nothing
+block|}
+block|}
 name|LOG
 operator|.
 name|info
