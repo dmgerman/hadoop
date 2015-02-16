@@ -113,6 +113,25 @@ name|int
 name|getNumFailedVolumes
 parameter_list|()
 function_decl|;
+comment|/**    * Returns each storage location that has failed, sorted.    * @return each storage location that has failed, sorted    */
+DECL|method|getFailedStorageLocations ()
+name|String
+index|[]
+name|getFailedStorageLocations
+parameter_list|()
+function_decl|;
+comment|/**    * Returns the date/time of the last volume failure in milliseconds since    * epoch.    * @return date/time of last volume failure in milliseconds since epoch    */
+DECL|method|getLastVolumeFailureDate ()
+name|long
+name|getLastVolumeFailureDate
+parameter_list|()
+function_decl|;
+comment|/**    * Returns an estimate of total capacity lost due to volume failures in bytes.    * @return estimate of total capacity lost in bytes    */
+DECL|method|getEstimatedCapacityLostTotal ()
+name|long
+name|getEstimatedCapacityLostTotal
+parameter_list|()
+function_decl|;
 comment|/**    * Returns the amount of cache used by the datanode (in bytes).    */
 DECL|method|getCacheUsed ()
 specifier|public

@@ -1874,6 +1874,24 @@ name|hadoop
 operator|.
 name|hdfs
 operator|.
+name|server
+operator|.
+name|protocol
+operator|.
+name|VolumeFailureSummary
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
 name|StorageType
 import|;
 end_import
@@ -7680,7 +7698,7 @@ block|}
 annotation|@
 name|Override
 comment|// DatanodeProtocol
-DECL|method|sendHeartbeat (DatanodeRegistration nodeReg, StorageReport[] report, long dnCacheCapacity, long dnCacheUsed, int xmitsInProgress, int xceiverCount, int failedVolumes)
+DECL|method|sendHeartbeat (DatanodeRegistration nodeReg, StorageReport[] report, long dnCacheCapacity, long dnCacheUsed, int xmitsInProgress, int xceiverCount, int failedVolumes, VolumeFailureSummary volumeFailureSummary)
 specifier|public
 name|HeartbeatResponse
 name|sendHeartbeat
@@ -7706,6 +7724,9 @@ name|xceiverCount
 parameter_list|,
 name|int
 name|failedVolumes
+parameter_list|,
+name|VolumeFailureSummary
+name|volumeFailureSummary
 parameter_list|)
 throws|throws
 name|IOException
@@ -7736,6 +7757,8 @@ argument_list|,
 name|xmitsInProgress
 argument_list|,
 name|failedVolumes
+argument_list|,
+name|volumeFailureSummary
 argument_list|)
 return|;
 block|}

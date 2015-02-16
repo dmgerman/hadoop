@@ -28,20 +28,6 @@ name|apache
 operator|.
 name|commons
 operator|.
-name|lang
-operator|.
-name|ArrayUtils
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|commons
-operator|.
 name|logging
 operator|.
 name|Log
@@ -595,6 +581,8 @@ argument_list|,
 literal|0
 argument_list|,
 literal|0
+argument_list|,
+literal|null
 argument_list|)
 expr_stmt|;
 comment|// Check that the missing storage was pruned.

@@ -170,6 +170,24 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|hdfs
+operator|.
+name|server
+operator|.
+name|protocol
+operator|.
+name|VolumeFailureSummary
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|util
 operator|.
 name|Daemon
@@ -790,6 +808,8 @@ argument_list|,
 literal|0
 argument_list|,
 literal|0
+argument_list|,
+literal|null
 argument_list|)
 expr_stmt|;
 block|}
@@ -887,7 +907,7 @@ literal|false
 expr_stmt|;
 block|}
 block|}
-DECL|method|updateHeartbeat (final DatanodeDescriptor node, StorageReport[] reports, long cacheCapacity, long cacheUsed, int xceiverCount, int failedVolumes)
+DECL|method|updateHeartbeat (final DatanodeDescriptor node, StorageReport[] reports, long cacheCapacity, long cacheUsed, int xceiverCount, int failedVolumes, VolumeFailureSummary volumeFailureSummary)
 specifier|synchronized
 name|void
 name|updateHeartbeat
@@ -911,6 +931,9 @@ name|xceiverCount
 parameter_list|,
 name|int
 name|failedVolumes
+parameter_list|,
+name|VolumeFailureSummary
+name|volumeFailureSummary
 parameter_list|)
 block|{
 name|stats
@@ -933,6 +956,8 @@ argument_list|,
 name|xceiverCount
 argument_list|,
 name|failedVolumes
+argument_list|,
+name|volumeFailureSummary
 argument_list|)
 expr_stmt|;
 name|stats

@@ -326,6 +326,24 @@ name|hadoop
 operator|.
 name|hdfs
 operator|.
+name|server
+operator|.
+name|protocol
+operator|.
+name|VolumeFailureSummary
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
 name|util
 operator|.
 name|EnumCounters
@@ -989,6 +1007,13 @@ name|volumeFailures
 init|=
 literal|0
 decl_stmt|;
+DECL|field|volumeFailureSummary
+specifier|private
+name|VolumeFailureSummary
+name|volumeFailureSummary
+init|=
+literal|null
+decl_stmt|;
 comment|/**     * When set to true, the node is not in include list and is not allowed    * to communicate with the namenode    */
 DECL|field|disallowed
 specifier|private
@@ -1040,6 +1065,8 @@ argument_list|,
 literal|0
 argument_list|,
 literal|0
+argument_list|,
+literal|null
 argument_list|)
 expr_stmt|;
 block|}
@@ -1075,6 +1102,8 @@ argument_list|,
 literal|0
 argument_list|,
 literal|0
+argument_list|,
+literal|null
 argument_list|)
 expr_stmt|;
 block|}
@@ -1485,7 +1514,7 @@ name|blocks
 return|;
 block|}
 comment|/**    * Updates stats from datanode heartbeat.    */
-DECL|method|updateHeartbeat (StorageReport[] reports, long cacheCapacity, long cacheUsed, int xceiverCount, int volFailures)
+DECL|method|updateHeartbeat (StorageReport[] reports, long cacheCapacity, long cacheUsed, int xceiverCount, int volFailures, VolumeFailureSummary volumeFailureSummary)
 specifier|public
 name|void
 name|updateHeartbeat
@@ -1505,6 +1534,9 @@ name|xceiverCount
 parameter_list|,
 name|int
 name|volFailures
+parameter_list|,
+name|VolumeFailureSummary
+name|volumeFailureSummary
 parameter_list|)
 block|{
 name|updateHeartbeatState
@@ -1518,6 +1550,8 @@ argument_list|,
 name|xceiverCount
 argument_list|,
 name|volFailures
+argument_list|,
+name|volumeFailureSummary
 argument_list|)
 expr_stmt|;
 name|heartbeatedSinceRegistration
@@ -1526,7 +1560,7 @@ literal|true
 expr_stmt|;
 block|}
 comment|/**    * process datanode heartbeat or stats initialization.    */
-DECL|method|updateHeartbeatState (StorageReport[] reports, long cacheCapacity, long cacheUsed, int xceiverCount, int volFailures)
+DECL|method|updateHeartbeatState (StorageReport[] reports, long cacheCapacity, long cacheUsed, int xceiverCount, int volFailures, VolumeFailureSummary volumeFailureSummary)
 specifier|public
 name|void
 name|updateHeartbeatState
@@ -1546,6 +1580,9 @@ name|xceiverCount
 parameter_list|,
 name|int
 name|volFailures
+parameter_list|,
+name|VolumeFailureSummary
+name|volumeFailureSummary
 parameter_list|)
 block|{
 name|long
@@ -1584,7 +1621,10 @@ comment|//    until DN restart, we can assume volFailures won't decrease
 comment|//    during the current DN registration session.
 comment|//    When volumeFailures == this.volumeFailures, it implies there is no
 comment|//    state change. No need to check for failed storage. This is an
-comment|//    optimization.
+comment|//    optimization.  Recent versions of the DataNode report a
+comment|//    VolumeFailureSummary containing the date/time of the last volume
+comment|//    failure.  If that's available, then we check that instead for greater
+comment|//    accuracy.
 comment|// 2. After DN restarts, volFailures might not increase and it is possible
 comment|//    we still have new failed storage. For example, admins reduce
 comment|//    available storages in configuration. Another corner case
@@ -1593,9 +1633,42 @@ comment|//    is one good storage A, one restored good storage B, so there is
 comment|//    one element in storageReports and that is A. b) A failed. c) Before
 comment|//    DN sends HB to NN to indicate A has failed, DN restarts. d) After DN
 comment|//    restarts, storageReports has one element which is B.
+specifier|final
 name|boolean
 name|checkFailedStorages
-init|=
+decl_stmt|;
+if|if
+condition|(
+name|volumeFailureSummary
+operator|!=
+literal|null
+operator|&&
+name|this
+operator|.
+name|volumeFailureSummary
+operator|!=
+literal|null
+condition|)
+block|{
+name|checkFailedStorages
+operator|=
+name|volumeFailureSummary
+operator|.
+name|getLastVolumeFailureDate
+argument_list|()
+operator|>
+name|this
+operator|.
+name|volumeFailureSummary
+operator|.
+name|getLastVolumeFailureDate
+argument_list|()
+expr_stmt|;
+block|}
+else|else
+block|{
+name|checkFailedStorages
+operator|=
 operator|(
 name|volFailures
 operator|>
@@ -1606,7 +1679,8 @@ operator|)
 operator|||
 operator|!
 name|heartbeatedSinceRegistration
-decl_stmt|;
+expr_stmt|;
+block|}
 if|if
 condition|(
 name|checkFailedStorages
@@ -1670,6 +1744,12 @@ operator|.
 name|volumeFailures
 operator|=
 name|volFailures
+expr_stmt|;
+name|this
+operator|.
+name|volumeFailureSummary
+operator|=
+name|volumeFailureSummary
 expr_stmt|;
 for|for
 control|(
@@ -3037,6 +3117,17 @@ parameter_list|()
 block|{
 return|return
 name|volumeFailures
+return|;
+block|}
+comment|/**    * Returns info about volume failures.    *    * @return info about volume failures, possibly null    */
+DECL|method|getVolumeFailureSummary ()
+specifier|public
+name|VolumeFailureSummary
+name|getVolumeFailureSummary
+parameter_list|()
+block|{
+return|return
+name|volumeFailureSummary
 return|;
 block|}
 comment|/**    * @param nodeReg DatanodeID to update registration for.    */

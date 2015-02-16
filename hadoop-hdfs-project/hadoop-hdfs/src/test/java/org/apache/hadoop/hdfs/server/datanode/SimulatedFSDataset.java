@@ -188,6 +188,20 @@ name|org
 operator|.
 name|apache
 operator|.
+name|commons
+operator|.
+name|lang
+operator|.
+name|ArrayUtils
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
 name|hadoop
 operator|.
 name|conf
@@ -575,6 +589,24 @@ operator|.
 name|protocol
 operator|.
 name|StorageReport
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|server
+operator|.
+name|protocol
+operator|.
+name|VolumeFailureSummary
 import|;
 end_import
 
@@ -3113,6 +3145,69 @@ name|storage
 operator|.
 name|getNumFailedVolumes
 argument_list|()
+return|;
+block|}
+annotation|@
+name|Override
+comment|// FSDatasetMBean
+DECL|method|getFailedStorageLocations ()
+specifier|public
+name|String
+index|[]
+name|getFailedStorageLocations
+parameter_list|()
+block|{
+return|return
+literal|null
+return|;
+block|}
+annotation|@
+name|Override
+comment|// FSDatasetMBean
+DECL|method|getLastVolumeFailureDate ()
+specifier|public
+name|long
+name|getLastVolumeFailureDate
+parameter_list|()
+block|{
+return|return
+literal|0
+return|;
+block|}
+annotation|@
+name|Override
+comment|// FSDatasetMBean
+DECL|method|getEstimatedCapacityLostTotal ()
+specifier|public
+name|long
+name|getEstimatedCapacityLostTotal
+parameter_list|()
+block|{
+return|return
+literal|0
+return|;
+block|}
+annotation|@
+name|Override
+comment|// FsDatasetSpi
+DECL|method|getVolumeFailureSummary ()
+specifier|public
+name|VolumeFailureSummary
+name|getVolumeFailureSummary
+parameter_list|()
+block|{
+return|return
+operator|new
+name|VolumeFailureSummary
+argument_list|(
+name|ArrayUtils
+operator|.
+name|EMPTY_STRING_ARRAY
+argument_list|,
+literal|0
+argument_list|,
+literal|0
+argument_list|)
 return|;
 block|}
 annotation|@

@@ -5757,7 +5757,7 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|/** Handle heartbeat from datanodes. */
-DECL|method|handleHeartbeat (DatanodeRegistration nodeReg, StorageReport[] reports, final String blockPoolId, long cacheCapacity, long cacheUsed, int xceiverCount, int maxTransfers, int failedVolumes )
+DECL|method|handleHeartbeat (DatanodeRegistration nodeReg, StorageReport[] reports, final String blockPoolId, long cacheCapacity, long cacheUsed, int xceiverCount, int maxTransfers, int failedVolumes, VolumeFailureSummary volumeFailureSummary)
 specifier|public
 name|DatanodeCommand
 index|[]
@@ -5788,6 +5788,9 @@ name|maxTransfers
 parameter_list|,
 name|int
 name|failedVolumes
+parameter_list|,
+name|VolumeFailureSummary
+name|volumeFailureSummary
 parameter_list|)
 throws|throws
 name|IOException
@@ -5898,6 +5901,8 @@ argument_list|,
 name|xceiverCount
 argument_list|,
 name|failedVolumes
+argument_list|,
+name|volumeFailureSummary
 argument_list|)
 expr_stmt|;
 comment|// If we are in safemode, do not send back any recovery / replication

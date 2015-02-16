@@ -612,6 +612,24 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|hdfs
+operator|.
+name|server
+operator|.
+name|protocol
+operator|.
+name|VolumeFailureSummary
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|util
 operator|.
 name|DiskChecker
@@ -845,6 +863,12 @@ argument_list|,
 name|Object
 argument_list|>
 name|getVolumeInfoMap
+parameter_list|()
+function_decl|;
+comment|/**    * Returns info about volume failures.    *    * @return info about volume failures, possibly null    */
+DECL|method|getVolumeFailureSummary ()
+name|VolumeFailureSummary
+name|getVolumeFailureSummary
 parameter_list|()
 function_decl|;
 comment|/** @return a list of finalized blocks for the given block pool. */

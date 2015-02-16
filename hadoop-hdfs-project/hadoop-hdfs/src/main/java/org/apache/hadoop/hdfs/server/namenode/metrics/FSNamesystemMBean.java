@@ -155,6 +155,18 @@ name|int
 name|getNumDecomDeadDataNodes
 parameter_list|()
 function_decl|;
+comment|/**    * Number of failed data volumes across all live data nodes.    * @return number of failed data volumes across all live data nodes    */
+DECL|method|getVolumeFailuresTotal ()
+name|int
+name|getVolumeFailuresTotal
+parameter_list|()
+function_decl|;
+comment|/**    * Returns an estimate of total capacity lost due to volume failures in bytes    * across all live data nodes.    * @return estimate of total capacity lost in bytes    */
+DECL|method|getEstimatedCapacityLostTotal ()
+name|long
+name|getEstimatedCapacityLostTotal
+parameter_list|()
+function_decl|;
 comment|/**    * Number of data nodes that are in the decommissioning state    */
 DECL|method|getNumDecommissioningDataNodes ()
 specifier|public
