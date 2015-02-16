@@ -170,12 +170,6 @@ return|;
 block|}
 return|return
 name|value
-operator|==
-literal|null
-condition|?
-name|defaultValue
-else|:
-name|value
 return|;
 block|}
 DECL|method|getLookupKey (String key, String suffix)

@@ -228,8 +228,9 @@ block|{
 name|Integer
 name|fn
 init|=
-operator|new
 name|Integer
+operator|.
+name|valueOf
 argument_list|(
 name|fieldSpec
 argument_list|)

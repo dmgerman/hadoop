@@ -404,7 +404,7 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 try|try
-block|{
+init|(
 name|FileOutputStream
 name|fos
 init|=
@@ -413,7 +413,8 @@ name|FileOutputStream
 argument_list|(
 name|dumpFile
 argument_list|)
-decl_stmt|;
+init|)
+block|{
 name|fos
 operator|.
 name|write
@@ -424,11 +425,6 @@ literal|0
 argument_list|,
 name|bufferSize
 argument_list|)
-expr_stmt|;
-name|fos
-operator|.
-name|close
-argument_list|()
 expr_stmt|;
 block|}
 catch|catch

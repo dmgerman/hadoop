@@ -2338,28 +2338,16 @@ argument_list|,
 name|replication
 argument_list|)
 expr_stmt|;
-comment|// Set the working directory
-if|if
-condition|(
+comment|// Get the working directory. If not set, sets it to filesystem working dir
+comment|// This code has been added so that working directory reset before running
+comment|// the job. This is necessary for backward compatibility as other systems
+comment|// might use the public API JobConf#setWorkingDirectory to reset the working
+comment|// directory.
 name|job
 operator|.
 name|getWorkingDirectory
 argument_list|()
-operator|==
-literal|null
-condition|)
-block|{
-name|job
-operator|.
-name|setWorkingDirectory
-argument_list|(
-name|jtFs
-operator|.
-name|getWorkingDirectory
-argument_list|()
-argument_list|)
 expr_stmt|;
-block|}
 block|}
 comment|/**    * Internal method for submitting jobs to the system.    *     *<p>The job submission process involves:    *<ol>    *<li>    *   Checking the input and output specifications of the job.    *</li>    *<li>    *   Computing the {@link InputSplit}s for the job.    *</li>    *<li>    *   Setup the requisite accounting information for the     *   {@link DistributedCache} of the job, if necessary.    *</li>    *<li>    *   Copying the job's jar and configuration to the map-reduce system    *   directory on the distributed file-system.     *</li>    *<li>    *   Submitting the job to the<code>JobTracker</code> and optionally    *   monitoring it's status.    *</li>    *</ol></p>    * @param job the configuration to submit    * @param cluster the handle to the Cluster    * @throws ClassNotFoundException    * @throws InterruptedException    * @throws IOException    */
 DECL|method|submitJobInternal (Job job, Cluster cluster)
@@ -4361,28 +4349,6 @@ argument_list|,
 name|replication
 argument_list|)
 expr_stmt|;
-comment|// Set the working directory
-if|if
-condition|(
-name|job
-operator|.
-name|getWorkingDirectory
-argument_list|()
-operator|==
-literal|null
-condition|)
-block|{
-name|job
-operator|.
-name|setWorkingDirectory
-argument_list|(
-name|jtFs
-operator|.
-name|getWorkingDirectory
-argument_list|()
-argument_list|)
-expr_stmt|;
-block|}
 block|}
 block|}
 block|}
