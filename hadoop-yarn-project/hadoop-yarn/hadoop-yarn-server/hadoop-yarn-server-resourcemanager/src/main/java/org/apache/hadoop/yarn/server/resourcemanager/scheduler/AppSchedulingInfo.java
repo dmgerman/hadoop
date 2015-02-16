@@ -943,7 +943,11 @@ name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"checking for deactivate... "
+literal|"checking for deactivate of application :"
+operator|+
+name|this
+operator|.
+name|applicationId
 argument_list|)
 expr_stmt|;
 name|checkForDeactivation
