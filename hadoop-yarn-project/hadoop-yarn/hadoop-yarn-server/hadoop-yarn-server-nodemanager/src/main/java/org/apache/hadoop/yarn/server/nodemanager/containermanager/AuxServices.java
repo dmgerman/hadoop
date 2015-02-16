@@ -858,7 +858,7 @@ name|sName
 operator|+
 literal|"' in the "
 operator|+
-literal|"configuration is for class "
+literal|"configuration is for "
 operator|+
 name|sClass
 operator|+
