@@ -311,18 +311,6 @@ operator|.
 name|class
 argument_list|)
 decl_stmt|;
-comment|/** SPNEGO authenticator */
-DECL|field|AUTH
-specifier|private
-specifier|static
-specifier|final
-name|KerberosUgiAuthenticator
-name|AUTH
-init|=
-operator|new
-name|KerberosUgiAuthenticator
-argument_list|()
-decl_stmt|;
 comment|/**    * Timeout for socket connects and reads    */
 DECL|field|DEFAULT_SOCKET_TIMEOUT
 specifier|public
@@ -694,7 +682,9 @@ return|return
 operator|new
 name|AuthenticatedURL
 argument_list|(
-name|AUTH
+operator|new
+name|KerberosUgiAuthenticator
+argument_list|()
 argument_list|,
 name|connConfigurator
 argument_list|)
