@@ -459,6 +459,10 @@ name|this
 operator|.
 name|path
 operator|=
+name|QueryStringDecoder
+operator|.
+name|decodeComponent
+argument_list|(
 name|decoder
 operator|.
 name|path
@@ -467,6 +471,7 @@ operator|.
 name|substring
 argument_list|(
 name|WEBHDFS_PREFIX_LENGTH
+argument_list|)
 argument_list|)
 expr_stmt|;
 name|this
