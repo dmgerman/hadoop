@@ -195,11 +195,6 @@ specifier|private
 name|S3ObjectInputStream
 name|wrappedStream
 decl_stmt|;
-DECL|field|wrappedObject
-specifier|private
-name|S3Object
-name|wrappedObject
-decl_stmt|;
 DECL|field|stats
 specifier|private
 name|FileSystem
@@ -237,6 +232,15 @@ init|=
 name|S3AFileSystem
 operator|.
 name|LOG
+decl_stmt|;
+DECL|field|CLOSE_THRESHOLD
+specifier|public
+specifier|static
+specifier|final
+name|long
+name|CLOSE_THRESHOLD
+init|=
+literal|4096
 decl_stmt|;
 DECL|method|S3AInputStream (String bucket, String key, long contentLength, AmazonS3Client client, FileSystem.Statistics stats)
 specifier|public
@@ -304,12 +308,6 @@ literal|false
 expr_stmt|;
 name|this
 operator|.
-name|wrappedObject
-operator|=
-literal|null
-expr_stmt|;
-name|this
-operator|.
 name|wrappedStream
 operator|=
 literal|null
@@ -325,7 +323,7 @@ name|IOException
 block|{
 if|if
 condition|(
-name|wrappedObject
+name|wrappedStream
 operator|==
 literal|null
 condition|)
@@ -463,7 +461,7 @@ operator|-
 literal|1
 argument_list|)
 expr_stmt|;
-name|wrappedObject
+name|wrappedStream
 operator|=
 name|client
 operator|.
@@ -471,10 +469,6 @@ name|getObject
 argument_list|(
 name|request
 argument_list|)
-expr_stmt|;
-name|wrappedStream
-operator|=
-name|wrappedObject
 operator|.
 name|getObjectContent
 argument_list|()
@@ -903,16 +897,37 @@ literal|true
 expr_stmt|;
 if|if
 condition|(
-name|wrappedObject
+name|wrappedStream
 operator|!=
 literal|null
 condition|)
 block|{
-name|wrappedObject
+if|if
+condition|(
+name|contentLength
+operator|-
+name|pos
+operator|<=
+name|CLOSE_THRESHOLD
+condition|)
+block|{
+comment|// Close, rather than abort, so that the http connection can be reused.
+name|wrappedStream
 operator|.
 name|close
 argument_list|()
 expr_stmt|;
+block|}
+else|else
+block|{
+comment|// Abort, rather than just close, the underlying stream.  Otherwise, the
+comment|// remaining object payload is read from S3 while closing the stream.
+name|wrappedStream
+operator|.
+name|abort
+argument_list|()
+expr_stmt|;
+block|}
 block|}
 block|}
 annotation|@
