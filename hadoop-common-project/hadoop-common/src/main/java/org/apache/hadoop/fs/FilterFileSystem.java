@@ -774,6 +774,8 @@ argument_list|,
 name|blockSize
 argument_list|,
 name|progress
+argument_list|,
+name|checksumOpt
 argument_list|)
 return|;
 block|}
