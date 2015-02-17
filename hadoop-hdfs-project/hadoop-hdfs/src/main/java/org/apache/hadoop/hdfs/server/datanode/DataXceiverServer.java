@@ -1067,22 +1067,17 @@ operator|)
 assert|;
 for|for
 control|(
-name|Peer
-name|p
+name|Thread
+name|t
 range|:
 name|peers
 operator|.
-name|keySet
+name|values
 argument_list|()
 control|)
 block|{
 comment|// interrupt each and every DataXceiver thread.
-name|peers
-operator|.
-name|get
-argument_list|(
-name|p
-argument_list|)
+name|t
 operator|.
 name|interrupt
 argument_list|()
