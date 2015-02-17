@@ -146,6 +146,25 @@ name|DEFAULT_MAX_ERROR_RETRIES
 init|=
 literal|10
 decl_stmt|;
+comment|// seconds until we give up trying to establish a connection to s3
+DECL|field|ESTABLISH_TIMEOUT
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|ESTABLISH_TIMEOUT
+init|=
+literal|"fs.s3a.connection.establish.timeout"
+decl_stmt|;
+DECL|field|DEFAULT_ESTABLISH_TIMEOUT
+specifier|public
+specifier|static
+specifier|final
+name|int
+name|DEFAULT_ESTABLISH_TIMEOUT
+init|=
+literal|50000
+decl_stmt|;
 comment|// seconds until we give up on a connection to s3
 DECL|field|SOCKET_TIMEOUT
 specifier|public
