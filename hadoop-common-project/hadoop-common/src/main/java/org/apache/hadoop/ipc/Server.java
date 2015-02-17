@@ -3821,6 +3821,11 @@ try|try
 block|{
 name|super
 operator|.
+name|interrupt
+argument_list|()
+expr_stmt|;
+name|super
+operator|.
 name|join
 argument_list|()
 expr_stmt|;
