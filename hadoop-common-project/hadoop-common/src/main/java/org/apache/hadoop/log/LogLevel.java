@@ -193,9 +193,9 @@ name|USAGES
 init|=
 literal|"\nUsage: General options are:\n"
 operator|+
-literal|"\t[-getlevel<host:httpPort><name>]\n"
+literal|"\t[-getlevel<host:httpPort><classname>]\n"
 operator|+
-literal|"\t[-setlevel<host:httpPort><name><level>]\n"
+literal|"\t[-setlevel<host:httpPort><classname><level>]\n"
 decl_stmt|;
 comment|/**    * A command line implementation    */
 DECL|method|main (String[] args)
@@ -595,7 +595,7 @@ name|println
 argument_list|(
 name|MARKER
 operator|+
-literal|"Submitted Log Name:<b>"
+literal|"Submitted Class Name:<b>"
 operator|+
 name|logName
 operator|+
@@ -746,13 +746,13 @@ name|FORMS
 init|=
 literal|"\n<br /><hr /><h3>Get / Set</h3>"
 operator|+
-literal|"\n<form>Log:<input type='text' size='50' name='log' /> "
+literal|"\n<form>Class Name:<input type='text' size='50' name='log' /> "
 operator|+
 literal|"<input type='submit' value='Get Log Level' />"
 operator|+
 literal|"</form>"
 operator|+
-literal|"\n<form>Log:<input type='text' size='50' name='log' /> "
+literal|"\n<form>Class Name:<input type='text' size='50' name='log' /> "
 operator|+
 literal|"Level:<input type='text' name='level' /> "
 operator|+
