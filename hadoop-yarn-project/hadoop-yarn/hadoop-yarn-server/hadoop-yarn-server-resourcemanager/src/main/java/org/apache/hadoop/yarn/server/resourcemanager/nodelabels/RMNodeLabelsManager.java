@@ -1111,6 +1111,58 @@ operator|!=
 name|nm
 condition|)
 block|{
+if|if
+condition|(
+literal|null
+operator|==
+name|nm
+operator|.
+name|labels
+condition|)
+block|{
+comment|// When node deactivated, remove the nm from node collection if no
+comment|// labels explicitly set for this particular nm
+comment|// Save labels first, we need to remove label->nodes relation later
+name|Set
+argument_list|<
+name|String
+argument_list|>
+name|savedNodeLabels
+init|=
+name|getLabelsOnNode
+argument_list|(
+name|nodeId
+argument_list|)
+decl_stmt|;
+comment|// Remove this node in nodes collection
+name|nodeCollections
+operator|.
+name|get
+argument_list|(
+name|nodeId
+operator|.
+name|getHost
+argument_list|()
+argument_list|)
+operator|.
+name|nms
+operator|.
+name|remove
+argument_list|(
+name|nodeId
+argument_list|)
+expr_stmt|;
+comment|// Remove this node in labels->node
+name|removeNodeFromLabels
+argument_list|(
+name|nodeId
+argument_list|,
+name|savedNodeLabels
+argument_list|)
+expr_stmt|;
+block|}
+else|else
+block|{
 comment|// set nm is not running, and its resource = 0
 name|nm
 operator|.
@@ -1131,6 +1183,7 @@ argument_list|,
 literal|0
 argument_list|)
 expr_stmt|;
+block|}
 block|}
 comment|// get the node after edition
 name|Map

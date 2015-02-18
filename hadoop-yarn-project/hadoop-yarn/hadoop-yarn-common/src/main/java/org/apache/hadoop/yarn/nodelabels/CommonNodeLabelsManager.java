@@ -374,22 +374,6 @@ name|yarn
 operator|.
 name|exceptions
 operator|.
-name|YarnException
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|yarn
-operator|.
-name|exceptions
-operator|.
 name|YarnRuntimeException
 import|;
 end_import
@@ -2534,7 +2518,7 @@ expr_stmt|;
 block|}
 block|}
 DECL|method|removeNodeFromLabels (NodeId node, Set<String> labels)
-specifier|private
+specifier|protected
 name|void
 name|removeNodeFromLabels
 parameter_list|(
