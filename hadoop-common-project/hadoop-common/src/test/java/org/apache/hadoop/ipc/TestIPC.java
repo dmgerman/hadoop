@@ -6641,6 +6641,37 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
+annotation|@
+name|Test
+DECL|method|testClientGetTimeout ()
+specifier|public
+name|void
+name|testClientGetTimeout
+parameter_list|()
+throws|throws
+name|IOException
+block|{
+name|Configuration
+name|config
+init|=
+operator|new
+name|Configuration
+argument_list|()
+decl_stmt|;
+name|assertEquals
+argument_list|(
+name|Client
+operator|.
+name|getTimeout
+argument_list|(
+name|config
+argument_list|)
+argument_list|,
+operator|-
+literal|1
+argument_list|)
+expr_stmt|;
+block|}
 DECL|method|assertRetriesOnSocketTimeouts (Configuration conf, int maxTimeoutRetries)
 specifier|private
 name|void

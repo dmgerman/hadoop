@@ -1450,7 +1450,9 @@ name|CommonConfigurationKeys
 operator|.
 name|IPC_CLIENT_PING_KEY
 argument_list|,
-literal|true
+name|CommonConfigurationKeys
+operator|.
+name|IPC_CLIENT_PING_DEFAULT
 argument_list|)
 condition|)
 block|{
