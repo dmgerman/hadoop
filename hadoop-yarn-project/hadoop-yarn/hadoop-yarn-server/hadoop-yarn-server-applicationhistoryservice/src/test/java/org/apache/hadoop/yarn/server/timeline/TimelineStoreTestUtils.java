@@ -6277,6 +6277,27 @@ name|size
 argument_list|()
 argument_list|)
 expr_stmt|;
+name|entities
+operator|=
+name|getEntitiesWithFilters
+argument_list|(
+literal|"type_5"
+argument_list|,
+literal|null
+argument_list|,
+name|badTestingFilters
+argument_list|)
+expr_stmt|;
+name|assertEquals
+argument_list|(
+literal|0
+argument_list|,
+name|entities
+operator|.
+name|size
+argument_list|()
+argument_list|)
+expr_stmt|;
 block|}
 DECL|method|testGetEvents ()
 specifier|public

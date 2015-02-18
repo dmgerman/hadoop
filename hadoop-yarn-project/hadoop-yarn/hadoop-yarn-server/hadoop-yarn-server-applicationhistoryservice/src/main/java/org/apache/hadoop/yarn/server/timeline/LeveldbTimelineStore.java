@@ -3963,9 +3963,9 @@ decl_stmt|;
 if|if
 condition|(
 name|vs
-operator|!=
+operator|==
 literal|null
-operator|&&
+operator|||
 operator|!
 name|vs
 operator|.
