@@ -958,25 +958,6 @@ literal|"nn2"
 argument_list|)
 argument_list|)
 expr_stmt|;
-comment|// Test failover with fencer and nameservice
-name|assertEquals
-argument_list|(
-literal|0
-argument_list|,
-name|runTool
-argument_list|(
-literal|"-ns"
-argument_list|,
-literal|"minidfs-ns"
-argument_list|,
-literal|"-failover"
-argument_list|,
-literal|"nn2"
-argument_list|,
-literal|"nn1"
-argument_list|)
-argument_list|)
-expr_stmt|;
 comment|// Fencer has not run yet, since none of the above required fencing
 name|assertEquals
 argument_list|(
