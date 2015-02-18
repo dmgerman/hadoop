@@ -407,6 +407,24 @@ literal|"create"
 argument_list|)
 condition|)
 block|{
+if|if
+condition|(
+name|i
+operator|==
+name|args
+operator|.
+name|length
+operator|-
+literal|1
+condition|)
+block|{
+name|printCredShellUsage
+argument_list|()
+expr_stmt|;
+return|return
+literal|1
+return|;
+block|}
 name|String
 name|alias
 init|=
@@ -456,6 +474,24 @@ literal|"delete"
 argument_list|)
 condition|)
 block|{
+if|if
+condition|(
+name|i
+operator|==
+name|args
+operator|.
+name|length
+operator|-
+literal|1
+condition|)
+block|{
+name|printCredShellUsage
+argument_list|()
+expr_stmt|;
+return|return
+literal|1
+return|;
+block|}
 name|String
 name|alias
 init|=
@@ -526,6 +562,24 @@ literal|"-provider"
 argument_list|)
 condition|)
 block|{
+if|if
+condition|(
+name|i
+operator|==
+name|args
+operator|.
+name|length
+operator|-
+literal|1
+condition|)
+block|{
+name|printCredShellUsage
+argument_list|()
+expr_stmt|;
+return|return
+literal|1
+return|;
+block|}
 name|userSuppliedProvider
 operator|=
 literal|true
@@ -955,7 +1009,7 @@ specifier|final
 name|String
 name|USAGE
 init|=
-literal|"list [-provider] [-help]"
+literal|"list [-provider provider-path]"
 decl_stmt|;
 DECL|field|DESC
 specifier|public
@@ -1128,7 +1182,7 @@ specifier|final
 name|String
 name|USAGE
 init|=
-literal|"delete<alias> [-provider] [-f] [-help]"
+literal|"delete<alias> [-f] [-provider provider-path]"
 decl_stmt|;
 DECL|field|DESC
 specifier|public
@@ -1413,7 +1467,7 @@ specifier|final
 name|String
 name|USAGE
 init|=
-literal|"create<alias> [-provider] [-help]"
+literal|"create<alias> [-provider provider-path]"
 decl_stmt|;
 DECL|field|DESC
 specifier|public
