@@ -643,14 +643,7 @@ specifier|final
 name|String
 name|USAGE
 init|=
-literal|"Usage: java "
-operator|+
-name|Balancer
-operator|.
-name|class
-operator|.
-name|getSimpleName
-argument_list|()
+literal|"Usage: hdfs balancer"
 operator|+
 literal|"\n\t[-policy<policy>]\tthe balancing policy: "
 operator|+
@@ -676,11 +669,11 @@ argument_list|()
 operator|+
 literal|"\n\t[-threshold<threshold>]\tPercentage of disk capacity"
 operator|+
-literal|"\n\t[-exclude [-f<hosts-file> | comma-sperated list of hosts]]"
+literal|"\n\t[-exclude [-f<hosts-file> |<comma-separated list of hosts>]]"
 operator|+
 literal|"\tExcludes the specified datanodes."
 operator|+
-literal|"\n\t[-include [-f<hosts-file> | comma-sperated list of hosts]]"
+literal|"\n\t[-include [-f<hosts-file> |<comma-separated list of hosts>]]"
 operator|+
 literal|"\tIncludes only the specified datanodes."
 operator|+
