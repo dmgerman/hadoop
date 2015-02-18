@@ -8232,6 +8232,22 @@ argument_list|(
 literal|"Starting flush of map output"
 argument_list|)
 expr_stmt|;
+if|if
+condition|(
+name|kvbuffer
+operator|==
+literal|null
+condition|)
+block|{
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"kvbuffer is null. Skipping flush."
+argument_list|)
+expr_stmt|;
+return|return;
+block|}
 name|spillLock
 operator|.
 name|lock
