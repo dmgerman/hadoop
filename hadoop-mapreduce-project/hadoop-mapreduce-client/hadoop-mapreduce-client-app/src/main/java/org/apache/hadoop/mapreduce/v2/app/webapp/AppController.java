@@ -1191,7 +1191,7 @@ name|toLowerCase
 argument_list|(
 name|Locale
 operator|.
-name|US
+name|ENGLISH
 argument_list|)
 argument_list|)
 expr_stmt|;

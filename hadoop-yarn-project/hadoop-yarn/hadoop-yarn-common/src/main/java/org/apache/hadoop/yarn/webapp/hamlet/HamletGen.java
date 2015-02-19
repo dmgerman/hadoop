@@ -1549,7 +1549,7 @@ name|toLowerCase
 argument_list|(
 name|Locale
 operator|.
-name|US
+name|ENGLISH
 argument_list|)
 argument_list|,
 literal|"\", e, opt("
@@ -1681,7 +1681,7 @@ name|toLowerCase
 argument_list|(
 name|Locale
 operator|.
-name|US
+name|ENGLISH
 argument_list|)
 argument_list|,
 literal|"_(this, "

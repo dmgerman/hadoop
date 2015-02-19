@@ -625,7 +625,11 @@ operator|+
 name|hostname
 operator|.
 name|toLowerCase
-argument_list|()
+argument_list|(
+name|Locale
+operator|.
+name|ENGLISH
+argument_list|)
 operator|+
 name|realm
 decl_stmt|;
@@ -661,7 +665,7 @@ name|toLowerCase
 argument_list|(
 name|Locale
 operator|.
-name|US
+name|ENGLISH
 argument_list|)
 decl_stmt|;
 name|assertEquals
@@ -1515,7 +1519,11 @@ else|:
 name|host
 operator|.
 name|toLowerCase
-argument_list|()
+argument_list|(
+name|Locale
+operator|.
+name|ENGLISH
+argument_list|)
 decl_stmt|;
 name|Token
 argument_list|<

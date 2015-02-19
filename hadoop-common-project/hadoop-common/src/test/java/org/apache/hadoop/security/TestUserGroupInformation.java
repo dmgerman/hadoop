@@ -320,6 +320,16 @@ name|java
 operator|.
 name|util
 operator|.
+name|Locale
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
 name|Set
 import|;
 end_import
@@ -1278,7 +1288,11 @@ operator|=
 name|userName
 operator|.
 name|toLowerCase
-argument_list|()
+argument_list|(
+name|Locale
+operator|.
+name|ENGLISH
+argument_list|)
 expr_stmt|;
 block|}
 comment|// get the groups
@@ -1412,7 +1426,11 @@ operator|=
 name|loginUserName
 operator|.
 name|toLowerCase
-argument_list|()
+argument_list|(
+name|Locale
+operator|.
+name|ENGLISH
+argument_list|)
 expr_stmt|;
 block|}
 name|assertEquals

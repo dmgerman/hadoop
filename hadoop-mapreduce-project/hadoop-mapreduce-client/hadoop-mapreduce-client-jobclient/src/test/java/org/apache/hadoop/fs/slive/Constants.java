@@ -18,6 +18,16 @@ name|slive
 package|;
 end_package
 
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
+name|Locale
+import|;
+end_import
+
 begin_comment
 comment|/**  * Constants used in various places in slive  */
 end_comment
@@ -62,7 +72,11 @@ name|name
 argument_list|()
 operator|.
 name|toLowerCase
-argument_list|()
+argument_list|(
+name|Locale
+operator|.
+name|ENGLISH
+argument_list|)
 return|;
 block|}
 block|}
@@ -104,7 +118,11 @@ name|name
 argument_list|()
 operator|.
 name|toLowerCase
-argument_list|()
+argument_list|(
+name|Locale
+operator|.
+name|ENGLISH
+argument_list|)
 return|;
 block|}
 block|}

@@ -23,6 +23,16 @@ package|;
 end_package
 
 begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
+name|Locale
+import|;
+end_import
+
+begin_import
 import|import static
 name|org
 operator|.
@@ -690,7 +700,11 @@ argument_list|(
 name|type
 operator|.
 name|toUpperCase
-argument_list|()
+argument_list|(
+name|Locale
+operator|.
+name|ENGLISH
+argument_list|)
 argument_list|)
 expr_stmt|;
 block|}

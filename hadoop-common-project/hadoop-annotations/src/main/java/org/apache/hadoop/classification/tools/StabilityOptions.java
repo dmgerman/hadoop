@@ -50,6 +50,16 @@ name|List
 import|;
 end_import
 
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
+name|Locale
+import|;
+end_import
+
 begin_class
 DECL|class|StabilityOptions
 class|class
@@ -98,7 +108,11 @@ init|=
 name|option
 operator|.
 name|toLowerCase
-argument_list|()
+argument_list|(
+name|Locale
+operator|.
+name|ENGLISH
+argument_list|)
 decl_stmt|;
 if|if
 condition|(
@@ -184,7 +198,11 @@ literal|0
 index|]
 operator|.
 name|toLowerCase
-argument_list|()
+argument_list|(
+name|Locale
+operator|.
+name|ENGLISH
+argument_list|)
 decl_stmt|;
 if|if
 condition|(

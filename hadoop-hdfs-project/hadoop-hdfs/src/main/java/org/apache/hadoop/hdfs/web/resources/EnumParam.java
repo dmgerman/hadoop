@@ -30,6 +30,16 @@ name|Arrays
 import|;
 end_import
 
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
+name|Locale
+import|;
+end_import
+
 begin_class
 DECL|class|EnumParam
 specifier|abstract
@@ -182,7 +192,11 @@ argument_list|,
 name|str
 operator|.
 name|toUpperCase
-argument_list|()
+argument_list|(
+name|Locale
+operator|.
+name|ENGLISH
+argument_list|)
 argument_list|)
 return|;
 block|}

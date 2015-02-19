@@ -585,7 +585,7 @@ name|toLowerCase
 argument_list|(
 name|Locale
 operator|.
-name|US
+name|ENGLISH
 argument_list|)
 argument_list|,
 literal|"."
@@ -606,7 +606,9 @@ name|loadFirst
 argument_list|(
 name|prefix
 argument_list|,
-literal|"hadoop-metrics2-"
+literal|"hadoop-metrics2"
+operator|+
+literal|"-"
 operator|+
 name|prefix
 operator|.
@@ -614,7 +616,7 @@ name|toLowerCase
 argument_list|(
 name|Locale
 operator|.
-name|US
+name|ENGLISH
 argument_list|)
 operator|+
 literal|".properties"

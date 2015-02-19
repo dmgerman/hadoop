@@ -651,8 +651,7 @@ name|toLowerCase
 argument_list|(
 name|Locale
 operator|.
-name|getDefault
-argument_list|()
+name|ENGLISH
 argument_list|)
 operator|+
 literal|".strategy.impl"
@@ -1103,7 +1102,11 @@ name|name
 argument_list|()
 operator|.
 name|toLowerCase
-argument_list|()
+argument_list|(
+name|Locale
+operator|.
+name|ENGLISH
+argument_list|)
 decl_stmt|;
 name|Map
 argument_list|<
@@ -1603,7 +1606,11 @@ name|name
 argument_list|()
 operator|.
 name|toLowerCase
-argument_list|()
+argument_list|(
+name|Locale
+operator|.
+name|ENGLISH
+argument_list|)
 decl_stmt|;
 for|for
 control|(

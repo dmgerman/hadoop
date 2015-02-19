@@ -839,7 +839,7 @@ name|toLowerCase
 argument_list|(
 name|Locale
 operator|.
-name|US
+name|ENGLISH
 argument_list|)
 operator|+
 literal|"@"
@@ -1502,7 +1502,11 @@ name|getHostName
 argument_list|()
 operator|.
 name|toLowerCase
-argument_list|()
+argument_list|(
+name|Locale
+operator|.
+name|ENGLISH
+argument_list|)
 expr_stmt|;
 block|}
 return|return
