@@ -1236,6 +1236,60 @@ name|YarnException
 throws|,
 name|IOException
 function_decl|;
+comment|/**    *<p>    * The interface used by client to get labels to nodes mapping    * in existing cluster    *</p>    *    * @return node to labels mappings    * @throws YarnException    * @throws IOException    */
+annotation|@
+name|Public
+annotation|@
+name|Unstable
+DECL|method|getLabelsToNodes ()
+specifier|public
+specifier|abstract
+name|Map
+argument_list|<
+name|String
+argument_list|,
+name|Set
+argument_list|<
+name|NodeId
+argument_list|>
+argument_list|>
+name|getLabelsToNodes
+parameter_list|()
+throws|throws
+name|YarnException
+throws|,
+name|IOException
+function_decl|;
+comment|/**    *<p>    * The interface used by client to get labels to nodes mapping    * for specified labels in existing cluster    *</p>    *    * @param labels labels for which labels to nodes mapping has to be retrieved    * @return labels to nodes mappings for specific labels    * @throws YarnException    * @throws IOException    */
+annotation|@
+name|Public
+annotation|@
+name|Unstable
+DECL|method|getLabelsToNodes (Set<String> labels)
+specifier|public
+specifier|abstract
+name|Map
+argument_list|<
+name|String
+argument_list|,
+name|Set
+argument_list|<
+name|NodeId
+argument_list|>
+argument_list|>
+name|getLabelsToNodes
+parameter_list|(
+name|Set
+argument_list|<
+name|String
+argument_list|>
+name|labels
+parameter_list|)
+throws|throws
+name|YarnException
+throws|,
+name|IOException
+function_decl|;
 comment|/**    *<p>    * The interface used by client to get node labels in the cluster    *</p>    *    * @return cluster node labels collection    * @throws YarnException    * @throws IOException    */
 annotation|@
 name|Public
