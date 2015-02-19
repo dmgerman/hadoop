@@ -92,6 +92,7 @@ DECL|enumConstant|LS
 DECL|enumConstant|MKDIR
 DECL|enumConstant|DELETE
 DECL|enumConstant|CREATE
+DECL|enumConstant|TRUNCATE
 name|READ
 block|,
 name|APPEND
@@ -105,6 +106,8 @@ block|,
 name|DELETE
 block|,
 name|CREATE
+block|,
+name|TRUNCATE
 block|;
 DECL|method|lowerName ()
 name|String
@@ -146,7 +149,7 @@ specifier|final
 name|String
 name|PROG_VERSION
 init|=
-literal|"0.0.2"
+literal|"0.1.0"
 decl_stmt|;
 comment|// useful constants
 DECL|field|MEGABYTES
