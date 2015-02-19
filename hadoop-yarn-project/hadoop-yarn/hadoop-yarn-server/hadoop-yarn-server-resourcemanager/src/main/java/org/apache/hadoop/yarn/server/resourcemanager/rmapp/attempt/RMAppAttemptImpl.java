@@ -2762,6 +2762,14 @@ name|RMAppAttemptEventType
 operator|.
 name|STATUS_UPDATE
 argument_list|,
+name|RMAppAttemptEventType
+operator|.
+name|LAUNCHED
+argument_list|,
+name|RMAppAttemptEventType
+operator|.
+name|LAUNCH_FAILED
+argument_list|,
 comment|// should be fixed to reject container allocate request at Final
 comment|// Saving in scheduler
 name|RMAppAttemptEventType
