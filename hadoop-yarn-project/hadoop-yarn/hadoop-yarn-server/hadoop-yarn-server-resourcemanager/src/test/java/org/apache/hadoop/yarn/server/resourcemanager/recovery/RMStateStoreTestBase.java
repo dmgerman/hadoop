@@ -23,6 +23,22 @@ package|;
 end_package
 
 begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|event
+operator|.
+name|Event
+import|;
+end_import
+
+begin_import
 import|import static
 name|org
 operator|.
@@ -929,7 +945,7 @@ name|Dispatcher
 implements|,
 name|EventHandler
 argument_list|<
-name|RMAppAttemptEvent
+name|Event
 argument_list|>
 block|{
 DECL|field|attemptId
@@ -968,25 +984,41 @@ parameter_list|)
 block|{     }
 annotation|@
 name|Override
-DECL|method|handle (RMAppAttemptEvent event)
+DECL|method|handle (Event event)
 specifier|public
 name|void
 name|handle
 parameter_list|(
-name|RMAppAttemptEvent
+name|Event
 name|event
 parameter_list|)
 block|{
+if|if
+condition|(
+name|event
+operator|instanceof
+name|RMAppAttemptEvent
+condition|)
+block|{
+name|RMAppAttemptEvent
+name|rmAppAttemptEvent
+init|=
+operator|(
+name|RMAppAttemptEvent
+operator|)
+name|event
+decl_stmt|;
 name|assertEquals
 argument_list|(
 name|attemptId
 argument_list|,
-name|event
+name|rmAppAttemptEvent
 operator|.
 name|getApplicationAttemptId
 argument_list|()
 argument_list|)
 expr_stmt|;
+block|}
 name|notified
 operator|=
 literal|true
@@ -1146,6 +1178,7 @@ literal|false
 expr_stmt|;
 block|}
 DECL|method|storeApp (RMStateStore store, ApplicationId appId, long submitTime, long startTime)
+specifier|protected
 name|RMApp
 name|storeApp
 parameter_list|(
@@ -1265,6 +1298,7 @@ name|mockApp
 return|;
 block|}
 DECL|method|storeAttempt (RMStateStore store, ApplicationAttemptId attemptId, String containerIdStr, Token<AMRMTokenIdentifier> appToken, SecretKey clientTokenMasterKey, TestDispatcher dispatcher)
+specifier|protected
 name|ContainerId
 name|storeAttempt
 parameter_list|(
@@ -3207,7 +3241,7 @@ argument_list|()
 expr_stmt|;
 block|}
 DECL|method|generateAMRMToken ( ApplicationAttemptId attemptId, AMRMTokenSecretManager appTokenMgr)
-specifier|private
+specifier|protected
 name|Token
 argument_list|<
 name|AMRMTokenIdentifier
