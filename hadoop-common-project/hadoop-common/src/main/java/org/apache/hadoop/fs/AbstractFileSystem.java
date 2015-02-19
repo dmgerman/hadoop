@@ -2733,7 +2733,6 @@ function_decl|;
 comment|/**    * The specification of this method matches that of    * {@link FileContext#truncate(Path, long)} except that Path f must be for    * this file system.    */
 DECL|method|truncate (Path f, long newLength)
 specifier|public
-specifier|abstract
 name|boolean
 name|truncate
 parameter_list|(
@@ -2751,7 +2750,21 @@ throws|,
 name|UnresolvedLinkException
 throws|,
 name|IOException
-function_decl|;
+block|{
+throw|throw
+operator|new
+name|UnsupportedOperationException
+argument_list|(
+name|getClass
+argument_list|()
+operator|.
+name|getSimpleName
+argument_list|()
+operator|+
+literal|" doesn't support truncate"
+argument_list|)
+throw|;
+block|}
 comment|/**    * The specification of this method matches that of    * {@link FileContext#setReplication(Path, short)} except that Path f must be    * for this file system.    */
 DECL|method|setReplication (final Path f, final short replication)
 specifier|public

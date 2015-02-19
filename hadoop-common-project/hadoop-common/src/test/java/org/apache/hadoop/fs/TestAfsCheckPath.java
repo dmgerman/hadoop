@@ -605,27 +605,6 @@ return|;
 block|}
 annotation|@
 name|Override
-DECL|method|truncate (Path f, long newLength)
-specifier|public
-name|boolean
-name|truncate
-parameter_list|(
-name|Path
-name|f
-parameter_list|,
-name|long
-name|newLength
-parameter_list|)
-throws|throws
-name|IOException
-block|{
-comment|// deliberately empty
-return|return
-literal|false
-return|;
-block|}
-annotation|@
-name|Override
 DECL|method|renameInternal (Path src, Path dst)
 specifier|public
 name|void
