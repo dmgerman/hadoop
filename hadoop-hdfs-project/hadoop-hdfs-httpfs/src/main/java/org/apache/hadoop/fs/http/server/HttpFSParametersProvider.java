@@ -540,6 +540,24 @@ name|put
 argument_list|(
 name|Operation
 operator|.
+name|TRUNCATE
+argument_list|,
+operator|new
+name|Class
+index|[]
+block|{
+name|NewLengthParam
+operator|.
+name|class
+block|}
+argument_list|)
+expr_stmt|;
+name|PARAMS_DEF
+operator|.
+name|put
+argument_list|(
+name|Operation
+operator|.
 name|CREATE
 argument_list|,
 operator|new
@@ -1299,6 +1317,46 @@ comment|/**      * Constructor.      */
 DECL|method|OffsetParam ()
 specifier|public
 name|OffsetParam
+parameter_list|()
+block|{
+name|super
+argument_list|(
+name|NAME
+argument_list|,
+literal|0l
+argument_list|)
+expr_stmt|;
+block|}
+block|}
+comment|/**    * Class for newlength parameter.    */
+annotation|@
+name|InterfaceAudience
+operator|.
+name|Private
+DECL|class|NewLengthParam
+specifier|public
+specifier|static
+class|class
+name|NewLengthParam
+extends|extends
+name|LongParam
+block|{
+comment|/**      * Parameter name.      */
+DECL|field|NAME
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|NAME
+init|=
+name|HttpFSFileSystem
+operator|.
+name|NEW_LENGTH_PARAM
+decl_stmt|;
+comment|/**      * Constructor.      */
+DECL|method|NewLengthParam ()
+specifier|public
+name|NewLengthParam
 parameter_list|()
 block|{
 name|super
