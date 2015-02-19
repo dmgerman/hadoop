@@ -464,7 +464,7 @@ name|System
 operator|.
 name|getProperty
 argument_list|(
-literal|"build.test.dir"
+literal|"test.build.data"
 argument_list|,
 literal|"build"
 argument_list|)
