@@ -255,6 +255,16 @@ name|OFFSET
 operator|)
 return|;
 block|}
+DECL|method|getMin ()
+specifier|public
+name|long
+name|getMin
+parameter_list|()
+block|{
+return|return
+name|MIN
+return|;
+block|}
 block|}
 end_class
 
