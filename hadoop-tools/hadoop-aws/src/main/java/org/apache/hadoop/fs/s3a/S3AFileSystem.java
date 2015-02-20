@@ -2099,17 +2099,24 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
+if|if
+condition|(
 name|LOG
 operator|.
-name|info
+name|isDebugEnabled
+argument_list|()
+condition|)
+block|{
+name|LOG
+operator|.
+name|debug
 argument_list|(
-literal|"Opening '"
-operator|+
+literal|"Opening '{}' for reading."
+argument_list|,
 name|f
-operator|+
-literal|"' for reading"
 argument_list|)
 expr_stmt|;
+block|}
 specifier|final
 name|FileStatus
 name|fileStatus
@@ -2297,19 +2304,26 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
+if|if
+condition|(
 name|LOG
 operator|.
-name|info
+name|isDebugEnabled
+argument_list|()
+condition|)
+block|{
+name|LOG
+operator|.
+name|debug
 argument_list|(
-literal|"Rename path "
-operator|+
+literal|"Rename path {} to {}"
+argument_list|,
 name|src
-operator|+
-literal|" to "
-operator|+
+argument_list|,
 name|dst
 argument_list|)
 expr_stmt|;
+block|}
 name|String
 name|srcKey
 init|=
@@ -2384,10 +2398,10 @@ parameter_list|)
 block|{
 name|LOG
 operator|.
-name|info
+name|error
 argument_list|(
-literal|"rename: src not found "
-operator|+
+literal|"rename: src not found {}"
+argument_list|,
 name|src
 argument_list|)
 expr_stmt|;
