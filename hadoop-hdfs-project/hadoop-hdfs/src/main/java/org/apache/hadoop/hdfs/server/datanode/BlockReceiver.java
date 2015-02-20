@@ -3435,6 +3435,15 @@ argument_list|(
 name|len
 argument_list|)
 expr_stmt|;
+name|datanode
+operator|.
+name|metrics
+operator|.
+name|incrTotalWriteTime
+argument_list|(
+name|duration
+argument_list|)
+expr_stmt|;
 name|manageWriterOsCache
 argument_list|(
 name|offsetInBlock
