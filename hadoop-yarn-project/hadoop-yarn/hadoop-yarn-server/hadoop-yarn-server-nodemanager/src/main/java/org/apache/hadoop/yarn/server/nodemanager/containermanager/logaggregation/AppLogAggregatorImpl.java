@@ -1591,6 +1591,8 @@ operator|.
 name|applicationId
 operator|+
 literal|". Skip log upload this time. "
+argument_list|,
+name|e1
 argument_list|)
 expr_stmt|;
 return|return;
@@ -3069,6 +3071,8 @@ operator|+
 name|containerId
 operator|+
 literal|". Skipping this container."
+argument_list|,
+name|e
 argument_list|)
 expr_stmt|;
 return|return
