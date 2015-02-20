@@ -68,6 +68,26 @@ name|NodeId
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|server
+operator|.
+name|api
+operator|.
+name|protocolrecords
+operator|.
+name|NMContainerStatus
+import|;
+end_import
+
 begin_class
 DECL|class|RMNodeReconnectEvent
 specifier|public
@@ -89,7 +109,15 @@ name|ApplicationId
 argument_list|>
 name|runningApplications
 decl_stmt|;
-DECL|method|RMNodeReconnectEvent (NodeId nodeId, RMNode newNode, List<ApplicationId> runningApps)
+DECL|field|containerStatuses
+specifier|private
+name|List
+argument_list|<
+name|NMContainerStatus
+argument_list|>
+name|containerStatuses
+decl_stmt|;
+DECL|method|RMNodeReconnectEvent (NodeId nodeId, RMNode newNode, List<ApplicationId> runningApps, List<NMContainerStatus> containerReports)
 specifier|public
 name|RMNodeReconnectEvent
 parameter_list|(
@@ -104,6 +132,12 @@ argument_list|<
 name|ApplicationId
 argument_list|>
 name|runningApps
+parameter_list|,
+name|List
+argument_list|<
+name|NMContainerStatus
+argument_list|>
+name|containerReports
 parameter_list|)
 block|{
 name|super
@@ -122,6 +156,10 @@ expr_stmt|;
 name|runningApplications
 operator|=
 name|runningApps
+expr_stmt|;
+name|containerStatuses
+operator|=
+name|containerReports
 expr_stmt|;
 block|}
 DECL|method|getReconnectedNode ()
@@ -145,6 +183,19 @@ parameter_list|()
 block|{
 return|return
 name|runningApplications
+return|;
+block|}
+DECL|method|getNMContainerStatuses ()
+specifier|public
+name|List
+argument_list|<
+name|NMContainerStatus
+argument_list|>
+name|getNMContainerStatuses
+parameter_list|()
+block|{
+return|return
+name|containerStatuses
 return|;
 block|}
 block|}

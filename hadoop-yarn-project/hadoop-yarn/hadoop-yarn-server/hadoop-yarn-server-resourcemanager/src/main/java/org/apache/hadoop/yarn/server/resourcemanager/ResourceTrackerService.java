@@ -2103,6 +2103,11 @@ name|request
 operator|.
 name|getRunningApplications
 argument_list|()
+argument_list|,
+name|request
+operator|.
+name|getNMContainerStatuses
+argument_list|()
 argument_list|)
 argument_list|)
 expr_stmt|;
