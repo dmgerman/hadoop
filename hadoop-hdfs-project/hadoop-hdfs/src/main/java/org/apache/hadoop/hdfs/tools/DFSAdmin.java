@@ -1508,7 +1508,7 @@ literal|"-"
 operator|+
 name|NAME
 operator|+
-literal|"<dirname>...<dirname> -storageType<storagetype>"
+literal|" [-storageType<storagetype>]<dirname>...<dirname>"
 decl_stmt|;
 DECL|field|DESCRIPTION
 specifier|private
@@ -1521,7 +1521,7 @@ name|USAGE
 operator|+
 literal|": "
 operator|+
-literal|"Clear the disk space quota for each directory<dirName>.\n"
+literal|"Clear the space quota for each directory<dirName>.\n"
 operator|+
 literal|"\t\tFor each directory, attempt to clear the quota. An error will be reported if\n"
 operator|+
@@ -1755,7 +1755,7 @@ literal|"-"
 operator|+
 name|NAME
 operator|+
-literal|"<quota><dirname>...<dirname> -storageType<storagetype>"
+literal|"<quota> [-storageType<storagetype>]<dirname>...<dirname>"
 decl_stmt|;
 DECL|field|DESCRIPTION
 specifier|private
@@ -1768,7 +1768,7 @@ name|USAGE
 operator|+
 literal|": "
 operator|+
-literal|"Set the disk space quota<quota> for each directory<dirName>.\n"
+literal|"Set the space quota<quota> for each directory<dirName>.\n"
 operator|+
 literal|"\t\tThe space quota is a long integer that puts a hard limit\n"
 operator|+
