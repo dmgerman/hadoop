@@ -1185,7 +1185,7 @@ return|;
 block|}
 DECL|method|getState ()
 specifier|public
-name|String
+name|YarnApplicationState
 name|getState
 parameter_list|()
 block|{
@@ -1193,9 +1193,6 @@ return|return
 name|this
 operator|.
 name|state
-operator|.
-name|toString
-argument_list|()
 return|;
 block|}
 DECL|method|getProgress ()
@@ -1236,7 +1233,7 @@ return|;
 block|}
 DECL|method|getFinalStatus ()
 specifier|public
-name|String
+name|FinalApplicationStatus
 name|getFinalStatus
 parameter_list|()
 block|{
@@ -1244,9 +1241,6 @@ return|return
 name|this
 operator|.
 name|finalStatus
-operator|.
-name|toString
-argument_list|()
 return|;
 block|}
 DECL|method|getTrackingUrl ()
