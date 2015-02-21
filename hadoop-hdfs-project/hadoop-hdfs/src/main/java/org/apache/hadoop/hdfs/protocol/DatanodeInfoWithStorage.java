@@ -54,7 +54,7 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|hdfs
+name|fs
 operator|.
 name|StorageType
 import|;

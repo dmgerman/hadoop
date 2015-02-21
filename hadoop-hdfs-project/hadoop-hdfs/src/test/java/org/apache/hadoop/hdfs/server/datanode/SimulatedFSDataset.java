@@ -218,9 +218,9 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|hdfs
+name|fs
 operator|.
-name|DFSConfigKeys
+name|StorageType
 import|;
 end_import
 
@@ -234,7 +234,7 @@ name|hadoop
 operator|.
 name|hdfs
 operator|.
-name|StorageType
+name|DFSConfigKeys
 import|;
 end_import
 

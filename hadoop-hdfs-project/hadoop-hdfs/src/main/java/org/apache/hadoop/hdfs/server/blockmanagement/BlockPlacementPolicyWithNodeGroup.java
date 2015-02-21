@@ -52,9 +52,9 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|hdfs
+name|fs
 operator|.
-name|DFSUtil
+name|StorageType
 import|;
 end_import
 
@@ -68,7 +68,7 @@ name|hadoop
 operator|.
 name|hdfs
 operator|.
-name|StorageType
+name|DFSUtil
 import|;
 end_import
 

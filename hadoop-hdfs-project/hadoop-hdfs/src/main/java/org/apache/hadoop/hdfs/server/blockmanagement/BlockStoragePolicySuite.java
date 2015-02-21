@@ -72,7 +72,7 @@ name|hadoop
 operator|.
 name|fs
 operator|.
-name|XAttr
+name|StorageType
 import|;
 end_import
 
@@ -84,9 +84,9 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|hdfs
+name|fs
 operator|.
-name|StorageType
+name|XAttr
 import|;
 end_import
 

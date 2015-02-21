@@ -112,11 +112,9 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|ha
+name|fs
 operator|.
-name|HAServiceProtocol
-operator|.
-name|HAServiceState
+name|StorageType
 import|;
 end_import
 
@@ -128,9 +126,11 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|hdfs
+name|ha
 operator|.
-name|StorageType
+name|HAServiceProtocol
+operator|.
+name|HAServiceState
 import|;
 end_import
 

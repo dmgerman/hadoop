@@ -114,7 +114,9 @@ name|hadoop
 operator|.
 name|fs
 operator|.
-name|XAttr
+name|permission
+operator|.
+name|PermissionStatus
 import|;
 end_import
 
@@ -128,9 +130,21 @@ name|hadoop
 operator|.
 name|fs
 operator|.
-name|permission
+name|StorageType
+import|;
+end_import
+
+begin_import
+import|import
+name|org
 operator|.
-name|PermissionStatus
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|fs
+operator|.
+name|XAttr
 import|;
 end_import
 
@@ -297,20 +311,6 @@ operator|.
 name|snapshot
 operator|.
 name|Snapshot
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|hdfs
-operator|.
-name|StorageType
 import|;
 end_import
 

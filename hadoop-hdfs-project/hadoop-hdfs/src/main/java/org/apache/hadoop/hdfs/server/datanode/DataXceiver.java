@@ -370,9 +370,9 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|hdfs
+name|fs
 operator|.
-name|ExtendedBlockId
+name|StorageType
 import|;
 end_import
 
@@ -386,7 +386,7 @@ name|hadoop
 operator|.
 name|hdfs
 operator|.
-name|StorageType
+name|ExtendedBlockId
 import|;
 end_import
 

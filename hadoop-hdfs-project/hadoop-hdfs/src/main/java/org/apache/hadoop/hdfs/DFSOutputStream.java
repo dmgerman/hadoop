@@ -418,7 +418,9 @@ name|hadoop
 operator|.
 name|fs
 operator|.
-name|Syncable
+name|permission
+operator|.
+name|FsPermission
 import|;
 end_import
 
@@ -432,9 +434,21 @@ name|hadoop
 operator|.
 name|fs
 operator|.
-name|permission
+name|StorageType
+import|;
+end_import
+
+begin_import
+import|import
+name|org
 operator|.
-name|FsPermission
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|fs
+operator|.
+name|Syncable
 import|;
 end_import
 

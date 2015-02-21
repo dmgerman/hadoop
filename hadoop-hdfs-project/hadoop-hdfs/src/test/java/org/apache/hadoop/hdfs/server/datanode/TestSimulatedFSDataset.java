@@ -130,9 +130,9 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|hdfs
+name|fs
 operator|.
-name|HdfsConfiguration
+name|StorageType
 import|;
 end_import
 
@@ -146,7 +146,7 @@ name|hadoop
 operator|.
 name|hdfs
 operator|.
-name|StorageType
+name|HdfsConfiguration
 import|;
 end_import
 
