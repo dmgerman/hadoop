@@ -95,7 +95,7 @@ name|isemptydir
 expr_stmt|;
 block|}
 comment|// Files
-DECL|method|S3AFileStatus (long length, long modification_time, Path path)
+DECL|method|S3AFileStatus (long length, long modification_time, Path path, long blockSize)
 specifier|public
 name|S3AFileStatus
 parameter_list|(
@@ -107,6 +107,9 @@ name|modification_time
 parameter_list|,
 name|Path
 name|path
+parameter_list|,
+name|long
+name|blockSize
 parameter_list|)
 block|{
 name|super
@@ -117,7 +120,7 @@ literal|false
 argument_list|,
 literal|1
 argument_list|,
-literal|0
+name|blockSize
 argument_list|,
 name|modification_time
 argument_list|,
