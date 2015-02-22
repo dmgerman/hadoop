@@ -217,15 +217,6 @@ name|?
 argument_list|>
 name|manager
 decl_stmt|;
-DECL|field|AUTH_HANDLER_PROPERTY
-specifier|public
-specifier|static
-specifier|final
-name|String
-name|AUTH_HANDLER_PROPERTY
-init|=
-literal|"yarn.resourcemanager.authentication-handler"
-decl_stmt|;
 DECL|field|OLD_HEADER
 specifier|private
 specifier|static
