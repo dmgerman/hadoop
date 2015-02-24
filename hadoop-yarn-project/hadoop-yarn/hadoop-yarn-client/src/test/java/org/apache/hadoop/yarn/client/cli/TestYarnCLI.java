@@ -11950,6 +11950,13 @@ name|pw
 operator|.
 name|println
 argument_list|(
+literal|" -help              Displays help for all commands."
+argument_list|)
+expr_stmt|;
+name|pw
+operator|.
+name|println
+argument_list|(
 literal|" -list              List all running nodes. Supports optional use of"
 argument_list|)
 expr_stmt|;

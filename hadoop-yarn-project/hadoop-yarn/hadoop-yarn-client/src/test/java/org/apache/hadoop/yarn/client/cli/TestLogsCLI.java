@@ -1128,6 +1128,13 @@ name|pw
 operator|.
 name|println
 argument_list|(
+literal|" -help                           Displays help for all commands."
+argument_list|)
+expr_stmt|;
+name|pw
+operator|.
+name|println
+argument_list|(
 literal|" -nodeAddress<Node Address>     NodeAddress in the format nodename:port"
 argument_list|)
 expr_stmt|;
