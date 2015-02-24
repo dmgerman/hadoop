@@ -495,6 +495,21 @@ return|return
 literal|"ftp"
 return|;
 block|}
+comment|/**    * Get the default port for this FTPFileSystem.    *    * @return the default port    */
+annotation|@
+name|Override
+DECL|method|getDefaultPort ()
+specifier|protected
+name|int
+name|getDefaultPort
+parameter_list|()
+block|{
+return|return
+name|FTP
+operator|.
+name|DEFAULT_PORT
+return|;
+block|}
 annotation|@
 name|Override
 DECL|method|initialize (URI uri, Configuration conf)
