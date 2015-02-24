@@ -228,9 +228,11 @@ condition|(
 literal|true
 condition|)
 block|{
-name|LOG
+name|System
 operator|.
-name|info
+name|err
+operator|.
+name|print
 argument_list|(
 name|prompt
 argument_list|)
@@ -242,9 +244,11 @@ operator|>
 name|FORCE_NONE
 condition|)
 block|{
-name|LOG
+name|System
 operator|.
-name|info
+name|out
+operator|.
+name|println
 argument_list|(
 literal|"automatically choosing "
 operator|+
@@ -349,9 +353,11 @@ name|c
 return|;
 block|}
 block|}
-name|LOG
+name|System
 operator|.
-name|error
+name|err
+operator|.
+name|print
 argument_list|(
 literal|"I'm sorry, I cannot understand your response.\n"
 argument_list|)
