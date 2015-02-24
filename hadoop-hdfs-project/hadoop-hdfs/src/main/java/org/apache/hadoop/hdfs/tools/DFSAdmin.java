@@ -8050,7 +8050,17 @@ argument_list|,
 literal|0
 argument_list|)
 decl_stmt|;
-name|GenericRefreshProtocol
+name|Collection
+argument_list|<
+name|RefreshResponse
+argument_list|>
+name|responses
+init|=
+literal|null
+decl_stmt|;
+try|try
+init|(
+name|GenericRefreshProtocolClientSideTranslatorPB
 name|xlator
 init|=
 operator|new
@@ -8058,14 +8068,12 @@ name|GenericRefreshProtocolClientSideTranslatorPB
 argument_list|(
 name|proxy
 argument_list|)
-decl_stmt|;
+init|;
+init|)
+block|{
 comment|// Refresh
-name|Collection
-argument_list|<
-name|RefreshResponse
-argument_list|>
 name|responses
-init|=
+operator|=
 name|xlator
 operator|.
 name|refresh
@@ -8074,7 +8082,7 @@ name|identifier
 argument_list|,
 name|args
 argument_list|)
-decl_stmt|;
+expr_stmt|;
 name|int
 name|returnCode
 init|=
@@ -8160,6 +8168,31 @@ block|}
 return|return
 name|returnCode
 return|;
+block|}
+finally|finally
+block|{
+if|if
+condition|(
+name|responses
+operator|==
+literal|null
+condition|)
+block|{
+name|System
+operator|.
+name|out
+operator|.
+name|println
+argument_list|(
+literal|"Failed to get response.\n"
+argument_list|)
+expr_stmt|;
+return|return
+operator|-
+literal|1
+return|;
+block|}
+block|}
 block|}
 comment|/**    * Displays format of commands.    * @param cmd The command that is being executed.    */
 DECL|method|printUsage (String cmd)
