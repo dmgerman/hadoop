@@ -1076,16 +1076,6 @@ name|java
 operator|.
 name|util
 operator|.
-name|Locale
-import|;
-end_import
-
-begin_import
-import|import
-name|java
-operator|.
-name|util
-operator|.
 name|List
 import|;
 end_import
@@ -23574,11 +23564,7 @@ operator|=
 name|name
 operator|.
 name|toUpperCase
-argument_list|(
-name|Locale
-operator|.
-name|ENGLISH
-argument_list|)
+argument_list|()
 expr_stmt|;
 block|}
 DECL|method|getStartInstance (OpInstanceCache cache)

@@ -3750,7 +3750,7 @@ name|toLowerCase
 argument_list|(
 name|Locale
 operator|.
-name|ENGLISH
+name|US
 argument_list|)
 operator|.
 name|equalsIgnoreCase
@@ -3764,7 +3764,7 @@ name|toLowerCase
 argument_list|(
 name|Locale
 operator|.
-name|ENGLISH
+name|US
 argument_list|)
 argument_list|)
 condition|)

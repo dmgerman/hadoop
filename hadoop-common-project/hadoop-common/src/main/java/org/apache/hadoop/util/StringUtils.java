@@ -3966,7 +3966,7 @@ name|toLowerCase
 argument_list|(
 name|Locale
 operator|.
-name|ENGLISH
+name|US
 argument_list|)
 argument_list|,
 name|ESCAPE_CHAR

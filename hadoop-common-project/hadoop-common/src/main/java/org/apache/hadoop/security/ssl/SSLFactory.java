@@ -210,16 +210,6 @@ name|GeneralSecurityException
 import|;
 end_import
 
-begin_import
-import|import
-name|java
-operator|.
-name|util
-operator|.
-name|Locale
-import|;
-end_import
-
 begin_comment
 comment|/**  * Factory that creates SSLEngine and SSLSocketFactory instances using  * Hadoop configuration information.  *<p/>  * This SSLFactory uses a {@link ReloadingX509TrustManager} instance,  * which reloads public keys if the truststore file changes.  *<p/>  * This factory is used to configure HTTPS in Hadoop HTTP based endpoints, both  * client and server.  */
 end_comment
@@ -650,11 +640,7 @@ name|trim
 argument_list|()
 operator|.
 name|toUpperCase
-argument_list|(
-name|Locale
-operator|.
-name|ENGLISH
-argument_list|)
+argument_list|()
 argument_list|)
 return|;
 block|}

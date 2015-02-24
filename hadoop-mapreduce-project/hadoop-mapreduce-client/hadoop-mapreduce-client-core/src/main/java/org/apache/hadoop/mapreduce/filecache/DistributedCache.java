@@ -1308,11 +1308,7 @@ init|=
 name|fragment
 operator|.
 name|toLowerCase
-argument_list|(
-name|Locale
-operator|.
-name|ENGLISH
-argument_list|)
+argument_list|()
 decl_stmt|;
 if|if
 condition|(
@@ -1390,11 +1386,7 @@ init|=
 name|fragment
 operator|.
 name|toLowerCase
-argument_list|(
-name|Locale
-operator|.
-name|ENGLISH
-argument_list|)
+argument_list|()
 decl_stmt|;
 if|if
 condition|(
