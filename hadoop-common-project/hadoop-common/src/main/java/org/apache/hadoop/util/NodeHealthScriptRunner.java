@@ -4,7 +4,7 @@ comment|/**  * Licensed to the Apache Software Foundation (ASF) under one  * or 
 end_comment
 
 begin_package
-DECL|package|org.apache.hadoop.yarn.server.nodemanager
+DECL|package|org.apache.hadoop.util
 package|package
 name|org
 operator|.
@@ -12,11 +12,7 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|yarn
-operator|.
-name|server
-operator|.
-name|nodemanager
+name|util
 package|;
 end_package
 
@@ -210,22 +206,6 @@ name|StringUtils
 import|;
 end_import
 
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|yarn
-operator|.
-name|conf
-operator|.
-name|YarnConfiguration
-import|;
-end_import
-
 begin_comment
 comment|/**  *   * The class which provides functionality of checking the health of the node  * using the configured node health script and reporting back to the service  * for which the health checker has been asked to report.  */
 end_comment
@@ -284,12 +264,6 @@ name|shexec
 init|=
 literal|null
 decl_stmt|;
-comment|/** Configuration used by the checker */
-DECL|field|conf
-specifier|private
-name|Configuration
-name|conf
-decl_stmt|;
 comment|/** Pattern used for searching in the output of the node health script */
 DECL|field|ERROR_PATTERN
 specifier|static
@@ -302,6 +276,7 @@ literal|"ERROR"
 decl_stmt|;
 comment|/** Time out error message */
 DECL|field|NODE_HEALTH_SCRIPT_TIMED_OUT_MSG
+specifier|public
 specifier|static
 specifier|final
 name|String
@@ -722,10 +697,23 @@ literal|false
 return|;
 block|}
 block|}
-DECL|method|NodeHealthScriptRunner ()
+DECL|method|NodeHealthScriptRunner (String scriptName, long chkInterval, long timeout, String[] scriptArgs)
 specifier|public
 name|NodeHealthScriptRunner
-parameter_list|()
+parameter_list|(
+name|String
+name|scriptName
+parameter_list|,
+name|long
+name|chkInterval
+parameter_list|,
+name|long
+name|timeout
+parameter_list|,
+name|String
+index|[]
+name|scriptArgs
+parameter_list|)
 block|{
 name|super
 argument_list|(
@@ -758,6 +746,34 @@ name|healthReport
 operator|=
 literal|""
 expr_stmt|;
+name|this
+operator|.
+name|nodeHealthScript
+operator|=
+name|scriptName
+expr_stmt|;
+name|this
+operator|.
+name|intervalTime
+operator|=
+name|chkInterval
+expr_stmt|;
+name|this
+operator|.
+name|scriptTimeout
+operator|=
+name|timeout
+expr_stmt|;
+name|this
+operator|.
+name|timer
+operator|=
+operator|new
+name|NodeHealthMonitorExecutor
+argument_list|(
+name|scriptArgs
+argument_list|)
+expr_stmt|;
 block|}
 comment|/*    * Method which initializes the values for the script path and interval time.    */
 annotation|@
@@ -773,85 +789,6 @@ parameter_list|)
 throws|throws
 name|Exception
 block|{
-name|this
-operator|.
-name|conf
-operator|=
-name|conf
-expr_stmt|;
-name|this
-operator|.
-name|nodeHealthScript
-operator|=
-name|conf
-operator|.
-name|get
-argument_list|(
-name|YarnConfiguration
-operator|.
-name|NM_HEALTH_CHECK_SCRIPT_PATH
-argument_list|)
-expr_stmt|;
-name|this
-operator|.
-name|intervalTime
-operator|=
-name|conf
-operator|.
-name|getLong
-argument_list|(
-name|YarnConfiguration
-operator|.
-name|NM_HEALTH_CHECK_INTERVAL_MS
-argument_list|,
-name|YarnConfiguration
-operator|.
-name|DEFAULT_NM_HEALTH_CHECK_INTERVAL_MS
-argument_list|)
-expr_stmt|;
-name|this
-operator|.
-name|scriptTimeout
-operator|=
-name|conf
-operator|.
-name|getLong
-argument_list|(
-name|YarnConfiguration
-operator|.
-name|NM_HEALTH_CHECK_SCRIPT_TIMEOUT_MS
-argument_list|,
-name|YarnConfiguration
-operator|.
-name|DEFAULT_NM_HEALTH_CHECK_SCRIPT_TIMEOUT_MS
-argument_list|)
-expr_stmt|;
-name|String
-index|[]
-name|args
-init|=
-name|conf
-operator|.
-name|getStrings
-argument_list|(
-name|YarnConfiguration
-operator|.
-name|NM_HEALTH_CHECK_SCRIPT_OPTS
-argument_list|,
-operator|new
-name|String
-index|[]
-block|{}
-argument_list|)
-decl_stmt|;
-name|timer
-operator|=
-operator|new
-name|NodeHealthMonitorExecutor
-argument_list|(
-name|args
-argument_list|)
-expr_stmt|;
 name|super
 operator|.
 name|serviceInit
@@ -877,7 +814,7 @@ condition|(
 operator|!
 name|shouldRun
 argument_list|(
-name|conf
+name|nodeHealthScript
 argument_list|)
 condition|)
 block|{
@@ -933,7 +870,7 @@ condition|(
 operator|!
 name|shouldRun
 argument_list|(
-name|conf
+name|nodeHealthScript
 argument_list|)
 condition|)
 block|{
@@ -1069,36 +1006,24 @@ operator|=
 name|lastReportedTime
 expr_stmt|;
 block|}
-comment|/**    * Method used to determine if or not node health monitoring service should be    * started or not. Returns true if following conditions are met:    *     *<ol>    *<li>Path to Node health check script is not empty</li>    *<li>Node health check script file exists</li>    *</ol>    *     * @param conf    * @return true if node health monitoring service can be started.    */
-DECL|method|shouldRun (Configuration conf)
+comment|/**    * Method used to determine if or not node health monitoring service should be    * started or not. Returns true if following conditions are met:    *     *<ol>    *<li>Path to Node health check script is not empty</li>    *<li>Node health check script file exists</li>    *</ol>    *     * @return true if node health monitoring service can be started.    */
+DECL|method|shouldRun (String healthScript)
 specifier|public
 specifier|static
 name|boolean
 name|shouldRun
 parameter_list|(
-name|Configuration
-name|conf
+name|String
+name|healthScript
 parameter_list|)
 block|{
-name|String
-name|nodeHealthScript
-init|=
-name|conf
-operator|.
-name|get
-argument_list|(
-name|YarnConfiguration
-operator|.
-name|NM_HEALTH_CHECK_SCRIPT_PATH
-argument_list|)
-decl_stmt|;
 if|if
 condition|(
-name|nodeHealthScript
+name|healthScript
 operator|==
 literal|null
 operator|||
-name|nodeHealthScript
+name|healthScript
 operator|.
 name|trim
 argument_list|()
@@ -1117,7 +1042,7 @@ init|=
 operator|new
 name|File
 argument_list|(
-name|nodeHealthScript
+name|healthScript
 argument_list|)
 decl_stmt|;
 return|return
@@ -1147,6 +1072,15 @@ name|String
 name|output
 parameter_list|)
 block|{
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"health status being set as "
+operator|+
+name|output
+argument_list|)
+expr_stmt|;
 name|this
 operator|.
 name|setHealthy
@@ -1178,6 +1112,15 @@ name|long
 name|time
 parameter_list|)
 block|{
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"health status being set as "
+operator|+
+name|output
+argument_list|)
+expr_stmt|;
 name|this
 operator|.
 name|setHealthStatus
@@ -1197,6 +1140,7 @@ expr_stmt|;
 block|}
 comment|/**    * Used only by tests to access the timer task directly    * @return the timer task    */
 DECL|method|getTimerTask ()
+specifier|public
 name|TimerTask
 name|getTimerTask
 parameter_list|()
