@@ -361,13 +361,12 @@ name|i
 else|:
 operator|-
 name|i
+operator|-
+literal|2
 init|;
 name|i
-operator|<
-name|diffs
-operator|.
-name|size
-argument_list|()
+operator|>=
+literal|0
 condition|;
 name|i
 operator|--
