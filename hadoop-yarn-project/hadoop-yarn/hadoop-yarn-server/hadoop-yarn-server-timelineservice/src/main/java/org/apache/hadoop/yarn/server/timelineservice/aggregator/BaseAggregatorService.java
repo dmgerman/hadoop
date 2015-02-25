@@ -138,29 +138,9 @@ name|api
 operator|.
 name|records
 operator|.
-name|timeline
+name|timelineservice
 operator|.
 name|TimelineEntities
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|yarn
-operator|.
-name|api
-operator|.
-name|records
-operator|.
-name|timeline
-operator|.
-name|TimelinePutResponse
 import|;
 end_import
 
@@ -263,10 +243,10 @@ name|serviceStop
 argument_list|()
 expr_stmt|;
 block|}
-comment|/**    * Handles entity writes. These writes are synchronous and are written to the    * backing storage without buffering/batching. If any entity already exists,    * it results in an update of the entity.    *    * This method should be reserved for selected critical entities and events.    * For normal voluminous writes one should use the async method    * {@link #postEntitiesAsync(TimelineEntities, UserGroupInformation)}.    *    * @param entities entities to post    * @param callerUgi the caller UGI    * @return the response that contains the result of the post.    */
+comment|/**    * Handles entity writes. These writes are synchronous and are written to the    * backing storage without buffering/batching. If any entity already exists,    * it results in an update of the entity.    *    * This method should be reserved for selected critical entities and events.    * For normal voluminous writes one should use the async method    * {@link #postEntitiesAsync(TimelineEntities, UserGroupInformation)}.    *    * @param entities entities to post    * @param callerUgi the caller UGI    */
 DECL|method|postEntities (TimelineEntities entities, UserGroupInformation callerUgi)
 specifier|public
-name|TimelinePutResponse
+name|void
 name|postEntities
 parameter_list|(
 name|TimelineEntities
@@ -301,9 +281,6 @@ literal|")"
 argument_list|)
 expr_stmt|;
 block|}
-return|return
-literal|null
-return|;
 block|}
 comment|/**    * Handles entity writes in an asynchronous manner. The method returns as soon    * as validation is done. No promises are made on how quickly it will be    * written to the backing storage or if it will always be written to the    * backing storage. Multiple writes to the same entities may be batched and    * appropriate values updated and result in fewer writes to the backing    * storage.    *    * @param entities entities to post    * @param callerUgi the caller UGI    */
 DECL|method|postEntitiesAsync (TimelineEntities entities, UserGroupInformation callerUgi)
