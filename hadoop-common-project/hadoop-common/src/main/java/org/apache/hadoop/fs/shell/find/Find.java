@@ -102,6 +102,16 @@ end_import
 
 begin_import
 import|import
+name|java
+operator|.
+name|util
+operator|.
+name|Set
+import|;
+end_import
+
+begin_import
+import|import
 name|org
 operator|.
 name|apache
@@ -307,44 +317,81 @@ init|=
 literal|"H"
 decl_stmt|;
 comment|/** List of expressions recognized by this command. */
-annotation|@
-name|SuppressWarnings
-argument_list|(
-literal|"rawtypes"
-argument_list|)
 DECL|field|EXPRESSIONS
 specifier|private
 specifier|static
 specifier|final
+name|Set
+argument_list|<
 name|Class
-index|[]
+argument_list|<
+name|?
+extends|extends
+name|Expression
+argument_list|>
+argument_list|>
 name|EXPRESSIONS
+init|=
+operator|new
+name|HashSet
+argument_list|<>
+argument_list|()
 decl_stmt|;
+DECL|method|addExpression (Class<?> clazz)
+specifier|private
+specifier|static
+name|void
+name|addExpression
+parameter_list|(
+name|Class
+argument_list|<
+name|?
+argument_list|>
+name|clazz
+parameter_list|)
+block|{
+name|EXPRESSIONS
+operator|.
+name|add
+argument_list|(
+name|clazz
+operator|.
+name|asSubclass
+argument_list|(
+name|Expression
+operator|.
+name|class
+argument_list|)
+argument_list|)
+expr_stmt|;
+block|}
 static|static
 block|{
 comment|// Initialize the static variables.
-name|EXPRESSIONS
-operator|=
-operator|new
-name|Class
-index|[]
-block|{
 comment|// Operator Expressions
+name|addExpression
+argument_list|(
 name|And
 operator|.
 name|class
-block|,
+argument_list|)
+expr_stmt|;
 comment|// Action Expressions
+name|addExpression
+argument_list|(
 name|Print
 operator|.
 name|class
-block|,
+argument_list|)
+expr_stmt|;
 comment|// Navigation Expressions
 comment|// Matcher Expressions
+name|addExpression
+argument_list|(
 name|Name
 operator|.
 name|class
-block|}
+argument_list|)
 expr_stmt|;
 name|DESCRIPTION
 operator|=
@@ -395,11 +442,6 @@ argument_list|>
 argument_list|()
 decl_stmt|;
 comment|/** Register the expressions with the expression factory. */
-annotation|@
-name|SuppressWarnings
-argument_list|(
-literal|"unchecked"
-argument_list|)
 DECL|method|registerExpressions (ExpressionFactory factory)
 specifier|private
 specifier|static
@@ -433,11 +475,6 @@ expr_stmt|;
 block|}
 block|}
 comment|/** Build the description used by the help command. */
-annotation|@
-name|SuppressWarnings
-argument_list|(
-literal|"unchecked"
-argument_list|)
 DECL|method|buildDescription (ExpressionFactory factory)
 specifier|private
 specifier|static
