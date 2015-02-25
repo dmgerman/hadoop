@@ -2122,17 +2122,14 @@ argument_list|()
 argument_list|)
 return|;
 block|}
-comment|/**    * Get block at the specified position.    * Fetch it from the namenode if not cached.    *     * @param offset block corresponding to this offset in file is returned    * @param updatePosition whether to update current position    * @return located block    * @throws IOException    */
-DECL|method|getBlockAt (long offset, boolean updatePosition)
+comment|/**    * Get block at the specified position.    * Fetch it from the namenode if not cached.    *     * @param offset block corresponding to this offset in file is returned    * @return located block    * @throws IOException    */
+DECL|method|getBlockAt (long offset)
 specifier|private
 name|LocatedBlock
 name|getBlockAt
 parameter_list|(
 name|long
 name|offset
-parameter_list|,
-name|boolean
-name|updatePosition
 parameter_list|)
 throws|throws
 name|IOException
@@ -2175,10 +2172,6 @@ argument_list|(
 literal|"offset< 0 || offset>= getFileLength(), offset="
 operator|+
 name|offset
-operator|+
-literal|", updatePosition="
-operator|+
-name|updatePosition
 operator|+
 literal|", locatedBlocks="
 operator|+
@@ -2285,43 +2278,6 @@ argument_list|(
 name|targetBlockIdx
 argument_list|)
 expr_stmt|;
-block|}
-comment|// update current position
-if|if
-condition|(
-name|updatePosition
-condition|)
-block|{
-comment|// synchronized not strictly needed, since we only get here
-comment|// from synchronized caller methods
-synchronized|synchronized
-init|(
-name|this
-init|)
-block|{
-name|pos
-operator|=
-name|offset
-expr_stmt|;
-name|blockEnd
-operator|=
-name|blk
-operator|.
-name|getStartOffset
-argument_list|()
-operator|+
-name|blk
-operator|.
-name|getBlockSize
-argument_list|()
-operator|-
-literal|1
-expr_stmt|;
-name|currentLocatedBlock
-operator|=
-name|blk
-expr_stmt|;
-block|}
 block|}
 return|return
 name|blk
@@ -2840,10 +2796,37 @@ init|=
 name|getBlockAt
 argument_list|(
 name|target
-argument_list|,
-literal|true
 argument_list|)
 decl_stmt|;
+comment|// update current position
+name|this
+operator|.
+name|pos
+operator|=
+name|target
+expr_stmt|;
+name|this
+operator|.
+name|blockEnd
+operator|=
+name|targetBlock
+operator|.
+name|getStartOffset
+argument_list|()
+operator|+
+name|targetBlock
+operator|.
+name|getBlockSize
+argument_list|()
+operator|-
+literal|1
+expr_stmt|;
+name|this
+operator|.
+name|currentLocatedBlock
+operator|=
+name|targetBlock
+expr_stmt|;
 assert|assert
 operator|(
 name|target
@@ -4698,8 +4681,6 @@ name|block
 operator|.
 name|getStartOffset
 argument_list|()
-argument_list|,
-literal|false
 argument_list|)
 expr_stmt|;
 name|failures
@@ -5131,8 +5112,6 @@ name|block
 operator|.
 name|getStartOffset
 argument_list|()
-argument_list|,
-literal|false
 argument_list|)
 expr_stmt|;
 while|while
@@ -5402,8 +5381,6 @@ name|block
 operator|.
 name|getStartOffset
 argument_list|()
-argument_list|,
-literal|false
 argument_list|)
 expr_stmt|;
 synchronized|synchronized
@@ -5983,8 +5960,6 @@ name|block
 operator|.
 name|getStartOffset
 argument_list|()
-argument_list|,
-literal|false
 argument_list|)
 expr_stmt|;
 while|while
