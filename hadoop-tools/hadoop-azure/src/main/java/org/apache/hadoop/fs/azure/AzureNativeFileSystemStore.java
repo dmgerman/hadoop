@@ -1951,16 +1951,6 @@ name|instrumentation
 operator|=
 name|instrumentation
 expr_stmt|;
-name|this
-operator|.
-name|bandwidthGaugeUpdater
-operator|=
-operator|new
-name|BandwidthGaugeUpdater
-argument_list|(
-name|instrumentation
-argument_list|)
-expr_stmt|;
 if|if
 condition|(
 literal|null
@@ -2009,9 +1999,36 @@ throw|throw
 operator|new
 name|IllegalArgumentException
 argument_list|(
-literal|"Cannot initialize WASB file system, URI is null"
+literal|"Cannot initialize WASB file system, conf is null"
 argument_list|)
 throw|;
+block|}
+if|if
+condition|(
+operator|!
+name|conf
+operator|.
+name|getBoolean
+argument_list|(
+name|NativeAzureFileSystem
+operator|.
+name|SKIP_AZURE_METRICS_PROPERTY_NAME
+argument_list|,
+literal|false
+argument_list|)
+condition|)
+block|{
+comment|//If not skip azure metrics, create bandwidthGaugeUpdater
+name|this
+operator|.
+name|bandwidthGaugeUpdater
+operator|=
+operator|new
+name|BandwidthGaugeUpdater
+argument_list|(
+name|instrumentation
+argument_list|)
+expr_stmt|;
 block|}
 comment|// Incoming parameters validated. Capture the URI and the job configuration
 comment|// object.
@@ -6367,6 +6384,14 @@ name|selfThrottlingWriteFactor
 argument_list|)
 expr_stmt|;
 block|}
+if|if
+condition|(
+name|bandwidthGaugeUpdater
+operator|!=
+literal|null
+condition|)
+block|{
+comment|//bandwidthGaugeUpdater is null when we config to skip azure metrics
 name|ResponseReceivedMetricUpdater
 operator|.
 name|hook
@@ -6378,6 +6403,7 @@ argument_list|,
 name|bandwidthGaugeUpdater
 argument_list|)
 expr_stmt|;
+block|}
 comment|// Bind operation context to receive send request callbacks on this operation.
 comment|// If reads concurrent to OOB writes are allowed, the interception will reset
 comment|// the conditional header on all Azure blob storage read requests.
@@ -9280,11 +9306,23 @@ name|void
 name|close
 parameter_list|()
 block|{
+if|if
+condition|(
+name|bandwidthGaugeUpdater
+operator|!=
+literal|null
+condition|)
+block|{
 name|bandwidthGaugeUpdater
 operator|.
 name|close
 argument_list|()
 expr_stmt|;
+name|bandwidthGaugeUpdater
+operator|=
+literal|null
+expr_stmt|;
+block|}
 block|}
 comment|// Finalizer to ensure complete shutdown
 annotation|@
