@@ -438,6 +438,24 @@ name|server
 operator|.
 name|blockmanagement
 operator|.
+name|BlockInfo
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|server
+operator|.
+name|blockmanagement
+operator|.
 name|BlockInfoContiguous
 import|;
 end_import
@@ -3034,7 +3052,7 @@ parameter_list|)
 block|{
 comment|// Add file->block mapping
 specifier|final
-name|BlockInfoContiguous
+name|BlockInfo
 index|[]
 name|blocks
 init|=
@@ -4545,7 +4563,7 @@ operator|>
 literal|0
 condition|)
 block|{
-name|BlockInfoContiguous
+name|BlockInfo
 name|ucBlock
 init|=
 name|cons
@@ -4554,7 +4572,7 @@ name|getLastBlock
 argument_list|()
 decl_stmt|;
 comment|// we do not replace the inode, just replace the last block of oldnode
-name|BlockInfoContiguous
+name|BlockInfo
 name|info
 init|=
 name|namesystem

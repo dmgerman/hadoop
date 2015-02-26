@@ -664,6 +664,24 @@ name|server
 operator|.
 name|blockmanagement
 operator|.
+name|BlockInfo
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|server
+operator|.
+name|blockmanagement
+operator|.
 name|BlockInfoContiguous
 import|;
 end_import
@@ -1737,7 +1755,7 @@ argument_list|)
 argument_list|)
 decl_stmt|;
 comment|//find which file this block belongs to
-name|BlockInfoContiguous
+name|BlockInfo
 name|blockInfo
 init|=
 name|namenode

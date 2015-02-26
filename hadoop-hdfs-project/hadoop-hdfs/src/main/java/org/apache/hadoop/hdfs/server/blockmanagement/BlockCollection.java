@@ -75,7 +75,7 @@ block|{
 comment|/**    * Get the last block of the collection.    */
 DECL|method|getLastBlock ()
 specifier|public
-name|BlockInfoContiguous
+name|BlockInfo
 name|getLastBlock
 parameter_list|()
 function_decl|;
@@ -96,10 +96,10 @@ name|int
 name|numBlocks
 parameter_list|()
 function_decl|;
-comment|/**    * Get the blocks or block groups.    */
+comment|/**    * Get the blocks (striped or contiguous).    */
 DECL|method|getBlocks ()
 specifier|public
-name|BlockInfoContiguous
+name|BlockInfo
 index|[]
 name|getBlocks
 parameter_list|()
@@ -132,8 +132,8 @@ name|String
 name|getName
 parameter_list|()
 function_decl|;
-comment|/**    * Set the block/block-group at the given index.    */
-DECL|method|setBlock (int index, BlockInfoContiguous blk)
+comment|/**    * Set the block (contiguous or striped) at the given index.    */
+DECL|method|setBlock (int index, BlockInfo blk)
 specifier|public
 name|void
 name|setBlock
@@ -141,17 +141,17 @@ parameter_list|(
 name|int
 name|index
 parameter_list|,
-name|BlockInfoContiguous
+name|BlockInfo
 name|blk
 parameter_list|)
 function_decl|;
 comment|/**    * Convert the last block of the collection to an under-construction block    * and set the locations.    */
-DECL|method|setLastBlock ( BlockInfoContiguous lastBlock, DatanodeStorageInfo[] targets)
+DECL|method|convertLastBlockToUC (BlockInfo lastBlock, DatanodeStorageInfo[] targets)
 specifier|public
-name|BlockInfoContiguousUnderConstruction
-name|setLastBlock
+name|void
+name|convertLastBlockToUC
 parameter_list|(
-name|BlockInfoContiguous
+name|BlockInfo
 name|lastBlock
 parameter_list|,
 name|DatanodeStorageInfo

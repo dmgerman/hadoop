@@ -1997,7 +1997,7 @@ operator|.
 name|getBlocksList
 argument_list|()
 decl_stmt|;
-comment|// TODO: also persist striped blocks
+comment|// in file diff there can only be contiguous blocks
 name|BlockInfoContiguous
 index|[]
 name|blocks
@@ -2073,6 +2073,9 @@ condition|)
 block|{
 name|storedBlock
 operator|=
+operator|(
+name|BlockInfoContiguous
+operator|)
 name|fsn
 operator|.
 name|getBlockManager

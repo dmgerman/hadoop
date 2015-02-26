@@ -2730,6 +2730,24 @@ name|server
 operator|.
 name|blockmanagement
 operator|.
+name|BlockInfo
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|server
+operator|.
+name|blockmanagement
+operator|.
 name|BlockInfoContiguous
 import|;
 end_import
@@ -2749,6 +2767,24 @@ operator|.
 name|blockmanagement
 operator|.
 name|BlockInfoContiguousUnderConstruction
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|server
+operator|.
+name|blockmanagement
+operator|.
+name|BlockInfoStripedUnderConstruction
 import|;
 end_import
 
@@ -11344,6 +11380,25 @@ argument_list|(
 literal|"LAZY_PERSIST"
 argument_list|)
 decl_stmt|;
+comment|// not support truncating file with striped blocks
+if|if
+condition|(
+name|file
+operator|.
+name|isStriped
+argument_list|()
+condition|)
+block|{
+throw|throw
+operator|new
+name|UnsupportedOperationException
+argument_list|(
+literal|"Cannot truncate file with striped block "
+operator|+
+name|src
+argument_list|)
+throw|;
+block|}
 if|if
 condition|(
 name|lpPolicy
@@ -11730,7 +11785,7 @@ operator|==
 literal|null
 operator|)
 decl_stmt|;
-name|BlockInfoContiguous
+name|BlockInfo
 name|oldBlock
 init|=
 name|file
@@ -11738,6 +11793,11 @@ operator|.
 name|getLastBlock
 argument_list|()
 decl_stmt|;
+assert|assert
+name|oldBlock
+operator|instanceof
+name|BlockInfoContiguous
+assert|;
 name|boolean
 name|shouldCopyOnTruncate
 init|=
@@ -11745,6 +11805,9 @@ name|shouldCopyOnTruncate
 argument_list|(
 name|file
 argument_list|,
+operator|(
+name|BlockInfoContiguous
+operator|)
 name|oldBlock
 argument_list|)
 decl_stmt|;
@@ -11838,7 +11901,7 @@ argument_list|)
 expr_stmt|;
 name|file
 operator|.
-name|setLastBlock
+name|convertLastBlockToUC
 argument_list|(
 name|truncatedBlockUC
 argument_list|,
@@ -13406,6 +13469,25 @@ argument_list|,
 literal|true
 argument_list|)
 decl_stmt|;
+comment|// not support appending file with striped blocks
+if|if
+condition|(
+name|myFile
+operator|.
+name|isStriped
+argument_list|()
+condition|)
+block|{
+throw|throw
+operator|new
+name|UnsupportedOperationException
+argument_list|(
+literal|"Cannot truncate file with striped block "
+operator|+
+name|src
+argument_list|)
+throw|;
+block|}
 specifier|final
 name|BlockStoragePolicy
 name|lpPolicy
@@ -13466,6 +13548,9 @@ specifier|final
 name|BlockInfoContiguous
 name|lastBlock
 init|=
+operator|(
+name|BlockInfoContiguous
+operator|)
 name|myFile
 operator|.
 name|getLastBlock
@@ -13725,7 +13810,7 @@ block|}
 block|}
 else|else
 block|{
-name|BlockInfoContiguous
+name|BlockInfo
 name|lastBlock
 init|=
 name|file
@@ -14601,7 +14686,7 @@ block|}
 else|else
 block|{
 specifier|final
-name|BlockInfoContiguous
+name|BlockInfo
 name|lastBlock
 init|=
 name|file
@@ -16242,7 +16327,7 @@ block|}
 else|else
 block|{
 comment|// check the penultimate block of this file
-name|BlockInfoContiguous
+name|BlockInfo
 name|b
 init|=
 name|v
@@ -16262,7 +16347,7 @@ argument_list|(
 name|src
 argument_list|,
 operator|new
-name|BlockInfoContiguous
+name|BlockInfo
 index|[]
 block|{
 name|b
@@ -16972,7 +17057,7 @@ condition|(
 name|trackBlockCounts
 condition|)
 block|{
-name|BlockInfoContiguous
+name|BlockInfo
 name|bi
 init|=
 name|getStoredBlock
@@ -17796,7 +17881,7 @@ operator|.
 name|numBlocks
 argument_list|()
 decl_stmt|;
-name|BlockInfoContiguous
+name|BlockInfo
 index|[]
 name|blocks
 init|=
@@ -17808,7 +17893,7 @@ decl_stmt|;
 name|int
 name|nrCompleteBlocks
 decl_stmt|;
-name|BlockInfoContiguous
+name|BlockInfo
 name|curBlock
 init|=
 literal|null
@@ -17957,7 +18042,7 @@ block|}
 comment|// The last block is not COMPLETE, and
 comment|// that the penultimate block if exists is either COMPLETE or COMMITTED
 specifier|final
-name|BlockInfoContiguous
+name|BlockInfo
 name|lastBlock
 init|=
 name|pendingFile
@@ -17973,7 +18058,7 @@ operator|.
 name|getBlockUCState
 argument_list|()
 decl_stmt|;
-name|BlockInfoContiguous
+name|BlockInfo
 name|penultimateBlock
 init|=
 name|pendingFile
@@ -17988,9 +18073,7 @@ init|=
 name|penultimateBlock
 operator|==
 literal|null
-condition|?
-literal|true
-else|:
+operator|||
 name|blockManager
 operator|.
 name|checkMinReplication
@@ -18097,6 +18180,7 @@ case|:
 case|case
 name|UNDER_RECOVERY
 case|:
+comment|// TODO support Striped block's recovery
 specifier|final
 name|BlockInfoContiguousUnderConstruction
 name|uc
@@ -18646,7 +18730,7 @@ expr_stmt|;
 block|}
 DECL|method|getStoredBlock (Block block)
 specifier|public
-name|BlockInfoContiguous
+name|BlockInfo
 name|getStoredBlock
 parameter_list|(
 name|Block
@@ -18654,9 +18738,6 @@ name|block
 parameter_list|)
 block|{
 return|return
-operator|(
-name|BlockInfoContiguous
-operator|)
 name|blockManager
 operator|.
 name|getStoredBlock
@@ -18667,28 +18748,19 @@ return|;
 block|}
 annotation|@
 name|Override
-DECL|method|isInSnapshot (BlockInfoContiguousUnderConstruction blockUC)
+DECL|method|isInSnapshot (BlockCollection bc)
 specifier|public
 name|boolean
 name|isInSnapshot
 parameter_list|(
-name|BlockInfoContiguousUnderConstruction
-name|blockUC
+name|BlockCollection
+name|bc
 parameter_list|)
 block|{
 assert|assert
 name|hasReadLock
 argument_list|()
 assert|;
-specifier|final
-name|BlockCollection
-name|bc
-init|=
-name|blockUC
-operator|.
-name|getBlockCollection
-argument_list|()
-decl_stmt|;
 if|if
 condition|(
 name|bc
@@ -18869,7 +18941,7 @@ name|copyTruncate
 init|=
 literal|false
 decl_stmt|;
-name|BlockInfoContiguousUnderConstruction
+name|BlockInfo
 name|truncatedBlock
 init|=
 literal|null
@@ -18891,7 +18963,7 @@ literal|"Cannot commitBlockSynchronization while in safe mode"
 argument_list|)
 expr_stmt|;
 specifier|final
-name|BlockInfoContiguous
+name|BlockInfo
 name|storedBlock
 init|=
 name|getStoredBlock
@@ -19103,9 +19175,6 @@ return|return;
 block|}
 name|truncatedBlock
 operator|=
-operator|(
-name|BlockInfoContiguousUnderConstruction
-operator|)
 name|iFile
 operator|.
 name|getLastBlock
@@ -19114,10 +19183,12 @@ expr_stmt|;
 name|long
 name|recoveryId
 init|=
-name|truncatedBlock
+name|BlockInfo
 operator|.
 name|getBlockRecoveryId
-argument_list|()
+argument_list|(
+name|truncatedBlock
+argument_list|)
 decl_stmt|;
 name|copyTruncate
 operator|=
@@ -19489,7 +19560,7 @@ condition|)
 block|{
 name|iFile
 operator|.
-name|setLastBlock
+name|convertLastBlockToUC
 argument_list|(
 name|truncatedBlock
 argument_list|,
@@ -19501,7 +19572,7 @@ else|else
 block|{
 name|iFile
 operator|.
-name|setLastBlock
+name|convertLastBlockToUC
 argument_list|(
 name|storedBlock
 argument_list|,
@@ -19555,6 +19626,9 @@ name|iFile
 operator|.
 name|isBlockInLatestSnapshot
 argument_list|(
+operator|(
+name|BlockInfoContiguous
+operator|)
 name|storedBlock
 argument_list|)
 condition|)
@@ -19682,14 +19756,14 @@ block|}
 comment|/**    * @param pendingFile open file that needs to be closed    * @param storedBlock last block    * @return Path of the file that was closed.    * @throws IOException on error    */
 annotation|@
 name|VisibleForTesting
-DECL|method|closeFileCommitBlocks (INodeFile pendingFile, BlockInfoContiguous storedBlock)
+DECL|method|closeFileCommitBlocks (INodeFile pendingFile, BlockInfo storedBlock)
 name|String
 name|closeFileCommitBlocks
 parameter_list|(
 name|INodeFile
 name|pendingFile
 parameter_list|,
-name|BlockInfoContiguous
+name|BlockInfo
 name|storedBlock
 parameter_list|)
 throws|throws
@@ -20605,7 +20679,7 @@ operator|.
 name|next
 argument_list|()
 decl_stmt|;
-name|BlockInfoContiguous
+name|BlockInfo
 name|blockInfo
 init|=
 name|getStoredBlock
@@ -24112,7 +24186,7 @@ literal|null
 condition|)
 comment|// mostly true
 return|return;
-name|BlockInfoContiguous
+name|BlockInfo
 name|storedBlock
 init|=
 name|getStoredBlock
@@ -26191,7 +26265,7 @@ name|block
 argument_list|)
 expr_stmt|;
 comment|// check stored block state
-name|BlockInfoContiguous
+name|BlockInfo
 name|storedBlock
 init|=
 name|getStoredBlock
@@ -26782,16 +26856,27 @@ name|clientName
 argument_list|)
 decl_stmt|;
 specifier|final
+name|BlockInfo
+name|lastBlock
+init|=
+name|pendingFile
+operator|.
+name|getLastBlock
+argument_list|()
+decl_stmt|;
+comment|// when updating pipeline, the last block must be contiguous block
+assert|assert
+name|lastBlock
+operator|instanceof
+name|BlockInfoContiguousUnderConstruction
+assert|;
 name|BlockInfoContiguousUnderConstruction
 name|blockinfo
 init|=
 operator|(
 name|BlockInfoContiguousUnderConstruction
 operator|)
-name|pendingFile
-operator|.
-name|getLastBlock
-argument_list|()
+name|lastBlock
 decl_stmt|;
 comment|// check new GS& length: this is not expected
 if|if

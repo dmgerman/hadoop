@@ -378,9 +378,9 @@ name|hdfs
 operator|.
 name|server
 operator|.
-name|blockmanagement
+name|common
 operator|.
-name|BlockInfoContiguous
+name|HdfsServerConstants
 import|;
 end_import
 
@@ -396,9 +396,9 @@ name|hdfs
 operator|.
 name|server
 operator|.
-name|common
+name|blockmanagement
 operator|.
-name|HdfsServerConstants
+name|BlockInfo
 import|;
 end_import
 
@@ -3875,7 +3875,7 @@ name|isUnderConstruction
 argument_list|()
 argument_list|)
 expr_stmt|;
-name|BlockInfoContiguous
+name|BlockInfo
 index|[]
 name|blocks
 init|=
@@ -3899,7 +3899,7 @@ operator|>
 literal|0
 argument_list|)
 expr_stmt|;
-name|BlockInfoContiguous
+name|BlockInfo
 name|pBlock
 init|=
 name|blocks
@@ -3919,7 +3919,7 @@ index|]
 else|:
 literal|null
 decl_stmt|;
-name|BlockInfoContiguous
+name|BlockInfo
 name|lastBlock
 init|=
 name|blocks

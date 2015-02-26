@@ -64,6 +64,24 @@ name|server
 operator|.
 name|blockmanagement
 operator|.
+name|BlockCollection
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|server
+operator|.
+name|blockmanagement
+operator|.
 name|BlockInfoContiguousUnderConstruction
 import|;
 end_import
@@ -211,13 +229,13 @@ parameter_list|)
 throws|throws
 name|StandbyException
 function_decl|;
-DECL|method|isInSnapshot (BlockInfoContiguousUnderConstruction blockUC)
+DECL|method|isInSnapshot (BlockCollection bc)
 specifier|public
 name|boolean
 name|isInSnapshot
 parameter_list|(
-name|BlockInfoContiguousUnderConstruction
-name|blockUC
+name|BlockCollection
+name|bc
 parameter_list|)
 function_decl|;
 block|}

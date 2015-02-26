@@ -286,6 +286,24 @@ name|hadoop
 operator|.
 name|hdfs
 operator|.
+name|server
+operator|.
+name|blockmanagement
+operator|.
+name|BlockInfo
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
 name|protocol
 operator|.
 name|Block
@@ -3886,8 +3904,6 @@ decl_stmt|;
 comment|// add the new block to the INodeFile
 name|addNewBlock
 argument_list|(
-name|fsDir
-argument_list|,
 name|addBlockOp
 argument_list|,
 name|oldFile
@@ -6192,15 +6208,12 @@ name|toString
 argument_list|()
 return|;
 block|}
-comment|/**    * Add a new block into the given INodeFile    */
-DECL|method|addNewBlock (FSDirectory fsDir, AddBlockOp op, INodeFile file)
+comment|/**    * Add a new block into the given INodeFile    * TODO support adding striped block    */
+DECL|method|addNewBlock (AddBlockOp op, INodeFile file)
 specifier|private
 name|void
 name|addNewBlock
 parameter_list|(
-name|FSDirectory
-name|fsDir
-parameter_list|,
 name|AddBlockOp
 name|op
 parameter_list|,
@@ -6210,7 +6223,7 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
-name|BlockInfoContiguous
+name|BlockInfo
 index|[]
 name|oldBlocks
 init|=
@@ -6243,10 +6256,7 @@ literal|null
 condition|)
 block|{
 comment|// the penultimate block is not null
-name|Preconditions
-operator|.
-name|checkState
-argument_list|(
+assert|assert
 name|oldBlocks
 operator|!=
 literal|null
@@ -6256,8 +6266,7 @@ operator|.
 name|length
 operator|>
 literal|0
-argument_list|)
-expr_stmt|;
+assert|;
 comment|// compare pBlock with the last block of oldBlocks
 name|Block
 name|oldLastBlock
@@ -6423,7 +6432,7 @@ name|newBlock
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Update in-memory data structures with new block information.    * @throws IOException    */
+comment|/**    * Update in-memory data structures with new block information.    * TODO support adding striped block    * @throws IOException    */
 DECL|method|updateBlocks (FSDirectory fsDir, BlockListUpdatingOp op, INodesInPath iip, INodeFile file)
 specifier|private
 name|void
@@ -6445,7 +6454,7 @@ throws|throws
 name|IOException
 block|{
 comment|// Update its block list
-name|BlockInfoContiguous
+name|BlockInfo
 index|[]
 name|oldBlocks
 init|=
@@ -6507,7 +6516,7 @@ name|i
 operator|++
 control|)
 block|{
-name|BlockInfoContiguous
+name|BlockInfo
 name|oldBlock
 init|=
 name|oldBlocks

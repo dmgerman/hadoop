@@ -861,6 +861,27 @@ argument_list|()
 argument_list|)
 throw|;
 block|}
+comment|// TODO currently we do not support concatenating EC files
+if|if
+condition|(
+name|srcINodeFile
+operator|.
+name|isStriped
+argument_list|()
+condition|)
+block|{
+throw|throw
+operator|new
+name|HadoopIllegalArgumentException
+argument_list|(
+literal|"concat: the src file "
+operator|+
+name|src
+operator|+
+literal|" is with striped blocks"
+argument_list|)
+throw|;
+block|}
 name|si
 operator|.
 name|add
@@ -1298,7 +1319,7 @@ condition|)
 block|{
 name|nodeToRemove
 operator|.
-name|setBlocks
+name|setContiguousBlocks
 argument_list|(
 literal|null
 argument_list|)

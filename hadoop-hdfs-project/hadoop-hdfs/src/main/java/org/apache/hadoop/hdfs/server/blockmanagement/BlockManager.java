@@ -2935,7 +2935,7 @@ if|if
 condition|(
 name|block
 operator|instanceof
-name|BlockInfoContiguous
+name|BlockInfo
 condition|)
 block|{
 name|BlockCollection
@@ -2943,7 +2943,7 @@ name|bc
 init|=
 operator|(
 operator|(
-name|BlockInfoContiguous
+name|BlockInfo
 operator|)
 name|block
 operator|)
@@ -3178,14 +3178,14 @@ operator|)
 return|;
 block|}
 comment|/**    * Commit a block of a file    *     * @param block block to be committed    * @param commitBlock - contains client reported block length and generation    * @return true if the block is changed to committed state.    * @throws IOException if the block does not have at least a minimal number    * of replicas reported from data-nodes.    */
-DECL|method|commitBlock ( final BlockInfoContiguousUnderConstruction block, final Block commitBlock)
+DECL|method|commitBlock (final BlockInfo block, final Block commitBlock)
 specifier|private
 specifier|static
 name|boolean
 name|commitBlock
 parameter_list|(
 specifier|final
-name|BlockInfoContiguousUnderConstruction
+name|BlockInfo
 name|block
 parameter_list|,
 specifier|final
@@ -3234,10 +3234,12 @@ operator|.
 name|getNumBytes
 argument_list|()
 assert|;
-name|block
+name|BlockInfo
 operator|.
 name|commitBlock
 argument_list|(
+name|block
+argument_list|,
 name|commitBlock
 argument_list|)
 expr_stmt|;
@@ -3270,7 +3272,7 @@ return|return
 literal|false
 return|;
 comment|// not committing, this is a block allocation retry
-name|BlockInfoContiguous
+name|BlockInfo
 name|lastBlock
 init|=
 name|bc
@@ -3305,9 +3307,6 @@ name|b
 init|=
 name|commitBlock
 argument_list|(
-operator|(
-name|BlockInfoContiguousUnderConstruction
-operator|)
 name|lastBlock
 argument_list|,
 name|commitBlock
@@ -3325,6 +3324,7 @@ argument_list|()
 operator|>=
 name|minReplication
 condition|)
+block|{
 name|completeBlock
 argument_list|(
 name|bc
@@ -3339,6 +3339,7 @@ argument_list|,
 literal|false
 argument_list|)
 expr_stmt|;
+block|}
 return|return
 name|b
 return|;
@@ -3369,10 +3370,12 @@ name|blkIndex
 operator|<
 literal|0
 condition|)
+block|{
 return|return
 literal|null
 return|;
-name|BlockInfoContiguous
+block|}
+name|BlockInfo
 name|curBlock
 init|=
 name|bc
@@ -3390,22 +3393,15 @@ operator|.
 name|isComplete
 argument_list|()
 condition|)
+block|{
 return|return
 name|curBlock
 return|;
-comment|// TODO: support BlockInfoStripedUC
-name|BlockInfoContiguousUnderConstruction
-name|ucBlock
-init|=
-operator|(
-name|BlockInfoContiguousUnderConstruction
-operator|)
-name|curBlock
-decl_stmt|;
+block|}
 name|int
 name|numNodes
 init|=
-name|ucBlock
+name|curBlock
 operator|.
 name|numNodes
 argument_list|()
@@ -3419,6 +3415,7 @@ name|numNodes
 operator|<
 name|minReplication
 condition|)
+block|{
 throw|throw
 operator|new
 name|IOException
@@ -3428,12 +3425,13 @@ operator|+
 literal|"block does not satisfy minimal replication requirement."
 argument_list|)
 throw|;
+block|}
 if|if
 condition|(
 operator|!
 name|force
 operator|&&
-name|ucBlock
+name|curBlock
 operator|.
 name|getBlockUCState
 argument_list|()
@@ -3442,6 +3440,7 @@ name|BlockUCState
 operator|.
 name|COMMITTED
 condition|)
+block|{
 throw|throw
 operator|new
 name|IOException
@@ -3449,13 +3448,17 @@ argument_list|(
 literal|"Cannot complete block: block has not been COMMITTED by the client"
 argument_list|)
 throw|;
-name|BlockInfoContiguous
+block|}
+specifier|final
+name|BlockInfo
 name|completeBlock
 init|=
-name|ucBlock
+name|BlockInfo
 operator|.
 name|convertToCompleteBlock
-argument_list|()
+argument_list|(
+name|curBlock
+argument_list|)
 decl_stmt|;
 comment|// replace penultimate block in file
 name|bc
@@ -3506,7 +3509,6 @@ name|completeBlock
 argument_list|)
 return|;
 block|}
-comment|// TODO: support BlockInfoStrippedUC
 DECL|method|completeBlock (final BlockCollection bc, final BlockInfo block, boolean force)
 specifier|private
 name|BlockInfo
@@ -3526,7 +3528,7 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
-name|BlockInfoContiguous
+name|BlockInfo
 index|[]
 name|fileBlocks
 init|=
@@ -3595,6 +3597,7 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
+comment|// TODO: support BlockInfoStripedUC for editlog
 name|block
 operator|.
 name|commitBlock
@@ -3628,7 +3631,7 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
-name|BlockInfoContiguous
+name|BlockInfo
 name|oldBlock
 init|=
 name|bc
@@ -3676,17 +3679,24 @@ argument_list|(
 name|oldBlock
 argument_list|)
 decl_stmt|;
-name|BlockInfoContiguousUnderConstruction
-name|ucBlock
-init|=
+comment|// convert the last block to UC
 name|bc
 operator|.
-name|setLastBlock
+name|convertLastBlockToUC
 argument_list|(
 name|oldBlock
 argument_list|,
 name|targets
 argument_list|)
+expr_stmt|;
+comment|// get the new created uc block
+name|BlockInfo
+name|ucBlock
+init|=
+name|bc
+operator|.
+name|getLastBlock
+argument_list|()
 decl_stmt|;
 name|blocksMap
 operator|.
@@ -3896,7 +3906,7 @@ return|return
 name|locations
 return|;
 block|}
-DECL|method|createLocatedBlockList ( final BlockInfoContiguous[] blocks, final long offset, final long length, final int nrBlocksToReturn, final AccessMode mode)
+DECL|method|createLocatedBlockList (final BlockInfo[] blocks, final long offset, final long length, final int nrBlocksToReturn, final AccessMode mode)
 specifier|private
 name|List
 argument_list|<
@@ -3905,7 +3915,7 @@ argument_list|>
 name|createLocatedBlockList
 parameter_list|(
 specifier|final
-name|BlockInfoContiguous
+name|BlockInfo
 index|[]
 name|blocks
 parameter_list|,
@@ -3930,8 +3940,6 @@ name|IOException
 block|{
 name|int
 name|curBlk
-init|=
-literal|0
 decl_stmt|;
 name|long
 name|curPos
@@ -4024,9 +4032,6 @@ comment|// offset>= end of file
 return|return
 name|Collections
 operator|.
-expr|<
-name|LocatedBlock
-operator|>
 name|emptyList
 argument_list|()
 return|;
@@ -4045,9 +4050,7 @@ name|results
 init|=
 operator|new
 name|ArrayList
-argument_list|<
-name|LocatedBlock
-argument_list|>
+argument_list|<>
 argument_list|(
 name|blocks
 operator|.
@@ -4111,13 +4114,13 @@ return|return
 name|results
 return|;
 block|}
-DECL|method|createLocatedBlock (final BlockInfoContiguous[] blocks, final long endPos, final AccessMode mode)
+DECL|method|createLocatedBlock (final BlockInfo[] blocks, final long endPos, final AccessMode mode)
 specifier|private
 name|LocatedBlock
 name|createLocatedBlock
 parameter_list|(
 specifier|final
-name|BlockInfoContiguous
+name|BlockInfo
 index|[]
 name|blocks
 parameter_list|,
@@ -4134,8 +4137,6 @@ name|IOException
 block|{
 name|int
 name|curBlk
-init|=
-literal|0
 decl_stmt|;
 name|long
 name|curPos
@@ -4218,13 +4219,13 @@ name|mode
 argument_list|)
 return|;
 block|}
-DECL|method|createLocatedBlock (final BlockInfoContiguous blk, final long pos, final AccessMode mode)
+DECL|method|createLocatedBlock (final BlockInfo blk, final long pos, final AccessMode mode)
 specifier|private
 name|LocatedBlock
 name|createLocatedBlock
 parameter_list|(
 specifier|final
-name|BlockInfoContiguous
+name|BlockInfo
 name|blk
 parameter_list|,
 specifier|final
@@ -4269,13 +4270,13 @@ name|lb
 return|;
 block|}
 comment|/** @return a LocatedBlock for the given block */
-DECL|method|createLocatedBlock (final BlockInfoContiguous blk, final long pos )
+DECL|method|createLocatedBlock (final BlockInfo blk, final long pos)
 specifier|private
 name|LocatedBlock
 name|createLocatedBlock
 parameter_list|(
 specifier|final
-name|BlockInfoContiguous
+name|BlockInfo
 name|blk
 parameter_list|,
 specifier|final
@@ -4359,6 +4360,7 @@ literal|false
 argument_list|)
 return|;
 block|}
+comment|// TODO support BlockInfoStripedUC
 comment|// get block locations
 specifier|final
 name|int
@@ -4576,13 +4578,13 @@ argument_list|)
 return|;
 block|}
 comment|/** Create a LocatedBlocks. */
-DECL|method|createLocatedBlocks (final BlockInfoContiguous[] blocks, final long fileSizeExcludeBlocksUnderConstruction, final boolean isFileUnderConstruction, final long offset, final long length, final boolean needBlockToken, final boolean inSnapshot, FileEncryptionInfo feInfo)
+DECL|method|createLocatedBlocks (final BlockInfo[] blocks, final long fileSizeExcludeBlocksUnderConstruction, final boolean isFileUnderConstruction, final long offset, final long length, final boolean needBlockToken, final boolean inSnapshot, FileEncryptionInfo feInfo)
 specifier|public
 name|LocatedBlocks
 name|createLocatedBlocks
 parameter_list|(
 specifier|final
-name|BlockInfoContiguous
+name|BlockInfo
 index|[]
 name|blocks
 parameter_list|,
@@ -4747,7 +4749,7 @@ name|inSnapshot
 condition|)
 block|{
 specifier|final
-name|BlockInfoContiguous
+name|BlockInfo
 name|last
 init|=
 name|blocks
@@ -8338,9 +8340,10 @@ name|StatefulBlockInfo
 block|{
 DECL|field|storedBlock
 specifier|final
-name|BlockInfoContiguousUnderConstruction
+name|BlockInfo
 name|storedBlock
 decl_stmt|;
+comment|// should be UC block
 DECL|field|reportedBlock
 specifier|final
 name|Block
@@ -8351,10 +8354,10 @@ specifier|final
 name|ReplicaState
 name|reportedState
 decl_stmt|;
-DECL|method|StatefulBlockInfo (BlockInfoContiguousUnderConstruction storedBlock, Block reportedBlock, ReplicaState reportedState)
+DECL|method|StatefulBlockInfo (BlockInfo storedBlock, Block reportedBlock, ReplicaState reportedState)
 name|StatefulBlockInfo
 parameter_list|(
-name|BlockInfoContiguousUnderConstruction
+name|BlockInfo
 name|storedBlock
 parameter_list|,
 name|Block
@@ -8364,6 +8367,19 @@ name|ReplicaState
 name|reportedState
 parameter_list|)
 block|{
+name|Preconditions
+operator|.
+name|checkArgument
+argument_list|(
+name|storedBlock
+operator|instanceof
+name|BlockInfoContiguousUnderConstruction
+operator|||
+name|storedBlock
+operator|instanceof
+name|BlockInfoStripedUnderConstruction
+argument_list|)
+expr_stmt|;
 name|this
 operator|.
 name|storedBlock
@@ -10244,15 +10260,12 @@ name|reportedState
 argument_list|)
 condition|)
 block|{
-operator|(
-operator|(
-name|BlockInfoContiguousUnderConstruction
-operator|)
-name|storedBlock
-operator|)
+name|BlockInfo
 operator|.
-name|addReplicaIfNotPresent
+name|addReplica
 argument_list|(
+name|storedBlock
+argument_list|,
 name|storageInfo
 argument_list|,
 name|iblk
@@ -10263,31 +10276,28 @@ expr_stmt|;
 comment|// OpenFileBlocks only inside snapshots also will be added to safemode
 comment|// threshold. So we need to update such blocks to safemode
 comment|// refer HDFS-5283
-name|BlockInfoContiguousUnderConstruction
-name|blockUC
-init|=
-operator|(
-name|BlockInfoContiguousUnderConstruction
-operator|)
-name|storedBlock
-decl_stmt|;
 if|if
 condition|(
 name|namesystem
 operator|.
 name|isInSnapshot
 argument_list|(
-name|blockUC
+name|storedBlock
+operator|.
+name|getBlockCollection
+argument_list|()
 argument_list|)
 condition|)
 block|{
 name|int
 name|numOfReplicas
 init|=
-name|blockUC
+name|BlockInfo
 operator|.
 name|getNumExpectedLocations
-argument_list|()
+argument_list|(
+name|storedBlock
+argument_list|)
 decl_stmt|;
 name|namesystem
 operator|.
@@ -10377,7 +10387,7 @@ operator|new
 name|Block
 argument_list|()
 decl_stmt|;
-name|BlockInfoContiguous
+name|BlockInfo
 name|delimiter
 init|=
 operator|new
@@ -10826,9 +10836,6 @@ argument_list|(
 operator|new
 name|StatefulBlockInfo
 argument_list|(
-operator|(
-name|BlockInfoContiguousUnderConstruction
-operator|)
 name|storedBlock
 argument_list|,
 operator|new
@@ -11655,17 +11662,19 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
-name|BlockInfoContiguousUnderConstruction
+name|BlockInfo
 name|block
 init|=
 name|ucBlock
 operator|.
 name|storedBlock
 decl_stmt|;
-name|block
+name|BlockInfo
 operator|.
-name|addReplicaIfNotPresent
+name|addReplica
 argument_list|(
+name|block
+argument_list|,
 name|storageInfo
 argument_list|,
 name|ucBlock
@@ -11906,6 +11915,10 @@ condition|(
 name|block
 operator|instanceof
 name|BlockInfoContiguousUnderConstruction
+operator|||
+name|block
+operator|instanceof
+name|BlockInfoStripedUnderConstruction
 condition|)
 block|{
 comment|//refresh our copy in case the block got completed in another thread
@@ -11969,13 +11982,6 @@ operator|.
 name|getBlockCollection
 argument_list|()
 decl_stmt|;
-assert|assert
-name|bc
-operator|!=
-literal|null
-operator|:
-literal|"Block must belong to a file"
-assert|;
 comment|// add block to the datanode
 name|AddBlockResult
 name|result
@@ -16166,7 +16172,7 @@ block|}
 block|}
 block|}
 comment|/**    * Check that the indicated blocks are present and    * replicated.    */
-DECL|method|checkBlocksProperlyReplicated ( String src, BlockInfoContiguous[] blocks)
+DECL|method|checkBlocksProperlyReplicated ( String src, BlockInfo[] blocks)
 specifier|public
 name|boolean
 name|checkBlocksProperlyReplicated
@@ -16174,14 +16180,14 @@ parameter_list|(
 name|String
 name|src
 parameter_list|,
-name|BlockInfoContiguous
+name|BlockInfo
 index|[]
 name|blocks
 parameter_list|)
 block|{
 for|for
 control|(
-name|BlockInfoContiguous
+name|BlockInfo
 name|b
 range|:
 name|blocks
@@ -16476,7 +16482,6 @@ name|enoughRacks
 init|=
 literal|false
 decl_stmt|;
-empty_stmt|;
 name|Collection
 argument_list|<
 name|DatanodeDescriptor
@@ -16686,23 +16691,19 @@ name|getCorruptReplOneBlockSize
 argument_list|()
 return|;
 block|}
-DECL|method|addBlockCollection (BlockInfoContiguous block, BlockCollection bc)
+DECL|method|addBlockCollection (BlockInfo block, BlockCollection bc)
 specifier|public
-name|BlockInfoContiguous
+name|BlockInfo
 name|addBlockCollection
 parameter_list|(
-name|BlockInfoContiguous
+name|BlockInfo
 name|block
 parameter_list|,
 name|BlockCollection
 name|bc
 parameter_list|)
 block|{
-comment|// TODO
 return|return
-operator|(
-name|BlockInfoContiguous
-operator|)
 name|blocksMap
 operator|.
 name|addBlockCollection
@@ -16728,29 +16729,6 @@ operator|.
 name|getBlockCollection
 argument_list|(
 name|b
-argument_list|)
-return|;
-block|}
-comment|/** @return an iterator of the datanodes. */
-DECL|method|getStorages (final Block block)
-specifier|public
-name|Iterable
-argument_list|<
-name|DatanodeStorageInfo
-argument_list|>
-name|getStorages
-parameter_list|(
-specifier|final
-name|Block
-name|block
-parameter_list|)
-block|{
-return|return
-name|blocksMap
-operator|.
-name|getStorages
-argument_list|(
-name|block
 argument_list|)
 return|;
 block|}
@@ -16902,31 +16880,6 @@ name|blocksMap
 operator|.
 name|getCapacity
 argument_list|()
-return|;
-block|}
-comment|/**    * Return a range of corrupt replica block ids. Up to numExpectedBlocks     * blocks starting at the next block after startingBlockId are returned    * (fewer if numExpectedBlocks blocks are unavailable). If startingBlockId     * is null, up to numExpectedBlocks blocks are returned from the beginning.    * If startingBlockId cannot be found, null is returned.    *    * @param numExpectedBlocks Number of block ids to return.    *  0<= numExpectedBlocks<= 100    * @param startingBlockId Block id from which to start. If null, start at    *  beginning.    * @return Up to numExpectedBlocks blocks from startingBlockId if it exists    *    */
-DECL|method|getCorruptReplicaBlockIds (int numExpectedBlocks, Long startingBlockId)
-specifier|public
-name|long
-index|[]
-name|getCorruptReplicaBlockIds
-parameter_list|(
-name|int
-name|numExpectedBlocks
-parameter_list|,
-name|Long
-name|startingBlockId
-parameter_list|)
-block|{
-return|return
-name|corruptReplicas
-operator|.
-name|getCorruptReplicaBlockIds
-argument_list|(
-name|numExpectedBlocks
-argument_list|,
-name|startingBlockId
-argument_list|)
 return|;
 block|}
 comment|/**    * Return an iterator over the set of blocks for which there are no replicas.    */

@@ -196,7 +196,7 @@ name|server
 operator|.
 name|blockmanagement
 operator|.
-name|BlockInfoContiguous
+name|BlockInfo
 import|;
 end_import
 
@@ -524,7 +524,7 @@ operator|.
 name|asFile
 argument_list|()
 decl_stmt|;
-name|BlockInfoContiguous
+name|BlockInfo
 index|[]
 name|file1Blocks
 init|=
@@ -589,7 +589,7 @@ operator|.
 name|asFile
 argument_list|()
 decl_stmt|;
-name|BlockInfoContiguous
+name|BlockInfo
 index|[]
 name|file2Blocks
 init|=
@@ -652,7 +652,7 @@ operator|.
 name|asFile
 argument_list|()
 decl_stmt|;
-name|BlockInfoContiguous
+name|BlockInfo
 index|[]
 name|file3Blocks
 init|=
@@ -745,7 +745,7 @@ operator|.
 name|asFile
 argument_list|()
 decl_stmt|;
-name|BlockInfoContiguous
+name|BlockInfo
 index|[]
 name|file4Blocks
 init|=
@@ -952,7 +952,7 @@ operator|.
 name|asFile
 argument_list|()
 decl_stmt|;
-name|BlockInfoContiguous
+name|BlockInfo
 index|[]
 name|fileBlocks
 init|=

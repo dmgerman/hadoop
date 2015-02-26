@@ -22,46 +22,6 @@ end_package
 
 begin_import
 import|import
-name|java
-operator|.
-name|io
-operator|.
-name|IOException
-import|;
-end_import
-
-begin_import
-import|import
-name|java
-operator|.
-name|util
-operator|.
-name|ArrayList
-import|;
-end_import
-
-begin_import
-import|import
-name|java
-operator|.
-name|util
-operator|.
-name|Iterator
-import|;
-end_import
-
-begin_import
-import|import
-name|java
-operator|.
-name|util
-operator|.
-name|List
-import|;
-end_import
-
-begin_import
-import|import
 name|org
 operator|.
 name|apache
@@ -134,25 +94,108 @@ name|NameNode
 import|;
 end_import
 
+begin_import
+import|import
+name|java
+operator|.
+name|io
+operator|.
+name|IOException
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
+name|ArrayList
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
+name|Iterator
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
+name|List
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|server
+operator|.
+name|common
+operator|.
+name|HdfsServerConstants
+operator|.
+name|BlockUCState
+operator|.
+name|COMPLETE
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|server
+operator|.
+name|common
+operator|.
+name|HdfsServerConstants
+operator|.
+name|BlockUCState
+operator|.
+name|UNDER_CONSTRUCTION
+import|;
+end_import
+
 begin_comment
-comment|/**  * Represents a block that is currently being constructed.<br>  * This is usually the last block of a file opened for write or append.  */
+comment|/**  * Represents a striped block that is currently being constructed.  * This is usually the last block of a file opened for write or append.  */
 end_comment
 
 begin_class
-DECL|class|BlockInfoContiguousUnderConstruction
+DECL|class|BlockInfoStripedUnderConstruction
 specifier|public
 class|class
-name|BlockInfoContiguousUnderConstruction
+name|BlockInfoStripedUnderConstruction
 extends|extends
-name|BlockInfoContiguous
+name|BlockInfoStriped
 block|{
-comment|/** Block state. See {@link BlockUCState} */
 DECL|field|blockUCState
 specifier|private
 name|BlockUCState
 name|blockUCState
 decl_stmt|;
-comment|/**    * Block replicas as assigned when the block was allocated.    * This defines the pipeline order.    */
+comment|/**    * Block replicas as assigned when the block was allocated.    *    * TODO: we need to update this attribute, along with the return type of    * getExpectedStorageLocations and LocatedBlock. For striped blocks, clients    * need to understand the index of each striped block in the block group.    */
 DECL|field|replicas
 specifier|private
 name|List
@@ -160,15 +203,6 @@ argument_list|<
 name|ReplicaUnderConstruction
 argument_list|>
 name|replicas
-decl_stmt|;
-comment|/**    * Index of the primary data node doing the recovery. Useful for log    * messages.    */
-DECL|field|primaryNodeIndex
-specifier|private
-name|int
-name|primaryNodeIndex
-init|=
-operator|-
-literal|1
 decl_stmt|;
 comment|/**    * The new generation stamp, which this block will have    * after the recovery succeeds. Also used as a recovery id to identify    * the right recovery if any of the abandoned recoveries re-appear.    */
 DECL|field|blockRecoveryId
@@ -178,48 +212,48 @@ name|blockRecoveryId
 init|=
 literal|0
 decl_stmt|;
-comment|/**    * The block source to use in the event of copy-on-write truncate.    */
-DECL|field|truncateBlock
-specifier|private
-name|Block
-name|truncateBlock
-decl_stmt|;
-comment|/**    * Create block and set its state to    * {@link BlockUCState#UNDER_CONSTRUCTION}.    */
-DECL|method|BlockInfoContiguousUnderConstruction (Block blk, short replication)
+comment|/**    * Constructor with null storage targets.    */
+DECL|method|BlockInfoStripedUnderConstruction (Block blk, short dataBlockNum, short parityBlockNum)
 specifier|public
-name|BlockInfoContiguousUnderConstruction
+name|BlockInfoStripedUnderConstruction
 parameter_list|(
 name|Block
 name|blk
 parameter_list|,
 name|short
-name|replication
+name|dataBlockNum
+parameter_list|,
+name|short
+name|parityBlockNum
 parameter_list|)
 block|{
 name|this
 argument_list|(
 name|blk
 argument_list|,
-name|replication
+name|dataBlockNum
 argument_list|,
-name|BlockUCState
-operator|.
+name|parityBlockNum
+argument_list|,
 name|UNDER_CONSTRUCTION
 argument_list|,
 literal|null
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Create a block that is currently being constructed.    */
-DECL|method|BlockInfoContiguousUnderConstruction (Block blk, short replication, BlockUCState state, DatanodeStorageInfo[] targets)
+comment|/**    * Create a striped block that is currently being constructed.    */
+DECL|method|BlockInfoStripedUnderConstruction (Block blk, short dataBlockNum, short parityBlockNum, BlockUCState state, DatanodeStorageInfo[] targets)
 specifier|public
-name|BlockInfoContiguousUnderConstruction
+name|BlockInfoStripedUnderConstruction
 parameter_list|(
 name|Block
 name|blk
 parameter_list|,
 name|short
-name|replication
+name|dataBlockNum
+parameter_list|,
+name|short
+name|parityBlockNum
 parameter_list|,
 name|BlockUCState
 name|state
@@ -233,18 +267,18 @@ name|super
 argument_list|(
 name|blk
 argument_list|,
-name|replication
+name|dataBlockNum
+argument_list|,
+name|parityBlockNum
 argument_list|)
 expr_stmt|;
 assert|assert
 name|getBlockUCState
 argument_list|()
 operator|!=
-name|BlockUCState
-operator|.
 name|COMPLETE
 operator|:
-literal|"BlockInfoContiguousUnderConstruction cannot be in COMPLETE state"
+literal|"BlockInfoStripedUnderConstruction cannot be in COMPLETE state"
 assert|;
 name|this
 operator|.
@@ -258,9 +292,9 @@ name|targets
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Convert an under construction block to a complete block.    *     * @return BlockInfoContiguous - a complete block.    * @throws IOException if the state of the block     * (the generation stamp and the length) has not been committed by     * the client or it does not have at least a minimal number of replicas     * reported from data-nodes.     */
+comment|/**    * Convert an under construction striped block to a complete striped block.    *     * @return BlockInfoStriped - a complete block.    * @throws IOException if the state of the block     * (the generation stamp and the length) has not been committed by     * the client or it does not have at least a minimal number of replicas     * reported from data-nodes.     */
 DECL|method|convertToCompleteBlock ()
-name|BlockInfoContiguous
+name|BlockInfoStriped
 name|convertToCompleteBlock
 parameter_list|()
 throws|throws
@@ -270,15 +304,13 @@ assert|assert
 name|getBlockUCState
 argument_list|()
 operator|!=
-name|BlockUCState
-operator|.
 name|COMPLETE
 operator|:
 literal|"Trying to convert a COMPLETE block"
 assert|;
 return|return
 operator|new
-name|BlockInfoContiguous
+name|BlockInfoStriped
 argument_list|(
 name|this
 argument_list|)
@@ -367,15 +399,7 @@ block|{
 name|int
 name|numLocations
 init|=
-name|replicas
-operator|==
-literal|null
-condition|?
-literal|0
-else|:
-name|replicas
-operator|.
-name|size
+name|getNumExpectedLocations
 argument_list|()
 decl_stmt|;
 name|DatanodeStorageInfo
@@ -481,33 +505,6 @@ return|return
 name|blockRecoveryId
 return|;
 block|}
-comment|/** Get recover block */
-DECL|method|getTruncateBlock ()
-specifier|public
-name|Block
-name|getTruncateBlock
-parameter_list|()
-block|{
-return|return
-name|truncateBlock
-return|;
-block|}
-DECL|method|setTruncateBlock (Block recoveryBlock)
-specifier|public
-name|void
-name|setTruncateBlock
-parameter_list|(
-name|Block
-name|recoveryBlock
-parameter_list|)
-block|{
-name|this
-operator|.
-name|truncateBlock
-operator|=
-name|recoveryBlock
-expr_stmt|;
-block|}
 comment|/**    * Process the recorded replicas. When about to commit or finish the    * pipeline recovery sort out bad replicas.    * @param genStamp  The final generation stamp for the block.    */
 DECL|method|setGenerationStampAndVerifyReplicas (long genStamp)
 specifier|public
@@ -580,7 +577,7 @@ expr_stmt|;
 block|}
 block|}
 block|}
-comment|/**    * Commit block's length and generation stamp as reported by the client.    * Set block state to {@link BlockUCState#COMMITTED}.    * @param block - contains client reported block length and generation     * @throws IOException if block ids are inconsistent.    */
+comment|/**    * Commit block's length and generation stamp as reported by the client.    * Set block state to {@link BlockUCState#COMMITTED}.    * @param block - contains client reported block length and generation    */
 DECL|method|commitBlock (Block block)
 name|void
 name|commitBlock
@@ -601,6 +598,7 @@ operator|.
 name|getBlockId
 argument_list|()
 condition|)
+block|{
 throw|throw
 operator|new
 name|IOException
@@ -618,6 +616,7 @@ name|getBlockId
 argument_list|()
 argument_list|)
 throw|;
+block|}
 name|blockUCState
 operator|=
 name|BlockUCState
@@ -652,7 +651,7 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Initialize lease recovery for this block.    * Find the first alive data-node starting from the previous primary and    * make it primary.    */
+comment|/**    * Initialize lease recovery for this striped block.    */
 DECL|method|initializeBlockRecovery (long recoveryId)
 specifier|public
 name|void
@@ -676,6 +675,10 @@ expr_stmt|;
 if|if
 condition|(
 name|replicas
+operator|==
+literal|null
+operator|||
+name|replicas
 operator|.
 name|size
 argument_list|()
@@ -691,221 +694,13 @@ name|warn
 argument_list|(
 literal|"BLOCK*"
 operator|+
-literal|" BlockInfoContiguousUnderConstruction.initLeaseRecovery:"
+literal|" BlockInfoUnderConstruction.initLeaseRecovery:"
 operator|+
 literal|" No blocks found, lease removed."
 argument_list|)
 expr_stmt|;
 block|}
-name|boolean
-name|allLiveReplicasTriedAsPrimary
-init|=
-literal|true
-decl_stmt|;
-for|for
-control|(
-name|ReplicaUnderConstruction
-name|replica
-range|:
-name|replicas
-control|)
-block|{
-comment|// Check if all replicas have been tried or not.
-if|if
-condition|(
-name|replica
-operator|.
-name|isAlive
-argument_list|()
-condition|)
-block|{
-name|allLiveReplicasTriedAsPrimary
-operator|=
-operator|(
-name|allLiveReplicasTriedAsPrimary
-operator|&&
-name|replica
-operator|.
-name|getChosenAsPrimary
-argument_list|()
-operator|)
-expr_stmt|;
-block|}
-block|}
-if|if
-condition|(
-name|allLiveReplicasTriedAsPrimary
-condition|)
-block|{
-comment|// Just set all the replicas to be chosen whether they are alive or not.
-for|for
-control|(
-name|ReplicaUnderConstruction
-name|replica
-range|:
-name|replicas
-control|)
-block|{
-name|replica
-operator|.
-name|setChosenAsPrimary
-argument_list|(
-literal|false
-argument_list|)
-expr_stmt|;
-block|}
-block|}
-name|long
-name|mostRecentLastUpdate
-init|=
-literal|0
-decl_stmt|;
-name|ReplicaUnderConstruction
-name|primary
-init|=
-literal|null
-decl_stmt|;
-name|primaryNodeIndex
-operator|=
-operator|-
-literal|1
-expr_stmt|;
-for|for
-control|(
-name|int
-name|i
-init|=
-literal|0
-init|;
-name|i
-operator|<
-name|replicas
-operator|.
-name|size
-argument_list|()
-condition|;
-name|i
-operator|++
-control|)
-block|{
-comment|// Skip alive replicas which have been chosen for recovery.
-if|if
-condition|(
-operator|!
-operator|(
-name|replicas
-operator|.
-name|get
-argument_list|(
-name|i
-argument_list|)
-operator|.
-name|isAlive
-argument_list|()
-operator|&&
-operator|!
-name|replicas
-operator|.
-name|get
-argument_list|(
-name|i
-argument_list|)
-operator|.
-name|getChosenAsPrimary
-argument_list|()
-operator|)
-condition|)
-block|{
-continue|continue;
-block|}
-specifier|final
-name|ReplicaUnderConstruction
-name|ruc
-init|=
-name|replicas
-operator|.
-name|get
-argument_list|(
-name|i
-argument_list|)
-decl_stmt|;
-specifier|final
-name|long
-name|lastUpdate
-init|=
-name|ruc
-operator|.
-name|getExpectedStorageLocation
-argument_list|()
-operator|.
-name|getDatanodeDescriptor
-argument_list|()
-operator|.
-name|getLastUpdateMonotonic
-argument_list|()
-decl_stmt|;
-if|if
-condition|(
-name|lastUpdate
-operator|>
-name|mostRecentLastUpdate
-condition|)
-block|{
-name|primaryNodeIndex
-operator|=
-name|i
-expr_stmt|;
-name|primary
-operator|=
-name|ruc
-expr_stmt|;
-name|mostRecentLastUpdate
-operator|=
-name|lastUpdate
-expr_stmt|;
-block|}
-block|}
-if|if
-condition|(
-name|primary
-operator|!=
-literal|null
-condition|)
-block|{
-name|primary
-operator|.
-name|getExpectedStorageLocation
-argument_list|()
-operator|.
-name|getDatanodeDescriptor
-argument_list|()
-operator|.
-name|addBlockToBeRecovered
-argument_list|(
-name|this
-argument_list|)
-expr_stmt|;
-name|primary
-operator|.
-name|setChosenAsPrimary
-argument_list|(
-literal|true
-argument_list|)
-expr_stmt|;
-name|NameNode
-operator|.
-name|blockStateChangeLog
-operator|.
-name|info
-argument_list|(
-literal|"BLOCK* {} recovery started, primary={}"
-argument_list|,
-name|this
-argument_list|,
-name|primary
-argument_list|)
-expr_stmt|;
-block|}
+comment|// TODO we need to implement different recovery logic here
 block|}
 DECL|method|addReplicaIfNotPresent (DatanodeStorageInfo storage, Block block, ReplicaState rState)
 name|void
@@ -1095,23 +890,6 @@ operator|.
 name|append
 argument_list|(
 name|blockUCState
-argument_list|)
-operator|.
-name|append
-argument_list|(
-literal|", truncateBlock="
-operator|+
-name|truncateBlock
-argument_list|)
-operator|.
-name|append
-argument_list|(
-literal|", primaryNodeIndex="
-argument_list|)
-operator|.
-name|append
-argument_list|(
-name|primaryNodeIndex
 argument_list|)
 operator|.
 name|append

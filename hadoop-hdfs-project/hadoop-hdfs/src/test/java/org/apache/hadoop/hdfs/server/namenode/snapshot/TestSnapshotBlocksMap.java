@@ -266,7 +266,7 @@ name|server
 operator|.
 name|blockmanagement
 operator|.
-name|BlockInfoContiguous
+name|BlockInfo
 import|;
 end_import
 
@@ -779,7 +779,7 @@ argument_list|)
 expr_stmt|;
 for|for
 control|(
-name|BlockInfoContiguous
+name|BlockInfo
 name|b
 range|:
 name|file
@@ -802,7 +802,7 @@ return|return
 name|file
 return|;
 block|}
-DECL|method|assertBlockCollection (final BlockManager blkManager, final INodeFile file, final BlockInfoContiguous b)
+DECL|method|assertBlockCollection (final BlockManager blkManager, final INodeFile file, final BlockInfo b)
 specifier|static
 name|void
 name|assertBlockCollection
@@ -816,7 +816,7 @@ name|INodeFile
 name|file
 parameter_list|,
 specifier|final
-name|BlockInfoContiguous
+name|BlockInfo
 name|b
 parameter_list|)
 block|{
@@ -1026,7 +1026,7 @@ argument_list|,
 name|blockmanager
 argument_list|)
 decl_stmt|;
-name|BlockInfoContiguous
+name|BlockInfo
 index|[]
 name|blocks
 init|=
@@ -1047,7 +1047,7 @@ expr_stmt|;
 comment|// The INode should have been removed from the blocksMap
 for|for
 control|(
-name|BlockInfoContiguous
+name|BlockInfo
 name|b
 range|:
 name|blocks
@@ -1269,7 +1269,7 @@ argument_list|,
 name|blockmanager
 argument_list|)
 decl_stmt|;
-name|BlockInfoContiguous
+name|BlockInfo
 index|[]
 name|blocks0
 init|=
@@ -1323,7 +1323,7 @@ expr_stmt|;
 comment|// Make sure the blocks of file0 is still in blocksMap
 for|for
 control|(
-name|BlockInfoContiguous
+name|BlockInfo
 name|b
 range|:
 name|blocks0
@@ -1399,7 +1399,7 @@ expr_stmt|;
 comment|// Make sure the first block of file0 is still in blocksMap
 for|for
 control|(
-name|BlockInfoContiguous
+name|BlockInfo
 name|b
 range|:
 name|blocks0
@@ -1957,7 +1957,7 @@ operator|.
 name|asFile
 argument_list|()
 decl_stmt|;
-name|BlockInfoContiguous
+name|BlockInfo
 index|[]
 name|blks
 init|=
@@ -2260,7 +2260,7 @@ operator|.
 name|asFile
 argument_list|()
 decl_stmt|;
-name|BlockInfoContiguous
+name|BlockInfo
 index|[]
 name|blks
 init|=
@@ -2547,7 +2547,7 @@ operator|.
 name|asFile
 argument_list|()
 decl_stmt|;
-name|BlockInfoContiguous
+name|BlockInfo
 index|[]
 name|blks
 init|=
@@ -2908,7 +2908,7 @@ operator|.
 name|asFile
 argument_list|()
 decl_stmt|;
-name|BlockInfoContiguous
+name|BlockInfo
 index|[]
 name|blks
 init|=
