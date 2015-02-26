@@ -421,6 +421,8 @@ literal|"\t-locations\tprint out locations for every block\n"
 operator|+
 literal|"\t-racks\tprint out network topology for data-node locations\n"
 operator|+
+literal|"\t-storagepolicies\tprint out storage policy summary for the blocks\n"
+operator|+
 literal|"\t-showprogress\tshow progress in output. Default is OFF (no progress)\n"
 operator|+
 literal|"\t-blockId\tprint out which file this blockId belongs to, locations"
@@ -1348,6 +1350,28 @@ operator|.
 name|append
 argument_list|(
 literal|"&racks=1"
+argument_list|)
+expr_stmt|;
+block|}
+elseif|else
+if|if
+condition|(
+name|args
+index|[
+name|idx
+index|]
+operator|.
+name|equals
+argument_list|(
+literal|"-storagepolicies"
+argument_list|)
+condition|)
+block|{
+name|url
+operator|.
+name|append
+argument_list|(
+literal|"&storagepolicies=1"
 argument_list|)
 expr_stmt|;
 block|}
