@@ -11777,6 +11777,16 @@ return|return
 literal|true
 return|;
 block|}
+if|if
+condition|(
+name|isRollingUpgrade
+argument_list|()
+condition|)
+block|{
+return|return
+literal|true
+return|;
+block|}
 return|return
 name|file
 operator|.
