@@ -2986,6 +2986,8 @@ name|volume
 argument_list|,
 name|bpFinalizedDir
 argument_list|,
+name|bpFinalizedDir
+argument_list|,
 name|report
 argument_list|)
 argument_list|)
@@ -2996,7 +2998,7 @@ name|result
 return|;
 block|}
 comment|/** Compile list {@link ScanInfo} for the blocks in the directory<dir> */
-DECL|method|compileReport (FsVolumeSpi vol, File dir, LinkedList<ScanInfo> report)
+DECL|method|compileReport (FsVolumeSpi vol, File bpFinalizedDir, File dir, LinkedList<ScanInfo> report)
 specifier|private
 name|LinkedList
 argument_list|<
@@ -3006,6 +3008,9 @@ name|compileReport
 parameter_list|(
 name|FsVolumeSpi
 name|vol
+parameter_list|,
+name|File
+name|bpFinalizedDir
 parameter_list|,
 name|File
 name|dir
@@ -3093,6 +3098,8 @@ name|compileReport
 argument_list|(
 name|vol
 argument_list|,
+name|bpFinalizedDir
+argument_list|,
 name|files
 index|[
 name|i
@@ -3149,6 +3156,21 @@ name|getName
 argument_list|()
 argument_list|)
 decl_stmt|;
+name|verifyFileLocation
+argument_list|(
+name|files
+index|[
+name|i
+index|]
+operator|.
+name|getParentFile
+argument_list|()
+argument_list|,
+name|bpFinalizedDir
+argument_list|,
+name|blockId
+argument_list|)
+expr_stmt|;
 name|report
 operator|.
 name|add
@@ -3271,6 +3293,18 @@ expr_stmt|;
 break|break;
 block|}
 block|}
+name|verifyFileLocation
+argument_list|(
+name|blockFile
+operator|.
+name|getParentFile
+argument_list|()
+argument_list|,
+name|bpFinalizedDir
+argument_list|,
+name|blockId
+argument_list|)
+expr_stmt|;
 name|report
 operator|.
 name|add
@@ -3292,6 +3326,59 @@ block|}
 return|return
 name|report
 return|;
+block|}
+comment|/**      * Verify whether the actual directory location of block file has the      * expected directory path computed using its block ID.      */
+DECL|method|verifyFileLocation (File actualBlockDir, File bpFinalizedDir, long blockId)
+specifier|private
+name|void
+name|verifyFileLocation
+parameter_list|(
+name|File
+name|actualBlockDir
+parameter_list|,
+name|File
+name|bpFinalizedDir
+parameter_list|,
+name|long
+name|blockId
+parameter_list|)
+block|{
+name|File
+name|blockDir
+init|=
+name|DatanodeUtil
+operator|.
+name|idToBlockDir
+argument_list|(
+name|bpFinalizedDir
+argument_list|,
+name|blockId
+argument_list|)
+decl_stmt|;
+if|if
+condition|(
+name|actualBlockDir
+operator|.
+name|compareTo
+argument_list|(
+name|blockDir
+argument_list|)
+operator|!=
+literal|0
+condition|)
+block|{
+name|LOG
+operator|.
+name|warn
+argument_list|(
+literal|"Block: "
+operator|+
+name|blockId
+operator|+
+literal|" has to be upgraded to block ID-based layout"
+argument_list|)
+expr_stmt|;
+block|}
 block|}
 block|}
 block|}
