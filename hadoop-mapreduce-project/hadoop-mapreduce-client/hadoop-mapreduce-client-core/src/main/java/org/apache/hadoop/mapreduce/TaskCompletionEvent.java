@@ -130,28 +130,33 @@ annotation|@
 name|InterfaceStability
 operator|.
 name|Evolving
+comment|/**    * Task Completion Statuses    */
 DECL|enum|Status
-DECL|enumConstant|FAILED
-DECL|enumConstant|KILLED
-DECL|enumConstant|SUCCEEDED
-DECL|enumConstant|OBSOLETE
-DECL|enumConstant|TIPFAILED
 specifier|static
 specifier|public
 enum|enum
 name|Status
 block|{
+comment|/**      * Task Event Attempt failed but there are attempts remaining.      */
+DECL|enumConstant|FAILED
 name|FAILED
 block|,
+comment|/**      * Task Event was killed.      */
+DECL|enumConstant|KILLED
 name|KILLED
 block|,
+comment|/**      * Task Event was successful.      */
+DECL|enumConstant|SUCCEEDED
 name|SUCCEEDED
 block|,
+comment|/**      * Used to Override a previously successful event status.      * Example:  Map attempt runs and a SUCCEEDED event is sent. Later a task      * is retroactively failed due to excessive fetch failure during shuffle      * phase. When the retroactive attempt failure occurs, an OBSOLETE event is      * sent for the map attempt indicating the prior event is no longer valid.      */
+DECL|enumConstant|OBSOLETE
 name|OBSOLETE
 block|,
+comment|/**      * Task Event attempt failed and no further attempts exist.      * reached MAX attempts. When a reducer receives a TIPFAILED event it      * gives up trying to shuffle data from that map task.      */
+DECL|enumConstant|TIPFAILED
 name|TIPFAILED
 block|}
-empty_stmt|;
 DECL|field|eventId
 specifier|private
 name|int
