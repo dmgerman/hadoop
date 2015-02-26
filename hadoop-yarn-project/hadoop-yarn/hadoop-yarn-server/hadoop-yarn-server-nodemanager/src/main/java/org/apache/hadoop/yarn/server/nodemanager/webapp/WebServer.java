@@ -804,30 +804,6 @@ operator|.
 name|class
 argument_list|)
 expr_stmt|;
-comment|// host the timeline service aggregator web service temporarily
-comment|// (see YARN-3087)
-name|bind
-argument_list|(
-name|PerNodeAggregatorWebService
-operator|.
-name|class
-argument_list|)
-expr_stmt|;
-comment|// bind to the global singleton instance
-name|bind
-argument_list|(
-name|AppLevelServiceManager
-operator|.
-name|class
-argument_list|)
-operator|.
-name|toProvider
-argument_list|(
-name|AppLevelServiceManagerProvider
-operator|.
-name|class
-argument_list|)
-expr_stmt|;
 name|bind
 argument_list|(
 name|ResourceView
