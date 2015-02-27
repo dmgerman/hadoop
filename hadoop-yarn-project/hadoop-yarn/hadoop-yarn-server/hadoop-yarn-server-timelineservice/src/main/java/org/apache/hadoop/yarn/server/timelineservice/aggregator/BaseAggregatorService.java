@@ -256,6 +256,30 @@ name|UserGroupInformation
 name|callerUgi
 parameter_list|)
 block|{
+comment|// Add this output temporarily for our prototype
+comment|// TODO remove this after we have an actual implementation
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"SUCCESS - TIMELINE V2 PROTOTYPE"
+argument_list|)
+expr_stmt|;
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"postEntities(entities="
+operator|+
+name|entities
+operator|+
+literal|", callerUgi="
+operator|+
+name|callerUgi
+operator|+
+literal|")"
+argument_list|)
+expr_stmt|;
 comment|// TODO implement
 if|if
 condition|(
