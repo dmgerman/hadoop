@@ -5606,6 +5606,8 @@ operator|=
 operator|new
 name|DirectoryScanner
 argument_list|(
+name|this
+argument_list|,
 name|data
 argument_list|,
 name|conf

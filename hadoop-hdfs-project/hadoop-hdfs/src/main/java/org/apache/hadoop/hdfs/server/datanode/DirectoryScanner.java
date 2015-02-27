@@ -484,6 +484,12 @@ name|retainDiffs
 init|=
 literal|false
 decl_stmt|;
+DECL|field|datanode
+specifier|private
+specifier|final
+name|DataNode
+name|datanode
+decl_stmt|;
 DECL|field|diffs
 specifier|final
 name|ScanInfoPerBlockPool
@@ -1424,9 +1430,12 @@ name|GRANDFATHER_GENERATION_STAMP
 return|;
 block|}
 block|}
-DECL|method|DirectoryScanner (FsDatasetSpi<?> dataset, Configuration conf)
+DECL|method|DirectoryScanner (DataNode datanode, FsDatasetSpi<?> dataset, Configuration conf)
 name|DirectoryScanner
 parameter_list|(
+name|DataNode
+name|datanode
+parameter_list|,
 name|FsDatasetSpi
 argument_list|<
 name|?
@@ -1437,6 +1446,12 @@ name|Configuration
 name|conf
 parameter_list|)
 block|{
+name|this
+operator|.
+name|datanode
+operator|=
+name|datanode
+expr_stmt|;
 name|this
 operator|.
 name|dataset
@@ -2694,6 +2709,8 @@ init|=
 operator|new
 name|ReportCompiler
 argument_list|(
+name|datanode
+argument_list|,
 name|volumes
 operator|.
 name|get
@@ -2898,14 +2915,29 @@ specifier|final
 name|FsVolumeSpi
 name|volume
 decl_stmt|;
-DECL|method|ReportCompiler (FsVolumeSpi volume)
+DECL|field|datanode
+specifier|private
+specifier|final
+name|DataNode
+name|datanode
+decl_stmt|;
+DECL|method|ReportCompiler (DataNode datanode, FsVolumeSpi volume)
 specifier|public
 name|ReportCompiler
 parameter_list|(
+name|DataNode
+name|datanode
+parameter_list|,
 name|FsVolumeSpi
 name|volume
 parameter_list|)
 block|{
+name|this
+operator|.
+name|datanode
+operator|=
+name|datanode
+expr_stmt|;
 name|this
 operator|.
 name|volume
@@ -3052,6 +3084,12 @@ literal|"Exception occured while compiling report: "
 argument_list|,
 name|ioe
 argument_list|)
+expr_stmt|;
+comment|// Initiate a check on disk failure.
+name|datanode
+operator|.
+name|checkDiskErrorAsync
+argument_list|()
 expr_stmt|;
 comment|// Ignore this directory and proceed.
 return|return
