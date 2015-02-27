@@ -9329,6 +9329,16 @@ parameter_list|)
 block|{
 specifier|final
 name|int
+name|bodySize
+init|=
+name|psize
+operator|-
+name|PacketHeader
+operator|.
+name|PKT_MAX_HEADER_LEN
+decl_stmt|;
+specifier|final
+name|int
 name|chunkSize
 init|=
 name|csize
@@ -9342,7 +9352,7 @@ name|Math
 operator|.
 name|max
 argument_list|(
-name|psize
+name|bodySize
 operator|/
 name|chunkSize
 argument_list|,
