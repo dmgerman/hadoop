@@ -671,6 +671,7 @@ annotation|@
 name|Override
 DECL|method|getNumContainers ()
 specifier|public
+specifier|synchronized
 name|int
 name|getNumContainers
 parameter_list|()
@@ -697,6 +698,7 @@ annotation|@
 name|Override
 DECL|method|setNumContainers (int numContainers)
 specifier|public
+specifier|synchronized
 name|void
 name|setNumContainers
 parameter_list|(

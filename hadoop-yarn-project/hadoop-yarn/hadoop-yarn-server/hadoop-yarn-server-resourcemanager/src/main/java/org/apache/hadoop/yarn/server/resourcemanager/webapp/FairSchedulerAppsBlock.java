@@ -496,6 +496,11 @@ specifier|final
 name|Configuration
 name|conf
 decl_stmt|;
+DECL|field|rm
+specifier|final
+name|ResourceManager
+name|rm
+decl_stmt|;
 annotation|@
 name|Inject
 DECL|method|FairSchedulerAppsBlock (ResourceManager rm, ViewContext ctx, Configuration conf)
@@ -644,6 +649,12 @@ operator|.
 name|conf
 operator|=
 name|conf
+expr_stmt|;
+name|this
+operator|.
+name|rm
+operator|=
+name|rm
 expr_stmt|;
 block|}
 DECL|method|render (Block html)
@@ -893,6 +904,8 @@ init|=
 operator|new
 name|AppInfo
 argument_list|(
+name|rm
+argument_list|,
 name|app
 argument_list|,
 literal|true

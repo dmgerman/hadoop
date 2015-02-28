@@ -3952,6 +3952,8 @@ init|=
 operator|new
 name|AppInfo
 argument_list|(
+name|rm
+argument_list|,
 name|rmapp
 argument_list|,
 name|hasAccess
@@ -4879,6 +4881,8 @@ return|return
 operator|new
 name|AppInfo
 argument_list|(
+name|rm
+argument_list|,
 name|app
 argument_list|,
 name|hasAccess

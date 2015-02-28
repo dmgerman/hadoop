@@ -23,6 +23,26 @@ package|;
 end_package
 
 begin_import
+import|import static
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|webapp
+operator|.
+name|view
+operator|.
+name|JQueryUI
+operator|.
+name|DATATABLES_ID
+import|;
+end_import
+
+begin_import
 import|import
 name|org
 operator|.
@@ -65,6 +85,20 @@ block|{
 name|commonPreHead
 argument_list|(
 name|html
+argument_list|)
+expr_stmt|;
+name|set
+argument_list|(
+name|DATATABLES_ID
+argument_list|,
+literal|"ResourceRequests"
+argument_list|)
+expr_stmt|;
+name|setTableStyles
+argument_list|(
+name|html
+argument_list|,
+literal|"ResourceRequests"
 argument_list|)
 expr_stmt|;
 block|}

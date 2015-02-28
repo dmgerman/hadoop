@@ -11174,12 +11174,11 @@ name|JSONException
 throws|,
 name|Exception
 block|{
-comment|// 28 because trackingUrl not assigned yet
 name|assertEquals
 argument_list|(
 literal|"incorrect number of elements"
 argument_list|,
-literal|26
+literal|27
 argument_list|,
 name|info
 operator|.

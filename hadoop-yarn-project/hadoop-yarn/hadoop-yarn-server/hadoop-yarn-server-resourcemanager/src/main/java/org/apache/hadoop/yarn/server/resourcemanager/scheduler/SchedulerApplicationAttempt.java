@@ -1120,6 +1120,18 @@ argument_list|()
 argument_list|)
 return|;
 block|}
+DECL|method|getAppSchedulingInfo ()
+specifier|public
+name|AppSchedulingInfo
+name|getAppSchedulingInfo
+parameter_list|()
+block|{
+return|return
+name|this
+operator|.
+name|appSchedulingInfo
+return|;
+block|}
 comment|/**    * Is this application pending?    * @return true if it is else false.    */
 DECL|method|isPending ()
 specifier|public
