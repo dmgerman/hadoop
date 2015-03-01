@@ -45,6 +45,18 @@ import|;
 end_import
 
 begin_import
+import|import static
+name|org
+operator|.
+name|junit
+operator|.
+name|Assert
+operator|.
+name|assertArrayEquals
+import|;
+end_import
+
+begin_import
 import|import
 name|java
 operator|.
@@ -1151,12 +1163,13 @@ literal|1L
 argument_list|)
 expr_stmt|;
 specifier|final
-name|String
+name|byte
+index|[]
 name|fileContent
 init|=
 name|DFSTestUtil
 operator|.
-name|readFile
+name|readFileAsBytes
 argument_list|(
 name|fs
 argument_list|,
@@ -1275,12 +1288,13 @@ name|i
 operator|++
 control|)
 block|{
-name|String
+name|byte
+index|[]
 name|blockContent
 init|=
 name|cluster
 operator|.
-name|readBlockOnDataNode
+name|readBlockOnDataNodeAsBytes
 argument_list|(
 name|i
 argument_list|,
@@ -1298,7 +1312,7 @@ operator|!=
 name|dnToCorrupt
 condition|)
 block|{
-name|assertEquals
+name|assertArrayEquals
 argument_list|(
 literal|"Corrupt replica"
 argument_list|,
