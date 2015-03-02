@@ -290,7 +290,43 @@ name|server
 operator|.
 name|blockmanagement
 operator|.
+name|BlockIdManager
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|server
+operator|.
+name|blockmanagement
+operator|.
 name|BlockInfo
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|server
+operator|.
+name|blockmanagement
+operator|.
+name|BlockInfoStripedUnderConstruction
 import|;
 end_import
 
@@ -3290,6 +3326,7 @@ operator|.
 name|CURRENT_STATE_ID
 argument_list|)
 expr_stmt|;
+comment|// TODO whether the file is striped should later be retrieved from iip
 name|updateBlocks
 argument_list|(
 name|fsDir
@@ -3299,6 +3336,11 @@ argument_list|,
 name|iip
 argument_list|,
 name|newFile
+argument_list|,
+name|newFile
+operator|.
+name|isStriped
+argument_list|()
 argument_list|)
 expr_stmt|;
 break|break;
@@ -3430,6 +3472,7 @@ operator|.
 name|CURRENT_STATE_ID
 argument_list|)
 expr_stmt|;
+comment|// TODO whether the file is striped should later be retrieved from iip
 name|updateBlocks
 argument_list|(
 name|fsDir
@@ -3439,6 +3482,11 @@ argument_list|,
 name|iip
 argument_list|,
 name|file
+argument_list|,
+name|file
+operator|.
+name|isStriped
+argument_list|()
 argument_list|)
 expr_stmt|;
 comment|// Now close the file
@@ -3791,6 +3839,7 @@ name|path
 argument_list|)
 decl_stmt|;
 comment|// Update in-memory data structures
+comment|// TODO whether the file is striped should later be retrieved from iip
 name|updateBlocks
 argument_list|(
 name|fsDir
@@ -3800,6 +3849,11 @@ argument_list|,
 name|iip
 argument_list|,
 name|oldFile
+argument_list|,
+name|oldFile
+operator|.
+name|isStriped
+argument_list|()
 argument_list|)
 expr_stmt|;
 if|if
@@ -3902,11 +3956,17 @@ name|path
 argument_list|)
 decl_stmt|;
 comment|// add the new block to the INodeFile
+comment|// TODO whether the file is striped should later be retrieved from iip
 name|addNewBlock
 argument_list|(
 name|addBlockOp
 argument_list|,
 name|oldFile
+argument_list|,
+name|oldFile
+operator|.
+name|isStriped
+argument_list|()
 argument_list|)
 expr_stmt|;
 break|break;
@@ -5410,18 +5470,48 @@ name|AllocateBlockIdOp
 operator|)
 name|op
 decl_stmt|;
+if|if
+condition|(
+name|BlockIdManager
+operator|.
+name|isStripedBlockID
+argument_list|(
+name|allocateBlockIdOp
+operator|.
+name|blockId
+argument_list|)
+condition|)
+block|{
+comment|// ALLOCATE_BLOCK_ID is added for sequential block id, thus if the id
+comment|// is negative, it must belong to striped blocks
 name|fsNamesys
 operator|.
 name|getBlockIdManager
 argument_list|()
 operator|.
-name|setLastAllocatedBlockId
+name|setLastAllocatedStripedBlockId
 argument_list|(
 name|allocateBlockIdOp
 operator|.
 name|blockId
 argument_list|)
 expr_stmt|;
+block|}
+else|else
+block|{
+name|fsNamesys
+operator|.
+name|getBlockIdManager
+argument_list|()
+operator|.
+name|setLastAllocatedContiguousBlockId
+argument_list|(
+name|allocateBlockIdOp
+operator|.
+name|blockId
+argument_list|)
+expr_stmt|;
+block|}
 break|break;
 block|}
 case|case
@@ -6208,8 +6298,8 @@ name|toString
 argument_list|()
 return|;
 block|}
-comment|/**    * Add a new block into the given INodeFile    * TODO support adding striped block    */
-DECL|method|addNewBlock (AddBlockOp op, INodeFile file)
+comment|/**    * Add a new block into the given INodeFile    */
+DECL|method|addNewBlock (AddBlockOp op, INodeFile file, boolean isStriped)
 specifier|private
 name|void
 name|addNewBlock
@@ -6219,6 +6309,9 @@ name|op
 parameter_list|,
 name|INodeFile
 name|file
+parameter_list|,
+name|boolean
+name|isStriped
 parameter_list|)
 throws|throws
 name|IOException
@@ -6268,7 +6361,7 @@ operator|>
 literal|0
 assert|;
 comment|// compare pBlock with the last block of oldBlocks
-name|Block
+name|BlockInfo
 name|oldLastBlock
 init|=
 name|oldBlocks
@@ -6336,9 +6429,11 @@ argument_list|)
 expr_stmt|;
 if|if
 condition|(
+operator|!
 name|oldLastBlock
-operator|instanceof
-name|BlockInfoContiguousUnderConstruction
+operator|.
+name|isComplete
+argument_list|()
 condition|)
 block|{
 name|fsNamesys
@@ -6350,9 +6445,6 @@ name|forceCompleteBlock
 argument_list|(
 name|file
 argument_list|,
-operator|(
-name|BlockInfoContiguousUnderConstruction
-operator|)
 name|oldLastBlock
 argument_list|)
 expr_stmt|;
@@ -6388,9 +6480,36 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|// add the new block
-name|BlockInfoContiguous
-name|newBI
-init|=
+specifier|final
+name|BlockInfo
+name|newBlockInfo
+decl_stmt|;
+if|if
+condition|(
+name|isStriped
+condition|)
+block|{
+name|newBlockInfo
+operator|=
+operator|new
+name|BlockInfoStripedUnderConstruction
+argument_list|(
+name|newBlock
+argument_list|,
+name|HdfsConstants
+operator|.
+name|NUM_DATA_BLOCKS
+argument_list|,
+name|HdfsConstants
+operator|.
+name|NUM_PARITY_BLOCKS
+argument_list|)
+expr_stmt|;
+block|}
+else|else
+block|{
+name|newBlockInfo
+operator|=
 operator|new
 name|BlockInfoContiguousUnderConstruction
 argument_list|(
@@ -6401,7 +6520,8 @@ operator|.
 name|getPreferredBlockReplication
 argument_list|()
 argument_list|)
-decl_stmt|;
+expr_stmt|;
+block|}
 name|fsNamesys
 operator|.
 name|getBlockManager
@@ -6409,7 +6529,7 @@ argument_list|()
 operator|.
 name|addBlockCollection
 argument_list|(
-name|newBI
+name|newBlockInfo
 argument_list|,
 name|file
 argument_list|)
@@ -6418,7 +6538,7 @@ name|file
 operator|.
 name|addBlock
 argument_list|(
-name|newBI
+name|newBlockInfo
 argument_list|)
 expr_stmt|;
 name|fsNamesys
@@ -6432,8 +6552,8 @@ name|newBlock
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Update in-memory data structures with new block information.    * TODO support adding striped block    * @throws IOException    */
-DECL|method|updateBlocks (FSDirectory fsDir, BlockListUpdatingOp op, INodesInPath iip, INodeFile file)
+comment|/**    * Update in-memory data structures with new block information.    * @throws IOException    */
+DECL|method|updateBlocks (FSDirectory fsDir, BlockListUpdatingOp op, INodesInPath iip, INodeFile file, boolean isStriped)
 specifier|private
 name|void
 name|updateBlocks
@@ -6449,6 +6569,9 @@ name|iip
 parameter_list|,
 name|INodeFile
 name|file
+parameter_list|,
+name|boolean
+name|isStriped
 parameter_list|)
 throws|throws
 name|IOException
@@ -6640,9 +6763,11 @@ argument_list|)
 expr_stmt|;
 if|if
 condition|(
+operator|!
 name|oldBlock
-operator|instanceof
-name|BlockInfoContiguousUnderConstruction
+operator|.
+name|isComplete
+argument_list|()
 operator|&&
 operator|(
 operator|!
@@ -6668,9 +6793,6 @@ name|forceCompleteBlock
 argument_list|(
 name|file
 argument_list|,
-operator|(
-name|BlockInfoContiguousUnderConstruction
-operator|)
 name|oldBlock
 argument_list|)
 expr_stmt|;
@@ -6845,7 +6967,8 @@ index|[
 name|i
 index|]
 decl_stmt|;
-name|BlockInfoContiguous
+specifier|final
+name|BlockInfo
 name|newBI
 decl_stmt|;
 if|if
@@ -6860,6 +6983,30 @@ block|{
 comment|// TODO: shouldn't this only be true for the last block?
 comment|// what about an old-version fsync() where fsync isn't called
 comment|// until several blocks in?
+if|if
+condition|(
+name|isStriped
+condition|)
+block|{
+name|newBI
+operator|=
+operator|new
+name|BlockInfoStripedUnderConstruction
+argument_list|(
+name|newBlock
+argument_list|,
+name|HdfsConstants
+operator|.
+name|NUM_DATA_BLOCKS
+argument_list|,
+name|HdfsConstants
+operator|.
+name|NUM_PARITY_BLOCKS
+argument_list|)
+expr_stmt|;
+block|}
+else|else
+block|{
 name|newBI
 operator|=
 operator|new
@@ -6873,6 +7020,7 @@ name|getPreferredBlockReplication
 argument_list|()
 argument_list|)
 expr_stmt|;
+block|}
 block|}
 else|else
 block|{

@@ -1162,6 +1162,19 @@ return|return
 name|ucBlock
 return|;
 block|}
+annotation|@
+name|Override
+DECL|method|isStriped ()
+specifier|public
+specifier|final
+name|boolean
+name|isStriped
+parameter_list|()
+block|{
+return|return
+literal|false
+return|;
+block|}
 block|}
 end_class
 

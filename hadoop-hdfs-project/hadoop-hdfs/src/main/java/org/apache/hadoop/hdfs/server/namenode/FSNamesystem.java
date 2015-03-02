@@ -2784,24 +2784,6 @@ name|server
 operator|.
 name|blockmanagement
 operator|.
-name|BlockInfoStripedUnderConstruction
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|hdfs
-operator|.
-name|server
-operator|.
-name|blockmanagement
-operator|.
 name|BlockManager
 import|;
 end_import
@@ -11794,9 +11776,11 @@ name|getLastBlock
 argument_list|()
 decl_stmt|;
 assert|assert
+operator|!
 name|oldBlock
-operator|instanceof
-name|BlockInfoContiguous
+operator|.
+name|isStriped
+argument_list|()
 assert|;
 name|boolean
 name|shouldCopyOnTruncate
@@ -17078,14 +17062,17 @@ operator|++
 expr_stmt|;
 if|if
 condition|(
+name|blockManager
+operator|.
+name|checkMinStorage
+argument_list|(
+name|bi
+argument_list|,
 name|bi
 operator|.
 name|numNodes
 argument_list|()
-operator|>=
-name|blockManager
-operator|.
-name|minReplication
+argument_list|)
 condition|)
 block|{
 name|numRemovedSafe
@@ -17931,7 +17918,7 @@ break|break;
 assert|assert
 name|blockManager
 operator|.
-name|checkMinReplication
+name|checkMinStorage
 argument_list|(
 name|curBlock
 argument_list|)
@@ -18068,7 +18055,7 @@ argument_list|()
 decl_stmt|;
 comment|// If penultimate block doesn't exist then its minReplication is met
 name|boolean
-name|penultimateBlockMinReplication
+name|penultimateBlockMinStorage
 init|=
 name|penultimateBlock
 operator|==
@@ -18076,7 +18063,7 @@ literal|null
 operator|||
 name|blockManager
 operator|.
-name|checkMinReplication
+name|checkMinStorage
 argument_list|(
 name|penultimateBlock
 argument_list|)
@@ -18101,11 +18088,11 @@ case|:
 comment|// Close file if committed blocks are minimally replicated
 if|if
 condition|(
-name|penultimateBlockMinReplication
+name|penultimateBlockMinStorage
 operator|&&
 name|blockManager
 operator|.
-name|checkMinReplication
+name|checkMinStorage
 argument_list|(
 name|lastBlock
 argument_list|)
@@ -18583,6 +18570,7 @@ block|{
 return|return;
 block|}
 comment|// Adjust disk space consumption if required
+comment|// TODO: support EC files
 specifier|final
 name|long
 name|diff
@@ -26072,12 +26060,12 @@ name|isStriped
 condition|?
 name|blockIdManager
 operator|.
-name|nextBlockGroupId
+name|nextStripedBlockId
 argument_list|()
 else|:
 name|blockIdManager
 operator|.
-name|nextBlockId
+name|nextContiguousBlockId
 argument_list|()
 decl_stmt|;
 name|getEditLog

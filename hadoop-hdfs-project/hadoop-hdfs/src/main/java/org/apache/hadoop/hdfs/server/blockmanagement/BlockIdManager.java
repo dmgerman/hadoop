@@ -311,11 +311,11 @@ return|return
 name|blockIdGenerator
 return|;
 block|}
-comment|/**    * Sets the maximum allocated block ID for this filesystem. This is    * the basis for allocating new block IDs.    */
-DECL|method|setLastAllocatedBlockId (long blockId)
+comment|/**    * Sets the maximum allocated contiguous block ID for this filesystem. This is    * the basis for allocating new block IDs.    */
+DECL|method|setLastAllocatedContiguousBlockId (long blockId)
 specifier|public
 name|void
-name|setLastAllocatedBlockId
+name|setLastAllocatedContiguousBlockId
 parameter_list|(
 name|long
 name|blockId
@@ -329,15 +329,47 @@ name|blockId
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Gets the maximum sequentially allocated block ID for this filesystem    */
-DECL|method|getLastAllocatedBlockId ()
+comment|/**    * Gets the maximum sequentially allocated contiguous block ID for this    * filesystem    */
+DECL|method|getLastAllocatedContiguousBlockId ()
 specifier|public
 name|long
-name|getLastAllocatedBlockId
+name|getLastAllocatedContiguousBlockId
 parameter_list|()
 block|{
 return|return
 name|blockIdGenerator
+operator|.
+name|getCurrentValue
+argument_list|()
+return|;
+block|}
+comment|/**    * Sets the maximum allocated striped block ID for this filesystem. This is    * the basis for allocating new block IDs.    */
+DECL|method|setLastAllocatedStripedBlockId (long blockId)
+specifier|public
+name|void
+name|setLastAllocatedStripedBlockId
+parameter_list|(
+name|long
+name|blockId
+parameter_list|)
+block|{
+name|blockGroupIdGenerator
+operator|.
+name|skipTo
+argument_list|(
+name|blockId
+argument_list|)
+expr_stmt|;
+block|}
+comment|/**    * Gets the maximum sequentially allocated striped block ID for this    * filesystem    */
+DECL|method|getLastAllocatedStripedBlockId ()
+specifier|public
+name|long
+name|getLastAllocatedStripedBlockId
+parameter_list|()
+block|{
+return|return
+name|blockGroupIdGenerator
 operator|.
 name|getCurrentValue
 argument_list|()
@@ -511,10 +543,10 @@ argument_list|()
 return|;
 block|}
 comment|/**    * Increments, logs and then returns the block ID    */
-DECL|method|nextBlockId ()
+DECL|method|nextContiguousBlockId ()
 specifier|public
 name|long
-name|nextBlockId
+name|nextContiguousBlockId
 parameter_list|()
 block|{
 return|return
@@ -524,10 +556,10 @@ name|nextValue
 argument_list|()
 return|;
 block|}
-DECL|method|nextBlockGroupId ()
+DECL|method|nextStripedBlockId ()
 specifier|public
 name|long
-name|nextBlockGroupId
+name|nextStripedBlockId
 parameter_list|()
 block|{
 return|return
@@ -634,11 +666,11 @@ operator|<
 literal|0
 return|;
 block|}
-DECL|method|convertToGroupID (long id)
+DECL|method|convertToStripedID (long id)
 specifier|public
 specifier|static
 name|long
-name|convertToGroupID
+name|convertToStripedID
 parameter_list|(
 name|long
 name|id

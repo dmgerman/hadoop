@@ -51,24 +51,6 @@ operator|.
 name|common
 operator|.
 name|HdfsServerConstants
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|hdfs
-operator|.
-name|server
-operator|.
-name|common
-operator|.
-name|HdfsServerConstants
 operator|.
 name|BlockUCState
 import|;
@@ -191,7 +173,6 @@ argument_list|)
 expr_stmt|;
 block|}
 DECL|method|getTotalBlockNum ()
-specifier|private
 name|short
 name|getTotalBlockNum
 parameter_list|()
@@ -809,6 +790,19 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
+block|}
+annotation|@
+name|Override
+DECL|method|isStriped ()
+specifier|public
+specifier|final
+name|boolean
+name|isStriped
+parameter_list|()
+block|{
+return|return
+literal|true
+return|;
 block|}
 annotation|@
 name|Override

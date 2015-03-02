@@ -348,6 +348,15 @@ literal|63
 argument_list|,
 literal|"Support quota for specific storage types"
 argument_list|)
+block|,
+DECL|enumConstant|ERASURE_CODING
+name|ERASURE_CODING
+argument_list|(
+operator|-
+literal|64
+argument_list|,
+literal|"Support erasure coding"
+argument_list|)
 block|;
 DECL|field|info
 specifier|private

@@ -2177,7 +2177,7 @@ name|numBlocksChecked
 operator|++
 expr_stmt|;
 specifier|final
-name|BlockInfoContiguous
+name|BlockInfo
 name|block
 init|=
 name|it
@@ -2339,11 +2339,19 @@ block|}
 block|}
 comment|// Even if the block is under-replicated,
 comment|// it doesn't block decommission if it's sufficiently replicated
+name|BlockInfoContiguous
+name|blk
+init|=
+operator|(
+name|BlockInfoContiguous
+operator|)
+name|block
+decl_stmt|;
 if|if
 condition|(
 name|isSufficientlyReplicated
 argument_list|(
-name|block
+name|blk
 argument_list|,
 name|bc
 argument_list|,
@@ -2376,7 +2384,7 @@ name|insufficientlyReplicated
 operator|.
 name|add
 argument_list|(
-name|block
+name|blk
 argument_list|)
 expr_stmt|;
 block|}

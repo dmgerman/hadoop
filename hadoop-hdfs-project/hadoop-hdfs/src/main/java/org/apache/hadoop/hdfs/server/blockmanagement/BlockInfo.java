@@ -640,6 +640,13 @@ name|BlockInfo
 name|newBlock
 parameter_list|)
 function_decl|;
+DECL|method|isStriped ()
+specifier|public
+specifier|abstract
+name|boolean
+name|isStriped
+parameter_list|()
+function_decl|;
 comment|/**    * Find specified DatanodeDescriptor.    * @return index or -1 if not found.    */
 DECL|method|findDatanode (DatanodeDescriptor dn)
 name|boolean
@@ -1287,9 +1294,11 @@ parameter_list|)
 block|{
 if|if
 condition|(
+operator|!
 name|b
-operator|instanceof
-name|BlockInfoContiguous
+operator|.
+name|isStriped
+argument_list|()
 condition|)
 block|{
 return|return

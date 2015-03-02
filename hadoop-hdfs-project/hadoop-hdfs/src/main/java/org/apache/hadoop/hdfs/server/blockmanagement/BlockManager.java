@@ -3153,18 +3153,72 @@ return|return
 name|maxReplicationStreams
 return|;
 block|}
-comment|/**    * @return true if the block has minimum replicas    */
-DECL|method|checkMinReplication (Block block)
+DECL|method|getDefaultStorageNum (BlockInfo block)
 specifier|public
-name|boolean
-name|checkMinReplication
+name|int
+name|getDefaultStorageNum
 parameter_list|(
-name|Block
+name|BlockInfo
 name|block
 parameter_list|)
 block|{
 return|return
+name|block
+operator|.
+name|isStriped
+argument_list|()
+condition|?
 operator|(
+operator|(
+name|BlockInfoStriped
+operator|)
+name|block
+operator|)
+operator|.
+name|getTotalBlockNum
+argument_list|()
+else|:
+name|defaultReplication
+return|;
+block|}
+DECL|method|getMinStorageNum (BlockInfo block)
+specifier|public
+name|short
+name|getMinStorageNum
+parameter_list|(
+name|BlockInfo
+name|block
+parameter_list|)
+block|{
+return|return
+name|block
+operator|.
+name|isStriped
+argument_list|()
+condition|?
+operator|(
+operator|(
+name|BlockInfoStriped
+operator|)
+name|block
+operator|)
+operator|.
+name|getDataBlockNum
+argument_list|()
+else|:
+name|minReplication
+return|;
+block|}
+DECL|method|checkMinStorage (BlockInfo block)
+specifier|public
+name|boolean
+name|checkMinStorage
+parameter_list|(
+name|BlockInfo
+name|block
+parameter_list|)
+block|{
+return|return
 name|countNodes
 argument_list|(
 name|block
@@ -3173,8 +3227,31 @@ operator|.
 name|liveReplicas
 argument_list|()
 operator|>=
-name|minReplication
-operator|)
+name|getMinStorageNum
+argument_list|(
+name|block
+argument_list|)
+return|;
+block|}
+DECL|method|checkMinStorage (BlockInfo block, int liveNum)
+specifier|public
+name|boolean
+name|checkMinStorage
+parameter_list|(
+name|BlockInfo
+name|block
+parameter_list|,
+name|int
+name|liveNum
+parameter_list|)
+block|{
+return|return
+name|liveNum
+operator|>=
+name|getMinStorageNum
+argument_list|(
+name|block
+argument_list|)
 return|;
 block|}
 comment|/**    * Commit a block of a file    *     * @param block block to be committed    * @param commitBlock - contains client reported block length and generation    * @return true if the block is changed to committed state.    * @throws IOException if the block does not have at least a minimal number    * of replicas reported from data-nodes.    */
@@ -3314,15 +3391,10 @@ argument_list|)
 decl_stmt|;
 if|if
 condition|(
-name|countNodes
+name|checkMinStorage
 argument_list|(
 name|lastBlock
 argument_list|)
-operator|.
-name|liveReplicas
-argument_list|()
-operator|>=
-name|minReplication
 condition|)
 block|{
 name|completeBlock
@@ -3411,9 +3483,13 @@ condition|(
 operator|!
 name|force
 operator|&&
+operator|!
+name|checkMinStorage
+argument_list|(
+name|curBlock
+argument_list|,
 name|numNodes
-operator|<
-name|minReplication
+argument_list|)
 condition|)
 block|{
 throw|throw
@@ -3581,7 +3657,7 @@ name|block
 return|;
 block|}
 comment|/**    * Force the given block in the given file to be marked as complete,    * regardless of whether enough replicas are present. This is necessary    * when tailing edit logs as a Standby.    */
-DECL|method|forceCompleteBlock (final BlockCollection bc, final BlockInfoContiguousUnderConstruction block)
+DECL|method|forceCompleteBlock (final BlockCollection bc, final BlockInfo block)
 specifier|public
 name|BlockInfo
 name|forceCompleteBlock
@@ -3591,17 +3667,18 @@ name|BlockCollection
 name|bc
 parameter_list|,
 specifier|final
-name|BlockInfoContiguousUnderConstruction
+name|BlockInfo
 name|block
 parameter_list|)
 throws|throws
 name|IOException
 block|{
-comment|// TODO: support BlockInfoStripedUC for editlog
-name|block
+name|BlockInfo
 operator|.
 name|commitBlock
 argument_list|(
+name|block
+argument_list|,
 name|block
 argument_list|)
 expr_stmt|;
@@ -3772,11 +3849,14 @@ operator|.
 name|adjustSafeModeBlockTotals
 argument_list|(
 comment|// decrement safe if we had enough
+name|checkMinStorage
+argument_list|(
+name|oldBlock
+argument_list|,
 name|targets
 operator|.
 name|length
-operator|>=
-name|minReplication
+argument_list|)
 condition|?
 operator|-
 literal|1
@@ -6067,12 +6147,17 @@ decl_stmt|;
 name|boolean
 name|minReplicationSatisfied
 init|=
+name|checkMinStorage
+argument_list|(
+name|b
+operator|.
+name|stored
+argument_list|,
 name|numberOfReplicas
 operator|.
 name|liveReplicas
 argument_list|()
-operator|>=
-name|minReplication
+argument_list|)
 decl_stmt|;
 name|boolean
 name|hasMoreCorruptReplicas
@@ -11817,9 +11902,12 @@ name|BlockUCState
 operator|.
 name|COMMITTED
 operator|&&
+name|checkMinStorage
+argument_list|(
+name|storedBlock
+argument_list|,
 name|numCurrentReplica
-operator|>=
-name|minReplication
+argument_list|)
 condition|)
 block|{
 name|completeBlock
@@ -12139,9 +12227,12 @@ name|BlockUCState
 operator|.
 name|COMMITTED
 operator|&&
+name|checkMinStorage
+argument_list|(
+name|storedBlock
+argument_list|,
 name|numLiveReplicas
-operator|>=
-name|minReplication
+argument_list|)
 condition|)
 block|{
 name|storedBlock
@@ -15186,7 +15277,7 @@ name|deleted
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Return the number of nodes hosting a given block, grouped    * by the state of those replicas.    */
+comment|/**    * Return the number of nodes hosting a given block, grouped    * by the state of those replicas.    * For a striped block, this includes nodes storing blocks belonging to the    * striped block group.    */
 DECL|method|countNodes (Block b)
 specifier|public
 name|NumberReplicas
@@ -15903,7 +15994,7 @@ name|Block
 argument_list|(
 name|BlockIdManager
 operator|.
-name|convertToGroupID
+name|convertToStripedID
 argument_list|(
 name|block
 operator|.
