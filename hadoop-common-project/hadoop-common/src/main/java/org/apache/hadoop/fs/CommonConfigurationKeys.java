@@ -293,6 +293,26 @@ name|IPC_CALLQUEUE_IDENTITY_PROVIDER_KEY
 init|=
 literal|"identity-provider.impl"
 decl_stmt|;
+comment|/** This is for specifying the implementation for the mappings from    * hostnames to the racks they belong to    */
+DECL|field|NET_TOPOLOGY_CONFIGURED_NODE_MAPPING_KEY
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|NET_TOPOLOGY_CONFIGURED_NODE_MAPPING_KEY
+init|=
+literal|"net.topology.configured.node.mapping"
+decl_stmt|;
+comment|/**    * Supported compression codec classes    */
+DECL|field|IO_COMPRESSION_CODECS_KEY
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|IO_COMPRESSION_CODECS_KEY
+init|=
+literal|"io.compression.codecs"
+decl_stmt|;
 comment|/** Internal buffer size for Lzo compressor/decompressors */
 DECL|field|IO_COMPRESSION_CODEC_LZO_BUFFERSIZE_KEY
 specifier|public
@@ -314,16 +334,6 @@ init|=
 literal|64
 operator|*
 literal|1024
-decl_stmt|;
-comment|/** This is for specifying the implementation for the mappings from    * hostnames to the racks they belong to    */
-DECL|field|NET_TOPOLOGY_CONFIGURED_NODE_MAPPING_KEY
-specifier|public
-specifier|static
-specifier|final
-name|String
-name|NET_TOPOLOGY_CONFIGURED_NODE_MAPPING_KEY
-init|=
-literal|"net.topology.configured.node.mapping"
 decl_stmt|;
 comment|/** Internal buffer size for Snappy compressor/decompressors */
 DECL|field|IO_COMPRESSION_CODEC_SNAPPY_BUFFERSIZE_KEY

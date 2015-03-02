@@ -108,6 +108,20 @@ name|hadoop
 operator|.
 name|fs
 operator|.
+name|CommonConfigurationKeys
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|fs
+operator|.
 name|Path
 import|;
 end_import
@@ -510,7 +524,7 @@ argument_list|()
 return|;
 block|}
 comment|/**    * Get the list of codecs discovered via a Java ServiceLoader, or    * listed in the configuration. Codecs specified in configuration come    * later in the returned list, and are considered to override those    * from the ServiceLoader.    * @param conf the configuration to look in    * @return a list of the {@link CompressionCodec} classes    */
-DECL|method|getCodecClasses (Configuration conf)
+DECL|method|getCodecClasses ( Configuration conf)
 specifier|public
 specifier|static
 name|List
@@ -587,7 +601,9 @@ name|conf
 operator|.
 name|get
 argument_list|(
-literal|"io.compression.codecs"
+name|CommonConfigurationKeys
+operator|.
+name|IO_COMPRESSION_CODECS_KEY
 argument_list|)
 decl_stmt|;
 if|if
@@ -814,7 +830,9 @@ name|conf
 operator|.
 name|set
 argument_list|(
-literal|"io.compression.codecs"
+name|CommonConfigurationKeys
+operator|.
+name|IO_COMPRESSION_CODECS_KEY
 argument_list|,
 name|buf
 operator|.
@@ -1107,7 +1125,8 @@ operator|==
 literal|null
 condition|)
 block|{
-comment|// trying to get the codec by name in case the name was specified instead a class
+comment|// trying to get the codec by name in case the name was specified
+comment|// instead a class
 name|codec
 operator|=
 name|codecsByName
@@ -1126,7 +1145,7 @@ name|codec
 return|;
 block|}
 comment|/**      * Find the relevant compression codec for the codec's canonical class name      * or by codec alias and returns its implemetation class.      *<p/>      * Codec aliases are case insensitive.      *<p/>      * The code alias is the short class name (without the package name).      * If the short class name ends with 'Codec', then there are two aliases for      * the codec, the complete short class name and the short class name without      * the 'Codec' ending. For example for the 'GzipCodec' codec class name the      * alias are 'gzip' and 'gzipcodec'.      *      * @param codecName the canonical class name of the codec      * @return the codec class      */
-DECL|method|getCodecClassByName (String codecName)
+DECL|method|getCodecClassByName ( String codecName)
 specifier|public
 name|Class
 argument_list|<

@@ -78,6 +78,20 @@ name|hadoop
 operator|.
 name|fs
 operator|.
+name|CommonConfigurationKeys
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|fs
+operator|.
 name|Path
 import|;
 end_import
@@ -1610,7 +1624,9 @@ name|conf
 operator|.
 name|set
 argument_list|(
-literal|"io.compression.codecs"
+name|CommonConfigurationKeys
+operator|.
+name|IO_COMPRESSION_CODECS_KEY
 argument_list|,
 literal|"   org.apache.hadoop.io.compress.GzipCodec   , "
 operator|+
