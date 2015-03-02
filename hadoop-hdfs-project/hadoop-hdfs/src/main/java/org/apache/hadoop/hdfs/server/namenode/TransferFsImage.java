@@ -1863,10 +1863,21 @@ throw|throw
 operator|new
 name|HttpPutFailedException
 argument_list|(
+name|String
+operator|.
+name|format
+argument_list|(
+literal|"Image uploading failed, status: %d, url: %s, message: %s"
+argument_list|,
+name|responseCode
+argument_list|,
+name|urlWithParams
+argument_list|,
 name|connection
 operator|.
 name|getResponseMessage
 argument_list|()
+argument_list|)
 argument_list|,
 name|responseCode
 argument_list|)
