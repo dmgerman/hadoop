@@ -6711,31 +6711,10 @@ name|proxyReply
 argument_list|)
 argument_list|)
 decl_stmt|;
-if|if
-condition|(
-name|copyResponse
-operator|.
-name|getStatus
-argument_list|()
-operator|!=
-name|SUCCESS
-condition|)
-block|{
-if|if
-condition|(
-name|copyResponse
-operator|.
-name|getStatus
-argument_list|()
-operator|==
-name|ERROR_ACCESS_TOKEN
-condition|)
-block|{
-throw|throw
-operator|new
-name|IOException
-argument_list|(
-literal|"Copy block "
+name|String
+name|logInfo
+init|=
+literal|"copy block "
 operator|+
 name|block
 operator|+
@@ -6745,30 +6724,16 @@ name|proxySock
 operator|.
 name|getRemoteSocketAddress
 argument_list|()
-operator|+
-literal|" failed due to access token error"
-argument_list|)
-throw|;
-block|}
-throw|throw
-operator|new
-name|IOException
-argument_list|(
-literal|"Copy block "
-operator|+
-name|block
-operator|+
-literal|" from "
-operator|+
-name|proxySock
+decl_stmt|;
+name|DataTransferProtoUtil
 operator|.
-name|getRemoteSocketAddress
-argument_list|()
-operator|+
-literal|" failed"
+name|checkBlockOpStatus
+argument_list|(
+name|copyResponse
+argument_list|,
+name|logInfo
 argument_list|)
-throw|;
-block|}
+expr_stmt|;
 comment|// get checksum info about the block we're copying
 name|ReadOpChecksumInfoProto
 name|checksumInfo
