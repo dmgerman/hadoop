@@ -166,6 +166,22 @@ name|apache
 operator|.
 name|commons
 operator|.
+name|lang
+operator|.
+name|mutable
+operator|.
+name|MutableObject
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|commons
+operator|.
 name|logging
 operator|.
 name|Log
@@ -5845,6 +5861,18 @@ operator|.
 name|none
 argument_list|()
 decl_stmt|;
+name|NodeType
+name|requestType
+init|=
+literal|null
+decl_stmt|;
+name|MutableObject
+name|allocatedContainer
+init|=
+operator|new
+name|MutableObject
+argument_list|()
+decl_stmt|;
 comment|// Data-local
 name|ResourceRequest
 name|nodeLocalResourceRequest
@@ -5868,6 +5896,12 @@ operator|!=
 literal|null
 condition|)
 block|{
+name|requestType
+operator|=
+name|NodeType
+operator|.
+name|NODE_LOCAL
+expr_stmt|;
 name|assigned
 operator|=
 name|assignNodeLocalContainers
@@ -5885,6 +5919,8 @@ argument_list|,
 name|reservedContainer
 argument_list|,
 name|needToUnreserve
+argument_list|,
+name|allocatedContainer
 argument_list|)
 expr_stmt|;
 if|if
@@ -5906,6 +5942,29 @@ argument_list|()
 argument_list|)
 condition|)
 block|{
+comment|//update locality statistics
+if|if
+condition|(
+name|allocatedContainer
+operator|.
+name|getValue
+argument_list|()
+operator|!=
+literal|null
+condition|)
+block|{
+name|application
+operator|.
+name|incNumAllocatedContainers
+argument_list|(
+name|NodeType
+operator|.
+name|NODE_LOCAL
+argument_list|,
+name|requestType
+argument_list|)
+expr_stmt|;
+block|}
 return|return
 operator|new
 name|CSAssignment
@@ -5955,6 +6014,22 @@ return|return
 name|SKIP_ASSIGNMENT
 return|;
 block|}
+if|if
+condition|(
+name|requestType
+operator|!=
+name|NodeType
+operator|.
+name|NODE_LOCAL
+condition|)
+block|{
+name|requestType
+operator|=
+name|NodeType
+operator|.
+name|RACK_LOCAL
+expr_stmt|;
+block|}
 name|assigned
 operator|=
 name|assignRackLocalContainers
@@ -5972,6 +6047,8 @@ argument_list|,
 name|reservedContainer
 argument_list|,
 name|needToUnreserve
+argument_list|,
+name|allocatedContainer
 argument_list|)
 expr_stmt|;
 if|if
@@ -5993,6 +6070,29 @@ argument_list|()
 argument_list|)
 condition|)
 block|{
+comment|//update locality statistics
+if|if
+condition|(
+name|allocatedContainer
+operator|.
+name|getValue
+argument_list|()
+operator|!=
+literal|null
+condition|)
+block|{
+name|application
+operator|.
+name|incNumAllocatedContainers
+argument_list|(
+name|NodeType
+operator|.
+name|RACK_LOCAL
+argument_list|,
+name|requestType
+argument_list|)
+expr_stmt|;
+block|}
 return|return
 operator|new
 name|CSAssignment
@@ -6041,10 +6141,30 @@ return|return
 name|SKIP_ASSIGNMENT
 return|;
 block|}
-return|return
-operator|new
-name|CSAssignment
-argument_list|(
+if|if
+condition|(
+name|requestType
+operator|!=
+name|NodeType
+operator|.
+name|NODE_LOCAL
+operator|&&
+name|requestType
+operator|!=
+name|NodeType
+operator|.
+name|RACK_LOCAL
+condition|)
+block|{
+name|requestType
+operator|=
+name|NodeType
+operator|.
+name|OFF_SWITCH
+expr_stmt|;
+block|}
+name|assigned
+operator|=
 name|assignOffSwitchContainers
 argument_list|(
 name|clusterResource
@@ -6060,7 +6180,38 @@ argument_list|,
 name|reservedContainer
 argument_list|,
 name|needToUnreserve
+argument_list|,
+name|allocatedContainer
 argument_list|)
+expr_stmt|;
+comment|// update locality statistics
+if|if
+condition|(
+name|allocatedContainer
+operator|.
+name|getValue
+argument_list|()
+operator|!=
+literal|null
+condition|)
+block|{
+name|application
+operator|.
+name|incNumAllocatedContainers
+argument_list|(
+name|NodeType
+operator|.
+name|OFF_SWITCH
+argument_list|,
+name|requestType
+argument_list|)
+expr_stmt|;
+block|}
+return|return
+operator|new
+name|CSAssignment
+argument_list|(
+name|assigned
 argument_list|,
 name|NodeType
 operator|.
@@ -6415,7 +6566,7 @@ return|return
 literal|true
 return|;
 block|}
-DECL|method|assignNodeLocalContainers (Resource clusterResource, ResourceRequest nodeLocalResourceRequest, FiCaSchedulerNode node, FiCaSchedulerApp application, Priority priority, RMContainer reservedContainer, boolean needToUnreserve)
+DECL|method|assignNodeLocalContainers (Resource clusterResource, ResourceRequest nodeLocalResourceRequest, FiCaSchedulerNode node, FiCaSchedulerApp application, Priority priority, RMContainer reservedContainer, boolean needToUnreserve, MutableObject allocatedContainer)
 specifier|private
 name|Resource
 name|assignNodeLocalContainers
@@ -6440,6 +6591,9 @@ name|reservedContainer
 parameter_list|,
 name|boolean
 name|needToUnreserve
+parameter_list|,
+name|MutableObject
+name|allocatedContainer
 parameter_list|)
 block|{
 if|if
@@ -6480,6 +6634,8 @@ argument_list|,
 name|reservedContainer
 argument_list|,
 name|needToUnreserve
+argument_list|,
+name|allocatedContainer
 argument_list|)
 return|;
 block|}
@@ -6490,7 +6646,7 @@ name|none
 argument_list|()
 return|;
 block|}
-DECL|method|assignRackLocalContainers (Resource clusterResource, ResourceRequest rackLocalResourceRequest, FiCaSchedulerNode node, FiCaSchedulerApp application, Priority priority, RMContainer reservedContainer, boolean needToUnreserve)
+DECL|method|assignRackLocalContainers ( Resource clusterResource, ResourceRequest rackLocalResourceRequest, FiCaSchedulerNode node, FiCaSchedulerApp application, Priority priority, RMContainer reservedContainer, boolean needToUnreserve, MutableObject allocatedContainer)
 specifier|private
 name|Resource
 name|assignRackLocalContainers
@@ -6515,6 +6671,9 @@ name|reservedContainer
 parameter_list|,
 name|boolean
 name|needToUnreserve
+parameter_list|,
+name|MutableObject
+name|allocatedContainer
 parameter_list|)
 block|{
 if|if
@@ -6555,6 +6714,8 @@ argument_list|,
 name|reservedContainer
 argument_list|,
 name|needToUnreserve
+argument_list|,
+name|allocatedContainer
 argument_list|)
 return|;
 block|}
@@ -6565,7 +6726,7 @@ name|none
 argument_list|()
 return|;
 block|}
-DECL|method|assignOffSwitchContainers (Resource clusterResource, ResourceRequest offSwitchResourceRequest, FiCaSchedulerNode node, FiCaSchedulerApp application, Priority priority, RMContainer reservedContainer, boolean needToUnreserve)
+DECL|method|assignOffSwitchContainers ( Resource clusterResource, ResourceRequest offSwitchResourceRequest, FiCaSchedulerNode node, FiCaSchedulerApp application, Priority priority, RMContainer reservedContainer, boolean needToUnreserve, MutableObject allocatedContainer)
 specifier|private
 name|Resource
 name|assignOffSwitchContainers
@@ -6590,6 +6751,9 @@ name|reservedContainer
 parameter_list|,
 name|boolean
 name|needToUnreserve
+parameter_list|,
+name|MutableObject
+name|allocatedContainer
 parameter_list|)
 block|{
 if|if
@@ -6630,6 +6794,8 @@ argument_list|,
 name|reservedContainer
 argument_list|,
 name|needToUnreserve
+argument_list|,
+name|allocatedContainer
 argument_list|)
 return|;
 block|}
@@ -6984,7 +7150,7 @@ return|return
 name|container
 return|;
 block|}
-DECL|method|assignContainer (Resource clusterResource, FiCaSchedulerNode node, FiCaSchedulerApp application, Priority priority, ResourceRequest request, NodeType type, RMContainer rmContainer, boolean needToUnreserve)
+DECL|method|assignContainer (Resource clusterResource, FiCaSchedulerNode node, FiCaSchedulerApp application, Priority priority, ResourceRequest request, NodeType type, RMContainer rmContainer, boolean needToUnreserve, MutableObject createdContainer)
 specifier|private
 name|Resource
 name|assignContainer
@@ -7012,6 +7178,9 @@ name|rmContainer
 parameter_list|,
 name|boolean
 name|needToUnreserve
+parameter_list|,
+name|MutableObject
+name|createdContainer
 parameter_list|)
 block|{
 if|if
@@ -7468,6 +7637,13 @@ operator|+
 literal|" clusterResource="
 operator|+
 name|clusterResource
+argument_list|)
+expr_stmt|;
+name|createdContainer
+operator|.
+name|setValue
+argument_list|(
+name|allocatedContainer
 argument_list|)
 expr_stmt|;
 return|return
