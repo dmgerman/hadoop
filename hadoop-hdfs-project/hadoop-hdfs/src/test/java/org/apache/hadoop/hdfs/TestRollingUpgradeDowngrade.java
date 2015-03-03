@@ -226,12 +226,19 @@ specifier|public
 class|class
 name|TestRollingUpgradeDowngrade
 block|{
+comment|/**    * Downgrade option is already obsolete. It should throw exception.    * @throws Exception    */
 annotation|@
 name|Test
 argument_list|(
 name|timeout
 operator|=
 literal|300000
+argument_list|,
+name|expected
+operator|=
+name|IllegalArgumentException
+operator|.
+name|class
 argument_list|)
 DECL|method|testDowngrade ()
 specifier|public
@@ -490,13 +497,13 @@ expr_stmt|;
 block|}
 block|}
 block|}
-comment|/**    * Ensure that during downgrade the NN fails to load a fsimage with newer    * format.    */
+comment|/**    * Ensure that restart namenode with downgrade option should throw exception    * because it has been obsolete.    */
 annotation|@
 name|Test
 argument_list|(
 name|expected
 operator|=
-name|IncorrectVersionException
+name|IllegalArgumentException
 operator|.
 name|class
 argument_list|)

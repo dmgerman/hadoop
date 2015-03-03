@@ -6998,15 +6998,6 @@ name|matches
 argument_list|(
 name|startOpt
 argument_list|)
-operator|||
-name|RollingUpgradeStartupOption
-operator|.
-name|DOWNGRADE
-operator|.
-name|matches
-argument_list|(
-name|startOpt
-argument_list|)
 condition|)
 block|{
 name|rollingUpgradeInfo

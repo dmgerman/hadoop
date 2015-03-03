@@ -5370,19 +5370,6 @@ name|RollbackException
 argument_list|()
 throw|;
 block|}
-elseif|else
-if|if
-condition|(
-name|rollingUpgradeOpt
-operator|==
-name|RollingUpgradeStartupOption
-operator|.
-name|DOWNGRADE
-condition|)
-block|{
-comment|//ignore upgrade marker
-break|break;
-block|}
 block|}
 comment|// start rolling upgrade
 specifier|final

@@ -165,11 +165,8 @@ enum|enum
 name|RollingUpgradeStartupOption
 block|{
 DECL|enumConstant|ROLLBACK
-DECL|enumConstant|DOWNGRADE
 DECL|enumConstant|STARTED
 name|ROLLBACK
-block|,
-name|DOWNGRADE
 block|,
 name|STARTED
 block|;
@@ -240,6 +237,32 @@ name|String
 name|s
 parameter_list|)
 block|{
+if|if
+condition|(
+literal|"downgrade"
+operator|.
+name|equalsIgnoreCase
+argument_list|(
+name|s
+argument_list|)
+condition|)
+block|{
+throw|throw
+operator|new
+name|IllegalArgumentException
+argument_list|(
+literal|"The \"downgrade\" option is no longer supported"
+operator|+
+literal|" since it may incorrectly finalize an ongoing rolling upgrade."
+operator|+
+literal|" For downgrade instruction, please see the documentation"
+operator|+
+literal|" (http://hadoop.apache.org/docs/current/hadoop-project-dist/"
+operator|+
+literal|"hadoop-hdfs/HdfsRollingUpgrade.html#Downgrade)."
+argument_list|)
+throw|;
+block|}
 for|for
 control|(
 name|RollingUpgradeStartupOption
