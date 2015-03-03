@@ -756,6 +756,13 @@ argument_list|)
 expr_stmt|;
 name|context
 operator|.
+name|setNodeLabelExpression
+argument_list|(
+name|appLabelExpression
+argument_list|)
+expr_stmt|;
+name|context
+operator|.
 name|setAMContainerResourceRequest
 argument_list|(
 name|resourceRequest
