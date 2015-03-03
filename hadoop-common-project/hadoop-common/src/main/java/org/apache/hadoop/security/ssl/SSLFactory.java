@@ -93,6 +93,20 @@ import|;
 end_import
 
 begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|util
+operator|.
+name|StringUtils
+import|;
+end_import
+
+begin_import
 import|import static
 name|org
 operator|.
@@ -627,6 +641,10 @@ block|{
 return|return
 name|getHostnameVerifier
 argument_list|(
+name|StringUtils
+operator|.
+name|toUpperCase
+argument_list|(
 name|conf
 operator|.
 name|get
@@ -638,9 +656,7 @@ argument_list|)
 operator|.
 name|trim
 argument_list|()
-operator|.
-name|toUpperCase
-argument_list|()
+argument_list|)
 argument_list|)
 return|;
 block|}

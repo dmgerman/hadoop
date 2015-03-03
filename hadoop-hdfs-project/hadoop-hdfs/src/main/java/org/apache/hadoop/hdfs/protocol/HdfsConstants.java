@@ -162,6 +162,20 @@ name|FSDirectory
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|util
+operator|.
+name|StringUtils
+import|;
+end_import
+
 begin_comment
 comment|/************************************  * Some handy constants  *   ************************************/
 end_comment
@@ -461,10 +475,12 @@ name|MAP
 operator|.
 name|get
 argument_list|(
-name|s
+name|StringUtils
 operator|.
 name|toUpperCase
-argument_list|()
+argument_list|(
+name|s
+argument_list|)
 argument_list|)
 return|;
 block|}

@@ -70,6 +70,20 @@ name|PathData
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|util
+operator|.
+name|StringUtils
+import|;
+end_import
+
 begin_comment
 comment|/**  * Implements the -name expression for the  * {@link org.apache.hadoop.fs.shell.find.Find} command.  */
 end_comment
@@ -264,10 +278,12 @@ condition|)
 block|{
 name|argPattern
 operator|=
-name|argPattern
+name|StringUtils
 operator|.
 name|toLowerCase
-argument_list|()
+argument_list|(
+name|argPattern
+argument_list|)
 expr_stmt|;
 block|}
 name|globPattern
@@ -314,10 +330,12 @@ condition|)
 block|{
 name|name
 operator|=
-name|name
+name|StringUtils
 operator|.
 name|toLowerCase
-argument_list|()
+argument_list|(
+name|name
+argument_list|)
 expr_stmt|;
 block|}
 if|if

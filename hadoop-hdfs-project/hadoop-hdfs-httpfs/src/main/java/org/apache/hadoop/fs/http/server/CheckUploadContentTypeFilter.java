@@ -54,6 +54,20 @@ end_import
 
 begin_import
 import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|util
+operator|.
+name|StringUtils
+import|;
+end_import
+
+begin_import
+import|import
 name|javax
 operator|.
 name|servlet
@@ -334,10 +348,12 @@ name|UPLOAD_OPERATIONS
 operator|.
 name|contains
 argument_list|(
-name|op
+name|StringUtils
 operator|.
 name|toUpperCase
-argument_list|()
+argument_list|(
+name|op
+argument_list|)
 argument_list|)
 condition|)
 block|{

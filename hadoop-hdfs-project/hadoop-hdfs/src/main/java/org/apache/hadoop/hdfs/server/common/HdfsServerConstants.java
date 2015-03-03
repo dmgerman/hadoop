@@ -120,6 +120,20 @@ name|Preconditions
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|util
+operator|.
+name|StringUtils
+import|;
+end_import
+
 begin_comment
 comment|/************************************  * Some handy internal HDFS constants  *  ************************************/
 end_comment
@@ -186,11 +200,13 @@ argument_list|()
 operator|+
 literal|" "
 operator|+
-name|name
-argument_list|()
+name|StringUtils
 operator|.
 name|toLowerCase
+argument_list|(
+name|name
 argument_list|()
+argument_list|)
 return|;
 block|}
 DECL|method|matches (StartupOption option)
@@ -337,13 +353,15 @@ name|b
 operator|.
 name|append
 argument_list|(
+name|StringUtils
+operator|.
+name|toLowerCase
+argument_list|(
 name|opt
 operator|.
 name|name
 argument_list|()
-operator|.
-name|toLowerCase
-argument_list|()
+argument_list|)
 argument_list|)
 operator|.
 name|append

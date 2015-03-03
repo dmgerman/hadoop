@@ -32,6 +32,20 @@ name|Text
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|util
+operator|.
+name|StringUtils
+import|;
+end_import
+
 begin_comment
 comment|/**  * An operation output has the following object format whereby simple types are  * represented as a key of dataType:operationType*measurementType and these  * simple types can be combined (mainly in the reducer) using there given types  * into a single operation output.  *   * Combination is done based on the data types and the following convention is  * followed (in the following order). If one is a string then the other will be  * concated as a string with a ";" separator. If one is a double then the other  * will be added as a double and the output will be a double. If one is a float  * then the other will be added as a float and the the output will be a float.  * Following this if one is a long the other will be added as a long and the  * output type will be a long and if one is a integer the other will be added as  * a integer and the output type will be an integer.  */
 end_comment
@@ -153,6 +167,10 @@ name|OutputType
 operator|.
 name|valueOf
 argument_list|(
+name|StringUtils
+operator|.
+name|toUpperCase
+argument_list|(
 name|key
 operator|.
 name|substring
@@ -161,9 +179,7 @@ literal|0
 argument_list|,
 name|place
 argument_list|)
-operator|.
-name|toUpperCase
-argument_list|()
+argument_list|)
 argument_list|)
 expr_stmt|;
 block|}

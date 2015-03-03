@@ -136,10 +136,12 @@ name|valueOf
 argument_list|(
 name|klass
 argument_list|,
-name|str
+name|StringUtils
 operator|.
 name|toUpperCase
-argument_list|()
+argument_list|(
+name|str
+argument_list|)
 argument_list|)
 return|;
 block|}

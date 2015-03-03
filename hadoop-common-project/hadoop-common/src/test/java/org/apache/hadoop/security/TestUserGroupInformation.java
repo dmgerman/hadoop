@@ -172,6 +172,20 @@ begin_import
 import|import
 name|org
 operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|util
+operator|.
+name|StringUtils
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
 name|junit
 operator|.
 name|*
@@ -1275,10 +1289,12 @@ block|}
 comment|// user names are case insensitive on Windows. Make consistent
 name|userName
 operator|=
-name|userName
+name|StringUtils
 operator|.
 name|toLowerCase
-argument_list|()
+argument_list|(
+name|userName
+argument_list|)
 expr_stmt|;
 block|}
 comment|// get the groups
@@ -1409,10 +1425,12 @@ block|{
 comment|// user names are case insensitive on Windows. Make consistent
 name|loginUserName
 operator|=
-name|loginUserName
+name|StringUtils
 operator|.
 name|toLowerCase
-argument_list|()
+argument_list|(
+name|loginUserName
+argument_list|)
 expr_stmt|;
 block|}
 name|assertEquals

@@ -2507,10 +2507,12 @@ name|Values
 operator|.
 name|valueOf
 argument_list|(
-name|name
+name|StringUtils
 operator|.
 name|toUpperCase
-argument_list|()
+argument_list|(
+name|name
+argument_list|)
 argument_list|)
 return|;
 block|}

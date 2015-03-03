@@ -17,6 +17,20 @@ package|;
 end_package
 
 begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|util
+operator|.
+name|StringUtils
+import|;
+end_import
+
+begin_import
 import|import static
 name|org
 operator|.
@@ -1249,6 +1263,10 @@ operator|.
 name|toString
 argument_list|()
 argument_list|,
+name|StringUtils
+operator|.
+name|toLowerCase
+argument_list|(
 name|queueInfo
 operator|.
 name|getQueueState
@@ -1256,9 +1274,7 @@ argument_list|()
 operator|.
 name|toString
 argument_list|()
-operator|.
-name|toLowerCase
-argument_list|()
+argument_list|)
 argument_list|)
 expr_stmt|;
 block|}

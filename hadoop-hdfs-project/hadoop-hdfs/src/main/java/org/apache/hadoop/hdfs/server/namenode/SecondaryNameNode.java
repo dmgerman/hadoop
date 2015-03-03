@@ -3021,6 +3021,10 @@ block|}
 name|String
 name|cmd
 init|=
+name|StringUtils
+operator|.
+name|toLowerCase
+argument_list|(
 name|opts
 operator|.
 name|getCommand
@@ -3028,9 +3032,7 @@ argument_list|()
 operator|.
 name|toString
 argument_list|()
-operator|.
-name|toLowerCase
-argument_list|()
+argument_list|)
 decl_stmt|;
 name|int
 name|exitCode

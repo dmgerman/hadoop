@@ -1794,6 +1794,20 @@ begin_import
 import|import
 name|org
 operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|util
+operator|.
+name|StringUtils
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
 name|xml
 operator|.
 name|sax
@@ -23561,10 +23575,12 @@ name|this
 operator|.
 name|name
 operator|=
-name|name
+name|StringUtils
 operator|.
 name|toUpperCase
-argument_list|()
+argument_list|(
+name|name
+argument_list|)
 expr_stmt|;
 block|}
 DECL|method|getStartInstance (OpInstanceCache cache)

@@ -74,6 +74,20 @@ name|InterfaceStability
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|util
+operator|.
+name|StringUtils
+import|;
+end_import
+
 begin_comment
 comment|/**  * Defines the types of supported storage media. The default storage  * medium is assumed to be DISK.  */
 end_comment
@@ -279,10 +293,12 @@ name|StorageType
 operator|.
 name|valueOf
 argument_list|(
-name|s
+name|StringUtils
 operator|.
 name|toUpperCase
-argument_list|()
+argument_list|(
+name|s
+argument_list|)
 argument_list|)
 return|;
 block|}

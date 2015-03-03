@@ -120,6 +120,20 @@ name|IOException
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|util
+operator|.
+name|StringUtils
+import|;
+end_import
+
 begin_enum
 DECL|enum|GridmixJobSubmissionPolicy
 enum|enum
@@ -411,10 +425,12 @@ decl_stmt|;
 return|return
 name|valueOf
 argument_list|(
-name|policy
+name|StringUtils
 operator|.
 name|toUpperCase
-argument_list|()
+argument_list|(
+name|policy
+argument_list|)
 argument_list|)
 return|;
 block|}

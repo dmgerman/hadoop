@@ -36,6 +36,20 @@ name|Distribution
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|util
+operator|.
+name|StringUtils
+import|;
+end_import
+
 begin_comment
 comment|/**  * This class holds the data representing what an operations distribution and  * its percentage is (between 0 and 1) and provides operations to access those  * types and parse and unparse from and into strings  */
 end_comment
@@ -174,13 +188,15 @@ name|Distribution
 operator|.
 name|valueOf
 argument_list|(
+name|StringUtils
+operator|.
+name|toUpperCase
+argument_list|(
 name|pieces
 index|[
 literal|1
 index|]
-operator|.
-name|toUpperCase
-argument_list|()
+argument_list|)
 argument_list|)
 expr_stmt|;
 block|}

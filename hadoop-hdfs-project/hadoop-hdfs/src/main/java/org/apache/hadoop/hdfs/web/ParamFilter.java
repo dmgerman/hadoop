@@ -140,6 +140,20 @@ name|ResourceFilter
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|util
+operator|.
+name|StringUtils
+import|;
+end_import
+
 begin_comment
 comment|/**  * A filter to change parameter names to lower cases  * so that parameter names are considered as case insensitive.  */
 end_comment
@@ -383,13 +397,15 @@ specifier|final
 name|String
 name|key
 init|=
+name|StringUtils
+operator|.
+name|toLowerCase
+argument_list|(
 name|e
 operator|.
 name|getKey
 argument_list|()
-operator|.
-name|toLowerCase
-argument_list|()
+argument_list|)
 decl_stmt|;
 for|for
 control|(

@@ -140,6 +140,20 @@ name|ReflectionUtils
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|util
+operator|.
+name|StringUtils
+import|;
+end_import
+
 begin_comment
 comment|/**  * A factory that will find the correct codec for a given filename.  */
 end_comment
@@ -301,10 +315,12 @@ name|codecsByName
 operator|.
 name|put
 argument_list|(
-name|codecName
+name|StringUtils
 operator|.
 name|toLowerCase
-argument_list|()
+argument_list|(
+name|codecName
+argument_list|)
 argument_list|,
 name|codec
 argument_list|)
@@ -342,10 +358,12 @@ name|codecsByName
 operator|.
 name|put
 argument_list|(
-name|codecName
+name|StringUtils
 operator|.
 name|toLowerCase
-argument_list|()
+argument_list|(
+name|codecName
+argument_list|)
 argument_list|,
 name|codec
 argument_list|)
@@ -1133,10 +1151,12 @@ name|codecsByName
 operator|.
 name|get
 argument_list|(
-name|codecName
+name|StringUtils
 operator|.
 name|toLowerCase
-argument_list|()
+argument_list|(
+name|codecName
+argument_list|)
 argument_list|)
 expr_stmt|;
 block|}

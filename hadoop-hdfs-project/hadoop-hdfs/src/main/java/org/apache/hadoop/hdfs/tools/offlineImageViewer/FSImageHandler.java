@@ -250,6 +250,20 @@ end_import
 
 begin_import
 import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|util
+operator|.
+name|StringUtils
+import|;
+end_import
+
+begin_import
+import|import
 name|java
 operator|.
 name|io
@@ -1090,6 +1104,10 @@ argument_list|(
 literal|"op"
 argument_list|)
 condition|?
+name|StringUtils
+operator|.
+name|toUpperCase
+argument_list|(
 name|parameters
 operator|.
 name|get
@@ -1101,9 +1119,7 @@ name|get
 argument_list|(
 literal|0
 argument_list|)
-operator|.
-name|toUpperCase
-argument_list|()
+argument_list|)
 else|:
 literal|null
 return|;

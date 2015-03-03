@@ -6987,10 +6987,12 @@ control|(
 name|String
 name|line
 range|:
-name|hexdump
+name|StringUtils
 operator|.
 name|toUpperCase
-argument_list|()
+argument_list|(
+name|hexdump
+argument_list|)
 operator|.
 name|split
 argument_list|(

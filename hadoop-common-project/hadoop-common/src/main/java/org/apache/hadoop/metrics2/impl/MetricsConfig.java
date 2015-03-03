@@ -318,6 +318,20 @@ name|GlobFilter
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|util
+operator|.
+name|StringUtils
+import|;
+end_import
+
 begin_comment
 comment|/**  * Metrics configuration for MetricsSystemImpl  */
 end_comment
@@ -579,13 +593,11 @@ name|super
 argument_list|(
 name|c
 argument_list|,
-name|prefix
+name|StringUtils
 operator|.
 name|toLowerCase
 argument_list|(
-name|Locale
-operator|.
-name|US
+name|prefix
 argument_list|)
 argument_list|,
 literal|"."
@@ -608,13 +620,11 @@ name|prefix
 argument_list|,
 literal|"hadoop-metrics2-"
 operator|+
-name|prefix
+name|StringUtils
 operator|.
 name|toLowerCase
 argument_list|(
-name|Locale
-operator|.
-name|US
+name|prefix
 argument_list|)
 operator|+
 literal|".properties"

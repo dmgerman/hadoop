@@ -687,10 +687,12 @@ name|NodeState
 operator|.
 name|valueOf
 argument_list|(
-name|type
+name|StringUtils
 operator|.
 name|toUpperCase
-argument_list|()
+argument_list|(
+name|type
+argument_list|)
 argument_list|)
 expr_stmt|;
 block|}

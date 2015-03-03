@@ -120,6 +120,20 @@ name|Util
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|util
+operator|.
+name|StringUtils
+import|;
+end_import
+
 begin_comment
 comment|/**  * Encapsulates the URI and storage medium that together describe a  * storage directory.  * The default storage medium is assumed to be DISK, if none is specified.  *  */
 end_comment
@@ -339,10 +353,12 @@ name|StorageType
 operator|.
 name|valueOf
 argument_list|(
-name|classString
+name|StringUtils
 operator|.
 name|toUpperCase
-argument_list|()
+argument_list|(
+name|classString
+argument_list|)
 argument_list|)
 expr_stmt|;
 block|}

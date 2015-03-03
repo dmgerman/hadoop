@@ -1862,10 +1862,12 @@ name|QueueState
 operator|.
 name|valueOf
 argument_list|(
-name|state
+name|StringUtils
 operator|.
 name|toUpperCase
-argument_list|()
+argument_list|(
+name|state
+argument_list|)
 argument_list|)
 else|:
 name|QueueState
@@ -2334,13 +2336,15 @@ block|{
 return|return
 literal|"acl_"
 operator|+
+name|StringUtils
+operator|.
+name|toLowerCase
+argument_list|(
 name|acl
 operator|.
 name|toString
 argument_list|()
-operator|.
-name|toLowerCase
-argument_list|()
+argument_list|)
 return|;
 block|}
 DECL|method|getAcl (String queue, QueueACL acl)

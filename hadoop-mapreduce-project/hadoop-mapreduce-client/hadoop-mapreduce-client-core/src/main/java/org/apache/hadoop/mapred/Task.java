@@ -829,10 +829,12 @@ block|{
 name|String
 name|scheme
 init|=
-name|uriScheme
+name|StringUtils
 operator|.
 name|toUpperCase
-argument_list|()
+argument_list|(
+name|uriScheme
+argument_list|)
 decl_stmt|;
 return|return
 operator|new

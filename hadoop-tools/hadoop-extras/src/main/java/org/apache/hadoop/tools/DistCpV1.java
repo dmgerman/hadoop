@@ -1177,11 +1177,13 @@ parameter_list|()
 block|{
 name|symbol
 operator|=
-name|toString
-argument_list|()
+name|StringUtils
 operator|.
 name|toLowerCase
+argument_list|(
+name|toString
 argument_list|()
+argument_list|)
 operator|.
 name|charAt
 argument_list|(

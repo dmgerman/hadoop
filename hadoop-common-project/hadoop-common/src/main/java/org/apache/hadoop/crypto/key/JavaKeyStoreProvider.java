@@ -164,6 +164,20 @@ begin_import
 import|import
 name|org
 operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|util
+operator|.
+name|StringUtils
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
 name|slf4j
 operator|.
 name|Logger
@@ -2183,10 +2197,12 @@ name|name
 operator|.
 name|equals
 argument_list|(
-name|name
+name|StringUtils
 operator|.
 name|toLowerCase
-argument_list|()
+argument_list|(
+name|name
+argument_list|)
 argument_list|)
 argument_list|,
 literal|"Uppercase key names are unsupported: %s"

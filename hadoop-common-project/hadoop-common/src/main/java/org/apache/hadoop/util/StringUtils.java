@@ -18,6 +18,20 @@ end_package
 
 begin_import
 import|import
+name|com
+operator|.
+name|google
+operator|.
+name|common
+operator|.
+name|base
+operator|.
+name|Preconditions
+import|;
+end_import
+
+begin_import
+import|import
 name|java
 operator|.
 name|io
@@ -3960,13 +3974,11 @@ name|words
 init|=
 name|split
 argument_list|(
-name|s
+name|StringUtils
 operator|.
 name|toLowerCase
 argument_list|(
-name|Locale
-operator|.
-name|US
+name|s
 argument_list|)
 argument_list|,
 name|ESCAPE_CHAR
@@ -4478,6 +4490,82 @@ block|}
 block|}
 return|return
 literal|null
+return|;
+block|}
+comment|/**    * Converts all of the characters in this String to lower case with    * Locale.ENGLISH.    *    * @param str  string to be converted    * @return     the str, converted to lowercase.    */
+DECL|method|toLowerCase (String str)
+specifier|public
+specifier|static
+name|String
+name|toLowerCase
+parameter_list|(
+name|String
+name|str
+parameter_list|)
+block|{
+return|return
+name|str
+operator|.
+name|toLowerCase
+argument_list|(
+name|Locale
+operator|.
+name|ENGLISH
+argument_list|)
+return|;
+block|}
+comment|/**    * Converts all of the characters in this String to upper case with    * Locale.ENGLISH.    *    * @param str  string to be converted    * @return     the str, converted to uppercase.    */
+DECL|method|toUpperCase (String str)
+specifier|public
+specifier|static
+name|String
+name|toUpperCase
+parameter_list|(
+name|String
+name|str
+parameter_list|)
+block|{
+return|return
+name|str
+operator|.
+name|toUpperCase
+argument_list|(
+name|Locale
+operator|.
+name|ENGLISH
+argument_list|)
+return|;
+block|}
+comment|/**    * Compare strings locale-freely by using String#equalsIgnoreCase.    *    * @param s1  Non-null string to be converted    * @param s2  string to be converted    * @return     the str, converted to uppercase.    */
+DECL|method|equalsIgnoreCase (String s1, String s2)
+specifier|public
+specifier|static
+name|boolean
+name|equalsIgnoreCase
+parameter_list|(
+name|String
+name|s1
+parameter_list|,
+name|String
+name|s2
+parameter_list|)
+block|{
+name|Preconditions
+operator|.
+name|checkNotNull
+argument_list|(
+name|s1
+argument_list|)
+expr_stmt|;
+comment|// don't check non-null against s2 to make the semantics same as
+comment|// s1.equals(s2)
+return|return
+name|s1
+operator|.
+name|equalsIgnoreCase
+argument_list|(
+name|s2
+argument_list|)
 return|;
 block|}
 block|}

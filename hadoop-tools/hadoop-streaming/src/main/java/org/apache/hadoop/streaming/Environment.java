@@ -86,6 +86,20 @@ name|IOUtils
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|util
+operator|.
+name|StringUtils
+import|;
+end_import
+
 begin_comment
 comment|/**  * This is a class used to get the current environment  * on the host machines running the map/reduce. This class  * assumes that setting the environment in streaming is   * allowed on windows/ix/linuz/freebsd/sunos/solaris/hp-ux  */
 end_comment
@@ -139,10 +153,12 @@ decl_stmt|;
 name|String
 name|lowerOs
 init|=
-name|OS
+name|StringUtils
 operator|.
 name|toLowerCase
-argument_list|()
+argument_list|(
+name|OS
+argument_list|)
 decl_stmt|;
 if|if
 condition|(

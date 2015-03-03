@@ -108,16 +108,6 @@ name|java
 operator|.
 name|util
 operator|.
-name|Locale
-import|;
-end_import
-
-begin_import
-import|import
-name|java
-operator|.
-name|util
-operator|.
 name|Set
 import|;
 end_import
@@ -201,6 +191,20 @@ operator|.
 name|classification
 operator|.
 name|InterfaceAudience
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|util
+operator|.
+name|StringUtils
 import|;
 end_import
 
@@ -1543,13 +1547,11 @@ name|retName
 argument_list|,
 literal|"<T>(\""
 argument_list|,
-name|retName
+name|StringUtils
 operator|.
 name|toLowerCase
 argument_list|(
-name|Locale
-operator|.
-name|US
+name|retName
 argument_list|)
 argument_list|,
 literal|"\", e, opt("
@@ -1675,16 +1677,16 @@ literal|"  closeAttrs();\n"
 argument_list|,
 literal|"  return "
 argument_list|,
-name|retName
+name|StringUtils
 operator|.
 name|toLowerCase
 argument_list|(
-name|Locale
-operator|.
-name|US
+name|retName
 argument_list|)
 argument_list|,
-literal|"_(this, "
+literal|"_"
+operator|+
+literal|"(this, "
 argument_list|,
 name|isInline
 argument_list|(

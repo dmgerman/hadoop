@@ -340,6 +340,20 @@ name|TaskAttemptContext
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|util
+operator|.
+name|StringUtils
+import|;
+end_import
+
 begin_comment
 comment|/**  * A InputFormat that reads input data from an SQL table.  *<p>  * DBInputFormat emits LongWritables containing the record number as   * key and DBWritables as value.   *   * The SQL query, and input class can be using one of the two   * setInput methods.  */
 end_comment
@@ -698,13 +712,15 @@ name|this
 operator|.
 name|dbProductName
 operator|=
+name|StringUtils
+operator|.
+name|toUpperCase
+argument_list|(
 name|dbMeta
 operator|.
 name|getDatabaseProductName
 argument_list|()
-operator|.
-name|toUpperCase
-argument_list|()
+argument_list|)
 expr_stmt|;
 block|}
 catch|catch

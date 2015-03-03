@@ -140,6 +140,20 @@ begin_import
 import|import
 name|org
 operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|util
+operator|.
+name|StringUtils
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
 name|junit
 operator|.
 name|runner
@@ -502,6 +516,10 @@ argument_list|)
 condition|?
 literal|"in Object.wait()"
 else|:
+name|StringUtils
+operator|.
+name|toLowerCase
+argument_list|(
 name|thread
 operator|.
 name|getState
@@ -509,9 +527,7 @@ argument_list|()
 operator|.
 name|name
 argument_list|()
-operator|.
-name|toLowerCase
-argument_list|()
+argument_list|)
 argument_list|,
 name|Thread
 operator|.

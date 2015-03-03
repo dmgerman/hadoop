@@ -258,6 +258,20 @@ name|PseudoAuthenticationHandler
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|util
+operator|.
+name|StringUtils
+import|;
+end_import
+
 begin_comment
 comment|/**  * Subclass of {@link AuthenticationFilter} that  * obtains Hadoop-Auth configuration for webhdfs.  */
 end_comment
@@ -554,13 +568,15 @@ specifier|final
 name|String
 name|key
 init|=
+name|StringUtils
+operator|.
+name|toLowerCase
+argument_list|(
 name|entry
 operator|.
 name|getKey
 argument_list|()
-operator|.
-name|toLowerCase
-argument_list|()
+argument_list|)
 decl_stmt|;
 name|List
 argument_list|<

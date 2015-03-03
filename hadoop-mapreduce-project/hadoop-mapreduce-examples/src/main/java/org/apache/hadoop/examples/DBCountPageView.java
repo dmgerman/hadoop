@@ -577,10 +577,12 @@ name|Exception
 block|{
 if|if
 condition|(
-name|driverClassName
+name|StringUtils
 operator|.
 name|toLowerCase
-argument_list|()
+argument_list|(
+name|driverClassName
+argument_list|)
 operator|.
 name|contains
 argument_list|(

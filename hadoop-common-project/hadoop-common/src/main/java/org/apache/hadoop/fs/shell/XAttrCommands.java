@@ -418,13 +418,11 @@ name|enValueOfFunc
 operator|.
 name|apply
 argument_list|(
-name|en
+name|StringUtils
 operator|.
 name|toUpperCase
 argument_list|(
-name|Locale
-operator|.
-name|ENGLISH
+name|en
 argument_list|)
 argument_list|)
 expr_stmt|;

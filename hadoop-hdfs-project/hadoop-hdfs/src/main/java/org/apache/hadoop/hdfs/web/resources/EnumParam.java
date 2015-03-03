@@ -30,6 +30,20 @@ name|Arrays
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|util
+operator|.
+name|StringUtils
+import|;
+end_import
+
 begin_class
 DECL|class|EnumParam
 specifier|abstract
@@ -179,10 +193,12 @@ name|valueOf
 argument_list|(
 name|enumClass
 argument_list|,
-name|str
+name|StringUtils
 operator|.
 name|toUpperCase
-argument_list|()
+argument_list|(
+name|str
+argument_list|)
 argument_list|)
 return|;
 block|}

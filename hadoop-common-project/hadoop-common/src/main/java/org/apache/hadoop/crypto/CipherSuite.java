@@ -30,6 +30,20 @@ name|InterfaceAudience
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|util
+operator|.
+name|StringUtils
+import|;
+end_import
+
 begin_comment
 comment|/**  * Defines properties of a CipherSuite. Modeled after the ciphers in  * {@link javax.crypto.Cipher}.  */
 end_comment
@@ -314,10 +328,12 @@ argument_list|)
 operator|.
 name|append
 argument_list|(
-name|part
+name|StringUtils
 operator|.
 name|toLowerCase
-argument_list|()
+argument_list|(
+name|part
+argument_list|)
 argument_list|)
 expr_stmt|;
 block|}

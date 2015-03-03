@@ -230,6 +230,20 @@ end_import
 
 begin_import
 import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|util
+operator|.
+name|StringUtils
+import|;
+end_import
+
+begin_import
+import|import
 name|javax
 operator|.
 name|ws
@@ -1069,10 +1083,12 @@ name|Operation
 operator|.
 name|valueOf
 argument_list|(
-name|operation
+name|StringUtils
 operator|.
 name|toUpperCase
-argument_list|()
+argument_list|(
+name|operation
+argument_list|)
 argument_list|)
 argument_list|)
 expr_stmt|;

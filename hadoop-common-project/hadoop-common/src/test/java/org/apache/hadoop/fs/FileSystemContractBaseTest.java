@@ -38,16 +38,6 @@ end_import
 
 begin_import
 import|import
-name|java
-operator|.
-name|util
-operator|.
-name|Locale
-import|;
-end_import
-
-begin_import
-import|import
 name|junit
 operator|.
 name|framework
@@ -111,6 +101,20 @@ operator|.
 name|permission
 operator|.
 name|FsPermission
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|util
+operator|.
+name|StringUtils
 import|;
 end_import
 
@@ -2896,13 +2900,11 @@ name|lower
 init|=
 name|path
 argument_list|(
-name|mixedCaseFilename
+name|StringUtils
 operator|.
 name|toLowerCase
 argument_list|(
-name|Locale
-operator|.
-name|ENGLISH
+name|mixedCaseFilename
 argument_list|)
 argument_list|)
 decl_stmt|;
