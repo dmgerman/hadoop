@@ -23,10 +23,10 @@ package|;
 end_package
 
 begin_class
-DECL|class|TestBaseAggregatorService
+DECL|class|TestTimelineAggregator
 specifier|public
 class|class
-name|TestBaseAggregatorService
+name|TestTimelineAggregator
 block|{  }
 end_class
 

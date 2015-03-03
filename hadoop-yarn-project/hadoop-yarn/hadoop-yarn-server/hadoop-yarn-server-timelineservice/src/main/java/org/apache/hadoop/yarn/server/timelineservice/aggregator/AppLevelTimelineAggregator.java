@@ -77,12 +77,12 @@ annotation|@
 name|Private
 annotation|@
 name|Unstable
-DECL|class|AppLevelAggregatorService
+DECL|class|AppLevelTimelineAggregator
 specifier|public
 class|class
-name|AppLevelAggregatorService
+name|AppLevelTimelineAggregator
 extends|extends
-name|BaseAggregatorService
+name|TimelineAggregator
 block|{
 DECL|field|applicationId
 specifier|private
@@ -91,9 +91,9 @@ name|String
 name|applicationId
 decl_stmt|;
 comment|// TODO define key metadata such as flow metadata, user, and queue
-DECL|method|AppLevelAggregatorService (String applicationId)
+DECL|method|AppLevelTimelineAggregator (String applicationId)
 specifier|public
-name|AppLevelAggregatorService
+name|AppLevelTimelineAggregator
 parameter_list|(
 name|String
 name|applicationId
@@ -101,7 +101,7 @@ parameter_list|)
 block|{
 name|super
 argument_list|(
-name|AppLevelAggregatorService
+name|AppLevelTimelineAggregator
 operator|.
 name|class
 operator|.

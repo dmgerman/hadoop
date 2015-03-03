@@ -118,7 +118,7 @@ name|timelineservice
 operator|.
 name|aggregator
 operator|.
-name|PerNodeAggregatorServer
+name|PerNodeTimelineAggregatorsAuxService
 import|;
 end_import
 
@@ -170,11 +170,11 @@ specifier|public
 class|class
 name|TestTimelineServiceClientIntegration
 block|{
-DECL|field|server
+DECL|field|auxService
 specifier|private
 specifier|static
-name|PerNodeAggregatorServer
-name|server
+name|PerNodeTimelineAggregatorsAuxService
+name|auxService
 decl_stmt|;
 annotation|@
 name|BeforeClass
@@ -189,9 +189,9 @@ name|Exception
 block|{
 try|try
 block|{
-name|server
+name|auxService
 operator|=
-name|PerNodeAggregatorServer
+name|PerNodeTimelineAggregatorsAuxService
 operator|.
 name|launchServer
 argument_list|(
@@ -202,7 +202,7 @@ literal|0
 index|]
 argument_list|)
 expr_stmt|;
-name|server
+name|auxService
 operator|.
 name|addApplication
 argument_list|(
@@ -243,12 +243,12 @@ name|Exception
 block|{
 if|if
 condition|(
-name|server
+name|auxService
 operator|!=
 literal|null
 condition|)
 block|{
-name|server
+name|auxService
 operator|.
 name|stop
 argument_list|()

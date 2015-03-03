@@ -145,7 +145,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * Service that handles writes to the timeline service and writes them to the  * backing storage.  *  * Classes that extend this can add their own lifecycle management or  * customization of request handling.  */
+comment|/**  * Service that handles writes to the timeline service and writes them to the  * backing storage.  *  * Classes that extend this can putIfAbsent their own lifecycle management or  * customization of request handling.  */
 end_comment
 
 begin_class
@@ -153,10 +153,11 @@ annotation|@
 name|Private
 annotation|@
 name|Unstable
-DECL|class|BaseAggregatorService
+DECL|class|TimelineAggregator
 specifier|public
+specifier|abstract
 class|class
-name|BaseAggregatorService
+name|TimelineAggregator
 extends|extends
 name|CompositeService
 block|{
@@ -171,14 +172,14 @@ name|LogFactory
 operator|.
 name|getLog
 argument_list|(
-name|BaseAggregatorService
+name|TimelineAggregator
 operator|.
 name|class
 argument_list|)
 decl_stmt|;
-DECL|method|BaseAggregatorService (String name)
+DECL|method|TimelineAggregator (String name)
 specifier|public
-name|BaseAggregatorService
+name|TimelineAggregator
 parameter_list|(
 name|String
 name|name

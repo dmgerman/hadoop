@@ -247,19 +247,19 @@ import|;
 end_import
 
 begin_class
-DECL|class|TestPerNodeAggregatorServer
+DECL|class|TestPerNodeTimelineAggregatorsAuxService
 specifier|public
 class|class
-name|TestPerNodeAggregatorServer
+name|TestPerNodeTimelineAggregatorsAuxService
 block|{
 DECL|field|appAttemptId
 specifier|private
 name|ApplicationAttemptId
 name|appAttemptId
 decl_stmt|;
-DECL|method|TestPerNodeAggregatorServer ()
+DECL|method|TestPerNodeTimelineAggregatorsAuxService ()
 specifier|public
-name|TestPerNodeAggregatorServer
+name|TestPerNodeTimelineAggregatorsAuxService
 parameter_list|()
 block|{
 name|ApplicationId
@@ -299,16 +299,16 @@ parameter_list|()
 throws|throws
 name|Exception
 block|{
-name|PerNodeAggregatorServer
-name|aggregator
+name|PerNodeTimelineAggregatorsAuxService
+name|auxService
 init|=
 name|createAggregatorAndAddApplication
 argument_list|()
 decl_stmt|;
-comment|// aggregator should have a single app
+comment|// auxService should have a single app
 name|assertTrue
 argument_list|(
-name|aggregator
+name|auxService
 operator|.
 name|hasApplication
 argument_list|(
@@ -322,7 +322,7 @@ argument_list|()
 argument_list|)
 argument_list|)
 expr_stmt|;
-name|aggregator
+name|auxService
 operator|.
 name|close
 argument_list|()
@@ -338,8 +338,8 @@ parameter_list|()
 throws|throws
 name|Exception
 block|{
-name|PerNodeAggregatorServer
-name|aggregator
+name|PerNodeTimelineAggregatorsAuxService
+name|auxService
 init|=
 name|createAggregator
 argument_list|()
@@ -376,17 +376,17 @@ argument_list|(
 name|containerId
 argument_list|)
 expr_stmt|;
-name|aggregator
+name|auxService
 operator|.
 name|initializeContainer
 argument_list|(
 name|context
 argument_list|)
 expr_stmt|;
-comment|// aggregator should not have that app
+comment|// auxService should not have that app
 name|assertFalse
 argument_list|(
-name|aggregator
+name|auxService
 operator|.
 name|hasApplication
 argument_list|(
@@ -411,13 +411,13 @@ parameter_list|()
 throws|throws
 name|Exception
 block|{
-name|PerNodeAggregatorServer
-name|aggregator
+name|PerNodeTimelineAggregatorsAuxService
+name|auxService
 init|=
 name|createAggregatorAndAddApplication
 argument_list|()
 decl_stmt|;
-comment|// aggregator should have a single app
+comment|// auxService should have a single app
 name|String
 name|appIdStr
 init|=
@@ -431,7 +431,7 @@ argument_list|()
 decl_stmt|;
 name|assertTrue
 argument_list|(
-name|aggregator
+name|auxService
 operator|.
 name|hasApplication
 argument_list|(
@@ -468,17 +468,17 @@ argument_list|(
 name|containerId
 argument_list|)
 expr_stmt|;
-name|aggregator
+name|auxService
 operator|.
 name|stopContainer
 argument_list|(
 name|context
 argument_list|)
 expr_stmt|;
-comment|// aggregator should not have that app
+comment|// auxService should not have that app
 name|assertFalse
 argument_list|(
-name|aggregator
+name|auxService
 operator|.
 name|hasApplication
 argument_list|(
@@ -486,7 +486,7 @@ name|appIdStr
 argument_list|)
 argument_list|)
 expr_stmt|;
-name|aggregator
+name|auxService
 operator|.
 name|close
 argument_list|()
@@ -502,13 +502,13 @@ parameter_list|()
 throws|throws
 name|Exception
 block|{
-name|PerNodeAggregatorServer
-name|aggregator
+name|PerNodeTimelineAggregatorsAuxService
+name|auxService
 init|=
 name|createAggregatorAndAddApplication
 argument_list|()
 decl_stmt|;
-comment|// aggregator should have a single app
+comment|// auxService should have a single app
 name|String
 name|appIdStr
 init|=
@@ -522,7 +522,7 @@ argument_list|()
 decl_stmt|;
 name|assertTrue
 argument_list|(
-name|aggregator
+name|auxService
 operator|.
 name|hasApplication
 argument_list|(
@@ -562,17 +562,17 @@ argument_list|(
 name|containerId
 argument_list|)
 expr_stmt|;
-name|aggregator
+name|auxService
 operator|.
 name|stopContainer
 argument_list|(
 name|context
 argument_list|)
 expr_stmt|;
-comment|// aggregator should still have that app
+comment|// auxService should still have that app
 name|assertTrue
 argument_list|(
-name|aggregator
+name|auxService
 operator|.
 name|hasApplication
 argument_list|(
@@ -580,7 +580,7 @@ name|appIdStr
 argument_list|)
 argument_list|)
 expr_stmt|;
-name|aggregator
+name|auxService
 operator|.
 name|close
 argument_list|()
@@ -606,16 +606,16 @@ operator|.
 name|disableSystemExit
 argument_list|()
 expr_stmt|;
-name|PerNodeAggregatorServer
-name|server
+name|PerNodeTimelineAggregatorsAuxService
+name|auxService
 init|=
 literal|null
 decl_stmt|;
 try|try
 block|{
-name|server
+name|auxService
 operator|=
-name|PerNodeAggregatorServer
+name|PerNodeTimelineAggregatorsAuxService
 operator|.
 name|launchServer
 argument_list|(
@@ -657,12 +657,12 @@ finally|finally
 block|{
 if|if
 condition|(
-name|server
+name|auxService
 operator|!=
 literal|null
 condition|)
 block|{
-name|server
+name|auxService
 operator|.
 name|stop
 argument_list|()
@@ -672,12 +672,12 @@ block|}
 block|}
 DECL|method|createAggregatorAndAddApplication ()
 specifier|private
-name|PerNodeAggregatorServer
+name|PerNodeTimelineAggregatorsAuxService
 name|createAggregatorAndAddApplication
 parameter_list|()
 block|{
-name|PerNodeAggregatorServer
-name|aggregator
+name|PerNodeTimelineAggregatorsAuxService
+name|auxService
 init|=
 name|createAggregator
 argument_list|()
@@ -712,7 +712,7 @@ argument_list|(
 name|containerId
 argument_list|)
 expr_stmt|;
-name|aggregator
+name|auxService
 operator|.
 name|initializeContainer
 argument_list|(
@@ -720,22 +720,22 @@ name|context
 argument_list|)
 expr_stmt|;
 return|return
-name|aggregator
+name|auxService
 return|;
 block|}
 DECL|method|createAggregator ()
 specifier|private
-name|PerNodeAggregatorServer
+name|PerNodeTimelineAggregatorsAuxService
 name|createAggregator
 parameter_list|()
 block|{
-name|AppLevelServiceManager
-name|serviceManager
+name|TimelineAggregatorsCollection
+name|aggregatorsCollection
 init|=
 name|spy
 argument_list|(
 operator|new
-name|AppLevelServiceManager
+name|TimelineAggregatorsCollection
 argument_list|()
 argument_list|)
 decl_stmt|;
@@ -748,26 +748,26 @@ argument_list|)
 operator|.
 name|when
 argument_list|(
-name|serviceManager
+name|aggregatorsCollection
 argument_list|)
 operator|.
 name|getConfig
 argument_list|()
 expr_stmt|;
-name|PerNodeAggregatorServer
-name|aggregator
+name|PerNodeTimelineAggregatorsAuxService
+name|auxService
 init|=
 name|spy
 argument_list|(
 operator|new
-name|PerNodeAggregatorServer
+name|PerNodeTimelineAggregatorsAuxService
 argument_list|(
-name|serviceManager
+name|aggregatorsCollection
 argument_list|)
 argument_list|)
 decl_stmt|;
 return|return
-name|aggregator
+name|auxService
 return|;
 block|}
 DECL|method|getAMContainerId ()

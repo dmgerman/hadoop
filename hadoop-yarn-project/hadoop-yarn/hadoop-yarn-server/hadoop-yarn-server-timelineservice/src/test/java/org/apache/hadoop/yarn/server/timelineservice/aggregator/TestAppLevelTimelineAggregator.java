@@ -22,49 +22,12 @@ name|aggregator
 package|;
 end_package
 
-begin_import
-import|import
-name|com
-operator|.
-name|google
-operator|.
-name|inject
-operator|.
-name|Provider
-import|;
-end_import
-
-begin_comment
-comment|/**  * A guice provider that provides a global singleton instance of  * AppLevelServiceManager.  */
-end_comment
-
 begin_class
-DECL|class|AppLevelServiceManagerProvider
+DECL|class|TestAppLevelTimelineAggregator
 specifier|public
 class|class
-name|AppLevelServiceManagerProvider
-implements|implements
-name|Provider
-argument_list|<
-name|AppLevelServiceManager
-argument_list|>
-block|{
-annotation|@
-name|Override
-DECL|method|get ()
-specifier|public
-name|AppLevelServiceManager
-name|get
-parameter_list|()
-block|{
-return|return
-name|AppLevelServiceManager
-operator|.
-name|getInstance
-argument_list|()
-return|;
-block|}
-block|}
+name|TestAppLevelTimelineAggregator
+block|{ }
 end_class
 
 end_unit

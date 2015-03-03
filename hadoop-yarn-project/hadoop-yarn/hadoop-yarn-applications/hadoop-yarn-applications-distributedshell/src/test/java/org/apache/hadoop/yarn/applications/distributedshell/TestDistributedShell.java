@@ -874,7 +874,7 @@ name|timelineservice
 operator|.
 name|aggregator
 operator|.
-name|PerNodeAggregatorServer
+name|PerNodeTimelineAggregatorsAuxService
 import|;
 end_import
 
@@ -1376,7 +1376,7 @@ name|TIMELINE_AUX_SERVICE_NAME
 operator|+
 literal|".class"
 argument_list|,
-name|PerNodeAggregatorServer
+name|PerNodeTimelineAggregatorsAuxService
 operator|.
 name|class
 operator|.
