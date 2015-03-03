@@ -90,13 +90,13 @@ DECL|field|required
 name|Resource
 name|required
 decl_stmt|;
-DECL|field|queueHeadroomInfo
+DECL|field|queueResourceLimitsInfo
 name|LeafQueue
 operator|.
-name|QueueHeadroomInfo
-name|queueHeadroomInfo
+name|QueueResourceLimitsInfo
+name|queueResourceLimitsInfo
 decl_stmt|;
-DECL|method|CapacityHeadroomProvider ( LeafQueue.User user, LeafQueue queue, FiCaSchedulerApp application, Resource required, LeafQueue.QueueHeadroomInfo queueHeadroomInfo)
+DECL|method|CapacityHeadroomProvider ( LeafQueue.User user, LeafQueue queue, FiCaSchedulerApp application, Resource required, LeafQueue.QueueResourceLimitsInfo queueResourceLimitsInfo)
 specifier|public
 name|CapacityHeadroomProvider
 parameter_list|(
@@ -116,8 +116,8 @@ name|required
 parameter_list|,
 name|LeafQueue
 operator|.
-name|QueueHeadroomInfo
-name|queueHeadroomInfo
+name|QueueResourceLimitsInfo
+name|queueResourceLimitsInfo
 parameter_list|)
 block|{
 name|this
@@ -146,9 +146,9 @@ name|required
 expr_stmt|;
 name|this
 operator|.
-name|queueHeadroomInfo
+name|queueResourceLimitsInfo
 operator|=
-name|queueHeadroomInfo
+name|queueResourceLimitsInfo
 expr_stmt|;
 block|}
 DECL|method|getHeadroom ()
@@ -158,26 +158,26 @@ name|getHeadroom
 parameter_list|()
 block|{
 name|Resource
-name|queueMaxCap
+name|queueCurrentLimit
 decl_stmt|;
 name|Resource
 name|clusterResource
 decl_stmt|;
 synchronized|synchronized
 init|(
-name|queueHeadroomInfo
+name|queueResourceLimitsInfo
 init|)
 block|{
-name|queueMaxCap
+name|queueCurrentLimit
 operator|=
-name|queueHeadroomInfo
+name|queueResourceLimitsInfo
 operator|.
-name|getQueueMaxCap
+name|getQueueCurrentLimit
 argument_list|()
 expr_stmt|;
 name|clusterResource
 operator|=
-name|queueHeadroomInfo
+name|queueResourceLimitsInfo
 operator|.
 name|getClusterResource
 argument_list|()
@@ -192,7 +192,7 @@ name|getHeadroom
 argument_list|(
 name|user
 argument_list|,
-name|queueMaxCap
+name|queueCurrentLimit
 argument_list|,
 name|clusterResource
 argument_list|,

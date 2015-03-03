@@ -78,18 +78,6 @@ name|org
 operator|.
 name|mockito
 operator|.
-name|Matchers
-operator|.
-name|eq
-import|;
-end_import
-
-begin_import
-import|import static
-name|org
-operator|.
-name|mockito
-operator|.
 name|Mockito
 operator|.
 name|doReturn
@@ -128,51 +116,7 @@ name|mockito
 operator|.
 name|Mockito
 operator|.
-name|times
-import|;
-end_import
-
-begin_import
-import|import static
-name|org
-operator|.
-name|mockito
-operator|.
-name|Mockito
-operator|.
-name|verify
-import|;
-end_import
-
-begin_import
-import|import static
-name|org
-operator|.
-name|mockito
-operator|.
-name|Mockito
-operator|.
 name|when
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|mockito
-operator|.
-name|Matchers
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|mockito
-operator|.
-name|Mockito
 import|;
 end_import
 
@@ -306,7 +250,7 @@ name|api
 operator|.
 name|records
 operator|.
-name|ApplicationId
+name|ApplicationAttemptId
 import|;
 end_import
 
@@ -324,7 +268,7 @@ name|api
 operator|.
 name|records
 operator|.
-name|ApplicationAttemptId
+name|ApplicationId
 import|;
 end_import
 
@@ -504,6 +448,46 @@ name|resourcemanager
 operator|.
 name|scheduler
 operator|.
+name|ActiveUsersManager
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|server
+operator|.
+name|resourcemanager
+operator|.
+name|scheduler
+operator|.
+name|ResourceLimits
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|server
+operator|.
+name|resourcemanager
+operator|.
+name|scheduler
+operator|.
 name|common
 operator|.
 name|fica
@@ -533,26 +517,6 @@ operator|.
 name|fica
 operator|.
 name|FiCaSchedulerNode
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|yarn
-operator|.
-name|server
-operator|.
-name|resourcemanager
-operator|.
-name|scheduler
-operator|.
-name|ActiveUsersManager
 import|;
 end_import
 
@@ -664,9 +628,19 @@ begin_import
 import|import
 name|org
 operator|.
-name|junit
+name|mockito
 operator|.
-name|Ignore
+name|Matchers
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|mockito
+operator|.
+name|Mockito
 import|;
 end_import
 
@@ -1306,10 +1280,9 @@ comment|// which are allowed, at 80GB = 8GB for AM's at the queue level.  The us
 comment|// am limit is 4G initially (based on the queue absolute capacity)
 comment|// when there is only 1 user, and drops to 2G (the userlimit) when there
 comment|// is a second user
-name|queue
-operator|.
-name|updateClusterResource
-argument_list|(
+name|Resource
+name|clusterResource
+init|=
 name|Resource
 operator|.
 name|newInstance
@@ -1319,6 +1292,18 @@ operator|*
 name|GB
 argument_list|,
 literal|40
+argument_list|)
+decl_stmt|;
+name|queue
+operator|.
+name|updateClusterResource
+argument_list|(
+name|clusterResource
+argument_list|,
+operator|new
+name|ResourceLimits
+argument_list|(
+name|clusterResource
 argument_list|)
 argument_list|)
 expr_stmt|;
@@ -2204,6 +2189,12 @@ operator|.
 name|updateClusterResource
 argument_list|(
 name|clusterResource
+argument_list|,
+operator|new
+name|ResourceLimits
+argument_list|(
+name|clusterResource
+argument_list|)
 argument_list|)
 expr_stmt|;
 name|assertEquals
@@ -4605,6 +4596,12 @@ argument_list|,
 name|node_0
 argument_list|,
 literal|false
+argument_list|,
+operator|new
+name|ResourceLimits
+argument_list|(
+name|clusterResource
+argument_list|)
 argument_list|)
 expr_stmt|;
 name|Resource
@@ -4732,6 +4729,12 @@ argument_list|,
 name|node_0
 argument_list|,
 literal|false
+argument_list|,
+operator|new
+name|ResourceLimits
+argument_list|(
+name|clusterResource
+argument_list|)
 argument_list|)
 expr_stmt|;
 comment|// Schedule to compute
@@ -4855,6 +4858,12 @@ argument_list|,
 name|node_0
 argument_list|,
 literal|false
+argument_list|,
+operator|new
+name|ResourceLimits
+argument_list|(
+name|clusterResource
+argument_list|)
 argument_list|)
 expr_stmt|;
 comment|// Schedule to compute
@@ -4929,6 +4938,12 @@ argument_list|,
 name|node_0
 argument_list|,
 literal|false
+argument_list|,
+operator|new
+name|ResourceLimits
+argument_list|(
+name|clusterResource
+argument_list|)
 argument_list|)
 expr_stmt|;
 comment|// Schedule to compute

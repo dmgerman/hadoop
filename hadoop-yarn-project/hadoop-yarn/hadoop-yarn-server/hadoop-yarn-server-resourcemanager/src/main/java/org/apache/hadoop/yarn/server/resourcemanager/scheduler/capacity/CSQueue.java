@@ -298,6 +298,26 @@ name|resourcemanager
 operator|.
 name|scheduler
 operator|.
+name|ResourceLimits
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|server
+operator|.
+name|resourcemanager
+operator|.
+name|scheduler
+operator|.
 name|ResourceUsage
 import|;
 end_import
@@ -567,8 +587,8 @@ name|String
 name|queue
 parameter_list|)
 function_decl|;
-comment|/**    * Assign containers to applications in the queue or it's children (if any).    * @param clusterResource the resource of the cluster.    * @param node node on which resources are available    * @param needToUnreserve assign container only if it can unreserve one first    * @return the assignment    */
-DECL|method|assignContainers ( Resource clusterResource, FiCaSchedulerNode node, boolean needToUnreserve)
+comment|/**    * Assign containers to applications in the queue or it's children (if any).    * @param clusterResource the resource of the cluster.    * @param node node on which resources are available    * @param needToUnreserve assign container only if it can unreserve one first    * @param resourceLimits how much overall resource of this queue can use.     * @return the assignment    */
+DECL|method|assignContainers (Resource clusterResource, FiCaSchedulerNode node, boolean needToUnreserve, ResourceLimits resourceLimits)
 specifier|public
 name|CSAssignment
 name|assignContainers
@@ -581,6 +601,9 @@ name|node
 parameter_list|,
 name|boolean
 name|needToUnreserve
+parameter_list|,
+name|ResourceLimits
+name|resourceLimits
 parameter_list|)
 function_decl|;
 comment|/**    * A container assigned to the queue has completed.    * @param clusterResource the resource of the cluster    * @param application application to which the container was assigned    * @param node node on which the container completed    * @param container completed container,     *<code>null</code> if it was just a reservation    * @param containerStatus<code>ContainerStatus</code> for the completed     *                        container    * @param childQueue<code>CSQueue</code> to reinsert in childQueues     * @param event event to be sent to the container    * @param sortQueues indicates whether it should re-sort the queues    */
@@ -636,14 +659,17 @@ parameter_list|)
 throws|throws
 name|IOException
 function_decl|;
-comment|/**    * Update the cluster resource for queues as we add/remove nodes    * @param clusterResource the current cluster resource    */
-DECL|method|updateClusterResource (Resource clusterResource)
+comment|/**    * Update the cluster resource for queues as we add/remove nodes    * @param clusterResource the current cluster resource    * @param resourceLimits the current ResourceLimits    */
+DECL|method|updateClusterResource (Resource clusterResource, ResourceLimits resourceLimits)
 specifier|public
 name|void
 name|updateClusterResource
 parameter_list|(
 name|Resource
 name|clusterResource
+parameter_list|,
+name|ResourceLimits
+name|resourceLimits
 parameter_list|)
 function_decl|;
 comment|/**    * Get the {@link ActiveUsersManager} for the queue.    * @return the<code>ActiveUsersManager</code> for the queue    */

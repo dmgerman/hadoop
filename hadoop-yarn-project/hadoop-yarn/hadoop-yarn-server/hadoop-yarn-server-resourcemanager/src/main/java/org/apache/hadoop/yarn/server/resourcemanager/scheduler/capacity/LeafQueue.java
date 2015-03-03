@@ -698,6 +698,26 @@ name|resourcemanager
 operator|.
 name|scheduler
 operator|.
+name|ResourceLimits
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|server
+operator|.
+name|resourcemanager
+operator|.
+name|scheduler
+operator|.
 name|ResourceUsage
 import|;
 end_import
@@ -1079,15 +1099,23 @@ operator|.
 name|none
 argument_list|()
 decl_stmt|;
-DECL|field|queueHeadroomInfo
+DECL|field|queueResourceLimitsInfo
 specifier|private
 specifier|final
-name|QueueHeadroomInfo
-name|queueHeadroomInfo
+name|QueueResourceLimitsInfo
+name|queueResourceLimitsInfo
 init|=
 operator|new
-name|QueueHeadroomInfo
+name|QueueResourceLimitsInfo
 argument_list|()
+decl_stmt|;
+DECL|field|currentResourceLimits
+specifier|private
+specifier|volatile
+name|ResourceLimits
+name|currentResourceLimits
+init|=
+literal|null
 decl_stmt|;
 DECL|method|LeafQueue (CapacitySchedulerContext cs, String queueName, CSQueue parent, CSQueue old)
 specifier|public
@@ -1236,19 +1264,24 @@ argument_list|(
 name|clusterResource
 argument_list|)
 expr_stmt|;
+name|this
+operator|.
+name|currentResourceLimits
+operator|=
+operator|new
+name|ResourceLimits
+argument_list|(
+name|clusterResource
+argument_list|)
+expr_stmt|;
 comment|// Initialize headroom info, also used for calculating application
 comment|// master resource limits.  Since this happens during queue initialization
 comment|// and all queues may not be realized yet, we'll use (optimistic)
 comment|// absoluteMaxCapacity (it will be replaced with the more accurate
 comment|// absoluteMaxAvailCapacity during headroom/userlimit/allocation events)
-name|updateHeadroomInfo
+name|computeQueueCurrentLimitAndSetHeadroomInfo
 argument_list|(
 name|clusterResource
-argument_list|,
-name|queueCapacities
-operator|.
-name|getAbsoluteMaximumCapacity
-argument_list|()
 argument_list|)
 expr_stmt|;
 name|CapacitySchedulerConfiguration
@@ -2849,18 +2882,18 @@ parameter_list|()
 block|{
 comment|/*        * The limit to the amount of resources which can be consumed by       * application masters for applications running in the queue       * is calculated by taking the greater of the max resources currently       * available to the queue (see absoluteMaxAvailCapacity) and the absolute       * resources guaranteed for the queue and multiplying it by the am       * resource percent.       *       * This is to allow a queue to grow its (proportional) application        * master resource use up to its max capacity when other queues are        * idle but to scale back down to it's guaranteed capacity as they        * become busy.       *       */
 name|Resource
-name|queueMaxCap
+name|queueCurrentLimit
 decl_stmt|;
 synchronized|synchronized
 init|(
-name|queueHeadroomInfo
+name|queueResourceLimitsInfo
 init|)
 block|{
-name|queueMaxCap
+name|queueCurrentLimit
 operator|=
-name|queueHeadroomInfo
+name|queueResourceLimitsInfo
 operator|.
-name|getQueueMaxCap
+name|getQueueCurrentLimit
 argument_list|()
 expr_stmt|;
 block|}
@@ -2877,7 +2910,7 @@ name|lastClusterResource
 argument_list|,
 name|absoluteCapacityResource
 argument_list|,
-name|queueMaxCap
+name|queueCurrentLimit
 argument_list|)
 decl_stmt|;
 return|return
@@ -3714,7 +3747,7 @@ return|;
 block|}
 annotation|@
 name|Override
-DECL|method|assignContainers (Resource clusterResource, FiCaSchedulerNode node, boolean needToUnreserve)
+DECL|method|assignContainers (Resource clusterResource, FiCaSchedulerNode node, boolean needToUnreserve, ResourceLimits currentResourceLimits)
 specifier|public
 specifier|synchronized
 name|CSAssignment
@@ -3728,8 +3761,17 @@ name|node
 parameter_list|,
 name|boolean
 name|needToUnreserve
+parameter_list|,
+name|ResourceLimits
+name|currentResourceLimits
 parameter_list|)
 block|{
+name|this
+operator|.
+name|currentResourceLimits
+operator|=
+name|currentResourceLimits
+expr_stmt|;
 if|if
 condition|(
 name|LOG
@@ -4236,10 +4278,10 @@ return|return
 name|NULL_ASSIGNMENT
 return|;
 block|}
+DECL|method|assignReservedContainer ( FiCaSchedulerApp application, FiCaSchedulerNode node, RMContainer rmContainer, Resource clusterResource)
 specifier|private
 specifier|synchronized
 name|CSAssignment
-DECL|method|assignReservedContainer (FiCaSchedulerApp application, FiCaSchedulerNode node, RMContainer rmContainer, Resource clusterResource)
 name|assignReservedContainer
 parameter_list|(
 name|FiCaSchedulerApp
@@ -4320,7 +4362,7 @@ name|NODE_LOCAL
 argument_list|)
 return|;
 block|}
-DECL|method|getHeadroom (User user, Resource queueMaxCap, Resource clusterResource, FiCaSchedulerApp application, Resource required)
+DECL|method|getHeadroom (User user, Resource queueCurrentLimit, Resource clusterResource, FiCaSchedulerApp application, Resource required)
 specifier|protected
 name|Resource
 name|getHeadroom
@@ -4329,7 +4371,7 @@ name|User
 name|user
 parameter_list|,
 name|Resource
-name|queueMaxCap
+name|queueCurrentLimit
 parameter_list|,
 name|Resource
 name|clusterResource
@@ -4346,7 +4388,7 @@ name|getHeadroom
 argument_list|(
 name|user
 argument_list|,
-name|queueMaxCap
+name|queueCurrentLimit
 argument_list|,
 name|clusterResource
 argument_list|,
@@ -4365,7 +4407,7 @@ argument_list|)
 argument_list|)
 return|;
 block|}
-DECL|method|getHeadroom (User user, Resource queueMaxCap, Resource clusterResource, Resource userLimit)
+DECL|method|getHeadroom (User user, Resource currentResourceLimit, Resource clusterResource, Resource userLimit)
 specifier|private
 name|Resource
 name|getHeadroom
@@ -4374,7 +4416,7 @@ name|User
 name|user
 parameter_list|,
 name|Resource
-name|queueMaxCap
+name|currentResourceLimit
 parameter_list|,
 name|Resource
 name|clusterResource
@@ -4411,7 +4453,7 @@ name|Resources
 operator|.
 name|subtract
 argument_list|(
-name|queueMaxCap
+name|currentResourceLimit
 argument_list|,
 name|queueUsage
 operator|.
@@ -4420,6 +4462,20 @@ argument_list|()
 argument_list|)
 argument_list|)
 decl_stmt|;
+comment|// Normalize it before return
+name|headroom
+operator|=
+name|Resources
+operator|.
+name|roundDown
+argument_list|(
+name|resourceCalculator
+argument_list|,
+name|headroom
+argument_list|,
+name|minimumAllocation
+argument_list|)
+expr_stmt|;
 return|return
 name|headroom
 return|;
@@ -4808,47 +4864,38 @@ return|return
 name|canAssign
 return|;
 block|}
-DECL|method|updateHeadroomInfo (Resource clusterResource, float absoluteMaxAvailCapacity)
+DECL|method|computeQueueCurrentLimitAndSetHeadroomInfo ( Resource clusterResource)
 specifier|private
 name|Resource
-name|updateHeadroomInfo
+name|computeQueueCurrentLimitAndSetHeadroomInfo
 parameter_list|(
 name|Resource
 name|clusterResource
-parameter_list|,
-name|float
-name|absoluteMaxAvailCapacity
 parameter_list|)
 block|{
 name|Resource
-name|queueMaxCap
+name|queueCurrentResourceLimit
 init|=
-name|Resources
-operator|.
-name|multiplyAndNormalizeDown
+name|getCurrentResourceLimit
 argument_list|(
-name|resourceCalculator
-argument_list|,
 name|clusterResource
 argument_list|,
-name|absoluteMaxAvailCapacity
-argument_list|,
-name|minimumAllocation
+name|currentResourceLimits
 argument_list|)
 decl_stmt|;
 synchronized|synchronized
 init|(
-name|queueHeadroomInfo
+name|queueResourceLimitsInfo
 init|)
 block|{
-name|queueHeadroomInfo
+name|queueResourceLimitsInfo
 operator|.
-name|setQueueMaxCap
+name|setQueueCurrentLimit
 argument_list|(
-name|queueMaxCap
+name|queueCurrentResourceLimit
 argument_list|)
 expr_stmt|;
-name|queueHeadroomInfo
+name|queueResourceLimitsInfo
 operator|.
 name|setClusterResource
 argument_list|(
@@ -4857,7 +4904,7 @@ argument_list|)
 expr_stmt|;
 block|}
 return|return
-name|queueMaxCap
+name|queueCurrentResourceLimit
 return|;
 block|}
 annotation|@
@@ -4927,31 +4974,12 @@ argument_list|,
 name|requestedLabels
 argument_list|)
 decl_stmt|;
-comment|//Max avail capacity needs to take into account usage by ancestor-siblings
-comment|//which are greater than their base capacity, so we are interested in "max avail"
-comment|//capacity
-name|float
-name|absoluteMaxAvailCapacity
-init|=
-name|CSQueueUtils
-operator|.
-name|getAbsoluteMaxAvailCapacity
-argument_list|(
-name|resourceCalculator
-argument_list|,
-name|clusterResource
-argument_list|,
-name|this
-argument_list|)
-decl_stmt|;
 name|Resource
-name|queueMaxCap
+name|currentResourceLimit
 init|=
-name|updateHeadroomInfo
+name|computeQueueCurrentLimitAndSetHeadroomInfo
 argument_list|(
 name|clusterResource
-argument_list|,
-name|absoluteMaxAvailCapacity
 argument_list|)
 decl_stmt|;
 name|Resource
@@ -4961,7 +4989,7 @@ name|getHeadroom
 argument_list|(
 name|queueUser
 argument_list|,
-name|queueMaxCap
+name|currentResourceLimit
 argument_list|,
 name|clusterResource
 argument_list|,
@@ -4990,9 +5018,9 @@ literal|" userLimit="
 operator|+
 name|userLimit
 operator|+
-literal|" queueMaxCap="
+literal|" queueMaxAvailRes="
 operator|+
-name|queueMaxCap
+name|currentResourceLimit
 operator|+
 literal|" consumed="
 operator|+
@@ -5021,7 +5049,7 @@ name|application
 argument_list|,
 name|required
 argument_list|,
-name|queueHeadroomInfo
+name|queueResourceLimitsInfo
 argument_list|)
 decl_stmt|;
 name|application
@@ -6462,7 +6490,7 @@ name|none
 argument_list|()
 return|;
 block|}
-DECL|method|assignRackLocalContainers ( Resource clusterResource, ResourceRequest rackLocalResourceRequest, FiCaSchedulerNode node, FiCaSchedulerApp application, Priority priority, RMContainer reservedContainer, boolean needToUnreserve)
+DECL|method|assignRackLocalContainers (Resource clusterResource, ResourceRequest rackLocalResourceRequest, FiCaSchedulerNode node, FiCaSchedulerApp application, Priority priority, RMContainer reservedContainer, boolean needToUnreserve)
 specifier|private
 name|Resource
 name|assignRackLocalContainers
@@ -6537,7 +6565,7 @@ name|none
 argument_list|()
 return|;
 block|}
-DECL|method|assignOffSwitchContainers ( Resource clusterResource, ResourceRequest offSwitchResourceRequest, FiCaSchedulerNode node, FiCaSchedulerApp application, Priority priority, RMContainer reservedContainer, boolean needToUnreserve)
+DECL|method|assignOffSwitchContainers (Resource clusterResource, ResourceRequest offSwitchResourceRequest, FiCaSchedulerNode node, FiCaSchedulerApp application, Priority priority, RMContainer reservedContainer, boolean needToUnreserve)
 specifier|private
 name|Resource
 name|assignOffSwitchContainers
@@ -8175,7 +8203,7 @@ expr_stmt|;
 block|}
 annotation|@
 name|Override
-DECL|method|updateClusterResource (Resource clusterResource)
+DECL|method|updateClusterResource (Resource clusterResource, ResourceLimits currentResourceLimits)
 specifier|public
 specifier|synchronized
 name|void
@@ -8183,8 +8211,17 @@ name|updateClusterResource
 parameter_list|(
 name|Resource
 name|clusterResource
+parameter_list|,
+name|ResourceLimits
+name|currentResourceLimits
 parameter_list|)
 block|{
+name|this
+operator|.
+name|currentResourceLimits
+operator|=
+name|currentResourceLimits
+expr_stmt|;
 name|lastClusterResource
 operator|=
 name|clusterResource
@@ -8197,14 +8234,9 @@ expr_stmt|;
 comment|// Update headroom info based on new cluster resource value
 comment|// absoluteMaxCapacity now,  will be replaced with absoluteMaxAvailCapacity
 comment|// during allocation
-name|updateHeadroomInfo
+name|computeQueueCurrentLimitAndSetHeadroomInfo
 argument_list|(
 name|clusterResource
-argument_list|,
-name|queueCapacities
-operator|.
-name|getAbsoluteMaximumCapacity
-argument_list|()
 argument_list|)
 expr_stmt|;
 comment|// Update metrics
@@ -9045,45 +9077,45 @@ name|maxApplications
 expr_stmt|;
 block|}
 comment|/*    * Holds shared values used by all applications in    * the queue to calculate headroom on demand    */
-DECL|class|QueueHeadroomInfo
+DECL|class|QueueResourceLimitsInfo
 specifier|static
 class|class
-name|QueueHeadroomInfo
+name|QueueResourceLimitsInfo
 block|{
-DECL|field|queueMaxCap
+DECL|field|queueCurrentLimit
 specifier|private
 name|Resource
-name|queueMaxCap
+name|queueCurrentLimit
 decl_stmt|;
 DECL|field|clusterResource
 specifier|private
 name|Resource
 name|clusterResource
 decl_stmt|;
-DECL|method|setQueueMaxCap (Resource queueMaxCap)
+DECL|method|setQueueCurrentLimit (Resource currentLimit)
 specifier|public
 name|void
-name|setQueueMaxCap
+name|setQueueCurrentLimit
 parameter_list|(
 name|Resource
-name|queueMaxCap
+name|currentLimit
 parameter_list|)
 block|{
 name|this
 operator|.
-name|queueMaxCap
+name|queueCurrentLimit
 operator|=
-name|queueMaxCap
+name|currentLimit
 expr_stmt|;
 block|}
-DECL|method|getQueueMaxCap ()
+DECL|method|getQueueCurrentLimit ()
 specifier|public
 name|Resource
-name|getQueueMaxCap
+name|getQueueCurrentLimit
 parameter_list|()
 block|{
 return|return
-name|queueMaxCap
+name|queueCurrentLimit
 return|;
 block|}
 DECL|method|setClusterResource (Resource clusterResource)

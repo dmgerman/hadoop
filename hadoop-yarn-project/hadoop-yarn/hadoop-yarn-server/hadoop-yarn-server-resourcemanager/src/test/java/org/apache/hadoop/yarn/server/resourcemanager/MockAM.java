@@ -66,16 +66,6 @@ begin_import
 import|import
 name|org
 operator|.
-name|junit
-operator|.
-name|Assert
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
 name|apache
 operator|.
 name|hadoop
@@ -169,24 +159,6 @@ operator|.
 name|protocolrecords
 operator|.
 name|FinishApplicationMasterRequest
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|yarn
-operator|.
-name|api
-operator|.
-name|protocolrecords
-operator|.
-name|FinishApplicationMasterResponse
 import|;
 end_import
 
@@ -448,6 +420,16 @@ name|Records
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|junit
+operator|.
+name|Assert
+import|;
+end_import
+
 begin_class
 DECL|class|MockAM
 specifier|public
@@ -482,6 +464,12 @@ DECL|field|ugi
 specifier|private
 name|UserGroupInformation
 name|ugi
+decl_stmt|;
+DECL|field|lastResponse
+specifier|private
+specifier|volatile
+name|AllocateResponse
+name|lastResponse
 decl_stmt|;
 DECL|field|requests
 specifier|private
@@ -1504,13 +1492,17 @@ name|decodeIdentifier
 argument_list|()
 argument_list|)
 expr_stmt|;
-return|return
+name|lastResponse
+operator|=
 name|doAllocateAs
 argument_list|(
 name|ugi
 argument_list|,
 name|allocateRequest
 argument_list|)
+expr_stmt|;
+return|return
+name|lastResponse
 return|;
 block|}
 DECL|method|doAllocateAs (UserGroupInformation ugi, final AllocateRequest req)
@@ -1588,6 +1580,23 @@ name|getCause
 argument_list|()
 throw|;
 block|}
+block|}
+DECL|method|doHeartbeat ()
+specifier|public
+name|AllocateResponse
+name|doHeartbeat
+parameter_list|()
+throws|throws
+name|Exception
+block|{
+return|return
+name|allocate
+argument_list|(
+literal|null
+argument_list|,
+literal|null
+argument_list|)
+return|;
 block|}
 DECL|method|unregisterAppAttempt ()
 specifier|public

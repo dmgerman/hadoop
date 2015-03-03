@@ -598,6 +598,26 @@ name|resourcemanager
 operator|.
 name|scheduler
 operator|.
+name|ResourceLimits
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|server
+operator|.
+name|resourcemanager
+operator|.
+name|scheduler
+operator|.
 name|SchedulerApplicationAttempt
 import|;
 end_import
@@ -2247,7 +2267,7 @@ expr_stmt|;
 block|}
 annotation|@
 name|Override
-DECL|method|assignContainers ( Resource clusterResource, FiCaSchedulerNode node, boolean needToUnreserve)
+DECL|method|assignContainers (Resource clusterResource, FiCaSchedulerNode node, boolean needToUnreserve, ResourceLimits resourceLimits)
 specifier|public
 specifier|synchronized
 name|CSAssignment
@@ -2261,6 +2281,9 @@ name|node
 parameter_list|,
 name|boolean
 name|needToUnreserve
+parameter_list|,
+name|ResourceLimits
+name|resourceLimits
 parameter_list|)
 block|{
 name|CSAssignment
@@ -2388,6 +2411,8 @@ argument_list|,
 name|localNeedToUnreserve
 operator||
 name|needToUnreserve
+argument_list|,
+name|resourceLimits
 argument_list|)
 decl_stmt|;
 name|assignment
@@ -2970,7 +2995,71 @@ name|minimumAllocation
 argument_list|)
 return|;
 block|}
-DECL|method|assignContainersToChildQueues (Resource cluster, FiCaSchedulerNode node, boolean needToUnreserve)
+DECL|method|getResourceLimitsOfChild (CSQueue child, Resource clusterResource, ResourceLimits myLimits)
+specifier|private
+name|ResourceLimits
+name|getResourceLimitsOfChild
+parameter_list|(
+name|CSQueue
+name|child
+parameter_list|,
+name|Resource
+name|clusterResource
+parameter_list|,
+name|ResourceLimits
+name|myLimits
+parameter_list|)
+block|{
+comment|/*      * Set head-room of a given child, limit =      * min(minimum-of-limit-of-this-queue-and-ancestors, this.max) - this.used      * + child.used. To avoid any of this queue's and its ancestors' limit      * being violated      */
+name|Resource
+name|myCurrentLimit
+init|=
+name|getCurrentResourceLimit
+argument_list|(
+name|clusterResource
+argument_list|,
+name|myLimits
+argument_list|)
+decl_stmt|;
+comment|// My available resource = my-current-limit - my-used-resource
+name|Resource
+name|myMaxAvailableResource
+init|=
+name|Resources
+operator|.
+name|subtract
+argument_list|(
+name|myCurrentLimit
+argument_list|,
+name|getUsedResources
+argument_list|()
+argument_list|)
+decl_stmt|;
+comment|// Child's limit = my-available-resource + resource-already-used-by-child
+name|Resource
+name|childLimit
+init|=
+name|Resources
+operator|.
+name|add
+argument_list|(
+name|myMaxAvailableResource
+argument_list|,
+name|child
+operator|.
+name|getUsedResources
+argument_list|()
+argument_list|)
+decl_stmt|;
+return|return
+operator|new
+name|ResourceLimits
+argument_list|(
+name|childLimit
+argument_list|)
+return|;
+block|}
+DECL|method|assignContainersToChildQueues ( Resource cluster, FiCaSchedulerNode node, boolean needToUnreserve, ResourceLimits limits)
 specifier|private
 specifier|synchronized
 name|CSAssignment
@@ -2984,6 +3073,9 @@ name|node
 parameter_list|,
 name|boolean
 name|needToUnreserve
+parameter_list|,
+name|ResourceLimits
+name|limits
 parameter_list|)
 block|{
 name|CSAssignment
@@ -3063,6 +3155,19 @@ name|childQueue
 argument_list|)
 expr_stmt|;
 block|}
+comment|// Get ResourceLimits of child queue before assign containers
+name|ResourceLimits
+name|childLimits
+init|=
+name|getResourceLimitsOfChild
+argument_list|(
+name|childQueue
+argument_list|,
+name|cluster
+argument_list|,
+name|limits
+argument_list|)
+decl_stmt|;
 name|assignment
 operator|=
 name|childQueue
@@ -3074,6 +3179,8 @@ argument_list|,
 name|node
 argument_list|,
 name|needToUnreserve
+argument_list|,
+name|childLimits
 argument_list|)
 expr_stmt|;
 if|if
@@ -3497,7 +3604,7 @@ block|}
 block|}
 annotation|@
 name|Override
-DECL|method|updateClusterResource (Resource clusterResource)
+DECL|method|updateClusterResource (Resource clusterResource, ResourceLimits resourceLimits)
 specifier|public
 specifier|synchronized
 name|void
@@ -3505,6 +3612,9 @@ name|updateClusterResource
 parameter_list|(
 name|Resource
 name|clusterResource
+parameter_list|,
+name|ResourceLimits
+name|resourceLimits
 parameter_list|)
 block|{
 comment|// Update all children
@@ -3516,11 +3626,26 @@ range|:
 name|childQueues
 control|)
 block|{
+comment|// Get ResourceLimits of child queue before assign containers
+name|ResourceLimits
+name|childLimits
+init|=
+name|getResourceLimitsOfChild
+argument_list|(
+name|childQueue
+argument_list|,
+name|clusterResource
+argument_list|,
+name|resourceLimits
+argument_list|)
+decl_stmt|;
 name|childQueue
 operator|.
 name|updateClusterResource
 argument_list|(
 name|clusterResource
+argument_list|,
+name|childLimits
 argument_list|)
 expr_stmt|;
 block|}

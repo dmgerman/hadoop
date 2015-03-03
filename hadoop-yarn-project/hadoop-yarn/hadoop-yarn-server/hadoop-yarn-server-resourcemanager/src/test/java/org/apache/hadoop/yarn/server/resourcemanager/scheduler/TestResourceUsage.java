@@ -212,10 +212,6 @@ literal|"Used"
 block|}
 block|,
 block|{
-literal|"Headroom"
-block|}
-block|,
-block|{
 literal|"Reserved"
 block|}
 block|,
