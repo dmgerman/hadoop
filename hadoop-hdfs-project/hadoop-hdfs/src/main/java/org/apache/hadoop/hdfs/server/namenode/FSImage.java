@@ -4577,9 +4577,9 @@ condition|)
 block|{
 name|LOG
 operator|.
-name|error
+name|warn
 argument_list|(
-literal|"BUG: Namespace quota violation in image for "
+literal|"Namespace quota violation in image for "
 operator|+
 name|dir
 operator|.
@@ -4630,9 +4630,9 @@ condition|)
 block|{
 name|LOG
 operator|.
-name|error
+name|warn
 argument_list|(
-literal|"BUG: Storagespace quota violation in image for "
+literal|"Storagespace quota violation in image for "
 operator|+
 name|dir
 operator|.
@@ -4727,9 +4727,9 @@ condition|)
 block|{
 name|LOG
 operator|.
-name|error
+name|warn
 argument_list|(
-literal|"BUG: Storage type quota violation in image for "
+literal|"Storage type quota violation in image for "
 operator|+
 name|dir
 operator|.
