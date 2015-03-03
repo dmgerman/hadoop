@@ -470,7 +470,7 @@ operator|=
 name|skipCrc
 expr_stmt|;
 block|}
-comment|/**    * Implementation of RetriableCommand::doExecute().    * This is the actual copy-implementation.    * @param arguments Argument-list to the command.    * @return Number of bytes copied.    * @throws Exception: CopyReadException, if there are read-failures. All other    *         failures are IOExceptions.    */
+comment|/**    * Implementation of RetriableCommand::doExecute().    * This is the actual copy-implementation.    * @param arguments Argument-list to the command.    * @return Number of bytes copied.    * @throws Exception    */
 annotation|@
 name|SuppressWarnings
 argument_list|(

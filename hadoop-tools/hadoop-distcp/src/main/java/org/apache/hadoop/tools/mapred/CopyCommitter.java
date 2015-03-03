@@ -345,7 +345,7 @@ operator|=
 name|context
 expr_stmt|;
 block|}
-comment|/** @inheritDoc */
+comment|/** {@inheritDoc} */
 annotation|@
 name|Override
 DECL|method|commitJob (JobContext jobContext)
@@ -528,7 +528,7 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-comment|/** @inheritDoc */
+comment|/** {@inheritDoc} */
 annotation|@
 name|Override
 DECL|method|abortJob (JobContext jobContext, JobStatus.State state)

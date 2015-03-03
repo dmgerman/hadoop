@@ -1058,7 +1058,7 @@ name|value
 return|;
 block|}
 block|}
-comment|/**    * This Mapper is similar to the one in {@link WordCount.MapClass}.    */
+comment|/**    * This Mapper is similar to the one in {@link WordCount.TokenizerMapper}.    */
 DECL|class|MapClass
 specifier|public
 specifier|static

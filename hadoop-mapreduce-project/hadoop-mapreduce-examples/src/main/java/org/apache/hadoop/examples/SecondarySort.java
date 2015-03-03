@@ -352,7 +352,7 @@ return|return
 name|second
 return|;
 block|}
-comment|/**      * Read the two integers.       * Encoded as: MIN_VALUE -> 0, 0 -> -MIN_VALUE, MAX_VALUE-> -1      */
+comment|/**      * Read the two integers.       * Encoded as: MIN_VALUE -&gt; 0, 0 -&gt; -MIN_VALUE, MAX_VALUE-&gt; -1      */
 annotation|@
 name|Override
 DECL|method|readFields (DataInput in)

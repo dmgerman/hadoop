@@ -344,7 +344,7 @@ argument_list|)
 return|;
 block|}
 block|}
-comment|/** @inheritDoc */
+comment|/** {@inheritDoc} */
 annotation|@
 name|Override
 DECL|method|getOutputCommitter (TaskAttemptContext context)
@@ -371,7 +371,7 @@ name|context
 argument_list|)
 return|;
 block|}
-comment|/** @inheritDoc */
+comment|/** {@inheritDoc} */
 annotation|@
 name|Override
 DECL|method|checkOutputSpecs (JobContext context)

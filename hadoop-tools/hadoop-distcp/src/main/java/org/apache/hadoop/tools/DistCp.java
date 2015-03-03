@@ -408,7 +408,7 @@ specifier|private
 name|FileSystem
 name|jobFS
 decl_stmt|;
-comment|/**    * Public Constructor. Creates DistCp object with specified input-parameters.    * (E.g. source-paths, target-location, etc.)    * @param inputOptions Options (indicating source-paths, target-location.)    * @param configuration The Hadoop configuration against which the Copy-mapper must run.    * @throws Exception, on failure.    */
+comment|/**    * Public Constructor. Creates DistCp object with specified input-parameters.    * (E.g. source-paths, target-location, etc.)    * @param inputOptions Options (indicating source-paths, target-location.)    * @param configuration The Hadoop configuration against which the Copy-mapper must run.    * @throws Exception    */
 DECL|method|DistCp (Configuration configuration, DistCpOptions inputOptions)
 specifier|public
 name|DistCp
@@ -679,7 +679,7 @@ operator|.
 name|SUCCESS
 return|;
 block|}
-comment|/**    * Implements the core-execution. Creates the file-list for copy,    * and launches the Hadoop-job, to do the copy.    * @return Job handle    * @throws Exception, on failure.    */
+comment|/**    * Implements the core-execution. Creates the file-list for copy,    * and launches the Hadoop-job, to do the copy.    * @return Job handle    * @throws Exception    */
 DECL|method|execute ()
 specifier|public
 name|Job

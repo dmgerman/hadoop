@@ -270,7 +270,7 @@ argument_list|)
 return|;
 block|}
 block|}
-comment|/**    * The parse method parses the command-line options, and creates    * a corresponding Options object.    * @param args Command-line arguments (excluding the options consumed    *              by the GenericOptionsParser).    * @return The Options object, corresponding to the specified command-line.    * @throws IllegalArgumentException: Thrown if the parse fails.    */
+comment|/**    * The parse method parses the command-line options, and creates    * a corresponding Options object.    * @param args Command-line arguments (excluding the options consumed    *              by the GenericOptionsParser).    * @return The Options object, corresponding to the specified command-line.    * @throws IllegalArgumentException Thrown if the parse fails.    */
 DECL|method|parse (String args[])
 specifier|public
 specifier|static

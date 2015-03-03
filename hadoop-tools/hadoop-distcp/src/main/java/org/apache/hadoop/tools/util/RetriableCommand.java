@@ -252,7 +252,7 @@ parameter_list|)
 throws|throws
 name|Exception
 function_decl|;
-comment|/**    * The execute() method invokes doExecute() until either:    *  1. doExecute() succeeds, or    *  2. the command may no longer be retried (e.g. runs out of retry-attempts).    * @param arguments The list of arguments for the command.    * @return Generic "Object" from doExecute(), on success.    * @throws IOException, IOException, on complete failure.    */
+comment|/**    * The execute() method invokes doExecute() until either:    *  1. doExecute() succeeds, or    *  2. the command may no longer be retried (e.g. runs out of retry-attempts).    * @param arguments The list of arguments for the command.    * @return Generic "Object" from doExecute(), on success.    * @throws Exception    */
 DECL|method|execute (Object... arguments)
 specifier|public
 name|Object

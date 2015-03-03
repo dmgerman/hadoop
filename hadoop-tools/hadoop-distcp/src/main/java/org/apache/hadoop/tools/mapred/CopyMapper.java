@@ -321,7 +321,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * Mapper class that executes the DistCp copy operation.  * Implements the o.a.h.mapreduce.Mapper<> interface.  */
+comment|/**  * Mapper class that executes the DistCp copy operation.  * Implements the o.a.h.mapreduce.Mapper interface.  */
 end_comment
 
 begin_class
@@ -981,7 +981,7 @@ return|return
 literal|null
 return|;
 block|}
-comment|/**    * Implementation of the Mapper<>::map(). Does the copy.    * @param relPath The target path.    * @param sourceFileStatus The source path.    * @throws IOException    */
+comment|/**    * Implementation of the Mapper::map(). Does the copy.    * @param relPath The target path.    * @param sourceFileStatus The source path.    * @throws IOException    * @throws InterruptedException    */
 annotation|@
 name|Override
 DECL|method|map (Text relPath, CopyListingFileStatus sourceFileStatus, Context context)

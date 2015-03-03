@@ -733,7 +733,7 @@ return|return
 name|conf
 return|;
 block|}
-comment|/**    * Close the<code>Cluster</code>.    */
+comment|/**    * Close the<code>Cluster</code>.    * @throws IOException    */
 DECL|method|close ()
 specifier|public
 specifier|synchronized

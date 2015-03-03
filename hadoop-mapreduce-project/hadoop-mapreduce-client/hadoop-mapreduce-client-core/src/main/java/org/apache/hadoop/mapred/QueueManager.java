@@ -285,7 +285,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * Class that exposes information about queues maintained by the Hadoop  * Map/Reduce framework.  *<p/>  * The Map/Reduce framework can be configured with one or more queues,  * depending on the scheduler it is configured with. While some  * schedulers work only with one queue, some schedulers support multiple  * queues. Some schedulers also support the notion of queues within  * queues - a feature called hierarchical queues.  *<p/>  * Queue names are unique, and used as a key to lookup queues. Hierarchical  * queues are named by a 'fully qualified name' such as q1:q2:q3, where  * q2 is a child queue of q1 and q3 is a child queue of q2.  *<p/>  * Leaf level queues are queues that contain no queues within them. Jobs  * can be submitted only to leaf level queues.  *<p/>  * Queues can be configured with various properties. Some of these  * properties are common to all schedulers, and those are handled by this  * class. Schedulers might also associate several custom properties with  * queues. These properties are parsed and maintained per queue by the  * framework. If schedulers need more complicated structure to maintain  * configuration per queue, they are free to not use the facilities  * provided by the framework, but define their own mechanisms. In such cases,  * it is likely that the name of the queue will be used to relate the  * common properties of a queue with scheduler specific properties.  *<p/>  * Information related to a queue, such as its name, properties, scheduling  * information and children are exposed by this class via a serializable  * class called {@link JobQueueInfo}.  *<p/>  * Queues are configured in the configuration file mapred-queues.xml.  * To support backwards compatibility, queues can also be configured  * in mapred-site.xml. However, when configured in the latter, there is  * no support for hierarchical queues.  */
+comment|/**  * Class that exposes information about queues maintained by the Hadoop  * Map/Reduce framework.  *<p>  * The Map/Reduce framework can be configured with one or more queues,  * depending on the scheduler it is configured with. While some  * schedulers work only with one queue, some schedulers support multiple  * queues. Some schedulers also support the notion of queues within  * queues - a feature called hierarchical queues.  *<p>  * Queue names are unique, and used as a key to lookup queues. Hierarchical  * queues are named by a 'fully qualified name' such as q1:q2:q3, where  * q2 is a child queue of q1 and q3 is a child queue of q2.  *<p>  * Leaf level queues are queues that contain no queues within them. Jobs  * can be submitted only to leaf level queues.  *<p>  * Queues can be configured with various properties. Some of these  * properties are common to all schedulers, and those are handled by this  * class. Schedulers might also associate several custom properties with  * queues. These properties are parsed and maintained per queue by the  * framework. If schedulers need more complicated structure to maintain  * configuration per queue, they are free to not use the facilities  * provided by the framework, but define their own mechanisms. In such cases,  * it is likely that the name of the queue will be used to relate the  * common properties of a queue with scheduler specific properties.  *<p>  * Information related to a queue, such as its name, properties, scheduling  * information and children are exposed by this class via a serializable  * class called {@link JobQueueInfo}.  *<p>  * Queues are configured in the configuration file mapred-queues.xml.  * To support backwards compatibility, queues can also be configured  * in mapred-site.xml. However, when configured in the latter, there is  * no support for hierarchical queues.  */
 end_comment
 
 begin_class
@@ -395,7 +395,7 @@ name|areAclsEnabled
 init|=
 literal|false
 decl_stmt|;
-comment|/**    * Factory method to create an appropriate instance of a queue    * configuration parser.    *<p/>    * Returns a parser that can parse either the deprecated property    * style queue configuration in mapred-site.xml, or one that can    * parse hierarchical queues in mapred-queues.xml. First preference    * is given to configuration in mapred-site.xml. If no queue    * configuration is found there, then a parser that can parse    * configuration in mapred-queues.xml is created.    *    * @param conf Configuration instance that determines which parser    *             to use.    * @return Queue configuration parser    */
+comment|/**    * Factory method to create an appropriate instance of a queue    * configuration parser.    *<p>    * Returns a parser that can parse either the deprecated property    * style queue configuration in mapred-site.xml, or one that can    * parse hierarchical queues in mapred-queues.xml. First preference    * is given to configuration in mapred-site.xml. If no queue    * configuration is found there, then a parser that can parse    * configuration in mapred-queues.xml is created.    *    * @param conf Configuration instance that determines which parser    *             to use.    * @return Queue configuration parser    */
 DECL|method|getQueueConfigurationParser ( Configuration conf, boolean reloadConf, boolean areAclsEnabled)
 specifier|static
 name|QueueConfigurationParser
@@ -590,7 +590,7 @@ argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Construct a new QueueManager using configuration specified in the passed    * in {@link org.apache.hadoop.conf.Configuration} object.    *<p/>    * This instance supports queue configuration specified in mapred-site.xml,    * but without support for hierarchical queues. If no queue configuration    * is found in mapred-site.xml, it will then look for site configuration    * in mapred-queues.xml supporting hierarchical queues.    *    * @param clusterConf    mapreduce cluster configuration    */
+comment|/**    * Construct a new QueueManager using configuration specified in the passed    * in {@link org.apache.hadoop.conf.Configuration} object.    *<p>    * This instance supports queue configuration specified in mapred-site.xml,    * but without support for hierarchical queues. If no queue configuration    * is found in mapred-site.xml, it will then look for site configuration    * in mapred-queues.xml supporting hierarchical queues.    *    * @param clusterConf    mapreduce cluster configuration    */
 DECL|method|QueueManager (Configuration clusterConf)
 specifier|public
 name|QueueManager
@@ -625,7 +625,7 @@ argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Create an instance that supports hierarchical queues, defined in    * the passed in configuration file.    *<p/>    * This is mainly used for testing purposes and should not called from    * production code.    *    * @param confFile File where the queue configuration is found.    */
+comment|/**    * Create an instance that supports hierarchical queues, defined in    * the passed in configuration file.    *<p>    * This is mainly used for testing purposes and should not called from    * production code.    *    * @param confFile File where the queue configuration is found.    */
 DECL|method|QueueManager (String confFile, boolean areAclsEnabled)
 name|QueueManager
 parameter_list|(
@@ -730,7 +730,7 @@ name|leafQueues
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Return the set of leaf level queues configured in the system to    * which jobs are submitted.    *<p/>    * The number of queues configured should be dependent on the Scheduler    * configured. Note that some schedulers work with only one queue, whereas    * others can support multiple queues.    *    * @return Set of queue names.    */
+comment|/**    * Return the set of leaf level queues configured in the system to    * which jobs are submitted.    *<p>    * The number of queues configured should be dependent on the Scheduler    * configured. Note that some schedulers work with only one queue, whereas    * others can support multiple queues.    *    * @return Set of queue names.    */
 DECL|method|getLeafQueueNames ()
 specifier|public
 specifier|synchronized
@@ -748,7 +748,7 @@ name|keySet
 argument_list|()
 return|;
 block|}
-comment|/**    * Return true if the given user is part of the ACL for the given    * {@link QueueACL} name for the given queue.    *<p/>    * An operation is allowed if all users are provided access for this    * operation, or if either the user or any of the groups specified is    * provided access.    *    * @param queueName Queue on which the operation needs to be performed.    * @param qACL      The queue ACL name to be checked    * @param ugi       The user and groups who wish to perform the operation.    * @return true     if the operation is allowed, false otherwise.    */
+comment|/**    * Return true if the given user is part of the ACL for the given    * {@link QueueACL} name for the given queue.    *<p>    * An operation is allowed if all users are provided access for this    * operation, or if either the user or any of the groups specified is    * provided access.    *    * @param queueName Queue on which the operation needs to be performed.    * @param qACL      The queue ACL name to be checked    * @param ugi       The user and groups who wish to perform the operation.    * @return true     if the operation is allowed, false otherwise.    */
 DECL|method|hasAccess ( String queueName, QueueACL qACL, UserGroupInformation ugi)
 specifier|public
 specifier|synchronized
@@ -963,7 +963,7 @@ return|return
 literal|false
 return|;
 block|}
-comment|/**    * Set a generic Object that represents scheduling information relevant    * to a queue.    *<p/>    * A string representation of this Object will be used by the framework    * to display in user facing applications like the JobTracker web UI and    * the hadoop CLI.    *    * @param queueName queue for which the scheduling information is to be set.    * @param queueInfo scheduling information for this queue.    */
+comment|/**    * Set a generic Object that represents scheduling information relevant    * to a queue.    *<p>    * A string representation of this Object will be used by the framework    * to display in user facing applications like the JobTracker web UI and    * the hadoop CLI.    *    * @param queueName queue for which the scheduling information is to be set.    * @param queueInfo scheduling information for this queue.    */
 DECL|method|setSchedulerInfo ( String queueName, Object queueInfo)
 specifier|public
 specifier|synchronized
@@ -1064,7 +1064,7 @@ literal|" configuration properties. "
 operator|+
 literal|"Retaining existing configuration throughout the system."
 decl_stmt|;
-comment|/**    * Refresh acls, state and scheduler properties for the configured queues.    *<p/>    * This method reloads configuration related to queues, but does not    * support changes to the list of queues or hierarchy. The expected usage    * is that an administrator can modify the queue configuration file and    * fire an admin command to reload queue configuration. If there is a    * problem in reloading configuration, then this method guarantees that    * existing queue configuration is untouched and in a consistent state.    *     * @param schedulerRefresher    * @throws IOException when queue configuration file is invalid.    */
+comment|/**    * Refresh acls, state and scheduler properties for the configured queues.    *<p>    * This method reloads configuration related to queues, but does not    * support changes to the list of queues or hierarchy. The expected usage    * is that an administrator can modify the queue configuration file and    * fire an admin command to reload queue configuration. If there is a    * problem in reloading configuration, then this method guarantees that    * existing queue configuration is untouched and in a consistent state.    *     * @param schedulerRefresher    * @throws IOException when queue configuration file is invalid.    */
 DECL|method|refreshQueues (Configuration conf, QueueRefresher schedulerRefresher)
 specifier|synchronized
 name|void
@@ -1371,7 +1371,7 @@ return|return
 literal|null
 return|;
 block|}
-comment|/**    * JobQueueInfo for all the queues.    *<p/>    * Contribs can use this data structure to either create a hierarchy or for    * traversing.    * They can also use this to refresh properties in case of refreshQueues    *    * @return a map for easy navigation.    */
+comment|/**    * JobQueueInfo for all the queues.    *<p>    * Contribs can use this data structure to either create a hierarchy or for    * traversing.    * They can also use this to refresh properties in case of refreshQueues    *    * @return a map for easy navigation.    */
 DECL|method|getJobQueueInfoMapping ()
 specifier|synchronized
 name|Map
@@ -1441,7 +1441,7 @@ return|return
 name|m
 return|;
 block|}
-comment|/**    * Generates the array of QueueAclsInfo object.    *<p/>    * The array consists of only those queues for which user has acls.    *    * @return QueueAclsInfo[]    * @throws java.io.IOException    */
+comment|/**    * Generates the array of QueueAclsInfo object.    *<p>    * The array consists of only those queues for which user has acls.    *    * @return QueueAclsInfo[]    * @throws java.io.IOException    */
 DECL|method|getQueueAcls (UserGroupInformation ugi)
 specifier|synchronized
 name|QueueAclsInfo

@@ -103,7 +103,7 @@ parameter_list|)
 throws|throws
 name|IOException
 function_decl|;
-comment|/**    * Get the next<name, input> pair. The name should preserve the original job    * history file or job conf file name. The input object should be closed    * before calling getNext() again. The old input object would be invalid after    * calling getNext() again.    *     * @return the next<name, input> pair.    */
+comment|/**    * Get the next&lt;name, input&gt; pair. The name should preserve the original job    * history file or job conf file name. The input object should be closed    * before calling getNext() again. The old input object would be invalid after    * calling getNext() again.    *     * @return the next&lt;name, input&gt; pair.    */
 DECL|method|getNext ()
 specifier|public
 name|Pair

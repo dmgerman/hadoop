@@ -883,7 +883,7 @@ return|;
 comment|// f does not exist
 block|}
 block|}
-comment|/**    * Return an array containing hostnames, offset and size of    * portions of the given file.  For a nonexistent    * file or regions, null will be returned.    *<p/>    * This call is most helpful with DFS, where it returns    * hostnames of machines that contain the given file.    *<p/>    * The FileSystem will simply return an elt containing 'localhost'.    */
+comment|/**    * Return an array containing hostnames, offset and size of    * portions of the given file.  For a nonexistent    * file or regions, null will be returned.    *<p>    * This call is most helpful with DFS, where it returns    * hostnames of machines that contain the given file.    *<p>    * The FileSystem will simply return an elt containing 'localhost'.    */
 annotation|@
 name|Override
 DECL|method|getFileBlockLocations (FileStatus file, long start, long len)
@@ -2198,7 +2198,7 @@ name|getOperationStatistics
 argument_list|()
 return|;
 block|}
-comment|/**    * Low level method to do a deep listing of all entries, not stopping    * at the next directory entry. This is to let tests be confident that    * recursive deletes&c really are working.    * @param path path to recurse down    * @param newest ask for the newest data, potentially slower than not.    * @return a potentially empty array of file status    * @throws IOException any problem    */
+comment|/**    * Low level method to do a deep listing of all entries, not stopping    * at the next directory entry. This is to let tests be confident that    * recursive deletes really are working.    * @param path path to recurse down    * @param newest ask for the newest data, potentially slower than not.    * @return a potentially empty array of file status    * @throws IOException any problem    */
 annotation|@
 name|InterfaceAudience
 operator|.

@@ -371,7 +371,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  *<code>IFile</code> is the simple<key-len, value-len, key, value> format  * for the intermediate map-outputs in Map-Reduce.  *  * There is a<code>Writer</code> to write out map-outputs in this format and   * a<code>Reader</code> to read files of this format.  */
+comment|/**  *<code>IFile</code> is the simple&lt;key-len, value-len, key, value&gt; format  * for the intermediate map-outputs in Map-Reduce.  *  * There is a<code>Writer</code> to write out map-outputs in this format and   * a<code>Reader</code> to read files of this format.  */
 end_comment
 
 begin_class

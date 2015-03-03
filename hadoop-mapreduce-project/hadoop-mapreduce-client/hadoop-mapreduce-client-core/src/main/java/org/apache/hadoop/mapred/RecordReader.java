@@ -55,7 +55,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  *<code>RecordReader</code> reads&lt;key, value&gt; pairs from an   * {@link InputSplit}.  *     *<p><code>RecordReader</code>, typically, converts the byte-oriented view of   * the input, provided by the<code>InputSplit</code>, and presents a   * record-oriented view for the {@link Mapper}& {@link Reducer} tasks for   * processing. It thus assumes the responsibility of processing record   * boundaries and presenting the tasks with keys and values.</p>  *   * @see InputSplit  * @see InputFormat  */
+comment|/**  *<code>RecordReader</code> reads&lt;key, value&gt; pairs from an   * {@link InputSplit}.  *     *<p><code>RecordReader</code>, typically, converts the byte-oriented view of   * the input, provided by the<code>InputSplit</code>, and presents a   * record-oriented view for the {@link Mapper} and {@link Reducer} tasks for  * processing. It thus assumes the responsibility of processing record   * boundaries and presenting the tasks with keys and values.</p>  *   * @see InputSplit  * @see InputFormat  */
 end_comment
 
 begin_interface

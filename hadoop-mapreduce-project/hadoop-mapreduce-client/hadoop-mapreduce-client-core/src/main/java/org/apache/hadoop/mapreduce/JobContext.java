@@ -531,7 +531,7 @@ index|[]
 name|getFileClassPaths
 parameter_list|()
 function_decl|;
-comment|/**    * Get the timestamps of the archives.  Used by internal    * DistributedCache and MapReduce code.    * @return a string array of timestamps     * @throws IOException    */
+comment|/**    * Get the timestamps of the archives.  Used by internal    * DistributedCache and MapReduce code.    * @return a string array of timestamps     */
 DECL|method|getArchiveTimestamps ()
 specifier|public
 name|String
@@ -539,7 +539,7 @@ index|[]
 name|getArchiveTimestamps
 parameter_list|()
 function_decl|;
-comment|/**    * Get the timestamps of the files.  Used by internal    * DistributedCache and MapReduce code.    * @return a string array of timestamps     * @throws IOException    */
+comment|/**    * Get the timestamps of the files.  Used by internal    * DistributedCache and MapReduce code.    * @return a string array of timestamps     */
 DECL|method|getFileTimestamps ()
 specifier|public
 name|String

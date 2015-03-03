@@ -172,7 +172,7 @@ argument_list|,
 name|V1
 argument_list|>
 block|{
-comment|/**    * @param key    *          the key is expected to be a Text object, whose prefix indicates    *          the type of aggregation to aggregate the values. In effect, data    *          driven computing is achieved. It is assumed that each aggregator's    *          getReport method emits appropriate output for the aggregator. This    *          may be further customiized.    * @value the values to be aggregated    */
+comment|/**    * @param key    *          the key is expected to be a Text object, whose prefix indicates    *          the type of aggregation to aggregate the values. In effect, data    *          driven computing is achieved. It is assumed that each aggregator's    *          getReport method emits appropriate output for the aggregator. This    *          may be further customiized.    * @param values    *          the values to be aggregated    */
 DECL|method|reduce (Text key, Iterator<Text> values, OutputCollector<Text, Text> output, Reporter reporter)
 specifier|public
 name|void

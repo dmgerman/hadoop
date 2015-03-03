@@ -201,7 +201,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * The CopyListing abstraction is responsible for how the list of  * sources and targets is constructed, for DistCp's copy function.  * The copy-listing should be a SequenceFile<Text, CopyListingFileStatus>,  * located at the path specified to buildListing(),  * each entry being a pair of (Source relative path, source file status),  * all the paths being fully qualified.  */
+comment|/**  * The CopyListing abstraction is responsible for how the list of  * sources and targets is constructed, for DistCp's copy function.  * The copy-listing should be a  * SequenceFile&lt;Text, CopyListingFileStatus&gt;, located at the path  * specified to buildListing(), each entry being a pair of (Source relative  * path, source file status), all the paths being fully qualified.  */
 end_comment
 
 begin_class
@@ -298,7 +298,7 @@ name|options
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Validate input and output paths    *    * @param options - Input options    * @throws InvalidInputException: If inputs are invalid    * @throws IOException: any Exception with FS     */
+comment|/**    * Validate input and output paths    *    * @param options - Input options    * @throws InvalidInputException If inputs are invalid    * @throws IOException any Exception with FS    */
 DECL|method|validatePaths (DistCpOptions options)
 specifier|protected
 specifier|abstract
@@ -313,7 +313,7 @@ name|IOException
 throws|,
 name|InvalidInputException
 function_decl|;
-comment|/**    * The interface to be implemented by sub-classes, to create the source/target file listing.    * @param pathToListFile Path on HDFS where the listing file is written.    * @param options Input Options for DistCp (indicating source/target paths.)    * @throws IOException: Thrown on failure to create the listing file.    */
+comment|/**    * The interface to be implemented by sub-classes, to create the source/target file listing.    * @param pathToListFile Path on HDFS where the listing file is written.    * @param options Input Options for DistCp (indicating source/target paths.)    * @throws IOException Thrown on failure to create the listing file.    */
 DECL|method|doBuildListing (Path pathToListFile, DistCpOptions options)
 specifier|protected
 specifier|abstract

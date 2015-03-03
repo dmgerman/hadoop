@@ -121,7 +121,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * This class implements the binding logic between Hadoop configurations  * and the swift rest client.  *<p/>  * The swift rest client takes a Properties instance containing  * the string values it uses to bind to a swift endpoint.  *<p/>  * This class extracts the values for a specific filesystem endpoint  * and then builds an appropriate Properties file.  */
+comment|/**  * This class implements the binding logic between Hadoop configurations  * and the swift rest client.  *<p>  * The swift rest client takes a Properties instance containing  * the string values it uses to bind to a swift endpoint.  *<p>  * This class extracts the values for a specific filesystem endpoint  * and then builds an appropriate Properties file.  */
 end_comment
 
 begin_class
@@ -732,7 +732,7 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-comment|/**    * Copy a (trimmed) property from the configuration file to the properties file.    *<p/>    * If marked as required and not found in the configuration, an    * exception is raised.    * If not required -and missing- then the property will not be set.    * In this case, if the property is already in the Properties instance,    * it will remain untouched.    *    * @param conf     source configuration    * @param confKey  key in the configuration file    * @param props    destination property set    * @param propsKey key in the property set    * @param required is the property required    * @throws SwiftConfigurationException if the property is required but was    *                                     not found in the configuration instance.    */
+comment|/**    * Copy a (trimmed) property from the configuration file to the properties file.    *<p>    * If marked as required and not found in the configuration, an    * exception is raised.    * If not required -and missing- then the property will not be set.    * In this case, if the property is already in the Properties instance,    * it will remain untouched.    *    * @param conf     source configuration    * @param confKey  key in the configuration file    * @param props    destination property set    * @param propsKey key in the property set    * @param required is the property required    * @throws SwiftConfigurationException if the property is required but was    *                                     not found in the configuration instance.    */
 DECL|method|copy (Configuration conf, String confKey, Properties props, String propsKey, boolean required)
 specifier|public
 specifier|static

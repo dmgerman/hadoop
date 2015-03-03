@@ -89,7 +89,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * Status information on the current state of the Map-Reduce cluster.  *   *<p><code>ClusterMetrics</code> provides clients with information such as:  *<ol>  *<li>  *   Size of the cluster.    *</li>  *<li>  *   Number of blacklisted and decommissioned trackers.    *</li>  *<li>  *   Slot capacity of the cluster.   *</li>  *<li>  *   The number of currently occupied/reserved map& reduce slots.  *</li>  *<li>  *   The number of currently running map& reduce tasks.  *</li>  *<li>  *   The number of job submissions.  *</li>  *</ol></p>  *   *<p>Clients can query for the latest<code>ClusterMetrics</code>, via   * {@link Cluster#getClusterStatus()}.</p>  *   * @see Cluster  */
+comment|/**  * Status information on the current state of the Map-Reduce cluster.  *   *<p><code>ClusterMetrics</code> provides clients with information such as:  *<ol>  *<li>  *   Size of the cluster.    *</li>  *<li>  *   Number of blacklisted and decommissioned trackers.    *</li>  *<li>  *   Slot capacity of the cluster.   *</li>  *<li>  *   The number of currently occupied/reserved map and reduce slots.  *</li>  *<li>  *   The number of currently running map and reduce tasks.  *</li>  *<li>  *   The number of job submissions.  *</li>  *</ol>  *   *<p>Clients can query for the latest<code>ClusterMetrics</code>, via   * {@link Cluster#getClusterStatus()}.</p>  *   * @see Cluster  */
 end_comment
 
 begin_class

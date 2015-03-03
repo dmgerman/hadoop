@@ -423,7 +423,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * Logalyzer: A utility tool for archiving and analyzing hadoop logs.  *<p>  * This tool supports archiving and anaylzing (sort/grep) of log-files.  * It takes as input  *  a) Input uri which will serve uris of the logs to be archived.  *  b) Output directory (not mandatory).  *  b) Directory on dfs to archive the logs.   *  c) The sort/grep patterns for analyzing the files and separator for boundaries.  * Usage:   * Logalyzer -archive -archiveDir<directory to archive logs> -analysis<directory> -logs<log-list uri> -grep<pattern> -sort<col1, col2> -separator<separator>     *<p>  */
+comment|/**  * Logalyzer: A utility tool for archiving and analyzing hadoop logs.  *<p>  * This tool supports archiving and anaylzing (sort/grep) of log-files.  * It takes as input  *  a) Input uri which will serve uris of the logs to be archived.  *  b) Output directory (not mandatory).  *  b) Directory on dfs to archive the logs.   *  c) The sort/grep patterns for analyzing the files and separator for boundaries.  * Usage:   * Logalyzer -archive -archiveDir&lt;directory to archive logs&gt; -analysis  *&lt;directory&gt; -logs&lt;log-list uri&gt; -grep&lt;pattern&gt; -sort  *&lt;col1, col2&gt; -separator&lt;separator&gt;  *<p>  */
 end_comment
 
 begin_class

@@ -393,7 +393,7 @@ else|:
 name|x
 return|;
 block|}
-comment|/** Given 0< x< y,    * return x^(-1) mod y.    */
+comment|/** Given 0&lt; x&lt; y,    * return x^(-1) mod y.    */
 DECL|method|modInverse (final long x, final long y)
 specifier|public
 specifier|static

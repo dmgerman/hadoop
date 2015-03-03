@@ -207,7 +207,7 @@ name|close
 argument_list|()
 expr_stmt|;
 block|}
-comment|/** @inheritDoc */
+comment|/** {@inheritDoc} */
 annotation|@
 name|Override
 DECL|method|read ()
@@ -245,7 +245,7 @@ return|return
 name|data
 return|;
 block|}
-comment|/** @inheritDoc */
+comment|/** {@inheritDoc} */
 annotation|@
 name|Override
 DECL|method|read (byte[] b)
@@ -290,7 +290,7 @@ return|return
 name|readLen
 return|;
 block|}
-comment|/** @inheritDoc */
+comment|/** {@inheritDoc} */
 annotation|@
 name|Override
 DECL|method|read (byte[] b, int off, int len)
@@ -537,7 +537,7 @@ return|return
 name|totalSleepTime
 return|;
 block|}
-comment|/** @inheritDoc */
+comment|/** {@inheritDoc} */
 annotation|@
 name|Override
 DECL|method|toString ()

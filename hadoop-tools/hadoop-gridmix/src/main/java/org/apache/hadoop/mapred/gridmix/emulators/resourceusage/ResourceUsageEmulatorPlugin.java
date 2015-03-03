@@ -95,7 +95,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  *<p>Each resource to be emulated should have a corresponding implementation   * class that implements {@link ResourceUsageEmulatorPlugin}.</p>  *<br><br>  * {@link ResourceUsageEmulatorPlugin} will be configured using the   * {@link #initialize(Configuration, ResourceUsageMetrics,   *                    ResourceCalculatorPlugin, Progressive)} call.  * Every   * {@link ResourceUsageEmulatorPlugin} is also configured with a feedback module  * i.e a {@link ResourceCalculatorPlugin}, to monitor the current resource   * usage. {@link ResourceUsageMetrics} decides the final resource usage value to  * emulate. {@link Progressive} keeps track of the task's progress.</p>  *   *<br><br>  *   * For configuring GridMix to load and and use a resource usage emulator,   * see {@link ResourceUsageMatcher}.   */
+comment|/**  *<p>Each resource to be emulated should have a corresponding implementation   * class that implements {@link ResourceUsageEmulatorPlugin}.</p>  *<br><br>  * {@link ResourceUsageEmulatorPlugin} will be configured using the   * {@link #initialize(Configuration, ResourceUsageMetrics,   *                    ResourceCalculatorPlugin, Progressive)} call.  * Every   * {@link ResourceUsageEmulatorPlugin} is also configured with a feedback module  * i.e a {@link ResourceCalculatorPlugin}, to monitor the current resource   * usage. {@link ResourceUsageMetrics} decides the final resource usage value to  * emulate. {@link Progressive} keeps track of the task's progress.  *   *<br><br>  *   * For configuring GridMix to load and and use a resource usage emulator,   * see {@link ResourceUsageMatcher}.   */
 end_comment
 
 begin_interface

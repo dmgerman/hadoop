@@ -1156,7 +1156,7 @@ return|return
 name|address
 return|;
 block|}
-comment|/**    * Child checking whether it can commit.    *     *<br/>    * Commit is a two-phased protocol. First the attempt informs the    * ApplicationMaster that it is    * {@link #commitPending(TaskAttemptID, TaskStatus)}. Then it repeatedly polls    * the ApplicationMaster whether it {@link #canCommit(TaskAttemptID)} This is    * a legacy from the centralized commit protocol handling by the JobTracker.    */
+comment|/**    * Child checking whether it can commit.    *     *<br>    * Commit is a two-phased protocol. First the attempt informs the    * ApplicationMaster that it is    * {@link #commitPending(TaskAttemptID, TaskStatus)}. Then it repeatedly polls    * the ApplicationMaster whether it {@link #canCommit(TaskAttemptID)} This is    * a legacy from the centralized commit protocol handling by the JobTracker.    */
 annotation|@
 name|Override
 DECL|method|canCommit (TaskAttemptID taskAttemptID)
@@ -1283,7 +1283,7 @@ name|attemptID
 argument_list|)
 return|;
 block|}
-comment|/**    * TaskAttempt is reporting that it is in commit_pending and it is waiting for    * the commit Response    *     *<br/>    * Commit it a two-phased protocol. First the attempt informs the    * ApplicationMaster that it is    * {@link #commitPending(TaskAttemptID, TaskStatus)}. Then it repeatedly polls    * the ApplicationMaster whether it {@link #canCommit(TaskAttemptID)} This is    * a legacy from the centralized commit protocol handling by the JobTracker.    */
+comment|/**    * TaskAttempt is reporting that it is in commit_pending and it is waiting for    * the commit Response    *     *<br>    * Commit it a two-phased protocol. First the attempt informs the    * ApplicationMaster that it is    * {@link #commitPending(TaskAttemptID, TaskStatus)}. Then it repeatedly polls    * the ApplicationMaster whether it {@link #canCommit(TaskAttemptID)} This is    * a legacy from the centralized commit protocol handling by the JobTracker.    */
 annotation|@
 name|Override
 DECL|method|commitPending (TaskAttemptID taskAttemptID, TaskStatus taskStatsu)

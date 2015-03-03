@@ -3943,7 +3943,7 @@ block|}
 argument_list|)
 return|;
 block|}
-comment|/**    * Authenticate to Openstack Keystone    * As well as returning the access token, the member fields {@link #token},    * {@link #endpointURI} and {@link #objectLocationURI} are set up for re-use.    *<p/>    * This method is re-entrant -if more than one thread attempts to authenticate    * neither will block -but the field values with have those of the last caller.    *<p/>    *    * @return authenticated access token    */
+comment|/**    * Authenticate to Openstack Keystone    * As well as returning the access token, the member fields {@link #token},    * {@link #endpointURI} and {@link #objectLocationURI} are set up for re-use.    *<p>    * This method is re-entrant -if more than one thread attempts to authenticate    * neither will block -but the field values with have those of the last caller.    *    * @return authenticated access token    */
 DECL|method|authenticate ()
 specifier|public
 name|AccessToken
@@ -5625,7 +5625,7 @@ return|return
 name|entity
 return|;
 block|}
-comment|/**    * Converts Swift path to URI to make request.    * This is public for unit testing    *    * @param path path to object    * @param endpointURI damain url e.g. http://domain.com    * @return valid URI for object    */
+comment|/**    * Converts Swift path to URI to make request.    * This is public for unit testing    *    * @param path path to object    * @param endpointURI damain url e.g. http://domain.com    * @return valid URI for object    * @throws SwiftException    */
 DECL|method|pathToURI (SwiftObjectPath path, URI endpointURI)
 specifier|public
 specifier|static
@@ -6380,7 +6380,7 @@ return|return
 name|locationAware
 return|;
 block|}
-comment|/**    * Get the blocksize of this filesystem    * @return a blocksize>0    */
+comment|/**    * Get the blocksize of this filesystem    * @return a blocksize&gt; 0    */
 DECL|method|getBlocksizeKB ()
 specifier|public
 name|long

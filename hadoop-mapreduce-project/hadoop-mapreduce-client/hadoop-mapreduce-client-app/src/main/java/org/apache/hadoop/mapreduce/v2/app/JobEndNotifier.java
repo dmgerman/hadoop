@@ -169,7 +169,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  *<p>This class handles job end notification. Submitters of jobs can choose to  * be notified of the end of a job by supplying a URL to which a connection  * will be established.  *<ul><li> The URL connection is fire and forget by default.</li><li>  * User can specify number of retry attempts and a time interval at which to  * attempt retries</li><li>  * Cluster administrators can set final parameters to set maximum number of  * tries (0 would disable job end notification) and max time interval and a  * proxy if needed</li><li>  * The URL may contain sentinels which will be replaced by jobId and jobStatus   * (eg. SUCCEEDED/KILLED/FAILED)</li></ul>  *</p>  */
+comment|/**  *<p>This class handles job end notification. Submitters of jobs can choose to  * be notified of the end of a job by supplying a URL to which a connection  * will be established.  *<ul><li> The URL connection is fire and forget by default.</li><li>  * User can specify number of retry attempts and a time interval at which to  * attempt retries</li><li>  * Cluster administrators can set final parameters to set maximum number of  * tries (0 would disable job end notification) and max time interval and a  * proxy if needed</li><li>  * The URL may contain sentinels which will be replaced by jobId and jobStatus   * (eg. SUCCEEDED/KILLED/FAILED)</li></ul>  */
 end_comment
 
 begin_class

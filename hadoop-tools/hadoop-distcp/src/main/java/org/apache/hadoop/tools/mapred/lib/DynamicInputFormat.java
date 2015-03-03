@@ -289,7 +289,7 @@ name|CONF_LABEL_NUM_ENTRIES_PER_CHUNK
 init|=
 literal|"mapred.num.entries.per.chunk"
 decl_stmt|;
-comment|/**    * Implementation of InputFormat::getSplits(). This method splits up the    * copy-listing file into chunks, and assigns the first batch to different    * tasks.    * @param jobContext JobContext for the map job.    * @return The list of (empty) dynamic input-splits.    * @throws IOException, on failure.    * @throws InterruptedException    */
+comment|/**    * Implementation of InputFormat::getSplits(). This method splits up the    * copy-listing file into chunks, and assigns the first batch to different    * tasks.    * @param jobContext JobContext for the map job.    * @return The list of (empty) dynamic input-splits.    * @throws IOException    * @throws InterruptedException    */
 annotation|@
 name|Override
 DECL|method|getSplits (JobContext jobContext)
@@ -1618,7 +1618,7 @@ name|CONF_LABEL_NUM_ENTRIES_PER_CHUNK
 argument_list|)
 return|;
 block|}
-comment|/**    * Implementation of Inputformat::createRecordReader().    * @param inputSplit The split for which the RecordReader is required.    * @param taskAttemptContext TaskAttemptContext for the current attempt.    * @return DynamicRecordReader instance.    * @throws IOException, on failure.    * @throws InterruptedException    */
+comment|/**    * Implementation of Inputformat::createRecordReader().    * @param inputSplit The split for which the RecordReader is required.    * @param taskAttemptContext TaskAttemptContext for the current attempt.    * @return DynamicRecordReader instance.    * @throws IOException    * @throws InterruptedException    */
 annotation|@
 name|Override
 DECL|method|createRecordReader ( InputSplit inputSplit, TaskAttemptContext taskAttemptContext)

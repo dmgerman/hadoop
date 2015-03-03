@@ -382,7 +382,7 @@ return|return
 literal|false
 return|;
 block|}
-comment|/**    * If authorization is enabled, checks whether the user (in the callerUGI)    * is authorized to perform the operation specified by 'jobOperation' on    * the job by checking if the user is jobOwner or part of job ACL for the    * specific job operation.    *<ul>    *<li>The owner of the job can do any operation on the job</li>    *<li>For all other users/groups job-acls are checked</li>    *</ul>    * @param callerUGI    * @param jobOperation    * @param jobOwner    * @param jobACL    * @throws AccessControlException    */
+comment|/**    * If authorization is enabled, checks whether the user (in the callerUGI)    * is authorized to perform the operation specified by 'jobOperation' on    * the job by checking if the user is jobOwner or part of job ACL for the    * specific job operation.    *<ul>    *<li>The owner of the job can do any operation on the job</li>    *<li>For all other users/groups job-acls are checked</li>    *</ul>    * @param callerUGI    * @param jobOperation    * @param jobOwner    * @param jobACL    */
 DECL|method|checkAccess (UserGroupInformation callerUGI, JobACL jobOperation, String jobOwner, AccessControlList jobACL)
 specifier|public
 name|boolean

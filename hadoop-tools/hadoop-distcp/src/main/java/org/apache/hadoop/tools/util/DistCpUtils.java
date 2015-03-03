@@ -468,7 +468,7 @@ operator|.
 name|class
 argument_list|)
 decl_stmt|;
-comment|/**    * Retrieves size of the file at the specified path.    * @param path The path of the file whose size is sought.    * @param configuration Configuration, to retrieve the appropriate FileSystem.    * @return The file-size, in number of bytes.    * @throws IOException, on failure.    */
+comment|/**    * Retrieves size of the file at the specified path.    * @param path The path of the file whose size is sought.    * @param configuration Configuration, to retrieve the appropriate FileSystem.    * @return The file-size, in number of bytes.    * @throws IOException    */
 DECL|method|getFileSize (Path path, Configuration configuration)
 specifier|public
 specifier|static

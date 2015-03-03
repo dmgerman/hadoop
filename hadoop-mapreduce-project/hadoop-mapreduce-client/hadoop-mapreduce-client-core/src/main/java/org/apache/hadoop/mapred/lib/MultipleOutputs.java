@@ -109,7 +109,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * The MultipleOutputs class simplifies writting to additional outputs other  * than the job default output via the<code>OutputCollector</code> passed to  * the<code>map()</code> and<code>reduce()</code> methods of the  *<code>Mapper</code> and<code>Reducer</code> implementations.  *<p/>  * Each additional output, or named output, may be configured with its own  *<code>OutputFormat</code>, with its own key class and with its own value  * class.  *<p/>  * A named output can be a single file or a multi file. The later is refered as  * a multi named output.  *<p/>  * A multi named output is an unbound set of files all sharing the same  *<code>OutputFormat</code>, key class and value class configuration.  *<p/>  * When named outputs are used within a<code>Mapper</code> implementation,  * key/values written to a name output are not part of the reduce phase, only  * key/values written to the job<code>OutputCollector</code> are part of the  * reduce phase.  *<p/>  * MultipleOutputs supports counters, by default the are disabled. The counters  * group is the {@link MultipleOutputs} class name.  *</p>  * The names of the counters are the same as the named outputs. For multi  * named outputs the name of the counter is the concatenation of the named  * output, and underscore '_' and the multiname.  *<p/>  * Job configuration usage pattern is:  *<pre>  *  * JobConf conf = new JobConf();  *  * conf.setInputPath(inDir);  * FileOutputFormat.setOutputPath(conf, outDir);  *  * conf.setMapperClass(MOMap.class);  * conf.setReducerClass(MOReduce.class);  * ...  *  * // Defines additional single text based output 'text' for the job  * MultipleOutputs.addNamedOutput(conf, "text", TextOutputFormat.class,  * LongWritable.class, Text.class);  *  * // Defines additional multi sequencefile based output 'sequence' for the  * // job  * MultipleOutputs.addMultiNamedOutput(conf, "seq",  *   SequenceFileOutputFormat.class,  *   LongWritable.class, Text.class);  * ...  *  * JobClient jc = new JobClient();  * RunningJob job = jc.submitJob(conf);  *  * ...  *</pre>  *<p/>  * Job configuration usage pattern is:  *<pre>  *  * public class MOReduce implements  *   Reducer&lt;WritableComparable, Writable&gt; {  * private MultipleOutputs mos;  *  * public void configure(JobConf conf) {  * ...  * mos = new MultipleOutputs(conf);  * }  *  * public void reduce(WritableComparable key, Iterator&lt;Writable&gt; values,  * OutputCollector output, Reporter reporter)  * throws IOException {  * ...  * mos.getCollector("text", reporter).collect(key, new Text("Hello"));  * mos.getCollector("seq", "A", reporter).collect(key, new Text("Bye"));  * mos.getCollector("seq", "B", reporter).collect(key, new Text("Chau"));  * ...  * }  *  * public void close() throws IOException {  * mos.close();  * ...  * }  *  * }  *</pre>  */
+comment|/**  * The MultipleOutputs class simplifies writting to additional outputs other  * than the job default output via the<code>OutputCollector</code> passed to  * the<code>map()</code> and<code>reduce()</code> methods of the  *<code>Mapper</code> and<code>Reducer</code> implementations.  *<p>  * Each additional output, or named output, may be configured with its own  *<code>OutputFormat</code>, with its own key class and with its own value  * class.  *<p>  * A named output can be a single file or a multi file. The later is refered as  * a multi named output.  *<p>  * A multi named output is an unbound set of files all sharing the same  *<code>OutputFormat</code>, key class and value class configuration.  *<p>  * When named outputs are used within a<code>Mapper</code> implementation,  * key/values written to a name output are not part of the reduce phase, only  * key/values written to the job<code>OutputCollector</code> are part of the  * reduce phase.  *<p>  * MultipleOutputs supports counters, by default the are disabled. The counters  * group is the {@link MultipleOutputs} class name.  *</p>  * The names of the counters are the same as the named outputs. For multi  * named outputs the name of the counter is the concatenation of the named  * output, and underscore '_' and the multiname.  *<p>  * Job configuration usage pattern is:  *<pre>  *  * JobConf conf = new JobConf();  *  * conf.setInputPath(inDir);  * FileOutputFormat.setOutputPath(conf, outDir);  *  * conf.setMapperClass(MOMap.class);  * conf.setReducerClass(MOReduce.class);  * ...  *  * // Defines additional single text based output 'text' for the job  * MultipleOutputs.addNamedOutput(conf, "text", TextOutputFormat.class,  * LongWritable.class, Text.class);  *  * // Defines additional multi sequencefile based output 'sequence' for the  * // job  * MultipleOutputs.addMultiNamedOutput(conf, "seq",  *   SequenceFileOutputFormat.class,  *   LongWritable.class, Text.class);  * ...  *  * JobClient jc = new JobClient();  * RunningJob job = jc.submitJob(conf);  *  * ...  *</pre>  *<p>  * Job configuration usage pattern is:  *<pre>  *  * public class MOReduce implements  *   Reducer&lt;WritableComparable, Writable&gt; {  * private MultipleOutputs mos;  *  * public void configure(JobConf conf) {  * ...  * mos = new MultipleOutputs(conf);  * }  *  * public void reduce(WritableComparable key, Iterator&lt;Writable&gt; values,  * OutputCollector output, Reporter reporter)  * throws IOException {  * ...  * mos.getCollector("text", reporter).collect(key, new Text("Hello"));  * mos.getCollector("seq", "A", reporter).collect(key, new Text("Bye"));  * mos.getCollector("seq", "B", reporter).collect(key, new Text("Chau"));  * ...  * }  *  * public void close() throws IOException {  * mos.close();  * ...  * }  *  * }  *</pre>  */
 end_comment
 
 begin_class
@@ -671,7 +671,7 @@ name|class
 argument_list|)
 return|;
 block|}
-comment|/**    * Adds a named output for the job.    *<p/>    *    * @param conf              job conf to add the named output    * @param namedOutput       named output name, it has to be a word, letters    *                          and numbers only, cannot be the word 'part' as    *                          that is reserved for the    *                          default output.    * @param outputFormatClass OutputFormat class.    * @param keyClass          key class    * @param valueClass        value class    */
+comment|/**    * Adds a named output for the job.    *    * @param conf              job conf to add the named output    * @param namedOutput       named output name, it has to be a word, letters    *                          and numbers only, cannot be the word 'part' as    *                          that is reserved for the    *                          default output.    * @param outputFormatClass OutputFormat class.    * @param keyClass          key class    * @param valueClass        value class    */
 DECL|method|addNamedOutput (JobConf conf, String namedOutput, Class<? extends OutputFormat> outputFormatClass, Class<?> keyClass, Class<?> valueClass)
 specifier|public
 specifier|static
@@ -721,7 +721,7 @@ name|valueClass
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Adds a multi named output for the job.    *<p/>    *    * @param conf              job conf to add the named output    * @param namedOutput       named output name, it has to be a word, letters    *                          and numbers only, cannot be the word 'part' as    *                          that is reserved for the    *                          default output.    * @param outputFormatClass OutputFormat class.    * @param keyClass          key class    * @param valueClass        value class    */
+comment|/**    * Adds a multi named output for the job.    *    * @param conf              job conf to add the named output    * @param namedOutput       named output name, it has to be a word, letters    *                          and numbers only, cannot be the word 'part' as    *                          that is reserved for the    *                          default output.    * @param outputFormatClass OutputFormat class.    * @param keyClass          key class    * @param valueClass        value class    */
 DECL|method|addMultiNamedOutput (JobConf conf, String namedOutput, Class<? extends OutputFormat> outputFormatClass, Class<?> keyClass, Class<?> valueClass)
 specifier|public
 specifier|static
@@ -771,7 +771,7 @@ name|valueClass
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Adds a named output for the job.    *<p/>    *    * @param conf              job conf to add the named output    * @param namedOutput       named output name, it has to be a word, letters    *                          and numbers only, cannot be the word 'part' as    *                          that is reserved for the    *                          default output.    * @param multi             indicates if the named output is multi    * @param outputFormatClass OutputFormat class.    * @param keyClass          key class    * @param valueClass        value class    */
+comment|/**    * Adds a named output for the job.    *    * @param conf              job conf to add the named output    * @param namedOutput       named output name, it has to be a word, letters    *                          and numbers only, cannot be the word 'part' as    *                          that is reserved for the    *                          default output.    * @param multi             indicates if the named output is multi    * @param outputFormatClass OutputFormat class.    * @param keyClass          key class    * @param valueClass        value class    */
 DECL|method|addNamedOutput (JobConf conf, String namedOutput, boolean multi, Class<? extends OutputFormat> outputFormatClass, Class<?> keyClass, Class<?> valueClass)
 specifier|private
 specifier|static
@@ -907,7 +907,7 @@ name|multi
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Enables or disables counters for the named outputs.    *<p/>    * By default these counters are disabled.    *<p/>    * MultipleOutputs supports counters, by default the are disabled.    * The counters group is the {@link MultipleOutputs} class name.    *</p>    * The names of the counters are the same as the named outputs. For multi    * named outputs the name of the counter is the concatenation of the named    * output, and underscore '_' and the multiname.    *    * @param conf    job conf to enableadd the named output.    * @param enabled indicates if the counters will be enabled or not.    */
+comment|/**    * Enables or disables counters for the named outputs.    *<p>    * By default these counters are disabled.    *<p>    * MultipleOutputs supports counters, by default the are disabled.    * The counters group is the {@link MultipleOutputs} class name.    *</p>    * The names of the counters are the same as the named outputs. For multi    * named outputs the name of the counter is the concatenation of the named    * output, and underscore '_' and the multiname.    *    * @param conf    job conf to enableadd the named output.    * @param enabled indicates if the counters will be enabled or not.    */
 DECL|method|setCountersEnabled (JobConf conf, boolean enabled)
 specifier|public
 specifier|static
@@ -931,7 +931,7 @@ name|enabled
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Returns if the counters for the named outputs are enabled or not.    *<p/>    * By default these counters are disabled.    *<p/>    * MultipleOutputs supports counters, by default the are disabled.    * The counters group is the {@link MultipleOutputs} class name.    *</p>    * The names of the counters are the same as the named outputs. For multi    * named outputs the name of the counter is the concatenation of the named    * output, and underscore '_' and the multiname.    *    *    * @param conf    job conf to enableadd the named output.    * @return TRUE if the counters are enabled, FALSE if they are disabled.    */
+comment|/**    * Returns if the counters for the named outputs are enabled or not.    *<p>    * By default these counters are disabled.    *<p>    * MultipleOutputs supports counters, by default the are disabled.    * The counters group is the {@link MultipleOutputs} class name.    *</p>    * The names of the counters are the same as the named outputs. For multi    * named outputs the name of the counter is the concatenation of the named    * output, and underscore '_' and the multiname.    *    *    * @param conf    job conf to enableadd the named output.    * @return TRUE if the counters are enabled, FALSE if they are disabled.    */
 DECL|method|getCountersEnabled (JobConf conf)
 specifier|public
 specifier|static
@@ -1330,7 +1330,7 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-comment|/**    * Gets the output collector for a named output.    *<p/>    *    * @param namedOutput the named output name    * @param reporter    the reporter    * @return the output collector for the given named output    * @throws IOException thrown if output collector could not be created    */
+comment|/**    * Gets the output collector for a named output.    *    * @param namedOutput the named output name    * @param reporter    the reporter    * @return the output collector for the given named output    * @throws IOException thrown if output collector could not be created    */
 annotation|@
 name|SuppressWarnings
 argument_list|(
@@ -1363,7 +1363,7 @@ name|reporter
 argument_list|)
 return|;
 block|}
-comment|/**    * Gets the output collector for a multi named output.    *<p/>    *    * @param namedOutput the named output name    * @param multiName   the multi name part    * @param reporter    the reporter    * @return the output collector for the given named output    * @throws IOException thrown if output collector could not be created    */
+comment|/**    * Gets the output collector for a multi named output.    *    * @param namedOutput the named output name    * @param multiName   the multi name part    * @param reporter    the reporter    * @return the output collector for the given named output    * @throws IOException thrown if output collector could not be created    */
 annotation|@
 name|SuppressWarnings
 argument_list|(
@@ -1525,7 +1525,7 @@ block|}
 block|}
 return|;
 block|}
-comment|/**    * Closes all the opened named outputs.    *<p/>    * If overriden subclasses must invoke<code>super.close()</code> at the    * end of their<code>close()</code>    *    * @throws java.io.IOException thrown if any of the MultipleOutput files    *                             could not be closed properly.    */
+comment|/**    * Closes all the opened named outputs.    *<p>    * If overriden subclasses must invoke<code>super.close()</code> at the    * end of their<code>close()</code>    *    * @throws java.io.IOException thrown if any of the MultipleOutput files    *                             could not be closed properly.    */
 DECL|method|close ()
 specifier|public
 name|void

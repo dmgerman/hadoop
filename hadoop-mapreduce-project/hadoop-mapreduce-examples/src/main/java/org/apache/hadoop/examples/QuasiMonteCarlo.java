@@ -313,7 +313,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * A map/reduce program that estimates the value of Pi  * using a quasi-Monte Carlo (qMC) method.  * Arbitrary integrals can be approximated numerically by qMC methods.  * In this example,  * we use a qMC method to approximate the integral $I = \int_S f(x) dx$,  * where $S=[0,1)^2$ is a unit square,  * $x=(x_1,x_2)$ is a 2-dimensional point,  * and $f$ is a function describing the inscribed circle of the square $S$,  * $f(x)=1$ if $(2x_1-1)^2+(2x_2-1)^2<= 1$ and $f(x)=0$, otherwise.  * It is easy to see that Pi is equal to $4I$.  * So an approximation of Pi is obtained once $I$ is evaluated numerically.  *   * There are better methods for computing Pi.  * We emphasize numerical approximation of arbitrary integrals in this example.  * For computing many digits of Pi, consider using bbp.  *  * The implementation is discussed below.  *  * Mapper:  *   Generate points in a unit square  *   and then count points inside/outside of the inscribed circle of the square.  *  * Reducer:  *   Accumulate points inside/outside results from the mappers.  *  * Let numTotal = numInside + numOutside.  * The fraction numInside/numTotal is a rational approximation of  * the value (Area of the circle)/(Area of the square) = $I$,  * where the area of the inscribed circle is Pi/4  * and the area of unit square is 1.  * Finally, the estimated value of Pi is 4(numInside/numTotal).    */
+comment|/**  * A map/reduce program that estimates the value of Pi  * using a quasi-Monte Carlo (qMC) method.  * Arbitrary integrals can be approximated numerically by qMC methods.  * In this example,  * we use a qMC method to approximate the integral $I = \int_S f(x) dx$,  * where $S=[0,1)^2$ is a unit square,  * $x=(x_1,x_2)$ is a 2-dimensional point,  * and $f$ is a function describing the inscribed circle of the square $S$,  * $f(x)=1$ if $(2x_1-1)^2+(2x_2-1)^2&lt;= 1$ and $f(x)=0$, otherwise.  * It is easy to see that Pi is equal to $4I$.  * So an approximation of Pi is obtained once $I$ is evaluated numerically.  *   * There are better methods for computing Pi.  * We emphasize numerical approximation of arbitrary integrals in this example.  * For computing many digits of Pi, consider using bbp.  *  * The implementation is discussed below.  *  * Mapper:  *   Generate points in a unit square  *   and then count points inside/outside of the inscribed circle of the square.  *  * Reducer:  *   Accumulate points inside/outside results from the mappers.  *  * Let numTotal = numInside + numOutside.  * The fraction numInside/numTotal is a rational approximation of  * the value (Area of the circle)/(Area of the square) = $I$,  * where the area of the inscribed circle is Pi/4  * and the area of unit square is 1.  * Finally, the estimated value of Pi is 4(numInside/numTotal).    */
 end_comment
 
 begin_class
@@ -783,7 +783,7 @@ argument_list|,
 name|LongWritable
 argument_list|>
 block|{
-comment|/** Map method.      * @param offset samples starting from the (offset+1)th sample.      * @param size the number of samples for this map      * @param context output {ture->numInside, false->numOutside}      */
+comment|/** Map method.      * @param offset samples starting from the (offset+1)th sample.      * @param size the number of samples for this map      * @param context output {ture-&gt;numInside, false-&gt;numOutside}      */
 DECL|method|map (LongWritable offset, LongWritable size, Context context)
 specifier|public
 name|void

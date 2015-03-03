@@ -932,7 +932,7 @@ return|return
 name|ret
 return|;
 block|}
-comment|/**    * Initializes the map-part of the job with the appropriate input settings.    *     * @param job The job    * @param inputClass the class object implementing DBWritable, which is the     * Java object holding tuple fields.    * @param tableName The table to read data from    * @param conditions The condition which to select data with, eg. '(updated>    * 20070101 AND length> 0)'    * @param orderBy the fieldNames in the orderBy clause.    * @param fieldNames The field names in the table    * @see #setInput(JobConf, Class, String, String)    */
+comment|/**    * Initializes the map-part of the job with the appropriate input settings.    *     * @param job The job    * @param inputClass the class object implementing DBWritable, which is the     * Java object holding tuple fields.    * @param tableName The table to read data from    * @param conditions The condition which to select data with, eg. '(updated&gt;    * 20070101 AND length&gt; 0)'    * @param orderBy the fieldNames in the orderBy clause.    * @param fieldNames The field names in the table    * @see #setInput(JobConf, Class, String, String)    */
 DECL|method|setInput (JobConf job, Class<? extends DBWritable> inputClass, String tableName,String conditions, String orderBy, String... fieldNames)
 specifier|public
 specifier|static

@@ -151,7 +151,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**   * A {@link Mapper} that maps text values into<token,freq> pairs.  Uses  * {@link StringTokenizer} to break text into tokens.   */
+comment|/**   * A {@link Mapper} that maps text values into&lt;token,freq&gt; pairs.  Uses  * {@link StringTokenizer} to break text into tokens.   */
 end_comment
 
 begin_class

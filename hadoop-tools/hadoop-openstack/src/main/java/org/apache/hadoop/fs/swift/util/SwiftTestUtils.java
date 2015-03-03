@@ -941,7 +941,7 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-comment|/**    * Convert a byte to a character for printing. If the    * byte value is< 32 -and hence unprintable- the byte is    * returned as a two digit hex value    * @param b byte    * @return the printable character string    */
+comment|/**    * Convert a byte to a character for printing. If the    * byte value is&lt; 32 -and hence unprintable- the byte is    * returned as a two digit hex value    * @param b byte    * @return the printable character string    */
 DECL|method|toChar (byte b)
 specifier|public
 specifier|static

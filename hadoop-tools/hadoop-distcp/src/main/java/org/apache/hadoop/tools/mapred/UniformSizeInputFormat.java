@@ -255,7 +255,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * UniformSizeInputFormat extends the InputFormat<> class, to produce  * input-splits for DistCp.  * It looks at the copy-listing and groups the contents into input-splits such  * that the total-number of bytes to be copied for each input split is  * uniform.  */
+comment|/**  * UniformSizeInputFormat extends the InputFormat class, to produce  * input-splits for DistCp.  * It looks at the copy-listing and groups the contents into input-splits such  * that the total-number of bytes to be copied for each input split is  * uniform.  */
 end_comment
 
 begin_class
@@ -287,7 +287,7 @@ operator|.
 name|class
 argument_list|)
 decl_stmt|;
-comment|/**    * Implementation of InputFormat::getSplits(). Returns a list of InputSplits,    * such that the number of bytes to be copied for all the splits are    * approximately equal.    * @param context JobContext for the job.    * @return The list of uniformly-distributed input-splits.    * @throws IOException: On failure.    * @throws InterruptedException    */
+comment|/**    * Implementation of InputFormat::getSplits(). Returns a list of InputSplits,    * such that the number of bytes to be copied for all the splits are    * approximately equal.    * @param context JobContext for the job.    * @return The list of uniformly-distributed input-splits.    * @throws IOException    * @throws InterruptedException    */
 annotation|@
 name|Override
 DECL|method|getSplits (JobContext context)

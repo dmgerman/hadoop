@@ -374,7 +374,7 @@ name|IOException
 throws|,
 name|InterruptedException
 function_decl|;
-comment|/**    * Return the latest CheckpointID for the given TaskID. This provides    * the task with a way to locate the checkpointed data and restart from    * that point in the computation.    *    * @param taskID task's id    * @return the most recent checkpoint (if any) for this task    * @throws IOException    */
+comment|/**    * Return the latest CheckpointID for the given TaskID. This provides    * the task with a way to locate the checkpointed data and restart from    * that point in the computation.    *    * @param taskID task's id    * @return the most recent checkpoint (if any) for this task    */
 DECL|method|getCheckpointID (TaskID taskID)
 name|TaskCheckpointID
 name|getCheckpointID

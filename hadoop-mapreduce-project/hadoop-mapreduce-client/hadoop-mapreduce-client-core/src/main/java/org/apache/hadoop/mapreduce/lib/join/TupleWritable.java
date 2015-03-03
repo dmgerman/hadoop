@@ -530,7 +530,7 @@ block|}
 block|}
 return|;
 block|}
-comment|/**    * Convert Tuple to String as in the following.    *<tt>[<child1>,<child2>,...,<childn>]</tt>    */
+comment|/**    * Convert Tuple to String as in the following.    *<tt>[&lt;child1&gt;,&lt;child2&gt;,...,&lt;childn&gt;]</tt>    */
 DECL|method|toString ()
 specifier|public
 name|String

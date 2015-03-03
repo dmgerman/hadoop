@@ -1275,7 +1275,7 @@ return|return
 name|result
 return|;
 block|}
-comment|/**    * Get the timestamps of the archives.  Used by internal    * DistributedCache and MapReduce code.    * @return a string array of timestamps     * @throws IOException    */
+comment|/**    * Get the timestamps of the archives.  Used by internal    * DistributedCache and MapReduce code.    * @return a string array of timestamps     */
 DECL|method|getArchiveTimestamps ()
 specifier|public
 name|String
@@ -1295,7 +1295,7 @@ argument_list|)
 argument_list|)
 return|;
 block|}
-comment|/**    * Get the timestamps of the files.  Used by internal    * DistributedCache and MapReduce code.    * @return a string array of timestamps     * @throws IOException    */
+comment|/**    * Get the timestamps of the files.  Used by internal    * DistributedCache and MapReduce code.    * @return a string array of timestamps     */
 DECL|method|getFileTimestamps ()
 specifier|public
 name|String

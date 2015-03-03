@@ -95,7 +95,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**   * A single process data generator for the terasort data. Based on gensort.c   * version 1.1 (3 Mar 2009) from Chris Nyberg<chris.nyberg@ordinal.com>.  */
+comment|/**   * A single process data generator for the terasort data. Based on gensort.c   * version 1.1 (3 Mar 2009) from Chris Nyberg&lt;chris.nyberg@ordinal.com&gt;.  */
 end_comment
 
 begin_class

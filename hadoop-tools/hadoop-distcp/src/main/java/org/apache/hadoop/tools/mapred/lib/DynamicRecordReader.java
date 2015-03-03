@@ -240,7 +240,7 @@ argument_list|(
 literal|5
 argument_list|)
 decl_stmt|;
-comment|/**    * Implementation for RecordReader::initialize(). Initializes the internal    * RecordReader to read from chunks.    * @param inputSplit The InputSplit for the map. Ignored entirely.    * @param taskAttemptContext The AttemptContext.    * @throws IOException, on failure.    * @throws InterruptedException    */
+comment|/**    * Implementation for RecordReader::initialize(). Initializes the internal    * RecordReader to read from chunks.    * @param inputSplit The InputSplit for the map. Ignored entirely.    * @param taskAttemptContext The AttemptContext.    * @throws IOException    * @throws InterruptedException    */
 annotation|@
 name|Override
 DECL|method|initialize (InputSplit inputSplit, TaskAttemptContext taskAttemptContext)
@@ -341,7 +341,7 @@ name|CONF_LABEL_TOTAL_NUMBER_OF_RECORDS
 argument_list|)
 return|;
 block|}
-comment|/**    * Implementation of RecordReader::nextValue().    * Reads the contents of the current chunk and returns them. When a chunk has    * been completely exhausted, an new chunk is acquired and read,    * transparently.    * @return True, if the nextValue() could be traversed to. False, otherwise.    * @throws IOException, on failure.    * @throws InterruptedException    */
+comment|/**    * Implementation of RecordReader::nextValue().    * Reads the contents of the current chunk and returns them. When a chunk has    * been completely exhausted, an new chunk is acquired and read,    * transparently.    * @return True, if the nextValue() could be traversed to. False, otherwise.    * @throws IOException    * @throws InterruptedException    */
 annotation|@
 name|Override
 DECL|method|nextKeyValue ()
@@ -476,7 +476,7 @@ literal|false
 return|;
 block|}
 block|}
-comment|/**    * Implementation of RecordReader::getCurrentKey().    * @return The key of the current record. (i.e. the source-path.)    * @throws IOException, on failure.    * @throws InterruptedException    */
+comment|/**    * Implementation of RecordReader::getCurrentKey().    * @return The key of the current record. (i.e. the source-path.)    * @throws IOException    * @throws InterruptedException    */
 annotation|@
 name|Override
 DECL|method|getCurrentKey ()
@@ -499,7 +499,7 @@ name|getCurrentKey
 argument_list|()
 return|;
 block|}
-comment|/**    * Implementation of RecordReader::getCurrentValue().    * @return The value of the current record. (i.e. the target-path.)    * @throws IOException, on failure.    * @throws InterruptedException    */
+comment|/**    * Implementation of RecordReader::getCurrentValue().    * @return The value of the current record. (i.e. the target-path.)    * @throws IOException    * @throws InterruptedException    */
 annotation|@
 name|Override
 DECL|method|getCurrentValue ()
@@ -522,7 +522,7 @@ name|getCurrentValue
 argument_list|()
 return|;
 block|}
-comment|/**    * Implementation of RecordReader::getProgress().    * @return A fraction [0.0,1.0] indicating the progress of a DistCp mapper.    * @throws IOException, on failure.    * @throws InterruptedException    */
+comment|/**    * Implementation of RecordReader::getProgress().    * @return A fraction [0.0,1.0] indicating the progress of a DistCp mapper.    * @throws IOException    * @throws InterruptedException    */
 annotation|@
 name|Override
 DECL|method|getProgress ()
@@ -656,7 +656,7 @@ name|getNumChunksLeft
 argument_list|()
 return|;
 block|}
-comment|/**    * Implementation of RecordReader::close().    * Closes the RecordReader.    * @throws IOException, on failure.    */
+comment|/**    * Implementation of RecordReader::close().    * Closes the RecordReader.    * @throws IOException    */
 annotation|@
 name|Override
 DECL|method|close ()

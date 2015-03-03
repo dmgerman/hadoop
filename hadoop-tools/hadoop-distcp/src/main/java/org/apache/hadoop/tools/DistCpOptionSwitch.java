@@ -209,7 +209,7 @@ literal|"List of files that need to be copied"
 argument_list|)
 argument_list|)
 block|,
-comment|/**    * Copy all the source files and commit them atomically to the target    * This is typically useful in cases where there is a process    * polling for availability of a file/dir. This option is incompatible    * with SYNC_FOLDERS& DELETE_MISSING    */
+comment|/**    * Copy all the source files and commit them atomically to the target    * This is typically useful in cases where there is a process    * polling for availability of a file/dir. This option is incompatible    * with SYNC_FOLDERS and DELETE_MISSING    */
 DECL|enumConstant|ATOMIC_COMMIT
 name|ATOMIC_COMMIT
 argument_list|(

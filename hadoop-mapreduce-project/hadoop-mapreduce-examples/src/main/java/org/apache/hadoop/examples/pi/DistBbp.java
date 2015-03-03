@@ -193,7 +193,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * A map/reduce program that uses a BBP-type method to compute exact   * binary digits of Pi.  * This program is designed for computing the n th bit of Pi,  * for large n, say n>= 10^8.  * For computing lower bits of Pi, consider using bbp.  *  * The actually computation is done by DistSum jobs.  * The steps for launching the jobs are:  *   * (1) Initialize parameters.  * (2) Create a list of sums.  * (3) Read computed values from the given local directory.  * (4) Remove the computed values from the sums.  * (5) Partition the remaining sums into computation jobs.  * (6) Submit the computation jobs to a cluster and then wait for the results.  * (7) Write job outputs to the given local directory.  * (8) Combine the job outputs and print the Pi bits.  */
+comment|/**  * A map/reduce program that uses a BBP-type method to compute exact   * binary digits of Pi.  * This program is designed for computing the n th bit of Pi,  * for large n, say n&gt;= 10^8.  * For computing lower bits of Pi, consider using bbp.  *  * The actually computation is done by DistSum jobs.  * The steps for launching the jobs are:  *   * (1) Initialize parameters.  * (2) Create a list of sums.  * (3) Read computed values from the given local directory.  * (4) Remove the computed values from the sums.  * (5) Partition the remaining sums into computation jobs.  * (6) Submit the computation jobs to a cluster and then wait for the results.  * (7) Write job outputs to the given local directory.  * (8) Combine the job outputs and print the Pi bits.  */
 end_comment
 
 begin_comment
