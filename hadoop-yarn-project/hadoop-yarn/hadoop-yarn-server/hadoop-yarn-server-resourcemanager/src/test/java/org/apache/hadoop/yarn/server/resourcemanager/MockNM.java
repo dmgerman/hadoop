@@ -451,7 +451,6 @@ name|resourceTracker
 decl_stmt|;
 DECL|field|httpPort
 specifier|private
-specifier|final
 name|int
 name|httpPort
 init|=
@@ -647,6 +646,20 @@ block|{
 return|return
 name|httpPort
 return|;
+block|}
+DECL|method|setHttpPort (int port)
+specifier|public
+name|void
+name|setHttpPort
+parameter_list|(
+name|int
+name|port
+parameter_list|)
+block|{
+name|httpPort
+operator|=
+name|port
+expr_stmt|;
 block|}
 DECL|method|setResourceTrackerService (ResourceTrackerService resourceTracker)
 specifier|public
