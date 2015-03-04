@@ -2129,6 +2129,12 @@ name|info
 operator|.
 name|createdRollbackImages
 argument_list|()
+operator|&&
+operator|!
+name|info
+operator|.
+name|isFinalized
+argument_list|()
 condition|)
 block|{
 name|out

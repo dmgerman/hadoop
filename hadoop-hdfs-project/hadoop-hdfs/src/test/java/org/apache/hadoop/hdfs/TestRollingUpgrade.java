@@ -1505,9 +1505,12 @@ argument_list|)
 decl_stmt|;
 name|Assert
 operator|.
-name|assertNull
+name|assertTrue
 argument_list|(
 name|finalize
+operator|.
+name|isFinalized
+argument_list|()
 argument_list|)
 expr_stmt|;
 name|LOG
@@ -2584,9 +2587,12 @@ argument_list|)
 expr_stmt|;
 name|Assert
 operator|.
-name|assertNull
+name|assertTrue
 argument_list|(
 name|info
+operator|.
+name|isFinalized
+argument_list|()
 argument_list|)
 expr_stmt|;
 name|Assert

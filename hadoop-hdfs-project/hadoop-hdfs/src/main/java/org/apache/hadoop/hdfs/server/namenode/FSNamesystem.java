@@ -34380,7 +34380,7 @@ throw|;
 block|}
 block|}
 DECL|method|finalizeRollingUpgrade ()
-name|void
+name|RollingUpgradeInfo
 name|finalizeRollingUpgrade
 parameter_list|()
 throws|throws
@@ -34419,7 +34419,9 @@ name|isRollingUpgrade
 argument_list|()
 condition|)
 block|{
-return|return;
+return|return
+literal|null
+return|;
 block|}
 name|checkNameNodeSafeMode
 argument_list|(
@@ -34524,7 +34526,9 @@ literal|null
 argument_list|)
 expr_stmt|;
 block|}
-return|return;
+return|return
+name|returnInfo
+return|;
 block|}
 DECL|method|finalizeRollingUpgradeInternal (long finalizeTime)
 name|RollingUpgradeInfo
