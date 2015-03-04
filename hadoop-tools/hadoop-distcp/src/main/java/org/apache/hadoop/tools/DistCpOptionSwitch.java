@@ -73,7 +73,7 @@ literal|"Ignore failures during copy"
 argument_list|)
 argument_list|)
 block|,
-comment|/**    * Preserves status of file/path in the target.    * Default behavior with -p, is to preserve replication,    * block size, user, group, permission, checksum type and timestamps on the     * target file. Note that when preserving checksum type, block size is also     * preserved.    *    * @see PRESERVE_STATUS_DEFAULT    *    * If any of the optional switches are present among rbugpcaxt, then    * only the corresponding file attribute is preserved.    */
+comment|/**    * Preserves status of file/path in the target.    * Default behavior with -p, is to preserve replication,    * block size, user, group, permission, checksum type and timestamps on the     * target file. Note that when preserving checksum type, block size is also     * preserved.    *    * If any of the optional switches are present among rbugpcaxt, then    * only the corresponding file attribute is preserved.    */
 DECL|enumConstant|PRESERVE_STATUS
 name|PRESERVE_STATUS
 argument_list|(
@@ -347,6 +347,26 @@ literal|"Reuse existing data in target files and append new data to them if poss
 argument_list|)
 argument_list|)
 block|,
+DECL|enumConstant|DIFF
+name|DIFF
+argument_list|(
+name|DistCpConstants
+operator|.
+name|CONF_LABEL_DIFF
+argument_list|,
+operator|new
+name|Option
+argument_list|(
+literal|"diff"
+argument_list|,
+literal|false
+argument_list|,
+literal|"Use snapshot diff report to identify the difference between source and target"
+argument_list|)
+argument_list|,
+literal|2
+argument_list|)
+block|,
 comment|/**    * Should DisctpExecution be blocking    */
 DECL|enumConstant|BLOCKING
 name|BLOCKING
@@ -461,6 +481,36 @@ operator|.
 name|option
 operator|=
 name|option
+expr_stmt|;
+block|}
+DECL|method|DistCpOptionSwitch (String confLabel, Option option, int argNum)
+name|DistCpOptionSwitch
+parameter_list|(
+name|String
+name|confLabel
+parameter_list|,
+name|Option
+name|option
+parameter_list|,
+name|int
+name|argNum
+parameter_list|)
+block|{
+name|this
+argument_list|(
+name|confLabel
+argument_list|,
+name|option
+argument_list|)
+expr_stmt|;
+name|this
+operator|.
+name|option
+operator|.
+name|setArgs
+argument_list|(
+name|argNum
+argument_list|)
 expr_stmt|;
 block|}
 comment|/**    * Get Configuration label for the option    * @return configuration label name    */
