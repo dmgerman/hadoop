@@ -336,7 +336,6 @@ name|ReadableByteChannel
 block|{
 DECL|field|oneByteBuf
 specifier|private
-specifier|static
 specifier|final
 name|byte
 index|[]
