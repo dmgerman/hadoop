@@ -52,6 +52,34 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|classification
+operator|.
+name|InterfaceAudience
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|classification
+operator|.
+name|InterfaceStability
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|conf
 operator|.
 name|Configuration
@@ -315,6 +343,14 @@ comment|/**  * DistCp is the main driver-class for DistCpV2.  * For command-line
 end_comment
 
 begin_class
+annotation|@
+name|InterfaceAudience
+operator|.
+name|Public
+annotation|@
+name|InterfaceStability
+operator|.
+name|Evolving
 DECL|class|DistCp
 specifier|public
 class|class
@@ -324,9 +360,8 @@ name|Configured
 implements|implements
 name|Tool
 block|{
-comment|/**    * Priority of the ResourceManager shutdown hook.    */
+comment|/**    * Priority of the shutdown hook.    */
 DECL|field|SHUTDOWN_HOOK_PRIORITY
-specifier|public
 specifier|static
 specifier|final
 name|int
@@ -388,7 +423,6 @@ init|=
 literal|"distcp-default.xml"
 decl_stmt|;
 DECL|field|rand
-specifier|public
 specifier|static
 specifier|final
 name|Random
@@ -461,11 +495,12 @@ comment|/**    * To be used with the ToolRunner. Not for public consumption.    
 annotation|@
 name|VisibleForTesting
 DECL|method|DistCp ()
-specifier|public
 name|DistCp
 parameter_list|()
 block|{}
 comment|/**    * Implementation of Tool::run(). Orchestrates the copy of source file(s)    * to target location, by:    *  1. Creating a list of files to be copied to target.    *  2. Launching a Map-only job to copy the files. (Delegates to execute().)    * @param argv List of arguments passed to DistCp, from the ToolRunner.    * @return On success, it returns 0. Else, -1.    */
+annotation|@
+name|Override
 DECL|method|run (String[] argv)
 specifier|public
 name|int
@@ -688,6 +723,39 @@ parameter_list|()
 throws|throws
 name|Exception
 block|{
+name|Job
+name|job
+init|=
+name|createAndSubmitJob
+argument_list|()
+decl_stmt|;
+if|if
+condition|(
+name|inputOptions
+operator|.
+name|shouldBlock
+argument_list|()
+condition|)
+block|{
+name|waitForJobCompletion
+argument_list|(
+name|job
+argument_list|)
+expr_stmt|;
+block|}
+return|return
+name|job
+return|;
+block|}
+comment|/**    * Create and submit the mapreduce job.    * @return The mapreduce job object that has been submitted    */
+DECL|method|createAndSubmitJob ()
+specifier|public
+name|Job
+name|createAndSubmitJob
+parameter_list|()
+throws|throws
+name|Exception
+block|{
 assert|assert
 name|inputOptions
 operator|!=
@@ -795,13 +863,29 @@ operator|+
 name|jobID
 argument_list|)
 expr_stmt|;
+return|return
+name|job
+return|;
+block|}
+comment|/**    * Wait for the given job to complete.    * @param job the given mapreduce job that has already been submitted    */
+DECL|method|waitForJobCompletion (Job job)
+specifier|public
+name|void
+name|waitForJobCompletion
+parameter_list|(
+name|Job
+name|job
+parameter_list|)
+throws|throws
+name|Exception
+block|{
+assert|assert
+name|job
+operator|!=
+literal|null
+assert|;
 if|if
 condition|(
-name|inputOptions
-operator|.
-name|shouldBlock
-argument_list|()
-operator|&&
 operator|!
 name|job
 operator|.
@@ -817,7 +901,10 @@ name|IOException
 argument_list|(
 literal|"DistCp failure: Job "
 operator|+
-name|jobID
+name|job
+operator|.
+name|getJobID
+argument_list|()
 operator|+
 literal|" has failed: "
 operator|+
@@ -831,9 +918,6 @@ argument_list|()
 argument_list|)
 throw|;
 block|}
-return|return
-name|job
-return|;
 block|}
 comment|/**    * Set targetPathExists in both inputOptions and job config,    * for the benefit of CopyCommitter    */
 DECL|method|setTargetPathExists ()
@@ -2032,7 +2116,6 @@ name|DistCp
 name|distCp
 decl_stmt|;
 DECL|method|Cleanup (DistCp distCp)
-specifier|public
 name|Cleanup
 parameter_list|(
 name|DistCp
