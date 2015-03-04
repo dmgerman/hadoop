@@ -431,6 +431,15 @@ name|SUBMIT_REPLICATION
 init|=
 literal|"mapreduce.client.submit.file.replication"
 decl_stmt|;
+DECL|field|DEFAULT_SUBMIT_REPLICATION
+specifier|public
+specifier|static
+specifier|final
+name|int
+name|DEFAULT_SUBMIT_REPLICATION
+init|=
+literal|10
+decl_stmt|;
 annotation|@
 name|InterfaceStability
 operator|.
