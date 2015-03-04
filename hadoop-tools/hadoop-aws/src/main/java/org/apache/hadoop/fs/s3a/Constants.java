@@ -331,6 +331,45 @@ name|BUFFER_DIR
 init|=
 literal|"fs.s3a.buffer.dir"
 decl_stmt|;
+comment|// should we upload directly from memory rather than using a file buffer
+DECL|field|FAST_UPLOAD
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|FAST_UPLOAD
+init|=
+literal|"fs.s3a.fast.upload"
+decl_stmt|;
+DECL|field|DEFAULT_FAST_UPLOAD
+specifier|public
+specifier|static
+specifier|final
+name|boolean
+name|DEFAULT_FAST_UPLOAD
+init|=
+literal|false
+decl_stmt|;
+comment|//initial size of memory buffer for a fast upload
+DECL|field|FAST_BUFFER_SIZE
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|FAST_BUFFER_SIZE
+init|=
+literal|"fs.s3a.fast.buffer.size"
+decl_stmt|;
+DECL|field|DEFAULT_FAST_BUFFER_SIZE
+specifier|public
+specifier|static
+specifier|final
+name|int
+name|DEFAULT_FAST_BUFFER_SIZE
+init|=
+literal|1048576
+decl_stmt|;
+comment|//1MB
 comment|// private | public-read | public-read-write | authenticated-read |
 comment|// log-delivery-write | bucket-owner-read | bucket-owner-full-control
 DECL|field|CANNED_ACL
