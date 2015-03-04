@@ -120,6 +120,20 @@ name|StorageInfo
 import|;
 end_import
 
+begin_import
+import|import
+name|com
+operator|.
+name|google
+operator|.
+name|common
+operator|.
+name|annotations
+operator|.
+name|VisibleForTesting
+import|;
+end_import
+
 begin_comment
 comment|/**   * DatanodeRegistration class contains all information the name-node needs  * to identify and verify a data-node when it contacts the name-node.  * This information is sent by data-node with each communication request.  */
 end_comment
@@ -159,6 +173,46 @@ specifier|final
 name|String
 name|softwareVersion
 decl_stmt|;
+annotation|@
+name|VisibleForTesting
+DECL|method|DatanodeRegistration (String uuid, DatanodeRegistration dnr)
+specifier|public
+name|DatanodeRegistration
+parameter_list|(
+name|String
+name|uuid
+parameter_list|,
+name|DatanodeRegistration
+name|dnr
+parameter_list|)
+block|{
+name|this
+argument_list|(
+operator|new
+name|DatanodeID
+argument_list|(
+name|uuid
+argument_list|,
+name|dnr
+argument_list|)
+argument_list|,
+name|dnr
+operator|.
+name|getStorageInfo
+argument_list|()
+argument_list|,
+name|dnr
+operator|.
+name|getExportedKeys
+argument_list|()
+argument_list|,
+name|dnr
+operator|.
+name|getSoftwareVersion
+argument_list|()
+argument_list|)
+expr_stmt|;
+block|}
 DECL|method|DatanodeRegistration (DatanodeID dn, StorageInfo info, ExportedBlockKeys keys, String softwareVersion)
 specifier|public
 name|DatanodeRegistration

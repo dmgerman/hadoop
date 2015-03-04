@@ -3151,17 +3151,6 @@ index|[
 literal|0
 index|]
 decl_stmt|;
-comment|// TODO: Needs to be fixed. DatanodeUuid is not storageID.
-name|node
-operator|.
-name|setDatanodeUuidForTesting
-argument_list|(
-name|ds
-operator|.
-name|getStorageID
-argument_list|()
-argument_list|)
-expr_stmt|;
 name|node
 operator|.
 name|isAlive
@@ -3447,17 +3436,6 @@ index|[
 literal|0
 index|]
 decl_stmt|;
-comment|// TODO: Needs to be fixed. DatanodeUuid is not storageID.
-name|node
-operator|.
-name|setDatanodeUuidForTesting
-argument_list|(
-name|ds
-operator|.
-name|getStorageID
-argument_list|()
-argument_list|)
-expr_stmt|;
 name|node
 operator|.
 name|isAlive
