@@ -66,6 +66,20 @@ name|hadoop
 operator|.
 name|fs
 operator|.
+name|FileChecksum
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|fs
+operator|.
 name|FileStatus
 import|;
 end_import
@@ -144,11 +158,35 @@ begin_import
 import|import static
 name|org
 operator|.
+name|hamcrest
+operator|.
+name|CoreMatchers
+operator|.
+name|not
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
 name|junit
 operator|.
 name|Assert
 operator|.
-name|*
+name|assertEquals
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|junit
+operator|.
+name|Assert
+operator|.
+name|assertThat
 import|;
 end_import
 
@@ -586,6 +624,34 @@ argument_list|,
 name|file1Name
 argument_list|)
 decl_stmt|;
+specifier|final
+name|FileChecksum
+name|snapChksum1
+init|=
+name|hdfs
+operator|.
+name|getFileChecksum
+argument_list|(
+name|file1snap1
+argument_list|)
+decl_stmt|;
+name|assertThat
+argument_list|(
+literal|"file and snapshot file checksums are not equal"
+argument_list|,
+name|hdfs
+operator|.
+name|getFileChecksum
+argument_list|(
+name|file1
+argument_list|)
+argument_list|,
+name|is
+argument_list|(
+name|snapChksum1
+argument_list|)
+argument_list|)
+expr_stmt|;
 comment|// Append to the file.
 name|FSDataOutputStream
 name|out
@@ -597,6 +663,41 @@ argument_list|(
 name|file1
 argument_list|)
 decl_stmt|;
+comment|// Nothing has been appended yet. All checksums should still be equal.
+name|assertThat
+argument_list|(
+literal|"file and snapshot checksums (open for append) are not equal"
+argument_list|,
+name|hdfs
+operator|.
+name|getFileChecksum
+argument_list|(
+name|file1
+argument_list|)
+argument_list|,
+name|is
+argument_list|(
+name|snapChksum1
+argument_list|)
+argument_list|)
+expr_stmt|;
+name|assertThat
+argument_list|(
+literal|"snapshot checksum (post-open for append) has changed"
+argument_list|,
+name|hdfs
+operator|.
+name|getFileChecksum
+argument_list|(
+name|file1snap1
+argument_list|)
+argument_list|,
+name|is
+argument_list|(
+name|snapChksum1
+argument_list|)
+argument_list|)
+expr_stmt|;
 try|try
 block|{
 name|AppendTestUtil
@@ -638,6 +739,41 @@ name|origLen
 argument_list|)
 argument_list|)
 expr_stmt|;
+comment|// Verify that checksum didn't change
+name|assertThat
+argument_list|(
+literal|"snapshot file checksum (pre-close) has changed"
+argument_list|,
+name|hdfs
+operator|.
+name|getFileChecksum
+argument_list|(
+name|file1
+argument_list|)
+argument_list|,
+name|is
+argument_list|(
+name|snapChksum1
+argument_list|)
+argument_list|)
+expr_stmt|;
+name|assertThat
+argument_list|(
+literal|"snapshot checksum (post-append) has changed"
+argument_list|,
+name|hdfs
+operator|.
+name|getFileChecksum
+argument_list|(
+name|file1snap1
+argument_list|)
+argument_list|,
+name|is
+argument_list|(
+name|snapChksum1
+argument_list|)
+argument_list|)
+expr_stmt|;
 block|}
 finally|finally
 block|{
@@ -647,6 +783,40 @@ name|close
 argument_list|()
 expr_stmt|;
 block|}
+name|assertThat
+argument_list|(
+literal|"file and snapshot file checksums (post-close) are equal"
+argument_list|,
+name|hdfs
+operator|.
+name|getFileChecksum
+argument_list|(
+name|file1
+argument_list|)
+argument_list|,
+name|not
+argument_list|(
+name|snapChksum1
+argument_list|)
+argument_list|)
+expr_stmt|;
+name|assertThat
+argument_list|(
+literal|"snapshot file checksum (post-close) has changed"
+argument_list|,
+name|hdfs
+operator|.
+name|getFileChecksum
+argument_list|(
+name|file1snap1
+argument_list|)
+argument_list|,
+name|is
+argument_list|(
+name|snapChksum1
+argument_list|)
+argument_list|)
+expr_stmt|;
 comment|// Make sure we can read the entire file via its non-snapshot path.
 name|fileStatus
 operator|=
