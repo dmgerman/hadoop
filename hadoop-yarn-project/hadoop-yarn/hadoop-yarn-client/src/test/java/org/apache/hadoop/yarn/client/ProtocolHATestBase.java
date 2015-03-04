@@ -3929,7 +3929,7 @@ literal|null
 argument_list|,
 name|YarnApplicationState
 operator|.
-name|FAILED
+name|FINISHED
 argument_list|,
 literal|"fake an application report"
 argument_list|,
