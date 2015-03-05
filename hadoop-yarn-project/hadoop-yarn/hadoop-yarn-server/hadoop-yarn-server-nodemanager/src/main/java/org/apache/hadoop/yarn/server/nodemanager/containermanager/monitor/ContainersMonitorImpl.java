@@ -310,6 +310,26 @@ name|hadoop
 operator|.
 name|yarn
 operator|.
+name|server
+operator|.
+name|nodemanager
+operator|.
+name|util
+operator|.
+name|NodeManagerHardwareUtils
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
 name|util
 operator|.
 name|ResourceCalculatorProcessTree
@@ -502,6 +522,11 @@ name|UNKNOWN_MEMORY_LIMIT
 init|=
 operator|-
 literal|1L
+decl_stmt|;
+DECL|field|nodeCpuPercentageForYARN
+specifier|private
+name|int
+name|nodeCpuPercentageForYARN
 decl_stmt|;
 DECL|method|ContainersMonitorImpl (ContainerExecutor exec, AsyncDispatcher dispatcher, Context context)
 specifier|public
@@ -860,6 +885,15 @@ argument_list|(
 literal|"Virtual memory check enabled: "
 operator|+
 name|vmemCheckEnabled
+argument_list|)
+expr_stmt|;
+name|nodeCpuPercentageForYARN
+operator|=
+name|NodeManagerHardwareUtils
+operator|.
+name|getNodeCpuPercentage
+argument_list|(
+name|conf
 argument_list|)
 expr_stmt|;
 if|if
@@ -2004,6 +2038,44 @@ operator|.
 name|getCumulativeRssmem
 argument_list|()
 decl_stmt|;
+comment|// if machine has 6 cores and 3 are used,
+comment|// cpuUsagePercentPerCore should be 300% and
+comment|// cpuUsageTotalCoresPercentage should be 50%
+name|float
+name|cpuUsagePercentPerCore
+init|=
+name|pTree
+operator|.
+name|getCpuUsagePercent
+argument_list|()
+decl_stmt|;
+name|float
+name|cpuUsageTotalCoresPercentage
+init|=
+name|cpuUsagePercentPerCore
+operator|/
+name|resourceCalculatorPlugin
+operator|.
+name|getNumProcessors
+argument_list|()
+decl_stmt|;
+comment|// Multiply by 1000 to avoid losing data when converting to int
+name|int
+name|milliVcoresUsed
+init|=
+call|(
+name|int
+call|)
+argument_list|(
+name|cpuUsageTotalCoresPercentage
+operator|*
+literal|1000
+operator|*
+name|maxVCoresAllottedForContainers
+operator|/
+name|nodeCpuPercentageForYARN
+argument_list|)
+decl_stmt|;
 comment|// as processes begin with an age 1, we want to see if there
 comment|// are processes more than 1 iteration old.
 name|long
@@ -2097,6 +2169,25 @@ name|currentPmemUsage
 operator|>>
 literal|20
 argument_list|)
+argument_list|)
+expr_stmt|;
+name|ContainerMetrics
+operator|.
+name|forContainer
+argument_list|(
+name|containerId
+argument_list|,
+name|containerMetricsPeriodMs
+argument_list|)
+operator|.
+name|recordCpuUsage
+argument_list|(
+operator|(
+name|int
+operator|)
+name|cpuUsagePercentPerCore
+argument_list|,
+name|milliVcoresUsed
 argument_list|)
 expr_stmt|;
 block|}

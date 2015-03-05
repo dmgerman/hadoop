@@ -636,7 +636,7 @@ call|(
 name|float
 call|)
 argument_list|(
-name|LinuxResourceCalculatorPlugin
+name|CpuTimeTracker
 operator|.
 name|UNAVAILABLE
 argument_list|)

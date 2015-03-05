@@ -166,6 +166,20 @@ return|return
 literal|0
 return|;
 block|}
+annotation|@
+name|Override
+DECL|method|getCpuUsagePercent ()
+specifier|public
+name|float
+name|getCpuUsagePercent
+parameter_list|()
+block|{
+return|return
+name|CpuTimeTracker
+operator|.
+name|UNAVAILABLE
+return|;
+block|}
 DECL|method|checkPidPgrpidForMatch ()
 specifier|public
 name|boolean

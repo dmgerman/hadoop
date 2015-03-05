@@ -1368,7 +1368,7 @@ name|pid
 argument_list|)
 return|;
 block|}
-DECL|method|createProcessTree (String pid, String procfsRootDir)
+DECL|method|createProcessTree (String pid, String procfsRootDir, Clock clock)
 specifier|protected
 name|ProcfsBasedProcessTree
 name|createProcessTree
@@ -1378,6 +1378,9 @@ name|pid
 parameter_list|,
 name|String
 name|procfsRootDir
+parameter_list|,
+name|Clock
+name|clock
 parameter_list|)
 block|{
 return|return
@@ -1387,6 +1390,8 @@ argument_list|(
 name|pid
 argument_list|,
 name|procfsRootDir
+argument_list|,
+name|clock
 argument_list|)
 return|;
 block|}
@@ -2253,6 +2258,24 @@ block|,
 literal|"400"
 block|}
 decl_stmt|;
+name|ControlledClock
+name|testClock
+init|=
+operator|new
+name|ControlledClock
+argument_list|(
+operator|new
+name|SystemClock
+argument_list|()
+argument_list|)
+decl_stmt|;
+name|testClock
+operator|.
+name|setTime
+argument_list|(
+literal|0
+argument_list|)
+expr_stmt|;
 comment|// create the fake procfs root directory.
 name|File
 name|procfsRootDir
@@ -2508,6 +2531,8 @@ name|procfsRootDir
 operator|.
 name|getAbsolutePath
 argument_list|()
+argument_list|,
+name|testClock
 argument_list|)
 decl_stmt|;
 name|processTree
@@ -2600,6 +2625,24 @@ name|processTree
 operator|.
 name|getCumulativeCpuTime
 argument_list|()
+argument_list|)
+expr_stmt|;
+comment|// verify CPU usage
+name|Assert
+operator|.
+name|assertEquals
+argument_list|(
+literal|"Percent CPU time should be set to -1 initially"
+argument_list|,
+operator|-
+literal|1.0
+argument_list|,
+name|processTree
+operator|.
+name|getCpuUsagePercent
+argument_list|()
+argument_list|,
+literal|0.01
 argument_list|)
 expr_stmt|;
 comment|// Check by enabling smaps
@@ -2708,6 +2751,18 @@ argument_list|,
 name|memInfo
 argument_list|)
 expr_stmt|;
+name|long
+name|elapsedTimeBetweenUpdatesMsec
+init|=
+literal|200000
+decl_stmt|;
+name|testClock
+operator|.
+name|setTime
+argument_list|(
+name|elapsedTimeBetweenUpdatesMsec
+argument_list|)
+expr_stmt|;
 comment|// build the process tree.
 name|processTree
 operator|.
@@ -2715,6 +2770,11 @@ name|updateProcessTree
 argument_list|()
 expr_stmt|;
 comment|// verify cumulative cpu time again
+name|long
+name|prevCumuCpuTime
+init|=
+name|cumuCpuTime
+decl_stmt|;
 name|cumuCpuTime
 operator|=
 name|ProcfsBasedProcessTree
@@ -2743,6 +2803,61 @@ name|processTree
 operator|.
 name|getCumulativeCpuTime
 argument_list|()
+argument_list|)
+expr_stmt|;
+name|double
+name|expectedCpuUsagePercent
+init|=
+operator|(
+name|ProcfsBasedProcessTree
+operator|.
+name|JIFFY_LENGTH_IN_MILLIS
+operator|>
+literal|0
+operator|)
+condition|?
+operator|(
+name|cumuCpuTime
+operator|-
+name|prevCumuCpuTime
+operator|)
+operator|*
+literal|100.0
+operator|/
+name|elapsedTimeBetweenUpdatesMsec
+else|:
+literal|0
+decl_stmt|;
+comment|// expectedCpuUsagePercent is given by (94000L - 72000) * 100/
+comment|//    200000;
+comment|// which in this case is 11. Lets verify that first
+name|Assert
+operator|.
+name|assertEquals
+argument_list|(
+literal|11
+argument_list|,
+name|expectedCpuUsagePercent
+argument_list|,
+literal|0.001
+argument_list|)
+expr_stmt|;
+name|Assert
+operator|.
+name|assertEquals
+argument_list|(
+literal|"Percent CPU time is not correct expected "
+operator|+
+name|expectedCpuUsagePercent
+argument_list|,
+name|expectedCpuUsagePercent
+argument_list|,
+name|processTree
+operator|.
+name|getCpuUsagePercent
+argument_list|()
+argument_list|,
+literal|0.01
 argument_list|)
 expr_stmt|;
 block|}
@@ -3100,6 +3215,10 @@ argument_list|,
 name|procfsRootDir
 operator|.
 name|getAbsolutePath
+argument_list|()
+argument_list|,
+operator|new
+name|SystemClock
 argument_list|()
 argument_list|)
 decl_stmt|;
@@ -3741,6 +3860,10 @@ name|procfsRootDir
 operator|.
 name|getAbsolutePath
 argument_list|()
+argument_list|,
+operator|new
+name|SystemClock
+argument_list|()
 argument_list|)
 expr_stmt|;
 comment|// Let us not create stat file for pid 100.
@@ -4205,6 +4328,10 @@ argument_list|,
 name|procfsRootDir
 operator|.
 name|getAbsolutePath
+argument_list|()
+argument_list|,
+operator|new
+name|SystemClock
 argument_list|()
 argument_list|)
 decl_stmt|;

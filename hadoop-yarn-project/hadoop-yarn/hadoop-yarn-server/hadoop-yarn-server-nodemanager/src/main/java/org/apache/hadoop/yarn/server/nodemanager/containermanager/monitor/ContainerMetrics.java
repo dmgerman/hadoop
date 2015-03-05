@@ -292,7 +292,7 @@ specifier|final
 name|String
 name|PMEM_LIMIT_METRIC_NAME
 init|=
-literal|"pMemLimit"
+literal|"pMemLimitMBs"
 decl_stmt|;
 DECL|field|VMEM_LIMIT_METRIC_NAME
 specifier|public
@@ -301,7 +301,7 @@ specifier|final
 name|String
 name|VMEM_LIMIT_METRIC_NAME
 init|=
-literal|"vMemLimit"
+literal|"vMemLimitMBs"
 decl_stmt|;
 DECL|field|VCORE_LIMIT_METRIC_NAME
 specifier|public
@@ -319,7 +319,27 @@ specifier|final
 name|String
 name|PMEM_USAGE_METRIC_NAME
 init|=
-literal|"pMemUsage"
+literal|"pMemUsageMBs"
+decl_stmt|;
+DECL|field|PHY_CPU_USAGE_METRIC_NAME
+specifier|private
+specifier|static
+specifier|final
+name|String
+name|PHY_CPU_USAGE_METRIC_NAME
+init|=
+literal|"pCpuUsagePercent"
+decl_stmt|;
+comment|// Use a multiplier of 1000 to avoid losing too much precision when
+comment|// converting to integers
+DECL|field|VCORE_USAGE_METRIC_NAME
+specifier|private
+specifier|static
+specifier|final
+name|String
+name|VCORE_USAGE_METRIC_NAME
+init|=
+literal|"milliVcoreUsage"
 decl_stmt|;
 annotation|@
 name|Metric
@@ -327,6 +347,24 @@ DECL|field|pMemMBsStat
 specifier|public
 name|MutableStat
 name|pMemMBsStat
+decl_stmt|;
+comment|// This tracks overall CPU percentage of the machine in terms of percentage
+comment|// of 1 core similar to top
+comment|// Thus if you use 2 cores completely out of 4 available cores this value
+comment|// will be 200
+annotation|@
+name|Metric
+DECL|field|cpuCoreUsagePercent
+specifier|public
+name|MutableStat
+name|cpuCoreUsagePercent
+decl_stmt|;
+annotation|@
+name|Metric
+DECL|field|milliVcoresUsed
+specifier|public
+name|MutableStat
+name|milliVcoresUsed
 decl_stmt|;
 annotation|@
 name|Metric
@@ -344,10 +382,10 @@ name|vMemLimitMbs
 decl_stmt|;
 annotation|@
 name|Metric
-DECL|field|cpuVcores
+DECL|field|cpuVcoreLimit
 specifier|public
 name|MutableGaugeInt
-name|cpuVcores
+name|cpuVcoreLimit
 decl_stmt|;
 DECL|field|RECORD_INFO
 specifier|static
@@ -532,6 +570,44 @@ argument_list|)
 expr_stmt|;
 name|this
 operator|.
+name|cpuCoreUsagePercent
+operator|=
+name|registry
+operator|.
+name|newStat
+argument_list|(
+name|PHY_CPU_USAGE_METRIC_NAME
+argument_list|,
+literal|"Physical Cpu core percent usage stats"
+argument_list|,
+literal|"Usage"
+argument_list|,
+literal|"Percents"
+argument_list|,
+literal|true
+argument_list|)
+expr_stmt|;
+name|this
+operator|.
+name|milliVcoresUsed
+operator|=
+name|registry
+operator|.
+name|newStat
+argument_list|(
+name|VCORE_USAGE_METRIC_NAME
+argument_list|,
+literal|"1000 times Vcore usage"
+argument_list|,
+literal|"Usage"
+argument_list|,
+literal|"MilliVcores"
+argument_list|,
+literal|true
+argument_list|)
+expr_stmt|;
+name|this
+operator|.
 name|pMemLimitMbs
 operator|=
 name|registry
@@ -562,7 +638,7 @@ argument_list|)
 expr_stmt|;
 name|this
 operator|.
-name|cpuVcores
+name|cpuVcoreLimit
 operator|=
 name|registry
 operator|.
@@ -888,6 +964,37 @@ name|memoryMBs
 argument_list|)
 expr_stmt|;
 block|}
+DECL|method|recordCpuUsage ( int totalPhysicalCpuPercent, int milliVcoresUsed)
+specifier|public
+name|void
+name|recordCpuUsage
+parameter_list|(
+name|int
+name|totalPhysicalCpuPercent
+parameter_list|,
+name|int
+name|milliVcoresUsed
+parameter_list|)
+block|{
+name|this
+operator|.
+name|cpuCoreUsagePercent
+operator|.
+name|add
+argument_list|(
+name|totalPhysicalCpuPercent
+argument_list|)
+expr_stmt|;
+name|this
+operator|.
+name|milliVcoresUsed
+operator|.
+name|add
+argument_list|(
+name|milliVcoresUsed
+argument_list|)
+expr_stmt|;
+block|}
 DECL|method|recordProcessId (String processId)
 specifier|public
 name|void
@@ -942,7 +1049,7 @@ argument_list|)
 expr_stmt|;
 name|this
 operator|.
-name|cpuVcores
+name|cpuVcoreLimit
 operator|.
 name|set
 argument_list|(

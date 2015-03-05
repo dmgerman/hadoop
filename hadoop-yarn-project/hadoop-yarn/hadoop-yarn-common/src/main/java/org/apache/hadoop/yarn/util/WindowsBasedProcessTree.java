@@ -1004,6 +1004,20 @@ return|return
 name|cpuTimeMs
 return|;
 block|}
+annotation|@
+name|Override
+DECL|method|getCpuUsagePercent ()
+specifier|public
+name|float
+name|getCpuUsagePercent
+parameter_list|()
+block|{
+return|return
+name|CpuTimeTracker
+operator|.
+name|UNAVAILABLE
+return|;
+block|}
 block|}
 end_class
 
