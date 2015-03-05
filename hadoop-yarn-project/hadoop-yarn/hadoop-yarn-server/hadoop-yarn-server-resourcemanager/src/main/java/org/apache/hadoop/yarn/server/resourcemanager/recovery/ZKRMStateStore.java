@@ -1117,10 +1117,12 @@ specifier|protected
 name|ZooKeeper
 name|zkClient
 decl_stmt|;
-DECL|field|oldZkClient
-specifier|private
+comment|/* activeZkClient is not used to do actual operations,    * it is only used to verify client session for watched events and    * it gets activated into zkClient on connection event.    */
+annotation|@
+name|VisibleForTesting
+DECL|field|activeZkClient
 name|ZooKeeper
-name|oldZkClient
+name|activeZkClient
 decl_stmt|;
 comment|/** Fencing related variables */
 DECL|field|FENCING_LOCK
@@ -2108,16 +2110,20 @@ parameter_list|()
 throws|throws
 name|IOException
 block|{
+name|zkClient
+operator|=
+literal|null
+expr_stmt|;
 if|if
 condition|(
-name|zkClient
+name|activeZkClient
 operator|!=
 literal|null
 condition|)
 block|{
 try|try
 block|{
-name|zkClient
+name|activeZkClient
 operator|.
 name|close
 argument_list|()
@@ -2139,43 +2145,7 @@ name|e
 argument_list|)
 throw|;
 block|}
-name|zkClient
-operator|=
-literal|null
-expr_stmt|;
-block|}
-if|if
-condition|(
-name|oldZkClient
-operator|!=
-literal|null
-condition|)
-block|{
-try|try
-block|{
-name|oldZkClient
-operator|.
-name|close
-argument_list|()
-expr_stmt|;
-block|}
-catch|catch
-parameter_list|(
-name|InterruptedException
-name|e
-parameter_list|)
-block|{
-throw|throw
-operator|new
-name|IOException
-argument_list|(
-literal|"Interrupted while closing old ZK"
-argument_list|,
-name|e
-argument_list|)
-throw|;
-block|}
-name|oldZkClient
+name|activeZkClient
 operator|=
 literal|null
 expr_stmt|;
@@ -4636,6 +4606,26 @@ name|ForwardingWatcher
 implements|implements
 name|Watcher
 block|{
+DECL|field|watchedZkClient
+specifier|private
+name|ZooKeeper
+name|watchedZkClient
+decl_stmt|;
+DECL|method|ForwardingWatcher (ZooKeeper client)
+specifier|public
+name|ForwardingWatcher
+parameter_list|(
+name|ZooKeeper
+name|client
+parameter_list|)
+block|{
+name|this
+operator|.
+name|watchedZkClient
+operator|=
+name|client
+expr_stmt|;
+block|}
 annotation|@
 name|Override
 DECL|method|process (WatchedEvent event)
@@ -4655,6 +4645,8 @@ name|this
 operator|.
 name|processWatchEvent
 argument_list|(
+name|watchedZkClient
+argument_list|,
 name|event
 argument_list|)
 expr_stmt|;
@@ -4692,18 +4684,59 @@ annotation|@
 name|Private
 annotation|@
 name|Unstable
-DECL|method|processWatchEvent (WatchedEvent event)
+DECL|method|processWatchEvent (ZooKeeper zk, WatchedEvent event)
 specifier|public
 specifier|synchronized
 name|void
 name|processWatchEvent
 parameter_list|(
+name|ZooKeeper
+name|zk
+parameter_list|,
 name|WatchedEvent
 name|event
 parameter_list|)
 throws|throws
 name|Exception
 block|{
+comment|// only process watcher event from current ZooKeeper Client session.
+if|if
+condition|(
+name|zk
+operator|!=
+name|activeZkClient
+condition|)
+block|{
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"Ignore watcher event type: "
+operator|+
+name|event
+operator|.
+name|getType
+argument_list|()
+operator|+
+literal|" with state:"
+operator|+
+name|event
+operator|.
+name|getState
+argument_list|()
+operator|+
+literal|" for path:"
+operator|+
+name|event
+operator|.
+name|getPath
+argument_list|()
+operator|+
+literal|" from old session"
+argument_list|)
+expr_stmt|;
+return|return;
+block|}
 name|Event
 operator|.
 name|EventType
@@ -4773,19 +4806,15 @@ argument_list|)
 expr_stmt|;
 if|if
 condition|(
-name|oldZkClient
-operator|!=
+name|zkClient
+operator|==
 literal|null
 condition|)
 block|{
 comment|// the SyncConnected must be from the client that sent Disconnected
 name|zkClient
 operator|=
-name|oldZkClient
-expr_stmt|;
-name|oldZkClient
-operator|=
-literal|null
+name|activeZkClient
 expr_stmt|;
 name|ZKRMStateStore
 operator|.
@@ -4812,10 +4841,6 @@ name|info
 argument_list|(
 literal|"ZKRMStateStore Session disconnected"
 argument_list|)
-expr_stmt|;
-name|oldZkClient
-operator|=
-name|zkClient
 expr_stmt|;
 name|zkClient
 operator|=
@@ -5862,10 +5887,14 @@ control|)
 block|{
 try|try
 block|{
-name|zkClient
+name|activeZkClient
 operator|=
 name|getNewZooKeeper
 argument_list|()
+expr_stmt|;
+name|zkClient
+operator|=
+name|activeZkClient
 expr_stmt|;
 for|for
 control|(
@@ -6026,7 +6055,9 @@ name|register
 argument_list|(
 operator|new
 name|ForwardingWatcher
-argument_list|()
+argument_list|(
+name|zk
+argument_list|)
 argument_list|)
 expr_stmt|;
 return|return

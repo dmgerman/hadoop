@@ -545,6 +545,40 @@ specifier|volatile
 name|boolean
 name|connected
 decl_stmt|;
+DECL|field|client
+specifier|protected
+name|ZooKeeper
+name|client
+decl_stmt|;
+DECL|method|initializeWatchedClient (ZooKeeper zk)
+specifier|public
+name|void
+name|initializeWatchedClient
+parameter_list|(
+name|ZooKeeper
+name|zk
+parameter_list|)
+block|{
+if|if
+condition|(
+name|client
+operator|!=
+literal|null
+condition|)
+block|{
+throw|throw
+operator|new
+name|RuntimeException
+argument_list|(
+literal|"Watched Client was already set"
+argument_list|)
+throw|;
+block|}
+name|client
+operator|=
+name|zk
+expr_stmt|;
+block|}
 DECL|method|CountdownWatcher ()
 specifier|public
 name|CountdownWatcher
@@ -993,6 +1027,13 @@ argument_list|()
 expr_stmt|;
 block|}
 block|}
+name|watcher
+operator|.
+name|initializeWatchedClient
+argument_list|(
+name|zk
+argument_list|)
+expr_stmt|;
 return|return
 name|zk
 return|;
