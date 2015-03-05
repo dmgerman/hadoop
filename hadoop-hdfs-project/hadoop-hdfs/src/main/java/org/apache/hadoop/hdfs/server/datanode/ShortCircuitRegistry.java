@@ -851,6 +851,8 @@ operator|new
 name|DomainSocketWatcher
 argument_list|(
 name|interruptCheck
+argument_list|,
+literal|"datanode"
 argument_list|)
 expr_stmt|;
 name|enabled

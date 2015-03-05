@@ -776,12 +776,15 @@ name|kicked
 init|=
 literal|false
 decl_stmt|;
-DECL|method|DomainSocketWatcher (int interruptCheckPeriodMs)
+DECL|method|DomainSocketWatcher (int interruptCheckPeriodMs, String src)
 specifier|public
 name|DomainSocketWatcher
 parameter_list|(
 name|int
 name|interruptCheckPeriodMs
+parameter_list|,
+name|String
+name|src
 parameter_list|)
 throws|throws
 name|IOException
@@ -828,6 +831,15 @@ operator|.
 name|setDaemon
 argument_list|(
 literal|true
+argument_list|)
+expr_stmt|;
+name|watcherThread
+operator|.
+name|setName
+argument_list|(
+name|src
+operator|+
+literal|" DomainSocketWatcher"
 argument_list|)
 expr_stmt|;
 name|watcherThread

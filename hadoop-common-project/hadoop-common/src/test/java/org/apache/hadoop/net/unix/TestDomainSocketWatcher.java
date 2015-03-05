@@ -906,6 +906,12 @@ operator|new
 name|DomainSocketWatcher
 argument_list|(
 name|interruptCheckPeriodMs
+argument_list|,
+name|getClass
+argument_list|()
+operator|.
+name|getSimpleName
+argument_list|()
 argument_list|)
 decl_stmt|;
 name|watcher

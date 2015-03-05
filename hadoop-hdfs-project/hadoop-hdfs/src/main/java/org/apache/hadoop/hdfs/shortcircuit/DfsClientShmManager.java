@@ -1655,6 +1655,8 @@ operator|new
 name|DomainSocketWatcher
 argument_list|(
 name|interruptCheckPeriodMs
+argument_list|,
+literal|"client"
 argument_list|)
 expr_stmt|;
 block|}
