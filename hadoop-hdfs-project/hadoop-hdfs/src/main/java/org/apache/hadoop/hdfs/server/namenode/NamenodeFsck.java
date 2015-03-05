@@ -2145,7 +2145,9 @@ name|blk
 operator|.
 name|contains
 argument_list|(
-literal|"blk_"
+name|Block
+operator|.
+name|BLOCK_FILE_PREFIX
 argument_list|)
 condition|)
 block|{

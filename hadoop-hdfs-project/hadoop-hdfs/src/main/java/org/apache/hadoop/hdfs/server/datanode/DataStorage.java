@@ -761,14 +761,6 @@ name|BLOCK_SUBDIR_PREFIX
 init|=
 literal|"subdir"
 decl_stmt|;
-DECL|field|BLOCK_FILE_PREFIX
-specifier|final
-specifier|static
-name|String
-name|BLOCK_FILE_PREFIX
-init|=
-literal|"blk_"
-decl_stmt|;
 DECL|field|COPY_FILE_PREFIX
 specifier|final
 specifier|static
@@ -6080,6 +6072,8 @@ name|name
 operator|.
 name|startsWith
 argument_list|(
+name|Block
+operator|.
 name|BLOCK_FILE_PREFIX
 argument_list|)
 return|;

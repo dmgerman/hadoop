@@ -3166,7 +3166,9 @@ if|if
 condition|(
 name|isBlockMetaFile
 argument_list|(
-literal|"blk_"
+name|Block
+operator|.
+name|BLOCK_FILE_PREFIX
 argument_list|,
 name|files
 index|[

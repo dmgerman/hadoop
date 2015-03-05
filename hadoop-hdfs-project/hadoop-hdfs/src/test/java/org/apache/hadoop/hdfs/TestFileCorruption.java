@@ -608,7 +608,9 @@ argument_list|()
 operator|.
 name|startsWith
 argument_list|(
-literal|"blk_"
+name|Block
+operator|.
+name|BLOCK_FILE_PREFIX
 argument_list|)
 condition|)
 block|{
