@@ -8028,18 +8028,6 @@ argument_list|,
 name|jobUserName
 argument_list|)
 expr_stmt|;
-comment|// Do not automatically close FileSystem objects so that in case of
-comment|// SIGTERM I have a chance to write out the job history. I'll be closing
-comment|// the objects myself.
-name|conf
-operator|.
-name|setBoolean
-argument_list|(
-literal|"fs.automatic.close"
-argument_list|,
-literal|false
-argument_list|)
-expr_stmt|;
 name|initAndStartAppMaster
 argument_list|(
 name|appMaster
