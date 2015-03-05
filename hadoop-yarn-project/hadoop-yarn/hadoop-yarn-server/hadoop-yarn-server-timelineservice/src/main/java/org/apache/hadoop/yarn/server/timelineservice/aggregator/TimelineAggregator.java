@@ -24,6 +24,16 @@ end_package
 
 begin_import
 import|import
+name|java
+operator|.
+name|io
+operator|.
+name|IOException
+import|;
+end_import
+
+begin_import
+import|import
 name|org
 operator|.
 name|apache
@@ -144,8 +154,98 @@ name|TimelineEntities
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|api
+operator|.
+name|records
+operator|.
+name|timelineservice
+operator|.
+name|TimelineWriteResponse
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|conf
+operator|.
+name|YarnConfiguration
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|server
+operator|.
+name|timelineservice
+operator|.
+name|storage
+operator|.
+name|TimelineWriter
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|server
+operator|.
+name|timelineservice
+operator|.
+name|storage
+operator|.
+name|FileSystemTimelineWriterImpl
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|util
+operator|.
+name|ReflectionUtils
+import|;
+end_import
+
 begin_comment
-comment|/**  * Service that handles writes to the timeline service and writes them to the  * backing storage.  *  * Classes that extend this can putIfAbsent their own lifecycle management or  * customization of request handling.  */
+comment|/**  * Service that handles writes to the timeline service and writes them to the  * backing storage.  *  * Classes that extend this can add their own lifecycle management or  * customization of request handling.  */
 end_comment
 
 begin_class
@@ -177,6 +277,11 @@ operator|.
 name|class
 argument_list|)
 decl_stmt|;
+DECL|field|writer
+specifier|private
+name|TimelineWriter
+name|writer
+decl_stmt|;
 DECL|method|TimelineAggregator (String name)
 specifier|public
 name|TimelineAggregator
@@ -207,6 +312,39 @@ block|{
 name|super
 operator|.
 name|serviceInit
+argument_list|(
+name|conf
+argument_list|)
+expr_stmt|;
+name|writer
+operator|=
+name|ReflectionUtils
+operator|.
+name|newInstance
+argument_list|(
+name|conf
+operator|.
+name|getClass
+argument_list|(
+name|YarnConfiguration
+operator|.
+name|TIMELINE_SERVICE_WRITER_CLASS
+argument_list|,
+name|FileSystemTimelineWriterImpl
+operator|.
+name|class
+argument_list|,
+name|TimelineWriter
+operator|.
+name|class
+argument_list|)
+argument_list|,
+name|conf
+argument_list|)
+expr_stmt|;
+name|writer
+operator|.
+name|init
 argument_list|(
 name|conf
 argument_list|)
@@ -243,11 +381,26 @@ operator|.
 name|serviceStop
 argument_list|()
 expr_stmt|;
+name|writer
+operator|.
+name|stop
+argument_list|()
+expr_stmt|;
 block|}
-comment|/**    * Handles entity writes. These writes are synchronous and are written to the    * backing storage without buffering/batching. If any entity already exists,    * it results in an update of the entity.    *    * This method should be reserved for selected critical entities and events.    * For normal voluminous writes one should use the async method    * {@link #postEntitiesAsync(TimelineEntities, UserGroupInformation)}.    *    * @param entities entities to post    * @param callerUgi the caller UGI    */
+DECL|method|getWriter ()
+specifier|public
+name|TimelineWriter
+name|getWriter
+parameter_list|()
+block|{
+return|return
+name|writer
+return|;
+block|}
+comment|/**    * Handles entity writes. These writes are synchronous and are written to the    * backing storage without buffering/batching. If any entity already exists,    * it results in an update of the entity.    *    * This method should be reserved for selected critical entities and events.    * For normal voluminous writes one should use the async method    * {@link #postEntitiesAsync(TimelineEntities, UserGroupInformation)}.    *    * @param entities entities to post    * @param callerUgi the caller UGI    * @return the response that contains the result of the post.    */
 DECL|method|postEntities (TimelineEntities entities, UserGroupInformation callerUgi)
 specifier|public
-name|void
+name|TimelineWriteResponse
 name|postEntities
 parameter_list|(
 name|TimelineEntities
@@ -256,32 +409,9 @@ parameter_list|,
 name|UserGroupInformation
 name|callerUgi
 parameter_list|)
+throws|throws
+name|IOException
 block|{
-comment|// Add this output temporarily for our prototype
-comment|// TODO remove this after we have an actual implementation
-name|LOG
-operator|.
-name|info
-argument_list|(
-literal|"SUCCESS - TIMELINE V2 PROTOTYPE"
-argument_list|)
-expr_stmt|;
-name|LOG
-operator|.
-name|info
-argument_list|(
-literal|"postEntities(entities="
-operator|+
-name|entities
-operator|+
-literal|", callerUgi="
-operator|+
-name|callerUgi
-operator|+
-literal|")"
-argument_list|)
-expr_stmt|;
-comment|// TODO implement
 if|if
 condition|(
 name|LOG
@@ -290,6 +420,13 @@ name|isDebugEnabled
 argument_list|()
 condition|)
 block|{
+name|LOG
+operator|.
+name|debug
+argument_list|(
+literal|"SUCCESS - TIMELINE V2 PROTOTYPE"
+argument_list|)
+expr_stmt|;
 name|LOG
 operator|.
 name|debug
@@ -306,6 +443,14 @@ literal|")"
 argument_list|)
 expr_stmt|;
 block|}
+return|return
+name|writer
+operator|.
+name|write
+argument_list|(
+name|entities
+argument_list|)
+return|;
 block|}
 comment|/**    * Handles entity writes in an asynchronous manner. The method returns as soon    * as validation is done. No promises are made on how quickly it will be    * written to the backing storage or if it will always be written to the    * backing storage. Multiple writes to the same entities may be batched and    * appropriate values updated and result in fewer writes to the backing    * storage.    *    * @param entities entities to post    * @param callerUgi the caller UGI    */
 DECL|method|postEntitiesAsync (TimelineEntities entities, UserGroupInformation callerUgi)

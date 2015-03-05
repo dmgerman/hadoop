@@ -4,7 +4,7 @@ comment|/**  * Licensed to the Apache Software Foundation (ASF) under one  * or 
 end_comment
 
 begin_package
-DECL|package|org.apache.hadoop.yarn.server.timelineservice.aggregator
+DECL|package|org.apache.hadoop.yarn.server.timelineservice.storage
 package|package
 name|org
 operator|.
@@ -18,17 +18,30 @@ name|server
 operator|.
 name|timelineservice
 operator|.
-name|aggregator
+name|storage
 package|;
 end_package
 
-begin_class
-DECL|class|TestTimelineAggregator
+begin_comment
+comment|/**  * specifies the tracks along which an entity  * info is to be aggregated on  *  */
+end_comment
+
+begin_enum
+DECL|enum|TimelineAggregationTrack
 specifier|public
-class|class
-name|TestTimelineAggregator
-block|{  }
-end_class
+enum|enum
+name|TimelineAggregationTrack
+block|{
+DECL|enumConstant|FLOW
+DECL|enumConstant|USER
+DECL|enumConstant|QUEUE
+name|FLOW
+block|,
+name|USER
+block|,
+name|QUEUE
+block|}
+end_enum
 
 end_unit
 

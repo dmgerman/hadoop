@@ -6694,6 +6694,18 @@ name|TIMELINE_SERVICE_PREFIX
 operator|+
 literal|"entity-file.fs-support-append"
 decl_stmt|;
+comment|/**    * Settings for timeline service v2.0    */
+DECL|field|TIMELINE_SERVICE_WRITER_CLASS
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|TIMELINE_SERVICE_WRITER_CLASS
+init|=
+name|TIMELINE_SERVICE_PREFIX
+operator|+
+literal|"writer.class"
+decl_stmt|;
 comment|// mark app-history related configs @Private as application history is going
 comment|// to be integrated into the timeline service
 annotation|@
