@@ -466,6 +466,60 @@ name|app
 argument_list|)
 expr_stmt|;
 block|}
+comment|/**    * This is called after reloading the allocation configuration when the    * scheduler is reinitilized    *    * Checks to see whether any non-runnable applications become runnable    * now that the max running apps of given queue has been changed    *    * Runs in O(n) where n is the number of apps that are non-runnable and in    * the queues that went from having no slack to having slack.    */
+DECL|method|updateRunnabilityOnReload ()
+specifier|public
+name|void
+name|updateRunnabilityOnReload
+parameter_list|()
+block|{
+name|FSParentQueue
+name|rootQueue
+init|=
+name|scheduler
+operator|.
+name|getQueueManager
+argument_list|()
+operator|.
+name|getRootQueue
+argument_list|()
+decl_stmt|;
+name|List
+argument_list|<
+name|List
+argument_list|<
+name|FSAppAttempt
+argument_list|>
+argument_list|>
+name|appsNowMaybeRunnable
+init|=
+operator|new
+name|ArrayList
+argument_list|<
+name|List
+argument_list|<
+name|FSAppAttempt
+argument_list|>
+argument_list|>
+argument_list|()
+decl_stmt|;
+name|gatherPossiblyRunnableAppLists
+argument_list|(
+name|rootQueue
+argument_list|,
+name|appsNowMaybeRunnable
+argument_list|)
+expr_stmt|;
+name|updateAppsRunnability
+argument_list|(
+name|appsNowMaybeRunnable
+argument_list|,
+name|Integer
+operator|.
+name|MAX_VALUE
+argument_list|)
+expr_stmt|;
+block|}
 comment|/**    * Checks to see whether any other applications runnable now that the given    * application has been removed from the given queue.  And makes them so.    *     * Runs in O(n log(n)) where n is the number of queues that are under the    * highest queue that went from having no slack to having slack.    */
 DECL|method|updateRunnabilityOnAppRemoval (FSAppAttempt app, FSLeafQueue queue)
 specifier|public
@@ -680,6 +734,36 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
+name|updateAppsRunnability
+argument_list|(
+name|appsNowMaybeRunnable
+argument_list|,
+name|appsNowMaybeRunnable
+operator|.
+name|size
+argument_list|()
+argument_list|)
+expr_stmt|;
+block|}
+comment|/**    * Checks to see whether applications are runnable now by iterating    * through each one of them and check if the queue and user have slack    *    * if we know how many apps can be runnable, there is no need to iterate    * through all apps, maxRunnableApps is used to break out of the iteration    */
+DECL|method|updateAppsRunnability (List<List<FSAppAttempt>> appsNowMaybeRunnable, int maxRunnableApps)
+specifier|private
+name|void
+name|updateAppsRunnability
+parameter_list|(
+name|List
+argument_list|<
+name|List
+argument_list|<
+name|FSAppAttempt
+argument_list|>
+argument_list|>
+name|appsNowMaybeRunnable
+parameter_list|,
+name|int
+name|maxRunnableApps
+parameter_list|)
+block|{
 comment|// Scan through and check whether this means that any apps are now runnable
 name|Iterator
 argument_list|<
@@ -781,8 +865,6 @@ argument_list|(
 name|appSched
 argument_list|)
 expr_stmt|;
-comment|// No more than one app per list will be able to be made runnable, so
-comment|// we can stop looking after we've found that many
 if|if
 condition|(
 name|noLongerPendingApps
@@ -790,10 +872,7 @@ operator|.
 name|size
 argument_list|()
 operator|>=
-name|appsNowMaybeRunnable
-operator|.
-name|size
-argument_list|()
+name|maxRunnableApps
 condition|)
 block|{
 break|break;

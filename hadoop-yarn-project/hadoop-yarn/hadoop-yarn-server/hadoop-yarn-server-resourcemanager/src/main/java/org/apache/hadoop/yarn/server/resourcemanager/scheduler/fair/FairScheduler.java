@@ -7693,6 +7693,11 @@ argument_list|(
 name|allocConf
 argument_list|)
 expr_stmt|;
+name|maxRunningEnforcer
+operator|.
+name|updateRunnabilityOnReload
+argument_list|()
+expr_stmt|;
 block|}
 block|}
 block|}
