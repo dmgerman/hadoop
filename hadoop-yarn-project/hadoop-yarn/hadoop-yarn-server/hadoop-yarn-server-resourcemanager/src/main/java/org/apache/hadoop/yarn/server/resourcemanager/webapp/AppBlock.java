@@ -326,6 +326,22 @@ name|hadoop
 operator|.
 name|yarn
 operator|.
+name|conf
+operator|.
+name|YarnConfiguration
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
 name|server
 operator|.
 name|resourcemanager
@@ -694,6 +710,12 @@ specifier|final
 name|ResourceManager
 name|rm
 decl_stmt|;
+DECL|field|rmWebAppUIActions
+specifier|private
+specifier|final
+name|boolean
+name|rmWebAppUIActions
+decl_stmt|;
 annotation|@
 name|Inject
 DECL|method|AppBlock (ResourceManager rm, ViewContext ctx, Configuration conf)
@@ -725,6 +747,23 @@ operator|.
 name|rm
 operator|=
 name|rm
+expr_stmt|;
+name|this
+operator|.
+name|rmWebAppUIActions
+operator|=
+name|conf
+operator|.
+name|getBoolean
+argument_list|(
+name|YarnConfiguration
+operator|.
+name|RM_WEBAPP_UI_ACTIONS_ENABLED
+argument_list|,
+name|YarnConfiguration
+operator|.
+name|DEFAULT_RM_WEBAPP_UI_ACTIONS_ENABLED
+argument_list|)
 expr_stmt|;
 block|}
 annotation|@
@@ -961,6 +1000,177 @@ name|aid
 argument_list|)
 argument_list|)
 expr_stmt|;
+if|if
+condition|(
+name|rmWebAppUIActions
+condition|)
+block|{
+comment|// Application Kill
+name|html
+operator|.
+name|div
+argument_list|()
+operator|.
+name|button
+argument_list|()
+operator|.
+name|$onclick
+argument_list|(
+literal|"confirmAction()"
+argument_list|)
+operator|.
+name|b
+argument_list|(
+literal|"Kill Application"
+argument_list|)
+operator|.
+name|_
+argument_list|()
+operator|.
+name|_
+argument_list|()
+expr_stmt|;
+name|StringBuilder
+name|script
+init|=
+operator|new
+name|StringBuilder
+argument_list|()
+decl_stmt|;
+name|script
+operator|.
+name|append
+argument_list|(
+literal|"function confirmAction() {"
+argument_list|)
+operator|.
+name|append
+argument_list|(
+literal|" b = confirm(\"Are you sure?\");"
+argument_list|)
+operator|.
+name|append
+argument_list|(
+literal|" if (b == true) {"
+argument_list|)
+operator|.
+name|append
+argument_list|(
+literal|" $.ajax({"
+argument_list|)
+operator|.
+name|append
+argument_list|(
+literal|" type: 'PUT',"
+argument_list|)
+operator|.
+name|append
+argument_list|(
+literal|" url: '/ws/v1/cluster/apps/"
+argument_list|)
+operator|.
+name|append
+argument_list|(
+name|aid
+argument_list|)
+operator|.
+name|append
+argument_list|(
+literal|"/state',"
+argument_list|)
+operator|.
+name|append
+argument_list|(
+literal|" contentType: 'application/json',"
+argument_list|)
+operator|.
+name|append
+argument_list|(
+literal|" data: '{\"state\":\"KILLED\"}',"
+argument_list|)
+operator|.
+name|append
+argument_list|(
+literal|" dataType: 'json'"
+argument_list|)
+operator|.
+name|append
+argument_list|(
+literal|" }).done(function(data){"
+argument_list|)
+operator|.
+name|append
+argument_list|(
+literal|" setTimeout(function(){"
+argument_list|)
+operator|.
+name|append
+argument_list|(
+literal|" location.href = '/cluster/app/"
+argument_list|)
+operator|.
+name|append
+argument_list|(
+name|aid
+argument_list|)
+operator|.
+name|append
+argument_list|(
+literal|"';"
+argument_list|)
+operator|.
+name|append
+argument_list|(
+literal|" }, 1000);"
+argument_list|)
+operator|.
+name|append
+argument_list|(
+literal|" }).fail(function(data){"
+argument_list|)
+operator|.
+name|append
+argument_list|(
+literal|" console.log(data);"
+argument_list|)
+operator|.
+name|append
+argument_list|(
+literal|" });"
+argument_list|)
+operator|.
+name|append
+argument_list|(
+literal|" }"
+argument_list|)
+operator|.
+name|append
+argument_list|(
+literal|"}"
+argument_list|)
+expr_stmt|;
+name|html
+operator|.
+name|script
+argument_list|()
+operator|.
+name|$type
+argument_list|(
+literal|"text/javascript"
+argument_list|)
+operator|.
+name|_
+argument_list|(
+name|script
+operator|.
+name|toString
+argument_list|()
+argument_list|)
+operator|.
+name|_
+argument_list|()
+expr_stmt|;
+block|}
 name|RMAppMetrics
 name|appMerics
 init|=
