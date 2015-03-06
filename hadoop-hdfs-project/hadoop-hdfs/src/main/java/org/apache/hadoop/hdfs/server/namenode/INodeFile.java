@@ -4448,15 +4448,22 @@ argument_list|(
 literal|", blocks="
 argument_list|)
 expr_stmt|;
+name|BlockInfo
+index|[]
+name|blks
+init|=
+name|getBlocks
+argument_list|()
+decl_stmt|;
 name|out
 operator|.
 name|print
 argument_list|(
-name|blocks
+name|blks
 operator|==
 literal|null
 operator|||
-name|blocks
+name|blks
 operator|.
 name|length
 operator|==
@@ -4464,13 +4471,12 @@ literal|0
 condition|?
 literal|null
 else|:
-name|blocks
+name|blks
 index|[
 literal|0
 index|]
 argument_list|)
 expr_stmt|;
-comment|// TODO print striped blocks
 name|out
 operator|.
 name|println
