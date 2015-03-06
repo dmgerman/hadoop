@@ -159,7 +159,7 @@ import|;
 end_import
 
 begin_import
-import|import static
+import|import
 name|org
 operator|.
 name|apache
@@ -168,13 +168,11 @@ name|hadoop
 operator|.
 name|yarn
 operator|.
+name|server
+operator|.
 name|webapp
 operator|.
-name|view
-operator|.
-name|JQueryUI
-operator|.
-name|tableInit
+name|AppsBlock
 import|;
 end_import
 
@@ -192,7 +190,7 @@ name|server
 operator|.
 name|webapp
 operator|.
-name|AppsBlock
+name|WebPageUtils
 import|;
 end_import
 
@@ -301,6 +299,8 @@ argument_list|,
 literal|"apps"
 argument_list|)
 argument_list|,
+name|WebPageUtils
+operator|.
 name|appsTableInit
 argument_list|()
 argument_list|)
@@ -423,108 +423,6 @@ return|return
 name|AppsBlock
 operator|.
 name|class
-return|;
-block|}
-DECL|method|appsTableInit ()
-specifier|private
-name|String
-name|appsTableInit
-parameter_list|()
-block|{
-comment|// id, user, name, queue, starttime, finishtime, state, status, progress, ui
-return|return
-name|tableInit
-argument_list|()
-operator|.
-name|append
-argument_list|(
-literal|", 'aaData': appsTableData"
-argument_list|)
-operator|.
-name|append
-argument_list|(
-literal|", bDeferRender: true"
-argument_list|)
-operator|.
-name|append
-argument_list|(
-literal|", bProcessing: true"
-argument_list|)
-operator|.
-name|append
-argument_list|(
-literal|"\n, aoColumnDefs: "
-argument_list|)
-operator|.
-name|append
-argument_list|(
-name|getAppsTableColumnDefs
-argument_list|()
-argument_list|)
-comment|// Sort by id upon page load
-operator|.
-name|append
-argument_list|(
-literal|", aaSorting: [[0, 'desc']]}"
-argument_list|)
-operator|.
-name|toString
-argument_list|()
-return|;
-block|}
-DECL|method|getAppsTableColumnDefs ()
-specifier|protected
-name|String
-name|getAppsTableColumnDefs
-parameter_list|()
-block|{
-name|StringBuilder
-name|sb
-init|=
-operator|new
-name|StringBuilder
-argument_list|()
-decl_stmt|;
-return|return
-name|sb
-operator|.
-name|append
-argument_list|(
-literal|"[\n"
-argument_list|)
-operator|.
-name|append
-argument_list|(
-literal|"{'sType':'numeric', 'aTargets': [0]"
-argument_list|)
-operator|.
-name|append
-argument_list|(
-literal|", 'mRender': parseHadoopID }"
-argument_list|)
-operator|.
-name|append
-argument_list|(
-literal|"\n, {'sType':'numeric', 'aTargets': [5, 6]"
-argument_list|)
-operator|.
-name|append
-argument_list|(
-literal|", 'mRender': renderHadoopDate }"
-argument_list|)
-operator|.
-name|append
-argument_list|(
-literal|"\n, {'sType':'numeric', bSearchable:false, 'aTargets': [9]"
-argument_list|)
-operator|.
-name|append
-argument_list|(
-literal|", 'mRender': parseHadoopProgress }]"
-argument_list|)
-operator|.
-name|toString
-argument_list|()
 return|;
 block|}
 block|}

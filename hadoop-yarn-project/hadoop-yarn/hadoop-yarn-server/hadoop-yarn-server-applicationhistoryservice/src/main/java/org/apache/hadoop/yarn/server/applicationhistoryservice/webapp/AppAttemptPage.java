@@ -101,7 +101,7 @@ import|;
 end_import
 
 begin_import
-import|import static
+import|import
 name|org
 operator|.
 name|apache
@@ -110,13 +110,11 @@ name|hadoop
 operator|.
 name|yarn
 operator|.
+name|server
+operator|.
 name|webapp
 operator|.
-name|view
-operator|.
-name|JQueryUI
-operator|.
-name|tableInit
+name|AppAttemptBlock
 import|;
 end_import
 
@@ -134,7 +132,7 @@ name|server
 operator|.
 name|webapp
 operator|.
-name|AppAttemptBlock
+name|WebPageUtils
 import|;
 end_import
 
@@ -249,6 +247,8 @@ argument_list|,
 literal|"containers"
 argument_list|)
 argument_list|,
+name|WebPageUtils
+operator|.
 name|containersTableInit
 argument_list|()
 argument_list|)
@@ -282,52 +282,6 @@ return|return
 name|AppAttemptBlock
 operator|.
 name|class
-return|;
-block|}
-DECL|method|containersTableInit ()
-specifier|private
-name|String
-name|containersTableInit
-parameter_list|()
-block|{
-return|return
-name|tableInit
-argument_list|()
-operator|.
-name|append
-argument_list|(
-literal|", 'aaData': containersTableData"
-argument_list|)
-operator|.
-name|append
-argument_list|(
-literal|", bDeferRender: true"
-argument_list|)
-operator|.
-name|append
-argument_list|(
-literal|", bProcessing: true"
-argument_list|)
-operator|.
-name|append
-argument_list|(
-literal|"\n, aoColumnDefs: "
-argument_list|)
-operator|.
-name|append
-argument_list|(
-name|getContainersTableColumnDefs
-argument_list|()
-argument_list|)
-comment|// Sort by id upon page load
-operator|.
-name|append
-argument_list|(
-literal|", aaSorting: [[0, 'desc']]}"
-argument_list|)
-operator|.
-name|toString
-argument_list|()
 return|;
 block|}
 DECL|method|getContainersTableColumnDefs ()

@@ -166,6 +166,24 @@ name|hadoop
 operator|.
 name|yarn
 operator|.
+name|server
+operator|.
+name|webapp
+operator|.
+name|WebPageUtils
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
 name|webapp
 operator|.
 name|ResponseInfo
@@ -1604,6 +1622,23 @@ operator|.
 name|class
 return|;
 block|}
+annotation|@
+name|Override
+DECL|method|initAppsTable ()
+specifier|protected
+name|String
+name|initAppsTable
+parameter_list|()
+block|{
+return|return
+name|WebPageUtils
+operator|.
+name|appsTableInit
+argument_list|(
+literal|true
+argument_list|)
+return|;
+block|}
 DECL|method|percent (float f)
 specifier|static
 name|String
@@ -1668,63 +1703,6 @@ name|f
 operator|*
 literal|100
 argument_list|)
-return|;
-block|}
-annotation|@
-name|Override
-DECL|method|getAppsTableColumnDefs ()
-specifier|protected
-name|String
-name|getAppsTableColumnDefs
-parameter_list|()
-block|{
-name|StringBuilder
-name|sb
-init|=
-operator|new
-name|StringBuilder
-argument_list|()
-decl_stmt|;
-return|return
-name|sb
-operator|.
-name|append
-argument_list|(
-literal|"[\n"
-argument_list|)
-operator|.
-name|append
-argument_list|(
-literal|"{'sType':'numeric', 'aTargets': [0]"
-argument_list|)
-operator|.
-name|append
-argument_list|(
-literal|", 'mRender': parseHadoopID }"
-argument_list|)
-operator|.
-name|append
-argument_list|(
-literal|"\n, {'sType':'numeric', 'aTargets': [6, 7]"
-argument_list|)
-operator|.
-name|append
-argument_list|(
-literal|", 'mRender': renderHadoopDate }"
-argument_list|)
-operator|.
-name|append
-argument_list|(
-literal|"\n, {'sType':'numeric', bSearchable:false, 'aTargets': [9]"
-argument_list|)
-operator|.
-name|append
-argument_list|(
-literal|", 'mRender': parseHadoopProgress }]"
-argument_list|)
-operator|.
-name|toString
-argument_list|()
 return|;
 block|}
 block|}

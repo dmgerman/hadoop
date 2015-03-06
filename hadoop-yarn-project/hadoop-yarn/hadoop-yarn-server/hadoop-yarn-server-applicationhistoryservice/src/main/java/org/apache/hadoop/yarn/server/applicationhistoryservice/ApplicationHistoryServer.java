@@ -1529,7 +1529,7 @@ name|AHSWebApp
 argument_list|(
 name|timelineDataManager
 argument_list|,
-name|historyManager
+name|ahsClientService
 argument_list|)
 argument_list|)
 expr_stmt|;

@@ -296,6 +296,34 @@ name|class
 argument_list|)
 expr_stmt|;
 block|}
+DECL|method|appattempt ()
+specifier|public
+name|void
+name|appattempt
+parameter_list|()
+block|{
+name|render
+argument_list|(
+name|AppAttemptPage
+operator|.
+name|class
+argument_list|)
+expr_stmt|;
+block|}
+DECL|method|container ()
+specifier|public
+name|void
+name|container
+parameter_list|()
+block|{
+name|render
+argument_list|(
+name|ContainerPage
+operator|.
+name|class
+argument_list|)
+expr_stmt|;
+block|}
 DECL|method|nodes ()
 specifier|public
 name|void

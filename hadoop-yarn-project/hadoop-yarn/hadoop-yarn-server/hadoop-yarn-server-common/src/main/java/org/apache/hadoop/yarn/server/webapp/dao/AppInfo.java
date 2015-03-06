@@ -23,6 +23,24 @@ package|;
 end_package
 
 begin_import
+import|import static
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|util
+operator|.
+name|StringHelper
+operator|.
+name|CSV_JOINER
+import|;
+end_import
+
+begin_import
 import|import
 name|javax
 operator|.
@@ -244,6 +262,11 @@ specifier|protected
 name|long
 name|elapsedTime
 decl_stmt|;
+DECL|field|applicationTags
+specifier|protected
+name|String
+name|applicationTags
+decl_stmt|;
 DECL|method|AppInfo ()
 specifier|public
 name|AppInfo
@@ -405,7 +428,44 @@ name|app
 operator|.
 name|getProgress
 argument_list|()
+operator|*
+literal|100
 expr_stmt|;
+comment|// in percent
+if|if
+condition|(
+name|app
+operator|.
+name|getApplicationTags
+argument_list|()
+operator|!=
+literal|null
+operator|&&
+operator|!
+name|app
+operator|.
+name|getApplicationTags
+argument_list|()
+operator|.
+name|isEmpty
+argument_list|()
+condition|)
+block|{
+name|this
+operator|.
+name|applicationTags
+operator|=
+name|CSV_JOINER
+operator|.
+name|join
+argument_list|(
+name|app
+operator|.
+name|getApplicationTags
+argument_list|()
+argument_list|)
+expr_stmt|;
+block|}
 block|}
 DECL|method|getAppId ()
 specifier|public
@@ -585,6 +645,16 @@ parameter_list|()
 block|{
 return|return
 name|elapsedTime
+return|;
+block|}
+DECL|method|getApplicationTags ()
+specifier|public
+name|String
+name|getApplicationTags
+parameter_list|()
+block|{
+return|return
+name|applicationTags
 return|;
 block|}
 block|}

@@ -146,6 +146,15 @@ name|TextView
 implements|implements
 name|SubView
 block|{
+DECL|field|UNAVAILABLE
+specifier|protected
+specifier|static
+specifier|final
+name|String
+name|UNAVAILABLE
+init|=
+literal|"N/A"
+decl_stmt|;
 DECL|class|Block
 specifier|public
 class|class

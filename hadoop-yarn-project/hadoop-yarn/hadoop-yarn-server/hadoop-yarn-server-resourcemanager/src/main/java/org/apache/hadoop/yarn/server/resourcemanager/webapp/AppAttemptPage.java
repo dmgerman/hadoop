@@ -4,7 +4,7 @@ comment|/**  * Licensed to the Apache Software Foundation (ASF) under one  * or 
 end_comment
 
 begin_package
-DECL|package|org.apache.hadoop.yarn.server.applicationhistoryservice.webapp
+DECL|package|org.apache.hadoop.yarn.server.resourcemanager.webapp
 package|package
 name|org
 operator|.
@@ -16,7 +16,7 @@ name|yarn
 operator|.
 name|server
 operator|.
-name|applicationhistoryservice
+name|resourcemanager
 operator|.
 name|webapp
 package|;
@@ -114,7 +114,7 @@ name|server
 operator|.
 name|webapp
 operator|.
-name|AppBlock
+name|AppAttemptBlock
 import|;
 end_import
 
@@ -169,12 +169,12 @@ import|;
 end_import
 
 begin_class
-DECL|class|AppPage
+DECL|class|AppAttemptPage
 specifier|public
 class|class
-name|AppPage
+name|AppAttemptPage
 extends|extends
-name|AHSView
+name|RmView
 block|{
 annotation|@
 name|Override
@@ -198,35 +198,35 @@ name|html
 argument_list|)
 expr_stmt|;
 name|String
-name|appId
+name|appAttemptId
 init|=
 name|$
 argument_list|(
 name|YarnWebParams
 operator|.
-name|APPLICATION_ID
+name|APPLICATION_ATTEMPT_ID
 argument_list|)
 decl_stmt|;
 name|set
 argument_list|(
 name|TITLE
 argument_list|,
-name|appId
+name|appAttemptId
 operator|.
 name|isEmpty
 argument_list|()
 condition|?
-literal|"Bad request: missing application ID"
+literal|"Bad request: missing application attempt ID"
 else|:
 name|join
 argument_list|(
-literal|"Application "
+literal|"Application Attempt "
 argument_list|,
 name|$
 argument_list|(
 name|YarnWebParams
 operator|.
-name|APPLICATION_ID
+name|APPLICATION_ATTEMPT_ID
 argument_list|)
 argument_list|)
 argument_list|)
@@ -235,7 +235,7 @@ name|set
 argument_list|(
 name|DATATABLES_ID
 argument_list|,
-literal|"attempts ResourceRequests"
+literal|"containers"
 argument_list|)
 expr_stmt|;
 name|set
@@ -244,12 +244,12 @@ name|initID
 argument_list|(
 name|DATATABLES
 argument_list|,
-literal|"attempts"
+literal|"containers"
 argument_list|)
 argument_list|,
 name|WebPageUtils
 operator|.
-name|attemptsTableInit
+name|containersTableInit
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -257,29 +257,11 @@ name|setTableStyles
 argument_list|(
 name|html
 argument_list|,
-literal|"attempts"
+literal|"containers"
 argument_list|,
 literal|".queue {width:6em}"
 argument_list|,
 literal|".ui {width:8em}"
-argument_list|)
-expr_stmt|;
-name|setTableStyles
-argument_list|(
-name|html
-argument_list|,
-literal|"ResourceRequests"
-argument_list|)
-expr_stmt|;
-name|set
-argument_list|(
-name|YarnWebParams
-operator|.
-name|WEB_UI_TYPE
-argument_list|,
-name|YarnWebParams
-operator|.
-name|APP_HISTORY_WEB_UI
 argument_list|)
 expr_stmt|;
 block|}
@@ -297,54 +279,9 @@ name|content
 parameter_list|()
 block|{
 return|return
-name|AppBlock
+name|AppAttemptBlock
 operator|.
 name|class
-return|;
-block|}
-DECL|method|getAttemptsTableColumnDefs ()
-specifier|protected
-name|String
-name|getAttemptsTableColumnDefs
-parameter_list|()
-block|{
-name|StringBuilder
-name|sb
-init|=
-operator|new
-name|StringBuilder
-argument_list|()
-decl_stmt|;
-return|return
-name|sb
-operator|.
-name|append
-argument_list|(
-literal|"[\n"
-argument_list|)
-operator|.
-name|append
-argument_list|(
-literal|"{'sType':'numeric', 'aTargets': [0]"
-argument_list|)
-operator|.
-name|append
-argument_list|(
-literal|", 'mRender': parseHadoopID }"
-argument_list|)
-operator|.
-name|append
-argument_list|(
-literal|"\n, {'sType':'numeric', 'aTargets': [1]"
-argument_list|)
-operator|.
-name|append
-argument_list|(
-literal|", 'mRender': renderHadoopDate }]"
-argument_list|)
-operator|.
-name|toString
-argument_list|()
 return|;
 block|}
 block|}

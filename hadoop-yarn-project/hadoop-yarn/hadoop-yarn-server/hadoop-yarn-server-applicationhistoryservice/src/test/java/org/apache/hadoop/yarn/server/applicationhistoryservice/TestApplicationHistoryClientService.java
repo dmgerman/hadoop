@@ -658,9 +658,6 @@ name|response
 init|=
 name|clientService
 operator|.
-name|getClientHandler
-argument_list|()
-operator|.
 name|getApplicationReport
 argument_list|(
 name|request
@@ -810,9 +807,6 @@ name|response
 init|=
 name|clientService
 operator|.
-name|getClientHandler
-argument_list|()
-operator|.
 name|getApplications
 argument_list|(
 name|request
@@ -922,9 +916,6 @@ name|response
 init|=
 name|clientService
 operator|.
-name|getClientHandler
-argument_list|()
-operator|.
 name|getApplicationAttemptReport
 argument_list|(
 name|request
@@ -1023,9 +1014,6 @@ name|GetApplicationAttemptsResponse
 name|response
 init|=
 name|clientService
-operator|.
-name|getClientHandler
-argument_list|()
 operator|.
 name|getApplicationAttempts
 argument_list|(
@@ -1147,9 +1135,6 @@ name|GetContainerReportResponse
 name|response
 init|=
 name|clientService
-operator|.
-name|getClientHandler
-argument_list|()
 operator|.
 name|getContainerReport
 argument_list|(
@@ -1274,9 +1259,6 @@ name|GetContainersResponse
 name|response
 init|=
 name|clientService
-operator|.
-name|getClientHandler
-argument_list|()
 operator|.
 name|getContainers
 argument_list|(

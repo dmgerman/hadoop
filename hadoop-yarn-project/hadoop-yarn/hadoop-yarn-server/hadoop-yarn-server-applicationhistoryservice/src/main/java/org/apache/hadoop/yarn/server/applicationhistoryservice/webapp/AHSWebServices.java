@@ -196,11 +196,9 @@ name|hadoop
 operator|.
 name|yarn
 operator|.
-name|server
-operator|.
 name|api
 operator|.
-name|ApplicationContext
+name|ApplicationBaseProtocol
 import|;
 end_import
 
@@ -399,17 +397,17 @@ name|WebServices
 block|{
 annotation|@
 name|Inject
-DECL|method|AHSWebServices (ApplicationContext appContext)
+DECL|method|AHSWebServices (ApplicationBaseProtocol appBaseProt)
 specifier|public
 name|AHSWebServices
 parameter_list|(
-name|ApplicationContext
-name|appContext
+name|ApplicationBaseProtocol
+name|appBaseProt
 parameter_list|)
 block|{
 name|super
 argument_list|(
-name|appContext
+name|appBaseProt
 argument_list|)
 expr_stmt|;
 block|}

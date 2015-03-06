@@ -50,11 +50,9 @@ name|hadoop
 operator|.
 name|yarn
 operator|.
-name|server
-operator|.
 name|api
 operator|.
-name|ApplicationContext
+name|ApplicationBaseProtocol
 import|;
 end_import
 
@@ -72,7 +70,7 @@ name|server
 operator|.
 name|applicationhistoryservice
 operator|.
-name|ApplicationHistoryManager
+name|ApplicationHistoryClientService
 import|;
 end_import
 
@@ -188,25 +186,26 @@ name|WebApp
 implements|implements
 name|YarnWebParams
 block|{
-DECL|field|applicationHistoryManager
+DECL|field|historyClientService
 specifier|private
-name|ApplicationHistoryManager
-name|applicationHistoryManager
+specifier|final
+name|ApplicationHistoryClientService
+name|historyClientService
 decl_stmt|;
 DECL|field|timelineDataManager
 specifier|private
 name|TimelineDataManager
 name|timelineDataManager
 decl_stmt|;
-DECL|method|AHSWebApp (TimelineDataManager timelineDataManager, ApplicationHistoryManager applicationHistoryManager)
+DECL|method|AHSWebApp (TimelineDataManager timelineDataManager, ApplicationHistoryClientService historyClientService)
 specifier|public
 name|AHSWebApp
 parameter_list|(
 name|TimelineDataManager
 name|timelineDataManager
 parameter_list|,
-name|ApplicationHistoryManager
-name|applicationHistoryManager
+name|ApplicationHistoryClientService
+name|historyClientService
 parameter_list|)
 block|{
 name|this
@@ -217,19 +216,19 @@ name|timelineDataManager
 expr_stmt|;
 name|this
 operator|.
-name|applicationHistoryManager
+name|historyClientService
 operator|=
-name|applicationHistoryManager
+name|historyClientService
 expr_stmt|;
 block|}
-DECL|method|getApplicationHistoryManager ()
+DECL|method|getApplicationHistoryClientService ()
 specifier|public
-name|ApplicationHistoryManager
-name|getApplicationHistoryManager
+name|ApplicationHistoryClientService
+name|getApplicationHistoryClientService
 parameter_list|()
 block|{
 return|return
-name|applicationHistoryManager
+name|historyClientService
 return|;
 block|}
 DECL|method|getTimelineDataManager ()
@@ -280,14 +279,14 @@ argument_list|)
 expr_stmt|;
 name|bind
 argument_list|(
-name|ApplicationContext
+name|ApplicationBaseProtocol
 operator|.
 name|class
 argument_list|)
 operator|.
 name|toInstance
 argument_list|(
-name|applicationHistoryManager
+name|historyClientService
 argument_list|)
 expr_stmt|;
 name|bind
