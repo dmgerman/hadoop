@@ -120,6 +120,35 @@ return|return
 name|NAME
 return|;
 block|}
+DECL|method|getOffset ()
+specifier|public
+name|Long
+name|getOffset
+parameter_list|()
+block|{
+name|Long
+name|offset
+init|=
+name|getValue
+argument_list|()
+decl_stmt|;
+return|return
+operator|(
+name|offset
+operator|==
+literal|null
+operator|)
+condition|?
+name|Long
+operator|.
+name|valueOf
+argument_list|(
+literal|0
+argument_list|)
+else|:
+name|offset
+return|;
+block|}
 block|}
 end_class
 

@@ -530,7 +530,7 @@ name|NAME
 argument_list|)
 argument_list|)
 operator|.
-name|getValue
+name|getOffset
 argument_list|()
 return|;
 block|}
