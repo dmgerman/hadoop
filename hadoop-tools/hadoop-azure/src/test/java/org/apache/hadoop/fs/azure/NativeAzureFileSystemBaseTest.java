@@ -446,7 +446,7 @@ name|com
 operator|.
 name|microsoft
 operator|.
-name|windowsazure
+name|azure
 operator|.
 name|storage
 operator|.
@@ -460,7 +460,7 @@ name|com
 operator|.
 name|microsoft
 operator|.
-name|windowsazure
+name|azure
 operator|.
 name|storage
 operator|.
@@ -474,7 +474,7 @@ name|com
 operator|.
 name|microsoft
 operator|.
-name|windowsazure
+name|azure
 operator|.
 name|storage
 operator|.

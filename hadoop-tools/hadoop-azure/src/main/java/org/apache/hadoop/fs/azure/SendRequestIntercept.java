@@ -86,7 +86,7 @@ name|com
 operator|.
 name|microsoft
 operator|.
-name|windowsazure
+name|azure
 operator|.
 name|storage
 operator|.
@@ -102,7 +102,23 @@ name|com
 operator|.
 name|microsoft
 operator|.
-name|windowsazure
+name|azure
+operator|.
+name|storage
+operator|.
+name|core
+operator|.
+name|StorageCredentialsHelper
+import|;
+end_import
+
+begin_import
+import|import
+name|com
+operator|.
+name|microsoft
+operator|.
+name|azure
 operator|.
 name|storage
 operator|.
@@ -116,7 +132,7 @@ name|com
 operator|.
 name|microsoft
 operator|.
-name|windowsazure
+name|azure
 operator|.
 name|storage
 operator|.
@@ -130,7 +146,7 @@ name|com
 operator|.
 name|microsoft
 operator|.
-name|windowsazure
+name|azure
 operator|.
 name|storage
 operator|.
@@ -144,7 +160,7 @@ name|com
 operator|.
 name|microsoft
 operator|.
-name|windowsazure
+name|azure
 operator|.
 name|storage
 operator|.
@@ -158,7 +174,7 @@ name|com
 operator|.
 name|microsoft
 operator|.
-name|windowsazure
+name|azure
 operator|.
 name|storage
 operator|.
@@ -420,11 +436,13 @@ try|try
 block|{
 comment|// Sign the request. GET's have no payload so the content length is
 comment|// zero.
-name|getCredentials
-argument_list|()
+name|StorageCredentialsHelper
 operator|.
 name|signBlobAndQueueRequest
 argument_list|(
+name|getCredentials
+argument_list|()
+argument_list|,
 name|urlConnection
 argument_list|,
 operator|-

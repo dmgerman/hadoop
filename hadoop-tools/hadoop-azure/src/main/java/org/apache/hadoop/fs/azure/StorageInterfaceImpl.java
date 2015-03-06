@@ -128,7 +128,7 @@ name|com
 operator|.
 name|microsoft
 operator|.
-name|windowsazure
+name|azure
 operator|.
 name|storage
 operator|.
@@ -142,7 +142,7 @@ name|com
 operator|.
 name|microsoft
 operator|.
-name|windowsazure
+name|azure
 operator|.
 name|storage
 operator|.
@@ -156,7 +156,7 @@ name|com
 operator|.
 name|microsoft
 operator|.
-name|windowsazure
+name|azure
 operator|.
 name|storage
 operator|.
@@ -170,7 +170,7 @@ name|com
 operator|.
 name|microsoft
 operator|.
-name|windowsazure
+name|azure
 operator|.
 name|storage
 operator|.
@@ -184,7 +184,7 @@ name|com
 operator|.
 name|microsoft
 operator|.
-name|windowsazure
+name|azure
 operator|.
 name|storage
 operator|.
@@ -198,7 +198,7 @@ name|com
 operator|.
 name|microsoft
 operator|.
-name|windowsazure
+name|azure
 operator|.
 name|storage
 operator|.
@@ -212,7 +212,7 @@ name|com
 operator|.
 name|microsoft
 operator|.
-name|windowsazure
+name|azure
 operator|.
 name|storage
 operator|.
@@ -226,7 +226,7 @@ name|com
 operator|.
 name|microsoft
 operator|.
-name|windowsazure
+name|azure
 operator|.
 name|storage
 operator|.
@@ -242,7 +242,7 @@ name|com
 operator|.
 name|microsoft
 operator|.
-name|windowsazure
+name|azure
 operator|.
 name|storage
 operator|.
@@ -258,7 +258,7 @@ name|com
 operator|.
 name|microsoft
 operator|.
-name|windowsazure
+name|azure
 operator|.
 name|storage
 operator|.
@@ -274,7 +274,7 @@ name|com
 operator|.
 name|microsoft
 operator|.
-name|windowsazure
+name|azure
 operator|.
 name|storage
 operator|.
@@ -290,7 +290,7 @@ name|com
 operator|.
 name|microsoft
 operator|.
-name|windowsazure
+name|azure
 operator|.
 name|storage
 operator|.
@@ -306,7 +306,7 @@ name|com
 operator|.
 name|microsoft
 operator|.
-name|windowsazure
+name|azure
 operator|.
 name|storage
 operator|.
@@ -322,7 +322,7 @@ name|com
 operator|.
 name|microsoft
 operator|.
-name|windowsazure
+name|azure
 operator|.
 name|storage
 operator|.
@@ -338,7 +338,7 @@ name|com
 operator|.
 name|microsoft
 operator|.
-name|windowsazure
+name|azure
 operator|.
 name|storage
 operator|.
@@ -354,7 +354,7 @@ name|com
 operator|.
 name|microsoft
 operator|.
-name|windowsazure
+name|azure
 operator|.
 name|storage
 operator|.
@@ -370,7 +370,7 @@ name|com
 operator|.
 name|microsoft
 operator|.
-name|windowsazure
+name|azure
 operator|.
 name|storage
 operator|.
@@ -386,7 +386,7 @@ name|com
 operator|.
 name|microsoft
 operator|.
-name|windowsazure
+name|azure
 operator|.
 name|storage
 operator|.
@@ -402,7 +402,7 @@ name|com
 operator|.
 name|microsoft
 operator|.
-name|windowsazure
+name|azure
 operator|.
 name|storage
 operator|.
@@ -418,7 +418,7 @@ name|com
 operator|.
 name|microsoft
 operator|.
-name|windowsazure
+name|azure
 operator|.
 name|storage
 operator|.
@@ -462,6 +462,9 @@ parameter_list|)
 block|{
 name|serviceClient
 operator|.
+name|getDefaultRequestOptions
+argument_list|()
+operator|.
 name|setRetryPolicyFactory
 argument_list|(
 name|retryPolicyFactory
@@ -481,7 +484,10 @@ parameter_list|)
 block|{
 name|serviceClient
 operator|.
-name|setTimeoutInMs
+name|getDefaultRequestOptions
+argument_list|()
+operator|.
+name|setTimeoutIntervalInMs
 argument_list|(
 name|timeoutInMs
 argument_list|)

@@ -606,7 +606,7 @@ name|com
 operator|.
 name|microsoft
 operator|.
-name|windowsazure
+name|azure
 operator|.
 name|storage
 operator|.
@@ -620,7 +620,7 @@ name|com
 operator|.
 name|microsoft
 operator|.
-name|windowsazure
+name|azure
 operator|.
 name|storage
 operator|.
@@ -634,7 +634,7 @@ name|com
 operator|.
 name|microsoft
 operator|.
-name|windowsazure
+name|azure
 operator|.
 name|storage
 operator|.
@@ -648,7 +648,7 @@ name|com
 operator|.
 name|microsoft
 operator|.
-name|windowsazure
+name|azure
 operator|.
 name|storage
 operator|.
@@ -662,7 +662,7 @@ name|com
 operator|.
 name|microsoft
 operator|.
-name|windowsazure
+name|azure
 operator|.
 name|storage
 operator|.
@@ -676,7 +676,7 @@ name|com
 operator|.
 name|microsoft
 operator|.
-name|windowsazure
+name|azure
 operator|.
 name|storage
 operator|.
@@ -690,7 +690,7 @@ name|com
 operator|.
 name|microsoft
 operator|.
-name|windowsazure
+name|azure
 operator|.
 name|storage
 operator|.
@@ -704,7 +704,7 @@ name|com
 operator|.
 name|microsoft
 operator|.
-name|windowsazure
+name|azure
 operator|.
 name|storage
 operator|.
@@ -718,7 +718,7 @@ name|com
 operator|.
 name|microsoft
 operator|.
-name|windowsazure
+name|azure
 operator|.
 name|storage
 operator|.
@@ -732,7 +732,7 @@ name|com
 operator|.
 name|microsoft
 operator|.
-name|windowsazure
+name|azure
 operator|.
 name|storage
 operator|.
@@ -748,7 +748,7 @@ name|com
 operator|.
 name|microsoft
 operator|.
-name|windowsazure
+name|azure
 operator|.
 name|storage
 operator|.
@@ -764,7 +764,7 @@ name|com
 operator|.
 name|microsoft
 operator|.
-name|windowsazure
+name|azure
 operator|.
 name|storage
 operator|.
@@ -780,7 +780,7 @@ name|com
 operator|.
 name|microsoft
 operator|.
-name|windowsazure
+name|azure
 operator|.
 name|storage
 operator|.
@@ -796,7 +796,7 @@ name|com
 operator|.
 name|microsoft
 operator|.
-name|windowsazure
+name|azure
 operator|.
 name|storage
 operator|.
@@ -812,7 +812,7 @@ name|com
 operator|.
 name|microsoft
 operator|.
-name|windowsazure
+name|azure
 operator|.
 name|storage
 operator|.
@@ -828,7 +828,7 @@ name|com
 operator|.
 name|microsoft
 operator|.
-name|windowsazure
+name|azure
 operator|.
 name|storage
 operator|.
@@ -844,7 +844,7 @@ name|com
 operator|.
 name|microsoft
 operator|.
-name|windowsazure
+name|azure
 operator|.
 name|storage
 operator|.
@@ -9194,16 +9194,8 @@ argument_list|(
 name|key
 argument_list|)
 decl_stmt|;
-name|blob
-operator|.
-name|getProperties
-argument_list|()
-operator|.
-name|setLastModified
-argument_list|(
-name|lastModified
-argument_list|)
-expr_stmt|;
+comment|//setLastModified function is not available in 2.0.0 version. blob.uploadProperties automatically updates last modified
+comment|//timestamp to current time
 name|blob
 operator|.
 name|uploadProperties
