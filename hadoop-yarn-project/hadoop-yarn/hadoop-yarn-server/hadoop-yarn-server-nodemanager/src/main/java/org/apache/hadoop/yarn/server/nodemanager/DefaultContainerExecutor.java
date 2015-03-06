@@ -386,6 +386,24 @@ name|hadoop
 operator|.
 name|yarn
 operator|.
+name|api
+operator|.
+name|records
+operator|.
+name|Resource
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
 name|conf
 operator|.
 name|YarnConfiguration
@@ -1310,6 +1328,11 @@ name|user
 argument_list|,
 name|pidFile
 argument_list|,
+name|container
+operator|.
+name|getResource
+argument_list|()
+argument_list|,
 operator|new
 name|File
 argument_list|(
@@ -1629,7 +1652,7 @@ return|return
 literal|0
 return|;
 block|}
-DECL|method|buildCommandExecutor (String wrapperScriptPath, String containerIdStr, String user, Path pidFile, File wordDir, Map<String, String> environment)
+DECL|method|buildCommandExecutor (String wrapperScriptPath, String containerIdStr, String user, Path pidFile, Resource resource, File wordDir, Map<String, String> environment)
 specifier|protected
 name|CommandExecutor
 name|buildCommandExecutor
@@ -1645,6 +1668,9 @@ name|user
 parameter_list|,
 name|Path
 name|pidFile
+parameter_list|,
+name|Resource
+name|resource
 parameter_list|,
 name|File
 name|wordDir
@@ -1678,6 +1704,8 @@ name|this
 operator|.
 name|getConf
 argument_list|()
+argument_list|,
+name|resource
 argument_list|)
 decl_stmt|;
 name|LOG
