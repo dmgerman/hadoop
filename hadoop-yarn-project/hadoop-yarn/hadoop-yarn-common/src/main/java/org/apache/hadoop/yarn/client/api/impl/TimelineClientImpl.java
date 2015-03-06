@@ -2629,6 +2629,11 @@ operator|.
 name|getCurrentUser
 argument_list|()
 decl_stmt|;
+name|callerUGI
+operator|.
+name|checkTGTAndReloginFromKeytab
+argument_list|()
+expr_stmt|;
 try|try
 block|{
 return|return
@@ -2888,6 +2893,11 @@ argument_list|()
 else|:
 literal|null
 decl_stmt|;
+name|callerUGI
+operator|.
+name|checkTGTAndReloginFromKeytab
+argument_list|()
+expr_stmt|;
 try|try
 block|{
 return|return
