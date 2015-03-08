@@ -24,6 +24,26 @@ specifier|public
 class|class
 name|Constants
 block|{
+comment|// s3 access key
+DECL|field|ACCESS_KEY
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|ACCESS_KEY
+init|=
+literal|"fs.s3a.access.key"
+decl_stmt|;
+comment|// s3 secret key
+DECL|field|SECRET_KEY
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|SECRET_KEY
+init|=
+literal|"fs.s3a.secret.key"
+decl_stmt|;
 comment|// number of simultaneous connections to s3
 DECL|field|MAXIMUM_CONNECTIONS
 specifier|public
