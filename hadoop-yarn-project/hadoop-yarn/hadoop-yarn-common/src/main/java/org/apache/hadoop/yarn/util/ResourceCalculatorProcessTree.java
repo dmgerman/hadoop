@@ -70,7 +70,23 @@ name|classification
 operator|.
 name|InterfaceAudience
 operator|.
-name|Private
+name|Public
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|classification
+operator|.
+name|InterfaceStability
+operator|.
+name|Evolving
 import|;
 end_import
 
@@ -108,7 +124,9 @@ end_comment
 
 begin_class
 annotation|@
-name|Private
+name|Public
+annotation|@
+name|Evolving
 DECL|class|ResourceCalculatorProcessTree
 specifier|public
 specifier|abstract
@@ -185,44 +203,57 @@ literal|0
 argument_list|)
 return|;
 block|}
-comment|/**    * Get the cumulative virtual memory used by all the processes in the    * process-tree that are older than the passed in age.    *    * @param olderThanAge processes above this age are included in the    *                      memory addition    * @return cumulative virtual memory used by the process-tree in bytes,    *          for processes older than this age.    */
+comment|/**    * Get the cumulative virtual memory used by all the processes in the    * process-tree that are older than the passed in age.    *    * @param olderThanAge processes above this age are included in the    *                      memory addition    * @return cumulative virtual memory used by the process-tree in bytes,    *          for processes older than this age. return 0 if it cannot be    *          calculated    */
 DECL|method|getCumulativeVmem (int olderThanAge)
 specifier|public
-specifier|abstract
 name|long
 name|getCumulativeVmem
 parameter_list|(
 name|int
 name|olderThanAge
 parameter_list|)
-function_decl|;
+block|{
+return|return
+literal|0
+return|;
+block|}
 comment|/**    * Get the cumulative resident set size (rss) memory used by all the processes    * in the process-tree that are older than the passed in age.    *    * @param olderThanAge processes above this age are included in the    *                      memory addition    * @return cumulative rss memory used by the process-tree in bytes,    *          for processes older than this age. return 0 if it cannot be    *          calculated    */
 DECL|method|getCumulativeRssmem (int olderThanAge)
 specifier|public
-specifier|abstract
 name|long
 name|getCumulativeRssmem
 parameter_list|(
 name|int
 name|olderThanAge
 parameter_list|)
-function_decl|;
+block|{
+return|return
+literal|0
+return|;
+block|}
 comment|/**    * Get the CPU time in millisecond used by all the processes in the    * process-tree since the process-tree was created    *    * @return cumulative CPU time in millisecond since the process-tree created    *         return 0 if it cannot be calculated    */
 DECL|method|getCumulativeCpuTime ()
 specifier|public
-specifier|abstract
 name|long
 name|getCumulativeCpuTime
 parameter_list|()
-function_decl|;
+block|{
+return|return
+literal|0
+return|;
+block|}
 comment|/**    * Get the CPU usage by all the processes in the process-tree based on    * average between samples as a ratio of overall CPU cycles similar to top.    * Thus, if 2 out of 4 cores are used this should return 200.0.    *    * @return percentage CPU usage since the process-tree was created    *         return {@link CpuTimeTracker#UNAVAILABLE} if it cannot be calculated    */
 DECL|method|getCpuUsagePercent ()
 specifier|public
-specifier|abstract
 name|float
 name|getCpuUsagePercent
 parameter_list|()
-function_decl|;
+block|{
+return|return
+operator|-
+literal|1
+return|;
+block|}
 comment|/** Verify that the tree process id is same as its process group id.    * @return true if the process id matches else return false.    */
 DECL|method|checkPidPgrpidForMatch ()
 specifier|public
