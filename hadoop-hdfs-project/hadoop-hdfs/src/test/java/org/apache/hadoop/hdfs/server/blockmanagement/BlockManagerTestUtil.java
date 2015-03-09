@@ -72,6 +72,18 @@ end_import
 
 begin_import
 import|import
+name|java
+operator|.
+name|util
+operator|.
+name|concurrent
+operator|.
+name|ExecutionException
+import|;
+end_import
+
+begin_import
+import|import
 name|org
 operator|.
 name|apache
@@ -1290,25 +1302,27 @@ argument_list|)
 return|;
 block|}
 comment|/**    * Have DatanodeManager check decommission state.    * @param dm the DatanodeManager to manipulate    */
-DECL|method|checkDecommissionState (DatanodeManager dm, DatanodeDescriptor node)
+DECL|method|recheckDecommissionState (DatanodeManager dm)
 specifier|public
 specifier|static
 name|void
-name|checkDecommissionState
+name|recheckDecommissionState
 parameter_list|(
 name|DatanodeManager
 name|dm
-parameter_list|,
-name|DatanodeDescriptor
-name|node
 parameter_list|)
+throws|throws
+name|ExecutionException
+throws|,
+name|InterruptedException
 block|{
 name|dm
 operator|.
-name|checkDecommissionState
-argument_list|(
-name|node
-argument_list|)
+name|getDecomManager
+argument_list|()
+operator|.
+name|runMonitor
+argument_list|()
 expr_stmt|;
 block|}
 block|}

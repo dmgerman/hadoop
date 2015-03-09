@@ -987,6 +987,9 @@ argument_list|)
 decl_stmt|;
 name|dnManager
 operator|.
+name|getDecomManager
+argument_list|()
+operator|.
 name|startDecommission
 argument_list|(
 name|d

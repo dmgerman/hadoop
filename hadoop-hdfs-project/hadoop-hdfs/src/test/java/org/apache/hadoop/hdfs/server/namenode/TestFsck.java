@@ -8987,6 +8987,9 @@ operator|.
 name|getDatanodeManager
 argument_list|()
 operator|.
+name|getDecomManager
+argument_list|()
+operator|.
 name|startDecommission
 argument_list|(
 name|dn

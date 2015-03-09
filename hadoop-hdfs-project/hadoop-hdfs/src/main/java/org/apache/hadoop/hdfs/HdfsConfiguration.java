@@ -520,7 +520,7 @@ name|DFSConfigKeys
 operator|.
 name|DFS_CLIENT_FILE_BLOCK_STORAGE_LOCATIONS_TIMEOUT_MS
 argument_list|)
-block|}
+block|,     }
 argument_list|)
 expr_stmt|;
 block|}
