@@ -4,7 +4,7 @@ comment|/**  * Licensed to the Apache Software Foundation (ASF) under one  * or 
 end_comment
 
 begin_package
-DECL|package|org.apache.hadoop.io.erasurecode.rawcoder
+DECL|package|org.apache.hadoop.io.erasurecode.coder
 package|package
 name|org
 operator|.
@@ -16,19 +16,19 @@ name|io
 operator|.
 name|erasurecode
 operator|.
-name|rawcoder
+name|coder
 package|;
 end_package
 
 begin_comment
-comment|/**  * RawErasureCoder is a common interface for {@link RawErasureEncoder} and  * {@link RawErasureDecoder} as both encoder and decoder share some properties.  *  * RawErasureCoder is part of ErasureCodec framework, where ErasureCoder is  * used to encode/decode a group of blocks (BlockGroup) according to the codec  * specific BlockGroup layout and logic. An ErasureCoder extracts chunks of  * data from the blocks and can employ various low level RawErasureCoders to  * perform encoding/decoding against the chunks.  *  * To distinguish from ErasureCoder, here RawErasureCoder is used to mean the  * low level constructs, since it only takes care of the math calculation with  * a group of byte buffers.  */
+comment|/**  * An erasure coder to perform encoding or decoding given a group. Generally it  * involves calculating necessary internal steps according to codec logic. For  * each step,it calculates necessary input blocks to read chunks from and output  * parity blocks to write parity chunks into from the group. It also takes care  * of appropriate raw coder to use for the step. And encapsulates all the  * necessary info (input blocks, output blocks and raw coder) into a step  * represented by {@link ErasureCodingStep}. ErasureCoder callers can use the  * step to do the real work with retrieved input and output chunks.  *  * Note, currently only one coding step is supported. Will support complex cases  * of multiple coding steps.  *  */
 end_comment
 
 begin_interface
-DECL|interface|RawErasureCoder
+DECL|interface|ErasureCoder
 specifier|public
 interface|interface
-name|RawErasureCoder
+name|ErasureCoder
 block|{
 comment|/**    * Initialize with the important parameters for the code.    * @param numDataUnits how many data inputs for the coding    * @param numParityUnits how many parity outputs the coding generates    * @param chunkSize the size of the input/output buffer    */
 DECL|method|initialize (int numDataUnits, int numParityUnits, int chunkSize)
@@ -74,7 +74,7 @@ name|boolean
 name|preferNativeBuffer
 parameter_list|()
 function_decl|;
-comment|/**    * Should be called when release this coder. Good chance to release encoding    * or decoding buffers    */
+comment|/**    * Release the resources if any. Good chance to invoke RawErasureCoder#release.    */
 DECL|method|release ()
 specifier|public
 name|void
