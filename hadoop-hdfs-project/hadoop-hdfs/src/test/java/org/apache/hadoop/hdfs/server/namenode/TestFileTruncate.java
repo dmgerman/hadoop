@@ -7550,6 +7550,39 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
+name|checkBlockRecovery
+argument_list|(
+name|p
+argument_list|,
+name|dfs
+argument_list|,
+name|SUCCESS_ATTEMPTS
+argument_list|,
+name|SLEEP
+argument_list|)
+expr_stmt|;
+block|}
+DECL|method|checkBlockRecovery (Path p, DistributedFileSystem dfs, int attempts, long sleepMs)
+specifier|public
+specifier|static
+name|void
+name|checkBlockRecovery
+parameter_list|(
+name|Path
+name|p
+parameter_list|,
+name|DistributedFileSystem
+name|dfs
+parameter_list|,
+name|int
+name|attempts
+parameter_list|,
+name|long
+name|sleepMs
+parameter_list|)
+throws|throws
+name|IOException
+block|{
 name|boolean
 name|success
 init|=
@@ -7564,7 +7597,7 @@ literal|0
 init|;
 name|i
 operator|<
-name|SUCCESS_ATTEMPTS
+name|attempts
 condition|;
 name|i
 operator|++
@@ -7620,7 +7653,7 @@ name|Thread
 operator|.
 name|sleep
 argument_list|(
-name|SLEEP
+name|sleepMs
 argument_list|)
 expr_stmt|;
 block|}
@@ -7635,9 +7668,9 @@ name|assertThat
 argument_list|(
 literal|"inode should complete in ~"
 operator|+
-name|SLEEP
+name|sleepMs
 operator|*
-name|SUCCESS_ATTEMPTS
+name|attempts
 operator|+
 literal|" ms."
 argument_list|,
