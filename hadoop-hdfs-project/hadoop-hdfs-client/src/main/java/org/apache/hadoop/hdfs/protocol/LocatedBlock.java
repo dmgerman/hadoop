@@ -201,9 +201,7 @@ name|blockToken
 init|=
 operator|new
 name|Token
-argument_list|<
-name|BlockTokenIdentifier
-argument_list|>
+argument_list|<>
 argument_list|()
 decl_stmt|;
 comment|/**    * List of cached datanode locations    */
@@ -215,7 +213,6 @@ name|cachedLocs
 decl_stmt|;
 comment|// Used when there are no locations
 DECL|field|EMPTY_LOCS
-specifier|private
 specifier|static
 specifier|final
 name|DatanodeInfoWithStorage

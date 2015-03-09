@@ -3759,7 +3759,7 @@ argument_list|()
 condition|?
 name|PBHelper
 operator|.
-name|convert
+name|convertLocatedBlockProto
 argument_list|(
 name|res
 operator|.
@@ -4291,7 +4291,7 @@ block|{
 return|return
 name|PBHelper
 operator|.
-name|convert
+name|convertLocatedBlockProto
 argument_list|(
 name|rpcProxy
 operator|.
@@ -4447,7 +4447,7 @@ block|{
 return|return
 name|PBHelper
 operator|.
-name|convert
+name|convertLocatedBlockProto
 argument_list|(
 name|rpcProxy
 operator|.
@@ -4617,7 +4617,7 @@ name|asList
 argument_list|(
 name|PBHelper
 operator|.
-name|convertLocatedBlock
+name|convertLocatedBlocks
 argument_list|(
 name|blocks
 argument_list|)
@@ -6896,7 +6896,7 @@ block|{
 return|return
 name|PBHelper
 operator|.
-name|convert
+name|convertLocatedBlockProto
 argument_list|(
 name|rpcProxy
 operator|.

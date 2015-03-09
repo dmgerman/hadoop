@@ -1934,7 +1934,7 @@ index|]
 operator|=
 name|PBHelper
 operator|.
-name|convert
+name|convertLocatedBlockProto
 argument_list|(
 name|lbps
 operator|.

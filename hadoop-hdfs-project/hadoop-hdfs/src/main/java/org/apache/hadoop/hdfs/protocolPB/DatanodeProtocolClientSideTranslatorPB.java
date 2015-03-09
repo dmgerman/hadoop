@@ -2089,7 +2089,7 @@ name|i
 argument_list|,
 name|PBHelper
 operator|.
-name|convert
+name|convertLocatedBlock
 argument_list|(
 name|blocks
 index|[

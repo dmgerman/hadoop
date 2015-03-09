@@ -942,6 +942,8 @@ operator|!=
 literal|0
 return|;
 block|}
+annotation|@
+name|VisibleForTesting
 DECL|method|getStorageID ()
 specifier|public
 name|String

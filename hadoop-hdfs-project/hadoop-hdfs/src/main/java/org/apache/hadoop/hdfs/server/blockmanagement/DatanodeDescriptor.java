@@ -1259,7 +1259,10 @@ argument_list|)
 return|;
 block|}
 block|}
+annotation|@
+name|VisibleForTesting
 DECL|method|getStorageInfos ()
+specifier|public
 name|DatanodeStorageInfo
 index|[]
 name|getStorageInfos

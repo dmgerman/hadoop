@@ -4847,7 +4847,7 @@ name|setBlock
 argument_list|(
 name|PBHelper
 operator|.
-name|convert
+name|convertLocatedBlock
 argument_list|(
 name|result
 operator|.
@@ -5322,7 +5322,7 @@ name|setBlock
 argument_list|(
 name|PBHelper
 operator|.
-name|convert
+name|convertLocatedBlock
 argument_list|(
 name|result
 argument_list|)
@@ -5498,7 +5498,7 @@ name|setBlock
 argument_list|(
 name|PBHelper
 operator|.
-name|convert
+name|convertLocatedBlock
 argument_list|(
 name|result
 argument_list|)
@@ -5655,7 +5655,7 @@ name|reportBadBlocks
 argument_list|(
 name|PBHelper
 operator|.
-name|convertLocatedBlock
+name|convertLocatedBlocks
 argument_list|(
 name|bl
 operator|.
@@ -7733,7 +7733,7 @@ name|result
 init|=
 name|PBHelper
 operator|.
-name|convert
+name|convertLocatedBlock
 argument_list|(
 name|server
 operator|.

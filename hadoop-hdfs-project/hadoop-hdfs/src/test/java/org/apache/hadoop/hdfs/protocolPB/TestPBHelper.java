@@ -4284,7 +4284,7 @@ name|lbProto
 init|=
 name|PBHelper
 operator|.
-name|convert
+name|convertLocatedBlock
 argument_list|(
 name|lb
 argument_list|)
@@ -4294,7 +4294,7 @@ name|lb2
 init|=
 name|PBHelper
 operator|.
-name|convert
+name|convertLocatedBlockProto
 argument_list|(
 name|lbProto
 argument_list|)
@@ -4326,7 +4326,7 @@ name|lbProto
 init|=
 name|PBHelper
 operator|.
-name|convert
+name|convertLocatedBlock
 argument_list|(
 name|lb
 argument_list|)
@@ -4336,7 +4336,7 @@ name|lb2
 init|=
 name|PBHelper
 operator|.
-name|convert
+name|convertLocatedBlockProto
 argument_list|(
 name|lbProto
 argument_list|)
@@ -4402,7 +4402,7 @@ name|lbpl
 init|=
 name|PBHelper
 operator|.
-name|convertLocatedBlock2
+name|convertLocatedBlocks2
 argument_list|(
 name|lbl
 argument_list|)
@@ -4415,7 +4415,7 @@ name|lbl2
 init|=
 name|PBHelper
 operator|.
-name|convertLocatedBlock
+name|convertLocatedBlocks
 argument_list|(
 name|lbpl
 argument_list|)
@@ -4518,7 +4518,7 @@ name|lbpl
 init|=
 name|PBHelper
 operator|.
-name|convertLocatedBlock
+name|convertLocatedBlocks
 argument_list|(
 name|lbl
 argument_list|)
@@ -4529,7 +4529,7 @@ name|lbl2
 init|=
 name|PBHelper
 operator|.
-name|convertLocatedBlock
+name|convertLocatedBlocks
 argument_list|(
 name|lbpl
 argument_list|)

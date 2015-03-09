@@ -2891,6 +2891,13 @@ operator|.
 name|getLastBlock
 argument_list|()
 decl_stmt|;
+if|if
+condition|(
+name|lastBlk
+operator|!=
+literal|null
+condition|)
+block|{
 comment|// replace the last block of file
 specifier|final
 name|BlockInfo
@@ -2957,6 +2964,7 @@ argument_list|,
 name|ucBlk
 argument_list|)
 expr_stmt|;
+block|}
 block|}
 return|return
 name|file
