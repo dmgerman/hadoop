@@ -973,9 +973,9 @@ literal|"\t-startTime<time to start, given in seconds from the epoch. "
 operator|+
 literal|"Make sure this is far enough into the future, so all maps "
 operator|+
-literal|"(operations) will start at the same time>. "
+literal|"(operations) will start at the same time. "
 operator|+
-literal|"default is launch time + 2 mins. This is not mandatory \n"
+literal|"default is launch time + 2 mins. This is not mandatory>\n"
 operator|+
 literal|"\t-blockSize<Block size in bytes. default is 1. "
 operator|+
