@@ -134,6 +134,19 @@ name|nodeinfo
 argument_list|)
 expr_stmt|;
 block|}
+DECL|method|getNodes ()
+specifier|public
+name|ArrayList
+argument_list|<
+name|NodeInfo
+argument_list|>
+name|getNodes
+parameter_list|()
+block|{
+return|return
+name|node
+return|;
+block|}
 block|}
 end_class
 

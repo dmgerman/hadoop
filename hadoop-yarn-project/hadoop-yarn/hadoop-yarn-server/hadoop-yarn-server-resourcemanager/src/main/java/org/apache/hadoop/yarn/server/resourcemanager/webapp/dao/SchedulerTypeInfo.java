@@ -113,6 +113,16 @@ operator|=
 name|scheduler
 expr_stmt|;
 block|}
+DECL|method|getSchedulerInfo ()
+specifier|public
+name|SchedulerInfo
+name|getSchedulerInfo
+parameter_list|()
+block|{
+return|return
+name|schedulerInfo
+return|;
+block|}
 block|}
 end_class
 
