@@ -264,6 +264,17 @@ argument_list|,
 literal|".ui {width:8em}"
 argument_list|)
 expr_stmt|;
+name|set
+argument_list|(
+name|YarnWebParams
+operator|.
+name|WEB_UI_TYPE
+argument_list|,
+name|YarnWebParams
+operator|.
+name|RM_WEB_UI
+argument_list|)
+expr_stmt|;
 block|}
 annotation|@
 name|Override
