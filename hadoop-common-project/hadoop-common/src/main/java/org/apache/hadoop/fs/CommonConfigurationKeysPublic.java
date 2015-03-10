@@ -703,7 +703,7 @@ name|IPC_CLIENT_TCPNODELAY_KEY
 init|=
 literal|"ipc.client.tcpnodelay"
 decl_stmt|;
-comment|/** Defalt value for IPC_CLIENT_TCPNODELAY_KEY */
+comment|/** Default value for IPC_CLIENT_TCPNODELAY_KEY */
 DECL|field|IPC_CLIENT_TCPNODELAY_DEFAULT
 specifier|public
 specifier|static
@@ -712,6 +712,26 @@ name|boolean
 name|IPC_CLIENT_TCPNODELAY_DEFAULT
 init|=
 literal|true
+decl_stmt|;
+comment|/** Enable low-latency connections from the client */
+DECL|field|IPC_CLIENT_LOW_LATENCY
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|IPC_CLIENT_LOW_LATENCY
+init|=
+literal|"ipc.client.low-latency"
+decl_stmt|;
+comment|/** Default value of IPC_CLIENT_LOW_LATENCY */
+DECL|field|IPC_CLIENT_LOW_LATENCY_DEFAULT
+specifier|public
+specifier|static
+specifier|final
+name|boolean
+name|IPC_CLIENT_LOW_LATENCY_DEFAULT
+init|=
+literal|false
 decl_stmt|;
 comment|/** See<a href="{@docRoot}/../core-default.html">core-default.xml</a> */
 DECL|field|IPC_SERVER_LISTEN_QUEUE_SIZE_KEY

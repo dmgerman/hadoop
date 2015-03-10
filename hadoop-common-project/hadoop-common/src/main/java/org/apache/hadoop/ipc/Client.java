@@ -1981,10 +1981,18 @@ name|maxRetriesOnSocketTimeouts
 decl_stmt|;
 DECL|field|tcpNoDelay
 specifier|private
+specifier|final
 name|boolean
 name|tcpNoDelay
 decl_stmt|;
 comment|// if T then disable Nagle's Algorithm
+DECL|field|tcpLowLatency
+specifier|private
+specifier|final
+name|boolean
+name|tcpLowLatency
+decl_stmt|;
+comment|// if T then use low-delay QoS
 DECL|field|doPing
 specifier|private
 name|boolean
@@ -2171,6 +2179,15 @@ operator|=
 name|remoteId
 operator|.
 name|getTcpNoDelay
+argument_list|()
+expr_stmt|;
+name|this
+operator|.
+name|tcpLowLatency
+operator|=
+name|remoteId
+operator|.
+name|getTcpLowLatency
 argument_list|()
 expr_stmt|;
 name|this
@@ -2866,6 +2883,37 @@ argument_list|(
 literal|true
 argument_list|)
 expr_stmt|;
+if|if
+condition|(
+name|tcpLowLatency
+condition|)
+block|{
+comment|/*              * This allows intermediate switches to shape IPC traffic              * differently from Shuffle/HDFS DataStreamer traffic.              *              * IPTOS_RELIABILITY (0x04) | IPTOS_LOWDELAY (0x10)              *              * Prefer to optimize connect() speed& response latency over net              * throughput.              */
+name|this
+operator|.
+name|socket
+operator|.
+name|setTrafficClass
+argument_list|(
+literal|0x04
+operator||
+literal|0x10
+argument_list|)
+expr_stmt|;
+name|this
+operator|.
+name|socket
+operator|.
+name|setPerformancePreferences
+argument_list|(
+literal|1
+argument_list|,
+literal|2
+argument_list|,
+literal|0
+argument_list|)
+expr_stmt|;
+block|}
 comment|/*            * Bind the socket to the host specified in the principal name of the            * client, to ensure Server matching address of the client connection            * to host name in principal passed.            */
 name|UserGroupInformation
 name|ticket
@@ -6706,6 +6754,13 @@ name|boolean
 name|tcpNoDelay
 decl_stmt|;
 comment|// if T then disable Nagle's Algorithm
+DECL|field|tcpLowLatency
+specifier|private
+specifier|final
+name|boolean
+name|tcpLowLatency
+decl_stmt|;
+comment|// if T then use low-delay QoS
 DECL|field|doPing
 specifier|private
 specifier|final
@@ -6858,6 +6913,23 @@ argument_list|)
 expr_stmt|;
 name|this
 operator|.
+name|tcpLowLatency
+operator|=
+name|conf
+operator|.
+name|getBoolean
+argument_list|(
+name|CommonConfigurationKeysPublic
+operator|.
+name|IPC_CLIENT_LOW_LATENCY
+argument_list|,
+name|CommonConfigurationKeysPublic
+operator|.
+name|IPC_CLIENT_LOW_LATENCY_DEFAULT
+argument_list|)
+expr_stmt|;
+name|this
+operator|.
 name|doPing
 operator|=
 name|conf
@@ -6967,6 +7039,7 @@ return|return
 name|maxRetriesOnSocketTimeouts
 return|;
 block|}
+comment|/** disable nagle's algorithm */
 DECL|method|getTcpNoDelay ()
 name|boolean
 name|getTcpNoDelay
@@ -6974,6 +7047,16 @@ parameter_list|()
 block|{
 return|return
 name|tcpNoDelay
+return|;
+block|}
+comment|/** use low-latency QoS bits over TCP */
+DECL|method|getTcpLowLatency ()
+name|boolean
+name|getTcpLowLatency
+parameter_list|()
+block|{
+return|return
+name|tcpLowLatency
 return|;
 block|}
 DECL|method|getDoPing ()
