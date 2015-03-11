@@ -608,6 +608,20 @@ argument_list|,
 name|rb
 argument_list|)
 expr_stmt|;
+name|assertTrue
+argument_list|(
+literal|"Expected non-zero number of incremental block reports"
+argument_list|,
+name|getLongCounter
+argument_list|(
+literal|"IncrementalBlockReportsNumOps"
+argument_list|,
+name|rb
+argument_list|)
+operator|>
+literal|0
+argument_list|)
+expr_stmt|;
 block|}
 finally|finally
 block|{

@@ -533,6 +533,12 @@ name|Metric
 name|MutableRate
 name|blockReports
 decl_stmt|;
+DECL|field|incrementalBlockReports
+annotation|@
+name|Metric
+name|MutableRate
+name|incrementalBlockReports
+decl_stmt|;
 DECL|field|cacheReports
 annotation|@
 name|Metric
@@ -1082,6 +1088,23 @@ name|latency
 parameter_list|)
 block|{
 name|blockReports
+operator|.
+name|add
+argument_list|(
+name|latency
+argument_list|)
+expr_stmt|;
+block|}
+DECL|method|addIncrementalBlockReport (long latency)
+specifier|public
+name|void
+name|addIncrementalBlockReport
+parameter_list|(
+name|long
+name|latency
+parameter_list|)
+block|{
+name|incrementalBlockReports
 operator|.
 name|add
 argument_list|(
