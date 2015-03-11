@@ -1763,13 +1763,16 @@ return|;
 block|}
 annotation|@
 name|Override
-DECL|method|startCopyFromBlob (URI source, OperationContext opContext)
+DECL|method|startCopyFromBlob (URI source, BlobRequestOptions options, OperationContext opContext)
 specifier|public
 name|void
 name|startCopyFromBlob
 parameter_list|(
 name|URI
 name|source
+parameter_list|,
+name|BlobRequestOptions
+name|options
 parameter_list|,
 name|OperationContext
 name|opContext
@@ -1790,7 +1793,7 @@ literal|null
 argument_list|,
 literal|null
 argument_list|,
-literal|null
+name|options
 argument_list|,
 name|opContext
 argument_list|)

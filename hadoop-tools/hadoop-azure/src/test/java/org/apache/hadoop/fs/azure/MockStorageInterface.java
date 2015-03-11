@@ -2129,13 +2129,16 @@ expr_stmt|;
 block|}
 annotation|@
 name|Override
-DECL|method|startCopyFromBlob (URI source, OperationContext opContext)
+DECL|method|startCopyFromBlob (URI source, BlobRequestOptions options, OperationContext opContext)
 specifier|public
 name|void
 name|startCopyFromBlob
 parameter_list|(
 name|URI
 name|source
+parameter_list|,
+name|BlobRequestOptions
+name|options
 parameter_list|,
 name|OperationContext
 name|opContext

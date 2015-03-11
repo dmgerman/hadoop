@@ -636,8 +636,8 @@ argument_list|>
 name|metadata
 parameter_list|)
 function_decl|;
-comment|/**      * Copies an existing blob's contents, properties, and metadata to this instance of the<code>CloudBlob</code>      * class, using the specified operation context.      *      * @param source      *            A<code>java.net.URI</code> The URI of a source blob.      * @param opContext      *            An {@link OperationContext} object that represents the context for the current operation. This object      *            is used to track requests to the storage service, and to provide additional runtime information about      *            the operation.      *      * @throws StorageException      *             If a storage service error occurred.      * @throws URISyntaxException      *      */
-DECL|method|startCopyFromBlob (URI source, OperationContext opContext)
+comment|/**      * Copies an existing blob's contents, properties, and metadata to this instance of the<code>CloudBlob</code>      * class, using the specified operation context.      *      * @param source      *            A<code>java.net.URI</code> The URI of a source blob.      * @param options      *            A {@link BlobRequestOptions} object that specifies any additional options for the request. Specifying      *<code>null</code> will use the default request options from the associated service client (      *            {@link CloudBlobClient}).      * @param opContext      *            An {@link OperationContext} object that represents the context for the current operation. This object      *            is used to track requests to the storage service, and to provide additional runtime information about      *            the operation.      *      * @throws StorageException      *             If a storage service error occurred.      * @throws URISyntaxException      *      */
+DECL|method|startCopyFromBlob (URI source, BlobRequestOptions options, OperationContext opContext)
 specifier|public
 specifier|abstract
 name|void
@@ -645,6 +645,9 @@ name|startCopyFromBlob
 parameter_list|(
 name|URI
 name|source
+parameter_list|,
+name|BlobRequestOptions
+name|options
 parameter_list|,
 name|OperationContext
 name|opContext
