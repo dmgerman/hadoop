@@ -2401,7 +2401,11 @@ name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"Locking is disabled"
+literal|"Locking is disabled for "
+operator|+
+name|this
+operator|.
+name|root
 argument_list|)
 expr_stmt|;
 return|return;
