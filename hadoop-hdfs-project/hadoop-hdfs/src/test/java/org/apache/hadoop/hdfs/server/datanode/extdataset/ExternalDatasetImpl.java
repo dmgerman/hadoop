@@ -500,18 +500,21 @@ name|IOException
 block|{    }
 annotation|@
 name|Override
-DECL|method|removeVolumes (Collection<StorageLocation> volumes)
+DECL|method|removeVolumes (Set<File> volumes, boolean clearFailure)
 specifier|public
 name|void
 name|removeVolumes
 parameter_list|(
-name|Collection
+name|Set
 argument_list|<
-name|StorageLocation
+name|File
 argument_list|>
 name|volumes
+parameter_list|,
+name|boolean
+name|clearFailure
 parameter_list|)
-block|{    }
+block|{   }
 annotation|@
 name|Override
 DECL|method|getStorage (String storageUuid)
@@ -1255,21 +1258,16 @@ annotation|@
 name|Override
 DECL|method|checkDataDir ()
 specifier|public
-name|void
+name|Set
+argument_list|<
+name|File
+argument_list|>
 name|checkDataDir
 parameter_list|()
-throws|throws
-name|DiskErrorException
 block|{
-throw|throw
-operator|new
-name|DiskChecker
-operator|.
-name|DiskErrorException
-argument_list|(
+return|return
 literal|null
-argument_list|)
-throw|;
+return|;
 block|}
 annotation|@
 name|Override

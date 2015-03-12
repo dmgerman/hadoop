@@ -154,6 +154,16 @@ end_import
 
 begin_import
 import|import
+name|java
+operator|.
+name|util
+operator|.
+name|Set
+import|;
+end_import
+
+begin_import
+import|import
 name|javax
 operator|.
 name|management
@@ -4862,13 +4872,17 @@ annotation|@
 name|Override
 DECL|method|checkDataDir ()
 specifier|public
-name|void
+name|Set
+argument_list|<
+name|File
+argument_list|>
 name|checkDataDir
 parameter_list|()
-throws|throws
-name|DiskErrorException
 block|{
 comment|// nothing to check for simulated data set
+return|return
+literal|null
+return|;
 block|}
 annotation|@
 name|Override
@@ -6044,17 +6058,20 @@ return|;
 block|}
 annotation|@
 name|Override
-DECL|method|removeVolumes (Collection<StorageLocation> volumes)
+DECL|method|removeVolumes (Set<File> volumes, boolean clearFailure)
 specifier|public
 specifier|synchronized
 name|void
 name|removeVolumes
 parameter_list|(
-name|Collection
+name|Set
 argument_list|<
-name|StorageLocation
+name|File
 argument_list|>
 name|volumes
+parameter_list|,
+name|boolean
+name|clearFailure
 parameter_list|)
 block|{
 throw|throw

@@ -114,6 +114,16 @@ end_import
 
 begin_import
 import|import
+name|java
+operator|.
+name|util
+operator|.
+name|Set
+import|;
+end_import
+
+begin_import
+import|import
 name|org
 operator|.
 name|apache
@@ -806,17 +816,20 @@ parameter_list|)
 throws|throws
 name|IOException
 function_decl|;
-comment|/**    * Removes a collection of volumes from FsDataset.    *    * If the FSDataset supports block scanning, this function removes    * the volumes from the block scanner.    *    * @param volumes      The storage locations of the volumes to remove.    */
-DECL|method|removeVolumes (Collection<StorageLocation> volumes)
+comment|/**    * Removes a collection of volumes from FsDataset.    *    * If the FSDataset supports block scanning, this function removes    * the volumes from the block scanner.    *    * @param volumes  The paths of the volumes to be removed.    * @param clearFailure set true to clear the failure information about the    *                     volumes.    */
+DECL|method|removeVolumes (Set<File> volumes, boolean clearFailure)
 specifier|public
 name|void
 name|removeVolumes
 parameter_list|(
-name|Collection
+name|Set
 argument_list|<
-name|StorageLocation
+name|File
 argument_list|>
 name|volumes
+parameter_list|,
+name|boolean
+name|clearFailure
 parameter_list|)
 function_decl|;
 comment|/** @return a storage with the given storage ID */
@@ -1306,14 +1319,15 @@ name|long
 name|blockId
 parameter_list|)
 function_decl|;
-comment|/**      * Check if all the data directories are healthy      * @throws DiskErrorException      */
+comment|/**      * Check if all the data directories are healthy      * @return A set of unhealthy data directories.      */
 DECL|method|checkDataDir ()
 specifier|public
-name|void
+name|Set
+argument_list|<
+name|File
+argument_list|>
 name|checkDataDir
 parameter_list|()
-throws|throws
-name|DiskErrorException
 function_decl|;
 comment|/**    * Shutdown the FSDataset    */
 DECL|method|shutdown ()

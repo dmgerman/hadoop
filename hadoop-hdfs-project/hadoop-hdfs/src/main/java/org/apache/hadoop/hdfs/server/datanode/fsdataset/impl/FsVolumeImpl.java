@@ -1618,7 +1618,10 @@ expr_stmt|;
 block|}
 block|}
 block|}
+annotation|@
+name|VisibleForTesting
 DECL|method|getDfsUsed ()
+specifier|public
 name|long
 name|getDfsUsed
 parameter_list|()

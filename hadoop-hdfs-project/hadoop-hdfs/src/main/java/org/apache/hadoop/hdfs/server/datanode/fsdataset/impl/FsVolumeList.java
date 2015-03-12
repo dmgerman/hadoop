@@ -102,6 +102,16 @@ name|java
 operator|.
 name|util
 operator|.
+name|HashSet
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
 name|Iterator
 import|;
 end_import
@@ -133,6 +143,16 @@ operator|.
 name|util
 operator|.
 name|TreeMap
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
+name|Set
 import|;
 end_import
 
@@ -1206,11 +1226,11 @@ literal|"ms"
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Calls {@link FsVolumeImpl#checkDirs()} on each volume, removing any    * volumes from the active list that result in a DiskErrorException.    *     * Use checkDirsMutext to allow only one instance of checkDirs() call    *    * @return list of all the removed volumes.    */
+comment|/**    * Calls {@link FsVolumeImpl#checkDirs()} on each volume.    *     * Use checkDirsMutext to allow only one instance of checkDirs() call    *    * @return list of all the failed volumes.    */
 DECL|method|checkDirs ()
-name|List
+name|Set
 argument_list|<
-name|FsVolumeImpl
+name|File
 argument_list|>
 name|checkDirs
 parameter_list|()
@@ -1220,11 +1240,11 @@ init|(
 name|checkDirsMutex
 init|)
 block|{
-name|ArrayList
+name|Set
 argument_list|<
-name|FsVolumeImpl
+name|File
 argument_list|>
-name|removedVols
+name|failedVols
 init|=
 literal|null
 decl_stmt|;
@@ -1308,34 +1328,44 @@ argument_list|)
 expr_stmt|;
 if|if
 condition|(
-name|removedVols
+name|failedVols
 operator|==
 literal|null
 condition|)
 block|{
-name|removedVols
+name|failedVols
 operator|=
 operator|new
-name|ArrayList
+name|HashSet
 argument_list|<>
 argument_list|(
 literal|1
 argument_list|)
 expr_stmt|;
 block|}
-name|removedVols
+name|failedVols
 operator|.
 name|add
+argument_list|(
+operator|new
+name|File
+argument_list|(
+name|fsv
+operator|.
+name|getBasePath
+argument_list|()
+argument_list|)
+operator|.
+name|getAbsoluteFile
+argument_list|()
+argument_list|)
+expr_stmt|;
+name|addVolumeFailureInfo
 argument_list|(
 name|fsv
 argument_list|)
 expr_stmt|;
 name|removeVolume
-argument_list|(
-name|fsv
-argument_list|)
-expr_stmt|;
-name|addVolumeFailureInfo
 argument_list|(
 name|fsv
 argument_list|)
@@ -1382,11 +1412,11 @@ block|}
 block|}
 if|if
 condition|(
-name|removedVols
+name|failedVols
 operator|!=
 literal|null
 operator|&&
-name|removedVols
+name|failedVols
 operator|.
 name|size
 argument_list|()
@@ -1400,21 +1430,19 @@ name|LOG
 operator|.
 name|warn
 argument_list|(
-literal|"Completed checkDirs. Removed "
+literal|"Completed checkDirs. Found "
 operator|+
-name|removedVols
+name|failedVols
 operator|.
 name|size
 argument_list|()
 operator|+
-literal|" volumes. Current volumes: "
-operator|+
-name|this
+literal|" failure volumes."
 argument_list|)
 expr_stmt|;
 block|}
 return|return
-name|removedVols
+name|failedVols
 return|;
 block|}
 block|}
@@ -1564,6 +1592,23 @@ name|ref
 argument_list|)
 expr_stmt|;
 block|}
+comment|// If the volume is used to replace a failed volume, it needs to reset the
+comment|// volume failure info for this volume.
+name|removeVolumeFailureInfo
+argument_list|(
+operator|new
+name|File
+argument_list|(
+name|ref
+operator|.
+name|getVolume
+argument_list|()
+operator|.
+name|getBasePath
+argument_list|()
+argument_list|)
+argument_list|)
+expr_stmt|;
 name|FsDatasetImpl
 operator|.
 name|LOG
@@ -1774,13 +1819,16 @@ break|break;
 block|}
 block|}
 block|}
-comment|/**    * Dynamically remove volume in the list.    * @param volume the volume to be removed.    */
-DECL|method|removeVolume (File volume)
+comment|/**    * Dynamically remove volume in the list.    * @param volume the volume to be removed.    * @param clearFailure set true to remove failure info for this volume.    */
+DECL|method|removeVolume (File volume, boolean clearFailure)
 name|void
 name|removeVolume
 parameter_list|(
 name|File
 name|volume
+parameter_list|,
+name|boolean
+name|clearFailure
 parameter_list|)
 block|{
 comment|// Make a copy of volumes to remove one volume.
@@ -1880,11 +1928,17 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
+if|if
+condition|(
+name|clearFailure
+condition|)
+block|{
 name|removeVolumeFailureInfo
 argument_list|(
 name|volume
 argument_list|)
 expr_stmt|;
+block|}
 block|}
 DECL|method|getVolumeFailureInfos ()
 name|VolumeFailureInfo
@@ -1954,9 +2008,16 @@ argument_list|(
 operator|new
 name|VolumeFailureInfo
 argument_list|(
+operator|new
+name|File
+argument_list|(
 name|vol
 operator|.
 name|getBasePath
+argument_list|()
+argument_list|)
+operator|.
+name|getAbsolutePath
 argument_list|()
 argument_list|,
 name|Time
