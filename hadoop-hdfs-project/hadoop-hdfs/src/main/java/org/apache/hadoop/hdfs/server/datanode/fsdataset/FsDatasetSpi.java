@@ -1617,6 +1617,19 @@ parameter_list|)
 throws|throws
 name|IOException
 function_decl|;
+comment|/**    * Confirm whether the block is deleting    */
+DECL|method|isDeletingBlock (String bpid, long blockId)
+specifier|public
+name|boolean
+name|isDeletingBlock
+parameter_list|(
+name|String
+name|bpid
+parameter_list|,
+name|long
+name|blockId
+parameter_list|)
+function_decl|;
 block|}
 end_interface
 

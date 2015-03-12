@@ -1847,6 +1847,24 @@ return|return
 literal|false
 return|;
 block|}
+annotation|@
+name|Override
+DECL|method|isDeletingBlock (String bpid, long blockId)
+specifier|public
+name|boolean
+name|isDeletingBlock
+parameter_list|(
+name|String
+name|bpid
+parameter_list|,
+name|long
+name|blockId
+parameter_list|)
+block|{
+return|return
+literal|false
+return|;
+block|}
 block|}
 end_class
 

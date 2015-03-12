@@ -6234,6 +6234,26 @@ operator|.
 name|pinned
 return|;
 block|}
+annotation|@
+name|Override
+DECL|method|isDeletingBlock (String bpid, long blockId)
+specifier|public
+name|boolean
+name|isDeletingBlock
+parameter_list|(
+name|String
+name|bpid
+parameter_list|,
+name|long
+name|blockId
+parameter_list|)
+block|{
+throw|throw
+operator|new
+name|UnsupportedOperationException
+argument_list|()
+throw|;
+block|}
 block|}
 end_class
 
