@@ -137,7 +137,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * CryptoOutputStream encrypts data. It is not thread-safe. AES CTR mode is  * required in order to ensure that the plain text and cipher text have a 1:1  * mapping. The encryption is buffer based. The key points of the encryption are  * (1) calculating counter and (2) padding through stream position.  *<p/>  * counter = base + pos/(algorithm blocksize);   * padding = pos%(algorithm blocksize);   *<p/>  * The underlying stream offset is maintained as state.  */
+comment|/**  * CryptoOutputStream encrypts data. It is not thread-safe. AES CTR mode is  * required in order to ensure that the plain text and cipher text have a 1:1  * mapping. The encryption is buffer based. The key points of the encryption are  * (1) calculating counter and (2) padding through stream position.  *<p/>  * counter = base + pos/(algorithm blocksize);   * padding = pos%(algorithm blocksize);   *<p/>  * The underlying stream offset is maintained as state.  *  * Note that while some of this class' methods are synchronized, this is just to  * match the threadsafety behavior of DFSOutputStream. See HADOOP-11710.  */
 end_comment
 
 begin_class
@@ -521,6 +521,7 @@ annotation|@
 name|Override
 DECL|method|write (byte[] b, int off, int len)
 specifier|public
+specifier|synchronized
 name|void
 name|write
 parameter_list|(
@@ -898,6 +899,7 @@ annotation|@
 name|Override
 DECL|method|close ()
 specifier|public
+specifier|synchronized
 name|void
 name|close
 parameter_list|()
@@ -911,6 +913,8 @@ condition|)
 block|{
 return|return;
 block|}
+try|try
+block|{
 name|super
 operator|.
 name|close
@@ -919,16 +923,21 @@ expr_stmt|;
 name|freeBuffers
 argument_list|()
 expr_stmt|;
+block|}
+finally|finally
+block|{
 name|closed
 operator|=
 literal|true
 expr_stmt|;
+block|}
 block|}
 comment|/**    * To flush, we need to encrypt the data in the buffer and write to the     * underlying stream, then do the flush.    */
 annotation|@
 name|Override
 DECL|method|flush ()
 specifier|public
+specifier|synchronized
 name|void
 name|flush
 parameter_list|()
