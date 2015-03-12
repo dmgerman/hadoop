@@ -161,17 +161,6 @@ literal|64
 operator|*
 literal|1024
 decl_stmt|;
-comment|// HACK - Use this as a global lock in the JNI layer
-DECL|field|clazz
-specifier|private
-specifier|static
-name|Class
-name|clazz
-init|=
-name|ZlibCompressor
-operator|.
-name|class
-decl_stmt|;
 DECL|field|stream
 specifier|private
 name|long

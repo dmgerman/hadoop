@@ -165,20 +165,6 @@ operator|.
 name|class
 argument_list|)
 decl_stmt|;
-comment|// HACK - Use this as a global lock in the JNI layer.
-DECL|field|clazz
-specifier|private
-specifier|static
-name|Class
-argument_list|<
-name|Bzip2Compressor
-argument_list|>
-name|clazz
-init|=
-name|Bzip2Compressor
-operator|.
-name|class
-decl_stmt|;
 DECL|field|stream
 specifier|private
 name|long

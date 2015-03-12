@@ -164,26 +164,6 @@ literal|64
 operator|*
 literal|1024
 decl_stmt|;
-comment|// HACK - Use this as a global lock in the JNI layer
-annotation|@
-name|SuppressWarnings
-argument_list|(
-block|{
-literal|"unchecked"
-block|,
-literal|"unused"
-block|}
-argument_list|)
-DECL|field|clazz
-specifier|private
-specifier|static
-name|Class
-name|clazz
-init|=
-name|Lz4Compressor
-operator|.
-name|class
-decl_stmt|;
 DECL|field|directBufferSize
 specifier|private
 name|int
