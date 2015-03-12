@@ -535,7 +535,7 @@ specifier|final
 name|String
 name|CONTAINER_PATTERN
 init|=
-literal|"%30s\t%20s\t%20s\t%20s\t%20s\t%35s"
+literal|"%30s\t%20s\t%20s\t%20s\t%20s\t%20s\t%35s"
 operator|+
 name|System
 operator|.
@@ -2348,6 +2348,32 @@ name|containerReportStr
 operator|.
 name|print
 argument_list|(
+literal|"\tNodeHttpAddress : "
+argument_list|)
+expr_stmt|;
+name|containerReportStr
+operator|.
+name|println
+argument_list|(
+name|containerReport
+operator|.
+name|getNodeHttpAddress
+argument_list|()
+operator|==
+literal|null
+condition|?
+literal|"N/A"
+else|:
+name|containerReport
+operator|.
+name|getNodeHttpAddress
+argument_list|()
+argument_list|)
+expr_stmt|;
+name|containerReportStr
+operator|.
+name|print
+argument_list|(
 literal|"\tDiagnostics : "
 argument_list|)
 expr_stmt|;
@@ -3665,6 +3691,8 @@ literal|"State"
 argument_list|,
 literal|"Host"
 argument_list|,
+literal|"Node Http Address"
+argument_list|,
 literal|"LOG-URL"
 argument_list|)
 expr_stmt|;
@@ -3715,6 +3743,20 @@ argument_list|,
 name|containerReport
 operator|.
 name|getAssignedNode
+argument_list|()
+argument_list|,
+name|containerReport
+operator|.
+name|getNodeHttpAddress
+argument_list|()
+operator|==
+literal|null
+condition|?
+literal|"N/A"
+else|:
+name|containerReport
+operator|.
+name|getNodeHttpAddress
 argument_list|()
 argument_list|,
 name|containerReport

@@ -323,6 +323,11 @@ argument_list|>
 name|getResourceRequests
 parameter_list|()
 function_decl|;
+DECL|method|getNodeHttpAddress ()
+name|String
+name|getNodeHttpAddress
+parameter_list|()
+function_decl|;
 block|}
 end_interface
 

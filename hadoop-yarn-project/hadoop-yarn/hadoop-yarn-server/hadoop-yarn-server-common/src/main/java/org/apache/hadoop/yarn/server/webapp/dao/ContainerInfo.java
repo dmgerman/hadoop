@@ -196,6 +196,11 @@ specifier|protected
 name|ContainerState
 name|containerState
 decl_stmt|;
+DECL|field|nodeHttpAddress
+specifier|protected
+name|String
+name|nodeHttpAddress
+decl_stmt|;
 DECL|method|ContainerInfo ()
 specifier|public
 name|ContainerInfo
@@ -336,6 +341,13 @@ operator|.
 name|getContainerState
 argument_list|()
 expr_stmt|;
+name|nodeHttpAddress
+operator|=
+name|container
+operator|.
+name|getNodeHttpAddress
+argument_list|()
+expr_stmt|;
 block|}
 DECL|method|getContainerId ()
 specifier|public
@@ -455,6 +467,16 @@ parameter_list|()
 block|{
 return|return
 name|containerState
+return|;
+block|}
+DECL|method|getNodeHttpAddress ()
+specifier|public
+name|String
+name|getNodeHttpAddress
+parameter_list|()
+block|{
+return|return
+name|nodeHttpAddress
 return|;
 block|}
 block|}

@@ -1906,6 +1906,20 @@ argument_list|,
 name|ContainerState
 operator|.
 name|COMPLETE
+argument_list|,
+literal|"http://"
+operator|+
+name|NodeId
+operator|.
+name|newInstance
+argument_list|(
+literal|"host"
+argument_list|,
+literal|2345
+argument_list|)
+operator|.
+name|toString
+argument_list|()
 argument_list|)
 decl_stmt|;
 name|when
@@ -2030,6 +2044,13 @@ operator|.
 name|println
 argument_list|(
 literal|"\tHost : host:1234"
+argument_list|)
+expr_stmt|;
+name|pw
+operator|.
+name|println
+argument_list|(
+literal|"\tNodeHttpAddress : http://host:2345"
 argument_list|)
 expr_stmt|;
 name|pw
@@ -2209,6 +2230,20 @@ argument_list|,
 name|ContainerState
 operator|.
 name|COMPLETE
+argument_list|,
+literal|"http://"
+operator|+
+name|NodeId
+operator|.
+name|newInstance
+argument_list|(
+literal|"host"
+argument_list|,
+literal|2345
+argument_list|)
+operator|.
+name|toString
+argument_list|()
 argument_list|)
 decl_stmt|;
 name|ContainerReport
@@ -2248,6 +2283,20 @@ argument_list|,
 name|ContainerState
 operator|.
 name|COMPLETE
+argument_list|,
+literal|"http://"
+operator|+
+name|NodeId
+operator|.
+name|newInstance
+argument_list|(
+literal|"host"
+argument_list|,
+literal|2345
+argument_list|)
+operator|.
+name|toString
+argument_list|()
 argument_list|)
 decl_stmt|;
 name|ContainerReport
@@ -2287,6 +2336,20 @@ argument_list|,
 name|ContainerState
 operator|.
 name|RUNNING
+argument_list|,
+literal|"http://"
+operator|+
+name|NodeId
+operator|.
+name|newInstance
+argument_list|(
+literal|"host"
+argument_list|,
+literal|2345
+argument_list|)
+operator|.
+name|toString
+argument_list|()
 argument_list|)
 decl_stmt|;
 name|List
@@ -2351,6 +2414,11 @@ name|thenReturn
 argument_list|(
 name|reports
 argument_list|)
+expr_stmt|;
+name|sysOutStream
+operator|.
+name|reset
+argument_list|()
 expr_stmt|;
 name|int
 name|result
@@ -2451,6 +2519,13 @@ argument_list|)
 expr_stmt|;
 name|pw
 operator|.
+name|print
+argument_list|(
+literal|"\t   Node Http Address"
+argument_list|)
+expr_stmt|;
+name|pw
+operator|.
 name|println
 argument_list|(
 literal|"\t                            LOG-URL"
@@ -2511,6 +2586,13 @@ operator|.
 name|print
 argument_list|(
 literal|"\t           host:1234"
+argument_list|)
+expr_stmt|;
+name|pw
+operator|.
+name|print
+argument_list|(
+literal|"\t    http://host:2345"
 argument_list|)
 expr_stmt|;
 name|pw
@@ -2579,6 +2661,13 @@ argument_list|)
 expr_stmt|;
 name|pw
 operator|.
+name|print
+argument_list|(
+literal|"\t    http://host:2345"
+argument_list|)
+expr_stmt|;
+name|pw
+operator|.
 name|println
 argument_list|(
 literal|"\t                             logURL"
@@ -2628,6 +2717,13 @@ operator|.
 name|print
 argument_list|(
 literal|"\t           host:1234"
+argument_list|)
+expr_stmt|;
+name|pw
+operator|.
+name|print
+argument_list|(
+literal|"\t    http://host:2345"
 argument_list|)
 expr_stmt|;
 name|pw

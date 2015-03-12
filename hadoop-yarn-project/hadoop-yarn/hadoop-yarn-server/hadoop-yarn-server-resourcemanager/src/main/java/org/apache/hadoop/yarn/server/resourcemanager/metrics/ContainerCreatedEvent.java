@@ -122,7 +122,12 @@ specifier|private
 name|Priority
 name|allocatedPriority
 decl_stmt|;
-DECL|method|ContainerCreatedEvent ( ContainerId containerId, Resource allocatedResource, NodeId allocatedNode, Priority allocatedPriority, long createdTime)
+DECL|field|nodeHttpAddress
+specifier|private
+name|String
+name|nodeHttpAddress
+decl_stmt|;
+DECL|method|ContainerCreatedEvent ( ContainerId containerId, Resource allocatedResource, NodeId allocatedNode, Priority allocatedPriority, long createdTime, String nodeHttpAddress)
 specifier|public
 name|ContainerCreatedEvent
 parameter_list|(
@@ -140,6 +145,9 @@ name|allocatedPriority
 parameter_list|,
 name|long
 name|createdTime
+parameter_list|,
+name|String
+name|nodeHttpAddress
 parameter_list|)
 block|{
 name|super
@@ -174,6 +182,12 @@ operator|.
 name|allocatedPriority
 operator|=
 name|allocatedPriority
+expr_stmt|;
+name|this
+operator|.
+name|nodeHttpAddress
+operator|=
+name|nodeHttpAddress
 expr_stmt|;
 block|}
 annotation|@
@@ -235,6 +249,16 @@ parameter_list|()
 block|{
 return|return
 name|allocatedPriority
+return|;
+block|}
+DECL|method|getNodeHttpAddress ()
+specifier|public
+name|String
+name|getNodeHttpAddress
+parameter_list|()
+block|{
+return|return
+name|nodeHttpAddress
 return|;
 block|}
 block|}

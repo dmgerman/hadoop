@@ -85,7 +85,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  *<p>  *<code>ContainerReport</code> is a report of an container.  *</p>  *   *<p>  * It includes details such as:  *<ul>  *<li>{@link ContainerId} of the container.</li>  *<li>Allocated Resources to the container.</li>  *<li>Assigned Node id.</li>  *<li>Assigned Priority.</li>  *<li>Creation Time.</li>  *<li>Finish Time.</li>  *<li>Container Exit Status.</li>  *<li>{@link ContainerState} of the container.</li>  *<li>Diagnostic information in case of errors.</li>  *<li>Log URL.</li>  *</ul>  *</p>  *   */
+comment|/**  *<p>  *<code>ContainerReport</code> is a report of an container.  *</p>  *   *<p>  * It includes details such as:  *<ul>  *<li>{@link ContainerId} of the container.</li>  *<li>Allocated Resources to the container.</li>  *<li>Assigned Node id.</li>  *<li>Assigned Priority.</li>  *<li>Creation Time.</li>  *<li>Finish Time.</li>  *<li>Container Exit Status.</li>  *<li>{@link ContainerState} of the container.</li>  *<li>Diagnostic information in case of errors.</li>  *<li>Log URL.</li>  *<li>nodeHttpAddress</li>  *</ul>  *</p>  *   */
 end_comment
 
 begin_class
@@ -103,7 +103,7 @@ annotation|@
 name|Private
 annotation|@
 name|Unstable
-DECL|method|newInstance (ContainerId containerId, Resource allocatedResource, NodeId assignedNode, Priority priority, long creationTime, long finishTime, String diagnosticInfo, String logUrl, int containerExitStatus, ContainerState containerState)
+DECL|method|newInstance (ContainerId containerId, Resource allocatedResource, NodeId assignedNode, Priority priority, long creationTime, long finishTime, String diagnosticInfo, String logUrl, int containerExitStatus, ContainerState containerState, String nodeHttpAddress)
 specifier|public
 specifier|static
 name|ContainerReport
@@ -138,6 +138,9 @@ name|containerExitStatus
 parameter_list|,
 name|ContainerState
 name|containerState
+parameter_list|,
+name|String
+name|nodeHttpAddress
 parameter_list|)
 block|{
 name|ContainerReport
@@ -220,6 +223,13 @@ operator|.
 name|setContainerState
 argument_list|(
 name|containerState
+argument_list|)
+expr_stmt|;
+name|report
+operator|.
+name|setNodeHttpAddress
+argument_list|(
+name|nodeHttpAddress
 argument_list|)
 expr_stmt|;
 return|return
@@ -484,6 +494,32 @@ name|setContainerExitStatus
 parameter_list|(
 name|int
 name|containerExitStatus
+parameter_list|)
+function_decl|;
+comment|/**    * Get the Node Http address of the container    *     * @return the node http address of the container    */
+annotation|@
+name|Public
+annotation|@
+name|Unstable
+DECL|method|getNodeHttpAddress ()
+specifier|public
+specifier|abstract
+name|String
+name|getNodeHttpAddress
+parameter_list|()
+function_decl|;
+annotation|@
+name|Private
+annotation|@
+name|Unstable
+DECL|method|setNodeHttpAddress (String nodeHttpAddress)
+specifier|public
+specifier|abstract
+name|void
+name|setNodeHttpAddress
+parameter_list|(
+name|String
+name|nodeHttpAddress
 parameter_list|)
 function_decl|;
 block|}

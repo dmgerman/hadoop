@@ -170,6 +170,15 @@ name|STATE_EVENT_INFO
 init|=
 literal|"YARN_CONTAINER_STATE"
 decl_stmt|;
+DECL|field|ALLOCATED_HOST_HTTP_ADDRESS_ENTITY_INFO
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|ALLOCATED_HOST_HTTP_ADDRESS_ENTITY_INFO
+init|=
+literal|"YARN_CONTAINER_ALLOCATED_HOST_HTTP_ADDRESS"
+decl_stmt|;
 block|}
 end_class
 

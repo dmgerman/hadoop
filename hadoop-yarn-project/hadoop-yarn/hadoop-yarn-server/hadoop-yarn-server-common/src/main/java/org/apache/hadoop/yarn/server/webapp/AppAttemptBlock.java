@@ -1348,14 +1348,27 @@ argument_list|)
 operator|.
 name|append
 argument_list|(
-literal|"</a>\",\"<a href='"
+literal|"</a>\",\"<a "
 argument_list|)
 operator|.
 name|append
 argument_list|(
+name|container
+operator|.
+name|getNodeHttpAddress
+argument_list|()
+operator|==
+literal|null
+condition|?
 literal|"#"
+else|:
+literal|"href='"
+operator|+
+name|container
+operator|.
+name|getNodeHttpAddress
+argument_list|()
 argument_list|)
-comment|// TODO: replace with node http address (YARN-1884)
 operator|.
 name|append
 argument_list|(
@@ -1366,7 +1379,7 @@ name|append
 argument_list|(
 name|container
 operator|.
-name|getAssignedNodeId
+name|getNodeHttpAddress
 argument_list|()
 operator|==
 literal|null
@@ -1383,7 +1396,7 @@ name|escapeHtml
 argument_list|(
 name|container
 operator|.
-name|getAssignedNodeId
+name|getNodeHttpAddress
 argument_list|()
 argument_list|)
 argument_list|)
