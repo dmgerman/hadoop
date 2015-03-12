@@ -20,6 +20,20 @@ name|rawcoder
 package|;
 end_package
 
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|conf
+operator|.
+name|Configured
+import|;
+end_import
+
 begin_comment
 comment|/**  * A common class of basic facilities to be shared by encoder and decoder  *  * It implements the {@link RawErasureCoder} interface.  */
 end_comment
@@ -30,6 +44,8 @@ specifier|public
 specifier|abstract
 class|class
 name|AbstractRawErasureCoder
+extends|extends
+name|Configured
 implements|implements
 name|RawErasureCoder
 block|{

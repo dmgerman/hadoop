@@ -136,6 +136,7 @@ name|usingDirectBuffer
 init|=
 literal|true
 decl_stmt|;
+comment|/**    * Prepare before running the case.    * @param numDataUnits    * @param numParityUnits    * @param erasedIndexes    */
 DECL|method|prepare (int numDataUnits, int numParityUnits, int[] erasedIndexes)
 specifier|protected
 name|void

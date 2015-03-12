@@ -143,6 +143,8 @@ argument_list|(
 name|clonedDataChunks
 argument_list|)
 decl_stmt|;
+try|try
+block|{
 name|encoder
 operator|.
 name|encode
@@ -152,6 +154,15 @@ argument_list|,
 name|parityChunks
 argument_list|)
 expr_stmt|;
+block|}
+finally|finally
+block|{
+name|encoder
+operator|.
+name|release
+argument_list|()
+expr_stmt|;
+block|}
 comment|// Erase the copied sources
 name|eraseSomeDataBlocks
 argument_list|(
@@ -183,6 +194,8 @@ init|=
 name|createDecoder
 argument_list|()
 decl_stmt|;
+try|try
+block|{
 name|decoder
 operator|.
 name|decode
@@ -195,6 +208,15 @@ argument_list|,
 name|recoveredChunks
 argument_list|)
 expr_stmt|;
+block|}
+finally|finally
+block|{
+name|decoder
+operator|.
+name|release
+argument_list|()
+expr_stmt|;
+block|}
 comment|//Compare
 name|compareAndVerify
 argument_list|(
