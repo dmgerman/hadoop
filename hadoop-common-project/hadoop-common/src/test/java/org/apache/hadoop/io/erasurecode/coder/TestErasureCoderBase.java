@@ -643,7 +643,12 @@ argument_list|,
 name|chunkSize
 argument_list|)
 expr_stmt|;
+operator|(
+operator|(
+name|AbstractErasureCoder
+operator|)
 name|encoder
+operator|)
 operator|.
 name|setConf
 argument_list|(
@@ -701,7 +706,12 @@ argument_list|,
 name|chunkSize
 argument_list|)
 expr_stmt|;
+operator|(
+operator|(
+name|AbstractErasureCoder
+operator|)
 name|decoder
+operator|)
 operator|.
 name|setConf
 argument_list|(
