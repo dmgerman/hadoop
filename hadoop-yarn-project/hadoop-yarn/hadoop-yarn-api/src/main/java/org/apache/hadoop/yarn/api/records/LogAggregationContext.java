@@ -85,7 +85,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  *<p><code>LogAggregationContext</code> represents all of the  * information needed by the<code>NodeManager</code> to handle  * the logs for an application.</p>  *  *<p>It includes details such as:  *<ul>  *<li>includePattern. It uses Java Regex to filter the log files  *     which match the defined include pattern and those log files  *     will be uploaded.</li>  *<li>excludePattern. It uses Java Regex to filter the log files  *     which match the defined exclude pattern and those log files  *     will not be uploaded. If the log file name matches both the  *     include and the exclude pattern, this file will be excluded eventually</li>  *</ul>  *</p>  *  * @see ApplicationSubmissionContext  */
+comment|/**  *<p><code>LogAggregationContext</code> represents all of the  * information needed by the<code>NodeManager</code> to handle  * the logs for an application.</p>  *  *<p>It includes details such as:  *<ul>  *<li>includePattern. It uses Java Regex to filter the log files  *     which match the defined include pattern and those log files  *     will be uploaded when the application finishes.</li>  *<li>excludePattern. It uses Java Regex to filter the log files  *     which match the defined exclude pattern and those log files  *     will not be uploaded when application finishes. If the log file  *     name matches both the include and the exclude pattern, this file  *     will be excluded eventually</li>  *<li>rolledLogsIncludePattern. It uses Java Regex to filter the log files  *     which match the defined include pattern and those log files  *     will be aggregated in a rolling fashion.</li>  *<li>rolledLogsExcludePattern. It uses Java Regex to filter the log files  *     which match the defined exclude pattern and those log files  *     will not be aggregated in a rolling fashion. If the log file  *     name matches both the include and the exclude pattern, this file  *     will be excluded eventually</li>  *</ul>  *</p>  *  * @see ApplicationSubmissionContext  */
 end_comment
 
 begin_class
@@ -146,7 +146,74 @@ return|return
 name|context
 return|;
 block|}
-comment|/**    * Get include pattern    *    * @return include pattern    */
+annotation|@
+name|Public
+annotation|@
+name|Unstable
+DECL|method|newInstance (String includePattern, String excludePattern, String rolledLogsIncludePattern, String rolledLogsExcludePattern)
+specifier|public
+specifier|static
+name|LogAggregationContext
+name|newInstance
+parameter_list|(
+name|String
+name|includePattern
+parameter_list|,
+name|String
+name|excludePattern
+parameter_list|,
+name|String
+name|rolledLogsIncludePattern
+parameter_list|,
+name|String
+name|rolledLogsExcludePattern
+parameter_list|)
+block|{
+name|LogAggregationContext
+name|context
+init|=
+name|Records
+operator|.
+name|newRecord
+argument_list|(
+name|LogAggregationContext
+operator|.
+name|class
+argument_list|)
+decl_stmt|;
+name|context
+operator|.
+name|setIncludePattern
+argument_list|(
+name|includePattern
+argument_list|)
+expr_stmt|;
+name|context
+operator|.
+name|setExcludePattern
+argument_list|(
+name|excludePattern
+argument_list|)
+expr_stmt|;
+name|context
+operator|.
+name|setRolledLogsIncludePattern
+argument_list|(
+name|rolledLogsIncludePattern
+argument_list|)
+expr_stmt|;
+name|context
+operator|.
+name|setRolledLogsExcludePattern
+argument_list|(
+name|rolledLogsExcludePattern
+argument_list|)
+expr_stmt|;
+return|return
+name|context
+return|;
+block|}
+comment|/**    * Get include pattern. This includePattern only takes affect    * on logs that exist at the time of application finish.    *    * @return include pattern    */
 annotation|@
 name|Public
 annotation|@
@@ -158,7 +225,7 @@ name|String
 name|getIncludePattern
 parameter_list|()
 function_decl|;
-comment|/**    * Set include pattern    *    * @param includePattern    */
+comment|/**    * Set include pattern. This includePattern only takes affect    * on logs that exist at the time of application finish.    *    * @param includePattern    */
 annotation|@
 name|Public
 annotation|@
@@ -173,7 +240,7 @@ name|String
 name|includePattern
 parameter_list|)
 function_decl|;
-comment|/**    * Get exclude pattern    *    * @return exclude pattern    */
+comment|/**    * Get exclude pattern. This excludePattern only takes affect    * on logs that exist at the time of application finish.    *    * @return exclude pattern    */
 annotation|@
 name|Public
 annotation|@
@@ -185,7 +252,7 @@ name|String
 name|getExcludePattern
 parameter_list|()
 function_decl|;
-comment|/**    * Set exclude pattern    *    * @param excludePattern    */
+comment|/**    * Set exclude pattern. This excludePattern only takes affect    * on logs that exist at the time of application finish.    *    * @param excludePattern    */
 annotation|@
 name|Public
 annotation|@
@@ -198,6 +265,60 @@ name|setExcludePattern
 parameter_list|(
 name|String
 name|excludePattern
+parameter_list|)
+function_decl|;
+comment|/**    * Get include pattern in a rolling fashion.    *     * @return include pattern    */
+annotation|@
+name|Public
+annotation|@
+name|Unstable
+DECL|method|getRolledLogsIncludePattern ()
+specifier|public
+specifier|abstract
+name|String
+name|getRolledLogsIncludePattern
+parameter_list|()
+function_decl|;
+comment|/**    * Set include pattern in a rolling fashion.    *     * @param rolledLogsIncludePattern    */
+annotation|@
+name|Public
+annotation|@
+name|Unstable
+DECL|method|setRolledLogsIncludePattern ( String rolledLogsIncludePattern)
+specifier|public
+specifier|abstract
+name|void
+name|setRolledLogsIncludePattern
+parameter_list|(
+name|String
+name|rolledLogsIncludePattern
+parameter_list|)
+function_decl|;
+comment|/**    * Get exclude pattern for aggregation in a rolling fashion.    *     * @return exclude pattern    */
+annotation|@
+name|Public
+annotation|@
+name|Unstable
+DECL|method|getRolledLogsExcludePattern ()
+specifier|public
+specifier|abstract
+name|String
+name|getRolledLogsExcludePattern
+parameter_list|()
+function_decl|;
+comment|/**    * Set exclude pattern for in a rolling fashion.    *     * @param rolledLogsExcludePattern    */
+annotation|@
+name|Public
+annotation|@
+name|Unstable
+DECL|method|setRolledLogsExcludePattern ( String rolledLogsExcludePattern)
+specifier|public
+specifier|abstract
+name|void
+name|setRolledLogsExcludePattern
+parameter_list|(
+name|String
+name|rolledLogsExcludePattern
 parameter_list|)
 function_decl|;
 block|}

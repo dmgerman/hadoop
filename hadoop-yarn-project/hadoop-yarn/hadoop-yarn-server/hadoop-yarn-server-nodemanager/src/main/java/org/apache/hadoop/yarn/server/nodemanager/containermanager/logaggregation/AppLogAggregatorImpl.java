@@ -336,22 +336,6 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|security
-operator|.
-name|token
-operator|.
-name|Token
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
 name|util
 operator|.
 name|StringUtils
@@ -974,6 +958,12 @@ specifier|final
 name|long
 name|rollingMonitorInterval
 decl_stmt|;
+DECL|field|logAggregationInRolling
+specifier|private
+specifier|final
+name|boolean
+name|logAggregationInRolling
+decl_stmt|;
 DECL|field|nodeId
 specifier|private
 specifier|final
@@ -1332,12 +1322,54 @@ operator|=
 name|configuredRollingMonitorInterval
 expr_stmt|;
 block|}
+name|this
+operator|.
+name|logAggregationInRolling
+operator|=
+name|this
+operator|.
+name|rollingMonitorInterval
+operator|<=
+literal|0
+operator|||
+name|this
+operator|.
+name|logAggregationContext
+operator|==
+literal|null
+operator|||
+name|this
+operator|.
+name|logAggregationContext
+operator|.
+name|getRolledLogsIncludePattern
+argument_list|()
+operator|==
+literal|null
+operator|||
+name|this
+operator|.
+name|logAggregationContext
+operator|.
+name|getRolledLogsIncludePattern
+argument_list|()
+operator|.
+name|isEmpty
+argument_list|()
+condition|?
+literal|false
+else|:
+literal|true
+expr_stmt|;
 block|}
-DECL|method|uploadLogsForContainers ()
+DECL|method|uploadLogsForContainers (boolean appFinished)
 specifier|private
 name|void
 name|uploadLogsForContainers
-parameter_list|()
+parameter_list|(
+name|boolean
+name|appFinished
+parameter_list|)
 block|{
 if|if
 condition|(
@@ -1666,6 +1698,8 @@ operator|.
 name|doContainerLogAggregation
 argument_list|(
 name|writer
+argument_list|,
+name|appFinished
 argument_list|)
 decl_stmt|;
 if|if
@@ -2361,11 +2395,7 @@ argument_list|)
 expr_stmt|;
 if|if
 condition|(
-name|this
-operator|.
-name|rollingMonitorInterval
-operator|>
-literal|0
+name|logAggregationInRolling
 condition|)
 block|{
 name|wait
@@ -2397,7 +2427,9 @@ block|{
 break|break;
 block|}
 name|uploadLogsForContainers
-argument_list|()
+argument_list|(
+literal|false
+argument_list|)
 expr_stmt|;
 block|}
 else|else
@@ -2448,7 +2480,9 @@ return|return;
 block|}
 comment|// App is finished, upload the container logs.
 name|uploadLogsForContainers
-argument_list|()
+argument_list|(
+literal|true
+argument_list|)
 expr_stmt|;
 comment|// Remove the local app-log-dirs
 name|List
@@ -2973,7 +3007,7 @@ operator|=
 name|containerId
 expr_stmt|;
 block|}
-DECL|method|doContainerLogAggregation (LogWriter writer)
+DECL|method|doContainerLogAggregation (LogWriter writer, boolean appFinished)
 specifier|public
 name|Set
 argument_list|<
@@ -2983,6 +3017,9 @@ name|doContainerLogAggregation
 parameter_list|(
 name|LogWriter
 name|writer
+parameter_list|,
+name|boolean
+name|appFinished
 parameter_list|)
 block|{
 name|LOG
@@ -3042,6 +3079,8 @@ argument_list|,
 name|this
 operator|.
 name|uploadedFileMeta
+argument_list|,
+name|appFinished
 argument_list|)
 decl_stmt|;
 try|try
