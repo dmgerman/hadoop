@@ -65,10 +65,10 @@ import|;
 end_import
 
 begin_class
-DECL|class|TestCryptoStreamsWithOpensslAesCtrCryptoCodec
+DECL|class|TestCryptoStreamsWithJceAesCtrCryptoCodec
 specifier|public
 class|class
-name|TestCryptoStreamsWithOpensslAesCtrCryptoCodec
+name|TestCryptoStreamsWithJceAesCtrCryptoCodec
 extends|extends
 name|TestCryptoStreams
 block|{
@@ -98,7 +98,7 @@ name|CommonConfigurationKeysPublic
 operator|.
 name|HADOOP_SECURITY_CRYPTO_CODEC_CLASSES_AES_CTR_NOPADDING_KEY
 argument_list|,
-name|OpensslAesCtrCryptoCodec
+name|JceAesCtrCryptoCodec
 operator|.
 name|class
 operator|.
@@ -119,7 +119,7 @@ name|Assert
 operator|.
 name|assertEquals
 argument_list|(
-name|OpensslAesCtrCryptoCodec
+name|JceAesCtrCryptoCodec
 operator|.
 name|class
 operator|.
