@@ -1297,6 +1297,22 @@ operator|==
 literal|0
 argument_list|)
 expr_stmt|;
+name|assertEquals
+argument_list|(
+literal|"Truncate is not idempotent"
+argument_list|,
+name|isReady
+argument_list|,
+name|fs
+operator|.
+name|truncate
+argument_list|(
+name|p
+argument_list|,
+name|newLength
+argument_list|)
+argument_list|)
+expr_stmt|;
 if|if
 condition|(
 operator|!

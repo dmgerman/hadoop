@@ -1428,6 +1428,13 @@ argument_list|)
 operator|.
 name|append
 argument_list|(
+literal|", truncateBlock="
+operator|+
+name|truncateBlock
+argument_list|)
+operator|.
+name|append
+argument_list|(
 literal|", primaryNodeIndex="
 argument_list|)
 operator|.
