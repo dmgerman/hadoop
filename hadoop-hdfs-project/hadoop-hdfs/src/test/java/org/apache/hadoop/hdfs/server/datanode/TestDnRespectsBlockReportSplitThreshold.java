@@ -611,14 +611,10 @@ block|{
 name|BlockListAsLongs
 name|blockList
 init|=
-operator|new
-name|BlockListAsLongs
-argument_list|(
 name|report
 operator|.
 name|getBlocks
 argument_list|()
-argument_list|)
 decl_stmt|;
 name|numBlocksReported
 operator|+=

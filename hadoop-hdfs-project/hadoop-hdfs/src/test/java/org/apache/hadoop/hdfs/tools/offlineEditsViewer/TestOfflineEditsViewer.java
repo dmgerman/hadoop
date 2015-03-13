@@ -184,6 +184,24 @@ name|server
 operator|.
 name|namenode
 operator|.
+name|NameNodeLayoutVersion
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|server
+operator|.
+name|namenode
+operator|.
 name|OfflineEditsViewerHelper
 import|;
 end_import
@@ -799,11 +817,23 @@ name|assertTrue
 argument_list|(
 literal|"Test round trip"
 argument_list|,
-name|filesEqualIgnoreTrailingZeros
+name|FileUtils
+operator|.
+name|contentEqualsIgnoreEOL
+argument_list|(
+operator|new
+name|File
 argument_list|(
 name|editsParsedXml
+argument_list|)
 argument_list|,
+operator|new
+name|File
+argument_list|(
 name|editsParsedXml2
+argument_list|)
+argument_list|,
+literal|"UTF-8"
 argument_list|)
 argument_list|)
 expr_stmt|;
@@ -1242,6 +1272,23 @@ name|filenameLarge
 argument_list|)
 argument_list|)
 decl_stmt|;
+comment|// OEV outputs with the latest layout version, so tweak the old file's
+comment|// contents to have latest version so checkedin binary files don't
+comment|// require frequent updates
+name|small
+operator|.
+name|put
+argument_list|(
+literal|3
+argument_list|,
+operator|(
+name|byte
+operator|)
+name|NameNodeLayoutVersion
+operator|.
+name|CURRENT_LAYOUT_VERSION
+argument_list|)
+expr_stmt|;
 comment|// now correct if it's otherwise
 if|if
 condition|(

@@ -1239,7 +1239,9 @@ argument_list|)
 expr_stmt|;
 comment|// Second phase of the handshake with the NN.
 name|register
-argument_list|()
+argument_list|(
+name|nsInfo
+argument_list|)
 expr_stmt|;
 block|}
 comment|// This is useful to make sure NN gets Heartbeat before Blockreport
@@ -2075,9 +2077,6 @@ name|getKey
 argument_list|()
 argument_list|,
 name|blockList
-operator|.
-name|getBlockListAsLongs
-argument_list|()
 argument_list|)
 expr_stmt|;
 name|totalBlockCount
@@ -3493,11 +3492,14 @@ block|}
 comment|// while (shouldRun())
 block|}
 comment|// offerService
-comment|/**    * Register one bp with the corresponding NameNode    *<p>    * The bpDatanode needs to register with the namenode on startup in order    * 1) to report which storage it is serving now and     * 2) to receive a registrationID    *      * issued by the namenode to recognize registered datanodes.    *     * @see FSNamesystem#registerDatanode(DatanodeRegistration)    * @throws IOException    */
-DECL|method|register ()
+comment|/**    * Register one bp with the corresponding NameNode    *<p>    * The bpDatanode needs to register with the namenode on startup in order    * 1) to report which storage it is serving now and     * 2) to receive a registrationID    *      * issued by the namenode to recognize registered datanodes.    *     * @param nsInfo current NamespaceInfo    * @see FSNamesystem#registerDatanode(DatanodeRegistration)    * @throws IOException    */
+DECL|method|register (NamespaceInfo nsInfo)
 name|void
 name|register
-parameter_list|()
+parameter_list|(
+name|NamespaceInfo
+name|nsInfo
+parameter_list|)
 throws|throws
 name|IOException
 block|{
@@ -3535,6 +3537,13 @@ operator|.
 name|registerDatanode
 argument_list|(
 name|bpRegistration
+argument_list|)
+expr_stmt|;
+name|bpRegistration
+operator|.
+name|setNamespaceInfo
+argument_list|(
+name|nsInfo
 argument_list|)
 expr_stmt|;
 break|break;
@@ -4018,12 +4027,17 @@ condition|)
 block|{
 comment|// re-retrieve namespace info to make sure that, if the NN
 comment|// was restarted, we still match its version (HDFS-2120)
+name|NamespaceInfo
+name|nsInfo
+init|=
 name|retrieveNamespaceInfo
 argument_list|()
-expr_stmt|;
+decl_stmt|;
 comment|// and re-register
 name|register
-argument_list|()
+argument_list|(
+name|nsInfo
+argument_list|)
 expr_stmt|;
 name|scheduleHeartbeat
 argument_list|()

@@ -173,6 +173,11 @@ specifier|final
 name|String
 name|softwareVersion
 decl_stmt|;
+DECL|field|nsInfo
+specifier|private
+name|NamespaceInfo
+name|nsInfo
+decl_stmt|;
 annotation|@
 name|VisibleForTesting
 DECL|method|DatanodeRegistration (String uuid, DatanodeRegistration dnr)
@@ -314,6 +319,32 @@ name|storageInfo
 operator|.
 name|getLayoutVersion
 argument_list|()
+return|;
+block|}
+DECL|method|setNamespaceInfo (NamespaceInfo nsInfo)
+specifier|public
+name|void
+name|setNamespaceInfo
+parameter_list|(
+name|NamespaceInfo
+name|nsInfo
+parameter_list|)
+block|{
+name|this
+operator|.
+name|nsInfo
+operator|=
+name|nsInfo
+expr_stmt|;
+block|}
+DECL|method|getNamespaceInfo ()
+specifier|public
+name|NamespaceInfo
+name|getNamespaceInfo
+parameter_list|()
+block|{
+return|return
+name|nsInfo
 return|;
 block|}
 annotation|@

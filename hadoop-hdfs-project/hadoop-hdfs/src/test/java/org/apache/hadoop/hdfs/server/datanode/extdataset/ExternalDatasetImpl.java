@@ -1086,13 +1086,9 @@ name|put
 argument_list|(
 name|storage
 argument_list|,
-operator|new
 name|BlockListAsLongs
-argument_list|(
-literal|null
-argument_list|,
-literal|null
-argument_list|)
+operator|.
+name|EMPTY
 argument_list|)
 expr_stmt|;
 return|return

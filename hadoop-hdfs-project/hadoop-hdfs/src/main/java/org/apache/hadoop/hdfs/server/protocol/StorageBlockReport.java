@@ -20,6 +20,22 @@ name|protocol
 package|;
 end_package
 
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|protocol
+operator|.
+name|BlockListAsLongs
+import|;
+end_import
+
 begin_comment
 comment|/**  * Block report for a Datanode storage  */
 end_comment
@@ -39,19 +55,17 @@ decl_stmt|;
 DECL|field|blocks
 specifier|private
 specifier|final
-name|long
-index|[]
+name|BlockListAsLongs
 name|blocks
 decl_stmt|;
-DECL|method|StorageBlockReport (DatanodeStorage storage, long[] blocks)
+DECL|method|StorageBlockReport (DatanodeStorage storage, BlockListAsLongs blocks)
 specifier|public
 name|StorageBlockReport
 parameter_list|(
 name|DatanodeStorage
 name|storage
 parameter_list|,
-name|long
-index|[]
+name|BlockListAsLongs
 name|blocks
 parameter_list|)
 block|{
@@ -80,8 +94,7 @@ return|;
 block|}
 DECL|method|getBlocks ()
 specifier|public
-name|long
-index|[]
+name|BlockListAsLongs
 name|getBlocks
 parameter_list|()
 block|{

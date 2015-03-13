@@ -108,16 +108,6 @@ name|java
 operator|.
 name|io
 operator|.
-name|FilenameFilter
-import|;
-end_import
-
-begin_import
-import|import
-name|java
-operator|.
-name|io
-operator|.
 name|IOException
 import|;
 end_import
@@ -139,16 +129,6 @@ operator|.
 name|net
 operator|.
 name|Socket
-import|;
-end_import
-
-begin_import
-import|import
-name|java
-operator|.
-name|util
-operator|.
-name|ArrayList
 import|;
 end_import
 
@@ -1446,9 +1426,6 @@ argument_list|(
 name|dnStorage
 argument_list|,
 name|blockList
-operator|.
-name|getBlockListAsLongs
-argument_list|()
 argument_list|)
 expr_stmt|;
 block|}

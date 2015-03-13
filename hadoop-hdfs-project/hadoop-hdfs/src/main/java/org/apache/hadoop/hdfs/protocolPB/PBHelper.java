@@ -6059,6 +6059,11 @@ name|info
 operator|.
 name|getSoftwareVersion
 argument_list|()
+argument_list|,
+name|info
+operator|.
+name|getCapabilities
+argument_list|()
 argument_list|)
 return|;
 block|}
@@ -10352,6 +10357,14 @@ argument_list|(
 name|info
 operator|.
 name|getSoftwareVersion
+argument_list|()
+argument_list|)
+operator|.
+name|setCapabilities
+argument_list|(
+name|info
+operator|.
+name|getCapabilities
 argument_list|()
 argument_list|)
 operator|.

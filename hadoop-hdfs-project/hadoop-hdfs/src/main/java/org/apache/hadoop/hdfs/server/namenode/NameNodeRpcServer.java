@@ -7841,14 +7841,10 @@ specifier|final
 name|BlockListAsLongs
 name|blocks
 init|=
-operator|new
-name|BlockListAsLongs
-argument_list|(
 name|r
 operator|.
 name|getBlocks
 argument_list|()
-argument_list|)
 decl_stmt|;
 comment|//
 comment|// BlockManager.processReport accumulates information of prior calls
