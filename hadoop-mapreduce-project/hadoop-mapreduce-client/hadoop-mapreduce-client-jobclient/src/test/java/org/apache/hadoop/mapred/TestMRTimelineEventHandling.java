@@ -372,6 +372,8 @@ argument_list|,
 literal|null
 argument_list|,
 literal|null
+argument_list|,
+literal|null
 argument_list|)
 decl_stmt|;
 name|Assert
@@ -534,6 +536,8 @@ operator|.
 name|getEntities
 argument_list|(
 literal|"MAPREDUCE_JOB"
+argument_list|,
+literal|null
 argument_list|,
 literal|null
 argument_list|,
@@ -851,6 +855,8 @@ argument_list|,
 literal|null
 argument_list|,
 literal|null
+argument_list|,
+literal|null
 argument_list|)
 decl_stmt|;
 name|Assert
@@ -923,6 +929,8 @@ operator|.
 name|getEntities
 argument_list|(
 literal|"MAPREDUCE_JOB"
+argument_list|,
+literal|null
 argument_list|,
 literal|null
 argument_list|,
@@ -1169,6 +1177,8 @@ argument_list|,
 literal|null
 argument_list|,
 literal|null
+argument_list|,
+literal|null
 argument_list|)
 decl_stmt|;
 name|Assert
@@ -1241,6 +1251,8 @@ operator|.
 name|getEntities
 argument_list|(
 literal|"MAPREDUCE_JOB"
+argument_list|,
+literal|null
 argument_list|,
 literal|null
 argument_list|,

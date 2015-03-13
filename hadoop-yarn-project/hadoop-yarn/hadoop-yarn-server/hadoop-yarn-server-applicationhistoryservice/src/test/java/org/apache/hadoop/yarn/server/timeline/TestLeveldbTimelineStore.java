@@ -1065,7 +1065,7 @@ argument_list|()
 decl_stmt|;
 name|assertEquals
 argument_list|(
-literal|6
+literal|7
 argument_list|,
 name|entityTypes
 operator|.
@@ -1075,7 +1075,7 @@ argument_list|)
 expr_stmt|;
 name|assertEquals
 argument_list|(
-literal|"OLD_ENTITY_TYPE_1"
+literal|"ACL_ENTITY_TYPE_1"
 argument_list|,
 name|entityTypes
 operator|.
@@ -1087,7 +1087,7 @@ argument_list|)
 expr_stmt|;
 name|assertEquals
 argument_list|(
-name|entityType1
+literal|"OLD_ENTITY_TYPE_1"
 argument_list|,
 name|entityTypes
 operator|.
@@ -1099,7 +1099,7 @@ argument_list|)
 expr_stmt|;
 name|assertEquals
 argument_list|(
-name|entityType2
+name|entityType1
 argument_list|,
 name|entityTypes
 operator|.
@@ -1111,7 +1111,7 @@ argument_list|)
 expr_stmt|;
 name|assertEquals
 argument_list|(
-name|entityType4
+name|entityType2
 argument_list|,
 name|entityTypes
 operator|.
@@ -1123,7 +1123,7 @@ argument_list|)
 expr_stmt|;
 name|assertEquals
 argument_list|(
-name|entityType5
+name|entityType4
 argument_list|,
 name|entityTypes
 operator|.
@@ -1135,7 +1135,7 @@ argument_list|)
 expr_stmt|;
 name|assertEquals
 argument_list|(
-name|entityType7
+name|entityType5
 argument_list|,
 name|entityTypes
 operator|.
@@ -1406,7 +1406,7 @@ argument_list|)
 expr_stmt|;
 name|assertEquals
 argument_list|(
-literal|5
+literal|6
 argument_list|,
 operator|(
 operator|(

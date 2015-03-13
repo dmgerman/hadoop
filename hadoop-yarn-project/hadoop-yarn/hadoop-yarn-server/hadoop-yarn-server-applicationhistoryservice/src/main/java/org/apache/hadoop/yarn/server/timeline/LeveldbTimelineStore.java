@@ -388,6 +388,26 @@ name|server
 operator|.
 name|timeline
 operator|.
+name|TimelineDataManager
+operator|.
+name|CheckAcl
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|server
+operator|.
+name|timeline
+operator|.
 name|util
 operator|.
 name|LeveldbUtils
@@ -579,6 +599,26 @@ operator|.
 name|GenericObjectMapper
 operator|.
 name|writeReverseOrderedLong
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|server
+operator|.
+name|timeline
+operator|.
+name|TimelineDataManager
+operator|.
+name|DEFAULT_DOMAIN_ID
 import|;
 end_import
 
@@ -3275,7 +3315,7 @@ return|;
 block|}
 annotation|@
 name|Override
-DECL|method|getEntities (String entityType, Long limit, Long windowStart, Long windowEnd, String fromId, Long fromTs, NameValuePair primaryFilter, Collection<NameValuePair> secondaryFilters, EnumSet<Field> fields)
+DECL|method|getEntities (String entityType, Long limit, Long windowStart, Long windowEnd, String fromId, Long fromTs, NameValuePair primaryFilter, Collection<NameValuePair> secondaryFilters, EnumSet<Field> fields, CheckAcl checkAcl)
 specifier|public
 name|TimelineEntities
 name|getEntities
@@ -3312,6 +3352,9 @@ argument_list|<
 name|Field
 argument_list|>
 name|fields
+parameter_list|,
+name|CheckAcl
+name|checkAcl
 parameter_list|)
 throws|throws
 name|IOException
@@ -3345,6 +3388,8 @@ argument_list|,
 name|secondaryFilters
 argument_list|,
 name|fields
+argument_list|,
+name|checkAcl
 argument_list|)
 return|;
 block|}
@@ -3418,12 +3463,14 @@ argument_list|,
 name|secondaryFilters
 argument_list|,
 name|fields
+argument_list|,
+name|checkAcl
 argument_list|)
 return|;
 block|}
 block|}
 comment|/**    * Retrieves a list of entities satisfying given parameters.    *    * @param base A byte array prefix for the lookup    * @param entityType The type of the entity    * @param limit A limit on the number of entities to return    * @param starttime The earliest entity start time to retrieve (exclusive)    * @param endtime The latest entity start time to retrieve (inclusive)    * @param fromId Retrieve entities starting with this entity    * @param fromTs Ignore entities with insert timestamp later than this ts    * @param secondaryFilters Filter pairs that the entities should match    * @param fields The set of fields to retrieve    * @return A list of entities    * @throws IOException    */
-DECL|method|getEntityByTime (byte[] base, String entityType, Long limit, Long starttime, Long endtime, String fromId, Long fromTs, Collection<NameValuePair> secondaryFilters, EnumSet<Field> fields)
+DECL|method|getEntityByTime (byte[] base, String entityType, Long limit, Long starttime, Long endtime, String fromId, Long fromTs, Collection<NameValuePair> secondaryFilters, EnumSet<Field> fields, CheckAcl checkAcl)
 specifier|private
 name|TimelineEntities
 name|getEntityByTime
@@ -3461,6 +3508,9 @@ argument_list|<
 name|Field
 argument_list|>
 name|fields
+parameter_list|,
+name|CheckAcl
+name|checkAcl
 parameter_list|)
 throws|throws
 name|IOException
@@ -4013,6 +4063,38 @@ condition|(
 name|filterPassed
 condition|)
 block|{
+if|if
+condition|(
+name|entity
+operator|.
+name|getDomainId
+argument_list|()
+operator|==
+literal|null
+condition|)
+block|{
+name|entity
+operator|.
+name|setDomainId
+argument_list|(
+name|DEFAULT_DOMAIN_ID
+argument_list|)
+expr_stmt|;
+block|}
+if|if
+condition|(
+name|checkAcl
+operator|==
+literal|null
+operator|||
+name|checkAcl
+operator|.
+name|check
+argument_list|(
+name|entity
+argument_list|)
+condition|)
+block|{
 name|entities
 operator|.
 name|addEntity
@@ -4020,6 +4102,7 @@ argument_list|(
 name|entity
 argument_list|)
 expr_stmt|;
+block|}
 block|}
 block|}
 return|return
