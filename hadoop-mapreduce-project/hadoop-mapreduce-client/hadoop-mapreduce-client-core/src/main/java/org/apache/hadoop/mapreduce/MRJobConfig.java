@@ -2143,6 +2143,27 @@ name|DEFAULT_MR_AM_CONTAINERLAUNCHER_THREAD_COUNT_LIMIT
 init|=
 literal|500
 decl_stmt|;
+comment|/**    * The initial size of thread pool to launch containers in the app master    */
+DECL|field|MR_AM_CONTAINERLAUNCHER_THREADPOOL_INITIAL_SIZE
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|MR_AM_CONTAINERLAUNCHER_THREADPOOL_INITIAL_SIZE
+init|=
+name|MR_AM_PREFIX
+operator|+
+literal|"containerlauncher.threadpool-initial-size"
+decl_stmt|;
+DECL|field|DEFAULT_MR_AM_CONTAINERLAUNCHER_THREADPOOL_INITIAL_SIZE
+specifier|public
+specifier|static
+specifier|final
+name|int
+name|DEFAULT_MR_AM_CONTAINERLAUNCHER_THREADPOOL_INITIAL_SIZE
+init|=
+literal|10
+decl_stmt|;
 comment|/** Number of threads to handle job client RPC requests.*/
 DECL|field|MR_AM_JOB_CLIENT_THREAD_COUNT
 specifier|public

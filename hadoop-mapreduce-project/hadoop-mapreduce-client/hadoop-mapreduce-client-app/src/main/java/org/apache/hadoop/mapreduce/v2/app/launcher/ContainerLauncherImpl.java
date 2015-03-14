@@ -651,14 +651,10 @@ specifier|protected
 name|ThreadPoolExecutor
 name|launcherPool
 decl_stmt|;
-DECL|field|INITIAL_POOL_SIZE
+DECL|field|initialPoolSize
 specifier|protected
-specifier|static
-specifier|final
 name|int
-name|INITIAL_POOL_SIZE
-init|=
-literal|10
+name|initialPoolSize
 decl_stmt|;
 DECL|field|limitOnPoolSize
 specifier|private
@@ -1595,6 +1591,34 @@ operator|.
 name|limitOnPoolSize
 argument_list|)
 expr_stmt|;
+name|this
+operator|.
+name|initialPoolSize
+operator|=
+name|conf
+operator|.
+name|getInt
+argument_list|(
+name|MRJobConfig
+operator|.
+name|MR_AM_CONTAINERLAUNCHER_THREADPOOL_INITIAL_SIZE
+argument_list|,
+name|MRJobConfig
+operator|.
+name|DEFAULT_MR_AM_CONTAINERLAUNCHER_THREADPOOL_INITIAL_SIZE
+argument_list|)
+expr_stmt|;
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"The thread pool initial size is "
+operator|+
+name|this
+operator|.
+name|initialPoolSize
+argument_list|)
+expr_stmt|;
 name|super
 operator|.
 name|serviceInit
@@ -1645,7 +1669,7 @@ operator|=
 operator|new
 name|ThreadPoolExecutor
 argument_list|(
-name|INITIAL_POOL_SIZE
+name|initialPoolSize
 argument_list|,
 name|Integer
 operator|.
@@ -1809,7 +1833,7 @@ operator|<
 name|idealPoolSize
 condition|)
 block|{
-comment|// Bump up the pool size to idealPoolSize+INITIAL_POOL_SIZE, the
+comment|// Bump up the pool size to idealPoolSize+initialPoolSize, the
 comment|// later is just a buffer so we are not always increasing the
 comment|// pool-size
 name|int
@@ -1823,7 +1847,7 @@ name|limitOnPoolSize
 argument_list|,
 name|idealPoolSize
 operator|+
-name|INITIAL_POOL_SIZE
+name|initialPoolSize
 argument_list|)
 decl_stmt|;
 name|LOG
