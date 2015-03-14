@@ -3631,19 +3631,6 @@ specifier|final
 name|long
 name|keyProviderCacheExpiryMs
 decl_stmt|;
-DECL|field|brfFailureInjector
-specifier|public
-name|BlockReaderFactory
-operator|.
-name|FailureInjector
-name|brfFailureInjector
-init|=
-operator|new
-name|BlockReaderFactory
-operator|.
-name|FailureInjector
-argument_list|()
-decl_stmt|;
 DECL|method|Conf (Configuration conf)
 specifier|public
 name|Conf

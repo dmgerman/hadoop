@@ -1213,7 +1213,7 @@ expr_stmt|;
 block|}
 annotation|@
 name|Override
-DECL|method|requestShortCircuitFds (final ExtendedBlock blk, final Token<BlockTokenIdentifier> blockToken, SlotId slotId, int maxVersion, boolean supportsReceiptVerification)
+DECL|method|requestShortCircuitFds (final ExtendedBlock blk, final Token<BlockTokenIdentifier> blockToken, SlotId slotId, int maxVersion)
 specifier|public
 name|void
 name|requestShortCircuitFds
@@ -1234,9 +1234,6 @@ name|slotId
 parameter_list|,
 name|int
 name|maxVersion
-parameter_list|,
-name|boolean
-name|supportsReceiptVerification
 parameter_list|)
 throws|throws
 name|IOException
@@ -1288,13 +1285,6 @@ argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
-name|builder
-operator|.
-name|setSupportsReceiptVerification
-argument_list|(
-name|supportsReceiptVerification
-argument_list|)
-expr_stmt|;
 name|OpRequestShortCircuitAccessProto
 name|proto
 init|=
