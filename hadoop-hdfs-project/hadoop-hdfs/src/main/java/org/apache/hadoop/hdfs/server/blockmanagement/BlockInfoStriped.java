@@ -46,6 +46,22 @@ name|hadoop
 operator|.
 name|hdfs
 operator|.
+name|protocol
+operator|.
+name|HdfsConstants
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
 name|server
 operator|.
 name|common
@@ -68,6 +84,16 @@ name|BlockInfoStriped
 extends|extends
 name|BlockInfo
 block|{
+DECL|field|chunkSize
+specifier|private
+specifier|final
+name|int
+name|chunkSize
+init|=
+name|HdfsConstants
+operator|.
+name|BLOCK_STRIPED_CHUNK_SIZE
+decl_stmt|;
 DECL|field|dataBlockNum
 specifier|private
 specifier|final
@@ -173,6 +199,7 @@ argument_list|)
 expr_stmt|;
 block|}
 DECL|method|getTotalBlockNum ()
+specifier|public
 name|short
 name|getTotalBlockNum
 parameter_list|()
@@ -823,6 +850,41 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
+block|}
+DECL|method|spaceConsumed ()
+specifier|public
+name|long
+name|spaceConsumed
+parameter_list|()
+block|{
+comment|// In case striped blocks, total usage by this striped blocks should
+comment|// be the total of data blocks and parity blocks because
+comment|// `getNumBytes` is the total of actual data block size.
+return|return
+operator|(
+operator|(
+name|getNumBytes
+argument_list|()
+operator|-
+literal|1
+operator|)
+operator|/
+operator|(
+name|dataBlockNum
+operator|*
+name|chunkSize
+operator|)
+operator|+
+literal|1
+operator|)
+operator|*
+name|chunkSize
+operator|*
+name|parityBlockNum
+operator|+
+name|getNumBytes
+argument_list|()
+return|;
 block|}
 annotation|@
 name|Override
