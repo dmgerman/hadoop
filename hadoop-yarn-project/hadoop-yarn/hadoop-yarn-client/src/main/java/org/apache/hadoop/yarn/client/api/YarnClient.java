@@ -204,24 +204,6 @@ name|api
 operator|.
 name|protocolrecords
 operator|.
-name|GetApplicationReportRequest
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|yarn
-operator|.
-name|api
-operator|.
-name|protocolrecords
-operator|.
 name|ReservationDeleteRequest
 import|;
 end_import
@@ -313,24 +295,6 @@ operator|.
 name|protocolrecords
 operator|.
 name|ReservationUpdateResponse
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|yarn
-operator|.
-name|api
-operator|.
-name|protocolrecords
-operator|.
-name|SubmitApplicationRequest
 import|;
 end_import
 
@@ -672,6 +636,22 @@ name|yarn
 operator|.
 name|exceptions
 operator|.
+name|ApplicationAttemptNotFoundException
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|exceptions
+operator|.
 name|ApplicationIdNotProvidedException
 import|;
 end_import
@@ -689,6 +669,22 @@ operator|.
 name|exceptions
 operator|.
 name|ApplicationNotFoundException
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|exceptions
+operator|.
+name|ContainerNotFoundException
 import|;
 end_import
 
@@ -820,7 +816,7 @@ name|YarnException
 throws|,
 name|IOException
 function_decl|;
-comment|/**    *<p>    * Get a report of the given Application.    *</p>    *     *<p>    * In secure mode,<code>YARN</code> verifies access to the application, queue    * etc. before accepting the request.    *</p>    *     *<p>    * If the user does not have<code>VIEW_APP</code> access then the following    * fields in the report will be set to stubbed values:    *<ul>    *<li>host - set to "N/A"</li>    *<li>RPC port - set to -1</li>    *<li>client token - set to "N/A"</li>    *<li>diagnostics - set to "N/A"</li>    *<li>tracking URL - set to "N/A"</li>    *<li>original tracking URL - set to "N/A"</li>    *<li>resource usage report - all values are -1</li>    *</ul>    *</p>    *     * @param appId    *          {@link ApplicationId} of the application that needs a report    * @return application report    * @throws YarnException    * @throws IOException    */
+comment|/**    *<p>    * Get a report of the given Application.    *</p>    *     *<p>    * In secure mode,<code>YARN</code> verifies access to the application, queue    * etc. before accepting the request.    *</p>    *     *<p>    * If the user does not have<code>VIEW_APP</code> access then the following    * fields in the report will be set to stubbed values:    *<ul>    *<li>host - set to "N/A"</li>    *<li>RPC port - set to -1</li>    *<li>client token - set to "N/A"</li>    *<li>diagnostics - set to "N/A"</li>    *<li>tracking URL - set to "N/A"</li>    *<li>original tracking URL - set to "N/A"</li>    *<li>resource usage report - all values are -1</li>    *</ul>    *     * @param appId    *          {@link ApplicationId} of the application that needs a report    * @return application report    * @throws YarnException    * @throws IOException    */
 DECL|method|getApplicationReport (ApplicationId appId)
 specifier|public
 specifier|abstract
@@ -835,7 +831,7 @@ name|YarnException
 throws|,
 name|IOException
 function_decl|;
-comment|/**    * Get the AMRM token of the application.    *<p/>    * The AMRM token is required for AM to RM scheduling operations. For     * managed Application Masters Yarn takes care of injecting it. For unmanaged    * Applications Masters, the token must be obtained via this method and set    * in the {@link org.apache.hadoop.security.UserGroupInformation} of the    * current user.    *<p/>    * The AMRM token will be returned only if all the following conditions are    * met:    *<li>    *<ul>the requester is the owner of the ApplicationMaster</ul>    *<ul>the application master is an unmanaged ApplicationMaster</ul>    *<ul>the application master is in ACCEPTED state</ul>    *</li>    * Else this method returns NULL.    *    * @param appId {@link ApplicationId} of the application to get the AMRM token    * @return the AMRM token if available    * @throws YarnException    * @throws IOException    */
+comment|/**    * Get the AMRM token of the application.    *<p>    * The AMRM token is required for AM to RM scheduling operations. For     * managed Application Masters Yarn takes care of injecting it. For unmanaged    * Applications Masters, the token must be obtained via this method and set    * in the {@link org.apache.hadoop.security.UserGroupInformation} of the    * current user.    *<p>    * The AMRM token will be returned only if all the following conditions are    * met:    *<ul>    *<li>the requester is the owner of the ApplicationMaster</li>    *<li>the application master is an unmanaged ApplicationMaster</li>    *<li>the application master is in ACCEPTED state</li>    *</ul>    * Else this method returns NULL.    *    * @param appId {@link ApplicationId} of the application to get the AMRM token    * @return the AMRM token if available    * @throws YarnException    * @throws IOException    */
 specifier|public
 specifier|abstract
 name|org
@@ -1071,7 +1067,7 @@ name|YarnException
 throws|,
 name|IOException
 function_decl|;
-comment|/**    *<p>    * Get a report of the given ApplicationAttempt.    *</p>    *     *<p>    * In secure mode,<code>YARN</code> verifies access to the application, queue    * etc. before accepting the request.    *</p>    *     * @param applicationAttemptId    *          {@link ApplicationAttemptId} of the application attempt that needs    *          a report    * @return application attempt report    * @throws YarnException    * @throws {@link ApplicationAttemptNotFoundException} if application attempt    *         not found    * @throws IOException    */
+comment|/**    *<p>    * Get a report of the given ApplicationAttempt.    *</p>    *     *<p>    * In secure mode,<code>YARN</code> verifies access to the application, queue    * etc. before accepting the request.    *</p>    *     * @param applicationAttemptId    *          {@link ApplicationAttemptId} of the application attempt that needs    *          a report    * @return application attempt report    * @throws YarnException    * @throws ApplicationAttemptNotFoundException if application attempt    *         not found    * @throws IOException    */
 DECL|method|getApplicationAttemptReport ( ApplicationAttemptId applicationAttemptId)
 specifier|public
 specifier|abstract
@@ -1104,7 +1100,7 @@ name|YarnException
 throws|,
 name|IOException
 function_decl|;
-comment|/**    *<p>    * Get a report of the given Container.    *</p>    *     *<p>    * In secure mode,<code>YARN</code> verifies access to the application, queue    * etc. before accepting the request.    *</p>    *     * @param containerId    *          {@link ContainerId} of the container that needs a report    * @return container report    * @throws YarnException    * @throws {@link ContainerNotFoundException} if container not found.    * @throws IOException    */
+comment|/**    *<p>    * Get a report of the given Container.    *</p>    *     *<p>    * In secure mode,<code>YARN</code> verifies access to the application, queue    * etc. before accepting the request.    *</p>    *     * @param containerId    *          {@link ContainerId} of the container that needs a report    * @return container report    * @throws YarnException    * @throws ContainerNotFoundException if container not found.    * @throws IOException    */
 DECL|method|getContainerReport (ContainerId containerId)
 specifier|public
 specifier|abstract

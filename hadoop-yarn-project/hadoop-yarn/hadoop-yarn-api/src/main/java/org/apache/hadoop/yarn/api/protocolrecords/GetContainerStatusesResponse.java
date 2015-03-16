@@ -191,7 +191,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  *<p>  * The response sent by the<code>NodeManager</code> to the  *<code>ApplicationMaster</code> when asked to obtain the  *<code>ContainerStatus</code> of requested containers.  *</p>  *   * @see ContainerManagementProtocol#getContainerStatuses(GetContainerStatusesRequest)  */
+comment|/**  * The response sent by the<code>NodeManager</code> to the  *<code>ApplicationMaster</code> when asked to obtain the  *<code>ContainerStatus</code> of requested containers.  *   * @see ContainerManagementProtocol#getContainerStatuses(GetContainerStatusesRequest)  */
 end_comment
 
 begin_class

@@ -184,7 +184,7 @@ operator|/
 literal|100.0f
 return|;
 block|}
-comment|/**    * Gets the percentage of physical CPU that is configured for YARN containers    * This is percent> 0 and<= 100  based on    * YarnConfiguration.NM_RESOURCE_PERCENTAGE_PHYSICAL_CPU_LIMIT    * @param conf Configuration object    * @return percent> 0 and<= 100    */
+comment|/**    * Gets the percentage of physical CPU that is configured for YARN containers.    * This is percent {@literal>} 0 and {@literal<=} 100 based on    * {@link YarnConfiguration#NM_RESOURCE_PERCENTAGE_PHYSICAL_CPU_LIMIT}    * @param conf Configuration object    * @return percent {@literal>} 0 and {@literal<=} 100    */
 DECL|method|getNodeCpuPercentage (Configuration conf)
 specifier|public
 specifier|static

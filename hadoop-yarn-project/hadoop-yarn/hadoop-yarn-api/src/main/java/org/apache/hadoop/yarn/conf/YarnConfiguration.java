@@ -2907,7 +2907,7 @@ init|=
 operator|-
 literal|1
 decl_stmt|;
-comment|/**    * How long to wait between aggregated log retention checks. If set to    * a value<= 0 then the value is computed as one-tenth of the log retention    * setting. Be careful set this too small and you will spam the name node.    */
+comment|/**    * How long to wait between aggregated log retention checks. If set to    * a value {@literal<=} 0 then the value is computed as one-tenth of the    * log retention setting. Be careful set this too small and you will spam    * the name node.    */
 DECL|field|LOG_AGGREGATION_RETAIN_CHECK_INTERVAL_SECONDS
 specifier|public
 specifier|static

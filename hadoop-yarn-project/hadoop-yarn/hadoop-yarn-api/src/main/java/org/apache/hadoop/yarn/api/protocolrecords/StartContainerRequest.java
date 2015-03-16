@@ -227,7 +227,7 @@ name|ContainerLaunchContext
 name|context
 parameter_list|)
 function_decl|;
-comment|/**    *<p>Get the container token to be used for authorization during starting    * container.</p>    *<p>Note: {@link NMToken} will be used for authenticating communication with</code>    * NodeManager</code>.</p>    * @return the container token to be used for authorization during starting    * container.    * @see NMToken    * @see ContainerManagementProtocol#startContainers(StartContainersRequest)    */
+comment|/**    * Get the container token to be used for authorization during starting    * container.    *<p>    * Note: {@link NMToken} will be used for authenticating communication with    * {@code NodeManager}.    * @return the container token to be used for authorization during starting    * container.    * @see NMToken    * @see ContainerManagementProtocol#startContainers(StartContainersRequest)    */
 annotation|@
 name|Public
 annotation|@

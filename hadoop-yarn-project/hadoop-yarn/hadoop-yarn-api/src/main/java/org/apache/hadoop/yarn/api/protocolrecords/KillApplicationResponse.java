@@ -117,7 +117,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  *<p>  * The response sent by the<code>ResourceManager</code> to the client aborting  * a submitted application.  *</p>  *<p>  * The response, includes:  *<ul>  *<li>A flag which indicates that the process of killing the application is  * completed or not.</li>  *</ul>  * Note: user is recommended to wait until this flag becomes true, otherwise if  * the<code>ResourceManager</code> crashes before the process of killing the  * application is completed, the<code>ResourceManager</code> may retry this  * application on recovery.  *</p>  *   * @see ApplicationClientProtocol#forceKillApplication(KillApplicationRequest)  */
+comment|/**  * The response sent by the<code>ResourceManager</code> to the client aborting  * a submitted application.  *<p>  * The response, includes:  *<ul>  *<li>  *     A flag which indicates that the process of killing the application is  *     completed or not.  *</li>  *</ul>  * Note: user is recommended to wait until this flag becomes true, otherwise if  * the<code>ResourceManager</code> crashes before the process of killing the  * application is completed, the<code>ResourceManager</code> may retry this  * application on recovery.  *   * @see ApplicationClientProtocol#forceKillApplication(KillApplicationRequest)  */
 end_comment
 
 begin_class

@@ -615,7 +615,7 @@ name|serviceClass
 argument_list|)
 return|;
 block|}
-comment|/**    * Create a path to a service under a user& service class    * @param user username or ""    * @param serviceClass service name    * @param serviceName service name unique for that user& service class    * @return a full path    */
+comment|/**    * Create a path to a service under a user and service class    * @param user username or ""    * @param serviceClass service name    * @param serviceName service name unique for that user and service class    * @return a full path    */
 DECL|method|servicePath (String user, String serviceClass, String serviceName)
 specifier|public
 specifier|static
@@ -646,7 +646,7 @@ name|serviceName
 argument_list|)
 return|;
 block|}
-comment|/**    * Create a path for listing components under a service    * @param user username or ""    * @param serviceClass service name    * @param serviceName service name unique for that user& service class    * @return a full path    */
+comment|/**    * Create a path for listing components under a service    * @param user username or ""    * @param serviceClass service name    * @param serviceName service name unique for that user and service class    * @return a full path    */
 DECL|method|componentListPath (String user, String serviceClass, String serviceName)
 specifier|public
 specifier|static
@@ -681,7 +681,7 @@ name|SUBPATH_COMPONENTS
 argument_list|)
 return|;
 block|}
-comment|/**    * Create the path to a service record for a component    * @param user username or ""    * @param serviceClass service name    * @param serviceName service name unique for that user& service class    * @param componentName unique name/ID of the component    * @return a full path    */
+comment|/**    * Create the path to a service record for a component    * @param user username or ""    * @param serviceClass service name    * @param serviceName service name unique for that user and service class    * @param componentName unique name/ID of the component    * @return a full path    */
 DECL|method|componentPath (String user, String serviceClass, String serviceName, String componentName)
 specifier|public
 specifier|static

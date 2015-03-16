@@ -135,7 +135,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  *<p>The response sent by the<code>ResourceManager</code> to a client  * requesting cluster metrics.<p>  *   * @see YarnClusterMetrics  * @see ApplicationClientProtocol#getClusterMetrics(GetClusterMetricsRequest)  */
+comment|/**  * The response sent by the<code>ResourceManager</code> to a client  * requesting cluster metrics.  *   * @see YarnClusterMetrics  * @see ApplicationClientProtocol#getClusterMetrics(GetClusterMetricsRequest)  */
 end_comment
 
 begin_class

@@ -171,7 +171,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  *<p>The request from clients to get a report of Applications  * in the cluster from the<code>ResourceManager</code>.</p>  *  *  * @see ApplicationClientProtocol#getApplications(GetApplicationsRequest)  */
+comment|/**  *<p>The request from clients to get a report of Applications  * in the cluster from the<code>ResourceManager</code>.</p>  *  * @see ApplicationClientProtocol#getApplications(GetApplicationsRequest)  */
 end_comment
 
 begin_class

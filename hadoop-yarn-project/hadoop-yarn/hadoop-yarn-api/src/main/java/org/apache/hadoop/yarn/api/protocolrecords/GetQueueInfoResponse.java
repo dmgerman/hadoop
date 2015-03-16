@@ -135,7 +135,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  *<p>The response sent by the<code>ResourceManager</code> to a client  * requesting information about queues in the system.</p>  *  *<p>The response includes a {@link QueueInfo} which has details such as  * queue name, used/total capacities, running applications, child queues etc  * .</p>  *   * @see QueueInfo  * @see ApplicationClientProtocol#getQueueInfo(GetQueueInfoRequest)  */
+comment|/**  * The response sent by the {@code ResourceManager} to a client  * requesting information about queues in the system.  *<p>  * The response includes a {@link QueueInfo} which has details such as  * queue name, used/total capacities, running applications, child queues etc.  *   * @see QueueInfo  * @see ApplicationClientProtocol#getQueueInfo(GetQueueInfoRequest)  */
 end_comment
 
 begin_class

@@ -193,7 +193,7 @@ name|String
 name|queueName
 parameter_list|)
 function_decl|;
-comment|/**    * Is information about<em>active applications<e/m> required?    * @return<code>true</code> if applications' information is to be included,    *         else<code>false</code>    */
+comment|/**    * Is information about<em>active applications</em> required?    * @return<code>true</code> if applications' information is to be included,    *         else<code>false</code>    */
 annotation|@
 name|Public
 annotation|@

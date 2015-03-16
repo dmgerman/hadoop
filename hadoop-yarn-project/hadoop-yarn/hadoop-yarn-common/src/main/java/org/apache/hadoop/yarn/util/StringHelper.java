@@ -342,7 +342,7 @@ name|args
 argument_list|)
 return|;
 block|}
-comment|/**    * Join on slash& colon (e.g., path args in routing spec)    * @param args to join    * @return args joined with /:    */
+comment|/**    * Join on slash and colon (e.g., path args in routing spec)    * @param args to join    * @return args joined with /:    */
 DECL|method|pajoin (Object... args)
 specifier|public
 specifier|static
@@ -413,7 +413,7 @@ name|args
 argument_list|)
 return|;
 block|}
-comment|/**    * Split on space& trim results.    * @param s the string to split    * @return an iterable of strings    */
+comment|/**    * Split on space and trim results.    * @param s the string to split    * @return an iterable of strings    */
 DECL|method|split (CharSequence s)
 specifier|public
 specifier|static
@@ -436,7 +436,7 @@ name|s
 argument_list|)
 return|;
 block|}
-comment|/**    * Split on _& trim results    * @param s the string to split    * @return an iterable of strings    */
+comment|/**    * Split on _ and trim results    * @param s the string to split    * @return an iterable of strings    */
 DECL|method|_split (CharSequence s)
 specifier|public
 specifier|static

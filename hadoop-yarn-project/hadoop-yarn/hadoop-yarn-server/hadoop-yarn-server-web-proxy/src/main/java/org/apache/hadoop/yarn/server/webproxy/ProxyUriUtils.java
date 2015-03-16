@@ -710,7 +710,7 @@ return|return
 literal|null
 return|;
 block|}
-comment|/**    * Returns the scheme if present in the url    * eg. "https://issues.apache.org/jira/browse/YARN"> "https"    */
+comment|/**    * Returns the scheme if present in the url    * eg. "https://issues.apache.org/jira/browse/YARN" {@literal ->} "https"    */
 DECL|method|getSchemeFromUrl (String url)
 specifier|public
 specifier|static

@@ -83,14 +83,14 @@ name|ZooKeeperSaslClient
 operator|.
 name|LOGIN_CONTEXT_NAME_KEY
 decl_stmt|;
-comment|/**    * The SASL client username: {@value}.    *<p>    * Set this to the<i>short</i> name of the client, e.g, "user",    * not<code>user/host</code>, or<code>user/host@REALM</code>    */
+comment|/**    * The SASL client username: {@value}.    *<p>    * Set this to the<i>short</i> name of the client, e.g, "user",    * not {@code user/host}, or {@code user/host@REALM}    */
 DECL|field|PROP_ZK_SASL_CLIENT_USERNAME
 name|String
 name|PROP_ZK_SASL_CLIENT_USERNAME
 init|=
 literal|"zookeeper.sasl.client.username"
 decl_stmt|;
-comment|/**    * The SASL Server context, referring to a context in the JVM's    * JAAS context file: {@value}    *<p>    */
+comment|/**    * The SASL Server context, referring to a context in the JVM's    * JAAS context file: {@value}    */
 DECL|field|PROP_ZK_SERVER_SASL_CONTEXT
 name|String
 name|PROP_ZK_SERVER_SASL_CONTEXT

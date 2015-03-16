@@ -789,7 +789,7 @@ name|normalized
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Utility method to validate a resource request, by insuring that the    * requested memory/vcore is non-negative and not greater than max    *     * @throws<code>InvalidResourceRequestException</code> when there is invalid    *         request    */
+comment|/**    * Utility method to validate a resource request, by insuring that the    * requested memory/vcore is non-negative and not greater than max    *     * @throws InvalidResourceRequestException when there is invalid request    */
 DECL|method|validateResourceRequest (ResourceRequest resReq, Resource maximumResource, String queueName, YarnScheduler scheduler)
 specifier|public
 specifier|static

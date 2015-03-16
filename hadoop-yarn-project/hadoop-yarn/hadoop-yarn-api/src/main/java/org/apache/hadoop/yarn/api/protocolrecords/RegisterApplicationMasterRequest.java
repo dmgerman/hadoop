@@ -85,7 +85,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  *<p>The request sent by the<code>ApplicationMaster</code> to   *<code>ResourceManager</code> on registration.</p>  *   *<p>The registration includes details such as:  *<ul>  *<li>Hostname on which the AM is running.</li>  *<li>RPC Port</li>  *<li>Tracking URL</li>  *</ul>  *</p>  *   * @see ApplicationMasterProtocol#registerApplicationMaster(RegisterApplicationMasterRequest)  */
+comment|/**  * The request sent by the {@code ApplicationMaster} to {@code ResourceManager}  * on registration.  *<p>  * The registration includes details such as:  *<ul>  *<li>Hostname on which the AM is running.</li>  *<li>RPC Port</li>  *<li>Tracking URL</li>  *</ul>  *   * @see ApplicationMasterProtocol#registerApplicationMaster(RegisterApplicationMasterRequest)  */
 end_comment
 
 begin_class
@@ -184,7 +184,7 @@ name|String
 name|host
 parameter_list|)
 function_decl|;
-comment|/**    * Get the<em>RPC port</em> on which the<code>ApplicationMaster</code>     * is responding.     * @return the<em>RPC port<em> on which the<code>ApplicationMaster</code> is     *         responding    */
+comment|/**    * Get the<em>RPC port</em> on which the {@code ApplicationMaster} is    * responding.    * @return the<em>RPC port</em> on which the {@code ApplicationMaster}    *         is responding    */
 annotation|@
 name|Public
 annotation|@
@@ -196,7 +196,7 @@ name|int
 name|getRpcPort
 parameter_list|()
 function_decl|;
-comment|/**    * Set the<em>RPC port<em> on which the<code>ApplicationMaster</code> is     * responding.    * @param port<em>RPC port<em> on which the<code>ApplicationMaster</code> is     *             responding    */
+comment|/**    * Set the<em>RPC port</em> on which the {@code ApplicationMaster} is    * responding.    * @param port<em>RPC port</em> on which the {@code ApplicationMaster}    *             is responding    */
 annotation|@
 name|Public
 annotation|@

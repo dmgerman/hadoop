@@ -79,7 +79,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  *<p>  * {@link ReservationRequest} represents the request made by an application to  * the {@code ResourceManager} to reserve {@link Resource}s.  *</p>  *   *<p>  * It includes:  *<ul>  *<li>{@link Resource} required for each request.</li>  *<li>  * Number of containers, of above specifications, which are required by the  * application.</li>  *<li>  * Concurrency that indicates the gang size of the request.</li>  *</ul>  *</p>  *   */
+comment|/**  * {@link ReservationRequest} represents the request made by an application to  * the {@code ResourceManager} to reserve {@link Resource}s.  *<p>  * It includes:  *<ul>  *<li>{@link Resource} required for each request.</li>  *<li>  *     Number of containers, of above specifications, which are required by the  *     application.  *</li>  *<li>Concurrency that indicates the gang size of the request.</li>  *</ul>  */
 end_comment
 
 begin_class

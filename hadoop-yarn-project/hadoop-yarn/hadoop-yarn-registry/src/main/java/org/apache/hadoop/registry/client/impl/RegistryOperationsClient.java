@@ -89,7 +89,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * This is the client service for applications to work with the registry.  *  * It does not set up the root paths for the registry, is bonded  * to a user, and can be set to use SASL, anonymous or id:pass auth.  *  * For SASL, the client must be operating in the context of an authed user.  *  * For id:pass the client must have the relevant id& password, SASL is  * not used even if the client has credentials.  *  * For anonymous, nothing is used.  *  * Any SASL-authed client also has the ability to add one or more authentication  * id:pass pair on all future writes, and to reset them later.  */
+comment|/**  * This is the client service for applications to work with the registry.  *  * It does not set up the root paths for the registry, is bonded  * to a user, and can be set to use SASL, anonymous or id:pass auth.  *  * For SASL, the client must be operating in the context of an authed user.  *  * For id:pass the client must have the relevant id and password, SASL is  * not used even if the client has credentials.  *  * For anonymous, nothing is used.  *  * Any SASL-authed client also has the ability to add one or more authentication  * id:pass pair on all future writes, and to reset them later.  */
 end_comment
 
 begin_class

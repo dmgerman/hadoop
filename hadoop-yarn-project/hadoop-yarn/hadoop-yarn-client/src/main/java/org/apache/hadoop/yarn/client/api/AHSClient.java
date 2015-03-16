@@ -344,7 +344,7 @@ name|name
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    *<p>    * Get a report of the given Application.    *</p>    *     *<p>    * In secure mode,<code>YARN</code> verifies access to the application, queue    * etc. before accepting the request.    *</p>    *     *<p>    * If the user does not have<code>VIEW_APP</code> access then the following    * fields in the report will be set to stubbed values:    *<ul>    *<li>host - set to "N/A"</li>    *<li>RPC port - set to -1</li>    *<li>client token - set to "N/A"</li>    *<li>diagnostics - set to "N/A"</li>    *<li>tracking URL - set to "N/A"</li>    *<li>original tracking URL - set to "N/A"</li>    *<li>resource usage report - all values are -1</li>    *</ul>    *</p>    *     * @param appId    *          {@link ApplicationId} of the application that needs a report    * @return application report    * @throws YarnException    * @throws IOException    */
+comment|/**    * Get a report of the given Application.    *<p>    * In secure mode,<code>YARN</code> verifies access to the application, queue    * etc. before accepting the request.    *<p>    * If the user does not have<code>VIEW_APP</code> access then the following    * fields in the report will be set to stubbed values:    *<ul>    *<li>host - set to "N/A"</li>    *<li>RPC port - set to -1</li>    *<li>client token - set to "N/A"</li>    *<li>diagnostics - set to "N/A"</li>    *<li>tracking URL - set to "N/A"</li>    *<li>original tracking URL - set to "N/A"</li>    *<li>resource usage report - all values are -1</li>    *</ul>    *     * @param appId    *          {@link ApplicationId} of the application that needs a report    * @return application report    * @throws YarnException    * @throws IOException    */
 DECL|method|getApplicationReport (ApplicationId appId)
 specifier|public
 specifier|abstract
@@ -374,7 +374,7 @@ name|YarnException
 throws|,
 name|IOException
 function_decl|;
-comment|/**    *<p>    * Get a report of the given ApplicationAttempt.    *</p>    *     *<p>    * In secure mode,<code>YARN</code> verifies access to the application, queue    * etc. before accepting the request.    *</p>    *     * @param applicationAttemptId    *          {@link ApplicationAttemptId} of the application attempt that needs    *          a report    * @return application attempt report    * @throws YarnException    * @throws {@link ApplicationAttemptNotFoundException} if application attempt    *         not found    * @throws IOException    */
+comment|/**    *<p>    * Get a report of the given ApplicationAttempt.    *</p>    *     *<p>    * In secure mode,<code>YARN</code> verifies access to the application, queue    * etc. before accepting the request.    *</p>    *     * @param applicationAttemptId    *          {@link ApplicationAttemptId} of the application attempt that needs    *          a report    * @return application attempt report    * @throws YarnException    * @throws ApplicationAttemptNotFoundException if application attempt    *         not found    * @throws IOException    */
 DECL|method|getApplicationAttemptReport ( ApplicationAttemptId applicationAttemptId)
 specifier|public
 specifier|abstract
@@ -407,7 +407,7 @@ name|YarnException
 throws|,
 name|IOException
 function_decl|;
-comment|/**    *<p>    * Get a report of the given Container.    *</p>    *     *<p>    * In secure mode,<code>YARN</code> verifies access to the application, queue    * etc. before accepting the request.    *</p>    *     * @param containerId    *          {@link ContainerId} of the container that needs a report    * @return container report    * @throws YarnException    * @throws {@link ContainerNotFoundException} if container not found    * @throws IOException    */
+comment|/**    *<p>    * Get a report of the given Container.    *</p>    *     *<p>    * In secure mode,<code>YARN</code> verifies access to the application, queue    * etc. before accepting the request.    *</p>    *     * @param containerId    *          {@link ContainerId} of the container that needs a report    * @return container report    * @throws YarnException    * @throws ContainerNotFoundException if container not found    * @throws IOException    */
 DECL|method|getContainerReport (ContainerId containerId)
 specifier|public
 specifier|abstract

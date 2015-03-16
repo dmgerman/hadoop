@@ -1822,7 +1822,7 @@ block|}
 block|}
 block|}
 block|}
-comment|/**    * add more labels to nodes    *     * @param addedLabelsToNode node -> labels map    */
+comment|/**    * add more labels to nodes    *     * @param addedLabelsToNode node {@literal ->} labels map    */
 DECL|method|addLabelsToNode (Map<NodeId, Set<String>> addedLabelsToNode)
 specifier|public
 name|void
@@ -3225,7 +3225,7 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-comment|/**    * remove labels from nodes, labels being removed most be contained by these    * nodes    *     * @param removeLabelsFromNode node -> labels map    */
+comment|/**    * remove labels from nodes, labels being removed most be contained by these    * nodes    *     * @param removeLabelsFromNode node {@literal ->} labels map    */
 specifier|public
 name|void
 DECL|method|removeLabelsFromNode (Map<NodeId, Set<String>> removeLabelsFromNode)
@@ -3469,7 +3469,7 @@ throw|;
 block|}
 block|}
 block|}
-comment|/**    * replace labels to nodes    *     * @param replaceLabelsToNode node -> labels map    */
+comment|/**    * replace labels to nodes    *     * @param replaceLabelsToNode node {@literal ->} labels map    */
 DECL|method|replaceLabelsOnNode (Map<NodeId, Set<String>> replaceLabelsToNode)
 specifier|public
 name|void

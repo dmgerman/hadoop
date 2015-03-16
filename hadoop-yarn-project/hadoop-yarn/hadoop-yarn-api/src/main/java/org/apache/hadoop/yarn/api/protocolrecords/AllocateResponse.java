@@ -323,7 +323,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  *<p>The response sent by the<code>ResourceManager</code> the    *<code>ApplicationMaster</code> during resource negotiation.</p>  *  *<p>The response, includes:  *<ul>  *<li>Response ID to track duplicate responses.</li>  *<li>  *       An AMCommand sent by ResourceManager to let the<code>ApplicationMaster</code>  *       take some actions (resync, shutdown etc.).  *<li>A list of newly allocated {@link Container}.</li>  *<li>A list of completed {@link Container}s' statuses.</li>  *<li>  *       The available headroom for resources in the cluster for the  *       application.   *</li>  *<li>A list of nodes whose status has been updated.</li>  *<li>The number of available nodes in a cluster.</li>  *<li>A description of resources requested back by the cluster</li>  *<li>AMRMToken, if AMRMToken has been rolled over</li>  *</ul>  *</p>  *   * @see ApplicationMasterProtocol#allocate(AllocateRequest)  */
+comment|/**  * The response sent by the<code>ResourceManager</code> the  *<code>ApplicationMaster</code> during resource negotiation.  *<p>  * The response, includes:  *<ul>  *<li>Response ID to track duplicate responses.</li>  *<li>  *     An AMCommand sent by ResourceManager to let the  *     {@code ApplicationMaster} take some actions (resync, shutdown etc.).  *</li>  *<li>A list of newly allocated {@link Container}.</li>  *<li>A list of completed {@link Container}s' statuses.</li>  *<li>  *     The available headroom for resources in the cluster for the  *     application.  *</li>  *<li>A list of nodes whose status has been updated.</li>  *<li>The number of available nodes in a cluster.</li>  *<li>A description of resources requested back by the cluster</li>  *<li>AMRMToken, if AMRMToken has been rolled over</li>  *</ul>  *   * @see ApplicationMasterProtocol#allocate(AllocateRequest)  */
 end_comment
 
 begin_class
@@ -876,7 +876,7 @@ name|int
 name|numNodes
 parameter_list|)
 function_decl|;
-comment|/**    *<p>Get the description of containers owned by the AM, but requested back by    * the cluster. Note that the RM may have an inconsistent view of the    * resources owned by the AM. These messages are advisory, and the AM may    * elect to ignore them.<p>    *    *<p>The message is a snapshot of the resources the RM wants back from the AM.    * While demand persists, the RM will repeat its request; applications should    * not interpret each message as a request for<em>additional<em>    * resources on top of previous messages. Resources requested consistently    * over some duration may be forcibly killed by the RM.<p>    *    * @return A specification of the resources to reclaim from this AM.    */
+comment|/**    * Get the description of containers owned by the AM, but requested back by    * the cluster. Note that the RM may have an inconsistent view of the    * resources owned by the AM. These messages are advisory, and the AM may    * elect to ignore them.    *<p>    * The message is a snapshot of the resources the RM wants back from the AM.    * While demand persists, the RM will repeat its request; applications should    * not interpret each message as a request for<em>additional</em>    * resources on top of previous messages. Resources requested consistently    * over some duration may be forcibly killed by the RM.    *    * @return A specification of the resources to reclaim from this AM.    */
 annotation|@
 name|Public
 annotation|@
@@ -902,7 +902,7 @@ name|PreemptionMessage
 name|request
 parameter_list|)
 function_decl|;
-comment|/**    *<p>Get the list of NMTokens required for communicating with NM. New NMTokens    * issued only if<p>    *<p>1) AM is receiving first container on underlying NodeManager.<br>    * OR<br>    * 2) NMToken master key rolled over in ResourceManager and AM is getting new    * container on the same underlying NodeManager.<p>    *<p>AM will receive one NMToken per NM irrespective of the number of containers    * issued on same NM. AM is expected to store these tokens until issued a    * new token for the same NM.<p>    */
+comment|/**    * Get the list of NMTokens required for communicating with NM. New NMTokens    * issued only if    *<p>    * 1) AM is receiving first container on underlying NodeManager.<br>    * OR<br>    * 2) NMToken master key rolled over in ResourceManager and AM is getting new    * container on the same underlying NodeManager.    *<p>    * AM will receive one NMToken per NM irrespective of the number of containers    * issued on same NM. AM is expected to store these tokens until issued a    * new token for the same NM.    */
 annotation|@
 name|Public
 annotation|@

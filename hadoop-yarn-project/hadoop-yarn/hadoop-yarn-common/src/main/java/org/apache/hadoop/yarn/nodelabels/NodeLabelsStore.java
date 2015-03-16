@@ -130,7 +130,7 @@ operator|=
 name|mgr
 expr_stmt|;
 block|}
-comment|/**    * Store node -> label    */
+comment|/**    * Store node {@literal ->} label    */
 DECL|method|updateNodeToLabelsMappings ( Map<NodeId, Set<String>> nodeToLabels)
 specifier|public
 specifier|abstract
@@ -183,7 +183,7 @@ parameter_list|)
 throws|throws
 name|IOException
 function_decl|;
-comment|/**    * Recover labels and node to labels mappings from store    * @param conf    */
+comment|/**    * Recover labels and node to labels mappings from store    */
 DECL|method|recover ()
 specifier|public
 specifier|abstract

@@ -191,7 +191,7 @@ return|return
 name|request
 return|;
 block|}
-comment|/**    * Get the map from<code>NodeId</code> to<code>ResourceOption</code>.    * @return the map of<NodeId, ResourceOption>    */
+comment|/**    * Get the map from<code>NodeId</code> to<code>ResourceOption</code>.    * @return the map of {@code<NodeId, ResourceOption>}    */
 annotation|@
 name|Public
 annotation|@
@@ -208,7 +208,7 @@ argument_list|>
 name|getNodeResourceMap
 parameter_list|()
 function_decl|;
-comment|/**    * Set the map from<code>NodeId</code> to<code>ResourceOption</code>.    * @param nodeResourceMap the map of<NodeId, ResourceOption>    */
+comment|/**    * Set the map from<code>NodeId</code> to<code>ResourceOption</code>.    * @param nodeResourceMap the map of {@code<NodeId, ResourceOption>}    */
 annotation|@
 name|Public
 annotation|@

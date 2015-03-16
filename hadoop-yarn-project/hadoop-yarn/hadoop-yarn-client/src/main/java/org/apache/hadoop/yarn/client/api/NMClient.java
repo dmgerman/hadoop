@@ -410,7 +410,7 @@ name|boolean
 name|enabled
 parameter_list|)
 function_decl|;
-comment|/**    * Set the NM Token cache of the<code>NMClient</code>. This cache must be    * shared with the {@link AMRMClient} that requested the containers managed    * by this<code>NMClient</code>    *<p/>    * If a NM token cache is not set, the {@link NMTokenCache#getSingleton()}    * singleton instance will be used.    *    * @param nmTokenCache the NM token cache to use.    */
+comment|/**    * Set the NM Token cache of the<code>NMClient</code>. This cache must be    * shared with the {@link AMRMClient} that requested the containers managed    * by this<code>NMClient</code>    *<p>    * If a NM token cache is not set, the {@link NMTokenCache#getSingleton()}    * singleton instance will be used.    *    * @param nmTokenCache the NM token cache to use.    */
 DECL|method|setNMTokenCache (NMTokenCache nmTokenCache)
 specifier|public
 name|void
@@ -427,7 +427,7 @@ operator|=
 name|nmTokenCache
 expr_stmt|;
 block|}
-comment|/**    * Get the NM token cache of the<code>NMClient</code>. This cache must be    * shared with the {@link AMRMClient} that requested the containers managed    * by this<code>NMClient</code>    *<p/>    * If a NM token cache is not set, the {@link NMTokenCache#getSingleton()}    * singleton instance will be used.    *    * @return the NM token cache    */
+comment|/**    * Get the NM token cache of the<code>NMClient</code>. This cache must be    * shared with the {@link AMRMClient} that requested the containers managed    * by this<code>NMClient</code>    *<p>    * If a NM token cache is not set, the {@link NMTokenCache#getSingleton()}    * singleton instance will be used.    *    * @return the NM token cache    */
 DECL|method|getNMTokenCache ()
 specifier|public
 name|NMTokenCache

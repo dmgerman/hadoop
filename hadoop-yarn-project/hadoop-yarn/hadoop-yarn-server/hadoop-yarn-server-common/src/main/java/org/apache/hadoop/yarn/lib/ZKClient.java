@@ -151,7 +151,7 @@ specifier|private
 name|ZooKeeper
 name|zkClient
 decl_stmt|;
-comment|/**    * the zookeeper client library to     * talk to zookeeper     * @param string the host    * @throws throws IOException    */
+comment|/**    * the zookeeper client library to     * talk to zookeeper     * @param string the host    * @throws IOException    */
 DECL|method|ZKClient (String string)
 specifier|public
 name|ZKClient

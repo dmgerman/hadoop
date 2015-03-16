@@ -2068,7 +2068,7 @@ return|return
 name|tokens
 return|;
 block|}
-comment|/**    * Asynchronously add application tokens for renewal.    * @param applicationId added application    * @param ts tokens    * @param shouldCancelAtEnd true if tokens should be canceled when the app is    * done else false.     * @param user user    * @throws IOException    */
+comment|/**    * Asynchronously add application tokens for renewal.    * @param applicationId added application    * @param ts tokens    * @param shouldCancelAtEnd true if tokens should be canceled when the app is    * done else false.     * @param user user    */
 DECL|method|addApplicationAsync (ApplicationId applicationId, Credentials ts, boolean shouldCancelAtEnd, String user)
 specifier|public
 name|void
@@ -3413,7 +3413,7 @@ block|}
 end_function
 
 begin_comment
-comment|/**    * removing failed DT    * @param applicationId    */
+comment|/**    * removing failed DT    */
 end_comment
 
 begin_function

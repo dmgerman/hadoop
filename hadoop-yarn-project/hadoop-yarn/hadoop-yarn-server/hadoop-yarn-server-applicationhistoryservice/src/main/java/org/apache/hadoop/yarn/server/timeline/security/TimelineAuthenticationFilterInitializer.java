@@ -351,7 +351,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  *<p>  * Initializes {@link TimelineAuthenticationFilter} which provides support for  * Kerberos HTTP SPNEGO authentication.  *<p/>  *<p>  * It enables Kerberos HTTP SPNEGO plus delegation token authentication for the  * timeline server.  *<p/>  * Refer to the<code>core-default.xml</code> file, after the comment 'HTTP  * Authentication' for details on the configuration options. All related  * configuration properties have 'hadoop.http.authentication.' as prefix.  */
+comment|/**  * Initializes {@link TimelineAuthenticationFilter} which provides support for  * Kerberos HTTP SPNEGO authentication.  *<p>  * It enables Kerberos HTTP SPNEGO plus delegation token authentication for the  * timeline server.  *<p>  * Refer to the {@code core-default.xml} file, after the comment 'HTTP  * Authentication' for details on the configuration options. All related  * configuration properties have {@code hadoop.http.authentication.} as prefix.  */
 end_comment
 
 begin_class
@@ -396,7 +396,7 @@ name|String
 argument_list|>
 name|filterConfig
 decl_stmt|;
-comment|/**    *<p>    * Initializes {@link TimelineAuthenticationFilter}    *<p/>    *<p>    * Propagates to {@link TimelineAuthenticationFilter} configuration all YARN    * configuration properties prefixed with    * "yarn.timeline-service.authentication."    *</p>    *     * @param container    *          The filter container    * @param conf    *          Configuration for run-time parameters    */
+comment|/**    * Initializes {@link TimelineAuthenticationFilter}    *<p>    * Propagates to {@link TimelineAuthenticationFilter} configuration all YARN    * configuration properties prefixed with    * {@code yarn.timeline-service.authentication.}    *     * @param container    *          The filter container    * @param conf    *          Configuration for run-time parameters    */
 annotation|@
 name|Override
 DECL|method|initFilter (FilterContainer container, Configuration conf)

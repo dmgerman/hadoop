@@ -501,7 +501,7 @@ name|appId
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * If authorization is enabled, checks whether the user (in the callerUGI) is    * authorized to perform the access specified by 'applicationAccessType' on    * the application by checking if the user is applicationOwner or part of    * application ACL for the specific access-type.    *<ul>    *<li>The owner of the application can have all access-types on the    * application</li>    *<li>For all other users/groups application-acls are checked</li>    *</ul>    *     * @param callerUGI    * @param applicationAccessType    * @param applicationOwner    * @param applicationId    * @throws AccessControlException    */
+comment|/**    * If authorization is enabled, checks whether the user (in the callerUGI) is    * authorized to perform the access specified by 'applicationAccessType' on    * the application by checking if the user is applicationOwner or part of    * application ACL for the specific access-type.    *<ul>    *<li>The owner of the application can have all access-types on the    * application</li>    *<li>For all other users/groups application-acls are checked</li>    *</ul>    *     * @param callerUGI    * @param applicationAccessType    * @param applicationOwner    * @param applicationId    */
 DECL|method|checkAccess (UserGroupInformation callerUGI, ApplicationAccessType applicationAccessType, String applicationOwner, ApplicationId applicationId)
 specifier|public
 name|boolean

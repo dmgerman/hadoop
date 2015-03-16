@@ -343,7 +343,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * Helpers to create an embedded webapp.  *  *<h4>Quick start:</h4>  *<pre>  *   WebApp wa = WebApps.$for(myApp).start();</pre>  * Starts a webapp with default routes binds to 0.0.0.0 (all network interfaces)  * on an ephemeral port, which can be obtained with:<pre>  *   int port = wa.port();</pre>  *<h4>With more options:</h4>  *<pre>  *   WebApp wa = WebApps.$for(myApp).at(address, port).  *                        with(configuration).  *                        start(new WebApp() {  *&#064;Override public void setup() {  *       route("/foo/action", FooController.class);  *       route("/foo/:id", FooController.class, "show");  *     }  *   });</pre>  */
+comment|/**  * Helpers to create an embedded webapp.  *  *<b>Quick start:</b>  *<pre>  *   WebApp wa = WebApps.$for(myApp).start();</pre>  * Starts a webapp with default routes binds to 0.0.0.0 (all network interfaces)  * on an ephemeral port, which can be obtained with:<pre>  *   int port = wa.port();</pre>  *<b>With more options:</b>  *<pre>  *   WebApp wa = WebApps.$for(myApp).at(address, port).  *                        with(configuration).  *                        start(new WebApp() {  *&#064;Override public void setup() {  *       route("/foo/action", FooController.class);  *       route("/foo/:id", FooController.class, "show");  *     }  *   });</pre>  */
 end_comment
 
 begin_class
