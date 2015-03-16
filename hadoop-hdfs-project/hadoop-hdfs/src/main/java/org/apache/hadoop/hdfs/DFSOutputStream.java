@@ -504,6 +504,22 @@ name|hdfs
 operator|.
 name|protocol
 operator|.
+name|QuotaExceededException
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|protocol
+operator|.
 name|DSQuotaExceededException
 import|;
 end_import
@@ -3235,6 +3251,29 @@ operator|-
 literal|1
 condition|)
 block|{
+comment|// Since their messages are descriptive enough, do not always
+comment|// log a verbose stack-trace WARN for quota exceptions.
+if|if
+condition|(
+name|e
+operator|instanceof
+name|QuotaExceededException
+condition|)
+block|{
+name|DFSClient
+operator|.
+name|LOG
+operator|.
+name|debug
+argument_list|(
+literal|"DataStreamer Quota Exception"
+argument_list|,
+name|e
+argument_list|)
+expr_stmt|;
+block|}
+else|else
+block|{
 name|DFSClient
 operator|.
 name|LOG
@@ -3246,6 +3285,7 @@ argument_list|,
 name|e
 argument_list|)
 expr_stmt|;
+block|}
 block|}
 if|if
 condition|(
