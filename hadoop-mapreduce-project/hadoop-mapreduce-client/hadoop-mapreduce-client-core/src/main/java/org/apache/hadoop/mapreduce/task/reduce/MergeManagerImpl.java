@@ -1279,7 +1279,9 @@ name|MRJobConfig
 operator|.
 name|SHUFFLE_MERGE_PERCENT
 argument_list|,
-literal|0.90f
+name|MRJobConfig
+operator|.
+name|DEFAULT_SHUFFLE_MERGE_PERCENT
 argument_list|)
 argument_list|)
 expr_stmt|;

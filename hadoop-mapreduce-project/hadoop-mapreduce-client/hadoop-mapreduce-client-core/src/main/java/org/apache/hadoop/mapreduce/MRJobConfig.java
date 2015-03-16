@@ -1308,6 +1308,15 @@ name|SHUFFLE_MERGE_PERCENT
 init|=
 literal|"mapreduce.reduce.shuffle.merge.percent"
 decl_stmt|;
+DECL|field|DEFAULT_SHUFFLE_MERGE_PERCENT
+specifier|public
+specifier|static
+specifier|final
+name|float
+name|DEFAULT_SHUFFLE_MERGE_PERCENT
+init|=
+literal|0.66f
+decl_stmt|;
 DECL|field|REDUCE_FAILURES_MAXPERCENT
 specifier|public
 specifier|static
