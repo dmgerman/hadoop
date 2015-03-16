@@ -688,7 +688,7 @@ name|YarnConfiguration
 operator|.
 name|FS_RM_STATE_STORE_NUM_RETRIES
 argument_list|,
-literal|5
+literal|8
 argument_list|)
 expr_stmt|;
 name|conf
@@ -721,7 +721,7 @@ operator|.
 name|getNumRetries
 argument_list|()
 argument_list|,
-literal|5
+literal|8
 argument_list|)
 expr_stmt|;
 name|Assert
@@ -1623,24 +1623,6 @@ name|Exception
 name|e
 parameter_list|)
 block|{
-comment|// TODO 0 datanode exception will not be retried by dfs client, fix
-comment|// that separately.
-if|if
-condition|(
-operator|!
-name|e
-operator|.
-name|getMessage
-argument_list|()
-operator|.
-name|contains
-argument_list|(
-literal|"could only be replicated"
-operator|+
-literal|" to 0 nodes instead of minReplication (=1)"
-argument_list|)
-condition|)
-block|{
 name|assertionFailedInThread
 operator|.
 name|set
@@ -1648,7 +1630,6 @@ argument_list|(
 literal|true
 argument_list|)
 expr_stmt|;
-block|}
 name|e
 operator|.
 name|printStackTrace
