@@ -2118,7 +2118,7 @@ name|insufficient
 return|;
 block|}
 comment|/**      * Used while checking if decommission-in-progress datanodes can be marked      * as decommissioned. Combines shared logic of       * pruneSufficientlyReplicated and handleInsufficientlyReplicated.      *      * @param datanode                    Datanode      * @param it                          Iterator over the blocks on the      *                                    datanode      * @param insufficientlyReplicated    Return parameter. If it's not null,      *                                    will contain the insufficiently      *                                    replicated-blocks from the list.      * @param pruneSufficientlyReplicated whether to remove sufficiently      *                                    replicated blocks from the iterator      * @return true if there are under-replicated blocks in the provided block      * iterator, else false.      */
-DECL|method|processBlocksForDecomInternal ( final DatanodeDescriptor datanode, final Iterator<BlockInfoContiguous> it, final List<BlockInfoContiguous> insufficientlyReplicated, boolean pruneSufficientlyReplicated)
+DECL|method|processBlocksForDecomInternal ( final DatanodeDescriptor datanode, final Iterator<? extends BlockInfo> it, final List<BlockInfoContiguous> insufficientlyReplicated, boolean pruneSufficientlyReplicated)
 specifier|private
 name|void
 name|processBlocksForDecomInternal
@@ -2130,7 +2130,9 @@ parameter_list|,
 specifier|final
 name|Iterator
 argument_list|<
-name|BlockInfoContiguous
+name|?
+extends|extends
+name|BlockInfo
 argument_list|>
 name|it
 parameter_list|,

@@ -11480,7 +11480,7 @@ throw|;
 block|}
 comment|// Check if the file is already being truncated with the same length
 specifier|final
-name|BlockInfoContiguous
+name|BlockInfo
 name|last
 init|=
 name|file

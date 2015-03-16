@@ -72,6 +72,24 @@ name|server
 operator|.
 name|blockmanagement
 operator|.
+name|BlockInfo
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|server
+operator|.
+name|blockmanagement
+operator|.
 name|BlockInfoContiguous
 import|;
 end_import
@@ -781,7 +799,7 @@ continue|continue;
 break|break;
 block|}
 comment|// Check if last block is part of truncate recovery
-name|BlockInfoContiguous
+name|BlockInfo
 name|lastBlock
 init|=
 name|file

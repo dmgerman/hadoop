@@ -420,7 +420,7 @@ name|server
 operator|.
 name|blockmanagement
 operator|.
-name|BlockInfoContiguous
+name|BlockInfo
 import|;
 end_import
 
@@ -3902,7 +3902,7 @@ name|Boolean
 name|get
 parameter_list|()
 block|{
-name|BlockInfoContiguous
+name|BlockInfo
 name|info
 init|=
 name|blockManager

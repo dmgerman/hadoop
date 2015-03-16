@@ -1982,11 +1982,10 @@ expr_stmt|;
 name|BlockListAsLongs
 name|bll
 init|=
-operator|new
 name|BlockListAsLongs
+operator|.
+name|encode
 argument_list|(
-literal|null
-argument_list|,
 name|blocks
 argument_list|)
 decl_stmt|;
@@ -2001,9 +2000,6 @@ argument_list|(
 name|storage
 argument_list|,
 name|bll
-operator|.
-name|getBlockListAsLongs
-argument_list|()
 argument_list|)
 block|}
 decl_stmt|;
