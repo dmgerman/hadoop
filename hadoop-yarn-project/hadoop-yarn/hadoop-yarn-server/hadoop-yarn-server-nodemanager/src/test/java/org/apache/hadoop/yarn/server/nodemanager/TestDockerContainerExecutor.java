@@ -525,7 +525,7 @@ specifier|private
 name|String
 name|testImage
 init|=
-literal|"centos"
+literal|"centos:latest"
 decl_stmt|;
 DECL|field|dockerExec
 specifier|private
