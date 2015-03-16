@@ -4915,6 +4915,36 @@ name|memory
 return|;
 block|}
 block|}
+comment|/* For debugging. Dump configurations to system output as XML format. */
+DECL|method|main (String[] args)
+specifier|public
+specifier|static
+name|void
+name|main
+parameter_list|(
+name|String
+index|[]
+name|args
+parameter_list|)
+throws|throws
+name|Exception
+block|{
+operator|new
+name|JobConf
+argument_list|(
+operator|new
+name|Configuration
+argument_list|()
+argument_list|)
+operator|.
+name|writeXml
+argument_list|(
+name|System
+operator|.
+name|out
+argument_list|)
+expr_stmt|;
+block|}
 block|}
 end_class
 
