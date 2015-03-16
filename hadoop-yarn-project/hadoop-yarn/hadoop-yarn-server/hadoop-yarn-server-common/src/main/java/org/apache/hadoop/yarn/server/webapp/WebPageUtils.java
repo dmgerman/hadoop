@@ -141,7 +141,7 @@ argument_list|)
 operator|.
 name|append
 argument_list|(
-literal|"{'sType':'numeric', 'aTargets': [0]"
+literal|"{'sType':'string', 'aTargets': [0]"
 argument_list|)
 operator|.
 name|append
@@ -252,7 +252,7 @@ argument_list|)
 operator|.
 name|append
 argument_list|(
-literal|"{'sType':'numeric', 'aTargets': [0]"
+literal|"{'sType':'string', 'aTargets': [0]"
 argument_list|)
 operator|.
 name|append
@@ -345,7 +345,7 @@ argument_list|)
 operator|.
 name|append
 argument_list|(
-literal|"{'sType':'numeric', 'aTargets': [0]"
+literal|"{'sType':'string', 'aTargets': [0]"
 argument_list|)
 operator|.
 name|append
