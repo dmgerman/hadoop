@@ -741,6 +741,26 @@ operator|==
 literal|0
 condition|)
 block|{
+if|if
+condition|(
+name|LOG
+operator|.
+name|isTraceEnabled
+argument_list|()
+condition|)
+block|{
+name|LOG
+operator|.
+name|trace
+argument_list|(
+literal|"No span receiver names found in "
+operator|+
+name|SPAN_RECEIVERS_CONF_KEY
+operator|+
+literal|"."
+argument_list|)
+expr_stmt|;
+block|}
 return|return;
 block|}
 comment|// It's convenient to have each daemon log to a random trace file when
@@ -757,16 +777,43 @@ operator|==
 literal|null
 condition|)
 block|{
+name|String
+name|uniqueFile
+init|=
+name|getUniqueLocalTraceFileName
+argument_list|()
+decl_stmt|;
 name|config
 operator|.
 name|set
 argument_list|(
 name|LOCAL_FILE_SPAN_RECEIVER_PATH
 argument_list|,
-name|getUniqueLocalTraceFileName
-argument_list|()
+name|uniqueFile
 argument_list|)
 expr_stmt|;
+if|if
+condition|(
+name|LOG
+operator|.
+name|isTraceEnabled
+argument_list|()
+condition|)
+block|{
+name|LOG
+operator|.
+name|trace
+argument_list|(
+literal|"Set "
+operator|+
+name|LOCAL_FILE_SPAN_RECEIVER_PATH
+operator|+
+literal|" to "
+operator|+
+name|uniqueFile
+argument_list|)
+expr_stmt|;
+block|}
 block|}
 for|for
 control|(
@@ -809,11 +856,11 @@ name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"SpanReceiver "
+literal|"Loaded SpanReceiver "
 operator|+
 name|className
 operator|+
-literal|" was loaded successfully."
+literal|" successfully."
 argument_list|)
 expr_stmt|;
 block|}
