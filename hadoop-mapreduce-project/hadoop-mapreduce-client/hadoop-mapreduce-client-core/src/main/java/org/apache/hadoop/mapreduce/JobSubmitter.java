@@ -2174,7 +2174,9 @@ name|conf
 operator|.
 name|get
 argument_list|(
-literal|"mapreduce.job.credentials.binary"
+name|MRJobConfig
+operator|.
+name|MAPREDUCE_JOB_CREDENTIALS_BINARY
 argument_list|)
 decl_stmt|;
 if|if
