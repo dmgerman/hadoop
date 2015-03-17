@@ -1029,6 +1029,7 @@ block|}
 comment|/**    * Updates the allocation list from the allocation config file. This file is    * expected to be in the XML format specified in the design doc.    *    * @throws IOException if the config file cannot be read.    * @throws AllocationConfigurationException if allocations are invalid.    * @throws ParserConfigurationException if XML parser is misconfigured.    * @throws SAXException if config file is malformed.    */
 DECL|method|reloadAllocations ()
 specifier|public
+specifier|synchronized
 name|void
 name|reloadAllocations
 parameter_list|()
