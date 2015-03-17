@@ -14679,6 +14679,16 @@ argument_list|()
 argument_list|)
 throw|;
 block|}
+name|TraceScope
+name|scope
+init|=
+name|getPathTraceScope
+argument_list|(
+literal|"setQuotaByStorageType"
+argument_list|,
+name|src
+argument_list|)
+decl_stmt|;
 try|try
 block|{
 name|namenode
@@ -14729,6 +14739,14 @@ operator|.
 name|class
 argument_list|)
 throw|;
+block|}
+finally|finally
+block|{
+name|scope
+operator|.
+name|close
+argument_list|()
+expr_stmt|;
 block|}
 block|}
 comment|/**    * set the modification and access time of a file    *     * @see ClientProtocol#setTimes(String, long, long)    */
