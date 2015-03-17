@@ -120,24 +120,6 @@ name|Test
 import|;
 end_import
 
-begin_import
-import|import
-name|com
-operator|.
-name|sun
-operator|.
-name|tools
-operator|.
-name|javac
-operator|.
-name|code
-operator|.
-name|Attribute
-operator|.
-name|Array
-import|;
-end_import
-
 begin_class
 DECL|class|TestRandomAlgorithm
 specifier|public
