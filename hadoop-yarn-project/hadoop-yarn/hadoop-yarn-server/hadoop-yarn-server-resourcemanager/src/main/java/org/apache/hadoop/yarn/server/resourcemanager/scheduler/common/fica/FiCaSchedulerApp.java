@@ -1652,7 +1652,7 @@ argument_list|()
 argument_list|)
 return|;
 block|}
-DECL|method|getNodeIdToUnreserve (Priority priority, Resource capability)
+DECL|method|getNodeIdToUnreserve (Priority priority, Resource resourceNeedUnreserve, ResourceCalculator rc, Resource clusterResource)
 specifier|synchronized
 specifier|public
 name|NodeId
@@ -1662,7 +1662,13 @@ name|Priority
 name|priority
 parameter_list|,
 name|Resource
-name|capability
+name|resourceNeedUnreserve
+parameter_list|,
+name|ResourceCalculator
+name|rc
+parameter_list|,
+name|Resource
+name|clusterResource
 parameter_list|)
 block|{
 comment|// first go around make this algorithm simple and just grab first
@@ -1719,16 +1725,17 @@ name|entrySet
 argument_list|()
 control|)
 block|{
-comment|// make sure we unreserve one with at least the same amount of
-comment|// resources, otherwise could affect capacity limits
-if|if
-condition|(
-name|Resources
+name|NodeId
+name|nodeId
+init|=
+name|entry
 operator|.
-name|fitsIn
-argument_list|(
-name|capability
-argument_list|,
+name|getKey
+argument_list|()
+decl_stmt|;
+name|Resource
+name|containerResource
+init|=
 name|entry
 operator|.
 name|getValue
@@ -1739,6 +1746,22 @@ argument_list|()
 operator|.
 name|getResource
 argument_list|()
+decl_stmt|;
+comment|// make sure we unreserve one with at least the same amount of
+comment|// resources, otherwise could affect capacity limits
+if|if
+condition|(
+name|Resources
+operator|.
+name|lessThanOrEqual
+argument_list|(
+name|rc
+argument_list|,
+name|clusterResource
+argument_list|,
+name|resourceNeedUnreserve
+argument_list|,
+name|containerResource
 argument_list|)
 condition|)
 block|{
@@ -1756,28 +1779,16 @@ name|debug
 argument_list|(
 literal|"unreserving node with reservation size: "
 operator|+
-name|entry
-operator|.
-name|getValue
-argument_list|()
-operator|.
-name|getContainer
-argument_list|()
-operator|.
-name|getResource
-argument_list|()
+name|containerResource
 operator|+
 literal|" in order to allocate container with size: "
 operator|+
-name|capability
+name|resourceNeedUnreserve
 argument_list|)
 expr_stmt|;
 block|}
 return|return
-name|entry
-operator|.
-name|getKey
-argument_list|()
+name|nodeId
 return|;
 block|}
 block|}

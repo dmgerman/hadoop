@@ -4595,8 +4595,6 @@ name|clusterResource
 argument_list|,
 name|node_0
 argument_list|,
-literal|false
-argument_list|,
 operator|new
 name|ResourceLimits
 argument_list|(
@@ -4728,8 +4726,6 @@ name|clusterResource
 argument_list|,
 name|node_0
 argument_list|,
-literal|false
-argument_list|,
 operator|new
 name|ResourceLimits
 argument_list|(
@@ -4857,8 +4853,6 @@ name|clusterResource
 argument_list|,
 name|node_0
 argument_list|,
-literal|false
-argument_list|,
 operator|new
 name|ResourceLimits
 argument_list|(
@@ -4936,8 +4930,6 @@ argument_list|(
 name|clusterResource
 argument_list|,
 name|node_0
-argument_list|,
-literal|false
 argument_list|,
 operator|new
 name|ResourceLimits

@@ -587,8 +587,8 @@ name|String
 name|queue
 parameter_list|)
 function_decl|;
-comment|/**    * Assign containers to applications in the queue or it's children (if any).    * @param clusterResource the resource of the cluster.    * @param node node on which resources are available    * @param needToUnreserve assign container only if it can unreserve one first    * @param resourceLimits how much overall resource of this queue can use.     * @return the assignment    */
-DECL|method|assignContainers (Resource clusterResource, FiCaSchedulerNode node, boolean needToUnreserve, ResourceLimits resourceLimits)
+comment|/**    * Assign containers to applications in the queue or it's children (if any).    * @param clusterResource the resource of the cluster.    * @param node node on which resources are available    * @param resourceLimits how much overall resource of this queue can use.     * @return the assignment    */
+DECL|method|assignContainers (Resource clusterResource, FiCaSchedulerNode node, ResourceLimits resourceLimits)
 specifier|public
 name|CSAssignment
 name|assignContainers
@@ -598,9 +598,6 @@ name|clusterResource
 parameter_list|,
 name|FiCaSchedulerNode
 name|node
-parameter_list|,
-name|boolean
-name|needToUnreserve
 parameter_list|,
 name|ResourceLimits
 name|resourceLimits

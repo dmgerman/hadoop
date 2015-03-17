@@ -56,18 +56,6 @@ name|mockito
 operator|.
 name|Matchers
 operator|.
-name|anyBoolean
-import|;
-end_import
-
-begin_import
-import|import static
-name|org
-operator|.
-name|mockito
-operator|.
-name|Matchers
-operator|.
 name|eq
 import|;
 end_import
@@ -1235,9 +1223,6 @@ argument_list|(
 name|node
 argument_list|)
 argument_list|,
-name|anyBoolean
-argument_list|()
-argument_list|,
 name|any
 argument_list|(
 name|ResourceLimits
@@ -1305,9 +1290,6 @@ name|eq
 argument_list|(
 name|node
 argument_list|)
-argument_list|,
-name|anyBoolean
-argument_list|()
 argument_list|,
 name|any
 argument_list|(
@@ -2101,8 +2083,6 @@ name|clusterResource
 argument_list|,
 name|node_0
 argument_list|,
-literal|false
-argument_list|,
 operator|new
 name|ResourceLimits
 argument_list|(
@@ -2184,8 +2164,6 @@ argument_list|(
 name|clusterResource
 argument_list|,
 name|node_0
-argument_list|,
-literal|false
 argument_list|,
 operator|new
 name|ResourceLimits
@@ -2270,8 +2248,6 @@ name|clusterResource
 argument_list|,
 name|node_0
 argument_list|,
-literal|false
-argument_list|,
 operator|new
 name|ResourceLimits
 argument_list|(
@@ -2354,8 +2330,6 @@ argument_list|(
 name|clusterResource
 argument_list|,
 name|node_0
-argument_list|,
-literal|false
 argument_list|,
 operator|new
 name|ResourceLimits
@@ -2631,8 +2605,6 @@ name|clusterResource
 argument_list|,
 name|node_0
 argument_list|,
-literal|false
-argument_list|,
 operator|new
 name|ResourceLimits
 argument_list|(
@@ -2876,8 +2848,6 @@ name|clusterResource
 argument_list|,
 name|node_0
 argument_list|,
-literal|false
-argument_list|,
 operator|new
 name|ResourceLimits
 argument_list|(
@@ -3120,8 +3090,6 @@ name|clusterResource
 argument_list|,
 name|node_0
 argument_list|,
-literal|false
-argument_list|,
 operator|new
 name|ResourceLimits
 argument_list|(
@@ -3252,8 +3220,6 @@ name|clusterResource
 argument_list|,
 name|node_0
 argument_list|,
-literal|false
-argument_list|,
 operator|new
 name|ResourceLimits
 argument_list|(
@@ -3292,9 +3258,6 @@ operator|.
 name|class
 argument_list|)
 argument_list|,
-name|anyBoolean
-argument_list|()
-argument_list|,
 name|any
 argument_list|(
 name|ResourceLimits
@@ -3323,9 +3286,6 @@ name|FiCaSchedulerNode
 operator|.
 name|class
 argument_list|)
-argument_list|,
-name|anyBoolean
-argument_list|()
 argument_list|,
 name|any
 argument_list|(

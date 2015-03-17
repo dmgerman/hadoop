@@ -2128,8 +2128,6 @@ name|clusterResource
 argument_list|,
 name|node_0
 argument_list|,
-literal|false
-argument_list|,
 operator|new
 name|ResourceLimits
 argument_list|(
@@ -2266,8 +2264,6 @@ name|clusterResource
 argument_list|,
 name|node_0
 argument_list|,
-literal|false
-argument_list|,
 operator|new
 name|ResourceLimits
 argument_list|(
@@ -2403,8 +2399,6 @@ argument_list|(
 name|clusterResource
 argument_list|,
 name|node_1
-argument_list|,
-literal|false
 argument_list|,
 operator|new
 name|ResourceLimits
@@ -2578,8 +2572,6 @@ argument_list|(
 name|clusterResource
 argument_list|,
 name|node_0
-argument_list|,
-literal|false
 argument_list|,
 operator|new
 name|ResourceLimits
@@ -2762,8 +2754,6 @@ name|clusterResource
 argument_list|,
 name|node_2
 argument_list|,
-literal|false
-argument_list|,
 operator|new
 name|ResourceLimits
 argument_list|(
@@ -2945,8 +2935,6 @@ argument_list|(
 name|clusterResource
 argument_list|,
 name|node_1
-argument_list|,
-literal|false
 argument_list|,
 operator|new
 name|ResourceLimits
@@ -3584,8 +3572,6 @@ name|clusterResource
 argument_list|,
 name|node_0
 argument_list|,
-literal|false
-argument_list|,
 operator|new
 name|ResourceLimits
 argument_list|(
@@ -3722,8 +3708,6 @@ name|clusterResource
 argument_list|,
 name|node_0
 argument_list|,
-literal|false
-argument_list|,
 operator|new
 name|ResourceLimits
 argument_list|(
@@ -3859,8 +3843,6 @@ argument_list|(
 name|clusterResource
 argument_list|,
 name|node_1
-argument_list|,
-literal|false
 argument_list|,
 operator|new
 name|ResourceLimits
@@ -4034,8 +4016,6 @@ argument_list|(
 name|clusterResource
 argument_list|,
 name|node_0
-argument_list|,
-literal|false
 argument_list|,
 operator|new
 name|ResourceLimits
@@ -4218,8 +4198,6 @@ name|clusterResource
 argument_list|,
 name|node_2
 argument_list|,
-literal|false
-argument_list|,
 operator|new
 name|ResourceLimits
 argument_list|(
@@ -4401,8 +4379,6 @@ argument_list|(
 name|clusterResource
 argument_list|,
 name|node_1
-argument_list|,
-literal|false
 argument_list|,
 operator|new
 name|ResourceLimits
@@ -4985,8 +4961,6 @@ name|clusterResource
 argument_list|,
 name|node_0
 argument_list|,
-literal|false
-argument_list|,
 operator|new
 name|ResourceLimits
 argument_list|(
@@ -5108,8 +5082,6 @@ name|clusterResource
 argument_list|,
 name|node_0
 argument_list|,
-literal|false
-argument_list|,
 operator|new
 name|ResourceLimits
 argument_list|(
@@ -5230,8 +5202,6 @@ argument_list|(
 name|clusterResource
 argument_list|,
 name|node_1
-argument_list|,
-literal|false
 argument_list|,
 operator|new
 name|ResourceLimits
@@ -5390,8 +5360,6 @@ argument_list|(
 name|clusterResource
 argument_list|,
 name|node_0
-argument_list|,
-literal|false
 argument_list|,
 operator|new
 name|ResourceLimits
@@ -5558,8 +5526,6 @@ argument_list|(
 name|clusterResource
 argument_list|,
 name|node_1
-argument_list|,
-literal|true
 argument_list|,
 operator|new
 name|ResourceLimits
@@ -5836,6 +5802,20 @@ operator|*
 name|GB
 argument_list|)
 decl_stmt|;
+name|Resource
+name|clusterResource
+init|=
+name|Resources
+operator|.
+name|createResource
+argument_list|(
+literal|2
+operator|*
+literal|8
+operator|*
+name|GB
+argument_list|)
+decl_stmt|;
 comment|// Setup resource-requests
 name|Priority
 name|priorityMap
@@ -6090,6 +6070,13 @@ argument_list|(
 name|priorityMap
 argument_list|,
 name|capability
+argument_list|,
+name|cs
+operator|.
+name|getResourceCalculator
+argument_list|()
+argument_list|,
+name|clusterResource
 argument_list|)
 decl_stmt|;
 name|assertEquals
@@ -6131,6 +6118,13 @@ argument_list|(
 name|priorityMap
 argument_list|,
 name|capability
+argument_list|,
+name|cs
+operator|.
+name|getResourceCalculator
+argument_list|()
+argument_list|,
+name|clusterResource
 argument_list|)
 expr_stmt|;
 name|assertEquals
@@ -6163,6 +6157,13 @@ argument_list|(
 name|priorityMap
 argument_list|,
 name|capability
+argument_list|,
+name|cs
+operator|.
+name|getResourceCalculator
+argument_list|()
+argument_list|,
+name|clusterResource
 argument_list|)
 expr_stmt|;
 name|assertEquals
@@ -6195,6 +6196,13 @@ argument_list|(
 name|priorityMap
 argument_list|,
 name|capability
+argument_list|,
+name|cs
+operator|.
+name|getResourceCalculator
+argument_list|()
+argument_list|,
+name|clusterResource
 argument_list|)
 expr_stmt|;
 name|assertEquals
@@ -6527,6 +6535,8 @@ argument_list|,
 name|priorityMap
 argument_list|,
 name|capability
+argument_list|,
+name|capability
 argument_list|)
 decl_stmt|;
 name|assertFalse
@@ -6575,6 +6585,8 @@ argument_list|,
 name|app_0
 argument_list|,
 name|priorityMap
+argument_list|,
+name|capability
 argument_list|,
 name|capability
 argument_list|)
@@ -7033,8 +7045,6 @@ name|clusterResource
 argument_list|,
 name|node_0
 argument_list|,
-literal|false
-argument_list|,
 operator|new
 name|ResourceLimits
 argument_list|(
@@ -7156,8 +7166,6 @@ name|clusterResource
 argument_list|,
 name|node_0
 argument_list|,
-literal|false
-argument_list|,
 operator|new
 name|ResourceLimits
 argument_list|(
@@ -7278,8 +7286,6 @@ argument_list|(
 name|clusterResource
 argument_list|,
 name|node_1
-argument_list|,
-literal|false
 argument_list|,
 operator|new
 name|ResourceLimits
@@ -7428,15 +7434,22 @@ name|canAssignToThisQueue
 argument_list|(
 name|clusterResource
 argument_list|,
-name|capability
-argument_list|,
 name|CommonNodeLabelsManager
 operator|.
 name|EMPTY_STRING_SET
 argument_list|,
-name|app_0
+operator|new
+name|ResourceLimits
+argument_list|(
+name|clusterResource
+argument_list|)
 argument_list|,
-literal|true
+name|capability
+argument_list|,
+name|Resources
+operator|.
+name|none
+argument_list|()
 argument_list|)
 decl_stmt|;
 name|assertFalse
@@ -7454,8 +7467,6 @@ argument_list|(
 name|clusterResource
 argument_list|,
 name|node_0
-argument_list|,
-literal|false
 argument_list|,
 operator|new
 name|ResourceLimits
@@ -7605,15 +7616,26 @@ name|canAssignToThisQueue
 argument_list|(
 name|clusterResource
 argument_list|,
-name|capability
-argument_list|,
 name|CommonNodeLabelsManager
 operator|.
 name|EMPTY_STRING_SET
 argument_list|,
-name|app_0
+operator|new
+name|ResourceLimits
+argument_list|(
+name|clusterResource
+argument_list|)
 argument_list|,
-literal|true
+name|capability
+argument_list|,
+name|Resources
+operator|.
+name|createResource
+argument_list|(
+literal|5
+operator|*
+name|GB
+argument_list|)
 argument_list|)
 expr_stmt|;
 name|assertTrue
@@ -7630,15 +7652,22 @@ name|canAssignToThisQueue
 argument_list|(
 name|clusterResource
 argument_list|,
-name|capability
-argument_list|,
 name|CommonNodeLabelsManager
 operator|.
 name|EMPTY_STRING_SET
 argument_list|,
-name|app_0
+operator|new
+name|ResourceLimits
+argument_list|(
+name|clusterResource
+argument_list|)
 argument_list|,
-literal|false
+name|capability
+argument_list|,
+name|Resources
+operator|.
+name|none
+argument_list|()
 argument_list|)
 expr_stmt|;
 name|assertFalse
@@ -7663,15 +7692,22 @@ name|canAssignToThisQueue
 argument_list|(
 name|clusterResource
 argument_list|,
-name|capability
-argument_list|,
 name|CommonNodeLabelsManager
 operator|.
 name|EMPTY_STRING_SET
 argument_list|,
-name|app_0
+operator|new
+name|ResourceLimits
+argument_list|(
+name|clusterResource
+argument_list|)
 argument_list|,
-literal|false
+name|capability
+argument_list|,
+name|Resources
+operator|.
+name|none
+argument_list|()
 argument_list|)
 expr_stmt|;
 name|assertFalse
@@ -7687,15 +7723,26 @@ name|canAssignToThisQueue
 argument_list|(
 name|clusterResource
 argument_list|,
-name|capability
-argument_list|,
 name|CommonNodeLabelsManager
 operator|.
 name|EMPTY_STRING_SET
 argument_list|,
-name|app_0
+operator|new
+name|ResourceLimits
+argument_list|(
+name|clusterResource
+argument_list|)
 argument_list|,
-literal|true
+name|capability
+argument_list|,
+name|Resources
+operator|.
+name|createResource
+argument_list|(
+literal|5
+operator|*
+name|GB
+argument_list|)
 argument_list|)
 expr_stmt|;
 name|assertFalse
@@ -8286,7 +8333,7 @@ name|ResourceRequest
 operator|.
 name|ANY
 argument_list|,
-literal|5
+literal|3
 operator|*
 name|GB
 argument_list|,
@@ -8294,7 +8341,7 @@ literal|2
 argument_list|,
 literal|true
 argument_list|,
-name|priorityReduce
+name|priorityMap
 argument_list|,
 name|recordFactory
 argument_list|)
@@ -8317,7 +8364,7 @@ name|ResourceRequest
 operator|.
 name|ANY
 argument_list|,
-literal|3
+literal|5
 operator|*
 name|GB
 argument_list|,
@@ -8325,7 +8372,7 @@ literal|2
 argument_list|,
 literal|true
 argument_list|,
-name|priorityMap
+name|priorityReduce
 argument_list|,
 name|recordFactory
 argument_list|)
@@ -8341,8 +8388,6 @@ argument_list|(
 name|clusterResource
 argument_list|,
 name|node_0
-argument_list|,
-literal|false
 argument_list|,
 operator|new
 name|ResourceLimits
@@ -8465,8 +8510,6 @@ name|clusterResource
 argument_list|,
 name|node_0
 argument_list|,
-literal|false
-argument_list|,
 operator|new
 name|ResourceLimits
 argument_list|(
@@ -8587,8 +8630,6 @@ argument_list|(
 name|clusterResource
 argument_list|,
 name|node_1
-argument_list|,
-literal|false
 argument_list|,
 operator|new
 name|ResourceLimits
@@ -8722,8 +8763,6 @@ argument_list|(
 name|clusterResource
 argument_list|,
 name|node_0
-argument_list|,
-literal|false
 argument_list|,
 operator|new
 name|ResourceLimits
@@ -9369,15 +9408,15 @@ name|ResourceRequest
 operator|.
 name|ANY
 argument_list|,
-literal|5
+literal|3
 operator|*
 name|GB
 argument_list|,
-literal|1
+literal|2
 argument_list|,
 literal|true
 argument_list|,
-name|priorityReduce
+name|priorityMap
 argument_list|,
 name|recordFactory
 argument_list|)
@@ -9400,15 +9439,15 @@ name|ResourceRequest
 operator|.
 name|ANY
 argument_list|,
-literal|3
+literal|5
 operator|*
 name|GB
 argument_list|,
-literal|2
+literal|1
 argument_list|,
 literal|true
 argument_list|,
-name|priorityMap
+name|priorityReduce
 argument_list|,
 name|recordFactory
 argument_list|)
@@ -9455,8 +9494,6 @@ argument_list|(
 name|clusterResource
 argument_list|,
 name|node_0
-argument_list|,
-literal|false
 argument_list|,
 operator|new
 name|ResourceLimits
@@ -9594,8 +9631,6 @@ name|clusterResource
 argument_list|,
 name|node_0
 argument_list|,
-literal|false
-argument_list|,
 operator|new
 name|ResourceLimits
 argument_list|(
@@ -9732,8 +9767,6 @@ name|clusterResource
 argument_list|,
 name|node_1
 argument_list|,
-literal|false
-argument_list|,
 operator|new
 name|ResourceLimits
 argument_list|(
@@ -9876,9 +9909,10 @@ name|getMemory
 argument_list|()
 argument_list|)
 expr_stmt|;
-comment|// try to assign reducer (5G on node 0), but tell it
-comment|// it has to unreserve. No room to allocate and shouldn't reserve
-comment|// since nothing currently reserved.
+comment|// try to assign reducer (5G on node 0), but tell it's resource limits<
+comment|// used (8G) + required (5G). It will not reserved since it has to unreserve
+comment|// some resource. Even with continous reservation looking, we don't allow
+comment|// unreserve resource to reserve container.
 name|a
 operator|.
 name|assignContainers
@@ -9887,12 +9921,17 @@ name|clusterResource
 argument_list|,
 name|node_0
 argument_list|,
-literal|true
-argument_list|,
 operator|new
 name|ResourceLimits
 argument_list|(
-name|clusterResource
+name|Resources
+operator|.
+name|createResource
+argument_list|(
+literal|10
+operator|*
+name|GB
+argument_list|)
 argument_list|)
 argument_list|)
 expr_stmt|;
@@ -9971,9 +10010,10 @@ name|getAvailableMB
 argument_list|()
 argument_list|)
 expr_stmt|;
+comment|// app_0's headroom = limit (10G) - used (8G) = 2G
 name|assertEquals
 argument_list|(
-literal|16
+literal|2
 operator|*
 name|GB
 argument_list|,
@@ -10031,9 +10071,9 @@ name|getMemory
 argument_list|()
 argument_list|)
 expr_stmt|;
-comment|// try to assign reducer (5G on node 2), but tell it
-comment|// it has to unreserve. Has room but shouldn't reserve
-comment|// since nothing currently reserved.
+comment|// try to assign reducer (5G on node 0), but tell it's resource limits<
+comment|// used (8G) + required (5G). It will not reserved since it has to unreserve
+comment|// some resource. Unfortunately, there's nothing to unreserve.
 name|a
 operator|.
 name|assignContainers
@@ -10042,12 +10082,17 @@ name|clusterResource
 argument_list|,
 name|node_2
 argument_list|,
-literal|true
-argument_list|,
 operator|new
 name|ResourceLimits
 argument_list|(
-name|clusterResource
+name|Resources
+operator|.
+name|createResource
+argument_list|(
+literal|10
+operator|*
+name|GB
+argument_list|)
 argument_list|)
 argument_list|)
 expr_stmt|;
@@ -10126,9 +10171,10 @@ name|getAvailableMB
 argument_list|()
 argument_list|)
 expr_stmt|;
+comment|// app_0's headroom = limit (10G) - used (8G) = 2G
 name|assertEquals
 argument_list|(
-literal|16
+literal|2
 operator|*
 name|GB
 argument_list|,
@@ -10194,8 +10240,6 @@ argument_list|(
 name|clusterResource
 argument_list|,
 name|node_2
-argument_list|,
-literal|false
 argument_list|,
 operator|new
 name|ResourceLimits
@@ -10347,8 +10391,6 @@ argument_list|(
 name|clusterResource
 argument_list|,
 name|node_0
-argument_list|,
-literal|false
 argument_list|,
 operator|new
 name|ResourceLimits
@@ -10502,8 +10544,6 @@ argument_list|(
 name|clusterResource
 argument_list|,
 name|node_2
-argument_list|,
-literal|false
 argument_list|,
 operator|new
 name|ResourceLimits

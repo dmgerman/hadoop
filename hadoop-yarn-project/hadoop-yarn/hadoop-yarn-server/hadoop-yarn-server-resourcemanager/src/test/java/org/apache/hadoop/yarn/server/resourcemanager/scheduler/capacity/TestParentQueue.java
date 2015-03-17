@@ -1209,11 +1209,6 @@ argument_list|(
 name|node
 argument_list|)
 argument_list|,
-name|eq
-argument_list|(
-literal|false
-argument_list|)
-argument_list|,
 name|any
 argument_list|(
 name|ResourceLimits
@@ -1280,11 +1275,6 @@ argument_list|,
 name|eq
 argument_list|(
 name|node
-argument_list|)
-argument_list|,
-name|eq
-argument_list|(
-literal|false
 argument_list|)
 argument_list|,
 name|any
@@ -1635,8 +1625,6 @@ name|clusterResource
 argument_list|,
 name|node_0
 argument_list|,
-literal|false
-argument_list|,
 operator|new
 name|ResourceLimits
 argument_list|(
@@ -1701,8 +1689,6 @@ name|clusterResource
 argument_list|,
 name|node_1
 argument_list|,
-literal|false
-argument_list|,
 operator|new
 name|ResourceLimits
 argument_list|(
@@ -1741,9 +1727,6 @@ operator|.
 name|class
 argument_list|)
 argument_list|,
-name|anyBoolean
-argument_list|()
-argument_list|,
 name|anyResourceLimits
 argument_list|()
 argument_list|)
@@ -1768,9 +1751,6 @@ name|FiCaSchedulerNode
 operator|.
 name|class
 argument_list|)
-argument_list|,
-name|anyBoolean
-argument_list|()
 argument_list|,
 name|anyResourceLimits
 argument_list|()
@@ -1834,8 +1814,6 @@ name|clusterResource
 argument_list|,
 name|node_0
 argument_list|,
-literal|false
-argument_list|,
 operator|new
 name|ResourceLimits
 argument_list|(
@@ -1873,9 +1851,6 @@ operator|.
 name|class
 argument_list|)
 argument_list|,
-name|anyBoolean
-argument_list|()
-argument_list|,
 name|anyResourceLimits
 argument_list|()
 argument_list|)
@@ -1900,9 +1875,6 @@ name|FiCaSchedulerNode
 operator|.
 name|class
 argument_list|)
-argument_list|,
-name|anyBoolean
-argument_list|()
 argument_list|,
 name|anyResourceLimits
 argument_list|()
@@ -1966,8 +1938,6 @@ name|clusterResource
 argument_list|,
 name|node_0
 argument_list|,
-literal|false
-argument_list|,
 operator|new
 name|ResourceLimits
 argument_list|(
@@ -2005,9 +1975,6 @@ operator|.
 name|class
 argument_list|)
 argument_list|,
-name|anyBoolean
-argument_list|()
-argument_list|,
 name|anyResourceLimits
 argument_list|()
 argument_list|)
@@ -2032,9 +1999,6 @@ name|FiCaSchedulerNode
 operator|.
 name|class
 argument_list|)
-argument_list|,
-name|anyBoolean
-argument_list|()
 argument_list|,
 name|anyResourceLimits
 argument_list|()
@@ -2098,8 +2062,6 @@ name|clusterResource
 argument_list|,
 name|node_1
 argument_list|,
-literal|false
-argument_list|,
 operator|new
 name|ResourceLimits
 argument_list|(
@@ -2137,9 +2099,6 @@ operator|.
 name|class
 argument_list|)
 argument_list|,
-name|anyBoolean
-argument_list|()
-argument_list|,
 name|anyResourceLimits
 argument_list|()
 argument_list|)
@@ -2164,9 +2123,6 @@ name|FiCaSchedulerNode
 operator|.
 name|class
 argument_list|)
-argument_list|,
-name|anyBoolean
-argument_list|()
 argument_list|,
 name|anyResourceLimits
 argument_list|()
@@ -2940,6 +2896,7 @@ parameter_list|()
 throws|throws
 name|Exception
 block|{
+comment|/*      * Structure of queue:      *            Root      *           ____________      *          /    |   \   \      *         A     B    C   D      *       / |   / | \   \      *      A1 A2 B1 B2 B3  C1      *                        \      *                         C11      *                           \      *                           C111      *                             \      *                              C1111      */
 comment|// Setup queue configs
 name|setupMultiLevelQueues
 argument_list|(
@@ -3248,8 +3205,6 @@ name|clusterResource
 argument_list|,
 name|node_0
 argument_list|,
-literal|false
-argument_list|,
 operator|new
 name|ResourceLimits
 argument_list|(
@@ -3365,8 +3320,6 @@ name|clusterResource
 argument_list|,
 name|node_1
 argument_list|,
-literal|false
-argument_list|,
 operator|new
 name|ResourceLimits
 argument_list|(
@@ -3471,8 +3424,6 @@ name|clusterResource
 argument_list|,
 name|node_0
 argument_list|,
-literal|false
-argument_list|,
 operator|new
 name|ResourceLimits
 argument_list|(
@@ -3513,9 +3464,6 @@ operator|.
 name|class
 argument_list|)
 argument_list|,
-name|anyBoolean
-argument_list|()
-argument_list|,
 name|anyResourceLimits
 argument_list|()
 argument_list|)
@@ -3541,9 +3489,6 @@ operator|.
 name|class
 argument_list|)
 argument_list|,
-name|anyBoolean
-argument_list|()
-argument_list|,
 name|anyResourceLimits
 argument_list|()
 argument_list|)
@@ -3568,9 +3513,6 @@ name|FiCaSchedulerNode
 operator|.
 name|class
 argument_list|)
-argument_list|,
-name|anyBoolean
-argument_list|()
 argument_list|,
 name|anyResourceLimits
 argument_list|()
@@ -3724,8 +3666,6 @@ name|clusterResource
 argument_list|,
 name|node_2
 argument_list|,
-literal|false
-argument_list|,
 operator|new
 name|ResourceLimits
 argument_list|(
@@ -3769,9 +3709,6 @@ operator|.
 name|class
 argument_list|)
 argument_list|,
-name|anyBoolean
-argument_list|()
-argument_list|,
 name|anyResourceLimits
 argument_list|()
 argument_list|)
@@ -3796,9 +3733,6 @@ name|FiCaSchedulerNode
 operator|.
 name|class
 argument_list|)
-argument_list|,
-name|anyBoolean
-argument_list|()
 argument_list|,
 name|anyResourceLimits
 argument_list|()
@@ -3825,9 +3759,6 @@ operator|.
 name|class
 argument_list|)
 argument_list|,
-name|anyBoolean
-argument_list|()
-argument_list|,
 name|anyResourceLimits
 argument_list|()
 argument_list|)
@@ -3852,9 +3783,6 @@ name|FiCaSchedulerNode
 operator|.
 name|class
 argument_list|)
-argument_list|,
-name|anyBoolean
-argument_list|()
 argument_list|,
 name|anyResourceLimits
 argument_list|()
@@ -4513,8 +4441,6 @@ name|clusterResource
 argument_list|,
 name|node_0
 argument_list|,
-literal|false
-argument_list|,
 operator|new
 name|ResourceLimits
 argument_list|(
@@ -4588,8 +4514,6 @@ name|clusterResource
 argument_list|,
 name|node_1
 argument_list|,
-literal|false
-argument_list|,
 operator|new
 name|ResourceLimits
 argument_list|(
@@ -4628,9 +4552,6 @@ operator|.
 name|class
 argument_list|)
 argument_list|,
-name|anyBoolean
-argument_list|()
-argument_list|,
 name|anyResourceLimits
 argument_list|()
 argument_list|)
@@ -4655,9 +4576,6 @@ name|FiCaSchedulerNode
 operator|.
 name|class
 argument_list|)
-argument_list|,
-name|anyBoolean
-argument_list|()
 argument_list|,
 name|anyResourceLimits
 argument_list|()
@@ -4730,8 +4648,6 @@ name|clusterResource
 argument_list|,
 name|node_0
 argument_list|,
-literal|false
-argument_list|,
 operator|new
 name|ResourceLimits
 argument_list|(
@@ -4769,9 +4685,6 @@ operator|.
 name|class
 argument_list|)
 argument_list|,
-name|anyBoolean
-argument_list|()
-argument_list|,
 name|anyResourceLimits
 argument_list|()
 argument_list|)
@@ -4796,9 +4709,6 @@ name|FiCaSchedulerNode
 operator|.
 name|class
 argument_list|)
-argument_list|,
-name|anyBoolean
-argument_list|()
 argument_list|,
 name|anyResourceLimits
 argument_list|()
@@ -5046,8 +4956,6 @@ name|clusterResource
 argument_list|,
 name|node_0
 argument_list|,
-literal|false
-argument_list|,
 operator|new
 name|ResourceLimits
 argument_list|(
@@ -5121,8 +5029,6 @@ name|clusterResource
 argument_list|,
 name|node_1
 argument_list|,
-literal|false
-argument_list|,
 operator|new
 name|ResourceLimits
 argument_list|(
@@ -5161,9 +5067,6 @@ operator|.
 name|class
 argument_list|)
 argument_list|,
-name|anyBoolean
-argument_list|()
-argument_list|,
 name|anyResourceLimits
 argument_list|()
 argument_list|)
@@ -5188,9 +5091,6 @@ name|FiCaSchedulerNode
 operator|.
 name|class
 argument_list|)
-argument_list|,
-name|anyBoolean
-argument_list|()
 argument_list|,
 name|anyResourceLimits
 argument_list|()
@@ -5263,8 +5163,6 @@ name|clusterResource
 argument_list|,
 name|node_0
 argument_list|,
-literal|false
-argument_list|,
 operator|new
 name|ResourceLimits
 argument_list|(
@@ -5302,9 +5200,6 @@ operator|.
 name|class
 argument_list|)
 argument_list|,
-name|anyBoolean
-argument_list|()
-argument_list|,
 name|anyResourceLimits
 argument_list|()
 argument_list|)
@@ -5329,9 +5224,6 @@ name|FiCaSchedulerNode
 operator|.
 name|class
 argument_list|)
-argument_list|,
-name|anyBoolean
-argument_list|()
 argument_list|,
 name|anyResourceLimits
 argument_list|()
