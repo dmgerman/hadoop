@@ -7204,7 +7204,16 @@ name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"Null container completed..."
+literal|"Container "
+operator|+
+name|containerStatus
+operator|.
+name|getContainerId
+argument_list|()
+operator|+
+literal|" completed with event "
+operator|+
+name|event
 argument_list|)
 expr_stmt|;
 return|return;
@@ -7260,7 +7269,7 @@ name|container
 operator|+
 literal|" of"
 operator|+
-literal|" unknown application "
+literal|" finished application "
 operator|+
 name|appId
 operator|+
