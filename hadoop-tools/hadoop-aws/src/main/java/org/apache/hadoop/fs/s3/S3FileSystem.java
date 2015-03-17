@@ -321,7 +321,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  *<p>  * A block-based {@link FileSystem} backed by  *<a href="http://aws.amazon.com/s3">Amazon S3</a>.  *</p>  * @see NativeS3FileSystem  */
+comment|/**  * A block-based {@link FileSystem} backed by  *<a href="http://aws.amazon.com/s3">Amazon S3</a>.  *  * @see NativeS3FileSystem  */
 end_comment
 
 begin_class
@@ -377,7 +377,7 @@ operator|=
 name|store
 expr_stmt|;
 block|}
-comment|/**    * Return the protocol scheme for the FileSystem.    *<p/>    *    * @return<code>s3</code>    */
+comment|/**    * Return the protocol scheme for the FileSystem.    *    * @return<code>s3</code>    */
 annotation|@
 name|Override
 DECL|method|getScheme ()

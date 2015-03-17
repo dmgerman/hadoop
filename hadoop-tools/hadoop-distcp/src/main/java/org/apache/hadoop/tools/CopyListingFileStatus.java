@@ -382,7 +382,7 @@ name|fileStatus
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Returns the full logical ACL.    *    * @return List<AclEntry> containing full logical ACL    */
+comment|/**    * Returns the full logical ACL.    *    * @return List containing full logical ACL    */
 DECL|method|getAclEntries ()
 specifier|public
 name|List
@@ -416,7 +416,7 @@ argument_list|()
 argument_list|)
 return|;
 block|}
-comment|/**    * Sets optional ACL entries.    *    * @param aclEntries List<AclEntry> containing all ACL entries    */
+comment|/**    * Sets optional ACL entries.    *    * @param aclEntries List containing all ACL entries    */
 DECL|method|setAclEntries (List<AclEntry> aclEntries)
 specifier|public
 name|void
@@ -436,7 +436,7 @@ operator|=
 name|aclEntries
 expr_stmt|;
 block|}
-comment|/**    * Returns all xAttrs.    *     * @return Map<String, byte[]> containing all xAttrs    */
+comment|/**    * Returns all xAttrs.    *     * @return Map containing all xAttrs    */
 DECL|method|getXAttrs ()
 specifier|public
 name|Map
@@ -468,7 +468,7 @@ name|emptyMap
 argument_list|()
 return|;
 block|}
-comment|/**    * Sets optional xAttrs.    *     * @param xAttrs Map<String, byte[]> containing all xAttrs    */
+comment|/**    * Sets optional xAttrs.    *     * @param xAttrs Map containing all xAttrs    */
 DECL|method|setXAttrs (Map<String, byte[]> xAttrs)
 specifier|public
 name|void

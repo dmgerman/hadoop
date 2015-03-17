@@ -767,7 +767,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  *<p>  * A {@link FileSystem} for reading and writing files stored on<a  * href="http://store.azure.com/">Windows Azure</a>. This implementation is  * blob-based and stores files on Azure in their native form so they can be read  * by other Azure tools.  *</p>  */
+comment|/**  * A {@link FileSystem} for reading and writing files stored on<a  * href="http://store.azure.com/">Windows Azure</a>. This implementation is  * blob-based and stores files on Azure in their native form so they can be read  * by other Azure tools.  */
 end_comment
 
 begin_class
@@ -1436,7 +1436,7 @@ return|return
 name|folderLease
 return|;
 block|}
-comment|/**      * Write to disk the information needed to redo folder rename, in JSON format.      * The file name will be wasb://<sourceFolderPrefix>/folderName-RenamePending.json      * The file format will be:      * {      *   FormatVersion: "1.0",      *   OperationTime: "<YYYY-MM-DD HH:MM:SS.MMM>",      *   OldFolderName: "<key>",      *   NewFolderName: "<key>",      *   FileList: [<string> ,<string> , ... ]      * }      *      * Here's a sample:      * {      *  FormatVersion: "1.0",      *  OperationUTCTime: "2014-07-01 23:50:35.572",      *  OldFolderName: "user/ehans/folderToRename",      *  NewFolderName: "user/ehans/renamedFolder",      *  FileList: [      *    "innerFile",      *    "innerFile2"      *  ]      * }      * @throws IOException      */
+comment|/**      * Write to disk the information needed to redo folder rename,      * in JSON format. The file name will be      * {@code wasb://<sourceFolderPrefix>/folderName-RenamePending.json}      * The file format will be:      *<pre>{@code      * {      *   FormatVersion: "1.0",      *   OperationTime: "<YYYY-MM-DD HH:MM:SS.MMM>",      *   OldFolderName: "<key>",      *   NewFolderName: "<key>",      *   FileList: [<string> ,<string> , ... ]      * }      *      * Here's a sample:      * {      *  FormatVersion: "1.0",      *  OperationUTCTime: "2014-07-01 23:50:35.572",      *  OldFolderName: "user/ehans/folderToRename",      *  NewFolderName: "user/ehans/renamedFolder",      *  FileList: [      *    "innerFile",      *    "innerFile2"      *  ]      * } }</pre>      * @throws IOException      */
 DECL|method|writeFile (FileSystem fs)
 specifier|public
 name|void
@@ -3696,7 +3696,7 @@ operator|=
 name|anEncodedKey
 expr_stmt|;
 block|}
-comment|/**      * Restore the original key name from the m_key member variable. Note: The      * output file stream is created with an encoded blob store key to guarantee      * load balancing on the front end of the Azure storage partition servers.      * The create also includes the name of the original key value which is      * stored in the m_key member variable. This method should only be called      * when the stream is closed.      *       * @param anEncodedKey      *          Encoding of the original key stored in m_key member.      */
+comment|/**      * Restore the original key name from the m_key member variable. Note: The      * output file stream is created with an encoded blob store key to guarantee      * load balancing on the front end of the Azure storage partition servers.      * The create also includes the name of the original key value which is      * stored in the m_key member variable. This method should only be called      * when the stream is closed.      */
 DECL|method|restoreKey ()
 specifier|private
 name|void
@@ -7274,7 +7274,7 @@ block|,
 DECL|enumConstant|ChangeExistingDirectory
 name|ChangeExistingDirectory
 block|,   }
-comment|/**    * Applies the applicable UMASK's on the given permission.    *     * @param permission    *          The permission to mask.    * @param applyDefaultUmask    *          Whether to also apply the default umask.    * @return The masked persmission.    */
+comment|/**    * Applies the applicable UMASK's on the given permission.    *     * @param permission    *          The permission to mask.    * @param applyMode    *          Whether to also apply the default umask.    * @return The masked persmission.    */
 DECL|method|applyUMask (final FsPermission permission, final UMaskApplyMode applyMode)
 specifier|private
 name|FsPermission
@@ -9854,7 +9854,7 @@ name|finalize
 argument_list|()
 expr_stmt|;
 block|}
-comment|/**    * Encode the key with a random prefix for load balancing in Azure storage.    * Upload data to a random temporary file then do storage side renaming to    * recover the original key.    *     * @param aKey    * @param numBuckets    * @return Encoded version of the original key.    */
+comment|/**    * Encode the key with a random prefix for load balancing in Azure storage.    * Upload data to a random temporary file then do storage side renaming to    * recover the original key.    *     * @param aKey    * @return Encoded version of the original key.    */
 DECL|method|encodeKey (String aKey)
 specifier|private
 specifier|static

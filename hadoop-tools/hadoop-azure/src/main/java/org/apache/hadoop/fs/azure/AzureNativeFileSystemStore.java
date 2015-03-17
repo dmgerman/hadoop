@@ -2603,7 +2603,7 @@ name|HTTP_SCHEME
 return|;
 block|}
 block|}
-comment|/**    * Set the configuration parameters for this client storage session with    * Azure.    *     * @throws AzureException    * @throws ConfigurationException    *     */
+comment|/**    * Set the configuration parameters for this client storage session with    * Azure.    *     * @throws AzureException    */
 DECL|method|configureAzureStorageSession ()
 specifier|private
 name|void
@@ -2916,7 +2916,7 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-comment|/**    * Connect to Azure storage using anonymous credentials.    *     * @param uri    *          - URI to target blob (R/O access to public blob)    *     * @throws StorageException    *           raised on errors communicating with Azure storage.    * @throws IOException    *           raised on errors performing I/O or setting up the session.    * @throws URISyntaxExceptions    *           raised on creating mal-formed URI's.    */
+comment|/**    * Connect to Azure storage using anonymous credentials.    *     * @param uri    *          - URI to target blob (R/O access to public blob)    *     * @throws StorageException    *           raised on errors communicating with Azure storage.    * @throws IOException    *           raised on errors performing I/O or setting up the session.    * @throws URISyntaxException    *           raised on creating mal-formed URI's.    */
 DECL|method|connectUsingAnonymousCredentials (final URI uri)
 specifier|private
 name|void
@@ -3997,7 +3997,7 @@ return|return
 name|directorySet
 return|;
 block|}
-comment|/**    * Checks if the given key in Azure Storage should be stored as a page    * blob instead of block blob.    * @throws URISyntaxException    */
+comment|/**    * Checks if the given key in Azure Storage should be stored as a page    * blob instead of block blob.    */
 DECL|method|isPageBlobKey (String key)
 specifier|public
 name|boolean
@@ -6360,7 +6360,7 @@ argument_list|()
 argument_list|)
 return|;
 block|}
-comment|/**    * This private method normalizes the key by stripping the container name from    * the path and returns a path relative to the root directory of the    * container.    *     * @param blob    *          - adjust the key to this directory to a path relative to the root    *          directory    *     * @returns normKey    */
+comment|/**    * This private method normalizes the key by stripping the container name from    * the path and returns a path relative to the root directory of the    * container.    *     * @param directory    *          - adjust the key to this directory to a path relative to the root    *          directory    *     * @returns normKey    */
 DECL|method|normalizeKey (CloudBlobDirectoryWrapper directory)
 specifier|private
 name|String
@@ -7794,7 +7794,7 @@ argument_list|)
 throw|;
 block|}
 block|}
-comment|/**    * Build up a metadata list of blobs in an Azure blob directory. This method    * uses a in-order first traversal of blob directory structures to maintain    * the sorted order of the blob names.    *     * @param dir    *          -- Azure blob directory    *     * @param list    *          -- a list of file metadata objects for each non-directory blob.    *     * @param maxListingLength    *          -- maximum length of the built up list.    */
+comment|/**    * Build up a metadata list of blobs in an Azure blob directory. This method    * uses a in-order first traversal of blob directory structures to maintain    * the sorted order of the blob names.    *     * @param aCloudBlobDirectory Azure blob directory    * @param aFileMetadataList a list of file metadata objects for each    *                          non-directory blob.    * @param maxListingCount maximum length of the built up list.    */
 DECL|method|buildUpList (CloudBlobDirectoryWrapper aCloudBlobDirectory, ArrayList<FileMetadata> aFileMetadataList, final int maxListingCount, final int maxListingDepth)
 specifier|private
 name|void
@@ -8375,7 +8375,7 @@ name|getLength
 argument_list|()
 return|;
 block|}
-comment|/**    * Deletes the given blob, taking special care that if we get a    * blob-not-found exception upon retrying the operation, we just    * swallow the error since what most probably happened is that    * the first operation succeeded on the server.    * @param blob The blob to delete.    * @param leaseID A string identifying the lease, or null if no    *        lease is to be used.    * @throws StorageException    */
+comment|/**    * Deletes the given blob, taking special care that if we get a    * blob-not-found exception upon retrying the operation, we just    * swallow the error since what most probably happened is that    * the first operation succeeded on the server.    * @param blob The blob to delete.    * @param lease Azure blob lease, or null if no lease is to be used.    * @throws StorageException    */
 DECL|method|safeDelete (CloudBlobWrapper blob, SelfRenewingLease lease)
 specifier|private
 name|void

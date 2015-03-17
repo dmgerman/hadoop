@@ -103,7 +103,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * Various utility functions for Hadooop record I/O runtime.  *   * @deprecated Replaced by<a href="http://hadoop.apache.org/avro/">Avro</a>.  */
+comment|/**  * Various utility functions for Hadoop record I/O runtime.  *   * @deprecated Replaced by<a href="http://avro.apache.org/">Avro</a>.  */
 end_comment
 
 begin_class
@@ -2744,7 +2744,7 @@ name|i
 argument_list|)
 return|;
 block|}
-comment|/**    * Serializes a long to a binary stream with zero-compressed encoding.    * For -112<= i<= 127, only one byte is used with the actual value.    * For other values of i, the first byte value indicates whether the    * long is positive or negative, and the number of bytes that follow.    * If the first byte value v is between -113 and -120, the following long    * is positive, with number of bytes that follow are -(v+112).    * If the first byte value v is between -121 and -128, the following long    * is negative, with number of bytes that follow are -(v+120). Bytes are    * stored in the high-non-zero-byte-first order.    *    * @param stream Binary output stream    * @param i Long to be serialized    * @throws java.io.IOException    */
+comment|/**    * Serializes a long to a binary stream with zero-compressed encoding.    * For {@literal -112<= i<= 127}, only one byte is used with the actual    * value. For other values of i, the first byte value indicates whether the    * long is positive or negative, and the number of bytes that follow.    * If the first byte value v is between -113 and -120, the following long    * is positive, with number of bytes that follow are -(v+112).    * If the first byte value v is between -121 and -128, the following long    * is negative, with number of bytes that follow are -(v+120). Bytes are    * stored in the high-non-zero-byte-first order.    *    * @param stream Binary output stream    * @param i Long to be serialized    * @throws java.io.IOException    */
 DECL|method|writeVLong (DataOutput stream, long i)
 specifier|public
 specifier|static

@@ -1381,7 +1381,7 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-comment|/**    * Returns a file's full logical ACL.    *    * @param fileSystem FileSystem containing the file    * @param fileStatus FileStatus of file    * @return List<AclEntry> containing full logical ACL    * @throws IOException if there is an I/O error    */
+comment|/**    * Returns a file's full logical ACL.    *    * @param fileSystem FileSystem containing the file    * @param fileStatus FileStatus of file    * @return List containing full logical ACL    * @throws IOException if there is an I/O error    */
 DECL|method|getAcl (FileSystem fileSystem, FileStatus fileStatus)
 specifier|public
 specifier|static
@@ -1433,7 +1433,7 @@ name|entries
 argument_list|)
 return|;
 block|}
-comment|/**    * Returns a file's all xAttrs.    *     * @param fileSystem FileSystem containing the file    * @param path file path    * @return Map<String, byte[]> containing all xAttrs    * @throws IOException if there is an I/O error    */
+comment|/**    * Returns a file's all xAttrs.    *     * @param fileSystem FileSystem containing the file    * @param path file path    * @return Map containing all xAttrs    * @throws IOException if there is an I/O error    */
 DECL|method|getXAttrs (FileSystem fileSystem, Path path)
 specifier|public
 specifier|static

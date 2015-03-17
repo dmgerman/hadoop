@@ -447,7 +447,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * Upload files/parts asap directly from a memory buffer (instead of buffering  * to a file).  *<p/>  * Uploads are managed low-level rather than through the AWS TransferManager.  * This allows for uploading each part of a multi-part upload as soon as  * the bytes are in memory, rather than waiting until the file is closed.  *<p/>  * Unstable: statistics and error handling might evolve  */
+comment|/**  * Upload files/parts asap directly from a memory buffer (instead of buffering  * to a file).  *<p>  * Uploads are managed low-level rather than through the AWS TransferManager.  * This allows for uploading each part of a multi-part upload as soon as  * the bytes are in memory, rather than waiting until the file is closed.  *<p>  * Unstable: statistics and error handling might evolve  */
 end_comment
 
 begin_class

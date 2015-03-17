@@ -204,7 +204,7 @@ name|DfsTask
 extends|extends
 name|Task
 block|{
-comment|/**    * Default sink for {@link java.lang.System.out System.out}    * and {@link java.lang.System.err System.err}.    */
+comment|/**    * Default sink for {@link java.lang.System#out}    * and {@link java.lang.System#err}.    */
 DECL|field|nullOut
 specifier|private
 specifier|static
@@ -704,7 +704,7 @@ return|return
 name|exit_code
 return|;
 block|}
-comment|/**    * Invoke {@link org.apache.hadoop.fs.FsShell#doMain FsShell.doMain} after a    * few cursory checks of the configuration.    */
+comment|/**    * Invoke {@link org.apache.hadoop.fs.FsShell#main} after a    * few cursory checks of the configuration.    */
 DECL|method|execute ()
 specifier|public
 name|void

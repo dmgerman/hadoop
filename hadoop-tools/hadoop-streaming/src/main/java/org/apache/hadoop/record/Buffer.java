@@ -55,7 +55,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * A byte sequence that is used as a Java native type for buffer.  * It is resizable and distinguishes between the count of the seqeunce and  * the current capacity.  *   * @deprecated Replaced by<a href="http://hadoop.apache.org/avro/">Avro</a>.  */
+comment|/**  * A byte sequence that is used as a Java native type for buffer.  * It is resizable and distinguishes between the count of the sequence and  * the current capacity.  *   * @deprecated Replaced by<a href="http://avro.apache.org/">Avro</a>.  */
 end_comment
 
 begin_class
@@ -324,7 +324,7 @@ operator|.
 name|length
 return|;
 block|}
-comment|/**    * Change the capacity of the backing storage.    * The data is preserved if newCapacity>= getCount().    * @param newCapacity The new capacity in bytes.    */
+comment|/**    * Change the capacity of the backing storage.    * The data is preserved if newCapacity {@literal>=} getCount().    * @param newCapacity The new capacity in bytes.    */
 DECL|method|setCapacity (int newCapacity)
 specifier|public
 name|void
