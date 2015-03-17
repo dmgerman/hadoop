@@ -4076,7 +4076,11 @@ comment|// This ensures that leases are persisted in fsimage.
 name|cluster
 operator|.
 name|shutdown
-argument_list|()
+argument_list|(
+literal|false
+argument_list|,
+literal|false
+argument_list|)
 expr_stmt|;
 try|try
 block|{
@@ -4129,7 +4133,11 @@ comment|// persistent leases from fsimage.
 name|cluster
 operator|.
 name|shutdown
-argument_list|()
+argument_list|(
+literal|false
+argument_list|,
+literal|false
+argument_list|)
 expr_stmt|;
 try|try
 block|{
