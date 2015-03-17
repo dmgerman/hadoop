@@ -50,6 +50,24 @@ name|Block
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|server
+operator|.
+name|blockmanagement
+operator|.
+name|BlockInfo
+import|;
+end_import
+
 begin_comment
 comment|/** SafeMode related operations. */
 end_comment
@@ -103,12 +121,12 @@ name|replication
 parameter_list|)
 function_decl|;
 comment|/** Decrement number of blocks that reached minimal replication. */
-DECL|method|decrementSafeBlockCount (Block b)
+DECL|method|decrementSafeBlockCount (BlockInfo b)
 specifier|public
 name|void
 name|decrementSafeBlockCount
 parameter_list|(
-name|Block
+name|BlockInfo
 name|b
 parameter_list|)
 function_decl|;

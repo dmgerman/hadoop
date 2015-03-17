@@ -244,6 +244,24 @@ name|server
 operator|.
 name|blockmanagement
 operator|.
+name|BlockInfo
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|server
+operator|.
+name|blockmanagement
+operator|.
 name|BlockStoragePolicySuite
 import|;
 end_import
@@ -259,22 +277,6 @@ operator|.
 name|hdfs
 operator|.
 name|DFSUtil
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|hdfs
-operator|.
-name|protocol
-operator|.
-name|Block
 import|;
 end_import
 
@@ -3205,7 +3207,7 @@ specifier|private
 specifier|final
 name|List
 argument_list|<
-name|Block
+name|BlockInfo
 argument_list|>
 name|toDeleteList
 decl_stmt|;
@@ -3227,7 +3229,7 @@ DECL|method|getToDeleteList ()
 specifier|public
 name|List
 argument_list|<
-name|Block
+name|BlockInfo
 argument_list|>
 name|getToDeleteList
 parameter_list|()
@@ -3237,12 +3239,12 @@ name|toDeleteList
 return|;
 block|}
 comment|/**      * Add a to-be-deleted block into the      * {@link BlocksMapUpdateInfo#toDeleteList}      * @param toDelete the to-be-deleted block      */
-DECL|method|addDeleteBlock (Block toDelete)
+DECL|method|addDeleteBlock (BlockInfo toDelete)
 specifier|public
 name|void
 name|addDeleteBlock
 parameter_list|(
-name|Block
+name|BlockInfo
 name|toDelete
 parameter_list|)
 block|{
@@ -3261,12 +3263,12 @@ name|toDelete
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|removeDeleteBlock (Block block)
+DECL|method|removeDeleteBlock (BlockInfo block)
 specifier|public
 name|void
 name|removeDeleteBlock
 parameter_list|(
-name|Block
+name|BlockInfo
 name|block
 parameter_list|)
 block|{

@@ -362,6 +362,17 @@ argument_list|()
 expr_stmt|;
 try|try
 block|{
+specifier|final
+name|BlockInfo
+name|storedBlock
+init|=
+name|bm
+operator|.
+name|getStoredBlock
+argument_list|(
+name|b
+argument_list|)
+decl_stmt|;
 return|return
 operator|new
 name|int
@@ -378,7 +389,7 @@ name|bm
 operator|.
 name|countNodes
 argument_list|(
-name|b
+name|storedBlock
 argument_list|)
 operator|.
 name|liveReplicas
@@ -390,7 +401,7 @@ name|neededReplications
 operator|.
 name|contains
 argument_list|(
-name|b
+name|storedBlock
 argument_list|)
 condition|?
 literal|1

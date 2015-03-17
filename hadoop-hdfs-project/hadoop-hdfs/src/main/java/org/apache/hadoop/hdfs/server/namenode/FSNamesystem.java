@@ -16908,7 +16908,7 @@ parameter_list|)
 block|{
 name|List
 argument_list|<
-name|Block
+name|BlockInfo
 argument_list|>
 name|toDeleteList
 init|=
@@ -16919,7 +16919,7 @@ argument_list|()
 decl_stmt|;
 name|Iterator
 argument_list|<
-name|Block
+name|BlockInfo
 argument_list|>
 name|iter
 init|=
@@ -17097,7 +17097,7 @@ literal|0
 decl_stmt|;
 for|for
 control|(
-name|Block
+name|BlockInfo
 name|b
 range|:
 name|blocks
@@ -17111,17 +17111,9 @@ condition|(
 name|trackBlockCounts
 condition|)
 block|{
-name|BlockInfo
-name|bi
-init|=
-name|getStoredBlock
-argument_list|(
-name|b
-argument_list|)
-decl_stmt|;
 if|if
 condition|(
-name|bi
+name|b
 operator|.
 name|isComplete
 argument_list|()
@@ -17136,9 +17128,9 @@ name|blockManager
 operator|.
 name|checkMinStorage
 argument_list|(
-name|bi
+name|b
 argument_list|,
-name|bi
+name|b
 operator|.
 name|numNodes
 argument_list|()
@@ -20712,7 +20704,7 @@ block|{
 specifier|final
 name|Iterator
 argument_list|<
-name|Block
+name|BlockInfo
 argument_list|>
 name|it
 init|=
@@ -24219,12 +24211,12 @@ expr_stmt|;
 block|}
 annotation|@
 name|Override
-DECL|method|decrementSafeBlockCount (Block b)
+DECL|method|decrementSafeBlockCount (BlockInfo b)
 specifier|public
 name|void
 name|decrementSafeBlockCount
 parameter_list|(
-name|Block
+name|BlockInfo
 name|b
 parameter_list|)
 block|{
@@ -27467,7 +27459,7 @@ comment|// print a limited # of corrupt files per call
 specifier|final
 name|Iterator
 argument_list|<
-name|Block
+name|BlockInfo
 argument_list|>
 name|blkIterator
 init|=
@@ -27521,7 +27513,7 @@ name|hasNext
 argument_list|()
 condition|)
 block|{
-name|Block
+name|BlockInfo
 name|blk
 init|=
 name|blkIterator

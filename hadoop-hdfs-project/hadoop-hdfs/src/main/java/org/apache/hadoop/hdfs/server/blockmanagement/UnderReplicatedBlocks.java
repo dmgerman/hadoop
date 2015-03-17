@@ -60,22 +60,6 @@ name|hadoop
 operator|.
 name|hdfs
 operator|.
-name|protocol
-operator|.
-name|Block
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|hdfs
-operator|.
 name|util
 operator|.
 name|LightWeightLinkedSet
@@ -101,7 +85,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * Keep prioritized queues of under replicated blocks.  * Blocks have replication priority, with priority {@link #QUEUE_HIGHEST_PRIORITY}  * indicating the highest priority.  *</p>  * Having a prioritised queue allows the {@link BlockManager} to select  * which blocks to replicate first -it tries to give priority to data  * that is most at risk or considered most valuable.  *  *<p/>  * The policy for choosing which priority to give added blocks  * is implemented in {@link #getPriority(Block, int, int, int)}.  *</p>  *<p>The queue order is as follows:</p>  *<ol>  *<li>{@link #QUEUE_HIGHEST_PRIORITY}: the blocks that must be replicated  *   first. That is blocks with only one copy, or blocks with zero live  *   copies but a copy in a node being decommissioned. These blocks  *   are at risk of loss if the disk or server on which they  *   remain fails.</li>  *<li>{@link #QUEUE_VERY_UNDER_REPLICATED}: blocks that are very  *   under-replicated compared to their expected values. Currently  *   that means the ratio of the ratio of actual:expected means that  *   there is<i>less than</i> 1:3.</li>. These blocks may not be at risk,  *   but they are clearly considered "important".  *<li>{@link #QUEUE_UNDER_REPLICATED}: blocks that are also under  *   replicated, and the ratio of actual:expected is good enough that  *   they do not need to go into the {@link #QUEUE_VERY_UNDER_REPLICATED}  *   queue.</li>  *<li>{@link #QUEUE_REPLICAS_BADLY_DISTRIBUTED}: there are as least as  *   many copies of a block as required, but the blocks are not adequately  *   distributed. Loss of a rack/switch could take all copies off-line.</li>  *<li>{@link #QUEUE_WITH_CORRUPT_BLOCKS} This is for blocks that are corrupt  *   and for which there are no-non-corrupt copies (currently) available.  *   The policy here is to keep those corrupt blocks replicated, but give  *   blocks that are not corrupt higher priority.</li>  *</ol>  */
+comment|/**  * Keep prioritized queues of under replicated blocks.  * Blocks have replication priority, with priority {@link #QUEUE_HIGHEST_PRIORITY}  * indicating the highest priority.  *</p>  * Having a prioritised queue allows the {@link BlockManager} to select  * which blocks to replicate first -it tries to give priority to data  * that is most at risk or considered most valuable.  *  *<p/>  * The policy for choosing which priority to give added blocks  * is implemented in {@link #getPriority(int, int, int)}.  *</p>  *<p>The queue order is as follows:</p>  *<ol>  *<li>{@link #QUEUE_HIGHEST_PRIORITY}: the blocks that must be replicated  *   first. That is blocks with only one copy, or blocks with zero live  *   copies but a copy in a node being decommissioned. These blocks  *   are at risk of loss if the disk or server on which they  *   remain fails.</li>  *<li>{@link #QUEUE_VERY_UNDER_REPLICATED}: blocks that are very  *   under-replicated compared to their expected values. Currently  *   that means the ratio of the ratio of actual:expected means that  *   there is<i>less than</i> 1:3.</li>. These blocks may not be at risk,  *   but they are clearly considered "important".  *<li>{@link #QUEUE_UNDER_REPLICATED}: blocks that are also under  *   replicated, and the ratio of actual:expected is good enough that  *   they do not need to go into the {@link #QUEUE_VERY_UNDER_REPLICATED}  *   queue.</li>  *<li>{@link #QUEUE_REPLICAS_BADLY_DISTRIBUTED}: there are as least as  *   many copies of a block as required, but the blocks are not adequately  *   distributed. Loss of a rack/switch could take all copies off-line.</li>  *<li>{@link #QUEUE_WITH_CORRUPT_BLOCKS} This is for blocks that are corrupt  *   and for which there are no-non-corrupt copies (currently) available.  *   The policy here is to keep those corrupt blocks replicated, but give  *   blocks that are not corrupt higher priority.</li>  *</ol>  */
 end_comment
 
 begin_class
@@ -111,7 +95,7 @@ name|UnderReplicatedBlocks
 implements|implements
 name|Iterable
 argument_list|<
-name|Block
+name|BlockInfo
 argument_list|>
 block|{
 comment|/** The total number of queues : {@value} */
@@ -176,19 +160,14 @@ name|List
 argument_list|<
 name|LightWeightLinkedSet
 argument_list|<
-name|Block
+name|BlockInfo
 argument_list|>
 argument_list|>
 name|priorityQueues
 init|=
 operator|new
 name|ArrayList
-argument_list|<
-name|LightWeightLinkedSet
-argument_list|<
-name|Block
-argument_list|>
-argument_list|>
+argument_list|<>
 argument_list|(
 name|LEVEL
 argument_list|)
@@ -228,7 +207,7 @@ argument_list|(
 operator|new
 name|LightWeightLinkedSet
 argument_list|<
-name|Block
+name|BlockInfo
 argument_list|>
 argument_list|()
 argument_list|)
@@ -395,12 +374,12 @@ name|corruptReplOneBlocks
 return|;
 block|}
 comment|/** Check if a block is in the neededReplication queue */
-DECL|method|contains (Block block)
+DECL|method|contains (BlockInfo block)
 specifier|synchronized
 name|boolean
 name|contains
 parameter_list|(
-name|Block
+name|BlockInfo
 name|block
 parameter_list|)
 block|{
@@ -408,7 +387,7 @@ for|for
 control|(
 name|LightWeightLinkedSet
 argument_list|<
-name|Block
+name|BlockInfo
 argument_list|>
 name|set
 range|:
@@ -434,15 +413,12 @@ return|return
 literal|false
 return|;
 block|}
-comment|/** Return the priority of a block    * @param block a under replicated block    * @param curReplicas current number of replicas of the block    * @param expectedReplicas expected number of replicas of the block    * @return the priority for the blocks, between 0 and ({@link #LEVEL}-1)    */
-DECL|method|getPriority (Block block, int curReplicas, int decommissionedReplicas, int expectedReplicas)
+comment|/** Return the priority of a block    * @param curReplicas current number of replicas of the block    * @param expectedReplicas expected number of replicas of the block    * @return the priority for the blocks, between 0 and ({@link #LEVEL}-1)    */
+DECL|method|getPriority (int curReplicas, int decommissionedReplicas, int expectedReplicas)
 specifier|private
 name|int
 name|getPriority
 parameter_list|(
-name|Block
-name|block
-parameter_list|,
 name|int
 name|curReplicas
 parameter_list|,
@@ -539,12 +515,12 @@ return|;
 block|}
 block|}
 comment|/** add a block to a under replication queue according to its priority    * @param block a under replication block    * @param curReplicas current number of replicas of the block    * @param decomissionedReplicas the number of decommissioned replicas    * @param expectedReplicas expected number of replicas of the block    * @return true if the block was added to a queue.    */
-DECL|method|add (Block block, int curReplicas, int decomissionedReplicas, int expectedReplicas)
+DECL|method|add (BlockInfo block, int curReplicas, int decomissionedReplicas, int expectedReplicas)
 specifier|synchronized
 name|boolean
 name|add
 parameter_list|(
-name|Block
+name|BlockInfo
 name|block
 parameter_list|,
 name|int
@@ -569,8 +545,6 @@ name|priLevel
 init|=
 name|getPriority
 argument_list|(
-name|block
-argument_list|,
 name|curReplicas
 argument_list|,
 name|decomissionedReplicas
@@ -638,12 +612,12 @@ literal|false
 return|;
 block|}
 comment|/** remove a block from a under replication queue */
-DECL|method|remove (Block block, int oldReplicas, int decommissionedReplicas, int oldExpectedReplicas)
+DECL|method|remove (BlockInfo block, int oldReplicas, int decommissionedReplicas, int oldExpectedReplicas)
 specifier|synchronized
 name|boolean
 name|remove
 parameter_list|(
-name|Block
+name|BlockInfo
 name|block
 parameter_list|,
 name|int
@@ -661,8 +635,6 @@ name|priLevel
 init|=
 name|getPriority
 argument_list|(
-name|block
-argument_list|,
 name|oldReplicas
 argument_list|,
 name|decommissionedReplicas
@@ -711,11 +683,11 @@ name|removedBlock
 return|;
 block|}
 comment|/**    * Remove a block from the under replication queues.    *    * The priLevel parameter is a hint of which queue to query    * first: if negative or&gt;= {@link #LEVEL} this shortcutting    * is not attmpted.    *    * If the block is not found in the nominated queue, an attempt is made to    * remove it from all queues.    *    *<i>Warning:</i> This is not a synchronized method.    * @param block block to remove    * @param priLevel expected privilege level    * @return true if the block was found and removed from one of the priority queues    */
-DECL|method|remove (Block block, int priLevel)
+DECL|method|remove (BlockInfo block, int priLevel)
 name|boolean
 name|remove
 parameter_list|(
-name|Block
+name|BlockInfo
 name|block
 parameter_list|,
 name|int
@@ -824,12 +796,12 @@ literal|false
 return|;
 block|}
 comment|/**    * Recalculate and potentially update the priority level of a block.    *    * If the block priority has changed from before an attempt is made to    * remove it from the block queue. Regardless of whether or not the block    * is in the block queue of (recalculate) priority, an attempt is made    * to add it to that queue. This ensures that the block will be    * in its expected priority queue (and only that queue) by the end of the    * method call.    * @param block a under replicated block    * @param curReplicas current number of replicas of the block    * @param decommissionedReplicas  the number of decommissioned replicas    * @param curExpectedReplicas expected number of replicas of the block    * @param curReplicasDelta the change in the replicate count from before    * @param expectedReplicasDelta the change in the expected replica count from before    */
-DECL|method|update (Block block, int curReplicas, int decommissionedReplicas, int curExpectedReplicas, int curReplicasDelta, int expectedReplicasDelta)
+DECL|method|update (BlockInfo block, int curReplicas, int decommissionedReplicas, int curExpectedReplicas, int curReplicasDelta, int expectedReplicasDelta)
 specifier|synchronized
 name|void
 name|update
 parameter_list|(
-name|Block
+name|BlockInfo
 name|block
 parameter_list|,
 name|int
@@ -867,8 +839,6 @@ name|curPri
 init|=
 name|getPriority
 argument_list|(
-name|block
-argument_list|,
 name|curReplicas
 argument_list|,
 name|decommissionedReplicas
@@ -881,8 +851,6 @@ name|oldPri
 init|=
 name|getPriority
 argument_list|(
-name|block
-argument_list|,
 name|oldReplicas
 argument_list|,
 name|decommissionedReplicas
@@ -1045,7 +1013,7 @@ name|List
 argument_list|<
 name|List
 argument_list|<
-name|Block
+name|BlockInfo
 argument_list|>
 argument_list|>
 name|chooseUnderReplicatedBlocks
@@ -1059,19 +1027,14 @@ name|List
 argument_list|<
 name|List
 argument_list|<
-name|Block
+name|BlockInfo
 argument_list|>
 argument_list|>
 name|blocksToReplicate
 init|=
 operator|new
 name|ArrayList
-argument_list|<
-name|List
-argument_list|<
-name|Block
-argument_list|>
-argument_list|>
+argument_list|<>
 argument_list|(
 name|LEVEL
 argument_list|)
@@ -1098,7 +1061,7 @@ argument_list|(
 operator|new
 name|ArrayList
 argument_list|<
-name|Block
+name|BlockInfo
 argument_list|>
 argument_list|()
 argument_list|)
@@ -1187,7 +1150,7 @@ name|hasNext
 argument_list|()
 condition|)
 block|{
-name|Block
+name|BlockInfo
 name|block
 init|=
 name|neededReplicationsIterator
@@ -1307,7 +1270,7 @@ name|BlockIterator
 implements|implements
 name|Iterator
 argument_list|<
-name|Block
+name|BlockInfo
 argument_list|>
 block|{
 DECL|field|level
@@ -1329,19 +1292,14 @@ name|List
 argument_list|<
 name|Iterator
 argument_list|<
-name|Block
+name|BlockInfo
 argument_list|>
 argument_list|>
 name|iterators
 init|=
 operator|new
 name|ArrayList
-argument_list|<
-name|Iterator
-argument_list|<
-name|Block
-argument_list|>
-argument_list|>
+argument_list|<>
 argument_list|()
 decl_stmt|;
 comment|/**      * Construct an iterator over all queues.      */
@@ -1461,7 +1419,7 @@ annotation|@
 name|Override
 DECL|method|next ()
 specifier|public
-name|Block
+name|BlockInfo
 name|next
 parameter_list|()
 block|{
