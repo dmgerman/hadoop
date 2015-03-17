@@ -7327,6 +7327,8 @@ name|NMETA
 return|;
 block|}
 comment|/**      * Compare logical range, st i, j MOD offset capacity.      * Compare by partition, then by key.      * @see IndexedSortable#compare      */
+annotation|@
+name|Override
 DECL|method|compare (final int mi, final int mj)
 specifier|public
 name|int
@@ -7482,6 +7484,8 @@ name|METASIZE
 index|]
 decl_stmt|;
 comment|/**      * Swap metadata for items i, j      * @see IndexedSortable#swap      */
+annotation|@
+name|Override
 DECL|method|swap (final int mi, final int mj)
 specifier|public
 name|void
