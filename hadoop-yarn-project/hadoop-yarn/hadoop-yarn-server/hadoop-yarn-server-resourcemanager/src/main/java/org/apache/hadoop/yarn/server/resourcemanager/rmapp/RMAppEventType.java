@@ -50,6 +50,10 @@ comment|// Source: Scheduler
 DECL|enumConstant|APP_ACCEPTED
 name|APP_ACCEPTED
 block|,
+comment|// TODO add source later
+DECL|enumConstant|AGGREGATOR_UPDATE
+name|AGGREGATOR_UPDATE
+block|,
 comment|// Source: RMAppAttempt
 DECL|enumConstant|ATTEMPT_REGISTERED
 name|ATTEMPT_REGISTERED

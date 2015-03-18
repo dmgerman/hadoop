@@ -252,6 +252,30 @@ argument_list|>
 name|getApplicationsToCleanup
 parameter_list|()
 function_decl|;
+comment|// This tells NM the aggregators' address info of related Apps
+DECL|method|getAppAggregatorsMap ()
+name|Map
+argument_list|<
+name|ApplicationId
+argument_list|,
+name|String
+argument_list|>
+name|getAppAggregatorsMap
+parameter_list|()
+function_decl|;
+DECL|method|setAppAggregatorsMap (Map<ApplicationId, String> appAggregatorsMap)
+name|void
+name|setAppAggregatorsMap
+parameter_list|(
+name|Map
+argument_list|<
+name|ApplicationId
+argument_list|,
+name|String
+argument_list|>
+name|appAggregatorsMap
+parameter_list|)
+function_decl|;
 DECL|method|setResponseId (int responseId)
 name|void
 name|setResponseId

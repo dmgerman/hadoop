@@ -367,11 +367,6 @@ specifier|protected
 name|ApplicationId
 name|contextAppId
 decl_stmt|;
-DECL|field|timelineServiceAddress
-specifier|protected
-name|String
-name|timelineServiceAddress
-decl_stmt|;
 annotation|@
 name|Public
 DECL|method|createTimelineClient ()
@@ -646,18 +641,14 @@ function_decl|;
 comment|/**    *<p>    * Update the timeline service address where the request will be sent to    *</p>    * @param address    *          the timeline service address    */
 DECL|method|setTimelineServiceAddress (String address)
 specifier|public
+specifier|abstract
 name|void
 name|setTimelineServiceAddress
 parameter_list|(
 name|String
 name|address
 parameter_list|)
-block|{
-name|timelineServiceAddress
-operator|=
-name|address
-expr_stmt|;
-block|}
+function_decl|;
 block|}
 end_class
 

@@ -1250,7 +1250,7 @@ argument_list|)
 return|;
 block|}
 DECL|method|getResolvedAddress (InetSocketAddress address)
-specifier|private
+specifier|public
 specifier|static
 name|String
 name|getResolvedAddress

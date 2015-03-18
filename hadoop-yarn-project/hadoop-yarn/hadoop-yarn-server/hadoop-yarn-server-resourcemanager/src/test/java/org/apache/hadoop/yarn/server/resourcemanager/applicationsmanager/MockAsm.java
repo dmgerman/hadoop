@@ -699,6 +699,57 @@ throw|;
 block|}
 annotation|@
 name|Override
+DECL|method|getAggregatorAddr ()
+specifier|public
+name|String
+name|getAggregatorAddr
+parameter_list|()
+block|{
+throw|throw
+operator|new
+name|UnsupportedOperationException
+argument_list|(
+literal|"Not supported yet."
+argument_list|)
+throw|;
+block|}
+annotation|@
+name|Override
+DECL|method|setAggregatorAddr (String aggregatorAddr)
+specifier|public
+name|void
+name|setAggregatorAddr
+parameter_list|(
+name|String
+name|aggregatorAddr
+parameter_list|)
+block|{
+throw|throw
+operator|new
+name|UnsupportedOperationException
+argument_list|(
+literal|"Not supported yet."
+argument_list|)
+throw|;
+block|}
+annotation|@
+name|Override
+DECL|method|removeAggregatorAddr ()
+specifier|public
+name|void
+name|removeAggregatorAddr
+parameter_list|()
+block|{
+throw|throw
+operator|new
+name|UnsupportedOperationException
+argument_list|(
+literal|"Not supported yet."
+argument_list|)
+throw|;
+block|}
+annotation|@
+name|Override
 DECL|method|getApplicationId ()
 specifier|public
 name|ApplicationId

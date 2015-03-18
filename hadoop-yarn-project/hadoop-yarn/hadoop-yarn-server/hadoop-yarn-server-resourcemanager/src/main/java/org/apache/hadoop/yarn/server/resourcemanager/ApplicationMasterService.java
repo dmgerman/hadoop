@@ -2372,6 +2372,12 @@ name|getApplicationId
 argument_list|()
 argument_list|)
 decl_stmt|;
+comment|// Remove aggregator address when app get finished.
+name|rmApp
+operator|.
+name|removeAggregatorAddr
+argument_list|()
+expr_stmt|;
 comment|// checking whether the app exits in RMStateStore at first not to throw
 comment|// ApplicationDoesNotExistInCacheException before and after
 comment|// RM work-preserving restart.
@@ -3699,6 +3705,27 @@ operator|.
 name|rScheduler
 operator|.
 name|getNumClusterNodes
+argument_list|()
+argument_list|)
+expr_stmt|;
+comment|// add aggregator address for this application
+name|allocateResponse
+operator|.
+name|setAggregatorAddr
+argument_list|(
+name|this
+operator|.
+name|rmContext
+operator|.
+name|getRMApps
+argument_list|()
+operator|.
+name|get
+argument_list|(
+name|applicationId
+argument_list|)
+operator|.
+name|getAggregatorAddr
 argument_list|()
 argument_list|)
 expr_stmt|;

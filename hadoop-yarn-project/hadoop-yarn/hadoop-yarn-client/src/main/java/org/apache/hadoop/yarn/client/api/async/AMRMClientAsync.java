@@ -436,6 +436,24 @@ name|hadoop
 operator|.
 name|yarn
 operator|.
+name|client
+operator|.
+name|api
+operator|.
+name|TimelineClient
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
 name|exceptions
 operator|.
 name|YarnException
@@ -1029,6 +1047,38 @@ name|int
 name|getClusterNodeCount
 parameter_list|()
 function_decl|;
+comment|/**    * Register TimelineClient to AMRMClient.    * @param timelineClient    */
+DECL|method|registerTimelineClient (TimelineClient timelineClient)
+specifier|public
+name|void
+name|registerTimelineClient
+parameter_list|(
+name|TimelineClient
+name|timelineClient
+parameter_list|)
+block|{
+name|client
+operator|.
+name|registerTimelineClient
+argument_list|(
+name|timelineClient
+argument_list|)
+expr_stmt|;
+block|}
+comment|/**    * Get registered timeline client.    * @return    */
+DECL|method|getRegisteredTimeineClient ()
+specifier|public
+name|TimelineClient
+name|getRegisteredTimeineClient
+parameter_list|()
+block|{
+return|return
+name|client
+operator|.
+name|getRegisteredTimeineClient
+argument_list|()
+return|;
+block|}
 comment|/**    * Update application's blacklist with addition or removal resources.    *    * @param blacklistAdditions list of resources which should be added to the    *        application blacklist    * @param blacklistRemovals list of resources which should be removed from the    *        application blacklist    */
 DECL|method|updateBlacklist (List<String> blacklistAdditions, List<String> blacklistRemovals)
 specifier|public

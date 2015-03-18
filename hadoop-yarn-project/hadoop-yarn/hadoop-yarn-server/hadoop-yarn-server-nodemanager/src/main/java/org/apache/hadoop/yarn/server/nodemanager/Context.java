@@ -408,6 +408,28 @@ argument_list|>
 name|getSystemCredentialsForApps
 parameter_list|()
 function_decl|;
+comment|/**    * Get the registered aggregators that located on this NM.     * @return registered    */
+DECL|method|getRegisteredAggregators ()
+name|Map
+argument_list|<
+name|ApplicationId
+argument_list|,
+name|String
+argument_list|>
+name|getRegisteredAggregators
+parameter_list|()
+function_decl|;
+comment|/**    * Return the known aggregators which get from RM for all active applications    * running on this NM.    * @return known aggregators.    */
+DECL|method|getKnownAggregators ()
+name|Map
+argument_list|<
+name|ApplicationId
+argument_list|,
+name|String
+argument_list|>
+name|getKnownAggregators
+parameter_list|()
+function_decl|;
 DECL|method|getContainers ()
 name|ConcurrentMap
 argument_list|<

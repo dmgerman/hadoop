@@ -482,6 +482,27 @@ name|String
 name|getTrackingUrl
 parameter_list|()
 function_decl|;
+comment|/**    * The aggregator address for the application.    * @return the address for the application's aggregator.    */
+DECL|method|getAggregatorAddr ()
+name|String
+name|getAggregatorAddr
+parameter_list|()
+function_decl|;
+comment|/**    * Set aggregator address for the application    * @param aggregatorAddr the address of aggregator    */
+DECL|method|setAggregatorAddr (String aggregatorAddr)
+name|void
+name|setAggregatorAddr
+parameter_list|(
+name|String
+name|aggregatorAddr
+parameter_list|)
+function_decl|;
+comment|/**    * Remove aggregator address when application is finished or killed.    */
+DECL|method|removeAggregatorAddr ()
+name|void
+name|removeAggregatorAddr
+parameter_list|()
+function_decl|;
 comment|/**    * The original tracking url for the application master.    * @return the original tracking url for the application master.    */
 DECL|method|getOriginalTrackingUrl ()
 name|String

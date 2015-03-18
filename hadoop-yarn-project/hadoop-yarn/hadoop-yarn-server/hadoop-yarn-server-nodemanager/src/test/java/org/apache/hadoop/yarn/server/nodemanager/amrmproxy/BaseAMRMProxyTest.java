@@ -3122,6 +3122,40 @@ return|;
 block|}
 annotation|@
 name|Override
+DECL|method|getRegisteredAggregators ()
+specifier|public
+name|Map
+argument_list|<
+name|ApplicationId
+argument_list|,
+name|String
+argument_list|>
+name|getRegisteredAggregators
+parameter_list|()
+block|{
+return|return
+literal|null
+return|;
+block|}
+annotation|@
+name|Override
+DECL|method|getKnownAggregators ()
+specifier|public
+name|Map
+argument_list|<
+name|ApplicationId
+argument_list|,
+name|String
+argument_list|>
+name|getKnownAggregators
+parameter_list|()
+block|{
+return|return
+literal|null
+return|;
+block|}
+annotation|@
+name|Override
 DECL|method|getContainers ()
 specifier|public
 name|ConcurrentMap
