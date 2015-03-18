@@ -3622,11 +3622,15 @@ control|)
 block|{
 name|assertThat
 argument_list|(
-operator|new
-name|File
+name|StorageLocation
+operator|.
+name|parse
 argument_list|(
 name|ev
 argument_list|)
+operator|.
+name|getFile
+argument_list|()
 operator|.
 name|getCanonicalPath
 argument_list|()
