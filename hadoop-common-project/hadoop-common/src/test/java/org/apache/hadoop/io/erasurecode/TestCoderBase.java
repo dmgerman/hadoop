@@ -20,6 +20,20 @@ end_package
 
 begin_import
 import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|conf
+operator|.
+name|Configuration
+import|;
+end_import
+
+begin_import
+import|import
 name|java
 operator|.
 name|nio
@@ -56,18 +70,6 @@ name|junit
 operator|.
 name|Assert
 operator|.
-name|assertArrayEquals
-import|;
-end_import
-
-begin_import
-import|import static
-name|org
-operator|.
-name|junit
-operator|.
-name|Assert
-operator|.
 name|assertTrue
 import|;
 end_import
@@ -92,6 +94,11 @@ init|=
 operator|new
 name|Random
 argument_list|()
+decl_stmt|;
+DECL|field|conf
+specifier|private
+name|Configuration
+name|conf
 decl_stmt|;
 DECL|field|numDataUnits
 specifier|protected
@@ -137,11 +144,14 @@ init|=
 literal|true
 decl_stmt|;
 comment|/**    * Prepare before running the case.    * @param numDataUnits    * @param numParityUnits    * @param erasedIndexes    */
-DECL|method|prepare (int numDataUnits, int numParityUnits, int[] erasedIndexes)
+DECL|method|prepare (Configuration conf, int numDataUnits, int numParityUnits, int[] erasedIndexes)
 specifier|protected
 name|void
 name|prepare
 parameter_list|(
+name|Configuration
+name|conf
+parameter_list|,
 name|int
 name|numDataUnits
 parameter_list|,
@@ -153,6 +163,12 @@ index|[]
 name|erasedIndexes
 parameter_list|)
 block|{
+name|this
+operator|.
+name|conf
+operator|=
+name|conf
+expr_stmt|;
 name|this
 operator|.
 name|numDataUnits
@@ -182,6 +198,19 @@ block|{
 literal|0
 block|}
 expr_stmt|;
+block|}
+comment|/**    * Get the conf the test.    * @return configuration    */
+DECL|method|getConf ()
+specifier|protected
+name|Configuration
+name|getConf
+parameter_list|()
+block|{
+return|return
+name|this
+operator|.
+name|conf
+return|;
 block|}
 comment|/**    * Compare and verify if erased chunks are equal to recovered chunks    * @param erasedChunks    * @param recoveredChunks    */
 DECL|method|compareAndVerify (ECChunk[] erasedChunks, ECChunk[] recoveredChunks)

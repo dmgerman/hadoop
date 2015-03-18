@@ -20,6 +20,20 @@ name|rawcoder
 package|;
 end_package
 
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|conf
+operator|.
+name|Configurable
+import|;
+end_import
+
 begin_comment
 comment|/**  * RawErasureCoder is a common interface for {@link RawErasureEncoder} and  * {@link RawErasureDecoder} as both encoder and decoder share some properties.  *  * RawErasureCoder is part of ErasureCodec framework, where ErasureCoder is  * used to encode/decode a group of blocks (BlockGroup) according to the codec  * specific BlockGroup layout and logic. An ErasureCoder extracts chunks of  * data from the blocks and can employ various low level RawErasureCoders to  * perform encoding/decoding against the chunks.  *  * To distinguish from ErasureCoder, here RawErasureCoder is used to mean the  * low level constructs, since it only takes care of the math calculation with  * a group of byte buffers.  */
 end_comment
@@ -29,6 +43,8 @@ DECL|interface|RawErasureCoder
 specifier|public
 interface|interface
 name|RawErasureCoder
+extends|extends
+name|Configurable
 block|{
 comment|/**    * Initialize with the important parameters for the code.    * @param numDataUnits how many data inputs for the coding    * @param numParityUnits how many parity outputs the coding generates    * @param chunkSize the size of the input/output buffer    */
 DECL|method|initialize (int numDataUnits, int numParityUnits, int chunkSize)

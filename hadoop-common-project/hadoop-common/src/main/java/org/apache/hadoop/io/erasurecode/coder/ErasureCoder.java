@@ -20,6 +20,20 @@ name|coder
 package|;
 end_package
 
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|conf
+operator|.
+name|Configurable
+import|;
+end_import
+
 begin_comment
 comment|/**  * An erasure coder to perform encoding or decoding given a group. Generally it  * involves calculating necessary internal steps according to codec logic. For  * each step,it calculates necessary input blocks to read chunks from and output  * parity blocks to write parity chunks into from the group. It also takes care  * of appropriate raw coder to use for the step. And encapsulates all the  * necessary info (input blocks, output blocks and raw coder) into a step  * represented by {@link ErasureCodingStep}. ErasureCoder callers can use the  * step to do the real work with retrieved input and output chunks.  *  * Note, currently only one coding step is supported. Will support complex cases  * of multiple coding steps.  *  */
 end_comment
@@ -29,6 +43,8 @@ DECL|interface|ErasureCoder
 specifier|public
 interface|interface
 name|ErasureCoder
+extends|extends
+name|Configurable
 block|{
 comment|/**    * Initialize with the important parameters for the code.    * @param numDataUnits how many data inputs for the coding    * @param numParityUnits how many parity outputs the coding generates    * @param chunkSize the size of the input/output buffer    */
 DECL|method|initialize (int numDataUnits, int numParityUnits, int chunkSize)

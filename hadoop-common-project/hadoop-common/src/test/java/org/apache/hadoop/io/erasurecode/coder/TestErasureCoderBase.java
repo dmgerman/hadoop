@@ -28,20 +28,6 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|conf
-operator|.
-name|Configuration
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
 name|io
 operator|.
 name|erasurecode
@@ -62,7 +48,7 @@ name|io
 operator|.
 name|erasurecode
 operator|.
-name|ECChunk
+name|ECBlockGroup
 import|;
 end_import
 
@@ -78,7 +64,7 @@ name|io
 operator|.
 name|erasurecode
 operator|.
-name|ECBlockGroup
+name|ECChunk
 import|;
 end_import
 
@@ -131,11 +117,6 @@ name|ErasureDecoder
 argument_list|>
 name|decoderClass
 decl_stmt|;
-DECL|field|conf
-specifier|private
-name|Configuration
-name|conf
-decl_stmt|;
 DECL|field|numChunksInBlock
 specifier|protected
 name|int
@@ -176,44 +157,6 @@ operator|=
 name|chunks
 expr_stmt|;
 block|}
-block|}
-comment|/**    * Prepare before running the case.    * @param conf    * @param numDataUnits    * @param numParityUnits    * @param erasedIndexes    */
-DECL|method|prepare (Configuration conf, int numDataUnits, int numParityUnits, int[] erasedIndexes)
-specifier|protected
-name|void
-name|prepare
-parameter_list|(
-name|Configuration
-name|conf
-parameter_list|,
-name|int
-name|numDataUnits
-parameter_list|,
-name|int
-name|numParityUnits
-parameter_list|,
-name|int
-index|[]
-name|erasedIndexes
-parameter_list|)
-block|{
-name|this
-operator|.
-name|conf
-operator|=
-name|conf
-expr_stmt|;
-name|super
-operator|.
-name|prepare
-argument_list|(
-name|numDataUnits
-argument_list|,
-name|numParityUnits
-argument_list|,
-name|erasedIndexes
-argument_list|)
-expr_stmt|;
 block|}
 comment|/**    * Generating source data, encoding, recovering and then verifying.    * RawErasureCoder mainly uses ECChunk to pass input and output data buffers,    * it supports two kinds of ByteBuffers, one is array backed, the other is    * direct ByteBuffer. Have usingDirectBuffer to indicate which case to test.    * @param usingDirectBuffer    */
 DECL|method|testCoding (boolean usingDirectBuffer)
@@ -643,16 +586,12 @@ argument_list|,
 name|chunkSize
 argument_list|)
 expr_stmt|;
-operator|(
-operator|(
-name|AbstractErasureCoder
-operator|)
 name|encoder
-operator|)
 operator|.
 name|setConf
 argument_list|(
-name|conf
+name|getConf
+argument_list|()
 argument_list|)
 expr_stmt|;
 return|return
@@ -706,16 +645,12 @@ argument_list|,
 name|chunkSize
 argument_list|)
 expr_stmt|;
-operator|(
-operator|(
-name|AbstractErasureCoder
-operator|)
 name|decoder
-operator|)
 operator|.
 name|setConf
 argument_list|(
-name|conf
+name|getConf
+argument_list|()
 argument_list|)
 expr_stmt|;
 return|return
