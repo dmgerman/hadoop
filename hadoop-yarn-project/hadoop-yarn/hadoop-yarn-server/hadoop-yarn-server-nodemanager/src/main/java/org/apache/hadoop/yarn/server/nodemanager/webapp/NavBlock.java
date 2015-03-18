@@ -148,7 +148,7 @@ name|RMWebAppURL
 init|=
 name|WebAppUtils
 operator|.
-name|getResolvedRMWebAppURLWithScheme
+name|getResolvedRemoteRMWebAppURLWithScheme
 argument_list|(
 name|this
 operator|.
