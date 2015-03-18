@@ -141,11 +141,21 @@ specifier|protected
 name|int
 name|numActiveApplications
 decl_stmt|;
+DECL|field|AMResourceUsed
+specifier|protected
+name|ResourceInfo
+name|AMResourceUsed
+decl_stmt|;
+DECL|field|userResourceLimit
+specifier|protected
+name|ResourceInfo
+name|userResourceLimit
+decl_stmt|;
 DECL|method|UserInfo ()
 name|UserInfo
 parameter_list|()
 block|{}
-DECL|method|UserInfo (String username, Resource resUsed, int activeApps, int pendingApps)
+DECL|method|UserInfo (String username, Resource resUsed, int activeApps, int pendingApps, Resource amResUsed, Resource resourceLimit)
 name|UserInfo
 parameter_list|(
 name|String
@@ -159,6 +169,12 @@ name|activeApps
 parameter_list|,
 name|int
 name|pendingApps
+parameter_list|,
+name|Resource
+name|amResUsed
+parameter_list|,
+name|Resource
+name|resourceLimit
 parameter_list|)
 block|{
 name|this
@@ -188,6 +204,26 @@ operator|.
 name|numPendingApplications
 operator|=
 name|pendingApps
+expr_stmt|;
+name|this
+operator|.
+name|AMResourceUsed
+operator|=
+operator|new
+name|ResourceInfo
+argument_list|(
+name|amResUsed
+argument_list|)
+expr_stmt|;
+name|this
+operator|.
+name|userResourceLimit
+operator|=
+operator|new
+name|ResourceInfo
+argument_list|(
+name|resourceLimit
+argument_list|)
 expr_stmt|;
 block|}
 DECL|method|getUsername ()
@@ -228,6 +264,26 @@ parameter_list|()
 block|{
 return|return
 name|numActiveApplications
+return|;
+block|}
+DECL|method|getAMResourcesUsed ()
+specifier|public
+name|ResourceInfo
+name|getAMResourcesUsed
+parameter_list|()
+block|{
+return|return
+name|AMResourceUsed
+return|;
+block|}
+DECL|method|getUserResourceLimit ()
+specifier|public
+name|ResourceInfo
+name|getUserResourceLimit
+parameter_list|()
+block|{
+return|return
+name|userResourceLimit
 return|;
 block|}
 block|}

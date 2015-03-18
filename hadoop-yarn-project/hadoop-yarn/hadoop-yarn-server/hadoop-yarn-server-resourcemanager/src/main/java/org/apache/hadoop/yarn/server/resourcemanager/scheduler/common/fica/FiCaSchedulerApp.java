@@ -1622,6 +1622,17 @@ init|=
 name|pullNewlyAllocatedContainersAndNMTokens
 argument_list|()
 decl_stmt|;
+name|Resource
+name|headroom
+init|=
+name|getHeadroom
+argument_list|()
+decl_stmt|;
+name|setApplicationHeadroomForMetrics
+argument_list|(
+name|headroom
+argument_list|)
+expr_stmt|;
 return|return
 operator|new
 name|Allocation
@@ -1631,8 +1642,7 @@ operator|.
 name|getContainerList
 argument_list|()
 argument_list|,
-name|getHeadroom
-argument_list|()
+name|headroom
 argument_list|,
 literal|null
 argument_list|,

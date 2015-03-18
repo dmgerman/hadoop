@@ -2600,7 +2600,7 @@ condition|)
 block|{
 name|numExpectedElements
 operator|=
-literal|24
+literal|25
 expr_stmt|;
 name|isParentQueue
 operator|=

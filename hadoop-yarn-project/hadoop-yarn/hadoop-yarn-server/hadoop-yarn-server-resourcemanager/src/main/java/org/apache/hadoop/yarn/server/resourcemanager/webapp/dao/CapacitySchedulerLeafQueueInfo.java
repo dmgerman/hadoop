@@ -146,10 +146,15 @@ specifier|protected
 name|float
 name|userLimitFactor
 decl_stmt|;
-DECL|field|aMResourceLimit
+DECL|field|AMResourceLimit
 specifier|protected
 name|ResourceInfo
-name|aMResourceLimit
+name|AMResourceLimit
+decl_stmt|;
+DECL|field|usedAMResource
+specifier|protected
+name|ResourceInfo
+name|usedAMResource
 decl_stmt|;
 DECL|field|userAMResourceLimit
 specifier|protected
@@ -238,7 +243,7 @@ operator|.
 name|getUserLimitFactor
 argument_list|()
 expr_stmt|;
-name|aMResourceLimit
+name|AMResourceLimit
 operator|=
 operator|new
 name|ResourceInfo
@@ -246,6 +251,20 @@ argument_list|(
 name|q
 operator|.
 name|getAMResourceLimit
+argument_list|()
+argument_list|)
+expr_stmt|;
+name|usedAMResource
+operator|=
+operator|new
+name|ResourceInfo
+argument_list|(
+name|q
+operator|.
+name|getQueueResourceUsage
+argument_list|()
+operator|.
+name|getAMUsed
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -356,7 +375,17 @@ name|getAMResourceLimit
 parameter_list|()
 block|{
 return|return
-name|aMResourceLimit
+name|AMResourceLimit
+return|;
+block|}
+DECL|method|getUsedAMResource ()
+specifier|public
+name|ResourceInfo
+name|getUsedAMResource
+parameter_list|()
+block|{
+return|return
+name|usedAMResource
 return|;
 block|}
 DECL|method|getUserAMResourceLimit ()

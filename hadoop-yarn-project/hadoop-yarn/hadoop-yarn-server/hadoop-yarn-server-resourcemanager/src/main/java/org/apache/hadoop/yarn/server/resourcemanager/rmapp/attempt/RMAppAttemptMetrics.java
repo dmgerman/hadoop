@@ -314,6 +314,22 @@ argument_list|,
 literal|0
 argument_list|)
 decl_stmt|;
+comment|// application headroom
+DECL|field|applicationHeadroom
+specifier|private
+specifier|volatile
+name|Resource
+name|applicationHeadroom
+init|=
+name|Resource
+operator|.
+name|newInstance
+argument_list|(
+literal|0
+argument_list|,
+literal|0
+argument_list|)
+decl_stmt|;
 DECL|field|numNonAMContainersPreempted
 specifier|private
 name|AtomicInteger
@@ -823,6 +839,32 @@ name|this
 operator|.
 name|totalAllocatedContainers
 return|;
+block|}
+DECL|method|getApplicationAttemptHeadroom ()
+specifier|public
+name|Resource
+name|getApplicationAttemptHeadroom
+parameter_list|()
+block|{
+return|return
+name|applicationHeadroom
+return|;
+block|}
+DECL|method|setApplicationAttemptHeadRoom (Resource headRoom)
+specifier|public
+name|void
+name|setApplicationAttemptHeadRoom
+parameter_list|(
+name|Resource
+name|headRoom
+parameter_list|)
+block|{
+name|this
+operator|.
+name|applicationHeadroom
+operator|=
+name|headRoom
+expr_stmt|;
 block|}
 block|}
 end_class
