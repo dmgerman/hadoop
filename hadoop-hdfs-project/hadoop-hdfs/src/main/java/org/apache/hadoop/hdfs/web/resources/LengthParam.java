@@ -120,6 +120,29 @@ return|return
 name|NAME
 return|;
 block|}
+DECL|method|getLength ()
+specifier|public
+name|long
+name|getLength
+parameter_list|()
+block|{
+name|Long
+name|v
+init|=
+name|getValue
+argument_list|()
+decl_stmt|;
+return|return
+name|v
+operator|==
+literal|null
+condition|?
+operator|-
+literal|1
+else|:
+name|v
+return|;
+block|}
 block|}
 end_class
 
