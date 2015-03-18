@@ -1809,6 +1809,17 @@ argument_list|,
 literal|"non-absolute-path"
 argument_list|)
 expr_stmt|;
+name|conf
+operator|.
+name|set
+argument_list|(
+name|DFSConfigKeys
+operator|.
+name|DFS_JOURNALNODE_HTTP_ADDRESS_KEY
+argument_list|,
+literal|"0.0.0.0:0"
+argument_list|)
+expr_stmt|;
 name|assertJNFailsToStart
 argument_list|(
 name|conf
