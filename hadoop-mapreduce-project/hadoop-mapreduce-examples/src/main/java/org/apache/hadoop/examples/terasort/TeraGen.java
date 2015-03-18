@@ -459,15 +459,6 @@ name|Counters
 block|{
 name|CHECKSUM
 block|}
-DECL|field|NUM_ROWS
-specifier|public
-specifier|static
-specifier|final
-name|String
-name|NUM_ROWS
-init|=
-literal|"mapreduce.terasort.num-rows"
-decl_stmt|;
 comment|/**    * An input format that assigns ranges of longs to each mapper.    */
 DECL|class|RangeInputFormat
 specifier|static
@@ -969,9 +960,16 @@ argument_list|()
 operator|.
 name|getLong
 argument_list|(
+name|TeraSortConfigKeys
+operator|.
 name|NUM_ROWS
+operator|.
+name|key
+argument_list|()
 argument_list|,
-literal|0
+name|TeraSortConfigKeys
+operator|.
+name|DEFAULT_NUM_ROWS
 argument_list|)
 return|;
 block|}
@@ -994,7 +992,12 @@ argument_list|()
 operator|.
 name|setLong
 argument_list|(
+name|TeraSortConfigKeys
+operator|.
 name|NUM_ROWS
+operator|.
+name|key
+argument_list|()
 argument_list|,
 name|numRows
 argument_list|)

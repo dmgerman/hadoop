@@ -149,13 +149,6 @@ DECL|class|TeraScheduler
 class|class
 name|TeraScheduler
 block|{
-DECL|field|USE
-specifier|static
-name|String
-name|USE
-init|=
-literal|"mapreduce.terasort.use.terascheduler"
-decl_stmt|;
 DECL|field|LOG
 specifier|private
 specifier|static
