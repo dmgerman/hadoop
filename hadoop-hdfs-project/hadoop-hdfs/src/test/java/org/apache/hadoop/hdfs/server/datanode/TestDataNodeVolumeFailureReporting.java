@@ -586,6 +586,14 @@ comment|// Restore executable permission on all directories where a failure may 
 comment|// been simulated by denying execute access.  This is based on the maximum
 comment|// number of datanodes and the maximum number of storages per data node used
 comment|// throughout the tests in this suite.
+name|assumeTrue
+argument_list|(
+operator|!
+name|Path
+operator|.
+name|WINDOWS
+argument_list|)
+expr_stmt|;
 name|int
 name|maxDataNodes
 init|=
@@ -667,11 +675,19 @@ argument_list|,
 name|fs
 argument_list|)
 expr_stmt|;
+if|if
+condition|(
+name|cluster
+operator|!=
+literal|null
+condition|)
+block|{
 name|cluster
 operator|.
 name|shutdown
 argument_list|()
 expr_stmt|;
+block|}
 block|}
 comment|/**    * Test that individual volume failures do not cause DNs to fail, that    * all volumes failed on a single datanode do cause it to fail, and    * that the capacities and liveliness is adjusted correctly in the NN.    */
 annotation|@
