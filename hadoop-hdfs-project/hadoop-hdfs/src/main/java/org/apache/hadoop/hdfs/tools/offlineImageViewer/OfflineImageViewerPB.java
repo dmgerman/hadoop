@@ -295,7 +295,7 @@ literal|"  * Web: Run a viewer to expose read-only WebHDFS API.\n"
 operator|+
 literal|"    -addr specifies the address to listen. (localhost:5978 by default)\n"
 operator|+
-literal|"  * Delimited: Generate a text file with all of the elements common\n"
+literal|"  * Delimited (experimental): Generate a text file with all of the elements common\n"
 operator|+
 literal|"    to both inodes and inodes-under-construction, separated by a\n"
 operator|+
@@ -325,13 +325,13 @@ literal|"                       against image file. (XML|FileDistribution|Web|De
 operator|+
 literal|"                       (Web by default)\n"
 operator|+
-literal|"-delimiter<arg>       Delimiting string to use with Delimited processor\n"
+literal|"-delimiter<arg>       Delimiting string to use with Delimited processor.  \n"
 operator|+
 literal|"-t,--temp<arg>        Use temporary dir to cache intermediate result to generate\n"
 operator|+
 literal|"                       Delimited outputs. If not set, Delimited processor constructs\n"
 operator|+
-literal|"                       the namespace in memory before outputting text."
+literal|"                       the namespace in memory before outputting text.\n"
 operator|+
 literal|"-h,--help              Display usage information and exit\n"
 decl_stmt|;
