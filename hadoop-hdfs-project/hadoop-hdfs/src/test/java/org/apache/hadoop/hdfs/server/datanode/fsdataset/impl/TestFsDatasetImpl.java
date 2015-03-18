@@ -2722,6 +2722,9 @@ argument_list|,
 name|eq
 argument_list|(
 name|badDir
+operator|.
+name|getAbsoluteFile
+argument_list|()
 argument_list|)
 argument_list|,
 name|Matchers
