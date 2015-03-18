@@ -320,6 +320,15 @@ init|=
 literal|10
 decl_stmt|;
 comment|// uncache blocks
+DECL|field|DNA_CODEC
+specifier|final
+specifier|static
+name|int
+name|DNA_CODEC
+init|=
+literal|11
+decl_stmt|;
+comment|// uncache blocks
 comment|/**     * Register Datanode.    *    * @see org.apache.hadoop.hdfs.server.namenode.FSNamesystem#registerDatanode(DatanodeRegistration)    * @param registration datanode registration information    * @return the given {@link org.apache.hadoop.hdfs.server.protocol.DatanodeRegistration} with    *  updated registration information    */
 annotation|@
 name|Idempotent

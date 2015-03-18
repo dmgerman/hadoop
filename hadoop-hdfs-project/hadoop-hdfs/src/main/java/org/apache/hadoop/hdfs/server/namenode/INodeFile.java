@@ -2225,6 +2225,17 @@ name|max
 expr_stmt|;
 block|}
 return|return
+name|isStriped
+argument_list|()
+condition|?
+name|HdfsConstants
+operator|.
+name|NUM_DATA_BLOCKS
+operator|+
+name|HdfsConstants
+operator|.
+name|NUM_PARITY_BLOCKS
+else|:
 name|max
 return|;
 block|}
@@ -5389,10 +5400,12 @@ name|block
 argument_list|)
 return|;
 block|}
+comment|/**    * @return true if the file is in the striping layout.    */
 annotation|@
 name|VisibleForTesting
-comment|/**    * @return true if the file is in the striping layout.    */
-comment|// TODO: move erasure coding policy to file XAttr (HDFS-7337)
+annotation|@
+name|Override
+comment|// TODO: move erasure coding policy to file XAttr
 DECL|method|isStriped ()
 specifier|public
 name|boolean

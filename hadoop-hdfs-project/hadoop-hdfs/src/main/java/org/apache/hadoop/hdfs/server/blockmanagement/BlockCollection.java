@@ -168,6 +168,13 @@ name|boolean
 name|isUnderConstruction
 parameter_list|()
 function_decl|;
+comment|/**    * @return whether the block collection is in striping format    */
+DECL|method|isStriped ()
+specifier|public
+name|boolean
+name|isStriped
+parameter_list|()
+function_decl|;
 block|}
 end_interface
 
