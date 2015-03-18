@@ -522,6 +522,20 @@ name|apache
 operator|.
 name|zookeeper
 operator|.
+name|KeeperException
+operator|.
+name|NoNodeException
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|zookeeper
+operator|.
 name|ZooDefs
 operator|.
 name|Perms
@@ -3912,6 +3926,8 @@ operator|!=
 literal|null
 condition|)
 block|{
+try|try
+block|{
 name|zkClient
 operator|.
 name|delete
@@ -3925,6 +3941,27 @@ argument_list|(
 name|nodeRemovePath
 argument_list|)
 expr_stmt|;
+block|}
+catch|catch
+parameter_list|(
+name|NoNodeException
+name|nne
+parameter_list|)
+block|{
+comment|// It is possible that the node might be deleted between the
+comment|// check and the actual delete.. which might lead to an
+comment|// exception that can bring down the daemon running this
+comment|// SecretManager
+name|LOG
+operator|.
+name|debug
+argument_list|(
+literal|"Node already deleted by peer "
+operator|+
+name|nodeRemovePath
+argument_list|)
+expr_stmt|;
+block|}
 block|}
 block|}
 else|else
@@ -4183,6 +4220,8 @@ operator|!=
 literal|null
 condition|)
 block|{
+try|try
+block|{
 name|zkClient
 operator|.
 name|delete
@@ -4196,6 +4235,27 @@ argument_list|(
 name|nodeRemovePath
 argument_list|)
 expr_stmt|;
+block|}
+catch|catch
+parameter_list|(
+name|NoNodeException
+name|nne
+parameter_list|)
+block|{
+comment|// It is possible that the node might be deleted between the
+comment|// check and the actual delete.. which might lead to an
+comment|// exception that can bring down the daemon running this
+comment|// SecretManager
+name|LOG
+operator|.
+name|debug
+argument_list|(
+literal|"Node already deleted by peer "
+operator|+
+name|nodeRemovePath
+argument_list|)
+expr_stmt|;
+block|}
 block|}
 block|}
 else|else
