@@ -756,7 +756,7 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-comment|/**      * Read the cut points from the given sequence file.      * @param fs the file system      * @param p the path to read      * @param job the job config      * @return the strings to split the partitions on      * @throws IOException      */
+comment|/**      * Read the cut points from the given sequence file.      * @param fs the file system      * @param p the path to read      * @param conf the job config      * @return the strings to split the partitions on      * @throws IOException      */
 DECL|method|readPartitions (FileSystem fs, Path p, Configuration conf)
 specifier|private
 specifier|static
