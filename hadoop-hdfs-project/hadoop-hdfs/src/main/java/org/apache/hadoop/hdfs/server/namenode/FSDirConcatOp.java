@@ -206,6 +206,10 @@ name|now
 import|;
 end_import
 
+begin_comment
+comment|/**  * Restrictions for a concat operation:  *<pre>  * 1. the src file and the target file are in the same dir  * 2. all the source files are not in snapshot  * 3. any source file cannot be the same with the target file  * 4. source files cannot be under construction or empty  * 5. source file's preferred block size cannot be greater than the target file  *</pre>  */
+end_comment
+
 begin_class
 DECL|class|FSDirConcatOp
 class|class
@@ -765,6 +769,7 @@ literal|" is referred by some other reference in some snapshot."
 argument_list|)
 throw|;
 block|}
+comment|// source file cannot be the same with the target file
 if|if
 condition|(
 name|srcINode
@@ -789,6 +794,7 @@ argument_list|()
 argument_list|)
 throw|;
 block|}
+comment|// source file cannot be under construction or empty
 if|if
 condition|(
 name|srcINodeFile
@@ -813,6 +819,45 @@ operator|+
 name|src
 operator|+
 literal|" is invalid or empty or underConstruction"
+argument_list|)
+throw|;
+block|}
+comment|// source file's preferred block size cannot be greater than the target
+comment|// file
+if|if
+condition|(
+name|srcINodeFile
+operator|.
+name|getPreferredBlockSize
+argument_list|()
+operator|>
+name|targetINode
+operator|.
+name|getPreferredBlockSize
+argument_list|()
+condition|)
+block|{
+throw|throw
+operator|new
+name|HadoopIllegalArgumentException
+argument_list|(
+literal|"concat: source file "
+operator|+
+name|src
+operator|+
+literal|" has preferred block size "
+operator|+
+name|srcINodeFile
+operator|.
+name|getPreferredBlockSize
+argument_list|()
+operator|+
+literal|" which is greater than the target file's preferred block size "
+operator|+
+name|targetINode
+operator|.
+name|getPreferredBlockSize
+argument_list|()
 argument_list|)
 throw|;
 block|}
@@ -891,6 +936,7 @@ operator|.
 name|build
 argument_list|()
 decl_stmt|;
+specifier|final
 name|short
 name|targetRepl
 init|=
