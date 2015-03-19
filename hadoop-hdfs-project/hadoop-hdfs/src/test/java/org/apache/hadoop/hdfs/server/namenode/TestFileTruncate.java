@@ -4639,7 +4639,7 @@ operator|.
 name|getLastLocatedBlock
 argument_list|()
 decl_stmt|;
-comment|/*      * For non copy-on-truncate, the truncated block id is the same, but the       * GS should increase.      * We trigger block report for dn0 after it restarts, since the GS       * of replica for the last block on it is old, so the reported last block      * from dn0 should be marked corrupt on nn and the replicas of last block       * on nn should decrease 1, then the truncated block will be replicated       * to dn0.      */
+comment|/*      * For non copy-on-truncate, the truncated block id is the same, but the       * GS should increase.      * The truncated block will be replicated to dn0 after it restarts.      */
 name|assertEquals
 argument_list|(
 name|newBlock
@@ -4970,7 +4970,7 @@ operator|.
 name|getLastLocatedBlock
 argument_list|()
 decl_stmt|;
-comment|/*      * For copy-on-truncate, new block is made with new block id and new GS.      * We trigger block report for dn1 after it restarts. The replicas of       * the new block is 2, and then it will be replicated to dn1.      */
+comment|/*      * For copy-on-truncate, new block is made with new block id and new GS.      * The replicas of the new block is 2, then it will be replicated to dn1.      */
 name|assertNotEquals
 argument_list|(
 name|newBlock
@@ -5303,11 +5303,6 @@ name|checkBlockRecovery
 argument_list|(
 name|p
 argument_list|)
-expr_stmt|;
-name|cluster
-operator|.
-name|triggerBlockReports
-argument_list|()
 expr_stmt|;
 name|LocatedBlock
 name|newBlock

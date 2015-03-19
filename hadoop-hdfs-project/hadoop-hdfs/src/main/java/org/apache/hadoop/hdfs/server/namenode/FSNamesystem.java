@@ -21384,6 +21384,24 @@ argument_list|)
 throw|;
 block|}
 block|}
+specifier|final
+name|long
+name|oldGenerationStamp
+init|=
+name|storedBlock
+operator|.
+name|getGenerationStamp
+argument_list|()
+decl_stmt|;
+specifier|final
+name|long
+name|oldNumBytes
+init|=
+name|storedBlock
+operator|.
+name|getNumBytes
+argument_list|()
+decl_stmt|;
 comment|//
 comment|// The implementation of delete operation (see @deleteInternal method)
 comment|// first removes the file paths from namespace, and delays the removal
@@ -21637,8 +21655,6 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|// find the DatanodeDescriptor objects
-comment|// There should be no locations in the blockManager till now because the
-comment|// file is underConstruction
 name|ArrayList
 argument_list|<
 name|DatanodeDescriptor
@@ -21921,6 +21937,25 @@ argument_list|,
 name|trimmedStorageInfos
 argument_list|)
 expr_stmt|;
+if|if
+condition|(
+name|closeFile
+condition|)
+block|{
+name|blockManager
+operator|.
+name|markBlockReplicasAsCorrupt
+argument_list|(
+name|storedBlock
+argument_list|,
+name|oldGenerationStamp
+argument_list|,
+name|oldNumBytes
+argument_list|,
+name|trimmedStorageInfos
+argument_list|)
+expr_stmt|;
+block|}
 block|}
 block|}
 if|if
