@@ -4,7 +4,7 @@ comment|/**  * Licensed to the Apache Software Foundation (ASF) under one  * or 
 end_comment
 
 begin_package
-DECL|package|org.apache.hadoop.yarn.server.timelineservice.aggregator
+DECL|package|org.apache.hadoop.yarn.server.timelineservice.collector
 package|package
 name|org
 operator|.
@@ -18,7 +18,7 @@ name|server
 operator|.
 name|timelineservice
 operator|.
-name|aggregator
+name|collector
 package|;
 end_package
 
@@ -77,12 +77,12 @@ annotation|@
 name|Private
 annotation|@
 name|Unstable
-DECL|class|AppLevelTimelineAggregator
+DECL|class|AppLevelTimelineCollector
 specifier|public
 class|class
-name|AppLevelTimelineAggregator
+name|AppLevelTimelineCollector
 extends|extends
-name|TimelineAggregator
+name|TimelineCollector
 block|{
 DECL|field|applicationId
 specifier|private
@@ -91,9 +91,9 @@ name|String
 name|applicationId
 decl_stmt|;
 comment|// TODO define key metadata such as flow metadata, user, and queue
-DECL|method|AppLevelTimelineAggregator (String applicationId)
+DECL|method|AppLevelTimelineCollector (String applicationId)
 specifier|public
-name|AppLevelTimelineAggregator
+name|AppLevelTimelineCollector
 parameter_list|(
 name|String
 name|applicationId
@@ -101,7 +101,7 @@ parameter_list|)
 block|{
 name|super
 argument_list|(
-name|AppLevelTimelineAggregator
+name|AppLevelTimelineCollector
 operator|.
 name|class
 operator|.

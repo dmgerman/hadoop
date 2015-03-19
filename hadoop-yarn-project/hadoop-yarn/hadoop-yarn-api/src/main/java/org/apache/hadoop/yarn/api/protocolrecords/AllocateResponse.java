@@ -660,7 +660,7 @@ annotation|@
 name|Public
 annotation|@
 name|Unstable
-DECL|method|newInstance (int responseId, List<ContainerStatus> completedContainers, List<Container> allocatedContainers, List<NodeReport> updatedNodes, Resource availResources, AMCommand command, int numClusterNodes, PreemptionMessage preempt, List<NMToken> nmTokens, Token amRMToken, List<Container> increasedContainers, List<Container> decreasedContainers, String aggregatorAddr)
+DECL|method|newInstance (int responseId, List<ContainerStatus> completedContainers, List<Container> allocatedContainers, List<NodeReport> updatedNodes, Resource availResources, AMCommand command, int numClusterNodes, PreemptionMessage preempt, List<NMToken> nmTokens, Token amRMToken, List<Container> increasedContainers, List<Container> decreasedContainers, String collectorAddr)
 specifier|public
 specifier|static
 name|AllocateResponse
@@ -721,7 +721,7 @@ argument_list|>
 name|decreasedContainers
 parameter_list|,
 name|String
-name|aggregatorAddr
+name|collectorAddr
 parameter_list|)
 block|{
 name|AllocateResponse
@@ -761,9 +761,9 @@ argument_list|)
 expr_stmt|;
 name|response
 operator|.
-name|setAggregatorAddr
+name|setCollectorAddr
 argument_list|(
-name|aggregatorAddr
+name|collectorAddr
 argument_list|)
 expr_stmt|;
 return|return
@@ -1148,30 +1148,30 @@ name|Priority
 name|priority
 parameter_list|)
 function_decl|;
-comment|/**    * The address of aggregator that belong to this app    *    * @return The address of aggregator that belong to this attempt    */
+comment|/**    * The address of collector that belong to this app    *    * @return The address of collector that belong to this attempt    */
 annotation|@
 name|Public
 annotation|@
 name|Unstable
-DECL|method|getAggregatorAddr ()
+DECL|method|getCollectorAddr ()
 specifier|public
 specifier|abstract
 name|String
-name|getAggregatorAddr
+name|getCollectorAddr
 parameter_list|()
 function_decl|;
 annotation|@
 name|Private
 annotation|@
 name|Unstable
-DECL|method|setAggregatorAddr (String aggregatorAddr)
+DECL|method|setCollectorAddr (String collectorAddr)
 specifier|public
 specifier|abstract
 name|void
-name|setAggregatorAddr
+name|setCollectorAddr
 parameter_list|(
 name|String
-name|aggregatorAddr
+name|collectorAddr
 parameter_list|)
 function_decl|;
 block|}

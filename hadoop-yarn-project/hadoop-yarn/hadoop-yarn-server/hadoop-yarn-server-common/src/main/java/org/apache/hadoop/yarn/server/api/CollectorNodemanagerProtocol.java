@@ -78,7 +78,7 @@ name|api
 operator|.
 name|protocolrecords
 operator|.
-name|ReportNewAggregatorsInfoRequest
+name|ReportNewCollectorInfoRequest
 import|;
 end_import
 
@@ -98,28 +98,28 @@ name|api
 operator|.
 name|protocolrecords
 operator|.
-name|ReportNewAggregatorsInfoResponse
+name|ReportNewCollectorInfoResponse
 import|;
 end_import
 
 begin_comment
-comment|/**  *<p>The protocol between an<code>TimelineAggregatorsCollection</code> and a   *<code>NodeManager</code> to report a new application aggregator get launched.  *</p>  *   */
+comment|/**  *<p>The protocol between an<code>TimelineCollectorManager</code> and a  *<code>NodeManager</code> to report a new application collector get launched.  *</p>  *  */
 end_comment
 
 begin_interface
 annotation|@
 name|Private
-DECL|interface|AggregatorNodemanagerProtocol
+DECL|interface|CollectorNodemanagerProtocol
 specifier|public
 interface|interface
-name|AggregatorNodemanagerProtocol
+name|CollectorNodemanagerProtocol
 block|{
-comment|/**    *     *<p>    * The<code>TimelineAggregatorsCollection</code> provides a list of mapping    * between application and aggregator's address in     * {@link ReportNewAggregatorsInfoRequest} to a<code>NodeManager</code> to    *<em>register</em> aggregator's info, include: applicationId and REST URI to     * access aggregator. NodeManager will add them into registered aggregators     * and register them into<code>ResourceManager</code> afterwards.    *</p>    *     * @param request the request of registering a new aggregator or a list of aggregators    * @return     * @throws YarnException    * @throws IOException    */
-DECL|method|reportNewAggregatorInfo ( ReportNewAggregatorsInfoRequest request)
-name|ReportNewAggregatorsInfoResponse
-name|reportNewAggregatorInfo
+comment|/**    *    *<p>    * The<code>TimelineCollectorManager</code> provides a list of mapping    * between application and collector's address in    * {@link ReportNewCollectorInfoRequest} to a<code>NodeManager</code> to    *<em>register</em> collector's info, include: applicationId and REST URI to    * access collector. NodeManager will add them into registered collectors    * and register them into<code>ResourceManager</code> afterwards.    *</p>    *    * @param request the request of registering a new collector or a list of    *                collectors    * @return    * @throws YarnException    * @throws IOException    */
+DECL|method|reportNewCollectorInfo ( ReportNewCollectorInfoRequest request)
+name|ReportNewCollectorInfoResponse
+name|reportNewCollectorInfo
 parameter_list|(
-name|ReportNewAggregatorsInfoRequest
+name|ReportNewCollectorInfoRequest
 name|request
 parameter_list|)
 throws|throws

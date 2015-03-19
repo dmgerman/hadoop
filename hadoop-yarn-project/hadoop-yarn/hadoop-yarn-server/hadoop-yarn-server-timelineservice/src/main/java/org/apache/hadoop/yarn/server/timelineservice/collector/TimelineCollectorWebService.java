@@ -4,7 +4,7 @@ comment|/**  * Licensed to the Apache Software Foundation (ASF) under one  * or 
 end_comment
 
 begin_package
-DECL|package|org.apache.hadoop.yarn.server.timelineservice.aggregator
+DECL|package|org.apache.hadoop.yarn.server.timelineservice.collector
 package|package
 name|org
 operator|.
@@ -18,7 +18,7 @@ name|server
 operator|.
 name|timelineservice
 operator|.
-name|aggregator
+name|collector
 package|;
 end_package
 
@@ -64,7 +64,79 @@ name|ws
 operator|.
 name|rs
 operator|.
-name|*
+name|Consumes
+import|;
+end_import
+
+begin_import
+import|import
+name|javax
+operator|.
+name|ws
+operator|.
+name|rs
+operator|.
+name|GET
+import|;
+end_import
+
+begin_import
+import|import
+name|javax
+operator|.
+name|ws
+operator|.
+name|rs
+operator|.
+name|PUT
+import|;
+end_import
+
+begin_import
+import|import
+name|javax
+operator|.
+name|ws
+operator|.
+name|rs
+operator|.
+name|Path
+import|;
+end_import
+
+begin_import
+import|import
+name|javax
+operator|.
+name|ws
+operator|.
+name|rs
+operator|.
+name|Produces
+import|;
+end_import
+
+begin_import
+import|import
+name|javax
+operator|.
+name|ws
+operator|.
+name|rs
+operator|.
+name|QueryParam
+import|;
+end_import
+
+begin_import
+import|import
+name|javax
+operator|.
+name|ws
+operator|.
+name|rs
+operator|.
+name|WebApplicationException
 import|;
 end_import
 
@@ -270,24 +342,6 @@ name|api
 operator|.
 name|records
 operator|.
-name|ApplicationId
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|yarn
-operator|.
-name|api
-operator|.
-name|records
-operator|.
 name|timelineservice
 operator|.
 name|TimelineEntities
@@ -370,10 +424,10 @@ name|Path
 argument_list|(
 literal|"/ws/v2/timeline"
 argument_list|)
-DECL|class|TimelineAggregatorWebService
+DECL|class|TimelineCollectorWebService
 specifier|public
 class|class
-name|TimelineAggregatorWebService
+name|TimelineCollectorWebService
 block|{
 DECL|field|LOG
 specifier|private
@@ -386,7 +440,7 @@ name|LogFactory
 operator|.
 name|getLog
 argument_list|(
-name|TimelineAggregatorWebService
+name|TimelineCollectorWebService
 operator|.
 name|class
 argument_list|)
@@ -519,11 +573,11 @@ return|return
 operator|new
 name|AboutInfo
 argument_list|(
-literal|"Timeline API"
+literal|"Timeline Collector API"
 argument_list|)
 return|;
 block|}
-comment|/**    * Accepts writes to the aggregator, and returns a response. It simply routes    * the request to the app level aggregator. It expects an application as a    * context.    */
+comment|/**    * Accepts writes to the collector, and returns a response. It simply routes    * the request to the app level collector. It expects an application as a    * context.    */
 annotation|@
 name|PUT
 annotation|@
@@ -666,10 +720,10 @@ name|build
 argument_list|()
 return|;
 block|}
-name|TimelineAggregator
-name|service
+name|TimelineCollector
+name|collector
 init|=
-name|getAggregatorService
+name|getCollector
 argument_list|(
 name|req
 argument_list|,
@@ -678,7 +732,7 @@ argument_list|)
 decl_stmt|;
 if|if
 condition|(
-name|service
+name|collector
 operator|==
 literal|null
 condition|)
@@ -697,7 +751,7 @@ argument_list|()
 throw|;
 comment|// different exception?
 block|}
-name|service
+name|collector
 operator|.
 name|postEntities
 argument_list|(
@@ -755,10 +809,6 @@ name|String
 name|appId
 parameter_list|)
 block|{
-comment|// Make sure the appId is not null and is valid
-name|ApplicationId
-name|appID
-decl_stmt|;
 try|try
 block|{
 if|if
@@ -802,9 +852,9 @@ return|;
 block|}
 block|}
 specifier|private
-name|TimelineAggregator
-DECL|method|getAggregatorService (HttpServletRequest req, String appIdToParse)
-name|getAggregatorService
+name|TimelineCollector
+DECL|method|getCollector (HttpServletRequest req, String appIdToParse)
+name|getCollector
 parameter_list|(
 name|HttpServletRequest
 name|req
@@ -822,23 +872,23 @@ name|appIdToParse
 argument_list|)
 decl_stmt|;
 specifier|final
-name|TimelineAggregatorsCollection
-name|aggregatorCollection
+name|TimelineCollectorManager
+name|collectorManager
 init|=
 operator|(
-name|TimelineAggregatorsCollection
+name|TimelineCollectorManager
 operator|)
 name|context
 operator|.
 name|getAttribute
 argument_list|(
-name|TimelineAggregatorsCollection
+name|TimelineCollectorManager
 operator|.
-name|AGGREGATOR_COLLECTION_ATTR_KEY
+name|COLLECTOR_MANAGER_ATTR_KEY
 argument_list|)
 decl_stmt|;
 return|return
-name|aggregatorCollection
+name|collectorManager
 operator|.
 name|get
 argument_list|(

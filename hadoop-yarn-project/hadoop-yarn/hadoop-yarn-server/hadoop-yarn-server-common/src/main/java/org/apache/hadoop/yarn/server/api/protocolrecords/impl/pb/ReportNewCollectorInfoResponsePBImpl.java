@@ -72,7 +72,7 @@ name|proto
 operator|.
 name|YarnServerCommonServiceProtos
 operator|.
-name|ReportNewAggregatorsInfoResponseProto
+name|ReportNewCollectorInfoResponseProto
 import|;
 end_import
 
@@ -92,7 +92,7 @@ name|api
 operator|.
 name|protocolrecords
 operator|.
-name|ReportNewAggregatorsInfoResponse
+name|ReportNewCollectorInfoResponse
 import|;
 end_import
 
@@ -113,24 +113,24 @@ annotation|@
 name|Private
 annotation|@
 name|Unstable
-DECL|class|ReportNewAggregatorsInfoResponsePBImpl
+DECL|class|ReportNewCollectorInfoResponsePBImpl
 specifier|public
 class|class
-name|ReportNewAggregatorsInfoResponsePBImpl
+name|ReportNewCollectorInfoResponsePBImpl
 extends|extends
-name|ReportNewAggregatorsInfoResponse
+name|ReportNewCollectorInfoResponse
 block|{
 DECL|field|proto
-name|ReportNewAggregatorsInfoResponseProto
+name|ReportNewCollectorInfoResponseProto
 name|proto
 init|=
-name|ReportNewAggregatorsInfoResponseProto
+name|ReportNewCollectorInfoResponseProto
 operator|.
 name|getDefaultInstance
 argument_list|()
 decl_stmt|;
 DECL|field|builder
-name|ReportNewAggregatorsInfoResponseProto
+name|ReportNewCollectorInfoResponseProto
 operator|.
 name|Builder
 name|builder
@@ -143,24 +143,24 @@ name|viaProto
 init|=
 literal|false
 decl_stmt|;
-DECL|method|ReportNewAggregatorsInfoResponsePBImpl ()
+DECL|method|ReportNewCollectorInfoResponsePBImpl ()
 specifier|public
-name|ReportNewAggregatorsInfoResponsePBImpl
+name|ReportNewCollectorInfoResponsePBImpl
 parameter_list|()
 block|{
 name|builder
 operator|=
-name|ReportNewAggregatorsInfoResponseProto
+name|ReportNewCollectorInfoResponseProto
 operator|.
 name|newBuilder
 argument_list|()
 expr_stmt|;
 block|}
-DECL|method|ReportNewAggregatorsInfoResponsePBImpl (ReportNewAggregatorsInfoResponseProto proto)
+DECL|method|ReportNewCollectorInfoResponsePBImpl (ReportNewCollectorInfoResponseProto proto)
 specifier|public
-name|ReportNewAggregatorsInfoResponsePBImpl
+name|ReportNewCollectorInfoResponsePBImpl
 parameter_list|(
-name|ReportNewAggregatorsInfoResponseProto
+name|ReportNewCollectorInfoResponseProto
 name|proto
 parameter_list|)
 block|{
@@ -177,7 +177,7 @@ expr_stmt|;
 block|}
 DECL|method|getProto ()
 specifier|public
-name|ReportNewAggregatorsInfoResponseProto
+name|ReportNewCollectorInfoResponseProto
 name|getProto
 parameter_list|()
 block|{

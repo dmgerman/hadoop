@@ -742,7 +742,7 @@ name|server
 operator|.
 name|api
 operator|.
-name|AggregatorNodemanagerProtocol
+name|CollectorNodemanagerProtocol
 import|;
 end_import
 
@@ -762,7 +762,7 @@ name|api
 operator|.
 name|protocolrecords
 operator|.
-name|ReportNewAggregatorsInfoRequest
+name|ReportNewCollectorInfoRequest
 import|;
 end_import
 
@@ -782,7 +782,7 @@ name|api
 operator|.
 name|protocolrecords
 operator|.
-name|ReportNewAggregatorsInfoResponse
+name|ReportNewCollectorInfoResponse
 import|;
 end_import
 
@@ -802,7 +802,7 @@ name|api
 operator|.
 name|records
 operator|.
-name|AppAggregatorsMap
+name|AppCollectorsMap
 import|;
 end_import
 
@@ -887,14 +887,14 @@ specifier|final
 name|String
 name|ILLEGAL_NUMBER_MESSAGE
 init|=
-literal|"aggregators' number in ReportNewAggregatorsInfoRequest is not ONE."
+literal|"collectors' number in ReportNewCollectorInfoRequest is not ONE."
 decl_stmt|;
-DECL|field|DEFAULT_AGGREGATOR_ADDR
+DECL|field|DEFAULT_COLLECTOR_ADDR
 specifier|public
 specifier|static
 specifier|final
 name|String
-name|DEFAULT_AGGREGATOR_ADDR
+name|DEFAULT_COLLECTOR_ADDR
 init|=
 literal|"localhost:0"
 decl_stmt|;
@@ -1097,10 +1097,10 @@ block|}
 block|}
 annotation|@
 name|Test
-DECL|method|testRPCOnAggregatorNodeManagerProtocol ()
+DECL|method|testRPCOnCollectorNodeManagerProtocol ()
 specifier|public
 name|void
-name|testRPCOnAggregatorNodeManagerProtocol
+name|testRPCOnCollectorNodeManagerProtocol
 parameter_list|()
 throws|throws
 name|IOException
@@ -1160,12 +1160,12 @@ name|rpc
 operator|.
 name|getServer
 argument_list|(
-name|AggregatorNodemanagerProtocol
+name|CollectorNodemanagerProtocol
 operator|.
 name|class
 argument_list|,
 operator|new
-name|DummyNMAggregatorService
+name|DummyNMCollectorService
 argument_list|()
 argument_list|,
 name|addr
@@ -1269,18 +1269,18 @@ name|printStackTrace
 argument_list|()
 expr_stmt|;
 block|}
-comment|// Test AggregatorNodemanagerProtocol get proper response
-name|AggregatorNodemanagerProtocol
+comment|// Test CollectorNodemanagerProtocol get proper response
+name|CollectorNodemanagerProtocol
 name|proxy
 init|=
 operator|(
-name|AggregatorNodemanagerProtocol
+name|CollectorNodemanagerProtocol
 operator|)
 name|rpc
 operator|.
 name|getProxy
 argument_list|(
-name|AggregatorNodemanagerProtocol
+name|CollectorNodemanagerProtocol
 operator|.
 name|class
 argument_list|,
@@ -1294,25 +1294,25 @@ argument_list|,
 name|conf
 argument_list|)
 decl_stmt|;
-comment|// Verify request with DEFAULT_APP_ID and DEFAULT_AGGREGATOR_ADDR get
+comment|// Verify request with DEFAULT_APP_ID and DEFAULT_COLLECTOR_ADDR get
 comment|// normally response.
 try|try
 block|{
-name|ReportNewAggregatorsInfoRequest
+name|ReportNewCollectorInfoRequest
 name|request
 init|=
-name|ReportNewAggregatorsInfoRequest
+name|ReportNewCollectorInfoRequest
 operator|.
 name|newInstance
 argument_list|(
 name|DEFAULT_APP_ID
 argument_list|,
-name|DEFAULT_AGGREGATOR_ADDR
+name|DEFAULT_COLLECTOR_ADDR
 argument_list|)
 decl_stmt|;
 name|proxy
 operator|.
-name|reportNewAggregatorInfo
+name|reportNewCollectorInfo
 argument_list|(
 name|request
 argument_list|)
@@ -1333,18 +1333,18 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|// Verify empty request get YarnException back (by design in
-comment|// DummyNMAggregatorService)
+comment|// DummyNMCollectorService)
 try|try
 block|{
 name|proxy
 operator|.
-name|reportNewAggregatorInfo
+name|reportNewCollectorInfo
 argument_list|(
 name|Records
 operator|.
 name|newRecord
 argument_list|(
-name|ReportNewAggregatorsInfoRequest
+name|ReportNewCollectorInfoRequest
 operator|.
 name|class
 argument_list|)
@@ -2334,23 +2334,23 @@ return|return
 name|containerToken
 return|;
 block|}
-comment|// A dummy implementation for AggregatorNodemanagerProtocol for test purpose,
-comment|// it only can accept one appID, aggregatorAddr pair or throw exceptions
-DECL|class|DummyNMAggregatorService
+comment|// A dummy implementation for CollectorNodemanagerProtocol for test purpose,
+comment|// it only can accept one appID, collectorAddr pair or throw exceptions
+DECL|class|DummyNMCollectorService
 specifier|public
 class|class
-name|DummyNMAggregatorService
+name|DummyNMCollectorService
 implements|implements
-name|AggregatorNodemanagerProtocol
+name|CollectorNodemanagerProtocol
 block|{
 annotation|@
 name|Override
-DECL|method|reportNewAggregatorInfo ( ReportNewAggregatorsInfoRequest request)
+DECL|method|reportNewCollectorInfo ( ReportNewCollectorInfoRequest request)
 specifier|public
-name|ReportNewAggregatorsInfoResponse
-name|reportNewAggregatorInfo
+name|ReportNewCollectorInfoResponse
+name|reportNewCollectorInfo
 parameter_list|(
-name|ReportNewAggregatorsInfoRequest
+name|ReportNewCollectorInfoRequest
 name|request
 parameter_list|)
 throws|throws
@@ -2360,18 +2360,18 @@ name|IOException
 block|{
 name|List
 argument_list|<
-name|AppAggregatorsMap
+name|AppCollectorsMap
 argument_list|>
-name|appAggregators
+name|appCollectors
 init|=
 name|request
 operator|.
-name|getAppAggregatorsList
+name|getAppCollectorsList
 argument_list|()
 decl_stmt|;
 if|if
 condition|(
-name|appAggregators
+name|appCollectors
 operator|.
 name|size
 argument_list|()
@@ -2379,11 +2379,11 @@ operator|==
 literal|1
 condition|)
 block|{
-comment|// check default appID and aggregatorAddr
-name|AppAggregatorsMap
-name|appAggregator
+comment|// check default appID and collectorAddr
+name|AppCollectorsMap
+name|appCollector
 init|=
-name|appAggregators
+name|appCollectors
 operator|.
 name|get
 argument_list|(
@@ -2394,7 +2394,7 @@ name|Assert
 operator|.
 name|assertEquals
 argument_list|(
-name|appAggregator
+name|appCollector
 operator|.
 name|getApplicationId
 argument_list|()
@@ -2406,12 +2406,12 @@ name|Assert
 operator|.
 name|assertEquals
 argument_list|(
-name|appAggregator
+name|appCollector
 operator|.
-name|getAggregatorAddr
+name|getCollectorAddr
 argument_list|()
 argument_list|,
-name|DEFAULT_AGGREGATOR_ADDR
+name|DEFAULT_COLLECTOR_ADDR
 argument_list|)
 expr_stmt|;
 block|}
@@ -2425,14 +2425,14 @@ name|ILLEGAL_NUMBER_MESSAGE
 argument_list|)
 throw|;
 block|}
-name|ReportNewAggregatorsInfoResponse
+name|ReportNewCollectorInfoResponse
 name|response
 init|=
 name|recordFactory
 operator|.
 name|newRecordInstance
 argument_list|(
-name|ReportNewAggregatorsInfoResponse
+name|ReportNewCollectorInfoResponse
 operator|.
 name|class
 argument_list|)

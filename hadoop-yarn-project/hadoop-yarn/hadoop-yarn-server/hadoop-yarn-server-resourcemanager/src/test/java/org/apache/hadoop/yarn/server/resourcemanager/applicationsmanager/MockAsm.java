@@ -699,10 +699,10 @@ throw|;
 block|}
 annotation|@
 name|Override
-DECL|method|getAggregatorAddr ()
+DECL|method|getCollectorAddr ()
 specifier|public
 name|String
-name|getAggregatorAddr
+name|getCollectorAddr
 parameter_list|()
 block|{
 throw|throw
@@ -715,13 +715,13 @@ throw|;
 block|}
 annotation|@
 name|Override
-DECL|method|setAggregatorAddr (String aggregatorAddr)
+DECL|method|setCollectorAddr (String collectorAddr)
 specifier|public
 name|void
-name|setAggregatorAddr
+name|setCollectorAddr
 parameter_list|(
 name|String
-name|aggregatorAddr
+name|collectorAddr
 parameter_list|)
 block|{
 throw|throw
@@ -734,10 +734,10 @@ throw|;
 block|}
 annotation|@
 name|Override
-DECL|method|removeAggregatorAddr ()
+DECL|method|removeCollectorAddr ()
 specifier|public
 name|void
-name|removeAggregatorAddr
+name|removeCollectorAddr
 parameter_list|()
 block|{
 throw|throw

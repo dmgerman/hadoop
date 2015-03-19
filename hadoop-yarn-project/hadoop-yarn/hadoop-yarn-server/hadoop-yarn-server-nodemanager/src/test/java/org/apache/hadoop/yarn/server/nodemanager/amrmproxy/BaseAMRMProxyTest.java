@@ -3122,7 +3122,7 @@ return|;
 block|}
 annotation|@
 name|Override
-DECL|method|getRegisteredAggregators ()
+DECL|method|getRegisteredCollectors ()
 specifier|public
 name|Map
 argument_list|<
@@ -3130,7 +3130,7 @@ name|ApplicationId
 argument_list|,
 name|String
 argument_list|>
-name|getRegisteredAggregators
+name|getRegisteredCollectors
 parameter_list|()
 block|{
 return|return
@@ -3139,7 +3139,7 @@ return|;
 block|}
 annotation|@
 name|Override
-DECL|method|getKnownAggregators ()
+DECL|method|getKnownCollectors ()
 specifier|public
 name|Map
 argument_list|<
@@ -3147,7 +3147,7 @@ name|ApplicationId
 argument_list|,
 name|String
 argument_list|>
-name|getKnownAggregators
+name|getKnownCollectors
 parameter_list|()
 block|{
 return|return

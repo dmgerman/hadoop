@@ -1744,10 +1744,10 @@ name|nextAttemptId
 init|=
 literal|1
 decl_stmt|;
-DECL|field|aggregatorAddr
+DECL|field|collectorAddr
 specifier|private
 name|String
-name|aggregatorAddr
+name|collectorAddr
 decl_stmt|;
 comment|// This field isn't protected by readlock now.
 DECL|field|currentAttempt
@@ -2011,10 +2011,10 @@ name|NEW
 argument_list|,
 name|RMAppEventType
 operator|.
-name|AGGREGATOR_UPDATE
+name|COLLECTOR_UPDATE
 argument_list|,
 operator|new
-name|RMAppAggregatorUpdateTransition
+name|RMAppCollectorUpdateTransition
 argument_list|()
 argument_list|)
 operator|.
@@ -2159,10 +2159,10 @@ name|NEW_SAVING
 argument_list|,
 name|RMAppEventType
 operator|.
-name|AGGREGATOR_UPDATE
+name|COLLECTOR_UPDATE
 argument_list|,
 operator|new
-name|RMAppAggregatorUpdateTransition
+name|RMAppCollectorUpdateTransition
 argument_list|()
 argument_list|)
 operator|.
@@ -2309,10 +2309,10 @@ name|SUBMITTED
 argument_list|,
 name|RMAppEventType
 operator|.
-name|AGGREGATOR_UPDATE
+name|COLLECTOR_UPDATE
 argument_list|,
 operator|new
-name|RMAppAggregatorUpdateTransition
+name|RMAppCollectorUpdateTransition
 argument_list|()
 argument_list|)
 operator|.
@@ -2440,10 +2440,10 @@ name|ACCEPTED
 argument_list|,
 name|RMAppEventType
 operator|.
-name|AGGREGATOR_UPDATE
+name|COLLECTOR_UPDATE
 argument_list|,
 operator|new
-name|RMAppAggregatorUpdateTransition
+name|RMAppCollectorUpdateTransition
 argument_list|()
 argument_list|)
 operator|.
@@ -2646,10 +2646,10 @@ name|RUNNING
 argument_list|,
 name|RMAppEventType
 operator|.
-name|AGGREGATOR_UPDATE
+name|COLLECTOR_UPDATE
 argument_list|,
 operator|new
-name|RMAppAggregatorUpdateTransition
+name|RMAppCollectorUpdateTransition
 argument_list|()
 argument_list|)
 operator|.
@@ -2859,10 +2859,10 @@ name|FINAL_SAVING
 argument_list|,
 name|RMAppEventType
 operator|.
-name|AGGREGATOR_UPDATE
+name|COLLECTOR_UPDATE
 argument_list|,
 operator|new
-name|RMAppAggregatorUpdateTransition
+name|RMAppCollectorUpdateTransition
 argument_list|()
 argument_list|)
 comment|// ignorable transitions
@@ -2948,10 +2948,10 @@ name|FINISHING
 argument_list|,
 name|RMAppEventType
 operator|.
-name|AGGREGATOR_UPDATE
+name|COLLECTOR_UPDATE
 argument_list|,
 operator|new
-name|RMAppAggregatorUpdateTransition
+name|RMAppCollectorUpdateTransition
 argument_list|()
 argument_list|)
 comment|// ignorable transitions
@@ -3018,10 +3018,10 @@ name|KILLING
 argument_list|,
 name|RMAppEventType
 operator|.
-name|AGGREGATOR_UPDATE
+name|COLLECTOR_UPDATE
 argument_list|,
 operator|new
-name|RMAppAggregatorUpdateTransition
+name|RMAppCollectorUpdateTransition
 argument_list|()
 argument_list|)
 operator|.
@@ -4092,47 +4092,47 @@ expr_stmt|;
 block|}
 annotation|@
 name|Override
-DECL|method|getAggregatorAddr ()
+DECL|method|getCollectorAddr ()
 specifier|public
 name|String
-name|getAggregatorAddr
+name|getCollectorAddr
 parameter_list|()
 block|{
 return|return
 name|this
 operator|.
-name|aggregatorAddr
+name|collectorAddr
 return|;
 block|}
 annotation|@
 name|Override
-DECL|method|setAggregatorAddr (String aggregatorAddr)
+DECL|method|setCollectorAddr (String collectorAddr)
 specifier|public
 name|void
-name|setAggregatorAddr
+name|setCollectorAddr
 parameter_list|(
 name|String
-name|aggregatorAddr
+name|collectorAddr
 parameter_list|)
 block|{
 name|this
 operator|.
-name|aggregatorAddr
+name|collectorAddr
 operator|=
-name|aggregatorAddr
+name|collectorAddr
 expr_stmt|;
 block|}
 annotation|@
 name|Override
-DECL|method|removeAggregatorAddr ()
+DECL|method|removeCollectorAddr ()
 specifier|public
 name|void
-name|removeAggregatorAddr
+name|removeCollectorAddr
 parameter_list|()
 block|{
 name|this
 operator|.
-name|aggregatorAddr
+name|collectorAddr
 operator|=
 literal|null
 expr_stmt|;
@@ -5458,8 +5458,8 @@ operator|.
 name|startTime
 argument_list|)
 expr_stmt|;
-comment|//TODO recover aggregator address.
-comment|//this.aggregatorAddr = appState.getAggregatorAddr();
+comment|//TODO recover collector address.
+comment|//this.collectorAddr = appState.getCollectorAddr();
 name|RMAppAttemptImpl
 name|preAttempt
 init|=
@@ -5794,12 +5794,12 @@ parameter_list|)
 block|{     }
 empty_stmt|;
 block|}
-DECL|class|RMAppAggregatorUpdateTransition
+DECL|class|RMAppCollectorUpdateTransition
 specifier|private
 specifier|static
 specifier|final
 class|class
-name|RMAppAggregatorUpdateTransition
+name|RMAppCollectorUpdateTransition
 extends|extends
 name|RMAppTransition
 block|{
@@ -5819,7 +5819,7 @@ name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"Updating aggregator info for app: "
+literal|"Updating collector info for app: "
 operator|+
 name|app
 operator|.
@@ -5827,22 +5827,22 @@ name|getApplicationId
 argument_list|()
 argument_list|)
 expr_stmt|;
-name|RMAppAggregatorUpdateEvent
-name|appAggregatorUpdateEvent
+name|RMAppCollectorUpdateEvent
+name|appCollectorUpdateEvent
 init|=
 operator|(
-name|RMAppAggregatorUpdateEvent
+name|RMAppCollectorUpdateEvent
 operator|)
 name|event
 decl_stmt|;
-comment|// Update aggregator address
+comment|// Update collector address
 name|app
 operator|.
-name|setAggregatorAddr
+name|setCollectorAddr
 argument_list|(
-name|appAggregatorUpdateEvent
+name|appCollectorUpdateEvent
 operator|.
-name|getAppAggregatorAddr
+name|getAppCollectorAddr
 argument_list|()
 argument_list|)
 expr_stmt|;

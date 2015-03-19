@@ -55,29 +55,29 @@ import|;
 end_import
 
 begin_class
-DECL|class|ReportNewAggregatorsInfoResponse
+DECL|class|ReportNewCollectorInfoResponse
 specifier|public
 specifier|abstract
 class|class
-name|ReportNewAggregatorsInfoResponse
+name|ReportNewCollectorInfoResponse
 block|{
 annotation|@
 name|Private
 DECL|method|newInstance ()
 specifier|public
 specifier|static
-name|ReportNewAggregatorsInfoResponse
+name|ReportNewCollectorInfoResponse
 name|newInstance
 parameter_list|()
 block|{
-name|ReportNewAggregatorsInfoResponse
+name|ReportNewCollectorInfoResponse
 name|response
 init|=
 name|Records
 operator|.
 name|newRecord
 argument_list|(
-name|ReportNewAggregatorsInfoResponse
+name|ReportNewCollectorInfoResponse
 operator|.
 name|class
 argument_list|)

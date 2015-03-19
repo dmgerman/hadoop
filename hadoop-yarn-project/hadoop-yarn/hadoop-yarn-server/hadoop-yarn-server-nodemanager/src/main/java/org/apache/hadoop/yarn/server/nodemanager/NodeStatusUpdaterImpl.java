@@ -4840,7 +4840,7 @@ name|this
 operator|.
 name|context
 operator|.
-name|getRegisteredAggregators
+name|getRegisteredCollectors
 argument_list|()
 argument_list|)
 decl_stmt|;
@@ -5244,11 +5244,11 @@ name|ApplicationId
 argument_list|,
 name|String
 argument_list|>
-name|knownAggregators
+name|knownCollectors
 init|=
 name|response
 operator|.
-name|getAppAggregatorsMap
+name|getAppCollectorsMap
 argument_list|()
 decl_stmt|;
 operator|(
@@ -5260,9 +5260,9 @@ operator|)
 name|context
 operator|)
 operator|.
-name|addKnownAggregators
+name|addKnownCollectors
 argument_list|(
-name|knownAggregators
+name|knownCollectors
 argument_list|)
 expr_stmt|;
 block|}

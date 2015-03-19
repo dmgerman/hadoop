@@ -2372,10 +2372,10 @@ name|getApplicationId
 argument_list|()
 argument_list|)
 decl_stmt|;
-comment|// Remove aggregator address when app get finished.
+comment|// Remove collector address when app get finished.
 name|rmApp
 operator|.
-name|removeAggregatorAddr
+name|removeCollectorAddr
 argument_list|()
 expr_stmt|;
 comment|// checking whether the app exits in RMStateStore at first not to throw
@@ -3708,10 +3708,10 @@ name|getNumClusterNodes
 argument_list|()
 argument_list|)
 expr_stmt|;
-comment|// add aggregator address for this application
+comment|// add collector address for this application
 name|allocateResponse
 operator|.
-name|setAggregatorAddr
+name|setCollectorAddr
 argument_list|(
 name|this
 operator|.
@@ -3725,7 +3725,7 @@ argument_list|(
 name|applicationId
 argument_list|)
 operator|.
-name|getAggregatorAddr
+name|getCollectorAddr
 argument_list|()
 argument_list|)
 expr_stmt|;

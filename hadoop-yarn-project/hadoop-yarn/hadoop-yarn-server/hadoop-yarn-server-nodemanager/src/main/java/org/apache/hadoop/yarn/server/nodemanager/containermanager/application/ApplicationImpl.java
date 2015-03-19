@@ -2751,13 +2751,14 @@ name|getAppId
 argument_list|()
 argument_list|)
 expr_stmt|;
-comment|// Remove aggregator info for finished apps.
-comment|// TODO check we remove related aggregators info in failure cases (YARN-3038)
+comment|// Remove collectors info for finished apps.
+comment|// TODO check we remove related collectors info in failure cases
+comment|// (YARN-3038)
 name|app
 operator|.
 name|context
 operator|.
-name|getRegisteredAggregators
+name|getRegisteredCollectors
 argument_list|()
 operator|.
 name|remove
@@ -2772,7 +2773,7 @@ name|app
 operator|.
 name|context
 operator|.
-name|getKnownAggregators
+name|getKnownCollectors
 argument_list|()
 operator|.
 name|remove

@@ -498,7 +498,7 @@ name|proto
 operator|.
 name|YarnServerCommonServiceProtos
 operator|.
-name|AppAggregatorsMapProto
+name|AppCollectorsMapProto
 import|;
 end_import
 
@@ -769,14 +769,14 @@ name|resource
 init|=
 literal|null
 decl_stmt|;
-DECL|field|appAggregatorsMap
+DECL|field|appCollectorsMap
 name|Map
 argument_list|<
 name|ApplicationId
 argument_list|,
 name|String
 argument_list|>
-name|appAggregatorsMap
+name|appCollectorsMap
 init|=
 literal|null
 decl_stmt|;
@@ -1057,12 +1057,12 @@ if|if
 condition|(
 name|this
 operator|.
-name|appAggregatorsMap
+name|appCollectorsMap
 operator|!=
 literal|null
 condition|)
 block|{
-name|addAppAggregatorsMapToProto
+name|addAppCollectorsMapToProto
 argument_list|()
 expr_stmt|;
 block|}
@@ -1138,10 +1138,10 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-DECL|method|addAppAggregatorsMapToProto ()
+DECL|method|addAppCollectorsMapToProto ()
 specifier|private
 name|void
-name|addAppAggregatorsMapToProto
+name|addAppCollectorsMapToProto
 parameter_list|()
 block|{
 name|maybeInitBuilder
@@ -1149,7 +1149,7 @@ argument_list|()
 expr_stmt|;
 name|builder
 operator|.
-name|clearAppAggregatorsMap
+name|clearAppCollectorsMap
 argument_list|()
 expr_stmt|;
 for|for
@@ -1164,7 +1164,7 @@ name|String
 argument_list|>
 name|entry
 range|:
-name|appAggregatorsMap
+name|appCollectorsMap
 operator|.
 name|entrySet
 argument_list|()
@@ -1172,9 +1172,9 @@ control|)
 block|{
 name|builder
 operator|.
-name|addAppAggregatorsMap
+name|addAppCollectorsMap
 argument_list|(
-name|AppAggregatorsMapProto
+name|AppCollectorsMapProto
 operator|.
 name|newBuilder
 argument_list|()
@@ -1190,7 +1190,7 @@ argument_list|()
 argument_list|)
 argument_list|)
 operator|.
-name|setAppAggregatorAddr
+name|setAppCollectorAddr
 argument_list|(
 name|entry
 operator|.
@@ -2871,7 +2871,7 @@ return|;
 block|}
 annotation|@
 name|Override
-DECL|method|getAppAggregatorsMap ()
+DECL|method|getAppCollectorsMap ()
 specifier|public
 name|Map
 argument_list|<
@@ -2879,14 +2879,14 @@ name|ApplicationId
 argument_list|,
 name|String
 argument_list|>
-name|getAppAggregatorsMap
+name|getAppCollectorsMap
 parameter_list|()
 block|{
 if|if
 condition|(
 name|this
 operator|.
-name|appAggregatorsMap
+name|appCollectorsMap
 operator|!=
 literal|null
 condition|)
@@ -2894,14 +2894,14 @@ block|{
 return|return
 name|this
 operator|.
-name|appAggregatorsMap
+name|appCollectorsMap
 return|;
 block|}
-name|initAppAggregatorsMap
+name|initAppCollectorsMap
 argument_list|()
 expr_stmt|;
 return|return
-name|appAggregatorsMap
+name|appCollectorsMap
 return|;
 block|}
 DECL|method|initSystemCredentials ()
@@ -2988,10 +2988,10 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-DECL|method|initAppAggregatorsMap ()
+DECL|method|initAppCollectorsMap ()
 specifier|private
 name|void
-name|initAppAggregatorsMap
+name|initAppCollectorsMap
 parameter_list|()
 block|{
 name|NodeHeartbeatResponseProtoOrBuilder
@@ -3005,18 +3005,18 @@ name|builder
 decl_stmt|;
 name|List
 argument_list|<
-name|AppAggregatorsMapProto
+name|AppCollectorsMapProto
 argument_list|>
 name|list
 init|=
 name|p
 operator|.
-name|getAppAggregatorsMapList
+name|getAppCollectorsMapList
 argument_list|()
 decl_stmt|;
 name|this
 operator|.
-name|appAggregatorsMap
+name|appCollectorsMap
 operator|=
 operator|new
 name|HashMap
@@ -3029,7 +3029,7 @@ argument_list|()
 expr_stmt|;
 for|for
 control|(
-name|AppAggregatorsMapProto
+name|AppCollectorsMapProto
 name|c
 range|:
 name|list
@@ -3048,7 +3048,7 @@ argument_list|)
 decl_stmt|;
 name|this
 operator|.
-name|appAggregatorsMap
+name|appCollectorsMap
 operator|.
 name|put
 argument_list|(
@@ -3056,7 +3056,7 @@ name|appId
 argument_list|,
 name|c
 operator|.
-name|getAppAggregatorAddr
+name|getAppCollectorAddr
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -3120,10 +3120,10 @@ expr_stmt|;
 block|}
 annotation|@
 name|Override
-DECL|method|setAppAggregatorsMap ( Map<ApplicationId, String> appAggregatorsMap)
+DECL|method|setAppCollectorsMap ( Map<ApplicationId, String> appCollectorsMap)
 specifier|public
 name|void
-name|setAppAggregatorsMap
+name|setAppCollectorsMap
 parameter_list|(
 name|Map
 argument_list|<
@@ -3131,16 +3131,16 @@ name|ApplicationId
 argument_list|,
 name|String
 argument_list|>
-name|appAggregatorsMap
+name|appCollectorsMap
 parameter_list|)
 block|{
 if|if
 condition|(
-name|appAggregatorsMap
+name|appCollectorsMap
 operator|==
 literal|null
 operator|||
-name|appAggregatorsMap
+name|appCollectorsMap
 operator|.
 name|isEmpty
 argument_list|()
@@ -3153,7 +3153,7 @@ argument_list|()
 expr_stmt|;
 name|this
 operator|.
-name|appAggregatorsMap
+name|appCollectorsMap
 operator|=
 operator|new
 name|HashMap
@@ -3166,11 +3166,11 @@ argument_list|()
 expr_stmt|;
 name|this
 operator|.
-name|appAggregatorsMap
+name|appCollectorsMap
 operator|.
 name|putAll
 argument_list|(
-name|appAggregatorsMap
+name|appCollectorsMap
 argument_list|)
 expr_stmt|;
 block|}

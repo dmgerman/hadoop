@@ -898,16 +898,16 @@ name|ApplicationId
 argument_list|,
 name|String
 argument_list|>
-name|aggregators
+name|collectors
 init|=
-name|getAggregators
+name|getCollectors
 argument_list|()
 decl_stmt|;
 name|original
 operator|.
-name|setRegisteredAggregators
+name|setRegisteredCollectors
 argument_list|(
-name|aggregators
+name|collectors
 argument_list|)
 expr_stmt|;
 name|NodeHeartbeatRequestPBImpl
@@ -966,11 +966,11 @@ argument_list|)
 expr_stmt|;
 name|assertEquals
 argument_list|(
-name|aggregators
+name|collectors
 argument_list|,
 name|copy
 operator|.
-name|getRegisteredAggregators
+name|getRegisteredCollectors
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -1150,16 +1150,16 @@ name|ApplicationId
 argument_list|,
 name|String
 argument_list|>
-name|aggregators
+name|collectors
 init|=
-name|getAggregators
+name|getCollectors
 argument_list|()
 decl_stmt|;
 name|original
 operator|.
-name|setAppAggregatorsMap
+name|setAppCollectorsMap
 argument_list|(
-name|aggregators
+name|collectors
 argument_list|)
 expr_stmt|;
 name|NodeHeartbeatResponsePBImpl
@@ -1244,11 +1244,11 @@ argument_list|)
 expr_stmt|;
 name|assertEquals
 argument_list|(
-name|aggregators
+name|collectors
 argument_list|,
 name|copy
 operator|.
-name|getAppAggregatorsMap
+name|getAppCollectorsMap
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -2331,7 +2331,7 @@ return|return
 name|nodeLabels
 return|;
 block|}
-DECL|method|getAggregators ()
+DECL|method|getCollectors ()
 specifier|private
 name|Map
 argument_list|<
@@ -2339,7 +2339,7 @@ name|ApplicationId
 argument_list|,
 name|String
 argument_list|>
-name|getAggregators
+name|getCollectors
 parameter_list|()
 block|{
 name|ApplicationId
@@ -2355,7 +2355,7 @@ literal|1
 argument_list|)
 decl_stmt|;
 name|String
-name|aggregatorAddr
+name|collectorAddr
 init|=
 literal|"localhost:0"
 decl_stmt|;
@@ -2365,7 +2365,7 @@ name|ApplicationId
 argument_list|,
 name|String
 argument_list|>
-name|aggregatorMap
+name|collectorMap
 init|=
 operator|new
 name|HashMap
@@ -2376,17 +2376,17 @@ name|String
 argument_list|>
 argument_list|()
 decl_stmt|;
-name|aggregatorMap
+name|collectorMap
 operator|.
 name|put
 argument_list|(
 name|appID
 argument_list|,
-name|aggregatorAddr
+name|collectorAddr
 argument_list|)
 expr_stmt|;
 return|return
-name|aggregatorMap
+name|collectorMap
 return|;
 block|}
 DECL|method|getContainerStatus (int applicationId, int containerID, int appAttemptId)

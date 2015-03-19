@@ -4,7 +4,7 @@ comment|/**  * Licensed to the Apache Software Foundation (ASF) under one  * or 
 end_comment
 
 begin_package
-DECL|package|org.apache.hadoop.yarn.server.timelineservice.aggregator
+DECL|package|org.apache.hadoop.yarn.server.timelineservice.collector
 package|package
 name|org
 operator|.
@@ -18,9 +18,41 @@ name|server
 operator|.
 name|timelineservice
 operator|.
-name|aggregator
+name|collector
 package|;
 end_package
+
+begin_import
+import|import static
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|fs
+operator|.
+name|CommonConfigurationKeys
+operator|.
+name|DEFAULT_HADOOP_HTTP_STATIC_USER
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|fs
+operator|.
+name|CommonConfigurationKeys
+operator|.
+name|HADOOP_HTTP_STATIC_USER
+import|;
+end_import
 
 begin_import
 import|import
@@ -38,7 +70,7 @@ name|java
 operator|.
 name|net
 operator|.
-name|URI
+name|InetSocketAddress
 import|;
 end_import
 
@@ -48,7 +80,7 @@ name|java
 operator|.
 name|net
 operator|.
-name|InetSocketAddress
+name|URI
 import|;
 end_import
 
@@ -310,7 +342,7 @@ name|server
 operator|.
 name|api
 operator|.
-name|AggregatorNodemanagerProtocol
+name|CollectorNodemanagerProtocol
 import|;
 end_import
 
@@ -330,7 +362,7 @@ name|api
 operator|.
 name|protocolrecords
 operator|.
-name|ReportNewAggregatorsInfoRequest
+name|ReportNewCollectorInfoRequest
 import|;
 end_import
 
@@ -385,39 +417,21 @@ import|;
 end_import
 
 begin_import
-import|import static
-name|org
+import|import
+name|com
 operator|.
-name|apache
+name|google
 operator|.
-name|hadoop
+name|common
 operator|.
-name|fs
+name|annotations
 operator|.
-name|CommonConfigurationKeys
-operator|.
-name|DEFAULT_HADOOP_HTTP_STATIC_USER
-import|;
-end_import
-
-begin_import
-import|import static
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|fs
-operator|.
-name|CommonConfigurationKeys
-operator|.
-name|HADOOP_HTTP_STATIC_USER
+name|VisibleForTesting
 import|;
 end_import
 
 begin_comment
-comment|/**  * Class that manages adding and removing aggregators and their lifecycle. It  * provides thread safety access to the aggregators inside.  *  * It is a singleton, and instances should be obtained via  * {@link #getInstance()}.  */
+comment|/**  * Class that manages adding and removing collectors and their lifecycle. It  * provides thread safety access to the collectors inside.  *  * It is a singleton, and instances should be obtained via  * {@link #getInstance()}.  */
 end_comment
 
 begin_class
@@ -425,10 +439,10 @@ annotation|@
 name|Private
 annotation|@
 name|Unstable
-DECL|class|TimelineAggregatorsCollection
+DECL|class|TimelineCollectorManager
 specifier|public
 class|class
-name|TimelineAggregatorsCollection
+name|TimelineCollectorManager
 extends|extends
 name|CompositeService
 block|{
@@ -443,7 +457,7 @@ name|LogFactory
 operator|.
 name|getLog
 argument_list|(
-name|TimelineAggregatorsCollection
+name|TimelineCollectorManager
 operator|.
 name|class
 argument_list|)
@@ -452,24 +466,24 @@ DECL|field|INSTANCE
 specifier|private
 specifier|static
 specifier|final
-name|TimelineAggregatorsCollection
+name|TimelineCollectorManager
 name|INSTANCE
 init|=
 operator|new
-name|TimelineAggregatorsCollection
+name|TimelineCollectorManager
 argument_list|()
 decl_stmt|;
 comment|// access to this map is synchronized with the map itself
-DECL|field|aggregators
+DECL|field|collectors
 specifier|private
 specifier|final
 name|Map
 argument_list|<
 name|String
 argument_list|,
-name|TimelineAggregator
+name|TimelineCollector
 argument_list|>
-name|aggregators
+name|collectors
 init|=
 name|Collections
 operator|.
@@ -480,12 +494,12 @@ name|HashMap
 argument_list|<
 name|String
 argument_list|,
-name|TimelineAggregator
+name|TimelineCollector
 argument_list|>
 argument_list|()
 argument_list|)
 decl_stmt|;
-comment|// REST server for this aggregator collection
+comment|// REST server for this collector manager
 DECL|field|timelineRestServer
 specifier|private
 name|HttpServer2
@@ -496,27 +510,27 @@ specifier|private
 name|String
 name|timelineRestServerBindAddress
 decl_stmt|;
-DECL|field|nmAggregatorService
+DECL|field|nmCollectorService
 specifier|private
-name|AggregatorNodemanagerProtocol
-name|nmAggregatorService
+name|CollectorNodemanagerProtocol
+name|nmCollectorService
 decl_stmt|;
-DECL|field|nmAggregatorServiceAddress
+DECL|field|nmCollectorServiceAddress
 specifier|private
 name|InetSocketAddress
-name|nmAggregatorServiceAddress
+name|nmCollectorServiceAddress
 decl_stmt|;
-DECL|field|AGGREGATOR_COLLECTION_ATTR_KEY
+DECL|field|COLLECTOR_MANAGER_ATTR_KEY
 specifier|static
 specifier|final
 name|String
-name|AGGREGATOR_COLLECTION_ATTR_KEY
+name|COLLECTOR_MANAGER_ATTR_KEY
 init|=
-literal|"aggregator.collection"
+literal|"collector.manager"
 decl_stmt|;
 DECL|method|getInstance ()
 specifier|static
-name|TimelineAggregatorsCollection
+name|TimelineCollectorManager
 name|getInstance
 parameter_list|()
 block|{
@@ -524,13 +538,16 @@ return|return
 name|INSTANCE
 return|;
 block|}
-DECL|method|TimelineAggregatorsCollection ()
-name|TimelineAggregatorsCollection
+annotation|@
+name|VisibleForTesting
+DECL|method|TimelineCollectorManager ()
+specifier|protected
+name|TimelineCollectorManager
 parameter_list|()
 block|{
 name|super
 argument_list|(
-name|TimelineAggregatorsCollection
+name|TimelineCollectorManager
 operator|.
 name|class
 operator|.
@@ -554,7 +571,7 @@ name|Exception
 block|{
 name|this
 operator|.
-name|nmAggregatorServiceAddress
+name|nmCollectorServiceAddress
 operator|=
 name|conf
 operator|.
@@ -566,15 +583,15 @@ name|NM_BIND_HOST
 argument_list|,
 name|YarnConfiguration
 operator|.
-name|NM_AGGREGATOR_SERVICE_ADDRESS
+name|NM_COLLECTOR_SERVICE_ADDRESS
 argument_list|,
 name|YarnConfiguration
 operator|.
-name|DEFAULT_NM_AGGREGATOR_SERVICE_ADDRESS
+name|DEFAULT_NM_COLLECTOR_SERVICE_ADDRESS
 argument_list|,
 name|YarnConfiguration
 operator|.
-name|DEFAULT_NM_AGGREGATOR_SERVICE_PORT
+name|DEFAULT_NM_COLLECTOR_SERVICE_PORT
 argument_list|)
 expr_stmt|;
 block|}
@@ -626,17 +643,17 @@ name|serviceStop
 argument_list|()
 expr_stmt|;
 block|}
-comment|/**    * Put the aggregator into the collection if an aggregator mapped by id does    * not exist.    *    * @throws YarnRuntimeException if there was any exception in initializing and    * starting the app level service    * @return the aggregator associated with id after the potential put.    */
-DECL|method|putIfAbsent (ApplicationId appId, TimelineAggregator aggregator)
+comment|/**    * Put the collector into the collection if an collector mapped by id does    * not exist.    *    * @throws YarnRuntimeException if there was any exception in initializing and    * starting the app level service    * @return the collector associated with id after the potential put.    */
+DECL|method|putIfAbsent (ApplicationId appId, TimelineCollector collector)
 specifier|public
-name|TimelineAggregator
+name|TimelineCollector
 name|putIfAbsent
 parameter_list|(
 name|ApplicationId
 name|appId
 parameter_list|,
-name|TimelineAggregator
-name|aggregator
+name|TimelineCollector
+name|collector
 parameter_list|)
 block|{
 name|String
@@ -647,22 +664,22 @@ operator|.
 name|toString
 argument_list|()
 decl_stmt|;
-name|TimelineAggregator
-name|aggregatorInTable
+name|TimelineCollector
+name|collectorInTable
 decl_stmt|;
 name|boolean
-name|aggregatorIsNew
+name|collectorIsNew
 init|=
 literal|false
 decl_stmt|;
 synchronized|synchronized
 init|(
-name|aggregators
+name|collectors
 init|)
 block|{
-name|aggregatorInTable
+name|collectorInTable
 operator|=
-name|aggregators
+name|collectors
 operator|.
 name|get
 argument_list|(
@@ -671,7 +688,7 @@ argument_list|)
 expr_stmt|;
 if|if
 condition|(
-name|aggregatorInTable
+name|collectorInTable
 operator|==
 literal|null
 condition|)
@@ -680,7 +697,7 @@ try|try
 block|{
 comment|// initialize, start, and add it to the collection so it can be
 comment|// cleaned up when the parent shuts down
-name|aggregator
+name|collector
 operator|.
 name|init
 argument_list|(
@@ -688,36 +705,36 @@ name|getConfig
 argument_list|()
 argument_list|)
 expr_stmt|;
-name|aggregator
+name|collector
 operator|.
 name|start
 argument_list|()
 expr_stmt|;
-name|aggregators
+name|collectors
 operator|.
 name|put
 argument_list|(
 name|id
 argument_list|,
-name|aggregator
+name|collector
 argument_list|)
 expr_stmt|;
 name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"the aggregator for "
+literal|"the collector for "
 operator|+
 name|id
 operator|+
 literal|" was added"
 argument_list|)
 expr_stmt|;
-name|aggregatorInTable
+name|collectorInTable
 operator|=
-name|aggregator
+name|collector
 expr_stmt|;
-name|aggregatorIsNew
+name|collectorIsNew
 operator|=
 literal|true
 expr_stmt|;
@@ -742,7 +759,7 @@ block|{
 name|String
 name|msg
 init|=
-literal|"the aggregator for "
+literal|"the collector for "
 operator|+
 name|id
 operator|+
@@ -757,15 +774,15 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-comment|// Report to NM if a new aggregator is added.
+comment|// Report to NM if a new collector is added.
 if|if
 condition|(
-name|aggregatorIsNew
+name|collectorIsNew
 condition|)
 block|{
 try|try
 block|{
-name|reportNewAggregatorToNM
+name|reportNewCollectorToNM
 argument_list|(
 name|appId
 argument_list|)
@@ -782,11 +799,11 @@ name|LOG
 operator|.
 name|error
 argument_list|(
-literal|"Failed to report a new aggregator for application: "
+literal|"Failed to report a new collector for application: "
 operator|+
 name|appId
 operator|+
-literal|" to NM Aggregator Services."
+literal|" to the NM Collector Service."
 argument_list|)
 expr_stmt|;
 throw|throw
@@ -799,10 +816,10 @@ throw|;
 block|}
 block|}
 return|return
-name|aggregatorInTable
+name|collectorInTable
 return|;
 block|}
-comment|/**    * Removes the aggregator for the specified id. The aggregator is also stopped    * as a result. If the aggregator does not exist, no change is made.    *    * @return whether it was removed successfully    */
+comment|/**    * Removes the collector for the specified id. The collector is also stopped    * as a result. If the collector does not exist, no change is made.    *    * @return whether it was removed successfully    */
 DECL|method|remove (String id)
 specifier|public
 name|boolean
@@ -814,13 +831,13 @@ parameter_list|)
 block|{
 synchronized|synchronized
 init|(
-name|aggregators
+name|collectors
 init|)
 block|{
-name|TimelineAggregator
-name|aggregator
+name|TimelineCollector
+name|collector
 init|=
-name|aggregators
+name|collectors
 operator|.
 name|remove
 argument_list|(
@@ -829,7 +846,7 @@ argument_list|)
 decl_stmt|;
 if|if
 condition|(
-name|aggregator
+name|collector
 operator|==
 literal|null
 condition|)
@@ -837,7 +854,7 @@ block|{
 name|String
 name|msg
 init|=
-literal|"the aggregator for "
+literal|"the collector for "
 operator|+
 name|id
 operator|+
@@ -857,7 +874,7 @@ block|}
 else|else
 block|{
 comment|// stop the service to do clean up
-name|aggregator
+name|collector
 operator|.
 name|stop
 argument_list|()
@@ -866,7 +883,7 @@ name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"the aggregator service for "
+literal|"the collector service for "
 operator|+
 name|id
 operator|+
@@ -879,10 +896,10 @@ return|;
 block|}
 block|}
 block|}
-comment|/**    * Returns the aggregator for the specified id.    *    * @return the aggregator or null if it does not exist    */
+comment|/**    * Returns the collector for the specified id.    *    * @return the collector or null if it does not exist    */
 DECL|method|get (String id)
 specifier|public
-name|TimelineAggregator
+name|TimelineCollector
 name|get
 parameter_list|(
 name|String
@@ -890,7 +907,7 @@ name|id
 parameter_list|)
 block|{
 return|return
-name|aggregators
+name|collectors
 operator|.
 name|get
 argument_list|(
@@ -898,7 +915,7 @@ name|id
 argument_list|)
 return|;
 block|}
-comment|/**    * Returns whether the aggregator for the specified id exists in this    * collection.    */
+comment|/**    * Returns whether the collector for the specified id exists in this    * collection.    */
 DECL|method|containsKey (String id)
 specifier|public
 name|boolean
@@ -909,7 +926,7 @@ name|id
 parameter_list|)
 block|{
 return|return
-name|aggregators
+name|collectors
 operator|.
 name|containsKey
 argument_list|(
@@ -917,7 +934,7 @@ name|id
 argument_list|)
 return|;
 block|}
-comment|/**    * Launch the REST web server for this aggregator collection    */
+comment|/**    * Launch the REST web server for this collector manager    */
 DECL|method|startWebApp ()
 specifier|private
 name|void
@@ -973,7 +990,7 @@ name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"Instantiating the per-node aggregator webapp at "
+literal|"Instantiating the per-node collector webapp at "
 operator|+
 name|timelineRestServerBindAddress
 argument_list|)
@@ -1109,7 +1126,7 @@ name|timelineRestServer
 operator|.
 name|addJerseyResourcePackage
 argument_list|(
-name|TimelineAggregatorWebService
+name|TimelineCollectorWebService
 operator|.
 name|class
 operator|.
@@ -1150,9 +1167,9 @@ name|timelineRestServer
 operator|.
 name|setAttribute
 argument_list|(
-name|AGGREGATOR_COLLECTION_ATTR_KEY
+name|COLLECTOR_MANAGER_ATTR_KEY
 argument_list|,
-name|TimelineAggregatorsCollection
+name|TimelineCollectorManager
 operator|.
 name|getInstance
 argument_list|()
@@ -1173,7 +1190,7 @@ block|{
 name|String
 name|msg
 init|=
-literal|"The per-node aggregator webapp failed to start."
+literal|"The per-node collector webapp failed to start."
 decl_stmt|;
 name|LOG
 operator|.
@@ -1195,10 +1212,10 @@ argument_list|)
 throw|;
 block|}
 block|}
-DECL|method|reportNewAggregatorToNM (ApplicationId appId)
+DECL|method|reportNewCollectorToNM (ApplicationId appId)
 specifier|private
 name|void
-name|reportNewAggregatorToNM
+name|reportNewCollectorToNM
 parameter_list|(
 name|ApplicationId
 name|appId
@@ -1210,15 +1227,15 @@ name|IOException
 block|{
 name|this
 operator|.
-name|nmAggregatorService
+name|nmCollectorService
 operator|=
-name|getNMAggregatorService
+name|getNMCollectorService
 argument_list|()
 expr_stmt|;
-name|ReportNewAggregatorsInfoRequest
+name|ReportNewCollectorInfoRequest
 name|request
 init|=
-name|ReportNewAggregatorsInfoRequest
+name|ReportNewCollectorInfoRequest
 operator|.
 name|newInstance
 argument_list|(
@@ -1233,26 +1250,27 @@ name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"Report a new aggregator for application: "
+literal|"Report a new collector for application: "
 operator|+
 name|appId
 operator|+
-literal|" to NM Aggregator Services."
+literal|" to the NM Collector Service."
 argument_list|)
 expr_stmt|;
-name|nmAggregatorService
+name|nmCollectorService
 operator|.
-name|reportNewAggregatorInfo
+name|reportNewCollectorInfo
 argument_list|(
 name|request
 argument_list|)
 expr_stmt|;
 block|}
-comment|// protected for test
-DECL|method|getNMAggregatorService ()
+annotation|@
+name|VisibleForTesting
+DECL|method|getNMCollectorService ()
 specifier|protected
-name|AggregatorNodemanagerProtocol
-name|getNMAggregatorService
+name|CollectorNodemanagerProtocol
+name|getNMCollectorService
 parameter_list|()
 block|{
 name|Configuration
@@ -1275,20 +1293,32 @@ decl_stmt|;
 comment|// TODO Security settings.
 return|return
 operator|(
-name|AggregatorNodemanagerProtocol
+name|CollectorNodemanagerProtocol
 operator|)
 name|rpc
 operator|.
 name|getProxy
 argument_list|(
-name|AggregatorNodemanagerProtocol
+name|CollectorNodemanagerProtocol
 operator|.
 name|class
 argument_list|,
-name|nmAggregatorServiceAddress
+name|nmCollectorServiceAddress
 argument_list|,
 name|conf
 argument_list|)
+return|;
+block|}
+annotation|@
+name|VisibleForTesting
+DECL|method|getRestServerBindAddress ()
+specifier|public
+name|String
+name|getRestServerBindAddress
+parameter_list|()
+block|{
+return|return
+name|timelineRestServerBindAddress
 return|;
 block|}
 block|}

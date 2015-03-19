@@ -44,22 +44,6 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|classification
-operator|.
-name|InterfaceAudience
-operator|.
-name|Private
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
 name|yarn
 operator|.
 name|exceptions
@@ -82,7 +66,7 @@ name|proto
 operator|.
 name|YarnServerCommonServiceProtos
 operator|.
-name|ReportNewAggregatorsInfoRequestProto
+name|ReportNewCollectorInfoRequestProto
 import|;
 end_import
 
@@ -100,7 +84,7 @@ name|proto
 operator|.
 name|YarnServerCommonServiceProtos
 operator|.
-name|ReportNewAggregatorsInfoResponseProto
+name|ReportNewCollectorInfoResponseProto
 import|;
 end_import
 
@@ -118,7 +102,7 @@ name|server
 operator|.
 name|api
 operator|.
-name|AggregatorNodemanagerProtocol
+name|CollectorNodemanagerProtocol
 import|;
 end_import
 
@@ -136,27 +120,7 @@ name|server
 operator|.
 name|api
 operator|.
-name|AggregatorNodemanagerProtocolPB
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|yarn
-operator|.
-name|server
-operator|.
-name|api
-operator|.
-name|protocolrecords
-operator|.
-name|ReportNewAggregatorsInfoRequest
+name|CollectorNodemanagerProtocolPB
 import|;
 end_import
 
@@ -176,7 +140,7 @@ name|api
 operator|.
 name|protocolrecords
 operator|.
-name|ReportNewAggregatorsInfoResponse
+name|ReportNewCollectorInfoResponse
 import|;
 end_import
 
@@ -200,7 +164,7 @@ name|impl
 operator|.
 name|pb
 operator|.
-name|ReportNewAggregatorsInfoRequestPBImpl
+name|ReportNewCollectorInfoRequestPBImpl
 import|;
 end_import
 
@@ -224,7 +188,7 @@ name|impl
 operator|.
 name|pb
 operator|.
-name|ReportNewAggregatorsInfoResponsePBImpl
+name|ReportNewCollectorInfoResponsePBImpl
 import|;
 end_import
 
@@ -253,23 +217,23 @@ import|;
 end_import
 
 begin_class
-DECL|class|AggregatorNodemanagerProtocolPBServiceImpl
+DECL|class|CollectorNodemanagerProtocolPBServiceImpl
 specifier|public
 class|class
-name|AggregatorNodemanagerProtocolPBServiceImpl
+name|CollectorNodemanagerProtocolPBServiceImpl
 implements|implements
-name|AggregatorNodemanagerProtocolPB
+name|CollectorNodemanagerProtocolPB
 block|{
 DECL|field|real
 specifier|private
-name|AggregatorNodemanagerProtocol
+name|CollectorNodemanagerProtocol
 name|real
 decl_stmt|;
-DECL|method|AggregatorNodemanagerProtocolPBServiceImpl (AggregatorNodemanagerProtocol impl)
+DECL|method|CollectorNodemanagerProtocolPBServiceImpl (CollectorNodemanagerProtocol impl)
 specifier|public
-name|AggregatorNodemanagerProtocolPBServiceImpl
+name|CollectorNodemanagerProtocolPBServiceImpl
 parameter_list|(
-name|AggregatorNodemanagerProtocol
+name|CollectorNodemanagerProtocol
 name|impl
 parameter_list|)
 block|{
@@ -282,37 +246,37 @@ expr_stmt|;
 block|}
 annotation|@
 name|Override
-DECL|method|reportNewAggregatorInfo ( RpcController arg0, ReportNewAggregatorsInfoRequestProto proto)
+DECL|method|reportNewCollectorInfo ( RpcController arg0, ReportNewCollectorInfoRequestProto proto)
 specifier|public
-name|ReportNewAggregatorsInfoResponseProto
-name|reportNewAggregatorInfo
+name|ReportNewCollectorInfoResponseProto
+name|reportNewCollectorInfo
 parameter_list|(
 name|RpcController
 name|arg0
 parameter_list|,
-name|ReportNewAggregatorsInfoRequestProto
+name|ReportNewCollectorInfoRequestProto
 name|proto
 parameter_list|)
 throws|throws
 name|ServiceException
 block|{
-name|ReportNewAggregatorsInfoRequestPBImpl
+name|ReportNewCollectorInfoRequestPBImpl
 name|request
 init|=
 operator|new
-name|ReportNewAggregatorsInfoRequestPBImpl
+name|ReportNewCollectorInfoRequestPBImpl
 argument_list|(
 name|proto
 argument_list|)
 decl_stmt|;
 try|try
 block|{
-name|ReportNewAggregatorsInfoResponse
+name|ReportNewCollectorInfoResponse
 name|response
 init|=
 name|real
 operator|.
-name|reportNewAggregatorInfo
+name|reportNewCollectorInfo
 argument_list|(
 name|request
 argument_list|)
@@ -320,7 +284,7 @@ decl_stmt|;
 return|return
 operator|(
 operator|(
-name|ReportNewAggregatorsInfoResponsePBImpl
+name|ReportNewCollectorInfoResponsePBImpl
 operator|)
 name|response
 operator|)

@@ -4,7 +4,7 @@ comment|/**  * Licensed to the Apache Software Foundation (ASF) under one  * or 
 end_comment
 
 begin_package
-DECL|package|org.apache.hadoop.yarn.server.timelineservice.aggregator
+DECL|package|org.apache.hadoop.yarn.server.timelineservice.collector
 package|package
 name|org
 operator|.
@@ -18,7 +18,7 @@ name|server
 operator|.
 name|timelineservice
 operator|.
-name|aggregator
+name|collector
 package|;
 end_package
 
@@ -214,6 +214,24 @@ name|server
 operator|.
 name|api
 operator|.
+name|CollectorNodemanagerProtocol
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|server
+operator|.
+name|api
+operator|.
 name|ContainerInitializationContext
 import|;
 end_import
@@ -247,19 +265,19 @@ import|;
 end_import
 
 begin_class
-DECL|class|TestPerNodeTimelineAggregatorsAuxService
+DECL|class|TestPerNodeTimelineCollectorsAuxService
 specifier|public
 class|class
-name|TestPerNodeTimelineAggregatorsAuxService
+name|TestPerNodeTimelineCollectorsAuxService
 block|{
 DECL|field|appAttemptId
 specifier|private
 name|ApplicationAttemptId
 name|appAttemptId
 decl_stmt|;
-DECL|method|TestPerNodeTimelineAggregatorsAuxService ()
+DECL|method|TestPerNodeTimelineCollectorsAuxService ()
 specifier|public
-name|TestPerNodeTimelineAggregatorsAuxService
+name|TestPerNodeTimelineCollectorsAuxService
 parameter_list|()
 block|{
 name|ApplicationId
@@ -299,10 +317,10 @@ parameter_list|()
 throws|throws
 name|Exception
 block|{
-name|PerNodeTimelineAggregatorsAuxService
+name|PerNodeTimelineCollectorsAuxService
 name|auxService
 init|=
-name|createAggregatorAndAddApplication
+name|createCollectorAndAddApplication
 argument_list|()
 decl_stmt|;
 comment|// auxService should have a single app
@@ -338,10 +356,10 @@ parameter_list|()
 throws|throws
 name|Exception
 block|{
-name|PerNodeTimelineAggregatorsAuxService
+name|PerNodeTimelineCollectorsAuxService
 name|auxService
 init|=
-name|createAggregator
+name|createCollector
 argument_list|()
 decl_stmt|;
 name|ContainerId
@@ -411,10 +429,10 @@ parameter_list|()
 throws|throws
 name|Exception
 block|{
-name|PerNodeTimelineAggregatorsAuxService
+name|PerNodeTimelineCollectorsAuxService
 name|auxService
 init|=
-name|createAggregatorAndAddApplication
+name|createCollectorAndAddApplication
 argument_list|()
 decl_stmt|;
 comment|// auxService should have a single app
@@ -502,10 +520,10 @@ parameter_list|()
 throws|throws
 name|Exception
 block|{
-name|PerNodeTimelineAggregatorsAuxService
+name|PerNodeTimelineCollectorsAuxService
 name|auxService
 init|=
-name|createAggregatorAndAddApplication
+name|createCollectorAndAddApplication
 argument_list|()
 decl_stmt|;
 comment|// auxService should have a single app
@@ -606,7 +624,7 @@ operator|.
 name|disableSystemExit
 argument_list|()
 expr_stmt|;
-name|PerNodeTimelineAggregatorsAuxService
+name|PerNodeTimelineCollectorsAuxService
 name|auxService
 init|=
 literal|null
@@ -615,7 +633,7 @@ try|try
 block|{
 name|auxService
 operator|=
-name|PerNodeTimelineAggregatorsAuxService
+name|PerNodeTimelineCollectorsAuxService
 operator|.
 name|launchServer
 argument_list|(
@@ -624,6 +642,9 @@ name|String
 index|[
 literal|0
 index|]
+argument_list|,
+name|createCollectorManager
+argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
@@ -670,16 +691,16 @@ expr_stmt|;
 block|}
 block|}
 block|}
-DECL|method|createAggregatorAndAddApplication ()
 specifier|private
-name|PerNodeTimelineAggregatorsAuxService
-name|createAggregatorAndAddApplication
+name|PerNodeTimelineCollectorsAuxService
+DECL|method|createCollectorAndAddApplication ()
+name|createCollectorAndAddApplication
 parameter_list|()
 block|{
-name|PerNodeTimelineAggregatorsAuxService
+name|PerNodeTimelineCollectorsAuxService
 name|auxService
 init|=
-name|createAggregator
+name|createCollector
 argument_list|()
 decl_stmt|;
 comment|// create an AM container
@@ -723,19 +744,47 @@ return|return
 name|auxService
 return|;
 block|}
-DECL|method|createAggregator ()
+DECL|method|createCollector ()
 specifier|private
-name|PerNodeTimelineAggregatorsAuxService
-name|createAggregator
+name|PerNodeTimelineCollectorsAuxService
+name|createCollector
 parameter_list|()
 block|{
-name|TimelineAggregatorsCollection
-name|aggregatorsCollection
+name|TimelineCollectorManager
+name|collectorManager
+init|=
+name|createCollectorManager
+argument_list|()
+decl_stmt|;
+name|PerNodeTimelineCollectorsAuxService
+name|auxService
 init|=
 name|spy
 argument_list|(
 operator|new
-name|TimelineAggregatorsCollection
+name|PerNodeTimelineCollectorsAuxService
+argument_list|(
+name|collectorManager
+argument_list|)
+argument_list|)
+decl_stmt|;
+return|return
+name|auxService
+return|;
+block|}
+DECL|method|createCollectorManager ()
+specifier|private
+name|TimelineCollectorManager
+name|createCollectorManager
+parameter_list|()
+block|{
+name|TimelineCollectorManager
+name|collectorManager
+init|=
+name|spy
+argument_list|(
+operator|new
+name|TimelineCollectorManager
 argument_list|()
 argument_list|)
 decl_stmt|;
@@ -748,26 +797,37 @@ argument_list|)
 operator|.
 name|when
 argument_list|(
-name|aggregatorsCollection
+name|collectorManager
 argument_list|)
 operator|.
 name|getConfig
 argument_list|()
 expr_stmt|;
-name|PerNodeTimelineAggregatorsAuxService
-name|auxService
+name|CollectorNodemanagerProtocol
+name|nmCollectorService
 init|=
-name|spy
+name|mock
 argument_list|(
-operator|new
-name|PerNodeTimelineAggregatorsAuxService
-argument_list|(
-name|aggregatorsCollection
-argument_list|)
+name|CollectorNodemanagerProtocol
+operator|.
+name|class
 argument_list|)
 decl_stmt|;
+name|doReturn
+argument_list|(
+name|nmCollectorService
+argument_list|)
+operator|.
+name|when
+argument_list|(
+name|collectorManager
+argument_list|)
+operator|.
+name|getNMCollectorService
+argument_list|()
+expr_stmt|;
 return|return
-name|auxService
+name|collectorManager
 return|;
 block|}
 DECL|method|getAMContainerId ()

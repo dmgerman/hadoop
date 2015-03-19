@@ -4,7 +4,7 @@ comment|/**  * Licensed to the Apache Software Foundation (ASF) under one  * or 
 end_comment
 
 begin_package
-DECL|package|org.apache.hadoop.yarn.server.timelineservice.aggregator
+DECL|package|org.apache.hadoop.yarn.server.timelineservice.collector
 package|package
 name|org
 operator|.
@@ -18,7 +18,7 @@ name|server
 operator|.
 name|timelineservice
 operator|.
-name|aggregator
+name|collector
 package|;
 end_package
 
@@ -337,7 +337,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * The top-level server for the per-node timeline aggregator collection. Currently  * it is defined as an auxiliary service to accommodate running within another  * daemon (e.g. node manager).  */
+comment|/**  * The top-level server for the per-node timeline collector manager. Currently  * it is defined as an auxiliary service to accommodate running within another  * daemon (e.g. node manager).  */
 end_comment
 
 begin_class
@@ -345,10 +345,10 @@ annotation|@
 name|Private
 annotation|@
 name|Unstable
-DECL|class|PerNodeTimelineAggregatorsAuxService
+DECL|class|PerNodeTimelineCollectorsAuxService
 specifier|public
 class|class
-name|PerNodeTimelineAggregatorsAuxService
+name|PerNodeTimelineCollectorsAuxService
 extends|extends
 name|AuxiliaryService
 block|{
@@ -363,7 +363,7 @@ name|LogFactory
 operator|.
 name|getLog
 argument_list|(
-name|PerNodeTimelineAggregatorsAuxService
+name|PerNodeTimelineCollectorsAuxService
 operator|.
 name|class
 argument_list|)
@@ -377,46 +377,46 @@ name|SHUTDOWN_HOOK_PRIORITY
 init|=
 literal|30
 decl_stmt|;
-DECL|field|aggregatorCollection
+DECL|field|collectorManager
 specifier|private
 specifier|final
-name|TimelineAggregatorsCollection
-name|aggregatorCollection
+name|TimelineCollectorManager
+name|collectorManager
 decl_stmt|;
-DECL|method|PerNodeTimelineAggregatorsAuxService ()
+DECL|method|PerNodeTimelineCollectorsAuxService ()
 specifier|public
-name|PerNodeTimelineAggregatorsAuxService
+name|PerNodeTimelineCollectorsAuxService
 parameter_list|()
 block|{
 comment|// use the same singleton
 name|this
 argument_list|(
-name|TimelineAggregatorsCollection
+name|TimelineCollectorManager
 operator|.
 name|getInstance
 argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|PerNodeTimelineAggregatorsAuxService ( TimelineAggregatorsCollection aggregatorCollection)
+DECL|method|PerNodeTimelineCollectorsAuxService ( TimelineCollectorManager collectorsManager)
 annotation|@
 name|VisibleForTesting
-name|PerNodeTimelineAggregatorsAuxService
+name|PerNodeTimelineCollectorsAuxService
 parameter_list|(
-name|TimelineAggregatorsCollection
-name|aggregatorCollection
+name|TimelineCollectorManager
+name|collectorsManager
 parameter_list|)
 block|{
 name|super
 argument_list|(
-literal|"timeline_aggregator"
+literal|"timeline_collector"
 argument_list|)
 expr_stmt|;
 name|this
 operator|.
-name|aggregatorCollection
+name|collectorManager
 operator|=
-name|aggregatorCollection
+name|collectorsManager
 expr_stmt|;
 block|}
 annotation|@
@@ -432,7 +432,7 @@ parameter_list|)
 throws|throws
 name|Exception
 block|{
-name|aggregatorCollection
+name|collectorManager
 operator|.
 name|init
 argument_list|(
@@ -457,7 +457,7 @@ parameter_list|()
 throws|throws
 name|Exception
 block|{
-name|aggregatorCollection
+name|collectorManager
 operator|.
 name|start
 argument_list|()
@@ -478,7 +478,7 @@ parameter_list|()
 throws|throws
 name|Exception
 block|{
-name|aggregatorCollection
+name|collectorManager
 operator|.
 name|stop
 argument_list|()
@@ -490,8 +490,8 @@ argument_list|()
 expr_stmt|;
 block|}
 comment|// these methods can be used as the basis for future service methods if the
-comment|// per-node aggregator runs separate from the node manager
-comment|/**    * Creates and adds an app level aggregator for the specified application id.    * The aggregator is also initialized and started. If the service already    * exists, no new service is created.    *    * @return whether it was added successfully    */
+comment|// per-node collector runs separate from the node manager
+comment|/**    * Creates and adds an app level collector for the specified application id.    * The collector is also initialized and started. If the service already    * exists, no new service is created.    *    * @return whether it was added successfully    */
 DECL|method|addApplication (ApplicationId appId)
 specifier|public
 name|boolean
@@ -501,11 +501,11 @@ name|ApplicationId
 name|appId
 parameter_list|)
 block|{
-name|AppLevelTimelineAggregator
-name|aggregator
+name|AppLevelTimelineCollector
+name|collector
 init|=
 operator|new
-name|AppLevelTimelineAggregator
+name|AppLevelTimelineCollector
 argument_list|(
 name|appId
 operator|.
@@ -515,20 +515,20 @@ argument_list|)
 decl_stmt|;
 return|return
 operator|(
-name|aggregatorCollection
+name|collectorManager
 operator|.
 name|putIfAbsent
 argument_list|(
 name|appId
 argument_list|,
-name|aggregator
+name|collector
 argument_list|)
 operator|==
-name|aggregator
+name|collector
 operator|)
 return|;
 block|}
-comment|/**    * Removes the app level aggregator for the specified application id. The    * aggregator is also stopped as a result. If the aggregator does not exist, no    * change is made.    *    * @return whether it was removed successfully    */
+comment|/**    * Removes the app level collector for the specified application id. The    * collector is also stopped as a result. If the collector does not exist, no    * change is made.    *    * @return whether it was removed successfully    */
 DECL|method|removeApplication (ApplicationId appId)
 specifier|public
 name|boolean
@@ -547,7 +547,7 @@ name|toString
 argument_list|()
 decl_stmt|;
 return|return
-name|aggregatorCollection
+name|collectorManager
 operator|.
 name|remove
 argument_list|(
@@ -555,7 +555,7 @@ name|appIdString
 argument_list|)
 return|;
 block|}
-comment|/**    * Creates and adds an app level aggregator for the specified application id.    * The aggregator is also initialized and started. If the aggregator already    * exists, no new aggregator is created.    */
+comment|/**    * Creates and adds an app level collector for the specified application id.    * The collector is also initialized and started. If the collector already    * exists, no new collector is created.    */
 annotation|@
 name|Override
 DECL|method|initializeContainer (ContainerInitializationContext context)
@@ -568,7 +568,7 @@ name|context
 parameter_list|)
 block|{
 comment|// intercept the event of the AM container being created and initialize the
-comment|// app level aggregator service
+comment|// app level collector service
 if|if
 condition|(
 name|isApplicationMaster
@@ -598,7 +598,7 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-comment|/**    * Removes the app level aggregator for the specified application id. The    * aggregator is also stopped as a result. If the aggregator does not exist, no    * change is made.    */
+comment|/**    * Removes the app level collector for the specified application id. The    * collector is also stopped as a result. If the collector does not exist, no    * change is made.    */
 annotation|@
 name|Override
 DECL|method|stopContainer (ContainerTerminationContext context)
@@ -611,7 +611,7 @@ name|context
 parameter_list|)
 block|{
 comment|// intercept the event of the AM container being stopped and remove the app
-comment|// level aggregator service
+comment|// level collector service
 if|if
 condition|(
 name|isApplicationMaster
@@ -681,7 +681,7 @@ name|appId
 parameter_list|)
 block|{
 return|return
-name|aggregatorCollection
+name|collectorManager
 operator|.
 name|containsKey
 argument_list|(
@@ -732,15 +732,18 @@ return|;
 block|}
 annotation|@
 name|VisibleForTesting
-DECL|method|launchServer (String[] args)
 specifier|public
 specifier|static
-name|PerNodeTimelineAggregatorsAuxService
+name|PerNodeTimelineCollectorsAuxService
+DECL|method|launchServer (String[] args, TimelineCollectorManager collectorManager)
 name|launchServer
 parameter_list|(
 name|String
 index|[]
 name|args
+parameter_list|,
+name|TimelineCollectorManager
+name|collectorManager
 parameter_list|)
 block|{
 name|Thread
@@ -756,7 +759,7 @@ name|StringUtils
 operator|.
 name|startupShutdownMessage
 argument_list|(
-name|PerNodeTimelineAggregatorsAuxService
+name|PerNodeTimelineCollectorsAuxService
 operator|.
 name|class
 argument_list|,
@@ -765,7 +768,7 @@ argument_list|,
 name|LOG
 argument_list|)
 expr_stmt|;
-name|PerNodeTimelineAggregatorsAuxService
+name|PerNodeTimelineCollectorsAuxService
 name|auxService
 init|=
 literal|null
@@ -774,9 +777,19 @@ try|try
 block|{
 name|auxService
 operator|=
+name|collectorManager
+operator|==
+literal|null
+condition|?
 operator|new
-name|PerNodeTimelineAggregatorsAuxService
+name|PerNodeTimelineCollectorsAuxService
 argument_list|()
+else|:
+operator|new
+name|PerNodeTimelineCollectorsAuxService
+argument_list|(
+name|collectorManager
+argument_list|)
 expr_stmt|;
 name|ShutdownHookManager
 operator|.
@@ -824,7 +837,7 @@ name|LOG
 operator|.
 name|fatal
 argument_list|(
-literal|"Error starting PerNodeAggregatorServer"
+literal|"Error starting PerNodeTimelineCollectorServer"
 argument_list|,
 name|t
 argument_list|)
@@ -836,7 +849,7 @@ argument_list|(
 operator|-
 literal|1
 argument_list|,
-literal|"Error starting PerNodeAggregatorServer"
+literal|"Error starting PerNodeTimelineCollectorServer"
 argument_list|)
 expr_stmt|;
 block|}
@@ -855,14 +868,14 @@ block|{
 DECL|field|auxService
 specifier|private
 specifier|final
-name|PerNodeTimelineAggregatorsAuxService
+name|PerNodeTimelineCollectorsAuxService
 name|auxService
 decl_stmt|;
-DECL|method|ShutdownHook (PerNodeTimelineAggregatorsAuxService auxService)
+DECL|method|ShutdownHook (PerNodeTimelineCollectorsAuxService auxService)
 specifier|public
 name|ShutdownHook
 parameter_list|(
-name|PerNodeTimelineAggregatorsAuxService
+name|PerNodeTimelineCollectorsAuxService
 name|auxService
 parameter_list|)
 block|{
@@ -900,6 +913,8 @@ block|{
 name|launchServer
 argument_list|(
 name|args
+argument_list|,
+literal|null
 argument_list|)
 expr_stmt|;
 block|}

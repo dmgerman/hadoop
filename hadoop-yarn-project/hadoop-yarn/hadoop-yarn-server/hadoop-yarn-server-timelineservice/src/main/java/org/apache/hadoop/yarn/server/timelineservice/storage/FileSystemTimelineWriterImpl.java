@@ -322,7 +322,7 @@ operator|)
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Stores the entire information in {@link TimelineEntity} to the    * timeline store. Any errors occurring for individual write request objects    * will be reported in the response.    *     * @param data    *          a {@link TimelineEntity} object    * @return {@link TimelineWriteResponse} object.    * @throws IOException    */
+comment|/**    * Stores the entire information in {@link TimelineEntity} to the    * timeline store. Any errors occurring for individual write request objects    * will be reported in the response.    *    * @param data    *          a {@link TimelineEntity} object    * @return {@link TimelineWriteResponse} object.    * @throws IOException    */
 annotation|@
 name|Override
 DECL|method|write (TimelineEntities entities)
@@ -541,7 +541,7 @@ expr_stmt|;
 block|}
 block|}
 block|}
-comment|/**    * Aggregates the entity information to the timeline store based on which    * track this entity is to be rolled up to The tracks along which aggregations    * are to be done are given by {@link TimelineAggregationTrack}    *     * Any errors occurring for individual write request objects will be reported    * in the response.    *     * @param data    *          a {@link TimelineEntity} object    *          a {@link TimelineAggregationTrack} enum value    * @return a {@link TimelineWriteResponse} object.    * @throws IOException    */
+comment|/**    * Aggregates the entity information to the timeline store based on which    * track this entity is to be rolled up to The tracks along which aggregations    * are to be done are given by {@link TimelineAggregationTrack}    *    * Any errors occurring for individual write request objects will be reported    * in the response.    *    * @param data    *          a {@link TimelineEntity} object    *          a {@link TimelineAggregationTrack} enum value    * @return a {@link TimelineWriteResponse} object.    * @throws IOException    */
 DECL|method|aggregate (TimelineEntity data, TimelineAggregationTrack track)
 specifier|public
 name|TimelineWriteResponse

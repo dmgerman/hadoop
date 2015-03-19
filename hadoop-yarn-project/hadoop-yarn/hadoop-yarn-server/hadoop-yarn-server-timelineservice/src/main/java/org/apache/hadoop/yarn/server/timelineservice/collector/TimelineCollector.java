@@ -4,7 +4,7 @@ comment|/**  * Licensed to the Apache Software Foundation (ASF) under one  * or 
 end_comment
 
 begin_package
-DECL|package|org.apache.hadoop.yarn.server.timelineservice.aggregator
+DECL|package|org.apache.hadoop.yarn.server.timelineservice.collector
 package|package
 name|org
 operator|.
@@ -18,7 +18,7 @@ name|server
 operator|.
 name|timelineservice
 operator|.
-name|aggregator
+name|collector
 package|;
 end_package
 
@@ -142,6 +142,20 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|util
+operator|.
+name|ReflectionUtils
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|yarn
 operator|.
 name|api
@@ -206,7 +220,7 @@ name|timelineservice
 operator|.
 name|storage
 operator|.
-name|TimelineWriter
+name|FileSystemTimelineWriterImpl
 import|;
 end_import
 
@@ -226,21 +240,7 @@ name|timelineservice
 operator|.
 name|storage
 operator|.
-name|FileSystemTimelineWriterImpl
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|util
-operator|.
-name|ReflectionUtils
+name|TimelineWriter
 import|;
 end_import
 
@@ -253,11 +253,11 @@ annotation|@
 name|Private
 annotation|@
 name|Unstable
-DECL|class|TimelineAggregator
+DECL|class|TimelineCollector
 specifier|public
 specifier|abstract
 class|class
-name|TimelineAggregator
+name|TimelineCollector
 extends|extends
 name|CompositeService
 block|{
@@ -272,7 +272,7 @@ name|LogFactory
 operator|.
 name|getLog
 argument_list|(
-name|TimelineAggregator
+name|TimelineCollector
 operator|.
 name|class
 argument_list|)
@@ -282,9 +282,9 @@ specifier|private
 name|TimelineWriter
 name|writer
 decl_stmt|;
-DECL|method|TimelineAggregator (String name)
+DECL|method|TimelineCollector (String name)
 specifier|public
-name|TimelineAggregator
+name|TimelineCollector
 parameter_list|(
 name|String
 name|name

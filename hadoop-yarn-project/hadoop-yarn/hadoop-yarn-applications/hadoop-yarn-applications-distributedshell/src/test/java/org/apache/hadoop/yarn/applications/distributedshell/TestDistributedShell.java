@@ -890,9 +890,9 @@ name|server
 operator|.
 name|timelineservice
 operator|.
-name|aggregator
+name|collector
 operator|.
-name|PerNodeTimelineAggregatorsAuxService
+name|PerNodeTimelineCollectorsAuxService
 import|;
 end_import
 
@@ -1058,7 +1058,7 @@ specifier|final
 name|String
 name|TIMELINE_AUX_SERVICE_NAME
 init|=
-literal|"timeline_aggregator"
+literal|"timeline_collector"
 decl_stmt|;
 DECL|field|APPMASTER_JAR
 specifier|protected
@@ -1414,7 +1414,7 @@ name|TIMELINE_AUX_SERVICE_NAME
 operator|+
 literal|".class"
 argument_list|,
-name|PerNodeTimelineAggregatorsAuxService
+name|PerNodeTimelineCollectorsAuxService
 operator|.
 name|class
 operator|.

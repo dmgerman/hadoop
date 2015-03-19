@@ -217,7 +217,7 @@ return|return
 name|nodeHeartbeatRequest
 return|;
 block|}
-DECL|method|newInstance (NodeStatus nodeStatus, MasterKey lastKnownContainerTokenMasterKey, MasterKey lastKnownNMTokenMasterKey, Set<NodeLabel> nodeLabels, Map<ApplicationId, String> registeredAggregators)
+DECL|method|newInstance (NodeStatus nodeStatus, MasterKey lastKnownContainerTokenMasterKey, MasterKey lastKnownNMTokenMasterKey, Set<NodeLabel> nodeLabels, Map<ApplicationId, String> registeredCollectors)
 specifier|public
 specifier|static
 name|NodeHeartbeatRequest
@@ -244,7 +244,7 @@ name|ApplicationId
 argument_list|,
 name|String
 argument_list|>
-name|registeredAggregators
+name|registeredCollectors
 parameter_list|)
 block|{
 name|NodeHeartbeatRequest
@@ -289,9 +289,9 @@ argument_list|)
 expr_stmt|;
 name|nodeHeartbeatRequest
 operator|.
-name|setRegisteredAggregators
+name|setRegisteredCollectors
 argument_list|(
-name|registeredAggregators
+name|registeredCollectors
 argument_list|)
 expr_stmt|;
 return|return
@@ -395,8 +395,8 @@ argument_list|>
 name|logAggregationReportsForApps
 parameter_list|)
 function_decl|;
-comment|// This tells RM registered aggregators' address info on this node
-DECL|method|getRegisteredAggregators ()
+comment|// This tells RM registered collectors' address info on this node
+DECL|method|getRegisteredCollectors ()
 specifier|public
 specifier|abstract
 name|Map
@@ -405,14 +405,14 @@ name|ApplicationId
 argument_list|,
 name|String
 argument_list|>
-name|getRegisteredAggregators
+name|getRegisteredCollectors
 parameter_list|()
 function_decl|;
-DECL|method|setRegisteredAggregators (Map<ApplicationId, String> appAggregatorsMap)
+DECL|method|setRegisteredCollectors (Map<ApplicationId, String> appCollectorsMap)
 specifier|public
 specifier|abstract
 name|void
-name|setRegisteredAggregators
+name|setRegisteredCollectors
 parameter_list|(
 name|Map
 argument_list|<
@@ -420,7 +420,7 @@ name|ApplicationId
 argument_list|,
 name|String
 argument_list|>
-name|appAggregatorsMap
+name|appCollectorsMap
 parameter_list|)
 function_decl|;
 block|}

@@ -114,7 +114,7 @@ name|api
 operator|.
 name|records
 operator|.
-name|AppAggregatorsMap
+name|AppCollectorsMap
 import|;
 end_import
 
@@ -150,7 +150,7 @@ name|proto
 operator|.
 name|YarnServerCommonServiceProtos
 operator|.
-name|AppAggregatorsMapProto
+name|AppCollectorsMapProto
 import|;
 end_import
 
@@ -168,7 +168,7 @@ name|proto
 operator|.
 name|YarnServerCommonServiceProtos
 operator|.
-name|AppAggregatorsMapProtoOrBuilder
+name|AppCollectorsMapProtoOrBuilder
 import|;
 end_import
 
@@ -189,24 +189,24 @@ annotation|@
 name|Private
 annotation|@
 name|Unstable
-DECL|class|AppAggregatorsMapPBImpl
+DECL|class|AppCollectorsMapPBImpl
 specifier|public
 class|class
-name|AppAggregatorsMapPBImpl
+name|AppCollectorsMapPBImpl
 extends|extends
-name|AppAggregatorsMap
+name|AppCollectorsMap
 block|{
 DECL|field|proto
-name|AppAggregatorsMapProto
+name|AppCollectorsMapProto
 name|proto
 init|=
-name|AppAggregatorsMapProto
+name|AppCollectorsMapProto
 operator|.
 name|getDefaultInstance
 argument_list|()
 decl_stmt|;
 DECL|field|builder
-name|AppAggregatorsMapProto
+name|AppCollectorsMapProto
 operator|.
 name|Builder
 name|builder
@@ -226,31 +226,31 @@ name|appId
 init|=
 literal|null
 decl_stmt|;
-DECL|field|aggregatorAddr
+DECL|field|collectorAddr
 specifier|private
 name|String
-name|aggregatorAddr
+name|collectorAddr
 init|=
 literal|null
 decl_stmt|;
-DECL|method|AppAggregatorsMapPBImpl ()
+DECL|method|AppCollectorsMapPBImpl ()
 specifier|public
-name|AppAggregatorsMapPBImpl
+name|AppCollectorsMapPBImpl
 parameter_list|()
 block|{
 name|builder
 operator|=
-name|AppAggregatorsMapProto
+name|AppCollectorsMapProto
 operator|.
 name|newBuilder
 argument_list|()
 expr_stmt|;
 block|}
-DECL|method|AppAggregatorsMapPBImpl (AppAggregatorsMapProto proto)
+DECL|method|AppCollectorsMapPBImpl (AppCollectorsMapProto proto)
 specifier|public
-name|AppAggregatorsMapPBImpl
+name|AppCollectorsMapPBImpl
 parameter_list|(
-name|AppAggregatorsMapProto
+name|AppCollectorsMapProto
 name|proto
 parameter_list|)
 block|{
@@ -267,7 +267,7 @@ expr_stmt|;
 block|}
 DECL|method|getProto ()
 specifier|public
-name|AppAggregatorsMapProto
+name|AppCollectorsMapProto
 name|getProto
 parameter_list|()
 block|{
@@ -398,7 +398,7 @@ name|ApplicationId
 name|getApplicationId
 parameter_list|()
 block|{
-name|AppAggregatorsMapProtoOrBuilder
+name|AppCollectorsMapProtoOrBuilder
 name|p
 init|=
 name|viaProto
@@ -442,13 +442,13 @@ return|;
 block|}
 annotation|@
 name|Override
-DECL|method|getAggregatorAddr ()
+DECL|method|getCollectorAddr ()
 specifier|public
 name|String
-name|getAggregatorAddr
+name|getCollectorAddr
 parameter_list|()
 block|{
-name|AppAggregatorsMapProtoOrBuilder
+name|AppCollectorsMapProtoOrBuilder
 name|p
 init|=
 name|viaProto
@@ -461,30 +461,30 @@ if|if
 condition|(
 name|this
 operator|.
-name|aggregatorAddr
+name|collectorAddr
 operator|==
 literal|null
 operator|&&
 name|p
 operator|.
-name|hasAppAggregatorAddr
+name|hasAppCollectorAddr
 argument_list|()
 condition|)
 block|{
 name|this
 operator|.
-name|aggregatorAddr
+name|collectorAddr
 operator|=
 name|p
 operator|.
-name|getAppAggregatorAddr
+name|getAppCollectorAddr
 argument_list|()
 expr_stmt|;
 block|}
 return|return
 name|this
 operator|.
-name|aggregatorAddr
+name|collectorAddr
 return|;
 block|}
 annotation|@
@@ -523,13 +523,13 @@ expr_stmt|;
 block|}
 annotation|@
 name|Override
-DECL|method|setAggregatorAddr (String aggregatorAddr)
+DECL|method|setCollectorAddr (String collectorAddr)
 specifier|public
 name|void
-name|setAggregatorAddr
+name|setCollectorAddr
 parameter_list|(
 name|String
-name|aggregatorAddr
+name|collectorAddr
 parameter_list|)
 block|{
 name|maybeInitBuilder
@@ -537,22 +537,22 @@ argument_list|()
 expr_stmt|;
 if|if
 condition|(
-name|aggregatorAddr
+name|collectorAddr
 operator|==
 literal|null
 condition|)
 block|{
 name|builder
 operator|.
-name|clearAppAggregatorAddr
+name|clearAppCollectorAddr
 argument_list|()
 expr_stmt|;
 block|}
 name|this
 operator|.
-name|aggregatorAddr
+name|collectorAddr
 operator|=
-name|aggregatorAddr
+name|collectorAddr
 expr_stmt|;
 block|}
 DECL|method|convertFromProtoFormat (ApplicationIdProto p)
@@ -610,7 +610,7 @@ condition|)
 block|{
 name|builder
 operator|=
-name|AppAggregatorsMapProto
+name|AppCollectorsMapProto
 operator|.
 name|newBuilder
 argument_list|(
@@ -685,18 +685,18 @@ if|if
 condition|(
 name|this
 operator|.
-name|aggregatorAddr
+name|collectorAddr
 operator|!=
 literal|null
 condition|)
 block|{
 name|builder
 operator|.
-name|setAppAggregatorAddr
+name|setAppCollectorAddr
 argument_list|(
 name|this
 operator|.
-name|aggregatorAddr
+name|collectorAddr
 argument_list|)
 expr_stmt|;
 block|}

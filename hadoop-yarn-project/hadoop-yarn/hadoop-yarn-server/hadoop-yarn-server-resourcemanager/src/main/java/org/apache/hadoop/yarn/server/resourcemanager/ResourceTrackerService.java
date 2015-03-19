@@ -858,7 +858,7 @@ name|resourcemanager
 operator|.
 name|rmapp
 operator|.
-name|RMAppAggregatorUpdateEvent
+name|RMAppCollectorUpdateEvent
 import|;
 end_import
 
@@ -3191,10 +3191,10 @@ name|message
 argument_list|)
 return|;
 block|}
-comment|// Check& update aggregators info from request.
+comment|// Check& update collectors info from request.
 comment|// TODO make sure it won't have race condition issue for AM failed over case
 comment|// that the older registration could possible override the newer one.
-name|updateAppAggregatorsMap
+name|updateAppCollectorsMap
 argument_list|(
 name|request
 argument_list|)
@@ -3280,8 +3280,8 @@ name|systemCredentials
 argument_list|)
 expr_stmt|;
 block|}
-comment|// Return aggregators' map that NM needs to know
-comment|// TODO we should optimize this to only include aggreator info that NM
+comment|// Return collectors' map that NM needs to know
+comment|// TODO we should optimize this to only include collector info that NM
 comment|// doesn't know yet.
 name|List
 argument_list|<
@@ -3301,7 +3301,7 @@ operator|!=
 literal|null
 condition|)
 block|{
-name|setAppAggregatorsMapToResponse
+name|setAppCollectorsMapToResponse
 argument_list|(
 name|keepAliveApps
 argument_list|,
@@ -3500,10 +3500,10 @@ return|return
 name|nodeHeartBeatResponse
 return|;
 block|}
-DECL|method|setAppAggregatorsMapToResponse ( List<ApplicationId> liveApps, NodeHeartbeatResponse response)
+DECL|method|setAppCollectorsMapToResponse ( List<ApplicationId> liveApps, NodeHeartbeatResponse response)
 specifier|private
 name|void
-name|setAppAggregatorsMapToResponse
+name|setAppCollectorsMapToResponse
 parameter_list|(
 name|List
 argument_list|<
@@ -3521,7 +3521,7 @@ name|ApplicationId
 argument_list|,
 name|String
 argument_list|>
-name|liveAppAggregatorsMap
+name|liveAppCollectorsMap
 init|=
 operator|new
 name|ConcurrentHashMap
@@ -3554,7 +3554,7 @@ name|liveApps
 control|)
 block|{
 name|String
-name|appAggregatorAddr
+name|appCollectorAddr
 init|=
 name|rmApps
 operator|.
@@ -3563,29 +3563,29 @@ argument_list|(
 name|appId
 argument_list|)
 operator|.
-name|getAggregatorAddr
+name|getCollectorAddr
 argument_list|()
 decl_stmt|;
 if|if
 condition|(
-name|appAggregatorAddr
+name|appCollectorAddr
 operator|!=
 literal|null
 condition|)
 block|{
-name|liveAppAggregatorsMap
+name|liveAppCollectorsMap
 operator|.
 name|put
 argument_list|(
 name|appId
 argument_list|,
-name|appAggregatorAddr
+name|appCollectorAddr
 argument_list|)
 expr_stmt|;
 block|}
 else|else
 block|{
-comment|// Log a debug info if aggregator address is not found.
+comment|// Log a debug info if collector address is not found.
 if|if
 condition|(
 name|LOG
@@ -3598,7 +3598,7 @@ name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"Aggregator for applicaton: "
+literal|"Collector for applicaton: "
 operator|+
 name|appId
 operator|+
@@ -3610,16 +3610,16 @@ block|}
 block|}
 name|response
 operator|.
-name|setAppAggregatorsMap
+name|setAppCollectorsMap
 argument_list|(
-name|liveAppAggregatorsMap
+name|liveAppCollectorsMap
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|updateAppAggregatorsMap (NodeHeartbeatRequest request)
+DECL|method|updateAppCollectorsMap (NodeHeartbeatRequest request)
 specifier|private
 name|void
-name|updateAppAggregatorsMap
+name|updateAppCollectorsMap
 parameter_list|(
 name|NodeHeartbeatRequest
 name|request
@@ -3631,21 +3631,21 @@ name|ApplicationId
 argument_list|,
 name|String
 argument_list|>
-name|registeredAggregatorsMap
+name|registeredCollectorsMap
 init|=
 name|request
 operator|.
-name|getRegisteredAggregators
+name|getRegisteredCollectors
 argument_list|()
 decl_stmt|;
 if|if
 condition|(
-name|registeredAggregatorsMap
+name|registeredCollectorsMap
 operator|!=
 literal|null
 operator|&&
 operator|!
-name|registeredAggregatorsMap
+name|registeredCollectorsMap
 operator|.
 name|isEmpty
 argument_list|()
@@ -3676,7 +3676,7 @@ name|String
 argument_list|>
 name|entry
 range|:
-name|registeredAggregatorsMap
+name|registeredCollectorsMap
 operator|.
 name|entrySet
 argument_list|()
@@ -3691,7 +3691,7 @@ name|getKey
 argument_list|()
 decl_stmt|;
 name|String
-name|aggregatorAddr
+name|collectorAddr
 init|=
 name|entry
 operator|.
@@ -3700,12 +3700,12 @@ argument_list|()
 decl_stmt|;
 if|if
 condition|(
-name|aggregatorAddr
+name|collectorAddr
 operator|!=
 literal|null
 operator|&&
 operator|!
-name|aggregatorAddr
+name|collectorAddr
 operator|.
 name|isEmpty
 argument_list|()
@@ -3732,7 +3732,7 @@ name|LOG
 operator|.
 name|warn
 argument_list|(
-literal|"Cannot update aggregator info because application ID: "
+literal|"Cannot update collector info because application ID: "
 operator|+
 name|appId
 operator|+
@@ -3743,34 +3743,34 @@ block|}
 else|else
 block|{
 name|String
-name|previousAggregatorAddr
+name|previousCollectorAddr
 init|=
 name|rmApp
 operator|.
-name|getAggregatorAddr
+name|getCollectorAddr
 argument_list|()
 decl_stmt|;
 if|if
 condition|(
-name|previousAggregatorAddr
+name|previousCollectorAddr
 operator|==
 literal|null
 operator|||
-name|previousAggregatorAddr
+name|previousCollectorAddr
 operator|!=
-name|aggregatorAddr
+name|collectorAddr
 condition|)
 block|{
-comment|// sending aggregator update event.
-name|RMAppAggregatorUpdateEvent
+comment|// sending collector update event.
+name|RMAppCollectorUpdateEvent
 name|event
 init|=
 operator|new
-name|RMAppAggregatorUpdateEvent
+name|RMAppCollectorUpdateEvent
 argument_list|(
 name|appId
 argument_list|,
-name|aggregatorAddr
+name|collectorAddr
 argument_list|)
 decl_stmt|;
 name|rmContext

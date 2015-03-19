@@ -178,7 +178,7 @@ specifier|public
 name|TimelineWriteResponse
 parameter_list|()
 block|{    }
-comment|/**    * Get a list of {@link TimelineWriteError} instances    *     * @return a list of {@link TimelineWriteError} instances    */
+comment|/**    * Get a list of {@link TimelineWriteError} instances    *    * @return a list of {@link TimelineWriteError} instances    */
 annotation|@
 name|XmlElement
 argument_list|(
@@ -199,7 +199,7 @@ return|return
 name|errors
 return|;
 block|}
-comment|/**    * Add a single {@link TimelineWriteError} instance into the existing list    *     * @param error    *          a single {@link TimelineWriteError} instance    */
+comment|/**    * Add a single {@link TimelineWriteError} instance into the existing list    *    * @param error    *          a single {@link TimelineWriteError} instance    */
 DECL|method|addError (TimelineWriteError error)
 specifier|public
 name|void
@@ -217,7 +217,7 @@ name|error
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Add a list of {@link TimelineWriteError} instances into the existing list    *     * @param errors    *          a list of {@link TimelineWriteError} instances    */
+comment|/**    * Add a list of {@link TimelineWriteError} instances into the existing list    *    * @param errors    *          a list of {@link TimelineWriteError} instances    */
 DECL|method|addErrors (List<TimelineWriteError> errors)
 specifier|public
 name|void
@@ -240,7 +240,7 @@ name|errors
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Set the list to the given list of {@link TimelineWriteError} instances    *     * @param errors    *          a list of {@link TimelineWriteError} instances    */
+comment|/**    * Set the list to the given list of {@link TimelineWriteError} instances    *    * @param errors    *          a list of {@link TimelineWriteError} instances    */
 DECL|method|setErrors (List<TimelineWriteError> errors)
 specifier|public
 name|void
@@ -320,7 +320,7 @@ specifier|private
 name|int
 name|errorCode
 decl_stmt|;
-comment|/**      * Get the entity Id      *       * @return the entity Id      */
+comment|/**      * Get the entity Id      *      * @return the entity Id      */
 annotation|@
 name|XmlElement
 argument_list|(
@@ -338,7 +338,7 @@ return|return
 name|entityId
 return|;
 block|}
-comment|/**      * Set the entity Id      *       * @param entityId      *          the entity Id      */
+comment|/**      * Set the entity Id      *      * @param entityId      *          the entity Id      */
 DECL|method|setEntityId (String entityId)
 specifier|public
 name|void
@@ -355,7 +355,7 @@ operator|=
 name|entityId
 expr_stmt|;
 block|}
-comment|/**      * Get the entity type      *       * @return the entity type      */
+comment|/**      * Get the entity type      *      * @return the entity type      */
 annotation|@
 name|XmlElement
 argument_list|(
@@ -373,7 +373,7 @@ return|return
 name|entityType
 return|;
 block|}
-comment|/**      * Set the entity type      *       * @param entityType      *          the entity type      */
+comment|/**      * Set the entity type      *      * @param entityType      *          the entity type      */
 DECL|method|setEntityType (String entityType)
 specifier|public
 name|void
@@ -390,7 +390,7 @@ operator|=
 name|entityType
 expr_stmt|;
 block|}
-comment|/**      * Get the error code      *       * @return an error code      */
+comment|/**      * Get the error code      *      * @return an error code      */
 annotation|@
 name|XmlElement
 argument_list|(
@@ -408,7 +408,7 @@ return|return
 name|errorCode
 return|;
 block|}
-comment|/**      * Set the error code to the given error code      *       * @param errorCode      *          an error code      */
+comment|/**      * Set the error code to the given error code      *      * @param errorCode      *          an error code      */
 DECL|method|setErrorCode (int errorCode)
 specifier|public
 name|void

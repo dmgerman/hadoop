@@ -2155,10 +2155,10 @@ expr_stmt|;
 block|}
 annotation|@
 name|Override
-DECL|method|getAggregatorAddr ()
+DECL|method|getCollectorAddr ()
 specifier|public
 name|String
-name|getAggregatorAddr
+name|getCollectorAddr
 parameter_list|()
 block|{
 name|AllocateResponseProtoOrBuilder
@@ -2173,19 +2173,19 @@ decl_stmt|;
 return|return
 name|p
 operator|.
-name|getAggregatorAddr
+name|getCollectorAddr
 argument_list|()
 return|;
 block|}
 annotation|@
 name|Override
-DECL|method|setAggregatorAddr (String aggregatorAddr)
+DECL|method|setCollectorAddr (String collectorAddr)
 specifier|public
 name|void
-name|setAggregatorAddr
+name|setCollectorAddr
 parameter_list|(
 name|String
-name|aggregatorAddr
+name|collectorAddr
 parameter_list|)
 block|{
 name|maybeInitBuilder
@@ -2193,23 +2193,23 @@ argument_list|()
 expr_stmt|;
 if|if
 condition|(
-name|aggregatorAddr
+name|collectorAddr
 operator|==
 literal|null
 condition|)
 block|{
 name|builder
 operator|.
-name|clearAggregatorAddr
+name|clearCollectorAddr
 argument_list|()
 expr_stmt|;
 return|return;
 block|}
 name|builder
 operator|.
-name|setAggregatorAddr
+name|setCollectorAddr
 argument_list|(
-name|aggregatorAddr
+name|collectorAddr
 argument_list|)
 expr_stmt|;
 block|}

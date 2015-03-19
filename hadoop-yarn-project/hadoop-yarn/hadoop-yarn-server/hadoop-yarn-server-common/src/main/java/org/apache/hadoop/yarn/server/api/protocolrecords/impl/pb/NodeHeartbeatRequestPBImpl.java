@@ -262,7 +262,7 @@ name|proto
 operator|.
 name|YarnServerCommonServiceProtos
 operator|.
-name|AppAggregatorsMapProto
+name|LogAggregationReportProto
 import|;
 end_import
 
@@ -280,7 +280,7 @@ name|proto
 operator|.
 name|YarnServerCommonServiceProtos
 operator|.
-name|LogAggregationReportProto
+name|AppCollectorsMapProto
 import|;
 end_import
 
@@ -558,14 +558,14 @@ name|logAggregationReportsForApps
 init|=
 literal|null
 decl_stmt|;
-DECL|field|registeredAggregators
+DECL|field|registeredCollectors
 name|Map
 argument_list|<
 name|ApplicationId
 argument_list|,
 name|String
 argument_list|>
-name|registeredAggregators
+name|registeredCollectors
 init|=
 literal|null
 decl_stmt|;
@@ -849,12 +849,12 @@ if|if
 condition|(
 name|this
 operator|.
-name|registeredAggregators
+name|registeredCollectors
 operator|!=
 literal|null
 condition|)
 block|{
-name|addRegisteredAggregatorsToProto
+name|addRegisteredCollectorsToProto
 argument_list|()
 expr_stmt|;
 block|}
@@ -1005,10 +1005,10 @@ name|getProto
 argument_list|()
 return|;
 block|}
-DECL|method|addRegisteredAggregatorsToProto ()
+DECL|method|addRegisteredCollectorsToProto ()
 specifier|private
 name|void
-name|addRegisteredAggregatorsToProto
+name|addRegisteredCollectorsToProto
 parameter_list|()
 block|{
 name|maybeInitBuilder
@@ -1016,7 +1016,7 @@ argument_list|()
 expr_stmt|;
 name|builder
 operator|.
-name|clearRegisteredAggregators
+name|clearRegisteredCollectors
 argument_list|()
 expr_stmt|;
 for|for
@@ -1031,7 +1031,7 @@ name|String
 argument_list|>
 name|entry
 range|:
-name|registeredAggregators
+name|registeredCollectors
 operator|.
 name|entrySet
 argument_list|()
@@ -1039,9 +1039,9 @@ control|)
 block|{
 name|builder
 operator|.
-name|addRegisteredAggregators
+name|addRegisteredCollectors
 argument_list|(
-name|AppAggregatorsMapProto
+name|AppCollectorsMapProto
 operator|.
 name|newBuilder
 argument_list|()
@@ -1057,7 +1057,7 @@ argument_list|()
 argument_list|)
 argument_list|)
 operator|.
-name|setAppAggregatorAddr
+name|setAppCollectorAddr
 argument_list|(
 name|entry
 operator|.
@@ -1413,7 +1413,7 @@ expr_stmt|;
 block|}
 annotation|@
 name|Override
-DECL|method|getRegisteredAggregators ()
+DECL|method|getRegisteredCollectors ()
 specifier|public
 name|Map
 argument_list|<
@@ -1421,14 +1421,14 @@ name|ApplicationId
 argument_list|,
 name|String
 argument_list|>
-name|getRegisteredAggregators
+name|getRegisteredCollectors
 parameter_list|()
 block|{
 if|if
 condition|(
 name|this
 operator|.
-name|registeredAggregators
+name|registeredCollectors
 operator|!=
 literal|null
 condition|)
@@ -1436,20 +1436,20 @@ block|{
 return|return
 name|this
 operator|.
-name|registeredAggregators
+name|registeredCollectors
 return|;
 block|}
-name|initRegisteredAggregators
+name|initRegisteredCollectors
 argument_list|()
 expr_stmt|;
 return|return
-name|registeredAggregators
+name|registeredCollectors
 return|;
 block|}
-DECL|method|initRegisteredAggregators ()
+DECL|method|initRegisteredCollectors ()
 specifier|private
 name|void
-name|initRegisteredAggregators
+name|initRegisteredCollectors
 parameter_list|()
 block|{
 name|NodeHeartbeatRequestProtoOrBuilder
@@ -1463,18 +1463,18 @@ name|builder
 decl_stmt|;
 name|List
 argument_list|<
-name|AppAggregatorsMapProto
+name|AppCollectorsMapProto
 argument_list|>
 name|list
 init|=
 name|p
 operator|.
-name|getRegisteredAggregatorsList
+name|getRegisteredCollectorsList
 argument_list|()
 decl_stmt|;
 name|this
 operator|.
-name|registeredAggregators
+name|registeredCollectors
 operator|=
 operator|new
 name|HashMap
@@ -1487,7 +1487,7 @@ argument_list|()
 expr_stmt|;
 for|for
 control|(
-name|AppAggregatorsMapProto
+name|AppCollectorsMapProto
 name|c
 range|:
 name|list
@@ -1506,7 +1506,7 @@ argument_list|)
 decl_stmt|;
 name|this
 operator|.
-name|registeredAggregators
+name|registeredCollectors
 operator|.
 name|put
 argument_list|(
@@ -1514,7 +1514,7 @@ name|appId
 argument_list|,
 name|c
 operator|.
-name|getAppAggregatorAddr
+name|getAppCollectorAddr
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -1522,10 +1522,10 @@ block|}
 block|}
 annotation|@
 name|Override
-DECL|method|setRegisteredAggregators ( Map<ApplicationId, String> registeredAggregators)
+DECL|method|setRegisteredCollectors ( Map<ApplicationId, String> registeredCollectors)
 specifier|public
 name|void
-name|setRegisteredAggregators
+name|setRegisteredCollectors
 parameter_list|(
 name|Map
 argument_list|<
@@ -1533,16 +1533,16 @@ name|ApplicationId
 argument_list|,
 name|String
 argument_list|>
-name|registeredAggregators
+name|registeredCollectors
 parameter_list|)
 block|{
 if|if
 condition|(
-name|registeredAggregators
+name|registeredCollectors
 operator|==
 literal|null
 operator|||
-name|registeredAggregators
+name|registeredCollectors
 operator|.
 name|isEmpty
 argument_list|()
@@ -1555,7 +1555,7 @@ argument_list|()
 expr_stmt|;
 name|this
 operator|.
-name|registeredAggregators
+name|registeredCollectors
 operator|=
 operator|new
 name|HashMap
@@ -1568,11 +1568,11 @@ argument_list|()
 expr_stmt|;
 name|this
 operator|.
-name|registeredAggregators
+name|registeredCollectors
 operator|.
 name|putAll
 argument_list|(
-name|registeredAggregators
+name|registeredCollectors
 argument_list|)
 expr_stmt|;
 block|}

@@ -640,9 +640,9 @@ name|server
 operator|.
 name|nodemanager
 operator|.
-name|aggregatormanager
+name|collectormanager
 operator|.
-name|NMAggregatorService
+name|NMCollectorService
 import|;
 end_import
 
@@ -1085,10 +1085,10 @@ specifier|private
 name|ContainerManagerImpl
 name|containerManager
 decl_stmt|;
-DECL|field|nmAggregatorService
+DECL|field|nmCollectorService
 specifier|private
-name|NMAggregatorService
-name|nmAggregatorService
+name|NMCollectorService
+name|nmCollectorService
 decl_stmt|;
 DECL|field|nodeStatusUpdater
 specifier|private
@@ -1506,10 +1506,10 @@ argument_list|)
 return|;
 block|}
 block|}
-DECL|method|createNMAggregatorService (Context context)
+DECL|method|createNMCollectorService (Context context)
 specifier|protected
-name|NMAggregatorService
-name|createNMAggregatorService
+name|NMCollectorService
+name|createNMCollectorService
 parameter_list|(
 name|Context
 name|context
@@ -1517,7 +1517,7 @@ parameter_list|)
 block|{
 return|return
 operator|new
-name|NMAggregatorService
+name|NMCollectorService
 argument_list|(
 name|context
 argument_list|)
@@ -2492,16 +2492,16 @@ argument_list|)
 expr_stmt|;
 name|this
 operator|.
-name|nmAggregatorService
+name|nmCollectorService
 operator|=
-name|createNMAggregatorService
+name|createNMCollectorService
 argument_list|(
 name|context
 argument_list|)
 expr_stmt|;
 name|addService
 argument_list|(
-name|nmAggregatorService
+name|nmCollectorService
 argument_list|)
 expr_stmt|;
 comment|// StatusUpdater should be added last so that it get started last
@@ -2875,7 +2875,7 @@ name|Container
 argument_list|>
 argument_list|()
 decl_stmt|;
-DECL|field|registeredAggregators
+DECL|field|registeredCollectors
 specifier|protected
 name|Map
 argument_list|<
@@ -2883,7 +2883,7 @@ name|ApplicationId
 argument_list|,
 name|String
 argument_list|>
-name|registeredAggregators
+name|registeredCollectors
 init|=
 operator|new
 name|ConcurrentHashMap
@@ -2894,7 +2894,7 @@ name|String
 argument_list|>
 argument_list|()
 decl_stmt|;
-DECL|field|knownAggregators
+DECL|field|knownCollectors
 specifier|protected
 name|Map
 argument_list|<
@@ -2902,7 +2902,7 @@ name|ApplicationId
 argument_list|,
 name|String
 argument_list|>
-name|knownAggregators
+name|knownCollectors
 init|=
 operator|new
 name|ConcurrentHashMap
@@ -3591,7 +3591,7 @@ return|;
 block|}
 annotation|@
 name|Override
-DECL|method|getRegisteredAggregators ()
+DECL|method|getRegisteredCollectors ()
 specifier|public
 name|Map
 argument_list|<
@@ -3599,19 +3599,19 @@ name|ApplicationId
 argument_list|,
 name|String
 argument_list|>
-name|getRegisteredAggregators
+name|getRegisteredCollectors
 parameter_list|()
 block|{
 return|return
 name|this
 operator|.
-name|registeredAggregators
+name|registeredCollectors
 return|;
 block|}
-DECL|method|addRegisteredAggregators ( Map<ApplicationId, String> newRegisteredAggregators)
+DECL|method|addRegisteredCollectors ( Map<ApplicationId, String> newRegisteredCollectors)
 specifier|public
 name|void
-name|addRegisteredAggregators
+name|addRegisteredCollectors
 parameter_list|(
 name|Map
 argument_list|<
@@ -3619,33 +3619,33 @@ name|ApplicationId
 argument_list|,
 name|String
 argument_list|>
-name|newRegisteredAggregators
+name|newRegisteredCollectors
 parameter_list|)
 block|{
 name|this
 operator|.
-name|registeredAggregators
+name|registeredCollectors
 operator|.
 name|putAll
 argument_list|(
-name|newRegisteredAggregators
+name|newRegisteredCollectors
 argument_list|)
 expr_stmt|;
-comment|// Update to knownAggregators as well so it can immediately be consumed by
+comment|// Update to knownCollectors as well so it can immediately be consumed by
 comment|// this NM's TimelineClient.
 name|this
 operator|.
-name|knownAggregators
+name|knownCollectors
 operator|.
 name|putAll
 argument_list|(
-name|newRegisteredAggregators
+name|newRegisteredCollectors
 argument_list|)
 expr_stmt|;
 block|}
 annotation|@
 name|Override
-DECL|method|getKnownAggregators ()
+DECL|method|getKnownCollectors ()
 specifier|public
 name|Map
 argument_list|<
@@ -3653,19 +3653,19 @@ name|ApplicationId
 argument_list|,
 name|String
 argument_list|>
-name|getKnownAggregators
+name|getKnownCollectors
 parameter_list|()
 block|{
 return|return
 name|this
 operator|.
-name|knownAggregators
+name|knownCollectors
 return|;
 block|}
-DECL|method|addKnownAggregators ( Map<ApplicationId, String> knownAggregators)
+DECL|method|addKnownCollectors ( Map<ApplicationId, String> knownCollectors)
 specifier|public
 name|void
-name|addKnownAggregators
+name|addKnownCollectors
 parameter_list|(
 name|Map
 argument_list|<
@@ -3673,16 +3673,16 @@ name|ApplicationId
 argument_list|,
 name|String
 argument_list|>
-name|knownAggregators
+name|knownCollectors
 parameter_list|)
 block|{
 name|this
 operator|.
-name|knownAggregators
+name|knownCollectors
 operator|.
 name|putAll
 argument_list|(
-name|knownAggregators
+name|knownCollectors
 argument_list|)
 expr_stmt|;
 block|}
@@ -4019,15 +4019,15 @@ name|context
 return|;
 block|}
 comment|// For testing
-DECL|method|getNMAggregatorService ()
-name|NMAggregatorService
-name|getNMAggregatorService
+DECL|method|getNMCollectorService ()
+name|NMCollectorService
+name|getNMCollectorService
 parameter_list|()
 block|{
 return|return
 name|this
 operator|.
-name|nmAggregatorService
+name|nmCollectorService
 return|;
 block|}
 DECL|method|main (String[] args)

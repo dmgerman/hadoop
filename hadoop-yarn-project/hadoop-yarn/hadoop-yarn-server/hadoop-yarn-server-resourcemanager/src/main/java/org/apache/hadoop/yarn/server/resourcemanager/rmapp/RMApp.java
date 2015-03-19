@@ -482,25 +482,25 @@ name|String
 name|getTrackingUrl
 parameter_list|()
 function_decl|;
-comment|/**    * The aggregator address for the application.    * @return the address for the application's aggregator.    */
-DECL|method|getAggregatorAddr ()
+comment|/**    * The collector address for the application.    * @return the address for the application's collector.    */
+DECL|method|getCollectorAddr ()
 name|String
-name|getAggregatorAddr
+name|getCollectorAddr
 parameter_list|()
 function_decl|;
-comment|/**    * Set aggregator address for the application    * @param aggregatorAddr the address of aggregator    */
-DECL|method|setAggregatorAddr (String aggregatorAddr)
+comment|/**    * Set collector address for the application    * @param collectorAddr the address of collector    */
+DECL|method|setCollectorAddr (String collectorAddr)
 name|void
-name|setAggregatorAddr
+name|setCollectorAddr
 parameter_list|(
 name|String
-name|aggregatorAddr
+name|collectorAddr
 parameter_list|)
 function_decl|;
-comment|/**    * Remove aggregator address when application is finished or killed.    */
-DECL|method|removeAggregatorAddr ()
+comment|/**    * Remove collector address when application is finished or killed.    */
+DECL|method|removeCollectorAddr ()
 name|void
-name|removeAggregatorAddr
+name|removeCollectorAddr
 parameter_list|()
 function_decl|;
 comment|/**    * The original tracking url for the application master.    * @return the original tracking url for the application master.    */
