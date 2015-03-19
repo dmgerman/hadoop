@@ -9320,7 +9320,7 @@ argument_list|()
 operator|-
 name|timeNotified
 operator|>
-literal|2500
+literal|1000
 operator|)
 operator|)
 condition|)
@@ -9332,6 +9332,7 @@ operator|.
 name|interrupt
 argument_list|()
 expr_stmt|;
+break|break;
 block|}
 name|LOG
 operator|.
@@ -9390,12 +9391,12 @@ if|if
 condition|(
 name|sleepMs
 operator|>
-literal|1000
+literal|200
 condition|)
 block|{
 name|sleepMs
 operator|=
-literal|1000
+literal|200
 expr_stmt|;
 block|}
 block|}
