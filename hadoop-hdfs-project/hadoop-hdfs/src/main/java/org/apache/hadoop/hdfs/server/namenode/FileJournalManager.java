@@ -3038,6 +3038,8 @@ name|NNUpgradeUtil
 operator|.
 name|doPreUpgrade
 argument_list|(
+name|conf
+argument_list|,
 name|sd
 argument_list|)
 expr_stmt|;
