@@ -1566,7 +1566,7 @@ parameter_list|()
 throws|throws
 name|IOException
 function_decl|;
-comment|/**    * Rolling upgrade operations.    * @param action either query, start or finailze.    * @return rolling upgrade information.    */
+comment|/**    * Rolling upgrade operations.    * @param action either query, prepare or finalize.    * @return rolling upgrade information.    */
 annotation|@
 name|Idempotent
 DECL|method|rollingUpgrade (RollingUpgradeAction action)

@@ -6050,7 +6050,7 @@ name|finalizeUpgrade
 argument_list|()
 expr_stmt|;
 block|}
-comment|/**    * Rolling upgrade: start/finalize/query.    */
+comment|/**    * Rolling upgrade: prepare/finalize/query.    */
 DECL|method|rollingUpgrade (RollingUpgradeAction action)
 specifier|public
 name|RollingUpgradeInfo
