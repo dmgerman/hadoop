@@ -6169,32 +6169,6 @@ name|info
 argument_list|(
 literal|"BLOCK* invalidateBlocks: postponing "
 operator|+
-literal|"invalidation of "
-operator|+
-name|b
-operator|+
-literal|" on "
-operator|+
-name|dn
-operator|+
-literal|" because "
-operator|+
-name|nr
-operator|.
-name|replicasOnStaleNodes
-argument_list|()
-operator|+
-literal|" replica(s) are located on nodes "
-operator|+
-literal|"with potentially out-of-date block reports"
-argument_list|)
-expr_stmt|;
-name|blockLog
-operator|.
-name|info
-argument_list|(
-literal|"BLOCK* invalidateBlocks: postponing "
-operator|+
 literal|"invalidation of {} on {} because {} replica(s) are located on "
 operator|+
 literal|"nodes with potentially out-of-date block reports"
@@ -7376,6 +7350,14 @@ expr_stmt|;
 block|}
 block|}
 block|}
+if|if
+condition|(
+name|blockLog
+operator|.
+name|isDebugEnabled
+argument_list|()
+condition|)
+block|{
 name|blockLog
 operator|.
 name|debug
@@ -7393,6 +7375,7 @@ name|size
 argument_list|()
 argument_list|)
 expr_stmt|;
+block|}
 return|return
 name|scheduledWork
 return|;
@@ -11445,28 +11428,6 @@ block|{
 name|curReplicaDelta
 operator|=
 literal|0
-expr_stmt|;
-name|blockLog
-operator|.
-name|warn
-argument_list|(
-literal|"BLOCK* addStoredBlock: "
-operator|+
-literal|"block "
-operator|+
-name|storedBlock
-operator|+
-literal|" moved to storageType "
-operator|+
-name|storageInfo
-operator|.
-name|getStorageType
-argument_list|()
-operator|+
-literal|" on node "
-operator|+
-name|node
-argument_list|)
 expr_stmt|;
 name|blockLog
 operator|.
