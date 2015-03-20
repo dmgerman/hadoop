@@ -2336,12 +2336,7 @@ operator|=
 operator|new
 name|JobHistoryParser
 argument_list|(
-name|historyFileAbsolute
-operator|.
-name|getFileSystem
-argument_list|(
-name|conf
-argument_list|)
+name|fs
 argument_list|,
 name|historyFileAbsolute
 argument_list|)
