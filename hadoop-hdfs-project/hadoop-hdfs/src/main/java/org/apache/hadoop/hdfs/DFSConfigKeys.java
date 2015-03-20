@@ -2973,6 +2973,25 @@ name|DFS_CLIENT_BLOCK_WRITE_LOCATEFOLLOWINGBLOCK_RETRIES_DEFAULT
 init|=
 literal|5
 decl_stmt|;
+comment|// the initial delay (unit is ms) for locateFollowingBlock, the delay time will increase exponentially(double) for each retry.
+DECL|field|DFS_CLIENT_BLOCK_WRITE_LOCATEFOLLOWINGBLOCK_INITIAL_DELAY_KEY
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|DFS_CLIENT_BLOCK_WRITE_LOCATEFOLLOWINGBLOCK_INITIAL_DELAY_KEY
+init|=
+literal|"dfs.client.block.write.locateFollowingBlock.initial.delay.ms"
+decl_stmt|;
+DECL|field|DFS_CLIENT_BLOCK_WRITE_LOCATEFOLLOWINGBLOCK_INITIAL_DELAY_DEFAULT
+specifier|public
+specifier|static
+specifier|final
+name|int
+name|DFS_CLIENT_BLOCK_WRITE_LOCATEFOLLOWINGBLOCK_INITIAL_DELAY_DEFAULT
+init|=
+literal|400
+decl_stmt|;
 DECL|field|DFS_CLIENT_BLOCK_WRITE_RETRIES_KEY
 specifier|public
 specifier|static
