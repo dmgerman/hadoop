@@ -1250,6 +1250,14 @@ name|ANY
 argument_list|)
 decl_stmt|;
 return|return
+operator|(
+name|request
+operator|==
+literal|null
+operator|)
+condition|?
+literal|null
+else|:
 name|request
 operator|.
 name|getCapability
@@ -1851,6 +1859,13 @@ decl_stmt|;
 if|if
 condition|(
 name|request
+operator|!=
+literal|null
+condition|)
+block|{
+if|if
+condition|(
+name|request
 operator|.
 name|getNumContainers
 argument_list|()
@@ -1863,6 +1878,7 @@ operator|=
 literal|false
 expr_stmt|;
 break|break;
+block|}
 block|}
 block|}
 if|if
