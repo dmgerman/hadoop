@@ -70,6 +70,16 @@ specifier|final
 class|class
 name|Time
 block|{
+comment|/**    * number of nano seconds in 1 millisecond    */
+DECL|field|NANOSECONDS_PER_MILLISECOND
+specifier|private
+specifier|static
+specifier|final
+name|long
+name|NANOSECONDS_PER_MILLISECOND
+init|=
+literal|1000000
+decl_stmt|;
 comment|/**    * Current system time.  Do not use this to calculate a duration or interval    * to sleep, because it will be broken by settimeofday.  Instead, use    * monotonicNow.    * @return current time in msec.    */
 DECL|method|now ()
 specifier|public
@@ -93,12 +103,6 @@ name|long
 name|monotonicNow
 parameter_list|()
 block|{
-specifier|final
-name|long
-name|NANOSECONDS_PER_MILLISECOND
-init|=
-literal|1000000
-decl_stmt|;
 return|return
 name|System
 operator|.
