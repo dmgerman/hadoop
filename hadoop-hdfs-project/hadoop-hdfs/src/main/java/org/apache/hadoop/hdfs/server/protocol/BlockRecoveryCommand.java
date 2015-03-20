@@ -224,11 +224,6 @@ argument_list|(
 name|b
 argument_list|,
 name|locs
-argument_list|,
-operator|-
-literal|1
-argument_list|,
-literal|false
 argument_list|)
 expr_stmt|;
 comment|// startOffset is unknown
@@ -266,11 +261,6 @@ argument_list|(
 name|b
 argument_list|,
 name|locs
-argument_list|,
-operator|-
-literal|1
-argument_list|,
-literal|false
 argument_list|)
 expr_stmt|;
 comment|// startOffset is unknown

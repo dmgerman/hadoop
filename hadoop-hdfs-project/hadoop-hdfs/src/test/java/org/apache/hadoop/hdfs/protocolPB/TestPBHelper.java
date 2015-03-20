@@ -4218,10 +4218,6 @@ literal|53
 argument_list|)
 argument_list|,
 name|dnInfos
-argument_list|,
-literal|5
-argument_list|,
-literal|false
 argument_list|)
 decl_stmt|;
 name|lb
@@ -4256,6 +4252,13 @@ argument_list|(
 literal|"service"
 argument_list|)
 argument_list|)
+argument_list|)
+expr_stmt|;
+name|lb
+operator|.
+name|setStartOffset
+argument_list|(
+literal|5
 argument_list|)
 expr_stmt|;
 return|return

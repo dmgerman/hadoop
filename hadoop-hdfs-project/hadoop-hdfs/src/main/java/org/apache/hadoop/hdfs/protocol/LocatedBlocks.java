@@ -371,10 +371,6 @@ name|DatanodeInfo
 index|[
 literal|0
 index|]
-argument_list|,
-literal|0L
-argument_list|,
-literal|false
 argument_list|)
 decl_stmt|;
 name|key

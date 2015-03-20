@@ -204,6 +204,7 @@ decl_stmt|;
 comment|/** Cached storage ID for each replica */
 DECL|field|storageIDs
 specifier|private
+specifier|final
 name|String
 index|[]
 name|storageIDs
@@ -211,6 +212,7 @@ decl_stmt|;
 comment|/** Cached storage type for each replica, if reported. */
 DECL|field|storageTypes
 specifier|private
+specifier|final
 name|StorageType
 index|[]
 name|storageTypes
@@ -272,81 +274,25 @@ index|[]
 name|locs
 parameter_list|)
 block|{
+comment|// By default, startOffset is unknown(-1) and corrupt is false.
 name|this
 argument_list|(
 name|b
 argument_list|,
 name|locs
+argument_list|,
+literal|null
+argument_list|,
+literal|null
 argument_list|,
 operator|-
 literal|1
 argument_list|,
 literal|false
-argument_list|)
-expr_stmt|;
-comment|// startOffset is unknown
-block|}
-DECL|method|LocatedBlock (ExtendedBlock b, DatanodeInfo[] locs, long startOffset, boolean corrupt)
-specifier|public
-name|LocatedBlock
-parameter_list|(
-name|ExtendedBlock
-name|b
-parameter_list|,
-name|DatanodeInfo
-index|[]
-name|locs
-parameter_list|,
-name|long
-name|startOffset
-parameter_list|,
-name|boolean
-name|corrupt
-parameter_list|)
-block|{
-name|this
-argument_list|(
-name|b
-argument_list|,
-name|locs
-argument_list|,
-literal|null
-argument_list|,
-literal|null
-argument_list|,
-name|startOffset
-argument_list|,
-name|corrupt
 argument_list|,
 name|EMPTY_LOCS
 argument_list|)
 expr_stmt|;
-block|}
-DECL|method|LocatedBlock (ExtendedBlock b, DatanodeStorageInfo[] storages)
-specifier|public
-name|LocatedBlock
-parameter_list|(
-name|ExtendedBlock
-name|b
-parameter_list|,
-name|DatanodeStorageInfo
-index|[]
-name|storages
-parameter_list|)
-block|{
-name|this
-argument_list|(
-name|b
-argument_list|,
-name|storages
-argument_list|,
-operator|-
-literal|1
-argument_list|,
-literal|false
-argument_list|)
-expr_stmt|;
-comment|// startOffset is unknown
 block|}
 DECL|method|LocatedBlock (ExtendedBlock b, DatanodeInfo[] locs, String[] storageIDs, StorageType[] storageTypes)
 specifier|public
@@ -810,6 +756,7 @@ argument_list|()
 return|;
 block|}
 DECL|method|setStartOffset (long value)
+specifier|public
 name|void
 name|setStartOffset
 parameter_list|(
@@ -825,6 +772,7 @@ name|value
 expr_stmt|;
 block|}
 DECL|method|setCorrupt (boolean corrupt)
+specifier|public
 name|void
 name|setCorrupt
 parameter_list|(
