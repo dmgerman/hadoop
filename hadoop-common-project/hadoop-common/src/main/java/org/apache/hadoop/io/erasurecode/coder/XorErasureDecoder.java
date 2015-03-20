@@ -102,10 +102,10 @@ name|AbstractErasureDecoder
 block|{
 annotation|@
 name|Override
-DECL|method|performDecoding (final ECBlockGroup blockGroup)
+DECL|method|prepareDecodingStep (final ECBlockGroup blockGroup)
 specifier|protected
 name|ErasureCodingStep
-name|performDecoding
+name|prepareDecodingStep
 parameter_list|(
 specifier|final
 name|ECBlockGroup

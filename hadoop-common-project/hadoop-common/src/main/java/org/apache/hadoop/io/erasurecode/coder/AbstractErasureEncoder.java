@@ -78,19 +78,20 @@ name|ECBlockGroup
 name|blockGroup
 parameter_list|)
 block|{
+comment|// We may have more than this when considering complicate cases. HADOOP-11550
 return|return
-name|performEncoding
+name|prepareEncodingStep
 argument_list|(
 name|blockGroup
 argument_list|)
 return|;
 block|}
 comment|/**    * Perform encoding against a block group.    * @param blockGroup    * @return encoding step for caller to do the real work    */
-DECL|method|performEncoding (ECBlockGroup blockGroup)
+DECL|method|prepareEncodingStep ( ECBlockGroup blockGroup)
 specifier|protected
 specifier|abstract
 name|ErasureCodingStep
-name|performEncoding
+name|prepareEncodingStep
 parameter_list|(
 name|ECBlockGroup
 name|blockGroup
