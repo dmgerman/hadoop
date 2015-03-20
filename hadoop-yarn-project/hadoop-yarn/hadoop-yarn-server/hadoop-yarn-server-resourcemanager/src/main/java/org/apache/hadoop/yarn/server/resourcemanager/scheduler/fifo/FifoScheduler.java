@@ -566,6 +566,26 @@ name|server
 operator|.
 name|resourcemanager
 operator|.
+name|nodelabels
+operator|.
+name|RMNodeLabelsManager
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|server
+operator|.
+name|resourcemanager
+operator|.
 name|recovery
 operator|.
 name|RMStateStore
@@ -1859,6 +1879,32 @@ return|return
 literal|null
 return|;
 block|}
+annotation|@
+name|Override
+specifier|public
+name|void
+name|incPendingResource
+parameter_list|(
+name|String
+name|nodeLabel
+parameter_list|,
+name|Resource
+name|resourceToInc
+parameter_list|)
+block|{     }
+annotation|@
+name|Override
+specifier|public
+name|void
+name|decPendingResource
+parameter_list|(
+name|String
+name|nodeLabel
+parameter_list|,
+name|Resource
+name|resourceToDec
+parameter_list|)
+block|{     }
 block|}
 decl_stmt|;
 DECL|method|FifoScheduler ()
@@ -4857,6 +4903,10 @@ argument_list|,
 name|containerStatus
 argument_list|,
 name|event
+argument_list|,
+name|RMNodeLabelsManager
+operator|.
+name|NO_LABEL
 argument_list|)
 expr_stmt|;
 comment|// Inform the node

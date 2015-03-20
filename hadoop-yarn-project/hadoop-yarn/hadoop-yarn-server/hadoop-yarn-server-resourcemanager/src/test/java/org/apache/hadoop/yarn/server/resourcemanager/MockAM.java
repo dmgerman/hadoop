@@ -1131,6 +1131,13 @@ name|ResourceRequest
 argument_list|>
 argument_list|()
 decl_stmt|;
+if|if
+condition|(
+name|hosts
+operator|!=
+literal|null
+condition|)
+block|{
 for|for
 control|(
 name|String
@@ -1199,6 +1206,7 @@ argument_list|(
 name|rackReq
 argument_list|)
 expr_stmt|;
+block|}
 block|}
 block|}
 name|ResourceRequest

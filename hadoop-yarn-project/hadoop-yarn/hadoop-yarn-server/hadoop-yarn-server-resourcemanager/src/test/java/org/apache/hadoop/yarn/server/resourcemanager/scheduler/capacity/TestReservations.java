@@ -8926,7 +8926,7 @@ name|res
 init|=
 name|a
 operator|.
-name|assignToUser
+name|canAssignToUser
 argument_list|(
 name|clusterResource
 argument_list|,
@@ -8952,7 +8952,7 @@ name|res
 operator|=
 name|a
 operator|.
-name|assignToUser
+name|canAssignToUser
 argument_list|(
 name|clusterResource
 argument_list|,
@@ -8984,7 +8984,7 @@ name|res
 operator|=
 name|a
 operator|.
-name|assignToUser
+name|canAssignToUser
 argument_list|(
 name|clusterResource
 argument_list|,

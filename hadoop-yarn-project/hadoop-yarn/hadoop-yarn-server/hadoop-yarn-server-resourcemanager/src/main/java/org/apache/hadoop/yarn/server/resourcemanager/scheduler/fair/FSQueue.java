@@ -1334,6 +1334,34 @@ return|return
 literal|null
 return|;
 block|}
+annotation|@
+name|Override
+DECL|method|incPendingResource (String nodeLabel, Resource resourceToInc)
+specifier|public
+name|void
+name|incPendingResource
+parameter_list|(
+name|String
+name|nodeLabel
+parameter_list|,
+name|Resource
+name|resourceToInc
+parameter_list|)
+block|{   }
+annotation|@
+name|Override
+DECL|method|decPendingResource (String nodeLabel, Resource resourceToDec)
+specifier|public
+name|void
+name|decPendingResource
+parameter_list|(
+name|String
+name|nodeLabel
+parameter_list|,
+name|Resource
+name|resourceToDec
+parameter_list|)
+block|{   }
 block|}
 end_class
 

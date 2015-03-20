@@ -3766,6 +3766,52 @@ return|return
 name|labels
 return|;
 block|}
+DECL|method|checkResourceRequestMatchingNodeLabel (ResourceRequest offswitchResourceRequest, FiCaSchedulerNode node)
+specifier|private
+name|boolean
+name|checkResourceRequestMatchingNodeLabel
+parameter_list|(
+name|ResourceRequest
+name|offswitchResourceRequest
+parameter_list|,
+name|FiCaSchedulerNode
+name|node
+parameter_list|)
+block|{
+name|String
+name|askedNodeLabel
+init|=
+name|offswitchResourceRequest
+operator|.
+name|getNodeLabelExpression
+argument_list|()
+decl_stmt|;
+if|if
+condition|(
+literal|null
+operator|==
+name|askedNodeLabel
+condition|)
+block|{
+name|askedNodeLabel
+operator|=
+name|RMNodeLabelsManager
+operator|.
+name|NO_LABEL
+expr_stmt|;
+block|}
+return|return
+name|askedNodeLabel
+operator|.
+name|equals
+argument_list|(
+name|node
+operator|.
+name|getPartition
+argument_list|()
+argument_list|)
+return|;
+block|}
 annotation|@
 name|Override
 DECL|method|assignContainers (Resource clusterResource, FiCaSchedulerNode node, ResourceLimits currentResourceLimits)
@@ -4002,6 +4048,22 @@ condition|)
 block|{
 continue|continue;
 block|}
+comment|// Is the node-label-expression of this offswitch resource request
+comment|// matches the node's label?
+comment|// If not match, jump to next priority.
+if|if
+condition|(
+operator|!
+name|checkResourceRequestMatchingNodeLabel
+argument_list|(
+name|anyRequest
+argument_list|,
+name|node
+argument_list|)
+condition|)
+block|{
+continue|continue;
+block|}
 if|if
 condition|(
 operator|!
@@ -4111,7 +4173,7 @@ comment|// Check user limit
 if|if
 condition|(
 operator|!
-name|assignToUser
+name|canAssignToUser
 argument_list|(
 name|clusterResource
 argument_list|,
@@ -5069,11 +5131,11 @@ return|;
 block|}
 annotation|@
 name|Private
-DECL|method|assignToUser (Resource clusterResource, String userName, Resource limit, FiCaSchedulerApp application, boolean checkReservations, Set<String> requestLabels)
+DECL|method|canAssignToUser (Resource clusterResource, String userName, Resource limit, FiCaSchedulerApp application, boolean checkReservations, Set<String> requestLabels)
 specifier|protected
 specifier|synchronized
 name|boolean
-name|assignToUser
+name|canAssignToUser
 parameter_list|(
 name|Resource
 name|clusterResource
@@ -5168,6 +5230,15 @@ operator|.
 name|reservationsContinueLooking
 operator|&&
 name|checkReservations
+operator|&&
+name|label
+operator|.
+name|equals
+argument_list|(
+name|CommonNodeLabelsManager
+operator|.
+name|NO_LABEL
+argument_list|)
 condition|)
 block|{
 if|if
@@ -6160,7 +6231,7 @@ comment|// Check user limit
 if|if
 condition|(
 operator|!
-name|assignToUser
+name|canAssignToUser
 argument_list|(
 name|clusterResource
 argument_list|,
@@ -7613,6 +7684,11 @@ argument_list|,
 name|containerStatus
 argument_list|,
 name|event
+argument_list|,
+name|node
+operator|.
+name|getPartition
+argument_list|()
 argument_list|)
 expr_stmt|;
 name|node

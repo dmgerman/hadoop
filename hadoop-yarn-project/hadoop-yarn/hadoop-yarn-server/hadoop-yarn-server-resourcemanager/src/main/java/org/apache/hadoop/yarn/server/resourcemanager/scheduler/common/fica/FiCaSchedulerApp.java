@@ -764,7 +764,7 @@ name|amResource
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|containerCompleted (RMContainer rmContainer, ContainerStatus containerStatus, RMContainerEventType event)
+DECL|method|containerCompleted (RMContainer rmContainer, ContainerStatus containerStatus, RMContainerEventType event, String partition)
 specifier|synchronized
 specifier|public
 name|boolean
@@ -778,6 +778,9 @@ name|containerStatus
 parameter_list|,
 name|RMContainerEventType
 name|event
+parameter_list|,
+name|String
+name|partition
 parameter_list|)
 block|{
 comment|// Remove from the list of containers
@@ -919,11 +922,11 @@ argument_list|,
 name|containerResource
 argument_list|)
 expr_stmt|;
-name|Resources
+name|attemptResourceUsage
 operator|.
-name|subtractFrom
+name|decUsed
 argument_list|(
-name|currentConsumption
+name|partition
 argument_list|,
 name|containerResource
 argument_list|)
@@ -1056,11 +1059,14 @@ argument_list|,
 name|container
 argument_list|)
 decl_stmt|;
-name|Resources
+name|attemptResourceUsage
 operator|.
-name|addTo
+name|incUsed
 argument_list|(
-name|currentConsumption
+name|node
+operator|.
+name|getPartition
+argument_list|()
 argument_list|,
 name|container
 operator|.
@@ -1282,11 +1288,16 @@ operator|.
 name|getResource
 argument_list|()
 decl_stmt|;
-name|Resources
+name|this
 operator|.
-name|subtractFrom
+name|attemptResourceUsage
+operator|.
+name|decReserved
 argument_list|(
-name|currentReservation
+name|node
+operator|.
+name|getPartition
+argument_list|()
 argument_list|,
 name|resource
 argument_list|)
@@ -1319,7 +1330,19 @@ name|priority
 operator|+
 literal|"; currentReservation "
 operator|+
-name|currentReservation
+name|this
+operator|.
+name|attemptResourceUsage
+operator|.
+name|getReserved
+argument_list|()
+operator|+
+literal|" on node-label="
+operator|+
+name|node
+operator|.
+name|getPartition
+argument_list|()
 argument_list|)
 expr_stmt|;
 return|return

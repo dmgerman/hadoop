@@ -279,6 +279,32 @@ name|String
 name|getDefaultNodeLabelExpression
 parameter_list|()
 function_decl|;
+comment|/**    * When new outstanding resource is asked, calling this will increase pending    * resource in a queue.    *     * @param nodeLabel asked by application    * @param resourceToInc new resource asked    */
+DECL|method|incPendingResource (String nodeLabel, Resource resourceToInc)
+specifier|public
+name|void
+name|incPendingResource
+parameter_list|(
+name|String
+name|nodeLabel
+parameter_list|,
+name|Resource
+name|resourceToInc
+parameter_list|)
+function_decl|;
+comment|/**    * When an outstanding resource is fulfilled or canceled, calling this will    * decrease pending resource in a queue.    *     * @param nodeLabel    *          asked by application    * @param resourceToDec    *          new resource asked    */
+DECL|method|decPendingResource (String nodeLabel, Resource resourceToDec)
+specifier|public
+name|void
+name|decPendingResource
+parameter_list|(
+name|String
+name|nodeLabel
+parameter_list|,
+name|Resource
+name|resourceToDec
+parameter_list|)
+function_decl|;
 block|}
 end_interface
 

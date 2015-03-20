@@ -2222,6 +2222,9 @@ argument_list|)
 argument_list|)
 expr_stmt|;
 comment|// recover scheduler node
+name|SchedulerNode
+name|schedulerNode
+init|=
 name|nodes
 operator|.
 name|get
@@ -2231,6 +2234,8 @@ operator|.
 name|getNodeID
 argument_list|()
 argument_list|)
+decl_stmt|;
+name|schedulerNode
 operator|.
 name|recoverContainer
 argument_list|(
@@ -2262,6 +2267,8 @@ name|schedulerAttempt
 operator|.
 name|recoverContainer
 argument_list|(
+name|schedulerNode
+argument_list|,
 name|rmContainer
 argument_list|)
 expr_stmt|;
