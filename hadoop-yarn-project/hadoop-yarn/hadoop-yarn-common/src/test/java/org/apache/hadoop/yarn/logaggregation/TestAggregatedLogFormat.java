@@ -1672,6 +1672,11 @@ literal|"\n"
 operator|.
 name|length
 argument_list|()
+operator|+
+literal|"End of LogType:stdout\n"
+operator|.
+name|length
+argument_list|()
 decl_stmt|;
 name|Assert
 operator|.

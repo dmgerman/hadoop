@@ -3797,6 +3797,15 @@ name|out
 operator|.
 name|println
 argument_list|(
+literal|"End of LogType:"
+operator|+
+name|fileType
+argument_list|)
+expr_stmt|;
+name|out
+operator|.
+name|println
+argument_list|(
 literal|""
 argument_list|)
 expr_stmt|;
