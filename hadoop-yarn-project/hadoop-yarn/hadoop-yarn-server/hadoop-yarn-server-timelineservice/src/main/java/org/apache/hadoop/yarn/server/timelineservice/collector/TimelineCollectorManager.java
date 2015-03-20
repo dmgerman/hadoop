@@ -1169,10 +1169,7 @@ name|setAttribute
 argument_list|(
 name|COLLECTOR_MANAGER_ATTR_KEY
 argument_list|,
-name|TimelineCollectorManager
-operator|.
-name|getInstance
-argument_list|()
+name|this
 argument_list|)
 expr_stmt|;
 name|timelineRestServer
