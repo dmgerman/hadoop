@@ -8773,6 +8773,8 @@ name|getAbsolutePath
 argument_list|()
 argument_list|)
 expr_stmt|;
+comment|//configure YarnConfiguration.NM_REMOTE_APP_LOG_DIR to
+comment|//have fully qualified path
 name|this
 operator|.
 name|conf
@@ -8783,6 +8785,8 @@ name|YarnConfiguration
 operator|.
 name|NM_REMOTE_APP_LOG_DIR
 argument_list|,
+literal|"file://"
+operator|+
 name|this
 operator|.
 name|remoteRootLogDir

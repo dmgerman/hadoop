@@ -1199,9 +1199,11 @@ throws|throws
 name|IOException
 block|{
 return|return
-name|FileSystem
+name|this
 operator|.
-name|get
+name|remoteRootLogDir
+operator|.
+name|getFileSystem
 argument_list|(
 name|conf
 argument_list|)

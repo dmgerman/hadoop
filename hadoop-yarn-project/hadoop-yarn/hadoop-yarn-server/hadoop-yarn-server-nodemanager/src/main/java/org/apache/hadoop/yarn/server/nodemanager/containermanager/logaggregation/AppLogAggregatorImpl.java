@@ -1856,9 +1856,9 @@ block|{
 name|FileSystem
 name|remoteFS
 init|=
-name|FileSystem
+name|remoteNodeLogFileForApp
 operator|.
-name|get
+name|getFileSystem
 argument_list|(
 name|conf
 argument_list|)

@@ -2330,6 +2330,11 @@ name|FileContext
 operator|.
 name|getFileContext
 argument_list|(
+name|remoteAppLogFile
+operator|.
+name|toUri
+argument_list|()
+argument_list|,
 name|conf
 argument_list|)
 expr_stmt|;
@@ -2847,6 +2852,11 @@ name|FileContext
 operator|.
 name|getFileContext
 argument_list|(
+name|remoteAppLogFile
+operator|.
+name|toUri
+argument_list|()
+argument_list|,
 name|conf
 argument_list|)
 decl_stmt|;
