@@ -384,7 +384,7 @@ name|util
 operator|.
 name|Time
 operator|.
-name|now
+name|monotonicNow
 import|;
 end_import
 
@@ -522,10 +522,10 @@ operator|.
 name|INVALID_TXID
 decl_stmt|;
 comment|/**    * The last time we successfully loaded a non-zero number of edits from the    * shared directory.    */
-DECL|field|lastLoadTimestamp
+DECL|field|lastLoadTimeMs
 specifier|private
 name|long
-name|lastLoadTimestamp
+name|lastLoadTimeMs
 decl_stmt|;
 comment|/**    * How often the Standby should roll edit logs. Since the Standby only reads    * from finalized log segments, the Standby will only be as up-to-date as how    * often the logs are rolled.    */
 DECL|field|logRollPeriodMs
@@ -581,9 +581,9 @@ operator|.
 name|getEditLog
 argument_list|()
 expr_stmt|;
-name|lastLoadTimestamp
+name|lastLoadTimeMs
 operator|=
-name|now
+name|monotonicNow
 argument_list|()
 expr_stmt|;
 name|logRollPeriodMs
@@ -1181,9 +1181,9 @@ operator|>
 literal|0
 condition|)
 block|{
-name|lastLoadTimestamp
+name|lastLoadTimeMs
 operator|=
-name|now
+name|monotonicNow
 argument_list|()
 expr_stmt|;
 block|}
@@ -1204,15 +1204,15 @@ argument_list|()
 expr_stmt|;
 block|}
 block|}
-comment|/**    * @return timestamp (in msec) of when we last loaded a non-zero number of edits.    */
-DECL|method|getLastLoadTimestamp ()
+comment|/**    * @return time in msec of when we last loaded a non-zero number of edits.    */
+DECL|method|getLastLoadTimeMs ()
 specifier|public
 name|long
-name|getLastLoadTimestamp
+name|getLastLoadTimeMs
 parameter_list|()
 block|{
 return|return
-name|lastLoadTimestamp
+name|lastLoadTimeMs
 return|;
 block|}
 comment|/**    * @return true if the configured log roll period has elapsed.    */
@@ -1228,10 +1228,10 @@ operator|>=
 literal|0
 operator|&&
 operator|(
-name|now
+name|monotonicNow
 argument_list|()
 operator|-
-name|lastLoadTimestamp
+name|lastLoadTimeMs
 operator|)
 operator|>
 name|logRollPeriodMs

@@ -1741,7 +1741,7 @@ name|start
 init|=
 name|Time
 operator|.
-name|now
+name|monotonicNow
 argument_list|()
 decl_stmt|;
 comment|//wait for all the blocks to be replicated;
@@ -1873,7 +1873,7 @@ operator|&&
 operator|(
 name|Time
 operator|.
-name|now
+name|monotonicNow
 argument_list|()
 operator|-
 name|start

@@ -261,6 +261,11 @@ specifier|private
 name|long
 name|lastUpdate
 decl_stmt|;
+DECL|field|lastUpdateMonotonic
+specifier|private
+name|long
+name|lastUpdateMonotonic
+decl_stmt|;
 DECL|field|xceiverCount
 specifier|private
 name|int
@@ -476,6 +481,15 @@ argument_list|()
 expr_stmt|;
 name|this
 operator|.
+name|lastUpdateMonotonic
+operator|=
+name|from
+operator|.
+name|getLastUpdateMonotonic
+argument_list|()
+expr_stmt|;
+name|this
+operator|.
 name|xceiverCount
 operator|=
 name|from
@@ -559,6 +573,12 @@ literal|0L
 expr_stmt|;
 name|this
 operator|.
+name|lastUpdateMonotonic
+operator|=
+literal|0L
+expr_stmt|;
+name|this
+operator|.
 name|xceiverCount
 operator|=
 literal|0
@@ -593,7 +613,7 @@ operator|=
 name|location
 expr_stmt|;
 block|}
-DECL|method|DatanodeInfo (DatanodeID nodeID, String location, final long capacity, final long dfsUsed, final long remaining, final long blockPoolUsed, final long cacheCapacity, final long cacheUsed, final long lastUpdate, final int xceiverCount, final AdminStates adminState)
+DECL|method|DatanodeInfo (DatanodeID nodeID, String location, final long capacity, final long dfsUsed, final long remaining, final long blockPoolUsed, final long cacheCapacity, final long cacheUsed, final long lastUpdate, final long lastUpdateMonotonic, final int xceiverCount, final AdminStates adminState)
 specifier|public
 name|DatanodeInfo
 parameter_list|(
@@ -630,6 +650,10 @@ parameter_list|,
 specifier|final
 name|long
 name|lastUpdate
+parameter_list|,
+specifier|final
+name|long
+name|lastUpdateMonotonic
 parameter_list|,
 specifier|final
 name|int
@@ -691,6 +715,8 @@ name|cacheUsed
 argument_list|,
 name|lastUpdate
 argument_list|,
+name|lastUpdateMonotonic
+argument_list|,
 name|xceiverCount
 argument_list|,
 name|location
@@ -700,7 +726,7 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|/** Constructor */
-DECL|method|DatanodeInfo (final String ipAddr, final String hostName, final String datanodeUuid, final int xferPort, final int infoPort, final int infoSecurePort, final int ipcPort, final long capacity, final long dfsUsed, final long remaining, final long blockPoolUsed, final long cacheCapacity, final long cacheUsed, final long lastUpdate, final int xceiverCount, final String networkLocation, final AdminStates adminState)
+DECL|method|DatanodeInfo (final String ipAddr, final String hostName, final String datanodeUuid, final int xferPort, final int infoPort, final int infoSecurePort, final int ipcPort, final long capacity, final long dfsUsed, final long remaining, final long blockPoolUsed, final long cacheCapacity, final long cacheUsed, final long lastUpdate, final long lastUpdateMonotonic, final int xceiverCount, final String networkLocation, final AdminStates adminState)
 specifier|public
 name|DatanodeInfo
 parameter_list|(
@@ -759,6 +785,10 @@ parameter_list|,
 specifier|final
 name|long
 name|lastUpdate
+parameter_list|,
+specifier|final
+name|long
+name|lastUpdateMonotonic
 parameter_list|,
 specifier|final
 name|int
@@ -831,6 +861,12 @@ operator|.
 name|lastUpdate
 operator|=
 name|lastUpdate
+expr_stmt|;
+name|this
+operator|.
+name|lastUpdateMonotonic
+operator|=
+name|lastUpdateMonotonic
 expr_stmt|;
 name|this
 operator|.
@@ -1061,7 +1097,7 @@ name|cacheCapacity
 argument_list|)
 return|;
 block|}
-comment|/** The time when this information was accurate. */
+comment|/**    * Get the last update timestamp.    * Return value is suitable for Date conversion.    */
 DECL|method|getLastUpdate ()
 specifier|public
 name|long
@@ -1071,6 +1107,34 @@ block|{
 return|return
 name|lastUpdate
 return|;
+block|}
+comment|/**     * The time when this information was accurate.<br>    * Ps: So return value is ideal for calculation of time differences.    * Should not be used to convert to Date.      */
+DECL|method|getLastUpdateMonotonic ()
+specifier|public
+name|long
+name|getLastUpdateMonotonic
+parameter_list|()
+block|{
+return|return
+name|lastUpdateMonotonic
+return|;
+block|}
+comment|/**    * Set lastUpdate monotonic time    */
+DECL|method|setLastUpdateMonotonic (long lastUpdateMonotonic)
+specifier|public
+name|void
+name|setLastUpdateMonotonic
+parameter_list|(
+name|long
+name|lastUpdateMonotonic
+parameter_list|)
+block|{
+name|this
+operator|.
+name|lastUpdateMonotonic
+operator|=
+name|lastUpdateMonotonic
+expr_stmt|;
 block|}
 comment|/** number of active connections */
 DECL|method|getXceiverCount ()
@@ -2164,10 +2228,10 @@ return|return
 operator|(
 name|Time
 operator|.
-name|now
+name|monotonicNow
 argument_list|()
 operator|-
-name|lastUpdate
+name|lastUpdateMonotonic
 operator|)
 operator|>=
 name|staleInterval

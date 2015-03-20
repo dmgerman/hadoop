@@ -32,7 +32,7 @@ name|util
 operator|.
 name|Time
 operator|.
-name|now
+name|monotonicNow
 import|;
 end_import
 
@@ -1146,7 +1146,7 @@ name|this
 operator|.
 name|lastUpdate
 operator|=
-name|now
+name|monotonicNow
 argument_list|()
 expr_stmt|;
 block|}
@@ -1158,7 +1158,7 @@ name|expiredHardLimit
 parameter_list|()
 block|{
 return|return
-name|now
+name|monotonicNow
 argument_list|()
 operator|-
 name|lastUpdate
@@ -1174,7 +1174,7 @@ name|expiredSoftLimit
 parameter_list|()
 block|{
 return|return
-name|now
+name|monotonicNow
 argument_list|()
 operator|-
 name|lastUpdate

@@ -72,7 +72,7 @@ name|util
 operator|.
 name|Time
 operator|.
-name|now
+name|monotonicNow
 import|;
 end_import
 
@@ -1667,7 +1667,7 @@ block|{
 name|long
 name|startTime
 init|=
-name|now
+name|monotonicNow
 argument_list|()
 decl_stmt|;
 name|FSImage
@@ -1727,7 +1727,7 @@ operator|+
 literal|" loaded in "
 operator|+
 operator|(
-name|now
+name|monotonicNow
 argument_list|()
 operator|-
 name|startTime
@@ -1944,7 +1944,7 @@ decl_stmt|;
 name|long
 name|lastLogTime
 init|=
-name|now
+name|monotonicNow
 argument_list|()
 decl_stmt|;
 name|long
@@ -2375,7 +2375,7 @@ block|{
 name|long
 name|now
 init|=
-name|now
+name|monotonicNow
 argument_list|()
 decl_stmt|;
 if|if

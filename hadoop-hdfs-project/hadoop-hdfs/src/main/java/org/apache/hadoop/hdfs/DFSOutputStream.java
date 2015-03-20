@@ -2504,7 +2504,7 @@ name|lastPacket
 init|=
 name|Time
 operator|.
-name|now
+name|monotonicNow
 argument_list|()
 decl_stmt|;
 name|TraceScope
@@ -2616,7 +2616,7 @@ name|now
 init|=
 name|Time
 operator|.
-name|now
+name|monotonicNow
 argument_list|()
 decl_stmt|;
 while|while
@@ -2748,7 +2748,7 @@ name|now
 operator|=
 name|Time
 operator|.
-name|now
+name|monotonicNow
 argument_list|()
 expr_stmt|;
 block|}
@@ -3179,7 +3179,7 @@ name|lastPacket
 operator|=
 name|Time
 operator|.
-name|now
+name|monotonicNow
 argument_list|()
 expr_stmt|;
 comment|// update bytesSent
@@ -4102,7 +4102,7 @@ name|datanodeRestartTimeout
 operator|+
 name|Time
 operator|.
-name|now
+name|monotonicNow
 argument_list|()
 expr_stmt|;
 name|setRestartingNodeIndex
@@ -5994,7 +5994,7 @@ if|if
 condition|(
 name|Time
 operator|.
-name|now
+name|monotonicNow
 argument_list|()
 operator|<
 name|restartDeadline
@@ -6187,14 +6187,6 @@ name|success
 operator|=
 literal|false
 expr_stmt|;
-name|long
-name|startTime
-init|=
-name|Time
-operator|.
-name|now
-argument_list|()
-decl_stmt|;
 name|DatanodeInfo
 index|[]
 name|excluded
@@ -6232,8 +6224,6 @@ name|lb
 operator|=
 name|locateFollowingBlock
 argument_list|(
-name|startTime
-argument_list|,
 name|excluded
 operator|.
 name|length
@@ -7040,7 +7030,7 @@ name|datanodeRestartTimeout
 operator|+
 name|Time
 operator|.
-name|now
+name|monotonicNow
 argument_list|()
 expr_stmt|;
 name|restartingNodeIndex
@@ -7304,14 +7294,11 @@ name|pinnings
 return|;
 block|}
 block|}
-DECL|method|locateFollowingBlock (long start, DatanodeInfo[] excludedNodes)
+DECL|method|locateFollowingBlock (DatanodeInfo[] excludedNodes)
 specifier|private
 name|LocatedBlock
 name|locateFollowingBlock
 parameter_list|(
-name|long
-name|start
-parameter_list|,
 name|DatanodeInfo
 index|[]
 name|excludedNodes
@@ -7349,7 +7336,7 @@ name|localstart
 init|=
 name|Time
 operator|.
-name|now
+name|monotonicNow
 argument_list|()
 decl_stmt|;
 while|while
@@ -7473,14 +7460,19 @@ argument_list|,
 name|e
 argument_list|)
 expr_stmt|;
-if|if
-condition|(
+name|long
+name|elapsed
+init|=
 name|Time
 operator|.
-name|now
+name|monotonicNow
 argument_list|()
 operator|-
 name|localstart
+decl_stmt|;
+if|if
+condition|(
+name|elapsed
 operator|>
 literal|5000
 condition|)
@@ -7494,15 +7486,10 @@ argument_list|(
 literal|"Waiting for replication for "
 operator|+
 operator|(
-name|Time
-operator|.
-name|now
-argument_list|()
-operator|-
-name|localstart
-operator|)
+name|elapsed
 operator|/
 literal|1000
+operator|)
 operator|+
 literal|" seconds"
 argument_list|)
@@ -10923,7 +10910,7 @@ name|localstart
 init|=
 name|Time
 operator|.
-name|now
+name|monotonicNow
 argument_list|()
 decl_stmt|;
 name|long
@@ -11009,7 +10996,7 @@ name|hdfsTimeout
 operator|<
 name|Time
 operator|.
-name|now
+name|monotonicNow
 argument_list|()
 operator|)
 condition|)
@@ -11085,7 +11072,7 @@ if|if
 condition|(
 name|Time
 operator|.
-name|now
+name|monotonicNow
 argument_list|()
 operator|-
 name|localstart

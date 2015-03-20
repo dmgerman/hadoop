@@ -9494,11 +9494,11 @@ argument_list|,
 name|dnId
 argument_list|)
 decl_stmt|;
-name|dnd
+name|DFSTestUtil
 operator|.
-name|setLastUpdate
+name|setDatanodeDead
 argument_list|(
-literal|0L
+name|dnd
 argument_list|)
 expr_stmt|;
 name|BlockManagerTestUtil

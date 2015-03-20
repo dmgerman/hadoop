@@ -6067,7 +6067,7 @@ name|lastLeaseRenewal
 operator|=
 name|Time
 operator|.
-name|now
+name|monotonicNow
 argument_list|()
 expr_stmt|;
 block|}
@@ -6118,7 +6118,7 @@ name|elapsed
 init|=
 name|Time
 operator|.
-name|now
+name|monotonicNow
 argument_list|()
 operator|-
 name|getLastLeaseRenewal
@@ -6520,7 +6520,7 @@ name|now
 init|=
 name|Time
 operator|.
-name|now
+name|monotonicNow
 argument_list|()
 decl_stmt|;
 if|if

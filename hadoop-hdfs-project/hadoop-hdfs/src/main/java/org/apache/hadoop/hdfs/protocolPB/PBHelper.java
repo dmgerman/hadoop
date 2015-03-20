@@ -6556,6 +6556,11 @@ argument_list|()
 argument_list|,
 name|di
 operator|.
+name|getLastUpdateMonotonic
+argument_list|()
+argument_list|,
+name|di
+operator|.
 name|getXceiverCount
 argument_list|()
 argument_list|,
@@ -6948,6 +6953,14 @@ argument_list|(
 name|info
 operator|.
 name|getLastUpdate
+argument_list|()
+argument_list|)
+operator|.
+name|setLastUpdateMonotonic
+argument_list|(
+name|info
+operator|.
+name|getLastUpdateMonotonic
 argument_list|()
 argument_list|)
 operator|.

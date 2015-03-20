@@ -1739,6 +1739,14 @@ name|now
 argument_list|()
 argument_list|)
 expr_stmt|;
+name|setLastUpdateMonotonic
+argument_list|(
+name|Time
+operator|.
+name|monotonicNow
+argument_list|()
+argument_list|)
+expr_stmt|;
 name|this
 operator|.
 name|volumeFailures
@@ -1821,7 +1829,7 @@ expr_stmt|;
 block|}
 name|rollBlocksScheduled
 argument_list|(
-name|getLastUpdate
+name|getLastUpdateMonotonic
 argument_list|()
 argument_list|)
 expr_stmt|;

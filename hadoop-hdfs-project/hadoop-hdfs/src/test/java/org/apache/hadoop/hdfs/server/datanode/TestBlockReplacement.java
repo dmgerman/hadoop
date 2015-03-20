@@ -623,7 +623,7 @@ name|start
 init|=
 name|Time
 operator|.
-name|now
+name|monotonicNow
 argument_list|()
 decl_stmt|;
 name|DataTransferThrottler
@@ -705,7 +705,7 @@ name|end
 init|=
 name|Time
 operator|.
-name|now
+name|monotonicNow
 argument_list|()
 decl_stmt|;
 name|assertTrue
@@ -1736,7 +1736,7 @@ name|starttime
 init|=
 name|Time
 operator|.
-name|now
+name|monotonicNow
 argument_list|()
 decl_stmt|;
 name|long
@@ -1897,7 +1897,7 @@ if|if
 condition|(
 name|Time
 operator|.
-name|now
+name|monotonicNow
 argument_list|()
 operator|>
 name|failtime

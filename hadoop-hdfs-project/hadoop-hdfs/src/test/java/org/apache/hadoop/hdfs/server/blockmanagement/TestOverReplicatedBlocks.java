@@ -32,7 +32,7 @@ name|util
 operator|.
 name|Time
 operator|.
-name|now
+name|monotonicNow
 import|;
 end_import
 
@@ -357,6 +357,20 @@ operator|.
 name|protocol
 operator|.
 name|DatanodeRegistration
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|util
+operator|.
+name|Time
 import|;
 end_import
 
@@ -1113,13 +1127,13 @@ name|lastHeartbeat
 operator|=
 name|nodeInfo
 operator|.
-name|getLastUpdate
+name|getLastUpdateMonotonic
 argument_list|()
 expr_stmt|;
 block|}
 do|while
 condition|(
-name|now
+name|monotonicNow
 argument_list|()
 operator|-
 name|lastHeartbeat

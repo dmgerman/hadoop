@@ -32,7 +32,7 @@ name|util
 operator|.
 name|Time
 operator|.
-name|now
+name|monotonicNow
 import|;
 end_import
 
@@ -4326,7 +4326,7 @@ block|{
 name|long
 name|oldestHeartbeat
 init|=
-name|now
+name|monotonicNow
 argument_list|()
 operator|-
 name|heartbeatInterval
@@ -4403,7 +4403,7 @@ name|lastHeartbeat
 init|=
 name|node
 operator|.
-name|getLastUpdate
+name|getLastUpdateMonotonic
 argument_list|()
 decl_stmt|;
 if|if

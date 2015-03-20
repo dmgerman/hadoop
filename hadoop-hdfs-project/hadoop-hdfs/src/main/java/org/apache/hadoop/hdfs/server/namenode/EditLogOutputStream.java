@@ -52,7 +52,7 @@ name|util
 operator|.
 name|Time
 operator|.
-name|now
+name|monotonicNow
 import|;
 end_import
 
@@ -255,7 +255,7 @@ expr_stmt|;
 name|long
 name|start
 init|=
-name|now
+name|monotonicNow
 argument_list|()
 decl_stmt|;
 name|flushAndSync
@@ -266,7 +266,7 @@ expr_stmt|;
 name|long
 name|end
 init|=
-name|now
+name|monotonicNow
 argument_list|()
 decl_stmt|;
 name|totalTimeSync

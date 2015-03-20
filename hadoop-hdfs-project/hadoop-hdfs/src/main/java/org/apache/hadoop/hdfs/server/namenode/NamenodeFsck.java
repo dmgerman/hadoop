@@ -2057,7 +2057,7 @@ name|startTime
 init|=
 name|Time
 operator|.
-name|now
+name|monotonicNow
 argument_list|()
 decl_stmt|;
 try|try
@@ -2448,7 +2448,7 @@ operator|+
 operator|(
 name|Time
 operator|.
-name|now
+name|monotonicNow
 argument_list|()
 operator|-
 name|startTime
@@ -2574,7 +2574,7 @@ operator|+
 operator|(
 name|Time
 operator|.
-name|now
+name|monotonicNow
 argument_list|()
 operator|-
 name|startTime

@@ -48,7 +48,7 @@ name|util
 operator|.
 name|Time
 operator|.
-name|now
+name|monotonicNow
 import|;
 end_import
 
@@ -1871,7 +1871,7 @@ argument_list|()
 expr_stmt|;
 name|lastPrintTime
 operator|=
-name|now
+name|monotonicNow
 argument_list|()
 expr_stmt|;
 comment|// If this list is empty, an error will be thrown on first use
@@ -2788,7 +2788,7 @@ operator|=
 name|txid
 expr_stmt|;
 return|return
-name|now
+name|monotonicNow
 argument_list|()
 return|;
 block|}
@@ -2813,7 +2813,7 @@ comment|// update statistics
 name|long
 name|end
 init|=
-name|now
+name|monotonicNow
 argument_list|()
 decl_stmt|;
 name|numTransactions
@@ -3172,7 +3172,7 @@ comment|// do the sync
 name|long
 name|start
 init|=
-name|now
+name|monotonicNow
 argument_list|()
 decl_stmt|;
 try|try
@@ -3254,7 +3254,7 @@ block|}
 name|long
 name|elapsed
 init|=
-name|now
+name|monotonicNow
 argument_list|()
 operator|-
 name|start
@@ -3321,7 +3321,7 @@ block|{
 name|long
 name|now
 init|=
-name|now
+name|monotonicNow
 argument_list|()
 decl_stmt|;
 if|if

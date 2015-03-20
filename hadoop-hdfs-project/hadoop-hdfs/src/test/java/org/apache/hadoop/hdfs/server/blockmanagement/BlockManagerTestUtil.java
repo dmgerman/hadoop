@@ -818,11 +818,11 @@ init|(
 name|hbm
 init|)
 block|{
-name|theDND
+name|DFSTestUtil
 operator|.
-name|setLastUpdate
+name|setDatanodeDead
 argument_list|(
-literal|0
+name|theDND
 argument_list|)
 expr_stmt|;
 name|hbm

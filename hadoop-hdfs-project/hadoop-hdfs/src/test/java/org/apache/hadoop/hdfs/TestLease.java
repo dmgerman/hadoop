@@ -813,7 +813,7 @@ name|lastLeaseRenewal
 operator|=
 name|Time
 operator|.
-name|now
+name|monotonicNow
 argument_list|()
 operator|-
 name|HdfsConstants
@@ -880,7 +880,7 @@ name|lastLeaseRenewal
 operator|=
 name|Time
 operator|.
-name|now
+name|monotonicNow
 argument_list|()
 operator|-
 name|HdfsConstants

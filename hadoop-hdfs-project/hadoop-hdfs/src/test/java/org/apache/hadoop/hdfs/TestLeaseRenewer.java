@@ -557,7 +557,7 @@ name|failTime
 init|=
 name|Time
 operator|.
-name|now
+name|monotonicNow
 argument_list|()
 operator|+
 literal|5000
@@ -566,7 +566,7 @@ while|while
 condition|(
 name|Time
 operator|.
-name|now
+name|monotonicNow
 argument_list|()
 operator|<
 name|failTime
@@ -972,7 +972,7 @@ name|setEmptyTime
 argument_list|(
 name|Time
 operator|.
-name|now
+name|monotonicNow
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -982,7 +982,7 @@ name|failTime
 init|=
 name|Time
 operator|.
-name|now
+name|monotonicNow
 argument_list|()
 operator|+
 literal|5000
@@ -996,7 +996,7 @@ argument_list|()
 operator|&&
 name|Time
 operator|.
-name|now
+name|monotonicNow
 argument_list|()
 operator|<
 name|failTime

@@ -32,7 +32,7 @@ name|util
 operator|.
 name|Time
 operator|.
-name|now
+name|monotonicNow
 import|;
 end_import
 
@@ -635,7 +635,7 @@ name|this
 operator|.
 name|timeStamp
 operator|=
-name|now
+name|monotonicNow
 argument_list|()
 expr_stmt|;
 name|this
@@ -684,7 +684,7 @@ parameter_list|()
 block|{
 name|timeStamp
 operator|=
-name|now
+name|monotonicNow
 argument_list|()
 expr_stmt|;
 block|}
@@ -858,7 +858,7 @@ decl_stmt|;
 name|long
 name|now
 init|=
-name|now
+name|monotonicNow
 argument_list|()
 decl_stmt|;
 if|if

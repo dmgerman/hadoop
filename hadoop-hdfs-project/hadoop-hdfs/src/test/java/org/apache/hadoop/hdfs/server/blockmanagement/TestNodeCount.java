@@ -750,7 +750,7 @@ name|failtime
 operator|=
 name|Time
 operator|.
-name|now
+name|monotonicNow
 argument_list|()
 operator|+
 operator|(
@@ -805,7 +805,7 @@ if|if
 condition|(
 name|Time
 operator|.
-name|now
+name|monotonicNow
 argument_list|()
 operator|>
 name|failtime

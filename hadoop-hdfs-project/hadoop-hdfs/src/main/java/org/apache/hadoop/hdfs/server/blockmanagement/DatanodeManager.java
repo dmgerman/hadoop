@@ -21,6 +21,22 @@ package|;
 end_package
 
 begin_import
+import|import static
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|util
+operator|.
+name|Time
+operator|.
+name|monotonicNow
+import|;
+end_import
+
+begin_import
 import|import
 name|com
 operator|.
@@ -423,20 +439,6 @@ operator|.
 name|util
 operator|.
 name|ReflectionUtils
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|util
-operator|.
-name|Time
 import|;
 end_import
 
@@ -2643,13 +2645,11 @@ return|return
 operator|(
 name|node
 operator|.
-name|getLastUpdate
+name|getLastUpdateMonotonic
 argument_list|()
 operator|<
 operator|(
-name|Time
-operator|.
-name|now
+name|monotonicNow
 argument_list|()
 operator|-
 name|heartbeatExpireInterval
@@ -5354,14 +5354,11 @@ name|defaultIpcPort
 argument_list|)
 argument_list|)
 decl_stmt|;
-name|dn
-operator|.
-name|setLastUpdate
+name|setDatanodeDead
 argument_list|(
-literal|0
+name|dn
 argument_list|)
 expr_stmt|;
-comment|// Consider this node dead for reporting
 name|nodes
 operator|.
 name|add
@@ -5469,6 +5466,13 @@ block|{
 name|node
 operator|.
 name|setLastUpdate
+argument_list|(
+literal|0
+argument_list|)
+expr_stmt|;
+name|node
+operator|.
+name|setLastUpdateMonotonic
 argument_list|(
 literal|0
 argument_list|)
@@ -6047,8 +6051,6 @@ decl_stmt|;
 name|long
 name|nowMs
 init|=
-name|Time
-operator|.
 name|monotonicNow
 argument_list|()
 decl_stmt|;

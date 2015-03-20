@@ -32,7 +32,7 @@ name|util
 operator|.
 name|Time
 operator|.
-name|now
+name|monotonicNow
 import|;
 end_import
 
@@ -585,20 +585,6 @@ operator|.
 name|ipc
 operator|.
 name|RemoteException
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|util
-operator|.
-name|Time
 import|;
 end_import
 
@@ -1281,9 +1267,7 @@ block|{
 comment|// send BR after random delay
 name|lastBlockReport
 operator|=
-name|Time
-operator|.
-name|now
+name|monotonicNow
 argument_list|()
 operator|-
 operator|(
@@ -1458,8 +1442,6 @@ specifier|final
 name|long
 name|startTime
 init|=
-name|Time
-operator|.
 name|monotonicNow
 argument_list|()
 decl_stmt|;
@@ -1505,8 +1487,6 @@ argument_list|()
 operator|.
 name|addIncrementalBlockReport
 argument_list|(
-name|Time
-operator|.
 name|monotonicNow
 argument_list|()
 operator|-
@@ -1942,7 +1922,7 @@ specifier|final
 name|long
 name|startTime
 init|=
-name|now
+name|monotonicNow
 argument_list|()
 decl_stmt|;
 if|if
@@ -1988,7 +1968,7 @@ expr_stmt|;
 name|long
 name|brCreateStartTime
 init|=
-name|now
+name|monotonicNow
 argument_list|()
 decl_stmt|;
 name|Map
@@ -2106,7 +2086,7 @@ decl_stmt|;
 name|long
 name|brSendStartTime
 init|=
-name|now
+name|monotonicNow
 argument_list|()
 decl_stmt|;
 try|try
@@ -2234,7 +2214,7 @@ comment|// Log the block report processing stats from Datanode perspective
 name|long
 name|brSendCost
 init|=
-name|now
+name|monotonicNow
 argument_list|()
 operator|-
 name|brSendStartTime
@@ -2422,7 +2402,7 @@ comment|/* say the last block report was at 8:20:14. The current report        *
 name|lastBlockReport
 operator|+=
 operator|(
-name|now
+name|monotonicNow
 argument_list|()
 operator|-
 name|lastBlockReport
@@ -2473,8 +2453,6 @@ specifier|final
 name|long
 name|startTime
 init|=
-name|Time
-operator|.
 name|monotonicNow
 argument_list|()
 decl_stmt|;
@@ -2538,8 +2516,6 @@ decl_stmt|;
 name|long
 name|createTime
 init|=
-name|Time
-operator|.
 name|monotonicNow
 argument_list|()
 decl_stmt|;
@@ -2559,8 +2535,6 @@ expr_stmt|;
 name|long
 name|sendTime
 init|=
-name|Time
-operator|.
 name|monotonicNow
 argument_list|()
 decl_stmt|;
@@ -3048,7 +3022,7 @@ specifier|final
 name|long
 name|startTime
 init|=
-name|now
+name|monotonicNow
 argument_list|()
 decl_stmt|;
 comment|//
@@ -3103,7 +3077,7 @@ argument_list|()
 operator|.
 name|addHeartbeat
 argument_list|(
-name|now
+name|monotonicNow
 argument_list|()
 operator|-
 name|startTime
@@ -3155,7 +3129,7 @@ block|}
 name|long
 name|startProcessCommands
 init|=
-name|now
+name|monotonicNow
 argument_list|()
 decl_stmt|;
 if|if
@@ -3173,7 +3147,7 @@ continue|continue;
 name|long
 name|endProcessCommands
 init|=
-name|now
+name|monotonicNow
 argument_list|()
 decl_stmt|;
 if|if
@@ -3295,9 +3269,7 @@ operator|.
 name|heartBeatInterval
 operator|-
 operator|(
-name|Time
-operator|.
-name|now
+name|monotonicNow
 argument_list|()
 operator|-
 name|lastHeartbeat

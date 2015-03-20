@@ -64,7 +64,7 @@ name|util
 operator|.
 name|Time
 operator|.
-name|now
+name|monotonicNow
 import|;
 end_import
 
@@ -666,7 +666,7 @@ condition|)
 block|{
 name|lastCheckpointTime
 operator|=
-name|now
+name|monotonicNow
 argument_list|()
 expr_stmt|;
 block|}
@@ -680,7 +680,7 @@ block|{
 name|long
 name|now
 init|=
-name|now
+name|monotonicNow
 argument_list|()
 decl_stmt|;
 name|boolean
@@ -859,7 +859,7 @@ decl_stmt|;
 name|long
 name|startTime
 init|=
-name|now
+name|monotonicNow
 argument_list|()
 decl_stmt|;
 name|bnImage
@@ -1365,7 +1365,7 @@ argument_list|(
 literal|"Checkpoint completed in "
 operator|+
 operator|(
-name|now
+name|monotonicNow
 argument_list|()
 operator|-
 name|startTime

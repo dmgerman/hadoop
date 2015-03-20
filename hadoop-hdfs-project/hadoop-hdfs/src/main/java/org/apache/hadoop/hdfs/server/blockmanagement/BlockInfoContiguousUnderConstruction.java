@@ -1125,7 +1125,7 @@ operator|.
 name|getDatanodeDescriptor
 argument_list|()
 operator|.
-name|getLastUpdate
+name|getLastUpdateMonotonic
 argument_list|()
 decl_stmt|;
 if|if

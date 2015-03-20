@@ -32,7 +32,7 @@ name|util
 operator|.
 name|Time
 operator|.
-name|now
+name|monotonicNow
 import|;
 end_import
 
@@ -1324,7 +1324,7 @@ expr_stmt|;
 name|long
 name|startTime
 init|=
-name|now
+name|monotonicNow
 argument_list|()
 decl_stmt|;
 comment|//
@@ -1963,7 +1963,7 @@ operator|+
 literal|" bytes loaded in "
 operator|+
 operator|(
-name|now
+name|monotonicNow
 argument_list|()
 operator|-
 name|startTime
@@ -5883,7 +5883,7 @@ decl_stmt|;
 name|long
 name|startTime
 init|=
-name|now
+name|monotonicNow
 argument_list|()
 decl_stmt|;
 comment|//
@@ -6244,7 +6244,7 @@ operator|+
 literal|" bytes saved in "
 operator|+
 operator|(
-name|now
+name|monotonicNow
 argument_list|()
 operator|-
 name|startTime

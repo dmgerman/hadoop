@@ -1163,6 +1163,22 @@ import|;
 end_import
 
 begin_import
+import|import static
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|util
+operator|.
+name|Time
+operator|.
+name|monotonicNow
+import|;
+end_import
+
+begin_import
 import|import
 name|java
 operator|.
@@ -4056,20 +4072,6 @@ name|hadoop
 operator|.
 name|util
 operator|.
-name|Time
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|util
-operator|.
 name|VersionInfo
 import|;
 end_import
@@ -5546,7 +5548,7 @@ block|}
 name|long
 name|loadStart
 init|=
-name|now
+name|monotonicNow
 argument_list|()
 decl_stmt|;
 try|try
@@ -5586,7 +5588,7 @@ block|}
 name|long
 name|timeTakenToLoadFSImage
 init|=
-name|now
+name|monotonicNow
 argument_list|()
 operator|-
 name|loadStart
@@ -24673,6 +24675,14 @@ init|=
 operator|-
 literal|1
 decl_stmt|;
+DECL|field|reachedTimestamp
+specifier|private
+name|long
+name|reachedTimestamp
+init|=
+operator|-
+literal|1
+decl_stmt|;
 comment|/** Total number of blocks. */
 DECL|field|blockTotal
 name|int
@@ -24991,6 +25001,12 @@ name|reached
 operator|=
 literal|0
 expr_stmt|;
+name|this
+operator|.
+name|reachedTimestamp
+operator|=
+literal|0
+expr_stmt|;
 block|}
 comment|/**      * Leave safe mode.      *<p>      * Check for invalid, under-& over-replicated blocks in the end of startup.      */
 DECL|method|leave ()
@@ -25071,6 +25087,11 @@ argument_list|)
 expr_stmt|;
 block|}
 name|reached
+operator|=
+operator|-
+literal|1
+expr_stmt|;
+name|reachedTimestamp
 operator|=
 operator|-
 literal|1
@@ -25218,7 +25239,7 @@ return|;
 block|}
 if|if
 condition|(
-name|now
+name|monotonicNow
 argument_list|()
 operator|-
 name|reached
@@ -25402,6 +25423,11 @@ return|return;
 block|}
 comment|// start monitor
 name|reached
+operator|=
+name|monotonicNow
+argument_list|()
+expr_stmt|;
+name|reachedTimestamp
 operator|=
 name|now
 argument_list|()
@@ -25923,7 +25949,7 @@ name|reached
 operator|+
 name|extension
 operator|-
-name|now
+name|monotonicNow
 argument_list|()
 operator|>
 literal|0
@@ -25939,7 +25965,7 @@ name|reached
 operator|+
 name|extension
 operator|-
-name|now
+name|monotonicNow
 argument_list|()
 operator|)
 operator|/
@@ -26056,7 +26082,7 @@ operator|+
 operator|new
 name|Date
 argument_list|(
-name|reached
+name|reachedTimestamp
 argument_list|)
 operator|+
 literal|"."
@@ -27701,12 +27727,12 @@ literal|null
 condition|)
 block|{
 return|return
-name|now
+name|monotonicNow
 argument_list|()
 operator|-
 name|editLogTailer
 operator|.
-name|getLastLoadTimestamp
+name|getLastLoadTimeMs
 argument_list|()
 return|;
 block|}
@@ -32208,14 +32234,12 @@ parameter_list|)
 block|{
 return|return
 operator|(
-name|Time
-operator|.
-name|now
+name|monotonicNow
 argument_list|()
 operator|-
 name|alivenode
 operator|.
-name|getLastUpdate
+name|getLastUpdateMonotonic
 argument_list|()
 operator|)
 operator|/

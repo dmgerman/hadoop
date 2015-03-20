@@ -8500,7 +8500,7 @@ name|startTime
 init|=
 name|Time
 operator|.
-name|now
+name|monotonicNow
 argument_list|()
 decl_stmt|;
 comment|//after acquiring write lock
@@ -8665,7 +8665,7 @@ name|endTime
 operator|=
 name|Time
 operator|.
-name|now
+name|monotonicNow
 argument_list|()
 expr_stmt|;
 name|namesystem
@@ -8802,7 +8802,7 @@ name|startTimeRescanPostponedMisReplicatedBlocks
 init|=
 name|Time
 operator|.
-name|now
+name|monotonicNow
 argument_list|()
 decl_stmt|;
 name|long
@@ -9081,7 +9081,7 @@ operator|+
 operator|(
 name|Time
 operator|.
-name|now
+name|monotonicNow
 argument_list|()
 operator|-
 name|startTimeRescanPostponedMisReplicatedBlocks
@@ -12126,7 +12126,7 @@ name|startTimeMisReplicatedScan
 init|=
 name|Time
 operator|.
-name|now
+name|monotonicNow
 argument_list|()
 decl_stmt|;
 name|Iterator
@@ -12436,7 +12436,7 @@ operator|+
 operator|(
 name|Time
 operator|.
-name|now
+name|monotonicNow
 argument_list|()
 operator|-
 name|startTimeMisReplicatedScan

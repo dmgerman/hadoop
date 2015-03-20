@@ -1088,7 +1088,7 @@ name|MAX_VALUE
 operator|&&
 name|Time
 operator|.
-name|now
+name|monotonicNow
 argument_list|()
 operator|-
 name|emptyTime
@@ -1414,7 +1414,7 @@ name|emptyTime
 operator|=
 name|Time
 operator|.
-name|now
+name|monotonicNow
 argument_list|()
 expr_stmt|;
 block|}
@@ -1483,7 +1483,7 @@ name|emptyTime
 operator|=
 name|Time
 operator|.
-name|now
+name|monotonicNow
 argument_list|()
 expr_stmt|;
 block|}
@@ -1826,7 +1826,7 @@ name|lastRenewed
 init|=
 name|Time
 operator|.
-name|now
+name|monotonicNow
 argument_list|()
 init|;
 operator|!
@@ -1850,7 +1850,7 @@ name|elapsed
 init|=
 name|Time
 operator|.
-name|now
+name|monotonicNow
 argument_list|()
 operator|-
 name|lastRenewed
@@ -1897,7 +1897,7 @@ name|lastRenewed
 operator|=
 name|Time
 operator|.
-name|now
+name|monotonicNow
 argument_list|()
 expr_stmt|;
 block|}
@@ -2077,7 +2077,7 @@ name|emptyTime
 operator|=
 name|Time
 operator|.
-name|now
+name|monotonicNow
 argument_list|()
 expr_stmt|;
 block|}

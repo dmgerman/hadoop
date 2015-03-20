@@ -1707,7 +1707,7 @@ name|starttime
 init|=
 name|Time
 operator|.
-name|now
+name|monotonicNow
 argument_list|()
 decl_stmt|;
 for|for
@@ -1752,7 +1752,7 @@ name|endtime
 init|=
 name|Time
 operator|.
-name|now
+name|monotonicNow
 argument_list|()
 decl_stmt|;
 comment|// Cleanup

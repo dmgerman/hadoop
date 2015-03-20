@@ -3733,7 +3733,7 @@ name|start
 init|=
 name|Time
 operator|.
-name|now
+name|monotonicNow
 argument_list|()
 decl_stmt|;
 name|int
@@ -3774,7 +3774,7 @@ name|waiting_period
 init|=
 name|Time
 operator|.
-name|now
+name|monotonicNow
 argument_list|()
 operator|-
 name|start
@@ -3857,7 +3857,7 @@ name|start
 operator|=
 name|Time
 operator|.
-name|now
+name|monotonicNow
 argument_list|()
 expr_stmt|;
 while|while
@@ -3915,7 +3915,7 @@ if|if
 condition|(
 name|Time
 operator|.
-name|now
+name|monotonicNow
 argument_list|()
 operator|-
 name|start

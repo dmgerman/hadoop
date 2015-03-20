@@ -206,7 +206,7 @@ name|util
 operator|.
 name|Time
 operator|.
-name|now
+name|monotonicNow
 import|;
 end_import
 
@@ -1867,7 +1867,7 @@ expr_stmt|;
 block|}
 name|opStartTime
 operator|=
-name|now
+name|monotonicNow
 argument_list|()
 expr_stmt|;
 name|processOp
@@ -7194,7 +7194,7 @@ name|elapsed
 parameter_list|()
 block|{
 return|return
-name|now
+name|monotonicNow
 argument_list|()
 operator|-
 name|opStartTime

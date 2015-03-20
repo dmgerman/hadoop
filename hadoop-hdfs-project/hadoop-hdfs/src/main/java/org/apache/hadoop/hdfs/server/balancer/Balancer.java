@@ -3172,7 +3172,7 @@ name|startTime
 init|=
 name|Time
 operator|.
-name|now
+name|monotonicNow
 argument_list|()
 decl_stmt|;
 specifier|final
@@ -3306,7 +3306,7 @@ name|time2Str
 argument_list|(
 name|Time
 operator|.
-name|now
+name|monotonicNow
 argument_list|()
 operator|-
 name|startTime

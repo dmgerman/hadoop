@@ -364,7 +364,7 @@ name|util
 operator|.
 name|Time
 operator|.
-name|now
+name|monotonicNow
 import|;
 end_import
 
@@ -882,7 +882,7 @@ name|decommissioningStatus
 operator|.
 name|setStartTime
 argument_list|(
-name|now
+name|monotonicNow
 argument_list|()
 argument_list|)
 expr_stmt|;

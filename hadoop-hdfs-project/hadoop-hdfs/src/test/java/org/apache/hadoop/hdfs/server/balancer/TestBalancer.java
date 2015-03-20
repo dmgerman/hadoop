@@ -1884,7 +1884,7 @@ name|MAX_VALUE
 else|:
 name|Time
 operator|.
-name|now
+name|monotonicNow
 argument_list|()
 operator|+
 name|timeout
@@ -1959,7 +1959,7 @@ if|if
 condition|(
 name|Time
 operator|.
-name|now
+name|monotonicNow
 argument_list|()
 operator|>
 name|failtime
@@ -2454,7 +2454,7 @@ name|MAX_VALUE
 else|:
 name|Time
 operator|.
-name|now
+name|monotonicNow
 argument_list|()
 operator|+
 name|timeout
@@ -2665,7 +2665,7 @@ if|if
 condition|(
 name|Time
 operator|.
-name|now
+name|monotonicNow
 argument_list|()
 operator|>
 name|failtime
