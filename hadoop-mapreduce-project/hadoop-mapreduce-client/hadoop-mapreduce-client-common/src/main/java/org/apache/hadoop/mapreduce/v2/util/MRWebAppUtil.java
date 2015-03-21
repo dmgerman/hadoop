@@ -800,6 +800,14 @@ name|address
 operator|.
 name|getAddress
 argument_list|()
+operator|!=
+literal|null
+operator|&&
+operator|(
+name|address
+operator|.
+name|getAddress
+argument_list|()
 operator|.
 name|isAnyLocalAddress
 argument_list|()
@@ -811,6 +819,7 @@ argument_list|()
 operator|.
 name|isLoopbackAddress
 argument_list|()
+operator|)
 condition|)
 block|{
 name|sb
