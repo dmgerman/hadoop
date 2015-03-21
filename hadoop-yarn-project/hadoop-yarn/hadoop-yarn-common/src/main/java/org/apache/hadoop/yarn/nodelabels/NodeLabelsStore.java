@@ -54,6 +54,16 @@ name|java
 operator|.
 name|util
 operator|.
+name|List
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
 name|Map
 import|;
 end_import
@@ -97,6 +107,40 @@ operator|.
 name|records
 operator|.
 name|NodeId
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|api
+operator|.
+name|records
+operator|.
+name|NodeLabel
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|exceptions
+operator|.
+name|YarnException
 import|;
 end_import
 
@@ -183,6 +227,22 @@ parameter_list|)
 throws|throws
 name|IOException
 function_decl|;
+comment|/**    * Update node labels    */
+DECL|method|updateNodeLabels ( List<NodeLabel> updatedNodeLabels)
+specifier|public
+specifier|abstract
+name|void
+name|updateNodeLabels
+parameter_list|(
+name|List
+argument_list|<
+name|NodeLabel
+argument_list|>
+name|updatedNodeLabels
+parameter_list|)
+throws|throws
+name|IOException
+function_decl|;
 comment|/**    * Recover labels and node to labels mappings from store    */
 DECL|method|recover ()
 specifier|public
@@ -192,6 +252,8 @@ name|recover
 parameter_list|()
 throws|throws
 name|IOException
+throws|,
+name|YarnException
 function_decl|;
 DECL|method|init (Configuration conf)
 specifier|public

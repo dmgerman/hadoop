@@ -240,7 +240,7 @@ name|yarn
 operator|.
 name|nodelabels
 operator|.
-name|NodeLabel
+name|RMNodeLabel
 import|;
 end_import
 
@@ -997,7 +997,7 @@ range|:
 name|labelsForNode
 control|)
 block|{
-name|NodeLabel
+name|RMNodeLabel
 name|labelInfo
 init|=
 name|labelCollections
@@ -2014,7 +2014,7 @@ argument_list|()
 condition|)
 block|{
 comment|// update labels
-name|NodeLabel
+name|RMNodeLabel
 name|label
 init|=
 name|labelCollections
@@ -2071,7 +2071,7 @@ range|:
 name|oldLabels
 control|)
 block|{
-name|NodeLabel
+name|RMNodeLabel
 name|label
 init|=
 name|labelCollections
@@ -2197,7 +2197,7 @@ argument_list|()
 condition|)
 block|{
 comment|// update labels
-name|NodeLabel
+name|RMNodeLabel
 name|label
 init|=
 name|labelCollections
@@ -2254,7 +2254,7 @@ range|:
 name|newLabels
 control|)
 block|{
-name|NodeLabel
+name|RMNodeLabel
 name|label
 init|=
 name|labelCollections
@@ -2597,7 +2597,7 @@ DECL|method|pullRMNodeLabelsInfo ()
 specifier|public
 name|List
 argument_list|<
-name|NodeLabel
+name|RMNodeLabel
 argument_list|>
 name|pullRMNodeLabelsInfo
 parameter_list|()
@@ -2611,14 +2611,14 @@ argument_list|()
 expr_stmt|;
 name|List
 argument_list|<
-name|NodeLabel
+name|RMNodeLabel
 argument_list|>
 name|infos
 init|=
 operator|new
 name|ArrayList
 argument_list|<
-name|NodeLabel
+name|RMNodeLabel
 argument_list|>
 argument_list|()
 decl_stmt|;
@@ -2628,7 +2628,7 @@ name|Entry
 argument_list|<
 name|String
 argument_list|,
-name|NodeLabel
+name|RMNodeLabel
 argument_list|>
 name|entry
 range|:
@@ -2638,7 +2638,7 @@ name|entrySet
 argument_list|()
 control|)
 block|{
-name|NodeLabel
+name|RMNodeLabel
 name|label
 init|=
 name|entry

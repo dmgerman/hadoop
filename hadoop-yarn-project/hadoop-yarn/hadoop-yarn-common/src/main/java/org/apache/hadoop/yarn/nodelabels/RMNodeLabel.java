@@ -107,14 +107,14 @@ import|;
 end_import
 
 begin_class
-DECL|class|NodeLabel
+DECL|class|RMNodeLabel
 specifier|public
 class|class
-name|NodeLabel
+name|RMNodeLabel
 implements|implements
 name|Comparable
 argument_list|<
-name|NodeLabel
+name|RMNodeLabel
 argument_list|>
 block|{
 DECL|field|resource
@@ -140,9 +140,16 @@ name|NodeId
 argument_list|>
 name|nodeIds
 decl_stmt|;
-DECL|method|NodeLabel (String labelName)
+DECL|field|exclusive
+specifier|private
+name|boolean
+name|exclusive
+init|=
+literal|true
+decl_stmt|;
+DECL|method|RMNodeLabel (String labelName)
 specifier|public
-name|NodeLabel
+name|RMNodeLabel
 parameter_list|(
 name|String
 name|labelName
@@ -165,9 +172,9 @@ literal|0
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|NodeLabel (String labelName, Resource res, int activeNMs)
+DECL|method|RMNodeLabel (String labelName, Resource res, int activeNMs)
 specifier|protected
-name|NodeLabel
+name|RMNodeLabel
 parameter_list|(
 name|String
 name|labelName
@@ -339,15 +346,43 @@ return|return
 name|labelName
 return|;
 block|}
+DECL|method|setIsExclusive (boolean exclusive)
+specifier|public
+name|void
+name|setIsExclusive
+parameter_list|(
+name|boolean
+name|exclusive
+parameter_list|)
+block|{
+name|this
+operator|.
+name|exclusive
+operator|=
+name|exclusive
+expr_stmt|;
+block|}
+DECL|method|getIsExclusive ()
+specifier|public
+name|boolean
+name|getIsExclusive
+parameter_list|()
+block|{
+return|return
+name|this
+operator|.
+name|exclusive
+return|;
+block|}
 DECL|method|getCopy ()
 specifier|public
-name|NodeLabel
+name|RMNodeLabel
 name|getCopy
 parameter_list|()
 block|{
 return|return
 operator|new
-name|NodeLabel
+name|RMNodeLabel
 argument_list|(
 name|labelName
 argument_list|,
@@ -359,12 +394,12 @@ return|;
 block|}
 annotation|@
 name|Override
-DECL|method|compareTo (NodeLabel o)
+DECL|method|compareTo (RMNodeLabel o)
 specifier|public
 name|int
 name|compareTo
 parameter_list|(
-name|NodeLabel
+name|RMNodeLabel
 name|o
 parameter_list|)
 block|{
@@ -429,14 +464,14 @@ if|if
 condition|(
 name|obj
 operator|instanceof
-name|NodeLabel
+name|RMNodeLabel
 condition|)
 block|{
-name|NodeLabel
+name|RMNodeLabel
 name|other
 init|=
 operator|(
-name|NodeLabel
+name|RMNodeLabel
 operator|)
 name|obj
 decl_stmt|;

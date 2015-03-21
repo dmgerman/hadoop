@@ -166,7 +166,7 @@ name|yarn
 operator|.
 name|nodelabels
 operator|.
-name|NodeLabel
+name|RMNodeLabel
 import|;
 end_import
 
@@ -3593,14 +3593,14 @@ argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|checkNodeLabelInfo (List<NodeLabel> infos, String labelName, int activeNMs, int memory)
+DECL|method|checkNodeLabelInfo (List<RMNodeLabel> infos, String labelName, int activeNMs, int memory)
 specifier|private
 name|void
 name|checkNodeLabelInfo
 parameter_list|(
 name|List
 argument_list|<
-name|NodeLabel
+name|RMNodeLabel
 argument_list|>
 name|infos
 parameter_list|,
@@ -3616,7 +3616,7 @@ parameter_list|)
 block|{
 for|for
 control|(
-name|NodeLabel
+name|RMNodeLabel
 name|info
 range|:
 name|infos
@@ -3862,7 +3862,7 @@ expr_stmt|;
 comment|// x, y, z and ""
 name|List
 argument_list|<
-name|NodeLabel
+name|RMNodeLabel
 argument_list|>
 name|infos
 init|=

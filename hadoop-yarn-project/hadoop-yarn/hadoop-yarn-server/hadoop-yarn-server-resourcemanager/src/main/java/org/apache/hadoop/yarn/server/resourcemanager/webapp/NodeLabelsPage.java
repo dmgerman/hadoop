@@ -54,7 +54,7 @@ name|yarn
 operator|.
 name|nodelabels
 operator|.
-name|NodeLabel
+name|RMNodeLabel
 import|;
 end_import
 
@@ -356,7 +356,7 @@ argument_list|()
 decl_stmt|;
 for|for
 control|(
-name|NodeLabel
+name|RMNodeLabel
 name|info
 range|:
 name|nlm
