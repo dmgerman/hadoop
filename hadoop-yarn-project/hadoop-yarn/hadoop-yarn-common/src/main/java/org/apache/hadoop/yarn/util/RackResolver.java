@@ -514,9 +514,17 @@ name|NetworkTopology
 operator|.
 name|DEFAULT_RACK
 expr_stmt|;
+if|if
+condition|(
 name|LOG
 operator|.
-name|info
+name|isDebugEnabled
+argument_list|()
+condition|)
+block|{
+name|LOG
+operator|.
+name|debug
 argument_list|(
 literal|"Couldn't resolve "
 operator|+
@@ -530,6 +538,7 @@ name|DEFAULT_RACK
 argument_list|)
 expr_stmt|;
 block|}
+block|}
 else|else
 block|{
 name|rName
@@ -541,9 +550,17 @@ argument_list|(
 literal|0
 argument_list|)
 expr_stmt|;
+if|if
+condition|(
 name|LOG
 operator|.
-name|info
+name|isDebugEnabled
+argument_list|()
+condition|)
+block|{
+name|LOG
+operator|.
+name|debug
 argument_list|(
 literal|"Resolved "
 operator|+
@@ -554,6 +571,7 @@ operator|+
 name|rName
 argument_list|)
 expr_stmt|;
+block|}
 block|}
 return|return
 operator|new
