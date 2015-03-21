@@ -662,7 +662,7 @@ name|Limits
 operator|.
 name|reset
 argument_list|(
-name|conf
+name|jobConf
 argument_list|)
 expr_stmt|;
 block|}
