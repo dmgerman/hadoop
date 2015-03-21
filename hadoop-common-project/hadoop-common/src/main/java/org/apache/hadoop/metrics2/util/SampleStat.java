@@ -405,6 +405,57 @@ name|max
 argument_list|()
 return|;
 block|}
+annotation|@
+name|Override
+DECL|method|toString ()
+specifier|public
+name|String
+name|toString
+parameter_list|()
+block|{
+try|try
+block|{
+return|return
+literal|"Samples = "
+operator|+
+name|numSamples
+argument_list|()
+operator|+
+literal|"  Min = "
+operator|+
+name|min
+argument_list|()
+operator|+
+literal|"  Mean = "
+operator|+
+name|mean
+argument_list|()
+operator|+
+literal|"  Std Dev = "
+operator|+
+name|stddev
+argument_list|()
+operator|+
+literal|"  Max = "
+operator|+
+name|max
+argument_list|()
+return|;
+block|}
+catch|catch
+parameter_list|(
+name|Throwable
+name|t
+parameter_list|)
+block|{
+return|return
+name|super
+operator|.
+name|toString
+argument_list|()
+return|;
+block|}
+block|}
 comment|/**    * Helper to keep running min/max    */
 annotation|@
 name|SuppressWarnings
