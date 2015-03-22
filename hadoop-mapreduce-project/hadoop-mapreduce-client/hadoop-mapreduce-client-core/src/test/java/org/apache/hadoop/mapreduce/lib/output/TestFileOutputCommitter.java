@@ -114,16 +114,6 @@ name|junit
 operator|.
 name|framework
 operator|.
-name|Assert
-import|;
-end_import
-
-begin_import
-import|import
-name|junit
-operator|.
-name|framework
-operator|.
 name|TestCase
 import|;
 end_import
@@ -2054,8 +2044,6 @@ name|Exception
 name|e
 parameter_list|)
 block|{
-name|Assert
-operator|.
 name|fail
 argument_list|(
 literal|"Fail to read from MapFileOutputFormat: "
