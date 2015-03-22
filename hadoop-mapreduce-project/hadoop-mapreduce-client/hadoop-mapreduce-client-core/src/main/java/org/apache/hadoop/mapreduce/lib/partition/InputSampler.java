@@ -1252,13 +1252,6 @@ argument_list|(
 name|numSamples
 argument_list|)
 decl_stmt|;
-if|if
-condition|(
-name|ind
-operator|!=
-name|numSamples
-condition|)
-block|{
 name|samples
 operator|.
 name|set
@@ -1283,7 +1276,6 @@ literal|null
 argument_list|)
 argument_list|)
 expr_stmt|;
-block|}
 name|freq
 operator|*=
 operator|(
