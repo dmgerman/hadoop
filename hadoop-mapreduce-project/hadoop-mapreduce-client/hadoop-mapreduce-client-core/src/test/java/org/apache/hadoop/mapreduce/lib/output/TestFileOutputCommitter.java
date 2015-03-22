@@ -114,6 +114,16 @@ name|junit
 operator|.
 name|framework
 operator|.
+name|Assert
+import|;
+end_import
+
+begin_import
+import|import
+name|junit
+operator|.
+name|framework
+operator|.
 name|TestCase
 import|;
 end_import
@@ -2024,6 +2034,41 @@ argument_list|(
 name|jContext
 argument_list|)
 expr_stmt|;
+comment|// Ensure getReaders call works and also ignores
+comment|// hidden filenames (_ or . prefixes)
+try|try
+block|{
+name|MapFileOutputFormat
+operator|.
+name|getReaders
+argument_list|(
+name|outDir
+argument_list|,
+name|conf
+argument_list|)
+expr_stmt|;
+block|}
+catch|catch
+parameter_list|(
+name|Exception
+name|e
+parameter_list|)
+block|{
+name|Assert
+operator|.
+name|fail
+argument_list|(
+literal|"Fail to read from MapFileOutputFormat: "
+operator|+
+name|e
+argument_list|)
+expr_stmt|;
+name|e
+operator|.
+name|printStackTrace
+argument_list|()
+expr_stmt|;
+block|}
 comment|// validate output
 name|validateMapFileOutputContent
 argument_list|(
