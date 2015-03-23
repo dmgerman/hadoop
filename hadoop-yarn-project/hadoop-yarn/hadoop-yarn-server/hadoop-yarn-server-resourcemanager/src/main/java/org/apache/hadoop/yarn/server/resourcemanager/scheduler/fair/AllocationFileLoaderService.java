@@ -2729,6 +2729,9 @@ name|getAttribute
 argument_list|(
 literal|"name"
 argument_list|)
+operator|.
+name|trim
+argument_list|()
 decl_stmt|;
 if|if
 condition|(
@@ -2751,6 +2754,26 @@ operator|+
 name|queueName
 operator|+
 literal|") shouldn't contain period."
+argument_list|)
+throw|;
+block|}
+if|if
+condition|(
+name|queueName
+operator|.
+name|isEmpty
+argument_list|()
+condition|)
+block|{
+throw|throw
+operator|new
+name|AllocationConfigurationException
+argument_list|(
+literal|"Bad fair scheduler config "
+operator|+
+literal|"file: queue name shouldn't be empty or "
+operator|+
+literal|"consist only of whitespace."
 argument_list|)
 throw|;
 block|}

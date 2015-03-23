@@ -687,6 +687,85 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
+annotation|@
+name|Test
+DECL|method|testCheckQueueNodeName ()
+specifier|public
+name|void
+name|testCheckQueueNodeName
+parameter_list|()
+block|{
+name|assertFalse
+argument_list|(
+name|queueManager
+operator|.
+name|isQueueNameValid
+argument_list|(
+literal|""
+argument_list|)
+argument_list|)
+expr_stmt|;
+name|assertFalse
+argument_list|(
+name|queueManager
+operator|.
+name|isQueueNameValid
+argument_list|(
+literal|"  "
+argument_list|)
+argument_list|)
+expr_stmt|;
+name|assertFalse
+argument_list|(
+name|queueManager
+operator|.
+name|isQueueNameValid
+argument_list|(
+literal|" a"
+argument_list|)
+argument_list|)
+expr_stmt|;
+name|assertFalse
+argument_list|(
+name|queueManager
+operator|.
+name|isQueueNameValid
+argument_list|(
+literal|"a "
+argument_list|)
+argument_list|)
+expr_stmt|;
+name|assertFalse
+argument_list|(
+name|queueManager
+operator|.
+name|isQueueNameValid
+argument_list|(
+literal|" a "
+argument_list|)
+argument_list|)
+expr_stmt|;
+name|assertTrue
+argument_list|(
+name|queueManager
+operator|.
+name|isQueueNameValid
+argument_list|(
+literal|"a b"
+argument_list|)
+argument_list|)
+expr_stmt|;
+name|assertTrue
+argument_list|(
+name|queueManager
+operator|.
+name|isQueueNameValid
+argument_list|(
+literal|"a"
+argument_list|)
+argument_list|)
+expr_stmt|;
+block|}
 DECL|method|updateConfiguredLeafQueues (QueueManager queueMgr, String... confLeafQueues)
 specifier|private
 name|void
