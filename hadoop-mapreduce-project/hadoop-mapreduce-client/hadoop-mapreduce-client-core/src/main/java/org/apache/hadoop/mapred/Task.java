@@ -1362,6 +1362,21 @@ name|GcTimeUpdater
 argument_list|()
 expr_stmt|;
 block|}
+annotation|@
+name|VisibleForTesting
+DECL|method|setTaskDone ()
+name|void
+name|setTaskDone
+parameter_list|()
+block|{
+name|taskDone
+operator|.
+name|set
+argument_list|(
+literal|true
+argument_list|)
+expr_stmt|;
+block|}
 comment|////////////////////////////////////////////
 comment|// Accessors
 comment|////////////////////////////////////////////
@@ -2426,16 +2441,6 @@ name|ClassNotFoundException
 throws|,
 name|InterruptedException
 function_decl|;
-comment|/** The number of milliseconds between progress reports. */
-DECL|field|PROGRESS_INTERVAL
-specifier|public
-specifier|static
-specifier|final
-name|int
-name|PROGRESS_INTERVAL
-init|=
-literal|3000
-decl_stmt|;
 DECL|field|taskProgress
 specifier|private
 specifier|transient
@@ -3315,6 +3320,22 @@ init|=
 name|resetProgressFlag
 argument_list|()
 decl_stmt|;
+name|long
+name|taskProgressInterval
+init|=
+name|conf
+operator|.
+name|getLong
+argument_list|(
+name|MRJobConfig
+operator|.
+name|TASK_PROGRESS_REPORT_INTERVAL
+argument_list|,
+name|MRJobConfig
+operator|.
+name|DEFAULT_TASK_PROGRESS_REPORT_INTERVAL
+argument_list|)
+decl_stmt|;
 while|while
 condition|(
 operator|!
@@ -3367,7 +3388,7 @@ name|lock
 operator|.
 name|wait
 argument_list|(
-name|PROGRESS_INTERVAL
+name|taskProgressInterval
 argument_list|)
 expr_stmt|;
 block|}

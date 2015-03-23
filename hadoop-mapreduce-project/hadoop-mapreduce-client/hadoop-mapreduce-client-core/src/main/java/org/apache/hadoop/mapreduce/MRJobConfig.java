@@ -203,6 +203,25 @@ name|TASK_CLEANUP_NEEDED
 init|=
 literal|"mapreduce.job.committer.task.cleanup.needed"
 decl_stmt|;
+DECL|field|TASK_PROGRESS_REPORT_INTERVAL
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|TASK_PROGRESS_REPORT_INTERVAL
+init|=
+literal|"mapreduce.task.progress-report.interval"
+decl_stmt|;
+comment|/** The number of milliseconds between progress reports. */
+DECL|field|DEFAULT_TASK_PROGRESS_REPORT_INTERVAL
+specifier|public
+specifier|static
+specifier|final
+name|int
+name|DEFAULT_TASK_PROGRESS_REPORT_INTERVAL
+init|=
+literal|3000
+decl_stmt|;
 DECL|field|JAR
 specifier|public
 specifier|static
