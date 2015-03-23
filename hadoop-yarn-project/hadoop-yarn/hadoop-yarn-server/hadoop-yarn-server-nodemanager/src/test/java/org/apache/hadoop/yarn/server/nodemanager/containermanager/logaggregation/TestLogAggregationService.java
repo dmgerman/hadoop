@@ -5737,7 +5737,9 @@ literal|" Hello "
 operator|+
 name|fileType
 operator|+
-literal|"!"
+literal|"!End of LogType:"
+operator|+
+name|fileType
 decl_stmt|;
 name|LOG
 operator|.
