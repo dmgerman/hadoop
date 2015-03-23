@@ -142,20 +142,6 @@ name|hadoop
 operator|.
 name|fs
 operator|.
-name|FileUtil
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|fs
-operator|.
 name|Path
 import|;
 end_import
@@ -4486,22 +4472,11 @@ operator|.
 name|getDfsUsed
 argument_list|()
 decl_stmt|;
-try|try
-block|{
-name|assertTrue
-argument_list|(
-literal|"Couldn't chmod local vol: "
-operator|+
-name|dirToFail
-argument_list|,
-name|FileUtil
+name|DataNodeTestUtils
 operator|.
-name|setExecutable
+name|injectDataDirFailure
 argument_list|(
 name|dirToFail
-argument_list|,
-literal|false
-argument_list|)
 argument_list|)
 expr_stmt|;
 comment|// Call and wait DataNode to detect disk failure.
@@ -4562,29 +4537,13 @@ name|getDfsUsed
 argument_list|()
 argument_list|)
 expr_stmt|;
-block|}
-finally|finally
-block|{
-comment|// Need to restore the mode on dirToFail. Otherwise, if an Exception
-comment|// is thrown above, the following tests can not delete this data directory
-comment|// and thus fail to start MiniDFSCluster.
-name|assertTrue
-argument_list|(
-literal|"Couldn't restore executable for: "
-operator|+
-name|dirToFail
-argument_list|,
-name|FileUtil
+name|DataNodeTestUtils
 operator|.
-name|setExecutable
+name|restoreDataDirFromFailure
 argument_list|(
 name|dirToFail
-argument_list|,
-literal|true
-argument_list|)
 argument_list|)
 expr_stmt|;
-block|}
 name|dn
 operator|.
 name|reconfigurePropertyImpl

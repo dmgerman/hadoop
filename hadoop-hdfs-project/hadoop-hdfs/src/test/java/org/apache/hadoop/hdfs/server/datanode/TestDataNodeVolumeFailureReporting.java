@@ -228,20 +228,6 @@ name|hadoop
 operator|.
 name|fs
 operator|.
-name|FileUtil
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|fs
-operator|.
 name|Path
 import|;
 end_import
@@ -582,90 +568,6 @@ parameter_list|()
 throws|throws
 name|Exception
 block|{
-comment|// Restore executable permission on all directories where a failure may have
-comment|// been simulated by denying execute access.  This is based on the maximum
-comment|// number of datanodes and the maximum number of storages per data node used
-comment|// throughout the tests in this suite.
-name|assumeTrue
-argument_list|(
-operator|!
-name|Path
-operator|.
-name|WINDOWS
-argument_list|)
-expr_stmt|;
-name|int
-name|maxDataNodes
-init|=
-literal|3
-decl_stmt|;
-name|int
-name|maxStoragesPerDataNode
-init|=
-literal|4
-decl_stmt|;
-for|for
-control|(
-name|int
-name|i
-init|=
-literal|0
-init|;
-name|i
-operator|<
-name|maxDataNodes
-condition|;
-name|i
-operator|++
-control|)
-block|{
-for|for
-control|(
-name|int
-name|j
-init|=
-literal|1
-init|;
-name|j
-operator|<=
-name|maxStoragesPerDataNode
-condition|;
-name|j
-operator|++
-control|)
-block|{
-name|String
-name|subDir
-init|=
-literal|"data"
-operator|+
-operator|(
-operator|(
-name|i
-operator|*
-name|maxStoragesPerDataNode
-operator|)
-operator|+
-name|j
-operator|)
-decl_stmt|;
-name|FileUtil
-operator|.
-name|setExecutable
-argument_list|(
-operator|new
-name|File
-argument_list|(
-name|dataDir
-argument_list|,
-name|subDir
-argument_list|)
-argument_list|,
-literal|true
-argument_list|)
-expr_stmt|;
-block|}
-block|}
 name|IOUtils
 operator|.
 name|cleanup
@@ -844,32 +746,13 @@ operator|)
 argument_list|)
 decl_stmt|;
 comment|/*      * Make the 1st volume directories on the first two datanodes      * non-accessible.  We don't make all three 1st volume directories      * readonly since that would cause the entire pipeline to      * fail. The client does not retry failed nodes even though      * perhaps they could succeed because just a single volume failed.      */
-name|assertTrue
-argument_list|(
-literal|"Couldn't chmod local vol"
-argument_list|,
-name|FileUtil
+name|DataNodeTestUtils
 operator|.
-name|setExecutable
+name|injectDataDirFailure
 argument_list|(
 name|dn1Vol1
 argument_list|,
-literal|false
-argument_list|)
-argument_list|)
-expr_stmt|;
-name|assertTrue
-argument_list|(
-literal|"Couldn't chmod local vol"
-argument_list|,
-name|FileUtil
-operator|.
-name|setExecutable
-argument_list|(
 name|dn2Vol1
-argument_list|,
-literal|false
-argument_list|)
 argument_list|)
 expr_stmt|;
 comment|/*      * Create file1 and wait for 3 replicas (ie all DNs can still      * store a block).  Then assert that all DNs are up, despite the      * volume failures.      */
@@ -1117,18 +1000,11 @@ literal|true
 argument_list|)
 expr_stmt|;
 comment|/*      * Now fail a volume on the third datanode. We should be able to get      * three replicas since we've already identified the other failures.      */
-name|assertTrue
-argument_list|(
-literal|"Couldn't chmod local vol"
-argument_list|,
-name|FileUtil
+name|DataNodeTestUtils
 operator|.
-name|setExecutable
+name|injectDataDirFailure
 argument_list|(
 name|dn3Vol1
-argument_list|,
-literal|false
-argument_list|)
 argument_list|)
 expr_stmt|;
 name|Path
@@ -1337,18 +1213,11 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 comment|/*      * Now fail the 2nd volume on the 3rd datanode. All its volumes      * are now failed and so it should report two volume failures      * and that it's no longer up. Only wait for two replicas since      * we'll never get a third.      */
-name|assertTrue
-argument_list|(
-literal|"Couldn't chmod local vol"
-argument_list|,
-name|FileUtil
+name|DataNodeTestUtils
 operator|.
-name|setExecutable
+name|injectDataDirFailure
 argument_list|(
 name|dn3Vol2
-argument_list|,
-literal|false
-argument_list|)
 argument_list|)
 expr_stmt|;
 name|Path
@@ -1500,60 +1369,17 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 comment|/*      * The datanode never tries to restore the failed volume, even if      * it's subsequently repaired, but it should see this volume on      * restart, so file creation should be able to succeed after      * restoring the data directories and restarting the datanodes.      */
-name|assertTrue
-argument_list|(
-literal|"Couldn't chmod local vol"
-argument_list|,
-name|FileUtil
+name|DataNodeTestUtils
 operator|.
-name|setExecutable
+name|restoreDataDirFromFailure
 argument_list|(
 name|dn1Vol1
 argument_list|,
-literal|true
-argument_list|)
-argument_list|)
-expr_stmt|;
-name|assertTrue
-argument_list|(
-literal|"Couldn't chmod local vol"
-argument_list|,
-name|FileUtil
-operator|.
-name|setExecutable
-argument_list|(
 name|dn2Vol1
 argument_list|,
-literal|true
-argument_list|)
-argument_list|)
-expr_stmt|;
-name|assertTrue
-argument_list|(
-literal|"Couldn't chmod local vol"
-argument_list|,
-name|FileUtil
-operator|.
-name|setExecutable
-argument_list|(
 name|dn3Vol1
 argument_list|,
-literal|true
-argument_list|)
-argument_list|)
-expr_stmt|;
-name|assertTrue
-argument_list|(
-literal|"Couldn't chmod local vol"
-argument_list|,
-name|FileUtil
-operator|.
-name|setExecutable
-argument_list|(
 name|dn3Vol2
-argument_list|,
-literal|true
-argument_list|)
 argument_list|)
 expr_stmt|;
 name|cluster
@@ -1791,32 +1617,13 @@ literal|1
 operator|)
 argument_list|)
 decl_stmt|;
-name|assertTrue
-argument_list|(
-literal|"Couldn't chmod local vol"
-argument_list|,
-name|FileUtil
+name|DataNodeTestUtils
 operator|.
-name|setExecutable
+name|injectDataDirFailure
 argument_list|(
 name|dn1Vol1
 argument_list|,
-literal|false
-argument_list|)
-argument_list|)
-expr_stmt|;
-name|assertTrue
-argument_list|(
-literal|"Couldn't chmod local vol"
-argument_list|,
-name|FileUtil
-operator|.
-name|setExecutable
-argument_list|(
 name|dn2Vol1
-argument_list|,
-literal|false
-argument_list|)
 argument_list|)
 expr_stmt|;
 name|Path
@@ -2169,60 +1976,17 @@ argument_list|)
 decl_stmt|;
 comment|// Make the first two volume directories on the first two datanodes
 comment|// non-accessible.
-name|assertTrue
-argument_list|(
-literal|"Couldn't chmod local vol"
-argument_list|,
-name|FileUtil
+name|DataNodeTestUtils
 operator|.
-name|setExecutable
+name|injectDataDirFailure
 argument_list|(
 name|dn1Vol1
 argument_list|,
-literal|false
-argument_list|)
-argument_list|)
-expr_stmt|;
-name|assertTrue
-argument_list|(
-literal|"Couldn't chmod local vol"
-argument_list|,
-name|FileUtil
-operator|.
-name|setExecutable
-argument_list|(
 name|dn1Vol2
 argument_list|,
-literal|false
-argument_list|)
-argument_list|)
-expr_stmt|;
-name|assertTrue
-argument_list|(
-literal|"Couldn't chmod local vol"
-argument_list|,
-name|FileUtil
-operator|.
-name|setExecutable
-argument_list|(
 name|dn2Vol1
 argument_list|,
-literal|false
-argument_list|)
-argument_list|)
-expr_stmt|;
-name|assertTrue
-argument_list|(
-literal|"Couldn't chmod local vol"
-argument_list|,
-name|FileUtil
-operator|.
-name|setExecutable
-argument_list|(
 name|dn2Vol2
-argument_list|,
-literal|false
-argument_list|)
 argument_list|)
 expr_stmt|;
 comment|// Create file1 and wait for 3 replicas (ie all DNs can still store a block).
@@ -2636,32 +2400,18 @@ literal|2
 operator|)
 argument_list|)
 decl_stmt|;
-name|assertTrue
-argument_list|(
-literal|"Couldn't chmod local vol"
-argument_list|,
-name|FileUtil
+name|DataNodeTestUtils
 operator|.
-name|setExecutable
+name|injectDataDirFailure
 argument_list|(
 name|dn1Vol1
-argument_list|,
-literal|false
-argument_list|)
 argument_list|)
 expr_stmt|;
-name|assertTrue
-argument_list|(
-literal|"Couldn't chmod local vol"
-argument_list|,
-name|FileUtil
+name|DataNodeTestUtils
 operator|.
-name|setExecutable
+name|injectDataDirFailure
 argument_list|(
 name|dn2Vol1
-argument_list|,
-literal|false
-argument_list|)
 argument_list|)
 expr_stmt|;
 name|Path
@@ -3235,32 +2985,13 @@ argument_list|)
 expr_stmt|;
 comment|// Replace failed volume with healthy volume and run reconfigure DataNode.
 comment|// The failed volume information should be cleared.
-name|assertTrue
-argument_list|(
-literal|"Couldn't chmod local vol"
-argument_list|,
-name|FileUtil
+name|DataNodeTestUtils
 operator|.
-name|setExecutable
+name|restoreDataDirFromFailure
 argument_list|(
 name|dn1Vol1
 argument_list|,
-literal|true
-argument_list|)
-argument_list|)
-expr_stmt|;
-name|assertTrue
-argument_list|(
-literal|"Couldn't chmod local vol"
-argument_list|,
-name|FileUtil
-operator|.
-name|setExecutable
-argument_list|(
 name|dn2Vol1
-argument_list|,
-literal|true
-argument_list|)
 argument_list|)
 expr_stmt|;
 name|reconfigureDataNode
