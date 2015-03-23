@@ -290,6 +290,22 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|metrics2
+operator|.
+name|lib
+operator|.
+name|MutableRate
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|yarn
 operator|.
 name|api
@@ -631,6 +647,15 @@ literal|"# of active applications"
 argument_list|)
 name|MutableGaugeInt
 name|activeApplications
+decl_stmt|;
+DECL|field|appAttemptFirstContainerAllocationDelay
+annotation|@
+name|Metric
+argument_list|(
+literal|"App Attempt First Container Allocation Delay"
+argument_list|)
+name|MutableRate
+name|appAttemptFirstContainerAllocationDelay
 decl_stmt|;
 DECL|field|runningTime
 specifier|private
@@ -2840,6 +2865,23 @@ name|user
 argument_list|)
 expr_stmt|;
 block|}
+block|}
+DECL|method|addAppAttemptFirstContainerAllocationDelay (long latency)
+specifier|public
+name|void
+name|addAppAttemptFirstContainerAllocationDelay
+parameter_list|(
+name|long
+name|latency
+parameter_list|)
+block|{
+name|appAttemptFirstContainerAllocationDelay
+operator|.
+name|add
+argument_list|(
+name|latency
+argument_list|)
+expr_stmt|;
 block|}
 DECL|method|getAppsSubmitted ()
 specifier|public

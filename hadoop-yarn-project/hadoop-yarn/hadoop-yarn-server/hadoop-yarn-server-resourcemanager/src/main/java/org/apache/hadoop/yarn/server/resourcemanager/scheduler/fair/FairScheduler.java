@@ -4871,6 +4871,18 @@ argument_list|,
 name|incrAllocation
 argument_list|)
 expr_stmt|;
+comment|// Record container allocation start time
+name|application
+operator|.
+name|recordContainerRequestTime
+argument_list|(
+name|getClock
+argument_list|()
+operator|.
+name|getTime
+argument_list|()
+argument_list|)
+expr_stmt|;
 comment|// Set amResource for this app
 if|if
 condition|(
@@ -5083,6 +5095,33 @@ operator|.
 name|pullNewlyAllocatedContainersAndNMTokens
 argument_list|()
 decl_stmt|;
+comment|// Record container allocation time
+if|if
+condition|(
+operator|!
+operator|(
+name|allocation
+operator|.
+name|getContainerList
+argument_list|()
+operator|.
+name|isEmpty
+argument_list|()
+operator|)
+condition|)
+block|{
+name|application
+operator|.
+name|recordContainerAllocationTime
+argument_list|(
+name|getClock
+argument_list|()
+operator|.
+name|getTime
+argument_list|()
+argument_list|)
+expr_stmt|;
+block|}
 name|Resource
 name|headroom
 init|=
