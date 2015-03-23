@@ -4778,7 +4778,7 @@ name|delta
 parameter_list|)
 block|{
 specifier|final
-name|BlockInfoContiguous
+name|BlockInfo
 index|[]
 name|blocks
 init|=
@@ -4898,7 +4898,7 @@ operator|--
 name|i
 control|)
 block|{
-name|BlockInfoContiguous
+name|BlockInfo
 name|bi
 init|=
 name|blocks

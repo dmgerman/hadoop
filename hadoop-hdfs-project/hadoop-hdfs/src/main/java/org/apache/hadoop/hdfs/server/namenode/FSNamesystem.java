@@ -14050,7 +14050,7 @@ name|build
 argument_list|()
 decl_stmt|;
 specifier|final
-name|BlockInfoContiguous
+name|BlockInfo
 name|lastBlock
 init|=
 name|file
@@ -19638,6 +19638,11 @@ name|blockManager
 operator|.
 name|markBlockReplicasAsCorrupt
 argument_list|(
+name|oldBlock
+operator|.
+name|getLocalBlock
+argument_list|()
+argument_list|,
 name|storedBlock
 argument_list|,
 name|oldGenerationStamp

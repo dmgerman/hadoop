@@ -10507,12 +10507,15 @@ name|toInvalidate
 return|;
 block|}
 comment|/**    * Mark block replicas as corrupt except those on the storages in     * newStorages list.    */
-DECL|method|markBlockReplicasAsCorrupt (BlockInfoContiguous block, long oldGenerationStamp, long oldNumBytes, DatanodeStorageInfo[] newStorages)
+DECL|method|markBlockReplicasAsCorrupt (Block oldBlock, BlockInfo block, long oldGenerationStamp, long oldNumBytes, DatanodeStorageInfo[] newStorages)
 specifier|public
 name|void
 name|markBlockReplicasAsCorrupt
 parameter_list|(
-name|BlockInfoContiguous
+name|Block
+name|oldBlock
+parameter_list|,
+name|BlockInfo
 name|block
 parameter_list|,
 name|long
@@ -10554,6 +10557,8 @@ operator|=
 operator|new
 name|BlockToMarkCorrupt
 argument_list|(
+name|oldBlock
+argument_list|,
 name|block
 argument_list|,
 name|oldGenerationStamp
@@ -10591,6 +10596,8 @@ operator|=
 operator|new
 name|BlockToMarkCorrupt
 argument_list|(
+name|oldBlock
+argument_list|,
 name|block
 argument_list|,
 literal|"length does not match "
