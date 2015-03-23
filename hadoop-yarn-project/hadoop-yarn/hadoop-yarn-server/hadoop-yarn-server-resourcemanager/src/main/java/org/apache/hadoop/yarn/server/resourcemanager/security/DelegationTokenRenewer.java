@@ -3258,6 +3258,8 @@ name|byteBuffer
 argument_list|)
 expr_stmt|;
 block|}
+annotation|@
+name|VisibleForTesting
 DECL|method|obtainSystemTokensForUser (String user, final Credentials credentials)
 specifier|protected
 name|Token
@@ -3330,7 +3332,9 @@ parameter_list|()
 throws|throws
 name|Exception
 block|{
-return|return
+name|FileSystem
+name|fs
+init|=
 name|FileSystem
 operator|.
 name|get
@@ -3338,6 +3342,11 @@ argument_list|(
 name|getConfig
 argument_list|()
 argument_list|)
+decl_stmt|;
+try|try
+block|{
+return|return
+name|fs
 operator|.
 name|addDelegationTokens
 argument_list|(
@@ -3352,6 +3361,17 @@ argument_list|,
 name|credentials
 argument_list|)
 return|;
+block|}
+finally|finally
+block|{
+comment|// Close the FileSystem created by the new proxy user,
+comment|// So that we don't leave an entry in the FileSystem cache
+name|fs
+operator|.
+name|close
+argument_list|()
+expr_stmt|;
+block|}
 block|}
 block|}
 block|)
