@@ -72,6 +72,26 @@ name|BlockUCState
 import|;
 end_import
 
+begin_import
+import|import
+name|java
+operator|.
+name|io
+operator|.
+name|DataOutput
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|io
+operator|.
+name|IOException
+import|;
+end_import
+
 begin_comment
 comment|/**  * Subclass of {@link BlockInfo}, presenting a block group in erasure coding.  *  * We still use triplets to store DatanodeStorageInfo for each block in the  * block group, as well as the previous/next block in the corresponding  * DatanodeStorageInfo. For a (m+k) block group, the first (m+k) triplet units  * are sorted and strictly mapped to the corresponding block.  *  * Normally each block belonging to group is stored in only one DataNode.  * However, it is possible that some block is over-replicated. Thus the triplet  * array's size can be larger than (m+k). Thus currently we use an extra byte  * array to record the block index for each triplet.  */
 end_comment
@@ -968,6 +988,41 @@ block|}
 return|return
 name|num
 return|;
+block|}
+annotation|@
+name|Override
+DECL|method|write (DataOutput out)
+specifier|public
+name|void
+name|write
+parameter_list|(
+name|DataOutput
+name|out
+parameter_list|)
+throws|throws
+name|IOException
+block|{
+name|out
+operator|.
+name|writeShort
+argument_list|(
+name|dataBlockNum
+argument_list|)
+expr_stmt|;
+name|out
+operator|.
+name|writeShort
+argument_list|(
+name|parityBlockNum
+argument_list|)
+expr_stmt|;
+name|super
+operator|.
+name|write
+argument_list|(
+name|out
+argument_list|)
+expr_stmt|;
 block|}
 comment|/**    * Convert a complete block to an under construction block.    * @return BlockInfoUnderConstruction -  an under construction block.    */
 DECL|method|convertToBlockUnderConstruction ( BlockUCState s, DatanodeStorageInfo[] targets)
