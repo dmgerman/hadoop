@@ -110,14 +110,17 @@ name|boolean
 name|isPopulatingReplQueues
 parameter_list|()
 function_decl|;
-comment|/**    * Increment number of blocks that reached minimal replication.    * @param replication current replication     */
-DECL|method|incrementSafeBlockCount (int replication)
+comment|/**    * Increment number of blocks that reached minimal replication.    * @param replication current replication    * @param storedBlock current stored Block    */
+DECL|method|incrementSafeBlockCount (int replication, BlockInfo storedBlock)
 specifier|public
 name|void
 name|incrementSafeBlockCount
 parameter_list|(
 name|int
 name|replication
+parameter_list|,
+name|BlockInfo
+name|storedBlock
 parameter_list|)
 function_decl|;
 comment|/** Decrement number of blocks that reached minimal replication. */

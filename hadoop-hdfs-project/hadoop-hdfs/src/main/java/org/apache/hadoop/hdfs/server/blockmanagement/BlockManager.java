@@ -3605,6 +3605,27 @@ argument_list|,
 literal|1
 argument_list|)
 expr_stmt|;
+specifier|final
+name|int
+name|minStorage
+init|=
+name|curBlock
+operator|.
+name|isStriped
+argument_list|()
+condition|?
+operator|(
+operator|(
+name|BlockInfoStriped
+operator|)
+name|curBlock
+operator|)
+operator|.
+name|getDataBlockNum
+argument_list|()
+else|:
+name|minReplication
+decl_stmt|;
 name|namesystem
 operator|.
 name|incrementSafeBlockCount
@@ -3615,8 +3636,10 @@ name|min
 argument_list|(
 name|numNodes
 argument_list|,
-name|minReplication
+name|minStorage
 argument_list|)
+argument_list|,
+name|curBlock
 argument_list|)
 expr_stmt|;
 comment|// replace block in the blocksMap
@@ -10978,6 +11001,8 @@ operator|.
 name|incrementSafeBlockCount
 argument_list|(
 name|numOfReplicas
+argument_list|,
+name|storedBlock
 argument_list|)
 expr_stmt|;
 block|}
@@ -12536,11 +12561,13 @@ operator|.
 name|incrementSafeBlockCount
 argument_list|(
 name|numCurrentReplica
+argument_list|,
+name|storedBlock
 argument_list|)
 expr_stmt|;
 block|}
 block|}
-comment|/**    * Modify (block-->datanode) map. Remove block from set of    * needed replications if this takes care of the problem.    * @return the block that is stored in blockMap.    */
+comment|/**    * Modify (block-->datanode) map. Remove block from set of    * needed replications if this takes care of the problem.    * @return the block that is stored in blocksMap.    */
 DECL|method|addStoredBlock (final BlockInfo block, final Block reportedBlock, DatanodeStorageInfo storageInfo, DatanodeDescriptor delNodeHint, boolean logEveryBlock)
 specifier|private
 name|Block
@@ -12861,6 +12888,8 @@ operator|.
 name|incrementSafeBlockCount
 argument_list|(
 name|numCurrentReplica
+argument_list|,
+name|storedBlock
 argument_list|)
 expr_stmt|;
 block|}

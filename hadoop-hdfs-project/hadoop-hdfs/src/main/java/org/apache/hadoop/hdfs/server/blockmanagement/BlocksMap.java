@@ -545,7 +545,7 @@ comment|// remove from the list and wipe the location
 block|}
 block|}
 block|}
-comment|/** Returns the block object it it exists in the map. */
+comment|/** Returns the block object if it exists in the map. */
 DECL|method|getStoredBlock (Block b)
 name|BlockInfo
 name|getStoredBlock

@@ -666,6 +666,7 @@ operator|<
 literal|0
 return|;
 block|}
+comment|/**    * The last 4 bits of HdfsConstants.BLOCK_GROUP_INDEX_MASK(15) is 1111,    * so the last 4 bits of (~HdfsConstants.BLOCK_GROUP_INDEX_MASK) is 0000    * and the other 60 bits are 1. Group ID is the first 60 bits of any    * data/parity block id in the same striped block group.    */
 DECL|method|convertToStripedID (long id)
 specifier|public
 specifier|static

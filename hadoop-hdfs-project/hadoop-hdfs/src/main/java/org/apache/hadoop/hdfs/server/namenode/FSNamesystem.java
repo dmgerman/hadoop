@@ -2924,6 +2924,24 @@ name|hdfs
 operator|.
 name|server
 operator|.
+name|blockmanagement
+operator|.
+name|BlockInfoStriped
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|server
+operator|.
 name|common
 operator|.
 name|HdfsServerConstants
@@ -23109,22 +23127,46 @@ name|checkMode
 argument_list|()
 expr_stmt|;
 block|}
-comment|/**      * Increment number of safe blocks if current block has       * reached minimal replication.      * @param replication current replication       */
-DECL|method|incrementSafeBlockCount (short replication)
+comment|/**      * Increment number of safe blocks if current block has       * reached minimal replication.      * @param storageNum current number of replicas or number of internal blocks      *                   of a striped block group      * @param storedBlock current storedBlock which is either a      *                    BlockInfoContiguous or a BlockInfoStriped      */
+DECL|method|incrementSafeBlockCount (short storageNum, BlockInfo storedBlock)
 specifier|private
 specifier|synchronized
 name|void
 name|incrementSafeBlockCount
 parameter_list|(
 name|short
-name|replication
+name|storageNum
+parameter_list|,
+name|BlockInfo
+name|storedBlock
 parameter_list|)
 block|{
+specifier|final
+name|int
+name|safe
+init|=
+name|storedBlock
+operator|.
+name|isStriped
+argument_list|()
+condition|?
+operator|(
+operator|(
+name|BlockInfoStriped
+operator|)
+name|storedBlock
+operator|)
+operator|.
+name|getDataBlockNum
+argument_list|()
+else|:
+name|safeReplication
+decl_stmt|;
 if|if
 condition|(
-name|replication
+name|storageNum
 operator|==
-name|safeReplication
+name|safe
 condition|)
 block|{
 name|this
@@ -24179,13 +24221,16 @@ return|;
 block|}
 annotation|@
 name|Override
-DECL|method|incrementSafeBlockCount (int replication)
+DECL|method|incrementSafeBlockCount (int storageNum, BlockInfo storedBlock)
 specifier|public
 name|void
 name|incrementSafeBlockCount
 parameter_list|(
 name|int
-name|replication
+name|storageNum
+parameter_list|,
+name|BlockInfo
+name|storedBlock
 parameter_list|)
 block|{
 comment|// safeMode is volatile, and may be set to null at any time
@@ -24210,7 +24255,9 @@ argument_list|(
 operator|(
 name|short
 operator|)
-name|replication
+name|storageNum
+argument_list|,
+name|storedBlock
 argument_list|)
 expr_stmt|;
 block|}

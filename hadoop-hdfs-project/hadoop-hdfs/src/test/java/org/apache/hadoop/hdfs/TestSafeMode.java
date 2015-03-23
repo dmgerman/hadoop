@@ -3044,6 +3044,45 @@ argument_list|()
 expr_stmt|;
 block|}
 block|}
+comment|//TODO : test should be added to check safeMode with stripedBloks after stripedBlock related functions have been added in class MiniDFSCluster
+annotation|@
+name|Test
+DECL|method|testSafeModeWithCorruptSripedBlock ()
+specifier|public
+name|void
+name|testSafeModeWithCorruptSripedBlock
+parameter_list|()
+throws|throws
+name|IOException
+block|{
+try|try
+block|{      }
+finally|finally
+block|{
+if|if
+condition|(
+name|fs
+operator|!=
+literal|null
+condition|)
+name|fs
+operator|.
+name|close
+argument_list|()
+expr_stmt|;
+if|if
+condition|(
+name|cluster
+operator|!=
+literal|null
+condition|)
+name|cluster
+operator|.
+name|shutdown
+argument_list|()
+expr_stmt|;
+block|}
+block|}
 DECL|method|checkGetBlockLocationsWorks (FileSystem fs, Path fileName)
 name|void
 name|checkGetBlockLocationsWorks
@@ -3103,7 +3142,7 @@ parameter_list|)
 block|{
 name|assertTrue
 argument_list|(
-literal|"Should have not got safemode exception"
+literal|"Should have not got remote exception"
 argument_list|,
 literal|false
 argument_list|)
