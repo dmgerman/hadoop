@@ -226,6 +226,16 @@ name|build
 argument_list|()
 return|;
 block|}
+DECL|method|isDirectory ()
+specifier|public
+name|boolean
+name|isDirectory
+parameter_list|()
+block|{
+return|return
+literal|true
+return|;
+block|}
 annotation|@
 name|Override
 DECL|method|metadataEquals (INodeDirectoryAttributes other)

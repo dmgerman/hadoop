@@ -246,6 +246,18 @@ expr_stmt|;
 block|}
 annotation|@
 name|Override
+DECL|method|isDirectory ()
+specifier|public
+name|boolean
+name|isDirectory
+parameter_list|()
+block|{
+return|return
+literal|false
+return|;
+block|}
+annotation|@
+name|Override
 DECL|method|getFileReplication ()
 specifier|public
 name|short

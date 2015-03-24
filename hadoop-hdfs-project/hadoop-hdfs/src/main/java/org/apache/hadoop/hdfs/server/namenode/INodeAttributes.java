@@ -118,6 +118,12 @@ specifier|public
 interface|interface
 name|INodeAttributes
 block|{
+DECL|method|isDirectory ()
+specifier|public
+name|boolean
+name|isDirectory
+parameter_list|()
+function_decl|;
 comment|/**    * @return null if the local name is null;    *         otherwise, return the local name byte array.    */
 DECL|method|getLocalNameBytes ()
 specifier|public

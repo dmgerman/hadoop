@@ -3048,6 +3048,8 @@ name|fsNamesys
 operator|.
 name|dir
 argument_list|,
+name|path
+argument_list|,
 name|HdfsFileStatus
 operator|.
 name|EMPTY_NAME
@@ -3161,6 +3163,8 @@ argument_list|(
 name|fsNamesys
 operator|.
 name|dir
+argument_list|,
+name|path
 argument_list|,
 name|HdfsFileStatus
 operator|.
@@ -3594,6 +3598,8 @@ argument_list|(
 name|fsNamesys
 operator|.
 name|dir
+argument_list|,
+name|path
 argument_list|,
 name|HdfsFileStatus
 operator|.

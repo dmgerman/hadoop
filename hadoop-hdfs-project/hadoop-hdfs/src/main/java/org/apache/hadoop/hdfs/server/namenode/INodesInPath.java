@@ -1944,6 +1944,46 @@ argument_list|)
 argument_list|)
 return|;
 block|}
+DECL|method|getINodesArray ()
+specifier|public
+name|INode
+index|[]
+name|getINodesArray
+parameter_list|()
+block|{
+name|INode
+index|[]
+name|retArr
+init|=
+operator|new
+name|INode
+index|[
+name|inodes
+operator|.
+name|length
+index|]
+decl_stmt|;
+name|System
+operator|.
+name|arraycopy
+argument_list|(
+name|inodes
+argument_list|,
+literal|0
+argument_list|,
+name|retArr
+argument_list|,
+literal|0
+argument_list|,
+name|inodes
+operator|.
+name|length
+argument_list|)
+expr_stmt|;
+return|return
+name|retArr
+return|;
+block|}
 comment|/**    * @param length number of ancestral INodes in the returned INodesInPath    *               instance    * @return the INodesInPath instance containing ancestral INodes. Note that    * this method only handles non-snapshot paths.    */
 DECL|method|getAncestorINodesInPath (int length)
 specifier|private

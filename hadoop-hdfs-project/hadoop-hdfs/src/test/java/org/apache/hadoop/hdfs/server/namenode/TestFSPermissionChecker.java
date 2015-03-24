@@ -3193,8 +3193,9 @@ argument_list|,
 literal|true
 argument_list|)
 decl_stmt|;
-operator|new
-name|FSPermissionChecker
+name|dir
+operator|.
+name|getPermissionChecker
 argument_list|(
 name|SUPERUSER
 argument_list|,
@@ -3252,8 +3253,9 @@ argument_list|,
 literal|true
 argument_list|)
 decl_stmt|;
-operator|new
-name|FSPermissionChecker
+name|dir
+operator|.
+name|getPermissionChecker
 argument_list|(
 name|SUPERUSER
 argument_list|,
