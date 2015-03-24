@@ -4764,6 +4764,24 @@ argument_list|(
 name|conf
 argument_list|)
 expr_stmt|;
+comment|// Send a full block report to let NN acknowledge the volume changes.
+name|triggerBlockReport
+argument_list|(
+operator|new
+name|BlockReportOptions
+operator|.
+name|Factory
+argument_list|()
+operator|.
+name|setIncremental
+argument_list|(
+literal|false
+argument_list|)
+operator|.
+name|build
+argument_list|()
+argument_list|)
+expr_stmt|;
 block|}
 block|}
 comment|/**    * Remove volumes from DataNode.    * See {@link removeVolumes(final Set<File>, boolean)} for details.    *    * @param locations the StorageLocations of the volumes to be removed.    * @throws IOException    */
