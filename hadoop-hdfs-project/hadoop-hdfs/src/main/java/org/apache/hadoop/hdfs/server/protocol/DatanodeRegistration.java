@@ -396,7 +396,9 @@ argument_list|()
 operator|+
 literal|"("
 operator|+
-name|getIpAddr
+name|super
+operator|.
+name|toString
 argument_list|()
 operator|+
 literal|", datanodeUuid="
