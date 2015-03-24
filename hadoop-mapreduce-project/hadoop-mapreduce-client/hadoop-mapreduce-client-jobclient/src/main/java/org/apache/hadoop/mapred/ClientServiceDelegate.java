@@ -758,6 +758,22 @@ name|hadoop
 operator|.
 name|security
 operator|.
+name|authorize
+operator|.
+name|AuthorizationException
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|security
+operator|.
 name|token
 operator|.
 name|Token
@@ -2370,6 +2386,27 @@ operator|=
 literal|null
 expr_stmt|;
 comment|// HS/AMS shut down
+if|if
+condition|(
+name|e
+operator|.
+name|getCause
+argument_list|()
+operator|instanceof
+name|AuthorizationException
+condition|)
+block|{
+throw|throw
+operator|new
+name|IOException
+argument_list|(
+name|e
+operator|.
+name|getTargetException
+argument_list|()
+argument_list|)
+throw|;
+block|}
 comment|// if it's AM shut down, do not decrement maxClientRetry as we wait for
 comment|// AM to be restarted.
 if|if
