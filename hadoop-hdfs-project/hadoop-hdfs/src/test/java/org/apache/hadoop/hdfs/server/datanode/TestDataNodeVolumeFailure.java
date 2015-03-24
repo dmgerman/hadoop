@@ -670,6 +670,24 @@ name|server
 operator|.
 name|protocol
 operator|.
+name|BlockReportContext
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|server
+operator|.
+name|protocol
+operator|.
 name|DatanodeRegistration
 import|;
 end_import
@@ -1379,6 +1397,8 @@ argument_list|,
 name|bpid
 argument_list|,
 name|reports
+argument_list|,
+literal|null
 argument_list|)
 expr_stmt|;
 comment|// verify number of blocks and files...

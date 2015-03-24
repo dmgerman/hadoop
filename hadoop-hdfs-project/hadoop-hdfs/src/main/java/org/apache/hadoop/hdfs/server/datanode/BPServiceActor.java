@@ -376,6 +376,24 @@ name|server
 operator|.
 name|protocol
 operator|.
+name|BlockReportContext
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|server
+operator|.
+name|protocol
+operator|.
 name|DatanodeCommand
 import|;
 end_import
@@ -1906,6 +1924,49 @@ return|return
 name|sendImmediateIBR
 return|;
 block|}
+DECL|field|prevBlockReportId
+specifier|private
+name|long
+name|prevBlockReportId
+init|=
+literal|0
+decl_stmt|;
+DECL|method|generateUniqueBlockReportId ()
+specifier|private
+name|long
+name|generateUniqueBlockReportId
+parameter_list|()
+block|{
+name|long
+name|id
+init|=
+name|System
+operator|.
+name|nanoTime
+argument_list|()
+decl_stmt|;
+if|if
+condition|(
+name|id
+operator|<=
+name|prevBlockReportId
+condition|)
+block|{
+name|id
+operator|=
+name|prevBlockReportId
+operator|+
+literal|1
+expr_stmt|;
+block|}
+name|prevBlockReportId
+operator|=
+name|id
+expr_stmt|;
+return|return
+name|id
+return|;
+block|}
 comment|/**    * Report the list blocks to the Namenode    * @return DatanodeCommands returned by the NN. May be null.    * @throws IOException    */
 DECL|method|blockReport ()
 name|List
@@ -2089,6 +2150,12 @@ init|=
 name|monotonicNow
 argument_list|()
 decl_stmt|;
+name|long
+name|reportId
+init|=
+name|generateUniqueBlockReportId
+argument_list|()
+decl_stmt|;
 try|try
 block|{
 if|if
@@ -2116,6 +2183,16 @@ name|getBlockPoolId
 argument_list|()
 argument_list|,
 name|reports
+argument_list|,
+operator|new
+name|BlockReportContext
+argument_list|(
+literal|1
+argument_list|,
+literal|0
+argument_list|,
+name|reportId
+argument_list|)
 argument_list|)
 decl_stmt|;
 name|numRPCs
@@ -2149,10 +2226,19 @@ block|{
 comment|// Send one block report per message.
 for|for
 control|(
-name|StorageBlockReport
-name|report
-range|:
+name|int
+name|r
+init|=
+literal|0
+init|;
+name|r
+operator|<
 name|reports
+operator|.
+name|length
+condition|;
+name|r
+operator|++
 control|)
 block|{
 name|StorageBlockReport
@@ -2160,7 +2246,10 @@ name|singleReport
 index|[]
 init|=
 block|{
-name|report
+name|reports
+index|[
+name|r
+index|]
 block|}
 decl_stmt|;
 name|DatanodeCommand
@@ -2178,6 +2267,18 @@ name|getBlockPoolId
 argument_list|()
 argument_list|,
 name|singleReport
+argument_list|,
+operator|new
+name|BlockReportContext
+argument_list|(
+name|reports
+operator|.
+name|length
+argument_list|,
+name|r
+argument_list|,
+name|reportId
+argument_list|)
 argument_list|)
 decl_stmt|;
 name|numReportsSent
@@ -2257,25 +2358,36 @@ else|:
 literal|"Uns"
 operator|)
 operator|+
-literal|"uccessfully sent "
+literal|"uccessfully sent block report 0x"
 operator|+
-name|numReportsSent
+name|Long
+operator|.
+name|toHexString
+argument_list|(
+name|reportId
+argument_list|)
 operator|+
-literal|" of "
+literal|",  containing "
 operator|+
 name|reports
 operator|.
 name|length
 operator|+
-literal|" blockreports for "
+literal|" storage report(s), of which we sent "
+operator|+
+name|numReportsSent
+operator|+
+literal|"."
+operator|+
+literal|" The reports had "
 operator|+
 name|totalBlockCount
 operator|+
-literal|" total blocks using "
+literal|" total blocks and used "
 operator|+
 name|numRPCs
 operator|+
-literal|" RPCs. This took "
+literal|" RPC(s). This took "
 operator|+
 name|brCreateCost
 operator|+

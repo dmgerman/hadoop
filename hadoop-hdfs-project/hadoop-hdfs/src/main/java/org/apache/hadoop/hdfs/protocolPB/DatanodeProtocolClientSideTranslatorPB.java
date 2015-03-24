@@ -514,6 +514,24 @@ name|server
 operator|.
 name|protocol
 operator|.
+name|BlockReportContext
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|server
+operator|.
+name|protocol
+operator|.
 name|DatanodeCommand
 import|;
 end_import
@@ -1392,7 +1410,7 @@ return|;
 block|}
 annotation|@
 name|Override
-DECL|method|blockReport (DatanodeRegistration registration, String poolId, StorageBlockReport[] reports)
+DECL|method|blockReport (DatanodeRegistration registration, String poolId, StorageBlockReport[] reports, BlockReportContext context)
 specifier|public
 name|DatanodeCommand
 name|blockReport
@@ -1406,6 +1424,9 @@ parameter_list|,
 name|StorageBlockReport
 index|[]
 name|reports
+parameter_list|,
+name|BlockReportContext
+name|context
 parameter_list|)
 throws|throws
 name|IOException
@@ -1548,6 +1569,18 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
+name|builder
+operator|.
+name|setContext
+argument_list|(
+name|PBHelper
+operator|.
+name|convert
+argument_list|(
+name|context
+argument_list|)
+argument_list|)
+expr_stmt|;
 name|BlockReportResponseProto
 name|resp
 decl_stmt|;

@@ -80,22 +80,6 @@ name|hdfs
 operator|.
 name|protocol
 operator|.
-name|BlockListAsLongs
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|hdfs
-operator|.
-name|protocol
-operator|.
 name|DatanodeID
 import|;
 end_import
@@ -386,10 +370,10 @@ parameter_list|)
 throws|throws
 name|IOException
 function_decl|;
-comment|/**    * blockReport() tells the NameNode about all the locally-stored blocks.    * The NameNode returns an array of Blocks that have become obsolete    * and should be deleted.  This function is meant to upload *all*    * the locally-stored blocks.  It's invoked upon startup and then    * infrequently afterwards.    * @param registration datanode registration    * @param poolId the block pool ID for the blocks    * @param reports report of blocks per storage    *     Each finalized block is represented as 3 longs. Each under-    *     construction replica is represented as 4 longs.    *     This is done instead of Block[] to reduce memory used by block reports.    *         * @return - the next command for DN to process.    * @throws IOException    */
+comment|/**    * blockReport() tells the NameNode about all the locally-stored blocks.    * The NameNode returns an array of Blocks that have become obsolete    * and should be deleted.  This function is meant to upload *all*    * the locally-stored blocks.  It's invoked upon startup and then    * infrequently afterwards.    * @param registration datanode registration    * @param poolId the block pool ID for the blocks    * @param reports report of blocks per storage    *     Each finalized block is represented as 3 longs. Each under-    *     construction replica is represented as 4 longs.    *     This is done instead of Block[] to reduce memory used by block reports.    * @param reports report of blocks per storage    * @param context Context information for this block report.    *    * @return - the next command for DN to process.    * @throws IOException    */
 annotation|@
 name|Idempotent
-DECL|method|blockReport (DatanodeRegistration registration, String poolId, StorageBlockReport[] reports)
+DECL|method|blockReport (DatanodeRegistration registration, String poolId, StorageBlockReport[] reports, BlockReportContext context)
 specifier|public
 name|DatanodeCommand
 name|blockReport
@@ -403,11 +387,14 @@ parameter_list|,
 name|StorageBlockReport
 index|[]
 name|reports
+parameter_list|,
+name|BlockReportContext
+name|context
 parameter_list|)
 throws|throws
 name|IOException
 function_decl|;
-comment|/**    * Communicates the complete list of locally cached blocks to the NameNode.    *     * This method is similar to    * {@link #blockReport(DatanodeRegistration, String, StorageBlockReport[])},    * which is used to communicated blocks stored on disk.    *    * @param            The datanode registration.    * @param poolId     The block pool ID for the blocks.    * @param blockIds   A list of block IDs.    * @return           The DatanodeCommand.    * @throws IOException    */
+comment|/**    * Communicates the complete list of locally cached blocks to the NameNode.    *     * This method is similar to    * {@link #blockReport(DatanodeRegistration, String, StorageBlockReport[], BlockReportContext)},    * which is used to communicated blocks stored on disk.    *    * @param            The datanode registration.    * @param poolId     The block pool ID for the blocks.    * @param blockIds   A list of block IDs.    * @return           The DatanodeCommand.    * @throws IOException    */
 annotation|@
 name|Idempotent
 DECL|method|cacheReport (DatanodeRegistration registration, String poolId, List<Long> blockIds)

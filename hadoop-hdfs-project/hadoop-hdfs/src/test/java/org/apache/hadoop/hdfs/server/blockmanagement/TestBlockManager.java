@@ -3257,6 +3257,10 @@ argument_list|,
 name|BlockListAsLongs
 operator|.
 name|EMPTY
+argument_list|,
+literal|null
+argument_list|,
+literal|false
 argument_list|)
 expr_stmt|;
 name|assertEquals
@@ -3293,6 +3297,10 @@ argument_list|,
 name|BlockListAsLongs
 operator|.
 name|EMPTY
+argument_list|,
+literal|null
+argument_list|,
+literal|false
 argument_list|)
 expr_stmt|;
 name|assertEquals
@@ -3365,6 +3373,10 @@ argument_list|,
 name|BlockListAsLongs
 operator|.
 name|EMPTY
+argument_list|,
+literal|null
+argument_list|,
+literal|false
 argument_list|)
 expr_stmt|;
 comment|// Reinitialize as registration with empty storage list pruned
@@ -3543,6 +3555,10 @@ argument_list|,
 name|BlockListAsLongs
 operator|.
 name|EMPTY
+argument_list|,
+literal|null
+argument_list|,
+literal|false
 argument_list|)
 expr_stmt|;
 name|assertEquals
