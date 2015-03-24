@@ -9870,7 +9870,7 @@ operator|)
 assert|;
 name|Iterator
 argument_list|<
-name|BlockInfoContiguous
+name|BlockInfo
 argument_list|>
 name|iter
 init|=
@@ -9895,7 +9895,7 @@ name|hasNext
 argument_list|()
 condition|)
 block|{
-name|BlockInfoContiguous
+name|BlockInfo
 name|block
 init|=
 name|iter
