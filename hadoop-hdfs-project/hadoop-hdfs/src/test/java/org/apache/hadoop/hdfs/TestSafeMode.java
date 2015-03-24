@@ -1237,7 +1237,7 @@ name|assertEquals
 argument_list|(
 literal|"Safe mode is ON. The reported blocks 0 needs additional "
 operator|+
-literal|"15 blocks to reach the threshold 0.9990 of total blocks 15."
+literal|"14 blocks to reach the threshold 0.9990 of total blocks 15."
 operator|+
 name|NEWLINE
 operator|+

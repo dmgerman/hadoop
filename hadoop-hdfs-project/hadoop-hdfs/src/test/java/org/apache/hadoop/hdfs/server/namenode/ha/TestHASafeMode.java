@@ -2644,7 +2644,14 @@ block|{
 name|int
 name|additional
 init|=
+call|(
+name|int
+call|)
+argument_list|(
 name|total
+operator|*
+literal|0.9990
+argument_list|)
 operator|-
 name|safe
 decl_stmt|;
