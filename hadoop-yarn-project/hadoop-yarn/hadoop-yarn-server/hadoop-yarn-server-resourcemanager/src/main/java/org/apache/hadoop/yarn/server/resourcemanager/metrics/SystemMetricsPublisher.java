@@ -627,7 +627,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * The class that helps RM publish metrics to the timeline server. RM will  * always invoke the methods of this class regardless the service is enabled or  * not. If it is disabled, publishing requests will be ignored silently.  */
+comment|/**  * The class that helps RM publish metrics to the timeline server V1. RM will  * always invoke the methods of this class regardless the service is enabled or  * not. If it is disabled, publishing requests will be ignored silently.  */
 end_comment
 
 begin_class
@@ -668,10 +668,10 @@ specifier|private
 name|TimelineClient
 name|client
 decl_stmt|;
-DECL|field|publishSystemMetrics
+DECL|field|publishSystemMetricsToATSv1
 specifier|private
 name|boolean
-name|publishSystemMetrics
+name|publishSystemMetricsToATSv1
 decl_stmt|;
 DECL|method|SystemMetricsPublisher ()
 specifier|public
@@ -702,7 +702,7 @@ parameter_list|)
 throws|throws
 name|Exception
 block|{
-name|publishSystemMetrics
+name|publishSystemMetricsToATSv1
 operator|=
 name|conf
 operator|.
@@ -723,16 +723,16 @@ name|getBoolean
 argument_list|(
 name|YarnConfiguration
 operator|.
-name|RM_SYSTEM_METRICS_PUBLISHER_ENABLED
+name|SYSTEM_METRICS_PUBLISHER_ENABLED
 argument_list|,
 name|YarnConfiguration
 operator|.
-name|DEFAULT_RM_SYSTEM_METRICS_PUBLISHER_ENABLED
+name|DEFAULT_SYSTEM_METRICS_PUBLISHER_ENABLED
 argument_list|)
 expr_stmt|;
 if|if
 condition|(
-name|publishSystemMetrics
+name|publishSystemMetricsToATSv1
 condition|)
 block|{
 name|client
@@ -817,7 +817,7 @@ parameter_list|)
 block|{
 if|if
 condition|(
-name|publishSystemMetrics
+name|publishSystemMetricsToATSv1
 condition|)
 block|{
 name|ApplicationSubmissionContext
@@ -923,7 +923,7 @@ parameter_list|)
 block|{
 if|if
 condition|(
-name|publishSystemMetrics
+name|publishSystemMetricsToATSv1
 condition|)
 block|{
 name|dispatcher
@@ -982,7 +982,7 @@ parameter_list|)
 block|{
 if|if
 condition|(
-name|publishSystemMetrics
+name|publishSystemMetricsToATSv1
 condition|)
 block|{
 name|dispatcher
@@ -1070,7 +1070,7 @@ parameter_list|)
 block|{
 if|if
 condition|(
-name|publishSystemMetrics
+name|publishSystemMetricsToATSv1
 condition|)
 block|{
 name|dispatcher
@@ -1169,7 +1169,7 @@ parameter_list|)
 block|{
 if|if
 condition|(
-name|publishSystemMetrics
+name|publishSystemMetricsToATSv1
 condition|)
 block|{
 name|ContainerId
@@ -1262,7 +1262,7 @@ parameter_list|)
 block|{
 if|if
 condition|(
-name|publishSystemMetrics
+name|publishSystemMetricsToATSv1
 condition|)
 block|{
 name|ContainerId
@@ -1358,7 +1358,7 @@ parameter_list|)
 block|{
 if|if
 condition|(
-name|publishSystemMetrics
+name|publishSystemMetricsToATSv1
 condition|)
 block|{
 name|dispatcher
@@ -1421,7 +1421,7 @@ parameter_list|)
 block|{
 if|if
 condition|(
-name|publishSystemMetrics
+name|publishSystemMetricsToATSv1
 condition|)
 block|{
 name|dispatcher

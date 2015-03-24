@@ -1864,7 +1864,7 @@ name|DEFAULT_RM_HISTORY_WRITER_MULTI_THREADED_DISPATCHER_POOL_SIZE
 init|=
 literal|10
 decl_stmt|;
-comment|/**    *  The setting that controls whether yarn system metrics is published on the    *  timeline server or not by RM.    */
+comment|/**    *  The setting that controls whether yarn system metrics is published on the    *  timeline server or not by RM. This configuration setting is for ATS V1    */
 DECL|field|RM_SYSTEM_METRICS_PUBLISHER_ENABLED
 specifier|public
 specifier|static
@@ -1882,6 +1882,27 @@ specifier|static
 specifier|final
 name|boolean
 name|DEFAULT_RM_SYSTEM_METRICS_PUBLISHER_ENABLED
+init|=
+literal|false
+decl_stmt|;
+comment|/**    *  The setting that controls whether yarn system metrics is published on the    *  timeline server or not by RM and NM. This configuration setting is for ATS V2    */
+DECL|field|SYSTEM_METRICS_PUBLISHER_ENABLED
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|SYSTEM_METRICS_PUBLISHER_ENABLED
+init|=
+name|YARN_PREFIX
+operator|+
+literal|"system-metrics-publisher.enabled"
+decl_stmt|;
+DECL|field|DEFAULT_SYSTEM_METRICS_PUBLISHER_ENABLED
+specifier|public
+specifier|static
+specifier|final
+name|boolean
+name|DEFAULT_SYSTEM_METRICS_PUBLISHER_ENABLED
 init|=
 literal|false
 decl_stmt|;

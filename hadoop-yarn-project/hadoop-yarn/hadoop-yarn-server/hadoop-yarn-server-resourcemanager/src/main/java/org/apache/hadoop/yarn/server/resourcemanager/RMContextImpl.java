@@ -66,9 +66,11 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|conf
+name|classification
 operator|.
-name|Configuration
+name|InterfaceStability
+operator|.
+name|Unstable
 import|;
 end_import
 
@@ -80,11 +82,9 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|classification
+name|conf
 operator|.
-name|InterfaceStability
-operator|.
-name|Unstable
+name|Configuration
 import|;
 end_import
 
@@ -581,6 +581,26 @@ operator|.
 name|security
 operator|.
 name|RMDelegationTokenSecretManager
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|server
+operator|.
+name|resourcemanager
+operator|.
+name|timelineservice
+operator|.
+name|RMTimelineCollector
 import|;
 end_import
 
@@ -1604,6 +1624,40 @@ return|return
 name|this
 operator|.
 name|rmApplicationHistoryWriter
+return|;
+block|}
+annotation|@
+name|Override
+DECL|method|setRMTimelineCollector ( RMTimelineCollector timelineCollector)
+specifier|public
+name|void
+name|setRMTimelineCollector
+parameter_list|(
+name|RMTimelineCollector
+name|timelineCollector
+parameter_list|)
+block|{
+name|activeServiceContext
+operator|.
+name|setRMTimelineCollector
+argument_list|(
+name|timelineCollector
+argument_list|)
+expr_stmt|;
+block|}
+annotation|@
+name|Override
+DECL|method|getRMTimelineCollector ()
+specifier|public
+name|RMTimelineCollector
+name|getRMTimelineCollector
+parameter_list|()
+block|{
+return|return
+name|activeServiceContext
+operator|.
+name|getRMTimelineCollector
+argument_list|()
 return|;
 block|}
 annotation|@
