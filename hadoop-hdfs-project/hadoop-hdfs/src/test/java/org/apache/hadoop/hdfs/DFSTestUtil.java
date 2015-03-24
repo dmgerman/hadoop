@@ -5714,7 +5714,7 @@ specifier|final
 name|Socket
 name|s
 init|=
-name|DFSOutputStream
+name|DataStreamer
 operator|.
 name|createSocketForPipeline
 argument_list|(
