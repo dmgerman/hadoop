@@ -4017,7 +4017,7 @@ name|YarnException
 block|{
 name|LOG
 operator|.
-name|info
+name|warn
 argument_list|(
 literal|"Exception "
 operator|+
