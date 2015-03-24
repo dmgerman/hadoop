@@ -579,7 +579,7 @@ name|interval
 operator|+
 literal|"s"
 argument_list|,
-literal|" process in ns"
+literal|"Write process in ns"
 argument_list|,
 literal|"ops"
 argument_list|,
@@ -603,7 +603,7 @@ name|interval
 operator|+
 literal|"s"
 argument_list|,
-literal|"Read process in ns"
+literal|"Commit process in ns"
 argument_list|,
 literal|"ops"
 argument_list|,
@@ -661,7 +661,7 @@ argument_list|,
 name|ms
 argument_list|)
 decl_stmt|;
-comment|// Percentile measurement is [,,,] by default
+comment|// Percentile measurement is [50th,75th,90th,95th,99th] currently
 name|int
 index|[]
 name|intervals
@@ -670,18 +670,9 @@ name|conf
 operator|.
 name|getInts
 argument_list|(
-name|conf
-operator|.
-name|get
-argument_list|(
 name|NfsConfigKeys
 operator|.
 name|NFS_METRICS_PERCENTILES_INTERVALS_KEY
-argument_list|,
-name|NfsConfigKeys
-operator|.
-name|NFS_METRICS_PERCENTILES_INTERVALS_DEFAULT
-argument_list|)
 argument_list|)
 decl_stmt|;
 return|return
