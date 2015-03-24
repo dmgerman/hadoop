@@ -337,7 +337,7 @@ return|return
 name|exitCode
 return|;
 block|}
-comment|/**    * Parse the command line arguments and initialize the data    *<pre>    * % hadoop credential create alias [-provider providerPath]    * % hadoop credential list [-provider providerPath]    * % hadoop credential delete alias [-provider providerPath] [-i]    *</pre>    * @param args    * @return 0 if the argument(s) were recognized, 1 otherwise    * @throws IOException    */
+comment|/**    * Parse the command line arguments and initialize the data    *<pre>    * % hadoop credential create alias [-provider providerPath]    * % hadoop credential list [-provider providerPath]    * % hadoop credential delete alias [-provider providerPath] [-f]    *</pre>    * @param args    * @return 0 if the argument(s) were recognized, 1 otherwise    * @throws IOException    */
 DECL|method|init (String[] args)
 specifier|protected
 name|int
