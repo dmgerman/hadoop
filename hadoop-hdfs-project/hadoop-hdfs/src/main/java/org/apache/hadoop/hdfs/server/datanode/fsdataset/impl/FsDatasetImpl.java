@@ -2280,11 +2280,19 @@ throw|throw
 operator|new
 name|DiskErrorException
 argument_list|(
-literal|"Invalid volume failure "
+literal|"Invalid value configured for "
 operator|+
-literal|" config value: "
+literal|"dfs.datanode.failed.volumes.tolerated - "
 operator|+
 name|volFailuresTolerated
+operator|+
+literal|". Value configured is either less than 0 or>= "
+operator|+
+literal|"to the number of configured volumes ("
+operator|+
+name|volsConfigured
+operator|+
+literal|")."
 argument_list|)
 throw|;
 block|}
