@@ -3234,13 +3234,6 @@ name|getCurrentApplicationAttemptId
 argument_list|()
 argument_list|)
 decl_stmt|;
-if|if
-condition|(
-name|appAttempt
-operator|!=
-literal|null
-condition|)
-block|{
 name|app
 operator|.
 name|appReport
@@ -3291,14 +3284,16 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-block|}
 catch|catch
 parameter_list|(
 name|AuthorizationException
+decl||
+name|ApplicationAttemptNotFoundException
 name|e
 parameter_list|)
 block|{
 comment|// AuthorizationException is thrown because the user doesn't have access
+comment|// It's possible that the app is finished before the first attempt is created.
 name|app
 operator|.
 name|appReport
