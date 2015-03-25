@@ -3268,17 +3268,6 @@ init|=
 name|getTestConfiguration
 argument_list|()
 decl_stmt|;
-name|conf
-operator|.
-name|setBoolean
-argument_list|(
-name|DFSConfigKeys
-operator|.
-name|DFS_WEBHDFS_ENABLED_KEY
-argument_list|,
-literal|true
-argument_list|)
-expr_stmt|;
 specifier|final
 name|MiniDFSCluster
 name|cluster

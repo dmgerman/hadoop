@@ -5219,17 +5219,6 @@ argument_list|,
 name|BLOCK_SIZE
 argument_list|)
 expr_stmt|;
-name|conf
-operator|.
-name|setBoolean
-argument_list|(
-name|DFSConfigKeys
-operator|.
-name|DFS_WEBHDFS_ENABLED_KEY
-argument_list|,
-literal|true
-argument_list|)
-expr_stmt|;
 name|MiniDFSCluster
 name|cluster
 init|=
@@ -5567,17 +5556,6 @@ operator|.
 name|DFS_BLOCK_SIZE_KEY
 argument_list|,
 name|BLOCK_SIZE
-argument_list|)
-expr_stmt|;
-name|conf
-operator|.
-name|setBoolean
-argument_list|(
-name|DFSConfigKeys
-operator|.
-name|DFS_WEBHDFS_ENABLED_KEY
-argument_list|,
-literal|true
 argument_list|)
 expr_stmt|;
 comment|// Make it relinquish locks. When run serially, the result should

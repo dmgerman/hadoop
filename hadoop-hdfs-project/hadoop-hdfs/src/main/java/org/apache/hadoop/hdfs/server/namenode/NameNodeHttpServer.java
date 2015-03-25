@@ -434,20 +434,6 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
-if|if
-condition|(
-name|WebHdfsFileSystem
-operator|.
-name|isEnabled
-argument_list|(
-name|conf
-argument_list|,
-name|HttpServer2
-operator|.
-name|LOG
-argument_list|)
-condition|)
-block|{
 comment|// set user pattern based on configuration file
 name|UserParam
 operator|.
@@ -584,7 +570,6 @@ argument_list|,
 name|pathSpec
 argument_list|)
 expr_stmt|;
-block|}
 block|}
 comment|/**    * @see DFSUtil#getHttpPolicy(org.apache.hadoop.conf.Configuration)    * for information related to the different configuration options and    * Http Policy is decided.    */
 DECL|method|start ()

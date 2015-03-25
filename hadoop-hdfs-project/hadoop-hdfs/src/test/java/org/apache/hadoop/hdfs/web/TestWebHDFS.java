@@ -2454,41 +2454,6 @@ expr_stmt|;
 block|}
 block|}
 block|}
-comment|/**    * WebHdfs should be enabled by default after HDFS-5532    *     * @throws Exception    */
-annotation|@
-name|Test
-DECL|method|testWebHdfsEnabledByDefault ()
-specifier|public
-name|void
-name|testWebHdfsEnabledByDefault
-parameter_list|()
-throws|throws
-name|Exception
-block|{
-name|Configuration
-name|conf
-init|=
-operator|new
-name|HdfsConfiguration
-argument_list|()
-decl_stmt|;
-name|Assert
-operator|.
-name|assertTrue
-argument_list|(
-name|conf
-operator|.
-name|getBoolean
-argument_list|(
-name|DFSConfigKeys
-operator|.
-name|DFS_WEBHDFS_ENABLED_KEY
-argument_list|,
-literal|false
-argument_list|)
-argument_list|)
-expr_stmt|;
-block|}
 comment|/**    * Test snapshot creation through WebHdfs    */
 annotation|@
 name|Test

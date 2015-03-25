@@ -733,17 +733,6 @@ argument_list|()
 expr_stmt|;
 name|config
 operator|.
-name|setBoolean
-argument_list|(
-name|DFSConfigKeys
-operator|.
-name|DFS_WEBHDFS_ENABLED_KEY
-argument_list|,
-literal|true
-argument_list|)
-expr_stmt|;
-name|config
-operator|.
 name|setLong
 argument_list|(
 name|DFSConfigKeys

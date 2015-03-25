@@ -452,17 +452,6 @@ name|ugi
 decl_stmt|;
 static|static
 block|{
-name|conf
-operator|.
-name|setBoolean
-argument_list|(
-name|DFSConfigKeys
-operator|.
-name|DFS_WEBHDFS_ENABLED_KEY
-argument_list|,
-literal|true
-argument_list|)
-expr_stmt|;
 try|try
 block|{
 name|cluster
