@@ -138,26 +138,6 @@ begin_import
 import|import
 name|org
 operator|.
-name|junit
-operator|.
-name|Assert
-import|;
-end_import
-
-begin_import
-import|import
-name|junit
-operator|.
-name|framework
-operator|.
-name|TestCase
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
 name|apache
 operator|.
 name|hadoop
@@ -528,13 +508,47 @@ name|HashMultiset
 import|;
 end_import
 
+begin_import
+import|import static
+name|org
+operator|.
+name|junit
+operator|.
+name|Assert
+operator|.
+name|assertEquals
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|junit
+operator|.
+name|Assert
+operator|.
+name|assertFalse
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|junit
+operator|.
+name|Assert
+operator|.
+name|assertTrue
+import|;
+end_import
+
 begin_class
 DECL|class|TestCombineFileInputFormat
 specifier|public
 class|class
 name|TestCombineFileInputFormat
-extends|extends
-name|TestCase
 block|{
 DECL|field|rack1
 specifier|private
@@ -1376,6 +1390,8 @@ argument_list|)
 return|;
 block|}
 block|}
+annotation|@
+name|Test
 DECL|method|testRecordReaderInit ()
 specifier|public
 name|void
@@ -1566,6 +1582,8 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
+annotation|@
+name|Test
 DECL|method|testReinit ()
 specifier|public
 name|void
@@ -1750,6 +1768,8 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
+annotation|@
+name|Test
 DECL|method|testSplitPlacement ()
 specifier|public
 name|void
@@ -6011,6 +6031,8 @@ name|replication
 argument_list|)
 expr_stmt|;
 block|}
+annotation|@
+name|Test
 DECL|method|testNodeDistribution ()
 specifier|public
 name|void
@@ -6377,8 +6399,6 @@ operator|/
 name|maxSplitSize
 argument_list|)
 decl_stmt|;
-name|Assert
-operator|.
 name|assertEquals
 argument_list|(
 name|expectedSplitCount
@@ -6404,8 +6424,6 @@ range|:
 name|splits
 control|)
 block|{
-name|Assert
-operator|.
 name|assertEquals
 argument_list|(
 name|maxSplitSize
@@ -6433,8 +6451,6 @@ operator|++
 expr_stmt|;
 block|}
 block|}
-name|Assert
-operator|.
 name|assertTrue
 argument_list|(
 name|numLocalSplits
@@ -6448,6 +6464,8 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
+annotation|@
+name|Test
 DECL|method|testNodeInputSplit ()
 specifier|public
 name|void
@@ -6727,8 +6745,6 @@ operator|/
 name|maxSize
 argument_list|)
 decl_stmt|;
-name|Assert
-operator|.
 name|assertEquals
 argument_list|(
 name|expectedSplitCount
@@ -6775,8 +6791,6 @@ argument_list|(
 name|i
 argument_list|)
 decl_stmt|;
-name|Assert
-operator|.
 name|assertEquals
 argument_list|(
 name|maxSize
@@ -6787,8 +6801,6 @@ name|getLength
 argument_list|()
 argument_list|)
 expr_stmt|;
-name|Assert
-operator|.
 name|assertEquals
 argument_list|(
 literal|1
@@ -6815,8 +6827,6 @@ index|]
 argument_list|)
 expr_stmt|;
 block|}
-name|Assert
-operator|.
 name|assertEquals
 argument_list|(
 literal|3
@@ -6832,8 +6842,6 @@ index|]
 argument_list|)
 argument_list|)
 expr_stmt|;
-name|Assert
-operator|.
 name|assertEquals
 argument_list|(
 literal|3
@@ -6850,6 +6858,8 @@ argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
+annotation|@
+name|Test
 DECL|method|testSplitPlacementForCompressedFiles ()
 specifier|public
 name|void
@@ -10332,6 +10342,8 @@ block|}
 block|}
 block|}
 comment|/**    * Test that CFIF can handle missing blocks.    */
+annotation|@
+name|Test
 DECL|method|testMissingBlocks ()
 specifier|public
 name|void
