@@ -958,9 +958,17 @@ operator|==
 literal|null
 condition|)
 block|{
+if|if
+condition|(
 name|LOG
 operator|.
-name|warn
+name|isDebugEnabled
+argument_list|()
+condition|)
+block|{
+name|LOG
+operator|.
+name|debug
 argument_list|(
 literal|"Could not find "
 operator|+
@@ -971,6 +979,7 @@ operator|+
 literal|" cookie, so user will not be set"
 argument_list|)
 expr_stmt|;
+block|}
 name|chain
 operator|.
 name|doFilter
