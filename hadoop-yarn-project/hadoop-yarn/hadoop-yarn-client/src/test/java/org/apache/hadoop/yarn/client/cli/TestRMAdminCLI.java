@@ -2238,9 +2238,7 @@ literal|"[node1[:port]=label1,label2 node2[:port]=label1] [-directlyAccessNodeLa
 operator|+
 literal|"[-transitionToActive [--forceactive]<serviceId>] "
 operator|+
-literal|"[-transitionToStandby<serviceId>] [-failover"
-operator|+
-literal|" [--forcefence] [--forceactive]<serviceId><serviceId>] "
+literal|"[-transitionToStandby<serviceId>] "
 operator|+
 literal|"[-getServiceState<serviceId>] [-checkHealth<serviceId>] [-help [cmd]]"
 decl_stmt|;
