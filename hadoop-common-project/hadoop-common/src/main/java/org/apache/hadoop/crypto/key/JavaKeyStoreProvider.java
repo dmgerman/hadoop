@@ -84,6 +84,20 @@ name|hadoop
 operator|.
 name|fs
 operator|.
+name|FSDataInputStream
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|fs
+operator|.
 name|FSDataOutputStream
 import|;
 end_import
@@ -1509,6 +1523,19 @@ name|NoSuchAlgorithmException
 throws|,
 name|CertificateException
 block|{
+try|try
+init|(
+name|FSDataInputStream
+name|in
+init|=
+name|fs
+operator|.
+name|open
+argument_list|(
+name|p
+argument_list|)
+init|)
+block|{
 name|FileStatus
 name|s
 init|=
@@ -1523,12 +1550,7 @@ name|keyStore
 operator|.
 name|load
 argument_list|(
-name|fs
-operator|.
-name|open
-argument_list|(
-name|p
-argument_list|)
+name|in
 argument_list|,
 name|password
 argument_list|)
@@ -1539,6 +1561,7 @@ operator|.
 name|getPermission
 argument_list|()
 return|;
+block|}
 block|}
 DECL|method|constructNewPath (Path path)
 specifier|private
@@ -3181,6 +3204,8 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
+try|try
+init|(
 name|FSDataOutputStream
 name|out
 init|=
@@ -3194,8 +3219,8 @@ name|newPath
 argument_list|,
 name|permissions
 argument_list|)
-decl_stmt|;
-try|try
+init|;
+init|)
 block|{
 name|keyStore
 operator|.
@@ -3261,11 +3286,6 @@ name|e
 argument_list|)
 throw|;
 block|}
-name|out
-operator|.
-name|close
-argument_list|()
-expr_stmt|;
 block|}
 DECL|method|backupToOld (Path oldPath)
 specifier|protected
