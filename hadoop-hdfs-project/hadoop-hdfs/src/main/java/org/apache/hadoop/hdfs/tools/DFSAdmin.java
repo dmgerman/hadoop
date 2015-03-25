@@ -34,16 +34,6 @@ name|java
 operator|.
 name|io
 operator|.
-name|FileNotFoundException
-import|;
-end_import
-
-begin_import
-import|import
-name|java
-operator|.
-name|io
-operator|.
 name|IOException
 import|;
 end_import
@@ -2371,7 +2361,7 @@ literal|"\t[-report [-live] [-dead] [-decommissioning]]\n"
 operator|+
 literal|"\t[-safemode<enter | leave | get | wait>]\n"
 operator|+
-literal|"\t[-saveNamespace]\n"
+literal|"\t[-saveNamespace [-beforeShutdown]]\n"
 operator|+
 literal|"\t[-rollEdits]\n"
 operator|+
@@ -3985,27 +3975,27 @@ literal|" succeeded"
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Command to ask the namenode to save the namespace.    * Usage: hdfs dfsadmin -saveNamespace    * @exception IOException     * @see org.apache.hadoop.hdfs.protocol.ClientProtocol#saveNamespace()    */
-DECL|method|saveNamespace ()
+comment|/**    * Command to ask the namenode to save the namespace.    * Usage: hdfs dfsadmin -saveNamespace    * @see ClientProtocol#saveNamespace(long, long)    */
+DECL|method|saveNamespace (String[] argv)
 specifier|public
 name|int
 name|saveNamespace
-parameter_list|()
+parameter_list|(
+name|String
+index|[]
+name|argv
+parameter_list|)
 throws|throws
 name|IOException
 block|{
-name|int
-name|exitCode
-init|=
-operator|-
-literal|1
-decl_stmt|;
+specifier|final
 name|DistributedFileSystem
 name|dfs
 init|=
 name|getDFS
 argument_list|()
 decl_stmt|;
+specifier|final
 name|Configuration
 name|dfsConf
 init|=
@@ -4014,6 +4004,118 @@ operator|.
 name|getConf
 argument_list|()
 decl_stmt|;
+name|long
+name|timeWindow
+init|=
+literal|0
+decl_stmt|;
+name|long
+name|txGap
+init|=
+literal|0
+decl_stmt|;
+if|if
+condition|(
+name|argv
+operator|.
+name|length
+operator|>
+literal|1
+operator|&&
+literal|"-beforeShutdown"
+operator|.
+name|equals
+argument_list|(
+name|argv
+index|[
+literal|1
+index|]
+argument_list|)
+condition|)
+block|{
+specifier|final
+name|long
+name|checkpointPeriod
+init|=
+name|dfsConf
+operator|.
+name|getLong
+argument_list|(
+name|DFSConfigKeys
+operator|.
+name|DFS_NAMENODE_CHECKPOINT_PERIOD_KEY
+argument_list|,
+name|DFSConfigKeys
+operator|.
+name|DFS_NAMENODE_CHECKPOINT_PERIOD_DEFAULT
+argument_list|)
+decl_stmt|;
+specifier|final
+name|long
+name|checkpointTxnCount
+init|=
+name|dfsConf
+operator|.
+name|getLong
+argument_list|(
+name|DFSConfigKeys
+operator|.
+name|DFS_NAMENODE_CHECKPOINT_TXNS_KEY
+argument_list|,
+name|DFSConfigKeys
+operator|.
+name|DFS_NAMENODE_CHECKPOINT_TXNS_DEFAULT
+argument_list|)
+decl_stmt|;
+specifier|final
+name|int
+name|toleratePeriodNum
+init|=
+name|dfsConf
+operator|.
+name|getInt
+argument_list|(
+name|DFSConfigKeys
+operator|.
+name|DFS_NAMENODE_MISSING_CHECKPOINT_PERIODS_BEFORE_SHUTDOWN_KEY
+argument_list|,
+name|DFSConfigKeys
+operator|.
+name|DFS_NAMENODE_MISSING_CHECKPOINT_PERIODS_BEFORE_SHUTDONW_DEFAULT
+argument_list|)
+decl_stmt|;
+name|timeWindow
+operator|=
+name|checkpointPeriod
+operator|*
+name|toleratePeriodNum
+expr_stmt|;
+name|txGap
+operator|=
+name|checkpointTxnCount
+operator|*
+name|toleratePeriodNum
+expr_stmt|;
+name|System
+operator|.
+name|out
+operator|.
+name|println
+argument_list|(
+literal|"Do checkpoint if necessary before stopping "
+operator|+
+literal|"namenode. The time window is "
+operator|+
+name|timeWindow
+operator|+
+literal|" seconds, and the "
+operator|+
+literal|"transaction gap is "
+operator|+
+name|txGap
+argument_list|)
+expr_stmt|;
+block|}
 name|URI
 name|dfsUri
 init|=
@@ -4080,14 +4182,26 @@ range|:
 name|proxies
 control|)
 block|{
+name|boolean
+name|saved
+init|=
 name|proxy
 operator|.
 name|getProxy
 argument_list|()
 operator|.
 name|saveNamespace
-argument_list|()
-expr_stmt|;
+argument_list|(
+name|timeWindow
+argument_list|,
+name|txGap
+argument_list|)
+decl_stmt|;
+if|if
+condition|(
+name|saved
+condition|)
+block|{
 name|System
 operator|.
 name|out
@@ -4103,14 +4217,44 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
+else|else
+block|{
+name|System
+operator|.
+name|out
+operator|.
+name|println
+argument_list|(
+literal|"No extra checkpoint has been made for "
+operator|+
+name|proxy
+operator|.
+name|getAddress
+argument_list|()
+argument_list|)
+expr_stmt|;
+block|}
+block|}
 block|}
 else|else
 block|{
+name|boolean
+name|saved
+init|=
 name|dfs
 operator|.
 name|saveNamespace
-argument_list|()
-expr_stmt|;
+argument_list|(
+name|timeWindow
+argument_list|,
+name|txGap
+argument_list|)
+decl_stmt|;
+if|if
+condition|(
+name|saved
+condition|)
+block|{
 name|System
 operator|.
 name|out
@@ -4121,12 +4265,21 @@ literal|"Save namespace successful"
 argument_list|)
 expr_stmt|;
 block|}
-name|exitCode
-operator|=
-literal|0
+else|else
+block|{
+name|System
+operator|.
+name|out
+operator|.
+name|println
+argument_list|(
+literal|"No extra checkpoint has been made"
+argument_list|)
 expr_stmt|;
+block|}
+block|}
 return|return
-name|exitCode
+literal|0
 return|;
 block|}
 DECL|method|rollEdits ()
@@ -4927,11 +5080,21 @@ decl_stmt|;
 name|String
 name|saveNamespace
 init|=
-literal|"-saveNamespace:\t"
+literal|"-saveNamespace [-beforeShutdown]:\t"
 operator|+
-literal|"Save current namespace into storage directories and reset edits log.\n"
+literal|"Save current namespace into storage directories and reset edits \n"
 operator|+
-literal|"\t\tRequires safe mode.\n"
+literal|"\t\t log. Requires safe mode.\n"
+operator|+
+literal|"\t\tIf the \"beforeShutdown\" option is given, the NameNode does a \n"
+operator|+
+literal|"\t\tcheckpoint if and only if there is no checkpoint done during \n"
+operator|+
+literal|"\t\ta time window (a configurable number of checkpoint periods).\n"
+operator|+
+literal|"\t\tThis is usually used before shutting down the NameNode to \n"
+operator|+
+literal|"\t\tprevent potential fsimage/editlog corruption.\n"
 decl_stmt|;
 name|String
 name|rollEdits
@@ -8321,7 +8484,7 @@ name|println
 argument_list|(
 literal|"Usage: hdfs dfsadmin"
 operator|+
-literal|" [-saveNamespace]"
+literal|" [-saveNamespace [-beforeShutdown]]"
 argument_list|)
 expr_stmt|;
 block|}
@@ -8342,9 +8505,7 @@ name|err
 operator|.
 name|println
 argument_list|(
-literal|"Usage: hdfs dfsadmin"
-operator|+
-literal|" [-rollEdits]"
+literal|"Usage: hdfs dfsadmin [-rollEdits]"
 argument_list|)
 expr_stmt|;
 block|}
@@ -9141,6 +9302,12 @@ operator|.
 name|length
 operator|!=
 literal|1
+operator|&&
+name|argv
+operator|.
+name|length
+operator|!=
+literal|2
 condition|)
 block|{
 name|printUsage
@@ -9864,7 +10031,9 @@ block|{
 name|exitCode
 operator|=
 name|saveNamespace
-argument_list|()
+argument_list|(
+name|argv
+argument_list|)
 expr_stmt|;
 block|}
 elseif|else

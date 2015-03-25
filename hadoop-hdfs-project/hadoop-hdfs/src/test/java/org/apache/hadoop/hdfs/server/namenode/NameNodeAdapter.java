@@ -640,7 +640,11 @@ name|getNamesystem
 argument_list|()
 operator|.
 name|saveNamespace
-argument_list|()
+argument_list|(
+literal|0
+argument_list|,
+literal|0
+argument_list|)
 expr_stmt|;
 block|}
 DECL|method|enterSafeMode (NameNode namenode, boolean resourcesLow)

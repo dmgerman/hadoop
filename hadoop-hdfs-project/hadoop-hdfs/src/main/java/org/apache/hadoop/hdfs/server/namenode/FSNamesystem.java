@@ -24367,14 +24367,20 @@ argument_list|()
 expr_stmt|;
 block|}
 block|}
-comment|/**    * Save namespace image.    * This will save current namespace into fsimage file and empty edits file.    * Requires superuser privilege and safe mode.    *     * @throws AccessControlException if superuser privilege is violated.    * @throws IOException if     */
-DECL|method|saveNamespace ()
-name|void
+comment|/**    * Save namespace image.    * This will save current namespace into fsimage file and empty edits file.    * Requires superuser privilege and safe mode.    */
+DECL|method|saveNamespace (final long timeWindow, final long txGap)
+name|boolean
 name|saveNamespace
-parameter_list|()
+parameter_list|(
+specifier|final
+name|long
+name|timeWindow
+parameter_list|,
+specifier|final
+name|long
+name|txGap
+parameter_list|)
 throws|throws
-name|AccessControlException
-throws|,
 name|IOException
 block|{
 name|checkOperation
@@ -24387,6 +24393,11 @@ expr_stmt|;
 name|checkSuperuserPrivilege
 argument_list|()
 expr_stmt|;
+name|boolean
+name|saved
+init|=
+literal|false
+decl_stmt|;
 name|cpLock
 argument_list|()
 expr_stmt|;
@@ -24420,11 +24431,17 @@ literal|"in order to create namespace image."
 argument_list|)
 throw|;
 block|}
+name|saved
+operator|=
 name|getFSImage
 argument_list|()
 operator|.
 name|saveNamespace
 argument_list|(
+name|timeWindow
+argument_list|,
+name|txGap
+argument_list|,
 name|this
 argument_list|)
 expr_stmt|;
@@ -24438,6 +24455,11 @@ name|cpUnlock
 argument_list|()
 expr_stmt|;
 block|}
+if|if
+condition|(
+name|saved
+condition|)
+block|{
 name|LOG
 operator|.
 name|info
@@ -24445,6 +24467,10 @@ argument_list|(
 literal|"New namespace image has been created"
 argument_list|)
 expr_stmt|;
+block|}
+return|return
+name|saved
+return|;
 block|}
 comment|/**    * Enables/Disables/Checks restoring failed storage replicas if the storage becomes available again.    * Requires superuser privilege.    *     * @throws AccessControlException if superuser privilege is violated.    */
 DECL|method|restoreFailedStorage (String arg)

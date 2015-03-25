@@ -763,7 +763,11 @@ literal|0
 argument_list|)
 operator|.
 name|saveNamespace
-argument_list|()
+argument_list|(
+literal|0
+argument_list|,
+literal|0
+argument_list|)
 expr_stmt|;
 name|cluster
 operator|.

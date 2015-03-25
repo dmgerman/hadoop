@@ -13803,14 +13803,18 @@ name|traceSampler
 argument_list|)
 return|;
 block|}
-comment|/**    * Save namespace image.    *     * @see ClientProtocol#saveNamespace()    */
-DECL|method|saveNamespace ()
-name|void
+comment|/**    * Save namespace image.    *     * @see ClientProtocol#saveNamespace(long, long)    */
+DECL|method|saveNamespace (long timeWindow, long txGap)
+name|boolean
 name|saveNamespace
-parameter_list|()
+parameter_list|(
+name|long
+name|timeWindow
+parameter_list|,
+name|long
+name|txGap
+parameter_list|)
 throws|throws
-name|AccessControlException
-throws|,
 name|IOException
 block|{
 name|TraceScope
@@ -13827,11 +13831,16 @@ argument_list|)
 decl_stmt|;
 try|try
 block|{
+return|return
 name|namenode
 operator|.
 name|saveNamespace
-argument_list|()
-expr_stmt|;
+argument_list|(
+name|timeWindow
+argument_list|,
+name|txGap
+argument_list|)
+return|;
 block|}
 catch|catch
 parameter_list|(

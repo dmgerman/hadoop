@@ -6778,11 +6778,17 @@ block|}
 annotation|@
 name|Override
 comment|// ClientProtocol
-DECL|method|saveNamespace ()
+DECL|method|saveNamespace (long timeWindow, long txGap)
 specifier|public
-name|void
+name|boolean
 name|saveNamespace
-parameter_list|()
+parameter_list|(
+name|long
+name|timeWindow
+parameter_list|,
+name|long
+name|txGap
+parameter_list|)
 throws|throws
 name|IOException
 block|{
@@ -6811,7 +6817,9 @@ name|isSuccess
 argument_list|()
 condition|)
 block|{
-return|return;
+return|return
+literal|true
+return|;
 comment|// Return previous response
 block|}
 name|boolean
@@ -6824,7 +6832,11 @@ block|{
 name|namesystem
 operator|.
 name|saveNamespace
-argument_list|()
+argument_list|(
+name|timeWindow
+argument_list|,
+name|txGap
+argument_list|)
 expr_stmt|;
 name|success
 operator|=
@@ -6843,6 +6855,9 @@ name|success
 argument_list|)
 expr_stmt|;
 block|}
+return|return
+literal|true
+return|;
 block|}
 annotation|@
 name|Override

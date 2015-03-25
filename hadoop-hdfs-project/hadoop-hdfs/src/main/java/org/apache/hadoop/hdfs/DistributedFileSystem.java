@@ -706,6 +706,22 @@ name|hdfs
 operator|.
 name|protocol
 operator|.
+name|ClientProtocol
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|protocol
+operator|.
 name|DatanodeInfo
 import|;
 end_import
@@ -5962,21 +5978,47 @@ name|isChecked
 argument_list|)
 return|;
 block|}
-comment|/**    * Save namespace image.    *     * @see org.apache.hadoop.hdfs.protocol.ClientProtocol#saveNamespace()    */
+comment|/**    * Save namespace image.    *    * @param timeWindow NameNode can ignore this command if the latest    *                   checkpoint was done within the given time period (in    *                   seconds).    * @return true if a new checkpoint has been made    * @see ClientProtocol#saveNamespace(long, long)    */
+DECL|method|saveNamespace (long timeWindow, long txGap)
+specifier|public
+name|boolean
+name|saveNamespace
+parameter_list|(
+name|long
+name|timeWindow
+parameter_list|,
+name|long
+name|txGap
+parameter_list|)
+throws|throws
+name|IOException
+block|{
+return|return
+name|dfs
+operator|.
+name|saveNamespace
+argument_list|(
+name|timeWindow
+argument_list|,
+name|txGap
+argument_list|)
+return|;
+block|}
+comment|/**    * Save namespace image. NameNode always does the checkpoint.    */
 DECL|method|saveNamespace ()
 specifier|public
 name|void
 name|saveNamespace
 parameter_list|()
 throws|throws
-name|AccessControlException
-throws|,
 name|IOException
 block|{
-name|dfs
-operator|.
 name|saveNamespace
-argument_list|()
+argument_list|(
+literal|0
+argument_list|,
+literal|0
+argument_list|)
 expr_stmt|;
 block|}
 comment|/**    * Rolls the edit log on the active NameNode.    * Requires super-user privileges.    * @see org.apache.hadoop.hdfs.protocol.ClientProtocol#rollEdits()    * @return the transaction ID of the newly created segment    */

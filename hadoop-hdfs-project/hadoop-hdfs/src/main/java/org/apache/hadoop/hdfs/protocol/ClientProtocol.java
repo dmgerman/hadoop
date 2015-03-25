@@ -1502,17 +1502,21 @@ parameter_list|)
 throws|throws
 name|IOException
 function_decl|;
-comment|/**    * Save namespace image.    *<p>    * Saves current namespace into storage directories and reset edits log.    * Requires superuser privilege and safe mode.    *     * @throws AccessControlException if the superuser privilege is violated.    * @throws IOException if image creation failed.    */
+comment|/**    * Save namespace image.    *<p>    * Saves current namespace into storage directories and reset edits log.    * Requires superuser privilege and safe mode.    *    * @param timeWindow NameNode does a checkpoint if the latest checkpoint was    *                   done beyond the given time period (in seconds).    * @param txGap NameNode does a checkpoint if the gap between the latest    *              checkpoint and the latest transaction id is greater this gap.    * @return whether an extra checkpoint has been done    *    * @throws IOException if image creation failed.    */
 annotation|@
 name|AtMostOnce
-DECL|method|saveNamespace ()
+DECL|method|saveNamespace (long timeWindow, long txGap)
 specifier|public
-name|void
+name|boolean
 name|saveNamespace
-parameter_list|()
+parameter_list|(
+name|long
+name|timeWindow
+parameter_list|,
+name|long
+name|txGap
+parameter_list|)
 throws|throws
-name|AccessControlException
-throws|,
 name|IOException
 function_decl|;
 comment|/**    * Roll the edit log.    * Requires superuser privileges.    *     * @throws AccessControlException if the superuser privilege is violated    * @throws IOException if log roll fails    * @return the txid of the new segment    */
