@@ -416,38 +416,6 @@ name|hdfs
 operator|.
 name|DFSConfigKeys
 operator|.
-name|DFS_DATANODE_SCAN_PERIOD_HOURS_DEFAULT
-import|;
-end_import
-
-begin_import
-import|import static
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|hdfs
-operator|.
-name|DFSConfigKeys
-operator|.
-name|DFS_DATANODE_SCAN_PERIOD_HOURS_KEY
-import|;
-end_import
-
-begin_import
-import|import static
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|hdfs
-operator|.
-name|DFSConfigKeys
-operator|.
 name|DFS_DATANODE_STARTUP_KEY
 import|;
 end_import
@@ -2087,6 +2055,28 @@ operator|.
 name|fsdataset
 operator|.
 name|FsVolumeSpi
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|server
+operator|.
+name|datanode
+operator|.
+name|fsdataset
+operator|.
+name|impl
+operator|.
+name|FsVolumeImpl
 import|;
 end_import
 
@@ -12443,6 +12433,17 @@ parameter_list|()
 block|{
 return|return
 name|blockScanner
+return|;
+block|}
+annotation|@
+name|VisibleForTesting
+DECL|method|getDirectoryScanner ()
+name|DirectoryScanner
+name|getDirectoryScanner
+parameter_list|()
+block|{
+return|return
+name|directoryScanner
 return|;
 block|}
 DECL|method|secureMain (String args[], SecureResources resources)

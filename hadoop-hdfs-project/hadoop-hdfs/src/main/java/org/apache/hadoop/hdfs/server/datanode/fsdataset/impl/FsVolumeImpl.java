@@ -424,6 +424,22 @@ name|hdfs
 operator|.
 name|protocol
 operator|.
+name|BlockListAsLongs
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|protocol
+operator|.
 name|ExtendedBlock
 import|;
 end_import
@@ -641,20 +657,6 @@ operator|.
 name|map
 operator|.
 name|ObjectMapper
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|codehaus
-operator|.
-name|jackson
-operator|.
-name|map
-operator|.
-name|ObjectReader
 import|;
 end_import
 
@@ -3764,7 +3766,9 @@ name|getValue
 argument_list|()
 operator|.
 name|shutdown
-argument_list|()
+argument_list|(
+literal|null
+argument_list|)
 expr_stmt|;
 block|}
 block|}
@@ -3817,12 +3821,15 @@ name|bp
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|shutdownBlockPool (String bpid)
+DECL|method|shutdownBlockPool (String bpid, BlockListAsLongs blocksListsAsLongs)
 name|void
 name|shutdownBlockPool
 parameter_list|(
 name|String
 name|bpid
+parameter_list|,
+name|BlockListAsLongs
+name|blocksListsAsLongs
 parameter_list|)
 block|{
 name|BlockPoolSlice
@@ -3845,7 +3852,9 @@ block|{
 name|bp
 operator|.
 name|shutdown
-argument_list|()
+argument_list|(
+name|blocksListsAsLongs
+argument_list|)
 expr_stmt|;
 block|}
 name|bpSlices

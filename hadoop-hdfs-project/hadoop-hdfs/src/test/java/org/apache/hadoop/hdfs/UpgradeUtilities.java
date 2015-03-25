@@ -1667,7 +1667,7 @@ expr_stmt|;
 block|}
 continue|continue;
 block|}
-comment|// skip VERSION and dfsUsed file for DataNodes
+comment|// skip VERSION and dfsUsed and replicas file for DataNodes
 if|if
 condition|(
 name|nodeType
@@ -1699,6 +1699,19 @@ operator|.
 name|equals
 argument_list|(
 literal|"dfsUsed"
+argument_list|)
+operator|||
+name|list
+index|[
+name|i
+index|]
+operator|.
+name|getName
+argument_list|()
+operator|.
+name|equals
+argument_list|(
+literal|"replicas"
 argument_list|)
 operator|)
 condition|)
