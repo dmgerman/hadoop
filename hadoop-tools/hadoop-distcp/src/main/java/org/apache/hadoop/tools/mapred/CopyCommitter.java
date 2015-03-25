@@ -702,6 +702,15 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
+if|if
+condition|(
+name|targetWorkPath
+operator|==
+literal|null
+condition|)
+block|{
+return|return;
+block|}
 name|FileStatus
 index|[]
 name|tempFiles
