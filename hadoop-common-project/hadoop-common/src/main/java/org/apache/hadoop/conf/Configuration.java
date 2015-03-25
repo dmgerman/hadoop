@@ -9015,6 +9015,14 @@ operator|!
 name|quietmode
 condition|)
 block|{
+if|if
+condition|(
+name|LOG
+operator|.
+name|isDebugEnabled
+argument_list|()
+condition|)
+block|{
 name|LOG
 operator|.
 name|debug
@@ -9024,6 +9032,7 @@ operator|+
 name|url
 argument_list|)
 expr_stmt|;
+block|}
 block|}
 if|if
 condition|(

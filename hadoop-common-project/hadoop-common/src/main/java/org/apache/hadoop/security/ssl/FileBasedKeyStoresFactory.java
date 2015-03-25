@@ -619,6 +619,14 @@ argument_list|,
 name|keystorePassword
 argument_list|)
 expr_stmt|;
+if|if
+condition|(
+name|LOG
+operator|.
+name|isDebugEnabled
+argument_list|()
+condition|)
+block|{
 name|LOG
 operator|.
 name|debug
@@ -633,6 +641,7 @@ operator|+
 name|keystoreLocation
 argument_list|)
 expr_stmt|;
+block|}
 name|InputStream
 name|is
 init|=
@@ -665,6 +674,14 @@ name|close
 argument_list|()
 expr_stmt|;
 block|}
+if|if
+condition|(
+name|LOG
+operator|.
+name|isDebugEnabled
+argument_list|()
+condition|)
+block|{
 name|LOG
 operator|.
 name|debug
@@ -679,6 +696,7 @@ operator|+
 name|keystoreLocation
 argument_list|)
 expr_stmt|;
+block|}
 block|}
 else|else
 block|{
@@ -839,6 +857,14 @@ argument_list|,
 name|DEFAULT_SSL_TRUSTSTORE_RELOAD_INTERVAL
 argument_list|)
 decl_stmt|;
+if|if
+condition|(
+name|LOG
+operator|.
+name|isDebugEnabled
+argument_list|()
+condition|)
+block|{
 name|LOG
 operator|.
 name|debug
@@ -853,6 +879,7 @@ operator|+
 name|truststoreLocation
 argument_list|)
 expr_stmt|;
+block|}
 name|trustManager
 operator|=
 operator|new
@@ -872,6 +899,14 @@ operator|.
 name|init
 argument_list|()
 expr_stmt|;
+if|if
+condition|(
+name|LOG
+operator|.
+name|isDebugEnabled
+argument_list|()
+condition|)
+block|{
 name|LOG
 operator|.
 name|debug
@@ -886,6 +921,7 @@ operator|+
 name|truststoreLocation
 argument_list|)
 expr_stmt|;
+block|}
 name|trustManagers
 operator|=
 operator|new
@@ -897,6 +933,14 @@ block|}
 expr_stmt|;
 block|}
 else|else
+block|{
+if|if
+condition|(
+name|LOG
+operator|.
+name|isDebugEnabled
+argument_list|()
+condition|)
 block|{
 name|LOG
 operator|.
@@ -911,6 +955,7 @@ operator|+
 literal|"no TrustStore will be loaded"
 argument_list|)
 expr_stmt|;
+block|}
 name|trustManagers
 operator|=
 literal|null
