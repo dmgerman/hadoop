@@ -557,7 +557,13 @@ literal|"org.apache.hadoop.hdfs.protocol.ClientProtocol.complete"
 block|,
 literal|"ClientNamenodeProtocol#complete"
 block|,
-literal|"DFSOutputStream"
+literal|"newStreamForCreate"
+block|,
+literal|"DFSOutputStream#writeChunk"
+block|,
+literal|"DFSOutputStream#close"
+block|,
+literal|"dataStreamer"
 block|,
 literal|"OpWriteBlockProto"
 block|,
@@ -628,21 +634,54 @@ operator|.
 name|getStopTimeMillis
 argument_list|()
 decl_stmt|;
-comment|// There should only be one trace id as it should all be homed in the
-comment|// top trace.
+comment|// Spans homed in the top trace shoud have same trace id.
+comment|// Spans having multiple parents (e.g. "dataStreamer" added by HDFS-7054)
+comment|// and children of them are exception.
+name|String
+index|[]
+name|spansInTopTrace
+init|=
+block|{
+literal|"testWriteTraceHooks"
+block|,
+literal|"org.apache.hadoop.hdfs.protocol.ClientProtocol.create"
+block|,
+literal|"ClientNamenodeProtocol#create"
+block|,
+literal|"org.apache.hadoop.hdfs.protocol.ClientProtocol.fsync"
+block|,
+literal|"ClientNamenodeProtocol#fsync"
+block|,
+literal|"org.apache.hadoop.hdfs.protocol.ClientProtocol.complete"
+block|,
+literal|"ClientNamenodeProtocol#complete"
+block|,
+literal|"newStreamForCreate"
+block|,
+literal|"DFSOutputStream#writeChunk"
+block|,
+literal|"DFSOutputStream#close"
+block|,     }
+decl_stmt|;
+for|for
+control|(
+name|String
+name|desc
+range|:
+name|spansInTopTrace
+control|)
+block|{
 for|for
 control|(
 name|Span
 name|span
 range|:
-name|SetSpanReceiver
+name|map
 operator|.
-name|SetHolder
-operator|.
-name|spans
-operator|.
-name|values
-argument_list|()
+name|get
+argument_list|(
+name|desc
+argument_list|)
 control|)
 block|{
 name|Assert
@@ -663,6 +702,7 @@ name|getTraceId
 argument_list|()
 argument_list|)
 expr_stmt|;
+block|}
 block|}
 block|}
 annotation|@
