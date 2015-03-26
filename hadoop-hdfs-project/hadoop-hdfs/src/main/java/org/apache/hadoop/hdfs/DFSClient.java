@@ -9764,13 +9764,6 @@ argument_list|,
 name|src
 argument_list|,
 name|flag
-operator|.
-name|contains
-argument_list|(
-name|CreateFlag
-operator|.
-name|NEW_BLOCK
-argument_list|)
 argument_list|,
 name|buffersize
 argument_list|,

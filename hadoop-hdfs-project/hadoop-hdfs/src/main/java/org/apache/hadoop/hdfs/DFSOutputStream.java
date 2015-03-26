@@ -1724,7 +1724,7 @@ expr_stmt|;
 block|}
 block|}
 comment|/** Construct a new output stream for append. */
-DECL|method|DFSOutputStream (DFSClient dfsClient, String src, boolean toNewBlock, Progressable progress, LocatedBlock lastBlock, HdfsFileStatus stat, DataChecksum checksum)
+DECL|method|DFSOutputStream (DFSClient dfsClient, String src, EnumSet<CreateFlag> flags, Progressable progress, LocatedBlock lastBlock, HdfsFileStatus stat, DataChecksum checksum)
 specifier|private
 name|DFSOutputStream
 parameter_list|(
@@ -1734,8 +1734,11 @@ parameter_list|,
 name|String
 name|src
 parameter_list|,
-name|boolean
-name|toNewBlock
+name|EnumSet
+argument_list|<
+name|CreateFlag
+argument_list|>
+name|flags
 parameter_list|,
 name|Progressable
 name|progress
@@ -1773,6 +1776,31 @@ name|getLen
 argument_list|()
 expr_stmt|;
 comment|// length of file when opened
+name|this
+operator|.
+name|shouldSyncBlock
+operator|=
+name|flags
+operator|.
+name|contains
+argument_list|(
+name|CreateFlag
+operator|.
+name|SYNC_BLOCK
+argument_list|)
+expr_stmt|;
+name|boolean
+name|toNewBlock
+init|=
+name|flags
+operator|.
+name|contains
+argument_list|(
+name|CreateFlag
+operator|.
+name|NEW_BLOCK
+argument_list|)
+decl_stmt|;
 name|this
 operator|.
 name|fileEncryptionInfo
@@ -2026,7 +2054,7 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-DECL|method|newStreamForAppend (DFSClient dfsClient, String src, boolean toNewBlock, int bufferSize, Progressable progress, LocatedBlock lastBlock, HdfsFileStatus stat, DataChecksum checksum, String[] favoredNodes)
+DECL|method|newStreamForAppend (DFSClient dfsClient, String src, EnumSet<CreateFlag> flags, int bufferSize, Progressable progress, LocatedBlock lastBlock, HdfsFileStatus stat, DataChecksum checksum, String[] favoredNodes)
 specifier|static
 name|DFSOutputStream
 name|newStreamForAppend
@@ -2037,8 +2065,11 @@ parameter_list|,
 name|String
 name|src
 parameter_list|,
-name|boolean
-name|toNewBlock
+name|EnumSet
+argument_list|<
+name|CreateFlag
+argument_list|>
+name|flags
 parameter_list|,
 name|int
 name|bufferSize
@@ -2087,7 +2118,7 @@ name|dfsClient
 argument_list|,
 name|src
 argument_list|,
-name|toNewBlock
+name|flags
 argument_list|,
 name|progress
 argument_list|,
