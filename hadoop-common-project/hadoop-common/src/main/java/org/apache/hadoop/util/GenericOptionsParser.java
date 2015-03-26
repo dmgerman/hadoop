@@ -2148,7 +2148,7 @@ name|out
 operator|.
 name|println
 argument_list|(
-literal|"bin/hadoop command [genericOptions] [commandOptions]\n"
+literal|"command [genericOptions] [commandOptions]\n"
 argument_list|)
 expr_stmt|;
 block|}
