@@ -52,6 +52,20 @@ name|Preconditions
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|commons
+operator|.
+name|lang
+operator|.
+name|ArrayUtils
+import|;
+end_import
+
 begin_comment
 comment|/**  * Counters for an enum type.  *   * For example, suppose there is an enum type  *<pre>  * enum Fruit { APPLE, ORANGE, GRAPE }  *</pre>  * An {@link EnumCounters} object can be created for counting the numbers of  * APPLE, ORANGLE and GRAPE.  *  * @param<E> the enum type  */
 end_comment
@@ -213,6 +227,23 @@ operator|.
 name|ordinal
 argument_list|()
 index|]
+return|;
+block|}
+comment|/** @return the values of counter as a shadow copy of array*/
+DECL|method|asArray ()
+specifier|public
+name|long
+index|[]
+name|asArray
+parameter_list|()
+block|{
+return|return
+name|ArrayUtils
+operator|.
+name|clone
+argument_list|(
+name|counters
+argument_list|)
 return|;
 block|}
 comment|/** Negate all counters. */

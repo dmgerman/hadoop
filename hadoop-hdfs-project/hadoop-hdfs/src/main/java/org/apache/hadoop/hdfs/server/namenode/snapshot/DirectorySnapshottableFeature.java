@@ -1309,7 +1309,7 @@ operator|.
 name|getCounts
 argument_list|()
 operator|.
-name|add
+name|addContent
 argument_list|(
 name|Content
 operator|.
@@ -1326,7 +1326,7 @@ operator|.
 name|getCounts
 argument_list|()
 operator|.
-name|add
+name|addContent
 argument_list|(
 name|Content
 operator|.

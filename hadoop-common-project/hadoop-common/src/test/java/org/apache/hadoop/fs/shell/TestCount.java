@@ -1644,6 +1644,12 @@ name|MockContentSummary
 extends|extends
 name|ContentSummary
 block|{
+annotation|@
+name|SuppressWarnings
+argument_list|(
+literal|"deprecation"
+argument_list|)
+comment|// suppress warning on the usage of deprecated ContentSummary constructor
 DECL|method|MockContentSummary ()
 specifier|public
 name|MockContentSummary

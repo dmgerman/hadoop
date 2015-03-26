@@ -80,11 +80,14 @@ name|getLastBlock
 parameter_list|()
 function_decl|;
 comment|/**     * Get content summary.    */
-DECL|method|computeContentSummary ()
+DECL|method|computeContentSummary (BlockStoragePolicySuite bsps)
 specifier|public
 name|ContentSummary
 name|computeContentSummary
-parameter_list|()
+parameter_list|(
+name|BlockStoragePolicySuite
+name|bsps
+parameter_list|)
 function_decl|;
 comment|/**    * @return the number of blocks    */
 DECL|method|numBlocks ()

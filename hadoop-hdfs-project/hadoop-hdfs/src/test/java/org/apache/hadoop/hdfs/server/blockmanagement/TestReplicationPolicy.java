@@ -7812,7 +7812,12 @@ argument_list|(
 name|mbc
 operator|.
 name|computeContentSummary
+argument_list|(
+name|bm
+operator|.
+name|getStoragePolicySuite
 argument_list|()
+argument_list|)
 argument_list|)
 operator|.
 name|thenReturn

@@ -200,6 +200,24 @@ name|server
 operator|.
 name|namenode
 operator|.
+name|ContentCounts
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|server
+operator|.
+name|namenode
+operator|.
 name|ContentSummaryComputationContext
 import|;
 end_import
@@ -3577,7 +3595,7 @@ return|return
 name|counts
 return|;
 block|}
-DECL|method|computeContentSummary4Snapshot (final BlockStoragePolicySuite bsps, final Content.Counts counts)
+DECL|method|computeContentSummary4Snapshot (final BlockStoragePolicySuite bsps, final ContentCounts counts)
 specifier|public
 name|void
 name|computeContentSummary4Snapshot
@@ -3587,9 +3605,7 @@ name|BlockStoragePolicySuite
 name|bsps
 parameter_list|,
 specifier|final
-name|Content
-operator|.
-name|Counts
+name|ContentCounts
 name|counts
 parameter_list|)
 block|{
@@ -3599,7 +3615,9 @@ name|summary
 init|=
 operator|new
 name|ContentSummaryComputationContext
-argument_list|()
+argument_list|(
+name|bsps
+argument_list|)
 decl_stmt|;
 for|for
 control|(
@@ -3639,7 +3657,7 @@ block|}
 comment|// Add the counts from deleted trees.
 name|counts
 operator|.
-name|add
+name|addContents
 argument_list|(
 name|summary
 operator|.
@@ -3650,7 +3668,7 @@ expr_stmt|;
 comment|// Add the deleted directory count.
 name|counts
 operator|.
-name|add
+name|addContent
 argument_list|(
 name|Content
 operator|.

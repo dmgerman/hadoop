@@ -3742,7 +3742,10 @@ init|=
 name|bc
 operator|.
 name|computeContentSummary
+argument_list|(
+name|getStoragePolicySuite
 argument_list|()
+argument_list|)
 operator|.
 name|getLength
 argument_list|()
