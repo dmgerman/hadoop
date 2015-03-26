@@ -276,6 +276,14 @@ DECL|field|app
 name|Application
 name|app
 decl_stmt|;
+DECL|field|flowId
+name|String
+name|flowId
+decl_stmt|;
+DECL|field|flowRunId
+name|String
+name|flowRunId
+decl_stmt|;
 DECL|method|MockApp (int uniqId)
 specifier|public
 name|MockApp
@@ -422,6 +430,26 @@ name|ApplicationEvent
 name|event
 parameter_list|)
 block|{}
+DECL|method|getFlowId ()
+specifier|public
+name|String
+name|getFlowId
+parameter_list|()
+block|{
+return|return
+name|flowId
+return|;
+block|}
+DECL|method|getFlowRunId ()
+specifier|public
+name|String
+name|getFlowRunId
+parameter_list|()
+block|{
+return|return
+name|flowRunId
+return|;
+block|}
 block|}
 end_class
 

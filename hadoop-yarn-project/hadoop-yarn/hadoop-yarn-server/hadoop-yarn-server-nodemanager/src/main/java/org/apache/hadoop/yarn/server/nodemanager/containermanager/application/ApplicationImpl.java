@@ -802,6 +802,16 @@ specifier|final
 name|String
 name|user
 decl_stmt|;
+DECL|field|flowId
+specifier|final
+name|String
+name|flowId
+decl_stmt|;
+DECL|field|flowRunId
+specifier|final
+name|String
+name|flowRunId
+decl_stmt|;
 DECL|field|appId
 specifier|final
 name|ApplicationId
@@ -898,7 +908,7 @@ specifier|final
 name|NMStateStoreService
 name|appStateStore
 decl_stmt|;
-DECL|method|ApplicationImpl (Dispatcher dispatcher, String user, ApplicationId appId, Credentials credentials, Context context, long recoveredLogInitedTime)
+DECL|method|ApplicationImpl (Dispatcher dispatcher, String user, String flowId, String flowRunId, ApplicationId appId, Credentials credentials, Context context, long recoveredLogInitedTime)
 specifier|public
 name|ApplicationImpl
 parameter_list|(
@@ -907,6 +917,12 @@ name|dispatcher
 parameter_list|,
 name|String
 name|user
+parameter_list|,
+name|String
+name|flowId
+parameter_list|,
+name|String
+name|flowRunId
 parameter_list|,
 name|ApplicationId
 name|appId
@@ -932,6 +948,18 @@ operator|.
 name|user
 operator|=
 name|user
+expr_stmt|;
+name|this
+operator|.
+name|flowId
+operator|=
+name|flowId
+expr_stmt|;
+name|this
+operator|.
+name|flowRunId
+operator|=
+name|flowRunId
 expr_stmt|;
 name|this
 operator|.
@@ -1005,7 +1033,7 @@ name|recoveredLogInitedTime
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|ApplicationImpl (Dispatcher dispatcher, String user, ApplicationId appId, Credentials credentials, Context context)
+DECL|method|ApplicationImpl (Dispatcher dispatcher, String user, String flowId, String flowRunId, ApplicationId appId, Credentials credentials, Context context)
 specifier|public
 name|ApplicationImpl
 parameter_list|(
@@ -1014,6 +1042,12 @@ name|dispatcher
 parameter_list|,
 name|String
 name|user
+parameter_list|,
+name|String
+name|flowId
+parameter_list|,
+name|String
+name|flowRunId
 parameter_list|,
 name|ApplicationId
 name|appId
@@ -1030,6 +1064,10 @@ argument_list|(
 name|dispatcher
 argument_list|,
 name|user
+argument_list|,
+name|flowId
+argument_list|,
+name|flowRunId
 argument_list|,
 name|appId
 argument_list|,
@@ -3050,6 +3088,26 @@ name|unlock
 argument_list|()
 expr_stmt|;
 block|}
+block|}
+DECL|method|getFlowId ()
+specifier|public
+name|String
+name|getFlowId
+parameter_list|()
+block|{
+return|return
+name|flowId
+return|;
+block|}
+DECL|method|getFlowRunId ()
+specifier|public
+name|String
+name|getFlowRunId
+parameter_list|()
+block|{
+return|return
+name|flowRunId
+return|;
 block|}
 block|}
 end_class

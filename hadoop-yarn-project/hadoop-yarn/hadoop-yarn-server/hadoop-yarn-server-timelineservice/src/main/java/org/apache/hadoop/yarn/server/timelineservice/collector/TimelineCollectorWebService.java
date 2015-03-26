@@ -753,7 +753,7 @@ comment|// different exception?
 block|}
 name|collector
 operator|.
-name|postEntities
+name|putEntities
 argument_list|(
 name|entities
 argument_list|,

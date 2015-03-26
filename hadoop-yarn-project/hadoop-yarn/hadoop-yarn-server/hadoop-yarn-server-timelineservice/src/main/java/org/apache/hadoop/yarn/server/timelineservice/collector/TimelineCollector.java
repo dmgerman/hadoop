@@ -397,11 +397,11 @@ return|return
 name|writer
 return|;
 block|}
-comment|/**    * Handles entity writes. These writes are synchronous and are written to the    * backing storage without buffering/batching. If any entity already exists,    * it results in an update of the entity.    *    * This method should be reserved for selected critical entities and events.    * For normal voluminous writes one should use the async method    * {@link #postEntitiesAsync(TimelineEntities, UserGroupInformation)}.    *    * @param entities entities to post    * @param callerUgi the caller UGI    * @return the response that contains the result of the post.    */
-DECL|method|postEntities (TimelineEntities entities, UserGroupInformation callerUgi)
+comment|/**    * Handles entity writes. These writes are synchronous and are written to the    * backing storage without buffering/batching. If any entity already exists,    * it results in an update of the entity.    *    * This method should be reserved for selected critical entities and events.    * For normal voluminous writes one should use the async method    * {@link #putEntitiesAsync(TimelineEntities, UserGroupInformation)}.    *    * @param entities entities to post    * @param callerUgi the caller UGI    * @return the response that contains the result of the post.    */
+DECL|method|putEntities (TimelineEntities entities, UserGroupInformation callerUgi)
 specifier|public
 name|TimelineWriteResponse
-name|postEntities
+name|putEntities
 parameter_list|(
 name|TimelineEntities
 name|entities
@@ -431,7 +431,7 @@ name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"postEntities(entities="
+literal|"putEntities(entities="
 operator|+
 name|entities
 operator|+
@@ -443,20 +443,51 @@ literal|")"
 argument_list|)
 expr_stmt|;
 block|}
+name|TimelineCollectorContext
+name|context
+init|=
+name|getTimelineEntityContext
+argument_list|()
+decl_stmt|;
 return|return
 name|writer
 operator|.
 name|write
 argument_list|(
+name|context
+operator|.
+name|getClusterId
+argument_list|()
+argument_list|,
+name|context
+operator|.
+name|getUserId
+argument_list|()
+argument_list|,
+name|context
+operator|.
+name|getFlowId
+argument_list|()
+argument_list|,
+name|context
+operator|.
+name|getFlowRunId
+argument_list|()
+argument_list|,
+name|context
+operator|.
+name|getAppId
+argument_list|()
+argument_list|,
 name|entities
 argument_list|)
 return|;
 block|}
 comment|/**    * Handles entity writes in an asynchronous manner. The method returns as soon    * as validation is done. No promises are made on how quickly it will be    * written to the backing storage or if it will always be written to the    * backing storage. Multiple writes to the same entities may be batched and    * appropriate values updated and result in fewer writes to the backing    * storage.    *    * @param entities entities to post    * @param callerUgi the caller UGI    */
-DECL|method|postEntitiesAsync (TimelineEntities entities, UserGroupInformation callerUgi)
+DECL|method|putEntitiesAsync (TimelineEntities entities, UserGroupInformation callerUgi)
 specifier|public
 name|void
-name|postEntitiesAsync
+name|putEntitiesAsync
 parameter_list|(
 name|TimelineEntities
 name|entities
@@ -478,7 +509,7 @@ name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"postEntitiesAsync(entities="
+literal|"putEntitiesAsync(entities="
 operator|+
 name|entities
 operator|+
@@ -491,6 +522,13 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
+DECL|method|getTimelineEntityContext ()
+specifier|protected
+specifier|abstract
+name|TimelineCollectorContext
+name|getTimelineEntityContext
+parameter_list|()
+function_decl|;
 block|}
 end_class
 

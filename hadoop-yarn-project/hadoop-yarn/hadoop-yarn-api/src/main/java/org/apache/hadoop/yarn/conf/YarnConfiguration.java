@@ -549,6 +549,15 @@ name|RM_PREFIX
 operator|+
 literal|"cluster-id"
 decl_stmt|;
+DECL|field|DEFAULT_RM_CLUSTER_ID
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|DEFAULT_RM_CLUSTER_ID
+init|=
+literal|"yarn_cluster"
+decl_stmt|;
 DECL|field|RM_HOSTNAME
 specifier|public
 specifier|static

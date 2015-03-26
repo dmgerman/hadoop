@@ -154,11 +154,26 @@ name|TimelineWriter
 extends|extends
 name|Service
 block|{
-comment|/**    * Stores the entire information in {@link TimelineEntities} to the    * timeline store. Any errors occurring for individual write request objects    * will be reported in the response.    *    * @param data    *          a {@link TimelineEntities} object.    * @return a {@link TimelineWriteResponse} object.    * @throws IOException    */
-DECL|method|write (TimelineEntities data)
+comment|/**    * Stores the entire information in {@link TimelineEntities} to the    * timeline store. Any errors occurring for individual write request objects    * will be reported in the response.    *    * @param clusterId context cluster ID    * @param userId context user ID    * @param flowId context flow ID    * @param flowRunId context flow run ID    * @param appId context app ID    * @param data    *          a {@link TimelineEntities} object.    * @return a {@link TimelineWriteResponse} object.    * @throws IOException    */
+DECL|method|write (String clusterId, String userId, String flowId, String flowRunId, String appId, TimelineEntities data)
 name|TimelineWriteResponse
 name|write
 parameter_list|(
+name|String
+name|clusterId
+parameter_list|,
+name|String
+name|userId
+parameter_list|,
+name|String
+name|flowId
+parameter_list|,
+name|String
+name|flowRunId
+parameter_list|,
+name|String
+name|appId
+parameter_list|,
 name|TimelineEntities
 name|data
 parameter_list|)

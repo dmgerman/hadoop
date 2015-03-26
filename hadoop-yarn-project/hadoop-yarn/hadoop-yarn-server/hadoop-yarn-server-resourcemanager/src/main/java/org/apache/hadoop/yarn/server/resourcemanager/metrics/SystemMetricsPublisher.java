@@ -1124,7 +1124,7 @@ parameter_list|)
 block|{
 if|if
 condition|(
-name|publishSystemMetrics
+name|publishSystemMetricsToATSv1
 condition|)
 block|{
 name|dispatcher

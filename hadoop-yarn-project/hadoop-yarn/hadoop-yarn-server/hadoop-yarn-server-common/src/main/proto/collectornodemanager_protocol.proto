@@ -26,4 +26,5 @@ import "yarn_server_common_service_protos.proto";
 
 service CollectorNodemanagerProtocolService {
   rpc reportNewCollectorInfo (ReportNewCollectorInfoRequestProto) returns (ReportNewCollectorInfoResponseProto);
+  rpc getTimelineCollectorContext (GetTimelineCollectorContextRequestProto) returns (GetTimelineCollectorContextResponseProto);
 }

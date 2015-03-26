@@ -144,6 +144,16 @@ name|ApplicationState
 name|getApplicationState
 parameter_list|()
 function_decl|;
+DECL|method|getFlowId ()
+name|String
+name|getFlowId
+parameter_list|()
+function_decl|;
+DECL|method|getFlowRunId ()
+name|String
+name|getFlowRunId
+parameter_list|()
+function_decl|;
 block|}
 end_interface
 

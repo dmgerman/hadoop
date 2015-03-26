@@ -508,9 +508,6 @@ operator|new
 name|AppLevelTimelineCollector
 argument_list|(
 name|appId
-operator|.
-name|toString
-argument_list|()
 argument_list|)
 decl_stmt|;
 return|return

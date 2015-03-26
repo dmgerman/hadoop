@@ -220,6 +220,26 @@ name|TimelineCollector
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|server
+operator|.
+name|timelineservice
+operator|.
+name|collector
+operator|.
+name|TimelineCollectorContext
+import|;
+end_import
+
 begin_comment
 comment|/**  * This class is responsible for posting application and appattempt lifecycle  * related events to timeline service V2  */
 end_comment
@@ -432,6 +452,19 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
+block|}
+annotation|@
+name|Override
+DECL|method|getTimelineEntityContext ()
+specifier|protected
+name|TimelineCollectorContext
+name|getTimelineEntityContext
+parameter_list|()
+block|{
+comment|// TODO address in YARN-3390.
+return|return
+literal|null
+return|;
 block|}
 comment|/**    * EventHandler implementation which forward events to SystemMetricsPublisher.    * Making use of it, SystemMetricsPublisher can avoid to have a public handle    * method.    */
 DECL|class|ForwardingEventHandler
