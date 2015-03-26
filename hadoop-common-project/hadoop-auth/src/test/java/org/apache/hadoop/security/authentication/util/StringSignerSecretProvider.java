@@ -54,6 +54,20 @@ end_import
 
 begin_import
 import|import
+name|com
+operator|.
+name|google
+operator|.
+name|common
+operator|.
+name|annotations
+operator|.
+name|VisibleForTesting
+import|;
+end_import
+
+begin_import
+import|import
 name|org
 operator|.
 name|apache
@@ -108,11 +122,8 @@ name|InterfaceStability
 operator|.
 name|Unstable
 annotation|@
-name|InterfaceAudience
-operator|.
-name|Private
+name|VisibleForTesting
 DECL|class|StringSignerSecretProvider
-specifier|public
 class|class
 name|StringSignerSecretProvider
 extends|extends
