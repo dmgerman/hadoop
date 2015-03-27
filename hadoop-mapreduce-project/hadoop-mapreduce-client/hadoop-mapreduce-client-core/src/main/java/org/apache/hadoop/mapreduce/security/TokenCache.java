@@ -480,7 +480,7 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-comment|/**    * get delegation token for a specific FS    * @param fs    * @param credentials    * @param p    * @param conf    * @throws IOException    */
+comment|/**    * get delegation token for a specific FS    * @param fs    * @param credentials    * @param conf    * @throws IOException    */
 DECL|method|obtainTokensForNamenodesInternal (FileSystem fs, Credentials credentials, Configuration conf)
 specifier|static
 name|void
