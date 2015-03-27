@@ -1868,7 +1868,7 @@ argument_list|()
 argument_list|)
 return|;
 block|}
-comment|/**    * Create a default working folder for the job, under the    * job staging directory    *    * @return Returns the working folder information    * @throws Exception - EXception if any    */
+comment|/**    * Create a default working folder for the job, under the    * job staging directory    *    * @return Returns the working folder information    * @throws Exception - Exception if any    */
 DECL|method|createMetaFolderPath ()
 specifier|private
 name|Path
