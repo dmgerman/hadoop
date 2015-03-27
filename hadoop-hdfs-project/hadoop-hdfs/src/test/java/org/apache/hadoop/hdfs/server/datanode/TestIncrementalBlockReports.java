@@ -782,10 +782,10 @@ expr|class
 argument_list|)
 argument_list|)
 expr_stmt|;
-comment|// Trigger a block report, this also triggers an IBR.
+comment|// Trigger a heartbeat, this also triggers an IBR.
 name|DataNodeTestUtils
 operator|.
-name|triggerBlockReport
+name|triggerHeartbeat
 argument_list|(
 name|singletonDn
 argument_list|)

@@ -701,7 +701,7 @@ specifier|final
 name|BPOfferService
 name|bpos
 decl_stmt|;
-comment|// lastBlockReport, lastDeletedReport and lastHeartbeat may be assigned/read
+comment|// lastBlockReport and lastHeartbeat may be assigned/read
 comment|// by testing threads (through BPServiceActor#triggerXXX), while also
 comment|// assigned/read by the actor thread. Thus they should be declared as volatile
 comment|// to make sure the "happens-before" consistency.
@@ -709,13 +709,6 @@ DECL|field|lastBlockReport
 specifier|volatile
 name|long
 name|lastBlockReport
-init|=
-literal|0
-decl_stmt|;
-DECL|field|lastDeletedReport
-specifier|volatile
-name|long
-name|lastDeletedReport
 init|=
 literal|0
 decl_stmt|;
@@ -1876,9 +1869,9 @@ init|(
 name|pendingIncrementalBRperStorage
 init|)
 block|{
-name|lastDeletedReport
+name|sendImmediateIBR
 operator|=
-literal|0
+literal|true
 expr_stmt|;
 name|pendingIncrementalBRperStorage
 operator|.
@@ -1887,9 +1880,7 @@ argument_list|()
 expr_stmt|;
 while|while
 condition|(
-name|lastDeletedReport
-operator|==
-literal|0
+name|sendImmediateIBR
 condition|)
 block|{
 try|try
@@ -2021,10 +2012,6 @@ comment|// or we will report an RBW replica after the BlockReport already report
 comment|// a FINALIZED one.
 name|reportReceivedDeletedBlocks
 argument_list|()
-expr_stmt|;
-name|lastDeletedReport
-operator|=
-name|startTime
 expr_stmt|;
 name|long
 name|brCreateStartTime
@@ -3080,14 +3067,6 @@ name|nnAddr
 operator|+
 literal|" using"
 operator|+
-literal|" DELETEREPORT_INTERVAL of "
-operator|+
-name|dnConf
-operator|.
-name|deleteReportInterval
-operator|+
-literal|" msec "
-operator|+
 literal|" BLOCKREPORT_INTERVAL of "
 operator|+
 name|dnConf
@@ -3140,8 +3119,9 @@ decl_stmt|;
 comment|//
 comment|// Every so often, send heartbeat or block-report
 comment|//
-if|if
-condition|(
+name|boolean
+name|sendHeartbeat
+init|=
 name|startTime
 operator|-
 name|lastHeartbeat
@@ -3149,6 +3129,10 @@ operator|>=
 name|dnConf
 operator|.
 name|heartBeatInterval
+decl_stmt|;
+if|if
+condition|(
+name|sendHeartbeat
 condition|)
 block|{
 comment|//
@@ -3302,23 +3286,11 @@ if|if
 condition|(
 name|sendImmediateIBR
 operator|||
-operator|(
-name|startTime
-operator|-
-name|lastDeletedReport
-operator|>
-name|dnConf
-operator|.
-name|deleteReportInterval
-operator|)
+name|sendHeartbeat
 condition|)
 block|{
 name|reportReceivedDeletedBlocks
 argument_list|()
-expr_stmt|;
-name|lastDeletedReport
-operator|=
-name|startTime
 expr_stmt|;
 block|}
 name|List

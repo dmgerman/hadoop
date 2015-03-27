@@ -722,11 +722,6 @@ specifier|final
 name|long
 name|blockReportSplitThreshold
 decl_stmt|;
-DECL|field|deleteReportInterval
-specifier|final
-name|long
-name|deleteReportInterval
-decl_stmt|;
 DECL|field|initialBlockReportDelay
 specifier|final
 name|long
@@ -1089,14 +1084,6 @@ name|DFS_HEARTBEAT_INTERVAL_DEFAULT
 argument_list|)
 operator|*
 literal|1000L
-expr_stmt|;
-name|this
-operator|.
-name|deleteReportInterval
-operator|=
-literal|100
-operator|*
-name|heartBeatInterval
 expr_stmt|;
 comment|// do we need to sync block file contents to disk when blockfile is closed?
 name|this
