@@ -428,6 +428,24 @@ name|IO_ERASURECODE_CODECS_KEY
 init|=
 literal|"io.erasurecode.codecs"
 decl_stmt|;
+DECL|field|IO_ERASURECODE_SCHEMA_FILE_KEY
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|IO_ERASURECODE_SCHEMA_FILE_KEY
+init|=
+literal|"io.erasurecode.schema.file"
+decl_stmt|;
+DECL|field|IO_ERASURECODE_SCHEMA_FILE_DEFAULT
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|IO_ERASURECODE_SCHEMA_FILE_DEFAULT
+init|=
+literal|"ecschema-def.xml"
+decl_stmt|;
 comment|/** Use XOR raw coder when possible for the RS codec */
 DECL|field|IO_ERASURECODE_CODEC_RS_USEXOR_KEY
 specifier|public
