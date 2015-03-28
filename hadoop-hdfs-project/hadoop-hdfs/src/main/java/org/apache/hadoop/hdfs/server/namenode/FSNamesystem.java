@@ -23606,10 +23606,10 @@ name|getTransactionsSinceLastCheckpoint
 parameter_list|()
 block|{
 return|return
-name|getEditLog
+name|getFSImage
 argument_list|()
 operator|.
-name|getLastWrittenTxId
+name|getLastAppliedOrWrittenTxId
 argument_list|()
 operator|-
 name|getFSImage
