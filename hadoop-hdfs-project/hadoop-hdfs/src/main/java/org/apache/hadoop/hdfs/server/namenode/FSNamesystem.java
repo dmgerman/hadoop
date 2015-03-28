@@ -36788,7 +36788,9 @@ argument_list|)
 throw|;
 block|}
 comment|// If the provider supports pool for EDEKs, this will fill in the pool
-name|generateEncryptedDataEncryptionKey
+name|provider
+operator|.
+name|warmUpEncryptedKeys
 argument_list|(
 name|keyName
 argument_list|)
