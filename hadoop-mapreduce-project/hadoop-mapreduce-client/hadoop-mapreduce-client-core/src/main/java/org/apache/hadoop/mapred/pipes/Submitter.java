@@ -1739,7 +1739,7 @@ name|out
 operator|.
 name|println
 argument_list|(
-literal|"bin/hadoop pipes"
+literal|"Usage: pipes "
 argument_list|)
 expr_stmt|;
 name|System

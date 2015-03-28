@@ -1193,7 +1193,7 @@ block|{
 name|String
 name|prefix
 init|=
-literal|"Usage: JobQueueClient "
+literal|"Usage: queue "
 decl_stmt|;
 if|if
 condition|(

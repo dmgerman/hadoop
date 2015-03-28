@@ -2790,7 +2790,7 @@ block|{
 name|String
 name|prefix
 init|=
-literal|"Usage: CLI "
+literal|"Usage: job "
 decl_stmt|;
 name|String
 name|jobPriorityValues

@@ -836,7 +836,7 @@ specifier|final
 name|String
 name|usage
 init|=
-literal|"archive"
+literal|"Usage: archive"
 operator|+
 literal|" -archiveName<NAME>.har -p<parent path> [-r<replication factor>]"
 operator|+
