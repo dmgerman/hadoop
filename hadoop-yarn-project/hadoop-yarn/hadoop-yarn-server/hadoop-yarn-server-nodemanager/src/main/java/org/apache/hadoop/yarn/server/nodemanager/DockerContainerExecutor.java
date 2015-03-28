@@ -21,58 +21,186 @@ package|;
 end_package
 
 begin_import
-import|import
-name|com
+import|import static
+name|org
 operator|.
-name|google
+name|apache
 operator|.
-name|common
+name|hadoop
 operator|.
-name|annotations
+name|fs
 operator|.
-name|VisibleForTesting
+name|CreateFlag
+operator|.
+name|CREATE
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|fs
+operator|.
+name|CreateFlag
+operator|.
+name|OVERWRITE
 import|;
 end_import
 
 begin_import
 import|import
-name|com
+name|java
 operator|.
-name|google
+name|io
 operator|.
-name|common
-operator|.
-name|base
-operator|.
-name|Joiner
+name|ByteArrayOutputStream
 import|;
 end_import
 
 begin_import
 import|import
-name|com
+name|java
 operator|.
-name|google
+name|io
 operator|.
-name|common
-operator|.
-name|base
-operator|.
-name|Preconditions
+name|DataOutputStream
 import|;
 end_import
 
 begin_import
 import|import
-name|com
+name|java
 operator|.
-name|google
+name|io
 operator|.
-name|common
+name|File
+import|;
+end_import
+
+begin_import
+import|import
+name|java
 operator|.
-name|base
+name|io
 operator|.
-name|Strings
+name|IOException
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|io
+operator|.
+name|OutputStream
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|io
+operator|.
+name|PrintStream
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|net
+operator|.
+name|InetSocketAddress
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
+name|ArrayList
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
+name|Collections
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
+name|EnumSet
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
+name|HashSet
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
+name|List
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
+name|Map
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
+name|Set
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
+name|regex
+operator|.
+name|Pattern
 import|;
 end_import
 
@@ -424,200 +552,62 @@ end_import
 
 begin_import
 import|import
-name|java
+name|com
 operator|.
-name|io
+name|google
 operator|.
-name|ByteArrayOutputStream
+name|common
+operator|.
+name|annotations
+operator|.
+name|VisibleForTesting
 import|;
 end_import
 
 begin_import
 import|import
-name|java
+name|com
 operator|.
-name|io
+name|google
 operator|.
-name|DataOutputStream
+name|common
+operator|.
+name|base
+operator|.
+name|Joiner
 import|;
 end_import
 
 begin_import
 import|import
-name|java
+name|com
 operator|.
-name|io
+name|google
 operator|.
-name|File
+name|common
+operator|.
+name|base
+operator|.
+name|Preconditions
 import|;
 end_import
 
 begin_import
 import|import
-name|java
+name|com
 operator|.
-name|io
+name|google
 operator|.
-name|IOException
-import|;
-end_import
-
-begin_import
-import|import
-name|java
+name|common
 operator|.
-name|io
+name|base
 operator|.
-name|OutputStream
-import|;
-end_import
-
-begin_import
-import|import
-name|java
-operator|.
-name|io
-operator|.
-name|PrintStream
-import|;
-end_import
-
-begin_import
-import|import
-name|java
-operator|.
-name|util
-operator|.
-name|ArrayList
-import|;
-end_import
-
-begin_import
-import|import
-name|java
-operator|.
-name|util
-operator|.
-name|Collections
-import|;
-end_import
-
-begin_import
-import|import
-name|java
-operator|.
-name|util
-operator|.
-name|EnumSet
-import|;
-end_import
-
-begin_import
-import|import
-name|java
-operator|.
-name|util
-operator|.
-name|HashSet
-import|;
-end_import
-
-begin_import
-import|import
-name|java
-operator|.
-name|util
-operator|.
-name|List
-import|;
-end_import
-
-begin_import
-import|import
-name|java
-operator|.
-name|util
-operator|.
-name|Map
-import|;
-end_import
-
-begin_import
-import|import
-name|java
-operator|.
-name|util
-operator|.
-name|Random
-import|;
-end_import
-
-begin_import
-import|import
-name|java
-operator|.
-name|util
-operator|.
-name|Set
-import|;
-end_import
-
-begin_import
-import|import
-name|java
-operator|.
-name|util
-operator|.
-name|regex
-operator|.
-name|Pattern
-import|;
-end_import
-
-begin_import
-import|import
-name|java
-operator|.
-name|net
-operator|.
-name|InetSocketAddress
-import|;
-end_import
-
-begin_import
-import|import static
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|fs
-operator|.
-name|CreateFlag
-operator|.
-name|CREATE
-import|;
-end_import
-
-begin_import
-import|import static
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|fs
-operator|.
-name|CreateFlag
-operator|.
-name|OVERWRITE
+name|Strings
 import|;
 end_import
 
 begin_comment
-comment|/**  * This executor will launch a docker container and run the task inside the container.  */
+comment|/**  * This executor will launch and run tasks inside Docker containers. It  * currently only supports simple authentication mode. It shares a lot of code  * with the DefaultContainerExecutor (and it may make sense to pull out those  * common pieces later).  */
 end_comment
 
 begin_class
@@ -644,6 +634,7 @@ operator|.
 name|class
 argument_list|)
 decl_stmt|;
+comment|//The name of the script file that will launch the Docker containers
 DECL|field|DOCKER_CONTAINER_EXECUTOR_SCRIPT
 specifier|public
 specifier|static
@@ -653,6 +644,8 @@ name|DOCKER_CONTAINER_EXECUTOR_SCRIPT
 init|=
 literal|"docker_container_executor"
 decl_stmt|;
+comment|//The name of the session script that the DOCKER_CONTAINER_EXECUTOR_SCRIPT
+comment|//launches in turn
 DECL|field|DOCKER_CONTAINER_EXECUTOR_SESSION_SCRIPT
 specifier|public
 specifier|static
@@ -662,7 +655,11 @@ name|DOCKER_CONTAINER_EXECUTOR_SESSION_SCRIPT
 init|=
 literal|"docker_container_executor_session"
 decl_stmt|;
-comment|// This validates that the image is a proper docker image and would not crash docker.
+comment|//This validates that the image is a proper docker image and would not crash
+comment|//docker. The image name is not allowed to contain spaces. e.g.
+comment|//registry.somecompany.com:9999/containername:0.1 or
+comment|//containername:0.1 or
+comment|//containername
 DECL|field|DOCKER_IMAGE_PATTERN
 specifier|public
 specifier|static
@@ -1089,6 +1086,8 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
+comment|//Variables for the launch environment can be injected from the command-line
+comment|//while submitting the application
 name|String
 name|containerImageName
 init|=
@@ -1437,6 +1436,12 @@ operator|new
 name|StringBuilder
 argument_list|()
 decl_stmt|;
+comment|//Use docker run to launch the docker container. See man pages for
+comment|//docker-run
+comment|//--rm removes the container automatically once the container finishes
+comment|//--net=host allows the container to take on the host's network stack
+comment|//--name sets the Docker Container name to the YARN containerId string
+comment|//-v is used to bind mount volumes for local, log and work dirs.
 name|String
 name|commandStr
 init|=
@@ -1507,6 +1512,8 @@ operator|.
 name|toString
 argument_list|()
 decl_stmt|;
+comment|//Get the pid of the process which has been launched as a docker container
+comment|//using docker inspect
 name|String
 name|dockerPidScript
 init|=
@@ -1561,6 +1568,8 @@ expr_stmt|;
 block|}
 else|else
 block|{
+comment|//Although the container was activated by ContainerLaunch before exec()
+comment|//was called, since then deactivateContainer() has been called.
 name|LOG
 operator|.
 name|info
@@ -1901,6 +1910,7 @@ return|;
 block|}
 annotation|@
 name|Override
+comment|/**    * Filter the environment variables that may conflict with the ones set in    * the docker image and write them out to an OutputStream.    */
 DECL|method|writeLaunchEnv (OutputStream out, Map<String, String> environment, Map<Path, List<String>> resources, List<String> command)
 specifier|public
 name|void
@@ -1949,6 +1959,7 @@ operator|.
 name|create
 argument_list|()
 decl_stmt|;
+comment|//Remove environments that may conflict with the ones in Docker image.
 name|Set
 argument_list|<
 name|String
@@ -2698,6 +2709,9 @@ name|toString
 argument_list|()
 return|;
 block|}
+comment|//This class facilitates (only) the creation of platform-specific scripts that
+comment|//will be used to launch the containers
+comment|//TODO: This should be re-used from the DefaultContainerExecutor.
 DECL|class|LocalWrapperScriptBuilder
 specifier|private
 specifier|abstract
@@ -2844,6 +2858,7 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
+comment|//TODO: This class too should be used from DefaultContainerExecutor.
 DECL|class|UnixLocalWrapperScriptBuilder
 specifier|private
 specifier|final
