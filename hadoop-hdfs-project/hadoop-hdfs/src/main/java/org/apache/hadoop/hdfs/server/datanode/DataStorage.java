@@ -1066,10 +1066,10 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-DECL|method|restoreTrash (String bpid)
+DECL|method|clearTrash (String bpid)
 specifier|public
 name|void
-name|restoreTrash
+name|clearTrash
 parameter_list|(
 name|String
 name|bpid
@@ -1090,7 +1090,7 @@ argument_list|(
 name|bpid
 argument_list|)
 operator|.
-name|restoreTrash
+name|clearTrash
 argument_list|()
 expr_stmt|;
 name|trashEnabledBpids
@@ -1104,7 +1104,7 @@ name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"Restored trash for bpid "
+literal|"Cleared trash for bpid "
 operator|+
 name|bpid
 argument_list|)

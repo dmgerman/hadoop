@@ -5850,10 +5850,10 @@ throw|;
 block|}
 annotation|@
 name|Override
-DECL|method|restoreTrash (String bpid)
+DECL|method|clearTrash (String bpid)
 specifier|public
 name|void
-name|restoreTrash
+name|clearTrash
 parameter_list|(
 name|String
 name|bpid

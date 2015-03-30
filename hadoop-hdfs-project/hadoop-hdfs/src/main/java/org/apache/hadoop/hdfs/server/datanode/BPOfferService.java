@@ -192,6 +192,22 @@ name|hadoop
 operator|.
 name|hdfs
 operator|.
+name|protocol
+operator|.
+name|RollingUpgradeStatus
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
 name|protocolPB
 operator|.
 name|DatanodeProtocolClientSideTranslatorPB
@@ -1742,17 +1758,26 @@ name|bpServices
 argument_list|)
 return|;
 block|}
-comment|/**    * Signal the current rolling upgrade status as indicated by the NN.    * @param inProgress true if a rolling upgrade is in progress    */
-DECL|method|signalRollingUpgrade (boolean inProgress)
+comment|/**    * Signal the current rolling upgrade status as indicated by the NN.    * @param rollingUpgradeStatus rolling upgrade status    */
+DECL|method|signalRollingUpgrade (RollingUpgradeStatus rollingUpgradeStatus)
 name|void
 name|signalRollingUpgrade
 parameter_list|(
-name|boolean
-name|inProgress
+name|RollingUpgradeStatus
+name|rollingUpgradeStatus
 parameter_list|)
 throws|throws
 name|IOException
 block|{
+if|if
+condition|(
+name|rollingUpgradeStatus
+operator|==
+literal|null
+condition|)
+block|{
+return|return;
+block|}
 name|String
 name|bpid
 init|=
@@ -1761,7 +1786,11 @@ argument_list|()
 decl_stmt|;
 if|if
 condition|(
-name|inProgress
+operator|!
+name|rollingUpgradeStatus
+operator|.
+name|isFinalized
+argument_list|()
 condition|)
 block|{
 name|dn
@@ -1792,7 +1821,7 @@ operator|.
 name|getFSDataset
 argument_list|()
 operator|.
-name|restoreTrash
+name|clearTrash
 argument_list|(
 name|bpid
 argument_list|)

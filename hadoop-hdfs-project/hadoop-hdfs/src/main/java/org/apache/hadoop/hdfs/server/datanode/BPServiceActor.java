@@ -3042,8 +3042,6 @@ operator|.
 name|signalRollingUpgrade
 argument_list|(
 name|rollingUpgradeStatus
-operator|!=
-literal|null
 argument_list|)
 expr_stmt|;
 block|}

@@ -13958,10 +13958,10 @@ expr_stmt|;
 block|}
 annotation|@
 name|Override
-DECL|method|restoreTrash (String bpid)
+DECL|method|clearTrash (String bpid)
 specifier|public
 name|void
-name|restoreTrash
+name|clearTrash
 parameter_list|(
 name|String
 name|bpid
@@ -13969,7 +13969,7 @@ parameter_list|)
 block|{
 name|dataStorage
 operator|.
-name|restoreTrash
+name|clearTrash
 argument_list|(
 name|bpid
 argument_list|)

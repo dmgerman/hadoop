@@ -1484,11 +1484,11 @@ name|String
 name|bpid
 parameter_list|)
 function_decl|;
-comment|/**    * Restore trash    */
-DECL|method|restoreTrash (String bpid)
+comment|/**    * Clear trash    */
+DECL|method|clearTrash (String bpid)
 specifier|public
 name|void
-name|restoreTrash
+name|clearTrash
 parameter_list|(
 name|String
 name|bpid

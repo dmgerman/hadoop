@@ -13290,6 +13290,14 @@ name|getBlockPoolId
 argument_list|()
 argument_list|)
 operator|.
+name|setFinalized
+argument_list|(
+name|status
+operator|.
+name|isFinalized
+argument_list|()
+argument_list|)
+operator|.
 name|build
 argument_list|()
 return|;
@@ -13311,6 +13319,11 @@ argument_list|(
 name|proto
 operator|.
 name|getBlockPoolId
+argument_list|()
+argument_list|,
+name|proto
+operator|.
+name|getFinalized
 argument_list|()
 argument_list|)
 return|;

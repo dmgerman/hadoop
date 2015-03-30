@@ -84,7 +84,6 @@ name|startTime
 decl_stmt|;
 DECL|field|finalizeTime
 specifier|private
-specifier|final
 name|long
 name|finalizeTime
 decl_stmt|;
@@ -113,6 +112,10 @@ block|{
 name|super
 argument_list|(
 name|blockPoolId
+argument_list|,
+name|finalizeTime
+operator|!=
+literal|0
 argument_list|)
 expr_stmt|;
 name|this
@@ -183,6 +186,8 @@ return|return
 name|startTime
 return|;
 block|}
+annotation|@
+name|Override
 DECL|method|isFinalized ()
 specifier|public
 name|boolean
@@ -194,6 +199,35 @@ name|finalizeTime
 operator|!=
 literal|0
 return|;
+block|}
+comment|/**    * Finalize the upgrade if not already finalized    * @param finalizeTime    */
+DECL|method|finalize (long finalizeTime)
+specifier|public
+name|void
+name|finalize
+parameter_list|(
+name|long
+name|finalizeTime
+parameter_list|)
+block|{
+if|if
+condition|(
+name|finalizeTime
+operator|!=
+literal|0
+condition|)
+block|{
+name|this
+operator|.
+name|finalizeTime
+operator|=
+name|finalizeTime
+expr_stmt|;
+name|createdRollbackImages
+operator|=
+literal|false
+expr_stmt|;
+block|}
 block|}
 DECL|method|getFinalizeTime ()
 specifier|public

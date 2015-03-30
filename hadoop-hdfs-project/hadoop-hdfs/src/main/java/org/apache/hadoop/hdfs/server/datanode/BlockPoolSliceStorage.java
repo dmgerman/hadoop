@@ -1554,7 +1554,24 @@ argument_list|)
 expr_stmt|;
 comment|// rollback if applicable
 block|}
-else|else
+elseif|else
+if|if
+condition|(
+name|startOpt
+operator|==
+name|StartupOption
+operator|.
+name|ROLLBACK
+operator|&&
+operator|!
+name|sd
+operator|.
+name|getPreviousDir
+argument_list|()
+operator|.
+name|exists
+argument_list|()
+condition|)
 block|{
 comment|// Restore all the files in the trash. The restored files are retained
 comment|// during rolling upgrade rollback. They are deleted during rolling
@@ -1707,6 +1724,44 @@ condition|)
 block|{
 return|return;
 comment|// regular startup
+block|}
+if|if
+condition|(
+name|this
+operator|.
+name|layoutVersion
+operator|>
+name|HdfsConstants
+operator|.
+name|DATANODE_LAYOUT_VERSION
+condition|)
+block|{
+name|int
+name|restored
+init|=
+name|restoreBlockFilesFromTrash
+argument_list|(
+name|getTrashRootDir
+argument_list|(
+name|sd
+argument_list|)
+argument_list|)
+decl_stmt|;
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"Restored "
+operator|+
+name|restored
+operator|+
+literal|" block files from trash "
+operator|+
+literal|"before the layout upgrade. These blocks will be moved to "
+operator|+
+literal|"the previous directory during the upgrade"
+argument_list|)
+expr_stmt|;
 block|}
 if|if
 condition|(
@@ -3152,10 +3207,10 @@ name|restoreDirectory
 return|;
 block|}
 comment|/**    * Delete all files and directories in the trash directories.    */
-DECL|method|restoreTrash ()
+DECL|method|clearTrash ()
 specifier|public
 name|void
-name|restoreTrash
+name|clearTrash
 parameter_list|()
 block|{
 for|for
@@ -3174,8 +3229,6 @@ argument_list|(
 name|sd
 argument_list|)
 decl_stmt|;
-try|try
-block|{
 name|Preconditions
 operator|.
 name|checkState
@@ -3197,38 +3250,22 @@ argument_list|()
 operator|)
 argument_list|)
 expr_stmt|;
-name|restoreBlockFilesFromTrash
-argument_list|(
-name|trashRoot
-argument_list|)
-expr_stmt|;
 name|FileUtil
 operator|.
 name|fullyDelete
 argument_list|(
-name|getTrashRootDir
-argument_list|(
-name|sd
-argument_list|)
+name|trashRoot
 argument_list|)
 expr_stmt|;
-block|}
-catch|catch
-parameter_list|(
-name|IOException
-name|ioe
-parameter_list|)
-block|{
 name|LOG
 operator|.
-name|warn
+name|info
 argument_list|(
-literal|"Restoring trash failed for storage directory "
+literal|"Cleared trash for storage directory "
 operator|+
 name|sd
 argument_list|)
 expr_stmt|;
-block|}
 block|}
 block|}
 comment|/** trash is enabled if at least one storage directory contains trash root */

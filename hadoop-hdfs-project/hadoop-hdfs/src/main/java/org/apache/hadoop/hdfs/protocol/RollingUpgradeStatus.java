@@ -70,12 +70,21 @@ specifier|final
 name|String
 name|blockPoolId
 decl_stmt|;
-DECL|method|RollingUpgradeStatus (String blockPoolId)
+DECL|field|finalized
+specifier|private
+specifier|final
+name|boolean
+name|finalized
+decl_stmt|;
+DECL|method|RollingUpgradeStatus (String blockPoolId, boolean finalized)
 specifier|public
 name|RollingUpgradeStatus
 parameter_list|(
 name|String
 name|blockPoolId
+parameter_list|,
+name|boolean
+name|finalized
 parameter_list|)
 block|{
 name|this
@@ -83,6 +92,12 @@ operator|.
 name|blockPoolId
 operator|=
 name|blockPoolId
+expr_stmt|;
+name|this
+operator|.
+name|finalized
+operator|=
+name|finalized
 expr_stmt|;
 block|}
 DECL|method|getBlockPoolId ()
@@ -93,6 +108,16 @@ parameter_list|()
 block|{
 return|return
 name|blockPoolId
+return|;
+block|}
+DECL|method|isFinalized ()
+specifier|public
+name|boolean
+name|isFinalized
+parameter_list|()
+block|{
+return|return
+name|finalized
 return|;
 block|}
 annotation|@
@@ -171,6 +196,16 @@ name|that
 operator|.
 name|blockPoolId
 argument_list|)
+operator|&&
+name|this
+operator|.
+name|isFinalized
+argument_list|()
+operator|==
+name|that
+operator|.
+name|isFinalized
+argument_list|()
 return|;
 block|}
 annotation|@

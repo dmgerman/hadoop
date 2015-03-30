@@ -34912,6 +34912,12 @@ return|return
 name|rollingUpgradeInfo
 operator|!=
 literal|null
+operator|&&
+operator|!
+name|rollingUpgradeInfo
+operator|.
+name|isFinalized
+argument_list|()
 return|;
 block|}
 DECL|method|checkRollingUpgrade (String action)
@@ -34967,10 +34973,6 @@ expr_stmt|;
 name|writeLock
 argument_list|()
 expr_stmt|;
-specifier|final
-name|RollingUpgradeInfo
-name|returnInfo
-decl_stmt|;
 try|try
 block|{
 name|checkOperation
@@ -34996,8 +34998,6 @@ argument_list|(
 literal|"Failed to finalize rolling upgrade"
 argument_list|)
 expr_stmt|;
-name|returnInfo
-operator|=
 name|finalizeRollingUpgradeInternal
 argument_list|(
 name|now
@@ -35009,7 +35009,7 @@ argument_list|()
 operator|.
 name|logFinalizeRollingUpgrade
 argument_list|(
-name|returnInfo
+name|rollingUpgradeInfo
 operator|.
 name|getFinalizeTime
 argument_list|()
@@ -35095,45 +35095,25 @@ argument_list|)
 expr_stmt|;
 block|}
 return|return
-name|returnInfo
+name|rollingUpgradeInfo
 return|;
 block|}
 DECL|method|finalizeRollingUpgradeInternal (long finalizeTime)
-name|RollingUpgradeInfo
+name|void
 name|finalizeRollingUpgradeInternal
 parameter_list|(
 name|long
 name|finalizeTime
 parameter_list|)
-throws|throws
-name|RollingUpgradeException
 block|{
-specifier|final
-name|long
-name|startTime
-init|=
+comment|// Set the finalize time
 name|rollingUpgradeInfo
 operator|.
-name|getStartTime
-argument_list|()
-decl_stmt|;
-name|rollingUpgradeInfo
-operator|=
-literal|null
-expr_stmt|;
-return|return
-operator|new
-name|RollingUpgradeInfo
+name|finalize
 argument_list|(
-name|blockPoolId
-argument_list|,
-literal|false
-argument_list|,
-name|startTime
-argument_list|,
 name|finalizeTime
 argument_list|)
-return|;
+expr_stmt|;
 block|}
 DECL|method|addCacheDirective (CacheDirectiveInfo directive, EnumSet<CacheFlag> flags, boolean logRetryCache)
 name|long
