@@ -568,7 +568,7 @@ argument_list|()
 decl_stmt|;
 name|Collection
 argument_list|<
-name|Block
+name|BlockInfo
 argument_list|>
 name|blocks
 init|=

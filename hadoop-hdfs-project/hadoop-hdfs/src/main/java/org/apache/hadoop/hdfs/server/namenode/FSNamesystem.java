@@ -17144,7 +17144,7 @@ if|if
 condition|(
 name|blockManager
 operator|.
-name|checkMinStorage
+name|hasMinStorage
 argument_list|(
 name|b
 argument_list|,
@@ -17998,7 +17998,7 @@ break|break;
 assert|assert
 name|blockManager
 operator|.
-name|checkMinStorage
+name|hasMinStorage
 argument_list|(
 name|curBlock
 argument_list|)
@@ -18143,7 +18143,7 @@ literal|null
 operator|||
 name|blockManager
 operator|.
-name|checkMinStorage
+name|hasMinStorage
 argument_list|(
 name|penultimateBlock
 argument_list|)
@@ -18172,7 +18172,7 @@ name|penultimateBlockMinStorage
 operator|&&
 name|blockManager
 operator|.
-name|checkMinStorage
+name|hasMinStorage
 argument_list|(
 name|lastBlock
 argument_list|)

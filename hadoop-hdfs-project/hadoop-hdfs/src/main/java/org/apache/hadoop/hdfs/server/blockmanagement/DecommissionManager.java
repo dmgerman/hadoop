@@ -431,7 +431,7 @@ name|DatanodeDescriptor
 argument_list|,
 name|AbstractList
 argument_list|<
-name|BlockInfoContiguous
+name|BlockInfo
 argument_list|>
 argument_list|>
 DECL|field|decomNodeBlocks
@@ -1003,13 +1003,13 @@ name|dn
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Checks whether a block is sufficiently replicated for decommissioning.    * Full-strength replication is not always necessary, hence "sufficient".    * @return true if sufficient, else false.    */
-DECL|method|isSufficientlyReplicated (BlockInfoContiguous block, BlockCollection bc, NumberReplicas numberReplicas)
+comment|/**    * Checks whether a block is sufficiently replicated/stored for    * decommissioning. For replicated blocks or striped blocks, full-strength    * replication or storage is not always necessary, hence "sufficient".    * @return true if sufficient, else false.    */
+DECL|method|isSufficient (BlockInfo block, BlockCollection bc, NumberReplicas numberReplicas)
 specifier|private
 name|boolean
-name|isSufficientlyReplicated
+name|isSufficient
 parameter_list|(
-name|BlockInfoContiguous
+name|BlockInfo
 name|block
 parameter_list|,
 name|BlockCollection
@@ -1108,11 +1108,14 @@ block|{
 comment|// Can decom a UC block as long as there will still be minReplicas
 if|if
 condition|(
-name|numLive
-operator|>=
 name|blockManager
 operator|.
-name|minReplication
+name|hasMinStorage
+argument_list|(
+name|block
+argument_list|,
+name|numLive
+argument_list|)
 condition|)
 block|{
 name|LOG
@@ -1129,7 +1132,10 @@ name|numLive
 argument_list|,
 name|blockManager
 operator|.
-name|minReplication
+name|getMinStorageNum
+argument_list|(
+name|block
+argument_list|)
 argument_list|)
 expr_stmt|;
 return|return
@@ -1152,7 +1158,10 @@ name|numLive
 argument_list|,
 name|blockManager
 operator|.
-name|minReplication
+name|getMinStorageNum
+argument_list|(
+name|block
+argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
@@ -1166,7 +1175,10 @@ name|numLive
 operator|>=
 name|blockManager
 operator|.
-name|defaultReplication
+name|getDefaultStorageNum
+argument_list|(
+name|block
+argument_list|)
 condition|)
 block|{
 return|return
@@ -1662,7 +1674,7 @@ name|DatanodeDescriptor
 argument_list|,
 name|AbstractList
 argument_list|<
-name|BlockInfoContiguous
+name|BlockInfo
 argument_list|>
 argument_list|>
 argument_list|>
@@ -1720,7 +1732,7 @@ name|DatanodeDescriptor
 argument_list|,
 name|AbstractList
 argument_list|<
-name|BlockInfoContiguous
+name|BlockInfo
 argument_list|>
 argument_list|>
 name|entry
@@ -1741,7 +1753,7 @@ argument_list|()
 decl_stmt|;
 name|AbstractList
 argument_list|<
-name|BlockInfoContiguous
+name|BlockInfo
 argument_list|>
 name|blocks
 init|=
@@ -1778,7 +1790,7 @@ argument_list|)
 expr_stmt|;
 name|blocks
 operator|=
-name|handleInsufficientlyReplicated
+name|handleInsufficientlyStored
 argument_list|(
 name|dn
 argument_list|)
@@ -1810,7 +1822,7 @@ argument_list|,
 name|dn
 argument_list|)
 expr_stmt|;
-name|pruneSufficientlyReplicated
+name|pruneReliableBlocks
 argument_list|(
 name|dn
 argument_list|,
@@ -1853,7 +1865,7 @@ argument_list|)
 expr_stmt|;
 name|blocks
 operator|=
-name|handleInsufficientlyReplicated
+name|handleInsufficientlyStored
 argument_list|(
 name|dn
 argument_list|)
@@ -2042,11 +2054,11 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-comment|/**      * Removes sufficiently replicated blocks from the block list of a       * datanode.      */
-DECL|method|pruneSufficientlyReplicated (final DatanodeDescriptor datanode, AbstractList<BlockInfoContiguous> blocks)
+comment|/**      * Removes reliable blocks from the block list of a datanode.      */
+DECL|method|pruneReliableBlocks (final DatanodeDescriptor datanode, AbstractList<BlockInfo> blocks)
 specifier|private
 name|void
-name|pruneSufficientlyReplicated
+name|pruneReliableBlocks
 parameter_list|(
 specifier|final
 name|DatanodeDescriptor
@@ -2054,7 +2066,7 @@ name|datanode
 parameter_list|,
 name|AbstractList
 argument_list|<
-name|BlockInfoContiguous
+name|BlockInfo
 argument_list|>
 name|blocks
 parameter_list|)
@@ -2074,14 +2086,14 @@ literal|true
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**      * Returns a list of blocks on a datanode that are insufficiently       * replicated, i.e. are under-replicated enough to prevent decommission.      *<p/>      * As part of this, it also schedules replication work for       * any under-replicated blocks.      *      * @param datanode      * @return List of insufficiently replicated blocks       */
-DECL|method|handleInsufficientlyReplicated ( final DatanodeDescriptor datanode)
+comment|/**      * Returns a list of blocks on a datanode that are insufficiently replicated      * or require recovery, i.e. requiring recovery and should prevent      * decommission.      *<p/>      * As part of this, it also schedules replication/recovery work.      *      * @return List of blocks requiring recovery      */
+DECL|method|handleInsufficientlyStored ( final DatanodeDescriptor datanode)
 specifier|private
 name|AbstractList
 argument_list|<
-name|BlockInfoContiguous
+name|BlockInfo
 argument_list|>
-name|handleInsufficientlyReplicated
+name|handleInsufficientlyStored
 parameter_list|(
 specifier|final
 name|DatanodeDescriptor
@@ -2090,7 +2102,7 @@ parameter_list|)
 block|{
 name|AbstractList
 argument_list|<
-name|BlockInfoContiguous
+name|BlockInfo
 argument_list|>
 name|insufficient
 init|=
@@ -2117,8 +2129,8 @@ return|return
 name|insufficient
 return|;
 block|}
-comment|/**      * Used while checking if decommission-in-progress datanodes can be marked      * as decommissioned. Combines shared logic of       * pruneSufficientlyReplicated and handleInsufficientlyReplicated.      *      * @param datanode                    Datanode      * @param it                          Iterator over the blocks on the      *                                    datanode      * @param insufficientlyReplicated    Return parameter. If it's not null,      *                                    will contain the insufficiently      *                                    replicated-blocks from the list.      * @param pruneSufficientlyReplicated whether to remove sufficiently      *                                    replicated blocks from the iterator      * @return true if there are under-replicated blocks in the provided block      * iterator, else false.      */
-DECL|method|processBlocksForDecomInternal ( final DatanodeDescriptor datanode, final Iterator<? extends BlockInfo> it, final List<BlockInfoContiguous> insufficientlyReplicated, boolean pruneSufficientlyReplicated)
+comment|/**      * Used while checking if decommission-in-progress datanodes can be marked      * as decommissioned. Combines shared logic of       * pruneReliableBlocks and handleInsufficientlyStored.      *      * @param datanode                    Datanode      * @param it                          Iterator over the blocks on the      *                                    datanode      * @param insufficientList            Return parameter. If it's not null,      *                                    will contain the insufficiently      *                                    replicated-blocks from the list.      * @param pruneReliableBlocks         whether to remove blocks reliable      *                                    enough from the iterator      */
+DECL|method|processBlocksForDecomInternal ( final DatanodeDescriptor datanode, final Iterator<BlockInfo> it, final List<BlockInfo> insufficientList, boolean pruneReliableBlocks)
 specifier|private
 name|void
 name|processBlocksForDecomInternal
@@ -2130,8 +2142,6 @@ parameter_list|,
 specifier|final
 name|Iterator
 argument_list|<
-name|?
-extends|extends
 name|BlockInfo
 argument_list|>
 name|it
@@ -2139,12 +2149,12 @@ parameter_list|,
 specifier|final
 name|List
 argument_list|<
-name|BlockInfoContiguous
+name|BlockInfo
 argument_list|>
-name|insufficientlyReplicated
+name|insufficientList
 parameter_list|,
 name|boolean
-name|pruneSufficientlyReplicated
+name|pruneReliableBlocks
 parameter_list|)
 block|{
 name|boolean
@@ -2224,8 +2234,6 @@ name|bc
 init|=
 name|blockManager
 operator|.
-name|blocksMap
-operator|.
 name|getBlockCollection
 argument_list|(
 name|block
@@ -2260,12 +2268,6 @@ name|num
 operator|.
 name|liveReplicas
 argument_list|()
-decl_stmt|;
-specifier|final
-name|int
-name|curReplicas
-init|=
-name|liveReplicas
 decl_stmt|;
 comment|// Schedule under-replicated blocks for replication if not already
 comment|// pending
@@ -2324,7 +2326,7 @@ name|add
 argument_list|(
 name|block
 argument_list|,
-name|curReplicas
+name|liveReplicas
 argument_list|,
 name|num
 operator|.
@@ -2341,19 +2343,11 @@ block|}
 block|}
 comment|// Even if the block is under-replicated,
 comment|// it doesn't block decommission if it's sufficiently replicated
-name|BlockInfoContiguous
-name|blk
-init|=
-operator|(
-name|BlockInfoContiguous
-operator|)
-name|block
-decl_stmt|;
 if|if
 condition|(
-name|isSufficientlyReplicated
+name|isSufficient
 argument_list|(
-name|blk
+name|block
 argument_list|,
 name|bc
 argument_list|,
@@ -2363,7 +2357,7 @@ condition|)
 block|{
 if|if
 condition|(
-name|pruneSufficientlyReplicated
+name|pruneReliableBlocks
 condition|)
 block|{
 name|it
@@ -2377,16 +2371,16 @@ block|}
 comment|// We've found an insufficiently replicated block.
 if|if
 condition|(
-name|insufficientlyReplicated
+name|insufficientList
 operator|!=
 literal|null
 condition|)
 block|{
-name|insufficientlyReplicated
+name|insufficientList
 operator|.
 name|add
 argument_list|(
-name|blk
+name|block
 argument_list|)
 expr_stmt|;
 block|}
@@ -2440,7 +2434,7 @@ block|}
 if|if
 condition|(
 operator|(
-name|curReplicas
+name|liveReplicas
 operator|==
 literal|0
 operator|)
