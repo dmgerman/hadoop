@@ -503,6 +503,54 @@ expr_stmt|;
 block|}
 annotation|@
 name|Test
+DECL|method|testVerifyChunkedSumsSuccessOddSize ()
+specifier|public
+name|void
+name|testVerifyChunkedSumsSuccessOddSize
+parameter_list|()
+throws|throws
+name|ChecksumException
+block|{
+comment|// Test checksum with an odd number of bytes. This is a corner case that
+comment|// is often broken in checksum calculation, because there is an loop which
+comment|// handles an even multiple or 4 or 8 bytes and then some additional code
+comment|// to finish the few odd bytes at the end. This code can often be broken
+comment|// but is never tested because we are always calling it with an even value
+comment|// such as 512.
+name|bytesPerChecksum
+operator|--
+expr_stmt|;
+name|allocateDirectByteBuffers
+argument_list|()
+expr_stmt|;
+name|fillDataAndValidChecksums
+argument_list|()
+expr_stmt|;
+name|NativeCrc32
+operator|.
+name|verifyChunkedSums
+argument_list|(
+name|bytesPerChecksum
+argument_list|,
+name|checksumType
+operator|.
+name|id
+argument_list|,
+name|checksums
+argument_list|,
+name|data
+argument_list|,
+name|fileName
+argument_list|,
+name|BASE_POSITION
+argument_list|)
+expr_stmt|;
+name|bytesPerChecksum
+operator|++
+expr_stmt|;
+block|}
+annotation|@
+name|Test
 DECL|method|testVerifyChunkedSumsByteArraySuccess ()
 specifier|public
 name|void
