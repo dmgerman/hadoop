@@ -489,7 +489,7 @@ argument_list|(
 operator|(
 name|short
 operator|)
-literal|0771
+literal|0770
 argument_list|)
 decl_stmt|;
 DECL|field|HISTORY_DONE_FILE_PERMISSION
@@ -526,7 +526,7 @@ call|(
 name|short
 call|)
 argument_list|(
-literal|0771
+literal|0770
 operator|^
 literal|0777
 argument_list|)
