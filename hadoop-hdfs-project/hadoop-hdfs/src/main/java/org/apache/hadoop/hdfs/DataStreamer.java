@@ -4057,7 +4057,7 @@ name|getStatusFromHeader
 argument_list|(
 name|ack
 operator|.
-name|getReply
+name|getHeaderFlag
 argument_list|(
 name|i
 argument_list|)

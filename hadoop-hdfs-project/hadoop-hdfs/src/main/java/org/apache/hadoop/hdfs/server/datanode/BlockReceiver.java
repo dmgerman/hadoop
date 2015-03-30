@@ -6517,7 +6517,7 @@ index|]
 operator|=
 name|ack
 operator|.
-name|getReply
+name|getHeaderFlag
 argument_list|(
 name|i
 argument_list|)
