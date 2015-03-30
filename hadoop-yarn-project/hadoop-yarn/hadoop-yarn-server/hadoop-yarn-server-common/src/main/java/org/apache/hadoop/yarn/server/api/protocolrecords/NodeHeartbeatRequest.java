@@ -24,6 +24,16 @@ end_package
 
 begin_import
 import|import
+name|java
+operator|.
+name|util
+operator|.
+name|Set
+import|;
+end_import
+
+begin_import
+import|import
 name|org
 operator|.
 name|apache
@@ -85,7 +95,7 @@ specifier|abstract
 class|class
 name|NodeHeartbeatRequest
 block|{
-DECL|method|newInstance (NodeStatus nodeStatus, MasterKey lastKnownContainerTokenMasterKey, MasterKey lastKnownNMTokenMasterKey)
+DECL|method|newInstance (NodeStatus nodeStatus, MasterKey lastKnownContainerTokenMasterKey, MasterKey lastKnownNMTokenMasterKey, Set<String> nodeLabels)
 specifier|public
 specifier|static
 name|NodeHeartbeatRequest
@@ -99,6 +109,12 @@ name|lastKnownContainerTokenMasterKey
 parameter_list|,
 name|MasterKey
 name|lastKnownNMTokenMasterKey
+parameter_list|,
+name|Set
+argument_list|<
+name|String
+argument_list|>
+name|nodeLabels
 parameter_list|)
 block|{
 name|NodeHeartbeatRequest
@@ -132,6 +148,13 @@ operator|.
 name|setLastKnownNMTokenMasterKey
 argument_list|(
 name|lastKnownNMTokenMasterKey
+argument_list|)
+expr_stmt|;
+name|nodeHeartbeatRequest
+operator|.
+name|setNodeLabels
+argument_list|(
+name|nodeLabels
 argument_list|)
 expr_stmt|;
 return|return
@@ -187,6 +210,29 @@ name|setLastKnownNMTokenMasterKey
 parameter_list|(
 name|MasterKey
 name|secretKey
+parameter_list|)
+function_decl|;
+DECL|method|getNodeLabels ()
+specifier|public
+specifier|abstract
+name|Set
+argument_list|<
+name|String
+argument_list|>
+name|getNodeLabels
+parameter_list|()
+function_decl|;
+DECL|method|setNodeLabels (Set<String> nodeLabels)
+specifier|public
+specifier|abstract
+name|void
+name|setNodeLabels
+parameter_list|(
+name|Set
+argument_list|<
+name|String
+argument_list|>
+name|nodeLabels
 parameter_list|)
 function_decl|;
 block|}

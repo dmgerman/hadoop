@@ -7342,7 +7342,7 @@ block|}
 expr_stmt|;
 name|verifyNodeStartFailure
 argument_list|(
-literal|"Recieved SHUTDOWN signal from Resourcemanager ,"
+literal|"Recieved SHUTDOWN signal from Resourcemanager, "
 operator|+
 literal|"Registration of NodeManager failed, "
 operator|+

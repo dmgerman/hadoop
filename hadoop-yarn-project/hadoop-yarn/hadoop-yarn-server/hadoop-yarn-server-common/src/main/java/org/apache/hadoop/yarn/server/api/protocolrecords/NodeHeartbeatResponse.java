@@ -297,6 +297,19 @@ argument_list|>
 name|systemCredentials
 parameter_list|)
 function_decl|;
+DECL|method|getAreNodeLabelsAcceptedByRM ()
+name|boolean
+name|getAreNodeLabelsAcceptedByRM
+parameter_list|()
+function_decl|;
+DECL|method|setAreNodeLabelsAcceptedByRM (boolean areNodeLabelsAcceptedByRM)
+name|void
+name|setAreNodeLabelsAcceptedByRM
+parameter_list|(
+name|boolean
+name|areNodeLabelsAcceptedByRM
+parameter_list|)
+function_decl|;
 block|}
 end_interface
 
