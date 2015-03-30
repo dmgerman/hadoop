@@ -1074,9 +1074,9 @@ expr_stmt|;
 block|}
 name|LOG
 operator|.
-name|info
+name|debug
 argument_list|(
-literal|"topN size for command {} is: {}"
+literal|"topN users size for command {} is: {}"
 argument_list|,
 name|metricName
 argument_list|,
