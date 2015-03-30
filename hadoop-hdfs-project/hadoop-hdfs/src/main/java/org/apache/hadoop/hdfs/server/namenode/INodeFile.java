@@ -2147,6 +2147,7 @@ comment|/** The same as getFileReplication(null). */
 annotation|@
 name|Override
 comment|// INodeFileAttributes
+comment|// TODO striped
 DECL|method|getFileReplication ()
 specifier|public
 specifier|final

@@ -3099,13 +3099,11 @@ name|NumberReplicas
 argument_list|()
 argument_list|,
 operator|new
-name|LinkedList
+name|ArrayList
 argument_list|<
 name|Short
 argument_list|>
 argument_list|()
-argument_list|,
-literal|1
 argument_list|,
 name|UnderReplicatedBlocks
 operator|.
@@ -3116,13 +3114,15 @@ literal|0
 index|]
 argument_list|)
 expr_stmt|;
-name|assertNull
+name|assertEquals
 argument_list|(
 literal|"Does not choose a source node for a less-than-highest-priority"
 operator|+
 literal|" replication since all available source nodes have reached"
 operator|+
 literal|" their replication limits."
+argument_list|,
+literal|0
 argument_list|,
 name|bm
 operator|.
@@ -3144,21 +3144,18 @@ name|NumberReplicas
 argument_list|()
 argument_list|,
 operator|new
-name|LinkedList
+name|ArrayList
 argument_list|<
 name|Short
 argument_list|>
 argument_list|()
 argument_list|,
-literal|1
-argument_list|,
 name|UnderReplicatedBlocks
 operator|.
 name|QUEUE_VERY_UNDER_REPLICATED
 argument_list|)
-index|[
-literal|0
-index|]
+operator|.
+name|length
 argument_list|)
 expr_stmt|;
 comment|// Increase the replication count to test replication count> hard limit
@@ -3195,11 +3192,13 @@ argument_list|,
 name|targets
 argument_list|)
 expr_stmt|;
-name|assertNull
+name|assertEquals
 argument_list|(
 literal|"Does not choose a source node for a highest-priority"
 operator|+
 literal|" replication when all available nodes exceed the hard limit."
+argument_list|,
+literal|0
 argument_list|,
 name|bm
 operator|.
@@ -3221,21 +3220,18 @@ name|NumberReplicas
 argument_list|()
 argument_list|,
 operator|new
-name|LinkedList
+name|ArrayList
 argument_list|<
 name|Short
 argument_list|>
 argument_list|()
 argument_list|,
-literal|1
-argument_list|,
 name|UnderReplicatedBlocks
 operator|.
 name|QUEUE_HIGHEST_PRIORITY
 argument_list|)
-index|[
-literal|0
-index|]
+operator|.
+name|length
 argument_list|)
 expr_stmt|;
 block|}
@@ -3378,12 +3374,13 @@ name|Short
 argument_list|>
 argument_list|()
 argument_list|,
-literal|1
-argument_list|,
 name|UnderReplicatedBlocks
 operator|.
 name|QUEUE_UNDER_REPLICATED
 argument_list|)
+index|[
+literal|0
+index|]
 argument_list|)
 expr_stmt|;
 comment|// Increase the replication count to test replication count> hard limit
@@ -3420,11 +3417,13 @@ argument_list|,
 name|targets
 argument_list|)
 expr_stmt|;
-name|assertNull
+name|assertEquals
 argument_list|(
 literal|"Does not choose a source decommissioning node for a normal"
 operator|+
 literal|" replication when all available nodes exceed the hard limit."
+argument_list|,
+literal|0
 argument_list|,
 name|bm
 operator|.
@@ -3452,12 +3451,12 @@ name|Short
 argument_list|>
 argument_list|()
 argument_list|,
-literal|1
-argument_list|,
 name|UnderReplicatedBlocks
 operator|.
 name|QUEUE_UNDER_REPLICATED
 argument_list|)
+operator|.
+name|length
 argument_list|)
 expr_stmt|;
 block|}

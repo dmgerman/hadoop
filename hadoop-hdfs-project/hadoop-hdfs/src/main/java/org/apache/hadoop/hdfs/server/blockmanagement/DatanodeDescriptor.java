@@ -692,14 +692,14 @@ name|DatanodeStorageInfo
 index|[]
 name|targets
 decl_stmt|;
-DECL|field|missingBlockIndices
+DECL|field|liveBlockIndices
 specifier|public
 specifier|final
 name|short
 index|[]
-name|missingBlockIndices
+name|liveBlockIndices
 decl_stmt|;
-DECL|method|BlockECRecoveryInfo (ExtendedBlock block, DatanodeDescriptor[] sources, DatanodeStorageInfo[] targets, short[] missingBlockIndices)
+DECL|method|BlockECRecoveryInfo (ExtendedBlock block, DatanodeDescriptor[] sources, DatanodeStorageInfo[] targets, short[] liveBlockIndices)
 name|BlockECRecoveryInfo
 parameter_list|(
 name|ExtendedBlock
@@ -715,7 +715,7 @@ name|targets
 parameter_list|,
 name|short
 index|[]
-name|missingBlockIndices
+name|liveBlockIndices
 parameter_list|)
 block|{
 name|this
@@ -738,9 +738,9 @@ name|targets
 expr_stmt|;
 name|this
 operator|.
-name|missingBlockIndices
+name|liveBlockIndices
 operator|=
-name|missingBlockIndices
+name|liveBlockIndices
 expr_stmt|;
 block|}
 annotation|@
@@ -804,6 +804,21 @@ operator|.
 name|append
 argument_list|(
 literal|")\n"
+argument_list|)
+operator|.
+name|append
+argument_list|(
+literal|" Block Indices: "
+argument_list|)
+operator|.
+name|append
+argument_list|(
+name|Arrays
+operator|.
+name|asList
+argument_list|(
+name|liveBlockIndices
+argument_list|)
 argument_list|)
 operator|.
 name|toString
@@ -2917,7 +2932,7 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|/**    * Store block erasure coding work.    */
-DECL|method|addBlockToBeErasureCoded (ExtendedBlock block, DatanodeDescriptor[] sources, DatanodeStorageInfo[] targets, short[] missingBlockIndicies)
+DECL|method|addBlockToBeErasureCoded (ExtendedBlock block, DatanodeDescriptor[] sources, DatanodeStorageInfo[] targets, short[] liveBlockIndices)
 name|void
 name|addBlockToBeErasureCoded
 parameter_list|(
@@ -2934,7 +2949,7 @@ name|targets
 parameter_list|,
 name|short
 index|[]
-name|missingBlockIndicies
+name|liveBlockIndices
 parameter_list|)
 block|{
 assert|assert
@@ -2966,7 +2981,7 @@ name|sources
 argument_list|,
 name|targets
 argument_list|,
-name|missingBlockIndicies
+name|liveBlockIndices
 argument_list|)
 decl_stmt|;
 name|erasurecodeBlocks
@@ -3106,7 +3121,10 @@ argument_list|()
 return|;
 block|}
 comment|/**    * The number of work items that are pending to be replicated    */
+annotation|@
+name|VisibleForTesting
 DECL|method|getNumberOfBlocksToBeErasureCoded ()
+specifier|public
 name|int
 name|getNumberOfBlocksToBeErasureCoded
 parameter_list|()

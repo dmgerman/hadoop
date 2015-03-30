@@ -1686,12 +1686,12 @@ operator|+
 name|i
 operator|++
 argument_list|,
+literal|0
+argument_list|,
 name|lastBlock
 operator|.
 name|getGenerationStamp
 argument_list|()
-argument_list|,
-literal|0
 argument_list|)
 decl_stmt|;
 name|DatanodeStorage
