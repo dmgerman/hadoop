@@ -8010,6 +8010,12 @@ name|UnderReplicatedBlocks
 operator|.
 name|QUEUE_HIGHEST_PRIORITY
 operator|&&
+operator|!
+name|node
+operator|.
+name|isDecommissionInProgress
+argument_list|()
+operator|&&
 name|node
 operator|.
 name|getNumberOfBlocksToBeReplicated
@@ -8057,14 +8063,9 @@ name|isDecommissioned
 argument_list|()
 condition|)
 continue|continue;
-comment|// we prefer nodes that are in DECOMMISSION_INPROGRESS state
+comment|// We got this far, current node is a reasonable choice
 if|if
 condition|(
-name|node
-operator|.
-name|isDecommissionInProgress
-argument_list|()
-operator|||
 name|srcNode
 operator|==
 literal|null
@@ -8076,14 +8077,6 @@ name|node
 expr_stmt|;
 continue|continue;
 block|}
-if|if
-condition|(
-name|srcNode
-operator|.
-name|isDecommissionInProgress
-argument_list|()
-condition|)
-continue|continue;
 comment|// switch to a different node randomly
 comment|// this to prevent from deterministically selecting the same node even
 comment|// if the node failed to replicate the block on previous iterations
