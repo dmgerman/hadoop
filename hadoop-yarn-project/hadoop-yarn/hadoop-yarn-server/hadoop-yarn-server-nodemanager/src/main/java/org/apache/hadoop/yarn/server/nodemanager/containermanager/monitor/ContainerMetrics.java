@@ -954,6 +954,13 @@ name|int
 name|memoryMBs
 parameter_list|)
 block|{
+if|if
+condition|(
+name|memoryMBs
+operator|>=
+literal|0
+condition|)
+block|{
 name|this
 operator|.
 name|pMemMBsStat
@@ -963,6 +970,7 @@ argument_list|(
 name|memoryMBs
 argument_list|)
 expr_stmt|;
+block|}
 block|}
 DECL|method|recordCpuUsage ( int totalPhysicalCpuPercent, int milliVcoresUsed)
 specifier|public
@@ -976,6 +984,13 @@ name|int
 name|milliVcoresUsed
 parameter_list|)
 block|{
+if|if
+condition|(
+name|totalPhysicalCpuPercent
+operator|>=
+literal|0
+condition|)
+block|{
 name|this
 operator|.
 name|cpuCoreUsagePercent
@@ -985,6 +1000,14 @@ argument_list|(
 name|totalPhysicalCpuPercent
 argument_list|)
 expr_stmt|;
+block|}
+if|if
+condition|(
+name|milliVcoresUsed
+operator|>=
+literal|0
+condition|)
+block|{
 name|this
 operator|.
 name|milliVcoresUsed
@@ -994,6 +1017,7 @@ argument_list|(
 name|milliVcoresUsed
 argument_list|)
 expr_stmt|;
+block|}
 block|}
 DECL|method|recordProcessId (String processId)
 specifier|public

@@ -84,6 +84,22 @@ name|hadoop
 operator|.
 name|classification
 operator|.
+name|InterfaceAudience
+operator|.
+name|Private
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|classification
+operator|.
 name|InterfaceStability
 operator|.
 name|Evolving
@@ -119,7 +135,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * Interface class to obtain process resource usage  *  */
+comment|/**  * Interface class to obtain process resource usage  * NOTE: This class should not be used by external users, but only by external  * developers to extend and include their own process-tree implementation,   * especially for platforms other than Linux and Windows.  */
 end_comment
 
 begin_class
@@ -150,6 +166,16 @@ operator|.
 name|class
 argument_list|)
 decl_stmt|;
+DECL|field|UNAVAILABLE
+specifier|public
+specifier|static
+specifier|final
+name|int
+name|UNAVAILABLE
+init|=
+operator|-
+literal|1
+decl_stmt|;
 comment|/**    * Create process-tree instance with specified root process.    *    * Subclass must override this.    * @param root process-tree root-process    */
 DECL|method|ResourceCalculatorProcessTree (String root)
 specifier|public
@@ -175,63 +201,63 @@ name|String
 name|getProcessTreeDump
 parameter_list|()
 function_decl|;
-comment|/**    * Get the cumulative virtual memory used by all the processes in the    * process-tree.    *    * @return cumulative virtual memory used by the process-tree in bytes.    */
-DECL|method|getCumulativeVmem ()
+comment|/**    * Get the virtual memory used by all the processes in the    * process-tree.    *    * @return virtual memory used by the process-tree in bytes,    * {@link #UNAVAILABLE} if it cannot be calculated.    */
+DECL|method|getVirtualMemorySize ()
 specifier|public
 name|long
-name|getCumulativeVmem
+name|getVirtualMemorySize
 parameter_list|()
 block|{
 return|return
-name|getCumulativeVmem
+name|getVirtualMemorySize
 argument_list|(
 literal|0
 argument_list|)
 return|;
 block|}
-comment|/**    * Get the cumulative resident set size (rss) memory used by all the processes    * in the process-tree.    *    * @return cumulative rss memory used by the process-tree in bytes. return 0    *         if it cannot be calculated    */
-DECL|method|getCumulativeRssmem ()
+comment|/**    * Get the resident set size (rss) memory used by all the processes    * in the process-tree.    *    * @return rss memory used by the process-tree in bytes,    * {@link #UNAVAILABLE} if it cannot be calculated.    */
+DECL|method|getRssMemorySize ()
 specifier|public
 name|long
-name|getCumulativeRssmem
+name|getRssMemorySize
 parameter_list|()
 block|{
 return|return
-name|getCumulativeRssmem
+name|getRssMemorySize
 argument_list|(
 literal|0
 argument_list|)
 return|;
 block|}
-comment|/**    * Get the cumulative virtual memory used by all the processes in the    * process-tree that are older than the passed in age.    *    * @param olderThanAge processes above this age are included in the    *                      memory addition    * @return cumulative virtual memory used by the process-tree in bytes,    *          for processes older than this age. return 0 if it cannot be    *          calculated    */
-DECL|method|getCumulativeVmem (int olderThanAge)
+comment|/**    * Get the virtual memory used by all the processes in the    * process-tree that are older than the passed in age.    *    * @param olderThanAge processes above this age are included in the    *                     memory addition    * @return virtual memory used by the process-tree in bytes for    * processes older than the specified age, {@link #UNAVAILABLE} if it    * cannot be calculated.    */
+DECL|method|getVirtualMemorySize (int olderThanAge)
 specifier|public
 name|long
-name|getCumulativeVmem
+name|getVirtualMemorySize
 parameter_list|(
 name|int
 name|olderThanAge
 parameter_list|)
 block|{
 return|return
-literal|0
+name|UNAVAILABLE
 return|;
 block|}
-comment|/**    * Get the cumulative resident set size (rss) memory used by all the processes    * in the process-tree that are older than the passed in age.    *    * @param olderThanAge processes above this age are included in the    *                      memory addition    * @return cumulative rss memory used by the process-tree in bytes,    *          for processes older than this age. return 0 if it cannot be    *          calculated    */
-DECL|method|getCumulativeRssmem (int olderThanAge)
+comment|/**    * Get the resident set size (rss) memory used by all the processes    * in the process-tree that are older than the passed in age.    *    * @param olderThanAge processes above this age are included in the    *                     memory addition    * @return rss memory used by the process-tree in bytes for    * processes older than specified age, {@link #UNAVAILABLE} if it cannot be    * calculated.    */
+DECL|method|getRssMemorySize (int olderThanAge)
 specifier|public
 name|long
-name|getCumulativeRssmem
+name|getRssMemorySize
 parameter_list|(
 name|int
 name|olderThanAge
 parameter_list|)
 block|{
 return|return
-literal|0
+name|UNAVAILABLE
 return|;
 block|}
-comment|/**    * Get the CPU time in millisecond used by all the processes in the    * process-tree since the process-tree was created    *    * @return cumulative CPU time in millisecond since the process-tree created    *         return 0 if it cannot be calculated    */
+comment|/**    * Get the CPU time in millisecond used by all the processes in the    * process-tree since the process-tree was created    *    * @return cumulative CPU time in millisecond since the process-tree    * created, {@link #UNAVAILABLE} if it cannot be calculated.    */
 DECL|method|getCumulativeCpuTime ()
 specifier|public
 name|long
@@ -239,10 +265,10 @@ name|getCumulativeCpuTime
 parameter_list|()
 block|{
 return|return
-literal|0
+name|UNAVAILABLE
 return|;
 block|}
-comment|/**    * Get the CPU usage by all the processes in the process-tree based on    * average between samples as a ratio of overall CPU cycles similar to top.    * Thus, if 2 out of 4 cores are used this should return 200.0.    *    * @return percentage CPU usage since the process-tree was created    *         return {@link CpuTimeTracker#UNAVAILABLE} if it cannot be calculated    */
+comment|/**    * Get the CPU usage by all the processes in the process-tree based on    * average between samples as a ratio of overall CPU cycles similar to top.    * Thus, if 2 out of 4 cores are used this should return 200.0.    *    * @return percentage CPU usage since the process-tree was created,    * {@link #UNAVAILABLE} if it cannot be calculated.    */
 DECL|method|getCpuUsagePercent ()
 specifier|public
 name|float
@@ -250,8 +276,7 @@ name|getCpuUsagePercent
 parameter_list|()
 block|{
 return|return
-operator|-
-literal|1
+name|UNAVAILABLE
 return|;
 block|}
 comment|/** Verify that the tree process id is same as its process group id.    * @return true if the process id matches else return false.    */
@@ -263,6 +288,8 @@ name|checkPidPgrpidForMatch
 parameter_list|()
 function_decl|;
 comment|/**    * Create the ResourceCalculatorProcessTree rooted to specified process     * from the class name and configure it. If class name is null, this method    * will try and return a process tree plugin available for this system.    *    * @param pid process pid of the root of the process tree    * @param clazz class-name    * @param conf configure the plugin with this.    *    * @return ResourceCalculatorProcessTree or null if ResourceCalculatorPluginTree    *         is not available for this system.    */
+annotation|@
+name|Private
 DECL|method|getResourceCalculatorProcessTree ( String pid, Class<? extends ResourceCalculatorProcessTree> clazz, Configuration conf)
 specifier|public
 specifier|static

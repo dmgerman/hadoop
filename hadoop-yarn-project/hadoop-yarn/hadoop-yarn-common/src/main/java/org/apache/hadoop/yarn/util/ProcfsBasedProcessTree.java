@@ -866,10 +866,10 @@ argument_list|)
 decl_stmt|;
 DECL|field|cpuTime
 specifier|private
-name|Long
+name|long
 name|cpuTime
 init|=
-literal|0L
+name|UNAVAILABLE
 decl_stmt|;
 DECL|field|processTree
 specifier|protected
@@ -1799,13 +1799,12 @@ name|toString
 argument_list|()
 return|;
 block|}
-comment|/**    * Get the cumulative virtual memory used by all the processes in the    * process-tree that are older than the passed in age.    *    * @param olderThanAge processes above this age are included in the    *                      memory addition    * @return cumulative virtual memory used by the process-tree in bytes,    *          for processes older than this age.    */
 annotation|@
 name|Override
-DECL|method|getCumulativeVmem (int olderThanAge)
+DECL|method|getVirtualMemorySize (int olderThanAge)
 specifier|public
 name|long
-name|getCumulativeVmem
+name|getVirtualMemorySize
 parameter_list|(
 name|int
 name|olderThanAge
@@ -1814,7 +1813,7 @@ block|{
 name|long
 name|total
 init|=
-literal|0
+name|UNAVAILABLE
 decl_stmt|;
 for|for
 control|(
@@ -1845,6 +1844,18 @@ name|olderThanAge
 operator|)
 condition|)
 block|{
+if|if
+condition|(
+name|total
+operator|==
+name|UNAVAILABLE
+condition|)
+block|{
+name|total
+operator|=
+literal|0
+expr_stmt|;
+block|}
 name|total
 operator|+=
 name|p
@@ -1858,13 +1869,12 @@ return|return
 name|total
 return|;
 block|}
-comment|/**    * Get the cumulative resident set size (rss) memory used by all the processes    * in the process-tree that are older than the passed in age.    *    * @param olderThanAge processes above this age are included in the    *                      memory addition    * @return cumulative rss memory used by the process-tree in bytes,    *          for processes older than this age. return 0 if it cannot be    *          calculated    */
 annotation|@
 name|Override
-DECL|method|getCumulativeRssmem (int olderThanAge)
+DECL|method|getRssMemorySize (int olderThanAge)
 specifier|public
 name|long
-name|getCumulativeRssmem
+name|getRssMemorySize
 parameter_list|(
 name|int
 name|olderThanAge
@@ -1878,7 +1888,7 @@ literal|0
 condition|)
 block|{
 return|return
-literal|0
+name|UNAVAILABLE
 return|;
 block|}
 if|if
@@ -1887,12 +1897,17 @@ name|smapsEnabled
 condition|)
 block|{
 return|return
-name|getSmapBasedCumulativeRssmem
+name|getSmapBasedRssMemorySize
 argument_list|(
 name|olderThanAge
 argument_list|)
 return|;
 block|}
+name|boolean
+name|isAvailable
+init|=
+literal|false
+decl_stmt|;
 name|long
 name|totalPages
 init|=
@@ -1934,20 +1949,28 @@ operator|.
 name|getRssmemPage
 argument_list|()
 expr_stmt|;
+name|isAvailable
+operator|=
+literal|true
+expr_stmt|;
 block|}
 block|}
 return|return
+name|isAvailable
+condition|?
 name|totalPages
 operator|*
 name|PAGE_SIZE
+else|:
+name|UNAVAILABLE
 return|;
 comment|// convert # pages to byte
 block|}
-comment|/**    * Get the cumulative resident set size (RSS) memory used by all the processes    * in the process-tree that are older than the passed in age. RSS is    * calculated based on SMAP information. Skip mappings with "r--s", "r-xs"    * permissions to get real RSS usage of the process.    *    * @param olderThanAge    *          processes above this age are included in the memory addition    * @return cumulative rss memory used by the process-tree in bytes, for    *         processes older than this age. return 0 if it cannot be calculated    */
-DECL|method|getSmapBasedCumulativeRssmem (int olderThanAge)
+comment|/**    * Get the resident set size (RSS) memory used by all the processes    * in the process-tree that are older than the passed in age. RSS is    * calculated based on SMAP information. Skip mappings with "r--s", "r-xs"    * permissions to get real RSS usage of the process.    *    * @param olderThanAge    *          processes above this age are included in the memory addition    * @return rss memory used by the process-tree in bytes, for    * processes older than this age. return {@link #UNAVAILABLE} if it cannot    * be calculated.    */
+DECL|method|getSmapBasedRssMemorySize (int olderThanAge)
 specifier|private
 name|long
-name|getSmapBasedCumulativeRssmem
+name|getSmapBasedRssMemorySize
 parameter_list|(
 name|int
 name|olderThanAge
@@ -1956,7 +1979,7 @@ block|{
 name|long
 name|total
 init|=
-literal|0
+name|UNAVAILABLE
 decl_stmt|;
 for|for
 control|(
@@ -2049,6 +2072,18 @@ argument_list|)
 condition|)
 block|{
 continue|continue;
+block|}
+if|if
+condition|(
+name|total
+operator|==
+name|UNAVAILABLE
+condition|)
+block|{
+name|total
+operator|=
+literal|0
+expr_stmt|;
 block|}
 name|total
 operator|+=
@@ -2153,15 +2188,19 @@ expr_stmt|;
 block|}
 block|}
 block|}
+if|if
+condition|(
 name|total
-operator|=
-operator|(
+operator|>
+literal|0
+condition|)
+block|{
 name|total
-operator|*
+operator|*=
 name|KB_TO_BYTES
-operator|)
 expr_stmt|;
 comment|// convert to bytes
+block|}
 name|LOG
 operator|.
 name|info
@@ -2176,7 +2215,6 @@ name|total
 return|;
 comment|// size
 block|}
-comment|/**    * Get the CPU time in millisecond used by all the processes in the    * process-tree since the process-tree created    *    * @return cumulative CPU time in millisecond since the process-tree created    *         return 0 if it cannot be calculated    */
 annotation|@
 name|Override
 DECL|method|getCumulativeCpuTime ()
@@ -2193,13 +2231,18 @@ literal|0
 condition|)
 block|{
 return|return
-literal|0
+name|UNAVAILABLE
 return|;
 block|}
 name|long
 name|incJiffies
 init|=
 literal|0
+decl_stmt|;
+name|boolean
+name|isAvailable
+init|=
+literal|false
 decl_stmt|;
 for|for
 control|(
@@ -2226,7 +2269,30 @@ operator|.
 name|getDtime
 argument_list|()
 expr_stmt|;
+comment|// data is available
+name|isAvailable
+operator|=
+literal|true
+expr_stmt|;
 block|}
+block|}
+if|if
+condition|(
+name|isAvailable
+condition|)
+block|{
+comment|// reset cpuTime to 0 instead of UNAVAILABLE
+if|if
+condition|(
+name|cpuTime
+operator|==
+name|UNAVAILABLE
+condition|)
+block|{
+name|cpuTime
+operator|=
+literal|0L
+expr_stmt|;
 block|}
 name|cpuTime
 operator|+=
@@ -2234,6 +2300,7 @@ name|incJiffies
 operator|*
 name|JIFFY_LENGTH_IN_MILLIS
 expr_stmt|;
+block|}
 return|return
 name|cpuTime
 return|;
@@ -4901,7 +4968,7 @@ literal|"Vmem usage in bytes "
 operator|+
 name|procfsBasedProcessTree
 operator|.
-name|getCumulativeVmem
+name|getVirtualMemorySize
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -4915,7 +4982,7 @@ literal|"Rss mem usage in bytes "
 operator|+
 name|procfsBasedProcessTree
 operator|.
-name|getCumulativeRssmem
+name|getRssMemorySize
 argument_list|()
 argument_list|)
 expr_stmt|;

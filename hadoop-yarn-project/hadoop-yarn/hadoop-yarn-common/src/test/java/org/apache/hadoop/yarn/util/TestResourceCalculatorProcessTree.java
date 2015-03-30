@@ -130,10 +130,10 @@ return|return
 literal|"Empty tree for testing"
 return|;
 block|}
-DECL|method|getCumulativeRssmem (int age)
+DECL|method|getRssMemorySize (int age)
 specifier|public
 name|long
-name|getCumulativeRssmem
+name|getRssMemorySize
 parameter_list|(
 name|int
 name|age
@@ -143,10 +143,10 @@ return|return
 literal|0
 return|;
 block|}
-DECL|method|getCumulativeVmem (int age)
+DECL|method|getVirtualMemorySize (int age)
 specifier|public
 name|long
-name|getCumulativeVmem
+name|getVirtualMemorySize
 parameter_list|(
 name|int
 name|age

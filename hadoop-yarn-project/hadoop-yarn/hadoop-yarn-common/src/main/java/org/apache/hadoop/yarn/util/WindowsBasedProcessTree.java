@@ -210,7 +210,7 @@ specifier|private
 name|long
 name|cpuTimeMs
 init|=
-literal|0
+name|UNAVAILABLE
 decl_stmt|;
 DECL|field|processTree
 specifier|private
@@ -864,10 +864,10 @@ return|;
 block|}
 annotation|@
 name|Override
-DECL|method|getCumulativeVmem (int olderThanAge)
+DECL|method|getVirtualMemorySize (int olderThanAge)
 specifier|public
 name|long
-name|getCumulativeVmem
+name|getVirtualMemorySize
 parameter_list|(
 name|int
 name|olderThanAge
@@ -876,7 +876,7 @@ block|{
 name|long
 name|total
 init|=
-literal|0
+name|UNAVAILABLE
 decl_stmt|;
 for|for
 control|(
@@ -906,6 +906,18 @@ name|olderThanAge
 operator|)
 condition|)
 block|{
+if|if
+condition|(
+name|total
+operator|==
+name|UNAVAILABLE
+condition|)
+block|{
+name|total
+operator|=
+literal|0
+expr_stmt|;
+block|}
 name|total
 operator|+=
 name|p
@@ -920,10 +932,10 @@ return|;
 block|}
 annotation|@
 name|Override
-DECL|method|getCumulativeRssmem (int olderThanAge)
+DECL|method|getRssMemorySize (int olderThanAge)
 specifier|public
 name|long
-name|getCumulativeRssmem
+name|getRssMemorySize
 parameter_list|(
 name|int
 name|olderThanAge
@@ -932,7 +944,7 @@ block|{
 name|long
 name|total
 init|=
-literal|0
+name|UNAVAILABLE
 decl_stmt|;
 for|for
 control|(
@@ -962,6 +974,18 @@ name|olderThanAge
 operator|)
 condition|)
 block|{
+if|if
+condition|(
+name|total
+operator|==
+name|UNAVAILABLE
+condition|)
+block|{
+name|total
+operator|=
+literal|0
+expr_stmt|;
+block|}
 name|total
 operator|+=
 name|p
@@ -993,6 +1017,18 @@ name|values
 argument_list|()
 control|)
 block|{
+if|if
+condition|(
+name|cpuTimeMs
+operator|==
+name|UNAVAILABLE
+condition|)
+block|{
+name|cpuTimeMs
+operator|=
+literal|0
+expr_stmt|;
+block|}
 name|cpuTimeMs
 operator|+=
 name|p

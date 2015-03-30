@@ -77,8 +77,9 @@ specifier|final
 name|int
 name|UNAVAILABLE
 init|=
-operator|-
-literal|1
+name|ResourceCalculatorProcessTree
+operator|.
+name|UNAVAILABLE
 decl_stmt|;
 DECL|field|MINIMUM_UPDATE_INTERVAL
 specifier|final

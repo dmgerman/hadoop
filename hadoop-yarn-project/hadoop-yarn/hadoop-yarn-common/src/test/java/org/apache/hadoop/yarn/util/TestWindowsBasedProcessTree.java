@@ -206,7 +206,7 @@ name|assertTrue
 argument_list|(
 name|pTree
 operator|.
-name|getCumulativeVmem
+name|getVirtualMemorySize
 argument_list|()
 operator|==
 literal|2048
@@ -216,7 +216,7 @@ name|assertTrue
 argument_list|(
 name|pTree
 operator|.
-name|getCumulativeVmem
+name|getVirtualMemorySize
 argument_list|(
 literal|0
 argument_list|)
@@ -228,7 +228,7 @@ name|assertTrue
 argument_list|(
 name|pTree
 operator|.
-name|getCumulativeRssmem
+name|getRssMemorySize
 argument_list|()
 operator|==
 literal|2048
@@ -238,7 +238,7 @@ name|assertTrue
 argument_list|(
 name|pTree
 operator|.
-name|getCumulativeRssmem
+name|getRssMemorySize
 argument_list|(
 literal|0
 argument_list|)
@@ -271,7 +271,7 @@ name|assertTrue
 argument_list|(
 name|pTree
 operator|.
-name|getCumulativeVmem
+name|getVirtualMemorySize
 argument_list|()
 operator|==
 literal|3072
@@ -281,7 +281,7 @@ name|assertTrue
 argument_list|(
 name|pTree
 operator|.
-name|getCumulativeVmem
+name|getVirtualMemorySize
 argument_list|(
 literal|1
 argument_list|)
@@ -293,7 +293,7 @@ name|assertTrue
 argument_list|(
 name|pTree
 operator|.
-name|getCumulativeRssmem
+name|getRssMemorySize
 argument_list|()
 operator|==
 literal|3072
@@ -303,7 +303,7 @@ name|assertTrue
 argument_list|(
 name|pTree
 operator|.
-name|getCumulativeRssmem
+name|getRssMemorySize
 argument_list|(
 literal|1
 argument_list|)
@@ -336,7 +336,7 @@ name|assertTrue
 argument_list|(
 name|pTree
 operator|.
-name|getCumulativeVmem
+name|getVirtualMemorySize
 argument_list|()
 operator|==
 literal|2048
@@ -346,7 +346,7 @@ name|assertTrue
 argument_list|(
 name|pTree
 operator|.
-name|getCumulativeVmem
+name|getVirtualMemorySize
 argument_list|(
 literal|2
 argument_list|)
@@ -358,7 +358,7 @@ name|assertTrue
 argument_list|(
 name|pTree
 operator|.
-name|getCumulativeRssmem
+name|getRssMemorySize
 argument_list|()
 operator|==
 literal|2048
@@ -368,7 +368,7 @@ name|assertTrue
 argument_list|(
 name|pTree
 operator|.
-name|getCumulativeRssmem
+name|getRssMemorySize
 argument_list|(
 literal|2
 argument_list|)

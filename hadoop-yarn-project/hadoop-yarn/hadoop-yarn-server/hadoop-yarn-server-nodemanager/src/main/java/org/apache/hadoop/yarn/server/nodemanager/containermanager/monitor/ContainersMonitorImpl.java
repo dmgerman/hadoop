@@ -1508,7 +1508,7 @@ name|currentMemUsage
 init|=
 name|pTree
 operator|.
-name|getCumulativeVmem
+name|getVirtualMemorySize
 argument_list|()
 decl_stmt|;
 comment|// as processes begin with an age 1, we want to see if there are processes
@@ -1518,7 +1518,7 @@ name|curMemUsageOfAgedProcesses
 init|=
 name|pTree
 operator|.
-name|getCumulativeVmem
+name|getVirtualMemorySize
 argument_list|(
 literal|1
 argument_list|)
@@ -2027,7 +2027,7 @@ name|currentVmemUsage
 init|=
 name|pTree
 operator|.
-name|getCumulativeVmem
+name|getVirtualMemorySize
 argument_list|()
 decl_stmt|;
 name|long
@@ -2035,7 +2035,7 @@ name|currentPmemUsage
 init|=
 name|pTree
 operator|.
-name|getCumulativeRssmem
+name|getRssMemorySize
 argument_list|()
 decl_stmt|;
 comment|// if machine has 6 cores and 3 are used,
@@ -2083,7 +2083,7 @@ name|curMemUsageOfAgedProcesses
 init|=
 name|pTree
 operator|.
-name|getCumulativeVmem
+name|getVirtualMemorySize
 argument_list|(
 literal|1
 argument_list|)
@@ -2093,7 +2093,7 @@ name|curRssMemUsageOfAgedProcesses
 init|=
 name|pTree
 operator|.
-name|getCumulativeRssmem
+name|getRssMemorySize
 argument_list|(
 literal|1
 argument_list|)
