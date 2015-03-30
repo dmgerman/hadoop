@@ -76,7 +76,27 @@ name|java
 operator|.
 name|util
 operator|.
+name|ArrayList
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
 name|Arrays
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
+name|Enumeration
 import|;
 end_import
 
@@ -1024,10 +1044,10 @@ block|}
 block|}
 annotation|@
 name|Test
-DECL|method|testInit ()
+DECL|method|testFallbackToRandomSecretProvider ()
 specifier|public
 name|void
-name|testInit
+name|testFallbackToRandomSecretProvider
 parameter_list|()
 throws|throws
 name|Exception
@@ -1115,9 +1135,7 @@ name|thenReturn
 argument_list|(
 operator|new
 name|Vector
-argument_list|<
-name|String
-argument_list|>
+argument_list|<>
 argument_list|(
 name|Arrays
 operator|.
@@ -1268,13 +1286,25 @@ name|destroy
 argument_list|()
 expr_stmt|;
 block|}
+block|}
+annotation|@
+name|Test
+DECL|method|testInit ()
+specifier|public
+name|void
+name|testInit
+parameter_list|()
+throws|throws
+name|Exception
+block|{
 comment|// custom secret as inline
+name|AuthenticationFilter
 name|filter
-operator|=
+init|=
 operator|new
 name|AuthenticationFilter
 argument_list|()
-expr_stmt|;
+decl_stmt|;
 try|try
 block|{
 name|FilterConfig
@@ -1314,25 +1344,6 @@ name|when
 argument_list|(
 name|config
 operator|.
-name|getInitParameter
-argument_list|(
-name|AuthenticationFilter
-operator|.
-name|SIGNATURE_SECRET
-argument_list|)
-argument_list|)
-operator|.
-name|thenReturn
-argument_list|(
-literal|"secret"
-argument_list|)
-expr_stmt|;
-name|Mockito
-operator|.
-name|when
-argument_list|(
-name|config
-operator|.
 name|getInitParameterNames
 argument_list|()
 argument_list|)
@@ -1341,9 +1352,7 @@ name|thenReturn
 argument_list|(
 operator|new
 name|Vector
-argument_list|<
-name|String
-argument_list|>
+argument_list|<>
 argument_list|(
 name|Arrays
 operator|.
@@ -1352,10 +1361,6 @@ argument_list|(
 name|AuthenticationFilter
 operator|.
 name|AUTH_TYPE
-argument_list|,
-name|AuthenticationFilter
-operator|.
-name|SIGNATURE_SECRET
 argument_list|)
 argument_list|)
 operator|.
