@@ -7709,8 +7709,10 @@ argument_list|)
 expr_stmt|;
 block|}
 DECL|method|getAllBpOs ()
+name|List
+argument_list|<
 name|BPOfferService
-index|[]
+argument_list|>
 name|getAllBpOs
 parameter_list|()
 block|{
@@ -7732,7 +7734,8 @@ operator|.
 name|getAllNamenodeThreads
 argument_list|()
 operator|.
-name|length
+name|size
+argument_list|()
 return|;
 block|}
 comment|/**    * Initializes the {@link #data}. The initialization is done only once, when    * handshake with the the first namenode is completed.    */
@@ -9059,21 +9062,26 @@ expr_stmt|;
 block|}
 block|}
 block|}
-comment|// We need to make a copy of the original blockPoolManager#offerServices to
-comment|// make sure blockPoolManager#shutDownAll() can still access all the
-comment|// BPOfferServices, since after setting DataNode#shouldRun to false the
-comment|// offerServices may be modified.
+name|List
+argument_list|<
 name|BPOfferService
-index|[]
+argument_list|>
 name|bposArray
 init|=
+operator|(
 name|this
 operator|.
 name|blockPoolManager
 operator|==
 literal|null
+operator|)
 condition|?
-literal|null
+operator|new
+name|ArrayList
+argument_list|<
+name|BPOfferService
+argument_list|>
+argument_list|()
 else|:
 name|this
 operator|.
@@ -11738,15 +11746,9 @@ name|blockPoolManager
 operator|.
 name|getAllNamenodeThreads
 argument_list|()
-operator|!=
-literal|null
-operator|&&
-name|blockPoolManager
 operator|.
-name|getAllNamenodeThreads
+name|size
 argument_list|()
-operator|.
-name|length
 operator|==
 literal|0
 condition|)

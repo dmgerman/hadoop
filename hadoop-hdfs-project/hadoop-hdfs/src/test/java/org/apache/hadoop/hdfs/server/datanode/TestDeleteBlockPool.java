@@ -523,7 +523,8 @@ operator|.
 name|getAllBpOs
 argument_list|()
 operator|.
-name|length
+name|size
+argument_list|()
 argument_list|)
 expr_stmt|;
 try|try
@@ -722,7 +723,8 @@ operator|.
 name|getAllBpOs
 argument_list|()
 operator|.
-name|length
+name|size
+argument_list|()
 argument_list|)
 expr_stmt|;
 name|verifyBlockPoolDirectories
@@ -1120,7 +1122,8 @@ operator|.
 name|getAllBpOs
 argument_list|()
 operator|.
-name|length
+name|size
+argument_list|()
 argument_list|)
 expr_stmt|;
 name|DFSAdmin

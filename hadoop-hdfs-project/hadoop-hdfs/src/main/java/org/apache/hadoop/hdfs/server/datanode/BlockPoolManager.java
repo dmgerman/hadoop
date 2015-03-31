@@ -56,7 +56,7 @@ name|java
 operator|.
 name|util
 operator|.
-name|ArrayList
+name|*
 import|;
 end_import
 
@@ -66,37 +66,9 @@ name|java
 operator|.
 name|util
 operator|.
-name|Iterator
-import|;
-end_import
-
-begin_import
-import|import
-name|java
+name|concurrent
 operator|.
-name|util
-operator|.
-name|List
-import|;
-end_import
-
-begin_import
-import|import
-name|java
-operator|.
-name|util
-operator|.
-name|Map
-import|;
-end_import
-
-begin_import
-import|import
-name|java
-operator|.
-name|util
-operator|.
-name|Set
+name|CopyOnWriteArrayList
 import|;
 end_import
 
@@ -319,9 +291,9 @@ name|BPOfferService
 argument_list|>
 name|offerServices
 init|=
-name|Lists
-operator|.
-name|newArrayList
+operator|new
+name|CopyOnWriteArrayList
+argument_list|<>
 argument_list|()
 decl_stmt|;
 DECL|field|dn
@@ -411,33 +383,22 @@ name|bpos
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Returns the array of BPOfferService objects.     * Caution: The BPOfferService returned could be shutdown any time.    */
+comment|/**    * Returns a list of BPOfferService objects. The underlying list    * implementation is a CopyOnWriteArrayList so it can be safely    * iterated while BPOfferServices are being added or removed.    *    * Caution: The BPOfferService returned could be shutdown any time.    */
 DECL|method|getAllNamenodeThreads ()
 specifier|synchronized
+name|List
+argument_list|<
 name|BPOfferService
-index|[]
+argument_list|>
 name|getAllNamenodeThreads
 parameter_list|()
 block|{
-name|BPOfferService
-index|[]
-name|bposArray
-init|=
-operator|new
-name|BPOfferService
-index|[
-name|offerServices
-operator|.
-name|size
-argument_list|()
-index|]
-decl_stmt|;
 return|return
-name|offerServices
+name|Collections
 operator|.
-name|toArray
+name|unmodifiableList
 argument_list|(
-name|bposArray
+name|offerServices
 argument_list|)
 return|;
 block|}
@@ -581,30 +542,25 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-DECL|method|shutDownAll (BPOfferService[] bposArray)
+DECL|method|shutDownAll (List<BPOfferService> bposList)
 name|void
 name|shutDownAll
 parameter_list|(
+name|List
+argument_list|<
 name|BPOfferService
-index|[]
-name|bposArray
+argument_list|>
+name|bposList
 parameter_list|)
 throws|throws
 name|InterruptedException
-block|{
-if|if
-condition|(
-name|bposArray
-operator|!=
-literal|null
-condition|)
 block|{
 for|for
 control|(
 name|BPOfferService
 name|bpos
 range|:
-name|bposArray
+name|bposList
 control|)
 block|{
 name|bpos
@@ -620,7 +576,7 @@ control|(
 name|BPOfferService
 name|bpos
 range|:
-name|bposArray
+name|bposList
 control|)
 block|{
 name|bpos
@@ -628,7 +584,6 @@ operator|.
 name|join
 argument_list|()
 expr_stmt|;
-block|}
 block|}
 block|}
 DECL|method|startAll ()

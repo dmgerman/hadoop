@@ -1567,9 +1567,11 @@ name|dn
 operator|.
 name|getAllBpOs
 argument_list|()
-index|[
+operator|.
+name|get
+argument_list|(
 literal|0
-index|]
+argument_list|)
 operator|.
 name|triggerHeartbeatForTests
 argument_list|()

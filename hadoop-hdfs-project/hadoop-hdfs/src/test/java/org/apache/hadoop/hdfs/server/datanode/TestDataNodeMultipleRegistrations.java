@@ -765,9 +765,11 @@ name|dn
 operator|.
 name|getAllBpOs
 argument_list|()
-index|[
+operator|.
+name|get
+argument_list|(
 literal|0
-index|]
+argument_list|)
 decl_stmt|;
 name|BPOfferService
 name|bpos2
@@ -776,9 +778,11 @@ name|dn
 operator|.
 name|getAllBpOs
 argument_list|()
-index|[
+operator|.
+name|get
+argument_list|(
 literal|1
-index|]
+argument_list|)
 decl_stmt|;
 comment|// The order of bpos is not guaranteed, so fix the order
 if|if
@@ -1229,9 +1233,11 @@ name|dn
 operator|.
 name|getAllBpOs
 argument_list|()
-index|[
+operator|.
+name|get
+argument_list|(
 literal|0
-index|]
+argument_list|)
 decl_stmt|;
 name|bpos1
 operator|.
@@ -1292,7 +1298,8 @@ operator|.
 name|getAllBpOs
 argument_list|()
 operator|.
-name|length
+name|size
+argument_list|()
 argument_list|)
 expr_stmt|;
 name|cluster
@@ -1371,8 +1378,10 @@ argument_list|(
 literal|0
 argument_list|)
 decl_stmt|;
+name|List
+argument_list|<
 name|BPOfferService
-index|[]
+argument_list|>
 name|bposs
 init|=
 name|dn
@@ -1388,7 +1397,8 @@ literal|"dn bpos len (should be 2):"
 operator|+
 name|bposs
 operator|.
-name|length
+name|size
+argument_list|()
 argument_list|)
 expr_stmt|;
 name|Assert
@@ -1399,7 +1409,8 @@ literal|"should've registered with two namenodes"
 argument_list|,
 name|bposs
 operator|.
-name|length
+name|size
+argument_list|()
 argument_list|,
 literal|2
 argument_list|)
@@ -1437,7 +1448,8 @@ literal|"dn bpos len (should be 3):"
 operator|+
 name|bposs
 operator|.
-name|length
+name|size
+argument_list|()
 argument_list|)
 expr_stmt|;
 name|Assert
@@ -1448,7 +1460,8 @@ literal|"should've registered with three namenodes"
 argument_list|,
 name|bposs
 operator|.
-name|length
+name|size
+argument_list|()
 argument_list|,
 literal|3
 argument_list|)
@@ -1512,7 +1525,8 @@ literal|"dn bpos len (still should be 3):"
 operator|+
 name|bposs
 operator|.
-name|length
+name|size
+argument_list|()
 argument_list|)
 expr_stmt|;
 name|Assert
@@ -1525,7 +1539,8 @@ literal|3
 argument_list|,
 name|bposs
 operator|.
-name|length
+name|size
+argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
@@ -1726,7 +1741,8 @@ operator|.
 name|getAllBpOs
 argument_list|()
 operator|.
-name|length
+name|size
+argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
@@ -1889,7 +1905,8 @@ operator|.
 name|getAllBpOs
 argument_list|()
 operator|.
-name|length
+name|size
+argument_list|()
 argument_list|)
 expr_stmt|;
 name|DataNodeProperties

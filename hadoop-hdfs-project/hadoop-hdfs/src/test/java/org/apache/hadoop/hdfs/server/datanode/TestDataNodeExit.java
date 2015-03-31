@@ -80,6 +80,16 @@ end_import
 
 begin_import
 import|import
+name|java
+operator|.
+name|util
+operator|.
+name|List
+import|;
+end_import
+
+begin_import
+import|import
 name|org
 operator|.
 name|apache
@@ -338,8 +348,10 @@ parameter_list|)
 throws|throws
 name|Exception
 block|{
+name|List
+argument_list|<
 name|BPOfferService
-index|[]
+argument_list|>
 name|bpoList
 init|=
 name|dn
@@ -372,10 +384,12 @@ literal|0
 condition|)
 block|{
 name|bpoList
-index|[
+operator|.
+name|get
+argument_list|(
 name|index
 operator|--
-index|]
+argument_list|)
 operator|.
 name|stop
 argument_list|()

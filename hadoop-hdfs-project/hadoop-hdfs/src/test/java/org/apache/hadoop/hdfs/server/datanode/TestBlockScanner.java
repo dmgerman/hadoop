@@ -1205,9 +1205,11 @@ literal|0
 decl_stmt|;
 try|try
 block|{
+name|List
+argument_list|<
 name|BPOfferService
+argument_list|>
 name|bpos
-index|[]
 init|=
 name|ctx
 operator|.
@@ -1222,7 +1224,8 @@ literal|1
 argument_list|,
 name|bpos
 operator|.
-name|length
+name|size
+argument_list|()
 argument_list|)
 expr_stmt|;
 name|BlockIterator

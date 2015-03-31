@@ -660,9 +660,11 @@ name|datanode
 operator|.
 name|getAllBpOs
 argument_list|()
-index|[
+operator|.
+name|get
+argument_list|(
 literal|0
-index|]
+argument_list|)
 operator|.
 name|getBPServiceActors
 argument_list|()
