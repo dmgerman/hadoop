@@ -388,12 +388,7 @@ expr_stmt|;
 name|resourceManager
 operator|=
 operator|new
-name|ResourceManager
-argument_list|()
-expr_stmt|;
-name|resourceManager
-operator|.
-name|init
+name|MockRM
 argument_list|(
 name|conf
 argument_list|)

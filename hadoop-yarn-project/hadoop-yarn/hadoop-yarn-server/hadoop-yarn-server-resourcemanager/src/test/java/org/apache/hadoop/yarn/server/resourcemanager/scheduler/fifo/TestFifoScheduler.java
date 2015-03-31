@@ -1507,12 +1507,6 @@ parameter_list|()
 throws|throws
 name|Exception
 block|{
-name|resourceManager
-operator|=
-operator|new
-name|ResourceManager
-argument_list|()
-expr_stmt|;
 name|conf
 operator|=
 operator|new
@@ -1537,8 +1531,9 @@ name|class
 argument_list|)
 expr_stmt|;
 name|resourceManager
-operator|.
-name|init
+operator|=
+operator|new
+name|MockRM
 argument_list|(
 name|conf
 argument_list|)
