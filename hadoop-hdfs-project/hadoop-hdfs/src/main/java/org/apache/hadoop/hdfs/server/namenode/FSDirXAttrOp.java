@@ -718,9 +718,13 @@ name|isEmpty
 argument_list|()
 condition|)
 block|{
-return|return
-literal|null
-return|;
+throw|throw
+operator|new
+name|IOException
+argument_list|(
+literal|"At least one of the attributes provided was not found."
+argument_list|)
+throw|;
 block|}
 name|List
 argument_list|<
