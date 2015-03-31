@@ -1396,6 +1396,21 @@ operator|+
 name|maxRes
 argument_list|)
 expr_stmt|;
+name|LOG
+operator|.
+name|debug
+argument_list|(
+literal|"The updated fairshare for "
+operator|+
+name|getName
+argument_list|()
+operator|+
+literal|" is "
+operator|+
+name|getFairShare
+argument_list|()
+argument_list|)
+expr_stmt|;
 block|}
 block|}
 DECL|method|updateDemandForApp (FSAppAttempt sched, Resource maxRes)
@@ -1522,6 +1537,11 @@ literal|" offered to queue: "
 operator|+
 name|getName
 argument_list|()
+operator|+
+literal|" fairShare: "
+operator|+
+name|getFairShare
+argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
@@ -1631,6 +1651,31 @@ argument_list|()
 argument_list|)
 condition|)
 block|{
+if|if
+condition|(
+name|LOG
+operator|.
+name|isDebugEnabled
+argument_list|()
+condition|)
+block|{
+name|LOG
+operator|.
+name|debug
+argument_list|(
+literal|"Assigned container in queue:"
+operator|+
+name|getName
+argument_list|()
+operator|+
+literal|" "
+operator|+
+literal|"container:"
+operator|+
+name|assigned
+argument_list|)
+expr_stmt|;
+block|}
 break|break;
 block|}
 block|}

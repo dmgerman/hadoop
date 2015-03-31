@@ -2981,6 +2981,24 @@ argument_list|()
 argument_list|)
 condition|)
 block|{
+if|if
+condition|(
+name|LOG
+operator|.
+name|isDebugEnabled
+argument_list|()
+condition|)
+block|{
+name|LOG
+operator|.
+name|debug
+argument_list|(
+literal|"Skipping allocation because maxAMShare limit would "
+operator|+
+literal|"be exceeded"
+argument_list|)
+expr_stmt|;
+block|}
 return|return
 name|Resources
 operator|.
