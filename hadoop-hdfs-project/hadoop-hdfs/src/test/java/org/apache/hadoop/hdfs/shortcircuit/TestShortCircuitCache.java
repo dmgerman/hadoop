@@ -1553,7 +1553,7 @@ name|Test
 argument_list|(
 name|timeout
 operator|=
-literal|60000
+literal|100000
 argument_list|)
 DECL|method|testExpiry ()
 specifier|public
