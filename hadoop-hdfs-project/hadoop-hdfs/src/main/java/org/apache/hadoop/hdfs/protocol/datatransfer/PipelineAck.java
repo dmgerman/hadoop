@@ -1180,6 +1180,25 @@ name|header
 argument_list|)
 return|;
 block|}
+DECL|method|getECNFromHeader (int header)
+specifier|public
+specifier|static
+name|ECN
+name|getECNFromHeader
+parameter_list|(
+name|int
+name|header
+parameter_list|)
+block|{
+return|return
+name|StatusFormat
+operator|.
+name|getECN
+argument_list|(
+name|header
+argument_list|)
+return|;
+block|}
 DECL|method|setStatusForHeader (int old, Status status)
 specifier|public
 specifier|static
