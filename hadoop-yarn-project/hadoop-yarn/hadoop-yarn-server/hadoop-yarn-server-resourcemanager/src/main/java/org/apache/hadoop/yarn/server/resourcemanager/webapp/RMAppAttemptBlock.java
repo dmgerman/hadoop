@@ -1351,6 +1351,14 @@ argument_list|)
 argument_list|)
 condition|)
 block|{
+name|RMAppAttemptMetrics
+name|metrics
+init|=
+name|attempt
+operator|.
+name|getRMAppAttemptMetrics
+argument_list|()
+decl_stmt|;
 name|DIV
 argument_list|<
 name|Hamlet
@@ -1388,7 +1396,16 @@ name|_
 argument_list|(
 literal|"Application Attempt Headroom : "
 argument_list|,
-literal|0
+name|metrics
+operator|==
+literal|null
+condition|?
+literal|"N/A"
+else|:
+name|metrics
+operator|.
+name|getApplicationAttemptHeadroom
+argument_list|()
 argument_list|)
 expr_stmt|;
 name|pdiv
