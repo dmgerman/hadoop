@@ -143,10 +143,46 @@ return|return
 literal|0
 return|;
 block|}
+annotation|@
+name|SuppressWarnings
+argument_list|(
+literal|"deprecation"
+argument_list|)
+DECL|method|getCumulativeRssmem (int age)
+specifier|public
+name|long
+name|getCumulativeRssmem
+parameter_list|(
+name|int
+name|age
+parameter_list|)
+block|{
+return|return
+literal|0
+return|;
+block|}
 DECL|method|getVirtualMemorySize (int age)
 specifier|public
 name|long
 name|getVirtualMemorySize
+parameter_list|(
+name|int
+name|age
+parameter_list|)
+block|{
+return|return
+literal|0
+return|;
+block|}
+annotation|@
+name|SuppressWarnings
+argument_list|(
+literal|"deprecation"
+argument_list|)
+DECL|method|getCumulativeVmem (int age)
+specifier|public
+name|long
+name|getCumulativeVmem
 parameter_list|(
 name|int
 name|age

@@ -215,6 +215,22 @@ literal|0
 argument_list|)
 return|;
 block|}
+comment|/**    * Get the virtual memory used by all the processes in the    * process-tree.    *    * @return virtual memory used by the process-tree in bytes,    * {@link #UNAVAILABLE} if it cannot be calculated.    */
+annotation|@
+name|Deprecated
+DECL|method|getCumulativeVmem ()
+specifier|public
+name|long
+name|getCumulativeVmem
+parameter_list|()
+block|{
+return|return
+name|getCumulativeVmem
+argument_list|(
+literal|0
+argument_list|)
+return|;
+block|}
 comment|/**    * Get the resident set size (rss) memory used by all the processes    * in the process-tree.    *    * @return rss memory used by the process-tree in bytes,    * {@link #UNAVAILABLE} if it cannot be calculated.    */
 DECL|method|getRssMemorySize ()
 specifier|public
@@ -224,6 +240,22 @@ parameter_list|()
 block|{
 return|return
 name|getRssMemorySize
+argument_list|(
+literal|0
+argument_list|)
+return|;
+block|}
+comment|/**    * Get the resident set size (rss) memory used by all the processes    * in the process-tree.    *    * @return rss memory used by the process-tree in bytes,    * {@link #UNAVAILABLE} if it cannot be calculated.    */
+annotation|@
+name|Deprecated
+DECL|method|getCumulativeRssmem ()
+specifier|public
+name|long
+name|getCumulativeRssmem
+parameter_list|()
+block|{
+return|return
+name|getCumulativeRssmem
 argument_list|(
 literal|0
 argument_list|)
@@ -243,11 +275,43 @@ return|return
 name|UNAVAILABLE
 return|;
 block|}
+comment|/**    * Get the virtual memory used by all the processes in the    * process-tree that are older than the passed in age.    *    * @param olderThanAge processes above this age are included in the    *                     memory addition    * @return virtual memory used by the process-tree in bytes for    * processes older than the specified age, {@link #UNAVAILABLE} if it    * cannot be calculated.    */
+annotation|@
+name|Deprecated
+DECL|method|getCumulativeVmem (int olderThanAge)
+specifier|public
+name|long
+name|getCumulativeVmem
+parameter_list|(
+name|int
+name|olderThanAge
+parameter_list|)
+block|{
+return|return
+name|UNAVAILABLE
+return|;
+block|}
 comment|/**    * Get the resident set size (rss) memory used by all the processes    * in the process-tree that are older than the passed in age.    *    * @param olderThanAge processes above this age are included in the    *                     memory addition    * @return rss memory used by the process-tree in bytes for    * processes older than specified age, {@link #UNAVAILABLE} if it cannot be    * calculated.    */
 DECL|method|getRssMemorySize (int olderThanAge)
 specifier|public
 name|long
 name|getRssMemorySize
+parameter_list|(
+name|int
+name|olderThanAge
+parameter_list|)
+block|{
+return|return
+name|UNAVAILABLE
+return|;
+block|}
+comment|/**    * Get the resident set size (rss) memory used by all the processes    * in the process-tree that are older than the passed in age.    *    * @param olderThanAge processes above this age are included in the    *                     memory addition    * @return rss memory used by the process-tree in bytes for    * processes older than specified age, {@link #UNAVAILABLE} if it cannot be    * calculated.    */
+annotation|@
+name|Deprecated
+DECL|method|getCumulativeRssmem (int olderThanAge)
+specifier|public
+name|long
+name|getCumulativeRssmem
 parameter_list|(
 name|int
 name|olderThanAge
@@ -288,8 +352,6 @@ name|checkPidPgrpidForMatch
 parameter_list|()
 function_decl|;
 comment|/**    * Create the ResourceCalculatorProcessTree rooted to specified process     * from the class name and configure it. If class name is null, this method    * will try and return a process tree plugin available for this system.    *    * @param pid process pid of the root of the process tree    * @param clazz class-name    * @param conf configure the plugin with this.    *    * @return ResourceCalculatorProcessTree or null if ResourceCalculatorPluginTree    *         is not available for this system.    */
-annotation|@
-name|Private
 DECL|method|getResourceCalculatorProcessTree ( String pid, Class<? extends ResourceCalculatorProcessTree> clazz, Configuration conf)
 specifier|public
 specifier|static
