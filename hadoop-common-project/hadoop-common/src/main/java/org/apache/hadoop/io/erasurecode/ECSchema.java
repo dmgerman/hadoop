@@ -270,12 +270,12 @@ name|options
 operator|.
 name|get
 argument_list|(
-name|CHUNK_SIZE_KEY
+name|NUM_DATA_UNITS_KEY
 argument_list|)
 operator|+
 literal|" for "
 operator|+
-name|CHUNK_SIZE_KEY
+name|NUM_DATA_UNITS_KEY
 operator|+
 literal|" is found. It should be an integer"
 argument_list|)
@@ -325,12 +325,12 @@ name|options
 operator|.
 name|get
 argument_list|(
-name|CHUNK_SIZE_KEY
+name|NUM_PARITY_UNITS_KEY
 argument_list|)
 operator|+
 literal|" for "
 operator|+
-name|CHUNK_SIZE_KEY
+name|NUM_PARITY_UNITS_KEY
 operator|+
 literal|" is found. It should be an integer"
 argument_list|)
