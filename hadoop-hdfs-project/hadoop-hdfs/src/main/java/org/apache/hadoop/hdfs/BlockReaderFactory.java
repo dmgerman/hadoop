@@ -1445,13 +1445,13 @@ name|LOG
 operator|.
 name|debug
 argument_list|(
-name|this
-operator|+
-literal|": can't construct "
+literal|"{}: can't construct "
 operator|+
 literal|"BlockReaderLocalLegacy because "
 operator|+
 literal|"disableLegacyBlockReaderLocal is set."
+argument_list|,
+name|this
 argument_list|)
 expr_stmt|;
 return|return
@@ -1641,15 +1641,13 @@ name|LOG
 operator|.
 name|debug
 argument_list|(
+literal|"{}: {} is not usable for short circuit; "
+operator|+
+literal|"giving up on BlockReaderLocal."
+argument_list|,
 name|this
-operator|+
-literal|": "
-operator|+
+argument_list|,
 name|pathInfo
-operator|+
-literal|" is not "
-operator|+
-literal|"usable for short circuit; giving up on BlockReaderLocal."
 argument_list|)
 expr_stmt|;
 return|return
@@ -1747,35 +1745,26 @@ operator|==
 literal|null
 condition|)
 block|{
-if|if
-condition|(
-name|LOG
-operator|.
-name|isTraceEnabled
-argument_list|()
-condition|)
-block|{
 name|PerformanceAdvisory
 operator|.
 name|LOG
 operator|.
 name|debug
 argument_list|(
-name|this
-operator|+
-literal|": failed to get "
+literal|"{}: failed to get "
 operator|+
 literal|"ShortCircuitReplica. Cannot construct "
 operator|+
-literal|"BlockReaderLocal via "
-operator|+
+literal|"BlockReaderLocal via {}"
+argument_list|,
+name|this
+argument_list|,
 name|pathInfo
 operator|.
 name|getPath
 argument_list|()
 argument_list|)
 expr_stmt|;
-block|}
 return|return
 literal|null
 return|;
@@ -2685,15 +2674,15 @@ name|LOG
 operator|.
 name|debug
 argument_list|(
-name|this
+literal|"{}: not trying to create a "
 operator|+
-literal|": not trying to create a "
-operator|+
-literal|"remote block reader because the UNIX domain socket at "
-operator|+
-name|pathInfo
+literal|"remote block reader because the UNIX domain socket at {}"
 operator|+
 literal|" is not usable."
+argument_list|,
+name|this
+argument_list|,
+name|pathInfo
 argument_list|)
 expr_stmt|;
 return|return

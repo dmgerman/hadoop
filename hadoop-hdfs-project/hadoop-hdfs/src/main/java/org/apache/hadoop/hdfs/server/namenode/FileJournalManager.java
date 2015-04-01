@@ -1743,6 +1743,14 @@ name|getCurrentDir
 argument_list|()
 argument_list|)
 decl_stmt|;
+if|if
+condition|(
+name|LOG
+operator|.
+name|isDebugEnabled
+argument_list|()
+condition|)
+block|{
 name|LOG
 operator|.
 name|debug
@@ -1771,6 +1779,7 @@ operator|+
 literal|" candidate file(s)"
 argument_list|)
 expr_stmt|;
+block|}
 name|addStreamsToCollectionFromFiles
 argument_list|(
 name|elfs
@@ -1829,6 +1838,14 @@ operator|!
 name|inProgressOk
 condition|)
 block|{
+if|if
+condition|(
+name|LOG
+operator|.
+name|isDebugEnabled
+argument_list|()
+condition|)
+block|{
 name|LOG
 operator|.
 name|debug
@@ -1842,6 +1859,7 @@ operator|+
 literal|"and we are ignoring in-progress logs."
 argument_list|)
 expr_stmt|;
+block|}
 continue|continue;
 block|}
 try|try
@@ -1892,6 +1910,14 @@ name|HdfsConstants
 operator|.
 name|INVALID_TXID
 assert|;
+if|if
+condition|(
+name|LOG
+operator|.
+name|isDebugEnabled
+argument_list|()
+condition|)
+block|{
 name|LOG
 operator|.
 name|debug
@@ -1913,6 +1939,7 @@ operator|+
 name|fromTxId
 argument_list|)
 expr_stmt|;
+block|}
 continue|continue;
 block|}
 name|EditLogFileInputStream

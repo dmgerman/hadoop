@@ -1472,6 +1472,14 @@ condition|(
 name|deferred
 condition|)
 block|{
+if|if
+condition|(
+name|LOG
+operator|.
+name|isDebugEnabled
+argument_list|()
+condition|)
+block|{
 name|LOG
 operator|.
 name|debug
@@ -1490,6 +1498,7 @@ name|revocationPollingMs
 argument_list|)
 argument_list|)
 expr_stmt|;
+block|}
 name|deferredUncachingExecutor
 operator|.
 name|schedule

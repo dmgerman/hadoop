@@ -2015,6 +2015,14 @@ operator|!=
 literal|null
 condition|)
 block|{
+if|if
+condition|(
+name|LOG
+operator|.
+name|isDebugEnabled
+argument_list|()
+condition|)
+block|{
 name|LOG
 operator|.
 name|debug
@@ -2026,6 +2034,7 @@ operator|+
 name|purgeReason
 argument_list|)
 expr_stmt|;
+block|}
 name|purge
 argument_list|(
 name|replica

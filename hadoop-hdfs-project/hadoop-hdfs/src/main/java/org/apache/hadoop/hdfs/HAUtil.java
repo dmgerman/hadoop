@@ -1504,6 +1504,14 @@ argument_list|,
 name|specificToken
 argument_list|)
 expr_stmt|;
+if|if
+condition|(
+name|LOG
+operator|.
+name|isDebugEnabled
+argument_list|()
+condition|)
+block|{
 name|LOG
 operator|.
 name|debug
@@ -1519,7 +1527,16 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
+block|}
 else|else
+block|{
+if|if
+condition|(
+name|LOG
+operator|.
+name|isDebugEnabled
+argument_list|()
+condition|)
 block|{
 name|LOG
 operator|.
@@ -1530,6 +1547,7 @@ operator|+
 name|haUri
 argument_list|)
 expr_stmt|;
+block|}
 block|}
 block|}
 comment|/**    * Get the internet address of the currently-active NN. This should rarely be    * used, since callers of this method who connect directly to the NN using the    * resulting InetSocketAddress will not be able to connect to the active NN if    * a failover were to occur after this method has been called.    *     * @param fs the file system to get the active address of.    * @return the internet address of the currently-active NN.    * @throws IOException if an error occurs while resolving the active NN.    */
