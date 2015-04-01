@@ -559,7 +559,7 @@ literal|"ClientNamenodeProtocol#complete"
 block|,
 literal|"newStreamForCreate"
 block|,
-literal|"DFSOutputStream#writeChunk"
+literal|"DFSOutputStream#write"
 block|,
 literal|"DFSOutputStream#close"
 block|,
@@ -658,7 +658,7 @@ literal|"ClientNamenodeProtocol#complete"
 block|,
 literal|"newStreamForCreate"
 block|,
-literal|"DFSOutputStream#writeChunk"
+literal|"DFSOutputStream#write"
 block|,
 literal|"DFSOutputStream#close"
 block|,     }

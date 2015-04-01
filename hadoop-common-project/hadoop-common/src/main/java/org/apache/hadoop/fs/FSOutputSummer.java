@@ -60,6 +60,30 @@ end_import
 
 begin_import
 import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|htrace
+operator|.
+name|NullScope
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|htrace
+operator|.
+name|TraceScope
+import|;
+end_import
+
+begin_import
+import|import
 name|java
 operator|.
 name|io
@@ -646,6 +670,18 @@ name|getChecksumSize
 argument_list|()
 return|;
 block|}
+DECL|method|createWriteTraceScope ()
+specifier|protected
+name|TraceScope
+name|createWriteTraceScope
+parameter_list|()
+block|{
+return|return
+name|NullScope
+operator|.
+name|INSTANCE
+return|;
+block|}
 comment|/** Generate checksums for the given data chunks and output chunks& checksums    * to the underlying output stream.    */
 DECL|method|writeChecksumChunks (byte b[], int off, int len)
 specifier|private
@@ -680,6 +716,14 @@ argument_list|,
 literal|0
 argument_list|)
 expr_stmt|;
+name|TraceScope
+name|scope
+init|=
+name|createWriteTraceScope
+argument_list|()
+decl_stmt|;
+try|try
+block|{
 for|for
 control|(
 name|int
@@ -746,6 +790,15 @@ argument_list|,
 name|getChecksumSize
 argument_list|()
 argument_list|)
+expr_stmt|;
+block|}
+block|}
+finally|finally
+block|{
+name|scope
+operator|.
+name|close
+argument_list|()
 expr_stmt|;
 block|}
 block|}
