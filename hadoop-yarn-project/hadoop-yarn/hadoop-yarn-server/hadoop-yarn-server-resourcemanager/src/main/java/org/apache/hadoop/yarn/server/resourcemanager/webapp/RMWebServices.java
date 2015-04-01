@@ -5081,6 +5081,8 @@ init|=
 operator|new
 name|AppAttemptInfo
 argument_list|(
+name|rm
+argument_list|,
 name|attempt
 argument_list|,
 name|app

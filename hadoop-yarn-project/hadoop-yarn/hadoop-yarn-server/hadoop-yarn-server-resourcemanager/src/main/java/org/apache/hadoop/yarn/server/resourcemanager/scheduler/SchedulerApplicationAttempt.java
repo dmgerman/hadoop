@@ -3484,6 +3484,24 @@ expr_stmt|;
 block|}
 block|}
 block|}
+DECL|method|getBlacklistedNodes ()
+specifier|public
+name|Set
+argument_list|<
+name|String
+argument_list|>
+name|getBlacklistedNodes
+parameter_list|()
+block|{
+return|return
+name|this
+operator|.
+name|appSchedulingInfo
+operator|.
+name|getBlackListCopy
+argument_list|()
+return|;
+block|}
 block|}
 end_class
 

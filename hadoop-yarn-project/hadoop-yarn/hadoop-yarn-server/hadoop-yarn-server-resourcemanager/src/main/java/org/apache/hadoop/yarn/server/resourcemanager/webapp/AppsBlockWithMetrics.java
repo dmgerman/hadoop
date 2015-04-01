@@ -93,7 +93,7 @@ name|html
 operator|.
 name|_
 argument_list|(
-name|AppsBlock
+name|RMAppsBlock
 operator|.
 name|class
 argument_list|)

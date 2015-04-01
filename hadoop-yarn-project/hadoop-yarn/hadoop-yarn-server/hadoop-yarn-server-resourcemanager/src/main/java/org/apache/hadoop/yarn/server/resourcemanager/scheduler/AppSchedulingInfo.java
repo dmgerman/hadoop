@@ -2288,6 +2288,27 @@ operator|.
 name|blacklist
 return|;
 block|}
+DECL|method|getBlackListCopy ()
+specifier|public
+specifier|synchronized
+name|Set
+argument_list|<
+name|String
+argument_list|>
+name|getBlackListCopy
+parameter_list|()
+block|{
+return|return
+operator|new
+name|HashSet
+argument_list|<>
+argument_list|(
+name|this
+operator|.
+name|blacklist
+argument_list|)
+return|;
+block|}
 DECL|method|transferStateFromPreviousAppSchedulingInfo ( AppSchedulingInfo appInfo)
 specifier|public
 specifier|synchronized
