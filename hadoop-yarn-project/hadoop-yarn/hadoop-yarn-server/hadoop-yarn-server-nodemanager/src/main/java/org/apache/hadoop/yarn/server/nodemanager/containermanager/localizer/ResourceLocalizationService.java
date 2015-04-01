@@ -3569,6 +3569,34 @@ name|ctxt
 argument_list|)
 argument_list|)
 expr_stmt|;
+if|if
+condition|(
+name|LOG
+operator|.
+name|isDebugEnabled
+argument_list|()
+condition|)
+block|{
+name|LOG
+operator|.
+name|debug
+argument_list|(
+literal|"Localizing "
+operator|+
+name|req
+operator|.
+name|getPath
+argument_list|()
+operator|+
+literal|" for container "
+operator|+
+name|c
+operator|.
+name|getContainerId
+argument_list|()
+argument_list|)
+expr_stmt|;
+block|}
 block|}
 block|}
 block|}
@@ -3599,6 +3627,14 @@ argument_list|(
 name|publicRsrc
 argument_list|)
 expr_stmt|;
+if|if
+condition|(
+name|LOG
+operator|.
+name|isDebugEnabled
+argument_list|()
+condition|)
+block|{
 name|LOG
 operator|.
 name|debug
@@ -3608,6 +3644,7 @@ operator|+
 name|retain
 argument_list|)
 expr_stmt|;
+block|}
 for|for
 control|(
 name|LocalResourcesTracker
@@ -3626,6 +3663,14 @@ argument_list|(
 name|t
 argument_list|)
 expr_stmt|;
+if|if
+condition|(
+name|LOG
+operator|.
+name|isDebugEnabled
+argument_list|()
+condition|)
+block|{
 name|LOG
 operator|.
 name|debug
@@ -3642,6 +3687,7 @@ operator|+
 name|retain
 argument_list|)
 expr_stmt|;
+block|}
 block|}
 comment|//TODO Check if appRsrcs should also be added to the retention set.
 block|}
