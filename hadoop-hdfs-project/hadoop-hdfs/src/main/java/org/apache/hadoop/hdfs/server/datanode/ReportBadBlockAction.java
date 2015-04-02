@@ -126,6 +126,20 @@ name|DatanodeRegistration
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|ipc
+operator|.
+name|StandbyException
+import|;
+end_import
+
 begin_comment
 comment|/**  * ReportBadBlockAction is an instruction issued by {{BPOfferService}} to  * {{BPServiceActor}} to report bad block to namenode  *  */
 end_comment
@@ -267,6 +281,26 @@ operator|.
 name|reportBadBlocks
 argument_list|(
 name|locatedBlock
+argument_list|)
+expr_stmt|;
+block|}
+catch|catch
+parameter_list|(
+name|StandbyException
+name|e
+parameter_list|)
+block|{
+name|DataNode
+operator|.
+name|LOG
+operator|.
+name|warn
+argument_list|(
+literal|"Failed to report bad block "
+operator|+
+name|block
+operator|+
+literal|" to standby namenode"
 argument_list|)
 expr_stmt|;
 block|}
