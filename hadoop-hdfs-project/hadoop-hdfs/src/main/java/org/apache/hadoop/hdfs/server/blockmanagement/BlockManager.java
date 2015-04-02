@@ -17377,7 +17377,7 @@ argument_list|()
 decl_stmt|;
 name|LightWeightLinkedSet
 argument_list|<
-name|Block
+name|BlockInfo
 argument_list|>
 name|excessReplicas
 init|=
