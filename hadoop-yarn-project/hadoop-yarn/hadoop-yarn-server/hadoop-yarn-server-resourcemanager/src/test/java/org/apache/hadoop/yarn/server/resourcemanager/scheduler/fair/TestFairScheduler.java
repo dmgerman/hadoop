@@ -1166,6 +1166,28 @@ name|scheduler
 operator|.
 name|event
 operator|.
+name|ContainerExpiredSchedulerEvent
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|server
+operator|.
+name|resourcemanager
+operator|.
+name|scheduler
+operator|.
+name|event
+operator|.
 name|NodeAddedSchedulerEvent
 import|;
 end_import
@@ -23654,9 +23676,9 @@ argument_list|)
 expr_stmt|;
 name|assertEquals
 argument_list|(
-literal|"Application3's AM requests 1024 MB memory"
+literal|"Application3's AM resource shouldn't be updated"
 argument_list|,
-literal|1024
+literal|0
 argument_list|,
 name|app3
 operator|.
@@ -23816,6 +23838,21 @@ argument_list|)
 expr_stmt|;
 name|assertEquals
 argument_list|(
+literal|"Application3's AM requests 1024 MB memory"
+argument_list|,
+literal|1024
+argument_list|,
+name|app3
+operator|.
+name|getAMResource
+argument_list|()
+operator|.
+name|getMemory
+argument_list|()
+argument_list|)
+expr_stmt|;
+name|assertEquals
+argument_list|(
 literal|"Queue1's AM resource usage should be 2048 MB memory"
 argument_list|,
 literal|2048
@@ -23886,9 +23923,9 @@ argument_list|)
 expr_stmt|;
 name|assertEquals
 argument_list|(
-literal|"Application4's AM requests 2048 MB memory"
+literal|"Application4's AM resource shouldn't be updated"
 argument_list|,
-literal|2048
+literal|0
 argument_list|,
 name|app4
 operator|.
@@ -23986,9 +24023,9 @@ argument_list|)
 expr_stmt|;
 name|assertEquals
 argument_list|(
-literal|"Application5's AM requests 2048 MB memory"
+literal|"Application5's AM resource shouldn't be updated"
 argument_list|,
-literal|2048
+literal|0
 argument_list|,
 name|app5
 operator|.
@@ -24198,6 +24235,160 @@ argument_list|)
 expr_stmt|;
 name|assertEquals
 argument_list|(
+literal|"Application5's AM requests 2048 MB memory"
+argument_list|,
+literal|2048
+argument_list|,
+name|app5
+operator|.
+name|getAMResource
+argument_list|()
+operator|.
+name|getMemory
+argument_list|()
+argument_list|)
+expr_stmt|;
+name|assertEquals
+argument_list|(
+literal|"Queue1's AM resource usage should be 2048 MB memory"
+argument_list|,
+literal|2048
+argument_list|,
+name|queue1
+operator|.
+name|getAmResourceUsage
+argument_list|()
+operator|.
+name|getMemory
+argument_list|()
+argument_list|)
+expr_stmt|;
+comment|// request non-AM container for app5
+name|createSchedulingRequestExistingApplication
+argument_list|(
+literal|1024
+argument_list|,
+literal|1
+argument_list|,
+name|attId5
+argument_list|)
+expr_stmt|;
+name|assertEquals
+argument_list|(
+literal|"Application5's AM should have 1 container"
+argument_list|,
+literal|1
+argument_list|,
+name|app5
+operator|.
+name|getLiveContainers
+argument_list|()
+operator|.
+name|size
+argument_list|()
+argument_list|)
+expr_stmt|;
+comment|// complete AM container before non-AM container is allocated.
+comment|// spark application hit this situation.
+name|RMContainer
+name|amContainer5
+init|=
+operator|(
+name|RMContainer
+operator|)
+name|app5
+operator|.
+name|getLiveContainers
+argument_list|()
+operator|.
+name|toArray
+argument_list|()
+index|[
+literal|0
+index|]
+decl_stmt|;
+name|ContainerExpiredSchedulerEvent
+name|containerExpired
+init|=
+operator|new
+name|ContainerExpiredSchedulerEvent
+argument_list|(
+name|amContainer5
+operator|.
+name|getContainerId
+argument_list|()
+argument_list|)
+decl_stmt|;
+name|scheduler
+operator|.
+name|handle
+argument_list|(
+name|containerExpired
+argument_list|)
+expr_stmt|;
+name|assertEquals
+argument_list|(
+literal|"Application5's AM should have 0 container"
+argument_list|,
+literal|0
+argument_list|,
+name|app5
+operator|.
+name|getLiveContainers
+argument_list|()
+operator|.
+name|size
+argument_list|()
+argument_list|)
+expr_stmt|;
+name|assertEquals
+argument_list|(
+literal|"Queue1's AM resource usage should be 2048 MB memory"
+argument_list|,
+literal|2048
+argument_list|,
+name|queue1
+operator|.
+name|getAmResourceUsage
+argument_list|()
+operator|.
+name|getMemory
+argument_list|()
+argument_list|)
+expr_stmt|;
+name|scheduler
+operator|.
+name|update
+argument_list|()
+expr_stmt|;
+name|scheduler
+operator|.
+name|handle
+argument_list|(
+name|updateEvent
+argument_list|)
+expr_stmt|;
+comment|// non-AM container should be allocated
+comment|// check non-AM container allocation is not rejected
+comment|// due to queue MaxAMShare limitation.
+name|assertEquals
+argument_list|(
+literal|"Application5 should have 1 container"
+argument_list|,
+literal|1
+argument_list|,
+name|app5
+operator|.
+name|getLiveContainers
+argument_list|()
+operator|.
+name|size
+argument_list|()
+argument_list|)
+expr_stmt|;
+comment|// check non-AM container allocation won't affect queue AmResourceUsage
+name|assertEquals
+argument_list|(
 literal|"Queue1's AM resource usage should be 2048 MB memory"
 argument_list|,
 literal|2048
@@ -24283,9 +24474,9 @@ argument_list|)
 expr_stmt|;
 name|assertEquals
 argument_list|(
-literal|"Application6's AM requests 2048 MB memory"
+literal|"Application6's AM resource shouldn't be updated"
 argument_list|,
-literal|2048
+literal|0
 argument_list|,
 name|app6
 operator|.
@@ -24971,9 +25162,9 @@ argument_list|)
 expr_stmt|;
 name|assertEquals
 argument_list|(
-literal|"Application2's AM requests 1024 MB memory"
+literal|"Application2's AM resource shouldn't be updated"
 argument_list|,
-literal|1024
+literal|0
 argument_list|,
 name|app2
 operator|.

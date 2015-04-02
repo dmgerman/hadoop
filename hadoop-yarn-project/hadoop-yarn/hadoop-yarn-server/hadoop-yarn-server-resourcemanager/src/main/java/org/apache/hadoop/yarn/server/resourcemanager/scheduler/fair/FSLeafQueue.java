@@ -753,7 +753,8 @@ name|unlock
 argument_list|()
 expr_stmt|;
 block|}
-comment|// Update AM resource usage if needed
+comment|// Update AM resource usage if needed. If isAMRunning is true, we're not
+comment|// running an unmanaged AM.
 if|if
 condition|(
 name|runnable
@@ -762,13 +763,6 @@ name|app
 operator|.
 name|isAmRunning
 argument_list|()
-operator|&&
-name|app
-operator|.
-name|getAMResource
-argument_list|()
-operator|!=
-literal|null
 condition|)
 block|{
 name|Resources
