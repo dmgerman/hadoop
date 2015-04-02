@@ -7449,7 +7449,7 @@ return|;
 block|}
 block|}
 DECL|method|locateFollowingBlock (DatanodeInfo[] excludedNodes)
-specifier|private
+specifier|protected
 name|LocatedBlock
 name|locateFollowingBlock
 parameter_list|(
@@ -8261,16 +8261,6 @@ parameter_list|()
 block|{
 return|return
 name|lastException
-return|;
-block|}
-comment|/**    * get the socket connecting to the first datanode in pipeline    *    * @return socket connecting to the first datanode in pipeline    */
-DECL|method|getSocket ()
-name|Socket
-name|getSocket
-parameter_list|()
-block|{
-return|return
-name|s
 return|;
 block|}
 comment|/**    * set socket to null    */

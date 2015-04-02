@@ -50,16 +50,6 @@ begin_import
 import|import
 name|java
 operator|.
-name|net
-operator|.
-name|Socket
-import|;
-end_import
-
-begin_import
-import|import
-name|java
-operator|.
 name|nio
 operator|.
 name|channels
@@ -741,20 +731,20 @@ name|supported
 argument_list|()
 decl_stmt|;
 DECL|field|dfsClient
-specifier|private
+specifier|protected
 specifier|final
 name|DFSClient
 name|dfsClient
 decl_stmt|;
 DECL|field|byteArrayManager
-specifier|private
+specifier|protected
 specifier|final
 name|ByteArrayManager
 name|byteArrayManager
 decl_stmt|;
 comment|// closed is accessed by different threads under different locks.
 DECL|field|closed
-specifier|private
+specifier|protected
 specifier|volatile
 name|boolean
 name|closed
@@ -762,43 +752,43 @@ init|=
 literal|false
 decl_stmt|;
 DECL|field|src
-specifier|private
+specifier|protected
 specifier|final
 name|String
 name|src
 decl_stmt|;
 DECL|field|fileId
-specifier|private
+specifier|protected
 specifier|final
 name|long
 name|fileId
 decl_stmt|;
 DECL|field|blockSize
-specifier|private
+specifier|protected
 specifier|final
 name|long
 name|blockSize
 decl_stmt|;
 DECL|field|bytesPerChecksum
-specifier|private
+specifier|protected
 specifier|final
 name|int
 name|bytesPerChecksum
 decl_stmt|;
 DECL|field|currentPacket
-specifier|private
+specifier|protected
 name|DFSPacket
 name|currentPacket
 init|=
 literal|null
 decl_stmt|;
 DECL|field|streamer
-specifier|private
+specifier|protected
 name|DataStreamer
 name|streamer
 decl_stmt|;
 DECL|field|packetSize
-specifier|private
+specifier|protected
 name|int
 name|packetSize
 init|=
@@ -806,14 +796,14 @@ literal|0
 decl_stmt|;
 comment|// write packet size, not including the header.
 DECL|field|chunksPerPacket
-specifier|private
+specifier|protected
 name|int
 name|chunksPerPacket
 init|=
 literal|0
 decl_stmt|;
 DECL|field|lastFlushOffset
-specifier|private
+specifier|protected
 name|long
 name|lastFlushOffset
 init|=
@@ -836,7 +826,7 @@ name|blockReplication
 decl_stmt|;
 comment|// replication factor of file
 DECL|field|shouldSyncBlock
-specifier|private
+specifier|protected
 name|boolean
 name|shouldSyncBlock
 init|=
@@ -844,7 +834,7 @@ literal|false
 decl_stmt|;
 comment|// force blocks to disk upon close
 DECL|field|cachingStrategy
-specifier|private
+specifier|protected
 specifier|final
 name|AtomicReference
 argument_list|<
@@ -859,7 +849,7 @@ name|fileEncryptionInfo
 decl_stmt|;
 comment|/** Use {@link ByteArrayManager} to create buffer for non-heartbeat packets.*/
 DECL|method|createPacket (int packetSize, int chunksPerPkt, long offsetInBlock, long seqno, boolean lastPacketInBlock)
-specifier|private
+specifier|protected
 name|DFSPacket
 name|createPacket
 parameter_list|(
@@ -1335,7 +1325,7 @@ expr_stmt|;
 block|}
 comment|/** Construct a new output stream for creating a file. */
 DECL|method|DFSOutputStream (DFSClient dfsClient, String src, HdfsFileStatus stat, EnumSet<CreateFlag> flag, Progressable progress, DataChecksum checksum, String[] favoredNodes)
-specifier|private
+specifier|protected
 name|DFSOutputStream
 parameter_list|(
 name|DFSClient
@@ -2171,7 +2161,7 @@ expr_stmt|;
 block|}
 block|}
 DECL|method|computePacketChunkSize (int psize, int csize)
-specifier|private
+specifier|protected
 name|void
 name|computePacketChunkSize
 parameter_list|(
@@ -2547,9 +2537,21 @@ name|currentPacket
 operator|=
 literal|null
 expr_stmt|;
-comment|// If the reopened file did not end at chunk boundary and the above
-comment|// write filled up its partial chunk. Tell the summer to generate full
-comment|// crc chunks from now on.
+name|adjustChunkBoundary
+argument_list|()
+expr_stmt|;
+name|endBlock
+argument_list|()
+expr_stmt|;
+block|}
+block|}
+comment|/**    * If the reopened file did not end at chunk boundary and the above    * write filled up its partial chunk. Tell the summer to generate full    * crc chunks from now on.    */
+DECL|method|adjustChunkBoundary ()
+specifier|protected
+name|void
+name|adjustChunkBoundary
+parameter_list|()
+block|{
 if|if
 condition|(
 name|streamer
@@ -2622,10 +2624,16 @@ name|bytesPerChecksum
 argument_list|)
 expr_stmt|;
 block|}
-comment|//
-comment|// if encountering a block boundary, send an empty packet to
-comment|// indicate the end of block and reset bytesCurBlock.
-comment|//
+block|}
+comment|/**    * if encountering a block boundary, send an empty packet to    * indicate the end of block and reset bytesCurBlock.    *    * @throws IOException    */
+DECL|method|endBlock ()
+specifier|protected
+name|void
+name|endBlock
+parameter_list|()
+throws|throws
+name|IOException
+block|{
 if|if
 condition|(
 name|streamer
@@ -2686,7 +2694,6 @@ name|lastFlushOffset
 operator|=
 literal|0
 expr_stmt|;
-block|}
 block|}
 block|}
 comment|/**    * Flushes out to all replicas of the block. The data is in the buffers    * of the DNs but not necessarily in the DN's OS buffers.    *    * It is a synchronous operation. When it returns,    * it guarantees that flushed data become visible to new readers.     * It is not guaranteed that data has been flushed to     * persistent store on the datanode.     * Block allocations are persisted on namenode.    */
@@ -3490,7 +3497,7 @@ return|;
 block|}
 comment|/**    * Waits till all existing data is flushed and confirmations     * received from datanodes.     */
 DECL|method|flushInternal ()
-specifier|private
+specifier|protected
 name|void
 name|flushInternal
 parameter_list|()
@@ -3544,7 +3551,7 @@ argument_list|)
 expr_stmt|;
 block|}
 DECL|method|start ()
-specifier|private
+specifier|protected
 specifier|synchronized
 name|void
 name|start
@@ -3640,7 +3647,7 @@ block|}
 comment|// shutdown datastreamer and responseprocessor threads.
 comment|// interrupt datastreamer if force is true
 DECL|method|closeThreads (boolean force)
-specifier|private
+specifier|protected
 name|void
 name|closeThreads
 parameter_list|(
@@ -3736,7 +3743,7 @@ expr_stmt|;
 block|}
 block|}
 DECL|method|closeImpl ()
-specifier|private
+specifier|protected
 specifier|synchronized
 name|void
 name|closeImpl
@@ -3912,7 +3919,7 @@ block|}
 comment|// should be called holding (this) lock since setTestFilename() may
 comment|// be called during unit tests
 DECL|method|completeFile (ExtendedBlock last)
-specifier|private
+specifier|protected
 name|void
 name|completeFile
 parameter_list|(
