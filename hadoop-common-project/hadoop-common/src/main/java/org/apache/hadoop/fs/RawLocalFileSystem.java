@@ -276,22 +276,6 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|io
-operator|.
-name|nativeio
-operator|.
-name|NativeIOException
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
 name|util
 operator|.
 name|Progressable
@@ -1856,11 +1840,101 @@ return|return
 literal|true
 return|;
 block|}
-comment|// Enforce POSIX rename behavior that a source directory replaces an existing
-comment|// destination if the destination is an empty directory.  On most platforms,
-comment|// this is already handled by the Java API call above.  Some platforms
-comment|// (notably Windows) do not provide this behavior, so the Java API call above
-comment|// fails.  Delete destination and attempt rename again.
+comment|// Else try POSIX style rename on Windows only
+if|if
+condition|(
+name|Shell
+operator|.
+name|WINDOWS
+operator|&&
+name|handleEmptyDstDirectoryOnWindows
+argument_list|(
+name|src
+argument_list|,
+name|srcFile
+argument_list|,
+name|dst
+argument_list|,
+name|dstFile
+argument_list|)
+condition|)
+block|{
+return|return
+literal|true
+return|;
+block|}
+comment|// The fallback behavior accomplishes the rename by a full copy.
+if|if
+condition|(
+name|LOG
+operator|.
+name|isDebugEnabled
+argument_list|()
+condition|)
+block|{
+name|LOG
+operator|.
+name|debug
+argument_list|(
+literal|"Falling through to a copy of "
+operator|+
+name|src
+operator|+
+literal|" to "
+operator|+
+name|dst
+argument_list|)
+expr_stmt|;
+block|}
+return|return
+name|FileUtil
+operator|.
+name|copy
+argument_list|(
+name|this
+argument_list|,
+name|src
+argument_list|,
+name|this
+argument_list|,
+name|dst
+argument_list|,
+literal|true
+argument_list|,
+name|getConf
+argument_list|()
+argument_list|)
+return|;
+block|}
+annotation|@
+name|VisibleForTesting
+DECL|method|handleEmptyDstDirectoryOnWindows (Path src, File srcFile, Path dst, File dstFile)
+specifier|public
+specifier|final
+name|boolean
+name|handleEmptyDstDirectoryOnWindows
+parameter_list|(
+name|Path
+name|src
+parameter_list|,
+name|File
+name|srcFile
+parameter_list|,
+name|Path
+name|dst
+parameter_list|,
+name|File
+name|dstFile
+parameter_list|)
+throws|throws
+name|IOException
+block|{
+comment|// Enforce POSIX rename behavior that a source directory replaces an
+comment|// existing destination if the destination is an empty directory. On most
+comment|// platforms, this is already handled by the Java API call above. Some
+comment|// platforms (notably Windows) do not provide this behavior, so the Java API
+comment|// call renameTo(dstFile) fails. Delete destination and attempt rename
+comment|// again.
 if|if
 condition|(
 name|this
@@ -1945,47 +2019,8 @@ return|;
 block|}
 block|}
 block|}
-comment|// The fallback behavior accomplishes the rename by a full copy.
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
-name|LOG
-operator|.
-name|debug
-argument_list|(
-literal|"Falling through to a copy of "
-operator|+
-name|src
-operator|+
-literal|" to "
-operator|+
-name|dst
-argument_list|)
-expr_stmt|;
-block|}
 return|return
-name|FileUtil
-operator|.
-name|copy
-argument_list|(
-name|this
-argument_list|,
-name|src
-argument_list|,
-name|this
-argument_list|,
-name|dst
-argument_list|,
-literal|true
-argument_list|,
-name|getConf
-argument_list|()
-argument_list|)
+literal|false
 return|;
 block|}
 annotation|@
