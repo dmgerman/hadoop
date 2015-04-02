@@ -6972,6 +6972,15 @@ name|TIMELINE_SERVICE_PREFIX
 operator|+
 literal|"bind-host"
 decl_stmt|;
+DECL|field|DEFAULT_TIMELINE_SERVICE_BIND_HOST
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|DEFAULT_TIMELINE_SERVICE_BIND_HOST
+init|=
+literal|"0.0.0.0"
+decl_stmt|;
 comment|/** The number of threads to handle client RPC API requests. */
 DECL|field|TIMELINE_SERVICE_HANDLER_THREAD_COUNT
 specifier|public
