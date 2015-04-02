@@ -2167,7 +2167,7 @@ name|blockSize
 operator|=
 name|config
 operator|.
-name|getLong
+name|getLongBytes
 argument_list|(
 name|DFSConfigKeys
 operator|.
