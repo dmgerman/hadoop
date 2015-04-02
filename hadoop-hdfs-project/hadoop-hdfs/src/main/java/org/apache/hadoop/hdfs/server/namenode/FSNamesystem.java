@@ -18561,7 +18561,8 @@ return|;
 block|}
 comment|/**    * Save allocated block at the given pending filename    *     * @param src path to the file    * @param inodesInPath representing each of the components of src.    *                     The last INode is the INode for {@code src} file.    * @param newBlock newly allocated block to be save    * @param targets target datanodes where replicas of the new block is placed    * @throws QuotaExceededException If addition of block exceeds space quota    */
 DECL|method|saveAllocatedBlock (String src, INodesInPath inodesInPath, Block newBlock, DatanodeStorageInfo[] targets)
-name|BlockInfoContiguous
+specifier|private
+name|void
 name|saveAllocatedBlock
 parameter_list|(
 name|String
@@ -18622,12 +18623,10 @@ argument_list|(
 name|targets
 argument_list|)
 expr_stmt|;
-return|return
-name|b
-return|;
 block|}
 comment|/**    * Create new block with a unique block id and a new generation stamp.    */
 DECL|method|createNewBlock ()
+specifier|private
 name|Block
 name|createNewBlock
 parameter_list|()
@@ -18693,38 +18692,19 @@ condition|(
 name|checkall
 condition|)
 block|{
-comment|// check all blocks of the file.
-for|for
-control|(
-name|BlockInfoContiguous
-name|block
-range|:
+return|return
+name|blockManager
+operator|.
+name|checkBlocksProperlyReplicated
+argument_list|(
+name|src
+argument_list|,
 name|v
 operator|.
 name|getBlocks
 argument_list|()
-control|)
-block|{
-if|if
-condition|(
-operator|!
-name|isCompleteBlock
-argument_list|(
-name|src
-argument_list|,
-name|block
-argument_list|,
-name|blockManager
-operator|.
-name|minReplication
 argument_list|)
-condition|)
-block|{
-return|return
-literal|false
 return|;
-block|}
-block|}
 block|}
 else|else
 block|{
@@ -18737,33 +18717,26 @@ operator|.
 name|getPenultimateBlock
 argument_list|()
 decl_stmt|;
-if|if
-condition|(
+return|return
 name|b
-operator|!=
+operator|==
 literal|null
-operator|&&
-operator|!
-name|isCompleteBlock
+operator|||
+name|blockManager
+operator|.
+name|checkBlocksProperlyReplicated
 argument_list|(
 name|src
 argument_list|,
-name|b
-argument_list|,
-name|blockManager
-operator|.
-name|minReplication
-argument_list|)
-condition|)
+operator|new
+name|BlockInfoContiguous
+index|[]
 block|{
-return|return
-literal|false
+name|b
+block|}
+argument_list|)
 return|;
 block|}
-block|}
-return|return
-literal|true
-return|;
 block|}
 finally|finally
 block|{
@@ -18772,106 +18745,7 @@ argument_list|()
 expr_stmt|;
 block|}
 block|}
-DECL|method|isCompleteBlock (String src, BlockInfoContiguous b, int minRepl)
-specifier|private
-specifier|static
-name|boolean
-name|isCompleteBlock
-parameter_list|(
-name|String
-name|src
-parameter_list|,
-name|BlockInfoContiguous
-name|b
-parameter_list|,
-name|int
-name|minRepl
-parameter_list|)
-block|{
-if|if
-condition|(
-operator|!
-name|b
-operator|.
-name|isComplete
-argument_list|()
-condition|)
-block|{
-specifier|final
-name|BlockInfoContiguousUnderConstruction
-name|uc
-init|=
-operator|(
-name|BlockInfoContiguousUnderConstruction
-operator|)
-name|b
-decl_stmt|;
-specifier|final
-name|int
-name|numNodes
-init|=
-name|b
-operator|.
-name|numNodes
-argument_list|()
-decl_stmt|;
-name|LOG
-operator|.
-name|info
-argument_list|(
-literal|"BLOCK* "
-operator|+
-name|b
-operator|+
-literal|" is not COMPLETE (ucState = "
-operator|+
-name|uc
-operator|.
-name|getBlockUCState
-argument_list|()
-operator|+
-literal|", replication# = "
-operator|+
-name|numNodes
-operator|+
-operator|(
-name|numNodes
-operator|<
-name|minRepl
-condition|?
-literal|"< "
-else|:
-literal|">= "
-operator|)
-operator|+
-literal|" minimum = "
-operator|+
-name|minRepl
-operator|+
-literal|") in file "
-operator|+
-name|src
-argument_list|)
-expr_stmt|;
-return|return
-literal|false
-return|;
-block|}
-return|return
-literal|true
-return|;
-block|}
-comment|////////////////////////////////////////////////////////////////
-comment|// Here's how to handle block-copy failure during client write:
-comment|// -- As usual, the client's write should result in a streaming
-comment|// backup write to a k-machine sequence.
-comment|// -- If one of the backup machines fails, no worries.  Fail silently.
-comment|// -- Before client is allowed to close and finalize file, make sure
-comment|// that the blocks are backed up.  Namenode may have to issue specific backup
-comment|// commands to make up for earlier datanode failures.  Once all copies
-comment|// are made, edit namespace and return to client.
-comment|////////////////////////////////////////////////////////////////
-comment|/**     * Change the indicated filename.     * @deprecated Use {@link #renameTo(String, String, boolean,    * Options.Rename...)} instead.    */
+comment|/**    * Change the indicated filename.     * @deprecated Use {@link #renameTo(String, String, boolean,    * Options.Rename...)} instead.    */
 annotation|@
 name|Deprecated
 DECL|method|renameTo (String src, String dst, boolean logRetryCache)

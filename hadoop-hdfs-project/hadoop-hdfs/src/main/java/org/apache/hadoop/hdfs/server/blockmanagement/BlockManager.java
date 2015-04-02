@@ -15715,6 +15715,102 @@ expr_stmt|;
 block|}
 block|}
 block|}
+comment|/**    * Check that the indicated blocks are present and    * replicated.    */
+DECL|method|checkBlocksProperlyReplicated ( String src, BlockInfoContiguous[] blocks)
+specifier|public
+name|boolean
+name|checkBlocksProperlyReplicated
+parameter_list|(
+name|String
+name|src
+parameter_list|,
+name|BlockInfoContiguous
+index|[]
+name|blocks
+parameter_list|)
+block|{
+for|for
+control|(
+name|BlockInfoContiguous
+name|b
+range|:
+name|blocks
+control|)
+block|{
+if|if
+condition|(
+operator|!
+name|b
+operator|.
+name|isComplete
+argument_list|()
+condition|)
+block|{
+specifier|final
+name|BlockInfoContiguousUnderConstruction
+name|uc
+init|=
+operator|(
+name|BlockInfoContiguousUnderConstruction
+operator|)
+name|b
+decl_stmt|;
+specifier|final
+name|int
+name|numNodes
+init|=
+name|b
+operator|.
+name|numNodes
+argument_list|()
+decl_stmt|;
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"BLOCK* "
+operator|+
+name|b
+operator|+
+literal|" is not COMPLETE (ucState = "
+operator|+
+name|uc
+operator|.
+name|getBlockUCState
+argument_list|()
+operator|+
+literal|", replication# = "
+operator|+
+name|numNodes
+operator|+
+operator|(
+name|numNodes
+operator|<
+name|minReplication
+condition|?
+literal|"< "
+else|:
+literal|">= "
+operator|)
+operator|+
+literal|" minimum = "
+operator|+
+name|minReplication
+operator|+
+literal|") in file "
+operator|+
+name|src
+argument_list|)
+expr_stmt|;
+return|return
+literal|false
+return|;
+block|}
+block|}
+return|return
+literal|true
+return|;
+block|}
 comment|/**     * @return 0 if the block is not found;    *         otherwise, return the replication factor of the block.    */
 DECL|method|getReplication (Block block)
 specifier|private
