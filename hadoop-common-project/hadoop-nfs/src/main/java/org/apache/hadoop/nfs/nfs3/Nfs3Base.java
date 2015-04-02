@@ -133,7 +133,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * Nfs server. Supports NFS v3 using {@link RpcProgram}.  * Currently Mountd program is also started inside this class.  * Only TCP server is supported and UDP is not supported.  */
+comment|/**  * Nfs server. Supports NFS v3 using {@link RpcProgram}.  * Only TCP server is supported and UDP is not supported.  */
 end_comment
 
 begin_class
@@ -267,7 +267,7 @@ name|LOG
 operator|.
 name|fatal
 argument_list|(
-literal|"Failed to start the server. Cause:"
+literal|"Failed to register the NFSv3 service."
 argument_list|,
 name|e
 argument_list|)
@@ -309,11 +309,67 @@ operator|.
 name|startDaemons
 argument_list|()
 expr_stmt|;
+try|try
+block|{
 name|tcpServer
 operator|.
 name|run
 argument_list|()
 expr_stmt|;
+block|}
+catch|catch
+parameter_list|(
+name|Throwable
+name|e
+parameter_list|)
+block|{
+name|LOG
+operator|.
+name|fatal
+argument_list|(
+literal|"Failed to start the TCP server."
+argument_list|,
+name|e
+argument_list|)
+expr_stmt|;
+if|if
+condition|(
+name|tcpServer
+operator|.
+name|getBoundPort
+argument_list|()
+operator|>
+literal|0
+condition|)
+block|{
+name|rpcProgram
+operator|.
+name|unregister
+argument_list|(
+name|PortmapMapping
+operator|.
+name|TRANSPORT_TCP
+argument_list|,
+name|tcpServer
+operator|.
+name|getBoundPort
+argument_list|()
+argument_list|)
+expr_stmt|;
+block|}
+name|tcpServer
+operator|.
+name|shutdown
+argument_list|()
+expr_stmt|;
+name|terminate
+argument_list|(
+literal|1
+argument_list|,
+name|e
+argument_list|)
+expr_stmt|;
+block|}
 name|nfsBoundPort
 operator|=
 name|tcpServer
