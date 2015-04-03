@@ -6807,13 +6807,6 @@ name|Exception
 block|{
 comment|// test if DFS_CLIENT_BLOCK_WRITE_LOCATEFOLLOWINGBLOCK_INITIAL_DELAY_KEY
 comment|// is not configured, verify DFSClient uses the default value 400.
-name|Configuration
-name|dfsConf
-init|=
-operator|new
-name|HdfsConfiguration
-argument_list|()
-decl_stmt|;
 name|MiniDFSCluster
 name|cluster
 init|=
@@ -6822,12 +6815,14 @@ name|MiniDFSCluster
 operator|.
 name|Builder
 argument_list|(
-name|dfsConf
+name|conf
 argument_list|)
 operator|.
 name|build
 argument_list|()
 decl_stmt|;
+try|try
+block|{
 name|cluster
 operator|.
 name|waitActive
@@ -6851,7 +6846,7 @@ literal|null
 argument_list|,
 name|nn
 argument_list|,
-name|dfsConf
+name|conf
 argument_list|,
 literal|null
 argument_list|)
@@ -6871,7 +6866,7 @@ argument_list|)
 expr_stmt|;
 comment|// change DFS_CLIENT_BLOCK_WRITE_LOCATEFOLLOWINGBLOCK_INITIAL_DELAY_KEY,
 comment|// verify DFSClient uses the configured value 1000.
-name|dfsConf
+name|conf
 operator|.
 name|setInt
 argument_list|(
@@ -6891,7 +6886,7 @@ literal|null
 argument_list|,
 name|nn
 argument_list|,
-name|dfsConf
+name|conf
 argument_list|,
 literal|null
 argument_list|)
@@ -6909,6 +6904,15 @@ argument_list|,
 literal|1000
 argument_list|)
 expr_stmt|;
+block|}
+finally|finally
+block|{
+name|cluster
+operator|.
+name|shutdown
+argument_list|()
+expr_stmt|;
+block|}
 block|}
 block|}
 end_class
