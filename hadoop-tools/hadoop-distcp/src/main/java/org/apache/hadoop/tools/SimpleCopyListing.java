@@ -976,12 +976,10 @@ argument_list|)
 expr_stmt|;
 if|if
 condition|(
-name|isDirectoryAndNotEmpty
-argument_list|(
-name|sourceFS
-argument_list|,
 name|sourceStatus
-argument_list|)
+operator|.
+name|isDirectory
+argument_list|()
 condition|)
 block|{
 if|if
@@ -996,7 +994,7 @@ name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"Traversing non-empty source dir: "
+literal|"Traversing source dir: "
 operator|+
 name|sourceStatus
 operator|.
@@ -1005,9 +1003,11 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
-name|traverseNonEmptyDirectory
+name|traverseDirectory
 argument_list|(
 name|fileListWriter
+argument_list|,
+name|sourceFS
 argument_list|,
 name|sourceStatus
 argument_list|,
@@ -1376,39 +1376,6 @@ argument_list|)
 argument_list|)
 return|;
 block|}
-DECL|method|isDirectoryAndNotEmpty (FileSystem fileSystem, FileStatus fileStatus)
-specifier|private
-specifier|static
-name|boolean
-name|isDirectoryAndNotEmpty
-parameter_list|(
-name|FileSystem
-name|fileSystem
-parameter_list|,
-name|FileStatus
-name|fileStatus
-parameter_list|)
-throws|throws
-name|IOException
-block|{
-return|return
-name|fileStatus
-operator|.
-name|isDirectory
-argument_list|()
-operator|&&
-name|getChildren
-argument_list|(
-name|fileSystem
-argument_list|,
-name|fileStatus
-argument_list|)
-operator|.
-name|length
-operator|>
-literal|0
-return|;
-block|}
 DECL|method|getChildren (FileSystem fileSystem, FileStatus parent)
 specifier|private
 specifier|static
@@ -1437,15 +1404,18 @@ argument_list|()
 argument_list|)
 return|;
 block|}
-DECL|method|traverseNonEmptyDirectory (SequenceFile.Writer fileListWriter, FileStatus sourceStatus, Path sourcePathRoot, DistCpOptions options)
+DECL|method|traverseDirectory (SequenceFile.Writer fileListWriter, FileSystem sourceFS, FileStatus sourceStatus, Path sourcePathRoot, DistCpOptions options)
 specifier|private
 name|void
-name|traverseNonEmptyDirectory
+name|traverseDirectory
 parameter_list|(
 name|SequenceFile
 operator|.
 name|Writer
 name|fileListWriter
+parameter_list|,
+name|FileSystem
+name|sourceFS
 parameter_list|,
 name|FileStatus
 name|sourceStatus
@@ -1459,17 +1429,6 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
-name|FileSystem
-name|sourceFS
-init|=
-name|sourcePathRoot
-operator|.
-name|getFileSystem
-argument_list|(
-name|getConf
-argument_list|()
-argument_list|)
-decl_stmt|;
 specifier|final
 name|boolean
 name|preserveAcls
@@ -1557,13 +1516,14 @@ operator|.
 name|isDebugEnabled
 argument_list|()
 condition|)
+block|{
 name|LOG
 operator|.
 name|debug
 argument_list|(
 literal|"Recording source-path: "
 operator|+
-name|sourceStatus
+name|child
 operator|.
 name|getPath
 argument_list|()
@@ -1571,6 +1531,7 @@ operator|+
 literal|" for copy."
 argument_list|)
 expr_stmt|;
+block|}
 name|CopyListingFileStatus
 name|childCopyListingStatus
 init|=
@@ -1617,12 +1578,10 @@ argument_list|)
 expr_stmt|;
 if|if
 condition|(
-name|isDirectoryAndNotEmpty
-argument_list|(
-name|sourceFS
-argument_list|,
 name|child
-argument_list|)
+operator|.
+name|isDirectory
+argument_list|()
 condition|)
 block|{
 if|if
@@ -1632,18 +1591,20 @@ operator|.
 name|isDebugEnabled
 argument_list|()
 condition|)
+block|{
 name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"Traversing non-empty source dir: "
+literal|"Traversing into source dir: "
 operator|+
-name|sourceStatus
+name|child
 operator|.
 name|getPath
 argument_list|()
 argument_list|)
 expr_stmt|;
+block|}
 name|pathStack
 operator|.
 name|push
