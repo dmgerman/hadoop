@@ -3536,13 +3536,16 @@ name|clear
 argument_list|()
 expr_stmt|;
 block|}
-DECL|method|computeQuotaUsage4CurrentDirectory ( BlockStoragePolicySuite bsps, QuotaCounts counts)
+DECL|method|computeQuotaUsage4CurrentDirectory ( BlockStoragePolicySuite bsps, byte storagePolicyId, QuotaCounts counts)
 specifier|public
 name|QuotaCounts
 name|computeQuotaUsage4CurrentDirectory
 parameter_list|(
 name|BlockStoragePolicySuite
 name|bsps
+parameter_list|,
+name|byte
+name|storagePolicyId
 parameter_list|,
 name|QuotaCounts
 name|counts
@@ -3574,11 +3577,24 @@ name|DELETED
 argument_list|)
 control|)
 block|{
+specifier|final
+name|byte
+name|childPolicyId
+init|=
+name|deleted
+operator|.
+name|getStoragePolicyIDForQuota
+argument_list|(
+name|storagePolicyId
+argument_list|)
+decl_stmt|;
 name|deleted
 operator|.
 name|computeQuotaUsage
 argument_list|(
 name|bsps
+argument_list|,
+name|childPolicyId
 argument_list|,
 name|counts
 argument_list|,

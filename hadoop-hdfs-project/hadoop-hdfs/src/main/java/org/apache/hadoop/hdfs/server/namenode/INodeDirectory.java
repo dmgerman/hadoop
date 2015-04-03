@@ -390,6 +390,26 @@ name|ImmutableList
 import|;
 end_import
 
+begin_import
+import|import static
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|server
+operator|.
+name|blockmanagement
+operator|.
+name|BlockStoragePolicySuite
+operator|.
+name|ID_UNSPECIFIED
+import|;
+end_import
+
 begin_comment
 comment|/**  * Directory INode class.  */
 end_comment
@@ -734,8 +754,6 @@ return|;
 block|}
 block|}
 return|return
-name|BlockStoragePolicySuite
-operator|.
 name|ID_UNSPECIFIED
 return|;
 block|}
@@ -757,8 +775,6 @@ if|if
 condition|(
 name|id
 operator|!=
-name|BlockStoragePolicySuite
-operator|.
 name|ID_UNSPECIFIED
 condition|)
 block|{
@@ -779,8 +795,6 @@ operator|.
 name|getStoragePolicyID
 argument_list|()
 else|:
-name|BlockStoragePolicySuite
-operator|.
 name|ID_UNSPECIFIED
 return|;
 block|}
@@ -2700,13 +2714,16 @@ block|}
 block|}
 annotation|@
 name|Override
-DECL|method|computeQuotaUsage (BlockStoragePolicySuite bsps, QuotaCounts counts, boolean useCache, int lastSnapshotId)
+DECL|method|computeQuotaUsage (BlockStoragePolicySuite bsps, byte blockStoragePolicyId, QuotaCounts counts, boolean useCache, int lastSnapshotId)
 specifier|public
 name|QuotaCounts
 name|computeQuotaUsage
 parameter_list|(
 name|BlockStoragePolicySuite
 name|bsps
+parameter_list|,
+name|byte
+name|blockStoragePolicyId
 parameter_list|,
 name|QuotaCounts
 name|counts
@@ -2768,11 +2785,24 @@ range|:
 name|childrenList
 control|)
 block|{
+specifier|final
+name|byte
+name|childPolicyId
+init|=
+name|child
+operator|.
+name|getStoragePolicyIDForQuota
+argument_list|(
+name|blockStoragePolicyId
+argument_list|)
+decl_stmt|;
 name|child
 operator|.
 name|computeQuotaUsage
 argument_list|(
 name|bsps
+argument_list|,
+name|childPolicyId
 argument_list|,
 name|counts
 argument_list|,
@@ -2848,6 +2878,8 @@ name|computeDirectoryQuotaUsage
 argument_list|(
 name|bsps
 argument_list|,
+name|blockStoragePolicyId
+argument_list|,
 name|counts
 argument_list|,
 name|useCache
@@ -2857,13 +2889,16 @@ argument_list|)
 return|;
 block|}
 block|}
-DECL|method|computeDirectoryQuotaUsage (BlockStoragePolicySuite bsps, QuotaCounts counts, boolean useCache, int lastSnapshotId)
+DECL|method|computeDirectoryQuotaUsage (BlockStoragePolicySuite bsps, byte blockStoragePolicyId, QuotaCounts counts, boolean useCache, int lastSnapshotId)
 specifier|private
 name|QuotaCounts
 name|computeDirectoryQuotaUsage
 parameter_list|(
 name|BlockStoragePolicySuite
 name|bsps
+parameter_list|,
+name|byte
+name|blockStoragePolicyId
 parameter_list|,
 name|QuotaCounts
 name|counts
@@ -2890,11 +2925,24 @@ range|:
 name|children
 control|)
 block|{
+specifier|final
+name|byte
+name|childPolicyId
+init|=
+name|child
+operator|.
+name|getStoragePolicyIDForQuota
+argument_list|(
+name|blockStoragePolicyId
+argument_list|)
+decl_stmt|;
 name|child
 operator|.
 name|computeQuotaUsage
 argument_list|(
 name|bsps
+argument_list|,
+name|childPolicyId
 argument_list|,
 name|counts
 argument_list|,
@@ -2910,18 +2958,23 @@ name|computeQuotaUsage4CurrentDirectory
 argument_list|(
 name|bsps
 argument_list|,
+name|blockStoragePolicyId
+argument_list|,
 name|counts
 argument_list|)
 return|;
 block|}
 comment|/** Add quota usage for this inode excluding children. */
-DECL|method|computeQuotaUsage4CurrentDirectory ( BlockStoragePolicySuite bsps, QuotaCounts counts)
+DECL|method|computeQuotaUsage4CurrentDirectory ( BlockStoragePolicySuite bsps, byte storagePolicyId, QuotaCounts counts)
 specifier|public
 name|QuotaCounts
 name|computeQuotaUsage4CurrentDirectory
 parameter_list|(
 name|BlockStoragePolicySuite
 name|bsps
+parameter_list|,
+name|byte
+name|storagePolicyId
 parameter_list|,
 name|QuotaCounts
 name|counts
@@ -2953,6 +3006,8 @@ operator|.
 name|computeQuotaUsage4CurrentDirectory
 argument_list|(
 name|bsps
+argument_list|,
+name|storagePolicyId
 argument_list|,
 name|counts
 argument_list|)

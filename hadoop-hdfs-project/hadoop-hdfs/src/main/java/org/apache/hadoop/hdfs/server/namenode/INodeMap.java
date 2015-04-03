@@ -399,6 +399,9 @@ parameter_list|(
 name|BlockStoragePolicySuite
 name|bsps
 parameter_list|,
+name|byte
+name|blockStoragePolicyId
+parameter_list|,
 name|QuotaCounts
 name|counts
 parameter_list|,

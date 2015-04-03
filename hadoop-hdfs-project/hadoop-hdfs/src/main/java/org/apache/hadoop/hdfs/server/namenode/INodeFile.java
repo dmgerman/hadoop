@@ -32,6 +32,26 @@ name|hdfs
 operator|.
 name|server
 operator|.
+name|blockmanagement
+operator|.
+name|BlockStoragePolicySuite
+operator|.
+name|ID_UNSPECIFIED
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|server
+operator|.
 name|namenode
 operator|.
 name|snapshot
@@ -101,16 +121,6 @@ operator|.
 name|util
 operator|.
 name|Arrays
-import|;
-end_import
-
-begin_import
-import|import
-name|java
-operator|.
-name|util
-operator|.
-name|Collections
 import|;
 end_import
 
@@ -2007,8 +2017,6 @@ if|if
 condition|(
 name|id
 operator|==
-name|BlockStoragePolicySuite
-operator|.
 name|ID_UNSPECIFIED
 condition|)
 block|{
@@ -2745,7 +2753,7 @@ comment|// This is the only place that needs to use the BlockStoragePolicySuite 
 comment|// derive the intended storage type usage for quota by storage type
 annotation|@
 name|Override
-DECL|method|computeQuotaUsage ( BlockStoragePolicySuite bsps, QuotaCounts counts, boolean useCache, int lastSnapshotId)
+DECL|method|computeQuotaUsage ( BlockStoragePolicySuite bsps, byte blockStoragePolicyId, QuotaCounts counts, boolean useCache, int lastSnapshotId)
 specifier|public
 specifier|final
 name|QuotaCounts
@@ -2753,6 +2761,9 @@ name|computeQuotaUsage
 parameter_list|(
 name|BlockStoragePolicySuite
 name|bsps
+parameter_list|,
+name|byte
+name|blockStoragePolicyId
 parameter_list|,
 name|QuotaCounts
 name|counts
@@ -2913,11 +2924,8 @@ argument_list|)
 expr_stmt|;
 if|if
 condition|(
-name|getStoragePolicyID
-argument_list|()
+name|blockStoragePolicyId
 operator|!=
-name|BlockStoragePolicySuite
-operator|.
 name|ID_UNSPECIFIED
 condition|)
 block|{
@@ -2928,8 +2936,7 @@ name|bsps
 operator|.
 name|getPolicy
 argument_list|(
-name|getStoragePolicyID
-argument_list|()
+name|blockStoragePolicyId
 argument_list|)
 decl_stmt|;
 name|List
@@ -3130,8 +3137,6 @@ condition|(
 name|getStoragePolicyID
 argument_list|()
 operator|!=
-name|BlockStoragePolicySuite
-operator|.
 name|ID_UNSPECIFIED
 condition|)
 block|{

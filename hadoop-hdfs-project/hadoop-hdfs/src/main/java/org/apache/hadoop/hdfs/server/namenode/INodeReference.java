@@ -80,20 +80,6 @@ name|hadoop
 operator|.
 name|fs
 operator|.
-name|StorageType
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|fs
-operator|.
 name|permission
 operator|.
 name|FsPermission
@@ -1258,13 +1244,16 @@ return|;
 block|}
 annotation|@
 name|Override
-DECL|method|computeQuotaUsage ( BlockStoragePolicySuite bsps, QuotaCounts counts, boolean useCache, int lastSnapshotId)
+DECL|method|computeQuotaUsage ( BlockStoragePolicySuite bsps, byte blockStoragePolicyId, QuotaCounts counts, boolean useCache, int lastSnapshotId)
 specifier|public
 name|QuotaCounts
 name|computeQuotaUsage
 parameter_list|(
 name|BlockStoragePolicySuite
 name|bsps
+parameter_list|,
+name|byte
+name|blockStoragePolicyId
 parameter_list|,
 name|QuotaCounts
 name|counts
@@ -1282,6 +1271,8 @@ operator|.
 name|computeQuotaUsage
 argument_list|(
 name|bsps
+argument_list|,
+name|blockStoragePolicyId
 argument_list|,
 name|counts
 argument_list|,
@@ -2160,6 +2151,9 @@ operator|.
 name|getBlockStoragePolicySuite
 argument_list|()
 argument_list|,
+name|getStoragePolicyID
+argument_list|()
+argument_list|,
 name|q
 argument_list|,
 literal|false
@@ -2203,7 +2197,7 @@ return|;
 block|}
 annotation|@
 name|Override
-DECL|method|computeQuotaUsage (BlockStoragePolicySuite bsps, QuotaCounts counts, boolean useCache, int lastSnapshotId)
+DECL|method|computeQuotaUsage (BlockStoragePolicySuite bsps, byte blockStoragePolicyId, QuotaCounts counts, boolean useCache, int lastSnapshotId)
 specifier|public
 specifier|final
 name|QuotaCounts
@@ -2211,6 +2205,9 @@ name|computeQuotaUsage
 parameter_list|(
 name|BlockStoragePolicySuite
 name|bsps
+parameter_list|,
+name|byte
+name|blockStoragePolicyId
 parameter_list|,
 name|QuotaCounts
 name|counts
@@ -2283,6 +2280,8 @@ operator|.
 name|computeQuotaUsage
 argument_list|(
 name|bsps
+argument_list|,
+name|blockStoragePolicyId
 argument_list|,
 name|counts
 argument_list|,

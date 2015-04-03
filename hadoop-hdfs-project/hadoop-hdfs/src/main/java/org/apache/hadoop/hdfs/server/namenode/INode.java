@@ -1589,7 +1589,7 @@ literal|0
 argument_list|)
 return|;
 block|}
-comment|/**    * Count subtree {@link Quota#NAMESPACE} and {@link Quota#STORAGESPACE} usages.    */
+comment|/**    * Count subtree {@link Quota#NAMESPACE} and {@link Quota#STORAGESPACE} usages.    * Entry point for FSDirectory where blockStoragePolicyId is given its initial    * value.    */
 DECL|method|computeQuotaUsage (BlockStoragePolicySuite bsps)
 specifier|public
 specifier|final
@@ -1600,10 +1600,26 @@ name|BlockStoragePolicySuite
 name|bsps
 parameter_list|)
 block|{
+specifier|final
+name|byte
+name|storagePolicyId
+init|=
+name|isSymlink
+argument_list|()
+condition|?
+name|BlockStoragePolicySuite
+operator|.
+name|ID_UNSPECIFIED
+else|:
+name|getStoragePolicyID
+argument_list|()
+decl_stmt|;
 return|return
 name|computeQuotaUsage
 argument_list|(
 name|bsps
+argument_list|,
+name|storagePolicyId
 argument_list|,
 operator|new
 name|QuotaCounts
@@ -1615,11 +1631,15 @@ name|build
 argument_list|()
 argument_list|,
 literal|true
+argument_list|,
+name|Snapshot
+operator|.
+name|CURRENT_STATE_ID
 argument_list|)
 return|;
 block|}
-comment|/**    * Count subtree {@link Quota#NAMESPACE} and {@link Quota#STORAGESPACE} usages.    *     * With the existence of {@link INodeReference}, the same inode and its    * subtree may be referred by multiple {@link WithName} nodes and a    * {@link DstReference} node. To avoid circles while quota usage computation,    * we have the following rules:    *     *<pre>    * 1. For a {@link DstReference} node, since the node must be in the current    * tree (or has been deleted as the end point of a series of rename     * operations), we compute the quota usage of the referred node (and its     * subtree) in the regular manner, i.e., including every inode in the current    * tree and in snapshot copies, as well as the size of diff list.    *     * 2. For a {@link WithName} node, since the node must be in a snapshot, we     * only count the quota usage for those nodes that still existed at the     * creation time of the snapshot associated with the {@link WithName} node.    * We do not count in the size of the diff list.      *<pre>    *    * @param bsps Block storage policy suite to calculate intended storage type usage    * @param counts The subtree counts for returning.    * @param useCache Whether to use cached quota usage. Note that     *                 {@link WithName} node never uses cache for its subtree.    * @param lastSnapshotId {@link Snapshot#CURRENT_STATE_ID} indicates the     *                       computation is in the current tree. Otherwise the id    *                       indicates the computation range for a     *                       {@link WithName} node.    * @return The same objects as the counts parameter.    */
-DECL|method|computeQuotaUsage ( BlockStoragePolicySuite bsps, QuotaCounts counts, boolean useCache, int lastSnapshotId)
+comment|/**    * Count subtree {@link Quota#NAMESPACE} and {@link Quota#STORAGESPACE} usages.    *     * With the existence of {@link INodeReference}, the same inode and its    * subtree may be referred by multiple {@link WithName} nodes and a    * {@link DstReference} node. To avoid circles while quota usage computation,    * we have the following rules:    *     *<pre>    * 1. For a {@link DstReference} node, since the node must be in the current    * tree (or has been deleted as the end point of a series of rename     * operations), we compute the quota usage of the referred node (and its     * subtree) in the regular manner, i.e., including every inode in the current    * tree and in snapshot copies, as well as the size of diff list.    *     * 2. For a {@link WithName} node, since the node must be in a snapshot, we     * only count the quota usage for those nodes that still existed at the     * creation time of the snapshot associated with the {@link WithName} node.    * We do not count in the size of the diff list.      *<pre>    *    * @param bsps Block storage policy suite to calculate intended storage type usage    * @param blockStoragePolicyId block storage policy id of the current INode    * @param counts The subtree counts for returning.    * @param useCache Whether to use cached quota usage. Note that     *                 {@link WithName} node never uses cache for its subtree.    * @param lastSnapshotId {@link Snapshot#CURRENT_STATE_ID} indicates the     *                       computation is in the current tree. Otherwise the id    *                       indicates the computation range for a     *                       {@link WithName} node.    * @return The same objects as the counts parameter.    */
+DECL|method|computeQuotaUsage ( BlockStoragePolicySuite bsps, byte blockStoragePolicyId, QuotaCounts counts, boolean useCache, int lastSnapshotId)
 specifier|public
 specifier|abstract
 name|QuotaCounts
@@ -1627,6 +1647,9 @@ name|computeQuotaUsage
 parameter_list|(
 name|BlockStoragePolicySuite
 name|bsps
+parameter_list|,
+name|byte
+name|blockStoragePolicyId
 parameter_list|,
 name|QuotaCounts
 name|counts
@@ -1654,10 +1677,26 @@ name|boolean
 name|useCache
 parameter_list|)
 block|{
+specifier|final
+name|byte
+name|storagePolicyId
+init|=
+name|isSymlink
+argument_list|()
+condition|?
+name|BlockStoragePolicySuite
+operator|.
+name|ID_UNSPECIFIED
+else|:
+name|getStoragePolicyID
+argument_list|()
+decl_stmt|;
 return|return
 name|computeQuotaUsage
 argument_list|(
 name|bsps
+argument_list|,
+name|storagePolicyId
 argument_list|,
 name|counts
 argument_list|,
@@ -2151,6 +2190,41 @@ name|byte
 name|getLocalStoragePolicyID
 parameter_list|()
 function_decl|;
+comment|/**    * Get the storage policy ID while computing quota usage    * @param parentStoragePolicyId the storage policy ID of the parent directory    * @return the storage policy ID of this INode. Note that for an    * {@link INodeSymlink} we return {@link BlockStoragePolicySuite#ID_UNSPECIFIED}    * instead of throwing Exception    */
+DECL|method|getStoragePolicyIDForQuota (byte parentStoragePolicyId)
+specifier|public
+name|byte
+name|getStoragePolicyIDForQuota
+parameter_list|(
+name|byte
+name|parentStoragePolicyId
+parameter_list|)
+block|{
+name|byte
+name|localId
+init|=
+name|isSymlink
+argument_list|()
+condition|?
+name|BlockStoragePolicySuite
+operator|.
+name|ID_UNSPECIFIED
+else|:
+name|getLocalStoragePolicyID
+argument_list|()
+decl_stmt|;
+return|return
+name|localId
+operator|!=
+name|BlockStoragePolicySuite
+operator|.
+name|ID_UNSPECIFIED
+condition|?
+name|localId
+else|:
+name|parentStoragePolicyId
+return|;
+block|}
 comment|/**    * Breaks {@code path} into components.    * @return array of byte arrays each of which represents    * a single path component.    */
 annotation|@
 name|VisibleForTesting

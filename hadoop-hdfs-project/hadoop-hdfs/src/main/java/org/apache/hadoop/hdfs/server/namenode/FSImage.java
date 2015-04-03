@@ -4408,6 +4408,11 @@ argument_list|(
 name|bsps
 argument_list|,
 name|root
+operator|.
+name|getStoragePolicyID
+argument_list|()
+argument_list|,
+name|root
 argument_list|,
 operator|new
 name|QuotaCounts
@@ -4420,7 +4425,7 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|updateCountForQuotaRecursively (BlockStoragePolicySuite bsps, INodeDirectory dir, QuotaCounts counts)
+DECL|method|updateCountForQuotaRecursively (BlockStoragePolicySuite bsps, byte blockStoragePolicyId, INodeDirectory dir, QuotaCounts counts)
 specifier|private
 specifier|static
 name|void
@@ -4428,6 +4433,9 @@ name|updateCountForQuotaRecursively
 parameter_list|(
 name|BlockStoragePolicySuite
 name|bsps
+parameter_list|,
+name|byte
+name|blockStoragePolicyId
 parameter_list|,
 name|INodeDirectory
 name|dir
@@ -4472,6 +4480,8 @@ name|computeQuotaUsage4CurrentDirectory
 argument_list|(
 name|bsps
 argument_list|,
+name|blockStoragePolicyId
+argument_list|,
 name|counts
 argument_list|)
 expr_stmt|;
@@ -4490,6 +4500,17 @@ name|CURRENT_STATE_ID
 argument_list|)
 control|)
 block|{
+specifier|final
+name|byte
+name|childPolicyId
+init|=
+name|child
+operator|.
+name|getStoragePolicyIDForQuota
+argument_list|(
+name|blockStoragePolicyId
+argument_list|)
+decl_stmt|;
 if|if
 condition|(
 name|child
@@ -4501,6 +4522,8 @@ block|{
 name|updateCountForQuotaRecursively
 argument_list|(
 name|bsps
+argument_list|,
+name|childPolicyId
 argument_list|,
 name|child
 operator|.
@@ -4520,9 +4543,15 @@ name|computeQuotaUsage
 argument_list|(
 name|bsps
 argument_list|,
+name|childPolicyId
+argument_list|,
 name|counts
 argument_list|,
 literal|false
+argument_list|,
+name|Snapshot
+operator|.
+name|CURRENT_STATE_ID
 argument_list|)
 expr_stmt|;
 block|}

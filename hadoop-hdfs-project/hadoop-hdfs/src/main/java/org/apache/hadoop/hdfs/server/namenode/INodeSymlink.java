@@ -411,13 +411,16 @@ expr_stmt|;
 block|}
 annotation|@
 name|Override
-DECL|method|computeQuotaUsage ( BlockStoragePolicySuite bsps, QuotaCounts counts, boolean useCache, int lastSnapshotId)
+DECL|method|computeQuotaUsage ( BlockStoragePolicySuite bsps, byte blockStoragePolicyId, QuotaCounts counts, boolean useCache, int lastSnapshotId)
 specifier|public
 name|QuotaCounts
 name|computeQuotaUsage
 parameter_list|(
 name|BlockStoragePolicySuite
 name|bsps
+parameter_list|,
+name|byte
+name|blockStoragePolicyId
 parameter_list|,
 name|QuotaCounts
 name|counts
