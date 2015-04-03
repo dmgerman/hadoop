@@ -2342,6 +2342,20 @@ parameter_list|)
 throws|throws
 name|IOException
 function_decl|;
+comment|/**    * Create an erasure coding zone (currently with hardcoded schema)    * TODO: Configurable and pluggable schemas (HDFS-7337)    */
+annotation|@
+name|Idempotent
+DECL|method|createErasureCodingZone (String src)
+specifier|public
+name|void
+name|createErasureCodingZone
+parameter_list|(
+name|String
+name|src
+parameter_list|)
+throws|throws
+name|IOException
+function_decl|;
 comment|/**    * Set xattr of a file or directory.    * The name must be prefixed with the namespace followed by ".". For example,    * "user.attr".    *<p/>    * Refer to the HDFS extended attributes user documentation for details.    *    * @param src file or directory    * @param xAttr<code>XAttr</code> to set    * @param flag set flag    * @throws IOException    */
 annotation|@
 name|AtMostOnce

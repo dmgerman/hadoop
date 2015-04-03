@@ -184,22 +184,6 @@ name|hadoop
 operator|.
 name|hdfs
 operator|.
-name|protocol
-operator|.
-name|BlockStoragePolicy
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|hdfs
-operator|.
 name|server
 operator|.
 name|blockmanagement
@@ -241,24 +225,6 @@ operator|.
 name|blockmanagement
 operator|.
 name|BlockInfoStriped
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|hdfs
-operator|.
-name|server
-operator|.
-name|common
-operator|.
-name|HdfsServerConstants
 import|;
 end_import
 
@@ -321,42 +287,6 @@ operator|.
 name|permission
 operator|.
 name|FsPermission
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|hdfs
-operator|.
-name|server
-operator|.
-name|blockmanagement
-operator|.
-name|BlockInfoContiguous
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|hdfs
-operator|.
-name|server
-operator|.
-name|blockmanagement
-operator|.
-name|BlockInfoStriped
 import|;
 end_import
 
@@ -563,22 +493,6 @@ operator|.
 name|HdfsConstants
 operator|.
 name|SafeModeAction
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|hdfs
-operator|.
-name|protocol
-operator|.
-name|Block
 import|;
 end_import
 
@@ -1078,10 +992,10 @@ expr_stmt|;
 block|}
 block|}
 block|}
-DECL|method|testSaveAndLoadINodeFile (FSNamesystem fsn, Configuration conf, boolean isUC)
+DECL|method|testSaveAndLoadStripedINodeFile (FSNamesystem fsn, Configuration conf, boolean isUC)
 specifier|private
 name|void
-name|testSaveAndLoadINodeFile
+name|testSaveAndLoadStripedINodeFile
 parameter_list|(
 name|FSNamesystem
 name|fsn
@@ -1096,6 +1010,15 @@ throws|throws
 name|IOException
 block|{
 comment|// contruct a INode with StripedBlock for saving and loading
+name|fsn
+operator|.
+name|createErasureCodingZone
+argument_list|(
+literal|"/"
+argument_list|,
+literal|false
+argument_list|)
+expr_stmt|;
 name|long
 name|id
 init|=
@@ -1166,13 +1089,6 @@ literal|1024
 operator|*
 literal|1024
 decl_stmt|;
-name|byte
-name|storagePolicyID
-init|=
-name|HdfsConstants
-operator|.
-name|EC_STORAGE_POLICY_ID
-decl_stmt|;
 name|INodeFile
 name|file
 init|=
@@ -1194,8 +1110,6 @@ argument_list|,
 name|replication
 argument_list|,
 name|preferredBlockSize
-argument_list|,
-name|storagePolicyID
 argument_list|)
 decl_stmt|;
 name|ByteArrayOutputStream
@@ -1741,10 +1655,10 @@ block|}
 comment|/**    * Test if a INodeFile with BlockInfoStriped can be saved by    * FSImageSerialization and loaded by FSImageFormat#Loader.    */
 annotation|@
 name|Test
-DECL|method|testSaveAndLoadInodeFile ()
+DECL|method|testSaveAndLoadStripedINodeFile ()
 specifier|public
 name|void
-name|testSaveAndLoadInodeFile
+name|testSaveAndLoadStripedINodeFile
 parameter_list|()
 throws|throws
 name|IOException
@@ -1781,7 +1695,7 @@ operator|.
 name|waitActive
 argument_list|()
 expr_stmt|;
-name|testSaveAndLoadINodeFile
+name|testSaveAndLoadStripedINodeFile
 argument_list|(
 name|cluster
 operator|.
@@ -1814,10 +1728,10 @@ block|}
 comment|/**    * Test if a INodeFileUnderConstruction with BlockInfoStriped can be    * saved and loaded by FSImageSerialization    */
 annotation|@
 name|Test
-DECL|method|testSaveAndLoadInodeFileUC ()
+DECL|method|testSaveAndLoadStripedINodeFileUC ()
 specifier|public
 name|void
-name|testSaveAndLoadInodeFileUC
+name|testSaveAndLoadStripedINodeFileUC
 parameter_list|()
 throws|throws
 name|IOException
@@ -1855,7 +1769,7 @@ operator|.
 name|waitActive
 argument_list|()
 expr_stmt|;
-name|testSaveAndLoadINodeFile
+name|testSaveAndLoadStripedINodeFile
 argument_list|(
 name|cluster
 operator|.
@@ -2718,17 +2632,15 @@ argument_list|()
 decl_stmt|;
 name|fs
 operator|.
-name|setStoragePolicy
-argument_list|(
-operator|new
-name|Path
+name|getClient
+argument_list|()
+operator|.
+name|getNamenode
+argument_list|()
+operator|.
+name|createErasureCodingZone
 argument_list|(
 literal|"/"
-argument_list|)
-argument_list|,
-name|HdfsConstants
-operator|.
-name|EC_STORAGE_POLICY_NAME
 argument_list|)
 expr_stmt|;
 name|Path

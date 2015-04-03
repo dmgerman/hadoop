@@ -1457,6 +1457,15 @@ name|SECURITY_XATTR_UNREADABLE_BY_SUPERUSER
 init|=
 literal|"security.hdfs.unreadable.by.superuser"
 decl_stmt|;
+DECL|field|XATTR_ERASURECODING_ZONE
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|XATTR_ERASURECODING_ZONE
+init|=
+literal|"raw.hdfs.erasurecoding.zone"
+decl_stmt|;
 block|}
 end_interface
 

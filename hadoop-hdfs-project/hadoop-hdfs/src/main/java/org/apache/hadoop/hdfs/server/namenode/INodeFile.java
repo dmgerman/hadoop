@@ -5406,7 +5406,6 @@ annotation|@
 name|VisibleForTesting
 annotation|@
 name|Override
-comment|// TODO: move erasure coding policy to file XAttr
 DECL|method|isStriped ()
 specifier|public
 name|boolean
@@ -5414,12 +5413,10 @@ name|isStriped
 parameter_list|()
 block|{
 return|return
-name|getStoragePolicyID
+name|getStripedBlocksFeature
 argument_list|()
-operator|==
-name|HdfsConstants
-operator|.
-name|EC_STORAGE_POLICY_ID
+operator|!=
+literal|null
 return|;
 block|}
 block|}
