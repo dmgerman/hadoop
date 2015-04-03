@@ -1676,7 +1676,7 @@ name|getStorageUuid
 argument_list|()
 return|;
 block|}
-comment|/**    * close files.    */
+comment|/**    * close files and release volume reference.    */
 annotation|@
 name|Override
 DECL|method|close ()
@@ -4021,6 +4021,16 @@ operator|||
 name|isTransfer
 condition|)
 block|{
+comment|// Hold a volume reference to finalize block.
+try|try
+init|(
+name|ReplicaHandler
+name|handler
+init|=
+name|claimReplicaHandler
+argument_list|()
+init|)
+block|{
 comment|// close the block/crc files
 name|close
 argument_list|()
@@ -4068,6 +4078,7 @@ argument_list|(
 name|block
 argument_list|)
 expr_stmt|;
+block|}
 block|}
 name|datanode
 operator|.
@@ -4835,6 +4846,26 @@ throw|;
 block|}
 return|return
 name|partialCrc
+return|;
+block|}
+comment|/** The caller claims the ownership of the replica handler. */
+DECL|method|claimReplicaHandler ()
+specifier|private
+name|ReplicaHandler
+name|claimReplicaHandler
+parameter_list|()
+block|{
+name|ReplicaHandler
+name|handler
+init|=
+name|replicaHandler
+decl_stmt|;
+name|replicaHandler
+operator|=
+literal|null
+expr_stmt|;
+return|return
+name|handler
 return|;
 block|}
 DECL|enum|PacketResponderType
@@ -6093,6 +6124,25 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
+name|long
+name|endTime
+init|=
+literal|0
+decl_stmt|;
+comment|// Hold a volume reference to finalize block.
+try|try
+init|(
+name|ReplicaHandler
+name|handler
+init|=
+name|BlockReceiver
+operator|.
+name|this
+operator|.
+name|claimReplicaHandler
+argument_list|()
+init|)
+block|{
 name|BlockReceiver
 operator|.
 name|this
@@ -6100,10 +6150,8 @@ operator|.
 name|close
 argument_list|()
 expr_stmt|;
-specifier|final
-name|long
 name|endTime
-init|=
+operator|=
 name|ClientTraceLog
 operator|.
 name|isInfoEnabled
@@ -6115,7 +6163,7 @@ name|nanoTime
 argument_list|()
 else|:
 literal|0
-decl_stmt|;
+expr_stmt|;
 name|block
 operator|.
 name|setNumBytes
@@ -6135,6 +6183,7 @@ argument_list|(
 name|block
 argument_list|)
 expr_stmt|;
+block|}
 if|if
 condition|(
 name|pinning
