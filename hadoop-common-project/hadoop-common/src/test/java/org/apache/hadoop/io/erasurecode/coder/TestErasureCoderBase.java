@@ -103,7 +103,7 @@ name|Class
 argument_list|<
 name|?
 extends|extends
-name|ErasureEncoder
+name|ErasureCoder
 argument_list|>
 name|encoderClass
 decl_stmt|;
@@ -113,7 +113,7 @@ name|Class
 argument_list|<
 name|?
 extends|extends
-name|ErasureDecoder
+name|ErasureCoder
 argument_list|>
 name|decoderClass
 decl_stmt|;
@@ -174,7 +174,7 @@ name|usingDirectBuffer
 operator|=
 name|usingDirectBuffer
 expr_stmt|;
-name|ErasureEncoder
+name|ErasureCoder
 name|encoder
 init|=
 name|createEncoder
@@ -224,7 +224,7 @@ name|codingStep
 operator|=
 name|encoder
 operator|.
-name|encode
+name|calculateCoding
 argument_list|(
 name|blockGroup
 argument_list|)
@@ -263,7 +263,7 @@ name|getParityBlocks
 argument_list|()
 argument_list|)
 expr_stmt|;
-name|ErasureDecoder
+name|ErasureCoder
 name|decoder
 init|=
 name|createDecoder
@@ -275,7 +275,7 @@ name|codingStep
 operator|=
 name|decoder
 operator|.
-name|decode
+name|calculateCoding
 argument_list|(
 name|blockGroup
 argument_list|)
@@ -542,11 +542,11 @@ block|}
 comment|/**    * Create erasure encoder for test.    * @return    */
 DECL|method|createEncoder ()
 specifier|private
-name|ErasureEncoder
+name|ErasureCoder
 name|createEncoder
 parameter_list|()
 block|{
-name|ErasureEncoder
+name|ErasureCoder
 name|encoder
 decl_stmt|;
 try|try
@@ -601,11 +601,11 @@ block|}
 comment|/**    * Create the erasure decoder for the test.    * @return    */
 DECL|method|createDecoder ()
 specifier|private
-name|ErasureDecoder
+name|ErasureCoder
 name|createDecoder
 parameter_list|()
 block|{
-name|ErasureDecoder
+name|ErasureCoder
 name|decoder
 decl_stmt|;
 try|try

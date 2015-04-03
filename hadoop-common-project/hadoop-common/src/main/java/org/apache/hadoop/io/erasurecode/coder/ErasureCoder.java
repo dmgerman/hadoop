@@ -34,6 +34,22 @@ name|Configurable
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|io
+operator|.
+name|erasurecode
+operator|.
+name|ECBlockGroup
+import|;
+end_import
+
 begin_comment
 comment|/**  * An erasure coder to perform encoding or decoding given a group. Generally it  * involves calculating necessary internal steps according to codec logic. For  * each step,it calculates necessary input blocks to read chunks from and output  * parity blocks to write parity chunks into from the group. It also takes care  * of appropriate raw coder to use for the step. And encapsulates all the  * necessary info (input blocks, output blocks and raw coder) into a step  * represented by {@link ErasureCodingStep}. ErasureCoder callers can use the  * step to do the real work with retrieved input and output chunks.  *  * Note, currently only one coding step is supported. Will support complex cases  * of multiple coding steps.  *  */
 end_comment
@@ -82,6 +98,16 @@ specifier|public
 name|int
 name|getChunkSize
 parameter_list|()
+function_decl|;
+comment|/**    * Calculate the encoding or decoding steps given a block blockGroup.    *    * Note, currently only one coding step is supported. Will support complex    * cases of multiple coding steps.    *    * @param blockGroup the erasure coding block group containing all necessary    *                   information for codec calculation    */
+DECL|method|calculateCoding (ECBlockGroup blockGroup)
+specifier|public
+name|ErasureCodingStep
+name|calculateCoding
+parameter_list|(
+name|ECBlockGroup
+name|blockGroup
+parameter_list|)
 function_decl|;
 comment|/**    * Tell if native or off-heap buffer is preferred or not. It's for callers to    * decide how to allocate coding chunk buffers, either on heap or off heap.    * It will return false by default.    * @return true if native buffer is preferred for performance consideration,    * otherwise false.    */
 DECL|method|preferNativeBuffer ()

@@ -53,7 +53,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * An abstract erasure decoder that's to be inherited by new decoders.  *  * It implements the {@link ErasureDecoder} interface.  */
+comment|/**  * An abstract erasure decoder that's to be inherited by new decoders.  *  * It implements the {@link ErasureCoder} interface.  */
 end_comment
 
 begin_class
@@ -64,15 +64,13 @@ class|class
 name|AbstractErasureDecoder
 extends|extends
 name|AbstractErasureCoder
-implements|implements
-name|ErasureDecoder
 block|{
 annotation|@
 name|Override
-DECL|method|decode (ECBlockGroup blockGroup)
+DECL|method|calculateCoding (ECBlockGroup blockGroup)
 specifier|public
 name|ErasureCodingStep
-name|decode
+name|calculateCoding
 parameter_list|(
 name|ECBlockGroup
 name|blockGroup
