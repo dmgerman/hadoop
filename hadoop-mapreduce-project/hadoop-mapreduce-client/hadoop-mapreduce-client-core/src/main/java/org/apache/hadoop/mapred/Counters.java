@@ -402,6 +402,7 @@ block|{
 DECL|field|MAX_COUNTER_LIMIT
 specifier|public
 specifier|static
+specifier|final
 name|int
 name|MAX_COUNTER_LIMIT
 init|=
@@ -413,6 +414,7 @@ decl_stmt|;
 DECL|field|MAX_GROUP_LIMIT
 specifier|public
 specifier|static
+specifier|final
 name|int
 name|MAX_GROUP_LIMIT
 init|=
@@ -424,6 +426,7 @@ decl_stmt|;
 DECL|field|depricatedCounterMap
 specifier|private
 specifier|static
+specifier|final
 name|HashMap
 argument_list|<
 name|String

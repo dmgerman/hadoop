@@ -391,6 +391,7 @@ decl_stmt|;
 comment|/**    * A cache from enum values to the associated counter.    */
 DECL|field|cache
 specifier|private
+specifier|final
 name|Map
 argument_list|<
 name|Enum
@@ -410,6 +411,7 @@ decl_stmt|;
 comment|//framework& fs groups
 DECL|field|fgroups
 specifier|private
+specifier|final
 name|Map
 argument_list|<
 name|String
@@ -430,6 +432,7 @@ decl_stmt|;
 comment|// other groups
 DECL|field|groups
 specifier|private
+specifier|final
 name|Map
 argument_list|<
 name|String
