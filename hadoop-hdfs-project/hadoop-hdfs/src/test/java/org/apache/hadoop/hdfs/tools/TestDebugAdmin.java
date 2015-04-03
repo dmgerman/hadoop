@@ -498,6 +498,18 @@ name|bytes
 operator|.
 name|toString
 argument_list|()
+operator|.
+name|replaceAll
+argument_list|(
+name|System
+operator|.
+name|getProperty
+argument_list|(
+literal|"line.separator"
+argument_list|)
+argument_list|,
+literal|""
+argument_list|)
 return|;
 block|}
 annotation|@
@@ -517,7 +529,7 @@ name|Exception
 block|{
 name|assertEquals
 argument_list|(
-literal|"ret: 1, You must supply a -path argument to recoverLease.\n"
+literal|"ret: 1, You must supply a -path argument to recoverLease."
 argument_list|,
 name|runCmd
 argument_list|(
@@ -562,7 +574,7 @@ argument_list|()
 expr_stmt|;
 name|assertEquals
 argument_list|(
-literal|"ret: 0, recoverLease SUCCEEDED on /foo\n"
+literal|"ret: 0, recoverLease SUCCEEDED on /foo"
 argument_list|,
 name|runCmd
 argument_list|(
@@ -664,7 +676,7 @@ argument_list|)
 decl_stmt|;
 name|assertEquals
 argument_list|(
-literal|"ret: 1, You must specify a meta file with -meta\n"
+literal|"ret: 1, You must specify a meta file with -meta"
 argument_list|,
 name|runCmd
 argument_list|(
@@ -706,7 +718,7 @@ name|assertEquals
 argument_list|(
 literal|"ret: 0, Checksum type: "
 operator|+
-literal|"DataChecksum(type=CRC32C, chunkSize=512)\n"
+literal|"DataChecksum(type=CRC32C, chunkSize=512)"
 argument_list|,
 name|runCmd
 argument_list|(
@@ -730,7 +742,7 @@ name|assertEquals
 argument_list|(
 literal|"ret: 0, Checksum type: "
 operator|+
-literal|"DataChecksum(type=CRC32C, chunkSize=512)\n"
+literal|"DataChecksum(type=CRC32C, chunkSize=512)"
 operator|+
 literal|"Checksum verification succeeded on block file "
 operator|+
@@ -738,8 +750,6 @@ name|blockFile
 operator|.
 name|getAbsolutePath
 argument_list|()
-operator|+
-literal|"\n"
 argument_list|,
 name|runCmd
 argument_list|(
