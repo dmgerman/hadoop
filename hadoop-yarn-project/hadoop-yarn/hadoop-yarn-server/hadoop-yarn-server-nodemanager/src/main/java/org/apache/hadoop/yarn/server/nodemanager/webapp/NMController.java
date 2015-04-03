@@ -367,6 +367,20 @@ name|class
 argument_list|)
 expr_stmt|;
 block|}
+DECL|method|errorsAndWarnings ()
+specifier|public
+name|void
+name|errorsAndWarnings
+parameter_list|()
+block|{
+name|render
+argument_list|(
+name|NMErrorsAndWarningsPage
+operator|.
+name|class
+argument_list|)
+expr_stmt|;
+block|}
 DECL|method|logs ()
 specifier|public
 name|void

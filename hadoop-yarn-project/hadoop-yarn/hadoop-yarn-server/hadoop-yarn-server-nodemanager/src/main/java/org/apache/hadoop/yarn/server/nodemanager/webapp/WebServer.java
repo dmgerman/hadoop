@@ -807,6 +807,17 @@ argument_list|,
 literal|"logs"
 argument_list|)
 expr_stmt|;
+name|route
+argument_list|(
+literal|"/errors-and-warnings"
+argument_list|,
+name|NMController
+operator|.
+name|class
+argument_list|,
+literal|"errorsAndWarnings"
+argument_list|)
+expr_stmt|;
 block|}
 block|}
 block|}

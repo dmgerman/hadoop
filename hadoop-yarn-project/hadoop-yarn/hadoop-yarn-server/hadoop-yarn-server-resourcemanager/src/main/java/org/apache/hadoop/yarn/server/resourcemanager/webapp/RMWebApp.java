@@ -454,6 +454,17 @@ argument_list|,
 literal|"container"
 argument_list|)
 expr_stmt|;
+name|route
+argument_list|(
+literal|"/errors-and-warnings"
+argument_list|,
+name|RmController
+operator|.
+name|class
+argument_list|,
+literal|"errorsAndWarnings"
+argument_list|)
+expr_stmt|;
 block|}
 annotation|@
 name|Override

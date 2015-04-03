@@ -522,6 +522,20 @@ name|class
 argument_list|)
 expr_stmt|;
 block|}
+DECL|method|errorsAndWarnings ()
+specifier|public
+name|void
+name|errorsAndWarnings
+parameter_list|()
+block|{
+name|render
+argument_list|(
+name|RMErrorsAndWarningsPage
+operator|.
+name|class
+argument_list|)
+expr_stmt|;
+block|}
 block|}
 end_class
 
