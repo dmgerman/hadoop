@@ -332,6 +332,20 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|io
+operator|.
+name|IOUtils
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|util
 operator|.
 name|DiskChecker
@@ -1622,6 +1636,22 @@ name|blockScanner
 operator|.
 name|addVolumeScanner
 argument_list|(
+name|ref
+argument_list|)
+expr_stmt|;
+block|}
+else|else
+block|{
+comment|// If the volume is not put into a volume scanner, it does not need to
+comment|// hold the reference.
+name|IOUtils
+operator|.
+name|cleanup
+argument_list|(
+name|FsDatasetImpl
+operator|.
+name|LOG
+argument_list|,
 name|ref
 argument_list|)
 expr_stmt|;
