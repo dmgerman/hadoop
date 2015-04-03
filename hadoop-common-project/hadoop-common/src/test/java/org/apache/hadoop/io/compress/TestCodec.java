@@ -5597,7 +5597,7 @@ argument_list|()
 expr_stmt|;
 block|}
 DECL|method|testGzipCodecWrite (boolean useNative)
-specifier|public
+specifier|private
 name|void
 name|testGzipCodecWrite
 parameter_list|(
@@ -5922,6 +5922,8 @@ literal|true
 argument_list|)
 expr_stmt|;
 block|}
+annotation|@
+name|Test
 DECL|method|testCodecPoolAndGzipDecompressor ()
 specifier|public
 name|void
