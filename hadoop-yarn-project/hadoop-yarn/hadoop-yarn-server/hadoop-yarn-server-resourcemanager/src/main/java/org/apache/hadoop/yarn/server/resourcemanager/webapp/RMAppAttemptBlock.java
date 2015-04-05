@@ -1599,7 +1599,7 @@ argument_list|,
 name|containers
 argument_list|)
 condition|?
-literal|null
+literal|"N/A"
 else|:
 name|root_url
 argument_list|(
