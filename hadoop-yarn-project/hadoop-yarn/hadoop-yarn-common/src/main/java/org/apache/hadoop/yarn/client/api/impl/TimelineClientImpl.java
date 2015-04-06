@@ -2812,30 +2812,28 @@ block|{
 name|String
 name|msg
 init|=
-literal|"Failed to get the response from the timeline server."
-decl_stmt|;
-name|LOG
-operator|.
-name|error
-argument_list|(
-name|msg
-argument_list|)
-expr_stmt|;
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-operator|&&
+literal|"Response from the timeline server is "
+operator|+
+operator|(
+operator|(
 name|resp
-operator|!=
+operator|==
 literal|null
-condition|)
-block|{
-name|String
-name|output
-init|=
+operator|)
+condition|?
+literal|"null"
+else|:
+literal|"not successful,"
+operator|+
+literal|" HTTP error code: "
+operator|+
+name|resp
+operator|.
+name|getStatus
+argument_list|()
+operator|+
+literal|", Server response:\n"
+operator|+
 name|resp
 operator|.
 name|getEntity
@@ -2844,24 +2842,15 @@ name|String
 operator|.
 name|class
 argument_list|)
+operator|)
 decl_stmt|;
 name|LOG
 operator|.
-name|debug
+name|error
 argument_list|(
-literal|"HTTP error code: "
-operator|+
-name|resp
-operator|.
-name|getStatus
-argument_list|()
-operator|+
-literal|" Server response:\n"
-operator|+
-name|output
+name|msg
 argument_list|)
 expr_stmt|;
-block|}
 throw|throw
 operator|new
 name|YarnException

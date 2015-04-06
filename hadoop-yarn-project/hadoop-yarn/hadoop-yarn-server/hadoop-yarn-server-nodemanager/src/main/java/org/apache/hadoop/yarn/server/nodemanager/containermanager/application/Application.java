@@ -80,6 +80,24 @@ name|hadoop
 operator|.
 name|yarn
 operator|.
+name|client
+operator|.
+name|api
+operator|.
+name|TimelineClient
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
 name|event
 operator|.
 name|EventHandler
@@ -152,6 +170,11 @@ function_decl|;
 DECL|method|getFlowRunId ()
 name|String
 name|getFlowRunId
+parameter_list|()
+function_decl|;
+DECL|method|getTimelineClient ()
+name|TimelineClient
+name|getTimelineClient
 parameter_list|()
 function_decl|;
 block|}

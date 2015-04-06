@@ -3139,23 +3139,6 @@ return|;
 block|}
 annotation|@
 name|Override
-DECL|method|getKnownCollectors ()
-specifier|public
-name|Map
-argument_list|<
-name|ApplicationId
-argument_list|,
-name|String
-argument_list|>
-name|getKnownCollectors
-parameter_list|()
-block|{
-return|return
-literal|null
-return|;
-block|}
-annotation|@
-name|Override
 DECL|method|getContainers ()
 specifier|public
 name|ConcurrentMap
@@ -3294,6 +3277,18 @@ parameter_list|()
 block|{
 return|return
 literal|false
+return|;
+block|}
+annotation|@
+name|Override
+DECL|method|getConf ()
+specifier|public
+name|Configuration
+name|getConf
+parameter_list|()
+block|{
+return|return
+literal|null
 return|;
 block|}
 annotation|@

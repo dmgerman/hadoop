@@ -9583,6 +9583,44 @@ return|return
 name|clusterId
 return|;
 block|}
+DECL|method|systemMetricsPublisherEnabled (Configuration conf)
+specifier|public
+specifier|static
+name|boolean
+name|systemMetricsPublisherEnabled
+parameter_list|(
+name|Configuration
+name|conf
+parameter_list|)
+block|{
+return|return
+name|conf
+operator|.
+name|getBoolean
+argument_list|(
+name|YarnConfiguration
+operator|.
+name|TIMELINE_SERVICE_ENABLED
+argument_list|,
+name|YarnConfiguration
+operator|.
+name|DEFAULT_TIMELINE_SERVICE_ENABLED
+argument_list|)
+operator|&&
+name|conf
+operator|.
+name|getBoolean
+argument_list|(
+name|YarnConfiguration
+operator|.
+name|SYSTEM_METRICS_PUBLISHER_ENABLED
+argument_list|,
+name|YarnConfiguration
+operator|.
+name|DEFAULT_SYSTEM_METRICS_PUBLISHER_ENABLED
+argument_list|)
+return|;
+block|}
 comment|/* For debugging. mp configurations to system output as XML format. */
 DECL|method|main (String[] args)
 specifier|public

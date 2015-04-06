@@ -10069,6 +10069,9 @@ name|store
 parameter_list|,
 name|boolean
 name|isDistributedSchedulingEnabled
+parameter_list|,
+name|Configuration
+name|conf
 parameter_list|)
 block|{
 return|return
@@ -10078,6 +10081,8 @@ argument_list|(
 name|containerTokenSecretManager
 argument_list|,
 name|nmTokenSecretManager
+argument_list|,
+name|conf
 argument_list|)
 return|;
 block|}
@@ -11281,7 +11286,7 @@ name|MyNMContext
 extends|extends
 name|NMContext
 block|{
-DECL|method|MyNMContext ( NMContainerTokenSecretManager containerTokenSecretManager, NMTokenSecretManagerInNM nmTokenSecretManager)
+DECL|method|MyNMContext ( NMContainerTokenSecretManager containerTokenSecretManager, NMTokenSecretManagerInNM nmTokenSecretManager, Configuration conf)
 specifier|public
 name|MyNMContext
 parameter_list|(
@@ -11290,6 +11295,9 @@ name|containerTokenSecretManager
 parameter_list|,
 name|NMTokenSecretManagerInNM
 name|nmTokenSecretManager
+parameter_list|,
+name|Configuration
+name|conf
 parameter_list|)
 block|{
 name|super
@@ -11307,6 +11315,8 @@ name|NMNullStateStoreService
 argument_list|()
 argument_list|,
 literal|false
+argument_list|,
+name|conf
 argument_list|)
 expr_stmt|;
 block|}

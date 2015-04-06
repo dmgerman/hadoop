@@ -3545,23 +3545,42 @@ operator|.
 name|getRMApps
 argument_list|()
 decl_stmt|;
+comment|// Set collectors for all apps now.
+comment|// TODO set collectors for only active apps running on NM (liveApps cannot be
+comment|// used for this case)
 for|for
 control|(
+name|Map
+operator|.
+name|Entry
+argument_list|<
 name|ApplicationId
-name|appId
+argument_list|,
+name|RMApp
+argument_list|>
+name|rmApp
 range|:
-name|liveApps
+name|rmApps
+operator|.
+name|entrySet
+argument_list|()
 control|)
 block|{
+name|ApplicationId
+name|appId
+init|=
+name|rmApp
+operator|.
+name|getKey
+argument_list|()
+decl_stmt|;
 name|String
 name|appCollectorAddr
 init|=
-name|rmApps
+name|rmApp
 operator|.
-name|get
-argument_list|(
-name|appId
-argument_list|)
+name|getValue
+argument_list|()
 operator|.
 name|getCollectorAddr
 argument_list|()
@@ -3582,30 +3601,6 @@ argument_list|,
 name|appCollectorAddr
 argument_list|)
 expr_stmt|;
-block|}
-else|else
-block|{
-comment|// Log a debug info if collector address is not found.
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
-name|LOG
-operator|.
-name|debug
-argument_list|(
-literal|"Collector for applicaton: "
-operator|+
-name|appId
-operator|+
-literal|" hasn't registered yet!"
-argument_list|)
-expr_stmt|;
-block|}
 block|}
 block|}
 name|response

@@ -1574,7 +1574,7 @@ name|nmStore
 argument_list|)
 return|;
 block|}
-DECL|method|createNMContext ( NMContainerTokenSecretManager containerTokenSecretManager, NMTokenSecretManagerInNM nmTokenSecretManager, NMStateStoreService stateStore, boolean isDistSchedulerEnabled)
+DECL|method|createNMContext ( NMContainerTokenSecretManager containerTokenSecretManager, NMTokenSecretManagerInNM nmTokenSecretManager, NMStateStoreService stateStore, boolean isDistSchedulerEnabled, Configuration conf)
 specifier|protected
 name|NMContext
 name|createNMContext
@@ -1590,6 +1590,9 @@ name|stateStore
 parameter_list|,
 name|boolean
 name|isDistSchedulerEnabled
+parameter_list|,
+name|Configuration
+name|conf
 parameter_list|)
 block|{
 return|return
@@ -1607,6 +1610,8 @@ argument_list|,
 name|stateStore
 argument_list|,
 name|isDistSchedulerEnabled
+argument_list|,
+name|conf
 argument_list|)
 return|;
 block|}
@@ -2269,6 +2274,8 @@ argument_list|,
 name|nmStore
 argument_list|,
 name|isDistSchedulingEnabled
+argument_list|,
+name|conf
 argument_list|)
 expr_stmt|;
 name|nodeLabelsProvider
@@ -2815,6 +2822,13 @@ name|nodeId
 init|=
 literal|null
 decl_stmt|;
+DECL|field|conf
+specifier|private
+name|Configuration
+name|conf
+init|=
+literal|null
+decl_stmt|;
 DECL|field|applications
 specifier|protected
 specifier|final
@@ -2884,25 +2898,6 @@ argument_list|,
 name|String
 argument_list|>
 name|registeredCollectors
-init|=
-operator|new
-name|ConcurrentHashMap
-argument_list|<
-name|ApplicationId
-argument_list|,
-name|String
-argument_list|>
-argument_list|()
-decl_stmt|;
-DECL|field|knownCollectors
-specifier|protected
-name|Map
-argument_list|<
-name|ApplicationId
-argument_list|,
-name|String
-argument_list|>
-name|knownCollectors
 init|=
 operator|new
 name|ConcurrentHashMap
@@ -3044,7 +3039,7 @@ specifier|final
 name|QueuingContext
 name|queuingContext
 decl_stmt|;
-DECL|method|NMContext (NMContainerTokenSecretManager containerTokenSecretManager, NMTokenSecretManagerInNM nmTokenSecretManager, LocalDirsHandlerService dirsHandler, ApplicationACLsManager aclsManager, NMStateStoreService stateStore, boolean isDistSchedulingEnabled)
+DECL|method|NMContext (NMContainerTokenSecretManager containerTokenSecretManager, NMTokenSecretManagerInNM nmTokenSecretManager, LocalDirsHandlerService dirsHandler, ApplicationACLsManager aclsManager, NMStateStoreService stateStore, boolean isDistSchedulingEnabled, Configuration conf)
 specifier|public
 name|NMContext
 parameter_list|(
@@ -3065,6 +3060,9 @@ name|stateStore
 parameter_list|,
 name|boolean
 name|isDistSchedulingEnabled
+parameter_list|,
+name|Configuration
+name|conf
 parameter_list|)
 block|{
 name|this
@@ -3152,6 +3150,12 @@ name|isDistSchedulingEnabled
 operator|=
 name|isDistSchedulingEnabled
 expr_stmt|;
+name|this
+operator|.
+name|conf
+operator|=
+name|conf
+expr_stmt|;
 block|}
 comment|/**      * Usable only after ContainerManager is started.      */
 annotation|@
@@ -3202,6 +3206,20 @@ return|return
 name|this
 operator|.
 name|applications
+return|;
+block|}
+annotation|@
+name|Override
+DECL|method|getConf ()
+specifier|public
+name|Configuration
+name|getConf
+parameter_list|()
+block|{
+return|return
+name|this
+operator|.
+name|conf
 return|;
 block|}
 annotation|@
@@ -3629,60 +3647,6 @@ operator|.
 name|putAll
 argument_list|(
 name|newRegisteredCollectors
-argument_list|)
-expr_stmt|;
-comment|// Update to knownCollectors as well so it can immediately be consumed by
-comment|// this NM's TimelineClient.
-name|this
-operator|.
-name|knownCollectors
-operator|.
-name|putAll
-argument_list|(
-name|newRegisteredCollectors
-argument_list|)
-expr_stmt|;
-block|}
-annotation|@
-name|Override
-DECL|method|getKnownCollectors ()
-specifier|public
-name|Map
-argument_list|<
-name|ApplicationId
-argument_list|,
-name|String
-argument_list|>
-name|getKnownCollectors
-parameter_list|()
-block|{
-return|return
-name|this
-operator|.
-name|knownCollectors
-return|;
-block|}
-DECL|method|addKnownCollectors ( Map<ApplicationId, String> knownCollectors)
-specifier|public
-name|void
-name|addKnownCollectors
-parameter_list|(
-name|Map
-argument_list|<
-name|ApplicationId
-argument_list|,
-name|String
-argument_list|>
-name|knownCollectors
-parameter_list|)
-block|{
-name|this
-operator|.
-name|knownCollectors
-operator|.
-name|putAll
-argument_list|(
-name|knownCollectors
 argument_list|)
 expr_stmt|;
 block|}

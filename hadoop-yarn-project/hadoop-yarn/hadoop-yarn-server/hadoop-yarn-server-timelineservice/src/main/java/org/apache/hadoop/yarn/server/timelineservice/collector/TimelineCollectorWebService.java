@@ -741,7 +741,11 @@ name|LOG
 operator|.
 name|error
 argument_list|(
-literal|"Application not found"
+literal|"Application: "
+operator|+
+name|appId
+operator|+
+literal|" is not found"
 argument_list|)
 expr_stmt|;
 throw|throw

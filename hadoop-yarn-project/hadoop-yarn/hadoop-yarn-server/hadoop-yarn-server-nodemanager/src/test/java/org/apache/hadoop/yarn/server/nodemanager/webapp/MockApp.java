@@ -102,6 +102,24 @@ name|hadoop
 operator|.
 name|yarn
 operator|.
+name|client
+operator|.
+name|api
+operator|.
+name|TimelineClient
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
 name|factories
 operator|.
 name|RecordFactory
@@ -284,6 +302,12 @@ DECL|field|flowRunId
 name|String
 name|flowRunId
 decl_stmt|;
+DECL|field|timelineClient
+name|TimelineClient
+name|timelineClient
+init|=
+literal|null
+decl_stmt|;
 DECL|method|MockApp (int uniqId)
 specifier|public
 name|MockApp
@@ -448,6 +472,18 @@ parameter_list|()
 block|{
 return|return
 name|flowRunId
+return|;
+block|}
+annotation|@
+name|Override
+DECL|method|getTimelineClient ()
+specifier|public
+name|TimelineClient
+name|getTimelineClient
+parameter_list|()
+block|{
+return|return
+name|timelineClient
 return|;
 block|}
 block|}

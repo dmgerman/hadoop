@@ -276,13 +276,9 @@ annotation|@
 name|InterfaceAudience
 operator|.
 name|Private
-annotation|@
-name|XmlElement
-argument_list|(
-name|name
-operator|=
-literal|"children"
-argument_list|)
+comment|// comment out XmlElement here because it cause UnrecognizedPropertyException
+comment|// TODO we need a better fix
+comment|//@XmlElement(name = "children")
 DECL|method|getChildrenJAXB ()
 specifier|public
 name|HashMap

@@ -62,6 +62,20 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|conf
+operator|.
+name|Configuration
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|security
 operator|.
 name|Credentials
@@ -419,17 +433,6 @@ argument_list|>
 name|getRegisteredCollectors
 parameter_list|()
 function_decl|;
-comment|/**    * Return the known collectors which get from RM for all active applications    * running on this NM.    * @return known collectors.    */
-DECL|method|getKnownCollectors ()
-name|Map
-argument_list|<
-name|ApplicationId
-argument_list|,
-name|String
-argument_list|>
-name|getKnownCollectors
-parameter_list|()
-function_decl|;
 DECL|method|getContainers ()
 name|ConcurrentMap
 argument_list|<
@@ -505,6 +508,11 @@ function_decl|;
 DECL|method|getDecommissioned ()
 name|boolean
 name|getDecommissioned
+parameter_list|()
+function_decl|;
+DECL|method|getConf ()
+name|Configuration
+name|getConf
 parameter_list|()
 function_decl|;
 DECL|method|setDecommissioned (boolean isDecommissioned)

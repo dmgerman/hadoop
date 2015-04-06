@@ -76,7 +76,7 @@ name|org
 operator|.
 name|mockito
 operator|.
-name|Mockito
+name|Matchers
 operator|.
 name|isA
 import|;
@@ -4656,6 +4656,8 @@ argument_list|,
 name|stateStore
 argument_list|,
 literal|false
+argument_list|,
+name|conf
 argument_list|)
 block|{
 specifier|public
