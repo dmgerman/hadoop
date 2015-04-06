@@ -16205,6 +16205,30 @@ name|fileState
 operator|.
 name|inode
 decl_stmt|;
+comment|// Check if the penultimate block is minimally replicated
+if|if
+condition|(
+operator|!
+name|checkFileProgress
+argument_list|(
+name|src
+argument_list|,
+name|pendingFile
+argument_list|,
+literal|false
+argument_list|)
+condition|)
+block|{
+throw|throw
+operator|new
+name|NotReplicatedYetException
+argument_list|(
+literal|"Not replicated yet: "
+operator|+
+name|src
+argument_list|)
+throw|;
+block|}
 name|src
 operator|=
 name|fileState
@@ -17135,30 +17159,6 @@ name|lastBlockInFile
 argument_list|)
 throw|;
 block|}
-block|}
-comment|// Check if the penultimate block is minimally replicated
-if|if
-condition|(
-operator|!
-name|checkFileProgress
-argument_list|(
-name|src
-argument_list|,
-name|pendingFile
-argument_list|,
-literal|false
-argument_list|)
-condition|)
-block|{
-throw|throw
-operator|new
-name|NotReplicatedYetException
-argument_list|(
-literal|"Not replicated yet: "
-operator|+
-name|src
-argument_list|)
-throw|;
 block|}
 return|return
 operator|new
@@ -18668,7 +18668,6 @@ return|;
 block|}
 comment|/**    * Check that the indicated file's blocks are present and    * replicated.  If not, return false. If checkall is true, then check    * all blocks, otherwise check only penultimate block.    */
 DECL|method|checkFileProgress (String src, INodeFile v, boolean checkall)
-specifier|private
 name|boolean
 name|checkFileProgress
 parameter_list|(
@@ -18682,11 +18681,10 @@ name|boolean
 name|checkall
 parameter_list|)
 block|{
-name|readLock
+assert|assert
+name|hasReadLock
 argument_list|()
-expr_stmt|;
-try|try
-block|{
+assert|;
 if|if
 condition|(
 name|checkall
@@ -18736,13 +18734,6 @@ name|b
 block|}
 argument_list|)
 return|;
-block|}
-block|}
-finally|finally
-block|{
-name|readUnlock
-argument_list|()
-expr_stmt|;
 block|}
 block|}
 comment|/**    * Change the indicated filename.     * @deprecated Use {@link #renameTo(String, String, boolean,    * Options.Rename...)} instead.    */
