@@ -26109,6 +26109,11 @@ argument_list|)
 expr_stmt|;
 name|scheduler
 operator|.
+name|stop
+argument_list|()
+expr_stmt|;
+name|scheduler
+operator|.
 name|allocate
 argument_list|(
 name|appAttemptId
@@ -26127,27 +26132,11 @@ argument_list|,
 literal|null
 argument_list|)
 expr_stmt|;
-comment|// Wait until app gets resources
-while|while
-condition|(
-name|app
+name|scheduler
 operator|.
-name|getCurrentConsumption
+name|continuousSchedulingAttempt
 argument_list|()
-operator|.
-name|equals
-argument_list|(
-name|Resources
-operator|.
-name|createResource
-argument_list|(
-literal|1024
-argument_list|,
-literal|1
-argument_list|)
-argument_list|)
-condition|)
-block|{ }
+expr_stmt|;
 name|Assert
 operator|.
 name|assertEquals
