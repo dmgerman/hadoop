@@ -159,6 +159,8 @@ class|class
 name|BlockInfoStripedUnderConstruction
 extends|extends
 name|BlockInfoStriped
+implements|implements
+name|BlockInfoUnderConstruction
 block|{
 DECL|field|blockUCState
 specifier|private
@@ -171,6 +173,15 @@ specifier|private
 name|ReplicaUnderConstruction
 index|[]
 name|replicas
+decl_stmt|;
+comment|/**    * Index of the primary data node doing the recovery. Useful for log    * messages.    */
+DECL|field|primaryNodeIndex
+specifier|private
+name|int
+name|primaryNodeIndex
+init|=
+operator|-
+literal|1
 decl_stmt|;
 comment|/**    * The new generation stamp, which this block will have    * after the recovery succeeds. Also used as a recovery id to identify    * the right recovery if any of the abandoned recoveries re-appear.    */
 DECL|field|blockRecoveryId
@@ -285,6 +296,8 @@ argument_list|)
 return|;
 block|}
 comment|/** Set expected locations */
+annotation|@
+name|Override
 DECL|method|setExpectedLocations (DatanodeStorageInfo[] targets)
 specifier|public
 name|void
@@ -379,6 +392,8 @@ expr_stmt|;
 block|}
 block|}
 comment|/**    * Create array of expected replica locations    * (as has been assigned by chooseTargets()).    */
+annotation|@
+name|Override
 DECL|method|getExpectedStorageLocations ()
 specifier|public
 name|DatanodeStorageInfo
@@ -494,7 +509,8 @@ return|return
 name|indices
 return|;
 block|}
-comment|/** Get the number of expected locations */
+annotation|@
+name|Override
 DECL|method|getNumExpectedLocations ()
 specifier|public
 name|int
@@ -540,7 +556,8 @@ operator|=
 name|s
 expr_stmt|;
 block|}
-comment|/** Get block recovery ID */
+annotation|@
+name|Override
 DECL|method|getBlockRecoveryId ()
 specifier|public
 name|long
@@ -551,7 +568,32 @@ return|return
 name|blockRecoveryId
 return|;
 block|}
-comment|/**    * Process the recorded replicas. When about to commit or finish the    * pipeline recovery sort out bad replicas.    * @param genStamp  The final generation stamp for the block.    */
+annotation|@
+name|Override
+DECL|method|getTruncateBlock ()
+specifier|public
+name|Block
+name|getTruncateBlock
+parameter_list|()
+block|{
+return|return
+literal|null
+return|;
+block|}
+annotation|@
+name|Override
+DECL|method|toBlock ()
+specifier|public
+name|Block
+name|toBlock
+parameter_list|()
+block|{
+return|return
+name|this
+return|;
+block|}
+annotation|@
+name|Override
 DECL|method|setGenerationStampAndVerifyReplicas (long genStamp)
 specifier|public
 name|void
@@ -697,7 +739,8 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Initialize lease recovery for this striped block.    */
+annotation|@
+name|Override
 DECL|method|initializeBlockRecovery (long recoveryId)
 specifier|public
 name|void
@@ -739,13 +782,214 @@ name|warn
 argument_list|(
 literal|"BLOCK*"
 operator|+
-literal|" BlockInfoUnderConstruction.initLeaseRecovery:"
+literal|" BlockInfoStripedUnderConstruction.initLeaseRecovery:"
 operator|+
 literal|" No blocks found, lease removed."
 argument_list|)
 expr_stmt|;
 block|}
-comment|// TODO we need to implement different recovery logic here
+name|boolean
+name|allLiveReplicasTriedAsPrimary
+init|=
+literal|true
+decl_stmt|;
+for|for
+control|(
+name|ReplicaUnderConstruction
+name|replica
+range|:
+name|replicas
+control|)
+block|{
+comment|// Check if all replicas have been tried or not.
+if|if
+condition|(
+name|replica
+operator|.
+name|isAlive
+argument_list|()
+condition|)
+block|{
+name|allLiveReplicasTriedAsPrimary
+operator|=
+operator|(
+name|allLiveReplicasTriedAsPrimary
+operator|&&
+name|replica
+operator|.
+name|getChosenAsPrimary
+argument_list|()
+operator|)
+expr_stmt|;
+block|}
+block|}
+if|if
+condition|(
+name|allLiveReplicasTriedAsPrimary
+condition|)
+block|{
+comment|// Just set all the replicas to be chosen whether they are alive or not.
+for|for
+control|(
+name|ReplicaUnderConstruction
+name|replica
+range|:
+name|replicas
+control|)
+block|{
+name|replica
+operator|.
+name|setChosenAsPrimary
+argument_list|(
+literal|false
+argument_list|)
+expr_stmt|;
+block|}
+block|}
+name|long
+name|mostRecentLastUpdate
+init|=
+literal|0
+decl_stmt|;
+name|ReplicaUnderConstruction
+name|primary
+init|=
+literal|null
+decl_stmt|;
+name|primaryNodeIndex
+operator|=
+operator|-
+literal|1
+expr_stmt|;
+for|for
+control|(
+name|int
+name|i
+init|=
+literal|0
+init|;
+name|i
+operator|<
+name|replicas
+operator|.
+name|length
+condition|;
+name|i
+operator|++
+control|)
+block|{
+comment|// Skip alive replicas which have been chosen for recovery.
+if|if
+condition|(
+operator|!
+operator|(
+name|replicas
+index|[
+name|i
+index|]
+operator|.
+name|isAlive
+argument_list|()
+operator|&&
+operator|!
+name|replicas
+index|[
+name|i
+index|]
+operator|.
+name|getChosenAsPrimary
+argument_list|()
+operator|)
+condition|)
+block|{
+continue|continue;
+block|}
+specifier|final
+name|ReplicaUnderConstruction
+name|ruc
+init|=
+name|replicas
+index|[
+name|i
+index|]
+decl_stmt|;
+specifier|final
+name|long
+name|lastUpdate
+init|=
+name|ruc
+operator|.
+name|getExpectedStorageLocation
+argument_list|()
+operator|.
+name|getDatanodeDescriptor
+argument_list|()
+operator|.
+name|getLastUpdateMonotonic
+argument_list|()
+decl_stmt|;
+if|if
+condition|(
+name|lastUpdate
+operator|>
+name|mostRecentLastUpdate
+condition|)
+block|{
+name|primaryNodeIndex
+operator|=
+name|i
+expr_stmt|;
+name|primary
+operator|=
+name|ruc
+expr_stmt|;
+name|mostRecentLastUpdate
+operator|=
+name|lastUpdate
+expr_stmt|;
+block|}
+block|}
+if|if
+condition|(
+name|primary
+operator|!=
+literal|null
+condition|)
+block|{
+name|primary
+operator|.
+name|getExpectedStorageLocation
+argument_list|()
+operator|.
+name|getDatanodeDescriptor
+argument_list|()
+operator|.
+name|addBlockToBeRecovered
+argument_list|(
+name|this
+argument_list|)
+expr_stmt|;
+name|primary
+operator|.
+name|setChosenAsPrimary
+argument_list|(
+literal|true
+argument_list|)
+expr_stmt|;
+name|NameNode
+operator|.
+name|blockStateChangeLog
+operator|.
+name|info
+argument_list|(
+literal|"BLOCK* {} recovery started, primary={}"
+argument_list|,
+name|this
+argument_list|,
+name|primary
+argument_list|)
+expr_stmt|;
+block|}
 block|}
 DECL|method|addReplicaIfNotPresent (DatanodeStorageInfo storage, Block reportedBlock, ReplicaState rState)
 name|void
@@ -1026,6 +1270,16 @@ operator|.
 name|append
 argument_list|(
 name|blockUCState
+argument_list|)
+operator|.
+name|append
+argument_list|(
+literal|", primaryNodeIndex="
+argument_list|)
+operator|.
+name|append
+argument_list|(
+name|primaryNodeIndex
 argument_list|)
 operator|.
 name|append

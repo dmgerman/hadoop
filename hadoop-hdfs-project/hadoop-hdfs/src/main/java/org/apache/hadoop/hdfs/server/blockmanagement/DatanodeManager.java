@@ -5673,7 +5673,7 @@ index|]
 return|;
 block|}
 comment|//check lease recovery
-name|BlockInfoContiguousUnderConstruction
+name|BlockInfoUnderConstruction
 index|[]
 name|blocks
 init|=
@@ -5706,7 +5706,7 @@ argument_list|)
 decl_stmt|;
 for|for
 control|(
-name|BlockInfoContiguousUnderConstruction
+name|BlockInfoUnderConstruction
 name|b
 range|:
 name|blocks
@@ -5797,6 +5797,9 @@ argument_list|()
 operator|!=
 name|b
 operator|.
+name|toBlock
+argument_list|()
+operator|.
 name|getBlockId
 argument_list|()
 decl_stmt|;
@@ -5824,6 +5827,9 @@ argument_list|(
 name|blockPoolId
 argument_list|,
 name|b
+operator|.
+name|toBlock
+argument_list|()
 argument_list|)
 decl_stmt|;
 comment|// If we only get 1 replica after eliminating stale nodes, then choose all
@@ -5910,6 +5916,9 @@ name|copyOnTruncateRecovery
 operator|)
 condition|?
 name|b
+operator|.
+name|toBlock
+argument_list|()
 else|:
 name|b
 operator|.

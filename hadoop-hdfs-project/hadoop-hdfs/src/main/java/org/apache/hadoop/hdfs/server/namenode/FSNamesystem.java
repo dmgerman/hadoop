@@ -2818,6 +2818,24 @@ name|server
 operator|.
 name|blockmanagement
 operator|.
+name|BlockInfoUnderConstruction
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|server
+operator|.
+name|blockmanagement
+operator|.
 name|BlockManager
 import|;
 end_import
@@ -18247,13 +18265,13 @@ case|:
 case|case
 name|UNDER_RECOVERY
 case|:
-comment|// TODO support Striped block's recovery
+comment|// TODO support truncate of striped blocks
 specifier|final
-name|BlockInfoContiguousUnderConstruction
+name|BlockInfoUnderConstruction
 name|uc
 init|=
 operator|(
-name|BlockInfoContiguousUnderConstruction
+name|BlockInfoUnderConstruction
 operator|)
 name|lastBlock
 decl_stmt|;
@@ -18285,6 +18303,9 @@ argument_list|()
 operator|!=
 name|uc
 operator|.
+name|toBlock
+argument_list|()
+operator|.
 name|getBlockId
 argument_list|()
 decl_stmt|;
@@ -18299,6 +18320,9 @@ argument_list|()
 operator|<
 name|uc
 operator|.
+name|toBlock
+argument_list|()
+operator|.
 name|getBlockId
 argument_list|()
 operator|&&
@@ -18309,6 +18333,9 @@ argument_list|()
 operator|<
 name|uc
 operator|.
+name|toBlock
+argument_list|()
+operator|.
 name|getGenerationStamp
 argument_list|()
 operator|&&
@@ -18318,6 +18345,9 @@ name|getNumBytes
 argument_list|()
 operator|>
 name|uc
+operator|.
+name|toBlock
+argument_list|()
 operator|.
 name|getNumBytes
 argument_list|()
@@ -18358,6 +18388,9 @@ operator|==
 literal|0
 operator|&&
 name|uc
+operator|.
+name|toBlock
+argument_list|()
 operator|.
 name|getNumBytes
 argument_list|()
@@ -18414,6 +18447,9 @@ operator|.
 name|isLegacyBlock
 argument_list|(
 name|uc
+operator|.
+name|toBlock
+argument_list|()
 argument_list|)
 argument_list|)
 decl_stmt|;
@@ -18436,6 +18472,9 @@ name|copyOnTruncate
 condition|)
 block|{
 name|uc
+operator|.
+name|toBlock
+argument_list|()
 operator|.
 name|setGenerationStamp
 argument_list|(

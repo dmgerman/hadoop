@@ -145,6 +145,8 @@ class|class
 name|BlockInfoContiguousUnderConstruction
 extends|extends
 name|BlockInfoContiguous
+implements|implements
+name|BlockInfoUnderConstruction
 block|{
 comment|/** Block state. See {@link BlockUCState} */
 DECL|field|blockUCState
@@ -284,7 +286,8 @@ name|this
 argument_list|)
 return|;
 block|}
-comment|/** Set expected locations */
+annotation|@
+name|Override
 DECL|method|setExpectedLocations (DatanodeStorageInfo[] targets)
 specifier|public
 name|void
@@ -356,7 +359,8 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-comment|/**    * Create array of expected replica locations    * (as has been assigned by chooseTargets()).    */
+annotation|@
+name|Override
 DECL|method|getExpectedStorageLocations ()
 specifier|public
 name|DatanodeStorageInfo
@@ -423,7 +427,8 @@ return|return
 name|storages
 return|;
 block|}
-comment|/** Get the number of expected locations */
+annotation|@
+name|Override
 DECL|method|getNumExpectedLocations ()
 specifier|public
 name|int
@@ -470,7 +475,8 @@ operator|=
 name|s
 expr_stmt|;
 block|}
-comment|/** Get block recovery ID */
+annotation|@
+name|Override
 DECL|method|getBlockRecoveryId ()
 specifier|public
 name|long
@@ -481,7 +487,8 @@ return|return
 name|blockRecoveryId
 return|;
 block|}
-comment|/** Get recover block */
+annotation|@
+name|Override
 DECL|method|getTruncateBlock ()
 specifier|public
 name|Block
@@ -490,6 +497,18 @@ parameter_list|()
 block|{
 return|return
 name|truncateBlock
+return|;
+block|}
+annotation|@
+name|Override
+DECL|method|toBlock ()
+specifier|public
+name|Block
+name|toBlock
+parameter_list|()
+block|{
+return|return
+name|this
 return|;
 block|}
 DECL|method|setTruncateBlock (Block recoveryBlock)
@@ -508,7 +527,8 @@ operator|=
 name|recoveryBlock
 expr_stmt|;
 block|}
-comment|/**    * Process the recorded replicas. When about to commit or finish the    * pipeline recovery sort out bad replicas.    * @param genStamp  The final generation stamp for the block.    */
+annotation|@
+name|Override
 DECL|method|setGenerationStampAndVerifyReplicas (long genStamp)
 specifier|public
 name|void
@@ -652,7 +672,8 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Initialize lease recovery for this block.    * Find the first alive data-node starting from the previous primary and    * make it primary.    */
+annotation|@
+name|Override
 DECL|method|initializeBlockRecovery (long recoveryId)
 specifier|public
 name|void
