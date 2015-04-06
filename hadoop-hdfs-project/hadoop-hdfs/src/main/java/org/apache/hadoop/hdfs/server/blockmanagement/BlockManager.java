@@ -16766,21 +16766,30 @@ argument_list|()
 condition|)
 block|{
 specifier|final
-name|BlockInfoContiguousUnderConstruction
-name|uc
-init|=
-operator|(
-name|BlockInfoContiguousUnderConstruction
-operator|)
-name|b
-decl_stmt|;
-specifier|final
 name|int
 name|numNodes
 init|=
 name|b
 operator|.
 name|numNodes
+argument_list|()
+decl_stmt|;
+specifier|final
+name|int
+name|min
+init|=
+name|getMinStorageNum
+argument_list|(
+name|b
+argument_list|)
+decl_stmt|;
+specifier|final
+name|BlockUCState
+name|state
+init|=
+name|b
+operator|.
+name|getBlockUCState
 argument_list|()
 decl_stmt|;
 name|LOG
@@ -16793,10 +16802,7 @@ name|b
 operator|+
 literal|" is not COMPLETE (ucState = "
 operator|+
-name|uc
-operator|.
-name|getBlockUCState
-argument_list|()
+name|state
 operator|+
 literal|", replication# = "
 operator|+
@@ -16805,7 +16811,7 @@ operator|+
 operator|(
 name|numNodes
 operator|<
-name|minReplication
+name|min
 condition|?
 literal|"< "
 else|:
@@ -16814,7 +16820,7 @@ operator|)
 operator|+
 literal|" minimum = "
 operator|+
-name|minReplication
+name|min
 operator|+
 literal|") in file "
 operator|+
