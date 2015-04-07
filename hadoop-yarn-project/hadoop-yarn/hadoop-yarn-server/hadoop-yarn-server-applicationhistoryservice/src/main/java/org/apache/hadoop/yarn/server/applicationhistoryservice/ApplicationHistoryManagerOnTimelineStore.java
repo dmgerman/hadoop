@@ -1586,6 +1586,11 @@ name|finishedTime
 init|=
 literal|0
 decl_stmt|;
+name|float
+name|progress
+init|=
+literal|0.0f
+decl_stmt|;
 name|ApplicationAttemptId
 name|latestApplicationAttemptId
 init|=
@@ -1606,7 +1611,9 @@ decl_stmt|;
 name|YarnApplicationState
 name|state
 init|=
-literal|null
+name|YarnApplicationState
+operator|.
+name|ACCEPTED
 decl_stmt|;
 name|ApplicationResourceUsageReport
 name|appResources
@@ -1785,7 +1792,7 @@ literal|null
 argument_list|,
 literal|null
 argument_list|,
-literal|1.0F
+name|progress
 argument_list|,
 name|type
 argument_list|,
@@ -2017,6 +2024,10 @@ name|FINISHED_EVENT_TYPE
 argument_list|)
 condition|)
 block|{
+name|progress
+operator|=
+literal|1.0F
+expr_stmt|;
 name|finishedTime
 operator|=
 name|event
@@ -2221,7 +2232,7 @@ name|appResources
 argument_list|,
 literal|null
 argument_list|,
-literal|1.0F
+name|progress
 argument_list|,
 name|type
 argument_list|,

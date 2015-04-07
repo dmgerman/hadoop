@@ -1255,6 +1255,14 @@ name|String
 name|node
 parameter_list|)
 block|{
+name|String
+name|amContainerId
+init|=
+name|appAttempt
+operator|.
+name|getAmContainerId
+argument_list|()
+decl_stmt|;
 name|info
 argument_list|(
 literal|"Application Attempt Overview"
@@ -1283,10 +1291,7 @@ name|_
 argument_list|(
 literal|"AM Container:"
 argument_list|,
-name|appAttempt
-operator|.
-name|getAmContainerId
-argument_list|()
+name|amContainerId
 operator|==
 literal|null
 operator|||
@@ -1311,21 +1316,16 @@ name|root_url
 argument_list|(
 literal|"container"
 argument_list|,
-name|appAttempt
-operator|.
-name|getAmContainerId
-argument_list|()
+name|amContainerId
 argument_list|)
 argument_list|,
-name|String
-operator|.
-name|valueOf
-argument_list|(
-name|appAttempt
-operator|.
-name|getAmContainerId
-argument_list|()
-argument_list|)
+name|amContainerId
+operator|==
+literal|null
+condition|?
+literal|"N/A"
+else|:
+name|amContainerId
 argument_list|)
 operator|.
 name|_
