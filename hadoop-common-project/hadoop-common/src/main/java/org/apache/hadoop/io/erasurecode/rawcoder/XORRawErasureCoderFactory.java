@@ -25,10 +25,10 @@ comment|/**  * A raw coder factory for raw XOR coder.  */
 end_comment
 
 begin_class
-DECL|class|XorRawErasureCoderFactory
+DECL|class|XORRawErasureCoderFactory
 specifier|public
 class|class
-name|XorRawErasureCoderFactory
+name|XORRawErasureCoderFactory
 implements|implements
 name|RawErasureCoderFactory
 block|{
@@ -42,7 +42,7 @@ parameter_list|()
 block|{
 return|return
 operator|new
-name|XorRawEncoder
+name|XORRawEncoder
 argument_list|()
 return|;
 block|}
@@ -56,7 +56,7 @@ parameter_list|()
 block|{
 return|return
 operator|new
-name|XorRawDecoder
+name|XORRawDecoder
 argument_list|()
 return|;
 block|}

@@ -91,10 +91,10 @@ comment|/**  * Test raw Reed-solomon encoding and decoding.  */
 end_comment
 
 begin_class
-DECL|class|TestJRSRawCoder
+DECL|class|TestRSRawCoder
 specifier|public
 class|class
-name|TestJRSRawCoder
+name|TestRSRawCoder
 extends|extends
 name|TestRawCoderBase
 block|{
@@ -172,7 +172,7 @@ name|this
 operator|.
 name|encoderClass
 operator|=
-name|JRSRawEncoder
+name|RSRawEncoder
 operator|.
 name|class
 expr_stmt|;
@@ -180,7 +180,7 @@ name|this
 operator|.
 name|decoderClass
 operator|=
-name|JRSRawDecoder
+name|RSRawDecoder
 operator|.
 name|class
 expr_stmt|;

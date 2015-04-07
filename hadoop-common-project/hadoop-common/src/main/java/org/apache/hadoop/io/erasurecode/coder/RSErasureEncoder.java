@@ -76,7 +76,7 @@ name|erasurecode
 operator|.
 name|rawcoder
 operator|.
-name|JRSRawEncoder
+name|RSRawEncoder
 import|;
 end_import
 
@@ -189,7 +189,7 @@ block|{
 name|rawEncoder
 operator|=
 operator|new
-name|JRSRawEncoder
+name|RSRawEncoder
 argument_list|()
 expr_stmt|;
 block|}

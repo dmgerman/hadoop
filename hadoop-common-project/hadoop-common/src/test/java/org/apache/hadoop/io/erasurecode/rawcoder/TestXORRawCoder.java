@@ -4,7 +4,7 @@ comment|/**  * Licensed to the Apache Software Foundation (ASF) under one  * or 
 end_comment
 
 begin_package
-DECL|package|org.apache.hadoop.io.erasurecode.coder
+DECL|package|org.apache.hadoop.io.erasurecode.rawcoder
 package|package
 name|org
 operator|.
@@ -16,7 +16,7 @@ name|io
 operator|.
 name|erasurecode
 operator|.
-name|coder
+name|rawcoder
 package|;
 end_package
 
@@ -45,12 +45,12 @@ comment|/**  * Test XOR encoding and decoding.  */
 end_comment
 
 begin_class
-DECL|class|TestXorCoder
+DECL|class|TestXORRawCoder
 specifier|public
 class|class
-name|TestXorCoder
+name|TestXORRawCoder
 extends|extends
-name|TestErasureCoderBase
+name|TestRawCoderBase
 block|{
 annotation|@
 name|Before
@@ -64,7 +64,7 @@ name|this
 operator|.
 name|encoderClass
 operator|=
-name|XorErasureEncoder
+name|XORRawEncoder
 operator|.
 name|class
 expr_stmt|;
@@ -72,7 +72,7 @@ name|this
 operator|.
 name|decoderClass
 operator|=
-name|XorErasureDecoder
+name|XORRawDecoder
 operator|.
 name|class
 expr_stmt|;
@@ -98,12 +98,6 @@ index|[]
 block|{
 literal|0
 block|}
-expr_stmt|;
-name|this
-operator|.
-name|numChunksInBlock
-operator|=
-literal|10
 expr_stmt|;
 block|}
 annotation|@

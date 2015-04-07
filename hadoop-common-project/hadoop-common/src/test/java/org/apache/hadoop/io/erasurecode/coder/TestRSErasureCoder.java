@@ -62,7 +62,7 @@ name|erasurecode
 operator|.
 name|rawcoder
 operator|.
-name|JRSRawErasureCoderFactory
+name|RSRawErasureCoderFactory
 import|;
 end_import
 
@@ -215,7 +215,7 @@ name|CommonConfigurationKeys
 operator|.
 name|IO_ERASURECODE_CODEC_RS_RAWCODER_KEY
 argument_list|,
-name|JRSRawErasureCoderFactory
+name|RSRawErasureCoderFactory
 operator|.
 name|class
 operator|.

@@ -31,33 +31,57 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * A raw encoder in XOR code scheme in pure Java, adapted from HDFS-RAID.  */
+comment|/**  * A raw decoder in XOR code scheme in pure Java, adapted from HDFS-RAID.  */
 end_comment
 
 begin_class
-DECL|class|XorRawEncoder
+DECL|class|XORRawDecoder
 specifier|public
 class|class
-name|XorRawEncoder
+name|XORRawDecoder
 extends|extends
-name|AbstractRawErasureEncoder
+name|AbstractRawErasureDecoder
 block|{
 annotation|@
 name|Override
-DECL|method|doEncode (ByteBuffer[] inputs, ByteBuffer[] outputs)
+DECL|method|doDecode (ByteBuffer[] inputs, int[] erasedIndexes, ByteBuffer[] outputs)
 specifier|protected
 name|void
-name|doEncode
+name|doDecode
 parameter_list|(
 name|ByteBuffer
 index|[]
 name|inputs
+parameter_list|,
+name|int
+index|[]
+name|erasedIndexes
 parameter_list|,
 name|ByteBuffer
 index|[]
 name|outputs
 parameter_list|)
 block|{
+assert|assert
+operator|(
+name|erasedIndexes
+operator|.
+name|length
+operator|==
+name|outputs
+operator|.
+name|length
+operator|)
+assert|;
+assert|assert
+operator|(
+name|erasedIndexes
+operator|.
+name|length
+operator|<=
+literal|1
+operator|)
+assert|;
 name|int
 name|bufSize
 init|=
@@ -69,7 +93,15 @@ operator|.
 name|remaining
 argument_list|()
 decl_stmt|;
-comment|// Get the first buffer's data.
+name|int
+name|erasedIdx
+init|=
+name|erasedIndexes
+index|[
+literal|0
+index|]
+decl_stmt|;
+comment|// Set the output to zeros.
 for|for
 control|(
 name|int
@@ -94,25 +126,20 @@ name|put
 argument_list|(
 name|j
 argument_list|,
-name|inputs
-index|[
+operator|(
+name|byte
+operator|)
 literal|0
-index|]
-operator|.
-name|get
-argument_list|(
-name|j
-argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
-comment|// XOR with everything else.
+comment|// Process the inputs.
 for|for
 control|(
 name|int
 name|i
 init|=
-literal|1
+literal|0
 init|;
 name|i
 operator|<
@@ -124,6 +151,16 @@ name|i
 operator|++
 control|)
 block|{
+comment|// Skip the erased location.
+if|if
+condition|(
+name|i
+operator|==
+name|erasedIdx
+condition|)
+block|{
+continue|continue;
+block|}
 for|for
 control|(
 name|int
@@ -179,15 +216,19 @@ block|}
 block|}
 annotation|@
 name|Override
-DECL|method|doEncode (byte[][] inputs, byte[][] outputs)
+DECL|method|doDecode (byte[][] inputs, int[] erasedIndexes, byte[][] outputs)
 specifier|protected
 name|void
-name|doEncode
+name|doDecode
 parameter_list|(
 name|byte
 index|[]
 index|[]
 name|inputs
+parameter_list|,
+name|int
+index|[]
+name|erasedIndexes
 parameter_list|,
 name|byte
 index|[]
@@ -195,6 +236,26 @@ index|[]
 name|outputs
 parameter_list|)
 block|{
+assert|assert
+operator|(
+name|erasedIndexes
+operator|.
+name|length
+operator|==
+name|outputs
+operator|.
+name|length
+operator|)
+assert|;
+assert|assert
+operator|(
+name|erasedIndexes
+operator|.
+name|length
+operator|<=
+literal|1
+operator|)
+assert|;
 name|int
 name|bufSize
 init|=
@@ -205,7 +266,15 @@ index|]
 operator|.
 name|length
 decl_stmt|;
-comment|// Get the first buffer's data.
+name|int
+name|erasedIdx
+init|=
+name|erasedIndexes
+index|[
+literal|0
+index|]
+decl_stmt|;
+comment|// Set the output to zeros.
 for|for
 control|(
 name|int
@@ -229,22 +298,16 @@ index|[
 name|j
 index|]
 operator|=
-name|inputs
-index|[
 literal|0
-index|]
-index|[
-name|j
-index|]
 expr_stmt|;
 block|}
-comment|// XOR with everything else.
+comment|// Process the inputs.
 for|for
 control|(
 name|int
 name|i
 init|=
-literal|1
+literal|0
 init|;
 name|i
 operator|<
@@ -256,6 +319,16 @@ name|i
 operator|++
 control|)
 block|{
+comment|// Skip the erased location.
+if|if
+condition|(
+name|i
+operator|==
+name|erasedIdx
+condition|)
+block|{
+continue|continue;
+block|}
 for|for
 control|(
 name|int

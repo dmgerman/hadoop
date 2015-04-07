@@ -90,7 +90,7 @@ name|erasurecode
 operator|.
 name|rawcoder
 operator|.
-name|JRSRawDecoder
+name|RSRawDecoder
 import|;
 end_import
 
@@ -126,7 +126,7 @@ name|erasurecode
 operator|.
 name|rawcoder
 operator|.
-name|XorRawDecoder
+name|XORRawDecoder
 import|;
 end_import
 
@@ -309,7 +309,7 @@ block|{
 name|rsRawDecoder
 operator|=
 operator|new
-name|JRSRawDecoder
+name|RSRawDecoder
 argument_list|()
 expr_stmt|;
 block|}
@@ -348,7 +348,7 @@ block|{
 name|xorRawDecoder
 operator|=
 operator|new
-name|XorRawDecoder
+name|XORRawDecoder
 argument_list|()
 expr_stmt|;
 name|xorRawDecoder
