@@ -833,6 +833,14 @@ parameter_list|()
 throws|throws
 name|IOException
 block|{
+name|assumeTrue
+argument_list|(
+operator|!
+name|Shell
+operator|.
+name|WINDOWS
+argument_list|)
+expr_stmt|;
 name|File
 name|tempStaticMapFile
 init|=
