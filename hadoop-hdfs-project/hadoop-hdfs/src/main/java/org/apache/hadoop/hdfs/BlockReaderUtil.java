@@ -18,6 +18,20 @@ end_package
 
 begin_import
 import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|classification
+operator|.
+name|InterfaceAudience
+import|;
+end_import
+
+begin_import
+import|import
 name|java
 operator|.
 name|io
@@ -31,6 +45,10 @@ comment|/**  * For sharing between the local and remote block reader implementat
 end_comment
 
 begin_class
+annotation|@
+name|InterfaceAudience
+operator|.
+name|Private
 DECL|class|BlockReaderUtil
 class|class
 name|BlockReaderUtil

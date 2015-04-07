@@ -18,6 +18,20 @@ end_package
 
 begin_import
 import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|classification
+operator|.
+name|InterfaceAudience
+import|;
+end_import
+
+begin_import
+import|import
 name|java
 operator|.
 name|util
@@ -35,6 +49,10 @@ comment|/**  * The client-side metrics for hedged read feature.  * This class ha
 end_comment
 
 begin_class
+annotation|@
+name|InterfaceAudience
+operator|.
+name|Private
 DECL|class|DFSHedgedReadMetrics
 specifier|public
 class|class
