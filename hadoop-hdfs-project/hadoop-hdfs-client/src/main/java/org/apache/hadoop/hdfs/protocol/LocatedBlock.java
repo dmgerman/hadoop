@@ -857,6 +857,16 @@ operator|+
 literal|"}"
 return|;
 block|}
+DECL|method|isStriped ()
+specifier|public
+name|boolean
+name|isStriped
+parameter_list|()
+block|{
+return|return
+literal|false
+return|;
+block|}
 block|}
 end_class
 

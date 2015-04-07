@@ -335,6 +335,18 @@ operator|.
 name|blockIndices
 return|;
 block|}
+annotation|@
+name|Override
+DECL|method|isStriped ()
+specifier|public
+name|boolean
+name|isStriped
+parameter_list|()
+block|{
+return|return
+literal|true
+return|;
+block|}
 block|}
 end_class
 

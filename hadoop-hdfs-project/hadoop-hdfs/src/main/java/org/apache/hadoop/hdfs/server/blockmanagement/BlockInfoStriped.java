@@ -90,7 +90,7 @@ name|protocol
 operator|.
 name|HdfsConstants
 operator|.
-name|BLOCK_STRIPED_CHUNK_SIZE
+name|BLOCK_STRIPED_CELL_SIZE
 import|;
 end_import
 
@@ -940,13 +940,13 @@ operator|/
 operator|(
 name|dataBlockNum
 operator|*
-name|BLOCK_STRIPED_CHUNK_SIZE
+name|BLOCK_STRIPED_CELL_SIZE
 operator|)
 operator|+
 literal|1
 operator|)
 operator|*
-name|BLOCK_STRIPED_CHUNK_SIZE
+name|BLOCK_STRIPED_CELL_SIZE
 operator|*
 name|parityBlockNum
 operator|+
