@@ -1700,6 +1700,220 @@ operator|.
 name|class
 argument_list|)
 expr_stmt|;
+comment|// Dump CapacityScheduler debug logs
+name|html
+operator|.
+name|div
+argument_list|()
+operator|.
+name|button
+argument_list|()
+operator|.
+name|$onclick
+argument_list|(
+literal|"confirmAction()"
+argument_list|)
+operator|.
+name|b
+argument_list|(
+literal|"Dump scheduler logs"
+argument_list|)
+operator|.
+name|_
+argument_list|()
+operator|.
+name|select
+argument_list|()
+operator|.
+name|$id
+argument_list|(
+literal|"time"
+argument_list|)
+operator|.
+name|option
+argument_list|()
+operator|.
+name|$value
+argument_list|(
+literal|"60"
+argument_list|)
+operator|.
+name|_
+argument_list|(
+literal|"1 min"
+argument_list|)
+operator|.
+name|_
+argument_list|()
+operator|.
+name|option
+argument_list|()
+operator|.
+name|$value
+argument_list|(
+literal|"300"
+argument_list|)
+operator|.
+name|_
+argument_list|(
+literal|"5 min"
+argument_list|)
+operator|.
+name|_
+argument_list|()
+operator|.
+name|option
+argument_list|()
+operator|.
+name|$value
+argument_list|(
+literal|"600"
+argument_list|)
+operator|.
+name|_
+argument_list|(
+literal|"10 min"
+argument_list|)
+operator|.
+name|_
+argument_list|()
+operator|.
+name|_
+argument_list|()
+operator|.
+name|_
+argument_list|()
+expr_stmt|;
+name|StringBuilder
+name|script
+init|=
+operator|new
+name|StringBuilder
+argument_list|()
+decl_stmt|;
+name|script
+operator|.
+name|append
+argument_list|(
+literal|"function confirmAction() {"
+argument_list|)
+operator|.
+name|append
+argument_list|(
+literal|" b = confirm(\"Are you sure you wish to generate scheduler logs?\");"
+argument_list|)
+operator|.
+name|append
+argument_list|(
+literal|" if (b == true) {"
+argument_list|)
+operator|.
+name|append
+argument_list|(
+literal|" var timePeriod = $(\"#time\").val();"
+argument_list|)
+operator|.
+name|append
+argument_list|(
+literal|" $.ajax({"
+argument_list|)
+operator|.
+name|append
+argument_list|(
+literal|" type: 'POST',"
+argument_list|)
+operator|.
+name|append
+argument_list|(
+literal|" url: '/ws/v1/cluster/scheduler/logs',"
+argument_list|)
+operator|.
+name|append
+argument_list|(
+literal|" contentType: 'text/plain',"
+argument_list|)
+operator|.
+name|append
+argument_list|(
+literal|" data: 'time=' + timePeriod,"
+argument_list|)
+operator|.
+name|append
+argument_list|(
+literal|" dataType: 'text'"
+argument_list|)
+operator|.
+name|append
+argument_list|(
+literal|" }).done(function(data){"
+argument_list|)
+operator|.
+name|append
+argument_list|(
+literal|" setTimeout(function(){"
+argument_list|)
+operator|.
+name|append
+argument_list|(
+literal|" alert(\"Scheduler log is being generated.\");"
+argument_list|)
+operator|.
+name|append
+argument_list|(
+literal|" }, 1000);"
+argument_list|)
+operator|.
+name|append
+argument_list|(
+literal|" }).fail(function(data){"
+argument_list|)
+operator|.
+name|append
+argument_list|(
+literal|" alert(\"Scheduler log generation failed. Please check the ResourceManager log for more informtion.\");"
+argument_list|)
+operator|.
+name|append
+argument_list|(
+literal|" console.log(data);"
+argument_list|)
+operator|.
+name|append
+argument_list|(
+literal|" });"
+argument_list|)
+operator|.
+name|append
+argument_list|(
+literal|" }"
+argument_list|)
+operator|.
+name|append
+argument_list|(
+literal|"}"
+argument_list|)
+expr_stmt|;
+name|html
+operator|.
+name|script
+argument_list|()
+operator|.
+name|$type
+argument_list|(
+literal|"text/javascript"
+argument_list|)
+operator|.
+name|_
+argument_list|(
+name|script
+operator|.
+name|toString
+argument_list|()
+argument_list|)
+operator|.
+name|_
+argument_list|()
+expr_stmt|;
 name|UL
 argument_list|<
 name|DIV
