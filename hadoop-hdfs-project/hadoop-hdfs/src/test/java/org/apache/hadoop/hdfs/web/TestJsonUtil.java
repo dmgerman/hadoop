@@ -679,7 +679,7 @@ specifier|final
 name|HdfsFileStatus
 name|s2
 init|=
-name|JsonUtil
+name|JsonUtilClient
 operator|.
 name|toFileStatus
 argument_list|(
@@ -916,7 +916,7 @@ argument_list|,
 literal|321l
 argument_list|)
 expr_stmt|;
-name|JsonUtil
+name|JsonUtilClient
 operator|.
 name|toDatanodeInfo
 argument_list|(
@@ -1096,7 +1096,7 @@ expr_stmt|;
 name|DatanodeInfo
 name|di
 init|=
-name|JsonUtil
+name|JsonUtilClient
 operator|.
 name|toDatanodeInfo
 argument_list|(
@@ -1393,7 +1393,7 @@ operator|.
 name|build
 argument_list|()
 argument_list|,
-name|JsonUtil
+name|JsonUtilClient
 operator|.
 name|toAclStatus
 argument_list|(
@@ -1812,7 +1812,7 @@ index|[]
 argument_list|>
 name|parsedXAttrMap
 init|=
-name|JsonUtil
+name|JsonUtilClient
 operator|.
 name|toXAttrs
 argument_list|(
@@ -1949,7 +1949,7 @@ name|byte
 index|[]
 name|value
 init|=
-name|JsonUtil
+name|JsonUtilClient
 operator|.
 name|getXAttr
 argument_list|(
@@ -1989,7 +1989,7 @@ parameter_list|)
 block|{
 try|try
 block|{
-name|JsonUtil
+name|JsonUtilClient
 operator|.
 name|toDatanodeInfo
 argument_list|(

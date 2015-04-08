@@ -2201,7 +2201,7 @@ block|}
 name|IOException
 name|re
 init|=
-name|JsonUtil
+name|JsonUtilClient
 operator|.
 name|toRemoteException
 argument_list|(
@@ -4447,7 +4447,7 @@ name|json
 parameter_list|)
 block|{
 return|return
-name|JsonUtil
+name|JsonUtilClient
 operator|.
 name|toFileStatus
 argument_list|(
@@ -4664,7 +4664,7 @@ name|json
 parameter_list|)
 block|{
 return|return
-name|JsonUtil
+name|JsonUtilClient
 operator|.
 name|toAclStatus
 argument_list|(
@@ -5165,7 +5165,7 @@ throws|throws
 name|IOException
 block|{
 return|return
-name|JsonUtil
+name|JsonUtilClient
 operator|.
 name|getXAttr
 argument_list|(
@@ -5261,7 +5261,7 @@ throws|throws
 name|IOException
 block|{
 return|return
-name|JsonUtil
+name|JsonUtilClient
 operator|.
 name|toXAttrs
 argument_list|(
@@ -5451,7 +5451,7 @@ throws|throws
 name|IOException
 block|{
 return|return
-name|JsonUtil
+name|JsonUtilClient
 operator|.
 name|toXAttrs
 argument_list|(
@@ -5528,7 +5528,7 @@ throws|throws
 name|IOException
 block|{
 return|return
-name|JsonUtil
+name|JsonUtilClient
 operator|.
 name|toXAttrNames
 argument_list|(
@@ -7378,7 +7378,7 @@ name|?
 argument_list|>
 name|array
 init|=
-name|JsonUtil
+name|JsonUtilClient
 operator|.
 name|getList
 argument_list|(
@@ -7447,7 +7447,7 @@ index|]
 operator|=
 name|makeQualified
 argument_list|(
-name|JsonUtil
+name|JsonUtilClient
 operator|.
 name|toFileStatus
 argument_list|(
@@ -7545,7 +7545,7 @@ throws|throws
 name|IOException
 block|{
 return|return
-name|JsonUtil
+name|JsonUtilClient
 operator|.
 name|toDelegationToken
 argument_list|(
@@ -7918,7 +7918,7 @@ name|DFSUtil
 operator|.
 name|locatedBlocks2Locations
 argument_list|(
-name|JsonUtil
+name|JsonUtilClient
 operator|.
 name|toLocatedBlocks
 argument_list|(
@@ -8041,7 +8041,7 @@ name|json
 parameter_list|)
 block|{
 return|return
-name|JsonUtil
+name|JsonUtilClient
 operator|.
 name|toContentSummary
 argument_list|(
@@ -8117,7 +8117,7 @@ throws|throws
 name|IOException
 block|{
 return|return
-name|JsonUtil
+name|JsonUtilClient
 operator|.
 name|toMD5MD5CRC32FileChecksum
 argument_list|(
