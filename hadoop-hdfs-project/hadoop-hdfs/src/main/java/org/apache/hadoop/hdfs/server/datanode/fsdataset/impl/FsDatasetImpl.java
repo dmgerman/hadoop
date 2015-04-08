@@ -13227,16 +13227,19 @@ specifier|final
 name|long
 name|usedSpace
 decl_stmt|;
+comment|// size of space used by HDFS
 DECL|field|freeSpace
 specifier|final
 name|long
 name|freeSpace
 decl_stmt|;
+comment|// size of free space excluding reserved space
 DECL|field|reservedSpace
 specifier|final
 name|long
 name|reservedSpace
 decl_stmt|;
+comment|// size of space reserved for non-HDFS and RBW
 DECL|method|VolumeInfo (FsVolumeImpl v, long usedSpace, long freeSpace)
 name|VolumeInfo
 parameter_list|(

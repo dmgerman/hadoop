@@ -1684,7 +1684,7 @@ name|getDfsUsed
 argument_list|()
 return|;
 block|}
-comment|/**    * Calculate the capacity of the filesystem, after removing any    * reserved capacity.    * @return the unreserved number of bytes left in this filesystem. May be zero.    */
+comment|/**    * Return either the configured capacity of the file system if configured; or    * the capacity of the file system excluding space reserved for non-HDFS.    *     * @return the unreserved number of bytes left in this filesystem. May be    *         zero.    */
 annotation|@
 name|VisibleForTesting
 DECL|method|getCapacity ()
@@ -1743,6 +1743,7 @@ operator|=
 name|capacity
 expr_stmt|;
 block|}
+comment|/*    * Calculate the available space of the filesystem, excluding space reserved    * for non-HDFS and space reserved for RBW    *     * @return the available number of bytes left in this filesystem. May be zero.    */
 annotation|@
 name|Override
 DECL|method|getAvailable ()
@@ -1773,6 +1774,13 @@ init|=
 name|usage
 operator|.
 name|getAvailable
+argument_list|()
+operator|-
+name|reserved
+operator|-
+name|reservedForRbw
+operator|.
+name|get
 argument_list|()
 decl_stmt|;
 if|if
