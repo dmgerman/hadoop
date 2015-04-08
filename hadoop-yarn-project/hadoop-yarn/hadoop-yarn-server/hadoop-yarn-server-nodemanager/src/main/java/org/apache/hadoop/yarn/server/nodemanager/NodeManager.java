@@ -1314,6 +1314,13 @@ argument_list|()
 expr_stmt|;
 if|if
 condition|(
+literal|null
+operator|!=
+name|context
+condition|)
+block|{
+if|if
+condition|(
 name|context
 operator|.
 name|getDecommissioned
@@ -1397,6 +1404,7 @@ operator|+
 name|recoveryRoot
 argument_list|)
 expr_stmt|;
+block|}
 block|}
 block|}
 block|}
