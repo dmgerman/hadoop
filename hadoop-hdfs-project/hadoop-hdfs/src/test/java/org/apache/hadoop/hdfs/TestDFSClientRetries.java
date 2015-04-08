@@ -112,18 +112,6 @@ name|mockito
 operator|.
 name|Matchers
 operator|.
-name|anyList
-import|;
-end_import
-
-begin_import
-import|import static
-name|org
-operator|.
-name|mockito
-operator|.
-name|Matchers
-operator|.
 name|anyLong
 import|;
 end_import
@@ -412,20 +400,6 @@ name|hadoop
 operator|.
 name|crypto
 operator|.
-name|CipherSuite
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|crypto
-operator|.
 name|CryptoProtocolVersion
 import|;
 end_import
@@ -555,6 +529,22 @@ operator|.
 name|permission
 operator|.
 name|FsPermission
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|client
+operator|.
+name|HdfsClientConfigKeys
 import|;
 end_import
 
@@ -1020,7 +1010,7 @@ name|org
 operator|.
 name|junit
 operator|.
-name|Test
+name|Before
 import|;
 end_import
 
@@ -1030,7 +1020,7 @@ name|org
 operator|.
 name|junit
 operator|.
-name|Before
+name|Test
 import|;
 end_import
 
@@ -2147,9 +2137,11 @@ name|conf
 operator|.
 name|setInt
 argument_list|(
-name|DFSConfigKeys
+name|HdfsClientConfigKeys
 operator|.
-name|DFS_CLIENT_RETRY_WINDOW_BASE
+name|Retry
+operator|.
+name|WINDOW_BASE_KEY
 argument_list|,
 literal|10
 argument_list|)
@@ -3846,9 +3838,11 @@ name|conf
 operator|.
 name|setInt
 argument_list|(
-name|DFSConfigKeys
+name|HdfsClientConfigKeys
 operator|.
-name|DFS_CLIENT_RETRY_WINDOW_BASE
+name|Retry
+operator|.
+name|WINDOW_BASE_KEY
 argument_list|,
 name|timeWin
 argument_list|)
@@ -5368,9 +5362,11 @@ name|conf
 operator|.
 name|setBoolean
 argument_list|(
-name|DFSConfigKeys
+name|HdfsClientConfigKeys
 operator|.
-name|DFS_CLIENT_RETRY_POLICY_ENABLED_KEY
+name|Retry
+operator|.
+name|POLICY_ENABLED_KEY
 argument_list|,
 literal|true
 argument_list|)

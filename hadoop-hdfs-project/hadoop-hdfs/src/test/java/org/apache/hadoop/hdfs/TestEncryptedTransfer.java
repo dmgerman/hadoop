@@ -36,18 +36,6 @@ name|junit
 operator|.
 name|Assert
 operator|.
-name|assertFalse
-import|;
-end_import
-
-begin_import
-import|import static
-name|org
-operator|.
-name|junit
-operator|.
-name|Assert
-operator|.
 name|assertTrue
 import|;
 end_import
@@ -219,6 +207,22 @@ operator|.
 name|fs
 operator|.
 name|Path
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|client
+operator|.
+name|HdfsClientConfigKeys
 import|;
 end_import
 
@@ -1809,9 +1813,11 @@ name|conf
 operator|.
 name|setInt
 argument_list|(
-name|DFSConfigKeys
+name|HdfsClientConfigKeys
 operator|.
-name|DFS_CLIENT_RETRY_WINDOW_BASE
+name|Retry
+operator|.
+name|WINDOW_BASE_KEY
 argument_list|,
 literal|10
 argument_list|)
