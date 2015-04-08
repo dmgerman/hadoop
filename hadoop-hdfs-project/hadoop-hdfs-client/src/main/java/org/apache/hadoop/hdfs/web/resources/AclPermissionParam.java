@@ -30,7 +30,9 @@ name|hadoop
 operator|.
 name|hdfs
 operator|.
-name|DFSConfigKeys
+name|client
+operator|.
+name|HdfsClientConfigKeys
 operator|.
 name|DFS_WEBHDFS_ACL_PERMISSION_PATTERN_DEFAULT
 import|;
@@ -140,7 +142,7 @@ name|DFS_WEBHDFS_ACL_PERMISSION_PATTERN_DEFAULT
 argument_list|)
 argument_list|)
 decl_stmt|;
-comment|/**    * Constructor.    *     * @param str a string representation of the parameter value.    */
+comment|/**    * Constructor.    *    * @param str a string representation of the parameter value.    */
 DECL|method|AclPermissionParam (final String str)
 specifier|public
 name|AclPermissionParam

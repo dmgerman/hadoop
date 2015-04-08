@@ -30,9 +30,11 @@ name|hadoop
 operator|.
 name|hdfs
 operator|.
-name|DFSConfigKeys
+name|client
 operator|.
-name|DFS_REPLICATION_DEFAULT
+name|HdfsClientConfigKeys
+operator|.
+name|DFS_BLOCK_SIZE_DEFAULT
 import|;
 end_import
 
@@ -46,9 +48,11 @@ name|hadoop
 operator|.
 name|hdfs
 operator|.
-name|DFSConfigKeys
+name|client
 operator|.
-name|DFS_REPLICATION_KEY
+name|HdfsClientConfigKeys
+operator|.
+name|DFS_BLOCK_SIZE_KEY
 import|;
 end_import
 
@@ -67,16 +71,16 @@ import|;
 end_import
 
 begin_comment
-comment|/** Replication parameter. */
+comment|/** Block size parameter. */
 end_comment
 
 begin_class
-DECL|class|ReplicationParam
+DECL|class|BlockSizeParam
 specifier|public
 class|class
-name|ReplicationParam
+name|BlockSizeParam
 extends|extends
-name|ShortParam
+name|LongParam
 block|{
 comment|/** Parameter name. */
 DECL|field|NAME
@@ -86,7 +90,7 @@ specifier|final
 name|String
 name|NAME
 init|=
-literal|"replication"
+literal|"blocksize"
 decl_stmt|;
 comment|/** Default parameter value. */
 DECL|field|DEFAULT
@@ -112,12 +116,12 @@ name|NAME
 argument_list|)
 decl_stmt|;
 comment|/**    * Constructor.    * @param value the parameter value.    */
-DECL|method|ReplicationParam (final Short value)
+DECL|method|BlockSizeParam (final Long value)
 specifier|public
-name|ReplicationParam
+name|BlockSizeParam
 parameter_list|(
 specifier|final
-name|Short
+name|Long
 name|value
 parameter_list|)
 block|{
@@ -127,19 +131,16 @@ name|DOMAIN
 argument_list|,
 name|value
 argument_list|,
-operator|(
-name|short
-operator|)
-literal|1
+literal|1L
 argument_list|,
 literal|null
 argument_list|)
 expr_stmt|;
 block|}
 comment|/**    * Constructor.    * @param str a string representation of the parameter value.    */
-DECL|method|ReplicationParam (final String str)
+DECL|method|BlockSizeParam (final String str)
 specifier|public
-name|ReplicationParam
+name|BlockSizeParam
 parameter_list|(
 specifier|final
 name|String
@@ -172,7 +173,7 @@ block|}
 comment|/** @return the value or, if it is null, return the default from conf. */
 DECL|method|getValue (final Configuration conf)
 specifier|public
-name|short
+name|long
 name|getValue
 parameter_list|(
 specifier|final
@@ -189,16 +190,13 @@ condition|?
 name|getValue
 argument_list|()
 else|:
-operator|(
-name|short
-operator|)
 name|conf
 operator|.
-name|getInt
+name|getLongBytes
 argument_list|(
-name|DFS_REPLICATION_KEY
+name|DFS_BLOCK_SIZE_KEY
 argument_list|,
-name|DFS_REPLICATION_DEFAULT
+name|DFS_BLOCK_SIZE_DEFAULT
 argument_list|)
 return|;
 block|}

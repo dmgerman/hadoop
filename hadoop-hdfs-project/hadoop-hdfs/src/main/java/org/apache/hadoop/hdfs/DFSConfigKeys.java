@@ -165,7 +165,9 @@ specifier|final
 name|String
 name|DFS_BLOCK_SIZE_KEY
 init|=
-literal|"dfs.blocksize"
+name|HdfsClientConfigKeys
+operator|.
+name|DFS_BLOCK_SIZE_KEY
 decl_stmt|;
 DECL|field|DFS_BLOCK_SIZE_DEFAULT
 specifier|public
@@ -174,11 +176,9 @@ specifier|final
 name|long
 name|DFS_BLOCK_SIZE_DEFAULT
 init|=
-literal|128
-operator|*
-literal|1024
-operator|*
-literal|1024
+name|HdfsClientConfigKeys
+operator|.
+name|DFS_BLOCK_SIZE_DEFAULT
 decl_stmt|;
 DECL|field|DFS_REPLICATION_KEY
 specifier|public
@@ -187,7 +187,9 @@ specifier|final
 name|String
 name|DFS_REPLICATION_KEY
 init|=
-literal|"dfs.replication"
+name|HdfsClientConfigKeys
+operator|.
+name|DFS_REPLICATION_KEY
 decl_stmt|;
 DECL|field|DFS_REPLICATION_DEFAULT
 specifier|public
@@ -196,7 +198,9 @@ specifier|final
 name|short
 name|DFS_REPLICATION_DEFAULT
 init|=
-literal|3
+name|HdfsClientConfigKeys
+operator|.
+name|DFS_REPLICATION_DEFAULT
 decl_stmt|;
 DECL|field|DFS_STREAM_BUFFER_SIZE_KEY
 specifier|public
@@ -295,7 +299,9 @@ specifier|final
 name|String
 name|DFS_WEBHDFS_ACL_PERMISSION_PATTERN_DEFAULT
 init|=
-literal|"^(default:)?(user|group|mask|other):[[A-Za-z_][A-Za-z0-9._-]]*:([rwx-]{3})?(,(default:)?(user|group|mask|other):[[A-Za-z_][A-Za-z0-9._-]]*:([rwx-]{3})?)*$"
+name|HdfsClientConfigKeys
+operator|.
+name|DFS_WEBHDFS_ACL_PERMISSION_PATTERN_DEFAULT
 decl_stmt|;
 comment|// HA related configuration
 DECL|field|DFS_DATANODE_RESTART_REPLICA_EXPIRY_KEY
@@ -1172,7 +1178,9 @@ specifier|final
 name|String
 name|DFS_WEBHDFS_USER_PATTERN_DEFAULT
 init|=
-literal|"^[A-Za-z_][A-Za-z0-9._-]*[$]?$"
+name|HdfsClientConfigKeys
+operator|.
+name|DFS_WEBHDFS_USER_PATTERN_DEFAULT
 decl_stmt|;
 DECL|field|DFS_PERMISSIONS_ENABLED_KEY
 specifier|public
