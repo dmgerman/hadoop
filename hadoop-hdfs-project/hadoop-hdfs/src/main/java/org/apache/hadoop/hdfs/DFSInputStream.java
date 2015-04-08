@@ -5069,13 +5069,13 @@ name|toString
 argument_list|()
 return|;
 block|}
-DECL|method|fetchBlockByteRange (LocatedBlock block, long start, long end, byte[] buf, int offset, Map<ExtendedBlock, Set<DatanodeInfo>> corruptedBlockMap)
+DECL|method|fetchBlockByteRange (long blockStartOffset, long start, long end, byte[] buf, int offset, Map<ExtendedBlock, Set<DatanodeInfo>> corruptedBlockMap)
 specifier|private
 name|void
 name|fetchBlockByteRange
 parameter_list|(
-name|LocatedBlock
-name|block
+name|long
+name|blockStartOffset
 parameter_list|,
 name|long
 name|start
@@ -5104,16 +5104,14 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
+name|LocatedBlock
 name|block
-operator|=
+init|=
 name|getBlockAt
 argument_list|(
-name|block
-operator|.
-name|getStartOffset
-argument_list|()
+name|blockStartOffset
 argument_list|)
-expr_stmt|;
+decl_stmt|;
 while|while
 condition|(
 literal|true
@@ -5135,7 +5133,7 @@ name|actualGetFromOneDataNode
 argument_list|(
 name|addressPair
 argument_list|,
-name|block
+name|blockStartOffset
 argument_list|,
 name|start
 argument_list|,
@@ -5161,7 +5159,7 @@ comment|// Loop through to try the next node.
 block|}
 block|}
 block|}
-DECL|method|getFromOneDataNode (final DNAddrPair datanode, final LocatedBlock block, final long start, final long end, final ByteBuffer bb, final Map<ExtendedBlock, Set<DatanodeInfo>> corruptedBlockMap, final int hedgedReadId)
+DECL|method|getFromOneDataNode (final DNAddrPair datanode, final long blockStartOffset, final long start, final long end, final ByteBuffer bb, final Map<ExtendedBlock, Set<DatanodeInfo>> corruptedBlockMap, final int hedgedReadId)
 specifier|private
 name|Callable
 argument_list|<
@@ -5174,8 +5172,8 @@ name|DNAddrPair
 name|datanode
 parameter_list|,
 specifier|final
-name|LocatedBlock
-name|block
+name|long
+name|blockStartOffset
 parameter_list|,
 specifier|final
 name|long
@@ -5269,7 +5267,7 @@ name|actualGetFromOneDataNode
 argument_list|(
 name|datanode
 argument_list|,
-name|block
+name|blockStartOffset
 argument_list|,
 name|start
 argument_list|,
@@ -5298,7 +5296,7 @@ block|}
 block|}
 return|;
 block|}
-DECL|method|actualGetFromOneDataNode (final DNAddrPair datanode, LocatedBlock block, final long start, final long end, byte[] buf, int offset, Map<ExtendedBlock, Set<DatanodeInfo>> corruptedBlockMap)
+DECL|method|actualGetFromOneDataNode (final DNAddrPair datanode, long blockStartOffset, final long start, final long end, byte[] buf, int offset, Map<ExtendedBlock, Set<DatanodeInfo>> corruptedBlockMap)
 specifier|private
 name|void
 name|actualGetFromOneDataNode
@@ -5307,8 +5305,8 @@ specifier|final
 name|DNAddrPair
 name|datanode
 parameter_list|,
-name|LocatedBlock
-name|block
+name|long
+name|blockStartOffset
 parameter_list|,
 specifier|final
 name|long
@@ -5373,16 +5371,14 @@ decl_stmt|;
 name|boolean
 name|allowShortCircuitLocalReads
 decl_stmt|;
+name|LocatedBlock
 name|block
-operator|=
+init|=
 name|getBlockAt
 argument_list|(
-name|block
-operator|.
-name|getStartOffset
-argument_list|()
+name|blockStartOffset
 argument_list|)
-expr_stmt|;
+decl_stmt|;
 synchronized|synchronized
 init|(
 name|infoLock
@@ -5843,13 +5839,13 @@ block|}
 block|}
 block|}
 comment|/**    * Like {@link #fetchBlockByteRange(LocatedBlock, long, long, byte[],    * int, Map)} except we start up a second, parallel, 'hedged' read    * if the first read is taking longer than configured amount of    * time.  We then wait on which ever read returns first.    */
-DECL|method|hedgedFetchBlockByteRange (LocatedBlock block, long start, long end, byte[] buf, int offset, Map<ExtendedBlock, Set<DatanodeInfo>> corruptedBlockMap)
+DECL|method|hedgedFetchBlockByteRange (long blockStartOffset, long start, long end, byte[] buf, int offset, Map<ExtendedBlock, Set<DatanodeInfo>> corruptedBlockMap)
 specifier|private
 name|void
 name|hedgedFetchBlockByteRange
 parameter_list|(
-name|LocatedBlock
-name|block
+name|long
+name|blockStartOffset
 parameter_list|,
 name|long
 name|start
@@ -5952,16 +5948,14 @@ name|hedgedReadId
 init|=
 literal|0
 decl_stmt|;
+name|LocatedBlock
 name|block
-operator|=
+init|=
 name|getBlockAt
 argument_list|(
-name|block
-operator|.
-name|getStartOffset
-argument_list|()
+name|blockStartOffset
 argument_list|)
-expr_stmt|;
+decl_stmt|;
 while|while
 condition|(
 literal|true
@@ -6020,6 +6014,9 @@ argument_list|(
 name|chosenNode
 argument_list|,
 name|block
+operator|.
+name|getStartOffset
+argument_list|()
 argument_list|,
 name|start
 argument_list|,
@@ -6215,6 +6212,9 @@ argument_list|(
 name|chosenNode
 argument_list|,
 name|block
+operator|.
+name|getStartOffset
+argument_list|()
 argument_list|,
 name|start
 argument_list|,
@@ -6857,6 +6857,9 @@ block|{
 name|hedgedFetchBlockByteRange
 argument_list|(
 name|blk
+operator|.
+name|getStartOffset
+argument_list|()
 argument_list|,
 name|targetStart
 argument_list|,
@@ -6879,6 +6882,9 @@ block|{
 name|fetchBlockByteRange
 argument_list|(
 name|blk
+operator|.
+name|getStartOffset
+argument_list|()
 argument_list|,
 name|targetStart
 argument_list|,
