@@ -4095,6 +4095,11 @@ name|IOException
 name|ioe
 parameter_list|)
 block|{
+name|replicaInfo
+operator|.
+name|releaseAllBytesReserved
+argument_list|()
+expr_stmt|;
 if|if
 condition|(
 name|datanode

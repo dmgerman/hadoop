@@ -1627,6 +1627,14 @@ block|}
 block|}
 annotation|@
 name|Override
+DECL|method|releaseAllBytesReserved ()
+specifier|public
+name|void
+name|releaseAllBytesReserved
+parameter_list|()
+block|{     }
+annotation|@
+name|Override
 DECL|method|getBytesOnDisk ()
 specifier|synchronized
 specifier|public

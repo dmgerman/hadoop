@@ -100,6 +100,13 @@ name|long
 name|bytesAcked
 parameter_list|)
 function_decl|;
+comment|/**    * Release any disk space reserved for this replica.    */
+DECL|method|releaseAllBytesReserved ()
+specifier|public
+name|void
+name|releaseAllBytesReserved
+parameter_list|()
+function_decl|;
 comment|/**    * store the checksum for the last chunk along with the data length    * @param dataLength number of bytes on disk    * @param lastChecksum - checksum bytes for the last chunk    */
 DECL|method|setLastChecksumAndDataLen (long dataLength, byte[] lastChecksum)
 specifier|public

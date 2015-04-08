@@ -529,6 +529,28 @@ return|;
 block|}
 annotation|@
 name|Override
+DECL|method|releaseAllBytesReserved ()
+specifier|public
+name|void
+name|releaseAllBytesReserved
+parameter_list|()
+block|{
+comment|// ReplicaInPipelineInterface
+name|getVolume
+argument_list|()
+operator|.
+name|releaseReservedSpace
+argument_list|(
+name|bytesReserved
+argument_list|)
+expr_stmt|;
+name|bytesReserved
+operator|=
+literal|0
+expr_stmt|;
+block|}
+annotation|@
+name|Override
 comment|// ReplicaInPipelineInterface
 DECL|method|setLastChecksumAndDataLen (long dataLength, byte[] lastChecksum)
 specifier|public
