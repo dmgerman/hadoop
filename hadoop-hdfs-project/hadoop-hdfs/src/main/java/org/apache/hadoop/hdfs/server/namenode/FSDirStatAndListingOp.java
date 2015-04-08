@@ -2958,6 +2958,11 @@ name|fsd
 operator|.
 name|getContentCountLimit
 argument_list|()
+argument_list|,
+name|fsd
+operator|.
+name|getContentSleepMicroSec
+argument_list|()
 argument_list|)
 decl_stmt|;
 name|ContentSummary

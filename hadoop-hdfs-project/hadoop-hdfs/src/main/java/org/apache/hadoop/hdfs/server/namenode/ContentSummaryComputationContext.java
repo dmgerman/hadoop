@@ -143,8 +143,22 @@ name|yieldCount
 init|=
 literal|0
 decl_stmt|;
+DECL|field|sleepMilliSec
+specifier|private
+name|long
+name|sleepMilliSec
+init|=
+literal|0
+decl_stmt|;
+DECL|field|sleepNanoSec
+specifier|private
+name|int
+name|sleepNanoSec
+init|=
+literal|0
+decl_stmt|;
 comment|/**    * Constructor    *    * @param dir The FSDirectory instance    * @param fsn The FSNamesystem instance    * @param limitPerRun allowed number of operations in one    *        locking period. 0 or a negative number means    *        no limit (i.e. no yielding)    */
-DECL|method|ContentSummaryComputationContext (FSDirectory dir, FSNamesystem fsn, long limitPerRun)
+DECL|method|ContentSummaryComputationContext (FSDirectory dir, FSNamesystem fsn, long limitPerRun, long sleepMicroSec)
 specifier|public
 name|ContentSummaryComputationContext
 parameter_list|(
@@ -156,6 +170,9 @@ name|fsn
 parameter_list|,
 name|long
 name|limitPerRun
+parameter_list|,
+name|long
+name|sleepMicroSec
 parameter_list|)
 block|{
 name|this
@@ -195,6 +212,31 @@ operator|.
 name|build
 argument_list|()
 expr_stmt|;
+name|this
+operator|.
+name|sleepMilliSec
+operator|=
+name|sleepMicroSec
+operator|/
+literal|1000
+expr_stmt|;
+name|this
+operator|.
+name|sleepNanoSec
+operator|=
+call|(
+name|int
+call|)
+argument_list|(
+operator|(
+name|sleepMicroSec
+operator|%
+literal|1000
+operator|)
+operator|*
+literal|1000
+argument_list|)
+expr_stmt|;
 block|}
 comment|/** Constructor for blocking computation. */
 DECL|method|ContentSummaryComputationContext (BlockStoragePolicySuite bsps)
@@ -212,6 +254,8 @@ argument_list|,
 literal|null
 argument_list|,
 literal|0
+argument_list|,
+literal|1000
 argument_list|)
 expr_stmt|;
 name|this
@@ -383,7 +427,9 @@ name|Thread
 operator|.
 name|sleep
 argument_list|(
-literal|1
+name|sleepMilliSec
+argument_list|,
+name|sleepNanoSec
 argument_list|)
 expr_stmt|;
 block|}

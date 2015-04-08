@@ -1332,6 +1332,12 @@ name|int
 name|contentCountLimit
 decl_stmt|;
 comment|// max content summary counts per run
+DECL|field|contentSleepMicroSec
+specifier|private
+specifier|final
+name|long
+name|contentSleepMicroSec
+decl_stmt|;
 DECL|field|inodeMap
 specifier|private
 specifier|final
@@ -1882,6 +1888,23 @@ operator|.
 name|DFS_CONTENT_SUMMARY_LIMIT_DEFAULT
 argument_list|)
 expr_stmt|;
+name|this
+operator|.
+name|contentSleepMicroSec
+operator|=
+name|conf
+operator|.
+name|getLong
+argument_list|(
+name|DFSConfigKeys
+operator|.
+name|DFS_CONTENT_SUMMARY_SLEEP_MICROSEC_KEY
+argument_list|,
+name|DFSConfigKeys
+operator|.
+name|DFS_CONTENT_SUMMARY_SLEEP_MICROSEC_DEFAULT
+argument_list|)
+expr_stmt|;
 comment|// filesystem limits
 name|this
 operator|.
@@ -2180,6 +2203,15 @@ parameter_list|()
 block|{
 return|return
 name|contentCountLimit
+return|;
+block|}
+DECL|method|getContentSleepMicroSec ()
+name|long
+name|getContentSleepMicroSec
+parameter_list|()
+block|{
+return|return
+name|contentSleepMicroSec
 return|;
 block|}
 DECL|method|getInodeXAttrsLimit ()
