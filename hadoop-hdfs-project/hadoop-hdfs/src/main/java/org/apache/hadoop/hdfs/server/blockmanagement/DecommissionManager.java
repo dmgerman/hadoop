@@ -805,38 +805,28 @@ name|node
 operator|.
 name|isDecommissionInProgress
 argument_list|()
-condition|)
-block|{
-if|if
-condition|(
-operator|!
-name|node
-operator|.
-name|isAlive
-condition|)
-block|{
-name|LOG
-operator|.
-name|info
-argument_list|(
-literal|"Dead node {} is decommissioned immediately."
-argument_list|,
-name|node
-argument_list|)
-expr_stmt|;
-name|node
-operator|.
-name|setDecommissioned
-argument_list|()
-expr_stmt|;
-block|}
-elseif|else
-if|if
-condition|(
+operator|&&
 operator|!
 name|node
 operator|.
 name|isDecommissioned
+argument_list|()
+condition|)
+block|{
+comment|// Update DN stats maintained by HeartbeatManager
+name|hbManager
+operator|.
+name|startDecommission
+argument_list|(
+name|node
+argument_list|)
+expr_stmt|;
+comment|// hbManager.startDecommission will set dead node to decommissioned.
+if|if
+condition|(
+name|node
+operator|.
+name|isDecommissionInProgress
 argument_list|()
 condition|)
 block|{
@@ -868,14 +858,6 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
-comment|// Update DN stats maintained by HeartbeatManager
-name|hbManager
-operator|.
-name|startDecommission
-argument_list|(
-name|node
-argument_list|)
-expr_stmt|;
 name|node
 operator|.
 name|decommissioningStatus
@@ -901,17 +883,23 @@ name|LOG
 operator|.
 name|trace
 argument_list|(
-literal|"startDecommission: Node {} is already decommission in "
+literal|"startDecommission: Node {} in {}, nothing to do."
 operator|+
-literal|"progress, nothing to do."
+name|node
 argument_list|,
 name|node
+operator|.
+name|getAdminState
+argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
 block|}
 comment|/**    * Stop decommissioning the specified datanode.     * @param node    */
+annotation|@
+name|VisibleForTesting
 DECL|method|stopDecommission (DatanodeDescriptor node)
+specifier|public
 name|void
 name|stopDecommission
 parameter_list|(
@@ -932,15 +920,6 @@ name|isDecommissioned
 argument_list|()
 condition|)
 block|{
-name|LOG
-operator|.
-name|info
-argument_list|(
-literal|"Stopping decommissioning of node {}"
-argument_list|,
-name|node
-argument_list|)
-expr_stmt|;
 comment|// Update DN stats maintained by HeartbeatManager
 name|hbManager
 operator|.
@@ -988,11 +967,14 @@ name|LOG
 operator|.
 name|trace
 argument_list|(
-literal|"stopDecommission: Node {} is not decommission in progress "
+literal|"stopDecommission: Node {} in {}, nothing to do."
 operator|+
-literal|"or decommissioned, nothing to do."
+name|node
 argument_list|,
 name|node
+operator|.
+name|getAdminState
+argument_list|()
 argument_list|)
 expr_stmt|;
 block|}

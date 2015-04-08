@@ -1181,6 +1181,17 @@ name|getBlockManager
 argument_list|()
 argument_list|)
 expr_stmt|;
+comment|//Verify decommission of dead node won't impact nodesInService metrics.
+name|dnm
+operator|.
+name|getDecomManager
+argument_list|()
+operator|.
+name|startDecommission
+argument_list|(
+name|dnd
+argument_list|)
+expr_stmt|;
 name|expectedInServiceNodes
 operator|--
 expr_stmt|;
@@ -1192,6 +1203,27 @@ name|namesystem
 operator|.
 name|getNumLiveDataNodes
 argument_list|()
+argument_list|)
+expr_stmt|;
+name|assertEquals
+argument_list|(
+name|expectedInServiceNodes
+argument_list|,
+name|getNumDNInService
+argument_list|(
+name|namesystem
+argument_list|)
+argument_list|)
+expr_stmt|;
+comment|//Verify recommission of dead node won't impact nodesInService metrics.
+name|dnm
+operator|.
+name|getDecomManager
+argument_list|()
+operator|.
+name|stopDecommission
+argument_list|(
+name|dnd
 argument_list|)
 expr_stmt|;
 name|assertEquals
