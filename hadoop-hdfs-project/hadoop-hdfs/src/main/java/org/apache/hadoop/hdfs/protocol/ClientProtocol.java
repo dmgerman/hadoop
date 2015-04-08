@@ -2478,6 +2478,20 @@ parameter_list|)
 throws|throws
 name|IOException
 function_decl|;
+comment|/**    * Gets the ECInfo for the specified file/directory    *     * @param src    * @return Returns the ECInfo if the file/directory is erasure coded, null otherwise    * @throws IOException    */
+annotation|@
+name|Idempotent
+DECL|method|getErasureCodingInfo (String src)
+specifier|public
+name|ECInfo
+name|getErasureCodingInfo
+parameter_list|(
+name|String
+name|src
+parameter_list|)
+throws|throws
+name|IOException
+function_decl|;
 block|}
 end_interface
 
