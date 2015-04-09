@@ -1261,7 +1261,7 @@ name|historyUrl
 operator|=
 name|MRWebAppUtil
 operator|.
-name|getApplicationWebURLOnJHSWithoutScheme
+name|getApplicationWebURLOnJHSWithScheme
 argument_list|(
 name|conf
 argument_list|,
@@ -1278,7 +1278,18 @@ name|UnknownHostException
 name|e
 parameter_list|)
 block|{
-comment|//Ignore.
+name|LOG
+operator|.
+name|error
+argument_list|(
+literal|"Problem determining local host: "
+operator|+
+name|e
+operator|.
+name|getMessage
+argument_list|()
+argument_list|)
+expr_stmt|;
 block|}
 name|report
 operator|.
