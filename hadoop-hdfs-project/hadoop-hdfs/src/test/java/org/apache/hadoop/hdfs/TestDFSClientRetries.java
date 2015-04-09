@@ -5348,9 +5348,11 @@ name|conf
 operator|.
 name|setBoolean
 argument_list|(
-name|DFSConfigKeys
+name|HdfsClientConfigKeys
 operator|.
-name|DFS_HTTP_CLIENT_RETRY_POLICY_ENABLED_KEY
+name|WebHdfsRetry
+operator|.
+name|RETRY_POLICY_ENABLED_KEY
 argument_list|,
 literal|true
 argument_list|)
