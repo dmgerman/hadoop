@@ -1800,7 +1800,7 @@ name|token
 operator|.
 name|block
 operator|.
-name|BlockTokenSecretManager
+name|BlockTokenIdentifier
 operator|.
 name|AccessMode
 import|;
@@ -2055,28 +2055,6 @@ operator|.
 name|fsdataset
 operator|.
 name|FsVolumeSpi
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|hdfs
-operator|.
-name|server
-operator|.
-name|datanode
-operator|.
-name|fsdataset
-operator|.
-name|impl
-operator|.
-name|FsVolumeImpl
 import|;
 end_import
 
@@ -8484,7 +8462,7 @@ name|block
 argument_list|,
 name|token
 argument_list|,
-name|BlockTokenSecretManager
+name|BlockTokenIdentifier
 operator|.
 name|AccessMode
 operator|.
@@ -8716,7 +8694,7 @@ name|blk
 argument_list|,
 name|token
 argument_list|,
-name|BlockTokenSecretManager
+name|BlockTokenIdentifier
 operator|.
 name|AccessMode
 operator|.
@@ -8931,7 +8909,7 @@ argument_list|(
 name|i
 argument_list|)
 argument_list|,
-name|BlockTokenSecretManager
+name|BlockTokenIdentifier
 operator|.
 name|AccessMode
 operator|.
@@ -10813,7 +10791,7 @@ name|EnumSet
 operator|.
 name|of
 argument_list|(
-name|BlockTokenSecretManager
+name|BlockTokenIdentifier
 operator|.
 name|AccessMode
 operator|.
@@ -14294,7 +14272,7 @@ literal|null
 argument_list|,
 name|block
 argument_list|,
-name|BlockTokenSecretManager
+name|BlockTokenIdentifier
 operator|.
 name|AccessMode
 operator|.

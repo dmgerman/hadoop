@@ -832,26 +832,6 @@ name|hadoop
 operator|.
 name|hdfs
 operator|.
-name|security
-operator|.
-name|token
-operator|.
-name|block
-operator|.
-name|BlockTokenSecretManager
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|hdfs
-operator|.
 name|server
 operator|.
 name|common
@@ -3368,7 +3348,7 @@ name|Op
 operator|.
 name|READ_BLOCK
 argument_list|,
-name|BlockTokenSecretManager
+name|BlockTokenIdentifier
 operator|.
 name|AccessMode
 operator|.
@@ -4159,7 +4139,7 @@ name|Op
 operator|.
 name|WRITE_BLOCK
 argument_list|,
-name|BlockTokenSecretManager
+name|BlockTokenIdentifier
 operator|.
 name|AccessMode
 operator|.
@@ -5213,7 +5193,7 @@ name|Op
 operator|.
 name|TRANSFER_BLOCK
 argument_list|,
-name|BlockTokenSecretManager
+name|BlockTokenIdentifier
 operator|.
 name|AccessMode
 operator|.
@@ -5610,7 +5590,7 @@ name|Op
 operator|.
 name|BLOCK_CHECKSUM
 argument_list|,
-name|BlockTokenSecretManager
+name|BlockTokenIdentifier
 operator|.
 name|AccessMode
 operator|.
@@ -6003,7 +5983,7 @@ literal|null
 argument_list|,
 name|block
 argument_list|,
-name|BlockTokenSecretManager
+name|BlockTokenIdentifier
 operator|.
 name|AccessMode
 operator|.
@@ -6458,7 +6438,7 @@ literal|null
 argument_list|,
 name|block
 argument_list|,
-name|BlockTokenSecretManager
+name|BlockTokenIdentifier
 operator|.
 name|AccessMode
 operator|.
@@ -7384,7 +7364,7 @@ name|remoteAddressWithoutPort
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|checkAccess (OutputStream out, final boolean reply, final ExtendedBlock blk, final Token<BlockTokenIdentifier> t, final Op op, final BlockTokenSecretManager.AccessMode mode)
+DECL|method|checkAccess (OutputStream out, final boolean reply, final ExtendedBlock blk, final Token<BlockTokenIdentifier> t, final Op op, final BlockTokenIdentifier.AccessMode mode)
 specifier|private
 name|void
 name|checkAccess
@@ -7412,7 +7392,7 @@ name|Op
 name|op
 parameter_list|,
 specifier|final
-name|BlockTokenSecretManager
+name|BlockTokenIdentifier
 operator|.
 name|AccessMode
 name|mode
@@ -7504,7 +7484,7 @@ if|if
 condition|(
 name|mode
 operator|==
-name|BlockTokenSecretManager
+name|BlockTokenIdentifier
 operator|.
 name|AccessMode
 operator|.

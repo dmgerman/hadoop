@@ -2614,29 +2614,7 @@ name|token
 operator|.
 name|block
 operator|.
-name|BlockTokenSecretManager
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|hdfs
-operator|.
-name|security
-operator|.
-name|token
-operator|.
-name|block
-operator|.
-name|BlockTokenSecretManager
-operator|.
-name|AccessMode
+name|BlockTokenIdentifier
 import|;
 end_import
 
@@ -17333,7 +17311,7 @@ name|setBlockToken
 argument_list|(
 name|lBlk
 argument_list|,
-name|BlockTokenSecretManager
+name|BlockTokenIdentifier
 operator|.
 name|AccessMode
 operator|.
@@ -17677,6 +17655,8 @@ name|setBlockToken
 argument_list|(
 name|lb
 argument_list|,
+name|BlockTokenIdentifier
+operator|.
 name|AccessMode
 operator|.
 name|COPY
@@ -29203,6 +29183,8 @@ name|setBlockToken
 argument_list|(
 name|locatedBlock
 argument_list|,
+name|BlockTokenIdentifier
+operator|.
 name|AccessMode
 operator|.
 name|WRITE

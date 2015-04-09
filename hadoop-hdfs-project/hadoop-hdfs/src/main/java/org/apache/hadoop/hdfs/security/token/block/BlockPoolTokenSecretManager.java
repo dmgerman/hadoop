@@ -94,7 +94,7 @@ name|token
 operator|.
 name|block
 operator|.
-name|BlockTokenSecretManager
+name|BlockTokenIdentifier
 operator|.
 name|AccessMode
 import|;
@@ -337,7 +337,7 @@ name|identifier
 argument_list|)
 return|;
 block|}
-comment|/**    * See {@link BlockTokenSecretManager#checkAccess(BlockTokenIdentifier,     *                String, ExtendedBlock, AccessMode)}    */
+comment|/**    * See {@link BlockTokenSecretManager#checkAccess(BlockTokenIdentifier,     *                String, ExtendedBlock, BlockTokenIdentifier.AccessMode)}    */
 DECL|method|checkAccess (BlockTokenIdentifier id, String userId, ExtendedBlock block, AccessMode mode)
 specifier|public
 name|void
@@ -378,7 +378,7 @@ name|mode
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * See {@link BlockTokenSecretManager#checkAccess(Token, String,     *                ExtendedBlock, AccessMode)}    */
+comment|/**    * See {@link BlockTokenSecretManager#checkAccess(Token, String,     *                ExtendedBlock, BlockTokenIdentifier.AccessMode)}    */
 DECL|method|checkAccess (Token<BlockTokenIdentifier> token, String userId, ExtendedBlock block, AccessMode mode)
 specifier|public
 name|void

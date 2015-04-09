@@ -428,24 +428,6 @@ operator|new
 name|SecureRandom
 argument_list|()
 decl_stmt|;
-DECL|enum|AccessMode
-specifier|public
-specifier|static
-enum|enum
-name|AccessMode
-block|{
-DECL|enumConstant|READ
-DECL|enumConstant|WRITE
-DECL|enumConstant|COPY
-DECL|enumConstant|REPLACE
-name|READ
-block|,
-name|WRITE
-block|,
-name|COPY
-block|,
-name|REPLACE
-block|}
 empty_stmt|;
 comment|/**    * Constructor for slaves.    *     * @param keyUpdateInterval how often a new key will be generated    * @param tokenLifetime how long an individual token is valid    */
 DECL|method|BlockTokenSecretManager (long keyUpdateInterval, long tokenLifetime, String blockPoolId, String encryptionAlgorithm)
@@ -1172,7 +1154,7 @@ literal|true
 return|;
 block|}
 comment|/** Generate an block token for current user */
-DECL|method|generateToken (ExtendedBlock block, EnumSet<AccessMode> modes)
+DECL|method|generateToken (ExtendedBlock block, EnumSet<BlockTokenIdentifier.AccessMode> modes)
 specifier|public
 name|Token
 argument_list|<
@@ -1185,6 +1167,8 @@ name|block
 parameter_list|,
 name|EnumSet
 argument_list|<
+name|BlockTokenIdentifier
+operator|.
 name|AccessMode
 argument_list|>
 name|modes
@@ -1228,7 +1212,7 @@ argument_list|)
 return|;
 block|}
 comment|/** Generate a block token for a specified user */
-DECL|method|generateToken (String userId, ExtendedBlock block, EnumSet<AccessMode> modes)
+DECL|method|generateToken (String userId, ExtendedBlock block, EnumSet<BlockTokenIdentifier.AccessMode> modes)
 specifier|public
 name|Token
 argument_list|<
@@ -1244,6 +1228,8 @@ name|block
 parameter_list|,
 name|EnumSet
 argument_list|<
+name|BlockTokenIdentifier
+operator|.
 name|AccessMode
 argument_list|>
 name|modes
@@ -1286,7 +1272,7 @@ argument_list|)
 return|;
 block|}
 comment|/**    * Check if access should be allowed. userID is not checked if null. This    * method doesn't check if token password is correct. It should be used only    * when token password has already been verified (e.g., in the RPC layer).    */
-DECL|method|checkAccess (BlockTokenIdentifier id, String userId, ExtendedBlock block, AccessMode mode)
+DECL|method|checkAccess (BlockTokenIdentifier id, String userId, ExtendedBlock block, BlockTokenIdentifier.AccessMode mode)
 specifier|public
 name|void
 name|checkAccess
@@ -1300,6 +1286,8 @@ parameter_list|,
 name|ExtendedBlock
 name|block
 parameter_list|,
+name|BlockTokenIdentifier
+operator|.
 name|AccessMode
 name|mode
 parameter_list|)
@@ -1499,7 +1487,7 @@ throw|;
 block|}
 block|}
 comment|/** Check if access should be allowed. userID is not checked if null */
-DECL|method|checkAccess (Token<BlockTokenIdentifier> token, String userId, ExtendedBlock block, AccessMode mode)
+DECL|method|checkAccess (Token<BlockTokenIdentifier> token, String userId, ExtendedBlock block, BlockTokenIdentifier.AccessMode mode)
 specifier|public
 name|void
 name|checkAccess
@@ -1516,6 +1504,8 @@ parameter_list|,
 name|ExtendedBlock
 name|block
 parameter_list|,
+name|BlockTokenIdentifier
+operator|.
 name|AccessMode
 name|mode
 parameter_list|)

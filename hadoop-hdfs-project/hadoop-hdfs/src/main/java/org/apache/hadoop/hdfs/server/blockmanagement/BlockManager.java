@@ -498,7 +498,7 @@ name|token
 operator|.
 name|block
 operator|.
-name|BlockTokenSecretManager
+name|BlockTokenIdentifier
 import|;
 end_import
 
@@ -519,6 +519,26 @@ operator|.
 name|block
 operator|.
 name|BlockTokenSecretManager
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|security
+operator|.
+name|token
+operator|.
+name|block
+operator|.
+name|BlockTokenIdentifier
 operator|.
 name|AccessMode
 import|;
@@ -3768,6 +3788,8 @@ name|ucBlock
 argument_list|,
 name|pos
 argument_list|,
+name|BlockTokenIdentifier
+operator|.
 name|AccessMode
 operator|.
 name|WRITE
@@ -4173,7 +4195,7 @@ name|mode
 argument_list|)
 return|;
 block|}
-DECL|method|createLocatedBlock (final BlockInfoContiguous blk, final long pos, final BlockTokenSecretManager.AccessMode mode)
+DECL|method|createLocatedBlock (final BlockInfoContiguous blk, final long pos, final AccessMode mode)
 specifier|private
 name|LocatedBlock
 name|createLocatedBlock
@@ -4187,8 +4209,6 @@ name|long
 name|pos
 parameter_list|,
 specifier|final
-name|BlockTokenSecretManager
-operator|.
 name|AccessMode
 name|mode
 parameter_list|)
@@ -4657,6 +4677,8 @@ name|mode
 init|=
 name|needBlockToken
 condition|?
+name|BlockTokenIdentifier
+operator|.
 name|AccessMode
 operator|.
 name|READ
@@ -4808,7 +4830,7 @@ name|DUMMY_KEYS
 return|;
 block|}
 comment|/** Generate a block token for the located block. */
-DECL|method|setBlockToken (final LocatedBlock b, final BlockTokenSecretManager.AccessMode mode)
+DECL|method|setBlockToken (final LocatedBlock b, final AccessMode mode)
 specifier|public
 name|void
 name|setBlockToken
@@ -4818,8 +4840,6 @@ name|LocatedBlock
 name|b
 parameter_list|,
 specifier|final
-name|BlockTokenSecretManager
-operator|.
 name|AccessMode
 name|mode
 parameter_list|)

@@ -1270,7 +1270,7 @@ name|getBlock
 argument_list|()
 argument_list|)
 argument_list|,
-name|BlockTokenSecretManager
+name|BlockTokenIdentifier
 operator|.
 name|AccessMode
 operator|.
@@ -1301,7 +1301,7 @@ argument_list|()
 return|;
 block|}
 block|}
-DECL|method|generateTokenId (BlockTokenSecretManager sm, ExtendedBlock block, EnumSet<BlockTokenSecretManager.AccessMode> accessModes)
+DECL|method|generateTokenId (BlockTokenSecretManager sm, ExtendedBlock block, EnumSet<BlockTokenIdentifier.AccessMode> accessModes)
 specifier|private
 name|BlockTokenIdentifier
 name|generateTokenId
@@ -1314,7 +1314,7 @@ name|block
 parameter_list|,
 name|EnumSet
 argument_list|<
-name|BlockTokenSecretManager
+name|BlockTokenIdentifier
 operator|.
 name|AccessMode
 argument_list|>
@@ -1418,7 +1418,7 @@ name|EnumSet
 operator|.
 name|allOf
 argument_list|(
-name|BlockTokenSecretManager
+name|BlockTokenIdentifier
 operator|.
 name|AccessMode
 operator|.
@@ -1441,7 +1441,7 @@ name|EnumSet
 operator|.
 name|of
 argument_list|(
-name|BlockTokenSecretManager
+name|BlockTokenIdentifier
 operator|.
 name|AccessMode
 operator|.
@@ -1464,7 +1464,7 @@ name|EnumSet
 operator|.
 name|noneOf
 argument_list|(
-name|BlockTokenSecretManager
+name|BlockTokenIdentifier
 operator|.
 name|AccessMode
 operator|.
@@ -1491,12 +1491,12 @@ block|{
 comment|// single-mode tokens
 for|for
 control|(
-name|BlockTokenSecretManager
+name|BlockTokenIdentifier
 operator|.
 name|AccessMode
 name|mode
 range|:
-name|BlockTokenSecretManager
+name|BlockTokenIdentifier
 operator|.
 name|AccessMode
 operator|.
@@ -1616,7 +1616,7 @@ name|EnumSet
 operator|.
 name|allOf
 argument_list|(
-name|BlockTokenSecretManager
+name|BlockTokenIdentifier
 operator|.
 name|AccessMode
 operator|.
@@ -1626,12 +1626,12 @@ argument_list|)
 decl_stmt|;
 for|for
 control|(
-name|BlockTokenSecretManager
+name|BlockTokenIdentifier
 operator|.
 name|AccessMode
 name|mode
 range|:
-name|BlockTokenSecretManager
+name|BlockTokenIdentifier
 operator|.
 name|AccessMode
 operator|.
@@ -2000,7 +2000,7 @@ name|EnumSet
 operator|.
 name|allOf
 argument_list|(
-name|BlockTokenSecretManager
+name|BlockTokenIdentifier
 operator|.
 name|AccessMode
 operator|.
@@ -2202,7 +2202,7 @@ name|EnumSet
 operator|.
 name|allOf
 argument_list|(
-name|BlockTokenSecretManager
+name|BlockTokenIdentifier
 operator|.
 name|AccessMode
 operator|.
