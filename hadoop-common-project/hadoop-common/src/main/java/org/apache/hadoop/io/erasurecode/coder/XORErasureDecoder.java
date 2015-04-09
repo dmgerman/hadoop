@@ -89,7 +89,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * Xor erasure decoder that decodes a block group.  *  * It implements {@link ErasureDecoder}.  */
+comment|/**  * Xor erasure decoder that decodes a block group.  *  * It implements {@link ErasureCoder}.  */
 end_comment
 
 begin_class
