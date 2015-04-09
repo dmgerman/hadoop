@@ -1197,6 +1197,12 @@ name|STATE_DESCRIPTION_NOT_LIVE
 init|=
 literal|" - not live"
 decl_stmt|;
+DECL|field|secretProvider
+specifier|private
+specifier|final
+name|SignerSecretProvider
+name|secretProvider
+decl_stmt|;
 comment|/**    * Class to construct instances of HTTP server with specific options.    */
 DECL|class|Builder
 specifier|public
@@ -2020,9 +2026,10 @@ argument_list|)
 expr_stmt|;
 try|try
 block|{
-name|SignerSecretProvider
+name|this
+operator|.
 name|secretProvider
-init|=
+operator|=
 name|constructSecretProvider
 argument_list|(
 name|b
@@ -2032,7 +2039,7 @@ operator|.
 name|getServletContext
 argument_list|()
 argument_list|)
-decl_stmt|;
+expr_stmt|;
 name|this
 operator|.
 name|webAppContext
@@ -4876,6 +4883,12 @@ block|}
 block|}
 try|try
 block|{
+comment|// explicitly destroy the secrete provider
+name|secretProvider
+operator|.
+name|destroy
+argument_list|()
+expr_stmt|;
 comment|// clear& stop webAppContext attributes to avoid memory leaks.
 name|webAppContext
 operator|.
