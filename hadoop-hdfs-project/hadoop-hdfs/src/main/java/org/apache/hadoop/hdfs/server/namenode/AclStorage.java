@@ -739,6 +739,35 @@ name|f
 argument_list|)
 return|;
 block|}
+comment|/**    * Reads the existing extended ACL entries of an INodeAttribute object.    *    * @param inodeAttr INode to read    * @return List<AclEntry> containing extended inode ACL entries    */
+DECL|method|readINodeAcl (INodeAttributes inodeAttr)
+specifier|public
+specifier|static
+name|List
+argument_list|<
+name|AclEntry
+argument_list|>
+name|readINodeAcl
+parameter_list|(
+name|INodeAttributes
+name|inodeAttr
+parameter_list|)
+block|{
+name|AclFeature
+name|f
+init|=
+name|inodeAttr
+operator|.
+name|getAclFeature
+argument_list|()
+decl_stmt|;
+return|return
+name|getEntriesFromAclFeature
+argument_list|(
+name|f
+argument_list|)
+return|;
+block|}
 comment|/**    * Build list of AclEntries from the AclFeature    * @param aclFeature AclFeature    * @return List of entries    */
 annotation|@
 name|VisibleForTesting

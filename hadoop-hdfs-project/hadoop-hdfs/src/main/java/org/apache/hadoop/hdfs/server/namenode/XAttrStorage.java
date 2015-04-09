@@ -203,8 +203,8 @@ name|getXAttrs
 argument_list|()
 return|;
 block|}
-comment|/**    * Reads the existing extended attributes of an inode.    *<p/>    * Must be called while holding the FSDirectory read lock.    *    * @param inode INode to read.    * @return List<XAttr><code>XAttr</code> list.    */
-DECL|method|readINodeXAttrs (INode inode)
+comment|/**    * Reads the existing extended attributes of an inode.    *<p/>    * Must be called while holding the FSDirectory read lock.    *    * @param inodeAttr INodeAttributes to read.    * @return List<XAttr><code>XAttr</code> list.    */
+DECL|method|readINodeXAttrs (INodeAttributes inodeAttr)
 specifier|public
 specifier|static
 name|List
@@ -213,14 +213,14 @@ name|XAttr
 argument_list|>
 name|readINodeXAttrs
 parameter_list|(
-name|INode
-name|inode
+name|INodeAttributes
+name|inodeAttr
 parameter_list|)
 block|{
 name|XAttrFeature
 name|f
 init|=
-name|inode
+name|inodeAttr
 operator|.
 name|getXAttrFeature
 argument_list|()
