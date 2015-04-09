@@ -11156,6 +11156,14 @@ throw|;
 block|}
 block|}
 block|}
+else|else
+block|{
+name|metrics
+operator|.
+name|incrBlocksReplicated
+argument_list|()
+expr_stmt|;
+block|}
 block|}
 catch|catch
 parameter_list|(

@@ -1129,21 +1129,16 @@ name|latency
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|incrBlocksReplicated (int delta)
+DECL|method|incrBlocksReplicated ()
 specifier|public
 name|void
 name|incrBlocksReplicated
-parameter_list|(
-name|int
-name|delta
-parameter_list|)
+parameter_list|()
 block|{
 name|blocksReplicated
 operator|.
 name|incr
-argument_list|(
-name|delta
-argument_list|)
+argument_list|()
 expr_stmt|;
 block|}
 DECL|method|incrBlocksWritten ()
