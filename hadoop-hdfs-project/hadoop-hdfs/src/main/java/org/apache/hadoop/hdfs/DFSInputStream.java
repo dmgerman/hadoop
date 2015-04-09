@@ -3191,7 +3191,7 @@ name|DFSClient
 operator|.
 name|LOG
 operator|.
-name|warn
+name|debug
 argument_list|(
 literal|"DFSInputStream has been closed already"
 argument_list|)
