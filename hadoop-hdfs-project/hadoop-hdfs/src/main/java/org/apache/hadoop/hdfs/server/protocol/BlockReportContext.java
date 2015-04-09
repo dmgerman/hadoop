@@ -20,11 +20,29 @@ name|protocol
 package|;
 end_package
 
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|classification
+operator|.
+name|InterfaceAudience
+import|;
+end_import
+
 begin_comment
 comment|/**  * The context of the block report.  *  * This is a set of fields that the Datanode sends to provide context about a  * block report RPC.  The context includes a unique 64-bit ID which  * identifies the block report as a whole.  It also includes the total number  * of RPCs which this block report is split into, and the index into that  * total for the current RPC.  */
 end_comment
 
 begin_class
+annotation|@
+name|InterfaceAudience
+operator|.
+name|Private
 DECL|class|BlockReportContext
 specifier|public
 class|class
