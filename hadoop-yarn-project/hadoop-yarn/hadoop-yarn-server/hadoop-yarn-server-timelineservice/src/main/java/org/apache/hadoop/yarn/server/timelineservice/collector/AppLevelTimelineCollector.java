@@ -270,10 +270,10 @@ name|getShortUserName
 argument_list|()
 argument_list|)
 expr_stmt|;
-comment|// Use app ID to generate a default flow ID for orphan app
+comment|// Use app ID to generate a default flow name for orphan app
 name|context
 operator|.
-name|setFlowId
+name|setFlowName
 argument_list|(
 name|TimelineUtils
 operator|.
@@ -283,12 +283,20 @@ name|appId
 argument_list|)
 argument_list|)
 expr_stmt|;
-comment|// Set the flow run ID to 0 if it's an orphan app
+comment|// Set the flow version to string 1 if it's an orphan app
+name|context
+operator|.
+name|setFlowVersion
+argument_list|(
+literal|"1"
+argument_list|)
+expr_stmt|;
+comment|// Set the flow run ID to 1 if it's an orphan app
 name|context
 operator|.
 name|setFlowRunId
 argument_list|(
-literal|"0"
+literal|1L
 argument_list|)
 expr_stmt|;
 name|context

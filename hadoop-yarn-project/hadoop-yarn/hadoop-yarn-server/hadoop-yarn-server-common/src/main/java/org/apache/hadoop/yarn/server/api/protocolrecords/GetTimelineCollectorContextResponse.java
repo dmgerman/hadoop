@@ -45,7 +45,7 @@ specifier|abstract
 class|class
 name|GetTimelineCollectorContextResponse
 block|{
-DECL|method|newInstance ( String userId, String flowId, String flowRunId)
+DECL|method|newInstance ( String userId, String flowName, String flowVersion, long flowRunId)
 specifier|public
 specifier|static
 name|GetTimelineCollectorContextResponse
@@ -55,9 +55,12 @@ name|String
 name|userId
 parameter_list|,
 name|String
-name|flowId
+name|flowName
 parameter_list|,
 name|String
+name|flowVersion
+parameter_list|,
+name|long
 name|flowRunId
 parameter_list|)
 block|{
@@ -82,9 +85,16 @@ argument_list|)
 expr_stmt|;
 name|response
 operator|.
-name|setFlowId
+name|setFlowName
 argument_list|(
-name|flowId
+name|flowName
+argument_list|)
+expr_stmt|;
+name|response
+operator|.
+name|setFlowVersion
+argument_list|(
+name|flowVersion
 argument_list|)
 expr_stmt|;
 name|response
@@ -115,37 +125,54 @@ name|String
 name|userId
 parameter_list|)
 function_decl|;
-DECL|method|getFlowId ()
+DECL|method|getFlowName ()
 specifier|public
 specifier|abstract
 name|String
-name|getFlowId
+name|getFlowName
 parameter_list|()
 function_decl|;
-DECL|method|setFlowId (String flowId)
+DECL|method|setFlowName (String flowName)
 specifier|public
 specifier|abstract
 name|void
-name|setFlowId
+name|setFlowName
 parameter_list|(
 name|String
-name|flowId
+name|flowName
+parameter_list|)
+function_decl|;
+DECL|method|getFlowVersion ()
+specifier|public
+specifier|abstract
+name|String
+name|getFlowVersion
+parameter_list|()
+function_decl|;
+DECL|method|setFlowVersion (String flowVersion)
+specifier|public
+specifier|abstract
+name|void
+name|setFlowVersion
+parameter_list|(
+name|String
+name|flowVersion
 parameter_list|)
 function_decl|;
 DECL|method|getFlowRunId ()
 specifier|public
 specifier|abstract
-name|String
+name|long
 name|getFlowRunId
 parameter_list|()
 function_decl|;
-DECL|method|setFlowRunId (String flowRunId)
+DECL|method|setFlowRunId (long flowRunId)
 specifier|public
 specifier|abstract
 name|void
 name|setFlowRunId
 parameter_list|(
-name|String
+name|long
 name|flowRunId
 parameter_list|)
 function_decl|;

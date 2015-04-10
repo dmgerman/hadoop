@@ -850,14 +850,19 @@ specifier|final
 name|String
 name|user
 decl_stmt|;
-DECL|field|flowId
+DECL|field|flowName
 specifier|final
 name|String
-name|flowId
+name|flowName
+decl_stmt|;
+DECL|field|flowVersion
+specifier|final
+name|String
+name|flowVersion
 decl_stmt|;
 DECL|field|flowRunId
 specifier|final
-name|String
+name|long
 name|flowRunId
 decl_stmt|;
 DECL|field|appId
@@ -961,7 +966,7 @@ specifier|final
 name|NMStateStoreService
 name|appStateStore
 decl_stmt|;
-DECL|method|ApplicationImpl (Dispatcher dispatcher, String user, String flowId, String flowRunId, ApplicationId appId, Credentials credentials, Context context, long recoveredLogInitedTime)
+DECL|method|ApplicationImpl (Dispatcher dispatcher, String user, String flowName, String flowVersion, long flowRunId, ApplicationId appId, Credentials credentials, Context context, long recoveredLogInitedTime)
 specifier|public
 name|ApplicationImpl
 parameter_list|(
@@ -972,9 +977,12 @@ name|String
 name|user
 parameter_list|,
 name|String
-name|flowId
+name|flowName
 parameter_list|,
 name|String
+name|flowVersion
+parameter_list|,
+name|long
 name|flowRunId
 parameter_list|,
 name|ApplicationId
@@ -1004,9 +1012,15 @@ name|user
 expr_stmt|;
 name|this
 operator|.
-name|flowId
+name|flowName
 operator|=
-name|flowId
+name|flowName
+expr_stmt|;
+name|this
+operator|.
+name|flowVersion
+operator|=
+name|flowVersion
 expr_stmt|;
 name|this
 operator|.
@@ -1086,7 +1100,7 @@ name|recoveredLogInitedTime
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|ApplicationImpl (Dispatcher dispatcher, String user, String flowId, String flowRunId, ApplicationId appId, Credentials credentials, Context context)
+DECL|method|ApplicationImpl (Dispatcher dispatcher, String user, String flowId, String flowVersion, long flowRunId, ApplicationId appId, Credentials credentials, Context context)
 specifier|public
 name|ApplicationImpl
 parameter_list|(
@@ -1100,6 +1114,9 @@ name|String
 name|flowId
 parameter_list|,
 name|String
+name|flowVersion
+parameter_list|,
+name|long
 name|flowRunId
 parameter_list|,
 name|ApplicationId
@@ -1119,6 +1136,8 @@ argument_list|,
 name|user
 argument_list|,
 name|flowId
+argument_list|,
+name|flowVersion
 argument_list|,
 name|flowRunId
 argument_list|,
@@ -3219,19 +3238,35 @@ argument_list|()
 expr_stmt|;
 block|}
 block|}
-DECL|method|getFlowId ()
+annotation|@
+name|Override
+DECL|method|getFlowName ()
 specifier|public
 name|String
-name|getFlowId
+name|getFlowName
 parameter_list|()
 block|{
 return|return
-name|flowId
+name|flowName
 return|;
 block|}
-DECL|method|getFlowRunId ()
+annotation|@
+name|Override
+DECL|method|getFlowVersion ()
 specifier|public
 name|String
+name|getFlowVersion
+parameter_list|()
+block|{
+return|return
+name|flowVersion
+return|;
+block|}
+annotation|@
+name|Override
+DECL|method|getFlowRunId ()
+specifier|public
+name|long
 name|getFlowRunId
 parameter_list|()
 block|{

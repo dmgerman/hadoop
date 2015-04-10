@@ -333,7 +333,7 @@ expr_stmt|;
 block|}
 annotation|@
 name|Override
-DECL|method|write (String clusterId, String userId, String flowId, String flowRunId, String appId, TimelineEntities entities)
+DECL|method|write (String clusterId, String userId, String flowName, String flowVersion, long flowRunId, String appId, TimelineEntities entities)
 specifier|public
 name|TimelineWriteResponse
 name|write
@@ -345,9 +345,12 @@ name|String
 name|userId
 parameter_list|,
 name|String
-name|flowId
+name|flowName
 parameter_list|,
 name|String
+name|flowVersion
+parameter_list|,
+name|long
 name|flowRunId
 parameter_list|,
 name|String
@@ -383,7 +386,9 @@ name|clusterId
 argument_list|,
 name|userId
 argument_list|,
-name|flowId
+name|flowName
+argument_list|,
+name|flowVersion
 argument_list|,
 name|flowRunId
 argument_list|,
@@ -399,7 +404,7 @@ return|return
 name|response
 return|;
 block|}
-DECL|method|write (String clusterId, String userId, String flowId, String flowRunId, String appId, TimelineEntity entity, TimelineWriteResponse response)
+DECL|method|write (String clusterId, String userId, String flowName, String flowVersion, long flowRun, String appId, TimelineEntity entity, TimelineWriteResponse response)
 specifier|private
 name|void
 name|write
@@ -411,10 +416,13 @@ name|String
 name|userId
 parameter_list|,
 name|String
-name|flowId
+name|flowName
 parameter_list|,
 name|String
-name|flowRunId
+name|flowVersion
+parameter_list|,
+name|long
+name|flowRun
 parameter_list|,
 name|String
 name|appId
@@ -448,9 +456,16 @@ name|clusterId
 argument_list|,
 name|userId
 argument_list|,
-name|flowId
+name|flowName
 argument_list|,
-name|flowRunId
+name|flowVersion
+argument_list|,
+name|String
+operator|.
+name|valueOf
+argument_list|(
+name|flowRun
+argument_list|)
 argument_list|,
 name|appId
 argument_list|,

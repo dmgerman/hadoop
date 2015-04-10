@@ -268,14 +268,23 @@ specifier|public
 class|class
 name|TimelineUtils
 block|{
-DECL|field|FLOW_ID_TAG_PREFIX
+DECL|field|FLOW_NAME_TAG_PREFIX
 specifier|public
 specifier|static
 specifier|final
 name|String
-name|FLOW_ID_TAG_PREFIX
+name|FLOW_NAME_TAG_PREFIX
 init|=
-literal|"TIMELINE_FLOW_ID_TAG"
+literal|"TIMELINE_FLOW_NAME_TAG"
+decl_stmt|;
+DECL|field|FLOW_VERSION_TAG_PREFIX
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|FLOW_VERSION_TAG_PREFIX
+init|=
+literal|"TIMELINE_FLOW_VERSION_TAG"
 decl_stmt|;
 DECL|field|FLOW_RUN_ID_TAG_PREFIX
 specifier|public
@@ -674,31 +683,52 @@ name|getId
 argument_list|()
 return|;
 block|}
-DECL|method|generateFlowIdTag (String flowId)
+comment|/**    * Generate flow name tag    *    * @param flowName flow name that identifies a distinct flow application which    *                 can be run repeatedly over time    * @return    */
+DECL|method|generateFlowNameTag (String flowName)
 specifier|public
 specifier|static
 name|String
-name|generateFlowIdTag
+name|generateFlowNameTag
 parameter_list|(
 name|String
-name|flowId
+name|flowName
 parameter_list|)
 block|{
 return|return
-name|FLOW_ID_TAG_PREFIX
+name|FLOW_NAME_TAG_PREFIX
 operator|+
 literal|":"
 operator|+
-name|flowId
+name|flowName
 return|;
 block|}
-DECL|method|generateFlowRunIdTag (String flowRunId)
+comment|/**    * Generate flow version tag    *    * @param flowVersion flow version that keeps track of the changes made to the    *                    flow    * @return    */
+DECL|method|generateFlowVersionTag (String flowVersion)
+specifier|public
+specifier|static
+name|String
+name|generateFlowVersionTag
+parameter_list|(
+name|String
+name|flowVersion
+parameter_list|)
+block|{
+return|return
+name|FLOW_VERSION_TAG_PREFIX
+operator|+
+literal|":"
+operator|+
+name|flowVersion
+return|;
+block|}
+comment|/**    * Generate flow run ID tag    *    * @param flowRunId flow run ID that identifies one instance (or specific    *                  execution) of that flow    * @return    */
+DECL|method|generateFlowRunIdTag (long flowRunId)
 specifier|public
 specifier|static
 name|String
 name|generateFlowRunIdTag
 parameter_list|(
-name|String
+name|long
 name|flowRunId
 parameter_list|)
 block|{

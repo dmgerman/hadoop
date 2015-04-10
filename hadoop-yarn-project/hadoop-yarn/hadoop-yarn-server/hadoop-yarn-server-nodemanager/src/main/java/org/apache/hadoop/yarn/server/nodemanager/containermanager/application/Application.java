@@ -162,13 +162,18 @@ name|ApplicationState
 name|getApplicationState
 parameter_list|()
 function_decl|;
-DECL|method|getFlowId ()
+DECL|method|getFlowName ()
 name|String
-name|getFlowId
+name|getFlowName
+parameter_list|()
+function_decl|;
+DECL|method|getFlowVersion ()
+name|String
+name|getFlowVersion
 parameter_list|()
 function_decl|;
 DECL|method|getFlowRunId ()
-name|String
+name|long
 name|getFlowRunId
 parameter_list|()
 function_decl|;

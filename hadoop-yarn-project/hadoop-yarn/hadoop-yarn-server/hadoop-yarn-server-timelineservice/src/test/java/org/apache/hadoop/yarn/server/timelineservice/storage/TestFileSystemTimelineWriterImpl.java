@@ -323,9 +323,11 @@ literal|"cluster_id"
 argument_list|,
 literal|"user_id"
 argument_list|,
-literal|"flow_id"
+literal|"flow_name"
 argument_list|,
-literal|"flow_run_id"
+literal|"flow_version"
+argument_list|,
+literal|12345678L
 argument_list|,
 literal|"app_id"
 argument_list|,
@@ -340,7 +342,7 @@ operator|.
 name|getOutputRoot
 argument_list|()
 operator|+
-literal|"/entities/cluster_id/user_id/flow_id/flow_run_id/app_id/"
+literal|"/entities/cluster_id/user_id/flow_name/flow_version/12345678/app_id/"
 operator|+
 name|type
 operator|+

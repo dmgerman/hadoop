@@ -38,14 +38,19 @@ specifier|private
 name|String
 name|userId
 decl_stmt|;
-DECL|field|flowId
+DECL|field|flowName
 specifier|private
 name|String
-name|flowId
+name|flowName
+decl_stmt|;
+DECL|field|flowVersion
+specifier|private
+name|String
+name|flowVersion
 decl_stmt|;
 DECL|field|flowRunId
 specifier|private
-name|String
+name|long
 name|flowRunId
 decl_stmt|;
 DECL|field|appId
@@ -68,11 +73,13 @@ literal|null
 argument_list|,
 literal|null
 argument_list|,
+literal|0L
+argument_list|,
 literal|null
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|TimelineCollectorContext (String clusterId, String userId, String flowId, String flowRunId, String appId)
+DECL|method|TimelineCollectorContext (String clusterId, String userId, String flowName, String flowVersion, long flowRunId, String appId)
 specifier|public
 name|TimelineCollectorContext
 parameter_list|(
@@ -83,9 +90,12 @@ name|String
 name|userId
 parameter_list|,
 name|String
-name|flowId
+name|flowName
 parameter_list|,
 name|String
+name|flowVersion
+parameter_list|,
+name|long
 name|flowRunId
 parameter_list|,
 name|String
@@ -106,9 +116,15 @@ name|userId
 expr_stmt|;
 name|this
 operator|.
-name|flowId
+name|flowName
 operator|=
-name|flowId
+name|flowName
+expr_stmt|;
+name|this
+operator|.
+name|flowVersion
+operator|=
+name|flowVersion
 expr_stmt|;
 name|this
 operator|.
@@ -175,35 +191,61 @@ operator|=
 name|userId
 expr_stmt|;
 block|}
-DECL|method|getFlowId ()
+DECL|method|getFlowName ()
 specifier|public
 name|String
-name|getFlowId
+name|getFlowName
 parameter_list|()
 block|{
 return|return
-name|flowId
+name|flowName
 return|;
 block|}
-DECL|method|setFlowId (String flowId)
+DECL|method|setFlowName (String flowName)
 specifier|public
 name|void
-name|setFlowId
+name|setFlowName
 parameter_list|(
 name|String
-name|flowId
+name|flowName
 parameter_list|)
 block|{
 name|this
 operator|.
-name|flowId
+name|flowName
 operator|=
-name|flowId
+name|flowName
+expr_stmt|;
+block|}
+DECL|method|getFlowVersion ()
+specifier|public
+name|String
+name|getFlowVersion
+parameter_list|()
+block|{
+return|return
+name|flowVersion
+return|;
+block|}
+DECL|method|setFlowVersion (String flowVersion)
+specifier|public
+name|void
+name|setFlowVersion
+parameter_list|(
+name|String
+name|flowVersion
+parameter_list|)
+block|{
+name|this
+operator|.
+name|flowVersion
+operator|=
+name|flowVersion
 expr_stmt|;
 block|}
 DECL|method|getFlowRunId ()
 specifier|public
-name|String
+name|long
 name|getFlowRunId
 parameter_list|()
 block|{
@@ -211,12 +253,12 @@ return|return
 name|flowRunId
 return|;
 block|}
-DECL|method|setFlowRunId (String flowRunId)
+DECL|method|setFlowRunId (long flowRunId)
 specifier|public
 name|void
 name|setFlowRunId
 parameter_list|(
-name|String
+name|long
 name|flowRunId
 parameter_list|)
 block|{

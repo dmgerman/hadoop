@@ -1013,6 +1013,8 @@ argument_list|,
 literal|null
 argument_list|,
 literal|null
+argument_list|,
+literal|0L
 argument_list|)
 decl_stmt|;
 try|try
