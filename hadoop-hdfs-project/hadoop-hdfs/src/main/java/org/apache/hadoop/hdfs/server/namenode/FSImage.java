@@ -3674,6 +3674,16 @@ argument_list|,
 name|ckptId
 argument_list|)
 expr_stmt|;
+comment|// HDFS-7939: purge all old fsimage_rollback_*
+name|archivalManager
+operator|.
+name|purgeCheckpoints
+argument_list|(
+name|NameNodeFile
+operator|.
+name|IMAGE_ROLLBACK
+argument_list|)
+expr_stmt|;
 name|String
 name|nameserviceId
 init|=
