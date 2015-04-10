@@ -1956,7 +1956,7 @@ init|=
 literal|false
 decl_stmt|;
 DECL|field|block
-specifier|private
+specifier|protected
 name|ExtendedBlock
 name|block
 decl_stmt|;
@@ -2133,13 +2133,13 @@ name|Socket
 name|s
 decl_stmt|;
 DECL|field|dfsClient
-specifier|private
+specifier|protected
 specifier|final
 name|DFSClient
 name|dfsClient
 decl_stmt|;
 DECL|field|src
-specifier|private
+specifier|protected
 specifier|final
 name|String
 name|src
@@ -2158,7 +2158,7 @@ name|Progressable
 name|progress
 decl_stmt|;
 DECL|field|stat
-specifier|private
+specifier|protected
 specifier|final
 name|HdfsFileStatus
 name|stat
@@ -2765,7 +2765,7 @@ name|DATA_STREAMING
 expr_stmt|;
 block|}
 DECL|method|endBlock ()
-specifier|private
+specifier|protected
 name|void
 name|endBlock
 parameter_list|()
