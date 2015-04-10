@@ -186,16 +186,6 @@ name|org
 operator|.
 name|junit
 operator|.
-name|Assume
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|junit
-operator|.
 name|Ignore
 import|;
 end_import
@@ -1663,7 +1653,8 @@ operator|.
 name|getConf
 argument_list|()
 operator|.
-name|ioBufferSize
+name|getIoBufferSize
+argument_list|()
 argument_list|,
 name|verifyChecksums
 argument_list|)

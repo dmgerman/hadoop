@@ -1347,6 +1347,9 @@ block|{
 return|return
 name|dfs
 operator|.
+name|getConf
+argument_list|()
+operator|.
 name|getDefaultBlockSize
 argument_list|()
 return|;
@@ -1361,6 +1364,9 @@ parameter_list|()
 block|{
 return|return
 name|dfs
+operator|.
+name|getConf
+argument_list|()
 operator|.
 name|getDefaultReplication
 argument_list|()

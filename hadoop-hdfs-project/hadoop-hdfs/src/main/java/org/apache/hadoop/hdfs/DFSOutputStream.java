@@ -216,9 +216,7 @@ name|hadoop
 operator|.
 name|fs
 operator|.
-name|permission
-operator|.
-name|FsPermission
+name|Syncable
 import|;
 end_import
 
@@ -232,7 +230,9 @@ name|hadoop
 operator|.
 name|fs
 operator|.
-name|Syncable
+name|permission
+operator|.
+name|FsPermission
 import|;
 end_import
 
@@ -267,6 +267,24 @@ operator|.
 name|HdfsDataOutputStream
 operator|.
 name|SyncFlag
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|client
+operator|.
+name|impl
+operator|.
+name|DfsClientConf
 import|;
 end_import
 
@@ -1389,7 +1407,8 @@ operator|.
 name|getConf
 argument_list|()
 operator|.
-name|writePacketSize
+name|getWritePacketSize
+argument_list|()
 argument_list|,
 name|bytesPerChecksum
 argument_list|)
@@ -1866,7 +1885,8 @@ operator|.
 name|getConf
 argument_list|()
 operator|.
-name|writePacketSize
+name|getWritePacketSize
+argument_list|()
 argument_list|,
 name|bytesPerChecksum
 argument_list|)
@@ -2034,7 +2054,8 @@ operator|.
 name|getConf
 argument_list|()
 operator|.
-name|writePacketSize
+name|getWritePacketSize
+argument_list|()
 argument_list|,
 name|freeInLastBlock
 argument_list|)
@@ -2613,7 +2634,8 @@ operator|.
 name|getConf
 argument_list|()
 operator|.
-name|writePacketSize
+name|getWritePacketSize
+argument_list|()
 argument_list|)
 decl_stmt|;
 name|computePacketChunkSize
@@ -3592,6 +3614,9 @@ operator|+
 operator|(
 name|dfsClient
 operator|.
+name|getConf
+argument_list|()
+operator|.
 name|getHdfsTimeout
 argument_list|()
 operator|/
@@ -3937,15 +3962,22 @@ operator|.
 name|monotonicNow
 argument_list|()
 decl_stmt|;
-name|long
-name|sleeptime
+specifier|final
+name|DfsClientConf
+name|conf
 init|=
 name|dfsClient
 operator|.
 name|getConf
 argument_list|()
+decl_stmt|;
+name|long
+name|sleeptime
+init|=
+name|conf
 operator|.
-name|blockWriteLocateFollowingInitialDelayMs
+name|getBlockWriteLocateFollowingInitialDelayMs
+argument_list|()
 decl_stmt|;
 name|boolean
 name|fileComplete
@@ -3955,12 +3987,10 @@ decl_stmt|;
 name|int
 name|retries
 init|=
-name|dfsClient
+name|conf
 operator|.
-name|getConf
+name|getNumBlockWriteLocateFollowingRetry
 argument_list|()
-operator|.
-name|nBlockWriteLocateFollowingRetry
 decl_stmt|;
 while|while
 condition|(
@@ -3997,7 +4027,7 @@ specifier|final
 name|int
 name|hdfsTimeout
 init|=
-name|dfsClient
+name|conf
 operator|.
 name|getHdfsTimeout
 argument_list|()

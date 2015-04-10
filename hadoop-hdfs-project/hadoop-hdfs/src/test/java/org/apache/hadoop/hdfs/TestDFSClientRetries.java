@@ -2222,6 +2222,9 @@ name|maxBlockAcquires
 init|=
 name|client
 operator|.
+name|getConf
+argument_list|()
+operator|.
 name|getMaxBlockAcquireFailures
 argument_list|()
 decl_stmt|;

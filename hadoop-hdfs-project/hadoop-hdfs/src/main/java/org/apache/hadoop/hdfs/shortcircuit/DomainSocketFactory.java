@@ -128,9 +128,7 @@ name|hadoop
 operator|.
 name|hdfs
 operator|.
-name|DFSClient
-operator|.
-name|Conf
+name|DFSConfigKeys
 import|;
 end_import
 
@@ -144,7 +142,13 @@ name|hadoop
 operator|.
 name|hdfs
 operator|.
-name|DFSConfigKeys
+name|client
+operator|.
+name|impl
+operator|.
+name|DfsClientConf
+operator|.
+name|ShortCircuitConf
 import|;
 end_import
 
@@ -161,6 +165,20 @@ operator|.
 name|unix
 operator|.
 name|DomainSocket
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|util
+operator|.
+name|PerformanceAdvisory
 import|;
 end_import
 
@@ -203,20 +221,6 @@ operator|.
 name|cache
 operator|.
 name|CacheBuilder
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|util
-operator|.
-name|PerformanceAdvisory
 import|;
 end_import
 
@@ -476,11 +480,11 @@ operator|.
 name|build
 argument_list|()
 decl_stmt|;
-DECL|method|DomainSocketFactory (Conf conf)
+DECL|method|DomainSocketFactory (ShortCircuitConf conf)
 specifier|public
 name|DomainSocketFactory
 parameter_list|(
-name|Conf
+name|ShortCircuitConf
 name|conf
 parameter_list|)
 block|{
@@ -617,7 +621,7 @@ block|}
 block|}
 block|}
 comment|/**    * Get information about a domain socket path.    *    * @param addr         The inet address to use.    * @param conf         The client configuration.    *    * @return             Information about the socket path.    */
-DECL|method|getPathInfo (InetSocketAddress addr, DFSClient.Conf conf)
+DECL|method|getPathInfo (InetSocketAddress addr, ShortCircuitConf conf)
 specifier|public
 name|PathInfo
 name|getPathInfo
@@ -625,9 +629,7 @@ parameter_list|(
 name|InetSocketAddress
 name|addr
 parameter_list|,
-name|DFSClient
-operator|.
-name|Conf
+name|ShortCircuitConf
 name|conf
 parameter_list|)
 block|{

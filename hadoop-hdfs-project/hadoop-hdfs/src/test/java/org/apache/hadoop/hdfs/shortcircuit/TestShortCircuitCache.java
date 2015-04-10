@@ -4468,6 +4468,9 @@ operator|.
 name|getConf
 argument_list|()
 operator|.
+name|getShortCircuitConf
+argument_list|()
+operator|.
 name|brfFailureInjector
 operator|=
 operator|new

@@ -138,9 +138,13 @@ name|hadoop
 operator|.
 name|hdfs
 operator|.
-name|DFSClient
+name|client
 operator|.
-name|Conf
+name|impl
+operator|.
+name|DfsClientConf
+operator|.
+name|ShortCircuitConf
 import|;
 end_import
 
@@ -238,7 +242,7 @@ name|hadoop
 operator|.
 name|util
 operator|.
-name|DirectBufferPool
+name|DataChecksum
 import|;
 end_import
 
@@ -252,7 +256,7 @@ name|hadoop
 operator|.
 name|util
 operator|.
-name|DataChecksum
+name|DirectBufferPool
 import|;
 end_import
 
@@ -408,11 +412,11 @@ specifier|private
 name|StorageType
 name|storageType
 decl_stmt|;
-DECL|method|Builder (Conf conf)
+DECL|method|Builder (ShortCircuitConf conf)
 specifier|public
 name|Builder
 parameter_list|(
-name|Conf
+name|ShortCircuitConf
 name|conf
 parameter_list|)
 block|{
@@ -431,7 +435,8 @@ operator|=
 operator|!
 name|conf
 operator|.
-name|skipShortCircuitChecksums
+name|isSkipShortCircuitChecksums
+argument_list|()
 expr_stmt|;
 name|this
 operator|.
@@ -439,7 +444,8 @@ name|bufferSize
 operator|=
 name|conf
 operator|.
-name|shortCircuitBufferSize
+name|getShortCircuitBufferSize
+argument_list|()
 expr_stmt|;
 block|}
 DECL|method|setVerifyChecksum (boolean verifyChecksum)

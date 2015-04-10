@@ -306,9 +306,9 @@ name|hadoop
 operator|.
 name|hdfs
 operator|.
-name|DFSClient
+name|client
 operator|.
-name|Conf
+name|HdfsClientConfigKeys
 import|;
 end_import
 
@@ -324,7 +324,9 @@ name|hdfs
 operator|.
 name|client
 operator|.
-name|HdfsClientConfigKeys
+name|impl
+operator|.
+name|DfsClientConf
 import|;
 end_import
 
@@ -1266,11 +1268,11 @@ block|}
 else|else
 block|{
 comment|// HA case
-name|Conf
+name|DfsClientConf
 name|config
 init|=
 operator|new
-name|Conf
+name|DfsClientConf
 argument_list|(
 name|conf
 argument_list|)
@@ -1299,19 +1301,23 @@ name|TRY_ONCE_THEN_FAIL
 argument_list|,
 name|config
 operator|.
-name|maxFailoverAttempts
+name|getMaxFailoverAttempts
+argument_list|()
 argument_list|,
 name|config
 operator|.
-name|maxRetryAttempts
+name|getMaxRetryAttempts
+argument_list|()
 argument_list|,
 name|config
 operator|.
-name|failoverSleepBaseMillis
+name|getFailoverSleepBaseMillis
+argument_list|()
 argument_list|,
 name|config
 operator|.
-name|failoverSleepMaxMillis
+name|getFailoverSleepMaxMillis
+argument_list|()
 argument_list|)
 argument_list|)
 decl_stmt|;
