@@ -3163,6 +3163,32 @@ return|return
 name|metricsSystem
 return|;
 block|}
+DECL|method|getAggregateAllocatedContainers ()
+specifier|public
+name|long
+name|getAggregateAllocatedContainers
+parameter_list|()
+block|{
+return|return
+name|aggregateContainersAllocated
+operator|.
+name|value
+argument_list|()
+return|;
+block|}
+DECL|method|getAggegatedReleasedContainers ()
+specifier|public
+name|long
+name|getAggegatedReleasedContainers
+parameter_list|()
+block|{
+return|return
+name|aggregateContainersReleased
+operator|.
+name|value
+argument_list|()
+return|;
+block|}
 block|}
 end_class
 

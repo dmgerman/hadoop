@@ -2579,6 +2579,8 @@ operator|new
 name|CapacitySchedulerInfo
 argument_list|(
 name|root
+argument_list|,
+name|cs
 argument_list|)
 expr_stmt|;
 block|}

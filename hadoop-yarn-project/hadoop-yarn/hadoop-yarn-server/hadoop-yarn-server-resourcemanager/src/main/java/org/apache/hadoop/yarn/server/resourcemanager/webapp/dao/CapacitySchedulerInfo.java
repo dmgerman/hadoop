@@ -134,6 +134,28 @@ name|scheduler
 operator|.
 name|capacity
 operator|.
+name|CapacityScheduler
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|server
+operator|.
+name|resourcemanager
+operator|.
+name|scheduler
+operator|.
+name|capacity
+operator|.
 name|LeafQueue
 import|;
 end_import
@@ -192,6 +214,11 @@ specifier|protected
 name|CapacitySchedulerQueueInfoList
 name|queues
 decl_stmt|;
+DECL|field|health
+specifier|protected
+name|CapacitySchedulerHealthInfo
+name|health
+decl_stmt|;
 annotation|@
 name|XmlTransient
 DECL|field|EPSILON
@@ -208,12 +235,15 @@ name|CapacitySchedulerInfo
 parameter_list|()
 block|{   }
 comment|// JAXB needs this
-DECL|method|CapacitySchedulerInfo (CSQueue parent)
+DECL|method|CapacitySchedulerInfo (CSQueue parent, CapacityScheduler cs)
 specifier|public
 name|CapacitySchedulerInfo
 parameter_list|(
 name|CSQueue
 name|parent
+parameter_list|,
+name|CapacityScheduler
+name|cs
 parameter_list|)
 block|{
 name|this
@@ -282,6 +312,14 @@ operator|=
 name|getQueues
 argument_list|(
 name|parent
+argument_list|)
+expr_stmt|;
+name|health
+operator|=
+operator|new
+name|CapacitySchedulerHealthInfo
+argument_list|(
+name|cs
 argument_list|)
 expr_stmt|;
 block|}

@@ -11378,6 +11378,8 @@ operator|new
 name|CapacitySchedulerInfo
 argument_list|(
 name|origRootQ
+argument_list|,
+name|cs
 argument_list|)
 decl_stmt|;
 name|int
@@ -11449,6 +11451,8 @@ operator|new
 name|CapacitySchedulerInfo
 argument_list|(
 name|newRootQ
+argument_list|,
+name|cs
 argument_list|)
 decl_stmt|;
 name|CapacitySchedulerLeafQueueInfo

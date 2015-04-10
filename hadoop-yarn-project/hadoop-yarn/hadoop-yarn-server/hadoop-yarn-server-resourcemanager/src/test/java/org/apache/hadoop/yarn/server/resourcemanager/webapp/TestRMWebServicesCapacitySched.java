@@ -42,6 +42,18 @@ name|junit
 operator|.
 name|Assert
 operator|.
+name|assertNotNull
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|junit
+operator|.
+name|Assert
+operator|.
 name|assertTrue
 import|;
 end_import
@@ -2334,7 +2346,7 @@ name|assertEquals
 argument_list|(
 literal|"incorrect number of elements"
 argument_list|,
-literal|6
+literal|7
 argument_list|,
 name|info
 operator|.
@@ -2387,6 +2399,33 @@ name|getString
 argument_list|(
 literal|"queueName"
 argument_list|)
+argument_list|)
+expr_stmt|;
+name|JSONObject
+name|health
+init|=
+name|info
+operator|.
+name|getJSONObject
+argument_list|(
+literal|"health"
+argument_list|)
+decl_stmt|;
+name|assertNotNull
+argument_list|(
+name|health
+argument_list|)
+expr_stmt|;
+name|assertEquals
+argument_list|(
+literal|"incorrect number of elements"
+argument_list|,
+literal|3
+argument_list|,
+name|health
+operator|.
+name|length
+argument_list|()
 argument_list|)
 expr_stmt|;
 name|JSONArray

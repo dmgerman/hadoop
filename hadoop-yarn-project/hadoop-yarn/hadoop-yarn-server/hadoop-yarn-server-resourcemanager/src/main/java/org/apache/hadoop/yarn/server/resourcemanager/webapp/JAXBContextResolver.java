@@ -305,6 +305,10 @@ block|,
 name|StatisticsItemInfo
 operator|.
 name|class
+block|,
+name|CapacitySchedulerHealthInfo
+operator|.
+name|class
 block|}
 decl_stmt|;
 comment|// these dao classes need root unwrapping
