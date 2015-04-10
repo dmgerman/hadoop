@@ -521,6 +521,8 @@ try|try
 block|{
 if|if
 condition|(
+name|this
+operator|.
 name|options
 operator|.
 name|containsKey
@@ -559,6 +561,8 @@ name|IllegalArgumentException
 argument_list|(
 literal|"Option value "
 operator|+
+name|this
+operator|.
 name|options
 operator|.
 name|get

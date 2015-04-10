@@ -564,6 +564,22 @@ name|hadoop
 operator|.
 name|io
 operator|.
+name|erasurecode
+operator|.
+name|ECSchema
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|io
+operator|.
 name|retry
 operator|.
 name|AtMostOnce
@@ -2489,6 +2505,18 @@ parameter_list|(
 name|String
 name|src
 parameter_list|)
+throws|throws
+name|IOException
+function_decl|;
+comment|/**    * Gets list of ECSchemas loaded in Namenode    *    * @return Returns the list of ECSchemas loaded at Namenode    * @throws IOException    */
+annotation|@
+name|Idempotent
+DECL|method|getECSchemas ()
+specifier|public
+name|ECSchema
+index|[]
+name|getECSchemas
+parameter_list|()
 throws|throws
 name|IOException
 function_decl|;

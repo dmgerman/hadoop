@@ -1988,6 +1988,22 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|io
+operator|.
+name|erasurecode
+operator|.
+name|ECSchema
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|ipc
 operator|.
 name|ProtobufRpcEngine
@@ -11294,7 +11310,7 @@ expr_stmt|;
 block|}
 annotation|@
 name|Override
-comment|// ClientNameNodeProtocol
+comment|// ClientProtocol
 DECL|method|getErasureCodingInfo (String src)
 specifier|public
 name|ECInfo
@@ -11316,6 +11332,28 @@ name|getErasureCodingInfo
 argument_list|(
 name|src
 argument_list|)
+return|;
+block|}
+annotation|@
+name|Override
+comment|// ClientProtocol
+DECL|method|getECSchemas ()
+specifier|public
+name|ECSchema
+index|[]
+name|getECSchemas
+parameter_list|()
+throws|throws
+name|IOException
+block|{
+name|checkNNStartup
+argument_list|()
+expr_stmt|;
+return|return
+name|namesystem
+operator|.
+name|getECSchemas
+argument_list|()
 return|;
 block|}
 block|}
