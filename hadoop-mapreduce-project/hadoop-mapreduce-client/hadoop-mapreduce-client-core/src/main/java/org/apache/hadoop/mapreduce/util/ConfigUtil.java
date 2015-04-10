@@ -794,16 +794,6 @@ block|,
 operator|new
 name|DeprecationDelta
 argument_list|(
-literal|"mapred.tasktracker.taskmemorymanager.monitoring-interval"
-argument_list|,
-name|TTConfig
-operator|.
-name|TT_MEMORY_MANAGER_MONITORING_INTERVAL
-argument_list|)
-block|,
-operator|new
-name|DeprecationDelta
-argument_list|(
 literal|"mapred.tasktracker.tasks.sleeptime-before-sigkill"
 argument_list|,
 name|TTConfig

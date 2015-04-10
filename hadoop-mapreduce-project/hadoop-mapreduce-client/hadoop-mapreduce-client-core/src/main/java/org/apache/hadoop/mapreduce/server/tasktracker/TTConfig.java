@@ -293,15 +293,6 @@ name|TT_REDUCE_SLOTS
 init|=
 literal|"mapreduce.tasktracker.reduce.tasks.maximum"
 decl_stmt|;
-DECL|field|TT_MEMORY_MANAGER_MONITORING_INTERVAL
-specifier|public
-specifier|static
-specifier|final
-name|String
-name|TT_MEMORY_MANAGER_MONITORING_INTERVAL
-init|=
-literal|"mapreduce.tasktracker.taskmemorymanager.monitoringinterval"
-decl_stmt|;
 DECL|field|TT_LOCAL_CACHE_SIZE
 specifier|public
 specifier|static
