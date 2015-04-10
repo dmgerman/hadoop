@@ -597,7 +597,7 @@ name|assertTrue
 argument_list|(
 name|fileNode
 operator|.
-name|isWithStripedBlocks
+name|isStriped
 argument_list|()
 argument_list|)
 expr_stmt|;

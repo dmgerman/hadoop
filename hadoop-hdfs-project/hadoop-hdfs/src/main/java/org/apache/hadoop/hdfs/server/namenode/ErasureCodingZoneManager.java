@@ -254,6 +254,22 @@ condition|)
 block|{
 continue|continue;
 block|}
+comment|// We don't allow symlinks in an EC zone, or pointing to a file/dir in
+comment|// an EC. Therefore if a symlink is encountered, the dir shouldn't have
+comment|// EC
+comment|// TODO: properly support symlinks in EC zones
+if|if
+condition|(
+name|inode
+operator|.
+name|isSymlink
+argument_list|()
+condition|)
+block|{
+return|return
+literal|false
+return|;
+block|}
 specifier|final
 name|List
 argument_list|<

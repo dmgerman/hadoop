@@ -1472,7 +1472,7 @@ literal|0
 argument_list|,
 name|fileByLoaded
 operator|.
-name|getBlockReplication
+name|getFileReplication
 argument_list|()
 argument_list|)
 expr_stmt|;

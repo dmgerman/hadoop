@@ -1218,7 +1218,7 @@ literal|"The file contains contiguous blocks"
 assert|;
 assert|assert
 operator|!
-name|isWithStripedBlocks
+name|isStriped
 argument_list|()
 assert|;
 name|this
@@ -1245,19 +1245,6 @@ argument_list|)
 expr_stmt|;
 return|return
 name|sb
-return|;
-block|}
-DECL|method|isWithStripedBlocks ()
-specifier|public
-name|boolean
-name|isWithStripedBlocks
-parameter_list|()
-block|{
-return|return
-name|getStripedBlocksFeature
-argument_list|()
-operator|!=
-literal|null
 return|;
 block|}
 comment|/** Used to make sure there is no contiguous block related info */
@@ -2287,7 +2274,7 @@ operator|.
 name|checkState
 argument_list|(
 operator|!
-name|isWithStripedBlocks
+name|isStriped
 argument_list|()
 argument_list|,
 literal|"Cannot set replication to a file with striped blocks"
@@ -3544,7 +3531,7 @@ return|return
 name|counts
 return|;
 block|}
-comment|/**    * Compute quota of striped file    * @param bsps    * @param counts    * @param useCache    * @param lastSnapshotId    * @return quota counts    */
+comment|/**    * Compute quota of striped file    */
 DECL|method|computeQuotaUsageWithStriped ( BlockStoragePolicySuite bsps, QuotaCounts counts)
 specifier|public
 specifier|final

@@ -361,12 +361,12 @@ argument_list|()
 operator|+
 name|i
 argument_list|,
+literal|0
+argument_list|,
 name|this
 operator|.
 name|getGenerationStamp
 argument_list|()
-argument_list|,
-literal|0
 argument_list|)
 decl_stmt|;
 name|replicas

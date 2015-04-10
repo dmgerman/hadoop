@@ -1359,7 +1359,7 @@ name|writeBoolean
 argument_list|(
 name|cons
 operator|.
-name|isWithStripedBlocks
+name|isStriped
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -1503,7 +1503,7 @@ name|writeBoolean
 argument_list|(
 name|file
 operator|.
-name|isWithStripedBlocks
+name|isStriped
 argument_list|()
 argument_list|)
 expr_stmt|;

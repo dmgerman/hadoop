@@ -2845,7 +2845,7 @@ name|assertTrue
 argument_list|(
 name|inodeLoaded
 operator|.
-name|isWithStripedBlocks
+name|isStriped
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -3351,7 +3351,7 @@ name|assertTrue
 argument_list|(
 name|inodeLoaded
 operator|.
-name|isWithStripedBlocks
+name|isStriped
 argument_list|()
 argument_list|)
 expr_stmt|;
