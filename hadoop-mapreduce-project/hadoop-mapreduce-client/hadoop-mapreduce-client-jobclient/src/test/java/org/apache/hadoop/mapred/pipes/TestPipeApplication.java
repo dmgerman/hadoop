@@ -1803,10 +1803,15 @@ name|out
 operator|.
 name|toString
 argument_list|()
+argument_list|,
+name|out
+operator|.
+name|toString
+argument_list|()
 operator|.
 name|contains
 argument_list|(
-literal|"bin/hadoop pipes"
+literal|"pipes"
 argument_list|)
 argument_list|)
 expr_stmt|;
