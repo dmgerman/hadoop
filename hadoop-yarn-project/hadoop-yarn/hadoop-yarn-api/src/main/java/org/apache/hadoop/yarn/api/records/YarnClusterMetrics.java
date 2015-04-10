@@ -178,6 +178,136 @@ name|int
 name|numNodeManagers
 parameter_list|)
 function_decl|;
+comment|/**    * Get the number of<code>DecommissionedNodeManager</code>s in the cluster.    *     * @return number of<code>DecommissionedNodeManager</code>s in the cluster    */
+annotation|@
+name|Public
+annotation|@
+name|Unstable
+DECL|method|getNumDecommissionedNodeManagers ()
+specifier|public
+specifier|abstract
+name|int
+name|getNumDecommissionedNodeManagers
+parameter_list|()
+function_decl|;
+annotation|@
+name|Private
+annotation|@
+name|Unstable
+DECL|method|setNumDecommissionedNodeManagers ( int numDecommissionedNodeManagers)
+specifier|public
+specifier|abstract
+name|void
+name|setNumDecommissionedNodeManagers
+parameter_list|(
+name|int
+name|numDecommissionedNodeManagers
+parameter_list|)
+function_decl|;
+comment|/**    * Get the number of<code>ActiveNodeManager</code>s in the cluster.    *     * @return number of<code>ActiveNodeManager</code>s in the cluster    */
+annotation|@
+name|Public
+annotation|@
+name|Unstable
+DECL|method|getNumActiveNodeManagers ()
+specifier|public
+specifier|abstract
+name|int
+name|getNumActiveNodeManagers
+parameter_list|()
+function_decl|;
+annotation|@
+name|Private
+annotation|@
+name|Unstable
+DECL|method|setNumActiveNodeManagers (int numActiveNodeManagers)
+specifier|public
+specifier|abstract
+name|void
+name|setNumActiveNodeManagers
+parameter_list|(
+name|int
+name|numActiveNodeManagers
+parameter_list|)
+function_decl|;
+comment|/**    * Get the number of<code>LostNodeManager</code>s in the cluster.    *     * @return number of<code>LostNodeManager</code>s in the cluster    */
+annotation|@
+name|Public
+annotation|@
+name|Unstable
+DECL|method|getNumLostNodeManagers ()
+specifier|public
+specifier|abstract
+name|int
+name|getNumLostNodeManagers
+parameter_list|()
+function_decl|;
+annotation|@
+name|Private
+annotation|@
+name|Unstable
+DECL|method|setNumLostNodeManagers (int numLostNodeManagers)
+specifier|public
+specifier|abstract
+name|void
+name|setNumLostNodeManagers
+parameter_list|(
+name|int
+name|numLostNodeManagers
+parameter_list|)
+function_decl|;
+comment|/**    * Get the number of<code>UnhealthyNodeManager</code>s in the cluster.    *     * @return number of<code>UnhealthyNodeManager</code>s in the cluster    */
+annotation|@
+name|Public
+annotation|@
+name|Unstable
+DECL|method|getNumUnhealthyNodeManagers ()
+specifier|public
+specifier|abstract
+name|int
+name|getNumUnhealthyNodeManagers
+parameter_list|()
+function_decl|;
+annotation|@
+name|Private
+annotation|@
+name|Unstable
+DECL|method|setNumUnhealthyNodeManagers (int numUnhealthNodeManagers)
+specifier|public
+specifier|abstract
+name|void
+name|setNumUnhealthyNodeManagers
+parameter_list|(
+name|int
+name|numUnhealthNodeManagers
+parameter_list|)
+function_decl|;
+comment|/**    * Get the number of<code>RebootedNodeManager</code>s in the cluster.    *     * @return number of<code>RebootedNodeManager</code>s in the cluster    */
+annotation|@
+name|Public
+annotation|@
+name|Unstable
+DECL|method|getNumRebootedNodeManagers ()
+specifier|public
+specifier|abstract
+name|int
+name|getNumRebootedNodeManagers
+parameter_list|()
+function_decl|;
+annotation|@
+name|Private
+annotation|@
+name|Unstable
+DECL|method|setNumRebootedNodeManagers (int numRebootedNodeManagers)
+specifier|public
+specifier|abstract
+name|void
+name|setNumRebootedNodeManagers
+parameter_list|(
+name|int
+name|numRebootedNodeManagers
+parameter_list|)
+function_decl|;
 block|}
 end_class
 

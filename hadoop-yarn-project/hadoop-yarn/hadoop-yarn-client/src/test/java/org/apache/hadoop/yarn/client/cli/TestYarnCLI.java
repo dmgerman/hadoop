@@ -10374,6 +10374,8 @@ argument_list|,
 name|nodeLabels
 argument_list|,
 literal|"GPU"
+argument_list|,
+literal|null
 argument_list|)
 decl_stmt|;
 name|when
@@ -10582,6 +10584,8 @@ argument_list|,
 name|QueueState
 operator|.
 name|RUNNING
+argument_list|,
+literal|null
 argument_list|,
 literal|null
 argument_list|,

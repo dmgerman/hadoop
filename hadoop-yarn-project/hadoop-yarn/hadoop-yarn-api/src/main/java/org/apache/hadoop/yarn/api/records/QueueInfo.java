@@ -155,7 +155,7 @@ annotation|@
 name|Private
 annotation|@
 name|Unstable
-DECL|method|newInstance (String queueName, float capacity, float maximumCapacity, float currentCapacity, List<QueueInfo> childQueues, List<ApplicationReport> applications, QueueState queueState, Set<String> accessibleNodeLabels, String defaultNodeLabelExpression)
+DECL|method|newInstance (String queueName, float capacity, float maximumCapacity, float currentCapacity, List<QueueInfo> childQueues, List<ApplicationReport> applications, QueueState queueState, Set<String> accessibleNodeLabels, String defaultNodeLabelExpression, QueueStatistics queueStatistics)
 specifier|public
 specifier|static
 name|QueueInfo
@@ -196,6 +196,9 @@ name|accessibleNodeLabels
 parameter_list|,
 name|String
 name|defaultNodeLabelExpression
+parameter_list|,
+name|QueueStatistics
+name|queueStatistics
 parameter_list|)
 block|{
 name|QueueInfo
@@ -271,6 +274,13 @@ operator|.
 name|setDefaultNodeLabelExpression
 argument_list|(
 name|defaultNodeLabelExpression
+argument_list|)
+expr_stmt|;
+name|queueInfo
+operator|.
+name|setQueueStatistics
+argument_list|(
+name|queueStatistics
 argument_list|)
 expr_stmt|;
 return|return
@@ -528,6 +538,33 @@ name|setDefaultNodeLabelExpression
 parameter_list|(
 name|String
 name|defaultLabelExpression
+parameter_list|)
+function_decl|;
+comment|/**    * Get the<code>queue stats</code> for the queue    *    * @return<code>queue stats</code> of the queue    */
+annotation|@
+name|Public
+annotation|@
+name|Unstable
+DECL|method|getQueueStatistics ()
+specifier|public
+specifier|abstract
+name|QueueStatistics
+name|getQueueStatistics
+parameter_list|()
+function_decl|;
+comment|/**    * Set the queue statistics for the queue    *     * @param queueStatistics    *          the queue statistics    */
+annotation|@
+name|Public
+annotation|@
+name|Unstable
+DECL|method|setQueueStatistics (QueueStatistics queueStatistics)
+specifier|public
+specifier|abstract
+name|void
+name|setQueueStatistics
+parameter_list|(
+name|QueueStatistics
+name|queueStatistics
 parameter_list|)
 function_decl|;
 block|}

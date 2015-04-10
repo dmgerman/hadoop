@@ -874,7 +874,7 @@ name|YarnException
 throws|,
 name|IOException
 function_decl|;
-comment|/**    *<p>    * Get a report (ApplicationReport) of Applications    * matching the given application types in the cluster.    *</p>    *    *<p>    * If the user does not have<code>VIEW_APP</code> access for an application    * then the corresponding report will be filtered as described in    * {@link #getApplicationReport(ApplicationId)}.    *</p>    *    * @param applicationTypes    * @return a list of reports of applications    * @throws YarnException    * @throws IOException    */
+comment|/**    *<p>    * Get a report (ApplicationReport) of Applications    * matching the given application types in the cluster.    *</p>    *    *<p>    * If the user does not have<code>VIEW_APP</code> access for an application    * then the corresponding report will be filtered as described in    * {@link #getApplicationReport(ApplicationId)}.    *</p>    *    * @param applicationTypes set of application types you are interested in    * @return a list of reports of applications    * @throws YarnException    * @throws IOException    */
 DECL|method|getApplications ( Set<String> applicationTypes)
 specifier|public
 specifier|abstract
@@ -895,7 +895,7 @@ name|YarnException
 throws|,
 name|IOException
 function_decl|;
-comment|/**    *<p>    * Get a report (ApplicationReport) of Applications matching the given    * application states in the cluster.    *</p>    *    *<p>    * If the user does not have<code>VIEW_APP</code> access for an application    * then the corresponding report will be filtered as described in    * {@link #getApplicationReport(ApplicationId)}.    *</p>    *    * @param applicationStates    * @return a list of reports of applications    * @throws YarnException    * @throws IOException    */
+comment|/**    *<p>    * Get a report (ApplicationReport) of Applications matching the given    * application states in the cluster.    *</p>    *    *<p>    * If the user does not have<code>VIEW_APP</code> access for an application    * then the corresponding report will be filtered as described in    * {@link #getApplicationReport(ApplicationId)}.    *</p>    *    * @param applicationStates set of application states you are interested in    * @return a list of reports of applications    * @throws YarnException    * @throws IOException    */
 specifier|public
 specifier|abstract
 name|List
@@ -916,7 +916,7 @@ name|YarnException
 throws|,
 name|IOException
 function_decl|;
-comment|/**    *<p>    * Get a report (ApplicationReport) of Applications matching the given    * application types and application states in the cluster.    *</p>    *    *<p>    * If the user does not have<code>VIEW_APP</code> access for an application    * then the corresponding report will be filtered as described in    * {@link #getApplicationReport(ApplicationId)}.    *</p>    *    * @param applicationTypes    * @param applicationStates    * @return a list of reports of applications    * @throws YarnException    * @throws IOException    */
+comment|/**    *<p>    * Get a report (ApplicationReport) of Applications matching the given    * application types and application states in the cluster.    *</p>    *    *<p>    * If the user does not have<code>VIEW_APP</code> access for an application    * then the corresponding report will be filtered as described in    * {@link #getApplicationReport(ApplicationId)}.    *</p>    *    * @param applicationTypes set of application types you are interested in    * @param applicationStates set of application states you are interested in    * @return a list of reports of applications    * @throws YarnException    * @throws IOException    */
 DECL|method|getApplications ( Set<String> applicationTypes, EnumSet<YarnApplicationState> applicationStates)
 specifier|public
 specifier|abstract
@@ -926,6 +926,45 @@ name|ApplicationReport
 argument_list|>
 name|getApplications
 parameter_list|(
+name|Set
+argument_list|<
+name|String
+argument_list|>
+name|applicationTypes
+parameter_list|,
+name|EnumSet
+argument_list|<
+name|YarnApplicationState
+argument_list|>
+name|applicationStates
+parameter_list|)
+throws|throws
+name|YarnException
+throws|,
+name|IOException
+function_decl|;
+comment|/**    *<p>    * Get a report (ApplicationReport) of Applications matching the given users,    * queues, application types and application states in the cluster. If any of    * the params is set to null, it is not used when filtering.    *</p>    *    *<p>    * If the user does not have<code>VIEW_APP</code> access for an application    * then the corresponding report will be filtered as described in    * {@link #getApplicationReport(ApplicationId)}.    *</p>    *    * @param queues set of queues you are interested in    * @param users set of users you are interested in    * @param applicationTypes set of application types you are interested in    * @param applicationStates set of application states you are interested in    * @return a list of reports of applications    * @throws YarnException    * @throws IOException    */
+DECL|method|getApplications (Set<String> queues, Set<String> users, Set<String> applicationTypes, EnumSet<YarnApplicationState> applicationStates)
+specifier|public
+specifier|abstract
+name|List
+argument_list|<
+name|ApplicationReport
+argument_list|>
+name|getApplications
+parameter_list|(
+name|Set
+argument_list|<
+name|String
+argument_list|>
+name|queues
+parameter_list|,
+name|Set
+argument_list|<
+name|String
+argument_list|>
+name|users
+parameter_list|,
 name|Set
 argument_list|<
 name|String
@@ -1082,7 +1121,7 @@ name|YarnException
 throws|,
 name|IOException
 function_decl|;
-comment|/**    *<p>    * Get a report of all (ApplicationAttempts) of Application in the cluster.    *</p>    *     * @param applicationId    * @return a list of reports for all application attempts for specified    *         application.    * @throws YarnException    * @throws IOException    */
+comment|/**    *<p>    * Get a report of all (ApplicationAttempts) of Application in the cluster.    *</p>    *     * @param applicationId application id of the app    * @return a list of reports for all application attempts for specified    *         application.    * @throws YarnException    * @throws IOException    */
 DECL|method|getApplicationAttempts ( ApplicationId applicationId)
 specifier|public
 specifier|abstract
@@ -1115,7 +1154,7 @@ name|YarnException
 throws|,
 name|IOException
 function_decl|;
-comment|/**    *<p>    * Get a report of all (Containers) of ApplicationAttempt in the cluster.    *</p>    *     * @param applicationAttemptId    * @return a list of reports of all containers for specified application    *         attempts    * @throws YarnException    * @throws IOException    */
+comment|/**    *<p>    * Get a report of all (Containers) of ApplicationAttempt in the cluster.    *</p>    *     * @param applicationAttemptId application attempt id    * @return a list of reports of all containers for specified application    *         attempts    * @throws YarnException    * @throws IOException    */
 DECL|method|getContainers ( ApplicationAttemptId applicationAttemptId)
 specifier|public
 specifier|abstract
