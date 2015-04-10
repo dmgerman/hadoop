@@ -16827,6 +16827,27 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
+DECL|method|isHDFSEncryptionEnabled ()
+specifier|public
+name|boolean
+name|isHDFSEncryptionEnabled
+parameter_list|()
+block|{
+return|return
+name|conf
+operator|.
+name|get
+argument_list|(
+name|DFSConfigKeys
+operator|.
+name|DFS_ENCRYPTION_KEY_PROVIDER_URI
+argument_list|,
+literal|null
+argument_list|)
+operator|!=
+literal|null
+return|;
+block|}
 comment|/**    * Returns the SaslDataTransferClient configured for this DFSClient.    *    * @return SaslDataTransferClient configured for this DFSClient    */
 DECL|method|getSaslDataTransferClient ()
 specifier|public

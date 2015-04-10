@@ -10598,10 +10598,8 @@ if|if
 condition|(
 name|dfs
 operator|.
-name|getKeyProvider
+name|isHDFSEncryptionEnabled
 argument_list|()
-operator|!=
-literal|null
 condition|)
 block|{
 name|KeyProviderDelegationTokenExtension
