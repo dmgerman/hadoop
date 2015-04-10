@@ -260,6 +260,26 @@ name|yarn
 operator|.
 name|server
 operator|.
+name|api
+operator|.
+name|protocolrecords
+operator|.
+name|LogAggregationReport
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|server
+operator|.
 name|resourcemanager
 operator|.
 name|rmapp
@@ -504,6 +524,16 @@ function_decl|;
 DECL|method|getAMResourceRequest ()
 name|ResourceRequest
 name|getAMResourceRequest
+parameter_list|()
+function_decl|;
+DECL|method|getLogAggregationReportsForApp ()
+name|Map
+argument_list|<
+name|NodeId
+argument_list|,
+name|LogAggregationReport
+argument_list|>
+name|getLogAggregationReportsForApp
 parameter_list|()
 function_decl|;
 block|}

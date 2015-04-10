@@ -536,6 +536,20 @@ name|class
 argument_list|)
 expr_stmt|;
 block|}
+DECL|method|logaggregationstatus ()
+specifier|public
+name|void
+name|logaggregationstatus
+parameter_list|()
+block|{
+name|render
+argument_list|(
+name|AppLogAggregationStatusPage
+operator|.
+name|class
+argument_list|)
+expr_stmt|;
+block|}
 block|}
 end_class
 

@@ -2929,6 +2929,31 @@ init|=
 operator|-
 literal|1
 decl_stmt|;
+comment|/**    * How long for ResourceManager to wait for NodeManager to report its    * log aggregation status. If waiting time of which the log aggregation status    * is reported from NodeManager exceeds the configured value, RM will report    * log aggregation status for this NodeManager as TIME_OUT    */
+DECL|field|LOG_AGGREGATION_STATUS_TIME_OUT_MS
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|LOG_AGGREGATION_STATUS_TIME_OUT_MS
+init|=
+name|YARN_PREFIX
+operator|+
+literal|"log-aggregation-status.time-out.ms"
+decl_stmt|;
+DECL|field|DEFAULT_LOG_AGGREGATION_STATUS_TIME_OUT_MS
+specifier|public
+specifier|static
+specifier|final
+name|long
+name|DEFAULT_LOG_AGGREGATION_STATUS_TIME_OUT_MS
+init|=
+literal|10
+operator|*
+literal|60
+operator|*
+literal|1000
+decl_stmt|;
 comment|/**    * Number of seconds to retain logs on the NodeManager. Only applicable if Log    * aggregation is disabled    */
 DECL|field|NM_LOG_RETAIN_SECONDS
 specifier|public

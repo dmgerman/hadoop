@@ -70,6 +70,18 @@ name|util
 operator|.
 name|concurrent
 operator|.
+name|ConcurrentLinkedQueue
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
+name|concurrent
+operator|.
 name|ConcurrentMap
 import|;
 end_import
@@ -509,6 +521,26 @@ operator|.
 name|providers
 operator|.
 name|RecordFactoryProvider
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|server
+operator|.
+name|api
+operator|.
+name|protocolrecords
+operator|.
+name|LogAggregationReport
 import|;
 end_import
 
@@ -2278,6 +2310,15 @@ name|isDecommissioned
 init|=
 literal|false
 decl_stmt|;
+specifier|private
+specifier|final
+name|ConcurrentLinkedQueue
+argument_list|<
+name|LogAggregationReport
+argument_list|>
+DECL|field|logAggregationReportForApps
+name|logAggregationReportForApps
+decl_stmt|;
 DECL|method|NMContext (NMContainerTokenSecretManager containerTokenSecretManager, NMTokenSecretManagerInNM nmTokenSecretManager, LocalDirsHandlerService dirsHandler, ApplicationACLsManager aclsManager, NMStateStoreService stateStore)
 specifier|public
 name|NMContext
@@ -2357,6 +2398,17 @@ operator|.
 name|stateStore
 operator|=
 name|stateStore
+expr_stmt|;
+name|this
+operator|.
+name|logAggregationReportForApps
+operator|=
+operator|new
+name|ConcurrentLinkedQueue
+argument_list|<
+name|LogAggregationReport
+argument_list|>
+argument_list|()
 expr_stmt|;
 block|}
 comment|/**      * Usable only after ContainerManager is started.      */
@@ -2636,6 +2688,23 @@ name|systemCredentials
 operator|=
 name|systemCredentials
 expr_stmt|;
+block|}
+annotation|@
+name|Override
+specifier|public
+name|ConcurrentLinkedQueue
+argument_list|<
+name|LogAggregationReport
+argument_list|>
+DECL|method|getLogAggregationStatusForApps ()
+name|getLogAggregationStatusForApps
+parameter_list|()
+block|{
+return|return
+name|this
+operator|.
+name|logAggregationReportForApps
+return|;
 block|}
 block|}
 comment|/**    * @return the node health checker    */
