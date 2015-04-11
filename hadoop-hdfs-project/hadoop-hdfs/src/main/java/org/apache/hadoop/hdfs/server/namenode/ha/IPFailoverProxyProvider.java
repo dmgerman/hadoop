@@ -100,7 +100,7 @@ name|hadoop
 operator|.
 name|hdfs
 operator|.
-name|DFSConfigKeys
+name|NameNodeProxies
 import|;
 end_import
 
@@ -114,7 +114,9 @@ name|hadoop
 operator|.
 name|hdfs
 operator|.
-name|NameNodeProxies
+name|client
+operator|.
+name|HdfsClientConfigKeys
 import|;
 end_import
 
@@ -151,22 +153,6 @@ operator|.
 name|protocol
 operator|.
 name|NamenodeProtocols
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|io
-operator|.
-name|retry
-operator|.
-name|FailoverProxyProvider
 import|;
 end_import
 
@@ -325,13 +311,17 @@ name|conf
 operator|.
 name|getInt
 argument_list|(
-name|DFSConfigKeys
+name|HdfsClientConfigKeys
 operator|.
-name|DFS_CLIENT_FAILOVER_CONNECTION_RETRIES_KEY
+name|Failover
+operator|.
+name|CONNECTION_RETRIES_KEY
 argument_list|,
-name|DFSConfigKeys
+name|HdfsClientConfigKeys
 operator|.
-name|DFS_CLIENT_FAILOVER_CONNECTION_RETRIES_DEFAULT
+name|Failover
+operator|.
+name|CONNECTION_RETRIES_DEFAULT
 argument_list|)
 decl_stmt|;
 name|this
@@ -356,13 +346,17 @@ name|conf
 operator|.
 name|getInt
 argument_list|(
-name|DFSConfigKeys
+name|HdfsClientConfigKeys
 operator|.
-name|DFS_CLIENT_FAILOVER_CONNECTION_RETRIES_ON_SOCKET_TIMEOUTS_KEY
+name|Failover
+operator|.
+name|CONNECTION_RETRIES_ON_SOCKET_TIMEOUTS_KEY
 argument_list|,
-name|DFSConfigKeys
+name|HdfsClientConfigKeys
 operator|.
-name|DFS_CLIENT_FAILOVER_CONNECTION_RETRIES_ON_SOCKET_TIMEOUTS_DEFAULT
+name|Failover
+operator|.
+name|CONNECTION_RETRIES_ON_SOCKET_TIMEOUTS_DEFAULT
 argument_list|)
 decl_stmt|;
 name|this

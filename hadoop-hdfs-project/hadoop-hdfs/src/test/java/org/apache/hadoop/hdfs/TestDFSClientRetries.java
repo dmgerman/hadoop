@@ -5353,7 +5353,7 @@ name|setBoolean
 argument_list|(
 name|HdfsClientConfigKeys
 operator|.
-name|WebHdfsRetry
+name|HttpClient
 operator|.
 name|RETRY_POLICY_ENABLED_KEY
 argument_list|,

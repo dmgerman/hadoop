@@ -20,22 +20,6 @@ begin_import
 import|import static
 name|org
 operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|hdfs
-operator|.
-name|DFSConfigKeys
-operator|.
-name|DFS_CLIENT_FAILOVER_PROXY_PROVIDER_KEY_PREFIX
-import|;
-end_import
-
-begin_import
-import|import static
-name|org
-operator|.
 name|junit
 operator|.
 name|Assert
@@ -94,6 +78,28 @@ begin_import
 import|import
 name|java
 operator|.
+name|lang
+operator|.
+name|reflect
+operator|.
+name|Field
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|net
+operator|.
+name|InetAddress
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
 name|net
 operator|.
 name|InetSocketAddress
@@ -117,28 +123,6 @@ operator|.
 name|net
 operator|.
 name|SocketAddress
-import|;
-end_import
-
-begin_import
-import|import
-name|java
-operator|.
-name|lang
-operator|.
-name|reflect
-operator|.
-name|Field
-import|;
-end_import
-
-begin_import
-import|import
-name|java
-operator|.
-name|net
-operator|.
-name|InetAddress
 import|;
 end_import
 
@@ -290,7 +274,9 @@ name|hadoop
 operator|.
 name|hdfs
 operator|.
-name|HAUtil
+name|client
+operator|.
+name|HdfsClientConfigKeys
 import|;
 end_import
 
@@ -348,7 +334,7 @@ name|namenode
 operator|.
 name|ha
 operator|.
-name|IPFailoverProxyProvider
+name|HATestUtil
 import|;
 end_import
 
@@ -368,7 +354,7 @@ name|namenode
 operator|.
 name|ha
 operator|.
-name|HATestUtil
+name|IPFailoverProxyProvider
 import|;
 end_import
 
@@ -383,22 +369,6 @@ operator|.
 name|io
 operator|.
 name|IOUtils
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|io
-operator|.
-name|retry
-operator|.
-name|DefaultFailoverProxyProvider
 import|;
 end_import
 
@@ -1230,7 +1200,11 @@ name|conf
 operator|.
 name|set
 argument_list|(
-name|DFS_CLIENT_FAILOVER_PROXY_PROVIDER_KEY_PREFIX
+name|HdfsClientConfigKeys
+operator|.
+name|Failover
+operator|.
+name|PROXY_PROVIDER_KEY_PREFIX
 operator|+
 literal|"."
 operator|+
@@ -1872,7 +1846,11 @@ name|config
 operator|.
 name|set
 argument_list|(
-name|DFS_CLIENT_FAILOVER_PROXY_PROVIDER_KEY_PREFIX
+name|HdfsClientConfigKeys
+operator|.
+name|Failover
+operator|.
+name|PROXY_PROVIDER_KEY_PREFIX
 operator|+
 literal|"."
 operator|+
@@ -1961,7 +1939,11 @@ name|config
 operator|.
 name|set
 argument_list|(
-name|DFS_CLIENT_FAILOVER_PROXY_PROVIDER_KEY_PREFIX
+name|HdfsClientConfigKeys
+operator|.
+name|Failover
+operator|.
+name|PROXY_PROVIDER_KEY_PREFIX
 operator|+
 literal|"."
 operator|+
