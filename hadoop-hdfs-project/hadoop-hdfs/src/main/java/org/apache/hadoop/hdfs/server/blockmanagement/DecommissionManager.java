@@ -1286,7 +1286,14 @@ literal|", decommissioned replicas: "
 operator|+
 name|num
 operator|.
-name|decommissionedReplicas
+name|decommissioned
+argument_list|()
+operator|+
+literal|", decommissioning replicas: "
+operator|+
+name|num
+operator|.
+name|decommissioning
 argument_list|()
 operator|+
 literal|", excess replicas: "
@@ -2319,7 +2326,7 @@ name|curReplicas
 argument_list|,
 name|num
 operator|.
-name|decommissionedReplicas
+name|decommissionedAndDecommissioning
 argument_list|()
 argument_list|,
 name|bc
@@ -2431,7 +2438,7 @@ operator|&&
 operator|(
 name|num
 operator|.
-name|decommissionedReplicas
+name|decommissionedAndDecommissioning
 argument_list|()
 operator|>
 literal|0

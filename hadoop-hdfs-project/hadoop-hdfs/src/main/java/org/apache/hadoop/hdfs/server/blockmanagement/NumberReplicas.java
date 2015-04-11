@@ -21,7 +21,7 @@ package|;
 end_package
 
 begin_comment
-comment|/**  * A immutable object that stores the number of live replicas and  * the number of decommissined Replicas.  */
+comment|/**  * A immutable object that stores the number of live replicas and  * the number of decommissioned Replicas.  */
 end_comment
 
 begin_class
@@ -35,10 +35,17 @@ specifier|private
 name|int
 name|liveReplicas
 decl_stmt|;
-DECL|field|decommissionedReplicas
+comment|// Tracks only the decommissioning replicas
+DECL|field|decommissioning
 specifier|private
 name|int
-name|decommissionedReplicas
+name|decommissioning
+decl_stmt|;
+comment|// Tracks only the decommissioned replicas
+DECL|field|decommissioned
+specifier|private
+name|int
+name|decommissioned
 decl_stmt|;
 DECL|field|corruptReplicas
 specifier|private
@@ -70,10 +77,12 @@ argument_list|,
 literal|0
 argument_list|,
 literal|0
+argument_list|,
+literal|0
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|NumberReplicas (int live, int decommissioned, int corrupt, int excess, int stale)
+DECL|method|NumberReplicas (int live, int decommissioned, int decommissioning, int corrupt, int excess, int stale)
 name|NumberReplicas
 parameter_list|(
 name|int
@@ -81,6 +90,9 @@ name|live
 parameter_list|,
 name|int
 name|decommissioned
+parameter_list|,
+name|int
+name|decommissioning
 parameter_list|,
 name|int
 name|corrupt
@@ -98,6 +110,8 @@ name|live
 argument_list|,
 name|decommissioned
 argument_list|,
+name|decommissioning
+argument_list|,
 name|corrupt
 argument_list|,
 name|excess
@@ -106,7 +120,7 @@ name|stale
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|initialize (int live, int decommissioned, int corrupt, int excess, int stale)
+DECL|method|initialize (int live, int decommissioned, int decommissioning, int corrupt, int excess, int stale)
 name|void
 name|initialize
 parameter_list|(
@@ -115,6 +129,9 @@ name|live
 parameter_list|,
 name|int
 name|decommissioned
+parameter_list|,
+name|int
+name|decommissioning
 parameter_list|,
 name|int
 name|corrupt
@@ -130,7 +147,15 @@ name|liveReplicas
 operator|=
 name|live
 expr_stmt|;
-name|decommissionedReplicas
+name|this
+operator|.
+name|decommissioning
+operator|=
+name|decommissioning
+expr_stmt|;
+name|this
+operator|.
+name|decommissioned
 operator|=
 name|decommissioned
 expr_stmt|;
@@ -157,6 +182,9 @@ return|return
 name|liveReplicas
 return|;
 block|}
+comment|/**    *    * @return decommissioned replicas + decommissioning replicas    * It is deprecated by decommissionedAndDecommissioning    * due to its misleading name.    */
+annotation|@
+name|Deprecated
 DECL|method|decommissionedReplicas ()
 specifier|public
 name|int
@@ -164,7 +192,43 @@ name|decommissionedReplicas
 parameter_list|()
 block|{
 return|return
-name|decommissionedReplicas
+name|decommissionedAndDecommissioning
+argument_list|()
+return|;
+block|}
+comment|/**    *    * @return decommissioned and decommissioning replicas    */
+DECL|method|decommissionedAndDecommissioning ()
+specifier|public
+name|int
+name|decommissionedAndDecommissioning
+parameter_list|()
+block|{
+return|return
+name|decommissioned
+operator|+
+name|decommissioning
+return|;
+block|}
+comment|/**    *    * @return decommissioned replicas only    */
+DECL|method|decommissioned ()
+specifier|public
+name|int
+name|decommissioned
+parameter_list|()
+block|{
+return|return
+name|decommissioned
+return|;
+block|}
+comment|/**    *    * @return decommissioning replicas only    */
+DECL|method|decommissioning ()
+specifier|public
+name|int
+name|decommissioning
+parameter_list|()
+block|{
+return|return
+name|decommissioning
 return|;
 block|}
 DECL|method|corruptReplicas ()

@@ -1233,7 +1233,7 @@ name|assertThat
 argument_list|(
 name|numberReplicas
 operator|.
-name|decommissionedReplicas
+name|decommissionedAndDecommissioning
 argument_list|()
 argument_list|,
 name|is

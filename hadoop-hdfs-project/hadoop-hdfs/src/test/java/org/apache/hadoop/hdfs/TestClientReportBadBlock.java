@@ -1002,7 +1002,7 @@ argument_list|)
 expr_stmt|;
 name|verifyFsckHealth
 argument_list|(
-literal|"Target Replicas is 3 but found 1 replica"
+literal|"Target Replicas is 3 but found 1 live replica"
 argument_list|)
 expr_stmt|;
 name|testFsckListCorruptFilesBlocks
