@@ -335,7 +335,7 @@ name|this
 operator|.
 name|appsCompleted
 operator|=
-name|metrics
+name|userMetrics
 operator|.
 name|getAppsCompleted
 argument_list|()
@@ -344,7 +344,7 @@ name|this
 operator|.
 name|appsPending
 operator|=
-name|metrics
+name|userMetrics
 operator|.
 name|getAppsPending
 argument_list|()
@@ -353,7 +353,7 @@ name|this
 operator|.
 name|appsRunning
 operator|=
-name|metrics
+name|userMetrics
 operator|.
 name|getAppsRunning
 argument_list|()
@@ -362,7 +362,7 @@ name|this
 operator|.
 name|appsFailed
 operator|=
-name|metrics
+name|userMetrics
 operator|.
 name|getAppsFailed
 argument_list|()
@@ -371,7 +371,7 @@ name|this
 operator|.
 name|appsKilled
 operator|=
-name|metrics
+name|userMetrics
 operator|.
 name|getAppsKilled
 argument_list|()
