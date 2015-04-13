@@ -510,7 +510,7 @@ literal|"@memphis"
 argument_list|)
 argument_list|)
 expr_stmt|;
-comment|// allowed becuase his netgroup is in ACL
+comment|// allowed because his netgroup is in ACL
 name|UserGroupInformation
 name|elvis
 init|=
