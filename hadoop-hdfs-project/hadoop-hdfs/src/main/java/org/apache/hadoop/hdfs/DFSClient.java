@@ -13953,13 +13953,16 @@ name|traceSampler
 argument_list|)
 return|;
 block|}
-DECL|method|createErasureCodingZone (String src)
+DECL|method|createErasureCodingZone (String src, ECSchema schema)
 specifier|public
 name|void
 name|createErasureCodingZone
 parameter_list|(
 name|String
 name|src
+parameter_list|,
+name|ECSchema
+name|schema
 parameter_list|)
 throws|throws
 name|IOException
@@ -13984,6 +13987,8 @@ operator|.
 name|createErasureCodingZone
 argument_list|(
 name|src
+argument_list|,
+name|schema
 argument_list|)
 expr_stmt|;
 block|}

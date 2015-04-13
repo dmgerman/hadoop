@@ -366,6 +366,8 @@ name|testDir
 operator|.
 name|toString
 argument_list|()
+argument_list|,
+literal|null
 argument_list|)
 expr_stmt|;
 comment|/* Verify files under the zone are striped */
@@ -464,6 +466,8 @@ name|notEmpty
 operator|.
 name|toString
 argument_list|()
+argument_list|,
+literal|null
 argument_list|)
 expr_stmt|;
 name|fail
@@ -532,6 +536,8 @@ name|zone1
 operator|.
 name|toString
 argument_list|()
+argument_list|,
+literal|null
 argument_list|)
 expr_stmt|;
 name|fs
@@ -559,6 +565,8 @@ name|zone2
 operator|.
 name|toString
 argument_list|()
+argument_list|,
+literal|null
 argument_list|)
 expr_stmt|;
 name|fail
@@ -612,6 +620,8 @@ name|fPath
 operator|.
 name|toString
 argument_list|()
+argument_list|,
+literal|null
 argument_list|)
 expr_stmt|;
 name|fail
@@ -702,6 +712,8 @@ name|srcECDir
 operator|.
 name|toString
 argument_list|()
+argument_list|,
+literal|null
 argument_list|)
 expr_stmt|;
 name|fs
@@ -715,6 +727,8 @@ name|dstECDir
 operator|.
 name|toString
 argument_list|()
+argument_list|,
+literal|null
 argument_list|)
 expr_stmt|;
 specifier|final
@@ -944,6 +958,8 @@ operator|.
 name|createErasureCodingZone
 argument_list|(
 name|src
+argument_list|,
+literal|null
 argument_list|)
 expr_stmt|;
 name|verifyErasureCodingInfo

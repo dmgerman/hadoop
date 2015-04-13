@@ -9662,13 +9662,16 @@ block|}
 block|}
 annotation|@
 name|Override
-DECL|method|createErasureCodingZone (String src)
+DECL|method|createErasureCodingZone (String src, ECSchema schema)
 specifier|public
 name|void
 name|createErasureCodingZone
 parameter_list|(
 name|String
 name|src
+parameter_list|,
+name|ECSchema
+name|schema
 parameter_list|)
 throws|throws
 name|IOException
@@ -9691,6 +9694,26 @@ argument_list|(
 name|src
 argument_list|)
 expr_stmt|;
+if|if
+condition|(
+name|schema
+operator|!=
+literal|null
+condition|)
+block|{
+name|builder
+operator|.
+name|setSchema
+argument_list|(
+name|PBHelper
+operator|.
+name|convertECSchema
+argument_list|(
+name|schema
+argument_list|)
+argument_list|)
+expr_stmt|;
+block|}
 name|CreateErasureCodingZoneRequestProto
 name|req
 init|=

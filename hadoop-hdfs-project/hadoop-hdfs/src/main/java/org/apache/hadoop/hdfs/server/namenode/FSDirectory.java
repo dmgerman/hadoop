@@ -678,6 +678,22 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|io
+operator|.
+name|erasurecode
+operator|.
+name|ECSchema
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|security
 operator|.
 name|AccessControlException
@@ -5883,12 +5899,15 @@ argument_list|()
 expr_stmt|;
 block|}
 block|}
-DECL|method|createErasureCodingZone (String src)
+DECL|method|createErasureCodingZone (String src, ECSchema schema)
 name|XAttr
 name|createErasureCodingZone
 parameter_list|(
 name|String
 name|src
+parameter_list|,
+name|ECSchema
+name|schema
 parameter_list|)
 throws|throws
 name|IOException
@@ -5904,6 +5923,8 @@ operator|.
 name|createErasureCodingZone
 argument_list|(
 name|src
+argument_list|,
+name|schema
 argument_list|)
 return|;
 block|}
@@ -5922,6 +5943,27 @@ parameter_list|(
 name|INodesInPath
 name|iip
 parameter_list|)
+throws|throws
+name|IOException
+block|{
+return|return
+name|getECSchema
+argument_list|(
+name|iip
+argument_list|)
+operator|!=
+literal|null
+return|;
+block|}
+DECL|method|getECSchema (INodesInPath iip)
+name|ECSchema
+name|getECSchema
+parameter_list|(
+name|INodesInPath
+name|iip
+parameter_list|)
+throws|throws
+name|IOException
 block|{
 name|readLock
 argument_list|()
@@ -5931,7 +5973,7 @@ block|{
 return|return
 name|ecZoneManager
 operator|.
-name|getECPolicy
+name|getECSchema
 argument_list|(
 name|iip
 argument_list|)
