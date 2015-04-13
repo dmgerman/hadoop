@@ -1449,6 +1449,9 @@ operator|+
 operator|(
 name|dfsClient
 operator|.
+name|getConf
+argument_list|()
+operator|.
 name|getHdfsTimeout
 argument_list|()
 operator|/

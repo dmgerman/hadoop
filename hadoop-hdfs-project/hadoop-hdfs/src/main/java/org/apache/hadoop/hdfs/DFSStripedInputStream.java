@@ -1154,13 +1154,13 @@ block|}
 comment|/**    * Real implementation of pread.    */
 annotation|@
 name|Override
-DECL|method|fetchBlockByteRange (LocatedBlock block, long start, long end, byte[] buf, int offset, Map<ExtendedBlock, Set<DatanodeInfo>> corruptedBlockMap)
+DECL|method|fetchBlockByteRange (long blockStartOffset, long start, long end, byte[] buf, int offset, Map<ExtendedBlock, Set<DatanodeInfo>> corruptedBlockMap)
 specifier|protected
 name|void
 name|fetchBlockByteRange
 parameter_list|(
-name|LocatedBlock
-name|block
+name|long
+name|blockStartOffset
 parameter_list|,
 name|long
 name|start
@@ -1236,16 +1236,14 @@ literal|1
 argument_list|)
 decl_stmt|;
 comment|// Refresh the striped block group
+name|LocatedBlock
 name|block
-operator|=
+init|=
 name|getBlockGroupAt
 argument_list|(
-name|block
-operator|.
-name|getStartOffset
-argument_list|()
+name|blockStartOffset
 argument_list|)
-expr_stmt|;
+decl_stmt|;
 assert|assert
 name|block
 operator|instanceof
@@ -1378,7 +1376,8 @@ operator|.
 name|getConf
 argument_list|()
 operator|.
-name|connectToDnViaHostname
+name|isConnectToDnViaHostname
+argument_list|()
 argument_list|)
 argument_list|)
 argument_list|,
@@ -1399,6 +1398,9 @@ name|blks
 index|[
 name|i
 index|]
+operator|.
+name|getStartOffset
+argument_list|()
 argument_list|,
 name|rp
 operator|.
@@ -1500,7 +1502,7 @@ comment|// Ignore and retry
 block|}
 block|}
 block|}
-DECL|method|getFromOneDataNode (final DNAddrPair datanode, final LocatedBlock block, final long start, final long end, final byte[] buf, final int[] offsets, final int[] lengths, final Map<ExtendedBlock, Set<DatanodeInfo>> corruptedBlockMap, final int hedgedReadId)
+DECL|method|getFromOneDataNode (final DNAddrPair datanode, final long blockStartOffset, final long start, final long end, final byte[] buf, final int[] offsets, final int[] lengths, final Map<ExtendedBlock, Set<DatanodeInfo>> corruptedBlockMap, final int hedgedReadId)
 specifier|private
 name|Callable
 argument_list|<
@@ -1513,8 +1515,8 @@ name|DNAddrPair
 name|datanode
 parameter_list|,
 specifier|final
-name|LocatedBlock
-name|block
+name|long
+name|blockStartOffset
 parameter_list|,
 specifier|final
 name|long
@@ -1602,7 +1604,7 @@ name|actualGetFromOneDataNode
 argument_list|(
 name|datanode
 argument_list|,
-name|block
+name|blockStartOffset
 argument_list|,
 name|start
 argument_list|,

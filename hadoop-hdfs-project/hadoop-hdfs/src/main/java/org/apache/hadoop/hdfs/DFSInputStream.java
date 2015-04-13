@@ -5452,7 +5452,7 @@ name|actualGetFromOneDataNode
 argument_list|(
 name|datanode
 argument_list|,
-name|block
+name|blockStartOffset
 argument_list|,
 name|start
 argument_list|,
@@ -5479,7 +5479,7 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|/**    * Read data from one DataNode.    * @param datanode the datanode from which to read data    * @param block the block to read    * @param startInBlk the startInBlk offset of the block    * @param endInBlk the endInBlk offset of the block    * @param buf the given byte array into which the data is read    * @param offsets the data may be read into multiple segments of the buf    *                (when reading a striped block). this array indicates the    *                offset of each buf segment.    * @param lengths the length of each buf segment    * @param corruptedBlockMap map recording list of datanodes with corrupted    *                          block replica    */
-DECL|method|actualGetFromOneDataNode (final DNAddrPair datanode, LocatedBlock block, final long startInBlk, final long endInBlk, byte[] buf, int[] offsets, int[] lengths, Map<ExtendedBlock, Set<DatanodeInfo>> corruptedBlockMap)
+DECL|method|actualGetFromOneDataNode (final DNAddrPair datanode, long blockStartOffset, final long startInBlk, final long endInBlk, byte[] buf, int[] offsets, int[] lengths, Map<ExtendedBlock, Set<DatanodeInfo>> corruptedBlockMap)
 name|void
 name|actualGetFromOneDataNode
 parameter_list|(
@@ -5487,8 +5487,8 @@ specifier|final
 name|DNAddrPair
 name|datanode
 parameter_list|,
-name|LocatedBlock
-name|block
+name|long
+name|blockStartOffset
 parameter_list|,
 specifier|final
 name|long
