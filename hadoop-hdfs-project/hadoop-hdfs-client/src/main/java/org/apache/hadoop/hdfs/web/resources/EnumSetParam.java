@@ -196,7 +196,7 @@ argument_list|()
 return|;
 block|}
 block|}
-DECL|method|toEnumSet (final Class<E> clazz, final E... values)
+DECL|method|toEnumSet (final Class<E> clazz, final E[] values)
 specifier|static
 parameter_list|<
 name|E
@@ -221,7 +221,7 @@ name|clazz
 parameter_list|,
 specifier|final
 name|E
-modifier|...
+index|[]
 name|values
 parameter_list|)
 block|{

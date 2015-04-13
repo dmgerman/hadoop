@@ -24,15 +24,11 @@ begin_import
 import|import static
 name|org
 operator|.
-name|apache
+name|junit
 operator|.
-name|hadoop
+name|Assert
 operator|.
-name|hdfs
-operator|.
-name|DFSConfigKeys
-operator|.
-name|DFS_CLIENT_BLOCK_WRITE_LOCATEFOLLOWINGBLOCK_RETRIES_KEY
+name|assertEquals
 import|;
 end_import
 
@@ -44,7 +40,7 @@ name|junit
 operator|.
 name|Assert
 operator|.
-name|*
+name|assertTrue
 import|;
 end_import
 
@@ -253,6 +249,22 @@ operator|.
 name|hdfs
 operator|.
 name|MiniDFSCluster
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|client
+operator|.
+name|HdfsClientConfigKeys
 import|;
 end_import
 
@@ -987,7 +999,11 @@ name|conf
 operator|.
 name|setInt
 argument_list|(
-name|DFS_CLIENT_BLOCK_WRITE_LOCATEFOLLOWINGBLOCK_RETRIES_KEY
+name|HdfsClientConfigKeys
+operator|.
+name|BlockWrite
+operator|.
+name|LOCATEFOLLOWINGBLOCK_RETRIES_KEY
 argument_list|,
 literal|1
 argument_list|)

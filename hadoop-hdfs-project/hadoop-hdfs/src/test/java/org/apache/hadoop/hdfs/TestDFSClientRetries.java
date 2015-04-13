@@ -1720,9 +1720,11 @@ name|conf
 operator|.
 name|setInt
 argument_list|(
-name|DFSConfigKeys
+name|HdfsClientConfigKeys
 operator|.
-name|DFS_CLIENT_BLOCK_WRITE_LOCATEFOLLOWINGBLOCK_RETRIES_KEY
+name|BlockWrite
+operator|.
+name|LOCATEFOLLOWINGBLOCK_RETRIES_KEY
 argument_list|,
 name|maxRetries
 argument_list|)
@@ -6806,7 +6808,7 @@ parameter_list|()
 throws|throws
 name|Exception
 block|{
-comment|// test if DFS_CLIENT_BLOCK_WRITE_LOCATEFOLLOWINGBLOCK_INITIAL_DELAY_KEY
+comment|// test if HdfsClientConfigKeys.BlockWrite.LOCATEFOLLOWINGBLOCK_INITIAL_DELAY_KEY
 comment|// is not configured, verify DFSClient uses the default value 400.
 name|MiniDFSCluster
 name|cluster
@@ -6865,15 +6867,17 @@ argument_list|,
 literal|400
 argument_list|)
 expr_stmt|;
-comment|// change DFS_CLIENT_BLOCK_WRITE_LOCATEFOLLOWINGBLOCK_INITIAL_DELAY_KEY,
+comment|// change HdfsClientConfigKeys.BlockWrite.LOCATEFOLLOWINGBLOCK_INITIAL_DELAY_KEY,
 comment|// verify DFSClient uses the configured value 1000.
 name|conf
 operator|.
 name|setInt
 argument_list|(
-name|DFSConfigKeys
+name|HdfsClientConfigKeys
 operator|.
-name|DFS_CLIENT_BLOCK_WRITE_LOCATEFOLLOWINGBLOCK_INITIAL_DELAY_KEY
+name|BlockWrite
+operator|.
+name|LOCATEFOLLOWINGBLOCK_INITIAL_DELAY_MS_KEY
 argument_list|,
 literal|1000
 argument_list|)

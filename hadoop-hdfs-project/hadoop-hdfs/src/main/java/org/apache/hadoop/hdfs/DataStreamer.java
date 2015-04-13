@@ -304,6 +304,22 @@ name|hdfs
 operator|.
 name|client
 operator|.
+name|HdfsClientConfigKeys
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|client
+operator|.
 name|impl
 operator|.
 name|DfsClientConf
@@ -4991,9 +5007,13 @@ argument_list|)
 operator|.
 name|append
 argument_list|(
-name|DFSConfigKeys
+name|HdfsClientConfigKeys
 operator|.
-name|DFS_CLIENT_WRITE_REPLACE_DATANODE_ON_FAILURE_POLICY_KEY
+name|BlockWrite
+operator|.
+name|ReplaceDatanodeOnFailure
+operator|.
+name|POLICY_KEY
 argument_list|)
 operator|.
 name|append
@@ -6044,9 +6064,13 @@ literal|"Failed to replace datanode."
 operator|+
 literal|" Continue with the remaining datanodes since "
 operator|+
-name|DFSConfigKeys
+name|HdfsClientConfigKeys
 operator|.
-name|DFS_CLIENT_WRITE_REPLACE_DATANODE_ON_FAILURE_BEST_EFFORT_KEY
+name|BlockWrite
+operator|.
+name|ReplaceDatanodeOnFailure
+operator|.
+name|BEST_EFFORT_KEY
 operator|+
 literal|" is set to true."
 argument_list|,

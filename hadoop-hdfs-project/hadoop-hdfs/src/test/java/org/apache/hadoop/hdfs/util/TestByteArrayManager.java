@@ -218,7 +218,7 @@ name|hadoop
 operator|.
 name|hdfs
 operator|.
-name|DFSConfigKeys
+name|DFSUtil
 import|;
 end_import
 
@@ -232,7 +232,9 @@ name|hadoop
 operator|.
 name|hdfs
 operator|.
-name|DFSUtil
+name|client
+operator|.
+name|HdfsClientConfigKeys
 import|;
 end_import
 
@@ -3468,15 +3470,23 @@ name|ByteArrayManager
 operator|.
 name|Conf
 argument_list|(
-name|DFSConfigKeys
+name|HdfsClientConfigKeys
 operator|.
-name|DFS_CLIENT_WRITE_BYTE_ARRAY_MANAGER_COUNT_THRESHOLD_DEFAULT
+name|Write
+operator|.
+name|ByteArrayManager
+operator|.
+name|COUNT_THRESHOLD_DEFAULT
 argument_list|,
 name|maxArrays
 argument_list|,
-name|DFSConfigKeys
+name|HdfsClientConfigKeys
 operator|.
-name|DFS_CLIENT_WRITE_BYTE_ARRAY_MANAGER_COUNT_RESET_TIME_PERIOD_MS_DEFAULT
+name|Write
+operator|.
+name|ByteArrayManager
+operator|.
+name|COUNT_RESET_TIME_PERIOD_MS_DEFAULT
 argument_list|)
 argument_list|)
 block|}
