@@ -973,7 +973,15 @@ name|assertEquals
 argument_list|(
 name|SimulatedFSDataset
 operator|.
-name|DEFAULT_DATABYTE
+name|simulatedByte
+argument_list|(
+name|b
+operator|.
+name|getLocalBlock
+argument_list|()
+argument_list|,
+name|lengthRead
+argument_list|)
 argument_list|,
 name|data
 argument_list|)
