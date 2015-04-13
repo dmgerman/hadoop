@@ -555,6 +555,13 @@ operator|!
 name|done
 condition|)
 block|{
+if|if
+condition|(
+name|tracker
+operator|!=
+literal|null
+condition|)
+block|{
 name|LOG
 operator|.
 name|error
@@ -567,6 +574,17 @@ name|getPos
 argument_list|()
 argument_list|)
 expr_stmt|;
+block|}
+else|else
+block|{
+name|LOG
+operator|.
+name|error
+argument_list|(
+literal|"Failed to load image file."
+argument_list|)
+expr_stmt|;
+block|}
 block|}
 name|IOUtils
 operator|.
