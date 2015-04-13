@@ -3108,6 +3108,15 @@ operator|.
 name|remove
 argument_list|()
 expr_stmt|;
+name|allTokens
+operator|.
+name|remove
+argument_list|(
+name|t
+operator|.
+name|token
+argument_list|)
+expr_stmt|;
 name|t
 operator|.
 name|cancelTimer
