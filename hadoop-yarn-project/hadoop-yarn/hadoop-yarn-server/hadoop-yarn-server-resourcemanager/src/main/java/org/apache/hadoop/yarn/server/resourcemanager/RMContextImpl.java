@@ -839,7 +839,7 @@ DECL|method|getInactiveRMNodes ()
 specifier|public
 name|ConcurrentMap
 argument_list|<
-name|String
+name|NodeId
 argument_list|,
 name|RMNode
 argument_list|>

@@ -515,7 +515,7 @@ function_decl|;
 DECL|method|getInactiveRMNodes ()
 name|ConcurrentMap
 argument_list|<
-name|String
+name|NodeId
 argument_list|,
 name|RMNode
 argument_list|>

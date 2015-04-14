@@ -3149,9 +3149,6 @@ operator|.
 name|get
 argument_list|(
 name|nid
-operator|.
-name|getHost
-argument_list|()
 argument_list|)
 expr_stmt|;
 if|if

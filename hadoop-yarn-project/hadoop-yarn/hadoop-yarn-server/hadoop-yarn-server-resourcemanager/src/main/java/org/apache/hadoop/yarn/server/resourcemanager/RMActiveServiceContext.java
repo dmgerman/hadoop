@@ -631,7 +631,7 @@ specifier|private
 specifier|final
 name|ConcurrentMap
 argument_list|<
-name|String
+name|NodeId
 argument_list|,
 name|RMNode
 argument_list|>
@@ -640,7 +640,7 @@ init|=
 operator|new
 name|ConcurrentHashMap
 argument_list|<
-name|String
+name|NodeId
 argument_list|,
 name|RMNode
 argument_list|>
@@ -1096,7 +1096,7 @@ DECL|method|getInactiveRMNodes ()
 specifier|public
 name|ConcurrentMap
 argument_list|<
-name|String
+name|NodeId
 argument_list|,
 name|RMNode
 argument_list|>

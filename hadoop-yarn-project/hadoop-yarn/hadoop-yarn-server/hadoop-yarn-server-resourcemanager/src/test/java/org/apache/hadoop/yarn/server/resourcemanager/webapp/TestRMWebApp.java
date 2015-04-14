@@ -1492,7 +1492,7 @@ decl_stmt|;
 specifier|final
 name|ConcurrentMap
 argument_list|<
-name|String
+name|NodeId
 argument_list|,
 name|RMNode
 argument_list|>
@@ -1517,7 +1517,7 @@ name|put
 argument_list|(
 name|node
 operator|.
-name|getHostName
+name|getNodeID
 argument_list|()
 argument_list|,
 name|node
@@ -1572,7 +1572,7 @@ name|Override
 specifier|public
 name|ConcurrentMap
 argument_list|<
-name|String
+name|NodeId
 argument_list|,
 name|RMNode
 argument_list|>

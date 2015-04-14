@@ -2881,15 +2881,12 @@ name|containers
 init|=
 literal|null
 decl_stmt|;
-name|String
-name|host
+name|NodeId
+name|nodeId
 init|=
 name|rmNode
 operator|.
 name|nodeId
-operator|.
-name|getHost
-argument_list|()
 decl_stmt|;
 if|if
 condition|(
@@ -2902,7 +2899,7 @@ argument_list|()
 operator|.
 name|containsKey
 argument_list|(
-name|host
+name|nodeId
 argument_list|)
 condition|)
 block|{
@@ -2919,7 +2916,7 @@ argument_list|()
 operator|.
 name|get
 argument_list|(
-name|host
+name|nodeId
 argument_list|)
 decl_stmt|;
 name|rmNode
@@ -2931,7 +2928,7 @@ argument_list|()
 operator|.
 name|remove
 argument_list|(
-name|host
+name|nodeId
 argument_list|)
 expr_stmt|;
 name|rmNode
@@ -4046,9 +4043,6 @@ argument_list|(
 name|rmNode
 operator|.
 name|nodeId
-operator|.
-name|getHost
-argument_list|()
 argument_list|,
 name|rmNode
 argument_list|)
