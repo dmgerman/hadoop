@@ -34,6 +34,16 @@ name|java
 operator|.
 name|util
 operator|.
+name|ArrayList
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
 name|Arrays
 import|;
 end_import
@@ -45,6 +55,16 @@ operator|.
 name|util
 operator|.
 name|LinkedList
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
+name|List
 import|;
 end_import
 
@@ -132,6 +152,20 @@ name|FsShell
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|fs
+operator|.
+name|StorageType
+import|;
+end_import
+
 begin_comment
 comment|/**  * Count the number of directories, files, bytes, quota, and remaining quota.  */
 end_comment
@@ -202,6 +236,15 @@ name|OPTION_HEADER
 init|=
 literal|"v"
 decl_stmt|;
+DECL|field|OPTION_TYPE
+specifier|private
+specifier|static
+specifier|final
+name|String
+name|OPTION_TYPE
+init|=
+literal|"t"
+decl_stmt|;
 DECL|field|NAME
 specifier|public
 specifier|static
@@ -230,7 +273,11 @@ literal|"] [-"
 operator|+
 name|OPTION_HEADER
 operator|+
-literal|"]<path> ..."
+literal|"] [-"
+operator|+
+name|OPTION_TYPE
+operator|+
+literal|" [<storage type>]]<path> ..."
 decl_stmt|;
 DECL|field|DESCRIPTION
 specifier|public
@@ -303,7 +350,31 @@ literal|"The -"
 operator|+
 name|OPTION_HEADER
 operator|+
-literal|" option displays a header line."
+literal|" option displays a header line.\n"
+operator|+
+literal|"The -"
+operator|+
+name|OPTION_TYPE
+operator|+
+literal|" option displays quota by storage types.\n"
+operator|+
+literal|"It must be used with -"
+operator|+
+name|OPTION_QUOTA
+operator|+
+literal|" option.\n"
+operator|+
+literal|"If a comma-separated list of storage types is given after the -"
+operator|+
+name|OPTION_TYPE
+operator|+
+literal|" option, \n"
+operator|+
+literal|"it displays the quota and usage for the specified types. \n"
+operator|+
+literal|"Otherwise, it displays the quota and usage for all the storage \n"
+operator|+
+literal|"types that support quota"
 decl_stmt|;
 DECL|field|showQuotas
 specifier|private
@@ -314,6 +385,21 @@ DECL|field|humanReadable
 specifier|private
 name|boolean
 name|humanReadable
+decl_stmt|;
+DECL|field|showQuotabyType
+specifier|private
+name|boolean
+name|showQuotabyType
+decl_stmt|;
+DECL|field|storageTypes
+specifier|private
+name|List
+argument_list|<
+name|StorageType
+argument_list|>
+name|storageTypes
+init|=
+literal|null
 decl_stmt|;
 comment|/** Constructor */
 DECL|method|Count ()
@@ -397,6 +483,13 @@ argument_list|)
 decl_stmt|;
 name|cf
 operator|.
+name|addOptionWithValue
+argument_list|(
+name|OPTION_TYPE
+argument_list|)
+expr_stmt|;
+name|cf
+operator|.
 name|parse
 argument_list|(
 name|args
@@ -439,6 +532,48 @@ argument_list|)
 expr_stmt|;
 if|if
 condition|(
+name|showQuotas
+condition|)
+block|{
+name|String
+name|types
+init|=
+name|cf
+operator|.
+name|getOptValue
+argument_list|(
+name|OPTION_TYPE
+argument_list|)
+decl_stmt|;
+if|if
+condition|(
+literal|null
+operator|!=
+name|types
+condition|)
+block|{
+name|showQuotabyType
+operator|=
+literal|true
+expr_stmt|;
+name|storageTypes
+operator|=
+name|getAndCheckStorageTypes
+argument_list|(
+name|types
+argument_list|)
+expr_stmt|;
+block|}
+else|else
+block|{
+name|showQuotabyType
+operator|=
+literal|false
+expr_stmt|;
+block|}
+block|}
+if|if
+condition|(
 name|cf
 operator|.
 name|getOpt
@@ -446,6 +581,28 @@ argument_list|(
 name|OPTION_HEADER
 argument_list|)
 condition|)
+block|{
+if|if
+condition|(
+name|showQuotabyType
+condition|)
+block|{
+name|out
+operator|.
+name|println
+argument_list|(
+name|ContentSummary
+operator|.
+name|getStorageTypeHeader
+argument_list|(
+name|storageTypes
+argument_list|)
+operator|+
+literal|"PATHNAME"
+argument_list|)
+expr_stmt|;
+block|}
+else|else
 block|{
 name|out
 operator|.
@@ -462,6 +619,92 @@ literal|"PATHNAME"
 argument_list|)
 expr_stmt|;
 block|}
+block|}
+block|}
+DECL|method|getAndCheckStorageTypes (String types)
+specifier|private
+name|List
+argument_list|<
+name|StorageType
+argument_list|>
+name|getAndCheckStorageTypes
+parameter_list|(
+name|String
+name|types
+parameter_list|)
+block|{
+if|if
+condition|(
+literal|""
+operator|.
+name|equals
+argument_list|(
+name|types
+argument_list|)
+operator|||
+literal|"all"
+operator|.
+name|equalsIgnoreCase
+argument_list|(
+name|types
+argument_list|)
+condition|)
+block|{
+return|return
+name|StorageType
+operator|.
+name|getTypesSupportingQuota
+argument_list|()
+return|;
+block|}
+name|String
+index|[]
+name|typeArray
+init|=
+name|StringUtils
+operator|.
+name|split
+argument_list|(
+name|types
+argument_list|,
+literal|','
+argument_list|)
+decl_stmt|;
+name|List
+argument_list|<
+name|StorageType
+argument_list|>
+name|stTypes
+init|=
+operator|new
+name|ArrayList
+argument_list|<>
+argument_list|()
+decl_stmt|;
+for|for
+control|(
+name|String
+name|t
+range|:
+name|typeArray
+control|)
+block|{
+name|stTypes
+operator|.
+name|add
+argument_list|(
+name|StorageType
+operator|.
+name|parseStorageType
+argument_list|(
+name|t
+argument_list|)
+argument_list|)
+expr_stmt|;
+block|}
+return|return
+name|stTypes
+return|;
 block|}
 annotation|@
 name|Override
@@ -502,6 +745,10 @@ name|showQuotas
 argument_list|,
 name|isHumanReadable
 argument_list|()
+argument_list|,
+name|showQuotabyType
+argument_list|,
+name|storageTypes
 argument_list|)
 operator|+
 name|src
@@ -534,6 +781,37 @@ parameter_list|()
 block|{
 return|return
 name|humanReadable
+return|;
+block|}
+comment|/**    * should print quota by storage types    * @return true if enables quota by storage types    */
+annotation|@
+name|InterfaceAudience
+operator|.
+name|Private
+DECL|method|isShowQuotabyType ()
+name|boolean
+name|isShowQuotabyType
+parameter_list|()
+block|{
+return|return
+name|showQuotabyType
+return|;
+block|}
+comment|/**    * show specified storage types    * @return specified storagetypes    */
+annotation|@
+name|InterfaceAudience
+operator|.
+name|Private
+DECL|method|getStorageTypes ()
+name|List
+argument_list|<
+name|StorageType
+argument_list|>
+name|getStorageTypes
+parameter_list|()
+block|{
+return|return
+name|storageTypes
 return|;
 block|}
 block|}
