@@ -166,6 +166,16 @@ name|java
 operator|.
 name|util
 operator|.
+name|ArrayList
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
 name|Arrays
 import|;
 end_import
@@ -1100,6 +1110,83 @@ name|pw
 operator|.
 name|println
 argument_list|(
+literal|" -am<AM Containers>             Prints the AM Container logs for this"
+argument_list|)
+expr_stmt|;
+name|pw
+operator|.
+name|println
+argument_list|(
+literal|"                                 application. Specify comma-separated"
+argument_list|)
+expr_stmt|;
+name|pw
+operator|.
+name|println
+argument_list|(
+literal|"                                 value to get logs for related AM"
+argument_list|)
+expr_stmt|;
+name|pw
+operator|.
+name|println
+argument_list|(
+literal|"                                 Container. For example, If we specify -am"
+argument_list|)
+expr_stmt|;
+name|pw
+operator|.
+name|println
+argument_list|(
+literal|"                                 1,2, we will get the logs for the first"
+argument_list|)
+expr_stmt|;
+name|pw
+operator|.
+name|println
+argument_list|(
+literal|"                                 AM Container as well as the second AM"
+argument_list|)
+expr_stmt|;
+name|pw
+operator|.
+name|println
+argument_list|(
+literal|"                                 Container. To get logs for all AM"
+argument_list|)
+expr_stmt|;
+name|pw
+operator|.
+name|println
+argument_list|(
+literal|"                                 Containers, use -am ALL. To get logs for"
+argument_list|)
+expr_stmt|;
+name|pw
+operator|.
+name|println
+argument_list|(
+literal|"                                 the latest AM Container, use -am -1. By"
+argument_list|)
+expr_stmt|;
+name|pw
+operator|.
+name|println
+argument_list|(
+literal|"                                 default, it will only print out syslog."
+argument_list|)
+expr_stmt|;
+name|pw
+operator|.
+name|println
+argument_list|(
+literal|"                                 Work with -logFiles to get other logs"
+argument_list|)
+expr_stmt|;
+name|pw
+operator|.
+name|println
+argument_list|(
 literal|" -appOwner<Application Owner>   AppOwner (assumed to be current user if"
 argument_list|)
 expr_stmt|;
@@ -1114,14 +1201,28 @@ name|pw
 operator|.
 name|println
 argument_list|(
-literal|" -containerId<Container ID>     ContainerId (must be specified if node"
+literal|" -containerId<Container ID>     ContainerId. By default, it will only"
 argument_list|)
 expr_stmt|;
 name|pw
 operator|.
 name|println
 argument_list|(
-literal|"                                 address is specified)"
+literal|"                                 print syslog if the application is"
+argument_list|)
+expr_stmt|;
+name|pw
+operator|.
+name|println
+argument_list|(
+literal|"                                 runing. Work with -logFiles to get other"
+argument_list|)
+expr_stmt|;
+name|pw
+operator|.
+name|println
+argument_list|(
+literal|"                                 logs."
 argument_list|)
 expr_stmt|;
 name|pw
@@ -1135,21 +1236,28 @@ name|pw
 operator|.
 name|println
 argument_list|(
+literal|" -logFiles<Log File Name>       Work with -am/-containerId and specify"
+argument_list|)
+expr_stmt|;
+name|pw
+operator|.
+name|println
+argument_list|(
+literal|"                                 comma-separated value to get specified"
+argument_list|)
+expr_stmt|;
+name|pw
+operator|.
+name|println
+argument_list|(
+literal|"                                 Container log files"
+argument_list|)
+expr_stmt|;
+name|pw
+operator|.
+name|println
+argument_list|(
 literal|" -nodeAddress<Node Address>     NodeAddress in the format nodename:port"
-argument_list|)
-expr_stmt|;
-name|pw
-operator|.
-name|println
-argument_list|(
-literal|"                                 (must be specified if container id is"
-argument_list|)
-expr_stmt|;
-name|pw
-operator|.
-name|println
-argument_list|(
-literal|"                                 specified)"
 argument_list|)
 expr_stmt|;
 name|pw
@@ -1329,6 +1437,18 @@ argument_list|,
 literal|2
 argument_list|)
 decl_stmt|;
+name|ContainerId
+name|containerId3
+init|=
+name|ContainerIdPBImpl
+operator|.
+name|newContainerId
+argument_list|(
+name|appAttemptId
+argument_list|,
+literal|3
+argument_list|)
+decl_stmt|;
 name|NodeId
 name|nodeId
 init|=
@@ -1443,6 +1563,26 @@ argument_list|(
 name|rootLogDir
 argument_list|)
 decl_stmt|;
+name|List
+argument_list|<
+name|String
+argument_list|>
+name|logTypes
+init|=
+operator|new
+name|ArrayList
+argument_list|<
+name|String
+argument_list|>
+argument_list|()
+decl_stmt|;
+name|logTypes
+operator|.
+name|add
+argument_list|(
+literal|"syslog"
+argument_list|)
+expr_stmt|;
 comment|// create container logs in localLogDir
 name|createContainerLogInLocalDir
 argument_list|(
@@ -1451,6 +1591,8 @@ argument_list|,
 name|containerId1
 argument_list|,
 name|fs
+argument_list|,
+name|logTypes
 argument_list|)
 expr_stmt|;
 name|createContainerLogInLocalDir
@@ -1460,6 +1602,27 @@ argument_list|,
 name|containerId2
 argument_list|,
 name|fs
+argument_list|,
+name|logTypes
+argument_list|)
+expr_stmt|;
+comment|// create two logs for container3 in localLogDir
+name|logTypes
+operator|.
+name|add
+argument_list|(
+literal|"stdout"
+argument_list|)
+expr_stmt|;
+name|createContainerLogInLocalDir
+argument_list|(
+name|appLogsDir
+argument_list|,
+name|containerId3
+argument_list|,
+name|fs
+argument_list|,
+name|logTypes
 argument_list|)
 expr_stmt|;
 name|Path
@@ -1580,6 +1743,23 @@ argument_list|,
 name|fs
 argument_list|)
 expr_stmt|;
+name|uploadContainerLogIntoRemoteDir
+argument_list|(
+name|ugi
+argument_list|,
+name|configuration
+argument_list|,
+name|rootLogDirs
+argument_list|,
+name|nodeId
+argument_list|,
+name|containerId3
+argument_list|,
+name|path
+argument_list|,
+name|fs
+argument_list|)
+expr_stmt|;
 name|YarnClient
 name|mockYarnClient
 init|=
@@ -1642,7 +1822,7 @@ argument_list|()
 operator|.
 name|contains
 argument_list|(
-literal|"Hello container_0_0001_01_000001!"
+literal|"Hello container_0_0001_01_000001 in syslog!"
 argument_list|)
 argument_list|)
 expr_stmt|;
@@ -1655,7 +1835,33 @@ argument_list|()
 operator|.
 name|contains
 argument_list|(
-literal|"Hello container_0_0001_01_000002!"
+literal|"Hello container_0_0001_01_000002 in syslog!"
+argument_list|)
+argument_list|)
+expr_stmt|;
+name|assertTrue
+argument_list|(
+name|sysOutStream
+operator|.
+name|toString
+argument_list|()
+operator|.
+name|contains
+argument_list|(
+literal|"Hello container_0_0001_01_000003 in syslog!"
+argument_list|)
+argument_list|)
+expr_stmt|;
+name|assertTrue
+argument_list|(
+name|sysOutStream
+operator|.
+name|toString
+argument_list|()
+operator|.
+name|contains
+argument_list|(
+literal|"Hello container_0_0001_01_000003 in stdout!"
 argument_list|)
 argument_list|)
 expr_stmt|;
@@ -1716,7 +1922,7 @@ argument_list|()
 operator|.
 name|contains
 argument_list|(
-literal|"Hello container_0_0001_01_000001!"
+literal|"Hello container_0_0001_01_000001 in syslog!"
 argument_list|)
 argument_list|)
 expr_stmt|;
@@ -1823,6 +2029,162 @@ literal|" are not present in this log-file."
 argument_list|)
 argument_list|)
 expr_stmt|;
+name|sysOutStream
+operator|.
+name|reset
+argument_list|()
+expr_stmt|;
+comment|// uploaded two logs for container3. The first log is named as syslog.
+comment|// The second one is named as stdout.
+name|exitCode
+operator|=
+name|cli
+operator|.
+name|run
+argument_list|(
+operator|new
+name|String
+index|[]
+block|{
+literal|"-applicationId"
+block|,
+name|appId
+operator|.
+name|toString
+argument_list|()
+block|,
+literal|"-nodeAddress"
+block|,
+name|nodeId
+operator|.
+name|toString
+argument_list|()
+block|,
+literal|"-containerId"
+block|,
+name|containerId3
+operator|.
+name|toString
+argument_list|()
+block|}
+argument_list|)
+expr_stmt|;
+name|assertTrue
+argument_list|(
+name|exitCode
+operator|==
+literal|0
+argument_list|)
+expr_stmt|;
+name|assertTrue
+argument_list|(
+name|sysOutStream
+operator|.
+name|toString
+argument_list|()
+operator|.
+name|contains
+argument_list|(
+literal|"Hello container_0_0001_01_000003 in syslog!"
+argument_list|)
+argument_list|)
+expr_stmt|;
+name|assertTrue
+argument_list|(
+name|sysOutStream
+operator|.
+name|toString
+argument_list|()
+operator|.
+name|contains
+argument_list|(
+literal|"Hello container_0_0001_01_000003 in stdout!"
+argument_list|)
+argument_list|)
+expr_stmt|;
+name|sysOutStream
+operator|.
+name|reset
+argument_list|()
+expr_stmt|;
+comment|// set -logFiles option as stdout
+comment|// should only print log with the name as stdout
+name|exitCode
+operator|=
+name|cli
+operator|.
+name|run
+argument_list|(
+operator|new
+name|String
+index|[]
+block|{
+literal|"-applicationId"
+block|,
+name|appId
+operator|.
+name|toString
+argument_list|()
+block|,
+literal|"-nodeAddress"
+block|,
+name|nodeId
+operator|.
+name|toString
+argument_list|()
+block|,
+literal|"-containerId"
+block|,
+name|containerId3
+operator|.
+name|toString
+argument_list|()
+block|,
+literal|"-logFiles"
+block|,
+literal|"stdout"
+block|}
+argument_list|)
+expr_stmt|;
+name|assertTrue
+argument_list|(
+name|exitCode
+operator|==
+literal|0
+argument_list|)
+expr_stmt|;
+name|assertTrue
+argument_list|(
+name|sysOutStream
+operator|.
+name|toString
+argument_list|()
+operator|.
+name|contains
+argument_list|(
+literal|"Hello container_0_0001_01_000003 in stdout!"
+argument_list|)
+argument_list|)
+expr_stmt|;
+name|assertTrue
+argument_list|(
+operator|!
+name|sysOutStream
+operator|.
+name|toString
+argument_list|()
+operator|.
+name|contains
+argument_list|(
+literal|"Hello container_0_0001_01_000003 in syslog!"
+argument_list|)
+argument_list|)
+expr_stmt|;
+name|sysOutStream
+operator|.
+name|reset
+argument_list|()
+expr_stmt|;
 name|fs
 operator|.
 name|delete
@@ -1850,7 +2212,7 @@ literal|true
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|createContainerLogInLocalDir (Path appLogsDir, ContainerId containerId, FileSystem fs)
+DECL|method|createContainerLogInLocalDir (Path appLogsDir, ContainerId containerId, FileSystem fs, List<String> logTypes)
 specifier|private
 specifier|static
 name|void
@@ -1864,6 +2226,12 @@ name|containerId
 parameter_list|,
 name|FileSystem
 name|fs
+parameter_list|,
+name|List
+argument_list|<
+name|String
+argument_list|>
+name|logTypes
 parameter_list|)
 throws|throws
 name|Exception
@@ -1912,6 +2280,14 @@ name|containerLogsDir
 argument_list|)
 argument_list|)
 expr_stmt|;
+for|for
+control|(
+name|String
+name|logType
+range|:
+name|logTypes
+control|)
+block|{
 name|Writer
 name|writer
 init|=
@@ -1926,7 +2302,7 @@ operator|.
 name|toString
 argument_list|()
 argument_list|,
-literal|"sysout"
+name|logType
 argument_list|)
 argument_list|)
 decl_stmt|;
@@ -1938,6 +2314,10 @@ literal|"Hello "
 operator|+
 name|containerId
 operator|+
+literal|" in "
+operator|+
+name|logType
+operator|+
 literal|"!"
 argument_list|)
 expr_stmt|;
@@ -1946,6 +2326,7 @@ operator|.
 name|close
 argument_list|()
 expr_stmt|;
+block|}
 block|}
 DECL|method|uploadContainerLogIntoRemoteDir (UserGroupInformation ugi, Configuration configuration, List<String> rootLogDirs, NodeId nodeId, ContainerId containerId, Path appDir, FileSystem fs)
 specifier|private
