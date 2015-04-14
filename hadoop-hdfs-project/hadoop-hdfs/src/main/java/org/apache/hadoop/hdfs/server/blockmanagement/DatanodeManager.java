@@ -1718,8 +1718,11 @@ argument_list|(
 name|targethost
 argument_list|)
 expr_stmt|;
+name|List
+argument_list|<
 name|String
-name|rName
+argument_list|>
+name|resolvedHosts
 init|=
 name|dnsToSwitchMapping
 operator|.
@@ -1727,6 +1730,24 @@ name|resolve
 argument_list|(
 name|hosts
 argument_list|)
+decl_stmt|;
+if|if
+condition|(
+name|resolvedHosts
+operator|!=
+literal|null
+operator|&&
+operator|!
+name|resolvedHosts
+operator|.
+name|isEmpty
+argument_list|()
+condition|)
+block|{
+name|String
+name|rName
+init|=
+name|resolvedHosts
 operator|.
 name|get
 argument_list|(
@@ -1739,6 +1760,7 @@ name|rName
 operator|!=
 literal|null
 condition|)
+block|{
 name|client
 operator|=
 operator|new
@@ -1753,6 +1775,20 @@ operator|+
 name|targethost
 argument_list|)
 expr_stmt|;
+block|}
+block|}
+else|else
+block|{
+name|LOG
+operator|.
+name|error
+argument_list|(
+literal|"Node Resolution failed. Please make sure that rack "
+operator|+
+literal|"awareness scripts are functional."
+argument_list|)
+expr_stmt|;
+block|}
 block|}
 name|Comparator
 argument_list|<
