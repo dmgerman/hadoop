@@ -34650,9 +34650,7 @@ name|getFSImage
 argument_list|()
 operator|.
 name|checkUpgrade
-argument_list|(
-name|this
-argument_list|)
+argument_list|()
 expr_stmt|;
 name|setRollingUpgradeInfo
 argument_list|(
@@ -34708,9 +34706,7 @@ name|getFSImage
 argument_list|()
 operator|.
 name|checkUpgrade
-argument_list|(
-name|this
-argument_list|)
+argument_list|()
 expr_stmt|;
 comment|// in non-HA setup, we do an extra checkpoint to generate a rollback image
 name|getFSImage

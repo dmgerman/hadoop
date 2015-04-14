@@ -4091,6 +4091,7 @@ return|;
 block|}
 comment|/** Validate and set block pool ID */
 DECL|method|setBlockPoolID (String bpid)
+specifier|public
 name|void
 name|setBlockPoolID
 parameter_list|(

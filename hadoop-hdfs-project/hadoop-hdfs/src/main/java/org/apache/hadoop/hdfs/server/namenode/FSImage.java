@@ -1349,6 +1349,8 @@ name|recoverStorageDirs
 argument_list|(
 name|startOpt
 argument_list|,
+name|storage
+argument_list|,
 name|dataDirStates
 argument_list|)
 decl_stmt|;
@@ -1723,13 +1725,17 @@ argument_list|)
 return|;
 block|}
 comment|/**    * For each storage directory, performs recovery of incomplete transitions    * (eg. upgrade, rollback, checkpoint) and inserts the directory's storage    * state into the dataDirStates map.    * @param dataDirStates output of storage directory states    * @return true if there is at least one valid formatted storage directory    */
-DECL|method|recoverStorageDirs (StartupOption startOpt, Map<StorageDirectory, StorageState> dataDirStates)
-specifier|private
+DECL|method|recoverStorageDirs (StartupOption startOpt, NNStorage storage, Map<StorageDirectory, StorageState> dataDirStates)
+specifier|public
+specifier|static
 name|boolean
 name|recoverStorageDirs
 parameter_list|(
 name|StartupOption
 name|startOpt
+parameter_list|,
+name|NNStorage
+name|storage
 parameter_list|,
 name|Map
 argument_list|<
@@ -1941,12 +1947,14 @@ name|isFormatted
 return|;
 block|}
 comment|/** Check if upgrade is in progress. */
-DECL|method|checkUpgrade (FSNamesystem target)
+DECL|method|checkUpgrade (NNStorage storage)
+specifier|public
+specifier|static
 name|void
 name|checkUpgrade
 parameter_list|(
-name|FSNamesystem
-name|target
+name|NNStorage
+name|storage
 parameter_list|)
 throws|throws
 name|IOException
@@ -2008,6 +2016,19 @@ literal|"Finalize or rollback first."
 argument_list|)
 throw|;
 block|}
+block|}
+DECL|method|checkUpgrade ()
+name|void
+name|checkUpgrade
+parameter_list|()
+throws|throws
+name|IOException
+block|{
+name|checkUpgrade
+argument_list|(
+name|storage
+argument_list|)
+expr_stmt|;
 block|}
 comment|/**    * @return true if there is rollback fsimage (for rolling upgrade) in NameNode    * directory.    */
 DECL|method|hasRollbackFSImage ()
@@ -2089,9 +2110,7 @@ throws|throws
 name|IOException
 block|{
 name|checkUpgrade
-argument_list|(
-name|target
-argument_list|)
+argument_list|()
 expr_stmt|;
 comment|// load the latest image
 comment|// Do upgrade for each directory

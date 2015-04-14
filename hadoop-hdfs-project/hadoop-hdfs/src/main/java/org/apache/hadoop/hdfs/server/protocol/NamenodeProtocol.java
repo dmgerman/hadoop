@@ -389,6 +389,17 @@ parameter_list|)
 throws|throws
 name|IOException
 function_decl|;
+comment|/**    * @return Whether the NameNode is in upgrade state (false) or not (true)    */
+annotation|@
+name|Idempotent
+DECL|method|isUpgradeFinalized ()
+specifier|public
+name|boolean
+name|isUpgradeFinalized
+parameter_list|()
+throws|throws
+name|IOException
+function_decl|;
 block|}
 end_interface
 
