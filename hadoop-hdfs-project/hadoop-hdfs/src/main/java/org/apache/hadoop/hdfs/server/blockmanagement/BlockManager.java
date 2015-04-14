@@ -2119,6 +2119,8 @@ specifier|final
 name|Configuration
 name|conf
 parameter_list|)
+throws|throws
+name|IOException
 block|{
 specifier|final
 name|boolean
@@ -2164,10 +2166,9 @@ name|isSecurityEnabled
 argument_list|()
 condition|)
 block|{
-name|LOG
-operator|.
-name|error
-argument_list|(
+name|String
+name|errMessage
+init|=
 literal|"Security is enabled but block access tokens "
 operator|+
 literal|"(via "
@@ -2180,9 +2181,15 @@ literal|") "
 operator|+
 literal|"aren't enabled. This may cause issues "
 operator|+
-literal|"when clients attempt to talk to a DataNode."
+literal|"when clients attempt to connect to a DataNode. Aborting NameNode"
+decl_stmt|;
+throw|throw
+operator|new
+name|IOException
+argument_list|(
+name|errMessage
 argument_list|)
-expr_stmt|;
+throw|;
 block|}
 return|return
 literal|null

@@ -7088,6 +7088,55 @@ condition|)
 block|{
 return|return;
 block|}
+comment|// Abort out of inconsistent state if Kerberos is enabled
+comment|// but block access tokens are not enabled.
+name|boolean
+name|isEnabled
+init|=
+name|conf
+operator|.
+name|getBoolean
+argument_list|(
+name|DFSConfigKeys
+operator|.
+name|DFS_BLOCK_ACCESS_TOKEN_ENABLE_KEY
+argument_list|,
+name|DFSConfigKeys
+operator|.
+name|DFS_BLOCK_ACCESS_TOKEN_ENABLE_DEFAULT
+argument_list|)
+decl_stmt|;
+if|if
+condition|(
+operator|!
+name|isEnabled
+condition|)
+block|{
+name|String
+name|errMessage
+init|=
+literal|"Security is enabled but block access tokens "
+operator|+
+literal|"(via "
+operator|+
+name|DFSConfigKeys
+operator|.
+name|DFS_BLOCK_ACCESS_TOKEN_ENABLE_KEY
+operator|+
+literal|") "
+operator|+
+literal|"aren't enabled. This may cause issues "
+operator|+
+literal|"when clients attempt to connect to a DataNode. Aborting DataNode"
+decl_stmt|;
+throw|throw
+operator|new
+name|RuntimeException
+argument_list|(
+name|errMessage
+argument_list|)
+throw|;
+block|}
 name|SaslPropertiesResolver
 name|saslPropsResolver
 init|=

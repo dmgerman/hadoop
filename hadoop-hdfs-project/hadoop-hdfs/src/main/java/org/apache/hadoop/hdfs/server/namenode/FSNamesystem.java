@@ -8110,6 +8110,13 @@ name|clearDirectiveStats
 argument_list|()
 expr_stmt|;
 block|}
+if|if
+condition|(
+name|blockManager
+operator|!=
+literal|null
+condition|)
+block|{
 name|blockManager
 operator|.
 name|getDatanodeManager
@@ -8134,6 +8141,7 @@ operator|.
 name|clearQueues
 argument_list|()
 expr_stmt|;
+block|}
 name|initializedReplQueues
 operator|=
 literal|false
