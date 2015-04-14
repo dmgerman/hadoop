@@ -462,6 +462,15 @@ name|exists
 argument_list|()
 condition|)
 block|{
+if|if
+condition|(
+operator|!
+name|testWebappDir
+operator|.
+name|mkdirs
+argument_list|()
+condition|)
+block|{
 name|fail
 argument_list|(
 literal|"Test webapp dir "
@@ -471,9 +480,10 @@ operator|.
 name|getCanonicalPath
 argument_list|()
 operator|+
-literal|" missing"
+literal|" can not be created"
 argument_list|)
 expr_stmt|;
+block|}
 block|}
 block|}
 catch|catch
