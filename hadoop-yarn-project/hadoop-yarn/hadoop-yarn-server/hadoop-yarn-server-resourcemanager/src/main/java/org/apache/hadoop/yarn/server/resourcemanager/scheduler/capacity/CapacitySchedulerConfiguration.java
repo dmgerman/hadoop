@@ -1401,6 +1401,31 @@ argument_list|()
 argument_list|)
 return|;
 block|}
+DECL|method|setMaximumApplicationMasterResourcePerQueuePercent (String queue, float percent)
+specifier|public
+name|void
+name|setMaximumApplicationMasterResourcePerQueuePercent
+parameter_list|(
+name|String
+name|queue
+parameter_list|,
+name|float
+name|percent
+parameter_list|)
+block|{
+name|setFloat
+argument_list|(
+name|getQueuePrefix
+argument_list|(
+name|queue
+argument_list|)
+operator|+
+name|MAXIMUM_AM_RESOURCE_SUFFIX
+argument_list|,
+name|percent
+argument_list|)
+expr_stmt|;
+block|}
 DECL|method|getNonLabeledQueueCapacity (String queue)
 specifier|public
 name|float

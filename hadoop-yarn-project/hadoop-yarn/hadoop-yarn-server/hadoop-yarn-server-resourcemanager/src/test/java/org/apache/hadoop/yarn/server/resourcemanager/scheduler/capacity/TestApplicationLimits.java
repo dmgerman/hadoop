@@ -4600,6 +4600,10 @@ name|ResourceLimits
 argument_list|(
 name|clusterResource
 argument_list|)
+argument_list|,
+name|SchedulingMode
+operator|.
+name|RESPECT_PARTITION_EXCLUSIVITY
 argument_list|)
 expr_stmt|;
 name|Resource
@@ -4731,6 +4735,10 @@ name|ResourceLimits
 argument_list|(
 name|clusterResource
 argument_list|)
+argument_list|,
+name|SchedulingMode
+operator|.
+name|RESPECT_PARTITION_EXCLUSIVITY
 argument_list|)
 expr_stmt|;
 comment|// Schedule to compute
@@ -4858,6 +4866,10 @@ name|ResourceLimits
 argument_list|(
 name|clusterResource
 argument_list|)
+argument_list|,
+name|SchedulingMode
+operator|.
+name|RESPECT_PARTITION_EXCLUSIVITY
 argument_list|)
 expr_stmt|;
 comment|// Schedule to compute
@@ -4936,6 +4948,10 @@ name|ResourceLimits
 argument_list|(
 name|clusterResource
 argument_list|)
+argument_list|,
+name|SchedulingMode
+operator|.
+name|RESPECT_PARTITION_EXCLUSIVITY
 argument_list|)
 expr_stmt|;
 comment|// Schedule to compute

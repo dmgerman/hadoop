@@ -90,16 +90,6 @@ name|java
 operator|.
 name|util
 operator|.
-name|HashSet
-import|;
-end_import
-
-begin_import
-import|import
-name|java
-operator|.
-name|util
-operator|.
 name|Iterator
 import|;
 end_import
@@ -595,6 +585,28 @@ operator|.
 name|nodelabels
 operator|.
 name|RMNodeLabelsManager
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|server
+operator|.
+name|resourcemanager
+operator|.
+name|rmapp
+operator|.
+name|attempt
+operator|.
+name|RMAppAttempt
 import|;
 end_import
 
@@ -3651,170 +3663,9 @@ name|applicationAttemptId
 argument_list|)
 return|;
 block|}
-DECL|field|NULL_ASSIGNMENT
-specifier|private
-specifier|static
-specifier|final
-name|CSAssignment
-name|NULL_ASSIGNMENT
-init|=
-operator|new
-name|CSAssignment
-argument_list|(
-name|Resources
-operator|.
-name|createResource
-argument_list|(
-literal|0
-argument_list|,
-literal|0
-argument_list|)
-argument_list|,
-name|NodeType
-operator|.
-name|NODE_LOCAL
-argument_list|)
-decl_stmt|;
-DECL|field|SKIP_ASSIGNMENT
-specifier|private
-specifier|static
-specifier|final
-name|CSAssignment
-name|SKIP_ASSIGNMENT
-init|=
-operator|new
-name|CSAssignment
-argument_list|(
-literal|true
-argument_list|)
-decl_stmt|;
-DECL|method|getRequestLabelSetByExpression ( String labelExpression)
-specifier|private
-specifier|static
-name|Set
-argument_list|<
-name|String
-argument_list|>
-name|getRequestLabelSetByExpression
-parameter_list|(
-name|String
-name|labelExpression
-parameter_list|)
-block|{
-name|Set
-argument_list|<
-name|String
-argument_list|>
-name|labels
-init|=
-operator|new
-name|HashSet
-argument_list|<
-name|String
-argument_list|>
-argument_list|()
-decl_stmt|;
-if|if
-condition|(
-literal|null
-operator|==
-name|labelExpression
-condition|)
-block|{
-return|return
-name|labels
-return|;
-block|}
-for|for
-control|(
-name|String
-name|l
-range|:
-name|labelExpression
-operator|.
-name|split
-argument_list|(
-literal|"&&"
-argument_list|)
-control|)
-block|{
-if|if
-condition|(
-name|l
-operator|.
-name|trim
-argument_list|()
-operator|.
-name|isEmpty
-argument_list|()
-condition|)
-block|{
-continue|continue;
-block|}
-name|labels
-operator|.
-name|add
-argument_list|(
-name|l
-operator|.
-name|trim
-argument_list|()
-argument_list|)
-expr_stmt|;
-block|}
-return|return
-name|labels
-return|;
-block|}
-DECL|method|checkResourceRequestMatchingNodeLabel (ResourceRequest offswitchResourceRequest, FiCaSchedulerNode node)
-specifier|private
-name|boolean
-name|checkResourceRequestMatchingNodeLabel
-parameter_list|(
-name|ResourceRequest
-name|offswitchResourceRequest
-parameter_list|,
-name|FiCaSchedulerNode
-name|node
-parameter_list|)
-block|{
-name|String
-name|askedNodeLabel
-init|=
-name|offswitchResourceRequest
-operator|.
-name|getNodeLabelExpression
-argument_list|()
-decl_stmt|;
-if|if
-condition|(
-literal|null
-operator|==
-name|askedNodeLabel
-condition|)
-block|{
-name|askedNodeLabel
-operator|=
-name|RMNodeLabelsManager
-operator|.
-name|NO_LABEL
-expr_stmt|;
-block|}
-return|return
-name|askedNodeLabel
-operator|.
-name|equals
-argument_list|(
-name|node
-operator|.
-name|getPartition
-argument_list|()
-argument_list|)
-return|;
-block|}
 annotation|@
 name|Override
-DECL|method|assignContainers (Resource clusterResource, FiCaSchedulerNode node, ResourceLimits currentResourceLimits)
+DECL|method|assignContainers (Resource clusterResource, FiCaSchedulerNode node, ResourceLimits currentResourceLimits, SchedulingMode schedulingMode)
 specifier|public
 specifier|synchronized
 name|CSAssignment
@@ -3828,6 +3679,9 @@ name|node
 parameter_list|,
 name|ResourceLimits
 name|currentResourceLimits
+parameter_list|,
+name|SchedulingMode
+name|schedulingMode
 parameter_list|)
 block|{
 name|updateCurrentResourceLimits
@@ -3864,27 +3718,6 @@ name|size
 argument_list|()
 argument_list|)
 expr_stmt|;
-block|}
-comment|// if our queue cannot access this node, just return
-if|if
-condition|(
-operator|!
-name|SchedulerUtils
-operator|.
-name|checkQueueAccessToNode
-argument_list|(
-name|accessibleLabels
-argument_list|,
-name|node
-operator|.
-name|getLabels
-argument_list|()
-argument_list|)
-condition|)
-block|{
-return|return
-name|NULL_ASSIGNMENT
-return|;
 block|}
 comment|// Check for reserved resources
 name|RMContainer
@@ -3928,9 +3761,89 @@ argument_list|,
 name|reservedContainer
 argument_list|,
 name|clusterResource
+argument_list|,
+name|schedulingMode
 argument_list|)
 return|;
 block|}
+block|}
+comment|// if our queue cannot access this node, just return
+if|if
+condition|(
+name|schedulingMode
+operator|==
+name|SchedulingMode
+operator|.
+name|RESPECT_PARTITION_EXCLUSIVITY
+operator|&&
+operator|!
+name|accessibleToPartition
+argument_list|(
+name|node
+operator|.
+name|getPartition
+argument_list|()
+argument_list|)
+condition|)
+block|{
+return|return
+name|NULL_ASSIGNMENT
+return|;
+block|}
+comment|// Check if this queue need more resource, simply skip allocation if this
+comment|// queue doesn't need more resources.
+if|if
+condition|(
+operator|!
+name|hasPendingResourceRequest
+argument_list|(
+name|node
+operator|.
+name|getPartition
+argument_list|()
+argument_list|,
+name|clusterResource
+argument_list|,
+name|schedulingMode
+argument_list|)
+condition|)
+block|{
+if|if
+condition|(
+name|LOG
+operator|.
+name|isDebugEnabled
+argument_list|()
+condition|)
+block|{
+name|LOG
+operator|.
+name|debug
+argument_list|(
+literal|"Skip this queue="
+operator|+
+name|getQueuePath
+argument_list|()
+operator|+
+literal|", because it doesn't need more resource, schedulingMode="
+operator|+
+name|schedulingMode
+operator|.
+name|name
+argument_list|()
+operator|+
+literal|" node-partition="
+operator|+
+name|node
+operator|.
+name|getPartition
+argument_list|()
+argument_list|)
+expr_stmt|;
+block|}
+return|return
+name|NULL_ASSIGNMENT
+return|;
 block|}
 comment|// Try to assign containers to applications in order
 for|for
@@ -3966,6 +3879,64 @@ operator|.
 name|showRequests
 argument_list|()
 expr_stmt|;
+block|}
+comment|// Check if application needs more resource, skip if it doesn't need more.
+if|if
+condition|(
+operator|!
+name|application
+operator|.
+name|hasPendingResourceRequest
+argument_list|(
+name|resourceCalculator
+argument_list|,
+name|node
+operator|.
+name|getPartition
+argument_list|()
+argument_list|,
+name|clusterResource
+argument_list|,
+name|schedulingMode
+argument_list|)
+condition|)
+block|{
+if|if
+condition|(
+name|LOG
+operator|.
+name|isDebugEnabled
+argument_list|()
+condition|)
+block|{
+name|LOG
+operator|.
+name|debug
+argument_list|(
+literal|"Skip app_attempt="
+operator|+
+name|application
+operator|.
+name|getApplicationAttemptId
+argument_list|()
+operator|+
+literal|", because it doesn't need more resource, schedulingMode="
+operator|+
+name|schedulingMode
+operator|.
+name|name
+argument_list|()
+operator|+
+literal|" node-label="
+operator|+
+name|node
+operator|.
+name|getPartition
+argument_list|()
+argument_list|)
+expr_stmt|;
+block|}
+continue|continue;
 block|}
 synchronized|synchronized
 init|(
@@ -4048,17 +4019,93 @@ condition|)
 block|{
 continue|continue;
 block|}
+comment|// AM container allocation doesn't support non-exclusive allocation to
+comment|// avoid painful of preempt an AM container
+if|if
+condition|(
+name|schedulingMode
+operator|==
+name|SchedulingMode
+operator|.
+name|IGNORE_PARTITION_EXCLUSIVITY
+condition|)
+block|{
+name|RMAppAttempt
+name|rmAppAttempt
+init|=
+name|csContext
+operator|.
+name|getRMContext
+argument_list|()
+operator|.
+name|getRMApps
+argument_list|()
+operator|.
+name|get
+argument_list|(
+name|application
+operator|.
+name|getApplicationId
+argument_list|()
+argument_list|)
+operator|.
+name|getCurrentAppAttempt
+argument_list|()
+decl_stmt|;
+if|if
+condition|(
+literal|null
+operator|==
+name|rmAppAttempt
+operator|.
+name|getMasterContainer
+argument_list|()
+condition|)
+block|{
+if|if
+condition|(
+name|LOG
+operator|.
+name|isDebugEnabled
+argument_list|()
+condition|)
+block|{
+name|LOG
+operator|.
+name|debug
+argument_list|(
+literal|"Skip allocating AM container to app_attempt="
+operator|+
+name|application
+operator|.
+name|getApplicationAttemptId
+argument_list|()
+operator|+
+literal|", don't allow to allocate AM container in non-exclusive mode"
+argument_list|)
+expr_stmt|;
+block|}
+break|break;
+block|}
+block|}
 comment|// Is the node-label-expression of this offswitch resource request
 comment|// matches the node's label?
 comment|// If not match, jump to next priority.
 if|if
 condition|(
 operator|!
-name|checkResourceRequestMatchingNodeLabel
+name|SchedulerUtils
+operator|.
+name|checkResourceRequestMatchingNodePartition
 argument_list|(
 name|anyRequest
 argument_list|,
 name|node
+operator|.
+name|getPartition
+argument_list|()
+argument_list|,
+name|schedulingMode
 argument_list|)
 condition|)
 block|{
@@ -4104,20 +4151,6 @@ block|}
 continue|continue;
 block|}
 block|}
-name|Set
-argument_list|<
-name|String
-argument_list|>
-name|requestedNodeLabels
-init|=
-name|getRequestLabelSetByExpression
-argument_list|(
-name|anyRequest
-operator|.
-name|getNodeLabelExpression
-argument_list|()
-argument_list|)
-decl_stmt|;
 comment|// Compute user-limit& set headroom
 comment|// Note: We compute both user-limit& headroom with the highest
 comment|//       priority request as the target.
@@ -4134,7 +4167,12 @@ name|clusterResource
 argument_list|,
 name|required
 argument_list|,
-name|requestedNodeLabels
+name|node
+operator|.
+name|getPartition
+argument_list|()
+argument_list|,
+name|schedulingMode
 argument_list|)
 decl_stmt|;
 comment|// Check queue max-capacity limit
@@ -4149,7 +4187,7 @@ name|clusterResource
 argument_list|,
 name|node
 operator|.
-name|getLabels
+name|getPartition
 argument_list|()
 argument_list|,
 name|this
@@ -4162,6 +4200,8 @@ name|application
 operator|.
 name|getCurrentReservation
 argument_list|()
+argument_list|,
+name|schedulingMode
 argument_list|)
 condition|)
 block|{
@@ -4188,7 +4228,10 @@ name|application
 argument_list|,
 literal|true
 argument_list|,
-name|requestedNodeLabels
+name|node
+operator|.
+name|getPartition
+argument_list|()
 argument_list|)
 condition|)
 block|{
@@ -4202,6 +4245,104 @@ argument_list|(
 name|priority
 argument_list|)
 expr_stmt|;
+comment|// Increase missed-non-partitioned-resource-request-opportunity.
+comment|// This is to make sure non-partitioned-resource-request will prefer
+comment|// to be allocated to non-partitioned nodes
+name|int
+name|missedNonPartitionedRequestSchedulingOpportunity
+init|=
+literal|0
+decl_stmt|;
+if|if
+condition|(
+name|anyRequest
+operator|.
+name|getNodeLabelExpression
+argument_list|()
+operator|.
+name|equals
+argument_list|(
+name|RMNodeLabelsManager
+operator|.
+name|NO_LABEL
+argument_list|)
+condition|)
+block|{
+name|missedNonPartitionedRequestSchedulingOpportunity
+operator|=
+name|application
+operator|.
+name|addMissedNonPartitionedRequestSchedulingOpportunity
+argument_list|(
+name|priority
+argument_list|)
+expr_stmt|;
+block|}
+if|if
+condition|(
+name|schedulingMode
+operator|==
+name|SchedulingMode
+operator|.
+name|IGNORE_PARTITION_EXCLUSIVITY
+condition|)
+block|{
+comment|// Before doing allocation, we need to check scheduling opportunity to
+comment|// make sure : non-partitioned resource request should be scheduled to
+comment|// non-partitioned partition first.
+if|if
+condition|(
+name|missedNonPartitionedRequestSchedulingOpportunity
+operator|<
+name|scheduler
+operator|.
+name|getNumClusterNodes
+argument_list|()
+condition|)
+block|{
+if|if
+condition|(
+name|LOG
+operator|.
+name|isDebugEnabled
+argument_list|()
+condition|)
+block|{
+name|LOG
+operator|.
+name|debug
+argument_list|(
+literal|"Skip app_attempt="
+operator|+
+name|application
+operator|.
+name|getApplicationAttemptId
+argument_list|()
+operator|+
+literal|" priority="
+operator|+
+name|priority
+operator|+
+literal|" because missed-non-partitioned-resource-request"
+operator|+
+literal|" opportunity under requred:"
+operator|+
+literal|" Now="
+operator|+
+name|missedNonPartitionedRequestSchedulingOpportunity
+operator|+
+literal|" required="
+operator|+
+name|scheduler
+operator|.
+name|getNumClusterNodes
+argument_list|()
+argument_list|)
+expr_stmt|;
+block|}
+break|break;
+block|}
+block|}
 comment|// Try to schedule
 name|CSAssignment
 name|assignment
@@ -4217,6 +4358,8 @@ argument_list|,
 name|priority
 argument_list|,
 literal|null
+argument_list|,
+name|schedulingMode
 argument_list|)
 decl_stmt|;
 comment|// Did the application skip this node?
@@ -4278,11 +4421,11 @@ name|assigned
 argument_list|,
 name|node
 operator|.
-name|getLabels
+name|getPartition
 argument_list|()
 argument_list|)
 expr_stmt|;
-comment|// Don't reset scheduling opportunities for non-local assignments
+comment|// Don't reset scheduling opportunities for offswitch assignments
 comment|// otherwise the app will be delayed for each non-local assignment.
 comment|// This helps apps with many off-cluster requests schedule faster.
 if|if
@@ -4321,6 +4464,16 @@ name|priority
 argument_list|)
 expr_stmt|;
 block|}
+comment|// Non-exclusive scheduling opportunity is different: we need reset
+comment|// it every time to make sure non-labeled resource request will be
+comment|// most likely allocated on non-labeled nodes first.
+name|application
+operator|.
+name|resetMissedNonPartitionedRequestSchedulingOpportunity
+argument_list|(
+name|priority
+argument_list|)
+expr_stmt|;
 comment|// Done
 return|return
 name|assignment
@@ -4364,7 +4517,7 @@ return|return
 name|NULL_ASSIGNMENT
 return|;
 block|}
-DECL|method|assignReservedContainer ( FiCaSchedulerApp application, FiCaSchedulerNode node, RMContainer rmContainer, Resource clusterResource)
+DECL|method|assignReservedContainer ( FiCaSchedulerApp application, FiCaSchedulerNode node, RMContainer rmContainer, Resource clusterResource, SchedulingMode schedulingMode)
 specifier|private
 specifier|synchronized
 name|CSAssignment
@@ -4381,6 +4534,9 @@ name|rmContainer
 parameter_list|,
 name|Resource
 name|clusterResource
+parameter_list|,
+name|SchedulingMode
+name|schedulingMode
 parameter_list|)
 block|{
 comment|// Do we still need this reservation?
@@ -4430,6 +4586,8 @@ argument_list|,
 name|priority
 argument_list|,
 name|rmContainer
+argument_list|,
+name|schedulingMode
 argument_list|)
 decl_stmt|;
 comment|// Doesn't matter... since it's already charged for at time of reservation
@@ -4515,7 +4673,13 @@ name|required
 argument_list|,
 name|user
 argument_list|,
-literal|null
+name|RMNodeLabelsManager
+operator|.
+name|NO_LABEL
+argument_list|,
+name|SchedulingMode
+operator|.
+name|RESPECT_PARTITION_EXCLUSIVITY
 argument_list|)
 argument_list|)
 return|;
@@ -4639,7 +4803,7 @@ operator|.
 name|class
 block|}
 argument_list|)
-DECL|method|computeUserLimitAndSetHeadroom (FiCaSchedulerApp application, Resource clusterResource, Resource required, Set<String> requestedLabels)
+DECL|method|computeUserLimitAndSetHeadroom (FiCaSchedulerApp application, Resource clusterResource, Resource required, String nodePartition, SchedulingMode schedulingMode)
 name|Resource
 name|computeUserLimitAndSetHeadroom
 parameter_list|(
@@ -4652,11 +4816,11 @@ parameter_list|,
 name|Resource
 name|required
 parameter_list|,
-name|Set
-argument_list|<
 name|String
-argument_list|>
-name|requestedLabels
+name|nodePartition
+parameter_list|,
+name|SchedulingMode
+name|schedulingMode
 parameter_list|)
 block|{
 name|String
@@ -4690,7 +4854,9 @@ name|required
 argument_list|,
 name|queueUser
 argument_list|,
-name|requestedLabels
+name|nodePartition
+argument_list|,
+name|schedulingMode
 argument_list|)
 decl_stmt|;
 name|setQueueResourceLimitsInfo
@@ -4801,7 +4967,7 @@ name|NoLock
 operator|.
 name|class
 argument_list|)
-DECL|method|computeUserLimit (FiCaSchedulerApp application, Resource clusterResource, Resource required, User user, Set<String> requestedLabels)
+DECL|method|computeUserLimit (FiCaSchedulerApp application, Resource clusterResource, Resource required, User user, String nodePartition, SchedulingMode schedulingMode)
 specifier|private
 name|Resource
 name|computeUserLimit
@@ -4818,11 +4984,11 @@ parameter_list|,
 name|User
 name|user
 parameter_list|,
-name|Set
-argument_list|<
 name|String
-argument_list|>
-name|requestedLabels
+name|nodePartition
+parameter_list|,
+name|SchedulingMode
+name|schedulingMode
 parameter_list|)
 block|{
 comment|// What is our current capacity?
@@ -4834,53 +5000,6 @@ comment|//   (usedResources + required) (which extra resources we are allocating
 name|Resource
 name|queueCapacity
 init|=
-name|Resource
-operator|.
-name|newInstance
-argument_list|(
-literal|0
-argument_list|,
-literal|0
-argument_list|)
-decl_stmt|;
-if|if
-condition|(
-name|requestedLabels
-operator|!=
-literal|null
-operator|&&
-operator|!
-name|requestedLabels
-operator|.
-name|isEmpty
-argument_list|()
-condition|)
-block|{
-comment|// if we have multiple labels to request, we will choose to use the first
-comment|// label
-name|String
-name|firstLabel
-init|=
-name|requestedLabels
-operator|.
-name|iterator
-argument_list|()
-operator|.
-name|next
-argument_list|()
-decl_stmt|;
-name|queueCapacity
-operator|=
-name|Resources
-operator|.
-name|max
-argument_list|(
-name|resourceCalculator
-argument_list|,
-name|clusterResource
-argument_list|,
-name|queueCapacity
-argument_list|,
 name|Resources
 operator|.
 name|multiplyAndNormalizeUp
@@ -4891,7 +5010,7 @@ name|labelManager
 operator|.
 name|getResourceByLabel
 argument_list|(
-name|firstLabel
+name|nodePartition
 argument_list|,
 name|clusterResource
 argument_list|)
@@ -4900,46 +5019,12 @@ name|queueCapacities
 operator|.
 name|getAbsoluteCapacity
 argument_list|(
-name|firstLabel
+name|nodePartition
 argument_list|)
 argument_list|,
 name|minimumAllocation
 argument_list|)
-argument_list|)
-expr_stmt|;
-block|}
-else|else
-block|{
-comment|// else there's no label on request, just to use absolute capacity as
-comment|// capacity for nodes without label
-name|queueCapacity
-operator|=
-name|Resources
-operator|.
-name|multiplyAndNormalizeUp
-argument_list|(
-name|resourceCalculator
-argument_list|,
-name|labelManager
-operator|.
-name|getResourceByLabel
-argument_list|(
-name|CommonNodeLabelsManager
-operator|.
-name|NO_LABEL
-argument_list|,
-name|clusterResource
-argument_list|)
-argument_list|,
-name|queueCapacities
-operator|.
-name|getAbsoluteCapacity
-argument_list|()
-argument_list|,
-name|minimumAllocation
-argument_list|)
-expr_stmt|;
-block|}
+decl_stmt|;
 comment|// Allow progress for queues with miniscule capacity
 name|queueCapacity
 operator|=
@@ -4970,7 +5055,9 @@ argument_list|,
 name|queueUsage
 operator|.
 name|getUsed
-argument_list|()
+argument_list|(
+name|nodePartition
+argument_list|)
 argument_list|,
 name|queueCapacity
 argument_list|)
@@ -4984,7 +5071,9 @@ argument_list|(
 name|queueUsage
 operator|.
 name|getUsed
-argument_list|()
+argument_list|(
+name|nodePartition
+argument_list|)
 argument_list|,
 name|required
 argument_list|)
@@ -5002,23 +5091,11 @@ operator|.
 name|getNumActiveUsers
 argument_list|()
 decl_stmt|;
+comment|// User limit resource is determined by:
+comment|// max{currentCapacity / #activeUsers, currentCapacity * user-limit-percentage%)
 name|Resource
-name|limit
+name|userLimitResource
 init|=
-name|Resources
-operator|.
-name|roundUp
-argument_list|(
-name|resourceCalculator
-argument_list|,
-name|Resources
-operator|.
-name|min
-argument_list|(
-name|resourceCalculator
-argument_list|,
-name|clusterResource
-argument_list|,
 name|Resources
 operator|.
 name|max
@@ -5056,7 +5133,35 @@ argument_list|,
 literal|100
 argument_list|)
 argument_list|)
-argument_list|,
+decl_stmt|;
+comment|// User limit is capped by maxUserLimit
+comment|// - maxUserLimit = queueCapacity * user-limit-factor (RESPECT_PARTITION_EXCLUSIVITY)
+comment|// - maxUserLimit = total-partition-resource (IGNORE_PARTITION_EXCLUSIVITY)
+comment|//
+comment|// In IGNORE_PARTITION_EXCLUSIVITY mode, if a queue cannot access a
+comment|// partition, its guaranteed resource on that partition is 0. And
+comment|// user-limit-factor computation is based on queue's guaranteed capacity. So
+comment|// we will not cap user-limit as well as used resource when doing
+comment|// IGNORE_PARTITION_EXCLUSIVITY allocation.
+name|Resource
+name|maxUserLimit
+init|=
+name|Resources
+operator|.
+name|none
+argument_list|()
+decl_stmt|;
+if|if
+condition|(
+name|schedulingMode
+operator|==
+name|SchedulingMode
+operator|.
+name|RESPECT_PARTITION_EXCLUSIVITY
+condition|)
+block|{
+name|maxUserLimit
+operator|=
 name|Resources
 operator|.
 name|multiplyAndRoundDown
@@ -5065,11 +5170,55 @@ name|queueCapacity
 argument_list|,
 name|userLimitFactor
 argument_list|)
+expr_stmt|;
+block|}
+elseif|else
+if|if
+condition|(
+name|schedulingMode
+operator|==
+name|SchedulingMode
+operator|.
+name|IGNORE_PARTITION_EXCLUSIVITY
+condition|)
+block|{
+name|maxUserLimit
+operator|=
+name|labelManager
+operator|.
+name|getResourceByLabel
+argument_list|(
+name|nodePartition
+argument_list|,
+name|clusterResource
+argument_list|)
+expr_stmt|;
+block|}
+comment|// Cap final user limit with maxUserLimit
+name|userLimitResource
+operator|=
+name|Resources
+operator|.
+name|roundUp
+argument_list|(
+name|resourceCalculator
+argument_list|,
+name|Resources
+operator|.
+name|min
+argument_list|(
+name|resourceCalculator
+argument_list|,
+name|clusterResource
+argument_list|,
+name|userLimitResource
+argument_list|,
+name|maxUserLimit
 argument_list|)
 argument_list|,
 name|minimumAllocation
 argument_list|)
-decl_stmt|;
+expr_stmt|;
 if|if
 condition|(
 name|LOG
@@ -5099,7 +5248,7 @@ operator|+
 name|getQueueName
 argument_list|()
 operator|+
-literal|" userLimit="
+literal|" userLimitPercent="
 operator|+
 name|userLimit
 operator|+
@@ -5118,9 +5267,9 @@ operator|.
 name|getUsed
 argument_list|()
 operator|+
-literal|" limit: "
+literal|" user-limit-resource: "
 operator|+
-name|limit
+name|userLimitResource
 operator|+
 literal|" queueCapacity: "
 operator|+
@@ -5151,16 +5300,16 @@ name|user
 operator|.
 name|setUserResourceLimit
 argument_list|(
-name|limit
+name|userLimitResource
 argument_list|)
 expr_stmt|;
 return|return
-name|limit
+name|userLimitResource
 return|;
 block|}
 annotation|@
 name|Private
-DECL|method|canAssignToUser (Resource clusterResource, String userName, Resource limit, FiCaSchedulerApp application, boolean checkReservations, Set<String> requestLabels)
+DECL|method|canAssignToUser (Resource clusterResource, String userName, Resource limit, FiCaSchedulerApp application, boolean checkReservations, String nodePartition)
 specifier|protected
 specifier|synchronized
 name|boolean
@@ -5181,11 +5330,8 @@ parameter_list|,
 name|boolean
 name|checkReservations
 parameter_list|,
-name|Set
-argument_list|<
 name|String
-argument_list|>
-name|requestLabels
+name|nodePartition
 parameter_list|)
 block|{
 name|User
@@ -5196,37 +5342,6 @@ argument_list|(
 name|userName
 argument_list|)
 decl_stmt|;
-name|String
-name|label
-init|=
-name|CommonNodeLabelsManager
-operator|.
-name|NO_LABEL
-decl_stmt|;
-if|if
-condition|(
-name|requestLabels
-operator|!=
-literal|null
-operator|&&
-operator|!
-name|requestLabels
-operator|.
-name|isEmpty
-argument_list|()
-condition|)
-block|{
-name|label
-operator|=
-name|requestLabels
-operator|.
-name|iterator
-argument_list|()
-operator|.
-name|next
-argument_list|()
-expr_stmt|;
-block|}
 comment|// Note: We aren't considering the current request since there is a fixed
 comment|// overhead of the AM, but it's a> check, not a>= check, so...
 if|if
@@ -5243,7 +5358,7 @@ name|user
 operator|.
 name|getUsed
 argument_list|(
-name|label
+name|nodePartition
 argument_list|)
 argument_list|,
 name|limit
@@ -5260,7 +5375,7 @@ name|reservationsContinueLooking
 operator|&&
 name|checkReservations
 operator|&&
-name|label
+name|nodePartition
 operator|.
 name|equals
 argument_list|(
@@ -5375,7 +5490,9 @@ operator|+
 name|user
 operator|.
 name|getUsed
-argument_list|()
+argument_list|(
+name|nodePartition
+argument_list|)
 operator|+
 literal|" limit: "
 operator|+
@@ -5551,7 +5668,7 @@ literal|0
 operator|)
 return|;
 block|}
-DECL|method|assignContainersOnNode (Resource clusterResource, FiCaSchedulerNode node, FiCaSchedulerApp application, Priority priority, RMContainer reservedContainer)
+DECL|method|assignContainersOnNode (Resource clusterResource, FiCaSchedulerNode node, FiCaSchedulerApp application, Priority priority, RMContainer reservedContainer, SchedulingMode schedulingMode)
 specifier|private
 name|CSAssignment
 name|assignContainersOnNode
@@ -5570,6 +5687,9 @@ name|priority
 parameter_list|,
 name|RMContainer
 name|reservedContainer
+parameter_list|,
+name|SchedulingMode
+name|schedulingMode
 parameter_list|)
 block|{
 name|CSAssignment
@@ -5633,6 +5753,8 @@ argument_list|,
 name|reservedContainer
 argument_list|,
 name|allocatedContainer
+argument_list|,
+name|schedulingMode
 argument_list|)
 expr_stmt|;
 if|if
@@ -5763,6 +5885,8 @@ argument_list|,
 name|reservedContainer
 argument_list|,
 name|allocatedContainer
+argument_list|,
+name|schedulingMode
 argument_list|)
 expr_stmt|;
 if|if
@@ -5898,6 +6022,8 @@ argument_list|,
 name|reservedContainer
 argument_list|,
 name|allocatedContainer
+argument_list|,
+name|schedulingMode
 argument_list|)
 expr_stmt|;
 comment|// update locality statistics
@@ -6180,7 +6306,7 @@ return|;
 block|}
 annotation|@
 name|Private
-DECL|method|checkLimitsToReserve (Resource clusterResource, FiCaSchedulerApp application, Resource capability)
+DECL|method|checkLimitsToReserve (Resource clusterResource, FiCaSchedulerApp application, Resource capability, String nodePartition, SchedulingMode schedulingMode)
 specifier|protected
 name|boolean
 name|checkLimitsToReserve
@@ -6193,6 +6319,12 @@ name|application
 parameter_list|,
 name|Resource
 name|capability
+parameter_list|,
+name|String
+name|nodePartition
+parameter_list|,
+name|SchedulingMode
+name|schedulingMode
 parameter_list|)
 block|{
 comment|// we can't reserve if we got here based on the limit
@@ -6208,7 +6340,9 @@ name|clusterResource
 argument_list|,
 name|capability
 argument_list|,
-literal|null
+name|nodePartition
+argument_list|,
+name|schedulingMode
 argument_list|)
 decl_stmt|;
 comment|// Check queue max-capacity limit,
@@ -6220,7 +6354,9 @@ name|canAssignToThisQueue
 argument_list|(
 name|clusterResource
 argument_list|,
-literal|null
+name|RMNodeLabelsManager
+operator|.
+name|NO_LABEL
 argument_list|,
 name|this
 operator|.
@@ -6232,6 +6368,8 @@ name|Resources
 operator|.
 name|none
 argument_list|()
+argument_list|,
+name|schedulingMode
 argument_list|)
 condition|)
 block|{
@@ -6274,7 +6412,7 @@ name|application
 argument_list|,
 literal|false
 argument_list|,
-literal|null
+name|nodePartition
 argument_list|)
 condition|)
 block|{
@@ -6302,7 +6440,7 @@ return|return
 literal|true
 return|;
 block|}
-DECL|method|assignNodeLocalContainers (Resource clusterResource, ResourceRequest nodeLocalResourceRequest, FiCaSchedulerNode node, FiCaSchedulerApp application, Priority priority, RMContainer reservedContainer, MutableObject allocatedContainer)
+DECL|method|assignNodeLocalContainers (Resource clusterResource, ResourceRequest nodeLocalResourceRequest, FiCaSchedulerNode node, FiCaSchedulerApp application, Priority priority, RMContainer reservedContainer, MutableObject allocatedContainer, SchedulingMode schedulingMode)
 specifier|private
 name|CSAssignment
 name|assignNodeLocalContainers
@@ -6327,6 +6465,9 @@ name|reservedContainer
 parameter_list|,
 name|MutableObject
 name|allocatedContainer
+parameter_list|,
+name|SchedulingMode
+name|schedulingMode
 parameter_list|)
 block|{
 if|if
@@ -6367,6 +6508,8 @@ argument_list|,
 name|reservedContainer
 argument_list|,
 name|allocatedContainer
+argument_list|,
+name|schedulingMode
 argument_list|)
 return|;
 block|}
@@ -6385,7 +6528,7 @@ name|NODE_LOCAL
 argument_list|)
 return|;
 block|}
-DECL|method|assignRackLocalContainers (Resource clusterResource, ResourceRequest rackLocalResourceRequest, FiCaSchedulerNode node, FiCaSchedulerApp application, Priority priority, RMContainer reservedContainer, MutableObject allocatedContainer)
+DECL|method|assignRackLocalContainers (Resource clusterResource, ResourceRequest rackLocalResourceRequest, FiCaSchedulerNode node, FiCaSchedulerApp application, Priority priority, RMContainer reservedContainer, MutableObject allocatedContainer, SchedulingMode schedulingMode)
 specifier|private
 name|CSAssignment
 name|assignRackLocalContainers
@@ -6410,6 +6553,9 @@ name|reservedContainer
 parameter_list|,
 name|MutableObject
 name|allocatedContainer
+parameter_list|,
+name|SchedulingMode
+name|schedulingMode
 parameter_list|)
 block|{
 if|if
@@ -6450,6 +6596,8 @@ argument_list|,
 name|reservedContainer
 argument_list|,
 name|allocatedContainer
+argument_list|,
+name|schedulingMode
 argument_list|)
 return|;
 block|}
@@ -6468,7 +6616,7 @@ name|RACK_LOCAL
 argument_list|)
 return|;
 block|}
-DECL|method|assignOffSwitchContainers (Resource clusterResource, ResourceRequest offSwitchResourceRequest, FiCaSchedulerNode node, FiCaSchedulerApp application, Priority priority, RMContainer reservedContainer, MutableObject allocatedContainer)
+DECL|method|assignOffSwitchContainers (Resource clusterResource, ResourceRequest offSwitchResourceRequest, FiCaSchedulerNode node, FiCaSchedulerApp application, Priority priority, RMContainer reservedContainer, MutableObject allocatedContainer, SchedulingMode schedulingMode)
 specifier|private
 name|CSAssignment
 name|assignOffSwitchContainers
@@ -6493,6 +6641,9 @@ name|reservedContainer
 parameter_list|,
 name|MutableObject
 name|allocatedContainer
+parameter_list|,
+name|SchedulingMode
+name|schedulingMode
 parameter_list|)
 block|{
 if|if
@@ -6533,6 +6684,8 @@ argument_list|,
 name|reservedContainer
 argument_list|,
 name|allocatedContainer
+argument_list|,
+name|schedulingMode
 argument_list|)
 return|;
 block|}
@@ -6548,6 +6701,27 @@ argument_list|,
 name|NodeType
 operator|.
 name|OFF_SWITCH
+argument_list|)
+return|;
+block|}
+DECL|method|getActualNodeLocalityDelay ()
+specifier|private
+name|int
+name|getActualNodeLocalityDelay
+parameter_list|()
+block|{
+return|return
+name|Math
+operator|.
+name|min
+argument_list|(
+name|scheduler
+operator|.
+name|getNumClusterNodes
+argument_list|()
+argument_list|,
+name|getNodeLocalityDelay
+argument_list|()
 argument_list|)
 return|;
 block|}
@@ -6708,22 +6882,10 @@ name|priority
 argument_list|)
 decl_stmt|;
 return|return
-operator|(
-name|Math
-operator|.
-name|min
-argument_list|(
-name|scheduler
-operator|.
-name|getNumClusterNodes
+name|getActualNodeLocalityDelay
 argument_list|()
-argument_list|,
-name|getNodeLocalityDelay
-argument_list|()
-argument_list|)
 operator|<
 name|missedOpportunities
-operator|)
 return|;
 block|}
 comment|// Check if we need containers on this host
@@ -6890,7 +7052,7 @@ literal|null
 argument_list|)
 return|;
 block|}
-DECL|method|assignContainer (Resource clusterResource, FiCaSchedulerNode node, FiCaSchedulerApp application, Priority priority, ResourceRequest request, NodeType type, RMContainer rmContainer, MutableObject createdContainer)
+DECL|method|assignContainer (Resource clusterResource, FiCaSchedulerNode node, FiCaSchedulerApp application, Priority priority, ResourceRequest request, NodeType type, RMContainer rmContainer, MutableObject createdContainer, SchedulingMode schedulingMode)
 specifier|private
 name|CSAssignment
 name|assignContainer
@@ -6918,6 +7080,9 @@ name|rmContainer
 parameter_list|,
 name|MutableObject
 name|createdContainer
+parameter_list|,
+name|SchedulingMode
+name|schedulingMode
 parameter_list|)
 block|{
 if|if
@@ -6969,17 +7134,16 @@ condition|(
 operator|!
 name|SchedulerUtils
 operator|.
-name|checkNodeLabelExpression
+name|checkResourceRequestMatchingNodePartition
 argument_list|(
+name|request
+argument_list|,
 name|node
 operator|.
-name|getLabels
+name|getPartition
 argument_list|()
 argument_list|,
-name|request
-operator|.
-name|getNodeLabelExpression
-argument_list|()
+name|schedulingMode
 argument_list|)
 condition|)
 block|{
@@ -7480,6 +7644,13 @@ argument_list|,
 name|application
 argument_list|,
 name|capability
+argument_list|,
+name|node
+operator|.
+name|getPartition
+argument_list|()
+argument_list|,
+name|schedulingMode
 argument_list|)
 condition|)
 block|{
@@ -7913,7 +8084,7 @@ argument_list|()
 argument_list|,
 name|node
 operator|.
-name|getLabels
+name|getPartition
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -7969,7 +8140,7 @@ expr_stmt|;
 block|}
 block|}
 block|}
-DECL|method|allocateResource (Resource clusterResource, SchedulerApplicationAttempt application, Resource resource, Set<String> nodeLabels)
+DECL|method|allocateResource (Resource clusterResource, SchedulerApplicationAttempt application, Resource resource, String nodePartition)
 specifier|synchronized
 name|void
 name|allocateResource
@@ -7983,11 +8154,8 @@ parameter_list|,
 name|Resource
 name|resource
 parameter_list|,
-name|Set
-argument_list|<
 name|String
-argument_list|>
-name|nodeLabels
+name|nodePartition
 parameter_list|)
 block|{
 name|super
@@ -7998,7 +8166,7 @@ name|clusterResource
 argument_list|,
 name|resource
 argument_list|,
-name|nodeLabels
+name|nodePartition
 argument_list|)
 expr_stmt|;
 comment|// Update user metrics
@@ -8024,7 +8192,7 @@ name|assignContainer
 argument_list|(
 name|resource
 argument_list|,
-name|nodeLabels
+name|nodePartition
 argument_list|)
 expr_stmt|;
 comment|// Note this is a bit unconventional since it gets the object and modifies
@@ -8101,7 +8269,7 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-DECL|method|releaseResource (Resource clusterResource, FiCaSchedulerApp application, Resource resource, Set<String> nodeLabels)
+DECL|method|releaseResource (Resource clusterResource, FiCaSchedulerApp application, Resource resource, String nodePartition)
 specifier|synchronized
 name|void
 name|releaseResource
@@ -8115,11 +8283,8 @@ parameter_list|,
 name|Resource
 name|resource
 parameter_list|,
-name|Set
-argument_list|<
 name|String
-argument_list|>
-name|nodeLabels
+name|nodePartition
 parameter_list|)
 block|{
 name|super
@@ -8130,7 +8295,7 @@ name|clusterResource
 argument_list|,
 name|resource
 argument_list|,
-name|nodeLabels
+name|nodePartition
 argument_list|)
 expr_stmt|;
 comment|// Update user metrics
@@ -8156,7 +8321,7 @@ name|releaseContainer
 argument_list|(
 name|resource
 argument_list|,
-name|nodeLabels
+name|nodePartition
 argument_list|)
 expr_stmt|;
 name|metrics
@@ -8219,7 +8384,16 @@ name|multiplyAndNormalizeUp
 argument_list|(
 name|resourceCalculator
 argument_list|,
+name|labelManager
+operator|.
+name|getResourceByLabel
+argument_list|(
+name|RMNodeLabelsManager
+operator|.
+name|NO_LABEL
+argument_list|,
 name|clusterResource
+argument_list|)
 argument_list|,
 name|queueCapacities
 operator|.
@@ -8395,7 +8569,13 @@ operator|.
 name|none
 argument_list|()
 argument_list|,
-literal|null
+name|RMNodeLabelsManager
+operator|.
+name|NO_LABEL
+argument_list|,
+name|SchedulingMode
+operator|.
+name|RESPECT_PARTITION_EXCLUSIVITY
 argument_list|)
 expr_stmt|;
 block|}
@@ -8582,7 +8762,7 @@ name|pendingApplications
 expr_stmt|;
 block|}
 block|}
-DECL|method|assignContainer (Resource resource, Set<String> nodeLabels)
+DECL|method|assignContainer (Resource resource, String nodePartition)
 specifier|public
 name|void
 name|assignContainer
@@ -8590,56 +8770,21 @@ parameter_list|(
 name|Resource
 name|resource
 parameter_list|,
-name|Set
-argument_list|<
 name|String
-argument_list|>
-name|nodeLabels
+name|nodePartition
 parameter_list|)
 block|{
-if|if
-condition|(
-name|nodeLabels
-operator|==
-literal|null
-operator|||
-name|nodeLabels
-operator|.
-name|isEmpty
-argument_list|()
-condition|)
-block|{
 name|userResourceUsage
 operator|.
 name|incUsed
 argument_list|(
-name|resource
-argument_list|)
-expr_stmt|;
-block|}
-else|else
-block|{
-for|for
-control|(
-name|String
-name|label
-range|:
-name|nodeLabels
-control|)
-block|{
-name|userResourceUsage
-operator|.
-name|incUsed
-argument_list|(
-name|label
+name|nodePartition
 argument_list|,
 name|resource
 argument_list|)
 expr_stmt|;
 block|}
-block|}
-block|}
-DECL|method|releaseContainer (Resource resource, Set<String> nodeLabels)
+DECL|method|releaseContainer (Resource resource, String nodePartition)
 specifier|public
 name|void
 name|releaseContainer
@@ -8647,54 +8792,19 @@ parameter_list|(
 name|Resource
 name|resource
 parameter_list|,
-name|Set
-argument_list|<
 name|String
-argument_list|>
-name|nodeLabels
+name|nodePartition
 parameter_list|)
 block|{
-if|if
-condition|(
-name|nodeLabels
-operator|==
-literal|null
-operator|||
-name|nodeLabels
-operator|.
-name|isEmpty
-argument_list|()
-condition|)
-block|{
 name|userResourceUsage
 operator|.
 name|decUsed
 argument_list|(
-name|resource
-argument_list|)
-expr_stmt|;
-block|}
-else|else
-block|{
-for|for
-control|(
-name|String
-name|label
-range|:
-name|nodeLabels
-control|)
-block|{
-name|userResourceUsage
-operator|.
-name|decUsed
-argument_list|(
-name|label
+name|nodePartition
 argument_list|,
 name|resource
 argument_list|)
 expr_stmt|;
-block|}
-block|}
 block|}
 DECL|method|getUserResourceLimit ()
 specifier|public
@@ -8795,7 +8905,7 @@ argument_list|()
 argument_list|,
 name|node
 operator|.
-name|getLabels
+name|getPartition
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -8983,7 +9093,7 @@ argument_list|()
 argument_list|,
 name|node
 operator|.
-name|getLabels
+name|getPartition
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -9107,7 +9217,7 @@ argument_list|()
 argument_list|,
 name|node
 operator|.
-name|getLabels
+name|getPartition
 argument_list|()
 argument_list|)
 expr_stmt|;

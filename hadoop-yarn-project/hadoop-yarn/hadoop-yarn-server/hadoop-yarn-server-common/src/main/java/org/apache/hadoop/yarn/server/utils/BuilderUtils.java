@@ -2286,6 +2286,16 @@ name|getNumContainers
 argument_list|()
 argument_list|)
 expr_stmt|;
+name|request
+operator|.
+name|setNodeLabelExpression
+argument_list|(
+name|r
+operator|.
+name|getNodeLabelExpression
+argument_list|()
+argument_list|)
+expr_stmt|;
 return|return
 name|request
 return|;

@@ -587,8 +587,8 @@ name|String
 name|queue
 parameter_list|)
 function_decl|;
-comment|/**    * Assign containers to applications in the queue or it's children (if any).    * @param clusterResource the resource of the cluster.    * @param node node on which resources are available    * @param resourceLimits how much overall resource of this queue can use.     * @return the assignment    */
-DECL|method|assignContainers (Resource clusterResource, FiCaSchedulerNode node, ResourceLimits resourceLimits)
+comment|/**    * Assign containers to applications in the queue or it's children (if any).    * @param clusterResource the resource of the cluster.    * @param node node on which resources are available    * @param resourceLimits how much overall resource of this queue can use.     * @param schedulingMode Type of exclusive check when assign container on a     * NodeManager, see {@link SchedulingMode}.    * @return the assignment    */
+DECL|method|assignContainers (Resource clusterResource, FiCaSchedulerNode node, ResourceLimits resourceLimits, SchedulingMode schedulingMode)
 specifier|public
 name|CSAssignment
 name|assignContainers
@@ -601,6 +601,9 @@ name|node
 parameter_list|,
 name|ResourceLimits
 name|resourceLimits
+parameter_list|,
+name|SchedulingMode
+name|schedulingMode
 parameter_list|)
 function_decl|;
 comment|/**    * A container assigned to the queue has completed.    * @param clusterResource the resource of the cluster    * @param application application to which the container was assigned    * @param node node on which the container completed    * @param container completed container,     *<code>null</code> if it was just a reservation    * @param containerStatus<code>ContainerStatus</code> for the completed     *                        container    * @param childQueue<code>CSQueue</code> to reinsert in childQueues     * @param event event to be sent to the container    * @param sortQueues indicates whether it should re-sort the queues    */

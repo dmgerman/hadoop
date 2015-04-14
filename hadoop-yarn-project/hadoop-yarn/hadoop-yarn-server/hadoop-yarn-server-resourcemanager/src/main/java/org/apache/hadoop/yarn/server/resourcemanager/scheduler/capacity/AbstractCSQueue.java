@@ -50,16 +50,6 @@ name|java
 operator|.
 name|util
 operator|.
-name|HashSet
-import|;
-end_import
-
-begin_import
-import|import
-name|java
-operator|.
-name|util
-operator|.
 name|Map
 import|;
 end_import
@@ -312,22 +302,6 @@ name|hadoop
 operator|.
 name|yarn
 operator|.
-name|nodelabels
-operator|.
-name|CommonNodeLabelsManager
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|yarn
-operator|.
 name|security
 operator|.
 name|AccessType
@@ -401,6 +375,26 @@ operator|.
 name|nodelabels
 operator|.
 name|RMNodeLabelsManager
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|server
+operator|.
+name|resourcemanager
+operator|.
+name|scheduler
+operator|.
+name|NodeType
 import|;
 end_import
 
@@ -557,6 +551,41 @@ argument_list|(
 name|AbstractCSQueue
 operator|.
 name|class
+argument_list|)
+decl_stmt|;
+DECL|field|NULL_ASSIGNMENT
+specifier|static
+specifier|final
+name|CSAssignment
+name|NULL_ASSIGNMENT
+init|=
+operator|new
+name|CSAssignment
+argument_list|(
+name|Resources
+operator|.
+name|createResource
+argument_list|(
+literal|0
+argument_list|,
+literal|0
+argument_list|)
+argument_list|,
+name|NodeType
+operator|.
+name|NODE_LOCAL
+argument_list|)
+decl_stmt|;
+DECL|field|SKIP_ASSIGNMENT
+specifier|static
+specifier|final
+name|CSAssignment
+name|SKIP_ASSIGNMENT
+init|=
+operator|new
+name|CSAssignment
+argument_list|(
+literal|true
 argument_list|)
 decl_stmt|;
 DECL|field|parent
@@ -1857,7 +1886,7 @@ return|return
 name|minimumAllocation
 return|;
 block|}
-DECL|method|allocateResource (Resource clusterResource, Resource resource, Set<String> nodeLabels)
+DECL|method|allocateResource (Resource clusterResource, Resource resource, String nodePartition)
 specifier|synchronized
 name|void
 name|allocateResource
@@ -1868,62 +1897,19 @@ parameter_list|,
 name|Resource
 name|resource
 parameter_list|,
-name|Set
-argument_list|<
 name|String
-argument_list|>
-name|nodeLabels
+name|nodePartition
 parameter_list|)
 block|{
-comment|// Update usedResources by labels
-if|if
-condition|(
-name|nodeLabels
-operator|==
-literal|null
-operator|||
-name|nodeLabels
-operator|.
-name|isEmpty
-argument_list|()
-condition|)
-block|{
 name|queueUsage
 operator|.
 name|incUsed
 argument_list|(
-name|resource
-argument_list|)
-expr_stmt|;
-block|}
-else|else
-block|{
-for|for
-control|(
-name|String
-name|label
-range|:
-name|Sets
-operator|.
-name|intersection
-argument_list|(
-name|accessibleLabels
-argument_list|,
-name|nodeLabels
-argument_list|)
-control|)
-block|{
-name|queueUsage
-operator|.
-name|incUsed
-argument_list|(
-name|label
+name|nodePartition
 argument_list|,
 name|resource
 argument_list|)
 expr_stmt|;
-block|}
-block|}
 operator|++
 name|numContainers
 expr_stmt|;
@@ -1944,7 +1930,7 @@ name|minimumAllocation
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|releaseResource (Resource clusterResource, Resource resource, Set<String> nodeLabels)
+DECL|method|releaseResource (Resource clusterResource, Resource resource, String nodePartition)
 specifier|protected
 specifier|synchronized
 name|void
@@ -1956,62 +1942,19 @@ parameter_list|,
 name|Resource
 name|resource
 parameter_list|,
-name|Set
-argument_list|<
 name|String
-argument_list|>
-name|nodeLabels
+name|nodePartition
 parameter_list|)
 block|{
-comment|// Update usedResources by labels
-if|if
-condition|(
-literal|null
-operator|==
-name|nodeLabels
-operator|||
-name|nodeLabels
-operator|.
-name|isEmpty
-argument_list|()
-condition|)
-block|{
 name|queueUsage
 operator|.
 name|decUsed
 argument_list|(
-name|resource
-argument_list|)
-expr_stmt|;
-block|}
-else|else
-block|{
-for|for
-control|(
-name|String
-name|label
-range|:
-name|Sets
-operator|.
-name|intersection
-argument_list|(
-name|accessibleLabels
-argument_list|,
-name|nodeLabels
-argument_list|)
-control|)
-block|{
-name|queueUsage
-operator|.
-name|decUsed
-argument_list|(
-name|label
+name|nodePartition
 argument_list|,
 name|resource
 argument_list|)
 expr_stmt|;
-block|}
-block|}
 name|CSQueueUtils
 operator|.
 name|updateQueueStatistics
@@ -2194,22 +2137,34 @@ argument_list|()
 argument_list|)
 return|;
 block|}
-DECL|method|getCurrentLimitResource (String nodeLabel, Resource clusterResource, ResourceLimits currentResourceLimits)
+DECL|method|getCurrentLimitResource (String nodePartition, Resource clusterResource, ResourceLimits currentResourceLimits, SchedulingMode schedulingMode)
 specifier|private
 name|Resource
 name|getCurrentLimitResource
 parameter_list|(
 name|String
-name|nodeLabel
+name|nodePartition
 parameter_list|,
 name|Resource
 name|clusterResource
 parameter_list|,
 name|ResourceLimits
 name|currentResourceLimits
+parameter_list|,
+name|SchedulingMode
+name|schedulingMode
 parameter_list|)
 block|{
-comment|/*      * Current limit resource: For labeled resource: limit = queue-max-resource      * (TODO, this part need update when we support labeled-limit) For      * non-labeled resource: limit = min(queue-max-resource,      * limit-set-by-parent)      */
+if|if
+condition|(
+name|schedulingMode
+operator|==
+name|SchedulingMode
+operator|.
+name|RESPECT_PARTITION_EXCLUSIVITY
+condition|)
+block|{
+comment|/*        * Current limit resource: For labeled resource: limit = queue-max-resource        * (TODO, this part need update when we support labeled-limit) For        * non-labeled resource: limit = min(queue-max-resource,        * limit-set-by-parent)        */
 name|Resource
 name|queueMaxResource
 init|=
@@ -2223,7 +2178,7 @@ name|labelManager
 operator|.
 name|getResourceByLabel
 argument_list|(
-name|nodeLabel
+name|nodePartition
 argument_list|,
 name|clusterResource
 argument_list|)
@@ -2232,7 +2187,7 @@ name|queueCapacities
 operator|.
 name|getAbsoluteMaximumCapacity
 argument_list|(
-name|nodeLabel
+name|nodePartition
 argument_list|)
 argument_list|,
 name|minimumAllocation
@@ -2240,7 +2195,7 @@ argument_list|)
 decl_stmt|;
 if|if
 condition|(
-name|nodeLabel
+name|nodePartition
 operator|.
 name|equals
 argument_list|(
@@ -2272,7 +2227,37 @@ return|return
 name|queueMaxResource
 return|;
 block|}
-DECL|method|canAssignToThisQueue (Resource clusterResource, Set<String> nodeLabels, ResourceLimits currentResourceLimits, Resource nowRequired, Resource resourceCouldBeUnreserved)
+elseif|else
+if|if
+condition|(
+name|schedulingMode
+operator|==
+name|SchedulingMode
+operator|.
+name|IGNORE_PARTITION_EXCLUSIVITY
+condition|)
+block|{
+comment|// When we doing non-exclusive resource allocation, maximum capacity of
+comment|// all queues on this label equals to total resource with the label.
+return|return
+name|labelManager
+operator|.
+name|getResourceByLabel
+argument_list|(
+name|nodePartition
+argument_list|,
+name|clusterResource
+argument_list|)
+return|;
+block|}
+return|return
+name|Resources
+operator|.
+name|none
+argument_list|()
+return|;
+block|}
+DECL|method|canAssignToThisQueue (Resource clusterResource, String nodePartition, ResourceLimits currentResourceLimits, Resource nowRequired, Resource resourceCouldBeUnreserved, SchedulingMode schedulingMode)
 specifier|synchronized
 name|boolean
 name|canAssignToThisQueue
@@ -2280,11 +2265,8 @@ parameter_list|(
 name|Resource
 name|clusterResource
 parameter_list|,
-name|Set
-argument_list|<
 name|String
-argument_list|>
-name|nodeLabels
+name|nodePartition
 parameter_list|,
 name|ResourceLimits
 name|currentResourceLimits
@@ -2294,86 +2276,10 @@ name|nowRequired
 parameter_list|,
 name|Resource
 name|resourceCouldBeUnreserved
+parameter_list|,
+name|SchedulingMode
+name|schedulingMode
 parameter_list|)
-block|{
-comment|// Get label of this queue can access, it's (nodeLabel AND queueLabel)
-name|Set
-argument_list|<
-name|String
-argument_list|>
-name|labelCanAccess
-decl_stmt|;
-if|if
-condition|(
-literal|null
-operator|==
-name|nodeLabels
-operator|||
-name|nodeLabels
-operator|.
-name|isEmpty
-argument_list|()
-condition|)
-block|{
-name|labelCanAccess
-operator|=
-operator|new
-name|HashSet
-argument_list|<
-name|String
-argument_list|>
-argument_list|()
-expr_stmt|;
-comment|// Any queue can always access any node without label
-name|labelCanAccess
-operator|.
-name|add
-argument_list|(
-name|RMNodeLabelsManager
-operator|.
-name|NO_LABEL
-argument_list|)
-expr_stmt|;
-block|}
-else|else
-block|{
-name|labelCanAccess
-operator|=
-operator|new
-name|HashSet
-argument_list|<
-name|String
-argument_list|>
-argument_list|(
-name|accessibleLabels
-operator|.
-name|contains
-argument_list|(
-name|CommonNodeLabelsManager
-operator|.
-name|ANY
-argument_list|)
-condition|?
-name|nodeLabels
-else|:
-name|Sets
-operator|.
-name|intersection
-argument_list|(
-name|accessibleLabels
-argument_list|,
-name|nodeLabels
-argument_list|)
-argument_list|)
-expr_stmt|;
-block|}
-for|for
-control|(
-name|String
-name|label
-range|:
-name|labelCanAccess
-control|)
 block|{
 comment|// New total resource = used + required
 name|Resource
@@ -2387,22 +2293,35 @@ name|queueUsage
 operator|.
 name|getUsed
 argument_list|(
-name|label
+name|nodePartition
 argument_list|)
 argument_list|,
 name|nowRequired
 argument_list|)
 decl_stmt|;
+comment|// Get current limited resource:
+comment|// - When doing RESPECT_PARTITION_EXCLUSIVITY allocation, we will respect
+comment|// queues' max capacity.
+comment|// - When doing IGNORE_PARTITION_EXCLUSIVITY allocation, we will not respect
+comment|// queue's max capacity, queue's max capacity on the partition will be
+comment|// considered to be 100%. Which is a queue can use all resource in the
+comment|// partition.
+comment|// Doing this because: for non-exclusive allocation, we make sure there's
+comment|// idle resource on the partition, to avoid wastage, such resource will be
+comment|// leveraged as much as we can, and preemption policy will reclaim it back
+comment|// when partitoned-resource-request comes back.
 name|Resource
 name|currentLimitResource
 init|=
 name|getCurrentLimitResource
 argument_list|(
-name|label
+name|nodePartition
 argument_list|,
 name|clusterResource
 argument_list|,
 name|currentResourceLimits
+argument_list|,
+name|schedulingMode
 argument_list|)
 decl_stmt|;
 comment|// if reservation continous looking enabled, check to see if could we
@@ -2415,7 +2334,7 @@ name|this
 operator|.
 name|reservationsContinueLooking
 operator|&&
-name|label
+name|nodePartition
 operator|.
 name|equals
 argument_list|(
@@ -2519,8 +2438,7 @@ literal|true
 return|;
 block|}
 block|}
-comment|// Otherwise, if any of the label of this node beyond queue limit, we
-comment|// cannot allocate on this node. Consider a small epsilon here.
+comment|// Check if we over current-resource-limit computed.
 if|if
 condition|(
 name|Resources
@@ -2556,9 +2474,9 @@ argument_list|(
 name|getQueueName
 argument_list|()
 operator|+
-literal|"Check assign to queue, label="
+literal|"Check assign to queue, nodePartition="
 operator|+
-name|label
+name|nodePartition
 operator|+
 literal|" usedResources: "
 operator|+
@@ -2566,7 +2484,7 @@ name|queueUsage
 operator|.
 name|getUsed
 argument_list|(
-name|label
+name|nodePartition
 argument_list|)
 operator|+
 literal|" clusterResources: "
@@ -2587,14 +2505,14 @@ name|queueUsage
 operator|.
 name|getUsed
 argument_list|(
-name|label
+name|nodePartition
 argument_list|)
 argument_list|,
 name|labelManager
 operator|.
 name|getResourceByLabel
 argument_list|(
-name|label
+name|nodePartition
 argument_list|,
 name|clusterResource
 argument_list|)
@@ -2606,7 +2524,7 @@ name|queueCapacities
 operator|.
 name|getAbsoluteMaximumCapacity
 argument_list|(
-name|label
+name|nodePartition
 argument_list|)
 operator|+
 literal|")"
@@ -2615,12 +2533,6 @@ expr_stmt|;
 block|}
 return|return
 literal|true
-return|;
-block|}
-comment|// Actually, this will not happen, since labelCanAccess will be always
-comment|// non-empty
-return|return
-literal|false
 return|;
 block|}
 annotation|@
@@ -2734,6 +2646,112 @@ name|resourceToDec
 argument_list|)
 expr_stmt|;
 block|}
+block|}
+comment|/**    * Return if the queue has pending resource on given nodePartition and    * schedulingMode.     */
+DECL|method|hasPendingResourceRequest (String nodePartition, Resource cluster, SchedulingMode schedulingMode)
+name|boolean
+name|hasPendingResourceRequest
+parameter_list|(
+name|String
+name|nodePartition
+parameter_list|,
+name|Resource
+name|cluster
+parameter_list|,
+name|SchedulingMode
+name|schedulingMode
+parameter_list|)
+block|{
+return|return
+name|SchedulerUtils
+operator|.
+name|hasPendingResourceRequest
+argument_list|(
+name|resourceCalculator
+argument_list|,
+name|queueUsage
+argument_list|,
+name|nodePartition
+argument_list|,
+name|cluster
+argument_list|,
+name|schedulingMode
+argument_list|)
+return|;
+block|}
+DECL|method|accessibleToPartition (String nodePartition)
+name|boolean
+name|accessibleToPartition
+parameter_list|(
+name|String
+name|nodePartition
+parameter_list|)
+block|{
+comment|// if queue's label is *, it can access any node
+if|if
+condition|(
+name|accessibleLabels
+operator|!=
+literal|null
+operator|&&
+name|accessibleLabels
+operator|.
+name|contains
+argument_list|(
+name|RMNodeLabelsManager
+operator|.
+name|ANY
+argument_list|)
+condition|)
+block|{
+return|return
+literal|true
+return|;
+block|}
+comment|// any queue can access to a node without label
+if|if
+condition|(
+name|nodePartition
+operator|==
+literal|null
+operator|||
+name|nodePartition
+operator|.
+name|equals
+argument_list|(
+name|RMNodeLabelsManager
+operator|.
+name|NO_LABEL
+argument_list|)
+condition|)
+block|{
+return|return
+literal|true
+return|;
+block|}
+comment|// a queue can access to a node only if it contains any label of the node
+if|if
+condition|(
+name|accessibleLabels
+operator|!=
+literal|null
+operator|&&
+name|accessibleLabels
+operator|.
+name|contains
+argument_list|(
+name|nodePartition
+argument_list|)
+condition|)
+block|{
+return|return
+literal|true
+return|;
+block|}
+comment|// sorry, you cannot access
+return|return
+literal|false
+return|;
 block|}
 block|}
 end_class
