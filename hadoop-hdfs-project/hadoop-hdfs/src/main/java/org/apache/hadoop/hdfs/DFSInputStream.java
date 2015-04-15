@@ -5672,7 +5672,10 @@ if|if
 condition|(
 name|nread
 operator|!=
-name|len
+name|lengths
+index|[
+name|i
+index|]
 condition|)
 block|{
 throw|throw
@@ -5683,7 +5686,10 @@ literal|"truncated return from reader.read(): "
 operator|+
 literal|"excpected "
 operator|+
-name|len
+name|lengths
+index|[
+name|i
+index|]
 operator|+
 literal|", got "
 operator|+

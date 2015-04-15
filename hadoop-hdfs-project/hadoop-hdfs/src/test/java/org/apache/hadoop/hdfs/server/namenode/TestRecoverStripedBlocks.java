@@ -548,7 +548,7 @@ literal|4
 decl_stmt|;
 name|DFSTestUtil
 operator|.
-name|createECFile
+name|createStripedFile
 argument_list|(
 name|cluster
 argument_list|,
@@ -559,6 +559,8 @@ argument_list|,
 name|numBlocks
 argument_list|,
 literal|1
+argument_list|,
+literal|true
 argument_list|)
 expr_stmt|;
 comment|// make sure the file is complete in NN
