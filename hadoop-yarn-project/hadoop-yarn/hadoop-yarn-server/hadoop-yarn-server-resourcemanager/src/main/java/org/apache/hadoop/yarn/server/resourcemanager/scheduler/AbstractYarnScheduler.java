@@ -2513,6 +2513,11 @@ name|status
 operator|.
 name|getCreationTime
 argument_list|()
+argument_list|,
+name|status
+operator|.
+name|getNodeLabelExpression
+argument_list|()
 argument_list|)
 decl_stmt|;
 return|return

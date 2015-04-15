@@ -2209,6 +2209,9 @@ name|createTime
 parameter_list|,
 name|LogAggregationContext
 name|logAggregationContext
+parameter_list|,
+name|String
+name|nodeLabelExp
 parameter_list|)
 block|{
 name|numRetries
@@ -2232,6 +2235,8 @@ argument_list|,
 name|createTime
 argument_list|,
 name|logAggregationContext
+argument_list|,
+name|nodeLabelExp
 argument_list|)
 return|;
 block|}

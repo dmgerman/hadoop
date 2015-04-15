@@ -1015,6 +1015,11 @@ argument_list|,
 name|this
 operator|.
 name|rmContext
+argument_list|,
+name|request
+operator|.
+name|getNodeLabelExpression
+argument_list|()
 argument_list|)
 decl_stmt|;
 comment|// Add it to allContainers list.

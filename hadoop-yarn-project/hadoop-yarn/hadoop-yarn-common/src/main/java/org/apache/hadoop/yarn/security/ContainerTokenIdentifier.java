@@ -362,6 +362,22 @@ name|hadoop
 operator|.
 name|yarn
 operator|.
+name|nodelabels
+operator|.
+name|CommonNodeLabelsManager
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
 name|proto
 operator|.
 name|YarnSecurityTokenProtos
@@ -484,10 +500,14 @@ argument_list|,
 name|creationTime
 argument_list|,
 literal|null
+argument_list|,
+name|CommonNodeLabelsManager
+operator|.
+name|NO_LABEL
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|ContainerTokenIdentifier (ContainerId containerID, String hostName, String appSubmitter, Resource r, long expiryTimeStamp, int masterKeyId, long rmIdentifier, Priority priority, long creationTime, LogAggregationContext logAggregationContext)
+DECL|method|ContainerTokenIdentifier (ContainerId containerID, String hostName, String appSubmitter, Resource r, long expiryTimeStamp, int masterKeyId, long rmIdentifier, Priority priority, long creationTime, LogAggregationContext logAggregationContext, String nodeLabelExpression)
 specifier|public
 name|ContainerTokenIdentifier
 parameter_list|(
@@ -520,6 +540,9 @@ name|creationTime
 parameter_list|,
 name|LogAggregationContext
 name|logAggregationContext
+parameter_list|,
+name|String
+name|nodeLabelExpression
 parameter_list|)
 block|{
 name|ContainerTokenIdentifierProto
@@ -663,6 +686,21 @@ operator|)
 operator|.
 name|getProto
 argument_list|()
+argument_list|)
+expr_stmt|;
+block|}
+if|if
+condition|(
+name|nodeLabelExpression
+operator|!=
+literal|null
+condition|)
+block|{
+name|builder
+operator|.
+name|setNodeLabelExpression
+argument_list|(
+name|nodeLabelExpression
 argument_list|)
 expr_stmt|;
 block|}
@@ -1003,6 +1041,34 @@ name|createRemoteUser
 argument_list|(
 name|containerId
 argument_list|)
+return|;
+block|}
+comment|/**    * Get the node-label-expression in the original ResourceRequest    */
+DECL|method|getNodeLabelExpression ()
+specifier|public
+name|String
+name|getNodeLabelExpression
+parameter_list|()
+block|{
+if|if
+condition|(
+name|proto
+operator|.
+name|hasNodeLabelExpression
+argument_list|()
+condition|)
+block|{
+return|return
+name|proto
+operator|.
+name|getNodeLabelExpression
+argument_list|()
+return|;
+block|}
+return|return
+name|CommonNodeLabelsManager
+operator|.
+name|NO_LABEL
 return|;
 block|}
 comment|// TODO: Needed?

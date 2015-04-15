@@ -2781,6 +2781,11 @@ name|containerTokenIdentifier
 operator|.
 name|getCreationTime
 argument_list|()
+argument_list|,
+name|containerTokenIdentifier
+operator|.
+name|getNodeLabelExpression
+argument_list|()
 argument_list|)
 return|;
 block|}

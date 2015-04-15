@@ -328,6 +328,11 @@ name|String
 name|getNodeHttpAddress
 parameter_list|()
 function_decl|;
+DECL|method|getNodeLabelExpression ()
+name|String
+name|getNodeLabelExpression
+parameter_list|()
+function_decl|;
 block|}
 end_interface
 

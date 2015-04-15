@@ -841,11 +841,13 @@ argument_list|,
 name|createTime
 argument_list|,
 literal|null
+argument_list|,
+literal|null
 argument_list|)
 return|;
 block|}
 comment|/**    * Helper function for creating ContainerTokens    *     * @param containerId    * @param nodeId    * @param appSubmitter    * @param capability    * @param priority    * @param createTime    * @param logAggregationContext    * @return the container-token    */
-DECL|method|createContainerToken (ContainerId containerId, NodeId nodeId, String appSubmitter, Resource capability, Priority priority, long createTime, LogAggregationContext logAggregationContext)
+DECL|method|createContainerToken (ContainerId containerId, NodeId nodeId, String appSubmitter, Resource capability, Priority priority, long createTime, LogAggregationContext logAggregationContext, String nodeLabelExpression)
 specifier|public
 name|Token
 name|createContainerToken
@@ -870,6 +872,9 @@ name|createTime
 parameter_list|,
 name|LogAggregationContext
 name|logAggregationContext
+parameter_list|,
+name|String
+name|nodeLabelExpression
 parameter_list|)
 block|{
 name|byte
@@ -937,6 +942,8 @@ argument_list|,
 name|createTime
 argument_list|,
 name|logAggregationContext
+argument_list|,
+name|nodeLabelExpression
 argument_list|)
 expr_stmt|;
 name|password
