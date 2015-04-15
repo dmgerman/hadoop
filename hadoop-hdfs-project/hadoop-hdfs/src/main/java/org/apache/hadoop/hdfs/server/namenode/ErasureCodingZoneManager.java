@@ -104,7 +104,7 @@ name|protocol
 operator|.
 name|proto
 operator|.
-name|HdfsProtos
+name|ErasureCodingProtos
 operator|.
 name|ECSchemaProto
 import|;
