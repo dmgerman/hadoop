@@ -203,11 +203,9 @@ literal|1
 condition|)
 block|{
 comment|// we only support one source dir which must be a snapshottable directory
-name|DistCp
-operator|.
-name|LOG
-operator|.
-name|warn
+throw|throw
+operator|new
+name|IllegalArgumentException
 argument_list|(
 name|sourcePaths
 operator|.
@@ -216,10 +214,7 @@ argument_list|()
 operator|+
 literal|" source paths are provided"
 argument_list|)
-expr_stmt|;
-return|return
-literal|false
-return|;
+throw|;
 block|}
 specifier|final
 name|Path
@@ -282,20 +277,15 @@ name|DistributedFileSystem
 operator|)
 condition|)
 block|{
-name|DistCp
-operator|.
-name|LOG
-operator|.
-name|warn
+throw|throw
+operator|new
+name|IllegalArgumentException
 argument_list|(
-literal|"To use diff-based distcp, the FileSystems needs to"
+literal|"The FileSystems needs to"
 operator|+
-literal|" be DistributedFileSystem"
+literal|" be DistributedFileSystem for using snapshot-diff-based distcp"
 argument_list|)
-expr_stmt|;
-return|return
-literal|false
-return|;
+throw|;
 block|}
 specifier|final
 name|DistributedFileSystem
@@ -329,6 +319,27 @@ name|targetDir
 argument_list|)
 condition|)
 block|{
+comment|// set the source path using the snapshot path
+name|inputOptions
+operator|.
+name|setSourcePaths
+argument_list|(
+name|Arrays
+operator|.
+name|asList
+argument_list|(
+name|getSourceSnapshotPath
+argument_list|(
+name|sourceDir
+argument_list|,
+name|inputOptions
+operator|.
+name|getToSnapshot
+argument_list|()
+argument_list|)
+argument_list|)
+argument_list|)
+expr_stmt|;
 return|return
 literal|false
 return|;
