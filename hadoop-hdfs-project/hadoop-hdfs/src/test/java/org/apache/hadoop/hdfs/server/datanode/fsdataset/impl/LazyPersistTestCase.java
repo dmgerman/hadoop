@@ -617,6 +617,17 @@ specifier|abstract
 class|class
 name|LazyPersistTestCase
 block|{
+DECL|field|LAZY_PERSIST_POLICY_ID
+specifier|static
+specifier|final
+name|byte
+name|LAZY_PERSIST_POLICY_ID
+init|=
+operator|(
+name|byte
+operator|)
+literal|15
+decl_stmt|;
 static|static
 block|{
 name|DFSTestUtil
