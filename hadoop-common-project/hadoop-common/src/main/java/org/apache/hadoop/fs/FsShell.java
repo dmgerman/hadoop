@@ -513,6 +513,16 @@ name|getCurrentTrashDir
 argument_list|()
 return|;
 block|}
+DECL|method|getUsagePrefix ()
+specifier|protected
+name|String
+name|getUsagePrefix
+parameter_list|()
+block|{
+return|return
+name|usagePrefix
+return|;
+block|}
 comment|// NOTE: Usage/Help are inner classes to allow access to outer methods
 comment|// that access commandFactory
 comment|/**    *  Display help for commands with their short usage and long description    */
@@ -859,7 +869,8 @@ name|out
 operator|.
 name|println
 argument_list|(
-name|usagePrefix
+name|getUsagePrefix
+argument_list|()
 argument_list|)
 expr_stmt|;
 comment|// display list of short usages
@@ -987,7 +998,8 @@ name|out
 operator|.
 name|println
 argument_list|(
-name|usagePrefix
+name|getUsagePrefix
+argument_list|()
 operator|+
 literal|" "
 operator|+

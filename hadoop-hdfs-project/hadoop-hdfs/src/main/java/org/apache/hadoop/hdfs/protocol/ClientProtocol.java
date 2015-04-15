@@ -2523,6 +2523,20 @@ parameter_list|()
 throws|throws
 name|IOException
 function_decl|;
+comment|/**    * Get the information about the EC zone for the path    *     * @param src path to get the info for    * @throws IOException    */
+annotation|@
+name|Idempotent
+DECL|method|getErasureCodingZoneInfo (String src)
+specifier|public
+name|ECZoneInfo
+name|getErasureCodingZoneInfo
+parameter_list|(
+name|String
+name|src
+parameter_list|)
+throws|throws
+name|IOException
+function_decl|;
 block|}
 end_interface
 
