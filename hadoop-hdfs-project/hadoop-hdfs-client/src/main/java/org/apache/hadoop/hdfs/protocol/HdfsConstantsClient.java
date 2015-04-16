@@ -62,6 +62,13 @@ name|BLOCK_STORAGE_POLICY_ID_UNSPECIFIED
 init|=
 literal|0
 decl_stmt|;
+comment|/**    * A prefix put before the namenode URI inside the "service" field    * of a delgation token, indicating that the URI is a logical (HA)    * URI.    */
+DECL|field|HA_DT_SERVICE_PREFIX
+name|String
+name|HA_DT_SERVICE_PREFIX
+init|=
+literal|"ha-"
+decl_stmt|;
 block|}
 end_interface
 

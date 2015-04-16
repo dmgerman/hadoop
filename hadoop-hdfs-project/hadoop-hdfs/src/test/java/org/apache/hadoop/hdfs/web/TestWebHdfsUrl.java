@@ -470,9 +470,9 @@ name|URI
 operator|.
 name|create
 argument_list|(
-name|WebHdfsFileSystem
+name|WebHdfsConstants
 operator|.
-name|SCHEME
+name|WEBHDFS_SCHEME
 operator|+
 literal|"://"
 operator|+

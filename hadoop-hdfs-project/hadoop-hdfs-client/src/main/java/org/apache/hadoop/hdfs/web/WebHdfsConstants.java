@@ -72,7 +72,24 @@ specifier|public
 class|class
 name|WebHdfsConstants
 block|{
-comment|/** Delegation token kind */
+DECL|field|WEBHDFS_SCHEME
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|WEBHDFS_SCHEME
+init|=
+literal|"webhdfs"
+decl_stmt|;
+DECL|field|SWEBHDFS_SCHEME
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|SWEBHDFS_SCHEME
+init|=
+literal|"swebhdfs"
+decl_stmt|;
 DECL|field|WEBHDFS_TOKEN_KIND
 specifier|public
 specifier|static

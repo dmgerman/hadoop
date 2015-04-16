@@ -1222,7 +1222,7 @@ condition|)
 block|{
 name|dtService
 operator|=
-name|HAUtil
+name|HAUtilClient
 operator|.
 name|buildTokenServiceForLogicalUri
 argument_list|(
@@ -1508,7 +1508,7 @@ condition|)
 block|{
 name|dtService
 operator|=
-name|HAUtil
+name|HAUtilClient
 operator|.
 name|buildTokenServiceForLogicalUri
 argument_list|(

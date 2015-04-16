@@ -776,7 +776,7 @@ name|hdfs
 operator|.
 name|web
 operator|.
-name|WebHdfsFileSystem
+name|WebHdfsConstants
 import|;
 end_import
 
@@ -5455,9 +5455,9 @@ name|getWebHdfsFileSystem
 argument_list|(
 name|conf
 argument_list|,
-name|WebHdfsFileSystem
+name|WebHdfsConstants
 operator|.
-name|SCHEME
+name|WEBHDFS_SCHEME
 argument_list|)
 else|:
 name|dfs
@@ -6612,9 +6612,9 @@ name|ugi
 argument_list|,
 name|conf
 argument_list|,
-name|WebHdfsFileSystem
+name|WebHdfsConstants
 operator|.
-name|SCHEME
+name|WEBHDFS_SCHEME
 argument_list|)
 else|:
 name|DFSTestUtil

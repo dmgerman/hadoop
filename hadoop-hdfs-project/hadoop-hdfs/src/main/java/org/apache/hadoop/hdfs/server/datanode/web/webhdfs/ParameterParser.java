@@ -94,7 +94,7 @@ name|hadoop
 operator|.
 name|hdfs
 operator|.
-name|HAUtil
+name|HAUtilClient
 import|;
 end_import
 
@@ -834,7 +834,7 @@ decl_stmt|;
 name|boolean
 name|isLogical
 init|=
-name|HAUtil
+name|HAUtilClient
 operator|.
 name|isLogicalUri
 argument_list|(
@@ -852,7 +852,7 @@ name|token
 operator|.
 name|setService
 argument_list|(
-name|HAUtil
+name|HAUtilClient
 operator|.
 name|buildTokenServiceForLogicalUri
 argument_list|(

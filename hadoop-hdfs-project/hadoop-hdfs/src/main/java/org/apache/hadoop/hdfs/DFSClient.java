@@ -5133,7 +5133,7 @@ block|{
 name|URI
 name|uri
 init|=
-name|HAUtil
+name|HAUtilClient
 operator|.
 name|getServiceUriFromToken
 argument_list|(
@@ -5146,7 +5146,7 @@ argument_list|)
 decl_stmt|;
 if|if
 condition|(
-name|HAUtil
+name|HAUtilClient
 operator|.
 name|isTokenForLogicalUri
 argument_list|(
@@ -5154,7 +5154,7 @@ name|token
 argument_list|)
 operator|&&
 operator|!
-name|HAUtil
+name|HAUtilClient
 operator|.
 name|isLogicalUri
 argument_list|(

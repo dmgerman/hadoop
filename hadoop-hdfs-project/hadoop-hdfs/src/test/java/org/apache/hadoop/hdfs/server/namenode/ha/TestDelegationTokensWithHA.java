@@ -1629,7 +1629,7 @@ name|token
 operator|.
 name|setService
 argument_list|(
-name|HAUtil
+name|HAUtilClient
 operator|.
 name|buildTokenServiceForLogicalUri
 argument_list|(
@@ -1992,7 +1992,7 @@ decl_stmt|;
 name|String
 name|haService
 init|=
-name|HAUtil
+name|HAUtilClient
 operator|.
 name|buildTokenServiceForLogicalUri
 argument_list|(
@@ -2125,7 +2125,7 @@ decl_stmt|;
 name|String
 name|haService
 init|=
-name|HAUtil
+name|HAUtilClient
 operator|.
 name|buildTokenServiceForLogicalUri
 argument_list|(

@@ -563,9 +563,9 @@ specifier|final
 name|String
 name|uri
 init|=
-name|WebHdfsFileSystem
+name|WebHdfsConstants
 operator|.
-name|SCHEME
+name|WEBHDFS_SCHEME
 operator|+
 literal|"://"
 operator|+

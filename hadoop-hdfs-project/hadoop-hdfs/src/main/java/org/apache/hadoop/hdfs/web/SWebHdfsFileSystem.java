@@ -54,15 +54,6 @@ name|SWebHdfsFileSystem
 extends|extends
 name|WebHdfsFileSystem
 block|{
-DECL|field|SCHEME
-specifier|public
-specifier|static
-specifier|final
-name|String
-name|SCHEME
-init|=
-literal|"swebhdfs"
-decl_stmt|;
 annotation|@
 name|Override
 DECL|method|getScheme ()
@@ -72,7 +63,9 @@ name|getScheme
 parameter_list|()
 block|{
 return|return
-name|SCHEME
+name|WebHdfsConstants
+operator|.
+name|SWEBHDFS_SCHEME
 return|;
 block|}
 annotation|@

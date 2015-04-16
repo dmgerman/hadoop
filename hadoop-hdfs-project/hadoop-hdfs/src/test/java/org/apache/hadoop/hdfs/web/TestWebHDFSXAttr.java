@@ -66,9 +66,9 @@ name|getWebHdfsFileSystem
 argument_list|(
 name|conf
 argument_list|,
-name|WebHdfsFileSystem
+name|WebHdfsConstants
 operator|.
-name|SCHEME
+name|WEBHDFS_SCHEME
 argument_list|)
 return|;
 block|}

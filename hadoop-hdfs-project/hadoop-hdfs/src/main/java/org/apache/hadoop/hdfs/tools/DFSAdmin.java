@@ -428,6 +428,20 @@ name|hadoop
 operator|.
 name|hdfs
 operator|.
+name|HAUtilClient
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
 name|client
 operator|.
 name|BlockReportOptions
@@ -733,20 +747,6 @@ operator|.
 name|namenode
 operator|.
 name|TransferFsImage
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|ipc
-operator|.
-name|GenericRefreshProtocol
 import|;
 end_import
 
@@ -3318,7 +3318,7 @@ decl_stmt|;
 name|boolean
 name|isHaEnabled
 init|=
-name|HAUtil
+name|HAUtilClient
 operator|.
 name|isLogicalUri
 argument_list|(
@@ -4127,7 +4127,7 @@ decl_stmt|;
 name|boolean
 name|isHaEnabled
 init|=
-name|HAUtil
+name|HAUtilClient
 operator|.
 name|isLogicalUri
 argument_list|(
@@ -4411,7 +4411,7 @@ decl_stmt|;
 name|boolean
 name|isHaEnabled
 init|=
-name|HAUtil
+name|HAUtilClient
 operator|.
 name|isLogicalUri
 argument_list|(
@@ -4571,7 +4571,7 @@ decl_stmt|;
 name|boolean
 name|isHaEnabled
 init|=
-name|HAUtil
+name|HAUtilClient
 operator|.
 name|isLogicalUri
 argument_list|(
@@ -4811,7 +4811,7 @@ decl_stmt|;
 name|boolean
 name|isHaEnabled
 init|=
-name|HAUtil
+name|HAUtilClient
 operator|.
 name|isLogicalUri
 argument_list|(
@@ -6301,7 +6301,7 @@ decl_stmt|;
 name|boolean
 name|isHaAndLogicalUri
 init|=
-name|HAUtil
+name|HAUtilClient
 operator|.
 name|isLogicalUri
 argument_list|(
@@ -6486,7 +6486,7 @@ decl_stmt|;
 name|boolean
 name|isHaEnabled
 init|=
-name|HAUtil
+name|HAUtilClient
 operator|.
 name|isLogicalUri
 argument_list|(
@@ -6917,7 +6917,7 @@ decl_stmt|;
 name|boolean
 name|isHaEnabled
 init|=
-name|HAUtil
+name|HAUtilClient
 operator|.
 name|isLogicalUri
 argument_list|(
@@ -7100,7 +7100,7 @@ decl_stmt|;
 name|boolean
 name|isHaEnabled
 init|=
-name|HAUtil
+name|HAUtilClient
 operator|.
 name|isLogicalUri
 argument_list|(
@@ -7283,7 +7283,7 @@ decl_stmt|;
 name|boolean
 name|isHaEnabled
 init|=
-name|HAUtil
+name|HAUtilClient
 operator|.
 name|isLogicalUri
 argument_list|(
@@ -7467,7 +7467,7 @@ decl_stmt|;
 name|boolean
 name|isHaEnabled
 init|=
-name|HAUtil
+name|HAUtilClient
 operator|.
 name|isLogicalUri
 argument_list|(

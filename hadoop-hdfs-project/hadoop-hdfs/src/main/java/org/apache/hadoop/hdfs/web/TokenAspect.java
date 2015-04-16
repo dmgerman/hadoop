@@ -158,7 +158,7 @@ name|hadoop
 operator|.
 name|hdfs
 operator|.
-name|HAUtil
+name|HAUtilClient
 import|;
 end_import
 
@@ -482,7 +482,7 @@ argument_list|)
 decl_stmt|;
 if|if
 condition|(
-name|HAUtil
+name|HAUtilClient
 operator|.
 name|isTokenForLogicalUri
 argument_list|(
@@ -492,7 +492,7 @@ condition|)
 block|{
 name|uri
 operator|=
-name|HAUtil
+name|HAUtilClient
 operator|.
 name|getServiceUriFromToken
 argument_list|(
@@ -571,9 +571,9 @@ argument_list|)
 condition|)
 block|{
 return|return
-name|WebHdfsFileSystem
+name|WebHdfsConstants
 operator|.
-name|SCHEME
+name|WEBHDFS_SCHEME
 return|;
 block|}
 elseif|else
@@ -590,9 +590,9 @@ argument_list|)
 condition|)
 block|{
 return|return
-name|SWebHdfsFileSystem
+name|WebHdfsConstants
 operator|.
-name|SCHEME
+name|SWEBHDFS_SCHEME
 return|;
 block|}
 else|else

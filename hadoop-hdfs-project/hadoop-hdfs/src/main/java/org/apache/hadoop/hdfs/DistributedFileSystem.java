@@ -7562,7 +7562,7 @@ parameter_list|)
 block|{
 if|if
 condition|(
-name|HAUtil
+name|HAUtilClient
 operator|.
 name|isLogicalUri
 argument_list|(

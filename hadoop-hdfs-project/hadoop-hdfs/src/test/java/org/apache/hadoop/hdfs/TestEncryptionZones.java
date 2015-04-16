@@ -62,16 +62,6 @@ name|java
 operator|.
 name|io
 operator|.
-name|PrintWriter
-import|;
-end_import
-
-begin_import
-import|import
-name|java
-operator|.
-name|io
-operator|.
 name|RandomAccessFile
 import|;
 end_import
@@ -83,16 +73,6 @@ operator|.
 name|io
 operator|.
 name|StringReader
-import|;
-end_import
-
-begin_import
-import|import
-name|java
-operator|.
-name|io
-operator|.
-name|StringWriter
 import|;
 end_import
 
@@ -303,22 +283,6 @@ operator|.
 name|key
 operator|.
 name|KeyProvider
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|crypto
-operator|.
-name|key
-operator|.
-name|KeyProviderCryptoExtension
 import|;
 end_import
 
@@ -752,7 +716,7 @@ name|hdfs
 operator|.
 name|web
 operator|.
-name|WebHdfsFileSystem
+name|WebHdfsConstants
 import|;
 end_import
 
@@ -4136,9 +4100,9 @@ name|getWebHdfsFileSystem
 argument_list|(
 name|conf
 argument_list|,
-name|WebHdfsFileSystem
+name|WebHdfsConstants
 operator|.
-name|SCHEME
+name|WEBHDFS_SCHEME
 argument_list|)
 decl_stmt|;
 specifier|final

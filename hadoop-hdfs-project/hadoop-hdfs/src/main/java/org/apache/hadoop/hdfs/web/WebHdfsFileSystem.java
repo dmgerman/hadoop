@@ -508,7 +508,21 @@ name|hadoop
 operator|.
 name|hdfs
 operator|.
-name|HAUtil
+name|DFSUtilClient
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|HAUtilClient
 import|;
 end_import
 
@@ -956,16 +970,6 @@ operator|.
 name|class
 argument_list|)
 decl_stmt|;
-comment|/** File System URI: {SCHEME}://namenode:port/path/to/file */
-DECL|field|SCHEME
-specifier|public
-specifier|static
-specifier|final
-name|String
-name|SCHEME
-init|=
-literal|"webhdfs"
-decl_stmt|;
 comment|/** WebHdfs version. */
 DECL|field|VERSION
 specifier|public
@@ -986,7 +990,9 @@ name|PATH_PREFIX
 init|=
 literal|"/"
 operator|+
-name|SCHEME
+name|WebHdfsConstants
+operator|.
+name|WEBHDFS_SCHEME
 operator|+
 literal|"/v"
 operator|+
@@ -1075,7 +1081,9 @@ name|getScheme
 parameter_list|()
 block|{
 return|return
-name|SCHEME
+name|WebHdfsConstants
+operator|.
+name|WEBHDFS_SCHEME
 return|;
 block|}
 comment|/**    * return the underlying transport protocol (http / https).    */
@@ -1198,7 +1206,7 @@ expr_stmt|;
 name|boolean
 name|isHA
 init|=
-name|HAUtil
+name|HAUtilClient
 operator|.
 name|isClientFailoverConfigured
 argument_list|(
@@ -1214,7 +1222,7 @@ name|isLogicalUri
 init|=
 name|isHA
 operator|&&
-name|HAUtil
+name|HAUtilClient
 operator|.
 name|isLogicalUri
 argument_list|(
@@ -1234,7 +1242,7 @@ name|tokenServiceName
 operator|=
 name|isLogicalUri
 condition|?
-name|HAUtil
+name|HAUtilClient
 operator|.
 name|buildTokenServiceForLogicalUri
 argument_list|(
@@ -4783,7 +4791,7 @@ name|run
 argument_list|()
 return|;
 block|}
-comment|/**    * Create a symlink pointing to the destination path.    * @see org.apache.hadoop.fs.Hdfs#createSymlink(Path, Path, boolean)     */
+comment|/**    * Create a symlink pointing to the destination path.    */
 DECL|method|createSymlink (Path destination, Path f, boolean createParent )
 specifier|public
 name|void
@@ -8200,7 +8208,7 @@ decl_stmt|;
 if|if
 condition|(
 operator|!
-name|HAUtil
+name|HAUtilClient
 operator|.
 name|isLogicalUri
 argument_list|(
@@ -8249,7 +8257,7 @@ argument_list|>
 argument_list|>
 name|addresses
 init|=
-name|DFSUtil
+name|DFSUtilClient
 operator|.
 name|getHaNnWebHdfsAddresses
 argument_list|(

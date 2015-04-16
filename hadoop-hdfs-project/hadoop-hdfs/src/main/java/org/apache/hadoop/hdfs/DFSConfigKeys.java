@@ -679,7 +679,9 @@ specifier|final
 name|int
 name|DFS_NAMENODE_HTTP_PORT_DEFAULT
 init|=
-literal|50070
+name|HdfsClientConfigKeys
+operator|.
+name|DFS_NAMENODE_HTTP_PORT_DEFAULT
 decl_stmt|;
 DECL|field|DFS_NAMENODE_HTTP_ADDRESS_KEY
 specifier|public
@@ -688,7 +690,9 @@ specifier|final
 name|String
 name|DFS_NAMENODE_HTTP_ADDRESS_KEY
 init|=
-literal|"dfs.namenode.http-address"
+name|HdfsClientConfigKeys
+operator|.
+name|DFS_NAMENODE_HTTP_ADDRESS_KEY
 decl_stmt|;
 DECL|field|DFS_NAMENODE_HTTP_ADDRESS_DEFAULT
 specifier|public
@@ -2137,7 +2141,9 @@ specifier|final
 name|int
 name|DFS_NAMENODE_HTTPS_PORT_DEFAULT
 init|=
-literal|50470
+name|HdfsClientConfigKeys
+operator|.
+name|DFS_NAMENODE_HTTPS_PORT_DEFAULT
 decl_stmt|;
 DECL|field|DFS_NAMENODE_HTTPS_ADDRESS_KEY
 specifier|public
@@ -2146,7 +2152,9 @@ specifier|final
 name|String
 name|DFS_NAMENODE_HTTPS_ADDRESS_KEY
 init|=
-literal|"dfs.namenode.https-address"
+name|HdfsClientConfigKeys
+operator|.
+name|DFS_NAMENODE_HTTPS_ADDRESS_KEY
 decl_stmt|;
 DECL|field|DFS_NAMENODE_HTTPS_BIND_HOST_KEY
 specifier|public
@@ -3841,7 +3849,9 @@ specifier|final
 name|String
 name|DFS_HA_NAMENODES_KEY_PREFIX
 init|=
-literal|"dfs.ha.namenodes"
+name|HdfsClientConfigKeys
+operator|.
+name|DFS_HA_NAMENODES_KEY_PREFIX
 decl_stmt|;
 DECL|field|DFS_HA_NAMENODE_ID_KEY
 specifier|public

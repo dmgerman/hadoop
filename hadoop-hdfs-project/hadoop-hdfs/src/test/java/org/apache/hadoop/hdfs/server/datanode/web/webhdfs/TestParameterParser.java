@@ -62,7 +62,7 @@ name|hadoop
 operator|.
 name|hdfs
 operator|.
-name|HAUtil
+name|HAUtilClient
 import|;
 end_import
 
@@ -194,33 +194,11 @@ end_import
 
 begin_import
 import|import
-name|javax
-operator|.
-name|servlet
-operator|.
-name|ServletContext
-import|;
-end_import
-
-begin_import
-import|import
 name|java
 operator|.
 name|io
 operator|.
 name|IOException
-import|;
-end_import
-
-begin_import
-import|import static
-name|org
-operator|.
-name|mockito
-operator|.
-name|Mockito
-operator|.
-name|doReturn
 import|;
 end_import
 
@@ -346,7 +324,7 @@ name|Assert
 operator|.
 name|assertTrue
 argument_list|(
-name|HAUtil
+name|HAUtilClient
 operator|.
 name|isTokenForLogicalUri
 argument_list|(

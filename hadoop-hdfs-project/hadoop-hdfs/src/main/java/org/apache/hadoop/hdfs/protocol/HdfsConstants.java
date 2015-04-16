@@ -541,16 +541,6 @@ name|HDFS_URI_SCHEME
 init|=
 literal|"hdfs"
 decl_stmt|;
-comment|/**    * A prefix put before the namenode URI inside the "service" field    * of a delgation token, indicating that the URI is a logical (HA)    * URI.    */
-DECL|field|HA_DT_SERVICE_PREFIX
-specifier|public
-specifier|static
-specifier|final
-name|String
-name|HA_DT_SERVICE_PREFIX
-init|=
-literal|"ha-"
-decl_stmt|;
 comment|/**    * Current layout version for NameNode.    * Please see {@link NameNodeLayoutVersion.Feature} on adding new layout version.    */
 DECL|field|NAMENODE_LAYOUT_VERSION
 specifier|public

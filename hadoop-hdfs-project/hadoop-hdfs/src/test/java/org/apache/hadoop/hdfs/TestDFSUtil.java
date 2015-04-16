@@ -1398,7 +1398,7 @@ literal|"Expected exception is not thrown"
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Test {@link DFSUtil#getNameServiceIds(Configuration)}    */
+comment|/**    * Test {@link DFSUtilClient#getNameServiceIds(Configuration)}    */
 annotation|@
 name|Test
 DECL|method|testGetNameServiceIds ()
@@ -1429,7 +1429,7 @@ name|String
 argument_list|>
 name|nameserviceIds
 init|=
-name|DFSUtil
+name|DFSUtilClient
 operator|.
 name|getNameServiceIds
 argument_list|(
@@ -3519,7 +3519,7 @@ argument_list|>
 argument_list|>
 name|map
 init|=
-name|DFSUtil
+name|DFSUtilClient
 operator|.
 name|getHaNnWebHdfsAddresses
 argument_list|(

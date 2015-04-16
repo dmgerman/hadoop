@@ -636,7 +636,7 @@ name|hdfs
 operator|.
 name|web
 operator|.
-name|WebHdfsFileSystem
+name|WebHdfsConstants
 import|;
 end_import
 
@@ -3455,9 +3455,9 @@ specifier|final
 name|String
 name|webhdfsuri
 init|=
-name|WebHdfsFileSystem
+name|WebHdfsConstants
 operator|.
-name|SCHEME
+name|WEBHDFS_SCHEME
 operator|+
 literal|"://"
 operator|+
