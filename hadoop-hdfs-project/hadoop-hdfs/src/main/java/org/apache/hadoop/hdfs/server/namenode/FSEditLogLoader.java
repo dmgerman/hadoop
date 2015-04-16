@@ -6545,7 +6545,7 @@ operator|.
 name|getBlockManager
 argument_list|()
 operator|.
-name|addBlockCollection
+name|addBlockCollectionWithCheck
 argument_list|(
 name|newBlockInfo
 argument_list|,
@@ -7065,7 +7065,7 @@ operator|.
 name|getBlockManager
 argument_list|()
 operator|.
-name|addBlockCollection
+name|addBlockCollectionWithCheck
 argument_list|(
 name|newBI
 argument_list|,

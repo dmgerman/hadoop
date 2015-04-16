@@ -1977,7 +1977,7 @@ name|i
 argument_list|,
 name|bm
 operator|.
-name|addBlockCollection
+name|addBlockCollectionWithCheck
 argument_list|(
 name|blocks
 index|[

@@ -2081,7 +2081,7 @@ operator|.
 name|getBlockManager
 argument_list|()
 operator|.
-name|addBlockCollection
+name|addBlockCollectionWithCheck
 argument_list|(
 operator|new
 name|BlockInfoContiguous

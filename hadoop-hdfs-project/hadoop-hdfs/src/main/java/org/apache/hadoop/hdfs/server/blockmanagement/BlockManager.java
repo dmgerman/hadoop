@@ -1633,6 +1633,14 @@ name|checkNSRunning
 init|=
 literal|true
 decl_stmt|;
+comment|/** Check whether there are any non-EC blocks using StripedID */
+DECL|field|hasNonEcBlockUsingStripedID
+specifier|private
+name|boolean
+name|hasNonEcBlockUsingStripedID
+init|=
+literal|false
+decl_stmt|;
 DECL|method|BlockManager (final Namesystem namesystem, final Configuration conf)
 specifier|public
 name|BlockManager
@@ -13812,6 +13820,32 @@ return|return
 name|replicationQueuesInitProgress
 return|;
 block|}
+comment|/**    * Get the value of whether there are any non-EC blocks using StripedID.    *    * @return Returns the value of whether there are any non-EC blocks using StripedID.    */
+DECL|method|hasNonEcBlockUsingStripedID ()
+specifier|public
+name|boolean
+name|hasNonEcBlockUsingStripedID
+parameter_list|()
+block|{
+return|return
+name|hasNonEcBlockUsingStripedID
+return|;
+block|}
+comment|/**    * Set the value of whether there are any non-EC blocks using StripedID.    *    * @param has - the value of whether there are any non-EC blocks using StripedID.    */
+DECL|method|hasNonEcBlockUsingStripedID (boolean has)
+specifier|public
+name|void
+name|hasNonEcBlockUsingStripedID
+parameter_list|(
+name|boolean
+name|has
+parameter_list|)
+block|{
+name|hasNonEcBlockUsingStripedID
+operator|=
+name|has
+expr_stmt|;
+block|}
 comment|/**    * Process a single possibly misreplicated block. This adds it to the    * appropriate queues if necessary, and returns a result code indicating    * what happened with it.    */
 DECL|method|processMisReplicatedBlock (BlockInfo block)
 specifier|private
@@ -16607,13 +16641,30 @@ argument_list|)
 argument_list|)
 argument_list|)
 expr_stmt|;
-block|}
 if|if
 condition|(
+operator|(
 name|info
 operator|==
 literal|null
+operator|)
+operator|&&
+name|hasNonEcBlockUsingStripedID
+argument_list|()
 condition|)
+block|{
+name|info
+operator|=
+name|blocksMap
+operator|.
+name|getStoredBlock
+argument_list|(
+name|block
+argument_list|)
+expr_stmt|;
+block|}
+block|}
+else|else
 block|{
 name|info
 operator|=
@@ -17404,6 +17455,55 @@ block|{
 return|return
 name|blocksMap
 operator|.
+name|addBlockCollection
+argument_list|(
+name|block
+argument_list|,
+name|bc
+argument_list|)
+return|;
+block|}
+comment|/**    * Do some check when adding a block to blocksmap.    * For HDFS-7994 to check whether then block is a NonEcBlockUsingStripedID.    *    */
+DECL|method|addBlockCollectionWithCheck ( BlockInfo block, BlockCollection bc)
+specifier|public
+name|BlockInfo
+name|addBlockCollectionWithCheck
+parameter_list|(
+name|BlockInfo
+name|block
+parameter_list|,
+name|BlockCollection
+name|bc
+parameter_list|)
+block|{
+if|if
+condition|(
+operator|!
+name|hasNonEcBlockUsingStripedID
+argument_list|()
+condition|)
+block|{
+if|if
+condition|(
+name|BlockIdManager
+operator|.
+name|isStripedBlockID
+argument_list|(
+name|block
+operator|.
+name|getBlockId
+argument_list|()
+argument_list|)
+condition|)
+block|{
+name|hasNonEcBlockUsingStripedID
+argument_list|(
+literal|true
+argument_list|)
+expr_stmt|;
+block|}
+block|}
+return|return
 name|addBlockCollection
 argument_list|(
 name|block
