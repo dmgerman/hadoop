@@ -5907,6 +5907,15 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
+specifier|final
+name|DfsClientConf
+name|conf
+init|=
+name|dfsClient
+operator|.
+name|getConf
+argument_list|()
+decl_stmt|;
 name|ArrayList
 argument_list|<
 name|Future
@@ -6095,9 +6104,9 @@ name|hedgedService
 operator|.
 name|poll
 argument_list|(
-name|dfsClient
+name|conf
 operator|.
-name|getHedgedReadTimeout
+name|getHedgedReadThresholdMillis
 argument_list|()
 argument_list|,
 name|TimeUnit
@@ -6137,9 +6146,9 @@ name|debug
 argument_list|(
 literal|"Waited "
 operator|+
-name|dfsClient
+name|conf
 operator|.
-name|getHedgedReadTimeout
+name|getHedgedReadThresholdMillis
 argument_list|()
 operator|+
 literal|"ms to read from "

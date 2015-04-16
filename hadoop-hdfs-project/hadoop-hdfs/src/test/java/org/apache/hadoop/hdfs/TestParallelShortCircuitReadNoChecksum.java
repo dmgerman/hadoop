@@ -17,12 +17,40 @@ package|;
 end_package
 
 begin_import
+import|import static
+name|org
+operator|.
+name|hamcrest
+operator|.
+name|CoreMatchers
+operator|.
+name|equalTo
+import|;
+end_import
+
+begin_import
 import|import
 name|java
 operator|.
 name|io
 operator|.
 name|File
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|client
+operator|.
+name|HdfsClientConfigKeys
 import|;
 end_import
 
@@ -95,18 +123,6 @@ operator|.
 name|junit
 operator|.
 name|BeforeClass
-import|;
-end_import
-
-begin_import
-import|import static
-name|org
-operator|.
-name|hamcrest
-operator|.
-name|CoreMatchers
-operator|.
-name|*
 import|;
 end_import
 
@@ -191,9 +207,13 @@ name|conf
 operator|.
 name|setBoolean
 argument_list|(
-name|DFSConfigKeys
+name|HdfsClientConfigKeys
 operator|.
-name|DFS_CLIENT_READ_SHORTCIRCUIT_KEY
+name|Read
+operator|.
+name|ShortCircuit
+operator|.
+name|KEY
 argument_list|,
 literal|true
 argument_list|)
@@ -202,9 +222,13 @@ name|conf
 operator|.
 name|setBoolean
 argument_list|(
-name|DFSConfigKeys
+name|HdfsClientConfigKeys
 operator|.
-name|DFS_CLIENT_READ_SHORTCIRCUIT_SKIP_CHECKSUM_KEY
+name|Read
+operator|.
+name|ShortCircuit
+operator|.
+name|SKIP_CHECKSUM_KEY
 argument_list|,
 literal|true
 argument_list|)

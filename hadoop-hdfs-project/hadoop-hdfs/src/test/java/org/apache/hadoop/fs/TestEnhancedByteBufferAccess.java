@@ -44,38 +44,6 @@ name|hdfs
 operator|.
 name|DFSConfigKeys
 operator|.
-name|DFS_CLIENT_MMAP_CACHE_SIZE
-import|;
-end_import
-
-begin_import
-import|import static
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|hdfs
-operator|.
-name|DFSConfigKeys
-operator|.
-name|DFS_CLIENT_MMAP_ENABLED
-import|;
-end_import
-
-begin_import
-import|import static
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|hdfs
-operator|.
-name|DFSConfigKeys
-operator|.
 name|DFS_DATANODE_MAX_LOCKED_MEMORY_KEY
 import|;
 end_import
@@ -391,6 +359,22 @@ operator|.
 name|hdfs
 operator|.
 name|MiniDFSCluster
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|client
+operator|.
+name|HdfsClientConfigKeys
 import|;
 end_import
 
@@ -999,9 +983,13 @@ name|conf
 operator|.
 name|setBoolean
 argument_list|(
-name|DFSConfigKeys
+name|HdfsClientConfigKeys
 operator|.
-name|DFS_CLIENT_READ_SHORTCIRCUIT_KEY
+name|Read
+operator|.
+name|ShortCircuit
+operator|.
+name|KEY
 argument_list|,
 literal|true
 argument_list|)
@@ -1021,9 +1009,11 @@ name|conf
 operator|.
 name|setInt
 argument_list|(
-name|DFSConfigKeys
+name|HdfsClientConfigKeys
 operator|.
-name|DFS_CLIENT_MMAP_CACHE_SIZE
+name|Mmap
+operator|.
+name|CACHE_SIZE_KEY
 argument_list|,
 literal|3
 argument_list|)
@@ -1032,9 +1022,11 @@ name|conf
 operator|.
 name|setLong
 argument_list|(
-name|DFSConfigKeys
+name|HdfsClientConfigKeys
 operator|.
-name|DFS_CLIENT_MMAP_CACHE_TIMEOUT_MS
+name|Mmap
+operator|.
+name|CACHE_TIMEOUT_MS_KEY
 argument_list|,
 literal|100
 argument_list|)
@@ -1066,9 +1058,13 @@ name|conf
 operator|.
 name|setBoolean
 argument_list|(
-name|DFSConfigKeys
+name|HdfsClientConfigKeys
 operator|.
-name|DFS_CLIENT_READ_SHORTCIRCUIT_SKIP_CHECKSUM_KEY
+name|Read
+operator|.
+name|ShortCircuit
+operator|.
+name|SKIP_CHECKSUM_KEY
 argument_list|,
 literal|true
 argument_list|)
@@ -4063,9 +4059,13 @@ name|conf
 operator|.
 name|setBoolean
 argument_list|(
-name|DFSConfigKeys
+name|HdfsClientConfigKeys
 operator|.
-name|DFS_CLIENT_READ_SHORTCIRCUIT_SKIP_CHECKSUM_KEY
+name|Read
+operator|.
+name|ShortCircuit
+operator|.
+name|SKIP_CHECKSUM_KEY
 argument_list|,
 literal|false
 argument_list|)
@@ -4868,7 +4868,11 @@ name|conf
 operator|.
 name|setBoolean
 argument_list|(
-name|DFS_CLIENT_MMAP_ENABLED
+name|HdfsClientConfigKeys
+operator|.
+name|Mmap
+operator|.
+name|ENABLED_KEY
 argument_list|,
 literal|false
 argument_list|)
@@ -4929,8 +4933,8 @@ argument_list|)
 expr_stmt|;
 try|try
 block|{
-comment|// With DFS_CLIENT_MMAP_ENABLED set to false, we should not do memory
-comment|// mapped reads.
+comment|// With HdfsClientConfigKeys.Mmap.ENABLED_KEY set to false,
+comment|// we should not do memory mapped reads.
 name|cluster
 operator|=
 operator|new
@@ -5089,12 +5093,16 @@ literal|null
 expr_stmt|;
 try|try
 block|{
-comment|// Now try again with DFS_CLIENT_MMAP_CACHE_SIZE == 0.  It should work.
+comment|// Now try again with HdfsClientConfigKeys.Mmap.CACHE_SIZE_KEY == 0.
 name|conf
 operator|.
 name|setBoolean
 argument_list|(
-name|DFS_CLIENT_MMAP_ENABLED
+name|HdfsClientConfigKeys
+operator|.
+name|Mmap
+operator|.
+name|ENABLED_KEY
 argument_list|,
 literal|true
 argument_list|)
@@ -5103,7 +5111,11 @@ name|conf
 operator|.
 name|setInt
 argument_list|(
-name|DFS_CLIENT_MMAP_CACHE_SIZE
+name|HdfsClientConfigKeys
+operator|.
+name|Mmap
+operator|.
+name|CACHE_SIZE_KEY
 argument_list|,
 literal|0
 argument_list|)

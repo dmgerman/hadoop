@@ -222,6 +222,22 @@ name|hdfs
 operator|.
 name|client
 operator|.
+name|HdfsClientConfigKeys
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|client
+operator|.
 name|impl
 operator|.
 name|DfsClientConf
@@ -1592,9 +1608,13 @@ name|bytesPerChecksum
 operator|+
 literal|"). Please configure "
 operator|+
-name|DFSConfigKeys
+name|HdfsClientConfigKeys
 operator|.
-name|DFS_CLIENT_READ_SHORTCIRCUIT_BUFFER_SIZE_KEY
+name|Read
+operator|.
+name|ShortCircuit
+operator|.
+name|BUFFER_SIZE_KEY
 operator|+
 literal|" appropriately"
 argument_list|)

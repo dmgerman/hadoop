@@ -9331,9 +9331,13 @@ name|conf
 operator|.
 name|setBoolean
 argument_list|(
-name|DFSConfigKeys
+name|HdfsClientConfigKeys
 operator|.
-name|DFS_CLIENT_READ_SHORTCIRCUIT_KEY
+name|Read
+operator|.
+name|ShortCircuit
+operator|.
+name|KEY
 argument_list|,
 literal|true
 argument_list|)
