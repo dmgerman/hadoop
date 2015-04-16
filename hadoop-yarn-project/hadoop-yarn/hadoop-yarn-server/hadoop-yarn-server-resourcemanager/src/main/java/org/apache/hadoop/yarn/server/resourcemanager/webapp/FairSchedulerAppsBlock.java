@@ -966,7 +966,6 @@ block|{
 comment|// FairScheduler#applications don't have the entry. Skip it.
 continue|continue;
 block|}
-comment|//AppID numerical value parsed by parseHadoopID in yarn.dt.plugins.js
 name|appsTableData
 operator|.
 name|append

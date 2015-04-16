@@ -1010,8 +1010,6 @@ argument_list|(
 name|containerReport
 argument_list|)
 decl_stmt|;
-comment|// ConatinerID numerical value parsed by parseHadoopID in
-comment|// yarn.dt.plugins.js
 name|containersTableData
 operator|.
 name|append

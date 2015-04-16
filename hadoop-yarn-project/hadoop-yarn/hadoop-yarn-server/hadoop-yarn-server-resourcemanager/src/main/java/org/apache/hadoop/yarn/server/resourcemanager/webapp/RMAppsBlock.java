@@ -598,7 +598,6 @@ name|getProgress
 argument_list|()
 argument_list|)
 decl_stmt|;
-comment|// AppID numerical value parsed by parseHadoopID in yarn.dt.plugins.js
 name|appsTableData
 operator|.
 name|append

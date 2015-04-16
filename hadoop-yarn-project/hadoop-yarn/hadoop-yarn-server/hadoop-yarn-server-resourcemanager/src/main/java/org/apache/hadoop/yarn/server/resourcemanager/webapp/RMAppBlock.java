@@ -1198,8 +1198,6 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
-comment|// AppAttemptID numerical value parsed by parseHadoopID in
-comment|// yarn.dt.plugins.js
 name|attemptsTableData
 operator|.
 name|append
