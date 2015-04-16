@@ -4,7 +4,7 @@ comment|/**  * Licensed to the Apache Software Foundation (ASF) under one  * or 
 end_comment
 
 begin_package
-DECL|package|org.apache.hadoop.hdfs.server.common
+DECL|package|org.apache.hadoop.hdfs.protocol
 package|package
 name|org
 operator|.
@@ -14,9 +14,7 @@ name|hadoop
 operator|.
 name|hdfs
 operator|.
-name|server
-operator|.
-name|common
+name|protocol
 package|;
 end_package
 
@@ -34,60 +32,32 @@ name|InterfaceAudience
 import|;
 end_import
 
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|util
-operator|.
-name|SequentialNumber
-import|;
-end_import
-
-begin_comment
-comment|/****************************************************************  * A GenerationStamp is a Hadoop FS primitive, identified by a long.  ****************************************************************/
-end_comment
-
-begin_class
+begin_interface
 annotation|@
 name|InterfaceAudience
 operator|.
 name|Private
-DECL|class|GenerationStamp
+DECL|interface|HdfsConstantsClient
 specifier|public
-class|class
-name|GenerationStamp
-extends|extends
-name|SequentialNumber
+interface|interface
+name|HdfsConstantsClient
 block|{
-comment|/**    * The last reserved generation stamp.    */
-DECL|field|LAST_RESERVED_STAMP
-specifier|public
-specifier|static
-specifier|final
+comment|/**    * Generation stamp of blocks that pre-date the introduction    * of a generation stamp.    */
+DECL|field|GRANDFATHER_GENERATION_STAMP
 name|long
-name|LAST_RESERVED_STAMP
+name|GRANDFATHER_GENERATION_STAMP
 init|=
-literal|1000L
+literal|0
 decl_stmt|;
-comment|/**    * Create a new instance, initialized to {@link #LAST_RESERVED_STAMP}.    */
-DECL|method|GenerationStamp ()
-specifier|public
-name|GenerationStamp
-parameter_list|()
-block|{
-name|super
-argument_list|(
-name|LAST_RESERVED_STAMP
-argument_list|)
-expr_stmt|;
+comment|/**    * The inode id validation of lease check will be skipped when the request    * uses GRANDFATHER_INODE_ID for backward compatibility.    */
+DECL|field|GRANDFATHER_INODE_ID
+name|long
+name|GRANDFATHER_INODE_ID
+init|=
+literal|0
+decl_stmt|;
 block|}
-block|}
-end_class
+end_interface
 
 end_unit
 

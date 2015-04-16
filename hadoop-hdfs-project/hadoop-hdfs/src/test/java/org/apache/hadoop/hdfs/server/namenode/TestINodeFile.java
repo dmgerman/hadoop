@@ -506,6 +506,22 @@ name|hdfs
 operator|.
 name|protocol
 operator|.
+name|HdfsConstantsClient
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|protocol
+operator|.
 name|HdfsFileStatus
 import|;
 end_import
@@ -766,7 +782,7 @@ return|return
 operator|new
 name|INodeFile
 argument_list|(
-name|INodeId
+name|HdfsConstantsClient
 operator|.
 name|GRANDFATHER_INODE_ID
 argument_list|,
@@ -800,7 +816,7 @@ return|return
 operator|new
 name|INodeFile
 argument_list|(
-name|INodeId
+name|HdfsConstantsClient
 operator|.
 name|GRANDFATHER_INODE_ID
 argument_list|,
@@ -1207,7 +1223,7 @@ init|=
 operator|new
 name|INodeDirectory
 argument_list|(
-name|INodeId
+name|HdfsConstantsClient
 operator|.
 name|GRANDFATHER_INODE_ID
 argument_list|,
@@ -1226,7 +1242,7 @@ init|=
 operator|new
 name|INodeDirectory
 argument_list|(
-name|INodeId
+name|HdfsConstantsClient
 operator|.
 name|GRANDFATHER_INODE_ID
 argument_list|,
@@ -1977,7 +1993,7 @@ init|=
 operator|new
 name|INodeFile
 argument_list|(
-name|INodeId
+name|HdfsConstantsClient
 operator|.
 name|GRANDFATHER_INODE_ID
 argument_list|,
@@ -2063,7 +2079,7 @@ init|=
 operator|new
 name|INodeDirectory
 argument_list|(
-name|INodeId
+name|HdfsConstantsClient
 operator|.
 name|GRANDFATHER_INODE_ID
 argument_list|,
@@ -6584,7 +6600,7 @@ init|=
 operator|new
 name|INodeFile
 argument_list|(
-name|INodeId
+name|HdfsConstantsClient
 operator|.
 name|GRANDFATHER_INODE_ID
 argument_list|,

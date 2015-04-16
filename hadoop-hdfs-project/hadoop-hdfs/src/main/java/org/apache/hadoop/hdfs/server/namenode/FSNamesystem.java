@@ -2380,6 +2380,22 @@ name|hdfs
 operator|.
 name|protocol
 operator|.
+name|HdfsConstantsClient
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|protocol
+operator|.
 name|LastBlockWithStatus
 import|;
 end_import
@@ -16948,7 +16964,7 @@ if|if
 condition|(
 name|fileId
 operator|==
-name|INodeId
+name|HdfsConstantsClient
 operator|.
 name|GRANDFATHER_INODE_ID
 condition|)
@@ -17473,7 +17489,7 @@ if|if
 condition|(
 name|fileId
 operator|==
-name|INodeId
+name|HdfsConstantsClient
 operator|.
 name|GRANDFATHER_INODE_ID
 condition|)
@@ -17796,7 +17812,7 @@ if|if
 condition|(
 name|fileId
 operator|==
-name|INodeId
+name|HdfsConstantsClient
 operator|.
 name|GRANDFATHER_INODE_ID
 condition|)
@@ -18437,7 +18453,7 @@ if|if
 condition|(
 name|fileId
 operator|==
-name|INodeId
+name|HdfsConstantsClient
 operator|.
 name|GRANDFATHER_INODE_ID
 condition|)
@@ -20192,7 +20208,7 @@ if|if
 condition|(
 name|fileId
 operator|==
-name|INodeId
+name|HdfsConstantsClient
 operator|.
 name|GRANDFATHER_INODE_ID
 condition|)

@@ -334,11 +334,9 @@ name|hadoop
 operator|.
 name|hdfs
 operator|.
-name|server
+name|protocol
 operator|.
-name|common
-operator|.
-name|GenerationStamp
+name|HdfsConstantsClient
 import|;
 end_import
 
@@ -1424,7 +1422,7 @@ name|getName
 argument_list|()
 argument_list|)
 else|:
-name|GenerationStamp
+name|HdfsConstantsClient
 operator|.
 name|GRANDFATHER_GENERATION_STAMP
 return|;

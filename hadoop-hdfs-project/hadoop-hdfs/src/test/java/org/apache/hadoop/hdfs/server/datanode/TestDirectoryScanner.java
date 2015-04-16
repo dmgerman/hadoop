@@ -386,7 +386,7 @@ name|hdfs
 operator|.
 name|protocol
 operator|.
-name|LocatedBlock
+name|HdfsConstantsClient
 import|;
 end_import
 
@@ -400,11 +400,9 @@ name|hadoop
 operator|.
 name|hdfs
 operator|.
-name|server
+name|protocol
 operator|.
-name|common
-operator|.
-name|GenerationStamp
+name|LocatedBlock
 import|;
 end_import
 
@@ -2750,7 +2748,7 @@ name|verifyGenStamp
 argument_list|(
 name|blockId
 argument_list|,
-name|GenerationStamp
+name|HdfsConstantsClient
 operator|.
 name|GRANDFATHER_GENERATION_STAMP
 argument_list|)
@@ -2843,7 +2841,7 @@ name|verifyAddition
 argument_list|(
 name|blockId
 argument_list|,
-name|GenerationStamp
+name|HdfsConstantsClient
 operator|.
 name|GRANDFATHER_GENERATION_STAMP
 argument_list|,

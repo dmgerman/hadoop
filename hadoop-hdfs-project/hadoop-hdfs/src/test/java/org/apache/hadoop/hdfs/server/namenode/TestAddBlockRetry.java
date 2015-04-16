@@ -174,6 +174,22 @@ name|hdfs
 operator|.
 name|protocol
 operator|.
+name|HdfsConstantsClient
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|protocol
+operator|.
 name|LocatedBlock
 import|;
 end_import
@@ -490,7 +506,7 @@ name|getNewBlockTargets
 argument_list|(
 name|src
 argument_list|,
-name|INodeId
+name|HdfsConstantsClient
 operator|.
 name|GRANDFATHER_INODE_ID
 argument_list|,
@@ -534,7 +550,7 @@ literal|null
 argument_list|,
 literal|null
 argument_list|,
-name|INodeId
+name|HdfsConstantsClient
 operator|.
 name|GRANDFATHER_INODE_ID
 argument_list|,
@@ -618,7 +634,7 @@ name|storeAllocatedBlock
 argument_list|(
 name|src
 argument_list|,
-name|INodeId
+name|HdfsConstantsClient
 operator|.
 name|GRANDFATHER_INODE_ID
 argument_list|,
@@ -868,7 +884,7 @@ literal|null
 argument_list|,
 literal|null
 argument_list|,
-name|INodeId
+name|HdfsConstantsClient
 operator|.
 name|GRANDFATHER_INODE_ID
 argument_list|,
@@ -916,7 +932,7 @@ literal|null
 argument_list|,
 literal|null
 argument_list|,
-name|INodeId
+name|HdfsConstantsClient
 operator|.
 name|GRANDFATHER_INODE_ID
 argument_list|,

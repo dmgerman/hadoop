@@ -314,7 +314,7 @@ name|hdfs
 operator|.
 name|protocol
 operator|.
-name|HdfsFileStatus
+name|HdfsConstantsClient
 import|;
 end_import
 
@@ -328,11 +328,9 @@ name|hadoop
 operator|.
 name|hdfs
 operator|.
-name|server
+name|protocol
 operator|.
-name|namenode
-operator|.
-name|INodeId
+name|HdfsFileStatus
 import|;
 end_import
 
@@ -583,7 +581,7 @@ argument_list|(
 literal|"foo"
 argument_list|)
 argument_list|,
-name|INodeId
+name|HdfsConstantsClient
 operator|.
 name|GRANDFATHER_INODE_ID
 argument_list|,

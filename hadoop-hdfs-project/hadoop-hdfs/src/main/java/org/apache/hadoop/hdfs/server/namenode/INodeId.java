@@ -52,6 +52,22 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|hdfs
+operator|.
+name|protocol
+operator|.
+name|HdfsConstantsClient
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|util
 operator|.
 name|SequentialNumber
@@ -99,16 +115,6 @@ name|LAST_RESERVED_ID
 operator|+
 literal|1
 decl_stmt|;
-comment|/**    * The inode id validation of lease check will be skipped when the request    * uses GRANDFATHER_INODE_ID for backward compatibility.    */
-DECL|field|GRANDFATHER_INODE_ID
-specifier|public
-specifier|static
-specifier|final
-name|long
-name|GRANDFATHER_INODE_ID
-init|=
-literal|0
-decl_stmt|;
 comment|/**    * To check if the request id is the same as saved id. Don't check fileId    * with GRANDFATHER_INODE_ID for backward compatibility.    */
 DECL|method|checkId (long requestId, INode inode)
 specifier|public
@@ -129,6 +135,8 @@ if|if
 condition|(
 name|requestId
 operator|!=
+name|HdfsConstantsClient
+operator|.
 name|GRANDFATHER_INODE_ID
 operator|&&
 name|requestId

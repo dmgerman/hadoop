@@ -104,11 +104,9 @@ name|hadoop
 operator|.
 name|hdfs
 operator|.
-name|server
+name|protocol
 operator|.
-name|common
-operator|.
-name|GenerationStamp
+name|HdfsConstantsClient
 import|;
 end_import
 
@@ -531,7 +529,7 @@ literal|" does not have a metafile!"
 argument_list|)
 expr_stmt|;
 return|return
-name|GenerationStamp
+name|HdfsConstantsClient
 operator|.
 name|GRANDFATHER_GENERATION_STAMP
 return|;
