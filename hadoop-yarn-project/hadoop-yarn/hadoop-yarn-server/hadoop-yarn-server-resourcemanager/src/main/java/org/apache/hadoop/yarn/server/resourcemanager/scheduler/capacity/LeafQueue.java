@@ -8529,14 +8529,15 @@ name|updateQueueStatistics
 argument_list|(
 name|resourceCalculator
 argument_list|,
-name|this
-argument_list|,
-name|getParent
-argument_list|()
-argument_list|,
 name|clusterResource
 argument_list|,
 name|minimumAllocation
+argument_list|,
+name|this
+argument_list|,
+name|labelManager
+argument_list|,
+literal|null
 argument_list|)
 expr_stmt|;
 comment|// queue metrics are updated, more resource may be available

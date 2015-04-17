@@ -1878,14 +1878,14 @@ name|THREAD_JOIN_TIMEOUT_MS
 init|=
 literal|1000
 decl_stmt|;
-DECL|field|queueComparator
+DECL|field|nonPartitionedQueueComparator
 specifier|static
 specifier|final
 name|Comparator
 argument_list|<
 name|CSQueue
 argument_list|>
-name|queueComparator
+name|nonPartitionedQueueComparator
 init|=
 operator|new
 name|Comparator
@@ -1959,6 +1959,16 @@ argument_list|)
 return|;
 block|}
 block|}
+decl_stmt|;
+DECL|field|partitionedQueueComparator
+specifier|static
+specifier|final
+name|PartitionedQueueComparator
+name|partitionedQueueComparator
+init|=
+operator|new
+name|PartitionedQueueComparator
+argument_list|()
 decl_stmt|;
 DECL|field|applicationComparator
 specifier|static
@@ -2449,17 +2459,29 @@ return|;
 block|}
 annotation|@
 name|Override
-DECL|method|getQueueComparator ()
+DECL|method|getNonPartitionedQueueComparator ()
 specifier|public
 name|Comparator
 argument_list|<
 name|CSQueue
 argument_list|>
-name|getQueueComparator
+name|getNonPartitionedQueueComparator
 parameter_list|()
 block|{
 return|return
-name|queueComparator
+name|nonPartitionedQueueComparator
+return|;
+block|}
+annotation|@
+name|Override
+DECL|method|getPartitionedQueueComparator ()
+specifier|public
+name|PartitionedQueueComparator
+name|getPartitionedQueueComparator
+parameter_list|()
+block|{
+return|return
+name|partitionedQueueComparator
 return|;
 block|}
 annotation|@

@@ -1232,8 +1232,6 @@ parameter_list|,
 name|Resource
 name|newResource
 parameter_list|)
-throws|throws
-name|IOException
 block|{
 name|deactivateNode
 argument_list|(

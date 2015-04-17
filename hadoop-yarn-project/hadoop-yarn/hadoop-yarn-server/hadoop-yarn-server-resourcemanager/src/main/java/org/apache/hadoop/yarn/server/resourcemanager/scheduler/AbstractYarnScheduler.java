@@ -3154,6 +3154,22 @@ name|newResource
 argument_list|)
 condition|)
 block|{
+comment|// Notify NodeLabelsManager about this change
+name|rmContext
+operator|.
+name|getNodeLabelManager
+argument_list|()
+operator|.
+name|updateNodeResource
+argument_list|(
+name|nm
+operator|.
+name|getNodeID
+argument_list|()
+argument_list|,
+name|newResource
+argument_list|)
+expr_stmt|;
 comment|// Log resource change
 name|LOG
 operator|.

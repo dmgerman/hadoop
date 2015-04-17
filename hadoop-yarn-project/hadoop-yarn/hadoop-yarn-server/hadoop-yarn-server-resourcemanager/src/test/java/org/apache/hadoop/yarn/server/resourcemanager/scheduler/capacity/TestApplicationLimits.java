@@ -853,7 +853,7 @@ name|when
 argument_list|(
 name|csContext
 operator|.
-name|getQueueComparator
+name|getNonPartitionedQueueComparator
 argument_list|()
 argument_list|)
 operator|.
@@ -861,7 +861,7 @@ name|thenReturn
 argument_list|(
 name|CapacityScheduler
 operator|.
-name|queueComparator
+name|nonPartitionedQueueComparator
 argument_list|)
 expr_stmt|;
 name|when
@@ -1962,7 +1962,7 @@ name|when
 argument_list|(
 name|csContext
 operator|.
-name|getQueueComparator
+name|getNonPartitionedQueueComparator
 argument_list|()
 argument_list|)
 operator|.
@@ -1970,7 +1970,7 @@ name|thenReturn
 argument_list|(
 name|CapacityScheduler
 operator|.
-name|queueComparator
+name|nonPartitionedQueueComparator
 argument_list|)
 expr_stmt|;
 name|when
@@ -4184,7 +4184,7 @@ name|when
 argument_list|(
 name|csContext
 operator|.
-name|getQueueComparator
+name|getNonPartitionedQueueComparator
 argument_list|()
 argument_list|)
 operator|.
@@ -4192,7 +4192,7 @@ name|thenReturn
 argument_list|(
 name|CapacityScheduler
 operator|.
-name|queueComparator
+name|nonPartitionedQueueComparator
 argument_list|)
 expr_stmt|;
 name|when

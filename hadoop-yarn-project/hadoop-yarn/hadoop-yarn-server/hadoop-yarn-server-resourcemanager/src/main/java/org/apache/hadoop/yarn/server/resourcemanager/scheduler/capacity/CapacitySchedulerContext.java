@@ -260,12 +260,17 @@ name|ResourceCalculator
 name|getResourceCalculator
 parameter_list|()
 function_decl|;
-DECL|method|getQueueComparator ()
+DECL|method|getNonPartitionedQueueComparator ()
 name|Comparator
 argument_list|<
 name|CSQueue
 argument_list|>
-name|getQueueComparator
+name|getNonPartitionedQueueComparator
+parameter_list|()
+function_decl|;
+DECL|method|getPartitionedQueueComparator ()
+name|PartitionedQueueComparator
+name|getPartitionedQueueComparator
 parameter_list|()
 function_decl|;
 DECL|method|getNode (NodeId nodeId)
