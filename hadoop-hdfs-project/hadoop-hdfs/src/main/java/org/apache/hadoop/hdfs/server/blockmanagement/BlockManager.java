@@ -13831,21 +13831,6 @@ return|return
 name|hasNonEcBlockUsingStripedID
 return|;
 block|}
-comment|/**    * Set the value of whether there are any non-EC blocks using StripedID.    *    * @param has - the value of whether there are any non-EC blocks using StripedID.    */
-DECL|method|hasNonEcBlockUsingStripedID (boolean has)
-specifier|public
-name|void
-name|hasNonEcBlockUsingStripedID
-parameter_list|(
-name|boolean
-name|has
-parameter_list|)
-block|{
-name|hasNonEcBlockUsingStripedID
-operator|=
-name|has
-expr_stmt|;
-block|}
 comment|/**    * Process a single possibly misreplicated block. This adds it to the    * appropriate queues if necessary, and returns a result code indicating    * what happened with it.    */
 DECL|method|processMisReplicatedBlock (BlockInfo block)
 specifier|private
@@ -16650,7 +16635,6 @@ literal|null
 operator|)
 operator|&&
 name|hasNonEcBlockUsingStripedID
-argument_list|()
 condition|)
 block|{
 name|info
@@ -17480,11 +17464,13 @@ if|if
 condition|(
 operator|!
 name|hasNonEcBlockUsingStripedID
+operator|&&
+operator|!
+name|block
+operator|.
+name|isStriped
 argument_list|()
-condition|)
-block|{
-if|if
-condition|(
+operator|&&
 name|BlockIdManager
 operator|.
 name|isStripedBlockID
@@ -17497,11 +17483,9 @@ argument_list|)
 condition|)
 block|{
 name|hasNonEcBlockUsingStripedID
-argument_list|(
+operator|=
 literal|true
-argument_list|)
 expr_stmt|;
-block|}
 block|}
 return|return
 name|addBlockCollection
