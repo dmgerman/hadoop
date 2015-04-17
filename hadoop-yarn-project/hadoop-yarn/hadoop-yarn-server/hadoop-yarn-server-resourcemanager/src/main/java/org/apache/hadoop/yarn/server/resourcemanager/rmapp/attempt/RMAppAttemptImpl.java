@@ -9138,6 +9138,14 @@ argument_list|()
 argument_list|)
 argument_list|,
 name|amId
+argument_list|,
+name|this
+operator|.
+name|startTime
+argument_list|,
+name|this
+operator|.
+name|finishTime
 argument_list|)
 expr_stmt|;
 block|}

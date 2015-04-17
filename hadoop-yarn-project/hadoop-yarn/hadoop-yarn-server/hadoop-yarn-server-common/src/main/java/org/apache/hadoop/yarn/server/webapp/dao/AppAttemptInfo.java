@@ -160,6 +160,16 @@ specifier|protected
 name|String
 name|amContainerId
 decl_stmt|;
+DECL|field|startedTime
+specifier|protected
+name|long
+name|startedTime
+decl_stmt|;
+DECL|field|finishedTime
+specifier|protected
+name|long
+name|finishedTime
+decl_stmt|;
 DECL|method|AppAttemptInfo ()
 specifier|public
 name|AppAttemptInfo
@@ -248,6 +258,20 @@ name|toString
 argument_list|()
 expr_stmt|;
 block|}
+name|startedTime
+operator|=
+name|appAttempt
+operator|.
+name|getStartTime
+argument_list|()
+expr_stmt|;
+name|finishedTime
+operator|=
+name|appAttempt
+operator|.
+name|getFinishTime
+argument_list|()
+expr_stmt|;
 block|}
 DECL|method|getAppAttemptId ()
 specifier|public
@@ -327,6 +351,26 @@ parameter_list|()
 block|{
 return|return
 name|amContainerId
+return|;
+block|}
+DECL|method|getStartedTime ()
+specifier|public
+name|long
+name|getStartedTime
+parameter_list|()
+block|{
+return|return
+name|startedTime
+return|;
+block|}
+DECL|method|getFinishedTime ()
+specifier|public
+name|long
+name|getFinishedTime
+parameter_list|()
+block|{
+return|return
+name|finishedTime
 return|;
 block|}
 block|}

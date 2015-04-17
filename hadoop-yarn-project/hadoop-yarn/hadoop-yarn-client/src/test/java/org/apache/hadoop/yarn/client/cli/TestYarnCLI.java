@@ -1331,6 +1331,10 @@ name|attemptId
 argument_list|,
 literal|1
 argument_list|)
+argument_list|,
+literal|1000l
+argument_list|,
+literal|2000l
 argument_list|)
 decl_stmt|;
 name|when
