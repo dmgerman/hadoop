@@ -4896,11 +4896,7 @@ init|=
 name|existing
 operator|.
 name|getPath
-argument_list|(
-name|pos
-operator|-
-literal|1
-argument_list|)
+argument_list|()
 decl_stmt|;
 name|verifyMaxComponentLength
 argument_list|(
