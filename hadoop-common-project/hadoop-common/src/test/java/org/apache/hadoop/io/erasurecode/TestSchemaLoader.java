@@ -19,40 +19,14 @@ package|;
 end_package
 
 begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|conf
-operator|.
-name|Configuration
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|fs
-operator|.
-name|CommonConfigurationKeys
-import|;
-end_import
-
-begin_import
-import|import
+import|import static
 name|org
 operator|.
 name|junit
 operator|.
-name|Test
+name|Assert
+operator|.
+name|assertEquals
 import|;
 end_import
 
@@ -97,14 +71,12 @@ import|;
 end_import
 
 begin_import
-import|import static
+import|import
 name|org
 operator|.
 name|junit
 operator|.
-name|Assert
-operator|.
-name|assertEquals
+name|Test
 import|;
 end_import
 
@@ -272,24 +244,6 @@ operator|.
 name|close
 argument_list|()
 expr_stmt|;
-name|Configuration
-name|conf
-init|=
-operator|new
-name|Configuration
-argument_list|()
-decl_stmt|;
-name|conf
-operator|.
-name|set
-argument_list|(
-name|CommonConfigurationKeys
-operator|.
-name|IO_ERASURECODE_SCHEMA_FILE_KEY
-argument_list|,
-name|SCHEMA_FILE
-argument_list|)
-expr_stmt|;
 name|SchemaLoader
 name|schemaLoader
 init|=
@@ -307,7 +261,7 @@ name|schemaLoader
 operator|.
 name|loadSchema
 argument_list|(
-name|conf
+name|SCHEMA_FILE
 argument_list|)
 decl_stmt|;
 name|assertEquals
