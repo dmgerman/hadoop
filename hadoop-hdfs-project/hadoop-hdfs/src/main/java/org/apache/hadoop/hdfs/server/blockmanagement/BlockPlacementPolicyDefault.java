@@ -1222,7 +1222,7 @@ return|;
 block|}
 comment|/**    * Calculate the maximum number of replicas to allocate per rack. It also    * limits the total number of replicas to the total number of nodes in the    * cluster. Caller should adjust the replica count to the return value.    *    * @param numOfChosen The number of already chosen nodes.    * @param numOfReplicas The number of additional nodes to allocate.    * @return integer array. Index 0: The number of nodes allowed to allocate    *         in addition to already chosen nodes.    *         Index 1: The maximum allowed number of nodes per rack. This    *         is independent of the number of chosen nodes, as it is calculated    *         using the target number of replicas.    */
 DECL|method|getMaxNodesPerRack (int numOfChosen, int numOfReplicas)
-specifier|private
+specifier|protected
 name|int
 index|[]
 name|getMaxNodesPerRack
