@@ -1607,6 +1607,15 @@ name|JOB_NAMENODES
 init|=
 literal|"mapreduce.job.hdfs-servers"
 decl_stmt|;
+DECL|field|JOB_NAMENODES_TOKEN_RENEWAL_EXCLUDE
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|JOB_NAMENODES_TOKEN_RENEWAL_EXCLUDE
+init|=
+literal|"mapreduce.job.hdfs-servers.token-renewal.exclude"
+decl_stmt|;
 DECL|field|JOB_JOBTRACKER_ID
 specifier|public
 specifier|static
