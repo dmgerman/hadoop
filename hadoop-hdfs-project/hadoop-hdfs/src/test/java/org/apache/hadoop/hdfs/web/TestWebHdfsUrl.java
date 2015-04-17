@@ -2072,9 +2072,9 @@ name|token
 operator|.
 name|setKind
 argument_list|(
-name|WebHdfsFileSystem
+name|WebHdfsConstants
 operator|.
-name|TOKEN_KIND
+name|WEBHDFS_TOKEN_KIND
 argument_list|)
 expr_stmt|;
 name|ugi

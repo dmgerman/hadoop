@@ -30,13 +30,11 @@ name|hadoop
 operator|.
 name|hdfs
 operator|.
-name|server
+name|protocol
 operator|.
-name|blockmanagement
+name|HdfsConstantsClient
 operator|.
-name|BlockStoragePolicySuite
-operator|.
-name|ID_UNSPECIFIED
+name|BLOCK_STORAGE_POLICY_ID_UNSPECIFIED
 import|;
 end_import
 
@@ -2017,7 +2015,7 @@ if|if
 condition|(
 name|id
 operator|==
-name|ID_UNSPECIFIED
+name|BLOCK_STORAGE_POLICY_ID_UNSPECIFIED
 condition|)
 block|{
 return|return
@@ -2926,7 +2924,7 @@ if|if
 condition|(
 name|blockStoragePolicyId
 operator|!=
-name|ID_UNSPECIFIED
+name|BLOCK_STORAGE_POLICY_ID_UNSPECIFIED
 condition|)
 block|{
 name|BlockStoragePolicy
@@ -3137,7 +3135,7 @@ condition|(
 name|getStoragePolicyID
 argument_list|()
 operator|!=
-name|ID_UNSPECIFIED
+name|BLOCK_STORAGE_POLICY_ID_UNSPECIFIED
 condition|)
 block|{
 name|BlockStoragePolicy

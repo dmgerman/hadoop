@@ -56,21 +56,7 @@ name|hadoop
 operator|.
 name|hdfs
 operator|.
-name|DFSConfigKeys
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|hdfs
-operator|.
-name|DFSUtil
+name|DFSUtilClient
 import|;
 end_import
 
@@ -198,14 +184,14 @@ name|hadoop
 operator|.
 name|hdfs
 operator|.
-name|DFSUtil
+name|DFSUtilClient
 operator|.
 name|percent2String
 import|;
 end_import
 
 begin_comment
-comment|/**   * This class extends the primary identifier of a Datanode with ephemeral  * state, eg usage information, current administrative state, and the  * network location that is communicated to clients.  */
+comment|/**  * This class extends the primary identifier of a Datanode with ephemeral  * state, eg usage information, current administrative state, and the  * network location that is communicated to clients.  */
 end_comment
 
 begin_class
@@ -968,7 +954,7 @@ name|getDfsUsedPercent
 parameter_list|()
 block|{
 return|return
-name|DFSUtil
+name|DFSUtilClient
 operator|.
 name|getPercentUsed
 argument_list|(
@@ -997,7 +983,7 @@ name|getBlockPoolUsedPercent
 parameter_list|()
 block|{
 return|return
-name|DFSUtil
+name|DFSUtilClient
 operator|.
 name|getPercentUsed
 argument_list|(
@@ -1015,7 +1001,7 @@ name|getRemainingPercent
 parameter_list|()
 block|{
 return|return
-name|DFSUtil
+name|DFSUtilClient
 operator|.
 name|getPercentRemaining
 argument_list|(
@@ -1055,7 +1041,7 @@ name|getCacheUsedPercent
 parameter_list|()
 block|{
 return|return
-name|DFSUtil
+name|DFSUtilClient
 operator|.
 name|getPercentUsed
 argument_list|(
@@ -1086,7 +1072,7 @@ name|getCacheRemainingPercent
 parameter_list|()
 block|{
 return|return
-name|DFSUtil
+name|DFSUtilClient
 operator|.
 name|getPercentRemaining
 argument_list|(
@@ -1108,7 +1094,7 @@ return|return
 name|lastUpdate
 return|;
 block|}
-comment|/**     * The time when this information was accurate.<br>    * Ps: So return value is ideal for calculation of time differences.    * Should not be used to convert to Date.      */
+comment|/**    * The time when this information was accurate.<br>    * Ps: So return value is ideal for calculation of time differences.    * Should not be used to convert to Date.    */
 DECL|method|getLastUpdateMonotonic ()
 specifier|public
 name|long
@@ -2214,7 +2200,7 @@ return|return
 name|adminState
 return|;
 block|}
-comment|/**    * Check if the datanode is in stale state. Here if     * the namenode has not received heartbeat msg from a     * datanode for more than staleInterval (default value is    * {@link DFSConfigKeys#DFS_NAMENODE_STALE_DATANODE_INTERVAL_DEFAULT}),    * the datanode will be treated as stale node.    *     * @param staleInterval    *          the time interval for marking the node as stale. If the last    *          update time is beyond the given time interval, the node will be    *          marked as stale.    * @return true if the node is stale    */
+comment|/**    * Check if the datanode is in stale state. Here if    * the namenode has not received heartbeat msg from a    * datanode for more than staleInterval,    * the datanode will be treated as stale node.    *    * @param staleInterval    *          the time interval for marking the node as stale. If the last    *          update time is beyond the given time interval, the node will be    *          marked as stale.    * @return true if the node is stale    */
 DECL|method|isStale (long staleInterval)
 specifier|public
 name|boolean

@@ -102,24 +102,6 @@ name|DFSUtil
 import|;
 end_import
 
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|hdfs
-operator|.
-name|server
-operator|.
-name|blockmanagement
-operator|.
-name|BlockStoragePolicySuite
-import|;
-end_import
-
 begin_comment
 comment|/**  * Metadata about a snapshottable directory  */
 end_comment
@@ -310,9 +292,9 @@ name|childrenNum
 argument_list|,
 literal|null
 argument_list|,
-name|BlockStoragePolicySuite
+name|HdfsConstantsClient
 operator|.
-name|ID_UNSPECIFIED
+name|BLOCK_STORAGE_POLICY_ID_UNSPECIFIED
 argument_list|)
 expr_stmt|;
 name|this

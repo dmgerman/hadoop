@@ -768,7 +768,7 @@ name|hdfs
 operator|.
 name|web
 operator|.
-name|SWebHdfsFileSystem
+name|WebHdfsConstants
 import|;
 end_import
 
@@ -1951,13 +1951,13 @@ argument_list|(
 literal|"http"
 argument_list|)
 condition|?
-name|WebHdfsFileSystem
+name|WebHdfsConstants
 operator|.
-name|TOKEN_KIND
+name|WEBHDFS_TOKEN_KIND
 else|:
-name|SWebHdfsFileSystem
+name|WebHdfsConstants
 operator|.
-name|TOKEN_KIND
+name|SWEBHDFS_TOKEN_KIND
 decl_stmt|;
 name|t
 operator|.

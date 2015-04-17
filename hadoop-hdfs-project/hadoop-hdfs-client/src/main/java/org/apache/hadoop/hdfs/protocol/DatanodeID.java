@@ -140,7 +140,7 @@ specifier|private
 name|String
 name|xferAddr
 decl_stmt|;
-comment|/**    * UUID identifying a given datanode. For upgraded Datanodes this is the    * same as the StorageID that was previously used by this Datanode.     * For newly formatted Datanodes it is a UUID.    */
+comment|/**    * UUID identifying a given datanode. For upgraded Datanodes this is the    * same as the StorageID that was previously used by this Datanode.    * For newly formatted Datanodes it is a UUID.    */
 DECL|field|datanodeUuid
 specifier|private
 specifier|final
@@ -224,7 +224,7 @@ name|getPeerHostName
 argument_list|()
 expr_stmt|;
 block|}
-comment|/**    * Create a DatanodeID    * @param ipAddr IP    * @param hostName hostname    * @param datanodeUuid data node ID, UUID for new Datanodes, may be the    *                     storage ID for pre-UUID datanodes. NULL if unknown    *                     e.g. if this is a new datanode. A new UUID will    *                     be assigned by the namenode.    * @param xferPort data transfer port    * @param infoPort info server port     * @param ipcPort ipc server port    */
+comment|/**    * Create a DatanodeID    * @param ipAddr IP    * @param hostName hostname    * @param datanodeUuid data node ID, UUID for new Datanodes, may be the    *                     storage ID for pre-UUID datanodes. NULL if unknown    *                     e.g. if this is a new datanode. A new UUID will    *                     be assigned by the namenode.    * @param xferPort data transfer port    * @param infoPort info server port    * @param ipcPort ipc server port    */
 DECL|method|DatanodeID (String ipAddr, String hostName, String datanodeUuid, int xferPort, int infoPort, int infoSecurePort, int ipcPort)
 specifier|public
 name|DatanodeID
@@ -427,7 +427,7 @@ return|return
 name|hostName
 return|;
 block|}
-comment|/**    * @return hostname from the actual connection     */
+comment|/**    * @return hostname from the actual connection    */
 DECL|method|getPeerHostName ()
 specifier|public
 name|String

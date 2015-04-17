@@ -54,19 +54,6 @@ name|SWebHdfsFileSystem
 extends|extends
 name|WebHdfsFileSystem
 block|{
-DECL|field|TOKEN_KIND
-specifier|public
-specifier|static
-specifier|final
-name|Text
-name|TOKEN_KIND
-init|=
-operator|new
-name|Text
-argument_list|(
-literal|"SWEBHDFS delegation"
-argument_list|)
-decl_stmt|;
 DECL|field|SCHEME
 specifier|public
 specifier|static
@@ -109,7 +96,9 @@ name|getTokenKind
 parameter_list|()
 block|{
 return|return
-name|TOKEN_KIND
+name|WebHdfsConstants
+operator|.
+name|SWEBHDFS_TOKEN_KIND
 return|;
 block|}
 annotation|@

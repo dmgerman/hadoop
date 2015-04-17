@@ -78,7 +78,7 @@ name|hadoop
 operator|.
 name|hdfs
 operator|.
-name|DFSUtil
+name|DFSUtilClient
 import|;
 end_import
 
@@ -506,7 +506,7 @@ name|getCapacityUsedPercent
 parameter_list|()
 block|{
 return|return
-name|DFSUtil
+name|DFSUtilClient
 operator|.
 name|getPercentUsed
 argument_list|(
@@ -545,7 +545,7 @@ name|getCapacityRemainingPercent
 parameter_list|()
 block|{
 return|return
-name|DFSUtil
+name|DFSUtilClient
 operator|.
 name|getPercentRemaining
 argument_list|(
@@ -584,7 +584,7 @@ name|getPercentBlockPoolUsed
 parameter_list|()
 block|{
 return|return
-name|DFSUtil
+name|DFSUtilClient
 operator|.
 name|getPercentUsed
 argument_list|(

@@ -17313,8 +17313,9 @@ block|{
 name|LocatedBlock
 name|lBlk
 init|=
-operator|new
-name|LocatedBlock
+name|BlockManager
+operator|.
+name|newLocatedBlock
 argument_list|(
 name|getExtendedBlock
 argument_list|(
@@ -17660,8 +17661,9 @@ specifier|final
 name|LocatedBlock
 name|lb
 init|=
-operator|new
-name|LocatedBlock
+name|BlockManager
+operator|.
+name|newLocatedBlock
 argument_list|(
 name|blk
 argument_list|,

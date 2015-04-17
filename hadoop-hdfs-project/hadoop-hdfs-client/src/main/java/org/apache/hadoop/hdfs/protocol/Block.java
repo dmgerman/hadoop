@@ -95,7 +95,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**************************************************  * A Block is a Hadoop FS primitive, identified by a   * long.  *  **************************************************/
+comment|/**************************************************  * A Block is a Hadoop FS primitive, identified by a  * long.  *  **************************************************/
 end_comment
 
 begin_class

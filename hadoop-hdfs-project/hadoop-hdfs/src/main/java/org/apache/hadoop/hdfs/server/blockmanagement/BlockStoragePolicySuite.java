@@ -238,15 +238,6 @@ name|ID_BIT_LENGTH
 init|=
 literal|4
 decl_stmt|;
-DECL|field|ID_UNSPECIFIED
-specifier|public
-specifier|static
-specifier|final
-name|byte
-name|ID_UNSPECIFIED
-init|=
-literal|0
-decl_stmt|;
 annotation|@
 name|VisibleForTesting
 DECL|method|createDefaultSuite ()

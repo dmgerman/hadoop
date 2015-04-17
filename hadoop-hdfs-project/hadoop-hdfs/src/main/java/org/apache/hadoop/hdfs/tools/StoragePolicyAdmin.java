@@ -102,7 +102,7 @@ name|hdfs
 operator|.
 name|protocol
 operator|.
-name|HdfsFileStatus
+name|HdfsConstantsClient
 import|;
 end_import
 
@@ -116,11 +116,9 @@ name|hadoop
 operator|.
 name|hdfs
 operator|.
-name|server
+name|protocol
 operator|.
-name|blockmanagement
-operator|.
-name|BlockStoragePolicySuite
+name|HdfsFileStatus
 import|;
 end_import
 
@@ -823,9 +821,9 @@ if|if
 condition|(
 name|storagePolicyId
 operator|==
-name|BlockStoragePolicySuite
+name|HdfsConstantsClient
 operator|.
-name|ID_UNSPECIFIED
+name|BLOCK_STORAGE_POLICY_ID_UNSPECIFIED
 condition|)
 block|{
 name|System

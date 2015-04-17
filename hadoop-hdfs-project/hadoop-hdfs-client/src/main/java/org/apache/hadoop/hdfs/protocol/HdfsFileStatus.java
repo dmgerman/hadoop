@@ -124,7 +124,7 @@ name|hadoop
 operator|.
 name|hdfs
 operator|.
-name|DFSUtil
+name|DFSUtilClient
 import|;
 end_import
 
@@ -553,7 +553,7 @@ return|return
 name|owner
 return|;
 block|}
-comment|/**    * Get the group associated with the file.    * @return group for the file.     */
+comment|/**    * Get the group associated with the file.    * @return group for the file.    */
 DECL|method|getGroup ()
 specifier|public
 specifier|final
@@ -590,7 +590,7 @@ name|getLocalName
 parameter_list|()
 block|{
 return|return
-name|DFSUtil
+name|DFSUtilClient
 operator|.
 name|bytes2String
 argument_list|(
@@ -722,7 +722,7 @@ name|getSymlink
 parameter_list|()
 block|{
 return|return
-name|DFSUtil
+name|DFSUtilClient
 operator|.
 name|bytes2String
 argument_list|(

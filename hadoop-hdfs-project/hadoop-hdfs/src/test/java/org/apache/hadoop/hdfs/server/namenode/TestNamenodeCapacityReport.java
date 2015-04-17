@@ -206,7 +206,7 @@ name|hadoop
 operator|.
 name|hdfs
 operator|.
-name|DFSUtil
+name|DFSUtilClient
 import|;
 end_import
 
@@ -673,7 +673,7 @@ name|assertTrue
 argument_list|(
 name|percentUsed
 operator|==
-name|DFSUtil
+name|DFSUtilClient
 operator|.
 name|getPercentUsed
 argument_list|(
@@ -687,7 +687,7 @@ name|assertTrue
 argument_list|(
 name|percentRemaining
 operator|==
-name|DFSUtil
+name|DFSUtilClient
 operator|.
 name|getPercentRemaining
 argument_list|(
@@ -701,7 +701,7 @@ name|assertTrue
 argument_list|(
 name|percentBpUsed
 operator|==
-name|DFSUtil
+name|DFSUtilClient
 operator|.
 name|getPercentUsed
 argument_list|(
@@ -905,7 +905,7 @@ name|assertTrue
 argument_list|(
 name|percentUsed
 operator|==
-name|DFSUtil
+name|DFSUtilClient
 operator|.
 name|getPercentUsed
 argument_list|(
@@ -920,7 +920,7 @@ name|assertTrue
 argument_list|(
 name|percentBpUsed
 operator|==
-name|DFSUtil
+name|DFSUtilClient
 operator|.
 name|getPercentUsed
 argument_list|(

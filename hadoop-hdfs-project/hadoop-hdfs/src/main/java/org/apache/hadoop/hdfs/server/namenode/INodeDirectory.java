@@ -400,13 +400,11 @@ name|hadoop
 operator|.
 name|hdfs
 operator|.
-name|server
+name|protocol
 operator|.
-name|blockmanagement
+name|HdfsConstantsClient
 operator|.
-name|BlockStoragePolicySuite
-operator|.
-name|ID_UNSPECIFIED
+name|BLOCK_STORAGE_POLICY_ID_UNSPECIFIED
 import|;
 end_import
 
@@ -754,7 +752,7 @@ return|;
 block|}
 block|}
 return|return
-name|ID_UNSPECIFIED
+name|BLOCK_STORAGE_POLICY_ID_UNSPECIFIED
 return|;
 block|}
 annotation|@
@@ -775,7 +773,7 @@ if|if
 condition|(
 name|id
 operator|!=
-name|ID_UNSPECIFIED
+name|BLOCK_STORAGE_POLICY_ID_UNSPECIFIED
 condition|)
 block|{
 return|return
@@ -795,7 +793,7 @@ operator|.
 name|getStoragePolicyID
 argument_list|()
 else|:
-name|ID_UNSPECIFIED
+name|BLOCK_STORAGE_POLICY_ID_UNSPECIFIED
 return|;
 block|}
 DECL|method|setQuota (BlockStoragePolicySuite bsps, long nsQuota, long ssQuota, StorageType type)

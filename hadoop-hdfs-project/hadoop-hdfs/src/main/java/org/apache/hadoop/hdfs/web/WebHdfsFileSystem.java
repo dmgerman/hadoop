@@ -998,20 +998,6 @@ specifier|protected
 name|URLConnectionFactory
 name|connectionFactory
 decl_stmt|;
-comment|/** Delegation token kind */
-DECL|field|TOKEN_KIND
-specifier|public
-specifier|static
-specifier|final
-name|Text
-name|TOKEN_KIND
-init|=
-operator|new
-name|Text
-argument_list|(
-literal|"WEBHDFS delegation"
-argument_list|)
-decl_stmt|;
 annotation|@
 name|VisibleForTesting
 DECL|field|CANT_FALLBACK_TO_INSECURE_MSG
@@ -1110,7 +1096,9 @@ name|getTokenKind
 parameter_list|()
 block|{
 return|return
-name|TOKEN_KIND
+name|WebHdfsConstants
+operator|.
+name|WEBHDFS_TOKEN_KIND
 return|;
 block|}
 annotation|@

@@ -56,6 +56,12 @@ name|GRANDFATHER_INODE_ID
 init|=
 literal|0
 decl_stmt|;
+DECL|field|BLOCK_STORAGE_POLICY_ID_UNSPECIFIED
+name|byte
+name|BLOCK_STORAGE_POLICY_ID_UNSPECIFIED
+init|=
+literal|0
+decl_stmt|;
 block|}
 end_interface
 

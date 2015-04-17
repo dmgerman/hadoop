@@ -310,7 +310,7 @@ name|size
 argument_list|()
 return|;
 block|}
-comment|/**    *     */
+comment|/**    *    */
 DECL|method|getFileLength ()
 specifier|public
 name|long
@@ -345,7 +345,7 @@ return|return
 name|fileEncryptionInfo
 return|;
 block|}
-comment|/**    * Find block containing specified offset.    *     * @return block if found, or null otherwise.    */
+comment|/**    * Find block containing specified offset.    *    * @return block if found, or null otherwise.    */
 DECL|method|findBlock (long offset)
 specifier|public
 name|int

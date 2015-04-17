@@ -188,6 +188,22 @@ name|hadoop
 operator|.
 name|hdfs
 operator|.
+name|protocol
+operator|.
+name|HdfsConstantsClient
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
 name|server
 operator|.
 name|blockmanagement
@@ -1607,9 +1623,9 @@ init|=
 name|isSymlink
 argument_list|()
 condition|?
-name|BlockStoragePolicySuite
+name|HdfsConstantsClient
 operator|.
-name|ID_UNSPECIFIED
+name|BLOCK_STORAGE_POLICY_ID_UNSPECIFIED
 else|:
 name|getStoragePolicyID
 argument_list|()
@@ -1684,9 +1700,9 @@ init|=
 name|isSymlink
 argument_list|()
 condition|?
-name|BlockStoragePolicySuite
+name|HdfsConstantsClient
 operator|.
-name|ID_UNSPECIFIED
+name|BLOCK_STORAGE_POLICY_ID_UNSPECIFIED
 else|:
 name|getStoragePolicyID
 argument_list|()
@@ -2182,7 +2198,7 @@ name|byte
 name|getStoragePolicyID
 parameter_list|()
 function_decl|;
-comment|/**    * @return the storage policy directly specified on the INode. Return    * {@link BlockStoragePolicySuite#ID_UNSPECIFIED} if no policy has    * been specified.    */
+comment|/**    * @return the storage policy directly specified on the INode. Return    * {@link HdfsConstantsClient#BLOCK_STORAGE_POLICY_ID_UNSPECIFIED} if no policy has    * been specified.    */
 DECL|method|getLocalStoragePolicyID ()
 specifier|public
 specifier|abstract
@@ -2190,7 +2206,7 @@ name|byte
 name|getLocalStoragePolicyID
 parameter_list|()
 function_decl|;
-comment|/**    * Get the storage policy ID while computing quota usage    * @param parentStoragePolicyId the storage policy ID of the parent directory    * @return the storage policy ID of this INode. Note that for an    * {@link INodeSymlink} we return {@link BlockStoragePolicySuite#ID_UNSPECIFIED}    * instead of throwing Exception    */
+comment|/**    * Get the storage policy ID while computing quota usage    * @param parentStoragePolicyId the storage policy ID of the parent directory    * @return the storage policy ID of this INode. Note that for an    * {@link INodeSymlink} we return {@link HdfsConstantsClient#BLOCK_STORAGE_POLICY_ID_UNSPECIFIED}    * instead of throwing Exception    */
 DECL|method|getStoragePolicyIDForQuota (byte parentStoragePolicyId)
 specifier|public
 name|byte
@@ -2206,9 +2222,9 @@ init|=
 name|isSymlink
 argument_list|()
 condition|?
-name|BlockStoragePolicySuite
+name|HdfsConstantsClient
 operator|.
-name|ID_UNSPECIFIED
+name|BLOCK_STORAGE_POLICY_ID_UNSPECIFIED
 else|:
 name|getLocalStoragePolicyID
 argument_list|()
@@ -2216,9 +2232,9 @@ decl_stmt|;
 return|return
 name|localId
 operator|!=
-name|BlockStoragePolicySuite
+name|HdfsConstantsClient
 operator|.
-name|ID_UNSPECIFIED
+name|BLOCK_STORAGE_POLICY_ID_UNSPECIFIED
 condition|?
 name|localId
 else|:
