@@ -194,6 +194,24 @@ name|api
 operator|.
 name|records
 operator|.
+name|LogAggregationStatus
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|api
+operator|.
+name|records
+operator|.
 name|NodeId
 import|;
 end_import
@@ -231,26 +249,6 @@ operator|.
 name|protocolrecords
 operator|.
 name|LogAggregationReport
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|yarn
-operator|.
-name|server
-operator|.
-name|api
-operator|.
-name|records
-operator|.
-name|LogAggregationStatus
 import|;
 end_import
 
@@ -670,7 +668,7 @@ name|td
 argument_list|(
 name|LogAggregationStatus
 operator|.
-name|FINISHED
+name|SUCCEEDED
 operator|.
 name|name
 argument_list|()
@@ -678,7 +676,7 @@ argument_list|)
 operator|.
 name|td
 argument_list|(
-literal|"Log Aggregation is Finished. All of the logs have been "
+literal|"Log Aggregation is Succeeded. All of the logs have been "
 operator|+
 literal|"aggregated successfully."
 argument_list|)
@@ -728,9 +726,11 @@ argument_list|)
 operator|.
 name|td
 argument_list|(
-literal|"Does not get the Log aggregation status for a long time. "
+literal|"The application is finished, but the log aggregation status is "
 operator|+
-literal|"Not sure what is the current Log Aggregation Status."
+literal|"not updated for a long time. Not sure whether the log aggregation "
+operator|+
+literal|"is finished or not."
 argument_list|)
 operator|.
 name|_

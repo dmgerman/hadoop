@@ -885,6 +885,32 @@ name|Token
 name|getAMRMToken
 parameter_list|()
 function_decl|;
+comment|/**    * Get log aggregation status for the application    * @return Application's log aggregation status    */
+annotation|@
+name|Public
+annotation|@
+name|Stable
+DECL|method|getLogAggregationStatus ()
+specifier|public
+specifier|abstract
+name|LogAggregationStatus
+name|getLogAggregationStatus
+parameter_list|()
+function_decl|;
+annotation|@
+name|Private
+annotation|@
+name|Unstable
+DECL|method|setLogAggregationStatus ( LogAggregationStatus logAggregationStatus)
+specifier|public
+specifier|abstract
+name|void
+name|setLogAggregationStatus
+parameter_list|(
+name|LogAggregationStatus
+name|logAggregationStatus
+parameter_list|)
+function_decl|;
 block|}
 end_class
 

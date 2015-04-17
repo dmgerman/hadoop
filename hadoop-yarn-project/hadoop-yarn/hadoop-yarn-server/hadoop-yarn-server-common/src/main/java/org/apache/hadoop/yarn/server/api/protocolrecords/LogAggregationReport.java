@@ -86,7 +86,7 @@ name|api
 operator|.
 name|records
 operator|.
-name|NodeId
+name|LogAggregationStatus
 import|;
 end_import
 
@@ -100,13 +100,11 @@ name|hadoop
 operator|.
 name|yarn
 operator|.
-name|server
-operator|.
 name|api
 operator|.
 name|records
 operator|.
-name|LogAggregationStatus
+name|NodeId
 import|;
 end_import
 

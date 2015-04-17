@@ -3337,6 +3337,32 @@ name|appReportStr
 operator|.
 name|print
 argument_list|(
+literal|"\tLog Aggregation Status : "
+argument_list|)
+expr_stmt|;
+name|appReportStr
+operator|.
+name|println
+argument_list|(
+name|appReport
+operator|.
+name|getLogAggregationStatus
+argument_list|()
+operator|==
+literal|null
+condition|?
+literal|"N/A"
+else|:
+name|appReport
+operator|.
+name|getLogAggregationStatus
+argument_list|()
+argument_list|)
+expr_stmt|;
+name|appReportStr
+operator|.
+name|print
+argument_list|(
 literal|"\tDiagnostics : "
 argument_list|)
 expr_stmt|;

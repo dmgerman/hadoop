@@ -4,7 +4,7 @@ comment|/**  * Licensed to the Apache Software Foundation (ASF) under one  * or 
 end_comment
 
 begin_package
-DECL|package|org.apache.hadoop.yarn.server.api.records
+DECL|package|org.apache.hadoop.yarn.api.records
 package|package
 name|org
 operator|.
@@ -14,13 +14,27 @@ name|hadoop
 operator|.
 name|yarn
 operator|.
-name|server
-operator|.
 name|api
 operator|.
 name|records
 package|;
 end_package
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|conf
+operator|.
+name|YarnConfiguration
+import|;
+end_import
 
 begin_comment
 comment|/**  *<p>Status of Log aggregation.</p>  */
@@ -32,21 +46,27 @@ specifier|public
 enum|enum
 name|LogAggregationStatus
 block|{
+comment|/** Log Aggregation is Disabled. */
 DECL|enumConstant|DISABLED
 name|DISABLED
 block|,
+comment|/** Log Aggregation does not Start. */
 DECL|enumConstant|NOT_START
 name|NOT_START
 block|,
+comment|/** Log Aggregation is Running. */
 DECL|enumConstant|RUNNING
 name|RUNNING
 block|,
-DECL|enumConstant|FINISHED
-name|FINISHED
+comment|/**    * Log Aggregation is Succeeded. All of the logs have been aggregated    * successfully.    */
+DECL|enumConstant|SUCCEEDED
+name|SUCCEEDED
 block|,
+comment|/**    * Log Aggregation is completed. But at least one of the logs have not been    * aggregated.    */
 DECL|enumConstant|FAILED
 name|FAILED
 block|,
+comment|/**    * The application is finished, but the log aggregation status is not updated    * for a long time.     * @see YarnConfiguration#LOG_AGGREGATION_STATUS_TIME_OUT_MS    */
 DECL|enumConstant|TIME_OUT
 name|TIME_OUT
 block|}

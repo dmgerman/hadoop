@@ -466,6 +466,24 @@ name|api
 operator|.
 name|records
 operator|.
+name|LogAggregationStatus
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|api
+operator|.
+name|records
+operator|.
 name|NodeId
 import|;
 end_import
@@ -966,6 +984,15 @@ argument_list|,
 literal|null
 argument_list|)
 decl_stmt|;
+name|newApplicationReport
+operator|.
+name|setLogAggregationStatus
+argument_list|(
+name|LogAggregationStatus
+operator|.
+name|SUCCEEDED
+argument_list|)
+expr_stmt|;
 name|when
 argument_list|(
 name|client
@@ -1161,6 +1188,13 @@ literal|"N/A"
 else|:
 literal|"123456 MB-seconds, 4567 vcore-seconds"
 operator|)
+argument_list|)
+expr_stmt|;
+name|pw
+operator|.
+name|println
+argument_list|(
+literal|"\tLog Aggregation Status : SUCCEEDED"
 argument_list|)
 expr_stmt|;
 name|pw

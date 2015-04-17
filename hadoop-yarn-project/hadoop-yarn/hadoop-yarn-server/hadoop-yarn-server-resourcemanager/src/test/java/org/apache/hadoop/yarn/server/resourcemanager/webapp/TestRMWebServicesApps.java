@@ -11154,6 +11154,15 @@ name|element
 argument_list|,
 literal|"numAMContainerPreempted"
 argument_list|)
+argument_list|,
+name|WebServicesTestUtils
+operator|.
+name|getXmlString
+argument_list|(
+name|element
+argument_list|,
+literal|"logAggregationStatus"
+argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
@@ -11178,7 +11187,7 @@ name|assertEquals
 argument_list|(
 literal|"incorrect number of elements"
 argument_list|,
-literal|27
+literal|28
 argument_list|,
 name|info
 operator|.
@@ -11353,10 +11362,17 @@ name|getInt
 argument_list|(
 literal|"numAMContainerPreempted"
 argument_list|)
+argument_list|,
+name|info
+operator|.
+name|getString
+argument_list|(
+literal|"logAggregationStatus"
+argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|verifyAppInfoGeneric (RMApp app, String id, String user, String name, String applicationType, String queue, String state, String finalStatus, float progress, String trackingUI, String diagnostics, long clusterId, long startedTime, long finishedTime, long elapsedTime, String amHostHttpAddress, String amContainerLogs, int allocatedMB, int allocatedVCores, int numContainers, int preemptedResourceMB, int preemptedResourceVCores, int numNonAMContainerPreempted, int numAMContainerPreempted)
+DECL|method|verifyAppInfoGeneric (RMApp app, String id, String user, String name, String applicationType, String queue, String state, String finalStatus, float progress, String trackingUI, String diagnostics, long clusterId, long startedTime, long finishedTime, long elapsedTime, String amHostHttpAddress, String amContainerLogs, int allocatedMB, int allocatedVCores, int numContainers, int preemptedResourceMB, int preemptedResourceVCores, int numNonAMContainerPreempted, int numAMContainerPreempted, String logAggregationStatus)
 specifier|public
 name|void
 name|verifyAppInfoGeneric
@@ -11432,6 +11448,9 @@ name|numNonAMContainerPreempted
 parameter_list|,
 name|int
 name|numAMContainerPreempted
+parameter_list|,
+name|String
+name|logAggregationStatus
 parameter_list|)
 throws|throws
 name|JSONException
@@ -11769,6 +11788,21 @@ name|getNumAMContainersPreempted
 argument_list|()
 argument_list|,
 name|numAMContainerPreempted
+argument_list|)
+expr_stmt|;
+name|assertEquals
+argument_list|(
+literal|"Log aggregation Status doesn't match"
+argument_list|,
+name|app
+operator|.
+name|getLogAggregationStatusForAppReport
+argument_list|()
+operator|.
+name|toString
+argument_list|()
+argument_list|,
+name|logAggregationStatus
 argument_list|)
 expr_stmt|;
 block|}
