@@ -70,22 +70,6 @@ name|hdfs
 operator|.
 name|protocol
 operator|.
-name|HdfsConstants
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|hdfs
-operator|.
-name|protocol
-operator|.
 name|HdfsFileStatus
 import|;
 end_import
@@ -248,6 +232,60 @@ name|AtomicReference
 import|;
 end_import
 
+begin_import
+import|import static
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|protocol
+operator|.
+name|HdfsConstants
+operator|.
+name|BLOCK_STRIPED_CELL_SIZE
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|protocol
+operator|.
+name|HdfsConstants
+operator|.
+name|NUM_DATA_BLOCKS
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|protocol
+operator|.
+name|HdfsConstants
+operator|.
+name|NUM_PARITY_BLOCKS
+import|;
+end_import
+
 begin_comment
 comment|/****************************************************************************  * The StripedDataStreamer class is used by {@link DFSStripedOutputStream}.  * There are two kinds of StripedDataStreamer, leading streamer and ordinary  * stream. Leading streamer requests a block group from NameNode, unwraps  * it to located blocks and transfers each located block to its corresponding  * ordinary streamer via a blocking queue.  *  ****************************************************************************/
 end_comment
@@ -277,20 +315,6 @@ name|LocatedBlock
 argument_list|>
 argument_list|>
 name|stripedBlocks
-decl_stmt|;
-DECL|field|blockGroupSize
-specifier|private
-specifier|static
-name|short
-name|blockGroupSize
-init|=
-name|HdfsConstants
-operator|.
-name|NUM_DATA_BLOCKS
-operator|+
-name|HdfsConstants
-operator|.
-name|NUM_PARITY_BLOCKS
 decl_stmt|;
 DECL|field|hasCommittedBlock
 specifier|private
@@ -473,8 +497,6 @@ block|{
 return|return
 name|index
 operator|>=
-name|HdfsConstants
-operator|.
 name|NUM_DATA_BLOCKS
 return|;
 block|}
@@ -497,8 +519,8 @@ name|isParityStreamer
 argument_list|()
 condition|)
 block|{
-comment|//before retrieving a new block, transfer the finished block to
-comment|//leading streamer
+comment|// before retrieving a new block, transfer the finished block to
+comment|// leading streamer
 name|LocatedBlock
 name|finishedBlock
 init|=
@@ -562,7 +584,7 @@ name|InterruptedException
 name|ie
 parameter_list|)
 block|{
-comment|//TODO: Handle InterruptedException (HDFS-7786)
+comment|// TODO: Handle InterruptedException (HDFS-7786)
 block|}
 block|}
 name|super
@@ -570,145 +592,6 @@ operator|.
 name|endBlock
 argument_list|()
 expr_stmt|;
-block|}
-comment|/**    * This function is called after the streamer is closed.    */
-DECL|method|countTailingBlockGroupBytes ()
-name|void
-name|countTailingBlockGroupBytes
-parameter_list|()
-throws|throws
-name|IOException
-block|{
-if|if
-condition|(
-name|isLeadingStreamer
-argument_list|()
-condition|)
-block|{
-comment|//when committing a block group, leading streamer has to adjust
-comment|// {@link block} including the size of block group
-for|for
-control|(
-name|int
-name|i
-init|=
-literal|1
-init|;
-name|i
-operator|<
-name|HdfsConstants
-operator|.
-name|NUM_DATA_BLOCKS
-condition|;
-name|i
-operator|++
-control|)
-block|{
-try|try
-block|{
-name|LocatedBlock
-name|finishedLocatedBlock
-init|=
-name|stripedBlocks
-operator|.
-name|get
-argument_list|(
-literal|0
-argument_list|)
-operator|.
-name|poll
-argument_list|(
-literal|30
-argument_list|,
-name|TimeUnit
-operator|.
-name|SECONDS
-argument_list|)
-decl_stmt|;
-if|if
-condition|(
-name|finishedLocatedBlock
-operator|==
-literal|null
-condition|)
-block|{
-throw|throw
-operator|new
-name|IOException
-argument_list|(
-literal|"Fail to get finished LocatedBlock "
-operator|+
-literal|"from streamer, i="
-operator|+
-name|i
-argument_list|)
-throw|;
-block|}
-name|ExtendedBlock
-name|finishedBlock
-init|=
-name|finishedLocatedBlock
-operator|.
-name|getBlock
-argument_list|()
-decl_stmt|;
-name|long
-name|bytes
-init|=
-name|finishedBlock
-operator|==
-literal|null
-condition|?
-literal|0
-else|:
-name|finishedBlock
-operator|.
-name|getNumBytes
-argument_list|()
-decl_stmt|;
-if|if
-condition|(
-name|block
-operator|!=
-literal|null
-condition|)
-block|{
-name|block
-operator|.
-name|setNumBytes
-argument_list|(
-name|block
-operator|.
-name|getNumBytes
-argument_list|()
-operator|+
-name|bytes
-argument_list|)
-expr_stmt|;
-block|}
-block|}
-catch|catch
-parameter_list|(
-name|InterruptedException
-name|ie
-parameter_list|)
-block|{
-name|DFSClient
-operator|.
-name|LOG
-operator|.
-name|info
-argument_list|(
-literal|"InterruptedException received when "
-operator|+
-literal|"putting a block to stripeBlocks, ie = "
-operator|+
-name|ie
-argument_list|)
-expr_stmt|;
-block|}
-block|}
-block|}
 block|}
 annotation|@
 name|Override
@@ -750,8 +633,6 @@ literal|1
 init|;
 name|i
 operator|<
-name|HdfsConstants
-operator|.
 name|NUM_DATA_BLOCKS
 condition|;
 name|i
@@ -905,16 +786,10 @@ name|LocatedStripedBlock
 operator|)
 name|lb
 argument_list|,
-name|HdfsConstants
-operator|.
 name|BLOCK_STRIPED_CELL_SIZE
 argument_list|,
-name|HdfsConstants
-operator|.
 name|NUM_DATA_BLOCKS
 argument_list|,
-name|HdfsConstants
-operator|.
 name|NUM_PARITY_BLOCKS
 argument_list|)
 decl_stmt|;
@@ -923,11 +798,19 @@ name|blocks
 operator|.
 name|length
 operator|==
-name|blockGroupSize
+operator|(
+name|NUM_DATA_BLOCKS
+operator|+
+name|NUM_PARITY_BLOCKS
+operator|)
 operator|:
 literal|"Fail to get block group from namenode: blockGroupSize: "
 operator|+
-name|blockGroupSize
+operator|(
+name|NUM_DATA_BLOCKS
+operator|+
+name|NUM_PARITY_BLOCKS
+operator|)
 operator|+
 literal|", blocks.length: "
 operator|+
@@ -1063,7 +946,7 @@ else|else
 block|{
 try|try
 block|{
-comment|//wait 90 seconds to get a block from the queue
+comment|// wait 90 seconds to get a block from the queue
 name|lb
 operator|=
 name|stripedBlocks
