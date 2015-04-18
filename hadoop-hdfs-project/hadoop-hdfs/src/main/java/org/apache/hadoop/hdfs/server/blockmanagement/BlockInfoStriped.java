@@ -928,8 +928,38 @@ block|{
 comment|// In case striped blocks, total usage by this striped blocks should
 comment|// be the total of data blocks and parity blocks because
 comment|// `getNumBytes` is the total of actual data block size.
+comment|// 0. Calculate the total bytes per stripes<Num Bytes per Stripes>
+name|long
+name|numBytesPerStripe
+init|=
+name|dataBlockNum
+operator|*
+name|BLOCK_STRIPED_CELL_SIZE
+decl_stmt|;
+if|if
+condition|(
+name|getNumBytes
+argument_list|()
+operator|%
+name|numBytesPerStripe
+operator|==
+literal|0
+condition|)
+block|{
 return|return
-operator|(
+name|getNumBytes
+argument_list|()
+operator|/
+name|dataBlockNum
+operator|*
+name|getTotalBlockNum
+argument_list|()
+return|;
+block|}
+comment|// 1. Calculate the number of stripes in this block group.<Num Stripes>
+name|long
+name|numStripes
+init|=
 operator|(
 name|getNumBytes
 argument_list|()
@@ -937,21 +967,55 @@ operator|-
 literal|1
 operator|)
 operator|/
-operator|(
-name|dataBlockNum
-operator|*
-name|BLOCK_STRIPED_CELL_SIZE
-operator|)
+name|numBytesPerStripe
 operator|+
 literal|1
-operator|)
+decl_stmt|;
+comment|// 2. Calculate the parity cell length in the last stripe. Note that the
+comment|//    size of parity cells should equal the size of the first cell, if it
+comment|//    is not full.<Last Stripe Parity Cell Length>
+name|long
+name|lastStripeParityCellLen
+init|=
+name|Math
+operator|.
+name|min
+argument_list|(
+name|getNumBytes
+argument_list|()
+operator|%
+name|numBytesPerStripe
+argument_list|,
+name|BLOCK_STRIPED_CELL_SIZE
+argument_list|)
+decl_stmt|;
+comment|// 3. Total consumed space is the total of
+comment|//     - The total of the full cells of data blocks and parity blocks.
+comment|//     - The remaining of data block which does not make a stripe.
+comment|//     - The last parity block cells. These size should be same
+comment|//       to the first cell in this stripe.
+return|return
+name|getTotalBlockNum
+argument_list|()
 operator|*
+operator|(
 name|BLOCK_STRIPED_CELL_SIZE
 operator|*
-name|parityBlockNum
+operator|(
+name|numStripes
+operator|-
+literal|1
+operator|)
+operator|)
 operator|+
 name|getNumBytes
 argument_list|()
+operator|%
+name|numBytesPerStripe
+operator|+
+name|lastStripeParityCellLen
+operator|*
+name|parityBlockNum
 return|;
 block|}
 annotation|@
