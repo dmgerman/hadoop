@@ -4238,7 +4238,6 @@ return|;
 block|}
 DECL|method|getQueue (String queueName)
 specifier|public
-specifier|synchronized
 name|CSQueue
 name|getQueue
 parameter_list|(
@@ -5738,11 +5737,6 @@ name|queue
 init|=
 literal|null
 decl_stmt|;
-synchronized|synchronized
-init|(
-name|this
-init|)
-block|{
 name|queue
 operator|=
 name|this
@@ -5754,7 +5748,6 @@ argument_list|(
 name|queueName
 argument_list|)
 expr_stmt|;
-block|}
 if|if
 condition|(
 name|queue
