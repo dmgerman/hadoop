@@ -747,11 +747,11 @@ name|results
 return|;
 block|}
 comment|/**    * Utility method to validate a list resource requests, by insuring that the    * requested memory/vcore is non-negative and not greater than max    */
-DECL|method|validateResourceRequests (List<ResourceRequest> ask, Resource maximumResource, String queueName, YarnScheduler scheduler)
+DECL|method|normalizeAndValidateRequests (List<ResourceRequest> ask, Resource maximumResource, String queueName, YarnScheduler scheduler)
 specifier|public
 specifier|static
 name|void
-name|validateResourceRequests
+name|normalizeAndValidateRequests
 parameter_list|(
 name|List
 argument_list|<
@@ -781,7 +781,7 @@ control|)
 block|{
 name|SchedulerUtils
 operator|.
-name|validateResourceRequest
+name|normalizeAndvalidateRequest
 argument_list|(
 name|resReq
 argument_list|,

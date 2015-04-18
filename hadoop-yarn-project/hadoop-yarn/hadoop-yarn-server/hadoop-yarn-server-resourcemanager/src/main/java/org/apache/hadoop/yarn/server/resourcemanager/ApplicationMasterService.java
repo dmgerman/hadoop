@@ -3230,7 +3230,7 @@ try|try
 block|{
 name|RMServerUtils
 operator|.
-name|validateResourceRequests
+name|normalizeAndValidateRequests
 argument_list|(
 name|ask
 argument_list|,

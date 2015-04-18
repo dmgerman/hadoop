@@ -1858,6 +1858,8 @@ argument_list|,
 name|submitTime
 argument_list|,
 name|user
+argument_list|,
+literal|false
 argument_list|)
 decl_stmt|;
 name|ApplicationId
@@ -2045,6 +2047,8 @@ name|appState
 operator|.
 name|getUser
 argument_list|()
+argument_list|,
+literal|true
 argument_list|)
 decl_stmt|;
 name|application
@@ -2061,7 +2065,7 @@ argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|createAndPopulateNewRMApp ( ApplicationSubmissionContext submissionContext, long submitTime, String user)
+DECL|method|createAndPopulateNewRMApp ( ApplicationSubmissionContext submissionContext, long submitTime, String user, boolean isRecovery)
 specifier|private
 name|RMAppImpl
 name|createAndPopulateNewRMApp
@@ -2074,6 +2078,9 @@ name|submitTime
 parameter_list|,
 name|String
 name|user
+parameter_list|,
+name|boolean
+name|isRecovery
 parameter_list|)
 throws|throws
 name|YarnException
@@ -2092,6 +2099,8 @@ init|=
 name|validateAndCreateResourceRequest
 argument_list|(
 name|submissionContext
+argument_list|,
+name|isRecovery
 argument_list|)
 decl_stmt|;
 comment|// Create RMApp
@@ -2183,9 +2192,8 @@ name|message
 argument_list|)
 expr_stmt|;
 throw|throw
-name|RPCUtil
-operator|.
-name|getRemoteException
+operator|new
+name|YarnException
 argument_list|(
 name|message
 argument_list|)
@@ -2248,13 +2256,16 @@ return|return
 name|application
 return|;
 block|}
-DECL|method|validateAndCreateResourceRequest ( ApplicationSubmissionContext submissionContext)
+DECL|method|validateAndCreateResourceRequest ( ApplicationSubmissionContext submissionContext, boolean isRecovery)
 specifier|private
 name|ResourceRequest
 name|validateAndCreateResourceRequest
 parameter_list|(
 name|ApplicationSubmissionContext
 name|submissionContext
+parameter_list|,
+name|boolean
+name|isRecovery
 parameter_list|)
 throws|throws
 name|InvalidResourceRequestException
@@ -2275,26 +2286,18 @@ condition|)
 block|{
 name|ResourceRequest
 name|amReq
+init|=
+name|submissionContext
+operator|.
+name|getAMContainerResourceRequest
+argument_list|()
 decl_stmt|;
 if|if
 condition|(
-name|submissionContext
-operator|.
-name|getAMContainerResourceRequest
-argument_list|()
-operator|!=
+name|amReq
+operator|==
 literal|null
 condition|)
-block|{
-name|amReq
-operator|=
-name|submissionContext
-operator|.
-name|getAMContainerResourceRequest
-argument_list|()
-expr_stmt|;
-block|}
-else|else
 block|{
 name|amReq
 operator|=
@@ -2345,7 +2348,7 @@ try|try
 block|{
 name|SchedulerUtils
 operator|.
-name|validateResourceRequest
+name|normalizeAndValidateRequest
 argument_list|(
 name|amReq
 argument_list|,
@@ -2360,6 +2363,8 @@ name|getQueue
 argument_list|()
 argument_list|,
 name|scheduler
+argument_list|,
+name|isRecovery
 argument_list|)
 expr_stmt|;
 block|}

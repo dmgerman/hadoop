@@ -666,22 +666,6 @@ name|hadoop
 operator|.
 name|yarn
 operator|.
-name|nodelabels
-operator|.
-name|NodeLabelsStore
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|yarn
-operator|.
 name|server
 operator|.
 name|resourcemanager
@@ -1931,7 +1915,7 @@ argument_list|)
 expr_stmt|;
 name|SchedulerUtils
 operator|.
-name|validateResourceRequest
+name|normalizeAndvalidateRequest
 argument_list|(
 name|resReq
 argument_list|,
@@ -1951,7 +1935,7 @@ argument_list|)
 expr_stmt|;
 name|SchedulerUtils
 operator|.
-name|validateResourceRequest
+name|normalizeAndvalidateRequest
 argument_list|(
 name|resReq
 argument_list|,
@@ -1971,7 +1955,7 @@ argument_list|)
 expr_stmt|;
 name|SchedulerUtils
 operator|.
-name|validateResourceRequest
+name|normalizeAndvalidateRequest
 argument_list|(
 name|resReq
 argument_list|,
@@ -1991,7 +1975,7 @@ argument_list|)
 expr_stmt|;
 name|SchedulerUtils
 operator|.
-name|validateResourceRequest
+name|normalizeAndvalidateRequest
 argument_list|(
 name|resReq
 argument_list|,
@@ -2089,7 +2073,7 @@ argument_list|)
 expr_stmt|;
 name|SchedulerUtils
 operator|.
-name|validateResourceRequest
+name|normalizeAndvalidateRequest
 argument_list|(
 name|resReq
 argument_list|,
@@ -2182,7 +2166,7 @@ argument_list|)
 expr_stmt|;
 name|SchedulerUtils
 operator|.
-name|validateResourceRequest
+name|normalizeAndvalidateRequest
 argument_list|(
 name|resReq
 argument_list|,
@@ -2258,7 +2242,7 @@ argument_list|)
 decl_stmt|;
 name|SchedulerUtils
 operator|.
-name|validateResourceRequest
+name|normalizeAndvalidateRequest
 argument_list|(
 name|resReq
 argument_list|,
@@ -2278,7 +2262,7 @@ argument_list|)
 expr_stmt|;
 name|SchedulerUtils
 operator|.
-name|validateResourceRequest
+name|normalizeAndvalidateRequest
 argument_list|(
 name|resReq
 argument_list|,
@@ -2298,7 +2282,7 @@ argument_list|)
 expr_stmt|;
 name|SchedulerUtils
 operator|.
-name|validateResourceRequest
+name|normalizeAndvalidateRequest
 argument_list|(
 name|resReq
 argument_list|,
@@ -2382,7 +2366,7 @@ argument_list|)
 expr_stmt|;
 name|SchedulerUtils
 operator|.
-name|validateResourceRequest
+name|normalizeAndvalidateRequest
 argument_list|(
 name|resReq
 argument_list|,
@@ -2469,7 +2453,7 @@ argument_list|)
 expr_stmt|;
 name|SchedulerUtils
 operator|.
-name|validateResourceRequest
+name|normalizeAndvalidateRequest
 argument_list|(
 name|resReq
 argument_list|,
@@ -2489,7 +2473,7 @@ argument_list|)
 expr_stmt|;
 name|SchedulerUtils
 operator|.
-name|validateResourceRequest
+name|normalizeAndvalidateRequest
 argument_list|(
 name|resReq
 argument_list|,
@@ -2509,7 +2493,7 @@ argument_list|)
 expr_stmt|;
 name|SchedulerUtils
 operator|.
-name|validateResourceRequest
+name|normalizeAndvalidateRequest
 argument_list|(
 name|resReq
 argument_list|,
@@ -2605,7 +2589,7 @@ argument_list|)
 expr_stmt|;
 name|SchedulerUtils
 operator|.
-name|validateResourceRequest
+name|normalizeAndvalidateRequest
 argument_list|(
 name|resReq
 argument_list|,
@@ -2696,7 +2680,7 @@ argument_list|)
 expr_stmt|;
 name|SchedulerUtils
 operator|.
-name|validateResourceRequest
+name|normalizeAndvalidateRequest
 argument_list|(
 name|resReq
 argument_list|,
@@ -2801,7 +2785,7 @@ argument_list|)
 decl_stmt|;
 name|SchedulerUtils
 operator|.
-name|validateResourceRequest
+name|normalizeAndvalidateRequest
 argument_list|(
 name|resReq
 argument_list|,
@@ -2867,7 +2851,7 @@ argument_list|)
 decl_stmt|;
 name|SchedulerUtils
 operator|.
-name|validateResourceRequest
+name|normalizeAndvalidateRequest
 argument_list|(
 name|resReq
 argument_list|,
@@ -2935,7 +2919,7 @@ argument_list|)
 decl_stmt|;
 name|SchedulerUtils
 operator|.
-name|validateResourceRequest
+name|normalizeAndvalidateRequest
 argument_list|(
 name|resReq
 argument_list|,
@@ -3003,7 +2987,7 @@ argument_list|)
 decl_stmt|;
 name|SchedulerUtils
 operator|.
-name|validateResourceRequest
+name|normalizeAndvalidateRequest
 argument_list|(
 name|resReq
 argument_list|,
@@ -3070,7 +3054,7 @@ argument_list|)
 decl_stmt|;
 name|SchedulerUtils
 operator|.
-name|validateResourceRequest
+name|normalizeAndvalidateRequest
 argument_list|(
 name|resReq
 argument_list|,
@@ -3138,7 +3122,7 @@ argument_list|)
 decl_stmt|;
 name|SchedulerUtils
 operator|.
-name|validateResourceRequest
+name|normalizeAndvalidateRequest
 argument_list|(
 name|resReq
 argument_list|,
@@ -3209,7 +3193,7 @@ argument_list|)
 decl_stmt|;
 name|SchedulerUtils
 operator|.
-name|validateResourceRequest
+name|normalizeAndvalidateRequest
 argument_list|(
 name|resReq
 argument_list|,
@@ -3280,7 +3264,7 @@ argument_list|)
 decl_stmt|;
 name|SchedulerUtils
 operator|.
-name|validateResourceRequest
+name|normalizeAndvalidateRequest
 argument_list|(
 name|resReq
 argument_list|,
