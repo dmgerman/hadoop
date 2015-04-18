@@ -320,15 +320,15 @@ init|=
 literal|10
 decl_stmt|;
 comment|// uncache blocks
-DECL|field|DNA_CODEC
+DECL|field|DNA_ERASURE_CODING_RECOVERY
 specifier|final
 specifier|static
 name|int
-name|DNA_CODEC
+name|DNA_ERASURE_CODING_RECOVERY
 init|=
 literal|11
 decl_stmt|;
-comment|// uncache blocks
+comment|// erasure coding recovery command
 comment|/**     * Register Datanode.    *    * @see org.apache.hadoop.hdfs.server.namenode.FSNamesystem#registerDatanode(DatanodeRegistration)    * @param registration datanode registration information    * @return the given {@link org.apache.hadoop.hdfs.server.protocol.DatanodeRegistration} with    *  updated registration information    */
 annotation|@
 name|Idempotent
