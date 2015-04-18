@@ -5951,10 +5951,10 @@ argument_list|()
 expr_stmt|;
 block|}
 block|}
-DECL|method|getECPolicy (INodesInPath iip)
+DECL|method|isInECZone (INodesInPath iip)
 specifier|public
 name|boolean
-name|getECPolicy
+name|isInECZone
 parameter_list|(
 name|INodesInPath
 name|iip

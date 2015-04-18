@@ -1101,41 +1101,6 @@ return|return
 name|num
 return|;
 block|}
-annotation|@
-name|Override
-DECL|method|write (DataOutput out)
-specifier|public
-name|void
-name|write
-parameter_list|(
-name|DataOutput
-name|out
-parameter_list|)
-throws|throws
-name|IOException
-block|{
-name|out
-operator|.
-name|writeShort
-argument_list|(
-name|dataBlockNum
-argument_list|)
-expr_stmt|;
-name|out
-operator|.
-name|writeShort
-argument_list|(
-name|parityBlockNum
-argument_list|)
-expr_stmt|;
-name|super
-operator|.
-name|write
-argument_list|(
-name|out
-argument_list|)
-expr_stmt|;
-block|}
 comment|/**    * Convert a complete block to an under construction block.    * @return BlockInfoUnderConstruction -  an under construction block.    */
 DECL|method|convertToBlockUnderConstruction ( BlockUCState s, DatanodeStorageInfo[] targets)
 specifier|public
