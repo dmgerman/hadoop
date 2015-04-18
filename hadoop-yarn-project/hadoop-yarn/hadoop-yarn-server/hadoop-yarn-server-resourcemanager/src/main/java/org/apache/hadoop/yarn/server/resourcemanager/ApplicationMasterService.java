@@ -2262,6 +2262,17 @@ expr_stmt|;
 block|}
 comment|// For work-preserving AM restart, retrieve previous attempts' containers
 comment|// and corresponding NM tokens.
+if|if
+condition|(
+name|app
+operator|.
+name|getApplicationSubmissionContext
+argument_list|()
+operator|.
+name|getKeepContainersAcrossApplicationAttempts
+argument_list|()
+condition|)
+block|{
 name|List
 argument_list|<
 name|Container
@@ -2361,7 +2372,8 @@ name|IllegalArgumentException
 name|e
 parameter_list|)
 block|{
-comment|// if it's a DNS issue, throw UnknowHostException directly and that
+comment|// if it's a DNS issue, throw UnknowHostException directly and
+comment|// that
 comment|// will be automatically retried by RMProxy in RPC layer.
 if|if
 condition|(
@@ -2419,6 +2431,7 @@ operator|+
 literal|" NM tokens."
 argument_list|)
 expr_stmt|;
+block|}
 block|}
 name|response
 operator|.
