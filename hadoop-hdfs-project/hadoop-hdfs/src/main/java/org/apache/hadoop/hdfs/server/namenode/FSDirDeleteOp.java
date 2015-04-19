@@ -157,7 +157,7 @@ DECL|class|FSDirDeleteOp
 class|class
 name|FSDirDeleteOp
 block|{
-comment|/**    * Delete the target directory and collect the blocks under it    *    * @param iip the INodesInPath instance containing all the INodes for the path    * @param collectedBlocks Blocks under the deleted directory    * @param removedINodes INodes that should be removed from inodeMap    * @return the number of files that have been removed    */
+comment|/**    * Delete the target directory and collect the blocks under it    *    * @param fsd the FSDirectory instance    * @param iip the INodesInPath instance containing all the INodes for the path    * @param collectedBlocks Blocks under the deleted directory    * @param removedINodes INodes that should be removed from inodeMap    * @return the number of files that have been removed    */
 DECL|method|delete ( FSDirectory fsd, INodesInPath iip, BlocksMapUpdateInfo collectedBlocks, List<INode> removedINodes, long mtime)
 specifier|static
 name|long
@@ -304,7 +304,7 @@ return|return
 name|filesRemoved
 return|;
 block|}
-comment|/**    * Remove a file/directory from the namespace.    *<p>    * For large directories, deletion is incremental. The blocks under    * the directory are collected and deleted a small number at a time holding    * the {@link FSNamesystem} lock.    *<p>    * For small directory or file the deletion is done in one shot.    *    */
+comment|/**    * Remove a file/directory from the namespace.    *<p>    * For large directories, deletion is incremental. The blocks under    * the directory are collected and deleted a small number at a time holding    * the {@link FSNamesystem} lock.    *<p>    * For small directory or file the deletion is done in one shot.    *    * @param fsn namespace    * @param src path name to be deleted    * @param recursive boolean true to apply to all sub-directories recursively    * @param logRetryCache whether to record RPC ids in editlog for retry cache    *          rebuilding    * @return blocks collected from the deleted path    * @throws IOException    */
 DECL|method|delete ( FSNamesystem fsn, String src, boolean recursive, boolean logRetryCache)
 specifier|static
 name|BlocksMapUpdateInfo
@@ -449,7 +449,7 @@ name|logRetryCache
 argument_list|)
 return|;
 block|}
-comment|/**    * Delete a path from the name space    * Update the count at each ancestor directory with quota    *<br>    * Note: This is to be used by    * {@link org.apache.hadoop.hdfs.server.namenode.FSEditLog} only.    *<br>    * @param src a string representation of a path to an inode    * @param mtime the time the inode is removed    */
+comment|/**    * Delete a path from the name space    * Update the count at each ancestor directory with quota    *<br>    * Note: This is to be used by    * {@link org.apache.hadoop.hdfs.server.namenode.FSEditLog} only.    *<br>    *    * @param fsd the FSDirectory instance    * @param src a string representation of a path to an inode    * @param mtime the time the inode is removed    */
 DECL|method|deleteForEditLog (FSDirectory fsd, String src, long mtime)
 specifier|static
 name|void
@@ -603,7 +603,7 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-comment|/**    * Remove a file/directory from the namespace.    *<p>    * For large directories, deletion is incremental. The blocks under    * the directory are collected and deleted a small number at a time holding    * the {@link org.apache.hadoop.hdfs.server.namenode.FSNamesystem} lock.    *<p>    * For small directory or file the deletion is done in one shot.    */
+comment|/**    * Remove a file/directory from the namespace.    *<p>    * For large directories, deletion is incremental. The blocks under    * the directory are collected and deleted a small number at a time holding    * the {@link org.apache.hadoop.hdfs.server.namenode.FSNamesystem} lock.    *<p>    * For small directory or file the deletion is done in one shot.    * @param fsn namespace    * @param src path name to be deleted    * @param iip the INodesInPath instance containing all the INodes for the path    * @param logRetryCache whether to record RPC ids in editlog for retry cache    *          rebuilding    * @return blocks collected from the deleted path    * @throws IOException    */
 DECL|method|deleteInternal ( FSNamesystem fsn, String src, INodesInPath iip, boolean logRetryCache)
 specifier|static
 name|BlocksMapUpdateInfo
@@ -891,7 +891,7 @@ return|return
 literal|true
 return|;
 block|}
-comment|/**    * Delete a path from the name space    * Update the count at each ancestor directory with quota    * @param iip the inodes resolved from the path    * @param collectedBlocks blocks collected from the deleted path    * @param removedINodes inodes that should be removed from inodeMap    * @param mtime the time the inode is removed    * @return the number of inodes deleted; 0 if no inodes are deleted.    */
+comment|/**    * Delete a path from the name space    * Update the count at each ancestor directory with quota    * @param fsd the FSDirectory instance    * @param iip the inodes resolved from the path    * @param collectedBlocks blocks collected from the deleted path    * @param removedINodes inodes that should be removed from inodeMap    * @param mtime the time the inode is removed    * @return the number of inodes deleted; 0 if no inodes are deleted.    */
 DECL|method|unprotectedDelete ( FSDirectory fsd, INodesInPath iip, BlocksMapUpdateInfo collectedBlocks, List<INode> removedINodes, long mtime)
 specifier|private
 specifier|static
