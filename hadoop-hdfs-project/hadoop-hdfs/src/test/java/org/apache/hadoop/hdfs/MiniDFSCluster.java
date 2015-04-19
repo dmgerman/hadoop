@@ -8081,6 +8081,13 @@ block|}
 block|}
 if|if
 condition|(
+name|base_dir
+operator|!=
+literal|null
+condition|)
+block|{
+if|if
+condition|(
 name|deleteDfsDir
 condition|)
 block|{
@@ -8097,6 +8104,7 @@ operator|.
 name|deleteOnExit
 argument_list|()
 expr_stmt|;
+block|}
 block|}
 block|}
 comment|/**    * Shutdown all DataNodes started by this class.  The NameNode    * is left running so that new DataNodes may be started.    */
