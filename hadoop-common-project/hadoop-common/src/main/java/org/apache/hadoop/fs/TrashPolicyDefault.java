@@ -813,6 +813,8 @@ argument_list|(
 literal|"Can't create trash directory: "
 operator|+
 name|baseTrashPath
+argument_list|,
+name|e
 argument_list|)
 expr_stmt|;
 name|cause

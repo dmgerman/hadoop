@@ -32,6 +32,20 @@ name|org
 operator|.
 name|apache
 operator|.
+name|commons
+operator|.
+name|logging
+operator|.
+name|LogFactory
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
 name|hadoop
 operator|.
 name|classification
@@ -102,6 +116,30 @@ name|Trash
 extends|extends
 name|Configured
 block|{
+DECL|field|LOG
+specifier|private
+specifier|static
+specifier|final
+name|org
+operator|.
+name|apache
+operator|.
+name|commons
+operator|.
+name|logging
+operator|.
+name|Log
+name|LOG
+init|=
+name|LogFactory
+operator|.
+name|getLog
+argument_list|(
+name|Trash
+operator|.
+name|class
+argument_list|)
+decl_stmt|;
 DECL|field|trashPolicy
 specifier|private
 name|TrashPolicy
@@ -270,6 +308,15 @@ parameter_list|)
 block|{
 comment|// If we can not determine that trash is enabled server side then
 comment|// bail rather than potentially deleting a file when trash is enabled.
+name|LOG
+operator|.
+name|warn
+argument_list|(
+literal|"Failed to get server trash configuration"
+argument_list|,
+name|e
+argument_list|)
+expr_stmt|;
 throw|throw
 operator|new
 name|IOException
