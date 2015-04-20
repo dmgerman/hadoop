@@ -498,7 +498,11 @@ name|this
 operator|.
 name|conf
 operator|=
+operator|new
+name|Configuration
+argument_list|(
 name|conf
+argument_list|)
 expr_stmt|;
 name|this
 operator|.
@@ -587,6 +591,8 @@ argument_list|()
 expr_stmt|;
 comment|// Connections are not being cached so ensure connections close quickly
 comment|// to avoid creating thousands of RPC client threads on large clusters.
+name|this
+operator|.
 name|conf
 operator|.
 name|setInt
