@@ -9366,6 +9366,13 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
+if|if
+condition|(
+name|httpServer
+operator|!=
+literal|null
+condition|)
+block|{
 try|try
 block|{
 name|httpServer
@@ -9389,6 +9396,7 @@ argument_list|,
 name|e
 argument_list|)
 expr_stmt|;
+block|}
 block|}
 if|if
 condition|(
