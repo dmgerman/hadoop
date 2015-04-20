@@ -342,6 +342,20 @@ end_import
 
 begin_import
 import|import
+name|com
+operator|.
+name|google
+operator|.
+name|common
+operator|.
+name|base
+operator|.
+name|Preconditions
+import|;
+end_import
+
+begin_import
+import|import
 name|org
 operator|.
 name|apache
@@ -797,6 +811,12 @@ specifier|private
 specifier|final
 name|int
 name|hedgedReadThreadpoolSize
+decl_stmt|;
+DECL|field|stripedReadThreadpoolSize
+specifier|private
+specifier|final
+name|int
+name|stripedReadThreadpoolSize
 decl_stmt|;
 DECL|method|DfsClientConf (Configuration conf)
 specifier|public
@@ -1450,6 +1470,44 @@ operator|.
 name|THREADPOOL_SIZE_DEFAULT
 argument_list|)
 expr_stmt|;
+name|stripedReadThreadpoolSize
+operator|=
+name|conf
+operator|.
+name|getInt
+argument_list|(
+name|HdfsClientConfigKeys
+operator|.
+name|StripedRead
+operator|.
+name|THREADPOOL_SIZE_KEY
+argument_list|,
+name|HdfsClientConfigKeys
+operator|.
+name|StripedRead
+operator|.
+name|THREADPOOL_SIZE_DEFAULT
+argument_list|)
+expr_stmt|;
+name|Preconditions
+operator|.
+name|checkArgument
+argument_list|(
+name|stripedReadThreadpoolSize
+operator|>
+literal|0
+argument_list|,
+literal|"The value of "
+operator|+
+name|HdfsClientConfigKeys
+operator|.
+name|StripedRead
+operator|.
+name|THREADPOOL_SIZE_KEY
+operator|+
+literal|" must be greater than 0."
+argument_list|)
+expr_stmt|;
 block|}
 DECL|method|getChecksumType (Configuration conf)
 specifier|private
@@ -2014,6 +2072,17 @@ parameter_list|()
 block|{
 return|return
 name|hedgedReadThreadpoolSize
+return|;
+block|}
+comment|/**    * @return the stripedReadThreadpoolSize    */
+DECL|method|getStripedReadThreadpoolSize ()
+specifier|public
+name|int
+name|getStripedReadThreadpoolSize
+parameter_list|()
+block|{
+return|return
+name|stripedReadThreadpoolSize
 return|;
 block|}
 comment|/**    * @return the shortCircuitConf    */

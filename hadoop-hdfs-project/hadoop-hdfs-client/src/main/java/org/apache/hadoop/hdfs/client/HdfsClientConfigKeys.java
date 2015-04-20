@@ -832,6 +832,37 @@ init|=
 literal|0
 decl_stmt|;
 block|}
+comment|/** dfs.client.read.striped configuration properties */
+DECL|interface|StripedRead
+interface|interface
+name|StripedRead
+block|{
+DECL|field|PREFIX
+name|String
+name|PREFIX
+init|=
+name|Read
+operator|.
+name|PREFIX
+operator|+
+literal|"striped."
+decl_stmt|;
+DECL|field|THREADPOOL_SIZE_KEY
+name|String
+name|THREADPOOL_SIZE_KEY
+init|=
+name|PREFIX
+operator|+
+literal|"threadpool.size"
+decl_stmt|;
+comment|/**      * With default 6+3 schema, each normal read could span 6 DNs. So this      * default value accommodates 3 read streams      */
+DECL|field|THREADPOOL_SIZE_DEFAULT
+name|int
+name|THREADPOOL_SIZE_DEFAULT
+init|=
+literal|18
+decl_stmt|;
+block|}
 comment|/** dfs.http.client configuration properties */
 DECL|interface|HttpClient
 interface|interface
