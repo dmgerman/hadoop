@@ -26,6 +26,16 @@ specifier|public
 class|class
 name|DistCpConstants
 block|{
+comment|/* Default number of threads to use for building file listing */
+DECL|field|DEFAULT_LISTSTATUS_THREADS
+specifier|public
+specifier|static
+specifier|final
+name|int
+name|DEFAULT_LISTSTATUS_THREADS
+init|=
+literal|1
+decl_stmt|;
 comment|/* Default number of maps to use for DistCp */
 DECL|field|DEFAULT_MAPS
 specifier|public
@@ -137,6 +147,15 @@ name|String
 name|CONF_LABEL_SSL_CONF
 init|=
 literal|"distcp.keystore.resource"
+decl_stmt|;
+DECL|field|CONF_LABEL_LISTSTATUS_THREADS
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|CONF_LABEL_LISTSTATUS_THREADS
+init|=
+literal|"distcp.liststatus.threads"
 decl_stmt|;
 DECL|field|CONF_LABEL_MAX_MAPS
 specifier|public

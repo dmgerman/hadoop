@@ -171,6 +171,33 @@ literal|", to use with hftps://"
 argument_list|)
 argument_list|)
 block|,
+comment|/**    * Number of threads for building source file listing (before map-reduce    * phase, max one listStatus per thread at a time).    */
+DECL|enumConstant|NUM_LISTSTATUS_THREADS
+name|NUM_LISTSTATUS_THREADS
+argument_list|(
+name|DistCpConstants
+operator|.
+name|CONF_LABEL_LISTSTATUS_THREADS
+argument_list|,
+operator|new
+name|Option
+argument_list|(
+literal|"numListstatusThreads"
+argument_list|,
+literal|true
+argument_list|,
+literal|"Number of threads to "
+operator|+
+literal|"use for building file listing (max "
+operator|+
+name|DistCpOptions
+operator|.
+name|maxNumListstatusThreads
+operator|+
+literal|")."
+argument_list|)
+argument_list|)
+block|,
 comment|/**    * Max number of maps to use during copy. DistCp will split work    * as equally as possible among these maps    */
 DECL|enumConstant|MAX_MAPS
 name|MAX_MAPS

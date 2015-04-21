@@ -173,6 +173,23 @@ name|useDiff
 init|=
 literal|false
 decl_stmt|;
+DECL|field|maxNumListstatusThreads
+specifier|public
+specifier|static
+specifier|final
+name|int
+name|maxNumListstatusThreads
+init|=
+literal|40
+decl_stmt|;
+DECL|field|numListstatusThreads
+specifier|private
+name|int
+name|numListstatusThreads
+init|=
+literal|0
+decl_stmt|;
+comment|// Indicates that flag is not set.
 DECL|field|maxMaps
 specifier|private
 name|int
@@ -524,6 +541,14 @@ operator|=
 name|that
 operator|.
 name|blocking
+expr_stmt|;
+name|this
+operator|.
+name|numListstatusThreads
+operator|=
+name|that
+operator|.
+name|numListstatusThreads
 expr_stmt|;
 name|this
 operator|.
@@ -999,6 +1024,66 @@ name|skipCRC
 operator|=
 name|skipCRC
 expr_stmt|;
+block|}
+comment|/** Get the number of threads to use for listStatus    *    * @return Number of threads to do listStatus    */
+DECL|method|getNumListstatusThreads ()
+specifier|public
+name|int
+name|getNumListstatusThreads
+parameter_list|()
+block|{
+return|return
+name|numListstatusThreads
+return|;
+block|}
+comment|/** Set the number of threads to use for listStatus. We allow max 40    *  threads. Setting numThreads to zero signify we should use the value    *  from conf properties.    *    * @param numThreads - Number of threads    */
+DECL|method|setNumListstatusThreads (int numThreads)
+specifier|public
+name|void
+name|setNumListstatusThreads
+parameter_list|(
+name|int
+name|numThreads
+parameter_list|)
+block|{
+if|if
+condition|(
+name|numThreads
+operator|>
+name|maxNumListstatusThreads
+condition|)
+block|{
+name|this
+operator|.
+name|numListstatusThreads
+operator|=
+name|maxNumListstatusThreads
+expr_stmt|;
+block|}
+elseif|else
+if|if
+condition|(
+name|numThreads
+operator|>
+literal|0
+condition|)
+block|{
+name|this
+operator|.
+name|numListstatusThreads
+operator|=
+name|numThreads
+expr_stmt|;
+block|}
+else|else
+block|{
+name|this
+operator|.
+name|numListstatusThreads
+operator|=
+literal|0
+expr_stmt|;
+block|}
 block|}
 comment|/** Get the max number of maps to use for this copy    *    * @return Max number of maps    */
 DECL|method|getMaxMaps ()
