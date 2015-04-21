@@ -838,6 +838,16 @@ name|org
 operator|.
 name|junit
 operator|.
+name|Assert
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|junit
+operator|.
 name|Test
 import|;
 end_import
@@ -897,6 +907,90 @@ operator|new
 name|ByteArrayOutputStream
 argument_list|()
 decl_stmt|;
+annotation|@
+name|Test
+DECL|method|testPullTaskLink ()
+specifier|public
+name|void
+name|testPullTaskLink
+parameter_list|()
+block|{
+name|Task
+name|task
+init|=
+name|getTask
+argument_list|(
+literal|0
+argument_list|)
+decl_stmt|;
+name|String
+name|taskId
+init|=
+name|task
+operator|.
+name|getID
+argument_list|()
+operator|.
+name|toString
+argument_list|()
+decl_stmt|;
+name|Assert
+operator|.
+name|assertEquals
+argument_list|(
+literal|"pull links doesn't work correctly"
+argument_list|,
+literal|"Task failed<a href=\"/jobhistory/task/"
+operator|+
+name|taskId
+operator|+
+literal|"\">"
+operator|+
+name|taskId
+operator|+
+literal|"</a>"
+argument_list|,
+name|HsJobBlock
+operator|.
+name|addTaskLinks
+argument_list|(
+literal|"Task failed "
+operator|+
+name|taskId
+argument_list|)
+argument_list|)
+expr_stmt|;
+name|Assert
+operator|.
+name|assertEquals
+argument_list|(
+literal|"pull links doesn't work correctly"
+argument_list|,
+literal|"Task failed<a href=\"/jobhistory/task/"
+operator|+
+name|taskId
+operator|+
+literal|"\">"
+operator|+
+name|taskId
+operator|+
+literal|"</a>\n Job failed as tasks failed. failedMaps:1 failedReduces:0"
+argument_list|,
+name|HsJobBlock
+operator|.
+name|addTaskLinks
+argument_list|(
+literal|"Task failed "
+operator|+
+name|taskId
+operator|+
+literal|"\n "
+operator|+
+literal|"Job failed as tasks failed. failedMaps:1 failedReduces:0"
+argument_list|)
+argument_list|)
+expr_stmt|;
+block|}
 comment|/**    * test HsTasksBlock's rendering.    */
 annotation|@
 name|Test
@@ -2130,7 +2224,7 @@ name|AMParams
 operator|.
 name|TASK_ID
 argument_list|,
-literal|"task_01_01_m01_01"
+literal|"task_01_01_m_01"
 argument_list|)
 expr_stmt|;
 name|controller
