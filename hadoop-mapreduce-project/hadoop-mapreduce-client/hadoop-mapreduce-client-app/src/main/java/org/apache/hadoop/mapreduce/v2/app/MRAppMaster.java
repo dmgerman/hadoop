@@ -5384,6 +5384,8 @@ operator|(
 name|TaskUmbilicalProtocol
 operator|)
 name|taskAttemptListener
+argument_list|,
+name|jobClassLoader
 argument_list|)
 expr_stmt|;
 block|}

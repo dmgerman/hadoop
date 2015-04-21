@@ -737,6 +737,12 @@ specifier|final
 name|TaskUmbilicalProtocol
 name|umbilical
 decl_stmt|;
+DECL|field|jobClassLoader
+specifier|private
+specifier|final
+name|ClassLoader
+name|jobClassLoader
+decl_stmt|;
 DECL|field|taskRunner
 specifier|private
 name|ExecutorService
@@ -773,6 +779,30 @@ name|TaskUmbilicalProtocol
 name|umbilical
 parameter_list|)
 block|{
+name|this
+argument_list|(
+name|context
+argument_list|,
+name|umbilical
+argument_list|,
+literal|null
+argument_list|)
+expr_stmt|;
+block|}
+DECL|method|LocalContainerLauncher (AppContext context, TaskUmbilicalProtocol umbilical, ClassLoader jobClassLoader)
+specifier|public
+name|LocalContainerLauncher
+parameter_list|(
+name|AppContext
+name|context
+parameter_list|,
+name|TaskUmbilicalProtocol
+name|umbilical
+parameter_list|,
+name|ClassLoader
+name|jobClassLoader
+parameter_list|)
+block|{
 name|super
 argument_list|(
 name|LocalContainerLauncher
@@ -799,6 +829,12 @@ comment|// umbilical:  MRAppMaster creates (taskAttemptListener), passes to us
 comment|// (TODO/FIXME:  pointless to use RPC to talk to self; should create
 comment|// LocalTaskAttemptListener or similar:  implement umbilical protocol
 comment|// but skip RPC stuff)
+name|this
+operator|.
+name|jobClassLoader
+operator|=
+name|jobClassLoader
+expr_stmt|;
 try|try
 block|{
 name|curFC
@@ -951,6 +987,63 @@ argument_list|,
 literal|"uber-EventHandler"
 argument_list|)
 expr_stmt|;
+comment|// if the job classloader is specified, set it onto the event handler as the
+comment|// thread context classloader so that it can be used by the event handler
+comment|// as well as the subtask runner threads
+if|if
+condition|(
+name|jobClassLoader
+operator|!=
+literal|null
+condition|)
+block|{
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"Setting "
+operator|+
+name|jobClassLoader
+operator|+
+literal|" as the context classloader of thread "
+operator|+
+name|eventHandler
+operator|.
+name|getName
+argument_list|()
+argument_list|)
+expr_stmt|;
+name|eventHandler
+operator|.
+name|setContextClassLoader
+argument_list|(
+name|jobClassLoader
+argument_list|)
+expr_stmt|;
+block|}
+else|else
+block|{
+comment|// note the current TCCL
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"Context classloader of thread "
+operator|+
+name|eventHandler
+operator|.
+name|getName
+argument_list|()
+operator|+
+literal|": "
+operator|+
+name|eventHandler
+operator|.
+name|getContextClassLoader
+argument_list|()
+argument_list|)
+expr_stmt|;
+block|}
 name|eventHandler
 operator|.
 name|start

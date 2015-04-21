@@ -2344,12 +2344,6 @@ argument_list|(
 literal|"Setting classloader "
 operator|+
 name|classLoader
-operator|.
-name|getClass
-argument_list|()
-operator|.
-name|getName
-argument_list|()
 operator|+
 literal|" on the configuration and as the thread context classloader"
 argument_list|)
