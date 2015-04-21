@@ -753,6 +753,7 @@ name|blockReportCount
 expr_stmt|;
 block|}
 DECL|method|areBlockContentsStale ()
+specifier|public
 name|boolean
 name|areBlockContentsStale
 parameter_list|()
@@ -926,6 +927,7 @@ literal|0
 return|;
 block|}
 DECL|method|getStorageID ()
+specifier|public
 name|String
 name|getStorageID
 parameter_list|()
@@ -935,6 +937,7 @@ name|storageID
 return|;
 block|}
 DECL|method|getStorageType ()
+specifier|public
 name|StorageType
 name|getStorageType
 parameter_list|()

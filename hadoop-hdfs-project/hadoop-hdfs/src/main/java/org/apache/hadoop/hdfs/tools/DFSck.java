@@ -429,7 +429,9 @@ literal|"\t-blockId\tprint out which file this blockId belongs to, locations"
 operator|+
 literal|" (nodes, racks) of this block, and other diagnostics info"
 operator|+
-literal|" (under replicated, corrupted or not, etc)\n\n"
+literal|" (under replicated, corrupted or not, etc)\n"
+operator|+
+literal|"\t-replicaDetails\tprint out each replica details \n\n"
 operator|+
 literal|"Please Note:\n"
 operator|+
@@ -1364,6 +1366,28 @@ operator|.
 name|append
 argument_list|(
 literal|"&racks=1"
+argument_list|)
+expr_stmt|;
+block|}
+elseif|else
+if|if
+condition|(
+name|args
+index|[
+name|idx
+index|]
+operator|.
+name|equals
+argument_list|(
+literal|"-replicaDetails"
+argument_list|)
+condition|)
+block|{
+name|url
+operator|.
+name|append
+argument_list|(
+literal|"&replicadetails=1"
 argument_list|)
 expr_stmt|;
 block|}
