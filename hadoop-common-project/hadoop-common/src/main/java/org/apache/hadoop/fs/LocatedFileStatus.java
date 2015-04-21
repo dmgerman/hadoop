@@ -96,6 +96,15 @@ name|BlockLocation
 index|[]
 name|locations
 decl_stmt|;
+DECL|method|LocatedFileStatus ()
+specifier|public
+name|LocatedFileStatus
+parameter_list|()
+block|{
+name|super
+argument_list|()
+expr_stmt|;
+block|}
 comment|/**    * Constructor     * @param stat a file status    * @param locations a file's block locations    */
 DECL|method|LocatedFileStatus (FileStatus stat, BlockLocation[] locations)
 specifier|public
@@ -170,6 +179,8 @@ argument_list|)
 expr_stmt|;
 if|if
 condition|(
+name|stat
+operator|.
 name|isSymlink
 argument_list|()
 condition|)
