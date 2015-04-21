@@ -1240,7 +1240,7 @@ name|ugi
 argument_list|,
 name|request
 operator|.
-name|getRemoteHost
+name|getRemoteAddr
 argument_list|()
 argument_list|)
 expr_stmt|;
