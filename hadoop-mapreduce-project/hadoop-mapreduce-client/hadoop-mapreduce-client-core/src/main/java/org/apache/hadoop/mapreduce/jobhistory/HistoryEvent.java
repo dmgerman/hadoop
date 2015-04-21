@@ -46,6 +46,26 @@ name|InterfaceStability
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|api
+operator|.
+name|records
+operator|.
+name|timelineservice
+operator|.
+name|TimelineEvent
+import|;
+end_import
+
 begin_comment
 comment|/**  * Interface for event wrapper classes.  Implementations each wrap an  * Avro-generated class, adding constructors and accessor methods.  */
 end_comment
@@ -84,6 +104,12 @@ parameter_list|(
 name|Object
 name|datum
 parameter_list|)
+function_decl|;
+comment|/** Map HistoryEvent to TimelineEvent */
+DECL|method|toTimelineEvent ()
+name|TimelineEvent
+name|toTimelineEvent
+parameter_list|()
 function_decl|;
 block|}
 end_interface
