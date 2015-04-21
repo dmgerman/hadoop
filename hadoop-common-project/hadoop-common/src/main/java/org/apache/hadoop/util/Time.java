@@ -95,7 +95,7 @@ name|currentTimeMillis
 argument_list|()
 return|;
 block|}
-comment|/**    * Current time from some arbitrary time base in the past, counting in    * milliseconds, and not affected by settimeofday or similar system clock    * changes.  This is appropriate to use when computing how much longer to    * wait for an interval to expire.    * @return a monotonic clock that counts in milliseconds.    */
+comment|/**    * Current time from some arbitrary time base in the past, counting in    * milliseconds, and not affected by settimeofday or similar system clock    * changes.  This is appropriate to use when computing how much longer to    * wait for an interval to expire.    * This function can return a negative value and it must be handled correctly    * by callers. See the documentation of System#nanoTime for caveats.    * @return a monotonic clock that counts in milliseconds.    */
 DECL|method|monotonicNow ()
 specifier|public
 specifier|static

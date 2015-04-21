@@ -1638,6 +1638,9 @@ control|)
 block|{
 name|actor
 operator|.
+name|getScheduler
+argument_list|()
+operator|.
 name|scheduleBlockReport
 argument_list|(
 name|delay

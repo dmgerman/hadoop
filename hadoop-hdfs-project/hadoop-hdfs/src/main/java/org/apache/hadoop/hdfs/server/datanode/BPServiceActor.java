@@ -616,6 +616,20 @@ name|hadoop
 operator|.
 name|util
 operator|.
+name|Time
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|util
+operator|.
 name|VersionInfo
 import|;
 end_import
@@ -701,29 +715,18 @@ specifier|final
 name|BPOfferService
 name|bpos
 decl_stmt|;
-comment|// lastBlockReport and lastHeartbeat may be assigned/read
-comment|// by testing threads (through BPServiceActor#triggerXXX), while also
-comment|// assigned/read by the actor thread. Thus they should be declared as volatile
-comment|// to make sure the "happens-before" consistency.
-DECL|field|lastBlockReport
-specifier|volatile
-name|long
-name|lastBlockReport
-init|=
-literal|0
-decl_stmt|;
-DECL|field|resetBlockReportTime
-name|boolean
-name|resetBlockReportTime
-init|=
-literal|true
-decl_stmt|;
 DECL|field|lastCacheReport
 specifier|volatile
 name|long
 name|lastCacheReport
 init|=
 literal|0
+decl_stmt|;
+DECL|field|scheduler
+specifier|private
+specifier|final
+name|Scheduler
+name|scheduler
 decl_stmt|;
 DECL|field|bpThread
 name|Thread
@@ -732,14 +735,6 @@ decl_stmt|;
 DECL|field|bpNamenode
 name|DatanodeProtocolClientSideTranslatorPB
 name|bpNamenode
-decl_stmt|;
-DECL|field|lastHeartbeat
-specifier|private
-specifier|volatile
-name|long
-name|lastHeartbeat
-init|=
-literal|0
 decl_stmt|;
 DECL|enum|RunningState
 specifier|static
@@ -893,6 +888,20 @@ argument_list|()
 operator|.
 name|nextLong
 argument_list|()
+expr_stmt|;
+name|scheduler
+operator|=
+operator|new
+name|Scheduler
+argument_list|(
+name|dnConf
+operator|.
+name|heartBeatInterval
+argument_list|,
+name|dnConf
+operator|.
+name|blockReportInterval
+argument_list|)
 expr_stmt|;
 block|}
 DECL|method|isAlive ()
@@ -1255,86 +1264,6 @@ argument_list|(
 name|nsInfo
 argument_list|)
 expr_stmt|;
-block|}
-comment|// This is useful to make sure NN gets Heartbeat before Blockreport
-comment|// upon NN restart while DN keeps retrying Otherwise,
-comment|// 1. NN restarts.
-comment|// 2. Heartbeat RPC will retry and succeed. NN asks DN to reregister.
-comment|// 3. After reregistration completes, DN will send Blockreport first.
-comment|// 4. Given NN receives Blockreport after Heartbeat, it won't mark
-comment|//    DatanodeStorageInfo#blockContentsStale to false until the next
-comment|//    Blockreport.
-DECL|method|scheduleHeartbeat ()
-name|void
-name|scheduleHeartbeat
-parameter_list|()
-block|{
-name|lastHeartbeat
-operator|=
-literal|0
-expr_stmt|;
-block|}
-comment|/**    * This methods  arranges for the data node to send the block report at     * the next heartbeat.    */
-DECL|method|scheduleBlockReport (long delay)
-name|void
-name|scheduleBlockReport
-parameter_list|(
-name|long
-name|delay
-parameter_list|)
-block|{
-if|if
-condition|(
-name|delay
-operator|>
-literal|0
-condition|)
-block|{
-comment|// send BR after random delay
-name|lastBlockReport
-operator|=
-name|monotonicNow
-argument_list|()
-operator|-
-operator|(
-name|dnConf
-operator|.
-name|blockReportInterval
-operator|-
-name|DFSUtil
-operator|.
-name|getRandom
-argument_list|()
-operator|.
-name|nextInt
-argument_list|(
-call|(
-name|int
-call|)
-argument_list|(
-name|delay
-argument_list|)
-argument_list|)
-operator|)
-expr_stmt|;
-block|}
-else|else
-block|{
-comment|// send at next heartbeat
-name|lastBlockReport
-operator|=
-name|lastHeartbeat
-operator|-
-name|dnConf
-operator|.
-name|blockReportInterval
-expr_stmt|;
-block|}
-name|resetBlockReportTime
-operator|=
-literal|true
-expr_stmt|;
-comment|// reset future BRs for randomness
 block|}
 comment|/**    * Report received blocks and delete hints to the Namenode for each    * storage.    *    * @throws IOException    */
 DECL|method|reportReceivedDeletedBlocks ()
@@ -1782,14 +1711,21 @@ init|(
 name|pendingIncrementalBRperStorage
 init|)
 block|{
-name|lastBlockReport
-operator|=
-literal|0
+name|scheduler
+operator|.
+name|scheduleHeartbeat
+argument_list|()
 expr_stmt|;
-name|lastHeartbeat
-operator|=
+name|long
+name|nextBlockReportTime
+init|=
+name|scheduler
+operator|.
+name|scheduleBlockReport
+argument_list|(
 literal|0
-expr_stmt|;
+argument_list|)
+decl_stmt|;
 name|pendingIncrementalBRperStorage
 operator|.
 name|notifyAll
@@ -1797,8 +1733,12 @@ argument_list|()
 expr_stmt|;
 while|while
 condition|(
-name|lastBlockReport
-operator|==
+name|nextBlockReportTime
+operator|-
+name|scheduler
+operator|.
+name|nextBlockReportTime
+operator|>=
 literal|0
 condition|)
 block|{
@@ -1835,10 +1775,15 @@ init|(
 name|pendingIncrementalBRperStorage
 init|)
 block|{
-name|lastHeartbeat
-operator|=
-literal|0
-expr_stmt|;
+specifier|final
+name|long
+name|nextHeartbeatTime
+init|=
+name|scheduler
+operator|.
+name|scheduleHeartbeat
+argument_list|()
+decl_stmt|;
 name|pendingIncrementalBRperStorage
 operator|.
 name|notifyAll
@@ -1846,8 +1791,12 @@ argument_list|()
 expr_stmt|;
 while|while
 condition|(
-name|lastHeartbeat
-operator|==
+name|nextHeartbeatTime
+operator|-
+name|scheduler
+operator|.
+name|nextHeartbeatTime
+operator|>=
 literal|0
 condition|)
 block|{
@@ -1976,22 +1925,13 @@ throws|throws
 name|IOException
 block|{
 comment|// send block report if timer has expired.
-specifier|final
-name|long
-name|startTime
-init|=
-name|monotonicNow
-argument_list|()
-decl_stmt|;
 if|if
 condition|(
-name|startTime
-operator|-
-name|lastBlockReport
-operator|<=
-name|dnConf
+operator|!
+name|scheduler
 operator|.
-name|blockReportInterval
+name|isBlockReportDue
+argument_list|()
 condition|)
 block|{
 return|return
@@ -2441,10 +2381,10 @@ literal|"."
 argument_list|)
 expr_stmt|;
 block|}
+name|scheduler
+operator|.
 name|scheduleNextBlockReport
-argument_list|(
-name|startTime
-argument_list|)
+argument_list|()
 expr_stmt|;
 return|return
 name|cmds
@@ -2458,70 +2398,6 @@ literal|null
 else|:
 name|cmds
 return|;
-block|}
-DECL|method|scheduleNextBlockReport (long previousReportStartTime)
-specifier|private
-name|void
-name|scheduleNextBlockReport
-parameter_list|(
-name|long
-name|previousReportStartTime
-parameter_list|)
-block|{
-comment|// If we have sent the first set of block reports, then wait a random
-comment|// time before we start the periodic block reports.
-if|if
-condition|(
-name|resetBlockReportTime
-condition|)
-block|{
-name|lastBlockReport
-operator|=
-name|previousReportStartTime
-operator|-
-name|DFSUtil
-operator|.
-name|getRandom
-argument_list|()
-operator|.
-name|nextInt
-argument_list|(
-call|(
-name|int
-call|)
-argument_list|(
-name|dnConf
-operator|.
-name|blockReportInterval
-argument_list|)
-argument_list|)
-expr_stmt|;
-name|resetBlockReportTime
-operator|=
-literal|false
-expr_stmt|;
-block|}
-else|else
-block|{
-comment|/* say the last block report was at 8:20:14. The current report        * should have started around 9:20:14 (default 1 hour interval).        * If current time is :        *   1) normal like 9:20:18, next report should be at 10:20:14        *   2) unexpected like 11:35:43, next report should be at 12:20:14        */
-name|lastBlockReport
-operator|+=
-operator|(
-name|monotonicNow
-argument_list|()
-operator|-
-name|lastBlockReport
-operator|)
-operator|/
-name|dnConf
-operator|.
-name|blockReportInterval
-operator|*
-name|dnConf
-operator|.
-name|blockReportInterval
-expr_stmt|;
-block|}
 block|}
 DECL|method|cacheReport ()
 name|DatanodeCommand
@@ -3126,22 +3002,24 @@ specifier|final
 name|long
 name|startTime
 init|=
+name|scheduler
+operator|.
 name|monotonicNow
 argument_list|()
 decl_stmt|;
 comment|//
 comment|// Every so often, send heartbeat or block-report
 comment|//
+specifier|final
 name|boolean
 name|sendHeartbeat
 init|=
-name|startTime
-operator|-
-name|lastHeartbeat
-operator|>=
-name|dnConf
+name|scheduler
 operator|.
-name|heartBeatInterval
+name|isHeartbeatDue
+argument_list|(
+name|startTime
+argument_list|)
 decl_stmt|;
 if|if
 condition|(
@@ -3155,9 +3033,10 @@ comment|// -- data transfer port
 comment|// -- Total capacity
 comment|// -- Bytes remaining
 comment|//
-name|lastHeartbeat
-operator|=
-name|startTime
+name|scheduler
+operator|.
+name|scheduleNextHeartbeat
+argument_list|()
 expr_stmt|;
 if|if
 condition|(
@@ -3186,6 +3065,8 @@ argument_list|()
 operator|.
 name|addHeartbeat
 argument_list|(
+name|scheduler
+operator|.
 name|monotonicNow
 argument_list|()
 operator|-
@@ -3361,16 +3242,10 @@ comment|//
 name|long
 name|waitTime
 init|=
-name|dnConf
+name|scheduler
 operator|.
-name|heartBeatInterval
-operator|-
-operator|(
-name|monotonicNow
+name|getHeartbeatWaitTime
 argument_list|()
-operator|-
-name|lastHeartbeat
-operator|)
 decl_stmt|;
 synchronized|synchronized
 init|(
@@ -3694,6 +3569,8 @@ name|bpRegistration
 argument_list|)
 expr_stmt|;
 comment|// random short delay - helps scatter the BR from all DNs
+name|scheduler
+operator|.
 name|scheduleBlockReport
 argument_list|(
 name|dnConf
@@ -4108,6 +3985,8 @@ argument_list|(
 name|nsInfo
 argument_list|)
 expr_stmt|;
+name|scheduler
+operator|.
 name|scheduleHeartbeat
 argument_list|()
 expr_stmt|;
@@ -4366,9 +4245,12 @@ init|(
 name|pendingIncrementalBRperStorage
 init|)
 block|{
-name|lastBlockReport
-operator|=
+name|scheduler
+operator|.
+name|scheduleBlockReport
+argument_list|(
 literal|0
+argument_list|)
 expr_stmt|;
 name|pendingIncrementalBRperStorage
 operator|.
@@ -4503,6 +4385,303 @@ name|actionItem
 argument_list|)
 expr_stmt|;
 block|}
+block|}
+block|}
+DECL|method|getScheduler ()
+name|Scheduler
+name|getScheduler
+parameter_list|()
+block|{
+return|return
+name|scheduler
+return|;
+block|}
+comment|/**    * Utility class that wraps the timestamp computations for scheduling    * heartbeats and block reports.    */
+DECL|class|Scheduler
+specifier|static
+class|class
+name|Scheduler
+block|{
+comment|// nextBlockReportTime and nextHeartbeatTime may be assigned/read
+comment|// by testing threads (through BPServiceActor#triggerXXX), while also
+comment|// assigned/read by the actor thread.
+annotation|@
+name|VisibleForTesting
+DECL|field|nextBlockReportTime
+specifier|volatile
+name|long
+name|nextBlockReportTime
+init|=
+name|monotonicNow
+argument_list|()
+decl_stmt|;
+annotation|@
+name|VisibleForTesting
+DECL|field|nextHeartbeatTime
+specifier|volatile
+name|long
+name|nextHeartbeatTime
+init|=
+name|monotonicNow
+argument_list|()
+decl_stmt|;
+annotation|@
+name|VisibleForTesting
+DECL|field|resetBlockReportTime
+name|boolean
+name|resetBlockReportTime
+init|=
+literal|true
+decl_stmt|;
+DECL|field|heartbeatIntervalMs
+specifier|private
+specifier|final
+name|long
+name|heartbeatIntervalMs
+decl_stmt|;
+DECL|field|blockReportIntervalMs
+specifier|private
+specifier|final
+name|long
+name|blockReportIntervalMs
+decl_stmt|;
+DECL|method|Scheduler (long heartbeatIntervalMs, long blockReportIntervalMs)
+name|Scheduler
+parameter_list|(
+name|long
+name|heartbeatIntervalMs
+parameter_list|,
+name|long
+name|blockReportIntervalMs
+parameter_list|)
+block|{
+name|this
+operator|.
+name|heartbeatIntervalMs
+operator|=
+name|heartbeatIntervalMs
+expr_stmt|;
+name|this
+operator|.
+name|blockReportIntervalMs
+operator|=
+name|blockReportIntervalMs
+expr_stmt|;
+block|}
+comment|// This is useful to make sure NN gets Heartbeat before Blockreport
+comment|// upon NN restart while DN keeps retrying Otherwise,
+comment|// 1. NN restarts.
+comment|// 2. Heartbeat RPC will retry and succeed. NN asks DN to reregister.
+comment|// 3. After reregistration completes, DN will send Blockreport first.
+comment|// 4. Given NN receives Blockreport after Heartbeat, it won't mark
+comment|//    DatanodeStorageInfo#blockContentsStale to false until the next
+comment|//    Blockreport.
+DECL|method|scheduleHeartbeat ()
+name|long
+name|scheduleHeartbeat
+parameter_list|()
+block|{
+name|nextHeartbeatTime
+operator|=
+name|monotonicNow
+argument_list|()
+expr_stmt|;
+return|return
+name|nextHeartbeatTime
+return|;
+block|}
+DECL|method|scheduleNextHeartbeat ()
+name|long
+name|scheduleNextHeartbeat
+parameter_list|()
+block|{
+comment|// Numerical overflow is possible here and is okay.
+name|nextHeartbeatTime
+operator|+=
+name|heartbeatIntervalMs
+expr_stmt|;
+return|return
+name|nextHeartbeatTime
+return|;
+block|}
+DECL|method|isHeartbeatDue (long startTime)
+name|boolean
+name|isHeartbeatDue
+parameter_list|(
+name|long
+name|startTime
+parameter_list|)
+block|{
+return|return
+operator|(
+name|nextHeartbeatTime
+operator|-
+name|startTime
+operator|<=
+literal|0
+operator|)
+return|;
+block|}
+DECL|method|isBlockReportDue ()
+name|boolean
+name|isBlockReportDue
+parameter_list|()
+block|{
+return|return
+name|nextBlockReportTime
+operator|-
+name|monotonicNow
+argument_list|()
+operator|<=
+literal|0
+return|;
+block|}
+comment|/**      * This methods  arranges for the data node to send the block report at      * the next heartbeat.      */
+DECL|method|scheduleBlockReport (long delay)
+name|long
+name|scheduleBlockReport
+parameter_list|(
+name|long
+name|delay
+parameter_list|)
+block|{
+if|if
+condition|(
+name|delay
+operator|>
+literal|0
+condition|)
+block|{
+comment|// send BR after random delay
+comment|// Numerical overflow is possible here and is okay.
+name|nextBlockReportTime
+operator|=
+name|monotonicNow
+argument_list|()
+operator|+
+name|DFSUtil
+operator|.
+name|getRandom
+argument_list|()
+operator|.
+name|nextInt
+argument_list|(
+call|(
+name|int
+call|)
+argument_list|(
+name|delay
+argument_list|)
+argument_list|)
+expr_stmt|;
+block|}
+else|else
+block|{
+comment|// send at next heartbeat
+name|nextBlockReportTime
+operator|=
+name|monotonicNow
+argument_list|()
+expr_stmt|;
+block|}
+name|resetBlockReportTime
+operator|=
+literal|true
+expr_stmt|;
+comment|// reset future BRs for randomness
+return|return
+name|nextBlockReportTime
+return|;
+block|}
+comment|/**      * Schedule the next block report after the block report interval. If the      * current block report was delayed then the next block report is sent per      * the original schedule.      * Numerical overflow is possible here.      */
+DECL|method|scheduleNextBlockReport ()
+name|void
+name|scheduleNextBlockReport
+parameter_list|()
+block|{
+comment|// If we have sent the first set of block reports, then wait a random
+comment|// time before we start the periodic block reports.
+if|if
+condition|(
+name|resetBlockReportTime
+condition|)
+block|{
+name|nextBlockReportTime
+operator|=
+name|monotonicNow
+argument_list|()
+operator|+
+name|DFSUtil
+operator|.
+name|getRandom
+argument_list|()
+operator|.
+name|nextInt
+argument_list|(
+call|(
+name|int
+call|)
+argument_list|(
+name|blockReportIntervalMs
+argument_list|)
+argument_list|)
+expr_stmt|;
+name|resetBlockReportTime
+operator|=
+literal|false
+expr_stmt|;
+block|}
+else|else
+block|{
+comment|/* say the last block report was at 8:20:14. The current report          * should have started around 9:20:14 (default 1 hour interval).          * If current time is :          *   1) normal like 9:20:18, next report should be at 10:20:14          *   2) unexpected like 11:35:43, next report should be at 12:20:14          */
+name|nextBlockReportTime
+operator|+=
+operator|(
+operator|(
+operator|(
+name|monotonicNow
+argument_list|()
+operator|-
+name|nextBlockReportTime
+operator|+
+name|blockReportIntervalMs
+operator|)
+operator|/
+name|blockReportIntervalMs
+operator|)
+operator|)
+operator|*
+name|blockReportIntervalMs
+expr_stmt|;
+block|}
+block|}
+DECL|method|getHeartbeatWaitTime ()
+name|long
+name|getHeartbeatWaitTime
+parameter_list|()
+block|{
+return|return
+name|nextHeartbeatTime
+operator|-
+name|monotonicNow
+argument_list|()
+return|;
+block|}
+comment|/**      * Wrapped for testing.      * @return      */
+annotation|@
+name|VisibleForTesting
+DECL|method|monotonicNow ()
+specifier|public
+name|long
+name|monotonicNow
+parameter_list|()
+block|{
+return|return
+name|Time
+operator|.
+name|monotonicNow
+argument_list|()
+return|;
 block|}
 block|}
 block|}
