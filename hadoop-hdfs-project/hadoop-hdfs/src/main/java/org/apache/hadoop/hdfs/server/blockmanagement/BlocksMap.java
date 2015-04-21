@@ -769,10 +769,8 @@ comment|// no datanodes left
 operator|&&
 name|info
 operator|.
-name|getBlockCollection
+name|isDeleted
 argument_list|()
-operator|==
-literal|null
 condition|)
 block|{
 comment|// does not belong to a file

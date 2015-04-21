@@ -263,6 +263,20 @@ operator|=
 name|bc
 expr_stmt|;
 block|}
+DECL|method|isDeleted ()
+specifier|public
+name|boolean
+name|isDeleted
+parameter_list|()
+block|{
+return|return
+operator|(
+name|bc
+operator|==
+literal|null
+operator|)
+return|;
+block|}
 DECL|method|getDatanode (int index)
 specifier|public
 name|DatanodeDescriptor

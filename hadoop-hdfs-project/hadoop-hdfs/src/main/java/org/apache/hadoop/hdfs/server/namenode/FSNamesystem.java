@@ -21557,19 +21557,12 @@ comment|// throw FileNotFoundException here, so not to proceed to the end of
 comment|// this method to add a CloseOp to the edit log for an already deleted
 comment|// file (See HDFS-6825).
 comment|//
-name|BlockCollection
-name|blockCollection
-init|=
-name|storedBlock
-operator|.
-name|getBlockCollection
-argument_list|()
-decl_stmt|;
 if|if
 condition|(
-name|blockCollection
-operator|==
-literal|null
+name|storedBlock
+operator|.
+name|isDeleted
+argument_list|()
 condition|)
 block|{
 throw|throw
@@ -21593,7 +21586,10 @@ operator|(
 operator|(
 name|INode
 operator|)
-name|blockCollection
+name|storedBlock
+operator|.
+name|getBlockCollection
+argument_list|()
 operator|)
 operator|.
 name|asFile
