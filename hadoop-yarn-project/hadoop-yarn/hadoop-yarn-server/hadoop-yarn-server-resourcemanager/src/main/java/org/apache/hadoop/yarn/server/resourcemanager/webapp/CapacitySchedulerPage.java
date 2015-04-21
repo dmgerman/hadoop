@@ -913,6 +913,16 @@ argument_list|)
 operator|.
 name|_
 argument_list|(
+literal|"Ordering Policy: "
+argument_list|,
+name|lqinfo
+operator|.
+name|getOrderingPolicyInfo
+argument_list|()
+argument_list|)
+operator|.
+name|_
+argument_list|(
 literal|"Preemption:"
 argument_list|,
 name|lqinfo

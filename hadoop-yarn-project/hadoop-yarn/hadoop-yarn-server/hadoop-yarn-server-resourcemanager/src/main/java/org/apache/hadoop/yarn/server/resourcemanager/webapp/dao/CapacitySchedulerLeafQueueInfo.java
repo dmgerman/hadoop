@@ -68,6 +68,20 @@ end_import
 
 begin_import
 import|import
+name|javax
+operator|.
+name|xml
+operator|.
+name|bind
+operator|.
+name|annotation
+operator|.
+name|XmlTransient
+import|;
+end_import
+
+begin_import
+import|import
 name|org
 operator|.
 name|apache
@@ -165,6 +179,13 @@ DECL|field|preemptionDisabled
 specifier|protected
 name|boolean
 name|preemptionDisabled
+decl_stmt|;
+annotation|@
+name|XmlTransient
+DECL|field|orderingPolicyInfo
+specifier|protected
+name|String
+name|orderingPolicyInfo
 decl_stmt|;
 DECL|method|CapacitySchedulerLeafQueueInfo ()
 name|CapacitySchedulerLeafQueueInfo
@@ -284,6 +305,16 @@ operator|=
 name|q
 operator|.
 name|getPreemptionDisabled
+argument_list|()
+expr_stmt|;
+name|orderingPolicyInfo
+operator|=
+name|q
+operator|.
+name|getOrderingPolicy
+argument_list|()
+operator|.
+name|getInfo
 argument_list|()
 expr_stmt|;
 block|}
@@ -406,6 +437,16 @@ parameter_list|()
 block|{
 return|return
 name|preemptionDisabled
+return|;
+block|}
+DECL|method|getOrderingPolicyInfo ()
+specifier|public
+name|String
+name|getOrderingPolicyInfo
+parameter_list|()
+block|{
+return|return
+name|orderingPolicyInfo
 return|;
 block|}
 block|}

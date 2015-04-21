@@ -99,22 +99,41 @@ specifier|public
 name|FifoOrderingPolicy
 parameter_list|()
 block|{
-name|setComparator
-argument_list|(
+name|this
+operator|.
+name|comparator
+operator|=
 operator|new
 name|FifoComparator
 argument_list|()
+expr_stmt|;
+name|this
+operator|.
+name|schedulableEntities
+operator|=
+operator|new
+name|TreeSet
+argument_list|<
+name|S
+argument_list|>
+argument_list|(
+name|comparator
 argument_list|)
 expr_stmt|;
 block|}
 annotation|@
 name|Override
-DECL|method|configure (String conf)
+DECL|method|configure (Map<String, String> conf)
 specifier|public
 name|void
 name|configure
 parameter_list|(
+name|Map
+argument_list|<
 name|String
+argument_list|,
+name|String
+argument_list|>
 name|conf
 parameter_list|)
 block|{        }
@@ -148,10 +167,10 @@ parameter_list|)
 block|{     }
 annotation|@
 name|Override
-DECL|method|getStatusMessage ()
+DECL|method|getInfo ()
 specifier|public
 name|String
-name|getStatusMessage
+name|getInfo
 parameter_list|()
 block|{
 return|return

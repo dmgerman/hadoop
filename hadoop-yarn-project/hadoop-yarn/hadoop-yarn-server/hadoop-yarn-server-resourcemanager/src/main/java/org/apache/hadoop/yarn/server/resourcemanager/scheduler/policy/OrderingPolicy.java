@@ -189,12 +189,17 @@ name|getNumSchedulableEntities
 parameter_list|()
 function_decl|;
 comment|/**    * Provides configuration information for the policy from the scheduler    * configuration    */
-DECL|method|configure (String conf)
+DECL|method|configure (Map<String, String> conf)
 specifier|public
 name|void
 name|configure
 parameter_list|(
+name|Map
+argument_list|<
 name|String
+argument_list|,
+name|String
+argument_list|>
 name|conf
 parameter_list|)
 function_decl|;
@@ -225,10 +230,10 @@ name|r
 parameter_list|)
 function_decl|;
 comment|/**    * Display information regarding configuration& status    */
-DECL|method|getStatusMessage ()
+DECL|method|getInfo ()
 specifier|public
 name|String
-name|getStatusMessage
+name|getInfo
 parameter_list|()
 function_decl|;
 block|}
