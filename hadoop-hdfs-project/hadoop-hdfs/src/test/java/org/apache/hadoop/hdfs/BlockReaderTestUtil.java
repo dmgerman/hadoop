@@ -984,6 +984,9 @@ return|return
 name|getBlockReader
 argument_list|(
 name|cluster
+operator|.
+name|getFileSystem
+argument_list|()
 argument_list|,
 name|testBlock
 argument_list|,
@@ -994,14 +997,15 @@ argument_list|)
 return|;
 block|}
 comment|/**    * Get a BlockReader for the given block.    */
-DECL|method|getBlockReader (MiniDFSCluster cluster, LocatedBlock testBlock, int offset, int lenToRead)
+DECL|method|getBlockReader (final DistributedFileSystem fs, LocatedBlock testBlock, int offset, long lenToRead)
 specifier|public
 specifier|static
 name|BlockReader
 name|getBlockReader
 parameter_list|(
-name|MiniDFSCluster
-name|cluster
+specifier|final
+name|DistributedFileSystem
+name|fs
 parameter_list|,
 name|LocatedBlock
 name|testBlock
@@ -1009,7 +1013,7 @@ parameter_list|,
 name|int
 name|offset
 parameter_list|,
-name|int
+name|long
 name|lenToRead
 parameter_list|)
 throws|throws
@@ -1052,15 +1056,6 @@ name|getXferAddr
 argument_list|()
 argument_list|)
 expr_stmt|;
-specifier|final
-name|DistributedFileSystem
-name|fs
-init|=
-name|cluster
-operator|.
-name|getFileSystem
-argument_list|()
-decl_stmt|;
 return|return
 operator|new
 name|BlockReaderFactory

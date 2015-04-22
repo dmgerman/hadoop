@@ -1596,6 +1596,9 @@ operator|.
 name|getBlockReader
 argument_list|(
 name|cluster
+operator|.
+name|getFileSystem
+argument_list|()
 argument_list|,
 name|lblock
 argument_list|,
@@ -1675,6 +1678,9 @@ operator|.
 name|getBlockReader
 argument_list|(
 name|cluster
+operator|.
+name|getFileSystem
+argument_list|()
 argument_list|,
 name|lblock
 argument_list|,
@@ -2921,6 +2927,9 @@ operator|.
 name|getBlockReader
 argument_list|(
 name|cluster
+operator|.
+name|getFileSystem
+argument_list|()
 argument_list|,
 name|lblock
 argument_list|,
@@ -3103,6 +3112,9 @@ operator|.
 name|getBlockReader
 argument_list|(
 name|cluster
+operator|.
+name|getFileSystem
+argument_list|()
 argument_list|,
 name|lblock
 argument_list|,
