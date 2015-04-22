@@ -57,7 +57,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**   * This exception is thrown when modification to HDFS results in violation  * of a directory quota. A directory quota might be namespace quota (limit   * on number of files and directories) or a diskspace quota (limit on space   * taken by all the file under the directory tree).<br><br>  *   * The message for the exception specifies the directory where the quota  * was violated and actual quotas. Specific message is generated in the   * corresponding Exception class:   *  DSQuotaExceededException or  *  NSQuotaExceededException  */
+comment|/**  * This exception is thrown when modification to HDFS results in violation  * of a directory quota. A directory quota might be namespace quota (limit  * on number of files and directories) or a diskspace quota (limit on space  * taken by all the file under the directory tree).<br><br>  *  * The message for the exception specifies the directory where the quota  * was violated and actual quotas. Specific message is generated in the  * corresponding Exception class:  *  DSQuotaExceededException or  *  NSQuotaExceededException  */
 end_comment
 
 begin_class
