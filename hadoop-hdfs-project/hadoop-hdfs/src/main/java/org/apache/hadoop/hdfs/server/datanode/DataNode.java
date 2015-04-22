@@ -1992,6 +1992,26 @@ name|server
 operator|.
 name|datanode
 operator|.
+name|erasurecode
+operator|.
+name|ErasureCodingWorker
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|server
+operator|.
+name|datanode
+operator|.
 name|fsdataset
 operator|.
 name|FsDatasetSpi
@@ -3329,6 +3349,11 @@ DECL|field|spanReceiverHost
 specifier|private
 name|SpanReceiverHost
 name|spanReceiverHost
+decl_stmt|;
+DECL|field|ecWorker
+specifier|private
+name|ErasureCodingWorker
+name|ecWorker
 decl_stmt|;
 DECL|field|NUM_CORES
 specifier|private
@@ -7102,6 +7127,15 @@ argument_list|,
 name|blockPoolTokenSecretManager
 argument_list|)
 expr_stmt|;
+name|ecWorker
+operator|=
+operator|new
+name|ErasureCodingWorker
+argument_list|(
+name|conf
+argument_list|)
+expr_stmt|;
+comment|// Initialize ErasureCoding worker
 block|}
 comment|/**    * Checks if the DataNode has a secure configuration if security is enabled.    * There are 2 possible configurations that are considered secure:    * 1. The server has bound to privileged ports for RPC and HTTP via    *   SecureDataNodeStarter.    * 2. The configuration enables SASL on DataTransferProtocol and HTTPS (no    *   plain HTTP) for the HTTP server.  The SASL handshake guarantees    *   authentication of the RPC server before a client transmits a secret, such    *   as a block access token.  Similarly, SSL guarantees authentication of the    *   HTTP server before a client transmits a secret, such as a delegation    *   token.    * It is not possible to run with both privileged ports and SASL on    * DataTransferProtocol.  For backwards-compatibility, the connection logic    * must check if the target port is a privileged port, and if so, skip the    * SASL handshake.    *    * @param dnConf DNConf to check    * @param conf Configuration to check    * @param resources SecuredResources obtained for DataNode    * @throws RuntimeException if security enabled, but configuration is insecure    */
 DECL|method|checkSecureConfig (DNConf dnConf, Configuration conf, SecureResources resources)
@@ -15840,6 +15874,16 @@ argument_list|(
 name|id
 argument_list|)
 expr_stmt|;
+block|}
+DECL|method|getErasureCodingWorker ()
+specifier|public
+name|ErasureCodingWorker
+name|getErasureCodingWorker
+parameter_list|()
+block|{
+return|return
+name|ecWorker
+return|;
 block|}
 block|}
 end_class

@@ -228,7 +228,7 @@ return|;
 block|}
 comment|/**    * Create raw coder using specified conf and raw coder factory key.    * @param conf    * @param rawCoderFactoryKey    * @param isEncoder    * @return raw coder    */
 DECL|method|createRawCoder (Configuration conf, String rawCoderFactoryKey, boolean isEncoder)
-specifier|protected
+specifier|public
 specifier|static
 name|RawErasureCoder
 name|createRawCoder
