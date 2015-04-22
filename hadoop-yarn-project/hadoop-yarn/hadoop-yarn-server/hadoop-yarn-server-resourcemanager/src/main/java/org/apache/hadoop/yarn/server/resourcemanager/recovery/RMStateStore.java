@@ -4108,6 +4108,19 @@ parameter_list|()
 throws|throws
 name|Exception
 function_decl|;
+comment|/**    * Derived classes must implement this method to remove application from the    * state store    *     * @throws Exception    */
+DECL|method|removeApplication (ApplicationId removeAppId)
+specifier|public
+specifier|abstract
+name|void
+name|removeApplication
+parameter_list|(
+name|ApplicationId
+name|removeAppId
+parameter_list|)
+throws|throws
+name|Exception
+function_decl|;
 DECL|method|setResourceManager (ResourceManager rm)
 specifier|public
 name|void

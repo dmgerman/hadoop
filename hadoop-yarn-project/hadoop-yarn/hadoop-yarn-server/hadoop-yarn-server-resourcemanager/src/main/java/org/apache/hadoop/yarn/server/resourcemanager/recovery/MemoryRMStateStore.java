@@ -1265,6 +1265,19 @@ parameter_list|()
 throws|throws
 name|Exception
 block|{   }
+annotation|@
+name|Override
+DECL|method|removeApplication (ApplicationId removeAppId)
+specifier|public
+name|void
+name|removeApplication
+parameter_list|(
+name|ApplicationId
+name|removeAppId
+parameter_list|)
+throws|throws
+name|Exception
+block|{   }
 block|}
 end_class
 

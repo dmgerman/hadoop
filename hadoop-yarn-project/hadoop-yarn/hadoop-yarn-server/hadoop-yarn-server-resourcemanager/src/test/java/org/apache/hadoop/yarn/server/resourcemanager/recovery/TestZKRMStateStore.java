@@ -1103,6 +1103,11 @@ argument_list|(
 name|zkTester
 argument_list|)
 expr_stmt|;
+name|testRemoveApplication
+argument_list|(
+name|zkTester
+argument_list|)
+expr_stmt|;
 name|testAMRMTokenSecretManagerStateStore
 argument_list|(
 name|zkTester
