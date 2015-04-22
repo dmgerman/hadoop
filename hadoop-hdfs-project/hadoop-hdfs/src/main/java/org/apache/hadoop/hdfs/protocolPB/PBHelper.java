@@ -22669,7 +22669,7 @@ name|entrySet
 init|=
 name|schema
 operator|.
-name|getOptions
+name|getExtraOptions
 argument_list|()
 operator|.
 name|entrySet

@@ -277,7 +277,7 @@ name|extraOptionValue
 argument_list|,
 name|schema
 operator|.
-name|getOptions
+name|getExtraOptions
 argument_list|()
 operator|.
 name|get

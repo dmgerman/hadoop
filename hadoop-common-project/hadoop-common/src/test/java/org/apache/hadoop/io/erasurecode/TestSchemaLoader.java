@@ -296,11 +296,11 @@ argument_list|)
 expr_stmt|;
 name|assertEquals
 argument_list|(
-literal|3
+literal|0
 argument_list|,
 name|schema1
 operator|.
-name|getOptions
+name|getExtraOptions
 argument_list|()
 operator|.
 name|size
@@ -359,11 +359,11 @@ argument_list|)
 expr_stmt|;
 name|assertEquals
 argument_list|(
-literal|3
+literal|0
 argument_list|,
 name|schema2
 operator|.
-name|getOptions
+name|getExtraOptions
 argument_list|()
 operator|.
 name|size

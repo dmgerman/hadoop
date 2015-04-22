@@ -210,36 +210,20 @@ operator|.
 name|getECSchemas
 argument_list|()
 decl_stmt|;
-comment|// TODO update assertion after HDFS-7866
 name|assertNotNull
 argument_list|(
 name|ecSchemas
 argument_list|)
 expr_stmt|;
-name|assertEquals
+name|assertTrue
 argument_list|(
-literal|"Should have only one ecSchema"
-argument_list|,
-literal|1
+literal|"Should have at least one schema"
 argument_list|,
 name|ecSchemas
 operator|.
 name|length
-argument_list|)
-expr_stmt|;
-name|assertEquals
-argument_list|(
-literal|"Returned schemas should have only default schema"
-argument_list|,
-name|ECSchemaManager
-operator|.
-name|getSystemDefaultSchema
-argument_list|()
-argument_list|,
-name|ecSchemas
-index|[
+operator|>
 literal|0
-index|]
 argument_list|)
 expr_stmt|;
 block|}
