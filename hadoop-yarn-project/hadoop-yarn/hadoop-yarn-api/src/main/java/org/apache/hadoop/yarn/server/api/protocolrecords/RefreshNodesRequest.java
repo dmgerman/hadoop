@@ -48,9 +48,9 @@ name|hadoop
 operator|.
 name|classification
 operator|.
-name|InterfaceAudience
+name|InterfaceStability
 operator|.
-name|Public
+name|Stable
 import|;
 end_import
 
@@ -66,7 +66,25 @@ name|classification
 operator|.
 name|InterfaceStability
 operator|.
-name|Stable
+name|Unstable
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|api
+operator|.
+name|records
+operator|.
+name|DecommissionType
 import|;
 end_import
 
@@ -90,7 +108,7 @@ begin_class
 annotation|@
 name|Private
 annotation|@
-name|Stable
+name|Unstable
 DECL|class|RefreshNodesRequest
 specifier|public
 specifier|abstract
@@ -98,7 +116,7 @@ class|class
 name|RefreshNodesRequest
 block|{
 annotation|@
-name|Public
+name|Private
 annotation|@
 name|Stable
 DECL|method|newInstance ()
@@ -124,6 +142,62 @@ return|return
 name|request
 return|;
 block|}
+annotation|@
+name|Private
+annotation|@
+name|Unstable
+DECL|method|newInstance ( DecommissionType decommissionType)
+specifier|public
+specifier|static
+name|RefreshNodesRequest
+name|newInstance
+parameter_list|(
+name|DecommissionType
+name|decommissionType
+parameter_list|)
+block|{
+name|RefreshNodesRequest
+name|request
+init|=
+name|Records
+operator|.
+name|newRecord
+argument_list|(
+name|RefreshNodesRequest
+operator|.
+name|class
+argument_list|)
+decl_stmt|;
+name|request
+operator|.
+name|setDecommissionType
+argument_list|(
+name|decommissionType
+argument_list|)
+expr_stmt|;
+return|return
+name|request
+return|;
+block|}
+comment|/**    * Set the DecommissionType    *     * @param decommissionType    */
+DECL|method|setDecommissionType (DecommissionType decommissionType)
+specifier|public
+specifier|abstract
+name|void
+name|setDecommissionType
+parameter_list|(
+name|DecommissionType
+name|decommissionType
+parameter_list|)
+function_decl|;
+comment|/**    * Get the DecommissionType    *     * @return decommissionType    */
+DECL|method|getDecommissionType ()
+specifier|public
+specifier|abstract
+name|DecommissionType
+name|getDecommissionType
+parameter_list|()
+function_decl|;
 block|}
 end_class
 

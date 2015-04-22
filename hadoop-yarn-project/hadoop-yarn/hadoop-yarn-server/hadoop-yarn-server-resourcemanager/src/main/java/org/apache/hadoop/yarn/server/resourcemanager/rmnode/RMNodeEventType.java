@@ -35,6 +35,12 @@ comment|// Source: AdminService
 DECL|enumConstant|DECOMMISSION
 name|DECOMMISSION
 block|,
+DECL|enumConstant|DECOMMISSION_WITH_TIMEOUT
+name|DECOMMISSION_WITH_TIMEOUT
+block|,
+DECL|enumConstant|RECOMMISSION
+name|RECOMMISSION
+block|,
 comment|// Source: AdminService, ResourceTrackerService
 DECL|enumConstant|RESOURCE_UPDATE
 name|RESOURCE_UPDATE

@@ -224,7 +224,7 @@ specifier|final
 name|int
 name|numberOfNodesPerRack
 init|=
-literal|6
+literal|7
 decl_stmt|;
 comment|// The following is because of the way TestRMWebApp.mockRMContext creates
 comment|// nodes.

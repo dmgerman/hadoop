@@ -4,7 +4,7 @@ comment|/**  * Licensed to the Apache Software Foundation (ASF) under one  * or 
 end_comment
 
 begin_package
-DECL|package|org.apache.hadoop.yarn.api.records
+DECL|package|org.apache.hadoop.yarn.server.api.protocolrecords
 package|package
 name|org
 operator|.
@@ -14,9 +14,11 @@ name|hadoop
 operator|.
 name|yarn
 operator|.
+name|server
+operator|.
 name|api
 operator|.
-name|records
+name|protocolrecords
 package|;
 end_package
 
@@ -32,7 +34,7 @@ name|classification
 operator|.
 name|InterfaceAudience
 operator|.
-name|Public
+name|Private
 import|;
 end_import
 
@@ -52,72 +54,62 @@ name|Unstable
 import|;
 end_import
 
-begin_comment
-comment|/**  *<p>State of a<code>Node</code>.</p>  */
-end_comment
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|util
+operator|.
+name|Records
+import|;
+end_import
 
-begin_enum
+begin_class
 annotation|@
-name|Public
+name|Private
 annotation|@
 name|Unstable
-DECL|enum|NodeState
+DECL|class|CheckForDecommissioningNodesRequest
 specifier|public
-enum|enum
-name|NodeState
+specifier|abstract
+class|class
+name|CheckForDecommissioningNodesRequest
 block|{
-comment|/** New node */
-DECL|enumConstant|NEW
-name|NEW
-block|,
-comment|/** Running node */
-DECL|enumConstant|RUNNING
-name|RUNNING
-block|,
-comment|/** Node is unhealthy */
-DECL|enumConstant|UNHEALTHY
-name|UNHEALTHY
-block|,
-comment|/** Node is out of service */
-DECL|enumConstant|DECOMMISSIONED
-name|DECOMMISSIONED
-block|,
-comment|/** Node has not sent a heartbeat for some configured time threshold*/
-DECL|enumConstant|LOST
-name|LOST
-block|,
-comment|/** Node has rebooted */
-DECL|enumConstant|REBOOTED
-name|REBOOTED
-block|,
-comment|/** Node decommission is in progress */
-DECL|enumConstant|DECOMMISSIONING
-name|DECOMMISSIONING
-block|;
-DECL|method|isUnusable ()
+annotation|@
+name|Private
+annotation|@
+name|Unstable
+DECL|method|newInstance ()
 specifier|public
-name|boolean
-name|isUnusable
+specifier|static
+name|CheckForDecommissioningNodesRequest
+name|newInstance
 parameter_list|()
 block|{
+name|CheckForDecommissioningNodesRequest
+name|request
+init|=
+name|Records
+operator|.
+name|newRecord
+argument_list|(
+name|CheckForDecommissioningNodesRequest
+operator|.
+name|class
+argument_list|)
+decl_stmt|;
 return|return
-operator|(
-name|this
-operator|==
-name|UNHEALTHY
-operator|||
-name|this
-operator|==
-name|DECOMMISSIONED
-operator|||
-name|this
-operator|==
-name|LOST
-operator|)
+name|request
 return|;
 block|}
 block|}
-end_enum
+end_class
 
 end_unit
 
