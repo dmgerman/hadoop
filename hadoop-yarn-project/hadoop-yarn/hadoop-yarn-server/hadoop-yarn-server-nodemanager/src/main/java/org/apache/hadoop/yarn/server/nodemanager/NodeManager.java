@@ -1740,7 +1740,9 @@ name|dirsHandler
 operator|=
 operator|new
 name|LocalDirsHandlerService
-argument_list|()
+argument_list|(
+name|metrics
+argument_list|)
 expr_stmt|;
 name|nodeHealthChecker
 operator|=
