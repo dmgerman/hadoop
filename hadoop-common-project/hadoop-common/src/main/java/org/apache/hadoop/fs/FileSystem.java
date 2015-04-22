@@ -758,7 +758,7 @@ specifier|protected
 name|Statistics
 name|statistics
 decl_stmt|;
-comment|/**    * A cache of files that should be deleted when filsystem is closed    * or the JVM is exited.    */
+comment|/**    * A cache of files that should be deleted when filesystem is closed    * or the JVM is exited.    */
 DECL|field|deleteOnExit
 specifier|private
 name|Set

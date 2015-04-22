@@ -717,7 +717,7 @@ return|return
 name|access_time
 return|;
 block|}
-comment|/**    * Get FsPermission associated with the file.    * @return permssion. If a filesystem does not have a notion of permissions    *         or if permissions could not be determined, then default     *         permissions equivalent of "rwxrwxrwx" is returned.    */
+comment|/**    * Get FsPermission associated with the file.    * @return permission. If a filesystem does not have a notion of permissions    *         or if permissions could not be determined, then default     *         permissions equivalent of "rwxrwxrwx" is returned.    */
 DECL|method|getPermission ()
 specifier|public
 name|FsPermission

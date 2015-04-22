@@ -812,7 +812,7 @@ return|return
 name|quota
 return|;
 block|}
-comment|/** Retuns storage space consumed */
+comment|/** Returns storage space consumed */
 DECL|method|getSpaceConsumed ()
 specifier|public
 name|long

@@ -3844,7 +3844,7 @@ literal|0xff
 operator|)
 return|;
 block|}
-comment|// NB: currently this method actually never executed becusae
+comment|// NB: currently this method actually never executed because
 comment|// java.io.DataInputStream.read(byte[]) directly delegates to
 comment|// method java.io.InputStream.read(byte[], int, int).
 comment|// However, potentially it can be invoked, so leave it intact for now.

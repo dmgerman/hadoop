@@ -85,7 +85,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * A class optimizes reading from FSInputStream by bufferring  */
+comment|/**  * A class that optimizes reading from FSInputStream by buffering  */
 end_comment
 
 begin_class

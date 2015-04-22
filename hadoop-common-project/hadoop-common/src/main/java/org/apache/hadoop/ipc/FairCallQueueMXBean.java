@@ -22,7 +22,7 @@ specifier|public
 interface|interface
 name|FairCallQueueMXBean
 block|{
-comment|// Get the size of each subqueue, the index corrosponding to the priority
+comment|// Get the size of each subqueue, the index corresponding to the priority
 comment|// level.
 DECL|method|getQueueSizes ()
 name|int

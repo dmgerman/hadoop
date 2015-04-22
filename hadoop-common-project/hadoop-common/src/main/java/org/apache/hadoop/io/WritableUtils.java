@@ -1163,7 +1163,7 @@ argument_list|)
 throw|;
 block|}
 block|}
-comment|/**    * Make a copy of the writable object using serialiation to a buffer    * @param dst the object to copy from    * @param src the object to copy into, which is destroyed    * @throws IOException    * @deprecated use ReflectionUtils.cloneInto instead.    */
+comment|/**    * Make a copy of the writable object using serialization to a buffer    * @param dst the object to copy from    * @param src the object to copy into, which is destroyed    * @throws IOException    * @deprecated use ReflectionUtils.cloneInto instead.    */
 annotation|@
 name|Deprecated
 DECL|method|cloneInto (Writable dst, Writable src)

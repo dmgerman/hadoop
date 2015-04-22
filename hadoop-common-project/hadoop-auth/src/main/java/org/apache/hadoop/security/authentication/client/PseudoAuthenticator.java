@@ -105,7 +105,7 @@ operator|=
 name|configurator
 expr_stmt|;
 block|}
-comment|/**    * Performs simple authentication against the specified URL.    *<p>    * If a token is given it does a NOP and returns the given token.    *<p>    * If no token is given, it will perform an HTTP<code>OPTIONS</code> request injecting an additional    * parameter {@link #USER_NAME} in the query string with the value returned by the {@link #getUserName()}    * method.    *<p>    * If the response is successful it will update the authentication token.    *    * @param url the URl to authenticate against.    * @param token the authencation token being used for the user.    *    * @throws IOException if an IO error occurred.    * @throws AuthenticationException if an authentication error occurred.    */
+comment|/**    * Performs simple authentication against the specified URL.    *<p>    * If a token is given it does a NOP and returns the given token.    *<p>    * If no token is given, it will perform an HTTP<code>OPTIONS</code> request injecting an additional    * parameter {@link #USER_NAME} in the query string with the value returned by the {@link #getUserName()}    * method.    *<p>    * If the response is successful it will update the authentication token.    *    * @param url the URl to authenticate against.    * @param token the authentication token being used for the user.    *    * @throws IOException if an IO error occurred.    * @throws AuthenticationException if an authentication error occurred.    */
 annotation|@
 name|Override
 DECL|method|authenticate (URL url, AuthenticatedURL.Token token)

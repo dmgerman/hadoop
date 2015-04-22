@@ -5628,7 +5628,7 @@ name|baseBlockSize
 index|]
 expr_stmt|;
 block|}
-comment|/**     * Initializes the {@link #tt} array.     *     * This method is called when the required length of the array is known.     * I don't initialize it at construction time to avoid unneccessary     * memory allocation when compressing small files.     */
+comment|/**     * Initializes the {@link #tt} array.     *     * This method is called when the required length of the array is known.     * I don't initialize it at construction time to avoid unnecessary     * memory allocation when compressing small files.     */
 DECL|method|initTT (int length)
 specifier|final
 name|int

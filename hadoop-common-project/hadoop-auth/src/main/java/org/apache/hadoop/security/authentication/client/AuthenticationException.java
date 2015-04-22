@@ -21,7 +21,7 @@ package|;
 end_package
 
 begin_comment
-comment|/**  * Exception thrown when an authentication error occurrs.  */
+comment|/**  * Exception thrown when an authentication error occurs.  */
 end_comment
 
 begin_class

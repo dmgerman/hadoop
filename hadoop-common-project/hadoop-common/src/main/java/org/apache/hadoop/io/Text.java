@@ -564,7 +564,7 @@ literal|0
 argument_list|)
 return|;
 block|}
-comment|/**    * Finds any occurence of<code>what</code> in the backing    * buffer, starting as position<code>start</code>. The starting    * position is measured in bytes and the return value is in    * terms of byte position in the buffer. The backing buffer is    * not converted to a string for this operation.    * @return byte position of the first occurence of the search    *         string in the UTF-8 buffer or -1 if not found    */
+comment|/**    * Finds any occurrence of<code>what</code> in the backing    * buffer, starting as position<code>start</code>. The starting    * position is measured in bytes and the return value is in    * terms of byte position in the buffer. The backing buffer is    * not converted to a string for this operation.    * @return byte position of the first occurrence of the search    *         string in the UTF-8 buffer or -1 if not found    */
 DECL|method|find (String what, int start)
 specifier|public
 name|int

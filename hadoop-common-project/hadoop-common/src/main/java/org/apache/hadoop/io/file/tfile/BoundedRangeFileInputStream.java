@@ -98,7 +98,7 @@ index|[
 literal|1
 index|]
 decl_stmt|;
-comment|/**    * Constructor    *     * @param in    *          The FSDataInputStream we connect to.    * @param offset    *          Begining offset of the region.    * @param length    *          Length of the region.    *     *          The actual length of the region may be smaller if (off_begin +    *          length) goes beyond the end of FS input stream.    */
+comment|/**    * Constructor    *     * @param in    *          The FSDataInputStream we connect to.    * @param offset    *          Beginning offset of the region.    * @param length    *          Length of the region.    *     *          The actual length of the region may be smaller if (off_begin +    *          length) goes beyond the end of FS input stream.    */
 DECL|method|BoundedRangeFileInputStream (FSDataInputStream in, long offset, long length)
 specifier|public
 name|BoundedRangeFileInputStream

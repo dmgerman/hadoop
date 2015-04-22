@@ -350,7 +350,7 @@ name|checksumSize
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Reads in checksum chunks into<code>buf</code> at<code>offset</code>    * and checksum into<code>checksum</code>.    * Since checksums can be disabled, there are two cases implementors need    * to worry about:    *    *  (a) needChecksum() will return false:    *     - len can be any positive value    *     - checksum will be null    *     Implementors should simply pass through to the underlying data stream.    * or    *  (b) needChecksum() will return true:    *    - len>= maxChunkSize    *    - checksum.length is a multiple of CHECKSUM_SIZE    *    Implementors should read an integer number of data chunks into    *    buf. The amount read should be bounded by len or by     *    checksum.length / CHECKSUM_SIZE * maxChunkSize. Note that len may    *    be a value that is not a multiple of maxChunkSize, in which case    *    the implementation may return less than len.    *    * The method is used for implementing read, therefore, it should be optimized    * for sequential reading.    *    * @param pos chunkPos    * @param buf desitination buffer    * @param offset offset in buf at which to store data    * @param len maximum number of bytes to read    * @param checksum the data buffer into which to write checksums    * @return number of bytes read    */
+comment|/**    * Reads in checksum chunks into<code>buf</code> at<code>offset</code>    * and checksum into<code>checksum</code>.    * Since checksums can be disabled, there are two cases implementors need    * to worry about:    *    *  (a) needChecksum() will return false:    *     - len can be any positive value    *     - checksum will be null    *     Implementors should simply pass through to the underlying data stream.    * or    *  (b) needChecksum() will return true:    *    - len>= maxChunkSize    *    - checksum.length is a multiple of CHECKSUM_SIZE    *    Implementors should read an integer number of data chunks into    *    buf. The amount read should be bounded by len or by     *    checksum.length / CHECKSUM_SIZE * maxChunkSize. Note that len may    *    be a value that is not a multiple of maxChunkSize, in which case    *    the implementation may return less than len.    *    * The method is used for implementing read, therefore, it should be optimized    * for sequential reading.    *    * @param pos chunkPos    * @param buf destination buffer    * @param offset offset in buf at which to store data    * @param len maximum number of bytes to read    * @param checksum the data buffer into which to write checksums    * @return number of bytes read    */
 DECL|method|readChunk (long pos, byte[] buf, int offset, int len, byte[] checksum)
 specifier|abstract
 specifier|protected
@@ -377,7 +377,7 @@ parameter_list|)
 throws|throws
 name|IOException
 function_decl|;
-comment|/** Return position of beginning of chunk containing pos.     *    * @param pos a postion in the file    * @return the starting position of the chunk which contains the byte    */
+comment|/** Return position of beginning of chunk containing pos.     *    * @param pos a position in the file    * @return the starting position of the chunk which contains the byte    */
 DECL|method|getChunkPosition (long pos)
 specifier|abstract
 specifier|protected
@@ -1230,7 +1230,7 @@ return|return
 name|n
 return|;
 block|}
-comment|/**    * Seek to the given position in the stream.    * The next read() will be from that position.    *     *<p>This method may seek past the end of the file.    * This produces no exception and an attempt to read from    * the stream will result in -1 indicating the end of the file.    *    * @param      pos   the postion to seek to.    * @exception  IOException  if an I/O error occurs.    *             ChecksumException if the chunk to seek to is corrupted    */
+comment|/**    * Seek to the given position in the stream.    * The next read() will be from that position.    *     *<p>This method may seek past the end of the file.    * This produces no exception and an attempt to read from    * the stream will result in -1 indicating the end of the file.    *    * @param      pos   the position to seek to.    * @exception  IOException  if an I/O error occurs.    *             ChecksumException if the chunk to seek to is corrupted    */
 annotation|@
 name|Override
 DECL|method|seek (long pos)
@@ -1347,7 +1347,7 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-comment|/**    * A utility function that tries to read up to<code>len</code> bytes from    *<code>stm</code>    *     * @param stm    an input stream    * @param buf    destiniation buffer    * @param offset offset at which to store data    * @param len    number of bytes to read    * @return actual number of bytes read    * @throws IOException if there is any IO error    */
+comment|/**    * A utility function that tries to read up to<code>len</code> bytes from    *<code>stm</code>    *     * @param stm    an input stream    * @param buf    destination buffer    * @param offset offset at which to store data    * @param len    number of bytes to read    * @return actual number of bytes read    * @throws IOException if there is any IO error    */
 DECL|method|readFully (InputStream stm, byte[] buf, int offset, int len)
 specifier|protected
 specifier|static

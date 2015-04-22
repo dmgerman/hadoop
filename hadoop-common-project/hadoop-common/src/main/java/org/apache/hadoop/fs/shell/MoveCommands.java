@@ -380,7 +380,7 @@ argument_list|)
 throw|;
 block|}
 block|}
-comment|/** move/rename paths on the same fileystem */
+comment|/** move/rename paths on the same filesystem */
 DECL|class|Rename
 specifier|public
 specifier|static

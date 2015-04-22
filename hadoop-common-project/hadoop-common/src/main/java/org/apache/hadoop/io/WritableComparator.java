@@ -119,7 +119,7 @@ import|;
 end_import
 
 begin_comment
-comment|/** A Comparator for {@link WritableComparable}s.  *  *<p>This base implemenation uses the natural ordering.  To define alternate  * orderings, override {@link #compare(WritableComparable,WritableComparable)}.  *  *<p>One may optimize compare-intensive operations by overriding  * {@link #compare(byte[],int,int,byte[],int,int)}.  Static utility methods are  * provided to assist in optimized implementations of this method.  */
+comment|/** A Comparator for {@link WritableComparable}s.  *  *<p>This base implementation uses the natural ordering.  To define alternate  * orderings, override {@link #compare(WritableComparable,WritableComparable)}.  *  *<p>One may optimize compare-intensive operations by overriding  * {@link #compare(byte[],int,int,byte[],int,int)}.  Static utility methods are  * provided to assist in optimized implementations of this method.  */
 end_comment
 
 begin_class

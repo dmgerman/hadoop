@@ -285,7 +285,7 @@ name|CONFIG_VIEWFS_DEFAULT_MOUNT_TABLE
 argument_list|)
 return|;
 block|}
-comment|/**    * Get the value of the home dir conf value for specfied mount table    * @param conf - from this conf    * @param mountTableName - the mount table    * @return home dir value, null if variable is not in conf    */
+comment|/**    * Get the value of the home dir conf value for specified mount table    * @param conf - from this conf    * @param mountTableName - the mount table    * @return home dir value, null if variable is not in conf    */
 DECL|method|getHomeDirValue (final Configuration conf, final String mountTableName)
 specifier|public
 specifier|static

@@ -2373,7 +2373,7 @@ argument_list|)
 return|;
 block|}
 block|}
-comment|/**    * Report a checksum error to the file system.    * @param f the file name containing the error    * @param in the stream open on the file    * @param inPos the position of the beginning of the bad data in the file    * @param sums the stream open on the checksum file    * @param sumsPos the position of the beginning of the bad data in the    *         checksum file    * @return if retry is neccessary    */
+comment|/**    * Report a checksum error to the file system.    * @param f the file name containing the error    * @param in the stream open on the file    * @param inPos the position of the beginning of the bad data in the file    * @param sums the stream open on the checksum file    * @param sumsPos the position of the beginning of the bad data in the    *         checksum file    * @return if retry is necessary    */
 DECL|method|reportChecksumFailure (Path f, FSDataInputStream in, long inPos, FSDataInputStream sums, long sumsPos)
 specifier|public
 name|boolean
