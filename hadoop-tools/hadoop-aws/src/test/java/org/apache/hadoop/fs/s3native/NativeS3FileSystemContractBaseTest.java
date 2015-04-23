@@ -947,7 +947,7 @@ block|{
 name|boolean
 name|shouldThrow
 init|=
-literal|false
+literal|true
 decl_stmt|;
 name|int
 name|throwCount
@@ -962,6 +962,11 @@ decl_stmt|;
 name|byte
 index|[]
 name|bytes
+decl_stmt|;
+name|boolean
+name|threwException
+init|=
+literal|false
 decl_stmt|;
 specifier|public
 name|TestInputStream
@@ -980,7 +985,7 @@ control|(
 name|int
 name|i
 init|=
-literal|0
+name|pos
 init|;
 name|i
 operator|<
@@ -1024,12 +1029,23 @@ block|{
 name|throwCount
 operator|++
 expr_stmt|;
+name|threwException
+operator|=
+literal|true
+expr_stmt|;
 throw|throw
 operator|new
 name|IOException
 argument_list|()
 throw|;
 block|}
+name|assertFalse
+argument_list|(
+literal|"IOException was thrown. InputStream should be reopened"
+argument_list|,
+name|threwException
+argument_list|)
+expr_stmt|;
 return|return
 name|pos
 operator|++
@@ -1067,12 +1083,23 @@ block|{
 name|throwCount
 operator|++
 expr_stmt|;
+name|threwException
+operator|=
+literal|true
+expr_stmt|;
 throw|throw
 operator|new
 name|IOException
 argument_list|()
 throw|;
 block|}
+name|assertFalse
+argument_list|(
+literal|"IOException was thrown. InputStream should be reopened"
+argument_list|,
+name|threwException
+argument_list|)
+expr_stmt|;
 name|int
 name|sizeToRead
 init|=
@@ -1123,9 +1150,34 @@ return|return
 name|sizeToRead
 return|;
 block|}
+specifier|public
+name|void
+name|reopenAt
+parameter_list|(
+name|long
+name|byteRangeStart
+parameter_list|)
+block|{
+name|threwException
+operator|=
+literal|false
+expr_stmt|;
+name|pos
+operator|=
+name|Long
+operator|.
+name|valueOf
+argument_list|(
+name|byteRangeStart
+argument_list|)
+operator|.
+name|intValue
+argument_list|()
+expr_stmt|;
+block|}
 block|}
 specifier|final
-name|InputStream
+name|TestInputStream
 name|is
 init|=
 operator|new
@@ -1152,6 +1204,13 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
+name|is
+operator|.
+name|reopenAt
+argument_list|(
+name|byteRangeStart
+argument_list|)
+expr_stmt|;
 return|return
 name|is
 return|;
@@ -1308,10 +1367,11 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|// Test to make sure the throw path was exercised.
-comment|// 144 = 128 + (128 / 8)
+comment|// every read should have thrown 1 IOException except for the first read
+comment|// 144 = 128 - 1 + (128 / 8)
 name|assertEquals
 argument_list|(
-literal|144
+literal|143
 argument_list|,
 operator|(
 operator|(
