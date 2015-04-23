@@ -2311,6 +2311,22 @@ argument_list|,
 name|schedulingMode
 argument_list|)
 decl_stmt|;
+if|if
+condition|(
+name|Resources
+operator|.
+name|greaterThan
+argument_list|(
+name|resourceCalculator
+argument_list|,
+name|clusterResource
+argument_list|,
+name|newTotalResource
+argument_list|,
+name|currentLimitResource
+argument_list|)
+condition|)
+block|{
 comment|// if reservation continous looking enabled, check to see if could we
 comment|// potentially use this node instead of a reserved node if the application
 comment|// has reserved containers.
@@ -2420,31 +2436,24 @@ name|currentLimitResource
 argument_list|)
 expr_stmt|;
 block|}
-return|return
-literal|true
-return|;
-block|}
-block|}
-comment|// Check if we over current-resource-limit computed.
-if|if
-condition|(
+name|currentResourceLimits
+operator|.
+name|setAmountNeededUnreserve
+argument_list|(
 name|Resources
 operator|.
-name|greaterThan
+name|subtract
 argument_list|(
-name|resourceCalculator
-argument_list|,
-name|clusterResource
-argument_list|,
 name|newTotalResource
 argument_list|,
 name|currentLimitResource
 argument_list|)
-condition|)
-block|{
+argument_list|)
+expr_stmt|;
 return|return
-literal|false
+literal|true
 return|;
+block|}
 block|}
 if|if
 condition|(
@@ -2517,6 +2526,10 @@ operator|+
 literal|")"
 argument_list|)
 expr_stmt|;
+block|}
+return|return
+literal|false
+return|;
 block|}
 return|return
 literal|true

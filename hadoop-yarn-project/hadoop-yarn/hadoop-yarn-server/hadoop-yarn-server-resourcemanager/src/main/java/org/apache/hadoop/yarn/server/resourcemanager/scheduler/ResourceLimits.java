@@ -40,6 +40,24 @@ name|Resource
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|util
+operator|.
+name|resource
+operator|.
+name|Resources
+import|;
+end_import
+
 begin_comment
 comment|/**  * Resource limits for queues/applications, this means max overall (please note  * that, it's not "extra") resource you can get.  */
 end_comment
@@ -50,6 +68,20 @@ specifier|public
 class|class
 name|ResourceLimits
 block|{
+DECL|field|limit
+specifier|volatile
+name|Resource
+name|limit
+decl_stmt|;
+comment|// This is special limit that goes with the RESERVE_CONT_LOOK_ALL_NODES
+comment|// config. This limit indicates how much we need to unreserve to allocate
+comment|// another container.
+DECL|field|amountNeededUnreserve
+specifier|private
+specifier|volatile
+name|Resource
+name|amountNeededUnreserve
+decl_stmt|;
 DECL|method|ResourceLimits (Resource limit)
 specifier|public
 name|ResourceLimits
@@ -60,16 +92,44 @@ parameter_list|)
 block|{
 name|this
 operator|.
+name|amountNeededUnreserve
+operator|=
+name|Resources
+operator|.
+name|none
+argument_list|()
+expr_stmt|;
+name|this
+operator|.
 name|limit
 operator|=
 name|limit
 expr_stmt|;
 block|}
-DECL|field|limit
-specifier|volatile
+DECL|method|ResourceLimits (Resource limit, Resource amountNeededUnreserve)
+specifier|public
+name|ResourceLimits
+parameter_list|(
 name|Resource
 name|limit
-decl_stmt|;
+parameter_list|,
+name|Resource
+name|amountNeededUnreserve
+parameter_list|)
+block|{
+name|this
+operator|.
+name|amountNeededUnreserve
+operator|=
+name|amountNeededUnreserve
+expr_stmt|;
+name|this
+operator|.
+name|limit
+operator|=
+name|limit
+expr_stmt|;
+block|}
 DECL|method|getLimit ()
 specifier|public
 name|Resource
@@ -78,6 +138,16 @@ parameter_list|()
 block|{
 return|return
 name|limit
+return|;
+block|}
+DECL|method|getAmountNeededUnreserve ()
+specifier|public
+name|Resource
+name|getAmountNeededUnreserve
+parameter_list|()
+block|{
+return|return
+name|amountNeededUnreserve
 return|;
 block|}
 DECL|method|setLimit (Resource limit)
@@ -94,6 +164,22 @@ operator|.
 name|limit
 operator|=
 name|limit
+expr_stmt|;
+block|}
+DECL|method|setAmountNeededUnreserve (Resource amountNeededUnreserve)
+specifier|public
+name|void
+name|setAmountNeededUnreserve
+parameter_list|(
+name|Resource
+name|amountNeededUnreserve
+parameter_list|)
+block|{
+name|this
+operator|.
+name|amountNeededUnreserve
+operator|=
+name|amountNeededUnreserve
 expr_stmt|;
 block|}
 block|}

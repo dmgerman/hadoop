@@ -1138,11 +1138,11 @@ operator|new
 name|QueueResourceLimitsInfo
 argument_list|()
 decl_stmt|;
-DECL|field|currentResourceLimits
+DECL|field|cachedResourceLimitsForHeadroom
 specifier|private
 specifier|volatile
 name|ResourceLimits
-name|currentResourceLimits
+name|cachedResourceLimitsForHeadroom
 init|=
 literal|null
 decl_stmt|;
@@ -1297,7 +1297,7 @@ argument_list|)
 expr_stmt|;
 name|this
 operator|.
-name|currentResourceLimits
+name|cachedResourceLimitsForHeadroom
 operator|=
 operator|new
 name|ResourceLimits
@@ -4294,8 +4294,6 @@ operator|.
 name|getPartition
 argument_list|()
 argument_list|,
-name|this
-operator|.
 name|currentResourceLimits
 argument_list|,
 name|required
@@ -4330,12 +4328,12 @@ name|userLimit
 argument_list|,
 name|application
 argument_list|,
-literal|true
-argument_list|,
 name|node
 operator|.
 name|getPartition
 argument_list|()
+argument_list|,
+name|currentResourceLimits
 argument_list|)
 condition|)
 block|{
@@ -4464,6 +4462,8 @@ argument_list|,
 literal|null
 argument_list|,
 name|schedulingMode
+argument_list|,
+name|currentResourceLimits
 argument_list|)
 decl_stmt|;
 comment|// Did the application skip this node?
@@ -4692,6 +4692,15 @@ argument_list|,
 name|rmContainer
 argument_list|,
 name|schedulingMode
+argument_list|,
+operator|new
+name|ResourceLimits
+argument_list|(
+name|Resources
+operator|.
+name|none
+argument_list|()
+argument_list|)
 argument_list|)
 decl_stmt|;
 comment|// Doesn't matter... since it's already charged for at time of reservation
@@ -4879,7 +4888,7 @@ name|queueResourceLimitsInfo
 operator|.
 name|setQueueCurrentLimit
 argument_list|(
-name|currentResourceLimits
+name|cachedResourceLimitsForHeadroom
 operator|.
 name|getLimit
 argument_list|()
@@ -4975,7 +4984,7 @@ name|getHeadroom
 argument_list|(
 name|queueUser
 argument_list|,
-name|currentResourceLimits
+name|cachedResourceLimitsForHeadroom
 operator|.
 name|getLimit
 argument_list|()
@@ -5009,7 +5018,7 @@ name|userLimit
 operator|+
 literal|" queueMaxAvailRes="
 operator|+
-name|currentResourceLimits
+name|cachedResourceLimitsForHeadroom
 operator|.
 name|getLimit
 argument_list|()
@@ -5413,7 +5422,7 @@ return|;
 block|}
 annotation|@
 name|Private
-DECL|method|canAssignToUser (Resource clusterResource, String userName, Resource limit, FiCaSchedulerApp application, boolean checkReservations, String nodePartition)
+DECL|method|canAssignToUser (Resource clusterResource, String userName, Resource limit, FiCaSchedulerApp application, String nodePartition, ResourceLimits currentResoureLimits)
 specifier|protected
 specifier|synchronized
 name|boolean
@@ -5431,11 +5440,11 @@ parameter_list|,
 name|FiCaSchedulerApp
 name|application
 parameter_list|,
-name|boolean
-name|checkReservations
-parameter_list|,
 name|String
 name|nodePartition
+parameter_list|,
+name|ResourceLimits
+name|currentResoureLimits
 parameter_list|)
 block|{
 name|User
@@ -5476,8 +5485,6 @@ condition|(
 name|this
 operator|.
 name|reservationsContinueLooking
-operator|&&
-name|checkReservations
 operator|&&
 name|nodePartition
 operator|.
@@ -5561,6 +5568,47 @@ name|limit
 argument_list|)
 expr_stmt|;
 block|}
+name|Resource
+name|amountNeededToUnreserve
+init|=
+name|Resources
+operator|.
+name|subtract
+argument_list|(
+name|user
+operator|.
+name|getUsed
+argument_list|(
+name|nodePartition
+argument_list|)
+argument_list|,
+name|limit
+argument_list|)
+decl_stmt|;
+comment|// we can only acquire a new container if we unreserve first since we ignored the
+comment|// user limit. Choose the max of user limit or what was previously set by max
+comment|// capacity.
+name|currentResoureLimits
+operator|.
+name|setAmountNeededUnreserve
+argument_list|(
+name|Resources
+operator|.
+name|max
+argument_list|(
+name|resourceCalculator
+argument_list|,
+name|clusterResource
+argument_list|,
+name|currentResoureLimits
+operator|.
+name|getAmountNeededUnreserve
+argument_list|()
+argument_list|,
+name|amountNeededToUnreserve
+argument_list|)
+argument_list|)
+expr_stmt|;
 return|return
 literal|true
 return|;
@@ -5772,7 +5820,7 @@ literal|0
 operator|)
 return|;
 block|}
-DECL|method|assignContainersOnNode (Resource clusterResource, FiCaSchedulerNode node, FiCaSchedulerApp application, Priority priority, RMContainer reservedContainer, SchedulingMode schedulingMode)
+DECL|method|assignContainersOnNode (Resource clusterResource, FiCaSchedulerNode node, FiCaSchedulerApp application, Priority priority, RMContainer reservedContainer, SchedulingMode schedulingMode, ResourceLimits currentResoureLimits)
 specifier|private
 name|CSAssignment
 name|assignContainersOnNode
@@ -5794,6 +5842,9 @@ name|reservedContainer
 parameter_list|,
 name|SchedulingMode
 name|schedulingMode
+parameter_list|,
+name|ResourceLimits
+name|currentResoureLimits
 parameter_list|)
 block|{
 name|CSAssignment
@@ -5859,6 +5910,8 @@ argument_list|,
 name|allocatedContainer
 argument_list|,
 name|schedulingMode
+argument_list|,
+name|currentResoureLimits
 argument_list|)
 expr_stmt|;
 if|if
@@ -5991,6 +6044,8 @@ argument_list|,
 name|allocatedContainer
 argument_list|,
 name|schedulingMode
+argument_list|,
+name|currentResoureLimits
 argument_list|)
 expr_stmt|;
 if|if
@@ -6128,6 +6183,8 @@ argument_list|,
 name|allocatedContainer
 argument_list|,
 name|schedulingMode
+argument_list|,
+name|currentResoureLimits
 argument_list|)
 expr_stmt|;
 comment|// update locality statistics
@@ -6170,44 +6227,9 @@ return|return
 name|SKIP_ASSIGNMENT
 return|;
 block|}
-DECL|method|getMinimumResourceNeedUnreserved (Resource askedResource)
-specifier|private
-name|Resource
-name|getMinimumResourceNeedUnreserved
-parameter_list|(
-name|Resource
-name|askedResource
-parameter_list|)
-block|{
-comment|// First we need to get minimum resource we need unreserve
-comment|// minimum-resource-need-unreserve = used + asked - limit
-return|return
-name|Resources
-operator|.
-name|subtract
-argument_list|(
-name|Resources
-operator|.
-name|add
-argument_list|(
-name|queueUsage
-operator|.
-name|getUsed
-argument_list|()
-argument_list|,
-name|askedResource
-argument_list|)
-argument_list|,
-name|currentResourceLimits
-operator|.
-name|getLimit
-argument_list|()
-argument_list|)
-return|;
-block|}
 annotation|@
 name|Private
-DECL|method|findNodeToUnreserve (Resource clusterResource, FiCaSchedulerNode node, FiCaSchedulerApp application, Priority priority, Resource askedResource, Resource minimumUnreservedResource)
+DECL|method|findNodeToUnreserve (Resource clusterResource, FiCaSchedulerNode node, FiCaSchedulerApp application, Priority priority, Resource minimumUnreservedResource)
 specifier|protected
 name|boolean
 name|findNodeToUnreserve
@@ -6223,9 +6245,6 @@ name|application
 parameter_list|,
 name|Priority
 name|priority
-parameter_list|,
-name|Resource
-name|askedResource
 parameter_list|,
 name|Resource
 name|minimumUnreservedResource
@@ -6339,7 +6358,7 @@ argument_list|()
 operator|+
 literal|" needing: "
 operator|+
-name|askedResource
+name|minimumUnreservedResource
 argument_list|)
 expr_stmt|;
 block|}
@@ -6408,143 +6427,7 @@ return|return
 literal|true
 return|;
 block|}
-annotation|@
-name|Private
-DECL|method|checkLimitsToReserve (Resource clusterResource, FiCaSchedulerApp application, Resource capability, String nodePartition, SchedulingMode schedulingMode)
-specifier|protected
-name|boolean
-name|checkLimitsToReserve
-parameter_list|(
-name|Resource
-name|clusterResource
-parameter_list|,
-name|FiCaSchedulerApp
-name|application
-parameter_list|,
-name|Resource
-name|capability
-parameter_list|,
-name|String
-name|nodePartition
-parameter_list|,
-name|SchedulingMode
-name|schedulingMode
-parameter_list|)
-block|{
-comment|// we can't reserve if we got here based on the limit
-comment|// checks assuming we could unreserve!!!
-name|Resource
-name|userLimit
-init|=
-name|computeUserLimitAndSetHeadroom
-argument_list|(
-name|application
-argument_list|,
-name|clusterResource
-argument_list|,
-name|capability
-argument_list|,
-name|nodePartition
-argument_list|,
-name|schedulingMode
-argument_list|)
-decl_stmt|;
-comment|// Check queue max-capacity limit,
-comment|// TODO: Consider reservation on labels
-if|if
-condition|(
-operator|!
-name|canAssignToThisQueue
-argument_list|(
-name|clusterResource
-argument_list|,
-name|RMNodeLabelsManager
-operator|.
-name|NO_LABEL
-argument_list|,
-name|this
-operator|.
-name|currentResourceLimits
-argument_list|,
-name|capability
-argument_list|,
-name|Resources
-operator|.
-name|none
-argument_list|()
-argument_list|,
-name|schedulingMode
-argument_list|)
-condition|)
-block|{
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
-name|LOG
-operator|.
-name|debug
-argument_list|(
-literal|"was going to reserve but hit queue limit"
-argument_list|)
-expr_stmt|;
-block|}
-return|return
-literal|false
-return|;
-block|}
-comment|// Check user limit
-if|if
-condition|(
-operator|!
-name|canAssignToUser
-argument_list|(
-name|clusterResource
-argument_list|,
-name|application
-operator|.
-name|getUser
-argument_list|()
-argument_list|,
-name|userLimit
-argument_list|,
-name|application
-argument_list|,
-literal|false
-argument_list|,
-name|nodePartition
-argument_list|)
-condition|)
-block|{
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
-name|LOG
-operator|.
-name|debug
-argument_list|(
-literal|"was going to reserve but hit user limit"
-argument_list|)
-expr_stmt|;
-block|}
-return|return
-literal|false
-return|;
-block|}
-return|return
-literal|true
-return|;
-block|}
-DECL|method|assignNodeLocalContainers (Resource clusterResource, ResourceRequest nodeLocalResourceRequest, FiCaSchedulerNode node, FiCaSchedulerApp application, Priority priority, RMContainer reservedContainer, MutableObject allocatedContainer, SchedulingMode schedulingMode)
+DECL|method|assignNodeLocalContainers (Resource clusterResource, ResourceRequest nodeLocalResourceRequest, FiCaSchedulerNode node, FiCaSchedulerApp application, Priority priority, RMContainer reservedContainer, MutableObject allocatedContainer, SchedulingMode schedulingMode, ResourceLimits currentResoureLimits)
 specifier|private
 name|CSAssignment
 name|assignNodeLocalContainers
@@ -6572,6 +6455,9 @@ name|allocatedContainer
 parameter_list|,
 name|SchedulingMode
 name|schedulingMode
+parameter_list|,
+name|ResourceLimits
+name|currentResoureLimits
 parameter_list|)
 block|{
 if|if
@@ -6614,6 +6500,8 @@ argument_list|,
 name|allocatedContainer
 argument_list|,
 name|schedulingMode
+argument_list|,
+name|currentResoureLimits
 argument_list|)
 return|;
 block|}
@@ -6632,7 +6520,7 @@ name|NODE_LOCAL
 argument_list|)
 return|;
 block|}
-DECL|method|assignRackLocalContainers (Resource clusterResource, ResourceRequest rackLocalResourceRequest, FiCaSchedulerNode node, FiCaSchedulerApp application, Priority priority, RMContainer reservedContainer, MutableObject allocatedContainer, SchedulingMode schedulingMode)
+DECL|method|assignRackLocalContainers (Resource clusterResource, ResourceRequest rackLocalResourceRequest, FiCaSchedulerNode node, FiCaSchedulerApp application, Priority priority, RMContainer reservedContainer, MutableObject allocatedContainer, SchedulingMode schedulingMode, ResourceLimits currentResoureLimits)
 specifier|private
 name|CSAssignment
 name|assignRackLocalContainers
@@ -6660,6 +6548,9 @@ name|allocatedContainer
 parameter_list|,
 name|SchedulingMode
 name|schedulingMode
+parameter_list|,
+name|ResourceLimits
+name|currentResoureLimits
 parameter_list|)
 block|{
 if|if
@@ -6702,6 +6593,8 @@ argument_list|,
 name|allocatedContainer
 argument_list|,
 name|schedulingMode
+argument_list|,
+name|currentResoureLimits
 argument_list|)
 return|;
 block|}
@@ -6720,7 +6613,7 @@ name|RACK_LOCAL
 argument_list|)
 return|;
 block|}
-DECL|method|assignOffSwitchContainers (Resource clusterResource, ResourceRequest offSwitchResourceRequest, FiCaSchedulerNode node, FiCaSchedulerApp application, Priority priority, RMContainer reservedContainer, MutableObject allocatedContainer, SchedulingMode schedulingMode)
+DECL|method|assignOffSwitchContainers (Resource clusterResource, ResourceRequest offSwitchResourceRequest, FiCaSchedulerNode node, FiCaSchedulerApp application, Priority priority, RMContainer reservedContainer, MutableObject allocatedContainer, SchedulingMode schedulingMode, ResourceLimits currentResoureLimits)
 specifier|private
 name|CSAssignment
 name|assignOffSwitchContainers
@@ -6748,6 +6641,9 @@ name|allocatedContainer
 parameter_list|,
 name|SchedulingMode
 name|schedulingMode
+parameter_list|,
+name|ResourceLimits
+name|currentResoureLimits
 parameter_list|)
 block|{
 if|if
@@ -6790,6 +6686,8 @@ argument_list|,
 name|allocatedContainer
 argument_list|,
 name|schedulingMode
+argument_list|,
+name|currentResoureLimits
 argument_list|)
 return|;
 block|}
@@ -7156,7 +7054,7 @@ literal|null
 argument_list|)
 return|;
 block|}
-DECL|method|assignContainer (Resource clusterResource, FiCaSchedulerNode node, FiCaSchedulerApp application, Priority priority, ResourceRequest request, NodeType type, RMContainer rmContainer, MutableObject createdContainer, SchedulingMode schedulingMode)
+DECL|method|assignContainer (Resource clusterResource, FiCaSchedulerNode node, FiCaSchedulerApp application, Priority priority, ResourceRequest request, NodeType type, RMContainer rmContainer, MutableObject createdContainer, SchedulingMode schedulingMode, ResourceLimits currentResoureLimits)
 specifier|private
 name|CSAssignment
 name|assignContainer
@@ -7187,6 +7085,9 @@ name|createdContainer
 parameter_list|,
 name|SchedulingMode
 name|schedulingMode
+parameter_list|,
+name|ResourceLimits
+name|currentResoureLimits
 parameter_list|)
 block|{
 if|if
@@ -7450,6 +7351,28 @@ argument_list|,
 name|capability
 argument_list|)
 decl_stmt|;
+name|boolean
+name|needToUnreserve
+init|=
+name|Resources
+operator|.
+name|greaterThan
+argument_list|(
+name|resourceCalculator
+argument_list|,
+name|clusterResource
+argument_list|,
+name|currentResoureLimits
+operator|.
+name|getAmountNeededUnreserve
+argument_list|()
+argument_list|,
+name|Resources
+operator|.
+name|none
+argument_list|()
+argument_list|)
+decl_stmt|;
 if|if
 condition|(
 name|availableContainers
@@ -7495,39 +7418,39 @@ argument_list|()
 condition|)
 block|{
 comment|// when reservationsContinueLooking is set, we may need to unreserve
-comment|// some containers to meet this queue and its parents' resource limits
+comment|// some containers to meet this queue, its parents', or the users' resource limits.
 comment|// TODO, need change here when we want to support continuous reservation
 comment|// looking for labeled partitions.
-name|Resource
-name|minimumUnreservedResource
-init|=
-name|getMinimumResourceNeedUnreserved
-argument_list|(
-name|capability
-argument_list|)
-decl_stmt|;
 if|if
 condition|(
 operator|!
 name|shouldAllocOrReserveNewContainer
 operator|||
-name|Resources
-operator|.
-name|greaterThan
-argument_list|(
-name|resourceCalculator
-argument_list|,
-name|clusterResource
-argument_list|,
-name|minimumUnreservedResource
-argument_list|,
-name|Resources
-operator|.
-name|none
-argument_list|()
-argument_list|)
+name|needToUnreserve
 condition|)
 block|{
+comment|// If we shouldn't allocate/reserve new container then we should unreserve one the same
+comment|// size we are asking for since the currentResoureLimits.getAmountNeededUnreserve
+comment|// could be zero. If the limit was hit then use the amount we need to unreserve to be
+comment|// under the limit.
+name|Resource
+name|amountToUnreserve
+init|=
+name|capability
+decl_stmt|;
+if|if
+condition|(
+name|needToUnreserve
+condition|)
+block|{
+name|amountToUnreserve
+operator|=
+name|currentResoureLimits
+operator|.
+name|getAmountNeededUnreserve
+argument_list|()
+expr_stmt|;
+block|}
 name|boolean
 name|containerUnreserved
 init|=
@@ -7541,14 +7464,12 @@ name|application
 argument_list|,
 name|priority
 argument_list|,
-name|capability
-argument_list|,
-name|minimumUnreservedResource
+name|amountToUnreserve
 argument_list|)
 decl_stmt|;
 comment|// When (minimum-unreserved-resource> 0 OR we cannot allocate new/reserved
 comment|// container (That means we *have to* unreserve some resource to
-comment|// continue)). If we failed to unreserve some resource,
+comment|// continue)). If we failed to unreserve some resource, we can't continue.
 if|if
 condition|(
 operator|!
@@ -7743,31 +7664,30 @@ operator|==
 literal|null
 condition|)
 block|{
-comment|// we could possibly ignoring parent queue capacity limits when
-comment|// reservationsContinueLooking is set.
-comment|// If we're trying to reserve a container here, not container will be
-comment|// unreserved for reserving the new one. Check limits again before
-comment|// reserve the new container
+comment|// we could possibly ignoring queue capacity or user limits when
+comment|// reservationsContinueLooking is set. Make sure we didn't need to unreserve
+comment|// one.
 if|if
 condition|(
-operator|!
-name|checkLimitsToReserve
-argument_list|(
-name|clusterResource
-argument_list|,
-name|application
-argument_list|,
-name|capability
-argument_list|,
-name|node
-operator|.
-name|getPartition
-argument_list|()
-argument_list|,
-name|schedulingMode
-argument_list|)
+name|needToUnreserve
 condition|)
 block|{
+if|if
+condition|(
+name|LOG
+operator|.
+name|isDebugEnabled
+argument_list|()
+condition|)
+block|{
+name|LOG
+operator|.
+name|debug
+argument_list|(
+literal|"we needed to unreserve to be able to allocate"
+argument_list|)
+expr_stmt|;
+block|}
 return|return
 operator|new
 name|CSAssignment
@@ -8547,9 +8467,16 @@ comment|// but when allocating reserved container, CapacityScheduler doesn't do
 comment|// this. So need cap limits by queue's max capacity here.
 name|this
 operator|.
-name|currentResourceLimits
+name|cachedResourceLimitsForHeadroom
 operator|=
+operator|new
+name|ResourceLimits
+argument_list|(
 name|currentResourceLimits
+operator|.
+name|getLimit
+argument_list|()
+argument_list|)
 expr_stmt|;
 name|Resource
 name|queueMaxResource
@@ -8585,7 +8512,7 @@ argument_list|)
 decl_stmt|;
 name|this
 operator|.
-name|currentResourceLimits
+name|cachedResourceLimitsForHeadroom
 operator|.
 name|setLimit
 argument_list|(
