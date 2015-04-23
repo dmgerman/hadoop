@@ -358,21 +358,10 @@ block|{
 name|String
 name|redirectMsg
 init|=
-literal|"This is standby RM. Redirecting to the current active RM: "
+literal|"This is standby RM. The redirect url is: "
 operator|+
 name|redirectPath
 decl_stmt|;
-name|response
-operator|.
-name|addHeader
-argument_list|(
-literal|"Refresh"
-argument_list|,
-literal|"3; url="
-operator|+
-name|redirectPath
-argument_list|)
-expr_stmt|;
 name|PrintWriter
 name|out
 init|=
@@ -386,6 +375,24 @@ operator|.
 name|println
 argument_list|(
 name|redirectMsg
+argument_list|)
+expr_stmt|;
+name|response
+operator|.
+name|setHeader
+argument_list|(
+literal|"Location"
+argument_list|,
+name|redirectPath
+argument_list|)
+expr_stmt|;
+name|response
+operator|.
+name|setStatus
+argument_list|(
+name|HttpServletResponse
+operator|.
+name|SC_TEMPORARY_REDIRECT
 argument_list|)
 expr_stmt|;
 return|return;
