@@ -6331,7 +6331,7 @@ operator|.
 name|getNodeLabelManager
 argument_list|()
 operator|.
-name|getClusterNodeLabels
+name|getClusterNodeLabelNames
 argument_list|()
 argument_list|)
 decl_stmt|;
@@ -6458,7 +6458,7 @@ operator|.
 name|getNodeLabelManager
 argument_list|()
 operator|.
-name|addToCluserNodeLabels
+name|addToCluserNodeLabelsWithDefaultExclusivity
 argument_list|(
 operator|new
 name|HashSet

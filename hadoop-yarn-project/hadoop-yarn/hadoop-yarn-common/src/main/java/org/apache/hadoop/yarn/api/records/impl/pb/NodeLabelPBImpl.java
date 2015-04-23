@@ -305,10 +305,10 @@ return|;
 block|}
 annotation|@
 name|Override
-DECL|method|getNodeLabel ()
+DECL|method|getName ()
 specifier|public
 name|String
-name|getNodeLabel
+name|getName
 parameter_list|()
 block|{
 name|NodeLabelProtoOrBuilder
@@ -325,7 +325,7 @@ condition|(
 operator|!
 name|p
 operator|.
-name|hasNodeLabel
+name|hasName
 argument_list|()
 condition|)
 block|{
@@ -337,20 +337,20 @@ return|return
 operator|(
 name|p
 operator|.
-name|getNodeLabel
+name|getName
 argument_list|()
 operator|)
 return|;
 block|}
 annotation|@
 name|Override
-DECL|method|setNodeLabel (String nodeLabel)
+DECL|method|setName (String name)
 specifier|public
 name|void
-name|setNodeLabel
+name|setName
 parameter_list|(
 name|String
-name|nodeLabel
+name|name
 parameter_list|)
 block|{
 name|maybeInitBuilder
@@ -358,32 +358,32 @@ argument_list|()
 expr_stmt|;
 if|if
 condition|(
-name|nodeLabel
+name|name
 operator|==
 literal|null
 condition|)
 block|{
 name|builder
 operator|.
-name|clearNodeLabel
+name|clearName
 argument_list|()
 expr_stmt|;
 return|return;
 block|}
 name|builder
 operator|.
-name|setNodeLabel
+name|setName
 argument_list|(
-name|nodeLabel
+name|name
 argument_list|)
 expr_stmt|;
 block|}
 annotation|@
 name|Override
-DECL|method|getIsExclusive ()
+DECL|method|isExclusive ()
 specifier|public
 name|boolean
-name|getIsExclusive
+name|isExclusive
 parameter_list|()
 block|{
 name|NodeLabelProtoOrBuilder
@@ -404,10 +404,10 @@ return|;
 block|}
 annotation|@
 name|Override
-DECL|method|setIsExclusive (boolean isExclusive)
+DECL|method|setExclusivity (boolean isExclusive)
 specifier|public
 name|void
-name|setIsExclusive
+name|setExclusivity
 parameter_list|(
 name|boolean
 name|isExclusive

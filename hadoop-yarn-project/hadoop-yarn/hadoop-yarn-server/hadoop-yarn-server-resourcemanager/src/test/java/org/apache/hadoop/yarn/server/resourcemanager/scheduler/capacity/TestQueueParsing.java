@@ -2843,7 +2843,7 @@ name|IOException
 block|{
 name|nodeLabelManager
 operator|.
-name|addToCluserNodeLabels
+name|addToCluserNodeLabelsWithDefaultExclusivity
 argument_list|(
 name|ImmutableSet
 operator|.
@@ -3482,7 +3482,7 @@ name|IOException
 block|{
 name|nodeLabelManager
 operator|.
-name|addToCluserNodeLabels
+name|addToCluserNodeLabelsWithDefaultExclusivity
 argument_list|(
 name|ImmutableSet
 operator|.
@@ -3617,7 +3617,7 @@ name|IOException
 block|{
 name|nodeLabelManager
 operator|.
-name|addToCluserNodeLabels
+name|addToCluserNodeLabelsWithDefaultExclusivity
 argument_list|(
 name|ImmutableSet
 operator|.
@@ -4366,7 +4366,7 @@ comment|// Initialize a cluster with labels, but doesn't use them, reinitialize
 comment|// shouldn't fail
 name|nodeLabelManager
 operator|.
-name|addToCluserNodeLabels
+name|addToCluserNodeLabelsWithDefaultExclusivity
 argument_list|(
 name|labels
 argument_list|)

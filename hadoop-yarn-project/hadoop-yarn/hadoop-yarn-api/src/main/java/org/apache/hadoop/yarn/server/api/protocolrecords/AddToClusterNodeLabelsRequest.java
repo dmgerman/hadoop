@@ -28,7 +28,7 @@ name|java
 operator|.
 name|util
 operator|.
-name|Set
+name|List
 import|;
 end_import
 
@@ -60,7 +60,25 @@ name|classification
 operator|.
 name|InterfaceStability
 operator|.
-name|Evolving
+name|Unstable
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|api
+operator|.
+name|records
+operator|.
+name|NodeLabel
 import|;
 end_import
 
@@ -84,24 +102,28 @@ begin_class
 annotation|@
 name|Public
 annotation|@
-name|Evolving
+name|Unstable
 DECL|class|AddToClusterNodeLabelsRequest
 specifier|public
 specifier|abstract
 class|class
 name|AddToClusterNodeLabelsRequest
 block|{
-DECL|method|newInstance (Set<String> labels)
+annotation|@
+name|Public
+annotation|@
+name|Unstable
+DECL|method|newInstance ( List<NodeLabel> NodeLabels)
 specifier|public
 specifier|static
 name|AddToClusterNodeLabelsRequest
 name|newInstance
 parameter_list|(
-name|Set
+name|List
 argument_list|<
-name|String
+name|NodeLabel
 argument_list|>
-name|labels
+name|NodeLabels
 parameter_list|)
 block|{
 name|AddToClusterNodeLabelsRequest
@@ -120,7 +142,7 @@ name|request
 operator|.
 name|setNodeLabels
 argument_list|(
-name|labels
+name|NodeLabels
 argument_list|)
 expr_stmt|;
 return|return
@@ -130,30 +152,30 @@ block|}
 annotation|@
 name|Public
 annotation|@
-name|Evolving
-DECL|method|setNodeLabels (Set<String> labels)
+name|Unstable
+DECL|method|setNodeLabels (List<NodeLabel> NodeLabels)
 specifier|public
 specifier|abstract
 name|void
 name|setNodeLabels
 parameter_list|(
-name|Set
+name|List
 argument_list|<
-name|String
+name|NodeLabel
 argument_list|>
-name|labels
+name|NodeLabels
 parameter_list|)
 function_decl|;
 annotation|@
 name|Public
 annotation|@
-name|Evolving
+name|Unstable
 DECL|method|getNodeLabels ()
 specifier|public
 specifier|abstract
-name|Set
+name|List
 argument_list|<
-name|String
+name|NodeLabel
 argument_list|>
 name|getNodeLabels
 parameter_list|()

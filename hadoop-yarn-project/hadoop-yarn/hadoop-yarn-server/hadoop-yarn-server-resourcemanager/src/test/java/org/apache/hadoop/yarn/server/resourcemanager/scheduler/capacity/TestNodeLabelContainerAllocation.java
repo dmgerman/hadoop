@@ -1173,7 +1173,7 @@ expr_stmt|;
 comment|// set node -> label
 name|mgr
 operator|.
-name|addToCluserNodeLabels
+name|addToCluserNodeLabelsWithDefaultExclusivity
 argument_list|(
 name|ImmutableSet
 operator|.
@@ -1550,7 +1550,7 @@ comment|/*      * Queue structure:      *                      root (*)      *  
 comment|// set node -> label
 name|mgr
 operator|.
-name|addToCluserNodeLabels
+name|addToCluserNodeLabelsWithDefaultExclusivity
 argument_list|(
 name|ImmutableSet
 operator|.
@@ -2190,7 +2190,7 @@ block|{
 comment|// set node -> label
 name|mgr
 operator|.
-name|addToCluserNodeLabels
+name|addToCluserNodeLabelsWithDefaultExclusivity
 argument_list|(
 name|ImmutableSet
 operator|.
@@ -2729,7 +2729,7 @@ comment|// instead, it uses default queue label expression
 comment|// set node -> label
 name|mgr
 operator|.
-name|addToCluserNodeLabels
+name|addToCluserNodeLabelsWithDefaultExclusivity
 argument_list|(
 name|ImmutableSet
 operator|.
@@ -3400,21 +3400,13 @@ name|ImmutableSet
 operator|.
 name|of
 argument_list|(
+name|NodeLabel
+operator|.
+name|newInstance
+argument_list|(
 literal|"x"
+argument_list|)
 argument_list|,
-literal|"y"
-argument_list|)
-argument_list|)
-expr_stmt|;
-comment|// Makes y to be non-exclusive node labels
-name|mgr
-operator|.
-name|updateNodeLabels
-argument_list|(
-name|Arrays
-operator|.
-name|asList
-argument_list|(
 name|NodeLabel
 operator|.
 name|newInstance
@@ -3889,21 +3881,13 @@ name|ImmutableSet
 operator|.
 name|of
 argument_list|(
+name|NodeLabel
+operator|.
+name|newInstance
+argument_list|(
 literal|"x"
+argument_list|)
 argument_list|,
-literal|"y"
-argument_list|)
-argument_list|)
-expr_stmt|;
-comment|// Makes y to be non-exclusive node labels
-name|mgr
-operator|.
-name|updateNodeLabels
-argument_list|(
-name|Arrays
-operator|.
-name|asList
-argument_list|(
 name|NodeLabel
 operator|.
 name|newInstance
@@ -3915,6 +3899,7 @@ argument_list|)
 argument_list|)
 argument_list|)
 expr_stmt|;
+comment|// Makes y to be non-exclusive node labels
 name|mgr
 operator|.
 name|addLabelsToNode
@@ -4187,7 +4172,6 @@ throws|throws
 name|Exception
 block|{
 comment|/**      * Test case: Submit one application, it asks 6 label="" containers, NM1      * with label=y and NM2 has no label, NM1/NM2 doing heartbeat together. Even      * if NM1 has idle resource, containers are all allocated to NM2 since      * non-labeled request should get allocation on non-labeled nodes first.      */
-comment|// set node -> label
 name|mgr
 operator|.
 name|addToCluserNodeLabels
@@ -4196,21 +4180,6 @@ name|ImmutableSet
 operator|.
 name|of
 argument_list|(
-literal|"x"
-argument_list|,
-literal|"y"
-argument_list|)
-argument_list|)
-expr_stmt|;
-comment|// Makes x to be non-exclusive node labels
-name|mgr
-operator|.
-name|updateNodeLabels
-argument_list|(
-name|Arrays
-operator|.
-name|asList
-argument_list|(
 name|NodeLabel
 operator|.
 name|newInstance
@@ -4218,6 +4187,13 @@ argument_list|(
 literal|"x"
 argument_list|,
 literal|false
+argument_list|)
+argument_list|,
+name|NodeLabel
+operator|.
+name|newInstance
+argument_list|(
+literal|"y"
 argument_list|)
 argument_list|)
 argument_list|)
@@ -4915,21 +4891,6 @@ name|ImmutableSet
 operator|.
 name|of
 argument_list|(
-literal|"x"
-argument_list|,
-literal|"y"
-argument_list|)
-argument_list|)
-expr_stmt|;
-comment|// Makes x to be non-exclusive node labels
-name|mgr
-operator|.
-name|updateNodeLabels
-argument_list|(
-name|Arrays
-operator|.
-name|asList
-argument_list|(
 name|NodeLabel
 operator|.
 name|newInstance
@@ -4937,6 +4898,13 @@ argument_list|(
 literal|"x"
 argument_list|,
 literal|false
+argument_list|)
+argument_list|,
+name|NodeLabel
+operator|.
+name|newInstance
+argument_list|(
+literal|"y"
 argument_list|)
 argument_list|)
 argument_list|)
@@ -5687,19 +5655,6 @@ name|ImmutableSet
 operator|.
 name|of
 argument_list|(
-literal|"x"
-argument_list|)
-argument_list|)
-expr_stmt|;
-comment|// Makes x to be non-exclusive node labels
-name|mgr
-operator|.
-name|updateNodeLabels
-argument_list|(
-name|Arrays
-operator|.
-name|asList
-argument_list|(
 name|NodeLabel
 operator|.
 name|newInstance
@@ -5707,6 +5662,13 @@ argument_list|(
 literal|"x"
 argument_list|,
 literal|false
+argument_list|)
+argument_list|,
+name|NodeLabel
+operator|.
+name|newInstance
+argument_list|(
+literal|"y"
 argument_list|)
 argument_list|)
 argument_list|)
@@ -6045,21 +6007,6 @@ name|ImmutableSet
 operator|.
 name|of
 argument_list|(
-literal|"x"
-argument_list|,
-literal|"y"
-argument_list|)
-argument_list|)
-expr_stmt|;
-comment|// Makes x to be non-exclusive node labels
-name|mgr
-operator|.
-name|updateNodeLabels
-argument_list|(
-name|Arrays
-operator|.
-name|asList
-argument_list|(
 name|NodeLabel
 operator|.
 name|newInstance
@@ -6067,6 +6014,13 @@ argument_list|(
 literal|"x"
 argument_list|,
 literal|false
+argument_list|)
+argument_list|,
+name|NodeLabel
+operator|.
+name|newInstance
+argument_list|(
+literal|"y"
 argument_list|)
 argument_list|)
 argument_list|)
@@ -6423,19 +6377,6 @@ argument_list|(
 name|ImmutableSet
 operator|.
 name|of
-argument_list|(
-literal|"x"
-argument_list|)
-argument_list|)
-expr_stmt|;
-comment|// Makes x to be non-exclusive node labels
-name|mgr
-operator|.
-name|updateNodeLabels
-argument_list|(
-name|Arrays
-operator|.
-name|asList
 argument_list|(
 name|NodeLabel
 operator|.
@@ -7134,19 +7075,6 @@ argument_list|(
 name|ImmutableSet
 operator|.
 name|of
-argument_list|(
-literal|"x"
-argument_list|)
-argument_list|)
-expr_stmt|;
-comment|// Makes x to be non-exclusive node labels
-name|mgr
-operator|.
-name|updateNodeLabels
-argument_list|(
-name|Arrays
-operator|.
-name|asList
 argument_list|(
 name|NodeLabel
 operator|.
@@ -8857,19 +8785,6 @@ argument_list|(
 name|ImmutableSet
 operator|.
 name|of
-argument_list|(
-literal|"x"
-argument_list|)
-argument_list|)
-expr_stmt|;
-comment|// Makes x to be non-exclusive node labels
-name|mgr
-operator|.
-name|updateNodeLabels
-argument_list|(
-name|Arrays
-operator|.
-name|asList
 argument_list|(
 name|NodeLabel
 operator|.

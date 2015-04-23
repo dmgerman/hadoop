@@ -707,7 +707,7 @@ block|{
 comment|// set node -> label
 name|mgr
 operator|.
-name|addToCluserNodeLabels
+name|addToCluserNodeLabelsWithDefaultExclusivity
 argument_list|(
 name|ImmutableSet
 operator|.

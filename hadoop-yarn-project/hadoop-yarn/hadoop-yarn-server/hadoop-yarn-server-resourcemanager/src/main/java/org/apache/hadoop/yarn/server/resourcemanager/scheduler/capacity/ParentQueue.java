@@ -1190,7 +1190,7 @@ name|nodeLabel
 range|:
 name|labelManager
 operator|.
-name|getClusterNodeLabels
+name|getClusterNodeLabelNames
 argument_list|()
 control|)
 block|{

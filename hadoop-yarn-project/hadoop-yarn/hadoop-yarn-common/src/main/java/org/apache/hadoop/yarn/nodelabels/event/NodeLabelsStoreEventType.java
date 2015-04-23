@@ -34,9 +34,6 @@ name|ADD_LABELS
 block|,
 DECL|enumConstant|STORE_NODE_TO_LABELS
 name|STORE_NODE_TO_LABELS
-block|,
-DECL|enumConstant|UPDATE_NODE_LABELS
-name|UPDATE_NODE_LABELS
 block|}
 end_enum
 

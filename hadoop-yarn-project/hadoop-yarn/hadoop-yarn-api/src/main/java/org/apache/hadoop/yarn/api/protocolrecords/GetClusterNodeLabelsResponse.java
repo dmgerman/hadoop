@@ -26,7 +26,7 @@ name|java
 operator|.
 name|util
 operator|.
-name|Set
+name|List
 import|;
 end_import
 
@@ -72,6 +72,24 @@ name|hadoop
 operator|.
 name|yarn
 operator|.
+name|api
+operator|.
+name|records
+operator|.
+name|NodeLabel
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
 name|util
 operator|.
 name|Records
@@ -89,15 +107,15 @@ specifier|abstract
 class|class
 name|GetClusterNodeLabelsResponse
 block|{
-DECL|method|newInstance (Set<String> labels)
+DECL|method|newInstance (List<NodeLabel> labels)
 specifier|public
 specifier|static
 name|GetClusterNodeLabelsResponse
 name|newInstance
 parameter_list|(
-name|Set
+name|List
 argument_list|<
-name|String
+name|NodeLabel
 argument_list|>
 name|labels
 parameter_list|)
@@ -129,15 +147,15 @@ annotation|@
 name|Public
 annotation|@
 name|Evolving
-DECL|method|setNodeLabels (Set<String> labels)
+DECL|method|setNodeLabels (List<NodeLabel> labels)
 specifier|public
 specifier|abstract
 name|void
 name|setNodeLabels
 parameter_list|(
-name|Set
+name|List
 argument_list|<
-name|String
+name|NodeLabel
 argument_list|>
 name|labels
 parameter_list|)
@@ -149,9 +167,9 @@ name|Evolving
 DECL|method|getNodeLabels ()
 specifier|public
 specifier|abstract
-name|Set
+name|List
 argument_list|<
-name|String
+name|NodeLabel
 argument_list|>
 name|getNodeLabels
 parameter_list|()

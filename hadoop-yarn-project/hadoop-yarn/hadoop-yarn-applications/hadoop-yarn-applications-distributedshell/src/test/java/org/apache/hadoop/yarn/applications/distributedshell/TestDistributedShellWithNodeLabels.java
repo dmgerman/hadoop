@@ -322,7 +322,7 @@ argument_list|)
 expr_stmt|;
 name|labelsMgr
 operator|.
-name|addToCluserNodeLabels
+name|addToCluserNodeLabelsWithDefaultExclusivity
 argument_list|(
 name|labels
 argument_list|)

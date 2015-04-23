@@ -271,9 +271,9 @@ specifier|public
 name|void
 name|storeNewClusterNodeLabels
 parameter_list|(
-name|Set
+name|List
 argument_list|<
-name|String
+name|NodeLabel
 argument_list|>
 name|label
 parameter_list|)
@@ -288,23 +288,6 @@ specifier|public
 name|void
 name|close
 parameter_list|()
-throws|throws
-name|IOException
-block|{
-comment|// do nothing
-block|}
-annotation|@
-name|Override
-specifier|public
-name|void
-name|updateNodeLabels
-parameter_list|(
-name|List
-argument_list|<
-name|NodeLabel
-argument_list|>
-name|updatedNodeLabels
-parameter_list|)
 throws|throws
 name|IOException
 block|{

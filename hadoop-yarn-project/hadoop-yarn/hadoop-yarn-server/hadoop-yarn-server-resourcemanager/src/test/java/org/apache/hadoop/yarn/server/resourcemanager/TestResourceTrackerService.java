@@ -2402,7 +2402,7 @@ try|try
 block|{
 name|nodeLabelsMgr
 operator|.
-name|addToCluserNodeLabels
+name|addToCluserNodeLabelsWithDefaultExclusivity
 argument_list|(
 name|toSet
 argument_list|(
@@ -2668,7 +2668,7 @@ try|try
 block|{
 name|nodeLabelsMgr
 operator|.
-name|addToCluserNodeLabels
+name|addToCluserNodeLabelsWithDefaultExclusivity
 argument_list|(
 name|toSet
 argument_list|(
@@ -2953,7 +2953,7 @@ try|try
 block|{
 name|nodeLabelsMgr
 operator|.
-name|addToCluserNodeLabels
+name|addToCluserNodeLabelsWithDefaultExclusivity
 argument_list|(
 name|toSet
 argument_list|(
@@ -3234,7 +3234,7 @@ try|try
 block|{
 name|nodeLabelsMgr
 operator|.
-name|addToCluserNodeLabels
+name|addToCluserNodeLabelsWithDefaultExclusivity
 argument_list|(
 name|toSet
 argument_list|(
@@ -3567,7 +3567,7 @@ try|try
 block|{
 name|nodeLabelsMgr
 operator|.
-name|addToCluserNodeLabels
+name|addToCluserNodeLabelsWithDefaultExclusivity
 argument_list|(
 name|toSet
 argument_list|(
@@ -4043,7 +4043,7 @@ try|try
 block|{
 name|nodeLabelsMgr
 operator|.
-name|addToCluserNodeLabels
+name|addToCluserNodeLabelsWithDefaultExclusivity
 argument_list|(
 name|toSet
 argument_list|(

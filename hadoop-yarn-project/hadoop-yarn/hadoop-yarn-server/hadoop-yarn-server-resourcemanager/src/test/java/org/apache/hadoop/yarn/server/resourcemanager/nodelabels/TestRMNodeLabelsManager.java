@@ -407,7 +407,7 @@ name|Exception
 block|{
 name|mgr
 operator|.
-name|addToCluserNodeLabels
+name|addToCluserNodeLabelsWithDefaultExclusivity
 argument_list|(
 name|toSet
 argument_list|(
@@ -585,7 +585,7 @@ comment|// check add labels multiple times shouldn't overwrite
 comment|// original attributes on labels like resource
 name|mgr
 operator|.
-name|addToCluserNodeLabels
+name|addToCluserNodeLabelsWithDefaultExclusivity
 argument_list|(
 name|toSet
 argument_list|(
@@ -884,7 +884,7 @@ name|Exception
 block|{
 name|mgr
 operator|.
-name|addToCluserNodeLabels
+name|addToCluserNodeLabelsWithDefaultExclusivity
 argument_list|(
 name|toSet
 argument_list|(
@@ -1064,7 +1064,7 @@ expr_stmt|;
 comment|// add more labels
 name|mgr
 operator|.
-name|addToCluserNodeLabels
+name|addToCluserNodeLabelsWithDefaultExclusivity
 argument_list|(
 name|toSet
 argument_list|(
@@ -1622,7 +1622,7 @@ decl_stmt|;
 comment|/*      * Node->Labels:      *   host1 : red      *   host2 : blue      *   host3 : yellow      *   host4 :      */
 name|mgr
 operator|.
-name|addToCluserNodeLabels
+name|addToCluserNodeLabelsWithDefaultExclusivity
 argument_list|(
 name|toSet
 argument_list|(
@@ -2973,7 +2973,7 @@ expr_stmt|;
 comment|// change two of these nodes to p1, check resource of no_label and P1
 name|mgr
 operator|.
-name|addToCluserNodeLabels
+name|addToCluserNodeLabelsWithDefaultExclusivity
 argument_list|(
 name|toSet
 argument_list|(
@@ -3078,7 +3078,7 @@ name|Exception
 block|{
 name|mgr
 operator|.
-name|addToCluserNodeLabels
+name|addToCluserNodeLabelsWithDefaultExclusivity
 argument_list|(
 name|toSet
 argument_list|(
@@ -3260,7 +3260,7 @@ name|Exception
 block|{
 name|mgr
 operator|.
-name|addToCluserNodeLabels
+name|addToCluserNodeLabelsWithDefaultExclusivity
 argument_list|(
 name|toSet
 argument_list|(
@@ -3692,7 +3692,7 @@ name|IOException
 block|{
 name|mgr
 operator|.
-name|addToCluserNodeLabels
+name|addToCluserNodeLabelsWithDefaultExclusivity
 argument_list|(
 name|toSet
 argument_list|(
@@ -4001,7 +4001,7 @@ expr_stmt|;
 comment|// Add labels and replace labels on node
 name|mgr
 operator|.
-name|addToCluserNodeLabels
+name|addToCluserNodeLabelsWithDefaultExclusivity
 argument_list|(
 name|toSet
 argument_list|(

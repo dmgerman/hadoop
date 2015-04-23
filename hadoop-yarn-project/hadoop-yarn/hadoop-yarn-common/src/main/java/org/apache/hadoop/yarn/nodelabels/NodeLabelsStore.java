@@ -196,15 +196,15 @@ throws|throws
 name|IOException
 function_decl|;
 comment|/**    * Store new labels    */
-DECL|method|storeNewClusterNodeLabels (Set<String> label)
+DECL|method|storeNewClusterNodeLabels (List<NodeLabel> label)
 specifier|public
 specifier|abstract
 name|void
 name|storeNewClusterNodeLabels
 parameter_list|(
-name|Set
+name|List
 argument_list|<
-name|String
+name|NodeLabel
 argument_list|>
 name|label
 parameter_list|)
@@ -223,22 +223,6 @@ argument_list|<
 name|String
 argument_list|>
 name|labels
-parameter_list|)
-throws|throws
-name|IOException
-function_decl|;
-comment|/**    * Update node labels    */
-DECL|method|updateNodeLabels ( List<NodeLabel> updatedNodeLabels)
-specifier|public
-specifier|abstract
-name|void
-name|updateNodeLabels
-parameter_list|(
-name|List
-argument_list|<
-name|NodeLabel
-argument_list|>
-name|updatedNodeLabels
 parameter_list|)
 throws|throws
 name|IOException

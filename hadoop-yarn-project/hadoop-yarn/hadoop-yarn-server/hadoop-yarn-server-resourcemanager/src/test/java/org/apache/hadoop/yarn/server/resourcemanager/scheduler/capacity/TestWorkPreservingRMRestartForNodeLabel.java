@@ -1011,7 +1011,7 @@ comment|// instead, it uses default queue label expression
 comment|// set node -> label
 name|mgr
 operator|.
-name|addToCluserNodeLabels
+name|addToCluserNodeLabelsWithDefaultExclusivity
 argument_list|(
 name|ImmutableSet
 operator|.
@@ -1563,7 +1563,7 @@ argument_list|)
 expr_stmt|;
 name|mgr
 operator|.
-name|addToCluserNodeLabels
+name|addToCluserNodeLabelsWithDefaultExclusivity
 argument_list|(
 name|ImmutableSet
 operator|.

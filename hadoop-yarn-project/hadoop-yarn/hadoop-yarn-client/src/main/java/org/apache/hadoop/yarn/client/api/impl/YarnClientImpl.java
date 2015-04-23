@@ -1122,6 +1122,24 @@ name|api
 operator|.
 name|records
 operator|.
+name|NodeLabel
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|api
+operator|.
+name|records
+operator|.
 name|NodeReport
 import|;
 end_import
@@ -4840,9 +4858,9 @@ annotation|@
 name|Override
 DECL|method|getClusterNodeLabels ()
 specifier|public
-name|Set
+name|List
 argument_list|<
-name|String
+name|NodeLabel
 argument_list|>
 name|getClusterNodeLabels
 parameter_list|()

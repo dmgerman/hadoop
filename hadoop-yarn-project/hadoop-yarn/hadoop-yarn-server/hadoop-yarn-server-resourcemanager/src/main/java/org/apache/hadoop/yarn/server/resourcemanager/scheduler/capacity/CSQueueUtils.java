@@ -619,7 +619,7 @@ name|addAll
 argument_list|(
 name|mgr
 operator|.
-name|getClusterNodeLabels
+name|getClusterNodeLabelNames
 argument_list|()
 argument_list|)
 expr_stmt|;

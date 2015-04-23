@@ -13339,7 +13339,7 @@ expr_stmt|;
 comment|// Add node label x,y,z
 name|nodeLabelManager
 operator|.
-name|addToCluserNodeLabels
+name|addToCluserNodeLabelsWithDefaultExclusivity
 argument_list|(
 name|clusterNodeLabels
 argument_list|)
@@ -13460,7 +13460,7 @@ argument_list|()
 argument_list|,
 name|nodeLabelManager
 operator|.
-name|getClusterNodeLabels
+name|getClusterNodeLabelNames
 argument_list|()
 operator|.
 name|size
@@ -13590,7 +13590,7 @@ argument_list|()
 argument_list|,
 name|nodeLabelManager
 operator|.
-name|getClusterNodeLabels
+name|getClusterNodeLabelNames
 argument_list|()
 operator|.
 name|size
