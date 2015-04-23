@@ -88,6 +88,20 @@ name|hadoop
 operator|.
 name|security
 operator|.
+name|UserGroupInformation
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|security
+operator|.
 name|token
 operator|.
 name|Token
@@ -239,6 +253,7 @@ name|TimelineClient
 extends|extends
 name|AbstractService
 block|{
+comment|/**    * Create a timeline client. The current UGI when the user initialize the    * client will be used to do the put and the delegation token operations. The    * current user may use {@link UserGroupInformation#doAs} another user to    * construct and initialize a timeline client if the following operations are    * supposed to be conducted by that user.    *    * @return a timeline client    */
 annotation|@
 name|Public
 DECL|method|createTimelineClient ()

@@ -109,6 +109,8 @@ throws|throws
 name|YarnException
 throws|,
 name|IOException
+throws|,
+name|InterruptedException
 block|{
 name|super
 operator|.

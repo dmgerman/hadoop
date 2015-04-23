@@ -3685,6 +3685,20 @@ name|opts
 argument_list|)
 expr_stmt|;
 block|}
+annotation|@
+name|VisibleForTesting
+annotation|@
+name|Private
+DECL|method|getUgi ()
+specifier|public
+name|UserGroupInformation
+name|getUgi
+parameter_list|()
+block|{
+return|return
+name|authUgi
+return|;
+block|}
 block|}
 end_class
 
