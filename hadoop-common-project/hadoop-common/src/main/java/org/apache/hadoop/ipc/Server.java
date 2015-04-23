@@ -2965,6 +2965,43 @@ name|conf
 argument_list|)
 expr_stmt|;
 block|}
+comment|/**    * Get from config if client backoff is enabled on that port.    */
+DECL|method|getClientBackoffEnable ( String prefix, Configuration conf)
+specifier|static
+name|boolean
+name|getClientBackoffEnable
+parameter_list|(
+name|String
+name|prefix
+parameter_list|,
+name|Configuration
+name|conf
+parameter_list|)
+block|{
+name|String
+name|name
+init|=
+name|prefix
+operator|+
+literal|"."
+operator|+
+name|CommonConfigurationKeys
+operator|.
+name|IPC_BACKOFF_ENABLE
+decl_stmt|;
+return|return
+name|conf
+operator|.
+name|getBoolean
+argument_list|(
+name|name
+argument_list|,
+name|CommonConfigurationKeys
+operator|.
+name|IPC_BACKOFF_ENABLE_DEFAULT
+argument_list|)
+return|;
+block|}
 comment|/** A call queued for handling. */
 DECL|class|Call
 specifier|public
@@ -9523,6 +9560,27 @@ argument_list|,
 name|traceSpan
 argument_list|)
 decl_stmt|;
+if|if
+condition|(
+name|callQueue
+operator|.
+name|isClientBackoffEnabled
+argument_list|()
+condition|)
+block|{
+comment|// if RPC queue is full, we will ask the RPC client to back off by
+comment|// throwing RetriableException. Whether RPC client will honor
+comment|// RetriableException and retry depends on client ipc retry policy.
+comment|// For example, FailoverOnNetworkExceptionRetry handles
+comment|// RetriableException.
+name|queueRequestOrAskClientToBackOff
+argument_list|(
+name|call
+argument_list|)
+expr_stmt|;
+block|}
+else|else
+block|{
 name|callQueue
 operator|.
 name|put
@@ -9531,10 +9589,68 @@ name|call
 argument_list|)
 expr_stmt|;
 comment|// queue the call; maybe blocked here
+block|}
 name|incRpcCount
 argument_list|()
 expr_stmt|;
 comment|// Increment the rpc count
+block|}
+DECL|method|queueRequestOrAskClientToBackOff (Call call)
+specifier|private
+name|void
+name|queueRequestOrAskClientToBackOff
+parameter_list|(
+name|Call
+name|call
+parameter_list|)
+throws|throws
+name|WrappedRpcServerException
+throws|,
+name|InterruptedException
+block|{
+comment|// If rpc queue is full, we will ask the client to back off.
+name|boolean
+name|isCallQueued
+init|=
+name|callQueue
+operator|.
+name|offer
+argument_list|(
+name|call
+argument_list|)
+decl_stmt|;
+if|if
+condition|(
+operator|!
+name|isCallQueued
+condition|)
+block|{
+name|rpcMetrics
+operator|.
+name|incrClientBackoff
+argument_list|()
+expr_stmt|;
+name|RetriableException
+name|retriableException
+init|=
+operator|new
+name|RetriableException
+argument_list|(
+literal|"Server is too busy."
+argument_list|)
+decl_stmt|;
+throw|throw
+operator|new
+name|WrappedRpcServerException
+argument_list|(
+name|RpcErrorCodeProto
+operator|.
+name|ERROR_RPC_SERVER
+argument_list|,
+name|retriableException
+argument_list|)
+throw|;
+block|}
 block|}
 comment|/**      * Establish RPC connection setup by negotiating SASL if required, then      * reading and authorizing the connection header      * @param header - RPC header      * @param dis - stream to request payload      * @throws WrappedRpcServerException - setup failed due to SASL      *         negotiation failure, premature or invalid connection context,      *         or other state errors. This exception needs to be sent to the       *         client.      * @throws IOException - failed to send a response back to the client      * @throws InterruptedException      */
 DECL|method|processRpcOutOfBandRequest (RpcRequestHeaderProto header, DataInputStream dis)
@@ -11109,6 +11225,13 @@ name|Call
 argument_list|>
 argument_list|(
 name|getQueueClass
+argument_list|(
+name|prefix
+argument_list|,
+name|conf
+argument_list|)
+argument_list|,
+name|getClientBackoffEnable
 argument_list|(
 name|prefix
 argument_list|,

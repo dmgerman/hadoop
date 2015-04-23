@@ -293,6 +293,24 @@ name|IPC_CALLQUEUE_IDENTITY_PROVIDER_KEY
 init|=
 literal|"identity-provider.impl"
 decl_stmt|;
+DECL|field|IPC_BACKOFF_ENABLE
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|IPC_BACKOFF_ENABLE
+init|=
+literal|"backoff.enable"
+decl_stmt|;
+DECL|field|IPC_BACKOFF_ENABLE_DEFAULT
+specifier|public
+specifier|static
+specifier|final
+name|boolean
+name|IPC_BACKOFF_ENABLE_DEFAULT
+init|=
+literal|false
+decl_stmt|;
 comment|/** This is for specifying the implementation for the mappings from    * hostnames to the racks they belong to    */
 DECL|field|NET_TOPOLOGY_CONFIGURED_NODE_MAPPING_KEY
 specifier|public

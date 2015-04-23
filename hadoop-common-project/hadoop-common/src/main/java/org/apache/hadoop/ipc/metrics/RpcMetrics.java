@@ -625,6 +625,15 @@ DECL|field|rpcAuthorizationSuccesses
 name|MutableCounterLong
 name|rpcAuthorizationSuccesses
 decl_stmt|;
+annotation|@
+name|Metric
+argument_list|(
+literal|"Number of client backoff requests"
+argument_list|)
+DECL|field|rpcClientBackoff
+name|MutableCounterLong
+name|rpcClientBackoff
+decl_stmt|;
 DECL|method|numOpenConnections ()
 annotation|@
 name|Metric
@@ -848,6 +857,20 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
+block|}
+comment|/**    * One client backoff event    */
+comment|//@Override
+DECL|method|incrClientBackoff ()
+specifier|public
+name|void
+name|incrClientBackoff
+parameter_list|()
+block|{
+name|rpcClientBackoff
+operator|.
+name|incr
+argument_list|()
+expr_stmt|;
 block|}
 block|}
 end_class

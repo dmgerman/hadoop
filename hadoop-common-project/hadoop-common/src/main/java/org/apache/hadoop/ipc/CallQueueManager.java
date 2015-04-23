@@ -186,6 +186,12 @@ operator|)
 name|queneClass
 return|;
 block|}
+DECL|field|clientBackOffEnabled
+specifier|private
+specifier|final
+name|boolean
+name|clientBackOffEnabled
+decl_stmt|;
 comment|// Atomic refs point to active callQueue
 comment|// We have two so we can better control swapping
 DECL|field|putRef
@@ -212,7 +218,7 @@ argument_list|>
 argument_list|>
 name|takeRef
 decl_stmt|;
-DECL|method|CallQueueManager (Class<? extends BlockingQueue<E>> backingClass, int maxQueueSize, String namespace, Configuration conf)
+DECL|method|CallQueueManager (Class<? extends BlockingQueue<E>> backingClass, boolean clientBackOffEnabled, int maxQueueSize, String namespace, Configuration conf)
 specifier|public
 name|CallQueueManager
 parameter_list|(
@@ -226,6 +232,9 @@ name|E
 argument_list|>
 argument_list|>
 name|backingClass
+parameter_list|,
+name|boolean
+name|clientBackOffEnabled
 parameter_list|,
 name|int
 name|maxQueueSize
@@ -254,6 +263,12 @@ argument_list|,
 name|conf
 argument_list|)
 decl_stmt|;
+name|this
+operator|.
+name|clientBackOffEnabled
+operator|=
+name|clientBackOffEnabled
+expr_stmt|;
 name|this
 operator|.
 name|putRef
@@ -474,6 +489,15 @@ literal|" could not be constructed."
 argument_list|)
 throw|;
 block|}
+DECL|method|isClientBackoffEnabled ()
+name|boolean
+name|isClientBackoffEnabled
+parameter_list|()
+block|{
+return|return
+name|clientBackOffEnabled
+return|;
+block|}
 comment|/**    * Insert e into the backing queue or block until we can.    * If we block and the queue changes on us, we will insert while the    * queue is drained.    */
 DECL|method|put (E e)
 specifier|public
@@ -496,6 +520,30 @@ argument_list|(
 name|e
 argument_list|)
 expr_stmt|;
+block|}
+comment|/**    * Insert e into the backing queue.    * Return true if e is queued.    * Return false if the queue is full.    */
+DECL|method|offer (E e)
+specifier|public
+name|boolean
+name|offer
+parameter_list|(
+name|E
+name|e
+parameter_list|)
+throws|throws
+name|InterruptedException
+block|{
+return|return
+name|putRef
+operator|.
+name|get
+argument_list|()
+operator|.
+name|offer
+argument_list|(
+name|e
+argument_list|)
+return|;
 block|}
 comment|/**    * Retrieve an E from the backing queue or block until we can.    * Guaranteed to return an element from the current queue.    */
 DECL|method|take ()

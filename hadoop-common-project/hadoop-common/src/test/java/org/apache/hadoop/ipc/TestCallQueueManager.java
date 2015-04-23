@@ -621,6 +621,8 @@ argument_list|>
 argument_list|(
 name|queueClass
 argument_list|,
+literal|false
+argument_list|,
 literal|10
 argument_list|,
 literal|""
@@ -658,6 +660,8 @@ name|FakeCall
 argument_list|>
 argument_list|(
 name|queueClass
+argument_list|,
+literal|false
 argument_list|,
 literal|10
 argument_list|,
@@ -701,6 +705,8 @@ name|FakeCall
 argument_list|>
 argument_list|(
 name|queueClass
+argument_list|,
+literal|false
 argument_list|,
 literal|5000
 argument_list|,
