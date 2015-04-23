@@ -662,6 +662,34 @@ expr_stmt|;
 block|}
 annotation|@
 name|Test
+DECL|method|testFileLessThanFullBlockGroup ()
+specifier|public
+name|void
+name|testFileLessThanFullBlockGroup
+parameter_list|()
+throws|throws
+name|IOException
+block|{
+name|testOneFile
+argument_list|(
+literal|"/LessThanFullBlockGroup"
+argument_list|,
+name|cellSize
+operator|*
+name|dataBlocks
+operator|*
+operator|(
+name|stripesPerBlock
+operator|-
+literal|1
+operator|)
+operator|+
+name|cellSize
+argument_list|)
+expr_stmt|;
+block|}
+annotation|@
+name|Test
 DECL|method|testFileFullBlockGroup ()
 specifier|public
 name|void
