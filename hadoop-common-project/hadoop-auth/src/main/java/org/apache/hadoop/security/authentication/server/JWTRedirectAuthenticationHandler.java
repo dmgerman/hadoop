@@ -393,7 +393,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * The {@link JWTRedirectAuthenticationHandler} extends  * AltKerberosAuthenticationHandler to add WebSSO behavior for UIs. The expected  * SSO token is a JsonWebToken (JWT). The supported algorithm is RS256 which  * uses PKI between the token issuer and consumer. The flow requires a redirect  * to a configured authentication server URL and a subsequent request with the  * expected JWT token. This token is cryptographically verified and validated.  * The user identity is then extracted from the token and used to create an  * AuthenticationToken - as expected by the AuthenticationFilter.  *  *<p/>  * The supported configuration properties are:  *<ul>  *<li>authentication.provider.url: the full URL to the authentication server.  * This is the URL that the handler will redirect the browser to in order to  * authenticate the user. It does not have a default value.</li>  *<li>public.key.pem: This is the PEM formatted public key of the issuer of the  * JWT token. It is required for verifying that the issuer is a trusted party.  * DO NOT include the PEM header and footer portions of the PEM encoded  * certificate. It does not have a default value.</li>  *<li>expected.jwt.audiences: This is a list of strings that identify  * acceptable audiences for the JWT token. The audience is a way for the issuer  * to indicate what entity/s that the token is intended for. Default value is  * null which indicates that all audiences will be accepted.</li>  *<li>jwt.cookie.name: the name of the cookie that contains the JWT token.  * Default value is "hadoop-jwt".</li>  *</ul>  */
+comment|/**  * The {@link JWTRedirectAuthenticationHandler} extends  * AltKerberosAuthenticationHandler to add WebSSO behavior for UIs. The expected  * SSO token is a JsonWebToken (JWT). The supported algorithm is RS256 which  * uses PKI between the token issuer and consumer. The flow requires a redirect  * to a configured authentication server URL and a subsequent request with the  * expected JWT token. This token is cryptographically verified and validated.  * The user identity is then extracted from the token and used to create an  * AuthenticationToken - as expected by the AuthenticationFilter.  *  *<p>  * The supported configuration properties are:  *</p>  *<ul>  *<li>authentication.provider.url: the full URL to the authentication server.  * This is the URL that the handler will redirect the browser to in order to  * authenticate the user. It does not have a default value.</li>  *<li>public.key.pem: This is the PEM formatted public key of the issuer of the  * JWT token. It is required for verifying that the issuer is a trusted party.  * DO NOT include the PEM header and footer portions of the PEM encoded  * certificate. It does not have a default value.</li>  *<li>expected.jwt.audiences: This is a list of strings that identify  * acceptable audiences for the JWT token. The audience is a way for the issuer  * to indicate what entity/s that the token is intended for. Default value is  * null which indicates that all audiences will be accepted.</li>  *<li>jwt.cookie.name: the name of the cookie that contains the JWT token.  * Default value is "hadoop-jwt".</li>  *</ul>  */
 end_comment
 
 begin_class
@@ -495,7 +495,7 @@ name|cookieName
 init|=
 literal|"hadoop-jwt"
 decl_stmt|;
-comment|/**    * Primarily for testing, this provides a way to set the publicKey for    * signature verification without needing to get a PEM encoded value.    *    * @param pk    */
+comment|/**    * Primarily for testing, this provides a way to set the publicKey for    * signature verification without needing to get a PEM encoded value.    *    * @param pk publicKey for the token signtature verification    */
 DECL|method|setPublicKey (RSAPublicKey pk)
 specifier|public
 name|void
@@ -510,7 +510,7 @@ operator|=
 name|pk
 expr_stmt|;
 block|}
-comment|/**    * Initializes the authentication handler instance.    *<p/>    * This method is invoked by the {@link AuthenticationFilter#init} method.    *    * @param config    *          configuration properties to initialize the handler.    *    * @throws ServletException    *           thrown if the handler could not be initialized.    */
+comment|/**    * Initializes the authentication handler instance.    *<p>    * This method is invoked by the {@link AuthenticationFilter#init} method.    *</p>    * @param config    *          configuration properties to initialize the handler.    *    * @throws ServletException    *           thrown if the handler could not be initialized.    */
 annotation|@
 name|Override
 DECL|method|init (Properties config)
@@ -737,8 +737,6 @@ init|=
 name|constructLoginURL
 argument_list|(
 name|request
-argument_list|,
-name|response
 argument_list|)
 decl_stmt|;
 name|LOG
@@ -890,8 +888,6 @@ init|=
 name|constructLoginURL
 argument_list|(
 name|request
-argument_list|,
-name|response
 argument_list|)
 decl_stmt|;
 name|LOG
@@ -921,7 +917,7 @@ return|return
 name|token
 return|;
 block|}
-comment|/**    * Encapsulate the acquisition of the JWT token from HTTP cookies within the    * request.    *    * @param serializedJWT    * @param req    * @return serialized JWT token    */
+comment|/**    * Encapsulate the acquisition of the JWT token from HTTP cookies within the    * request.    *    * @param req servlet request to get the JWT token from    * @return serialized JWT token    */
 DECL|method|getJWTFromCookie (HttpServletRequest req)
 specifier|protected
 name|String
@@ -1002,17 +998,14 @@ return|return
 name|serializedJWT
 return|;
 block|}
-comment|/**    * Create the URL to be used for authentication of the user in the absence of    * a JWT token within the incoming request.    *    * @param request    * @param response    * @return url to use as login url for redirect    */
-DECL|method|constructLoginURL (HttpServletRequest request, HttpServletResponse response)
+comment|/**    * Create the URL to be used for authentication of the user in the absence of    * a JWT token within the incoming request.    *    * @param request for getting the original request URL    * @return url to use as login url for redirect    */
+DECL|method|constructLoginURL (HttpServletRequest request)
 specifier|protected
 name|String
 name|constructLoginURL
 parameter_list|(
 name|HttpServletRequest
 name|request
-parameter_list|,
-name|HttpServletResponse
-name|response
 parameter_list|)
 block|{
 name|String
@@ -1056,7 +1049,7 @@ return|return
 name|loginURL
 return|;
 block|}
-comment|/**    * This method provides a single method for validating the JWT for use in    * request processing. It provides for the override of specific aspects of    * this implementation through submethods used within but also allows for the    * override of the entire token validation algorithm.    *    * @param jwtToken    * @return true if valid    * @throws AuthenticationException    */
+comment|/**    * This method provides a single method for validating the JWT for use in    * request processing. It provides for the override of specific aspects of    * this implementation through submethods used within but also allows for the    * override of the entire token validation algorithm.    *    * @param jwtToken the token to validate    * @return true if valid    */
 DECL|method|validateToken (SignedJWT jwtToken)
 specifier|protected
 name|boolean
@@ -1140,7 +1133,7 @@ operator|&&
 name|expValid
 return|;
 block|}
-comment|/**    * Verify the signature of the JWT token in this method. This method depends    * on the public key that was established during init based upon the    * provisioned public key. Override this method in subclasses in order to    * customize the signature verification behavior.    *    * @param jwtToken    * @throws AuthenticationException    */
+comment|/**    * Verify the signature of the JWT token in this method. This method depends    * on the public key that was established during init based upon the    * provisioned public key. Override this method in subclasses in order to    * customize the signature verification behavior.    *    * @param jwtToken the token that contains the signature to be validated    * @return valid true if signature verifies successfully; false otherwise    */
 DECL|method|validateSignature (SignedJWT jwtToken)
 specifier|protected
 name|boolean
@@ -1381,7 +1374,7 @@ return|return
 name|valid
 return|;
 block|}
-comment|/**    * Validate that the expiration time of the JWT token has not been violated.    * If it has then throw an AuthenticationException. Override this method in    * subclasses in order to customize the expiration validation behavior.    *    * @param jwtToken    * @throws AuthenticationException    */
+comment|/**    * Validate that the expiration time of the JWT token has not been violated.    * If it has then throw an AuthenticationException. Override this method in    * subclasses in order to customize the expiration validation behavior.    *    * @param jwtToken the token that contains the expiration date to validate    * @return valid true if the token has not expired; false otherwise    */
 DECL|method|validateExpiration (SignedJWT jwtToken)
 specifier|protected
 name|boolean
