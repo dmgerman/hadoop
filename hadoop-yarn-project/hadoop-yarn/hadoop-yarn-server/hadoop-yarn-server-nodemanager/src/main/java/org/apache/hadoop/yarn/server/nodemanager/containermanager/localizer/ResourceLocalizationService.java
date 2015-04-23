@@ -6275,14 +6275,11 @@ operator|+
 name|diagnostics
 argument_list|)
 expr_stmt|;
-name|response
-operator|.
-name|setLocalizerAction
-argument_list|(
+name|action
+operator|=
 name|LocalizerAction
 operator|.
 name|DIE
-argument_list|)
 expr_stmt|;
 name|getLocalResourcesTracker
 argument_list|(
