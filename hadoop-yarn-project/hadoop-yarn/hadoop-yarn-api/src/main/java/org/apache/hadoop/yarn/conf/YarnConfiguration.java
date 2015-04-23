@@ -3214,6 +3214,111 @@ name|DEFAULT_NM_RESOURCE_PERCENTAGE_PHYSICAL_CPU_LIMIT
 init|=
 literal|100
 decl_stmt|;
+DECL|field|NM_NETWORK_RESOURCE_PREFIX
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|NM_NETWORK_RESOURCE_PREFIX
+init|=
+name|NM_PREFIX
+operator|+
+literal|"resource.network."
+decl_stmt|;
+comment|/** This setting controls if resource handling for network bandwidth is enabled **/
+comment|/* Work in progress: This configuration parameter may be changed/removed in the future */
+annotation|@
+name|Private
+DECL|field|NM_NETWORK_RESOURCE_ENABLED
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|NM_NETWORK_RESOURCE_ENABLED
+init|=
+name|NM_NETWORK_RESOURCE_PREFIX
+operator|+
+literal|"enabled"
+decl_stmt|;
+comment|/** Network as a resource is disabled by default **/
+annotation|@
+name|Private
+DECL|field|DEFAULT_NM_NETWORK_RESOURCE_ENABLED
+specifier|public
+specifier|static
+specifier|final
+name|boolean
+name|DEFAULT_NM_NETWORK_RESOURCE_ENABLED
+init|=
+literal|false
+decl_stmt|;
+comment|/** Specifies the interface to be used for applying network throttling rules **/
+comment|/* Work in progress: This configuration parameter may be changed/removed in the future */
+annotation|@
+name|Private
+DECL|field|NM_NETWORK_RESOURCE_INTERFACE
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|NM_NETWORK_RESOURCE_INTERFACE
+init|=
+name|NM_NETWORK_RESOURCE_PREFIX
+operator|+
+literal|"interface"
+decl_stmt|;
+annotation|@
+name|Private
+DECL|field|DEFAULT_NM_NETWORK_RESOURCE_INTERFACE
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|DEFAULT_NM_NETWORK_RESOURCE_INTERFACE
+init|=
+literal|"eth0"
+decl_stmt|;
+comment|/** Specifies the total available outbound bandwidth on the node **/
+comment|/* Work in progress: This configuration parameter may be changed/removed in the future */
+annotation|@
+name|Private
+DECL|field|NM_NETWORK_RESOURCE_OUTBOUND_BANDWIDTH_MBIT
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|NM_NETWORK_RESOURCE_OUTBOUND_BANDWIDTH_MBIT
+init|=
+name|NM_NETWORK_RESOURCE_PREFIX
+operator|+
+literal|"outbound-bandwidth-mbit"
+decl_stmt|;
+annotation|@
+name|Private
+DECL|field|DEFAULT_NM_NETWORK_RESOURCE_OUTBOUND_BANDWIDTH_MBIT
+specifier|public
+specifier|static
+specifier|final
+name|int
+name|DEFAULT_NM_NETWORK_RESOURCE_OUTBOUND_BANDWIDTH_MBIT
+init|=
+literal|1000
+decl_stmt|;
+comment|/** Specifies the total outbound bandwidth available to YARN containers. defaults to    * NM_NETWORK_RESOURCE_OUTBOUND_BANDWIDTH_MBIT if not specified.    */
+comment|/* Work in progress: This configuration parameter may be changed/removed in the future */
+annotation|@
+name|Private
+DECL|field|NM_NETWORK_RESOURCE_OUTBOUND_BANDWIDTH_YARN_MBIT
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|NM_NETWORK_RESOURCE_OUTBOUND_BANDWIDTH_YARN_MBIT
+init|=
+name|NM_NETWORK_RESOURCE_PREFIX
+operator|+
+literal|"outbound-bandwidth-yarn-mbit"
+decl_stmt|;
 comment|/** NM Webapp address.**/
 DECL|field|NM_WEBAPP_ADDRESS
 specifier|public
