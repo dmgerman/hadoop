@@ -72,34 +72,6 @@ name|InterfaceStability
 import|;
 end_import
 
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|conf
-operator|.
-name|Configuration
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|fs
-operator|.
-name|CommonConfigurationKeys
-import|;
-end_import
-
 begin_comment
 comment|/**  * A helper to load the native hadoop code i.e. libhadoop.so.  * This handles the fallback to either the bundled libhadoop-Linux-i386-32.so  * or the default java implementations where appropriate.  *    */
 end_comment
@@ -277,56 +249,6 @@ name|String
 name|getLibraryName
 parameter_list|()
 function_decl|;
-comment|/**    * Return if native hadoop libraries, if present, can be used for this job.    * @param conf configuration    *     * @return<code>true</code> if native hadoop libraries, if present, can be     *         used for this job;<code>false</code> otherwise.    */
-DECL|method|getLoadNativeLibraries (Configuration conf)
-specifier|public
-name|boolean
-name|getLoadNativeLibraries
-parameter_list|(
-name|Configuration
-name|conf
-parameter_list|)
-block|{
-return|return
-name|conf
-operator|.
-name|getBoolean
-argument_list|(
-name|CommonConfigurationKeys
-operator|.
-name|IO_NATIVE_LIB_AVAILABLE_KEY
-argument_list|,
-name|CommonConfigurationKeys
-operator|.
-name|IO_NATIVE_LIB_AVAILABLE_DEFAULT
-argument_list|)
-return|;
-block|}
-comment|/**    * Set if native hadoop libraries, if present, can be used for this job.    *     * @param conf configuration    * @param loadNativeLibraries can native hadoop libraries be loaded    */
-DECL|method|setLoadNativeLibraries (Configuration conf, boolean loadNativeLibraries)
-specifier|public
-name|void
-name|setLoadNativeLibraries
-parameter_list|(
-name|Configuration
-name|conf
-parameter_list|,
-name|boolean
-name|loadNativeLibraries
-parameter_list|)
-block|{
-name|conf
-operator|.
-name|setBoolean
-argument_list|(
-name|CommonConfigurationKeys
-operator|.
-name|IO_NATIVE_LIB_AVAILABLE_KEY
-argument_list|,
-name|loadNativeLibraries
-argument_list|)
-expr_stmt|;
-block|}
 block|}
 end_class
 

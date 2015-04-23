@@ -2007,16 +2007,6 @@ block|,
 operator|new
 name|DeprecationDelta
 argument_list|(
-literal|"hadoop.native.lib"
-argument_list|,
-name|CommonConfigurationKeys
-operator|.
-name|IO_NATIVE_LIB_AVAILABLE_KEY
-argument_list|)
-block|,
-operator|new
-name|DeprecationDelta
-argument_list|(
 literal|"fs.default.name"
 argument_list|,
 name|CommonConfigurationKeys

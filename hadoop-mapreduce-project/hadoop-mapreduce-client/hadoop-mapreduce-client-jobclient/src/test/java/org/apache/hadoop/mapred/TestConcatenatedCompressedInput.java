@@ -17,6 +17,42 @@ package|;
 end_package
 
 begin_import
+import|import static
+name|org
+operator|.
+name|junit
+operator|.
+name|Assert
+operator|.
+name|assertEquals
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|junit
+operator|.
+name|Assert
+operator|.
+name|assertFalse
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|junit
+operator|.
+name|Assert
+operator|.
+name|assertTrue
+import|;
+end_import
+
+begin_import
 import|import
 name|java
 operator|.
@@ -43,16 +79,6 @@ operator|.
 name|io
 operator|.
 name|IOException
-import|;
-end_import
-
-begin_import
-import|import
-name|java
-operator|.
-name|io
-operator|.
-name|InputStream
 import|;
 end_import
 
@@ -104,11 +130,11 @@ name|org
 operator|.
 name|apache
 operator|.
-name|hadoop
+name|commons
 operator|.
-name|conf
+name|logging
 operator|.
-name|Configuration
+name|Log
 import|;
 end_import
 
@@ -118,11 +144,11 @@ name|org
 operator|.
 name|apache
 operator|.
-name|hadoop
+name|commons
 operator|.
-name|fs
+name|logging
 operator|.
-name|Path
+name|LogFactory
 import|;
 end_import
 
@@ -137,6 +163,20 @@ operator|.
 name|fs
 operator|.
 name|FileSystem
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|fs
+operator|.
+name|Path
 import|;
 end_import
 
@@ -180,7 +220,73 @@ name|io
 operator|.
 name|compress
 operator|.
-name|*
+name|BZip2Codec
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|io
+operator|.
+name|compress
+operator|.
+name|CompressionCodec
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|io
+operator|.
+name|compress
+operator|.
+name|CompressionInputStream
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|io
+operator|.
+name|compress
+operator|.
+name|GzipCodec
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|io
+operator|.
+name|compress
+operator|.
+name|zlib
+operator|.
+name|ZlibFactory
 import|;
 end_import
 
@@ -218,6 +324,16 @@ name|org
 operator|.
 name|junit
 operator|.
+name|After
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|junit
+operator|.
 name|Ignore
 import|;
 end_import
@@ -229,46 +345,6 @@ operator|.
 name|junit
 operator|.
 name|Test
-import|;
-end_import
-
-begin_import
-import|import static
-name|org
-operator|.
-name|junit
-operator|.
-name|Assert
-operator|.
-name|*
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|commons
-operator|.
-name|logging
-operator|.
-name|Log
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|commons
-operator|.
-name|logging
-operator|.
-name|LogFactory
 import|;
 end_import
 
@@ -528,6 +604,20 @@ name|e
 argument_list|)
 throw|;
 block|}
+block|}
+annotation|@
+name|After
+DECL|method|after ()
+specifier|public
+name|void
+name|after
+parameter_list|()
+block|{
+name|ZlibFactory
+operator|.
+name|loadNativeZLib
+argument_list|()
+expr_stmt|;
 block|}
 DECL|field|workDir
 specifier|private
@@ -1719,15 +1809,6 @@ argument_list|(
 name|defaultConf
 argument_list|)
 decl_stmt|;
-name|jobConf
-operator|.
-name|setBoolean
-argument_list|(
-literal|"io.native.lib.available"
-argument_list|,
-literal|false
-argument_list|)
-expr_stmt|;
 name|CompressionCodec
 name|gzip
 init|=
@@ -1751,6 +1832,14 @@ argument_list|(
 name|workDir
 argument_list|,
 literal|true
+argument_list|)
+expr_stmt|;
+comment|// Don't use native libs for this test
+name|ZlibFactory
+operator|.
+name|setNativeZlibLoaded
+argument_list|(
+literal|false
 argument_list|)
 expr_stmt|;
 name|assertEquals
@@ -2045,13 +2134,10 @@ argument_list|,
 name|lineNum
 argument_list|)
 expr_stmt|;
-comment|// test BuiltInGzipDecompressor with lots of different input-buffer sizes
-name|doMultipleGzipBufferSizes
-argument_list|(
-name|jobConf
-argument_list|,
-literal|false
-argument_list|)
+name|ZlibFactory
+operator|.
+name|loadNativeZLib
+argument_list|()
 expr_stmt|;
 comment|// test GzipZlibDecompressor (native), just to be sure
 comment|// (FIXME?  could move this call to testGzip(), but would need filename
@@ -2101,15 +2187,6 @@ literal|"BuiltInGzipDecompressor"
 operator|)
 operator|+
 name|COLOR_NORMAL
-argument_list|)
-expr_stmt|;
-name|jConf
-operator|.
-name|setBoolean
-argument_list|(
-literal|"io.native.lib.available"
-argument_list|,
-name|useNative
 argument_list|)
 expr_stmt|;
 name|int
@@ -3131,17 +3208,13 @@ comment|// test CBZip2InputStream with lots of different input-buffer sizes
 name|doMultipleBzip2BufferSizes
 argument_list|(
 name|jobConf
-argument_list|,
-literal|false
 argument_list|)
 expr_stmt|;
-comment|// no native version of bzip2 codec (yet?)
-comment|//doMultipleBzip2BufferSizes(jobConf, true);
 block|}
-comment|// this tests either the native or the non-native gzip decoder with more than
+comment|// this tests native bzip2 decoder with more than
 comment|// three dozen input-buffer sizes in order to try to catch any parser/state-
 comment|// machine errors at buffer boundaries
-DECL|method|doMultipleBzip2BufferSizes (JobConf jConf, boolean useNative)
+DECL|method|doMultipleBzip2BufferSizes (JobConf jConf)
 specifier|private
 specifier|static
 name|void
@@ -3149,9 +3222,6 @@ name|doMultipleBzip2BufferSizes
 parameter_list|(
 name|JobConf
 name|jConf
-parameter_list|,
-name|boolean
-name|useNative
 parameter_list|)
 throws|throws
 name|IOException
@@ -3169,15 +3239,6 @@ operator|+
 literal|"default bzip2 decompressor"
 operator|+
 name|COLOR_NORMAL
-argument_list|)
-expr_stmt|;
-name|jConf
-operator|.
-name|setBoolean
-argument_list|(
-literal|"io.native.lib.available"
-argument_list|,
-name|useNative
 argument_list|)
 expr_stmt|;
 name|int

@@ -166,15 +166,15 @@ end_import
 
 begin_import
 import|import
-name|org
+name|com
 operator|.
-name|apache
+name|google
 operator|.
-name|hadoop
+name|common
 operator|.
-name|fs
+name|annotations
 operator|.
-name|CommonConfigurationKeys
+name|VisibleForTesting
 import|;
 end_import
 
@@ -213,6 +213,20 @@ init|=
 literal|false
 decl_stmt|;
 static|static
+block|{
+name|loadNativeZLib
+argument_list|()
+expr_stmt|;
+block|}
+comment|/**    * Load native library and set the flag whether to use native library. The    * method is also used for reset the flag modified by setNativeZlibLoaded    */
+annotation|@
+name|VisibleForTesting
+DECL|method|loadNativeZLib ()
+specifier|public
+specifier|static
+name|void
+name|loadNativeZLib
+parameter_list|()
 block|{
 if|if
 condition|(
@@ -259,6 +273,27 @@ expr_stmt|;
 block|}
 block|}
 block|}
+comment|/**    * Set the flag whether to use native library. Used for testing non-native    * libraries    *    */
+annotation|@
+name|VisibleForTesting
+DECL|method|setNativeZlibLoaded (final boolean isLoaded)
+specifier|public
+specifier|static
+name|void
+name|setNativeZlibLoaded
+parameter_list|(
+specifier|final
+name|boolean
+name|isLoaded
+parameter_list|)
+block|{
+name|ZlibFactory
+operator|.
+name|nativeZlibLoaded
+operator|=
+name|isLoaded
+expr_stmt|;
+block|}
 comment|/**    * Check if native-zlib code is loaded& initialized correctly and     * can be loaded for this job.    *     * @param conf configuration    * @return<code>true</code> if native-zlib is loaded& initialized     *         and can be loaded for this job, else<code>false</code>    */
 DECL|method|isNativeZlibLoaded (Configuration conf)
 specifier|public
@@ -272,19 +307,6 @@ parameter_list|)
 block|{
 return|return
 name|nativeZlibLoaded
-operator|&&
-name|conf
-operator|.
-name|getBoolean
-argument_list|(
-name|CommonConfigurationKeys
-operator|.
-name|IO_NATIVE_LIB_AVAILABLE_KEY
-argument_list|,
-name|CommonConfigurationKeys
-operator|.
-name|IO_NATIVE_LIB_AVAILABLE_DEFAULT
-argument_list|)
 return|;
 block|}
 DECL|method|getLibraryName ()

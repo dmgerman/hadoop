@@ -88,26 +88,6 @@ name|CommonConfigurationKeysPublic
 block|{
 comment|// The Keys
 comment|/** See<a href="{@docRoot}/../core-default.html">core-default.xml</a> */
-DECL|field|IO_NATIVE_LIB_AVAILABLE_KEY
-specifier|public
-specifier|static
-specifier|final
-name|String
-name|IO_NATIVE_LIB_AVAILABLE_KEY
-init|=
-literal|"io.native.lib.available"
-decl_stmt|;
-comment|/** Default value for IO_NATIVE_LIB_AVAILABLE_KEY */
-DECL|field|IO_NATIVE_LIB_AVAILABLE_DEFAULT
-specifier|public
-specifier|static
-specifier|final
-name|boolean
-name|IO_NATIVE_LIB_AVAILABLE_DEFAULT
-init|=
-literal|true
-decl_stmt|;
-comment|/** See<a href="{@docRoot}/../core-default.html">core-default.xml</a> */
 DECL|field|NET_TOPOLOGY_SCRIPT_NUMBER_ARGS_KEY
 specifier|public
 specifier|static

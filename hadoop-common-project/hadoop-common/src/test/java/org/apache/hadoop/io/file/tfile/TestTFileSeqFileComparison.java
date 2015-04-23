@@ -1366,17 +1366,6 @@ operator|new
 name|Configuration
 argument_list|()
 decl_stmt|;
-name|conf
-operator|.
-name|setBoolean
-argument_list|(
-name|CommonConfigurationKeys
-operator|.
-name|IO_NATIVE_LIB_AVAILABLE_KEY
-argument_list|,
-literal|true
-argument_list|)
-expr_stmt|;
 name|CompressionCodec
 name|codec
 init|=
