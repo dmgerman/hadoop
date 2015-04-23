@@ -90,6 +90,14 @@ specifier|public
 class|class
 name|TestFileContextResolveAfs
 block|{
+static|static
+block|{
+name|FileSystem
+operator|.
+name|enableSymlinks
+argument_list|()
+expr_stmt|;
+block|}
 DECL|field|TEST_ROOT_DIR_LOCAL
 specifier|private
 specifier|static

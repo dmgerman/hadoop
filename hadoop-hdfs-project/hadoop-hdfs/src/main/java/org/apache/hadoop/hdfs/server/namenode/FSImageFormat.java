@@ -282,6 +282,20 @@ name|hadoop
 operator|.
 name|fs
 operator|.
+name|FileSystem
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|fs
+operator|.
 name|Path
 import|;
 end_import
@@ -3184,6 +3198,11 @@ name|inode
 return|;
 block|}
 comment|/**    * load an inode from fsimage except for its name    *     * @param in data input stream from which image is read    * @param counter Counter to increment for namenode startup progress    * @return an inode    */
+annotation|@
+name|SuppressWarnings
+argument_list|(
+literal|"deprecation"
+argument_list|)
 DECL|method|loadINode (final byte[] localName, boolean isSnapshotINode, DataInput in, Counter counter)
 name|INode
 name|loadINode
@@ -3816,6 +3835,23 @@ literal|2
 condition|)
 block|{
 comment|//symlink
+if|if
+condition|(
+operator|!
+name|FileSystem
+operator|.
+name|areSymlinksEnabled
+argument_list|()
+condition|)
+block|{
+throw|throw
+operator|new
+name|IOException
+argument_list|(
+literal|"Symlinks not supported - please remove symlink before upgrading to this version of HDFS"
+argument_list|)
+throw|;
+block|}
 specifier|final
 name|String
 name|symlink

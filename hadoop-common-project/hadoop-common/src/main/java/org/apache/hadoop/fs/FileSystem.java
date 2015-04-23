@@ -10099,6 +10099,50 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
+comment|// Symlinks are temporarily disabled - see HADOOP-10020 and HADOOP-10052
+DECL|field|symlinksEnabled
+specifier|private
+specifier|static
+name|boolean
+name|symlinksEnabled
+init|=
+literal|false
+decl_stmt|;
+DECL|field|conf
+specifier|private
+specifier|static
+name|Configuration
+name|conf
+init|=
+literal|null
+decl_stmt|;
+annotation|@
+name|VisibleForTesting
+DECL|method|areSymlinksEnabled ()
+specifier|public
+specifier|static
+name|boolean
+name|areSymlinksEnabled
+parameter_list|()
+block|{
+return|return
+name|symlinksEnabled
+return|;
+block|}
+annotation|@
+name|VisibleForTesting
+DECL|method|enableSymlinks ()
+specifier|public
+specifier|static
+name|void
+name|enableSymlinks
+parameter_list|()
+block|{
+name|symlinksEnabled
+operator|=
+literal|true
+expr_stmt|;
+block|}
 block|}
 end_class
 

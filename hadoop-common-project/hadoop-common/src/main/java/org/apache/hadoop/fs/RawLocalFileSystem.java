@@ -3819,6 +3819,11 @@ literal|true
 return|;
 block|}
 annotation|@
+name|SuppressWarnings
+argument_list|(
+literal|"deprecation"
+argument_list|)
+annotation|@
 name|Override
 DECL|method|createSymlink (Path target, Path link, boolean createParent)
 specifier|public
@@ -3837,6 +3842,23 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
+if|if
+condition|(
+operator|!
+name|FileSystem
+operator|.
+name|areSymlinksEnabled
+argument_list|()
+condition|)
+block|{
+throw|throw
+operator|new
+name|UnsupportedOperationException
+argument_list|(
+literal|"Symlinks not supported"
+argument_list|)
+throw|;
+block|}
 specifier|final
 name|String
 name|targetScheme

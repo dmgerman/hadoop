@@ -3593,6 +3593,12 @@ operator|.
 name|disableSystemExit
 argument_list|()
 expr_stmt|;
+comment|// Re-enable symlinks for tests, see HADOOP-10020 and HADOOP-10052
+name|FileSystem
+operator|.
+name|enableSymlinks
+argument_list|()
+expr_stmt|;
 synchronized|synchronized
 init|(
 name|MiniDFSCluster

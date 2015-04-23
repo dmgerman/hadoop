@@ -698,6 +698,15 @@ specifier|public
 class|class
 name|TestINodeFile
 block|{
+comment|// Re-enable symlinks for tests, see HADOOP-10020 and HADOOP-10052
+static|static
+block|{
+name|FileSystem
+operator|.
+name|enableSymlinks
+argument_list|()
+expr_stmt|;
+block|}
 DECL|field|LOG
 specifier|public
 specifier|static

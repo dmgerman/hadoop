@@ -212,6 +212,25 @@ throw|;
 block|}
 if|if
 condition|(
+operator|!
+name|FileSystem
+operator|.
+name|areSymlinksEnabled
+argument_list|()
+condition|)
+block|{
+throw|throw
+operator|new
+name|IOException
+argument_list|(
+literal|"Symlink resolution is disabled in"
+operator|+
+literal|" this version of Hadoop."
+argument_list|)
+throw|;
+block|}
+if|if
+condition|(
 name|count
 operator|++
 operator|>

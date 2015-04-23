@@ -146,6 +146,14 @@ name|TestStat
 extends|extends
 name|FileSystemTestHelper
 block|{
+static|static
+block|{
+name|FileSystem
+operator|.
+name|enableSymlinks
+argument_list|()
+expr_stmt|;
+block|}
 DECL|field|stat
 specifier|private
 specifier|static
