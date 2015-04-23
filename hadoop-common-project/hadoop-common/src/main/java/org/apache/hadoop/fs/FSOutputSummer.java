@@ -670,6 +670,16 @@ name|getChecksumSize
 argument_list|()
 return|;
 block|}
+DECL|method|getDataChecksum ()
+specifier|protected
+name|DataChecksum
+name|getDataChecksum
+parameter_list|()
+block|{
+return|return
+name|sum
+return|;
+block|}
 DECL|method|createWriteTraceScope ()
 specifier|protected
 name|TraceScope
