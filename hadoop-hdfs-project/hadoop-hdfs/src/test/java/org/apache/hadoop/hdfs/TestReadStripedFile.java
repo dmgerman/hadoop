@@ -884,13 +884,6 @@ argument_list|,
 literal|false
 argument_list|)
 decl_stmt|;
-name|in
-operator|.
-name|setCellSize
-argument_list|(
-name|CELLSIZE
-argument_list|)
-expr_stmt|;
 name|int
 name|readSize
 init|=
