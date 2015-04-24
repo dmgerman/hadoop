@@ -7522,6 +7522,10 @@ name|DSQuotaExceededException
 operator|.
 name|class
 argument_list|,
+name|QuotaByStorageTypeExceededException
+operator|.
+name|class
+argument_list|,
 name|UnresolvedPathException
 operator|.
 name|class
@@ -7727,6 +7731,10 @@ operator|.
 name|class
 argument_list|,
 name|DSQuotaExceededException
+operator|.
+name|class
+argument_list|,
+name|QuotaByStorageTypeExceededException
 operator|.
 name|class
 argument_list|,
@@ -8007,6 +8015,10 @@ name|DSQuotaExceededException
 operator|.
 name|class
 argument_list|,
+name|QuotaByStorageTypeExceededException
+operator|.
+name|class
+argument_list|,
 name|UnresolvedPathException
 operator|.
 name|class
@@ -8217,6 +8229,10 @@ name|DSQuotaExceededException
 operator|.
 name|class
 argument_list|,
+name|QuotaByStorageTypeExceededException
+operator|.
+name|class
+argument_list|,
 name|UnresolvedPathException
 operator|.
 name|class
@@ -8379,6 +8395,10 @@ operator|.
 name|class
 argument_list|,
 name|DSQuotaExceededException
+operator|.
+name|class
+argument_list|,
+name|QuotaByStorageTypeExceededException
 operator|.
 name|class
 argument_list|,
@@ -12322,6 +12342,10 @@ name|DSQuotaExceededException
 operator|.
 name|class
 argument_list|,
+name|QuotaByStorageTypeExceededException
+operator|.
+name|class
+argument_list|,
 name|UnresolvedPathException
 operator|.
 name|class
@@ -12529,6 +12553,10 @@ operator|.
 name|class
 argument_list|,
 name|DSQuotaExceededException
+operator|.
+name|class
+argument_list|,
+name|QuotaByStorageTypeExceededException
 operator|.
 name|class
 argument_list|,
