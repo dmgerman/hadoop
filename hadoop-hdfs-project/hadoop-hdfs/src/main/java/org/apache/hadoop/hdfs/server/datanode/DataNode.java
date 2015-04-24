@@ -7268,7 +7268,6 @@ return|;
 block|}
 comment|/**    * Verify that the DatanodeUuid has been initialized. If this is a new    * datanode then we generate a new Datanode Uuid and persist it to disk.    *    * @throws IOException    */
 DECL|method|checkDatanodeUuid ()
-specifier|private
 specifier|synchronized
 name|void
 name|checkDatanodeUuid
@@ -15476,13 +15475,13 @@ name|getDatanodeUuid
 parameter_list|()
 block|{
 return|return
-name|id
+name|storage
 operator|==
 literal|null
 condition|?
 literal|null
 else|:
-name|id
+name|storage
 operator|.
 name|getDatanodeUuid
 argument_list|()
