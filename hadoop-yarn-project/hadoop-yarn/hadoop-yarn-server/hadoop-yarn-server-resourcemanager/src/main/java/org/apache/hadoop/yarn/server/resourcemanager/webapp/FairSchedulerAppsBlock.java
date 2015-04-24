@@ -762,6 +762,13 @@ argument_list|)
 operator|.
 name|th
 argument_list|(
+literal|".runningcontainer"
+argument_list|,
+literal|"Running Containers"
+argument_list|)
+operator|.
+name|th
+argument_list|(
 literal|".progress"
 argument_list|,
 literal|"Progress"
@@ -1150,6 +1157,19 @@ argument_list|(
 name|appInfo
 operator|.
 name|getFinalStatus
+argument_list|()
+argument_list|)
+operator|.
+name|append
+argument_list|(
+literal|"\",\""
+argument_list|)
+operator|.
+name|append
+argument_list|(
+name|appInfo
+operator|.
+name|getRunningContainers
 argument_list|()
 argument_list|)
 operator|.

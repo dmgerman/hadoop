@@ -57,10 +57,12 @@ return|return
 name|appsTableInit
 argument_list|(
 literal|false
+argument_list|,
+literal|true
 argument_list|)
 return|;
 block|}
-DECL|method|appsTableInit (boolean isFairSchedulerPage)
+DECL|method|appsTableInit ( boolean isFairSchedulerPage, boolean isResourceManager)
 specifier|public
 specifier|static
 name|String
@@ -68,6 +70,9 @@ name|appsTableInit
 parameter_list|(
 name|boolean
 name|isFairSchedulerPage
+parameter_list|,
+name|boolean
+name|isResourceManager
 parameter_list|)
 block|{
 comment|// id, user, name, queue, starttime, finishtime, state, status, progress, ui
@@ -101,6 +106,8 @@ argument_list|(
 name|getAppsTableColumnDefs
 argument_list|(
 name|isFairSchedulerPage
+argument_list|,
+name|isResourceManager
 argument_list|)
 argument_list|)
 comment|// Sort by id upon page load
@@ -114,7 +121,7 @@ name|toString
 argument_list|()
 return|;
 block|}
-DECL|method|getAppsTableColumnDefs (boolean isFairSchedulerPage)
+DECL|method|getAppsTableColumnDefs ( boolean isFairSchedulerPage, boolean isResourceManager)
 specifier|private
 specifier|static
 name|String
@@ -122,6 +129,9 @@ name|getAppsTableColumnDefs
 parameter_list|(
 name|boolean
 name|isFairSchedulerPage
+parameter_list|,
+name|boolean
+name|isResourceManager
 parameter_list|)
 block|{
 name|StringBuilder
@@ -131,7 +141,6 @@ operator|new
 name|StringBuilder
 argument_list|()
 decl_stmt|;
-return|return
 name|sb
 operator|.
 name|append
@@ -169,13 +178,55 @@ argument_list|)
 operator|.
 name|append
 argument_list|(
-literal|"\n, {'sType':'numeric', bSearchable:false, 'aTargets': [9]"
+literal|"\n, {'sType':'numeric', bSearchable:false, 'aTargets':"
 argument_list|)
+expr_stmt|;
+if|if
+condition|(
+name|isFairSchedulerPage
+condition|)
+block|{
+name|sb
+operator|.
+name|append
+argument_list|(
+literal|"[11]"
+argument_list|)
+expr_stmt|;
+block|}
+elseif|else
+if|if
+condition|(
+name|isResourceManager
+condition|)
+block|{
+name|sb
+operator|.
+name|append
+argument_list|(
+literal|"[10]"
+argument_list|)
+expr_stmt|;
+block|}
+else|else
+block|{
+name|sb
+operator|.
+name|append
+argument_list|(
+literal|"[9]"
+argument_list|)
+expr_stmt|;
+block|}
+name|sb
 operator|.
 name|append
 argument_list|(
 literal|", 'mRender': parseHadoopProgress }]"
 argument_list|)
+expr_stmt|;
+return|return
+name|sb
 operator|.
 name|toString
 argument_list|()

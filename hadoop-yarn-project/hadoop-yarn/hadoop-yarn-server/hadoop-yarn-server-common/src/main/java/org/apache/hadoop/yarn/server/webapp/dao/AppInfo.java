@@ -217,6 +217,11 @@ specifier|protected
 name|YarnApplicationState
 name|appState
 decl_stmt|;
+DECL|field|runningContainers
+specifier|protected
+name|int
+name|runningContainers
+decl_stmt|;
 DECL|field|progress
 specifier|protected
 name|float
@@ -422,6 +427,27 @@ operator|.
 name|getFinalApplicationStatus
 argument_list|()
 expr_stmt|;
+if|if
+condition|(
+name|app
+operator|.
+name|getApplicationResourceUsageReport
+argument_list|()
+operator|!=
+literal|null
+condition|)
+block|{
+name|runningContainers
+operator|=
+name|app
+operator|.
+name|getApplicationResourceUsageReport
+argument_list|()
+operator|.
+name|getNumUsedContainers
+argument_list|()
+expr_stmt|;
+block|}
 name|progress
 operator|=
 name|app
@@ -555,6 +581,16 @@ parameter_list|()
 block|{
 return|return
 name|appState
+return|;
+block|}
+DECL|method|getRunningContainers ()
+specifier|public
+name|int
+name|getRunningContainers
+parameter_list|()
+block|{
+return|return
+name|runningContainers
 return|;
 block|}
 DECL|method|getProgress ()
