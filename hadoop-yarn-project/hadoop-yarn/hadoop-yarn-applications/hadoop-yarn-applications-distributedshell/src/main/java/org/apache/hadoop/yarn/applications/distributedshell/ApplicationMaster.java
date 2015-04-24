@@ -3188,7 +3188,7 @@ name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"Max mem capabililty of resources in this cluster "
+literal|"Max mem capability of resources in this cluster "
 operator|+
 name|maxMem
 argument_list|)
@@ -3208,7 +3208,7 @@ name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"Max vcores capabililty of resources in this cluster "
+literal|"Max vcores capability of resources in this cluster "
 operator|+
 name|maxVCores
 argument_list|)
