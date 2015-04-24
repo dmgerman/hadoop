@@ -119,7 +119,7 @@ name|class
 argument_list|)
 decl_stmt|;
 comment|/**    * Return the default retry policy set in conf.    *     * If the value retryPolicyEnabledKey is set to false in conf,    * use TRY_ONCE_THEN_FAIL.    *     * Otherwise, get the MultipleLinearRandomRetry policy specified in the conf    * and then    * (1) use multipleLinearRandomRetry for    *     - remoteExceptionToRetry, or    *     - IOException other than RemoteException, or    *     - ServiceException; and    * (2) use TRY_ONCE_THEN_FAIL for    *     - non-remoteExceptionToRetry RemoteException, or    *     - non-IOException.    *         *    * @param conf    * @param retryPolicyEnabledKey     conf property key for enabling retry    * @param defaultRetryPolicyEnabled default retryPolicyEnabledKey conf value     * @param retryPolicySpecKey        conf property key for retry policy spec    * @param defaultRetryPolicySpec    default retryPolicySpecKey conf value    * @param remoteExceptionToRetry    The particular RemoteException to retry    * @return the default retry policy.    */
-DECL|method|getDefaultRetryPolicy ( Configuration conf, String retryPolicyEnabledKey, boolean defaultRetryPolicyEnabled, String retryPolicySpecKey, String defaultRetryPolicySpec, final Class<? extends Exception> remoteExceptionToRetry )
+DECL|method|getDefaultRetryPolicy ( Configuration conf, String retryPolicyEnabledKey, boolean defaultRetryPolicyEnabled, String retryPolicySpecKey, String defaultRetryPolicySpec, final String remoteExceptionToRetry )
 specifier|public
 specifier|static
 name|RetryPolicy
@@ -141,12 +141,7 @@ name|String
 name|defaultRetryPolicySpec
 parameter_list|,
 specifier|final
-name|Class
-argument_list|<
-name|?
-extends|extends
-name|Exception
-argument_list|>
+name|String
 name|remoteExceptionToRetry
 parameter_list|)
 block|{
@@ -288,9 +283,6 @@ decl_stmt|;
 name|p
 operator|=
 name|remoteExceptionToRetry
-operator|.
-name|getName
-argument_list|()
 operator|.
 name|equals
 argument_list|(

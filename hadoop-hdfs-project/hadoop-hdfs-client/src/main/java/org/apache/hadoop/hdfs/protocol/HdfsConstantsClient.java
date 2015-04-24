@@ -69,6 +69,16 @@ name|HA_DT_SERVICE_PREFIX
 init|=
 literal|"ha-"
 decl_stmt|;
+comment|// The name of the SafeModeException. FileSystem should retry if it sees
+comment|// the below exception in RPC
+DECL|field|SAFEMODE_EXCEPTION_CLASS_NAME
+name|String
+name|SAFEMODE_EXCEPTION_CLASS_NAME
+init|=
+literal|"org.apache.hadoop.hdfs.server"
+operator|+
+literal|".namenode.SafeModeException"
+decl_stmt|;
 block|}
 end_interface
 

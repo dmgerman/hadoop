@@ -5552,7 +5552,7 @@ name|BlockLocation
 index|[]
 name|locations
 init|=
-name|DFSUtil
+name|DFSUtilClient
 operator|.
 name|locatedBlocks2Locations
 argument_list|(

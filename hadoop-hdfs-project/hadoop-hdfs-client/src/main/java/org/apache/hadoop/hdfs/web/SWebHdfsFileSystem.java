@@ -28,7 +28,9 @@ name|hadoop
 operator|.
 name|hdfs
 operator|.
-name|DFSConfigKeys
+name|client
+operator|.
+name|HdfsClientConfigKeys
 import|;
 end_import
 
@@ -103,7 +105,7 @@ name|getDefaultPort
 parameter_list|()
 block|{
 return|return
-name|DFSConfigKeys
+name|HdfsClientConfigKeys
 operator|.
 name|DFS_NAMENODE_HTTPS_PORT_DEFAULT
 return|;

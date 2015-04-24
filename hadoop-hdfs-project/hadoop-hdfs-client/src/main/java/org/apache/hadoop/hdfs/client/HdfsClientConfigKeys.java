@@ -70,6 +70,12 @@ name|DFS_REPLICATION_DEFAULT
 init|=
 literal|3
 decl_stmt|;
+DECL|field|DFS_WEBHDFS_USER_PATTERN_KEY
+name|String
+name|DFS_WEBHDFS_USER_PATTERN_KEY
+init|=
+literal|"dfs.webhdfs.user.provider.user.pattern"
+decl_stmt|;
 DECL|field|DFS_WEBHDFS_USER_PATTERN_DEFAULT
 name|String
 name|DFS_WEBHDFS_USER_PATTERN_DEFAULT

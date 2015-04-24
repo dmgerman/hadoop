@@ -418,18 +418,6 @@ name|apache
 operator|.
 name|htrace
 operator|.
-name|Sampler
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|htrace
-operator|.
 name|Span
 import|;
 end_import
@@ -1678,7 +1666,7 @@ name|BlockLocation
 index|[]
 name|locations
 init|=
-name|DFSUtil
+name|DFSUtilClient
 operator|.
 name|locatedBlocks2Locations
 argument_list|(

@@ -1149,6 +1149,8 @@ operator|.
 name|toString
 argument_list|()
 decl_stmt|;
+annotation|@
+name|Deprecated
 DECL|field|DFS_WEBHDFS_USER_PATTERN_KEY
 specifier|public
 specifier|static
@@ -1156,8 +1158,12 @@ specifier|final
 name|String
 name|DFS_WEBHDFS_USER_PATTERN_KEY
 init|=
-literal|"dfs.webhdfs.user.provider.user.pattern"
+name|HdfsClientConfigKeys
+operator|.
+name|DFS_WEBHDFS_USER_PATTERN_KEY
 decl_stmt|;
+annotation|@
+name|Deprecated
 DECL|field|DFS_WEBHDFS_USER_PATTERN_DEFAULT
 specifier|public
 specifier|static

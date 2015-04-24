@@ -746,7 +746,7 @@ name|connection
 return|;
 block|}
 block|}
-comment|/**    * Sets timeout parameters on the given URLConnection.    *     * @param connection    *          URLConnection to set    * @param socketTimeout    *          the connection and read timeout of the connection.    */
+comment|/**    * Sets timeout parameters on the given URLConnection.    *    * @param connection    *          URLConnection to set    * @param socketTimeout    *          the connection and read timeout of the connection.    */
 DECL|method|setTimeouts (URLConnection connection, int socketTimeout)
 specifier|private
 specifier|static

@@ -202,7 +202,7 @@ name|hadoop
 operator|.
 name|hdfs
 operator|.
-name|DFSUtil
+name|DFSUtilClient
 import|;
 end_import
 
@@ -933,7 +933,7 @@ name|SYMLINK
 condition|?
 literal|null
 else|:
-name|DFSUtil
+name|DFSUtilClient
 operator|.
 name|string2Bytes
 argument_list|(
@@ -1215,7 +1215,7 @@ name|group
 argument_list|,
 name|symlink
 argument_list|,
-name|DFSUtil
+name|DFSUtilClient
 operator|.
 name|string2Bytes
 argument_list|(

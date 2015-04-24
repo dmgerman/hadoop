@@ -124,7 +124,7 @@ name|hadoop
 operator|.
 name|hdfs
 operator|.
-name|DFSUtil
+name|DFSUtilClient
 import|;
 end_import
 
@@ -331,7 +331,7 @@ literal|null
 argument_list|)
 argument_list|,
 comment|// fully-qualify path
-name|DFSUtil
+name|DFSUtilClient
 operator|.
 name|locatedBlocks2Locations
 argument_list|(

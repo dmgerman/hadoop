@@ -480,34 +480,6 @@ name|hadoop
 operator|.
 name|hdfs
 operator|.
-name|DFSConfigKeys
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|hdfs
-operator|.
-name|DFSUtil
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|hdfs
-operator|.
 name|DFSUtilClient
 import|;
 end_import
@@ -554,6 +526,22 @@ name|hdfs
 operator|.
 name|protocol
 operator|.
+name|HdfsConstantsClient
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|protocol
+operator|.
 name|HdfsFileStatus
 import|;
 end_import
@@ -575,24 +563,6 @@ operator|.
 name|delegation
 operator|.
 name|DelegationTokenIdentifier
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|hdfs
-operator|.
-name|server
-operator|.
-name|namenode
-operator|.
-name|SafeModeException
 import|;
 end_import
 
@@ -1149,11 +1119,11 @@ name|conf
 operator|.
 name|get
 argument_list|(
-name|DFSConfigKeys
+name|HdfsClientConfigKeys
 operator|.
 name|DFS_WEBHDFS_USER_PATTERN_KEY
 argument_list|,
-name|DFSConfigKeys
+name|HdfsClientConfigKeys
 operator|.
 name|DFS_WEBHDFS_USER_PATTERN_DEFAULT
 argument_list|)
@@ -1300,9 +1270,9 @@ name|HttpClient
 operator|.
 name|RETRY_POLICY_SPEC_DEFAULT
 argument_list|,
-name|SafeModeException
+name|HdfsConstantsClient
 operator|.
-name|class
+name|SAFEMODE_EXCEPTION_CLASS_NAME
 argument_list|)
 expr_stmt|;
 block|}
@@ -1693,7 +1663,7 @@ name|getDefaultPort
 parameter_list|()
 block|{
 return|return
-name|DFSConfigKeys
+name|HdfsClientConfigKeys
 operator|.
 name|DFS_NAMENODE_HTTP_PORT_DEFAULT
 return|;
@@ -1821,7 +1791,7 @@ decl_stmt|;
 if|if
 condition|(
 operator|!
-name|DFSUtil
+name|DFSUtilClient
 operator|.
 name|isValidName
 argument_list|(
@@ -2333,7 +2303,7 @@ return|return
 literal|null
 return|;
 block|}
-comment|/**    * Covert an exception to an IOException.    *     * For a non-IOException, wrap it with IOException.    * For a RemoteException, unwrap it.    * For an IOException which is not a RemoteException, return it.     */
+comment|/**    * Covert an exception to an IOException.    *    * For a non-IOException, wrap it with IOException.    * For a RemoteException, unwrap it.    * For an IOException which is not a RemoteException, return it.    */
 DECL|method|toIOException (Exception e)
 specifier|private
 specifier|static
@@ -2940,7 +2910,7 @@ argument_list|)
 throw|;
 block|}
 block|}
-comment|/**      * Two-step requests redirected to a DN      *       * Create/Append:      * Step 1) Submit a Http request with neither auto-redirect nor data.       * Step 2) Submit another Http request with the URL from the Location header with data.      *       * The reason of having two-step create/append is for preventing clients to      * send out the data before the redirect. This issue is addressed by the      * "Expect: 100-continue" header in HTTP/1.1; see RFC 2616, Section 8.2.3.      * Unfortunately, there are software library bugs (e.g. Jetty 6 http server      * and Java 6 http client), which do not correctly implement "Expect:      * 100-continue". The two-step create/append is a temporary workaround for      * the software library bugs.      *       * Open/Checksum      * Also implements two-step connects for other operations redirected to      * a DN such as open and checksum      */
+comment|/**      * Two-step requests redirected to a DN      *      * Create/Append:      * Step 1) Submit a Http request with neither auto-redirect nor data.      * Step 2) Submit another Http request with the URL from the Location header with data.      *      * The reason of having two-step create/append is for preventing clients to      * send out the data before the redirect. This issue is addressed by the      * "Expect: 100-continue" header in HTTP/1.1; see RFC 2616, Section 8.2.3.      * Unfortunately, there are software library bugs (e.g. Jetty 6 http server      * and Java 6 http client), which do not correctly implement "Expect:      * 100-continue". The two-step create/append is a temporary workaround for      * the software library bugs.      *      * Open/Checksum      * Also implements two-step connects for other operations redirected to      * a DN such as open and checksum      */
 DECL|method|connect (URL url)
 specifier|private
 name|HttpURLConnection
@@ -6384,11 +6354,11 @@ argument_list|()
 operator|.
 name|getLongBytes
 argument_list|(
-name|DFSConfigKeys
+name|HdfsClientConfigKeys
 operator|.
 name|DFS_BLOCK_SIZE_KEY
 argument_list|,
-name|DFSConfigKeys
+name|HdfsClientConfigKeys
 operator|.
 name|DFS_BLOCK_SIZE_DEFAULT
 argument_list|)
@@ -6411,11 +6381,11 @@ argument_list|()
 operator|.
 name|getInt
 argument_list|(
-name|DFSConfigKeys
+name|HdfsClientConfigKeys
 operator|.
 name|DFS_REPLICATION_KEY
 argument_list|,
-name|DFSConfigKeys
+name|HdfsClientConfigKeys
 operator|.
 name|DFS_REPLICATION_DEFAULT
 argument_list|)
@@ -7950,7 +7920,7 @@ throws|throws
 name|IOException
 block|{
 return|return
-name|DFSUtil
+name|DFSUtilClient
 operator|.
 name|locatedBlocks2Locations
 argument_list|(

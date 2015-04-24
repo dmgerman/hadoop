@@ -977,7 +977,7 @@ name|BlockLocation
 index|[]
 name|bs
 init|=
-name|DFSUtil
+name|DFSUtilClient
 operator|.
 name|locatedBlocks2Locations
 argument_list|(
@@ -1039,7 +1039,7 @@ expr_stmt|;
 comment|// test an empty location
 name|bs
 operator|=
-name|DFSUtil
+name|DFSUtilClient
 operator|.
 name|locatedBlocks2Locations
 argument_list|(
