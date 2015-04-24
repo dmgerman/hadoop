@@ -1713,7 +1713,7 @@ name|getPath
 argument_list|()
 argument_list|)
 argument_list|,
-literal|0
+name|retry
 argument_list|,
 literal|true
 argument_list|)
@@ -1752,7 +1752,7 @@ index|[
 literal|0
 index|]
 argument_list|,
-literal|0
+name|retry
 argument_list|,
 literal|true
 argument_list|,
@@ -2013,9 +2013,6 @@ literal|0
 argument_list|)
 argument_list|)
 expr_stmt|;
-name|maybePrintStats
-argument_list|()
-expr_stmt|;
 block|}
 while|while
 condition|(
@@ -2083,9 +2080,10 @@ expr_stmt|;
 block|}
 if|if
 condition|(
-name|retry
-operator|==
-literal|0
+name|workResult
+operator|.
+name|getSuccess
+argument_list|()
 condition|)
 block|{
 name|CopyListingFileStatus
@@ -2184,9 +2182,6 @@ argument_list|,
 name|retry
 argument_list|)
 argument_list|)
-expr_stmt|;
-name|maybePrintStats
-argument_list|()
 expr_stmt|;
 block|}
 block|}
@@ -2456,6 +2451,9 @@ expr_stmt|;
 block|}
 name|totalPaths
 operator|++
+expr_stmt|;
+name|maybePrintStats
+argument_list|()
 expr_stmt|;
 block|}
 block|}
