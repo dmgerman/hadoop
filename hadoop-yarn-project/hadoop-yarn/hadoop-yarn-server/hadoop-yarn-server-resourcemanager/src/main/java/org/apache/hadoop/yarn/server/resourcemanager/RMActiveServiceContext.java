@@ -580,7 +580,7 @@ name|resourcemanager
 operator|.
 name|timelineservice
 operator|.
-name|RMTimelineCollector
+name|RMTimelineCollectorManager
 import|;
 end_import
 
@@ -823,10 +823,10 @@ specifier|private
 name|SystemMetricsPublisher
 name|systemMetricsPublisher
 decl_stmt|;
-DECL|field|timelineCollector
+DECL|field|timelineCollectorManager
 specifier|private
-name|RMTimelineCollector
-name|timelineCollector
+name|RMTimelineCollectorManager
+name|timelineCollectorManager
 decl_stmt|;
 DECL|field|nodeLabelManager
 specifier|private
@@ -1715,34 +1715,34 @@ annotation|@
 name|Private
 annotation|@
 name|Unstable
-DECL|method|getRMTimelineCollector ()
+DECL|method|getRMTimelineCollectorManager ()
 specifier|public
-name|RMTimelineCollector
-name|getRMTimelineCollector
+name|RMTimelineCollectorManager
+name|getRMTimelineCollectorManager
 parameter_list|()
 block|{
 return|return
-name|timelineCollector
+name|timelineCollectorManager
 return|;
 block|}
 annotation|@
 name|Private
 annotation|@
 name|Unstable
-DECL|method|setRMTimelineCollector (RMTimelineCollector timelineCollector)
+DECL|method|setRMTimelineCollectorManager ( RMTimelineCollectorManager timelineCollectorManager)
 specifier|public
 name|void
-name|setRMTimelineCollector
+name|setRMTimelineCollectorManager
 parameter_list|(
-name|RMTimelineCollector
-name|timelineCollector
+name|RMTimelineCollectorManager
+name|timelineCollectorManager
 parameter_list|)
 block|{
 name|this
 operator|.
-name|timelineCollector
+name|timelineCollectorManager
 operator|=
-name|timelineCollector
+name|timelineCollectorManager
 expr_stmt|;
 block|}
 annotation|@

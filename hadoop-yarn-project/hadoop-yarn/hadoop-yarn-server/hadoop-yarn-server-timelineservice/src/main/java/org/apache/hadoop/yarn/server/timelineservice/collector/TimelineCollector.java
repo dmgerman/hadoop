@@ -528,7 +528,7 @@ expr_stmt|;
 block|}
 block|}
 DECL|method|getTimelineEntityContext ()
-specifier|protected
+specifier|public
 specifier|abstract
 name|TimelineCollectorContext
 name|getTimelineEntityContext

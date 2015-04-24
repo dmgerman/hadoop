@@ -540,7 +540,7 @@ name|resourcemanager
 operator|.
 name|timelineservice
 operator|.
-name|RMTimelineCollector
+name|RMTimelineCollectorManager
 import|;
 end_import
 
@@ -731,17 +731,17 @@ name|SystemMetricsPublisher
 name|getSystemMetricsPublisher
 parameter_list|()
 function_decl|;
-DECL|method|setRMTimelineCollector (RMTimelineCollector timelineCollector)
+DECL|method|setRMTimelineCollectorManager ( RMTimelineCollectorManager timelineCollectorManager)
 name|void
-name|setRMTimelineCollector
+name|setRMTimelineCollectorManager
 parameter_list|(
-name|RMTimelineCollector
-name|timelineCollector
+name|RMTimelineCollectorManager
+name|timelineCollectorManager
 parameter_list|)
 function_decl|;
-DECL|method|getRMTimelineCollector ()
-name|RMTimelineCollector
-name|getRMTimelineCollector
+DECL|method|getRMTimelineCollectorManager ()
+name|RMTimelineCollectorManager
+name|getRMTimelineCollectorManager
 parameter_list|()
 function_decl|;
 DECL|method|getConfigurationProvider ()

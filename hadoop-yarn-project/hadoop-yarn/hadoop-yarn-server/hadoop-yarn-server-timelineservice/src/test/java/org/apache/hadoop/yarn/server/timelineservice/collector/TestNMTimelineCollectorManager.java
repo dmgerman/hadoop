@@ -373,14 +373,14 @@ import|;
 end_import
 
 begin_class
-DECL|class|TestTimelineCollectorManager
+DECL|class|TestNMTimelineCollectorManager
 specifier|public
 class|class
-name|TestTimelineCollectorManager
+name|TestNMTimelineCollectorManager
 block|{
 DECL|field|collectorManager
 specifier|private
-name|TimelineCollectorManager
+name|NodeTimelineCollectorManager
 name|collectorManager
 decl_stmt|;
 annotation|@
@@ -717,12 +717,9 @@ name|assertTrue
 argument_list|(
 name|collectorManager
 operator|.
-name|containsKey
+name|containsTimelineCollector
 argument_list|(
 name|appId
-operator|.
-name|toString
-argument_list|()
 argument_list|)
 argument_list|)
 expr_stmt|;
@@ -842,9 +839,6 @@ operator|.
 name|remove
 argument_list|(
 name|appId
-operator|.
-name|toString
-argument_list|()
 argument_list|)
 return|;
 block|}
@@ -948,12 +942,9 @@ name|assertFalse
 argument_list|(
 name|collectorManager
 operator|.
-name|containsKey
+name|containsTimelineCollector
 argument_list|(
 name|appId
-operator|.
-name|toString
-argument_list|()
 argument_list|)
 argument_list|)
 expr_stmt|;
@@ -961,18 +952,18 @@ block|}
 block|}
 DECL|method|createCollectorManager ()
 specifier|private
-name|TimelineCollectorManager
+name|NodeTimelineCollectorManager
 name|createCollectorManager
 parameter_list|()
 block|{
 specifier|final
-name|TimelineCollectorManager
+name|NodeTimelineCollectorManager
 name|collectorManager
 init|=
 name|spy
 argument_list|(
 operator|new
-name|TimelineCollectorManager
+name|NodeTimelineCollectorManager
 argument_list|()
 argument_list|)
 decl_stmt|;

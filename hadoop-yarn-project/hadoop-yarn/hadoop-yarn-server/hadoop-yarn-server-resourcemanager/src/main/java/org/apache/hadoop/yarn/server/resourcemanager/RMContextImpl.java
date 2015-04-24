@@ -600,7 +600,7 @@ name|resourcemanager
 operator|.
 name|timelineservice
 operator|.
-name|RMTimelineCollector
+name|RMTimelineCollectorManager
 import|;
 end_import
 
@@ -1628,35 +1628,35 @@ return|;
 block|}
 annotation|@
 name|Override
-DECL|method|setRMTimelineCollector ( RMTimelineCollector timelineCollector)
+DECL|method|setRMTimelineCollectorManager ( RMTimelineCollectorManager timelineCollectorManager)
 specifier|public
 name|void
-name|setRMTimelineCollector
+name|setRMTimelineCollectorManager
 parameter_list|(
-name|RMTimelineCollector
-name|timelineCollector
+name|RMTimelineCollectorManager
+name|timelineCollectorManager
 parameter_list|)
 block|{
 name|activeServiceContext
 operator|.
-name|setRMTimelineCollector
+name|setRMTimelineCollectorManager
 argument_list|(
-name|timelineCollector
+name|timelineCollectorManager
 argument_list|)
 expr_stmt|;
 block|}
 annotation|@
 name|Override
-DECL|method|getRMTimelineCollector ()
+DECL|method|getRMTimelineCollectorManager ()
 specifier|public
-name|RMTimelineCollector
-name|getRMTimelineCollector
+name|RMTimelineCollectorManager
+name|getRMTimelineCollectorManager
 parameter_list|()
 block|{
 return|return
 name|activeServiceContext
 operator|.
-name|getRMTimelineCollector
+name|getRMTimelineCollectorManager
 argument_list|()
 return|;
 block|}

@@ -352,7 +352,7 @@ block|}
 annotation|@
 name|Override
 DECL|method|getTimelineEntityContext ()
-specifier|protected
+specifier|public
 name|TimelineCollectorContext
 name|getTimelineEntityContext
 parameter_list|()

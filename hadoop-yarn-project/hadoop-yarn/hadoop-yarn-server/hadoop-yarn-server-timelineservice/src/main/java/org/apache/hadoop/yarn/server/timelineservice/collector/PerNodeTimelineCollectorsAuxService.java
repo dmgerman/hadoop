@@ -380,7 +380,7 @@ decl_stmt|;
 DECL|field|collectorManager
 specifier|private
 specifier|final
-name|TimelineCollectorManager
+name|NodeTimelineCollectorManager
 name|collectorManager
 decl_stmt|;
 DECL|method|PerNodeTimelineCollectorsAuxService ()
@@ -391,19 +391,19 @@ block|{
 comment|// use the same singleton
 name|this
 argument_list|(
-name|TimelineCollectorManager
+name|NodeTimelineCollectorManager
 operator|.
 name|getInstance
 argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|PerNodeTimelineCollectorsAuxService ( TimelineCollectorManager collectorsManager)
+DECL|method|PerNodeTimelineCollectorsAuxService ( NodeTimelineCollectorManager collectorsManager)
 annotation|@
 name|VisibleForTesting
 name|PerNodeTimelineCollectorsAuxService
 parameter_list|(
-name|TimelineCollectorManager
+name|NodeTimelineCollectorManager
 name|collectorsManager
 parameter_list|)
 block|{
@@ -535,20 +535,12 @@ name|ApplicationId
 name|appId
 parameter_list|)
 block|{
-name|String
-name|appIdString
-init|=
-name|appId
-operator|.
-name|toString
-argument_list|()
-decl_stmt|;
 return|return
 name|collectorManager
 operator|.
 name|remove
 argument_list|(
-name|appIdString
+name|appId
 argument_list|)
 return|;
 block|}
@@ -669,18 +661,18 @@ return|;
 block|}
 annotation|@
 name|VisibleForTesting
-DECL|method|hasApplication (String appId)
+DECL|method|hasApplication (ApplicationId appId)
 name|boolean
 name|hasApplication
 parameter_list|(
-name|String
+name|ApplicationId
 name|appId
 parameter_list|)
 block|{
 return|return
 name|collectorManager
 operator|.
-name|containsKey
+name|containsTimelineCollector
 argument_list|(
 name|appId
 argument_list|)
@@ -732,14 +724,14 @@ name|VisibleForTesting
 specifier|public
 specifier|static
 name|PerNodeTimelineCollectorsAuxService
-DECL|method|launchServer (String[] args, TimelineCollectorManager collectorManager)
+DECL|method|launchServer (String[] args, NodeTimelineCollectorManager collectorManager)
 name|launchServer
 parameter_list|(
 name|String
 index|[]
 name|args
 parameter_list|,
-name|TimelineCollectorManager
+name|NodeTimelineCollectorManager
 name|collectorManager
 parameter_list|)
 block|{

@@ -2583,6 +2583,12 @@ name|message
 argument_list|)
 throw|;
 block|}
+comment|// Start timeline collector for the submitted app
+name|application
+operator|.
+name|startTimelineCollector
+argument_list|()
+expr_stmt|;
 comment|// Inform the ACLs Manager
 name|this
 operator|.

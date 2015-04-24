@@ -264,7 +264,7 @@ name|timelineservice
 operator|.
 name|collector
 operator|.
-name|TimelineCollectorManager
+name|NodeTimelineCollectorManager
 import|;
 end_import
 
@@ -317,7 +317,7 @@ block|{
 DECL|field|collectorManager
 specifier|private
 specifier|static
-name|TimelineCollectorManager
+name|NodeTimelineCollectorManager
 name|collectorManager
 decl_stmt|;
 DECL|field|auxService
@@ -342,7 +342,7 @@ block|{
 name|collectorManager
 operator|=
 operator|new
-name|MyTimelineCollectorManager
+name|MockNodeTimelineCollectorManager
 argument_list|()
 expr_stmt|;
 name|auxService
@@ -512,17 +512,17 @@ argument_list|()
 expr_stmt|;
 block|}
 block|}
-DECL|class|MyTimelineCollectorManager
+DECL|class|MockNodeTimelineCollectorManager
 specifier|private
 specifier|static
 class|class
-name|MyTimelineCollectorManager
+name|MockNodeTimelineCollectorManager
 extends|extends
-name|TimelineCollectorManager
+name|NodeTimelineCollectorManager
 block|{
-DECL|method|MyTimelineCollectorManager ()
+DECL|method|MockNodeTimelineCollectorManager ()
 specifier|public
-name|MyTimelineCollectorManager
+name|MockNodeTimelineCollectorManager
 parameter_list|()
 block|{
 name|super
