@@ -1951,7 +1951,7 @@ expr_stmt|;
 block|}
 catch|catch
 parameter_list|(
-name|IOException
+name|Throwable
 name|e
 parameter_list|)
 block|{
@@ -1962,7 +1962,7 @@ argument_list|(
 name|toString
 argument_list|()
 operator|+
-literal|" terminating on IOException"
+literal|" terminating on exception"
 argument_list|,
 name|e
 argument_list|)

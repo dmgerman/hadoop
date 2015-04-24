@@ -999,7 +999,7 @@ literal|null
 return|;
 block|}
 block|}
-comment|/**      * Allocate a new shared memory slot connected to this datanode.      *      * Must be called with the EndpointShmManager lock held.      *      * @param peer          The peer to use to talk to the DataNode.      * @param clientName    The client name.      * @param usedPeer      (out param) Will be set to true if we used the peer.      *                        When a peer is used      *      * @return              null if the DataNode does not support shared memory      *                        segments, or experienced an error creating the      *                        shm.  The shared memory segment itself on success.      * @throws IOException  If there was an error communicating over the socket.      */
+comment|/**      * Allocate a new shared memory slot connected to this datanode.      *      * Must be called with the EndpointShmManager lock held.      *      * @param peer          The peer to use to talk to the DataNode.      * @param usedPeer      (out param) Will be set to true if we used the peer.      *                        When a peer is used      *      * @param clientName    The client name.      * @param blockId       The block ID to use.      * @return              null if the DataNode does not support shared memory      *                        segments, or experienced an error creating the      *                        shm.  The shared memory segment itself on success.      * @throws IOException  If there was an error communicating over the socket.      */
 DECL|method|allocSlot (DomainPeer peer, MutableBoolean usedPeer, String clientName, ExtendedBlockId blockId)
 name|Slot
 name|allocSlot

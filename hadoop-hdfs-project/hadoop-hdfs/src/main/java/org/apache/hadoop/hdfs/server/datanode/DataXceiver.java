@@ -2920,6 +2920,14 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
+name|DataNodeFaultInjector
+operator|.
+name|get
+argument_list|()
+operator|.
+name|sendShortCircuitShmResponse
+argument_list|()
+expr_stmt|;
 name|ShortCircuitShmResponseProto
 operator|.
 name|newBuilder
@@ -3220,18 +3228,51 @@ literal|null
 operator|)
 condition|)
 block|{
-comment|// If we failed to pass the shared memory segment to the client,
-comment|// close the UNIX domain socket now.  This will trigger the
-comment|// DomainSocketWatcher callback, cleaning up the segment.
-name|IOUtils
+comment|// The socket is now managed by the DomainSocketWatcher.  However,
+comment|// we failed to pass it to the client.  We call shutdown() on the
+comment|// UNIX domain socket now.  This will trigger the DomainSocketWatcher
+comment|// callback.  The callback will close the domain socket.
+comment|// We don't want to close the socket here, since that might lead to
+comment|// bad behavior inside the poll() call.  See HADOOP-11802 for details.
+try|try
+block|{
+name|LOG
 operator|.
-name|cleanup
+name|warn
 argument_list|(
-literal|null
-argument_list|,
-name|sock
+literal|"Failed to send success response back to the client.  "
+operator|+
+literal|"Shutting down socket for "
+operator|+
+name|shmInfo
+operator|.
+name|shmId
+operator|+
+literal|"."
 argument_list|)
 expr_stmt|;
+name|sock
+operator|.
+name|shutdown
+argument_list|()
+expr_stmt|;
+block|}
+catch|catch
+parameter_list|(
+name|IOException
+name|e
+parameter_list|)
+block|{
+name|LOG
+operator|.
+name|warn
+argument_list|(
+literal|"Failed to shut down socket in error handler"
+argument_list|,
+name|e
+argument_list|)
+expr_stmt|;
+block|}
 block|}
 name|IOUtils
 operator|.
