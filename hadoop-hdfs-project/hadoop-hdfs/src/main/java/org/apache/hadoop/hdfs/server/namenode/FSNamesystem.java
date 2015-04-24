@@ -21477,6 +21477,16 @@ expr_stmt|;
 name|writeLock
 argument_list|()
 expr_stmt|;
+name|boolean
+name|copyTruncate
+init|=
+literal|false
+decl_stmt|;
+name|BlockInfoContiguousUnderConstruction
+name|truncatedBlock
+init|=
+literal|null
+decl_stmt|;
 try|try
 block|{
 name|checkOperation
@@ -21704,9 +21714,8 @@ expr_stmt|;
 block|}
 return|return;
 block|}
-name|BlockInfoContiguousUnderConstruction
 name|truncatedBlock
-init|=
+operator|=
 operator|(
 name|BlockInfoContiguousUnderConstruction
 operator|)
@@ -21714,7 +21723,7 @@ name|iFile
 operator|.
 name|getLastBlock
 argument_list|()
-decl_stmt|;
+expr_stmt|;
 name|long
 name|recoveryId
 init|=
@@ -21723,9 +21732,8 @@ operator|.
 name|getBlockRecoveryId
 argument_list|()
 decl_stmt|;
-name|boolean
 name|copyTruncate
-init|=
+operator|=
 name|truncatedBlock
 operator|.
 name|getBlockId
@@ -21735,7 +21743,7 @@ name|storedBlock
 operator|.
 name|getBlockId
 argument_list|()
-decl_stmt|;
+expr_stmt|;
 if|if
 condition|(
 name|recoveryId
@@ -22230,9 +22238,17 @@ literal|", file="
 operator|+
 name|src
 operator|+
+operator|(
+name|copyTruncate
+condition|?
+literal|", newBlock="
+operator|+
+name|truncatedBlock
+else|:
 literal|", newgenerationstamp="
 operator|+
 name|newgenerationstamp
+operator|)
 operator|+
 literal|", newlength="
 operator|+

@@ -14232,12 +14232,30 @@ argument_list|)
 operator|+
 literal|"]"
 operator|+
+operator|(
+operator|(
+name|rb
+operator|.
+name|getNewBlock
+argument_list|()
+operator|==
+literal|null
+operator|)
+condition|?
 literal|", newGenerationStamp="
 operator|+
 name|rb
 operator|.
 name|getNewGenerationStamp
 argument_list|()
+else|:
+literal|", newBlock="
+operator|+
+name|rb
+operator|.
+name|getNewBlock
+argument_list|()
+operator|)
 operator|+
 literal|")"
 argument_list|)
