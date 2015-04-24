@@ -7254,7 +7254,7 @@ operator|.
 name|currentAttempt
 operator|)
 operator|.
-name|transferStateFromPreviousAttempt
+name|transferStateFromAttempt
 argument_list|(
 name|oldAttempt
 argument_list|)

@@ -4846,10 +4846,10 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|transferStateFromPreviousAttempt (RMAppAttempt attempt)
+DECL|method|transferStateFromAttempt (RMAppAttempt attempt)
 specifier|public
 name|void
-name|transferStateFromPreviousAttempt
+name|transferStateFromAttempt
 parameter_list|(
 name|RMAppAttempt
 name|attempt
@@ -5668,6 +5668,42 @@ name|getApplicationId
 argument_list|()
 argument_list|)
 decl_stmt|;
+if|if
+condition|(
+name|appAttempt
+operator|.
+name|submissionContext
+operator|.
+name|getKeepContainersAcrossApplicationAttempts
+argument_list|()
+operator|&&
+operator|!
+name|appAttempt
+operator|.
+name|submissionContext
+operator|.
+name|getUnmanagedAM
+argument_list|()
+operator|&&
+name|rmApp
+operator|.
+name|getCurrentAppAttempt
+argument_list|()
+operator|!=
+name|appAttempt
+condition|)
+block|{
+name|appAttempt
+operator|.
+name|transferStateFromAttempt
+argument_list|(
+name|rmApp
+operator|.
+name|getCurrentAppAttempt
+argument_list|()
+argument_list|)
+expr_stmt|;
+block|}
 comment|// We will replay the final attempt only if last attempt is in final
 comment|// state but application is not in final state.
 if|if
