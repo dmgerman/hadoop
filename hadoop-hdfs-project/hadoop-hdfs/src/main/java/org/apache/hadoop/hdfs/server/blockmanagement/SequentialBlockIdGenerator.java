@@ -171,11 +171,9 @@ operator|<
 literal|0
 condition|)
 block|{
-name|BlockManager
-operator|.
-name|LOG
-operator|.
-name|warn
+throw|throw
+operator|new
+name|IllegalStateException
 argument_list|(
 literal|"All positive block IDs are used, "
 operator|+
@@ -183,7 +181,7 @@ literal|"wrapping to negative IDs, "
 operator|+
 literal|"which might conflict with erasure coded block groups."
 argument_list|)
-expr_stmt|;
+throw|;
 block|}
 return|return
 name|b
