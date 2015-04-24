@@ -230,6 +230,15 @@ specifier|public
 class|class
 name|TestEvents
 block|{
+DECL|field|taskId
+specifier|private
+specifier|static
+specifier|final
+name|String
+name|taskId
+init|=
+literal|"task_1_2_r_3"
+decl_stmt|;
 comment|/**    * test a getters of TaskAttemptFinishedEvent and TaskAttemptFinished    *     * @throws Exception    */
 annotation|@
 name|Test
@@ -828,7 +837,7 @@ argument_list|)
 expr_stmt|;
 name|assertEquals
 argument_list|(
-literal|"task_1_2_r03_4"
+name|taskId
 argument_list|,
 operator|(
 operator|(
@@ -912,7 +921,7 @@ argument_list|)
 expr_stmt|;
 name|assertEquals
 argument_list|(
-literal|"task_1_2_r03_4"
+name|taskId
 argument_list|,
 operator|(
 operator|(
@@ -954,7 +963,7 @@ argument_list|)
 expr_stmt|;
 name|assertEquals
 argument_list|(
-literal|"task_1_2_r03_4"
+name|taskId
 argument_list|,
 operator|(
 operator|(
@@ -996,7 +1005,7 @@ argument_list|)
 expr_stmt|;
 name|assertEquals
 argument_list|(
-literal|"task_1_2_r03_4"
+name|taskId
 argument_list|,
 operator|(
 operator|(
@@ -1038,7 +1047,7 @@ argument_list|)
 expr_stmt|;
 name|assertEquals
 argument_list|(
-literal|"task_1_2_r03_4"
+name|taskId
 argument_list|,
 operator|(
 operator|(
@@ -1080,7 +1089,7 @@ argument_list|)
 expr_stmt|;
 name|assertEquals
 argument_list|(
-literal|"task_1_2_r03_4"
+name|taskId
 argument_list|,
 operator|(
 operator|(
@@ -1122,7 +1131,7 @@ argument_list|)
 expr_stmt|;
 name|assertEquals
 argument_list|(
-literal|"task_1_2_r03_4"
+name|taskId
 argument_list|,
 operator|(
 operator|(
@@ -1164,7 +1173,7 @@ argument_list|)
 expr_stmt|;
 name|assertEquals
 argument_list|(
-literal|"task_1_2_r03_4"
+name|taskId
 argument_list|,
 operator|(
 operator|(
@@ -1206,7 +1215,7 @@ argument_list|)
 expr_stmt|;
 name|assertEquals
 argument_list|(
-literal|"task_1_2_r03_4"
+name|taskId
 argument_list|,
 operator|(
 operator|(
@@ -1544,7 +1553,7 @@ name|datum
 operator|.
 name|taskid
 operator|=
-literal|"task_1_2_r03_4"
+name|taskId
 expr_stmt|;
 name|datum
 operator|.
@@ -1691,7 +1700,7 @@ name|datum
 operator|.
 name|taskid
 operator|=
-literal|"task_1_2_r03_4"
+name|taskId
 expr_stmt|;
 name|datum
 operator|.
@@ -1786,7 +1795,7 @@ name|datum
 operator|.
 name|taskid
 operator|=
-literal|"task_1_2_r03_4"
+name|taskId
 expr_stmt|;
 name|datum
 operator|.
@@ -1934,7 +1943,7 @@ name|datum
 operator|.
 name|taskid
 operator|=
-literal|"task_1_2_r03_4"
+name|taskId
 expr_stmt|;
 name|datum
 operator|.
@@ -2029,7 +2038,7 @@ name|datum
 operator|.
 name|taskid
 operator|=
-literal|"task_1_2_r03_4"
+name|taskId
 expr_stmt|;
 name|datum
 operator|.

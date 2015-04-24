@@ -347,6 +347,15 @@ specifier|private
 name|Job
 name|job
 decl_stmt|;
+DECL|field|taskId
+specifier|private
+specifier|static
+specifier|final
+name|String
+name|taskId
+init|=
+literal|"task_01_01_m_01"
+decl_stmt|;
 annotation|@
 name|Before
 DECL|method|setUp ()
@@ -582,7 +591,7 @@ name|AMParams
 operator|.
 name|TASK_ID
 argument_list|,
-literal|"task_01_01_m01_01"
+name|taskId
 argument_list|)
 expr_stmt|;
 block|}
@@ -1278,7 +1287,7 @@ name|AMParams
 operator|.
 name|TASK_ID
 argument_list|,
-literal|"task_01_01_m01_01"
+name|taskId
 argument_list|)
 expr_stmt|;
 name|appController
@@ -1430,7 +1439,9 @@ argument_list|()
 expr_stmt|;
 name|assertEquals
 argument_list|(
-literal|"Attempts for task_01_01_m01_01"
+literal|"Attempts for "
+operator|+
+name|taskId
 argument_list|,
 name|appController
 operator|.
@@ -1626,7 +1637,7 @@ name|AMParams
 operator|.
 name|TASK_ID
 argument_list|,
-literal|"task_01_01_m01_01"
+name|taskId
 argument_list|)
 expr_stmt|;
 name|appController

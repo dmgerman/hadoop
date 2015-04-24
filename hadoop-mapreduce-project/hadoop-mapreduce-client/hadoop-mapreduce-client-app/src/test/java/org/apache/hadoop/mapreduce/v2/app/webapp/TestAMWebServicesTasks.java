@@ -152,6 +152,20 @@ name|hadoop
 operator|.
 name|mapreduce
 operator|.
+name|TaskID
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|mapreduce
+operator|.
 name|v2
 operator|.
 name|api
@@ -3025,13 +3039,21 @@ argument_list|)
 decl_stmt|;
 name|WebServicesTestUtils
 operator|.
-name|checkStringMatch
+name|checkStringEqual
 argument_list|(
 literal|"exception message"
 argument_list|,
 literal|"java.lang.Exception: TaskId string : "
 operator|+
 literal|"bogustaskid is not properly formed"
+operator|+
+literal|"\nReason: java.util.regex.Matcher[pattern="
+operator|+
+name|TaskID
+operator|.
+name|TASK_ID_REGEX
+operator|+
+literal|" region=0,11 lastmatch=]"
 argument_list|,
 name|message
 argument_list|)
@@ -3521,13 +3543,21 @@ argument_list|)
 decl_stmt|;
 name|WebServicesTestUtils
 operator|.
-name|checkStringMatch
+name|checkStringEqual
 argument_list|(
 literal|"exception message"
 argument_list|,
-literal|"java.lang.Exception: Bad TaskType identifier. TaskId string : "
+literal|"java.lang.Exception: TaskId string : "
 operator|+
-literal|"task_0_0000_d_000000 is not properly formed."
+literal|"task_0_0000_d_000000 is not properly formed"
+operator|+
+literal|"\nReason: java.util.regex.Matcher[pattern="
+operator|+
+name|TaskID
+operator|.
+name|TASK_ID_REGEX
+operator|+
+literal|" region=0,20 lastmatch=]"
 argument_list|,
 name|message
 argument_list|)
@@ -3770,13 +3800,21 @@ argument_list|)
 decl_stmt|;
 name|WebServicesTestUtils
 operator|.
-name|checkStringMatch
+name|checkStringEqual
 argument_list|(
 literal|"exception message"
 argument_list|,
 literal|"java.lang.Exception: TaskId string : "
 operator|+
 literal|"task_0_m_000000 is not properly formed"
+operator|+
+literal|"\nReason: java.util.regex.Matcher[pattern="
+operator|+
+name|TaskID
+operator|.
+name|TASK_ID_REGEX
+operator|+
+literal|" region=0,15 lastmatch=]"
 argument_list|,
 name|message
 argument_list|)
@@ -4019,13 +4057,21 @@ argument_list|)
 decl_stmt|;
 name|WebServicesTestUtils
 operator|.
-name|checkStringMatch
+name|checkStringEqual
 argument_list|(
 literal|"exception message"
 argument_list|,
 literal|"java.lang.Exception: TaskId string : "
 operator|+
 literal|"task_0_0000_m is not properly formed"
+operator|+
+literal|"\nReason: java.util.regex.Matcher[pattern="
+operator|+
+name|TaskID
+operator|.
+name|TASK_ID_REGEX
+operator|+
+literal|" region=0,13 lastmatch=]"
 argument_list|,
 name|message
 argument_list|)
