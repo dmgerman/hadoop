@@ -1339,6 +1339,13 @@ parameter_list|()
 throws|throws
 name|IOException
 block|{
+if|if
+condition|(
+literal|null
+operator|!=
+name|nmStore
+condition|)
+block|{
 name|nmStore
 operator|.
 name|stop
@@ -1436,6 +1443,7 @@ operator|+
 name|recoveryRoot
 argument_list|)
 expr_stmt|;
+block|}
 block|}
 block|}
 block|}
