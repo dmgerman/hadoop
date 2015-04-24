@@ -743,6 +743,16 @@ name|IOException
 block|{
 comment|// do nothing
 block|}
+DECL|method|getSupportsReceiptVerification ()
+specifier|public
+name|boolean
+name|getSupportsReceiptVerification
+parameter_list|()
+block|{
+return|return
+literal|true
+return|;
+block|}
 block|}
 annotation|@
 name|VisibleForTesting
@@ -2287,7 +2297,10 @@ name|slotId
 argument_list|,
 literal|1
 argument_list|,
-literal|true
+name|failureInjector
+operator|.
+name|getSupportsReceiptVerification
+argument_list|()
 argument_list|)
 expr_stmt|;
 name|DataInputStream

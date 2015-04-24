@@ -1297,7 +1297,10 @@ operator|.
 name|getMaxVersion
 argument_list|()
 argument_list|,
-literal|true
+name|proto
+operator|.
+name|getSupportsReceiptVerification
+argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
