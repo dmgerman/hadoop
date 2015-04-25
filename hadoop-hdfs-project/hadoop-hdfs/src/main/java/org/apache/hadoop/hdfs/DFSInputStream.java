@@ -922,7 +922,7 @@ name|DFSClient
 name|dfsClient
 decl_stmt|;
 DECL|field|closed
-specifier|private
+specifier|protected
 name|AtomicBoolean
 name|closed
 init|=
@@ -933,13 +933,13 @@ literal|false
 argument_list|)
 decl_stmt|;
 DECL|field|src
-specifier|private
+specifier|protected
 specifier|final
 name|String
 name|src
 decl_stmt|;
 DECL|field|verifyChecksum
-specifier|private
+specifier|protected
 specifier|final
 name|boolean
 name|verifyChecksum
@@ -955,21 +955,21 @@ init|=
 literal|null
 decl_stmt|;
 DECL|field|currentLocatedBlock
-specifier|private
+specifier|protected
 name|LocatedBlock
 name|currentLocatedBlock
 init|=
 literal|null
 decl_stmt|;
 DECL|field|pos
-specifier|private
+specifier|protected
 name|long
 name|pos
 init|=
 literal|0
 decl_stmt|;
 DECL|field|blockEnd
-specifier|private
+specifier|protected
 name|long
 name|blockEnd
 init|=
@@ -988,7 +988,7 @@ comment|// state shared by stateful and positional read:
 comment|// (protected by lock on infoLock)
 comment|////
 DECL|field|locatedBlocks
-specifier|private
+specifier|protected
 name|LocatedBlocks
 name|locatedBlocks
 init|=
@@ -1009,13 +1009,13 @@ init|=
 literal|null
 decl_stmt|;
 DECL|field|cachingStrategy
-specifier|private
+specifier|protected
 name|CachingStrategy
 name|cachingStrategy
 decl_stmt|;
 comment|////
 DECL|field|readStatistics
-specifier|private
+specifier|protected
 specifier|final
 name|ReadStatistics
 name|readStatistics
@@ -1028,7 +1028,7 @@ comment|// lock for state shared between read and pread
 comment|// Note: Never acquire a lock on<this> with this lock held to avoid deadlocks
 comment|//       (it's OK to acquire this lock when the lock on<this> is held)
 DECL|field|infoLock
-specifier|private
+specifier|protected
 specifier|final
 name|Object
 name|infoLock
@@ -1351,7 +1351,7 @@ decl_stmt|;
 block|}
 comment|/**    * This variable tracks the number of failures since the start of the    * most recent user-facing operation. That is to say, it should be reset    * whenever the user makes a call on this stream, and if at any point    * during the retry logic, the failure count exceeds a threshold,    * the errors will be thrown back to the operation.    *    * Specifically this counts the number of times the client has gone    * back to the namenode to get a new list of block locations, and is    * capped at maxBlockAcquireFailures    */
 DECL|field|failures
-specifier|private
+specifier|protected
 name|int
 name|failures
 init|=
@@ -2340,7 +2340,7 @@ block|}
 block|}
 comment|/** Fetch a block from namenode and cache it */
 DECL|method|fetchBlockAt (long offset)
-specifier|private
+specifier|protected
 name|void
 name|fetchBlockAt
 parameter_list|(
@@ -2808,7 +2808,7 @@ argument_list|)
 throw|;
 block|}
 comment|// Will be getting a new BlockReader.
-name|closeCurrentBlockReader
+name|closeCurrentBlockReaders
 argument_list|()
 expr_stmt|;
 comment|//
@@ -3392,7 +3392,7 @@ literal|"."
 argument_list|)
 expr_stmt|;
 block|}
-name|closeCurrentBlockReader
+name|closeCurrentBlockReaders
 argument_list|()
 expr_stmt|;
 name|super
@@ -3486,7 +3486,7 @@ name|IOException
 function_decl|;
 block|}
 DECL|method|updateReadStatistics (ReadStatistics readStatistics, int nRead, BlockReader blockReader)
-specifier|private
+specifier|protected
 name|void
 name|updateReadStatistics
 parameter_list|(
@@ -3638,7 +3638,7 @@ block|}
 block|}
 comment|/**    * Used to read bytes into a user-supplied ByteBuffer    */
 DECL|class|ByteBufferStrategy
-specifier|private
+specifier|protected
 class|class
 name|ByteBufferStrategy
 implements|implements
@@ -3730,6 +3730,23 @@ argument_list|,
 name|blockReader
 argument_list|)
 expr_stmt|;
+if|if
+condition|(
+name|ret
+operator|==
+literal|0
+condition|)
+block|{
+name|DFSClient
+operator|.
+name|LOG
+operator|.
+name|warn
+argument_list|(
+literal|"zero"
+argument_list|)
+expr_stmt|;
+block|}
 return|return
 name|ret
 return|;
@@ -3961,7 +3978,7 @@ expr_stmt|;
 block|}
 block|}
 DECL|method|readWithStrategy (ReaderStrategy strategy, int off, int len)
-specifier|private
+specifier|protected
 specifier|synchronized
 name|int
 name|readWithStrategy
@@ -4403,7 +4420,7 @@ block|}
 block|}
 comment|/**    * Add corrupted block replica into map.    */
 DECL|method|addIntoCorruptedBlockMap (ExtendedBlock blk, DatanodeInfo node, Map<ExtendedBlock, Set<DatanodeInfo>> corruptedBlockMap)
-specifier|private
+specifier|protected
 name|void
 name|addIntoCorruptedBlockMap
 parameter_list|(
@@ -4783,7 +4800,7 @@ block|}
 block|}
 comment|/**    * Get the best node from which to stream the data.    * @param block LocatedBlock, containing nodes in priority order.    * @param ignoredNodes Do not choose nodes in this array (may be null)    * @return The DNAddrPair of the best node. Null if no node can be chosen.    */
 DECL|method|getBestNodeDNAddrPair (LocatedBlock block, Collection<DatanodeInfo> ignoredNodes)
-specifier|private
+specifier|protected
 name|DNAddrPair
 name|getBestNodeDNAddrPair
 parameter_list|(
@@ -6781,7 +6798,7 @@ block|}
 block|}
 comment|/**    * Should the block access token be refetched on an exception    *     * @param ex Exception received    * @param targetAddr Target datanode address from where exception was received    * @return true if block access token has expired or invalid and it should be    *         refetched    */
 DECL|method|tokenRefetchNeeded (IOException ex, InetSocketAddress targetAddr)
-specifier|private
+specifier|protected
 specifier|static
 name|boolean
 name|tokenRefetchNeeded
@@ -7195,7 +7212,7 @@ return|;
 block|}
 comment|/**    * DFSInputStream reports checksum failure.    * Case I : client has tried multiple data nodes and at least one of the    * attempts has succeeded. We report the other failures as corrupted block to    * namenode.     * Case II: client has tried out all data nodes, but all failed. We    * only report if the total number of replica is 1. We do not    * report otherwise since this maybe due to the client is a handicapped client    * (who can not read).    * @param corruptedBlockMap map of corrupted blocks    * @param dataNodeCount number of data nodes who contains the block replicas    */
 DECL|method|reportCheckSumFailure ( Map<ExtendedBlock, Set<DatanodeInfo>> corruptedBlockMap, int dataNodeCount)
-specifier|private
+specifier|protected
 name|void
 name|reportCheckSumFailure
 parameter_list|(
@@ -8020,10 +8037,10 @@ name|fileEncryptionInfo
 return|;
 block|}
 block|}
-DECL|method|closeCurrentBlockReader ()
-specifier|private
+DECL|method|closeCurrentBlockReaders ()
+specifier|protected
 name|void
-name|closeCurrentBlockReader
+name|closeCurrentBlockReaders
 parameter_list|()
 block|{
 if|if
@@ -8113,7 +8130,7 @@ name|build
 argument_list|()
 expr_stmt|;
 block|}
-name|closeCurrentBlockReader
+name|closeCurrentBlockReaders
 argument_list|()
 expr_stmt|;
 block|}
@@ -8159,7 +8176,7 @@ name|build
 argument_list|()
 expr_stmt|;
 block|}
-name|closeCurrentBlockReader
+name|closeCurrentBlockReaders
 argument_list|()
 expr_stmt|;
 block|}
@@ -8964,7 +8981,7 @@ name|void
 name|unbuffer
 parameter_list|()
 block|{
-name|closeCurrentBlockReader
+name|closeCurrentBlockReaders
 argument_list|()
 expr_stmt|;
 block|}
