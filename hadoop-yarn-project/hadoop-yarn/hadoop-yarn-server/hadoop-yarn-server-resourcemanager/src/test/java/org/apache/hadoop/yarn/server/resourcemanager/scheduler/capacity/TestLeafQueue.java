@@ -6010,6 +6010,8 @@ name|u0Priority
 argument_list|)
 argument_list|,
 literal|null
+argument_list|,
+literal|null
 argument_list|)
 expr_stmt|;
 name|qb
@@ -6026,6 +6028,8 @@ name|getResource
 argument_list|(
 name|u1Priority
 argument_list|)
+argument_list|,
+literal|null
 argument_list|,
 literal|null
 argument_list|)

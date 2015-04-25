@@ -1971,6 +1971,7 @@ name|PartitionedQueueComparator
 argument_list|()
 decl_stmt|;
 DECL|field|applicationComparator
+specifier|public
 specifier|static
 specifier|final
 name|Comparator
