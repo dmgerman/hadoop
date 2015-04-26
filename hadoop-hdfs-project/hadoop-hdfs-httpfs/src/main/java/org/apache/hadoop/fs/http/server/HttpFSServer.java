@@ -1040,7 +1040,7 @@ argument_list|(
 literal|"httpfsaudit"
 argument_list|)
 decl_stmt|;
-comment|/**    * Executes a {@link FileSystemAccess.FileSystemExecutor} using a filesystem for the effective    * user.    *    * @param ugi user making the request.    * @param executor FileSystemExecutor to execute.    *    * @return FileSystemExecutor response    *    * @throws IOException thrown if an IO error occurrs.    * @throws FileSystemAccessException thrown if a FileSystemAccess releated error occurred. Thrown    * exceptions are handled by {@link HttpFSExceptionProvider}.    */
+comment|/**    * Executes a {@link FileSystemAccess.FileSystemExecutor} using a filesystem for the effective    * user.    *    * @param ugi user making the request.    * @param executor FileSystemExecutor to execute.    *    * @return FileSystemExecutor response    *    * @throws IOException thrown if an IO error occurs.    * @throws FileSystemAccessException thrown if a FileSystemAccess releated error occurred. Thrown    * exceptions are handled by {@link HttpFSExceptionProvider}.    */
 DECL|method|fsExecute (UserGroupInformation ugi, FileSystemAccess.FileSystemExecutor<T> executor)
 specifier|private
 parameter_list|<

@@ -164,7 +164,7 @@ parameter_list|)
 throws|throws
 name|ServletException
 block|{   }
-comment|/**    * Sets the slf4j<code>MDC</code> and delegates the request to the chain.    *    * @param request servlet request.    * @param response servlet response.    * @param chain filter chain.    *    * @throws IOException thrown if an IO error occurrs.    * @throws ServletException thrown if a servet error occurrs.    */
+comment|/**    * Sets the slf4j<code>MDC</code> and delegates the request to the chain.    *    * @param request servlet request.    * @param response servlet response.    * @param chain filter chain.    *    * @throws IOException thrown if an IO error occurs.    * @throws ServletException thrown if a servlet error occurs.    */
 annotation|@
 name|Override
 DECL|method|doFilter (ServletRequest request, ServletResponse response, FilterChain chain)

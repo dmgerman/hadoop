@@ -258,7 +258,7 @@ parameter_list|)
 throws|throws
 name|ServletException
 block|{   }
-comment|/**    * Enforces the content-type to be application/octet-stream for    * POST and PUT requests.    *    * @param request servlet request.    * @param response servlet response.    * @param chain filter chain.    *    * @throws IOException thrown if an IO error occurrs.    * @throws ServletException thrown if a servet error occurrs.    */
+comment|/**    * Enforces the content-type to be application/octet-stream for    * POST and PUT requests.    *    * @param request servlet request.    * @param response servlet response.    * @param chain filter chain.    *    * @throws IOException thrown if an IO error occurs.    * @throws ServletException thrown if a servlet error occurs.    */
 annotation|@
 name|Override
 DECL|method|doFilter (ServletRequest request, ServletResponse response, FilterChain chain)

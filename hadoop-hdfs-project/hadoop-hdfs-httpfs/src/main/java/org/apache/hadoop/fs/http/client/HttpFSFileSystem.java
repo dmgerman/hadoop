@@ -1717,7 +1717,7 @@ decl_stmt|;
 end_decl_stmt
 
 begin_comment
-comment|/**    * Convenience method that creates a<code>HttpURLConnection</code> for the    * HttpFSServer file system operations.    *<p>    * This methods performs and injects any needed authentication credentials    * via the {@link #getConnection(URL, String)} method    *    * @param method the HTTP method.    * @param params the query string parameters.    * @param path the file path    * @param makeQualified if the path should be 'makeQualified'    *    * @return a<code>HttpURLConnection</code> for the HttpFSServer server,    *         authenticated and ready to use for the specified path and file system operation.    *    * @throws IOException thrown if an IO error occurrs.    */
+comment|/**    * Convenience method that creates a<code>HttpURLConnection</code> for the    * HttpFSServer file system operations.    *<p>    * This methods performs and injects any needed authentication credentials    * via the {@link #getConnection(URL, String)} method    *    * @param method the HTTP method.    * @param params the query string parameters.    * @param path the file path    * @param makeQualified if the path should be 'makeQualified'    *    * @return a<code>HttpURLConnection</code> for the HttpFSServer server,    *         authenticated and ready to use for the specified path and file system operation.    *    * @throws IOException thrown if an IO error occurs.    */
 end_comment
 
 begin_function
@@ -1765,7 +1765,7 @@ block|}
 end_function
 
 begin_comment
-comment|/**    * Convenience method that creates a<code>HttpURLConnection</code> for the    * HttpFSServer file system operations.    *<p/>    * This methods performs and injects any needed authentication credentials    * via the {@link #getConnection(URL, String)} method    *    * @param method the HTTP method.    * @param params the query string parameters.    * @param multiValuedParams multi valued parameters of the query string    * @param path the file path    * @param makeQualified if the path should be 'makeQualified'    *    * @return HttpURLConnection a<code>HttpURLConnection</code> for the    *         HttpFSServer server, authenticated and ready to use for the    *         specified path and file system operation.    *    * @throws IOException thrown if an IO error occurrs.    */
+comment|/**    * Convenience method that creates a<code>HttpURLConnection</code> for the    * HttpFSServer file system operations.    *<p/>    * This methods performs and injects any needed authentication credentials    * via the {@link #getConnection(URL, String)} method    *    * @param method the HTTP method.    * @param params the query string parameters.    * @param multiValuedParams multi valued parameters of the query string    * @param path the file path    * @param makeQualified if the path should be 'makeQualified'    *    * @return HttpURLConnection a<code>HttpURLConnection</code> for the    *         HttpFSServer server, authenticated and ready to use for the    *         specified path and file system operation.    *    * @throws IOException thrown if an IO error occurs.    */
 end_comment
 
 begin_function
@@ -1908,7 +1908,7 @@ block|}
 end_function
 
 begin_comment
-comment|/**    * Convenience method that creates a<code>HttpURLConnection</code> for the specified URL.    *<p>    * This methods performs and injects any needed authentication credentials.    *    * @param url url to connect to.    * @param method the HTTP method.    *    * @return a<code>HttpURLConnection</code> for the HttpFSServer server, authenticated and ready to use for    *         the specified path and file system operation.    *    * @throws IOException thrown if an IO error occurrs.    */
+comment|/**    * Convenience method that creates a<code>HttpURLConnection</code> for the specified URL.    *<p>    * This methods performs and injects any needed authentication credentials.    *    * @param url url to connect to.    * @param method the HTTP method.    *    * @return a<code>HttpURLConnection</code> for the HttpFSServer server, authenticated and ready to use for    *         the specified path and file system operation.    *    * @throws IOException thrown if an IO error occurs.    */
 end_comment
 
 begin_function
