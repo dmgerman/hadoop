@@ -46,6 +46,20 @@ name|InterfaceAudience
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|metrics2
+operator|.
+name|MetricsSource
+import|;
+end_import
+
 begin_comment
 comment|/**  *   * This Interface defines the methods to get the status of a the FSDataset of  * a data node.  * It is also used for publishing via JMX (hence we follow the JMX naming  * convention.)   *  * Note we have not used the MetricsDynamicMBeanBase to implement this  * because the interface for the FSDatasetMBean is stable and should  * be published as an interface.  *   *<p>  * Data Node runtime statistic  info is report in another MBean  * @see org.apache.hadoop.hdfs.server.datanode.metrics.DataNodeMetrics  *  */
 end_comment
@@ -59,6 +73,8 @@ DECL|interface|FSDatasetMBean
 specifier|public
 interface|interface
 name|FSDatasetMBean
+extends|extends
+name|MetricsSource
 block|{
 comment|/**    * Returns the total space (in bytes) used by a block pool    * @return  the total space used by a block pool    * @throws IOException    */
 DECL|method|getBlockPoolUsed (String bpid)
