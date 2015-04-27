@@ -3928,8 +3928,10 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
+annotation|@
+name|VisibleForTesting
 DECL|method|scanDirectory (Path path, FileContext fc, PathFilter pathFilter)
-specifier|private
+specifier|protected
 specifier|static
 name|List
 argument_list|<
@@ -3971,6 +3973,8 @@ name|FileStatus
 argument_list|>
 argument_list|()
 decl_stmt|;
+try|try
+block|{
 name|RemoteIterator
 argument_list|<
 name|FileStatus
@@ -4031,6 +4035,25 @@ name|fileStatus
 argument_list|)
 expr_stmt|;
 block|}
+block|}
+block|}
+catch|catch
+parameter_list|(
+name|FileNotFoundException
+name|fe
+parameter_list|)
+block|{
+name|LOG
+operator|.
+name|error
+argument_list|(
+literal|"Error while scanning directory "
+operator|+
+name|path
+argument_list|,
+name|fe
+argument_list|)
+expr_stmt|;
 block|}
 return|return
 name|jhStatusList
