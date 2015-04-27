@@ -6182,6 +6182,34 @@ name|DEFAULT_NODELABEL_CONFIGURATION_TYPE
 init|=
 name|CENTALIZED_NODELABEL_CONFIGURATION_TYPE
 decl_stmt|;
+annotation|@
+name|Private
+DECL|method|isDistributedNodeLabelConfiguration (Configuration conf)
+specifier|public
+specifier|static
+name|boolean
+name|isDistributedNodeLabelConfiguration
+parameter_list|(
+name|Configuration
+name|conf
+parameter_list|)
+block|{
+return|return
+name|DISTRIBUTED_NODELABEL_CONFIGURATION_TYPE
+operator|.
+name|equals
+argument_list|(
+name|conf
+operator|.
+name|get
+argument_list|(
+name|NODELABEL_CONFIGURATION_TYPE
+argument_list|,
+name|DEFAULT_NODELABEL_CONFIGURATION_TYPE
+argument_list|)
+argument_list|)
+return|;
+block|}
 DECL|method|YarnConfiguration ()
 specifier|public
 name|YarnConfiguration

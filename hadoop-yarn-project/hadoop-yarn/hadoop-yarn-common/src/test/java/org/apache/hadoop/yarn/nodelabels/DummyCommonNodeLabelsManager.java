@@ -200,7 +200,10 @@ name|Override
 specifier|public
 name|void
 name|recover
-parameter_list|()
+parameter_list|(
+name|boolean
+name|ignoreNodeToLabelsMappings
+parameter_list|)
 throws|throws
 name|IOException
 block|{       }

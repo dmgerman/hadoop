@@ -1256,6 +1256,14 @@ argument_list|(
 literal|null
 argument_list|)
 decl_stmt|;
+annotation|@
+name|VisibleForTesting
+DECL|field|isDistributedNodeLabelConfiguration
+name|boolean
+name|isDistributedNodeLabelConfiguration
+init|=
+literal|false
+decl_stmt|;
 DECL|method|AdminService (ResourceManager rm, RMContext rmContext)
 specifier|public
 name|AdminService
@@ -1416,6 +1424,15 @@ argument_list|(
 name|YarnConfiguration
 operator|.
 name|RM_HA_ID
+argument_list|)
+expr_stmt|;
+name|isDistributedNodeLabelConfiguration
+operator|=
+name|YarnConfiguration
+operator|.
+name|isDistributedNodeLabelConfiguration
+argument_list|(
+name|conf
 argument_list|)
 expr_stmt|;
 name|super
@@ -3688,7 +3705,7 @@ throws|,
 name|IOException
 block|{
 name|String
-name|argName
+name|operation
 init|=
 literal|"removeFromClusterNodeLabels"
 decl_stmt|;
@@ -3703,7 +3720,7 @@ name|user
 init|=
 name|checkAcls
 argument_list|(
-name|argName
+name|operation
 argument_list|)
 decl_stmt|;
 name|checkRMStatus
@@ -3713,7 +3730,7 @@ operator|.
 name|getShortUserName
 argument_list|()
 argument_list|,
-name|argName
+name|operation
 argument_list|,
 name|msg
 argument_list|)
@@ -3754,7 +3771,7 @@ operator|.
 name|getShortUserName
 argument_list|()
 argument_list|,
-name|argName
+name|operation
 argument_list|,
 literal|"AdminService"
 argument_list|)
@@ -3779,7 +3796,7 @@ operator|.
 name|getShortUserName
 argument_list|()
 argument_list|,
-name|argName
+name|operation
 argument_list|,
 name|msg
 argument_list|)
@@ -3802,7 +3819,7 @@ throws|,
 name|IOException
 block|{
 name|String
-name|argName
+name|operation
 init|=
 literal|"replaceLabelsOnNode"
 decl_stmt|;
@@ -3812,12 +3829,17 @@ name|msg
 init|=
 literal|"set node to labels."
 decl_stmt|;
+name|checkAndThrowIfDistributedNodeLabelConfEnabled
+argument_list|(
+name|operation
+argument_list|)
+expr_stmt|;
 name|UserGroupInformation
 name|user
 init|=
 name|checkAcls
 argument_list|(
-name|argName
+name|operation
 argument_list|)
 decl_stmt|;
 name|checkRMStatus
@@ -3827,7 +3849,7 @@ operator|.
 name|getShortUserName
 argument_list|()
 argument_list|,
-name|argName
+name|operation
 argument_list|,
 name|msg
 argument_list|)
@@ -3868,7 +3890,7 @@ operator|.
 name|getShortUserName
 argument_list|()
 argument_list|,
-name|argName
+name|operation
 argument_list|,
 literal|"AdminService"
 argument_list|)
@@ -3893,14 +3915,14 @@ operator|.
 name|getShortUserName
 argument_list|()
 argument_list|,
-name|argName
+name|operation
 argument_list|,
 name|msg
 argument_list|)
 throw|;
 block|}
 block|}
-DECL|method|checkRMStatus (String user, String argName, String msg)
+DECL|method|checkRMStatus (String user, String operation, String msg)
 specifier|private
 name|void
 name|checkRMStatus
@@ -3909,7 +3931,7 @@ name|String
 name|user
 parameter_list|,
 name|String
-name|argName
+name|operation
 parameter_list|,
 name|String
 name|msg
@@ -3930,7 +3952,7 @@ name|logFailure
 argument_list|(
 name|user
 argument_list|,
-name|argName
+name|operation
 argument_list|,
 literal|""
 argument_list|,
@@ -3946,7 +3968,7 @@ argument_list|()
 expr_stmt|;
 block|}
 block|}
-DECL|method|logAndWrapException (Exception exception, String user, String argName, String msg)
+DECL|method|logAndWrapException (Exception exception, String user, String operation, String msg)
 specifier|private
 name|YarnException
 name|logAndWrapException
@@ -3958,7 +3980,7 @@ name|String
 name|user
 parameter_list|,
 name|String
-name|argName
+name|operation
 parameter_list|,
 name|String
 name|msg
@@ -3983,7 +4005,7 @@ name|logFailure
 argument_list|(
 name|user
 argument_list|,
-name|argName
+name|operation
 argument_list|,
 literal|""
 argument_list|,
@@ -4002,6 +4024,57 @@ argument_list|(
 name|exception
 argument_list|)
 return|;
+block|}
+DECL|method|checkAndThrowIfDistributedNodeLabelConfEnabled (String operation)
+specifier|private
+name|void
+name|checkAndThrowIfDistributedNodeLabelConfEnabled
+parameter_list|(
+name|String
+name|operation
+parameter_list|)
+throws|throws
+name|YarnException
+block|{
+if|if
+condition|(
+name|isDistributedNodeLabelConfiguration
+condition|)
+block|{
+name|String
+name|msg
+init|=
+name|String
+operator|.
+name|format
+argument_list|(
+literal|"Error when invoke method=%s because of "
+operator|+
+literal|"distributed node label configuration enabled."
+argument_list|,
+name|operation
+argument_list|)
+decl_stmt|;
+name|LOG
+operator|.
+name|error
+argument_list|(
+name|msg
+argument_list|)
+expr_stmt|;
+throw|throw
+name|RPCUtil
+operator|.
+name|getRemoteException
+argument_list|(
+operator|new
+name|IOException
+argument_list|(
+name|msg
+argument_list|)
+argument_list|)
+throw|;
+block|}
 block|}
 annotation|@
 name|Override

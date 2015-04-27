@@ -227,13 +227,16 @@ parameter_list|)
 throws|throws
 name|IOException
 function_decl|;
-comment|/**    * Recover labels and node to labels mappings from store    */
-DECL|method|recover ()
+comment|/**    * Recover labels and node to labels mappings from store, but if    * ignoreNodeToLabelsMappings is true then node to labels mappings should not    * be recovered. In case of Distributed NodeLabels setup    * ignoreNodeToLabelsMappings will be set to true and recover will be invoked    * as RM will collect the node labels from NM through registration/HB    *    * @param ignoreNodeToLabelsMappings    * @throws IOException    * @throws YarnException    */
+DECL|method|recover (boolean ignoreNodeToLabelsMappings)
 specifier|public
 specifier|abstract
 name|void
 name|recover
-parameter_list|()
+parameter_list|(
+name|boolean
+name|ignoreNodeToLabelsMappings
+parameter_list|)
 throws|throws
 name|IOException
 throws|,

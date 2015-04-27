@@ -751,6 +751,13 @@ name|nodeLabelsEnabled
 init|=
 literal|false
 decl_stmt|;
+DECL|field|isDistributedNodeLabelConfiguration
+specifier|private
+name|boolean
+name|isDistributedNodeLabelConfiguration
+init|=
+literal|false
+decl_stmt|;
 comment|/**    * A<code>Host</code> can have multiple<code>Node</code>s     */
 DECL|class|Host
 specifier|protected
@@ -1276,6 +1283,15 @@ operator|.
 name|DEFAULT_NODE_LABELS_ENABLED
 argument_list|)
 expr_stmt|;
+name|isDistributedNodeLabelConfiguration
+operator|=
+name|YarnConfiguration
+operator|.
+name|isDistributedNodeLabelConfiguration
+argument_list|(
+name|conf
+argument_list|)
+expr_stmt|;
 if|if
 condition|(
 name|nodeLabelsEnabled
@@ -1336,7 +1352,9 @@ operator|.
 name|store
 operator|.
 name|recover
-argument_list|()
+argument_list|(
+name|isDistributedNodeLabelConfiguration
+argument_list|)
 expr_stmt|;
 block|}
 comment|// for UT purpose
@@ -3252,8 +3270,14 @@ condition|(
 literal|null
 operator|!=
 name|dispatcher
+operator|&&
+operator|!
+name|isDistributedNodeLabelConfiguration
 condition|)
 block|{
+comment|// In case of DistributedNodeLabelConfiguration, no need to save the the
+comment|// NodeLabels Mapping to the back-end store, as on RM restart/failover
+comment|// NodeLabels are collected from NM through Register/Heartbeat again
 name|dispatcher
 operator|.
 name|getEventHandler
@@ -4106,6 +4130,20 @@ name|values
 argument_list|()
 control|)
 block|{
+if|if
+condition|(
+operator|!
+name|label
+operator|.
+name|getLabelName
+argument_list|()
+operator|.
+name|equals
+argument_list|(
+name|NO_LABEL
+argument_list|)
+condition|)
+block|{
 name|nodeLabels
 operator|.
 name|add
@@ -4126,6 +4164,7 @@ argument_list|()
 argument_list|)
 argument_list|)
 expr_stmt|;
+block|}
 block|}
 return|return
 name|nodeLabels

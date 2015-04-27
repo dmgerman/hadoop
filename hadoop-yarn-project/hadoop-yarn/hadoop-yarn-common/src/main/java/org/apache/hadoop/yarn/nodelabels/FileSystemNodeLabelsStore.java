@@ -979,13 +979,17 @@ name|ensureCloseEditlogFile
 argument_list|()
 expr_stmt|;
 block|}
+comment|/* (non-Javadoc)    * @see org.apache.hadoop.yarn.nodelabels.NodeLabelsStore#recover(boolean)    */
 annotation|@
 name|Override
-DECL|method|recover ()
+DECL|method|recover (boolean ignoreNodeToLabelsMappings)
 specifier|public
 name|void
 name|recover
-parameter_list|()
+parameter_list|(
+name|boolean
+name|ignoreNodeToLabelsMappings
+parameter_list|)
 throws|throws
 name|YarnException
 throws|,
@@ -1283,6 +1287,13 @@ operator|.
 name|getNodeToLabels
 argument_list|()
 decl_stmt|;
+if|if
+condition|(
+operator|!
+name|ignoreNodeToLabelsMappings
+condition|)
+block|{
+comment|/*                * In case of Distributed NodeLabels setup,                * ignoreNodeToLabelsMappings will be set to true and recover will                * be invoked. As RM will collect the node labels from NM through                * registration/HB                */
 name|mgr
 operator|.
 name|replaceLabelsOnNode
@@ -1290,6 +1301,7 @@ argument_list|(
 name|map
 argument_list|)
 expr_stmt|;
+block|}
 break|break;
 block|}
 block|}
