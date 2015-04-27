@@ -120,6 +120,16 @@ specifier|public
 interface|interface
 name|MRJobConfig
 block|{
+comment|// Used by MapTask
+DECL|field|MAP_SORT_CLASS
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|MAP_SORT_CLASS
+init|=
+literal|"map.sort.class"
+decl_stmt|;
 comment|// Put all of the attribute names in here so that Job and JobContext are
 comment|// consistent.
 DECL|field|INPUT_FORMAT_CLASS_ATTR

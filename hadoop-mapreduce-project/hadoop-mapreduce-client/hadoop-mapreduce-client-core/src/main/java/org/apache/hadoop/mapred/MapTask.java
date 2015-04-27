@@ -5968,7 +5968,9 @@ name|job
 operator|.
 name|getClass
 argument_list|(
-literal|"map.sort.class"
+name|MRJobConfig
+operator|.
+name|MAP_SORT_CLASS
 argument_list|,
 name|QuickSort
 operator|.
