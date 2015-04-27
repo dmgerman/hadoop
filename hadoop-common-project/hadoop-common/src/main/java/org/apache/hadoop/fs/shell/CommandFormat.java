@@ -153,12 +153,12 @@ decl_stmt|;
 comment|/**    * @deprecated use replacement since name is an unused parameter    * @param name of command, but never used    * @param min see replacement    * @param max see replacement    * @param possibleOpt see replacement    * @see #CommandFormat(int, int, String...)    */
 annotation|@
 name|Deprecated
-DECL|method|CommandFormat (String n, int min, int max, String ... possibleOpt)
+DECL|method|CommandFormat (String name, int min, int max, String ... possibleOpt)
 specifier|public
 name|CommandFormat
 parameter_list|(
 name|String
-name|n
+name|name
 parameter_list|,
 name|int
 name|min
