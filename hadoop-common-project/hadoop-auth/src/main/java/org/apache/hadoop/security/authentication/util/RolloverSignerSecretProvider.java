@@ -198,7 +198,7 @@ operator|=
 literal|false
 expr_stmt|;
 block|}
-comment|/**    * Initialize the SignerSecretProvider.  It initializes the current secret    * and starts the scheduler for the rollover to run at an interval of    * tokenValidity.    * @param config configuration properties    * @param servletContext servlet context    * @param tokenValidity The amount of time a token is valid for    * @throws Exception    */
+comment|/**    * Initialize the SignerSecretProvider.  It initializes the current secret    * and starts the scheduler for the rollover to run at an interval of    * tokenValidity.    * @param config configuration properties    * @param servletContext servlet context    * @param tokenValidity The amount of time a token is valid for    * @throws Exception thrown if an error occurred    */
 annotation|@
 name|Override
 DECL|method|init (Properties config, ServletContext servletContext, long tokenValidity)

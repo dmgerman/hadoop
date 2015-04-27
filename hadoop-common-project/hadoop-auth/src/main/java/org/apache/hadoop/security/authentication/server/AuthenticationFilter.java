@@ -2081,7 +2081,7 @@ block|}
 block|}
 block|}
 block|}
-comment|/**    * Delegates call to the servlet filter chain. Sub-classes my override this    * method to perform pre and post tasks.    */
+comment|/**    * Delegates call to the servlet filter chain. Sub-classes my override this    * method to perform pre and post tasks.    *    * @param filterChain the filter chain object.    * @param request the request object.    * @param response the response object.    *    * @throws IOException thrown if an IO error occurred.    * @throws ServletException thrown if a processing error occurred.    */
 DECL|method|doFilter (FilterChain filterChain, HttpServletRequest request, HttpServletResponse response)
 specifier|protected
 name|void
@@ -2111,7 +2111,7 @@ name|response
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Creates the Hadoop authentication HTTP cookie.    *    * @param token authentication token for the cookie.    * @param expires UNIX timestamp that indicates the expire date of the    *                cookie. It has no effect if its value&lt; 0.    *    * XXX the following code duplicate some logic in Jetty / Servlet API,    * because of the fact that Hadoop is stuck at servlet 2.5 and jetty 6    * right now.    */
+comment|/**    * Creates the Hadoop authentication HTTP cookie.    *    * @param resp the response object.    * @param token authentication token for the cookie.    * @param domain the cookie domain.    * @param path the cokie path.    * @param expires UNIX timestamp that indicates the expire date of the    *                cookie. It has no effect if its value&lt; 0.    * @param isSecure is the cookie secure?    * @param token the token.    * @param expires the cookie expiration time.    *    * XXX the following code duplicate some logic in Jetty / Servlet API,    * because of the fact that Hadoop is stuck at servlet 2.5 and jetty 6    * right now.    */
 DECL|method|createAuthCookie (HttpServletResponse resp, String token, String domain, String path, long expires, boolean isSecure)
 specifier|public
 specifier|static

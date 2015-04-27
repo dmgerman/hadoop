@@ -132,7 +132,7 @@ name|PEM_FOOTER
 init|=
 literal|"\n-----END CERTIFICATE-----"
 decl_stmt|;
-comment|/**    * Gets an RSAPublicKey from the provided PEM encoding.    *    * @param pem    *          - the pem encoding from config without the header and footer    * @return RSAPublicKey    */
+comment|/**    * Gets an RSAPublicKey from the provided PEM encoding.    *    * @param pem    *          - the pem encoding from config without the header and footer    * @return RSAPublicKey the RSA public key    * @throws ServletException thrown if a processing error occurred    */
 DECL|method|parseRSAPublicKey (String pem)
 specifier|public
 specifier|static

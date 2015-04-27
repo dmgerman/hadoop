@@ -1451,7 +1451,7 @@ argument_list|)
 argument_list|)
 return|;
 block|}
-comment|/**    * This method creates the Curator client and connects to ZooKeeper.    * @param config configuration properties    * @return A Curator client    * @throws Exception    */
+comment|/**    * This method creates the Curator client and connects to ZooKeeper.    * @param config configuration properties    * @return A Curator client    * @throws Exception thrown if an error occurred    */
 DECL|method|createCuratorClient (Properties config)
 specifier|protected
 name|CuratorFramework

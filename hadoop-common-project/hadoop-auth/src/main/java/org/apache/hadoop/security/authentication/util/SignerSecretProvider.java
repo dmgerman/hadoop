@@ -87,7 +87,7 @@ specifier|abstract
 class|class
 name|SignerSecretProvider
 block|{
-comment|/**    * Initialize the SignerSecretProvider    * @param config configuration properties    * @param servletContext servlet context    * @param tokenValidity The amount of time a token is valid for    * @throws Exception    */
+comment|/**    * Initialize the SignerSecretProvider    * @param config configuration properties    * @param servletContext servlet context    * @param tokenValidity The amount of time a token is valid for    * @throws Exception thrown if an error occurred    */
 DECL|method|init (Properties config, ServletContext servletContext, long tokenValidity)
 specifier|public
 specifier|abstract

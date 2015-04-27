@@ -329,7 +329,7 @@ specifier|private
 name|Lock
 name|writeLock
 decl_stmt|;
-comment|/**    * The constructor takes a {@link KeyProviderCryptoExtension} and an    * implementation of<code>KeyACLs</code>. All calls are delegated to the    * provider keyProvider after authorization check (if required)    * @param keyProvider     * @param acls    */
+comment|/**    * The constructor takes a {@link KeyProviderCryptoExtension} and an    * implementation of<code>KeyACLs</code>. All calls are delegated to the    * provider keyProvider after authorization check (if required)    * @param keyProvider  the key provider    * @param acls the Key ACLs    */
 DECL|method|KeyAuthorizationKeyProvider (KeyProviderCryptoExtension keyProvider, KeyACLs acls)
 specifier|public
 name|KeyAuthorizationKeyProvider
