@@ -2358,23 +2358,6 @@ parameter_list|)
 throws|throws
 name|IOException
 function_decl|;
-comment|/**    * Create an erasure coding zone with specified schema, if any, otherwise    * default    */
-annotation|@
-name|Idempotent
-DECL|method|createErasureCodingZone (String src, ECSchema schema)
-specifier|public
-name|void
-name|createErasureCodingZone
-parameter_list|(
-name|String
-name|src
-parameter_list|,
-name|ECSchema
-name|schema
-parameter_list|)
-throws|throws
-name|IOException
-function_decl|;
 comment|/**    * Set xattr of a file or directory.    * The name must be prefixed with the namespace followed by ".". For example,    * "user.attr".    *<p/>    * Refer to the HDFS extended attributes user documentation for details.    *    * @param src file or directory    * @param xAttr<code>XAttr</code> to set    * @param flag set flag    * @throws IOException    */
 annotation|@
 name|AtMostOnce
@@ -2493,6 +2476,23 @@ name|getEditsFromTxid
 parameter_list|(
 name|long
 name|txid
+parameter_list|)
+throws|throws
+name|IOException
+function_decl|;
+comment|/**    * Create an erasure coding zone with specified schema, if any, otherwise    * default    */
+annotation|@
+name|AtMostOnce
+DECL|method|createErasureCodingZone (String src, ECSchema schema)
+specifier|public
+name|void
+name|createErasureCodingZone
+parameter_list|(
+name|String
+name|src
+parameter_list|,
+name|ECSchema
+name|schema
 parameter_list|)
 throws|throws
 name|IOException
