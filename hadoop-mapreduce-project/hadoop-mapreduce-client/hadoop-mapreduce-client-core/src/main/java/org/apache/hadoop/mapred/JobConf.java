@@ -4620,12 +4620,12 @@ name|matches
 argument_list|()
 condition|)
 block|{
-name|int
+name|long
 name|size
 init|=
-name|Integer
+name|Long
 operator|.
-name|parseInt
+name|parseLong
 argument_list|(
 name|m
 operator|.
@@ -4662,6 +4662,10 @@ condition|)
 block|{
 comment|// -Xmx specified in bytes
 return|return
+call|(
+name|int
+call|)
+argument_list|(
 name|size
 operator|/
 operator|(
@@ -4669,6 +4673,7 @@ literal|1024
 operator|*
 literal|1024
 operator|)
+argument_list|)
 return|;
 block|}
 name|char
@@ -4699,9 +4704,14 @@ literal|'G'
 case|:
 comment|// -Xmx specified in GB
 return|return
+call|(
+name|int
+call|)
+argument_list|(
 name|size
 operator|*
 literal|1024
+argument_list|)
 return|;
 case|case
 literal|'m'
@@ -4711,6 +4721,9 @@ literal|'M'
 case|:
 comment|// -Xmx specified in MB
 return|return
+operator|(
+name|int
+operator|)
 name|size
 return|;
 case|case
@@ -4721,9 +4734,14 @@ literal|'K'
 case|:
 comment|// -Xmx specified in KB
 return|return
+call|(
+name|int
+call|)
+argument_list|(
 name|size
 operator|/
 literal|1024
+argument_list|)
 return|;
 block|}
 block|}
