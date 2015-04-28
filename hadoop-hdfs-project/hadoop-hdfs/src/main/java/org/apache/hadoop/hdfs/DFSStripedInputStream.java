@@ -743,7 +743,7 @@ specifier|final
 name|ECInfo
 name|ecInfo
 decl_stmt|;
-DECL|method|DFSStripedInputStream (DFSClient dfsClient, String src, boolean verifyChecksum)
+DECL|method|DFSStripedInputStream (DFSClient dfsClient, String src, boolean verifyChecksum, ECInfo info)
 name|DFSStripedInputStream
 parameter_list|(
 name|DFSClient
@@ -754,6 +754,9 @@ name|src
 parameter_list|,
 name|boolean
 name|verifyChecksum
+parameter_list|,
+name|ECInfo
+name|info
 parameter_list|)
 throws|throws
 name|IOException
@@ -768,14 +771,14 @@ name|verifyChecksum
 argument_list|)
 expr_stmt|;
 comment|// ECInfo is restored from NN just before reading striped file.
+assert|assert
+name|info
+operator|!=
+literal|null
+assert|;
 name|ecInfo
 operator|=
-name|dfsClient
-operator|.
-name|getErasureCodingInfo
-argument_list|(
-name|src
-argument_list|)
+name|info
 expr_stmt|;
 name|cellSize
 operator|=
