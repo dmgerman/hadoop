@@ -3035,6 +3035,11 @@ name|DatanodeProtocol
 operator|.
 name|DNA_UNCACHE
 case|:
+case|case
+name|DatanodeProtocol
+operator|.
+name|DNA_ERASURE_CODING_RECOVERY
+case|:
 name|LOG
 operator|.
 name|warn
