@@ -2867,6 +2867,19 @@ parameter_list|)
 block|{
 if|if
 condition|(
+name|mapOutput
+operator|!=
+literal|null
+condition|)
+block|{
+name|mapOutput
+operator|.
+name|abort
+argument_list|()
+expr_stmt|;
+block|}
+if|if
+condition|(
 name|canRetry
 condition|)
 block|{
@@ -2973,11 +2986,6 @@ name|ioe
 argument_list|)
 expr_stmt|;
 comment|// Inform the shuffle-scheduler
-name|mapOutput
-operator|.
-name|abort
-argument_list|()
-expr_stmt|;
 name|metrics
 operator|.
 name|failedFetch
