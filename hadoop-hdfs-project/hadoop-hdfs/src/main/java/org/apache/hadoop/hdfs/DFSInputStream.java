@@ -5495,7 +5495,7 @@ name|corruptedBlockMap
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Read data from one DataNode.    * @param datanode the datanode from which to read data    * @param block the block to read    * @param startInBlk the startInBlk offset of the block    * @param endInBlk the endInBlk offset of the block    * @param buf the given byte array into which the data is read    * @param offsets the data may be read into multiple segments of the buf    *                (when reading a striped block). this array indicates the    *                offset of each buf segment.    * @param lengths the length of each buf segment    * @param corruptedBlockMap map recording list of datanodes with corrupted    *                          block replica    */
+comment|/**    * Read data from one DataNode.    * @param datanode the datanode from which to read data    * @param blockStartOffset starting offset in the file    * @param startInBlk the startInBlk offset of the block    * @param endInBlk the endInBlk offset of the block    * @param buf the given byte array into which the data is read    * @param offsets the data may be read into multiple segments of the buf    *                (when reading a striped block). this array indicates the    *                offset of each buf segment.    * @param lengths the length of each buf segment    * @param corruptedBlockMap map recording list of datanodes with corrupted    *                          block replica    */
 DECL|method|actualGetFromOneDataNode (final DNAddrPair datanode, long blockStartOffset, final long startInBlk, final long endInBlk, byte[] buf, int[] offsets, int[] lengths, Map<ExtendedBlock, Set<DatanodeInfo>> corruptedBlockMap)
 name|void
 name|actualGetFromOneDataNode
@@ -5622,7 +5622,7 @@ name|getBlockReader
 argument_list|(
 name|block
 argument_list|,
-name|start
+name|startInBlk
 argument_list|,
 name|len
 argument_list|,

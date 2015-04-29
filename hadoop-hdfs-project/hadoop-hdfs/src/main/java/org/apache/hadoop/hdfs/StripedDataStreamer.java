@@ -323,7 +323,7 @@ name|hasCommittedBlock
 init|=
 literal|false
 decl_stmt|;
-DECL|method|StripedDataStreamer (HdfsFileStatus stat, ExtendedBlock block, DFSClient dfsClient, String src, Progressable progress, DataChecksum checksum, AtomicReference<CachingStrategy> cachingStrategy, ByteArrayManager byteArrayManage, short index, List<BlockingQueue<LocatedBlock>> stripedBlocks)
+DECL|method|StripedDataStreamer (HdfsFileStatus stat, ExtendedBlock block, DFSClient dfsClient, String src, Progressable progress, DataChecksum checksum, AtomicReference<CachingStrategy> cachingStrategy, ByteArrayManager byteArrayManage, short index, List<BlockingQueue<LocatedBlock>> stripedBlocks, String[] favoredNodes)
 name|StripedDataStreamer
 parameter_list|(
 name|HdfsFileStatus
@@ -364,6 +364,10 @@ name|LocatedBlock
 argument_list|>
 argument_list|>
 name|stripedBlocks
+parameter_list|,
+name|String
+index|[]
+name|favoredNodes
 parameter_list|)
 block|{
 name|super
@@ -383,6 +387,8 @@ argument_list|,
 name|cachingStrategy
 argument_list|,
 name|byteArrayManage
+argument_list|,
+name|favoredNodes
 argument_list|)
 expr_stmt|;
 name|this
