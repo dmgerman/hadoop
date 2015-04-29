@@ -1153,6 +1153,7 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
+comment|/**    * Headroom depends on resources in the cluster, current usage of the    * queue, queue's fair-share and queue's max-resources.    */
 annotation|@
 name|Override
 DECL|method|getHeadroom ()
@@ -1220,7 +1221,7 @@ name|getAllocatedResources
 argument_list|()
 decl_stmt|;
 name|Resource
-name|clusterAvailableResource
+name|clusterAvailableResources
 init|=
 name|Resources
 operator|.
@@ -1229,6 +1230,33 @@ argument_list|(
 name|clusterResource
 argument_list|,
 name|clusterUsage
+argument_list|)
+decl_stmt|;
+name|Resource
+name|queueMaxAvailableResources
+init|=
+name|Resources
+operator|.
+name|subtract
+argument_list|(
+name|queue
+operator|.
+name|getMaxShare
+argument_list|()
+argument_list|,
+name|queueUsage
+argument_list|)
+decl_stmt|;
+name|Resource
+name|maxAvailableResource
+init|=
+name|Resources
+operator|.
+name|componentwiseMin
+argument_list|(
+name|clusterAvailableResources
+argument_list|,
+name|queueMaxAvailableResources
 argument_list|)
 decl_stmt|;
 name|Resource
@@ -1242,7 +1270,7 @@ name|queueFairShare
 argument_list|,
 name|queueUsage
 argument_list|,
-name|clusterAvailableResource
+name|maxAvailableResource
 argument_list|)
 decl_stmt|;
 if|if
@@ -1278,19 +1306,9 @@ name|queueUsage
 operator|+
 literal|"),"
 operator|+
-literal|" clusterAvailableResource="
+literal|" maxAvailableResource="
 operator|+
-name|clusterAvailableResource
-operator|+
-literal|"(clusterResource="
-operator|+
-name|clusterResource
-operator|+
-literal|" - clusterUsage="
-operator|+
-name|clusterUsage
-operator|+
-literal|")"
+name|maxAvailableResource
 operator|+
 literal|"Headroom="
 operator|+

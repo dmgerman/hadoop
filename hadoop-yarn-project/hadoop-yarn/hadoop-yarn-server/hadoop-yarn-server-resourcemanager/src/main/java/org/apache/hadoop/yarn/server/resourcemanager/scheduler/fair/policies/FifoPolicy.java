@@ -527,7 +527,7 @@ return|;
 block|}
 annotation|@
 name|Override
-DECL|method|getHeadroom (Resource queueFairShare, Resource queueUsage, Resource clusterAvailable)
+DECL|method|getHeadroom (Resource queueFairShare, Resource queueUsage, Resource maxAvailable)
 specifier|public
 name|Resource
 name|getHeadroom
@@ -539,7 +539,7 @@ name|Resource
 name|queueUsage
 parameter_list|,
 name|Resource
-name|clusterAvailable
+name|maxAvailable
 parameter_list|)
 block|{
 name|int
@@ -573,7 +573,7 @@ name|Math
 operator|.
 name|min
 argument_list|(
-name|clusterAvailable
+name|maxAvailable
 operator|.
 name|getMemory
 argument_list|()
@@ -581,7 +581,7 @@ argument_list|,
 name|queueAvailableMemory
 argument_list|)
 argument_list|,
-name|clusterAvailable
+name|maxAvailable
 operator|.
 name|getVirtualCores
 argument_list|()
