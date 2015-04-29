@@ -1727,6 +1727,27 @@ literal|200
 argument_list|)
 expr_stmt|;
 block|}
+name|Assert
+operator|.
+name|assertNotNull
+argument_list|(
+literal|"Failed in waiting for "
+operator|+
+name|containerId
+operator|+
+literal|" "
+operator|+
+literal|"allocation."
+argument_list|,
+name|getResourceScheduler
+argument_list|()
+operator|.
+name|getRMContainer
+argument_list|(
+name|containerId
+argument_list|)
+argument_list|)
+expr_stmt|;
 block|}
 DECL|method|waitForContainerToComplete (RMAppAttempt attempt, NMContainerStatus completedContainer)
 specifier|public
@@ -4675,6 +4696,32 @@ name|tick
 operator|++
 expr_stmt|;
 block|}
+name|Assert
+operator|.
+name|assertNotNull
+argument_list|(
+literal|"Timed out waiting for SchedulerApplicationAttempt="
+operator|+
+name|attemptId
+operator|+
+literal|" to be added."
+argument_list|,
+operator|(
+operator|(
+name|AbstractYarnScheduler
+operator|)
+name|rm
+operator|.
+name|getResourceScheduler
+argument_list|()
+operator|)
+operator|.
+name|getApplicationAttempt
+argument_list|(
+name|attemptId
+argument_list|)
+argument_list|)
+expr_stmt|;
 block|}
 DECL|method|launchAM (RMApp app, MockRM rm, MockNM nm)
 specifier|public
@@ -4724,6 +4771,20 @@ name|getAppAttemptId
 argument_list|()
 argument_list|,
 name|rm
+argument_list|)
+expr_stmt|;
+name|rm
+operator|.
+name|waitForState
+argument_list|(
+name|attempt
+operator|.
+name|getAppAttemptId
+argument_list|()
+argument_list|,
+name|RMAppAttemptState
+operator|.
+name|SCHEDULED
 argument_list|)
 expr_stmt|;
 name|System
