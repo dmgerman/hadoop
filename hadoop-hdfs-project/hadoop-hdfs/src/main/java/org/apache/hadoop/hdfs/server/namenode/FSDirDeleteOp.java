@@ -742,14 +742,6 @@ argument_list|,
 literal|true
 argument_list|)
 expr_stmt|;
-name|fsd
-operator|.
-name|getEditLog
-argument_list|()
-operator|.
-name|logSync
-argument_list|()
-expr_stmt|;
 if|if
 condition|(
 name|NameNode
