@@ -3219,6 +3219,11 @@ name|fsn
 operator|.
 name|getBlockLocations
 argument_list|(
+name|fsn
+operator|.
+name|getPermissionChecker
+argument_list|()
+argument_list|,
 name|path
 argument_list|,
 literal|0

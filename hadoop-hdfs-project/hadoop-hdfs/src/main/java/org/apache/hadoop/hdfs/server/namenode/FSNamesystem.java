@@ -9883,10 +9883,10 @@ specifier|static
 class|class
 name|GetBlockLocationsResult
 block|{
-DECL|field|iip
+DECL|field|updateAccessTime
 specifier|final
-name|INodesInPath
-name|iip
+name|boolean
+name|updateAccessTime
 decl_stmt|;
 DECL|field|blocks
 specifier|final
@@ -9899,17 +9899,15 @@ name|updateAccessTime
 parameter_list|()
 block|{
 return|return
-name|iip
-operator|!=
-literal|null
+name|updateAccessTime
 return|;
 block|}
-DECL|method|GetBlockLocationsResult (INodesInPath iip, LocatedBlocks blocks)
+DECL|method|GetBlockLocationsResult ( boolean updateAccessTime, LocatedBlocks blocks)
 specifier|private
 name|GetBlockLocationsResult
 parameter_list|(
-name|INodesInPath
-name|iip
+name|boolean
+name|updateAccessTime
 parameter_list|,
 name|LocatedBlocks
 name|blocks
@@ -9917,9 +9915,9 @@ parameter_list|)
 block|{
 name|this
 operator|.
-name|iip
+name|updateAccessTime
 operator|=
-name|iip
+name|updateAccessTime
 expr_stmt|;
 name|this
 operator|.
@@ -9930,7 +9928,7 @@ expr_stmt|;
 block|}
 block|}
 comment|/**    * Get block locations within the specified range.    * @see ClientProtocol#getBlockLocations(String, long, long)    */
-DECL|method|getBlockLocations (String clientMachine, String src, long offset, long length)
+DECL|method|getBlockLocations (String clientMachine, String srcArg, long offset, long length)
 name|LocatedBlocks
 name|getBlockLocations
 parameter_list|(
@@ -9938,7 +9936,7 @@ name|String
 name|clientMachine
 parameter_list|,
 name|String
-name|src
+name|srcArg
 parameter_list|,
 name|long
 name|offset
@@ -9961,6 +9959,12 @@ name|res
 init|=
 literal|null
 decl_stmt|;
+name|FSPermissionChecker
+name|pc
+init|=
+name|getPermissionChecker
+argument_list|()
+decl_stmt|;
 name|readLock
 argument_list|()
 expr_stmt|;
@@ -9977,7 +9981,9 @@ name|res
 operator|=
 name|getBlockLocations
 argument_list|(
-name|src
+name|pc
+argument_list|,
+name|srcArg
 argument_list|,
 name|offset
 argument_list|,
@@ -10001,7 +10007,7 @@ literal|false
 argument_list|,
 literal|"open"
 argument_list|,
-name|src
+name|srcArg
 argument_list|)
 expr_stmt|;
 throw|throw
@@ -10020,7 +10026,7 @@ literal|true
 argument_list|,
 literal|"open"
 argument_list|,
-name|src
+name|srcArg
 argument_list|)
 expr_stmt|;
 if|if
@@ -10031,6 +10037,23 @@ name|updateAccessTime
 argument_list|()
 condition|)
 block|{
+name|byte
+index|[]
+index|[]
+name|pathComponents
+init|=
+name|FSDirectory
+operator|.
+name|getPathComponentsForReservedPath
+argument_list|(
+name|srcArg
+argument_list|)
+decl_stmt|;
+name|String
+name|src
+init|=
+name|srcArg
+decl_stmt|;
 name|writeLock
 argument_list|()
 expr_stmt|;
@@ -10050,11 +10073,36 @@ operator|.
 name|WRITE
 argument_list|)
 expr_stmt|;
+comment|/**          * Resolve the path again and update the atime only when the file          * exists.          *          * XXX: Races can still occur even after resolving the path again.          * For example:          *          *<ul>          *<li>Get the block location for "/a/b"</li>          *<li>Rename "/a/b" to "/c/b"</li>          *<li>The second resolution still points to "/a/b", which is          *   wrong.</li>          *</ul>          *          * The behavior is incorrect but consistent with the one before          * HDFS-7463. A better fix is to change the edit log of SetTime to          * use inode id instead of a path.          */
+name|src
+operator|=
+name|dir
+operator|.
+name|resolvePath
+argument_list|(
+name|pc
+argument_list|,
+name|srcArg
+argument_list|,
+name|pathComponents
+argument_list|)
+expr_stmt|;
+specifier|final
+name|INodesInPath
+name|iip
+init|=
+name|dir
+operator|.
+name|getINodesInPath
+argument_list|(
+name|src
+argument_list|,
+literal|true
+argument_list|)
+decl_stmt|;
 name|INode
 name|inode
 init|=
-name|res
-operator|.
 name|iip
 operator|.
 name|getLastINode
@@ -10063,6 +10111,10 @@ decl_stmt|;
 name|boolean
 name|updateAccessTime
 init|=
+name|inode
+operator|!=
+literal|null
+operator|&&
 name|now
 operator|>
 name|inode
@@ -10100,8 +10152,6 @@ name|now
 argument_list|,
 literal|false
 argument_list|,
-name|res
-operator|.
 name|iip
 operator|.
 name|getLatestSnapshotId
@@ -10231,10 +10281,13 @@ name|blocks
 return|;
 block|}
 comment|/**    * Get block locations within the specified range.    * @see ClientProtocol#getBlockLocations(String, long, long)    * @throws IOException    */
-DECL|method|getBlockLocations ( String src, long offset, long length, boolean needBlockToken, boolean checkSafeMode)
+DECL|method|getBlockLocations ( FSPermissionChecker pc, String src, long offset, long length, boolean needBlockToken, boolean checkSafeMode)
 name|GetBlockLocationsResult
 name|getBlockLocations
 parameter_list|(
+name|FSPermissionChecker
+name|pc
+parameter_list|,
 name|String
 name|src
 parameter_list|,
@@ -10293,6 +10346,8 @@ name|ret
 init|=
 name|getBlockLocationsInt
 argument_list|(
+name|pc
+argument_list|,
 name|src
 argument_list|,
 name|offset
@@ -10402,11 +10457,14 @@ return|return
 name|ret
 return|;
 block|}
-DECL|method|getBlockLocationsInt ( final String srcArg, long offset, long length, boolean needBlockToken)
+DECL|method|getBlockLocationsInt ( FSPermissionChecker pc, final String srcArg, long offset, long length, boolean needBlockToken)
 specifier|private
 name|GetBlockLocationsResult
 name|getBlockLocationsInt
 parameter_list|(
+name|FSPermissionChecker
+name|pc
+parameter_list|,
 specifier|final
 name|String
 name|srcArg
@@ -10428,12 +10486,6 @@ name|src
 init|=
 name|srcArg
 decl_stmt|;
-name|FSPermissionChecker
-name|pc
-init|=
-name|getPermissionChecker
-argument_list|()
-decl_stmt|;
 name|byte
 index|[]
 index|[]
@@ -10454,7 +10506,7 @@ name|resolvePath
 argument_list|(
 name|pc
 argument_list|,
-name|src
+name|srcArg
 argument_list|,
 name|pathComponents
 argument_list|)
@@ -10700,10 +10752,6 @@ operator|new
 name|GetBlockLocationsResult
 argument_list|(
 name|updateAccessTime
-condition|?
-name|iip
-else|:
-literal|null
 argument_list|,
 name|blocks
 argument_list|)
