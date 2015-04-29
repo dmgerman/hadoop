@@ -178,6 +178,20 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|mapred
+operator|.
+name|TimelineServicePerformanceV2
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|mapreduce
 operator|.
 name|FailJob
@@ -651,6 +665,19 @@ operator|.
 name|class
 argument_list|,
 literal|"A job that launches mappers to test timlineserver performance."
+argument_list|)
+expr_stmt|;
+name|pgd
+operator|.
+name|addClass
+argument_list|(
+literal|"timelineperformance"
+argument_list|,
+name|TimelineServicePerformanceV2
+operator|.
+name|class
+argument_list|,
+literal|"A job that launch mappers to test timline service v.2 performance."
 argument_list|)
 expr_stmt|;
 name|pgd
