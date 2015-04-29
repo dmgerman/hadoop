@@ -78,6 +78,20 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|security
+operator|.
+name|UserGroupInformation
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|util
 operator|.
 name|StringUtils
@@ -251,6 +265,24 @@ operator|.
 name|dao
 operator|.
 name|CapacitySchedulerQueueInfo
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|server
+operator|.
+name|security
+operator|.
+name|ApplicationACLsManager
 import|;
 end_import
 
@@ -1679,6 +1711,12 @@ specifier|final
 name|CSQInfo
 name|csqinfo
 decl_stmt|;
+DECL|field|rm
+specifier|private
+specifier|final
+name|ResourceManager
+name|rm
+decl_stmt|;
 DECL|method|QueuesBlock (ResourceManager rm, CSQInfo info)
 annotation|@
 name|Inject
@@ -1705,6 +1743,12 @@ name|csqinfo
 operator|=
 name|info
 expr_stmt|;
+name|this
+operator|.
+name|rm
+operator|=
+name|rm
+expr_stmt|;
 block|}
 annotation|@
 name|Override
@@ -1726,7 +1770,68 @@ operator|.
 name|class
 argument_list|)
 expr_stmt|;
-comment|// Dump CapacityScheduler debug logs
+name|UserGroupInformation
+name|callerUGI
+init|=
+name|this
+operator|.
+name|getCallerUGI
+argument_list|()
+decl_stmt|;
+name|boolean
+name|isAdmin
+init|=
+literal|false
+decl_stmt|;
+name|ApplicationACLsManager
+name|aclsManager
+init|=
+name|rm
+operator|.
+name|getApplicationACLsManager
+argument_list|()
+decl_stmt|;
+if|if
+condition|(
+name|aclsManager
+operator|.
+name|areACLsEnabled
+argument_list|()
+condition|)
+block|{
+if|if
+condition|(
+name|callerUGI
+operator|!=
+literal|null
+operator|&&
+name|aclsManager
+operator|.
+name|isAdmin
+argument_list|(
+name|callerUGI
+argument_list|)
+condition|)
+block|{
+name|isAdmin
+operator|=
+literal|true
+expr_stmt|;
+block|}
+block|}
+else|else
+block|{
+name|isAdmin
+operator|=
+literal|true
+expr_stmt|;
+block|}
+comment|// only show button to dump CapacityScheduler debug logs to admins
+if|if
+condition|(
+name|isAdmin
+condition|)
+block|{
 name|html
 operator|.
 name|div
@@ -1734,6 +1839,13 @@ argument_list|()
 operator|.
 name|button
 argument_list|()
+operator|.
+name|$style
+argument_list|(
+literal|"border-style: solid; border-color: #000000; border-width: 1px;"
+operator|+
+literal|" cursor: hand; cursor: pointer; border-radius: 4px"
+argument_list|)
 operator|.
 name|$onclick
 argument_list|(
@@ -1826,7 +1938,9 @@ argument_list|)
 operator|.
 name|append
 argument_list|(
-literal|" b = confirm(\"Are you sure you wish to generate scheduler logs?\");"
+literal|" b = confirm(\"Are you sure you wish to generate"
+operator|+
+literal|" scheduler logs?\");"
 argument_list|)
 operator|.
 name|append
@@ -1896,7 +2010,9 @@ argument_list|)
 operator|.
 name|append
 argument_list|(
-literal|" alert(\"Scheduler log generation failed. Please check the ResourceManager log for more informtion.\");"
+literal|" alert(\"Scheduler log generation failed. Please check the"
+operator|+
+literal|" ResourceManager log for more informtion.\");"
 argument_list|)
 operator|.
 name|append
@@ -1940,6 +2056,7 @@ operator|.
 name|_
 argument_list|()
 expr_stmt|;
+block|}
 name|UL
 argument_list|<
 name|DIV

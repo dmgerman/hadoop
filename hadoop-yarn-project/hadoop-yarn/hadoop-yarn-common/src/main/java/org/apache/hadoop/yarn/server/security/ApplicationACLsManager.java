@@ -724,6 +724,29 @@ return|return
 literal|false
 return|;
 block|}
+comment|/**    * Check if the given user in an admin.    *    * @param calledUGI    *          UserGroupInformation for the user    * @return true if the user is an admin, false otherwise    */
+DECL|method|isAdmin (final UserGroupInformation calledUGI)
+specifier|public
+specifier|final
+name|boolean
+name|isAdmin
+parameter_list|(
+specifier|final
+name|UserGroupInformation
+name|calledUGI
+parameter_list|)
+block|{
+return|return
+name|this
+operator|.
+name|adminAclsManager
+operator|.
+name|isAdmin
+argument_list|(
+name|calledUGI
+argument_list|)
+return|;
+block|}
 block|}
 end_class
 
