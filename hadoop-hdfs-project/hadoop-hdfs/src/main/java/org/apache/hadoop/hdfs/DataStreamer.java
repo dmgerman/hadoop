@@ -270,6 +270,34 @@ name|org
 operator|.
 name|apache
 operator|.
+name|commons
+operator|.
+name|logging
+operator|.
+name|Log
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|commons
+operator|.
+name|logging
+operator|.
+name|LogFactory
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
 name|hadoop
 operator|.
 name|classification
@@ -814,6 +842,20 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|io
+operator|.
+name|MultipleIOException
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|ipc
 operator|.
 name|RemoteException
@@ -1000,6 +1042,20 @@ name|google
 operator|.
 name|common
 operator|.
+name|base
+operator|.
+name|Preconditions
+import|;
+end_import
+
+begin_import
+import|import
+name|com
+operator|.
+name|google
+operator|.
+name|common
+operator|.
 name|cache
 operator|.
 name|CacheBuilder
@@ -1077,6 +1133,21 @@ name|DataStreamer
 extends|extends
 name|Daemon
 block|{
+DECL|field|LOG
+specifier|static
+specifier|final
+name|Log
+name|LOG
+init|=
+name|LogFactory
+operator|.
+name|getLog
+argument_list|(
+name|DataStreamer
+operator|.
+name|class
+argument_list|)
+decl_stmt|;
 comment|/**    * Create a socket for a write pipeline    *    * @param first the first datanode    * @param length the pipeline length    * @param client client    * @return the socket connected to the first datanode    */
 DECL|method|createSocketForPipeline (final DatanodeInfo first, final int length, final DFSClient client)
 specifier|static
@@ -1123,16 +1194,12 @@ argument_list|)
 decl_stmt|;
 if|if
 condition|(
-name|DFSClient
-operator|.
 name|LOG
 operator|.
 name|isDebugEnabled
 argument_list|()
 condition|)
 block|{
-name|DFSClient
-operator|.
 name|LOG
 operator|.
 name|debug
@@ -1213,16 +1280,12 @@ argument_list|)
 expr_stmt|;
 if|if
 condition|(
-name|DFSClient
-operator|.
 name|LOG
 operator|.
 name|isDebugEnabled
 argument_list|()
 condition|)
 block|{
-name|DFSClient
-operator|.
 name|LOG
 operator|.
 name|debug
@@ -1318,6 +1381,112 @@ name|clear
 argument_list|()
 expr_stmt|;
 block|}
+DECL|class|LastException
+specifier|static
+class|class
+name|LastException
+block|{
+DECL|field|thrown
+specifier|private
+name|Throwable
+name|thrown
+decl_stmt|;
+DECL|method|set (Throwable t)
+specifier|synchronized
+name|void
+name|set
+parameter_list|(
+name|Throwable
+name|t
+parameter_list|)
+block|{
+name|Preconditions
+operator|.
+name|checkNotNull
+argument_list|(
+name|t
+argument_list|)
+expr_stmt|;
+name|Preconditions
+operator|.
+name|checkState
+argument_list|(
+name|thrown
+operator|==
+literal|null
+argument_list|)
+expr_stmt|;
+name|this
+operator|.
+name|thrown
+operator|=
+name|t
+expr_stmt|;
+block|}
+DECL|method|clear ()
+specifier|synchronized
+name|void
+name|clear
+parameter_list|()
+block|{
+name|thrown
+operator|=
+literal|null
+expr_stmt|;
+block|}
+comment|/** Check if there already is an exception. */
+DECL|method|check ()
+specifier|synchronized
+name|void
+name|check
+parameter_list|()
+throws|throws
+name|IOException
+block|{
+if|if
+condition|(
+name|thrown
+operator|!=
+literal|null
+condition|)
+block|{
+throw|throw
+operator|new
+name|IOException
+argument_list|(
+name|thrown
+argument_list|)
+throw|;
+block|}
+block|}
+DECL|method|throwException4Close ()
+specifier|synchronized
+name|void
+name|throwException4Close
+parameter_list|()
+throws|throws
+name|IOException
+block|{
+name|check
+argument_list|()
+expr_stmt|;
+specifier|final
+name|IOException
+name|ioe
+init|=
+operator|new
+name|ClosedChannelException
+argument_list|()
+decl_stmt|;
+name|thrown
+operator|=
+name|ioe
+expr_stmt|;
+throw|throw
+name|ioe
+throw|;
+block|}
+block|}
 DECL|field|streamerClosed
 specifier|private
 specifier|volatile
@@ -1384,12 +1553,6 @@ index|[]
 name|storageIDs
 init|=
 literal|null
-decl_stmt|;
-DECL|field|favoredNodes
-specifier|private
-name|String
-index|[]
-name|favoredNodes
 decl_stmt|;
 DECL|field|hasError
 specifier|volatile
@@ -1488,6 +1651,7 @@ decl_stmt|;
 comment|/** Append on an existing block? */
 DECL|field|isAppend
 specifier|private
+specifier|final
 name|boolean
 name|isAppend
 decl_stmt|;
@@ -1525,15 +1689,11 @@ comment|// bytes written in current block
 DECL|field|lastException
 specifier|private
 specifier|final
-name|AtomicReference
-argument_list|<
-name|IOException
-argument_list|>
+name|LastException
 name|lastException
 init|=
 operator|new
-name|AtomicReference
-argument_list|<>
+name|LastException
 argument_list|()
 decl_stmt|;
 DECL|field|s
@@ -1675,7 +1835,7 @@ comment|// are congested
 DECL|field|congestedNodes
 specifier|private
 specifier|final
-name|ArrayList
+name|List
 argument_list|<
 name|DatanodeInfo
 argument_list|>
@@ -1722,7 +1882,14 @@ name|DatanodeInfo
 argument_list|>
 name|excludedNodes
 decl_stmt|;
-DECL|method|DataStreamer (HdfsFileStatus stat, DFSClient dfsClient, String src, Progressable progress, DataChecksum checksum, AtomicReference<CachingStrategy> cachingStrategy, ByteArrayManager byteArrayManage)
+DECL|field|favoredNodes
+specifier|private
+specifier|final
+name|String
+index|[]
+name|favoredNodes
+decl_stmt|;
+DECL|method|DataStreamer (HdfsFileStatus stat, DFSClient dfsClient, String src, Progressable progress, DataChecksum checksum, AtomicReference<CachingStrategy> cachingStrategy, ByteArrayManager byteArrayManage, boolean isAppend, String[] favoredNodes)
 specifier|private
 name|DataStreamer
 parameter_list|(
@@ -1749,6 +1916,13 @@ name|cachingStrategy
 parameter_list|,
 name|ByteArrayManager
 name|byteArrayManage
+parameter_list|,
+name|boolean
+name|isAppend
+parameter_list|,
+name|String
+index|[]
+name|favoredNodes
 parameter_list|)
 block|{
 name|this
@@ -1793,6 +1967,8 @@ name|byteArrayManager
 operator|=
 name|byteArrayManage
 expr_stmt|;
+name|this
+operator|.
 name|isLazyPersistFile
 operator|=
 name|isLazyPersist
@@ -1812,14 +1988,28 @@ operator|.
 name|getSlowIoWarningThresholdMs
 argument_list|()
 expr_stmt|;
+name|this
+operator|.
 name|excludedNodes
 operator|=
 name|initExcludedNodes
 argument_list|()
 expr_stmt|;
+name|this
+operator|.
+name|isAppend
+operator|=
+name|isAppend
+expr_stmt|;
+name|this
+operator|.
+name|favoredNodes
+operator|=
+name|favoredNodes
+expr_stmt|;
 block|}
 comment|/**    * construction with tracing info    */
-DECL|method|DataStreamer (HdfsFileStatus stat, ExtendedBlock block, DFSClient dfsClient, String src, Progressable progress, DataChecksum checksum, AtomicReference<CachingStrategy> cachingStrategy, ByteArrayManager byteArrayManage)
+DECL|method|DataStreamer (HdfsFileStatus stat, ExtendedBlock block, DFSClient dfsClient, String src, Progressable progress, DataChecksum checksum, AtomicReference<CachingStrategy> cachingStrategy, ByteArrayManager byteArrayManage, String[] favoredNodes)
 name|DataStreamer
 parameter_list|(
 name|HdfsFileStatus
@@ -1848,6 +2038,10 @@ name|cachingStrategy
 parameter_list|,
 name|ByteArrayManager
 name|byteArrayManage
+parameter_list|,
+name|String
+index|[]
+name|favoredNodes
 parameter_list|)
 block|{
 name|this
@@ -1865,11 +2059,11 @@ argument_list|,
 name|cachingStrategy
 argument_list|,
 name|byteArrayManage
-argument_list|)
-expr_stmt|;
-name|isAppend
-operator|=
+argument_list|,
 literal|false
+argument_list|,
+name|favoredNodes
+argument_list|)
 expr_stmt|;
 name|this
 operator|.
@@ -1933,11 +2127,11 @@ argument_list|,
 name|cachingStrategy
 argument_list|,
 name|byteArrayManage
-argument_list|)
-expr_stmt|;
-name|isAppend
-operator|=
+argument_list|,
 literal|true
+argument_list|,
+literal|null
+argument_list|)
 expr_stmt|;
 name|stage
 operator|=
@@ -2081,23 +2275,6 @@ operator|=
 name|storageIDs
 expr_stmt|;
 block|}
-comment|/**    * Set favored nodes    *    * @param favoredNodes favored nodes    */
-DECL|method|setFavoredNodes (String[] favoredNodes)
-name|void
-name|setFavoredNodes
-parameter_list|(
-name|String
-index|[]
-name|favoredNodes
-parameter_list|)
-block|{
-name|this
-operator|.
-name|favoredNodes
-operator|=
-name|favoredNodes
-expr_stmt|;
-block|}
 comment|/**    * Initialize for data streaming    */
 DECL|method|initDataStreaming ()
 specifier|private
@@ -2146,16 +2323,12 @@ parameter_list|()
 block|{
 if|if
 condition|(
-name|DFSClient
-operator|.
 name|LOG
 operator|.
 name|isDebugEnabled
 argument_list|()
 condition|)
 block|{
-name|DFSClient
-operator|.
 name|LOG
 operator|.
 name|debug
@@ -2264,13 +2437,11 @@ name|InterruptedException
 name|e
 parameter_list|)
 block|{
-name|DFSClient
-operator|.
 name|LOG
 operator|.
 name|warn
 argument_list|(
-literal|"Caught exception "
+literal|"Caught exception"
 argument_list|,
 name|e
 argument_list|)
@@ -2435,13 +2606,11 @@ name|InterruptedException
 name|e
 parameter_list|)
 block|{
-name|DFSClient
-operator|.
 name|LOG
 operator|.
 name|warn
 argument_list|(
-literal|"Caught exception "
+literal|"Caught exception"
 argument_list|,
 name|e
 argument_list|)
@@ -2507,13 +2676,11 @@ name|InterruptedException
 name|e
 parameter_list|)
 block|{
-name|DFSClient
-operator|.
 name|LOG
 operator|.
 name|warn
 argument_list|(
-literal|"Caught exception "
+literal|"Caught exception"
 argument_list|,
 name|e
 argument_list|)
@@ -2583,16 +2750,12 @@ condition|)
 block|{
 if|if
 condition|(
-name|DFSClient
-operator|.
 name|LOG
 operator|.
 name|isDebugEnabled
 argument_list|()
 condition|)
 block|{
-name|DFSClient
-operator|.
 name|LOG
 operator|.
 name|debug
@@ -2623,16 +2786,12 @@ condition|)
 block|{
 if|if
 condition|(
-name|DFSClient
-operator|.
 name|LOG
 operator|.
 name|isDebugEnabled
 argument_list|()
 condition|)
 block|{
-name|DFSClient
-operator|.
 name|LOG
 operator|.
 name|debug
@@ -2742,13 +2901,11 @@ name|InterruptedException
 name|e
 parameter_list|)
 block|{
-name|DFSClient
-operator|.
 name|LOG
 operator|.
 name|warn
 argument_list|(
-literal|"Caught exception "
+literal|"Caught exception"
 argument_list|,
 name|e
 argument_list|)
@@ -2833,16 +2990,12 @@ block|}
 block|}
 if|if
 condition|(
-name|DFSClient
-operator|.
 name|LOG
 operator|.
 name|isDebugEnabled
 argument_list|()
 condition|)
 block|{
-name|DFSClient
-operator|.
 name|LOG
 operator|.
 name|debug
@@ -3078,8 +3231,6 @@ operator|instanceof
 name|QuotaExceededException
 condition|)
 block|{
-name|DFSClient
-operator|.
 name|LOG
 operator|.
 name|debug
@@ -3092,8 +3243,6 @@ expr_stmt|;
 block|}
 else|else
 block|{
-name|DFSClient
-operator|.
 name|LOG
 operator|.
 name|warn
@@ -3105,36 +3254,13 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-if|if
-condition|(
-name|e
-operator|instanceof
-name|IOException
-condition|)
-block|{
-name|setLastException
+name|lastException
+operator|.
+name|set
 argument_list|(
-operator|(
-name|IOException
-operator|)
 name|e
 argument_list|)
 expr_stmt|;
-block|}
-else|else
-block|{
-name|setLastException
-argument_list|(
-operator|new
-name|IOException
-argument_list|(
-literal|"DataStreamer Exception: "
-argument_list|,
-name|e
-argument_list|)
-argument_list|)
-expr_stmt|;
-block|}
 name|hasError
 operator|=
 literal|true
@@ -3263,16 +3389,12 @@ try|try
 block|{
 if|if
 condition|(
-name|DFSClient
-operator|.
 name|LOG
 operator|.
 name|isDebugEnabled
 argument_list|()
 condition|)
 block|{
-name|DFSClient
-operator|.
 name|LOG
 operator|.
 name|debug
@@ -3371,8 +3493,6 @@ operator|>
 name|dfsclientSlowLogThresholdMs
 condition|)
 block|{
-name|DFSClient
-operator|.
 name|LOG
 operator|.
 name|warn
@@ -3614,25 +3734,11 @@ condition|(
 name|streamerClosed
 condition|)
 block|{
-name|IOException
-name|e
-init|=
 name|lastException
 operator|.
-name|get
+name|throwException4Close
 argument_list|()
-decl_stmt|;
-throw|throw
-name|e
-operator|!=
-literal|null
-condition|?
-name|e
-else|:
-operator|new
-name|ClosedChannelException
-argument_list|()
-throw|;
+expr_stmt|;
 block|}
 block|}
 DECL|method|closeResponder ()
@@ -3667,13 +3773,11 @@ name|InterruptedException
 name|e
 parameter_list|)
 block|{
-name|DFSClient
-operator|.
 name|LOG
 operator|.
 name|warn
 argument_list|(
-literal|"Caught exception "
+literal|"Caught exception"
 argument_list|,
 name|e
 argument_list|)
@@ -3694,6 +3798,18 @@ name|void
 name|closeStream
 parameter_list|()
 block|{
+specifier|final
+name|MultipleIOException
+operator|.
+name|Builder
+name|b
+init|=
+operator|new
+name|MultipleIOException
+operator|.
+name|Builder
+argument_list|()
+decl_stmt|;
 if|if
 condition|(
 name|blockStream
@@ -3715,7 +3831,9 @@ name|IOException
 name|e
 parameter_list|)
 block|{
-name|setLastException
+name|b
+operator|.
+name|add
 argument_list|(
 name|e
 argument_list|)
@@ -3750,7 +3868,9 @@ name|IOException
 name|e
 parameter_list|)
 block|{
-name|setLastException
+name|b
+operator|.
+name|add
 argument_list|(
 name|e
 argument_list|)
@@ -3785,7 +3905,9 @@ name|IOException
 name|e
 parameter_list|)
 block|{
-name|setLastException
+name|b
+operator|.
+name|add
 argument_list|(
 name|e
 argument_list|)
@@ -3798,6 +3920,30 @@ operator|=
 literal|null
 expr_stmt|;
 block|}
+block|}
+specifier|final
+name|IOException
+name|ioe
+init|=
+name|b
+operator|.
+name|build
+argument_list|()
+decl_stmt|;
+if|if
+condition|(
+name|ioe
+operator|!=
+literal|null
+condition|)
+block|{
+name|lastException
+operator|.
+name|set
+argument_list|(
+name|ioe
+argument_list|)
+expr_stmt|;
 block|}
 block|}
 comment|// The following synchronized methods are used whenever
@@ -4102,8 +4248,6 @@ operator|.
 name|HEART_BEAT_SEQNO
 condition|)
 block|{
-name|DFSClient
-operator|.
 name|LOG
 operator|.
 name|warn
@@ -4134,16 +4278,12 @@ block|}
 elseif|else
 if|if
 condition|(
-name|DFSClient
-operator|.
 name|LOG
 operator|.
 name|isDebugEnabled
 argument_list|()
 condition|)
 block|{
-name|DFSClient
-operator|.
 name|LOG
 operator|.
 name|debug
@@ -4293,8 +4433,6 @@ index|[
 name|i
 index|]
 decl_stmt|;
-name|DFSClient
-operator|.
 name|LOG
 operator|.
 name|info
@@ -4567,22 +4705,13 @@ operator|!
 name|responderClosed
 condition|)
 block|{
-if|if
-condition|(
-name|e
-operator|instanceof
-name|IOException
-condition|)
-block|{
-name|setLastException
+name|lastException
+operator|.
+name|set
 argument_list|(
-operator|(
-name|IOException
-operator|)
 name|e
 argument_list|)
 expr_stmt|;
-block|}
 name|hasError
 operator|=
 literal|true
@@ -4614,15 +4743,11 @@ operator|-
 literal|1
 condition|)
 block|{
-name|DFSClient
-operator|.
 name|LOG
 operator|.
 name|warn
 argument_list|(
-literal|"DataStreamer ResponseProcessor exception "
-operator|+
-literal|" for block "
+literal|"Exception for "
 operator|+
 name|block
 argument_list|,
@@ -4681,8 +4806,6 @@ operator|!=
 literal|null
 condition|)
 block|{
-name|DFSClient
-operator|.
 name|LOG
 operator|.
 name|info
@@ -4752,8 +4875,6 @@ operator|>
 literal|5
 condition|)
 block|{
-name|DFSClient
-operator|.
 name|LOG
 operator|.
 name|warn
@@ -5595,8 +5716,6 @@ name|src
 operator|+
 literal|"\" - Aborting..."
 decl_stmt|;
-name|DFSClient
-operator|.
 name|LOG
 operator|.
 name|warn
@@ -5604,7 +5723,9 @@ argument_list|(
 name|msg
 argument_list|)
 expr_stmt|;
-name|setLastException
+name|lastException
+operator|.
+name|set
 argument_list|(
 operator|new
 name|IOException
@@ -5826,8 +5947,6 @@ return|return
 literal|false
 return|;
 block|}
-name|DFSClient
-operator|.
 name|LOG
 operator|.
 name|warn
@@ -6010,10 +6129,8 @@ expr_stmt|;
 block|}
 name|lastException
 operator|.
-name|set
-argument_list|(
-literal|null
-argument_list|)
+name|clear
+argument_list|()
 expr_stmt|;
 name|errorIndex
 operator|=
@@ -6070,8 +6187,6 @@ throw|throw
 name|ioe
 throw|;
 block|}
-name|DFSClient
-operator|.
 name|LOG
 operator|.
 name|warn
@@ -6257,8 +6372,6 @@ operator|-
 literal|1
 argument_list|)
 expr_stmt|;
-name|DFSClient
-operator|.
 name|LOG
 operator|.
 name|warn
@@ -6407,10 +6520,8 @@ literal|false
 expr_stmt|;
 name|lastException
 operator|.
-name|set
-argument_list|(
-literal|null
-argument_list|)
+name|clear
+argument_list|()
 expr_stmt|;
 name|errorIndex
 operator|=
@@ -6530,8 +6641,6 @@ operator|!
 name|success
 condition|)
 block|{
-name|DFSClient
-operator|.
 name|LOG
 operator|.
 name|info
@@ -6565,8 +6674,6 @@ name|block
 operator|=
 literal|null
 expr_stmt|;
-name|DFSClient
-operator|.
 name|LOG
 operator|.
 name|info
@@ -6657,13 +6764,11 @@ operator|==
 literal|0
 condition|)
 block|{
-name|DFSClient
-operator|.
 name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"nodes are empty for write pipeline of block "
+literal|"nodes are empty for write pipeline of "
 operator|+
 name|block
 argument_list|)
@@ -6689,46 +6794,26 @@ literal|false
 decl_stmt|;
 if|if
 condition|(
-name|DFSClient
-operator|.
 name|LOG
 operator|.
 name|isDebugEnabled
 argument_list|()
 condition|)
 block|{
-for|for
-control|(
-name|int
-name|i
-init|=
-literal|0
-init|;
-name|i
-operator|<
-name|nodes
-operator|.
-name|length
-condition|;
-name|i
-operator|++
-control|)
-block|{
-name|DFSClient
-operator|.
 name|LOG
 operator|.
 name|debug
 argument_list|(
 literal|"pipeline = "
 operator|+
+name|Arrays
+operator|.
+name|asList
+argument_list|(
 name|nodes
-index|[
-name|i
-index|]
+argument_list|)
 argument_list|)
 expr_stmt|;
-block|}
 block|}
 comment|// persist blocks on namenode on next flush
 name|persistBlocks
@@ -7127,8 +7212,6 @@ operator|-
 literal|1
 condition|)
 block|{
-name|DFSClient
-operator|.
 name|LOG
 operator|.
 name|info
@@ -7150,8 +7233,6 @@ operator|>
 literal|0
 condition|)
 block|{
-name|DFSClient
-operator|.
 name|LOG
 operator|.
 name|info
@@ -7286,8 +7367,6 @@ operator|=
 operator|-
 literal|1
 expr_stmt|;
-name|DFSClient
-operator|.
 name|LOG
 operator|.
 name|info
@@ -7308,7 +7387,9 @@ name|hasError
 operator|=
 literal|true
 expr_stmt|;
-name|setLastException
+name|lastException
+operator|.
+name|set
 argument_list|(
 name|ie
 argument_list|)
@@ -7463,16 +7544,12 @@ argument_list|)
 expr_stmt|;
 if|if
 condition|(
-name|DFSClient
-operator|.
 name|LOG
 operator|.
 name|isDebugEnabled
 argument_list|()
 condition|)
 block|{
-name|DFSClient
-operator|.
 name|LOG
 operator|.
 name|debug
@@ -7509,8 +7586,6 @@ argument_list|()
 condition|)
 block|{
 comment|// There is one or more favored nodes that were not allocated.
-name|DFSClient
-operator|.
 name|LOG
 operator|.
 name|warn
@@ -7702,8 +7777,6 @@ block|{
 operator|--
 name|retries
 expr_stmt|;
-name|DFSClient
-operator|.
 name|LOG
 operator|.
 name|info
@@ -7730,8 +7803,6 @@ operator|>
 literal|5000
 condition|)
 block|{
-name|DFSClient
-operator|.
 name|LOG
 operator|.
 name|info
@@ -7750,8 +7821,6 @@ expr_stmt|;
 block|}
 try|try
 block|{
-name|DFSClient
-operator|.
 name|LOG
 operator|.
 name|warn
@@ -7783,13 +7852,11 @@ name|InterruptedException
 name|ie
 parameter_list|)
 block|{
-name|DFSClient
-operator|.
 name|LOG
 operator|.
 name|warn
 argument_list|(
-literal|"Caught exception "
+literal|"Caught exception"
 argument_list|,
 name|ie
 argument_list|)
@@ -7937,8 +8004,6 @@ argument_list|(
 literal|" ms"
 argument_list|)
 expr_stmt|;
-name|DFSClient
-operator|.
 name|LOG
 operator|.
 name|info
@@ -8006,25 +8071,6 @@ return|return
 name|accessToken
 return|;
 block|}
-comment|/**    * set last exception    *    * @param e an exception    */
-DECL|method|setLastException (IOException e)
-name|void
-name|setLastException
-parameter_list|(
-name|IOException
-name|e
-parameter_list|)
-block|{
-name|lastException
-operator|.
-name|compareAndSet
-argument_list|(
-literal|null
-argument_list|,
-name|e
-argument_list|)
-expr_stmt|;
-block|}
 comment|/**    * Put a packet to the data queue    *    * @param packet the packet to be put into the data queued    */
 DECL|method|queuePacket (DFSPacket packet)
 name|void
@@ -8072,16 +8118,12 @@ argument_list|()
 expr_stmt|;
 if|if
 condition|(
-name|DFSClient
-operator|.
 name|LOG
 operator|.
 name|isDebugEnabled
 argument_list|()
 condition|)
 block|{
-name|DFSClient
-operator|.
 name|LOG
 operator|.
 name|debug
@@ -8202,8 +8244,6 @@ argument_list|>
 name|notification
 parameter_list|)
 block|{
-name|DFSClient
-operator|.
 name|LOG
 operator|.
 name|info
@@ -8347,12 +8387,9 @@ return|return
 name|appendChunk
 return|;
 block|}
-comment|/**    * get the last exception    *    * @return the last exception    */
+comment|/**    * @return the last exception    */
 DECL|method|getLastException ()
-name|AtomicReference
-argument_list|<
-name|IOException
-argument_list|>
+name|LastException
 name|getLastException
 parameter_list|()
 block|{

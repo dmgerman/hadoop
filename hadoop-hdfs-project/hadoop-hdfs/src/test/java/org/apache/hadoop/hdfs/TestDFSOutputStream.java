@@ -403,11 +403,6 @@ argument_list|,
 literal|"wrappedStream"
 argument_list|)
 decl_stmt|;
-annotation|@
-name|SuppressWarnings
-argument_list|(
-literal|"unchecked"
-argument_list|)
 name|DataStreamer
 name|streamer
 init|=
@@ -758,6 +753,8 @@ argument_list|,
 name|client
 argument_list|,
 literal|"foo"
+argument_list|,
+literal|null
 argument_list|,
 literal|null
 argument_list|,
