@@ -27,6 +27,22 @@ import|;
 end_import
 
 begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|util
+operator|.
+name|StripedBlockUtil
+import|;
+end_import
+
+begin_import
 import|import static
 name|org
 operator|.
@@ -36,7 +52,9 @@ name|hadoop
 operator|.
 name|hdfs
 operator|.
-name|DFSStripedInputStream
+name|util
+operator|.
+name|StripedBlockUtil
 operator|.
 name|ReadPortion
 import|;
@@ -117,7 +135,7 @@ name|ReadPortion
 index|[]
 name|results
 init|=
-name|DFSStripedInputStream
+name|StripedBlockUtil
 operator|.
 name|planReadPortions
 argument_list|(
@@ -168,8 +186,7 @@ index|[
 name|i
 index|]
 operator|.
-name|getReadLength
-argument_list|()
+name|readLength
 argument_list|)
 expr_stmt|;
 name|assertEquals
@@ -184,8 +201,7 @@ index|[
 name|i
 index|]
 operator|.
-name|getStartOffsetInBlock
-argument_list|()
+name|startOffsetInBlock
 argument_list|)
 expr_stmt|;
 specifier|final
@@ -236,7 +252,7 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-comment|/**    * Test {@link DFSStripedInputStream#planReadPortions}    */
+comment|/**    * Test {@link StripedBlockUtil#planReadPortions}    */
 annotation|@
 name|Test
 DECL|method|testPlanReadPortions ()
