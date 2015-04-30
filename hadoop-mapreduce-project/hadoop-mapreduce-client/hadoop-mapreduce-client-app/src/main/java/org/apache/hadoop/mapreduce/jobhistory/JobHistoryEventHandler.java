@@ -790,6 +790,20 @@ name|ObjectNode
 import|;
 end_import
 
+begin_import
+import|import
+name|com
+operator|.
+name|google
+operator|.
+name|common
+operator|.
+name|annotations
+operator|.
+name|VisibleForTesting
+import|;
+end_import
+
 begin_comment
 comment|/**  * The job history events get routed to this class. This class writes the Job  * history events to the DFS directly into a staging dir and then moved to a  * done-dir. JobHistory implementation is in this package to access package  * private classes.  */
 end_comment
@@ -7662,6 +7676,10 @@ argument_list|,
 name|flushTimeout
 argument_list|)
 expr_stmt|;
+name|isTimerActive
+operator|=
+literal|true
+expr_stmt|;
 block|}
 block|}
 block|}
@@ -8259,6 +8277,17 @@ name|KILLED
 operator|.
 name|toString
 argument_list|()
+return|;
+block|}
+annotation|@
+name|VisibleForTesting
+DECL|method|getFlushTimerStatus ()
+name|boolean
+name|getFlushTimerStatus
+parameter_list|()
+block|{
+return|return
+name|isTimerActive
 return|;
 block|}
 block|}
