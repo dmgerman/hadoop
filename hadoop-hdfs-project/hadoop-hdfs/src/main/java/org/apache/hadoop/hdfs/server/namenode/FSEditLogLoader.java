@@ -3054,7 +3054,7 @@ name|stat
 init|=
 name|FSDirStatAndListingOp
 operator|.
-name|createFileStatus
+name|createFileStatusForEditLog
 argument_list|(
 name|fsNamesys
 operator|.
@@ -3170,7 +3170,7 @@ name|stat
 init|=
 name|FSDirStatAndListingOp
 operator|.
-name|createFileStatus
+name|createFileStatusForEditLog
 argument_list|(
 name|fsNamesys
 operator|.
@@ -3605,7 +3605,7 @@ name|stat
 init|=
 name|FSDirStatAndListingOp
 operator|.
-name|createFileStatus
+name|createFileStatusForEditLog
 argument_list|(
 name|fsNamesys
 operator|.
