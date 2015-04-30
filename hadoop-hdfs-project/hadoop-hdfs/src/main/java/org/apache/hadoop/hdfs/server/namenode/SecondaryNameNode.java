@@ -968,6 +968,14 @@ name|lastCheckpointTime
 init|=
 literal|0
 decl_stmt|;
+DECL|field|lastCheckpointWallclockTime
+specifier|private
+specifier|volatile
+name|long
+name|lastCheckpointWallclockTime
+init|=
+literal|0
+decl_stmt|;
 DECL|field|fsName
 specifier|private
 name|URL
@@ -1083,6 +1091,15 @@ literal|0
 condition|?
 literal|"--"
 else|:
+operator|new
+name|Date
+argument_list|(
+name|lastCheckpointWallclockTime
+argument_list|)
+operator|)
+operator|+
+literal|" ("
+operator|+
 operator|(
 operator|(
 name|Time
@@ -1095,9 +1112,8 @@ operator|)
 operator|/
 literal|1000
 operator|)
-operator|)
 operator|+
-literal|" seconds ago"
+literal|" seconds ago)"
 operator|+
 literal|"\nCheckpoint Period      : "
 operator|+
@@ -2172,11 +2188,20 @@ argument_list|()
 expr_stmt|;
 specifier|final
 name|long
-name|now
+name|monotonicNow
 init|=
 name|Time
 operator|.
 name|monotonicNow
+argument_list|()
+decl_stmt|;
+specifier|final
+name|long
+name|now
+init|=
+name|Time
+operator|.
+name|now
 argument_list|()
 decl_stmt|;
 if|if
@@ -2184,7 +2209,7 @@ condition|(
 name|shouldCheckpointBasedOnCount
 argument_list|()
 operator|||
-name|now
+name|monotonicNow
 operator|>=
 name|lastCheckpointTime
 operator|+
@@ -2200,6 +2225,10 @@ name|doCheckpoint
 argument_list|()
 expr_stmt|;
 name|lastCheckpointTime
+operator|=
+name|monotonicNow
+expr_stmt|;
+name|lastCheckpointWallclockTime
 operator|=
 name|now
 expr_stmt|;
@@ -3527,7 +3556,7 @@ expr_stmt|;
 block|}
 annotation|@
 name|Override
-comment|// SecondaryNameNodeInfoMXXBean
+comment|// SecondaryNameNodeInfoMXBean
 DECL|method|getHostAndPort ()
 specifier|public
 name|String
@@ -3545,7 +3574,7 @@ return|;
 block|}
 annotation|@
 name|Override
-comment|// SecondaryNameNodeInfoMXXBean
+comment|// SecondaryNameNodeInfoMXBean
 DECL|method|getStartTime ()
 specifier|public
 name|long
@@ -3558,7 +3587,7 @@ return|;
 block|}
 annotation|@
 name|Override
-comment|// SecondaryNameNodeInfoMXXBean
+comment|// SecondaryNameNodeInfoMXBean
 DECL|method|getLastCheckpointTime ()
 specifier|public
 name|long
@@ -3566,12 +3595,47 @@ name|getLastCheckpointTime
 parameter_list|()
 block|{
 return|return
-name|lastCheckpointTime
+name|lastCheckpointWallclockTime
 return|;
 block|}
 annotation|@
 name|Override
-comment|// SecondaryNameNodeInfoMXXBean
+comment|// SecondaryNameNodeInfoMXBean
+DECL|method|getLastCheckpointDeltaMs ()
+specifier|public
+name|long
+name|getLastCheckpointDeltaMs
+parameter_list|()
+block|{
+if|if
+condition|(
+name|lastCheckpointTime
+operator|==
+literal|0
+condition|)
+block|{
+return|return
+operator|-
+literal|1
+return|;
+block|}
+else|else
+block|{
+return|return
+operator|(
+name|Time
+operator|.
+name|monotonicNow
+argument_list|()
+operator|-
+name|lastCheckpointTime
+operator|)
+return|;
+block|}
+block|}
+annotation|@
+name|Override
+comment|// SecondaryNameNodeInfoMXBean
 DECL|method|getCheckpointDirectories ()
 specifier|public
 name|String
@@ -3632,7 +3696,7 @@ return|;
 block|}
 annotation|@
 name|Override
-comment|// SecondaryNameNodeInfoMXXBean
+comment|// SecondaryNameNodeInfoMXBean
 DECL|method|getCheckpointEditlogDirectories ()
 specifier|public
 name|String

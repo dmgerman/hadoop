@@ -89,6 +89,13 @@ name|long
 name|getLastCheckpointTime
 parameter_list|()
 function_decl|;
+comment|/**    * @return the number of msec since the last checkpoint, or -1 if no    * checkpoint has been done yet.    */
+DECL|method|getLastCheckpointDeltaMs ()
+specifier|public
+name|long
+name|getLastCheckpointDeltaMs
+parameter_list|()
+function_decl|;
 comment|/**    * @return the directories that store the checkpoint images    */
 DECL|method|getCheckpointDirectories ()
 specifier|public
