@@ -1716,6 +1716,16 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
+name|int
+name|index
+init|=
+literal|0
+decl_stmt|;
+name|boolean
+name|exceptionOccurred
+init|=
+literal|false
+decl_stmt|;
 for|for
 control|(
 name|StripedDataStreamer
@@ -1747,16 +1757,39 @@ block|}
 catch|catch
 parameter_list|(
 name|InterruptedException
+decl||
+name|IOException
 name|e
 parameter_list|)
 block|{
-throw|throw
-operator|new
-name|IOException
+name|DFSClient
+operator|.
+name|LOG
+operator|.
+name|error
 argument_list|(
-literal|"Failed to shutdown streamer"
+literal|"Failed to shutdown streamer: name="
+operator|+
+name|streamer
+operator|.
+name|getName
+argument_list|()
+operator|+
+literal|", index="
+operator|+
+name|index
+operator|+
+literal|", file="
+operator|+
+name|src
+argument_list|,
+name|e
 argument_list|)
-throw|;
+expr_stmt|;
+name|exceptionOccurred
+operator|=
+literal|true
+expr_stmt|;
 block|}
 finally|finally
 block|{
@@ -1768,7 +1801,23 @@ expr_stmt|;
 name|setClosed
 argument_list|()
 expr_stmt|;
+name|index
+operator|++
+expr_stmt|;
 block|}
+block|}
+if|if
+condition|(
+name|exceptionOccurred
+condition|)
+block|{
+throw|throw
+operator|new
+name|IOException
+argument_list|(
+literal|"Failed to shutdown streamer"
+argument_list|)
+throw|;
 block|}
 block|}
 comment|/**    * Simply add bytesCurBlock together. Note that this result is not accurately    * the size of the block group.    */
