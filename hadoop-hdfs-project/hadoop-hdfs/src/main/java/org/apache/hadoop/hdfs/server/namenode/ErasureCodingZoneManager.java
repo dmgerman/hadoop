@@ -409,7 +409,10 @@ operator|.
 name|getFSNamesystem
 argument_list|()
 operator|.
-name|getECSchema
+name|getSchemaManager
+argument_list|()
+operator|.
+name|getSchema
 argument_list|(
 name|schemaName
 argument_list|)

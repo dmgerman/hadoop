@@ -34726,7 +34726,7 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-comment|/**    * Create an erasure coding zone on directory src.    * @param schema  ECSchema for the erasure coding zone    * @param src     the path of a directory which will be the root of the    *                erasure coding zone. The directory must be empty.    *    * @throws AccessControlException  if the caller is not the superuser.    * @throws UnresolvedLinkException if the path can't be resolved.    * @throws SafeModeException       if the Namenode is in safe mode.    */
+comment|/**    * Create an erasure coding zone on directory src.    * @param srcArg  the path of a directory which will be the root of the    *                erasure coding zone. The directory must be empty.    * @param schema  ECSchema for the erasure coding zone    *    * @throws AccessControlException  if the caller is not the superuser.    * @throws UnresolvedLinkException if the path can't be resolved.    * @throws SafeModeException       if the Namenode is in safe mode.    */
 DECL|method|createErasureCodingZone (final String srcArg, final ECSchema schema, final boolean logRetryCache)
 name|void
 name|createErasureCodingZone
