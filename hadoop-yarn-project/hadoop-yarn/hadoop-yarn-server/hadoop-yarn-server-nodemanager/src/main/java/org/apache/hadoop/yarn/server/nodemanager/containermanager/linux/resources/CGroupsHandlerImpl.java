@@ -28,6 +28,20 @@ end_package
 
 begin_import
 import|import
+name|com
+operator|.
+name|google
+operator|.
+name|common
+operator|.
+name|annotations
+operator|.
+name|VisibleForTesting
+import|;
+end_import
+
+begin_import
+import|import
 name|org
 operator|.
 name|apache
@@ -294,6 +308,16 @@ name|java
 operator|.
 name|util
 operator|.
+name|Collections
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
 name|HashMap
 import|;
 end_import
@@ -455,7 +479,6 @@ name|deleteCGroupDelay
 decl_stmt|;
 DECL|field|controllerPaths
 specifier|private
-specifier|final
 name|Map
 argument_list|<
 name|CGroupController
@@ -688,9 +711,9 @@ condition|(
 name|enableCGroupMount
 condition|)
 block|{
-comment|//nothing to do here - we support 'deferred' mounting of specific
-comment|//controllers - we'll populate the path for a given controller when an
-comment|//explicit mountCGroupController request is issued.
+comment|// nothing to do here - we support 'deferred' mounting of specific
+comment|// controllers - we'll populate the path for a given controller when an
+comment|// explicit mountCGroupController request is issued.
 name|LOG
 operator|.
 name|info
@@ -701,18 +724,72 @@ expr_stmt|;
 block|}
 else|else
 block|{
-comment|//cluster admins are expected to have mounted controllers in specific
-comment|//locations - we'll attempt to figure out mount points
+comment|// cluster admins are expected to have mounted controllers in specific
+comment|// locations - we'll attempt to figure out mount points
+name|Map
+argument_list|<
+name|CGroupController
+argument_list|,
+name|String
+argument_list|>
+name|cPaths
+init|=
 name|initializeControllerPathsFromMtab
+argument_list|(
+name|MTAB_FILE
+argument_list|,
+name|this
+operator|.
+name|cGroupPrefix
+argument_list|)
+decl_stmt|;
+comment|// we want to do a bulk update without the paths changing concurrently
+try|try
+block|{
+name|rwLock
+operator|.
+name|writeLock
+argument_list|()
+operator|.
+name|lock
+argument_list|()
+expr_stmt|;
+name|controllerPaths
+operator|=
+name|cPaths
+expr_stmt|;
+block|}
+finally|finally
+block|{
+name|rwLock
+operator|.
+name|writeLock
+argument_list|()
+operator|.
+name|unlock
 argument_list|()
 expr_stmt|;
 block|}
 block|}
-DECL|method|initializeControllerPathsFromMtab ()
-specifier|private
-name|void
+block|}
+annotation|@
+name|VisibleForTesting
+DECL|method|initializeControllerPathsFromMtab ( String mtab, String cGroupPrefix)
+specifier|static
+name|Map
+argument_list|<
+name|CGroupController
+argument_list|,
+name|String
+argument_list|>
 name|initializeControllerPathsFromMtab
-parameter_list|()
+parameter_list|(
+name|String
+name|mtab
+parameter_list|,
+name|String
+name|cGroupPrefix
+parameter_list|)
 throws|throws
 name|ResourceHandlerException
 block|{
@@ -730,17 +807,23 @@ argument_list|>
 name|parsedMtab
 init|=
 name|parseMtab
+argument_list|(
+name|mtab
+argument_list|)
+decl_stmt|;
+name|Map
+argument_list|<
+name|CGroupController
+argument_list|,
+name|String
+argument_list|>
+name|ret
+init|=
+operator|new
+name|HashMap
+argument_list|<>
 argument_list|()
 decl_stmt|;
-comment|//we want to do a bulk update without the paths changing concurrently
-name|rwLock
-operator|.
-name|writeLock
-argument_list|()
-operator|.
-name|lock
-argument_list|()
-expr_stmt|;
 for|for
 control|(
 name|CGroupController
@@ -787,8 +870,6 @@ name|controllerPath
 operator|+
 literal|"/"
 operator|+
-name|this
-operator|.
 name|cGroupPrefix
 argument_list|)
 decl_stmt|;
@@ -802,7 +883,7 @@ name|f
 argument_list|)
 condition|)
 block|{
-name|controllerPaths
+name|ret
 operator|.
 name|put
 argument_list|(
@@ -825,7 +906,7 @@ argument_list|)
 operator|.
 name|append
 argument_list|(
-name|MTAB_FILE
+name|mtab
 argument_list|)
 operator|.
 name|append
@@ -870,6 +951,9 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
+return|return
+name|ret
+return|;
 block|}
 catch|catch
 parameter_list|(
@@ -894,17 +978,6 @@ literal|"Failed to initialize controller paths!"
 argument_list|)
 throw|;
 block|}
-finally|finally
-block|{
-name|rwLock
-operator|.
-name|writeLock
-argument_list|()
-operator|.
-name|unlock
-argument_list|()
-expr_stmt|;
-block|}
 block|}
 comment|/* We are looking for entries of the form:    * none /cgroup/path/mem cgroup rw,memory 0 0    *    * Use a simple pattern that splits on the five spaces, and    * grabs the 2, 3, and 4th fields.    */
 DECL|field|MTAB_FILE_FORMAT
@@ -922,8 +995,9 @@ literal|"^[^\\s]+\\s([^\\s]+)\\s([^\\s]+)\\s([^\\s]+)\\s[^\\s]+\\s[^\\s]+$"
 argument_list|)
 decl_stmt|;
 comment|/*    * Returns a map: path -> mount options    * for mounts with type "cgroup". Cgroup controllers will    * appear in the list of options for a path.    */
-DECL|method|parseMtab ()
+DECL|method|parseMtab (String mtab)
 specifier|private
+specifier|static
 name|Map
 argument_list|<
 name|String
@@ -934,7 +1008,10 @@ name|String
 argument_list|>
 argument_list|>
 name|parseMtab
-parameter_list|()
+parameter_list|(
+name|String
+name|mtab
+parameter_list|)
 throws|throws
 name|IOException
 block|{
@@ -977,8 +1054,7 @@ argument_list|(
 operator|new
 name|File
 argument_list|(
-name|getMtabFileName
-argument_list|()
+name|mtab
 argument_list|)
 argument_list|)
 decl_stmt|;
@@ -1124,8 +1200,7 @@ name|IOException
 argument_list|(
 literal|"Error while reading "
 operator|+
-name|getMtabFileName
-argument_list|()
+name|mtab
 argument_list|,
 name|e
 argument_list|)
@@ -1149,6 +1224,7 @@ return|;
 block|}
 DECL|method|findControllerInMtab (String controller, Map<String, List<String>> entries)
 specifier|private
+specifier|static
 name|String
 name|findControllerInMtab
 parameter_list|(
@@ -1209,15 +1285,6 @@ return|;
 block|}
 return|return
 literal|null
-return|;
-block|}
-DECL|method|getMtabFileName ()
-name|String
-name|getMtabFileName
-parameter_list|()
-block|{
-return|return
-name|MTAB_FILE
 return|;
 block|}
 annotation|@

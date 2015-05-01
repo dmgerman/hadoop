@@ -3214,6 +3214,46 @@ name|DEFAULT_NM_RESOURCE_PERCENTAGE_PHYSICAL_CPU_LIMIT
 init|=
 literal|100
 decl_stmt|;
+comment|/**    * Prefix for disk configurations. Work in progress: This configuration    * parameter may be changed/removed in the future.    */
+annotation|@
+name|Private
+DECL|field|NM_DISK_RESOURCE_PREFIX
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|NM_DISK_RESOURCE_PREFIX
+init|=
+name|NM_PREFIX
+operator|+
+literal|"resource.disk."
+decl_stmt|;
+comment|/**    * This setting controls if resource handling for disk operations is enabled.    * Work in progress: This configuration parameter may be changed/removed in    * the future    */
+annotation|@
+name|Private
+DECL|field|NM_DISK_RESOURCE_ENABLED
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|NM_DISK_RESOURCE_ENABLED
+init|=
+name|NM_DISK_RESOURCE_PREFIX
+operator|+
+literal|"enabled"
+decl_stmt|;
+comment|/** Disk as a resource is disabled by default. **/
+annotation|@
+name|Private
+DECL|field|DEFAULT_NM_DISK_RESOURCE_ENABLED
+specifier|public
+specifier|static
+specifier|final
+name|boolean
+name|DEFAULT_NM_DISK_RESOURCE_ENABLED
+init|=
+literal|false
+decl_stmt|;
 DECL|field|NM_NETWORK_RESOURCE_PREFIX
 specifier|public
 specifier|static
@@ -3225,8 +3265,7 @@ name|NM_PREFIX
 operator|+
 literal|"resource.network."
 decl_stmt|;
-comment|/** This setting controls if resource handling for network bandwidth is enabled **/
-comment|/* Work in progress: This configuration parameter may be changed/removed in the future */
+comment|/**    * This setting controls if resource handling for network bandwidth is    * enabled. Work in progress: This configuration parameter may be    * changed/removed in the future    */
 annotation|@
 name|Private
 DECL|field|NM_NETWORK_RESOURCE_ENABLED
@@ -3240,7 +3279,7 @@ name|NM_NETWORK_RESOURCE_PREFIX
 operator|+
 literal|"enabled"
 decl_stmt|;
-comment|/** Network as a resource is disabled by default **/
+comment|/** Network as a resource is disabled by default. **/
 annotation|@
 name|Private
 DECL|field|DEFAULT_NM_NETWORK_RESOURCE_ENABLED
@@ -3252,8 +3291,7 @@ name|DEFAULT_NM_NETWORK_RESOURCE_ENABLED
 init|=
 literal|false
 decl_stmt|;
-comment|/** Specifies the interface to be used for applying network throttling rules **/
-comment|/* Work in progress: This configuration parameter may be changed/removed in the future */
+comment|/**    * Specifies the interface to be used for applying network throttling rules.    * Work in progress: This configuration parameter may be changed/removed in    * the future    */
 annotation|@
 name|Private
 DECL|field|NM_NETWORK_RESOURCE_INTERFACE
@@ -3278,8 +3316,7 @@ name|DEFAULT_NM_NETWORK_RESOURCE_INTERFACE
 init|=
 literal|"eth0"
 decl_stmt|;
-comment|/** Specifies the total available outbound bandwidth on the node **/
-comment|/* Work in progress: This configuration parameter may be changed/removed in the future */
+comment|/**    * Specifies the total available outbound bandwidth on the node. Work in    * progress: This configuration parameter may be changed/removed in the future    */
 annotation|@
 name|Private
 DECL|field|NM_NETWORK_RESOURCE_OUTBOUND_BANDWIDTH_MBIT
@@ -3304,8 +3341,7 @@ name|DEFAULT_NM_NETWORK_RESOURCE_OUTBOUND_BANDWIDTH_MBIT
 init|=
 literal|1000
 decl_stmt|;
-comment|/** Specifies the total outbound bandwidth available to YARN containers. defaults to    * NM_NETWORK_RESOURCE_OUTBOUND_BANDWIDTH_MBIT if not specified.    */
-comment|/* Work in progress: This configuration parameter may be changed/removed in the future */
+comment|/**    * Specifies the total outbound bandwidth available to YARN containers.    * defaults to NM_NETWORK_RESOURCE_OUTBOUND_BANDWIDTH_MBIT if not specified.    * Work in progress: This configuration parameter may be changed/removed in    * the future    */
 annotation|@
 name|Private
 DECL|field|NM_NETWORK_RESOURCE_OUTBOUND_BANDWIDTH_YARN_MBIT

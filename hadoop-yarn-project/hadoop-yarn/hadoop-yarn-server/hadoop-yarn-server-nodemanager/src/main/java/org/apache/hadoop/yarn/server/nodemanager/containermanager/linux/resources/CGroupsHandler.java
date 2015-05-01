@@ -88,6 +88,12 @@ name|NET_CLS
 argument_list|(
 literal|"net_cls"
 argument_list|)
+block|,
+DECL|enumConstant|BLKIO
+name|BLKIO
+argument_list|(
+literal|"blkio"
+argument_list|)
 block|;
 DECL|field|name
 specifier|private
@@ -136,6 +142,15 @@ name|String
 name|CGROUP_PARAM_CLASSID
 init|=
 literal|"classid"
+decl_stmt|;
+DECL|field|CGROUP_PARAM_BLKIO_WEIGHT
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|CGROUP_PARAM_BLKIO_WEIGHT
+init|=
+literal|"weight"
 decl_stmt|;
 comment|/**    * Mounts a cgroup controller    * @param controller - the controller being mounted    * @throws ResourceHandlerException    */
 DECL|method|mountCGroupController (CGroupController controller)

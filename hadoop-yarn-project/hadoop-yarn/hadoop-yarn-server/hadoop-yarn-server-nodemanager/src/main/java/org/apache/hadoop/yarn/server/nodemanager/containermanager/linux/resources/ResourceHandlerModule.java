@@ -28,6 +28,20 @@ end_package
 
 begin_import
 import|import
+name|com
+operator|.
+name|google
+operator|.
+name|common
+operator|.
+name|annotations
+operator|.
+name|VisibleForTesting
+import|;
+end_import
+
+begin_import
+import|import
 name|org
 operator|.
 name|apache
@@ -129,7 +143,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * Provides mechanisms to get various resource handlers - cpu, memory, network,  * disk etc., - based on configuration  */
+comment|/**  * Provides mechanisms to get various resource handlers - cpu, memory, network,  * disk etc., - based on configuration.  */
 end_comment
 
 begin_class
@@ -148,27 +162,34 @@ name|ResourceHandlerModule
 block|{
 DECL|field|resourceHandlerChain
 specifier|private
-specifier|volatile
 specifier|static
+specifier|volatile
 name|ResourceHandlerChain
 name|resourceHandlerChain
 decl_stmt|;
 comment|/**    * This specific implementation might provide resource management as well    * as resource metrics functionality. We need to ensure that the same    * instance is used for both.    */
 specifier|private
-specifier|volatile
 specifier|static
+specifier|volatile
 name|TrafficControlBandwidthHandlerImpl
 DECL|field|trafficControlBandwidthHandler
 name|trafficControlBandwidthHandler
 decl_stmt|;
 DECL|field|cGroupsHandler
 specifier|private
-specifier|volatile
 specifier|static
+specifier|volatile
 name|CGroupsHandler
 name|cGroupsHandler
 decl_stmt|;
-comment|/**    * Returns an initialized, thread-safe CGroupsHandler instance    */
+specifier|private
+specifier|static
+specifier|volatile
+name|CGroupsBlkioResourceHandlerImpl
+DECL|field|cGroupsBlkioResourceHandler
+name|cGroupsBlkioResourceHandler
+decl_stmt|;
+comment|/**    * Returns an initialized, thread-safe CGroupsHandler instance.    */
 DECL|method|getCGroupsHandler (Configuration conf)
 specifier|public
 specifier|static
@@ -337,6 +358,96 @@ name|conf
 argument_list|)
 return|;
 block|}
+DECL|method|getDiskResourceHandler (Configuration conf)
+specifier|public
+specifier|static
+name|DiskResourceHandler
+name|getDiskResourceHandler
+parameter_list|(
+name|Configuration
+name|conf
+parameter_list|)
+throws|throws
+name|ResourceHandlerException
+block|{
+if|if
+condition|(
+name|conf
+operator|.
+name|getBoolean
+argument_list|(
+name|YarnConfiguration
+operator|.
+name|NM_DISK_RESOURCE_ENABLED
+argument_list|,
+name|YarnConfiguration
+operator|.
+name|DEFAULT_NM_DISK_RESOURCE_ENABLED
+argument_list|)
+condition|)
+block|{
+return|return
+name|getCgroupsBlkioResourceHandler
+argument_list|(
+name|conf
+argument_list|)
+return|;
+block|}
+return|return
+literal|null
+return|;
+block|}
+DECL|method|getCgroupsBlkioResourceHandler ( Configuration conf)
+specifier|private
+specifier|static
+name|CGroupsBlkioResourceHandlerImpl
+name|getCgroupsBlkioResourceHandler
+parameter_list|(
+name|Configuration
+name|conf
+parameter_list|)
+throws|throws
+name|ResourceHandlerException
+block|{
+if|if
+condition|(
+name|cGroupsBlkioResourceHandler
+operator|==
+literal|null
+condition|)
+block|{
+synchronized|synchronized
+init|(
+name|DiskResourceHandler
+operator|.
+name|class
+init|)
+block|{
+if|if
+condition|(
+name|cGroupsBlkioResourceHandler
+operator|==
+literal|null
+condition|)
+block|{
+name|cGroupsBlkioResourceHandler
+operator|=
+operator|new
+name|CGroupsBlkioResourceHandlerImpl
+argument_list|(
+name|getCGroupsHandler
+argument_list|(
+name|conf
+argument_list|)
+argument_list|)
+expr_stmt|;
+block|}
+block|}
+block|}
+return|return
+name|cGroupsBlkioResourceHandler
+return|;
+block|}
 DECL|method|addHandlerIfNotNull (List<ResourceHandler> handlerList, ResourceHandler handler)
 specifier|private
 specifier|static
@@ -402,6 +513,16 @@ name|conf
 argument_list|)
 argument_list|)
 expr_stmt|;
+name|addHandlerIfNotNull
+argument_list|(
+name|handlerList
+argument_list|,
+name|getDiskResourceHandler
+argument_list|(
+name|conf
+argument_list|)
+argument_list|)
+expr_stmt|;
 name|resourceHandlerChain
 operator|=
 operator|new
@@ -411,7 +532,7 @@ name|handlerList
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|getConfiguredResourceHandlerChain (Configuration conf)
+DECL|method|getConfiguredResourceHandlerChain ( Configuration conf)
 specifier|public
 specifier|static
 name|ResourceHandlerChain
@@ -475,6 +596,21 @@ return|return
 literal|null
 return|;
 block|}
+block|}
+annotation|@
+name|VisibleForTesting
+DECL|method|nullifyResourceHandlerChain ()
+specifier|static
+name|void
+name|nullifyResourceHandlerChain
+parameter_list|()
+throws|throws
+name|ResourceHandlerException
+block|{
+name|resourceHandlerChain
+operator|=
+literal|null
+expr_stmt|;
 block|}
 block|}
 end_class
