@@ -219,8 +219,6 @@ operator|.
 name|protocol
 operator|.
 name|HdfsConstants
-operator|.
-name|DatanodeReportType
 import|;
 end_import
 
@@ -236,7 +234,9 @@ name|hdfs
 operator|.
 name|protocol
 operator|.
-name|HdfsConstantsClient
+name|HdfsConstants
+operator|.
+name|DatanodeReportType
 import|;
 end_import
 
@@ -1849,7 +1849,7 @@ index|]
 argument_list|,
 literal|0
 argument_list|,
-name|HdfsConstantsClient
+name|HdfsConstants
 operator|.
 name|GRANDFATHER_GENERATION_STAMP
 argument_list|)

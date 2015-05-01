@@ -112,7 +112,7 @@ name|hdfs
 operator|.
 name|protocol
 operator|.
-name|HdfsConstantsClient
+name|HdfsConstants
 operator|.
 name|HA_DT_SERVICE_PREFIX
 import|;

@@ -170,7 +170,7 @@ name|hdfs
 operator|.
 name|protocol
 operator|.
-name|HdfsConstantsClient
+name|HdfsConstants
 import|;
 end_import
 
@@ -1244,7 +1244,7 @@ literal|null
 argument_list|,
 literal|null
 argument_list|,
-name|HdfsConstantsClient
+name|HdfsConstants
 operator|.
 name|GRANDFATHER_INODE_ID
 argument_list|,

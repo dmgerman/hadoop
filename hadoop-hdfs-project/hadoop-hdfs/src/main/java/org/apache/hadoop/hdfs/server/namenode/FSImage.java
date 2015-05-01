@@ -324,22 +324,6 @@ name|hdfs
 operator|.
 name|protocol
 operator|.
-name|HdfsConstants
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|hdfs
-operator|.
-name|protocol
-operator|.
 name|LayoutVersion
 import|;
 end_import
@@ -359,6 +343,24 @@ operator|.
 name|blockmanagement
 operator|.
 name|BlockStoragePolicySuite
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|server
+operator|.
+name|common
+operator|.
+name|HdfsServerConstants
 import|;
 end_import
 
@@ -1449,7 +1451,7 @@ name|println
 argument_list|(
 literal|"Software format version: "
 operator|+
-name|HdfsConstants
+name|HdfsServerConstants
 operator|.
 name|NAMENODE_LAYOUT_VERSION
 argument_list|)
@@ -1510,7 +1512,7 @@ name|LAST_PRE_UPGRADE_LAYOUT_VERSION
 operator|&&
 name|layoutVersion
 operator|!=
-name|HdfsConstants
+name|HdfsServerConstants
 operator|.
 name|NAMENODE_LAYOUT_VERSION
 condition|)
@@ -1528,7 +1530,7 @@ argument_list|()
 operator|+
 literal|".\nAn upgrade to version "
 operator|+
-name|HdfsConstants
+name|HdfsServerConstants
 operator|.
 name|NAMENODE_LAYOUT_VERSION
 operator|+
@@ -2162,7 +2164,7 @@ name|storage
 operator|.
 name|layoutVersion
 operator|=
-name|HdfsConstants
+name|HdfsServerConstants
 operator|.
 name|NAMENODE_LAYOUT_VERSION
 expr_stmt|;
@@ -2485,7 +2487,7 @@ argument_list|()
 operator|.
 name|layoutVersion
 operator|=
-name|HdfsConstants
+name|HdfsServerConstants
 operator|.
 name|NAMENODE_LAYOUT_VERSION
 expr_stmt|;
@@ -2535,7 +2537,7 @@ operator|.
 name|getStorage
 argument_list|()
 argument_list|,
-name|HdfsConstants
+name|HdfsServerConstants
 operator|.
 name|NAMENODE_LAYOUT_VERSION
 argument_list|)
@@ -2583,7 +2585,7 @@ operator|.
 name|getStorage
 argument_list|()
 argument_list|,
-name|HdfsConstants
+name|HdfsServerConstants
 operator|.
 name|NAMENODE_LAYOUT_VERSION
 argument_list|)
@@ -4361,7 +4363,7 @@ operator|.
 name|getLastTxId
 argument_list|()
 operator|!=
-name|HdfsConstants
+name|HdfsServerConstants
 operator|.
 name|INVALID_TXID
 condition|)

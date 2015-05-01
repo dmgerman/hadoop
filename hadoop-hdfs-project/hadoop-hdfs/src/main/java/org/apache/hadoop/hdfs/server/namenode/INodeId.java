@@ -56,7 +56,7 @@ name|hdfs
 operator|.
 name|protocol
 operator|.
-name|HdfsConstantsClient
+name|HdfsConstants
 import|;
 end_import
 
@@ -135,7 +135,7 @@ if|if
 condition|(
 name|requestId
 operator|!=
-name|HdfsConstantsClient
+name|HdfsConstants
 operator|.
 name|GRANDFATHER_INODE_ID
 operator|&&

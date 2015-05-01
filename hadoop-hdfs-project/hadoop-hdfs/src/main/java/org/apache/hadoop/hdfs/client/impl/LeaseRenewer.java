@@ -202,9 +202,11 @@ name|hadoop
 operator|.
 name|hdfs
 operator|.
-name|protocol
+name|server
 operator|.
-name|HdfsConstants
+name|common
+operator|.
+name|HdfsServerConstants
 import|;
 end_import
 
@@ -735,7 +737,7 @@ specifier|private
 name|long
 name|renewal
 init|=
-name|HdfsConstants
+name|HdfsServerConstants
 operator|.
 name|LEASE_SOFTLIMIT_PERIOD
 operator|/
@@ -1568,7 +1570,7 @@ block|{
 name|long
 name|min
 init|=
-name|HdfsConstants
+name|HdfsServerConstants
 operator|.
 name|LEASE_SOFTLIMIT_PERIOD
 decl_stmt|;

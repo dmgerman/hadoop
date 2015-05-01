@@ -144,6 +144,24 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|hdfs
+operator|.
+name|server
+operator|.
+name|common
+operator|.
+name|HdfsServerConstants
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|util
 operator|.
 name|StringUtils
@@ -264,7 +282,7 @@ specifier|final
 name|byte
 name|lazyPersistId
 init|=
-name|HdfsConstants
+name|HdfsServerConstants
 operator|.
 name|MEMORY_STORAGE_POLICY_ID
 decl_stmt|;
@@ -321,7 +339,7 @@ specifier|final
 name|byte
 name|allssdId
 init|=
-name|HdfsConstants
+name|HdfsServerConstants
 operator|.
 name|ALLSSD_STORAGE_POLICY_ID
 decl_stmt|;
@@ -371,7 +389,7 @@ specifier|final
 name|byte
 name|onessdId
 init|=
-name|HdfsConstants
+name|HdfsServerConstants
 operator|.
 name|ONESSD_STORAGE_POLICY_ID
 decl_stmt|;
@@ -433,7 +451,7 @@ specifier|final
 name|byte
 name|hotId
 init|=
-name|HdfsConstants
+name|HdfsServerConstants
 operator|.
 name|HOT_STORAGE_POLICY_ID
 decl_stmt|;
@@ -447,7 +465,7 @@ name|BlockStoragePolicy
 argument_list|(
 name|hotId
 argument_list|,
-name|HdfsConstants
+name|HdfsServerConstants
 operator|.
 name|HOT_STORAGE_POLICY_NAME
 argument_list|,
@@ -478,7 +496,7 @@ specifier|final
 name|byte
 name|warmId
 init|=
-name|HdfsConstants
+name|HdfsServerConstants
 operator|.
 name|WARM_STORAGE_POLICY_ID
 decl_stmt|;
@@ -492,7 +510,7 @@ name|BlockStoragePolicy
 argument_list|(
 name|warmId
 argument_list|,
-name|HdfsConstants
+name|HdfsServerConstants
 operator|.
 name|WARM_STORAGE_POLICY_NAME
 argument_list|,
@@ -540,7 +558,7 @@ specifier|final
 name|byte
 name|coldId
 init|=
-name|HdfsConstants
+name|HdfsServerConstants
 operator|.
 name|COLD_STORAGE_POLICY_ID
 decl_stmt|;
@@ -554,7 +572,7 @@ name|BlockStoragePolicy
 argument_list|(
 name|coldId
 argument_list|,
-name|HdfsConstants
+name|HdfsServerConstants
 operator|.
 name|COLD_STORAGE_POLICY_NAME
 argument_list|,

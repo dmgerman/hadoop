@@ -594,7 +594,7 @@ name|hdfs
 operator|.
 name|protocol
 operator|.
-name|HdfsConstantsClient
+name|RecoveryInProgressException
 import|;
 end_import
 
@@ -608,9 +608,11 @@ name|hadoop
 operator|.
 name|hdfs
 operator|.
-name|protocol
+name|server
 operator|.
-name|RecoveryInProgressException
+name|common
+operator|.
+name|HdfsServerConstants
 import|;
 end_import
 
@@ -5590,7 +5592,7 @@ argument_list|(
 name|dstMeta
 argument_list|)
 argument_list|,
-name|HdfsConstants
+name|HdfsServerConstants
 operator|.
 name|SMALL_BUFFER_SIZE
 argument_list|)
@@ -11336,7 +11338,7 @@ name|getName
 argument_list|()
 argument_list|)
 else|:
-name|HdfsConstantsClient
+name|HdfsConstants
 operator|.
 name|GRANDFATHER_GENERATION_STAMP
 decl_stmt|;
@@ -11854,7 +11856,7 @@ argument_list|)
 condition|?
 name|diskGS
 else|:
-name|HdfsConstantsClient
+name|HdfsConstants
 operator|.
 name|GRANDFATHER_GENERATION_STAMP
 decl_stmt|;

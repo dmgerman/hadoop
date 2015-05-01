@@ -64,9 +64,11 @@ name|hadoop
 operator|.
 name|hdfs
 operator|.
-name|protocol
+name|server
 operator|.
-name|HdfsConstants
+name|common
+operator|.
+name|HdfsServerConstants
 import|;
 end_import
 
@@ -539,7 +541,7 @@ if|if
 condition|(
 name|firstTxId
 operator|==
-name|HdfsConstants
+name|HdfsServerConstants
 operator|.
 name|INVALID_TXID
 condition|)
@@ -587,7 +589,7 @@ argument_list|()
 expr_stmt|;
 name|firstTxId
 operator|=
-name|HdfsConstants
+name|HdfsServerConstants
 operator|.
 name|INVALID_TXID
 expr_stmt|;

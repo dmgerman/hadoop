@@ -412,9 +412,13 @@ name|hadoop
 operator|.
 name|hdfs
 operator|.
-name|protocol
+name|server
 operator|.
-name|HdfsConstants
+name|blockmanagement
+operator|.
+name|BlockManager
+operator|.
+name|StatefulBlockInfo
 import|;
 end_import
 
@@ -430,11 +434,9 @@ name|hdfs
 operator|.
 name|server
 operator|.
-name|blockmanagement
+name|common
 operator|.
-name|BlockManager
-operator|.
-name|StatefulBlockInfo
+name|HdfsServerConstants
 import|;
 end_import
 
@@ -1127,7 +1129,7 @@ index|]
 argument_list|,
 literal|2
 operator|*
-name|HdfsConstants
+name|HdfsServerConstants
 operator|.
 name|MIN_BLOCKS_FOR_WRITE
 operator|*
@@ -1137,7 +1139,7 @@ literal|0L
 argument_list|,
 literal|2
 operator|*
-name|HdfsConstants
+name|HdfsServerConstants
 operator|.
 name|MIN_BLOCKS_FOR_WRITE
 operator|*
@@ -1228,7 +1230,7 @@ index|]
 argument_list|,
 literal|2
 operator|*
-name|HdfsConstants
+name|HdfsServerConstants
 operator|.
 name|MIN_BLOCKS_FOR_WRITE
 operator|*
@@ -1236,7 +1238,7 @@ name|BLOCK_SIZE
 argument_list|,
 literal|0L
 argument_list|,
-name|HdfsConstants
+name|HdfsServerConstants
 operator|.
 name|MIN_BLOCKS_FOR_WRITE
 operator|*
@@ -1492,7 +1494,7 @@ index|]
 argument_list|,
 literal|2
 operator|*
-name|HdfsConstants
+name|HdfsServerConstants
 operator|.
 name|MIN_BLOCKS_FOR_WRITE
 operator|*
@@ -1500,7 +1502,7 @@ name|BLOCK_SIZE
 argument_list|,
 literal|0L
 argument_list|,
-name|HdfsConstants
+name|HdfsServerConstants
 operator|.
 name|MIN_BLOCKS_FOR_WRITE
 operator|*
@@ -2282,7 +2284,7 @@ index|]
 argument_list|,
 literal|2
 operator|*
-name|HdfsConstants
+name|HdfsServerConstants
 operator|.
 name|MIN_BLOCKS_FOR_WRITE
 operator|*
@@ -2291,7 +2293,7 @@ argument_list|,
 literal|0L
 argument_list|,
 operator|(
-name|HdfsConstants
+name|HdfsServerConstants
 operator|.
 name|MIN_BLOCKS_FOR_WRITE
 operator|-
@@ -2582,7 +2584,7 @@ index|]
 argument_list|,
 literal|2
 operator|*
-name|HdfsConstants
+name|HdfsServerConstants
 operator|.
 name|MIN_BLOCKS_FOR_WRITE
 operator|*
@@ -2590,7 +2592,7 @@ name|BLOCK_SIZE
 argument_list|,
 literal|0L
 argument_list|,
-name|HdfsConstants
+name|HdfsServerConstants
 operator|.
 name|MIN_BLOCKS_FOR_WRITE
 operator|*
@@ -2644,7 +2646,7 @@ index|]
 argument_list|,
 literal|2
 operator|*
-name|HdfsConstants
+name|HdfsServerConstants
 operator|.
 name|MIN_BLOCKS_FOR_WRITE
 operator|*
@@ -2653,7 +2655,7 @@ argument_list|,
 literal|0L
 argument_list|,
 operator|(
-name|HdfsConstants
+name|HdfsServerConstants
 operator|.
 name|MIN_BLOCKS_FOR_WRITE
 operator|-
@@ -2891,7 +2893,7 @@ index|]
 argument_list|,
 literal|2
 operator|*
-name|HdfsConstants
+name|HdfsServerConstants
 operator|.
 name|MIN_BLOCKS_FOR_WRITE
 operator|*
@@ -2899,7 +2901,7 @@ name|BLOCK_SIZE
 argument_list|,
 literal|0L
 argument_list|,
-name|HdfsConstants
+name|HdfsServerConstants
 operator|.
 name|MIN_BLOCKS_FOR_WRITE
 operator|*
@@ -3240,7 +3242,7 @@ name|newDn
 argument_list|,
 literal|2
 operator|*
-name|HdfsConstants
+name|HdfsServerConstants
 operator|.
 name|MIN_BLOCKS_FOR_WRITE
 operator|*
@@ -3250,7 +3252,7 @@ literal|0L
 argument_list|,
 literal|2
 operator|*
-name|HdfsConstants
+name|HdfsServerConstants
 operator|.
 name|MIN_BLOCKS_FOR_WRITE
 operator|*
@@ -3447,7 +3449,7 @@ index|]
 argument_list|,
 literal|2
 operator|*
-name|HdfsConstants
+name|HdfsServerConstants
 operator|.
 name|MIN_BLOCKS_FOR_WRITE
 operator|*
@@ -3456,7 +3458,7 @@ argument_list|,
 literal|0L
 argument_list|,
 operator|(
-name|HdfsConstants
+name|HdfsServerConstants
 operator|.
 name|MIN_BLOCKS_FOR_WRITE
 operator|-
@@ -3625,7 +3627,7 @@ index|]
 argument_list|,
 literal|2
 operator|*
-name|HdfsConstants
+name|HdfsServerConstants
 operator|.
 name|MIN_BLOCKS_FOR_WRITE
 operator|*
@@ -3633,7 +3635,7 @@ name|BLOCK_SIZE
 argument_list|,
 literal|0L
 argument_list|,
-name|HdfsConstants
+name|HdfsServerConstants
 operator|.
 name|MIN_BLOCKS_FOR_WRITE
 operator|*

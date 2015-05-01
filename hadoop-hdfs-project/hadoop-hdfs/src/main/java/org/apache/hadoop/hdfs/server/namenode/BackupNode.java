@@ -170,22 +170,6 @@ name|hdfs
 operator|.
 name|protocol
 operator|.
-name|HdfsConstants
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|hdfs
-operator|.
-name|protocol
-operator|.
 name|UnregisteredNodeException
 import|;
 end_import
@@ -257,6 +241,24 @@ operator|.
 name|protocolPB
 operator|.
 name|JournalProtocolServerSideTranslatorPB
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|server
+operator|.
+name|common
+operator|.
+name|HdfsServerConstants
 import|;
 end_import
 
@@ -1001,7 +1003,7 @@ name|leaseManager
 operator|.
 name|setLeasePeriod
 argument_list|(
-name|HdfsConstants
+name|HdfsServerConstants
 operator|.
 name|LEASE_SOFTLIMIT_PERIOD
 argument_list|,
@@ -2166,7 +2168,7 @@ argument_list|)
 throw|;
 block|}
 assert|assert
-name|HdfsConstants
+name|HdfsServerConstants
 operator|.
 name|NAMENODE_LAYOUT_VERSION
 operator|==
@@ -2177,7 +2179,7 @@ argument_list|()
 operator|:
 literal|"Active and backup node layout versions must be the same. Expected: "
 operator|+
-name|HdfsConstants
+name|HdfsServerConstants
 operator|.
 name|NAMENODE_LAYOUT_VERSION
 operator|+

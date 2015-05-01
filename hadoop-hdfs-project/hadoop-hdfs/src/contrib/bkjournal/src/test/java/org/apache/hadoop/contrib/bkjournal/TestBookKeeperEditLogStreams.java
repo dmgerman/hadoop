@@ -132,9 +132,11 @@ name|hadoop
 operator|.
 name|hdfs
 operator|.
-name|protocol
+name|server
 operator|.
-name|HdfsConstants
+name|common
+operator|.
+name|HdfsServerConstants
 import|;
 end_import
 
@@ -328,7 +330,7 @@ name|EditLogLedgerMetadata
 argument_list|(
 literal|"/foobar"
 argument_list|,
-name|HdfsConstants
+name|HdfsServerConstants
 operator|.
 name|NAMENODE_LAYOUT_VERSION
 argument_list|,
@@ -386,7 +388,7 @@ name|EditLogLedgerMetadata
 argument_list|(
 literal|"/foobar"
 argument_list|,
-name|HdfsConstants
+name|HdfsServerConstants
 operator|.
 name|NAMENODE_LAYOUT_VERSION
 argument_list|,

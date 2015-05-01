@@ -314,9 +314,11 @@ name|hadoop
 operator|.
 name|hdfs
 operator|.
-name|protocol
+name|server
 operator|.
-name|HdfsConstants
+name|common
+operator|.
+name|HdfsServerConstants
 import|;
 end_import
 
@@ -2093,7 +2095,7 @@ init|=
 operator|new
 name|byte
 index|[
-name|HdfsConstants
+name|HdfsServerConstants
 operator|.
 name|IO_FILE_BUFFER_SIZE
 index|]
@@ -2148,7 +2150,7 @@ name|len
 operator|/
 literal|2
 argument_list|,
-name|HdfsConstants
+name|HdfsServerConstants
 operator|.
 name|IO_FILE_BUFFER_SIZE
 argument_list|)
@@ -2960,7 +2962,7 @@ init|=
 operator|new
 name|byte
 index|[
-name|HdfsConstants
+name|HdfsServerConstants
 operator|.
 name|IO_FILE_BUFFER_SIZE
 index|]

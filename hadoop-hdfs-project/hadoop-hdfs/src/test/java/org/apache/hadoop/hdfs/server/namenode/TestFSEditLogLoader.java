@@ -306,9 +306,11 @@ name|hadoop
 operator|.
 name|hdfs
 operator|.
-name|protocol
+name|server
 operator|.
-name|HdfsConstants
+name|common
+operator|.
+name|HdfsServerConstants
 import|;
 end_import
 
@@ -2140,7 +2142,7 @@ operator|==
 literal|0
 operator|)
 condition|?
-name|HdfsConstants
+name|HdfsServerConstants
 operator|.
 name|INVALID_TXID
 else|:
@@ -2257,7 +2259,7 @@ argument_list|)
 expr_stmt|;
 name|assertEquals
 argument_list|(
-name|HdfsConstants
+name|HdfsServerConstants
 operator|.
 name|INVALID_TXID
 argument_list|,

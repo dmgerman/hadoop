@@ -28,7 +28,7 @@ name|hdfs
 operator|.
 name|protocol
 operator|.
-name|HdfsConstantsClient
+name|HdfsConstants
 operator|.
 name|BLOCK_STORAGE_POLICY_ID_UNSPECIFIED
 import|;
@@ -193,6 +193,24 @@ operator|.
 name|blockmanagement
 operator|.
 name|*
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|server
+operator|.
+name|common
+operator|.
+name|HdfsServerConstants
 import|;
 end_import
 
@@ -548,7 +566,7 @@ specifier|final
 name|byte
 name|COLD
 init|=
-name|HdfsConstants
+name|HdfsServerConstants
 operator|.
 name|COLD_STORAGE_POLICY_ID
 decl_stmt|;
@@ -558,7 +576,7 @@ specifier|final
 name|byte
 name|WARM
 init|=
-name|HdfsConstants
+name|HdfsServerConstants
 operator|.
 name|WARM_STORAGE_POLICY_ID
 decl_stmt|;
@@ -568,7 +586,7 @@ specifier|final
 name|byte
 name|HOT
 init|=
-name|HdfsConstants
+name|HdfsServerConstants
 operator|.
 name|HOT_STORAGE_POLICY_ID
 decl_stmt|;
@@ -578,7 +596,7 @@ specifier|final
 name|byte
 name|ONESSD
 init|=
-name|HdfsConstants
+name|HdfsServerConstants
 operator|.
 name|ONESSD_STORAGE_POLICY_ID
 decl_stmt|;
@@ -588,7 +606,7 @@ specifier|final
 name|byte
 name|ALLSSD
 init|=
-name|HdfsConstants
+name|HdfsServerConstants
 operator|.
 name|ALLSSD_STORAGE_POLICY_ID
 decl_stmt|;
@@ -598,7 +616,7 @@ specifier|final
 name|byte
 name|LAZY_PERSIST
 init|=
-name|HdfsConstants
+name|HdfsServerConstants
 operator|.
 name|MEMORY_STORAGE_POLICY_ID
 decl_stmt|;
@@ -674,7 +692,7 @@ argument_list|(
 literal|"/"
 argument_list|)
 argument_list|,
-name|HdfsConstants
+name|HdfsServerConstants
 operator|.
 name|COLD_STORAGE_POLICY_NAME
 argument_list|)
@@ -768,7 +786,7 @@ argument_list|(
 literal|"/"
 argument_list|)
 argument_list|,
-name|HdfsConstants
+name|HdfsServerConstants
 operator|.
 name|COLD_STORAGE_POLICY_NAME
 argument_list|)
@@ -6220,7 +6238,7 @@ name|setStoragePolicy
 argument_list|(
 name|invalidPath
 argument_list|,
-name|HdfsConstants
+name|HdfsServerConstants
 operator|.
 name|WARM_STORAGE_POLICY_NAME
 argument_list|)
@@ -6258,7 +6276,7 @@ name|setStoragePolicy
 argument_list|(
 name|fooFile
 argument_list|,
-name|HdfsConstants
+name|HdfsServerConstants
 operator|.
 name|COLD_STORAGE_POLICY_NAME
 argument_list|)
@@ -6269,7 +6287,7 @@ name|setStoragePolicy
 argument_list|(
 name|barDir
 argument_list|,
-name|HdfsConstants
+name|HdfsServerConstants
 operator|.
 name|WARM_STORAGE_POLICY_NAME
 argument_list|)
@@ -6280,7 +6298,7 @@ name|setStoragePolicy
 argument_list|(
 name|barFile2
 argument_list|,
-name|HdfsConstants
+name|HdfsServerConstants
 operator|.
 name|HOT_STORAGE_POLICY_NAME
 argument_list|)
@@ -6655,7 +6673,7 @@ name|setStoragePolicy
 argument_list|(
 name|fooDir
 argument_list|,
-name|HdfsConstants
+name|HdfsServerConstants
 operator|.
 name|WARM_STORAGE_POLICY_NAME
 argument_list|)
@@ -6747,7 +6765,7 @@ name|setStoragePolicy
 argument_list|(
 name|fooFile1
 argument_list|,
-name|HdfsConstants
+name|HdfsServerConstants
 operator|.
 name|COLD_STORAGE_POLICY_NAME
 argument_list|)
@@ -6901,7 +6919,7 @@ name|setStoragePolicy
 argument_list|(
 name|fooDir
 argument_list|,
-name|HdfsConstants
+name|HdfsServerConstants
 operator|.
 name|HOT_STORAGE_POLICY_NAME
 argument_list|)
@@ -7738,7 +7756,7 @@ name|Exception
 block|{
 name|testChangeFileRep
 argument_list|(
-name|HdfsConstants
+name|HdfsServerConstants
 operator|.
 name|HOT_STORAGE_POLICY_NAME
 argument_list|,
@@ -7801,7 +7819,7 @@ name|Exception
 block|{
 name|testChangeFileRep
 argument_list|(
-name|HdfsConstants
+name|HdfsServerConstants
 operator|.
 name|WARM_STORAGE_POLICY_NAME
 argument_list|,
@@ -7864,7 +7882,7 @@ name|Exception
 block|{
 name|testChangeFileRep
 argument_list|(
-name|HdfsConstants
+name|HdfsServerConstants
 operator|.
 name|COLD_STORAGE_POLICY_NAME
 argument_list|,

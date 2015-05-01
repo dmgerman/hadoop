@@ -344,9 +344,13 @@ name|hadoop
 operator|.
 name|hdfs
 operator|.
-name|protocol
+name|server
 operator|.
-name|HdfsConstants
+name|blockmanagement
+operator|.
+name|DatanodeDescriptor
+operator|.
+name|BlockTargetPair
 import|;
 end_import
 
@@ -362,11 +366,9 @@ name|hdfs
 operator|.
 name|server
 operator|.
-name|blockmanagement
+name|common
 operator|.
-name|DatanodeDescriptor
-operator|.
-name|BlockTargetPair
+name|HdfsServerConstants
 import|;
 end_import
 
@@ -845,7 +847,7 @@ name|setUtilizationForTesting
 argument_list|(
 literal|2
 operator|*
-name|HdfsConstants
+name|HdfsServerConstants
 operator|.
 name|MIN_BLOCKS_FOR_WRITE
 operator|*
@@ -855,7 +857,7 @@ literal|0L
 argument_list|,
 literal|2
 operator|*
-name|HdfsConstants
+name|HdfsServerConstants
 operator|.
 name|MIN_BLOCKS_FOR_WRITE
 operator|*

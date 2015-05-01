@@ -82,9 +82,11 @@ name|hadoop
 operator|.
 name|hdfs
 operator|.
-name|protocol
+name|server
 operator|.
-name|HdfsConstants
+name|common
+operator|.
+name|HdfsServerConstants
 import|;
 end_import
 
@@ -440,7 +442,7 @@ name|assertEquals
 argument_list|(
 literal|".snapshot."
 operator|+
-name|HdfsConstants
+name|HdfsServerConstants
 operator|.
 name|NAMENODE_LAYOUT_VERSION
 operator|+
@@ -460,7 +462,7 @@ name|assertEquals
 argument_list|(
 literal|".reserved."
 operator|+
-name|HdfsConstants
+name|HdfsServerConstants
 operator|.
 name|NAMENODE_LAYOUT_VERSION
 operator|+

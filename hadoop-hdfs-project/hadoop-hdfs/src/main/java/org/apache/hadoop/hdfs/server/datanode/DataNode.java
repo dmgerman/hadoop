@@ -10992,7 +10992,7 @@ name|BufferedOutputStream
 argument_list|(
 name|unbufOut
 argument_list|,
-name|HdfsConstants
+name|HdfsServerConstants
 operator|.
 name|SMALL_BUFFER_SIZE
 argument_list|)

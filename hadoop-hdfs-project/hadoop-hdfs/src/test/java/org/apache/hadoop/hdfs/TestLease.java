@@ -36,18 +36,6 @@ name|mockito
 operator|.
 name|Matchers
 operator|.
-name|anyList
-import|;
-end_import
-
-begin_import
-import|import static
-name|org
-operator|.
-name|mockito
-operator|.
-name|Matchers
-operator|.
 name|anyString
 import|;
 end_import
@@ -85,30 +73,6 @@ operator|.
 name|Matchers
 operator|.
 name|anyObject
-import|;
-end_import
-
-begin_import
-import|import static
-name|org
-operator|.
-name|mockito
-operator|.
-name|Matchers
-operator|.
-name|anyShort
-import|;
-end_import
-
-begin_import
-import|import static
-name|org
-operator|.
-name|mockito
-operator|.
-name|Matchers
-operator|.
-name|anyString
 import|;
 end_import
 
@@ -180,16 +144,6 @@ end_import
 
 begin_import
 import|import
-name|java
-operator|.
-name|util
-operator|.
-name|List
-import|;
-end_import
-
-begin_import
-import|import
 name|org
 operator|.
 name|apache
@@ -227,20 +181,6 @@ operator|.
 name|conf
 operator|.
 name|Configuration
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|crypto
-operator|.
-name|CipherSuite
 import|;
 end_import
 
@@ -390,7 +330,7 @@ name|hdfs
 operator|.
 name|protocol
 operator|.
-name|HdfsConstants
+name|HdfsFileStatus
 import|;
 end_import
 
@@ -404,9 +344,11 @@ name|hadoop
 operator|.
 name|hdfs
 operator|.
-name|protocol
+name|server
 operator|.
-name|HdfsFileStatus
+name|common
+operator|.
+name|HdfsServerConstants
 import|;
 end_import
 
@@ -834,7 +776,7 @@ operator|.
 name|monotonicNow
 argument_list|()
 operator|-
-name|HdfsConstants
+name|HdfsServerConstants
 operator|.
 name|LEASE_SOFTLIMIT_PERIOD
 operator|-
@@ -901,7 +843,7 @@ operator|.
 name|monotonicNow
 argument_list|()
 operator|-
-name|HdfsConstants
+name|HdfsServerConstants
 operator|.
 name|LEASE_HARDLIMIT_PERIOD
 operator|-

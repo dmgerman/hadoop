@@ -526,7 +526,7 @@ name|hdfs
 operator|.
 name|protocol
 operator|.
-name|HdfsConstantsClient
+name|HdfsConstants
 import|;
 end_import
 
@@ -1270,7 +1270,7 @@ name|HttpClient
 operator|.
 name|RETRY_POLICY_SPEC_DEFAULT
 argument_list|,
-name|HdfsConstantsClient
+name|HdfsConstants
 operator|.
 name|SAFEMODE_EXCEPTION_CLASS_NAME
 argument_list|)

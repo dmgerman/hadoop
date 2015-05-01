@@ -184,9 +184,11 @@ name|hadoop
 operator|.
 name|hdfs
 operator|.
-name|protocol
+name|server
 operator|.
-name|HdfsConstants
+name|common
+operator|.
+name|HdfsServerConstants
 import|;
 end_import
 
@@ -1584,7 +1586,7 @@ name|f
 argument_list|,
 name|startTxId
 argument_list|,
-name|HdfsConstants
+name|HdfsServerConstants
 operator|.
 name|INVALID_TXID
 argument_list|,
@@ -1668,7 +1670,7 @@ name|f
 argument_list|,
 name|startTxId
 argument_list|,
-name|HdfsConstants
+name|HdfsServerConstants
 operator|.
 name|INVALID_TXID
 argument_list|,
@@ -1906,7 +1908,7 @@ name|elf
 operator|.
 name|lastTxId
 operator|!=
-name|HdfsConstants
+name|HdfsServerConstants
 operator|.
 name|INVALID_TXID
 assert|;
@@ -2143,7 +2145,7 @@ operator|.
 name|getLastTxId
 argument_list|()
 operator|==
-name|HdfsConstants
+name|HdfsServerConstants
 operator|.
 name|INVALID_TXID
 condition|)
@@ -2587,7 +2589,7 @@ assert|assert
 operator|(
 name|lastTxId
 operator|!=
-name|HdfsConstants
+name|HdfsServerConstants
 operator|.
 name|INVALID_TXID
 operator|)
@@ -2619,7 +2621,7 @@ assert|assert
 operator|(
 name|lastTxId
 operator|==
-name|HdfsConstants
+name|HdfsServerConstants
 operator|.
 name|INVALID_TXID
 operator|&&
@@ -2629,7 +2631,7 @@ operator|||
 operator|(
 name|lastTxId
 operator|!=
-name|HdfsConstants
+name|HdfsServerConstants
 operator|.
 name|INVALID_TXID
 operator|&&
@@ -2648,7 +2650,7 @@ operator|||
 operator|(
 name|firstTxId
 operator|==
-name|HdfsConstants
+name|HdfsServerConstants
 operator|.
 name|INVALID_TXID
 operator|)
@@ -2667,7 +2669,7 @@ name|isInProgress
 operator|||
 name|lastTxId
 operator|==
-name|HdfsConstants
+name|HdfsServerConstants
 operator|.
 name|INVALID_TXID
 argument_list|)
@@ -2890,7 +2892,7 @@ block|{
 assert|assert
 name|lastTxId
 operator|==
-name|HdfsConstants
+name|HdfsServerConstants
 operator|.
 name|INVALID_TXID
 assert|;

@@ -44,9 +44,11 @@ name|hadoop
 operator|.
 name|hdfs
 operator|.
-name|protocol
+name|server
 operator|.
-name|HdfsConstants
+name|common
+operator|.
+name|HdfsServerConstants
 import|;
 end_import
 
@@ -206,7 +208,7 @@ return|return
 operator|(
 name|committedTxId
 operator|!=
-name|HdfsConstants
+name|HdfsServerConstants
 operator|.
 name|INVALID_TXID
 operator|)

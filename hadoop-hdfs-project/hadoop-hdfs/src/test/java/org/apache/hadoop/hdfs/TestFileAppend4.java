@@ -190,22 +190,6 @@ name|org
 operator|.
 name|apache
 operator|.
-name|commons
-operator|.
-name|logging
-operator|.
-name|impl
-operator|.
-name|Log4JLogger
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
 name|hadoop
 operator|.
 name|conf
@@ -300,7 +284,7 @@ name|hdfs
 operator|.
 name|protocol
 operator|.
-name|HdfsConstants
+name|LocatedBlocks
 import|;
 end_import
 
@@ -314,9 +298,11 @@ name|hadoop
 operator|.
 name|hdfs
 operator|.
-name|protocol
+name|server
 operator|.
-name|LocatedBlocks
+name|common
+operator|.
+name|HdfsServerConstants
 import|;
 end_import
 
@@ -698,7 +684,7 @@ name|setLeasePeriod
 argument_list|(
 literal|1000
 argument_list|,
-name|HdfsConstants
+name|HdfsServerConstants
 operator|.
 name|LEASE_HARDLIMIT_PERIOD
 argument_list|)

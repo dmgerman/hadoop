@@ -402,7 +402,7 @@ name|hdfs
 operator|.
 name|protocol
 operator|.
-name|HdfsConstantsClient
+name|HdfsConstants
 operator|.
 name|BLOCK_STORAGE_POLICY_ID_UNSPECIFIED
 import|;

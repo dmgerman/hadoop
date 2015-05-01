@@ -178,9 +178,11 @@ name|hadoop
 operator|.
 name|hdfs
 operator|.
-name|protocol
+name|server
 operator|.
-name|HdfsConstants
+name|common
+operator|.
+name|HdfsServerConstants
 import|;
 end_import
 
@@ -1128,7 +1130,7 @@ operator|=
 operator|new
 name|StorageInfo
 argument_list|(
-name|HdfsConstants
+name|HdfsServerConstants
 operator|.
 name|DATANODE_LAYOUT_VERSION
 operator|-
@@ -1685,7 +1687,7 @@ operator|=
 operator|new
 name|StorageInfo
 argument_list|(
-name|HdfsConstants
+name|HdfsServerConstants
 operator|.
 name|DATANODE_LAYOUT_VERSION
 argument_list|,

@@ -176,7 +176,7 @@ name|hdfs
 operator|.
 name|protocol
 operator|.
-name|HdfsConstants
+name|LocatedBlock
 import|;
 end_import
 
@@ -190,9 +190,11 @@ name|hadoop
 operator|.
 name|hdfs
 operator|.
-name|protocol
+name|server
 operator|.
-name|LocatedBlock
+name|common
+operator|.
+name|HdfsServerConstants
 import|;
 end_import
 
@@ -3851,7 +3853,7 @@ name|requiredSize
 init|=
 name|blockSize
 operator|*
-name|HdfsConstants
+name|HdfsServerConstants
 operator|.
 name|MIN_BLOCKS_FOR_WRITE
 decl_stmt|;

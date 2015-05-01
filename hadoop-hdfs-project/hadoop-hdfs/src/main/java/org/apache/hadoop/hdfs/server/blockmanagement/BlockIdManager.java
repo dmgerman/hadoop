@@ -90,9 +90,11 @@ name|hadoop
 operator|.
 name|hdfs
 operator|.
-name|protocol
+name|server
 operator|.
-name|HdfsConstantsClient
+name|common
+operator|.
+name|GenerationStamp
 import|;
 end_import
 
@@ -110,7 +112,7 @@ name|server
 operator|.
 name|common
 operator|.
-name|GenerationStamp
+name|HdfsServerConstants
 import|;
 end_import
 
@@ -181,7 +183,7 @@ name|this
 operator|.
 name|generationStampV1Limit
 operator|=
-name|HdfsConstantsClient
+name|HdfsConstants
 operator|.
 name|GRANDFATHER_GENERATION_STAMP
 expr_stmt|;
@@ -226,7 +228,7 @@ operator|.
 name|getCurrentValue
 argument_list|()
 operator|+
-name|HdfsConstants
+name|HdfsServerConstants
 operator|.
 name|RESERVED_GENERATION_STAMPS_V1
 argument_list|)
@@ -261,7 +263,7 @@ name|checkState
 argument_list|(
 name|generationStampV1Limit
 operator|==
-name|HdfsConstantsClient
+name|HdfsConstants
 operator|.
 name|GRANDFATHER_GENERATION_STAMP
 argument_list|)
@@ -582,7 +584,7 @@ argument_list|)
 expr_stmt|;
 name|generationStampV1Limit
 operator|=
-name|HdfsConstantsClient
+name|HdfsConstants
 operator|.
 name|GRANDFATHER_GENERATION_STAMP
 expr_stmt|;

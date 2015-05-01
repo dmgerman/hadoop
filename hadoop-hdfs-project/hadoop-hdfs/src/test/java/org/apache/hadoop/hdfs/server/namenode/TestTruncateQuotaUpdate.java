@@ -128,9 +128,11 @@ name|hadoop
 operator|.
 name|hdfs
 operator|.
-name|protocol
+name|server
 operator|.
-name|HdfsConstants
+name|common
+operator|.
+name|HdfsServerConstants
 import|;
 end_import
 
@@ -394,7 +396,7 @@ name|setStoragePolicy
 argument_list|(
 name|dir
 argument_list|,
-name|HdfsConstants
+name|HdfsServerConstants
 operator|.
 name|HOT_STORAGE_POLICY_NAME
 argument_list|)

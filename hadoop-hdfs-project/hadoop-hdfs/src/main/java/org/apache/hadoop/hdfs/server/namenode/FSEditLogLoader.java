@@ -242,7 +242,7 @@ name|hdfs
 operator|.
 name|protocol
 operator|.
-name|HdfsConstantsClient
+name|HdfsConstants
 import|;
 end_import
 
@@ -291,22 +291,6 @@ operator|.
 name|protocol
 operator|.
 name|CacheDirectiveInfo
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|hdfs
-operator|.
-name|protocol
-operator|.
-name|HdfsConstants
 import|;
 end_import
 
@@ -391,6 +375,24 @@ operator|.
 name|blockmanagement
 operator|.
 name|BlockInfoContiguousUnderConstruction
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|server
+operator|.
+name|common
+operator|.
+name|HdfsServerConstants
 import|;
 end_import
 
@@ -2603,7 +2605,7 @@ if|if
 condition|(
 name|inodeId
 operator|==
-name|HdfsConstantsClient
+name|HdfsConstants
 operator|.
 name|GRANDFATHER_INODE_ID
 condition|)
@@ -2703,7 +2705,7 @@ block|{
 name|long
 name|inodeId
 init|=
-name|HdfsConstantsClient
+name|HdfsConstants
 operator|.
 name|GRANDFATHER_INODE_ID
 decl_stmt|;
@@ -3068,7 +3070,7 @@ name|EMPTY_NAME
 argument_list|,
 name|newFile
 argument_list|,
-name|HdfsConstantsClient
+name|HdfsConstants
 operator|.
 name|BLOCK_STORAGE_POLICY_ID_UNSPECIFIED
 argument_list|,
@@ -3184,7 +3186,7 @@ name|EMPTY_NAME
 argument_list|,
 name|newFile
 argument_list|,
-name|HdfsConstantsClient
+name|HdfsConstants
 operator|.
 name|BLOCK_STORAGE_POLICY_ID_UNSPECIFIED
 argument_list|,
@@ -3619,7 +3621,7 @@ name|EMPTY_NAME
 argument_list|,
 name|file
 argument_list|,
-name|HdfsConstantsClient
+name|HdfsConstants
 operator|.
 name|BLOCK_STORAGE_POLICY_ID_UNSPECIFIED
 argument_list|,
@@ -7047,7 +7049,7 @@ argument_list|)
 operator|&&
 name|logVersion
 operator|!=
-name|HdfsConstants
+name|HdfsServerConstants
 operator|.
 name|NAMENODE_LAYOUT_VERSION
 condition|)
@@ -7094,7 +7096,7 @@ decl_stmt|;
 name|long
 name|lastTxId
 init|=
-name|HdfsConstants
+name|HdfsServerConstants
 operator|.
 name|INVALID_TXID
 decl_stmt|;
@@ -7193,7 +7195,7 @@ if|if
 condition|(
 name|lastTxId
 operator|==
-name|HdfsConstants
+name|HdfsServerConstants
 operator|.
 name|INVALID_TXID
 operator|||
@@ -7246,7 +7248,7 @@ decl_stmt|;
 name|long
 name|lastTxId
 init|=
-name|HdfsConstants
+name|HdfsServerConstants
 operator|.
 name|INVALID_TXID
 decl_stmt|;
@@ -7346,7 +7348,7 @@ if|if
 condition|(
 name|lastTxId
 operator|==
-name|HdfsConstants
+name|HdfsServerConstants
 operator|.
 name|INVALID_TXID
 operator|||

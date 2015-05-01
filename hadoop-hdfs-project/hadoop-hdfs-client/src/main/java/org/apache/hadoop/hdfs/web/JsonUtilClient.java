@@ -266,7 +266,7 @@ name|hdfs
 operator|.
 name|protocol
 operator|.
-name|HdfsConstantsClient
+name|HdfsConstants
 import|;
 end_import
 
@@ -1134,7 +1134,7 @@ operator|.
 name|longValue
 argument_list|()
 else|:
-name|HdfsConstantsClient
+name|HdfsConstants
 operator|.
 name|GRANDFATHER_INODE_ID
 decl_stmt|;
@@ -1181,7 +1181,7 @@ operator|.
 name|longValue
 argument_list|()
 else|:
-name|HdfsConstantsClient
+name|HdfsConstants
 operator|.
 name|BLOCK_STORAGE_POLICY_ID_UNSPECIFIED
 decl_stmt|;

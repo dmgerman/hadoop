@@ -1450,22 +1450,6 @@ name|hdfs
 operator|.
 name|protocol
 operator|.
-name|HdfsConstantsClient
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|hdfs
-operator|.
-name|protocol
-operator|.
 name|LayoutVersion
 import|;
 end_import
@@ -1561,6 +1545,24 @@ operator|.
 name|delegation
 operator|.
 name|DelegationTokenIdentifier
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|server
+operator|.
+name|common
+operator|.
+name|HdfsServerConstants
 import|;
 end_import
 
@@ -1956,7 +1958,7 @@ parameter_list|()
 block|{
 name|txid
 operator|=
-name|HdfsConstants
+name|HdfsServerConstants
 operator|.
 name|INVALID_TXID
 expr_stmt|;
@@ -2670,7 +2672,7 @@ name|checkState
 argument_list|(
 name|txid
 operator|!=
-name|HdfsConstants
+name|HdfsServerConstants
 operator|.
 name|INVALID_TXID
 argument_list|)
@@ -2689,7 +2691,7 @@ return|return
 operator|(
 name|txid
 operator|==
-name|HdfsConstants
+name|HdfsServerConstants
 operator|.
 name|INVALID_TXID
 operator|)
@@ -2711,7 +2713,7 @@ return|return
 operator|(
 name|txid
 operator|!=
-name|HdfsConstants
+name|HdfsServerConstants
 operator|.
 name|INVALID_TXID
 operator|)
@@ -3736,7 +3738,7 @@ argument_list|)
 expr_stmt|;
 name|storagePolicyId
 operator|=
-name|HdfsConstantsClient
+name|HdfsConstants
 operator|.
 name|BLOCK_STORAGE_POLICY_ID_UNSPECIFIED
 expr_stmt|;
@@ -4503,7 +4505,7 @@ name|this
 operator|.
 name|inodeId
 operator|=
-name|HdfsConstantsClient
+name|HdfsConstants
 operator|.
 name|GRANDFATHER_INODE_ID
 expr_stmt|;
@@ -4888,7 +4890,7 @@ name|this
 operator|.
 name|storagePolicyId
 operator|=
-name|HdfsConstantsClient
+name|HdfsConstants
 operator|.
 name|BLOCK_STORAGE_POLICY_ID_UNSPECIFIED
 expr_stmt|;
@@ -10354,7 +10356,7 @@ name|this
 operator|.
 name|inodeId
 operator|=
-name|HdfsConstantsClient
+name|HdfsConstants
 operator|.
 name|GRANDFATHER_INODE_ID
 expr_stmt|;
@@ -14755,7 +14757,7 @@ name|this
 operator|.
 name|inodeId
 operator|=
-name|HdfsConstantsClient
+name|HdfsConstants
 operator|.
 name|GRANDFATHER_INODE_ID
 expr_stmt|;
@@ -24990,7 +24992,7 @@ name|op
 operator|.
 name|setTransactionId
 argument_list|(
-name|HdfsConstants
+name|HdfsServerConstants
 operator|.
 name|INVALID_TXID
 argument_list|)
@@ -25070,7 +25072,7 @@ name|e
 parameter_list|)
 block|{
 return|return
-name|HdfsConstants
+name|HdfsServerConstants
 operator|.
 name|INVALID_TXID
 return|;
@@ -25096,7 +25098,7 @@ name|verifyTerminator
 argument_list|()
 expr_stmt|;
 return|return
-name|HdfsConstants
+name|HdfsServerConstants
 operator|.
 name|INVALID_TXID
 return|;
@@ -25149,7 +25151,7 @@ name|op
 operator|==
 literal|null
 condition|?
-name|HdfsConstants
+name|HdfsServerConstants
 operator|.
 name|INVALID_TXID
 else|:

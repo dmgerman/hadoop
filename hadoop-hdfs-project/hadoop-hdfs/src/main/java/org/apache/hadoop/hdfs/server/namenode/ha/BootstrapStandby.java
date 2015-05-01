@@ -288,9 +288,11 @@ name|hadoop
 operator|.
 name|hdfs
 operator|.
-name|protocol
+name|server
 operator|.
-name|HdfsConstants
+name|common
+operator|.
+name|HdfsServerConstants
 import|;
 end_import
 
@@ -1190,7 +1192,7 @@ literal|") does not match "
 operator|+
 literal|"this node's layout version ("
 operator|+
-name|HdfsConstants
+name|HdfsServerConstants
 operator|.
 name|NAMENODE_LAYOUT_VERSION
 operator|+
@@ -2069,7 +2071,7 @@ operator|.
 name|getLayoutVersion
 argument_list|()
 operator|==
-name|HdfsConstants
+name|HdfsServerConstants
 operator|.
 name|NAMENODE_LAYOUT_VERSION
 operator|)

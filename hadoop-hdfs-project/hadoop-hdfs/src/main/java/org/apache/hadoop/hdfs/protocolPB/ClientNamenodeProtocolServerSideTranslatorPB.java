@@ -290,7 +290,7 @@ name|hdfs
 operator|.
 name|protocol
 operator|.
-name|HdfsConstantsClient
+name|HdfsConstants
 import|;
 end_import
 
@@ -5585,7 +5585,7 @@ operator|.
 name|getFileId
 argument_list|()
 else|:
-name|HdfsConstantsClient
+name|HdfsConstants
 operator|.
 name|GRANDFATHER_INODE_ID
 argument_list|)

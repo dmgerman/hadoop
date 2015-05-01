@@ -398,7 +398,7 @@ literal|2
 argument_list|)
 argument_list|)
 else|:
-name|HdfsConstantsClient
+name|HdfsConstants
 operator|.
 name|GRANDFATHER_GENERATION_STAMP
 return|;
@@ -517,7 +517,7 @@ name|blkid
 argument_list|,
 literal|0
 argument_list|,
-name|HdfsConstantsClient
+name|HdfsConstants
 operator|.
 name|GRANDFATHER_GENERATION_STAMP
 argument_list|)

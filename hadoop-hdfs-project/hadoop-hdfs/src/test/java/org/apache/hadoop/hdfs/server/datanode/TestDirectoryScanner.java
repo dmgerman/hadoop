@@ -386,7 +386,7 @@ name|hdfs
 operator|.
 name|protocol
 operator|.
-name|HdfsConstantsClient
+name|HdfsConstants
 import|;
 end_import
 
@@ -2748,7 +2748,7 @@ name|verifyGenStamp
 argument_list|(
 name|blockId
 argument_list|,
-name|HdfsConstantsClient
+name|HdfsConstants
 operator|.
 name|GRANDFATHER_GENERATION_STAMP
 argument_list|)
@@ -2841,7 +2841,7 @@ name|verifyAddition
 argument_list|(
 name|blockId
 argument_list|,
-name|HdfsConstantsClient
+name|HdfsConstants
 operator|.
 name|GRANDFATHER_GENERATION_STAMP
 argument_list|,

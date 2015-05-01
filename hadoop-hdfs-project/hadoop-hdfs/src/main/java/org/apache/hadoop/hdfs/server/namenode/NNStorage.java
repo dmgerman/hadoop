@@ -240,22 +240,6 @@ name|hdfs
 operator|.
 name|protocol
 operator|.
-name|HdfsConstants
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|hdfs
-operator|.
-name|protocol
-operator|.
 name|LayoutVersion
 import|;
 end_import
@@ -782,7 +766,7 @@ specifier|volatile
 name|long
 name|mostRecentCheckpointTxId
 init|=
-name|HdfsConstants
+name|HdfsServerConstants
 operator|.
 name|INVALID_TXID
 decl_stmt|;
@@ -2383,7 +2367,7 @@ operator|.
 name|getLayoutVersion
 argument_list|()
 operator|==
-name|HdfsConstants
+name|HdfsServerConstants
 operator|.
 name|NAMENODE_LAYOUT_VERSION
 argument_list|,
@@ -2482,7 +2466,7 @@ name|this
 operator|.
 name|layoutVersion
 operator|=
-name|HdfsConstants
+name|HdfsServerConstants
 operator|.
 name|NAMENODE_LAYOUT_VERSION
 expr_stmt|;
@@ -2743,7 +2727,7 @@ name|Integer
 operator|.
 name|toString
 argument_list|(
-name|HdfsConstants
+name|HdfsServerConstants
 operator|.
 name|NAMENODE_LAYOUT_VERSION
 argument_list|)
@@ -2820,7 +2804,7 @@ assert|assert
 name|getLayoutVersion
 argument_list|()
 operator|>
-name|HdfsConstants
+name|HdfsServerConstants
 operator|.
 name|NAMENODE_LAYOUT_VERSION
 operator|:

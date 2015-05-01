@@ -276,7 +276,7 @@ name|hdfs
 operator|.
 name|protocol
 operator|.
-name|HdfsConstants
+name|LayoutVersion
 import|;
 end_import
 
@@ -290,9 +290,11 @@ name|hadoop
 operator|.
 name|hdfs
 operator|.
-name|protocol
+name|server
 operator|.
-name|LayoutVersion
+name|common
+operator|.
+name|HdfsServerConstants
 import|;
 end_import
 
@@ -593,16 +595,6 @@ operator|.
 name|util
 operator|.
 name|HashMap
-import|;
-end_import
-
-begin_import
-import|import
-name|java
-operator|.
-name|util
-operator|.
-name|HashSet
 import|;
 end_import
 
@@ -2354,7 +2346,7 @@ name|info
 argument_list|(
 literal|"DataNode version: "
 operator|+
-name|HdfsConstants
+name|HdfsServerConstants
 operator|.
 name|DATANODE_LAYOUT_VERSION
 operator|+
@@ -2559,7 +2551,7 @@ name|this
 operator|.
 name|layoutVersion
 operator|=
-name|HdfsConstants
+name|HdfsServerConstants
 operator|.
 name|DATANODE_LAYOUT_VERSION
 expr_stmt|;
@@ -3261,7 +3253,7 @@ name|this
 operator|.
 name|layoutVersion
 operator|>=
-name|HdfsConstants
+name|HdfsServerConstants
 operator|.
 name|DATANODE_LAYOUT_VERSION
 operator|:
@@ -3408,7 +3400,7 @@ name|this
 operator|.
 name|layoutVersion
 operator|==
-name|HdfsConstants
+name|HdfsServerConstants
 operator|.
 name|DATANODE_LAYOUT_VERSION
 condition|)
@@ -3431,7 +3423,7 @@ name|this
 operator|.
 name|layoutVersion
 operator|>
-name|HdfsConstants
+name|HdfsServerConstants
 operator|.
 name|DATANODE_LAYOUT_VERSION
 condition|)
@@ -3473,7 +3465,7 @@ argument_list|()
 operator|+
 literal|" is newer than the supported LV = "
 operator|+
-name|HdfsConstants
+name|HdfsServerConstants
 operator|.
 name|DATANODE_LAYOUT_VERSION
 argument_list|)
@@ -3527,7 +3519,7 @@ name|layoutVersion
 operator|+
 literal|" to "
 operator|+
-name|HdfsConstants
+name|HdfsServerConstants
 operator|.
 name|DATANODE_LAYOUT_VERSION
 operator|+
@@ -3541,7 +3533,7 @@ argument_list|)
 expr_stmt|;
 name|layoutVersion
 operator|=
-name|HdfsConstants
+name|HdfsServerConstants
 operator|.
 name|DATANODE_LAYOUT_VERSION
 expr_stmt|;
@@ -3579,7 +3571,7 @@ argument_list|()
 operator|+
 literal|".\n   new LV = "
 operator|+
-name|HdfsConstants
+name|HdfsServerConstants
 operator|.
 name|DATANODE_LAYOUT_VERSION
 operator|+
@@ -3754,7 +3746,7 @@ expr_stmt|;
 comment|// 4. Write version file under<SD>/current
 name|layoutVersion
 operator|=
-name|HdfsConstants
+name|HdfsServerConstants
 operator|.
 name|DATANODE_LAYOUT_VERSION
 expr_stmt|;
@@ -3938,7 +3930,7 @@ name|Feature
 operator|.
 name|FEDERATION
 argument_list|,
-name|HdfsConstants
+name|HdfsServerConstants
 operator|.
 name|DATANODE_LAYOUT_VERSION
 argument_list|)
@@ -3948,7 +3940,7 @@ name|readProperties
 argument_list|(
 name|sd
 argument_list|,
-name|HdfsConstants
+name|HdfsServerConstants
 operator|.
 name|DATANODE_LAYOUT_VERSION
 argument_list|)
@@ -3964,7 +3956,7 @@ name|info
 argument_list|(
 literal|"Layout version rolled back to "
 operator|+
-name|HdfsConstants
+name|HdfsServerConstants
 operator|.
 name|DATANODE_LAYOUT_VERSION
 operator|+
@@ -4004,7 +3996,7 @@ operator|.
 name|getLayoutVersion
 argument_list|()
 operator|>=
-name|HdfsConstants
+name|HdfsServerConstants
 operator|.
 name|DATANODE_LAYOUT_VERSION
 operator|&&
@@ -4045,7 +4037,7 @@ argument_list|()
 operator|+
 literal|" is newer than the namespace state: LV = "
 operator|+
-name|HdfsConstants
+name|HdfsServerConstants
 operator|.
 name|DATANODE_LAYOUT_VERSION
 operator|+
@@ -4070,7 +4062,7 @@ argument_list|()
 operator|+
 literal|".\n   target LV = "
 operator|+
-name|HdfsConstants
+name|HdfsServerConstants
 operator|.
 name|DATANODE_LAYOUT_VERSION
 operator|+

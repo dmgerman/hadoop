@@ -146,9 +146,11 @@ name|hadoop
 operator|.
 name|hdfs
 operator|.
-name|protocol
+name|server
 operator|.
-name|HdfsConstants
+name|common
+operator|.
+name|HdfsServerConstants
 import|;
 end_import
 
@@ -465,7 +467,7 @@ decl_stmt|;
 name|int
 name|layoutVersionCur
 init|=
-name|HdfsConstants
+name|HdfsServerConstants
 operator|.
 name|DATANODE_LAYOUT_VERSION
 decl_stmt|;
@@ -964,7 +966,7 @@ comment|// check #3
 name|int
 name|softwareLV
 init|=
-name|HdfsConstants
+name|HdfsServerConstants
 operator|.
 name|DATANODE_LAYOUT_VERSION
 decl_stmt|;
@@ -1181,7 +1183,7 @@ init|=
 operator|new
 name|StorageData
 argument_list|(
-name|HdfsConstants
+name|HdfsServerConstants
 operator|.
 name|NAMENODE_LAYOUT_VERSION
 argument_list|,

@@ -4061,7 +4061,7 @@ if|if
 condition|(
 name|elapsed
 operator|>
-name|HdfsConstants
+name|HdfsServerConstants
 operator|.
 name|LEASE_HARDLIMIT_PERIOD
 condition|)
@@ -4085,7 +4085,7 @@ operator|+
 literal|" seconds (>= hard-limit ="
 operator|+
 operator|(
-name|HdfsConstants
+name|HdfsServerConstants
 operator|.
 name|LEASE_HARDLIMIT_PERIOD
 operator|/
@@ -9481,7 +9481,7 @@ name|pair
 operator|.
 name|out
 argument_list|,
-name|HdfsConstants
+name|HdfsServerConstants
 operator|.
 name|SMALL_BUFFER_SIZE
 argument_list|)
@@ -10249,7 +10249,7 @@ name|pair
 operator|.
 name|out
 argument_list|,
-name|HdfsConstants
+name|HdfsServerConstants
 operator|.
 name|SMALL_BUFFER_SIZE
 argument_list|)

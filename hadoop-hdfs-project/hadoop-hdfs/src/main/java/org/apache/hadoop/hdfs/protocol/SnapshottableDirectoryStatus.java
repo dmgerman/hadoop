@@ -292,7 +292,7 @@ name|childrenNum
 argument_list|,
 literal|null
 argument_list|,
-name|HdfsConstantsClient
+name|HdfsConstants
 operator|.
 name|BLOCK_STORAGE_POLICY_ID_UNSPECIFIED
 argument_list|)

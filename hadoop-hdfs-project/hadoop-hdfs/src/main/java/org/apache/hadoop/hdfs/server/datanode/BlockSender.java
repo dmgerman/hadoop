@@ -218,7 +218,9 @@ name|hdfs
 operator|.
 name|protocol
 operator|.
-name|HdfsConstants
+name|datatransfer
+operator|.
+name|PacketHeader
 import|;
 end_import
 
@@ -232,11 +234,11 @@ name|hadoop
 operator|.
 name|hdfs
 operator|.
-name|protocol
+name|server
 operator|.
-name|datatransfer
+name|common
 operator|.
-name|PacketHeader
+name|HdfsServerConstants
 import|;
 end_import
 
@@ -525,7 +527,7 @@ name|Math
 operator|.
 name|max
 argument_list|(
-name|HdfsConstants
+name|HdfsServerConstants
 operator|.
 name|IO_FILE_BUFFER_SIZE
 argument_list|,
@@ -1240,7 +1242,7 @@ name|BufferedInputStream
 argument_list|(
 name|metaIn
 argument_list|,
-name|HdfsConstants
+name|HdfsServerConstants
 operator|.
 name|IO_FILE_BUFFER_SIZE
 argument_list|)
@@ -3138,7 +3140,7 @@ literal|1
 argument_list|,
 name|numberOfChunks
 argument_list|(
-name|HdfsConstants
+name|HdfsServerConstants
 operator|.
 name|IO_FILE_BUFFER_SIZE
 argument_list|)

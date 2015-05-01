@@ -1297,6 +1297,24 @@ operator|.
 name|common
 operator|.
 name|HdfsServerConstants
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|server
+operator|.
+name|common
+operator|.
+name|HdfsServerConstants
 operator|.
 name|NodeType
 import|;
@@ -6260,7 +6278,7 @@ argument_list|,
 name|writeTimeout
 argument_list|)
 argument_list|,
-name|HdfsConstants
+name|HdfsServerConstants
 operator|.
 name|SMALL_BUFFER_SIZE
 argument_list|)
@@ -7972,7 +7990,7 @@ name|setStoragePolicy
 argument_list|(
 name|pathFileCreate
 argument_list|,
-name|HdfsConstants
+name|HdfsServerConstants
 operator|.
 name|HOT_STORAGE_POLICY_NAME
 argument_list|)
@@ -10449,10 +10467,9 @@ argument_list|,
 name|lv
 argument_list|)
 expr_stmt|;
-comment|// Override {@link HdfsConstants#DATANODE_LAYOUT_VERSION}
 name|field
 operator|=
-name|HdfsConstants
+name|HdfsServerConstants
 operator|.
 name|class
 operator|.

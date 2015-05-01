@@ -150,7 +150,7 @@ name|hdfs
 operator|.
 name|protocol
 operator|.
-name|HdfsConstantsClient
+name|HdfsConstants
 import|;
 end_import
 
@@ -3583,7 +3583,7 @@ expr_stmt|;
 name|long
 name|inodeId
 init|=
-name|HdfsConstantsClient
+name|HdfsConstants
 operator|.
 name|GRANDFATHER_INODE_ID
 decl_stmt|;

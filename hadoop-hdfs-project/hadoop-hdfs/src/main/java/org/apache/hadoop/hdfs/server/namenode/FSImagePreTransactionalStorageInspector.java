@@ -200,9 +200,11 @@ name|hadoop
 operator|.
 name|hdfs
 operator|.
-name|protocol
+name|server
 operator|.
-name|HdfsConstants
+name|common
+operator|.
+name|HdfsServerConstants
 import|;
 end_import
 
@@ -919,7 +921,7 @@ operator|.
 name|IMAGE
 argument_list|)
 argument_list|,
-name|HdfsConstants
+name|HdfsServerConstants
 operator|.
 name|INVALID_TXID
 argument_list|)

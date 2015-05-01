@@ -282,22 +282,6 @@ name|hdfs
 operator|.
 name|protocol
 operator|.
-name|HdfsConstants
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|hdfs
-operator|.
-name|protocol
-operator|.
 name|proto
 operator|.
 name|ClientNamenodeProtocolProtos
@@ -361,6 +345,24 @@ operator|.
 name|blockmanagement
 operator|.
 name|BlockIdManager
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|server
+operator|.
+name|common
+operator|.
+name|HdfsServerConstants
 import|;
 end_import
 
@@ -1035,7 +1037,7 @@ specifier|private
 name|long
 name|imgTxId
 decl_stmt|;
-comment|/**      * Whether the image's layout version must be the same with      * {@link HdfsConstants#NAMENODE_LAYOUT_VERSION}. This is only set to true      * when we're doing (rollingUpgrade rollback).      */
+comment|/**      * Whether the image's layout version must be the same with      * {@link HdfsServerConstants#NAMENODE_LAYOUT_VERSION}. This is only set to true      * when we're doing (rollingUpgrade rollback).      */
 DECL|field|requireSameLayoutVersion
 specifier|private
 specifier|final
@@ -1264,7 +1266,7 @@ operator|.
 name|getLayoutVersion
 argument_list|()
 operator|!=
-name|HdfsConstants
+name|HdfsServerConstants
 operator|.
 name|NAMENODE_LAYOUT_VERSION
 condition|)
@@ -1282,7 +1284,7 @@ argument_list|()
 operator|+
 literal|" is not equal to the software version "
 operator|+
-name|HdfsConstants
+name|HdfsServerConstants
 operator|.
 name|NAMENODE_LAYOUT_VERSION
 argument_list|)

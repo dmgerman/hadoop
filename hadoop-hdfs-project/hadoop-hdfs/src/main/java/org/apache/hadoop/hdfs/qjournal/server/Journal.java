@@ -214,22 +214,6 @@ name|hadoop
 operator|.
 name|hdfs
 operator|.
-name|protocol
-operator|.
-name|HdfsConstants
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|hdfs
-operator|.
 name|qjournal
 operator|.
 name|protocol
@@ -387,6 +371,24 @@ operator|.
 name|protocol
 operator|.
 name|RequestInfo
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|server
+operator|.
+name|common
+operator|.
+name|HdfsServerConstants
 import|;
 end_import
 
@@ -816,7 +818,7 @@ specifier|private
 name|long
 name|curSegmentTxId
 init|=
-name|HdfsConstants
+name|HdfsServerConstants
 operator|.
 name|INVALID_TXID
 decl_stmt|;
@@ -825,7 +827,7 @@ specifier|private
 name|long
 name|nextTxId
 init|=
-name|HdfsConstants
+name|HdfsServerConstants
 operator|.
 name|INVALID_TXID
 decl_stmt|;
@@ -1087,7 +1089,7 @@ argument_list|,
 name|COMMITTED_TXID_FILENAME
 argument_list|)
 argument_list|,
-name|HdfsConstants
+name|HdfsServerConstants
 operator|.
 name|INVALID_TXID
 argument_list|)
@@ -1189,7 +1191,7 @@ operator|.
 name|getLastTxId
 argument_list|()
 operator|==
-name|HdfsConstants
+name|HdfsServerConstants
 operator|.
 name|INVALID_TXID
 condition|)
@@ -1625,7 +1627,7 @@ literal|null
 expr_stmt|;
 name|curSegmentTxId
 operator|=
-name|HdfsConstants
+name|HdfsServerConstants
 operator|.
 name|INVALID_TXID
 expr_stmt|;
@@ -2567,7 +2569,7 @@ literal|null
 expr_stmt|;
 name|curSegmentTxId
 operator|=
-name|HdfsConstants
+name|HdfsServerConstants
 operator|.
 name|INVALID_TXID
 expr_stmt|;
@@ -3007,7 +3009,7 @@ operator|.
 name|getLastTxId
 argument_list|()
 operator|==
-name|HdfsConstants
+name|HdfsServerConstants
 operator|.
 name|INVALID_TXID
 condition|)
@@ -3266,7 +3268,7 @@ operator|.
 name|get
 argument_list|()
 operator|!=
-name|HdfsConstants
+name|HdfsServerConstants
 operator|.
 name|INVALID_TXID
 condition|)
@@ -4483,7 +4485,7 @@ argument_list|,
 name|COMMITTED_TXID_FILENAME
 argument_list|)
 argument_list|,
-name|HdfsConstants
+name|HdfsServerConstants
 operator|.
 name|INVALID_TXID
 argument_list|)
@@ -4533,7 +4535,7 @@ argument_list|,
 name|COMMITTED_TXID_FILENAME
 argument_list|)
 argument_list|,
-name|HdfsConstants
+name|HdfsServerConstants
 operator|.
 name|INVALID_TXID
 argument_list|)

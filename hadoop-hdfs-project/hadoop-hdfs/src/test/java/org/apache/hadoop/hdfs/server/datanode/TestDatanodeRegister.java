@@ -138,9 +138,9 @@ name|hadoop
 operator|.
 name|hdfs
 operator|.
-name|protocol
+name|protocolPB
 operator|.
-name|HdfsConstants
+name|DatanodeProtocolClientSideTranslatorPB
 import|;
 end_import
 
@@ -154,9 +154,11 @@ name|hadoop
 operator|.
 name|hdfs
 operator|.
-name|protocolPB
+name|server
 operator|.
-name|DatanodeProtocolClientSideTranslatorPB
+name|common
+operator|.
+name|HdfsServerConstants
 import|;
 end_import
 
@@ -428,7 +430,7 @@ expr_stmt|;
 comment|// Return a good layout version for now.
 name|doReturn
 argument_list|(
-name|HdfsConstants
+name|HdfsServerConstants
 operator|.
 name|NAMENODE_LAYOUT_VERSION
 argument_list|)
@@ -619,7 +621,7 @@ block|{
 comment|// We expect no exceptions to be thrown when the layout versions match.
 name|assertEquals
 argument_list|(
-name|HdfsConstants
+name|HdfsServerConstants
 operator|.
 name|NAMENODE_LAYOUT_VERSION
 argument_list|,
@@ -636,7 +638,7 @@ comment|// We expect an exception to be thrown when the NN reports a layout vers
 comment|// different from that of the DN.
 name|doReturn
 argument_list|(
-name|HdfsConstants
+name|HdfsServerConstants
 operator|.
 name|NAMENODE_LAYOUT_VERSION
 operator|*

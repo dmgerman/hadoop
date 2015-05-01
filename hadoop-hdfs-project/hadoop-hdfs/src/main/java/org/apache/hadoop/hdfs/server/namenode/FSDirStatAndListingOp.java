@@ -210,22 +210,6 @@ name|hdfs
 operator|.
 name|protocol
 operator|.
-name|HdfsConstantsClient
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|hdfs
-operator|.
-name|protocol
-operator|.
 name|HdfsFileStatus
 import|;
 end_import
@@ -996,7 +980,7 @@ block|{
 return|return
 name|inodePolicy
 operator|!=
-name|HdfsConstantsClient
+name|HdfsConstants
 operator|.
 name|BLOCK_STORAGE_POLICY_ID_UNSPECIFIED
 condition|?
@@ -1122,7 +1106,7 @@ operator|.
 name|getStoragePolicyID
 argument_list|()
 else|:
-name|HdfsConstantsClient
+name|HdfsConstants
 operator|.
 name|BLOCK_STORAGE_POLICY_ID_UNSPECIFIED
 decl_stmt|;
@@ -1319,7 +1303,7 @@ operator|.
 name|getLocalStoragePolicyID
 argument_list|()
 else|:
-name|HdfsConstantsClient
+name|HdfsConstants
 operator|.
 name|BLOCK_STORAGE_POLICY_ID_UNSPECIFIED
 decl_stmt|;
@@ -1744,7 +1728,7 @@ name|sRoot
 argument_list|,
 name|nodeAttrs
 argument_list|,
-name|HdfsConstantsClient
+name|HdfsConstants
 operator|.
 name|BLOCK_STORAGE_POLICY_ID_UNSPECIFIED
 argument_list|,
@@ -1847,7 +1831,7 @@ operator|.
 name|getStoragePolicyID
 argument_list|()
 else|:
-name|HdfsConstantsClient
+name|HdfsConstants
 operator|.
 name|BLOCK_STORAGE_POLICY_ID_UNSPECIFIED
 decl_stmt|;
@@ -1999,7 +1983,7 @@ literal|0
 argument_list|,
 literal|null
 argument_list|,
-name|HdfsConstantsClient
+name|HdfsConstants
 operator|.
 name|BLOCK_STORAGE_POLICY_ID_UNSPECIFIED
 argument_list|)

@@ -52,22 +52,6 @@ end_import
 
 begin_import
 import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|hdfs
-operator|.
-name|protocol
-operator|.
-name|HdfsConstants
-import|;
-end_import
-
-begin_import
-import|import
 name|com
 operator|.
 name|google
@@ -77,6 +61,24 @@ operator|.
 name|base
 operator|.
 name|Preconditions
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|server
+operator|.
+name|common
+operator|.
+name|HdfsServerConstants
 import|;
 end_import
 
@@ -476,7 +478,7 @@ name|getFirstTxId
 parameter_list|()
 block|{
 return|return
-name|HdfsConstants
+name|HdfsServerConstants
 operator|.
 name|INVALID_TXID
 return|;
@@ -490,7 +492,7 @@ name|getLastTxId
 parameter_list|()
 block|{
 return|return
-name|HdfsConstants
+name|HdfsServerConstants
 operator|.
 name|INVALID_TXID
 return|;

@@ -208,9 +208,13 @@ name|hadoop
 operator|.
 name|hdfs
 operator|.
-name|protocol
+name|security
 operator|.
-name|HdfsConstants
+name|token
+operator|.
+name|block
+operator|.
+name|ExportedBlockKeys
 import|;
 end_import
 
@@ -224,13 +228,11 @@ name|hadoop
 operator|.
 name|hdfs
 operator|.
-name|security
+name|server
 operator|.
-name|token
+name|common
 operator|.
-name|block
-operator|.
-name|ExportedBlockKeys
+name|HdfsServerConstants
 import|;
 end_import
 
@@ -681,7 +683,7 @@ name|setUtilizationForTesting
 argument_list|(
 literal|2
 operator|*
-name|HdfsConstants
+name|HdfsServerConstants
 operator|.
 name|MIN_BLOCKS_FOR_WRITE
 operator|*
@@ -691,7 +693,7 @@ literal|0L
 argument_list|,
 literal|2
 operator|*
-name|HdfsConstants
+name|HdfsServerConstants
 operator|.
 name|MIN_BLOCKS_FOR_WRITE
 operator|*

@@ -1617,7 +1617,7 @@ name|saslStreams
 operator|.
 name|in
 argument_list|,
-name|HdfsConstants
+name|HdfsServerConstants
 operator|.
 name|SMALL_BUFFER_SIZE
 argument_list|)
@@ -3369,7 +3369,7 @@ name|BufferedOutputStream
 argument_list|(
 name|baseStream
 argument_list|,
-name|HdfsConstants
+name|HdfsServerConstants
 operator|.
 name|SMALL_BUFFER_SIZE
 argument_list|)
@@ -4160,7 +4160,7 @@ argument_list|(
 name|getOutputStream
 argument_list|()
 argument_list|,
-name|HdfsConstants
+name|HdfsServerConstants
 operator|.
 name|SMALL_BUFFER_SIZE
 argument_list|)
@@ -4516,7 +4516,7 @@ name|BufferedOutputStream
 argument_list|(
 name|unbufMirrorOut
 argument_list|,
-name|HdfsConstants
+name|HdfsServerConstants
 operator|.
 name|SMALL_BUFFER_SIZE
 argument_list|)
@@ -5707,7 +5707,7 @@ name|BufferedInputStream
 argument_list|(
 name|metadataIn
 argument_list|,
-name|HdfsConstants
+name|HdfsServerConstants
 operator|.
 name|IO_FILE_BUFFER_SIZE
 argument_list|)
@@ -6230,7 +6230,7 @@ name|BufferedOutputStream
 argument_list|(
 name|baseStream
 argument_list|,
-name|HdfsConstants
+name|HdfsServerConstants
 operator|.
 name|SMALL_BUFFER_SIZE
 argument_list|)
@@ -6837,7 +6837,7 @@ name|BufferedOutputStream
 argument_list|(
 name|unbufProxyOut
 argument_list|,
-name|HdfsConstants
+name|HdfsServerConstants
 operator|.
 name|SMALL_BUFFER_SIZE
 argument_list|)
@@ -6853,7 +6853,7 @@ name|BufferedInputStream
 argument_list|(
 name|unbufProxyIn
 argument_list|,
-name|HdfsConstants
+name|HdfsServerConstants
 operator|.
 name|IO_FILE_BUFFER_SIZE
 argument_list|)

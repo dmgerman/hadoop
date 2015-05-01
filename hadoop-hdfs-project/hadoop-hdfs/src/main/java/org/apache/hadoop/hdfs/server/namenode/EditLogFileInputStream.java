@@ -188,22 +188,6 @@ name|hdfs
 operator|.
 name|protocol
 operator|.
-name|HdfsConstants
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|hdfs
-operator|.
-name|protocol
-operator|.
 name|LayoutFlags
 import|;
 end_import
@@ -221,6 +205,24 @@ operator|.
 name|protocol
 operator|.
 name|LayoutVersion
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|server
+operator|.
+name|common
+operator|.
+name|HdfsServerConstants
 import|;
 end_import
 
@@ -539,11 +541,11 @@ name|this
 argument_list|(
 name|name
 argument_list|,
-name|HdfsConstants
+name|HdfsServerConstants
 operator|.
 name|INVALID_TXID
 argument_list|,
-name|HdfsConstants
+name|HdfsServerConstants
 operator|.
 name|INVALID_TXID
 argument_list|,
@@ -1052,7 +1054,7 @@ operator|&&
 operator|(
 name|lastTxId
 operator|!=
-name|HdfsConstants
+name|HdfsServerConstants
 operator|.
 name|INVALID_TXID
 operator|)
@@ -1452,7 +1454,7 @@ name|EditLogValidation
 argument_list|(
 literal|0
 argument_list|,
-name|HdfsConstants
+name|HdfsServerConstants
 operator|.
 name|INVALID_TXID
 argument_list|,
@@ -1545,7 +1547,7 @@ name|EditLogValidation
 argument_list|(
 literal|0
 argument_list|,
-name|HdfsConstants
+name|HdfsServerConstants
 operator|.
 name|INVALID_TXID
 argument_list|,
@@ -1561,7 +1563,7 @@ decl_stmt|;
 name|long
 name|lastTxId
 init|=
-name|HdfsConstants
+name|HdfsServerConstants
 operator|.
 name|INVALID_TXID
 decl_stmt|;
@@ -1580,7 +1582,7 @@ block|{
 name|long
 name|txid
 init|=
-name|HdfsConstants
+name|HdfsServerConstants
 operator|.
 name|INVALID_TXID
 decl_stmt|;
@@ -1604,7 +1606,7 @@ name|scanNextOp
 argument_list|()
 operator|)
 operator|==
-name|HdfsConstants
+name|HdfsServerConstants
 operator|.
 name|INVALID_TXID
 condition|)
@@ -1664,7 +1666,7 @@ if|if
 condition|(
 name|lastTxId
 operator|==
-name|HdfsConstants
+name|HdfsServerConstants
 operator|.
 name|INVALID_TXID
 operator|||
@@ -1758,7 +1760,7 @@ operator|&&
 operator|(
 name|logVersion
 argument_list|<
-name|HdfsConstants
+name|HdfsServerConstants
 operator|.
 name|NAMENODE_LAYOUT_VERSION
 operator|||
@@ -1782,7 +1784,7 @@ name|logVersion
 operator|+
 literal|". Current version = "
 operator|+
-name|HdfsConstants
+name|HdfsServerConstants
 operator|.
 name|NAMENODE_LAYOUT_VERSION
 operator|+

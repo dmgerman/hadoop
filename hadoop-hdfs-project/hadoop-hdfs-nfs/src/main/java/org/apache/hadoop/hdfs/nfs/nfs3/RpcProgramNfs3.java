@@ -372,7 +372,7 @@ name|hdfs
 operator|.
 name|protocol
 operator|.
-name|HdfsConstants
+name|HdfsFileStatus
 import|;
 end_import
 
@@ -386,9 +386,11 @@ name|hadoop
 operator|.
 name|hdfs
 operator|.
-name|protocol
+name|server
 operator|.
-name|HdfsFileStatus
+name|common
+operator|.
+name|HdfsServerConstants
 import|;
 end_import
 
@@ -12972,7 +12974,7 @@ name|attrs
 argument_list|,
 literal|0
 argument_list|,
-name|HdfsConstants
+name|HdfsServerConstants
 operator|.
 name|MAX_PATH_LENGTH
 argument_list|,

@@ -22,22 +22,6 @@ end_package
 
 begin_import
 import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|hdfs
-operator|.
-name|protocol
-operator|.
-name|HdfsConstants
-import|;
-end_import
-
-begin_import
-import|import
 name|com
 operator|.
 name|google
@@ -64,6 +48,24 @@ name|ComparisonChain
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|server
+operator|.
+name|common
+operator|.
+name|HdfsServerConstants
+import|;
+end_import
+
 begin_class
 DECL|class|RemoteEditLog
 specifier|public
@@ -80,7 +82,7 @@ specifier|private
 name|long
 name|startTxId
 init|=
-name|HdfsConstants
+name|HdfsServerConstants
 operator|.
 name|INVALID_TXID
 decl_stmt|;
@@ -89,7 +91,7 @@ specifier|private
 name|long
 name|endTxId
 init|=
-name|HdfsConstants
+name|HdfsServerConstants
 operator|.
 name|INVALID_TXID
 decl_stmt|;
@@ -135,7 +137,7 @@ operator|=
 operator|(
 name|endTxId
 operator|==
-name|HdfsConstants
+name|HdfsServerConstants
 operator|.
 name|INVALID_TXID
 operator|)
@@ -376,7 +378,7 @@ name|log
 condition|)
 block|{
 return|return
-name|HdfsConstants
+name|HdfsServerConstants
 operator|.
 name|INVALID_TXID
 return|;

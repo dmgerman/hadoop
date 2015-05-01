@@ -2051,7 +2051,7 @@ if|if
 condition|(
 name|policyId
 operator|==
-name|HdfsConstantsClient
+name|HdfsConstants
 operator|.
 name|BLOCK_STORAGE_POLICY_ID_UNSPECIFIED
 condition|)
