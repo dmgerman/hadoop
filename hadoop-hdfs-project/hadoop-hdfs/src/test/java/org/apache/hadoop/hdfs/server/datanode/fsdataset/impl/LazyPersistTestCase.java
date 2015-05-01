@@ -1723,6 +1723,17 @@ operator|*
 name|BLOCK_SIZE
 argument_list|)
 expr_stmt|;
+name|conf
+operator|.
+name|setInt
+argument_list|(
+name|DFSConfigKeys
+operator|.
+name|DFS_NAMENODE_SAFEMODE_MIN_DATANODES_KEY
+argument_list|,
+literal|1
+argument_list|)
+expr_stmt|;
 if|if
 condition|(
 name|useSCR
