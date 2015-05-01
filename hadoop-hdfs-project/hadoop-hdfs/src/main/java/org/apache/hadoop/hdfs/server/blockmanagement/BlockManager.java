@@ -4408,6 +4408,10 @@ name|boolean
 name|isCorrupt
 init|=
 name|numCorruptNodes
+operator|!=
+literal|0
+operator|&&
+name|numCorruptNodes
 operator|==
 name|numNodes
 decl_stmt|;

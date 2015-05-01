@@ -3497,6 +3497,11 @@ name|missize
 init|=
 literal|0
 decl_stmt|;
+name|long
+name|corruptSize
+init|=
+literal|0
+decl_stmt|;
 name|int
 name|underReplicatedPerFile
 init|=
@@ -3684,13 +3689,25 @@ condition|(
 name|isCorrupt
 condition|)
 block|{
+name|res
+operator|.
+name|addCorrupt
+argument_list|(
+name|block
+operator|.
+name|getNumBytes
+argument_list|()
+argument_list|)
+expr_stmt|;
 name|corrupt
 operator|++
 expr_stmt|;
-name|res
+name|corruptSize
+operator|+=
+name|block
 operator|.
-name|corruptBlocks
-operator|++
+name|getNumBytes
+argument_list|()
 expr_stmt|;
 name|out
 operator|.
@@ -3938,8 +3955,15 @@ condition|(
 name|totalReplicasPerBlock
 operator|==
 literal|0
+operator|&&
+operator|!
+name|isCorrupt
 condition|)
 block|{
+comment|// If the block is corrupted, it means all its available replicas are
+comment|// corrupted. We don't mark it as missing given these available replicas
+comment|// might still be accessible as the block might be incorrectly marked as
+comment|// corrupted by client machines.
 name|report
 operator|.
 name|append
@@ -4342,12 +4366,13 @@ if|if
 condition|(
 operator|!
 name|showFiles
-operator|&&
-operator|(
+condition|)
+block|{
+if|if
+condition|(
 name|missing
 operator|>
 literal|0
-operator|)
 condition|)
 block|{
 name|out
@@ -4369,6 +4394,34 @@ operator|+
 literal|" B."
 argument_list|)
 expr_stmt|;
+block|}
+if|if
+condition|(
+name|corrupt
+operator|>
+literal|0
+condition|)
+block|{
+name|out
+operator|.
+name|print
+argument_list|(
+literal|"\n"
+operator|+
+name|path
+operator|+
+literal|": CORRUPT "
+operator|+
+name|corrupt
+operator|+
+literal|" blocks of total size "
+operator|+
+name|corruptSize
+operator|+
+literal|" B."
+argument_list|)
+expr_stmt|;
+block|}
 block|}
 name|res
 operator|.
@@ -4426,6 +4479,17 @@ condition|(
 name|missing
 operator|>
 literal|0
+operator|||
+name|corrupt
+operator|>
+literal|0
+condition|)
+block|{
+if|if
+condition|(
+name|missing
+operator|>
+literal|0
 condition|)
 block|{
 name|out
@@ -4443,6 +4507,30 @@ operator|+
 literal|" B\n"
 argument_list|)
 expr_stmt|;
+block|}
+if|if
+condition|(
+name|corrupt
+operator|>
+literal|0
+condition|)
+block|{
+name|out
+operator|.
+name|print
+argument_list|(
+literal|" CORRUPT "
+operator|+
+name|corrupt
+operator|+
+literal|" blocks of total size "
+operator|+
+name|corruptSize
+operator|+
+literal|" B\n"
+argument_list|)
+expr_stmt|;
+block|}
 block|}
 elseif|else
 if|if
@@ -5856,6 +5944,12 @@ name|corruptBlocks
 init|=
 literal|0L
 decl_stmt|;
+DECL|field|corruptSize
+name|long
+name|corruptSize
+init|=
+literal|0L
+decl_stmt|;
 DECL|field|excessiveReplicas
 name|long
 name|excessiveReplicas
@@ -6075,6 +6169,23 @@ name|id
 argument_list|)
 expr_stmt|;
 name|missingSize
+operator|+=
+name|size
+expr_stmt|;
+block|}
+comment|/** Add a corrupt block. */
+DECL|method|addCorrupt (long size)
+name|void
+name|addCorrupt
+parameter_list|(
+name|long
+name|size
+parameter_list|)
+block|{
+name|corruptBlocks
+operator|++
+expr_stmt|;
+name|corruptSize
 operator|+=
 name|size
 expr_stmt|;
@@ -6476,6 +6587,21 @@ name|append
 argument_list|(
 name|corruptBlocks
 argument_list|)
+operator|.
+name|append
+argument_list|(
+literal|"\n  CORRUPT SIZE:\t\t"
+argument_list|)
+operator|.
+name|append
+argument_list|(
+name|corruptSize
+argument_list|)
+operator|.
+name|append
+argument_list|(
+literal|" B"
+argument_list|)
 expr_stmt|;
 block|}
 block|}
@@ -6711,6 +6837,19 @@ operator|.
 name|append
 argument_list|(
 name|getReplicationFactor
+argument_list|()
+argument_list|)
+operator|.
+name|append
+argument_list|(
+literal|"\n Missing blocks:\t\t"
+argument_list|)
+operator|.
+name|append
+argument_list|(
+name|missingIds
+operator|.
+name|size
 argument_list|()
 argument_list|)
 operator|.
