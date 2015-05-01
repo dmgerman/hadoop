@@ -1100,6 +1100,24 @@ name|hadoop
 operator|.
 name|hdfs
 operator|.
+name|client
+operator|.
+name|impl
+operator|.
+name|LeaseRenewer
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
 name|net
 operator|.
 name|Peer
@@ -3836,6 +3854,7 @@ expr_stmt|;
 block|}
 comment|/** Put a file. Only called from LeaseRenewer, where proper locking is    *  enforced to consistently update its local dfsclients array and     *  client's filesBeingWritten map.    */
 DECL|method|putFileBeingWritten (final long inodeId, final DFSOutputStream out)
+specifier|public
 name|void
 name|putFileBeingWritten
 parameter_list|(
@@ -3880,6 +3899,7 @@ block|}
 block|}
 comment|/** Remove a file. Only called from LeaseRenewer. */
 DECL|method|removeFileBeingWritten (final long inodeId)
+specifier|public
 name|void
 name|removeFileBeingWritten
 parameter_list|(
@@ -3917,6 +3937,7 @@ block|}
 block|}
 comment|/** Is file-being-written map empty? */
 DECL|method|isFilesBeingWrittenEmpty ()
+specifier|public
 name|boolean
 name|isFilesBeingWrittenEmpty
 parameter_list|()
@@ -3936,6 +3957,7 @@ block|}
 block|}
 comment|/** @return true if the client is running */
 DECL|method|isClientRunning ()
+specifier|public
 name|boolean
 name|isClientRunning
 parameter_list|()
@@ -3984,6 +4006,7 @@ block|}
 block|}
 comment|/**    * Renew leases.    * @return true if lease was renewed. May return false if this    * client has been closed or has no files open.    **/
 DECL|method|renewLease ()
+specifier|public
 name|boolean
 name|renewLease
 parameter_list|()
@@ -4111,6 +4134,7 @@ expr_stmt|;
 block|}
 comment|/** Abort and release resources held.  Ignore all errors. */
 DECL|method|abort ()
+specifier|public
 name|void
 name|abort
 parameter_list|()

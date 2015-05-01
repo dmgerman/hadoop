@@ -4,7 +4,7 @@ comment|/**  * Licensed to the Apache Software Foundation (ASF) under one  * or 
 end_comment
 
 begin_package
-DECL|package|org.apache.hadoop.hdfs
+DECL|package|org.apache.hadoop.hdfs.client.impl
 package|package
 name|org
 operator|.
@@ -13,6 +13,10 @@ operator|.
 name|hadoop
 operator|.
 name|hdfs
+operator|.
+name|client
+operator|.
+name|impl
 package|;
 end_package
 
@@ -170,6 +174,34 @@ name|hadoop
 operator|.
 name|hdfs
 operator|.
+name|DFSClient
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|DFSOutputStream
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
 name|protocol
 operator|.
 name|HdfsConstants
@@ -247,7 +279,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  *<p>  * Used by {@link DFSClient} for renewing file-being-written leases  * on the namenode.  * When a file is opened for write (create or append),  * namenode stores a file lease for recording the identity of the writer.  * The writer (i.e. the DFSClient) is required to renew the lease periodically.  * When the lease is not renewed before it expires,  * the namenode considers the writer as failed and then it may either let  * another writer to obtain the lease or close the file.  *</p>  *<p>  * This class also provides the following functionality:  *<ul>  *<li>  * It maintains a map from (namenode, user) pairs to lease renewers.   * The same {@link LeaseRenewer} instance is used for renewing lease  * for all the {@link DFSClient} to the same namenode and the same user.  *</li>  *<li>  * Each renewer maintains a list of {@link DFSClient}.  * Periodically the leases for all the clients are renewed.  * A client is removed from the list when the client is closed.  *</li>  *<li>  * A thread per namenode per user is used by the {@link LeaseRenewer}  * to renew the leases.  *</li>  *</ul>  *</p>  */
+comment|/**  *<p>  * Used by {@link org.apache.hadoop.hdfs.DFSClient} for renewing file-being-written leases  * on the namenode.  * When a file is opened for write (create or append),  * namenode stores a file lease for recording the identity of the writer.  * The writer (i.e. the DFSClient) is required to renew the lease periodically.  * When the lease is not renewed before it expires,  * the namenode considers the writer as failed and then it may either let  * another writer to obtain the lease or close the file.  *</p>  *<p>  * This class also provides the following functionality:  *<ul>  *<li>  * It maintains a map from (namenode, user) pairs to lease renewers.  * The same {@link LeaseRenewer} instance is used for renewing lease  * for all the {@link org.apache.hadoop.hdfs.DFSClient} to the same namenode and the same user.  *</li>  *<li>  * Each renewer maintains a list of {@link org.apache.hadoop.hdfs.DFSClient}.  * Periodically the leases for all the clients are renewed.  * A client is removed from the list when the client is closed.  *</li>  *<li>  * A thread per namenode per user is used by the {@link LeaseRenewer}  * to renew the leases.  *</li>  *</ul>  *</p>  */
 end_comment
 
 begin_class
@@ -256,6 +288,7 @@ name|InterfaceAudience
 operator|.
 name|Private
 DECL|class|LeaseRenewer
+specifier|public
 class|class
 name|LeaseRenewer
 block|{
@@ -294,6 +327,7 @@ literal|1000L
 decl_stmt|;
 comment|/** Get a {@link LeaseRenewer} instance */
 DECL|method|getInstance (final String authority, final UserGroupInformation ugi, final DFSClient dfsc)
+specifier|public
 specifier|static
 name|LeaseRenewer
 name|getInstance
@@ -339,7 +373,7 @@ return|return
 name|r
 return|;
 block|}
-comment|/**     * A factory for sharing {@link LeaseRenewer} objects    * among {@link DFSClient} instances    * so that there is only one renewer per authority per user.    */
+comment|/**    * A factory for sharing {@link LeaseRenewer} objects    * among {@link DFSClient} instances    * so that there is only one renewer per authority per user.    */
 DECL|class|Factory
 specifier|private
 specifier|static
@@ -723,13 +757,13 @@ name|currentId
 init|=
 literal|0
 decl_stmt|;
-comment|/**     * A period in milliseconds that the lease renewer thread should run    * after the map became empty.    * In other words,    * if the map is empty for a time period longer than the grace period,    * the renewer should terminate.      */
+comment|/**    * A period in milliseconds that the lease renewer thread should run    * after the map became empty.    * In other words,    * if the map is empty for a time period longer than the grace period,    * the renewer should terminate.    */
 DECL|field|gracePeriod
 specifier|private
 name|long
 name|gracePeriod
 decl_stmt|;
-comment|/**    * The time period in milliseconds    * that the renewer sleeps for each iteration.     */
+comment|/**    * The time period in milliseconds    * that the renewer sleeps for each iteration.    */
 DECL|field|sleepPeriod
 specifier|private
 name|long
@@ -1121,6 +1155,7 @@ name|gracePeriod
 return|;
 block|}
 DECL|method|put (final long inodeId, final DFSOutputStream out, final DFSClient dfsc)
+specifier|public
 specifier|synchronized
 name|void
 name|put
@@ -1362,6 +1397,7 @@ expr_stmt|;
 block|}
 comment|/** Close a file. */
 DECL|method|closeFile (final long inodeId, final DFSClient dfsc)
+specifier|public
 name|void
 name|closeFile
 parameter_list|(
@@ -1446,6 +1482,7 @@ block|}
 block|}
 comment|/** Close the given client. */
 DECL|method|closeClient (final DFSClient dfsc)
+specifier|public
 specifier|synchronized
 name|void
 name|closeClient
@@ -1581,6 +1618,7 @@ expr_stmt|;
 block|}
 block|}
 DECL|method|interruptAndJoin ()
+specifier|public
 name|void
 name|interruptAndJoin
 parameter_list|()
