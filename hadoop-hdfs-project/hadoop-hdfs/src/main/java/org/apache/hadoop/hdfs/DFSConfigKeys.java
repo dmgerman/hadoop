@@ -287,6 +287,27 @@ name|HdfsClientConfigKeys
 operator|.
 name|DFS_WEBHDFS_ACL_PERMISSION_PATTERN_DEFAULT
 decl_stmt|;
+comment|// HDFS HTrace configuration is controlled by dfs.htrace.spanreceiver.classes,
+comment|// etc.
+DECL|field|DFS_SERVER_HTRACE_PREFIX
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|DFS_SERVER_HTRACE_PREFIX
+init|=
+literal|"dfs.htrace."
+decl_stmt|;
+comment|// HDFS client HTrace configuration.
+DECL|field|DFS_CLIENT_HTRACE_PREFIX
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|DFS_CLIENT_HTRACE_PREFIX
+init|=
+literal|"dfs.client.htrace."
+decl_stmt|;
 comment|// HA related configuration
 DECL|field|DFS_DATANODE_RESTART_REPLICA_EXPIRY_KEY
 specifier|public

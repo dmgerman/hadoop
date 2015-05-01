@@ -2888,9 +2888,13 @@ name|IOException
 block|{
 name|SpanReceiverHost
 operator|.
-name|getInstance
+name|get
 argument_list|(
 name|conf
+argument_list|,
+name|DFSConfigKeys
+operator|.
+name|DFS_CLIENT_HTRACE_PREFIX
 argument_list|)
 expr_stmt|;
 name|traceSampler
@@ -2902,6 +2906,10 @@ name|TraceUtils
 operator|.
 name|wrapHadoopConf
 argument_list|(
+name|DFSConfigKeys
+operator|.
+name|DFS_CLIENT_HTRACE_PREFIX
+argument_list|,
 name|conf
 argument_list|)
 argument_list|)

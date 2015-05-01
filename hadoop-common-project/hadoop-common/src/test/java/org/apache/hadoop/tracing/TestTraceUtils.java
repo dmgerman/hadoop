@@ -96,6 +96,14 @@ specifier|public
 class|class
 name|TestTraceUtils
 block|{
+DECL|field|TEST_PREFIX
+specifier|private
+specifier|static
+name|String
+name|TEST_PREFIX
+init|=
+literal|"test.prefix.htrace."
+decl_stmt|;
 annotation|@
 name|Test
 DECL|method|testWrappedHadoopConf ()
@@ -125,9 +133,7 @@ name|conf
 operator|.
 name|set
 argument_list|(
-name|TraceUtils
-operator|.
-name|HTRACE_CONF_PREFIX
+name|TEST_PREFIX
 operator|+
 name|key
 argument_list|,
@@ -141,6 +147,8 @@ name|TraceUtils
 operator|.
 name|wrapHadoopConf
 argument_list|(
+name|TEST_PREFIX
+argument_list|,
 name|conf
 argument_list|)
 decl_stmt|;
@@ -191,9 +199,7 @@ name|conf
 operator|.
 name|set
 argument_list|(
-name|TraceUtils
-operator|.
-name|HTRACE_CONF_PREFIX
+name|TEST_PREFIX
 operator|+
 name|key
 argument_list|,
@@ -233,6 +239,8 @@ name|TraceUtils
 operator|.
 name|wrapHadoopConf
 argument_list|(
+name|TEST_PREFIX
+argument_list|,
 name|conf
 argument_list|,
 name|extraConfig

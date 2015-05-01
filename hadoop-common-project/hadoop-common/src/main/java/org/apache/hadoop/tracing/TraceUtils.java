@@ -116,15 +116,6 @@ specifier|public
 class|class
 name|TraceUtils
 block|{
-DECL|field|HTRACE_CONF_PREFIX
-specifier|public
-specifier|static
-specifier|final
-name|String
-name|HTRACE_CONF_PREFIX
-init|=
-literal|"hadoop.htrace."
-decl_stmt|;
 DECL|field|EMPTY
 specifier|private
 specifier|static
@@ -139,12 +130,16 @@ operator|.
 name|emptyList
 argument_list|()
 decl_stmt|;
-DECL|method|wrapHadoopConf (final Configuration conf)
+DECL|method|wrapHadoopConf (final String prefix, final Configuration conf)
 specifier|public
 specifier|static
 name|HTraceConfiguration
 name|wrapHadoopConf
 parameter_list|(
+specifier|final
+name|String
+name|prefix
+parameter_list|,
 specifier|final
 name|Configuration
 name|conf
@@ -153,18 +148,24 @@ block|{
 return|return
 name|wrapHadoopConf
 argument_list|(
+name|prefix
+argument_list|,
 name|conf
 argument_list|,
 name|EMPTY
 argument_list|)
 return|;
 block|}
-DECL|method|wrapHadoopConf (final Configuration conf, List<ConfigurationPair> extraConfig)
+DECL|method|wrapHadoopConf (final String prefix, final Configuration conf, List<ConfigurationPair> extraConfig)
 specifier|public
 specifier|static
 name|HTraceConfiguration
 name|wrapHadoopConf
 parameter_list|(
+specifier|final
+name|String
+name|prefix
+parameter_list|,
 specifier|final
 name|Configuration
 name|conf
@@ -257,7 +258,7 @@ name|conf
 operator|.
 name|get
 argument_list|(
-name|HTRACE_CONF_PREFIX
+name|prefix
 operator|+
 name|key
 argument_list|,
@@ -302,7 +303,7 @@ name|conf
 operator|.
 name|get
 argument_list|(
-name|HTRACE_CONF_PREFIX
+name|prefix
 operator|+
 name|key
 argument_list|,

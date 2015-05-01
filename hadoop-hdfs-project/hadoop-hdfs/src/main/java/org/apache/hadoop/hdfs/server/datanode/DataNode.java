@@ -6822,9 +6822,13 @@ name|spanReceiverHost
 operator|=
 name|SpanReceiverHost
 operator|.
-name|getInstance
+name|get
 argument_list|(
 name|conf
+argument_list|,
+name|DFSConfigKeys
+operator|.
+name|DFS_SERVER_HTRACE_PREFIX
 argument_list|)
 expr_stmt|;
 if|if
