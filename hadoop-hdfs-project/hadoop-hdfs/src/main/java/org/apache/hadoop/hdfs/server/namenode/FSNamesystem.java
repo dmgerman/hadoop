@@ -6296,7 +6296,7 @@ condition|(
 name|this
 operator|.
 name|lazyPersistFileScrubIntervalSec
-operator|==
+operator|<
 literal|0
 condition|)
 block|{
@@ -6306,7 +6306,7 @@ name|IllegalArgumentException
 argument_list|(
 name|DFS_NAMENODE_LAZY_PERSIST_FILE_SCRUB_INTERVAL_SEC
 operator|+
-literal|" must be non-zero."
+literal|" must be zero (for disable) or greater than zero."
 argument_list|)
 throw|;
 block|}
@@ -7867,6 +7867,18 @@ name|lazyPersistFileScrubber
 operator|.
 name|start
 argument_list|()
+expr_stmt|;
+block|}
+else|else
+block|{
+name|LOG
+operator|.
+name|warn
+argument_list|(
+literal|"Lazy persist file scrubber is disabled,"
+operator|+
+literal|" configured scrub interval is zero."
+argument_list|)
 expr_stmt|;
 block|}
 name|cacheManager

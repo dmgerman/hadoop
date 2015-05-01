@@ -560,6 +560,20 @@ name|hadoop
 operator|.
 name|hdfs
 operator|.
+name|DFSConfigKeys
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
 name|DFSTestUtil
 import|;
 end_import
@@ -1591,7 +1605,7 @@ expr_stmt|;
 block|}
 block|}
 comment|/**    * If ramDiskStorageLimit is>=0, then RAM_DISK capacity is artificially    * capped. If ramDiskStorageLimit< 0 then it is ignored.    */
-DECL|method|startUpCluster ( int numDatanodes, boolean hasTransientStorage, StorageType[] storageTypes, int ramDiskReplicaCapacity, long ramDiskStorageLimit, long evictionLowWatermarkReplicas, boolean useSCR, boolean useLegacyBlockReaderLocal)
+DECL|method|startUpCluster ( int numDatanodes, boolean hasTransientStorage, StorageType[] storageTypes, int ramDiskReplicaCapacity, long ramDiskStorageLimit, long evictionLowWatermarkReplicas, boolean useSCR, boolean useLegacyBlockReaderLocal, boolean disableScrubber)
 specifier|protected
 specifier|final
 name|void
@@ -1621,6 +1635,9 @@ name|useSCR
 parameter_list|,
 name|boolean
 name|useLegacyBlockReaderLocal
+parameter_list|,
+name|boolean
+name|disableScrubber
 parameter_list|)
 throws|throws
 name|IOException
@@ -1641,6 +1658,23 @@ argument_list|,
 name|BLOCK_SIZE
 argument_list|)
 expr_stmt|;
+if|if
+condition|(
+name|disableScrubber
+condition|)
+block|{
+name|conf
+operator|.
+name|setInt
+argument_list|(
+name|DFS_NAMENODE_LAZY_PERSIST_FILE_SCRUB_INTERVAL_SEC
+argument_list|,
+literal|0
+argument_list|)
+expr_stmt|;
+block|}
+else|else
+block|{
 name|conf
 operator|.
 name|setInt
@@ -1650,6 +1684,7 @@ argument_list|,
 name|LAZY_WRITE_FILE_SCRUBBER_INTERVAL_SEC
 argument_list|)
 expr_stmt|;
+block|}
 name|conf
 operator|.
 name|setLong
@@ -2120,6 +2155,22 @@ return|return
 name|this
 return|;
 block|}
+DECL|method|disableScrubber ()
+specifier|public
+name|ClusterWithRamDiskBuilder
+name|disableScrubber
+parameter_list|()
+block|{
+name|this
+operator|.
+name|disableScrubber
+operator|=
+literal|true
+expr_stmt|;
+return|return
+name|this
+return|;
+block|}
 DECL|method|build ()
 specifier|public
 name|void
@@ -2149,6 +2200,8 @@ argument_list|,
 name|useScr
 argument_list|,
 name|useLegacyBlockReaderLocal
+argument_list|,
+name|disableScrubber
 argument_list|)
 expr_stmt|;
 block|}
@@ -2210,6 +2263,13 @@ name|long
 name|evictionLowWatermarkReplicas
 init|=
 name|EVICTION_LOW_WATERMARK
+decl_stmt|;
+DECL|field|disableScrubber
+specifier|private
+name|boolean
+name|disableScrubber
+init|=
+literal|false
 decl_stmt|;
 block|}
 DECL|method|triggerBlockReport ()
