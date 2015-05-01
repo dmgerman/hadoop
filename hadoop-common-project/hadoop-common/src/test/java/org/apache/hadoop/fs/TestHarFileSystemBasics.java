@@ -2070,6 +2070,49 @@ block|{
 comment|// ok, expected.
 block|}
 block|}
+annotation|@
+name|Test
+DECL|method|testHarFsWithoutAuthority ()
+specifier|public
+name|void
+name|testHarFsWithoutAuthority
+parameter_list|()
+throws|throws
+name|Exception
+block|{
+specifier|final
+name|URI
+name|uri
+init|=
+name|harFileSystem
+operator|.
+name|getUri
+argument_list|()
+decl_stmt|;
+name|Assert
+operator|.
+name|assertNull
+argument_list|(
+literal|"har uri authority not null: "
+operator|+
+name|uri
+argument_list|,
+name|uri
+operator|.
+name|getAuthority
+argument_list|()
+argument_list|)
+expr_stmt|;
+name|FileContext
+operator|.
+name|getFileContext
+argument_list|(
+name|uri
+argument_list|,
+name|conf
+argument_list|)
+expr_stmt|;
+block|}
 block|}
 end_class
 
