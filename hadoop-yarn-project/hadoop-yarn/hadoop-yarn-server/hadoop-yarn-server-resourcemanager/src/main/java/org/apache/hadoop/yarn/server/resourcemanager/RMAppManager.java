@@ -1870,6 +1870,20 @@ operator|.
 name|getApplicationId
 argument_list|()
 decl_stmt|;
+name|Credentials
+name|credentials
+init|=
+literal|null
+decl_stmt|;
+try|try
+block|{
+name|credentials
+operator|=
+name|parseCredentials
+argument_list|(
+name|submissionContext
+argument_list|)
+expr_stmt|;
 if|if
 condition|(
 name|UserGroupInformation
@@ -1877,8 +1891,6 @@ operator|.
 name|isSecurityEnabled
 argument_list|()
 condition|)
-block|{
-try|try
 block|{
 name|this
 operator|.
@@ -1891,10 +1903,7 @@ name|addApplicationAsync
 argument_list|(
 name|appId
 argument_list|,
-name|parseCredentials
-argument_list|(
-name|submissionContext
-argument_list|)
+name|credentials
 argument_list|,
 name|submissionContext
 operator|.
@@ -1907,6 +1916,36 @@ name|getUser
 argument_list|()
 argument_list|)
 expr_stmt|;
+block|}
+else|else
+block|{
+comment|// Dispatcher is not yet started at this time, so these START events
+comment|// enqueued should be guaranteed to be first processed when dispatcher
+comment|// gets started.
+name|this
+operator|.
+name|rmContext
+operator|.
+name|getDispatcher
+argument_list|()
+operator|.
+name|getEventHandler
+argument_list|()
+operator|.
+name|handle
+argument_list|(
+operator|new
+name|RMAppEvent
+argument_list|(
+name|applicationId
+argument_list|,
+name|RMAppEventType
+operator|.
+name|START
+argument_list|)
+argument_list|)
+expr_stmt|;
+block|}
 block|}
 catch|catch
 parameter_list|(
@@ -1968,36 +2007,6 @@ argument_list|(
 name|e
 argument_list|)
 throw|;
-block|}
-block|}
-else|else
-block|{
-comment|// Dispatcher is not yet started at this time, so these START events
-comment|// enqueued should be guaranteed to be first processed when dispatcher
-comment|// gets started.
-name|this
-operator|.
-name|rmContext
-operator|.
-name|getDispatcher
-argument_list|()
-operator|.
-name|getEventHandler
-argument_list|()
-operator|.
-name|handle
-argument_list|(
-operator|new
-name|RMAppEvent
-argument_list|(
-name|applicationId
-argument_list|,
-name|RMAppEventType
-operator|.
-name|START
-argument_list|)
-argument_list|)
-expr_stmt|;
 block|}
 block|}
 DECL|method|recoverApplication (ApplicationStateData appState, RMState rmState)
