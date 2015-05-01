@@ -68,7 +68,19 @@ specifier|final
 name|int
 name|cpuVcores
 decl_stmt|;
-DECL|method|ContainerStartMonitoringEvent (ContainerId containerId, long vmemLimit, long pmemLimit, int cpuVcores)
+DECL|field|launchDuration
+specifier|private
+specifier|final
+name|long
+name|launchDuration
+decl_stmt|;
+DECL|field|localizationDuration
+specifier|private
+specifier|final
+name|long
+name|localizationDuration
+decl_stmt|;
+DECL|method|ContainerStartMonitoringEvent (ContainerId containerId, long vmemLimit, long pmemLimit, int cpuVcores, long launchDuration, long localizationDuration)
 specifier|public
 name|ContainerStartMonitoringEvent
 parameter_list|(
@@ -83,6 +95,12 @@ name|pmemLimit
 parameter_list|,
 name|int
 name|cpuVcores
+parameter_list|,
+name|long
+name|launchDuration
+parameter_list|,
+name|long
+name|localizationDuration
 parameter_list|)
 block|{
 name|super
@@ -111,6 +129,18 @@ operator|.
 name|cpuVcores
 operator|=
 name|cpuVcores
+expr_stmt|;
+name|this
+operator|.
+name|launchDuration
+operator|=
+name|launchDuration
+expr_stmt|;
+name|this
+operator|.
+name|localizationDuration
+operator|=
+name|localizationDuration
 expr_stmt|;
 block|}
 DECL|method|getVmemLimit ()
@@ -147,6 +177,30 @@ return|return
 name|this
 operator|.
 name|cpuVcores
+return|;
+block|}
+DECL|method|getLaunchDuration ()
+specifier|public
+name|long
+name|getLaunchDuration
+parameter_list|()
+block|{
+return|return
+name|this
+operator|.
+name|launchDuration
+return|;
+block|}
+DECL|method|getLocalizationDuration ()
+specifier|public
+name|long
+name|getLocalizationDuration
+parameter_list|()
+block|{
+return|return
+name|this
+operator|.
+name|localizationDuration
 return|;
 block|}
 block|}
