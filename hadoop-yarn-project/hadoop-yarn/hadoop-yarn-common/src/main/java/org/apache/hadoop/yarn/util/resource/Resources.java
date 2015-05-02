@@ -254,7 +254,7 @@ throw|throw
 operator|new
 name|RuntimeException
 argument_list|(
-literal|"NONE cannot be modified!"
+literal|"UNBOUNDED cannot be modified!"
 argument_list|)
 throw|;
 block|}
@@ -285,7 +285,7 @@ throw|throw
 operator|new
 name|RuntimeException
 argument_list|(
-literal|"NONE cannot be modified!"
+literal|"UNBOUNDED cannot be modified!"
 argument_list|)
 throw|;
 block|}
@@ -302,7 +302,9 @@ block|{
 name|int
 name|diff
 init|=
-literal|0
+name|Integer
+operator|.
+name|MAX_VALUE
 operator|-
 name|o
 operator|.
@@ -318,7 +320,9 @@ condition|)
 block|{
 name|diff
 operator|=
-literal|0
+name|Integer
+operator|.
+name|MAX_VALUE
 operator|-
 name|o
 operator|.
