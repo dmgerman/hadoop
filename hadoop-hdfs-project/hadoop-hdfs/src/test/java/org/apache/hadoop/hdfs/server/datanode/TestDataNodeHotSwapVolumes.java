@@ -804,6 +804,18 @@ begin_import
 import|import static
 name|org
 operator|.
+name|junit
+operator|.
+name|Assume
+operator|.
+name|assumeTrue
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
 name|mockito
 operator|.
 name|Matchers
@@ -4667,6 +4679,16 @@ name|InterruptedException
 throws|,
 name|ReconfigurationException
 block|{
+comment|// The test uses DataNodeTestUtils#injectDataDirFailure() to simulate
+comment|// volume failures which is currently not supported on Windows.
+name|assumeTrue
+argument_list|(
+operator|!
+name|Path
+operator|.
+name|WINDOWS
+argument_list|)
+expr_stmt|;
 name|startDFSCluster
 argument_list|(
 literal|1

@@ -536,9 +536,8 @@ parameter_list|()
 throws|throws
 name|Exception
 block|{
-comment|// These tests simulate volume failures by denying execute permission on the
-comment|// volume's path.  On Windows, the owner of an object is always allowed
-comment|// access, so we can't run these tests on Windows.
+comment|// These tests use DataNodeTestUtils#injectDataDirFailure() to simulate
+comment|// volume failures which is currently not supported on Windows.
 name|assumeTrue
 argument_list|(
 operator|!

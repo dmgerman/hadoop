@@ -1496,6 +1496,16 @@ name|IOException
 throws|,
 name|TimeoutException
 block|{
+comment|// The test uses DataNodeTestUtils#injectDataDirFailure() to simulate
+comment|// volume failures which is currently not supported on Windows.
+name|assumeTrue
+argument_list|(
+operator|!
+name|Path
+operator|.
+name|WINDOWS
+argument_list|)
+expr_stmt|;
 name|Path
 name|file1
 init|=
@@ -1913,9 +1923,8 @@ parameter_list|()
 throws|throws
 name|Exception
 block|{
-comment|// This test relies on denying access to data volumes to simulate data volume
-comment|// failure.  This doesn't work on Windows, because an owner of an object
-comment|// always has the ability to read and change permissions on the object.
+comment|// The test uses DataNodeTestUtils#injectDataDirFailure() to simulate
+comment|// volume failures which is currently not supported on Windows.
 name|assumeTrue
 argument_list|(
 operator|!
