@@ -146,8 +146,13 @@ specifier|private
 name|String
 name|forcedJobStateOnShutDown
 decl_stmt|;
+DECL|field|submitTime
+specifier|private
+name|long
+name|submitTime
+decl_stmt|;
 comment|/**    * Create an event to record the start of an MR AppMaster    *     * @param appAttemptId    *          the application attempt id.    * @param startTime    *          the start time of the AM.    * @param containerId    *          the containerId of the AM.    * @param nodeManagerHost    *          the node on which the AM is running.    * @param nodeManagerPort    *          the port on which the AM is running.    * @param nodeManagerHttpPort    *          the httpPort for the node running the AM.    */
-DECL|method|AMStartedEvent (ApplicationAttemptId appAttemptId, long startTime, ContainerId containerId, String nodeManagerHost, int nodeManagerPort, int nodeManagerHttpPort)
+DECL|method|AMStartedEvent (ApplicationAttemptId appAttemptId, long startTime, ContainerId containerId, String nodeManagerHost, int nodeManagerPort, int nodeManagerHttpPort, long submitTime)
 specifier|public
 name|AMStartedEvent
 parameter_list|(
@@ -168,6 +173,9 @@ name|nodeManagerPort
 parameter_list|,
 name|int
 name|nodeManagerHttpPort
+parameter_list|,
+name|long
+name|submitTime
 parameter_list|)
 block|{
 name|this
@@ -185,11 +193,13 @@ argument_list|,
 name|nodeManagerHttpPort
 argument_list|,
 literal|null
+argument_list|,
+name|submitTime
 argument_list|)
 expr_stmt|;
 block|}
 comment|/**    * Create an event to record the start of an MR AppMaster    *    * @param appAttemptId    *          the application attempt id.    * @param startTime    *          the start time of the AM.    * @param containerId    *          the containerId of the AM.    * @param nodeManagerHost    *          the node on which the AM is running.    * @param nodeManagerPort    *          the port on which the AM is running.    * @param nodeManagerHttpPort    *          the httpPort for the node running the AM.    * @param forcedJobStateOnShutDown    *          the state to force the job into    */
-DECL|method|AMStartedEvent (ApplicationAttemptId appAttemptId, long startTime, ContainerId containerId, String nodeManagerHost, int nodeManagerPort, int nodeManagerHttpPort, String forcedJobStateOnShutDown)
+DECL|method|AMStartedEvent (ApplicationAttemptId appAttemptId, long startTime, ContainerId containerId, String nodeManagerHost, int nodeManagerPort, int nodeManagerHttpPort, String forcedJobStateOnShutDown, long submitTime)
 specifier|public
 name|AMStartedEvent
 parameter_list|(
@@ -213,6 +223,9 @@ name|nodeManagerHttpPort
 parameter_list|,
 name|String
 name|forcedJobStateOnShutDown
+parameter_list|,
+name|long
+name|submitTime
 parameter_list|)
 block|{
 name|datum
@@ -274,6 +287,12 @@ operator|.
 name|forcedJobStateOnShutDown
 operator|=
 name|forcedJobStateOnShutDown
+expr_stmt|;
+name|this
+operator|.
+name|submitTime
+operator|=
+name|submitTime
 expr_stmt|;
 block|}
 DECL|method|AMStartedEvent ()
@@ -417,6 +436,19 @@ return|return
 name|this
 operator|.
 name|forcedJobStateOnShutDown
+return|;
+block|}
+comment|/**    * @return the submit time for the Application(Job)    */
+DECL|method|getSubmitTime ()
+specifier|public
+name|long
+name|getSubmitTime
+parameter_list|()
+block|{
+return|return
+name|this
+operator|.
+name|submitTime
 return|;
 block|}
 comment|/** Get the attempt id */

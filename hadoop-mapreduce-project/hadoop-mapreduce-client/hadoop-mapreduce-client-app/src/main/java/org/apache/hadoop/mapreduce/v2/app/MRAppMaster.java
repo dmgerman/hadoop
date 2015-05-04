@@ -6020,6 +6020,8 @@ name|info
 operator|.
 name|getNodeManagerHttpPort
 argument_list|()
+argument_list|,
+name|appSubmitTime
 argument_list|)
 argument_list|)
 argument_list|)
@@ -6088,6 +6090,8 @@ name|forcedState
 operator|.
 name|toString
 argument_list|()
+argument_list|,
+name|appSubmitTime
 argument_list|)
 argument_list|)
 argument_list|)
