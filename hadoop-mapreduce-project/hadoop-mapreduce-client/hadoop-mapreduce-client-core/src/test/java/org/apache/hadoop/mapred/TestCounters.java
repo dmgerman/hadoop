@@ -36,6 +36,18 @@ name|junit
 operator|.
 name|Assert
 operator|.
+name|assertFalse
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|junit
+operator|.
+name|Assert
+operator|.
 name|assertTrue
 import|;
 end_import
@@ -518,6 +530,18 @@ operator|.
 name|makeEscapedCompactString
 argument_list|()
 decl_stmt|;
+name|assertFalse
+argument_list|(
+literal|"compactEscapedString should not contain null"
+argument_list|,
+name|compactEscapedString
+operator|.
+name|contains
+argument_list|(
+literal|"null"
+argument_list|)
+argument_list|)
+expr_stmt|;
 name|Counters
 name|recoveredCounter
 init|=
