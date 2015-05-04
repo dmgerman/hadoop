@@ -1030,6 +1030,15 @@ name|RuntimeException
 name|rte
 parameter_list|)
 block|{
+name|LOG
+operator|.
+name|fatal
+argument_list|(
+literal|"The failover controller encounters runtime error: "
+operator|+
+name|rte
+argument_list|)
+expr_stmt|;
 throw|throw
 operator|(
 name|Exception
