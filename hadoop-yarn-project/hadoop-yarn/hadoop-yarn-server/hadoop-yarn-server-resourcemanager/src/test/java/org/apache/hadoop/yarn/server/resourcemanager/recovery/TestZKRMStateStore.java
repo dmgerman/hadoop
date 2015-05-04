@@ -850,6 +850,21 @@ operator|+
 name|appId
 return|;
 block|}
+comment|/**        * Emulating retrying createRootDir not to raise NodeExist exception        * @throws Exception        */
+DECL|method|testRetryingCreateRootDir ()
+specifier|public
+name|void
+name|testRetryingCreateRootDir
+parameter_list|()
+throws|throws
+name|Exception
+block|{
+name|createRootDir
+argument_list|(
+name|znodeWorkingPath
+argument_list|)
+expr_stmt|;
+block|}
 block|}
 DECL|method|getRMStateStore ()
 specifier|public
@@ -1112,6 +1127,21 @@ name|testAMRMTokenSecretManagerStateStore
 argument_list|(
 name|zkTester
 argument_list|)
+expr_stmt|;
+operator|(
+operator|(
+name|TestZKRMStateStoreTester
+operator|.
+name|TestZKRMStateStoreInternal
+operator|)
+name|zkTester
+operator|.
+name|getRMStateStore
+argument_list|()
+operator|)
+operator|.
+name|testRetryingCreateRootDir
+argument_list|()
 expr_stmt|;
 block|}
 annotation|@

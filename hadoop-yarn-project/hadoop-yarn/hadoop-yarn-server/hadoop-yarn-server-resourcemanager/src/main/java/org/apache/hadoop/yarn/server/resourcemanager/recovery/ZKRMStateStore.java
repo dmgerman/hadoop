@@ -1782,7 +1782,7 @@ argument_list|)
 expr_stmt|;
 block|}
 DECL|method|createRootDir (final String rootPath)
-specifier|private
+specifier|protected
 name|void
 name|createRootDir
 parameter_list|(
