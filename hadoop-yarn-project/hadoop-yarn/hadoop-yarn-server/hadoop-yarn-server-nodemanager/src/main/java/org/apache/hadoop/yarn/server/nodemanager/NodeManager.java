@@ -1519,7 +1519,11 @@ name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"Abey khali"
+literal|"Node Manager health check script is not available "
+operator|+
+literal|"or doesn't have execute permission, so not "
+operator|+
+literal|"starting the node health script runner."
 argument_list|)
 expr_stmt|;
 return|return

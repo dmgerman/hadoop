@@ -808,25 +808,6 @@ parameter_list|()
 throws|throws
 name|Exception
 block|{
-comment|// if health script path is not configured don't start the thread.
-if|if
-condition|(
-operator|!
-name|shouldRun
-argument_list|(
-name|nodeHealthScript
-argument_list|)
-condition|)
-block|{
-name|LOG
-operator|.
-name|info
-argument_list|(
-literal|"Not starting node health monitor"
-argument_list|)
-expr_stmt|;
-return|return;
-block|}
 name|nodeHealthScriptScheduler
 operator|=
 operator|new
@@ -865,17 +846,6 @@ name|void
 name|serviceStop
 parameter_list|()
 block|{
-if|if
-condition|(
-operator|!
-name|shouldRun
-argument_list|(
-name|nodeHealthScript
-argument_list|)
-condition|)
-block|{
-return|return;
-block|}
 if|if
 condition|(
 name|nodeHealthScriptScheduler

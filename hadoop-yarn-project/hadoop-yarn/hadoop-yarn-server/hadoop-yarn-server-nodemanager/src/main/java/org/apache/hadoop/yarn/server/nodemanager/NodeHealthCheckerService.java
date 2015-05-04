@@ -62,22 +62,6 @@ name|NodeHealthScriptRunner
 import|;
 end_import
 
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|yarn
-operator|.
-name|conf
-operator|.
-name|YarnConfiguration
-import|;
-end_import
-
 begin_comment
 comment|/**  * The class which provides functionality of checking the health of the node and  * reporting back to the service for which the health checker has been asked to  * report.  */
 end_comment
@@ -153,19 +137,9 @@ name|Exception
 block|{
 if|if
 condition|(
-name|NodeHealthScriptRunner
-operator|.
-name|shouldRun
-argument_list|(
-name|conf
-operator|.
-name|get
-argument_list|(
-name|YarnConfiguration
-operator|.
-name|NM_HEALTH_CHECK_SCRIPT_PATH
-argument_list|)
-argument_list|)
+name|nodeHealthScriptRunner
+operator|!=
+literal|null
 condition|)
 block|{
 name|addService
