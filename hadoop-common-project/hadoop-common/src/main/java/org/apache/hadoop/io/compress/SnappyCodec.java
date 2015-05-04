@@ -225,6 +225,12 @@ condition|(
 operator|!
 name|NativeCodeLoader
 operator|.
+name|isNativeCodeLoaded
+argument_list|()
+operator|||
+operator|!
+name|NativeCodeLoader
+operator|.
 name|buildSupportsSnappy
 argument_list|()
 condition|)
