@@ -453,7 +453,7 @@ specifier|final
 name|String
 name|REDUCER_INPUT_VALUE_CLASS
 init|=
-literal|"maperduce.chain.reducer.input.value.class"
+literal|"mapreduce.chain.reducer.input.value.class"
 decl_stmt|;
 DECL|field|REDUCER_OUTPUT_KEY_CLASS
 specifier|protected
