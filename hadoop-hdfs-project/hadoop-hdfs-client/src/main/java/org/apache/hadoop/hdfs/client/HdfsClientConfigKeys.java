@@ -132,6 +132,12 @@ name|DFS_HA_NAMENODES_KEY_PREFIX
 init|=
 literal|"dfs.ha.namenodes"
 decl_stmt|;
+DECL|field|DFS_NAMENODE_RPC_PORT_DEFAULT
+name|int
+name|DFS_NAMENODE_RPC_PORT_DEFAULT
+init|=
+literal|8020
+decl_stmt|;
 comment|/** dfs.client.retry configuration properties */
 DECL|interface|Retry
 interface|interface

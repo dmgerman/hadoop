@@ -98,7 +98,7 @@ name|hadoop
 operator|.
 name|hdfs
 operator|.
-name|DFSUtil
+name|DFSUtilClient
 import|;
 end_import
 
@@ -146,7 +146,7 @@ block|{
 name|int
 name|d
 init|=
-name|DFSUtil
+name|DFSUtilClient
 operator|.
 name|compareBytes
 argument_list|(
@@ -166,7 +166,7 @@ literal|0
 condition|?
 name|d
 else|:
-name|DFSUtil
+name|DFSUtilClient
 operator|.
 name|compareBytes
 argument_list|(
@@ -385,7 +385,7 @@ operator|)
 condition|?
 literal|null
 else|:
-name|DFSUtil
+name|DFSUtilClient
 operator|.
 name|bytes2String
 argument_list|(

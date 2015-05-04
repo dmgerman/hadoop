@@ -414,6 +414,20 @@ name|hadoop
 operator|.
 name|hdfs
 operator|.
+name|DFSUtilClient
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
 name|inotify
 operator|.
 name|EventBatch
@@ -433,20 +447,6 @@ operator|.
 name|protocol
 operator|.
 name|BlockStoragePolicy
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|hdfs
-operator|.
-name|DFSUtil
 import|;
 end_import
 
@@ -5352,7 +5352,7 @@ name|encodedKey
 operator|==
 literal|null
 condition|?
-name|DFSUtil
+name|DFSUtilClient
 operator|.
 name|EMPTY_BYTES
 else|:
@@ -12270,7 +12270,7 @@ name|parentFullPath
 operator|==
 literal|null
 condition|?
-name|DFSUtil
+name|DFSUtilClient
 operator|.
 name|EMPTY_BYTES
 else|:
@@ -15283,7 +15283,7 @@ argument_list|()
 operator|==
 literal|null
 condition|?
-name|DFSUtil
+name|DFSUtilClient
 operator|.
 name|EMPTY_BYTES
 else|:
@@ -15350,7 +15350,7 @@ argument_list|()
 operator|==
 literal|null
 condition|?
-name|DFSUtil
+name|DFSUtilClient
 operator|.
 name|EMPTY_BYTES
 else|:

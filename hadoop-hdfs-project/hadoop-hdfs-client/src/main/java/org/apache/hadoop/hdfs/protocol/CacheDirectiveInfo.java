@@ -104,20 +104,6 @@ end_import
 
 begin_import
 import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|hdfs
-operator|.
-name|DFSUtil
-import|;
-end_import
-
-begin_import
-import|import
 name|com
 operator|.
 name|google
@@ -127,6 +113,20 @@ operator|.
 name|base
 operator|.
 name|Preconditions
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|DFSUtilClient
 import|;
 end_import
 
@@ -602,7 +602,7 @@ name|isRelative
 condition|)
 block|{
 return|return
-name|DFSUtil
+name|DFSUtilClient
 operator|.
 name|durationToString
 argument_list|(
@@ -611,7 +611,7 @@ argument_list|)
 return|;
 block|}
 return|return
-name|DFSUtil
+name|DFSUtilClient
 operator|.
 name|dateToIso8601String
 argument_list|(

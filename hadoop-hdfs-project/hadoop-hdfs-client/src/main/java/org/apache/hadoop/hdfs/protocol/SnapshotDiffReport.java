@@ -64,20 +64,6 @@ end_import
 
 begin_import
 import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|hdfs
-operator|.
-name|DFSUtil
-import|;
-end_import
-
-begin_import
-import|import
 name|com
 operator|.
 name|google
@@ -87,6 +73,20 @@ operator|.
 name|base
 operator|.
 name|Objects
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|DFSUtilClient
 import|;
 end_import
 
@@ -401,7 +401,7 @@ name|this
 operator|.
 name|sourcePath
 operator|=
-name|DFSUtil
+name|DFSUtilClient
 operator|.
 name|byteArray2bytes
 argument_list|(
@@ -418,7 +418,7 @@ literal|null
 condition|?
 literal|null
 else|:
-name|DFSUtil
+name|DFSUtilClient
 operator|.
 name|byteArray2bytes
 argument_list|(
@@ -495,7 +495,7 @@ block|{
 name|String
 name|pathStr
 init|=
-name|DFSUtil
+name|DFSUtilClient
 operator|.
 name|bytes2String
 argument_list|(
