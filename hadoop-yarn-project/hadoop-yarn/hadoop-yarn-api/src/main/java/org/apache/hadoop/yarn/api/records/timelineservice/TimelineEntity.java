@@ -366,7 +366,7 @@ name|HashMap
 argument_list|<
 name|String
 argument_list|,
-name|Object
+name|String
 argument_list|>
 name|configs
 init|=
@@ -953,7 +953,7 @@ name|HashMap
 argument_list|<
 name|String
 argument_list|,
-name|Object
+name|String
 argument_list|>
 name|getConfigsJAXB
 parameter_list|()
@@ -985,7 +985,7 @@ name|Map
 argument_list|<
 name|String
 argument_list|,
-name|Object
+name|String
 argument_list|>
 name|getConfigs
 parameter_list|()
@@ -1011,7 +1011,7 @@ argument_list|()
 return|;
 block|}
 block|}
-DECL|method|setConfigs (Map<String, Object> configs)
+DECL|method|setConfigs (Map<String, String> configs)
 specifier|public
 name|void
 name|setConfigs
@@ -1020,7 +1020,7 @@ name|Map
 argument_list|<
 name|String
 argument_list|,
-name|Object
+name|String
 argument_list|>
 name|configs
 parameter_list|)
@@ -1055,7 +1055,7 @@ name|HashMap
 argument_list|<
 name|String
 argument_list|,
-name|Object
+name|String
 argument_list|>
 argument_list|(
 name|configs
@@ -1073,7 +1073,7 @@ name|HashMap
 argument_list|<
 name|String
 argument_list|,
-name|Object
+name|String
 argument_list|>
 operator|)
 name|configs
@@ -1091,7 +1091,7 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-DECL|method|addConfigs (Map<String, Object> configs)
+DECL|method|addConfigs (Map<String, String> configs)
 specifier|public
 name|void
 name|addConfigs
@@ -1100,7 +1100,7 @@ name|Map
 argument_list|<
 name|String
 argument_list|,
-name|Object
+name|String
 argument_list|>
 name|configs
 parameter_list|)
@@ -1133,7 +1133,7 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-DECL|method|addConfig (String key, Object value)
+DECL|method|addConfig (String key, String value)
 specifier|public
 name|void
 name|addConfig
@@ -1141,7 +1141,7 @@ parameter_list|(
 name|String
 name|key
 parameter_list|,
-name|Object
+name|String
 name|value
 parameter_list|)
 block|{

@@ -1825,8 +1825,13 @@ argument_list|)
 expr_stmt|;
 name|metric
 operator|.
-name|setSingleData
+name|addValue
 argument_list|(
+name|System
+operator|.
+name|currentTimeMillis
+argument_list|()
+argument_list|,
 literal|123456789L
 argument_list|)
 expr_stmt|;

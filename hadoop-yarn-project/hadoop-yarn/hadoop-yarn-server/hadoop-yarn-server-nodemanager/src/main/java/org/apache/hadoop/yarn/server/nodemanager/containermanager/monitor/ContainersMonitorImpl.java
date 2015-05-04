@@ -2647,7 +2647,7 @@ argument_list|)
 expr_stmt|;
 name|memoryMetric
 operator|.
-name|addTimeSeriesData
+name|addValue
 argument_list|(
 name|currentTime
 argument_list|,
@@ -2695,7 +2695,7 @@ argument_list|)
 expr_stmt|;
 name|cpuMetric
 operator|.
-name|addTimeSeriesData
+name|addValue
 argument_list|(
 name|currentTime
 argument_list|,
