@@ -277,6 +277,37 @@ name|CLIENT_NAMENODE_PROTOCOL_NAME
 init|=
 literal|"org.apache.hadoop.hdfs.protocol.ClientProtocol"
 decl_stmt|;
+comment|/*    * These values correspond to the values used by the system default erasure    * coding schema.    * TODO: to be removed once all places use schema.    */
+DECL|field|NUM_DATA_BLOCKS
+specifier|public
+specifier|static
+specifier|final
+name|byte
+name|NUM_DATA_BLOCKS
+init|=
+literal|6
+decl_stmt|;
+DECL|field|NUM_PARITY_BLOCKS
+specifier|public
+specifier|static
+specifier|final
+name|byte
+name|NUM_PARITY_BLOCKS
+init|=
+literal|3
+decl_stmt|;
+comment|// The chunk size for striped block which is used by erasure coding
+DECL|field|BLOCK_STRIPED_CELL_SIZE
+specifier|public
+specifier|static
+specifier|final
+name|int
+name|BLOCK_STRIPED_CELL_SIZE
+init|=
+literal|256
+operator|*
+literal|1024
+decl_stmt|;
 comment|// SafeMode actions
 DECL|enum|SafeModeAction
 specifier|public

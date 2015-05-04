@@ -74,9 +74,11 @@ name|hadoop
 operator|.
 name|hdfs
 operator|.
-name|protocol
+name|server
 operator|.
-name|HdfsConstants
+name|common
+operator|.
+name|HdfsServerConstants
 operator|.
 name|BLOCK_GROUP_INDEX_MASK
 import|;
@@ -92,9 +94,11 @@ name|hadoop
 operator|.
 name|hdfs
 operator|.
-name|protocol
+name|server
 operator|.
-name|HdfsConstants
+name|common
+operator|.
+name|HdfsServerConstants
 operator|.
 name|MAX_BLOCKS_IN_GROUP
 import|;

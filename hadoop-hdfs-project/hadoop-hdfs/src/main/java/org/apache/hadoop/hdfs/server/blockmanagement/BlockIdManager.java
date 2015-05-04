@@ -682,7 +682,7 @@ name|id
 operator|&
 operator|(
 operator|~
-name|HdfsConstants
+name|HdfsServerConstants
 operator|.
 name|BLOCK_GROUP_INDEX_MASK
 operator|)
@@ -708,7 +708,7 @@ operator|.
 name|getBlockId
 argument_list|()
 operator|&
-name|HdfsConstants
+name|HdfsServerConstants
 operator|.
 name|BLOCK_GROUP_INDEX_MASK
 argument_list|)

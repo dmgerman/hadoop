@@ -877,7 +877,7 @@ name|assertEquals
 argument_list|(
 name|firstId
 operator|+
-name|HdfsConstants
+name|HdfsServerConstants
 operator|.
 name|MAX_BLOCKS_IN_GROUP
 argument_list|,
@@ -1287,7 +1287,7 @@ operator|.
 name|getBlockId
 argument_list|()
 operator|&
-name|HdfsConstants
+name|HdfsServerConstants
 operator|.
 name|BLOCK_GROUP_INDEX_MASK
 argument_list|)
