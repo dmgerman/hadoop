@@ -186,7 +186,8 @@ index|[
 name|i
 index|]
 operator|.
-name|readLength
+name|getReadLength
+argument_list|()
 argument_list|)
 expr_stmt|;
 name|assertEquals
@@ -201,7 +202,8 @@ index|[
 name|i
 index|]
 operator|.
-name|startOffsetInBlock
+name|getStartOffsetInBlock
+argument_list|()
 argument_list|)
 expr_stmt|;
 specifier|final
