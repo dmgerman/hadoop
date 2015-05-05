@@ -142,16 +142,6 @@ end_import
 
 begin_import
 import|import
-name|java
-operator|.
-name|util
-operator|.
-name|Arrays
-import|;
-end_import
-
-begin_import
-import|import
 name|com
 operator|.
 name|google
@@ -451,6 +441,22 @@ operator|.
 name|util
 operator|.
 name|LightWeightHashSet
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|io
+operator|.
+name|erasurecode
+operator|.
+name|ECSchema
 import|;
 end_import
 
@@ -2783,7 +2789,7 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|/**    * Store block erasure coding work.    */
-DECL|method|addBlockToBeErasureCoded (ExtendedBlock block, DatanodeDescriptor[] sources, DatanodeStorageInfo[] targets, short[] liveBlockIndices)
+DECL|method|addBlockToBeErasureCoded (ExtendedBlock block, DatanodeDescriptor[] sources, DatanodeStorageInfo[] targets, short[] liveBlockIndices, ECSchema ecSchema)
 name|void
 name|addBlockToBeErasureCoded
 parameter_list|(
@@ -2801,6 +2807,9 @@ parameter_list|,
 name|short
 index|[]
 name|liveBlockIndices
+parameter_list|,
+name|ECSchema
+name|ecSchema
 parameter_list|)
 block|{
 assert|assert
@@ -2833,6 +2842,8 @@ argument_list|,
 name|targets
 argument_list|,
 name|liveBlockIndices
+argument_list|,
+name|ecSchema
 argument_list|)
 decl_stmt|;
 name|erasurecodeBlocks

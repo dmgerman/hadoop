@@ -128,6 +128,22 @@ end_import
 
 begin_import
 import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|io
+operator|.
+name|erasurecode
+operator|.
+name|ECSchema
+import|;
+end_import
+
+begin_import
+import|import
 name|java
 operator|.
 name|util
@@ -304,7 +320,13 @@ name|short
 index|[]
 name|liveBlockIndices
 decl_stmt|;
-DECL|method|BlockECRecoveryInfo (ExtendedBlock block, DatanodeInfo[] sources, DatanodeStorageInfo[] targetDnStorageInfo, short[] liveBlockIndices)
+DECL|field|ecSchema
+specifier|private
+specifier|final
+name|ECSchema
+name|ecSchema
+decl_stmt|;
+DECL|method|BlockECRecoveryInfo (ExtendedBlock block, DatanodeInfo[] sources, DatanodeStorageInfo[] targetDnStorageInfo, short[] liveBlockIndices, ECSchema ecSchema)
 specifier|public
 name|BlockECRecoveryInfo
 parameter_list|(
@@ -322,6 +344,9 @@ parameter_list|,
 name|short
 index|[]
 name|liveBlockIndices
+parameter_list|,
+name|ECSchema
+name|ecSchema
 parameter_list|)
 block|{
 name|this
@@ -375,8 +400,14 @@ name|liveBlockIndices
 operator|=
 name|liveBlockIndices
 expr_stmt|;
+name|this
+operator|.
+name|ecSchema
+operator|=
+name|ecSchema
+expr_stmt|;
 block|}
-DECL|method|BlockECRecoveryInfo (ExtendedBlock block, DatanodeInfo[] sources, DatanodeInfo[] targets, String[] targetStorageIDs, StorageType[] targetStorageTypes, short[] liveBlockIndices)
+DECL|method|BlockECRecoveryInfo (ExtendedBlock block, DatanodeInfo[] sources, DatanodeInfo[] targets, String[] targetStorageIDs, StorageType[] targetStorageTypes, short[] liveBlockIndices, ECSchema ecSchema)
 specifier|public
 name|BlockECRecoveryInfo
 parameter_list|(
@@ -402,6 +433,9 @@ parameter_list|,
 name|short
 index|[]
 name|liveBlockIndices
+parameter_list|,
+name|ECSchema
+name|ecSchema
 parameter_list|)
 block|{
 name|this
@@ -439,6 +473,12 @@ operator|.
 name|liveBlockIndices
 operator|=
 name|liveBlockIndices
+expr_stmt|;
+name|this
+operator|.
+name|ecSchema
+operator|=
+name|ecSchema
 expr_stmt|;
 block|}
 DECL|method|getExtendedBlock ()
@@ -504,6 +544,16 @@ parameter_list|()
 block|{
 return|return
 name|liveBlockIndices
+return|;
+block|}
+DECL|method|getECSchema ()
+specifier|public
+name|ECSchema
+name|getECSchema
+parameter_list|()
+block|{
+return|return
+name|ecSchema
 return|;
 block|}
 annotation|@

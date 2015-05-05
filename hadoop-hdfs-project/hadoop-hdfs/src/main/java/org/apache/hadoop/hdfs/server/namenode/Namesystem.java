@@ -22,6 +22,16 @@ end_package
 
 begin_import
 import|import
+name|java
+operator|.
+name|io
+operator|.
+name|IOException
+import|;
+end_import
+
+begin_import
+import|import
 name|org
 operator|.
 name|apache
@@ -80,24 +90,6 @@ name|hdfs
 operator|.
 name|server
 operator|.
-name|blockmanagement
-operator|.
-name|BlockInfoContiguousUnderConstruction
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|hdfs
-operator|.
-name|server
-operator|.
 name|namenode
 operator|.
 name|NameNode
@@ -119,6 +111,22 @@ operator|.
 name|util
 operator|.
 name|RwLock
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|io
+operator|.
+name|erasurecode
+operator|.
+name|ECSchema
 import|;
 end_import
 
@@ -237,6 +245,18 @@ parameter_list|(
 name|BlockCollection
 name|bc
 parameter_list|)
+function_decl|;
+comment|/**    * Gets the ECSchema for the specified path    *     * @param src    *          - path    * @return ECSchema    * @throws IOException    */
+DECL|method|getECSchemaForPath (String src)
+specifier|public
+name|ECSchema
+name|getECSchemaForPath
+parameter_list|(
+name|String
+name|src
+parameter_list|)
+throws|throws
+name|IOException
 function_decl|;
 block|}
 end_interface
