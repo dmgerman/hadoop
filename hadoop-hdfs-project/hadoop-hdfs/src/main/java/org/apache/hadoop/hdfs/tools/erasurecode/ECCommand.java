@@ -36,7 +36,27 @@ name|java
 operator|.
 name|util
 operator|.
+name|ArrayList
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
 name|LinkedList
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
+name|List
 import|;
 end_import
 
@@ -635,9 +655,22 @@ name|sb
 operator|.
 name|append
 argument_list|(
-literal|"Please select any one of ["
+literal|" Please select any one of "
 argument_list|)
 expr_stmt|;
+name|List
+argument_list|<
+name|String
+argument_list|>
+name|schemaNames
+init|=
+operator|new
+name|ArrayList
+argument_list|<
+name|String
+argument_list|>
+argument_list|()
+decl_stmt|;
 for|for
 control|(
 name|ECSchema
@@ -646,9 +679,9 @@ range|:
 name|ecSchemas
 control|)
 block|{
-name|sb
+name|schemaNames
 operator|.
-name|append
+name|add
 argument_list|(
 name|ecSchema
 operator|.
@@ -656,14 +689,14 @@ name|getSchemaName
 argument_list|()
 argument_list|)
 expr_stmt|;
+block|}
 name|sb
 operator|.
 name|append
 argument_list|(
-literal|", "
+name|schemaNames
 argument_list|)
 expr_stmt|;
-block|}
 throw|throw
 operator|new
 name|HadoopIllegalArgumentException
