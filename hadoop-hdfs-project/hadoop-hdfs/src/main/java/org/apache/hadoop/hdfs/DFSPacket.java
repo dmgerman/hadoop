@@ -164,6 +164,7 @@ name|InterfaceAudience
 operator|.
 name|Private
 DECL|class|DFSPacket
+specifier|public
 class|class
 name|DFSPacket
 block|{
@@ -278,6 +279,7 @@ name|span
 decl_stmt|;
 comment|/**    * Create a new packet.    *    * @param buf the buffer storing data and checksums    * @param chunksPerPkt maximum number of chunks per packet.    * @param offsetInBlock offset in bytes into the HDFS block.    * @param seqno the sequence number of this packet    * @param checksumSize the size of checksum    * @param lastPacketInBlock if this is the last packet    */
 DECL|method|DFSPacket (byte[] buf, int chunksPerPkt, long offsetInBlock, long seqno, int checksumSize, boolean lastPacketInBlock)
+specifier|public
 name|DFSPacket
 parameter_list|(
 name|byte
@@ -419,6 +421,7 @@ name|len
 expr_stmt|;
 block|}
 DECL|method|writeData (ByteBuffer inBuffer, int len)
+specifier|public
 specifier|synchronized
 name|void
 name|writeData
@@ -503,6 +506,7 @@ expr_stmt|;
 block|}
 comment|/**    * Write checksums to this packet    *    * @param inarray input array of checksums    * @param off the offset of checksums to write    * @param len the length of checksums to write    * @throws ClosedChannelException    */
 DECL|method|writeChecksum (byte[] inarray, int off, int len)
+specifier|public
 specifier|synchronized
 name|void
 name|writeChecksum
@@ -569,6 +573,7 @@ expr_stmt|;
 block|}
 comment|/**    * Write the full packet, including the header, to the given output stream.    *    * @param stm    * @throws IOException    */
 DECL|method|writeTo (DataOutputStream stm)
+specifier|public
 specifier|synchronized
 name|void
 name|writeTo

@@ -7127,15 +7127,17 @@ argument_list|,
 name|blockPoolTokenSecretManager
 argument_list|)
 expr_stmt|;
+comment|// Initialize ErasureCoding worker
 name|ecWorker
 operator|=
 operator|new
 name|ErasureCodingWorker
 argument_list|(
 name|conf
+argument_list|,
+name|this
 argument_list|)
 expr_stmt|;
-comment|// Initialize ErasureCoding worker
 block|}
 comment|/**    * Checks if the DataNode has a secure configuration if security is enabled.    * There are 2 possible configurations that are considered secure:    * 1. The server has bound to privileged ports for RPC and HTTP via    *   SecureDataNodeStarter.    * 2. The configuration enables SASL on DataTransferProtocol and HTTPS (no    *   plain HTTP) for the HTTP server.  The SASL handshake guarantees    *   authentication of the RPC server before a client transmits a secret, such    *   as a block access token.  Similarly, SSL guarantees authentication of the    *   HTTP server before a client transmits a secret, such as a delegation    *   token.    * It is not possible to run with both privileged ports and SASL on    * DataTransferProtocol.  For backwards-compatibility, the connection logic    * must check if the target port is a privileged port, and if so, skip the    * SASL handshake.    *    * @param dnConf DNConf to check    * @param conf Configuration to check    * @param resources SecuredResources obtained for DataNode    * @throws RuntimeException if security enabled, but configuration is insecure    */
 DECL|method|checkSecureConfig (DNConf dnConf, Configuration conf, SecureResources resources)
@@ -7302,6 +7304,16 @@ argument_list|()
 operator|.
 name|toString
 argument_list|()
+return|;
+block|}
+DECL|method|getSaslClient ()
+specifier|public
+name|SaslDataTransferClient
+name|getSaslClient
+parameter_list|()
+block|{
+return|return
+name|saslClient
 return|;
 block|}
 comment|/**    * Verify that the DatanodeUuid has been initialized. If this is a new    * datanode then we generate a new Datanode Uuid and persist it to disk.    *    * @throws IOException    */
@@ -8246,7 +8258,7 @@ return|;
 block|}
 comment|/**    * Creates either NIO or regular depending on socketWriteTimeout.    */
 DECL|method|newSocket ()
-specifier|protected
+specifier|public
 name|Socket
 name|newSocket
 parameter_list|()
@@ -10905,20 +10917,7 @@ name|BlockTokenIdentifier
 argument_list|>
 name|accessToken
 init|=
-name|BlockTokenSecretManager
-operator|.
-name|DUMMY_TOKEN
-decl_stmt|;
-if|if
-condition|(
-name|isBlockTokenEnabled
-condition|)
-block|{
-name|accessToken
-operator|=
-name|blockPoolTokenSecretManager
-operator|.
-name|generateToken
+name|getBlockAccessToken
 argument_list|(
 name|b
 argument_list|,
@@ -10933,8 +10932,7 @@ operator|.
 name|WRITE
 argument_list|)
 argument_list|)
-expr_stmt|;
-block|}
+decl_stmt|;
 name|long
 name|writeTimeout
 init|=
@@ -11352,8 +11350,61 @@ expr_stmt|;
 block|}
 block|}
 block|}
+comment|/***    * Use BlockTokenSecretManager to generate block token for current user.    */
+DECL|method|getBlockAccessToken (ExtendedBlock b, EnumSet<AccessMode> mode)
+specifier|public
+name|Token
+argument_list|<
+name|BlockTokenIdentifier
+argument_list|>
+name|getBlockAccessToken
+parameter_list|(
+name|ExtendedBlock
+name|b
+parameter_list|,
+name|EnumSet
+argument_list|<
+name|AccessMode
+argument_list|>
+name|mode
+parameter_list|)
+throws|throws
+name|IOException
+block|{
+name|Token
+argument_list|<
+name|BlockTokenIdentifier
+argument_list|>
+name|accessToken
+init|=
+name|BlockTokenSecretManager
+operator|.
+name|DUMMY_TOKEN
+decl_stmt|;
+if|if
+condition|(
+name|isBlockTokenEnabled
+condition|)
+block|{
+name|accessToken
+operator|=
+name|blockPoolTokenSecretManager
+operator|.
+name|generateToken
+argument_list|(
+name|b
+argument_list|,
+name|mode
+argument_list|)
+expr_stmt|;
+block|}
+return|return
+name|accessToken
+return|;
+block|}
 comment|/**    * Returns a new DataEncryptionKeyFactory that generates a key from the    * BlockPoolTokenSecretManager, using the block pool ID of the given block.    *    * @param block for which the factory needs to create a key    * @return DataEncryptionKeyFactory for block's block pool ID    */
 DECL|method|getDataEncryptionKeyFactoryForBlock ( final ExtendedBlock block)
+specifier|public
 name|DataEncryptionKeyFactory
 name|getDataEncryptionKeyFactoryForBlock
 parameter_list|(

@@ -1280,6 +1280,39 @@ return|return
 name|maxLockedMemory
 return|;
 block|}
+comment|/**    * Returns true if connect to datanode via hostname    *     * @return boolean true if connect to datanode via hostname    */
+DECL|method|getConnectToDnViaHostname ()
+specifier|public
+name|boolean
+name|getConnectToDnViaHostname
+parameter_list|()
+block|{
+return|return
+name|connectToDnViaHostname
+return|;
+block|}
+comment|/**    * Returns socket timeout    *     * @return int socket timeout    */
+DECL|method|getSocketTimeout ()
+specifier|public
+name|int
+name|getSocketTimeout
+parameter_list|()
+block|{
+return|return
+name|socketTimeout
+return|;
+block|}
+comment|/**    * Returns socket write timeout    *     * @return int socket write timeout    */
+DECL|method|getSocketWriteTimeout ()
+specifier|public
+name|int
+name|getSocketWriteTimeout
+parameter_list|()
+block|{
+return|return
+name|socketWriteTimeout
+return|;
+block|}
 comment|/**    * Returns the SaslPropertiesResolver configured for use with    * DataTransferProtocol, or null if not configured.    *    * @return SaslPropertiesResolver configured for use with DataTransferProtocol    */
 DECL|method|getSaslPropsResolver ()
 specifier|public

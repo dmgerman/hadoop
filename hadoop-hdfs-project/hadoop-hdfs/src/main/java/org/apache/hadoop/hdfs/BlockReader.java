@@ -94,6 +94,20 @@ name|ClientMmap
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|util
+operator|.
+name|DataChecksum
+import|;
+end_import
+
 begin_comment
 comment|/**  * A BlockReader is responsible for reading a single block  * from a single datanode.  */
 end_comment
@@ -214,6 +228,12 @@ name|ReadOption
 argument_list|>
 name|opts
 parameter_list|)
+function_decl|;
+comment|/**    * @return              The DataChecksum used by the read block    */
+DECL|method|getDataChecksum ()
+name|DataChecksum
+name|getDataChecksum
+parameter_list|()
 function_decl|;
 block|}
 end_interface

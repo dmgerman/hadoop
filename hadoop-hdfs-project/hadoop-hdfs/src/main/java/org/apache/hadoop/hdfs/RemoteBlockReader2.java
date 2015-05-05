@@ -2248,6 +2248,18 @@ return|return
 literal|null
 return|;
 block|}
+annotation|@
+name|Override
+DECL|method|getDataChecksum ()
+specifier|public
+name|DataChecksum
+name|getDataChecksum
+parameter_list|()
+block|{
+return|return
+name|checksum
+return|;
+block|}
 block|}
 end_class
 
