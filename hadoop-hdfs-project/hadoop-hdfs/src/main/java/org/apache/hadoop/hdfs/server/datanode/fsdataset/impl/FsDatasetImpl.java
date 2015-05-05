@@ -482,7 +482,35 @@ name|hadoop
 operator|.
 name|hdfs
 operator|.
+name|DFSUtil
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
 name|ExtendedBlockId
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|HdfsConfiguration
 import|;
 end_import
 
@@ -595,24 +623,6 @@ operator|.
 name|protocol
 operator|.
 name|RecoveryInProgressException
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|hdfs
-operator|.
-name|server
-operator|.
-name|common
-operator|.
-name|HdfsServerConstants
 import|;
 end_import
 
@@ -2183,6 +2193,12 @@ name|MAX_BLOCK_EVICTIONS_PER_ITERATION
 init|=
 literal|3
 decl_stmt|;
+DECL|field|smallBufferSize
+specifier|private
+specifier|final
+name|int
+name|smallBufferSize
+decl_stmt|;
 comment|// Used for synchronizing access to usage stats
 DECL|field|statsLock
 specifier|private
@@ -2243,6 +2259,17 @@ operator|.
 name|conf
 operator|=
 name|conf
+expr_stmt|;
+name|this
+operator|.
+name|smallBufferSize
+operator|=
+name|DFSUtil
+operator|.
+name|getSmallBufferSize
+argument_list|(
+name|conf
+argument_list|)
 expr_stmt|;
 comment|// The number of volumes required for operation is the total number
 comment|// of volumes minus the number of failed volumes we can tolerate.
@@ -4908,7 +4935,7 @@ name|dstfile
 return|;
 block|}
 comment|/**    * Copy the block and meta files for the given block to the given destination.    * @return the new meta and block files.    * @throws IOException    */
-DECL|method|copyBlockFiles (long blockId, long genStamp, File srcMeta, File srcFile, File destRoot, boolean calculateChecksum)
+DECL|method|copyBlockFiles (long blockId, long genStamp, File srcMeta, File srcFile, File destRoot, boolean calculateChecksum, int smallBufferSize)
 specifier|static
 name|File
 index|[]
@@ -4931,6 +4958,9 @@ name|destRoot
 parameter_list|,
 name|boolean
 name|calculateChecksum
+parameter_list|,
+name|int
+name|smallBufferSize
 parameter_list|)
 throws|throws
 name|IOException
@@ -4988,10 +5018,12 @@ argument_list|,
 name|dstFile
 argument_list|,
 name|calculateChecksum
+argument_list|,
+name|smallBufferSize
 argument_list|)
 return|;
 block|}
-DECL|method|copyBlockFiles (File srcMeta, File srcFile, File dstMeta, File dstFile, boolean calculateChecksum)
+DECL|method|copyBlockFiles (File srcMeta, File srcFile, File dstMeta, File dstFile, boolean calculateChecksum, int smallBufferSize)
 specifier|static
 name|File
 index|[]
@@ -5011,6 +5043,9 @@ name|dstFile
 parameter_list|,
 name|boolean
 name|calculateChecksum
+parameter_list|,
+name|int
+name|smallBufferSize
 parameter_list|)
 throws|throws
 name|IOException
@@ -5027,6 +5062,8 @@ argument_list|,
 name|dstMeta
 argument_list|,
 name|srcFile
+argument_list|,
+name|smallBufferSize
 argument_list|)
 expr_stmt|;
 block|}
@@ -5384,6 +5421,8 @@ name|replicaInfo
 operator|.
 name|isOnTransientStorage
 argument_list|()
+argument_list|,
+name|smallBufferSize
 argument_list|)
 decl_stmt|;
 name|ReplicaInfo
@@ -5474,7 +5513,7 @@ name|replicaInfo
 return|;
 block|}
 comment|/**    * Compute and store the checksum for a block file that does not already have    * its checksum computed.    *    * @param srcMeta source meta file, containing only the checksum header, not a    *     calculated checksum    * @param dstMeta destination meta file, into which this method will write a    *     full computed checksum    * @param blockFile block file for which the checksum will be computed    * @throws IOException    */
-DECL|method|computeChecksum (File srcMeta, File dstMeta, File blockFile)
+DECL|method|computeChecksum (File srcMeta, File dstMeta, File blockFile, int smallBufferSize)
 specifier|private
 specifier|static
 name|void
@@ -5488,6 +5527,9 @@ name|dstMeta
 parameter_list|,
 name|File
 name|blockFile
+parameter_list|,
+name|int
+name|smallBufferSize
 parameter_list|)
 throws|throws
 name|IOException
@@ -5598,9 +5640,7 @@ argument_list|(
 name|dstMeta
 argument_list|)
 argument_list|,
-name|HdfsServerConstants
-operator|.
-name|SMALL_BUFFER_SIZE
+name|smallBufferSize
 argument_list|)
 argument_list|)
 expr_stmt|;
@@ -13172,6 +13212,8 @@ argument_list|,
 name|dstBlockFile
 argument_list|,
 literal|true
+argument_list|,
+name|smallBufferSize
 argument_list|)
 return|;
 block|}

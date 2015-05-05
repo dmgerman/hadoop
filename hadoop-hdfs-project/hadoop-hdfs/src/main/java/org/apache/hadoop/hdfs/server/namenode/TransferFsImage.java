@@ -300,7 +300,7 @@ name|hadoop
 operator|.
 name|hdfs
 operator|.
-name|HdfsConfiguration
+name|DFSUtil
 import|;
 end_import
 
@@ -314,11 +314,7 @@ name|hadoop
 operator|.
 name|hdfs
 operator|.
-name|server
-operator|.
-name|common
-operator|.
-name|HdfsServerConstants
+name|HdfsConfiguration
 import|;
 end_import
 
@@ -673,6 +669,13 @@ name|CONTENT_TRANSFER_ENCODING
 init|=
 literal|"Content-Transfer-Encoding"
 decl_stmt|;
+DECL|field|IO_FILE_BUFFER_SIZE
+specifier|private
+specifier|final
+specifier|static
+name|int
+name|IO_FILE_BUFFER_SIZE
+decl_stmt|;
 annotation|@
 name|VisibleForTesting
 DECL|field|timeout
@@ -720,6 +723,15 @@ name|UserGroupInformation
 operator|.
 name|isSecurityEnabled
 argument_list|()
+expr_stmt|;
+name|IO_FILE_BUFFER_SIZE
+operator|=
+name|DFSUtil
+operator|.
+name|getIoFileBufferSize
+argument_list|(
+name|conf
+argument_list|)
 expr_stmt|;
 block|}
 DECL|field|LOG
@@ -2095,8 +2107,6 @@ init|=
 operator|new
 name|byte
 index|[
-name|HdfsServerConstants
-operator|.
 name|IO_FILE_BUFFER_SIZE
 index|]
 decl_stmt|;
@@ -2150,8 +2160,6 @@ name|len
 operator|/
 literal|2
 argument_list|,
-name|HdfsServerConstants
-operator|.
 name|IO_FILE_BUFFER_SIZE
 argument_list|)
 index|]
@@ -2962,8 +2970,6 @@ init|=
 operator|new
 name|byte
 index|[
-name|HdfsServerConstants
-operator|.
 name|IO_FILE_BUFFER_SIZE
 index|]
 decl_stmt|;

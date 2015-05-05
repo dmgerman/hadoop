@@ -2733,6 +2733,12 @@ name|?
 argument_list|>
 name|traceSampler
 decl_stmt|;
+DECL|field|smallBufferSize
+specifier|private
+specifier|final
+name|int
+name|smallBufferSize
+decl_stmt|;
 DECL|method|getConf ()
 specifier|public
 name|DfsClientConf
@@ -2980,6 +2986,17 @@ operator|=
 name|ReplaceDatanodeOnFailure
 operator|.
 name|get
+argument_list|(
+name|conf
+argument_list|)
+expr_stmt|;
+name|this
+operator|.
+name|smallBufferSize
+operator|=
+name|DFSUtil
+operator|.
+name|getSmallBufferSize
 argument_list|(
 name|conf
 argument_list|)
@@ -9481,9 +9498,7 @@ name|pair
 operator|.
 name|out
 argument_list|,
-name|HdfsServerConstants
-operator|.
-name|SMALL_BUFFER_SIZE
+name|smallBufferSize
 argument_list|)
 argument_list|)
 expr_stmt|;
@@ -10249,9 +10264,7 @@ name|pair
 operator|.
 name|out
 argument_list|,
-name|HdfsServerConstants
-operator|.
-name|SMALL_BUFFER_SIZE
+name|smallBufferSize
 argument_list|)
 argument_list|)
 decl_stmt|;

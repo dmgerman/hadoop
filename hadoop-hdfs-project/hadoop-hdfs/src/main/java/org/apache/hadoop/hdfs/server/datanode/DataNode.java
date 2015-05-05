@@ -10992,9 +10992,12 @@ name|BufferedOutputStream
 argument_list|(
 name|unbufOut
 argument_list|,
-name|HdfsServerConstants
+name|DFSUtil
 operator|.
-name|SMALL_BUFFER_SIZE
+name|getSmallBufferSize
+argument_list|(
+name|conf
+argument_list|)
 argument_list|)
 argument_list|)
 expr_stmt|;

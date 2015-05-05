@@ -198,11 +198,21 @@ name|hadoop
 operator|.
 name|hdfs
 operator|.
-name|server
+name|DFSUtil
+import|;
+end_import
+
+begin_import
+import|import
+name|org
 operator|.
-name|common
+name|apache
 operator|.
-name|HdfsServerConstants
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|HdfsConfiguration
 import|;
 end_import
 
@@ -305,6 +315,17 @@ name|checksum
 init|=
 literal|null
 decl_stmt|;
+DECL|field|conf
+specifier|private
+specifier|static
+specifier|final
+name|HdfsConfiguration
+name|conf
+init|=
+operator|new
+name|HdfsConfiguration
+argument_list|()
+decl_stmt|;
 annotation|@
 name|VisibleForTesting
 DECL|method|BlockMetadataHeader (short version, DataChecksum checksum)
@@ -387,9 +408,12 @@ argument_list|(
 name|metaFile
 argument_list|)
 argument_list|,
-name|HdfsServerConstants
+name|DFSUtil
 operator|.
-name|IO_FILE_BUFFER_SIZE
+name|getIoFileBufferSize
+argument_list|(
+name|conf
+argument_list|)
 argument_list|)
 argument_list|)
 expr_stmt|;

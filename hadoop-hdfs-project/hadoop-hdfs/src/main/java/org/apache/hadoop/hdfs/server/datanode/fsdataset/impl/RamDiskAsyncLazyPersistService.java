@@ -62,6 +62,34 @@ name|hadoop
 operator|.
 name|hdfs
 operator|.
+name|DFSUtil
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|HdfsConfiguration
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
 name|server
 operator|.
 name|datanode
@@ -87,18 +115,6 @@ operator|.
 name|fsdataset
 operator|.
 name|FsVolumeReference
-import|;
-end_import
-
-begin_import
-import|import
-name|javax
-operator|.
-name|ws
-operator|.
-name|rs
-operator|.
-name|HEAD
 import|;
 end_import
 
@@ -274,6 +290,17 @@ name|File
 argument_list|,
 name|ThreadPoolExecutor
 argument_list|>
+argument_list|()
+decl_stmt|;
+DECL|field|EMPTY_HDFS_CONF
+specifier|private
+specifier|final
+specifier|static
+name|HdfsConfiguration
+name|EMPTY_HDFS_CONF
+init|=
+operator|new
+name|HdfsConfiguration
 argument_list|()
 decl_stmt|;
 comment|/**    * Create a RamDiskAsyncLazyPersistService with a set of volumes (specified by their    * root directories).    *    * The RamDiskAsyncLazyPersistService uses one ThreadPool per volume to do the async    * disk operations.    */
@@ -1051,6 +1078,16 @@ operator|.
 name|targetVolume
 init|)
 block|{
+name|int
+name|smallBufferSize
+init|=
+name|DFSUtil
+operator|.
+name|getSmallBufferSize
+argument_list|(
+name|EMPTY_HDFS_CONF
+argument_list|)
+decl_stmt|;
 comment|// No FsDatasetImpl lock for the file copy
 name|File
 name|targetFiles
@@ -1071,6 +1108,8 @@ argument_list|,
 name|lazyPersistDir
 argument_list|,
 literal|true
+argument_list|,
+name|smallBufferSize
 argument_list|)
 decl_stmt|;
 comment|// Lock FsDataSetImpl during onCompleteLazyPersist callback

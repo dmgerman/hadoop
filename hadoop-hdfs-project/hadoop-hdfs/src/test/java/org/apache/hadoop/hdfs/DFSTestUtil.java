@@ -6348,9 +6348,15 @@ argument_list|,
 name|writeTimeout
 argument_list|)
 argument_list|,
-name|HdfsServerConstants
+name|DFSUtil
 operator|.
-name|SMALL_BUFFER_SIZE
+name|getSmallBufferSize
+argument_list|(
+name|dfsClient
+operator|.
+name|getConfiguration
+argument_list|()
+argument_list|)
 argument_list|)
 argument_list|)
 decl_stmt|;
