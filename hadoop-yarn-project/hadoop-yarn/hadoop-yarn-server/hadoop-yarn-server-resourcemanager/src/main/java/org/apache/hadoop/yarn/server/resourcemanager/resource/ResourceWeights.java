@@ -325,7 +325,7 @@ name|sb
 operator|.
 name|append
 argument_list|(
-name|String
+name|StringUtils
 operator|.
 name|format
 argument_list|(

@@ -913,7 +913,7 @@ name|_
 argument_list|(
 literal|"Configured User Limit Factor:"
 argument_list|,
-name|String
+name|StringUtils
 operator|.
 name|format
 argument_list|(
@@ -3359,15 +3359,13 @@ name|f
 parameter_list|)
 block|{
 return|return
-name|String
+name|StringUtils
 operator|.
-name|format
+name|formatPercent
 argument_list|(
-literal|"%.1f%%"
-argument_list|,
 name|f
-operator|*
-literal|100
+argument_list|,
+literal|1
 argument_list|)
 return|;
 block|}
@@ -3381,7 +3379,7 @@ name|f
 parameter_list|)
 block|{
 return|return
-name|String
+name|StringUtils
 operator|.
 name|format
 argument_list|(
@@ -3403,7 +3401,7 @@ name|f
 parameter_list|)
 block|{
 return|return
-name|String
+name|StringUtils
 operator|.
 name|format
 argument_list|(

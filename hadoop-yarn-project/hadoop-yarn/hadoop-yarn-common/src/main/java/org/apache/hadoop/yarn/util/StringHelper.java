@@ -648,29 +648,6 @@ name|part
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|percent (double value)
-specifier|public
-specifier|static
-name|String
-name|percent
-parameter_list|(
-name|double
-name|value
-parameter_list|)
-block|{
-return|return
-name|String
-operator|.
-name|format
-argument_list|(
-literal|"%.2f"
-argument_list|,
-name|value
-operator|*
-literal|100
-argument_list|)
-return|;
-block|}
 block|}
 end_class
 

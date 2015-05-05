@@ -32,24 +32,6 @@ name|hadoop
 operator|.
 name|yarn
 operator|.
-name|util
-operator|.
-name|StringHelper
-operator|.
-name|percent
-import|;
-end_import
-
-begin_import
-import|import static
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|yarn
-operator|.
 name|webapp
 operator|.
 name|view
@@ -221,6 +203,20 @@ operator|.
 name|util
 operator|.
 name|MRWebAppUtil
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|util
+operator|.
+name|StringUtils
 import|;
 end_import
 
@@ -527,7 +523,9 @@ decl_stmt|;
 name|String
 name|progress
 init|=
-name|percent
+name|StringUtils
+operator|.
+name|formatPercent
 argument_list|(
 name|ta
 operator|.
@@ -535,6 +533,8 @@ name|getProgress
 argument_list|()
 operator|/
 literal|100
+argument_list|,
+literal|2
 argument_list|)
 decl_stmt|;
 name|String
