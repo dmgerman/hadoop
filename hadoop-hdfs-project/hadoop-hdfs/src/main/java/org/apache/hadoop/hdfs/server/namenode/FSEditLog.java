@@ -3697,7 +3697,7 @@ name|setStoragePolicyId
 argument_list|(
 name|newNode
 operator|.
-name|getStoragePolicyID
+name|getLocalStoragePolicyID
 argument_list|()
 argument_list|)
 decl_stmt|;
