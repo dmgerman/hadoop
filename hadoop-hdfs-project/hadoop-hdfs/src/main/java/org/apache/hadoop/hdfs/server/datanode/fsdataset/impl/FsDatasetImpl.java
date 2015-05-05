@@ -1583,20 +1583,21 @@ block|}
 annotation|@
 name|Override
 comment|// FsDatasetSpi
-DECL|method|getVolumes ()
+DECL|method|getFsVolumeReferences ()
 specifier|public
-name|List
-argument_list|<
-name|FsVolumeImpl
-argument_list|>
-name|getVolumes
+name|FsVolumeReferences
+name|getFsVolumeReferences
 parameter_list|()
 block|{
 return|return
+operator|new
+name|FsVolumeReferences
+argument_list|(
 name|volumes
 operator|.
 name|getVolumes
 argument_list|()
+argument_list|)
 return|;
 block|}
 annotation|@
@@ -1652,6 +1653,8 @@ name|FsVolumeImpl
 argument_list|>
 name|curVolumes
 init|=
+name|volumes
+operator|.
 name|getVolumes
 argument_list|()
 decl_stmt|;
@@ -2095,6 +2098,7 @@ name|DataStorage
 name|dataStorage
 decl_stmt|;
 DECL|field|volumes
+specifier|private
 specifier|final
 name|FsVolumeList
 name|volumes
@@ -3679,6 +3683,8 @@ name|hasEnoughResource
 parameter_list|()
 block|{
 return|return
+name|volumes
+operator|.
 name|getVolumes
 argument_list|()
 operator|.
@@ -9093,6 +9099,8 @@ name|FsVolumeImpl
 argument_list|>
 name|curVolumes
 init|=
+name|volumes
+operator|.
 name|getVolumes
 argument_list|()
 decl_stmt|;
@@ -13447,6 +13455,8 @@ control|(
 name|FsVolumeImpl
 name|volume
 range|:
+name|volumes
+operator|.
 name|getVolumes
 argument_list|()
 control|)
@@ -13679,6 +13689,8 @@ name|FsVolumeImpl
 argument_list|>
 name|curVolumes
 init|=
+name|volumes
+operator|.
 name|getVolumes
 argument_list|()
 decl_stmt|;
@@ -13963,6 +13975,8 @@ name|FsVolumeImpl
 argument_list|>
 name|curVolumes
 init|=
+name|volumes
+operator|.
 name|getVolumes
 argument_list|()
 decl_stmt|;
@@ -14536,6 +14550,8 @@ control|(
 name|FsVolumeImpl
 name|v
 range|:
+name|volumes
+operator|.
 name|getVolumes
 argument_list|()
 control|)
@@ -14571,6 +14587,8 @@ control|(
 name|FsVolumeImpl
 name|v
 range|:
+name|volumes
+operator|.
 name|getVolumes
 argument_list|()
 control|)
@@ -15191,26 +15209,31 @@ literal|0.0f
 decl_stmt|;
 comment|// Don't worry about fragmentation for now. We don't expect more than one
 comment|// transient volume per DN.
-for|for
-control|(
-name|FsVolumeImpl
-name|v
-range|:
-name|getVolumes
-argument_list|()
-control|)
-block|{
 try|try
 init|(
-name|FsVolumeReference
-name|ref
+name|FsVolumeReferences
+name|volumes
 init|=
-name|v
-operator|.
-name|obtainReference
+name|getFsVolumeReferences
 argument_list|()
 init|)
 block|{
+for|for
+control|(
+name|FsVolumeSpi
+name|fvs
+range|:
+name|volumes
+control|)
+block|{
+name|FsVolumeImpl
+name|v
+init|=
+operator|(
+name|FsVolumeImpl
+operator|)
+name|fvs
+decl_stmt|;
 if|if
 condition|(
 name|v
@@ -15234,14 +15257,6 @@ name|getAvailable
 argument_list|()
 expr_stmt|;
 block|}
-block|}
-catch|catch
-parameter_list|(
-name|ClosedChannelException
-name|e
-parameter_list|)
-block|{
-comment|// ignore.
 block|}
 block|}
 if|if

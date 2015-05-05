@@ -470,13 +470,10 @@ argument_list|)
 decl_stmt|;
 annotation|@
 name|Override
-DECL|method|getVolumes ()
+DECL|method|getFsVolumeReferences ()
 specifier|public
-name|List
-argument_list|<
-name|ExternalVolumeImpl
-argument_list|>
-name|getVolumes
+name|FsVolumeReferences
+name|getFsVolumeReferences
 parameter_list|()
 block|{
 return|return

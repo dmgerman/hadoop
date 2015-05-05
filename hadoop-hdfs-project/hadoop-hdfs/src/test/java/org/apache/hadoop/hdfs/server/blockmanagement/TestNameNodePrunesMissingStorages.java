@@ -258,6 +258,26 @@ name|datanode
 operator|.
 name|fsdataset
 operator|.
+name|FsDatasetSpi
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|server
+operator|.
+name|datanode
+operator|.
+name|fsdataset
+operator|.
 name|FsVolumeSpi
 import|;
 end_import
@@ -368,27 +388,7 @@ name|java
 operator|.
 name|util
 operator|.
-name|Arrays
-import|;
-end_import
-
-begin_import
-import|import
-name|java
-operator|.
-name|util
-operator|.
 name|Iterator
-import|;
-end_import
-
-begin_import
-import|import
-name|java
-operator|.
-name|util
-operator|.
-name|List
 import|;
 end_import
 
@@ -1206,12 +1206,16 @@ operator|++
 expr_stmt|;
 block|}
 comment|// Find the volume within the datanode which holds that first storage.
-name|List
-argument_list|<
-name|?
-extends|extends
-name|FsVolumeSpi
-argument_list|>
+name|String
+name|volumeDirectoryToRemove
+init|=
+literal|null
+decl_stmt|;
+try|try
+init|(
+name|FsDatasetSpi
+operator|.
+name|FsVolumeReferences
 name|volumes
 init|=
 name|datanodeToRemoveStorageFrom
@@ -1219,9 +1223,10 @@ operator|.
 name|getFSDataset
 argument_list|()
 operator|.
-name|getVolumes
+name|getFsVolumeReferences
 argument_list|()
-decl_stmt|;
+init|)
+block|{
 name|assertEquals
 argument_list|(
 name|NUM_STORAGES_PER_DN
@@ -1232,11 +1237,6 @@ name|size
 argument_list|()
 argument_list|)
 expr_stmt|;
-name|String
-name|volumeDirectoryToRemove
-init|=
-literal|null
-decl_stmt|;
 for|for
 control|(
 name|FsVolumeSpi
@@ -1267,6 +1267,8 @@ argument_list|()
 expr_stmt|;
 block|}
 block|}
+block|}
+empty_stmt|;
 comment|// Shut down the datanode and remove the volume.
 comment|// Replace the volume directory with a regular file, which will
 comment|// cause a volume failure.  (If we merely removed the directory,

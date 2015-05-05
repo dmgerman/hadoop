@@ -714,12 +714,9 @@ name|data
 decl_stmt|;
 DECL|field|volumes
 specifier|final
-name|List
-argument_list|<
-name|?
-extends|extends
-name|FsVolumeSpi
-argument_list|>
+name|FsDatasetSpi
+operator|.
+name|FsVolumeReferences
 name|volumes
 decl_stmt|;
 DECL|method|TestContext (Configuration conf, int numNameServices)
@@ -930,7 +927,7 @@ name|volumes
 operator|=
 name|data
 operator|.
-name|getVolumes
+name|getFsVolumeReferences
 argument_list|()
 expr_stmt|;
 block|}
@@ -944,6 +941,11 @@ parameter_list|()
 throws|throws
 name|IOException
 block|{
+name|volumes
+operator|.
+name|close
+argument_list|()
+expr_stmt|;
 if|if
 condition|(
 name|cluster
@@ -4407,13 +4409,7 @@ name|storageID
 init|=
 name|ctx
 operator|.
-name|datanode
-operator|.
-name|getFSDataset
-argument_list|()
-operator|.
-name|getVolumes
-argument_list|()
+name|volumes
 operator|.
 name|get
 argument_list|(

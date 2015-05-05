@@ -248,7 +248,7 @@ name|junit
 operator|.
 name|Assert
 operator|.
-name|fail
+name|assertNull
 import|;
 end_import
 
@@ -756,27 +756,14 @@ argument_list|(
 name|ref
 argument_list|)
 expr_stmt|;
-try|try
-block|{
+name|assertNull
+argument_list|(
 name|ref
 operator|.
-name|close
+name|getVolume
 argument_list|()
-expr_stmt|;
-name|fail
-argument_list|(
-literal|"Should throw exception because the reference is closed in "
-operator|+
-literal|"VolumeList#addVolume()."
 argument_list|)
 expr_stmt|;
-block|}
-catch|catch
-parameter_list|(
-name|IllegalStateException
-name|e
-parameter_list|)
-block|{     }
 block|}
 block|}
 end_class

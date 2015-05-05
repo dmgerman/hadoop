@@ -1523,6 +1523,17 @@ name|FsVolumeReference
 name|ref
 parameter_list|)
 block|{
+name|FsVolumeImpl
+name|volume
+init|=
+operator|(
+name|FsVolumeImpl
+operator|)
+name|ref
+operator|.
+name|getVolume
+argument_list|()
+decl_stmt|;
 while|while
 condition|(
 literal|true
@@ -1556,13 +1567,7 @@ name|volumeList
 operator|.
 name|add
 argument_list|(
-operator|(
-name|FsVolumeImpl
-operator|)
-name|ref
-operator|.
-name|getVolume
-argument_list|()
+name|volume
 argument_list|)
 expr_stmt|;
 if|if
@@ -1663,10 +1668,7 @@ argument_list|(
 operator|new
 name|File
 argument_list|(
-name|ref
-operator|.
-name|getVolume
-argument_list|()
+name|volume
 operator|.
 name|getBasePath
 argument_list|()
@@ -1681,10 +1683,7 @@ name|info
 argument_list|(
 literal|"Added new volume: "
 operator|+
-name|ref
-operator|.
-name|getVolume
-argument_list|()
+name|volume
 operator|.
 name|getStorageID
 argument_list|()

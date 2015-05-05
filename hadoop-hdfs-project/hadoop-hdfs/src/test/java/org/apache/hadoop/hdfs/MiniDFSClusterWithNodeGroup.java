@@ -44,16 +44,6 @@ end_import
 
 begin_import
 import|import
-name|java
-operator|.
-name|util
-operator|.
-name|List
-import|;
-end_import
-
-begin_import
-import|import
 name|org
 operator|.
 name|apache
@@ -218,7 +208,7 @@ name|datanode
 operator|.
 name|fsdataset
 operator|.
-name|FsVolumeSpi
+name|FsDatasetSpi
 import|;
 end_import
 
@@ -1354,12 +1344,11 @@ operator|++
 name|i
 control|)
 block|{
-name|List
-argument_list|<
-name|?
-extends|extends
-name|FsVolumeSpi
-argument_list|>
+try|try
+init|(
+name|FsDatasetSpi
+operator|.
+name|FsVolumeReferences
 name|volumes
 init|=
 name|dns
@@ -1370,9 +1359,10 @@ operator|.
 name|getFSDataset
 argument_list|()
 operator|.
-name|getVolumes
+name|getFsVolumeReferences
 argument_list|()
-decl_stmt|;
+init|)
+block|{
 assert|assert
 name|volumes
 operator|.
@@ -1425,6 +1415,7 @@ name|j
 index|]
 argument_list|)
 expr_stmt|;
+block|}
 block|}
 block|}
 block|}

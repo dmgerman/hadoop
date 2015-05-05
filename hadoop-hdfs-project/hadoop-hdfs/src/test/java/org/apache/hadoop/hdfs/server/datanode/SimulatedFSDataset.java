@@ -6037,13 +6037,10 @@ throw|;
 block|}
 annotation|@
 name|Override
-DECL|method|getVolumes ()
+DECL|method|getFsVolumeReferences ()
 specifier|public
-name|List
-argument_list|<
-name|FsVolumeSpi
-argument_list|>
-name|getVolumes
+name|FsVolumeReferences
+name|getFsVolumeReferences
 parameter_list|()
 block|{
 throw|throw

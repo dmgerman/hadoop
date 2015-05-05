@@ -43,7 +43,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * This is the interface for holding reference count as AutoClosable resource.  * It increases the reference count by one in the constructor, and decreases  * the reference count by one in {@link #close()}.  *  *<pre>  *  {@code  *    try (FsVolumeReference ref = volume.obtainReference()) {  *      // Do IOs on the volume  *      volume.createRwb(...);  *      ...  *    }  *  }  *</pre>  */
+comment|/**  * This holds volume reference count as AutoClosable resource.  * It increases the reference count by one in the constructor, and decreases  * the reference count by one in {@link #close()}.  *  *<pre>  *  {@code  *    try (FsVolumeReference ref = volume.obtainReference()) {  *      // Do IOs on the volume  *      volume.createRwb(...);  *      ...  *    }  *  }  *</pre>  */
 end_comment
 
 begin_interface
@@ -54,20 +54,18 @@ name|FsVolumeReference
 extends|extends
 name|Closeable
 block|{
-comment|/**    * Descrese the reference count of the volume.    * @throws IOException it never throws IOException.    */
+comment|/**    * Decrease the reference count of the volume.    * @throws IOException it never throws IOException.    */
 annotation|@
 name|Override
 DECL|method|close ()
-specifier|public
 name|void
 name|close
 parameter_list|()
 throws|throws
 name|IOException
 function_decl|;
-comment|/** Returns the underlying volume object */
+comment|/**    * Returns the underlying volume object. Return null if the reference was    * released.    */
 DECL|method|getVolume ()
-specifier|public
 name|FsVolumeSpi
 name|getVolume
 parameter_list|()
