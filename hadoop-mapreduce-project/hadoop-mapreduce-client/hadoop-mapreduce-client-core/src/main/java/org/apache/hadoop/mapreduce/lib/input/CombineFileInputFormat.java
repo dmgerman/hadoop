@@ -132,18 +132,6 @@ end_import
 
 begin_import
 import|import
-name|java
-operator|.
-name|util
-operator|.
-name|Map
-operator|.
-name|Entry
-import|;
-end_import
-
-begin_import
-import|import
 name|org
 operator|.
 name|apache
@@ -1377,6 +1365,7 @@ name|splits
 argument_list|)
 expr_stmt|;
 block|}
+comment|/**    * Process all the nodes and create splits that are local to a node.    * Generate one split per node iteration, and walk over nodes multiple times    * to distribute the splits across nodes.    *<p>    * Note: The order of processing the nodes is undetermined because the    * implementation of nodeToBlocks is {@link java.util.HashMap} and its order    * of the entries is undetermined.    * @param nodeToBlocks Mapping from a node to the list of blocks that    *                     it contains.    * @param blockToNodes Mapping from a block to the nodes on which    *                     it has replicas.    * @param rackToBlocks Mapping from a rack name to the list of blocks it has.    * @param totLength Total length of the input files.    * @param maxSize Max size of each split.    *                If set to 0, disable smoothing load.    * @param minSizeNode Minimum split size per node.    * @param minSizeRack Minimum split size per rack.    * @param splits New splits created by this method are added to the list.    */
 annotation|@
 name|VisibleForTesting
 DECL|method|createSplits (Map<String, Set<OneBlockInfo>> nodeToBlocks, Map<OneBlockInfo, String[]> blockToNodes, Map<String, List<OneBlockInfo>> rackToBlocks, long totLength, long maxSize, long minSizeNode, long minSizeRack, List<InputSplit> splits )
@@ -1493,10 +1482,6 @@ condition|(
 literal|true
 condition|)
 block|{
-comment|// it is allowed for maxSize to be 0. Disable smoothing load for such cases
-comment|// process all nodes and create splits that are local to a node. Generate
-comment|// one split per node iteration, and walk over nodes multiple times to
-comment|// distribute the splits across nodes.
 for|for
 control|(
 name|Iterator
