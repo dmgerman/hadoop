@@ -798,6 +798,16 @@ argument_list|)
 operator|.
 name|append
 argument_list|(
+name|app
+operator|.
+name|getRunningContainers
+argument_list|()
+operator|==
+operator|-
+literal|1
+condition|?
+literal|"N/A"
+else|:
 name|String
 operator|.
 name|valueOf
