@@ -9150,26 +9150,6 @@ argument_list|)
 operator|.
 name|datanode
 decl_stmt|;
-name|LOG
-operator|.
-name|info
-argument_list|(
-literal|"DN name="
-operator|+
-name|dnName
-operator|+
-literal|" found DN="
-operator|+
-name|dn
-operator|+
-literal|" with name="
-operator|+
-name|dn
-operator|.
-name|getDisplayName
-argument_list|()
-argument_list|)
-expr_stmt|;
 if|if
 condition|(
 name|dnName

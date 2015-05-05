@@ -3192,7 +3192,9 @@ name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"Allocating new block"
+literal|"Allocating new block "
+operator|+
+name|this
 argument_list|)
 expr_stmt|;
 block|}
@@ -3277,15 +3279,13 @@ operator|.
 name|getBlockSize
 argument_list|()
 operator|+
-literal|" is smaller than data size. "
+literal|"< lastByteOffsetInBlock, "
 operator|+
-literal|" Offset of packet in block "
+name|this
 operator|+
-name|lastByteOffsetInBlock
+literal|", "
 operator|+
-literal|" Aborting file "
-operator|+
-name|src
+name|one
 argument_list|)
 throw|;
 block|}
@@ -8351,12 +8351,13 @@ name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"Queued packet "
+literal|"Queued "
 operator|+
 name|packet
-operator|.
-name|getSeqno
-argument_list|()
+operator|+
+literal|", "
+operator|+
+name|this
 argument_list|)
 expr_stmt|;
 block|}
@@ -8751,6 +8752,39 @@ name|close
 argument_list|()
 expr_stmt|;
 block|}
+block|}
+annotation|@
+name|Override
+DECL|method|toString ()
+specifier|public
+name|String
+name|toString
+parameter_list|()
+block|{
+return|return
+operator|(
+name|block
+operator|==
+literal|null
+condition|?
+literal|null
+else|:
+name|block
+operator|.
+name|getLocalBlock
+argument_list|()
+operator|)
+operator|+
+literal|"@"
+operator|+
+name|Arrays
+operator|.
+name|toString
+argument_list|(
+name|getNodes
+argument_list|()
+argument_list|)
+return|;
 block|}
 block|}
 end_class
