@@ -724,7 +724,7 @@ name|getReplacementCommand
 parameter_list|()
 block|{
 return|return
-literal|"rm -r"
+literal|"-rm -r"
 return|;
 block|}
 block|}
