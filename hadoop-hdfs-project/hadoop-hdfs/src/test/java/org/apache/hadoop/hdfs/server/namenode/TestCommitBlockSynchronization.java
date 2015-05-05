@@ -443,7 +443,7 @@ argument_list|)
 expr_stmt|;
 name|doReturn
 argument_list|(
-literal|true
+name|blockInfo
 argument_list|)
 operator|.
 name|when
@@ -949,7 +949,7 @@ expr_stmt|;
 comment|// Simulate removing the last block from the file.
 name|doReturn
 argument_list|(
-literal|false
+literal|null
 argument_list|)
 operator|.
 name|when

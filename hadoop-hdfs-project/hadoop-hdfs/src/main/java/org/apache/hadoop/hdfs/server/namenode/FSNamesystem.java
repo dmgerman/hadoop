@@ -21871,6 +21871,8 @@ name|removeLastBlock
 argument_list|(
 name|blockToDel
 argument_list|)
+operator|!=
+literal|null
 decl_stmt|;
 if|if
 condition|(

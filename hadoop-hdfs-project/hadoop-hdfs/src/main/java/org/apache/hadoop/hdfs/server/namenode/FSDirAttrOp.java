@@ -2366,6 +2366,11 @@ init|=
 name|file
 operator|.
 name|storagespaceConsumed
+argument_list|(
+literal|null
+argument_list|)
+operator|.
+name|getStorageSpace
 argument_list|()
 operator|/
 name|oldBR
@@ -2423,6 +2428,11 @@ init|=
 name|file
 operator|.
 name|storagespaceConsumed
+argument_list|(
+literal|null
+argument_list|)
+operator|.
+name|getStorageSpace
 argument_list|()
 operator|/
 name|newBR
