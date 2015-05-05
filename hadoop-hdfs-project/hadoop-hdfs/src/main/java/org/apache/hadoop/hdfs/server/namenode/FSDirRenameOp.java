@@ -2641,7 +2641,7 @@ name|logRename
 argument_list|(
 name|src
 argument_list|,
-name|dst
+name|actualDst
 argument_list|,
 name|mtime
 argument_list|,

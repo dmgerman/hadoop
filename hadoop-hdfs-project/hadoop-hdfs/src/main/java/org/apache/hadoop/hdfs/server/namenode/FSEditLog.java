@@ -4149,7 +4149,7 @@ name|op
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**     * Add rename record to edit log    * TODO: use String parameters until just before writing to disk    */
+comment|/**     * Add rename record to edit log.    *    * The destination should be the file name, not the destination directory.    * TODO: use String parameters until just before writing to disk    */
 DECL|method|logRename (String src, String dst, long timestamp, boolean toLogRpcIds)
 name|void
 name|logRename
@@ -4208,7 +4208,7 @@ name|op
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**     * Add rename record to edit log    */
+comment|/**     * Add rename record to edit log.    *    * The destination should be the file name, not the destination directory.    */
 DECL|method|logRename (String src, String dst, long timestamp, boolean toLogRpcIds, Options.Rename... options)
 name|void
 name|logRename
