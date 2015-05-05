@@ -6303,7 +6303,20 @@ name|URISyntaxException
 name|e
 parameter_list|)
 block|{
-comment|// TODO fail? Already translated several times...
+name|LOG
+operator|.
+name|error
+argument_list|(
+literal|"Got exception in parsing URL of LocalResource:"
+operator|+
+name|rsrc
+operator|.
+name|getResource
+argument_list|()
+argument_list|,
+name|e
+argument_list|)
+expr_stmt|;
 block|}
 name|LocalizerResourceRequestEvent
 name|assoc
@@ -6657,7 +6670,20 @@ name|URISyntaxException
 name|e
 parameter_list|)
 block|{
-comment|//TODO fail? Already translated several times...
+name|LOG
+operator|.
+name|error
+argument_list|(
+literal|"Got exception in parsing URL of LocalResource:"
+operator|+
+name|next
+operator|.
+name|getResource
+argument_list|()
+argument_list|,
+name|e
+argument_list|)
+expr_stmt|;
 block|}
 block|}
 name|response
