@@ -924,6 +924,11 @@ operator|.
 name|class
 argument_list|)
 expr_stmt|;
+name|createTablesForAttemptMetrics
+argument_list|(
+name|html
+argument_list|)
+expr_stmt|;
 comment|// Container Table
 name|TBODY
 argument_list|<
@@ -1489,6 +1494,15 @@ name|Block
 name|html
 parameter_list|)
 block|{        }
+DECL|method|createTablesForAttemptMetrics (Block html)
+specifier|protected
+name|void
+name|createTablesForAttemptMetrics
+parameter_list|(
+name|Block
+name|html
+parameter_list|)
+block|{    }
 block|}
 end_class
 
