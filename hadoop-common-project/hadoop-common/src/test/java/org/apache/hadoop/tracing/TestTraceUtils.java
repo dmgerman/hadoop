@@ -226,6 +226,8 @@ argument_list|(
 operator|new
 name|ConfigurationPair
 argument_list|(
+name|TEST_PREFIX
+operator|+
 name|key
 argument_list|,
 name|newValue
