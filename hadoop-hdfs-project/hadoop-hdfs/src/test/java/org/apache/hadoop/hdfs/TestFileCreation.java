@@ -890,24 +890,6 @@ name|server
 operator|.
 name|namenode
 operator|.
-name|LeaseExpiredException
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|hdfs
-operator|.
-name|server
-operator|.
-name|namenode
-operator|.
 name|LeaseManager
 import|;
 end_import
@@ -6965,7 +6947,7 @@ expr_stmt|;
 block|}
 catch|catch
 parameter_list|(
-name|LeaseExpiredException
+name|FileNotFoundException
 name|e
 parameter_list|)
 block|{
@@ -6975,7 +6957,7 @@ name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"Caught Expected LeaseExpiredException: "
+literal|"Caught Expected FileNotFoundException: "
 argument_list|,
 name|e
 argument_list|)

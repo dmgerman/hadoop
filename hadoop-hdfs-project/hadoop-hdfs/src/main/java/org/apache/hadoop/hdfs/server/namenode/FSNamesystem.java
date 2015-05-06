@@ -18124,7 +18124,7 @@ argument_list|)
 decl_stmt|;
 throw|throw
 operator|new
-name|LeaseExpiredException
+name|FileNotFoundException
 argument_list|(
 literal|"No lease on "
 operator|+
