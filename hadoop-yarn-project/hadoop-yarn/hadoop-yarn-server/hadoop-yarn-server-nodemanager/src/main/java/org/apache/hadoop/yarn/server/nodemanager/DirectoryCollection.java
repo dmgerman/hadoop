@@ -252,6 +252,7 @@ end_comment
 
 begin_class
 DECL|class|DirectoryCollection
+specifier|public
 class|class
 name|DirectoryCollection
 block|{
@@ -271,6 +272,7 @@ operator|.
 name|class
 argument_list|)
 decl_stmt|;
+comment|/**    * The enum defines disk failure type.    */
 DECL|enum|DiskErrorCause
 specifier|public
 enum|enum
@@ -318,6 +320,18 @@ operator|=
 name|message
 expr_stmt|;
 block|}
+block|}
+comment|/**    * The interface provides a callback when localDirs is changed.    */
+DECL|interface|DirsChangeListener
+specifier|public
+interface|interface
+name|DirsChangeListener
+block|{
+DECL|method|onDirsChanged ()
+name|void
+name|onDirsChanged
+parameter_list|()
+function_decl|;
 block|}
 comment|/**    * Returns a merged list which contains all the elements of l1 and l2    * @param l1 the first list to be included    * @param l2 the second list to be included    * @return a new list containing all the elements of the first and second list    */
 DECL|method|concat (List<String> l1, List<String> l2)
@@ -426,6 +440,14 @@ DECL|field|goodDirsDiskUtilizationPercentage
 specifier|private
 name|int
 name|goodDirsDiskUtilizationPercentage
+decl_stmt|;
+DECL|field|dirsChangeListeners
+specifier|private
+name|Set
+argument_list|<
+name|DirsChangeListener
+argument_list|>
+name|dirsChangeListeners
 decl_stmt|;
 comment|/**    * Create collection for the directories specified. No check for free space.    *     * @param dirs    *          directories to be monitored    */
 DECL|method|DirectoryCollection (String[] dirs)
@@ -565,6 +587,58 @@ condition|?
 literal|0
 else|:
 name|utilizationSpaceCutOff
+expr_stmt|;
+name|dirsChangeListeners
+operator|=
+operator|new
+name|HashSet
+argument_list|<
+name|DirsChangeListener
+argument_list|>
+argument_list|()
+expr_stmt|;
+block|}
+DECL|method|registerDirsChangeListener ( DirsChangeListener listener)
+specifier|synchronized
+name|void
+name|registerDirsChangeListener
+parameter_list|(
+name|DirsChangeListener
+name|listener
+parameter_list|)
+block|{
+if|if
+condition|(
+name|dirsChangeListeners
+operator|.
+name|add
+argument_list|(
+name|listener
+argument_list|)
+condition|)
+block|{
+name|listener
+operator|.
+name|onDirsChanged
+argument_list|()
+expr_stmt|;
+block|}
+block|}
+DECL|method|deregisterDirsChangeListener ( DirsChangeListener listener)
+specifier|synchronized
+name|void
+name|deregisterDirsChangeListener
+parameter_list|(
+name|DirsChangeListener
+name|listener
+parameter_list|)
+block|{
+name|dirsChangeListeners
+operator|.
+name|remove
+argument_list|(
+name|listener
+argument_list|)
 expr_stmt|;
 block|}
 comment|/**    * @return the current valid directories     */
@@ -1130,6 +1204,26 @@ block|}
 name|setGoodDirsDiskUtilizationPercentage
 argument_list|()
 expr_stmt|;
+if|if
+condition|(
+name|setChanged
+condition|)
+block|{
+for|for
+control|(
+name|DirsChangeListener
+name|listener
+range|:
+name|dirsChangeListeners
+control|)
+block|{
+name|listener
+operator|.
+name|onDirsChanged
+argument_list|()
+expr_stmt|;
+block|}
+block|}
 return|return
 name|setChanged
 return|;
