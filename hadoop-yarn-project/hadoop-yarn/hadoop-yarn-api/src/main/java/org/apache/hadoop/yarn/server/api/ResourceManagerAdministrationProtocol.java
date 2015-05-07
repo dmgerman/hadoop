@@ -54,54 +54,6 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|classification
-operator|.
-name|InterfaceAudience
-operator|.
-name|Public
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|classification
-operator|.
-name|InterfaceStability
-operator|.
-name|Evolving
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|classification
-operator|.
-name|InterfaceStability
-operator|.
-name|Stable
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
 name|io
 operator|.
 name|retry
@@ -633,8 +585,6 @@ end_import
 begin_interface
 annotation|@
 name|Private
-annotation|@
-name|Stable
 DECL|interface|ResourceManagerAdministrationProtocol
 specifier|public
 interface|interface
@@ -643,9 +593,7 @@ extends|extends
 name|GetUserMappingsProtocol
 block|{
 annotation|@
-name|Public
-annotation|@
-name|Stable
+name|Private
 annotation|@
 name|Idempotent
 DECL|method|refreshQueues (RefreshQueuesRequest request)
@@ -664,9 +612,7 @@ throws|,
 name|IOException
 function_decl|;
 annotation|@
-name|Public
-annotation|@
-name|Stable
+name|Private
 annotation|@
 name|Idempotent
 DECL|method|refreshNodes (RefreshNodesRequest request)
@@ -685,9 +631,7 @@ throws|,
 name|IOException
 function_decl|;
 annotation|@
-name|Public
-annotation|@
-name|Stable
+name|Private
 annotation|@
 name|Idempotent
 specifier|public
@@ -706,9 +650,7 @@ throws|,
 name|IOException
 function_decl|;
 annotation|@
-name|Public
-annotation|@
-name|Stable
+name|Private
 annotation|@
 name|Idempotent
 DECL|method|refreshUserToGroupsMappings ( RefreshUserToGroupsMappingsRequest request)
@@ -727,9 +669,7 @@ throws|,
 name|IOException
 function_decl|;
 annotation|@
-name|Public
-annotation|@
-name|Stable
+name|Private
 annotation|@
 name|Idempotent
 DECL|method|refreshAdminAcls ( RefreshAdminAclsRequest request)
@@ -746,9 +686,7 @@ throws|,
 name|IOException
 function_decl|;
 annotation|@
-name|Public
-annotation|@
-name|Stable
+name|Private
 annotation|@
 name|Idempotent
 DECL|method|refreshServiceAcls ( RefreshServiceAclsRequest request)
@@ -766,9 +704,7 @@ name|IOException
 function_decl|;
 comment|/**    *<p>The interface used by admin to update nodes' resources to the    *<code>ResourceManager</code></p>.    *     *<p>The admin client is required to provide details such as a map from     * {@link NodeId} to {@link ResourceOption} required to update resources on     * a list of<code>RMNode</code> in<code>ResourceManager</code> etc.    * via the {@link UpdateNodeResourceRequest}.</p>    *     * @param request request to update resource for a node in cluster.    * @return (empty) response on accepting update.    * @throws YarnException    * @throws IOException    */
 annotation|@
-name|Public
-annotation|@
-name|Evolving
+name|Private
 annotation|@
 name|Idempotent
 DECL|method|updateNodeResource ( UpdateNodeResourceRequest request)
@@ -785,9 +721,7 @@ throws|,
 name|IOException
 function_decl|;
 annotation|@
-name|Public
-annotation|@
-name|Evolving
+name|Private
 annotation|@
 name|Idempotent
 DECL|method|addToClusterNodeLabels ( AddToClusterNodeLabelsRequest request)
@@ -804,9 +738,7 @@ throws|,
 name|IOException
 function_decl|;
 annotation|@
-name|Public
-annotation|@
-name|Evolving
+name|Private
 annotation|@
 name|Idempotent
 DECL|method|removeFromClusterNodeLabels ( RemoveFromClusterNodeLabelsRequest request)
@@ -823,9 +755,7 @@ throws|,
 name|IOException
 function_decl|;
 annotation|@
-name|Public
-annotation|@
-name|Evolving
+name|Private
 annotation|@
 name|Idempotent
 DECL|method|replaceLabelsOnNode ( ReplaceLabelsOnNodeRequest request)
@@ -842,9 +772,7 @@ throws|,
 name|IOException
 function_decl|;
 annotation|@
-name|Public
-annotation|@
-name|Evolving
+name|Private
 annotation|@
 name|Idempotent
 DECL|method|checkForDecommissioningNodes ( CheckForDecommissioningNodesRequest checkForDecommissioningNodesRequest)
