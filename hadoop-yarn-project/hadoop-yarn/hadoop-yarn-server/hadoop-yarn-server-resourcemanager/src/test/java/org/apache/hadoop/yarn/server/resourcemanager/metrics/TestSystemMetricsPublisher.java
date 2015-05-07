@@ -811,7 +811,7 @@ name|setBoolean
 argument_list|(
 name|YarnConfiguration
 operator|.
-name|RM_SYSTEM_METRICS_PUBLISHER_ENABLED
+name|SYSTEM_METRICS_PUBLISHER_ENABLED
 argument_list|,
 literal|true
 argument_list|)

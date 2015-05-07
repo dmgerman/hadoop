@@ -3751,9 +3751,13 @@ name|previousCollectorAddr
 operator|==
 literal|null
 operator|||
+operator|!
 name|previousCollectorAddr
-operator|!=
+operator|.
+name|equals
+argument_list|(
 name|collectorAddr
+argument_list|)
 condition|)
 block|{
 comment|// sending collector update event.

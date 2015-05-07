@@ -405,7 +405,7 @@ name|setFlowRunId
 argument_list|(
 name|Long
 operator|.
-name|valueOf
+name|parseLong
 argument_list|(
 name|parts
 index|[
