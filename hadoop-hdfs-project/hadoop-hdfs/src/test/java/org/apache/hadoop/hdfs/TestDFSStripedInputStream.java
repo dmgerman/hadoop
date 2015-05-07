@@ -132,7 +132,7 @@ name|hdfs
 operator|.
 name|protocol
 operator|.
-name|ECInfo
+name|ErasureCodingInfo
 import|;
 end_import
 
@@ -268,7 +268,7 @@ name|server
 operator|.
 name|namenode
 operator|.
-name|ECSchemaManager
+name|ErasureCodingSchemaManager
 import|;
 end_import
 
@@ -426,18 +426,18 @@ argument_list|)
 decl_stmt|;
 DECL|field|info
 specifier|private
-name|ECInfo
+name|ErasureCodingInfo
 name|info
 init|=
 operator|new
-name|ECInfo
+name|ErasureCodingInfo
 argument_list|(
 name|filePath
 operator|.
 name|toString
 argument_list|()
 argument_list|,
-name|ECSchemaManager
+name|ErasureCodingSchemaManager
 operator|.
 name|getSystemDefaultSchema
 argument_list|()

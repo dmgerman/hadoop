@@ -66,7 +66,7 @@ name|server
 operator|.
 name|namenode
 operator|.
-name|ECSchemaManager
+name|ErasureCodingSchemaManager
 import|;
 end_import
 

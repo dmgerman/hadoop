@@ -562,7 +562,7 @@ name|Integer
 argument_list|>
 name|readingService
 decl_stmt|;
-DECL|method|DFSStripedInputStream (DFSClient dfsClient, String src, boolean verifyChecksum, ECInfo ecInfo)
+DECL|method|DFSStripedInputStream (DFSClient dfsClient, String src, boolean verifyChecksum, ErasureCodingInfo ecInfo)
 name|DFSStripedInputStream
 parameter_list|(
 name|DFSClient
@@ -574,7 +574,7 @@ parameter_list|,
 name|boolean
 name|verifyChecksum
 parameter_list|,
-name|ECInfo
+name|ErasureCodingInfo
 name|ecInfo
 parameter_list|)
 throws|throws

@@ -938,7 +938,7 @@ name|server
 operator|.
 name|namenode
 operator|.
-name|ECSchemaManager
+name|ErasureCodingSchemaManager
 import|;
 end_import
 
@@ -5800,7 +5800,7 @@ name|targetDnInfos0
 argument_list|,
 name|liveBlkIndices0
 argument_list|,
-name|ECSchemaManager
+name|ErasureCodingSchemaManager
 operator|.
 name|getSystemDefaultSchema
 argument_list|()
@@ -5906,7 +5906,7 @@ name|targetDnInfos1
 argument_list|,
 name|liveBlkIndices1
 argument_list|,
-name|ECSchemaManager
+name|ErasureCodingSchemaManager
 operator|.
 name|getSystemDefaultSchema
 argument_list|()
@@ -6210,7 +6210,7 @@ comment|// Compare ECSchemas same as default ECSchema as we used system default
 comment|// ECSchema used in this test
 name|compareECSchemas
 argument_list|(
-name|ECSchemaManager
+name|ErasureCodingSchemaManager
 operator|.
 name|getSystemDefaultSchema
 argument_list|()
@@ -6220,7 +6220,7 @@ argument_list|)
 expr_stmt|;
 name|compareECSchemas
 argument_list|(
-name|ECSchemaManager
+name|ErasureCodingSchemaManager
 operator|.
 name|getSystemDefaultSchema
 argument_list|()

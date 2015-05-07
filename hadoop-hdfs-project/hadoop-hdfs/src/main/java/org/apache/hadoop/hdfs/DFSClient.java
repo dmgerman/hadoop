@@ -1388,7 +1388,7 @@ name|hdfs
 operator|.
 name|protocol
 operator|.
-name|ECInfo
+name|ErasureCodingInfo
 import|;
 end_import
 
@@ -1404,7 +1404,7 @@ name|hdfs
 operator|.
 name|protocol
 operator|.
-name|ECZoneInfo
+name|ErasureCodingZoneInfo
 import|;
 end_import
 
@@ -6736,7 +6736,7 @@ argument_list|)
 decl_stmt|;
 try|try
 block|{
-name|ECInfo
+name|ErasureCodingInfo
 name|info
 init|=
 name|getErasureCodingInfo
@@ -14671,7 +14671,7 @@ block|}
 block|}
 DECL|method|getErasureCodingInfo (String src)
 specifier|public
-name|ECInfo
+name|ErasureCodingInfo
 name|getErasureCodingInfo
 parameter_list|(
 name|String
@@ -15663,7 +15663,7 @@ block|}
 comment|/**    * Get the erasure coding zone information for the specified path    *     * @param src path to get the information for    * @return Returns the zone information if path is in EC Zone, null otherwise    * @throws IOException    */
 DECL|method|getErasureCodingZoneInfo (String src)
 specifier|public
-name|ECZoneInfo
+name|ErasureCodingZoneInfo
 name|getErasureCodingZoneInfo
 parameter_list|(
 name|String

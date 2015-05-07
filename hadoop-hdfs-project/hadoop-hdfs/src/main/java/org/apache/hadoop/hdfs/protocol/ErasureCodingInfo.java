@@ -39,10 +39,10 @@ comment|/**  * Class to provide information, such as ECSchema, for a file/block.
 end_comment
 
 begin_class
-DECL|class|ECInfo
+DECL|class|ErasureCodingInfo
 specifier|public
 class|class
-name|ECInfo
+name|ErasureCodingInfo
 block|{
 DECL|field|src
 specifier|private
@@ -56,9 +56,9 @@ specifier|final
 name|ECSchema
 name|schema
 decl_stmt|;
-DECL|method|ECInfo (String src, ECSchema schema)
+DECL|method|ErasureCodingInfo (String src, ECSchema schema)
 specifier|public
-name|ECInfo
+name|ErasureCodingInfo
 parameter_list|(
 name|String
 name|src

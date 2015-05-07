@@ -2332,7 +2332,7 @@ name|hdfs
 operator|.
 name|protocol
 operator|.
-name|ECInfo
+name|ErasureCodingInfo
 import|;
 end_import
 
@@ -2348,7 +2348,7 @@ name|hdfs
 operator|.
 name|protocol
 operator|.
-name|ECZoneInfo
+name|ErasureCodingZoneInfo
 import|;
 end_import
 
@@ -4886,11 +4886,11 @@ specifier|final
 name|CacheManager
 name|cacheManager
 decl_stmt|;
-DECL|field|schemaManager
+DECL|field|ecSchemaManager
 specifier|private
 specifier|final
-name|ECSchemaManager
-name|schemaManager
+name|ErasureCodingSchemaManager
+name|ecSchemaManager
 decl_stmt|;
 DECL|field|datanodeStatistics
 specifier|private
@@ -5349,7 +5349,7 @@ operator|.
 name|clear
 argument_list|()
 expr_stmt|;
-name|schemaManager
+name|ecSchemaManager
 operator|.
 name|clear
 argument_list|()
@@ -6476,10 +6476,10 @@ argument_list|)
 expr_stmt|;
 name|this
 operator|.
-name|schemaManager
+name|ecSchemaManager
 operator|=
 operator|new
-name|ECSchemaManager
+name|ErasureCodingSchemaManager
 argument_list|()
 expr_stmt|;
 name|this
@@ -30753,14 +30753,14 @@ name|cacheManager
 return|;
 block|}
 comment|/** @return the schema manager. */
-DECL|method|getSchemaManager ()
+DECL|method|getECSchemaManager ()
 specifier|public
-name|ECSchemaManager
-name|getSchemaManager
+name|ErasureCodingSchemaManager
+name|getECSchemaManager
 parameter_list|()
 block|{
 return|return
-name|schemaManager
+name|ecSchemaManager
 return|;
 block|}
 annotation|@
@@ -34960,7 +34960,7 @@ expr_stmt|;
 block|}
 comment|/**    * Get the erasure coding information for specified src    */
 DECL|method|getErasureCodingInfo (String src)
-name|ECInfo
+name|ErasureCodingInfo
 name|getErasureCodingInfo
 parameter_list|(
 name|String
@@ -34990,7 +34990,7 @@ condition|)
 block|{
 return|return
 operator|new
-name|ECInfo
+name|ErasureCodingInfo
 argument_list|(
 name|src
 argument_list|,
@@ -35004,7 +35004,7 @@ return|;
 block|}
 comment|/**    * Get the erasure coding zone information for specified path    */
 DECL|method|getErasureCodingZoneInfo (String src)
-name|ECZoneInfo
+name|ErasureCodingZoneInfo
 name|getErasureCodingZoneInfo
 parameter_list|(
 name|String
@@ -35149,7 +35149,7 @@ name|READ
 argument_list|)
 expr_stmt|;
 return|return
-name|schemaManager
+name|ecSchemaManager
 operator|.
 name|getSchemas
 argument_list|()
@@ -35196,7 +35196,7 @@ name|READ
 argument_list|)
 expr_stmt|;
 return|return
-name|schemaManager
+name|ecSchemaManager
 operator|.
 name|getSchema
 argument_list|(

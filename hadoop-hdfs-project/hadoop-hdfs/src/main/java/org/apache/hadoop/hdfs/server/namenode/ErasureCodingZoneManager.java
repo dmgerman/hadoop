@@ -102,7 +102,7 @@ name|hdfs
 operator|.
 name|protocol
 operator|.
-name|ECZoneInfo
+name|ErasureCodingZoneInfo
 import|;
 end_import
 
@@ -224,7 +224,7 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
-name|ECZoneInfo
+name|ErasureCodingZoneInfo
 name|ecZoneInfo
 init|=
 name|getECZoneInfo
@@ -246,7 +246,7 @@ argument_list|()
 return|;
 block|}
 DECL|method|getECZoneInfo (INodesInPath iip)
-name|ECZoneInfo
+name|ErasureCodingZoneInfo
 name|getECZoneInfo
 parameter_list|(
 name|INodesInPath
@@ -409,7 +409,7 @@ operator|.
 name|getFSNamesystem
 argument_list|()
 operator|.
-name|getSchemaManager
+name|getECSchemaManager
 argument_list|()
 operator|.
 name|getSchema
@@ -419,7 +419,7 @@ argument_list|)
 decl_stmt|;
 return|return
 operator|new
-name|ECZoneInfo
+name|ErasureCodingZoneInfo
 argument_list|(
 name|inode
 operator|.
@@ -555,7 +555,7 @@ condition|)
 block|{
 name|schema
 operator|=
-name|ECSchemaManager
+name|ErasureCodingSchemaManager
 operator|.
 name|getSystemDefaultSchema
 argument_list|()

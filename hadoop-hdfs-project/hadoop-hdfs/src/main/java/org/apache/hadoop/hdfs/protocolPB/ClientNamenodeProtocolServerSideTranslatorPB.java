@@ -274,7 +274,7 @@ name|hdfs
 operator|.
 name|protocol
 operator|.
-name|ECInfo
+name|ErasureCodingInfo
 import|;
 end_import
 
@@ -290,7 +290,7 @@ name|hdfs
 operator|.
 name|protocol
 operator|.
-name|ECZoneInfo
+name|ErasureCodingZoneInfo
 import|;
 end_import
 
@@ -3576,7 +3576,7 @@ name|proto
 operator|.
 name|ErasureCodingProtos
 operator|.
-name|GetECZoneInfoRequestProto
+name|GetErasureCodingZoneInfoRequestProto
 import|;
 end_import
 
@@ -3596,7 +3596,7 @@ name|proto
 operator|.
 name|ErasureCodingProtos
 operator|.
-name|GetECZoneInfoResponseProto
+name|GetErasureCodingZoneInfoResponseProto
 import|;
 end_import
 
@@ -10768,7 +10768,7 @@ name|ServiceException
 block|{
 try|try
 block|{
-name|ECInfo
+name|ErasureCodingInfo
 name|ecInfo
 init|=
 name|server
@@ -10915,15 +10915,15 @@ block|}
 block|}
 annotation|@
 name|Override
-DECL|method|getErasureCodingZoneInfo (RpcController controller, GetECZoneInfoRequestProto request)
+DECL|method|getErasureCodingZoneInfo (RpcController controller, GetErasureCodingZoneInfoRequestProto request)
 specifier|public
-name|GetECZoneInfoResponseProto
+name|GetErasureCodingZoneInfoResponseProto
 name|getErasureCodingZoneInfo
 parameter_list|(
 name|RpcController
 name|controller
 parameter_list|,
-name|GetECZoneInfoRequestProto
+name|GetErasureCodingZoneInfoRequestProto
 name|request
 parameter_list|)
 throws|throws
@@ -10931,7 +10931,7 @@ name|ServiceException
 block|{
 try|try
 block|{
-name|ECZoneInfo
+name|ErasureCodingZoneInfo
 name|ecZoneInfo
 init|=
 name|server
@@ -10944,12 +10944,12 @@ name|getSrc
 argument_list|()
 argument_list|)
 decl_stmt|;
-name|GetECZoneInfoResponseProto
+name|GetErasureCodingZoneInfoResponseProto
 operator|.
 name|Builder
 name|builder
 init|=
-name|GetECZoneInfoResponseProto
+name|GetErasureCodingZoneInfoResponseProto
 operator|.
 name|newBuilder
 argument_list|()

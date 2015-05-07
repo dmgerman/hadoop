@@ -84,11 +84,11 @@ block|{
 literal|"HDFS"
 block|}
 argument_list|)
-DECL|class|ECSchemaManager
+DECL|class|ErasureCodingSchemaManager
 specifier|public
 specifier|final
 class|class
-name|ECSchemaManager
+name|ErasureCodingSchemaManager
 block|{
 comment|/**    * TODO: HDFS-8095    */
 DECL|field|DEFAULT_DATA_BLOCKS
@@ -173,8 +173,8 @@ name|ECSchema
 argument_list|>
 name|activeSchemas
 decl_stmt|;
-DECL|method|ECSchemaManager ()
-name|ECSchemaManager
+DECL|method|ErasureCodingSchemaManager ()
+name|ErasureCodingSchemaManager
 parameter_list|()
 block|{
 name|this

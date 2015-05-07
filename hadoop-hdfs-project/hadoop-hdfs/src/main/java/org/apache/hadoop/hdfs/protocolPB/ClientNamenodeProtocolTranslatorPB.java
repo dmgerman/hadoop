@@ -590,7 +590,7 @@ name|hdfs
 operator|.
 name|protocol
 operator|.
-name|ECInfo
+name|ErasureCodingInfo
 import|;
 end_import
 
@@ -606,7 +606,7 @@ name|hdfs
 operator|.
 name|protocol
 operator|.
-name|ECZoneInfo
+name|ErasureCodingZoneInfo
 import|;
 end_import
 
@@ -2738,7 +2738,7 @@ name|proto
 operator|.
 name|ErasureCodingProtos
 operator|.
-name|GetECZoneInfoRequestProto
+name|GetErasureCodingZoneInfoRequestProto
 import|;
 end_import
 
@@ -2758,7 +2758,7 @@ name|proto
 operator|.
 name|ErasureCodingProtos
 operator|.
-name|GetECZoneInfoResponseProto
+name|GetErasureCodingZoneInfoResponseProto
 import|;
 end_import
 
@@ -10421,7 +10421,7 @@ annotation|@
 name|Override
 DECL|method|getErasureCodingInfo (String src)
 specifier|public
-name|ECInfo
+name|ErasureCodingInfo
 name|getErasureCodingInfo
 parameter_list|(
 name|String
@@ -10592,7 +10592,7 @@ annotation|@
 name|Override
 DECL|method|getErasureCodingZoneInfo (String src)
 specifier|public
-name|ECZoneInfo
+name|ErasureCodingZoneInfo
 name|getErasureCodingZoneInfo
 parameter_list|(
 name|String
@@ -10601,10 +10601,10 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
-name|GetECZoneInfoRequestProto
+name|GetErasureCodingZoneInfoRequestProto
 name|req
 init|=
-name|GetECZoneInfoRequestProto
+name|GetErasureCodingZoneInfoRequestProto
 operator|.
 name|newBuilder
 argument_list|()
@@ -10619,7 +10619,7 @@ argument_list|()
 decl_stmt|;
 try|try
 block|{
-name|GetECZoneInfoResponseProto
+name|GetErasureCodingZoneInfoResponseProto
 name|response
 init|=
 name|rpcProxy

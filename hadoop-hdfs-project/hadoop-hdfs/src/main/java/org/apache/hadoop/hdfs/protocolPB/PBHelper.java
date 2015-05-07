@@ -860,7 +860,7 @@ name|hdfs
 operator|.
 name|protocol
 operator|.
-name|ECZoneInfo
+name|ErasureCodingZoneInfo
 import|;
 end_import
 
@@ -962,7 +962,7 @@ name|hdfs
 operator|.
 name|protocol
 operator|.
-name|ECInfo
+name|ErasureCodingInfo
 import|;
 end_import
 
@@ -1966,7 +1966,7 @@ name|proto
 operator|.
 name|ErasureCodingProtos
 operator|.
-name|ECInfoProto
+name|ErasureCodingInfoProto
 import|;
 end_import
 
@@ -2026,7 +2026,7 @@ name|proto
 operator|.
 name|ErasureCodingProtos
 operator|.
-name|ECZoneInfoProto
+name|ErasureCodingZoneInfoProto
 import|;
 end_import
 
@@ -22445,19 +22445,19 @@ name|build
 argument_list|()
 return|;
 block|}
-DECL|method|convertECInfo (ECInfoProto ecInfoProto)
+DECL|method|convertECInfo (ErasureCodingInfoProto ecInfoProto)
 specifier|public
 specifier|static
-name|ECInfo
+name|ErasureCodingInfo
 name|convertECInfo
 parameter_list|(
-name|ECInfoProto
+name|ErasureCodingInfoProto
 name|ecInfoProto
 parameter_list|)
 block|{
 return|return
 operator|new
-name|ECInfo
+name|ErasureCodingInfo
 argument_list|(
 name|ecInfoProto
 operator|.
@@ -22474,18 +22474,18 @@ argument_list|)
 argument_list|)
 return|;
 block|}
-DECL|method|convertECInfo (ECInfo ecInfo)
+DECL|method|convertECInfo (ErasureCodingInfo ecInfo)
 specifier|public
 specifier|static
-name|ECInfoProto
+name|ErasureCodingInfoProto
 name|convertECInfo
 parameter_list|(
-name|ECInfo
+name|ErasureCodingInfo
 name|ecInfo
 parameter_list|)
 block|{
 return|return
-name|ECInfoProto
+name|ErasureCodingInfoProto
 operator|.
 name|newBuilder
 argument_list|()
@@ -22725,18 +22725,18 @@ name|build
 argument_list|()
 return|;
 block|}
-DECL|method|convertECZoneInfo (ECZoneInfo ecZoneInfo)
+DECL|method|convertECZoneInfo (ErasureCodingZoneInfo ecZoneInfo)
 specifier|public
 specifier|static
-name|ECZoneInfoProto
+name|ErasureCodingZoneInfoProto
 name|convertECZoneInfo
 parameter_list|(
-name|ECZoneInfo
+name|ErasureCodingZoneInfo
 name|ecZoneInfo
 parameter_list|)
 block|{
 return|return
-name|ECZoneInfoProto
+name|ErasureCodingZoneInfoProto
 operator|.
 name|newBuilder
 argument_list|()
@@ -22764,19 +22764,19 @@ name|build
 argument_list|()
 return|;
 block|}
-DECL|method|convertECZoneInfo (ECZoneInfoProto ecZoneInfoProto)
+DECL|method|convertECZoneInfo (ErasureCodingZoneInfoProto ecZoneInfoProto)
 specifier|public
 specifier|static
-name|ECZoneInfo
+name|ErasureCodingZoneInfo
 name|convertECZoneInfo
 parameter_list|(
-name|ECZoneInfoProto
+name|ErasureCodingZoneInfoProto
 name|ecZoneInfoProto
 parameter_list|)
 block|{
 return|return
 operator|new
-name|ECZoneInfo
+name|ErasureCodingZoneInfo
 argument_list|(
 name|ecZoneInfoProto
 operator|.

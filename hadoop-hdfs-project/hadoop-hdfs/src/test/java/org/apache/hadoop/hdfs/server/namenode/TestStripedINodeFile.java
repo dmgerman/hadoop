@@ -371,7 +371,7 @@ block|{
 name|ECSchema
 name|defaultSchema
 init|=
-name|ECSchemaManager
+name|ErasureCodingSchemaManager
 operator|.
 name|getSystemDefaultSchema
 argument_list|()
@@ -436,7 +436,7 @@ block|{
 name|ECSchema
 name|defaultSchema
 init|=
-name|ECSchemaManager
+name|ErasureCodingSchemaManager
 operator|.
 name|getSystemDefaultSchema
 argument_list|()
@@ -521,7 +521,7 @@ block|{
 name|ECSchema
 name|defaultSchema
 init|=
-name|ECSchemaManager
+name|ErasureCodingSchemaManager
 operator|.
 name|getSystemDefaultSchema
 argument_list|()
@@ -633,7 +633,7 @@ block|{
 name|ECSchema
 name|defaultSchema
 init|=
-name|ECSchemaManager
+name|ErasureCodingSchemaManager
 operator|.
 name|getSystemDefaultSchema
 argument_list|()
@@ -786,7 +786,7 @@ block|{
 name|ECSchema
 name|defaultSchema
 init|=
-name|ECSchemaManager
+name|ErasureCodingSchemaManager
 operator|.
 name|getSystemDefaultSchema
 argument_list|()
@@ -892,7 +892,7 @@ block|{
 name|ECSchema
 name|defaultSchema
 init|=
-name|ECSchemaManager
+name|ErasureCodingSchemaManager
 operator|.
 name|getSystemDefaultSchema
 argument_list|()
@@ -996,7 +996,7 @@ block|{
 name|ECSchema
 name|defaultSchema
 init|=
-name|ECSchemaManager
+name|ErasureCodingSchemaManager
 operator|.
 name|getSystemDefaultSchema
 argument_list|()
@@ -1127,7 +1127,7 @@ block|{
 name|ECSchema
 name|defaultSchema
 init|=
-name|ECSchemaManager
+name|ErasureCodingSchemaManager
 operator|.
 name|getSystemDefaultSchema
 argument_list|()

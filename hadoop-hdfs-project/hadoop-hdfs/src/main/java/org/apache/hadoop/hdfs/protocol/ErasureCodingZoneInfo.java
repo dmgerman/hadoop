@@ -39,10 +39,10 @@ comment|/**  * Information about the EC Zone at the specified path.  */
 end_comment
 
 begin_class
-DECL|class|ECZoneInfo
+DECL|class|ErasureCodingZoneInfo
 specifier|public
 class|class
-name|ECZoneInfo
+name|ErasureCodingZoneInfo
 block|{
 DECL|field|dir
 specifier|private
@@ -54,9 +54,9 @@ specifier|private
 name|ECSchema
 name|schema
 decl_stmt|;
-DECL|method|ECZoneInfo (String dir, ECSchema schema)
+DECL|method|ErasureCodingZoneInfo (String dir, ECSchema schema)
 specifier|public
-name|ECZoneInfo
+name|ErasureCodingZoneInfo
 parameter_list|(
 name|String
 name|dir

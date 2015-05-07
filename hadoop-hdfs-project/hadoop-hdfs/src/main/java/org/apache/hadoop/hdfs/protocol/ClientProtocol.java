@@ -2502,7 +2502,7 @@ annotation|@
 name|Idempotent
 DECL|method|getErasureCodingInfo (String src)
 specifier|public
-name|ECInfo
+name|ErasureCodingInfo
 name|getErasureCodingInfo
 parameter_list|(
 name|String
@@ -2528,7 +2528,7 @@ annotation|@
 name|Idempotent
 DECL|method|getErasureCodingZoneInfo (String src)
 specifier|public
-name|ECZoneInfo
+name|ErasureCodingZoneInfo
 name|getErasureCodingZoneInfo
 parameter_list|(
 name|String

@@ -72,7 +72,7 @@ name|hdfs
 operator|.
 name|protocol
 operator|.
-name|ECInfo
+name|ErasureCodingInfo
 import|;
 end_import
 
@@ -90,7 +90,7 @@ name|server
 operator|.
 name|namenode
 operator|.
-name|ECSchemaManager
+name|ErasureCodingSchemaManager
 import|;
 end_import
 
@@ -972,7 +972,7 @@ comment|//Default one will be used.
 name|ECSchema
 name|sysDefaultSchema
 init|=
-name|ECSchemaManager
+name|ErasureCodingSchemaManager
 operator|.
 name|getSystemDefaultSchema
 argument_list|()
@@ -1025,7 +1025,7 @@ name|ECSchema
 index|[]
 name|sysSchemas
 init|=
-name|ECSchemaManager
+name|ErasureCodingSchemaManager
 operator|.
 name|getSystemSchemas
 argument_list|()
@@ -1151,7 +1151,7 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
-name|ECInfo
+name|ErasureCodingInfo
 name|ecInfo
 init|=
 name|fs

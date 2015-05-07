@@ -806,7 +806,7 @@ name|hdfs
 operator|.
 name|protocol
 operator|.
-name|ECZoneInfo
+name|ErasureCodingZoneInfo
 import|;
 end_import
 
@@ -11202,7 +11202,7 @@ block|}
 comment|/**    * Get ErasureCoding zone information for the specified path    *     * @param path    * @return Returns the zone information if path is in EC zone, null otherwise    * @throws IOException    */
 DECL|method|getErasureCodingZoneInfo (final Path path)
 specifier|public
-name|ECZoneInfo
+name|ErasureCodingZoneInfo
 name|getErasureCodingZoneInfo
 parameter_list|(
 specifier|final
@@ -11224,14 +11224,14 @@ return|return
 operator|new
 name|FileSystemLinkResolver
 argument_list|<
-name|ECZoneInfo
+name|ErasureCodingZoneInfo
 argument_list|>
 argument_list|()
 block|{
 annotation|@
 name|Override
 specifier|public
-name|ECZoneInfo
+name|ErasureCodingZoneInfo
 name|doCall
 parameter_list|(
 specifier|final
@@ -11258,7 +11258,7 @@ block|}
 annotation|@
 name|Override
 specifier|public
-name|ECZoneInfo
+name|ErasureCodingZoneInfo
 name|next
 parameter_list|(
 specifier|final

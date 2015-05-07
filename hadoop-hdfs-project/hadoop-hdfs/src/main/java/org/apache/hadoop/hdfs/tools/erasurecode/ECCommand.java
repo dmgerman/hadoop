@@ -202,7 +202,7 @@ name|hdfs
 operator|.
 name|protocol
 operator|.
-name|ECZoneInfo
+name|ErasureCodingZoneInfo
 import|;
 end_import
 
@@ -872,7 +872,7 @@ name|fs
 decl_stmt|;
 try|try
 block|{
-name|ECZoneInfo
+name|ErasureCodingZoneInfo
 name|ecZoneInfo
 init|=
 name|dfs

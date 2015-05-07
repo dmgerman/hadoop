@@ -962,7 +962,7 @@ name|hdfs
 operator|.
 name|protocol
 operator|.
-name|ECInfo
+name|ErasureCodingInfo
 import|;
 end_import
 
@@ -978,7 +978,7 @@ name|hdfs
 operator|.
 name|protocol
 operator|.
-name|ECZoneInfo
+name|ErasureCodingZoneInfo
 import|;
 end_import
 
@@ -11338,7 +11338,7 @@ name|Override
 comment|// ClientProtocol
 DECL|method|getErasureCodingInfo (String src)
 specifier|public
-name|ECInfo
+name|ErasureCodingInfo
 name|getErasureCodingInfo
 parameter_list|(
 name|String
@@ -11386,7 +11386,7 @@ name|Override
 comment|// ClientProtocol
 DECL|method|getErasureCodingZoneInfo (String src)
 specifier|public
-name|ECZoneInfo
+name|ErasureCodingZoneInfo
 name|getErasureCodingZoneInfo
 parameter_list|(
 name|String
