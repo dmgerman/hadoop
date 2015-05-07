@@ -355,6 +355,16 @@ name|FORBIDDEN_RELATION
 init|=
 literal|6
 decl_stmt|;
+comment|/**      * Error code returned if the entity start time is before the eviction      * period of old data.      */
+DECL|field|EXPIRED_ENTITY
+specifier|public
+specifier|static
+specifier|final
+name|int
+name|EXPIRED_ENTITY
+init|=
+literal|7
+decl_stmt|;
 DECL|field|entityId
 specifier|private
 name|String

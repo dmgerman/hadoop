@@ -21,24 +21,6 @@ package|;
 end_package
 
 begin_import
-import|import static
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|yarn
-operator|.
-name|util
-operator|.
-name|StringHelper
-operator|.
-name|CSV_JOINER
-import|;
-end_import
-
-begin_import
 import|import
 name|java
 operator|.
@@ -374,24 +356,6 @@ end_import
 
 begin_import
 import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|yarn
-operator|.
-name|util
-operator|.
-name|timeline
-operator|.
-name|TimelineUtils
-import|;
-end_import
-
-begin_import
-import|import
 name|com
 operator|.
 name|google
@@ -405,7 +369,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * The class wrap over the timeline store and the ACLs manager. It does some non  * trivial manipulation of the timeline data before putting or after getting it  * from the timeline store, and checks the user's access to it.  *   */
+comment|/**  * The class wrap over the timeline store and the ACLs manager. It does some non  * trivial manipulation of the timeline data before putting or after getting it  * from the timeline store, and checks the user's access to it.  *  */
 end_comment
 
 begin_class
@@ -698,7 +662,7 @@ return|;
 block|}
 block|}
 block|}
-comment|/**    * Get the timeline entities that the given user have access to. The meaning    * of each argument has been documented with    * {@link TimelineReader#getEntities}.    *     * @see TimelineReader#getEntities    */
+comment|/**    * Get the timeline entities that the given user have access to. The meaning    * of each argument has been documented with    * {@link TimelineReader#getEntities}.    *    * @see TimelineReader#getEntities    */
 DECL|method|getEntities ( String entityType, NameValuePair primaryFilter, Collection<NameValuePair> secondaryFilter, Long windowStart, Long windowEnd, String fromId, Long fromTs, Long limit, EnumSet<Field> fields, UserGroupInformation callerUGI)
 specifier|public
 name|TimelineEntities
@@ -798,7 +762,7 @@ return|return
 name|entities
 return|;
 block|}
-comment|/**    * Get the single timeline entity that the given user has access to. The    * meaning of each argument has been documented with    * {@link TimelineReader#getEntity}.    *     * @see TimelineReader#getEntity    */
+comment|/**    * Get the single timeline entity that the given user has access to. The    * meaning of each argument has been documented with    * {@link TimelineReader#getEntity}.    *    * @see TimelineReader#getEntity    */
 DECL|method|getEntity ( String entityType, String entityId, EnumSet<Field> fields, UserGroupInformation callerUGI)
 specifier|public
 name|TimelineEntity
@@ -882,7 +846,7 @@ return|return
 name|entity
 return|;
 block|}
-comment|/**    * Get the events whose entities the given user has access to. The meaning of    * each argument has been documented with    * {@link TimelineReader#getEntityTimelines}.    *     * @see TimelineReader#getEntityTimelines    */
+comment|/**    * Get the events whose entities the given user has access to. The meaning of    * each argument has been documented with    * {@link TimelineReader#getEntityTimelines}.    *    * @see TimelineReader#getEntityTimelines    */
 DECL|method|getEvents ( String entityType, SortedSet<String> entityIds, SortedSet<String> eventTypes, Long windowStart, Long windowEnd, Long limit, UserGroupInformation callerUGI)
 specifier|public
 name|TimelineEvents
@@ -1052,7 +1016,7 @@ parameter_list|)
 block|{
 name|LOG
 operator|.
-name|error
+name|warn
 argument_list|(
 literal|"Error when verifying access for user "
 operator|+
@@ -1132,19 +1096,6 @@ name|TimelinePutResponse
 argument_list|()
 return|;
 block|}
-name|List
-argument_list|<
-name|EntityIdentifier
-argument_list|>
-name|entityIDs
-init|=
-operator|new
-name|ArrayList
-argument_list|<
-name|EntityIdentifier
-argument_list|>
-argument_list|()
-decl_stmt|;
 name|TimelineEntities
 name|entitiesToPut
 init|=
@@ -1180,23 +1131,6 @@ name|getEntities
 argument_list|()
 control|)
 block|{
-name|EntityIdentifier
-name|entityID
-init|=
-operator|new
-name|EntityIdentifier
-argument_list|(
-name|entity
-operator|.
-name|getEntityId
-argument_list|()
-argument_list|,
-name|entity
-operator|.
-name|getEntityType
-argument_list|()
-argument_list|)
-decl_stmt|;
 comment|// if the domain id is not specified, the entity will be put into
 comment|// the default domain
 if|if
@@ -1241,14 +1175,14 @@ name|store
 operator|.
 name|getEntity
 argument_list|(
-name|entityID
+name|entity
 operator|.
-name|getId
+name|getEntityId
 argument_list|()
 argument_list|,
-name|entityID
+name|entity
 operator|.
-name|getType
+name|getEntityType
 argument_list|()
 argument_list|,
 name|EnumSet
@@ -1296,9 +1230,33 @@ name|YarnException
 argument_list|(
 literal|"The domain of the timeline entity "
 operator|+
-name|entityID
+literal|"{ id: "
 operator|+
-literal|" is not allowed to be changed."
+name|entity
+operator|.
+name|getEntityId
+argument_list|()
+operator|+
+literal|", type: "
+operator|+
+name|entity
+operator|.
+name|getEntityType
+argument_list|()
+operator|+
+literal|" } is not allowed to be changed from "
+operator|+
+name|existingEntity
+operator|.
+name|getDomainId
+argument_list|()
+operator|+
+literal|" to "
+operator|+
+name|entity
+operator|.
+name|getDomainId
+argument_list|()
 argument_list|)
 throw|;
 block|}
@@ -1328,9 +1286,21 @@ name|callerUGI
 operator|+
 literal|" is not allowed to put the timeline entity "
 operator|+
-name|entityID
+literal|"{ id: "
 operator|+
-literal|" into the domain "
+name|entity
+operator|.
+name|getEntityId
+argument_list|()
+operator|+
+literal|", type: "
+operator|+
+name|entity
+operator|.
+name|getEntityType
+argument_list|()
+operator|+
+literal|" } into the domain "
 operator|+
 name|entity
 operator|.
@@ -1351,11 +1321,23 @@ block|{
 comment|// Skip the entity which already exists and was put by others
 name|LOG
 operator|.
-name|error
+name|warn
 argument_list|(
-literal|"Skip the timeline entity: "
+literal|"Skip the timeline entity: { id: "
 operator|+
-name|entityID
+name|entity
+operator|.
+name|getEntityId
+argument_list|()
+operator|+
+literal|", type: "
+operator|+
+name|entity
+operator|.
+name|getEntityType
+argument_list|()
+operator|+
+literal|" }"
 argument_list|,
 name|e
 argument_list|)
@@ -1375,9 +1357,9 @@ name|error
 operator|.
 name|setEntityId
 argument_list|(
-name|entityID
+name|entity
 operator|.
-name|getId
+name|getEntityId
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -1385,9 +1367,9 @@ name|error
 operator|.
 name|setEntityType
 argument_list|(
-name|entityID
+name|entity
 operator|.
-name|getType
+name|getEntityType
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -1411,68 +1393,11 @@ argument_list|)
 expr_stmt|;
 continue|continue;
 block|}
-name|entityIDs
-operator|.
-name|add
-argument_list|(
-name|entityID
-argument_list|)
-expr_stmt|;
 name|entitiesToPut
 operator|.
 name|addEntity
 argument_list|(
 name|entity
-argument_list|)
-expr_stmt|;
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
-name|LOG
-operator|.
-name|debug
-argument_list|(
-literal|"Storing the entity "
-operator|+
-name|entityID
-operator|+
-literal|", JSON-style content: "
-operator|+
-name|TimelineUtils
-operator|.
-name|dumpTimelineRecordtoJSON
-argument_list|(
-name|entity
-argument_list|)
-argument_list|)
-expr_stmt|;
-block|}
-block|}
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
-name|LOG
-operator|.
-name|debug
-argument_list|(
-literal|"Storing entities: "
-operator|+
-name|CSV_JOINER
-operator|.
-name|join
-argument_list|(
-name|entityIDs
-argument_list|)
 argument_list|)
 expr_stmt|;
 block|}

@@ -776,9 +776,6 @@ name|l2
 operator|.
 name|add
 argument_list|(
-operator|(
-name|long
-operator|)
 name|Integer
 operator|.
 name|MAX_VALUE
@@ -890,7 +887,7 @@ name|put
 argument_list|(
 literal|"startTime"
 argument_list|,
-literal|123456l
+literal|123456
 argument_list|)
 expr_stmt|;
 name|secondaryFilters
@@ -1049,8 +1046,7 @@ name|ev4
 init|=
 name|createEvent
 argument_list|(
-operator|-
-literal|123l
+literal|0l
 argument_list|,
 literal|"init_event"
 argument_list|,
@@ -2460,8 +2456,7 @@ name|ev4
 operator|=
 name|createEvent
 argument_list|(
-operator|-
-literal|123l
+literal|0l
 argument_list|,
 literal|"init_event"
 argument_list|,
@@ -2964,8 +2959,7 @@ name|EMPTY_PRIMARY_FILTERS
 argument_list|,
 name|EMPTY_MAP
 argument_list|,
-operator|-
-literal|123l
+literal|0l
 argument_list|,
 name|store
 operator|.

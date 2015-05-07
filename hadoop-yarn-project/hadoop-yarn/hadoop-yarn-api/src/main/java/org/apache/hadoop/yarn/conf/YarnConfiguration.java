@@ -5022,6 +5022,29 @@ literal|24
 operator|*
 literal|7
 decl_stmt|;
+comment|/** Timeline service rolling period. Valid values are daily, half_daily,    * quarter_daily, and hourly. */
+DECL|field|TIMELINE_SERVICE_ROLLING_PERIOD
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|TIMELINE_SERVICE_ROLLING_PERIOD
+init|=
+name|TIMELINE_SERVICE_PREFIX
+operator|+
+literal|"rolling-period"
+decl_stmt|;
+comment|/** Roll a new database each hour. */
+DECL|field|DEFAULT_TIMELINE_SERVICE_ROLLING_PERIOD
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|DEFAULT_TIMELINE_SERVICE_ROLLING_PERIOD
+init|=
+literal|"hourly"
+decl_stmt|;
+comment|/** Implementation specific configuration prefix for Timeline Service    * leveldb.    */
 DECL|field|TIMELINE_SERVICE_LEVELDB_PREFIX
 specifier|public
 specifier|static
@@ -5045,7 +5068,7 @@ name|TIMELINE_SERVICE_LEVELDB_PREFIX
 operator|+
 literal|"path"
 decl_stmt|;
-comment|/** Timeline service leveldb read cache (uncompressed blocks) */
+comment|/** Timeline service leveldb read cache (uncompressed blocks). This is    * per rolling instance so should be tuned if using rolling leveldb    * timeline store */
 DECL|field|TIMELINE_SERVICE_LEVELDB_READ_CACHE_SIZE
 specifier|public
 specifier|static
@@ -5057,6 +5080,7 @@ name|TIMELINE_SERVICE_LEVELDB_PREFIX
 operator|+
 literal|"read-cache-size"
 decl_stmt|;
+comment|/** Default leveldb read cache size if no configuration is specified. */
 DECL|field|DEFAULT_TIMELINE_SERVICE_LEVELDB_READ_CACHE_SIZE
 specifier|public
 specifier|static
@@ -5069,6 +5093,54 @@ operator|*
 literal|1024
 operator|*
 literal|1024
+decl_stmt|;
+comment|/** Timeline service leveldb write buffer size. */
+DECL|field|TIMELINE_SERVICE_LEVELDB_WRITE_BUFFER_SIZE
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|TIMELINE_SERVICE_LEVELDB_WRITE_BUFFER_SIZE
+init|=
+name|TIMELINE_SERVICE_LEVELDB_PREFIX
+operator|+
+literal|"write-buffer-size"
+decl_stmt|;
+comment|/** Default leveldb write buffer size if no configuration is specified. This    * is per rolling instance so should be tuned if using rolling leveldb    * timeline store. */
+DECL|field|DEFAULT_TIMELINE_SERVICE_LEVELDB_WRITE_BUFFER_SIZE
+specifier|public
+specifier|static
+specifier|final
+name|int
+name|DEFAULT_TIMELINE_SERVICE_LEVELDB_WRITE_BUFFER_SIZE
+init|=
+literal|16
+operator|*
+literal|1024
+operator|*
+literal|1024
+decl_stmt|;
+comment|/** Timeline service leveldb write batch size. This value can be tuned down    * to reduce lock time for ttl eviction. */
+specifier|public
+specifier|static
+specifier|final
+name|String
+DECL|field|TIMELINE_SERVICE_LEVELDB_WRITE_BATCH_SIZE
+name|TIMELINE_SERVICE_LEVELDB_WRITE_BATCH_SIZE
+init|=
+name|TIMELINE_SERVICE_LEVELDB_PREFIX
+operator|+
+literal|"write-batch-size"
+decl_stmt|;
+comment|/** Default leveldb write batch size is no configuration is specified */
+specifier|public
+specifier|static
+specifier|final
+name|int
+DECL|field|DEFAULT_TIMELINE_SERVICE_LEVELDB_WRITE_BATCH_SIZE
+name|DEFAULT_TIMELINE_SERVICE_LEVELDB_WRITE_BATCH_SIZE
+init|=
+literal|10000
 decl_stmt|;
 comment|/** Timeline service leveldb start time read cache (number of entities) */
 specifier|public
@@ -5136,6 +5208,28 @@ operator|*
 literal|60
 operator|*
 literal|5
+decl_stmt|;
+comment|/** Timeline service leveldb number of concurrent open files. Tuned this    * configuration to stay within system limits. This is per rolling instance    * so should be tuned if using rolling leveldb timeline store. */
+DECL|field|TIMELINE_SERVICE_LEVELDB_MAX_OPEN_FILES
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|TIMELINE_SERVICE_LEVELDB_MAX_OPEN_FILES
+init|=
+name|TIMELINE_SERVICE_LEVELDB_PREFIX
+operator|+
+literal|"max-open-files"
+decl_stmt|;
+comment|/** Default leveldb max open files if no configuration is specified. */
+DECL|field|DEFAULT_TIMELINE_SERVICE_LEVELDB_MAX_OPEN_FILES
+specifier|public
+specifier|static
+specifier|final
+name|int
+name|DEFAULT_TIMELINE_SERVICE_LEVELDB_MAX_OPEN_FILES
+init|=
+literal|1000
 decl_stmt|;
 comment|/** The Kerberos principal for the timeline server.*/
 DECL|field|TIMELINE_SERVICE_PRINCIPAL
