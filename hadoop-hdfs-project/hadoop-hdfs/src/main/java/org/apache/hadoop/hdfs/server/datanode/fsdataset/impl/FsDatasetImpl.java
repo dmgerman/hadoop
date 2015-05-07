@@ -2144,11 +2144,11 @@ specifier|final
 name|Configuration
 name|conf
 decl_stmt|;
-DECL|field|validVolsRequired
+DECL|field|volFailuresTolerated
 specifier|private
 specifier|final
 name|int
-name|validVolsRequired
+name|volFailuresTolerated
 decl_stmt|;
 DECL|field|fsRunning
 specifier|private
@@ -2273,10 +2273,8 @@ argument_list|)
 expr_stmt|;
 comment|// The number of volumes required for operation is the total number
 comment|// of volumes minus the number of failed volumes we can tolerate.
-specifier|final
-name|int
 name|volFailuresTolerated
-init|=
+operator|=
 name|conf
 operator|.
 name|getInt
@@ -2289,7 +2287,7 @@ name|DFSConfigKeys
 operator|.
 name|DFS_DATANODE_FAILED_VOLUMES_TOLERATED_DEFAULT
 argument_list|)
-decl_stmt|;
+expr_stmt|;
 name|String
 index|[]
 name|dataDirs
@@ -2352,14 +2350,6 @@ operator|.
 name|size
 argument_list|()
 decl_stmt|;
-name|this
-operator|.
-name|validVolsRequired
-operator|=
-name|volsConfigured
-operator|-
-name|volFailuresTolerated
-expr_stmt|;
 if|if
 condition|(
 name|volFailuresTolerated
@@ -3710,15 +3700,10 @@ name|hasEnoughResource
 parameter_list|()
 block|{
 return|return
-name|volumes
-operator|.
-name|getVolumes
+name|getNumFailedVolumes
 argument_list|()
-operator|.
-name|size
-argument_list|()
-operator|>=
-name|validVolsRequired
+operator|<=
+name|volFailuresTolerated
 return|;
 block|}
 comment|/**    * Return total capacity, used and unused    */
