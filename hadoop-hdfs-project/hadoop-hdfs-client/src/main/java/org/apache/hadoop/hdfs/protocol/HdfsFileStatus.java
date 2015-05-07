@@ -128,6 +128,22 @@ name|DFSUtilClient
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|io
+operator|.
+name|erasurecode
+operator|.
+name|ECSchema
+import|;
+end_import
+
 begin_comment
 comment|/** Interface that represents the over the wire information for a file.  */
 end_comment
@@ -228,6 +244,12 @@ specifier|final
 name|FileEncryptionInfo
 name|feInfo
 decl_stmt|;
+DECL|field|schema
+specifier|private
+specifier|final
+name|ECSchema
+name|schema
+decl_stmt|;
 comment|// Used by dir, not including dot and dotdot. Always zero for a regular file.
 DECL|field|childrenNum
 specifier|private
@@ -256,7 +278,7 @@ literal|0
 index|]
 decl_stmt|;
 comment|/**    * Constructor    * @param length the number of bytes the file has    * @param isdir if the path is a directory    * @param block_replication the replication factor    * @param blocksize the block size    * @param modification_time modification time    * @param access_time access time    * @param permission permission    * @param owner the owner of the path    * @param group the group of the path    * @param path the local name in java UTF8 encoding the same as that in-memory    * @param fileId the file id    * @param feInfo the file's encryption info    */
-DECL|method|HdfsFileStatus (long length, boolean isdir, int block_replication, long blocksize, long modification_time, long access_time, FsPermission permission, String owner, String group, byte[] symlink, byte[] path, long fileId, int childrenNum, FileEncryptionInfo feInfo, byte storagePolicy)
+DECL|method|HdfsFileStatus (long length, boolean isdir, int block_replication, long blocksize, long modification_time, long access_time, FsPermission permission, String owner, String group, byte[] symlink, byte[] path, long fileId, int childrenNum, FileEncryptionInfo feInfo, byte storagePolicy, ECSchema schema)
 specifier|public
 name|HdfsFileStatus
 parameter_list|(
@@ -306,6 +328,9 @@ name|feInfo
 parameter_list|,
 name|byte
 name|storagePolicy
+parameter_list|,
+name|ECSchema
+name|schema
 parameter_list|)
 block|{
 name|this
@@ -442,6 +467,12 @@ operator|.
 name|storagePolicy
 operator|=
 name|storagePolicy
+expr_stmt|;
+name|this
+operator|.
+name|schema
+operator|=
+name|schema
 expr_stmt|;
 block|}
 comment|/**    * Get the length of this file, in bytes.    * @return the length of this file, in bytes.    */
@@ -762,6 +793,16 @@ parameter_list|()
 block|{
 return|return
 name|feInfo
+return|;
+block|}
+DECL|method|getECSchema ()
+specifier|public
+name|ECSchema
+name|getECSchema
+parameter_list|()
+block|{
+return|return
+name|schema
 return|;
 block|}
 DECL|method|getChildrenNum ()

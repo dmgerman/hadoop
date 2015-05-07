@@ -4969,6 +4969,8 @@ operator|(
 name|byte
 operator|)
 literal|0
+argument_list|,
+literal|null
 argument_list|)
 argument_list|)
 operator|.

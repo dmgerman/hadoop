@@ -8229,6 +8229,8 @@ argument_list|,
 literal|null
 argument_list|,
 name|storagePolicy
+argument_list|,
+literal|null
 argument_list|)
 decl_stmt|;
 name|Result

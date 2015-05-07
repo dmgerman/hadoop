@@ -1328,20 +1328,13 @@ name|src
 argument_list|)
 expr_stmt|;
 block|}
-comment|// ECInfo is restored from NN just before writing striped files.
-comment|//TODO reduce an rpc call HDFS-8289
 specifier|final
 name|ECSchema
 name|schema
 init|=
-name|dfsClient
+name|stat
 operator|.
-name|getErasureCodingInfo
-argument_list|(
-name|src
-argument_list|)
-operator|.
-name|getSchema
+name|getECSchema
 argument_list|()
 decl_stmt|;
 specifier|final

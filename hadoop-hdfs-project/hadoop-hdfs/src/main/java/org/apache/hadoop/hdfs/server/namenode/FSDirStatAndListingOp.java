@@ -336,6 +336,22 @@ end_import
 
 begin_import
 import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|io
+operator|.
+name|erasurecode
+operator|.
+name|ECSchema
+import|;
+end_import
+
+begin_import
+import|import
 name|java
 operator|.
 name|io
@@ -1986,6 +2002,8 @@ argument_list|,
 name|HdfsConstants
 operator|.
 name|BLOCK_STORAGE_POLICY_ID_UNSPECIFIED
+argument_list|,
+literal|null
 argument_list|)
 return|;
 block|}
@@ -2269,6 +2287,17 @@ argument_list|,
 name|iip
 argument_list|)
 decl_stmt|;
+specifier|final
+name|ECSchema
+name|schema
+init|=
+name|fsd
+operator|.
+name|getECSchema
+argument_list|(
+name|iip
+argument_list|)
+decl_stmt|;
 if|if
 condition|(
 name|node
@@ -2446,6 +2475,8 @@ argument_list|,
 name|feInfo
 argument_list|,
 name|storagePolicy
+argument_list|,
+name|schema
 argument_list|)
 return|;
 block|}
@@ -2762,6 +2793,17 @@ argument_list|)
 else|:
 literal|0
 decl_stmt|;
+specifier|final
+name|ECSchema
+name|schema
+init|=
+name|fsd
+operator|.
+name|getECSchema
+argument_list|(
+name|iip
+argument_list|)
+decl_stmt|;
 name|HdfsLocatedFileStatus
 name|status
 init|=
@@ -2839,6 +2881,8 @@ argument_list|,
 name|feInfo
 argument_list|,
 name|storagePolicy
+argument_list|,
+name|schema
 argument_list|)
 decl_stmt|;
 comment|// Set caching information for the located blocks.

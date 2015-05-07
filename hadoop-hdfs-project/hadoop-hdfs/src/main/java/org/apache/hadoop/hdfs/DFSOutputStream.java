@@ -1730,10 +1730,10 @@ if|if
 condition|(
 name|stat
 operator|.
-name|getReplication
+name|getECSchema
 argument_list|()
-operator|==
-literal|0
+operator|!=
+literal|null
 condition|)
 block|{
 name|out

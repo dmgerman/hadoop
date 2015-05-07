@@ -295,6 +295,8 @@ argument_list|,
 name|HdfsConstants
 operator|.
 name|BLOCK_STORAGE_POLICY_ID_UNSPECIFIED
+argument_list|,
+literal|null
 argument_list|)
 expr_stmt|;
 name|this

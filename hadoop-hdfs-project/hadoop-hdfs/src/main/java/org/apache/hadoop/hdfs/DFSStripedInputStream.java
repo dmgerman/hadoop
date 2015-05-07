@@ -180,6 +180,22 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|io
+operator|.
+name|erasurecode
+operator|.
+name|ECSchema
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|net
 operator|.
 name|NetUtils
@@ -610,7 +626,7 @@ name|Integer
 argument_list|>
 name|readingService
 decl_stmt|;
-DECL|method|DFSStripedInputStream (DFSClient dfsClient, String src, boolean verifyChecksum, ErasureCodingInfo ecInfo)
+DECL|method|DFSStripedInputStream (DFSClient dfsClient, String src, boolean verifyChecksum, ECSchema schema)
 name|DFSStripedInputStream
 parameter_list|(
 name|DFSClient
@@ -622,8 +638,8 @@ parameter_list|,
 name|boolean
 name|verifyChecksum
 parameter_list|,
-name|ErasureCodingInfo
-name|ecInfo
+name|ECSchema
+name|schema
 parameter_list|)
 throws|throws
 name|IOException
@@ -637,18 +653,14 @@ argument_list|,
 name|verifyChecksum
 argument_list|)
 expr_stmt|;
-comment|// ECInfo is restored from NN just before reading striped file.
 assert|assert
-name|ecInfo
+name|schema
 operator|!=
 literal|null
 assert|;
 name|cellSize
 operator|=
-name|ecInfo
-operator|.
-name|getSchema
-argument_list|()
+name|schema
 operator|.
 name|getChunkSize
 argument_list|()
@@ -658,10 +670,7 @@ operator|=
 operator|(
 name|short
 operator|)
-name|ecInfo
-operator|.
-name|getSchema
-argument_list|()
+name|schema
 operator|.
 name|getNumDataUnits
 argument_list|()
@@ -671,10 +680,7 @@ operator|=
 operator|(
 name|short
 operator|)
-name|ecInfo
-operator|.
-name|getSchema
-argument_list|()
+name|schema
 operator|.
 name|getNumParityUnits
 argument_list|()
