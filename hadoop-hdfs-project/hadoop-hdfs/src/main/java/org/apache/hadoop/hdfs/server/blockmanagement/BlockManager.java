@@ -8692,7 +8692,7 @@ if|if
 condition|(
 name|storageInfo
 operator|.
-name|numBlocks
+name|getBlockReportCount
 argument_list|()
 operator|==
 literal|0
@@ -9923,7 +9923,7 @@ assert|assert
 operator|(
 name|storageInfo
 operator|.
-name|numBlocks
+name|getBlockReportCount
 argument_list|()
 operator|==
 literal|0
@@ -11534,13 +11534,16 @@ expr_stmt|;
 return|return;
 block|}
 comment|// just add it
+name|AddBlockResult
+name|result
+init|=
 name|storageInfo
 operator|.
 name|addBlock
 argument_list|(
 name|storedBlock
 argument_list|)
-expr_stmt|;
+decl_stmt|;
 comment|// Now check for completion of blocks and safe block count
 name|int
 name|numCurrentReplica
@@ -11586,6 +11589,12 @@ name|storedBlock
 operator|.
 name|isComplete
 argument_list|()
+operator|&&
+name|result
+operator|==
+name|AddBlockResult
+operator|.
+name|ADDED
 condition|)
 block|{
 comment|// check whether safe replication is reached for the block
