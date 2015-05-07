@@ -86,7 +86,7 @@ specifier|static
 name|String
 name|FS_ACTION_PATTERN
 init|=
-literal|"[rwx-]{3}"
+literal|"[r-][w-][x-]"
 decl_stmt|;
 DECL|field|DOMAIN
 specifier|private
