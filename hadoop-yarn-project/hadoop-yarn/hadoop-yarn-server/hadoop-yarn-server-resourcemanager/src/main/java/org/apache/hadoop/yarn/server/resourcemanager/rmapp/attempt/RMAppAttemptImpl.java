@@ -7303,6 +7303,26 @@ argument_list|(
 literal|"\n"
 argument_list|)
 expr_stmt|;
+name|diagnosticsBuilder
+operator|.
+name|append
+argument_list|(
+literal|"Failing this attempt."
+argument_list|)
+operator|.
+name|append
+argument_list|(
+literal|"Diagnostics: "
+argument_list|)
+operator|.
+name|append
+argument_list|(
+name|status
+operator|.
+name|getDiagnostics
+argument_list|()
+argument_list|)
+expr_stmt|;
 if|if
 condition|(
 name|this
@@ -7322,7 +7342,7 @@ argument_list|)
 operator|.
 name|append
 argument_list|(
-literal|" check application tracking page:"
+literal|" check application tracking page: "
 argument_list|)
 operator|.
 name|append
@@ -7335,30 +7355,10 @@ argument_list|)
 operator|.
 name|append
 argument_list|(
-literal|"Then, click on links to logs of each attempt.\n"
+literal|" Then, click on links to logs of each attempt.\n"
 argument_list|)
 expr_stmt|;
 block|}
-name|diagnosticsBuilder
-operator|.
-name|append
-argument_list|(
-literal|"Diagnostics: "
-argument_list|)
-operator|.
-name|append
-argument_list|(
-name|status
-operator|.
-name|getDiagnostics
-argument_list|()
-argument_list|)
-operator|.
-name|append
-argument_list|(
-literal|"Failing this attempt"
-argument_list|)
-expr_stmt|;
 return|return
 name|diagnosticsBuilder
 operator|.
