@@ -2008,11 +2008,11 @@ specifier|final
 name|JobACLsManager
 name|aclsManager
 decl_stmt|;
-DECL|field|username
+DECL|field|reporterUserName
 specifier|private
 specifier|final
 name|String
-name|username
+name|reporterUserName
 decl_stmt|;
 DECL|field|jobACLs
 specifier|private
@@ -4792,7 +4792,7 @@ argument_list|)
 expr_stmt|;
 name|this
 operator|.
-name|username
+name|reporterUserName
 operator|=
 name|System
 operator|.
@@ -5550,7 +5550,7 @@ name|jobId
 argument_list|,
 name|jobName
 argument_list|,
-name|username
+name|reporterUserName
 argument_list|,
 name|state
 argument_list|,
@@ -5595,7 +5595,7 @@ name|jobId
 argument_list|,
 name|jobName
 argument_list|,
-name|username
+name|reporterUserName
 argument_list|,
 name|state
 argument_list|,
