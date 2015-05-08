@@ -248,6 +248,20 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|hdfs
+operator|.
+name|NNBenchWithoutMR
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|fs
 operator|.
 name|TestFileSystem
@@ -622,7 +636,20 @@ name|NNBench
 operator|.
 name|class
 argument_list|,
-literal|"A benchmark that stresses the namenode."
+literal|"A benchmark that stresses the namenode w/ MR."
+argument_list|)
+expr_stmt|;
+name|pgd
+operator|.
+name|addClass
+argument_list|(
+literal|"nnbenchWithoutMR"
+argument_list|,
+name|NNBenchWithoutMR
+operator|.
+name|class
+argument_list|,
+literal|"A benchmark that stresses the namenode w/o MR."
 argument_list|)
 expr_stmt|;
 name|pgd
