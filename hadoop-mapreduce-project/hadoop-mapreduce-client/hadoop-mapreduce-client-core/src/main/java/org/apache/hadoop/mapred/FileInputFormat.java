@@ -397,7 +397,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**   * A base class for file-based {@link InputFormat}.  *   *<p><code>FileInputFormat</code> is the base class for all file-based   *<code>InputFormat</code>s. This provides a generic implementation of  * {@link #getSplits(JobConf, int)}.  * Subclasses of<code>FileInputFormat</code> can also override the   * {@link #isSplitable(FileSystem, Path)} method to ensure input-files are  * not split-up and are processed as a whole by {@link Mapper}s.  */
+comment|/**   * A base class for file-based {@link InputFormat}.  *   *<p><code>FileInputFormat</code> is the base class for all file-based   *<code>InputFormat</code>s. This provides a generic implementation of  * {@link #getSplits(JobConf, int)}.  *  * Implementations of<code>FileInputFormat</code> can also override the  * {@link #isSplitable(FileSystem, Path)} method to prevent input files  * from being split-up in certain situations. Implementations that may  * deal with non-splittable files<i>must</i> override this method, since  * the default implementation assumes splitting is always possible.  */
 end_comment
 
 begin_class
@@ -653,7 +653,7 @@ literal|true
 return|;
 block|}
 block|}
-comment|/**    * Is the given filename splitable? Usually, true, but if the file is    * stream compressed, it will not be.    *     *<code>FileInputFormat</code> implementations can override this and return    *<code>false</code> to ensure that individual input files are never split-up    * so that {@link Mapper}s process entire files.    *     * @param fs the file system that the file is on    * @param filename the file name to check    * @return is this file splitable?    */
+comment|/**    * Is the given filename splittable? Usually, true, but if the file is    * stream compressed, it will not be.    *    * The default implementation in<code>FileInputFormat</code> always returns    * true. Implementations that may deal with non-splittable files<i>must</i>    * override this method.    *    *<code>FileInputFormat</code> implementations can override this and return    *<code>false</code> to ensure that individual input files are never split-up    * so that {@link Mapper}s process entire files.    *     * @param fs the file system that the file is on    * @param filename the file name to check    * @return is this file splitable?    */
 DECL|method|isSplitable (FileSystem fs, Path filename)
 specifier|protected
 name|boolean

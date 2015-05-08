@@ -631,6 +631,33 @@ literal|136498
 argument_list|)
 expr_stmt|;
 block|}
+annotation|@
+name|Test
+argument_list|(
+name|expected
+operator|=
+name|IOException
+operator|.
+name|class
+argument_list|)
+DECL|method|testSafeguardSplittingUnsplittableFiles ()
+specifier|public
+name|void
+name|testSafeguardSplittingUnsplittableFiles
+parameter_list|()
+throws|throws
+name|IOException
+block|{
+comment|// The LineRecordReader must fail when trying to read a file that
+comment|// was compressed using an unsplittable file format
+name|testSplitRecords
+argument_list|(
+literal|"TestSafeguardSplittingUnsplittableFiles.txt.gz"
+argument_list|,
+literal|2
+argument_list|)
+expr_stmt|;
+block|}
 comment|// Use the LineRecordReader to read records from the file
 DECL|method|readRecords (URL testFileUrl, int splitSize)
 specifier|public

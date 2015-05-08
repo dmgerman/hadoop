@@ -656,6 +656,33 @@ expr_stmt|;
 block|}
 else|else
 block|{
+if|if
+condition|(
+name|start
+operator|!=
+literal|0
+condition|)
+block|{
+comment|// So we have a split that is only part of a file stored using
+comment|// a Compression codec that cannot be split.
+throw|throw
+operator|new
+name|IOException
+argument_list|(
+literal|"Cannot seek in "
+operator|+
+name|codec
+operator|.
+name|getClass
+argument_list|()
+operator|.
+name|getSimpleName
+argument_list|()
+operator|+
+literal|" compressed stream"
+argument_list|)
+throw|;
+block|}
 name|in
 operator|=
 operator|new
