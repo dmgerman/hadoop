@@ -328,6 +328,9 @@ operator|.
 name|equals
 argument_list|(
 name|other
+operator|.
+name|getLocalizerId
+argument_list|()
 argument_list|)
 operator|&&
 name|getResources
