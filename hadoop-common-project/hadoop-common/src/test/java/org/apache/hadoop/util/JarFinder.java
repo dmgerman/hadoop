@@ -1016,6 +1016,11 @@ argument_list|,
 name|tempJar
 argument_list|)
 expr_stmt|;
+name|tempJar
+operator|.
+name|deleteOnExit
+argument_list|()
+expr_stmt|;
 return|return
 name|tempJar
 operator|.
