@@ -346,13 +346,13 @@ specifier|static
 class|class
 name|Queue
 block|{
-DECL|field|acccessibleNodeLabels
+DECL|field|accessibleNodeLabels
 specifier|protected
 name|Set
 argument_list|<
 name|String
 argument_list|>
-name|acccessibleNodeLabels
+name|accessibleNodeLabels
 decl_stmt|;
 DECL|field|resource
 specifier|protected
@@ -364,7 +364,7 @@ specifier|protected
 name|Queue
 parameter_list|()
 block|{
-name|acccessibleNodeLabels
+name|accessibleNodeLabels
 operator|=
 name|Collections
 operator|.
@@ -607,7 +607,7 @@ operator|.
 name|getValue
 argument_list|()
 operator|.
-name|acccessibleNodeLabels
+name|accessibleNodeLabels
 decl_stmt|;
 if|if
 condition|(
@@ -1348,7 +1348,7 @@ continue|continue;
 block|}
 name|q
 operator|.
-name|acccessibleNodeLabels
+name|accessibleNodeLabels
 operator|.
 name|addAll
 argument_list|(
@@ -2472,7 +2472,7 @@ if|if
 condition|(
 name|q
 operator|.
-name|acccessibleNodeLabels
+name|accessibleNodeLabels
 operator|.
 name|contains
 argument_list|(
