@@ -2374,6 +2374,8 @@ argument_list|,
 name|scheduler
 argument_list|,
 name|isRecovery
+argument_list|,
+name|rmContext
 argument_list|)
 expr_stmt|;
 block|}

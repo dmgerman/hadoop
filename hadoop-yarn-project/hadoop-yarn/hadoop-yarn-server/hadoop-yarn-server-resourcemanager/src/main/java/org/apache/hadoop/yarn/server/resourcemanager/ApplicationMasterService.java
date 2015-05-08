@@ -3258,6 +3258,8 @@ name|getQueue
 argument_list|()
 argument_list|,
 name|rScheduler
+argument_list|,
+name|rmContext
 argument_list|)
 expr_stmt|;
 block|}

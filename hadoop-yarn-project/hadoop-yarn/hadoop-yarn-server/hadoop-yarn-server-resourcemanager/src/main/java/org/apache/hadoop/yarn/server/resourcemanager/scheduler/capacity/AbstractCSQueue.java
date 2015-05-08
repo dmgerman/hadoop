@@ -841,8 +841,6 @@ argument_list|(
 name|getQueuePath
 argument_list|()
 argument_list|,
-name|accessibleLabels
-argument_list|,
 name|csContext
 operator|.
 name|getConfiguration
@@ -859,14 +857,6 @@ else|:
 name|parent
 operator|.
 name|getQueueCapacities
-argument_list|()
-argument_list|,
-name|csContext
-operator|.
-name|getRMContext
-argument_list|()
-operator|.
-name|getNodeLabelManager
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -1304,17 +1294,6 @@ name|getAccessibleNodeLabels
 argument_list|()
 expr_stmt|;
 block|}
-name|SchedulerUtils
-operator|.
-name|checkIfLabelInClusterNodeLabels
-argument_list|(
-name|labelManager
-argument_list|,
-name|this
-operator|.
-name|accessibleLabels
-argument_list|)
-expr_stmt|;
 comment|// inherit from parent if labels not set
 if|if
 condition|(
