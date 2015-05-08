@@ -4395,6 +4395,9 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
+name|checkOpen
+argument_list|()
+expr_stmt|;
 name|TraceScope
 name|scope
 init|=
@@ -4453,6 +4456,9 @@ parameter_list|()
 throws|throws
 name|IOException
 block|{
+name|checkOpen
+argument_list|()
+expr_stmt|;
 name|long
 name|now
 init|=
@@ -5329,6 +5335,9 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
+name|checkOpen
+argument_list|()
+expr_stmt|;
 name|namenode
 operator|.
 name|reportBadBlocks
@@ -5573,6 +5582,9 @@ name|IOException
 throws|,
 name|UnresolvedLinkException
 block|{
+name|checkOpen
+argument_list|()
+expr_stmt|;
 name|TraceScope
 name|scope
 init|=
@@ -5692,6 +5704,9 @@ name|UnsupportedOperationException
 throws|,
 name|InvalidBlockTokenException
 block|{
+name|checkOpen
+argument_list|()
+expr_stmt|;
 if|if
 condition|(
 operator|!
@@ -7501,6 +7516,9 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
+name|checkOpen
+argument_list|()
+expr_stmt|;
 name|TraceScope
 name|scope
 init|=
@@ -8014,6 +8032,9 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
+name|checkOpen
+argument_list|()
+expr_stmt|;
 name|TraceScope
 name|scope
 init|=
@@ -8102,6 +8123,9 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
+name|checkOpen
+argument_list|()
+expr_stmt|;
 name|TraceScope
 name|scope
 init|=
@@ -8180,6 +8204,9 @@ parameter_list|()
 throws|throws
 name|IOException
 block|{
+name|checkOpen
+argument_list|()
+expr_stmt|;
 name|TraceScope
 name|scope
 init|=
@@ -10867,6 +10894,9 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
+name|checkOpen
+argument_list|()
+expr_stmt|;
 return|return
 name|setSafeMode
 argument_list|(
@@ -11572,6 +11602,9 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
+name|checkOpen
+argument_list|()
+expr_stmt|;
 return|return
 operator|new
 name|CacheDirectiveIterator
@@ -11769,6 +11802,9 @@ parameter_list|()
 throws|throws
 name|IOException
 block|{
+name|checkOpen
+argument_list|()
+expr_stmt|;
 return|return
 operator|new
 name|CachePoolIterator
@@ -11793,6 +11829,9 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
+name|checkOpen
+argument_list|()
+expr_stmt|;
 name|TraceScope
 name|scope
 init|=
@@ -11854,6 +11893,9 @@ name|AccessControlException
 throws|,
 name|IOException
 block|{
+name|checkOpen
+argument_list|()
+expr_stmt|;
 name|TraceScope
 name|scope
 init|=
@@ -11936,6 +11978,9 @@ name|AccessControlException
 throws|,
 name|IOException
 block|{
+name|checkOpen
+argument_list|()
+expr_stmt|;
 name|TraceScope
 name|scope
 init|=
@@ -11977,6 +12022,9 @@ parameter_list|()
 throws|throws
 name|IOException
 block|{
+name|checkOpen
+argument_list|()
+expr_stmt|;
 name|TraceScope
 name|scope
 init|=
@@ -12018,6 +12066,9 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
+name|checkOpen
+argument_list|()
+expr_stmt|;
 name|TraceScope
 name|scope
 init|=
@@ -12061,6 +12112,9 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
+name|checkOpen
+argument_list|()
+expr_stmt|;
 name|TraceScope
 name|scope
 init|=
@@ -12101,6 +12155,9 @@ parameter_list|()
 throws|throws
 name|IOException
 block|{
+name|checkOpen
+argument_list|()
+expr_stmt|;
 name|TraceScope
 name|scope
 init|=
@@ -12140,6 +12197,9 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
+name|checkOpen
+argument_list|()
+expr_stmt|;
 name|TraceScope
 name|scope
 init|=
@@ -12421,6 +12481,9 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
+name|checkOpen
+argument_list|()
+expr_stmt|;
 name|TraceScope
 name|scope
 init|=
@@ -12493,6 +12556,9 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
+name|checkOpen
+argument_list|()
+expr_stmt|;
 comment|// sanity check
 if|if
 condition|(
@@ -12641,6 +12707,9 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
+name|checkOpen
+argument_list|()
+expr_stmt|;
 if|if
 condition|(
 name|quota
@@ -14367,6 +14436,9 @@ parameter_list|()
 throws|throws
 name|IOException
 block|{
+name|checkOpen
+argument_list|()
+expr_stmt|;
 return|return
 operator|new
 name|DFSInotifyEventInputStream
@@ -14388,6 +14460,9 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
+name|checkOpen
+argument_list|()
+expr_stmt|;
 return|return
 operator|new
 name|DFSInotifyEventInputStream

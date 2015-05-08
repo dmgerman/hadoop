@@ -1335,6 +1335,15 @@ operator|.
 name|close
 argument_list|()
 expr_stmt|;
+name|dfs
+operator|=
+name|dfsCluster
+operator|.
+name|getFileSystem
+argument_list|(
+literal|0
+argument_list|)
+expr_stmt|;
 name|TestRollingUpgrade
 operator|.
 name|queryForPreparation
