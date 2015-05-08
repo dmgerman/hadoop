@@ -1697,7 +1697,7 @@ argument_list|,
 name|containers
 argument_list|)
 condition|?
-literal|"N/A"
+literal|null
 else|:
 name|root_url
 argument_list|(
@@ -1709,6 +1709,15 @@ name|getAmContainerId
 argument_list|()
 argument_list|)
 argument_list|,
+name|appAttempt
+operator|.
+name|getAmContainerId
+argument_list|()
+operator|==
+literal|null
+condition|?
+literal|"N/A"
+else|:
 name|String
 operator|.
 name|valueOf
