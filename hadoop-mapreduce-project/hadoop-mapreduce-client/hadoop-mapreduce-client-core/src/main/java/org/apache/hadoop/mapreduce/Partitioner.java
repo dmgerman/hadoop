@@ -59,7 +59,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**   * Partitions the key space.  *   *<p><code>Partitioner</code> controls the partitioning of the keys of the   * intermediate map-outputs. The key (or a subset of the key) is used to derive  * the partition, typically by a hash function. The total number of partitions  * is the same as the number of reduce tasks for the job. Hence this controls  * which of the<code>m</code> reduce tasks the intermediate key (and hence the   * record) is sent for reduction.</p>  *   * Note: If you require your Partitioner class to obtain the Job's configuration  * object, implement the {@link Configurable} interface.  *   * @see Reducer  */
+comment|/**   * Partitions the key space.  *   *<p><code>Partitioner</code> controls the partitioning of the keys of the   * intermediate map-outputs. The key (or a subset of the key) is used to derive  * the partition, typically by a hash function. The total number of partitions  * is the same as the number of reduce tasks for the job. Hence this controls  * which of the<code>m</code> reduce tasks the intermediate key (and hence the   * record) is sent for reduction.</p>  *  *<p>Note: A<code>Partitioner</code> is created only when there are multiple  * reducers.</p>  *  *<p>Note: If you require your Partitioner class to obtain the Job's  * configuration object, implement the {@link Configurable} interface.</p>  *   * @see Reducer  */
 end_comment
 
 begin_class
