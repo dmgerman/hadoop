@@ -4629,7 +4629,7 @@ name|existsWithRetries
 argument_list|(
 name|appIdRemovePath
 argument_list|,
-literal|true
+literal|false
 argument_list|)
 operator|!=
 literal|null
@@ -4639,7 +4639,7 @@ name|deleteWithRetries
 argument_list|(
 name|appIdRemovePath
 argument_list|,
-literal|true
+literal|false
 argument_list|)
 expr_stmt|;
 block|}
