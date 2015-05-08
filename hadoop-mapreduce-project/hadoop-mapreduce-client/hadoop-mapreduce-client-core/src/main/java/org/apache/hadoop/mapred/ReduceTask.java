@@ -2459,10 +2459,7 @@ argument_list|>
 argument_list|(
 name|rIter
 argument_list|,
-name|job
-operator|.
-name|getOutputValueGroupingComparator
-argument_list|()
+name|comparator
 argument_list|,
 name|keyClass
 argument_list|,
