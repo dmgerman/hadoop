@@ -1060,7 +1060,9 @@ name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"dfs.blockreport.initialDelay is greater than "
+literal|"dfs.blockreport.initialDelay is "
+operator|+
+literal|"greater than or equal to"
 operator|+
 literal|"dfs.blockreport.intervalMsec."
 operator|+
