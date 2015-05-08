@@ -1028,8 +1028,7 @@ specifier|final
 name|int
 name|DEFAULT_NODE_LOCALITY_DELAY
 init|=
-operator|-
-literal|1
+literal|40
 decl_stmt|;
 annotation|@
 name|Private
@@ -3454,26 +3453,13 @@ name|int
 name|getNodeLocalityDelay
 parameter_list|()
 block|{
-name|int
-name|delay
-init|=
+return|return
 name|getInt
 argument_list|(
 name|NODE_LOCALITY_DELAY
 argument_list|,
 name|DEFAULT_NODE_LOCALITY_DELAY
 argument_list|)
-decl_stmt|;
-return|return
-operator|(
-name|delay
-operator|==
-name|DEFAULT_NODE_LOCALITY_DELAY
-operator|)
-condition|?
-literal|0
-else|:
-name|delay
 return|;
 block|}
 DECL|method|getResourceCalculator ()
