@@ -88,7 +88,7 @@ specifier|final
 name|String
 name|DFS_NFS_FILE_DUMP_DIR_KEY
 init|=
-literal|"nfs.file.dump.dir"
+literal|"nfs.dump.dir"
 decl_stmt|;
 DECL|field|DFS_NFS_FILE_DUMP_DIR_DEFAULT
 specifier|public
