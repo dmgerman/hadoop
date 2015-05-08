@@ -1112,21 +1112,6 @@ argument_list|(
 name|nn2
 argument_list|)
 expr_stmt|;
-comment|// Even though NN2 considers the blocks over-replicated, it should
-comment|// post-pone the block invalidation because the DNs are still "stale".
-name|assertEquals
-argument_list|(
-literal|30
-argument_list|,
-name|nn2
-operator|.
-name|getNamesystem
-argument_list|()
-operator|.
-name|getPostponedMisreplicatedBlocks
-argument_list|()
-argument_list|)
-expr_stmt|;
 name|banner
 argument_list|(
 literal|"Triggering heartbeats and block reports so that fencing is completed"
