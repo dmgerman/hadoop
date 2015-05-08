@@ -322,6 +322,13 @@ argument_list|)
 operator|.
 name|th
 argument_list|(
+literal|".type"
+argument_list|,
+literal|"Label Type"
+argument_list|)
+operator|.
+name|th
+argument_list|(
 literal|".numOfActiveNMs"
 argument_list|,
 literal|"Num Of Active NMs"
@@ -392,7 +399,7 @@ operator|.
 name|isEmpty
 argument_list|()
 condition|?
-literal|"<NO_LABEL>"
+literal|"<DEFAULT_PARTITION>"
 else|:
 name|info
 operator|.
@@ -400,6 +407,29 @@ name|getLabelName
 argument_list|()
 argument_list|)
 decl_stmt|;
+name|String
+name|type
+init|=
+operator|(
+name|info
+operator|.
+name|getIsExclusive
+argument_list|()
+operator|)
+condition|?
+literal|"Exclusive Partition"
+else|:
+literal|"Non Exclusive Partition"
+decl_stmt|;
+name|row
+operator|=
+name|row
+operator|.
+name|td
+argument_list|(
+name|type
+argument_list|)
+expr_stmt|;
 name|int
 name|nActiveNMs
 init|=
