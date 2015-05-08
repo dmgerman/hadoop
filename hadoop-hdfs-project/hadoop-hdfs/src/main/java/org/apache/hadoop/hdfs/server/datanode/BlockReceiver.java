@@ -1630,7 +1630,17 @@ name|LOG
 operator|.
 name|warn
 argument_list|(
-literal|"IOException in BlockReceiver constructor. Cause is "
+literal|"IOException in BlockReceiver constructor"
+operator|+
+operator|(
+name|cause
+operator|==
+literal|null
+condition|?
+literal|""
+else|:
+literal|". Cause is "
+operator|)
 argument_list|,
 name|cause
 argument_list|)
