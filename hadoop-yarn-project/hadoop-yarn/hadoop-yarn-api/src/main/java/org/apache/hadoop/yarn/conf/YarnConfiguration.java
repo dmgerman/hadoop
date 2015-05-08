@@ -4147,6 +4147,26 @@ name|NM_RECOVERY_PREFIX
 operator|+
 literal|"dir"
 decl_stmt|;
+DECL|field|NM_RECOVERY_SUPERVISED
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|NM_RECOVERY_SUPERVISED
+init|=
+name|NM_RECOVERY_PREFIX
+operator|+
+literal|"supervised"
+decl_stmt|;
+DECL|field|DEFAULT_NM_RECOVERY_SUPERVISED
+specifier|public
+specifier|static
+specifier|final
+name|boolean
+name|DEFAULT_NM_RECOVERY_SUPERVISED
+init|=
+literal|false
+decl_stmt|;
 comment|////////////////////////////////
 comment|// Web Proxy Configs
 comment|////////////////////////////////

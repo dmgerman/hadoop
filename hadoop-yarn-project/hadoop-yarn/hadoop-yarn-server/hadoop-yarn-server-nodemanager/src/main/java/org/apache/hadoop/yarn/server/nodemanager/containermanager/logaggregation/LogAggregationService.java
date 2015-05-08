@@ -1042,6 +1042,23 @@ operator|.
 name|shutdown
 argument_list|()
 expr_stmt|;
+name|boolean
+name|supervised
+init|=
+name|getConfig
+argument_list|()
+operator|.
+name|getBoolean
+argument_list|(
+name|YarnConfiguration
+operator|.
+name|NM_RECOVERY_SUPERVISED
+argument_list|,
+name|YarnConfiguration
+operator|.
+name|DEFAULT_NM_RECOVERY_SUPERVISED
+argument_list|)
+decl_stmt|;
 comment|// if recovery on restart is supported then leave outstanding aggregations
 comment|// to the next restart
 name|boolean
@@ -1060,6 +1077,8 @@ name|context
 operator|.
 name|getDecommissioned
 argument_list|()
+operator|&&
+name|supervised
 decl_stmt|;
 comment|// politely ask to finish
 for|for

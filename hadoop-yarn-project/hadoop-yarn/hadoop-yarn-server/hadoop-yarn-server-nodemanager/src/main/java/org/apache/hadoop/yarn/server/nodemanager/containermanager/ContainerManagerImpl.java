@@ -4122,8 +4122,26 @@ name|getDecommissioned
 argument_list|()
 condition|)
 block|{
+if|if
+condition|(
+name|getConfig
+argument_list|()
+operator|.
+name|getBoolean
+argument_list|(
+name|YarnConfiguration
+operator|.
+name|NM_RECOVERY_SUPERVISED
+argument_list|,
+name|YarnConfiguration
+operator|.
+name|DEFAULT_NM_RECOVERY_SUPERVISED
+argument_list|)
+condition|)
+block|{
 comment|// do not cleanup apps as they can be recovered on restart
 return|return;
+block|}
 block|}
 name|List
 argument_list|<
