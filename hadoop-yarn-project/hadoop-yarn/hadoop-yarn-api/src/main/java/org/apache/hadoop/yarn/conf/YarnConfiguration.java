@@ -6153,7 +6153,7 @@ specifier|final
 name|long
 name|DEFAULT_CLIENT_NM_CONNECT_MAX_WAIT_MS
 init|=
-literal|15
+literal|3
 operator|*
 literal|60
 operator|*
