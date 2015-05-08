@@ -1844,6 +1844,10 @@ operator|.
 name|addResource
 argument_list|(
 name|coreSiteXMLInputStream
+argument_list|,
+name|YarnConfiguration
+operator|.
+name|CORE_SITE_CONFIGURATION_FILE
 argument_list|)
 expr_stmt|;
 block|}
@@ -1912,6 +1916,10 @@ operator|.
 name|addResource
 argument_list|(
 name|yarnSiteXMLInputStream
+argument_list|,
+name|YarnConfiguration
+operator|.
+name|YARN_SITE_CONFIGURATION_FILE
 argument_list|)
 expr_stmt|;
 block|}
