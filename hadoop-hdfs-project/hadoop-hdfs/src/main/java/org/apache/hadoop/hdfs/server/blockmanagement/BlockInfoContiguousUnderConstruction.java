@@ -260,8 +260,10 @@ name|targets
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Convert an under construction block to a complete block.    *     * @return BlockInfoContiguous - a complete block.    * @throws IOException if the state of the block     * (the generation stamp and the length) has not been committed by     * the client or it does not have at least a minimal number of replicas     * reported from data-nodes.     */
+annotation|@
+name|Override
 DECL|method|convertToCompleteBlock ()
+specifier|public
 name|BlockInfoContiguous
 name|convertToCompleteBlock
 parameter_list|()
@@ -600,8 +602,10 @@ expr_stmt|;
 block|}
 block|}
 block|}
-comment|/**    * Commit block's length and generation stamp as reported by the client.    * Set block state to {@link BlockUCState#COMMITTED}.    * @param block - contains client reported block length and generation     * @throws IOException if block ids are inconsistent.    */
+annotation|@
+name|Override
 DECL|method|commitBlock (Block block)
+specifier|public
 name|void
 name|commitBlock
 parameter_list|(
@@ -928,7 +932,10 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
+annotation|@
+name|Override
 DECL|method|addReplicaIfNotPresent (DatanodeStorageInfo storage, Block block, ReplicaState rState)
+specifier|public
 name|void
 name|addReplicaIfNotPresent
 parameter_list|(

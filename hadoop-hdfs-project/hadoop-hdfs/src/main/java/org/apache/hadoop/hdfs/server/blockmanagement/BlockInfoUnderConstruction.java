@@ -22,6 +22,16 @@ end_package
 
 begin_import
 import|import
+name|java
+operator|.
+name|io
+operator|.
+name|IOException
+import|;
+end_import
+
+begin_import
+import|import
 name|org
 operator|.
 name|apache
@@ -33,6 +43,46 @@ operator|.
 name|protocol
 operator|.
 name|Block
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|server
+operator|.
+name|common
+operator|.
+name|HdfsServerConstants
+operator|.
+name|BlockUCState
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|server
+operator|.
+name|common
+operator|.
+name|HdfsServerConstants
+operator|.
+name|ReplicaState
 import|;
 end_import
 
@@ -108,6 +158,43 @@ parameter_list|(
 name|long
 name|recoveryId
 parameter_list|)
+function_decl|;
+comment|/** Add the reported replica if it is not already in the replica list. */
+DECL|method|addReplicaIfNotPresent (DatanodeStorageInfo storage, Block reportedBlock, ReplicaState rState)
+specifier|public
+name|void
+name|addReplicaIfNotPresent
+parameter_list|(
+name|DatanodeStorageInfo
+name|storage
+parameter_list|,
+name|Block
+name|reportedBlock
+parameter_list|,
+name|ReplicaState
+name|rState
+parameter_list|)
+function_decl|;
+comment|/**    * Commit block's length and generation stamp as reported by the client.    * Set block state to {@link BlockUCState#COMMITTED}.    * @param block - contains client reported block length and generation     * @throws IOException if block ids are inconsistent.    */
+DECL|method|commitBlock (Block block)
+specifier|public
+name|void
+name|commitBlock
+parameter_list|(
+name|Block
+name|block
+parameter_list|)
+throws|throws
+name|IOException
+function_decl|;
+comment|/**    * Convert an under construction block to a complete block.    *     * @return a complete block.    * @throws IOException    *           if the state of the block (the generation stamp and the length)    *           has not been committed by the client or it does not have at least    *           a minimal number of replicas reported from data-nodes.    */
+DECL|method|convertToCompleteBlock ()
+specifier|public
+name|BlockInfo
+name|convertToCompleteBlock
+parameter_list|()
+throws|throws
+name|IOException
 function_decl|;
 block|}
 end_interface
