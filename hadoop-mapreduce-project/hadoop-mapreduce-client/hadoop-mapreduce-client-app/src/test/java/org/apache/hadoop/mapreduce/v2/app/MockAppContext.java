@@ -548,7 +548,9 @@ name|getEventHandler
 parameter_list|()
 block|{
 return|return
-literal|null
+operator|new
+name|MockEventHandler
+argument_list|()
 return|;
 block|}
 annotation|@
