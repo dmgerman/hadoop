@@ -4279,6 +4279,103 @@ literal|" doesn't support removeXAttr"
 argument_list|)
 throw|;
 block|}
+comment|/**    * The specification of this method matches that of    * {@link FileContext#createSnapshot(Path, String)}.    */
+DECL|method|createSnapshot (final Path path, final String snapshotName)
+specifier|public
+name|Path
+name|createSnapshot
+parameter_list|(
+specifier|final
+name|Path
+name|path
+parameter_list|,
+specifier|final
+name|String
+name|snapshotName
+parameter_list|)
+throws|throws
+name|IOException
+block|{
+throw|throw
+operator|new
+name|UnsupportedOperationException
+argument_list|(
+name|getClass
+argument_list|()
+operator|.
+name|getSimpleName
+argument_list|()
+operator|+
+literal|" doesn't support createSnapshot"
+argument_list|)
+throw|;
+block|}
+comment|/**    * The specification of this method matches that of    * {@link FileContext#renameSnapshot(Path, String, String)}.    */
+DECL|method|renameSnapshot (final Path path, final String snapshotOldName, final String snapshotNewName)
+specifier|public
+name|void
+name|renameSnapshot
+parameter_list|(
+specifier|final
+name|Path
+name|path
+parameter_list|,
+specifier|final
+name|String
+name|snapshotOldName
+parameter_list|,
+specifier|final
+name|String
+name|snapshotNewName
+parameter_list|)
+throws|throws
+name|IOException
+block|{
+throw|throw
+operator|new
+name|UnsupportedOperationException
+argument_list|(
+name|getClass
+argument_list|()
+operator|.
+name|getSimpleName
+argument_list|()
+operator|+
+literal|" doesn't support renameSnapshot"
+argument_list|)
+throw|;
+block|}
+comment|/**    * The specification of this method matches that of    * {@link FileContext#deleteSnapshot(Path, String)}.    */
+DECL|method|deleteSnapshot (final Path snapshotDir, final String snapshotName)
+specifier|public
+name|void
+name|deleteSnapshot
+parameter_list|(
+specifier|final
+name|Path
+name|snapshotDir
+parameter_list|,
+specifier|final
+name|String
+name|snapshotName
+parameter_list|)
+throws|throws
+name|IOException
+block|{
+throw|throw
+operator|new
+name|UnsupportedOperationException
+argument_list|(
+name|getClass
+argument_list|()
+operator|.
+name|getSimpleName
+argument_list|()
+operator|+
+literal|" doesn't support deleteSnapshot"
+argument_list|)
+throw|;
+block|}
 annotation|@
 name|Override
 comment|//Object
