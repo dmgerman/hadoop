@@ -147,7 +147,7 @@ name|LogFactory
 operator|.
 name|getLog
 argument_list|(
-name|SnappyCompressor
+name|SnappyDecompressor
 operator|.
 name|class
 operator|.
