@@ -227,6 +227,15 @@ name|bytesPerFile
 init|=
 literal|1
 decl_stmt|;
+DECL|field|replicationFactorPerFile
+specifier|private
+specifier|static
+name|short
+name|replicationFactorPerFile
+init|=
+literal|1
+decl_stmt|;
+comment|// default is 1
 DECL|field|baseDir
 specifier|private
 specifier|static
@@ -433,7 +442,7 @@ argument_list|,
 operator|(
 name|short
 operator|)
-literal|1
+name|replicationFactorPerFile
 argument_list|,
 name|bytesPerBlock
 argument_list|)
@@ -1015,21 +1024,23 @@ name|usage
 init|=
 literal|"Usage: nnbench "
 operator|+
-literal|"  -operation<one of createWrite, openRead, rename, or delete> "
+literal|"  -operation<one of createWrite, openRead, rename, or delete>\n "
 operator|+
-literal|"  -baseDir<base output/input DFS path> "
+literal|"  -baseDir<base output/input DFS path>\n "
 operator|+
-literal|"  -startTime<time to start, given in seconds from the epoch> "
+literal|"  -startTime<time to start, given in seconds from the epoch>\n"
 operator|+
-literal|"  -numFiles<number of files to create> "
+literal|"  -numFiles<number of files to create>\n "
 operator|+
-literal|"  -blocksPerFile<number of blocks to create per file> "
+literal|"  -replicationFactorPerFile<Replication factor for the files, default is 1>\n"
 operator|+
-literal|"  [-bytesPerBlock<number of bytes to write to each block, default is 1>] "
+literal|"  -blocksPerFile<number of blocks to create per file>\n"
 operator|+
-literal|"  [-bytesPerChecksum<value for io.bytes.per.checksum>]"
+literal|"  [-bytesPerBlock<number of bytes to write to each block, default is 1>]\n"
 operator|+
-literal|"Note: bytesPerBlock MUST be a multiple of bytesPerChecksum"
+literal|"  [-bytesPerChecksum<value for io.bytes.per.checksum>]\n"
+operator|+
+literal|"Note: bytesPerBlock MUST be a multiple of bytesPerChecksum\n"
 decl_stmt|;
 name|String
 name|operation
@@ -1183,6 +1194,34 @@ operator|=
 name|Integer
 operator|.
 name|parseInt
+argument_list|(
+name|args
+index|[
+operator|++
+name|i
+index|]
+argument_list|)
+expr_stmt|;
+block|}
+elseif|else
+if|if
+condition|(
+name|args
+index|[
+name|i
+index|]
+operator|.
+name|equals
+argument_list|(
+literal|"-replicationFactorPerFile"
+argument_list|)
+condition|)
+block|{
+name|replicationFactorPerFile
+operator|=
+name|Short
+operator|.
+name|parseShort
 argument_list|(
 name|args
 index|[
@@ -1372,6 +1411,17 @@ argument_list|(
 literal|"   numFiles: "
 operator|+
 name|numFiles
+argument_list|)
+expr_stmt|;
+name|System
+operator|.
+name|out
+operator|.
+name|println
+argument_list|(
+literal|"   replicationFactorPerFile: "
+operator|+
+name|replicationFactorPerFile
 argument_list|)
 expr_stmt|;
 name|System
