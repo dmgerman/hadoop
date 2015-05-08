@@ -146,7 +146,7 @@ name|writer
 argument_list|()
 return|;
 block|}
-comment|/**    * Print strings as is (no newline, a la php echo).    * @param args the strings to print    */
+comment|/**    * Print strings escaping html.    * @param args the strings to print    */
 DECL|method|echo (Object... args)
 specifier|public
 name|void
@@ -198,6 +198,40 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
+comment|/**    * Print strings as is (no newline, a la php echo).    * @param args the strings to print    */
+DECL|method|echoWithoutEscapeHtml (Object... args)
+specifier|public
+name|void
+name|echoWithoutEscapeHtml
+parameter_list|(
+name|Object
+modifier|...
+name|args
+parameter_list|)
+block|{
+name|PrintWriter
+name|out
+init|=
+name|writer
+argument_list|()
+decl_stmt|;
+for|for
+control|(
+name|Object
+name|s
+range|:
+name|args
+control|)
+block|{
+name|out
+operator|.
+name|print
+argument_list|(
+name|s
+argument_list|)
+expr_stmt|;
+block|}
+block|}
 comment|/**    * Print strings as a line (new line appended at the end, a la C/Tcl puts).    * @param args the strings to print    */
 DECL|method|puts (Object... args)
 specifier|public
@@ -210,6 +244,28 @@ name|args
 parameter_list|)
 block|{
 name|echo
+argument_list|(
+name|args
+argument_list|)
+expr_stmt|;
+name|writer
+argument_list|()
+operator|.
+name|println
+argument_list|()
+expr_stmt|;
+block|}
+comment|/**    * Print string as a line. This does not escapes the string for html    * @param args the strings to print    */
+DECL|method|putWithoutEscapeHtml (Object args)
+specifier|public
+name|void
+name|putWithoutEscapeHtml
+parameter_list|(
+name|Object
+name|args
+parameter_list|)
+block|{
+name|echoWithoutEscapeHtml
 argument_list|(
 name|args
 argument_list|)

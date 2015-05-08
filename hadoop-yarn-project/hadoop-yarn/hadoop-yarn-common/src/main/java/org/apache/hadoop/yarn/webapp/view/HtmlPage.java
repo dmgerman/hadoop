@@ -337,7 +337,7 @@ name|void
 name|render
 parameter_list|()
 block|{
-name|puts
+name|putWithoutEscapeHtml
 argument_list|(
 name|DOCTYPE
 argument_list|)
