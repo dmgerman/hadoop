@@ -415,11 +415,13 @@ literal|"\t-list-corruptfileblocks\tprint out list of missing "
 operator|+
 literal|"blocks and files they belong to\n"
 operator|+
-literal|"\t-blocks\tprint out block report\n"
+literal|"\t-files -blocks\tprint out block report\n"
 operator|+
-literal|"\t-locations\tprint out locations for every block\n"
+literal|"\t-files -blocks -locations\tprint out locations for every block\n"
 operator|+
-literal|"\t-racks\tprint out network topology for data-node locations\n"
+literal|"\t-files -blocks -racks"
+operator|+
+literal|"\tprint out network topology for data-node locations\n"
 operator|+
 literal|"\t-storagepolicies\tprint out storage policy summary for the blocks\n"
 operator|+
