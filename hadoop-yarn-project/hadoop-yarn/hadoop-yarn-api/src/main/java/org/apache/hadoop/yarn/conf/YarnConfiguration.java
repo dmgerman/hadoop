@@ -3721,6 +3721,27 @@ name|NM_PREFIX
 operator|+
 literal|"health-checker.script.opts"
 decl_stmt|;
+comment|/** The JVM options used on forking ContainerLocalizer process       by container executor. */
+DECL|field|NM_CONTAINER_LOCALIZER_JAVA_OPTS_KEY
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|NM_CONTAINER_LOCALIZER_JAVA_OPTS_KEY
+init|=
+name|NM_PREFIX
+operator|+
+literal|"container-localizer.java.opts"
+decl_stmt|;
+DECL|field|NM_CONTAINER_LOCALIZER_JAVA_OPTS_DEFAULT
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|NM_CONTAINER_LOCALIZER_JAVA_OPTS_DEFAULT
+init|=
+literal|"-Xmx256m"
+decl_stmt|;
 comment|/** The Docker image name(For DockerContainerExecutor).*/
 DECL|field|NM_DOCKER_CONTAINER_EXECUTOR_IMAGE_NAME
 specifier|public

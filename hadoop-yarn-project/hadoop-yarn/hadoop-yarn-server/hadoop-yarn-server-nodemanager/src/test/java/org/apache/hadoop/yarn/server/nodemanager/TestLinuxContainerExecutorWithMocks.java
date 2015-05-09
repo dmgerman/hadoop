@@ -1282,7 +1282,7 @@ operator|.
 name|size
 argument_list|()
 argument_list|,
-literal|17
+literal|18
 argument_list|)
 expr_stmt|;
 name|Assert
@@ -1382,7 +1382,7 @@ argument_list|(
 literal|11
 argument_list|)
 argument_list|,
-literal|"org.apache.hadoop.yarn.server.nodemanager.containermanager.localizer.ContainerLocalizer"
+literal|"-Xmx256m"
 argument_list|)
 expr_stmt|;
 name|Assert
@@ -1396,7 +1396,7 @@ argument_list|(
 literal|12
 argument_list|)
 argument_list|,
-literal|"test"
+literal|"org.apache.hadoop.yarn.server.nodemanager.containermanager.localizer.ContainerLocalizer"
 argument_list|)
 expr_stmt|;
 name|Assert
@@ -1410,7 +1410,7 @@ argument_list|(
 literal|13
 argument_list|)
 argument_list|,
-literal|"application_0"
+literal|"test"
 argument_list|)
 expr_stmt|;
 name|Assert
@@ -1424,7 +1424,7 @@ argument_list|(
 literal|14
 argument_list|)
 argument_list|,
-literal|"12345"
+literal|"application_0"
 argument_list|)
 expr_stmt|;
 name|Assert
@@ -1438,7 +1438,7 @@ argument_list|(
 literal|15
 argument_list|)
 argument_list|,
-literal|"localhost"
+literal|"12345"
 argument_list|)
 expr_stmt|;
 name|Assert
@@ -1450,6 +1450,20 @@ operator|.
 name|get
 argument_list|(
 literal|16
+argument_list|)
+argument_list|,
+literal|"localhost"
+argument_list|)
+expr_stmt|;
+name|Assert
+operator|.
+name|assertEquals
+argument_list|(
+name|result
+operator|.
+name|get
+argument_list|(
+literal|17
 argument_list|)
 argument_list|,
 literal|"8040"
