@@ -1457,7 +1457,7 @@ literal|true
 return|;
 block|}
 block|}
-comment|/**    * Replace the periods in the username or groupname with "_dot_".    */
+comment|/**    * Replace the periods in the username or groupname with "_dot_" and    * remove trailing and leading whitespace.    */
 DECL|method|cleanName (String name)
 specifier|protected
 name|String
@@ -1467,6 +1467,13 @@ name|String
 name|name
 parameter_list|)
 block|{
+name|name
+operator|=
+name|name
+operator|.
+name|trim
+argument_list|()
+expr_stmt|;
 if|if
 condition|(
 name|name
