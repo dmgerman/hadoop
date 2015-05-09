@@ -2283,6 +2283,8 @@ name|conf
 operator|=
 literal|null
 expr_stmt|;
+try|try
+block|{
 name|FileUtils
 operator|.
 name|deleteDirectory
@@ -2297,6 +2299,15 @@ argument_list|()
 argument_list|)
 argument_list|)
 expr_stmt|;
+block|}
+catch|catch
+parameter_list|(
+name|IOException
+name|e
+parameter_list|)
+block|{
+comment|// ignore
+block|}
 block|}
 annotation|@
 name|Test
