@@ -490,7 +490,7 @@ argument_list|()
 argument_list|,
 name|WebAppUtils
 operator|.
-name|getResolvedRMWebAppURLWithoutScheme
+name|getResolvedRemoteRMWebAppURLWithoutScheme
 argument_list|(
 name|conf
 argument_list|,
