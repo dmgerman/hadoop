@@ -1452,6 +1452,17 @@ parameter_list|)
 block|{
 comment|// ignore
 block|}
+name|LeaseManager
+name|lm
+init|=
+name|cluster
+operator|.
+name|getNamesystem
+argument_list|()
+operator|.
+name|getLeaseManager
+argument_list|()
+decl_stmt|;
 comment|// check that the file exists, isn't UC, and has no dangling lease
 name|INodeFile
 name|inode
@@ -1494,20 +1505,11 @@ name|assertNull
 argument_list|(
 literal|"should not have a lease"
 argument_list|,
-name|cluster
+name|lm
 operator|.
-name|getNamesystem
-argument_list|()
-operator|.
-name|getLeaseManager
-argument_list|()
-operator|.
-name|getLeaseByPath
+name|getLease
 argument_list|(
-name|file
-operator|.
-name|toString
-argument_list|()
+name|inode
 argument_list|)
 argument_list|)
 expr_stmt|;
@@ -1699,6 +1701,17 @@ block|{
 comment|//ignore
 block|}
 comment|// check that the file exists, isn't UC, and has no dangling lease
+name|LeaseManager
+name|lm
+init|=
+name|cluster
+operator|.
+name|getNamesystem
+argument_list|()
+operator|.
+name|getLeaseManager
+argument_list|()
+decl_stmt|;
 name|INodeFile
 name|inode
 init|=
@@ -1740,20 +1753,11 @@ name|assertNull
 argument_list|(
 literal|"should not have a lease"
 argument_list|,
-name|cluster
+name|lm
 operator|.
-name|getNamesystem
-argument_list|()
-operator|.
-name|getLeaseManager
-argument_list|()
-operator|.
-name|getLeaseByPath
+name|getLease
 argument_list|(
-name|file
-operator|.
-name|toString
-argument_list|()
+name|inode
 argument_list|)
 argument_list|)
 expr_stmt|;
@@ -1949,6 +1953,17 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|// check that the file exists, isn't UC, and has no dangling lease
+name|LeaseManager
+name|lm
+init|=
+name|cluster
+operator|.
+name|getNamesystem
+argument_list|()
+operator|.
+name|getLeaseManager
+argument_list|()
+decl_stmt|;
 name|INodeFile
 name|inode
 init|=
@@ -1990,20 +2005,11 @@ name|assertNull
 argument_list|(
 literal|"should not have a lease"
 argument_list|,
-name|cluster
+name|lm
 operator|.
-name|getNamesystem
-argument_list|()
-operator|.
-name|getLeaseManager
-argument_list|()
-operator|.
-name|getLeaseByPath
+name|getLease
 argument_list|(
-name|file
-operator|.
-name|toString
-argument_list|()
+name|inode
 argument_list|)
 argument_list|)
 expr_stmt|;

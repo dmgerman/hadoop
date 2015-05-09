@@ -780,12 +780,9 @@ name|fsn
 operator|.
 name|leaseManager
 operator|.
-name|getLeaseByPath
+name|getLease
 argument_list|(
-name|file2
-operator|.
-name|toString
-argument_list|()
+name|file2Node
 argument_list|)
 decl_stmt|;
 name|Assert

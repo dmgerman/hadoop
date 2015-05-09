@@ -3183,7 +3183,11 @@ name|addLease
 argument_list|(
 literal|"me"
 argument_list|,
-literal|"/non-existent"
+name|INodeId
+operator|.
+name|ROOT_INODE_ID
+operator|+
+literal|1
 argument_list|)
 expr_stmt|;
 name|fs

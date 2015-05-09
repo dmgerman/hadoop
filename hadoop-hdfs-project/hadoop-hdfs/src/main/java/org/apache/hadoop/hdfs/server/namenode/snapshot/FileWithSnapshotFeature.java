@@ -1213,6 +1213,8 @@ argument_list|,
 name|info
 argument_list|,
 name|removedINodes
+argument_list|,
+literal|null
 argument_list|)
 expr_stmt|;
 return|return;

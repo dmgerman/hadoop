@@ -148,6 +148,20 @@ end_import
 
 begin_import
 import|import
+name|com
+operator|.
+name|google
+operator|.
+name|common
+operator|.
+name|collect
+operator|.
+name|Lists
+import|;
+end_import
+
+begin_import
+import|import
 name|org
 operator|.
 name|apache
@@ -3042,7 +3056,10 @@ name|addCloseOp
 operator|.
 name|clientName
 argument_list|,
-name|path
+name|newFile
+operator|.
+name|getId
+argument_list|()
 argument_list|)
 expr_stmt|;
 comment|// add the op into retry cache if necessary
@@ -3434,7 +3451,7 @@ argument_list|)
 throw|;
 block|}
 comment|// One might expect that you could use removeLease(holder, path) here,
-comment|// but OP_CLOSE doesn't serialize the holder. So, remove by path.
+comment|// but OP_CLOSE doesn't serialize the holder. So, remove the inode.
 if|if
 condition|(
 name|file
@@ -3447,9 +3464,17 @@ name|fsNamesys
 operator|.
 name|leaseManager
 operator|.
-name|removeLeaseWithPrefixPath
+name|removeLeases
 argument_list|(
-name|path
+name|Lists
+operator|.
+name|newArrayList
+argument_list|(
+name|file
+operator|.
+name|getId
+argument_list|()
+argument_list|)
 argument_list|)
 expr_stmt|;
 name|file
@@ -4945,8 +4970,6 @@ operator|.
 name|reassignLeaseInternal
 argument_list|(
 name|lease
-argument_list|,
-name|path
 argument_list|,
 name|reassignLeaseOp
 operator|.

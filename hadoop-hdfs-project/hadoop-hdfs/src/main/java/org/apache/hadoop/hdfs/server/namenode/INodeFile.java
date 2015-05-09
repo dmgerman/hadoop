@@ -2476,7 +2476,7 @@ expr_stmt|;
 block|}
 annotation|@
 name|Override
-DECL|method|cleanSubtree (BlockStoragePolicySuite bsps, final int snapshot, int priorSnapshotId, final BlocksMapUpdateInfo collectedBlocks, final List<INode> removedINodes)
+DECL|method|cleanSubtree ( BlockStoragePolicySuite bsps, final int snapshot, int priorSnapshotId, final BlocksMapUpdateInfo collectedBlocks, final List<INode> removedINodes, List<Long> removedUCFiles)
 specifier|public
 name|QuotaCounts
 name|cleanSubtree
@@ -2501,6 +2501,12 @@ argument_list|<
 name|INode
 argument_list|>
 name|removedINodes
+parameter_list|,
+name|List
+argument_list|<
+name|Long
+argument_list|>
+name|removedUCFiles
 parameter_list|)
 block|{
 name|FileWithSnapshotFeature
@@ -2579,19 +2585,21 @@ argument_list|,
 name|collectedBlocks
 argument_list|,
 name|removedINodes
+argument_list|,
+name|removedUCFiles
 argument_list|)
 expr_stmt|;
 block|}
 else|else
 block|{
-comment|// when deleting the current file and the file is in snapshot, we should
-comment|// clean the 0-sized block if the file is UC
 name|FileUnderConstructionFeature
 name|uc
 init|=
 name|getFileUnderConstructionFeature
 argument_list|()
 decl_stmt|;
+comment|// when deleting the current file and the file is in snapshot, we should
+comment|// clean the 0-sized block if the file is UC
 if|if
 condition|(
 name|uc
@@ -2608,6 +2616,22 @@ argument_list|,
 name|collectedBlocks
 argument_list|)
 expr_stmt|;
+if|if
+condition|(
+name|removedUCFiles
+operator|!=
+literal|null
+condition|)
+block|{
+name|removedUCFiles
+operator|.
+name|add
+argument_list|(
+name|getId
+argument_list|()
+argument_list|)
+expr_stmt|;
+block|}
 block|}
 block|}
 block|}
@@ -2617,7 +2641,7 @@ return|;
 block|}
 annotation|@
 name|Override
-DECL|method|destroyAndCollectBlocks (BlockStoragePolicySuite bsps, BlocksMapUpdateInfo collectedBlocks, final List<INode> removedINodes)
+DECL|method|destroyAndCollectBlocks ( BlockStoragePolicySuite bsps, BlocksMapUpdateInfo collectedBlocks, final List<INode> removedINodes, List<Long> removedUCFiles)
 specifier|public
 name|void
 name|destroyAndCollectBlocks
@@ -2634,6 +2658,12 @@ argument_list|<
 name|INode
 argument_list|>
 name|removedINodes
+parameter_list|,
+name|List
+argument_list|<
+name|Long
+argument_list|>
+name|removedUCFiles
 parameter_list|)
 block|{
 if|if
@@ -2730,6 +2760,25 @@ name|sf
 operator|.
 name|clearDiffs
 argument_list|()
+expr_stmt|;
+block|}
+if|if
+condition|(
+name|isUnderConstruction
+argument_list|()
+operator|&&
+name|removedUCFiles
+operator|!=
+literal|null
+condition|)
+block|{
+name|removedUCFiles
+operator|.
+name|add
+argument_list|(
+name|getId
+argument_list|()
+argument_list|)
 expr_stmt|;
 block|}
 block|}

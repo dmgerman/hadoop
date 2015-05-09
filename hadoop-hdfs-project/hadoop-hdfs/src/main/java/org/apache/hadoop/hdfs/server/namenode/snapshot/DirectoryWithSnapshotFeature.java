@@ -721,7 +721,7 @@ literal|false
 return|;
 block|}
 comment|/** clear the created list */
-DECL|method|destroyCreatedList ( final BlockStoragePolicySuite bsps, final INodeDirectory currentINode, final BlocksMapUpdateInfo collectedBlocks, final List<INode> removedINodes)
+DECL|method|destroyCreatedList ( final BlockStoragePolicySuite bsps, final INodeDirectory currentINode, final BlocksMapUpdateInfo collectedBlocks, final List<INode> removedINodes, List<Long> removedUCFiles)
 specifier|private
 name|QuotaCounts
 name|destroyCreatedList
@@ -744,6 +744,12 @@ argument_list|<
 name|INode
 argument_list|>
 name|removedINodes
+parameter_list|,
+name|List
+argument_list|<
+name|Long
+argument_list|>
+name|removedUCFiles
 parameter_list|)
 block|{
 name|QuotaCounts
@@ -800,6 +806,8 @@ argument_list|,
 name|collectedBlocks
 argument_list|,
 name|removedINodes
+argument_list|,
+name|removedUCFiles
 argument_list|)
 expr_stmt|;
 comment|// c should be contained in the children list, remove it
@@ -821,7 +829,7 @@ name|counts
 return|;
 block|}
 comment|/** clear the deleted list */
-DECL|method|destroyDeletedList ( final BlockStoragePolicySuite bsps, final BlocksMapUpdateInfo collectedBlocks, final List<INode> removedINodes)
+DECL|method|destroyDeletedList ( final BlockStoragePolicySuite bsps, final BlocksMapUpdateInfo collectedBlocks, final List<INode> removedINodes, List<Long> removedUCFiles)
 specifier|private
 name|QuotaCounts
 name|destroyDeletedList
@@ -840,6 +848,12 @@ argument_list|<
 name|INode
 argument_list|>
 name|removedINodes
+parameter_list|,
+name|List
+argument_list|<
+name|Long
+argument_list|>
+name|removedUCFiles
 parameter_list|)
 block|{
 name|QuotaCounts
@@ -896,6 +910,8 @@ argument_list|,
 name|collectedBlocks
 argument_list|,
 name|removedINodes
+argument_list|,
+name|removedUCFiles
 argument_list|)
 expr_stmt|;
 block|}
@@ -1404,6 +1420,8 @@ argument_list|,
 name|collectedBlocks
 argument_list|,
 name|removedINodes
+argument_list|,
+literal|null
 argument_list|)
 expr_stmt|;
 block|}
@@ -1865,6 +1883,8 @@ argument_list|,
 name|collectedBlocks
 argument_list|,
 name|removedINodes
+argument_list|,
+literal|null
 argument_list|)
 argument_list|)
 expr_stmt|;
@@ -2336,7 +2356,7 @@ name|map
 return|;
 block|}
 comment|/**    * Destroy a subtree under a DstReference node.    */
-DECL|method|destroyDstSubtree ( final BlockStoragePolicySuite bsps, INode inode, final int snapshot, final int prior, final BlocksMapUpdateInfo collectedBlocks, final List<INode> removedINodes)
+DECL|method|destroyDstSubtree ( final BlockStoragePolicySuite bsps, INode inode, final int snapshot, final int prior, final BlocksMapUpdateInfo collectedBlocks, final List<INode> removedINodes, List<Long> removedUCFiles)
 specifier|public
 specifier|static
 name|void
@@ -2367,6 +2387,12 @@ argument_list|<
 name|INode
 argument_list|>
 name|removedINodes
+parameter_list|,
+name|List
+argument_list|<
+name|Long
+argument_list|>
+name|removedUCFiles
 parameter_list|)
 throws|throws
 name|QuotaExceededException
@@ -2420,6 +2446,8 @@ argument_list|,
 name|collectedBlocks
 argument_list|,
 name|removedINodes
+argument_list|,
+name|removedUCFiles
 argument_list|)
 expr_stmt|;
 block|}
@@ -2445,6 +2473,8 @@ argument_list|,
 name|collectedBlocks
 argument_list|,
 name|removedINodes
+argument_list|,
+name|removedUCFiles
 argument_list|)
 expr_stmt|;
 block|}
@@ -2471,6 +2501,8 @@ argument_list|,
 name|collectedBlocks
 argument_list|,
 name|removedINodes
+argument_list|,
+name|removedUCFiles
 argument_list|)
 expr_stmt|;
 block|}
@@ -2636,6 +2668,8 @@ argument_list|,
 name|collectedBlocks
 argument_list|,
 name|removedINodes
+argument_list|,
+name|removedUCFiles
 argument_list|)
 expr_stmt|;
 block|}
@@ -2685,13 +2719,15 @@ argument_list|,
 name|collectedBlocks
 argument_list|,
 name|removedINodes
+argument_list|,
+name|removedUCFiles
 argument_list|)
 expr_stmt|;
 block|}
 block|}
 block|}
-comment|/**    * Clean an inode while we move it from the deleted list of post to the    * deleted list of prior.    * @param bsps The block storage policy suite.    * @param inode The inode to clean.    * @param post The post snapshot.    * @param prior The id of the prior snapshot.    * @param collectedBlocks Used to collect blocks for later deletion.    * @return Quota usage update.    */
-DECL|method|cleanDeletedINode ( final BlockStoragePolicySuite bsps, INode inode, final int post, final int prior, final BlocksMapUpdateInfo collectedBlocks, final List<INode> removedINodes)
+comment|/**    * Clean an inode while we move it from the deleted list of post to the    * deleted list of prior.    * @param bsps The block storage policy suite.    * @param inode The inode to clean.    * @param post The post snapshot.    * @param prior The id of the prior snapshot.    * @param collectedBlocks Used to collect blocks for later deletion.    * @param removedUCFiles    * @return Quota usage update.    */
+DECL|method|cleanDeletedINode ( final BlockStoragePolicySuite bsps, INode inode, final int post, final int prior, final BlocksMapUpdateInfo collectedBlocks, final List<INode> removedINodes, List<Long> removedUCFiles)
 specifier|private
 specifier|static
 name|QuotaCounts
@@ -2722,6 +2758,12 @@ argument_list|<
 name|INode
 argument_list|>
 name|removedINodes
+parameter_list|,
+name|List
+argument_list|<
+name|Long
+argument_list|>
+name|removedUCFiles
 parameter_list|)
 block|{
 name|QuotaCounts
@@ -2817,6 +2859,8 @@ argument_list|,
 name|collectedBlocks
 argument_list|,
 name|removedINodes
+argument_list|,
+name|removedUCFiles
 argument_list|)
 expr_stmt|;
 block|}
@@ -2962,6 +3006,8 @@ argument_list|,
 name|collectedBlocks
 argument_list|,
 name|removedINodes
+argument_list|,
+name|removedUCFiles
 argument_list|)
 argument_list|)
 expr_stmt|;
@@ -3484,7 +3530,7 @@ return|return
 name|child
 return|;
 block|}
-DECL|method|clear (BlockStoragePolicySuite bsps, INodeDirectory currentINode, final BlocksMapUpdateInfo collectedBlocks, final List<INode> removedINodes)
+DECL|method|clear (BlockStoragePolicySuite bsps, INodeDirectory currentINode, final BlocksMapUpdateInfo collectedBlocks, final List<INode> removedINodes, final List<Long> removedUCFiles)
 specifier|public
 name|void
 name|clear
@@ -3505,6 +3551,13 @@ argument_list|<
 name|INode
 argument_list|>
 name|removedINodes
+parameter_list|,
+specifier|final
+name|List
+argument_list|<
+name|Long
+argument_list|>
+name|removedUCFiles
 parameter_list|)
 block|{
 comment|// destroy its diff list
@@ -3943,7 +3996,7 @@ literal|false
 return|;
 block|}
 block|}
-DECL|method|cleanDirectory (final BlockStoragePolicySuite bsps, final INodeDirectory currentINode, final int snapshot, int prior, final BlocksMapUpdateInfo collectedBlocks, final List<INode> removedINodes)
+DECL|method|cleanDirectory ( final BlockStoragePolicySuite bsps, final INodeDirectory currentINode, final int snapshot, int prior, final BlocksMapUpdateInfo collectedBlocks, final List<INode> removedINodes, List<Long> removedUCFiles)
 specifier|public
 name|QuotaCounts
 name|cleanDirectory
@@ -3973,6 +4026,12 @@ argument_list|<
 name|INode
 argument_list|>
 name|removedINodes
+parameter_list|,
+name|List
+argument_list|<
+name|Long
+argument_list|>
+name|removedUCFiles
 parameter_list|)
 block|{
 name|QuotaCounts
@@ -4057,6 +4116,8 @@ argument_list|,
 name|collectedBlocks
 argument_list|,
 name|removedINodes
+argument_list|,
+name|removedUCFiles
 argument_list|)
 argument_list|)
 expr_stmt|;
@@ -4078,6 +4139,8 @@ argument_list|,
 name|collectedBlocks
 argument_list|,
 name|removedINodes
+argument_list|,
+name|removedUCFiles
 argument_list|,
 name|priorDeleted
 argument_list|)
@@ -4228,6 +4291,8 @@ name|collectedBlocks
 argument_list|,
 name|removedINodes
 argument_list|,
+name|removedUCFiles
+argument_list|,
 name|priorDeleted
 argument_list|)
 argument_list|)
@@ -4329,6 +4394,8 @@ argument_list|,
 name|collectedBlocks
 argument_list|,
 name|removedINodes
+argument_list|,
+name|removedUCFiles
 argument_list|)
 argument_list|)
 expr_stmt|;
@@ -4391,6 +4458,8 @@ argument_list|,
 name|collectedBlocks
 argument_list|,
 name|removedINodes
+argument_list|,
+name|removedUCFiles
 argument_list|)
 argument_list|)
 expr_stmt|;

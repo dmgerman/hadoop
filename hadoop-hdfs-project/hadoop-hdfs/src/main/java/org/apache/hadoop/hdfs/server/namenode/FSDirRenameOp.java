@@ -3799,19 +3799,6 @@ name|getLatestSnapshotId
 argument_list|()
 argument_list|)
 expr_stmt|;
-comment|// update moved lease with new filename
-name|fsd
-operator|.
-name|getFSNamesystem
-argument_list|()
-operator|.
-name|unprotectedChangeLease
-argument_list|(
-name|src
-argument_list|,
-name|dst
-argument_list|)
-expr_stmt|;
 block|}
 DECL|method|restoreSource ()
 name|void
@@ -4086,6 +4073,17 @@ name|ChunkedArrayList
 argument_list|<>
 argument_list|()
 decl_stmt|;
+name|List
+argument_list|<
+name|Long
+argument_list|>
+name|removedUCFiles
+init|=
+operator|new
+name|ChunkedArrayList
+argument_list|<>
+argument_list|()
+decl_stmt|;
 specifier|final
 name|boolean
 name|filesDeleted
@@ -4113,6 +4111,8 @@ argument_list|,
 name|collectedBlocks
 argument_list|,
 name|removedINodes
+argument_list|,
+name|removedUCFiles
 argument_list|)
 expr_stmt|;
 name|filesDeleted
@@ -4142,6 +4142,8 @@ argument_list|,
 name|collectedBlocks
 argument_list|,
 name|removedINodes
+argument_list|,
+name|removedUCFiles
 argument_list|)
 operator|.
 name|getNameSpace
@@ -4157,7 +4159,7 @@ argument_list|()
 operator|.
 name|removeLeasesAndINodes
 argument_list|(
-name|src
+name|removedUCFiles
 argument_list|,
 name|removedINodes
 argument_list|,

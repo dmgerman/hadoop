@@ -470,7 +470,13 @@ name|addLease
 argument_list|(
 literal|"client1"
 argument_list|,
-literal|"importantFile"
+name|fsn
+operator|.
+name|getFSDirectory
+argument_list|()
+operator|.
+name|allocateNewInodeId
+argument_list|()
 argument_list|)
 expr_stmt|;
 name|assertEquals

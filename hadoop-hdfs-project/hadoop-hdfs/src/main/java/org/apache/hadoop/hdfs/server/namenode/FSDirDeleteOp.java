@@ -158,7 +158,7 @@ class|class
 name|FSDirDeleteOp
 block|{
 comment|/**    * Delete the target directory and collect the blocks under it    *    * @param fsd the FSDirectory instance    * @param iip the INodesInPath instance containing all the INodes for the path    * @param collectedBlocks Blocks under the deleted directory    * @param removedINodes INodes that should be removed from inodeMap    * @return the number of files that have been removed    */
-DECL|method|delete ( FSDirectory fsd, INodesInPath iip, BlocksMapUpdateInfo collectedBlocks, List<INode> removedINodes, long mtime)
+DECL|method|delete ( FSDirectory fsd, INodesInPath iip, BlocksMapUpdateInfo collectedBlocks, List<INode> removedINodes, List<Long> removedUCFiles, long mtime)
 specifier|static
 name|long
 name|delete
@@ -177,6 +177,12 @@ argument_list|<
 name|INode
 argument_list|>
 name|removedINodes
+parameter_list|,
+name|List
+argument_list|<
+name|Long
+argument_list|>
+name|removedUCFiles
 parameter_list|,
 name|long
 name|mtime
@@ -276,6 +282,8 @@ argument_list|,
 name|collectedBlocks
 argument_list|,
 name|removedINodes
+argument_list|,
+name|removedUCFiles
 argument_list|,
 name|mtime
 argument_list|)
@@ -499,6 +507,17 @@ name|ChunkedArrayList
 argument_list|<>
 argument_list|()
 decl_stmt|;
+name|List
+argument_list|<
+name|Long
+argument_list|>
+name|removedUCFiles
+init|=
+operator|new
+name|ChunkedArrayList
+argument_list|<>
+argument_list|()
+decl_stmt|;
 specifier|final
 name|INodesInPath
 name|iip
@@ -566,6 +585,8 @@ name|collectedBlocks
 argument_list|,
 name|removedINodes
 argument_list|,
+name|removedUCFiles
+argument_list|,
 name|mtime
 argument_list|)
 decl_stmt|;
@@ -587,7 +608,7 @@ name|fsn
 operator|.
 name|removeLeasesAndINodes
 argument_list|(
-name|src
+name|removedUCFiles
 argument_list|,
 name|removedINodes
 argument_list|,
@@ -678,6 +699,17 @@ name|ChunkedArrayList
 argument_list|<>
 argument_list|()
 decl_stmt|;
+name|List
+argument_list|<
+name|Long
+argument_list|>
+name|removedUCFiles
+init|=
+operator|new
+name|ChunkedArrayList
+argument_list|<>
+argument_list|()
+decl_stmt|;
 name|long
 name|mtime
 init|=
@@ -697,6 +729,8 @@ argument_list|,
 name|collectedBlocks
 argument_list|,
 name|removedINodes
+argument_list|,
+name|removedUCFiles
 argument_list|,
 name|mtime
 argument_list|)
@@ -735,7 +769,7 @@ name|fsn
 operator|.
 name|removeLeasesAndINodes
 argument_list|(
-name|src
+name|removedUCFiles
 argument_list|,
 name|removedINodes
 argument_list|,
@@ -883,8 +917,8 @@ return|return
 literal|true
 return|;
 block|}
-comment|/**    * Delete a path from the name space    * Update the count at each ancestor directory with quota    * @param fsd the FSDirectory instance    * @param iip the inodes resolved from the path    * @param collectedBlocks blocks collected from the deleted path    * @param removedINodes inodes that should be removed from inodeMap    * @param mtime the time the inode is removed    * @return the number of inodes deleted; 0 if no inodes are deleted.    */
-DECL|method|unprotectedDelete ( FSDirectory fsd, INodesInPath iip, BlocksMapUpdateInfo collectedBlocks, List<INode> removedINodes, long mtime)
+comment|/**    * Delete a path from the name space    * Update the count at each ancestor directory with quota    * @param fsd the FSDirectory instance    * @param iip the inodes resolved from the path    * @param collectedBlocks blocks collected from the deleted path    * @param removedINodes inodes that should be removed from inodeMap    * @param removedUCFiles inodes whose leases need to be released    * @param mtime the time the inode is removed    * @return the number of inodes deleted; 0 if no inodes are deleted.    */
+DECL|method|unprotectedDelete ( FSDirectory fsd, INodesInPath iip, BlocksMapUpdateInfo collectedBlocks, List<INode> removedINodes, List<Long> removedUCFiles, long mtime)
 specifier|private
 specifier|static
 name|long
@@ -904,6 +938,12 @@ argument_list|<
 name|INode
 argument_list|>
 name|removedINodes
+parameter_list|,
+name|List
+argument_list|<
+name|Long
+argument_list|>
+name|removedUCFiles
 parameter_list|,
 name|long
 name|mtime
@@ -1040,6 +1080,8 @@ argument_list|,
 name|collectedBlocks
 argument_list|,
 name|removedINodes
+argument_list|,
+name|removedUCFiles
 argument_list|)
 expr_stmt|;
 block|}
@@ -1064,6 +1106,8 @@ argument_list|,
 name|collectedBlocks
 argument_list|,
 name|removedINodes
+argument_list|,
+name|removedUCFiles
 argument_list|)
 decl_stmt|;
 name|removed

@@ -516,6 +516,13 @@ name|INode
 argument_list|>
 argument_list|()
 argument_list|,
+operator|new
+name|ArrayList
+argument_list|<
+name|Long
+argument_list|>
+argument_list|()
+argument_list|,
 name|now
 argument_list|()
 argument_list|)

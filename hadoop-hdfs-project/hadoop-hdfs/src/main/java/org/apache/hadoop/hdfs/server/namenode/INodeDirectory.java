@@ -3462,7 +3462,7 @@ argument_list|()
 expr_stmt|;
 block|}
 comment|/** Call cleanSubtree(..) recursively down the subtree. */
-DECL|method|cleanSubtreeRecursively (final BlockStoragePolicySuite bsps, final int snapshot, int prior, final BlocksMapUpdateInfo collectedBlocks, final List<INode> removedINodes, final Map<INode, INode> excludedNodes)
+DECL|method|cleanSubtreeRecursively ( final BlockStoragePolicySuite bsps, final int snapshot, int prior, final BlocksMapUpdateInfo collectedBlocks, final List<INode> removedINodes, List<Long> removedUCFiles, final Map<INode, INode> excludedNodes)
 specifier|public
 name|QuotaCounts
 name|cleanSubtreeRecursively
@@ -3488,6 +3488,12 @@ argument_list|<
 name|INode
 argument_list|>
 name|removedINodes
+parameter_list|,
+name|List
+argument_list|<
+name|Long
+argument_list|>
+name|removedUCFiles
 parameter_list|,
 specifier|final
 name|Map
@@ -3586,6 +3592,8 @@ argument_list|,
 name|collectedBlocks
 argument_list|,
 name|removedINodes
+argument_list|,
+name|removedUCFiles
 argument_list|)
 decl_stmt|;
 name|counts
@@ -3603,7 +3611,7 @@ return|;
 block|}
 annotation|@
 name|Override
-DECL|method|destroyAndCollectBlocks (final BlockStoragePolicySuite bsps, final BlocksMapUpdateInfo collectedBlocks, final List<INode> removedINodes)
+DECL|method|destroyAndCollectBlocks ( final BlockStoragePolicySuite bsps, final BlocksMapUpdateInfo collectedBlocks, final List<INode> removedINodes, List<Long> removedUCFiles)
 specifier|public
 name|void
 name|destroyAndCollectBlocks
@@ -3622,6 +3630,12 @@ argument_list|<
 name|INode
 argument_list|>
 name|removedINodes
+parameter_list|,
+name|List
+argument_list|<
+name|Long
+argument_list|>
+name|removedUCFiles
 parameter_list|)
 block|{
 specifier|final
@@ -3649,6 +3663,8 @@ argument_list|,
 name|collectedBlocks
 argument_list|,
 name|removedINodes
+argument_list|,
+name|removedUCFiles
 argument_list|)
 expr_stmt|;
 block|}
@@ -3674,6 +3690,8 @@ argument_list|,
 name|collectedBlocks
 argument_list|,
 name|removedINodes
+argument_list|,
+name|removedUCFiles
 argument_list|)
 expr_stmt|;
 block|}
@@ -3707,7 +3725,7 @@ expr_stmt|;
 block|}
 annotation|@
 name|Override
-DECL|method|cleanSubtree (final BlockStoragePolicySuite bsps, final int snapshotId, int priorSnapshotId, final BlocksMapUpdateInfo collectedBlocks, final List<INode> removedINodes)
+DECL|method|cleanSubtree ( final BlockStoragePolicySuite bsps, final int snapshotId, int priorSnapshotId, final BlocksMapUpdateInfo collectedBlocks, final List<INode> removedINodes, List<Long> removedUCFiles)
 specifier|public
 name|QuotaCounts
 name|cleanSubtree
@@ -3733,6 +3751,12 @@ argument_list|<
 name|INode
 argument_list|>
 name|removedINodes
+parameter_list|,
+name|List
+argument_list|<
+name|Long
+argument_list|>
+name|removedUCFiles
 parameter_list|)
 block|{
 name|DirectoryWithSnapshotFeature
@@ -3765,6 +3789,8 @@ argument_list|,
 name|collectedBlocks
 argument_list|,
 name|removedINodes
+argument_list|,
+name|removedUCFiles
 argument_list|)
 return|;
 block|}
@@ -3815,6 +3841,8 @@ argument_list|,
 name|collectedBlocks
 argument_list|,
 name|removedINodes
+argument_list|,
+name|removedUCFiles
 argument_list|)
 expr_stmt|;
 return|return
@@ -3838,6 +3866,8 @@ argument_list|,
 name|collectedBlocks
 argument_list|,
 name|removedINodes
+argument_list|,
+name|removedUCFiles
 argument_list|,
 literal|null
 argument_list|)

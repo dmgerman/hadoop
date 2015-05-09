@@ -262,7 +262,7 @@ name|N
 name|currentINode
 parameter_list|)
 function_decl|;
-comment|/**    * Delete a snapshot. The synchronization of the diff list will be done     * outside. If the diff to remove is not the first one in the diff list, we     * need to combine the diff with its previous one.    *     * @param snapshot The id of the snapshot to be deleted    * @param prior The id of the snapshot taken before the to-be-deleted snapshot    * @param collectedBlocks Used to collect information for blocksMap update    * @return delta in namespace.     */
+comment|/**    * Delete a snapshot. The synchronization of the diff list will be done     * outside. If the diff to remove is not the first one in the diff list, we     * need to combine the diff with its previous one.    *     * @param snapshot The id of the snapshot to be deleted    * @param prior The id of the snapshot taken before the to-be-deleted snapshot    * @param collectedBlocks Used to collect information for blocksMap update    * @return delta in namespace.    */
 DECL|method|deleteSnapshotDiff (BlockStoragePolicySuite bsps, final int snapshot, final int prior, final N currentINode, final BlocksMapUpdateInfo collectedBlocks, final List<INode> removedINodes)
 specifier|public
 specifier|final

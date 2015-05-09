@@ -1135,7 +1135,7 @@ block|}
 annotation|@
 name|Override
 comment|// used by WithCount
-DECL|method|cleanSubtree (BlockStoragePolicySuite bsps, int snapshot, int prior, BlocksMapUpdateInfo collectedBlocks, final List<INode> removedINodes)
+DECL|method|cleanSubtree ( BlockStoragePolicySuite bsps, int snapshot, int prior, BlocksMapUpdateInfo collectedBlocks, final List<INode> removedINodes, List<Long> removedUCFiles)
 specifier|public
 name|QuotaCounts
 name|cleanSubtree
@@ -1158,6 +1158,12 @@ argument_list|<
 name|INode
 argument_list|>
 name|removedINodes
+parameter_list|,
+name|List
+argument_list|<
+name|Long
+argument_list|>
+name|removedUCFiles
 parameter_list|)
 block|{
 return|return
@@ -1174,13 +1180,15 @@ argument_list|,
 name|collectedBlocks
 argument_list|,
 name|removedINodes
+argument_list|,
+name|removedUCFiles
 argument_list|)
 return|;
 block|}
 annotation|@
 name|Override
 comment|// used by WithCount
-DECL|method|destroyAndCollectBlocks ( BlockStoragePolicySuite bsps, BlocksMapUpdateInfo collectedBlocks, final List<INode> removedINodes)
+DECL|method|destroyAndCollectBlocks ( BlockStoragePolicySuite bsps, BlocksMapUpdateInfo collectedBlocks, final List<INode> removedINodes, List<Long> removedUCFiles)
 specifier|public
 name|void
 name|destroyAndCollectBlocks
@@ -1197,6 +1205,12 @@ argument_list|<
 name|INode
 argument_list|>
 name|removedINodes
+parameter_list|,
+name|List
+argument_list|<
+name|Long
+argument_list|>
+name|removedUCFiles
 parameter_list|)
 block|{
 if|if
@@ -1218,6 +1232,8 @@ argument_list|,
 name|collectedBlocks
 argument_list|,
 name|removedINodes
+argument_list|,
+name|removedUCFiles
 argument_list|)
 expr_stmt|;
 block|}
@@ -2293,7 +2309,7 @@ return|;
 block|}
 annotation|@
 name|Override
-DECL|method|cleanSubtree (BlockStoragePolicySuite bsps, final int snapshot, int prior, final BlocksMapUpdateInfo collectedBlocks, final List<INode> removedINodes)
+DECL|method|cleanSubtree ( BlockStoragePolicySuite bsps, final int snapshot, int prior, final BlocksMapUpdateInfo collectedBlocks, final List<INode> removedINodes, List<Long> removedUCFiles)
 specifier|public
 name|QuotaCounts
 name|cleanSubtree
@@ -2318,6 +2334,12 @@ argument_list|<
 name|INode
 argument_list|>
 name|removedINodes
+parameter_list|,
+name|List
+argument_list|<
+name|Long
+argument_list|>
+name|removedUCFiles
 parameter_list|)
 block|{
 comment|// since WithName node resides in deleted list acting as a snapshot copy,
@@ -2402,6 +2424,8 @@ argument_list|,
 name|collectedBlocks
 argument_list|,
 name|removedINodes
+argument_list|,
+name|removedUCFiles
 argument_list|)
 decl_stmt|;
 name|INodeReference
@@ -2479,7 +2503,7 @@ return|;
 block|}
 annotation|@
 name|Override
-DECL|method|destroyAndCollectBlocks (BlockStoragePolicySuite bsps, BlocksMapUpdateInfo collectedBlocks, final List<INode> removedINodes)
+DECL|method|destroyAndCollectBlocks ( BlockStoragePolicySuite bsps, BlocksMapUpdateInfo collectedBlocks, final List<INode> removedINodes, List<Long> removedUCFiles)
 specifier|public
 name|void
 name|destroyAndCollectBlocks
@@ -2496,6 +2520,12 @@ argument_list|<
 name|INode
 argument_list|>
 name|removedINodes
+parameter_list|,
+name|List
+argument_list|<
+name|Long
+argument_list|>
+name|removedUCFiles
 parameter_list|)
 block|{
 name|int
@@ -2524,6 +2554,8 @@ argument_list|,
 name|collectedBlocks
 argument_list|,
 name|removedINodes
+argument_list|,
+name|removedUCFiles
 argument_list|)
 expr_stmt|;
 block|}
@@ -2600,6 +2632,8 @@ argument_list|,
 name|collectedBlocks
 argument_list|,
 name|removedINodes
+argument_list|,
+name|removedUCFiles
 argument_list|)
 decl_stmt|;
 name|INodeReference
@@ -2820,7 +2854,7 @@ expr_stmt|;
 block|}
 annotation|@
 name|Override
-DECL|method|cleanSubtree (BlockStoragePolicySuite bsps, int snapshot, int prior, BlocksMapUpdateInfo collectedBlocks, List<INode> removedINodes)
+DECL|method|cleanSubtree ( BlockStoragePolicySuite bsps, int snapshot, int prior, BlocksMapUpdateInfo collectedBlocks, List<INode> removedINodes, List<Long> removedUCFiles)
 specifier|public
 name|QuotaCounts
 name|cleanSubtree
@@ -2842,6 +2876,12 @@ argument_list|<
 name|INode
 argument_list|>
 name|removedINodes
+parameter_list|,
+name|List
+argument_list|<
+name|Long
+argument_list|>
+name|removedUCFiles
 parameter_list|)
 block|{
 if|if
@@ -2889,6 +2929,8 @@ argument_list|,
 name|collectedBlocks
 argument_list|,
 name|removedINodes
+argument_list|,
+name|removedUCFiles
 argument_list|)
 expr_stmt|;
 return|return
@@ -2973,6 +3015,8 @@ argument_list|,
 name|collectedBlocks
 argument_list|,
 name|removedINodes
+argument_list|,
+name|removedUCFiles
 argument_list|)
 return|;
 block|}
@@ -2980,7 +3024,7 @@ block|}
 comment|/**      * {@inheritDoc}      *<br/>      * To destroy a DstReference node, we first remove its link with the       * referred node. If the reference number of the referred node is<= 0, we       * destroy the subtree of the referred node. Otherwise, we clean the       * referred node's subtree and delete everything created after the last       * rename operation, i.e., everything outside of the scope of the prior       * WithName nodes.      */
 annotation|@
 name|Override
-DECL|method|destroyAndCollectBlocks (BlockStoragePolicySuite bsps, BlocksMapUpdateInfo collectedBlocks, final List<INode> removedINodes)
+DECL|method|destroyAndCollectBlocks ( BlockStoragePolicySuite bsps, BlocksMapUpdateInfo collectedBlocks, final List<INode> removedINodes, List<Long> removedUCFiles)
 specifier|public
 name|void
 name|destroyAndCollectBlocks
@@ -2997,6 +3041,12 @@ argument_list|<
 name|INode
 argument_list|>
 name|removedINodes
+parameter_list|,
+name|List
+argument_list|<
+name|Long
+argument_list|>
+name|removedUCFiles
 parameter_list|)
 block|{
 if|if
@@ -3019,6 +3069,8 @@ argument_list|,
 name|collectedBlocks
 argument_list|,
 name|removedINodes
+argument_list|,
+name|removedUCFiles
 argument_list|)
 expr_stmt|;
 block|}
@@ -3121,6 +3173,8 @@ argument_list|,
 name|collectedBlocks
 argument_list|,
 name|removedINodes
+argument_list|,
+name|removedUCFiles
 argument_list|)
 expr_stmt|;
 block|}
@@ -3170,6 +3224,8 @@ argument_list|,
 name|collectedBlocks
 argument_list|,
 name|removedINodes
+argument_list|,
+name|removedUCFiles
 argument_list|)
 expr_stmt|;
 block|}

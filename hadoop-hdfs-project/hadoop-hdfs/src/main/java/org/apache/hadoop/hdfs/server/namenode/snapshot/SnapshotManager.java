@@ -1022,7 +1022,7 @@ name|snapshotName
 argument_list|)
 return|;
 block|}
-comment|/**    * Delete a snapshot for a snapshottable directory    * @param snapshotName Name of the snapshot to be deleted    * @param collectedBlocks Used to collect information to update blocksMap     * @throws IOException    */
+comment|/**    * Delete a snapshot for a snapshottable directory    * @param snapshotName Name of the snapshot to be deleted    * @param collectedBlocks Used to collect information to update blocksMap    * @throws IOException    */
 DECL|method|deleteSnapshot (final INodesInPath iip, final String snapshotName, BlocksMapUpdateInfo collectedBlocks, final List<INode> removedINodes)
 specifier|public
 name|void
