@@ -264,7 +264,7 @@ name|yarn
 operator|.
 name|util
 operator|.
-name|Clock
+name|ControlledClock
 import|;
 end_import
 
@@ -324,51 +324,6 @@ name|TestFSAppAttempt
 extends|extends
 name|FairSchedulerTestBase
 block|{
-DECL|class|MockClock
-specifier|private
-class|class
-name|MockClock
-implements|implements
-name|Clock
-block|{
-DECL|field|time
-specifier|private
-name|long
-name|time
-init|=
-literal|0
-decl_stmt|;
-annotation|@
-name|Override
-DECL|method|getTime ()
-specifier|public
-name|long
-name|getTime
-parameter_list|()
-block|{
-return|return
-name|time
-return|;
-block|}
-DECL|method|tick (int seconds)
-specifier|public
-name|void
-name|tick
-parameter_list|(
-name|int
-name|seconds
-parameter_list|)
-block|{
-name|time
-operator|=
-name|time
-operator|+
-name|seconds
-operator|*
-literal|1000
-expr_stmt|;
-block|}
-block|}
 annotation|@
 name|Before
 DECL|method|setup ()
@@ -827,11 +782,11 @@ argument_list|(
 literal|1
 argument_list|)
 expr_stmt|;
-name|MockClock
+name|ControlledClock
 name|clock
 init|=
 operator|new
-name|MockClock
+name|ControlledClock
 argument_list|()
 decl_stmt|;
 name|scheduler
@@ -921,7 +876,7 @@ expr_stmt|;
 comment|// after 4 seconds should remain node local
 name|clock
 operator|.
-name|tick
+name|tickSec
 argument_list|(
 literal|4
 argument_list|)
@@ -952,7 +907,7 @@ expr_stmt|;
 comment|// after 6 seconds should switch to rack local
 name|clock
 operator|.
-name|tick
+name|tickSec
 argument_list|(
 literal|2
 argument_list|)
@@ -1030,7 +985,7 @@ expr_stmt|;
 comment|// Now escalate again to rack-local, then to off-switch
 name|clock
 operator|.
-name|tick
+name|tickSec
 argument_list|(
 literal|6
 argument_list|)
@@ -1060,7 +1015,7 @@ argument_list|)
 expr_stmt|;
 name|clock
 operator|.
-name|tick
+name|tickSec
 argument_list|(
 literal|7
 argument_list|)

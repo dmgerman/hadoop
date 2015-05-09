@@ -754,24 +754,6 @@ name|server
 operator|.
 name|resourcemanager
 operator|.
-name|ResourceManager
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|yarn
-operator|.
-name|server
-operator|.
-name|resourcemanager
-operator|.
 name|resource
 operator|.
 name|ResourceType
@@ -1323,6 +1305,38 @@ operator|.
 name|utils
 operator|.
 name|BuilderUtils
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|util
+operator|.
+name|ControlledClock
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|util
+operator|.
+name|SystemClock
 import|;
 end_import
 
@@ -10528,11 +10542,11 @@ argument_list|,
 literal|"false"
 argument_list|)
 expr_stmt|;
-name|MockClock
+name|ControlledClock
 name|clock
 init|=
 operator|new
-name|MockClock
+name|ControlledClock
 argument_list|()
 decl_stmt|;
 name|scheduler
@@ -11268,7 +11282,7 @@ expr_stmt|;
 comment|// Pretend 15 seconds have passed
 name|clock
 operator|.
-name|tick
+name|tickSec
 argument_list|(
 literal|15
 argument_list|)
@@ -11446,7 +11460,7 @@ expr_stmt|;
 comment|// Pretend 15 seconds have passed
 name|clock
 operator|.
-name|tick
+name|tickSec
 argument_list|(
 literal|15
 argument_list|)
@@ -11683,11 +11697,11 @@ argument_list|,
 literal|"false"
 argument_list|)
 expr_stmt|;
-name|MockClock
+name|ControlledClock
 name|clock
 init|=
 operator|new
-name|MockClock
+name|ControlledClock
 argument_list|()
 decl_stmt|;
 name|scheduler
@@ -12017,7 +12031,7 @@ expr_stmt|;
 comment|// Let 11 sec pass
 name|clock
 operator|.
-name|tick
+name|tickSec
 argument_list|(
 literal|11
 argument_list|)
@@ -12117,11 +12131,11 @@ argument_list|,
 name|ALLOC_FILE
 argument_list|)
 expr_stmt|;
-name|MockClock
+name|ControlledClock
 name|clock
 init|=
 operator|new
-name|MockClock
+name|ControlledClock
 argument_list|()
 decl_stmt|;
 name|scheduler
@@ -12849,7 +12863,7 @@ comment|// After minSharePreemptionTime has passed, they should want to preempt 
 comment|// share.
 name|clock
 operator|.
-name|tick
+name|tickSec
 argument_list|(
 literal|6
 argument_list|)
@@ -12903,7 +12917,7 @@ argument_list|()
 expr_stmt|;
 name|clock
 operator|.
-name|tick
+name|tickSec
 argument_list|(
 literal|6
 argument_list|)
@@ -12971,11 +12985,11 @@ argument_list|,
 name|ALLOC_FILE
 argument_list|)
 expr_stmt|;
-name|MockClock
+name|ControlledClock
 name|clock
 init|=
 operator|new
-name|MockClock
+name|ControlledClock
 argument_list|()
 decl_stmt|;
 name|scheduler
@@ -13821,7 +13835,7 @@ argument_list|()
 expr_stmt|;
 name|clock
 operator|.
-name|tick
+name|tickSec
 argument_list|(
 literal|6
 argument_list|)
@@ -13894,7 +13908,7 @@ argument_list|()
 expr_stmt|;
 name|clock
 operator|.
-name|tick
+name|tickSec
 argument_list|(
 literal|5
 argument_list|)
@@ -13967,7 +13981,7 @@ argument_list|()
 expr_stmt|;
 name|clock
 operator|.
-name|tick
+name|tickSec
 argument_list|(
 literal|5
 argument_list|)
@@ -14040,7 +14054,7 @@ argument_list|()
 expr_stmt|;
 name|clock
 operator|.
-name|tick
+name|tickSec
 argument_list|(
 literal|5
 argument_list|)
@@ -14113,7 +14127,7 @@ argument_list|()
 expr_stmt|;
 name|clock
 operator|.
-name|tick
+name|tickSec
 argument_list|(
 literal|5
 argument_list|)
@@ -14186,7 +14200,7 @@ argument_list|()
 expr_stmt|;
 name|clock
 operator|.
-name|tick
+name|tickSec
 argument_list|(
 literal|5
 argument_list|)
@@ -24632,11 +24646,11 @@ argument_list|,
 name|ALLOC_FILE
 argument_list|)
 expr_stmt|;
-name|MockClock
+name|ControlledClock
 name|clock
 init|=
 operator|new
-name|MockClock
+name|ControlledClock
 argument_list|()
 decl_stmt|;
 name|scheduler
@@ -24796,7 +24810,7 @@ argument_list|)
 expr_stmt|;
 name|clock
 operator|.
-name|tick
+name|tickSec
 argument_list|(
 literal|10
 argument_list|)
@@ -24832,7 +24846,7 @@ argument_list|)
 expr_stmt|;
 name|clock
 operator|.
-name|tick
+name|tickSec
 argument_list|(
 literal|10
 argument_list|)
@@ -24868,7 +24882,7 @@ argument_list|)
 expr_stmt|;
 name|clock
 operator|.
-name|tick
+name|tickSec
 argument_list|(
 literal|10
 argument_list|)
@@ -24904,7 +24918,7 @@ argument_list|)
 expr_stmt|;
 name|clock
 operator|.
-name|tick
+name|tickSec
 argument_list|(
 literal|10
 argument_list|)
@@ -24940,7 +24954,7 @@ argument_list|)
 expr_stmt|;
 name|clock
 operator|.
-name|tick
+name|tickSec
 argument_list|(
 literal|10
 argument_list|)
@@ -26002,11 +26016,11 @@ argument_list|,
 literal|10
 argument_list|)
 expr_stmt|;
-name|MockClock
+name|ControlledClock
 name|clock
 init|=
 operator|new
-name|MockClock
+name|ControlledClock
 argument_list|()
 decl_stmt|;
 name|scheduler
@@ -26316,7 +26330,7 @@ expr_stmt|;
 comment|// Wait for few clock ticks
 name|clock
 operator|.
-name|tick
+name|tickSec
 argument_list|(
 literal|5
 argument_list|)

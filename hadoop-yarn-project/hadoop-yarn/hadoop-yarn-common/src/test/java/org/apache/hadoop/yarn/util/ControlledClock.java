@@ -40,6 +40,25 @@ specifier|final
 name|Clock
 name|actualClock
 decl_stmt|;
+comment|// Convenience for getting a controlled clock with overridden time
+DECL|method|ControlledClock ()
+specifier|public
+name|ControlledClock
+parameter_list|()
+block|{
+name|this
+argument_list|(
+operator|new
+name|SystemClock
+argument_list|()
+argument_list|)
+expr_stmt|;
+name|setTime
+argument_list|(
+literal|0
+argument_list|)
+expr_stmt|;
+block|}
 DECL|method|ControlledClock (Clock actualClock)
 specifier|public
 name|ControlledClock
@@ -83,6 +102,59 @@ name|time
 operator|=
 operator|-
 literal|1
+expr_stmt|;
+block|}
+DECL|method|tickSec (int seconds)
+specifier|public
+specifier|synchronized
+name|void
+name|tickSec
+parameter_list|(
+name|int
+name|seconds
+parameter_list|)
+block|{
+name|tickMsec
+argument_list|(
+name|seconds
+operator|*
+literal|1000L
+argument_list|)
+expr_stmt|;
+block|}
+DECL|method|tickMsec (long millisec)
+specifier|public
+specifier|synchronized
+name|void
+name|tickMsec
+parameter_list|(
+name|long
+name|millisec
+parameter_list|)
+block|{
+if|if
+condition|(
+name|time
+operator|==
+operator|-
+literal|1
+condition|)
+block|{
+throw|throw
+operator|new
+name|IllegalStateException
+argument_list|(
+literal|"ControlledClock setTime should be "
+operator|+
+literal|"called before incrementing time"
+argument_list|)
+throw|;
+block|}
+name|time
+operator|=
+name|time
+operator|+
+name|millisec
 expr_stmt|;
 block|}
 annotation|@

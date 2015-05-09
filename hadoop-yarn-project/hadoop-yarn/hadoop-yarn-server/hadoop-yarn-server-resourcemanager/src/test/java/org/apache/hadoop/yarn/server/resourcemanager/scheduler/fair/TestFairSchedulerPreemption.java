@@ -204,6 +204,22 @@ name|yarn
 operator|.
 name|util
 operator|.
+name|ControlledClock
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|util
+operator|.
 name|resource
 operator|.
 name|Resources
@@ -339,7 +355,7 @@ argument_list|()
 decl_stmt|;
 DECL|field|clock
 specifier|private
-name|MockClock
+name|ControlledClock
 name|clock
 decl_stmt|;
 DECL|class|StubbedFairScheduler
@@ -465,7 +481,7 @@ expr_stmt|;
 name|clock
 operator|=
 operator|new
-name|MockClock
+name|ControlledClock
 argument_list|()
 expr_stmt|;
 block|}
@@ -901,7 +917,7 @@ argument_list|()
 expr_stmt|;
 name|clock
 operator|.
-name|tick
+name|tickSec
 argument_list|(
 literal|6
 argument_list|)
@@ -982,7 +998,7 @@ argument_list|()
 expr_stmt|;
 name|clock
 operator|.
-name|tick
+name|tickSec
 argument_list|(
 literal|6
 argument_list|)
@@ -1064,7 +1080,7 @@ argument_list|()
 expr_stmt|;
 name|clock
 operator|.
-name|tick
+name|tickSec
 argument_list|(
 literal|6
 argument_list|)
