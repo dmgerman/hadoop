@@ -144,7 +144,7 @@ name|SERVICE_CATALOG_SWIFT
 init|=
 literal|"swift"
 decl_stmt|;
-comment|/**    *  section in the JSON catalog provided after auth listing the cloudfiles;    * this is an alternate catalog entry name    *  {@value}    */
+comment|/**    *  section in the JSON catalog provided after auth listing the cloud files;    * this is an alternate catalog entry name    *  {@value}    */
 DECL|field|SERVICE_CATALOG_CLOUD_FILES
 specifier|public
 specifier|static
@@ -383,7 +383,7 @@ name|FS_SWIFT
 operator|+
 literal|".requestsize"
 decl_stmt|;
-comment|/**    * The default reqeuest size for reads: {@value}    */
+comment|/**    * The default request size for reads: {@value}    */
 DECL|field|DEFAULT_SWIFT_REQUEST_SIZE
 specifier|public
 specifier|static

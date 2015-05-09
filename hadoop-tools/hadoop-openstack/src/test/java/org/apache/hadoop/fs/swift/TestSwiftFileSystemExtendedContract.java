@@ -774,7 +774,7 @@ argument_list|,
 name|lower
 argument_list|)
 expr_stmt|;
-comment|//verifEy the length of the upper file hasn't changed
+comment|//verify the length of the upper file hasn't changed
 name|assertExists
 argument_list|(
 literal|"Original upper case file "

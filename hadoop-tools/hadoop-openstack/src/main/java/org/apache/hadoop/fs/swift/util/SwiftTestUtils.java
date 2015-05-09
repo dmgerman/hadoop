@@ -637,7 +637,7 @@ name|len
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Read the file and convert to a byte dataaset    * @param fs filesystem    * @param path path to read from    * @param len length of data to read    * @return the bytes    * @throws IOException IO problems    */
+comment|/**    * Read the file and convert to a byte dataset    * @param fs filesystem    * @param path path to read from    * @param len length of data to read    * @return the bytes    * @throws IOException IO problems    */
 DECL|method|readDataset (FileSystem fs, Path path, int len)
 specifier|public
 specifier|static
@@ -701,7 +701,7 @@ return|return
 name|dest
 return|;
 block|}
-comment|/**    * Assert that tthe array src[0..len] and dest[] are equal    * @param src source data    * @param dest actual    * @param len length of bytes to compare    */
+comment|/**    * Assert that the array src[0..len] and dest[] are equal    * @param src source data    * @param dest actual    * @param len length of bytes to compare    */
 DECL|method|compareByteArrays (byte[] src, byte[] dest, int len)
 specifier|public
 specifier|static
@@ -1982,7 +1982,7 @@ block|{
 comment|//this is expected
 block|}
 block|}
-comment|/**    * Assert that a FileSystem.listStatus on a dir finds the subdir/child entry    * @param fs filesystem    * @param dir directory to scan    * @param subdir full path to look for    * @throws IOException IO probles    */
+comment|/**    * Assert that a FileSystem.listStatus on a dir finds the subdir/child entry    * @param fs filesystem    * @param dir directory to scan    * @param subdir full path to look for    * @throws IOException IO problems    */
 DECL|method|assertListStatusFinds (FileSystem fs, Path dir, Path subdir)
 specifier|public
 specifier|static

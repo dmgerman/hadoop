@@ -42,7 +42,7 @@ specifier|final
 name|HttpInputStreamWithRelease
 name|inputStream
 decl_stmt|;
-comment|/**    * build a body response    * @param inputStream input stream from the operatin    * @param contentLength length of content; may be -1 for "don't know"    */
+comment|/**    * build a body response    * @param inputStream input stream from the operation    * @param contentLength length of content; may be -1 for "don't know"    */
 DECL|method|HttpBodyContent (HttpInputStreamWithRelease inputStream, long contentLength)
 specifier|public
 name|HttpBodyContent

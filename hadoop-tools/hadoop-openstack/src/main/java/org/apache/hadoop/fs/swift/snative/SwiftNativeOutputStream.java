@@ -1072,7 +1072,7 @@ operator|==
 literal|0
 condition|)
 block|{
-comment|//no remainder -downgrade to noop
+comment|//no remainder -downgrade to no-op
 return|return;
 block|}
 comment|//write the new data out to the backup stream

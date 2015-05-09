@@ -103,7 +103,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * Test swift-specific directory logic.  * This class is HDFS-1 compatible; its designed to be subclases by something  * with HDFS2 extensions  */
+comment|/**  * Test swift-specific directory logic.  * This class is HDFS-1 compatible; its designed to be subclasses by something  * with HDFS2 extensions  */
 end_comment
 
 begin_class

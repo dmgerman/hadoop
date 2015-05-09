@@ -262,7 +262,7 @@ operator|==
 literal|0
 return|;
 block|}
-comment|/**    * Predicate: Is a swift object referring to the root direcory?    * @param swiftObject object to probe    * @return true iff the object refers to the root    */
+comment|/**    * Predicate: Is a swift object referring to the root directory?    * @param swiftObject object to probe    * @return true iff the object refers to the root    */
 DECL|method|isRootDir (SwiftObjectPath swiftObject)
 specifier|public
 specifier|static
@@ -433,7 +433,7 @@ name|partNumber
 argument_list|)
 return|;
 block|}
-comment|/**    * List a a path to string    * @param fileSystem filesystem    * @param path directory    * @return a listing of the filestatuses of elements in the directory, one    * to a line, precedeed by the full path of the directory    * @throws IOException connectivity problems    */
+comment|/**    * List a a path to string    * @param fileSystem filesystem    * @param path directory    * @return a listing of the filestatuses of elements in the directory, one    * to a line, preceded by the full path of the directory    * @throws IOException connectivity problems    */
 DECL|method|ls (FileSystem fileSystem, Path path)
 specifier|public
 specifier|static
@@ -521,7 +521,7 @@ literal|"\n"
 argument_list|)
 return|;
 block|}
-comment|/**    * Take an array of filestats and convert to a string (prefixed w/ a [01] counter    * @param stats array of stats    * @param separator separator after every entry    * @return a stringified set    */
+comment|/**    * Take an array of filestatus and convert to a string (prefixed w/ a [01] counter    * @param stats array of stats    * @param separator separator after every entry    * @return a stringified set    */
 DECL|method|fileStatsToString (FileStatus[] stats, String separator)
 specifier|public
 specifier|static
@@ -598,7 +598,7 @@ name|toString
 argument_list|()
 return|;
 block|}
-comment|/**    * Verify that the basic args to a read operation are valid;    * throws an exception if not -with meaningful text includeing    * @param buffer destination buffer    * @param off offset    * @param len number of bytes to read    * @throws NullPointerException null buffer    * @throws IndexOutOfBoundsException on any invalid range.    */
+comment|/**    * Verify that the basic args to a read operation are valid;    * throws an exception if not -with meaningful text including    * @param buffer destination buffer    * @param off offset    * @param len number of bytes to read    * @throws NullPointerException null buffer    * @throws IndexOutOfBoundsException on any invalid range.    */
 DECL|method|validateReadArgs (byte[] buffer, int off, int len)
 specifier|public
 specifier|static

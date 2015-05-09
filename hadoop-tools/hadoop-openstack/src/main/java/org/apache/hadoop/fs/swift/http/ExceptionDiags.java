@@ -111,7 +111,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * Variant of Hadoop Netutils exception wrapping with URI awareness and  * available in branch-1 too.  */
+comment|/**  * Variant of Hadoop NetUtils exception wrapping with URI awareness and  * available in branch-1 too.  */
 end_comment
 
 begin_class

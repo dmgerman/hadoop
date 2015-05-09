@@ -894,7 +894,7 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-comment|/**    * Get a string describing the outcome of a rename, by listing the dest    * path and its parent along with some covering text    * @param src source patj    * @param dst dest path    * @return a string for logs and exceptions    * @throws IOException IO problems    */
+comment|/**    * Get a string describing the outcome of a rename, by listing the dest    * path and its parent along with some covering text    * @param src source path    * @param dst dest path    * @return a string for logs and exceptions    * @throws IOException IO problems    */
 DECL|method|getRenameOutcome (Path src, Path dst)
 specifier|private
 name|String

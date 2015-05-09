@@ -2365,7 +2365,7 @@ expr_stmt|;
 block|}
 else|else
 block|{
-comment|//outcome #1 dest it's a file: fail if differeent
+comment|//outcome #1 dest it's a file: fail if different
 if|if
 condition|(
 operator|!
@@ -3606,7 +3606,7 @@ argument_list|)
 argument_list|)
 throw|;
 block|}
-comment|//delete the entries. including ourself.
+comment|//delete the entries. including ourselves.
 for|for
 control|(
 name|FileStatus

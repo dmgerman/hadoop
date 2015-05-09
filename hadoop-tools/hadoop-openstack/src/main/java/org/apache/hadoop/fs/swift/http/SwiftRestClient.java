@@ -931,7 +931,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * This implements the client-side of the Swift REST API  *  * The core actions put, get and query data in the Swift object store,  * after authenticationg the client.  *  *<b>Logging:</b>  *  * Logging at DEBUG level displays detail about the actions of this  * client, including HTTP requests and responses -excluding authentication  * details.  */
+comment|/**  * This implements the client-side of the Swift REST API  *  * The core actions put, get and query data in the Swift object store,  * after authenticating the client.  *  *<b>Logging:</b>  *  * Logging at DEBUG level displays detail about the actions of this  * client, including HTTP requests and responses -excluding authentication  * details.  */
 end_comment
 
 begin_class
@@ -5625,7 +5625,7 @@ return|return
 name|entity
 return|;
 block|}
-comment|/**    * Converts Swift path to URI to make request.    * This is public for unit testing    *    * @param path path to object    * @param endpointURI damain url e.g. http://domain.com    * @return valid URI for object    * @throws SwiftException    */
+comment|/**    * Converts Swift path to URI to make request.    * This is public for unit testing    *    * @param path path to object    * @param endpointURI domain url e.g. http://domain.com    * @return valid URI for object    * @throws SwiftException    */
 DECL|method|pathToURI (SwiftObjectPath path, URI endpointURI)
 specifier|public
 specifier|static
@@ -5869,7 +5869,7 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Execute a method in a new HttpClient instance.    * If the auth failed, authenticate then retry the method.    *    * @param method methot to exec    * @param<M> Method type    * @return the status code    * @throws IOException on any failure    */
+comment|/**    * Execute a method in a new HttpClient instance.    * If the auth failed, authenticate then retry the method.    *    * @param method method to exec    * @param<M> Method type    * @return the status code    * @throws IOException on any failure    */
 DECL|method|exec (M method)
 specifier|private
 parameter_list|<

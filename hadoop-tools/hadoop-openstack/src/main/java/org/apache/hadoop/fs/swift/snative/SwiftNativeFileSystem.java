@@ -1232,7 +1232,7 @@ argument_list|)
 block|}
 return|;
 block|}
-comment|/**    * Create the parent directories.    * As an optimization, the entire hierarchy of parent    * directories is<i>Not</i> polled. Instead    * the tree is walked up from the last to the first,    * creating directories until one that exists is found.    *    * This strategy means if a file is created in an existing directory,    * one quick poll sufficies.    *    * There is a big assumption here: that all parent directories of an existing    * directory also exists.    * @param path path to create.    * @param permission to apply to files    * @return true if the operation was successful    * @throws IOException on a problem    */
+comment|/**    * Create the parent directories.    * As an optimization, the entire hierarchy of parent    * directories is<i>Not</i> polled. Instead    * the tree is walked up from the last to the first,    * creating directories until one that exists is found.    *    * This strategy means if a file is created in an existing directory,    * one quick poll suffices.    *    * There is a big assumption here: that all parent directories of an existing    * directory also exists.    * @param path path to create.    * @param permission to apply to files    * @return true if the operation was successful    * @throws IOException on a problem    */
 annotation|@
 name|Override
 DECL|method|mkdirs (Path path, FsPermission permission)
@@ -1946,7 +1946,7 @@ name|readBlockSize
 argument_list|)
 return|;
 block|}
-comment|/**    * Low-level operation to also set the block size for this operation    * @param path       the file name to open    * @param bufferSize the size of the buffer to be used.    * @param readBlockSize how big should the read blockk/buffer size be?    * @return the input stream    * @throws FileNotFoundException if the file is not found    * @throws IOException any IO problem    */
+comment|/**    * Low-level operation to also set the block size for this operation    * @param path       the file name to open    * @param bufferSize the size of the buffer to be used.    * @param readBlockSize how big should the read block/buffer size be?    * @return the input stream    * @throws FileNotFoundException if the file is not found    * @throws IOException any IO problem    */
 DECL|method|open (Path path, int bufferSize, long readBlockSize)
 specifier|public
 name|FSDataInputStream

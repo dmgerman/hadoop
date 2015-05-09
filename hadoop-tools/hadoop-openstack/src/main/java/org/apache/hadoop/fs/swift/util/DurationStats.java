@@ -77,7 +77,7 @@ name|reset
 argument_list|()
 expr_stmt|;
 block|}
-comment|/**    * construct from anothr stats entry;    * all value are copied.    * @param that the source statistics    */
+comment|/**    * construct from another stats entry;    * all value are copied.    * @param that the source statistics    */
 DECL|method|DurationStats (DurationStats that)
 specifier|public
 name|DurationStats
