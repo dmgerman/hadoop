@@ -1098,30 +1098,22 @@ return|return
 name|s
 return|;
 block|}
-comment|/**    * Remove the snapshot with the given name from {@link #snapshotsByNames},    * and delete all the corresponding DirectoryDiff.    *    * @param snapshotRoot The directory where we take snapshots    * @param snapshotName The name of the snapshot to be removed    * @param collectedBlocks Used to collect information to update blocksMap    * @return The removed snapshot. Null if no snapshot with the given name    *         exists.    */
-DECL|method|removeSnapshot (BlockStoragePolicySuite bsps, INodeDirectory snapshotRoot, String snapshotName, BlocksMapUpdateInfo collectedBlocks, final List<INode> removedINodes)
+comment|/**    * Remove the snapshot with the given name from {@link #snapshotsByNames},    * and delete all the corresponding DirectoryDiff.    *    * @param reclaimContext records blocks and inodes that need to be reclaimed    * @param snapshotRoot The directory where we take snapshots    * @param snapshotName The name of the snapshot to be removed    * @return The removed snapshot. Null if no snapshot with the given name    *         exists.    */
+DECL|method|removeSnapshot ( INode.ReclaimContext reclaimContext, INodeDirectory snapshotRoot, String snapshotName)
 specifier|public
 name|Snapshot
 name|removeSnapshot
 parameter_list|(
-name|BlockStoragePolicySuite
-name|bsps
+name|INode
+operator|.
+name|ReclaimContext
+name|reclaimContext
 parameter_list|,
 name|INodeDirectory
 name|snapshotRoot
 parameter_list|,
 name|String
 name|snapshotName
-parameter_list|,
-name|BlocksMapUpdateInfo
-name|collectedBlocks
-parameter_list|,
-specifier|final
-name|List
-argument_list|<
-name|INode
-argument_list|>
-name|removedINodes
 parameter_list|)
 throws|throws
 name|SnapshotException
@@ -1203,7 +1195,7 @@ name|snapshotRoot
 operator|.
 name|cleanSubtree
 argument_list|(
-name|bsps
+name|reclaimContext
 argument_list|,
 name|snapshot
 operator|.
@@ -1211,12 +1203,6 @@ name|getId
 argument_list|()
 argument_list|,
 name|prior
-argument_list|,
-name|collectedBlocks
-argument_list|,
-name|removedINodes
-argument_list|,
-literal|null
 argument_list|)
 decl_stmt|;
 name|INodeDirectory

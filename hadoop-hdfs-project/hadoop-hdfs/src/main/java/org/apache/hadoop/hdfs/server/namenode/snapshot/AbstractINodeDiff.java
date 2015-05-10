@@ -433,14 +433,15 @@ block|}
 block|}
 block|}
 comment|/** Combine the posterior diff and collect blocks for deletion. */
-DECL|method|combinePosteriorAndCollectBlocks ( final BlockStoragePolicySuite bsps, final N currentINode, final D posterior, final BlocksMapUpdateInfo collectedBlocks, final List<INode> removedINodes)
+DECL|method|combinePosteriorAndCollectBlocks ( INode.ReclaimContext reclaimContext, final N currentINode, final D posterior)
 specifier|abstract
 name|QuotaCounts
 name|combinePosteriorAndCollectBlocks
 parameter_list|(
-specifier|final
-name|BlockStoragePolicySuite
-name|bsps
+name|INode
+operator|.
+name|ReclaimContext
+name|reclaimContext
 parameter_list|,
 specifier|final
 name|N
@@ -449,43 +450,22 @@ parameter_list|,
 specifier|final
 name|D
 name|posterior
-parameter_list|,
-specifier|final
-name|BlocksMapUpdateInfo
-name|collectedBlocks
-parameter_list|,
-specifier|final
-name|List
-argument_list|<
-name|INode
-argument_list|>
-name|removedINodes
 parameter_list|)
 function_decl|;
-comment|/**    * Delete and clear self.    * @param bsps The block storage policy suite used to retrieve storage policy    * @param currentINode The inode where the deletion happens.    * @param collectedBlocks Used to collect blocks for deletion.    * @param removedINodes INodes removed    * @return quota usage delta    */
-DECL|method|destroyDiffAndCollectBlocks ( final BlockStoragePolicySuite bsps, final N currentINode, final BlocksMapUpdateInfo collectedBlocks, final List<INode> removedINodes)
+comment|/**    * Delete and clear self.    * @param reclaimContext blocks and inodes that need to be reclaimed    * @param currentINode The inode where the deletion happens.    *    * @return usage delta    */
+DECL|method|destroyDiffAndCollectBlocks ( INode.ReclaimContext reclaimContext, final N currentINode)
 specifier|abstract
 name|QuotaCounts
 name|destroyDiffAndCollectBlocks
 parameter_list|(
-specifier|final
-name|BlockStoragePolicySuite
-name|bsps
+name|INode
+operator|.
+name|ReclaimContext
+name|reclaimContext
 parameter_list|,
 specifier|final
 name|N
 name|currentINode
-parameter_list|,
-specifier|final
-name|BlocksMapUpdateInfo
-name|collectedBlocks
-parameter_list|,
-specifier|final
-name|List
-argument_list|<
-name|INode
-argument_list|>
-name|removedINodes
 parameter_list|)
 function_decl|;
 annotation|@

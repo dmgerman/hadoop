@@ -1286,16 +1286,15 @@ argument_list|()
 argument_list|)
 throw|;
 block|}
-comment|/**    * Clean the subtree under this inode and collect the blocks from the descents    * for further block deletion/update. The current inode can either resides in    * the current tree or be stored as a snapshot copy.    *     *<pre>    * In general, we have the following rules.     * 1. When deleting a file/directory in the current tree, we have different     * actions according to the type of the node to delete.     *     * 1.1 The current inode (this) is an {@link INodeFile}.     * 1.1.1 If {@code prior} is null, there is no snapshot taken on ancestors     * before. Thus we simply destroy (i.e., to delete completely, no need to save     * snapshot copy) the current INode and collect its blocks for further     * cleansing.    * 1.1.2 Else do nothing since the current INode will be stored as a snapshot    * copy.    *     * 1.2 The current inode is an {@link INodeDirectory}.    * 1.2.1 If {@code prior} is null, there is no snapshot taken on ancestors     * before. Similarly, we destroy the whole subtree and collect blocks.    * 1.2.2 Else do nothing with the current INode. Recursively clean its     * children.    *     * 1.3 The current inode is a file with snapshot.    * Call recordModification(..) to capture the current states.    * Mark the INode as deleted.    *     * 1.4 The current inode is an {@link INodeDirectory} with snapshot feature.    * Call recordModification(..) to capture the current states.     * Destroy files/directories created after the latest snapshot     * (i.e., the inodes stored in the created list of the latest snapshot).    * Recursively clean remaining children.     *    * 2. When deleting a snapshot.    * 2.1 To clean {@link INodeFile}: do nothing.    * 2.2 To clean {@link INodeDirectory}: recursively clean its children.    * 2.3 To clean INodeFile with snapshot: delete the corresponding snapshot in    * its diff list.    * 2.4 To clean {@link INodeDirectory} with snapshot: delete the corresponding     * snapshot in its diff list. Recursively clean its children.    *</pre>    *    * @param bsps    *          block storage policy suite to calculate intended storage type usage    * @param snapshotId    *          The id of the snapshot to delete.    *          {@link Snapshot#CURRENT_STATE_ID} means to delete the current    *          file/directory.    * @param priorSnapshotId    *          The id of the latest snapshot before the to-be-deleted snapshot.    *          When deleting a current inode, this parameter captures the latest    *          snapshot.    * @param collectedBlocks    *          blocks collected from the descents for further block    *          deletion/update will be added to the given map.    * @param removedINodes    *          INodes collected from the descents for further cleaning up of    *          inodeMap    * @param removedUCFiles    *          INodes whose leases need to be released    * @return quota usage delta when deleting a snapshot    */
-DECL|method|cleanSubtree ( final BlockStoragePolicySuite bsps, final int snapshotId, int priorSnapshotId, BlocksMapUpdateInfo collectedBlocks, List<INode> removedINodes, List<Long> removedUCFiles)
+comment|/**    * Clean the subtree under this inode and collect the blocks from the descents    * for further block deletion/update. The current inode can either resides in    * the current tree or be stored as a snapshot copy.    *     *<pre>    * In general, we have the following rules.     * 1. When deleting a file/directory in the current tree, we have different     * actions according to the type of the node to delete.     *     * 1.1 The current inode (this) is an {@link INodeFile}.     * 1.1.1 If {@code prior} is null, there is no snapshot taken on ancestors     * before. Thus we simply destroy (i.e., to delete completely, no need to save     * snapshot copy) the current INode and collect its blocks for further     * cleansing.    * 1.1.2 Else do nothing since the current INode will be stored as a snapshot    * copy.    *     * 1.2 The current inode is an {@link INodeDirectory}.    * 1.2.1 If {@code prior} is null, there is no snapshot taken on ancestors     * before. Similarly, we destroy the whole subtree and collect blocks.    * 1.2.2 Else do nothing with the current INode. Recursively clean its     * children.    *     * 1.3 The current inode is a file with snapshot.    * Call recordModification(..) to capture the current states.    * Mark the INode as deleted.    *     * 1.4 The current inode is an {@link INodeDirectory} with snapshot feature.    * Call recordModification(..) to capture the current states.     * Destroy files/directories created after the latest snapshot     * (i.e., the inodes stored in the created list of the latest snapshot).    * Recursively clean remaining children.     *    * 2. When deleting a snapshot.    * 2.1 To clean {@link INodeFile}: do nothing.    * 2.2 To clean {@link INodeDirectory}: recursively clean its children.    * 2.3 To clean INodeFile with snapshot: delete the corresponding snapshot in    * its diff list.    * 2.4 To clean {@link INodeDirectory} with snapshot: delete the corresponding     * snapshot in its diff list. Recursively clean its children.    *</pre>    *    * @param reclaimContext    *        Record blocks and inodes that need to be reclaimed.    * @param snapshotId    *        The id of the snapshot to delete.    *        {@link Snapshot#CURRENT_STATE_ID} means to delete the current    *        file/directory.    * @param priorSnapshotId    *        The id of the latest snapshot before the to-be-deleted snapshot.    *        When deleting a current inode, this parameter captures the latest    *        snapshot.    * @return quota usage delta when deleting a snapshot    */
+DECL|method|cleanSubtree ( ReclaimContext reclaimContext, final int snapshotId, int priorSnapshotId)
 specifier|public
 specifier|abstract
 name|QuotaCounts
 name|cleanSubtree
 parameter_list|(
-specifier|final
-name|BlockStoragePolicySuite
-name|bsps
+name|ReclaimContext
+name|reclaimContext
 parameter_list|,
 specifier|final
 name|int
@@ -1303,47 +1302,17 @@ name|snapshotId
 parameter_list|,
 name|int
 name|priorSnapshotId
-parameter_list|,
-name|BlocksMapUpdateInfo
-name|collectedBlocks
-parameter_list|,
-name|List
-argument_list|<
-name|INode
-argument_list|>
-name|removedINodes
-parameter_list|,
-name|List
-argument_list|<
-name|Long
-argument_list|>
-name|removedUCFiles
 parameter_list|)
 function_decl|;
-comment|/**    * Destroy self and clear everything! If the INode is a file, this method    * collects its blocks for further block deletion. If the INode is a    * directory, the method goes down the subtree and collects blocks from the    * descents, and clears its parent/children references as well. The method    * also clears the diff list if the INode contains snapshot diff list.    * @param bsps    *          block storage policy suite to calculate intended storage type usage    *          This is needed because INodeReference#destroyAndCollectBlocks() needs    *          to call INode#cleanSubtree(), which calls INode#computeQuotaUsage().    * @param collectedBlocks    *          blocks collected from the descents for further block    *          deletion/update will be added to this map.    * @param removedINodes    *          INodes collected from the descents for further cleaning up of    *          inodeMap    * @param removedUCFiles    *          INodes whose leases need to be released    */
-DECL|method|destroyAndCollectBlocks ( BlockStoragePolicySuite bsps, BlocksMapUpdateInfo collectedBlocks, List<INode> removedINodes, List<Long> removedUCFiles)
+comment|/**    * Destroy self and clear everything! If the INode is a file, this method    * collects its blocks for further block deletion. If the INode is a    * directory, the method goes down the subtree and collects blocks from the    * descents, and clears its parent/children references as well. The method    * also clears the diff list if the INode contains snapshot diff list.    *    * @param reclaimContext    *        Record blocks and inodes that need to be reclaimed.    */
+DECL|method|destroyAndCollectBlocks (ReclaimContext reclaimContext)
 specifier|public
 specifier|abstract
 name|void
 name|destroyAndCollectBlocks
 parameter_list|(
-name|BlockStoragePolicySuite
-name|bsps
-parameter_list|,
-name|BlocksMapUpdateInfo
-name|collectedBlocks
-parameter_list|,
-name|List
-argument_list|<
-name|INode
-argument_list|>
-name|removedINodes
-parameter_list|,
-name|List
-argument_list|<
-name|Long
-argument_list|>
-name|removedUCFiles
+name|ReclaimContext
+name|reclaimContext
 parameter_list|)
 function_decl|;
 comment|/** Compute {@link ContentSummary}. Blocking call */
@@ -2681,6 +2650,113 @@ name|snapshotId
 argument_list|)
 argument_list|)
 expr_stmt|;
+block|}
+comment|/**    * Context object to record blocks and inodes that need to be reclaimed    */
+DECL|class|ReclaimContext
+specifier|public
+specifier|static
+class|class
+name|ReclaimContext
+block|{
+DECL|field|bsps
+specifier|protected
+specifier|final
+name|BlockStoragePolicySuite
+name|bsps
+decl_stmt|;
+DECL|field|collectedBlocks
+specifier|protected
+specifier|final
+name|BlocksMapUpdateInfo
+name|collectedBlocks
+decl_stmt|;
+DECL|field|removedINodes
+specifier|protected
+specifier|final
+name|List
+argument_list|<
+name|INode
+argument_list|>
+name|removedINodes
+decl_stmt|;
+DECL|field|removedUCFiles
+specifier|protected
+specifier|final
+name|List
+argument_list|<
+name|Long
+argument_list|>
+name|removedUCFiles
+decl_stmt|;
+comment|/**      * @param bsps      *          block storage policy suite to calculate intended storage type      *          usage      * @param collectedBlocks      *          blocks collected from the descents for further block      *          deletion/update will be added to the given map.      * @param removedINodes  *          INodes collected from the descents for further cleaning up of      * @param removedUCFiles      *      files that the NN need to remove the leases      */
+DECL|method|ReclaimContext ( BlockStoragePolicySuite bsps, BlocksMapUpdateInfo collectedBlocks, List<INode> removedINodes, List<Long> removedUCFiles)
+specifier|public
+name|ReclaimContext
+parameter_list|(
+name|BlockStoragePolicySuite
+name|bsps
+parameter_list|,
+name|BlocksMapUpdateInfo
+name|collectedBlocks
+parameter_list|,
+name|List
+argument_list|<
+name|INode
+argument_list|>
+name|removedINodes
+parameter_list|,
+name|List
+argument_list|<
+name|Long
+argument_list|>
+name|removedUCFiles
+parameter_list|)
+block|{
+name|this
+operator|.
+name|bsps
+operator|=
+name|bsps
+expr_stmt|;
+name|this
+operator|.
+name|collectedBlocks
+operator|=
+name|collectedBlocks
+expr_stmt|;
+name|this
+operator|.
+name|removedINodes
+operator|=
+name|removedINodes
+expr_stmt|;
+name|this
+operator|.
+name|removedUCFiles
+operator|=
+name|removedUCFiles
+expr_stmt|;
+block|}
+DECL|method|storagePolicySuite ()
+specifier|public
+name|BlockStoragePolicySuite
+name|storagePolicySuite
+parameter_list|()
+block|{
+return|return
+name|bsps
+return|;
+block|}
+DECL|method|collectedBlocks ()
+specifier|public
+name|BlocksMapUpdateInfo
+name|collectedBlocks
+parameter_list|()
+block|{
+return|return
+name|collectedBlocks
+return|;
+block|}
 block|}
 comment|/**    * Information used for updating the blocksMap when deleting files.    */
 DECL|class|BlocksMapUpdateInfo
