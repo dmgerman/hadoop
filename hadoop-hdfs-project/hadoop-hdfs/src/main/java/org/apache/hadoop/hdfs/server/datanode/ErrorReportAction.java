@@ -64,6 +64,20 @@ name|DatanodeRegistration
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|ipc
+operator|.
+name|RemoteException
+import|;
+end_import
+
 begin_comment
 comment|/**  * A ErrorReportAction is an instruction issued by BPOfferService to   * BPServiceActor about a particular block encapsulated in errorMessage.  */
 end_comment
@@ -137,6 +151,32 @@ argument_list|,
 name|errorCode
 argument_list|,
 name|errorMessage
+argument_list|)
+expr_stmt|;
+block|}
+catch|catch
+parameter_list|(
+name|RemoteException
+name|re
+parameter_list|)
+block|{
+name|DataNode
+operator|.
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"trySendErrorReport encountered RemoteException  "
+operator|+
+literal|"errorMessage: "
+operator|+
+name|errorMessage
+operator|+
+literal|"  errorCode: "
+operator|+
+name|errorCode
+argument_list|,
+name|re
 argument_list|)
 expr_stmt|;
 block|}

@@ -126,6 +126,20 @@ name|DatanodeRegistration
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|ipc
+operator|.
+name|RemoteException
+import|;
+end_import
+
 begin_comment
 comment|/**  * ReportBadBlockAction is an instruction issued by {{BPOfferService}} to  * {{BPServiceActor}} to report bad block to namenode  *  */
 end_comment
@@ -267,6 +281,28 @@ operator|.
 name|reportBadBlocks
 argument_list|(
 name|locatedBlock
+argument_list|)
+expr_stmt|;
+block|}
+catch|catch
+parameter_list|(
+name|RemoteException
+name|re
+parameter_list|)
+block|{
+name|DataNode
+operator|.
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"reportBadBlock encountered RemoteException for "
+operator|+
+literal|"block:  "
+operator|+
+name|block
+argument_list|,
+name|re
 argument_list|)
 expr_stmt|;
 block|}
