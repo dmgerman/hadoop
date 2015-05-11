@@ -312,7 +312,9 @@ name|length
 operator|:
 literal|"Index is out of bound"
 assert|;
-return|return
+name|BlockInfo
+name|info
+init|=
 operator|(
 name|BlockInfo
 operator|)
@@ -324,6 +326,38 @@ literal|3
 operator|+
 literal|1
 index|]
+decl_stmt|;
+assert|assert
+name|info
+operator|==
+literal|null
+operator|||
+name|info
+operator|.
+name|getClass
+argument_list|()
+operator|.
+name|getName
+argument_list|()
+operator|.
+name|startsWith
+argument_list|(
+name|BlockInfo
+operator|.
+name|class
+operator|.
+name|getName
+argument_list|()
+argument_list|)
+operator|:
+literal|"BlockInfo is expected at "
+operator|+
+name|index
+operator|*
+literal|3
+assert|;
+return|return
+name|info
 return|;
 block|}
 DECL|method|getNext (int index)
@@ -360,7 +394,9 @@ name|length
 operator|:
 literal|"Index is out of bound"
 assert|;
-return|return
+name|BlockInfo
+name|info
+init|=
 operator|(
 name|BlockInfo
 operator|)
@@ -372,6 +408,38 @@ literal|3
 operator|+
 literal|2
 index|]
+decl_stmt|;
+assert|assert
+name|info
+operator|==
+literal|null
+operator|||
+name|info
+operator|.
+name|getClass
+argument_list|()
+operator|.
+name|getName
+argument_list|()
+operator|.
+name|startsWith
+argument_list|(
+name|BlockInfo
+operator|.
+name|class
+operator|.
+name|getName
+argument_list|()
+argument_list|)
+operator|:
+literal|"BlockInfo is expected at "
+operator|+
+name|index
+operator|*
+literal|3
+assert|;
+return|return
+name|info
 return|;
 block|}
 DECL|method|setStorageInfo (int index, DatanodeStorageInfo storage)

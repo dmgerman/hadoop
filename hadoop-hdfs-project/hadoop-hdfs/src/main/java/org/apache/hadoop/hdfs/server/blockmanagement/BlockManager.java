@@ -11795,10 +11795,13 @@ argument_list|()
 decl_stmt|;
 name|removeStoredBlock
 argument_list|(
+name|getStoredBlock
+argument_list|(
 name|rbi
 operator|.
 name|getBlock
 argument_list|()
+argument_list|)
 argument_list|,
 name|storageInfo
 operator|.
@@ -15043,7 +15046,10 @@ return|return;
 block|}
 name|removeStoredBlock
 argument_list|(
+name|getStoredBlock
+argument_list|(
 name|block
+argument_list|)
 argument_list|,
 name|node
 argument_list|)
