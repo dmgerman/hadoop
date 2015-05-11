@@ -1969,15 +1969,6 @@ literal|" ] | \n\t["
 operator|+
 name|StartupOption
 operator|.
-name|FINALIZE
-operator|.
-name|getName
-argument_list|()
-operator|+
-literal|"] | \n\t["
-operator|+
-name|StartupOption
-operator|.
 name|IMPORT
 operator|.
 name|getName
@@ -4135,7 +4126,7 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-comment|/**    * Start NameNode.    *<p>    * The name-node can be started with one of the following startup options:    *<ul>     *<li>{@link StartupOption#REGULAR REGULAR} - normal name node startup</li>    *<li>{@link StartupOption#FORMAT FORMAT} - format name node</li>    *<li>{@link StartupOption#BACKUP BACKUP} - start backup node</li>    *<li>{@link StartupOption#CHECKPOINT CHECKPOINT} - start checkpoint node</li>    *<li>{@link StartupOption#UPGRADE UPGRADE} - start the cluster      *<li>{@link StartupOption#UPGRADEONLY UPGRADEONLY} - upgrade the cluster      * upgrade and create a snapshot of the current file system state</li>     *<li>{@link StartupOption#RECOVER RECOVERY} - recover name node    * metadata</li>    *<li>{@link StartupOption#ROLLBACK ROLLBACK} - roll the      *            cluster back to the previous state</li>    *<li>{@link StartupOption#FINALIZE FINALIZE} - finalize     *            previous upgrade</li>    *<li>{@link StartupOption#IMPORT IMPORT} - import checkpoint</li>    *</ul>    * The option is passed via configuration field:     *<tt>dfs.namenode.startup</tt>    *     * The conf will be modified to reflect the actual ports on which     * the NameNode is up and running if the user passes the port as    *<code>zero</code> in the conf.    *     * @param conf  confirguration    * @throws IOException    */
+comment|/**    * Start NameNode.    *<p>    * The name-node can be started with one of the following startup options:    *<ul>     *<li>{@link StartupOption#REGULAR REGULAR} - normal name node startup</li>    *<li>{@link StartupOption#FORMAT FORMAT} - format name node</li>    *<li>{@link StartupOption#BACKUP BACKUP} - start backup node</li>    *<li>{@link StartupOption#CHECKPOINT CHECKPOINT} - start checkpoint node</li>    *<li>{@link StartupOption#UPGRADE UPGRADE} - start the cluster      *<li>{@link StartupOption#UPGRADEONLY UPGRADEONLY} - upgrade the cluster      * upgrade and create a snapshot of the current file system state</li>     *<li>{@link StartupOption#RECOVER RECOVERY} - recover name node    * metadata</li>    *<li>{@link StartupOption#ROLLBACK ROLLBACK} - roll the      *            cluster back to the previous state</li>    *<li>{@link StartupOption#IMPORT IMPORT} - import checkpoint</li>    *</ul>    * The option is passed via configuration field:     *<tt>dfs.namenode.startup</tt>    *     * The conf will be modified to reflect the actual ports on which     * the NameNode is up and running if the user passes the port as    *<code>zero</code> in the conf.    *     * @param conf  confirguration    * @throws IOException    */
 DECL|method|NameNode (Configuration conf)
 specifier|public
 name|NameNode
@@ -6620,29 +6611,6 @@ if|if
 condition|(
 name|StartupOption
 operator|.
-name|FINALIZE
-operator|.
-name|getName
-argument_list|()
-operator|.
-name|equalsIgnoreCase
-argument_list|(
-name|cmd
-argument_list|)
-condition|)
-block|{
-name|startOpt
-operator|=
-name|StartupOption
-operator|.
-name|FINALIZE
-expr_stmt|;
-block|}
-elseif|else
-if|if
-condition|(
-name|StartupOption
-operator|.
 name|IMPORT
 operator|.
 name|getName
@@ -7455,37 +7423,6 @@ expr_stmt|;
 return|return
 literal|null
 return|;
-block|}
-case|case
-name|FINALIZE
-case|:
-block|{
-name|System
-operator|.
-name|err
-operator|.
-name|println
-argument_list|(
-literal|"Use of the argument '"
-operator|+
-name|StartupOption
-operator|.
-name|FINALIZE
-operator|+
-literal|"' is no longer supported. To finalize an upgrade, start the NN "
-operator|+
-literal|" and then run `hdfs dfsadmin -finalizeUpgrade'"
-argument_list|)
-expr_stmt|;
-name|terminate
-argument_list|(
-literal|1
-argument_list|)
-expr_stmt|;
-return|return
-literal|null
-return|;
-comment|// avoid javac warning
 block|}
 case|case
 name|ROLLBACK

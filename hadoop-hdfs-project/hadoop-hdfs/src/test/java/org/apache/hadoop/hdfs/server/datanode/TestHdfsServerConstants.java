@@ -223,17 +223,6 @@ argument_list|)
 expr_stmt|;
 name|verifyStartupOptionResult
 argument_list|(
-literal|"FINALIZE"
-argument_list|,
-name|StartupOption
-operator|.
-name|FINALIZE
-argument_list|,
-literal|null
-argument_list|)
-expr_stmt|;
-name|verifyStartupOptionResult
-argument_list|(
 literal|"ROLLINGUPGRADE"
 argument_list|,
 name|StartupOption

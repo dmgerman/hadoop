@@ -694,12 +694,6 @@ argument_list|(
 literal|"-rollback"
 argument_list|)
 block|,
-DECL|enumConstant|FINALIZE
-name|FINALIZE
-argument_list|(
-literal|"-finalize"
-argument_list|)
-block|,
 DECL|enumConstant|ROLLINGUPGRADE
 name|ROLLINGUPGRADE
 argument_list|(
