@@ -282,6 +282,24 @@ name|mapreduce
 operator|.
 name|v2
 operator|.
+name|app
+operator|.
+name|TaskAttemptFinishingMonitor
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|mapreduce
+operator|.
+name|v2
+operator|.
 name|hs
 operator|.
 name|HistoryFileManager
@@ -1842,6 +1860,18 @@ name|getNMHostname
 parameter_list|()
 block|{
 comment|// bogus - Not Required
+return|return
+literal|null
+return|;
+block|}
+annotation|@
+name|Override
+DECL|method|getTaskAttemptFinishingMonitor ()
+specifier|public
+name|TaskAttemptFinishingMonitor
+name|getTaskAttemptFinishingMonitor
+parameter_list|()
+block|{
 return|return
 literal|null
 return|;

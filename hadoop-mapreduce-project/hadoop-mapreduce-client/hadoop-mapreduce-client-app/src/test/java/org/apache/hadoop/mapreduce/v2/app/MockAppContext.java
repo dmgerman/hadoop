@@ -684,6 +684,18 @@ return|return
 literal|null
 return|;
 block|}
+annotation|@
+name|Override
+DECL|method|getTaskAttemptFinishingMonitor ()
+specifier|public
+name|TaskAttemptFinishingMonitor
+name|getTaskAttemptFinishingMonitor
+parameter_list|()
+block|{
+return|return
+literal|null
+return|;
+block|}
 block|}
 end_class
 

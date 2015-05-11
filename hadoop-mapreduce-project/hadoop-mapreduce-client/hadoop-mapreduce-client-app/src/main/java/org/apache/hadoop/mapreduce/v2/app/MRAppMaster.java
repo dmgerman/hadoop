@@ -2331,6 +2331,17 @@ specifier|private
 name|AMPreemptionPolicy
 name|preemptionPolicy
 decl_stmt|;
+comment|// After a task attempt completes from TaskUmbilicalProtocol's point of view,
+comment|// it will be transitioned to finishing state.
+comment|// taskAttemptFinishingMonitor is just a timer for attempts in finishing
+comment|// state. If the attempt stays in finishing state for too long,
+comment|// taskAttemptFinishingMonitor will notify the attempt via TA_TIMED_OUT
+comment|// event.
+DECL|field|taskAttemptFinishingMonitor
+specifier|private
+name|TaskAttemptFinishingMonitor
+name|taskAttemptFinishingMonitor
+decl_stmt|;
 DECL|field|job
 specifier|private
 name|Job
@@ -2572,6 +2583,28 @@ name|applicationAttemptId
 argument_list|)
 expr_stmt|;
 block|}
+DECL|method|createTaskAttemptFinishingMonitor ( EventHandler eventHandler)
+specifier|protected
+name|TaskAttemptFinishingMonitor
+name|createTaskAttemptFinishingMonitor
+parameter_list|(
+name|EventHandler
+name|eventHandler
+parameter_list|)
+block|{
+name|TaskAttemptFinishingMonitor
+name|monitor
+init|=
+operator|new
+name|TaskAttemptFinishingMonitor
+argument_list|(
+name|eventHandler
+argument_list|)
+decl_stmt|;
+return|return
+name|monitor
+return|;
+block|}
 annotation|@
 name|Override
 DECL|method|serviceInit (final Configuration conf)
@@ -2608,12 +2641,39 @@ argument_list|(
 name|conf
 argument_list|)
 expr_stmt|;
+name|dispatcher
+operator|=
+name|createDispatcher
+argument_list|()
+expr_stmt|;
+name|addIfService
+argument_list|(
+name|dispatcher
+argument_list|)
+expr_stmt|;
+name|taskAttemptFinishingMonitor
+operator|=
+name|createTaskAttemptFinishingMonitor
+argument_list|(
+name|dispatcher
+operator|.
+name|getEventHandler
+argument_list|()
+argument_list|)
+expr_stmt|;
+name|addIfService
+argument_list|(
+name|taskAttemptFinishingMonitor
+argument_list|)
+expr_stmt|;
 name|context
 operator|=
 operator|new
 name|RunningAppContext
 argument_list|(
 name|conf
+argument_list|,
+name|taskAttemptFinishingMonitor
 argument_list|)
 expr_stmt|;
 comment|// Job name is the same as the app name util we support DAG of jobs
@@ -3008,16 +3068,6 @@ condition|(
 name|errorHappenedShutDown
 condition|)
 block|{
-name|dispatcher
-operator|=
-name|createDispatcher
-argument_list|()
-expr_stmt|;
-name|addIfService
-argument_list|(
-name|dispatcher
-argument_list|)
-expr_stmt|;
 name|NoopEventHandler
 name|eater
 init|=
@@ -3193,16 +3243,6 @@ operator|=
 name|createOutputCommitter
 argument_list|(
 name|conf
-argument_list|)
-expr_stmt|;
-name|dispatcher
-operator|=
-name|createDispatcher
-argument_list|()
-expr_stmt|;
-name|addIfService
-argument_list|(
-name|dispatcher
 argument_list|)
 expr_stmt|;
 comment|//service to handle requests from JobClient
@@ -5696,12 +5736,21 @@ specifier|final
 name|ClientToAMTokenSecretManager
 name|clientToAMTokenSecretManager
 decl_stmt|;
-DECL|method|RunningAppContext (Configuration config)
+DECL|field|taskAttemptFinishingMonitor
+specifier|private
+specifier|final
+name|TaskAttemptFinishingMonitor
+name|taskAttemptFinishingMonitor
+decl_stmt|;
+DECL|method|RunningAppContext (Configuration config, TaskAttemptFinishingMonitor taskAttemptFinishingMonitor)
 specifier|public
 name|RunningAppContext
 parameter_list|(
 name|Configuration
 name|config
+parameter_list|,
+name|TaskAttemptFinishingMonitor
+name|taskAttemptFinishingMonitor
 parameter_list|)
 block|{
 name|this
@@ -5721,6 +5770,12 @@ name|appAttemptID
 argument_list|,
 literal|null
 argument_list|)
+expr_stmt|;
+name|this
+operator|.
+name|taskAttemptFinishingMonitor
+operator|=
+name|taskAttemptFinishingMonitor
 expr_stmt|;
 block|}
 annotation|@
@@ -5970,6 +6025,18 @@ parameter_list|()
 block|{
 return|return
 name|nmHost
+return|;
+block|}
+annotation|@
+name|Override
+DECL|method|getTaskAttemptFinishingMonitor ()
+specifier|public
+name|TaskAttemptFinishingMonitor
+name|getTaskAttemptFinishingMonitor
+parameter_list|()
+block|{
+return|return
+name|taskAttemptFinishingMonitor
 return|;
 block|}
 block|}

@@ -926,6 +926,20 @@ operator|.
 name|FAILED
 return|;
 block|}
+DECL|method|done ()
+specifier|public
+specifier|synchronized
+name|void
+name|done
+parameter_list|()
+block|{
+name|state
+operator|=
+name|ContainerState
+operator|.
+name|DONE
+expr_stmt|;
+block|}
 annotation|@
 name|SuppressWarnings
 argument_list|(
@@ -2113,6 +2127,15 @@ case|:
 name|c
 operator|.
 name|kill
+argument_list|()
+expr_stmt|;
+break|break;
+case|case
+name|CONTAINER_COMPLETED
+case|:
+name|c
+operator|.
+name|done
 argument_list|()
 expr_stmt|;
 break|break;

@@ -65,6 +65,38 @@ block|,
 DECL|enumConstant|COMMIT_PENDING
 name|COMMIT_PENDING
 block|,
+comment|// Transition into SUCCESS_FINISHING_CONTAINER
+comment|// After the attempt finishes successfully from
+comment|// TaskUmbilicalProtocol's point of view, it will transition to
+comment|// SUCCESS_FINISHING_CONTAINER state. That will give a chance for the
+comment|// container to exit by itself. In the transition,
+comment|// the attempt will notify the task via T_ATTEMPT_SUCCEEDED so that
+comment|// from job point of view, the task is considered succeeded.
+comment|// Transition out of SUCCESS_FINISHING_CONTAINER
+comment|// The attempt will transition from SUCCESS_FINISHING_CONTAINER to
+comment|// SUCCESS_CONTAINER_CLEANUP if it doesn't receive container exit
+comment|// notification within TASK_EXIT_TIMEOUT;
+comment|// Or it will transition to SUCCEEDED if it receives container exit
+comment|// notification from YARN.
+DECL|enumConstant|SUCCESS_FINISHING_CONTAINER
+name|SUCCESS_FINISHING_CONTAINER
+block|,
+comment|// Transition into FAIL_FINISHING_CONTAINER
+comment|// After the attempt fails from
+comment|// TaskUmbilicalProtocol's point of view, it will transition to
+comment|// FAIL_FINISHING_CONTAINER state. That will give a chance for the container
+comment|// to exit by itself. In the transition,
+comment|// the attempt will notify the task via T_ATTEMPT_FAILED so that
+comment|// from job point of view, the task is considered failed.
+comment|// Transition out of FAIL_FINISHING_CONTAINER
+comment|// The attempt will transition from FAIL_FINISHING_CONTAINER to
+comment|// FAIL_CONTAINER_CLEANUP if it doesn't receive container exit
+comment|// notification within TASK_EXIT_TIMEOUT;
+comment|// Or it will transition to FAILED if it receives container exit
+comment|// notification from YARN.
+DECL|enumConstant|FAIL_FINISHING_CONTAINER
+name|FAIL_FINISHING_CONTAINER
+block|,
 DECL|enumConstant|SUCCESS_CONTAINER_CLEANUP
 name|SUCCESS_CONTAINER_CLEANUP
 block|,

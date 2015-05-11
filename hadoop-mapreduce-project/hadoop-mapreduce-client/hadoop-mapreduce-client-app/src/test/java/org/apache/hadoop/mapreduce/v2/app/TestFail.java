@@ -1708,6 +1708,16 @@ argument_list|)
 argument_list|)
 expr_stmt|;
 break|break;
+case|case
+name|CONTAINER_COMPLETED
+case|:
+name|super
+operator|.
+name|handle
+argument_list|(
+name|event
+argument_list|)
+expr_stmt|;
 block|}
 block|}
 annotation|@

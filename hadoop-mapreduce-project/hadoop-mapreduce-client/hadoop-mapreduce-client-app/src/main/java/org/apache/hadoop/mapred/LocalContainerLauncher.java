@@ -1426,6 +1426,32 @@ argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
+elseif|else
+if|if
+condition|(
+name|event
+operator|.
+name|getType
+argument_list|()
+operator|==
+name|EventType
+operator|.
+name|CONTAINER_COMPLETED
+condition|)
+block|{
+name|LOG
+operator|.
+name|debug
+argument_list|(
+literal|"Container completed "
+operator|+
+name|event
+operator|.
+name|toString
+argument_list|()
+argument_list|)
+expr_stmt|;
+block|}
 else|else
 block|{
 name|LOG
@@ -1689,6 +1715,28 @@ literal|0
 operator|)
 argument_list|,
 name|localMapFiles
+argument_list|)
+expr_stmt|;
+comment|// In non-uber mode, TA gets TA_CONTAINER_COMPLETED from MRAppMaster
+comment|// as part of NM -> RM -> AM notification route.
+comment|// In uber mode, given the task run inside the MRAppMaster container,
+comment|// we have to simulate the notification.
+name|context
+operator|.
+name|getEventHandler
+argument_list|()
+operator|.
+name|handle
+argument_list|(
+operator|new
+name|TaskAttemptEvent
+argument_list|(
+name|attemptID
+argument_list|,
+name|TaskAttemptEventType
+operator|.
+name|TA_CONTAINER_COMPLETED
+argument_list|)
 argument_list|)
 expr_stmt|;
 block|}

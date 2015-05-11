@@ -285,6 +285,11 @@ name|String
 name|getNMHostname
 parameter_list|()
 function_decl|;
+DECL|method|getTaskAttemptFinishingMonitor ()
+name|TaskAttemptFinishingMonitor
+name|getTaskAttemptFinishingMonitor
+parameter_list|()
+function_decl|;
 block|}
 end_interface
 

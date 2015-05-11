@@ -2760,7 +2760,7 @@ name|taskAttemptId
 argument_list|,
 name|TaskAttemptEventType
 operator|.
-name|TA_FAILMSG
+name|TA_FAILMSG_BY_CLIENT
 argument_list|)
 argument_list|)
 expr_stmt|;

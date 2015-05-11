@@ -72,6 +72,14 @@ name|CONTAINER_REMOTE_LAUNCH
 block|,
 DECL|enumConstant|CONTAINER_REMOTE_CLEANUP
 name|CONTAINER_REMOTE_CLEANUP
+block|,
+comment|// When TaskAttempt receives TA_CONTAINER_COMPLETED,
+comment|// it will notify ContainerLauncher so that the container can be removed
+comment|// from ContainerLauncher's launched containers list
+comment|// Otherwise, ContainerLauncher will try to stop the containers as part of
+comment|// serviceStop.
+DECL|enumConstant|CONTAINER_COMPLETED
+name|CONTAINER_COMPLETED
 block|}
 block|}
 end_interface

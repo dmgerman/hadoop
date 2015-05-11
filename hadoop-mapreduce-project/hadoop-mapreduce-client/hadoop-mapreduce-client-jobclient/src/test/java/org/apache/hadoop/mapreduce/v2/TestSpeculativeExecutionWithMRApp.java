@@ -883,7 +883,7 @@ argument_list|()
 argument_list|,
 name|TaskAttemptEventType
 operator|.
-name|TA_CONTAINER_CLEANED
+name|TA_CONTAINER_COMPLETED
 argument_list|)
 argument_list|)
 expr_stmt|;
@@ -1361,7 +1361,7 @@ argument_list|()
 argument_list|,
 name|TaskAttemptEventType
 operator|.
-name|TA_CONTAINER_CLEANED
+name|TA_CONTAINER_COMPLETED
 argument_list|)
 argument_list|)
 expr_stmt|;
@@ -1734,7 +1734,7 @@ argument_list|()
 argument_list|,
 name|TaskAttemptEventType
 operator|.
-name|TA_CONTAINER_CLEANED
+name|TA_CONTAINER_COMPLETED
 argument_list|)
 argument_list|)
 expr_stmt|;
