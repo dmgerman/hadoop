@@ -216,7 +216,7 @@ specifier|private
 name|HistoryServerStateStoreService
 name|store
 decl_stmt|;
-comment|/**    * Create a secret manager    * @param delegationKeyUpdateInterval the number of seconds for rolling new    *        secret keys.    * @param delegationTokenMaxLifetime the maximum lifetime of the delegation    *        tokens    * @param delegationTokenRenewInterval how often the tokens must be renewed    * @param delegationTokenRemoverScanInterval how often the tokens are scanned    *        for expired tokens    * @param store history server state store for persisting state    */
+comment|/**    * Create a secret manager    * @param delegationKeyUpdateInterval the number of milliseconds for rolling    *        new secret keys.    * @param delegationTokenMaxLifetime the maximum lifetime of the delegation    *        tokens in milliseconds    * @param delegationTokenRenewInterval how often the tokens must be renewed    *        in milliseconds    * @param delegationTokenRemoverScanInterval how often the tokens are scanned    *        for expired tokens in milliseconds    * @param store history server state store for persisting state    */
 DECL|method|JHSDelegationTokenSecretManager (long delegationKeyUpdateInterval, long delegationTokenMaxLifetime, long delegationTokenRenewInterval, long delegationTokenRemoverScanInterval, HistoryServerStateStoreService store)
 specifier|public
 name|JHSDelegationTokenSecretManager
