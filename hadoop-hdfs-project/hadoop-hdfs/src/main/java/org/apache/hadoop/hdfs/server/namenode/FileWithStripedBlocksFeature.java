@@ -86,6 +86,24 @@ name|BlockInfoStriped
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|server
+operator|.
+name|blockmanagement
+operator|.
+name|BlockInfoStripedUnderConstruction
+import|;
+end_import
+
 begin_comment
 comment|/**  * Feature for file with striped blocks  */
 end_comment
@@ -354,8 +372,8 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-DECL|method|removeLastBlock (Block oldblock)
-name|boolean
+DECL|method|removeLastBlock ( Block oldblock)
+name|BlockInfoStripedUnderConstruction
 name|removeLastBlock
 parameter_list|(
 name|Block
@@ -376,7 +394,7 @@ literal|0
 condition|)
 block|{
 return|return
-literal|false
+literal|null
 return|;
 block|}
 name|int
@@ -403,9 +421,20 @@ argument_list|)
 condition|)
 block|{
 return|return
-literal|false
+literal|null
 return|;
 block|}
+name|BlockInfoStripedUnderConstruction
+name|uc
+init|=
+operator|(
+name|BlockInfoStripedUnderConstruction
+operator|)
+name|blocks
+index|[
+name|newSize
+index|]
+decl_stmt|;
 comment|//copy to a new list
 name|BlockInfoStriped
 index|[]
@@ -438,7 +467,7 @@ name|newlist
 argument_list|)
 expr_stmt|;
 return|return
-literal|true
+name|uc
 return|;
 block|}
 DECL|method|truncateStripedBlocks (int n)
