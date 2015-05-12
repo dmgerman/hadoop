@@ -1757,12 +1757,22 @@ block|}
 comment|// Now do the monitoring for the trackingContainers
 comment|// Check memory usage and kill any overflowing containers
 name|long
-name|vmemStillInUsage
+name|vmemUsageByAllContainers
 init|=
 literal|0
 decl_stmt|;
 name|long
-name|pmemStillInUsage
+name|pmemByAllContainers
+init|=
+literal|0
+decl_stmt|;
+name|long
+name|cpuUsagePercentPerCoreByAllContainers
+init|=
+literal|0
+decl_stmt|;
+name|long
+name|cpuUsageTotalCoresByAllContainers
 init|=
 literal|0
 decl_stmt|;
@@ -2328,6 +2338,24 @@ operator|.
 name|KILLED_EXCEEDED_PMEM
 expr_stmt|;
 block|}
+comment|// Accounting the total memory in usage for all containers
+name|vmemUsageByAllContainers
+operator|+=
+name|currentVmemUsage
+expr_stmt|;
+name|pmemByAllContainers
+operator|+=
+name|currentPmemUsage
+expr_stmt|;
+comment|// Accounting the total cpu usage for all containers
+name|cpuUsagePercentPerCoreByAllContainers
+operator|+=
+name|cpuUsagePercentPerCore
+expr_stmt|;
+name|cpuUsageTotalCoresByAllContainers
+operator|+=
+name|cpuUsagePercentPerCore
+expr_stmt|;
 if|if
 condition|(
 name|isMemoryOverLimit
@@ -2399,20 +2427,6 @@ name|pId
 argument_list|)
 expr_stmt|;
 block|}
-else|else
-block|{
-comment|// Accounting the total memory in usage for all containers that
-comment|// are still
-comment|// alive and within limits.
-name|vmemStillInUsage
-operator|+=
-name|currentVmemUsage
-expr_stmt|;
-name|pmemStillInUsage
-operator|+=
-name|currentPmemUsage
-expr_stmt|;
-block|}
 block|}
 catch|catch
 parameter_list|(
@@ -2435,6 +2449,38 @@ name|e
 argument_list|)
 expr_stmt|;
 block|}
+block|}
+if|if
+condition|(
+name|LOG
+operator|.
+name|isDebugEnabled
+argument_list|()
+condition|)
+block|{
+name|LOG
+operator|.
+name|debug
+argument_list|(
+literal|"Total Resource Usage stats in NM by all containers : "
+operator|+
+literal|"Virtual Memory= "
+operator|+
+name|vmemUsageByAllContainers
+operator|+
+literal|", Physical Memory= "
+operator|+
+name|pmemByAllContainers
+operator|+
+literal|", Total CPU usage= "
+operator|+
+name|cpuUsageTotalCoresByAllContainers
+operator|+
+literal|", Total CPU(% per core) usage"
+operator|+
+name|cpuUsagePercentPerCoreByAllContainers
+argument_list|)
+expr_stmt|;
 block|}
 try|try
 block|{
