@@ -698,7 +698,7 @@ name|util
 operator|.
 name|StripedBlockUtil
 operator|.
-name|StripedReadResult
+name|StripingChunkReadResult
 import|;
 end_import
 
@@ -2535,7 +2535,7 @@ condition|)
 block|{
 try|try
 block|{
-name|StripedReadResult
+name|StripingChunkReadResult
 name|result
 init|=
 name|StripedBlockUtil
@@ -2555,7 +2555,7 @@ name|result
 operator|.
 name|state
 operator|==
-name|StripedReadResult
+name|StripingChunkReadResult
 operator|.
 name|SUCCESSFUL
 condition|)
@@ -2602,7 +2602,7 @@ name|result
 operator|.
 name|state
 operator|==
-name|StripedReadResult
+name|StripingChunkReadResult
 operator|.
 name|FAILED
 condition|)
@@ -2647,7 +2647,7 @@ name|result
 operator|.
 name|state
 operator|==
-name|StripedReadResult
+name|StripingChunkReadResult
 operator|.
 name|TIMEOUT
 condition|)
