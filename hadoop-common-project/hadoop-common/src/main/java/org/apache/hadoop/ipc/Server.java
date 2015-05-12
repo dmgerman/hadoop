@@ -7490,24 +7490,6 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
-name|LOG
-operator|.
-name|debug
-argument_list|(
-literal|"Sending sasl message "
-operator|+
-name|message
-argument_list|)
-expr_stmt|;
-block|}
 name|setupResponse
 argument_list|(
 name|saslResponse

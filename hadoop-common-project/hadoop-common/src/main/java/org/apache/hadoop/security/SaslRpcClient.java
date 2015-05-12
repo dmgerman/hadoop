@@ -2101,24 +2101,6 @@ name|getMessageBytes
 argument_list|()
 argument_list|)
 decl_stmt|;
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
-name|LOG
-operator|.
-name|debug
-argument_list|(
-literal|"Received SASL message "
-operator|+
-name|saslMessage
-argument_list|)
-expr_stmt|;
-block|}
 comment|// handle sasl negotiation process
 name|RpcSaslProto
 operator|.
