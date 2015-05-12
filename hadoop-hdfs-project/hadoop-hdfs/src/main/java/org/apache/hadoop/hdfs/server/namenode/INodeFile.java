@@ -1852,10 +1852,10 @@ block|}
 annotation|@
 name|Override
 comment|// BlockCollection
-DECL|method|getBlockReplication ()
+DECL|method|getPreferredBlockReplication ()
 specifier|public
 name|short
-name|getBlockReplication
+name|getPreferredBlockReplication
 parameter_list|()
 block|{
 name|short
@@ -3596,7 +3596,7 @@ specifier|final
 name|short
 name|replication
 init|=
-name|getBlockReplication
+name|getPreferredBlockReplication
 argument_list|()
 decl_stmt|;
 for|for
@@ -4197,7 +4197,7 @@ argument_list|(
 operator|-
 name|truncatedBytes
 operator|*
-name|getBlockReplication
+name|getPreferredBlockReplication
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -4218,7 +4218,7 @@ name|bsps
 operator|.
 name|chooseStorageTypes
 argument_list|(
-name|getBlockReplication
+name|getPreferredBlockReplication
 argument_list|()
 argument_list|)
 decl_stmt|;

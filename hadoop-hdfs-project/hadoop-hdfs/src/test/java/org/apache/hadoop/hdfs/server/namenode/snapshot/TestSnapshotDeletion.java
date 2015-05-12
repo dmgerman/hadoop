@@ -5458,7 +5458,7 @@ name|REPLICATION_1
 argument_list|,
 name|nodeFile13
 operator|.
-name|getBlockReplication
+name|getPreferredBlockReplication
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -5500,7 +5500,7 @@ name|REPLICATION_1
 argument_list|,
 name|nodeFile12
 operator|.
-name|getBlockReplication
+name|getPreferredBlockReplication
 argument_list|()
 argument_list|)
 expr_stmt|;

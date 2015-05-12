@@ -2851,7 +2851,7 @@ argument_list|()
 argument_list|,
 name|fileINode
 operator|.
-name|getBlockReplication
+name|getPreferredBlockReplication
 argument_list|()
 argument_list|,
 literal|true
@@ -3084,7 +3084,7 @@ argument_list|()
 argument_list|,
 name|fileNode
 operator|.
-name|getBlockReplication
+name|getPreferredBlockReplication
 argument_list|()
 argument_list|,
 literal|true

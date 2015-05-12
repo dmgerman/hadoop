@@ -257,7 +257,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * This class tests the replication handling/calculation of snapshots. In  * particular, {@link INodeFile#getFileReplication()} and  * {@link INodeFile#getBlockReplication()} are tested to make sure  * the number of replication is calculated correctly with/without snapshots.  */
+comment|/**  * This class tests the replication handling/calculation of snapshots. In  * particular, {@link INodeFile#getFileReplication()} and  * {@link INodeFile#getPreferredBlockReplication()} are tested to make sure  * the number of replication is calculated correctly with/without snapshots.  */
 end_comment
 
 begin_class
@@ -447,7 +447,7 @@ argument_list|()
 expr_stmt|;
 block|}
 block|}
-comment|/**    * Check the replication of a given file. We test both    * {@link INodeFile#getFileReplication()} and    * {@link INodeFile#getBlockReplication()}.    *    * @param file The given file    * @param replication The expected replication number    * @param blockReplication The expected replication number for the block    * @throws Exception    */
+comment|/**    * Check the replication of a given file. We test both    * {@link INodeFile#getFileReplication()} and    * {@link INodeFile#getPreferredBlockReplication()}.    *    * @param file The given file    * @param replication The expected replication number    * @param blockReplication The expected replication number for the block    * @throws Exception    */
 DECL|method|checkFileReplication (Path file, short replication, short blockReplication)
 specifier|private
 name|void
@@ -488,7 +488,7 @@ argument_list|,
 name|fileReplication
 argument_list|)
 expr_stmt|;
-comment|// Check the correctness of getBlockReplication()
+comment|// Check the correctness of getPreferredBlockReplication()
 name|INode
 name|inode
 init|=
@@ -520,7 +520,7 @@ operator|)
 name|inode
 operator|)
 operator|.
-name|getBlockReplication
+name|getPreferredBlockReplication
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -667,7 +667,8 @@ parameter_list|)
 throws|throws
 name|Exception
 block|{
-comment|// First check the getBlockReplication for the INode of the currentFile
+comment|// First check the getPreferredBlockReplication for the INode of
+comment|// the currentFile
 specifier|final
 name|INodeFile
 name|inodeOfCurrentFile
@@ -683,7 +684,7 @@ name|expectedBlockRep
 argument_list|,
 name|inodeOfCurrentFile
 operator|.
-name|getBlockReplication
+name|getPreferredBlockReplication
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -728,14 +729,15 @@ name|asFile
 argument_list|()
 decl_stmt|;
 comment|// The replication number derived from the
-comment|// INodeFileWithLink#getBlockReplication should always == expectedBlockRep
+comment|// INodeFileWithLink#getPreferredBlockReplication should
+comment|// always == expectedBlockRep
 name|assertEquals
 argument_list|(
 name|expectedBlockRep
 argument_list|,
 name|ssInode
 operator|.
-name|getBlockReplication
+name|getPreferredBlockReplication
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -1119,14 +1121,15 @@ name|ss
 argument_list|)
 decl_stmt|;
 comment|// The replication number derived from the
-comment|// INodeFileWithLink#getBlockReplication should always == expectedBlockRep
+comment|// INodeFileWithLink#getPreferredBlockReplication should
+comment|// always == expectedBlockRep
 name|assertEquals
 argument_list|(
 name|REPLICATION
 argument_list|,
 name|ssInode
 operator|.
-name|getBlockReplication
+name|getPreferredBlockReplication
 argument_list|()
 argument_list|)
 expr_stmt|;

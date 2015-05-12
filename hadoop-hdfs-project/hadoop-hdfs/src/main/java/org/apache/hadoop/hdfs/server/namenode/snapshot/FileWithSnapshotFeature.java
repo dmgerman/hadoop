@@ -809,7 +809,7 @@ name|currentRepl
 init|=
 name|file
 operator|.
-name|getBlockReplication
+name|getPreferredBlockReplication
 argument_list|()
 decl_stmt|;
 if|if
@@ -842,7 +842,7 @@ argument_list|()
 operator|/
 name|file
 operator|.
-name|getBlockReplication
+name|getPreferredBlockReplication
 argument_list|()
 decl_stmt|;
 name|oldStoragespace

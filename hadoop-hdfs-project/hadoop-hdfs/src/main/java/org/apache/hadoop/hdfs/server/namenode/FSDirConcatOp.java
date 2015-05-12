@@ -942,7 +942,7 @@ name|targetRepl
 init|=
 name|target
 operator|.
-name|getBlockReplication
+name|getPreferredBlockReplication
 argument_list|()
 decl_stmt|;
 for|for
@@ -958,7 +958,7 @@ name|srcRepl
 init|=
 name|src
 operator|.
-name|getBlockReplication
+name|getPreferredBlockReplication
 argument_list|()
 decl_stmt|;
 name|long

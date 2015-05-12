@@ -1856,7 +1856,7 @@ literal|"No. of Expected Replica: "
 operator|+
 name|bc
 operator|.
-name|getBlockReplication
+name|getPreferredBlockReplication
 argument_list|()
 argument_list|)
 expr_stmt|;

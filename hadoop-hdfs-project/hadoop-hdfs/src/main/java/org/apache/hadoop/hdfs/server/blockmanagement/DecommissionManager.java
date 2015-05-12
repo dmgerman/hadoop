@@ -1025,7 +1025,7 @@ name|numExpected
 init|=
 name|bc
 operator|.
-name|getBlockReplication
+name|getPreferredBlockReplication
 argument_list|()
 decl_stmt|;
 specifier|final
@@ -1217,7 +1217,7 @@ name|curExpectedReplicas
 init|=
 name|bc
 operator|.
-name|getBlockReplication
+name|getPreferredBlockReplication
 argument_list|()
 decl_stmt|;
 name|StringBuilder
@@ -2277,7 +2277,7 @@ name|block
 argument_list|,
 name|bc
 operator|.
-name|getBlockReplication
+name|getPreferredBlockReplication
 argument_list|()
 argument_list|,
 name|liveReplicas
@@ -2331,7 +2331,7 @@ argument_list|()
 argument_list|,
 name|bc
 operator|.
-name|getBlockReplication
+name|getPreferredBlockReplication
 argument_list|()
 argument_list|)
 expr_stmt|;

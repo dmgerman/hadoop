@@ -6372,7 +6372,7 @@ name|newBlock
 argument_list|,
 name|file
 operator|.
-name|getBlockReplication
+name|getPreferredBlockReplication
 argument_list|()
 argument_list|)
 decl_stmt|;
@@ -6841,7 +6841,7 @@ name|newBlock
 argument_list|,
 name|file
 operator|.
-name|getBlockReplication
+name|getPreferredBlockReplication
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -6861,7 +6861,7 @@ name|newBlock
 argument_list|,
 name|file
 operator|.
-name|getBlockReplication
+name|getPreferredBlockReplication
 argument_list|()
 argument_list|)
 expr_stmt|;

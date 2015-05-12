@@ -11851,7 +11851,7 @@ name|newBlock
 argument_list|,
 name|file
 operator|.
-name|getBlockReplication
+name|getPreferredBlockReplication
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -15002,7 +15002,7 @@ name|repl
 init|=
 name|file
 operator|.
-name|getBlockReplication
+name|getPreferredBlockReplication
 argument_list|()
 decl_stmt|;
 name|delta

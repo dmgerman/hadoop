@@ -112,10 +112,10 @@ name|getPreferredBlockSize
 parameter_list|()
 function_decl|;
 comment|/**    * Get block replication for the collection     * @return block replication value    */
-DECL|method|getBlockReplication ()
+DECL|method|getPreferredBlockReplication ()
 specifier|public
 name|short
-name|getBlockReplication
+name|getPreferredBlockReplication
 parameter_list|()
 function_decl|;
 comment|/**     * @return the storage policy ID.    */

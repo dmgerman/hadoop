@@ -7447,7 +7447,7 @@ name|when
 argument_list|(
 name|bc
 operator|.
-name|getBlockReplication
+name|getPreferredBlockReplication
 argument_list|()
 argument_list|)
 operator|.
@@ -7728,7 +7728,7 @@ name|when
 argument_list|(
 name|mbc
 operator|.
-name|getBlockReplication
+name|getPreferredBlockReplication
 argument_list|()
 argument_list|)
 operator|.

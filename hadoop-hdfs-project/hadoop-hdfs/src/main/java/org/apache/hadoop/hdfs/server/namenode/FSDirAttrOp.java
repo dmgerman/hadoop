@@ -2347,7 +2347,7 @@ name|oldBR
 init|=
 name|file
 operator|.
-name|getBlockReplication
+name|getPreferredBlockReplication
 argument_list|()
 decl_stmt|;
 comment|// before setFileReplication, check for increasing block replication.
@@ -2411,7 +2411,7 @@ name|newBR
 init|=
 name|file
 operator|.
-name|getBlockReplication
+name|getPreferredBlockReplication
 argument_list|()
 decl_stmt|;
 comment|// check newBR< oldBR case.

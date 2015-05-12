@@ -1619,7 +1619,7 @@ argument_list|,
 name|getBlockCollection
 argument_list|()
 operator|.
-name|getBlockReplication
+name|getPreferredBlockReplication
 argument_list|()
 argument_list|,
 name|s

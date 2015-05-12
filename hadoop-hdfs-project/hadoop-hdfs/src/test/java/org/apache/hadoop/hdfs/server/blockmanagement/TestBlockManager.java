@@ -2657,7 +2657,7 @@ argument_list|(
 name|bc
 argument_list|)
 operator|.
-name|getBlockReplication
+name|getPreferredBlockReplication
 argument_list|()
 expr_stmt|;
 name|BlockInfoContiguous
@@ -4487,7 +4487,7 @@ argument_list|(
 name|bc
 argument_list|)
 operator|.
-name|getBlockReplication
+name|getPreferredBlockReplication
 argument_list|()
 expr_stmt|;
 name|bm
@@ -4564,7 +4564,7 @@ argument_list|(
 name|bc
 argument_list|)
 operator|.
-name|getBlockReplication
+name|getPreferredBlockReplication
 argument_list|()
 expr_stmt|;
 name|bm

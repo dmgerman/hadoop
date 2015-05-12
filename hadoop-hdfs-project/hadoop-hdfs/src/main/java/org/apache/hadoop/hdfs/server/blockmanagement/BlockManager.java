@@ -5973,7 +5973,7 @@ operator|.
 name|getBlockCollection
 argument_list|()
 operator|.
-name|getBlockReplication
+name|getPreferredBlockReplication
 argument_list|()
 decl_stmt|;
 comment|// Add replica to the data-node if it is not already there
@@ -6686,7 +6686,7 @@ name|requiredReplication
 operator|=
 name|bc
 operator|.
-name|getBlockReplication
+name|getPreferredBlockReplication
 argument_list|()
 expr_stmt|;
 comment|// get a source data-node
@@ -7079,7 +7079,7 @@ name|requiredReplication
 operator|=
 name|bc
 operator|.
-name|getBlockReplication
+name|getPreferredBlockReplication
 argument_list|()
 expr_stmt|;
 comment|// do not schedule more if enough replicas is already pending
@@ -11999,7 +11999,7 @@ name|fileReplication
 init|=
 name|bc
 operator|.
-name|getBlockReplication
+name|getPreferredBlockReplication
 argument_list|()
 decl_stmt|;
 if|if
@@ -12944,7 +12944,7 @@ operator|.
 name|getBlockCollection
 argument_list|()
 operator|.
-name|getBlockReplication
+name|getPreferredBlockReplication
 argument_list|()
 decl_stmt|;
 name|NumberReplicas
@@ -15327,7 +15327,7 @@ name|expectedReplication
 init|=
 name|bc
 operator|.
-name|getBlockReplication
+name|getPreferredBlockReplication
 argument_list|()
 decl_stmt|;
 name|NumberReplicas
@@ -15805,7 +15805,7 @@ name|expected
 init|=
 name|bc
 operator|.
-name|getBlockReplication
+name|getPreferredBlockReplication
 argument_list|()
 decl_stmt|;
 for|for
@@ -16014,7 +16014,7 @@ literal|0
 else|:
 name|bc
 operator|.
-name|getBlockReplication
+name|getPreferredBlockReplication
 argument_list|()
 return|;
 block|}
