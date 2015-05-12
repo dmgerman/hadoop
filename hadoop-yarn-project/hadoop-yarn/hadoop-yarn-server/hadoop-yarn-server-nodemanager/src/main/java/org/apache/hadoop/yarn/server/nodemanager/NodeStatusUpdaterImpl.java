@@ -1544,11 +1544,7 @@ name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"Initialized nodemanager for "
-operator|+
-name|nodeId
-operator|+
-literal|":"
+literal|"Initialized nodemanager with :"
 operator|+
 literal|" physical-memory="
 operator|+
@@ -1602,6 +1598,17 @@ name|context
 operator|.
 name|getNodeId
 argument_list|()
+expr_stmt|;
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"Node ID assigned is : "
+operator|+
+name|this
+operator|.
+name|nodeId
+argument_list|)
 expr_stmt|;
 name|this
 operator|.
