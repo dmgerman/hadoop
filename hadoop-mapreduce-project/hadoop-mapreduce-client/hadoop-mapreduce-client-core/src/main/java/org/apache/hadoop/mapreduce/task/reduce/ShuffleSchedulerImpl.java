@@ -1776,6 +1776,40 @@ operator|.
 name|getHostName
 argument_list|()
 decl_stmt|;
+name|IntWritable
+name|hostFailedNum
+init|=
+name|hostFailures
+operator|.
+name|get
+argument_list|(
+name|hostname
+argument_list|)
+decl_stmt|;
+comment|// MAPREDUCE-6361: hostname could get cleanup from hostFailures in another
+comment|// thread with copySucceeded.
+comment|// In this case, add back hostname to hostFailures to get rid of NPE issue.
+if|if
+condition|(
+name|hostFailedNum
+operator|==
+literal|null
+condition|)
+block|{
+name|hostFailures
+operator|.
+name|put
+argument_list|(
+name|hostname
+argument_list|,
+operator|new
+name|IntWritable
+argument_list|(
+literal|1
+argument_list|)
+argument_list|)
+expr_stmt|;
+block|}
 comment|//report failure if already retried maxHostFailures times
 name|boolean
 name|hostFail
