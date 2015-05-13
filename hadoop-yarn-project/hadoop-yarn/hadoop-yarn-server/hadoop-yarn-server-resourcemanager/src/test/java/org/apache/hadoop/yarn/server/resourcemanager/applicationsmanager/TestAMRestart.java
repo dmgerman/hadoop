@@ -4193,7 +4193,7 @@ name|Test
 argument_list|(
 name|timeout
 operator|=
-literal|50000
+literal|120000
 argument_list|)
 DECL|method|testRMAppAttemptFailuresValidityInterval ()
 specifier|public
@@ -4328,9 +4328,9 @@ operator|.
 name|registerNode
 argument_list|()
 expr_stmt|;
-comment|// set window size to a larger number : 20s
+comment|// set window size to a larger number : 60s
 comment|// we will verify the app should be failed if
-comment|// two continuous attempts failed in 20s.
+comment|// two continuous attempts failed in 60s.
 name|RMApp
 name|app
 init|=
@@ -4340,7 +4340,7 @@ name|submitApp
 argument_list|(
 literal|200
 argument_list|,
-literal|20000
+literal|60000
 argument_list|)
 decl_stmt|;
 name|MockAM
@@ -4505,7 +4505,7 @@ name|SystemClock
 argument_list|()
 argument_list|)
 decl_stmt|;
-comment|// set window size to 6s
+comment|// set window size to 10s
 name|RMAppImpl
 name|app1
 init|=
@@ -4518,7 +4518,7 @@ name|submitApp
 argument_list|(
 literal|200
 argument_list|,
-literal|6000
+literal|10000
 argument_list|)
 decl_stmt|;
 empty_stmt|;
@@ -4645,7 +4645,7 @@ operator|.
 name|RUNNING
 argument_list|)
 expr_stmt|;
-comment|// wait for 6 seconds
+comment|// wait for 10 seconds
 name|clock
 operator|.
 name|setTime
@@ -4655,7 +4655,7 @@ operator|.
 name|currentTimeMillis
 argument_list|()
 operator|+
-literal|6
+literal|10
 operator|*
 literal|1000
 argument_list|)
@@ -4895,7 +4895,7 @@ argument_list|,
 name|nm1
 argument_list|)
 decl_stmt|;
-comment|// wait for 6 seconds
+comment|// wait for 10 seconds
 name|clock
 operator|.
 name|setTime
@@ -4905,7 +4905,7 @@ operator|.
 name|currentTimeMillis
 argument_list|()
 operator|+
-literal|6
+literal|10
 operator|*
 literal|1000
 argument_list|)

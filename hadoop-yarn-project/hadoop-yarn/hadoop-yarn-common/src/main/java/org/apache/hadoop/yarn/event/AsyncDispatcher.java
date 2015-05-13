@@ -659,7 +659,12 @@ name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"Waiting for AsyncDispatcher to drain."
+literal|"Waiting for AsyncDispatcher to drain. Thread state is :"
+operator|+
+name|eventHandlingThread
+operator|.
+name|getState
+argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
