@@ -2027,12 +2027,11 @@ condition|)
 block|{
 return|return;
 block|}
+try|try
+block|{
 name|super
 operator|.
 name|serviceStop
-argument_list|()
-expr_stmt|;
-name|stopRecoveryStore
 argument_list|()
 expr_stmt|;
 name|DefaultMetricsSystem
@@ -2040,6 +2039,15 @@ operator|.
 name|shutdown
 argument_list|()
 expr_stmt|;
+block|}
+finally|finally
+block|{
+comment|// YARN-3641: NM's services stop get failed shouldn't block the
+comment|// release of NMLevelDBStore.
+name|stopRecoveryStore
+argument_list|()
+expr_stmt|;
+block|}
 block|}
 DECL|method|getName ()
 specifier|public
