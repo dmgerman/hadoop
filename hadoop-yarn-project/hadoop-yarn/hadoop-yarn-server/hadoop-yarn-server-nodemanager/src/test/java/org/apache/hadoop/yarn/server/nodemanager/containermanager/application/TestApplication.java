@@ -3695,6 +3695,19 @@ argument_list|(
 name|stateStoreService
 argument_list|)
 expr_stmt|;
+name|when
+argument_list|(
+name|context
+operator|.
+name|getConf
+argument_list|()
+argument_list|)
+operator|.
+name|thenReturn
+argument_list|(
+name|conf
+argument_list|)
+expr_stmt|;
 comment|// Setting master key
 name|MasterKey
 name|masterKey
