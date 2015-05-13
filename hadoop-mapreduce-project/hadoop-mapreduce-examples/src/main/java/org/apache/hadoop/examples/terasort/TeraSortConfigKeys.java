@@ -215,7 +215,7 @@ specifier|final
 name|boolean
 name|DEFAULT_FINAL_SYNC_ATTRIBUTE
 init|=
-literal|false
+literal|true
 decl_stmt|;
 DECL|field|DEFAULT_USE_TERA_SCHEDULER
 specifier|public

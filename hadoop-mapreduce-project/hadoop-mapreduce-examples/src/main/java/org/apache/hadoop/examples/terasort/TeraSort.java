@@ -1869,15 +1869,6 @@ name|job
 argument_list|)
 argument_list|)
 expr_stmt|;
-name|TeraOutputFormat
-operator|.
-name|setFinalSync
-argument_list|(
-name|job
-argument_list|,
-literal|true
-argument_list|)
-expr_stmt|;
 name|int
 name|ret
 init|=
