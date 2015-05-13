@@ -116,22 +116,6 @@ name|hadoop
 operator|.
 name|yarn
 operator|.
-name|conf
-operator|.
-name|YarnConfiguration
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|yarn
-operator|.
 name|util
 operator|.
 name|resource
@@ -178,6 +162,11 @@ DECL|field|exclusive
 specifier|private
 name|boolean
 name|exclusive
+decl_stmt|;
+DECL|field|nodeLabel
+specifier|private
+name|NodeLabel
+name|nodeLabel
 decl_stmt|;
 DECL|method|RMNodeLabel (NodeLabel nodeLabel)
 specifier|public
@@ -292,6 +281,19 @@ operator|.
 name|exclusive
 operator|=
 name|exclusive
+expr_stmt|;
+name|this
+operator|.
+name|nodeLabel
+operator|=
+name|NodeLabel
+operator|.
+name|newInstance
+argument_list|(
+name|labelName
+argument_list|,
+name|exclusive
+argument_list|)
 expr_stmt|;
 block|}
 DECL|method|addNodeId (NodeId node)
@@ -470,6 +472,18 @@ name|numActiveNMs
 argument_list|,
 name|exclusive
 argument_list|)
+return|;
+block|}
+DECL|method|getNodeLabel ()
+specifier|public
+name|NodeLabel
+name|getNodeLabel
+parameter_list|()
+block|{
+return|return
+name|this
+operator|.
+name|nodeLabel
 return|;
 block|}
 annotation|@
