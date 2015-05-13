@@ -2826,7 +2826,6 @@ argument_list|,
 name|replication
 argument_list|)
 decl_stmt|;
-empty_stmt|;
 name|updateCount
 argument_list|(
 name|iip
