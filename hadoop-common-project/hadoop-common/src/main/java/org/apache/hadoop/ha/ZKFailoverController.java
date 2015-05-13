@@ -3538,9 +3538,8 @@ block|}
 block|}
 block|}
 comment|/**    * @return the last health state passed to the FC    * by the HealthMonitor.    */
-annotation|@
-name|VisibleForTesting
 DECL|method|getLastHealthState ()
+specifier|protected
 specifier|synchronized
 name|State
 name|getLastHealthState
@@ -3551,7 +3550,7 @@ name|lastHealthState
 return|;
 block|}
 DECL|method|setLastHealthState (HealthMonitor.State newState)
-specifier|private
+specifier|protected
 specifier|synchronized
 name|void
 name|setLastHealthState

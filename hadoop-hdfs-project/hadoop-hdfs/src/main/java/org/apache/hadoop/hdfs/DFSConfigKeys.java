@@ -4011,6 +4011,24 @@ name|DFS_HA_ZKFC_PORT_DEFAULT
 init|=
 literal|8019
 decl_stmt|;
+DECL|field|DFS_HA_ZKFC_NN_HTTP_TIMEOUT_KEY
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|DFS_HA_ZKFC_NN_HTTP_TIMEOUT_KEY
+init|=
+literal|"dfs.ha.zkfc.nn.http.timeout.ms"
+decl_stmt|;
+DECL|field|DFS_HA_ZKFC_NN_HTTP_TIMEOUT_KEY_DEFAULT
+specifier|public
+specifier|static
+specifier|final
+name|int
+name|DFS_HA_ZKFC_NN_HTTP_TIMEOUT_KEY_DEFAULT
+init|=
+literal|20000
+decl_stmt|;
 comment|// Security-related configs
 DECL|field|DFS_ENCRYPT_DATA_TRANSFER_KEY
 specifier|public
