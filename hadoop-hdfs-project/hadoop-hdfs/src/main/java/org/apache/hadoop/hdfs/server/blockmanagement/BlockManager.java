@@ -8700,6 +8700,25 @@ condition|)
 block|{
 comment|// The first block report can be processed a lot more efficiently than
 comment|// ordinary block reports.  This shortens restart times.
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"Processing first storage report for "
+operator|+
+name|storageInfo
+operator|.
+name|getStorageID
+argument_list|()
+operator|+
+literal|" from datanode "
+operator|+
+name|nodeID
+operator|.
+name|getDatanodeUuid
+argument_list|()
+argument_list|)
+expr_stmt|;
 name|processFirstBlockReport
 argument_list|(
 name|storageInfo
@@ -9945,6 +9964,45 @@ operator|.
 name|getState
 argument_list|()
 decl_stmt|;
+if|if
+condition|(
+name|LOG
+operator|.
+name|isDebugEnabled
+argument_list|()
+condition|)
+block|{
+name|LOG
+operator|.
+name|debug
+argument_list|(
+literal|"Initial report of block "
+operator|+
+name|iblk
+operator|.
+name|getBlockName
+argument_list|()
+operator|+
+literal|" on "
+operator|+
+name|storageInfo
+operator|.
+name|getDatanodeDescriptor
+argument_list|()
+operator|+
+literal|" size "
+operator|+
+name|iblk
+operator|.
+name|getNumBytes
+argument_list|()
+operator|+
+literal|" replicaState = "
+operator|+
+name|reportedState
+argument_list|)
+expr_stmt|;
+block|}
 if|if
 condition|(
 name|shouldPostponeBlocksFromFuture
@@ -11490,16 +11548,16 @@ name|ReplicaState
 operator|.
 name|FINALIZED
 operator|&&
-operator|!
+operator|(
 name|block
 operator|.
-name|findDatanode
+name|findStorageInfo
 argument_list|(
 name|storageInfo
-operator|.
-name|getDatanodeDescriptor
-argument_list|()
 argument_list|)
+operator|<
+literal|0
+operator|)
 condition|)
 block|{
 name|addStoredBlock
