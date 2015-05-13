@@ -2635,7 +2635,25 @@ name|exists
 argument_list|(
 name|outputPath
 argument_list|)
-operator|||
+condition|)
+block|{
+throw|throw
+operator|new
+name|IOException
+argument_list|(
+literal|"Archive path: "
+operator|+
+name|outputPath
+operator|.
+name|toString
+argument_list|()
+operator|+
+literal|" already exists"
+argument_list|)
+throw|;
+block|}
+if|if
+condition|(
 name|outFs
 operator|.
 name|isFile
@@ -2648,9 +2666,14 @@ throw|throw
 operator|new
 name|IOException
 argument_list|(
-literal|"Invalid Output: "
+literal|"Destination "
 operator|+
-name|outputPath
+name|dest
+operator|.
+name|toString
+argument_list|()
+operator|+
+literal|" should be a directory but is a file"
 argument_list|)
 throw|;
 block|}
@@ -4896,11 +4919,11 @@ throw|throw
 operator|new
 name|IOException
 argument_list|(
-literal|"source path "
+literal|"Source path "
 operator|+
 name|argPath
 operator|+
-literal|" is not relative  to "
+literal|" is not relative to "
 operator|+
 name|parentPath
 argument_list|)
