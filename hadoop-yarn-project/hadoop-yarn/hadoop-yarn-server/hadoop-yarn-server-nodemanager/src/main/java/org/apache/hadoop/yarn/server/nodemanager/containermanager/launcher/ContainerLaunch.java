@@ -4274,15 +4274,59 @@ name|isEmpty
 argument_list|()
 condition|)
 block|{
+comment|//On non-windows, localized resources
+comment|//from distcache are available via the classpath as they were placed
+comment|//there but on windows they are not available when the classpath
+comment|//jar is created and so they "are lost" and have to be explicitly
+comment|//added to the classpath instead.  This also means that their position
+comment|//is lost relative to other non-distcache classpath entries which will
+comment|//break things like mapreduce.job.user.classpath.first.
+name|boolean
+name|preferLocalizedJars
+init|=
+name|conf
+operator|.
+name|getBoolean
+argument_list|(
+name|YarnConfiguration
+operator|.
+name|YARN_APPLICATION_CLASSPATH_PREPEND_DISTCACHE
+argument_list|,
+name|YarnConfiguration
+operator|.
+name|DEFAULT_YARN_APPLICATION_CLASSPATH_PREPEND_DISTCACHE
+argument_list|)
+decl_stmt|;
+name|boolean
+name|needsSeparator
+init|=
+literal|false
+decl_stmt|;
 name|StringBuilder
 name|newClassPath
 init|=
 operator|new
 name|StringBuilder
+argument_list|()
+decl_stmt|;
+if|if
+condition|(
+operator|!
+name|preferLocalizedJars
+condition|)
+block|{
+name|newClassPath
+operator|.
+name|append
 argument_list|(
 name|inputClassPath
 argument_list|)
-decl_stmt|;
+expr_stmt|;
+name|needsSeparator
+operator|=
+literal|true
+expr_stmt|;
+block|}
 comment|// Localized resources do not exist at the desired paths yet, because the
 comment|// container launch script has not run to create symlinks yet.  This
 comment|// means that FileUtil.createJarWithClassPath can't automatically expand
@@ -4343,6 +4387,11 @@ argument_list|()
 control|)
 block|{
 comment|// Append resource.
+if|if
+condition|(
+name|needsSeparator
+condition|)
+block|{
 name|newClassPath
 operator|.
 name|append
@@ -4351,6 +4400,16 @@ name|File
 operator|.
 name|pathSeparator
 argument_list|)
+expr_stmt|;
+block|}
+else|else
+block|{
+name|needsSeparator
+operator|=
+literal|true
+expr_stmt|;
+block|}
+name|newClassPath
 operator|.
 name|append
 argument_list|(
@@ -4397,6 +4456,34 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
+block|}
+if|if
+condition|(
+name|preferLocalizedJars
+condition|)
+block|{
+if|if
+condition|(
+name|needsSeparator
+condition|)
+block|{
+name|newClassPath
+operator|.
+name|append
+argument_list|(
+name|File
+operator|.
+name|pathSeparator
+argument_list|)
+expr_stmt|;
+block|}
+name|newClassPath
+operator|.
+name|append
+argument_list|(
+name|inputClassPath
+argument_list|)
+expr_stmt|;
 block|}
 comment|// When the container launches, it takes the parent process's environment
 comment|// and then adds/overwrites with the entries from the container launch
