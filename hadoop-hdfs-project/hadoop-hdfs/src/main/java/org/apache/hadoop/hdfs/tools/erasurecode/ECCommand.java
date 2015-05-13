@@ -747,8 +747,13 @@ operator|+
 name|item
 operator|.
 name|path
-argument_list|,
+operator|+
+literal|". "
+operator|+
 name|e
+operator|.
+name|getMessage
+argument_list|()
 argument_list|)
 throw|;
 block|}
@@ -884,6 +889,13 @@ operator|.
 name|path
 argument_list|)
 decl_stmt|;
+if|if
+condition|(
+name|ecZoneInfo
+operator|!=
+literal|null
+condition|)
+block|{
 name|out
 operator|.
 name|println
@@ -895,6 +907,23 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
+else|else
+block|{
+name|out
+operator|.
+name|println
+argument_list|(
+literal|"Path "
+operator|+
+name|item
+operator|.
+name|path
+operator|+
+literal|" is not in EC zone"
+argument_list|)
+expr_stmt|;
+block|}
+block|}
 catch|catch
 parameter_list|(
 name|IOException
@@ -905,13 +934,18 @@ throw|throw
 operator|new
 name|IOException
 argument_list|(
-literal|"Unable to create EC zone for the path "
+literal|"Unable to get EC zone for the path "
 operator|+
 name|item
 operator|.
 name|path
-argument_list|,
+operator|+
+literal|". "
+operator|+
 name|e
+operator|.
+name|getMessage
+argument_list|()
 argument_list|)
 throw|;
 block|}
