@@ -97,7 +97,7 @@ class|class
 name|NodeToLabelsInfo
 block|{
 DECL|field|nodeToLabels
-specifier|protected
+specifier|private
 name|HashMap
 argument_list|<
 name|String
@@ -119,8 +119,9 @@ DECL|method|NodeToLabelsInfo ()
 specifier|public
 name|NodeToLabelsInfo
 parameter_list|()
-block|{   }
+block|{
 comment|// JAXB needs this
+block|}
 DECL|method|getNodeToLabels ()
 specifier|public
 name|HashMap

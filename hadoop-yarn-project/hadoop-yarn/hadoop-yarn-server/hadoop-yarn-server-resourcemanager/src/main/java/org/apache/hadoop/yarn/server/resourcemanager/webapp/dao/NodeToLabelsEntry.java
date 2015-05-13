@@ -4,7 +4,7 @@ comment|/**  * Licensed to the Apache Software Foundation (ASF) under one  * or 
 end_comment
 
 begin_package
-DECL|package|org.apache.hadoop.yarn.server.resourcemanager.webapp
+DECL|package|org.apache.hadoop.yarn.server.resourcemanager.webapp.dao
 package|package
 name|org
 operator|.
@@ -19,6 +19,8 @@ operator|.
 name|resourcemanager
 operator|.
 name|webapp
+operator|.
+name|dao
 package|;
 end_package
 
@@ -28,17 +30,7 @@ name|java
 operator|.
 name|util
 operator|.
-name|ArrayList
-import|;
-end_import
-
-begin_import
-import|import
-name|java
-operator|.
-name|util
-operator|.
-name|List
+name|*
 import|;
 end_import
 
@@ -80,7 +72,7 @@ name|bind
 operator|.
 name|annotation
 operator|.
-name|XmlElement
+name|XmlRootElement
 import|;
 end_import
 
@@ -94,7 +86,7 @@ name|bind
 operator|.
 name|annotation
 operator|.
-name|XmlRootElement
+name|XmlElement
 import|;
 end_import
 
@@ -104,7 +96,7 @@ name|XmlRootElement
 argument_list|(
 name|name
 operator|=
-literal|"labelsToNodesInfo"
+literal|"nodeToLabelsEntry"
 argument_list|)
 annotation|@
 name|XmlAccessorType
@@ -113,26 +105,37 @@ name|XmlAccessType
 operator|.
 name|FIELD
 argument_list|)
-DECL|class|NodeIDsInfo
+DECL|class|NodeToLabelsEntry
 specifier|public
 class|class
-name|NodeIDsInfo
+name|NodeToLabelsEntry
 block|{
-comment|/**    * Set doesn't support default no arg constructor which is req by JAXB    */
 annotation|@
 name|XmlElement
 argument_list|(
 name|name
 operator|=
-literal|"nodes"
+literal|"nodeId"
 argument_list|)
-DECL|field|nodeIDsList
-specifier|protected
+DECL|field|nodeId
+specifier|private
+name|String
+name|nodeId
+decl_stmt|;
+annotation|@
+name|XmlElement
+argument_list|(
+name|name
+operator|=
+literal|"labels"
+argument_list|)
+DECL|field|labels
+specifier|private
 name|ArrayList
 argument_list|<
 name|String
 argument_list|>
-name|nodeIDsList
+name|labels
 init|=
 operator|new
 name|ArrayList
@@ -141,44 +144,61 @@ name|String
 argument_list|>
 argument_list|()
 decl_stmt|;
-DECL|method|NodeIDsInfo ()
+DECL|method|NodeToLabelsEntry ()
 specifier|public
-name|NodeIDsInfo
+name|NodeToLabelsEntry
 parameter_list|()
-block|{   }
+block|{
 comment|// JAXB needs this
-DECL|method|NodeIDsInfo (List<String> nodeIdsList)
+block|}
+DECL|method|NodeToLabelsEntry (String nodeId, ArrayList<String> labels)
 specifier|public
-name|NodeIDsInfo
+name|NodeToLabelsEntry
 parameter_list|(
-name|List
+name|String
+name|nodeId
+parameter_list|,
+name|ArrayList
 argument_list|<
 name|String
 argument_list|>
-name|nodeIdsList
+name|labels
 parameter_list|)
 block|{
 name|this
 operator|.
-name|nodeIDsList
+name|nodeId
+operator|=
+name|nodeId
+expr_stmt|;
+name|this
 operator|.
-name|addAll
-argument_list|(
-name|nodeIdsList
-argument_list|)
+name|labels
+operator|=
+name|labels
 expr_stmt|;
 block|}
-DECL|method|getNodeIDs ()
+DECL|method|getNodeId ()
+specifier|public
+name|String
+name|getNodeId
+parameter_list|()
+block|{
+return|return
+name|nodeId
+return|;
+block|}
+DECL|method|getNodeLabels ()
 specifier|public
 name|ArrayList
 argument_list|<
 name|String
 argument_list|>
-name|getNodeIDs
+name|getNodeLabels
 parameter_list|()
 block|{
 return|return
-name|nodeIDsList
+name|labels
 return|;
 block|}
 block|}

@@ -130,7 +130,7 @@ DECL|field|labelsToNodes
 specifier|protected
 name|Map
 argument_list|<
-name|String
+name|NodeLabelInfo
 argument_list|,
 name|NodeIDsInfo
 argument_list|>
@@ -139,7 +139,7 @@ init|=
 operator|new
 name|HashMap
 argument_list|<
-name|String
+name|NodeLabelInfo
 argument_list|,
 name|NodeIDsInfo
 argument_list|>
@@ -155,7 +155,7 @@ DECL|method|getLabelsToNodes ()
 specifier|public
 name|Map
 argument_list|<
-name|String
+name|NodeLabelInfo
 argument_list|,
 name|NodeIDsInfo
 argument_list|>
