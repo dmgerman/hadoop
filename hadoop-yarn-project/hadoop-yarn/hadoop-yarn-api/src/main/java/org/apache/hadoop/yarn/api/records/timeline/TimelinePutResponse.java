@@ -50,7 +50,7 @@ name|classification
 operator|.
 name|InterfaceStability
 operator|.
-name|Unstable
+name|Evolving
 import|;
 end_import
 
@@ -152,7 +152,7 @@ argument_list|)
 annotation|@
 name|Public
 annotation|@
-name|Unstable
+name|Evolving
 DECL|class|TimelinePutResponse
 specifier|public
 class|class
@@ -288,7 +288,7 @@ argument_list|)
 annotation|@
 name|Public
 annotation|@
-name|Unstable
+name|Evolving
 DECL|class|TimelinePutError
 specifier|public
 specifier|static

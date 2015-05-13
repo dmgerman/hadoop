@@ -10,6 +10,13 @@ operator|.
 name|Public
 end_annotation
 
+begin_annotation
+annotation|@
+name|InterfaceStability
+operator|.
+name|Evolving
+end_annotation
+
 begin_package
 DECL|package|org.apache.hadoop.yarn.client.api.impl
 package|package
@@ -40,6 +47,20 @@ operator|.
 name|classification
 operator|.
 name|InterfaceAudience
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|classification
+operator|.
+name|InterfaceStability
 import|;
 end_import
 

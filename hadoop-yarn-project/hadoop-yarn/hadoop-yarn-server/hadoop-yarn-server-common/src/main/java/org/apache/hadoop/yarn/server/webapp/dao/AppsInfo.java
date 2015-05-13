@@ -24,6 +24,38 @@ end_package
 
 begin_import
 import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|classification
+operator|.
+name|InterfaceAudience
+operator|.
+name|Public
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|classification
+operator|.
+name|InterfaceStability
+operator|.
+name|Evolving
+import|;
+end_import
+
+begin_import
+import|import
 name|java
 operator|.
 name|util
@@ -76,6 +108,10 @@ end_import
 
 begin_class
 annotation|@
+name|Public
+annotation|@
+name|Evolving
+annotation|@
 name|XmlRootElement
 argument_list|(
 name|name
@@ -104,9 +140,7 @@ name|app
 init|=
 operator|new
 name|ArrayList
-argument_list|<
-name|AppInfo
-argument_list|>
+argument_list|<>
 argument_list|()
 decl_stmt|;
 DECL|method|AppsInfo ()
