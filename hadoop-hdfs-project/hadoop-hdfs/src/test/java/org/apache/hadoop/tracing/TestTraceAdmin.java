@@ -407,7 +407,7 @@ name|assertEquals
 argument_list|(
 literal|"ret:0, Added trace span receiver 1 with "
 operator|+
-literal|"configuration local-file-span-receiver.path = "
+literal|"configuration dfs.htrace.local-file-span-receiver.path = "
 operator|+
 name|tracePath
 operator|+
@@ -430,7 +430,7 @@ literal|"-class"
 argument_list|,
 literal|"org.apache.htrace.impl.LocalFileSpanReceiver"
 argument_list|,
-literal|"-Clocal-file-span-receiver.path="
+literal|"-Cdfs.htrace.local-file-span-receiver.path="
 operator|+
 name|tracePath
 argument_list|)
@@ -531,7 +531,7 @@ name|assertEquals
 argument_list|(
 literal|"ret:0, Added trace span receiver 2 with "
 operator|+
-literal|"configuration local-file-span-receiver.path = "
+literal|"configuration dfs.htrace.local-file-span-receiver.path = "
 operator|+
 name|tracePath
 operator|+
@@ -554,7 +554,7 @@ literal|"-class"
 argument_list|,
 literal|"LocalFileSpanReceiver"
 argument_list|,
-literal|"-Clocal-file-span-receiver.path="
+literal|"-Cdfs.htrace.local-file-span-receiver.path="
 operator|+
 name|tracePath
 argument_list|)
