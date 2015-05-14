@@ -141,7 +141,7 @@ import|;
 end_import
 
 begin_comment
-comment|/** Names a file or directory in a {@link FileSystem}.  * Path strings use slash as the directory separator.  A path string is  * absolute if it begins with a slash.  */
+comment|/** Names a file or directory in a {@link FileSystem}.  * Path strings use slash as the directory separator.  */
 end_comment
 
 begin_class
@@ -1401,8 +1401,7 @@ name|start
 argument_list|)
 return|;
 block|}
-comment|/** True if the path component of this URI is absolute. */
-comment|/**    * There is some ambiguity here. An absolute path is a slash    * relative name without a scheme or an authority.    * So either this method was incorrectly named or its    * implementation is incorrect. This method returns true    * even if there is a scheme and authority.    */
+comment|/** True if the path is not a relative path and starts with root. */
 DECL|method|isAbsolute ()
 specifier|public
 name|boolean
