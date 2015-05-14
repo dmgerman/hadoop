@@ -100,24 +100,6 @@ name|hadoop
 operator|.
 name|yarn
 operator|.
-name|api
-operator|.
-name|records
-operator|.
-name|NodeId
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|yarn
-operator|.
 name|util
 operator|.
 name|Records
@@ -125,7 +107,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * {@code LogAggregationReport} is a report for log aggregation status  * in one NodeManager of an application.  *<p>  * It includes details such as:  *<ul>  *<li>{@link ApplicationId} of the application.</li>  *<li>{@link NodeId} of the NodeManager.</li>  *<li>{@link LogAggregationStatus}</li>  *<li>Diagnostic information</li>  *</ul>  *  */
+comment|/**  * {@code LogAggregationReport} is a report for log aggregation status  * in one NodeManager of an application.  *<p>  * It includes details such as:  *<ul>  *<li>{@link ApplicationId} of the application.</li>  *<li>{@link LogAggregationStatus}</li>  *<li>Diagnostic information</li>  *</ul>  *  */
 end_comment
 
 begin_class
@@ -143,7 +125,7 @@ annotation|@
 name|Public
 annotation|@
 name|Unstable
-DECL|method|newInstance (ApplicationId appId, NodeId nodeId, LogAggregationStatus status, String diagnosticMessage)
+DECL|method|newInstance (ApplicationId appId, LogAggregationStatus status, String diagnosticMessage)
 specifier|public
 specifier|static
 name|LogAggregationReport
@@ -151,9 +133,6 @@ name|newInstance
 parameter_list|(
 name|ApplicationId
 name|appId
-parameter_list|,
-name|NodeId
-name|nodeId
 parameter_list|,
 name|LogAggregationStatus
 name|status
@@ -223,32 +202,6 @@ name|setApplicationId
 parameter_list|(
 name|ApplicationId
 name|appId
-parameter_list|)
-function_decl|;
-comment|/**    * Get the<code>NodeId</code>.    * @return<code>NodeId</code>    */
-annotation|@
-name|Public
-annotation|@
-name|Unstable
-DECL|method|getNodeId ()
-specifier|public
-specifier|abstract
-name|NodeId
-name|getNodeId
-parameter_list|()
-function_decl|;
-annotation|@
-name|Public
-annotation|@
-name|Unstable
-DECL|method|setNodeId (NodeId nodeId)
-specifier|public
-specifier|abstract
-name|void
-name|setNodeId
-parameter_list|(
-name|NodeId
-name|nodeId
 parameter_list|)
 function_decl|;
 comment|/**    * Get the<code>LogAggregationStatus</code>.    * @return<code>LogAggregationStatus</code>    */

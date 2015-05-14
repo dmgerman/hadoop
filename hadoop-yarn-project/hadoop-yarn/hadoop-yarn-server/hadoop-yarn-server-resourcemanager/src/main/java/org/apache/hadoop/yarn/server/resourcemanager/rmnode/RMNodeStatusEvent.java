@@ -34,16 +34,6 @@ end_import
 
 begin_import
 import|import
-name|java
-operator|.
-name|util
-operator|.
-name|Map
-import|;
-end_import
-
-begin_import
-import|import
 name|org
 operator|.
 name|apache
@@ -196,10 +186,8 @@ name|keepAliveAppIds
 decl_stmt|;
 DECL|field|logAggregationReportsForApps
 specifier|private
-name|Map
+name|List
 argument_list|<
-name|ApplicationId
-argument_list|,
 name|LogAggregationReport
 argument_list|>
 name|logAggregationReportsForApps
@@ -270,7 +258,7 @@ operator|=
 literal|null
 expr_stmt|;
 block|}
-DECL|method|RMNodeStatusEvent (NodeId nodeId, NodeHealthStatus nodeHealthStatus, List<ContainerStatus> collection, List<ApplicationId> keepAliveAppIds, NodeHeartbeatResponse latestResponse, Map<ApplicationId, LogAggregationReport> logAggregationReportsForApps)
+DECL|method|RMNodeStatusEvent (NodeId nodeId, NodeHealthStatus nodeHealthStatus, List<ContainerStatus> collection, List<ApplicationId> keepAliveAppIds, NodeHeartbeatResponse latestResponse, List<LogAggregationReport> logAggregationReportsForApps)
 specifier|public
 name|RMNodeStatusEvent
 parameter_list|(
@@ -295,10 +283,8 @@ parameter_list|,
 name|NodeHeartbeatResponse
 name|latestResponse
 parameter_list|,
-name|Map
+name|List
 argument_list|<
-name|ApplicationId
-argument_list|,
 name|LogAggregationReport
 argument_list|>
 name|logAggregationReportsForApps
@@ -398,14 +384,12 @@ operator|.
 name|keepAliveAppIds
 return|;
 block|}
+DECL|method|getLogAggregationReportsForApps ()
 specifier|public
-name|Map
+name|List
 argument_list|<
-name|ApplicationId
-argument_list|,
 name|LogAggregationReport
 argument_list|>
-DECL|method|getLogAggregationReportsForApps ()
 name|getLogAggregationReportsForApps
 parameter_list|()
 block|{
@@ -415,15 +399,13 @@ operator|.
 name|logAggregationReportsForApps
 return|;
 block|}
-DECL|method|setLogAggregationReportsForApps ( Map<ApplicationId, LogAggregationReport> logAggregationReportsForApps)
+DECL|method|setLogAggregationReportsForApps ( List<LogAggregationReport> logAggregationReportsForApps)
 specifier|public
 name|void
 name|setLogAggregationReportsForApps
 parameter_list|(
-name|Map
+name|List
 argument_list|<
-name|ApplicationId
-argument_list|,
 name|LogAggregationReport
 argument_list|>
 name|logAggregationReportsForApps

@@ -2864,6 +2864,27 @@ name|DEFAULT_RM_PROXY_USER_PRIVILEGES_ENABLED
 init|=
 literal|false
 decl_stmt|;
+comment|/**    * How many diagnostics/failure messages can be saved in RM for    * log aggregation. It also defines the number of diagnostics/failure    * messages can be shown in log aggregation web ui.    */
+DECL|field|RM_MAX_LOG_AGGREGATION_DIAGNOSTICS_IN_MEMORY
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|RM_MAX_LOG_AGGREGATION_DIAGNOSTICS_IN_MEMORY
+init|=
+name|RM_PREFIX
+operator|+
+literal|"max-log-aggregation-diagnostics-in-memory"
+decl_stmt|;
+DECL|field|DEFAULT_RM_MAX_LOG_AGGREGATION_DIAGNOSTICS_IN_MEMORY
+specifier|public
+specifier|static
+specifier|final
+name|int
+name|DEFAULT_RM_MAX_LOG_AGGREGATION_DIAGNOSTICS_IN_MEMORY
+init|=
+literal|10
+decl_stmt|;
 comment|/** Whether to enable log aggregation */
 DECL|field|LOG_AGGREGATION_ENABLED
 specifier|public

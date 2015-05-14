@@ -58,6 +58,10 @@ comment|/** Log Aggregation is Running. */
 DECL|enumConstant|RUNNING
 name|RUNNING
 block|,
+comment|/** Log Aggregation is Running, but has failures in previous cycles. */
+DECL|enumConstant|RUNNING_WITH_FAILURE
+name|RUNNING_WITH_FAILURE
+block|,
 comment|/**    * Log Aggregation is Succeeded. All of the logs have been aggregated    * successfully.    */
 DECL|enumConstant|SUCCEEDED
 name|SUCCEEDED

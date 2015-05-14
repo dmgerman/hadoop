@@ -28,7 +28,7 @@ name|java
 operator|.
 name|util
 operator|.
-name|Map
+name|List
 import|;
 end_import
 
@@ -39,24 +39,6 @@ operator|.
 name|util
 operator|.
 name|Set
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|yarn
-operator|.
-name|api
-operator|.
-name|records
-operator|.
-name|ApplicationId
 import|;
 end_import
 
@@ -265,26 +247,22 @@ parameter_list|)
 function_decl|;
 specifier|public
 specifier|abstract
-name|Map
+name|List
 argument_list|<
-name|ApplicationId
-argument_list|,
 name|LogAggregationReport
 argument_list|>
 DECL|method|getLogAggregationReportsForApps ()
 name|getLogAggregationReportsForApps
 parameter_list|()
 function_decl|;
-DECL|method|setLogAggregationReportsForApps ( Map<ApplicationId, LogAggregationReport> logAggregationReportsForApps)
+DECL|method|setLogAggregationReportsForApps ( List<LogAggregationReport> logAggregationReportsForApps)
 specifier|public
 specifier|abstract
 name|void
 name|setLogAggregationReportsForApps
 parameter_list|(
-name|Map
+name|List
 argument_list|<
-name|ApplicationId
-argument_list|,
 name|LogAggregationReport
 argument_list|>
 name|logAggregationReportsForApps
