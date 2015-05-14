@@ -4568,6 +4568,10 @@ block|}
 else|else
 block|{
 comment|// file or symlink: count here to reduce recursive calls.
+name|counts
+operator|.
+name|add
+argument_list|(
 name|child
 operator|.
 name|computeQuotaUsage
@@ -4576,13 +4580,12 @@ name|bsps
 argument_list|,
 name|childPolicyId
 argument_list|,
-name|counts
-argument_list|,
 literal|false
 argument_list|,
 name|Snapshot
 operator|.
 name|CURRENT_STATE_ID
+argument_list|)
 argument_list|)
 expr_stmt|;
 block|}

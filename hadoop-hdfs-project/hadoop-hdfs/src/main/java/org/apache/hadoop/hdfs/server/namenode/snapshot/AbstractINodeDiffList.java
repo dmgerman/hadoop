@@ -98,24 +98,6 @@ name|INodeAttributes
 import|;
 end_import
 
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|hdfs
-operator|.
-name|server
-operator|.
-name|namenode
-operator|.
-name|QuotaCounts
-import|;
-end_import
-
 begin_comment
 comment|/**  * A list of snapshot diffs for storing snapshot data.  *  * @param<N> The {@link INode} type.  * @param<D> The diff type, which must extend {@link AbstractINodeDiff}.  */
 end_comment
@@ -224,11 +206,11 @@ name|N
 name|currentINode
 parameter_list|)
 function_decl|;
-comment|/**    * Delete a snapshot. The synchronization of the diff list will be done     * outside. If the diff to remove is not the first one in the diff list, we     * need to combine the diff with its previous one.    *     * @param reclaimContext blocks and inodes that need to be reclaimed    * @param snapshot The id of the snapshot to be deleted    * @param prior The id of the snapshot taken before the to-be-deleted snapshot    * @return delta in namespace.    */
-DECL|method|deleteSnapshotDiff ( INode.ReclaimContext reclaimContext, final int snapshot, final int prior, final N currentINode)
+comment|/**    * Delete a snapshot. The synchronization of the diff list will be done     * outside. If the diff to remove is not the first one in the diff list, we     * need to combine the diff with its previous one.    *     * @param reclaimContext blocks and inodes that need to be reclaimed    * @param snapshot The id of the snapshot to be deleted    * @param prior The id of the snapshot taken before the to-be-deleted snapshot    * @param currentINode the inode where the snapshot diff is deleted    */
+DECL|method|deleteSnapshotDiff (INode.ReclaimContext reclaimContext, final int snapshot, final int prior, final N currentINode)
 specifier|public
 specifier|final
-name|QuotaCounts
+name|void
 name|deleteSnapshotDiff
 parameter_list|(
 name|INode
@@ -261,22 +243,8 @@ argument_list|,
 name|snapshot
 argument_list|)
 decl_stmt|;
-name|QuotaCounts
-name|counts
-init|=
-operator|new
-name|QuotaCounts
-operator|.
-name|Builder
-argument_list|()
-operator|.
-name|build
-argument_list|()
-decl_stmt|;
 name|D
 name|removed
-init|=
-literal|null
 decl_stmt|;
 if|if
 condition|(
@@ -321,10 +289,6 @@ argument_list|(
 literal|0
 argument_list|)
 expr_stmt|;
-name|counts
-operator|.
-name|add
-argument_list|(
 name|removed
 operator|.
 name|destroyDiffAndCollectBlocks
@@ -332,7 +296,6 @@ argument_list|(
 name|reclaimContext
 argument_list|,
 name|currentINode
-argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
@@ -418,10 +381,6 @@ operator|.
 name|snapshotINode
 expr_stmt|;
 block|}
-name|counts
-operator|.
-name|add
-argument_list|(
 name|previous
 operator|.
 name|combinePosteriorAndCollectBlocks
@@ -431,7 +390,6 @@ argument_list|,
 name|currentINode
 argument_list|,
 name|removed
-argument_list|)
 argument_list|)
 expr_stmt|;
 name|previous
@@ -453,9 +411,6 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-return|return
-name|counts
-return|;
 block|}
 comment|/** Add an {@link AbstractINodeDiff} for the given snapshot. */
 DECL|method|addDiff (int latestSnapshotId, N currentINode)
@@ -485,7 +440,6 @@ block|}
 comment|/** Append the diff at the end of the list. */
 DECL|method|addLast (D diff)
 specifier|private
-specifier|final
 name|D
 name|addLast
 parameter_list|(

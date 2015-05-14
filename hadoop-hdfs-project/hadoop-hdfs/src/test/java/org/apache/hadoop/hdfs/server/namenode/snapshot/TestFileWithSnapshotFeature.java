@@ -38,16 +38,6 @@ end_import
 
 begin_import
 import|import
-name|junit
-operator|.
-name|framework
-operator|.
-name|Assert
-import|;
-end_import
-
-begin_import
-import|import
 name|org
 operator|.
 name|apache
@@ -165,6 +155,16 @@ operator|.
 name|namenode
 operator|.
 name|QuotaCounts
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|junit
+operator|.
+name|Assert
 import|;
 end_import
 
@@ -497,9 +497,6 @@ argument_list|,
 literal|null
 argument_list|)
 decl_stmt|;
-name|QuotaCounts
-name|counts
-init|=
 name|sf
 operator|.
 name|updateQuotaAndCollectBlocks
@@ -510,6 +507,17 @@ name|file
 argument_list|,
 name|diff
 argument_list|)
+expr_stmt|;
+name|QuotaCounts
+name|counts
+init|=
+name|ctx
+operator|.
+name|quotaDelta
+argument_list|()
+operator|.
+name|getCountsCopy
+argument_list|()
 decl_stmt|;
 name|Assert
 operator|.
@@ -642,8 +650,6 @@ name|DISK
 argument_list|)
 argument_list|)
 expr_stmt|;
-name|counts
-operator|=
 name|sf
 operator|.
 name|updateQuotaAndCollectBlocks
@@ -654,6 +660,16 @@ name|file
 argument_list|,
 name|diff
 argument_list|)
+expr_stmt|;
+name|counts
+operator|=
+name|ctx
+operator|.
+name|quotaDelta
+argument_list|()
+operator|.
+name|getCountsCopy
+argument_list|()
 expr_stmt|;
 name|Assert
 operator|.

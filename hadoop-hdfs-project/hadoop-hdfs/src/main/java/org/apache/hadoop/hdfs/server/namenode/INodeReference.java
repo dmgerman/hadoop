@@ -112,22 +112,6 @@ name|hadoop
 operator|.
 name|hdfs
 operator|.
-name|protocol
-operator|.
-name|QuotaExceededException
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|hdfs
-operator|.
 name|server
 operator|.
 name|blockmanagement
@@ -187,18 +171,6 @@ operator|.
 name|base
 operator|.
 name|Preconditions
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|mortbay
-operator|.
-name|log
-operator|.
-name|Log
 import|;
 end_import
 
@@ -1137,7 +1109,7 @@ name|Override
 comment|// used by WithCount
 DECL|method|cleanSubtree ( ReclaimContext reclaimContext, int snapshot, int prior)
 specifier|public
-name|QuotaCounts
+name|void
 name|cleanSubtree
 parameter_list|(
 name|ReclaimContext
@@ -1150,7 +1122,6 @@ name|int
 name|prior
 parameter_list|)
 block|{
-return|return
 name|referred
 operator|.
 name|cleanSubtree
@@ -1161,7 +1132,7 @@ name|snapshot
 argument_list|,
 name|prior
 argument_list|)
-return|;
+expr_stmt|;
 block|}
 annotation|@
 name|Override
@@ -1216,7 +1187,7 @@ return|;
 block|}
 annotation|@
 name|Override
-DECL|method|computeQuotaUsage ( BlockStoragePolicySuite bsps, byte blockStoragePolicyId, QuotaCounts counts, boolean useCache, int lastSnapshotId)
+DECL|method|computeQuotaUsage (BlockStoragePolicySuite bsps, byte blockStoragePolicyId, boolean useCache, int lastSnapshotId)
 specifier|public
 name|QuotaCounts
 name|computeQuotaUsage
@@ -1226,9 +1197,6 @@ name|bsps
 parameter_list|,
 name|byte
 name|blockStoragePolicyId
-parameter_list|,
-name|QuotaCounts
-name|counts
 parameter_list|,
 name|boolean
 name|useCache
@@ -1245,8 +1213,6 @@ argument_list|(
 name|bsps
 argument_list|,
 name|blockStoragePolicyId
-argument_list|,
-name|counts
 argument_list|,
 name|useCache
 argument_list|,
@@ -1478,9 +1444,7 @@ name|withNameList
 init|=
 operator|new
 name|ArrayList
-argument_list|<
-name|WithName
-argument_list|>
+argument_list|<>
 argument_list|()
 decl_stmt|;
 comment|/**      * Compare snapshot with IDs, where null indicates the current status thus      * is greater than any non-null snapshot.      */
@@ -2102,20 +2066,11 @@ name|ContentSummaryComputationContext
 name|summary
 parameter_list|)
 block|{
-comment|//only count storagespace for WithName
+comment|// only count storagespace for WithName
 specifier|final
 name|QuotaCounts
 name|q
 init|=
-operator|new
-name|QuotaCounts
-operator|.
-name|Builder
-argument_list|()
-operator|.
-name|build
-argument_list|()
-decl_stmt|;
 name|computeQuotaUsage
 argument_list|(
 name|summary
@@ -2126,13 +2081,11 @@ argument_list|,
 name|getStoragePolicyID
 argument_list|()
 argument_list|,
-name|q
-argument_list|,
 literal|false
 argument_list|,
 name|lastSnapshotId
 argument_list|)
-expr_stmt|;
+decl_stmt|;
 name|summary
 operator|.
 name|getCounts
@@ -2169,7 +2122,7 @@ return|;
 block|}
 annotation|@
 name|Override
-DECL|method|computeQuotaUsage (BlockStoragePolicySuite bsps, byte blockStoragePolicyId, QuotaCounts counts, boolean useCache, int lastSnapshotId)
+DECL|method|computeQuotaUsage (BlockStoragePolicySuite bsps, byte blockStoragePolicyId, boolean useCache, int lastSnapshotId)
 specifier|public
 specifier|final
 name|QuotaCounts
@@ -2180,9 +2133,6 @@ name|bsps
 parameter_list|,
 name|byte
 name|blockStoragePolicyId
-parameter_list|,
-name|QuotaCounts
-name|counts
 parameter_list|,
 name|boolean
 name|useCache
@@ -2255,8 +2205,6 @@ name|bsps
 argument_list|,
 name|blockStoragePolicyId
 argument_list|,
-name|counts
-argument_list|,
 literal|false
 argument_list|,
 name|id
@@ -2265,9 +2213,9 @@ return|;
 block|}
 annotation|@
 name|Override
-DECL|method|cleanSubtree ( ReclaimContext reclaimContext, final int snapshot, int prior)
+DECL|method|cleanSubtree (ReclaimContext reclaimContext, final int snapshot, int prior)
 specifier|public
-name|QuotaCounts
+name|void
 name|cleanSubtree
 parameter_list|(
 name|ReclaimContext
@@ -2335,20 +2283,20 @@ operator|<=
 literal|0
 condition|)
 block|{
-return|return
-operator|new
-name|QuotaCounts
-operator|.
-name|Builder
-argument_list|()
-operator|.
-name|build
-argument_list|()
-return|;
+return|return;
 block|}
+comment|// record the old quota delta
 name|QuotaCounts
-name|counts
+name|old
 init|=
+name|reclaimContext
+operator|.
+name|quotaDelta
+argument_list|()
+operator|.
+name|getCountsCopy
+argument_list|()
+decl_stmt|;
 name|getReferredINode
 argument_list|()
 operator|.
@@ -2360,7 +2308,7 @@ name|snapshot
 argument_list|,
 name|prior
 argument_list|)
-decl_stmt|;
+expr_stmt|;
 name|INodeReference
 name|ref
 init|=
@@ -2377,35 +2325,37 @@ operator|!=
 literal|null
 condition|)
 block|{
-try|try
-block|{
-name|ref
+name|QuotaCounts
+name|current
+init|=
+name|reclaimContext
 operator|.
-name|addSpaceConsumed
-argument_list|(
-name|counts
-operator|.
-name|negation
+name|quotaDelta
 argument_list|()
-argument_list|,
-literal|true
-argument_list|)
-expr_stmt|;
-block|}
-catch|catch
-parameter_list|(
-name|QuotaExceededException
-name|e
-parameter_list|)
-block|{
-name|Log
 operator|.
-name|warn
+name|getCountsCopy
+argument_list|()
+decl_stmt|;
+name|current
+operator|.
+name|subtract
 argument_list|(
-literal|"Should not have QuotaExceededException"
+name|old
 argument_list|)
 expr_stmt|;
-block|}
+comment|// we need to update the quota usage along the parent path from ref
+name|reclaimContext
+operator|.
+name|quotaDelta
+argument_list|()
+operator|.
+name|addUpdatePath
+argument_list|(
+name|ref
+argument_list|,
+name|current
+argument_list|)
+expr_stmt|;
 block|}
 if|if
 condition|(
@@ -2418,21 +2368,17 @@ comment|// for a WithName node, when we compute its quota usage, we only count
 comment|// in all the nodes existing at the time of the corresponding rename op.
 comment|// Thus if we are deleting a snapshot before/at the snapshot associated
 comment|// with lastSnapshotId, we do not need to update the quota upwards.
-name|counts
-operator|=
-operator|new
-name|QuotaCounts
+name|reclaimContext
 operator|.
-name|Builder
+name|quotaDelta
 argument_list|()
 operator|.
-name|build
-argument_list|()
+name|setCounts
+argument_list|(
+name|old
+argument_list|)
 expr_stmt|;
 block|}
-return|return
-name|counts
-return|;
 block|}
 annotation|@
 name|Override
@@ -2451,6 +2397,21 @@ init|=
 name|getSelfSnapshot
 argument_list|()
 decl_stmt|;
+name|reclaimContext
+operator|.
+name|quotaDelta
+argument_list|()
+operator|.
+name|add
+argument_list|(
+name|computeQuotaUsage
+argument_list|(
+name|reclaimContext
+operator|.
+name|bsps
+argument_list|)
+argument_list|)
+expr_stmt|;
 if|if
 condition|(
 name|removeReference
@@ -2467,6 +2428,9 @@ operator|.
 name|destroyAndCollectBlocks
 argument_list|(
 name|reclaimContext
+operator|.
+name|getCopy
+argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
@@ -2525,22 +2489,25 @@ comment|// 4. rename foo2 again
 comment|// 5. delete snapshot s2
 return|return;
 block|}
-try|try
-block|{
-name|QuotaCounts
-name|counts
+name|ReclaimContext
+name|newCtx
 init|=
+name|reclaimContext
+operator|.
+name|getCopy
+argument_list|()
+decl_stmt|;
 name|referred
 operator|.
 name|cleanSubtree
 argument_list|(
-name|reclaimContext
+name|newCtx
 argument_list|,
 name|snapshot
 argument_list|,
 name|prior
 argument_list|)
-decl_stmt|;
+expr_stmt|;
 name|INodeReference
 name|ref
 init|=
@@ -2557,33 +2524,23 @@ operator|!=
 literal|null
 condition|)
 block|{
-name|ref
+comment|// we need to update the quota usage along the parent path from ref
+name|reclaimContext
 operator|.
-name|addSpaceConsumed
-argument_list|(
-name|counts
-operator|.
-name|negation
+name|quotaDelta
 argument_list|()
-argument_list|,
-literal|true
-argument_list|)
-expr_stmt|;
-block|}
-block|}
-catch|catch
-parameter_list|(
-name|QuotaExceededException
-name|e
-parameter_list|)
-block|{
-name|LOG
 operator|.
-name|error
+name|addUpdatePath
 argument_list|(
-literal|"should not exceed quota while snapshot deletion"
+name|ref
 argument_list|,
-name|e
+name|newCtx
+operator|.
+name|quotaDelta
+argument_list|()
+operator|.
+name|getCountsCopy
+argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
@@ -2759,9 +2716,9 @@ expr_stmt|;
 block|}
 annotation|@
 name|Override
-DECL|method|cleanSubtree ( ReclaimContext reclaimContext, int snapshot, int prior)
+DECL|method|cleanSubtree (ReclaimContext reclaimContext, int snapshot, int prior)
 specifier|public
-name|QuotaCounts
+name|void
 name|cleanSubtree
 parameter_list|(
 name|ReclaimContext
@@ -2789,39 +2746,11 @@ operator|.
 name|NO_SNAPSHOT_ID
 condition|)
 block|{
-name|QuotaCounts
-name|counts
-init|=
-operator|new
-name|QuotaCounts
-operator|.
-name|Builder
-argument_list|()
-operator|.
-name|build
-argument_list|()
-decl_stmt|;
-name|this
-operator|.
-name|computeQuotaUsage
-argument_list|(
-name|reclaimContext
-operator|.
-name|bsps
-argument_list|,
-name|counts
-argument_list|,
-literal|true
-argument_list|)
-expr_stmt|;
 name|destroyAndCollectBlocks
 argument_list|(
 name|reclaimContext
 argument_list|)
 expr_stmt|;
-return|return
-name|counts
-return|;
 block|}
 else|else
 block|{
@@ -2875,18 +2804,8 @@ operator|<=
 literal|0
 condition|)
 block|{
-return|return
-operator|new
-name|QuotaCounts
-operator|.
-name|Builder
-argument_list|()
-operator|.
-name|build
-argument_list|()
-return|;
+return|return;
 block|}
-return|return
 name|getReferredINode
 argument_list|()
 operator|.
@@ -2898,7 +2817,7 @@ name|snapshot
 argument_list|,
 name|prior
 argument_list|)
-return|;
+expr_stmt|;
 block|}
 block|}
 comment|/**      * {@inheritDoc}      *<br/>      * To destroy a DstReference node, we first remove its link with the       * referred node. If the reference number of the referred node is<= 0, we       * destroy the subtree of the referred node. Otherwise, we clean the       * referred node's subtree and delete everything created after the last       * rename operation, i.e., everything outside of the scope of the prior       * WithName nodes.      * @param reclaimContext      */
@@ -2913,6 +2832,33 @@ name|ReclaimContext
 name|reclaimContext
 parameter_list|)
 block|{
+comment|// since we count everything of the subtree for the quota usage of a
+comment|// dst reference node, here we should just simply do a quota computation.
+comment|// then to avoid double counting, we pass a different QuotaDelta to other
+comment|// calls
+name|reclaimContext
+operator|.
+name|quotaDelta
+argument_list|()
+operator|.
+name|add
+argument_list|(
+name|computeQuotaUsage
+argument_list|(
+name|reclaimContext
+operator|.
+name|bsps
+argument_list|)
+argument_list|)
+expr_stmt|;
+name|ReclaimContext
+name|newCtx
+init|=
+name|reclaimContext
+operator|.
+name|getCopy
+argument_list|()
+decl_stmt|;
 if|if
 condition|(
 name|removeReference
@@ -2928,7 +2874,7 @@ argument_list|()
 operator|.
 name|destroyAndCollectBlocks
 argument_list|(
-name|reclaimContext
+name|newCtx
 argument_list|)
 expr_stmt|;
 block|}
@@ -3022,7 +2968,7 @@ name|referred
 operator|.
 name|cleanSubtree
 argument_list|(
-name|reclaimContext
+name|newCtx
 argument_list|,
 name|snapshot
 argument_list|,
@@ -3059,13 +3005,11 @@ name|isWithSnapshot
 argument_list|()
 argument_list|)
 expr_stmt|;
-try|try
-block|{
 name|DirectoryWithSnapshotFeature
 operator|.
 name|destroyDstSubtree
 argument_list|(
-name|reclaimContext
+name|newCtx
 argument_list|,
 name|dir
 argument_list|,
@@ -3074,23 +3018,6 @@ argument_list|,
 name|prior
 argument_list|)
 expr_stmt|;
-block|}
-catch|catch
-parameter_list|(
-name|QuotaExceededException
-name|e
-parameter_list|)
-block|{
-name|LOG
-operator|.
-name|error
-argument_list|(
-literal|"should not exceed quota while snapshot deletion"
-argument_list|,
-name|e
-argument_list|)
-expr_stmt|;
-block|}
 block|}
 block|}
 block|}

@@ -176,24 +176,6 @@ name|server
 operator|.
 name|namenode
 operator|.
-name|QuotaCounts
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|hdfs
-operator|.
-name|server
-operator|.
-name|namenode
-operator|.
 name|snapshot
 operator|.
 name|SnapshotFSImageFormat
@@ -397,7 +379,7 @@ block|}
 annotation|@
 name|Override
 DECL|method|combinePosteriorAndCollectBlocks ( INode.ReclaimContext reclaimContext, INodeFile currentINode, FileDiff posterior)
-name|QuotaCounts
+name|void
 name|combinePosteriorAndCollectBlocks
 parameter_list|(
 name|INode
@@ -427,7 +409,6 @@ literal|null
 operator|:
 literal|"FileWithSnapshotFeature is null"
 assert|;
-return|return
 name|sf
 operator|.
 name|updateQuotaAndCollectBlocks
@@ -438,7 +419,7 @@ name|currentINode
 argument_list|,
 name|posterior
 argument_list|)
-return|;
+expr_stmt|;
 block|}
 annotation|@
 name|Override
@@ -539,8 +520,8 @@ block|}
 block|}
 annotation|@
 name|Override
-DECL|method|destroyDiffAndCollectBlocks ( INode.ReclaimContext reclaimContext, INodeFile currentINode)
-name|QuotaCounts
+DECL|method|destroyDiffAndCollectBlocks (INode.ReclaimContext reclaimContext, INodeFile currentINode)
+name|void
 name|destroyDiffAndCollectBlocks
 parameter_list|(
 name|INode
@@ -552,7 +533,6 @@ name|INodeFile
 name|currentINode
 parameter_list|)
 block|{
-return|return
 name|currentINode
 operator|.
 name|getFileWithSnapshotFeature
@@ -566,7 +546,7 @@ name|currentINode
 argument_list|,
 name|this
 argument_list|)
-return|;
+expr_stmt|;
 block|}
 DECL|method|destroyAndCollectSnapshotBlocks ( BlocksMapUpdateInfo collectedBlocks)
 specifier|public
@@ -587,7 +567,9 @@ name|collectedBlocks
 operator|==
 literal|null
 condition|)
+block|{
 return|return;
+block|}
 for|for
 control|(
 name|BlockInfoContiguous
@@ -595,6 +577,7 @@ name|blk
 range|:
 name|blocks
 control|)
+block|{
 name|collectedBlocks
 operator|.
 name|addDeleteBlock
@@ -602,6 +585,7 @@ argument_list|(
 name|blk
 argument_list|)
 expr_stmt|;
+block|}
 name|blocks
 operator|=
 literal|null

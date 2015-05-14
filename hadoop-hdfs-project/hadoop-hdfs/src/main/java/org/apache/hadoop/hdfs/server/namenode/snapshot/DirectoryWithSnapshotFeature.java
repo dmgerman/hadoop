@@ -470,6 +470,28 @@ name|Preconditions
 import|;
 end_import
 
+begin_import
+import|import static
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|server
+operator|.
+name|namenode
+operator|.
+name|snapshot
+operator|.
+name|Snapshot
+operator|.
+name|NO_SNAPSHOT_ID
+import|;
+end_import
+
 begin_comment
 comment|/**  * Feature used to store and process the snapshot diff information for a  * directory. In particular, it contains a directory diff list recording changes  * made to the directory and its children for each snapshot.  */
 end_comment
@@ -701,9 +723,9 @@ literal|false
 return|;
 block|}
 comment|/** clear the created list */
-DECL|method|destroyCreatedList ( INode.ReclaimContext reclaimContext, final INodeDirectory currentINode)
+DECL|method|destroyCreatedList (INode.ReclaimContext reclaimContext, final INodeDirectory currentINode)
 specifier|private
-name|QuotaCounts
+name|void
 name|destroyCreatedList
 parameter_list|(
 name|INode
@@ -716,18 +738,6 @@ name|INodeDirectory
 name|currentINode
 parameter_list|)
 block|{
-name|QuotaCounts
-name|counts
-init|=
-operator|new
-name|QuotaCounts
-operator|.
-name|Builder
-argument_list|()
-operator|.
-name|build
-argument_list|()
-decl_stmt|;
 specifier|final
 name|List
 argument_list|<
@@ -752,20 +762,6 @@ control|)
 block|{
 name|c
 operator|.
-name|computeQuotaUsage
-argument_list|(
-name|reclaimContext
-operator|.
-name|storagePolicySuite
-argument_list|()
-argument_list|,
-name|counts
-argument_list|,
-literal|true
-argument_list|)
-expr_stmt|;
-name|c
-operator|.
 name|destroyAndCollectBlocks
 argument_list|(
 name|reclaimContext
@@ -785,14 +781,11 @@ operator|.
 name|clear
 argument_list|()
 expr_stmt|;
-return|return
-name|counts
-return|;
 block|}
 comment|/** clear the deleted list */
 DECL|method|destroyDeletedList (INode.ReclaimContext reclaimContext)
 specifier|private
-name|QuotaCounts
+name|void
 name|destroyDeletedList
 parameter_list|(
 name|INode
@@ -801,18 +794,6 @@ name|ReclaimContext
 name|reclaimContext
 parameter_list|)
 block|{
-name|QuotaCounts
-name|counts
-init|=
-operator|new
-name|QuotaCounts
-operator|.
-name|Builder
-argument_list|()
-operator|.
-name|build
-argument_list|()
-decl_stmt|;
 specifier|final
 name|List
 argument_list|<
@@ -837,20 +818,6 @@ control|)
 block|{
 name|d
 operator|.
-name|computeQuotaUsage
-argument_list|(
-name|reclaimContext
-operator|.
-name|storagePolicySuite
-argument_list|()
-argument_list|,
-name|counts
-argument_list|,
-literal|false
-argument_list|)
-expr_stmt|;
-name|d
-operator|.
 name|destroyAndCollectBlocks
 argument_list|(
 name|reclaimContext
@@ -862,9 +829,6 @@ operator|.
 name|clear
 argument_list|()
 expr_stmt|;
-return|return
-name|counts
-return|;
 block|}
 comment|/** Serialize {@link #created} */
 DECL|method|writeCreated (DataOutput out)
@@ -1267,7 +1231,7 @@ block|}
 annotation|@
 name|Override
 DECL|method|combinePosteriorAndCollectBlocks ( final INode.ReclaimContext reclaimContext, final INodeDirectory currentDir, final DirectoryDiff posterior)
-name|QuotaCounts
+name|void
 name|combinePosteriorAndCollectBlocks
 parameter_list|(
 specifier|final
@@ -1285,19 +1249,6 @@ name|DirectoryDiff
 name|posterior
 parameter_list|)
 block|{
-specifier|final
-name|QuotaCounts
-name|counts
-init|=
-operator|new
-name|QuotaCounts
-operator|.
-name|Builder
-argument_list|()
-operator|.
-name|build
-argument_list|()
-decl_stmt|;
 name|diff
 operator|.
 name|combinePosterior
@@ -1335,20 +1286,6 @@ condition|)
 block|{
 name|inode
 operator|.
-name|computeQuotaUsage
-argument_list|(
-name|reclaimContext
-operator|.
-name|storagePolicySuite
-argument_list|()
-argument_list|,
-name|counts
-argument_list|,
-literal|false
-argument_list|)
-expr_stmt|;
-name|inode
-operator|.
 name|destroyAndCollectBlocks
 argument_list|(
 name|reclaimContext
@@ -1359,9 +1296,6 @@ block|}
 block|}
 argument_list|)
 expr_stmt|;
-return|return
-name|counts
-return|;
 block|}
 comment|/**      * @return The children list of a directory in a snapshot.      *         Since the snapshot is read-only, the logical view of the list is      *         never changed although the internal data structure may mutate.      */
 DECL|method|getChildrenList (final INodeDirectory currentDir)
@@ -1767,7 +1701,7 @@ block|}
 annotation|@
 name|Override
 DECL|method|destroyDiffAndCollectBlocks ( INode.ReclaimContext reclaimContext, INodeDirectory currentINode)
-name|QuotaCounts
+name|void
 name|destroyDiffAndCollectBlocks
 parameter_list|(
 name|INode
@@ -1780,28 +1714,11 @@ name|currentINode
 parameter_list|)
 block|{
 comment|// this diff has been deleted
-name|QuotaCounts
-name|counts
-init|=
-operator|new
-name|QuotaCounts
-operator|.
-name|Builder
-argument_list|()
-operator|.
-name|build
-argument_list|()
-decl_stmt|;
-name|counts
-operator|.
-name|add
-argument_list|(
 name|diff
 operator|.
 name|destroyDeletedList
 argument_list|(
 name|reclaimContext
-argument_list|)
 argument_list|)
 expr_stmt|;
 name|INodeDirectoryAttributes
@@ -1835,9 +1752,6 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
-return|return
-name|counts
-return|;
 block|}
 block|}
 comment|/** A list of directory diffs. */
@@ -2185,8 +2099,6 @@ return|;
 block|}
 block|}
 return|return
-name|Snapshot
-operator|.
 name|NO_SNAPSHOT_ID
 return|;
 block|}
@@ -2237,11 +2149,7 @@ name|map
 init|=
 operator|new
 name|HashMap
-argument_list|<
-name|INode
-argument_list|,
-name|INode
-argument_list|>
+argument_list|<>
 argument_list|(
 name|diffList
 operator|.
@@ -2272,7 +2180,7 @@ name|map
 return|;
 block|}
 comment|/**    * Destroy a subtree under a DstReference node.    */
-DECL|method|destroyDstSubtree ( INode.ReclaimContext reclaimContext, INode inode, final int snapshot, final int prior)
+DECL|method|destroyDstSubtree (INode.ReclaimContext reclaimContext, INode inode, final int snapshot, final int prior)
 specifier|public
 specifier|static
 name|void
@@ -2294,8 +2202,6 @@ specifier|final
 name|int
 name|prior
 parameter_list|)
-throws|throws
-name|QuotaExceededException
 block|{
 name|Preconditions
 operator|.
@@ -2303,8 +2209,6 @@ name|checkArgument
 argument_list|(
 name|prior
 operator|!=
-name|Snapshot
-operator|.
 name|NO_SNAPSHOT_ID
 argument_list|)
 expr_stmt|;
@@ -2592,11 +2496,11 @@ expr_stmt|;
 block|}
 block|}
 block|}
-comment|/**    * Clean an inode while we move it from the deleted list of post to the    * deleted list of prior.    * @param reclaimContext blocks and inodes that need to be reclaimed    * @param inode The inode to clean.    * @param post The post snapshot.    * @param prior The id of the prior snapshot.    * @return Quota usage update.    */
-DECL|method|cleanDeletedINode ( INode.ReclaimContext reclaimContext, INode inode, final int post, final int prior)
+comment|/**    * Clean an inode while we move it from the deleted list of post to the    * deleted list of prior.    * @param reclaimContext blocks and inodes that need to be reclaimed    * @param inode The inode to clean.    * @param post The post snapshot.    * @param prior The id of the prior snapshot.    */
+DECL|method|cleanDeletedINode (INode.ReclaimContext reclaimContext, INode inode, final int post, final int prior)
 specifier|private
 specifier|static
-name|QuotaCounts
+name|void
 name|cleanDeletedINode
 parameter_list|(
 name|INode
@@ -2616,18 +2520,6 @@ name|int
 name|prior
 parameter_list|)
 block|{
-name|QuotaCounts
-name|counts
-init|=
-operator|new
-name|QuotaCounts
-operator|.
-name|Builder
-argument_list|()
-operator|.
-name|build
-argument_list|()
-decl_stmt|;
 name|Deque
 argument_list|<
 name|INode
@@ -2636,9 +2528,7 @@ name|queue
 init|=
 operator|new
 name|ArrayDeque
-argument_list|<
-name|INode
-argument_list|>
+argument_list|<>
 argument_list|()
 decl_stmt|;
 name|queue
@@ -2736,10 +2626,6 @@ operator|.
 name|asFile
 argument_list|()
 decl_stmt|;
-name|counts
-operator|.
-name|add
-argument_list|(
 name|file
 operator|.
 name|getDiffs
@@ -2754,7 +2640,6 @@ argument_list|,
 name|prior
 argument_list|,
 name|file
-argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
@@ -2831,10 +2716,6 @@ operator|.
 name|getChildrenDiff
 argument_list|()
 expr_stmt|;
-name|counts
-operator|.
-name|add
-argument_list|(
 name|priorChildrenDiff
 operator|.
 name|destroyCreatedList
@@ -2842,7 +2723,6 @@ argument_list|(
 name|reclaimContext
 argument_list|,
 name|dir
-argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
@@ -2895,9 +2775,6 @@ expr_stmt|;
 block|}
 block|}
 block|}
-return|return
-name|counts
-return|;
 block|}
 comment|/** Diff list sorted by snapshot IDs, i.e. in chronological order. */
 DECL|field|diffs
@@ -3403,7 +3280,7 @@ name|clear
 argument_list|()
 expr_stmt|;
 block|}
-DECL|method|computeQuotaUsage4CurrentDirectory ( BlockStoragePolicySuite bsps, byte storagePolicyId, QuotaCounts counts)
+DECL|method|computeQuotaUsage4CurrentDirectory ( BlockStoragePolicySuite bsps, byte storagePolicyId)
 specifier|public
 name|QuotaCounts
 name|computeQuotaUsage4CurrentDirectory
@@ -3413,11 +3290,21 @@ name|bsps
 parameter_list|,
 name|byte
 name|storagePolicyId
-parameter_list|,
-name|QuotaCounts
-name|counts
 parameter_list|)
 block|{
+specifier|final
+name|QuotaCounts
+name|counts
+init|=
+operator|new
+name|QuotaCounts
+operator|.
+name|Builder
+argument_list|()
+operator|.
+name|build
+argument_list|()
+decl_stmt|;
 for|for
 control|(
 name|DirectoryDiff
@@ -3455,6 +3342,10 @@ argument_list|(
 name|storagePolicyId
 argument_list|)
 decl_stmt|;
+name|counts
+operator|.
+name|add
+argument_list|(
 name|deleted
 operator|.
 name|computeQuotaUsage
@@ -3463,13 +3354,12 @@ name|bsps
 argument_list|,
 name|childPolicyId
 argument_list|,
-name|counts
-argument_list|,
 literal|false
 argument_list|,
 name|Snapshot
 operator|.
 name|CURRENT_STATE_ID
+argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
@@ -3810,9 +3700,9 @@ literal|false
 return|;
 block|}
 block|}
-DECL|method|cleanDirectory ( INode.ReclaimContext reclaimContext, final INodeDirectory currentINode, final int snapshot, int prior)
+DECL|method|cleanDirectory (INode.ReclaimContext reclaimContext, final INodeDirectory currentINode, final int snapshot, int prior)
 specifier|public
-name|QuotaCounts
+name|void
 name|cleanDirectory
 parameter_list|(
 name|INode
@@ -3832,18 +3722,6 @@ name|int
 name|prior
 parameter_list|)
 block|{
-name|QuotaCounts
-name|counts
-init|=
-operator|new
-name|QuotaCounts
-operator|.
-name|Builder
-argument_list|()
-operator|.
-name|build
-argument_list|()
-decl_stmt|;
 name|Map
 argument_list|<
 name|INode
@@ -3863,6 +3741,17 @@ argument_list|>
 name|priorDeleted
 init|=
 literal|null
+decl_stmt|;
+name|QuotaCounts
+name|old
+init|=
+name|reclaimContext
+operator|.
+name|quotaDelta
+argument_list|()
+operator|.
+name|getCountsCopy
+argument_list|()
 decl_stmt|;
 if|if
 condition|(
@@ -3897,10 +3786,6 @@ operator|!=
 literal|null
 condition|)
 block|{
-name|counts
-operator|.
-name|add
-argument_list|(
 name|lastDiff
 operator|.
 name|diff
@@ -3911,13 +3796,8 @@ name|reclaimContext
 argument_list|,
 name|currentINode
 argument_list|)
-argument_list|)
 expr_stmt|;
 block|}
-name|counts
-operator|.
-name|add
-argument_list|(
 name|currentINode
 operator|.
 name|cleanSubtreeRecursively
@@ -3928,8 +3808,7 @@ name|snapshot
 argument_list|,
 name|prior
 argument_list|,
-name|priorDeleted
-argument_list|)
+literal|null
 argument_list|)
 expr_stmt|;
 block|}
@@ -3954,8 +3833,6 @@ if|if
 condition|(
 name|prior
 operator|!=
-name|Snapshot
-operator|.
 name|NO_SNAPSHOT_ID
 condition|)
 block|{
@@ -4036,10 +3913,6 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-name|counts
-operator|.
-name|add
-argument_list|(
 name|getDiffs
 argument_list|()
 operator|.
@@ -4053,12 +3926,7 @@ name|prior
 argument_list|,
 name|currentINode
 argument_list|)
-argument_list|)
 expr_stmt|;
-name|counts
-operator|.
-name|add
-argument_list|(
 name|currentINode
 operator|.
 name|cleanSubtreeRecursively
@@ -4071,15 +3939,12 @@ name|prior
 argument_list|,
 name|priorDeleted
 argument_list|)
-argument_list|)
 expr_stmt|;
 comment|// check priorDiff again since it may be created during the diff deletion
 if|if
 condition|(
 name|prior
 operator|!=
-name|Snapshot
-operator|.
 name|NO_SNAPSHOT_ID
 condition|)
 block|{
@@ -4151,10 +4016,6 @@ name|cNode
 argument_list|)
 condition|)
 block|{
-name|counts
-operator|.
-name|add
-argument_list|(
 name|cNode
 operator|.
 name|cleanSubtree
@@ -4163,10 +4024,7 @@ name|reclaimContext
 argument_list|,
 name|snapshot
 argument_list|,
-name|Snapshot
-operator|.
 name|NO_SNAPSHOT_ID
-argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
@@ -4211,10 +4069,6 @@ name|dNode
 argument_list|)
 condition|)
 block|{
-name|counts
-operator|.
-name|add
-argument_list|(
 name|cleanDeletedINode
 argument_list|(
 name|reclaimContext
@@ -4225,13 +4079,30 @@ name|snapshot
 argument_list|,
 name|prior
 argument_list|)
-argument_list|)
 expr_stmt|;
 block|}
 block|}
 block|}
 block|}
 block|}
+name|QuotaCounts
+name|current
+init|=
+name|reclaimContext
+operator|.
+name|quotaDelta
+argument_list|()
+operator|.
+name|getCountsCopy
+argument_list|()
+decl_stmt|;
+name|current
+operator|.
+name|subtract
+argument_list|(
+name|old
+argument_list|)
+expr_stmt|;
 if|if
 condition|(
 name|currentINode
@@ -4240,23 +4111,19 @@ name|isQuotaSet
 argument_list|()
 condition|)
 block|{
-name|currentINode
+name|reclaimContext
 operator|.
-name|getDirectoryWithQuotaFeature
+name|quotaDelta
 argument_list|()
 operator|.
-name|addSpaceConsumed2Cache
+name|addQuotaDirUpdate
 argument_list|(
-name|counts
-operator|.
-name|negation
-argument_list|()
+name|currentINode
+argument_list|,
+name|current
 argument_list|)
 expr_stmt|;
 block|}
-return|return
-name|counts
-return|;
 block|}
 block|}
 end_class

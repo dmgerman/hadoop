@@ -1731,7 +1731,7 @@ block|}
 comment|/**    * Rename src to dst.    *<br>    * Note: This is to be used by {@link org.apache.hadoop.hdfs.server    * .namenode.FSEditLogLoader} only.    *<br>    *    * @param fsd       FSDirectory    * @param src       source path    * @param dst       destination path    * @param timestamp modification time    * @param options   Rename options    */
 DECL|method|renameForEditLog ( FSDirectory fsd, String src, String dst, long timestamp, Options.Rename... options)
 specifier|static
-name|boolean
+name|void
 name|renameForEditLog
 parameter_list|(
 name|FSDirectory
@@ -1788,9 +1788,6 @@ argument_list|,
 literal|false
 argument_list|)
 decl_stmt|;
-name|boolean
-name|ret
-init|=
 name|unprotectedRenameTo
 argument_list|(
 name|fsd
@@ -1809,7 +1806,7 @@ name|collectedBlocks
 argument_list|,
 name|options
 argument_list|)
-decl_stmt|;
+expr_stmt|;
 if|if
 condition|(
 operator|!
@@ -1833,9 +1830,6 @@ name|collectedBlocks
 argument_list|)
 expr_stmt|;
 block|}
-return|return
-name|ret
-return|;
 block|}
 comment|/**    * Rename src to dst.    * See {@link DistributedFileSystem#rename(Path, Path, Options.Rename...)}    * for details related to rename semantics and exceptions.    *    * @param fsd             FSDirectory    * @param src             source path    * @param dst             destination path    * @param timestamp       modification time    * @param collectedBlocks blocks to be removed    * @param options         Rename options    * @return whether a file/directory gets overwritten in the dst path    */
 DECL|method|unprotectedRenameTo (FSDirectory fsd, String src, String dst, final INodesInPath srcIIP, final INodesInPath dstIIP, long timestamp, BlocksMapUpdateInfo collectedBlocks, Options.Rename... options)
@@ -3378,6 +3372,10 @@ name|srcChild
 argument_list|)
 expr_stmt|;
 comment|// get the counts before rename
+name|oldSrcCounts
+operator|.
+name|add
+argument_list|(
 name|withCount
 operator|.
 name|getReferredINode
@@ -3386,10 +3384,7 @@ operator|.
 name|computeQuotaUsage
 argument_list|(
 name|bsps
-argument_list|,
-name|oldSrcCounts
-argument_list|,
-literal|true
+argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
@@ -4084,6 +4079,25 @@ name|ChunkedArrayList
 argument_list|<>
 argument_list|()
 decl_stmt|;
+name|INode
+operator|.
+name|ReclaimContext
+name|context
+init|=
+operator|new
+name|INode
+operator|.
+name|ReclaimContext
+argument_list|(
+name|bsps
+argument_list|,
+name|collectedBlocks
+argument_list|,
+name|removedINodes
+argument_list|,
+name|removedUCFiles
+argument_list|)
+decl_stmt|;
 specifier|final
 name|boolean
 name|filesDeleted
@@ -4106,19 +4120,7 @@ name|oldDstChild
 operator|.
 name|destroyAndCollectBlocks
 argument_list|(
-operator|new
-name|INode
-operator|.
-name|ReclaimContext
-argument_list|(
-name|bsps
-argument_list|,
-name|collectedBlocks
-argument_list|,
-name|removedINodes
-argument_list|,
-name|removedUCFiles
-argument_list|)
+name|context
 argument_list|)
 expr_stmt|;
 name|filesDeleted
@@ -4128,25 +4130,11 @@ expr_stmt|;
 block|}
 else|else
 block|{
-name|filesDeleted
-operator|=
 name|oldDstChild
 operator|.
 name|cleanSubtree
 argument_list|(
-operator|new
-name|INode
-operator|.
-name|ReclaimContext
-argument_list|(
-name|bsps
-argument_list|,
-name|collectedBlocks
-argument_list|,
-name|removedINodes
-argument_list|,
-name|removedUCFiles
-argument_list|)
+name|context
 argument_list|,
 name|Snapshot
 operator|.
@@ -4157,8 +4145,15 @@ operator|.
 name|getLatestSnapshotId
 argument_list|()
 argument_list|)
+expr_stmt|;
+name|filesDeleted
+operator|=
+name|context
 operator|.
-name|getNameSpace
+name|quotaDelta
+argument_list|()
+operator|.
+name|getNsDelta
 argument_list|()
 operator|>=
 literal|0
@@ -4207,15 +4202,6 @@ operator|.
 name|computeQuotaUsage
 argument_list|(
 name|bsps
-argument_list|,
-operator|new
-name|QuotaCounts
-operator|.
-name|Builder
-argument_list|()
-operator|.
-name|build
-argument_list|()
 argument_list|,
 literal|false
 argument_list|)

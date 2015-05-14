@@ -2649,9 +2649,7 @@ name|children
 operator|=
 operator|new
 name|ArrayList
-argument_list|<
-name|INode
-argument_list|>
+argument_list|<>
 argument_list|(
 name|DEFAULT_FILES_PER_DIRECTORY
 argument_list|)
@@ -2698,7 +2696,7 @@ block|}
 block|}
 annotation|@
 name|Override
-DECL|method|computeQuotaUsage (BlockStoragePolicySuite bsps, byte blockStoragePolicyId, QuotaCounts counts, boolean useCache, int lastSnapshotId)
+DECL|method|computeQuotaUsage (BlockStoragePolicySuite bsps, byte blockStoragePolicyId, boolean useCache, int lastSnapshotId)
 specifier|public
 name|QuotaCounts
 name|computeQuotaUsage
@@ -2708,9 +2706,6 @@ name|bsps
 parameter_list|,
 name|byte
 name|blockStoragePolicyId
-parameter_list|,
-name|QuotaCounts
-name|counts
 parameter_list|,
 name|boolean
 name|useCache
@@ -2724,6 +2719,18 @@ name|DirectoryWithSnapshotFeature
 name|sf
 init|=
 name|getDirectoryWithSnapshotFeature
+argument_list|()
+decl_stmt|;
+name|QuotaCounts
+name|counts
+init|=
+operator|new
+name|QuotaCounts
+operator|.
+name|Builder
+argument_list|()
+operator|.
+name|build
 argument_list|()
 decl_stmt|;
 comment|// we are computing the quota usage for a specific snapshot here, i.e., the
@@ -2780,6 +2787,10 @@ argument_list|(
 name|blockStoragePolicyId
 argument_list|)
 decl_stmt|;
+name|counts
+operator|.
+name|add
+argument_list|(
 name|child
 operator|.
 name|computeQuotaUsage
@@ -2788,11 +2799,10 @@ name|bsps
 argument_list|,
 name|childPolicyId
 argument_list|,
-name|counts
-argument_list|,
 name|useCache
 argument_list|,
 name|lastSnapshotId
+argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
@@ -2920,6 +2930,10 @@ argument_list|(
 name|blockStoragePolicyId
 argument_list|)
 decl_stmt|;
+name|counts
+operator|.
+name|add
+argument_list|(
 name|child
 operator|.
 name|computeQuotaUsage
@@ -2928,11 +2942,10 @@ name|bsps
 argument_list|,
 name|childPolicyId
 argument_list|,
-name|counts
-argument_list|,
 name|useCache
 argument_list|,
 name|lastSnapshotId
+argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
@@ -2985,6 +2998,10 @@ operator|!=
 literal|null
 condition|)
 block|{
+name|counts
+operator|.
+name|add
+argument_list|(
 name|sf
 operator|.
 name|computeQuotaUsage4CurrentDirectory
@@ -2992,8 +3009,7 @@ argument_list|(
 name|bsps
 argument_list|,
 name|storagePolicyId
-argument_list|,
-name|counts
+argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
@@ -3255,17 +3271,13 @@ init|=
 name|getDirectoryWithSnapshotFeature
 argument_list|()
 decl_stmt|;
-name|Preconditions
-operator|.
-name|checkState
-argument_list|(
+assert|assert
 name|sf
 operator|!=
 literal|null
-argument_list|,
+operator|:
 literal|"Directory does not have snapshot feature"
-argument_list|)
-expr_stmt|;
+assert|;
 name|sf
 operator|.
 name|getDiffs
@@ -3334,17 +3346,13 @@ init|=
 name|getDirectoryWithSnapshotFeature
 argument_list|()
 decl_stmt|;
-name|Preconditions
-operator|.
-name|checkState
-argument_list|(
+assert|assert
 name|sf
 operator|!=
 literal|null
-argument_list|,
+operator|:
 literal|"Directory does not have snapshot feature"
-argument_list|)
-expr_stmt|;
+assert|;
 name|boolean
 name|removeDeletedChild
 init|=
@@ -3450,7 +3458,7 @@ block|}
 comment|/** Call cleanSubtree(..) recursively down the subtree. */
 DECL|method|cleanSubtreeRecursively ( ReclaimContext reclaimContext, final int snapshot, int prior, final Map<INode, INode> excludedNodes)
 specifier|public
-name|QuotaCounts
+name|void
 name|cleanSubtreeRecursively
 parameter_list|(
 name|ReclaimContext
@@ -3473,18 +3481,6 @@ argument_list|>
 name|excludedNodes
 parameter_list|)
 block|{
-name|QuotaCounts
-name|counts
-init|=
-operator|new
-name|QuotaCounts
-operator|.
-name|Builder
-argument_list|()
-operator|.
-name|build
-argument_list|()
-decl_stmt|;
 comment|// in case of deletion snapshot, since this call happens after we modify
 comment|// the diff list, the snapshot to be deleted has been combined or renamed
 comment|// to its latest previous snapshot. (besides, we also need to consider nodes
@@ -3523,15 +3519,16 @@ block|{
 if|if
 condition|(
 name|snapshot
-operator|!=
+operator|==
 name|Snapshot
 operator|.
 name|CURRENT_STATE_ID
-operator|&&
+operator|||
 name|excludedNodes
-operator|!=
+operator|==
 literal|null
-operator|&&
+operator|||
+operator|!
 name|excludedNodes
 operator|.
 name|containsKey
@@ -3540,13 +3537,6 @@ name|child
 argument_list|)
 condition|)
 block|{
-continue|continue;
-block|}
-else|else
-block|{
-name|QuotaCounts
-name|childCounts
-init|=
 name|child
 operator|.
 name|cleanSubtree
@@ -3557,19 +3547,9 @@ name|snapshot
 argument_list|,
 name|prior
 argument_list|)
-decl_stmt|;
-name|counts
-operator|.
-name|add
-argument_list|(
-name|childCounts
-argument_list|)
 expr_stmt|;
 block|}
 block|}
-return|return
-name|counts
-return|;
 block|}
 annotation|@
 name|Override
@@ -3582,6 +3562,28 @@ name|ReclaimContext
 name|reclaimContext
 parameter_list|)
 block|{
+name|reclaimContext
+operator|.
+name|quotaDelta
+argument_list|()
+operator|.
+name|add
+argument_list|(
+operator|new
+name|QuotaCounts
+operator|.
+name|Builder
+argument_list|()
+operator|.
+name|nameSpace
+argument_list|(
+literal|1
+argument_list|)
+operator|.
+name|build
+argument_list|()
+argument_list|)
+expr_stmt|;
 specifier|final
 name|DirectoryWithSnapshotFeature
 name|sf
@@ -3659,9 +3661,9 @@ expr_stmt|;
 block|}
 annotation|@
 name|Override
-DECL|method|cleanSubtree ( ReclaimContext reclaimContext, final int snapshotId, int priorSnapshotId)
+DECL|method|cleanSubtree (ReclaimContext reclaimContext, final int snapshotId, int priorSnapshotId)
 specifier|public
-name|QuotaCounts
+name|void
 name|cleanSubtree
 parameter_list|(
 name|ReclaimContext
@@ -3689,7 +3691,6 @@ operator|!=
 literal|null
 condition|)
 block|{
-return|return
 name|sf
 operator|.
 name|cleanDirectory
@@ -3702,8 +3703,10 @@ name|snapshotId
 argument_list|,
 name|priorSnapshotId
 argument_list|)
-return|;
+expr_stmt|;
 block|}
+else|else
+block|{
 comment|// there is no snapshot data
 if|if
 condition|(
@@ -3721,46 +3724,27 @@ name|CURRENT_STATE_ID
 condition|)
 block|{
 comment|// destroy the whole subtree and collect blocks that should be deleted
-name|QuotaCounts
-name|counts
-init|=
-operator|new
-name|QuotaCounts
-operator|.
-name|Builder
-argument_list|()
-operator|.
-name|build
-argument_list|()
-decl_stmt|;
-name|this
-operator|.
-name|computeQuotaUsage
-argument_list|(
-name|reclaimContext
-operator|.
-name|bsps
-argument_list|,
-name|counts
-argument_list|,
-literal|true
-argument_list|)
-expr_stmt|;
 name|destroyAndCollectBlocks
 argument_list|(
 name|reclaimContext
 argument_list|)
 expr_stmt|;
-return|return
-name|counts
-return|;
 block|}
 else|else
 block|{
-comment|// process recursively down the subtree
+comment|// make a copy the quota delta
 name|QuotaCounts
-name|counts
+name|old
 init|=
+name|reclaimContext
+operator|.
+name|quotaDelta
+argument_list|()
+operator|.
+name|getCountsCopy
+argument_list|()
+decl_stmt|;
+comment|// process recursively down the subtree
 name|cleanSubtreeRecursively
 argument_list|(
 name|reclaimContext
@@ -3771,28 +3755,45 @@ name|priorSnapshotId
 argument_list|,
 literal|null
 argument_list|)
+expr_stmt|;
+name|QuotaCounts
+name|current
+init|=
+name|reclaimContext
+operator|.
+name|quotaDelta
+argument_list|()
+operator|.
+name|getCountsCopy
+argument_list|()
 decl_stmt|;
+name|current
+operator|.
+name|subtract
+argument_list|(
+name|old
+argument_list|)
+expr_stmt|;
 if|if
 condition|(
 name|isQuotaSet
 argument_list|()
 condition|)
 block|{
-name|getDirectoryWithQuotaFeature
+name|reclaimContext
+operator|.
+name|quotaDelta
 argument_list|()
 operator|.
-name|addSpaceConsumed2Cache
+name|addQuotaDirUpdate
 argument_list|(
-name|counts
-operator|.
-name|negation
-argument_list|()
+name|this
+argument_list|,
+name|current
 argument_list|)
 expr_stmt|;
 block|}
-return|return
-name|counts
-return|;
+block|}
 block|}
 block|}
 comment|/**    * Compare the metadata with another INodeDirectory    */

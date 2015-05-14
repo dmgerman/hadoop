@@ -180,11 +180,7 @@ name|map
 init|=
 operator|new
 name|LightWeightGSet
-argument_list|<
-name|INode
-argument_list|,
-name|INodeWithAdditionalFields
-argument_list|>
+argument_list|<>
 argument_list|(
 name|capacity
 argument_list|)
@@ -399,9 +395,6 @@ parameter_list|,
 name|byte
 name|blockStoragePolicyId
 parameter_list|,
-name|QuotaCounts
-name|counts
-parameter_list|,
 name|boolean
 name|useCache
 parameter_list|,
@@ -430,7 +423,7 @@ block|}
 annotation|@
 name|Override
 specifier|public
-name|QuotaCounts
+name|void
 name|cleanSubtree
 parameter_list|(
 name|ReclaimContext
@@ -442,11 +435,7 @@ parameter_list|,
 name|int
 name|priorSnapshotId
 parameter_list|)
-block|{
-return|return
-literal|null
-return|;
-block|}
+block|{       }
 annotation|@
 name|Override
 specifier|public

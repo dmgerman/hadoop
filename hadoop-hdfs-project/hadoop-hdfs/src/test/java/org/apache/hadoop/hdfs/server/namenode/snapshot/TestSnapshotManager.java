@@ -72,16 +72,6 @@ end_import
 
 begin_import
 import|import
-name|java
-operator|.
-name|util
-operator|.
-name|ArrayList
-import|;
-end_import
-
-begin_import
-import|import
 name|org
 operator|.
 name|apache
@@ -410,17 +400,10 @@ name|mock
 argument_list|(
 name|INode
 operator|.
-name|BlocksMapUpdateInfo
+name|ReclaimContext
 operator|.
 name|class
 argument_list|)
-argument_list|,
-operator|new
-name|ArrayList
-argument_list|<
-name|INode
-argument_list|>
-argument_list|()
 argument_list|)
 expr_stmt|;
 comment|// Attempt to create a snapshot again. It should still fail due

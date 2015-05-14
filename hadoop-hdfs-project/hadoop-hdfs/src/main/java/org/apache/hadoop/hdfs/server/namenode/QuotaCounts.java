@@ -321,7 +321,7 @@ expr_stmt|;
 block|}
 DECL|method|add (QuotaCounts that)
 specifier|public
-name|void
+name|QuotaCounts
 name|add
 parameter_list|(
 name|QuotaCounts
@@ -350,10 +350,13 @@ operator|.
 name|tsCounts
 argument_list|)
 expr_stmt|;
+return|return
+name|this
+return|;
 block|}
 DECL|method|subtract (QuotaCounts that)
 specifier|public
-name|void
+name|QuotaCounts
 name|subtract
 parameter_list|(
 name|QuotaCounts
@@ -382,6 +385,9 @@ operator|.
 name|tsCounts
 argument_list|)
 expr_stmt|;
+return|return
+name|this
+return|;
 block|}
 comment|/**    * Returns a QuotaCounts whose value is {@code (-this)}.    *    * @return {@code -this}    */
 DECL|method|negation ()

@@ -604,9 +604,9 @@ operator|+
 name|diffs
 return|;
 block|}
-DECL|method|cleanFile (INode.ReclaimContext reclaimContext, final INodeFile file, final int snapshotId, int priorSnapshotId)
+DECL|method|cleanFile (INode.ReclaimContext reclaimContext, final INodeFile file, final int snapshotId, int priorSnapshotId, byte storagePolicyId)
 specifier|public
-name|QuotaCounts
+name|void
 name|cleanFile
 parameter_list|(
 name|INode
@@ -624,6 +624,9 @@ name|snapshotId
 parameter_list|,
 name|int
 name|priorSnapshotId
+parameter_list|,
+name|byte
+name|storagePolicyId
 parameter_list|)
 block|{
 if|if
@@ -654,6 +657,30 @@ name|deleteCurrentFile
 argument_list|()
 expr_stmt|;
 block|}
+specifier|final
+name|BlockStoragePolicy
+name|policy
+init|=
+name|reclaimContext
+operator|.
+name|storagePolicySuite
+argument_list|()
+operator|.
+name|getPolicy
+argument_list|(
+name|storagePolicyId
+argument_list|)
+decl_stmt|;
+name|QuotaCounts
+name|old
+init|=
+name|file
+operator|.
+name|storagespaceConsumed
+argument_list|(
+name|policy
+argument_list|)
+decl_stmt|;
 name|collectBlocksAndClear
 argument_list|(
 name|reclaimContext
@@ -661,16 +688,31 @@ argument_list|,
 name|file
 argument_list|)
 expr_stmt|;
-return|return
-operator|new
 name|QuotaCounts
+name|current
+init|=
+name|file
 operator|.
-name|Builder
+name|storagespaceConsumed
+argument_list|(
+name|policy
+argument_list|)
+decl_stmt|;
+name|reclaimContext
+operator|.
+name|quotaDelta
 argument_list|()
 operator|.
-name|build
-argument_list|()
-return|;
+name|add
+argument_list|(
+name|old
+operator|.
+name|subtract
+argument_list|(
+name|current
+argument_list|)
+argument_list|)
+expr_stmt|;
 block|}
 else|else
 block|{
@@ -687,7 +729,6 @@ argument_list|,
 name|priorSnapshotId
 argument_list|)
 expr_stmt|;
-return|return
 name|diffs
 operator|.
 name|deleteSnapshotDiff
@@ -700,7 +741,7 @@ name|priorSnapshotId
 argument_list|,
 name|file
 argument_list|)
-return|;
+expr_stmt|;
 block|}
 block|}
 DECL|method|clearDiffs ()
@@ -717,9 +758,9 @@ name|clear
 argument_list|()
 expr_stmt|;
 block|}
-DECL|method|updateQuotaAndCollectBlocks ( INode.ReclaimContext reclaimContext, INodeFile file, FileDiff removed)
+DECL|method|updateQuotaAndCollectBlocks (INode.ReclaimContext reclaimContext, INodeFile file, FileDiff removed)
 specifier|public
-name|QuotaCounts
+name|void
 name|updateQuotaAndCollectBlocks
 parameter_list|(
 name|INode
@@ -956,16 +997,21 @@ argument_list|(
 name|bsp
 argument_list|)
 decl_stmt|;
+name|reclaimContext
+operator|.
+name|quotaDelta
+argument_list|()
+operator|.
+name|add
+argument_list|(
 name|oldCounts
 operator|.
 name|subtract
 argument_list|(
 name|current
 argument_list|)
+argument_list|)
 expr_stmt|;
-return|return
-name|oldCounts
-return|;
 block|}
 comment|/**    * If some blocks at the end of the block list no longer belongs to    * any inode, collect them and update the block list.    */
 DECL|method|collectBlocksAndClear ( INode.ReclaimContext reclaimContext, final INodeFile file)
@@ -1001,7 +1047,7 @@ condition|)
 block|{
 name|file
 operator|.
-name|destroyAndCollectBlocks
+name|clearFile
 argument_list|(
 name|reclaimContext
 argument_list|)

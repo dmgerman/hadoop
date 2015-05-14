@@ -322,26 +322,6 @@ name|server
 operator|.
 name|namenode
 operator|.
-name|INode
-operator|.
-name|BlocksMapUpdateInfo
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|hdfs
-operator|.
-name|server
-operator|.
-name|namenode
-operator|.
 name|INodeDirectory
 import|;
 end_import
@@ -982,7 +962,6 @@ block|{
 comment|// We have reached the maximum allowable snapshot ID and since we don't
 comment|// handle rollover we will fail all subsequent snapshot creation
 comment|// requests.
-comment|//
 throw|throw
 operator|new
 name|SnapshotException
@@ -1022,8 +1001,8 @@ name|snapshotName
 argument_list|)
 return|;
 block|}
-comment|/**    * Delete a snapshot for a snapshottable directory    * @param snapshotName Name of the snapshot to be deleted    * @param collectedBlocks Used to collect information to update blocksMap    * @throws IOException    */
-DECL|method|deleteSnapshot (final INodesInPath iip, final String snapshotName, BlocksMapUpdateInfo collectedBlocks, final List<INode> removedINodes)
+comment|/**    * Delete a snapshot for a snapshottable directory    * @param snapshotName Name of the snapshot to be deleted    * @param reclaimContext Used to collect information to reclaim blocks    *                       and inodes    */
+DECL|method|deleteSnapshot (final INodesInPath iip, final String snapshotName, INode.ReclaimContext reclaimContext)
 specifier|public
 name|void
 name|deleteSnapshot
@@ -1036,15 +1015,10 @@ specifier|final
 name|String
 name|snapshotName
 parameter_list|,
-name|BlocksMapUpdateInfo
-name|collectedBlocks
-parameter_list|,
-specifier|final
-name|List
-argument_list|<
 name|INode
-argument_list|>
-name|removedINodes
+operator|.
+name|ReclaimContext
+name|reclaimContext
 parameter_list|)
 throws|throws
 name|IOException
@@ -1061,22 +1035,7 @@ name|srcRoot
 operator|.
 name|removeSnapshot
 argument_list|(
-operator|new
-name|INode
-operator|.
-name|ReclaimContext
-argument_list|(
-name|fsdir
-operator|.
-name|getBlockStoragePolicySuite
-argument_list|()
-argument_list|,
-name|collectedBlocks
-argument_list|,
-name|removedINodes
-argument_list|,
-literal|null
-argument_list|)
+name|reclaimContext
 argument_list|,
 name|snapshotName
 argument_list|)

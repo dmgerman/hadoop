@@ -44,34 +44,6 @@ end_import
 
 begin_import
 import|import
-name|java
-operator|.
-name|util
-operator|.
-name|List
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|hdfs
-operator|.
-name|server
-operator|.
-name|blockmanagement
-operator|.
-name|BlockStoragePolicySuite
-import|;
-end_import
-
-begin_import
-import|import
 name|org
 operator|.
 name|apache
@@ -85,26 +57,6 @@ operator|.
 name|namenode
 operator|.
 name|INode
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|hdfs
-operator|.
-name|server
-operator|.
-name|namenode
-operator|.
-name|INode
-operator|.
-name|BlocksMapUpdateInfo
 import|;
 end_import
 
@@ -123,24 +75,6 @@ operator|.
 name|namenode
 operator|.
 name|INodeAttributes
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|hdfs
-operator|.
-name|server
-operator|.
-name|namenode
-operator|.
-name|QuotaCounts
 import|;
 end_import
 
@@ -435,7 +369,7 @@ block|}
 comment|/** Combine the posterior diff and collect blocks for deletion. */
 DECL|method|combinePosteriorAndCollectBlocks ( INode.ReclaimContext reclaimContext, final N currentINode, final D posterior)
 specifier|abstract
-name|QuotaCounts
+name|void
 name|combinePosteriorAndCollectBlocks
 parameter_list|(
 name|INode
@@ -452,10 +386,10 @@ name|D
 name|posterior
 parameter_list|)
 function_decl|;
-comment|/**    * Delete and clear self.    * @param reclaimContext blocks and inodes that need to be reclaimed    * @param currentINode The inode where the deletion happens.    *    * @return usage delta    */
-DECL|method|destroyDiffAndCollectBlocks ( INode.ReclaimContext reclaimContext, final N currentINode)
+comment|/**    * Delete and clear self.    * @param reclaimContext blocks and inodes that need to be reclaimed    * @param currentINode The inode where the deletion happens.    */
+DECL|method|destroyDiffAndCollectBlocks (INode.ReclaimContext reclaimContext, final N currentINode)
 specifier|abstract
-name|QuotaCounts
+name|void
 name|destroyDiffAndCollectBlocks
 parameter_list|(
 name|INode

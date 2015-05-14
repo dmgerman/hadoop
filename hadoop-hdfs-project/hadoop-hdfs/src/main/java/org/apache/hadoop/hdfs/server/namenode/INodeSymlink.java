@@ -300,9 +300,9 @@ return|;
 block|}
 annotation|@
 name|Override
-DECL|method|cleanSubtree ( ReclaimContext reclaimContext, final int snapshotId, int priorSnapshotId)
+DECL|method|cleanSubtree (ReclaimContext reclaimContext, final int snapshotId, int priorSnapshotId)
 specifier|public
-name|QuotaCounts
+name|void
 name|cleanSubtree
 parameter_list|(
 name|ReclaimContext
@@ -337,21 +337,6 @@ name|reclaimContext
 argument_list|)
 expr_stmt|;
 block|}
-return|return
-operator|new
-name|QuotaCounts
-operator|.
-name|Builder
-argument_list|()
-operator|.
-name|nameSpace
-argument_list|(
-literal|1
-argument_list|)
-operator|.
-name|build
-argument_list|()
-return|;
 block|}
 annotation|@
 name|Override
@@ -373,10 +358,32 @@ argument_list|(
 name|this
 argument_list|)
 expr_stmt|;
+name|reclaimContext
+operator|.
+name|quotaDelta
+argument_list|()
+operator|.
+name|add
+argument_list|(
+operator|new
+name|QuotaCounts
+operator|.
+name|Builder
+argument_list|()
+operator|.
+name|nameSpace
+argument_list|(
+literal|1
+argument_list|)
+operator|.
+name|build
+argument_list|()
+argument_list|)
+expr_stmt|;
 block|}
 annotation|@
 name|Override
-DECL|method|computeQuotaUsage ( BlockStoragePolicySuite bsps, byte blockStoragePolicyId, QuotaCounts counts, boolean useCache, int lastSnapshotId)
+DECL|method|computeQuotaUsage (BlockStoragePolicySuite bsps, byte blockStoragePolicyId, boolean useCache, int lastSnapshotId)
 specifier|public
 name|QuotaCounts
 name|computeQuotaUsage
@@ -387,9 +394,6 @@ parameter_list|,
 name|byte
 name|blockStoragePolicyId
 parameter_list|,
-name|QuotaCounts
-name|counts
-parameter_list|,
 name|boolean
 name|useCache
 parameter_list|,
@@ -397,15 +401,20 @@ name|int
 name|lastSnapshotId
 parameter_list|)
 block|{
-name|counts
+return|return
+operator|new
+name|QuotaCounts
 operator|.
-name|addNameSpace
+name|Builder
+argument_list|()
+operator|.
+name|nameSpace
 argument_list|(
 literal|1
 argument_list|)
-expr_stmt|;
-return|return
-name|counts
+operator|.
+name|build
+argument_list|()
 return|;
 block|}
 annotation|@
@@ -473,7 +482,6 @@ name|println
 argument_list|()
 expr_stmt|;
 block|}
-comment|/**    * getAclFeature is not overridden because it is needed for resolving    * symlinks.   @Override   final AclFeature getAclFeature(int snapshotId) {     throw new UnsupportedOperationException("ACLs are not supported on symlinks");   }   */
 annotation|@
 name|Override
 DECL|method|removeAclFeature ()

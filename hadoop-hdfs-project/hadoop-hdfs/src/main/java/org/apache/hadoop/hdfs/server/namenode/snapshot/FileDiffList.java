@@ -265,6 +265,7 @@ range|:
 name|asList
 argument_list|()
 control|)
+block|{
 name|d
 operator|.
 name|destroyAndCollectSnapshotBlocks
@@ -272,6 +273,7 @@ argument_list|(
 name|collectedBlocks
 argument_list|)
 expr_stmt|;
+block|}
 block|}
 DECL|method|saveSelf2Snapshot (int latestSnapshotId, INodeFile iNodeFile, INodeFileAttributes snapshotCopy, boolean withBlocks)
 specifier|public
@@ -310,6 +312,7 @@ if|if
 condition|(
 name|withBlocks
 condition|)
+block|{
 comment|// Store blocks if this is the first update
 name|diff
 operator|.
@@ -321,6 +324,7 @@ name|getBlocks
 argument_list|()
 argument_list|)
 expr_stmt|;
+block|}
 block|}
 DECL|method|findEarlierSnapshotBlocks (int snapshotId)
 specifier|public
@@ -649,6 +653,7 @@ name|earlierDiff
 operator|!=
 literal|null
 condition|)
+block|{
 name|earlierDiff
 operator|.
 name|setBlocks
@@ -656,6 +661,7 @@ argument_list|(
 name|removedBlocks
 argument_list|)
 expr_stmt|;
+block|}
 name|BlockInfoContiguous
 index|[]
 name|earlierBlocks

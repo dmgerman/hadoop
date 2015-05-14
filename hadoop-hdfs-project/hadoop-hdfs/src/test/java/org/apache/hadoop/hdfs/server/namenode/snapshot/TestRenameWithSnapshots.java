@@ -5811,6 +5811,11 @@ argument_list|,
 literal|true
 argument_list|)
 expr_stmt|;
+name|restartClusterAndCheckImage
+argument_list|(
+literal|true
+argument_list|)
+expr_stmt|;
 name|hdfs
 operator|.
 name|delete
