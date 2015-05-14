@@ -571,10 +571,6 @@ name|String
 operator|.
 name|format
 argument_list|(
-name|String
-operator|.
-name|format
-argument_list|(
 name|SPILL_FILE_PATTERN
 argument_list|,
 name|conf
@@ -587,7 +583,6 @@ name|TASK_ATTEMPT_ID
 argument_list|)
 argument_list|,
 name|spillNumber
-argument_list|)
 argument_list|)
 argument_list|,
 name|size
