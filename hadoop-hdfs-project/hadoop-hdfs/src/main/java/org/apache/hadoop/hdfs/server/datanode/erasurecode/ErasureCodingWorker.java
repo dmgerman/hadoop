@@ -1715,6 +1715,11 @@ name|void
 name|run
 parameter_list|()
 block|{
+name|datanode
+operator|.
+name|incrementXmitsInProgress
+argument_list|()
+expr_stmt|;
 try|try
 block|{
 comment|// Store the indices of successfully read source
@@ -2178,11 +2183,18 @@ argument_list|(
 literal|"Failed to recover striped block: "
 operator|+
 name|blockGroup
+argument_list|,
+name|e
 argument_list|)
 expr_stmt|;
 block|}
 finally|finally
 block|{
+name|datanode
+operator|.
+name|decrementXmitsInProgress
+argument_list|()
+expr_stmt|;
 comment|// close block readers
 for|for
 control|(

@@ -10119,6 +10119,32 @@ name|get
 argument_list|()
 return|;
 block|}
+comment|/**    * Increments the xmitsInProgress count. xmitsInProgress count represents the    * number of data replication/reconstruction tasks running currently.    */
+DECL|method|incrementXmitsInProgress ()
+specifier|public
+name|void
+name|incrementXmitsInProgress
+parameter_list|()
+block|{
+name|xmitsInProgress
+operator|.
+name|getAndIncrement
+argument_list|()
+expr_stmt|;
+block|}
+comment|/**    * Decrements the xmitsInProgress count    */
+DECL|method|decrementXmitsInProgress ()
+specifier|public
+name|void
+name|decrementXmitsInProgress
+parameter_list|()
+block|{
+name|xmitsInProgress
+operator|.
+name|getAndDecrement
+argument_list|()
+expr_stmt|;
+block|}
 DECL|method|reportBadBlock (final BPOfferService bpos, final ExtendedBlock block, final String msg)
 specifier|private
 name|void
@@ -10797,9 +10823,7 @@ name|void
 name|run
 parameter_list|()
 block|{
-name|xmitsInProgress
-operator|.
-name|getAndIncrement
+name|incrementXmitsInProgress
 argument_list|()
 expr_stmt|;
 name|Socket
@@ -11314,9 +11338,7 @@ expr_stmt|;
 block|}
 finally|finally
 block|{
-name|xmitsInProgress
-operator|.
-name|getAndDecrement
+name|decrementXmitsInProgress
 argument_list|()
 expr_stmt|;
 name|IOUtils
