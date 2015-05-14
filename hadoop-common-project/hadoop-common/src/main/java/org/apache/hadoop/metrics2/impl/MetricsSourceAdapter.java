@@ -937,7 +937,6 @@ else|else
 block|{
 return|return;
 block|}
-block|}
 if|if
 condition|(
 name|getAllMetrics
@@ -958,11 +957,6 @@ literal|true
 argument_list|)
 expr_stmt|;
 block|}
-synchronized|synchronized
-init|(
-name|this
-init|)
-block|{
 name|updateAttrCache
 argument_list|()
 expr_stmt|;
