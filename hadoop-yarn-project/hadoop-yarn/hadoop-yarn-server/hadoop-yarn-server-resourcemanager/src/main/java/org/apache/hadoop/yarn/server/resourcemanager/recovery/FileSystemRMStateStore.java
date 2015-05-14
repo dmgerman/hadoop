@@ -98,6 +98,16 @@ name|java
 operator|.
 name|util
 operator|.
+name|EnumSet
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
 name|List
 import|;
 end_import
@@ -257,6 +267,20 @@ operator|.
 name|fs
 operator|.
 name|PathFilter
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|fs
+operator|.
+name|XAttrSetFlag
 import|;
 end_import
 
@@ -783,8 +807,15 @@ name|AMRMTOKEN_SECRET_MANAGER_NODE
 init|=
 literal|"AMRMTokenSecretManagerNode"
 decl_stmt|;
-annotation|@
-name|VisibleForTesting
+DECL|field|UNREADABLE_BY_SUPERUSER_XATTRIB
+specifier|private
+specifier|static
+specifier|final
+name|String
+name|UNREADABLE_BY_SUPERUSER_XATTRIB
+init|=
+literal|"security.hdfs.unreadable.by.superuser"
+decl_stmt|;
 DECL|field|fs
 specifier|protected
 name|FileSystem
@@ -831,6 +862,11 @@ DECL|field|fsRetryInterval
 specifier|private
 name|long
 name|fsRetryInterval
+decl_stmt|;
+DECL|field|isHDFS
+specifier|private
+name|boolean
+name|isHDFS
 decl_stmt|;
 annotation|@
 name|VisibleForTesting
@@ -1068,6 +1104,21 @@ argument_list|(
 name|fsConf
 argument_list|)
 expr_stmt|;
+name|isHDFS
+operator|=
+name|fs
+operator|.
+name|getScheme
+argument_list|()
+operator|.
+name|toLowerCase
+argument_list|()
+operator|.
+name|contains
+argument_list|(
+literal|"hdfs"
+argument_list|)
+expr_stmt|;
 name|mkdirsWithRetries
 argument_list|(
 name|rmDTSecretManagerRoot
@@ -1082,6 +1133,23 @@ name|mkdirsWithRetries
 argument_list|(
 name|amrmTokenSecretManagerRoot
 argument_list|)
+expr_stmt|;
+block|}
+annotation|@
+name|VisibleForTesting
+DECL|method|setIsHDFS (boolean isHDFS)
+name|void
+name|setIsHDFS
+parameter_list|(
+name|boolean
+name|isHDFS
+parameter_list|)
+block|{
+name|this
+operator|.
+name|isHDFS
+operator|=
+name|isHDFS
 expr_stmt|;
 block|}
 annotation|@
@@ -1234,6 +1302,8 @@ argument_list|(
 name|versionNodePath
 argument_list|,
 name|data
+argument_list|,
+literal|false
 argument_list|)
 expr_stmt|;
 block|}
@@ -1244,6 +1314,8 @@ argument_list|(
 name|versionNodePath
 argument_list|,
 name|data
+argument_list|,
+literal|false
 argument_list|)
 expr_stmt|;
 block|}
@@ -1350,6 +1422,8 @@ argument_list|(
 name|epochNodePath
 argument_list|,
 name|storeData
+argument_list|,
+literal|false
 argument_list|)
 expr_stmt|;
 block|}
@@ -1380,6 +1454,8 @@ argument_list|(
 name|epochNodePath
 argument_list|,
 name|storeData
+argument_list|,
+literal|false
 argument_list|)
 expr_stmt|;
 block|}
@@ -1631,6 +1707,15 @@ name|getLen
 argument_list|()
 argument_list|)
 decl_stmt|;
+comment|// Set attribute if not already set
+name|setUnreadableBySuperuserXattrib
+argument_list|(
+name|childNodeStatus
+operator|.
+name|getPath
+argument_list|()
+argument_list|)
+expr_stmt|;
 if|if
 condition|(
 name|childNodeName
@@ -2401,6 +2486,8 @@ argument_list|(
 name|nodeCreatePath
 argument_list|,
 name|appStateData
+argument_list|,
+literal|true
 argument_list|)
 expr_stmt|;
 block|}
@@ -2500,6 +2587,8 @@ argument_list|(
 name|nodeCreatePath
 argument_list|,
 name|appStateData
+argument_list|,
+literal|true
 argument_list|)
 expr_stmt|;
 block|}
@@ -2602,6 +2691,8 @@ argument_list|(
 name|nodeCreatePath
 argument_list|,
 name|attemptStateData
+argument_list|,
+literal|true
 argument_list|)
 expr_stmt|;
 block|}
@@ -2704,6 +2795,8 @@ argument_list|(
 name|nodeCreatePath
 argument_list|,
 name|attemptStateData
+argument_list|,
+literal|true
 argument_list|)
 expr_stmt|;
 block|}
@@ -2952,6 +3045,8 @@ name|identifierData
 operator|.
 name|toByteArray
 argument_list|()
+argument_list|,
+literal|true
 argument_list|)
 expr_stmt|;
 block|}
@@ -2977,6 +3072,8 @@ name|identifierData
 operator|.
 name|toByteArray
 argument_list|()
+argument_list|,
+literal|true
 argument_list|)
 expr_stmt|;
 comment|// store sequence number
@@ -3141,6 +3238,8 @@ name|os
 operator|.
 name|toByteArray
 argument_list|()
+argument_list|,
+literal|true
 argument_list|)
 expr_stmt|;
 block|}
@@ -3281,6 +3380,55 @@ argument_list|()
 argument_list|)
 return|;
 block|}
+annotation|@
+name|VisibleForTesting
+DECL|method|getAppDir (ApplicationId appId)
+specifier|protected
+name|Path
+name|getAppDir
+parameter_list|(
+name|ApplicationId
+name|appId
+parameter_list|)
+block|{
+return|return
+name|getAppDir
+argument_list|(
+name|rmAppRoot
+argument_list|,
+name|appId
+argument_list|)
+return|;
+block|}
+annotation|@
+name|VisibleForTesting
+DECL|method|getAppAttemptDir (ApplicationAttemptId appAttId)
+specifier|protected
+name|Path
+name|getAppAttemptDir
+parameter_list|(
+name|ApplicationAttemptId
+name|appAttId
+parameter_list|)
+block|{
+return|return
+name|getNodePath
+argument_list|(
+name|getAppDir
+argument_list|(
+name|appAttId
+operator|.
+name|getApplicationId
+argument_list|()
+argument_list|)
+argument_list|,
+name|appAttId
+operator|.
+name|toString
+argument_list|()
+argument_list|)
+return|;
+block|}
 comment|// FileSystem related code
 DECL|method|checkAndRemovePartialRecordWithRetries (final Path record)
 specifier|private
@@ -3369,7 +3517,7 @@ name|runWithRetries
 argument_list|()
 expr_stmt|;
 block|}
-DECL|method|writeFileWithRetries (final Path outputPath,final byte[] data)
+DECL|method|writeFileWithRetries (final Path outputPath, final byte[] data, final boolean makeUnreadableByAdmin)
 specifier|private
 name|void
 name|writeFileWithRetries
@@ -3382,6 +3530,10 @@ specifier|final
 name|byte
 index|[]
 name|data
+parameter_list|,
+specifier|final
+name|boolean
+name|makeUnreadableByAdmin
 parameter_list|)
 throws|throws
 name|Exception
@@ -3407,6 +3559,8 @@ argument_list|(
 name|outputPath
 argument_list|,
 name|data
+argument_list|,
+name|makeUnreadableByAdmin
 argument_list|)
 expr_stmt|;
 return|return
@@ -4061,8 +4215,8 @@ return|;
 block|}
 block|}
 comment|/*    * In order to make this write atomic as a part of write we will first write    * data to .tmp file and then rename it. Here we are assuming that rename is    * atomic for underlying file system.    */
-DECL|method|writeFile (Path outputPath, byte[] data)
-specifier|private
+DECL|method|writeFile (Path outputPath, byte[] data, boolean makeUnradableByAdmin)
+specifier|protected
 name|void
 name|writeFile
 parameter_list|(
@@ -4072,6 +4226,9 @@ parameter_list|,
 name|byte
 index|[]
 name|data
+parameter_list|,
+name|boolean
+name|makeUnradableByAdmin
 parameter_list|)
 throws|throws
 name|Exception
@@ -4115,6 +4272,17 @@ argument_list|,
 literal|true
 argument_list|)
 expr_stmt|;
+if|if
+condition|(
+name|makeUnradableByAdmin
+condition|)
+block|{
+name|setUnreadableBySuperuserXattrib
+argument_list|(
+name|tempPath
+argument_list|)
+expr_stmt|;
+block|}
 name|fsOut
 operator|.
 name|write
@@ -4155,7 +4323,7 @@ expr_stmt|;
 block|}
 block|}
 comment|/*    * In order to make this update atomic as a part of write we will first write    * data to .new file and then rename it. Here we are assuming that rename is    * atomic for underlying file system.    */
-DECL|method|updateFile (Path outputPath, byte[] data)
+DECL|method|updateFile (Path outputPath, byte[] data, boolean makeUnradableByAdmin)
 specifier|protected
 name|void
 name|updateFile
@@ -4166,6 +4334,9 @@ parameter_list|,
 name|byte
 index|[]
 name|data
+parameter_list|,
+name|boolean
+name|makeUnradableByAdmin
 parameter_list|)
 throws|throws
 name|Exception
@@ -4195,6 +4366,8 @@ argument_list|(
 name|newPath
 argument_list|,
 name|data
+argument_list|,
+name|makeUnradableByAdmin
 argument_list|)
 expr_stmt|;
 name|replaceFile
@@ -4385,6 +4558,8 @@ argument_list|(
 name|nodeCreatePath
 argument_list|,
 name|stateData
+argument_list|,
+literal|true
 argument_list|)
 expr_stmt|;
 block|}
@@ -4395,6 +4570,8 @@ argument_list|(
 name|nodeCreatePath
 argument_list|,
 name|stateData
+argument_list|,
+literal|true
 argument_list|)
 expr_stmt|;
 block|}
@@ -4422,6 +4599,57 @@ block|{
 return|return
 name|fsRetryInterval
 return|;
+block|}
+DECL|method|setUnreadableBySuperuserXattrib (Path p)
+specifier|private
+name|void
+name|setUnreadableBySuperuserXattrib
+parameter_list|(
+name|Path
+name|p
+parameter_list|)
+throws|throws
+name|IOException
+block|{
+if|if
+condition|(
+name|isHDFS
+operator|&&
+operator|!
+name|fs
+operator|.
+name|getXAttrs
+argument_list|(
+name|p
+argument_list|)
+operator|.
+name|containsKey
+argument_list|(
+name|UNREADABLE_BY_SUPERUSER_XATTRIB
+argument_list|)
+condition|)
+block|{
+name|fs
+operator|.
+name|setXAttr
+argument_list|(
+name|p
+argument_list|,
+name|UNREADABLE_BY_SUPERUSER_XATTRIB
+argument_list|,
+literal|null
+argument_list|,
+name|EnumSet
+operator|.
+name|of
+argument_list|(
+name|XAttrSetFlag
+operator|.
+name|CREATE
+argument_list|)
+argument_list|)
+expr_stmt|;
+block|}
 block|}
 block|}
 end_class
