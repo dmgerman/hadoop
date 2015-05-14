@@ -2659,6 +2659,7 @@ argument_list|)
 return|;
 block|}
 DECL|method|accessibleToPartition (String nodePartition)
+specifier|public
 name|boolean
 name|accessibleToPartition
 parameter_list|(

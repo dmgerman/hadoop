@@ -192,16 +192,21 @@ name|CapacitySchedulerLeafQueueInfo
 parameter_list|()
 block|{   }
 empty_stmt|;
-DECL|method|CapacitySchedulerLeafQueueInfo (LeafQueue q)
+DECL|method|CapacitySchedulerLeafQueueInfo (LeafQueue q, String nodeLabel)
 name|CapacitySchedulerLeafQueueInfo
 parameter_list|(
 name|LeafQueue
 name|q
+parameter_list|,
+name|String
+name|nodeLabel
 parameter_list|)
 block|{
 name|super
 argument_list|(
 name|q
+argument_list|,
+name|nodeLabel
 argument_list|)
 expr_stmt|;
 name|numActiveApplications
