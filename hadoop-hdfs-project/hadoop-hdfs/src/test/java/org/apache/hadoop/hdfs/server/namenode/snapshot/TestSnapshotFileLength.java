@@ -38,6 +38,16 @@ name|java
 operator|.
 name|io
 operator|.
+name|IOException
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|io
+operator|.
 name|PrintStream
 import|;
 end_import
@@ -187,6 +197,30 @@ operator|.
 name|Assert
 operator|.
 name|assertThat
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|junit
+operator|.
+name|Assert
+operator|.
+name|assertTrue
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|junit
+operator|.
+name|Assert
+operator|.
+name|fail
 import|;
 end_import
 
@@ -664,23 +698,48 @@ name|file1
 argument_list|)
 decl_stmt|;
 comment|// Nothing has been appended yet. All checksums should still be equal.
-name|assertThat
-argument_list|(
-literal|"file and snapshot checksums (open for append) are not equal"
-argument_list|,
+comment|// HDFS-8150:Fetching checksum for file under construction should fail
+try|try
+block|{
 name|hdfs
 operator|.
 name|getFileChecksum
 argument_list|(
 name|file1
 argument_list|)
-argument_list|,
-name|is
+expr_stmt|;
+name|fail
 argument_list|(
-name|snapChksum1
+literal|"getFileChecksum should fail for files "
+operator|+
+literal|"with blocks under construction"
+argument_list|)
+expr_stmt|;
+block|}
+catch|catch
+parameter_list|(
+name|IOException
+name|ie
+parameter_list|)
+block|{
+name|assertTrue
+argument_list|(
+name|ie
+operator|.
+name|getMessage
+argument_list|()
+operator|.
+name|contains
+argument_list|(
+literal|"Fail to get checksum, since file "
+operator|+
+name|file1
+operator|+
+literal|" is under construction."
 argument_list|)
 argument_list|)
 expr_stmt|;
+block|}
 name|assertThat
 argument_list|(
 literal|"snapshot checksum (post-open for append) has changed"
@@ -740,23 +799,6 @@ argument_list|)
 argument_list|)
 expr_stmt|;
 comment|// Verify that checksum didn't change
-name|assertThat
-argument_list|(
-literal|"snapshot file checksum (pre-close) has changed"
-argument_list|,
-name|hdfs
-operator|.
-name|getFileChecksum
-argument_list|(
-name|file1
-argument_list|)
-argument_list|,
-name|is
-argument_list|(
-name|snapChksum1
-argument_list|)
-argument_list|)
-expr_stmt|;
 name|assertThat
 argument_list|(
 literal|"snapshot checksum (post-append) has changed"

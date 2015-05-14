@@ -9234,6 +9234,26 @@ name|src
 argument_list|)
 throw|;
 block|}
+if|if
+condition|(
+name|blockLocations
+operator|.
+name|isUnderConstruction
+argument_list|()
+condition|)
+block|{
+throw|throw
+operator|new
+name|IOException
+argument_list|(
+literal|"Fail to get checksum, since file "
+operator|+
+name|src
+operator|+
+literal|" is under construction."
+argument_list|)
+throw|;
+block|}
 name|List
 argument_list|<
 name|LocatedBlock
@@ -9375,6 +9395,26 @@ argument_list|(
 literal|"File does not exist: "
 operator|+
 name|src
+argument_list|)
+throw|;
+block|}
+if|if
+condition|(
+name|blockLocations
+operator|.
+name|isUnderConstruction
+argument_list|()
+condition|)
+block|{
+throw|throw
+operator|new
+name|IOException
+argument_list|(
+literal|"Fail to get checksum, since file "
+operator|+
+name|src
+operator|+
+literal|" is under construction."
 argument_list|)
 throw|;
 block|}
