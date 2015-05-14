@@ -753,6 +753,19 @@ specifier|private
 name|Thread
 name|eventHandler
 decl_stmt|;
+DECL|field|encryptedSpillKey
+specifier|private
+name|byte
+index|[]
+name|encryptedSpillKey
+init|=
+operator|new
+name|byte
+index|[]
+block|{
+literal|0
+block|}
+decl_stmt|;
 DECL|field|eventQueue
 specifier|private
 name|BlockingQueue
@@ -1130,6 +1143,31 @@ name|e
 argument_list|)
 throw|;
 comment|// FIXME? YarnRuntimeException is "for runtime exceptions only"
+block|}
+block|}
+DECL|method|setEncryptedSpillKey (byte[] encryptedSpillKey)
+specifier|public
+name|void
+name|setEncryptedSpillKey
+parameter_list|(
+name|byte
+index|[]
+name|encryptedSpillKey
+parameter_list|)
+block|{
+if|if
+condition|(
+name|encryptedSpillKey
+operator|!=
+literal|null
+condition|)
+block|{
+name|this
+operator|.
+name|encryptedSpillKey
+operator|=
+name|encryptedSpillKey
+expr_stmt|;
 block|}
 block|}
 comment|/*    * Uber-AM lifecycle/ordering ("normal" case):    *    * - [somebody] sends TA_ASSIGNED    *   - handled by ContainerAssignedTransition (TaskAttemptImpl.java)    *     - creates "remoteTask" for us == real Task    *     - sends CONTAINER_REMOTE_LAUNCH    *     - TA: UNASSIGNED -> ASSIGNED    * - CONTAINER_REMOTE_LAUNCH handled by LocalContainerLauncher (us)    *   - sucks "remoteTask" out of TaskAttemptImpl via getRemoteTask()    *   - sends TA_CONTAINER_LAUNCHED    *     [[ elsewhere...    *       - TA_CONTAINER_LAUNCHED handled by LaunchedContainerTransition    *         - registers "remoteTask" with TaskAttemptListener (== umbilical)    *         - NUKES "remoteTask"    *         - sends T_ATTEMPT_LAUNCHED (Task: SCHEDULED -> RUNNING)    *         - TA: ASSIGNED -> RUNNING    *     ]]    *   - runs Task (runSubMap() or runSubReduce())    *     - TA can safely send TA_UPDATE since in RUNNING state    */
@@ -2084,6 +2122,21 @@ argument_list|(
 literal|"mapreduce.task.uberized"
 argument_list|,
 literal|true
+argument_list|)
+expr_stmt|;
+comment|// Check and handle Encrypted spill key
+name|task
+operator|.
+name|setEncryptedSpillKey
+argument_list|(
+name|encryptedSpillKey
+argument_list|)
+expr_stmt|;
+name|YarnChild
+operator|.
+name|setEncryptedSpillKeyIfRequired
+argument_list|(
+name|task
 argument_list|)
 expr_stmt|;
 comment|// META-FIXME: do we want the extra sanity-checking (doneWithMaps,

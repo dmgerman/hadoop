@@ -672,6 +672,13 @@ argument_list|(
 name|taskId
 argument_list|)
 expr_stmt|;
+if|if
+condition|(
+name|taskStatus
+operator|!=
+literal|null
+condition|)
+block|{
 name|buf
 operator|.
 name|append
@@ -718,6 +725,7 @@ argument_list|(
 name|state
 argument_list|)
 expr_stmt|;
+block|}
 block|}
 name|LOG
 operator|.

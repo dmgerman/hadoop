@@ -942,6 +942,21 @@ name|int
 name|partition
 decl_stmt|;
 comment|// id within job
+DECL|field|encryptedSpillKey
+specifier|private
+name|byte
+index|[]
+name|encryptedSpillKey
+init|=
+operator|new
+name|byte
+index|[]
+block|{
+literal|0
+block|}
+decl_stmt|;
+comment|// Key Used to encrypt
+comment|// intermediate spills
 DECL|field|taskStatus
 name|TaskStatus
 name|taskStatus
@@ -1467,6 +1482,44 @@ name|tokenSecret
 operator|=
 name|tokenSecret
 expr_stmt|;
+block|}
+comment|/**    * Get Encrypted spill key    * @return encrypted spill key    */
+DECL|method|getEncryptedSpillKey ()
+specifier|public
+name|byte
+index|[]
+name|getEncryptedSpillKey
+parameter_list|()
+block|{
+return|return
+name|encryptedSpillKey
+return|;
+block|}
+comment|/**    * Set Encrypted spill key    * @param encryptedSpillKey key    */
+DECL|method|setEncryptedSpillKey (byte[] encryptedSpillKey)
+specifier|public
+name|void
+name|setEncryptedSpillKey
+parameter_list|(
+name|byte
+index|[]
+name|encryptedSpillKey
+parameter_list|)
+block|{
+if|if
+condition|(
+name|encryptedSpillKey
+operator|!=
+literal|null
+condition|)
+block|{
+name|this
+operator|.
+name|encryptedSpillKey
+operator|=
+name|encryptedSpillKey
+expr_stmt|;
+block|}
 block|}
 comment|/**    * Get the job token secret    * @return the token secret    */
 DECL|method|getJobTokenSecret ()
@@ -2147,6 +2200,22 @@ argument_list|,
 name|user
 argument_list|)
 expr_stmt|;
+name|out
+operator|.
+name|writeInt
+argument_list|(
+name|encryptedSpillKey
+operator|.
+name|length
+argument_list|)
+expr_stmt|;
+name|out
+operator|.
+name|write
+argument_list|(
+name|encryptedSpillKey
+argument_list|)
+expr_stmt|;
 name|extraData
 operator|.
 name|write
@@ -2314,6 +2383,29 @@ name|readString
 argument_list|(
 name|in
 argument_list|)
+argument_list|)
+expr_stmt|;
+name|int
+name|len
+init|=
+name|in
+operator|.
+name|readInt
+argument_list|()
+decl_stmt|;
+name|encryptedSpillKey
+operator|=
+operator|new
+name|byte
+index|[
+name|len
+index|]
+expr_stmt|;
+name|in
+operator|.
+name|readFully
+argument_list|(
+name|encryptedSpillKey
 argument_list|)
 expr_stmt|;
 name|extraData

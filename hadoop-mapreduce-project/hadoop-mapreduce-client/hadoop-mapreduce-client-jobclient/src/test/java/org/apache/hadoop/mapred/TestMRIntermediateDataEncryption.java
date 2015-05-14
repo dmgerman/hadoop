@@ -267,6 +267,30 @@ argument_list|,
 literal|1
 argument_list|,
 literal|2
+argument_list|,
+literal|false
+argument_list|)
+expr_stmt|;
+block|}
+annotation|@
+name|Test
+DECL|method|testUberMode ()
+specifier|public
+name|void
+name|testUberMode
+parameter_list|()
+throws|throws
+name|Exception
+block|{
+name|doEncryptionTest
+argument_list|(
+literal|3
+argument_list|,
+literal|1
+argument_list|,
+literal|2
+argument_list|,
+literal|true
 argument_list|)
 expr_stmt|;
 block|}
@@ -287,6 +311,8 @@ argument_list|,
 literal|1
 argument_list|,
 literal|2
+argument_list|,
+literal|false
 argument_list|)
 expr_stmt|;
 block|}
@@ -307,10 +333,12 @@ argument_list|,
 literal|4
 argument_list|,
 literal|2
+argument_list|,
+literal|false
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|doEncryptionTest (int numMappers, int numReducers, int numNodes)
+DECL|method|doEncryptionTest (int numMappers, int numReducers, int numNodes, boolean isUber)
 specifier|public
 name|void
 name|doEncryptionTest
@@ -323,6 +351,9 @@ name|numReducers
 parameter_list|,
 name|int
 name|numNodes
+parameter_list|,
+name|boolean
+name|isUber
 parameter_list|)
 throws|throws
 name|Exception
@@ -336,10 +367,12 @@ argument_list|,
 name|numNodes
 argument_list|,
 literal|1000
+argument_list|,
+name|isUber
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|doEncryptionTest (int numMappers, int numReducers, int numNodes, int numLines)
+DECL|method|doEncryptionTest (int numMappers, int numReducers, int numNodes, int numLines, boolean isUber)
 specifier|public
 name|void
 name|doEncryptionTest
@@ -355,6 +388,9 @@ name|numNodes
 parameter_list|,
 name|int
 name|numLines
+parameter_list|,
+name|boolean
+name|isUber
 parameter_list|)
 throws|throws
 name|Exception
@@ -454,6 +490,8 @@ argument_list|,
 name|numReducers
 argument_list|,
 name|numLines
+argument_list|,
+name|isUber
 argument_list|)
 expr_stmt|;
 block|}
@@ -613,7 +651,7 @@ argument_list|()
 expr_stmt|;
 block|}
 block|}
-DECL|method|runMergeTest (JobConf job, FileSystem fileSystem, int numMappers, int numReducers, int numLines)
+DECL|method|runMergeTest (JobConf job, FileSystem fileSystem, int numMappers, int numReducers, int numLines, boolean isUber)
 specifier|private
 name|void
 name|runMergeTest
@@ -632,6 +670,9 @@ name|numReducers
 parameter_list|,
 name|int
 name|numLines
+parameter_list|,
+name|boolean
+name|isUber
 parameter_list|)
 throws|throws
 name|Exception
@@ -799,6 +840,21 @@ argument_list|,
 name|numLines
 argument_list|)
 expr_stmt|;
+if|if
+condition|(
+name|isUber
+condition|)
+block|{
+name|job
+operator|.
+name|setBoolean
+argument_list|(
+literal|"mapreduce.job.ubertask.enable"
+argument_list|,
+literal|true
+argument_list|)
+expr_stmt|;
+block|}
 name|job
 operator|.
 name|setBoolean

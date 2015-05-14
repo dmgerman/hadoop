@@ -748,7 +748,7 @@ argument_list|()
 decl_stmt|;
 name|TokenCache
 operator|.
-name|setShuffleSecretKey
+name|setEncryptedSpillKey
 argument_list|(
 operator|new
 name|byte

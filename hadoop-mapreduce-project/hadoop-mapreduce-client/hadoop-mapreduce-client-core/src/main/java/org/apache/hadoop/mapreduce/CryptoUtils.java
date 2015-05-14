@@ -244,20 +244,6 @@ name|hadoop
 operator|.
 name|mapreduce
 operator|.
-name|MRJobConfig
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|mapreduce
-operator|.
 name|security
 operator|.
 name|TokenCache
@@ -326,11 +312,11 @@ operator|.
 name|class
 argument_list|)
 decl_stmt|;
-DECL|method|isShuffleEncrypted (Configuration conf)
+DECL|method|isEncryptedSpillEnabled (Configuration conf)
 specifier|public
 specifier|static
 name|boolean
-name|isShuffleEncrypted
+name|isEncryptedSpillEnabled
 parameter_list|(
 name|Configuration
 name|conf
@@ -377,7 +363,7 @@ argument_list|)
 decl_stmt|;
 if|if
 condition|(
-name|isShuffleEncrypted
+name|isEncryptedSpillEnabled
 argument_list|(
 name|conf
 argument_list|)
@@ -429,7 +415,7 @@ parameter_list|)
 block|{
 comment|// Sizeof(IV) + long(start-offset)
 return|return
-name|isShuffleEncrypted
+name|isEncryptedSpillEnabled
 argument_list|(
 name|conf
 argument_list|)
@@ -465,7 +451,7 @@ block|{
 return|return
 name|TokenCache
 operator|.
-name|getShuffleSecretKey
+name|getEncryptedSpillKey
 argument_list|(
 name|UserGroupInformation
 operator|.
@@ -522,7 +508,7 @@ name|IOException
 block|{
 if|if
 condition|(
-name|isShuffleEncrypted
+name|isEncryptedSpillEnabled
 argument_list|(
 name|conf
 argument_list|)
@@ -645,7 +631,7 @@ name|IOException
 block|{
 if|if
 condition|(
-name|isShuffleEncrypted
+name|isEncryptedSpillEnabled
 argument_list|(
 name|conf
 argument_list|)
@@ -833,7 +819,7 @@ name|IOException
 block|{
 if|if
 condition|(
-name|isShuffleEncrypted
+name|isEncryptedSpillEnabled
 argument_list|(
 name|conf
 argument_list|)
