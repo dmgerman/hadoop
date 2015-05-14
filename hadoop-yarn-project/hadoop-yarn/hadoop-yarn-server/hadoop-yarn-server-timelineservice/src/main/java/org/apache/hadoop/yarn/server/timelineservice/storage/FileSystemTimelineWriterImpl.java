@@ -281,7 +281,7 @@ specifier|private
 name|String
 name|outputRoot
 decl_stmt|;
-comment|/** Config param for timeline service storage tmp root for FILE YARN-3264 */
+comment|/** Config param for timeline service storage tmp root for FILE YARN-3264. */
 DECL|field|TIMELINE_SERVICE_STORAGE_DIR_ROOT
 specifier|public
 specifier|static
@@ -295,7 +295,7 @@ name|TIMELINE_SERVICE_PREFIX
 operator|+
 literal|"fs-writer.root-dir"
 decl_stmt|;
-comment|/** default value for storage location on local disk */
+comment|/** default value for storage location on local disk. */
 DECL|field|DEFAULT_TIMELINE_SERVICE_STORAGE_DIR_ROOT
 specifier|public
 specifier|static
@@ -314,7 +314,7 @@ name|ENTITIES_DIR
 init|=
 literal|"entities"
 decl_stmt|;
-comment|/** Default extension for output files */
+comment|/** Default extension for output files. */
 DECL|field|TIMELINE_SERVICE_STORAGE_EXTENSION
 specifier|public
 specifier|static
@@ -467,9 +467,15 @@ name|clusterId
 argument_list|,
 name|userId
 argument_list|,
+name|escape
+argument_list|(
 name|flowName
+argument_list|)
 argument_list|,
+name|escape
+argument_list|(
 name|flowVersion
+argument_list|)
 argument_list|,
 name|String
 operator|.
@@ -773,6 +779,30 @@ name|path
 operator|.
 name|toString
 argument_list|()
+return|;
+block|}
+comment|// specifically escape the separator character
+DECL|method|escape (String str)
+specifier|private
+specifier|static
+name|String
+name|escape
+parameter_list|(
+name|String
+name|str
+parameter_list|)
+block|{
+return|return
+name|str
+operator|.
+name|replace
+argument_list|(
+name|File
+operator|.
+name|separatorChar
+argument_list|,
+literal|'_'
+argument_list|)
 return|;
 block|}
 block|}

@@ -305,7 +305,6 @@ operator|.
 name|Unstable
 DECL|class|TimelineCollectorManager
 specifier|public
-specifier|abstract
 class|class
 name|TimelineCollectorManager
 extends|extends
@@ -505,7 +504,7 @@ argument_list|()
 argument_list|)
 decl_stmt|;
 DECL|method|TimelineCollectorManager (String name)
-specifier|protected
+specifier|public
 name|TimelineCollectorManager
 parameter_list|(
 name|String
@@ -517,6 +516,16 @@ argument_list|(
 name|name
 argument_list|)
 expr_stmt|;
+block|}
+DECL|method|getWriter ()
+specifier|protected
+name|TimelineWriter
+name|getWriter
+parameter_list|()
+block|{
+return|return
+name|writer
+return|;
 block|}
 comment|/**    * Put the collector into the collection if an collector mapped by id does    * not exist.    *    * @throws YarnRuntimeException if there  was any exception in initializing    *                              and starting the app level service    * @return the collector associated with id after the potential put.    */
 DECL|method|putIfAbsent (ApplicationId appId, TimelineCollector collector)
