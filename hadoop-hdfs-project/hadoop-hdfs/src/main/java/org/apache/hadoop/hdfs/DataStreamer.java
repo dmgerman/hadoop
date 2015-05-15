@@ -246,20 +246,6 @@ name|concurrent
 operator|.
 name|atomic
 operator|.
-name|AtomicInteger
-import|;
-end_import
-
-begin_import
-import|import
-name|java
-operator|.
-name|util
-operator|.
-name|concurrent
-operator|.
-name|atomic
-operator|.
 name|AtomicReference
 import|;
 end_import
@@ -333,6 +319,24 @@ operator|.
 name|client
 operator|.
 name|HdfsClientConfigKeys
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|client
+operator|.
+name|HdfsClientConfigKeys
+operator|.
+name|BlockWrite
 import|;
 end_import
 
@@ -1505,6 +1509,444 @@ argument_list|()
 throw|;
 block|}
 block|}
+DECL|class|ErrorState
+specifier|static
+class|class
+name|ErrorState
+block|{
+DECL|field|error
+specifier|private
+name|boolean
+name|error
+init|=
+literal|false
+decl_stmt|;
+DECL|field|badNodeIndex
+specifier|private
+name|int
+name|badNodeIndex
+init|=
+operator|-
+literal|1
+decl_stmt|;
+DECL|field|restartingNodeIndex
+specifier|private
+name|int
+name|restartingNodeIndex
+init|=
+operator|-
+literal|1
+decl_stmt|;
+DECL|field|restartingNodeDeadline
+specifier|private
+name|long
+name|restartingNodeDeadline
+init|=
+literal|0
+decl_stmt|;
+DECL|field|datanodeRestartTimeout
+specifier|private
+specifier|final
+name|long
+name|datanodeRestartTimeout
+decl_stmt|;
+DECL|method|ErrorState (long datanodeRestartTimeout)
+name|ErrorState
+parameter_list|(
+name|long
+name|datanodeRestartTimeout
+parameter_list|)
+block|{
+name|this
+operator|.
+name|datanodeRestartTimeout
+operator|=
+name|datanodeRestartTimeout
+expr_stmt|;
+block|}
+DECL|method|reset ()
+specifier|synchronized
+name|void
+name|reset
+parameter_list|()
+block|{
+name|error
+operator|=
+literal|false
+expr_stmt|;
+name|badNodeIndex
+operator|=
+operator|-
+literal|1
+expr_stmt|;
+name|restartingNodeIndex
+operator|=
+operator|-
+literal|1
+expr_stmt|;
+name|restartingNodeDeadline
+operator|=
+literal|0
+expr_stmt|;
+block|}
+DECL|method|hasError ()
+specifier|synchronized
+name|boolean
+name|hasError
+parameter_list|()
+block|{
+return|return
+name|error
+return|;
+block|}
+DECL|method|hasDatanodeError ()
+specifier|synchronized
+name|boolean
+name|hasDatanodeError
+parameter_list|()
+block|{
+return|return
+name|error
+operator|&&
+name|isNodeMarked
+argument_list|()
+return|;
+block|}
+DECL|method|setError (boolean err)
+specifier|synchronized
+name|void
+name|setError
+parameter_list|(
+name|boolean
+name|err
+parameter_list|)
+block|{
+name|this
+operator|.
+name|error
+operator|=
+name|err
+expr_stmt|;
+block|}
+DECL|method|setBadNodeIndex (int index)
+specifier|synchronized
+name|void
+name|setBadNodeIndex
+parameter_list|(
+name|int
+name|index
+parameter_list|)
+block|{
+name|this
+operator|.
+name|badNodeIndex
+operator|=
+name|index
+expr_stmt|;
+block|}
+DECL|method|getBadNodeIndex ()
+specifier|synchronized
+name|int
+name|getBadNodeIndex
+parameter_list|()
+block|{
+return|return
+name|badNodeIndex
+return|;
+block|}
+DECL|method|getRestartingNodeIndex ()
+specifier|synchronized
+name|int
+name|getRestartingNodeIndex
+parameter_list|()
+block|{
+return|return
+name|restartingNodeIndex
+return|;
+block|}
+DECL|method|initRestartingNode (int i, String message)
+specifier|synchronized
+name|void
+name|initRestartingNode
+parameter_list|(
+name|int
+name|i
+parameter_list|,
+name|String
+name|message
+parameter_list|)
+block|{
+name|restartingNodeIndex
+operator|=
+name|i
+expr_stmt|;
+name|restartingNodeDeadline
+operator|=
+name|Time
+operator|.
+name|monotonicNow
+argument_list|()
+operator|+
+name|datanodeRestartTimeout
+expr_stmt|;
+comment|// If the data streamer has already set the primary node
+comment|// bad, clear it. It is likely that the write failed due to
+comment|// the DN shutdown. Even if it was a real failure, the pipeline
+comment|// recovery will take care of it.
+name|badNodeIndex
+operator|=
+operator|-
+literal|1
+expr_stmt|;
+name|LOG
+operator|.
+name|info
+argument_list|(
+name|message
+argument_list|)
+expr_stmt|;
+block|}
+DECL|method|isRestartingNode ()
+specifier|synchronized
+name|boolean
+name|isRestartingNode
+parameter_list|()
+block|{
+return|return
+name|restartingNodeIndex
+operator|>=
+literal|0
+return|;
+block|}
+DECL|method|isNodeMarked ()
+specifier|synchronized
+name|boolean
+name|isNodeMarked
+parameter_list|()
+block|{
+return|return
+name|badNodeIndex
+operator|>=
+literal|0
+operator|||
+name|isRestartingNode
+argument_list|()
+return|;
+block|}
+comment|/**      * This method is used when no explicit error report was received, but      * something failed. The first node is a suspect or unsure about the cause      * so that it is marked as failed.      */
+DECL|method|markFirstNodeIfNotMarked ()
+specifier|synchronized
+name|void
+name|markFirstNodeIfNotMarked
+parameter_list|()
+block|{
+comment|// There should be no existing error and no ongoing restart.
+if|if
+condition|(
+operator|!
+name|isNodeMarked
+argument_list|()
+condition|)
+block|{
+name|badNodeIndex
+operator|=
+literal|0
+expr_stmt|;
+block|}
+block|}
+DECL|method|adjustState4RestartingNode ()
+specifier|synchronized
+name|void
+name|adjustState4RestartingNode
+parameter_list|()
+block|{
+comment|// Just took care of a node error while waiting for a node restart
+if|if
+condition|(
+name|restartingNodeIndex
+operator|>=
+literal|0
+condition|)
+block|{
+comment|// If the error came from a node further away than the restarting
+comment|// node, the restart must have been complete.
+if|if
+condition|(
+name|badNodeIndex
+operator|>
+name|restartingNodeIndex
+condition|)
+block|{
+name|restartingNodeIndex
+operator|=
+operator|-
+literal|1
+expr_stmt|;
+block|}
+elseif|else
+if|if
+condition|(
+name|badNodeIndex
+operator|<
+name|restartingNodeIndex
+condition|)
+block|{
+comment|// the node index has shifted.
+name|restartingNodeIndex
+operator|--
+expr_stmt|;
+block|}
+else|else
+block|{
+throw|throw
+operator|new
+name|IllegalStateException
+argument_list|(
+literal|"badNodeIndex = "
+operator|+
+name|badNodeIndex
+operator|+
+literal|" = restartingNodeIndex = "
+operator|+
+name|restartingNodeIndex
+argument_list|)
+throw|;
+block|}
+block|}
+if|if
+condition|(
+operator|!
+name|isRestartingNode
+argument_list|()
+condition|)
+block|{
+name|error
+operator|=
+literal|false
+expr_stmt|;
+block|}
+name|badNodeIndex
+operator|=
+operator|-
+literal|1
+expr_stmt|;
+block|}
+DECL|method|checkRestartingNodeDeadline (DatanodeInfo[] nodes)
+specifier|synchronized
+name|void
+name|checkRestartingNodeDeadline
+parameter_list|(
+name|DatanodeInfo
+index|[]
+name|nodes
+parameter_list|)
+block|{
+if|if
+condition|(
+name|restartingNodeIndex
+operator|>=
+literal|0
+condition|)
+block|{
+if|if
+condition|(
+operator|!
+name|error
+condition|)
+block|{
+throw|throw
+operator|new
+name|IllegalStateException
+argument_list|(
+literal|"error=false while checking"
+operator|+
+literal|" restarting node deadline"
+argument_list|)
+throw|;
+block|}
+comment|// check badNodeIndex
+if|if
+condition|(
+name|badNodeIndex
+operator|==
+name|restartingNodeIndex
+condition|)
+block|{
+comment|// ignore, if came from the restarting node
+name|badNodeIndex
+operator|=
+operator|-
+literal|1
+expr_stmt|;
+block|}
+comment|// not within the deadline
+if|if
+condition|(
+name|Time
+operator|.
+name|monotonicNow
+argument_list|()
+operator|>=
+name|restartingNodeDeadline
+condition|)
+block|{
+comment|// expired. declare the restarting node dead
+name|restartingNodeDeadline
+operator|=
+literal|0
+expr_stmt|;
+specifier|final
+name|int
+name|i
+init|=
+name|restartingNodeIndex
+decl_stmt|;
+name|restartingNodeIndex
+operator|=
+operator|-
+literal|1
+expr_stmt|;
+name|LOG
+operator|.
+name|warn
+argument_list|(
+literal|"Datanode "
+operator|+
+name|i
+operator|+
+literal|" did not restart within "
+operator|+
+name|datanodeRestartTimeout
+operator|+
+literal|"ms: "
+operator|+
+name|nodes
+index|[
+name|i
+index|]
+argument_list|)
+expr_stmt|;
+comment|// Mark the restarting node as failed. If there is any other failed
+comment|// node during the last pipeline construction attempt, it will not be
+comment|// overwritten/dropped. In this case, the restarting node will get
+comment|// excluded in the following attempt, if it still does not come up.
+if|if
+condition|(
+name|badNodeIndex
+operator|==
+operator|-
+literal|1
+condition|)
+block|{
+name|badNodeIndex
+operator|=
+name|i
+expr_stmt|;
+block|}
+block|}
+block|}
+block|}
+block|}
 DECL|field|streamerClosed
 specifier|private
 specifier|volatile
@@ -1572,41 +2014,12 @@ name|storageIDs
 init|=
 literal|null
 decl_stmt|;
-DECL|field|hasError
-specifier|volatile
-name|boolean
-name|hasError
-init|=
-literal|false
-decl_stmt|;
-DECL|field|errorIndex
-specifier|volatile
-name|int
-name|errorIndex
-init|=
-operator|-
-literal|1
-decl_stmt|;
-comment|// Restarting node index
-DECL|field|restartingNodeIndex
-name|AtomicInteger
-name|restartingNodeIndex
-init|=
-operator|new
-name|AtomicInteger
-argument_list|(
-operator|-
-literal|1
-argument_list|)
-decl_stmt|;
-DECL|field|restartDeadline
+DECL|field|errorState
 specifier|private
-name|long
-name|restartDeadline
-init|=
-literal|0
+specifier|final
+name|ErrorState
+name|errorState
 decl_stmt|;
-comment|// Deadline of DN restart
 DECL|field|stage
 specifier|private
 name|BlockConstructionStage
@@ -1996,12 +2409,30 @@ argument_list|)
 expr_stmt|;
 name|this
 operator|.
-name|dfsclientSlowLogThresholdMs
+name|isAppend
 operator|=
+name|isAppend
+expr_stmt|;
+name|this
+operator|.
+name|favoredNodes
+operator|=
+name|favoredNodes
+expr_stmt|;
+specifier|final
+name|DfsClientConf
+name|conf
+init|=
 name|dfsClient
 operator|.
 name|getConf
 argument_list|()
+decl_stmt|;
+name|this
+operator|.
+name|dfsclientSlowLogThresholdMs
+operator|=
+name|conf
 operator|.
 name|getSlowIoWarningThresholdMs
 argument_list|()
@@ -2011,19 +2442,25 @@ operator|.
 name|excludedNodes
 operator|=
 name|initExcludedNodes
+argument_list|(
+name|conf
+operator|.
+name|getExcludedNodesCacheExpiry
 argument_list|()
+argument_list|)
 expr_stmt|;
 name|this
 operator|.
-name|isAppend
+name|errorState
 operator|=
-name|isAppend
-expr_stmt|;
-name|this
+operator|new
+name|ErrorState
+argument_list|(
+name|conf
 operator|.
-name|favoredNodes
-operator|=
-name|favoredNodes
+name|getDatanodeRestartTimeout
+argument_list|()
+argument_list|)
 expr_stmt|;
 block|}
 comment|/**    * construction with tracing info    */
@@ -2196,12 +2633,6 @@ argument_list|(
 name|lastBlock
 argument_list|)
 expr_stmt|;
-name|errorIndex
-operator|=
-operator|-
-literal|1
-expr_stmt|;
-comment|// no errors yet.
 if|if
 condition|(
 name|nodes
@@ -2388,6 +2819,26 @@ operator|.
 name|PIPELINE_SETUP_CREATE
 expr_stmt|;
 block|}
+DECL|method|shouldStop ()
+specifier|private
+name|boolean
+name|shouldStop
+parameter_list|()
+block|{
+return|return
+name|streamerClosed
+operator|||
+name|errorState
+operator|.
+name|hasError
+argument_list|()
+operator|||
+operator|!
+name|dfsClient
+operator|.
+name|clientRunning
+return|;
+block|}
 comment|/*    * streamer thread is the only thread that opens streams to datanode,    * and closes them. Any error recovery is also done by this thread.    */
 annotation|@
 name|Override
@@ -2425,7 +2876,10 @@ block|{
 comment|// if the Responder encountered an error, shutdown Responder
 if|if
 condition|(
+name|errorState
+operator|.
 name|hasError
+argument_list|()
 operator|&&
 name|response
 operator|!=
@@ -2475,32 +2929,9 @@ comment|// process datanode IO errors if any
 name|boolean
 name|doSleep
 init|=
-literal|false
-decl_stmt|;
-if|if
-condition|(
-name|hasError
-operator|&&
-operator|(
-name|errorIndex
-operator|>=
-literal|0
-operator|||
-name|restartingNodeIndex
-operator|.
-name|get
-argument_list|()
-operator|>=
-literal|0
-operator|)
-condition|)
-block|{
-name|doSleep
-operator|=
 name|processDatanodeError
 argument_list|()
-expr_stmt|;
-block|}
+decl_stmt|;
 specifier|final
 name|int
 name|halfSocketTimeout
@@ -2533,14 +2964,8 @@ while|while
 condition|(
 operator|(
 operator|!
-name|streamerClosed
-operator|&&
-operator|!
-name|hasError
-operator|&&
-name|dfsClient
-operator|.
-name|clientRunning
+name|shouldStop
+argument_list|()
 operator|&&
 name|dataQueue
 operator|.
@@ -2648,14 +3073,8 @@ expr_stmt|;
 block|}
 if|if
 condition|(
-name|streamerClosed
-operator|||
-name|hasError
-operator|||
-operator|!
-name|dfsClient
-operator|.
-name|clientRunning
+name|shouldStop
+argument_list|()
 condition|)
 block|{
 continue|continue;
@@ -2674,11 +3093,6 @@ operator|=
 name|createHeartbeatPacket
 argument_list|()
 expr_stmt|;
-assert|assert
-name|one
-operator|!=
-literal|null
-assert|;
 block|}
 else|else
 block|{
@@ -2825,8 +3239,6 @@ argument_list|()
 expr_stmt|;
 if|if
 condition|(
-literal|true
-operator|==
 name|streamerClosed
 condition|)
 block|{
@@ -2894,10 +3306,8 @@ block|{
 while|while
 condition|(
 operator|!
-name|streamerClosed
-operator|&&
-operator|!
-name|hasError
+name|shouldStop
+argument_list|()
 operator|&&
 name|ackQueue
 operator|.
@@ -2905,10 +3315,6 @@ name|size
 argument_list|()
 operator|!=
 literal|0
-operator|&&
-name|dfsClient
-operator|.
-name|clientRunning
 condition|)
 block|{
 try|try
@@ -2942,14 +3348,8 @@ block|}
 block|}
 if|if
 condition|(
-name|streamerClosed
-operator|||
-name|hasError
-operator|||
-operator|!
-name|dfsClient
-operator|.
-name|clientRunning
+name|shouldStop
+argument_list|()
 condition|)
 block|{
 continue|continue;
@@ -3077,7 +3477,9 @@ comment|// been recorded by the responder, the following call will have no
 comment|// effect. Pipeline recovery can handle only one node error at a
 comment|// time. If the primary node fails again during the recovery, it
 comment|// will be taken out then.
-name|tryMarkPrimaryDatanodeFailed
+name|errorState
+operator|.
+name|markFirstNodeIfNotMarked
 argument_list|()
 expr_stmt|;
 throw|throw
@@ -3122,14 +3524,8 @@ expr_stmt|;
 block|}
 if|if
 condition|(
-name|streamerClosed
-operator|||
-name|hasError
-operator|||
-operator|!
-name|dfsClient
-operator|.
-name|clientRunning
+name|shouldStop
+argument_list|()
 condition|)
 block|{
 continue|continue;
@@ -3152,10 +3548,8 @@ block|{
 while|while
 condition|(
 operator|!
-name|streamerClosed
-operator|&&
-operator|!
-name|hasError
+name|shouldStop
+argument_list|()
 operator|&&
 name|ackQueue
 operator|.
@@ -3163,10 +3557,6 @@ name|size
 argument_list|()
 operator|!=
 literal|0
-operator|&&
-name|dfsClient
-operator|.
-name|clientRunning
 condition|)
 block|{
 name|dataQueue
@@ -3181,14 +3571,8 @@ block|}
 block|}
 if|if
 condition|(
-name|streamerClosed
-operator|||
-name|hasError
-operator|||
-operator|!
-name|dfsClient
-operator|.
-name|clientRunning
+name|shouldStop
+argument_list|()
 condition|)
 block|{
 continue|continue;
@@ -3240,13 +3624,11 @@ block|{
 comment|// Log warning if there was a real error.
 if|if
 condition|(
-name|restartingNodeIndex
+operator|!
+name|errorState
 operator|.
-name|get
+name|isRestartingNode
 argument_list|()
-operator|==
-operator|-
-literal|1
 condition|)
 block|{
 comment|// Since their messages are descriptive enough, do not always
@@ -3296,24 +3678,20 @@ operator|instanceof
 name|NullPointerException
 operator|)
 assert|;
-name|hasError
-operator|=
+name|errorState
+operator|.
+name|setError
+argument_list|(
 literal|true
+argument_list|)
 expr_stmt|;
 if|if
 condition|(
-name|errorIndex
-operator|==
-operator|-
-literal|1
-operator|&&
-name|restartingNodeIndex
+operator|!
+name|errorState
 operator|.
-name|get
+name|isNodeMarked
 argument_list|()
-operator|==
-operator|-
-literal|1
 condition|)
 block|{
 comment|// Not a datanode issue
@@ -3981,88 +4359,6 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-comment|// The following synchronized methods are used whenever
-comment|// errorIndex or restartingNodeIndex is set. This is because
-comment|// check& set needs to be atomic. Simply reading variables
-comment|// does not require a synchronization. When responder is
-comment|// not running (e.g. during pipeline recovery), there is no
-comment|// need to use these methods.
-comment|/** Set the error node index. Called by responder */
-DECL|method|setErrorIndex (int idx)
-specifier|synchronized
-name|void
-name|setErrorIndex
-parameter_list|(
-name|int
-name|idx
-parameter_list|)
-block|{
-name|errorIndex
-operator|=
-name|idx
-expr_stmt|;
-block|}
-comment|/** Set the restarting node index. Called by responder */
-DECL|method|setRestartingNodeIndex (int idx)
-specifier|synchronized
-name|void
-name|setRestartingNodeIndex
-parameter_list|(
-name|int
-name|idx
-parameter_list|)
-block|{
-name|restartingNodeIndex
-operator|.
-name|set
-argument_list|(
-name|idx
-argument_list|)
-expr_stmt|;
-comment|// If the data streamer has already set the primary node
-comment|// bad, clear it. It is likely that the write failed due to
-comment|// the DN shutdown. Even if it was a real failure, the pipeline
-comment|// recovery will take care of it.
-name|errorIndex
-operator|=
-operator|-
-literal|1
-expr_stmt|;
-block|}
-comment|/**    * This method is used when no explicit error report was received,    * but something failed. When the primary node is a suspect or    * unsure about the cause, the primary node is marked as failed.    */
-DECL|method|tryMarkPrimaryDatanodeFailed ()
-specifier|synchronized
-name|void
-name|tryMarkPrimaryDatanodeFailed
-parameter_list|()
-block|{
-comment|// There should be no existing error and no ongoing restart.
-if|if
-condition|(
-operator|(
-name|errorIndex
-operator|==
-operator|-
-literal|1
-operator|)
-operator|&&
-operator|(
-name|restartingNodeIndex
-operator|.
-name|get
-argument_list|()
-operator|==
-operator|-
-literal|1
-operator|)
-condition|)
-block|{
-name|errorIndex
-operator|=
-literal|0
-expr_stmt|;
-block|}
-block|}
 comment|/**    * Examine whether it is worth waiting for a node to restart.    * @param index the node index    */
 DECL|method|shouldWaitForRestart (int index)
 name|boolean
@@ -4438,40 +4734,27 @@ name|i
 argument_list|)
 condition|)
 block|{
-name|restartDeadline
-operator|=
-name|dfsClient
-operator|.
-name|getConf
-argument_list|()
-operator|.
-name|getDatanodeRestartTimeout
-argument_list|()
-operator|+
-name|Time
-operator|.
-name|monotonicNow
-argument_list|()
-expr_stmt|;
-name|setRestartingNodeIndex
-argument_list|(
-name|i
-argument_list|)
-expr_stmt|;
+specifier|final
 name|String
 name|message
 init|=
-literal|"A datanode is restarting: "
+literal|"Datanode "
+operator|+
+name|i
+operator|+
+literal|" is restarting: "
 operator|+
 name|targets
 index|[
 name|i
 index|]
 decl_stmt|;
-name|LOG
+name|errorState
 operator|.
-name|info
+name|initRestartingNode
 argument_list|(
+name|i
+argument_list|,
 name|message
 argument_list|)
 expr_stmt|;
@@ -4491,12 +4774,14 @@ operator|!=
 name|SUCCESS
 condition|)
 block|{
-name|setErrorIndex
+name|errorState
+operator|.
+name|setBadNodeIndex
 argument_list|(
 name|i
 argument_list|)
 expr_stmt|;
-comment|// first bad datanode
+comment|// mark bad datanode
 throw|throw
 operator|new
 name|IOException
@@ -4505,7 +4790,7 @@ literal|"Bad response "
 operator|+
 name|reply
 operator|+
-literal|" for block "
+literal|" for "
 operator|+
 name|block
 operator|+
@@ -4747,13 +5032,16 @@ argument_list|(
 name|e
 argument_list|)
 expr_stmt|;
-name|hasError
-operator|=
+name|errorState
+operator|.
+name|setError
+argument_list|(
 literal|true
+argument_list|)
 expr_stmt|;
-comment|// If no explicit error report was received, mark the primary
-comment|// node as failed.
-name|tryMarkPrimaryDatanodeFailed
+name|errorState
+operator|.
+name|markFirstNodeIfNotMarked
 argument_list|()
 expr_stmt|;
 synchronized|synchronized
@@ -4769,13 +5057,11 @@ expr_stmt|;
 block|}
 if|if
 condition|(
-name|restartingNodeIndex
+operator|!
+name|errorState
 operator|.
-name|get
+name|isRestartingNode
 argument_list|()
-operator|==
-operator|-
-literal|1
 condition|)
 block|{
 name|LOG
@@ -4822,10 +5108,7 @@ argument_list|()
 expr_stmt|;
 block|}
 block|}
-comment|// If this stream has encountered any errors so far, shutdown
-comment|// threads and mark stream as closed. Returns true if we should
-comment|// sleep for a while after returning from this call.
-comment|//
+comment|/**    * If this stream has encountered any errors, shutdown threads    * and mark the stream as closed.    *    * @return true if it should sleep for a while after returning.    */
 DECL|method|processDatanodeError ()
 specifier|private
 name|boolean
@@ -4834,6 +5117,19 @@ parameter_list|()
 throws|throws
 name|IOException
 block|{
+if|if
+condition|(
+operator|!
+name|errorState
+operator|.
+name|hasDatanodeError
+argument_list|()
+condition|)
+block|{
+return|return
+literal|false
+return|;
+block|}
 if|if
 condition|(
 name|response
@@ -5179,8 +5475,6 @@ argument_list|)
 operator|.
 name|append
 argument_list|(
-name|HdfsClientConfigKeys
-operator|.
 name|BlockWrite
 operator|.
 name|ReplaceDatanodeOnFailure
@@ -5819,22 +6113,128 @@ operator|.
 name|clientRunning
 condition|)
 block|{
-comment|// Sleep before reconnect if a dn is restarting.
-comment|// This process will be repeated until the deadline or the datanode
-comment|// starts back up.
 if|if
 condition|(
-name|restartingNodeIndex
-operator|.
-name|get
+operator|!
+name|handleRestartingDatanode
 argument_list|()
-operator|>=
-literal|0
+condition|)
+block|{
+return|return
+literal|false
+return|;
+block|}
+specifier|final
+name|boolean
+name|isRecovery
+init|=
+name|errorState
+operator|.
+name|hasError
+argument_list|()
+decl_stmt|;
+if|if
+condition|(
+operator|!
+name|handleBadDatanode
+argument_list|()
+condition|)
+block|{
+return|return
+literal|false
+return|;
+block|}
+name|handleDatanodeReplacement
+argument_list|()
+expr_stmt|;
+comment|// get a new generation stamp and an access token
+specifier|final
+name|LocatedBlock
+name|lb
+init|=
+name|updateBlockForPipeline
+argument_list|()
+decl_stmt|;
+name|newGS
+operator|=
+name|lb
+operator|.
+name|getBlock
+argument_list|()
+operator|.
+name|getGenerationStamp
+argument_list|()
+expr_stmt|;
+name|accessToken
+operator|=
+name|lb
+operator|.
+name|getBlockToken
+argument_list|()
+expr_stmt|;
+comment|// set up the pipeline again with the remaining nodes
+name|success
+operator|=
+name|createBlockOutputStream
+argument_list|(
+name|nodes
+argument_list|,
+name|storageTypes
+argument_list|,
+name|newGS
+argument_list|,
+name|isRecovery
+argument_list|)
+expr_stmt|;
+name|failPacket4Testing
+argument_list|()
+expr_stmt|;
+name|errorState
+operator|.
+name|checkRestartingNodeDeadline
+argument_list|(
+name|nodes
+argument_list|)
+expr_stmt|;
+block|}
+comment|// while
+if|if
+condition|(
+name|success
+condition|)
+block|{
+name|block
+operator|=
+name|updatePipeline
+argument_list|(
+name|newGS
+argument_list|)
+expr_stmt|;
+block|}
+return|return
+literal|false
+return|;
+comment|// do not sleep, continue processing
+block|}
+comment|/**    * Sleep if a node is restarting.    * This process is repeated until the deadline or the node starts back up.    * @return true if it should continue.    */
+DECL|method|handleRestartingDatanode ()
+specifier|private
+name|boolean
+name|handleRestartingDatanode
+parameter_list|()
+block|{
+if|if
+condition|(
+name|errorState
+operator|.
+name|isRestartingNode
+argument_list|()
 condition|)
 block|{
 comment|// 4 seconds or the configured deadline period, whichever is shorter.
 comment|// This is the retry interval and recovery will be retried in this
 comment|// interval until timeout or success.
+specifier|final
 name|long
 name|delay
 init|=
@@ -5842,13 +6242,9 @@ name|Math
 operator|.
 name|min
 argument_list|(
-name|dfsClient
+name|errorState
 operator|.
-name|getConf
-argument_list|()
-operator|.
-name|getDatanodeRestartTimeout
-argument_list|()
+name|datanodeRestartTimeout
 argument_list|,
 literal|4000L
 argument_list|)
@@ -5876,15 +6272,13 @@ argument_list|(
 operator|new
 name|IOException
 argument_list|(
-literal|"Interrupted while waiting for "
-operator|+
-literal|"datanode to restart. "
+literal|"Interrupted while waiting for restarting "
 operator|+
 name|nodes
 index|[
-name|restartingNodeIndex
+name|errorState
 operator|.
-name|get
+name|getRestartingNodeIndex
 argument_list|()
 index|]
 argument_list|)
@@ -5899,76 +6293,33 @@ literal|false
 return|;
 block|}
 block|}
+return|return
+literal|true
+return|;
+block|}
+comment|/**    * Remove bad node from list of nodes if badNodeIndex was set.    * @return true if it should continue.    */
+DECL|method|handleBadDatanode ()
+specifier|private
 name|boolean
-name|isRecovery
+name|handleBadDatanode
+parameter_list|()
+block|{
+specifier|final
+name|int
+name|badNodeIndex
 init|=
-name|hasError
+name|errorState
+operator|.
+name|getBadNodeIndex
+argument_list|()
 decl_stmt|;
-comment|// remove bad datanode from list of datanodes.
-comment|// If errorIndex was not set (i.e. appends), then do not remove
-comment|// any datanodes
-comment|//
 if|if
 condition|(
-name|errorIndex
+name|badNodeIndex
 operator|>=
 literal|0
 condition|)
 block|{
-name|StringBuilder
-name|pipelineMsg
-init|=
-operator|new
-name|StringBuilder
-argument_list|()
-decl_stmt|;
-for|for
-control|(
-name|int
-name|j
-init|=
-literal|0
-init|;
-name|j
-operator|<
-name|nodes
-operator|.
-name|length
-condition|;
-name|j
-operator|++
-control|)
-block|{
-name|pipelineMsg
-operator|.
-name|append
-argument_list|(
-name|nodes
-index|[
-name|j
-index|]
-argument_list|)
-expr_stmt|;
-if|if
-condition|(
-name|j
-operator|<
-name|nodes
-operator|.
-name|length
-operator|-
-literal|1
-condition|)
-block|{
-name|pipelineMsg
-operator|.
-name|append
-argument_list|(
-literal|", "
-argument_list|)
-expr_stmt|;
-block|}
-block|}
 if|if
 condition|(
 name|nodes
@@ -5987,7 +6338,12 @@ name|IOException
 argument_list|(
 literal|"All datanodes "
 operator|+
-name|pipelineMsg
+name|Arrays
+operator|.
+name|toString
+argument_list|(
+name|nodes
+argument_list|)
 operator|+
 literal|" are bad. Aborting..."
 argument_list|)
@@ -6005,20 +6361,31 @@ name|LOG
 operator|.
 name|warn
 argument_list|(
-literal|"Error Recovery for block "
+literal|"Error Recovery for "
 operator|+
 name|block
 operator|+
 literal|" in pipeline "
 operator|+
-name|pipelineMsg
+name|Arrays
+operator|.
+name|toString
+argument_list|(
+name|nodes
+argument_list|)
 operator|+
-literal|": bad datanode "
+literal|": datanode "
+operator|+
+name|badNodeIndex
+operator|+
+literal|"("
 operator|+
 name|nodes
 index|[
-name|errorIndex
+name|badNodeIndex
 index|]
+operator|+
+literal|") is bad."
 argument_list|)
 expr_stmt|;
 name|failed
@@ -6027,7 +6394,7 @@ name|add
 argument_list|(
 name|nodes
 index|[
-name|errorIndex
+name|badNodeIndex
 index|]
 argument_list|)
 expr_stmt|;
@@ -6051,7 +6418,7 @@ name|nodes
 argument_list|,
 name|newnodes
 argument_list|,
-name|errorIndex
+name|badNodeIndex
 argument_list|)
 expr_stmt|;
 specifier|final
@@ -6073,7 +6440,7 @@ name|storageTypes
 argument_list|,
 name|newStorageTypes
 argument_list|,
-name|errorIndex
+name|badNodeIndex
 argument_list|)
 expr_stmt|;
 specifier|final
@@ -6095,7 +6462,7 @@ name|storageIDs
 argument_list|,
 name|newStorageIDs
 argument_list|,
-name|errorIndex
+name|badNodeIndex
 argument_list|)
 expr_stmt|;
 name|setPipeline
@@ -6107,92 +6474,30 @@ argument_list|,
 name|newStorageIDs
 argument_list|)
 expr_stmt|;
-comment|// Just took care of a node error while waiting for a node restart
-if|if
-condition|(
-name|restartingNodeIndex
+name|errorState
 operator|.
-name|get
-argument_list|()
-operator|>=
-literal|0
-condition|)
-block|{
-comment|// If the error came from a node further away than the restarting
-comment|// node, the restart must have been complete.
-if|if
-condition|(
-name|errorIndex
-operator|>
-name|restartingNodeIndex
-operator|.
-name|get
-argument_list|()
-condition|)
-block|{
-name|restartingNodeIndex
-operator|.
-name|set
-argument_list|(
-operator|-
-literal|1
-argument_list|)
-expr_stmt|;
-block|}
-elseif|else
-if|if
-condition|(
-name|errorIndex
-operator|<
-name|restartingNodeIndex
-operator|.
-name|get
-argument_list|()
-condition|)
-block|{
-comment|// the node index has shifted.
-name|restartingNodeIndex
-operator|.
-name|decrementAndGet
+name|adjustState4RestartingNode
 argument_list|()
 expr_stmt|;
-block|}
-else|else
-block|{
-comment|// this shouldn't happen...
-assert|assert
-literal|false
-assert|;
-block|}
-block|}
-if|if
-condition|(
-name|restartingNodeIndex
-operator|.
-name|get
-argument_list|()
-operator|==
-operator|-
-literal|1
-condition|)
-block|{
-name|hasError
-operator|=
-literal|false
-expr_stmt|;
-block|}
 name|lastException
 operator|.
 name|clear
 argument_list|()
 expr_stmt|;
-name|errorIndex
-operator|=
-operator|-
-literal|1
-expr_stmt|;
 block|}
-comment|// Check if replace-datanode policy is satisfied.
+return|return
+literal|true
+return|;
+block|}
+comment|/** Add a datanode if replace-datanode policy is satisfied. */
+DECL|method|handleDatanodeReplacement ()
+specifier|private
+name|void
+name|handleDatanodeReplacement
+parameter_list|()
+throws|throws
+name|IOException
+block|{
 if|if
 condition|(
 name|dfsClient
@@ -6249,8 +6554,6 @@ literal|"Failed to replace datanode."
 operator|+
 literal|" Continue with the remaining datanodes since "
 operator|+
-name|HdfsClientConfigKeys
-operator|.
 name|BlockWrite
 operator|.
 name|ReplaceDatanodeOnFailure
@@ -6264,60 +6567,19 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-comment|// get a new generation stamp and an access token
-name|LocatedBlock
-name|lb
-init|=
-name|dfsClient
-operator|.
-name|namenode
-operator|.
-name|updateBlockForPipeline
-argument_list|(
-name|block
-argument_list|,
-name|dfsClient
-operator|.
-name|clientName
-argument_list|)
-decl_stmt|;
-name|newGS
-operator|=
-name|lb
-operator|.
-name|getBlock
-argument_list|()
-operator|.
-name|getGenerationStamp
-argument_list|()
-expr_stmt|;
-name|accessToken
-operator|=
-name|lb
-operator|.
-name|getBlockToken
-argument_list|()
-expr_stmt|;
-comment|// set up the pipeline again with the remaining nodes
+block|}
+DECL|method|failPacket4Testing ()
+specifier|private
+name|void
+name|failPacket4Testing
+parameter_list|()
+block|{
 if|if
 condition|(
 name|failPacket
 condition|)
 block|{
 comment|// for testing
-name|success
-operator|=
-name|createBlockOutputStream
-argument_list|(
-name|nodes
-argument_list|,
-name|storageTypes
-argument_list|,
-name|newGS
-argument_list|,
-name|isRecovery
-argument_list|)
-expr_stmt|;
 name|failPacket
 operator|=
 literal|false
@@ -6342,129 +6604,41 @@ name|ie
 parameter_list|)
 block|{}
 block|}
-else|else
+block|}
+DECL|method|updateBlockForPipeline ()
+name|LocatedBlock
+name|updateBlockForPipeline
+parameter_list|()
+throws|throws
+name|IOException
 block|{
-name|success
-operator|=
-name|createBlockOutputStream
+return|return
+name|dfsClient
+operator|.
+name|namenode
+operator|.
+name|updateBlockForPipeline
 argument_list|(
-name|nodes
+name|block
 argument_list|,
-name|storageTypes
-argument_list|,
+name|dfsClient
+operator|.
+name|clientName
+argument_list|)
+return|;
+block|}
+comment|/** update pipeline at the namenode */
+DECL|method|updatePipeline (long newGS)
+name|ExtendedBlock
+name|updatePipeline
+parameter_list|(
+name|long
 name|newGS
-argument_list|,
-name|isRecovery
-argument_list|)
-expr_stmt|;
-block|}
-if|if
-condition|(
-name|restartingNodeIndex
-operator|.
-name|get
-argument_list|()
-operator|>=
-literal|0
-condition|)
+parameter_list|)
+throws|throws
+name|IOException
 block|{
-assert|assert
-name|hasError
-operator|==
-literal|true
-assert|;
-comment|// check errorIndex set above
-if|if
-condition|(
-name|errorIndex
-operator|==
-name|restartingNodeIndex
-operator|.
-name|get
-argument_list|()
-condition|)
-block|{
-comment|// ignore, if came from the restarting node
-name|errorIndex
-operator|=
-operator|-
-literal|1
-expr_stmt|;
-block|}
-comment|// still within the deadline
-if|if
-condition|(
-name|Time
-operator|.
-name|monotonicNow
-argument_list|()
-operator|<
-name|restartDeadline
-condition|)
-block|{
-continue|continue;
-comment|// with in the deadline
-block|}
-comment|// expired. declare the restarting node dead
-name|restartDeadline
-operator|=
-literal|0
-expr_stmt|;
-name|int
-name|expiredNodeIndex
-init|=
-name|restartingNodeIndex
-operator|.
-name|get
-argument_list|()
-decl_stmt|;
-name|restartingNodeIndex
-operator|.
-name|set
-argument_list|(
-operator|-
-literal|1
-argument_list|)
-expr_stmt|;
-name|LOG
-operator|.
-name|warn
-argument_list|(
-literal|"Datanode did not restart in time: "
-operator|+
-name|nodes
-index|[
-name|expiredNodeIndex
-index|]
-argument_list|)
-expr_stmt|;
-comment|// Mark the restarting node as failed. If there is any other failed
-comment|// node during the last pipeline construction attempt, it will not be
-comment|// overwritten/dropped. In this case, the restarting node will get
-comment|// excluded in the following attempt, if it still does not come up.
-if|if
-condition|(
-name|errorIndex
-operator|==
-operator|-
-literal|1
-condition|)
-block|{
-name|errorIndex
-operator|=
-name|expiredNodeIndex
-expr_stmt|;
-block|}
-comment|// From this point on, normal pipeline recovery applies.
-block|}
-block|}
-comment|// while
-if|if
-condition|(
-name|success
-condition|)
-block|{
-comment|// update pipeline at the namenode
+specifier|final
 name|ExtendedBlock
 name|newBlock
 init|=
@@ -6508,16 +6682,9 @@ argument_list|,
 name|storageIDs
 argument_list|)
 expr_stmt|;
-comment|// update client side generation stamp
-name|block
-operator|=
-name|newBlock
-expr_stmt|;
-block|}
 return|return
-literal|false
+name|newBlock
 return|;
-comment|// do not sleep, continue processing
 block|}
 comment|/**    * Open a DataStreamer to a DataNode so that it can be written to.    * This happens when a file is created and each time a new block is allocated.    * Must get block ID and the IDs of the destinations from the namenode.    * Returns the list of target datanodes.    */
 DECL|method|nextBlockOutputStream ()
@@ -6568,19 +6735,15 @@ name|block
 decl_stmt|;
 do|do
 block|{
-name|hasError
-operator|=
-literal|false
+name|errorState
+operator|.
+name|reset
+argument_list|()
 expr_stmt|;
 name|lastException
 operator|.
 name|clear
 argument_list|()
-expr_stmt|;
-name|errorIndex
-operator|=
-operator|-
-literal|1
 expr_stmt|;
 name|success
 operator|=
@@ -6728,31 +6891,34 @@ name|block
 operator|=
 literal|null
 expr_stmt|;
+specifier|final
+name|DatanodeInfo
+name|badNode
+init|=
+name|nodes
+index|[
+name|errorState
+operator|.
+name|getBadNodeIndex
+argument_list|()
+index|]
+decl_stmt|;
 name|LOG
 operator|.
 name|info
 argument_list|(
 literal|"Excluding datanode "
 operator|+
-name|nodes
-index|[
-name|errorIndex
-index|]
+name|badNode
 argument_list|)
 expr_stmt|;
 name|excludedNodes
 operator|.
 name|put
 argument_list|(
-name|nodes
-index|[
-name|errorIndex
-index|]
+name|badNode
 argument_list|,
-name|nodes
-index|[
-name|errorIndex
-index|]
+name|badNode
 argument_list|)
 expr_stmt|;
 block|}
@@ -7203,13 +7369,11 @@ argument_list|(
 name|pipelineStatus
 argument_list|)
 operator|&&
-name|restartingNodeIndex
+operator|!
+name|errorState
 operator|.
-name|get
+name|isRestartingNode
 argument_list|()
-operator|==
-operator|-
-literal|1
 condition|)
 block|{
 name|checkRestart
@@ -7256,17 +7420,10 @@ operator|=
 literal|true
 expr_stmt|;
 comment|// success
-name|restartingNodeIndex
+name|errorState
 operator|.
-name|set
-argument_list|(
-operator|-
-literal|1
-argument_list|)
-expr_stmt|;
-name|hasError
-operator|=
-literal|false
+name|reset
+argument_list|()
 expr_stmt|;
 block|}
 catch|catch
@@ -7277,13 +7434,11 @@ parameter_list|)
 block|{
 if|if
 condition|(
-name|restartingNodeIndex
+operator|!
+name|errorState
 operator|.
-name|get
+name|isRestartingNode
 argument_list|()
-operator|==
-operator|-
-literal|1
 condition|)
 block|{
 name|LOG
@@ -7383,9 +7538,12 @@ argument_list|()
 argument_list|)
 condition|)
 block|{
-name|errorIndex
-operator|=
+name|errorState
+operator|.
+name|setBadNodeIndex
+argument_list|(
 name|i
+argument_list|)
 expr_stmt|;
 break|break;
 block|}
@@ -7398,11 +7556,23 @@ name|checkRestart
 operator|==
 literal|false
 assert|;
-name|errorIndex
-operator|=
+name|errorState
+operator|.
+name|setBadNodeIndex
+argument_list|(
 literal|0
+argument_list|)
 expr_stmt|;
 block|}
+specifier|final
+name|int
+name|i
+init|=
+name|errorState
+operator|.
+name|getBadNodeIndex
+argument_list|()
+decl_stmt|;
 comment|// Check whether there is a restart worth waiting for.
 if|if
 condition|(
@@ -7410,56 +7580,35 @@ name|checkRestart
 operator|&&
 name|shouldWaitForRestart
 argument_list|(
-name|errorIndex
+name|i
 argument_list|)
 condition|)
 block|{
-name|restartDeadline
-operator|=
-name|dfsClient
+name|errorState
 operator|.
-name|getConf
-argument_list|()
-operator|.
-name|getDatanodeRestartTimeout
-argument_list|()
+name|initRestartingNode
+argument_list|(
+name|i
+argument_list|,
+literal|"Datanode "
 operator|+
-name|Time
-operator|.
-name|monotonicNow
-argument_list|()
-expr_stmt|;
-name|restartingNodeIndex
-operator|.
-name|set
-argument_list|(
-name|errorIndex
-argument_list|)
-expr_stmt|;
-name|errorIndex
-operator|=
-operator|-
-literal|1
-expr_stmt|;
-name|LOG
-operator|.
-name|info
-argument_list|(
-literal|"Waiting for the datanode to be restarted: "
+name|i
+operator|+
+literal|" is restarting: "
 operator|+
 name|nodes
 index|[
-name|restartingNodeIndex
-operator|.
-name|get
-argument_list|()
+name|i
 index|]
 argument_list|)
 expr_stmt|;
 block|}
-name|hasError
-operator|=
+name|errorState
+operator|.
+name|setError
+argument_list|(
 literal|true
+argument_list|)
 expr_stmt|;
 name|lastException
 operator|.
@@ -8260,8 +8409,9 @@ literal|false
 argument_list|)
 return|;
 block|}
-DECL|method|initExcludedNodes ()
+DECL|method|initExcludedNodes ( long excludedNodesCacheExpiry)
 specifier|private
+specifier|static
 name|LoadingCache
 argument_list|<
 name|DatanodeInfo
@@ -8269,7 +8419,10 @@ argument_list|,
 name|DatanodeInfo
 argument_list|>
 name|initExcludedNodes
-parameter_list|()
+parameter_list|(
+name|long
+name|excludedNodesCacheExpiry
+parameter_list|)
 block|{
 return|return
 name|CacheBuilder
@@ -8279,13 +8432,7 @@ argument_list|()
 operator|.
 name|expireAfterWrite
 argument_list|(
-name|dfsClient
-operator|.
-name|getConf
-argument_list|()
-operator|.
-name|getExcludedNodesCacheExpiry
-argument_list|()
+name|excludedNodesCacheExpiry
 argument_list|,
 name|TimeUnit
 operator|.
