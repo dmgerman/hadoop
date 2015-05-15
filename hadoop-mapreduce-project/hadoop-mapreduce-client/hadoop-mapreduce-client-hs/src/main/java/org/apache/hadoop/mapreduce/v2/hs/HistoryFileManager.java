@@ -1773,8 +1773,10 @@ specifier|private
 name|HistoryInfoState
 name|state
 decl_stmt|;
+annotation|@
+name|VisibleForTesting
 DECL|method|HistoryFileInfo (Path historyFile, Path confFile, Path summaryFile, JobIndexInfo jobIndexInfo, boolean isInDone)
-specifier|private
+specifier|protected
 name|HistoryFileInfo
 parameter_list|(
 name|Path
@@ -1903,8 +1905,9 @@ operator|+
 name|historyFile
 return|;
 block|}
+annotation|@
+name|VisibleForTesting
 DECL|method|moveToDone ()
-specifier|private
 specifier|synchronized
 name|void
 name|moveToDone
@@ -2067,6 +2070,17 @@ condition|(
 name|summaryFile
 operator|==
 literal|null
+operator|||
+operator|!
+name|intermediateDoneDirFc
+operator|.
+name|util
+argument_list|()
+operator|.
+name|exists
+argument_list|(
+name|summaryFile
+argument_list|)
 condition|)
 block|{
 name|LOG
