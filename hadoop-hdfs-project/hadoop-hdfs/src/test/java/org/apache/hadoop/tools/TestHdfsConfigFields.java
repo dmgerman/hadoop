@@ -200,6 +200,21 @@ argument_list|(
 literal|"dfs.client.short.circuit.replica.stale.threshold.ms"
 argument_list|)
 expr_stmt|;
+comment|// Ignore SpanReceiveHost properties
+name|xmlPropsToSkipCompare
+operator|.
+name|add
+argument_list|(
+literal|"dfs.htrace.spanreceiver.classes"
+argument_list|)
+expr_stmt|;
+name|xmlPropsToSkipCompare
+operator|.
+name|add
+argument_list|(
+literal|"dfs.client.htrace.spanreceiver.classes"
+argument_list|)
+expr_stmt|;
 block|}
 block|}
 end_class
