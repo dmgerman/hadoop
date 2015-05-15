@@ -2392,6 +2392,15 @@ name|DFS_NAMENODE_AUDIT_LOG_ASYNC_DEFAULT
 init|=
 literal|false
 decl_stmt|;
+DECL|field|DFS_NAMENODE_AUDIT_LOG_DEBUG_CMDLIST
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|DFS_NAMENODE_AUDIT_LOG_DEBUG_CMDLIST
+init|=
+literal|"dfs.namenode.audit.log.debug.cmdlist"
+decl_stmt|;
 DECL|field|DFS_BALANCER_MOVEDWINWIDTH_KEY
 specifier|public
 specifier|static
