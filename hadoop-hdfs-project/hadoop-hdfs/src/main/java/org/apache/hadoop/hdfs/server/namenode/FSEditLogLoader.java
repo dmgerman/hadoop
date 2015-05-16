@@ -6755,10 +6755,12 @@ decl_stmt|;
 name|boolean
 name|removed
 init|=
-name|fsDir
+name|FSDirWriteFileOp
 operator|.
 name|unprotectedRemoveBlock
 argument_list|(
+name|fsDir
+argument_list|,
 name|path
 argument_list|,
 name|iip
