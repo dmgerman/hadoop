@@ -11735,7 +11735,7 @@ name|groupSize
 init|=
 name|fileNode
 operator|.
-name|getBlockReplication
+name|getPreferredBlockReplication
 argument_list|()
 decl_stmt|;
 assert|assert

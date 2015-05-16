@@ -16645,6 +16645,29 @@ return|return
 name|storages
 return|;
 block|}
+comment|/** @return an iterator of the datanodes. */
+DECL|method|getStorages (final Block block)
+specifier|public
+name|Iterable
+argument_list|<
+name|DatanodeStorageInfo
+argument_list|>
+name|getStorages
+parameter_list|(
+specifier|final
+name|Block
+name|block
+parameter_list|)
+block|{
+return|return
+name|blocksMap
+operator|.
+name|getStorages
+argument_list|(
+name|block
+argument_list|)
+return|;
+block|}
 DECL|method|getTotalBlocks ()
 specifier|public
 name|int
@@ -18313,6 +18336,7 @@ return|;
 block|}
 DECL|method|newLocatedBlock (ExtendedBlock eb, BlockInfo info, DatanodeStorageInfo[] locs, long offset)
 specifier|public
+specifier|static
 name|LocatedBlock
 name|newLocatedBlock
 parameter_list|(
@@ -18384,17 +18408,6 @@ literal|false
 argument_list|)
 expr_stmt|;
 block|}
-name|setBlockToken
-argument_list|(
-name|lb
-argument_list|,
-name|BlockTokenIdentifier
-operator|.
-name|AccessMode
-operator|.
-name|WRITE
-argument_list|)
-expr_stmt|;
 return|return
 name|lb
 return|;

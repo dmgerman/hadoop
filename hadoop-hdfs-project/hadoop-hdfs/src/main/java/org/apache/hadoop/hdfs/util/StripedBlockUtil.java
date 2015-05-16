@@ -489,6 +489,8 @@ name|getStartOffset
 argument_list|()
 operator|+
 name|idxInBlockGroup
+operator|*
+name|cellSize
 argument_list|,
 name|bg
 operator|.

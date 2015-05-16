@@ -16378,15 +16378,39 @@ operator|.
 name|logSync
 argument_list|()
 expr_stmt|;
+if|if
+condition|(
+name|success
+condition|)
+block|{
+name|NameNode
+operator|.
+name|stateChangeLog
+operator|.
+name|info
+argument_list|(
+literal|"DIR* completeFile: "
+operator|+
+name|src
+operator|+
+literal|" is closed by "
+operator|+
+name|holder
+argument_list|)
+expr_stmt|;
+block|}
 return|return
 name|success
 return|;
 block|}
 comment|/**    * Create new block with a unique block id and a new generation stamp.    * @param isStriped is the file under striping or contiguous layout?    */
-DECL|method|createNewBlock ()
+DECL|method|createNewBlock (boolean isStriped)
 name|Block
 name|createNewBlock
-parameter_list|()
+parameter_list|(
+name|boolean
+name|isStriped
+parameter_list|)
 throws|throws
 name|IOException
 block|{

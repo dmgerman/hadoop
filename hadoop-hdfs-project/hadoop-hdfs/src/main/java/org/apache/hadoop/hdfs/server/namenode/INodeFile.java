@@ -4503,38 +4503,6 @@ return|return
 name|counts
 return|;
 block|}
-DECL|method|getReplication (int lastSnapshotId)
-specifier|public
-specifier|final
-name|short
-name|getReplication
-parameter_list|(
-name|int
-name|lastSnapshotId
-parameter_list|)
-block|{
-if|if
-condition|(
-name|lastSnapshotId
-operator|!=
-name|CURRENT_STATE_ID
-condition|)
-block|{
-return|return
-name|getFileReplication
-argument_list|(
-name|lastSnapshotId
-argument_list|)
-return|;
-block|}
-else|else
-block|{
-return|return
-name|getBlockReplication
-argument_list|()
-return|;
-block|}
-block|}
 comment|/**    * Return the penultimate allocated block for this file.    */
 DECL|method|getPenultimateBlock ()
 name|BlockInfo
