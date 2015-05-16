@@ -260,6 +260,11 @@ specifier|private
 name|File
 name|savedMetaFile
 decl_stmt|;
+DECL|field|lockedBytesReserved
+specifier|private
+name|long
+name|lockedBytesReserved
+decl_stmt|;
 DECL|field|creationTime
 specifier|private
 name|long
@@ -292,7 +297,7 @@ DECL|field|lazyPersistVolume
 name|FsVolumeImpl
 name|lazyPersistVolume
 decl_stmt|;
-DECL|method|RamDiskReplica (final String bpid, final long blockId, final FsVolumeImpl ramDiskVolume)
+DECL|method|RamDiskReplica (final String bpid, final long blockId, final FsVolumeImpl ramDiskVolume, long lockedBytesReserved)
 name|RamDiskReplica
 parameter_list|(
 specifier|final
@@ -306,6 +311,9 @@ parameter_list|,
 specifier|final
 name|FsVolumeImpl
 name|ramDiskVolume
+parameter_list|,
+name|long
+name|lockedBytesReserved
 parameter_list|)
 block|{
 name|this
@@ -325,6 +333,12 @@ operator|.
 name|ramDiskVolume
 operator|=
 name|ramDiskVolume
+expr_stmt|;
+name|this
+operator|.
+name|lockedBytesReserved
+operator|=
+name|lockedBytesReserved
 expr_stmt|;
 name|lazyPersistVolume
 operator|=
@@ -725,6 +739,16 @@ operator|+
 literal|"]"
 return|;
 block|}
+DECL|method|getLockedBytesReserved ()
+specifier|public
+name|long
+name|getLockedBytesReserved
+parameter_list|()
+block|{
+return|return
+name|lockedBytesReserved
+return|;
+block|}
 block|}
 comment|/**    * Get an instance of the configured RamDiskReplicaTracker based on the    * the configuration property    * {@link org.apache.hadoop.hdfs.DFSConfigKeys#DFS_DATANODE_RAM_DISK_REPLICA_TRACKER_KEY}.    *    * @param conf the configuration to be used    * @param dataset the FsDataset object.    * @return an instance of RamDiskReplicaTracker    */
 DECL|method|getInstance (final Configuration conf, final FsDatasetImpl fsDataset)
@@ -808,7 +832,7 @@ name|fsDataset
 expr_stmt|;
 block|}
 comment|/**    * Start tracking a new finalized replica on RAM disk.    *    * @param transientVolume RAM disk volume that stores the replica.    */
-DECL|method|addReplica (final String bpid, final long blockId, final FsVolumeImpl transientVolume)
+DECL|method|addReplica (final String bpid, final long blockId, final FsVolumeImpl transientVolume, long lockedBytesReserved)
 specifier|abstract
 name|void
 name|addReplica
@@ -824,6 +848,9 @@ parameter_list|,
 specifier|final
 name|FsVolumeImpl
 name|transientVolume
+parameter_list|,
+name|long
+name|lockedBytesReserved
 parameter_list|)
 function_decl|;
 comment|/**    * Invoked when a replica is opened by a client. This may be used as    * a heuristic by the eviction scheme.    */

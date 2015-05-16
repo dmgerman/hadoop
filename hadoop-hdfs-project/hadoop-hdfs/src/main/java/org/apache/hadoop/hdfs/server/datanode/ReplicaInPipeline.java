@@ -219,6 +219,12 @@ specifier|private
 name|long
 name|bytesReserved
 decl_stmt|;
+DECL|field|originalBytesReserved
+specifier|private
+specifier|final
+name|long
+name|originalBytesReserved
+decl_stmt|;
 comment|/**    * Constructor for a zero length replica    * @param blockId block id    * @param genStamp replica generation stamp    * @param vol volume where replica is located    * @param dir directory path where block and meta files are located    * @param bytesToReserve disk space to reserve for this replica, based on    *                       the estimated maximum block length.    */
 DECL|method|ReplicaInPipeline (long blockId, long genStamp, FsVolumeSpi vol, File dir, long bytesToReserve)
 specifier|public
@@ -368,6 +374,12 @@ name|bytesReserved
 operator|=
 name|bytesToReserve
 expr_stmt|;
+name|this
+operator|.
+name|originalBytesReserved
+operator|=
+name|bytesToReserve
+expr_stmt|;
 block|}
 comment|/**    * Copy constructor.    * @param from where to copy from    */
 DECL|method|ReplicaInPipeline (ReplicaInPipeline from)
@@ -416,6 +428,14 @@ operator|=
 name|from
 operator|.
 name|bytesReserved
+expr_stmt|;
+name|this
+operator|.
+name|originalBytesReserved
+operator|=
+name|from
+operator|.
+name|originalBytesReserved
 expr_stmt|;
 block|}
 annotation|@
@@ -529,6 +549,18 @@ return|;
 block|}
 annotation|@
 name|Override
+DECL|method|getOriginalBytesReserved ()
+specifier|public
+name|long
+name|getOriginalBytesReserved
+parameter_list|()
+block|{
+return|return
+name|originalBytesReserved
+return|;
+block|}
+annotation|@
+name|Override
 DECL|method|releaseAllBytesReserved ()
 specifier|public
 name|void
@@ -540,6 +572,14 @@ name|getVolume
 argument_list|()
 operator|.
 name|releaseReservedSpace
+argument_list|(
+name|bytesReserved
+argument_list|)
+expr_stmt|;
+name|getVolume
+argument_list|()
+operator|.
+name|releaseLockedMemory
 argument_list|(
 name|bytesReserved
 argument_list|)

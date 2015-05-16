@@ -692,34 +692,55 @@ name|getOperatingSystemPageSize
 argument_list|()
 decl_stmt|;
 comment|/**      * Round up a number to the operating system page size.      */
-DECL|method|round (long count)
+DECL|method|roundUp (long count)
 specifier|public
 name|long
-name|round
+name|roundUp
 parameter_list|(
 name|long
 name|count
 parameter_list|)
 block|{
-name|long
-name|newCount
-init|=
+return|return
 operator|(
 name|count
 operator|+
+name|osPageSize
+operator|-
+literal|1
+operator|)
+operator|&
+operator|(
+operator|~
 operator|(
 name|osPageSize
 operator|-
 literal|1
 operator|)
 operator|)
-operator|/
-name|osPageSize
-decl_stmt|;
+return|;
+block|}
+comment|/**      * Round down a number to the operating system page size.      */
+DECL|method|roundDown (long count)
+specifier|public
+name|long
+name|roundDown
+parameter_list|(
+name|long
+name|count
+parameter_list|)
+block|{
 return|return
-name|newCount
-operator|*
+name|count
+operator|&
+operator|(
+operator|~
+operator|(
 name|osPageSize
+operator|-
+literal|1
+operator|)
+operator|)
 return|;
 block|}
 block|}
@@ -763,7 +784,7 @@ name|count
 operator|=
 name|rounder
 operator|.
-name|round
+name|roundUp
 argument_list|(
 name|count
 argument_list|)
@@ -831,7 +852,35 @@ name|count
 operator|=
 name|rounder
 operator|.
-name|round
+name|roundUp
+argument_list|(
+name|count
+argument_list|)
+expr_stmt|;
+return|return
+name|usedBytes
+operator|.
+name|addAndGet
+argument_list|(
+operator|-
+name|count
+argument_list|)
+return|;
+block|}
+comment|/**      * Release some bytes that we're using rounded down to the page size.      *      * @param count    The number of bytes to release.  We will round this      *                 down to the page size.      *      * @return         The new number of usedBytes.      */
+DECL|method|releaseRoundDown (long count)
+name|long
+name|releaseRoundDown
+parameter_list|(
+name|long
+name|count
+parameter_list|)
+block|{
+name|count
+operator|=
+name|rounder
+operator|.
+name|roundDown
 argument_list|(
 name|count
 argument_list|)
@@ -1571,6 +1620,74 @@ expr_stmt|;
 break|break;
 block|}
 block|}
+comment|/**    * Try to reserve more bytes.    *    * @param count    The number of bytes to add.  We will round this    *                 up to the page size.    *    * @return         The new number of usedBytes if we succeeded;    *                 -1 if we failed.    */
+DECL|method|reserve (long count)
+name|long
+name|reserve
+parameter_list|(
+name|long
+name|count
+parameter_list|)
+block|{
+return|return
+name|usedBytesCount
+operator|.
+name|reserve
+argument_list|(
+name|count
+argument_list|)
+return|;
+block|}
+comment|/**    * Release some bytes that we're using.    *    * @param count    The number of bytes to release.  We will round this    *                 up to the page size.    *    * @return         The new number of usedBytes.    */
+DECL|method|release (long count)
+name|long
+name|release
+parameter_list|(
+name|long
+name|count
+parameter_list|)
+block|{
+return|return
+name|usedBytesCount
+operator|.
+name|release
+argument_list|(
+name|count
+argument_list|)
+return|;
+block|}
+comment|/**    * Release some bytes that we're using rounded down to the page size.    *    * @param count    The number of bytes to release.  We will round this    *                 down to the page size.    *    * @return         The new number of usedBytes.    */
+DECL|method|releaseRoundDown (long count)
+name|long
+name|releaseRoundDown
+parameter_list|(
+name|long
+name|count
+parameter_list|)
+block|{
+return|return
+name|usedBytesCount
+operator|.
+name|releaseRoundDown
+argument_list|(
+name|count
+argument_list|)
+return|;
+block|}
+comment|/**    * Get the OS page size.    *    * @return the OS page size.    */
+DECL|method|getOsPageSize ()
+name|long
+name|getOsPageSize
+parameter_list|()
+block|{
+return|return
+name|usedBytesCount
+operator|.
+name|rounder
+operator|.
+name|osPageSize
+return|;
+block|}
 comment|/**    * Background worker that mmaps, mlocks, and checksums a block    */
 DECL|class|CachingTask
 specifier|private
@@ -1695,8 +1812,6 @@ decl_stmt|;
 name|long
 name|newUsedBytes
 init|=
-name|usedBytesCount
-operator|.
 name|reserve
 argument_list|(
 name|length
@@ -2065,8 +2180,6 @@ condition|(
 name|reservedBytes
 condition|)
 block|{
-name|usedBytesCount
-operator|.
 name|release
 argument_list|(
 name|length
@@ -2415,8 +2528,6 @@ block|}
 name|long
 name|newUsedBytes
 init|=
-name|usedBytesCount
-operator|.
 name|release
 argument_list|(
 name|value

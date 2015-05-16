@@ -200,6 +200,16 @@ name|long
 name|bytesToRelease
 parameter_list|)
 function_decl|;
+comment|/**    * Release reserved memory for an RBW block written to transient storage    * i.e. RAM.    * bytesToRelease will be rounded down to the OS page size since locked    * memory reservation must always be a multiple of the page size.    */
+DECL|method|releaseLockedMemory (long bytesToRelease)
+specifier|public
+name|void
+name|releaseLockedMemory
+parameter_list|(
+name|long
+name|bytesToRelease
+parameter_list|)
+function_decl|;
 comment|/**    * BlockIterator will return ExtendedBlock entries from a block pool in    * this volume.  The entries will be returned in sorted order.<p/>    *    * BlockIterator objects themselves do not always have internal    * synchronization, so they can only safely be used by a single thread at a    * time.<p/>    *    * Closing the iterator does not save it.  You must call save to save it.    */
 DECL|interface|BlockIterator
 specifier|public

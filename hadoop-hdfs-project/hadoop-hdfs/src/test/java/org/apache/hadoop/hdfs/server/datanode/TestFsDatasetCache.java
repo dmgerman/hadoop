@@ -2519,7 +2519,7 @@ name|verifyExpectedCacheUsage
 argument_list|(
 name|rounder
 operator|.
-name|round
+name|roundUp
 argument_list|(
 name|total
 operator|+
@@ -2676,7 +2676,7 @@ name|uncachedBytes
 init|=
 name|rounder
 operator|.
-name|round
+name|roundUp
 argument_list|(
 name|fileSizes
 index|[

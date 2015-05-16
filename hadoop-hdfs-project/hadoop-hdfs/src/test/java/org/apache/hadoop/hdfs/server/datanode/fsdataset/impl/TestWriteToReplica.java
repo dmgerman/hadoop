@@ -1440,7 +1440,7 @@ try|try
 block|{
 name|v
 operator|.
-name|decDfsUsed
+name|onBlockFileDeletion
 argument_list|(
 name|bpid
 argument_list|,
@@ -1511,7 +1511,7 @@ expr_stmt|;
 block|}
 name|v
 operator|.
-name|decDfsUsed
+name|onBlockFileDeletion
 argument_list|(
 name|bpid
 argument_list|,

@@ -131,7 +131,7 @@ DECL|field|lastUsedTime
 name|long
 name|lastUsedTime
 decl_stmt|;
-DECL|method|RamDiskReplicaLru (String bpid, long blockId, FsVolumeImpl ramDiskVolume)
+DECL|method|RamDiskReplicaLru (String bpid, long blockId, FsVolumeImpl ramDiskVolume, long lockedBytesReserved)
 specifier|private
 name|RamDiskReplicaLru
 parameter_list|(
@@ -143,6 +143,9 @@ name|blockId
 parameter_list|,
 name|FsVolumeImpl
 name|ramDiskVolume
+parameter_list|,
+name|long
+name|lockedBytesReserved
 parameter_list|)
 block|{
 name|super
@@ -152,6 +155,8 @@ argument_list|,
 name|blockId
 argument_list|,
 name|ramDiskVolume
+argument_list|,
+name|lockedBytesReserved
 argument_list|)
 expr_stmt|;
 block|}
@@ -232,25 +237,14 @@ name|replicaMaps
 operator|=
 operator|new
 name|HashMap
-argument_list|<
-name|String
-argument_list|,
-name|Map
-argument_list|<
-name|Long
-argument_list|,
-name|RamDiskReplicaLru
-argument_list|>
-argument_list|>
+argument_list|<>
 argument_list|()
 expr_stmt|;
 name|replicasNotPersisted
 operator|=
 operator|new
 name|LinkedList
-argument_list|<
-name|RamDiskReplicaLru
-argument_list|>
+argument_list|<>
 argument_list|()
 expr_stmt|;
 name|replicasPersisted
@@ -263,7 +257,7 @@ expr_stmt|;
 block|}
 annotation|@
 name|Override
-DECL|method|addReplica (final String bpid, final long blockId, final FsVolumeImpl transientVolume)
+DECL|method|addReplica (final String bpid, final long blockId, final FsVolumeImpl transientVolume, long lockedBytesReserved)
 specifier|synchronized
 name|void
 name|addReplica
@@ -279,6 +273,9 @@ parameter_list|,
 specifier|final
 name|FsVolumeImpl
 name|transientVolume
+parameter_list|,
+name|long
+name|lockedBytesReserved
 parameter_list|)
 block|{
 name|Map
@@ -307,11 +304,7 @@ name|map
 operator|=
 operator|new
 name|HashMap
-argument_list|<
-name|Long
-argument_list|,
-name|RamDiskReplicaLru
-argument_list|>
+argument_list|<>
 argument_list|()
 expr_stmt|;
 name|replicaMaps
@@ -335,6 +328,8 @@ argument_list|,
 name|blockId
 argument_list|,
 name|transientVolume
+argument_list|,
+name|lockedBytesReserved
 argument_list|)
 decl_stmt|;
 name|map

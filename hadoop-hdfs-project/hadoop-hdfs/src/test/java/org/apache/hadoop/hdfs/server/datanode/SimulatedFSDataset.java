@@ -2387,6 +2387,17 @@ parameter_list|)
 block|{     }
 annotation|@
 name|Override
+DECL|method|releaseLockedMemory (long bytesToRelease)
+specifier|public
+name|void
+name|releaseLockedMemory
+parameter_list|(
+name|long
+name|bytesToRelease
+parameter_list|)
+block|{     }
+annotation|@
+name|Override
 DECL|method|releaseReservedSpace (long bytesToRelease)
 specifier|public
 name|void
