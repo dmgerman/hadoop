@@ -1939,6 +1939,26 @@ name|rm1Url
 argument_list|)
 argument_list|)
 expr_stmt|;
+name|header
+operator|=
+name|getHeader
+argument_list|(
+literal|"Refresh"
+argument_list|,
+name|rm2Url
+operator|+
+literal|"/proxy/"
+operator|+
+name|fakeAppId
+argument_list|)
+expr_stmt|;
+name|assertEquals
+argument_list|(
+literal|null
+argument_list|,
+name|header
+argument_list|)
+expr_stmt|;
 comment|// Due to the limitation of MiniYARNCluster and dispatcher is a singleton,
 comment|// we couldn't add the test case after explicitFailover();
 block|}
