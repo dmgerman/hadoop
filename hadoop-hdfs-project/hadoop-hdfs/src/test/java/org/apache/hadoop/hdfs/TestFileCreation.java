@@ -666,6 +666,22 @@ name|hdfs
 operator|.
 name|client
 operator|.
+name|HdfsClientConfigKeys
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|client
+operator|.
 name|HdfsDataOutputStream
 import|;
 end_import
@@ -781,6 +797,24 @@ operator|.
 name|blockmanagement
 operator|.
 name|BlockManager
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|server
+operator|.
+name|common
+operator|.
+name|HdfsServerConstants
 import|;
 end_import
 
@@ -2508,6 +2542,19 @@ argument_list|,
 literal|false
 argument_list|)
 expr_stmt|;
+comment|// Force NameNodeProxies' createNNProxyWithClientProtocol to give
+comment|// up file creation after one failure.
+name|conf
+operator|.
+name|setBoolean
+argument_list|(
+name|DFSConfigKeys
+operator|.
+name|DFS_CLIENT_TEST_NO_PROXY_RETRIES
+argument_list|,
+literal|true
+argument_list|)
+expr_stmt|;
 specifier|final
 name|MiniDFSCluster
 name|cluster
@@ -2672,12 +2719,11 @@ name|abce
 argument_list|)
 expr_stmt|;
 block|}
-comment|// NameNodeProxies' createNNProxyWithClientProtocol has 5 retries.
 name|assertCounter
 argument_list|(
 literal|"AlreadyBeingCreatedExceptionNumOps"
 argument_list|,
-literal|6L
+literal|1L
 argument_list|,
 name|getMetrics
 argument_list|(
