@@ -187,6 +187,41 @@ expr_stmt|;
 name|prepareCoders
 argument_list|()
 expr_stmt|;
+comment|/**      * The following runs will use 3 different chunkSize for inputs and outputs,      * to verify the same encoder/decoder can process variable width of data.      */
+name|performTestCoding
+argument_list|(
+name|baseChunkSize
+argument_list|)
+expr_stmt|;
+name|performTestCoding
+argument_list|(
+name|baseChunkSize
+operator|-
+literal|17
+argument_list|)
+expr_stmt|;
+name|performTestCoding
+argument_list|(
+name|baseChunkSize
+operator|+
+literal|16
+argument_list|)
+expr_stmt|;
+block|}
+DECL|method|performTestCoding (int chunkSize)
+specifier|private
+name|void
+name|performTestCoding
+parameter_list|(
+name|int
+name|chunkSize
+parameter_list|)
+block|{
+name|setChunkSize
+argument_list|(
+name|chunkSize
+argument_list|)
+expr_stmt|;
 comment|// Generate data and encode
 name|ECBlockGroup
 name|blockGroup
@@ -571,7 +606,8 @@ name|numDataUnits
 argument_list|,
 name|numParityUnits
 argument_list|,
-name|chunkSize
+name|getChunkSize
+argument_list|()
 argument_list|)
 expr_stmt|;
 name|encoder
@@ -663,7 +699,8 @@ name|numDataUnits
 argument_list|,
 name|numParityUnits
 argument_list|,
-name|chunkSize
+name|getChunkSize
+argument_list|()
 argument_list|)
 expr_stmt|;
 name|decoder
@@ -972,7 +1009,6 @@ block|}
 comment|/**    * Clone blocks with data copied along with, avoiding affecting the original    * blocks.    * @param blocks    * @return    */
 DECL|method|cloneBlocksWithData (TestBlock[] blocks)
 specifier|protected
-specifier|static
 name|TestBlock
 index|[]
 name|cloneBlocksWithData
@@ -1032,7 +1068,6 @@ block|}
 comment|/**    * Clone exactly a block, avoiding affecting the original block.    * @param block    * @return a new block    */
 DECL|method|cloneBlockWithData (TestBlock block)
 specifier|protected
-specifier|static
 name|TestBlock
 name|cloneBlockWithData
 parameter_list|(
