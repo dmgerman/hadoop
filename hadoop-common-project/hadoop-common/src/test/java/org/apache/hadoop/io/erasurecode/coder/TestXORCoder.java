@@ -97,10 +97,10 @@ expr_stmt|;
 block|}
 annotation|@
 name|Test
-DECL|method|testCodingNoDirectBuffer_erasing_d0 ()
+DECL|method|testCodingNoDirectBuffer_erasing_p0 ()
 specifier|public
 name|void
-name|testCodingNoDirectBuffer_erasing_d0
+name|testCodingNoDirectBuffer_erasing_p0
 parameter_list|()
 block|{
 name|prepare
@@ -110,6 +110,12 @@ argument_list|,
 literal|10
 argument_list|,
 literal|1
+argument_list|,
+operator|new
+name|int
+index|[
+literal|0
+index|]
 argument_list|,
 operator|new
 name|int
@@ -153,6 +159,12 @@ index|[]
 block|{
 literal|5
 block|}
+argument_list|,
+operator|new
+name|int
+index|[
+literal|0
+index|]
 argument_list|)
 expr_stmt|;
 comment|/**      * Doing in mixed buffer usage model to test if the coders can be repeatedly      * reused with different buffer usage model. This matters as the underlying      * coding buffers are shared, which may have bugs.      */

@@ -119,13 +119,26 @@ literal|16
 operator|*
 literal|1024
 decl_stmt|;
-comment|// Indexes of erased data units. Will also support test of erasing
-comment|// parity units
+comment|// Indexes of erased data units.
 DECL|field|erasedDataIndexes
 specifier|protected
 name|int
 index|[]
 name|erasedDataIndexes
+init|=
+operator|new
+name|int
+index|[]
+block|{
+literal|0
+block|}
+decl_stmt|;
+comment|// Indexes of erased parity units.
+DECL|field|erasedParityIndexes
+specifier|protected
+name|int
+index|[]
+name|erasedParityIndexes
 init|=
 operator|new
 name|int
@@ -144,7 +157,7 @@ init|=
 literal|true
 decl_stmt|;
 comment|/**    * Prepare before running the case.    * @param numDataUnits    * @param numParityUnits    * @param erasedDataIndexes    */
-DECL|method|prepare (Configuration conf, int numDataUnits, int numParityUnits, int[] erasedDataIndexes)
+DECL|method|prepare (Configuration conf, int numDataUnits, int numParityUnits, int[] erasedDataIndexes, int[] erasedParityIndexes)
 specifier|protected
 name|void
 name|prepare
@@ -161,6 +174,10 @@ parameter_list|,
 name|int
 index|[]
 name|erasedDataIndexes
+parameter_list|,
+name|int
+index|[]
+name|erasedParityIndexes
 parameter_list|)
 block|{
 name|this
@@ -190,6 +207,23 @@ operator|!=
 literal|null
 condition|?
 name|erasedDataIndexes
+else|:
+operator|new
+name|int
+index|[]
+block|{
+literal|0
+block|}
+expr_stmt|;
+name|this
+operator|.
+name|erasedParityIndexes
+operator|=
+name|erasedParityIndexes
+operator|!=
+literal|null
+condition|?
+name|erasedParityIndexes
 else|:
 operator|new
 name|int
@@ -286,6 +320,10 @@ init|=
 operator|new
 name|int
 index|[
+name|erasedParityIndexes
+operator|.
+name|length
+operator|+
 name|erasedDataIndexes
 operator|.
 name|length
@@ -296,6 +334,35 @@ name|idx
 init|=
 literal|0
 decl_stmt|;
+for|for
+control|(
+name|int
+name|i
+init|=
+literal|0
+init|;
+name|i
+operator|<
+name|erasedParityIndexes
+operator|.
+name|length
+condition|;
+name|i
+operator|++
+control|)
+block|{
+name|erasedIndexesForDecoding
+index|[
+name|idx
+operator|++
+index|]
+operator|=
+name|erasedParityIndexes
+index|[
+name|i
+index|]
+expr_stmt|;
+block|}
 for|for
 control|(
 name|int
@@ -422,8 +489,8 @@ return|return
 name|inputChunks
 return|;
 block|}
-comment|/**    * Erase chunks to test the recovering of them. Before erasure clone them    * first so could return them.    * @param dataChunks    * @return clone of erased chunks    */
-DECL|method|backupAndEraseChunks (ECChunk[] dataChunks)
+comment|/**    * Erase chunks to test the recovering of them. Before erasure clone them    * first so could return them.    * @param dataChunks    * @param parityChunks    * @return clone of erased chunks    */
+DECL|method|backupAndEraseChunks (ECChunk[] dataChunks, ECChunk[] parityChunks)
 specifier|protected
 name|ECChunk
 index|[]
@@ -432,6 +499,10 @@ parameter_list|(
 name|ECChunk
 index|[]
 name|dataChunks
+parameter_list|,
+name|ECChunk
+index|[]
+name|parityChunks
 parameter_list|)
 block|{
 name|ECChunk
@@ -441,6 +512,10 @@ init|=
 operator|new
 name|ECChunk
 index|[
+name|erasedParityIndexes
+operator|.
+name|length
+operator|+
 name|erasedDataIndexes
 operator|.
 name|length
@@ -451,6 +526,53 @@ name|idx
 init|=
 literal|0
 decl_stmt|;
+name|ECChunk
+name|chunk
+decl_stmt|;
+for|for
+control|(
+name|int
+name|i
+init|=
+literal|0
+init|;
+name|i
+operator|<
+name|erasedParityIndexes
+operator|.
+name|length
+condition|;
+name|i
+operator|++
+control|)
+block|{
+name|chunk
+operator|=
+name|parityChunks
+index|[
+name|erasedParityIndexes
+index|[
+name|i
+index|]
+index|]
+expr_stmt|;
+name|toEraseChunks
+index|[
+name|idx
+operator|++
+index|]
+operator|=
+name|cloneChunkWithData
+argument_list|(
+name|chunk
+argument_list|)
+expr_stmt|;
+name|eraseDataFromChunk
+argument_list|(
+name|chunk
+argument_list|)
+expr_stmt|;
+block|}
 for|for
 control|(
 name|int
@@ -468,9 +590,8 @@ name|i
 operator|++
 control|)
 block|{
-name|ECChunk
 name|chunk
-init|=
+operator|=
 name|dataChunks
 index|[
 name|erasedDataIndexes
@@ -478,7 +599,7 @@ index|[
 name|i
 index|]
 index|]
-decl_stmt|;
+expr_stmt|;
 name|toEraseChunks
 index|[
 name|idx
@@ -981,6 +1102,10 @@ operator|new
 name|ECChunk
 index|[
 name|erasedDataIndexes
+operator|.
+name|length
+operator|+
+name|erasedParityIndexes
 operator|.
 name|length
 index|]

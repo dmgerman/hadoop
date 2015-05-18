@@ -157,6 +157,8 @@ init|=
 name|backupAndEraseChunks
 argument_list|(
 name|clonedDataChunks
+argument_list|,
+name|parityChunks
 argument_list|)
 decl_stmt|;
 comment|// Decode

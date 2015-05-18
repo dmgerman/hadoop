@@ -79,10 +79,10 @@ expr_stmt|;
 block|}
 annotation|@
 name|Test
-DECL|method|testCodingNoDirectBuffer_10x4_erasing_d0 ()
+DECL|method|testCodingNoDirectBuffer_10x4_erasing_d0_p0 ()
 specifier|public
 name|void
-name|testCodingNoDirectBuffer_10x4_erasing_d0
+name|testCodingNoDirectBuffer_10x4_erasing_d0_p0
 parameter_list|()
 block|{
 name|prepare
@@ -92,6 +92,13 @@ argument_list|,
 literal|10
 argument_list|,
 literal|4
+argument_list|,
+operator|new
+name|int
+index|[]
+block|{
+literal|0
+block|}
 argument_list|,
 operator|new
 name|int
@@ -110,6 +117,46 @@ expr_stmt|;
 name|testCoding
 argument_list|(
 literal|false
+argument_list|)
+expr_stmt|;
+block|}
+annotation|@
+name|Test
+DECL|method|testCodingDirectBuffer_10x4_erasing_p1 ()
+specifier|public
+name|void
+name|testCodingDirectBuffer_10x4_erasing_p1
+parameter_list|()
+block|{
+name|prepare
+argument_list|(
+literal|null
+argument_list|,
+literal|10
+argument_list|,
+literal|4
+argument_list|,
+operator|new
+name|int
+index|[]
+block|{}
+argument_list|,
+operator|new
+name|int
+index|[]
+block|{
+literal|1
+block|}
+argument_list|)
+expr_stmt|;
+name|testCoding
+argument_list|(
+literal|true
+argument_list|)
+expr_stmt|;
+name|testCoding
+argument_list|(
+literal|true
 argument_list|)
 expr_stmt|;
 block|}
@@ -135,6 +182,11 @@ index|[]
 block|{
 literal|2
 block|}
+argument_list|,
+operator|new
+name|int
+index|[]
+block|{}
 argument_list|)
 expr_stmt|;
 name|testCoding
@@ -150,10 +202,10 @@ expr_stmt|;
 block|}
 annotation|@
 name|Test
-DECL|method|testCodingDirectBuffer_10x4_erasing_d0 ()
+DECL|method|testCodingDirectBuffer_10x4_erasing_d0_p0 ()
 specifier|public
 name|void
-name|testCodingDirectBuffer_10x4_erasing_d0
+name|testCodingDirectBuffer_10x4_erasing_d0_p0
 parameter_list|()
 block|{
 name|prepare
@@ -163,6 +215,13 @@ argument_list|,
 literal|10
 argument_list|,
 literal|4
+argument_list|,
+operator|new
+name|int
+index|[]
+block|{
+literal|0
+block|}
 argument_list|,
 operator|new
 name|int
@@ -185,10 +244,10 @@ expr_stmt|;
 block|}
 annotation|@
 name|Test
-DECL|method|testCodingBothBuffers_10x4_erasing_d0 ()
+DECL|method|testCodingBothBuffers_10x4_erasing_d0_p0 ()
 specifier|public
 name|void
-name|testCodingBothBuffers_10x4_erasing_d0
+name|testCodingBothBuffers_10x4_erasing_d0_p0
 parameter_list|()
 block|{
 name|prepare
@@ -198,6 +257,13 @@ argument_list|,
 literal|10
 argument_list|,
 literal|4
+argument_list|,
+operator|new
+name|int
+index|[]
+block|{
+literal|0
+block|}
 argument_list|,
 operator|new
 name|int
@@ -231,10 +297,10 @@ expr_stmt|;
 block|}
 annotation|@
 name|Test
-DECL|method|testCodingDirectBuffer_10x4_erasure_of_d2_d4 ()
+DECL|method|testCodingDirectBuffer_10x4_erasure_of_d2_d4_p0 ()
 specifier|public
 name|void
-name|testCodingDirectBuffer_10x4_erasure_of_d2_d4
+name|testCodingDirectBuffer_10x4_erasure_of_d2_d4_p0
 parameter_list|()
 block|{
 name|prepare
@@ -253,6 +319,13 @@ literal|2
 block|,
 literal|4
 block|}
+argument_list|,
+operator|new
+name|int
+index|[]
+block|{
+literal|0
+block|}
 argument_list|)
 expr_stmt|;
 name|testCoding
@@ -263,10 +336,10 @@ expr_stmt|;
 block|}
 annotation|@
 name|Test
-DECL|method|testCodingDirectBuffer_10x4_erasing_d0_d1 ()
+DECL|method|testCodingDirectBuffer_10x4_erasing_d0_d1_p0_p1 ()
 specifier|public
 name|void
-name|testCodingDirectBuffer_10x4_erasing_d0_d1
+name|testCodingDirectBuffer_10x4_erasing_d0_d1_p0_p1
 parameter_list|()
 block|{
 name|prepare
@@ -276,6 +349,15 @@ argument_list|,
 literal|10
 argument_list|,
 literal|4
+argument_list|,
+operator|new
+name|int
+index|[]
+block|{
+literal|0
+block|,
+literal|1
+block|}
 argument_list|,
 operator|new
 name|int
@@ -295,10 +377,10 @@ expr_stmt|;
 block|}
 annotation|@
 name|Test
-DECL|method|testCodingNoDirectBuffer_3x3_erasing_d0 ()
+DECL|method|testCodingNoDirectBuffer_3x3_erasing_d0_p0 ()
 specifier|public
 name|void
-name|testCodingNoDirectBuffer_3x3_erasing_d0
+name|testCodingNoDirectBuffer_3x3_erasing_d0_p0
 parameter_list|()
 block|{
 name|prepare
@@ -308,6 +390,13 @@ argument_list|,
 literal|3
 argument_list|,
 literal|3
+argument_list|,
+operator|new
+name|int
+index|[]
+block|{
+literal|0
+block|}
 argument_list|,
 operator|new
 name|int
@@ -325,10 +414,10 @@ expr_stmt|;
 block|}
 annotation|@
 name|Test
-DECL|method|testCodingDirectBuffer_3x3_erasing_d0 ()
+DECL|method|testCodingDirectBuffer_3x3_erasing_d0_p0 ()
 specifier|public
 name|void
-name|testCodingDirectBuffer_3x3_erasing_d0
+name|testCodingDirectBuffer_3x3_erasing_d0_p0
 parameter_list|()
 block|{
 name|prepare
@@ -338,6 +427,13 @@ argument_list|,
 literal|3
 argument_list|,
 literal|3
+argument_list|,
+operator|new
+name|int
+index|[]
+block|{
+literal|0
+block|}
 argument_list|,
 operator|new
 name|int
