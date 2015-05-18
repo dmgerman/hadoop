@@ -769,6 +769,8 @@ comment|/**  * A Map-reduce program to recursively copy directories between  * d
 end_comment
 
 begin_class
+annotation|@
+name|Deprecated
 DECL|class|DistCpV1
 specifier|public
 class|class

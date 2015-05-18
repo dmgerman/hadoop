@@ -267,6 +267,11 @@ argument_list|)
 decl_stmt|;
 annotation|@
 name|Test
+annotation|@
+name|SuppressWarnings
+argument_list|(
+literal|"deprecation"
+argument_list|)
 DECL|method|testLogalyzer ()
 specifier|public
 name|void

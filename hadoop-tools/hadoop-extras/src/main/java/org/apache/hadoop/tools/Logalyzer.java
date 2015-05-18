@@ -427,6 +427,8 @@ comment|/**  * Logalyzer: A utility tool for archiving and analyzing hadoop logs
 end_comment
 
 begin_class
+annotation|@
+name|Deprecated
 DECL|class|Logalyzer
 specifier|public
 class|class
@@ -1083,6 +1085,11 @@ expr_stmt|;
 block|}
 block|}
 comment|/**    * doArchive: Workhorse function to archive log-files.    * @param logListURI : The uri which will serve list of log-files to archive.    * @param archiveDirectory : The directory to store archived logfiles.    * @throws IOException    */
+annotation|@
+name|SuppressWarnings
+argument_list|(
+literal|"deprecation"
+argument_list|)
 specifier|public
 name|void
 DECL|method|doArchive (String logListURI, String archiveDirectory)

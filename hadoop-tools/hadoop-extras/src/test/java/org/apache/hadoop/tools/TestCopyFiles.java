@@ -409,6 +409,11 @@ comment|/**  * A JUnit test for copying files recursively.  */
 end_comment
 
 begin_class
+annotation|@
+name|SuppressWarnings
+argument_list|(
+literal|"deprecation"
+argument_list|)
 DECL|class|TestCopyFiles
 specifier|public
 class|class
@@ -1891,6 +1896,11 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|/** copy files from local file system to local file system */
+annotation|@
+name|SuppressWarnings
+argument_list|(
+literal|"deprecation"
+argument_list|)
 DECL|method|testCopyFromLocalToLocal ()
 specifier|public
 name|void
@@ -1997,6 +2007,11 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|/** copy files from dfs file system to dfs file system */
+annotation|@
+name|SuppressWarnings
+argument_list|(
+literal|"deprecation"
+argument_list|)
 DECL|method|testCopyFromDfsToDfs ()
 specifier|public
 name|void
@@ -2211,6 +2226,11 @@ block|}
 block|}
 block|}
 comment|/** copy empty directory on dfs file system */
+annotation|@
+name|SuppressWarnings
+argument_list|(
+literal|"deprecation"
+argument_list|)
 DECL|method|testEmptyDir ()
 specifier|public
 name|void
@@ -2424,6 +2444,11 @@ block|}
 block|}
 block|}
 comment|/** copy files from local file system to dfs file system */
+annotation|@
+name|SuppressWarnings
+argument_list|(
+literal|"deprecation"
+argument_list|)
 DECL|method|testCopyFromLocalToDfs ()
 specifier|public
 name|void
@@ -2620,6 +2645,11 @@ block|}
 block|}
 block|}
 comment|/** copy files from dfs file system to local file system */
+annotation|@
+name|SuppressWarnings
+argument_list|(
+literal|"deprecation"
+argument_list|)
 DECL|method|testCopyFromDfsToLocal ()
 specifier|public
 name|void
@@ -2821,6 +2851,11 @@ expr_stmt|;
 block|}
 block|}
 block|}
+annotation|@
+name|SuppressWarnings
+argument_list|(
+literal|"deprecation"
+argument_list|)
 DECL|method|testCopyDfsToDfsUpdateOverwrite ()
 specifier|public
 name|void
@@ -3214,6 +3249,11 @@ expr_stmt|;
 block|}
 block|}
 block|}
+annotation|@
+name|SuppressWarnings
+argument_list|(
+literal|"deprecation"
+argument_list|)
 DECL|method|testCopyDfsToDfsUpdateWithSkipCRC ()
 specifier|public
 name|void
@@ -3611,6 +3651,11 @@ expr_stmt|;
 block|}
 block|}
 block|}
+annotation|@
+name|SuppressWarnings
+argument_list|(
+literal|"deprecation"
+argument_list|)
 DECL|method|testCopyDuplication ()
 specifier|public
 name|void
@@ -3772,6 +3817,11 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
+annotation|@
+name|SuppressWarnings
+argument_list|(
+literal|"deprecation"
+argument_list|)
 DECL|method|testCopySingleFile ()
 specifier|public
 name|void
@@ -4235,6 +4285,11 @@ expr_stmt|;
 block|}
 block|}
 comment|/** tests basedir option copying files from dfs file system to dfs file system */
+annotation|@
+name|SuppressWarnings
+argument_list|(
+literal|"deprecation"
+argument_list|)
 DECL|method|testBasedir ()
 specifier|public
 name|void
@@ -4409,6 +4464,11 @@ expr_stmt|;
 block|}
 block|}
 block|}
+annotation|@
+name|SuppressWarnings
+argument_list|(
+literal|"deprecation"
+argument_list|)
 DECL|method|testPreserveOption ()
 specifier|public
 name|void
@@ -5284,6 +5344,11 @@ expr_stmt|;
 block|}
 block|}
 block|}
+annotation|@
+name|SuppressWarnings
+argument_list|(
+literal|"deprecation"
+argument_list|)
 DECL|method|testMapCount ()
 specifier|public
 name|void
@@ -5643,6 +5708,11 @@ expr_stmt|;
 block|}
 block|}
 block|}
+annotation|@
+name|SuppressWarnings
+argument_list|(
+literal|"deprecation"
+argument_list|)
 DECL|method|testLimits ()
 specifier|public
 name|void
@@ -6481,6 +6551,11 @@ name|home
 return|;
 block|}
 comment|/** test -delete */
+annotation|@
+name|SuppressWarnings
+argument_list|(
+literal|"deprecation"
+argument_list|)
 DECL|method|testDelete ()
 specifier|public
 name|void
@@ -6922,6 +6997,11 @@ block|}
 block|}
 block|}
 comment|/**    * verify that -delete option works for other {@link FileSystem}    * implementations. See MAPREDUCE-1285 */
+annotation|@
+name|SuppressWarnings
+argument_list|(
+literal|"deprecation"
+argument_list|)
 DECL|method|testDeleteLocal ()
 specifier|public
 name|void
@@ -7142,6 +7222,11 @@ block|}
 block|}
 block|}
 comment|/** test globbing  */
+annotation|@
+name|SuppressWarnings
+argument_list|(
+literal|"deprecation"
+argument_list|)
 DECL|method|testGlobbing ()
 specifier|public
 name|void
