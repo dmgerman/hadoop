@@ -5741,7 +5741,7 @@ name|outStr
 operator|.
 name|contains
 argument_list|(
-literal|"DFSConfigKeys.DFS_NAMENODE_REPLICATION_MIN_KEY:\t2"
+literal|"dfs.namenode.replication.min:\t2"
 argument_list|)
 argument_list|)
 expr_stmt|;
@@ -7387,11 +7387,6 @@ name|out
 argument_list|,
 name|NUM_REPLICAS
 argument_list|,
-operator|(
-name|short
-operator|)
-literal|1
-argument_list|,
 name|remoteAddress
 argument_list|)
 decl_stmt|;
@@ -7803,8 +7798,6 @@ name|out
 argument_list|,
 name|NUM_DN
 argument_list|,
-name|REPL_FACTOR
-argument_list|,
 name|remoteAddress
 argument_list|)
 decl_stmt|;
@@ -8102,11 +8095,6 @@ argument_list|,
 name|out
 argument_list|,
 name|NUM_REPLICAS
-argument_list|,
-operator|(
-name|short
-operator|)
-literal|1
 argument_list|,
 name|remoteAddress
 argument_list|)

@@ -1052,12 +1052,6 @@ specifier|final
 name|int
 name|totalDatanodes
 decl_stmt|;
-DECL|field|minReplication
-specifier|private
-specifier|final
-name|short
-name|minReplication
-decl_stmt|;
 DECL|field|remoteAddress
 specifier|private
 specifier|final
@@ -1242,8 +1236,8 @@ name|storageTypeSummary
 init|=
 literal|null
 decl_stmt|;
-comment|/**    * Filesystem checker.    * @param conf configuration (namenode config)    * @param namenode namenode that this fsck is going to use    * @param pmap key=value[] map passed to the http servlet as url parameters    * @param out output stream to write the fsck output    * @param totalDatanodes number of live datanodes    * @param minReplication minimum replication    * @param remoteAddress source address of the fsck request    */
-DECL|method|NamenodeFsck (Configuration conf, NameNode namenode, NetworkTopology networktopology, Map<String,String[]> pmap, PrintWriter out, int totalDatanodes, short minReplication, InetAddress remoteAddress)
+comment|/**    * Filesystem checker.    * @param conf configuration (namenode config)    * @param namenode namenode that this fsck is going to use    * @param pmap key=value[] map passed to the http servlet as url parameters    * @param out output stream to write the fsck output    * @param totalDatanodes number of live datanodes    * @param remoteAddress source address of the fsck request    */
+DECL|method|NamenodeFsck (Configuration conf, NameNode namenode, NetworkTopology networktopology, Map<String,String[]> pmap, PrintWriter out, int totalDatanodes, InetAddress remoteAddress)
 name|NamenodeFsck
 parameter_list|(
 name|Configuration
@@ -1269,9 +1263,6 @@ name|out
 parameter_list|,
 name|int
 name|totalDatanodes
-parameter_list|,
-name|short
-name|minReplication
 parameter_list|,
 name|InetAddress
 name|remoteAddress
@@ -1306,12 +1297,6 @@ operator|.
 name|totalDatanodes
 operator|=
 name|totalDatanodes
-expr_stmt|;
-name|this
-operator|.
-name|minReplication
-operator|=
-name|minReplication
 expr_stmt|;
 name|this
 operator|.
@@ -3641,6 +3626,8 @@ if|if
 condition|(
 name|totalReplicasPerBlock
 operator|<
+name|res
+operator|.
 name|minReplication
 condition|)
 block|{
@@ -3740,6 +3727,8 @@ if|if
 condition|(
 name|totalReplicasPerBlock
 operator|>=
+name|res
+operator|.
 name|minReplication
 condition|)
 name|res
@@ -3824,7 +3813,7 @@ literal|" decommissioning replica(s)."
 argument_list|)
 expr_stmt|;
 block|}
-comment|// count mis replicated blocks block
+comment|// count mis replicated blocks
 name|BlockPlacementStatus
 name|blockPlacementStatus
 init|=
@@ -6503,7 +6492,11 @@ argument_list|)
 operator|.
 name|append
 argument_list|(
-literal|"DFSConfigKeys.DFS_NAMENODE_REPLICATION_MIN_KEY:\t"
+name|DFSConfigKeys
+operator|.
+name|DFS_NAMENODE_REPLICATION_MIN_KEY
+operator|+
+literal|":\t"
 argument_list|)
 operator|.
 name|append

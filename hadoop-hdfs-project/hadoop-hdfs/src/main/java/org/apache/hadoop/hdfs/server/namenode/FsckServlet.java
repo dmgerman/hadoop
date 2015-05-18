@@ -381,10 +381,6 @@ name|out
 argument_list|,
 name|totalDatanodes
 argument_list|,
-name|bm
-operator|.
-name|minReplication
-argument_list|,
 name|remoteAddress
 argument_list|)
 operator|.
