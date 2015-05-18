@@ -428,16 +428,6 @@ name|IO_ERASURECODE_CODECS_KEY
 init|=
 literal|"io.erasurecode.codecs"
 decl_stmt|;
-comment|/** Use XOR raw coder when possible for the RS codec */
-DECL|field|IO_ERASURECODE_CODEC_RS_USEXOR_KEY
-specifier|public
-specifier|static
-specifier|final
-name|String
-name|IO_ERASURECODE_CODEC_RS_USEXOR_KEY
-init|=
-literal|"io.erasurecode.codec.rs.usexor"
-decl_stmt|;
 comment|/** Raw coder factory for the RS codec */
 DECL|field|IO_ERASURECODE_CODEC_RS_RAWCODER_KEY
 specifier|public

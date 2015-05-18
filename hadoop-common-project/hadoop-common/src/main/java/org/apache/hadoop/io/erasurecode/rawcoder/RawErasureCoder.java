@@ -83,11 +83,11 @@ name|int
 name|getChunkSize
 parameter_list|()
 function_decl|;
-comment|/**    * Tell if native or off-heap buffer is preferred or not. It's for callers to    * decide how to allocate coding chunk buffers, either on heap or off heap.    * It will return false by default.    * @return true if native buffer is preferred for performance consideration,    * otherwise false.    */
-DECL|method|preferNativeBuffer ()
+comment|/**    * Tell if direct buffer is preferred or not. It's for callers to    * decide how to allocate coding chunk buffers, using DirectByteBuffer or    * bytes array. It will return false by default.    * @return true if native buffer is preferred for performance consideration,    * otherwise false.    */
+DECL|method|preferDirectBuffer ()
 specifier|public
 name|boolean
-name|preferNativeBuffer
+name|preferDirectBuffer
 parameter_list|()
 function_decl|;
 comment|/**    * Should be called when release this coder. Good chance to release encoding    * or decoding buffers    */

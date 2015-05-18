@@ -153,13 +153,13 @@ name|buffers
 return|;
 block|}
 comment|/**    * Convert an array of this chunks to an array of byte array.    * Note the chunk buffers are not affected.    * @param chunks    * @return an array of byte array    */
-DECL|method|toArray (ECChunk[] chunks)
+DECL|method|toArrays (ECChunk[] chunks)
 specifier|public
 specifier|static
 name|byte
 index|[]
 index|[]
-name|toArray
+name|toArrays
 parameter_list|(
 name|ECChunk
 index|[]

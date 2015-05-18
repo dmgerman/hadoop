@@ -335,13 +335,6 @@ name|e
 argument_list|)
 throw|;
 block|}
-if|if
-condition|(
-name|fact
-operator|!=
-literal|null
-condition|)
-block|{
 return|return
 name|isEncoder
 condition|?
@@ -354,10 +347,6 @@ name|fact
 operator|.
 name|createDecoder
 argument_list|()
-return|;
-block|}
-return|return
-literal|null
 return|;
 block|}
 annotation|@

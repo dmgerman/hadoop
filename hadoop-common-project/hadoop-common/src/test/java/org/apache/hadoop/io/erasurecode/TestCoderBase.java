@@ -234,7 +234,7 @@ name|erased
 init|=
 name|ECChunk
 operator|.
-name|toArray
+name|toArrays
 argument_list|(
 name|erasedChunks
 argument_list|)
@@ -246,7 +246,7 @@ name|recovered
 init|=
 name|ECChunk
 operator|.
-name|toArray
+name|toArrays
 argument_list|(
 name|recoveredChunks
 argument_list|)
