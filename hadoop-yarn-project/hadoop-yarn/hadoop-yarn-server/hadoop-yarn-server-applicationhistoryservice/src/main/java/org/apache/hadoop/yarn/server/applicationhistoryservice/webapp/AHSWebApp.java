@@ -312,6 +312,17 @@ argument_list|)
 expr_stmt|;
 name|route
 argument_list|(
+literal|"/about"
+argument_list|,
+name|AHSController
+operator|.
+name|class
+argument_list|,
+literal|"about"
+argument_list|)
+expr_stmt|;
+name|route
+argument_list|(
 name|pajoin
 argument_list|(
 literal|"/apps"
