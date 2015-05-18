@@ -3394,9 +3394,7 @@ name|BlockInfoStripedUnderConstruction
 argument_list|(
 name|block
 argument_list|,
-name|numDataUnits
-argument_list|,
-name|numParityUnits
+name|ecSchema
 argument_list|,
 name|HdfsServerConstants
 operator|.

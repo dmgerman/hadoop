@@ -820,6 +820,22 @@ name|ByteString
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|io
+operator|.
+name|erasurecode
+operator|.
+name|ECSchema
+import|;
+end_import
+
 begin_class
 annotation|@
 name|InterfaceAudience
@@ -2809,6 +2825,15 @@ name|hasStripedBlocks
 argument_list|()
 condition|)
 block|{
+comment|// TODO: HDFS-7859
+name|ECSchema
+name|schema
+init|=
+name|ErasureCodingSchemaManager
+operator|.
+name|getSystemDefaultSchema
+argument_list|()
+decl_stmt|;
 name|StripedBlocksFeature
 name|sb
 init|=
@@ -2844,6 +2869,8 @@ operator|.
 name|convert
 argument_list|(
 name|sp
+argument_list|,
+name|schema
 argument_list|)
 argument_list|)
 expr_stmt|;
@@ -2927,12 +2954,7 @@ name|striped
 argument_list|,
 name|striped
 operator|.
-name|getDataBlockNum
-argument_list|()
-argument_list|,
-name|striped
-operator|.
-name|getParityBlockNum
+name|getSchema
 argument_list|()
 argument_list|)
 expr_stmt|;

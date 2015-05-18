@@ -96,6 +96,22 @@ end_import
 
 begin_import
 import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|io
+operator|.
+name|erasurecode
+operator|.
+name|ECSchema
+import|;
+end_import
+
+begin_import
+import|import
 name|java
 operator|.
 name|io
@@ -192,27 +208,22 @@ init|=
 literal|0
 decl_stmt|;
 comment|/**    * Constructor with null storage targets.    */
-DECL|method|BlockInfoStripedUnderConstruction (Block blk, short dataBlockNum, short parityBlockNum)
+DECL|method|BlockInfoStripedUnderConstruction (Block blk, ECSchema schema)
 specifier|public
 name|BlockInfoStripedUnderConstruction
 parameter_list|(
 name|Block
 name|blk
 parameter_list|,
-name|short
-name|dataBlockNum
-parameter_list|,
-name|short
-name|parityBlockNum
+name|ECSchema
+name|schema
 parameter_list|)
 block|{
 name|this
 argument_list|(
 name|blk
 argument_list|,
-name|dataBlockNum
-argument_list|,
-name|parityBlockNum
+name|schema
 argument_list|,
 name|UNDER_CONSTRUCTION
 argument_list|,
@@ -221,18 +232,15 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|/**    * Create a striped block that is currently being constructed.    */
-DECL|method|BlockInfoStripedUnderConstruction (Block blk, short dataBlockNum, short parityBlockNum, BlockUCState state, DatanodeStorageInfo[] targets)
+DECL|method|BlockInfoStripedUnderConstruction (Block blk, ECSchema schema, BlockUCState state, DatanodeStorageInfo[] targets)
 specifier|public
 name|BlockInfoStripedUnderConstruction
 parameter_list|(
 name|Block
 name|blk
 parameter_list|,
-name|short
-name|dataBlockNum
-parameter_list|,
-name|short
-name|parityBlockNum
+name|ECSchema
+name|schema
 parameter_list|,
 name|BlockUCState
 name|state
@@ -246,9 +254,7 @@ name|super
 argument_list|(
 name|blk
 argument_list|,
-name|dataBlockNum
-argument_list|,
-name|parityBlockNum
+name|schema
 argument_list|)
 expr_stmt|;
 assert|assert

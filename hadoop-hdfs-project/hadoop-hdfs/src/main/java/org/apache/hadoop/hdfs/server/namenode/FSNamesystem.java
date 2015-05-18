@@ -18841,9 +18841,7 @@ name|BlockInfoStriped
 argument_list|(
 name|commitBlock
 argument_list|,
-name|numDataUnits
-argument_list|,
-name|numParityUnits
+name|ecSchema
 argument_list|)
 decl_stmt|;
 specifier|final

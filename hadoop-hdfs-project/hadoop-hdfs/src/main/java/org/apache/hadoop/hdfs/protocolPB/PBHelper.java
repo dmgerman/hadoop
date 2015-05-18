@@ -3328,6 +3328,24 @@ name|hdfs
 operator|.
 name|server
 operator|.
+name|namenode
+operator|.
+name|ErasureCodingSchemaManager
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|server
+operator|.
 name|protocol
 operator|.
 name|BalancerBandwidthCommand
@@ -5316,7 +5334,7 @@ argument_list|()
 argument_list|)
 return|;
 block|}
-DECL|method|convert (StripedBlockProto p)
+DECL|method|convert (StripedBlockProto p, ECSchema schema)
 specifier|public
 specifier|static
 name|BlockInfoStriped
@@ -5324,6 +5342,9 @@ name|convert
 parameter_list|(
 name|StripedBlockProto
 name|p
+parameter_list|,
+name|ECSchema
+name|schema
 parameter_list|)
 block|{
 return|return
@@ -5338,21 +5359,7 @@ name|getBlock
 argument_list|()
 argument_list|)
 argument_list|,
-operator|(
-name|short
-operator|)
-name|p
-operator|.
-name|getDataBlockNum
-argument_list|()
-argument_list|,
-operator|(
-name|short
-operator|)
-name|p
-operator|.
-name|getParityBlockNum
-argument_list|()
+name|schema
 argument_list|)
 return|;
 block|}

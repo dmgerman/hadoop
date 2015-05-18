@@ -1566,6 +1566,22 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|io
+operator|.
+name|erasurecode
+operator|.
+name|ECSchema
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|util
 operator|.
 name|ChunkedArrayList
@@ -3344,7 +3360,6 @@ operator|.
 name|CURRENT_STATE_ID
 argument_list|)
 expr_stmt|;
-comment|// TODO whether the file is striped should later be retrieved from iip
 name|updateBlocks
 argument_list|(
 name|fsDir
@@ -3354,6 +3369,13 @@ argument_list|,
 name|iip
 argument_list|,
 name|newFile
+argument_list|,
+name|fsDir
+operator|.
+name|getECSchema
+argument_list|(
+name|iip
+argument_list|)
 argument_list|,
 name|fsDir
 operator|.
@@ -3492,7 +3514,6 @@ operator|.
 name|CURRENT_STATE_ID
 argument_list|)
 expr_stmt|;
-comment|// TODO whether the file is striped should later be retrieved from iip
 name|updateBlocks
 argument_list|(
 name|fsDir
@@ -3502,6 +3523,13 @@ argument_list|,
 name|iip
 argument_list|,
 name|file
+argument_list|,
+name|fsDir
+operator|.
+name|getECSchema
+argument_list|(
+name|iip
+argument_list|)
 argument_list|,
 name|fsDir
 operator|.
@@ -3861,7 +3889,6 @@ name|path
 argument_list|)
 decl_stmt|;
 comment|// Update in-memory data structures
-comment|// TODO whether the file is striped should later be retrieved from iip
 name|updateBlocks
 argument_list|(
 name|fsDir
@@ -3871,6 +3898,13 @@ argument_list|,
 name|iip
 argument_list|,
 name|oldFile
+argument_list|,
+name|fsDir
+operator|.
+name|getECSchema
+argument_list|(
+name|iip
+argument_list|)
 argument_list|,
 name|fsDir
 operator|.
@@ -3990,12 +4024,18 @@ name|path
 argument_list|)
 decl_stmt|;
 comment|// add the new block to the INodeFile
-comment|// TODO whether the file is striped should later be retrieved from iip
 name|addNewBlock
 argument_list|(
 name|addBlockOp
 argument_list|,
 name|oldFile
+argument_list|,
+name|fsDir
+operator|.
+name|getECSchema
+argument_list|(
+name|iip
+argument_list|)
 argument_list|,
 name|fsDir
 operator|.
@@ -6335,7 +6375,7 @@ argument_list|()
 return|;
 block|}
 comment|/**    * Add a new block into the given INodeFile    */
-DECL|method|addNewBlock (AddBlockOp op, INodeFile file, boolean isStriped)
+DECL|method|addNewBlock (AddBlockOp op, INodeFile file, ECSchema schema, boolean isStriped)
 specifier|private
 name|void
 name|addNewBlock
@@ -6345,6 +6385,9 @@ name|op
 parameter_list|,
 name|INodeFile
 name|file
+parameter_list|,
+name|ECSchema
+name|schema
 parameter_list|,
 name|boolean
 name|isStriped
@@ -6532,13 +6575,7 @@ name|BlockInfoStripedUnderConstruction
 argument_list|(
 name|newBlock
 argument_list|,
-name|HdfsConstants
-operator|.
-name|NUM_DATA_BLOCKS
-argument_list|,
-name|HdfsConstants
-operator|.
-name|NUM_PARITY_BLOCKS
+name|schema
 argument_list|)
 expr_stmt|;
 block|}
@@ -6589,7 +6626,7 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|/**    * Update in-memory data structures with new block information.    * @throws IOException    */
-DECL|method|updateBlocks (FSDirectory fsDir, BlockListUpdatingOp op, INodesInPath iip, INodeFile file, boolean isStriped)
+DECL|method|updateBlocks (FSDirectory fsDir, BlockListUpdatingOp op, INodesInPath iip, INodeFile file, ECSchema schema, boolean isStriped)
 specifier|private
 name|void
 name|updateBlocks
@@ -6605,6 +6642,9 @@ name|iip
 parameter_list|,
 name|INodeFile
 name|file
+parameter_list|,
+name|ECSchema
+name|schema
 parameter_list|,
 name|boolean
 name|isStriped
@@ -7031,13 +7071,7 @@ name|BlockInfoStripedUnderConstruction
 argument_list|(
 name|newBlock
 argument_list|,
-name|HdfsConstants
-operator|.
-name|NUM_DATA_BLOCKS
-argument_list|,
-name|HdfsConstants
-operator|.
-name|NUM_PARITY_BLOCKS
+name|schema
 argument_list|)
 expr_stmt|;
 block|}
@@ -7064,6 +7098,7 @@ comment|// OP_CLOSE should add finalized blocks. This code path
 comment|// is only executed when loading edits written by prior
 comment|// versions of Hadoop. Current versions always log
 comment|// OP_ADD operations as each block is allocated.
+comment|// TODO: ECSchema can be restored from persisted file (HDFS-7859).
 name|newBI
 operator|=
 name|isStriped
@@ -7073,13 +7108,10 @@ name|BlockInfoStriped
 argument_list|(
 name|newBlock
 argument_list|,
-name|HdfsConstants
+name|ErasureCodingSchemaManager
 operator|.
-name|NUM_DATA_BLOCKS
-argument_list|,
-name|HdfsConstants
-operator|.
-name|NUM_PARITY_BLOCKS
+name|getSystemDefaultSchema
+argument_list|()
 argument_list|)
 else|:
 operator|new
