@@ -96,6 +96,20 @@ name|hadoop
 operator|.
 name|fs
 operator|.
+name|BlockStoragePolicySpi
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|fs
+operator|.
 name|StorageType
 import|;
 end_import
@@ -133,6 +147,8 @@ DECL|class|BlockStoragePolicy
 specifier|public
 class|class
 name|BlockStoragePolicy
+implements|implements
+name|BlockStoragePolicySpi
 block|{
 DECL|field|LOG
 specifier|public
@@ -1085,6 +1101,8 @@ return|return
 name|id
 return|;
 block|}
+annotation|@
+name|Override
 DECL|method|getName ()
 specifier|public
 name|String
@@ -1095,6 +1113,8 @@ return|return
 name|name
 return|;
 block|}
+annotation|@
+name|Override
 DECL|method|getStorageTypes ()
 specifier|public
 name|StorageType
@@ -1108,6 +1128,8 @@ operator|.
 name|storageTypes
 return|;
 block|}
+annotation|@
+name|Override
 DECL|method|getCreationFallbacks ()
 specifier|public
 name|StorageType
@@ -1121,6 +1143,8 @@ operator|.
 name|creationFallbacks
 return|;
 block|}
+annotation|@
+name|Override
 DECL|method|getReplicationFallbacks ()
 specifier|public
 name|StorageType
@@ -1179,6 +1203,8 @@ return|return
 literal|null
 return|;
 block|}
+annotation|@
+name|Override
 DECL|method|isCopyOnCreateFile ()
 specifier|public
 name|boolean

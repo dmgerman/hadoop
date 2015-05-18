@@ -72,6 +72,26 @@ name|java
 operator|.
 name|util
 operator|.
+name|Arrays
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
+name|Collection
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
 name|EnumSet
 import|;
 end_import
@@ -163,6 +183,20 @@ operator|.
 name|fs
 operator|.
 name|BlockStorageLocation
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|fs
+operator|.
+name|BlockStoragePolicySpi
 import|;
 end_import
 
@@ -3126,6 +3160,8 @@ argument_list|)
 return|;
 block|}
 comment|/**    * Set the source path to the specified storage policy.    *    * @param src The source path referring to either a directory or a file.    * @param policyName The name of the storage policy.    */
+annotation|@
+name|Override
 DECL|method|setStoragePolicy (final Path src, final String policyName)
 specifier|public
 name|void
@@ -3212,19 +3248,7 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
-if|if
-condition|(
 name|fs
-operator|instanceof
-name|DistributedFileSystem
-condition|)
-block|{
-operator|(
-operator|(
-name|DistributedFileSystem
-operator|)
-name|fs
-operator|)
 operator|.
 name|setStoragePolicy
 argument_list|(
@@ -3237,23 +3261,6 @@ return|return
 literal|null
 return|;
 block|}
-else|else
-block|{
-throw|throw
-operator|new
-name|UnsupportedOperationException
-argument_list|(
-literal|"Cannot perform setStoragePolicy on a non-DistributedFileSystem: "
-operator|+
-name|src
-operator|+
-literal|" -> "
-operator|+
-name|p
-argument_list|)
-throw|;
-block|}
-block|}
 block|}
 operator|.
 name|resolve
@@ -3264,7 +3271,34 @@ name|absF
 argument_list|)
 expr_stmt|;
 block|}
-comment|/** Get all the existing storage policies */
+annotation|@
+name|Override
+DECL|method|getAllStoragePolicies ()
+specifier|public
+name|Collection
+argument_list|<
+name|BlockStoragePolicy
+argument_list|>
+name|getAllStoragePolicies
+parameter_list|()
+throws|throws
+name|IOException
+block|{
+return|return
+name|Arrays
+operator|.
+name|asList
+argument_list|(
+name|dfs
+operator|.
+name|getStoragePolicies
+argument_list|()
+argument_list|)
+return|;
+block|}
+comment|/**    * Deprecated. Prefer {@link FileSystem#getAllStoragePolicies()}    * @return    * @throws IOException    */
+annotation|@
+name|Deprecated
 DECL|method|getStoragePolicies ()
 specifier|public
 name|BlockStoragePolicy

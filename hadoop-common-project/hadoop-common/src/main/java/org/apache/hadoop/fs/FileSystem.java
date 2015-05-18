@@ -114,6 +114,16 @@ name|java
 operator|.
 name|util
 operator|.
+name|Collection
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
 name|EnumSet
 import|;
 end_import
@@ -7463,6 +7473,65 @@ name|getSimpleName
 argument_list|()
 operator|+
 literal|" doesn't support removeXAttr"
+argument_list|)
+throw|;
+block|}
+comment|/**    * Set the storage policy for a given file or directory.    *    * @param src file or directory path.    * @param policyName the name of the target storage policy. The list    *                   of supported Storage policies can be retrieved    *                   via {@link #getAllStoragePolicies}.    * @throws IOException    */
+DECL|method|setStoragePolicy (final Path src, final String policyName)
+specifier|public
+name|void
+name|setStoragePolicy
+parameter_list|(
+specifier|final
+name|Path
+name|src
+parameter_list|,
+specifier|final
+name|String
+name|policyName
+parameter_list|)
+throws|throws
+name|IOException
+block|{
+throw|throw
+operator|new
+name|UnsupportedOperationException
+argument_list|(
+name|getClass
+argument_list|()
+operator|.
+name|getSimpleName
+argument_list|()
+operator|+
+literal|" doesn't support setStoragePolicy"
+argument_list|)
+throw|;
+block|}
+comment|/**    * Retrieve all the storage policies supported by this file system.    *    * @return all storage policies supported by this filesystem.    * @throws IOException    */
+DECL|method|getAllStoragePolicies ()
+specifier|public
+name|Collection
+argument_list|<
+name|?
+extends|extends
+name|BlockStoragePolicySpi
+argument_list|>
+name|getAllStoragePolicies
+parameter_list|()
+throws|throws
+name|IOException
+block|{
+throw|throw
+operator|new
+name|UnsupportedOperationException
+argument_list|(
+name|getClass
+argument_list|()
+operator|.
+name|getSimpleName
+argument_list|()
+operator|+
+literal|" doesn't support getAllStoragePolicies"
 argument_list|)
 throw|;
 block|}
