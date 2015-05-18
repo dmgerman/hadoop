@@ -1092,10 +1092,10 @@ name|useWindowsPath
 argument_list|)
 expr_stmt|;
 block|}
-comment|// copy to non-existent subdir
+comment|// copy to non-existent dir
 name|prepPut
 argument_list|(
-name|childPath
+name|dstPath
 argument_list|,
 literal|false
 argument_list|,
@@ -1108,7 +1108,7 @@ literal|1
 argument_list|,
 name|srcPath
 argument_list|,
-name|dstPath
+name|childPath
 argument_list|,
 name|useWindowsPath
 argument_list|)
