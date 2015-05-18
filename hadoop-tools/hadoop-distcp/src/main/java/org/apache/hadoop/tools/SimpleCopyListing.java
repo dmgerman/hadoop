@@ -382,6 +382,11 @@ name|maxRetries
 init|=
 literal|3
 decl_stmt|;
+DECL|field|copyFilter
+specifier|private
+name|CopyFilter
+name|copyFilter
+decl_stmt|;
 comment|/**    * Protected constructor, to initialize configuration.    *    * @param configuration The input configuration, with which the source/target FileSystems may be accessed.    * @param credentials - Credentials object on which the FS delegation tokens are cached. If null    * delegation token caching is skipped    */
 DECL|method|SimpleCopyListing (Configuration configuration, Credentials credentials)
 specifier|protected
@@ -416,6 +421,21 @@ name|DistCpConstants
 operator|.
 name|DEFAULT_LISTSTATUS_THREADS
 argument_list|)
+expr_stmt|;
+name|copyFilter
+operator|=
+name|CopyFilter
+operator|.
+name|getCopyFilter
+argument_list|(
+name|getConf
+argument_list|()
+argument_list|)
+expr_stmt|;
+name|copyFilter
+operator|.
+name|initialize
+argument_list|()
 expr_stmt|;
 block|}
 annotation|@
@@ -1133,8 +1153,6 @@ argument_list|,
 name|sourceCopyListingStatus
 argument_list|,
 name|sourcePathRoot
-argument_list|,
-name|options
 argument_list|)
 expr_stmt|;
 if|if
@@ -1375,21 +1393,23 @@ argument_list|()
 return|;
 block|}
 block|}
-comment|/**    * Provide an option to skip copy of a path, Allows for exclusion    * of files such as {@link org.apache.hadoop.mapreduce.lib.output.FileOutputCommitter#SUCCEEDED_FILE_NAME}    * @param path - Path being considered for copy while building the file listing    * @param options - Input options passed during DistCp invocation    * @return - True if the path should be considered for copy, false otherwise    */
-DECL|method|shouldCopy (Path path, DistCpOptions options)
+comment|/**    * Provide an option to skip copy of a path, Allows for exclusion    * of files such as {@link org.apache.hadoop.mapreduce.lib.output.FileOutputCommitter#SUCCEEDED_FILE_NAME}    * @param path - Path being considered for copy while building the file listing    * @return - True if the path should be considered for copy, false otherwise    */
+DECL|method|shouldCopy (Path path)
 specifier|protected
 name|boolean
 name|shouldCopy
 parameter_list|(
 name|Path
 name|path
-parameter_list|,
-name|DistCpOptions
-name|options
 parameter_list|)
 block|{
 return|return
-literal|true
+name|copyFilter
+operator|.
+name|shouldCopy
+argument_list|(
+name|path
+argument_list|)
 return|;
 block|}
 comment|/** {@inheritDoc} */
@@ -2126,8 +2146,6 @@ argument_list|,
 name|childCopyListingStatus
 argument_list|,
 name|sourcePathRoot
-argument_list|,
-name|options
 argument_list|)
 expr_stmt|;
 block|}
@@ -2315,12 +2333,10 @@ argument_list|,
 name|fileStatus
 argument_list|,
 name|sourcePathRoot
-argument_list|,
-name|options
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|writeToFileListing (SequenceFile.Writer fileListWriter, CopyListingFileStatus fileStatus, Path sourcePathRoot, DistCpOptions options)
+DECL|method|writeToFileListing (SequenceFile.Writer fileListWriter, CopyListingFileStatus fileStatus, Path sourcePathRoot)
 specifier|private
 name|void
 name|writeToFileListing
@@ -2335,9 +2351,6 @@ name|fileStatus
 parameter_list|,
 name|Path
 name|sourcePathRoot
-parameter_list|,
-name|DistCpOptions
-name|options
 parameter_list|)
 throws|throws
 name|IOException
@@ -2377,11 +2390,6 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
-name|FileStatus
-name|status
-init|=
-name|fileStatus
-decl_stmt|;
 if|if
 condition|(
 operator|!
@@ -2391,8 +2399,6 @@ name|fileStatus
 operator|.
 name|getPath
 argument_list|()
-argument_list|,
-name|options
 argument_list|)
 condition|)
 block|{
@@ -2418,7 +2424,7 @@ argument_list|()
 argument_list|)
 argument_list|)
 argument_list|,
-name|status
+name|fileStatus
 argument_list|)
 expr_stmt|;
 name|fileListWriter

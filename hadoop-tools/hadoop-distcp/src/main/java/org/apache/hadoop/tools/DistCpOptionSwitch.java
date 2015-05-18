@@ -465,6 +465,27 @@ argument_list|,
 literal|"Specify bandwidth per map in MB"
 argument_list|)
 argument_list|)
+block|,
+comment|/**    * Path containing a list of strings, which when found in the path of    * a file to be copied excludes that file from the copy job.    */
+DECL|enumConstant|FILTERS
+name|FILTERS
+argument_list|(
+name|DistCpConstants
+operator|.
+name|CONF_LABEL_FILTERS_FILE
+argument_list|,
+operator|new
+name|Option
+argument_list|(
+literal|"filters"
+argument_list|,
+literal|true
+argument_list|,
+literal|"The path to a file containing a list of"
+operator|+
+literal|" strings for paths to be excluded from the copy."
+argument_list|)
+argument_list|)
 block|;
 DECL|field|PRESERVE_STATUS_DEFAULT
 specifier|public

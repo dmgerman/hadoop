@@ -282,6 +282,12 @@ specifier|private
 name|Path
 name|targetPath
 decl_stmt|;
+comment|/**    * The path to a file containing a list of paths to filter out of the copy.    */
+DECL|field|filtersFile
+specifier|private
+name|String
+name|filtersFile
+decl_stmt|;
 comment|// targetPathExist is a derived field, it's initialized in the
 comment|// beginning of distcp.
 DECL|field|targetPathExists
@@ -651,6 +657,15 @@ operator|=
 name|that
 operator|.
 name|getTargetPathExists
+argument_list|()
+expr_stmt|;
+name|this
+operator|.
+name|filtersFile
+operator|=
+name|that
+operator|.
+name|getFiltersFile
 argument_list|()
 expr_stmt|;
 block|}
@@ -1466,6 +1481,36 @@ operator|=
 name|targetPathExists
 return|;
 block|}
+comment|/**    * File path that contains the list of patterns    * for paths to be filtered from the file copy.    * @return - Filter  file path.    */
+DECL|method|getFiltersFile ()
+specifier|public
+specifier|final
+name|String
+name|getFiltersFile
+parameter_list|()
+block|{
+return|return
+name|filtersFile
+return|;
+block|}
+comment|/**    * Set filtersFile.    * @param filtersFilename The path to a list of patterns to exclude from copy.    */
+DECL|method|setFiltersFile (String filtersFilename)
+specifier|public
+specifier|final
+name|void
+name|setFiltersFile
+parameter_list|(
+name|String
+name|filtersFilename
+parameter_list|)
+block|{
+name|this
+operator|.
+name|filtersFile
+operator|=
+name|filtersFilename
+expr_stmt|;
+block|}
 DECL|method|validate (DistCpOptionSwitch option, boolean value)
 specifier|public
 name|void
@@ -1912,6 +1957,27 @@ name|preserveStatus
 argument_list|)
 argument_list|)
 expr_stmt|;
+if|if
+condition|(
+name|filtersFile
+operator|!=
+literal|null
+condition|)
+block|{
+name|DistCpOptionSwitch
+operator|.
+name|addToConf
+argument_list|(
+name|conf
+argument_list|,
+name|DistCpOptionSwitch
+operator|.
+name|FILTERS
+argument_list|,
+name|filtersFile
+argument_list|)
+expr_stmt|;
+block|}
 block|}
 comment|/**    * Utility to easily string-ify Options, for logging.    *    * @return String representation of the Options.    */
 annotation|@
@@ -1976,6 +2042,12 @@ operator|+
 literal|", preserveRawXattrs="
 operator|+
 name|preserveRawXattrs
+operator|+
+literal|", filtersFile='"
+operator|+
+name|filtersFile
+operator|+
+literal|'\''
 operator|+
 literal|'}'
 return|;

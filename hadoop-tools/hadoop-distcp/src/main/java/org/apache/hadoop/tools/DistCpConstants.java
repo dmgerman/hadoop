@@ -229,6 +229,15 @@ name|CONF_LABEL_BANDWIDTH_MB
 init|=
 literal|"distcp.map.bandwidth.mb"
 decl_stmt|;
+DECL|field|CONF_LABEL_FILTERS_FILE
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|CONF_LABEL_FILTERS_FILE
+init|=
+literal|"distcp.filters.file"
+decl_stmt|;
 DECL|field|CONF_LABEL_MAX_CHUNKS_TOLERABLE
 specifier|public
 specifier|static
