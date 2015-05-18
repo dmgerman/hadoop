@@ -25277,6 +25277,52 @@ name|getTotalBlocks
 argument_list|()
 return|;
 block|}
+comment|/**    * Get the number of files under construction in the system.    */
+annotation|@
+name|Metric
+argument_list|(
+block|{
+literal|"NumFilesUnderConstruction"
+block|,
+literal|"Number of files under construction"
+block|}
+argument_list|)
+DECL|method|getNumFilesUnderConstruction ()
+specifier|public
+name|long
+name|getNumFilesUnderConstruction
+parameter_list|()
+block|{
+return|return
+name|leaseManager
+operator|.
+name|countPath
+argument_list|()
+return|;
+block|}
+comment|/**    * Get the total number of active clients holding lease in the system.    */
+annotation|@
+name|Metric
+argument_list|(
+block|{
+literal|"NumActiveClients"
+block|,
+literal|"Number of active clients holding lease"
+block|}
+argument_list|)
+DECL|method|getNumActiveClients ()
+specifier|public
+name|long
+name|getNumActiveClients
+parameter_list|()
+block|{
+return|return
+name|leaseManager
+operator|.
+name|countLease
+argument_list|()
+return|;
+block|}
 comment|/**    * Get the total number of COMPLETE blocks in the system.    * For safe mode only complete blocks are counted.    */
 DECL|method|getCompleteBlocksTotal ()
 specifier|private

@@ -612,6 +612,41 @@ name|size
 argument_list|()
 return|;
 block|}
+comment|/** @return the number of paths contained in all leases */
+DECL|method|countPath ()
+specifier|synchronized
+name|int
+name|countPath
+parameter_list|()
+block|{
+name|int
+name|count
+init|=
+literal|0
+decl_stmt|;
+for|for
+control|(
+name|Lease
+name|lease
+range|:
+name|sortedLeases
+control|)
+block|{
+name|count
+operator|+=
+name|lease
+operator|.
+name|getFiles
+argument_list|()
+operator|.
+name|size
+argument_list|()
+expr_stmt|;
+block|}
+return|return
+name|count
+return|;
+block|}
 comment|/**    * Adds (or re-adds) the lease for the specified file.    */
 DECL|method|addLease (String holder, long inodeId)
 specifier|synchronized
