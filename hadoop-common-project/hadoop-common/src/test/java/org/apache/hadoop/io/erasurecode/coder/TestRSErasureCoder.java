@@ -143,10 +143,10 @@ expr_stmt|;
 block|}
 annotation|@
 name|Test
-DECL|method|testCodingNoDirectBuffer_10x4 ()
+DECL|method|testCodingNoDirectBuffer_10x4_erasing_d0 ()
 specifier|public
 name|void
-name|testCodingNoDirectBuffer_10x4
+name|testCodingNoDirectBuffer_10x4_erasing_d0
 parameter_list|()
 block|{
 name|prepare
@@ -157,7 +157,18 @@ literal|10
 argument_list|,
 literal|4
 argument_list|,
-literal|null
+operator|new
+name|int
+index|[]
+block|{
+literal|0
+block|}
+argument_list|)
+expr_stmt|;
+comment|/**      * Doing twice to test if the coders can be repeatedly reused. This matters      * as the underlying coding buffers are shared, which may have bugs.      */
+name|testCoding
+argument_list|(
+literal|false
 argument_list|)
 expr_stmt|;
 name|testCoding
@@ -168,35 +179,10 @@ expr_stmt|;
 block|}
 annotation|@
 name|Test
-DECL|method|testCodingDirectBuffer_10x4 ()
+DECL|method|testCodingDirectBufferWithConf_10x4_erasing_d0 ()
 specifier|public
 name|void
-name|testCodingDirectBuffer_10x4
-parameter_list|()
-block|{
-name|prepare
-argument_list|(
-literal|null
-argument_list|,
-literal|10
-argument_list|,
-literal|4
-argument_list|,
-literal|null
-argument_list|)
-expr_stmt|;
-name|testCoding
-argument_list|(
-literal|true
-argument_list|)
-expr_stmt|;
-block|}
-annotation|@
-name|Test
-DECL|method|testCodingDirectBufferWithConf_10x4 ()
-specifier|public
-name|void
-name|testCodingDirectBufferWithConf_10x4
+name|testCodingDirectBufferWithConf_10x4_erasing_d0
 parameter_list|()
 block|{
 comment|/**      * This tests if the two configuration items work or not.      */
@@ -242,7 +228,12 @@ literal|10
 argument_list|,
 literal|4
 argument_list|,
-literal|null
+operator|new
+name|int
+index|[]
+block|{
+literal|0
+block|}
 argument_list|)
 expr_stmt|;
 name|testCoding
@@ -253,10 +244,126 @@ expr_stmt|;
 block|}
 annotation|@
 name|Test
-DECL|method|testCodingDirectBuffer_10x4_erasure_of_2_4 ()
+DECL|method|testCodingDirectBuffer_10x4_erasing_d2 ()
 specifier|public
 name|void
-name|testCodingDirectBuffer_10x4_erasure_of_2_4
+name|testCodingDirectBuffer_10x4_erasing_d2
+parameter_list|()
+block|{
+name|prepare
+argument_list|(
+literal|null
+argument_list|,
+literal|10
+argument_list|,
+literal|4
+argument_list|,
+operator|new
+name|int
+index|[]
+block|{
+literal|2
+block|}
+argument_list|)
+expr_stmt|;
+name|testCoding
+argument_list|(
+literal|true
+argument_list|)
+expr_stmt|;
+name|testCoding
+argument_list|(
+literal|true
+argument_list|)
+expr_stmt|;
+block|}
+annotation|@
+name|Test
+DECL|method|testCodingDirectBuffer_10x4_erasing_d0 ()
+specifier|public
+name|void
+name|testCodingDirectBuffer_10x4_erasing_d0
+parameter_list|()
+block|{
+name|prepare
+argument_list|(
+literal|null
+argument_list|,
+literal|10
+argument_list|,
+literal|4
+argument_list|,
+operator|new
+name|int
+index|[]
+block|{
+literal|0
+block|}
+argument_list|)
+expr_stmt|;
+name|testCoding
+argument_list|(
+literal|true
+argument_list|)
+expr_stmt|;
+name|testCoding
+argument_list|(
+literal|true
+argument_list|)
+expr_stmt|;
+block|}
+annotation|@
+name|Test
+DECL|method|testCodingBothBuffers_10x4_erasing_d0 ()
+specifier|public
+name|void
+name|testCodingBothBuffers_10x4_erasing_d0
+parameter_list|()
+block|{
+name|prepare
+argument_list|(
+literal|null
+argument_list|,
+literal|10
+argument_list|,
+literal|4
+argument_list|,
+operator|new
+name|int
+index|[]
+block|{
+literal|0
+block|}
+argument_list|)
+expr_stmt|;
+comment|/**      * Doing in mixed buffer usage model to test if the coders can be repeatedly      * reused with different buffer usage model. This matters as the underlying      * coding buffers are shared, which may have bugs.      */
+name|testCoding
+argument_list|(
+literal|true
+argument_list|)
+expr_stmt|;
+name|testCoding
+argument_list|(
+literal|false
+argument_list|)
+expr_stmt|;
+name|testCoding
+argument_list|(
+literal|true
+argument_list|)
+expr_stmt|;
+name|testCoding
+argument_list|(
+literal|false
+argument_list|)
+expr_stmt|;
+block|}
+annotation|@
+name|Test
+DECL|method|testCodingDirectBuffer_10x4_erasure_of_d2_d4 ()
+specifier|public
+name|void
+name|testCodingDirectBuffer_10x4_erasure_of_d2_d4
 parameter_list|()
 block|{
 name|prepare
@@ -285,10 +392,10 @@ expr_stmt|;
 block|}
 annotation|@
 name|Test
-DECL|method|testCodingDirectBuffer_10x4_erasing_all ()
+DECL|method|testCodingDirectBuffer_10x4_erasing_d0_d1 ()
 specifier|public
 name|void
-name|testCodingDirectBuffer_10x4_erasing_all
+name|testCodingDirectBuffer_10x4_erasing_d0_d1
 parameter_list|()
 block|{
 name|prepare
@@ -306,10 +413,6 @@ block|{
 literal|0
 block|,
 literal|1
-block|,
-literal|2
-block|,
-literal|3
 block|}
 argument_list|)
 expr_stmt|;
@@ -321,10 +424,10 @@ expr_stmt|;
 block|}
 annotation|@
 name|Test
-DECL|method|testCodingNoDirectBuffer_3x3 ()
+DECL|method|testCodingNoDirectBuffer_3x3_erasing_d0 ()
 specifier|public
 name|void
-name|testCodingNoDirectBuffer_3x3
+name|testCodingNoDirectBuffer_3x3_erasing_d0
 parameter_list|()
 block|{
 name|prepare
@@ -335,7 +438,12 @@ literal|3
 argument_list|,
 literal|3
 argument_list|,
-literal|null
+operator|new
+name|int
+index|[]
+block|{
+literal|0
+block|}
 argument_list|)
 expr_stmt|;
 name|testCoding
@@ -346,10 +454,10 @@ expr_stmt|;
 block|}
 annotation|@
 name|Test
-DECL|method|testCodingDirectBuffer_3x3 ()
+DECL|method|testCodingDirectBuffer_3x3_erasing_d0 ()
 specifier|public
 name|void
-name|testCodingDirectBuffer_3x3
+name|testCodingDirectBuffer_3x3_erasing_d0
 parameter_list|()
 block|{
 name|prepare
@@ -360,7 +468,12 @@ literal|3
 argument_list|,
 literal|3
 argument_list|,
-literal|null
+operator|new
+name|int
+index|[]
+block|{
+literal|0
+block|}
 argument_list|)
 expr_stmt|;
 name|testCoding

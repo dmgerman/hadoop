@@ -143,8 +143,8 @@ name|usingDirectBuffer
 init|=
 literal|true
 decl_stmt|;
-comment|/**    * Prepare before running the case.    * @param numDataUnits    * @param numParityUnits    * @param erasedIndexes    */
-DECL|method|prepare (Configuration conf, int numDataUnits, int numParityUnits, int[] erasedIndexes)
+comment|/**    * Prepare before running the case.    * @param numDataUnits    * @param numParityUnits    * @param erasedDataIndexes    */
+DECL|method|prepare (Configuration conf, int numDataUnits, int numParityUnits, int[] erasedDataIndexes)
 specifier|protected
 name|void
 name|prepare
@@ -160,7 +160,7 @@ name|numParityUnits
 parameter_list|,
 name|int
 index|[]
-name|erasedIndexes
+name|erasedDataIndexes
 parameter_list|)
 block|{
 name|this
@@ -185,11 +185,11 @@ name|this
 operator|.
 name|erasedDataIndexes
 operator|=
-name|erasedIndexes
+name|erasedDataIndexes
 operator|!=
 literal|null
 condition|?
-name|erasedIndexes
+name|erasedDataIndexes
 else|:
 operator|new
 name|int
@@ -271,7 +271,7 @@ name|result
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Adjust and return erased indexes based on the array of the input chunks (    * parity chunks + data chunks).    * @return    */
+comment|/**    * Adjust and return erased indexes altogether, including erased data indexes    * and parity indexes.    * @return erased indexes altogether    */
 DECL|method|getErasedIndexesForDecoding ()
 specifier|protected
 name|int
@@ -290,6 +290,11 @@ name|erasedDataIndexes
 operator|.
 name|length
 index|]
+decl_stmt|;
+name|int
+name|idx
+init|=
+literal|0
 decl_stmt|;
 for|for
 control|(
@@ -310,7 +315,8 @@ control|)
 block|{
 name|erasedIndexesForDecoding
 index|[
-name|i
+name|idx
+operator|++
 index|]
 operator|=
 name|erasedDataIndexes
@@ -416,12 +422,12 @@ return|return
 name|inputChunks
 return|;
 block|}
-comment|/**    * Have a copy of the data chunks that's to be erased thereafter. The copy    * will be used to compare and verify with the to be recovered chunks.    * @param dataChunks    * @return    */
-DECL|method|copyDataChunksToErase (ECChunk[] dataChunks)
+comment|/**    * Erase chunks to test the recovering of them. Before erasure clone them    * first so could return them.    * @param dataChunks    * @return clone of erased chunks    */
+DECL|method|backupAndEraseChunks (ECChunk[] dataChunks)
 specifier|protected
 name|ECChunk
 index|[]
-name|copyDataChunksToErase
+name|backupAndEraseChunks
 parameter_list|(
 name|ECChunk
 index|[]
@@ -430,7 +436,7 @@ parameter_list|)
 block|{
 name|ECChunk
 index|[]
-name|copiedChunks
+name|toEraseChunks
 init|=
 operator|new
 name|ECChunk
@@ -441,7 +447,7 @@ name|length
 index|]
 decl_stmt|;
 name|int
-name|j
+name|idx
 init|=
 literal|0
 decl_stmt|;
@@ -462,68 +468,37 @@ name|i
 operator|++
 control|)
 block|{
-name|copiedChunks
+name|ECChunk
+name|chunk
+init|=
+name|dataChunks
 index|[
-name|j
+name|erasedDataIndexes
+index|[
+name|i
+index|]
+index|]
+decl_stmt|;
+name|toEraseChunks
+index|[
+name|idx
 operator|++
 index|]
 operator|=
 name|cloneChunkWithData
 argument_list|(
-name|dataChunks
-index|[
-name|erasedDataIndexes
-index|[
-name|i
-index|]
-index|]
+name|chunk
+argument_list|)
+expr_stmt|;
+name|eraseDataFromChunk
+argument_list|(
+name|chunk
 argument_list|)
 expr_stmt|;
 block|}
 return|return
-name|copiedChunks
+name|toEraseChunks
 return|;
-block|}
-comment|/**    * Erase some data chunks to test the recovering of them    * @param dataChunks    */
-DECL|method|eraseSomeDataBlocks (ECChunk[] dataChunks)
-specifier|protected
-name|void
-name|eraseSomeDataBlocks
-parameter_list|(
-name|ECChunk
-index|[]
-name|dataChunks
-parameter_list|)
-block|{
-for|for
-control|(
-name|int
-name|i
-init|=
-literal|0
-init|;
-name|i
-operator|<
-name|erasedDataIndexes
-operator|.
-name|length
-condition|;
-name|i
-operator|++
-control|)
-block|{
-name|eraseDataFromChunk
-argument_list|(
-name|dataChunks
-index|[
-name|erasedDataIndexes
-index|[
-name|i
-index|]
-index|]
-argument_list|)
-expr_stmt|;
-block|}
 block|}
 comment|/**    * Erase data from the specified chunks, putting ZERO bytes to the buffers.    * @param chunks    */
 DECL|method|eraseDataFromChunks (ECChunk[] chunks)

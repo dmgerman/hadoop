@@ -85,6 +85,16 @@ name|RawErasureDecoder
 argument_list|>
 name|decoderClass
 decl_stmt|;
+DECL|field|encoder
+specifier|private
+name|RawErasureEncoder
+name|encoder
+decl_stmt|;
+DECL|field|decoder
+specifier|private
+name|RawErasureDecoder
+name|decoder
+decl_stmt|;
 comment|/**    * Generating source data, encoding, recovering and then verifying.    * RawErasureCoder mainly uses ECChunk to pass input and output data buffers,    * it supports two kinds of ByteBuffers, one is array backed, the other is    * direct ByteBuffer. Use usingDirectBuffer indicate which case to test.    *    * @param usingDirectBuffer    */
 DECL|method|testCoding (boolean usingDirectBuffer)
 specifier|protected
@@ -101,6 +111,9 @@ name|usingDirectBuffer
 operator|=
 name|usingDirectBuffer
 expr_stmt|;
+name|prepareCoders
+argument_list|()
+expr_stmt|;
 comment|// Generate data and encode
 name|ECChunk
 index|[]
@@ -116,12 +129,6 @@ init|=
 name|prepareParityChunksForEncoding
 argument_list|()
 decl_stmt|;
-name|RawErasureEncoder
-name|encoder
-init|=
-name|createEncoder
-argument_list|()
-decl_stmt|;
 comment|// Backup all the source chunks for later recovering because some coders
 comment|// may affect the source data.
 name|ECChunk
@@ -133,18 +140,6 @@ argument_list|(
 name|dataChunks
 argument_list|)
 decl_stmt|;
-comment|// Make a copy of a strip for later comparing
-name|ECChunk
-index|[]
-name|toEraseDataChunks
-init|=
-name|copyDataChunksToErase
-argument_list|(
-name|clonedDataChunks
-argument_list|)
-decl_stmt|;
-try|try
-block|{
 name|encoder
 operator|.
 name|encode
@@ -154,22 +149,17 @@ argument_list|,
 name|parityChunks
 argument_list|)
 expr_stmt|;
-block|}
-finally|finally
-block|{
-name|encoder
-operator|.
-name|release
-argument_list|()
-expr_stmt|;
-block|}
-comment|// Erase the copied sources
-name|eraseSomeDataBlocks
+comment|// Backup and erase some chunks
+name|ECChunk
+index|[]
+name|backupChunks
+init|=
+name|backupAndEraseChunks
 argument_list|(
 name|clonedDataChunks
 argument_list|)
-expr_stmt|;
-comment|//Decode
+decl_stmt|;
+comment|// Decode
 name|ECChunk
 index|[]
 name|inputChunks
@@ -188,14 +178,6 @@ init|=
 name|prepareOutputChunksForDecoding
 argument_list|()
 decl_stmt|;
-name|RawErasureDecoder
-name|decoder
-init|=
-name|createDecoder
-argument_list|()
-decl_stmt|;
-try|try
-block|{
 name|decoder
 operator|.
 name|decode
@@ -208,23 +190,47 @@ argument_list|,
 name|recoveredChunks
 argument_list|)
 expr_stmt|;
-block|}
-finally|finally
-block|{
-name|decoder
-operator|.
-name|release
-argument_list|()
-expr_stmt|;
-block|}
-comment|//Compare
+comment|// Compare
 name|compareAndVerify
 argument_list|(
-name|toEraseDataChunks
+name|backupChunks
 argument_list|,
 name|recoveredChunks
 argument_list|)
 expr_stmt|;
+block|}
+DECL|method|prepareCoders ()
+specifier|private
+name|void
+name|prepareCoders
+parameter_list|()
+block|{
+if|if
+condition|(
+name|encoder
+operator|==
+literal|null
+condition|)
+block|{
+name|encoder
+operator|=
+name|createEncoder
+argument_list|()
+expr_stmt|;
+block|}
+if|if
+condition|(
+name|decoder
+operator|==
+literal|null
+condition|)
+block|{
+name|decoder
+operator|=
+name|createDecoder
+argument_list|()
+expr_stmt|;
+block|}
 block|}
 comment|/**    * Create the raw erasure encoder to test    * @return    */
 DECL|method|createEncoder ()
