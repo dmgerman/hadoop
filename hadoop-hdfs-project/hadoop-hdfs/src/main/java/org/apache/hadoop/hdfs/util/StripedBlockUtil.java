@@ -2094,6 +2094,12 @@ decl_stmt|;
 name|long
 name|firstCellOffsetInBlk
 init|=
+name|firstCellIdxInBG
+operator|/
+name|dataBlkNum
+operator|*
+name|cellSize
+operator|+
 name|start
 operator|%
 name|cellSize

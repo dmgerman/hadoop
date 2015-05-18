@@ -800,6 +800,8 @@ operator|(
 name|firstByte
 operator|+
 name|offsetInBlk
+operator|%
+literal|29
 operator|)
 operator|&
 name|BYTE_MASK
