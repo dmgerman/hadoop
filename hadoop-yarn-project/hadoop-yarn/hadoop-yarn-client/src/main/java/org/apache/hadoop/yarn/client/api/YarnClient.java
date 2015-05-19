@@ -1279,7 +1279,7 @@ name|NodeId
 argument_list|,
 name|Set
 argument_list|<
-name|String
+name|NodeLabel
 argument_list|>
 argument_list|>
 name|getNodeToLabels
@@ -1299,7 +1299,7 @@ specifier|public
 specifier|abstract
 name|Map
 argument_list|<
-name|String
+name|NodeLabel
 argument_list|,
 name|Set
 argument_list|<
@@ -1318,12 +1318,12 @@ annotation|@
 name|Public
 annotation|@
 name|Unstable
-DECL|method|getLabelsToNodes (Set<String> labels)
+DECL|method|getLabelsToNodes ( Set<String> labels)
 specifier|public
 specifier|abstract
 name|Map
 argument_list|<
-name|String
+name|NodeLabel
 argument_list|,
 name|Set
 argument_list|<

@@ -7769,7 +7769,7 @@ name|newInstance
 argument_list|(
 name|labelsMgr
 operator|.
-name|getNodeLabels
+name|getNodeLabelsInfo
 argument_list|()
 argument_list|)
 decl_stmt|;
@@ -7825,7 +7825,7 @@ name|newInstance
 argument_list|(
 name|labelsMgr
 operator|.
-name|getLabelsToNodes
+name|getLabelsInfoToNodes
 argument_list|()
 argument_list|)
 return|;
@@ -7839,7 +7839,7 @@ name|newInstance
 argument_list|(
 name|labelsMgr
 operator|.
-name|getLabelsToNodes
+name|getLabelsInfoToNodes
 argument_list|(
 name|request
 operator|.

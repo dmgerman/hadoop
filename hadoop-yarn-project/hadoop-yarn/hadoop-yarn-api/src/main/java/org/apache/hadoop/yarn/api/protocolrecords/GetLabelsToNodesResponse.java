@@ -100,6 +100,24 @@ name|hadoop
 operator|.
 name|yarn
 operator|.
+name|api
+operator|.
+name|records
+operator|.
+name|NodeLabel
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
 name|util
 operator|.
 name|Records
@@ -113,7 +131,7 @@ specifier|abstract
 class|class
 name|GetLabelsToNodesResponse
 block|{
-DECL|method|newInstance ( Map<String, Set<NodeId>> map)
+DECL|method|newInstance ( Map<NodeLabel, Set<NodeId>> map)
 specifier|public
 specifier|static
 name|GetLabelsToNodesResponse
@@ -121,7 +139,7 @@ name|newInstance
 parameter_list|(
 name|Map
 argument_list|<
-name|String
+name|NodeLabel
 argument_list|,
 name|Set
 argument_list|<
@@ -158,7 +176,7 @@ annotation|@
 name|Public
 annotation|@
 name|Evolving
-DECL|method|setLabelsToNodes (Map<String, Set<NodeId>> map)
+DECL|method|setLabelsToNodes (Map<NodeLabel, Set<NodeId>> map)
 specifier|public
 specifier|abstract
 name|void
@@ -166,7 +184,7 @@ name|setLabelsToNodes
 parameter_list|(
 name|Map
 argument_list|<
-name|String
+name|NodeLabel
 argument_list|,
 name|Set
 argument_list|<
@@ -185,7 +203,7 @@ specifier|public
 specifier|abstract
 name|Map
 argument_list|<
-name|String
+name|NodeLabel
 argument_list|,
 name|Set
 argument_list|<

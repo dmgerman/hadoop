@@ -2547,7 +2547,7 @@ name|NodeId
 argument_list|,
 name|Set
 argument_list|<
-name|String
+name|NodeLabel
 argument_list|>
 argument_list|>
 name|getNodeToLabels
@@ -2570,7 +2570,7 @@ DECL|method|getLabelsToNodes ()
 specifier|public
 name|Map
 argument_list|<
-name|String
+name|NodeLabel
 argument_list|,
 name|Set
 argument_list|<
@@ -2597,7 +2597,7 @@ DECL|method|getLabelsToNodes (Set<String> labels)
 specifier|public
 name|Map
 argument_list|<
-name|String
+name|NodeLabel
 argument_list|,
 name|Set
 argument_list|<
