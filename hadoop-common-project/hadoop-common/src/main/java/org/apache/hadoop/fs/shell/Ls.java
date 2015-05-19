@@ -200,6 +200,15 @@ literal|"-lsr"
 argument_list|)
 expr_stmt|;
 block|}
+DECL|field|OPTION_PATHONLY
+specifier|private
+specifier|static
+specifier|final
+name|String
+name|OPTION_PATHONLY
+init|=
+literal|"C"
+decl_stmt|;
 DECL|field|OPTION_DIRECTORY
 specifier|private
 specifier|static
@@ -281,15 +290,17 @@ name|USAGE
 init|=
 literal|"[-"
 operator|+
+name|OPTION_PATHONLY
+operator|+
+literal|"] [-"
+operator|+
 name|OPTION_DIRECTORY
 operator|+
 literal|"] [-"
 operator|+
 name|OPTION_HUMAN
 operator|+
-literal|"] "
-operator|+
-literal|"[-"
+literal|"] [-"
 operator|+
 name|OPTION_RECURSIVE
 operator|+
@@ -305,9 +316,7 @@ literal|"] [-"
 operator|+
 name|OPTION_REVERSE
 operator|+
-literal|"] "
-operator|+
-literal|"[-"
+literal|"] [-"
 operator|+
 name|OPTION_ATIME
 operator|+
@@ -339,6 +348,12 @@ operator|+
 literal|"and file entries are of the form:\n"
 operator|+
 literal|"\tpermissions numberOfReplicas userId groupId sizeOfFile(in bytes) modificationDate(yyyy-MM-dd HH:mm) fileName\n\n"
+operator|+
+literal|"  -"
+operator|+
+name|OPTION_PATHONLY
+operator|+
+literal|"  Display the paths of files and directories only.\n"
 operator|+
 literal|"  -"
 operator|+
@@ -424,6 +439,11 @@ DECL|field|lineFormat
 specifier|protected
 name|String
 name|lineFormat
+decl_stmt|;
+DECL|field|pathOnly
+specifier|private
+name|boolean
+name|pathOnly
 decl_stmt|;
 DECL|field|dirRecurse
 specifier|protected
@@ -526,6 +546,8 @@ name|Integer
 operator|.
 name|MAX_VALUE
 argument_list|,
+name|OPTION_PATHONLY
+argument_list|,
 name|OPTION_DIRECTORY
 argument_list|,
 name|OPTION_HUMAN
@@ -546,6 +568,15 @@ operator|.
 name|parse
 argument_list|(
 name|args
+argument_list|)
+expr_stmt|;
+name|pathOnly
+operator|=
+name|cf
+operator|.
+name|getOpt
+argument_list|(
+name|OPTION_PATHONLY
 argument_list|)
 expr_stmt|;
 name|dirRecurse
@@ -637,6 +668,22 @@ expr_stmt|;
 name|initialiseOrderComparator
 argument_list|()
 expr_stmt|;
+block|}
+comment|/**    * Should display only paths of files and directories.    * @return true display paths only, false display all fields    */
+annotation|@
+name|InterfaceAudience
+operator|.
+name|Private
+DECL|method|isPathOnly ()
+name|boolean
+name|isPathOnly
+parameter_list|()
+block|{
+return|return
+name|this
+operator|.
+name|pathOnly
+return|;
 block|}
 comment|/**    * Should the contents of the directory be shown or just the directory?    * @return true if directory contents, false if just directory    */
 annotation|@
@@ -811,6 +858,12 @@ operator|!=
 literal|0
 condition|)
 block|{
+if|if
+condition|(
+operator|!
+name|pathOnly
+condition|)
+block|{
 name|out
 operator|.
 name|println
@@ -824,6 +877,7 @@ operator|+
 literal|" items"
 argument_list|)
 expr_stmt|;
+block|}
 name|Arrays
 operator|.
 name|sort
@@ -835,11 +889,18 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
+if|if
+condition|(
+operator|!
+name|pathOnly
+condition|)
+block|{
 name|adjustColumnWidths
 argument_list|(
 name|items
 argument_list|)
 expr_stmt|;
+block|}
 name|super
 operator|.
 name|processPaths
@@ -863,6 +924,23 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
+if|if
+condition|(
+name|pathOnly
+condition|)
+block|{
+name|out
+operator|.
+name|println
+argument_list|(
+name|item
+operator|.
+name|toString
+argument_list|()
+argument_list|)
+expr_stmt|;
+return|return;
+block|}
 name|FileStatus
 name|stat
 init|=
