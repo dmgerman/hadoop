@@ -148,6 +148,16 @@ name|java
 operator|.
 name|util
 operator|.
+name|Collections
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
 name|HashMap
 import|;
 end_import
@@ -179,6 +189,16 @@ operator|.
 name|util
 operator|.
 name|Map
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
+name|Set
 import|;
 end_import
 
@@ -1618,6 +1638,31 @@ name|String
 name|windows_command
 init|=
 literal|"cmd /c"
+decl_stmt|;
+annotation|@
+name|VisibleForTesting
+DECL|field|launchedContainers
+specifier|protected
+specifier|final
+name|Set
+argument_list|<
+name|ContainerId
+argument_list|>
+name|launchedContainers
+init|=
+name|Collections
+operator|.
+name|newSetFromMap
+argument_list|(
+operator|new
+name|ConcurrentHashMap
+argument_list|<
+name|ContainerId
+argument_list|,
+name|Boolean
+argument_list|>
+argument_list|()
+argument_list|)
 decl_stmt|;
 comment|/**    * @param args Command line args    */
 DECL|method|main (String[] args)
@@ -3299,6 +3344,25 @@ operator|+
 literal|" previous attempts' running containers on AM registration."
 argument_list|)
 expr_stmt|;
+for|for
+control|(
+name|Container
+name|container
+range|:
+name|previousAMRunningContainers
+control|)
+block|{
+name|launchedContainers
+operator|.
+name|add
+argument_list|(
+name|container
+operator|.
+name|getId
+argument_list|()
+argument_list|)
+expr_stmt|;
+block|}
 name|numAllocatedContainers
 operator|.
 name|addAndGet
@@ -3783,8 +3847,9 @@ return|return
 name|success
 return|;
 block|}
+annotation|@
+name|VisibleForTesting
 DECL|class|RMCallbackHandler
-specifier|private
 class|class
 name|RMCallbackHandler
 implements|implements
@@ -3879,6 +3944,38 @@ operator|.
 name|COMPLETE
 operator|)
 assert|;
+comment|// ignore containers we know nothing about - probably from a previous
+comment|// attempt
+if|if
+condition|(
+operator|!
+name|launchedContainers
+operator|.
+name|contains
+argument_list|(
+name|containerStatus
+operator|.
+name|getContainerId
+argument_list|()
+argument_list|)
+condition|)
+block|{
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"Ignoring completed status of "
+operator|+
+name|containerStatus
+operator|.
+name|getContainerId
+argument_list|()
+operator|+
+literal|"; unknown container(probably launched by previous attempt)"
+argument_list|)
+expr_stmt|;
+continue|continue;
+block|}
 comment|// increment counters for completed/failed containers
 name|int
 name|exitStatus
@@ -4158,24 +4255,12 @@ argument_list|)
 expr_stmt|;
 comment|// + ", containerToken"
 comment|// +allocatedContainer.getContainerToken().getIdentifier().toString());
-name|LaunchContainerRunnable
-name|runnableLaunchContainer
-init|=
-operator|new
-name|LaunchContainerRunnable
-argument_list|(
-name|allocatedContainer
-argument_list|,
-name|containerListener
-argument_list|)
-decl_stmt|;
 name|Thread
 name|launchThread
 init|=
-operator|new
-name|Thread
+name|createLaunchContainerThread
 argument_list|(
-name|runnableLaunchContainer
+name|allocatedContainer
 argument_list|)
 decl_stmt|;
 comment|// launch and start the container on a separate thread to keep
@@ -4186,6 +4271,16 @@ operator|.
 name|add
 argument_list|(
 name|launchThread
+argument_list|)
+expr_stmt|;
+name|launchedContainers
+operator|.
+name|add
+argument_list|(
+name|allocatedContainer
+operator|.
+name|getId
+argument_list|()
 argument_list|)
 expr_stmt|;
 name|launchThread
@@ -5836,6 +5931,88 @@ name|e
 argument_list|)
 expr_stmt|;
 block|}
+block|}
+DECL|method|getRMCallbackHandler ()
+name|RMCallbackHandler
+name|getRMCallbackHandler
+parameter_list|()
+block|{
+return|return
+operator|new
+name|RMCallbackHandler
+argument_list|()
+return|;
+block|}
+annotation|@
+name|VisibleForTesting
+DECL|method|setAmRMClient (AMRMClientAsync client)
+name|void
+name|setAmRMClient
+parameter_list|(
+name|AMRMClientAsync
+name|client
+parameter_list|)
+block|{
+name|this
+operator|.
+name|amRMClient
+operator|=
+name|client
+expr_stmt|;
+block|}
+annotation|@
+name|VisibleForTesting
+DECL|method|getNumCompletedContainers ()
+name|int
+name|getNumCompletedContainers
+parameter_list|()
+block|{
+return|return
+name|numCompletedContainers
+operator|.
+name|get
+argument_list|()
+return|;
+block|}
+annotation|@
+name|VisibleForTesting
+DECL|method|getDone ()
+name|boolean
+name|getDone
+parameter_list|()
+block|{
+return|return
+name|done
+return|;
+block|}
+annotation|@
+name|VisibleForTesting
+DECL|method|createLaunchContainerThread (Container allocatedContainer)
+name|Thread
+name|createLaunchContainerThread
+parameter_list|(
+name|Container
+name|allocatedContainer
+parameter_list|)
+block|{
+name|LaunchContainerRunnable
+name|runnableLaunchContainer
+init|=
+operator|new
+name|LaunchContainerRunnable
+argument_list|(
+name|allocatedContainer
+argument_list|,
+name|containerListener
+argument_list|)
+decl_stmt|;
+return|return
+operator|new
+name|Thread
+argument_list|(
+name|runnableLaunchContainer
+argument_list|)
+return|;
 block|}
 block|}
 end_class
