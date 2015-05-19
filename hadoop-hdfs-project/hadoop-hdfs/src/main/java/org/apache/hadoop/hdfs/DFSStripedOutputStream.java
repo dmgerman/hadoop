@@ -1404,9 +1404,9 @@ argument_list|()
 decl_stmt|;
 name|cellSize
 operator|=
-name|schema
+name|stat
 operator|.
-name|getChunkSize
+name|getStripeCellSize
 argument_list|()
 expr_stmt|;
 name|numDataBlocks

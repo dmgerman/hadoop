@@ -2789,7 +2789,7 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|/**    * Store block erasure coding work.    */
-DECL|method|addBlockToBeErasureCoded (ExtendedBlock block, DatanodeDescriptor[] sources, DatanodeStorageInfo[] targets, short[] liveBlockIndices, ECSchema ecSchema)
+DECL|method|addBlockToBeErasureCoded (ExtendedBlock block, DatanodeDescriptor[] sources, DatanodeStorageInfo[] targets, short[] liveBlockIndices, ECSchema ecSchema, int cellSize)
 name|void
 name|addBlockToBeErasureCoded
 parameter_list|(
@@ -2810,6 +2810,9 @@ name|liveBlockIndices
 parameter_list|,
 name|ECSchema
 name|ecSchema
+parameter_list|,
+name|int
+name|cellSize
 parameter_list|)
 block|{
 assert|assert
@@ -2844,6 +2847,8 @@ argument_list|,
 name|liveBlockIndices
 argument_list|,
 name|ecSchema
+argument_list|,
+name|cellSize
 argument_list|)
 decl_stmt|;
 name|erasurecodeBlocks

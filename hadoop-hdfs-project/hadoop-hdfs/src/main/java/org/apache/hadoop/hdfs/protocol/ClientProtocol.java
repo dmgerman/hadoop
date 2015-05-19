@@ -2483,7 +2483,7 @@ function_decl|;
 comment|/**    * Create an erasure coding zone with specified schema, if any, otherwise    * default    */
 annotation|@
 name|AtMostOnce
-DECL|method|createErasureCodingZone (String src, ECSchema schema)
+DECL|method|createErasureCodingZone (String src, ECSchema schema, int cellSize)
 specifier|public
 name|void
 name|createErasureCodingZone
@@ -2493,6 +2493,9 @@ name|src
 parameter_list|,
 name|ECSchema
 name|schema
+parameter_list|,
+name|int
+name|cellSize
 parameter_list|)
 throws|throws
 name|IOException

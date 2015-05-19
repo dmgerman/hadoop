@@ -244,11 +244,17 @@ specifier|final
 name|FileEncryptionInfo
 name|feInfo
 decl_stmt|;
-DECL|field|schema
+DECL|field|ecSchema
 specifier|private
 specifier|final
 name|ECSchema
-name|schema
+name|ecSchema
+decl_stmt|;
+DECL|field|stripeCellSize
+specifier|private
+specifier|final
+name|int
+name|stripeCellSize
 decl_stmt|;
 comment|// Used by dir, not including dot and dotdot. Always zero for a regular file.
 DECL|field|childrenNum
@@ -278,7 +284,7 @@ literal|0
 index|]
 decl_stmt|;
 comment|/**    * Constructor    * @param length the number of bytes the file has    * @param isdir if the path is a directory    * @param block_replication the replication factor    * @param blocksize the block size    * @param modification_time modification time    * @param access_time access time    * @param permission permission    * @param owner the owner of the path    * @param group the group of the path    * @param path the local name in java UTF8 encoding the same as that in-memory    * @param fileId the file id    * @param feInfo the file's encryption info    */
-DECL|method|HdfsFileStatus (long length, boolean isdir, int block_replication, long blocksize, long modification_time, long access_time, FsPermission permission, String owner, String group, byte[] symlink, byte[] path, long fileId, int childrenNum, FileEncryptionInfo feInfo, byte storagePolicy, ECSchema schema)
+DECL|method|HdfsFileStatus (long length, boolean isdir, int block_replication, long blocksize, long modification_time, long access_time, FsPermission permission, String owner, String group, byte[] symlink, byte[] path, long fileId, int childrenNum, FileEncryptionInfo feInfo, byte storagePolicy, ECSchema ecSchema, int stripeCellSize)
 specifier|public
 name|HdfsFileStatus
 parameter_list|(
@@ -330,7 +336,10 @@ name|byte
 name|storagePolicy
 parameter_list|,
 name|ECSchema
-name|schema
+name|ecSchema
+parameter_list|,
+name|int
+name|stripeCellSize
 parameter_list|)
 block|{
 name|this
@@ -470,9 +479,15 @@ name|storagePolicy
 expr_stmt|;
 name|this
 operator|.
-name|schema
+name|ecSchema
 operator|=
-name|schema
+name|ecSchema
+expr_stmt|;
+name|this
+operator|.
+name|stripeCellSize
+operator|=
+name|stripeCellSize
 expr_stmt|;
 block|}
 comment|/**    * Get the length of this file, in bytes.    * @return the length of this file, in bytes.    */
@@ -802,7 +817,17 @@ name|getECSchema
 parameter_list|()
 block|{
 return|return
-name|schema
+name|ecSchema
+return|;
+block|}
+DECL|method|getStripeCellSize ()
+specifier|public
+name|int
+name|getStripeCellSize
+parameter_list|()
+block|{
+return|return
+name|stripeCellSize
 return|;
 block|}
 DECL|method|getChildrenNum ()

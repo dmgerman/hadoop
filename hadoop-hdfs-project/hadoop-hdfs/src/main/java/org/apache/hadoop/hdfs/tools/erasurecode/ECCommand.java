@@ -216,6 +216,22 @@ name|hadoop
 operator|.
 name|hdfs
 operator|.
+name|protocol
+operator|.
+name|HdfsConstants
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
 name|server
 operator|.
 name|namenode
@@ -459,6 +475,16 @@ literal|"  -s<schemaName> : EC schema name to encode files. "
 operator|+
 literal|"If not passed default schema will be used\n"
 operator|+
+literal|"  -c<cellSize> : cell size to use for striped encoding files."
+operator|+
+literal|" If not passed default cellsize of "
+operator|+
+name|HdfsConstants
+operator|.
+name|BLOCK_STRIPED_CELL_SIZE
+operator|+
+literal|" will be used\n"
+operator|+
 literal|"<path>  : Path to an empty directory. Under this directory "
 operator|+
 literal|"files will be encoded using specified schema"
@@ -467,6 +493,13 @@ DECL|field|schemaName
 specifier|private
 name|String
 name|schemaName
+decl_stmt|;
+DECL|field|cellSize
+specifier|private
+name|int
+name|cellSize
+init|=
+literal|0
 decl_stmt|;
 DECL|field|schema
 specifier|private
@@ -502,6 +535,40 @@ argument_list|,
 name|args
 argument_list|)
 expr_stmt|;
+name|String
+name|cellSizeStr
+init|=
+name|StringUtils
+operator|.
+name|popOptionWithArgument
+argument_list|(
+literal|"-c"
+argument_list|,
+name|args
+argument_list|)
+decl_stmt|;
+if|if
+condition|(
+name|cellSizeStr
+operator|!=
+literal|null
+condition|)
+block|{
+name|cellSize
+operator|=
+operator|(
+name|int
+operator|)
+name|StringUtils
+operator|.
+name|TraditionalBinaryPrefix
+operator|.
+name|string2long
+argument_list|(
+name|cellSizeStr
+argument_list|)
+expr_stmt|;
+block|}
 if|if
 condition|(
 name|args
@@ -718,6 +785,8 @@ operator|.
 name|path
 argument_list|,
 name|schema
+argument_list|,
+name|cellSize
 argument_list|)
 expr_stmt|;
 name|out

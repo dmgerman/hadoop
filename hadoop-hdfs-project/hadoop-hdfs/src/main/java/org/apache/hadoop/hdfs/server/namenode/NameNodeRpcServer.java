@@ -10352,7 +10352,7 @@ block|}
 annotation|@
 name|Override
 comment|// ClientProtocol
-DECL|method|createErasureCodingZone (String src, ECSchema schema)
+DECL|method|createErasureCodingZone (String src, ECSchema schema, int cellSize)
 specifier|public
 name|void
 name|createErasureCodingZone
@@ -10362,6 +10362,9 @@ name|src
 parameter_list|,
 name|ECSchema
 name|schema
+parameter_list|,
+name|int
+name|cellSize
 parameter_list|)
 throws|throws
 name|IOException
@@ -10408,6 +10411,8 @@ argument_list|(
 name|src
 argument_list|,
 name|schema
+argument_list|,
+name|cellSize
 argument_list|,
 name|cacheEntry
 operator|!=

@@ -9698,7 +9698,7 @@ block|}
 block|}
 annotation|@
 name|Override
-DECL|method|createErasureCodingZone (String src, ECSchema schema)
+DECL|method|createErasureCodingZone (String src, ECSchema schema, int cellSize)
 specifier|public
 name|void
 name|createErasureCodingZone
@@ -9708,6 +9708,9 @@ name|src
 parameter_list|,
 name|ECSchema
 name|schema
+parameter_list|,
+name|int
+name|cellSize
 parameter_list|)
 throws|throws
 name|IOException
@@ -9747,6 +9750,21 @@ name|convertECSchema
 argument_list|(
 name|schema
 argument_list|)
+argument_list|)
+expr_stmt|;
+block|}
+if|if
+condition|(
+name|cellSize
+operator|>
+literal|0
+condition|)
+block|{
+name|builder
+operator|.
+name|setCellSize
+argument_list|(
+name|cellSize
 argument_list|)
 expr_stmt|;
 block|}

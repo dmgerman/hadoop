@@ -5804,6 +5804,10 @@ name|ErasureCodingSchemaManager
 operator|.
 name|getSystemDefaultSchema
 argument_list|()
+argument_list|,
+literal|64
+operator|*
+literal|1024
 argument_list|)
 decl_stmt|;
 name|DatanodeInfo
@@ -5910,6 +5914,10 @@ name|ErasureCodingSchemaManager
 operator|.
 name|getSystemDefaultSchema
 argument_list|()
+argument_list|,
+literal|64
+operator|*
+literal|1024
 argument_list|)
 decl_stmt|;
 name|List

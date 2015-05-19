@@ -54,7 +54,12 @@ specifier|private
 name|ECSchema
 name|schema
 decl_stmt|;
-DECL|method|ErasureCodingZoneInfo (String dir, ECSchema schema)
+DECL|field|cellSize
+specifier|private
+name|int
+name|cellSize
+decl_stmt|;
+DECL|method|ErasureCodingZoneInfo (String dir, ECSchema schema, int cellSize)
 specifier|public
 name|ErasureCodingZoneInfo
 parameter_list|(
@@ -63,6 +68,9 @@ name|dir
 parameter_list|,
 name|ECSchema
 name|schema
+parameter_list|,
+name|int
+name|cellSize
 parameter_list|)
 block|{
 name|this
@@ -76,6 +84,12 @@ operator|.
 name|schema
 operator|=
 name|schema
+expr_stmt|;
+name|this
+operator|.
+name|cellSize
+operator|=
+name|cellSize
 expr_stmt|;
 block|}
 comment|/**    * Get directory of the EC zone.    *     * @return    */
@@ -100,6 +114,17 @@ return|return
 name|schema
 return|;
 block|}
+comment|/**    * Get cellSize for the EC Zone    */
+DECL|method|getCellSize ()
+specifier|public
+name|int
+name|getCellSize
+parameter_list|()
+block|{
+return|return
+name|cellSize
+return|;
+block|}
 annotation|@
 name|Override
 DECL|method|toString ()
@@ -117,6 +142,10 @@ operator|+
 literal|", Schema: "
 operator|+
 name|schema
+operator|+
+literal|", cellSize: "
+operator|+
+name|cellSize
 return|;
 block|}
 block|}

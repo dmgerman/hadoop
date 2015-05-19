@@ -1476,9 +1476,9 @@ argument_list|()
 expr_stmt|;
 name|cellSize
 operator|=
-name|schema
+name|recoveryInfo
 operator|.
-name|getChunkSize
+name|getCellSize
 argument_list|()
 expr_stmt|;
 name|blockGroup

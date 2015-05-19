@@ -374,6 +374,8 @@ name|toString
 argument_list|()
 argument_list|,
 literal|null
+argument_list|,
+literal|0
 argument_list|)
 expr_stmt|;
 comment|/* Verify files under the zone are striped */
@@ -474,6 +476,8 @@ name|toString
 argument_list|()
 argument_list|,
 literal|null
+argument_list|,
+literal|0
 argument_list|)
 expr_stmt|;
 name|fail
@@ -544,6 +548,8 @@ name|toString
 argument_list|()
 argument_list|,
 literal|null
+argument_list|,
+literal|0
 argument_list|)
 expr_stmt|;
 name|fs
@@ -573,6 +579,8 @@ name|toString
 argument_list|()
 argument_list|,
 literal|null
+argument_list|,
+literal|0
 argument_list|)
 expr_stmt|;
 name|fail
@@ -628,6 +636,8 @@ name|toString
 argument_list|()
 argument_list|,
 literal|null
+argument_list|,
+literal|0
 argument_list|)
 expr_stmt|;
 name|fail
@@ -720,6 +730,8 @@ name|toString
 argument_list|()
 argument_list|,
 literal|null
+argument_list|,
+literal|0
 argument_list|)
 expr_stmt|;
 name|fs
@@ -735,6 +747,8 @@ name|toString
 argument_list|()
 argument_list|,
 literal|null
+argument_list|,
+literal|0
 argument_list|)
 expr_stmt|;
 specifier|final
@@ -966,6 +980,8 @@ argument_list|(
 name|src
 argument_list|,
 literal|null
+argument_list|,
+literal|0
 argument_list|)
 expr_stmt|;
 comment|//Default one will be used.
@@ -1101,6 +1117,8 @@ argument_list|(
 name|src
 argument_list|,
 name|usingSchema
+argument_list|,
+literal|0
 argument_list|)
 expr_stmt|;
 name|verifyErasureCodingInfo

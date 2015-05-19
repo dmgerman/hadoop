@@ -1558,8 +1558,8 @@ block|}
 block|}
 block|}
 block|}
-comment|/**    * This method divides a requested byte range into an array of inclusive    * {@link AlignedStripe}.    * @param ecSchema The codec schema for the file, which carries the numbers    *                 of data / parity blocks, as well as cell size    * @param blockGroup The striped block group    * @param rangeStartInBlockGroup The byte range's start offset in block group    * @param rangeEndInBlockGroup The byte range's end offset in block group    * @param buf Destination buffer of the read operation for the byte range    * @param offsetInBuf Start offset into the destination buffer    *    * At most 5 stripes will be generated from each logical range, as    * demonstrated in the header of {@link AlignedStripe}.    */
-DECL|method|divideByteRangeIntoStripes ( ECSchema ecSchema, LocatedStripedBlock blockGroup, long rangeStartInBlockGroup, long rangeEndInBlockGroup, byte[] buf, int offsetInBuf)
+comment|/**    * This method divides a requested byte range into an array of inclusive    * {@link AlignedStripe}.    * @param ecSchema The codec schema for the file, which carries the numbers    *                 of data / parity blocks, as well as cell size    * @param cellSize Cell size of stripe    * @param blockGroup The striped block group    * @param rangeStartInBlockGroup The byte range's start offset in block group    * @param rangeEndInBlockGroup The byte range's end offset in block group    * @param buf Destination buffer of the read operation for the byte range    * @param offsetInBuf Start offset into the destination buffer    *    * At most 5 stripes will be generated from each logical range, as    * demonstrated in the header of {@link AlignedStripe}.    */
+DECL|method|divideByteRangeIntoStripes (ECSchema ecSchema, int cellSize, LocatedStripedBlock blockGroup, long rangeStartInBlockGroup, long rangeEndInBlockGroup, byte[] buf, int offsetInBuf)
 specifier|public
 specifier|static
 name|AlignedStripe
@@ -1568,6 +1568,9 @@ name|divideByteRangeIntoStripes
 parameter_list|(
 name|ECSchema
 name|ecSchema
+parameter_list|,
+name|int
+name|cellSize
 parameter_list|,
 name|LocatedStripedBlock
 name|blockGroup
@@ -1589,14 +1592,6 @@ block|{
 comment|// TODO: change ECSchema naming to use cell size instead of chunk size
 comment|// Step 0: analyze range and calculate basic parameters
 name|int
-name|cellSize
-init|=
-name|ecSchema
-operator|.
-name|getChunkSize
-argument_list|()
-decl_stmt|;
-name|int
 name|dataBlkNum
 init|=
 name|ecSchema
@@ -1613,6 +1608,8 @@ name|getStripingCellsOfByteRange
 argument_list|(
 name|ecSchema
 argument_list|,
+name|cellSize
+argument_list|,
 name|blockGroup
 argument_list|,
 name|rangeStartInBlockGroup
@@ -1628,6 +1625,8 @@ init|=
 name|getRangesForInternalBlocks
 argument_list|(
 name|ecSchema
+argument_list|,
+name|cellSize
 argument_list|,
 name|cells
 argument_list|)
@@ -1648,6 +1647,8 @@ comment|// Step 4: calculate each chunk's position in destination buffer
 name|calcualteChunkPositionsInBuf
 argument_list|(
 name|ecSchema
+argument_list|,
+name|cellSize
 argument_list|,
 name|stripes
 argument_list|,
@@ -1679,7 +1680,7 @@ block|}
 comment|/**    * Map the logical byte range to a set of inclusive {@link StripingCell}    * instances, each representing the overlap of the byte range to a cell    * used by {@link DFSStripedOutputStream} in encoding    */
 annotation|@
 name|VisibleForTesting
-DECL|method|getStripingCellsOfByteRange (ECSchema ecSchema, LocatedStripedBlock blockGroup, long rangeStartInBlockGroup, long rangeEndInBlockGroup)
+DECL|method|getStripingCellsOfByteRange (ECSchema ecSchema, int cellSize, LocatedStripedBlock blockGroup, long rangeStartInBlockGroup, long rangeEndInBlockGroup)
 specifier|private
 specifier|static
 name|StripingCell
@@ -1688,6 +1689,9 @@ name|getStripingCellsOfByteRange
 parameter_list|(
 name|ECSchema
 name|ecSchema
+parameter_list|,
+name|int
+name|cellSize
 parameter_list|,
 name|LocatedStripedBlock
 name|blockGroup
@@ -1715,14 +1719,6 @@ name|getBlockSize
 argument_list|()
 argument_list|)
 expr_stmt|;
-name|int
-name|cellSize
-init|=
-name|ecSchema
-operator|.
-name|getChunkSize
-argument_list|()
-decl_stmt|;
 name|int
 name|len
 init|=
@@ -1790,6 +1786,8 @@ name|StripingCell
 argument_list|(
 name|ecSchema
 argument_list|,
+name|cellSize
+argument_list|,
 name|firstCellIdxInBG
 argument_list|)
 expr_stmt|;
@@ -1804,6 +1802,8 @@ operator|new
 name|StripingCell
 argument_list|(
 name|ecSchema
+argument_list|,
+name|cellSize
 argument_list|,
 name|lastCellIdxInBG
 argument_list|)
@@ -1904,6 +1904,8 @@ name|StripingCell
 argument_list|(
 name|ecSchema
 argument_list|,
+name|cellSize
+argument_list|,
 name|i
 operator|+
 name|firstCellIdxInBG
@@ -1915,7 +1917,7 @@ name|cells
 return|;
 block|}
 comment|/**    * Given a logical start offset in a block group, calculate the physical    * start offset into each stored internal block.    */
-DECL|method|getStartOffsetsForInternalBlocks ( ECSchema ecSchema, LocatedStripedBlock blockGroup, long rangeStartInBlockGroup)
+DECL|method|getStartOffsetsForInternalBlocks (ECSchema ecSchema, int cellSize, LocatedStripedBlock blockGroup, long rangeStartInBlockGroup)
 specifier|public
 specifier|static
 name|long
@@ -1924,6 +1926,9 @@ name|getStartOffsetsForInternalBlocks
 parameter_list|(
 name|ECSchema
 name|ecSchema
+parameter_list|,
+name|int
+name|cellSize
 parameter_list|,
 name|LocatedStripedBlock
 name|blockGroup
@@ -1958,14 +1963,6 @@ init|=
 name|ecSchema
 operator|.
 name|getNumParityUnits
-argument_list|()
-decl_stmt|;
-name|int
-name|cellSize
-init|=
-name|ecSchema
-operator|.
-name|getChunkSize
 argument_list|()
 decl_stmt|;
 name|long
@@ -2009,6 +2006,8 @@ operator|new
 name|StripingCell
 argument_list|(
 name|ecSchema
+argument_list|,
+name|cellSize
 argument_list|,
 name|firstCellIdxInBG
 argument_list|)
@@ -2097,6 +2096,8 @@ name|StripingCell
 argument_list|(
 name|ecSchema
 argument_list|,
+name|cellSize
+argument_list|,
 name|idx
 argument_list|)
 decl_stmt|;
@@ -2168,7 +2169,7 @@ block|}
 comment|/**    * Given a logical byte range, mapped to each {@link StripingCell}, calculate    * the physical byte range (inclusive) on each stored internal block.    */
 annotation|@
 name|VisibleForTesting
-DECL|method|getRangesForInternalBlocks (ECSchema ecSchema, StripingCell[] cells)
+DECL|method|getRangesForInternalBlocks (ECSchema ecSchema, int cellSize, StripingCell[] cells)
 specifier|private
 specifier|static
 name|VerticalRange
@@ -2178,19 +2179,14 @@ parameter_list|(
 name|ECSchema
 name|ecSchema
 parameter_list|,
+name|int
+name|cellSize
+parameter_list|,
 name|StripingCell
 index|[]
 name|cells
 parameter_list|)
 block|{
-name|int
-name|cellSize
-init|=
-name|ecSchema
-operator|.
-name|getChunkSize
-argument_list|()
-decl_stmt|;
 name|int
 name|dataBlkNum
 init|=
@@ -2545,7 +2541,7 @@ index|]
 argument_list|)
 return|;
 block|}
-DECL|method|calcualteChunkPositionsInBuf (ECSchema ecSchema, AlignedStripe[] stripes, StripingCell[] cells, byte[] buf, int offsetInBuf)
+DECL|method|calcualteChunkPositionsInBuf (ECSchema ecSchema, int cellSize, AlignedStripe[] stripes, StripingCell[] cells, byte[] buf, int offsetInBuf)
 specifier|private
 specifier|static
 name|void
@@ -2553,6 +2549,9 @@ name|calcualteChunkPositionsInBuf
 parameter_list|(
 name|ECSchema
 name|ecSchema
+parameter_list|,
+name|int
+name|cellSize
 parameter_list|,
 name|AlignedStripe
 index|[]
@@ -2571,14 +2570,6 @@ name|offsetInBuf
 parameter_list|)
 block|{
 comment|/**      *     |<--------------- AlignedStripe --------------->|      *      *     |<- length_0 ->|<--  length_1  -->|<- length_2 ->|      * +------------------+------------------+----------------+      * |    cell_0_0_0    |    cell_3_1_0    |   cell_6_2_0   |<- blk_0      * +------------------+------------------+----------------+      *   _/                \_______________________      *  |                                          |      *  v offset_0                                 v offset_1      * +----------------------------------------------------------+      * |  cell_0_0_0 |  cell_1_0_1 and cell_2_0_2  |cell_3_1_0 ...|<- buf      * |  (partial)  |    (from blk_1 and blk_2)   |              |      * +----------------------------------------------------------+      *      * Cell indexing convention defined in {@link StripingCell}      */
-name|int
-name|cellSize
-init|=
-name|ecSchema
-operator|.
-name|getChunkSize
-argument_list|()
-decl_stmt|;
 name|int
 name|done
 init|=
@@ -2929,11 +2920,14 @@ DECL|field|size
 name|int
 name|size
 decl_stmt|;
-DECL|method|StripingCell (ECSchema ecSchema, int idxInBlkGroup)
+DECL|method|StripingCell (ECSchema ecSchema, int cellSize, int idxInBlkGroup)
 name|StripingCell
 parameter_list|(
 name|ECSchema
 name|ecSchema
+parameter_list|,
+name|int
+name|cellSize
 parameter_list|,
 name|int
 name|idxInBlkGroup
@@ -2987,17 +2981,17 @@ name|this
 operator|.
 name|size
 operator|=
-name|ecSchema
-operator|.
-name|getChunkSize
-argument_list|()
+name|cellSize
 expr_stmt|;
 block|}
-DECL|method|StripingCell (ECSchema ecSchema, int idxInInternalBlk, int idxInStripe)
+DECL|method|StripingCell (ECSchema ecSchema, int cellSize, int idxInInternalBlk, int idxInStripe)
 name|StripingCell
 parameter_list|(
 name|ECSchema
 name|ecSchema
+parameter_list|,
+name|int
+name|cellSize
 parameter_list|,
 name|int
 name|idxInInternalBlk
@@ -3047,10 +3041,7 @@ name|this
 operator|.
 name|size
 operator|=
-name|ecSchema
-operator|.
-name|getChunkSize
-argument_list|()
+name|cellSize
 expr_stmt|;
 block|}
 block|}

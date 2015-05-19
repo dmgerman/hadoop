@@ -810,7 +810,7 @@ name|Integer
 argument_list|>
 name|readingService
 decl_stmt|;
-DECL|method|DFSStripedInputStream (DFSClient dfsClient, String src, boolean verifyChecksum, ECSchema schema)
+DECL|method|DFSStripedInputStream (DFSClient dfsClient, String src, boolean verifyChecksum, ECSchema schema, int cellSize)
 name|DFSStripedInputStream
 parameter_list|(
 name|DFSClient
@@ -824,6 +824,9 @@ name|verifyChecksum
 parameter_list|,
 name|ECSchema
 name|schema
+parameter_list|,
+name|int
+name|cellSize
 parameter_list|)
 throws|throws
 name|IOException
@@ -848,12 +851,11 @@ name|schema
 operator|=
 name|schema
 expr_stmt|;
+name|this
+operator|.
 name|cellSize
 operator|=
-name|schema
-operator|.
-name|getChunkSize
-argument_list|()
+name|cellSize
 expr_stmt|;
 name|dataBlkNum
 operator|=
@@ -1141,6 +1143,8 @@ init|=
 name|getStartOffsetsForInternalBlocks
 argument_list|(
 name|schema
+argument_list|,
+name|cellSize
 argument_list|,
 name|targetBlockGroup
 argument_list|,
@@ -2801,6 +2805,8 @@ init|=
 name|divideByteRangeIntoStripes
 argument_list|(
 name|schema
+argument_list|,
+name|cellSize
 argument_list|,
 name|blockGroup
 argument_list|,

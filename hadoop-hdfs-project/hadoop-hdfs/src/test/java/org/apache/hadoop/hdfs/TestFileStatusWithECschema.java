@@ -376,6 +376,8 @@ argument_list|(
 name|dir
 argument_list|,
 name|schema1
+argument_list|,
+literal|0
 argument_list|)
 expr_stmt|;
 specifier|final

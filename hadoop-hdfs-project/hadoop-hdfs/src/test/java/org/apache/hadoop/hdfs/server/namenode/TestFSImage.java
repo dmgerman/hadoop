@@ -1058,6 +1058,8 @@ literal|"/"
 argument_list|,
 literal|null
 argument_list|,
+literal|0
+argument_list|,
 literal|false
 argument_list|)
 expr_stmt|;
@@ -2677,6 +2679,8 @@ argument_list|(
 literal|"/"
 argument_list|,
 literal|null
+argument_list|,
+literal|0
 argument_list|)
 expr_stmt|;
 name|Path

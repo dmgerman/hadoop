@@ -11065,8 +11065,8 @@ name|lastReadTxid
 argument_list|)
 return|;
 block|}
-comment|/**    * Create the erasurecoding zone    *     * @param path Directory to create the ec zone    * @param schema ECSchema for the zone. If not specified default will be used.    * @throws IOException    */
-DECL|method|createErasureCodingZone (final Path path, final ECSchema schema)
+comment|/**    * Create the erasurecoding zone    *     * @param path Directory to create the ec zone    * @param schema ECSchema for the zone. If not specified default will be used.    * @param cellSize Cellsize for the striped erasure coding    * @throws IOException    */
+DECL|method|createErasureCodingZone (final Path path, final ECSchema schema, final int cellSize)
 specifier|public
 name|void
 name|createErasureCodingZone
@@ -11078,6 +11078,10 @@ parameter_list|,
 specifier|final
 name|ECSchema
 name|schema
+parameter_list|,
+specifier|final
+name|int
+name|cellSize
 parameter_list|)
 throws|throws
 name|IOException
@@ -11122,6 +11126,8 @@ name|p
 argument_list|)
 argument_list|,
 name|schema
+argument_list|,
+name|cellSize
 argument_list|)
 expr_stmt|;
 return|return
@@ -11167,6 +11173,8 @@ argument_list|(
 name|p
 argument_list|,
 name|schema
+argument_list|,
+name|cellSize
 argument_list|)
 expr_stmt|;
 return|return

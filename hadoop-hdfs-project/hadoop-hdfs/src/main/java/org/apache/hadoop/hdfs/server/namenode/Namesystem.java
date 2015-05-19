@@ -70,6 +70,22 @@ name|hadoop
 operator|.
 name|hdfs
 operator|.
+name|protocol
+operator|.
+name|ErasureCodingZoneInfo
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
 name|server
 operator|.
 name|blockmanagement
@@ -246,11 +262,11 @@ name|BlockCollection
 name|bc
 parameter_list|)
 function_decl|;
-comment|/**    * Gets the ECSchema for the specified path    *     * @param src    *          - path    * @return ECSchema    * @throws IOException    */
-DECL|method|getECSchemaForPath (String src)
+comment|/**    * Gets the ECZone info for path    *     * @param src    *          - path    * @return {@link ErasureCodingZoneInfo}    * @throws IOException    */
+DECL|method|getErasureCodingZoneInfoForPath (String src)
 specifier|public
-name|ECSchema
-name|getECSchemaForPath
+name|ErasureCodingZoneInfo
+name|getErasureCodingZoneInfoForPath
 parameter_list|(
 name|String
 name|src

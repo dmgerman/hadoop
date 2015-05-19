@@ -2736,6 +2736,8 @@ argument_list|(
 name|testDir
 argument_list|,
 literal|null
+argument_list|,
+literal|0
 argument_list|)
 expr_stmt|;
 comment|// Create a file with striped block
@@ -3174,6 +3176,8 @@ argument_list|(
 name|testDir
 argument_list|,
 literal|null
+argument_list|,
+literal|0
 argument_list|)
 expr_stmt|;
 comment|//create a file with striped blocks

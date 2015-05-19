@@ -474,6 +474,8 @@ name|toString
 argument_list|()
 argument_list|,
 name|ecSchema
+argument_list|,
+literal|0
 argument_list|)
 expr_stmt|;
 name|dfs

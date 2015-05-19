@@ -887,6 +887,8 @@ name|StripingCell
 argument_list|(
 name|SCEHMA
 argument_list|,
+name|CELLSIZE
+argument_list|,
 name|done
 operator|/
 name|CELLSIZE
@@ -1532,6 +1534,8 @@ init|=
 name|divideByteRangeIntoStripes
 argument_list|(
 name|SCEHMA
+argument_list|,
+name|CELLSIZE
 argument_list|,
 name|blockGroup
 argument_list|,
