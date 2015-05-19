@@ -78,6 +78,17 @@ name|RemoteException
 extends|extends
 name|IOException
 block|{
+comment|/** this value should not be defined in RpcHeader.proto so that protobuf will return a null */
+DECL|field|UNSPECIFIED_ERROR
+specifier|private
+specifier|static
+specifier|final
+name|int
+name|UNSPECIFIED_ERROR
+init|=
+operator|-
+literal|1
+decl_stmt|;
 comment|/** For java.io.Serializable */
 DECL|field|serialVersionUID
 specifier|private
@@ -96,9 +107,11 @@ name|errorCode
 decl_stmt|;
 DECL|field|className
 specifier|private
+specifier|final
 name|String
 name|className
 decl_stmt|;
+comment|/**    * @param className wrapped exception, may be null    * @param msg may be null    */
 DECL|method|RemoteException (String className, String msg)
 specifier|public
 name|RemoteException
@@ -110,23 +123,17 @@ name|String
 name|msg
 parameter_list|)
 block|{
-name|super
+name|this
 argument_list|(
+name|className
+argument_list|,
 name|msg
+argument_list|,
+literal|null
 argument_list|)
 expr_stmt|;
-name|this
-operator|.
-name|className
-operator|=
-name|className
-expr_stmt|;
-name|errorCode
-operator|=
-operator|-
-literal|1
-expr_stmt|;
 block|}
+comment|/**    * @param className wrapped exception, may be null    * @param msg may be null    * @param erCode may be null    */
 DECL|method|RemoteException (String className, String msg, RpcErrorCodeProto erCode)
 specifier|public
 name|RemoteException
@@ -168,10 +175,10 @@ expr_stmt|;
 else|else
 name|errorCode
 operator|=
-operator|-
-literal|1
+name|UNSPECIFIED_ERROR
 expr_stmt|;
 block|}
+comment|/**    * @return the class name for the wrapped exception; may be null if none was given.    */
 DECL|method|getClassName ()
 specifier|public
 name|String
@@ -182,6 +189,7 @@ return|return
 name|className
 return|;
 block|}
+comment|/**    * @return may be null if the code was newer than our protobuf definitions or none was given.    */
 DECL|method|getErrorCode ()
 specifier|public
 name|RpcErrorCodeProto
@@ -197,7 +205,7 @@ name|errorCode
 argument_list|)
 return|;
 block|}
-comment|/**    * If this remote exception wraps up one of the lookupTypes    * then return this exception.    *<p>    * Unwraps any IOException.    *     * @param lookupTypes the desired exception class.    * @return IOException, which is either the lookupClass exception or this.    */
+comment|/**    * If this remote exception wraps up one of the lookupTypes    * then return this exception.    *<p>    * Unwraps any IOException.    *     * @param lookupTypes the desired exception class. may be null.    * @return IOException, which is either the lookupClass exception or this.    */
 DECL|method|unwrapRemoteException (Class<?>.... lookupTypes)
 specifier|public
 name|IOException
@@ -392,7 +400,7 @@ return|return
 name|ex
 return|;
 block|}
-comment|/** Create RemoteException from attributes */
+comment|/**    * Create RemoteException from attributes    * @param attrs may not be null    */
 DECL|method|valueOf (Attributes attrs)
 specifier|public
 specifier|static
