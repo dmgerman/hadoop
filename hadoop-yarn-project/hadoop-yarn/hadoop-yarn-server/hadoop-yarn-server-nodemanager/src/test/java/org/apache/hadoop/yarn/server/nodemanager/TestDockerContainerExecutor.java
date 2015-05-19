@@ -347,7 +347,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * This is intended to test the DockerContainerExecutor code, but it requires  * docker to be installed.  *<br><ol>  *<li>Install docker, and Compile the code with docker-service-url set to the  * host and port where docker service is running.  *<br><pre><code>  *> mvn clean install -Ddocker-service-url=tcp://0.0.0.0:4243 -DskipTests  *</code></pre>  */
+comment|/**  * This is intended to test the DockerContainerExecutor code, but it requires  * docker to be installed.  *<br><ol>  *<li>To run the tests, set the docker-service-url to the host and port where  * docker service is running (If docker-service-url is not specified then the  * local daemon will be used).  *<br><pre><code>  * mvn test -Ddocker-service-url=tcp://0.0.0.0:4243 -Dtest=TestDockerContainerExecutor  *</code></pre>  */
 end_comment
 
 begin_class
@@ -614,6 +614,7 @@ argument_list|)
 expr_stmt|;
 if|if
 condition|(
+operator|!
 name|Strings
 operator|.
 name|isNullOrEmpty
@@ -622,14 +623,29 @@ name|dockerUrl
 argument_list|)
 condition|)
 block|{
-return|return;
-block|}
 name|dockerUrl
 operator|=
 literal|" -H "
 operator|+
 name|dockerUrl
 expr_stmt|;
+block|}
+elseif|else
+if|if
+condition|(
+name|isDockerDaemonRunningLocally
+argument_list|()
+condition|)
+block|{
+name|dockerUrl
+operator|=
+literal|""
+expr_stmt|;
+block|}
+else|else
+block|{
+return|return;
+block|}
 name|dockerExec
 operator|=
 literal|"docker "
@@ -802,6 +818,47 @@ return|return
 name|exec
 operator|!=
 literal|null
+return|;
+block|}
+DECL|method|isDockerDaemonRunningLocally ()
+specifier|private
+name|boolean
+name|isDockerDaemonRunningLocally
+parameter_list|()
+block|{
+name|boolean
+name|dockerDaemonRunningLocally
+init|=
+literal|true
+decl_stmt|;
+try|try
+block|{
+name|shellExec
+argument_list|(
+literal|"docker info"
+argument_list|)
+expr_stmt|;
+block|}
+catch|catch
+parameter_list|(
+name|Exception
+name|e
+parameter_list|)
+block|{
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"docker daemon is not running on local machine."
+argument_list|)
+expr_stmt|;
+name|dockerDaemonRunningLocally
+operator|=
+literal|false
+expr_stmt|;
+block|}
+return|return
+name|dockerDaemonRunningLocally
 return|;
 block|}
 comment|/**    * Test that a docker container can be launched to run a command    * @param cId a fake ContainerID    * @param launchCtxEnv    * @param cmd the command to launch inside the docker container    * @return the exit code of the process used to launch the docker container    * @throws IOException    */
@@ -1188,6 +1245,11 @@ block|}
 comment|/**    * Test that a touch command can be launched successfully in a docker    * container    */
 annotation|@
 name|Test
+argument_list|(
+name|timeout
+operator|=
+literal|1000000
+argument_list|)
 DECL|method|testLaunchContainer ()
 specifier|public
 name|void
