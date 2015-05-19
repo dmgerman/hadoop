@@ -865,6 +865,7 @@ name|fsRetryInterval
 decl_stmt|;
 DECL|field|isHDFS
 specifier|private
+specifier|volatile
 name|boolean
 name|isHDFS
 decl_stmt|;
