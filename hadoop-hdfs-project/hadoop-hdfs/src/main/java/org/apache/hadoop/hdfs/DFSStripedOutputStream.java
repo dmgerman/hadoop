@@ -194,6 +194,40 @@ name|hadoop
 operator|.
 name|hdfs
 operator|.
+name|client
+operator|.
+name|HdfsClientConfigKeys
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|client
+operator|.
+name|impl
+operator|.
+name|DfsClientConf
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
 name|protocol
 operator|.
 name|ExtendedBlock
@@ -398,6 +432,12 @@ specifier|static
 class|class
 name|Coordinator
 block|{
+DECL|field|conf
+specifier|private
+specifier|final
+name|DfsClientConf
+name|conf
+decl_stmt|;
 DECL|field|endBlocks
 specifier|private
 specifier|final
@@ -430,9 +470,13 @@ name|shouldLocateFollowingBlock
 init|=
 literal|false
 decl_stmt|;
-DECL|method|Coordinator (final int numDataBlocks, final int numAllBlocks)
+DECL|method|Coordinator (final DfsClientConf conf, final int numDataBlocks, final int numAllBlocks)
 name|Coordinator
 parameter_list|(
+specifier|final
+name|DfsClientConf
+name|conf
+parameter_list|,
 specifier|final
 name|int
 name|numDataBlocks
@@ -442,6 +486,12 @@ name|int
 name|numAllBlocks
 parameter_list|)
 block|{
+name|this
+operator|.
+name|conf
+operator|=
+name|conf
+expr_stmt|;
 name|endBlocks
 operator|=
 operator|new
@@ -599,7 +649,10 @@ argument_list|)
 operator|.
 name|poll
 argument_list|(
-literal|30
+name|conf
+operator|.
+name|getStripedWriteMaxSecondsGetEndedBlock
+argument_list|()
 argument_list|,
 name|TimeUnit
 operator|.
@@ -781,7 +834,10 @@ argument_list|)
 operator|.
 name|poll
 argument_list|(
-literal|90
+name|conf
+operator|.
+name|getStripedWriteMaxSecondsGetStripedBlock
+argument_list|()
 argument_list|,
 name|TimeUnit
 operator|.
@@ -828,7 +884,7 @@ name|lb
 return|;
 block|}
 block|}
-comment|/** Buffers for writing the data and parity cells of a strip. */
+comment|/** Buffers for writing the data and parity cells of a stripe. */
 DECL|class|CellBuffers
 class|class
 name|CellBuffers
@@ -1388,6 +1444,11 @@ operator|=
 operator|new
 name|Coordinator
 argument_list|(
+name|dfsClient
+operator|.
+name|getConf
+argument_list|()
+argument_list|,
 name|numDataBlocks
 argument_list|,
 name|numAllBlocks
