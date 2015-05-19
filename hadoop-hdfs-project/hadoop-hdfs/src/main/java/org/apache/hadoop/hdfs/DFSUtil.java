@@ -428,7 +428,7 @@ name|java
 operator|.
 name|util
 operator|.
-name|Random
+name|Set
 import|;
 end_import
 
@@ -438,7 +438,9 @@ name|java
 operator|.
 name|util
 operator|.
-name|Set
+name|concurrent
+operator|.
+name|ThreadLocalRandom
 import|;
 end_import
 
@@ -1086,38 +1088,6 @@ parameter_list|()
 block|{
 comment|/* Hidden constructor */
 block|}
-DECL|field|RANDOM
-specifier|private
-specifier|static
-specifier|final
-name|ThreadLocal
-argument_list|<
-name|Random
-argument_list|>
-name|RANDOM
-init|=
-operator|new
-name|ThreadLocal
-argument_list|<
-name|Random
-argument_list|>
-argument_list|()
-block|{
-annotation|@
-name|Override
-specifier|protected
-name|Random
-name|initialValue
-parameter_list|()
-block|{
-return|return
-operator|new
-name|Random
-argument_list|()
-return|;
-block|}
-block|}
-decl_stmt|;
 DECL|field|SECURE_RANDOM
 specifier|private
 specifier|static
@@ -1150,21 +1120,6 @@ return|;
 block|}
 block|}
 decl_stmt|;
-comment|/** @return a pseudo random number generator. */
-DECL|method|getRandom ()
-specifier|public
-specifier|static
-name|Random
-name|getRandom
-parameter_list|()
-block|{
-return|return
-name|RANDOM
-operator|.
-name|get
-argument_list|()
-return|;
-block|}
 comment|/** @return a pseudo secure random number generator. */
 DECL|method|getSecureRandom ()
 specifier|public
@@ -1210,13 +1165,6 @@ operator|>
 literal|0
 condition|)
 block|{
-specifier|final
-name|Random
-name|random
-init|=
-name|getRandom
-argument_list|()
-decl_stmt|;
 for|for
 control|(
 name|int
@@ -1236,7 +1184,10 @@ specifier|final
 name|int
 name|randomIndex
 init|=
-name|random
+name|ThreadLocalRandom
+operator|.
+name|current
+argument_list|()
 operator|.
 name|nextInt
 argument_list|(

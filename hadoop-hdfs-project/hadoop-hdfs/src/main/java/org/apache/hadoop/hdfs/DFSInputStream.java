@@ -270,6 +270,18 @@ name|util
 operator|.
 name|concurrent
 operator|.
+name|ThreadLocalRandom
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
+name|concurrent
+operator|.
 name|TimeUnit
 import|;
 end_import
@@ -4676,6 +4688,7 @@ operator|*
 name|failures
 operator|+
 comment|// grace period for the last round of attempt
+comment|// expanding time window for each failure
 name|timeWindow
 operator|*
 operator|(
@@ -4684,15 +4697,14 @@ operator|+
 literal|1
 operator|)
 operator|*
-name|DFSUtil
+name|ThreadLocalRandom
 operator|.
-name|getRandom
+name|current
 argument_list|()
 operator|.
 name|nextDouble
 argument_list|()
 decl_stmt|;
-comment|// expanding time window for each failure
 name|DFSClient
 operator|.
 name|LOG

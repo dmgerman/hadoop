@@ -204,6 +204,18 @@ name|util
 operator|.
 name|concurrent
 operator|.
+name|ThreadLocalRandom
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
+name|concurrent
+operator|.
 name|atomic
 operator|.
 name|AtomicLong
@@ -5286,12 +5298,13 @@ operator|.
 name|getBlockIterator
 argument_list|()
 decl_stmt|;
+comment|// starting from a random block
 name|int
 name|startBlock
 init|=
-name|DFSUtil
+name|ThreadLocalRandom
 operator|.
-name|getRandom
+name|current
 argument_list|()
 operator|.
 name|nextInt
@@ -5299,7 +5312,6 @@ argument_list|(
 name|numBlocks
 argument_list|)
 decl_stmt|;
-comment|// starting from a random block
 comment|// skip blocks
 for|for
 control|(
@@ -8127,9 +8139,9 @@ comment|// this to prevent from deterministically selecting the same node even
 comment|// if the node failed to replicate the block on previous iterations
 if|if
 condition|(
-name|DFSUtil
+name|ThreadLocalRandom
 operator|.
-name|getRandom
+name|current
 argument_list|()
 operator|.
 name|nextBoolean
@@ -9228,9 +9240,9 @@ condition|)
 block|{
 name|startIndex
 operator|=
-name|DFSUtil
+name|ThreadLocalRandom
 operator|.
-name|getRandom
+name|current
 argument_list|()
 operator|.
 name|nextLong

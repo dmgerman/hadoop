@@ -38,6 +38,18 @@ end_import
 
 begin_import
 import|import
+name|java
+operator|.
+name|util
+operator|.
+name|concurrent
+operator|.
+name|ThreadLocalRandom
+import|;
+end_import
+
+begin_import
+import|import
 name|org
 operator|.
 name|apache
@@ -1694,9 +1706,9 @@ index|[
 literal|1024
 index|]
 decl_stmt|;
-name|DFSUtil
+name|ThreadLocalRandom
 operator|.
-name|getRandom
+name|current
 argument_list|()
 operator|.
 name|nextBytes
@@ -2048,9 +2060,9 @@ specifier|final
 name|int
 name|newLength
 init|=
-name|DFSUtil
+name|ThreadLocalRandom
 operator|.
-name|getRandom
+name|current
 argument_list|()
 operator|.
 name|nextInt

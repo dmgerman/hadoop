@@ -172,6 +172,18 @@ end_import
 
 begin_import
 import|import
+name|java
+operator|.
+name|util
+operator|.
+name|concurrent
+operator|.
+name|ThreadLocalRandom
+import|;
+end_import
+
+begin_import
+import|import
 name|org
 operator|.
 name|apache
@@ -321,20 +333,6 @@ operator|.
 name|hdfs
 operator|.
 name|DFSConfigKeys
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|hdfs
-operator|.
-name|DFSUtil
 import|;
 end_import
 
@@ -5731,9 +5729,9 @@ name|chosenNode
 operator|=
 name|nodes
 index|[
-name|DFSUtil
+name|ThreadLocalRandom
 operator|.
-name|getRandom
+name|current
 argument_list|()
 operator|.
 name|nextInt

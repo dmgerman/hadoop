@@ -174,6 +174,18 @@ end_import
 
 begin_import
 import|import
+name|java
+operator|.
+name|util
+operator|.
+name|concurrent
+operator|.
+name|ThreadLocalRandom
+import|;
+end_import
+
+begin_import
+import|import
 name|org
 operator|.
 name|apache
@@ -2524,9 +2536,9 @@ literal|0
 condition|)
 name|newID
 operator|=
-name|DFSUtil
+name|ThreadLocalRandom
 operator|.
-name|getRandom
+name|current
 argument_list|()
 operator|.
 name|nextInt
@@ -2534,7 +2546,7 @@ argument_list|(
 literal|0x7FFFFFFF
 argument_list|)
 expr_stmt|;
-comment|// use 31 bits only
+comment|// use 31 bits
 return|return
 name|newID
 return|;

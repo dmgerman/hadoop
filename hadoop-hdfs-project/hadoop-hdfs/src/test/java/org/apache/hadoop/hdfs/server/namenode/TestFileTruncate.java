@@ -166,6 +166,18 @@ end_import
 
 begin_import
 import|import
+name|java
+operator|.
+name|util
+operator|.
+name|concurrent
+operator|.
+name|ThreadLocalRandom
+import|;
+end_import
+
+begin_import
+import|import
 name|org
 operator|.
 name|apache
@@ -357,20 +369,6 @@ operator|.
 name|hdfs
 operator|.
 name|DFSTestUtil
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|hdfs
-operator|.
-name|DFSUtil
 import|;
 end_import
 
@@ -1226,9 +1224,9 @@ operator|*
 name|BLOCK_SIZE
 index|]
 decl_stmt|;
-name|DFSUtil
+name|ThreadLocalRandom
 operator|.
-name|getRandom
+name|current
 argument_list|()
 operator|.
 name|nextBytes
@@ -1266,9 +1264,9 @@ specifier|final
 name|int
 name|newLength
 init|=
-name|DFSUtil
+name|ThreadLocalRandom
 operator|.
-name|getRandom
+name|current
 argument_list|()
 operator|.
 name|nextInt
@@ -1424,9 +1422,9 @@ index|[
 name|BLOCK_SIZE
 index|]
 decl_stmt|;
-name|DFSUtil
+name|ThreadLocalRandom
 operator|.
-name|getRandom
+name|current
 argument_list|()
 operator|.
 name|nextBytes
@@ -1632,9 +1630,9 @@ operator|*
 name|BLOCK_SIZE
 index|]
 decl_stmt|;
-name|DFSUtil
+name|ThreadLocalRandom
 operator|.
-name|getRandom
+name|current
 argument_list|()
 operator|.
 name|nextBytes

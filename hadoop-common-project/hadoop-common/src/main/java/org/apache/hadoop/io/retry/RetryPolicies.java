@@ -136,7 +136,9 @@ name|java
 operator|.
 name|util
 operator|.
-name|Random
+name|concurrent
+operator|.
+name|ThreadLocalRandom
 import|;
 end_import
 
@@ -261,37 +263,6 @@ name|RetryPolicies
 operator|.
 name|class
 argument_list|)
-decl_stmt|;
-DECL|field|RANDOM
-specifier|private
-specifier|static
-name|ThreadLocal
-argument_list|<
-name|Random
-argument_list|>
-name|RANDOM
-init|=
-operator|new
-name|ThreadLocal
-argument_list|<
-name|Random
-argument_list|>
-argument_list|()
-block|{
-annotation|@
-name|Override
-specifier|protected
-name|Random
-name|initialValue
-parameter_list|()
-block|{
-return|return
-operator|new
-name|Random
-argument_list|()
-return|;
-block|}
-block|}
 decl_stmt|;
 comment|/**    *<p>    * Try once, and fail by re-throwing the exception.    * This corresponds to having no retry mechanism in place.    *</p>    */
 DECL|field|TRY_ONCE_THEN_FAIL
@@ -1335,13 +1306,14 @@ name|FAIL
 return|;
 block|}
 comment|//calculate sleep time and return.
+comment|// ensure 0.5<= ratio<=1.5
 specifier|final
 name|double
 name|ratio
 init|=
-name|RANDOM
+name|ThreadLocalRandom
 operator|.
-name|get
+name|current
 argument_list|()
 operator|.
 name|nextDouble
@@ -1349,7 +1321,6 @@ argument_list|()
 operator|+
 literal|0.5
 decl_stmt|;
-comment|//0.5<= ratio<=1.5
 specifier|final
 name|long
 name|sleepTime
@@ -2732,9 +2703,9 @@ argument_list|(
 name|baseTime
 operator|*
 operator|(
-name|RANDOM
+name|ThreadLocalRandom
 operator|.
-name|get
+name|current
 argument_list|()
 operator|.
 name|nextDouble
