@@ -1665,7 +1665,7 @@ block|{
 return|return
 name|StripedBlockUtil
 operator|.
-name|constructStripedBlock
+name|constructInternalBlock
 argument_list|(
 name|blockGroup
 argument_list|,
@@ -1692,7 +1692,7 @@ block|{
 return|return
 name|StripedBlockUtil
 operator|.
-name|getStripedBlockLength
+name|getInternalBlockLength
 argument_list|(
 name|blockGroup
 operator|.

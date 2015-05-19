@@ -116,22 +116,6 @@ name|hdfs
 operator|.
 name|protocol
 operator|.
-name|HdfsConstants
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|hdfs
-operator|.
-name|protocol
-operator|.
 name|LocatedBlock
 import|;
 end_import
@@ -197,24 +181,6 @@ operator|.
 name|io
 operator|.
 name|ByteBufferPool
-import|;
-end_import
-
-begin_import
-import|import static
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|hdfs
-operator|.
-name|util
-operator|.
-name|StripedBlockUtil
-operator|.
-name|planReadPortions
 import|;
 end_import
 
@@ -304,7 +270,25 @@ name|util
 operator|.
 name|StripedBlockUtil
 operator|.
-name|ReadPortion
+name|getStartOffsetsForInternalBlocks
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|util
+operator|.
+name|StripedBlockUtil
+operator|.
+name|parseStripedBlockGroup
 import|;
 end_import
 
@@ -613,7 +597,7 @@ import|;
 end_import
 
 begin_comment
-comment|/******************************************************************************  * DFSStripedInputStream reads from striped block groups, illustrated below:  *  * |<- Striped Block Group -> |  *  blk_0      blk_1       blk_2<- A striped block group has  *    |          |           |          {@link #dataBlkNum} blocks  *    v          v           v  * +------+   +------+   +------+  * |cell_0|   |cell_1|   |cell_2|<- The logical read order should be  * +------+   +------+   +------+       cell_0, cell_1, ...  * |cell_3|   |cell_4|   |cell_5|  * +------+   +------+   +------+  * |cell_6|   |cell_7|   |cell_8|  * +------+   +------+   +------+  * |cell_9|  * +------+<- A cell contains {@link #cellSize} bytes of data  *  * Three styles of read will eventually be supported:  *   1. Stateful read  *   2. pread without decode support  *     This is implemented by calculating the portion of read from each block and  *     issuing requests to each DataNode in parallel.  *   3. pread with decode support: TODO: will be supported after HDFS-7678  *****************************************************************************/
+comment|/**  * DFSStripedInputStream reads from striped block groups  */
 end_comment
 
 begin_class
@@ -1138,8 +1122,6 @@ name|LocatedBlock
 index|[]
 name|targetBlocks
 init|=
-name|StripedBlockUtil
-operator|.
 name|parseStripedBlockGroup
 argument_list|(
 name|targetBlockGroup
@@ -1151,24 +1133,27 @@ argument_list|,
 name|parityBlkNum
 argument_list|)
 decl_stmt|;
-comment|// The purpose is to get start offset into each block
-name|ReadPortion
+comment|// The purpose is to get start offset into each block.
+name|long
 index|[]
-name|readPortions
+name|offsetsForInternalBlocks
 init|=
-name|planReadPortions
+name|getStartOffsetsForInternalBlocks
 argument_list|(
-name|groupSize
+name|schema
 argument_list|,
-name|cellSize
+name|targetBlockGroup
 argument_list|,
 name|offsetIntoBlockGroup
-argument_list|,
-literal|0
-argument_list|,
-literal|0
 argument_list|)
 decl_stmt|;
+name|Preconditions
+operator|.
+name|checkNotNull
+argument_list|(
+name|offsetsForInternalBlocks
+argument_list|)
+expr_stmt|;
 specifier|final
 name|ReaderRetryPolicy
 name|retry
@@ -1207,6 +1192,23 @@ operator|!=
 literal|null
 condition|)
 block|{
+name|long
+name|offsetInBlock
+init|=
+name|offsetsForInternalBlocks
+index|[
+name|i
+index|]
+operator|<
+literal|0
+condition|?
+literal|0
+else|:
+name|offsetsForInternalBlocks
+index|[
+name|i
+index|]
+decl_stmt|;
 name|DNAddrPair
 name|retval
 init|=
@@ -1242,26 +1244,14 @@ name|getBlockReaderWithRetry
 argument_list|(
 name|targetBlock
 argument_list|,
-name|readPortions
-index|[
-name|i
-index|]
-operator|.
-name|getStartOffsetInBlock
-argument_list|()
+name|offsetInBlock
 argument_list|,
 name|targetBlock
 operator|.
 name|getBlockSize
 argument_list|()
 operator|-
-name|readPortions
-index|[
-name|i
-index|]
-operator|.
-name|getStartOffsetInBlock
-argument_list|()
+name|offsetInBlock
 argument_list|,
 name|retval
 operator|.

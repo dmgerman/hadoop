@@ -1234,7 +1234,7 @@ index|]
 operator|=
 name|StripedBlockUtil
 operator|.
-name|constructStripedBlock
+name|constructInternalBlock
 argument_list|(
 name|lastBlock
 operator|.
@@ -1307,7 +1307,7 @@ argument_list|()
 argument_list|,
 name|StripedBlockUtil
 operator|.
-name|getStripedBlockLength
+name|getInternalBlockLength
 argument_list|(
 name|lastBlock
 operator|.
