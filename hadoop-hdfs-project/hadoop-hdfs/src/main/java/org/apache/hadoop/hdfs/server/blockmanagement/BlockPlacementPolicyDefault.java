@@ -3205,12 +3205,7 @@ block|{
 name|DatanodeDescriptor
 name|chosenNode
 init|=
-operator|(
-name|DatanodeDescriptor
-operator|)
-name|clusterMap
-operator|.
-name|chooseRandom
+name|chooseDataNode
 argument_list|(
 name|scope
 argument_list|)
@@ -3543,6 +3538,29 @@ throw|;
 block|}
 return|return
 name|firstChosen
+return|;
+block|}
+comment|/**    * Choose a datanode from the given<i>scope</i>.    * @return the chosen node, if there is any.    */
+DECL|method|chooseDataNode (final String scope)
+specifier|protected
+name|DatanodeDescriptor
+name|chooseDataNode
+parameter_list|(
+specifier|final
+name|String
+name|scope
+parameter_list|)
+block|{
+return|return
+operator|(
+name|DatanodeDescriptor
+operator|)
+name|clusterMap
+operator|.
+name|chooseRandom
+argument_list|(
+name|scope
+argument_list|)
 return|;
 block|}
 comment|/**    * If the given storage is a good target, add it to the result list and    * update the set of excluded nodes.    * @return -1 if the given is not a good target;    *         otherwise, return the number of nodes added to excludedNodes set.    */
