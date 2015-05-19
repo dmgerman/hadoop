@@ -46,6 +46,24 @@ name|AbstractService
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|api
+operator|.
+name|records
+operator|.
+name|NodeLabel
+import|;
+end_import
+
 begin_comment
 comment|/**  * Interface which will be responsible for fetching the labels  *   */
 end_comment
@@ -79,7 +97,7 @@ specifier|public
 specifier|abstract
 name|Set
 argument_list|<
-name|String
+name|NodeLabel
 argument_list|>
 name|getNodeLabels
 parameter_list|()

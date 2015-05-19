@@ -70,16 +70,6 @@ name|java
 operator|.
 name|util
 operator|.
-name|Collections
-import|;
-end_import
-
-begin_import
-import|import
-name|java
-operator|.
-name|util
-operator|.
 name|Set
 import|;
 end_import
@@ -109,6 +99,24 @@ operator|.
 name|service
 operator|.
 name|ServiceOperations
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|api
+operator|.
+name|records
+operator|.
+name|NodeLabel
 import|;
 end_import
 
@@ -191,6 +199,22 @@ operator|.
 name|providers
 operator|.
 name|RecordFactoryProvider
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|nodelabels
+operator|.
+name|CommonNodeLabelsManager
 import|;
 end_import
 
@@ -557,7 +581,7 @@ decl_stmt|;
 DECL|field|labels
 name|Set
 argument_list|<
-name|String
+name|NodeLabel
 argument_list|>
 name|labels
 decl_stmt|;
@@ -1055,13 +1079,13 @@ DECL|field|nodeLabels
 specifier|private
 name|Set
 argument_list|<
-name|String
+name|NodeLabel
 argument_list|>
 name|nodeLabels
 init|=
-name|Collections
+name|CommonNodeLabelsManager
 operator|.
-name|EMPTY_SET
+name|EMPTY_NODELABEL_SET
 decl_stmt|;
 DECL|method|DummyNodeLabelsProvider ()
 specifier|public
@@ -1086,7 +1110,7 @@ specifier|public
 specifier|synchronized
 name|Set
 argument_list|<
-name|String
+name|NodeLabel
 argument_list|>
 name|getNodeLabels
 parameter_list|()
@@ -1095,14 +1119,14 @@ return|return
 name|nodeLabels
 return|;
 block|}
-DECL|method|setNodeLabels (Set<String> nodeLabels)
+DECL|method|setNodeLabels (Set<NodeLabel> nodeLabels)
 specifier|synchronized
 name|void
 name|setNodeLabels
 parameter_list|(
 name|Set
 argument_list|<
-name|String
+name|NodeLabel
 argument_list|>
 name|nodeLabels
 parameter_list|)
@@ -1274,7 +1298,7 @@ operator|.
 name|waitTillRegister
 argument_list|()
 expr_stmt|;
-name|assertCollectionEquals
+name|assertNLCollectionEquals
 argument_list|(
 name|resourceTracker
 operator|.
@@ -1302,7 +1326,7 @@ name|dummyLabelsProviderRef
 operator|.
 name|setNodeLabels
 argument_list|(
-name|toSet
+name|toNodeLabelSet
 argument_list|(
 literal|"P"
 argument_list|)
@@ -1321,7 +1345,7 @@ operator|.
 name|waitTillHeartbeat
 argument_list|()
 expr_stmt|;
-name|assertCollectionEquals
+name|assertNLCollectionEquals
 argument_list|(
 name|resourceTracker
 operator|.

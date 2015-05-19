@@ -148,18 +148,6 @@ name|java
 operator|.
 name|util
 operator|.
-name|concurrent
-operator|.
-name|ConcurrentLinkedQueue
-import|;
-end_import
-
-begin_import
-import|import
-name|java
-operator|.
-name|util
-operator|.
 name|Random
 import|;
 end_import
@@ -171,6 +159,18 @@ operator|.
 name|util
 operator|.
 name|Set
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
+name|concurrent
+operator|.
+name|ConcurrentLinkedQueue
 import|;
 end_import
 
@@ -417,6 +417,24 @@ operator|.
 name|records
 operator|.
 name|NodeId
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|api
+operator|.
+name|records
+operator|.
+name|NodeLabel
 import|;
 end_import
 
@@ -1884,7 +1902,7 @@ argument_list|()
 decl_stmt|;
 name|Set
 argument_list|<
-name|String
+name|NodeLabel
 argument_list|>
 name|nodeLabels
 init|=
@@ -1912,7 +1930,7 @@ operator|)
 condition|?
 name|CommonNodeLabelsManager
 operator|.
-name|EMPTY_STRING_SET
+name|EMPTY_NODELABEL_SET
 else|:
 name|nodeLabels
 expr_stmt|;
@@ -3759,7 +3777,7 @@ literal|0
 decl_stmt|;
 name|Set
 argument_list|<
-name|String
+name|NodeLabel
 argument_list|>
 name|lastUpdatedNodeLabelsToRM
 init|=
@@ -3787,7 +3805,7 @@ operator|)
 condition|?
 name|CommonNodeLabelsManager
 operator|.
-name|EMPTY_STRING_SET
+name|EMPTY_NODELABEL_SET
 else|:
 name|lastUpdatedNodeLabelsToRM
 expr_stmt|;
@@ -3808,7 +3826,7 @@ literal|null
 decl_stmt|;
 name|Set
 argument_list|<
-name|String
+name|NodeLabel
 argument_list|>
 name|nodeLabelsForHeartbeat
 init|=
@@ -3834,7 +3852,7 @@ operator|.
 name|getNodeLabels
 argument_list|()
 expr_stmt|;
-comment|//if the provider returns null then consider empty labels are set
+comment|// if the provider returns null then consider empty labels are set
 name|nodeLabelsForHeartbeat
 operator|=
 operator|(
@@ -3845,7 +3863,7 @@ operator|)
 condition|?
 name|CommonNodeLabelsManager
 operator|.
-name|EMPTY_STRING_SET
+name|EMPTY_NODELABEL_SET
 else|:
 name|nodeLabelsForHeartbeat
 expr_stmt|;
@@ -3860,7 +3878,7 @@ name|lastUpdatedNodeLabelsToRM
 argument_list|)
 condition|)
 block|{
-comment|//if nodelabels have not changed then no need to send
+comment|// if nodelabels have not changed then no need to send
 name|nodeLabelsForHeartbeat
 operator|=
 literal|null
@@ -4397,13 +4415,13 @@ name|areNodeLabelsUpdated
 parameter_list|(
 name|Set
 argument_list|<
-name|String
+name|NodeLabel
 argument_list|>
 name|nodeLabelsNew
 parameter_list|,
 name|Set
 argument_list|<
-name|String
+name|NodeLabel
 argument_list|>
 name|nodeLabelsOld
 parameter_list|)

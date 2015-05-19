@@ -92,6 +92,24 @@ name|api
 operator|.
 name|records
 operator|.
+name|NodeLabel
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|api
+operator|.
+name|records
+operator|.
 name|Resource
 import|;
 end_import
@@ -169,7 +187,7 @@ literal|null
 argument_list|)
 return|;
 block|}
-DECL|method|newInstance (NodeId nodeId, int httpPort, Resource resource, String nodeManagerVersionId, List<NMContainerStatus> containerStatuses, List<ApplicationId> runningApplications, Set<String> nodeLabels)
+DECL|method|newInstance (NodeId nodeId, int httpPort, Resource resource, String nodeManagerVersionId, List<NMContainerStatus> containerStatuses, List<ApplicationId> runningApplications, Set<NodeLabel> nodeLabels)
 specifier|public
 specifier|static
 name|RegisterNodeManagerRequest
@@ -201,7 +219,7 @@ name|runningApplications
 parameter_list|,
 name|Set
 argument_list|<
-name|String
+name|NodeLabel
 argument_list|>
 name|nodeLabels
 parameter_list|)
@@ -314,12 +332,12 @@ specifier|public
 specifier|abstract
 name|Set
 argument_list|<
-name|String
+name|NodeLabel
 argument_list|>
 name|getNodeLabels
 parameter_list|()
 function_decl|;
-DECL|method|setNodeLabels (Set<String> nodeLabels)
+DECL|method|setNodeLabels (Set<NodeLabel> nodeLabels)
 specifier|public
 specifier|abstract
 name|void
@@ -327,7 +345,7 @@ name|setNodeLabels
 parameter_list|(
 name|Set
 argument_list|<
-name|String
+name|NodeLabel
 argument_list|>
 name|nodeLabels
 parameter_list|)

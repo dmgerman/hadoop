@@ -52,6 +52,24 @@ name|hadoop
 operator|.
 name|yarn
 operator|.
+name|api
+operator|.
+name|records
+operator|.
+name|NodeLabel
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
 name|server
 operator|.
 name|api
@@ -105,7 +123,7 @@ specifier|abstract
 class|class
 name|NodeHeartbeatRequest
 block|{
-DECL|method|newInstance (NodeStatus nodeStatus, MasterKey lastKnownContainerTokenMasterKey, MasterKey lastKnownNMTokenMasterKey, Set<String> nodeLabels)
+DECL|method|newInstance (NodeStatus nodeStatus, MasterKey lastKnownContainerTokenMasterKey, MasterKey lastKnownNMTokenMasterKey, Set<NodeLabel> nodeLabels)
 specifier|public
 specifier|static
 name|NodeHeartbeatRequest
@@ -122,7 +140,7 @@ name|lastKnownNMTokenMasterKey
 parameter_list|,
 name|Set
 argument_list|<
-name|String
+name|NodeLabel
 argument_list|>
 name|nodeLabels
 parameter_list|)
@@ -227,12 +245,12 @@ specifier|public
 specifier|abstract
 name|Set
 argument_list|<
-name|String
+name|NodeLabel
 argument_list|>
 name|getNodeLabels
 parameter_list|()
 function_decl|;
-DECL|method|setNodeLabels (Set<String> nodeLabels)
+DECL|method|setNodeLabels (Set<NodeLabel> nodeLabels)
 specifier|public
 specifier|abstract
 name|void
@@ -240,7 +258,7 @@ name|setNodeLabels
 parameter_list|(
 name|Set
 argument_list|<
-name|String
+name|NodeLabel
 argument_list|>
 name|nodeLabels
 parameter_list|)
