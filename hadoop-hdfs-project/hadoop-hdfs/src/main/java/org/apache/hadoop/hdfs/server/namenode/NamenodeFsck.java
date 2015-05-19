@@ -1858,10 +1858,14 @@ name|println
 argument_list|(
 literal|"No. of Expected Replica: "
 operator|+
-name|bc
+name|bm
 operator|.
-name|getPreferredBlockReplication
-argument_list|()
+name|getExpectedReplicaNum
+argument_list|(
+name|bc
+argument_list|,
+name|blockInfo
+argument_list|)
 argument_list|)
 expr_stmt|;
 name|out
