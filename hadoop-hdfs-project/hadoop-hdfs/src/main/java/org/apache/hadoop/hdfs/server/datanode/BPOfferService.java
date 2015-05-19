@@ -2913,6 +2913,7 @@ argument_list|(
 name|ecTasks
 argument_list|)
 expr_stmt|;
+break|break;
 default|default:
 name|LOG
 operator|.
