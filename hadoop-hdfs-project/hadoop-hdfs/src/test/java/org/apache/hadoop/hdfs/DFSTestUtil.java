@@ -11974,48 +11974,29 @@ name|lastBlock
 return|;
 block|}
 comment|/**    * Because currently DFSStripedOutputStream does not support hflush/hsync,    * tests can use this method to flush all the buffered data to DataNodes.    */
-DECL|method|writeAndFlushStripedOutputStream ( DFSStripedOutputStream out, int chunkSize)
+DECL|method|flushInternal (DFSStripedOutputStream out)
 specifier|public
 specifier|static
-name|void
-name|writeAndFlushStripedOutputStream
+name|ExtendedBlock
+name|flushInternal
 parameter_list|(
 name|DFSStripedOutputStream
 name|out
-parameter_list|,
-name|int
-name|chunkSize
 parameter_list|)
 throws|throws
 name|IOException
 block|{
-comment|// FSOutputSummer.BUFFER_NUM_CHUNKS == 9
-name|byte
-index|[]
-name|toWrite
-init|=
-operator|new
-name|byte
-index|[
-name|chunkSize
-operator|*
-literal|9
-operator|+
-literal|1
-index|]
-decl_stmt|;
-name|out
-operator|.
-name|write
-argument_list|(
-name|toWrite
-argument_list|)
-expr_stmt|;
 name|out
 operator|.
 name|flushInternal
 argument_list|()
 expr_stmt|;
+return|return
+name|out
+operator|.
+name|getBlock
+argument_list|()
+return|;
 block|}
 block|}
 end_class

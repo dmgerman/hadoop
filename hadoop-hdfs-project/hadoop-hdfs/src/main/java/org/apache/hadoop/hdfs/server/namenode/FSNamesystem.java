@@ -26869,10 +26869,10 @@ argument_list|()
 expr_stmt|;
 block|}
 block|}
-comment|/**    * Get a new generation stamp together with an access token for     * a block under construction    *     * This method is called for recovering a failed pipeline or setting up    * a pipeline to append to a block.    *     * @param block a block    * @param clientName the name of a client    * @return a located block with a new generation stamp and an access token    * @throws IOException if any error occurs    */
-DECL|method|updateBlockForPipeline (ExtendedBlock block, String clientName)
+comment|/**    * Get a new generation stamp together with an access token for     * a block under construction    *     * This method is called for recovering a failed write or setting up    * a block for appended.    *     * @param block a block    * @param clientName the name of a client    * @return a located block with a new generation stamp and an access token    * @throws IOException if any error occurs    */
+DECL|method|bumpBlockGenerationStamp (ExtendedBlock block, String clientName)
 name|LocatedBlock
-name|updateBlockForPipeline
+name|bumpBlockGenerationStamp
 parameter_list|(
 name|ExtendedBlock
 name|block
@@ -26883,6 +26883,7 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
+specifier|final
 name|LocatedBlock
 name|locatedBlock
 decl_stmt|;
@@ -26906,13 +26907,17 @@ name|WRITE
 argument_list|)
 expr_stmt|;
 comment|// check vadility of parameters
+specifier|final
+name|INodeFile
+name|file
+init|=
 name|checkUCBlock
 argument_list|(
 name|block
 argument_list|,
 name|clientName
 argument_list|)
-expr_stmt|;
+decl_stmt|;
 comment|// get a new generation stamp and an access token
 name|block
 operator|.
@@ -26934,29 +26939,21 @@ argument_list|)
 expr_stmt|;
 name|locatedBlock
 operator|=
-operator|new
-name|LocatedBlock
+name|BlockManager
+operator|.
+name|newLocatedBlock
 argument_list|(
 name|block
 argument_list|,
-operator|new
-name|DatanodeInfo
-index|[
-literal|0
-index|]
-argument_list|)
-expr_stmt|;
-name|blockManager
+name|file
 operator|.
-name|setBlockToken
-argument_list|(
-name|locatedBlock
+name|getLastBlock
+argument_list|()
 argument_list|,
-name|BlockTokenIdentifier
-operator|.
-name|AccessMode
-operator|.
-name|WRITE
+literal|null
+argument_list|,
+operator|-
+literal|1
 argument_list|)
 expr_stmt|;
 block|}
@@ -27195,17 +27192,12 @@ operator|.
 name|getLastBlock
 argument_list|()
 decl_stmt|;
-comment|// when updating pipeline, the last block must be contiguous block
-assert|assert
-name|lastBlock
-operator|instanceof
-name|BlockInfoContiguousUnderConstruction
-assert|;
-name|BlockInfoContiguousUnderConstruction
+specifier|final
+name|BlockInfoUnderConstruction
 name|blockinfo
 init|=
 operator|(
-name|BlockInfoContiguousUnderConstruction
+name|BlockInfoUnderConstruction
 operator|)
 name|lastBlock
 decl_stmt|;
@@ -27217,22 +27209,13 @@ operator|.
 name|getGenerationStamp
 argument_list|()
 operator|<=
-name|blockinfo
+name|lastBlock
 operator|.
 name|getGenerationStamp
 argument_list|()
-operator|||
-name|newBlock
-operator|.
-name|getNumBytes
-argument_list|()
-operator|<
-name|blockinfo
-operator|.
-name|getNumBytes
-argument_list|()
 condition|)
 block|{
+specifier|final
 name|String
 name|msg
 init|=
@@ -27240,18 +27223,62 @@ literal|"Update "
 operator|+
 name|oldBlock
 operator|+
-literal|" (len = "
+literal|" but the new block "
 operator|+
-name|blockinfo
+name|newBlock
+operator|+
+literal|" does not have a larger generation stamp than the last block "
+operator|+
+name|lastBlock
+decl_stmt|;
+name|LOG
+operator|.
+name|warn
+argument_list|(
+name|msg
+argument_list|)
+expr_stmt|;
+throw|throw
+operator|new
+name|IOException
+argument_list|(
+name|msg
+argument_list|)
+throw|;
+block|}
+if|if
+condition|(
+name|newBlock
+operator|.
+name|getNumBytes
+argument_list|()
+operator|<
+name|lastBlock
+operator|.
+name|getNumBytes
+argument_list|()
+condition|)
+block|{
+specifier|final
+name|String
+name|msg
+init|=
+literal|"Update "
+operator|+
+name|oldBlock
+operator|+
+literal|" (size="
+operator|+
+name|oldBlock
 operator|.
 name|getNumBytes
 argument_list|()
 operator|+
-literal|") to an older state: "
+literal|") to a smaller size block "
 operator|+
 name|newBlock
 operator|+
-literal|" (len = "
+literal|" (size="
 operator|+
 name|newBlock
 operator|.
@@ -27276,7 +27303,7 @@ argument_list|)
 throw|;
 block|}
 comment|// Update old block with the new generation stamp and new length
-name|blockinfo
+name|lastBlock
 operator|.
 name|setNumBytes
 argument_list|(

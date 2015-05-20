@@ -5426,7 +5426,7 @@ expr_stmt|;
 return|return
 name|namesystem
 operator|.
-name|updateBlockForPipeline
+name|bumpBlockGenerationStamp
 argument_list|(
 name|block
 argument_list|,

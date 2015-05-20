@@ -319,22 +319,6 @@ operator|.
 name|client
 operator|.
 name|HdfsClientConfigKeys
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|hdfs
-operator|.
-name|client
-operator|.
-name|HdfsClientConfigKeys
 operator|.
 name|BlockWrite
 import|;
@@ -1521,6 +1505,13 @@ name|error
 init|=
 literal|false
 decl_stmt|;
+DECL|field|extenalError
+specifier|private
+name|boolean
+name|extenalError
+init|=
+literal|false
+decl_stmt|;
 DECL|field|badNodeIndex
 specifier|private
 name|int
@@ -1574,6 +1565,10 @@ name|error
 operator|=
 literal|false
 expr_stmt|;
+name|extenalError
+operator|=
+literal|false
+expr_stmt|;
 name|badNodeIndex
 operator|=
 operator|-
@@ -1608,8 +1603,12 @@ block|{
 return|return
 name|error
 operator|&&
+operator|(
 name|isNodeMarked
 argument_list|()
+operator|||
+name|extenalError
+operator|)
 return|;
 block|}
 DECL|method|setError (boolean err)
@@ -1626,6 +1625,24 @@ operator|.
 name|error
 operator|=
 name|err
+expr_stmt|;
+block|}
+DECL|method|initExtenalError ()
+specifier|synchronized
+name|void
+name|initExtenalError
+parameter_list|()
+block|{
+name|setError
+argument_list|(
+literal|true
+argument_list|)
+expr_stmt|;
+name|this
+operator|.
+name|extenalError
+operator|=
+literal|true
 expr_stmt|;
 block|}
 DECL|method|setBadNodeIndex (int index)
@@ -8292,6 +8309,15 @@ parameter_list|()
 block|{
 return|return
 name|accessToken
+return|;
+block|}
+DECL|method|getErrorState ()
+name|ErrorState
+name|getErrorState
+parameter_list|()
+block|{
+return|return
+name|errorState
 return|;
 block|}
 comment|/**    * Put a packet to the data queue    *    * @param packet the packet to be put into the data queued    */
