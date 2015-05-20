@@ -15909,13 +15909,10 @@ name|removeStoredBlock
 argument_list|(
 name|storageInfo
 argument_list|,
-name|getStoredBlock
-argument_list|(
 name|rdbi
 operator|.
 name|getBlock
 argument_list|()
-argument_list|)
 argument_list|,
 name|node
 argument_list|)
