@@ -579,6 +579,11 @@ argument_list|(
 name|conf
 argument_list|)
 expr_stmt|;
+name|mgr
+operator|.
+name|start
+argument_list|()
+expr_stmt|;
 comment|// check variables
 name|Assert
 operator|.
@@ -738,6 +743,11 @@ name|init
 argument_list|(
 name|conf
 argument_list|)
+expr_stmt|;
+name|mgr
+operator|.
+name|start
+argument_list|()
 expr_stmt|;
 comment|// check variables
 name|Assert
@@ -1106,6 +1116,11 @@ argument_list|(
 name|cf
 argument_list|)
 expr_stmt|;
+name|mgr
+operator|.
+name|start
+argument_list|()
+expr_stmt|;
 comment|// check variables
 name|Assert
 operator|.
@@ -1368,6 +1383,11 @@ name|init
 argument_list|(
 name|conf
 argument_list|)
+expr_stmt|;
+name|mgr
+operator|.
+name|start
+argument_list|()
 expr_stmt|;
 comment|// check variables
 name|Assert

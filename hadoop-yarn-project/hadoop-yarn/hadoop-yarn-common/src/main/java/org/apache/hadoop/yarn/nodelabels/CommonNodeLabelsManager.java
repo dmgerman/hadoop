@@ -1334,17 +1334,6 @@ argument_list|(
 name|conf
 argument_list|)
 expr_stmt|;
-if|if
-condition|(
-name|nodeLabelsEnabled
-condition|)
-block|{
-name|initNodeLabelStore
-argument_list|(
-name|conf
-argument_list|)
-expr_stmt|;
-block|}
 name|labelCollections
 operator|.
 name|put
@@ -1431,6 +1420,18 @@ parameter_list|()
 throws|throws
 name|Exception
 block|{
+if|if
+condition|(
+name|nodeLabelsEnabled
+condition|)
+block|{
+name|initNodeLabelStore
+argument_list|(
+name|getConfig
+argument_list|()
+argument_list|)
+expr_stmt|;
+block|}
 comment|// init dispatcher only when service start, because recover will happen in
 comment|// service init, we don't want to trigger any event handling at that time.
 name|initDispatcher

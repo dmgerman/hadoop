@@ -829,6 +829,10 @@ operator|new
 name|MockRM
 argument_list|(
 name|confForRM1
+argument_list|,
+literal|null
+argument_list|,
+literal|false
 argument_list|)
 expr_stmt|;
 name|rm2
@@ -837,6 +841,10 @@ operator|new
 name|MockRM
 argument_list|(
 name|confForRM2
+argument_list|,
+literal|null
+argument_list|,
+literal|false
 argument_list|)
 expr_stmt|;
 name|startRMs
