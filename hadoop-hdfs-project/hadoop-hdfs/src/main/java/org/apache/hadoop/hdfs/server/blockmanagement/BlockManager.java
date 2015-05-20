@@ -1648,10 +1648,10 @@ init|=
 literal|0.0
 decl_stmt|;
 comment|/** for block replicas placement */
-DECL|field|blockplacement
+DECL|field|placementPolicies
 specifier|private
-name|BlockPlacementPolicy
-name|blockplacement
+name|BlockPlacementPolicies
+name|placementPolicies
 decl_stmt|;
 DECL|field|storagePolicySuite
 specifier|private
@@ -1760,11 +1760,10 @@ literal|"BlocksMap"
 argument_list|)
 argument_list|)
 expr_stmt|;
-name|blockplacement
+name|placementPolicies
 operator|=
-name|BlockPlacementPolicy
-operator|.
-name|getInstance
+operator|new
+name|BlockPlacementPolicies
 argument_list|(
 name|conf
 argument_list|,
@@ -2727,40 +2726,13 @@ name|getBlockPlacementPolicy
 parameter_list|()
 block|{
 return|return
-name|blockplacement
-return|;
-block|}
-comment|/** Set BlockPlacementPolicy */
-DECL|method|setBlockPlacementPolicy (BlockPlacementPolicy newpolicy)
-specifier|public
-name|void
-name|setBlockPlacementPolicy
-parameter_list|(
-name|BlockPlacementPolicy
-name|newpolicy
-parameter_list|)
-block|{
-if|if
-condition|(
-name|newpolicy
-operator|==
-literal|null
-condition|)
-block|{
-throw|throw
-operator|new
-name|HadoopIllegalArgumentException
-argument_list|(
-literal|"newpolicy == null"
-argument_list|)
-throw|;
-block|}
-name|this
+name|placementPolicies
 operator|.
-name|blockplacement
-operator|=
-name|newpolicy
-expr_stmt|;
+name|getPolicy
+argument_list|(
+literal|false
+argument_list|)
+return|;
 block|}
 comment|/** Dump meta data to out. */
 DECL|method|metaSave (PrintWriter out)
@@ -7499,11 +7471,27 @@ block|}
 comment|// choose replication targets: NOT HOLDING THE GLOBAL LOCK
 comment|// It is costly to extract the filename for which chooseTargets is called,
 comment|// so for now we pass in the block collection itself.
+specifier|final
+name|BlockPlacementPolicy
+name|placementPolicy
+init|=
+name|placementPolicies
+operator|.
+name|getPolicy
+argument_list|(
+name|rw
+operator|.
+name|block
+operator|.
+name|isStriped
+argument_list|()
+argument_list|)
+decl_stmt|;
 name|rw
 operator|.
 name|chooseTargets
 argument_list|(
-name|blockplacement
+name|placementPolicy
 argument_list|,
 name|storagePolicySuite
 argument_list|,
@@ -8152,7 +8140,12 @@ name|blocksize
 parameter_list|)
 block|{
 return|return
-name|blockplacement
+name|placementPolicies
+operator|.
+name|getPolicy
+argument_list|(
+literal|false
+argument_list|)
 operator|.
 name|chooseTarget
 argument_list|(
@@ -8184,7 +8177,7 @@ argument_list|)
 return|;
 block|}
 comment|/** Choose target for getting additional datanodes for an existing pipeline. */
-DECL|method|chooseTarget4AdditionalDatanode (String src, int numAdditionalNodes, Node clientnode, List<DatanodeStorageInfo> chosen, Set<Node> excludes, long blocksize, byte storagePolicyID)
+DECL|method|chooseTarget4AdditionalDatanode (String src, int numAdditionalNodes, Node clientnode, List<DatanodeStorageInfo> chosen, Set<Node> excludes, long blocksize, byte storagePolicyID, boolean isStriped)
 specifier|public
 name|DatanodeStorageInfo
 index|[]
@@ -8216,6 +8209,9 @@ name|blocksize
 parameter_list|,
 name|byte
 name|storagePolicyID
+parameter_list|,
+name|boolean
+name|isStriped
 parameter_list|)
 block|{
 specifier|final
@@ -8227,6 +8223,17 @@ operator|.
 name|getPolicy
 argument_list|(
 name|storagePolicyID
+argument_list|)
+decl_stmt|;
+specifier|final
+name|BlockPlacementPolicy
+name|blockplacement
+init|=
+name|placementPolicies
+operator|.
+name|getPolicy
+argument_list|(
+name|isStriped
 argument_list|)
 decl_stmt|;
 return|return
@@ -8253,7 +8260,7 @@ argument_list|)
 return|;
 block|}
 comment|/**    * Choose target datanodes for creating a new block.    *     * @throws IOException    *           if the number of targets< minimum replication.    * @see BlockPlacementPolicy#chooseTarget(String, int, Node,    *      Set, long, List, BlockStoragePolicy)    */
-DECL|method|chooseTarget4NewBlock (final String src, final int numOfReplicas, final Node client, final Set<Node> excludedNodes, final long blocksize, final List<String> favoredNodes, final byte storagePolicyID)
+DECL|method|chooseTarget4NewBlock (final String src, final int numOfReplicas, final Node client, final Set<Node> excludedNodes, final long blocksize, final List<String> favoredNodes, final byte storagePolicyID, final boolean isStriped)
 specifier|public
 name|DatanodeStorageInfo
 index|[]
@@ -8292,6 +8299,10 @@ parameter_list|,
 specifier|final
 name|byte
 name|storagePolicyID
+parameter_list|,
+specifier|final
+name|boolean
+name|isStriped
 parameter_list|)
 throws|throws
 name|IOException
@@ -8316,6 +8327,17 @@ operator|.
 name|getPolicy
 argument_list|(
 name|storagePolicyID
+argument_list|)
+decl_stmt|;
+specifier|final
+name|BlockPlacementPolicy
+name|blockplacement
+init|=
+name|placementPolicies
+operator|.
+name|getPolicy
+argument_list|(
+name|isStriped
 argument_list|)
 decl_stmt|;
 specifier|final
@@ -14457,7 +14479,12 @@ name|addedNode
 argument_list|,
 name|delNodeHint
 argument_list|,
-name|blockplacement
+name|placementPolicies
+operator|.
+name|getPolicy
+argument_list|(
+literal|false
+argument_list|)
 argument_list|)
 expr_stmt|;
 block|}

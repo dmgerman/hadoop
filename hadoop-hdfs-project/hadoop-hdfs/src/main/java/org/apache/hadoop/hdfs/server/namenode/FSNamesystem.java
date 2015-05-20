@@ -15613,6 +15613,10 @@ name|DatanodeStorageInfo
 argument_list|>
 name|chosen
 decl_stmt|;
+specifier|final
+name|boolean
+name|isStriped
+decl_stmt|;
 name|checkOperation
 argument_list|(
 name|OperationCategory
@@ -15778,6 +15782,13 @@ operator|.
 name|getStoragePolicyID
 argument_list|()
 expr_stmt|;
+name|isStriped
+operator|=
+name|file
+operator|.
+name|isStriped
+argument_list|()
+expr_stmt|;
 comment|//find datanode storages
 specifier|final
 name|DatanodeManager
@@ -15853,6 +15864,8 @@ argument_list|,
 name|preferredblocksize
 argument_list|,
 name|storagePolicyID
+argument_list|,
+name|isStriped
 argument_list|)
 decl_stmt|;
 specifier|final

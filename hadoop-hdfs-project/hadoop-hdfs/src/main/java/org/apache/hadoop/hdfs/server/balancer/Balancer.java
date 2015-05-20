@@ -412,7 +412,7 @@ name|server
 operator|.
 name|blockmanagement
 operator|.
-name|BlockPlacementPolicy
+name|BlockPlacementPolicyDefault
 import|;
 end_import
 
@@ -430,7 +430,7 @@ name|server
 operator|.
 name|blockmanagement
 operator|.
-name|BlockPlacementPolicyDefault
+name|BlockPlacementPolicies
 import|;
 end_import
 
@@ -777,13 +777,11 @@ parameter_list|)
 throws|throws
 name|UnsupportedActionException
 block|{
-if|if
-condition|(
-operator|!
-operator|(
-name|BlockPlacementPolicy
-operator|.
-name|getInstance
+name|BlockPlacementPolicies
+name|placementPolicies
+init|=
+operator|new
+name|BlockPlacementPolicies
 argument_list|(
 name|conf
 argument_list|,
@@ -792,6 +790,17 @@ argument_list|,
 literal|null
 argument_list|,
 literal|null
+argument_list|)
+decl_stmt|;
+if|if
+condition|(
+operator|!
+operator|(
+name|placementPolicies
+operator|.
+name|getPolicy
+argument_list|(
+literal|false
 argument_list|)
 operator|instanceof
 name|BlockPlacementPolicyDefault

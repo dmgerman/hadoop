@@ -1294,6 +1294,10 @@ decl_stmt|;
 name|String
 name|clientMachine
 decl_stmt|;
+specifier|final
+name|boolean
+name|isStriped
+decl_stmt|;
 name|byte
 index|[]
 index|[]
@@ -1461,14 +1465,13 @@ operator|.
 name|getClientMachine
 argument_list|()
 expr_stmt|;
-name|boolean
 name|isStriped
-init|=
+operator|=
 name|pendingFile
 operator|.
 name|isStriped
 argument_list|()
-decl_stmt|;
+expr_stmt|;
 name|numTargets
 operator|=
 name|isStriped
@@ -1504,6 +1507,8 @@ argument_list|,
 name|storagePolicyID
 argument_list|,
 name|clientMachine
+argument_list|,
+name|isStriped
 argument_list|)
 return|;
 block|}
@@ -1967,6 +1972,10 @@ argument_list|,
 name|r
 operator|.
 name|storagePolicyID
+argument_list|,
+name|r
+operator|.
+name|isStriped
 argument_list|)
 return|;
 block|}
@@ -4977,7 +4986,12 @@ specifier|final
 name|String
 name|clientMachine
 decl_stmt|;
-DECL|method|ValidateAddBlockResult ( long blockSize, int numTargets, byte storagePolicyID, String clientMachine)
+DECL|field|isStriped
+specifier|final
+name|boolean
+name|isStriped
+decl_stmt|;
+DECL|method|ValidateAddBlockResult ( long blockSize, int numTargets, byte storagePolicyID, String clientMachine, boolean isStriped)
 name|ValidateAddBlockResult
 parameter_list|(
 name|long
@@ -4991,6 +5005,9 @@ name|storagePolicyID
 parameter_list|,
 name|String
 name|clientMachine
+parameter_list|,
+name|boolean
+name|isStriped
 parameter_list|)
 block|{
 name|this
@@ -5016,6 +5033,12 @@ operator|.
 name|clientMachine
 operator|=
 name|clientMachine
+expr_stmt|;
+name|this
+operator|.
+name|isStriped
+operator|=
+name|isStriped
 expr_stmt|;
 block|}
 block|}
