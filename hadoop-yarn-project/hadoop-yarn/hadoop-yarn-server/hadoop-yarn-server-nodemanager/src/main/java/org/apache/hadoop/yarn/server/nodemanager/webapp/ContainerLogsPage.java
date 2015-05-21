@@ -496,35 +496,6 @@ argument_list|)
 expr_stmt|;
 comment|//Error getting redirect url. Fall through.
 block|}
-else|else
-block|{
-name|set
-argument_list|(
-name|TITLE
-argument_list|,
-name|join
-argument_list|(
-literal|"Redirecting to log server for "
-argument_list|,
-name|$
-argument_list|(
-name|CONTAINER_ID
-argument_list|)
-argument_list|)
-argument_list|)
-expr_stmt|;
-name|html
-operator|.
-name|meta_http
-argument_list|(
-literal|"refresh"
-argument_list|,
-literal|"1; url="
-operator|+
-name|redirectUrl
-argument_list|)
-expr_stmt|;
-block|}
 block|}
 name|set
 argument_list|(
