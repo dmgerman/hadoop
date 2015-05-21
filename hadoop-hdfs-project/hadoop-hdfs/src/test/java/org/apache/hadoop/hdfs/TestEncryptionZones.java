@@ -4699,7 +4699,7 @@ name|URI
 argument_list|(
 name|conf
 operator|.
-name|get
+name|getTrimmed
 argument_list|(
 name|DFSConfigKeys
 operator|.

@@ -14944,6 +14944,7 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
+comment|/**    * Probe for encryption enabled on this filesystem.    * See {@link DFSUtil#isHDFSEncryptionEnabled(Configuration)}    * @return true if encryption is enabled    */
 DECL|method|isHDFSEncryptionEnabled ()
 specifier|public
 name|boolean
@@ -14951,18 +14952,14 @@ name|isHDFSEncryptionEnabled
 parameter_list|()
 block|{
 return|return
-name|conf
+name|DFSUtil
 operator|.
-name|get
+name|isHDFSEncryptionEnabled
 argument_list|(
-name|DFSConfigKeys
+name|this
 operator|.
-name|DFS_ENCRYPTION_KEY_PROVIDER_URI
-argument_list|,
-literal|null
+name|conf
 argument_list|)
-operator|!=
-literal|null
 return|;
 block|}
 comment|/**    * Returns the SaslDataTransferClient configured for this DFSClient.    *    * @return SaslDataTransferClient configured for this DFSClient    */

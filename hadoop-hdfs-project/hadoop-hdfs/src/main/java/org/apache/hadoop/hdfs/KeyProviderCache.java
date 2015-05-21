@@ -459,21 +459,22 @@ name|providerUriStr
 init|=
 name|conf
 operator|.
-name|get
+name|getTrimmed
 argument_list|(
 name|DFSConfigKeys
 operator|.
 name|DFS_ENCRYPTION_KEY_PROVIDER_URI
 argument_list|,
-literal|null
+literal|""
 argument_list|)
 decl_stmt|;
 comment|// No provider set in conf
 if|if
 condition|(
 name|providerUriStr
-operator|==
-literal|null
+operator|.
+name|isEmpty
+argument_list|()
 condition|)
 block|{
 name|LOG
