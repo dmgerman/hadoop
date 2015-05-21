@@ -5599,8 +5599,9 @@ argument_list|)
 return|;
 block|}
 block|}
+annotation|@
+name|VisibleForTesting
 DECL|method|attemptScheduling (FSSchedulerNode node)
-specifier|private
 specifier|synchronized
 name|void
 name|attemptScheduling
@@ -5623,6 +5624,41 @@ name|isSchedulerReadyForAllocatingContainers
 argument_list|()
 condition|)
 block|{
+return|return;
+block|}
+specifier|final
+name|NodeId
+name|nodeID
+init|=
+name|node
+operator|.
+name|getNodeID
+argument_list|()
+decl_stmt|;
+if|if
+condition|(
+operator|!
+name|nodes
+operator|.
+name|containsKey
+argument_list|(
+name|nodeID
+argument_list|)
+condition|)
+block|{
+comment|// The node might have just been removed while this thread was waiting
+comment|// on the synchronized lock before it entered this synchronized method
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"Skipping scheduling as the node "
+operator|+
+name|nodeID
+operator|+
+literal|" has been removed"
+argument_list|)
+expr_stmt|;
 return|return;
 block|}
 comment|// Assign new containers...
