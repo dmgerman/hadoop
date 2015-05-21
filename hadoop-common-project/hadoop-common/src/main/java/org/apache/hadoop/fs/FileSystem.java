@@ -5355,7 +5355,7 @@ throw|throw
 operator|new
 name|NoSuchElementException
 argument_list|(
-literal|"No more entry in "
+literal|"No more entries in "
 operator|+
 name|f
 argument_list|)
