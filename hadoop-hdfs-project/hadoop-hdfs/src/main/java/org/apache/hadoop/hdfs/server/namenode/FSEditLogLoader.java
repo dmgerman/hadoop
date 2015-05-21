@@ -2971,10 +2971,12 @@ argument_list|)
 expr_stmt|;
 name|newFile
 operator|=
-name|fsDir
+name|FSDirWriteFileOp
 operator|.
 name|addFileForEditLog
 argument_list|(
+name|fsDir
+argument_list|,
 name|inodeId
 argument_list|,
 name|iip
