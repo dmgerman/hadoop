@@ -797,6 +797,13 @@ operator|+
 literal|" No blocks found, lease removed."
 argument_list|)
 expr_stmt|;
+comment|// sets primary node index and return.
+name|primaryNodeIndex
+operator|=
+operator|-
+literal|1
+expr_stmt|;
+return|return;
 block|}
 name|boolean
 name|allLiveReplicasTriedAsPrimary

@@ -1649,6 +1649,8 @@ argument_list|()
 return|;
 block|}
 DECL|method|getCurrentStreamer ()
+specifier|private
+specifier|synchronized
 name|StripedDataStreamer
 name|getCurrentStreamer
 parameter_list|()
@@ -1662,6 +1664,7 @@ return|;
 block|}
 DECL|method|setCurrentStreamer (int i)
 specifier|private
+specifier|synchronized
 name|StripedDataStreamer
 name|setCurrentStreamer
 parameter_list|(
@@ -1990,12 +1993,14 @@ name|packetSize
 argument_list|,
 name|chunksPerPacket
 argument_list|,
-name|streamer
+name|getCurrentStreamer
+argument_list|()
 operator|.
 name|getBytesCurBlock
 argument_list|()
 argument_list|,
-name|streamer
+name|getCurrentStreamer
+argument_list|()
 operator|.
 name|getAndIncCurrentSeqno
 argument_list|()
@@ -2072,7 +2077,8 @@ argument_list|,
 name|toWrite
 argument_list|)
 expr_stmt|;
-name|streamer
+name|getCurrentStreamer
+argument_list|()
 operator|.
 name|incBytesCurBlock
 argument_list|(
@@ -2920,7 +2926,8 @@ name|checksumBuf
 argument_list|)
 control|)
 block|{
-name|streamer
+name|getCurrentStreamer
+argument_list|()
 operator|.
 name|waitAndQueuePacket
 argument_list|(

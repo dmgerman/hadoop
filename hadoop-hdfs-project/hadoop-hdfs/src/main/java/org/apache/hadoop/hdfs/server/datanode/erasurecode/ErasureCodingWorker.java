@@ -1365,6 +1365,7 @@ decl_stmt|;
 DECL|field|WRITE_PACKET_SIZE
 specifier|private
 specifier|final
+specifier|static
 name|int
 name|WRITE_PACKET_SIZE
 init|=
@@ -5076,6 +5077,7 @@ block|}
 block|}
 DECL|class|StripedReader
 specifier|private
+specifier|static
 class|class
 name|StripedReader
 block|{

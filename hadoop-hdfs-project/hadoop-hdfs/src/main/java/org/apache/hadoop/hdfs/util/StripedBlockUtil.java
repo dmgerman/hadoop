@@ -459,6 +459,9 @@ argument_list|()
 operator|+
 name|idxInBlockGroup
 operator|*
+operator|(
+name|long
+operator|)
 name|cellSize
 decl_stmt|;
 if|if
@@ -2132,6 +2135,9 @@ if|if
 condition|(
 name|idx
 operator|*
+operator|(
+name|long
+operator|)
 name|cellSize
 operator|>=
 name|blockGroup
@@ -2166,6 +2172,9 @@ name|cell
 operator|.
 name|idxInInternalBlk
 operator|*
+operator|(
+name|long
+operator|)
 name|cellSize
 expr_stmt|;
 if|if

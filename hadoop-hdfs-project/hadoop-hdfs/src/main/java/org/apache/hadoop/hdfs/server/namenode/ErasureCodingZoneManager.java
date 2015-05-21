@@ -534,7 +534,15 @@ return|return
 operator|new
 name|ErasureCodingZoneInfo
 argument_list|(
+name|dir
+operator|.
+name|getInode
+argument_list|(
 name|inode
+operator|.
+name|getId
+argument_list|()
+argument_list|)
 operator|.
 name|getFullPathName
 argument_list|()
