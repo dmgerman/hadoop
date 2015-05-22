@@ -674,6 +674,13 @@ argument_list|()
 decl_stmt|;
 name|event
 operator|.
+name|setId
+argument_list|(
+literal|"foo_event_id"
+argument_list|)
+expr_stmt|;
+name|event
+operator|.
 name|setTimestamp
 argument_list|(
 name|System
