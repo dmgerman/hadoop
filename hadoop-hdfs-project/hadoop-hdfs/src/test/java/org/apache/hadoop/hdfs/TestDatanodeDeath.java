@@ -1880,13 +1880,6 @@ argument_list|(
 literal|5
 argument_list|)
 expr_stmt|;
-name|dfstream
-operator|.
-name|setArtificialSlowdown
-argument_list|(
-literal|3000
-argument_list|)
-expr_stmt|;
 specifier|final
 name|long
 name|myseed
