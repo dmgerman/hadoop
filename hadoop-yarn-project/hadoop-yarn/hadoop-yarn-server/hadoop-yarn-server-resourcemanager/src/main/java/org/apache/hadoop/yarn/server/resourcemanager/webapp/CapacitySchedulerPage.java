@@ -2696,7 +2696,7 @@ name|span
 argument_list|(
 literal|".q"
 argument_list|,
-literal|"root"
+literal|"Queue: root"
 argument_list|)
 operator|.
 name|_
@@ -3963,9 +3963,9 @@ literal|"  $('#cs').bind('select_node.jstree', function(e, data) {"
 argument_list|,
 literal|"    var q = $('.q', data.rslt.obj).first().text();"
 argument_list|,
-literal|"    if (q == 'root') q = '';"
+literal|"    if (q == 'Queue: root') q = '';"
 argument_list|,
-literal|"    else q = '^' + q.substr(q.lastIndexOf('.') + 1) + '$';"
+literal|"    else q = '^' + q.substr(q.lastIndexOf(':') + 2) + '$';"
 argument_list|,
 literal|"    $('#apps').dataTable().fnFilter(q, 4, true);"
 argument_list|,
