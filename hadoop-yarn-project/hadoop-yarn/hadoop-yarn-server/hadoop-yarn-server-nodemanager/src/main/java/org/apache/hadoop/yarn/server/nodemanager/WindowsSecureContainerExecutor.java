@@ -2441,7 +2441,7 @@ name|run
 parameter_list|()
 block|{
 try|try
-block|{
+init|(
 name|BufferedReader
 name|lines
 init|=
@@ -2461,7 +2461,8 @@ literal|"UTF-8"
 argument_list|)
 argument_list|)
 argument_list|)
-decl_stmt|;
+init|)
+block|{
 name|char
 index|[]
 name|buf
