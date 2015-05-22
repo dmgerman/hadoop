@@ -2292,17 +2292,6 @@ parameter_list|)
 throws|throws
 name|QuotaExceededException
 block|{
-name|Preconditions
-operator|.
-name|checkState
-argument_list|(
-operator|!
-name|isStriped
-argument_list|()
-argument_list|,
-literal|"Cannot set replication to a file with striped blocks"
-argument_list|)
-expr_stmt|;
 name|recordModification
 argument_list|(
 name|latestSnapshotId

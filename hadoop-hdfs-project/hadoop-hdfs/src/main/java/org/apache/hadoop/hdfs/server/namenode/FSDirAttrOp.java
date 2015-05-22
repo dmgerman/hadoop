@@ -2323,6 +2323,8 @@ throws|,
 name|UnresolvedLinkException
 throws|,
 name|SnapshotAccessControlException
+throws|,
+name|UnsupportedActionException
 block|{
 assert|assert
 name|fsd
@@ -2377,6 +2379,22 @@ operator|.
 name|asFile
 argument_list|()
 decl_stmt|;
+if|if
+condition|(
+name|file
+operator|.
+name|isStriped
+argument_list|()
+condition|)
+block|{
+throw|throw
+operator|new
+name|UnsupportedActionException
+argument_list|(
+literal|"Cannot set replication to a file with striped blocks"
+argument_list|)
+throw|;
+block|}
 specifier|final
 name|short
 name|oldBR
