@@ -68,32 +68,22 @@ name|int
 index|[]
 name|generatingPolynomial
 decl_stmt|;
-annotation|@
-name|Override
-DECL|method|initialize (int numDataUnits, int numParityUnits, int chunkSize)
+DECL|method|RSRawEncoder (int numDataUnits, int numParityUnits)
 specifier|public
-name|void
-name|initialize
+name|RSRawEncoder
 parameter_list|(
 name|int
 name|numDataUnits
 parameter_list|,
 name|int
 name|numParityUnits
-parameter_list|,
-name|int
-name|chunkSize
 parameter_list|)
 block|{
 name|super
-operator|.
-name|initialize
 argument_list|(
 name|numDataUnits
 argument_list|,
 name|numParityUnits
-argument_list|,
-name|chunkSize
 argument_list|)
 expr_stmt|;
 assert|assert

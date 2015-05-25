@@ -52,6 +52,22 @@ name|ECBlockGroup
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|io
+operator|.
+name|erasurecode
+operator|.
+name|ECSchema
+import|;
+end_import
+
 begin_comment
 comment|/**  * An abstract erasure encoder that's to be inherited by new encoders.  *  * It implements the {@link ErasureCoder} interface.  */
 end_comment
@@ -65,6 +81,39 @@ name|AbstractErasureEncoder
 extends|extends
 name|AbstractErasureCoder
 block|{
+DECL|method|AbstractErasureEncoder (int numDataUnits, int numParityUnits)
+specifier|public
+name|AbstractErasureEncoder
+parameter_list|(
+name|int
+name|numDataUnits
+parameter_list|,
+name|int
+name|numParityUnits
+parameter_list|)
+block|{
+name|super
+argument_list|(
+name|numDataUnits
+argument_list|,
+name|numParityUnits
+argument_list|)
+expr_stmt|;
+block|}
+DECL|method|AbstractErasureEncoder (ECSchema schema)
+specifier|public
+name|AbstractErasureEncoder
+parameter_list|(
+name|ECSchema
+name|schema
+parameter_list|)
+block|{
+name|super
+argument_list|(
+name|schema
+argument_list|)
+expr_stmt|;
+block|}
 annotation|@
 name|Override
 DECL|method|calculateCoding (ECBlockGroup blockGroup)

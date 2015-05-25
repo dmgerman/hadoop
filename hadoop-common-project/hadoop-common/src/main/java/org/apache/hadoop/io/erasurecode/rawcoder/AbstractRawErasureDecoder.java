@@ -73,6 +73,25 @@ name|AbstractRawErasureCoder
 implements|implements
 name|RawErasureDecoder
 block|{
+DECL|method|AbstractRawErasureDecoder (int numDataUnits, int numParityUnits)
+specifier|public
+name|AbstractRawErasureDecoder
+parameter_list|(
+name|int
+name|numDataUnits
+parameter_list|,
+name|int
+name|numParityUnits
+parameter_list|)
+block|{
+name|super
+argument_list|(
+name|numDataUnits
+argument_list|,
+name|numParityUnits
+argument_list|)
+expr_stmt|;
+block|}
 annotation|@
 name|Override
 DECL|method|decode (ByteBuffer[] inputs, int[] erasedIndexes, ByteBuffer[] outputs)

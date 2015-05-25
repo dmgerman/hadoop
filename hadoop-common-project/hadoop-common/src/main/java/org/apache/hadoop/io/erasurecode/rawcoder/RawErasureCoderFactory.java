@@ -30,19 +30,31 @@ specifier|public
 interface|interface
 name|RawErasureCoderFactory
 block|{
-comment|/**    * Create raw erasure encoder.    * @return raw erasure encoder    */
-DECL|method|createEncoder ()
+comment|/**    * Create raw erasure encoder.    * @param numDataUnits    * @param numParityUnits    * @return raw erasure encoder    */
+DECL|method|createEncoder (int numDataUnits, int numParityUnits)
 specifier|public
 name|RawErasureEncoder
 name|createEncoder
-parameter_list|()
+parameter_list|(
+name|int
+name|numDataUnits
+parameter_list|,
+name|int
+name|numParityUnits
+parameter_list|)
 function_decl|;
-comment|/**    * Create raw erasure decoder.    * @return raw erasure decoder    */
-DECL|method|createDecoder ()
+comment|/**    * Create raw erasure decoder.    * @param numDataUnits    * @param numParityUnits    * @return raw erasure decoder    */
+DECL|method|createDecoder (int numDataUnits, int numParityUnits)
 specifier|public
 name|RawErasureDecoder
 name|createDecoder
-parameter_list|()
+parameter_list|(
+name|int
+name|numDataUnits
+parameter_list|,
+name|int
+name|numParityUnits
+parameter_list|)
 function_decl|;
 block|}
 end_interface

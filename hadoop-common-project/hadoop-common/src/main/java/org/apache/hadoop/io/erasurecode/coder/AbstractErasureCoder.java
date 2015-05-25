@@ -153,27 +153,30 @@ name|ErasureCoder
 block|{
 DECL|field|numDataUnits
 specifier|private
+specifier|final
 name|int
 name|numDataUnits
 decl_stmt|;
 DECL|field|numParityUnits
 specifier|private
+specifier|final
 name|int
 name|numParityUnits
 decl_stmt|;
-DECL|field|chunkSize
-specifier|private
-name|int
-name|chunkSize
-decl_stmt|;
 comment|/**    * Create raw decoder using the factory specified by rawCoderFactoryKey    * @param rawCoderFactoryKey    * @return raw decoder    */
-DECL|method|createRawDecoder (String rawCoderFactoryKey)
+DECL|method|createRawDecoder ( String rawCoderFactoryKey, int dataUnitsCount, int parityUnitsCount)
 specifier|protected
 name|RawErasureDecoder
 name|createRawDecoder
 parameter_list|(
 name|String
 name|rawCoderFactoryKey
+parameter_list|,
+name|int
+name|dataUnitsCount
+parameter_list|,
+name|int
+name|parityUnitsCount
 parameter_list|)
 block|{
 name|RawErasureCoder
@@ -187,6 +190,10 @@ argument_list|,
 name|rawCoderFactoryKey
 argument_list|,
 literal|false
+argument_list|,
+name|dataUnitsCount
+argument_list|,
+name|parityUnitsCount
 argument_list|)
 decl_stmt|;
 return|return
@@ -197,13 +204,19 @@ name|rawCoder
 return|;
 block|}
 comment|/**    * Create raw encoder using the factory specified by rawCoderFactoryKey    * @param rawCoderFactoryKey    * @return raw encoder    */
-DECL|method|createRawEncoder (String rawCoderFactoryKey)
+DECL|method|createRawEncoder ( String rawCoderFactoryKey, int dataUnitsCount, int parityUnitsCount)
 specifier|protected
 name|RawErasureEncoder
 name|createRawEncoder
 parameter_list|(
 name|String
 name|rawCoderFactoryKey
+parameter_list|,
+name|int
+name|dataUnitsCount
+parameter_list|,
+name|int
+name|parityUnitsCount
 parameter_list|)
 block|{
 name|RawErasureCoder
@@ -217,6 +230,10 @@ argument_list|,
 name|rawCoderFactoryKey
 argument_list|,
 literal|true
+argument_list|,
+name|dataUnitsCount
+argument_list|,
+name|parityUnitsCount
 argument_list|)
 decl_stmt|;
 return|return
@@ -227,7 +244,7 @@ name|rawCoder
 return|;
 block|}
 comment|/**    * Create raw coder using specified conf and raw coder factory key.    * @param conf    * @param rawCoderFactoryKey    * @param isEncoder    * @return raw coder    */
-DECL|method|createRawCoder (Configuration conf, String rawCoderFactoryKey, boolean isEncoder)
+DECL|method|createRawCoder (Configuration conf, String rawCoderFactoryKey, boolean isEncoder, int numDataUnits, int numParityUnits)
 specifier|public
 specifier|static
 name|RawErasureCoder
@@ -241,6 +258,12 @@ name|rawCoderFactoryKey
 parameter_list|,
 name|boolean
 name|isEncoder
+parameter_list|,
+name|int
+name|numDataUnits
+parameter_list|,
+name|int
+name|numParityUnits
 parameter_list|)
 block|{
 if|if
@@ -341,29 +364,31 @@ condition|?
 name|fact
 operator|.
 name|createEncoder
-argument_list|()
+argument_list|(
+name|numDataUnits
+argument_list|,
+name|numParityUnits
+argument_list|)
 else|:
 name|fact
 operator|.
 name|createDecoder
-argument_list|()
+argument_list|(
+name|numDataUnits
+argument_list|,
+name|numParityUnits
+argument_list|)
 return|;
 block|}
-annotation|@
-name|Override
-DECL|method|initialize (int numDataUnits, int numParityUnits, int chunkSize)
+DECL|method|AbstractErasureCoder (int numDataUnits, int numParityUnits)
 specifier|public
-name|void
-name|initialize
+name|AbstractErasureCoder
 parameter_list|(
 name|int
 name|numDataUnits
 parameter_list|,
 name|int
 name|numParityUnits
-parameter_list|,
-name|int
-name|chunkSize
 parameter_list|)
 block|{
 name|this
@@ -378,25 +403,16 @@ name|numParityUnits
 operator|=
 name|numParityUnits
 expr_stmt|;
-name|this
-operator|.
-name|chunkSize
-operator|=
-name|chunkSize
-expr_stmt|;
 block|}
-annotation|@
-name|Override
-DECL|method|initialize (ECSchema schema)
+DECL|method|AbstractErasureCoder (ECSchema schema)
 specifier|public
-name|void
-name|initialize
+name|AbstractErasureCoder
 parameter_list|(
 name|ECSchema
 name|schema
 parameter_list|)
 block|{
-name|initialize
+name|this
 argument_list|(
 name|schema
 operator|.
@@ -406,11 +422,6 @@ argument_list|,
 name|schema
 operator|.
 name|getNumParityUnits
-argument_list|()
-argument_list|,
-name|schema
-operator|.
-name|getChunkSize
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -441,22 +452,10 @@ return|;
 block|}
 annotation|@
 name|Override
-DECL|method|getChunkSize ()
-specifier|public
-name|int
-name|getChunkSize
-parameter_list|()
-block|{
-return|return
-name|chunkSize
-return|;
-block|}
-annotation|@
-name|Override
-DECL|method|preferNativeBuffer ()
+DECL|method|preferDirectBuffer ()
 specifier|public
 name|boolean
-name|preferNativeBuffer
+name|preferDirectBuffer
 parameter_list|()
 block|{
 return|return

@@ -64,6 +64,22 @@ name|io
 operator|.
 name|erasurecode
 operator|.
+name|ECSchema
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|io
+operator|.
+name|erasurecode
+operator|.
 name|rawcoder
 operator|.
 name|RawErasureEncoder
@@ -89,7 +105,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * Xor erasure encoder that encodes a block group.  *  * It implements {@link ErasureEncoder}.  */
+comment|/**  * Xor erasure encoder that encodes a block group.  *  * It implements {@link ErasureCoder}.  */
 end_comment
 
 begin_class
@@ -100,6 +116,39 @@ name|XORErasureEncoder
 extends|extends
 name|AbstractErasureEncoder
 block|{
+DECL|method|XORErasureEncoder (int numDataUnits, int numParityUnits)
+specifier|public
+name|XORErasureEncoder
+parameter_list|(
+name|int
+name|numDataUnits
+parameter_list|,
+name|int
+name|numParityUnits
+parameter_list|)
+block|{
+name|super
+argument_list|(
+name|numDataUnits
+argument_list|,
+name|numParityUnits
+argument_list|)
+expr_stmt|;
+block|}
+DECL|method|XORErasureEncoder (ECSchema schema)
+specifier|public
+name|XORErasureEncoder
+parameter_list|(
+name|ECSchema
+name|schema
+parameter_list|)
+block|{
+name|super
+argument_list|(
+name|schema
+argument_list|)
+expr_stmt|;
+block|}
 annotation|@
 name|Override
 DECL|method|prepareEncodingStep (final ECBlockGroup blockGroup)
@@ -118,22 +167,14 @@ name|rawEncoder
 init|=
 operator|new
 name|XORRawEncoder
-argument_list|()
-decl_stmt|;
-name|rawEncoder
-operator|.
-name|initialize
 argument_list|(
 name|getNumDataUnits
 argument_list|()
 argument_list|,
 name|getNumParityUnits
 argument_list|()
-argument_list|,
-name|getChunkSize
-argument_list|()
 argument_list|)
-expr_stmt|;
+decl_stmt|;
 name|ECBlock
 index|[]
 name|inputBlocks

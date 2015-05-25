@@ -1484,17 +1484,10 @@ name|encoder
 operator|=
 operator|new
 name|RSRawEncoder
-argument_list|()
-expr_stmt|;
-name|encoder
-operator|.
-name|initialize
 argument_list|(
 name|numDataBlocks
 argument_list|,
 name|numParityBlocks
-argument_list|,
-name|cellSize
 argument_list|)
 expr_stmt|;
 name|coordinator

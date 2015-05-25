@@ -102,20 +102,15 @@ name|XORErasureCodec
 extends|extends
 name|AbstractErasureCodec
 block|{
-annotation|@
-name|Override
-DECL|method|setSchema (ECSchema schema)
+DECL|method|XORErasureCodec (ECSchema schema)
 specifier|public
-name|void
-name|setSchema
+name|XORErasureCodec
 parameter_list|(
 name|ECSchema
 name|schema
 parameter_list|)
 block|{
 name|super
-operator|.
-name|setSchema
 argument_list|(
 name|schema
 argument_list|)
@@ -133,30 +128,36 @@ assert|;
 block|}
 annotation|@
 name|Override
-DECL|method|doCreateEncoder ()
-specifier|protected
+DECL|method|createEncoder ()
+specifier|public
 name|ErasureCoder
-name|doCreateEncoder
+name|createEncoder
 parameter_list|()
 block|{
 return|return
 operator|new
 name|XORErasureEncoder
+argument_list|(
+name|getSchema
 argument_list|()
+argument_list|)
 return|;
 block|}
 annotation|@
 name|Override
-DECL|method|doCreateDecoder ()
-specifier|protected
+DECL|method|createDecoder ()
+specifier|public
 name|ErasureCoder
-name|doCreateDecoder
+name|createDecoder
 parameter_list|()
 block|{
 return|return
 operator|new
 name|XORErasureDecoder
+argument_list|(
+name|getSchema
 argument_list|()
+argument_list|)
 return|;
 block|}
 block|}

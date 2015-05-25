@@ -1719,11 +1719,6 @@ name|encoder
 init|=
 operator|new
 name|RSRawEncoder
-argument_list|()
-decl_stmt|;
-name|encoder
-operator|.
-name|initialize
 argument_list|(
 name|dataBytes
 operator|.
@@ -1732,10 +1727,8 @@ argument_list|,
 name|parityBytes
 operator|.
 name|length
-argument_list|,
-name|cellSize
 argument_list|)
-expr_stmt|;
+decl_stmt|;
 name|encoder
 operator|.
 name|encode

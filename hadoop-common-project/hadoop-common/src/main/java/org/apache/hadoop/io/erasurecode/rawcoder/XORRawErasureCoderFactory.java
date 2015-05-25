@@ -34,30 +34,50 @@ name|RawErasureCoderFactory
 block|{
 annotation|@
 name|Override
-DECL|method|createEncoder ()
+DECL|method|createEncoder (int numDataUnits, int numParityUnits)
 specifier|public
 name|RawErasureEncoder
 name|createEncoder
-parameter_list|()
+parameter_list|(
+name|int
+name|numDataUnits
+parameter_list|,
+name|int
+name|numParityUnits
+parameter_list|)
 block|{
 return|return
 operator|new
 name|XORRawEncoder
-argument_list|()
+argument_list|(
+name|numDataUnits
+argument_list|,
+name|numParityUnits
+argument_list|)
 return|;
 block|}
 annotation|@
 name|Override
-DECL|method|createDecoder ()
+DECL|method|createDecoder (int numDataUnits, int numParityUnits)
 specifier|public
 name|RawErasureDecoder
 name|createDecoder
-parameter_list|()
+parameter_list|(
+name|int
+name|numDataUnits
+parameter_list|,
+name|int
+name|numParityUnits
+parameter_list|)
 block|{
 return|return
 operator|new
 name|XORRawDecoder
-argument_list|()
+argument_list|(
+name|numDataUnits
+argument_list|,
+name|numParityUnits
+argument_list|)
 return|;
 block|}
 block|}

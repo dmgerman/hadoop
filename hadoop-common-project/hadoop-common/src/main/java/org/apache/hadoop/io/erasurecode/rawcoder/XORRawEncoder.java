@@ -42,6 +42,25 @@ name|XORRawEncoder
 extends|extends
 name|AbstractRawErasureEncoder
 block|{
+DECL|method|XORRawEncoder (int numDataUnits, int numParityUnits)
+specifier|public
+name|XORRawEncoder
+parameter_list|(
+name|int
+name|numDataUnits
+parameter_list|,
+name|int
+name|numParityUnits
+parameter_list|)
+block|{
+name|super
+argument_list|(
+name|numDataUnits
+argument_list|,
+name|numParityUnits
+argument_list|)
+expr_stmt|;
+block|}
 DECL|method|doEncode (ByteBuffer[] inputs, ByteBuffer[] outputs)
 specifier|protected
 name|void

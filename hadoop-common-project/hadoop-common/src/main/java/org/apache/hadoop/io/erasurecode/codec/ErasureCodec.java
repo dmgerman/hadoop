@@ -46,22 +46,6 @@ name|io
 operator|.
 name|erasurecode
 operator|.
-name|ECSchema
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|io
-operator|.
-name|erasurecode
-operator|.
 name|coder
 operator|.
 name|ErasureCoder
@@ -98,16 +82,6 @@ name|ErasureCodec
 extends|extends
 name|Configurable
 block|{
-comment|/**    * Set EC schema to be used by this codec.    * @param schema    */
-DECL|method|setSchema (ECSchema schema)
-specifier|public
-name|void
-name|setSchema
-parameter_list|(
-name|ECSchema
-name|schema
-parameter_list|)
-function_decl|;
 comment|/**    * Create block grouper    * @return block grouper    */
 DECL|method|createBlockGrouper ()
 specifier|public

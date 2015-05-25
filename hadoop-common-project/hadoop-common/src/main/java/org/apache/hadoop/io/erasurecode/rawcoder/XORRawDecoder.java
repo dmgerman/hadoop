@@ -42,6 +42,25 @@ name|XORRawDecoder
 extends|extends
 name|AbstractRawErasureDecoder
 block|{
+DECL|method|XORRawDecoder (int numDataUnits, int numParityUnits)
+specifier|public
+name|XORRawDecoder
+parameter_list|(
+name|int
+name|numDataUnits
+parameter_list|,
+name|int
+name|numParityUnits
+parameter_list|)
+block|{
+name|super
+argument_list|(
+name|numDataUnits
+argument_list|,
+name|numParityUnits
+argument_list|)
+expr_stmt|;
+block|}
 annotation|@
 name|Override
 DECL|method|doDecode (ByteBuffer[] inputs, int[] erasedIndexes, ByteBuffer[] outputs)

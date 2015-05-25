@@ -46,22 +46,6 @@ name|RawErasureCoder
 extends|extends
 name|Configurable
 block|{
-comment|/**    * Initialize with the important parameters for the code.    * @param numDataUnits how many data inputs for the coding    * @param numParityUnits how many parity outputs the coding generates    * @param chunkSize the size of the input/output buffer    */
-DECL|method|initialize (int numDataUnits, int numParityUnits, int chunkSize)
-specifier|public
-name|void
-name|initialize
-parameter_list|(
-name|int
-name|numDataUnits
-parameter_list|,
-name|int
-name|numParityUnits
-parameter_list|,
-name|int
-name|chunkSize
-parameter_list|)
-function_decl|;
 comment|/**    * The number of data input units for the coding. A unit can be a byte,    * chunk or buffer or even a block.    * @return count of data input units    */
 DECL|method|getNumDataUnits ()
 specifier|public
@@ -74,13 +58,6 @@ DECL|method|getNumParityUnits ()
 specifier|public
 name|int
 name|getNumParityUnits
-parameter_list|()
-function_decl|;
-comment|/**    * Chunk buffer size for the input/output    * @return chunk buffer size    */
-DECL|method|getChunkSize ()
-specifier|public
-name|int
-name|getChunkSize
 parameter_list|()
 function_decl|;
 comment|/**    * Tell if direct buffer is preferred or not. It's for callers to    * decide how to allocate coding chunk buffers, using DirectByteBuffer or    * bytes array. It will return false by default.    * @return true if native buffer is preferred for performance consideration,    * otherwise false.    */
