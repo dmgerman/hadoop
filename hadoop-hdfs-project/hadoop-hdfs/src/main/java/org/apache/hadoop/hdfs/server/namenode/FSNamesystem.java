@@ -2348,23 +2348,7 @@ name|hdfs
 operator|.
 name|protocol
 operator|.
-name|ErasureCodingInfo
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|hdfs
-operator|.
-name|protocol
-operator|.
-name|ErasureCodingZoneInfo
+name|ErasureCodingZone
 import|;
 end_import
 
@@ -35220,57 +35204,10 @@ name|iip
 argument_list|)
 return|;
 block|}
-comment|/**    * Get the erasure coding information for specified src    */
-DECL|method|getErasureCodingInfo (String src)
-name|ErasureCodingInfo
-name|getErasureCodingInfo
-parameter_list|(
-name|String
-name|src
-parameter_list|)
-throws|throws
-name|AccessControlException
-throws|,
-name|UnresolvedLinkException
-throws|,
-name|IOException
-block|{
-name|ErasureCodingZoneInfo
-name|zoneInfo
-init|=
-name|getErasureCodingZoneInfo
-argument_list|(
-name|src
-argument_list|)
-decl_stmt|;
-if|if
-condition|(
-name|zoneInfo
-operator|!=
-literal|null
-condition|)
-block|{
-return|return
-operator|new
-name|ErasureCodingInfo
-argument_list|(
-name|src
-argument_list|,
-name|zoneInfo
-operator|.
-name|getSchema
-argument_list|()
-argument_list|)
-return|;
-block|}
-return|return
-literal|null
-return|;
-block|}
 comment|/**    * Get the erasure coding zone information for specified path    */
-DECL|method|getErasureCodingZoneInfo (String src)
-name|ErasureCodingZoneInfo
-name|getErasureCodingZoneInfo
+DECL|method|getErasureCodingZone (String src)
+name|ErasureCodingZone
+name|getErasureCodingZone
 parameter_list|(
 name|String
 name|src
@@ -35302,7 +35239,7 @@ name|READ
 argument_list|)
 expr_stmt|;
 return|return
-name|getErasureCodingZoneInfoForPath
+name|getErasureCodingZoneForPath
 argument_list|(
 name|src
 argument_list|)
@@ -36508,10 +36445,10 @@ block|}
 block|}
 annotation|@
 name|Override
-DECL|method|getErasureCodingZoneInfoForPath (String src)
+DECL|method|getErasureCodingZoneForPath (String src)
 specifier|public
-name|ErasureCodingZoneInfo
-name|getErasureCodingZoneInfoForPath
+name|ErasureCodingZone
+name|getErasureCodingZoneForPath
 parameter_list|(
 name|String
 name|src
@@ -36587,7 +36524,7 @@ block|}
 return|return
 name|dir
 operator|.
-name|getECZoneInfo
+name|getECZone
 argument_list|(
 name|iip
 argument_list|)

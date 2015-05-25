@@ -428,7 +428,7 @@ name|hdfs
 operator|.
 name|protocol
 operator|.
-name|ErasureCodingZoneInfo
+name|ErasureCodingZone
 import|;
 end_import
 
@@ -7797,18 +7797,18 @@ operator|.
 name|getName
 argument_list|()
 decl_stmt|;
-name|ErasureCodingZoneInfo
-name|ecZoneInfo
+name|ErasureCodingZone
+name|ecZone
 init|=
 literal|null
 decl_stmt|;
 try|try
 block|{
-name|ecZoneInfo
+name|ecZone
 operator|=
 name|namesystem
 operator|.
-name|getErasureCodingZoneInfoForPath
+name|getErasureCodingZoneForPath
 argument_list|(
 name|src
 argument_list|)
@@ -7824,7 +7824,7 @@ name|blockLog
 operator|.
 name|warn
 argument_list|(
-literal|"Failed to get the EC zone info for the file {} "
+literal|"Failed to get the EC zone for the file {} "
 argument_list|,
 name|src
 argument_list|)
@@ -7832,7 +7832,7 @@ expr_stmt|;
 block|}
 if|if
 condition|(
-name|ecZoneInfo
+name|ecZone
 operator|==
 literal|null
 condition|)
@@ -7892,12 +7892,12 @@ operator|)
 operator|.
 name|liveBlockIndicies
 argument_list|,
-name|ecZoneInfo
+name|ecZone
 operator|.
 name|getSchema
 argument_list|()
 argument_list|,
-name|ecZoneInfo
+name|ecZone
 operator|.
 name|getCellSize
 argument_list|()

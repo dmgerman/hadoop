@@ -2500,20 +2500,6 @@ parameter_list|)
 throws|throws
 name|IOException
 function_decl|;
-comment|/**    * Gets the ECInfo for the specified file/directory    *     * @param src    * @return Returns the ECInfo if the file/directory is erasure coded, null otherwise    * @throws IOException    */
-annotation|@
-name|Idempotent
-DECL|method|getErasureCodingInfo (String src)
-specifier|public
-name|ErasureCodingInfo
-name|getErasureCodingInfo
-parameter_list|(
-name|String
-name|src
-parameter_list|)
-throws|throws
-name|IOException
-function_decl|;
 comment|/**    * Gets list of ECSchemas loaded in Namenode    *    * @return Returns the list of ECSchemas loaded at Namenode    * @throws IOException    */
 annotation|@
 name|Idempotent
@@ -2529,10 +2515,10 @@ function_decl|;
 comment|/**    * Get the information about the EC zone for the path    *     * @param src path to get the info for    * @throws IOException    */
 annotation|@
 name|Idempotent
-DECL|method|getErasureCodingZoneInfo (String src)
+DECL|method|getErasureCodingZone (String src)
 specifier|public
-name|ErasureCodingZoneInfo
-name|getErasureCodingZoneInfo
+name|ErasureCodingZone
+name|getErasureCodingZone
 parameter_list|(
 name|String
 name|src

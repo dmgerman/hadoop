@@ -390,7 +390,7 @@ name|hdfs
 operator|.
 name|protocol
 operator|.
-name|ErasureCodingZoneInfo
+name|ErasureCodingZone
 import|;
 end_import
 
@@ -6060,9 +6060,9 @@ argument_list|()
 expr_stmt|;
 block|}
 block|}
-DECL|method|getECZoneInfo (INodesInPath iip)
-name|ErasureCodingZoneInfo
-name|getECZoneInfo
+DECL|method|getECZone (INodesInPath iip)
+name|ErasureCodingZone
+name|getECZone
 parameter_list|(
 name|INodesInPath
 name|iip
@@ -6078,7 +6078,7 @@ block|{
 return|return
 name|ecZoneManager
 operator|.
-name|getECZoneInfo
+name|getECZone
 argument_list|(
 name|iip
 argument_list|)

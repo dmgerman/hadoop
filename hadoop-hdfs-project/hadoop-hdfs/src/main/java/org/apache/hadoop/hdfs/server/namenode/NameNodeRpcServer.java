@@ -962,23 +962,7 @@ name|hdfs
 operator|.
 name|protocol
 operator|.
-name|ErasureCodingInfo
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|hdfs
-operator|.
-name|protocol
-operator|.
-name|ErasureCodingZoneInfo
+name|ErasureCodingZone
 import|;
 end_import
 
@@ -11341,32 +11325,6 @@ block|}
 annotation|@
 name|Override
 comment|// ClientProtocol
-DECL|method|getErasureCodingInfo (String src)
-specifier|public
-name|ErasureCodingInfo
-name|getErasureCodingInfo
-parameter_list|(
-name|String
-name|src
-parameter_list|)
-throws|throws
-name|IOException
-block|{
-name|checkNNStartup
-argument_list|()
-expr_stmt|;
-return|return
-name|namesystem
-operator|.
-name|getErasureCodingInfo
-argument_list|(
-name|src
-argument_list|)
-return|;
-block|}
-annotation|@
-name|Override
-comment|// ClientProtocol
 DECL|method|getECSchemas ()
 specifier|public
 name|ECSchema
@@ -11389,10 +11347,10 @@ block|}
 annotation|@
 name|Override
 comment|// ClientProtocol
-DECL|method|getErasureCodingZoneInfo (String src)
+DECL|method|getErasureCodingZone (String src)
 specifier|public
-name|ErasureCodingZoneInfo
-name|getErasureCodingZoneInfo
+name|ErasureCodingZone
+name|getErasureCodingZone
 parameter_list|(
 name|String
 name|src
@@ -11406,7 +11364,7 @@ expr_stmt|;
 return|return
 name|namesystem
 operator|.
-name|getErasureCodingZoneInfo
+name|getErasureCodingZone
 argument_list|(
 name|src
 argument_list|)

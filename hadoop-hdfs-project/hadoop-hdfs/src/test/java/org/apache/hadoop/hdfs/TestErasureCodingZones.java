@@ -86,7 +86,7 @@ name|hdfs
 operator|.
 name|protocol
 operator|.
-name|ErasureCodingInfo
+name|HdfsFileStatus
 import|;
 end_import
 
@@ -1111,10 +1111,13 @@ operator|.
 name|getClient
 argument_list|()
 operator|.
-name|getErasureCodingInfo
+name|getFileInfo
 argument_list|(
 name|src
 argument_list|)
+operator|.
+name|getECSchema
+argument_list|()
 argument_list|)
 expr_stmt|;
 comment|// dir ECInfo after creating ec zone
@@ -1157,7 +1160,7 @@ name|Path
 argument_list|(
 name|ecDir
 argument_list|,
-literal|"/child1"
+literal|"child1"
 argument_list|)
 argument_list|)
 operator|.
@@ -1248,10 +1251,13 @@ operator|.
 name|getClient
 argument_list|()
 operator|.
-name|getErasureCodingInfo
+name|getFileInfo
 argument_list|(
 name|src
 argument_list|)
+operator|.
+name|getECSchema
+argument_list|()
 argument_list|)
 expr_stmt|;
 comment|// dir ECInfo after creating ec zone
@@ -1285,7 +1291,7 @@ name|Path
 argument_list|(
 name|ecDir
 argument_list|,
-literal|"/child1"
+literal|"child1"
 argument_list|)
 argument_list|)
 operator|.
@@ -1317,42 +1323,25 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
-name|ErasureCodingInfo
-name|ecInfo
+name|HdfsFileStatus
+name|hdfsFileStatus
 init|=
 name|fs
 operator|.
 name|getClient
 argument_list|()
 operator|.
-name|getErasureCodingInfo
+name|getFileInfo
 argument_list|(
 name|src
 argument_list|)
 decl_stmt|;
-name|assertNotNull
-argument_list|(
-literal|"ECInfo should have been non-null"
-argument_list|,
-name|ecInfo
-argument_list|)
-expr_stmt|;
-name|assertEquals
-argument_list|(
-name|src
-argument_list|,
-name|ecInfo
-operator|.
-name|getSrc
-argument_list|()
-argument_list|)
-expr_stmt|;
 name|ECSchema
 name|schema
 init|=
-name|ecInfo
+name|hdfsFileStatus
 operator|.
-name|getSchema
+name|getECSchema
 argument_list|()
 decl_stmt|;
 name|assertNotNull

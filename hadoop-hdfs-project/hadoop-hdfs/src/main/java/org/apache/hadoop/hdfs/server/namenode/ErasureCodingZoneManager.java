@@ -102,7 +102,7 @@ name|hdfs
 operator|.
 name|protocol
 operator|.
-name|ErasureCodingZoneInfo
+name|ErasureCodingZone
 import|;
 end_import
 
@@ -308,30 +308,30 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
-name|ErasureCodingZoneInfo
-name|ecZoneInfo
+name|ErasureCodingZone
+name|ecZone
 init|=
-name|getECZoneInfo
+name|getECZone
 argument_list|(
 name|iip
 argument_list|)
 decl_stmt|;
 return|return
-name|ecZoneInfo
+name|ecZone
 operator|==
 literal|null
 condition|?
 literal|null
 else|:
-name|ecZoneInfo
+name|ecZone
 operator|.
 name|getSchema
 argument_list|()
 return|;
 block|}
-DECL|method|getECZoneInfo (INodesInPath iip)
-name|ErasureCodingZoneInfo
-name|getECZoneInfo
+DECL|method|getECZone (INodesInPath iip)
+name|ErasureCodingZone
+name|getECZone
 parameter_list|(
 name|INodesInPath
 name|iip
@@ -532,7 +532,7 @@ argument_list|)
 decl_stmt|;
 return|return
 operator|new
-name|ErasureCodingZoneInfo
+name|ErasureCodingZone
 argument_list|(
 name|dir
 operator|.

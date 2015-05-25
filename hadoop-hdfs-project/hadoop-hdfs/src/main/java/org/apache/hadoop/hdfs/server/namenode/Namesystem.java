@@ -72,7 +72,7 @@ name|hdfs
 operator|.
 name|protocol
 operator|.
-name|ErasureCodingZoneInfo
+name|ErasureCodingZone
 import|;
 end_import
 
@@ -127,22 +127,6 @@ operator|.
 name|util
 operator|.
 name|RwLock
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|io
-operator|.
-name|erasurecode
-operator|.
-name|ECSchema
 import|;
 end_import
 
@@ -262,11 +246,11 @@ name|BlockCollection
 name|bc
 parameter_list|)
 function_decl|;
-comment|/**    * Gets the ECZone info for path    *     * @param src    *          - path    * @return {@link ErasureCodingZoneInfo}    * @throws IOException    */
-DECL|method|getErasureCodingZoneInfoForPath (String src)
+comment|/**    * Gets the ECZone for path    * @param src    *          - path    * @return {@link ErasureCodingZone}    * @throws IOException    */
+DECL|method|getErasureCodingZoneForPath (String src)
 specifier|public
-name|ErasureCodingZoneInfo
-name|getErasureCodingZoneInfoForPath
+name|ErasureCodingZone
+name|getErasureCodingZoneForPath
 parameter_list|(
 name|String
 name|src

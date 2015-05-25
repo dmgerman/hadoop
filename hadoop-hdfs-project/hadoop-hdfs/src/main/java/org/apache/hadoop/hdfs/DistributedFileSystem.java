@@ -806,7 +806,7 @@ name|hdfs
 operator|.
 name|protocol
 operator|.
-name|ErasureCodingZoneInfo
+name|ErasureCodingZone
 import|;
 end_import
 
@@ -11208,10 +11208,10 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|/**    * Get ErasureCoding zone information for the specified path    *     * @param path    * @return Returns the zone information if path is in EC zone, null otherwise    * @throws IOException    */
-DECL|method|getErasureCodingZoneInfo (final Path path)
+DECL|method|getErasureCodingZone (final Path path)
 specifier|public
-name|ErasureCodingZoneInfo
-name|getErasureCodingZoneInfo
+name|ErasureCodingZone
+name|getErasureCodingZone
 parameter_list|(
 specifier|final
 name|Path
@@ -11232,14 +11232,14 @@ return|return
 operator|new
 name|FileSystemLinkResolver
 argument_list|<
-name|ErasureCodingZoneInfo
+name|ErasureCodingZone
 argument_list|>
 argument_list|()
 block|{
 annotation|@
 name|Override
 specifier|public
-name|ErasureCodingZoneInfo
+name|ErasureCodingZone
 name|doCall
 parameter_list|(
 specifier|final
@@ -11254,7 +11254,7 @@ block|{
 return|return
 name|dfs
 operator|.
-name|getErasureCodingZoneInfo
+name|getErasureCodingZone
 argument_list|(
 name|getPathName
 argument_list|(
@@ -11266,7 +11266,7 @@ block|}
 annotation|@
 name|Override
 specifier|public
-name|ErasureCodingZoneInfo
+name|ErasureCodingZone
 name|next
 parameter_list|(
 specifier|final
@@ -11298,7 +11298,7 @@ decl_stmt|;
 return|return
 name|myDfs
 operator|.
-name|getErasureCodingZoneInfo
+name|getErasureCodingZone
 argument_list|(
 name|p
 argument_list|)
@@ -11308,7 +11308,7 @@ throw|throw
 operator|new
 name|UnsupportedOperationException
 argument_list|(
-literal|"Cannot getErasureCodingZoneInfo through a symlink to a "
+literal|"Cannot getErasureCodingZone through a symlink to a "
 operator|+
 literal|"non-DistributedFileSystem: "
 operator|+

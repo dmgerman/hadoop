@@ -202,7 +202,7 @@ name|hdfs
 operator|.
 name|protocol
 operator|.
-name|ErasureCodingZoneInfo
+name|ErasureCodingZone
 import|;
 end_import
 
@@ -322,13 +322,13 @@ name|factory
 operator|.
 name|addClass
 argument_list|(
-name|GetECZoneInfoCommand
+name|GetECZoneCommand
 operator|.
 name|class
 argument_list|,
 literal|"-"
 operator|+
-name|GetECZoneInfoCommand
+name|GetECZoneCommand
 operator|.
 name|NAME
 argument_list|)
@@ -829,10 +829,10 @@ block|}
 block|}
 block|}
 comment|/**    * Get the information about the zone    */
-DECL|class|GetECZoneInfoCommand
+DECL|class|GetECZoneCommand
 specifier|static
 class|class
-name|GetECZoneInfoCommand
+name|GetECZoneCommand
 extends|extends
 name|ECCommand
 block|{
@@ -843,7 +843,7 @@ specifier|final
 name|String
 name|NAME
 init|=
-literal|"getZoneInfo"
+literal|"getZone"
 decl_stmt|;
 DECL|field|USAGE
 specifier|public
@@ -946,12 +946,12 @@ name|fs
 decl_stmt|;
 try|try
 block|{
-name|ErasureCodingZoneInfo
-name|ecZoneInfo
+name|ErasureCodingZone
+name|ecZone
 init|=
 name|dfs
 operator|.
-name|getErasureCodingZoneInfo
+name|getErasureCodingZone
 argument_list|(
 name|item
 operator|.
@@ -960,7 +960,7 @@ argument_list|)
 decl_stmt|;
 if|if
 condition|(
-name|ecZoneInfo
+name|ecZone
 operator|!=
 literal|null
 condition|)
@@ -969,7 +969,7 @@ name|out
 operator|.
 name|println
 argument_list|(
-name|ecZoneInfo
+name|ecZone
 operator|.
 name|toString
 argument_list|()
