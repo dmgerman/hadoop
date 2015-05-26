@@ -96,6 +96,16 @@ name|java
 operator|.
 name|util
 operator|.
+name|HashSet
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
 name|regex
 operator|.
 name|Matcher
@@ -111,6 +121,20 @@ operator|.
 name|regex
 operator|.
 name|Pattern
+import|;
+end_import
+
+begin_import
+import|import
+name|com
+operator|.
+name|google
+operator|.
+name|common
+operator|.
+name|annotations
+operator|.
+name|VisibleForTesting
 import|;
 end_import
 
@@ -276,7 +300,7 @@ name|INACTIVE_STRING
 init|=
 literal|"Inactive"
 decl_stmt|;
-comment|/**    * Patterns for parsing /proc/cpuinfo    */
+comment|/**    * Patterns for parsing /proc/cpuinfo.    */
 DECL|field|PROCFS_CPUINFO
 specifier|private
 specifier|static
@@ -314,7 +338,35 @@ argument_list|(
 literal|"^cpu MHz[ \t]*:[ \t]*([0-9.]*)"
 argument_list|)
 decl_stmt|;
-comment|/**    * Pattern for parsing /proc/stat    */
+DECL|field|PHYSICAL_ID_FORMAT
+specifier|private
+specifier|static
+specifier|final
+name|Pattern
+name|PHYSICAL_ID_FORMAT
+init|=
+name|Pattern
+operator|.
+name|compile
+argument_list|(
+literal|"^physical id[ \t]*:[ \t]*([0-9]*)"
+argument_list|)
+decl_stmt|;
+DECL|field|CORE_ID_FORMAT
+specifier|private
+specifier|static
+specifier|final
+name|Pattern
+name|CORE_ID_FORMAT
+init|=
+name|Pattern
+operator|.
+name|compile
+argument_list|(
+literal|"^core id[ \t]*:[ \t]*([0-9]*)"
+argument_list|)
+decl_stmt|;
+comment|/**    * Pattern for parsing /proc/stat.    */
 DECL|field|PROCFS_STAT
 specifier|private
 specifier|static
@@ -361,6 +413,7 @@ name|String
 name|procfsStatFile
 decl_stmt|;
 DECL|field|jiffyLengthInMillis
+specifier|private
 name|long
 name|jiffyLengthInMillis
 decl_stmt|;
@@ -402,6 +455,7 @@ init|=
 literal|0
 decl_stmt|;
 comment|// inactive cache memory (kB)
+comment|/* number of logical processors on the system. */
 DECL|field|numProcessors
 specifier|private
 name|int
@@ -409,7 +463,14 @@ name|numProcessors
 init|=
 literal|0
 decl_stmt|;
-comment|// number of processors on the system
+comment|/* number of physical cores on the system. */
+DECL|field|numCores
+specifier|private
+name|int
+name|numCores
+init|=
+literal|0
+decl_stmt|;
 DECL|field|cpuFrequency
 specifier|private
 name|long
@@ -419,18 +480,20 @@ literal|0L
 decl_stmt|;
 comment|// CPU frequency on the system (kHz)
 DECL|field|readMemInfoFile
+specifier|private
 name|boolean
 name|readMemInfoFile
 init|=
 literal|false
 decl_stmt|;
 DECL|field|readCpuInfoFile
+specifier|private
 name|boolean
 name|readCpuInfoFile
 init|=
 literal|false
 decl_stmt|;
-comment|/**    * Get current time    * @return Unix time stamp in millisecond    */
+comment|/**    * Get current time.    * @return Unix time stamp in millisecond    */
 DECL|method|getCurrentTime ()
 name|long
 name|getCurrentTime
@@ -462,7 +525,7 @@ name|JIFFY_LENGTH_IN_MILLIS
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Constructor which allows assigning the /proc/ directories. This will be    * used only in unit tests    * @param procfsMemFile fake file for /proc/meminfo    * @param procfsCpuFile fake file for /proc/cpuinfo    * @param procfsStatFile fake file for /proc/stat    * @param jiffyLengthInMillis fake jiffy length value    */
+comment|/**    * Constructor which allows assigning the /proc/ directories. This will be    * used only in unit tests.    * @param procfsMemFile fake file for /proc/meminfo    * @param procfsCpuFile fake file for /proc/cpuinfo    * @param procfsStatFile fake file for /proc/stat    * @param jiffyLengthInMillis fake jiffy length value    */
 DECL|method|LinuxResourceCalculatorPlugin (String procfsMemFile, String procfsCpuFile, String procfsStatFile, long jiffyLengthInMillis)
 specifier|public
 name|LinuxResourceCalculatorPlugin
@@ -515,7 +578,7 @@ name|jiffyLengthInMillis
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Read /proc/meminfo, parse and compute memory information only once    */
+comment|/**    * Read /proc/meminfo, parse and compute memory information only once.    */
 DECL|method|readProcMemInfoFile ()
 specifier|private
 name|void
@@ -528,7 +591,7 @@ literal|false
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Read /proc/meminfo, parse and compute memory information    * @param readAgain if false, read only on the first time    */
+comment|/**    * Read /proc/meminfo, parse and compute memory information.    * @param readAgain if false, read only on the first time    */
 DECL|method|readProcMemInfoFile (boolean readAgain)
 specifier|private
 name|void
@@ -551,13 +614,9 @@ block|}
 comment|// Read "/proc/memInfo" file
 name|BufferedReader
 name|in
-init|=
-literal|null
 decl_stmt|;
 name|InputStreamReader
 name|fReader
-init|=
-literal|null
 decl_stmt|;
 try|try
 block|{
@@ -596,12 +655,21 @@ name|f
 parameter_list|)
 block|{
 comment|// shouldn't happen....
+name|LOG
+operator|.
+name|warn
+argument_list|(
+literal|"Couldn't read "
+operator|+
+name|procfsMemFile
+operator|+
+literal|"; can't determine memory settings"
+argument_list|)
+expr_stmt|;
 return|return;
 block|}
 name|Matcher
 name|mat
-init|=
-literal|null
 decl_stmt|;
 try|try
 block|{
@@ -874,7 +942,7 @@ operator|=
 literal|true
 expr_stmt|;
 block|}
-comment|/**    * Read /proc/cpuinfo, parse and calculate CPU information    */
+comment|/**    * Read /proc/cpuinfo, parse and calculate CPU information.    */
 DECL|method|readProcCpuInfoFile ()
 specifier|private
 name|void
@@ -889,16 +957,23 @@ condition|)
 block|{
 return|return;
 block|}
+name|HashSet
+argument_list|<
+name|String
+argument_list|>
+name|coreIdSet
+init|=
+operator|new
+name|HashSet
+argument_list|<>
+argument_list|()
+decl_stmt|;
 comment|// Read "/proc/cpuinfo" file
 name|BufferedReader
 name|in
-init|=
-literal|null
 decl_stmt|;
 name|InputStreamReader
 name|fReader
-init|=
-literal|null
 decl_stmt|;
 try|try
 block|{
@@ -937,12 +1012,21 @@ name|f
 parameter_list|)
 block|{
 comment|// shouldn't happen....
+name|LOG
+operator|.
+name|warn
+argument_list|(
+literal|"Couldn't read "
+operator|+
+name|procfsCpuFile
+operator|+
+literal|"; can't determine cpu info"
+argument_list|)
+expr_stmt|;
 return|return;
 block|}
 name|Matcher
 name|mat
-init|=
-literal|null
 decl_stmt|;
 try|try
 block|{
@@ -950,6 +1034,15 @@ name|numProcessors
 operator|=
 literal|0
 expr_stmt|;
+name|numCores
+operator|=
+literal|1
+expr_stmt|;
+name|String
+name|currentPhysicalId
+init|=
+literal|""
+decl_stmt|;
 name|String
 name|str
 init|=
@@ -1025,6 +1118,64 @@ literal|1000
 argument_list|)
 expr_stmt|;
 comment|// kHz
+block|}
+name|mat
+operator|=
+name|PHYSICAL_ID_FORMAT
+operator|.
+name|matcher
+argument_list|(
+name|str
+argument_list|)
+expr_stmt|;
+if|if
+condition|(
+name|mat
+operator|.
+name|find
+argument_list|()
+condition|)
+block|{
+name|currentPhysicalId
+operator|=
+name|str
+expr_stmt|;
+block|}
+name|mat
+operator|=
+name|CORE_ID_FORMAT
+operator|.
+name|matcher
+argument_list|(
+name|str
+argument_list|)
+expr_stmt|;
+if|if
+condition|(
+name|mat
+operator|.
+name|find
+argument_list|()
+condition|)
+block|{
+name|coreIdSet
+operator|.
+name|add
+argument_list|(
+name|currentPhysicalId
+operator|+
+literal|" "
+operator|+
+name|str
+argument_list|)
+expr_stmt|;
+name|numCores
+operator|=
+name|coreIdSet
+operator|.
+name|size
+argument_list|()
+expr_stmt|;
 block|}
 name|str
 operator|=
@@ -1108,7 +1259,7 @@ operator|=
 literal|true
 expr_stmt|;
 block|}
-comment|/**    * Read /proc/stat file, parse and calculate cumulative CPU    */
+comment|/**    * Read /proc/stat file, parse and calculate cumulative CPU.    */
 DECL|method|readProcStatFile ()
 specifier|private
 name|void
@@ -1118,13 +1269,9 @@ block|{
 comment|// Read "/proc/stat" file
 name|BufferedReader
 name|in
-init|=
-literal|null
 decl_stmt|;
 name|InputStreamReader
 name|fReader
-init|=
-literal|null
 decl_stmt|;
 try|try
 block|{
@@ -1167,8 +1314,6 @@ return|return;
 block|}
 name|Matcher
 name|mat
-init|=
-literal|null
 decl_stmt|;
 try|try
 block|{
@@ -1457,6 +1602,22 @@ block|}
 comment|/** {@inheritDoc} */
 annotation|@
 name|Override
+DECL|method|getNumCores ()
+specifier|public
+name|int
+name|getNumCores
+parameter_list|()
+block|{
+name|readProcCpuInfoFile
+argument_list|()
+expr_stmt|;
+return|return
+name|numCores
+return|;
+block|}
+comment|/** {@inheritDoc} */
+annotation|@
+name|Override
 DECL|method|getCpuFrequency ()
 specifier|public
 name|long
@@ -1532,7 +1693,7 @@ return|return
 name|overallCpuUsage
 return|;
 block|}
-comment|/**    * Test the {@link LinuxResourceCalculatorPlugin}    *    * @param args    */
+comment|/**    * Test the {@link LinuxResourceCalculatorPlugin}.    *    * @param args - arguments to this calculator test    */
 DECL|method|main (String[] args)
 specifier|public
 specifier|static
@@ -1682,6 +1843,35 @@ name|getCpuUsage
 argument_list|()
 argument_list|)
 expr_stmt|;
+block|}
+annotation|@
+name|VisibleForTesting
+DECL|method|setReadCpuInfoFile (boolean readCpuInfoFileValue)
+name|void
+name|setReadCpuInfoFile
+parameter_list|(
+name|boolean
+name|readCpuInfoFileValue
+parameter_list|)
+block|{
+name|this
+operator|.
+name|readCpuInfoFile
+operator|=
+name|readCpuInfoFileValue
+expr_stmt|;
+block|}
+DECL|method|getJiffyLengthInMillis ()
+specifier|public
+name|long
+name|getJiffyLengthInMillis
+parameter_list|()
+block|{
+return|return
+name|this
+operator|.
+name|jiffyLengthInMillis
+return|;
 block|}
 block|}
 end_class

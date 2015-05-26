@@ -267,6 +267,20 @@ block|}
 comment|/** {@inheritDoc} */
 annotation|@
 name|Override
+DECL|method|getNumCores ()
+specifier|public
+name|int
+name|getNumCores
+parameter_list|()
+block|{
+return|return
+name|getNumProcessors
+argument_list|()
+return|;
+block|}
+comment|/** {@inheritDoc} */
+annotation|@
+name|Override
 DECL|method|getCpuFrequency ()
 specifier|public
 name|long

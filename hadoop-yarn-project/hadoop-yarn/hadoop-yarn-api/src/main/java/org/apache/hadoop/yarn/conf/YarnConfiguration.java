@@ -3107,7 +3107,7 @@ name|YARN_PREFIX
 operator|+
 literal|"tracking.url.generator"
 decl_stmt|;
-comment|/** Amount of memory in GB that can be allocated for containers.*/
+comment|/** Amount of memory in MB that can be allocated for containers.*/
 DECL|field|NM_PMEM_MB
 specifier|public
 specifier|static
@@ -3129,6 +3129,18 @@ init|=
 literal|8
 operator|*
 literal|1024
+decl_stmt|;
+comment|/** Amount of memory in MB that has been reserved for non-yarn use. */
+DECL|field|NM_SYSTEM_RESERVED_PMEM_MB
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|NM_SYSTEM_RESERVED_PMEM_MB
+init|=
+name|NM_PREFIX
+operator|+
+literal|"resource.system-reserved-memory-mb"
 decl_stmt|;
 comment|/** Specifies whether physical memory check is enabled. */
 DECL|field|NM_PMEM_CHECK_ENABLED
@@ -3214,6 +3226,48 @@ name|DEFAULT_NM_VCORES
 init|=
 literal|8
 decl_stmt|;
+comment|/** Count logical processors(like hyperthreads) as cores. */
+DECL|field|NM_COUNT_LOGICAL_PROCESSORS_AS_CORES
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|NM_COUNT_LOGICAL_PROCESSORS_AS_CORES
+init|=
+name|NM_PREFIX
+operator|+
+literal|"resource.count-logical-processors-as-cores"
+decl_stmt|;
+DECL|field|DEFAULT_NM_COUNT_LOGICAL_PROCESSORS_AS_CORES
+specifier|public
+specifier|static
+specifier|final
+name|boolean
+name|DEFAULT_NM_COUNT_LOGICAL_PROCESSORS_AS_CORES
+init|=
+literal|false
+decl_stmt|;
+comment|/** Multiplier to convert physical cores to vcores. */
+DECL|field|NM_PCORES_VCORES_MULTIPLIER
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|NM_PCORES_VCORES_MULTIPLIER
+init|=
+name|NM_PREFIX
+operator|+
+literal|"resource.pcores-vcores-multiplier"
+decl_stmt|;
+DECL|field|DEFAULT_NM_PCORES_VCORES_MULTIPLIER
+specifier|public
+specifier|static
+specifier|final
+name|float
+name|DEFAULT_NM_PCORES_VCORES_MULTIPLIER
+init|=
+literal|1.0f
+decl_stmt|;
 comment|/** Percentage of overall CPU which can be allocated for containers. */
 DECL|field|NM_RESOURCE_PERCENTAGE_PHYSICAL_CPU_LIMIT
 specifier|public
@@ -3234,6 +3288,27 @@ name|int
 name|DEFAULT_NM_RESOURCE_PERCENTAGE_PHYSICAL_CPU_LIMIT
 init|=
 literal|100
+decl_stmt|;
+comment|/** Enable or disable node hardware capability detection. */
+DECL|field|NM_ENABLE_HARDWARE_CAPABILITY_DETECTION
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|NM_ENABLE_HARDWARE_CAPABILITY_DETECTION
+init|=
+name|NM_PREFIX
+operator|+
+literal|"resource.detect-hardware-capabilities"
+decl_stmt|;
+DECL|field|DEFAULT_NM_ENABLE_HARDWARE_CAPABILITY_DETECTION
+specifier|public
+specifier|static
+specifier|final
+name|boolean
+name|DEFAULT_NM_ENABLE_HARDWARE_CAPABILITY_DETECTION
+init|=
+literal|false
 decl_stmt|;
 comment|/**    * Prefix for disk configurations. Work in progress: This configuration    * parameter may be changed/removed in the future.    */
 annotation|@

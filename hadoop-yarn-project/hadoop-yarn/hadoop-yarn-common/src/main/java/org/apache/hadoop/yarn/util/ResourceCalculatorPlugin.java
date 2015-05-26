@@ -162,12 +162,20 @@ name|long
 name|getAvailablePhysicalMemorySize
 parameter_list|()
 function_decl|;
-comment|/**    * Obtain the total number of processors present on the system.    *    * @return number of processors    */
+comment|/**    * Obtain the total number of logical processors present on the system.    *    * @return number of logical processors    */
 DECL|method|getNumProcessors ()
 specifier|public
 specifier|abstract
 name|int
 name|getNumProcessors
+parameter_list|()
+function_decl|;
+comment|/**    * Obtain total number of physical cores present on the system.    *    * @return number of physical cores    */
+DECL|method|getNumCores ()
+specifier|public
+specifier|abstract
+name|int
+name|getNumCores
 parameter_list|()
 function_decl|;
 comment|/**    * Obtain the CPU frequency of on the system.    *    * @return CPU frequency in kHz    */
