@@ -695,7 +695,15 @@ literal|"bStateSave : true, "
 operator|+
 literal|"\"fnStateSave\": function (oSettings, oData) { "
 operator|+
-literal|"sessionStorage.setItem( oSettings.sTableId, JSON.stringify(oData) ); }, "
+literal|" data = oData.aoSearchCols;"
+operator|+
+literal|"for(i =0 ; i< data.length; i ++) {"
+operator|+
+literal|"data[i].sSearch = \"\""
+operator|+
+literal|"}"
+operator|+
+literal|" sessionStorage.setItem( oSettings.sTableId, JSON.stringify(oData) ); }, "
 operator|+
 literal|"\"fnStateLoad\": function (oSettings) { "
 operator|+
