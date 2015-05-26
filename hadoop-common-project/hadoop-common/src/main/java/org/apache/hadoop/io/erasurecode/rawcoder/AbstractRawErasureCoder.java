@@ -163,11 +163,11 @@ parameter_list|()
 block|{
 comment|// Nothing to do by default
 block|}
-comment|/**    * Ensure output buffer filled with ZERO bytes fully in chunkSize.    * @param buffer a buffer ready to write chunk size bytes    * @return the buffer itself, with ZERO bytes written, the position and limit    *         are not changed after the call    */
-DECL|method|resetOutputBuffer (ByteBuffer buffer)
+comment|/**    * Ensure a buffer filled with ZERO bytes from current readable/writable    * position.    * @param buffer a buffer ready to read / write certain size bytes    * @return the buffer itself, with ZERO bytes written, the position and limit    *         are not changed after the call    */
+DECL|method|resetBuffer (ByteBuffer buffer)
 specifier|protected
 name|ByteBuffer
-name|resetOutputBuffer
+name|resetBuffer
 parameter_list|(
 name|ByteBuffer
 name|buffer
@@ -221,7 +221,7 @@ return|return
 name|buffer
 return|;
 block|}
-comment|/**    * Ensure the buffer (either input or output) ready to read or write with ZERO    * bytes fully in chunkSize.    * @param buffer bytes array buffer    * @return the buffer itself    */
+comment|/**    * Ensure the buffer (either input or output) ready to read or write with ZERO    * bytes fully in specified length of len.    * @param buffer bytes array buffer    * @return the buffer itself    */
 DECL|method|resetBuffer (byte[] buffer, int offset, int len)
 specifier|protected
 name|byte
@@ -269,8 +269,8 @@ return|return
 name|buffer
 return|;
 block|}
-comment|/**    * Check and ensure the buffers are of the length specified by dataLen.    * @param buffers    * @param dataLen    */
-DECL|method|ensureLength (ByteBuffer[] buffers, int dataLen)
+comment|/**    * Check and ensure the buffers are of the length specified by dataLen.    * @param buffers    * @param allowNull    * @param dataLen    */
+DECL|method|ensureLength (ByteBuffer[] buffers, boolean allowNull, int dataLen)
 specifier|protected
 name|void
 name|ensureLength
@@ -278,6 +278,9 @@ parameter_list|(
 name|ByteBuffer
 index|[]
 name|buffers
+parameter_list|,
+name|boolean
+name|allowNull
 parameter_list|,
 name|int
 name|dataLen
@@ -306,6 +309,35 @@ name|buffers
 index|[
 name|i
 index|]
+operator|==
+literal|null
+operator|&&
+operator|!
+name|allowNull
+condition|)
+block|{
+throw|throw
+operator|new
+name|HadoopIllegalArgumentException
+argument_list|(
+literal|"Invalid buffer found, not allowing null"
+argument_list|)
+throw|;
+block|}
+elseif|else
+if|if
+condition|(
+name|buffers
+index|[
+name|i
+index|]
+operator|!=
+literal|null
+operator|&&
+name|buffers
+index|[
+name|i
+index|]
 operator|.
 name|remaining
 argument_list|()
@@ -325,8 +357,8 @@ throw|;
 block|}
 block|}
 block|}
-comment|/**    * Check and ensure the buffers are of the length specified by dataLen.    * @param buffers    * @param dataLen    */
-DECL|method|ensureLength (byte[][] buffers, int dataLen)
+comment|/**    * Check and ensure the buffers are of the length specified by dataLen.    * @param buffers    * @param allowNull    * @param dataLen    */
+DECL|method|ensureLength (byte[][] buffers, boolean allowNull, int dataLen)
 specifier|protected
 name|void
 name|ensureLength
@@ -335,6 +367,9 @@ name|byte
 index|[]
 index|[]
 name|buffers
+parameter_list|,
+name|boolean
+name|allowNull
 parameter_list|,
 name|int
 name|dataLen
@@ -359,6 +394,35 @@ control|)
 block|{
 if|if
 condition|(
+name|buffers
+index|[
+name|i
+index|]
+operator|==
+literal|null
+operator|&&
+operator|!
+name|allowNull
+condition|)
+block|{
+throw|throw
+operator|new
+name|HadoopIllegalArgumentException
+argument_list|(
+literal|"Invalid buffer found, not allowing null"
+argument_list|)
+throw|;
+block|}
+elseif|else
+if|if
+condition|(
+name|buffers
+index|[
+name|i
+index|]
+operator|!=
+literal|null
+operator|&&
 name|buffers
 index|[
 name|i

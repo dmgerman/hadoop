@@ -115,9 +115,7 @@ specifier|protected
 name|int
 name|baseChunkSize
 init|=
-literal|16
-operator|*
-literal|1024
+literal|513
 decl_stmt|;
 DECL|field|chunkSize
 specifier|private
@@ -661,7 +659,7 @@ return|return
 name|inputChunks
 return|;
 block|}
-comment|/**    * Erase chunks to test the recovering of them. Before erasure clone them    * first so could return them.    * @param dataChunks    * @param parityChunks    * @return clone of erased chunks    */
+comment|/**    * Erase some data chunks to test the recovering of them. As they're erased,    * we don't need to read them and will not have the buffers at all, so just    * set them as null.    * @param dataChunks    * @param parityChunks    * @return clone of erased chunks    */
 DECL|method|backupAndEraseChunks (ECChunk[] dataChunks, ECChunk[] parityChunks)
 specifier|protected
 name|ECChunk
@@ -698,9 +696,6 @@ name|idx
 init|=
 literal|0
 decl_stmt|;
-name|ECChunk
-name|chunk
-decl_stmt|;
 for|for
 control|(
 name|int
@@ -718,7 +713,11 @@ name|i
 operator|++
 control|)
 block|{
-name|chunk
+name|toEraseChunks
+index|[
+name|idx
+operator|++
+index|]
 operator|=
 name|parityChunks
 index|[
@@ -728,21 +727,15 @@ name|i
 index|]
 index|]
 expr_stmt|;
-name|toEraseChunks
+name|parityChunks
 index|[
-name|idx
-operator|++
+name|erasedParityIndexes
+index|[
+name|i
+index|]
 index|]
 operator|=
-name|cloneChunkWithData
-argument_list|(
-name|chunk
-argument_list|)
-expr_stmt|;
-name|eraseDataFromChunk
-argument_list|(
-name|chunk
-argument_list|)
+literal|null
 expr_stmt|;
 block|}
 for|for
@@ -762,7 +755,11 @@ name|i
 operator|++
 control|)
 block|{
-name|chunk
+name|toEraseChunks
+index|[
+name|idx
+operator|++
+index|]
 operator|=
 name|dataChunks
 index|[
@@ -772,28 +769,22 @@ name|i
 index|]
 index|]
 expr_stmt|;
-name|toEraseChunks
+name|dataChunks
 index|[
-name|idx
-operator|++
+name|erasedDataIndexes
+index|[
+name|i
+index|]
 index|]
 operator|=
-name|cloneChunkWithData
-argument_list|(
-name|chunk
-argument_list|)
-expr_stmt|;
-name|eraseDataFromChunk
-argument_list|(
-name|chunk
-argument_list|)
+literal|null
 expr_stmt|;
 block|}
 return|return
 name|toEraseChunks
 return|;
 block|}
-comment|/**    * Erase data from the specified chunks, putting ZERO bytes to the buffers.    * @param chunks    */
+comment|/**    * Erase data from the specified chunks, just setting them as null.    * @param chunks    */
 DECL|method|eraseDataFromChunks (ECChunk[] chunks)
 specifier|protected
 name|void
@@ -821,85 +812,14 @@ name|i
 operator|++
 control|)
 block|{
-name|eraseDataFromChunk
-argument_list|(
 name|chunks
 index|[
 name|i
 index|]
-argument_list|)
+operator|=
+literal|null
 expr_stmt|;
 block|}
-block|}
-comment|/**    * Erase data from the specified chunk, putting ZERO bytes to the buffer.    * @param chunk with a buffer ready to read at the current position    */
-DECL|method|eraseDataFromChunk (ECChunk chunk)
-specifier|protected
-name|void
-name|eraseDataFromChunk
-parameter_list|(
-name|ECChunk
-name|chunk
-parameter_list|)
-block|{
-name|ByteBuffer
-name|chunkBuffer
-init|=
-name|chunk
-operator|.
-name|getBuffer
-argument_list|()
-decl_stmt|;
-comment|// Erase the data at the position, and restore the buffer ready for reading
-comment|// same many bytes but all ZERO.
-name|int
-name|pos
-init|=
-name|chunkBuffer
-operator|.
-name|position
-argument_list|()
-decl_stmt|;
-name|int
-name|len
-init|=
-name|chunkBuffer
-operator|.
-name|remaining
-argument_list|()
-decl_stmt|;
-name|chunkBuffer
-operator|.
-name|put
-argument_list|(
-name|zeroChunkBytes
-argument_list|,
-literal|0
-argument_list|,
-name|len
-argument_list|)
-expr_stmt|;
-comment|// Back to readable again after data erased
-name|chunkBuffer
-operator|.
-name|flip
-argument_list|()
-expr_stmt|;
-name|chunkBuffer
-operator|.
-name|position
-argument_list|(
-name|pos
-argument_list|)
-expr_stmt|;
-name|chunkBuffer
-operator|.
-name|limit
-argument_list|(
-name|pos
-operator|+
-name|len
-argument_list|)
-expr_stmt|;
 block|}
 comment|/**    * Clone chunks along with copying the associated data. It respects how the    * chunk buffer is allocated, direct or non-direct. It avoids affecting the    * original chunk buffers.    * @param chunks    * @return    */
 DECL|method|cloneChunksWithData (ECChunk[] chunks)

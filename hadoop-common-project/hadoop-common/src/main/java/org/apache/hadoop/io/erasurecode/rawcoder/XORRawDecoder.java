@@ -89,7 +89,7 @@ index|[
 literal|0
 index|]
 decl_stmt|;
-name|resetOutputBuffer
+name|resetBuffer
 argument_list|(
 name|output
 argument_list|)

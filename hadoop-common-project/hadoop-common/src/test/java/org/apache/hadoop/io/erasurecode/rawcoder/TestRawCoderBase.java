@@ -64,6 +64,16 @@ end_import
 
 begin_import
 import|import
+name|org
+operator|.
+name|junit
+operator|.
+name|Test
+import|;
+end_import
+
+begin_import
+import|import
 name|java
 operator|.
 name|lang
@@ -117,6 +127,38 @@ specifier|private
 name|RawErasureDecoder
 name|decoder
 decl_stmt|;
+comment|/**    * Doing twice to test if the coders can be repeatedly reused. This matters    * as the underlying coding buffers are shared, which may have bugs.    */
+DECL|method|testCodingDoMixAndTwice ()
+specifier|protected
+name|void
+name|testCodingDoMixAndTwice
+parameter_list|()
+block|{
+name|testCodingDoMixed
+argument_list|()
+expr_stmt|;
+name|testCodingDoMixed
+argument_list|()
+expr_stmt|;
+block|}
+comment|/**    * Doing in mixed buffer usage model to test if the coders can be repeatedly    * reused with different buffer usage model. This matters as the underlying    * coding buffers are shared, which may have bugs.    */
+DECL|method|testCodingDoMixed ()
+specifier|protected
+name|void
+name|testCodingDoMixed
+parameter_list|()
+block|{
+name|testCoding
+argument_list|(
+literal|true
+argument_list|)
+expr_stmt|;
+name|testCoding
+argument_list|(
+literal|false
+argument_list|)
+expr_stmt|;
+block|}
 comment|/**    * Generating source data, encoding, recovering and then verifying.    * RawErasureCoder mainly uses ECChunk to pass input and output data buffers,    * it supports two kinds of ByteBuffers, one is array backed, the other is    * direct ByteBuffer. Use usingDirectBuffer indicate which case to test.    *    * @param usingDirectBuffer    */
 DECL|method|testCoding (boolean usingDirectBuffer)
 specifier|protected
@@ -263,6 +305,61 @@ block|{
 comment|// Expected
 block|}
 block|}
+annotation|@
+name|Test
+DECL|method|testCodingWithErasingTooMany ()
+specifier|public
+name|void
+name|testCodingWithErasingTooMany
+parameter_list|()
+block|{
+try|try
+block|{
+name|testCoding
+argument_list|(
+literal|true
+argument_list|)
+expr_stmt|;
+name|Assert
+operator|.
+name|fail
+argument_list|(
+literal|"Decoding test erasing too many should fail"
+argument_list|)
+expr_stmt|;
+block|}
+catch|catch
+parameter_list|(
+name|Exception
+name|e
+parameter_list|)
+block|{
+comment|// Expected
+block|}
+try|try
+block|{
+name|testCoding
+argument_list|(
+literal|false
+argument_list|)
+expr_stmt|;
+name|Assert
+operator|.
+name|fail
+argument_list|(
+literal|"Decoding test erasing too many should fail"
+argument_list|)
+expr_stmt|;
+block|}
+catch|catch
+parameter_list|(
+name|Exception
+name|e
+parameter_list|)
+block|{
+comment|// Expected
+block|}
+block|}
 DECL|method|performTestCoding (int chunkSize, boolean useBadInput, boolean useBadOutput)
 specifier|private
 name|void
@@ -353,6 +450,12 @@ argument_list|,
 name|parityChunks
 argument_list|)
 decl_stmt|;
+comment|// Remove unnecessary chunks, allowing only least required chunks to be read.
+name|ensureOnlyLeastRequiredChunks
+argument_list|(
+name|inputChunks
+argument_list|)
+expr_stmt|;
 name|ECChunk
 index|[]
 name|recoveredChunks
@@ -423,6 +526,93 @@ operator|=
 name|createDecoder
 argument_list|()
 expr_stmt|;
+block|}
+block|}
+DECL|method|ensureOnlyLeastRequiredChunks (ECChunk[] inputChunks)
+specifier|private
+name|void
+name|ensureOnlyLeastRequiredChunks
+parameter_list|(
+name|ECChunk
+index|[]
+name|inputChunks
+parameter_list|)
+block|{
+name|int
+name|leastRequiredNum
+init|=
+name|numDataUnits
+decl_stmt|;
+name|int
+name|erasedNum
+init|=
+name|erasedDataIndexes
+operator|.
+name|length
+operator|+
+name|erasedParityIndexes
+operator|.
+name|length
+decl_stmt|;
+name|int
+name|goodNum
+init|=
+name|inputChunks
+operator|.
+name|length
+operator|-
+name|erasedNum
+decl_stmt|;
+name|int
+name|redundantNum
+init|=
+name|goodNum
+operator|-
+name|leastRequiredNum
+decl_stmt|;
+for|for
+control|(
+name|int
+name|i
+init|=
+literal|0
+init|;
+name|i
+argument_list|<
+name|inputChunks
+operator|.
+name|length
+operator|&&
+name|redundantNum
+argument_list|>
+literal|0
+condition|;
+name|i
+operator|++
+control|)
+block|{
+if|if
+condition|(
+name|inputChunks
+index|[
+name|i
+index|]
+operator|!=
+literal|null
+condition|)
+block|{
+name|inputChunks
+index|[
+name|i
+index|]
+operator|=
+literal|null
+expr_stmt|;
+comment|// Setting it null, not needing it actually
+name|redundantNum
+operator|--
+expr_stmt|;
+block|}
 block|}
 block|}
 comment|/**    * Create the raw erasure encoder to test    * @return    */
