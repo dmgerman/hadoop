@@ -914,6 +914,9 @@ name|p
 operator|.
 name|getNodeLabelExpression
 argument_list|()
+operator|.
+name|trim
+argument_list|()
 operator|)
 return|;
 block|}

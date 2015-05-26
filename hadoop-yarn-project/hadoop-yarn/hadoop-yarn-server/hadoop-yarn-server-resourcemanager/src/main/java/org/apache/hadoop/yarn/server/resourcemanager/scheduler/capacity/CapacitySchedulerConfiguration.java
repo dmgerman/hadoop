@@ -2673,7 +2673,9 @@ name|String
 name|queue
 parameter_list|)
 block|{
-return|return
+name|String
+name|defaultLabelExpression
+init|=
 name|get
 argument_list|(
 name|getQueuePrefix
@@ -2683,6 +2685,23 @@ argument_list|)
 operator|+
 name|DEFAULT_NODE_LABEL_EXPRESSION
 argument_list|)
+decl_stmt|;
+if|if
+condition|(
+name|defaultLabelExpression
+operator|==
+literal|null
+condition|)
+block|{
+return|return
+literal|null
+return|;
+block|}
+return|return
+name|defaultLabelExpression
+operator|.
+name|trim
+argument_list|()
 return|;
 block|}
 DECL|method|setDefaultNodeLabelExpression (String queue, String exp)
