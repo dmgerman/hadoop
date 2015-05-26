@@ -414,6 +414,18 @@ name|Map
 import|;
 end_import
 
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
+name|concurrent
+operator|.
+name|ThreadLocalRandom
+import|;
+end_import
+
 begin_class
 DECL|class|TestRecoverStripedFile
 specifier|public
@@ -2213,9 +2225,9 @@ index|[
 name|dataLen
 index|]
 decl_stmt|;
-name|DFSUtil
+name|ThreadLocalRandom
 operator|.
-name|getRandom
+name|current
 argument_list|()
 operator|.
 name|nextBytes

@@ -9015,7 +9015,7 @@ operator|++
 control|)
 block|{
 comment|/*            * Use the blockinfo from the blocksmap to be certain we're working            * with the most up-to-date block information (e.g. genstamp).            */
-name|BlockInfoContiguous
+name|BlockInfo
 name|bi
 init|=
 name|blocksMap
