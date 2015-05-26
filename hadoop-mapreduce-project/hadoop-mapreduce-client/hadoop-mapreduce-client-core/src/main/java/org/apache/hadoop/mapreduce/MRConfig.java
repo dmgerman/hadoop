@@ -451,6 +451,19 @@ name|DEFAULT_MAPREDUCE_APP_SUBMISSION_CROSS_PLATFORM
 init|=
 literal|false
 decl_stmt|;
+comment|/**    * Enable application master webapp ui actions.    */
+DECL|field|MASTER_WEBAPP_UI_ACTIONS_ENABLED
+name|String
+name|MASTER_WEBAPP_UI_ACTIONS_ENABLED
+init|=
+literal|"mapreduce.webapp.ui-actions.enabled"
+decl_stmt|;
+DECL|field|DEFAULT_MASTER_WEBAPP_UI_ACTIONS_ENABLED
+name|boolean
+name|DEFAULT_MASTER_WEBAPP_UI_ACTIONS_ENABLED
+init|=
+literal|true
+decl_stmt|;
 block|}
 end_interface
 
