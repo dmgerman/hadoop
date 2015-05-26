@@ -139,6 +139,7 @@ decl_stmt|;
 DECL|field|DIGESTER_FACTORY
 specifier|private
 specifier|static
+specifier|final
 name|ThreadLocal
 argument_list|<
 name|MessageDigest

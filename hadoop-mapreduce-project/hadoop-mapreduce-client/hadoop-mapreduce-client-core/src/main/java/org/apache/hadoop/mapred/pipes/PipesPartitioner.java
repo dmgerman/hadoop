@@ -113,14 +113,15 @@ argument_list|,
 name|V
 argument_list|>
 block|{
-DECL|field|cache
+DECL|field|CACHE
 specifier|private
 specifier|static
+specifier|final
 name|ThreadLocal
 argument_list|<
 name|Integer
 argument_list|>
-name|cache
+name|CACHE
 init|=
 operator|new
 name|ThreadLocal
@@ -182,7 +183,7 @@ name|int
 name|newValue
 parameter_list|)
 block|{
-name|cache
+name|CACHE
 operator|.
 name|set
 argument_list|(
@@ -209,7 +210,7 @@ block|{
 name|Integer
 name|result
 init|=
-name|cache
+name|CACHE
 operator|.
 name|get
 argument_list|()

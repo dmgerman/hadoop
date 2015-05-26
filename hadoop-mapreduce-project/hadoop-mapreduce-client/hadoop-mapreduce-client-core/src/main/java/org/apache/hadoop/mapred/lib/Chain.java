@@ -1145,6 +1145,7 @@ comment|// it has to be a thread local because if not it would break if used fro
 comment|// MultiThreadedMapRunner.
 DECL|field|threadLocalDataOutputBuffer
 specifier|private
+specifier|final
 name|ThreadLocal
 argument_list|<
 name|DataOutputBuffer

@@ -438,13 +438,15 @@ argument_list|,
 name|V
 argument_list|>
 block|{
-DECL|field|shuffleStart
+DECL|field|SHUFFLE_START
+specifier|private
 specifier|static
+specifier|final
 name|ThreadLocal
 argument_list|<
 name|Long
 argument_list|>
-name|shuffleStart
+name|SHUFFLE_START
 init|=
 operator|new
 name|ThreadLocal
@@ -2539,7 +2541,7 @@ name|getName
 argument_list|()
 argument_list|)
 expr_stmt|;
-name|shuffleStart
+name|SHUFFLE_START
 operator|.
 name|set
 argument_list|(
@@ -2823,7 +2825,7 @@ operator|.
 name|monotonicNow
 argument_list|()
 operator|-
-name|shuffleStart
+name|SHUFFLE_START
 operator|.
 name|get
 argument_list|()

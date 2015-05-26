@@ -237,6 +237,7 @@ decl_stmt|;
 DECL|field|HOME_DIR_TL
 specifier|private
 specifier|static
+specifier|final
 name|ThreadLocal
 argument_list|<
 name|String

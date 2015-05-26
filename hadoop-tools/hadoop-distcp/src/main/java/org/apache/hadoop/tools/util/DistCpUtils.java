@@ -1903,6 +1903,7 @@ comment|/**    * String utility to convert a number-of-bytes to human readable f
 DECL|field|FORMATTER
 specifier|private
 specifier|static
+specifier|final
 name|ThreadLocal
 argument_list|<
 name|DecimalFormat

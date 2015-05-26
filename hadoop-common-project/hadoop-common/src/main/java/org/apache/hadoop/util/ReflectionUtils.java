@@ -1324,14 +1324,15 @@ expr_stmt|;
 block|}
 block|}
 comment|/**    * Allocate a buffer for each thread that tries to clone objects.    */
-DECL|field|cloneBuffers
+DECL|field|CLONE_BUFFERS
 specifier|private
 specifier|static
+specifier|final
 name|ThreadLocal
 argument_list|<
 name|CopyInCopyOutBuffer
 argument_list|>
-name|cloneBuffers
+name|CLONE_BUFFERS
 init|=
 operator|new
 name|ThreadLocal
@@ -1416,7 +1417,7 @@ block|{
 name|CopyInCopyOutBuffer
 name|buffer
 init|=
-name|cloneBuffers
+name|CLONE_BUFFERS
 operator|.
 name|get
 argument_list|()
@@ -1542,7 +1543,7 @@ block|{
 name|CopyInCopyOutBuffer
 name|buffer
 init|=
-name|cloneBuffers
+name|CLONE_BUFFERS
 operator|.
 name|get
 argument_list|()
