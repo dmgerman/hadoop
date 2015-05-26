@@ -229,6 +229,15 @@ name|RMContainer
 name|r
 parameter_list|)
 function_decl|;
+comment|/**    * Demand Updated for the passed schedulableEntity, reorder if needed.    */
+DECL|method|demandUpdated (S schedulableEntity)
+name|void
+name|demandUpdated
+parameter_list|(
+name|S
+name|schedulableEntity
+parameter_list|)
+function_decl|;
 comment|/**    * Display information regarding configuration& status    */
 DECL|method|getInfo ()
 specifier|public

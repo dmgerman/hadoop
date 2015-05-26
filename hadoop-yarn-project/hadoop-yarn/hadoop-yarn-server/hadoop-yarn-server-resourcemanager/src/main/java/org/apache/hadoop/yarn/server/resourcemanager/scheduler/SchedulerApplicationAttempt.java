@@ -1639,7 +1639,7 @@ block|}
 DECL|method|updateResourceRequests ( List<ResourceRequest> requests)
 specifier|public
 specifier|synchronized
-name|void
+name|boolean
 name|updateResourceRequests
 parameter_list|(
 name|List
@@ -1655,6 +1655,7 @@ operator|!
 name|isStopped
 condition|)
 block|{
+return|return
 name|appSchedulingInfo
 operator|.
 name|updateResourceRequests
@@ -1663,8 +1664,11 @@ name|requests
 argument_list|,
 literal|false
 argument_list|)
-expr_stmt|;
+return|;
 block|}
+return|return
+literal|false
+return|;
 block|}
 DECL|method|recoverResourceRequests ( List<ResourceRequest> requests)
 specifier|public

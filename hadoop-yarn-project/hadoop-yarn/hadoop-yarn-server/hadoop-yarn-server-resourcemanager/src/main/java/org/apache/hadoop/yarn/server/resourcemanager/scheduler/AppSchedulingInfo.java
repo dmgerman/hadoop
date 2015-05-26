@@ -714,11 +714,11 @@ name|incrementAndGet
 argument_list|()
 return|;
 block|}
-comment|/**    * The ApplicationMaster is updating resource requirements for the    * application, by asking for more resources and releasing resources acquired    * by the application.    *    * @param requests resources to be acquired    * @param recoverPreemptedRequest recover Resource Request on preemption    */
+comment|/**    * The ApplicationMaster is updating resource requirements for the    * application, by asking for more resources and releasing resources acquired    * by the application.    *    * @param requests resources to be acquired    * @param recoverPreemptedRequest recover Resource Request on preemption    * @return true if any resource was updated, false else    */
 DECL|method|updateResourceRequests ( List<ResourceRequest> requests, boolean recoverPreemptedRequest)
 specifier|synchronized
 specifier|public
-name|void
+name|boolean
 name|updateResourceRequests
 parameter_list|(
 name|List
@@ -738,6 +738,11 @@ name|queue
 operator|.
 name|getMetrics
 argument_list|()
+decl_stmt|;
+name|boolean
+name|anyResourcesUpdated
+init|=
+literal|false
 decl_stmt|;
 comment|// Update resource requests
 for|for
@@ -811,6 +816,10 @@ argument_list|)
 expr_stmt|;
 block|}
 name|updatePendingResources
+operator|=
+literal|true
+expr_stmt|;
+name|anyResourcesUpdated
 operator|=
 literal|true
 expr_stmt|;
@@ -1118,6 +1127,9 @@ expr_stmt|;
 block|}
 block|}
 block|}
+return|return
+name|anyResourcesUpdated
+return|;
 block|}
 comment|/**    * The ApplicationMaster is updating the blacklist    *    * @param blacklistAdditions resources to be added to the blacklist    * @param blacklistRemovals resources to be removed from the blacklist    */
 DECL|method|updateBlacklist ( List<String> blacklistAdditions, List<String> blacklistRemovals)
