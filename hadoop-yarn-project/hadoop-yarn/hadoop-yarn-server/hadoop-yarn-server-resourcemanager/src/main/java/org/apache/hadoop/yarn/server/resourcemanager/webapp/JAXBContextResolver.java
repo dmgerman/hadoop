@@ -309,6 +309,10 @@ block|,
 name|CapacitySchedulerHealthInfo
 operator|.
 name|class
+block|,
+name|FairSchedulerQueueInfoList
+operator|.
+name|class
 block|}
 decl_stmt|;
 comment|// these dao classes need root unwrapping

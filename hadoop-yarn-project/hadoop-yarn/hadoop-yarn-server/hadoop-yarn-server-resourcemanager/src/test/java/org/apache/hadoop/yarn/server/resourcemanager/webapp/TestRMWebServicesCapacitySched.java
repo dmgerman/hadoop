@@ -59,6 +59,18 @@ import|;
 end_import
 
 begin_import
+import|import static
+name|org
+operator|.
+name|junit
+operator|.
+name|Assert
+operator|.
+name|fail
+import|;
+end_import
+
+begin_import
 import|import
 name|java
 operator|.
@@ -4271,6 +4283,41 @@ expr_stmt|;
 name|checkResourcesUsed
 argument_list|(
 name|user
+argument_list|)
+expr_stmt|;
+block|}
+comment|// Verify 'queues' field is omitted from CapacitySchedulerLeafQueueInfo.
+try|try
+block|{
+name|b1
+operator|.
+name|getJSONObject
+argument_list|(
+literal|"queues"
+argument_list|)
+expr_stmt|;
+name|fail
+argument_list|(
+literal|"CapacitySchedulerQueueInfo should omit field 'queues'"
+operator|+
+literal|"if child queue is empty."
+argument_list|)
+expr_stmt|;
+block|}
+catch|catch
+parameter_list|(
+name|JSONException
+name|je
+parameter_list|)
+block|{
+name|assertEquals
+argument_list|(
+literal|"JSONObject[\"queues\"] not found."
+argument_list|,
+name|je
+operator|.
+name|getMessage
+argument_list|()
 argument_list|)
 expr_stmt|;
 block|}

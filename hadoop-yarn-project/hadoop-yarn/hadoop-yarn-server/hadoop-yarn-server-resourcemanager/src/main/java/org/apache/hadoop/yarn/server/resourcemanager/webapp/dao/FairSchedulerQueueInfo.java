@@ -30,16 +30,6 @@ name|java
 operator|.
 name|util
 operator|.
-name|ArrayList
-import|;
-end_import
-
-begin_import
-import|import
-name|java
-operator|.
-name|util
-operator|.
 name|Collection
 import|;
 end_import
@@ -326,10 +316,7 @@ name|schedulingPolicy
 decl_stmt|;
 DECL|field|childQueues
 specifier|private
-name|Collection
-argument_list|<
-name|FairSchedulerQueueInfo
-argument_list|>
+name|FairSchedulerQueueInfoList
 name|childQueues
 decl_stmt|;
 DECL|method|FairSchedulerQueueInfo ()
@@ -544,15 +531,6 @@ argument_list|(
 name|queueName
 argument_list|)
 expr_stmt|;
-name|childQueues
-operator|=
-operator|new
-name|ArrayList
-argument_list|<
-name|FairSchedulerQueueInfo
-argument_list|>
-argument_list|()
-expr_stmt|;
 if|if
 condition|(
 name|allocConf
@@ -573,6 +551,31 @@ condition|)
 block|{
 return|return;
 block|}
+name|childQueues
+operator|=
+name|getChildQueues
+argument_list|(
+name|queue
+argument_list|,
+name|scheduler
+argument_list|)
+expr_stmt|;
+block|}
+DECL|method|getChildQueues (FSQueue queue, FairScheduler scheduler)
+specifier|protected
+name|FairSchedulerQueueInfoList
+name|getChildQueues
+parameter_list|(
+name|FSQueue
+name|queue
+parameter_list|,
+name|FairScheduler
+name|scheduler
+parameter_list|)
+block|{
+comment|// Return null to omit 'childQueues' field from the return value of
+comment|// REST API if it is empty. We omit the field to keep the consistency
+comment|// with CapacitySchedulerQueueInfo, which omits 'queues' field if empty.
 name|Collection
 argument_list|<
 name|FSQueue
@@ -582,6 +585,25 @@ init|=
 name|queue
 operator|.
 name|getChildQueues
+argument_list|()
+decl_stmt|;
+if|if
+condition|(
+name|children
+operator|.
+name|isEmpty
+argument_list|()
+condition|)
+block|{
+return|return
+literal|null
+return|;
+block|}
+name|FairSchedulerQueueInfoList
+name|list
+init|=
+operator|new
+name|FairSchedulerQueueInfoList
 argument_list|()
 decl_stmt|;
 for|for
@@ -599,9 +621,9 @@ operator|instanceof
 name|FSLeafQueue
 condition|)
 block|{
-name|childQueues
+name|list
 operator|.
-name|add
+name|addToQueueInfoList
 argument_list|(
 operator|new
 name|FairSchedulerLeafQueueInfo
@@ -618,9 +640,9 @@ expr_stmt|;
 block|}
 else|else
 block|{
-name|childQueues
+name|list
 operator|.
-name|add
+name|addToQueueInfoList
 argument_list|(
 operator|new
 name|FairSchedulerQueueInfo
@@ -633,6 +655,9 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
+return|return
+name|list
+return|;
 block|}
 comment|/**    * Returns the steady fair share as a fraction of the entire cluster capacity.    */
 DECL|method|getSteadyFairShareMemoryFraction ()
@@ -783,6 +808,9 @@ parameter_list|()
 block|{
 return|return
 name|childQueues
+operator|.
+name|getQueueInfoList
+argument_list|()
 return|;
 block|}
 block|}
