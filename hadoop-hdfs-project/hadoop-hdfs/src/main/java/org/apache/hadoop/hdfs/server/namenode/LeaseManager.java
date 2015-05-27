@@ -192,7 +192,7 @@ name|server
 operator|.
 name|blockmanagement
 operator|.
-name|BlockInfoContiguous
+name|BlockInfo
 import|;
 end_import
 
@@ -505,7 +505,7 @@ name|isUnderConstruction
 argument_list|()
 argument_list|)
 expr_stmt|;
-name|BlockInfoContiguous
+name|BlockInfo
 index|[]
 name|blocks
 init|=
@@ -525,7 +525,7 @@ continue|continue;
 block|}
 for|for
 control|(
-name|BlockInfoContiguous
+name|BlockInfo
 name|b
 range|:
 name|blocks

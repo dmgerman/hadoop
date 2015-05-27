@@ -416,7 +416,7 @@ name|server
 operator|.
 name|blockmanagement
 operator|.
-name|BlockInfoContiguous
+name|BlockInfo
 import|;
 end_import
 
@@ -1592,7 +1592,7 @@ block|}
 else|else
 block|{
 comment|// add new chosen targets to already allocated block and return
-name|BlockInfoContiguous
+name|BlockInfo
 name|lastBlockInFile
 init|=
 name|pendingFile
@@ -3149,7 +3149,7 @@ comment|/**    * Add a block to the file. Returns a reference to the added block
 DECL|method|addBlock ( FSDirectory fsd, String path, INodesInPath inodesInPath, Block block, DatanodeStorageInfo[] targets)
 specifier|private
 specifier|static
-name|BlockInfoContiguous
+name|BlockInfo
 name|addBlock
 parameter_list|(
 name|FSDirectory
@@ -3647,7 +3647,7 @@ argument_list|,
 name|fileId
 argument_list|)
 decl_stmt|;
-name|BlockInfoContiguous
+name|BlockInfo
 name|lastBlockInFile
 init|=
 name|file
@@ -3693,7 +3693,7 @@ comment|//    There are no means to distinguish between the first and
 comment|//    the second attempts in Part I, because the first one hasn't
 comment|//    changed the namesystem state yet.
 comment|//    We run this analysis again in Part II where case 4 is impossible.
-name|BlockInfoContiguous
+name|BlockInfo
 name|penultimateBlock
 init|=
 name|file
@@ -4377,7 +4377,7 @@ name|mtime
 argument_list|,
 name|atime
 argument_list|,
-name|BlockInfoContiguous
+name|BlockInfo
 operator|.
 name|EMPTY_ARRAY
 argument_list|,
@@ -4549,7 +4549,7 @@ operator|.
 name|hasWriteLock
 argument_list|()
 assert|;
-name|BlockInfoContiguous
+name|BlockInfo
 name|b
 init|=
 name|addBlock

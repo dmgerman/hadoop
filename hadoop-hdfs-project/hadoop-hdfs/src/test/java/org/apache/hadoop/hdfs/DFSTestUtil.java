@@ -1194,7 +1194,7 @@ name|server
 operator|.
 name|blockmanagement
 operator|.
-name|BlockInfoContiguous
+name|BlockInfo
 import|;
 end_import
 
@@ -9976,7 +9976,7 @@ operator|.
 name|getBlockManager
 argument_list|()
 decl_stmt|;
-name|BlockInfoContiguous
+name|BlockInfo
 name|storedBlock
 init|=
 name|bm0

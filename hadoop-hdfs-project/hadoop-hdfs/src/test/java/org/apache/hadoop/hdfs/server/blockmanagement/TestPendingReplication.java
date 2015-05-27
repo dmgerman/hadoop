@@ -964,7 +964,7 @@ decl_stmt|;
 name|Block
 name|block
 decl_stmt|;
-name|BlockInfoContiguous
+name|BlockInfo
 name|blockInfo
 decl_stmt|;
 try|try
@@ -1047,7 +1047,7 @@ expr_stmt|;
 name|blockInfo
 operator|=
 operator|new
-name|BlockInfoContiguous
+name|BlockInfo
 argument_list|(
 name|block
 argument_list|,

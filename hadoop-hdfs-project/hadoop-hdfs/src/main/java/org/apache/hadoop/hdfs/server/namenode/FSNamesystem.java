@@ -2730,7 +2730,7 @@ name|server
 operator|.
 name|blockmanagement
 operator|.
-name|BlockInfoContiguous
+name|BlockInfo
 import|;
 end_import
 
@@ -11373,7 +11373,7 @@ throw|;
 block|}
 comment|// Check if the file is already being truncated with the same length
 specifier|final
-name|BlockInfoContiguous
+name|BlockInfo
 name|last
 init|=
 name|file
@@ -11730,7 +11730,7 @@ operator|==
 literal|null
 operator|)
 decl_stmt|;
-name|BlockInfoContiguous
+name|BlockInfo
 name|oldBlock
 init|=
 name|file
@@ -12002,14 +12002,14 @@ name|newBlock
 return|;
 block|}
 comment|/**    * Defines if a replica needs to be copied on truncate or    * can be truncated in place.    */
-DECL|method|shouldCopyOnTruncate (INodeFile file, BlockInfoContiguous blk)
+DECL|method|shouldCopyOnTruncate (INodeFile file, BlockInfo blk)
 name|boolean
 name|shouldCopyOnTruncate
 parameter_list|(
 name|INodeFile
 name|file
 parameter_list|,
-name|BlockInfoContiguous
+name|BlockInfo
 name|blk
 parameter_list|)
 block|{
@@ -13458,7 +13458,7 @@ literal|false
 argument_list|)
 expr_stmt|;
 specifier|final
-name|BlockInfoContiguous
+name|BlockInfo
 name|lastBlock
 init|=
 name|myFile
@@ -13720,7 +13720,7 @@ block|}
 block|}
 else|else
 block|{
-name|BlockInfoContiguous
+name|BlockInfo
 name|lastBlock
 init|=
 name|file
@@ -13906,7 +13906,7 @@ name|build
 argument_list|()
 decl_stmt|;
 specifier|final
-name|BlockInfoContiguous
+name|BlockInfo
 name|lastBlock
 init|=
 name|file
@@ -14596,7 +14596,7 @@ block|}
 else|else
 block|{
 specifier|final
-name|BlockInfoContiguous
+name|BlockInfo
 name|lastBlock
 init|=
 name|file
@@ -16235,7 +16235,7 @@ block|}
 else|else
 block|{
 comment|// check the penultimate block of this file
-name|BlockInfoContiguous
+name|BlockInfo
 name|b
 init|=
 name|v
@@ -16255,7 +16255,7 @@ argument_list|(
 name|src
 argument_list|,
 operator|new
-name|BlockInfoContiguous
+name|BlockInfo
 index|[]
 block|{
 name|b
@@ -16965,7 +16965,7 @@ condition|(
 name|trackBlockCounts
 condition|)
 block|{
-name|BlockInfoContiguous
+name|BlockInfo
 name|bi
 init|=
 name|getStoredBlock
@@ -17789,7 +17789,7 @@ operator|.
 name|numBlocks
 argument_list|()
 decl_stmt|;
-name|BlockInfoContiguous
+name|BlockInfo
 index|[]
 name|blocks
 init|=
@@ -17801,7 +17801,7 @@ decl_stmt|;
 name|int
 name|nrCompleteBlocks
 decl_stmt|;
-name|BlockInfoContiguous
+name|BlockInfo
 name|curBlock
 init|=
 literal|null
@@ -17950,7 +17950,7 @@ block|}
 comment|// The last block is not COMPLETE, and
 comment|// that the penultimate block if exists is either COMPLETE or COMMITTED
 specifier|final
-name|BlockInfoContiguous
+name|BlockInfo
 name|lastBlock
 init|=
 name|pendingFile
@@ -17966,7 +17966,7 @@ operator|.
 name|getBlockUCState
 argument_list|()
 decl_stmt|;
-name|BlockInfoContiguous
+name|BlockInfo
 name|penultimateBlock
 init|=
 name|pendingFile
@@ -18640,7 +18640,7 @@ block|}
 annotation|@
 name|VisibleForTesting
 DECL|method|getStoredBlock (Block block)
-name|BlockInfoContiguous
+name|BlockInfo
 name|getStoredBlock
 parameter_list|(
 name|Block
@@ -18882,7 +18882,7 @@ literal|"Cannot commitBlockSynchronization while in safe mode"
 argument_list|)
 expr_stmt|;
 specifier|final
-name|BlockInfoContiguous
+name|BlockInfo
 name|storedBlock
 init|=
 name|getStoredBlock
@@ -19669,14 +19669,14 @@ block|}
 comment|/**    * @param pendingFile open file that needs to be closed    * @param storedBlock last block    * @return Path of the file that was closed.    * @throws IOException on error    */
 annotation|@
 name|VisibleForTesting
-DECL|method|closeFileCommitBlocks (INodeFile pendingFile, BlockInfoContiguous storedBlock)
+DECL|method|closeFileCommitBlocks (INodeFile pendingFile, BlockInfo storedBlock)
 name|String
 name|closeFileCommitBlocks
 parameter_list|(
 name|INodeFile
 name|pendingFile
 parameter_list|,
-name|BlockInfoContiguous
+name|BlockInfo
 name|storedBlock
 parameter_list|)
 throws|throws
@@ -20592,7 +20592,7 @@ operator|.
 name|next
 argument_list|()
 decl_stmt|;
-name|BlockInfoContiguous
+name|BlockInfo
 name|blockInfo
 init|=
 name|blockManager
@@ -24101,7 +24101,7 @@ literal|null
 condition|)
 comment|// mostly true
 return|return;
-name|BlockInfoContiguous
+name|BlockInfo
 name|storedBlock
 init|=
 name|getStoredBlock
@@ -26170,7 +26170,7 @@ name|block
 argument_list|)
 expr_stmt|;
 comment|// check stored block state
-name|BlockInfoContiguous
+name|BlockInfo
 name|storedBlock
 init|=
 name|getStoredBlock

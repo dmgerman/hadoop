@@ -95,7 +95,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * BlockInfo class maintains for a given block  * the {@link BlockCollection} it is part of and datanodes where the replicas of   * the block are stored.  */
+comment|/**  * BlockInfo class maintains for a given block  * the {@link BlockCollection} it is part of and datanodes where the replicas of  * the block are stored.  */
 end_comment
 
 begin_class
@@ -103,10 +103,10 @@ annotation|@
 name|InterfaceAudience
 operator|.
 name|Private
-DECL|class|BlockInfoContiguous
+DECL|class|BlockInfo
 specifier|public
 class|class
-name|BlockInfoContiguous
+name|BlockInfo
 extends|extends
 name|Block
 implements|implements
@@ -118,7 +118,7 @@ DECL|field|EMPTY_ARRAY
 specifier|public
 specifier|static
 specifier|final
-name|BlockInfoContiguous
+name|BlockInfo
 index|[]
 name|EMPTY_ARRAY
 init|=
@@ -137,7 +137,7 @@ operator|.
 name|LinkedElement
 name|nextLinkedElement
 decl_stmt|;
-comment|/**    * This array contains triplets of references. For each i-th storage, the    * block belongs to triplets[3*i] is the reference to the    * {@link DatanodeStorageInfo} and triplets[3*i+1] and triplets[3*i+2] are    * references to the previous and the next blocks, respectively, in the list    * of blocks belonging to this storage.    *     * Using previous and next in Object triplets is done instead of a    * {@link LinkedList} list to efficiently use memory. With LinkedList the cost    * per replica is 42 bytes (LinkedList#Entry object per replica) versus 16    * bytes using the triplets.    */
+comment|/**    * This array contains triplets of references. For each i-th storage, the    * block belongs to triplets[3*i] is the reference to the    * {@link DatanodeStorageInfo} and triplets[3*i+1] and triplets[3*i+2] are    * references to the previous and the next blocks, respectively, in the list    * of blocks belonging to this storage.    *    * Using previous and next in Object triplets is done instead of a    * {@link LinkedList} list to efficiently use memory. With LinkedList the cost    * per replica is 42 bytes (LinkedList#Entry object per replica) versus 16    * bytes using the triplets.    */
 DECL|field|triplets
 specifier|private
 name|Object
@@ -145,9 +145,9 @@ index|[]
 name|triplets
 decl_stmt|;
 comment|/**    * Construct an entry for blocksmap    * @param replication the block's replication factor    */
-DECL|method|BlockInfoContiguous (short replication)
+DECL|method|BlockInfo (short replication)
 specifier|public
-name|BlockInfoContiguous
+name|BlockInfo
 parameter_list|(
 name|short
 name|replication
@@ -172,9 +172,9 @@ operator|=
 literal|null
 expr_stmt|;
 block|}
-DECL|method|BlockInfoContiguous (Block blk, short replication)
+DECL|method|BlockInfo (Block blk, short replication)
 specifier|public
-name|BlockInfoContiguous
+name|BlockInfo
 parameter_list|(
 name|Block
 name|blk
@@ -208,11 +208,11 @@ literal|null
 expr_stmt|;
 block|}
 comment|/**    * Copy construction.    * This is used to convert BlockInfoUnderConstruction    * @param from BlockInfo to copy from.    */
-DECL|method|BlockInfoContiguous (BlockInfoContiguous from)
+DECL|method|BlockInfo (BlockInfo from)
 specifier|protected
-name|BlockInfoContiguous
+name|BlockInfo
 parameter_list|(
-name|BlockInfoContiguous
+name|BlockInfo
 name|from
 parameter_list|)
 block|{
@@ -360,7 +360,7 @@ return|;
 block|}
 DECL|method|getPrevious (int index)
 specifier|private
-name|BlockInfoContiguous
+name|BlockInfo
 name|getPrevious
 parameter_list|(
 name|int
@@ -393,11 +393,11 @@ name|length
 operator|:
 literal|"Index is out of bound"
 assert|;
-name|BlockInfoContiguous
+name|BlockInfo
 name|info
 init|=
 operator|(
-name|BlockInfoContiguous
+name|BlockInfo
 operator|)
 name|triplets
 index|[
@@ -423,7 +423,7 @@ argument_list|()
 operator|.
 name|startsWith
 argument_list|(
-name|BlockInfoContiguous
+name|BlockInfo
 operator|.
 name|class
 operator|.
@@ -442,7 +442,7 @@ name|info
 return|;
 block|}
 DECL|method|getNext (int index)
-name|BlockInfoContiguous
+name|BlockInfo
 name|getNext
 parameter_list|(
 name|int
@@ -475,11 +475,11 @@ name|length
 operator|:
 literal|"Index is out of bound"
 assert|;
-name|BlockInfoContiguous
+name|BlockInfo
 name|info
 init|=
 operator|(
-name|BlockInfoContiguous
+name|BlockInfo
 operator|)
 name|triplets
 index|[
@@ -505,7 +505,7 @@ argument_list|()
 operator|.
 name|startsWith
 argument_list|(
-name|BlockInfoContiguous
+name|BlockInfo
 operator|.
 name|class
 operator|.
@@ -570,15 +570,15 @@ name|storage
 expr_stmt|;
 block|}
 comment|/**    * Return the previous block on the block list for the datanode at    * position index. Set the previous block on the list to "to".    *    * @param index - the datanode index    * @param to - block to be set to previous on the list of blocks    * @return current previous block on the list of blocks    */
-DECL|method|setPrevious (int index, BlockInfoContiguous to)
+DECL|method|setPrevious (int index, BlockInfo to)
 specifier|private
-name|BlockInfoContiguous
+name|BlockInfo
 name|setPrevious
 parameter_list|(
 name|int
 name|index
 parameter_list|,
-name|BlockInfoContiguous
+name|BlockInfo
 name|to
 parameter_list|)
 block|{
@@ -608,11 +608,11 @@ name|length
 operator|:
 literal|"Index is out of bound"
 assert|;
-name|BlockInfoContiguous
+name|BlockInfo
 name|info
 init|=
 operator|(
-name|BlockInfoContiguous
+name|BlockInfo
 operator|)
 name|triplets
 index|[
@@ -639,15 +639,15 @@ name|info
 return|;
 block|}
 comment|/**    * Return the next block on the block list for the datanode at    * position index. Set the next block on the list to "to".    *    * @param index - the datanode index    * @param to - block to be set to next on the list of blocks    *    * @return current next block on the list of blocks    */
-DECL|method|setNext (int index, BlockInfoContiguous to)
+DECL|method|setNext (int index, BlockInfo to)
 specifier|private
-name|BlockInfoContiguous
+name|BlockInfo
 name|setNext
 parameter_list|(
 name|int
 name|index
 parameter_list|,
-name|BlockInfoContiguous
+name|BlockInfo
 name|to
 parameter_list|)
 block|{
@@ -677,11 +677,11 @@ name|length
 operator|:
 literal|"Index is out of bound"
 assert|;
-name|BlockInfoContiguous
+name|BlockInfo
 name|info
 init|=
 operator|(
-name|BlockInfoContiguous
+name|BlockInfo
 operator|)
 name|triplets
 index|[
@@ -783,7 +783,7 @@ condition|)
 return|return
 name|last
 return|;
-comment|/* Not enough space left. Create a new array. Should normally       * happen only when replication is manually increased by the user. */
+comment|/* Not enough space left. Create a new array. Should normally      * happen only when replication is manually increased by the user. */
 name|Object
 index|[]
 name|old
@@ -1168,12 +1168,12 @@ operator|-
 literal|1
 return|;
 block|}
-comment|/**    * Insert this block into the head of the list of blocks     * related to the specified DatanodeStorageInfo.    * If the head is null then form a new list.    * @return current block as the new head of the list.    */
-DECL|method|listInsert (BlockInfoContiguous head, DatanodeStorageInfo storage)
-name|BlockInfoContiguous
+comment|/**    * Insert this block into the head of the list of blocks    * related to the specified DatanodeStorageInfo.    * If the head is null then form a new list.    * @return current block as the new head of the list.    */
+DECL|method|listInsert (BlockInfo head, DatanodeStorageInfo storage)
+name|BlockInfo
 name|listInsert
 parameter_list|(
-name|BlockInfoContiguous
+name|BlockInfo
 name|head
 parameter_list|,
 name|DatanodeStorageInfo
@@ -1256,12 +1256,12 @@ return|return
 name|this
 return|;
 block|}
-comment|/**    * Remove this block from the list of blocks     * related to the specified DatanodeStorageInfo.    * If this block is the head of the list then return the next block as     * the new head.    * @return the new head of the list or null if the list becomes    * empy after deletion.    */
-DECL|method|listRemove (BlockInfoContiguous head, DatanodeStorageInfo storage)
-name|BlockInfoContiguous
+comment|/**    * Remove this block from the list of blocks    * related to the specified DatanodeStorageInfo.    * If this block is the head of the list then return the next block as    * the new head.    * @return the new head of the list or null if the list becomes    * empy after deletion.    */
+DECL|method|listRemove (BlockInfo head, DatanodeStorageInfo storage)
+name|BlockInfo
 name|listRemove
 parameter_list|(
-name|BlockInfoContiguous
+name|BlockInfo
 name|head
 parameter_list|,
 name|DatanodeStorageInfo
@@ -1297,7 +1297,7 @@ comment|// this block is not on the data-node list
 return|return
 name|head
 return|;
-name|BlockInfoContiguous
+name|BlockInfo
 name|next
 init|=
 name|this
@@ -1307,7 +1307,7 @@ argument_list|(
 name|dnIndex
 argument_list|)
 decl_stmt|;
-name|BlockInfoContiguous
+name|BlockInfo
 name|prev
 init|=
 name|this
@@ -1391,12 +1391,12 @@ name|head
 return|;
 block|}
 comment|/**    * Remove this block from the list of blocks related to the specified    * DatanodeDescriptor. Insert it into the head of the list of blocks.    *    * @return the new head of the list.    */
-DECL|method|moveBlockToHead (BlockInfoContiguous head, DatanodeStorageInfo storage, int curIndex, int headIndex)
+DECL|method|moveBlockToHead (BlockInfo head, DatanodeStorageInfo storage, int curIndex, int headIndex)
 specifier|public
-name|BlockInfoContiguous
+name|BlockInfo
 name|moveBlockToHead
 parameter_list|(
-name|BlockInfoContiguous
+name|BlockInfo
 name|head
 parameter_list|,
 name|DatanodeStorageInfo
@@ -1420,7 +1420,7 @@ return|return
 name|this
 return|;
 block|}
-name|BlockInfoContiguous
+name|BlockInfo
 name|next
 init|=
 name|this
@@ -1432,7 +1432,7 @@ argument_list|,
 name|head
 argument_list|)
 decl_stmt|;
-name|BlockInfoContiguous
+name|BlockInfo
 name|prev
 init|=
 name|this
@@ -1506,7 +1506,7 @@ operator|.
 name|COMPLETE
 return|;
 block|}
-comment|/**    * Is this block complete?    *     * @return true if the state of the block is {@link BlockUCState#COMPLETE}    */
+comment|/**    * Is this block complete?    *    * @return true if the state of the block is {@link BlockUCState#COMPLETE}    */
 DECL|method|isComplete ()
 specifier|public
 name|boolean

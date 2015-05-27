@@ -82,7 +82,7 @@ name|server
 operator|.
 name|blockmanagement
 operator|.
-name|BlockInfoContiguous
+name|BlockInfo
 import|;
 end_import
 
@@ -359,16 +359,16 @@ operator|.
 name|class
 argument_list|)
 decl_stmt|;
-name|BlockInfoContiguous
+name|BlockInfo
 index|[]
 name|blocks
 init|=
 operator|new
-name|BlockInfoContiguous
+name|BlockInfo
 index|[]
 block|{
 operator|new
-name|BlockInfoContiguous
+name|BlockInfo
 argument_list|(
 operator|new
 name|Block

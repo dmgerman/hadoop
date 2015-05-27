@@ -370,7 +370,7 @@ name|server
 operator|.
 name|blockmanagement
 operator|.
-name|BlockInfoContiguous
+name|BlockInfo
 import|;
 end_import
 
@@ -6210,7 +6210,7 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
-name|BlockInfoContiguous
+name|BlockInfo
 index|[]
 name|oldBlocks
 init|=
@@ -6379,7 +6379,7 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|// add the new block
-name|BlockInfoContiguous
+name|BlockInfo
 name|newBI
 init|=
 operator|new
@@ -6445,7 +6445,7 @@ throws|throws
 name|IOException
 block|{
 comment|// Update its block list
-name|BlockInfoContiguous
+name|BlockInfo
 index|[]
 name|oldBlocks
 init|=
@@ -6507,7 +6507,7 @@ name|i
 operator|++
 control|)
 block|{
-name|BlockInfoContiguous
+name|BlockInfo
 name|oldBlock
 init|=
 name|oldBlocks
@@ -6836,7 +6836,7 @@ index|[
 name|i
 index|]
 decl_stmt|;
-name|BlockInfoContiguous
+name|BlockInfo
 name|newBI
 decl_stmt|;
 if|if
@@ -6874,7 +6874,7 @@ comment|// OP_ADD operations as each block is allocated.
 name|newBI
 operator|=
 operator|new
-name|BlockInfoContiguous
+name|BlockInfo
 argument_list|(
 name|newBlock
 argument_list|,

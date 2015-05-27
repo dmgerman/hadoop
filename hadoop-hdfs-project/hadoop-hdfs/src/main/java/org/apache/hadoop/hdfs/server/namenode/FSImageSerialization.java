@@ -240,7 +240,7 @@ name|server
 operator|.
 name|blockmanagement
 operator|.
-name|BlockInfoContiguous
+name|BlockInfo
 import|;
 end_import
 
@@ -830,12 +830,12 @@ operator|.
 name|readInt
 argument_list|()
 decl_stmt|;
-name|BlockInfoContiguous
+name|BlockInfo
 index|[]
 name|blocks
 init|=
 operator|new
-name|BlockInfoContiguous
+name|BlockInfo
 index|[
 name|numBlocks
 index|]
@@ -878,7 +878,7 @@ name|i
 index|]
 operator|=
 operator|new
-name|BlockInfoContiguous
+name|BlockInfo
 argument_list|(
 name|blk
 argument_list|,

@@ -252,22 +252,6 @@ name|fs
 operator|.
 name|permission
 operator|.
-name|AclEntry
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|fs
-operator|.
-name|permission
-operator|.
 name|FsAction
 import|;
 end_import
@@ -285,22 +269,6 @@ operator|.
 name|permission
 operator|.
 name|FsPermission
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|fs
-operator|.
-name|permission
-operator|.
-name|PermissionStatus
 import|;
 end_import
 
@@ -542,7 +510,7 @@ name|server
 operator|.
 name|blockmanagement
 operator|.
-name|BlockInfoContiguous
+name|BlockInfo
 import|;
 end_import
 
@@ -4616,7 +4584,7 @@ operator|!
 name|onBlockBoundary
 condition|)
 block|{
-name|BlockInfoContiguous
+name|BlockInfo
 name|oldBlock
 init|=
 name|file

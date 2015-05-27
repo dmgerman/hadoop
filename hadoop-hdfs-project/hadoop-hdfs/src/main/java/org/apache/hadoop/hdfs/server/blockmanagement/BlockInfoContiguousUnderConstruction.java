@@ -144,7 +144,7 @@ specifier|public
 class|class
 name|BlockInfoContiguousUnderConstruction
 extends|extends
-name|BlockInfoContiguous
+name|BlockInfo
 block|{
 comment|/** Block state. See {@link BlockUCState} */
 DECL|field|blockUCState
@@ -511,7 +511,7 @@ expr_stmt|;
 block|}
 comment|/**    * Convert an under construction block to a complete block.    *     * @return BlockInfo - a complete block.    * @throws IOException if the state of the block     * (the generation stamp and the length) has not been committed by     * the client or it does not have at least a minimal number of replicas     * reported from data-nodes.     */
 DECL|method|convertToCompleteBlock ()
-name|BlockInfoContiguous
+name|BlockInfo
 name|convertToCompleteBlock
 parameter_list|()
 throws|throws
@@ -529,7 +529,7 @@ literal|"Trying to convert a COMPLETE block"
 assert|;
 return|return
 operator|new
-name|BlockInfoContiguous
+name|BlockInfo
 argument_list|(
 name|this
 argument_list|)

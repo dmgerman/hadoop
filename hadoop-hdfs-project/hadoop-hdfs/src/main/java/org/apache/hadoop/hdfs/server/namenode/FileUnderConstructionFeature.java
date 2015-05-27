@@ -58,7 +58,7 @@ name|server
 operator|.
 name|blockmanagement
 operator|.
-name|BlockInfoContiguous
+name|BlockInfo
 import|;
 end_import
 
@@ -205,7 +205,7 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
-name|BlockInfoContiguous
+name|BlockInfo
 name|lastBlock
 init|=
 name|f
@@ -268,7 +268,7 @@ name|collectedBlocks
 parameter_list|)
 block|{
 specifier|final
-name|BlockInfoContiguous
+name|BlockInfo
 index|[]
 name|blocks
 init|=

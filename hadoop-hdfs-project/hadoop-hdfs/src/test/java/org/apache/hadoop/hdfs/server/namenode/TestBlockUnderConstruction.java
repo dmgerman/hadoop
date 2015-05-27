@@ -252,7 +252,7 @@ name|server
 operator|.
 name|blockmanagement
 operator|.
-name|BlockInfoContiguous
+name|BlockInfo
 import|;
 end_import
 
@@ -635,7 +635,7 @@ operator|==
 name|isFileOpen
 argument_list|)
 expr_stmt|;
-name|BlockInfoContiguous
+name|BlockInfo
 index|[]
 name|blocks
 init|=
@@ -669,7 +669,7 @@ name|idx
 init|=
 literal|0
 decl_stmt|;
-name|BlockInfoContiguous
+name|BlockInfo
 name|curBlock
 decl_stmt|;
 comment|// all blocks but the last two should be regular blocks

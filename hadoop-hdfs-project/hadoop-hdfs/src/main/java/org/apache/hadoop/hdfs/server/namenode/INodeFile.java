@@ -276,7 +276,7 @@ name|server
 operator|.
 name|blockmanagement
 operator|.
-name|BlockInfoContiguous
+name|BlockInfo
 import|;
 end_import
 
@@ -833,11 +833,11 @@ literal|0L
 decl_stmt|;
 DECL|field|blocks
 specifier|private
-name|BlockInfoContiguous
+name|BlockInfo
 index|[]
 name|blocks
 decl_stmt|;
-DECL|method|INodeFile (long id, byte[] name, PermissionStatus permissions, long mtime, long atime, BlockInfoContiguous[] blklist, short replication, long preferredBlockSize)
+DECL|method|INodeFile (long id, byte[] name, PermissionStatus permissions, long mtime, long atime, BlockInfo[] blklist, short replication, long preferredBlockSize)
 name|INodeFile
 parameter_list|(
 name|long
@@ -856,7 +856,7 @@ parameter_list|,
 name|long
 name|atime
 parameter_list|,
-name|BlockInfoContiguous
+name|BlockInfo
 index|[]
 name|blklist
 parameter_list|,
@@ -892,7 +892,7 @@ literal|0
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|INodeFile (long id, byte[] name, PermissionStatus permissions, long mtime, long atime, BlockInfoContiguous[] blklist, short replication, long preferredBlockSize, byte storagePolicyID)
+DECL|method|INodeFile (long id, byte[] name, PermissionStatus permissions, long mtime, long atime, BlockInfo[] blklist, short replication, long preferredBlockSize, byte storagePolicyID)
 name|INodeFile
 parameter_list|(
 name|long
@@ -911,7 +911,7 @@ parameter_list|,
 name|long
 name|atime
 parameter_list|,
-name|BlockInfoContiguous
+name|BlockInfo
 index|[]
 name|blklist
 parameter_list|,
@@ -1310,7 +1310,7 @@ block|}
 annotation|@
 name|Override
 comment|// BlockCollection
-DECL|method|setBlock (int index, BlockInfoContiguous blk)
+DECL|method|setBlock (int index, BlockInfo blk)
 specifier|public
 name|void
 name|setBlock
@@ -1318,7 +1318,7 @@ parameter_list|(
 name|int
 name|index
 parameter_list|,
-name|BlockInfoContiguous
+name|BlockInfo
 name|blk
 parameter_list|)
 block|{
@@ -1335,12 +1335,12 @@ block|}
 annotation|@
 name|Override
 comment|// BlockCollection, the file should be under construction
-DECL|method|setLastBlock ( BlockInfoContiguous lastBlock, DatanodeStorageInfo[] locations)
+DECL|method|setLastBlock ( BlockInfo lastBlock, DatanodeStorageInfo[] locations)
 specifier|public
 name|BlockInfoContiguousUnderConstruction
 name|setLastBlock
 parameter_list|(
-name|BlockInfoContiguous
+name|BlockInfo
 name|lastBlock
 parameter_list|,
 name|DatanodeStorageInfo
@@ -1479,12 +1479,12 @@ name|size_1
 index|]
 decl_stmt|;
 comment|//copy to a new list
-name|BlockInfoContiguous
+name|BlockInfo
 index|[]
 name|newlist
 init|=
 operator|new
-name|BlockInfoContiguous
+name|BlockInfo
 index|[
 name|size_1
 index|]
@@ -2120,7 +2120,7 @@ annotation|@
 name|Override
 DECL|method|getBlocks ()
 specifier|public
-name|BlockInfoContiguous
+name|BlockInfo
 index|[]
 name|getBlocks
 parameter_list|()
@@ -2134,7 +2134,7 @@ block|}
 comment|/** @return blocks of the file corresponding to the snapshot. */
 DECL|method|getBlocks (int snapshot)
 specifier|public
-name|BlockInfoContiguous
+name|BlockInfo
 index|[]
 name|getBlocks
 parameter_list|(
@@ -2168,7 +2168,7 @@ argument_list|(
 name|snapshot
 argument_list|)
 decl_stmt|;
-name|BlockInfoContiguous
+name|BlockInfo
 index|[]
 name|snapshotBlocks
 init|=
@@ -2232,7 +2232,7 @@ condition|)
 block|{
 for|for
 control|(
-name|BlockInfoContiguous
+name|BlockInfo
 name|b
 range|:
 name|blocks
@@ -2289,12 +2289,12 @@ operator|.
 name|length
 expr_stmt|;
 block|}
-name|BlockInfoContiguous
+name|BlockInfo
 index|[]
 name|newlist
 init|=
 operator|new
-name|BlockInfoContiguous
+name|BlockInfo
 index|[
 name|size
 operator|+
@@ -2366,11 +2366,11 @@ argument_list|()
 expr_stmt|;
 block|}
 comment|/**    * add a block to the block list    */
-DECL|method|addBlock (BlockInfoContiguous newblock)
+DECL|method|addBlock (BlockInfo newblock)
 name|void
 name|addBlock
 parameter_list|(
-name|BlockInfoContiguous
+name|BlockInfo
 name|newblock
 parameter_list|)
 block|{
@@ -2388,7 +2388,7 @@ operator|.
 name|setBlocks
 argument_list|(
 operator|new
-name|BlockInfoContiguous
+name|BlockInfo
 index|[]
 block|{
 name|newblock
@@ -2407,12 +2407,12 @@ name|blocks
 operator|.
 name|length
 decl_stmt|;
-name|BlockInfoContiguous
+name|BlockInfo
 index|[]
 name|newlist
 init|=
 operator|new
-name|BlockInfoContiguous
+name|BlockInfo
 index|[
 name|size
 operator|+
@@ -2453,12 +2453,12 @@ expr_stmt|;
 block|}
 block|}
 comment|/** Set the blocks. */
-DECL|method|setBlocks (BlockInfoContiguous[] blocks)
+DECL|method|setBlocks (BlockInfo[] blocks)
 specifier|public
 name|void
 name|setBlocks
 parameter_list|(
-name|BlockInfoContiguous
+name|BlockInfo
 index|[]
 name|blocks
 parameter_list|)
@@ -2709,7 +2709,7 @@ condition|)
 block|{
 for|for
 control|(
-name|BlockInfoContiguous
+name|BlockInfo
 name|blk
 range|:
 name|blocks
@@ -3489,7 +3489,7 @@ decl_stmt|;
 specifier|final
 name|Iterable
 argument_list|<
-name|BlockInfoContiguous
+name|BlockInfo
 argument_list|>
 name|blocks
 decl_stmt|;
@@ -3522,7 +3522,7 @@ block|{
 comment|// Collect all distinct blocks
 name|Set
 argument_list|<
-name|BlockInfoContiguous
+name|BlockInfo
 argument_list|>
 name|allBlocks
 init|=
@@ -3561,7 +3561,7 @@ range|:
 name|diffs
 control|)
 block|{
-name|BlockInfoContiguous
+name|BlockInfo
 index|[]
 name|diffBlocks
 init|=
@@ -3605,7 +3605,7 @@ argument_list|()
 decl_stmt|;
 for|for
 control|(
-name|BlockInfoContiguous
+name|BlockInfo
 name|b
 range|:
 name|blocks
@@ -3691,7 +3691,7 @@ return|;
 block|}
 comment|/**    * Return the penultimate allocated block for this file.    */
 DECL|method|getPenultimateBlock ()
-name|BlockInfoContiguous
+name|BlockInfo
 name|getPenultimateBlock
 parameter_list|()
 block|{
@@ -3727,7 +3727,7 @@ annotation|@
 name|Override
 DECL|method|getLastBlock ()
 specifier|public
-name|BlockInfoContiguous
+name|BlockInfo
 name|getLastBlock
 parameter_list|()
 block|{
@@ -3869,7 +3869,7 @@ name|collectedBlocks
 parameter_list|)
 block|{
 specifier|final
-name|BlockInfoContiguous
+name|BlockInfo
 index|[]
 name|oldBlocks
 init|=
@@ -3995,7 +3995,7 @@ name|delta
 parameter_list|)
 block|{
 specifier|final
-name|BlockInfoContiguous
+name|BlockInfo
 index|[]
 name|blocks
 init|=
@@ -4024,7 +4024,7 @@ literal|0
 decl_stmt|;
 for|for
 control|(
-name|BlockInfoContiguous
+name|BlockInfo
 name|b
 range|:
 name|blocks
@@ -4038,7 +4038,7 @@ name|getNumBytes
 argument_list|()
 expr_stmt|;
 block|}
-name|BlockInfoContiguous
+name|BlockInfo
 index|[]
 name|sblocks
 init|=
@@ -4115,7 +4115,7 @@ operator|--
 name|i
 control|)
 block|{
-name|BlockInfoContiguous
+name|BlockInfo
 name|bi
 init|=
 name|blocks
@@ -4266,7 +4266,7 @@ name|n
 parameter_list|)
 block|{
 specifier|final
-name|BlockInfoContiguous
+name|BlockInfo
 index|[]
 name|newBlocks
 decl_stmt|;
@@ -4279,7 +4279,7 @@ condition|)
 block|{
 name|newBlocks
 operator|=
-name|BlockInfoContiguous
+name|BlockInfo
 operator|.
 name|EMPTY_ARRAY
 expr_stmt|;
@@ -4289,7 +4289,7 @@ block|{
 name|newBlocks
 operator|=
 operator|new
-name|BlockInfoContiguous
+name|BlockInfo
 index|[
 name|n
 index|]
@@ -4318,12 +4318,12 @@ name|newBlocks
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|collectBlocksBeyondSnapshot (BlockInfoContiguous[] snapshotBlocks, BlocksMapUpdateInfo collectedBlocks)
+DECL|method|collectBlocksBeyondSnapshot (BlockInfo[] snapshotBlocks, BlocksMapUpdateInfo collectedBlocks)
 specifier|public
 name|void
 name|collectBlocksBeyondSnapshot
 parameter_list|(
-name|BlockInfoContiguous
+name|BlockInfo
 index|[]
 name|snapshotBlocks
 parameter_list|,
@@ -4331,7 +4331,7 @@ name|BlocksMapUpdateInfo
 name|collectedBlocks
 parameter_list|)
 block|{
-name|BlockInfoContiguous
+name|BlockInfo
 index|[]
 name|oldBlocks
 init|=
@@ -4452,7 +4452,7 @@ operator|==
 literal|null
 condition|)
 return|return;
-name|BlockInfoContiguous
+name|BlockInfo
 index|[]
 name|snapshotBlocks
 init|=
@@ -4509,11 +4509,11 @@ expr_stmt|;
 block|}
 block|}
 comment|/**    * @return true if the block is contained in a snapshot or false otherwise.    */
-DECL|method|isBlockInLatestSnapshot (BlockInfoContiguous block)
+DECL|method|isBlockInLatestSnapshot (BlockInfo block)
 name|boolean
 name|isBlockInLatestSnapshot
 parameter_list|(
-name|BlockInfoContiguous
+name|BlockInfo
 name|block
 parameter_list|)
 block|{
@@ -4543,7 +4543,7 @@ return|return
 literal|false
 return|;
 block|}
-name|BlockInfoContiguous
+name|BlockInfo
 index|[]
 name|snapshotBlocks
 init|=

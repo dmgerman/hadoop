@@ -72,7 +72,7 @@ name|server
 operator|.
 name|blockmanagement
 operator|.
-name|BlockInfoContiguous
+name|BlockInfo
 import|;
 end_import
 
@@ -328,7 +328,7 @@ block|}
 block|}
 DECL|method|findEarlierSnapshotBlocks (int snapshotId)
 specifier|public
-name|BlockInfoContiguous
+name|BlockInfo
 index|[]
 name|findEarlierSnapshotBlocks
 parameter_list|(
@@ -381,7 +381,7 @@ argument_list|,
 name|snapshotId
 argument_list|)
 decl_stmt|;
-name|BlockInfoContiguous
+name|BlockInfo
 index|[]
 name|blocks
 init|=
@@ -438,7 +438,7 @@ return|;
 block|}
 DECL|method|findLaterSnapshotBlocks (int snapshotId)
 specifier|public
-name|BlockInfoContiguous
+name|BlockInfo
 index|[]
 name|findLaterSnapshotBlocks
 parameter_list|(
@@ -491,7 +491,7 @@ argument_list|,
 name|snapshotId
 argument_list|)
 decl_stmt|;
-name|BlockInfoContiguous
+name|BlockInfo
 index|[]
 name|blocks
 init|=
@@ -568,7 +568,7 @@ name|FileDiff
 name|removed
 parameter_list|)
 block|{
-name|BlockInfoContiguous
+name|BlockInfo
 index|[]
 name|removedBlocks
 init|=
@@ -662,7 +662,7 @@ name|removedBlocks
 argument_list|)
 expr_stmt|;
 block|}
-name|BlockInfoContiguous
+name|BlockInfo
 index|[]
 name|earlierBlocks
 init|=
@@ -672,7 +672,7 @@ operator|==
 literal|null
 condition|?
 operator|new
-name|BlockInfoContiguous
+name|BlockInfo
 index|[]
 block|{}
 else|:
@@ -683,7 +683,7 @@ argument_list|()
 operator|)
 decl_stmt|;
 comment|// Find later snapshot (or file itself) with blocks
-name|BlockInfoContiguous
+name|BlockInfo
 index|[]
 name|laterBlocks
 init|=
@@ -770,7 +770,7 @@ continue|continue;
 break|break;
 block|}
 comment|// Check if last block is part of truncate recovery
-name|BlockInfoContiguous
+name|BlockInfo
 name|lastBlock
 init|=
 name|file

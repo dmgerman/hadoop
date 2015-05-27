@@ -202,16 +202,6 @@ name|java
 operator|.
 name|util
 operator|.
-name|Random
-import|;
-end_import
-
-begin_import
-import|import
-name|java
-operator|.
-name|util
-operator|.
 name|Set
 import|;
 end_import
@@ -7714,11 +7704,11 @@ literal|0
 argument_list|)
 expr_stmt|;
 specifier|final
-name|BlockInfoContiguous
+name|BlockInfo
 name|info
 init|=
 operator|new
-name|BlockInfoContiguous
+name|BlockInfo
 argument_list|(
 name|block1
 argument_list|,
@@ -7966,7 +7956,7 @@ name|removeBlock
 argument_list|(
 name|any
 argument_list|(
-name|BlockInfoContiguous
+name|BlockInfo
 operator|.
 name|class
 argument_list|)
@@ -7986,7 +7976,7 @@ name|addBlock
 argument_list|(
 name|any
 argument_list|(
-name|BlockInfoContiguous
+name|BlockInfo
 operator|.
 name|class
 argument_list|)
@@ -8016,7 +8006,7 @@ operator|.
 name|setLastBlock
 argument_list|(
 operator|(
-name|BlockInfoContiguous
+name|BlockInfo
 operator|)
 name|any
 argument_list|()

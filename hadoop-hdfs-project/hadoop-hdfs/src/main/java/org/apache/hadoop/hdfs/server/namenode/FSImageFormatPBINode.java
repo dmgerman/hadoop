@@ -92,16 +92,6 @@ end_import
 
 begin_import
 import|import
-name|java
-operator|.
-name|util
-operator|.
-name|Map
-import|;
-end_import
-
-begin_import
-import|import
 name|org
 operator|.
 name|apache
@@ -360,7 +350,7 @@ name|server
 operator|.
 name|blockmanagement
 operator|.
-name|BlockInfoContiguous
+name|BlockInfo
 import|;
 end_import
 
@@ -1840,7 +1830,7 @@ parameter_list|)
 block|{
 comment|// Add file->block mapping
 specifier|final
-name|BlockInfoContiguous
+name|BlockInfo
 index|[]
 name|blocks
 init|=
@@ -2498,12 +2488,12 @@ operator|.
 name|getLoaderContext
 argument_list|()
 decl_stmt|;
-name|BlockInfoContiguous
+name|BlockInfo
 index|[]
 name|blocks
 init|=
 operator|new
-name|BlockInfoContiguous
+name|BlockInfo
 index|[
 name|bp
 operator|.
@@ -2539,7 +2529,7 @@ name|i
 index|]
 operator|=
 operator|new
-name|BlockInfoContiguous
+name|BlockInfo
 argument_list|(
 name|PBHelper
 operator|.
@@ -2743,7 +2733,7 @@ operator|>
 literal|0
 condition|)
 block|{
-name|BlockInfoContiguous
+name|BlockInfo
 name|lastBlk
 init|=
 name|file

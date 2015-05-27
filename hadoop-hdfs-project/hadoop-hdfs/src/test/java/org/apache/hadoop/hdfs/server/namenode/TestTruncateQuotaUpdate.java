@@ -82,7 +82,7 @@ name|server
 operator|.
 name|blockmanagement
 operator|.
-name|BlockInfoContiguous
+name|BlockInfo
 import|;
 end_import
 
@@ -594,12 +594,12 @@ argument_list|,
 name|REPLICATION
 argument_list|)
 decl_stmt|;
-name|BlockInfoContiguous
+name|BlockInfo
 index|[]
 name|blocks
 init|=
 operator|new
-name|BlockInfoContiguous
+name|BlockInfo
 index|[
 name|file
 operator|.
@@ -821,7 +821,7 @@ parameter_list|)
 block|{
 name|ArrayList
 argument_list|<
-name|BlockInfoContiguous
+name|BlockInfo
 argument_list|>
 name|blocks
 init|=
@@ -856,7 +856,7 @@ operator|-
 name|createdSize
 argument_list|)
 decl_stmt|;
-name|BlockInfoContiguous
+name|BlockInfo
 name|bi
 init|=
 name|newBlock
@@ -923,7 +923,7 @@ operator|.
 name|toArray
 argument_list|(
 operator|new
-name|BlockInfoContiguous
+name|BlockInfo
 index|[
 name|blocks
 operator|.
@@ -940,7 +940,7 @@ return|;
 block|}
 DECL|method|newBlock (long size, short replication)
 specifier|private
-name|BlockInfoContiguous
+name|BlockInfo
 name|newBlock
 parameter_list|(
 name|long
@@ -967,7 +967,7 @@ argument_list|)
 decl_stmt|;
 return|return
 operator|new
-name|BlockInfoContiguous
+name|BlockInfo
 argument_list|(
 name|b
 argument_list|,
@@ -975,7 +975,7 @@ name|replication
 argument_list|)
 return|;
 block|}
-DECL|method|addSnapshotFeature (INodeFile file, BlockInfoContiguous[] blocks)
+DECL|method|addSnapshotFeature (INodeFile file, BlockInfo[] blocks)
 specifier|private
 specifier|static
 name|void
@@ -984,7 +984,7 @@ parameter_list|(
 name|INodeFile
 name|file
 parameter_list|,
-name|BlockInfoContiguous
+name|BlockInfo
 index|[]
 name|blocks
 parameter_list|)

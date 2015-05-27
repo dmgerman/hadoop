@@ -431,7 +431,7 @@ name|DatanodeDescriptor
 argument_list|,
 name|AbstractList
 argument_list|<
-name|BlockInfoContiguous
+name|BlockInfo
 argument_list|>
 argument_list|>
 DECL|field|decomNodeBlocks
@@ -1004,12 +1004,12 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|/**    * Checks whether a block is sufficiently replicated for decommissioning.    * Full-strength replication is not always necessary, hence "sufficient".    * @return true if sufficient, else false.    */
-DECL|method|isSufficientlyReplicated (BlockInfoContiguous block, BlockCollection bc, NumberReplicas numberReplicas)
+DECL|method|isSufficientlyReplicated (BlockInfo block, BlockCollection bc, NumberReplicas numberReplicas)
 specifier|private
 name|boolean
 name|isSufficientlyReplicated
 parameter_list|(
-name|BlockInfoContiguous
+name|BlockInfo
 name|block
 parameter_list|,
 name|BlockCollection
@@ -1662,7 +1662,7 @@ name|DatanodeDescriptor
 argument_list|,
 name|AbstractList
 argument_list|<
-name|BlockInfoContiguous
+name|BlockInfo
 argument_list|>
 argument_list|>
 argument_list|>
@@ -1720,7 +1720,7 @@ name|DatanodeDescriptor
 argument_list|,
 name|AbstractList
 argument_list|<
-name|BlockInfoContiguous
+name|BlockInfo
 argument_list|>
 argument_list|>
 name|entry
@@ -1741,7 +1741,7 @@ argument_list|()
 decl_stmt|;
 name|AbstractList
 argument_list|<
-name|BlockInfoContiguous
+name|BlockInfo
 argument_list|>
 name|blocks
 init|=
@@ -2043,7 +2043,7 @@ expr_stmt|;
 block|}
 block|}
 comment|/**      * Removes sufficiently replicated blocks from the block list of a       * datanode.      */
-DECL|method|pruneSufficientlyReplicated (final DatanodeDescriptor datanode, AbstractList<BlockInfoContiguous> blocks)
+DECL|method|pruneSufficientlyReplicated (final DatanodeDescriptor datanode, AbstractList<BlockInfo> blocks)
 specifier|private
 name|void
 name|pruneSufficientlyReplicated
@@ -2054,7 +2054,7 @@ name|datanode
 parameter_list|,
 name|AbstractList
 argument_list|<
-name|BlockInfoContiguous
+name|BlockInfo
 argument_list|>
 name|blocks
 parameter_list|)
@@ -2079,7 +2079,7 @@ DECL|method|handleInsufficientlyReplicated ( final DatanodeDescriptor datanode)
 specifier|private
 name|AbstractList
 argument_list|<
-name|BlockInfoContiguous
+name|BlockInfo
 argument_list|>
 name|handleInsufficientlyReplicated
 parameter_list|(
@@ -2090,7 +2090,7 @@ parameter_list|)
 block|{
 name|AbstractList
 argument_list|<
-name|BlockInfoContiguous
+name|BlockInfo
 argument_list|>
 name|insufficient
 init|=
@@ -2118,7 +2118,7 @@ name|insufficient
 return|;
 block|}
 comment|/**      * Used while checking if decommission-in-progress datanodes can be marked      * as decommissioned. Combines shared logic of       * pruneSufficientlyReplicated and handleInsufficientlyReplicated.      *      * @param datanode                    Datanode      * @param it                          Iterator over the blocks on the      *                                    datanode      * @param insufficientlyReplicated    Return parameter. If it's not null,      *                                    will contain the insufficiently      *                                    replicated-blocks from the list.      * @param pruneSufficientlyReplicated whether to remove sufficiently      *                                    replicated blocks from the iterator      * @return true if there are under-replicated blocks in the provided block      * iterator, else false.      */
-DECL|method|processBlocksForDecomInternal ( final DatanodeDescriptor datanode, final Iterator<BlockInfoContiguous> it, final List<BlockInfoContiguous> insufficientlyReplicated, boolean pruneSufficientlyReplicated)
+DECL|method|processBlocksForDecomInternal ( final DatanodeDescriptor datanode, final Iterator<BlockInfo> it, final List<BlockInfo> insufficientlyReplicated, boolean pruneSufficientlyReplicated)
 specifier|private
 name|void
 name|processBlocksForDecomInternal
@@ -2130,14 +2130,14 @@ parameter_list|,
 specifier|final
 name|Iterator
 argument_list|<
-name|BlockInfoContiguous
+name|BlockInfo
 argument_list|>
 name|it
 parameter_list|,
 specifier|final
 name|List
 argument_list|<
-name|BlockInfoContiguous
+name|BlockInfo
 argument_list|>
 name|insufficientlyReplicated
 parameter_list|,
@@ -2177,7 +2177,7 @@ name|numBlocksChecked
 operator|++
 expr_stmt|;
 specifier|final
-name|BlockInfoContiguous
+name|BlockInfo
 name|block
 init|=
 name|it
