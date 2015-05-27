@@ -10314,6 +10314,16 @@ operator|.
 name|traceSpan
 argument_list|)
 expr_stmt|;
+name|traceScope
+operator|.
+name|getSpan
+argument_list|()
+operator|.
+name|addTimelineAnnotation
+argument_list|(
+literal|"called"
+argument_list|)
+expr_stmt|;
 block|}
 try|try
 block|{
