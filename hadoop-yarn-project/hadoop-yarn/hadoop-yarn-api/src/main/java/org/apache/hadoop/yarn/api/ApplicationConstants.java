@@ -44,6 +44,22 @@ name|hadoop
 operator|.
 name|classification
 operator|.
+name|InterfaceAudience
+operator|.
+name|Private
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|classification
+operator|.
 name|InterfaceStability
 operator|.
 name|Evolving
@@ -329,6 +345,16 @@ DECL|enumConstant|HADOOP_YARN_HOME
 name|HADOOP_YARN_HOME
 argument_list|(
 literal|"HADOOP_YARN_HOME"
+argument_list|)
+block|,
+comment|/**      * $CLASSPATH_PREPEND_DISTCACHE      * Private, Windows specific      */
+DECL|enumConstant|Private
+annotation|@
+name|Private
+DECL|enumConstant|CLASSPATH_PREPEND_DISTCACHE
+name|CLASSPATH_PREPEND_DISTCACHE
+argument_list|(
+literal|"CLASSPATH_PREPEND_DISTCACHE"
 argument_list|)
 block|,
 comment|/**      * $CONTAINER_ID      * Final, exported by NodeManager and non-modifiable by users.      */

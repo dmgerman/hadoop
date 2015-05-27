@@ -3197,7 +3197,7 @@ operator|.
 name|name
 argument_list|()
 argument_list|,
-literal|"SYSTEM_CLPATH"
+literal|"APATH"
 argument_list|)
 expr_stmt|;
 name|containerLaunchContext
@@ -3547,7 +3547,21 @@ literal|"userjarlink.jar"
 argument_list|)
 argument_list|)
 expr_stmt|;
-comment|//Now move userjar to the front
+comment|//Then, with user classpath first
+name|userSetEnv
+operator|.
+name|put
+argument_list|(
+name|Environment
+operator|.
+name|CLASSPATH_PREPEND_DISTCACHE
+operator|.
+name|name
+argument_list|()
+argument_list|,
+literal|"true"
+argument_list|)
+expr_stmt|;
 name|cId
 operator|=
 name|ContainerId
@@ -3570,17 +3584,6 @@ operator|.
 name|thenReturn
 argument_list|(
 name|cId
-argument_list|)
-expr_stmt|;
-name|conf
-operator|.
-name|set
-argument_list|(
-name|YarnConfiguration
-operator|.
-name|YARN_APPLICATION_CLASSPATH_PREPEND_DISTCACHE
-argument_list|,
-literal|"true"
 argument_list|)
 expr_stmt|;
 name|launch

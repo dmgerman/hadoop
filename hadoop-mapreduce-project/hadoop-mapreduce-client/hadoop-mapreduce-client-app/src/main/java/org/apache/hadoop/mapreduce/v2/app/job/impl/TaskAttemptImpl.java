@@ -5622,6 +5622,20 @@ block|}
 block|}
 comment|// Fill in the fields needed per-container that are missing in the common
 comment|// spec.
+name|boolean
+name|userClassesTakesPrecedence
+init|=
+name|conf
+operator|.
+name|getBoolean
+argument_list|(
+name|MRJobConfig
+operator|.
+name|MAPREDUCE_JOB_USER_CLASSPATH_FIRST
+argument_list|,
+literal|false
+argument_list|)
+decl_stmt|;
 comment|// Setup environment by cloning from common env.
 name|Map
 argument_list|<
@@ -5665,6 +5679,26 @@ argument_list|(
 name|env
 argument_list|)
 expr_stmt|;
+if|if
+condition|(
+name|userClassesTakesPrecedence
+condition|)
+block|{
+name|myEnv
+operator|.
+name|put
+argument_list|(
+name|Environment
+operator|.
+name|CLASSPATH_PREPEND_DISTCACHE
+operator|.
+name|name
+argument_list|()
+argument_list|,
+literal|"true"
+argument_list|)
+expr_stmt|;
+block|}
 name|MapReduceChildJVM
 operator|.
 name|setVMEnv

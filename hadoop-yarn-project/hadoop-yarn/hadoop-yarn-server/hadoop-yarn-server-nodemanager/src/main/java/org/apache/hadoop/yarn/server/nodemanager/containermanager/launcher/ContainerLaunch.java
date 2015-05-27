@@ -4371,21 +4371,27 @@ comment|//there but on windows they are not available when the classpath
 comment|//jar is created and so they "are lost" and have to be explicitly
 comment|//added to the classpath instead.  This also means that their position
 comment|//is lost relative to other non-distcache classpath entries which will
-comment|//break things like mapreduce.job.user.classpath.first.
+comment|//break things like mapreduce.job.user.classpath.first.  An environment
+comment|//variable can be set to indicate that distcache entries should come
+comment|//first
 name|boolean
 name|preferLocalizedJars
 init|=
-name|conf
+name|Boolean
 operator|.
-name|getBoolean
+name|valueOf
 argument_list|(
-name|YarnConfiguration
+name|environment
 operator|.
-name|YARN_APPLICATION_CLASSPATH_PREPEND_DISTCACHE
-argument_list|,
-name|YarnConfiguration
+name|get
+argument_list|(
+name|Environment
 operator|.
-name|DEFAULT_YARN_APPLICATION_CLASSPATH_PREPEND_DISTCACHE
+name|CLASSPATH_PREPEND_DISTCACHE
+operator|.
+name|name
+argument_list|()
+argument_list|)
 argument_list|)
 decl_stmt|;
 name|boolean

@@ -2460,6 +2460,15 @@ name|ApplicationConstants
 operator|.
 name|Environment
 operator|.
+name|CLASSPATH_PREPEND_DISTCACHE
+operator|.
+name|key
+argument_list|()
+argument_list|,
+name|ApplicationConstants
+operator|.
+name|Environment
+operator|.
 name|HADOOP_YARN_HOME
 operator|.
 name|key
@@ -4517,27 +4526,6 @@ init|=
 name|YARN_PREFIX
 operator|+
 literal|"application.classpath"
-decl_stmt|;
-comment|/**    * Whether or not entries from the distributed cache should be preferred over    * the rest of the YARN CLASSPATH    */
-DECL|field|YARN_APPLICATION_CLASSPATH_PREPEND_DISTCACHE
-specifier|public
-specifier|static
-specifier|final
-name|String
-name|YARN_APPLICATION_CLASSPATH_PREPEND_DISTCACHE
-init|=
-name|YARN_PREFIX
-operator|+
-literal|"application.classpath.prepend.distcache"
-decl_stmt|;
-specifier|public
-specifier|static
-specifier|final
-name|boolean
-DECL|field|DEFAULT_YARN_APPLICATION_CLASSPATH_PREPEND_DISTCACHE
-name|DEFAULT_YARN_APPLICATION_CLASSPATH_PREPEND_DISTCACHE
-init|=
-literal|false
 decl_stmt|;
 comment|/**    * Default platform-agnostic CLASSPATH for YARN applications. A    * comma-separated list of CLASSPATH entries. The parameter expansion marker    * will be replaced with real parameter expansion marker ('%' for Windows and    * '$' for Linux) by NodeManager on container launch. For example: {{VAR}}    * will be replaced as $VAR on Linux, and %VAR% on Windows.    */
 annotation|@
