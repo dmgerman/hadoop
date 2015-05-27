@@ -5120,7 +5120,7 @@ return|;
 block|}
 block|}
 DECL|method|getLabelsInfoByNode (NodeId nodeId)
-specifier|private
+specifier|public
 name|Set
 argument_list|<
 name|NodeLabel
@@ -5131,6 +5131,13 @@ name|NodeId
 name|nodeId
 parameter_list|)
 block|{
+try|try
+block|{
+name|readLock
+operator|.
+name|lock
+argument_list|()
+expr_stmt|;
 name|Set
 argument_list|<
 name|String
@@ -5170,6 +5177,15 @@ decl_stmt|;
 return|return
 name|nodeLabels
 return|;
+block|}
+finally|finally
+block|{
+name|readLock
+operator|.
+name|unlock
+argument_list|()
+expr_stmt|;
+block|}
 block|}
 DECL|method|createNodeLabelFromLabelNames (Set<String> labels)
 specifier|private
