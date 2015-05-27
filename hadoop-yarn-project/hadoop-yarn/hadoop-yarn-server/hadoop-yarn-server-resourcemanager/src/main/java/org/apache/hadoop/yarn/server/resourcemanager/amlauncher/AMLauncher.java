@@ -1445,7 +1445,7 @@ name|getWebProxyBase
 argument_list|()
 argument_list|)
 expr_stmt|;
-comment|// Set AppSubmitTime and MaxAppAttempts to be consumable by the AM.
+comment|// Set AppSubmitTime to be consumable by the AM.
 name|ApplicationId
 name|applicationId
 init|=
@@ -1480,33 +1480,6 @@ name|applicationId
 argument_list|)
 operator|.
 name|getSubmitTime
-argument_list|()
-argument_list|)
-argument_list|)
-expr_stmt|;
-name|environment
-operator|.
-name|put
-argument_list|(
-name|ApplicationConstants
-operator|.
-name|MAX_APP_ATTEMPTS_ENV
-argument_list|,
-name|String
-operator|.
-name|valueOf
-argument_list|(
-name|rmContext
-operator|.
-name|getRMApps
-argument_list|()
-operator|.
-name|get
-argument_list|(
-name|applicationId
-argument_list|)
-operator|.
-name|getMaxAppAttempts
 argument_list|()
 argument_list|)
 argument_list|)

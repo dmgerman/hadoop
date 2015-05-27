@@ -111,7 +111,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * This is the API for the applications comprising of constants that YARN sets  * up for the applications and the containers.  *   * TODO: Investigate the semantics and security of each cross-boundary refs.  */
+comment|/**  * This is the API for the applications comprising of constants that YARN sets  * up for the applications and the containers.  *  * TODO: Investigate the semantics and security of each cross-boundary refs.  */
 end_comment
 
 begin_interface
@@ -146,7 +146,7 @@ name|UserGroupInformation
 operator|.
 name|HADOOP_TOKEN_FILE_LOCATION
 decl_stmt|;
-comment|/**    * The environmental variable for APPLICATION_WEB_PROXY_BASE. Set in     * ApplicationMaster's environment only. This states that for all non-relative    * web URLs in the app masters web UI what base should they have.    */
+comment|/**    * The environmental variable for APPLICATION_WEB_PROXY_BASE. Set in    * ApplicationMaster's environment only. This states that for all non-relative    * web URLs in the app masters web UI what base should they have.    */
 DECL|field|APPLICATION_WEB_PROXY_BASE_ENV
 specifier|public
 specifier|static
@@ -226,17 +226,7 @@ name|STDOUT
 init|=
 literal|"stdout"
 decl_stmt|;
-comment|/**    * The environment variable for MAX_APP_ATTEMPTS. Set in AppMaster environment    * only    */
-DECL|field|MAX_APP_ATTEMPTS_ENV
-specifier|public
-specifier|static
-specifier|final
-name|String
-name|MAX_APP_ATTEMPTS_ENV
-init|=
-literal|"MAX_APP_ATTEMPTS"
-decl_stmt|;
-comment|/**    * Environment for Applications.    *     * Some of the environment variables for applications are<em>final</em>     * i.e. they cannot be modified by the applications.    */
+comment|/**    * Environment for Applications.    *    * Some of the environment variables for applications are<em>final</em>    * i.e. they cannot be modified by the applications.    */
 DECL|enum|Environment
 specifier|public
 enum|enum
