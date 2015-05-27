@@ -113,6 +113,12 @@ name|APP_STATE
 init|=
 literal|"app.state"
 decl_stmt|;
+DECL|field|APPS_NUM
+name|String
+name|APPS_NUM
+init|=
+literal|"apps.num"
+decl_stmt|;
 DECL|field|QUEUE_NAME
 name|String
 name|QUEUE_NAME

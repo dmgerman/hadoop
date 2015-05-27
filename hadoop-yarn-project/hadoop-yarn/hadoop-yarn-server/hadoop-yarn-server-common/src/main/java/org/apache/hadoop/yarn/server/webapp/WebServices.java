@@ -699,16 +699,6 @@ argument_list|(
 name|req
 argument_list|)
 decl_stmt|;
-name|long
-name|num
-init|=
-literal|0
-decl_stmt|;
-name|boolean
-name|checkCount
-init|=
-literal|false
-decl_stmt|;
 name|boolean
 name|checkStart
 init|=
@@ -732,7 +722,9 @@ decl_stmt|;
 name|long
 name|countNum
 init|=
-literal|0
+name|Long
+operator|.
+name|MAX_VALUE
 decl_stmt|;
 comment|// set values suitable in case both of begin/end not specified
 name|long
@@ -772,10 +764,6 @@ name|isEmpty
 argument_list|()
 condition|)
 block|{
-name|checkCount
-operator|=
-literal|true
-expr_stmt|;
 name|countNum
 operator|=
 name|Long
@@ -1090,6 +1078,22 @@ name|appReports
 init|=
 literal|null
 decl_stmt|;
+specifier|final
+name|GetApplicationsRequest
+name|request
+init|=
+name|GetApplicationsRequest
+operator|.
+name|newInstance
+argument_list|()
+decl_stmt|;
+name|request
+operator|.
+name|setLimit
+argument_list|(
+name|countNum
+argument_list|)
+expr_stmt|;
 try|try
 block|{
 if|if
@@ -1101,14 +1105,6 @@ condition|)
 block|{
 comment|// TODO: the request should take the params like what RMWebServices does
 comment|// in YARN-1819.
-name|GetApplicationsRequest
-name|request
-init|=
-name|GetApplicationsRequest
-operator|.
-name|newInstance
-argument_list|()
-decl_stmt|;
 name|appReports
 operator|=
 name|appBaseProt
@@ -1157,10 +1153,7 @@ name|appBaseProt
 operator|.
 name|getApplications
 argument_list|(
-name|GetApplicationsRequest
-operator|.
-name|newInstance
-argument_list|()
+name|request
 argument_list|)
 operator|.
 name|getApplicationList
@@ -1192,17 +1185,6 @@ range|:
 name|appReports
 control|)
 block|{
-if|if
-condition|(
-name|checkCount
-operator|&&
-name|num
-operator|==
-name|countNum
-condition|)
-block|{
-break|break;
-block|}
 if|if
 condition|(
 name|checkAppStates
@@ -1416,9 +1398,6 @@ name|add
 argument_list|(
 name|app
 argument_list|)
-expr_stmt|;
-name|num
-operator|++
 expr_stmt|;
 block|}
 return|return

@@ -524,6 +524,22 @@ name|hadoop
 operator|.
 name|yarn
 operator|.
+name|conf
+operator|.
+name|YarnConfiguration
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
 name|exceptions
 operator|.
 name|ApplicationAttemptNotFoundException
@@ -805,6 +821,11 @@ specifier|private
 name|String
 name|serverHttpAddress
 decl_stmt|;
+DECL|field|maxLoadedApplications
+specifier|private
+name|long
+name|maxLoadedApplications
+decl_stmt|;
 DECL|method|ApplicationHistoryManagerOnTimelineStore ( TimelineDataManager timelineDataManager, ApplicationACLsManager aclsManager)
 specifier|public
 name|ApplicationHistoryManagerOnTimelineStore
@@ -868,6 +889,21 @@ argument_list|(
 name|conf
 argument_list|)
 expr_stmt|;
+name|maxLoadedApplications
+operator|=
+name|conf
+operator|.
+name|getLong
+argument_list|(
+name|YarnConfiguration
+operator|.
+name|APPLICATION_HISTORY_PREFIX_MAX_APPS
+argument_list|,
+name|YarnConfiguration
+operator|.
+name|DEFAULT_APPLICATION_HISTORY_PREFIX_MAX_APPS
+argument_list|)
+expr_stmt|;
 name|super
 operator|.
 name|serviceInit
@@ -906,7 +942,7 @@ return|;
 block|}
 annotation|@
 name|Override
-DECL|method|getAllApplications ()
+DECL|method|getApplications (long appsNum)
 specifier|public
 name|Map
 argument_list|<
@@ -914,8 +950,11 @@ name|ApplicationId
 argument_list|,
 name|ApplicationReport
 argument_list|>
-name|getAllApplications
-parameter_list|()
+name|getApplications
+parameter_list|(
+name|long
+name|appsNum
+parameter_list|)
 throws|throws
 name|YarnException
 throws|,
@@ -944,9 +983,17 @@ literal|null
 argument_list|,
 literal|null
 argument_list|,
+name|appsNum
+operator|==
 name|Long
 operator|.
 name|MAX_VALUE
+condition|?
+name|this
+operator|.
+name|maxLoadedApplications
+else|:
+name|appsNum
 argument_list|,
 name|EnumSet
 operator|.

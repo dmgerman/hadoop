@@ -623,7 +623,7 @@ return|;
 block|}
 annotation|@
 name|Override
-DECL|method|getAllApplications ()
+DECL|method|getApplications (long appsNum)
 specifier|public
 name|Map
 argument_list|<
@@ -631,8 +631,11 @@ name|ApplicationId
 argument_list|,
 name|ApplicationReport
 argument_list|>
-name|getAllApplications
-parameter_list|()
+name|getApplications
+parameter_list|(
+name|long
+name|appsNum
+parameter_list|)
 throws|throws
 name|IOException
 block|{

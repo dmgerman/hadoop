@@ -1236,8 +1236,13 @@ argument_list|>
 argument_list|(
 name|history
 operator|.
-name|getAllApplications
+name|getApplications
+argument_list|(
+name|request
+operator|.
+name|getLimit
 argument_list|()
+argument_list|)
 operator|.
 name|values
 argument_list|()

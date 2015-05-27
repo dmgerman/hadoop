@@ -5115,6 +5115,27 @@ literal|"0.0.0.0:"
 operator|+
 name|DEFAULT_TIMELINE_SERVICE_WEBAPP_HTTPS_PORT
 decl_stmt|;
+comment|/**    * Defines the max number of applications could be fetched using    * REST API or application history protocol and shown in timeline    * server web ui.    */
+DECL|field|APPLICATION_HISTORY_PREFIX_MAX_APPS
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|APPLICATION_HISTORY_PREFIX_MAX_APPS
+init|=
+name|APPLICATION_HISTORY_PREFIX
+operator|+
+literal|"max-applications"
+decl_stmt|;
+DECL|field|DEFAULT_APPLICATION_HISTORY_PREFIX_MAX_APPS
+specifier|public
+specifier|static
+specifier|final
+name|long
+name|DEFAULT_APPLICATION_HISTORY_PREFIX_MAX_APPS
+init|=
+literal|10000
+decl_stmt|;
 comment|/** Timeline service store class */
 DECL|field|TIMELINE_SERVICE_STORE
 specifier|public
