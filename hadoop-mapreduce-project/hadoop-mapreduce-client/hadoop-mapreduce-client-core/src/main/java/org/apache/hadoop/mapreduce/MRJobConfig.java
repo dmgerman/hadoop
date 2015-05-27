@@ -295,6 +295,46 @@ name|QUEUE_NAME
 init|=
 literal|"mapreduce.job.queuename"
 decl_stmt|;
+comment|/**    *  Node Label expression applicable for all Job containers.    */
+DECL|field|JOB_NODE_LABEL_EXP
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|JOB_NODE_LABEL_EXP
+init|=
+literal|"mapreduce.job.node-label-expression"
+decl_stmt|;
+comment|/**    * Node Label expression applicable for AM containers.    */
+DECL|field|AM_NODE_LABEL_EXP
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|AM_NODE_LABEL_EXP
+init|=
+literal|"mapreduce.job.am.node-label-expression"
+decl_stmt|;
+comment|/**    *  Node Label expression applicable for map containers.    */
+DECL|field|MAP_NODE_LABEL_EXP
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|MAP_NODE_LABEL_EXP
+init|=
+literal|"mapreduce.map.node-label-expression"
+decl_stmt|;
+comment|/**    * Node Label expression applicable for reduce containers.    */
+DECL|field|REDUCE_NODE_LABEL_EXP
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|REDUCE_NODE_LABEL_EXP
+init|=
+literal|"mapreduce.reduce.node-label-expression"
+decl_stmt|;
 DECL|field|RESERVATION_ID
 specifier|public
 specifier|static
