@@ -2204,11 +2204,11 @@ literal|"UserGroupsConfiguration] [-refreshUserToGroupsMappings] "
 operator|+
 literal|"[-refreshAdminAcls] [-refreshServiceAcl] [-getGroup"
 operator|+
-literal|" [username]] [[-addToClusterNodeLabels [label1,label2,label3]]"
+literal|" [username]] [-addToClusterNodeLabels<\"label1(exclusive=true),label2(exclusive=false),label3\">]"
 operator|+
-literal|" [-removeFromClusterNodeLabels [label1,label2,label3]] [-replaceLabelsOnNode "
+literal|" [-removeFromClusterNodeLabels<label1,label2,label3>] [-replaceLabelsOnNode "
 operator|+
-literal|"[node1[:port]=label1,label2 node2[:port]=label1] [-directlyAccessNodeLabelStore]] "
+literal|"<\"node1[:port]=label1,label2 node2[:port]=label1\">] [-directlyAccessNodeLabelStore]] "
 operator|+
 literal|"[-help [cmd]]"
 argument_list|)
@@ -2603,11 +2603,13 @@ literal|"UserGroupsConfiguration] [-refreshUserToGroupsMappings] "
 operator|+
 literal|"[-refreshAdminAcls] [-refreshServiceAcl] [-getGroup"
 operator|+
-literal|" [username]] [[-addToClusterNodeLabels [label1,label2,label3]]"
+literal|" [username]] [-addToClusterNodeLabels<\"label1(exclusive=true),"
 operator|+
-literal|" [-removeFromClusterNodeLabels [label1,label2,label3]] [-replaceLabelsOnNode "
+literal|"label2(exclusive=false),label3\">]"
 operator|+
-literal|"[node1[:port]=label1,label2 node2[:port]=label1] [-directlyAccessNodeLabelStore]] "
+literal|" [-removeFromClusterNodeLabels<label1,label2,label3>] [-replaceLabelsOnNode "
+operator|+
+literal|"<\"node1[:port]=label1,label2 node2[:port]=label1\">] [-directlyAccessNodeLabelStore]] "
 operator|+
 literal|"[-transitionToActive [--forceactive]<serviceId>] "
 operator|+

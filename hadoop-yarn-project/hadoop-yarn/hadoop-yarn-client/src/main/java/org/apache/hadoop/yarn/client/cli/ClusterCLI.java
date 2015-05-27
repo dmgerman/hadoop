@@ -494,7 +494,7 @@ name|DIRECTLY_ACCESS_NODE_LABEL_STORE
 argument_list|,
 literal|false
 argument_list|,
-literal|"Directly access node label store, "
+literal|"This is DEPRECATED, will be removed in future releases. Directly access node label store, "
 operator|+
 literal|"with this option, all node label related operations"
 operator|+

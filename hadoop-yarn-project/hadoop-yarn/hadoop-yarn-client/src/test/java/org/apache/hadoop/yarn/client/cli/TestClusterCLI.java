@@ -866,7 +866,21 @@ name|pw
 operator|.
 name|println
 argument_list|(
-literal|" -dnl,--directly-access-node-label-store   Directly access node label"
+literal|" -dnl,--directly-access-node-label-store   This is DEPRECATED, will be"
+argument_list|)
+expr_stmt|;
+name|pw
+operator|.
+name|println
+argument_list|(
+literal|"                                           removed in future releases."
+argument_list|)
+expr_stmt|;
+name|pw
+operator|.
+name|println
+argument_list|(
+literal|"                                           Directly access node label"
 argument_list|)
 expr_stmt|;
 name|pw
