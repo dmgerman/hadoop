@@ -1022,6 +1022,16 @@ argument_list|()
 operator|.
 name|getQuery
 argument_list|()
+operator|!=
+literal|null
+operator|&&
+name|connection
+operator|.
+name|getURL
+argument_list|()
+operator|.
+name|getQuery
+argument_list|()
 operator|.
 name|contains
 argument_list|(

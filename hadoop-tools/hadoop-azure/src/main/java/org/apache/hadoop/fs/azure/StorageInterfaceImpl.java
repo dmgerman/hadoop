@@ -1763,13 +1763,13 @@ return|;
 block|}
 annotation|@
 name|Override
-DECL|method|startCopyFromBlob (URI source, BlobRequestOptions options, OperationContext opContext)
+DECL|method|startCopyFromBlob (CloudBlobWrapper sourceBlob, BlobRequestOptions options, OperationContext opContext)
 specifier|public
 name|void
 name|startCopyFromBlob
 parameter_list|(
-name|URI
-name|source
+name|CloudBlobWrapper
+name|sourceBlob
 parameter_list|,
 name|BlobRequestOptions
 name|options
@@ -1787,7 +1787,14 @@ argument_list|()
 operator|.
 name|startCopyFromBlob
 argument_list|(
-name|source
+operator|(
+operator|(
+name|CloudBlobWrapperImpl
+operator|)
+name|sourceBlob
+operator|)
+operator|.
+name|blob
 argument_list|,
 literal|null
 argument_list|,

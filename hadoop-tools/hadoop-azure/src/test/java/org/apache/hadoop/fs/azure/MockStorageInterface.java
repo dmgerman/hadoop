@@ -2129,13 +2129,13 @@ expr_stmt|;
 block|}
 annotation|@
 name|Override
-DECL|method|startCopyFromBlob (URI source, BlobRequestOptions options, OperationContext opContext)
+DECL|method|startCopyFromBlob (CloudBlobWrapper sourceBlob, BlobRequestOptions options, OperationContext opContext)
 specifier|public
 name|void
 name|startCopyFromBlob
 parameter_list|(
-name|URI
-name|source
+name|CloudBlobWrapper
+name|sourceBlob
 parameter_list|,
 name|BlobRequestOptions
 name|options
@@ -2154,7 +2154,10 @@ name|copy
 argument_list|(
 name|convertUriToDecodedString
 argument_list|(
-name|source
+name|sourceBlob
+operator|.
+name|getUri
+argument_list|()
 argument_list|)
 argument_list|,
 name|convertUriToDecodedString
