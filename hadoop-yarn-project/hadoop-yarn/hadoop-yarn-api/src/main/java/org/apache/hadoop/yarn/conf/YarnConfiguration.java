@@ -1085,6 +1085,31 @@ name|DEFAULT_YARN_APP_ACL
 init|=
 literal|" "
 decl_stmt|;
+comment|/**    * Enable/disable intermediate-data encryption at YARN level. For now, this    * only is used by the FileSystemRMStateStore to setup right file-system    * security attributes.    */
+annotation|@
+name|Private
+DECL|field|YARN_INTERMEDIATE_DATA_ENCRYPTION
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|YARN_INTERMEDIATE_DATA_ENCRYPTION
+init|=
+name|YARN_PREFIX
+operator|+
+literal|"intermediate-data-encryption.enable"
+decl_stmt|;
+annotation|@
+name|Private
+DECL|field|DEFAULT_YARN_INTERMEDIATE_DATA_ENCRYPTION
+specifier|public
+specifier|static
+specifier|final
+name|Boolean
+name|DEFAULT_YARN_INTERMEDIATE_DATA_ENCRYPTION
+init|=
+literal|false
+decl_stmt|;
 comment|/** The address of the RM admin interface.*/
 DECL|field|RM_ADMIN_ADDRESS
 specifier|public
