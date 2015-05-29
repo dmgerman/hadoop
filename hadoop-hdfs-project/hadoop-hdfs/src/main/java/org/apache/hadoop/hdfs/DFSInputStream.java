@@ -3043,7 +3043,12 @@ literal|"Failed to connect to "
 operator|+
 name|targetAddr
 operator|+
-literal|" for block"
+literal|" for block "
+operator|+
+name|targetBlock
+operator|.
+name|getBlock
+argument_list|()
 operator|+
 literal|", add to deadNodes and continue. "
 operator|+
