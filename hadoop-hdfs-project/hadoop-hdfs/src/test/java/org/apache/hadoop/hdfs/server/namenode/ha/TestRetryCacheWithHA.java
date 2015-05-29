@@ -1685,6 +1685,12 @@ specifier|final
 name|DFSClient
 name|client
 decl_stmt|;
+DECL|field|expectedUpdateCount
+name|int
+name|expectedUpdateCount
+init|=
+literal|0
+decl_stmt|;
 DECL|method|AtMostOnceOp (String name, DFSClient client)
 name|AtMostOnceOp
 parameter_list|(
@@ -1738,6 +1744,15 @@ name|Object
 name|getResult
 parameter_list|()
 function_decl|;
+DECL|method|getExpectedCacheUpdateCount ()
+name|int
+name|getExpectedCacheUpdateCount
+parameter_list|()
+block|{
+return|return
+name|expectedUpdateCount
+return|;
+block|}
 block|}
 comment|/** createSnapshot operaiton */
 DECL|class|CreateSnapshotOp
@@ -3778,6 +3793,9 @@ name|p
 argument_list|)
 condition|)
 block|{
+name|expectedUpdateCount
+operator|++
+expr_stmt|;
 name|DFSTestUtil
 operator|.
 name|createFile
@@ -3804,6 +3822,9 @@ parameter_list|()
 throws|throws
 name|Exception
 block|{
+name|expectedUpdateCount
+operator|++
+expr_stmt|;
 name|deleted
 operator|=
 name|client
@@ -3983,6 +4004,9 @@ name|p
 argument_list|)
 condition|)
 block|{
+name|expectedUpdateCount
+operator|++
+expr_stmt|;
 name|DFSTestUtil
 operator|.
 name|createFile
@@ -4009,6 +4033,9 @@ parameter_list|()
 throws|throws
 name|Exception
 block|{
+name|expectedUpdateCount
+operator|++
+expr_stmt|;
 name|client
 operator|.
 name|createSymlink
@@ -4626,6 +4653,9 @@ parameter_list|()
 throws|throws
 name|Exception
 block|{
+name|expectedUpdateCount
+operator|++
+expr_stmt|;
 name|dfs
 operator|.
 name|addCachePool
@@ -4650,6 +4680,9 @@ parameter_list|()
 throws|throws
 name|Exception
 block|{
+name|expectedUpdateCount
+operator|++
+expr_stmt|;
 name|result
 operator|=
 name|client
@@ -4831,6 +4864,9 @@ parameter_list|()
 throws|throws
 name|Exception
 block|{
+name|expectedUpdateCount
+operator|++
+expr_stmt|;
 name|dfs
 operator|.
 name|addCachePool
@@ -4844,6 +4880,9 @@ name|getPool
 argument_list|()
 argument_list|)
 argument_list|)
+expr_stmt|;
+name|expectedUpdateCount
+operator|++
 expr_stmt|;
 name|id
 operator|=
@@ -4873,6 +4912,9 @@ parameter_list|()
 throws|throws
 name|Exception
 block|{
+name|expectedUpdateCount
+operator|++
+expr_stmt|;
 name|client
 operator|.
 name|modifyCacheDirective
@@ -5114,6 +5156,9 @@ parameter_list|()
 throws|throws
 name|Exception
 block|{
+name|expectedUpdateCount
+operator|++
+expr_stmt|;
 name|dfs
 operator|.
 name|addCachePool
@@ -5127,6 +5172,9 @@ name|getPool
 argument_list|()
 argument_list|)
 argument_list|)
+expr_stmt|;
+name|expectedUpdateCount
+operator|++
 expr_stmt|;
 name|id
 operator|=
@@ -5156,6 +5204,9 @@ parameter_list|()
 throws|throws
 name|Exception
 block|{
+name|expectedUpdateCount
+operator|++
+expr_stmt|;
 name|client
 operator|.
 name|removeCacheDirective
@@ -5316,6 +5367,9 @@ parameter_list|()
 throws|throws
 name|Exception
 block|{
+name|expectedUpdateCount
+operator|++
+expr_stmt|;
 name|client
 operator|.
 name|addCachePool
@@ -5444,6 +5498,9 @@ parameter_list|()
 throws|throws
 name|Exception
 block|{
+name|expectedUpdateCount
+operator|++
+expr_stmt|;
 name|client
 operator|.
 name|addCachePool
@@ -5470,6 +5527,9 @@ parameter_list|()
 throws|throws
 name|Exception
 block|{
+name|expectedUpdateCount
+operator|++
+expr_stmt|;
 name|client
 operator|.
 name|modifyCachePool
@@ -5617,6 +5677,9 @@ parameter_list|()
 throws|throws
 name|Exception
 block|{
+name|expectedUpdateCount
+operator|++
+expr_stmt|;
 name|client
 operator|.
 name|addCachePool
@@ -5638,6 +5701,9 @@ parameter_list|()
 throws|throws
 name|Exception
 block|{
+name|expectedUpdateCount
+operator|++
+expr_stmt|;
 name|client
 operator|.
 name|removeCachePool
@@ -5784,6 +5850,9 @@ name|p
 argument_list|)
 condition|)
 block|{
+name|expectedUpdateCount
+operator|++
+expr_stmt|;
 name|DFSTestUtil
 operator|.
 name|createFile
@@ -5810,6 +5879,9 @@ parameter_list|()
 throws|throws
 name|Exception
 block|{
+name|expectedUpdateCount
+operator|++
+expr_stmt|;
 name|client
 operator|.
 name|setXAttr
@@ -5993,6 +6065,9 @@ name|p
 argument_list|)
 condition|)
 block|{
+name|expectedUpdateCount
+operator|++
+expr_stmt|;
 name|DFSTestUtil
 operator|.
 name|createFile
@@ -6007,6 +6082,9 @@ name|DataNodes
 argument_list|,
 literal|0
 argument_list|)
+expr_stmt|;
+name|expectedUpdateCount
+operator|++
 expr_stmt|;
 name|client
 operator|.
@@ -6042,6 +6120,9 @@ parameter_list|()
 throws|throws
 name|Exception
 block|{
+name|expectedUpdateCount
+operator|++
+expr_stmt|;
 name|client
 operator|.
 name|removeXAttr
@@ -7349,6 +7430,44 @@ operator|>
 literal|0
 argument_list|)
 expr_stmt|;
+name|long
+name|expectedUpdateCount
+init|=
+name|op
+operator|.
+name|getExpectedCacheUpdateCount
+argument_list|()
+decl_stmt|;
+if|if
+condition|(
+name|expectedUpdateCount
+operator|>
+literal|0
+condition|)
+block|{
+name|assertEquals
+argument_list|(
+literal|"CacheUpdated on NN0: "
+operator|+
+name|updatedNN0
+argument_list|,
+name|expectedUpdateCount
+argument_list|,
+name|updatedNN0
+argument_list|)
+expr_stmt|;
+name|assertEquals
+argument_list|(
+literal|"CacheUpdated on NN0: "
+operator|+
+name|updatedNN1
+argument_list|,
+name|expectedUpdateCount
+argument_list|,
+name|updatedNN1
+argument_list|)
+expr_stmt|;
+block|}
 block|}
 comment|/**    * Add a list of cache pools, list cache pools,    * switch active NN, and list cache pools again.    */
 annotation|@
