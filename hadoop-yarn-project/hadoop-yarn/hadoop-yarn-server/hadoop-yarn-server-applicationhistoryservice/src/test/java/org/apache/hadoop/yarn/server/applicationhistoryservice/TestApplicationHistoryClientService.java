@@ -884,7 +884,7 @@ name|setLong
 argument_list|(
 name|YarnConfiguration
 operator|.
-name|APPLICATION_HISTORY_PREFIX_MAX_APPS
+name|APPLICATION_HISTORY_MAX_APPS
 argument_list|,
 literal|1
 argument_list|)

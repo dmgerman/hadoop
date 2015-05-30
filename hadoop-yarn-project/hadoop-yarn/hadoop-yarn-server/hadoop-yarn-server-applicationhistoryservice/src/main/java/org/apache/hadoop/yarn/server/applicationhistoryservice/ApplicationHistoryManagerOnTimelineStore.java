@@ -897,11 +897,11 @@ name|getLong
 argument_list|(
 name|YarnConfiguration
 operator|.
-name|APPLICATION_HISTORY_PREFIX_MAX_APPS
+name|APPLICATION_HISTORY_MAX_APPS
 argument_list|,
 name|YarnConfiguration
 operator|.
-name|DEFAULT_APPLICATION_HISTORY_PREFIX_MAX_APPS
+name|DEFAULT_APPLICATION_HISTORY_MAX_APPS
 argument_list|)
 expr_stmt|;
 name|super
