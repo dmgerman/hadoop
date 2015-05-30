@@ -1540,6 +1540,8 @@ argument_list|,
 name|type
 argument_list|,
 literal|null
+argument_list|,
+literal|null
 argument_list|)
 decl_stmt|;
 return|return

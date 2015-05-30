@@ -2026,6 +2026,8 @@ operator|(
 name|Token
 operator|)
 literal|null
+argument_list|,
+literal|null
 argument_list|)
 decl_stmt|;
 name|appReports

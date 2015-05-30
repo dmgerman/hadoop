@@ -145,7 +145,7 @@ annotation|@
 name|Private
 annotation|@
 name|Unstable
-DECL|method|newInstance (ApplicationId applicationId, ApplicationAttemptId applicationAttemptId, String user, String queue, String name, String host, int rpcPort, Token clientToAMToken, YarnApplicationState state, String diagnostics, String url, long startTime, long finishTime, FinalApplicationStatus finalStatus, ApplicationResourceUsageReport appResources, String origTrackingUrl, float progress, String applicationType, Token amRmToken)
+DECL|method|newInstance (ApplicationId applicationId, ApplicationAttemptId applicationAttemptId, String user, String queue, String name, String host, int rpcPort, Token clientToAMToken, YarnApplicationState state, String diagnostics, String url, long startTime, long finishTime, FinalApplicationStatus finalStatus, ApplicationResourceUsageReport appResources, String origTrackingUrl, float progress, String applicationType, Token amRmToken, Set<String> tags)
 specifier|public
 specifier|static
 name|ApplicationReport
@@ -207,6 +207,12 @@ name|applicationType
 parameter_list|,
 name|Token
 name|amRmToken
+parameter_list|,
+name|Set
+argument_list|<
+name|String
+argument_list|>
+name|tags
 parameter_list|)
 block|{
 name|ApplicationReport
@@ -352,6 +358,13 @@ operator|.
 name|setAMRMToken
 argument_list|(
 name|amRmToken
+argument_list|)
+expr_stmt|;
+name|report
+operator|.
+name|setApplicationTags
+argument_list|(
+name|tags
 argument_list|)
 expr_stmt|;
 return|return

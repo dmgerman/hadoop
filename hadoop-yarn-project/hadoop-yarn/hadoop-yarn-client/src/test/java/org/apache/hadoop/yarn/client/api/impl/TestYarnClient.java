@@ -4787,6 +4787,8 @@ argument_list|,
 literal|"YARN"
 argument_list|,
 literal|null
+argument_list|,
+literal|null
 argument_list|)
 decl_stmt|;
 name|List
@@ -5397,6 +5399,8 @@ argument_list|,
 literal|"NON-YARN"
 argument_list|,
 literal|null
+argument_list|,
+literal|null
 argument_list|)
 decl_stmt|;
 name|applicationReports
@@ -5473,6 +5477,8 @@ argument_list|,
 literal|"MAPREDUCE"
 argument_list|,
 literal|null
+argument_list|,
+literal|null
 argument_list|)
 decl_stmt|;
 name|applicationReports
@@ -5547,6 +5553,8 @@ argument_list|,
 literal|0.83789f
 argument_list|,
 literal|"NON-MAPREDUCE"
+argument_list|,
+literal|null
 argument_list|,
 literal|null
 argument_list|)

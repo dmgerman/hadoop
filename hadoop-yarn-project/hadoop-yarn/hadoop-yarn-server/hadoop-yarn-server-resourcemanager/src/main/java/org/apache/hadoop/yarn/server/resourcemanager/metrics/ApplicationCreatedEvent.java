@@ -24,6 +24,16 @@ end_package
 
 begin_import
 import|import
+name|java
+operator|.
+name|util
+operator|.
+name|Set
+import|;
+end_import
+
+begin_import
+import|import
 name|org
 operator|.
 name|apache
@@ -78,7 +88,15 @@ specifier|private
 name|long
 name|submittedTime
 decl_stmt|;
-DECL|method|ApplicationCreatedEvent (ApplicationId appId, String name, String type, String user, String queue, long submittedTime, long createdTime)
+DECL|field|appTags
+specifier|private
+name|Set
+argument_list|<
+name|String
+argument_list|>
+name|appTags
+decl_stmt|;
+DECL|method|ApplicationCreatedEvent (ApplicationId appId, String name, String type, String user, String queue, long submittedTime, long createdTime, Set<String> appTags)
 specifier|public
 name|ApplicationCreatedEvent
 parameter_list|(
@@ -102,6 +120,12 @@ name|submittedTime
 parameter_list|,
 name|long
 name|createdTime
+parameter_list|,
+name|Set
+argument_list|<
+name|String
+argument_list|>
+name|appTags
 parameter_list|)
 block|{
 name|super
@@ -148,6 +172,12 @@ operator|.
 name|submittedTime
 operator|=
 name|submittedTime
+expr_stmt|;
+name|this
+operator|.
+name|appTags
+operator|=
+name|appTags
 expr_stmt|;
 block|}
 annotation|@
@@ -223,6 +253,19 @@ parameter_list|()
 block|{
 return|return
 name|submittedTime
+return|;
+block|}
+DECL|method|getAppTags ()
+specifier|public
+name|Set
+argument_list|<
+name|String
+argument_list|>
+name|getAppTags
+parameter_list|()
+block|{
+return|return
+name|appTags
 return|;
 block|}
 block|}
