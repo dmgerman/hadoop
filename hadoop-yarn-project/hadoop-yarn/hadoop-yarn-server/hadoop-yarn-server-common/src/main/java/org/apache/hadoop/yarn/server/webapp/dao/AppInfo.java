@@ -308,6 +308,16 @@ specifier|protected
 name|String
 name|applicationTags
 decl_stmt|;
+DECL|field|allocatedCpuVcores
+specifier|private
+name|int
+name|allocatedCpuVcores
+decl_stmt|;
+DECL|field|allocatedMemoryMB
+specifier|private
+name|int
+name|allocatedMemoryMB
+decl_stmt|;
 DECL|method|AppInfo ()
 specifier|public
 name|AppInfo
@@ -483,6 +493,32 @@ operator|.
 name|getNumUsedContainers
 argument_list|()
 expr_stmt|;
+name|allocatedCpuVcores
+operator|=
+name|app
+operator|.
+name|getApplicationResourceUsageReport
+argument_list|()
+operator|.
+name|getUsedResources
+argument_list|()
+operator|.
+name|getVirtualCores
+argument_list|()
+expr_stmt|;
+name|allocatedMemoryMB
+operator|=
+name|app
+operator|.
+name|getApplicationResourceUsageReport
+argument_list|()
+operator|.
+name|getUsedResources
+argument_list|()
+operator|.
+name|getMemory
+argument_list|()
+expr_stmt|;
 block|}
 name|progress
 operator|=
@@ -627,6 +663,26 @@ parameter_list|()
 block|{
 return|return
 name|runningContainers
+return|;
+block|}
+DECL|method|getAllocatedCpuVcores ()
+specifier|public
+name|int
+name|getAllocatedCpuVcores
+parameter_list|()
+block|{
+return|return
+name|allocatedCpuVcores
+return|;
+block|}
+DECL|method|getAllocatedMemoryMB ()
+specifier|public
+name|int
+name|getAllocatedMemoryMB
+parameter_list|()
+block|{
+return|return
+name|allocatedMemoryMB
 return|;
 block|}
 DECL|method|getProgress ()

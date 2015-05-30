@@ -190,7 +190,7 @@ name|sb
 operator|.
 name|append
 argument_list|(
-literal|"[11]"
+literal|"[13]"
 argument_list|)
 expr_stmt|;
 block|}
@@ -204,7 +204,7 @@ name|sb
 operator|.
 name|append
 argument_list|(
-literal|"[10]"
+literal|"[12]"
 argument_list|)
 expr_stmt|;
 block|}
