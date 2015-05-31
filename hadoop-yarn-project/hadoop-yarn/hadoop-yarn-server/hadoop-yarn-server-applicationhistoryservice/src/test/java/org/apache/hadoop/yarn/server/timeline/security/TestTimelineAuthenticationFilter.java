@@ -1564,6 +1564,23 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 comment|// Renew token
+name|Assert
+operator|.
+name|assertFalse
+argument_list|(
+name|token
+operator|.
+name|getService
+argument_list|()
+operator|.
+name|toString
+argument_list|()
+operator|.
+name|isEmpty
+argument_list|()
+argument_list|)
+expr_stmt|;
+comment|// Renew the token from the token service address
 name|long
 name|renewTime1
 init|=
@@ -1581,6 +1598,33 @@ argument_list|(
 literal|100
 argument_list|)
 expr_stmt|;
+name|token
+operator|.
+name|setService
+argument_list|(
+operator|new
+name|Text
+argument_list|()
+argument_list|)
+expr_stmt|;
+name|Assert
+operator|.
+name|assertTrue
+argument_list|(
+name|token
+operator|.
+name|getService
+argument_list|()
+operator|.
+name|toString
+argument_list|()
+operator|.
+name|isEmpty
+argument_list|()
+argument_list|)
+expr_stmt|;
+comment|// If the token service address is not avaiable, it still can be renewed
+comment|// from the configured address
 name|long
 name|renewTime2
 init|=
@@ -1601,6 +1645,24 @@ name|renewTime2
 argument_list|)
 expr_stmt|;
 comment|// Cancel token
+name|Assert
+operator|.
+name|assertTrue
+argument_list|(
+name|token
+operator|.
+name|getService
+argument_list|()
+operator|.
+name|toString
+argument_list|()
+operator|.
+name|isEmpty
+argument_list|()
+argument_list|)
+expr_stmt|;
+comment|// If the token service address is not avaiable, it still can be canceled
+comment|// from the configured address
 name|httpUserClient
 operator|.
 name|cancelDelegationToken
@@ -1793,6 +1855,23 @@ name|renewTime2
 argument_list|)
 expr_stmt|;
 comment|// Cancel token
+name|Assert
+operator|.
+name|assertFalse
+argument_list|(
+name|tokenToRenew
+operator|.
+name|getService
+argument_list|()
+operator|.
+name|toString
+argument_list|()
+operator|.
+name|isEmpty
+argument_list|()
+argument_list|)
+expr_stmt|;
+comment|// Cancel the token from the token service address
 name|fooUserClient
 operator|.
 name|cancelDelegationToken
