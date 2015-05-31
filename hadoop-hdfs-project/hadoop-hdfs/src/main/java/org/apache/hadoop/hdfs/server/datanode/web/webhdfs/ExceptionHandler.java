@@ -425,7 +425,7 @@ name|LOG
 operator|.
 name|trace
 argument_list|(
-literal|"GOT EXCEPITION"
+literal|"GOT EXCEPTION"
 argument_list|,
 name|e
 argument_list|)
