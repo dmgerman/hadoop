@@ -2386,7 +2386,7 @@ name|BlockInfo
 name|blockInfo
 init|=
 operator|new
-name|BlockInfo
+name|BlockInfoContiguous
 argument_list|(
 name|block
 argument_list|,
@@ -4450,7 +4450,7 @@ name|BlockInfo
 name|blockInfo
 init|=
 operator|new
-name|BlockInfo
+name|BlockInfoContiguous
 argument_list|(
 name|block
 argument_list|,

@@ -1047,7 +1047,7 @@ expr_stmt|;
 name|blockInfo
 operator|=
 operator|new
-name|BlockInfo
+name|BlockInfoContiguous
 argument_list|(
 name|block
 argument_list|,

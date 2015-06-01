@@ -321,7 +321,7 @@ name|BlockInfo
 name|blk
 init|=
 operator|new
-name|BlockInfo
+name|BlockInfoContiguous
 argument_list|(
 operator|new
 name|Block
@@ -339,7 +339,7 @@ name|BlockInfo
 name|blk1
 init|=
 operator|new
-name|BlockInfo
+name|BlockInfoContiguous
 argument_list|(
 operator|new
 name|Block

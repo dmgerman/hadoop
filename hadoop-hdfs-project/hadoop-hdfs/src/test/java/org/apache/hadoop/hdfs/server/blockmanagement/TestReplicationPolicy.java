@@ -7708,7 +7708,7 @@ name|BlockInfo
 name|info
 init|=
 operator|new
-name|BlockInfo
+name|BlockInfoContiguous
 argument_list|(
 name|block1
 argument_list|,

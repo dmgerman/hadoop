@@ -105,6 +105,7 @@ operator|.
 name|Private
 DECL|class|BlockInfo
 specifier|public
+specifier|abstract
 class|class
 name|BlockInfo
 extends|extends
@@ -139,7 +140,7 @@ name|nextLinkedElement
 decl_stmt|;
 comment|/**    * This array contains triplets of references. For each i-th storage, the    * block belongs to triplets[3*i] is the reference to the    * {@link DatanodeStorageInfo} and triplets[3*i+1] and triplets[3*i+2] are    * references to the previous and the next blocks, respectively, in the list    * of blocks belonging to this storage.    *    * Using previous and next in Object triplets is done instead of a    * {@link LinkedList} list to efficiently use memory. With LinkedList the cost    * per replica is 42 bytes (LinkedList#Entry object per replica) versus 16    * bytes using the triplets.    */
 DECL|field|triplets
-specifier|private
+specifier|protected
 name|Object
 index|[]
 name|triplets
@@ -359,7 +360,6 @@ index|]
 return|;
 block|}
 DECL|method|getPrevious (int index)
-specifier|private
 name|BlockInfo
 name|getPrevious
 parameter_list|(
@@ -524,7 +524,6 @@ name|info
 return|;
 block|}
 DECL|method|setStorageInfo (int index, DatanodeStorageInfo storage)
-specifier|private
 name|void
 name|setStorageInfo
 parameter_list|(
@@ -571,7 +570,6 @@ expr_stmt|;
 block|}
 comment|/**    * Return the previous block on the block list for the datanode at    * position index. Set the previous block on the list to "to".    *    * @param index - the datanode index    * @param to - block to be set to previous on the list of blocks    * @return current previous block on the list of blocks    */
 DECL|method|setPrevious (int index, BlockInfo to)
-specifier|private
 name|BlockInfo
 name|setPrevious
 parameter_list|(
@@ -640,7 +638,6 @@ return|;
 block|}
 comment|/**    * Return the next block on the block list for the datanode at    * position index. Set the next block on the list to "to".    *    * @param index - the datanode index    * @param to - block to be set to next on the list of blocks    *    * @return current next block on the list of blocks    */
 DECL|method|setNext (int index, BlockInfo to)
-specifier|private
 name|BlockInfo
 name|setNext
 parameter_list|(
@@ -741,307 +738,44 @@ operator|/
 literal|3
 return|;
 block|}
-comment|/**    * Ensure that there is enough  space to include num more triplets.    * @return first free triplet index.    */
-DECL|method|ensureCapacity (int num)
-specifier|private
-name|int
-name|ensureCapacity
-parameter_list|(
-name|int
-name|num
-parameter_list|)
-block|{
-assert|assert
-name|this
-operator|.
-name|triplets
-operator|!=
-literal|null
-operator|:
-literal|"BlockInfo is not initialized"
-assert|;
-name|int
-name|last
-init|=
-name|numNodes
-argument_list|()
-decl_stmt|;
-if|if
-condition|(
-name|triplets
-operator|.
-name|length
-operator|>=
-operator|(
-name|last
-operator|+
-name|num
-operator|)
-operator|*
-literal|3
-condition|)
-return|return
-name|last
-return|;
-comment|/* Not enough space left. Create a new array. Should normally      * happen only when replication is manually increased by the user. */
-name|Object
-index|[]
-name|old
-init|=
-name|triplets
-decl_stmt|;
-name|triplets
-operator|=
-operator|new
-name|Object
-index|[
-operator|(
-name|last
-operator|+
-name|num
-operator|)
-operator|*
-literal|3
-index|]
-expr_stmt|;
-name|System
-operator|.
-name|arraycopy
-argument_list|(
-name|old
-argument_list|,
-literal|0
-argument_list|,
-name|triplets
-argument_list|,
-literal|0
-argument_list|,
-name|last
-operator|*
-literal|3
-argument_list|)
-expr_stmt|;
-return|return
-name|last
-return|;
-block|}
 comment|/**    * Count the number of data-nodes the block belongs to.    */
 DECL|method|numNodes ()
 specifier|public
+specifier|abstract
 name|int
 name|numNodes
 parameter_list|()
-block|{
-assert|assert
-name|this
-operator|.
-name|triplets
-operator|!=
-literal|null
-operator|:
-literal|"BlockInfo is not initialized"
-assert|;
-assert|assert
-name|triplets
-operator|.
-name|length
-operator|%
-literal|3
-operator|==
-literal|0
-operator|:
-literal|"Malformed BlockInfo"
-assert|;
-for|for
-control|(
-name|int
-name|idx
-init|=
-name|getCapacity
-argument_list|()
-operator|-
-literal|1
-init|;
-name|idx
-operator|>=
-literal|0
-condition|;
-name|idx
-operator|--
-control|)
-block|{
-if|if
-condition|(
-name|getDatanode
-argument_list|(
-name|idx
-argument_list|)
-operator|!=
-literal|null
-condition|)
-return|return
-name|idx
-operator|+
-literal|1
-return|;
-block|}
-return|return
-literal|0
-return|;
-block|}
-comment|/**    * Add a {@link DatanodeStorageInfo} location for a block    */
+function_decl|;
+comment|/**    * Add a {@link DatanodeStorageInfo} location for a block.    */
 DECL|method|addStorage (DatanodeStorageInfo storage)
+specifier|abstract
 name|boolean
 name|addStorage
 parameter_list|(
 name|DatanodeStorageInfo
 name|storage
 parameter_list|)
-block|{
-comment|// find the last null node
-name|int
-name|lastNode
-init|=
-name|ensureCapacity
-argument_list|(
-literal|1
-argument_list|)
-decl_stmt|;
-name|setStorageInfo
-argument_list|(
-name|lastNode
-argument_list|,
-name|storage
-argument_list|)
-expr_stmt|;
-name|setNext
-argument_list|(
-name|lastNode
-argument_list|,
-literal|null
-argument_list|)
-expr_stmt|;
-name|setPrevious
-argument_list|(
-name|lastNode
-argument_list|,
-literal|null
-argument_list|)
-expr_stmt|;
-return|return
-literal|true
-return|;
-block|}
+function_decl|;
 comment|/**    * Remove {@link DatanodeStorageInfo} location for a block    */
 DECL|method|removeStorage (DatanodeStorageInfo storage)
+specifier|abstract
 name|boolean
 name|removeStorage
 parameter_list|(
 name|DatanodeStorageInfo
 name|storage
 parameter_list|)
-block|{
-name|int
-name|dnIndex
-init|=
-name|findStorageInfo
-argument_list|(
-name|storage
-argument_list|)
-decl_stmt|;
-if|if
-condition|(
-name|dnIndex
-operator|<
-literal|0
-condition|)
-comment|// the node is not found
-return|return
-literal|false
-return|;
-assert|assert
-name|getPrevious
-argument_list|(
-name|dnIndex
-argument_list|)
-operator|==
-literal|null
-operator|&&
-name|getNext
-argument_list|(
-name|dnIndex
-argument_list|)
-operator|==
-literal|null
-operator|:
-literal|"Block is still in the list and must be removed first."
-assert|;
-comment|// find the last not null node
-name|int
-name|lastNode
-init|=
-name|numNodes
-argument_list|()
-operator|-
-literal|1
-decl_stmt|;
-comment|// replace current node triplet by the lastNode one
-name|setStorageInfo
-argument_list|(
-name|dnIndex
-argument_list|,
-name|getStorageInfo
-argument_list|(
-name|lastNode
-argument_list|)
-argument_list|)
-expr_stmt|;
-name|setNext
-argument_list|(
-name|dnIndex
-argument_list|,
-name|getNext
-argument_list|(
-name|lastNode
-argument_list|)
-argument_list|)
-expr_stmt|;
-name|setPrevious
-argument_list|(
-name|dnIndex
-argument_list|,
-name|getPrevious
-argument_list|(
-name|lastNode
-argument_list|)
-argument_list|)
-expr_stmt|;
-comment|// set the last triplet to null
-name|setStorageInfo
-argument_list|(
-name|lastNode
-argument_list|,
-literal|null
-argument_list|)
-expr_stmt|;
-name|setNext
-argument_list|(
-name|lastNode
-argument_list|,
-literal|null
-argument_list|)
-expr_stmt|;
-name|setPrevious
-argument_list|(
-name|lastNode
-argument_list|,
-literal|null
-argument_list|)
-expr_stmt|;
-return|return
-literal|true
-return|;
-block|}
+function_decl|;
+comment|/**    * Replace the current BlockInfo with the new one in corresponding    * DatanodeStorageInfo's linked list    */
+DECL|method|replaceBlock (BlockInfo newBlock)
+specifier|abstract
+name|void
+name|replaceBlock
+parameter_list|(
+name|BlockInfo
+name|newBlock
+parameter_list|)
+function_decl|;
 comment|/**    * Find specified DatanodeStorageInfo.    * @return DatanodeStorageInfo or null if not found.    */
 DECL|method|findStorageInfo (DatanodeDescriptor dn)
 name|DatanodeStorageInfo

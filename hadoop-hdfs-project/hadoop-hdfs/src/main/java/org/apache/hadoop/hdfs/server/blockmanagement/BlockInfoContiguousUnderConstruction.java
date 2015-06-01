@@ -144,7 +144,7 @@ specifier|public
 class|class
 name|BlockInfoContiguousUnderConstruction
 extends|extends
-name|BlockInfo
+name|BlockInfoContiguous
 block|{
 comment|/** Block state. See {@link BlockUCState} */
 DECL|field|blockUCState
@@ -529,7 +529,7 @@ literal|"Trying to convert a COMPLETE block"
 assert|;
 return|return
 operator|new
-name|BlockInfo
+name|BlockInfoContiguous
 argument_list|(
 name|this
 argument_list|)

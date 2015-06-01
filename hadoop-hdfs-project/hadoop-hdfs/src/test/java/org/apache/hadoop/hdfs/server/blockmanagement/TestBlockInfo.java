@@ -268,7 +268,7 @@ name|BlockInfo
 name|blockInfo
 init|=
 operator|new
-name|BlockInfo
+name|BlockInfoContiguous
 argument_list|(
 operator|(
 name|short
@@ -337,7 +337,7 @@ name|BlockInfo
 name|blockInfo
 init|=
 operator|new
-name|BlockInfo
+name|BlockInfoContiguous
 argument_list|(
 operator|(
 name|short
@@ -402,7 +402,7 @@ name|BlockInfo
 name|old
 init|=
 operator|new
-name|BlockInfo
+name|BlockInfoContiguous
 argument_list|(
 operator|(
 name|short
@@ -416,8 +416,11 @@ name|BlockInfo
 name|copy
 init|=
 operator|new
-name|BlockInfo
+name|BlockInfoContiguous
 argument_list|(
+operator|(
+name|BlockInfoContiguous
+operator|)
 name|old
 argument_list|)
 decl_stmt|;
@@ -546,7 +549,7 @@ name|i
 index|]
 operator|=
 operator|new
-name|BlockInfo
+name|BlockInfoContiguous
 argument_list|(
 operator|(
 name|short
@@ -733,7 +736,7 @@ operator|.
 name|add
 argument_list|(
 operator|new
-name|BlockInfo
+name|BlockInfoContiguous
 argument_list|(
 name|blockList
 operator|.

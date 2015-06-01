@@ -8502,8 +8502,11 @@ block|{
 name|this
 argument_list|(
 operator|new
-name|BlockInfo
+name|BlockInfoContiguous
 argument_list|(
+operator|(
+name|BlockInfoContiguous
+operator|)
 name|stored
 argument_list|)
 argument_list|,
@@ -10281,7 +10284,7 @@ name|BlockInfo
 name|delimiter
 init|=
 operator|new
-name|BlockInfo
+name|BlockInfoContiguous
 argument_list|(
 operator|new
 name|Block
