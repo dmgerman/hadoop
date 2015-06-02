@@ -788,9 +788,63 @@ argument_list|(
 name|srcFile
 argument_list|)
 expr_stmt|;
+comment|// Test move dir
+comment|// Move EC dir under non-EC dir
+specifier|final
+name|Path
+name|newDir
+init|=
+operator|new
+name|Path
+argument_list|(
+literal|"/srcEC_new"
+argument_list|)
+decl_stmt|;
+name|fs
+operator|.
+name|rename
+argument_list|(
+name|srcECDir
+argument_list|,
+name|newDir
+argument_list|)
+expr_stmt|;
+name|fs
+operator|.
+name|rename
+argument_list|(
+name|newDir
+argument_list|,
+name|srcECDir
+argument_list|)
+expr_stmt|;
+comment|// move back
+comment|// Move EC dir under another EC dir
+name|fs
+operator|.
+name|rename
+argument_list|(
+name|srcECDir
+argument_list|,
+name|dstECDir
+argument_list|)
+expr_stmt|;
+name|fs
+operator|.
+name|rename
+argument_list|(
+operator|new
+name|Path
+argument_list|(
+literal|"/dstEC/srcEC"
+argument_list|)
+argument_list|,
+name|srcECDir
+argument_list|)
+expr_stmt|;
+comment|// move back
+comment|// Test move file
 comment|/* Verify that a file can be moved between 2 EC zones */
-try|try
-block|{
 name|fs
 operator|.
 name|rename
@@ -800,22 +854,6 @@ argument_list|,
 name|dstECDir
 argument_list|)
 expr_stmt|;
-block|}
-catch|catch
-parameter_list|(
-name|IOException
-name|e
-parameter_list|)
-block|{
-name|fail
-argument_list|(
-literal|"A file should be able to move between 2 EC zones "
-operator|+
-name|e
-argument_list|)
-expr_stmt|;
-block|}
-comment|// Move the file back
 name|fs
 operator|.
 name|rename
@@ -831,6 +869,7 @@ argument_list|,
 name|srcECDir
 argument_list|)
 expr_stmt|;
+comment|// move back
 comment|/* Verify that a file cannot be moved from a non-EC dir to an EC zone */
 specifier|final
 name|Path
