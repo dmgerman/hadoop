@@ -996,7 +996,8 @@ name|isClosed
 argument_list|()
 condition|)
 block|{
-name|streamer
+name|getStreamer
+argument_list|()
 operator|.
 name|getLastException
 argument_list|()
@@ -1021,7 +1022,8 @@ parameter_list|()
 block|{
 if|if
 condition|(
-name|streamer
+name|getStreamer
+argument_list|()
 operator|.
 name|streamerClosed
 argument_list|()
@@ -1035,7 +1037,8 @@ name|DatanodeInfo
 index|[]
 name|currentNodes
 init|=
-name|streamer
+name|getStreamer
+argument_list|()
 operator|.
 name|getNodes
 argument_list|()
@@ -1844,7 +1847,8 @@ argument_list|,
 name|byteArrayManager
 argument_list|)
 expr_stmt|;
-name|streamer
+name|getStreamer
+argument_list|()
 operator|.
 name|setBytesCurBlock
 argument_list|(
@@ -1859,7 +1863,8 @@ argument_list|(
 name|stat
 argument_list|)
 expr_stmt|;
-name|streamer
+name|getStreamer
+argument_list|()
 operator|.
 name|setPipelineInConstruction
 argument_list|(
@@ -2022,7 +2027,8 @@ argument_list|(
 name|freeInCksum
 argument_list|)
 expr_stmt|;
-name|streamer
+name|getStreamer
+argument_list|()
 operator|.
 name|setAppendChunk
 argument_list|(
@@ -2358,12 +2364,14 @@ name|packetSize
 argument_list|,
 name|chunksPerPacket
 argument_list|,
-name|streamer
+name|getStreamer
+argument_list|()
 operator|.
 name|getBytesCurBlock
 argument_list|()
 argument_list|,
-name|streamer
+name|getStreamer
+argument_list|()
 operator|.
 name|getAndIncCurrentSeqno
 argument_list|()
@@ -2408,7 +2416,8 @@ name|chunksPerPacket
 operator|+
 literal|", bytesCurBlock="
 operator|+
-name|streamer
+name|getStreamer
+argument_list|()
 operator|.
 name|getBytesCurBlock
 argument_list|()
@@ -2443,7 +2452,8 @@ operator|.
 name|incNumChunks
 argument_list|()
 expr_stmt|;
-name|streamer
+name|getStreamer
+argument_list|()
 operator|.
 name|incBytesCurBlock
 argument_list|(
@@ -2464,7 +2474,8 @@ operator|.
 name|getMaxChunks
 argument_list|()
 operator|||
-name|streamer
+name|getStreamer
+argument_list|()
 operator|.
 name|getBytesCurBlock
 argument_list|()
@@ -2501,7 +2512,8 @@ name|src
 operator|+
 literal|", bytesCurBlock="
 operator|+
-name|streamer
+name|getStreamer
+argument_list|()
 operator|.
 name|getBytesCurBlock
 argument_list|()
@@ -2512,14 +2524,16 @@ name|blockSize
 operator|+
 literal|", appendChunk="
 operator|+
-name|streamer
+name|getStreamer
+argument_list|()
 operator|.
 name|getAppendChunk
 argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
-name|streamer
+name|getStreamer
+argument_list|()
 operator|.
 name|waitAndQueuePacket
 argument_list|(
@@ -2547,12 +2561,14 @@ parameter_list|()
 block|{
 if|if
 condition|(
-name|streamer
+name|getStreamer
+argument_list|()
 operator|.
 name|getAppendChunk
 argument_list|()
 operator|&&
-name|streamer
+name|getStreamer
+argument_list|()
 operator|.
 name|getBytesCurBlock
 argument_list|()
@@ -2562,7 +2578,8 @@ operator|==
 literal|0
 condition|)
 block|{
-name|streamer
+name|getStreamer
+argument_list|()
 operator|.
 name|setAppendChunk
 argument_list|(
@@ -2576,7 +2593,8 @@ block|}
 if|if
 condition|(
 operator|!
-name|streamer
+name|getStreamer
+argument_list|()
 operator|.
 name|getAppendChunk
 argument_list|()
@@ -2595,7 +2613,8 @@ call|)
 argument_list|(
 name|blockSize
 operator|-
-name|streamer
+name|getStreamer
+argument_list|()
 operator|.
 name|getBytesCurBlock
 argument_list|()
@@ -2630,7 +2649,8 @@ name|IOException
 block|{
 if|if
 condition|(
-name|streamer
+name|getStreamer
+argument_list|()
 operator|.
 name|getBytesCurBlock
 argument_list|()
@@ -2646,12 +2666,14 @@ literal|0
 argument_list|,
 literal|0
 argument_list|,
-name|streamer
+name|getStreamer
+argument_list|()
 operator|.
 name|getBytesCurBlock
 argument_list|()
 argument_list|,
-name|streamer
+name|getStreamer
+argument_list|()
 operator|.
 name|getAndIncCurrentSeqno
 argument_list|()
@@ -2666,7 +2688,8 @@ argument_list|(
 name|shouldSyncBlock
 argument_list|)
 expr_stmt|;
-name|streamer
+name|getStreamer
+argument_list|()
 operator|.
 name|waitAndQueuePacket
 argument_list|(
@@ -2677,7 +2700,8 @@ name|currentPacket
 operator|=
 literal|null
 expr_stmt|;
-name|streamer
+name|getStreamer
+argument_list|()
 operator|.
 name|setBytesCurBlock
 argument_list|(
@@ -2933,7 +2957,8 @@ literal|"DFSClient flush(): "
 operator|+
 literal|" bytesCurBlock="
 operator|+
-name|streamer
+name|getStreamer
+argument_list|()
 operator|.
 name|getBytesCurBlock
 argument_list|()
@@ -2953,14 +2978,16 @@ if|if
 condition|(
 name|lastFlushOffset
 operator|!=
-name|streamer
+name|getStreamer
+argument_list|()
 operator|.
 name|getBytesCurBlock
 argument_list|()
 condition|)
 block|{
 assert|assert
-name|streamer
+name|getStreamer
+argument_list|()
 operator|.
 name|getBytesCurBlock
 argument_list|()
@@ -2970,7 +2997,8 @@ assert|;
 comment|// record the valid offset of this flush
 name|lastFlushOffset
 operator|=
-name|streamer
+name|getStreamer
+argument_list|()
 operator|.
 name|getBytesCurBlock
 argument_list|()
@@ -2998,12 +3026,14 @@ name|packetSize
 argument_list|,
 name|chunksPerPacket
 argument_list|,
-name|streamer
+name|getStreamer
+argument_list|()
 operator|.
 name|getBytesCurBlock
 argument_list|()
 argument_list|,
-name|streamer
+name|getStreamer
+argument_list|()
 operator|.
 name|getAndIncCurrentSeqno
 argument_list|()
@@ -3019,7 +3049,8 @@ if|if
 condition|(
 name|isSync
 operator|&&
-name|streamer
+name|getStreamer
+argument_list|()
 operator|.
 name|getBytesCurBlock
 argument_list|()
@@ -3033,7 +3064,8 @@ block|{
 comment|// Nothing to send right now,
 comment|// and the block was partially written,
 comment|// and sync was requested.
-comment|// So send an empty sync packet if we do not end the block right now
+comment|// So send an empty sync packet if we do not end the block right
+comment|// now
 name|currentPacket
 operator|=
 name|createPacket
@@ -3042,12 +3074,14 @@ name|packetSize
 argument_list|,
 name|chunksPerPacket
 argument_list|,
-name|streamer
+name|getStreamer
+argument_list|()
 operator|.
 name|getBytesCurBlock
 argument_list|()
 argument_list|,
-name|streamer
+name|getStreamer
+argument_list|()
 operator|.
 name|getAndIncCurrentSeqno
 argument_list|()
@@ -3092,7 +3126,8 @@ argument_list|(
 name|isSync
 argument_list|)
 expr_stmt|;
-name|streamer
+name|getStreamer
+argument_list|()
 operator|.
 name|waitAndQueuePacket
 argument_list|(
@@ -3108,7 +3143,8 @@ if|if
 condition|(
 name|endBlock
 operator|&&
-name|streamer
+name|getStreamer
+argument_list|()
 operator|.
 name|getBytesCurBlock
 argument_list|()
@@ -3126,12 +3162,14 @@ literal|0
 argument_list|,
 literal|0
 argument_list|,
-name|streamer
+name|getStreamer
+argument_list|()
 operator|.
 name|getBytesCurBlock
 argument_list|()
 argument_list|,
-name|streamer
+name|getStreamer
+argument_list|()
 operator|.
 name|getAndIncCurrentSeqno
 argument_list|()
@@ -3148,7 +3186,8 @@ operator|||
 name|isSync
 argument_list|)
 expr_stmt|;
-name|streamer
+name|getStreamer
+argument_list|()
 operator|.
 name|waitAndQueuePacket
 argument_list|(
@@ -3159,7 +3198,8 @@ name|currentPacket
 operator|=
 literal|null
 expr_stmt|;
-name|streamer
+name|getStreamer
+argument_list|()
 operator|.
 name|setBytesCurBlock
 argument_list|(
@@ -3175,11 +3215,13 @@ else|else
 block|{
 comment|// Restore state of stream. Record the last flush offset
 comment|// of the last full chunk that was flushed.
-name|streamer
+name|getStreamer
+argument_list|()
 operator|.
 name|setBytesCurBlock
 argument_list|(
-name|streamer
+name|getStreamer
+argument_list|()
 operator|.
 name|getBytesCurBlock
 argument_list|()
@@ -3190,14 +3232,16 @@ expr_stmt|;
 block|}
 name|toWaitFor
 operator|=
-name|streamer
+name|getStreamer
+argument_list|()
 operator|.
 name|getLastQueuedSeqno
 argument_list|()
 expr_stmt|;
 block|}
 comment|// end synchronized
-name|streamer
+name|getStreamer
+argument_list|()
 operator|.
 name|waitForAckedSeqno
 argument_list|(
@@ -3209,7 +3253,8 @@ if|if
 condition|(
 name|updateLength
 operator|||
-name|streamer
+name|getStreamer
+argument_list|()
 operator|.
 name|getPersistBlocks
 argument_list|()
@@ -3226,12 +3271,14 @@ block|{
 if|if
 condition|(
 operator|!
-name|streamer
+name|getStreamer
+argument_list|()
 operator|.
 name|streamerClosed
 argument_list|()
 operator|&&
-name|streamer
+name|getStreamer
+argument_list|()
 operator|.
 name|getBlock
 argument_list|()
@@ -3241,7 +3288,8 @@ condition|)
 block|{
 name|lastBlockLength
 operator|=
-name|streamer
+name|getStreamer
+argument_list|()
 operator|.
 name|getBlock
 argument_list|()
@@ -3257,7 +3305,8 @@ comment|// update length in NN is required, then persist block locations on
 comment|// namenode.
 if|if
 condition|(
-name|streamer
+name|getStreamer
+argument_list|()
 operator|.
 name|getPersistBlocks
 argument_list|()
@@ -3330,13 +3379,15 @@ block|{
 if|if
 condition|(
 operator|!
-name|streamer
+name|getStreamer
+argument_list|()
 operator|.
 name|streamerClosed
 argument_list|()
 condition|)
 block|{
-name|streamer
+name|getStreamer
+argument_list|()
 operator|.
 name|setHflush
 argument_list|()
@@ -3386,7 +3437,8 @@ name|isClosed
 argument_list|()
 condition|)
 block|{
-name|streamer
+name|getStreamer
+argument_list|()
 operator|.
 name|getLastException
 argument_list|()
@@ -3445,7 +3497,8 @@ argument_list|()
 expr_stmt|;
 if|if
 condition|(
-name|streamer
+name|getStreamer
+argument_list|()
 operator|.
 name|streamerClosed
 argument_list|()
@@ -3460,7 +3513,8 @@ name|DatanodeInfo
 index|[]
 name|currentNodes
 init|=
-name|streamer
+name|getStreamer
+argument_list|()
 operator|.
 name|getNodes
 argument_list|()
@@ -3511,7 +3565,8 @@ expr_stmt|;
 comment|//
 comment|// If there is data in the current buffer, send it across
 comment|//
-name|streamer
+name|getStreamer
+argument_list|()
 operator|.
 name|queuePacket
 argument_list|(
@@ -3524,13 +3579,15 @@ literal|null
 expr_stmt|;
 name|toWaitFor
 operator|=
-name|streamer
+name|getStreamer
+argument_list|()
 operator|.
 name|getLastQueuedSeqno
 argument_list|()
 expr_stmt|;
 block|}
-name|streamer
+name|getStreamer
+argument_list|()
 operator|.
 name|waitForAckedSeqno
 argument_list|(
@@ -3545,7 +3602,8 @@ name|void
 name|start
 parameter_list|()
 block|{
-name|streamer
+name|getStreamer
+argument_list|()
 operator|.
 name|start
 argument_list|()
@@ -3568,7 +3626,8 @@ condition|)
 block|{
 return|return;
 block|}
-name|streamer
+name|getStreamer
+argument_list|()
 operator|.
 name|getLastException
 argument_list|()
@@ -3617,7 +3676,8 @@ block|{
 return|return
 name|closed
 operator|||
-name|streamer
+name|getStreamer
+argument_list|()
 operator|.
 name|streamerClosed
 argument_list|()
@@ -3632,7 +3692,8 @@ name|closed
 operator|=
 literal|true
 expr_stmt|;
-name|streamer
+name|getStreamer
+argument_list|()
 operator|.
 name|release
 argument_list|()
@@ -3653,19 +3714,22 @@ name|IOException
 block|{
 try|try
 block|{
-name|streamer
+name|getStreamer
+argument_list|()
 operator|.
 name|close
 argument_list|(
 name|force
 argument_list|)
 expr_stmt|;
-name|streamer
+name|getStreamer
+argument_list|()
 operator|.
 name|join
 argument_list|()
 expr_stmt|;
-name|streamer
+name|getStreamer
+argument_list|()
 operator|.
 name|closeSocket
 argument_list|()
@@ -3687,7 +3751,8 @@ throw|;
 block|}
 finally|finally
 block|{
-name|streamer
+name|getStreamer
+argument_list|()
 operator|.
 name|setSocketToNull
 argument_list|()
@@ -3751,7 +3816,8 @@ name|isClosed
 argument_list|()
 condition|)
 block|{
-name|streamer
+name|getStreamer
+argument_list|()
 operator|.
 name|getLastException
 argument_list|()
@@ -3776,7 +3842,8 @@ operator|!=
 literal|null
 condition|)
 block|{
-name|streamer
+name|getStreamer
+argument_list|()
 operator|.
 name|waitAndQueuePacket
 argument_list|(
@@ -3790,7 +3857,8 @@ expr_stmt|;
 block|}
 if|if
 condition|(
-name|streamer
+name|getStreamer
+argument_list|()
 operator|.
 name|getBytesCurBlock
 argument_list|()
@@ -3807,12 +3875,14 @@ literal|0
 argument_list|,
 literal|0
 argument_list|,
-name|streamer
+name|getStreamer
+argument_list|()
 operator|.
 name|getBytesCurBlock
 argument_list|()
 argument_list|,
-name|streamer
+name|getStreamer
+argument_list|()
 operator|.
 name|getAndIncCurrentSeqno
 argument_list|()
@@ -3836,7 +3906,8 @@ comment|// get last block before destroying the streamer
 name|ExtendedBlock
 name|lastBlock
 init|=
-name|streamer
+name|getStreamer
+argument_list|()
 operator|.
 name|getBlock
 argument_list|()
@@ -4137,7 +4208,8 @@ name|long
 name|period
 parameter_list|)
 block|{
-name|streamer
+name|getStreamer
+argument_list|()
 operator|.
 name|setArtificialSlowdown
 argument_list|(
@@ -4213,7 +4285,8 @@ name|getBlockToken
 parameter_list|()
 block|{
 return|return
-name|streamer
+name|getStreamer
+argument_list|()
 operator|.
 name|getBlockToken
 argument_list|()
@@ -4293,7 +4366,8 @@ name|getBlock
 parameter_list|()
 block|{
 return|return
-name|streamer
+name|getStreamer
+argument_list|()
 operator|.
 name|getBlock
 argument_list|()
@@ -4309,6 +4383,36 @@ parameter_list|()
 block|{
 return|return
 name|fileId
+return|;
+block|}
+comment|/**    * Set the data streamer object.    */
+DECL|method|setStreamer (DataStreamer streamer)
+specifier|protected
+specifier|synchronized
+name|void
+name|setStreamer
+parameter_list|(
+name|DataStreamer
+name|streamer
+parameter_list|)
+block|{
+name|this
+operator|.
+name|streamer
+operator|=
+name|streamer
+expr_stmt|;
+block|}
+comment|/**    * Returns the data streamer object.    */
+DECL|method|getStreamer ()
+specifier|protected
+specifier|synchronized
+name|DataStreamer
+name|getStreamer
+parameter_list|()
+block|{
+return|return
+name|streamer
 return|;
 block|}
 block|}
