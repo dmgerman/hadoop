@@ -631,10 +631,10 @@ block|}
 comment|/**    * Test {@link DFSStripedInputStream#getBlockAt(long)}    */
 annotation|@
 name|Test
-DECL|method|testGetBlock ()
+DECL|method|testRefreshBlock ()
 specifier|public
 name|void
-name|testGetBlock
+name|testRefreshBlock
 parameter_list|()
 throws|throws
 name|Exception
@@ -774,15 +774,12 @@ name|refreshed
 init|=
 name|in
 operator|.
-name|getBlockAt
+name|refreshLocatedBlock
 argument_list|(
 name|blks
 index|[
 name|j
 index|]
-operator|.
-name|getStartOffset
-argument_list|()
 argument_list|)
 decl_stmt|;
 name|assertEquals

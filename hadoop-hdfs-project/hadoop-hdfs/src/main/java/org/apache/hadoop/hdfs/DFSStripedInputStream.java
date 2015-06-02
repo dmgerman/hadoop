@@ -164,6 +164,24 @@ name|hadoop
 operator|.
 name|hdfs
 operator|.
+name|server
+operator|.
+name|blockmanagement
+operator|.
+name|BlockIdManager
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
 name|util
 operator|.
 name|StripedBlockUtil
@@ -2645,49 +2663,45 @@ argument_list|)
 argument_list|)
 return|;
 block|}
-comment|/**    * |<--------- LocatedStripedBlock (ID = 0) ---------> |    * LocatedBlock (0) | LocatedBlock (1) | LocatedBlock (2)    *                      ^    *                    offset    * On a striped file, the super method {@link DFSInputStream#getBlockAt}    * treats a striped block group as a single {@link LocatedBlock} object,    * which includes target in its range. This method adds the logic of:    *   1. Analyzing the index of required block based on offset    *   2. Parsing the block group to obtain the block location on that index    */
+comment|/**    * The super method {@link DFSInputStream#refreshLocatedBlock} refreshes    * cached LocatedBlock by executing {@link DFSInputStream#getBlockAt} again.    * This method extends the logic by first remembering the index of the    * internal block, and re-parsing the refreshed block group with the same    * index.    */
 annotation|@
 name|Override
-DECL|method|getBlockAt (long blkStartOffset)
+DECL|method|refreshLocatedBlock (LocatedBlock block)
 specifier|protected
 name|LocatedBlock
-name|getBlockAt
+name|refreshLocatedBlock
 parameter_list|(
-name|long
-name|blkStartOffset
+name|LocatedBlock
+name|block
 parameter_list|)
 throws|throws
 name|IOException
 block|{
+name|int
+name|idx
+init|=
+name|BlockIdManager
+operator|.
+name|getBlockIndex
+argument_list|(
+name|block
+operator|.
+name|getBlock
+argument_list|()
+operator|.
+name|getLocalBlock
+argument_list|()
+argument_list|)
+decl_stmt|;
 name|LocatedBlock
 name|lb
 init|=
 name|getBlockGroupAt
 argument_list|(
-name|blkStartOffset
-argument_list|)
-decl_stmt|;
-name|int
-name|idx
-init|=
-call|(
-name|int
-call|)
-argument_list|(
-operator|(
-name|blkStartOffset
-operator|-
-name|lb
+name|block
 operator|.
 name|getStartOffset
 argument_list|()
-operator|)
-operator|%
-operator|(
-name|dataBlkNum
-operator|+
-name|parityBlkNum
-operator|)
 argument_list|)
 decl_stmt|;
 comment|// If indexing information is returned, iterate through the index array
@@ -2753,9 +2767,12 @@ name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"getBlockAt for striped blocks, offset="
+literal|"refreshLocatedBlock for striped blocks, offset="
 operator|+
-name|blkStartOffset
+name|block
+operator|.
+name|getStartOffset
+argument_list|()
 operator|+
 literal|". Obtained block "
 operator|+
@@ -2824,13 +2841,13 @@ block|}
 comment|/**    * Real implementation of pread.    */
 annotation|@
 name|Override
-DECL|method|fetchBlockByteRange (long blockStartOffset, long start, long end, byte[] buf, int offset, Map<ExtendedBlock, Set<DatanodeInfo>> corruptedBlockMap)
+DECL|method|fetchBlockByteRange (LocatedBlock block, long start, long end, byte[] buf, int offset, Map<ExtendedBlock, Set<DatanodeInfo>> corruptedBlockMap)
 specifier|protected
 name|void
 name|fetchBlockByteRange
 parameter_list|(
-name|long
-name|blockStartOffset
+name|LocatedBlock
+name|block
 parameter_list|,
 name|long
 name|start
@@ -2865,7 +2882,10 @@ name|blockGroup
 init|=
 name|getBlockGroupAt
 argument_list|(
-name|blockStartOffset
+name|block
+operator|.
+name|getStartOffset
+argument_list|()
 argument_list|)
 decl_stmt|;
 name|AlignedStripe
@@ -3544,9 +3564,6 @@ argument_list|(
 name|dnAddr
 argument_list|,
 name|block
-operator|.
-name|getStartOffset
-argument_list|()
 argument_list|,
 name|alignedStripe
 operator|.
@@ -3656,7 +3673,7 @@ name|index
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|getFromOneDataNode (final DNAddrPair datanode, final long blockStartOffset, final long start, final long end, final byte[] buf, final int[] offsets, final int[] lengths, final Map<ExtendedBlock, Set<DatanodeInfo>> corruptedBlockMap, final int hedgedReadId)
+DECL|method|getFromOneDataNode (final DNAddrPair datanode, final LocatedBlock block, final long start, final long end, final byte[] buf, final int[] offsets, final int[] lengths, final Map<ExtendedBlock, Set<DatanodeInfo>> corruptedBlockMap, final int hedgedReadId)
 specifier|private
 name|Callable
 argument_list|<
@@ -3669,8 +3686,8 @@ name|DNAddrPair
 name|datanode
 parameter_list|,
 specifier|final
-name|long
-name|blockStartOffset
+name|LocatedBlock
+name|block
 parameter_list|,
 specifier|final
 name|long
@@ -3758,7 +3775,7 @@ name|actualGetFromOneDataNode
 argument_list|(
 name|datanode
 argument_list|,
-name|blockStartOffset
+name|block
 argument_list|,
 name|start
 argument_list|,

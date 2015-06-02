@@ -343,6 +343,14 @@ name|testWritePreadWithDNFailure
 argument_list|(
 literal|"/foo"
 argument_list|,
+name|cellSize
+operator|*
+operator|(
+name|dataBlocks
+operator|+
+literal|2
+operator|)
+argument_list|,
 literal|0
 argument_list|)
 expr_stmt|;
@@ -363,17 +371,50 @@ literal|"/foo"
 argument_list|,
 name|cellSize
 operator|*
+operator|(
+name|dataBlocks
+operator|+
+literal|2
+operator|)
+argument_list|,
+name|cellSize
+operator|*
 literal|5
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|testWritePreadWithDNFailure (String file, int startOffsetInFile)
+annotation|@
+name|Test
+DECL|method|testWritePreadWithDNFailure3 ()
+specifier|public
+name|void
+name|testWritePreadWithDNFailure3
+parameter_list|()
+throws|throws
+name|IOException
+block|{
+name|testWritePreadWithDNFailure
+argument_list|(
+literal|"/foo"
+argument_list|,
+name|cellSize
+operator|*
+name|dataBlocks
+argument_list|,
+literal|0
+argument_list|)
+expr_stmt|;
+block|}
+DECL|method|testWritePreadWithDNFailure (String file, int fileSize, int startOffsetInFile)
 specifier|private
 name|void
 name|testWritePreadWithDNFailure
 parameter_list|(
 name|String
 name|file
+parameter_list|,
+name|int
+name|fileSize
 parameter_list|,
 name|int
 name|startOffsetInFile
@@ -386,18 +427,6 @@ name|int
 name|failedDNIdx
 init|=
 literal|2
-decl_stmt|;
-specifier|final
-name|int
-name|length
-init|=
-name|cellSize
-operator|*
-operator|(
-name|dataBlocks
-operator|+
-literal|2
-operator|)
 decl_stmt|;
 name|Path
 name|testPath
@@ -417,7 +446,7 @@ name|StripedFileTestUtil
 operator|.
 name|generateBytes
 argument_list|(
-name|length
+name|fileSize
 argument_list|)
 decl_stmt|;
 name|DFSTestUtil
@@ -528,7 +557,7 @@ init|=
 operator|new
 name|byte
 index|[
-name|length
+name|fileSize
 index|]
 decl_stmt|;
 name|int
@@ -553,9 +582,9 @@ name|Assert
 operator|.
 name|assertEquals
 argument_list|(
-literal|"The length of file should be the same to write size"
+literal|"The fileSize of file should be the same to write size"
 argument_list|,
-name|length
+name|fileSize
 operator|-
 name|startOffsetInFile
 argument_list|,
@@ -581,7 +610,7 @@ name|startOffsetInFile
 init|;
 name|i
 operator|<
-name|length
+name|fileSize
 condition|;
 name|i
 operator|++
@@ -611,7 +640,7 @@ name|startOffsetInFile
 init|;
 name|i
 operator|<
-name|length
+name|fileSize
 condition|;
 name|i
 operator|++

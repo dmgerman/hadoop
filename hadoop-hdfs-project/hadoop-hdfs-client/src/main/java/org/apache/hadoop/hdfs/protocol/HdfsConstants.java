@@ -304,7 +304,7 @@ specifier|final
 name|int
 name|BLOCK_STRIPED_CELL_SIZE
 init|=
-literal|256
+literal|64
 operator|*
 literal|1024
 decl_stmt|;
