@@ -95,10 +95,10 @@ annotation|@
 name|InterfaceAudience
 operator|.
 name|Private
-DECL|class|BlockPlacementPolicyRackFaultTolarent
+DECL|class|BlockPlacementPolicyRackFaultTolerant
 specifier|public
 class|class
-name|BlockPlacementPolicyRackFaultTolarent
+name|BlockPlacementPolicyRackFaultTolerant
 extends|extends
 name|BlockPlacementPolicyDefault
 block|{

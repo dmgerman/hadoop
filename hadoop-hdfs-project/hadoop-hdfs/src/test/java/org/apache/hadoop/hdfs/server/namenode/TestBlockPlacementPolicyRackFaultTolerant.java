@@ -216,7 +216,7 @@ name|server
 operator|.
 name|blockmanagement
 operator|.
-name|BlockPlacementPolicyRackFaultTolarent
+name|BlockPlacementPolicyRackFaultTolerant
 import|;
 end_import
 
@@ -327,10 +327,10 @@ import|;
 end_import
 
 begin_class
-DECL|class|TestBlockPlacementPolicyRackFaultTolarent
+DECL|class|TestBlockPlacementPolicyRackFaultTolerant
 specifier|public
 class|class
-name|TestBlockPlacementPolicyRackFaultTolarent
+name|TestBlockPlacementPolicyRackFaultTolerant
 block|{
 DECL|field|DEFAULT_BLOCK_SIZE
 specifier|private
@@ -479,7 +479,7 @@ name|DFSConfigKeys
 operator|.
 name|DFS_BLOCK_REPLICATOR_CLASSNAME_KEY
 argument_list|,
-name|BlockPlacementPolicyRackFaultTolarent
+name|BlockPlacementPolicyRackFaultTolerant
 operator|.
 name|class
 argument_list|,
