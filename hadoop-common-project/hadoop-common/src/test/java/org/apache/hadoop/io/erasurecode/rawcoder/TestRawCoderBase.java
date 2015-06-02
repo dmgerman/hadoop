@@ -380,6 +380,9 @@ argument_list|(
 name|chunkSize
 argument_list|)
 expr_stmt|;
+name|dumpSetting
+argument_list|()
+expr_stmt|;
 comment|// Generate data and encode
 name|ECChunk
 index|[]
@@ -399,6 +402,13 @@ name|dataChunks
 argument_list|)
 expr_stmt|;
 block|}
+name|dumpChunks
+argument_list|(
+literal|"Testing data chunks"
+argument_list|,
+name|dataChunks
+argument_list|)
+expr_stmt|;
 name|ECChunk
 index|[]
 name|parityChunks
@@ -422,6 +432,13 @@ operator|.
 name|encode
 argument_list|(
 name|dataChunks
+argument_list|,
+name|parityChunks
+argument_list|)
+expr_stmt|;
+name|dumpChunks
+argument_list|(
+literal|"Encoded parity chunks"
 argument_list|,
 name|parityChunks
 argument_list|)
@@ -474,6 +491,13 @@ name|recoveredChunks
 argument_list|)
 expr_stmt|;
 block|}
+name|dumpChunks
+argument_list|(
+literal|"Decoding input chunks"
+argument_list|,
+name|inputChunks
+argument_list|)
+expr_stmt|;
 name|decoder
 operator|.
 name|decode
@@ -482,6 +506,13 @@ name|inputChunks
 argument_list|,
 name|getErasedIndexesForDecoding
 argument_list|()
+argument_list|,
+name|recoveredChunks
+argument_list|)
+expr_stmt|;
+name|dumpChunks
+argument_list|(
+literal|"Decoded/recovered chunks"
 argument_list|,
 name|recoveredChunks
 argument_list|)

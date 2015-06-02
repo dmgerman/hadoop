@@ -34,6 +34,26 @@ end_import
 
 begin_import
 import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|io
+operator|.
+name|erasurecode
+operator|.
+name|rawcoder
+operator|.
+name|util
+operator|.
+name|DumpUtil
+import|;
+end_import
+
+begin_import
+import|import
 name|java
 operator|.
 name|nio
@@ -94,6 +114,13 @@ init|=
 operator|new
 name|Random
 argument_list|()
+decl_stmt|;
+DECL|field|allowDump
+specifier|private
+name|boolean
+name|allowDump
+init|=
+literal|true
 decl_stmt|;
 DECL|field|conf
 specifier|private
@@ -234,6 +261,23 @@ name|chunkSize
 index|]
 expr_stmt|;
 comment|// With ZERO by default
+block|}
+comment|/**    * Set true during setup if want to dump test settings and coding data,    * useful in debugging.    * @param allowDump    */
+DECL|method|setAllowDump (boolean allowDump)
+specifier|protected
+name|void
+name|setAllowDump
+parameter_list|(
+name|boolean
+name|allowDump
+parameter_list|)
+block|{
+name|this
+operator|.
+name|allowDump
+operator|=
+name|allowDump
+expr_stmt|;
 block|}
 comment|/**    * Prepare before running the case.    * @param conf    * @param numDataUnits    * @param numParityUnits    * @param erasedDataIndexes    * @param erasedParityIndexes    * @param usingFixedData Using fixed or pre-generated data to test instead of    *                       generating data    */
 DECL|method|prepare (Configuration conf, int numDataUnits, int numParityUnits, int[] erasedDataIndexes, int[] erasedParityIndexes, boolean usingFixedData)
@@ -1669,6 +1713,163 @@ block|}
 return|return
 name|bytesArr
 return|;
+block|}
+comment|/**    * Dump all the settings used in the test case if allowDump is enabled.    */
+DECL|method|dumpSetting ()
+specifier|protected
+name|void
+name|dumpSetting
+parameter_list|()
+block|{
+if|if
+condition|(
+name|allowDump
+condition|)
+block|{
+name|StringBuilder
+name|sb
+init|=
+operator|new
+name|StringBuilder
+argument_list|(
+literal|"Erasure coder test settings:\n"
+argument_list|)
+decl_stmt|;
+name|sb
+operator|.
+name|append
+argument_list|(
+literal|" numDataUnits="
+argument_list|)
+operator|.
+name|append
+argument_list|(
+name|numDataUnits
+argument_list|)
+expr_stmt|;
+name|sb
+operator|.
+name|append
+argument_list|(
+literal|" numParityUnits="
+argument_list|)
+operator|.
+name|append
+argument_list|(
+name|numParityUnits
+argument_list|)
+expr_stmt|;
+name|sb
+operator|.
+name|append
+argument_list|(
+literal|" chunkSize="
+argument_list|)
+operator|.
+name|append
+argument_list|(
+name|chunkSize
+argument_list|)
+operator|.
+name|append
+argument_list|(
+literal|"\n"
+argument_list|)
+expr_stmt|;
+name|sb
+operator|.
+name|append
+argument_list|(
+literal|" erasedDataIndexes="
+argument_list|)
+operator|.
+name|append
+argument_list|(
+name|Arrays
+operator|.
+name|toString
+argument_list|(
+name|erasedDataIndexes
+argument_list|)
+argument_list|)
+expr_stmt|;
+name|sb
+operator|.
+name|append
+argument_list|(
+literal|" erasedParityIndexes="
+argument_list|)
+operator|.
+name|append
+argument_list|(
+name|Arrays
+operator|.
+name|toString
+argument_list|(
+name|erasedParityIndexes
+argument_list|)
+argument_list|)
+expr_stmt|;
+name|sb
+operator|.
+name|append
+argument_list|(
+literal|" usingDirectBuffer="
+argument_list|)
+operator|.
+name|append
+argument_list|(
+name|usingDirectBuffer
+argument_list|)
+operator|.
+name|append
+argument_list|(
+literal|"\n"
+argument_list|)
+expr_stmt|;
+name|System
+operator|.
+name|out
+operator|.
+name|println
+argument_list|(
+name|sb
+operator|.
+name|toString
+argument_list|()
+argument_list|)
+expr_stmt|;
+block|}
+block|}
+comment|/**    * Dump chunks prefixed with a header if allowDump is enabled.    * @param header    * @param chunks    */
+DECL|method|dumpChunks (String header, ECChunk[] chunks)
+specifier|protected
+name|void
+name|dumpChunks
+parameter_list|(
+name|String
+name|header
+parameter_list|,
+name|ECChunk
+index|[]
+name|chunks
+parameter_list|)
+block|{
+if|if
+condition|(
+name|allowDump
+condition|)
+block|{
+name|DumpUtil
+operator|.
+name|dumpChunks
+argument_list|(
+name|header
+argument_list|,
+name|chunks
+argument_list|)
+expr_stmt|;
+block|}
 block|}
 comment|/**    * Make some chunk messy or not correct any more    * @param chunks    */
 DECL|method|corruptSomeChunk (ECChunk[] chunks)

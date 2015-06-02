@@ -76,6 +76,12 @@ name|RSRawDecoder
 operator|.
 name|class
 expr_stmt|;
+name|setAllowDump
+argument_list|(
+literal|false
+argument_list|)
+expr_stmt|;
+comment|// Change to true to allow verbose dump for debugging
 block|}
 annotation|@
 name|Test
