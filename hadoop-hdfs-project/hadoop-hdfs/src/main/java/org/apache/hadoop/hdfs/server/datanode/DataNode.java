@@ -7804,11 +7804,6 @@ comment|// failures.
 name|checkDiskError
 argument_list|()
 expr_stmt|;
-name|initDirectoryScanner
-argument_list|(
-name|conf
-argument_list|)
-expr_stmt|;
 name|data
 operator|.
 name|addBlockPool
@@ -7829,6 +7824,11 @@ name|bpos
 operator|.
 name|getBlockPoolId
 argument_list|()
+argument_list|)
+expr_stmt|;
+name|initDirectoryScanner
+argument_list|(
+name|conf
 argument_list|)
 expr_stmt|;
 block|}
