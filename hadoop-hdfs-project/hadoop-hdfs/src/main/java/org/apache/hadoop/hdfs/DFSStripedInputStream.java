@@ -3392,6 +3392,10 @@ name|finalizeDecodeInputs
 argument_list|(
 name|decodeInputs
 argument_list|,
+name|dataBlkNum
+argument_list|,
+name|parityBlkNum
+argument_list|,
 name|alignedStripe
 argument_list|)
 expr_stmt|;
@@ -3402,6 +3406,8 @@ argument_list|,
 name|buf
 argument_list|,
 name|alignedStripe
+argument_list|,
+name|dataBlkNum
 argument_list|,
 name|parityBlkNum
 argument_list|,

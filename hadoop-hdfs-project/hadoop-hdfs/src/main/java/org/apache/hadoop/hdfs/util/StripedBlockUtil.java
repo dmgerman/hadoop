@@ -196,24 +196,6 @@ name|erasurecode
 operator|.
 name|rawcoder
 operator|.
-name|RSRawDecoder
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|io
-operator|.
-name|erasurecode
-operator|.
-name|rawcoder
-operator|.
 name|RawErasureDecoder
 import|;
 end_import
@@ -1185,6 +1167,19 @@ operator|==
 literal|null
 condition|)
 block|{
+specifier|final
+name|int
+name|decodeIndex
+init|=
+name|convertIndex4Decode
+argument_list|(
+name|i
+argument_list|,
+name|dataBlkNum
+argument_list|,
+name|parityBlkNum
+argument_list|)
+decl_stmt|;
 name|alignedStripe
 operator|.
 name|chunks
@@ -1197,7 +1192,7 @@ name|StripingChunk
 argument_list|(
 name|decodeInputs
 index|[
-name|i
+name|decodeIndex
 index|]
 argument_list|)
 expr_stmt|;
@@ -1242,7 +1237,7 @@ name|decodeInputs
 return|;
 block|}
 comment|/**    * Some fetched {@link StripingChunk} might be stored in original application    * buffer instead of prepared decode input buffers. Some others are beyond    * the range of the internal blocks and should correspond to all zero bytes.    * When all pending requests have returned, this method should be called to    * finalize decode input buffers.    */
-DECL|method|finalizeDecodeInputs (final byte[][] decodeInputs, AlignedStripe alignedStripe)
+DECL|method|finalizeDecodeInputs (final byte[][] decodeInputs, int dataBlkNum, int parityBlkNum, AlignedStripe alignedStripe)
 specifier|public
 specifier|static
 name|void
@@ -1253,6 +1248,12 @@ name|byte
 index|[]
 index|[]
 name|decodeInputs
+parameter_list|,
+name|int
+name|dataBlkNum
+parameter_list|,
+name|int
+name|parityBlkNum
 parameter_list|,
 name|AlignedStripe
 name|alignedStripe
@@ -1277,6 +1278,7 @@ name|i
 operator|++
 control|)
 block|{
+specifier|final
 name|StripingChunk
 name|chunk
 init|=
@@ -1286,6 +1288,19 @@ name|chunks
 index|[
 name|i
 index|]
+decl_stmt|;
+specifier|final
+name|int
+name|decodeIndex
+init|=
+name|convertIndex4Decode
+argument_list|(
+name|i
+argument_list|,
+name|dataBlkNum
+argument_list|,
+name|parityBlkNum
+argument_list|)
 decl_stmt|;
 if|if
 condition|(
@@ -1342,7 +1357,7 @@ argument_list|)
 argument_list|,
 name|decodeInputs
 index|[
-name|i
+name|decodeIndex
 index|]
 argument_list|,
 name|posInBuf
@@ -1388,7 +1403,7 @@ name|fill
 argument_list|(
 name|decodeInputs
 index|[
-name|i
+name|decodeIndex
 index|]
 argument_list|,
 operator|(
@@ -1402,7 +1417,7 @@ else|else
 block|{
 name|decodeInputs
 index|[
-name|i
+name|decodeIndex
 index|]
 operator|=
 literal|null
@@ -1410,8 +1425,69 @@ expr_stmt|;
 block|}
 block|}
 block|}
+comment|/**    * Currently decoding requires parity chunks are before data chunks.    * The indices are opposite to what we store in NN. In future we may    * improve the decoding to make the indices order the same as in NN.    *    * @param index The index to convert    * @param dataBlkNum The number of data blocks    * @param parityBlkNum The number of parity blocks    * @return converted index    */
+DECL|method|convertIndex4Decode (int index, int dataBlkNum, int parityBlkNum)
+specifier|public
+specifier|static
+name|int
+name|convertIndex4Decode
+parameter_list|(
+name|int
+name|index
+parameter_list|,
+name|int
+name|dataBlkNum
+parameter_list|,
+name|int
+name|parityBlkNum
+parameter_list|)
+block|{
+return|return
+name|index
+operator|<
+name|dataBlkNum
+condition|?
+name|index
+operator|+
+name|parityBlkNum
+else|:
+name|index
+operator|-
+name|dataBlkNum
+return|;
+block|}
+DECL|method|convertDecodeIndexBack (int index, int dataBlkNum, int parityBlkNum)
+specifier|public
+specifier|static
+name|int
+name|convertDecodeIndexBack
+parameter_list|(
+name|int
+name|index
+parameter_list|,
+name|int
+name|dataBlkNum
+parameter_list|,
+name|int
+name|parityBlkNum
+parameter_list|)
+block|{
+return|return
+name|index
+operator|<
+name|parityBlkNum
+condition|?
+name|index
+operator|+
+name|dataBlkNum
+else|:
+name|index
+operator|-
+name|parityBlkNum
+return|;
+block|}
 comment|/**    * Decode based on the given input buffers and schema.    */
-DECL|method|decodeAndFillBuffer (final byte[][] decodeInputs, byte[] buf, AlignedStripe alignedStripe, int parityBlkNum, RawErasureDecoder decoder)
+DECL|method|decodeAndFillBuffer (final byte[][] decodeInputs, byte[] buf, AlignedStripe alignedStripe, int dataBlkNum, int parityBlkNum, RawErasureDecoder decoder)
 specifier|public
 specifier|static
 name|void
@@ -1429,6 +1505,9 @@ name|buf
 parameter_list|,
 name|AlignedStripe
 name|alignedStripe
+parameter_list|,
+name|int
+name|dataBlkNum
 parameter_list|,
 name|int
 name|parityBlkNum
@@ -1494,7 +1573,14 @@ name|pos
 operator|++
 index|]
 operator|=
+name|convertIndex4Decode
+argument_list|(
 name|i
+argument_list|,
+name|dataBlkNum
+argument_list|,
+name|parityBlkNum
+argument_list|)
 expr_stmt|;
 block|}
 block|}
@@ -1564,10 +1650,17 @@ block|{
 name|int
 name|missingBlkIdx
 init|=
+name|convertDecodeIndexBack
+argument_list|(
 name|decodeIndices
 index|[
 name|i
 index|]
+argument_list|,
+name|dataBlkNum
+argument_list|,
+name|parityBlkNum
+argument_list|)
 decl_stmt|;
 name|StripingChunk
 name|chunk
@@ -1662,7 +1755,7 @@ block|}
 block|}
 block|}
 block|}
-comment|/**    * This method divides a requested byte range into an array of inclusive    * {@link AlignedStripe}.    * @param ecSchema The codec schema for the file, which carries the numbers    *                 of data / parity blocks, as well as cell size    * @param cellSize Cell size of stripe    * @param blockGroup The striped block group    * @param rangeStartInBlockGroup The byte range's start offset in block group    * @param rangeEndInBlockGroup The byte range's end offset in block group    * @param buf Destination buffer of the read operation for the byte range    * @param offsetInBuf Start offset into the destination buffer    *    * At most 5 stripes will be generated from each logical range, as    * demonstrated in the header of {@link AlignedStripe}.    */
+comment|/**    * This method divides a requested byte range into an array of inclusive    * {@link AlignedStripe}.    * @param ecSchema The codec schema for the file, which carries the numbers    *                 of data / parity blocks    * @param cellSize Cell size of stripe    * @param blockGroup The striped block group    * @param rangeStartInBlockGroup The byte range's start offset in block group    * @param rangeEndInBlockGroup The byte range's end offset in block group    * @param buf Destination buffer of the read operation for the byte range    * @param offsetInBuf Start offset into the destination buffer    *    * At most 5 stripes will be generated from each logical range, as    * demonstrated in the header of {@link AlignedStripe}.    */
 DECL|method|divideByteRangeIntoStripes (ECSchema ecSchema, int cellSize, LocatedStripedBlock blockGroup, long rangeStartInBlockGroup, long rangeEndInBlockGroup, byte[] buf, int offsetInBuf)
 specifier|public
 specifier|static
@@ -1693,7 +1786,6 @@ name|int
 name|offsetInBuf
 parameter_list|)
 block|{
-comment|// TODO: change ECSchema naming to use cell size instead of chunk size
 comment|// Step 0: analyze range and calculate basic parameters
 name|int
 name|dataBlkNum
@@ -1750,8 +1842,6 @@ decl_stmt|;
 comment|// Step 4: calculate each chunk's position in destination buffer
 name|calcualteChunkPositionsInBuf
 argument_list|(
-name|ecSchema
-argument_list|,
 name|cellSize
 argument_list|,
 name|stripes
@@ -2651,15 +2741,12 @@ index|]
 argument_list|)
 return|;
 block|}
-DECL|method|calcualteChunkPositionsInBuf (ECSchema ecSchema, int cellSize, AlignedStripe[] stripes, StripingCell[] cells, byte[] buf, int offsetInBuf)
+DECL|method|calcualteChunkPositionsInBuf (int cellSize, AlignedStripe[] stripes, StripingCell[] cells, byte[] buf, int offsetInBuf)
 specifier|private
 specifier|static
 name|void
 name|calcualteChunkPositionsInBuf
 parameter_list|(
-name|ECSchema
-name|ecSchema
-parameter_list|,
 name|int
 name|cellSize
 parameter_list|,

@@ -5576,8 +5576,8 @@ name|toByteArray
 argument_list|()
 return|;
 block|}
-comment|/* Write the given string to the given file */
-DECL|method|writeFile (FileSystem fs, Path p, String s)
+comment|/* Write the given bytes to the given file */
+DECL|method|writeFile (FileSystem fs, Path p, byte[] bytes)
 specifier|public
 specifier|static
 name|void
@@ -5589,8 +5589,9 @@ parameter_list|,
 name|Path
 name|p
 parameter_list|,
-name|String
-name|s
+name|byte
+index|[]
+name|bytes
 parameter_list|)
 throws|throws
 name|IOException
@@ -5621,10 +5622,7 @@ init|=
 operator|new
 name|ByteArrayInputStream
 argument_list|(
-name|s
-operator|.
-name|getBytes
-argument_list|()
+name|bytes
 argument_list|)
 decl_stmt|;
 name|FSDataOutputStream
@@ -5645,12 +5643,43 @@ name|is
 argument_list|,
 name|os
 argument_list|,
-name|s
+name|bytes
 operator|.
 name|length
-argument_list|()
 argument_list|,
 literal|true
+argument_list|)
+expr_stmt|;
+block|}
+comment|/* Write the given string to the given file */
+DECL|method|writeFile (FileSystem fs, Path p, String s)
+specifier|public
+specifier|static
+name|void
+name|writeFile
+parameter_list|(
+name|FileSystem
+name|fs
+parameter_list|,
+name|Path
+name|p
+parameter_list|,
+name|String
+name|s
+parameter_list|)
+throws|throws
+name|IOException
+block|{
+name|writeFile
+argument_list|(
+name|fs
+argument_list|,
+name|p
+argument_list|,
+name|s
+operator|.
+name|getBytes
+argument_list|()
 argument_list|)
 expr_stmt|;
 block|}

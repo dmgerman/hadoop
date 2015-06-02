@@ -1690,13 +1690,11 @@ name|int
 index|[]
 block|{
 name|failedDNIdx
-block|,
-name|DATA_BLK_NUM
 operator|+
+name|PARITY_BLK_NUM
+block|,
 literal|1
 block|,
-name|DATA_BLK_NUM
-operator|+
 literal|2
 block|}
 decl_stmt|;
@@ -1760,6 +1758,8 @@ argument_list|,
 name|decodeInputs
 index|[
 name|j
+operator|+
+name|PARITY_BLK_NUM
 index|]
 argument_list|,
 literal|0
@@ -1795,7 +1795,7 @@ name|k
 decl_stmt|;
 name|decodeInputs
 index|[
-name|DATA_BLK_NUM
+literal|0
 index|]
 index|[
 name|k
