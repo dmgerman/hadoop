@@ -6147,6 +6147,15 @@ argument_list|(
 name|nnf
 argument_list|)
 expr_stmt|;
+name|archivalManager
+operator|.
+name|purgeCheckpoints
+argument_list|(
+name|NameNodeFile
+operator|.
+name|IMAGE_NEW
+argument_list|)
+expr_stmt|;
 block|}
 finally|finally
 block|{
