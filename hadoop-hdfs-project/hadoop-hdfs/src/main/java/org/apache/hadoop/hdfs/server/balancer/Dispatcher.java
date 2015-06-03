@@ -39,6 +39,24 @@ import|;
 end_import
 
 begin_import
+import|import static
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|util
+operator|.
+name|StripedBlockUtil
+operator|.
+name|getInternalBlockLength
+import|;
+end_import
+
+begin_import
 import|import
 name|java
 operator|.
@@ -424,6 +442,22 @@ name|hdfs
 operator|.
 name|protocol
 operator|.
+name|HdfsConstants
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|protocol
+operator|.
 name|datatransfer
 operator|.
 name|DataTransferProtoUtil
@@ -659,6 +693,26 @@ operator|.
 name|BlocksWithLocations
 operator|.
 name|BlockWithLocations
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|server
+operator|.
+name|protocol
+operator|.
+name|BlocksWithLocations
+operator|.
+name|StripedBlockWithLocations
 import|;
 end_import
 
@@ -1036,53 +1090,50 @@ name|DBlock
 argument_list|>
 argument_list|()
 decl_stmt|;
-comment|/**      * Get the block from the map;      * if the block is not found, create a new block and put it in the map.      */
-DECL|method|get (Block b)
+comment|/**      * Put block in the map if it's not found      * @return the block which be put in the map the first time      */
+DECL|method|putIfAbsent (Block blk, DBlock dblk)
 specifier|private
 name|DBlock
-name|get
+name|putIfAbsent
 parameter_list|(
 name|Block
-name|b
+name|blk
+parameter_list|,
+name|DBlock
+name|dblk
 parameter_list|)
 block|{
-name|DBlock
-name|block
-init|=
-name|map
-operator|.
-name|get
-argument_list|(
-name|b
-argument_list|)
-decl_stmt|;
 if|if
 condition|(
-name|block
-operator|==
-literal|null
+operator|!
+name|map
+operator|.
+name|containsKey
+argument_list|(
+name|blk
+argument_list|)
 condition|)
 block|{
-name|block
-operator|=
-operator|new
-name|DBlock
-argument_list|(
-name|b
-argument_list|)
-expr_stmt|;
 name|map
 operator|.
 name|put
 argument_list|(
-name|b
+name|blk
 argument_list|,
-name|block
+name|dblk
 argument_list|)
 expr_stmt|;
+return|return
+name|dblk
+return|;
 block|}
 return|return
-name|block
+name|map
+operator|.
+name|get
+argument_list|(
+name|blk
+argument_list|)
 return|;
 block|}
 comment|/** Remove all blocks except for the moved blocks. */
@@ -1313,16 +1364,16 @@ argument_list|()
 return|;
 block|}
 block|}
-comment|/** This class keeps track of a scheduled block move */
+comment|/** This class keeps track of a scheduled reportedBlock move */
 DECL|class|PendingMove
 specifier|public
 class|class
 name|PendingMove
 block|{
-DECL|field|block
+DECL|field|reportedBlock
 specifier|private
 name|DBlock
-name|block
+name|reportedBlock
 decl_stmt|;
 DECL|field|source
 specifier|private
@@ -1375,11 +1426,11 @@ specifier|final
 name|Block
 name|b
 init|=
-name|block
+name|reportedBlock
 operator|!=
 literal|null
 condition|?
-name|block
+name|reportedBlock
 operator|.
 name|getBlock
 argument_list|()
@@ -1440,7 +1491,7 @@ literal|""
 operator|)
 return|;
 block|}
-comment|/**      * Choose a block& a proxy source for this pendingMove whose source&      * target have already been chosen.      *       * @return true if a block and its proxy are chosen; false otherwise      */
+comment|/**      * Choose a good block/blockGroup from source& Get reportedBlock from      * the block& Choose a proxy source for the reportedBlock.      *       * @return true if a block and its proxy are chosen; false otherwise      */
 DECL|method|chooseBlockAndProxy ()
 specifier|private
 name|boolean
@@ -1542,12 +1593,35 @@ name|block
 argument_list|)
 condition|)
 block|{
-name|this
-operator|.
+if|if
+condition|(
 name|block
+operator|instanceof
+name|DBlockStriped
+condition|)
+block|{
+name|reportedBlock
+operator|=
+operator|(
+operator|(
+name|DBlockStriped
+operator|)
+name|block
+operator|)
+operator|.
+name|getInternalBlock
+argument_list|(
+name|source
+argument_list|)
+expr_stmt|;
+block|}
+else|else
+block|{
+name|reportedBlock
 operator|=
 name|block
 expr_stmt|;
+block|}
 if|if
 condition|(
 name|chooseProxySource
@@ -1643,7 +1717,7 @@ control|(
 name|StorageGroup
 name|loc
 range|:
-name|block
+name|reportedBlock
 operator|.
 name|getLocations
 argument_list|()
@@ -1681,7 +1755,7 @@ control|(
 name|StorageGroup
 name|loc
 range|:
-name|block
+name|reportedBlock
 operator|.
 name|getLocations
 argument_list|()
@@ -1718,7 +1792,7 @@ control|(
 name|StorageGroup
 name|loc
 range|:
-name|block
+name|reportedBlock
 operator|.
 name|getLocations
 argument_list|()
@@ -1741,7 +1815,7 @@ return|return
 literal|false
 return|;
 block|}
-comment|/** add to a proxy source for specific block movement */
+comment|/** add to a proxy source for specific reportedBlock movement */
 DECL|method|addTo (StorageGroup g)
 specifier|private
 name|boolean
@@ -1807,6 +1881,14 @@ name|this
 argument_list|)
 expr_stmt|;
 block|}
+assert|assert
+operator|!
+operator|(
+name|reportedBlock
+operator|instanceof
+name|DBlockStriped
+operator|)
+assert|;
 name|Socket
 name|sock
 init|=
@@ -1882,7 +1964,7 @@ operator|.
 name|getBlockpoolID
 argument_list|()
 argument_list|,
-name|block
+name|reportedBlock
 operator|.
 name|getBlock
 argument_list|()
@@ -1994,7 +2076,7 @@ argument_list|()
 operator|.
 name|addAndGet
 argument_list|(
-name|block
+name|reportedBlock
 operator|.
 name|getNumBytes
 argument_list|()
@@ -2128,7 +2210,7 @@ expr_stmt|;
 block|}
 block|}
 block|}
-comment|/** Send a block replace request to the output stream */
+comment|/** Send a reportedBlock replace request to the output stream */
 DECL|method|sendRequest (DataOutputStream out, ExtendedBlock eb, Token<BlockTokenIdentifier> accessToken)
 specifier|private
 name|void
@@ -2179,7 +2261,7 @@ name|datanode
 argument_list|)
 expr_stmt|;
 block|}
-comment|/** Receive a block copy response from the input stream */
+comment|/** Receive a reportedBlock copy response from the input stream */
 DECL|method|receiveResponse (DataInputStream in)
 specifier|private
 name|void
@@ -2233,7 +2315,7 @@ block|}
 name|String
 name|logInfo
 init|=
-literal|"block move is failed"
+literal|"reportedBlock move is failed"
 decl_stmt|;
 name|DataTransferProtoUtil
 operator|.
@@ -2252,7 +2334,7 @@ name|void
 name|reset
 parameter_list|()
 block|{
-name|block
+name|reportedBlock
 operator|=
 literal|null
 expr_stmt|;
@@ -2297,6 +2379,207 @@ argument_list|(
 name|block
 argument_list|)
 expr_stmt|;
+block|}
+DECL|method|getNumBytes (StorageGroup storage)
+specifier|public
+name|long
+name|getNumBytes
+parameter_list|(
+name|StorageGroup
+name|storage
+parameter_list|)
+block|{
+return|return
+name|super
+operator|.
+name|getNumBytes
+argument_list|()
+return|;
+block|}
+block|}
+DECL|class|DBlockStriped
+specifier|public
+specifier|static
+class|class
+name|DBlockStriped
+extends|extends
+name|DBlock
+block|{
+DECL|field|indices
+specifier|final
+name|byte
+index|[]
+name|indices
+decl_stmt|;
+DECL|field|dataBlockNum
+specifier|final
+name|short
+name|dataBlockNum
+decl_stmt|;
+DECL|method|DBlockStriped (Block block, byte[] indices, short dataBlockNum)
+specifier|public
+name|DBlockStriped
+parameter_list|(
+name|Block
+name|block
+parameter_list|,
+name|byte
+index|[]
+name|indices
+parameter_list|,
+name|short
+name|dataBlockNum
+parameter_list|)
+block|{
+name|super
+argument_list|(
+name|block
+argument_list|)
+expr_stmt|;
+name|this
+operator|.
+name|indices
+operator|=
+name|indices
+expr_stmt|;
+name|this
+operator|.
+name|dataBlockNum
+operator|=
+name|dataBlockNum
+expr_stmt|;
+block|}
+DECL|method|getInternalBlock (StorageGroup storage)
+specifier|public
+name|DBlock
+name|getInternalBlock
+parameter_list|(
+name|StorageGroup
+name|storage
+parameter_list|)
+block|{
+name|int
+name|idxInLocs
+init|=
+name|locations
+operator|.
+name|indexOf
+argument_list|(
+name|storage
+argument_list|)
+decl_stmt|;
+if|if
+condition|(
+name|idxInLocs
+operator|==
+operator|-
+literal|1
+condition|)
+block|{
+return|return
+literal|null
+return|;
+block|}
+name|byte
+name|idxInGroup
+init|=
+name|indices
+index|[
+name|idxInLocs
+index|]
+decl_stmt|;
+name|long
+name|blkId
+init|=
+name|getBlock
+argument_list|()
+operator|.
+name|getBlockId
+argument_list|()
+operator|+
+name|idxInGroup
+decl_stmt|;
+name|long
+name|numBytes
+init|=
+name|getInternalBlockLength
+argument_list|(
+name|getNumBytes
+argument_list|()
+argument_list|,
+name|HdfsConstants
+operator|.
+name|BLOCK_STRIPED_CELL_SIZE
+argument_list|,
+name|dataBlockNum
+argument_list|,
+name|idxInGroup
+argument_list|)
+decl_stmt|;
+name|Block
+name|blk
+init|=
+operator|new
+name|Block
+argument_list|(
+name|getBlock
+argument_list|()
+argument_list|)
+decl_stmt|;
+name|blk
+operator|.
+name|setBlockId
+argument_list|(
+name|blkId
+argument_list|)
+expr_stmt|;
+name|blk
+operator|.
+name|setNumBytes
+argument_list|(
+name|numBytes
+argument_list|)
+expr_stmt|;
+name|DBlock
+name|dblk
+init|=
+operator|new
+name|DBlock
+argument_list|(
+name|blk
+argument_list|)
+decl_stmt|;
+name|dblk
+operator|.
+name|addLocation
+argument_list|(
+name|storage
+argument_list|)
+expr_stmt|;
+return|return
+name|dblk
+return|;
+block|}
+annotation|@
+name|Override
+DECL|method|getNumBytes (StorageGroup storage)
+specifier|public
+name|long
+name|getNumBytes
+parameter_list|(
+name|StorageGroup
+name|storage
+parameter_list|)
+block|{
+return|return
+name|getInternalBlock
+argument_list|(
+name|storage
+argument_list|)
+operator|.
+name|getNumBytes
+argument_list|()
+return|;
 block|}
 block|}
 comment|/** The class represents a desired move. */
@@ -2562,7 +2845,7 @@ name|incScheduledSize
 argument_list|(
 name|pm
 operator|.
-name|block
+name|reportedBlock
 operator|.
 name|getNumBytes
 argument_list|()
@@ -3301,7 +3584,7 @@ argument_list|)
 decl_stmt|;
 specifier|final
 name|BlocksWithLocations
-name|newBlocks
+name|newBlksLocs
 init|=
 name|nnc
 operator|.
@@ -3321,17 +3604,75 @@ decl_stmt|;
 for|for
 control|(
 name|BlockWithLocations
-name|blk
+name|blkLocs
 range|:
-name|newBlocks
+name|newBlksLocs
 operator|.
 name|getBlocks
 argument_list|()
 control|)
 block|{
+name|DBlock
+name|block
+decl_stmt|;
+if|if
+condition|(
+name|blkLocs
+operator|instanceof
+name|StripedBlockWithLocations
+condition|)
+block|{
+name|StripedBlockWithLocations
+name|sblkLocs
+init|=
+operator|(
+name|StripedBlockWithLocations
+operator|)
+name|blkLocs
+decl_stmt|;
+comment|// approximate size
 name|bytesReceived
 operator|+=
-name|blk
+name|sblkLocs
+operator|.
+name|getBlock
+argument_list|()
+operator|.
+name|getNumBytes
+argument_list|()
+operator|/
+name|sblkLocs
+operator|.
+name|getDataBlockNum
+argument_list|()
+expr_stmt|;
+name|block
+operator|=
+operator|new
+name|DBlockStriped
+argument_list|(
+name|sblkLocs
+operator|.
+name|getBlock
+argument_list|()
+argument_list|,
+name|sblkLocs
+operator|.
+name|getIndices
+argument_list|()
+argument_list|,
+name|sblkLocs
+operator|.
+name|getDataBlockNum
+argument_list|()
+argument_list|)
+expr_stmt|;
+block|}
+else|else
+block|{
+name|bytesReceived
+operator|+=
+name|blkLocs
 operator|.
 name|getBlock
 argument_list|()
@@ -3339,25 +3680,37 @@ operator|.
 name|getNumBytes
 argument_list|()
 expr_stmt|;
+name|block
+operator|=
+operator|new
+name|DBlock
+argument_list|(
+name|blkLocs
+operator|.
+name|getBlock
+argument_list|()
+argument_list|)
+expr_stmt|;
+block|}
 synchronized|synchronized
 init|(
 name|globalBlocks
 init|)
 block|{
-specifier|final
-name|DBlock
 name|block
-init|=
+operator|=
 name|globalBlocks
 operator|.
-name|get
+name|putIfAbsent
 argument_list|(
-name|blk
+name|blkLocs
 operator|.
 name|getBlock
 argument_list|()
+argument_list|,
+name|block
 argument_list|)
-decl_stmt|;
+expr_stmt|;
 synchronized|synchronized
 init|(
 name|block
@@ -3374,7 +3727,7 @@ name|String
 index|[]
 name|datanodeUuids
 init|=
-name|blk
+name|blkLocs
 operator|.
 name|getDatanodeUuids
 argument_list|()
@@ -3384,7 +3737,7 @@ name|StorageType
 index|[]
 name|storageTypes
 init|=
-name|blk
+name|blkLocs
 operator|.
 name|getStorageTypes
 argument_list|()
@@ -3529,7 +3882,7 @@ return|return
 literal|false
 return|;
 block|}
-comment|/**      * Choose a move for the source. The block's source, target, and proxy      * are determined too. When choosing proxy and target, source&      * target throttling has been considered. They are chosen only when they      * have the capacity to support this block move. The block should be      * dispatched immediately after this method is returned.      *       * @return a move that's good for the source to dispatch immediately.      */
+comment|/**      * Choose a move for the source. The block's source, target, and proxy      * are determined too. When choosing proxy and target, source&      * target throttling has been considered. They are chosen only when they      * have the capacity to support this block move. The block should be      * dispatched immediately after this method is returned.      * If the block is a block group. Only the internal block on this source      * will be dispatched.      *       * @return a move that's good for the source to dispatch immediately.      */
 DECL|method|chooseNextMove ()
 specifier|private
 name|PendingMove
@@ -3614,10 +3967,12 @@ name|blockSize
 init|=
 name|pendingBlock
 operator|.
-name|block
+name|reportedBlock
 operator|.
 name|getNumBytes
-argument_list|()
+argument_list|(
+name|this
+argument_list|)
 decl_stmt|;
 name|incScheduledSize
 argument_list|(
@@ -3906,7 +4261,7 @@ name|LOG
 operator|.
 name|warn
 argument_list|(
-literal|"Exception while getting block list"
+literal|"Exception while getting reportedBlock list"
 argument_list|,
 name|e
 argument_list|)
@@ -4550,7 +4905,7 @@ name|PendingMove
 name|p
 parameter_list|)
 block|{
-comment|// move the block
+comment|// move the reportedBlock
 name|moveExecutor
 operator|.
 name|execute
@@ -4738,7 +5093,7 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-comment|// wait for all block moving to be done
+comment|// wait for all reportedBlock moving to be done
 name|waitForMoveCompletion
 argument_list|(
 name|targets
@@ -4751,7 +5106,7 @@ operator|-
 name|bytesLastMoved
 return|;
 block|}
-comment|/** The sleeping period before checking if block move is completed again */
+comment|/** The sleeping period before checking if reportedBlock move is completed again */
 DECL|field|blockMoveWaitTime
 specifier|static
 specifier|private
@@ -4760,7 +5115,7 @@ name|blockMoveWaitTime
 init|=
 literal|30000L
 decl_stmt|;
-comment|/**    * Wait for all block move confirmations.    * @return true if there is failed move execution    */
+comment|/**    * Wait for all reportedBlock move confirmations.    * @return true if there is failed move execution    */
 DECL|method|waitForMoveCompletion ( Iterable<? extends StorageGroup> targets)
 specifier|public
 specifier|static
@@ -4859,7 +5214,7 @@ parameter_list|)
 block|{       }
 block|}
 block|}
-comment|/**    * Decide if the block is a good candidate to be moved from source to target.    * A block is a good candidate if    * 1. the block is not in the process of being moved/has not been moved;    * 2. the block does not have a replica on the target;    * 3. doing the move does not reduce the number of racks that the block has    */
+comment|/**    * Decide if the block/blockGroup is a good candidate to be moved from source    * to target. A block is a good candidate if    * 1. the block is not in the process of being moved/has not been moved;    * 2. the block does not have a replica/internalBlock on the target;    * 3. doing the move does not reduce the number of racks that the block has    */
 DECL|method|isGoodBlockCandidate (StorageGroup source, StorageGroup target, StorageType targetStorageType, DBlock block)
 specifier|private
 name|boolean
@@ -4945,7 +5300,7 @@ name|targetDatanode
 argument_list|)
 condition|)
 block|{
-comment|// the block is moved inside same DN
+comment|// the reportedBlock is moved inside same DN
 return|return
 literal|true
 return|;
@@ -5273,7 +5628,7 @@ name|cleanup
 argument_list|()
 expr_stmt|;
 block|}
-comment|/** set the sleeping period for block move completion check */
+comment|/** set the sleeping period for reportedBlock move completion check */
 annotation|@
 name|VisibleForTesting
 DECL|method|setBlockMoveWaitTime (long time)
