@@ -493,6 +493,19 @@ operator|.
 name|getNumUsedContainers
 argument_list|()
 expr_stmt|;
+if|if
+condition|(
+name|app
+operator|.
+name|getApplicationResourceUsageReport
+argument_list|()
+operator|.
+name|getUsedResources
+argument_list|()
+operator|!=
+literal|null
+condition|)
+block|{
 name|allocatedCpuVcores
 operator|=
 name|app
@@ -519,6 +532,7 @@ operator|.
 name|getMemory
 argument_list|()
 expr_stmt|;
+block|}
 block|}
 name|progress
 operator|=
