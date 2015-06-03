@@ -2157,6 +2157,7 @@ annotation|@
 name|Override
 DECL|method|getCollectorAddr ()
 specifier|public
+specifier|synchronized
 name|String
 name|getCollectorAddr
 parameter_list|()
@@ -2181,6 +2182,7 @@ annotation|@
 name|Override
 DECL|method|setCollectorAddr (String collectorAddr)
 specifier|public
+specifier|synchronized
 name|void
 name|setCollectorAddr
 parameter_list|(

@@ -215,12 +215,11 @@ name|l2
 parameter_list|)
 block|{
 return|return
-operator|-
-name|l1
+name|l2
 operator|.
 name|compareTo
 argument_list|(
-name|l2
+name|l1
 argument_list|)
 return|;
 block|}
