@@ -552,6 +552,20 @@ name|google
 operator|.
 name|common
 operator|.
+name|annotations
+operator|.
+name|VisibleForTesting
+import|;
+end_import
+
+begin_import
+import|import
+name|com
+operator|.
+name|google
+operator|.
+name|common
+operator|.
 name|io
 operator|.
 name|Files
@@ -2769,6 +2783,8 @@ return|return
 name|replicaToKeep
 return|;
 block|}
+annotation|@
+name|VisibleForTesting
 DECL|method|selectReplicaToDelete (final ReplicaInfo replica1, final ReplicaInfo replica2)
 specifier|static
 name|ReplicaInfo
