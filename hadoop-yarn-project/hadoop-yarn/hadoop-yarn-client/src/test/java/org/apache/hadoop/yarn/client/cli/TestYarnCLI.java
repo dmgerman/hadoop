@@ -982,8 +982,6 @@ argument_list|,
 literal|"YARN"
 argument_list|,
 literal|null
-argument_list|,
-literal|null
 argument_list|)
 decl_stmt|;
 name|newApplicationReport
@@ -3032,8 +3030,6 @@ argument_list|,
 literal|"YARN"
 argument_list|,
 literal|null
-argument_list|,
-literal|null
 argument_list|)
 decl_stmt|;
 name|List
@@ -3123,8 +3119,6 @@ argument_list|,
 literal|"NON-YARN"
 argument_list|,
 literal|null
-argument_list|,
-literal|null
 argument_list|)
 decl_stmt|;
 name|applicationReports
@@ -3199,8 +3193,6 @@ argument_list|,
 literal|0.73789f
 argument_list|,
 literal|"MAPREDUCE"
-argument_list|,
-literal|null
 argument_list|,
 literal|null
 argument_list|)
@@ -3279,8 +3271,6 @@ argument_list|,
 literal|"NON-MAPREDUCE"
 argument_list|,
 literal|null
-argument_list|,
-literal|null
 argument_list|)
 decl_stmt|;
 name|applicationReports
@@ -3357,8 +3347,6 @@ argument_list|,
 literal|"HIVE"
 argument_list|,
 literal|null
-argument_list|,
-literal|null
 argument_list|)
 decl_stmt|;
 name|applicationReports
@@ -3433,8 +3421,6 @@ argument_list|,
 literal|0.99789f
 argument_list|,
 literal|"PIG"
-argument_list|,
-literal|null
 argument_list|,
 literal|null
 argument_list|)
@@ -6667,8 +6653,6 @@ argument_list|,
 literal|"YARN"
 argument_list|,
 literal|null
-argument_list|,
-literal|null
 argument_list|)
 decl_stmt|;
 name|when
@@ -6807,8 +6791,6 @@ argument_list|,
 literal|0.53789f
 argument_list|,
 literal|"YARN"
-argument_list|,
-literal|null
 argument_list|,
 literal|null
 argument_list|)
@@ -7082,8 +7064,6 @@ argument_list|,
 literal|"YARN"
 argument_list|,
 literal|null
-argument_list|,
-literal|null
 argument_list|)
 decl_stmt|;
 name|when
@@ -7233,8 +7213,6 @@ argument_list|,
 literal|0.53789f
 argument_list|,
 literal|"YARN"
-argument_list|,
-literal|null
 argument_list|,
 literal|null
 argument_list|)

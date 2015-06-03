@@ -206,15 +206,6 @@ name|LATEST_APP_ATTEMPT_EVENT_INFO
 init|=
 literal|"YARN_APPLICATION_LATEST_APP_ATTEMPT"
 decl_stmt|;
-DECL|field|APP_TAGS_INFO
-specifier|public
-specifier|static
-specifier|final
-name|String
-name|APP_TAGS_INFO
-init|=
-literal|"YARN_APPLICATION_TAGS"
-decl_stmt|;
 block|}
 end_class
 
