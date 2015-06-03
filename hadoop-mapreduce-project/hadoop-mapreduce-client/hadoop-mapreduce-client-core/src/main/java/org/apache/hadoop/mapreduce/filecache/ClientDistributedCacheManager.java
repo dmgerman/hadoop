@@ -1216,6 +1216,15 @@ name|getPath
 argument_list|()
 argument_list|)
 decl_stmt|;
+name|current
+operator|=
+name|fs
+operator|.
+name|makeQualified
+argument_list|(
+name|current
+argument_list|)
+expr_stmt|;
 comment|//the leaf level file should be readable by others
 if|if
 condition|(
