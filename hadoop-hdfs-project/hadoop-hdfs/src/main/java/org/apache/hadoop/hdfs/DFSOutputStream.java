@@ -817,7 +817,7 @@ init|=
 literal|null
 decl_stmt|;
 DECL|field|streamer
-specifier|protected
+specifier|private
 name|DataStreamer
 name|streamer
 decl_stmt|;
