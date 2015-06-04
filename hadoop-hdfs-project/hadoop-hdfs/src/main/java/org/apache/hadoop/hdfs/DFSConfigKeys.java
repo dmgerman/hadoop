@@ -2680,7 +2680,7 @@ specifier|final
 name|int
 name|DFS_DATANODE_STRIPED_READ_BUFFER_SIZE_DEFAULT
 init|=
-literal|256
+literal|64
 operator|*
 literal|1024
 decl_stmt|;
