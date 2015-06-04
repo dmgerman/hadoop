@@ -7342,7 +7342,7 @@ argument_list|)
 operator|.
 name|append
 argument_list|(
-literal|" check application tracking page: "
+literal|" check the application tracking page: "
 argument_list|)
 operator|.
 name|append
@@ -7355,7 +7355,7 @@ argument_list|)
 operator|.
 name|append
 argument_list|(
-literal|" Then, click on links to logs of each attempt.\n"
+literal|" Then click on links to logs of each attempt.\n"
 argument_list|)
 expr_stmt|;
 block|}

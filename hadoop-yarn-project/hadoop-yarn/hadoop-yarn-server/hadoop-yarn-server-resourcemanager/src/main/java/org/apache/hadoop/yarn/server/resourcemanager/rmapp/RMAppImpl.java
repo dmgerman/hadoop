@@ -6112,29 +6112,76 @@ operator|.
 name|isNumAttemptsBeyondThreshold
 condition|)
 block|{
+name|int
+name|globalLimit
+init|=
+name|conf
+operator|.
+name|getInt
+argument_list|(
+name|YarnConfiguration
+operator|.
+name|RM_AM_MAX_ATTEMPTS
+argument_list|,
+name|YarnConfiguration
+operator|.
+name|DEFAULT_RM_AM_MAX_ATTEMPTS
+argument_list|)
+decl_stmt|;
 name|msg
 operator|=
-literal|"Application "
-operator|+
-name|this
+name|String
 operator|.
+name|format
+argument_list|(
+literal|"Application %s failed %d times%s%s due to %s. Failing the application."
+argument_list|,
 name|getApplicationId
 argument_list|()
+argument_list|,
+name|maxAppAttempts
+argument_list|,
+operator|(
+name|attemptFailuresValidityInterval
+operator|<=
+literal|0
+condition|?
+literal|""
+else|:
+operator|(
+literal|" in previous "
 operator|+
-literal|" failed "
+name|attemptFailuresValidityInterval
 operator|+
-name|this
-operator|.
+literal|" milliseconds"
+operator|)
+operator|)
+argument_list|,
+operator|(
+name|globalLimit
+operator|==
+name|maxAppAttempts
+operator|)
+condition|?
+literal|""
+else|:
+operator|(
+literal|" (global limit ="
+operator|+
+name|globalLimit
+operator|+
+literal|"; local limit is ="
+operator|+
 name|maxAppAttempts
 operator|+
-literal|" times due to "
-operator|+
+literal|")"
+operator|)
+argument_list|,
 name|failedEvent
 operator|.
 name|getDiagnostics
 argument_list|()
-operator|+
-literal|". Failing the application."
+argument_list|)
 expr_stmt|;
 block|}
 return|return
