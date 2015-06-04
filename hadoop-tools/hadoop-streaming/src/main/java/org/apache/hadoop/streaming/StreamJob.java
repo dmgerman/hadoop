@@ -3740,7 +3740,27 @@ name|out
 operator|.
 name|println
 argument_list|(
-literal|"To set an environement variable in a streaming "
+literal|"Truncate the values of the job configuration copied"
+operator|+
+literal|"to the environment at the given length:"
+argument_list|)
+expr_stmt|;
+name|System
+operator|.
+name|out
+operator|.
+name|println
+argument_list|(
+literal|"   -D stream.jobconf.truncate.limit=-1"
+argument_list|)
+expr_stmt|;
+name|System
+operator|.
+name|out
+operator|.
+name|println
+argument_list|(
+literal|"To set an environment variable in a streaming "
 operator|+
 literal|"command:"
 argument_list|)
