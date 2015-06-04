@@ -62,6 +62,25 @@ literal|true
 argument_list|)
 return|;
 block|}
+DECL|method|appsTableInit (boolean isResourceManager)
+specifier|public
+specifier|static
+name|String
+name|appsTableInit
+parameter_list|(
+name|boolean
+name|isResourceManager
+parameter_list|)
+block|{
+return|return
+name|appsTableInit
+argument_list|(
+literal|false
+argument_list|,
+name|isResourceManager
+argument_list|)
+return|;
+block|}
 DECL|method|appsTableInit ( boolean isFairSchedulerPage, boolean isResourceManager)
 specifier|public
 specifier|static
