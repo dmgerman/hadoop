@@ -5057,7 +5057,13 @@ name|report
 init|=
 literal|"-report [-live] [-dead] [-decommissioning]:\n"
 operator|+
-literal|"\tReports basic filesystem information and statistics.\n"
+literal|"\tReports basic filesystem information and statistics. \n"
+operator|+
+literal|"\tThe dfs usage can be different from \"du\" usage, because it\n"
+operator|+
+literal|"\tmeasures raw space used by replication, checksums, snapshots\n"
+operator|+
+literal|"\tand etc. on all the DNs.\n"
 operator|+
 literal|"\tOptional flags may be used to filter the list of displayed DNs.\n"
 decl_stmt|;
