@@ -3128,17 +3128,6 @@ name|void
 name|testLowerAndUpperStrings
 parameter_list|()
 block|{
-comment|// Due to java bug http://bugs.java.com/bugdatabase/view_bug.do?bug_id=8047340,
-comment|// The test will fail with Turkish locality on Mac OS.
-name|Assume
-operator|.
-name|assumeTrue
-argument_list|(
-name|Shell
-operator|.
-name|LINUX
-argument_list|)
-expr_stmt|;
 name|Locale
 name|defaultLocale
 init|=

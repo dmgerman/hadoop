@@ -1787,6 +1787,54 @@ operator|=
 literal|false
 expr_stmt|;
 block|}
+catch|catch
+parameter_list|(
+name|Error
+name|err
+parameter_list|)
+block|{
+if|if
+condition|(
+name|err
+operator|.
+name|getMessage
+argument_list|()
+operator|.
+name|contains
+argument_list|(
+literal|"posix_spawn is not "
+operator|+
+literal|"a supported process launch mechanism"
+argument_list|)
+operator|&&
+operator|(
+name|Shell
+operator|.
+name|FREEBSD
+operator|||
+name|Shell
+operator|.
+name|MAC
+operator|)
+condition|)
+block|{
+comment|// HADOOP-11924: This is a workaround to avoid failure of class init
+comment|// by JDK issue on TR locale(JDK-8047340).
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"Avoiding JDK-8047340 on BSD-based systems."
+argument_list|,
+name|err
+argument_list|)
+expr_stmt|;
+name|setsidSupported
+operator|=
+literal|false
+expr_stmt|;
+block|}
+block|}
 finally|finally
 block|{
 comment|// handle the exit code
