@@ -55,6 +55,9 @@ block|,
 DECL|enumConstant|RECONNECTED
 name|RECONNECTED
 block|,
+DECL|enumConstant|SHUTDOWN
+name|SHUTDOWN
+block|,
 comment|// Source: Application
 DECL|enumConstant|CLEANUP_APP
 name|CLEANUP_APP

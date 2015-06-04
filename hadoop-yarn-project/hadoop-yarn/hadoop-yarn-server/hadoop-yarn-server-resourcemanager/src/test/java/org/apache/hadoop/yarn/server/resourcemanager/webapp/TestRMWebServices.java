@@ -3223,6 +3223,15 @@ name|element
 argument_list|,
 literal|"activeNodes"
 argument_list|)
+argument_list|,
+name|WebServicesTestUtils
+operator|.
+name|getXmlInt
+argument_list|(
+name|element
+argument_list|,
+literal|"shutdownNodes"
+argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
@@ -3266,7 +3275,7 @@ name|assertEquals
 argument_list|(
 literal|"incorrect number of elements"
 argument_list|,
-literal|23
+literal|24
 argument_list|,
 name|clusterinfo
 operator|.
@@ -3394,10 +3403,17 @@ name|getInt
 argument_list|(
 literal|"activeNodes"
 argument_list|)
+argument_list|,
+name|clusterinfo
+operator|.
+name|getInt
+argument_list|(
+literal|"shutdownNodes"
+argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|verifyClusterMetrics (int submittedApps, int completedApps, int reservedMB, int availableMB, int allocMB, int reservedVirtualCores, int availableVirtualCores, int allocVirtualCores, int totalVirtualCores, int containersAlloc, int totalMB, int totalNodes, int lostNodes, int unhealthyNodes, int decommissionedNodes, int rebootedNodes, int activeNodes)
+DECL|method|verifyClusterMetrics (int submittedApps, int completedApps, int reservedMB, int availableMB, int allocMB, int reservedVirtualCores, int availableVirtualCores, int allocVirtualCores, int totalVirtualCores, int containersAlloc, int totalMB, int totalNodes, int lostNodes, int unhealthyNodes, int decommissionedNodes, int rebootedNodes, int activeNodes, int shutdownNodes)
 specifier|public
 name|void
 name|verifyClusterMetrics
@@ -3452,6 +3468,9 @@ name|rebootedNodes
 parameter_list|,
 name|int
 name|activeNodes
+parameter_list|,
+name|int
+name|shutdownNodes
 parameter_list|)
 throws|throws
 name|JSONException
@@ -3709,6 +3728,18 @@ name|getNumActiveNMs
 argument_list|()
 argument_list|,
 name|activeNodes
+argument_list|)
+expr_stmt|;
+name|assertEquals
+argument_list|(
+literal|"shutdownNodes doesn't match"
+argument_list|,
+name|clusterMetrics
+operator|.
+name|getNumShutdownNMs
+argument_list|()
+argument_list|,
+name|shutdownNodes
 argument_list|)
 expr_stmt|;
 block|}

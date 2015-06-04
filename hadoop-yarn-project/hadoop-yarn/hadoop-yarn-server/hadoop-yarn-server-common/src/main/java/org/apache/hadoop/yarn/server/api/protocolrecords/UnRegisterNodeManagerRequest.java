@@ -4,7 +4,7 @@ comment|/**  * Licensed to the Apache Software Foundation (ASF) under one  * or 
 end_comment
 
 begin_package
-DECL|package|org.apache.hadoop.yarn.api.records
+DECL|package|org.apache.hadoop.yarn.server.api.protocolrecords
 package|package
 name|org
 operator|.
@@ -14,9 +14,11 @@ name|hadoop
 operator|.
 name|yarn
 operator|.
+name|server
+operator|.
 name|api
 operator|.
-name|records
+name|protocolrecords
 package|;
 end_package
 
@@ -28,11 +30,13 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|classification
+name|yarn
 operator|.
-name|InterfaceAudience
+name|api
 operator|.
-name|Public
+name|records
+operator|.
+name|NodeId
 import|;
 end_import
 
@@ -44,88 +48,77 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|classification
+name|yarn
 operator|.
-name|InterfaceStability
+name|util
 operator|.
-name|Unstable
+name|Records
 import|;
 end_import
 
 begin_comment
-comment|/**  *<p>State of a<code>Node</code>.</p>  */
+comment|/**  * Node Manager's unregister request.  */
 end_comment
 
-begin_enum
-annotation|@
-name|Public
-annotation|@
-name|Unstable
-DECL|enum|NodeState
+begin_class
+DECL|class|UnRegisterNodeManagerRequest
 specifier|public
-enum|enum
-name|NodeState
+specifier|abstract
+class|class
+name|UnRegisterNodeManagerRequest
 block|{
-comment|/** New node */
-DECL|enumConstant|NEW
-name|NEW
-block|,
-comment|/** Running node */
-DECL|enumConstant|RUNNING
-name|RUNNING
-block|,
-comment|/** Node is unhealthy */
-DECL|enumConstant|UNHEALTHY
-name|UNHEALTHY
-block|,
-comment|/** Node is out of service */
-DECL|enumConstant|DECOMMISSIONED
-name|DECOMMISSIONED
-block|,
-comment|/** Node has not sent a heartbeat for some configured time threshold*/
-DECL|enumConstant|LOST
-name|LOST
-block|,
-comment|/** Node has rebooted */
-DECL|enumConstant|REBOOTED
-name|REBOOTED
-block|,
-comment|/** Node decommission is in progress */
-DECL|enumConstant|DECOMMISSIONING
-name|DECOMMISSIONING
-block|,
-comment|/** Node has shutdown gracefully. */
-DECL|enumConstant|SHUTDOWN
-name|SHUTDOWN
-block|;
-DECL|method|isUnusable ()
+DECL|method|newInstance (NodeId nodeId)
 specifier|public
-name|boolean
-name|isUnusable
-parameter_list|()
+specifier|static
+name|UnRegisterNodeManagerRequest
+name|newInstance
+parameter_list|(
+name|NodeId
+name|nodeId
+parameter_list|)
 block|{
+name|UnRegisterNodeManagerRequest
+name|nodeHeartbeatRequest
+init|=
+name|Records
+operator|.
+name|newRecord
+argument_list|(
+name|UnRegisterNodeManagerRequest
+operator|.
+name|class
+argument_list|)
+decl_stmt|;
+name|nodeHeartbeatRequest
+operator|.
+name|setNodeId
+argument_list|(
+name|nodeId
+argument_list|)
+expr_stmt|;
 return|return
-operator|(
-name|this
-operator|==
-name|UNHEALTHY
-operator|||
-name|this
-operator|==
-name|DECOMMISSIONED
-operator|||
-name|this
-operator|==
-name|LOST
-operator|||
-name|this
-operator|==
-name|SHUTDOWN
-operator|)
+name|nodeHeartbeatRequest
 return|;
 block|}
+DECL|method|getNodeId ()
+specifier|public
+specifier|abstract
+name|NodeId
+name|getNodeId
+parameter_list|()
+function_decl|;
+DECL|method|setNodeId (NodeId nodeId)
+specifier|public
+specifier|abstract
+name|void
+name|setNodeId
+parameter_list|(
+name|NodeId
+name|nodeId
+parameter_list|)
+function_decl|;
 block|}
-end_enum
+end_class
 
 end_unit
 
