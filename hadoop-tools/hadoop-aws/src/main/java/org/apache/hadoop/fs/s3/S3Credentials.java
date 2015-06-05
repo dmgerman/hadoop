@@ -22,6 +22,16 @@ begin_import
 import|import
 name|java
 operator|.
+name|io
+operator|.
+name|IOException
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
 name|net
 operator|.
 name|URI
@@ -98,7 +108,7 @@ specifier|private
 name|String
 name|secretAccessKey
 decl_stmt|;
-comment|/**    * @throws IllegalArgumentException if credentials for S3 cannot be    * determined.    */
+comment|/**    * @throws IllegalArgumentException if credentials for S3 cannot be    * determined.    * @throws IOException if credential providers are misconfigured and we have    *                     to talk to them.    */
 DECL|method|initialize (URI uri, Configuration conf)
 specifier|public
 name|void
@@ -110,6 +120,8 @@ parameter_list|,
 name|Configuration
 name|conf
 parameter_list|)
+throws|throws
+name|IOException
 block|{
 if|if
 condition|(
@@ -251,15 +263,39 @@ operator|==
 literal|null
 condition|)
 block|{
-name|secretAccessKey
-operator|=
+specifier|final
+name|char
+index|[]
+name|pass
+init|=
 name|conf
 operator|.
-name|getTrimmed
+name|getPassword
 argument_list|(
 name|secretAccessKeyProperty
 argument_list|)
+decl_stmt|;
+if|if
+condition|(
+name|pass
+operator|!=
+literal|null
+condition|)
+block|{
+name|secretAccessKey
+operator|=
+operator|(
+operator|new
+name|String
+argument_list|(
+name|pass
+argument_list|)
+operator|)
+operator|.
+name|trim
+argument_list|()
 expr_stmt|;
+block|}
 block|}
 if|if
 condition|(
