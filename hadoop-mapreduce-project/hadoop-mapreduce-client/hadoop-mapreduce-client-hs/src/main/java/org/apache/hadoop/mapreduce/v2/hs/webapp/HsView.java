@@ -377,7 +377,7 @@ operator|.
 comment|// Sort by id upon page load
 name|append
 argument_list|(
-literal|", aaSorting: [[2, 'desc']]"
+literal|", aaSorting: [[3, 'desc']]"
 argument_list|)
 operator|.
 name|append
@@ -388,7 +388,9 @@ operator|.
 comment|// Maps Total, Maps Completed, Reduces Total and Reduces Completed
 name|append
 argument_list|(
-literal|"{'sType':'numeric', 'bSearchable': false, 'aTargets': [ 7, 8, 9, 10 ] }"
+literal|"{'sType':'numeric', 'bSearchable': false"
+operator|+
+literal|", 'aTargets': [ 8, 9, 10, 11 ] }"
 argument_list|)
 operator|.
 name|append
