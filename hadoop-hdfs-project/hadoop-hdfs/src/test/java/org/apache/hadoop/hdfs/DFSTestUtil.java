@@ -11423,7 +11423,7 @@ return|return
 name|reports
 return|;
 block|}
-comment|/**    * Creates the metadata of a file in striped layout. This method only    * manipulates the NameNode state without injecting data to DataNode.    *  @param file Path of the file to create    * @param dir Parent path of the file    * @param numBlocks Number of striped block groups to add to the file    * @param numStripesPerBlk Number of striped cells in each block    * @param toMkdir    */
+comment|/**    * Creates the metadata of a file in striped layout. This method only    * manipulates the NameNode state without injecting data to DataNode.    * You should disable periodical heartbeat before use this.    *  @param file Path of the file to create    * @param dir Parent path of the file    * @param numBlocks Number of striped block groups to add to the file    * @param numStripesPerBlk Number of striped cells in each block    * @param toMkdir    */
 DECL|method|createStripedFile (MiniDFSCluster cluster, Path file, Path dir, int numBlocks, int numStripesPerBlk, boolean toMkdir)
 specifier|public
 specifier|static
@@ -11689,7 +11689,7 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-comment|/**    * Adds a striped block group to a file. This method only manipulates NameNode    * states of the file and the block without injecting data to DataNode.    * It does mimic block reports.    * @param dataNodes List DataNodes to host the striped block group    * @param previous Previous block in the file    * @param numStripes Number of stripes in each block group    * @return The added block group    */
+comment|/**    * Adds a striped block group to a file. This method only manipulates NameNode    * states of the file and the block without injecting data to DataNode.    * It does mimic block reports.    * You should disable periodical heartbeat before use this.    * @param dataNodes List DataNodes to host the striped block group    * @param previous Previous block in the file    * @param numStripes Number of stripes in each block group    * @return The added block group    */
 DECL|method|addStripedBlockToFile (List<DataNode> dataNodes, DistributedFileSystem fs, FSNamesystem ns, String file, INodeFile fileNode, String clientName, ExtendedBlock previous, int numStripes)
 specifier|public
 specifier|static
