@@ -892,6 +892,8 @@ argument_list|,
 name|done
 operator|/
 name|CELLSIZE
+argument_list|,
+literal|0
 argument_list|)
 decl_stmt|;
 name|int
@@ -1060,9 +1062,7 @@ argument_list|)
 expr_stmt|;
 name|assertEquals
 argument_list|(
-name|i
-operator|*
-name|CELLSIZE
+literal|0
 argument_list|,
 name|blocks
 index|[
@@ -1073,7 +1073,6 @@ name|getStartOffset
 argument_list|()
 argument_list|)
 expr_stmt|;
-comment|/** TODO: properly define {@link LocatedBlock#offset} for internal blocks */
 name|assertEquals
 argument_list|(
 literal|1
@@ -1618,6 +1617,8 @@ name|j
 operator|<
 name|chunk
 operator|.
+name|byteArray
+operator|.
 name|getLengths
 argument_list|()
 operator|.
@@ -1650,6 +1651,8 @@ name|assembled
 argument_list|,
 name|chunk
 operator|.
+name|byteArray
+operator|.
 name|getOffsets
 argument_list|()
 index|[
@@ -1657,6 +1660,8 @@ name|j
 index|]
 argument_list|,
 name|chunk
+operator|.
+name|byteArray
 operator|.
 name|getLengths
 argument_list|()
@@ -1668,6 +1673,8 @@ expr_stmt|;
 name|done
 operator|+=
 name|chunk
+operator|.
+name|byteArray
 operator|.
 name|getLengths
 argument_list|()

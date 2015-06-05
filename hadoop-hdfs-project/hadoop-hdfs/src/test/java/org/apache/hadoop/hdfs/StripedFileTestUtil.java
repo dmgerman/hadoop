@@ -130,11 +130,11 @@ name|parityBlocks
 operator|+
 literal|2
 decl_stmt|;
-DECL|field|r
+DECL|field|random
 specifier|static
 specifier|final
 name|Random
-name|r
+name|random
 init|=
 operator|new
 name|Random
