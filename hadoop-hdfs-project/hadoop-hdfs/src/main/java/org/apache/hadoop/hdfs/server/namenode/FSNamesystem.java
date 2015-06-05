@@ -11040,32 +11040,19 @@ name|src
 init|=
 name|srcArg
 decl_stmt|;
-if|if
-condition|(
-name|NameNode
-operator|.
-name|stateChangeLog
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|NameNode
 operator|.
 name|stateChangeLog
 operator|.
 name|debug
 argument_list|(
-literal|"DIR* NameSystem.truncate: src="
-operator|+
+literal|"DIR* NameSystem.truncate: src={} newLength={}"
+argument_list|,
 name|src
-operator|+
-literal|" newLength="
-operator|+
+argument_list|,
 name|newLength
 argument_list|)
 expr_stmt|;
-block|}
 if|if
 condition|(
 name|newLength
@@ -11852,23 +11839,19 @@ name|NameNode
 operator|.
 name|stateChangeLog
 operator|.
-name|info
+name|debug
 argument_list|(
-literal|"BLOCK* prepareFileForTruncate: "
+literal|"BLOCK* prepareFileForTruncate: Scheduling copy-on-truncate to new"
 operator|+
-literal|"Scheduling copy-on-truncate to new size "
-operator|+
+literal|" size {}  new block {} old block {}"
+argument_list|,
 name|truncatedBlockUC
 operator|.
 name|getNumBytes
 argument_list|()
-operator|+
-literal|" new block "
-operator|+
+argument_list|,
 name|newBlock
-operator|+
-literal|" old block "
-operator|+
+argument_list|,
 name|truncatedBlockUC
 operator|.
 name|getTruncateBlock
@@ -11956,10 +11939,10 @@ name|stateChangeLog
 operator|.
 name|debug
 argument_list|(
-literal|"BLOCK* prepareFileForTruncate: "
+literal|"BLOCK* prepareFileForTruncate: {} Scheduling in-place block "
 operator|+
-literal|"Scheduling in-place block truncate to new size "
-operator|+
+literal|"truncate to new size {}"
+argument_list|,
 name|truncatedBlockUC
 operator|.
 name|getTruncateBlock
@@ -11967,9 +11950,7 @@ argument_list|()
 operator|.
 name|getNumBytes
 argument_list|()
-operator|+
-literal|" block="
-operator|+
+argument_list|,
 name|truncatedBlockUC
 argument_list|)
 expr_stmt|;
@@ -14760,36 +14741,21 @@ name|src
 init|=
 name|srcArg
 decl_stmt|;
-if|if
-condition|(
-name|NameNode
-operator|.
-name|stateChangeLog
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|NameNode
 operator|.
 name|stateChangeLog
 operator|.
 name|debug
 argument_list|(
-literal|"DIR* NameSystem.appendFile: src="
-operator|+
+literal|"DIR* NameSystem.appendFile: src={}, holder={}, clientMachine={}"
+argument_list|,
 name|src
-operator|+
-literal|", holder="
-operator|+
+argument_list|,
 name|holder
-operator|+
-literal|", clientMachine="
-operator|+
+argument_list|,
 name|clientMachine
 argument_list|)
 expr_stmt|;
-block|}
 name|boolean
 name|skipSync
 init|=
@@ -14948,43 +14914,27 @@ operator|!=
 literal|null
 condition|)
 block|{
-if|if
-condition|(
-name|NameNode
-operator|.
-name|stateChangeLog
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|NameNode
 operator|.
 name|stateChangeLog
 operator|.
 name|debug
 argument_list|(
-literal|"DIR* NameSystem.appendFile: file "
+literal|"DIR* NameSystem.appendFile: file {} for {} at {} block {} block"
 operator|+
+literal|" size {}"
+argument_list|,
 name|src
-operator|+
-literal|" for "
-operator|+
+argument_list|,
 name|holder
-operator|+
-literal|" at "
-operator|+
+argument_list|,
 name|clientMachine
-operator|+
-literal|" block "
-operator|+
+argument_list|,
 name|lb
 operator|.
 name|getBlock
 argument_list|()
-operator|+
-literal|" block size "
-operator|+
+argument_list|,
 name|lb
 operator|.
 name|getBlock
@@ -14994,7 +14944,6 @@ name|getNumBytes
 argument_list|()
 argument_list|)
 expr_stmt|;
-block|}
 block|}
 name|logAuditEvent
 argument_list|(
@@ -15081,36 +15030,23 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
-if|if
-condition|(
-name|NameNode
-operator|.
-name|stateChangeLog
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|NameNode
 operator|.
 name|stateChangeLog
 operator|.
 name|debug
 argument_list|(
-literal|"BLOCK* getAdditionalBlock: "
+literal|"BLOCK* getAdditionalBlock: {}  inodeId {}"
 operator|+
+literal|" for {}"
+argument_list|,
 name|src
-operator|+
-literal|" inodeId "
-operator|+
+argument_list|,
 name|fileId
-operator|+
-literal|" for "
-operator|+
+argument_list|,
 name|clientName
 argument_list|)
 expr_stmt|;
-block|}
 name|waitForLoadingFSImage
 argument_list|()
 expr_stmt|;
@@ -15653,32 +15589,19 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
-if|if
-condition|(
-name|NameNode
-operator|.
-name|stateChangeLog
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|NameNode
 operator|.
 name|stateChangeLog
 operator|.
 name|debug
 argument_list|(
-literal|"BLOCK* NameSystem.abandonBlock: "
-operator|+
+literal|"BLOCK* NameSystem.abandonBlock: {} of file {}"
+argument_list|,
 name|b
-operator|+
-literal|"of file "
-operator|+
+argument_list|,
 name|src
 argument_list|)
 expr_stmt|;
-block|}
 name|waitForLoadingFSImage
 argument_list|()
 expr_stmt|;
@@ -15735,30 +15658,19 @@ argument_list|,
 name|holder
 argument_list|)
 expr_stmt|;
-if|if
-condition|(
-name|NameNode
-operator|.
-name|stateChangeLog
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|NameNode
 operator|.
 name|stateChangeLog
 operator|.
 name|debug
 argument_list|(
-literal|"BLOCK* NameSystem.abandonBlock: "
+literal|"BLOCK* NameSystem.abandonBlock: {} is "
 operator|+
+literal|"removed from pendingCreates"
+argument_list|,
 name|b
-operator|+
-literal|" is removed from pendingCreates"
 argument_list|)
 expr_stmt|;
-block|}
 block|}
 finally|finally
 block|{
@@ -20086,39 +19998,26 @@ argument_list|,
 name|file
 argument_list|)
 expr_stmt|;
-if|if
-condition|(
-name|NameNode
-operator|.
-name|stateChangeLog
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|NameNode
 operator|.
 name|stateChangeLog
 operator|.
 name|debug
 argument_list|(
-literal|"closeFile: "
+literal|"closeFile: {} with {} blocks is persisted"
 operator|+
+literal|" to the file system"
+argument_list|,
 name|path
-operator|+
-literal|" with "
-operator|+
+argument_list|,
 name|file
 operator|.
 name|getBlocks
 argument_list|()
 operator|.
 name|length
-operator|+
-literal|" blocks is persisted to the file system"
 argument_list|)
 expr_stmt|;
-block|}
 block|}
 comment|/**    * Periodically calls hasAvailableResources of NameNodeResourceChecker, and if    * there are found to be insufficient resources available, causes the NN to    * enter safe mode. If resources are later found to have returned to    * acceptable levels, this daemon will cause the NN to exit safe mode.    */
 DECL|class|NameNodeResourceMonitor
@@ -27203,13 +27102,22 @@ argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
+if|if
+condition|(
 name|LOG
 operator|.
-name|info
+name|isDebugEnabled
+argument_list|()
+condition|)
+block|{
+name|LOG
+operator|.
+name|debug
 argument_list|(
 literal|"there are no corrupt file blocks."
 argument_list|)
 expr_stmt|;
+block|}
 return|return
 name|corruptFiles
 return|;
@@ -27403,15 +27311,24 @@ argument_list|(
 name|skip
 argument_list|)
 expr_stmt|;
+if|if
+condition|(
 name|LOG
 operator|.
-name|info
+name|isDebugEnabled
+argument_list|()
+condition|)
+block|{
+name|LOG
+operator|.
+name|debug
 argument_list|(
 literal|"list corrupt file blocks returned: "
 operator|+
 name|count
 argument_list|)
 expr_stmt|;
+block|}
 return|return
 name|corruptFiles
 return|;
