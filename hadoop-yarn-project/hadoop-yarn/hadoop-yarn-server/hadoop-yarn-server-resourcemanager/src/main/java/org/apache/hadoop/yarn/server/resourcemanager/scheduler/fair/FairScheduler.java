@@ -1345,7 +1345,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * A scheduler that schedules resources between a set of queues. The scheduler  * keeps track of the resources used by each queue, and attempts to maintain  * fairness by scheduling tasks at queues whose allocations are farthest below  * an ideal fair distribution.  *   * The fair scheduler supports hierarchical queues. All queues descend from a  * queue named "root". Available resources are distributed among the children  * of the root queue in the typical fair scheduling fashion. Then, the children  * distribute the resources assigned to them to their children in the same  * fashion.  Applications may only be scheduled on leaf queues. Queues can be  * specified as children of other queues by placing them as sub-elements of their  * parents in the fair scheduler configuration file.  *   * A queue's name starts with the names of its parents, with periods as  * separators.  So a queue named "queue1" under the root named, would be   * referred to as "root.queue1", and a queue named "queue2" under a queue  * named "parent1" would be referred to as "root.parent1.queue2".  */
+comment|/**  * A scheduler that schedules resources between a set of queues. The scheduler  * keeps track of the resources used by each queue, and attempts to maintain  * fairness by scheduling tasks at queues whose allocations are farthest below  * an ideal fair distribution.  *   * The fair scheduler supports hierarchical queues. All queues descend from a  * queue named "root". Available resources are distributed among the children  * of the root queue in the typical fair scheduling fashion. Then, the children  * distribute the resources assigned to them to their children in the same  * fashion.  Applications may only be scheduled on leaf queues. Queues can be  * specified as children of other queues by placing them as sub-elements of  * their parents in the fair scheduler configuration file.  *  * A queue's name starts with the names of its parents, with periods as  * separators.  So a queue named "queue1" under the root named, would be   * referred to as "root.queue1", and a queue named "queue2" under a queue  * named "parent1" would be referred to as "root.parent1.queue2".  */
 end_comment
 
 begin_class
@@ -1480,6 +1480,16 @@ name|VisibleForTesting
 DECL|field|updateThread
 name|Thread
 name|updateThread
+decl_stmt|;
+DECL|field|updateThreadMonitor
+specifier|private
+specifier|final
+name|Object
+name|updateThreadMonitor
+init|=
+operator|new
+name|Object
+argument_list|()
 decl_stmt|;
 annotation|@
 name|VisibleForTesting
@@ -1885,6 +1895,24 @@ return|return
 name|queueMgr
 return|;
 block|}
+comment|// Allows UpdateThread to start processing without waiting till updateInterval
+DECL|method|triggerUpdate ()
+name|void
+name|triggerUpdate
+parameter_list|()
+block|{
+synchronized|synchronized
+init|(
+name|updateThreadMonitor
+init|)
+block|{
+name|updateThreadMonitor
+operator|.
+name|notify
+argument_list|()
+expr_stmt|;
+block|}
+block|}
 comment|/**    * Thread which calls {@link FairScheduler#update()} every    *<code>updateInterval</code> milliseconds.    */
 DECL|class|UpdateThread
 specifier|private
@@ -1915,13 +1943,19 @@ condition|)
 block|{
 try|try
 block|{
-name|Thread
+synchronized|synchronized
+init|(
+name|updateThreadMonitor
+init|)
+block|{
+name|updateThreadMonitor
 operator|.
-name|sleep
+name|wait
 argument_list|(
 name|updateInterval
 argument_list|)
 expr_stmt|;
+block|}
 name|long
 name|start
 init|=
@@ -4578,6 +4612,9 @@ argument_list|,
 literal|true
 argument_list|)
 expr_stmt|;
+name|triggerUpdate
+argument_list|()
+expr_stmt|;
 name|queueMgr
 operator|.
 name|getRootQueue
@@ -4657,6 +4694,9 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 name|updateRootQueueMetrics
+argument_list|()
+expr_stmt|;
+name|triggerUpdate
 argument_list|()
 expr_stmt|;
 comment|// Remove running containers
