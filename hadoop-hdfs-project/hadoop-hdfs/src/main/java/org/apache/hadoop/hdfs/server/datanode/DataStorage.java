@@ -4911,9 +4911,9 @@ argument_list|(
 name|j
 argument_list|)
 decl_stmt|;
-name|NativeIO
+name|HardLink
 operator|.
-name|link
+name|createHardLink
 argument_list|(
 name|cur
 operator|.

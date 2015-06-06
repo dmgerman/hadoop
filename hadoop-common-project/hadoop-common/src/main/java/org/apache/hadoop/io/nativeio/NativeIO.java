@@ -3805,6 +3805,9 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
+comment|/**    * Creates a hardlink "dst" that points to "src".    *    * This is deprecated since JDK7 NIO can create hardlinks via the    * {@link java.nio.file.Files} API.    *    * @param src source file    * @param dst hardlink location    * @throws IOException    */
+annotation|@
+name|Deprecated
 DECL|method|link (File src, File dst)
 specifier|public
 specifier|static
