@@ -1359,7 +1359,11 @@ expr_stmt|;
 name|editLog
 operator|.
 name|openForWrite
-argument_list|()
+argument_list|(
+name|NameNodeLayoutVersion
+operator|.
+name|CURRENT_LAYOUT_VERSION
+argument_list|)
 expr_stmt|;
 name|PermissionStatus
 name|perms

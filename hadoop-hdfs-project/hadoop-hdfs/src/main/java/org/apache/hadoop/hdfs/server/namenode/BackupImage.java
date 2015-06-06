@@ -1233,6 +1233,11 @@ argument_list|(
 name|txid
 argument_list|,
 literal|true
+argument_list|,
+name|namesystem
+operator|.
+name|getEffectiveLayoutVersion
+argument_list|()
 argument_list|)
 expr_stmt|;
 if|if

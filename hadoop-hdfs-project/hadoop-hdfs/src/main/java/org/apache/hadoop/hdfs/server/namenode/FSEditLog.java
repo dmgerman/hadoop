@@ -2181,11 +2181,14 @@ name|editsDirs
 return|;
 block|}
 comment|/**    * Initialize the output stream for logging, opening the first    * log segment.    */
-DECL|method|openForWrite ()
+DECL|method|openForWrite (int layoutVersion)
 specifier|synchronized
 name|void
 name|openForWrite
-parameter_list|()
+parameter_list|(
+name|int
+name|layoutVersion
+parameter_list|)
 throws|throws
 name|IOException
 block|{
@@ -2297,6 +2300,8 @@ block|}
 name|startLogSegmentAndWriteHeaderTxn
 argument_list|(
 name|segmentTxId
+argument_list|,
+name|layoutVersion
 argument_list|)
 expr_stmt|;
 assert|assert
@@ -5931,11 +5936,14 @@ argument_list|)
 return|;
 block|}
 comment|/**    * Finalizes the current edit log and opens a new log segment.    * @return the transaction id of the BEGIN_LOG_SEGMENT transaction    * in the new log.    */
-DECL|method|rollEditLog ()
+DECL|method|rollEditLog (int layoutVersion)
 specifier|synchronized
 name|long
 name|rollEditLog
-parameter_list|()
+parameter_list|(
+name|int
+name|layoutVersion
+parameter_list|)
 throws|throws
 name|IOException
 block|{
@@ -5962,6 +5970,8 @@ decl_stmt|;
 name|startLogSegmentAndWriteHeaderTxn
 argument_list|(
 name|nextTxId
+argument_list|,
+name|layoutVersion
 argument_list|)
 expr_stmt|;
 assert|assert
@@ -5974,7 +5984,7 @@ name|nextTxId
 return|;
 block|}
 comment|/**    * Remote namenode just has started a log segment, start log segment locally.    */
-DECL|method|startLogSegment (long txid, boolean abortCurrentLogSegment)
+DECL|method|startLogSegment (long txid, boolean abortCurrentLogSegment, int layoutVersion)
 specifier|public
 specifier|synchronized
 name|void
@@ -5985,6 +5995,9 @@ name|txid
 parameter_list|,
 name|boolean
 name|abortCurrentLogSegment
+parameter_list|,
+name|int
+name|layoutVersion
 parameter_list|)
 throws|throws
 name|IOException
@@ -6081,11 +6094,13 @@ expr_stmt|;
 name|startLogSegment
 argument_list|(
 name|txid
+argument_list|,
+name|layoutVersion
 argument_list|)
 expr_stmt|;
 block|}
 comment|/**    * Start writing to the log segment with the given txid.    * Transitions from BETWEEN_LOG_SEGMENTS state to IN_LOG_SEGMENT state.     */
-DECL|method|startLogSegment (final long segmentTxId)
+DECL|method|startLogSegment (final long segmentTxId, int layoutVersion)
 specifier|private
 name|void
 name|startLogSegment
@@ -6093,6 +6108,9 @@ parameter_list|(
 specifier|final
 name|long
 name|segmentTxId
+parameter_list|,
+name|int
+name|layoutVersion
 parameter_list|)
 throws|throws
 name|IOException
@@ -6205,9 +6223,7 @@ name|startLogSegment
 argument_list|(
 name|segmentTxId
 argument_list|,
-name|NameNodeLayoutVersion
-operator|.
-name|CURRENT_LAYOUT_VERSION
+name|layoutVersion
 argument_list|)
 expr_stmt|;
 block|}
@@ -6242,7 +6258,7 @@ operator|.
 name|IN_SEGMENT
 expr_stmt|;
 block|}
-DECL|method|startLogSegmentAndWriteHeaderTxn (final long segmentTxId )
+DECL|method|startLogSegmentAndWriteHeaderTxn (final long segmentTxId, int layoutVersion)
 specifier|synchronized
 name|void
 name|startLogSegmentAndWriteHeaderTxn
@@ -6250,6 +6266,9 @@ parameter_list|(
 specifier|final
 name|long
 name|segmentTxId
+parameter_list|,
+name|int
+name|layoutVersion
 parameter_list|)
 throws|throws
 name|IOException
@@ -6257,6 +6276,8 @@ block|{
 name|startLogSegment
 argument_list|(
 name|segmentTxId
+argument_list|,
+name|layoutVersion
 argument_list|)
 expr_stmt|;
 name|logEdit

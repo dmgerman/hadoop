@@ -2881,9 +2881,13 @@ argument_list|)
 operator|.
 name|setLayoutVersion
 argument_list|(
-name|NameNodeLayoutVersion
+name|context
 operator|.
-name|CURRENT_LAYOUT_VERSION
+name|getSourceNamesystem
+argument_list|()
+operator|.
+name|getEffectiveLayoutVersion
+argument_list|()
 argument_list|)
 decl_stmt|;
 name|codec
