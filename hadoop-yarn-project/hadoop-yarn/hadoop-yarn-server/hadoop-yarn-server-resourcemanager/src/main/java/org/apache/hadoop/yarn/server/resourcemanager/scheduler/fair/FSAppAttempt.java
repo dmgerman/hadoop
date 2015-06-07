@@ -2808,29 +2808,6 @@ name|getResource
 argument_list|()
 return|;
 block|}
-else|else
-block|{
-if|if
-condition|(
-operator|!
-name|FairScheduler
-operator|.
-name|fitsInMaxShare
-argument_list|(
-name|getQueue
-argument_list|()
-argument_list|,
-name|capability
-argument_list|)
-condition|)
-block|{
-return|return
-name|Resources
-operator|.
-name|none
-argument_list|()
-return|;
-block|}
 comment|// The desired container won't fit here, so reserve
 name|reserve
 argument_list|(
@@ -2851,7 +2828,6 @@ name|FairScheduler
 operator|.
 name|CONTAINER_RESERVED
 return|;
-block|}
 block|}
 DECL|method|hasNodeOrRackLocalRequests (Priority priority)
 specifier|private
@@ -2874,41 +2850,13 @@ operator|>
 literal|1
 return|;
 block|}
-DECL|method|assignContainer (FSSchedulerNode node, boolean reserved)
+comment|/**    * Whether the AM container for this app is over maxAMShare limit.    */
+DECL|method|isOverAMShareLimit ()
 specifier|private
-name|Resource
-name|assignContainer
-parameter_list|(
-name|FSSchedulerNode
-name|node
-parameter_list|,
 name|boolean
-name|reserved
-parameter_list|)
+name|isOverAMShareLimit
+parameter_list|()
 block|{
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
-name|LOG
-operator|.
-name|debug
-argument_list|(
-literal|"Node offered to app: "
-operator|+
-name|getName
-argument_list|()
-operator|+
-literal|" reserved: "
-operator|+
-name|reserved
-argument_list|)
-expr_stmt|;
-block|}
 comment|// Check the AM resource usage for the leaf queue
 if|if
 condition|(
@@ -2957,6 +2905,27 @@ argument_list|()
 argument_list|)
 condition|)
 block|{
+return|return
+literal|true
+return|;
+block|}
+block|}
+return|return
+literal|false
+return|;
+block|}
+DECL|method|assignContainer (FSSchedulerNode node, boolean reserved)
+specifier|private
+name|Resource
+name|assignContainer
+parameter_list|(
+name|FSSchedulerNode
+name|node
+parameter_list|,
+name|boolean
+name|reserved
+parameter_list|)
+block|{
 if|if
 condition|(
 name|LOG
@@ -2969,19 +2938,16 @@ name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"Skipping allocation because maxAMShare limit would "
+literal|"Node offered to app: "
 operator|+
-literal|"be exceeded"
+name|getName
+argument_list|()
+operator|+
+literal|" reserved: "
+operator|+
+name|reserved
 argument_list|)
 expr_stmt|;
-block|}
-return|return
-name|Resources
-operator|.
-name|none
-argument_list|()
-return|;
-block|}
 block|}
 name|Collection
 argument_list|<
@@ -3025,15 +2991,13 @@ range|:
 name|prioritiesToTry
 control|)
 block|{
+comment|// Skip it for reserved container, since
+comment|// we already check it in isValidReservation.
 if|if
 condition|(
-name|getTotalRequiredResources
-argument_list|(
-name|priority
-argument_list|)
-operator|<=
-literal|0
-operator|||
+operator|!
+name|reserved
+operator|&&
 operator|!
 name|hasContainerForNode
 argument_list|(
@@ -3349,101 +3313,9 @@ name|none
 argument_list|()
 return|;
 block|}
-comment|/**    * Called when this application already has an existing reservation on the    * given node.  Sees whether we can turn the reservation into an allocation.    * Also checks whether the application needs the reservation anymore, and    * releases it if not.    *    * @param node    *     Node that the application has an existing reservation on    */
-DECL|method|assignReservedContainer (FSSchedulerNode node)
-specifier|public
-name|Resource
-name|assignReservedContainer
-parameter_list|(
-name|FSSchedulerNode
-name|node
-parameter_list|)
-block|{
-name|RMContainer
-name|rmContainer
-init|=
-name|node
-operator|.
-name|getReservedContainer
-argument_list|()
-decl_stmt|;
-name|Priority
-name|priority
-init|=
-name|rmContainer
-operator|.
-name|getReservedPriority
-argument_list|()
-decl_stmt|;
-comment|// Make sure the application still needs requests at this priority
-if|if
-condition|(
-name|getTotalRequiredResources
-argument_list|(
-name|priority
-argument_list|)
-operator|==
-literal|0
-condition|)
-block|{
-name|unreserve
-argument_list|(
-name|priority
-argument_list|,
-name|node
-argument_list|)
-expr_stmt|;
-return|return
-name|Resources
-operator|.
-name|none
-argument_list|()
-return|;
-block|}
-comment|// Fail early if the reserved container won't fit.
-comment|// Note that we have an assumption here that there's only one container size
-comment|// per priority.
-if|if
-condition|(
-operator|!
-name|Resources
-operator|.
-name|fitsIn
-argument_list|(
-name|node
-operator|.
-name|getReservedContainer
-argument_list|()
-operator|.
-name|getReservedResource
-argument_list|()
-argument_list|,
-name|node
-operator|.
-name|getAvailableResource
-argument_list|()
-argument_list|)
-condition|)
-block|{
-return|return
-name|Resources
-operator|.
-name|none
-argument_list|()
-return|;
-block|}
-return|return
-name|assignContainer
-argument_list|(
-name|node
-argument_list|,
-literal|true
-argument_list|)
-return|;
-block|}
 comment|/**    * Whether this app has containers requests that could be satisfied on the    * given node, if the node had full space.    */
 DECL|method|hasContainerForNode (Priority prio, FSSchedulerNode node)
-specifier|public
+specifier|private
 name|boolean
 name|hasContainerForNode
 parameter_list|(
@@ -3575,6 +3447,174 @@ operator|.
 name|getTotalCapability
 argument_list|()
 argument_list|)
+operator|&&
+comment|// The requested container must fit in queue maximum share:
+name|getQueue
+argument_list|()
+operator|.
+name|fitsInMaxShare
+argument_list|(
+name|anyRequest
+operator|.
+name|getCapability
+argument_list|()
+argument_list|)
+return|;
+block|}
+DECL|method|isValidReservation (FSSchedulerNode node)
+specifier|private
+name|boolean
+name|isValidReservation
+parameter_list|(
+name|FSSchedulerNode
+name|node
+parameter_list|)
+block|{
+name|Priority
+name|reservedPriority
+init|=
+name|node
+operator|.
+name|getReservedContainer
+argument_list|()
+operator|.
+name|getReservedPriority
+argument_list|()
+decl_stmt|;
+return|return
+name|hasContainerForNode
+argument_list|(
+name|reservedPriority
+argument_list|,
+name|node
+argument_list|)
+operator|&&
+operator|!
+name|isOverAMShareLimit
+argument_list|()
+return|;
+block|}
+comment|/**    * Called when this application already has an existing reservation on the    * given node.  Sees whether we can turn the reservation into an allocation.    * Also checks whether the application needs the reservation anymore, and    * releases it if not.    *    * @param node    *     Node that the application has an existing reservation on    * @return whether the reservation on the given node is valid.    */
+DECL|method|assignReservedContainer (FSSchedulerNode node)
+specifier|public
+name|boolean
+name|assignReservedContainer
+parameter_list|(
+name|FSSchedulerNode
+name|node
+parameter_list|)
+block|{
+name|RMContainer
+name|rmContainer
+init|=
+name|node
+operator|.
+name|getReservedContainer
+argument_list|()
+decl_stmt|;
+name|Priority
+name|reservedPriority
+init|=
+name|rmContainer
+operator|.
+name|getReservedPriority
+argument_list|()
+decl_stmt|;
+if|if
+condition|(
+operator|!
+name|isValidReservation
+argument_list|(
+name|node
+argument_list|)
+condition|)
+block|{
+comment|// Don't hold the reservation if app can no longer use it
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"Releasing reservation that cannot be satisfied for "
+operator|+
+literal|"application "
+operator|+
+name|getApplicationAttemptId
+argument_list|()
+operator|+
+literal|" on node "
+operator|+
+name|node
+argument_list|)
+expr_stmt|;
+name|unreserve
+argument_list|(
+name|reservedPriority
+argument_list|,
+name|node
+argument_list|)
+expr_stmt|;
+return|return
+literal|false
+return|;
+block|}
+comment|// Reservation valid; try to fulfill the reservation
+if|if
+condition|(
+name|LOG
+operator|.
+name|isDebugEnabled
+argument_list|()
+condition|)
+block|{
+name|LOG
+operator|.
+name|debug
+argument_list|(
+literal|"Trying to fulfill reservation for application "
+operator|+
+name|getApplicationAttemptId
+argument_list|()
+operator|+
+literal|" on node: "
+operator|+
+name|node
+argument_list|)
+expr_stmt|;
+block|}
+comment|// Fail early if the reserved container won't fit.
+comment|// Note that we have an assumption here that
+comment|// there's only one container size per priority.
+if|if
+condition|(
+name|Resources
+operator|.
+name|fitsIn
+argument_list|(
+name|node
+operator|.
+name|getReservedContainer
+argument_list|()
+operator|.
+name|getReservedResource
+argument_list|()
+argument_list|,
+name|node
+operator|.
+name|getAvailableResource
+argument_list|()
+argument_list|)
+condition|)
+block|{
+name|assignContainer
+argument_list|(
+name|node
+argument_list|,
+literal|true
+argument_list|)
+expr_stmt|;
+block|}
+return|return
+literal|true
 return|;
 block|}
 DECL|class|RMContainerComparator
@@ -3908,6 +3948,37 @@ name|FSSchedulerNode
 name|node
 parameter_list|)
 block|{
+if|if
+condition|(
+name|isOverAMShareLimit
+argument_list|()
+condition|)
+block|{
+if|if
+condition|(
+name|LOG
+operator|.
+name|isDebugEnabled
+argument_list|()
+condition|)
+block|{
+name|LOG
+operator|.
+name|debug
+argument_list|(
+literal|"Skipping allocation because maxAMShare limit would "
+operator|+
+literal|"be exceeded"
+argument_list|)
+expr_stmt|;
+block|}
+return|return
+name|Resources
+operator|.
+name|none
+argument_list|()
+return|;
+block|}
 return|return
 name|assignContainer
 argument_list|(
