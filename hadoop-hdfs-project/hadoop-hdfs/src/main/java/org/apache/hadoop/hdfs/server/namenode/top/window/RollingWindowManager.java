@@ -708,14 +708,6 @@ argument_list|(
 name|windowLenMs
 argument_list|)
 decl_stmt|;
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|Set
 argument_list|<
 name|String
@@ -741,7 +733,6 @@ argument_list|,
 name|metricNames
 argument_list|)
 expr_stmt|;
-block|}
 for|for
 control|(
 name|Map
