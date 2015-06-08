@@ -238,6 +238,24 @@ name|ConnectTimeoutException
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|security
+operator|.
+name|token
+operator|.
+name|SecretManager
+operator|.
+name|InvalidToken
+import|;
+end_import
+
 begin_comment
 comment|/**  *<p>  * A collection of useful implementations of {@link RetryPolicy}.  *</p>  */
 end_comment
@@ -2585,6 +2603,30 @@ name|getFailoverOrRetrySleepTime
 argument_list|(
 name|retries
 argument_list|)
+argument_list|)
+return|;
+block|}
+elseif|else
+if|if
+condition|(
+name|e
+operator|instanceof
+name|InvalidToken
+condition|)
+block|{
+return|return
+operator|new
+name|RetryAction
+argument_list|(
+name|RetryAction
+operator|.
+name|RetryDecision
+operator|.
+name|FAIL
+argument_list|,
+literal|0
+argument_list|,
+literal|"Invalid or Cancelled Token"
 argument_list|)
 return|;
 block|}
