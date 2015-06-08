@@ -66,7 +66,7 @@ specifier|final
 name|String
 name|NUM_DATA_UNITS_KEY
 init|=
-literal|"k"
+literal|"numDataUnits"
 decl_stmt|;
 DECL|field|NUM_PARITY_UNITS_KEY
 specifier|public
@@ -75,7 +75,7 @@ specifier|final
 name|String
 name|NUM_PARITY_UNITS_KEY
 init|=
-literal|"m"
+literal|"numParityUnits"
 decl_stmt|;
 DECL|field|CODEC_NAME_KEY
 specifier|public
