@@ -1635,7 +1635,7 @@ DECL|field|DEFAULT_RM_ZK_RETRY_INTERVAL_MS
 specifier|public
 specifier|static
 specifier|final
-name|long
+name|int
 name|DEFAULT_RM_ZK_RETRY_INTERVAL_MS
 init|=
 literal|1000
