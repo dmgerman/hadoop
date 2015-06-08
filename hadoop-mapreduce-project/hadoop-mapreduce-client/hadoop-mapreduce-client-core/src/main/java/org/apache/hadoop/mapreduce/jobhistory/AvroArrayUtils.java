@@ -209,9 +209,6 @@ init|=
 operator|new
 name|int
 index|[
-operator|(
-name|int
-operator|)
 name|avro
 operator|.
 name|size

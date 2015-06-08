@@ -141,8 +141,8 @@ parameter_list|)
 block|{
 name|datum
 operator|.
-name|jobid
-operator|=
+name|setJobid
+argument_list|(
 operator|new
 name|Utf8
 argument_list|(
@@ -151,11 +151,12 @@ operator|.
 name|toString
 argument_list|()
 argument_list|)
+argument_list|)
 expr_stmt|;
 name|datum
 operator|.
-name|priority
-operator|=
+name|setPriority
+argument_list|(
 operator|new
 name|Utf8
 argument_list|(
@@ -163,6 +164,7 @@ name|priority
 operator|.
 name|name
 argument_list|()
+argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
@@ -213,7 +215,8 @@ name|forName
 argument_list|(
 name|datum
 operator|.
-name|jobid
+name|getJobid
+argument_list|()
 operator|.
 name|toString
 argument_list|()
@@ -234,7 +237,8 @@ name|valueOf
 argument_list|(
 name|datum
 operator|.
-name|priority
+name|getPriority
+argument_list|()
 operator|.
 name|toString
 argument_list|()

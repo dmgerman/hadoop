@@ -129,8 +129,8 @@ parameter_list|)
 block|{
 name|datum
 operator|.
-name|jobid
-operator|=
+name|setJobid
+argument_list|(
 operator|new
 name|Utf8
 argument_list|(
@@ -139,40 +139,46 @@ operator|.
 name|toString
 argument_list|()
 argument_list|)
+argument_list|)
 expr_stmt|;
 name|datum
 operator|.
+name|setLaunchTime
+argument_list|(
 name|launchTime
-operator|=
-name|launchTime
+argument_list|)
 expr_stmt|;
 name|datum
 operator|.
+name|setTotalMaps
+argument_list|(
 name|totalMaps
-operator|=
-name|totalMaps
+argument_list|)
 expr_stmt|;
 name|datum
 operator|.
+name|setTotalReduces
+argument_list|(
 name|totalReduces
-operator|=
-name|totalReduces
+argument_list|)
 expr_stmt|;
 name|datum
 operator|.
-name|jobStatus
-operator|=
+name|setJobStatus
+argument_list|(
 operator|new
 name|Utf8
 argument_list|(
 name|jobStatus
 argument_list|)
+argument_list|)
 expr_stmt|;
 name|datum
 operator|.
+name|setUberized
+argument_list|(
 name|uberized
-operator|=
-name|uberized
+argument_list|)
 expr_stmt|;
 block|}
 DECL|method|JobInitedEvent ()
@@ -222,7 +228,8 @@ name|forName
 argument_list|(
 name|datum
 operator|.
-name|jobid
+name|getJobid
+argument_list|()
 operator|.
 name|toString
 argument_list|()
@@ -239,7 +246,8 @@ block|{
 return|return
 name|datum
 operator|.
-name|launchTime
+name|getLaunchTime
+argument_list|()
 return|;
 block|}
 comment|/** Get the total number of maps */
@@ -252,7 +260,8 @@ block|{
 return|return
 name|datum
 operator|.
-name|totalMaps
+name|getTotalMaps
+argument_list|()
 return|;
 block|}
 comment|/** Get the total number of reduces */
@@ -265,7 +274,8 @@ block|{
 return|return
 name|datum
 operator|.
-name|totalReduces
+name|getTotalReduces
+argument_list|()
 return|;
 block|}
 comment|/** Get the status */
@@ -278,7 +288,8 @@ block|{
 return|return
 name|datum
 operator|.
-name|jobStatus
+name|getJobStatus
+argument_list|()
 operator|.
 name|toString
 argument_list|()
@@ -307,7 +318,8 @@ block|{
 return|return
 name|datum
 operator|.
-name|uberized
+name|getUberized
+argument_list|()
 return|;
 block|}
 block|}

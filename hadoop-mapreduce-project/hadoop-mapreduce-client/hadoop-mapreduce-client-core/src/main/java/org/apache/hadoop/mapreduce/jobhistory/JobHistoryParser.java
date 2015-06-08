@@ -3227,7 +3227,6 @@ return|return
 name|latestAmInfo
 return|;
 block|}
-empty_stmt|;
 block|}
 comment|/**    * TaskInformation is aggregated in this class after parsing    */
 DECL|class|TaskInfo
