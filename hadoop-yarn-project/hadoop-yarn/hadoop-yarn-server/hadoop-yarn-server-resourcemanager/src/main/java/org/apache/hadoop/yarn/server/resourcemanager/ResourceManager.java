@@ -6708,7 +6708,7 @@ name|out
 operator|.
 name|println
 argument_list|(
-literal|"Usage: java ResourceManager [-format-state-store]"
+literal|"Usage: yarn resourcemanager [-format-state-store]"
 argument_list|)
 expr_stmt|;
 name|out
