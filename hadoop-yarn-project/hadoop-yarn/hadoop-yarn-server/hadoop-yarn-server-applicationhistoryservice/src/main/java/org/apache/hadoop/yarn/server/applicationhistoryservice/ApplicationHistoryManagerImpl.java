@@ -623,7 +623,7 @@ return|;
 block|}
 annotation|@
 name|Override
-DECL|method|getApplications (long appsNum)
+DECL|method|getApplications (long appsNum, long appStartedTimeBegin, long appStartedTimeEnd)
 specifier|public
 name|Map
 argument_list|<
@@ -635,6 +635,12 @@ name|getApplications
 parameter_list|(
 name|long
 name|appsNum
+parameter_list|,
+name|long
+name|appStartedTimeBegin
+parameter_list|,
+name|long
+name|appStartedTimeEnd
 parameter_list|)
 throws|throws
 name|IOException

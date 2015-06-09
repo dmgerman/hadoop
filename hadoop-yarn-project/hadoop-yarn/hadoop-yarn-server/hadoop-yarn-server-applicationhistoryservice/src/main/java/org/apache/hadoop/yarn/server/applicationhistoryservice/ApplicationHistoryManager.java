@@ -239,22 +239,28 @@ name|YarnException
 throws|,
 name|IOException
 function_decl|;
-comment|/**    * This method returns the given number of Application    * {@link ApplicationReport}s.    *    * @param appsNum    *    * @return map of {@link ApplicationId} to {@link ApplicationReport}s.    * @throws YarnException    * @throws IOException    */
+comment|/**    * This method returns the given number of Application in the    * given appStartedTime period.    *    * {@link ApplicationReport}s.    *    * @param appsNum    * @param appStartedTimeBegin    * @param appStartedTimeEnd    *    * @return map of {@link ApplicationId} to {@link ApplicationReport}s.    * @throws YarnException    * @throws IOException    */
 annotation|@
 name|Public
 annotation|@
 name|Unstable
+DECL|method|getApplications (long appsNum, long appStartedTimeBegin, long appStartedTimeEnd)
 name|Map
 argument_list|<
 name|ApplicationId
 argument_list|,
 name|ApplicationReport
 argument_list|>
-DECL|method|getApplications (long appsNum)
 name|getApplications
 parameter_list|(
 name|long
 name|appsNum
+parameter_list|,
+name|long
+name|appStartedTimeBegin
+parameter_list|,
+name|long
+name|appStartedTimeEnd
 parameter_list|)
 throws|throws
 name|YarnException
