@@ -1828,7 +1828,7 @@ specifier|final
 name|String
 name|USAGE
 init|=
-literal|"Usage: java NameNode ["
+literal|"Usage: hdfs namenode ["
 operator|+
 name|StartupOption
 operator|.

@@ -651,7 +651,7 @@ specifier|final
 name|String
 name|USAGE
 init|=
-literal|"Usage: java zkfc [ -formatZK [-force] [-nonInteractive] ]"
+literal|"Usage: hdfs zkfc [ -formatZK [-force] [-nonInteractive] ]"
 decl_stmt|;
 comment|/** Unable to format the parent znode in ZK */
 DECL|field|ERR_CODE_FORMAT_DENIED
