@@ -8359,7 +8359,7 @@ block|{
 return|return
 name|PageBlobInputStream
 operator|.
-name|getPageBlobSize
+name|getPageBlobDataSize
 argument_list|(
 operator|(
 name|CloudPageBlobWrapper
