@@ -83,6 +83,13 @@ argument_list|(
 operator|-
 literal|6
 argument_list|)
+block|,
+DECL|enumConstant|UNFINALIZED_UPGRADE
+name|UNFINALIZED_UPGRADE
+argument_list|(
+operator|-
+literal|7
+argument_list|)
 block|;
 DECL|field|code
 specifier|private

@@ -679,7 +679,17 @@ literal|"\tIncludes only the specified datanodes."
 operator|+
 literal|"\n\t[-idleiterations<idleiterations>]"
 operator|+
-literal|"\tNumber of consecutive idle iterations (-1 for Infinite) before exit."
+literal|"\tNumber of consecutive idle iterations (-1 for Infinite) before "
+operator|+
+literal|"exit."
+operator|+
+literal|"\n\t[-runDuringUpgrade]"
+operator|+
+literal|"\tWhether to run the balancer during an ongoing HDFS upgrade."
+operator|+
+literal|"This is usually not desired since it will not affect used space "
+operator|+
+literal|"on over-utilized machines."
 decl_stmt|;
 DECL|field|dispatcher
 specifier|private
@@ -687,11 +697,23 @@ specifier|final
 name|Dispatcher
 name|dispatcher
 decl_stmt|;
+DECL|field|nnc
+specifier|private
+specifier|final
+name|NameNodeConnector
+name|nnc
+decl_stmt|;
 DECL|field|policy
 specifier|private
 specifier|final
 name|BalancingPolicy
 name|policy
+decl_stmt|;
+DECL|field|runDuringUpgrade
+specifier|private
+specifier|final
+name|boolean
+name|runDuringUpgrade
 decl_stmt|;
 DECL|field|threshold
 specifier|private
@@ -891,6 +913,12 @@ argument_list|)
 decl_stmt|;
 name|this
 operator|.
+name|nnc
+operator|=
+name|theblockpool
+expr_stmt|;
+name|this
+operator|.
 name|dispatcher
 operator|=
 operator|new
@@ -932,6 +960,14 @@ operator|=
 name|p
 operator|.
 name|policy
+expr_stmt|;
+name|this
+operator|.
+name|runDuringUpgrade
+operator|=
+name|p
+operator|.
+name|runDuringUpgrade
 expr_stmt|;
 block|}
 DECL|method|getCapacity (DatanodeStorageReport report, StorageType t)
@@ -1249,7 +1285,7 @@ else|else
 block|{
 name|overLoadedBytes
 operator|+=
-name|precentage2bytes
+name|percentage2bytes
 argument_list|(
 name|thresholdDiff
 argument_list|,
@@ -1302,7 +1338,7 @@ else|else
 block|{
 name|underLoadedBytes
 operator|+=
-name|precentage2bytes
+name|percentage2bytes
 argument_list|(
 name|thresholdDiff
 argument_list|,
@@ -1424,7 +1460,7 @@ decl_stmt|;
 name|long
 name|maxSizeToMove
 init|=
-name|precentage2bytes
+name|percentage2bytes
 argument_list|(
 name|diff
 argument_list|,
@@ -1461,14 +1497,14 @@ name|maxSizeToMove
 argument_list|)
 return|;
 block|}
-DECL|method|precentage2bytes (double precentage, long capacity)
+DECL|method|percentage2bytes (double percentage, long capacity)
 specifier|private
 specifier|static
 name|long
-name|precentage2bytes
+name|percentage2bytes
 parameter_list|(
 name|double
-name|precentage
+name|percentage
 parameter_list|,
 name|long
 name|capacity
@@ -1478,15 +1514,13 @@ name|Preconditions
 operator|.
 name|checkArgument
 argument_list|(
-name|precentage
+name|percentage
 operator|>=
 literal|0
 argument_list|,
-literal|"precentage = "
-operator|+
-name|precentage
-operator|+
-literal|"< 0"
+literal|"percentage = %s< 0"
+argument_list|,
+name|percentage
 argument_list|)
 expr_stmt|;
 return|return
@@ -1494,7 +1528,7 @@ call|(
 name|long
 call|)
 argument_list|(
-name|precentage
+name|percentage
 operator|*
 name|capacity
 operator|/
@@ -2392,6 +2426,33 @@ literal|" to make the cluster balanced."
 argument_list|)
 expr_stmt|;
 block|}
+comment|// Should not run the balancer during an unfinalized upgrade, since moved
+comment|// blocks are not deleted on the source datanode.
+if|if
+condition|(
+operator|!
+name|runDuringUpgrade
+operator|&&
+name|nnc
+operator|.
+name|isUpgrading
+argument_list|()
+condition|)
+block|{
+return|return
+name|newResult
+argument_list|(
+name|ExitStatus
+operator|.
+name|UNFINALIZED_UPGRADE
+argument_list|,
+name|bytesLeftToMove
+argument_list|,
+operator|-
+literal|1
+argument_list|)
+return|;
+block|}
 comment|/* Decide all the nodes that will participate in the block move and        * the number of bytes that need to be moved from one node to another        * in this iteration. Maximum bytes to be moved per node is        * Min(1 Band worth of bytes,  MAX_SIZE_TO_MOVE).        */
 specifier|final
 name|long
@@ -3001,6 +3062,8 @@ name|String
 operator|>
 name|emptySet
 argument_list|()
+argument_list|,
+literal|false
 argument_list|)
 decl_stmt|;
 DECL|field|policy
@@ -3034,7 +3097,13 @@ name|String
 argument_list|>
 name|nodesToBeIncluded
 decl_stmt|;
-DECL|method|Parameters (BalancingPolicy policy, double threshold, int maxIdleIteration, Set<String> nodesToBeExcluded, Set<String> nodesToBeIncluded)
+comment|/**      * Whether to run the balancer during upgrade.      */
+DECL|field|runDuringUpgrade
+specifier|final
+name|boolean
+name|runDuringUpgrade
+decl_stmt|;
+DECL|method|Parameters (BalancingPolicy policy, double threshold, int maxIdleIteration, Set<String> nodesToBeExcluded, Set<String> nodesToBeIncluded, boolean runDuringUpgrade)
 name|Parameters
 parameter_list|(
 name|BalancingPolicy
@@ -3057,6 +3126,9 @@ argument_list|<
 name|String
 argument_list|>
 name|nodesToBeIncluded
+parameter_list|,
+name|boolean
+name|runDuringUpgrade
 parameter_list|)
 block|{
 name|this
@@ -3089,6 +3161,12 @@ name|nodesToBeIncluded
 operator|=
 name|nodesToBeIncluded
 expr_stmt|;
+name|this
+operator|.
+name|runDuringUpgrade
+operator|=
+name|runDuringUpgrade
+expr_stmt|;
 block|}
 annotation|@
 name|Override
@@ -3099,48 +3177,53 @@ name|toString
 parameter_list|()
 block|{
 return|return
+name|String
+operator|.
+name|format
+argument_list|(
+literal|"%s.%s [%s,"
+operator|+
+literal|" threshold = %s,"
+operator|+
+literal|" max idle iteration = %s, "
+operator|+
+literal|"number of nodes to be excluded = %s,"
+operator|+
+literal|" number of nodes to be included = %s,"
+operator|+
+literal|" run during upgrade = %s]"
+argument_list|,
 name|Balancer
 operator|.
 name|class
 operator|.
 name|getSimpleName
 argument_list|()
-operator|+
-literal|"."
-operator|+
+argument_list|,
 name|getClass
 argument_list|()
 operator|.
 name|getSimpleName
 argument_list|()
-operator|+
-literal|"["
-operator|+
+argument_list|,
 name|policy
-operator|+
-literal|", threshold="
-operator|+
+argument_list|,
 name|threshold
-operator|+
-literal|", max idle iteration = "
-operator|+
+argument_list|,
 name|maxIdleIteration
-operator|+
-literal|", number of nodes to be excluded = "
-operator|+
+argument_list|,
 name|nodesToBeExcluded
 operator|.
 name|size
 argument_list|()
-operator|+
-literal|", number of nodes to be included = "
-operator|+
+argument_list|,
 name|nodesToBeIncluded
 operator|.
 name|size
 argument_list|()
-operator|+
-literal|"]"
+argument_list|,
+name|runDuringUpgrade
+argument_list|)
 return|;
 block|}
 block|}
@@ -3376,6 +3459,15 @@ operator|.
 name|DEFAULT
 operator|.
 name|nodesToBeIncluded
+decl_stmt|;
+name|boolean
+name|runDuringUpgrade
+init|=
+name|Parameters
+operator|.
+name|DEFAULT
+operator|.
+name|runDuringUpgrade
 decl_stmt|;
 if|if
 condition|(
@@ -3825,6 +3917,38 @@ name|maxIdleIteration
 argument_list|)
 expr_stmt|;
 block|}
+elseif|else
+if|if
+condition|(
+literal|"-runDuringUpgrade"
+operator|.
+name|equalsIgnoreCase
+argument_list|(
+name|args
+index|[
+name|i
+index|]
+argument_list|)
+condition|)
+block|{
+name|runDuringUpgrade
+operator|=
+literal|true
+expr_stmt|;
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"Will run the balancer even during an ongoing HDFS "
+operator|+
+literal|"upgrade. Most users will not want to run the balancer "
+operator|+
+literal|"during an upgrade since it will not affect used space "
+operator|+
+literal|"on over-utilized machines."
+argument_list|)
+expr_stmt|;
+block|}
 else|else
 block|{
 throw|throw
@@ -3890,6 +4014,8 @@ argument_list|,
 name|nodesTobeExcluded
 argument_list|,
 name|nodesTobeIncluded
+argument_list|,
+name|runDuringUpgrade
 argument_list|)
 return|;
 block|}
