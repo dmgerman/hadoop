@@ -697,6 +697,27 @@ name|DEFAULT_MR_HISTORY_MINICLUSTER_FIXED_PORTS
 init|=
 literal|false
 decl_stmt|;
+comment|/**    * Number of characters allowed for job name in Job History Server web page.    */
+DECL|field|MR_HS_JOBNAME_LIMIT
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|MR_HS_JOBNAME_LIMIT
+init|=
+name|MR_HISTORY_PREFIX
+operator|+
+literal|"jobname.limit"
+decl_stmt|;
+DECL|field|DEFAULT_MR_HS_JOBNAME_LIMIT
+specifier|public
+specifier|static
+specifier|final
+name|int
+name|DEFAULT_MR_HS_JOBNAME_LIMIT
+init|=
+literal|50
+decl_stmt|;
 block|}
 end_class
 

@@ -142,14 +142,6 @@ specifier|public
 class|class
 name|FileNameIndexUtils
 block|{
-DECL|field|JOB_NAME_TRIM_LENGTH
-specifier|static
-specifier|final
-name|int
-name|JOB_NAME_TRIM_LENGTH
-init|=
-literal|50
-decl_stmt|;
 comment|// Sanitize job history file for predictable parsing
 DECL|field|DELIMITER
 specifier|static
@@ -288,6 +280,32 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
+return|return
+name|getDoneFileName
+argument_list|(
+name|indexInfo
+argument_list|,
+name|JHAdminConfig
+operator|.
+name|DEFAULT_MR_HS_JOBNAME_LIMIT
+argument_list|)
+return|;
+block|}
+DECL|method|getDoneFileName (JobIndexInfo indexInfo, int jobNameLimit)
+specifier|public
+specifier|static
+name|String
+name|getDoneFileName
+parameter_list|(
+name|JobIndexInfo
+name|indexInfo
+parameter_list|,
+name|int
+name|jobNameLimit
+parameter_list|)
+throws|throws
+name|IOException
+block|{
 name|StringBuilder
 name|sb
 init|=
@@ -376,6 +394,8 @@ name|getJobName
 argument_list|(
 name|indexInfo
 argument_list|)
+argument_list|,
+name|jobNameLimit
 argument_list|)
 argument_list|)
 argument_list|)
@@ -1253,7 +1273,7 @@ argument_list|)
 return|;
 block|}
 comment|/**    * Trims the job-name if required    */
-DECL|method|trimJobName (String jobName)
+DECL|method|trimJobName (String jobName, int jobNameLimit)
 specifier|private
 specifier|static
 name|String
@@ -1261,6 +1281,9 @@ name|trimJobName
 parameter_list|(
 name|String
 name|jobName
+parameter_list|,
+name|int
+name|jobNameLimit
 parameter_list|)
 block|{
 if|if
@@ -1270,7 +1293,7 @@ operator|.
 name|length
 argument_list|()
 operator|>
-name|JOB_NAME_TRIM_LENGTH
+name|jobNameLimit
 condition|)
 block|{
 name|jobName
@@ -1281,7 +1304,7 @@ name|substring
 argument_list|(
 literal|0
 argument_list|,
-name|JOB_NAME_TRIM_LENGTH
+name|jobNameLimit
 argument_list|)
 expr_stmt|;
 block|}
