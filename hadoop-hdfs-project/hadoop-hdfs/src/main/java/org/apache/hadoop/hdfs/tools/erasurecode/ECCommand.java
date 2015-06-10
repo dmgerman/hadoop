@@ -458,7 +458,7 @@ specifier|final
 name|String
 name|USAGE
 init|=
-literal|"[-s<schemaName>]<path>"
+literal|"[-s<schemaName>] [-c<cellSize>]<path>"
 decl_stmt|;
 DECL|field|DESCRIPTION
 specifier|public
