@@ -2832,7 +2832,6 @@ name|StandbyException
 return|;
 block|}
 DECL|method|getWrappedRetriableException (Exception e)
-specifier|private
 specifier|static
 name|RetriableException
 name|getWrappedRetriableException
