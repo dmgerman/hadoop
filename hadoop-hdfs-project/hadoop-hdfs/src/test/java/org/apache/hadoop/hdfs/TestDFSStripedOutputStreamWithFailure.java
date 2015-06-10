@@ -2255,6 +2255,11 @@ name|TestDFSStripedOutputStream
 operator|.
 name|verifyParity
 argument_list|(
+name|dfs
+operator|.
+name|getConf
+argument_list|()
+argument_list|,
 name|lbs
 operator|.
 name|getLocatedBlocks

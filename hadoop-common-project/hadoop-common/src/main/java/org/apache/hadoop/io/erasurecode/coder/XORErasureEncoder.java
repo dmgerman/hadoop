@@ -32,6 +32,22 @@ name|io
 operator|.
 name|erasurecode
 operator|.
+name|CodecUtil
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|io
+operator|.
+name|erasurecode
+operator|.
 name|ECBlock
 import|;
 end_import
@@ -86,24 +102,6 @@ name|RawErasureEncoder
 import|;
 end_import
 
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|io
-operator|.
-name|erasurecode
-operator|.
-name|rawcoder
-operator|.
-name|XORRawEncoder
-import|;
-end_import
-
 begin_comment
 comment|/**  * Xor erasure encoder that encodes a block group.  *  * It implements {@link ErasureCoder}.  */
 end_comment
@@ -151,7 +149,7 @@ expr_stmt|;
 block|}
 annotation|@
 name|Override
-DECL|method|prepareEncodingStep (final ECBlockGroup blockGroup)
+DECL|method|prepareEncodingStep ( final ECBlockGroup blockGroup)
 specifier|protected
 name|ErasureCodingStep
 name|prepareEncodingStep
@@ -161,13 +159,16 @@ name|ECBlockGroup
 name|blockGroup
 parameter_list|)
 block|{
-comment|// May be configured
 name|RawErasureEncoder
 name|rawEncoder
 init|=
-operator|new
-name|XORRawEncoder
+name|CodecUtil
+operator|.
+name|createXORRawEncoder
 argument_list|(
+name|getConf
+argument_list|()
+argument_list|,
 name|getNumDataUnits
 argument_list|()
 argument_list|,

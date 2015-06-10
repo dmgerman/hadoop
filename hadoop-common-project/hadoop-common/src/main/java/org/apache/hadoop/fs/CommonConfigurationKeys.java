@@ -428,7 +428,7 @@ name|IO_ERASURECODE_CODECS_KEY
 init|=
 literal|"io.erasurecode.codecs"
 decl_stmt|;
-comment|/** Raw coder factory for the RS codec */
+comment|/** Raw coder factory for the RS codec. */
 DECL|field|IO_ERASURECODE_CODEC_RS_RAWCODER_KEY
 specifier|public
 specifier|static
@@ -437,6 +437,16 @@ name|String
 name|IO_ERASURECODE_CODEC_RS_RAWCODER_KEY
 init|=
 literal|"io.erasurecode.codec.rs.rawcoder"
+decl_stmt|;
+comment|/** Raw coder factory for the XOR codec. */
+DECL|field|IO_ERASURECODE_CODEC_XOR_RAWCODER_KEY
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|IO_ERASURECODE_CODEC_XOR_RAWCODER_KEY
+init|=
+literal|"io.erasurecode.codec.xor.rawcoder"
 decl_stmt|;
 comment|/**    * Service Authorization    */
 specifier|public

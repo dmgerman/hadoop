@@ -234,6 +234,22 @@ name|io
 operator|.
 name|erasurecode
 operator|.
+name|CodecUtil
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|io
+operator|.
+name|erasurecode
+operator|.
 name|rawcoder
 operator|.
 name|RSRawEncoder
@@ -403,6 +419,11 @@ specifier|private
 name|DistributedFileSystem
 name|fs
 decl_stmt|;
+DECL|field|conf
+specifier|private
+name|Configuration
+name|conf
+decl_stmt|;
 DECL|field|cellSize
 specifier|private
 specifier|final
@@ -450,13 +471,12 @@ name|parityBlocks
 operator|+
 literal|2
 decl_stmt|;
-name|Configuration
 name|conf
-init|=
+operator|=
 operator|new
 name|Configuration
 argument_list|()
-decl_stmt|;
+expr_stmt|;
 name|conf
 operator|.
 name|setLong
@@ -1470,7 +1490,6 @@ expr_stmt|;
 block|}
 block|}
 DECL|method|verifyParity (final long size, final int cellSize, byte[][] dataBytes, byte[][] parityBytes)
-specifier|static
 name|void
 name|verifyParity
 parameter_list|(
@@ -1495,6 +1514,8 @@ parameter_list|)
 block|{
 name|verifyParity
 argument_list|(
+name|conf
+argument_list|,
 name|size
 argument_list|,
 name|cellSize
@@ -1508,11 +1529,14 @@ literal|1
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|verifyParity (final long size, final int cellSize, byte[][] dataBytes, byte[][] parityBytes, int killedDnIndex)
+DECL|method|verifyParity (Configuration conf, final long size, final int cellSize, byte[][] dataBytes, byte[][] parityBytes, int killedDnIndex)
 specifier|static
 name|void
 name|verifyParity
 parameter_list|(
+name|Configuration
+name|conf
+parameter_list|,
 specifier|final
 name|long
 name|size
@@ -1717,9 +1741,12 @@ specifier|final
 name|RawErasureEncoder
 name|encoder
 init|=
-operator|new
-name|RSRawEncoder
+name|CodecUtil
+operator|.
+name|createRSRawEncoder
 argument_list|(
+name|conf
+argument_list|,
 name|dataBytes
 operator|.
 name|length
