@@ -11340,7 +11340,7 @@ expr_stmt|;
 return|return
 name|namesystem
 operator|.
-name|getECSchemas
+name|getErasureCodingSchemas
 argument_list|()
 return|;
 block|}

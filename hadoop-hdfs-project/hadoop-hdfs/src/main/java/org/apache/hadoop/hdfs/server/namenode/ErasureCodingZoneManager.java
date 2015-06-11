@@ -298,9 +298,9 @@ operator|=
 name|dir
 expr_stmt|;
 block|}
-DECL|method|getECSchema (INodesInPath iip)
+DECL|method|getErasureCodingSchema (INodesInPath iip)
 name|ECSchema
-name|getECSchema
+name|getErasureCodingSchema
 parameter_list|(
 name|INodesInPath
 name|iip
@@ -311,7 +311,7 @@ block|{
 name|ErasureCodingZone
 name|ecZone
 init|=
-name|getECZone
+name|getErasureCodingZone
 argument_list|(
 name|iip
 argument_list|)
@@ -329,9 +329,9 @@ name|getSchema
 argument_list|()
 return|;
 block|}
-DECL|method|getECZone (INodesInPath iip)
+DECL|method|getErasureCodingZone (INodesInPath iip)
 name|ErasureCodingZone
-name|getECZone
+name|getErasureCodingZone
 parameter_list|(
 name|INodesInPath
 name|iip
@@ -350,6 +350,8 @@ operator|.
 name|checkNotNull
 argument_list|(
 name|iip
+argument_list|,
+literal|"INodes cannot be null"
 argument_list|)
 expr_stmt|;
 name|List
@@ -522,7 +524,7 @@ operator|.
 name|getFSNamesystem
 argument_list|()
 operator|.
-name|getECSchemaManager
+name|getErasureCodingSchemaManager
 argument_list|()
 operator|.
 name|getSchema
@@ -559,12 +561,16 @@ return|return
 literal|null
 return|;
 block|}
-DECL|method|createErasureCodingZone (String src, ECSchema schema, int cellSize)
+DECL|method|createErasureCodingZone (final INodesInPath srcIIP, ECSchema schema, int cellSize)
+name|List
+argument_list|<
 name|XAttr
+argument_list|>
 name|createErasureCodingZone
 parameter_list|(
-name|String
-name|src
+specifier|final
+name|INodesInPath
+name|srcIIP
 parameter_list|,
 name|ECSchema
 name|schema
@@ -581,18 +587,22 @@ operator|.
 name|hasWriteLock
 argument_list|()
 assert|;
-specifier|final
-name|INodesInPath
-name|srcIIP
-init|=
-name|dir
+name|Preconditions
 operator|.
-name|getINodesInPath4Write
+name|checkNotNull
 argument_list|(
-name|src
+name|srcIIP
 argument_list|,
-literal|false
+literal|"INodes cannot be null"
 argument_list|)
+expr_stmt|;
+name|String
+name|src
+init|=
+name|srcIIP
+operator|.
+name|getPath
+argument_list|()
 decl_stmt|;
 if|if
 condition|(
@@ -610,16 +620,14 @@ name|IOException
 argument_list|(
 literal|"Attempt to create an erasure coding zone for a "
 operator|+
-literal|"non-empty directory."
+literal|"non-empty directory "
+operator|+
+name|src
 argument_list|)
 throw|;
 block|}
 if|if
 condition|(
-name|srcIIP
-operator|!=
-literal|null
-operator|&&
 name|srcIIP
 operator|.
 name|getLastINode
@@ -643,13 +651,15 @@ name|IOException
 argument_list|(
 literal|"Attempt to create an erasure coding zone "
 operator|+
-literal|"for a file."
+literal|"for a file "
+operator|+
+name|src
 argument_list|)
 throw|;
 block|}
 if|if
 condition|(
-name|getECSchema
+name|getErasureCodingSchema
 argument_list|(
 name|srcIIP
 argument_list|)
@@ -817,7 +827,7 @@ argument_list|)
 argument_list|)
 expr_stmt|;
 return|return
-name|ecXAttr
+name|xattrs
 return|;
 block|}
 DECL|method|checkMoveValidity (INodesInPath srcIIP, INodesInPath dstIIP, String src)
@@ -846,7 +856,7 @@ specifier|final
 name|ErasureCodingZone
 name|srcZone
 init|=
-name|getECZone
+name|getErasureCodingZone
 argument_list|(
 name|srcIIP
 argument_list|)
@@ -855,7 +865,7 @@ specifier|final
 name|ErasureCodingZone
 name|dstZone
 init|=
-name|getECZone
+name|getErasureCodingZone
 argument_list|(
 name|dstIIP
 argument_list|)

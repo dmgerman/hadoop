@@ -562,6 +562,16 @@ name|StandbyException
 throws|,
 name|IOException
 block|{
+name|namenode
+operator|.
+name|getNamesystem
+argument_list|()
+operator|.
+name|readLock
+argument_list|()
+expr_stmt|;
+try|try
+block|{
 return|return
 name|FSDirStatAndListingOp
 operator|.
@@ -580,6 +590,18 @@ argument_list|,
 name|resolveLink
 argument_list|)
 return|;
+block|}
+finally|finally
+block|{
+name|namenode
+operator|.
+name|getNamesystem
+argument_list|()
+operator|.
+name|readUnlock
+argument_list|()
+expr_stmt|;
+block|}
 block|}
 DECL|method|mkdirs (NameNode namenode, String src, PermissionStatus permissions, boolean createParent)
 specifier|public
