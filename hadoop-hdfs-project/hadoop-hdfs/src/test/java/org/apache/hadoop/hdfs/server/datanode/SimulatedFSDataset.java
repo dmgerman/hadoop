@@ -1564,6 +1564,22 @@ block|}
 block|}
 annotation|@
 name|Override
+DECL|method|createRestartMetaStream ()
+specifier|public
+name|OutputStream
+name|createRestartMetaStream
+parameter_list|()
+throws|throws
+name|IOException
+block|{
+return|return
+operator|new
+name|SimulatedOutputStream
+argument_list|()
+return|;
+block|}
+annotation|@
+name|Override
 DECL|method|getBlockId ()
 specifier|synchronized
 specifier|public

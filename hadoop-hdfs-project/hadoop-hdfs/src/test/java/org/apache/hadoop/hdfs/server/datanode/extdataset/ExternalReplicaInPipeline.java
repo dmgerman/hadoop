@@ -34,6 +34,16 @@ end_import
 
 begin_import
 import|import
+name|java
+operator|.
+name|io
+operator|.
+name|OutputStream
+import|;
+end_import
+
+begin_import
+import|import
 name|org
 operator|.
 name|apache
@@ -233,6 +243,20 @@ name|requestedChecksum
 argument_list|,
 literal|false
 argument_list|)
+return|;
+block|}
+annotation|@
+name|Override
+DECL|method|createRestartMetaStream ()
+specifier|public
+name|OutputStream
+name|createRestartMetaStream
+parameter_list|()
+throws|throws
+name|IOException
+block|{
+return|return
+literal|null
 return|;
 block|}
 annotation|@
