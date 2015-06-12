@@ -413,8 +413,6 @@ name|SpanReceiverHost
 operator|.
 name|SPAN_RECEIVERS_CONF_SUFFIX
 argument_list|,
-name|TestTracing
-operator|.
 name|SetSpanReceiver
 operator|.
 name|class
@@ -598,7 +596,7 @@ block|,
 literal|"ShortCircuitShmRequestProto"
 block|}
 decl_stmt|;
-name|TestTracing
+name|SetSpanReceiver
 operator|.
 name|assertSpanNamesFound
 argument_list|(
