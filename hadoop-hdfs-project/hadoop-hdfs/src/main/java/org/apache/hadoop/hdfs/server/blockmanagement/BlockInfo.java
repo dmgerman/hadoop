@@ -140,7 +140,6 @@ name|nextLinkedElement
 decl_stmt|;
 comment|/**    * This array contains triplets of references. For each i-th storage, the    * block belongs to triplets[3*i] is the reference to the    * {@link DatanodeStorageInfo} and triplets[3*i+1] and triplets[3*i+2] are    * references to the previous and the next blocks, respectively, in the list    * of blocks belonging to this storage.    *    * Using previous and next in Object triplets is done instead of a    * {@link LinkedList} list to efficiently use memory. With LinkedList the cost    * per replica is 42 bytes (LinkedList#Entry object per replica) versus 16    * bytes using the triplets.    */
 DECL|field|triplets
-specifier|protected
 name|Object
 index|[]
 name|triplets
@@ -1227,7 +1226,7 @@ return|return
 name|this
 return|;
 block|}
-comment|/**    * BlockInfo represents a block that is not being constructed.    * In order to start modifying the block, the BlockInfo should be converted    * to {@link BlockInfoContiguousUnderConstruction}.    * @return {@link BlockUCState#COMPLETE}    */
+comment|/**    * BlockInfo represents a block that is not being constructed.    * In order to start modifying the block, the BlockInfo should be converted    * to {@link BlockInfoUnderConstruction}.    * @return {@link BlockUCState#COMPLETE}    */
 DECL|method|getBlockUCState ()
 specifier|public
 name|BlockUCState
@@ -1259,10 +1258,10 @@ name|COMPLETE
 argument_list|)
 return|;
 block|}
-comment|/**    * Convert a complete block to an under construction block.    * @return BlockInfoUnderConstruction -  an under construction block.    */
+comment|/**    * Convert a block to an under construction block.    * @return BlockInfoUnderConstruction -  an under construction block.    */
 DECL|method|convertToBlockUnderConstruction ( BlockUCState s, DatanodeStorageInfo[] targets)
 specifier|public
-name|BlockInfoContiguousUnderConstruction
+name|BlockInfoUnderConstruction
 name|convertToBlockUnderConstruction
 parameter_list|(
 name|BlockUCState
@@ -1279,43 +1278,21 @@ name|isComplete
 argument_list|()
 condition|)
 block|{
-name|BlockInfoContiguousUnderConstruction
-name|ucBlock
-init|=
-operator|new
-name|BlockInfoContiguousUnderConstruction
+return|return
+name|convertCompleteBlockToUC
 argument_list|(
-name|this
-argument_list|,
-name|getBlockCollection
-argument_list|()
-operator|.
-name|getPreferredBlockReplication
-argument_list|()
-argument_list|,
 name|s
 argument_list|,
 name|targets
 argument_list|)
-decl_stmt|;
-name|ucBlock
-operator|.
-name|setBlockCollection
-argument_list|(
-name|getBlockCollection
-argument_list|()
-argument_list|)
-expr_stmt|;
-return|return
-name|ucBlock
 return|;
 block|}
 comment|// the block is already under construction
-name|BlockInfoContiguousUnderConstruction
+name|BlockInfoUnderConstruction
 name|ucBlock
 init|=
 operator|(
-name|BlockInfoContiguousUnderConstruction
+name|BlockInfoUnderConstruction
 operator|)
 name|this
 decl_stmt|;
@@ -1345,6 +1322,20 @@ return|return
 name|ucBlock
 return|;
 block|}
+comment|/**    * Convert a complete block to an under construction block.    */
+DECL|method|convertCompleteBlockToUC ( BlockUCState s, DatanodeStorageInfo[] targets)
+specifier|abstract
+name|BlockInfoUnderConstruction
+name|convertCompleteBlockToUC
+parameter_list|(
+name|BlockUCState
+name|s
+parameter_list|,
+name|DatanodeStorageInfo
+index|[]
+name|targets
+parameter_list|)
+function_decl|;
 annotation|@
 name|Override
 DECL|method|hashCode ()

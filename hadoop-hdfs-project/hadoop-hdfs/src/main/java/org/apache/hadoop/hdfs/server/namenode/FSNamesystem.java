@@ -2748,7 +2748,25 @@ name|server
 operator|.
 name|blockmanagement
 operator|.
-name|BlockInfoContiguousUnderConstruction
+name|BlockInfoUnderConstruction
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|server
+operator|.
+name|blockmanagement
+operator|.
+name|BlockInfoUnderConstructionContiguous
 import|;
 end_import
 
@@ -11329,7 +11347,7 @@ name|truncateBlock
 init|=
 operator|(
 operator|(
-name|BlockInfoContiguousUnderConstruction
+name|BlockInfoUnderConstruction
 operator|)
 name|last
 operator|)
@@ -11715,7 +11733,7 @@ argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
-name|BlockInfoContiguousUnderConstruction
+name|BlockInfoUnderConstruction
 name|truncatedBlockUC
 decl_stmt|;
 if|if
@@ -11728,7 +11746,7 @@ comment|// use oldBlock as a source for copy-on-truncate recovery
 name|truncatedBlockUC
 operator|=
 operator|new
-name|BlockInfoContiguousUnderConstruction
+name|BlockInfoUnderConstructionContiguous
 argument_list|(
 name|newBlock
 argument_list|,
@@ -11836,7 +11854,7 @@ assert|;
 name|truncatedBlockUC
 operator|=
 operator|(
-name|BlockInfoContiguousUnderConstruction
+name|BlockInfoUnderConstruction
 operator|)
 name|oldBlock
 expr_stmt|;
@@ -17966,11 +17984,11 @@ case|case
 name|UNDER_RECOVERY
 case|:
 specifier|final
-name|BlockInfoContiguousUnderConstruction
+name|BlockInfoUnderConstruction
 name|uc
 init|=
 operator|(
-name|BlockInfoContiguousUnderConstruction
+name|BlockInfoUnderConstruction
 operator|)
 name|lastBlock
 decl_stmt|;
@@ -18533,12 +18551,12 @@ return|;
 block|}
 annotation|@
 name|Override
-DECL|method|isInSnapshot (BlockInfoContiguousUnderConstruction blockUC)
+DECL|method|isInSnapshot (BlockInfoUnderConstruction blockUC)
 specifier|public
 name|boolean
 name|isInSnapshot
 parameter_list|(
-name|BlockInfoContiguousUnderConstruction
+name|BlockInfoUnderConstruction
 name|blockUC
 parameter_list|)
 block|{
@@ -18735,7 +18753,7 @@ name|copyTruncate
 init|=
 literal|false
 decl_stmt|;
-name|BlockInfoContiguousUnderConstruction
+name|BlockInfoUnderConstruction
 name|truncatedBlock
 init|=
 literal|null
@@ -18970,7 +18988,7 @@ block|}
 name|truncatedBlock
 operator|=
 operator|(
-name|BlockInfoContiguousUnderConstruction
+name|BlockInfoUnderConstruction
 operator|)
 name|iFile
 operator|.
@@ -26647,11 +26665,11 @@ name|clientName
 argument_list|)
 decl_stmt|;
 specifier|final
-name|BlockInfoContiguousUnderConstruction
+name|BlockInfoUnderConstruction
 name|blockinfo
 init|=
 operator|(
-name|BlockInfoContiguousUnderConstruction
+name|BlockInfoUnderConstruction
 operator|)
 name|pendingFile
 operator|.

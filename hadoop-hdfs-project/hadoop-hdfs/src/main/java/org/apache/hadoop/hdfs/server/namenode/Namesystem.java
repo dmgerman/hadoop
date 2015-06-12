@@ -64,7 +64,7 @@ name|server
 operator|.
 name|blockmanagement
 operator|.
-name|BlockInfoContiguousUnderConstruction
+name|BlockInfoUnderConstruction
 import|;
 end_import
 
@@ -211,12 +211,12 @@ parameter_list|)
 throws|throws
 name|StandbyException
 function_decl|;
-DECL|method|isInSnapshot (BlockInfoContiguousUnderConstruction blockUC)
+DECL|method|isInSnapshot (BlockInfoUnderConstruction blockUC)
 specifier|public
 name|boolean
 name|isInSnapshot
 parameter_list|(
-name|BlockInfoContiguousUnderConstruction
+name|BlockInfoUnderConstruction
 name|blockUC
 parameter_list|)
 function_decl|;

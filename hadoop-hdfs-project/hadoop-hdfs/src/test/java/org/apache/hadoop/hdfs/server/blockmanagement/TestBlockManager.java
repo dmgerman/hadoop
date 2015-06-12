@@ -4351,7 +4351,7 @@ name|assertTrue
 argument_list|(
 operator|(
 operator|(
-name|BlockInfoContiguousUnderConstruction
+name|BlockInfoUnderConstruction
 operator|)
 name|bm
 operator|.
@@ -4523,11 +4523,11 @@ argument_list|(
 name|blkId
 argument_list|)
 decl_stmt|;
-name|BlockInfoContiguousUnderConstruction
+name|BlockInfoUnderConstruction
 name|blockInfo
 init|=
 operator|new
-name|BlockInfoContiguousUnderConstruction
+name|BlockInfoUnderConstructionContiguous
 argument_list|(
 name|block
 argument_list|,

@@ -1040,14 +1040,14 @@ specifier|private
 specifier|final
 name|BlockQueue
 argument_list|<
-name|BlockInfoContiguousUnderConstruction
+name|BlockInfoUnderConstruction
 argument_list|>
 name|recoverBlocks
 init|=
 operator|new
 name|BlockQueue
 argument_list|<
-name|BlockInfoContiguousUnderConstruction
+name|BlockInfoUnderConstruction
 argument_list|>
 argument_list|()
 decl_stmt|;
@@ -2730,11 +2730,11 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|/**    * Store block recovery work.    */
-DECL|method|addBlockToBeRecovered (BlockInfoContiguousUnderConstruction block)
+DECL|method|addBlockToBeRecovered (BlockInfoUnderConstruction block)
 name|void
 name|addBlockToBeRecovered
 parameter_list|(
-name|BlockInfoContiguousUnderConstruction
+name|BlockInfoUnderConstruction
 name|block
 parameter_list|)
 block|{
@@ -2874,9 +2874,9 @@ name|maxTransfers
 argument_list|)
 return|;
 block|}
-DECL|method|getLeaseRecoveryCommand (int maxTransfers)
+DECL|method|getLeaseRecoveryCommand ( int maxTransfers)
 specifier|public
-name|BlockInfoContiguousUnderConstruction
+name|BlockInfoUnderConstruction
 index|[]
 name|getLeaseRecoveryCommand
 parameter_list|(
@@ -2886,7 +2886,7 @@ parameter_list|)
 block|{
 name|List
 argument_list|<
-name|BlockInfoContiguousUnderConstruction
+name|BlockInfoUnderConstruction
 argument_list|>
 name|blocks
 init|=
@@ -2912,7 +2912,7 @@ operator|.
 name|toArray
 argument_list|(
 operator|new
-name|BlockInfoContiguousUnderConstruction
+name|BlockInfoUnderConstruction
 index|[
 name|blocks
 operator|.

@@ -294,7 +294,7 @@ name|server
 operator|.
 name|blockmanagement
 operator|.
-name|BlockInfoContiguousUnderConstruction
+name|BlockInfoUnderConstruction
 import|;
 end_import
 
@@ -1337,7 +1337,7 @@ name|Override
 comment|// BlockCollection, the file should be under construction
 DECL|method|setLastBlock ( BlockInfo lastBlock, DatanodeStorageInfo[] locations)
 specifier|public
-name|BlockInfoContiguousUnderConstruction
+name|BlockInfoUnderConstruction
 name|setLastBlock
 parameter_list|(
 name|BlockInfo
@@ -1376,7 +1376,7 @@ literal|"Failed to set last block: File is empty."
 argument_list|)
 throw|;
 block|}
-name|BlockInfoContiguousUnderConstruction
+name|BlockInfoUnderConstruction
 name|ucBlock
 init|=
 name|lastBlock
@@ -1406,7 +1406,7 @@ return|;
 block|}
 comment|/**    * Remove a block from the block list. This block should be    * the last one on the list.    */
 DECL|method|removeLastBlock (Block oldblock)
-name|BlockInfoContiguousUnderConstruction
+name|BlockInfoUnderConstruction
 name|removeLastBlock
 parameter_list|(
 name|Block
@@ -1467,11 +1467,11 @@ return|return
 literal|null
 return|;
 block|}
-name|BlockInfoContiguousUnderConstruction
+name|BlockInfoUnderConstruction
 name|uc
 init|=
 operator|(
-name|BlockInfoContiguousUnderConstruction
+name|BlockInfoUnderConstruction
 operator|)
 name|blocks
 index|[
@@ -3405,7 +3405,7 @@ index|[
 name|last
 index|]
 operator|instanceof
-name|BlockInfoContiguousUnderConstruction
+name|BlockInfoUnderConstruction
 condition|)
 block|{
 if|if

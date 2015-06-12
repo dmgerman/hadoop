@@ -90,7 +90,7 @@ name|server
 operator|.
 name|blockmanagement
 operator|.
-name|BlockInfoContiguousUnderConstruction
+name|BlockInfoUnderConstruction
 import|;
 end_import
 
@@ -808,7 +808,7 @@ name|dontRemoveBlock
 operator|=
 operator|(
 operator|(
-name|BlockInfoContiguousUnderConstruction
+name|BlockInfoUnderConstruction
 operator|)
 name|lastBlock
 operator|)

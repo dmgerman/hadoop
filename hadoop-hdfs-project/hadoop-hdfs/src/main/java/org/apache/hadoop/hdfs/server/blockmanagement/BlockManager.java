@@ -3212,14 +3212,14 @@ operator|)
 return|;
 block|}
 comment|/**    * Commit a block of a file    *     * @param block block to be committed    * @param commitBlock - contains client reported block length and generation    * @return true if the block is changed to committed state.    * @throws IOException if the block does not have at least a minimal number    * of replicas reported from data-nodes.    */
-DECL|method|commitBlock ( final BlockInfoContiguousUnderConstruction block, final Block commitBlock)
+DECL|method|commitBlock ( final BlockInfoUnderConstruction block, final Block commitBlock)
 specifier|private
 specifier|static
 name|boolean
 name|commitBlock
 parameter_list|(
 specifier|final
-name|BlockInfoContiguousUnderConstruction
+name|BlockInfoUnderConstruction
 name|block
 parameter_list|,
 specifier|final
@@ -3340,7 +3340,7 @@ init|=
 name|commitBlock
 argument_list|(
 operator|(
-name|BlockInfoContiguousUnderConstruction
+name|BlockInfoUnderConstruction
 operator|)
 name|lastBlock
 argument_list|,
@@ -3427,11 +3427,11 @@ condition|)
 return|return
 name|curBlock
 return|;
-name|BlockInfoContiguousUnderConstruction
+name|BlockInfoUnderConstruction
 name|ucBlock
 init|=
 operator|(
-name|BlockInfoContiguousUnderConstruction
+name|BlockInfoUnderConstruction
 operator|)
 name|curBlock
 decl_stmt|;
@@ -3609,7 +3609,7 @@ name|block
 return|;
 block|}
 comment|/**    * Force the given block in the given file to be marked as complete,    * regardless of whether enough replicas are present. This is necessary    * when tailing edit logs as a Standby.    */
-DECL|method|forceCompleteBlock (final BlockCollection bc, final BlockInfoContiguousUnderConstruction block)
+DECL|method|forceCompleteBlock (final BlockCollection bc, final BlockInfoUnderConstruction block)
 specifier|public
 name|BlockInfo
 name|forceCompleteBlock
@@ -3619,7 +3619,7 @@ name|BlockCollection
 name|bc
 parameter_list|,
 specifier|final
-name|BlockInfoContiguousUnderConstruction
+name|BlockInfoUnderConstruction
 name|block
 parameter_list|)
 throws|throws
@@ -3706,7 +3706,7 @@ argument_list|(
 name|oldBlock
 argument_list|)
 decl_stmt|;
-name|BlockInfoContiguousUnderConstruction
+name|BlockInfoUnderConstruction
 name|ucBlock
 init|=
 name|bc
@@ -4319,7 +4319,7 @@ if|if
 condition|(
 name|blk
 operator|instanceof
-name|BlockInfoContiguousUnderConstruction
+name|BlockInfoUnderConstruction
 condition|)
 block|{
 if|if
@@ -4343,11 +4343,11 @@ argument_list|)
 throw|;
 block|}
 specifier|final
-name|BlockInfoContiguousUnderConstruction
+name|BlockInfoUnderConstruction
 name|uc
 init|=
 operator|(
-name|BlockInfoContiguousUnderConstruction
+name|BlockInfoUnderConstruction
 operator|)
 name|blk
 decl_stmt|;
@@ -8455,7 +8455,7 @@ name|StatefulBlockInfo
 block|{
 DECL|field|storedBlock
 specifier|final
-name|BlockInfoContiguousUnderConstruction
+name|BlockInfoUnderConstruction
 name|storedBlock
 decl_stmt|;
 DECL|field|reportedBlock
@@ -8468,10 +8468,10 @@ specifier|final
 name|ReplicaState
 name|reportedState
 decl_stmt|;
-DECL|method|StatefulBlockInfo (BlockInfoContiguousUnderConstruction storedBlock, Block reportedBlock, ReplicaState reportedState)
+DECL|method|StatefulBlockInfo (BlockInfoUnderConstruction storedBlock, Block reportedBlock, ReplicaState reportedState)
 name|StatefulBlockInfo
 parameter_list|(
-name|BlockInfoContiguousUnderConstruction
+name|BlockInfoUnderConstruction
 name|storedBlock
 parameter_list|,
 name|Block
@@ -8637,9 +8637,6 @@ argument_list|(
 operator|new
 name|BlockInfoContiguous
 argument_list|(
-operator|(
-name|BlockInfoContiguous
-operator|)
 name|stored
 argument_list|)
 argument_list|,
@@ -10343,7 +10340,7 @@ condition|)
 block|{
 operator|(
 operator|(
-name|BlockInfoContiguousUnderConstruction
+name|BlockInfoUnderConstruction
 operator|)
 name|storedBlock
 operator|)
@@ -10360,11 +10357,11 @@ expr_stmt|;
 comment|// OpenFileBlocks only inside snapshots also will be added to safemode
 comment|// threshold. So we need to update such blocks to safemode
 comment|// refer HDFS-5283
-name|BlockInfoContiguousUnderConstruction
+name|BlockInfoUnderConstruction
 name|blockUC
 init|=
 operator|(
-name|BlockInfoContiguousUnderConstruction
+name|BlockInfoUnderConstruction
 operator|)
 name|storedBlock
 decl_stmt|;
@@ -10917,7 +10914,7 @@ operator|new
 name|StatefulBlockInfo
 argument_list|(
 operator|(
-name|BlockInfoContiguousUnderConstruction
+name|BlockInfoUnderConstruction
 operator|)
 name|storedBlock
 argument_list|,
@@ -11727,7 +11724,7 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
-name|BlockInfoContiguousUnderConstruction
+name|BlockInfoUnderConstruction
 name|block
 init|=
 name|ucBlock
@@ -11962,7 +11959,7 @@ if|if
 condition|(
 name|block
 operator|instanceof
-name|BlockInfoContiguousUnderConstruction
+name|BlockInfoUnderConstruction
 condition|)
 block|{
 comment|//refresh our copy in case the block got completed in another thread
@@ -16189,11 +16186,11 @@ argument_list|()
 condition|)
 block|{
 specifier|final
-name|BlockInfoContiguousUnderConstruction
+name|BlockInfoUnderConstruction
 name|uc
 init|=
 operator|(
-name|BlockInfoContiguousUnderConstruction
+name|BlockInfoUnderConstruction
 operator|)
 name|b
 decl_stmt|;

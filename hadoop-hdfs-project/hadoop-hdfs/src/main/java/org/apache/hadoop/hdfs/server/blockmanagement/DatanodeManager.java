@@ -5675,7 +5675,7 @@ index|]
 return|;
 block|}
 comment|//check lease recovery
-name|BlockInfoContiguousUnderConstruction
+name|BlockInfoUnderConstruction
 index|[]
 name|blocks
 init|=
@@ -5708,7 +5708,7 @@ argument_list|)
 decl_stmt|;
 for|for
 control|(
-name|BlockInfoContiguousUnderConstruction
+name|BlockInfoUnderConstruction
 name|b
 range|:
 name|blocks

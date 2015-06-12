@@ -76,7 +76,7 @@ name|server
 operator|.
 name|blockmanagement
 operator|.
-name|BlockInfoContiguousUnderConstruction
+name|BlockInfoUnderConstruction
 import|;
 end_import
 
@@ -233,7 +233,7 @@ assert|assert
 operator|(
 name|lastBlock
 operator|instanceof
-name|BlockInfoContiguousUnderConstruction
+name|BlockInfoUnderConstruction
 operator|)
 operator|:
 literal|"The last block for path "
@@ -298,14 +298,14 @@ operator|-
 literal|1
 index|]
 operator|instanceof
-name|BlockInfoContiguousUnderConstruction
+name|BlockInfoUnderConstruction
 condition|)
 block|{
-name|BlockInfoContiguousUnderConstruction
+name|BlockInfoUnderConstruction
 name|lastUC
 init|=
 operator|(
-name|BlockInfoContiguousUnderConstruction
+name|BlockInfoUnderConstruction
 operator|)
 name|blocks
 index|[

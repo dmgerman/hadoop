@@ -494,7 +494,7 @@ name|server
 operator|.
 name|blockmanagement
 operator|.
-name|BlockInfoContiguousUnderConstruction
+name|BlockInfoUnderConstruction
 import|;
 end_import
 
@@ -6664,7 +6664,7 @@ name|blockRecoveryId
 init|=
 operator|(
 operator|(
-name|BlockInfoContiguousUnderConstruction
+name|BlockInfoUnderConstruction
 operator|)
 name|file
 operator|.
@@ -6930,7 +6930,7 @@ name|blockRecoveryId
 init|=
 operator|(
 operator|(
-name|BlockInfoContiguousUnderConstruction
+name|BlockInfoUnderConstruction
 operator|)
 name|file
 operator|.
