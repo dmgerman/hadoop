@@ -19823,7 +19823,7 @@ argument_list|)
 return|;
 block|}
 comment|/**    * The given node has reported in.  This method should:    * 1) Record the heartbeat, so the datanode isn't timed out    * 2) Adjust usage stats for future block allocation    *     * If a substantial amount of time passed since the last datanode     * heartbeat then request an immediate block report.      *     * @return an array of datanode commands     * @throws IOException    */
-DECL|method|handleHeartbeat (DatanodeRegistration nodeReg, StorageReport[] reports, long cacheCapacity, long cacheUsed, int xceiverCount, int xmitsInProgress, int failedVolumes, VolumeFailureSummary volumeFailureSummary)
+DECL|method|handleHeartbeat (DatanodeRegistration nodeReg, StorageReport[] reports, long cacheCapacity, long cacheUsed, int xceiverCount, int xmitsInProgress, int failedVolumes, VolumeFailureSummary volumeFailureSummary, boolean requestFullBlockReportLease)
 name|HeartbeatResponse
 name|handleHeartbeat
 parameter_list|(
@@ -19851,6 +19851,9 @@ name|failedVolumes
 parameter_list|,
 name|VolumeFailureSummary
 name|volumeFailureSummary
+parameter_list|,
+name|boolean
+name|requestFullBlockReportLease
 parameter_list|)
 throws|throws
 name|IOException
@@ -19902,6 +19905,26 @@ argument_list|,
 name|volumeFailureSummary
 argument_list|)
 decl_stmt|;
+name|long
+name|blockReportLeaseId
+init|=
+literal|0
+decl_stmt|;
+if|if
+condition|(
+name|requestFullBlockReportLease
+condition|)
+block|{
+name|blockReportLeaseId
+operator|=
+name|blockManager
+operator|.
+name|requestBlockReportLeaseId
+argument_list|(
+name|nodeReg
+argument_list|)
+expr_stmt|;
+block|}
 comment|//create ha status
 specifier|final
 name|NNHAStatusHeartbeat
@@ -19934,6 +19957,8 @@ argument_list|,
 name|haState
 argument_list|,
 name|rollingUpgradeInfo
+argument_list|,
+name|blockReportLeaseId
 argument_list|)
 return|;
 block|}

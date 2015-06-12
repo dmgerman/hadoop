@@ -334,10 +334,10 @@ parameter_list|)
 throws|throws
 name|IOException
 function_decl|;
-comment|/**    * sendHeartbeat() tells the NameNode that the DataNode is still    * alive and well.  Includes some status info, too.     * It also gives the NameNode a chance to return     * an array of "DatanodeCommand" objects in HeartbeatResponse.    * A DatanodeCommand tells the DataNode to invalidate local block(s),     * or to copy them to other DataNodes, etc.    * @param registration datanode registration information    * @param reports utilization report per storage    * @param xmitsInProgress number of transfers from this datanode to others    * @param xceiverCount number of active transceiver threads    * @param failedVolumes number of failed volumes    * @param volumeFailureSummary info about volume failures    * @throws IOException on error    */
+comment|/**    * sendHeartbeat() tells the NameNode that the DataNode is still    * alive and well.  Includes some status info, too.     * It also gives the NameNode a chance to return     * an array of "DatanodeCommand" objects in HeartbeatResponse.    * A DatanodeCommand tells the DataNode to invalidate local block(s),     * or to copy them to other DataNodes, etc.    * @param registration datanode registration information    * @param reports utilization report per storage    * @param xmitsInProgress number of transfers from this datanode to others    * @param xceiverCount number of active transceiver threads    * @param failedVolumes number of failed volumes    * @param volumeFailureSummary info about volume failures    * @param requestFullBlockReportLease whether to request a full block    *                                    report lease.    * @throws IOException on error    */
 annotation|@
 name|Idempotent
-DECL|method|sendHeartbeat (DatanodeRegistration registration, StorageReport[] reports, long dnCacheCapacity, long dnCacheUsed, int xmitsInProgress, int xceiverCount, int failedVolumes, VolumeFailureSummary volumeFailureSummary)
+DECL|method|sendHeartbeat (DatanodeRegistration registration, StorageReport[] reports, long dnCacheCapacity, long dnCacheUsed, int xmitsInProgress, int xceiverCount, int failedVolumes, VolumeFailureSummary volumeFailureSummary, boolean requestFullBlockReportLease)
 specifier|public
 name|HeartbeatResponse
 name|sendHeartbeat
@@ -366,6 +366,9 @@ name|failedVolumes
 parameter_list|,
 name|VolumeFailureSummary
 name|volumeFailureSummary
+parameter_list|,
+name|boolean
+name|requestFullBlockReportLease
 parameter_list|)
 throws|throws
 name|IOException

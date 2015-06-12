@@ -722,10 +722,10 @@ specifier|final
 name|long
 name|blockReportSplitThreshold
 decl_stmt|;
-DECL|field|initialBlockReportDelay
+DECL|field|initialBlockReportDelayMs
 specifier|final
 name|long
-name|initialBlockReportDelay
+name|initialBlockReportDelayMs
 decl_stmt|;
 DECL|field|cacheReportInterval
 specifier|final
@@ -1070,7 +1070,7 @@ literal|" Setting initial delay to 0 msec:"
 argument_list|)
 expr_stmt|;
 block|}
-name|initialBlockReportDelay
+name|initialBlockReportDelayMs
 operator|=
 name|initBRDelay
 expr_stmt|;

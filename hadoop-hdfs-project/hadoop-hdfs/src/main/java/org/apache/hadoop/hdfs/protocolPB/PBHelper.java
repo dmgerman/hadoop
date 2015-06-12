@@ -21845,6 +21845,11 @@ name|proto
 operator|.
 name|getId
 argument_list|()
+argument_list|,
+name|proto
+operator|.
+name|getLeaseId
+argument_list|()
 argument_list|)
 return|;
 block|}
@@ -21885,6 +21890,14 @@ argument_list|(
 name|context
 operator|.
 name|getReportId
+argument_list|()
+argument_list|)
+operator|.
+name|setLeaseId
+argument_list|(
+name|context
+operator|.
+name|getLeaseId
 argument_list|()
 argument_list|)
 operator|.

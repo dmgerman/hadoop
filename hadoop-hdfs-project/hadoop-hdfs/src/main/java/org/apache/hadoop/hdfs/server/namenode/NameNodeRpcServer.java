@@ -1506,6 +1506,24 @@ name|hdfs
 operator|.
 name|server
 operator|.
+name|blockmanagement
+operator|.
+name|BlockManagerFaultInjector
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|server
+operator|.
 name|common
 operator|.
 name|HdfsServerConstants
@@ -7715,7 +7733,7 @@ block|}
 annotation|@
 name|Override
 comment|// DatanodeProtocol
-DECL|method|sendHeartbeat (DatanodeRegistration nodeReg, StorageReport[] report, long dnCacheCapacity, long dnCacheUsed, int xmitsInProgress, int xceiverCount, int failedVolumes, VolumeFailureSummary volumeFailureSummary)
+DECL|method|sendHeartbeat (DatanodeRegistration nodeReg, StorageReport[] report, long dnCacheCapacity, long dnCacheUsed, int xmitsInProgress, int xceiverCount, int failedVolumes, VolumeFailureSummary volumeFailureSummary, boolean requestFullBlockReportLease)
 specifier|public
 name|HeartbeatResponse
 name|sendHeartbeat
@@ -7744,6 +7762,9 @@ name|failedVolumes
 parameter_list|,
 name|VolumeFailureSummary
 name|volumeFailureSummary
+parameter_list|,
+name|boolean
+name|requestFullBlockReportLease
 parameter_list|)
 throws|throws
 name|IOException
@@ -7776,6 +7797,8 @@ argument_list|,
 name|failedVolumes
 argument_list|,
 name|volumeFailureSummary
+argument_list|,
+name|requestFullBlockReportLease
 argument_list|)
 return|;
 block|}
@@ -7922,6 +7945,18 @@ name|incrStorageBlockReportOps
 argument_list|()
 expr_stmt|;
 block|}
+name|BlockManagerFaultInjector
+operator|.
+name|getInstance
+argument_list|()
+operator|.
+name|incomingBlockReportRpc
+argument_list|(
+name|nodeReg
+argument_list|,
+name|context
+argument_list|)
+expr_stmt|;
 if|if
 condition|(
 name|nn

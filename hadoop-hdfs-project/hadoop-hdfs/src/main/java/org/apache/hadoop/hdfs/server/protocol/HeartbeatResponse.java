@@ -100,7 +100,13 @@ specifier|final
 name|RollingUpgradeStatus
 name|rollingUpdateStatus
 decl_stmt|;
-DECL|method|HeartbeatResponse (DatanodeCommand[] cmds, NNHAStatusHeartbeat haStatus, RollingUpgradeStatus rollingUpdateStatus)
+DECL|field|fullBlockReportLeaseId
+specifier|private
+specifier|final
+name|long
+name|fullBlockReportLeaseId
+decl_stmt|;
+DECL|method|HeartbeatResponse (DatanodeCommand[] cmds, NNHAStatusHeartbeat haStatus, RollingUpgradeStatus rollingUpdateStatus, long fullBlockReportLeaseId)
 specifier|public
 name|HeartbeatResponse
 parameter_list|(
@@ -113,6 +119,9 @@ name|haStatus
 parameter_list|,
 name|RollingUpgradeStatus
 name|rollingUpdateStatus
+parameter_list|,
+name|long
+name|fullBlockReportLeaseId
 parameter_list|)
 block|{
 name|commands
@@ -130,6 +139,12 @@ operator|.
 name|rollingUpdateStatus
 operator|=
 name|rollingUpdateStatus
+expr_stmt|;
+name|this
+operator|.
+name|fullBlockReportLeaseId
+operator|=
+name|fullBlockReportLeaseId
 expr_stmt|;
 block|}
 DECL|method|getCommands ()
@@ -161,6 +176,16 @@ parameter_list|()
 block|{
 return|return
 name|rollingUpdateStatus
+return|;
+block|}
+DECL|method|getFullBlockReportLeaseId ()
+specifier|public
+name|long
+name|getFullBlockReportLeaseId
+parameter_list|()
+block|{
+return|return
+name|fullBlockReportLeaseId
 return|;
 block|}
 block|}

@@ -48,25 +48,35 @@ specifier|public
 class|class
 name|BlockReportContext
 block|{
+comment|/**    * The total number of RPCs contained in the block report.    */
 DECL|field|totalRpcs
 specifier|private
 specifier|final
 name|int
 name|totalRpcs
 decl_stmt|;
+comment|/**    * The index of this particular RPC.    */
 DECL|field|curRpc
 specifier|private
 specifier|final
 name|int
 name|curRpc
 decl_stmt|;
+comment|/**    * A 64-bit ID which identifies the block report as a whole.    */
 DECL|field|reportId
 specifier|private
 specifier|final
 name|long
 name|reportId
 decl_stmt|;
-DECL|method|BlockReportContext (int totalRpcs, int curRpc, long reportId)
+comment|/**    * The lease ID which this block report is using, or 0 if this block report is    * bypassing rate-limiting.    */
+DECL|field|leaseId
+specifier|private
+specifier|final
+name|long
+name|leaseId
+decl_stmt|;
+DECL|method|BlockReportContext (int totalRpcs, int curRpc, long reportId, long leaseId)
 specifier|public
 name|BlockReportContext
 parameter_list|(
@@ -78,6 +88,9 @@ name|curRpc
 parameter_list|,
 name|long
 name|reportId
+parameter_list|,
+name|long
+name|leaseId
 parameter_list|)
 block|{
 name|this
@@ -97,6 +110,12 @@ operator|.
 name|reportId
 operator|=
 name|reportId
+expr_stmt|;
+name|this
+operator|.
+name|leaseId
+operator|=
+name|leaseId
 expr_stmt|;
 block|}
 DECL|method|getTotalRpcs ()
@@ -127,6 +146,16 @@ parameter_list|()
 block|{
 return|return
 name|reportId
+return|;
+block|}
+DECL|method|getLeaseId ()
+specifier|public
+name|long
+name|getLeaseId
+parameter_list|()
+block|{
+return|return
+name|leaseId
 return|;
 block|}
 block|}
