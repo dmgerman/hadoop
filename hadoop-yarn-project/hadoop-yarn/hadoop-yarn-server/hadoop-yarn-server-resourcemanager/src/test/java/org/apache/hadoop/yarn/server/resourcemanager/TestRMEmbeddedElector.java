@@ -543,6 +543,8 @@ argument_list|(
 literal|true
 argument_list|)
 expr_stmt|;
+name|TestRMEmbeddedElector
+operator|.
 name|LOG
 operator|.
 name|info
@@ -557,6 +559,8 @@ argument_list|(
 name|delayMs
 argument_list|)
 expr_stmt|;
+name|TestRMEmbeddedElector
+operator|.
 name|LOG
 operator|.
 name|info
