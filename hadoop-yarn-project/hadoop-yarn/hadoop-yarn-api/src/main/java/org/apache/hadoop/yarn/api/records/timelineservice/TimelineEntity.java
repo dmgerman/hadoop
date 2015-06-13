@@ -2211,6 +2211,19 @@ else|:
 name|real
 return|;
 block|}
+DECL|method|toString ()
+specifier|public
+name|String
+name|toString
+parameter_list|()
+block|{
+return|return
+name|identifier
+operator|.
+name|toString
+argument_list|()
+return|;
+block|}
 block|}
 end_class
 

@@ -7905,11 +7905,6 @@ operator|.
 name|finishTime
 argument_list|)
 expr_stmt|;
-name|app
-operator|.
-name|stopTimelineCollector
-argument_list|()
-expr_stmt|;
 block|}
 empty_stmt|;
 block|}

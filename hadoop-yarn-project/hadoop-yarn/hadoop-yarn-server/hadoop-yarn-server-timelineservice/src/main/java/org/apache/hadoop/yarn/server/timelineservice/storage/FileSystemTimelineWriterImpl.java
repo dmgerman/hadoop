@@ -306,7 +306,7 @@ init|=
 literal|"/tmp/timeline_service_data"
 decl_stmt|;
 DECL|field|ENTITIES_DIR
-specifier|private
+specifier|public
 specifier|static
 specifier|final
 name|String
@@ -416,6 +416,7 @@ return|;
 block|}
 DECL|method|write (String clusterId, String userId, String flowName, String flowVersion, long flowRun, String appId, TimelineEntity entity, TimelineWriteResponse response)
 specifier|private
+specifier|synchronized
 name|void
 name|write
 parameter_list|(

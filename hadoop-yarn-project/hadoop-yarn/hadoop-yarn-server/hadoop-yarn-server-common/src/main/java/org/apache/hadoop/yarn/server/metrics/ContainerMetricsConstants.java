@@ -71,6 +71,7 @@ name|ENTITY_TYPE
 init|=
 literal|"YARN_CONTAINER"
 decl_stmt|;
+comment|// Event of this type will be emitted by NM.
 DECL|field|CREATED_EVENT_TYPE
 specifier|public
 specifier|static
@@ -80,6 +81,17 @@ name|CREATED_EVENT_TYPE
 init|=
 literal|"YARN_CONTAINER_CREATED"
 decl_stmt|;
+comment|// Event of this type will be emitted by RM.
+DECL|field|CREATED_IN_RM_EVENT_TYPE
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|CREATED_IN_RM_EVENT_TYPE
+init|=
+literal|"YARN_RM_CONTAINER_CREATED"
+decl_stmt|;
+comment|// Event of this type will be emitted by NM.
 DECL|field|FINISHED_EVENT_TYPE
 specifier|public
 specifier|static
@@ -88,6 +100,16 @@ name|String
 name|FINISHED_EVENT_TYPE
 init|=
 literal|"YARN_CONTAINER_FINISHED"
+decl_stmt|;
+comment|// Event of this type will be emitted by RM.
+DECL|field|FINISHED_IN_RM_EVENT_TYPE
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|FINISHED_IN_RM_EVENT_TYPE
+init|=
+literal|"YARN_RM_CONTAINER_FINISHED"
 decl_stmt|;
 DECL|field|PARENT_PRIMARIY_FILTER
 specifier|public

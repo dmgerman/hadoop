@@ -854,9 +854,12 @@ name|rmContext
 operator|.
 name|setSystemMetricsPublisher
 argument_list|(
-operator|new
+name|mock
+argument_list|(
 name|SystemMetricsPublisher
-argument_list|()
+operator|.
+name|class
+argument_list|)
 argument_list|)
 expr_stmt|;
 name|rmContext
