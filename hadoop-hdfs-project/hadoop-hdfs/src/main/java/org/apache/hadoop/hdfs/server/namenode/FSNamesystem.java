@@ -32021,15 +32021,12 @@ name|int
 name|getEffectiveLayoutVersion
 parameter_list|()
 block|{
-if|if
-condition|(
+return|return
+name|getEffectiveLayoutVersion
+argument_list|(
 name|isRollingUpgrade
 argument_list|()
-condition|)
-block|{
-name|int
-name|storageLV
-init|=
+argument_list|,
 name|fsImage
 operator|.
 name|getStorage
@@ -32037,14 +32034,47 @@ argument_list|()
 operator|.
 name|getLayoutVersion
 argument_list|()
-decl_stmt|;
-if|if
-condition|(
-name|storageLV
-operator|>=
+argument_list|,
 name|NameNodeLayoutVersion
 operator|.
 name|MINIMUM_COMPATIBLE_LAYOUT_VERSION
+argument_list|,
+name|NameNodeLayoutVersion
+operator|.
+name|CURRENT_LAYOUT_VERSION
+argument_list|)
+return|;
+block|}
+annotation|@
+name|VisibleForTesting
+DECL|method|getEffectiveLayoutVersion (boolean isRollingUpgrade, int storageLV, int minCompatLV, int currentLV)
+specifier|static
+name|int
+name|getEffectiveLayoutVersion
+parameter_list|(
+name|boolean
+name|isRollingUpgrade
+parameter_list|,
+name|int
+name|storageLV
+parameter_list|,
+name|int
+name|minCompatLV
+parameter_list|,
+name|int
+name|currentLV
+parameter_list|)
+block|{
+if|if
+condition|(
+name|isRollingUpgrade
+condition|)
+block|{
+if|if
+condition|(
+name|storageLV
+operator|<=
+name|minCompatLV
 condition|)
 block|{
 comment|// The prior layout version satisfies the minimum compatible layout
@@ -32058,9 +32088,7 @@ block|}
 comment|// The current software cannot satisfy the layout version of the prior
 comment|// software.  Proceed with using the current layout version.
 return|return
-name|NameNodeLayoutVersion
-operator|.
-name|CURRENT_LAYOUT_VERSION
+name|currentLV
 return|;
 block|}
 comment|/**    * Performs a pre-condition check that the layout version in effect is    * sufficient to support the requested {@link Feature}.  If not, then the    * method throws {@link HadoopIllegalArgumentException} to deny the operation.    * This exception class is registered as a terse exception, so it prevents    * verbose stack traces in the NameNode log.  During a rolling upgrade, this    * method is used to restrict usage of new features.  This prevents writing    * new edit log operations that would be unreadable by the old software    * version if the admin chooses to downgrade.    *    * @param f feature to check    * @throws HadoopIllegalArgumentException if the current layout version in    *     effect is insufficient to support the feature    */
