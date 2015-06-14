@@ -5173,6 +5173,8 @@ name|DatanodeHttpServer
 argument_list|(
 name|conf
 argument_list|,
+name|this
+argument_list|,
 name|httpServerChannel
 argument_list|)
 expr_stmt|;

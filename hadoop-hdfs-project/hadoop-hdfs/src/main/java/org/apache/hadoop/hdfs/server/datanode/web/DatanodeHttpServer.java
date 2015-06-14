@@ -641,13 +641,17 @@ operator|.
 name|class
 argument_list|)
 decl_stmt|;
-DECL|method|DatanodeHttpServer (final Configuration conf, final ServerSocketChannel externalHttpChannel)
+DECL|method|DatanodeHttpServer (final Configuration conf, final DataNode datanode, final ServerSocketChannel externalHttpChannel)
 specifier|public
 name|DatanodeHttpServer
 parameter_list|(
 specifier|final
 name|Configuration
 name|conf
+parameter_list|,
+specifier|final
+name|DataNode
+name|datanode
 parameter_list|,
 specifier|final
 name|ServerSocketChannel
@@ -759,7 +763,7 @@ name|setAttribute
 argument_list|(
 literal|"datanode"
 argument_list|,
-name|this
+name|datanode
 argument_list|)
 expr_stmt|;
 name|this
