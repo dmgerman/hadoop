@@ -1326,6 +1326,16 @@ return|return
 name|props
 return|;
 block|}
+DECL|method|getNodeType ()
+specifier|public
+name|NodeType
+name|getNodeType
+parameter_list|()
+block|{
+return|return
+name|storageType
+return|;
+block|}
 block|}
 end_class
 
