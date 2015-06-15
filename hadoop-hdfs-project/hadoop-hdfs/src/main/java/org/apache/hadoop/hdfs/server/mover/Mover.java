@@ -156,20 +156,6 @@ name|hadoop
 operator|.
 name|fs
 operator|.
-name|BlockStoragePolicySpi
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|fs
-operator|.
 name|Path
 import|;
 end_import
@@ -1265,26 +1251,16 @@ block|{
 name|init
 argument_list|()
 expr_stmt|;
-name|boolean
-name|hasRemaining
-init|=
+return|return
 operator|new
 name|Processor
 argument_list|()
 operator|.
 name|processNamespace
 argument_list|()
-decl_stmt|;
-return|return
-name|hasRemaining
-condition|?
-name|ExitStatus
 operator|.
-name|IN_PROGRESS
-else|:
-name|ExitStatus
-operator|.
-name|SUCCESS
+name|getExitStatus
+argument_list|()
 return|;
 block|}
 catch|catch
@@ -1751,7 +1727,7 @@ block|}
 comment|/**      * @return whether there is still remaining migration work for the next      *         round      */
 DECL|method|processNamespace ()
 specifier|private
-name|boolean
+name|Result
 name|processNamespace
 parameter_list|()
 throws|throws
@@ -1760,10 +1736,12 @@ block|{
 name|getSnapshottableDirs
 argument_list|()
 expr_stmt|;
-name|boolean
-name|hasRemaining
+name|Result
+name|result
 init|=
-literal|false
+operator|new
+name|Result
+argument_list|()
 decl_stmt|;
 for|for
 control|(
@@ -1773,8 +1751,6 @@ range|:
 name|targetPaths
 control|)
 block|{
-name|hasRemaining
-operator||=
 name|processPath
 argument_list|(
 name|target
@@ -1784,6 +1760,8 @@ argument_list|()
 operator|.
 name|getPath
 argument_list|()
+argument_list|,
+name|result
 argument_list|)
 expr_stmt|;
 block|}
@@ -1850,29 +1828,30 @@ literal|0
 argument_list|)
 expr_stmt|;
 block|}
-name|hasRemaining
-operator||=
+name|result
+operator|.
+name|updateHasRemaining
+argument_list|(
 name|hasFailed
+argument_list|)
 expr_stmt|;
 return|return
-name|hasRemaining
+name|result
 return|;
 block|}
 comment|/**      * @return whether there is still remaing migration work for the next      *         round      */
-DECL|method|processPath (String fullPath)
+DECL|method|processPath (String fullPath, Result result)
 specifier|private
-name|boolean
+name|void
 name|processPath
 parameter_list|(
 name|String
 name|fullPath
+parameter_list|,
+name|Result
+name|result
 parameter_list|)
 block|{
-name|boolean
-name|hasRemaining
-init|=
-literal|false
-decl_stmt|;
 for|for
 control|(
 name|byte
@@ -1925,9 +1904,7 @@ argument_list|,
 name|e
 argument_list|)
 expr_stmt|;
-return|return
-name|hasRemaining
-return|;
+return|return;
 block|}
 if|if
 condition|(
@@ -1936,9 +1913,7 @@ operator|==
 literal|null
 condition|)
 block|{
-return|return
-name|hasRemaining
-return|;
+return|return;
 block|}
 for|for
 control|(
@@ -1951,13 +1926,13 @@ name|getPartialListing
 argument_list|()
 control|)
 block|{
-name|hasRemaining
-operator||=
 name|processRecursively
 argument_list|(
 name|fullPath
 argument_list|,
 name|child
+argument_list|,
+name|result
 argument_list|)
 expr_stmt|;
 block|}
@@ -1979,16 +1954,14 @@ expr_stmt|;
 block|}
 else|else
 block|{
-return|return
-name|hasRemaining
-return|;
+return|return;
 block|}
 block|}
 block|}
 comment|/** @return whether the migration requires next round */
-DECL|method|processRecursively (String parent, HdfsFileStatus status)
+DECL|method|processRecursively (String parent, HdfsFileStatus status, Result result)
 specifier|private
-name|boolean
+name|void
 name|processRecursively
 parameter_list|(
 name|String
@@ -1996,6 +1969,9 @@ name|parent
 parameter_list|,
 name|HdfsFileStatus
 name|status
+parameter_list|,
+name|Result
+name|result
 parameter_list|)
 block|{
 name|String
@@ -2007,11 +1983,6 @@ name|getFullName
 argument_list|(
 name|parent
 argument_list|)
-decl_stmt|;
-name|boolean
-name|hasRemaining
-init|=
-literal|false
 decl_stmt|;
 if|if
 condition|(
@@ -2043,11 +2014,11 @@ operator|.
 name|SEPARATOR
 expr_stmt|;
 block|}
-name|hasRemaining
-operator|=
 name|processPath
 argument_list|(
 name|fullPath
+argument_list|,
+name|result
 argument_list|)
 expr_stmt|;
 comment|// process snapshots if this is a snapshottable directory
@@ -2071,11 +2042,11 @@ name|HdfsConstants
 operator|.
 name|DOT_SNAPSHOT_DIR
 decl_stmt|;
-name|hasRemaining
-operator||=
 name|processPath
 argument_list|(
 name|dirSnapshot
+argument_list|,
+name|result
 argument_list|)
 expr_stmt|;
 block|}
@@ -2104,8 +2075,6 @@ condition|)
 block|{
 comment|// the full path is a snapshot path but it is also included in the
 comment|// current directory tree, thus ignore it.
-name|hasRemaining
-operator|=
 name|processFile
 argument_list|(
 name|fullPath
@@ -2114,6 +2083,8 @@ operator|(
 name|HdfsLocatedFileStatus
 operator|)
 name|status
+argument_list|,
+name|result
 argument_list|)
 expr_stmt|;
 block|}
@@ -2137,19 +2108,13 @@ argument_list|,
 name|e
 argument_list|)
 expr_stmt|;
-return|return
-literal|false
-return|;
 block|}
 block|}
-return|return
-name|hasRemaining
-return|;
 block|}
 comment|/** @return true if it is necessary to run another round of migration */
-DECL|method|processFile (String fullPath, HdfsLocatedFileStatus status)
+DECL|method|processFile (String fullPath, HdfsLocatedFileStatus status, Result result)
 specifier|private
-name|boolean
+name|void
 name|processFile
 parameter_list|(
 name|String
@@ -2157,6 +2122,9 @@ name|fullPath
 parameter_list|,
 name|HdfsLocatedFileStatus
 name|status
+parameter_list|,
+name|Result
+name|result
 parameter_list|)
 block|{
 specifier|final
@@ -2178,9 +2146,7 @@ operator|.
 name|BLOCK_STORAGE_POLICY_ID_UNSPECIFIED
 condition|)
 block|{
-return|return
-literal|false
-return|;
+return|return;
 block|}
 specifier|final
 name|BlockStoragePolicy
@@ -2207,9 +2173,7 @@ operator|+
 name|fullPath
 argument_list|)
 expr_stmt|;
-return|return
-literal|false
-return|;
+return|return;
 block|}
 specifier|final
 name|List
@@ -2236,11 +2200,6 @@ name|status
 operator|.
 name|getBlockLocations
 argument_list|()
-decl_stmt|;
-name|boolean
-name|hasRemaining
-init|=
-literal|false
 decl_stmt|;
 specifier|final
 name|boolean
@@ -2344,9 +2303,10 @@ name|lb
 argument_list|)
 condition|)
 block|{
-name|hasRemaining
-operator||=
-operator|(
+name|result
+operator|.
+name|updateHasRemaining
+argument_list|(
 name|diff
 operator|.
 name|existing
@@ -2364,14 +2324,29 @@ name|size
 argument_list|()
 operator|>
 literal|1
-operator|)
+argument_list|)
+expr_stmt|;
+comment|// One block scheduled successfully, set noBlockMoved to false
+name|result
+operator|.
+name|setNoBlockMoved
+argument_list|(
+literal|false
+argument_list|)
+expr_stmt|;
+block|}
+else|else
+block|{
+name|result
+operator|.
+name|updateHasRemaining
+argument_list|(
+literal|true
+argument_list|)
 expr_stmt|;
 block|}
 block|}
 block|}
-return|return
-name|hasRemaining
-return|;
 block|}
 DECL|method|scheduleMoves4Block (StorageTypeDiff diff, LocatedBlock lb)
 name|boolean
@@ -4350,6 +4325,111 @@ argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
+block|}
+block|}
+DECL|class|Result
+specifier|private
+specifier|static
+class|class
+name|Result
+block|{
+DECL|field|hasRemaining
+specifier|private
+name|boolean
+name|hasRemaining
+decl_stmt|;
+DECL|field|noBlockMoved
+specifier|private
+name|boolean
+name|noBlockMoved
+decl_stmt|;
+DECL|method|Result ()
+name|Result
+parameter_list|()
+block|{
+name|hasRemaining
+operator|=
+literal|false
+expr_stmt|;
+name|noBlockMoved
+operator|=
+literal|true
+expr_stmt|;
+block|}
+DECL|method|isHasRemaining ()
+name|boolean
+name|isHasRemaining
+parameter_list|()
+block|{
+return|return
+name|hasRemaining
+return|;
+block|}
+DECL|method|isNoBlockMoved ()
+name|boolean
+name|isNoBlockMoved
+parameter_list|()
+block|{
+return|return
+name|noBlockMoved
+return|;
+block|}
+DECL|method|updateHasRemaining (boolean hasRemaining)
+name|void
+name|updateHasRemaining
+parameter_list|(
+name|boolean
+name|hasRemaining
+parameter_list|)
+block|{
+name|this
+operator|.
+name|hasRemaining
+operator||=
+name|hasRemaining
+expr_stmt|;
+block|}
+DECL|method|setNoBlockMoved (boolean noBlockMoved)
+name|void
+name|setNoBlockMoved
+parameter_list|(
+name|boolean
+name|noBlockMoved
+parameter_list|)
+block|{
+name|this
+operator|.
+name|noBlockMoved
+operator|=
+name|noBlockMoved
+expr_stmt|;
+block|}
+comment|/**      * @return SUCCESS if all moves are success and there is no remaining move.      *         Return NO_MOVE_BLOCK if there moves available but all the moves      *         cannot be scheduled. Otherwise, return IN_PROGRESS since there      *         must be some remaining moves.      */
+DECL|method|getExitStatus ()
+name|ExitStatus
+name|getExitStatus
+parameter_list|()
+block|{
+return|return
+operator|!
+name|isHasRemaining
+argument_list|()
+condition|?
+name|ExitStatus
+operator|.
+name|SUCCESS
+else|:
+name|isNoBlockMoved
+argument_list|()
+condition|?
+name|ExitStatus
+operator|.
+name|NO_MOVE_BLOCK
+else|:
+name|ExitStatus
+operator|.
+name|IN_PROGRESS
+return|;
 block|}
 block|}
 comment|/**    * Run a Mover in command line.    *    * @param args Command line arguments    */
