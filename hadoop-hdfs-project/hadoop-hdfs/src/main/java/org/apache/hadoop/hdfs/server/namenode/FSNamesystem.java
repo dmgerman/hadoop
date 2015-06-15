@@ -13972,7 +13972,7 @@ return|return
 name|delta
 return|;
 block|}
-comment|/**    * Recover lease;    * Immediately revoke the lease of the current lease holder and start lease    * recovery so that the file can be forced to be closed.    *     * @param src the path of the file to start lease recovery    * @param holder the lease holder's name    * @param clientMachine the client machine's name    * @return true if the file is already closed    * @throws IOException    */
+comment|/**    * Recover lease;    * Immediately revoke the lease of the current lease holder and start lease    * recovery so that the file can be forced to be closed.    *     * @param src the path of the file to start lease recovery    * @param holder the lease holder's name    * @param clientMachine the client machine's name    * @return true if the file is already closed or    *         if the lease can be released and the file can be closed.    * @throws IOException    */
 DECL|method|recoverLease (String src, String holder, String clientMachine)
 name|boolean
 name|recoverLease
@@ -14131,6 +14131,7 @@ name|WRITE
 argument_list|)
 expr_stmt|;
 block|}
+return|return
 name|recoverLeaseInternal
 argument_list|(
 name|RecoverLeaseOp
@@ -14147,7 +14148,7 @@ name|clientMachine
 argument_list|,
 literal|true
 argument_list|)
-expr_stmt|;
+return|;
 block|}
 catch|catch
 parameter_list|(
@@ -14184,9 +14185,6 @@ argument_list|()
 expr_stmt|;
 block|}
 block|}
-return|return
-literal|false
-return|;
 block|}
 DECL|enum|RecoverLeaseOp
 enum|enum
@@ -14246,7 +14244,7 @@ return|;
 block|}
 block|}
 DECL|method|recoverLeaseInternal (RecoverLeaseOp op, INodesInPath iip, String src, String holder, String clientMachine, boolean force)
-name|void
+name|boolean
 name|recoverLeaseInternal
 parameter_list|(
 name|RecoverLeaseOp
@@ -14287,10 +14285,6 @@ argument_list|()
 decl_stmt|;
 if|if
 condition|(
-name|file
-operator|!=
-literal|null
-operator|&&
 name|file
 operator|.
 name|isUnderConstruction
@@ -14447,6 +14441,7 @@ operator|+
 name|clientName
 argument_list|)
 expr_stmt|;
+return|return
 name|internalReleaseLease
 argument_list|(
 name|lease
@@ -14457,7 +14452,7 @@ name|iip
 argument_list|,
 name|holder
 argument_list|)
-expr_stmt|;
+return|;
 block|}
 else|else
 block|{
@@ -14512,9 +14507,8 @@ operator|+
 name|clientName
 argument_list|)
 expr_stmt|;
-name|boolean
-name|isClosed
-init|=
+if|if
+condition|(
 name|internalReleaseLease
 argument_list|(
 name|lease
@@ -14525,12 +14519,14 @@ name|iip
 argument_list|,
 literal|null
 argument_list|)
-decl_stmt|;
-if|if
-condition|(
-operator|!
-name|isClosed
 condition|)
+block|{
+return|return
+literal|true
+return|;
+block|}
+else|else
+block|{
 throw|throw
 operator|new
 name|RecoveryInProgressException
@@ -14549,6 +14545,7 @@ literal|"lease recovery is in progress. Try again later."
 argument_list|)
 argument_list|)
 throw|;
+block|}
 block|}
 else|else
 block|{
@@ -14637,6 +14634,12 @@ throw|;
 block|}
 block|}
 block|}
+block|}
+else|else
+block|{
+return|return
+literal|true
+return|;
 block|}
 block|}
 comment|/**    * Append to an existing file in the namespace.    */
