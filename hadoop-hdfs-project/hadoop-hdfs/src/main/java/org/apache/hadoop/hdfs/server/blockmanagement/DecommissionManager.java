@@ -570,8 +570,6 @@ operator|.
 name|DFS_NAMENODE_DECOMMISSION_INTERVAL_KEY
 argument_list|)
 expr_stmt|;
-comment|// By default, the new configuration key overrides the deprecated one.
-comment|// No # node limit is set.
 name|int
 name|blocksPerInterval
 init|=
@@ -588,18 +586,6 @@ operator|.
 name|DFS_NAMENODE_DECOMMISSION_BLOCKS_PER_INTERVAL_DEFAULT
 argument_list|)
 decl_stmt|;
-name|int
-name|nodesPerInterval
-init|=
-name|Integer
-operator|.
-name|MAX_VALUE
-decl_stmt|;
-comment|// If the expected key isn't present and the deprecated one is,
-comment|// use the deprecated one into the new one. This overrides the
-comment|// default.
-comment|//
-comment|// Also print a deprecation warning.
 specifier|final
 name|String
 name|deprecatedKey
@@ -624,30 +610,13 @@ operator|!=
 literal|null
 condition|)
 block|{
-name|nodesPerInterval
-operator|=
-name|Integer
-operator|.
-name|parseInt
-argument_list|(
-name|strNodes
-argument_list|)
-expr_stmt|;
-name|blocksPerInterval
-operator|=
-name|Integer
-operator|.
-name|MAX_VALUE
-expr_stmt|;
 name|LOG
 operator|.
 name|warn
 argument_list|(
-literal|"Using deprecated configuration key {} value of {}."
+literal|"Deprecated configuration key {} will be ignored."
 argument_list|,
 name|deprecatedKey
-argument_list|,
-name|nodesPerInterval
 argument_list|)
 expr_stmt|;
 name|LOG
@@ -714,8 +683,6 @@ name|Monitor
 argument_list|(
 name|blocksPerInterval
 argument_list|,
-name|nodesPerInterval
-argument_list|,
 name|maxConcurrentTrackedNodes
 argument_list|)
 expr_stmt|;
@@ -740,15 +707,13 @@ name|debug
 argument_list|(
 literal|"Activating DecommissionManager with interval {} seconds, "
 operator|+
-literal|"{} max blocks per interval, {} max nodes per interval, "
+literal|"{} max blocks per interval, "
 operator|+
 literal|"{} max concurrently tracked nodes."
 argument_list|,
 name|intervalSecs
 argument_list|,
 name|blocksPerInterval
-argument_list|,
-name|nodesPerInterval
 argument_list|,
 name|maxConcurrentTrackedNodes
 argument_list|)
@@ -1386,13 +1351,6 @@ specifier|final
 name|int
 name|numBlocksPerCheck
 decl_stmt|;
-comment|/**      * The maximum number of nodes to check per tick.      */
-DECL|field|numNodesPerCheck
-specifier|private
-specifier|final
-name|int
-name|numNodesPerCheck
-decl_stmt|;
 comment|/**      * The maximum number of nodes to track in decomNodeBlocks. A value of 0      * means no limit.      */
 DECL|field|maxConcurrentTrackedNodes
 specifier|private
@@ -1408,7 +1366,7 @@ name|numBlocksChecked
 init|=
 literal|0
 decl_stmt|;
-comment|/**      * The number of nodes that have been checked on this tick. Used for       * testing.      */
+comment|/**      * The number of nodes that have been checked on this tick. Used for       * statistics.      */
 DECL|field|numNodesChecked
 specifier|private
 name|int
@@ -1444,14 +1402,11 @@ literal|0
 argument_list|)
 argument_list|)
 decl_stmt|;
-DECL|method|Monitor (int numBlocksPerCheck, int numNodesPerCheck, int maxConcurrentTrackedNodes)
+DECL|method|Monitor (int numBlocksPerCheck, int maxConcurrentTrackedNodes)
 name|Monitor
 parameter_list|(
 name|int
 name|numBlocksPerCheck
-parameter_list|,
-name|int
-name|numNodesPerCheck
 parameter_list|,
 name|int
 name|maxConcurrentTrackedNodes
@@ -1462,12 +1417,6 @@ operator|.
 name|numBlocksPerCheck
 operator|=
 name|numBlocksPerCheck
-expr_stmt|;
-name|this
-operator|.
-name|numNodesPerCheck
-operator|=
-name|numNodesPerCheck
 expr_stmt|;
 name|this
 operator|.
@@ -1495,29 +1444,6 @@ return|return
 name|numBlocksChecked
 operator|>=
 name|numBlocksPerCheck
-return|;
-block|}
-annotation|@
-name|Deprecated
-DECL|method|exceededNumNodesPerCheck ()
-specifier|private
-name|boolean
-name|exceededNumNodesPerCheck
-parameter_list|()
-block|{
-name|LOG
-operator|.
-name|trace
-argument_list|(
-literal|"Processed {} nodes so far this tick"
-argument_list|,
-name|numNodesChecked
-argument_list|)
-expr_stmt|;
-return|return
-name|numNodesChecked
-operator|>=
-name|numNodesPerCheck
 return|;
 block|}
 annotation|@
@@ -1701,10 +1627,6 @@ argument_list|()
 operator|&&
 operator|!
 name|exceededNumBlocksPerCheck
-argument_list|()
-operator|&&
-operator|!
-name|exceededNumNodesPerCheck
 argument_list|()
 condition|)
 block|{
