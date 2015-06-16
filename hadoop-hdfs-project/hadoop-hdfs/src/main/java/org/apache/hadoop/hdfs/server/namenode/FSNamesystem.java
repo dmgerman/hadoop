@@ -8374,12 +8374,9 @@ block|{
 name|SafeModeException
 name|se
 init|=
-operator|new
-name|SafeModeException
+name|newSafemodeException
 argument_list|(
 name|errorMsg
-argument_list|,
-name|safeMode
 argument_list|)
 decl_stmt|;
 if|if
@@ -8425,6 +8422,32 @@ name|se
 throw|;
 block|}
 block|}
+block|}
+DECL|method|newSafemodeException (String errorMsg)
+specifier|private
+name|SafeModeException
+name|newSafemodeException
+parameter_list|(
+name|String
+name|errorMsg
+parameter_list|)
+block|{
+return|return
+operator|new
+name|SafeModeException
+argument_list|(
+name|errorMsg
+operator|+
+literal|". Name node is in safe "
+operator|+
+literal|"mode.\n"
+operator|+
+name|safeMode
+operator|.
+name|getTurnOffTip
+argument_list|()
+argument_list|)
+return|;
 block|}
 DECL|method|isPermissionEnabled ()
 name|boolean
@@ -10333,14 +10356,11 @@ block|{
 name|SafeModeException
 name|se
 init|=
-operator|new
-name|SafeModeException
+name|newSafemodeException
 argument_list|(
 literal|"Zero blocklocations for "
 operator|+
 name|src
-argument_list|,
-name|safeMode
 argument_list|)
 decl_stmt|;
 if|if

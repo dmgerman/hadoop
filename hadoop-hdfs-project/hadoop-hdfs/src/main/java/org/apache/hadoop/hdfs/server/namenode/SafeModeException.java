@@ -87,29 +87,17 @@ name|serialVersionUID
 init|=
 literal|1L
 decl_stmt|;
-DECL|method|SafeModeException (String text, FSNamesystem.SafeModeInfo mode )
+DECL|method|SafeModeException (String msg)
 specifier|public
 name|SafeModeException
 parameter_list|(
 name|String
-name|text
-parameter_list|,
-name|FSNamesystem
-operator|.
-name|SafeModeInfo
-name|mode
+name|msg
 parameter_list|)
 block|{
 name|super
 argument_list|(
-name|text
-operator|+
-literal|". Name node is in safe mode.\n"
-operator|+
-name|mode
-operator|.
-name|getTurnOffTip
-argument_list|()
+name|msg
 argument_list|)
 expr_stmt|;
 block|}
