@@ -582,24 +582,6 @@ name|server
 operator|.
 name|resourcemanager
 operator|.
-name|RMContext
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|yarn
-operator|.
-name|server
-operator|.
-name|resourcemanager
-operator|.
 name|nodelabels
 operator|.
 name|RMNodeLabelsManager
@@ -3168,6 +3150,14 @@ operator|.
 name|next
 argument_list|()
 decl_stmt|;
+name|ApplicationId
+name|applicationId
+init|=
+name|application
+operator|.
+name|getApplicationId
+argument_list|()
+decl_stmt|;
 comment|// Check am resource limit
 name|Resource
 name|amIfStarted
@@ -3267,7 +3257,17 @@ name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"not starting application as amIfStarted exceeds amLimit"
+literal|"Not activating application "
+operator|+
+name|applicationId
+operator|+
+literal|" as  amIfStarted: "
+operator|+
+name|amIfStarted
+operator|+
+literal|" exceeds amLimit: "
+operator|+
+name|amLimit
 argument_list|)
 expr_stmt|;
 continue|continue;
@@ -3346,9 +3346,21 @@ name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"not starting application as amIfStarted exceeds "
+literal|"Not activating application "
 operator|+
-literal|"userAmLimit"
+name|applicationId
+operator|+
+literal|" for user: "
+operator|+
+name|user
+operator|+
+literal|" as userAmIfStarted: "
+operator|+
+name|userAmIfStarted
+operator|+
+literal|" exceeds userAmLimit: "
+operator|+
+name|userAMLimit
 argument_list|)
 expr_stmt|;
 continue|continue;
@@ -3427,10 +3439,7 @@ name|info
 argument_list|(
 literal|"Application "
 operator|+
-name|application
-operator|.
-name|getApplicationId
-argument_list|()
+name|applicationId
 operator|+
 literal|" from user: "
 operator|+
