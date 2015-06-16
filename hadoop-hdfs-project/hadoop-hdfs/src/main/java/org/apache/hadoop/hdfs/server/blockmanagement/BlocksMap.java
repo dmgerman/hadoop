@@ -758,12 +758,26 @@ name|int
 name|size
 parameter_list|()
 block|{
+if|if
+condition|(
+name|blocks
+operator|!=
+literal|null
+condition|)
+block|{
 return|return
 name|blocks
 operator|.
 name|size
 argument_list|()
 return|;
+block|}
+else|else
+block|{
+return|return
+literal|0
+return|;
+block|}
 block|}
 DECL|method|getBlocks ()
 name|Iterable
