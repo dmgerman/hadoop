@@ -3199,10 +3199,15 @@ try|try
 block|{
 name|blocks
 operator|=
-name|fsn
+name|FSDirStatAndListingOp
 operator|.
 name|getBlockLocations
 argument_list|(
+name|fsn
+operator|.
+name|getFSDirectory
+argument_list|()
+argument_list|,
 name|fsn
 operator|.
 name|getPermissionChecker
@@ -3213,8 +3218,6 @@ argument_list|,
 literal|0
 argument_list|,
 name|fileLen
-argument_list|,
-literal|false
 argument_list|,
 literal|false
 argument_list|)

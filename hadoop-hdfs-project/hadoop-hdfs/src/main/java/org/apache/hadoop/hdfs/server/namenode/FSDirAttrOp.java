@@ -2860,9 +2860,6 @@ name|inodeTime
 operator|+
 name|fsd
 operator|.
-name|getFSNamesystem
-argument_list|()
-operator|.
 name|getAccessTimePrecision
 argument_list|()
 operator|&&
