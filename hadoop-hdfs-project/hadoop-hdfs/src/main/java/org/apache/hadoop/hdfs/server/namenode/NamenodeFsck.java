@@ -1153,7 +1153,7 @@ name|internalError
 init|=
 literal|false
 decl_stmt|;
-comment|/**     * True if the user specified the -move option.    *    * Whe this option is in effect, we will copy salvaged blocks into the lost    * and found. */
+comment|/**    * True if the user specified the -move option.    *    * Whe this option is in effect, we will copy salvaged blocks into the lost    * and found. */
 DECL|field|doMove
 specifier|private
 name|boolean
@@ -1161,7 +1161,7 @@ name|doMove
 init|=
 literal|false
 decl_stmt|;
-comment|/**     * True if the user specified the -delete option.    *    * Whe this option is in effect, we will delete corrupted files.    */
+comment|/**    * True if the user specified the -delete option.    *    * Whe this option is in effect, we will delete corrupted files.    */
 DECL|field|doDelete
 specifier|private
 name|boolean
@@ -1807,7 +1807,7 @@ name|bm
 operator|.
 name|countNodes
 argument_list|(
-name|block
+name|blockInfo
 argument_list|)
 decl_stmt|;
 name|out
@@ -3181,6 +3181,7 @@ name|blocks
 init|=
 literal|null
 decl_stmt|;
+specifier|final
 name|FSNamesystem
 name|fsn
 init|=
@@ -3537,6 +3538,20 @@ operator|.
 name|getBlockManager
 argument_list|()
 decl_stmt|;
+specifier|final
+name|BlockInfo
+name|storedBlock
+init|=
+name|bm
+operator|.
+name|getStoredBlock
+argument_list|(
+name|block
+operator|.
+name|getLocalBlock
+argument_list|()
+argument_list|)
+decl_stmt|;
 comment|// count decommissionedReplicas / decommissioningReplicas
 name|NumberReplicas
 name|numberReplicas
@@ -3545,10 +3560,7 @@ name|bm
 operator|.
 name|countNodes
 argument_list|(
-name|block
-operator|.
-name|getLocalBlock
-argument_list|()
+name|storedBlock
 argument_list|)
 decl_stmt|;
 name|int

@@ -3188,12 +3188,12 @@ name|maxReplicationStreams
 return|;
 block|}
 comment|/**    * @return true if the block has minimum replicas    */
-DECL|method|checkMinReplication (Block block)
+DECL|method|checkMinReplication (BlockInfo block)
 specifier|public
 name|boolean
 name|checkMinReplication
 parameter_list|(
-name|Block
+name|BlockInfo
 name|block
 parameter_list|)
 block|{
@@ -6541,7 +6541,7 @@ name|List
 argument_list|<
 name|List
 argument_list|<
-name|Block
+name|BlockInfo
 argument_list|>
 argument_list|>
 name|blocksToReplicate
@@ -6584,7 +6584,7 @@ block|}
 comment|/** Replicate a set of blocks    *    * @param blocksToReplicate blocks to be replicated, for each priority    * @return the number of blocks scheduled for replication    */
 annotation|@
 name|VisibleForTesting
-DECL|method|computeReplicationWorkForBlocks (List<List<Block>> blocksToReplicate)
+DECL|method|computeReplicationWorkForBlocks (List<List<BlockInfo>> blocksToReplicate)
 name|int
 name|computeReplicationWorkForBlocks
 parameter_list|(
@@ -6592,7 +6592,7 @@ name|List
 argument_list|<
 name|List
 argument_list|<
-name|Block
+name|BlockInfo
 argument_list|>
 argument_list|>
 name|blocksToReplicate
@@ -6670,7 +6670,7 @@ control|)
 block|{
 for|for
 control|(
-name|Block
+name|BlockInfo
 name|block
 range|:
 name|blocksToReplicate
@@ -7053,7 +7053,7 @@ init|(
 name|neededReplications
 init|)
 block|{
-name|Block
+name|BlockInfo
 name|block
 init|=
 name|rw
@@ -8220,7 +8220,7 @@ name|void
 name|processPendingReplications
 parameter_list|()
 block|{
-name|Block
+name|BlockInfo
 index|[]
 name|timedOutItems
 init|=
@@ -13321,7 +13321,7 @@ name|OK
 return|;
 block|}
 comment|/** Set replication for the blocks. */
-DECL|method|setReplication (final short oldRepl, final short newRepl, final String src, final Block... blocks)
+DECL|method|setReplication (final short oldRepl, final short newRepl, final String src, final BlockInfo... blocks)
 specifier|public
 name|void
 name|setReplication
@@ -13339,7 +13339,7 @@ name|String
 name|src
 parameter_list|,
 specifier|final
-name|Block
+name|BlockInfo
 modifier|...
 name|blocks
 parameter_list|)
@@ -13356,7 +13356,7 @@ block|}
 comment|// update needReplication priority queues
 for|for
 control|(
-name|Block
+name|BlockInfo
 name|b
 range|:
 name|blocks
@@ -13401,7 +13401,7 @@ argument_list|)
 expr_stmt|;
 for|for
 control|(
-name|Block
+name|BlockInfo
 name|b
 range|:
 name|blocks
@@ -14262,14 +14262,26 @@ argument_list|()
 operator|)
 assert|;
 block|{
+name|BlockInfo
+name|storedBlock
+init|=
+name|getStoredBlock
+argument_list|(
+name|block
+argument_list|)
+decl_stmt|;
 if|if
 condition|(
+name|storedBlock
+operator|==
+literal|null
+operator|||
 operator|!
 name|blocksMap
 operator|.
 name|removeNode
 argument_list|(
-name|block
+name|storedBlock
 argument_list|,
 name|node
 argument_list|)
@@ -14317,12 +14329,12 @@ name|namesystem
 operator|.
 name|decrementSafeBlockCount
 argument_list|(
-name|block
+name|storedBlock
 argument_list|)
 expr_stmt|;
 name|updateNeededReplications
 argument_list|(
-name|block
+name|storedBlock
 argument_list|,
 operator|-
 literal|1
@@ -14685,15 +14697,34 @@ block|}
 comment|//
 comment|// Modify the blocks->datanode map and node's map.
 comment|//
+name|BlockInfo
+name|storedBlock
+init|=
+name|getStoredBlock
+argument_list|(
+name|block
+argument_list|)
+decl_stmt|;
+if|if
+condition|(
+name|storedBlock
+operator|!=
+literal|null
+condition|)
+block|{
 name|pendingReplications
 operator|.
 name|decrement
 argument_list|(
+name|getStoredBlock
+argument_list|(
 name|block
+argument_list|)
 argument_list|,
 name|node
 argument_list|)
 expr_stmt|;
+block|}
 name|processAndHandleReportedBlock
 argument_list|(
 name|storageInfo
@@ -15222,12 +15253,12 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|/**    * Return the number of nodes hosting a given block, grouped    * by the state of those replicas.    */
-DECL|method|countNodes (Block b)
+DECL|method|countNodes (BlockInfo b)
 specifier|public
 name|NumberReplicas
 name|countNodes
 parameter_list|(
-name|Block
+name|BlockInfo
 name|b
 parameter_list|)
 block|{
@@ -15422,7 +15453,7 @@ name|stale
 argument_list|)
 return|;
 block|}
-comment|/**     * Simpler, faster form of {@link #countNodes(Block)} that only returns the number    * of live nodes.  If in startup safemode (or its 30-sec extension period),    * then it gains speed by ignoring issues of excess replicas or nodes    * that are decommissioned or in process of becoming decommissioned.    * If not in startup, then it calls {@link #countNodes(Block)} instead.    *     * @param b - the block being tested    * @return count of live nodes for this block    */
+comment|/**     * Simpler, faster form of {@link #countNodes} that only returns the number    * of live nodes.  If in startup safemode (or its 30-sec extension period),    * then it gains speed by ignoring issues of excess replicas or nodes    * that are decommissioned or in process of becoming decommissioned.    * If not in startup, then it calls {@link #countNodes} instead.    *    * @param b - the block being tested    * @return count of live nodes for this block    */
 DECL|method|countLiveNodes (BlockInfo b)
 name|int
 name|countLiveNodes
@@ -15545,9 +15576,7 @@ block|}
 specifier|final
 name|Iterator
 argument_list|<
-name|?
-extends|extends
-name|Block
+name|BlockInfo
 argument_list|>
 name|it
 init|=
@@ -15570,7 +15599,7 @@ argument_list|()
 condition|)
 block|{
 specifier|final
-name|Block
+name|BlockInfo
 name|block
 init|=
 name|it
@@ -15827,12 +15856,12 @@ name|size
 argument_list|()
 return|;
 block|}
-DECL|method|removeBlock (Block block)
+DECL|method|removeBlock (BlockInfo block)
 specifier|public
 name|void
 name|removeBlock
 parameter_list|(
-name|Block
+name|BlockInfo
 name|block
 parameter_list|)
 block|{
@@ -15919,13 +15948,13 @@ argument_list|)
 return|;
 block|}
 comment|/** updates a block in under replication queue */
-DECL|method|updateNeededReplications (final Block block, final int curReplicasDelta, int expectedReplicasDelta)
+DECL|method|updateNeededReplications (final BlockInfo block, final int curReplicasDelta, int expectedReplicasDelta)
 specifier|private
 name|void
 name|updateNeededReplications
 parameter_list|(
 specifier|final
-name|Block
+name|BlockInfo
 name|block
 parameter_list|,
 specifier|final
@@ -16076,7 +16105,7 @@ argument_list|()
 decl_stmt|;
 for|for
 control|(
-name|Block
+name|BlockInfo
 name|block
 range|:
 name|bc
@@ -16919,7 +16948,7 @@ DECL|method|getCorruptReplicaBlockIterator ()
 specifier|public
 name|Iterator
 argument_list|<
-name|Block
+name|BlockInfo
 argument_list|>
 name|getCorruptReplicaBlockIterator
 parameter_list|()
@@ -17355,7 +17384,7 @@ block|{
 DECL|field|block
 specifier|private
 specifier|final
-name|Block
+name|BlockInfo
 name|block
 decl_stmt|;
 DECL|field|bc
@@ -17406,11 +17435,11 @@ specifier|final
 name|int
 name|priority
 decl_stmt|;
-DECL|method|ReplicationWork (Block block, BlockCollection bc, DatanodeDescriptor srcNode, List<DatanodeDescriptor> containingNodes, List<DatanodeStorageInfo> liveReplicaStorages, int additionalReplRequired, int priority)
+DECL|method|ReplicationWork (BlockInfo block, BlockCollection bc, DatanodeDescriptor srcNode, List<DatanodeDescriptor> containingNodes, List<DatanodeStorageInfo> liveReplicaStorages, int additionalReplRequired, int priority)
 specifier|public
 name|ReplicationWork
 parameter_list|(
-name|Block
+name|BlockInfo
 name|block
 parameter_list|,
 name|BlockCollection

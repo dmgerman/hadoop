@@ -2685,28 +2685,26 @@ return|return
 name|blockInfo
 return|;
 block|}
-DECL|method|scheduleSingleReplication (Block block)
+DECL|method|scheduleSingleReplication (BlockInfo block)
 specifier|private
 name|DatanodeStorageInfo
 index|[]
 name|scheduleSingleReplication
 parameter_list|(
-name|Block
+name|BlockInfo
 name|block
 parameter_list|)
 block|{
 comment|// list for priority 1
 name|List
 argument_list|<
-name|Block
+name|BlockInfo
 argument_list|>
 name|list_p1
 init|=
 operator|new
 name|ArrayList
-argument_list|<
-name|Block
-argument_list|>
+argument_list|<>
 argument_list|()
 decl_stmt|;
 name|list_p1
@@ -2721,19 +2719,14 @@ name|List
 argument_list|<
 name|List
 argument_list|<
-name|Block
+name|BlockInfo
 argument_list|>
 argument_list|>
 name|list_all
 init|=
 operator|new
 name|ArrayList
-argument_list|<
-name|List
-argument_list|<
-name|Block
-argument_list|>
-argument_list|>
+argument_list|<>
 argument_list|()
 decl_stmt|;
 name|list_all
@@ -2743,7 +2736,7 @@ argument_list|(
 operator|new
 name|ArrayList
 argument_list|<
-name|Block
+name|BlockInfo
 argument_list|>
 argument_list|()
 argument_list|)

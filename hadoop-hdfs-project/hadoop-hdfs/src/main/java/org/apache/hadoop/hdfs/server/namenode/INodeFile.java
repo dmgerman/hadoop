@@ -4473,7 +4473,7 @@ condition|)
 return|return;
 name|List
 argument_list|<
-name|Block
+name|BlockInfo
 argument_list|>
 name|toDelete
 init|=
@@ -4484,7 +4484,7 @@ argument_list|()
 decl_stmt|;
 for|for
 control|(
-name|Block
+name|BlockInfo
 name|blk
 range|:
 name|snapshotBlocks

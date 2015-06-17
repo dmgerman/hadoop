@@ -146,22 +146,6 @@ name|hdfs
 operator|.
 name|protocol
 operator|.
-name|Block
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|hdfs
-operator|.
-name|protocol
-operator|.
 name|BlockStoragePolicy
 import|;
 end_import
@@ -227,6 +211,24 @@ operator|.
 name|protocol
 operator|.
 name|SnapshotAccessControlException
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|server
+operator|.
+name|blockmanagement
+operator|.
+name|BlockInfo
 import|;
 end_import
 
@@ -1040,7 +1042,7 @@ index|]
 decl_stmt|;
 comment|// 0: old, 1: new
 specifier|final
-name|Block
+name|BlockInfo
 index|[]
 name|blocks
 init|=
@@ -2264,7 +2266,7 @@ block|}
 block|}
 DECL|method|unprotectedSetReplication ( FSDirectory fsd, String src, short replication, short[] blockRepls)
 specifier|static
-name|Block
+name|BlockInfo
 index|[]
 name|unprotectedSetReplication
 parameter_list|(

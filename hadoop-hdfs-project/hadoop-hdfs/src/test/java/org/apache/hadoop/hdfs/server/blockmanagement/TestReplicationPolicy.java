@@ -5686,6 +5686,32 @@ argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
+DECL|method|genBlockInfo (long id)
+specifier|private
+name|BlockInfo
+name|genBlockInfo
+parameter_list|(
+name|long
+name|id
+parameter_list|)
+block|{
+return|return
+operator|new
+name|BlockInfoContiguous
+argument_list|(
+operator|new
+name|Block
+argument_list|(
+name|id
+argument_list|)
+argument_list|,
+operator|(
+name|short
+operator|)
+literal|3
+argument_list|)
+return|;
+block|}
 comment|/**    * Test for the high priority blocks are processed before the low priority    * blocks.    */
 annotation|@
 name|Test
@@ -5798,8 +5824,7 @@ name|neededReplications
 operator|.
 name|add
 argument_list|(
-operator|new
-name|Block
+name|genBlockInfo
 argument_list|(
 name|ThreadLocalRandom
 operator|.
@@ -5832,8 +5857,7 @@ name|neededReplications
 operator|.
 name|add
 argument_list|(
-operator|new
-name|Block
+name|genBlockInfo
 argument_list|(
 name|ThreadLocalRandom
 operator|.
@@ -5924,8 +5948,7 @@ name|underReplicatedBlocks
 operator|.
 name|add
 argument_list|(
-operator|new
-name|Block
+name|genBlockInfo
 argument_list|(
 name|ThreadLocalRandom
 operator|.
@@ -5948,8 +5971,7 @@ name|underReplicatedBlocks
 operator|.
 name|add
 argument_list|(
-operator|new
-name|Block
+name|genBlockInfo
 argument_list|(
 name|ThreadLocalRandom
 operator|.
@@ -5972,8 +5994,7 @@ name|underReplicatedBlocks
 operator|.
 name|add
 argument_list|(
-operator|new
-name|Block
+name|genBlockInfo
 argument_list|(
 name|ThreadLocalRandom
 operator|.
@@ -5996,8 +6017,7 @@ name|underReplicatedBlocks
 operator|.
 name|add
 argument_list|(
-operator|new
-name|Block
+name|genBlockInfo
 argument_list|(
 name|ThreadLocalRandom
 operator|.
@@ -6020,8 +6040,7 @@ name|underReplicatedBlocks
 operator|.
 name|add
 argument_list|(
-operator|new
-name|Block
+name|genBlockInfo
 argument_list|(
 name|ThreadLocalRandom
 operator|.
@@ -6047,7 +6066,7 @@ name|List
 argument_list|<
 name|List
 argument_list|<
-name|Block
+name|BlockInfo
 argument_list|>
 argument_list|>
 name|chosenBlocks
@@ -6106,8 +6125,7 @@ name|underReplicatedBlocks
 operator|.
 name|add
 argument_list|(
-operator|new
-name|Block
+name|genBlockInfo
 argument_list|(
 name|ThreadLocalRandom
 operator|.
@@ -6182,7 +6200,7 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|/** asserts the chosen blocks with expected priority blocks */
-DECL|method|assertTheChosenBlocks ( List<List<Block>> chosenBlocks, int firstPrioritySize, int secondPrioritySize, int thirdPrioritySize, int fourthPrioritySize, int fifthPrioritySize)
+DECL|method|assertTheChosenBlocks ( List<List<BlockInfo>> chosenBlocks, int firstPrioritySize, int secondPrioritySize, int thirdPrioritySize, int fourthPrioritySize, int fifthPrioritySize)
 specifier|private
 name|void
 name|assertTheChosenBlocks
@@ -6191,7 +6209,7 @@ name|List
 argument_list|<
 name|List
 argument_list|<
-name|Block
+name|BlockInfo
 argument_list|>
 argument_list|>
 name|chosenBlocks
@@ -7072,11 +7090,10 @@ operator|new
 name|UnderReplicatedBlocks
 argument_list|()
 decl_stmt|;
-name|Block
+name|BlockInfo
 name|block1
 init|=
-operator|new
-name|Block
+name|genBlockInfo
 argument_list|(
 name|ThreadLocalRandom
 operator|.
@@ -7087,11 +7104,10 @@ name|nextLong
 argument_list|()
 argument_list|)
 decl_stmt|;
-name|Block
+name|BlockInfo
 name|block2
 init|=
-operator|new
-name|Block
+name|genBlockInfo
 argument_list|(
 name|ThreadLocalRandom
 operator|.
@@ -7102,11 +7118,10 @@ name|nextLong
 argument_list|()
 argument_list|)
 decl_stmt|;
-name|Block
+name|BlockInfo
 name|block3
 init|=
-operator|new
-name|Block
+name|genBlockInfo
 argument_list|(
 name|ThreadLocalRandom
 operator|.
@@ -7175,7 +7190,7 @@ name|List
 argument_list|<
 name|List
 argument_list|<
-name|Block
+name|BlockInfo
 argument_list|>
 argument_list|>
 name|chosenBlocks
@@ -7352,11 +7367,10 @@ name|bm
 operator|.
 name|neededReplications
 decl_stmt|;
-name|Block
+name|BlockInfo
 name|block1
 init|=
-operator|new
-name|Block
+name|genBlockInfo
 argument_list|(
 name|ThreadLocalRandom
 operator|.
@@ -7367,11 +7381,10 @@ name|nextLong
 argument_list|()
 argument_list|)
 decl_stmt|;
-name|Block
+name|BlockInfo
 name|block2
 init|=
-operator|new
-name|Block
+name|genBlockInfo
 argument_list|(
 name|ThreadLocalRandom
 operator|.
@@ -7414,7 +7427,7 @@ name|List
 argument_list|<
 name|List
 argument_list|<
-name|Block
+name|BlockInfo
 argument_list|>
 argument_list|>
 name|chosenBlocks
@@ -7610,11 +7623,10 @@ name|bm
 operator|.
 name|neededReplications
 decl_stmt|;
-name|Block
+name|BlockInfo
 name|block1
 init|=
-operator|new
-name|Block
+name|genBlockInfo
 argument_list|(
 name|ThreadLocalRandom
 operator|.
@@ -7625,11 +7637,10 @@ name|nextLong
 argument_list|()
 argument_list|)
 decl_stmt|;
-name|Block
+name|BlockInfo
 name|block2
 init|=
-operator|new
-name|Block
+name|genBlockInfo
 argument_list|(
 name|ThreadLocalRandom
 operator|.
@@ -7672,7 +7683,7 @@ name|List
 argument_list|<
 name|List
 argument_list|<
-name|Block
+name|BlockInfo
 argument_list|>
 argument_list|>
 name|chosenBlocks
@@ -8120,11 +8131,10 @@ name|bm
 operator|.
 name|neededReplications
 decl_stmt|;
-name|Block
+name|BlockInfo
 name|block1
 init|=
-operator|new
-name|Block
+name|genBlockInfo
 argument_list|(
 name|ThreadLocalRandom
 operator|.
@@ -8135,11 +8145,10 @@ name|nextLong
 argument_list|()
 argument_list|)
 decl_stmt|;
-name|Block
+name|BlockInfo
 name|block2
 init|=
-operator|new
-name|Block
+name|genBlockInfo
 argument_list|(
 name|ThreadLocalRandom
 operator|.
@@ -8182,7 +8191,7 @@ name|List
 argument_list|<
 name|List
 argument_list|<
-name|Block
+name|BlockInfo
 argument_list|>
 argument_list|>
 name|chosenBlocks

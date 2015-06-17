@@ -82,6 +82,16 @@ name|java
 operator|.
 name|util
 operator|.
+name|Collections
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
 name|HashMap
 import|;
 end_import
@@ -181,7 +191,7 @@ specifier|private
 specifier|final
 name|Map
 argument_list|<
-name|Block
+name|BlockInfo
 argument_list|,
 name|PendingBlockInfo
 argument_list|>
@@ -192,7 +202,7 @@ specifier|private
 specifier|final
 name|ArrayList
 argument_list|<
-name|Block
+name|BlockInfo
 argument_list|>
 name|timedOutItems
 decl_stmt|;
@@ -263,20 +273,14 @@ name|pendingReplications
 operator|=
 operator|new
 name|HashMap
-argument_list|<
-name|Block
-argument_list|,
-name|PendingBlockInfo
-argument_list|>
+argument_list|<>
 argument_list|()
 expr_stmt|;
 name|timedOutItems
 operator|=
 operator|new
 name|ArrayList
-argument_list|<
-name|Block
-argument_list|>
+argument_list|<>
 argument_list|()
 expr_stmt|;
 block|}
@@ -302,11 +306,11 @@ argument_list|()
 expr_stmt|;
 block|}
 comment|/**    * Add a block to the list of pending Replications    * @param block The corresponding block    * @param targets The DataNodes where replicas of the block should be placed    */
-DECL|method|increment (Block block, DatanodeDescriptor[] targets)
+DECL|method|increment (BlockInfo block, DatanodeDescriptor[] targets)
 name|void
 name|increment
 parameter_list|(
-name|Block
+name|BlockInfo
 name|block
 parameter_list|,
 name|DatanodeDescriptor
@@ -367,12 +371,12 @@ expr_stmt|;
 block|}
 block|}
 block|}
-comment|/**    * One replication request for this block has finished.    * Decrement the number of pending replication requests    * for this block.    *     * @param The DataNode that finishes the replication    */
-DECL|method|decrement (Block block, DatanodeDescriptor dn)
+comment|/**    * One replication request for this block has finished.    * Decrement the number of pending replication requests    * for this block.    *     * @param dn The DataNode that finishes the replication    */
+DECL|method|decrement (BlockInfo block, DatanodeDescriptor dn)
 name|void
 name|decrement
 parameter_list|(
-name|Block
+name|BlockInfo
 name|block
 parameter_list|,
 name|DatanodeDescriptor
@@ -448,11 +452,11 @@ block|}
 block|}
 block|}
 comment|/**    * Remove the record about the given block from pendingReplications.    * @param block The given block whose pending replication requests need to be    *              removed    */
-DECL|method|remove (Block block)
+DECL|method|remove (BlockInfo block)
 name|void
 name|remove
 parameter_list|(
-name|Block
+name|BlockInfo
 name|block
 parameter_list|)
 block|{
@@ -507,11 +511,11 @@ argument_list|()
 return|;
 block|}
 comment|/**    * How many copies of this block is pending replication?    */
-DECL|method|getNumReplicas (Block block)
+DECL|method|getNumReplicas (BlockInfo block)
 name|int
 name|getNumReplicas
 parameter_list|(
-name|Block
+name|BlockInfo
 name|block
 parameter_list|)
 block|{
@@ -551,7 +555,7 @@ return|;
 block|}
 comment|/**    * Returns a list of blocks that have timed out their     * replication requests. Returns null if no blocks have    * timed out.    */
 DECL|method|getTimedOutBlocks ()
-name|Block
+name|BlockInfo
 index|[]
 name|getTimedOutBlocks
 parameter_list|()
@@ -575,7 +579,7 @@ return|return
 literal|null
 return|;
 block|}
-name|Block
+name|BlockInfo
 index|[]
 name|blockList
 init|=
@@ -584,7 +588,7 @@ operator|.
 name|toArray
 argument_list|(
 operator|new
-name|Block
+name|BlockInfo
 index|[
 name|timedOutItems
 operator|.
@@ -655,9 +659,7 @@ argument_list|()
 else|:
 operator|new
 name|ArrayList
-argument_list|<
-name|DatanodeDescriptor
-argument_list|>
+argument_list|<>
 argument_list|(
 name|Arrays
 operator|.
@@ -704,22 +706,15 @@ operator|!=
 literal|null
 condition|)
 block|{
-for|for
-control|(
-name|DatanodeDescriptor
-name|dn
-range|:
-name|newTargets
-control|)
-block|{
-name|targets
+name|Collections
 operator|.
-name|add
+name|addAll
 argument_list|(
-name|dn
+name|targets
+argument_list|,
+name|newTargets
 argument_list|)
 expr_stmt|;
-block|}
 block|}
 block|}
 DECL|method|decrementReplicas (DatanodeDescriptor dn)
@@ -840,7 +835,7 @@ name|Map
 operator|.
 name|Entry
 argument_list|<
-name|Block
+name|BlockInfo
 argument_list|,
 name|PendingBlockInfo
 argument_list|>
@@ -889,7 +884,7 @@ name|Map
 operator|.
 name|Entry
 argument_list|<
-name|Block
+name|BlockInfo
 argument_list|,
 name|PendingBlockInfo
 argument_list|>
@@ -920,7 +915,7 @@ operator|+
 name|timeout
 condition|)
 block|{
-name|Block
+name|BlockInfo
 name|block
 init|=
 name|entry
@@ -1025,50 +1020,24 @@ name|size
 argument_list|()
 argument_list|)
 expr_stmt|;
-name|Iterator
-argument_list|<
+for|for
+control|(
 name|Map
 operator|.
 name|Entry
 argument_list|<
-name|Block
-argument_list|,
-name|PendingBlockInfo
-argument_list|>
-argument_list|>
-name|iter
-init|=
-name|pendingReplications
-operator|.
-name|entrySet
-argument_list|()
-operator|.
-name|iterator
-argument_list|()
-decl_stmt|;
-while|while
-condition|(
-name|iter
-operator|.
-name|hasNext
-argument_list|()
-condition|)
-block|{
-name|Map
-operator|.
-name|Entry
-argument_list|<
-name|Block
+name|BlockInfo
 argument_list|,
 name|PendingBlockInfo
 argument_list|>
 name|entry
-init|=
-name|iter
+range|:
+name|pendingReplications
 operator|.
-name|next
+name|entrySet
 argument_list|()
-decl_stmt|;
+control|)
+block|{
 name|PendingBlockInfo
 name|pendingBlock
 init|=
