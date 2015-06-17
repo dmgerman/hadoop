@@ -720,6 +720,12 @@ argument_list|,
 literal|"Accept-Charset"
 argument_list|,
 literal|"Content-Type"
+argument_list|,
+literal|"Origin"
+argument_list|,
+literal|"Access-Control-Request-Method"
+argument_list|,
+literal|"Access-Control-Request-Headers"
 argument_list|)
 argument_list|)
 decl_stmt|;
