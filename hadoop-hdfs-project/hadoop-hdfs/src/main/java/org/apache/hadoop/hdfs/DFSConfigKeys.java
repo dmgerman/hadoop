@@ -3619,7 +3619,9 @@ specifier|final
 name|String
 name|DFS_NAMENODE_KERBEROS_PRINCIPAL_KEY
 init|=
-literal|"dfs.namenode.kerberos.principal"
+name|HdfsClientConfigKeys
+operator|.
+name|DFS_NAMENODE_KERBEROS_PRINCIPAL_KEY
 decl_stmt|;
 annotation|@
 name|Deprecated

@@ -374,20 +374,6 @@ name|hadoop
 operator|.
 name|hdfs
 operator|.
-name|DFSConfigKeys
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|hdfs
-operator|.
 name|inotify
 operator|.
 name|EventBatchList
@@ -646,8 +632,26 @@ name|TokenInfo
 import|;
 end_import
 
+begin_import
+import|import static
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|client
+operator|.
+name|HdfsClientConfigKeys
+operator|.
+name|DFS_NAMENODE_KERBEROS_PRINCIPAL_KEY
+import|;
+end_import
+
 begin_comment
-comment|/**********************************************************************  * ClientProtocol is used by user code via   * {@link org.apache.hadoop.hdfs.DistributedFileSystem} class to communicate   * with the NameNode.  User code can manipulate the directory namespace,   * as well as open/close file streams, etc.  *  **********************************************************************/
+comment|/**********************************************************************  * ClientProtocol is used by user code via the DistributedFileSystem class to  * communicate with the NameNode.  User code can manipulate the directory  * namespace, as well as open/close file streams, etc.  *  **********************************************************************/
 end_comment
 
 begin_interface
@@ -664,8 +668,6 @@ name|KerberosInfo
 argument_list|(
 name|serverPrincipal
 operator|=
-name|DFSConfigKeys
-operator|.
 name|DFS_NAMENODE_KERBEROS_PRINCIPAL_KEY
 argument_list|)
 annotation|@
