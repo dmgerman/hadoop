@@ -4385,28 +4385,9 @@ return|return
 name|fileId
 return|;
 block|}
-comment|/**    * Set the data streamer object.    */
-DECL|method|setStreamer (DataStreamer streamer)
-specifier|protected
-specifier|synchronized
-name|void
-name|setStreamer
-parameter_list|(
-name|DataStreamer
-name|streamer
-parameter_list|)
-block|{
-name|this
-operator|.
-name|streamer
-operator|=
-name|streamer
-expr_stmt|;
-block|}
 comment|/**    * Returns the data streamer object.    */
 DECL|method|getStreamer ()
 specifier|protected
-specifier|synchronized
 name|DataStreamer
 name|getStreamer
 parameter_list|()
