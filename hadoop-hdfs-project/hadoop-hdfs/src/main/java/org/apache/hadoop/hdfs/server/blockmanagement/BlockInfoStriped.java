@@ -124,6 +124,12 @@ specifier|final
 name|ECSchema
 name|schema
 decl_stmt|;
+DECL|field|cellSize
+specifier|private
+specifier|final
+name|int
+name|cellSize
+decl_stmt|;
 comment|/**    * Always the same size with triplets. Record the block index for each triplet    * TODO: actually this is only necessary for over-replicated block. Thus can    * be further optimized to save memory usage.    */
 DECL|field|indices
 specifier|private
@@ -131,7 +137,7 @@ name|byte
 index|[]
 name|indices
 decl_stmt|;
-DECL|method|BlockInfoStriped (Block blk, ECSchema schema)
+DECL|method|BlockInfoStriped (Block blk, ECSchema schema, int cellSize)
 specifier|public
 name|BlockInfoStriped
 parameter_list|(
@@ -140,6 +146,9 @@ name|blk
 parameter_list|,
 name|ECSchema
 name|schema
+parameter_list|,
+name|int
+name|cellSize
 parameter_list|)
 block|{
 name|super
@@ -187,6 +196,12 @@ name|schema
 operator|=
 name|schema
 expr_stmt|;
+name|this
+operator|.
+name|cellSize
+operator|=
+name|cellSize
+expr_stmt|;
 block|}
 DECL|method|BlockInfoStriped (BlockInfoStriped b)
 name|BlockInfoStriped
@@ -202,6 +217,11 @@ argument_list|,
 name|b
 operator|.
 name|getSchema
+argument_list|()
+argument_list|,
+name|b
+operator|.
+name|getCellSize
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -287,6 +307,16 @@ parameter_list|()
 block|{
 return|return
 name|schema
+return|;
+block|}
+DECL|method|getCellSize ()
+specifier|public
+name|int
+name|getCellSize
+parameter_list|()
+block|{
+return|return
+name|cellSize
 return|;
 block|}
 DECL|method|initIndices ()
@@ -1111,6 +1141,8 @@ argument_list|(
 name|this
 argument_list|,
 name|schema
+argument_list|,
+name|cellSize
 argument_list|,
 name|s
 argument_list|,

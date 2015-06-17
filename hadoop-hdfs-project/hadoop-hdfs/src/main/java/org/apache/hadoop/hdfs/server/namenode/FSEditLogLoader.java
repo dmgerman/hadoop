@@ -256,6 +256,22 @@ name|hdfs
 operator|.
 name|protocol
 operator|.
+name|ErasureCodingZone
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|protocol
+operator|.
 name|HdfsConstants
 import|;
 end_import
@@ -3360,12 +3376,12 @@ operator|.
 name|CURRENT_STATE_ID
 argument_list|)
 expr_stmt|;
-name|ECSchema
-name|ecSchema
+name|ErasureCodingZone
+name|ecZone
 init|=
 name|FSDirErasureCodingOp
 operator|.
-name|getErasureCodingSchema
+name|getErasureCodingZone
 argument_list|(
 name|fsDir
 operator|.
@@ -3385,7 +3401,7 @@ name|iip
 argument_list|,
 name|newFile
 argument_list|,
-name|ecSchema
+name|ecZone
 argument_list|)
 expr_stmt|;
 break|break;
@@ -3517,12 +3533,12 @@ operator|.
 name|CURRENT_STATE_ID
 argument_list|)
 expr_stmt|;
-name|ECSchema
-name|ecSchema
+name|ErasureCodingZone
+name|ecZone
 init|=
 name|FSDirErasureCodingOp
 operator|.
-name|getErasureCodingSchema
+name|getErasureCodingZone
 argument_list|(
 name|fsDir
 operator|.
@@ -3542,7 +3558,7 @@ name|iip
 argument_list|,
 name|file
 argument_list|,
-name|ecSchema
+name|ecZone
 argument_list|)
 expr_stmt|;
 comment|// Now close the file
@@ -3895,12 +3911,12 @@ name|path
 argument_list|)
 decl_stmt|;
 comment|// Update in-memory data structures
-name|ECSchema
-name|ecSchema
+name|ErasureCodingZone
+name|ecZone
 init|=
 name|FSDirErasureCodingOp
 operator|.
-name|getErasureCodingSchema
+name|getErasureCodingZone
 argument_list|(
 name|fsDir
 operator|.
@@ -3920,7 +3936,7 @@ name|iip
 argument_list|,
 name|oldFile
 argument_list|,
-name|ecSchema
+name|ecZone
 argument_list|)
 expr_stmt|;
 if|if
@@ -4033,12 +4049,12 @@ name|path
 argument_list|)
 decl_stmt|;
 comment|// add the new block to the INodeFile
-name|ECSchema
-name|ecSchema
+name|ErasureCodingZone
+name|ecZone
 init|=
 name|FSDirErasureCodingOp
 operator|.
-name|getErasureCodingSchema
+name|getErasureCodingZone
 argument_list|(
 name|fsDir
 operator|.
@@ -4054,7 +4070,7 @@ name|addBlockOp
 argument_list|,
 name|oldFile
 argument_list|,
-name|ecSchema
+name|ecZone
 argument_list|)
 expr_stmt|;
 break|break;
@@ -6387,7 +6403,7 @@ argument_list|()
 return|;
 block|}
 comment|/**    * Add a new block into the given INodeFile    */
-DECL|method|addNewBlock (AddBlockOp op, INodeFile file, ECSchema ecSchema)
+DECL|method|addNewBlock (AddBlockOp op, INodeFile file, ErasureCodingZone ecZone)
 specifier|private
 name|void
 name|addNewBlock
@@ -6398,8 +6414,8 @@ parameter_list|,
 name|INodeFile
 name|file
 parameter_list|,
-name|ECSchema
-name|ecSchema
+name|ErasureCodingZone
+name|ecZone
 parameter_list|)
 throws|throws
 name|IOException
@@ -6575,7 +6591,7 @@ decl_stmt|;
 name|boolean
 name|isStriped
 init|=
-name|ecSchema
+name|ecZone
 operator|!=
 literal|null
 decl_stmt|;
@@ -6591,7 +6607,15 @@ name|BlockInfoStripedUnderConstruction
 argument_list|(
 name|newBlock
 argument_list|,
-name|ecSchema
+name|ecZone
+operator|.
+name|getSchema
+argument_list|()
+argument_list|,
+name|ecZone
+operator|.
+name|getCellSize
+argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
@@ -6642,7 +6666,7 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|/**    * Update in-memory data structures with new block information.    * @throws IOException    */
-DECL|method|updateBlocks (FSDirectory fsDir, BlockListUpdatingOp op, INodesInPath iip, INodeFile file, ECSchema ecSchema)
+DECL|method|updateBlocks (FSDirectory fsDir, BlockListUpdatingOp op, INodesInPath iip, INodeFile file, ErasureCodingZone ecZone)
 specifier|private
 name|void
 name|updateBlocks
@@ -6659,8 +6683,8 @@ parameter_list|,
 name|INodeFile
 name|file
 parameter_list|,
-name|ECSchema
-name|ecSchema
+name|ErasureCodingZone
+name|ecZone
 parameter_list|)
 throws|throws
 name|IOException
@@ -7032,7 +7056,7 @@ specifier|final
 name|boolean
 name|isStriped
 init|=
-name|ecSchema
+name|ecZone
 operator|!=
 literal|null
 decl_stmt|;
@@ -7092,7 +7116,15 @@ name|BlockInfoStripedUnderConstruction
 argument_list|(
 name|newBlock
 argument_list|,
-name|ecSchema
+name|ecZone
+operator|.
+name|getSchema
+argument_list|()
+argument_list|,
+name|ecZone
+operator|.
+name|getCellSize
+argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
@@ -7120,10 +7152,13 @@ comment|// is only executed when loading edits written by prior
 comment|// versions of Hadoop. Current versions always log
 comment|// OP_ADD operations as each block is allocated.
 comment|// TODO: ECSchema can be restored from persisted file (HDFS-7859).
+if|if
+condition|(
+name|isStriped
+condition|)
+block|{
 name|newBI
 operator|=
-name|isStriped
-condition|?
 operator|new
 name|BlockInfoStriped
 argument_list|(
@@ -7133,8 +7168,18 @@ name|ErasureCodingSchemaManager
 operator|.
 name|getSystemDefaultSchema
 argument_list|()
+argument_list|,
+name|ecZone
+operator|.
+name|getCellSize
+argument_list|()
 argument_list|)
-else|:
+expr_stmt|;
+block|}
+else|else
+block|{
+name|newBI
+operator|=
 operator|new
 name|BlockInfoContiguous
 argument_list|(
@@ -7146,6 +7191,7 @@ name|getPreferredBlockReplication
 argument_list|()
 argument_list|)
 expr_stmt|;
+block|}
 block|}
 name|fsNamesys
 operator|.

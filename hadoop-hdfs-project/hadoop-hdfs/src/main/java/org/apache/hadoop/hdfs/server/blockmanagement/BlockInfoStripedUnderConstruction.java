@@ -208,7 +208,7 @@ init|=
 literal|0
 decl_stmt|;
 comment|/**    * Constructor with null storage targets.    */
-DECL|method|BlockInfoStripedUnderConstruction (Block blk, ECSchema schema)
+DECL|method|BlockInfoStripedUnderConstruction (Block blk, ECSchema schema, int cellSize)
 specifier|public
 name|BlockInfoStripedUnderConstruction
 parameter_list|(
@@ -217,6 +217,9 @@ name|blk
 parameter_list|,
 name|ECSchema
 name|schema
+parameter_list|,
+name|int
+name|cellSize
 parameter_list|)
 block|{
 name|this
@@ -225,6 +228,8 @@ name|blk
 argument_list|,
 name|schema
 argument_list|,
+name|cellSize
+argument_list|,
 name|UNDER_CONSTRUCTION
 argument_list|,
 literal|null
@@ -232,7 +237,7 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|/**    * Create a striped block that is currently being constructed.    */
-DECL|method|BlockInfoStripedUnderConstruction (Block blk, ECSchema schema, BlockUCState state, DatanodeStorageInfo[] targets)
+DECL|method|BlockInfoStripedUnderConstruction (Block blk, ECSchema schema, int cellSize, BlockUCState state, DatanodeStorageInfo[] targets)
 specifier|public
 name|BlockInfoStripedUnderConstruction
 parameter_list|(
@@ -241,6 +246,9 @@ name|blk
 parameter_list|,
 name|ECSchema
 name|schema
+parameter_list|,
+name|int
+name|cellSize
 parameter_list|,
 name|BlockUCState
 name|state
@@ -255,6 +263,8 @@ argument_list|(
 name|blk
 argument_list|,
 name|schema
+argument_list|,
+name|cellSize
 argument_list|)
 expr_stmt|;
 assert|assert

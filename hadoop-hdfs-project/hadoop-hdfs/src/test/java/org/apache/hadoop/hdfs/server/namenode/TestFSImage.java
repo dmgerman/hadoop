@@ -645,6 +645,17 @@ operator|.
 name|getSystemDefaultSchema
 argument_list|()
 decl_stmt|;
+DECL|field|cellSize
+specifier|private
+specifier|static
+specifier|final
+name|int
+name|cellSize
+init|=
+name|HdfsConstants
+operator|.
+name|BLOCK_STRIPED_CELL_SIZE
+decl_stmt|;
 annotation|@
 name|Test
 DECL|method|testPersist ()
@@ -1229,6 +1240,8 @@ name|timestamp
 argument_list|)
 argument_list|,
 name|testSchema
+argument_list|,
+name|cellSize
 argument_list|)
 expr_stmt|;
 name|file
