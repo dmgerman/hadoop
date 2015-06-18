@@ -1489,23 +1489,6 @@ expr_stmt|;
 block|}
 annotation|@
 name|Override
-DECL|method|applyUMask (FsPermission umask)
-specifier|public
-name|FsPermission
-name|applyUMask
-parameter_list|(
-name|FsPermission
-name|umask
-parameter_list|)
-block|{
-throw|throw
-operator|new
-name|UnsupportedOperationException
-argument_list|()
-throw|;
-block|}
-annotation|@
-name|Override
 DECL|method|readFields (DataInput in)
 specifier|public
 name|void
