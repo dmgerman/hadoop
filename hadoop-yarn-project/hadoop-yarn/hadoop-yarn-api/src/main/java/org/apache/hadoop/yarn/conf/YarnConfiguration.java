@@ -1105,7 +1105,7 @@ DECL|field|DEFAULT_YARN_INTERMEDIATE_DATA_ENCRYPTION
 specifier|public
 specifier|static
 specifier|final
-name|Boolean
+name|boolean
 name|DEFAULT_YARN_INTERMEDIATE_DATA_ENCRYPTION
 init|=
 literal|false
@@ -2893,6 +2893,7 @@ decl_stmt|;
 DECL|field|DEFAULT_RM_PROXY_USER_PRIVILEGES_ENABLED
 specifier|public
 specifier|static
+specifier|final
 name|boolean
 name|DEFAULT_RM_PROXY_USER_PRIVILEGES_ENABLED
 init|=
