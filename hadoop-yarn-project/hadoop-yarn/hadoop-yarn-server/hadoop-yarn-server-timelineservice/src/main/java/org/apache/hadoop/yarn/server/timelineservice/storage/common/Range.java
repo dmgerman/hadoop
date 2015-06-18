@@ -4,7 +4,7 @@ comment|/**  * Licensed to the Apache Software Foundation (ASF) under one  * or 
 end_comment
 
 begin_package
-DECL|package|org.apache.hadoop.yarn.server.timelineservice.storage
+DECL|package|org.apache.hadoop.yarn.server.timelineservice.storage.common
 package|package
 name|org
 operator|.
@@ -19,6 +19,8 @@ operator|.
 name|timelineservice
 operator|.
 name|storage
+operator|.
+name|common
 package|;
 end_package
 
