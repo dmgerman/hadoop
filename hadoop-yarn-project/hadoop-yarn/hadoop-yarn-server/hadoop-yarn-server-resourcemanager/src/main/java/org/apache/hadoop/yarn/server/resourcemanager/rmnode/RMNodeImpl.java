@@ -3314,6 +3314,33 @@ argument_list|)
 expr_stmt|;
 if|if
 condition|(
+operator|!
+name|rmNode
+operator|.
+name|getTotalCapability
+argument_list|()
+operator|.
+name|equals
+argument_list|(
+name|newNode
+operator|.
+name|getTotalCapability
+argument_list|()
+argument_list|)
+condition|)
+block|{
+name|rmNode
+operator|.
+name|totalCapability
+operator|=
+name|newNode
+operator|.
+name|getTotalCapability
+argument_list|()
+expr_stmt|;
+block|}
+if|if
+condition|(
 name|rmNode
 operator|.
 name|getState
@@ -3327,7 +3354,7 @@ name|RUNNING
 argument_list|)
 condition|)
 block|{
-comment|// Only add new node if old state is RUNNING
+comment|// Only add old node if old state is RUNNING
 name|rmNode
 operator|.
 name|context
@@ -3343,7 +3370,7 @@ argument_list|(
 operator|new
 name|NodeAddedSchedulerEvent
 argument_list|(
-name|newNode
+name|rmNode
 argument_list|)
 argument_list|)
 expr_stmt|;
