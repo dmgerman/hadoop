@@ -252,20 +252,6 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|mapred
-operator|.
-name|SplitLocationInfo
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
 name|mapreduce
 operator|.
 name|InputFormat
@@ -1216,7 +1202,7 @@ name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"Total input paths to process : "
+literal|"Total input files to process : "
 operator|+
 name|result
 operator|.
