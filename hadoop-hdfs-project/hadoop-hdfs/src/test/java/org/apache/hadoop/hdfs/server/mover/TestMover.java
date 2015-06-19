@@ -2899,6 +2899,17 @@ argument_list|,
 literal|1L
 argument_list|)
 expr_stmt|;
+name|conf
+operator|.
+name|setBoolean
+argument_list|(
+name|DFSConfigKeys
+operator|.
+name|DFS_NAMENODE_REPLICATION_CONSIDERLOAD_KEY
+argument_list|,
+literal|false
+argument_list|)
+expr_stmt|;
 name|Dispatcher
 operator|.
 name|setBlockMoveWaitTime

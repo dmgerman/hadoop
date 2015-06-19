@@ -1193,6 +1193,17 @@ argument_list|)
 expr_stmt|;
 name|conf
 operator|.
+name|setBoolean
+argument_list|(
+name|DFSConfigKeys
+operator|.
+name|DFS_NAMENODE_REPLICATION_CONSIDERLOAD_KEY
+argument_list|,
+literal|false
+argument_list|)
+expr_stmt|;
+name|conf
+operator|.
 name|setLong
 argument_list|(
 name|DFSConfigKeys
