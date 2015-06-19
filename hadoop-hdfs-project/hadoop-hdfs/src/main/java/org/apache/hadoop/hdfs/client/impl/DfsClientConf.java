@@ -818,18 +818,6 @@ specifier|final
 name|int
 name|stripedReadThreadpoolSize
 decl_stmt|;
-DECL|field|stripedWriteMaxSecondsGetStripedBlock
-specifier|private
-specifier|final
-name|int
-name|stripedWriteMaxSecondsGetStripedBlock
-decl_stmt|;
-DECL|field|stripedWriteMaxSecondsGetEndedBlock
-specifier|private
-specifier|final
-name|int
-name|stripedWriteMaxSecondsGetEndedBlock
-decl_stmt|;
 DECL|method|DfsClientConf (Configuration conf)
 specifier|public
 name|DfsClientConf
@@ -1520,44 +1508,6 @@ operator|+
 literal|" must be greater than 0."
 argument_list|)
 expr_stmt|;
-name|stripedWriteMaxSecondsGetStripedBlock
-operator|=
-name|conf
-operator|.
-name|getInt
-argument_list|(
-name|HdfsClientConfigKeys
-operator|.
-name|StripedWrite
-operator|.
-name|MAX_SECONDS_GET_STRIPED_BLOCK_KEY
-argument_list|,
-name|HdfsClientConfigKeys
-operator|.
-name|StripedWrite
-operator|.
-name|MAX_SECONDS_GET_STRIPED_BLOCK_DEFAULT
-argument_list|)
-expr_stmt|;
-name|stripedWriteMaxSecondsGetEndedBlock
-operator|=
-name|conf
-operator|.
-name|getInt
-argument_list|(
-name|HdfsClientConfigKeys
-operator|.
-name|StripedWrite
-operator|.
-name|MAX_SECONDS_GET_ENDED_BLOCK_KEY
-argument_list|,
-name|HdfsClientConfigKeys
-operator|.
-name|StripedWrite
-operator|.
-name|MAX_SECONDS_GET_ENDED_BLOCK_DEFAULT
-argument_list|)
-expr_stmt|;
 block|}
 DECL|method|getChecksumType (Configuration conf)
 specifier|private
@@ -2133,28 +2083,6 @@ parameter_list|()
 block|{
 return|return
 name|stripedReadThreadpoolSize
-return|;
-block|}
-comment|/**    * @return stripedWriteMaxSecondsGetStripedBlock    */
-DECL|method|getStripedWriteMaxSecondsGetStripedBlock ()
-specifier|public
-name|int
-name|getStripedWriteMaxSecondsGetStripedBlock
-parameter_list|()
-block|{
-return|return
-name|stripedWriteMaxSecondsGetStripedBlock
-return|;
-block|}
-comment|/**    * @return stripedWriteMaxSecondsGetEndedBlock    */
-DECL|method|getStripedWriteMaxSecondsGetEndedBlock ()
-specifier|public
-name|int
-name|getStripedWriteMaxSecondsGetEndedBlock
-parameter_list|()
-block|{
-return|return
-name|stripedWriteMaxSecondsGetEndedBlock
 return|;
 block|}
 comment|/**    * @return the shortCircuitConf    */

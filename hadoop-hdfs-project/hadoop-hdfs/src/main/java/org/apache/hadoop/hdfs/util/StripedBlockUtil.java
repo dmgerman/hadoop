@@ -4236,15 +4236,18 @@ literal|")"
 return|;
 block|}
 block|}
-comment|/**    * Check if the information such as IDs and generation stamps in block-i    * match block-0.    */
-DECL|method|checkBlocks (ExtendedBlock block0, int i, ExtendedBlock blocki)
+comment|/**    * Check if the information such as IDs and generation stamps in block-i    * match block-j, where block-i and block-j are in the same group.    */
+DECL|method|checkBlocks (int j, ExtendedBlock blockj, int i, ExtendedBlock blocki)
 specifier|public
 specifier|static
 name|void
 name|checkBlocks
 parameter_list|(
+name|int
+name|j
+parameter_list|,
 name|ExtendedBlock
-name|block0
+name|blockj
 parameter_list|,
 name|int
 name|i
@@ -4265,7 +4268,7 @@ argument_list|()
 operator|.
 name|equals
 argument_list|(
-name|block0
+name|blockj
 operator|.
 name|getBlockPoolId
 argument_list|()
@@ -4276,9 +4279,13 @@ throw|throw
 operator|new
 name|IOException
 argument_list|(
-literal|"Block pool IDs mismatched: block0="
+literal|"Block pool IDs mismatched: block"
 operator|+
-name|block0
+name|j
+operator|+
+literal|"="
+operator|+
+name|blockj
 operator|+
 literal|", block"
 operator|+
@@ -4299,19 +4306,25 @@ argument_list|()
 operator|-
 name|i
 operator|!=
-name|block0
+name|blockj
 operator|.
 name|getBlockId
 argument_list|()
+operator|-
+name|j
 condition|)
 block|{
 throw|throw
 operator|new
 name|IOException
 argument_list|(
-literal|"Block IDs mismatched: block0="
+literal|"Block IDs mismatched: block"
 operator|+
-name|block0
+name|j
+operator|+
+literal|"="
+operator|+
+name|blockj
 operator|+
 literal|", block"
 operator|+
@@ -4330,7 +4343,7 @@ operator|.
 name|getGenerationStamp
 argument_list|()
 operator|!=
-name|block0
+name|blockj
 operator|.
 name|getGenerationStamp
 argument_list|()
@@ -4340,9 +4353,13 @@ throw|throw
 operator|new
 name|IOException
 argument_list|(
-literal|"Generation stamps mismatched: block0="
+literal|"Generation stamps mismatched: block"
 operator|+
-name|block0
+name|j
+operator|+
+literal|"="
+operator|+
+name|blockj
 operator|+
 literal|", block"
 operator|+
