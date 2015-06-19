@@ -653,6 +653,27 @@ argument_list|,
 name|filterConfig
 argument_list|)
 decl_stmt|;
+name|setAuthHandlerClass
+argument_list|(
+name|props
+argument_list|)
+expr_stmt|;
+return|return
+name|props
+return|;
+block|}
+comment|/**    * Set AUTH_TYPE property to the name of the corresponding authentication    * handler class based on the input properties.    * @param props input properties.    */
+DECL|method|setAuthHandlerClass (Properties props)
+specifier|protected
+name|void
+name|setAuthHandlerClass
+parameter_list|(
+name|Properties
+name|props
+parameter_list|)
+throws|throws
+name|ServletException
+block|{
 name|String
 name|authType
 init|=
@@ -663,6 +684,25 @@ argument_list|(
 name|AUTH_TYPE
 argument_list|)
 decl_stmt|;
+if|if
+condition|(
+name|authType
+operator|==
+literal|null
+condition|)
+block|{
+throw|throw
+operator|new
+name|ServletException
+argument_list|(
+literal|"Config property "
+operator|+
+name|AUTH_TYPE
+operator|+
+literal|" doesn't exist"
+argument_list|)
+throw|;
+block|}
 if|if
 condition|(
 name|authType
@@ -718,9 +758,6 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
-return|return
-name|props
-return|;
 block|}
 comment|/**    * Returns the proxyuser configuration. All returned properties must start    * with<code>proxyuser.</code>'    *<p/>    * Subclasses may override this method if the proxyuser configuration is     * read from other place than the filter init parameters.    *    * @param filterConfig filter configuration object    * @return the proxyuser configuration properties.    * @throws ServletException thrown if the configuration could not be created.    */
 DECL|method|getProxyuserConfiguration (FilterConfig filterConfig)
