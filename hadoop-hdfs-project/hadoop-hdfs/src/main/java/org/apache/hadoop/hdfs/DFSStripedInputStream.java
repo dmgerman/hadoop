@@ -446,24 +446,6 @@ name|erasurecode
 operator|.
 name|rawcoder
 operator|.
-name|RSRawDecoder
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|io
-operator|.
-name|erasurecode
-operator|.
-name|rawcoder
-operator|.
 name|RawErasureDecoder
 import|;
 end_import
@@ -1942,7 +1924,7 @@ name|stripeLimit
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|readCell (final BlockReader reader, final DatanodeInfo datanode, final long currentReaderOffset, final long targetReaderOffset, final ByteBufferStrategy strategy, final int targetLength, final Map<ExtendedBlock, Set<DatanodeInfo>> corruptedBlockMap)
+DECL|method|readCell (final BlockReader reader, final DatanodeInfo datanode, final long currentReaderOffset, final long targetReaderOffset, final ByteBufferStrategy strategy, final int targetLength, final ExtendedBlock currentBlock, final Map<ExtendedBlock, Set<DatanodeInfo>> corruptedBlockMap)
 specifier|private
 name|Callable
 argument_list|<
@@ -1973,6 +1955,10 @@ parameter_list|,
 specifier|final
 name|int
 name|targetLength
+parameter_list|,
+specifier|final
+name|ExtendedBlock
+name|currentBlock
 parameter_list|,
 specifier|final
 name|Map
@@ -2086,6 +2072,8 @@ name|datanode
 argument_list|,
 name|strategy
 argument_list|,
+name|currentBlock
+argument_list|,
 name|corruptedBlockMap
 argument_list|)
 decl_stmt|;
@@ -2125,7 +2113,7 @@ block|}
 block|}
 return|;
 block|}
-DECL|method|readToBuffer (BlockReader blockReader, DatanodeInfo currentNode, ByteBufferStrategy readerStrategy, Map<ExtendedBlock, Set<DatanodeInfo>> corruptedBlockMap)
+DECL|method|readToBuffer (BlockReader blockReader, DatanodeInfo currentNode, ByteBufferStrategy readerStrategy, ExtendedBlock currentBlock, Map<ExtendedBlock, Set<DatanodeInfo>> corruptedBlockMap)
 specifier|private
 name|int
 name|readToBuffer
@@ -2138,6 +2126,9 @@ name|currentNode
 parameter_list|,
 name|ByteBufferStrategy
 name|readerStrategy
+parameter_list|,
+name|ExtendedBlock
+name|currentBlock
 parameter_list|,
 name|Map
 argument_list|<
@@ -2182,8 +2173,7 @@ name|warn
 argument_list|(
 literal|"Found Checksum error for "
 operator|+
-name|getCurrentBlock
-argument_list|()
+name|currentBlock
 operator|+
 literal|" from "
 operator|+
@@ -2200,8 +2190,7 @@ expr_stmt|;
 comment|// we want to remember which block replicas we have tried
 name|addIntoCorruptedBlockMap
 argument_list|(
-name|getCurrentBlock
-argument_list|()
+name|currentBlock
 argument_list|,
 name|currentNode
 argument_list|,
@@ -2226,8 +2215,7 @@ name|warn
 argument_list|(
 literal|"Exception while reading from "
 operator|+
-name|getCurrentBlock
-argument_list|()
+name|currentBlock
 operator|+
 literal|" of "
 operator|+
@@ -4245,6 +4233,11 @@ operator|.
 name|byteBuffer
 operator|.
 name|remaining
+argument_list|()
+argument_list|,
+name|block
+operator|.
+name|getBlock
 argument_list|()
 argument_list|,
 name|corruptedBlockMap
