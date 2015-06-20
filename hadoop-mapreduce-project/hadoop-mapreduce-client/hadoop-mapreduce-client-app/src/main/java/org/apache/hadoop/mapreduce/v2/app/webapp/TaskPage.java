@@ -236,6 +236,26 @@ name|mapreduce
 operator|.
 name|v2
 operator|.
+name|api
+operator|.
+name|records
+operator|.
+name|TaskId
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|mapreduce
+operator|.
+name|v2
+operator|.
 name|app
 operator|.
 name|job
@@ -904,6 +924,17 @@ operator|.
 name|getNote
 argument_list|()
 decl_stmt|;
+name|TaskId
+name|taskId
+init|=
+name|attempt
+operator|.
+name|getID
+argument_list|()
+operator|.
+name|getTaskId
+argument_list|()
+decl_stmt|;
 name|attemptsTableData
 operator|.
 name|append
@@ -913,10 +944,12 @@ argument_list|)
 operator|.
 name|append
 argument_list|(
+name|getAttemptId
+argument_list|(
+name|taskId
+argument_list|,
 name|ta
-operator|.
-name|getId
-argument_list|()
+argument_list|)
 argument_list|)
 operator|.
 name|append
@@ -1297,6 +1330,25 @@ name|_
 argument_list|()
 expr_stmt|;
 block|}
+DECL|method|getAttemptId (TaskId taskId, TaskAttemptInfo ta)
+specifier|protected
+name|String
+name|getAttemptId
+parameter_list|(
+name|TaskId
+name|taskId
+parameter_list|,
+name|TaskAttemptInfo
+name|ta
+parameter_list|)
+block|{
+return|return
+name|ta
+operator|.
+name|getId
+argument_list|()
+return|;
+block|}
 DECL|method|isValidRequest ()
 specifier|protected
 name|boolean
@@ -1454,6 +1506,16 @@ operator|.
 name|append
 argument_list|(
 literal|", 'bSearchable': false }"
+argument_list|)
+operator|.
+name|append
+argument_list|(
+literal|"\n, {'sType':'string', 'aTargets': [ 0 ]"
+argument_list|)
+operator|.
+name|append
+argument_list|(
+literal|", 'mRender': parseHadoopID }"
 argument_list|)
 operator|.
 name|append
