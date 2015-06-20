@@ -133,6 +133,18 @@ import|;
 end_import
 
 begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
+name|concurrent
+operator|.
+name|TimeoutException
+import|;
+end_import
+
+begin_import
 import|import static
 name|org
 operator|.
@@ -221,6 +233,8 @@ throws|throws
 name|IOException
 throws|,
 name|InterruptedException
+throws|,
+name|TimeoutException
 block|{
 name|getClusterBuilder
 argument_list|()
@@ -228,6 +242,12 @@ operator|.
 name|build
 argument_list|()
 expr_stmt|;
+specifier|final
+name|int
+name|NUM_BLOCKS
+init|=
+literal|10
+decl_stmt|;
 specifier|final
 name|String
 name|METHOD_NAME
@@ -257,7 +277,7 @@ name|path
 argument_list|,
 name|BLOCK_SIZE
 operator|*
-literal|10
+name|NUM_BLOCKS
 argument_list|,
 literal|true
 argument_list|)
@@ -272,16 +292,11 @@ argument_list|,
 name|RAM_DISK
 argument_list|)
 decl_stmt|;
-comment|// Sleep for a short time to allow the lazy writer thread to do its job
-name|Thread
-operator|.
-name|sleep
+name|waitForMetric
 argument_list|(
-literal|6
-operator|*
-name|LAZY_WRITER_INTERVAL_SEC
-operator|*
-literal|1000
+literal|"RamDiskBlocksLazyPersisted"
+argument_list|,
+name|NUM_BLOCKS
 argument_list|)
 expr_stmt|;
 name|LOG
@@ -299,13 +314,12 @@ name|locatedBlocks
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * RamDisk eviction after lazy persist to disk.    * @throws Exception    */
 annotation|@
 name|Test
-DECL|method|testRamDiskEviction ()
+DECL|method|testSynchronousEviction ()
 specifier|public
 name|void
-name|testRamDiskEviction
+name|testSynchronousEviction
 parameter_list|()
 throws|throws
 name|Exception
@@ -313,11 +327,9 @@ block|{
 name|getClusterBuilder
 argument_list|()
 operator|.
-name|setRamDiskReplicaCapacity
+name|setMaxLockedMemory
 argument_list|(
-literal|1
-operator|+
-name|EVICTION_LOW_WATERMARK
+name|BLOCK_SIZE
 argument_list|)
 operator|.
 name|build
@@ -332,6 +344,7 @@ operator|.
 name|getMethodName
 argument_list|()
 decl_stmt|;
+specifier|final
 name|Path
 name|path1
 init|=
@@ -345,6 +358,32 @@ operator|+
 literal|".01.dat"
 argument_list|)
 decl_stmt|;
+name|makeTestFile
+argument_list|(
+name|path1
+argument_list|,
+name|BLOCK_SIZE
+argument_list|,
+literal|true
+argument_list|)
+expr_stmt|;
+name|ensureFileReplicasOnStorageType
+argument_list|(
+name|path1
+argument_list|,
+name|RAM_DISK
+argument_list|)
+expr_stmt|;
+comment|// Wait until the replica is written to persistent storage.
+name|waitForMetric
+argument_list|(
+literal|"RamDiskBlocksLazyPersisted"
+argument_list|,
+literal|1
+argument_list|)
+expr_stmt|;
+comment|// Ensure that writing a new file to RAM DISK evicts the block
+comment|// for the previous one.
 name|Path
 name|path2
 init|=
@@ -358,50 +397,6 @@ operator|+
 literal|".02.dat"
 argument_list|)
 decl_stmt|;
-specifier|final
-name|int
-name|SEED
-init|=
-literal|0xFADED
-decl_stmt|;
-name|makeRandomTestFile
-argument_list|(
-name|path1
-argument_list|,
-name|BLOCK_SIZE
-argument_list|,
-literal|true
-argument_list|,
-name|SEED
-argument_list|)
-expr_stmt|;
-name|ensureFileReplicasOnStorageType
-argument_list|(
-name|path1
-argument_list|,
-name|RAM_DISK
-argument_list|)
-expr_stmt|;
-comment|// Sleep for a short time to allow the lazy writer thread to do its job.
-name|Thread
-operator|.
-name|sleep
-argument_list|(
-literal|3
-operator|*
-name|LAZY_WRITER_INTERVAL_SEC
-operator|*
-literal|1000
-argument_list|)
-expr_stmt|;
-name|ensureFileReplicasOnStorageType
-argument_list|(
-name|path1
-argument_list|,
-name|RAM_DISK
-argument_list|)
-expr_stmt|;
-comment|// Create another file with a replica on RAM_DISK.
 name|makeTestFile
 argument_list|(
 name|path2
@@ -409,36 +404,6 @@ argument_list|,
 name|BLOCK_SIZE
 argument_list|,
 literal|true
-argument_list|)
-expr_stmt|;
-name|Thread
-operator|.
-name|sleep
-argument_list|(
-literal|3
-operator|*
-name|LAZY_WRITER_INTERVAL_SEC
-operator|*
-literal|1000
-argument_list|)
-expr_stmt|;
-name|triggerBlockReport
-argument_list|()
-expr_stmt|;
-comment|// Ensure the first file was evicted to disk, the second is still on
-comment|// RAM_DISK.
-name|ensureFileReplicasOnStorageType
-argument_list|(
-name|path2
-argument_list|,
-name|RAM_DISK
-argument_list|)
-expr_stmt|;
-name|ensureFileReplicasOnStorageType
-argument_list|(
-name|path1
-argument_list|,
-name|DEFAULT
 argument_list|)
 expr_stmt|;
 name|verifyRamDiskJMXMetric
@@ -465,16 +430,14 @@ name|void
 name|testRamDiskEvictionBeforePersist
 parameter_list|()
 throws|throws
-name|IOException
-throws|,
-name|InterruptedException
+name|Exception
 block|{
 name|getClusterBuilder
 argument_list|()
 operator|.
-name|setRamDiskReplicaCapacity
+name|setMaxLockedMemory
 argument_list|(
-literal|1
+name|BLOCK_SIZE
 argument_list|)
 operator|.
 name|build
@@ -567,6 +530,13 @@ argument_list|)
 expr_stmt|;
 comment|// Eviction should not happen for block of the first file that is not
 comment|// persisted yet.
+name|verifyRamDiskJMXMetric
+argument_list|(
+literal|"RamDiskBlocksEvicted"
+argument_list|,
+literal|0
+argument_list|)
+expr_stmt|;
 name|ensureFileReplicasOnStorageType
 argument_list|(
 name|path1
@@ -634,11 +604,11 @@ decl_stmt|;
 name|getClusterBuilder
 argument_list|()
 operator|.
-name|setRamDiskReplicaCapacity
+name|setMaxLockedMemory
 argument_list|(
 name|NUM_PATHS
-operator|+
-name|EVICTION_LOW_WATERMARK
+operator|*
+name|BLOCK_SIZE
 argument_list|)
 operator|.
 name|build
@@ -730,16 +700,11 @@ literal|true
 argument_list|)
 expr_stmt|;
 block|}
-comment|// Sleep for a short time to allow the lazy writer thread to do its job.
-name|Thread
-operator|.
-name|sleep
+name|waitForMetric
 argument_list|(
-literal|3
-operator|*
-name|LAZY_WRITER_INTERVAL_SEC
-operator|*
-literal|1000
+literal|"RamDiskBlocksLazyPersisted"
+argument_list|,
+name|NUM_PATHS
 argument_list|)
 expr_stmt|;
 for|for
@@ -1199,16 +1164,11 @@ argument_list|,
 name|RAM_DISK
 argument_list|)
 decl_stmt|;
-comment|// Sleep for a short time to allow the lazy writer thread to do its job
-name|Thread
-operator|.
-name|sleep
+name|waitForMetric
 argument_list|(
-literal|6
-operator|*
-name|LAZY_WRITER_INTERVAL_SEC
-operator|*
-literal|1000
+literal|"RamDiskBlocksLazyPersisted"
+argument_list|,
+literal|1
 argument_list|)
 expr_stmt|;
 comment|// Delete after persist
@@ -1276,6 +1236,8 @@ throws|throws
 name|IOException
 throws|,
 name|InterruptedException
+throws|,
+name|TimeoutException
 block|{
 name|getClusterBuilder
 argument_list|()
@@ -1349,16 +1311,11 @@ name|BLOCK_SIZE
 argument_list|)
 argument_list|)
 expr_stmt|;
-comment|// Sleep for a short time to allow the lazy writer thread to do its job
-name|Thread
-operator|.
-name|sleep
+name|waitForMetric
 argument_list|(
-literal|3
-operator|*
-name|LAZY_WRITER_INTERVAL_SEC
-operator|*
-literal|1000
+literal|"RamDiskBlocksLazyPersisted"
+argument_list|,
+literal|1
 argument_list|)
 expr_stmt|;
 name|long

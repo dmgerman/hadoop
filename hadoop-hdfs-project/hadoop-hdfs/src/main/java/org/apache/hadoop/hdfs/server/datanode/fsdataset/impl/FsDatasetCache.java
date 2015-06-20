@@ -1688,6 +1688,26 @@ operator|.
 name|osPageSize
 return|;
 block|}
+comment|/**    * Round up to the OS page size.    */
+DECL|method|roundUpPageSize (long count)
+name|long
+name|roundUpPageSize
+parameter_list|(
+name|long
+name|count
+parameter_list|)
+block|{
+return|return
+name|usedBytesCount
+operator|.
+name|rounder
+operator|.
+name|roundUp
+argument_list|(
+name|count
+argument_list|)
+return|;
+block|}
 comment|/**    * Background worker that mmaps, mlocks, and checksums a block    */
 DECL|class|CachingTask
 specifier|private
