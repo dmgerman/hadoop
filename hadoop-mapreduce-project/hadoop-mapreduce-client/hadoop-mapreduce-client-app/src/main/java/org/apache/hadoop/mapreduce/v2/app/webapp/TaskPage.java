@@ -128,6 +128,16 @@ name|java
 operator|.
 name|util
 operator|.
+name|EnumSet
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
 name|Collection
 import|;
 end_import
@@ -171,6 +181,46 @@ operator|.
 name|mapreduce
 operator|.
 name|MRConfig
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|mapreduce
+operator|.
+name|v2
+operator|.
+name|api
+operator|.
+name|records
+operator|.
+name|JobId
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|mapreduce
+operator|.
+name|v2
+operator|.
+name|api
+operator|.
+name|records
+operator|.
+name|TaskAttemptState
 import|;
 end_import
 
@@ -417,11 +467,6 @@ specifier|final
 name|boolean
 name|enableUIActions
 decl_stmt|;
-DECL|field|stateURLFormat
-specifier|private
-name|String
-name|stateURLFormat
-decl_stmt|;
 annotation|@
 name|Inject
 DECL|method|AttemptsBlock (App ctx, Configuration conf)
@@ -486,90 +531,23 @@ argument_list|)
 expr_stmt|;
 return|return;
 block|}
+name|JobId
+name|jobId
+init|=
+name|app
+operator|.
+name|getJob
+argument_list|()
+operator|.
+name|getID
+argument_list|()
+decl_stmt|;
 if|if
 condition|(
 name|enableUIActions
 condition|)
 block|{
 comment|// Kill task attempt
-name|String
-name|appID
-init|=
-name|app
-operator|.
-name|getJob
-argument_list|()
-operator|.
-name|getID
-argument_list|()
-operator|.
-name|getAppId
-argument_list|()
-operator|.
-name|toString
-argument_list|()
-decl_stmt|;
-name|String
-name|jobID
-init|=
-name|app
-operator|.
-name|getJob
-argument_list|()
-operator|.
-name|getID
-argument_list|()
-operator|.
-name|toString
-argument_list|()
-decl_stmt|;
-name|String
-name|taskID
-init|=
-name|app
-operator|.
-name|getTask
-argument_list|()
-operator|.
-name|getID
-argument_list|()
-operator|.
-name|toString
-argument_list|()
-decl_stmt|;
-name|stateURLFormat
-operator|=
-name|String
-operator|.
-name|format
-argument_list|(
-literal|"/proxy/%s/ws/v1/mapreduce/jobs/%s/tasks/%s/"
-operator|+
-literal|"attempts"
-argument_list|,
-name|appID
-argument_list|,
-name|jobID
-argument_list|,
-name|taskID
-argument_list|)
-operator|+
-literal|"/%s/state"
-expr_stmt|;
-name|String
-name|current
-init|=
-name|String
-operator|.
-name|format
-argument_list|(
-literal|"/proxy/%s/mapreduce/task/%s"
-argument_list|,
-name|appID
-argument_list|,
-name|taskID
-argument_list|)
-decl_stmt|;
 name|StringBuilder
 name|script
 init|=
@@ -581,102 +559,122 @@ name|script
 operator|.
 name|append
 argument_list|(
-literal|"function confirmAction(stateURL) {"
+literal|"function confirmAction(appID, jobID, taskID, attID) {\n"
 argument_list|)
 operator|.
 name|append
 argument_list|(
-literal|" b = confirm(\"Are you sure?\");"
+literal|"  var b = confirm(\"Are you sure?\");\n"
 argument_list|)
 operator|.
 name|append
 argument_list|(
-literal|" if (b == true) {"
+literal|"  if (b == true) {\n"
 argument_list|)
 operator|.
 name|append
 argument_list|(
-literal|" $.ajax({"
+literal|"    var current = '/proxy/' + appID"
 argument_list|)
 operator|.
 name|append
 argument_list|(
-literal|" type: 'PUT',"
+literal|"      + '/mapreduce/task/' + taskID;\n"
 argument_list|)
 operator|.
 name|append
 argument_list|(
-literal|" url: stateURL,"
+literal|"    var stateURL = '/proxy/' + appID"
 argument_list|)
 operator|.
 name|append
 argument_list|(
-literal|" contentType: 'application/json',"
+literal|"      + '/ws/v1/mapreduce/jobs/' + jobID"
 argument_list|)
 operator|.
 name|append
 argument_list|(
-literal|" data: '{\"state\":\"KILLED\"}',"
+literal|"      + '/tasks/' + taskID"
 argument_list|)
 operator|.
 name|append
 argument_list|(
-literal|" dataType: 'json'"
+literal|"      + '/attempts/' + attID + '/state';\n"
 argument_list|)
 operator|.
 name|append
 argument_list|(
-literal|" }).done(function(data){"
+literal|"    $.ajax({\n"
 argument_list|)
 operator|.
 name|append
 argument_list|(
-literal|" setTimeout(function(){"
+literal|"      type: 'PUT',\n"
 argument_list|)
 operator|.
 name|append
 argument_list|(
-literal|" location.href = '"
+literal|"      url: stateURL,\n"
 argument_list|)
 operator|.
 name|append
 argument_list|(
-name|current
+literal|"      contentType: 'application/json',\n"
 argument_list|)
 operator|.
 name|append
 argument_list|(
-literal|"';"
+literal|"      data: '{\"state\":\"KILLED\"}',\n"
 argument_list|)
 operator|.
 name|append
 argument_list|(
-literal|" }, 1000);"
+literal|"      dataType: 'json'\n"
 argument_list|)
 operator|.
 name|append
 argument_list|(
-literal|" }).fail(function(data){"
+literal|"    }).done(function(data) {\n"
 argument_list|)
 operator|.
 name|append
 argument_list|(
-literal|" console.log(data);"
+literal|"         setTimeout(function() {\n"
 argument_list|)
 operator|.
 name|append
 argument_list|(
-literal|" });"
+literal|"           location.href = current;\n"
 argument_list|)
 operator|.
 name|append
 argument_list|(
-literal|" }"
+literal|"         }, 1000);\n"
 argument_list|)
 operator|.
 name|append
 argument_list|(
-literal|"}"
+literal|"    }).fail(function(data) {\n"
+argument_list|)
+operator|.
+name|append
+argument_list|(
+literal|"         console.log(data);\n"
+argument_list|)
+operator|.
+name|append
+argument_list|(
+literal|"    });\n"
+argument_list|)
+operator|.
+name|append
+argument_list|(
+literal|"  }\n"
+argument_list|)
+operator|.
+name|append
+argument_list|(
+literal|"}\n"
 argument_list|)
 expr_stmt|;
 name|html
@@ -1117,6 +1115,46 @@ name|append
 argument_list|(
 literal|"\",\""
 argument_list|)
+expr_stmt|;
+if|if
+condition|(
+name|EnumSet
+operator|.
+name|of
+argument_list|(
+name|TaskAttemptState
+operator|.
+name|SUCCEEDED
+argument_list|,
+name|TaskAttemptState
+operator|.
+name|FAILED
+argument_list|,
+name|TaskAttemptState
+operator|.
+name|KILLED
+argument_list|)
+operator|.
+name|contains
+argument_list|(
+name|attempt
+operator|.
+name|getState
+argument_list|()
+argument_list|)
+condition|)
+block|{
+name|attemptsTableData
+operator|.
+name|append
+argument_list|(
+literal|"N/A"
+argument_list|)
+expr_stmt|;
+block|}
+else|else
+block|{
+name|attemptsTableData
 operator|.
 name|append
 argument_list|(
@@ -1125,32 +1163,57 @@ argument_list|)
 operator|.
 name|append
 argument_list|(
-name|String
+name|jobId
 operator|.
-name|format
+name|getAppId
+argument_list|()
+argument_list|)
+operator|.
+name|append
 argument_list|(
-name|stateURLFormat
-argument_list|,
+literal|"','"
+argument_list|)
+operator|.
+name|append
+argument_list|(
+name|jobId
+argument_list|)
+operator|.
+name|append
+argument_list|(
+literal|"','"
+argument_list|)
+operator|.
+name|append
+argument_list|(
+name|attempt
+operator|.
+name|getID
+argument_list|()
+operator|.
+name|getTaskId
+argument_list|()
+argument_list|)
+operator|.
+name|append
+argument_list|(
+literal|"','"
+argument_list|)
+operator|.
+name|append
+argument_list|(
 name|ta
 operator|.
 name|getId
 argument_list|()
-argument_list|)
 argument_list|)
 operator|.
 name|append
 argument_list|(
 literal|"');>Kill</a>"
 argument_list|)
-operator|.
-name|append
-argument_list|(
-literal|"\"],\n"
-argument_list|)
 expr_stmt|;
 block|}
-else|else
-block|{
 name|attemptsTableData
 operator|.
 name|append
