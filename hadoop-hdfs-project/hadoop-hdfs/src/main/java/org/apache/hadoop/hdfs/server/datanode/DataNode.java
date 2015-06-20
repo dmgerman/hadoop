@@ -2883,6 +2883,29 @@ name|CURRENT_BLOCK_FORMAT_VERSION
 init|=
 literal|1
 decl_stmt|;
+comment|/** A list of property that are reconfigurable at runtime. */
+DECL|field|RECONFIGURABLE_PROPERTIES
+specifier|private
+specifier|static
+specifier|final
+name|List
+argument_list|<
+name|String
+argument_list|>
+name|RECONFIGURABLE_PROPERTIES
+init|=
+name|Collections
+operator|.
+name|unmodifiableList
+argument_list|(
+name|Arrays
+operator|.
+name|asList
+argument_list|(
+name|DFS_DATANODE_DATA_DIR_KEY
+argument_list|)
+argument_list|)
+decl_stmt|;
 comment|/**    * Use {@link NetUtils#createSocketAddr(String)} instead.    */
 annotation|@
 name|Deprecated
@@ -3777,6 +3800,21 @@ expr_stmt|;
 block|}
 annotation|@
 name|Override
+comment|// ReconfigurableBase
+DECL|method|getNewConf ()
+specifier|protected
+name|Configuration
+name|getNewConf
+parameter_list|()
+block|{
+return|return
+operator|new
+name|HdfsConfiguration
+argument_list|()
+return|;
+block|}
+annotation|@
+name|Override
 DECL|method|reconfigurePropertyImpl (String property, String newVal)
 specifier|public
 name|void
@@ -3875,6 +3913,7 @@ block|}
 comment|/**    * Get a list of the keys of the re-configurable properties in configuration.    */
 annotation|@
 name|Override
+comment|// Reconfigurable
 DECL|method|getReconfigurableProperties ()
 specifier|public
 name|Collection
@@ -3884,26 +3923,8 @@ argument_list|>
 name|getReconfigurableProperties
 parameter_list|()
 block|{
-name|List
-argument_list|<
-name|String
-argument_list|>
-name|reconfigurable
-init|=
-name|Collections
-operator|.
-name|unmodifiableList
-argument_list|(
-name|Arrays
-operator|.
-name|asList
-argument_list|(
-name|DFS_DATANODE_DATA_DIR_KEY
-argument_list|)
-argument_list|)
-decl_stmt|;
 return|return
-name|reconfigurable
+name|RECONFIGURABLE_PROPERTIES
 return|;
 block|}
 comment|/**    * The ECN bit for the DataNode. The DataNode should return:    *<ul>    *<li>ECN.DISABLED when ECN is disabled.</li>    *<li>ECN.SUPPORTED when ECN is enabled but the DN still has capacity.</li>    *<li>ECN.CONGESTED when ECN is enabled and the DN is congested.</li>    *</ul>    */
@@ -14973,6 +14994,24 @@ expr_stmt|;
 return|return
 name|getReconfigurationTaskStatus
 argument_list|()
+return|;
+block|}
+annotation|@
+name|Override
+comment|// ClientDatanodeProtocol
+DECL|method|listReconfigurableProperties ()
+specifier|public
+name|List
+argument_list|<
+name|String
+argument_list|>
+name|listReconfigurableProperties
+parameter_list|()
+throws|throws
+name|IOException
+block|{
+return|return
+name|RECONFIGURABLE_PROPERTIES
 return|;
 block|}
 annotation|@

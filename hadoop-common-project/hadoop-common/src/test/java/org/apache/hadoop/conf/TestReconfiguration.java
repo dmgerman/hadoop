@@ -702,6 +702,20 @@ expr_stmt|;
 block|}
 annotation|@
 name|Override
+DECL|method|getNewConf ()
+specifier|protected
+name|Configuration
+name|getNewConf
+parameter_list|()
+block|{
+return|return
+operator|new
+name|Configuration
+argument_list|()
+return|;
+block|}
+annotation|@
+name|Override
 DECL|method|getReconfigurableProperties ()
 specifier|public
 name|Collection
@@ -1629,6 +1643,20 @@ name|conf
 argument_list|)
 expr_stmt|;
 block|}
+annotation|@
+name|Override
+DECL|method|getNewConf ()
+specifier|protected
+name|Configuration
+name|getNewConf
+parameter_list|()
+block|{
+return|return
+operator|new
+name|Configuration
+argument_list|()
+return|;
+block|}
 DECL|field|latch
 specifier|final
 name|CountDownLatch
@@ -2021,7 +2049,7 @@ argument_list|()
 decl_stmt|;
 name|assertEquals
 argument_list|(
-literal|3
+literal|2
 argument_list|,
 name|status
 operator|.
