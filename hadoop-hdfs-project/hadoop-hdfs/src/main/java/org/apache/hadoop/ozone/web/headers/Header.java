@@ -76,6 +76,24 @@ name|OZONE_QUOTA_REMOVE
 init|=
 literal|"remove"
 decl_stmt|;
+DECL|field|OZONE_QUOTA_UNDEFINED
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|OZONE_QUOTA_UNDEFINED
+init|=
+literal|"undefined"
+decl_stmt|;
+DECL|field|OZONE_LIST_QUERY_BUCKET
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|OZONE_LIST_QUERY_BUCKET
+init|=
+literal|"bucket"
+decl_stmt|;
 DECL|method|Header ()
 specifier|private
 name|Header
