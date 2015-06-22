@@ -144,6 +144,48 @@ specifier|private
 name|String
 name|hostID
 decl_stmt|;
+comment|/**    * Constructor that allows a shortMessage and exception.    *    * @param httpCode Error Code    * @param shortMessage Short Message    * @param ex Exception    */
+DECL|method|OzoneException (long httpCode, String shortMessage, Exception ex)
+specifier|public
+name|OzoneException
+parameter_list|(
+name|long
+name|httpCode
+parameter_list|,
+name|String
+name|shortMessage
+parameter_list|,
+name|Exception
+name|ex
+parameter_list|)
+block|{
+name|super
+argument_list|(
+name|ex
+argument_list|)
+expr_stmt|;
+name|this
+operator|.
+name|message
+operator|=
+name|ex
+operator|.
+name|getMessage
+argument_list|()
+expr_stmt|;
+name|this
+operator|.
+name|shortMessage
+operator|=
+name|shortMessage
+expr_stmt|;
+name|this
+operator|.
+name|httpCode
+operator|=
+name|httpCode
+expr_stmt|;
+block|}
 comment|/**    * Constructor that allows a shortMessage.    *    * @param httpCode Error Code    * @param shortMessage Short Message    */
 DECL|method|OzoneException (long httpCode, String shortMessage)
 specifier|public
@@ -242,7 +284,7 @@ return|return
 name|message
 return|;
 block|}
-comment|/**    * Sets the error message.    *    * @param longMessage  - Long message    */
+comment|/**    * Sets the error message.    *    * @param longMessage - Long message    */
 DECL|method|setMessage (String longMessage)
 specifier|public
 name|void
