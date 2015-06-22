@@ -474,26 +474,6 @@ name|TaskAttemptID
 import|;
 end_import
 
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|mapreduce
-operator|.
-name|v2
-operator|.
-name|api
-operator|.
-name|records
-operator|.
-name|TaskId
-import|;
-end_import
-
 begin_comment
 comment|/**  * This program executes a specified operation that applies load to   * the NameNode.  *   * When run simultaneously on multiple nodes, this program functions   * as a stress-test and benchmark for namenode, especially when   * the number of bytes written to each file is small.  *   * Valid operations are:  *   create_write  *   open_read  *   rename  *   delete  *   * NOTE: The open_read, rename and delete operations assume that the files  *       they operate on are already available. The create_write operation   *       must be run before running the other operations.  */
 end_comment
@@ -1045,7 +1025,7 @@ literal|"\t-replicationFactorPerFile<Replication factor for the files."
 operator|+
 literal|" default is 1. This is not mandatory>\n"
 operator|+
-literal|"\t-baseDir<base DFS path. default is /becnhmarks/NNBench. "
+literal|"\t-baseDir<base DFS path. default is /benchmarks/NNBench. "
 operator|+
 literal|"This is not mandatory>\n"
 operator|+
