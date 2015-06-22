@@ -1171,6 +1171,26 @@ name|MAX_VALUE
 argument_list|)
 return|;
 block|}
+DECL|method|getBufferPosn ()
+specifier|protected
+name|int
+name|getBufferPosn
+parameter_list|()
+block|{
+return|return
+name|bufferPosn
+return|;
+block|}
+DECL|method|getBufferSize ()
+specifier|protected
+name|int
+name|getBufferSize
+parameter_list|()
+block|{
+return|return
+name|bufferSize
+return|;
+block|}
 block|}
 end_class
 
