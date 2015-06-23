@@ -94,6 +94,24 @@ name|OZONE_LIST_QUERY_BUCKET
 init|=
 literal|"bucket"
 decl_stmt|;
+DECL|field|OZONE_USER
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|OZONE_USER
+init|=
+literal|"x-ozone-user"
+decl_stmt|;
+DECL|field|OZONE_SIMPLE_AUTHENTICATION_SCHEME
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|OZONE_SIMPLE_AUTHENTICATION_SCHEME
+init|=
+literal|"OZONE"
+decl_stmt|;
 DECL|method|Header ()
 specifier|private
 name|Header
