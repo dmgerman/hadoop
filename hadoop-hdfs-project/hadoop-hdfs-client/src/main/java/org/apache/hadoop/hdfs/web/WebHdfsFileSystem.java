@@ -188,34 +188,6 @@ name|org
 operator|.
 name|apache
 operator|.
-name|commons
-operator|.
-name|logging
-operator|.
-name|Log
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|commons
-operator|.
-name|logging
-operator|.
-name|LogFactory
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
 name|hadoop
 operator|.
 name|conf
@@ -864,6 +836,26 @@ end_import
 
 begin_import
 import|import
+name|org
+operator|.
+name|slf4j
+operator|.
+name|Logger
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|slf4j
+operator|.
+name|LoggerFactory
+import|;
+end_import
+
+begin_import
+import|import
 name|com
 operator|.
 name|google
@@ -928,12 +920,12 @@ DECL|field|LOG
 specifier|public
 specifier|static
 specifier|final
-name|Log
+name|Logger
 name|LOG
 init|=
-name|LogFactory
+name|LoggerFactory
 operator|.
-name|getLog
+name|getLogger
 argument_list|(
 name|WebHdfsFileSystem
 operator|.
@@ -1536,8 +1528,8 @@ name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"Using UGI token: "
-operator|+
+literal|"Using UGI token: {}"
+argument_list|,
 name|token
 argument_list|)
 expr_stmt|;
@@ -1575,8 +1567,8 @@ name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"Fetched new token: "
-operator|+
+literal|"Fetched new token: {}"
+argument_list|,
 name|token
 argument_list|)
 expr_stmt|;
@@ -1644,8 +1636,8 @@ name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"Replaced expired token: "
-operator|+
+literal|"Replaced expired token: {}"
+argument_list|,
 name|token
 argument_list|)
 expr_stmt|;
@@ -2600,8 +2592,8 @@ name|LOG
 operator|.
 name|trace
 argument_list|(
-literal|"url="
-operator|+
+literal|"url={}"
+argument_list|,
 name|url
 argument_list|)
 expr_stmt|;
@@ -2873,8 +2865,8 @@ name|LOG
 operator|.
 name|trace
 argument_list|(
-literal|"url="
-operator|+
+literal|"url={}"
+argument_list|,
 name|url
 argument_list|)
 expr_stmt|;
@@ -3599,25 +3591,19 @@ name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"Retrying connect to namenode: "
+literal|"Retrying connect to namenode: {}. Already tried {}"
 operator|+
+literal|" time(s); retry policy is {}, delay {}ms."
+argument_list|,
 name|nnAddr
-operator|+
-literal|". Already tried "
-operator|+
+argument_list|,
 name|retry
-operator|+
-literal|" time(s); retry policy is "
-operator|+
+argument_list|,
 name|retryPolicy
-operator|+
-literal|", delay "
-operator|+
+argument_list|,
 name|a
 operator|.
 name|delayMillis
-operator|+
-literal|"ms."
 argument_list|)
 expr_stmt|;
 if|if
@@ -4133,7 +4119,14 @@ name|LOG
 operator|.
 name|debug
 argument_list|(
-name|ioe
+literal|"Response decoding failure: {}"
+argument_list|,
+name|e
+operator|.
+name|toString
+argument_list|()
+argument_list|,
+name|e
 argument_list|)
 expr_stmt|;
 block|}
@@ -6978,7 +6971,7 @@ operator|.
 name|debug
 argument_list|(
 literal|"Token cancel failed: "
-operator|+
+argument_list|,
 name|ioe
 argument_list|)
 expr_stmt|;

@@ -735,40 +735,34 @@ name|LOG
 operator|.
 name|warn
 argument_list|(
-literal|"Failed to place enough replicas: expected size is "
+literal|"Failed to place enough replicas: expected size is {}"
 operator|+
+literal|" but only {} storage types can be selected (replication={},"
+operator|+
+literal|" selected={}, unavailable={}"
+operator|+
+literal|", removed={}"
+operator|+
+literal|", policy={}"
+operator|+
+literal|")"
+argument_list|,
 name|expectedSize
-operator|+
-literal|" but only "
-operator|+
+argument_list|,
 name|storageTypes
 operator|.
 name|size
 argument_list|()
-operator|+
-literal|" storage types can be selected "
-operator|+
-literal|"(replication="
-operator|+
+argument_list|,
 name|replication
-operator|+
-literal|", selected="
-operator|+
+argument_list|,
 name|storageTypes
-operator|+
-literal|", unavailable="
-operator|+
+argument_list|,
 name|unavailables
-operator|+
-literal|", removed="
-operator|+
+argument_list|,
 name|removed
-operator|+
-literal|", policy="
-operator|+
+argument_list|,
 name|this
-operator|+
-literal|")"
 argument_list|)
 expr_stmt|;
 block|}

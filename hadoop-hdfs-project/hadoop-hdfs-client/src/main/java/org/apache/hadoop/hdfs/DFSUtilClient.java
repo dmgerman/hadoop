@@ -1742,17 +1742,15 @@ name|LOG
 operator|.
 name|warn
 argument_list|(
-literal|"Namenode for "
+literal|"Namenode for {} remains unresolved for ID {}. Check your "
 operator|+
+literal|"hdfs-site.xml file to ensure namenodes are configured "
+operator|+
+literal|"properly."
+argument_list|,
 name|nsId
-operator|+
-literal|" remains unresolved for ID "
-operator|+
+argument_list|,
 name|nnId
-operator|+
-literal|".  Check your hdfs-site.xml file to "
-operator|+
-literal|"ensure namenodes are configured properly."
 argument_list|)
 expr_stmt|;
 block|}
