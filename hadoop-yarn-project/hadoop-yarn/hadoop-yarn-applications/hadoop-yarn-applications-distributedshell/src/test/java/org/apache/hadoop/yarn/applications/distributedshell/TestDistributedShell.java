@@ -552,6 +552,24 @@ name|api
 operator|.
 name|records
 operator|.
+name|FinalApplicationStatus
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|api
+operator|.
+name|records
+operator|.
 name|YarnApplicationState
 import|;
 end_import
@@ -1464,9 +1482,20 @@ name|setBoolean
 argument_list|(
 name|YarnConfiguration
 operator|.
-name|SYSTEM_METRICS_PUBLISHER_ENABLED
+name|RM_SYSTEM_METRICS_PUBLISHER_ENABLED
 argument_list|,
 literal|true
+argument_list|)
+expr_stmt|;
+name|conf
+operator|.
+name|setBoolean
+argument_list|(
+name|YarnConfiguration
+operator|.
+name|SYSTEM_METRICS_PUBLISHER_ENABLED
+argument_list|,
+literal|false
 argument_list|)
 expr_stmt|;
 comment|// ATS version specific settings
@@ -1630,6 +1659,28 @@ name|getName
 argument_list|()
 argument_list|)
 expr_stmt|;
+name|conf
+operator|.
+name|setBoolean
+argument_list|(
+name|YarnConfiguration
+operator|.
+name|SYSTEM_METRICS_PUBLISHER_ENABLED
+argument_list|,
+literal|true
+argument_list|)
+expr_stmt|;
+name|conf
+operator|.
+name|setBoolean
+argument_list|(
+name|YarnConfiguration
+operator|.
+name|RM_SYSTEM_METRICS_PUBLISHER_ENABLED
+argument_list|,
+literal|false
+argument_list|)
+expr_stmt|;
 block|}
 else|else
 block|{
@@ -1669,8 +1720,6 @@ argument_list|,
 literal|1
 argument_list|,
 literal|1
-argument_list|,
-name|enableATSServer
 argument_list|)
 expr_stmt|;
 name|yarnCluster
@@ -2583,6 +2632,15 @@ operator|==
 name|YarnApplicationState
 operator|.
 name|FINISHED
+operator|&&
+name|appReport
+operator|.
+name|getFinalApplicationStatus
+argument_list|()
+operator|!=
+name|FinalApplicationStatus
+operator|.
+name|UNDEFINED
 condition|)
 block|{
 break|break;
@@ -2606,7 +2664,7 @@ name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"Client run completed. Result="
+literal|"Client run completed for testDSShell. Result="
 operator|+
 name|result
 argument_list|)
@@ -3155,7 +3213,7 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-DECL|method|checkTimelineV2 ( boolean haveDomain, ApplicationId appId, boolean defaultFlow)
+DECL|method|checkTimelineV2 (boolean haveDomain, ApplicationId appId, boolean defaultFlow)
 specifier|private
 name|void
 name|checkTimelineV2
@@ -3172,6 +3230,13 @@ parameter_list|)
 throws|throws
 name|Exception
 block|{
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"Started checkTimelineV2 "
+argument_list|)
+expr_stmt|;
 comment|// For PoC check in /tmp/timeline_service_data YARN-3264
 name|String
 name|tmpRoot
@@ -3385,30 +3450,86 @@ argument_list|,
 name|appMetricsTimestampFileName
 argument_list|)
 decl_stmt|;
-name|verifyStringExistsSpecifiedTimes
+name|Assert
+operator|.
+name|assertEquals
+argument_list|(
+literal|"Application created event should be published atleast once"
+argument_list|,
+literal|1
+argument_list|,
+name|getNumOfStringOccurences
 argument_list|(
 name|appEntityFile
 argument_list|,
 name|ApplicationMetricsConstants
 operator|.
 name|CREATED_EVENT_TYPE
-argument_list|,
-literal|1
-argument_list|,
-literal|"Application created event should be published atleast once"
+argument_list|)
 argument_list|)
 expr_stmt|;
-name|verifyStringExistsSpecifiedTimes
+comment|// to avoid race condition of testcase, atleast check 4 times with sleep
+comment|// of 500ms
+name|long
+name|numOfStringOccurences
+init|=
+literal|0
+decl_stmt|;
+for|for
+control|(
+name|int
+name|i
+init|=
+literal|0
+init|;
+name|i
+operator|<
+literal|4
+condition|;
+name|i
+operator|++
+control|)
+block|{
+name|numOfStringOccurences
+operator|=
+name|getNumOfStringOccurences
 argument_list|(
 name|appEntityFile
 argument_list|,
 name|ApplicationMetricsConstants
 operator|.
 name|FINISHED_EVENT_TYPE
+argument_list|)
+expr_stmt|;
+if|if
+condition|(
+name|numOfStringOccurences
+operator|>
+literal|0
+condition|)
+block|{
+break|break;
+block|}
+else|else
+block|{
+name|Thread
+operator|.
+name|sleep
+argument_list|(
+literal|500l
+argument_list|)
+expr_stmt|;
+block|}
+block|}
+name|Assert
+operator|.
+name|assertEquals
+argument_list|(
+literal|"Application finished event should be published atleast once"
 argument_list|,
 literal|1
 argument_list|,
-literal|"Application finished event should be published atleast once"
+name|numOfStringOccurences
 argument_list|)
 expr_stmt|;
 comment|// Verify RM posting AppAttempt life cycle Events are getting published
@@ -3452,30 +3573,40 @@ argument_list|,
 name|appAttemptMetricsTimestampFileName
 argument_list|)
 decl_stmt|;
-name|verifyStringExistsSpecifiedTimes
+name|Assert
+operator|.
+name|assertEquals
+argument_list|(
+literal|"AppAttempt register event should be published atleast once"
+argument_list|,
+literal|1
+argument_list|,
+name|getNumOfStringOccurences
 argument_list|(
 name|appAttemptEntityFile
 argument_list|,
 name|AppAttemptMetricsConstants
 operator|.
 name|REGISTERED_EVENT_TYPE
+argument_list|)
+argument_list|)
+expr_stmt|;
+name|Assert
+operator|.
+name|assertEquals
+argument_list|(
+literal|"AppAttempt finished event should be published atleast once"
 argument_list|,
 literal|1
 argument_list|,
-literal|"AppAttempt register event should be published atleast once"
-argument_list|)
-expr_stmt|;
-name|verifyStringExistsSpecifiedTimes
+name|getNumOfStringOccurences
 argument_list|(
 name|appAttemptEntityFile
 argument_list|,
 name|AppAttemptMetricsConstants
 operator|.
 name|FINISHED_EVENT_TYPE
-argument_list|,
-literal|1
-argument_list|,
-literal|"AppAttempt finished event should be published atleast once"
+argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
@@ -3568,22 +3699,16 @@ return|return
 name|entityFile
 return|;
 block|}
-DECL|method|verifyStringExistsSpecifiedTimes (File entityFile, String searchString, long expectedNumOfTimes, String errorMsg)
+DECL|method|getNumOfStringOccurences (File entityFile, String searchString)
 specifier|private
-name|void
-name|verifyStringExistsSpecifiedTimes
+name|long
+name|getNumOfStringOccurences
 parameter_list|(
 name|File
 name|entityFile
 parameter_list|,
 name|String
 name|searchString
-parameter_list|,
-name|long
-name|expectedNumOfTimes
-parameter_list|,
-name|String
-name|errorMsg
 parameter_list|)
 throws|throws
 name|IOException
@@ -3654,17 +3779,9 @@ name|close
 argument_list|()
 expr_stmt|;
 block|}
-name|Assert
-operator|.
-name|assertEquals
-argument_list|(
-name|errorMsg
-argument_list|,
-name|expectedNumOfTimes
-argument_list|,
+return|return
 name|actualCount
-argument_list|)
-expr_stmt|;
+return|;
 block|}
 comment|/**    * Utility function to merge two String arrays to form a new String array for    * our argumemts.    *    * @param args    * @param newArgs    * @return a String array consists of {args, newArgs}    */
 DECL|method|mergeArgs (String[] args, String[] newArgs)

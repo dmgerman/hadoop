@@ -604,7 +604,7 @@ name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"the collector service for "
+literal|"The collector service for "
 operator|+
 name|appId
 operator|+

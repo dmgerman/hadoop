@@ -388,12 +388,10 @@ specifier|public
 name|PerNodeTimelineCollectorsAuxService
 parameter_list|()
 block|{
-comment|// use the same singleton
 name|this
 argument_list|(
+operator|new
 name|NodeTimelineCollectorManager
-operator|.
-name|getInstance
 argument_list|()
 argument_list|)
 expr_stmt|;

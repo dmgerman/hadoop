@@ -1169,17 +1169,17 @@ name|conf
 argument_list|)
 condition|)
 block|{
-name|createAndStartTimelienClient
+name|createAndStartTimelineClient
 argument_list|(
 name|conf
 argument_list|)
 expr_stmt|;
 block|}
 block|}
-DECL|method|createAndStartTimelienClient (Configuration conf)
+DECL|method|createAndStartTimelineClient (Configuration conf)
 specifier|private
 name|void
-name|createAndStartTimelienClient
+name|createAndStartTimelineClient
 parameter_list|(
 name|Configuration
 name|conf

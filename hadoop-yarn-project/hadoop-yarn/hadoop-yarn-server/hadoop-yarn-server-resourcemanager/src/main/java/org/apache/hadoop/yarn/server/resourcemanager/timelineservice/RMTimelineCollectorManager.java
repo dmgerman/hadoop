@@ -351,6 +351,9 @@ name|parts
 index|[
 literal|0
 index|]
+operator|.
+name|toUpperCase
+argument_list|()
 condition|)
 block|{
 case|case

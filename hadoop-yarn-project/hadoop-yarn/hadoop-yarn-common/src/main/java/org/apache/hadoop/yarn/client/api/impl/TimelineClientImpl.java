@@ -2514,6 +2514,41 @@ operator|.
 name|maxServiceRetries
 argument_list|)
 decl_stmt|;
+if|if
+condition|(
+name|timelineServiceAddress
+operator|==
+literal|null
+condition|)
+block|{
+name|String
+name|errMessage
+init|=
+literal|"TimelineClient has reached to max retry times : "
+operator|+
+name|this
+operator|.
+name|maxServiceRetries
+operator|+
+literal|", but failed to fetch timeline service address. Please verify"
+operator|+
+literal|" Timeline Auxillary Service is configured in all the NMs"
+decl_stmt|;
+name|LOG
+operator|.
+name|error
+argument_list|(
+name|errMessage
+argument_list|)
+expr_stmt|;
+throw|throw
+operator|new
+name|YarnException
+argument_list|(
+name|errMessage
+argument_list|)
+throw|;
+block|}
 comment|// timelineServiceAddress could be stale, add retry logic here.
 name|boolean
 name|needRetry

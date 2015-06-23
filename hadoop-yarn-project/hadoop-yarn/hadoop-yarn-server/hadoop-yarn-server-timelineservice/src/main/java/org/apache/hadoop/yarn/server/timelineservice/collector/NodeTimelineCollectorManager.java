@@ -422,10 +422,6 @@ name|VisibleForTesting
 import|;
 end_import
 
-begin_comment
-comment|/**  *  * It is a singleton, and instances should be obtained via  * {@link #getInstance()}.  *  */
-end_comment
-
 begin_class
 annotation|@
 name|Private
@@ -454,17 +450,6 @@ operator|.
 name|class
 argument_list|)
 decl_stmt|;
-DECL|field|INSTANCE
-specifier|private
-specifier|static
-specifier|final
-name|NodeTimelineCollectorManager
-name|INSTANCE
-init|=
-operator|new
-name|NodeTimelineCollectorManager
-argument_list|()
-decl_stmt|;
 comment|// REST server for this collector manager
 DECL|field|timelineRestServer
 specifier|private
@@ -490,16 +475,6 @@ name|COLLECTOR_MANAGER_ATTR_KEY
 init|=
 literal|"collector.manager"
 decl_stmt|;
-DECL|method|getInstance ()
-specifier|static
-name|NodeTimelineCollectorManager
-name|getInstance
-parameter_list|()
-block|{
-return|return
-name|INSTANCE
-return|;
-block|}
 annotation|@
 name|VisibleForTesting
 DECL|method|NodeTimelineCollectorManager ()
