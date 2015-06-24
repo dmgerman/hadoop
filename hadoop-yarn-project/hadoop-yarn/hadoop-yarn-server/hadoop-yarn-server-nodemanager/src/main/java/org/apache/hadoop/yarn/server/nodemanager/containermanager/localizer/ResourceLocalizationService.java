@@ -8106,7 +8106,7 @@ name|localDir
 range|:
 name|dirsHandler
 operator|.
-name|getLocalDirs
+name|getLocalDirsForCleanup
 argument_list|()
 control|)
 block|{
