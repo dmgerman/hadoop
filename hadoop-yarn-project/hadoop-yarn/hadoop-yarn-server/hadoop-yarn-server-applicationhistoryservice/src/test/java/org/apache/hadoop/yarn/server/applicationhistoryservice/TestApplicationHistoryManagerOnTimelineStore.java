@@ -901,6 +901,13 @@ argument_list|,
 name|aclsManager
 argument_list|)
 decl_stmt|;
+name|dataManager
+operator|.
+name|init
+argument_list|(
+name|conf
+argument_list|)
+expr_stmt|;
 name|ApplicationACLsManager
 name|appAclsManager
 init|=

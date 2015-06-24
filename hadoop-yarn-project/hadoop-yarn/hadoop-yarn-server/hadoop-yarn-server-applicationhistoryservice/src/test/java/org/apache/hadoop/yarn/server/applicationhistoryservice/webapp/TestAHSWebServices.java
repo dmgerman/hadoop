@@ -957,6 +957,13 @@ argument_list|,
 literal|"foo"
 argument_list|)
 expr_stmt|;
+name|dataManager
+operator|.
+name|init
+argument_list|(
+name|conf
+argument_list|)
+expr_stmt|;
 name|ApplicationACLsManager
 name|appAclsManager
 init|=
