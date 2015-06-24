@@ -2718,6 +2718,8 @@ operator|.
 name|Builder
 argument_list|()
 decl_stmt|;
+try|try
+block|{
 for|for
 control|(
 name|StripedDataStreamer
@@ -2786,10 +2788,14 @@ operator|.
 name|setSocketToNull
 argument_list|()
 expr_stmt|;
+block|}
+block|}
+block|}
+finally|finally
+block|{
 name|setClosed
 argument_list|()
 expr_stmt|;
-block|}
 block|}
 specifier|final
 name|IOException
