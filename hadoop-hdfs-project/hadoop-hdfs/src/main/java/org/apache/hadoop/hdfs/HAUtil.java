@@ -785,11 +785,14 @@ literal|null
 return|;
 block|}
 comment|/**    * Get the NN ID of the other node in an HA setup.    *     * @param conf the configuration of this node    * @return the NN ID of the other node in this nameservice    */
-DECL|method|getNameNodeIdOfOtherNode (Configuration conf, String nsId)
+DECL|method|getNameNodeIdOfOtherNodes (Configuration conf, String nsId)
 specifier|public
 specifier|static
+name|List
+argument_list|<
 name|String
-name|getNameNodeIdOfOtherNode
+argument_list|>
+name|getNameNodeIdOfOtherNodes
 parameter_list|(
 name|Configuration
 name|conf
@@ -878,12 +881,12 @@ name|nnIds
 operator|.
 name|size
 argument_list|()
-operator|==
+operator|>=
 literal|2
 argument_list|,
-literal|"Expected exactly 2 NameNodes in namespace '%s'. "
+literal|"Expected at least 2 NameNodes in namespace '%s'. "
 operator|+
-literal|"Instead, got only %s (NN ids were '%s'"
+literal|"Instead, got only %s (NN ids were '%s')"
 argument_list|,
 name|nsId
 argument_list|,
@@ -936,7 +939,7 @@ name|ArrayList
 argument_list|<
 name|String
 argument_list|>
-name|nnSet
+name|namenodes
 init|=
 name|Lists
 operator|.
@@ -945,7 +948,7 @@ argument_list|(
 name|nnIds
 argument_list|)
 decl_stmt|;
-name|nnSet
+name|namenodes
 operator|.
 name|remove
 argument_list|(
@@ -953,28 +956,26 @@ name|myNNId
 argument_list|)
 expr_stmt|;
 assert|assert
-name|nnSet
+name|namenodes
 operator|.
 name|size
 argument_list|()
-operator|==
+operator|>=
 literal|1
 assert|;
 return|return
-name|nnSet
-operator|.
-name|get
-argument_list|(
-literal|0
-argument_list|)
+name|namenodes
 return|;
 block|}
 comment|/**    * Given the configuration for this node, return a Configuration object for    * the other node in an HA setup.    *     * @param myConf the configuration of this node    * @return the configuration of the other node in an HA setup    */
-DECL|method|getConfForOtherNode ( Configuration myConf)
+DECL|method|getConfForOtherNodes ( Configuration myConf)
 specifier|public
 specifier|static
+name|List
+argument_list|<
 name|Configuration
-name|getConfForOtherNode
+argument_list|>
+name|getConfForOtherNodes
 parameter_list|(
 name|Configuration
 name|myConf
@@ -990,17 +991,46 @@ argument_list|(
 name|myConf
 argument_list|)
 decl_stmt|;
+name|List
+argument_list|<
 name|String
+argument_list|>
 name|otherNn
 init|=
-name|getNameNodeIdOfOtherNode
+name|getNameNodeIdOfOtherNodes
 argument_list|(
 name|myConf
 argument_list|,
 name|nsId
 argument_list|)
 decl_stmt|;
-comment|// Look up the address of the active NN.
+comment|// Look up the address of the other NNs
+name|List
+argument_list|<
+name|Configuration
+argument_list|>
+name|confs
+init|=
+operator|new
+name|ArrayList
+argument_list|<
+name|Configuration
+argument_list|>
+argument_list|(
+name|otherNn
+operator|.
+name|size
+argument_list|()
+argument_list|)
+decl_stmt|;
+for|for
+control|(
+name|String
+name|nn
+range|:
+name|otherNn
+control|)
+block|{
 name|Configuration
 name|confForOtherNode
 init|=
@@ -1018,11 +1048,19 @@ name|confForOtherNode
 argument_list|,
 name|nsId
 argument_list|,
-name|otherNn
+name|nn
 argument_list|)
 expr_stmt|;
-return|return
+name|confs
+operator|.
+name|add
+argument_list|(
 name|confForOtherNode
+argument_list|)
+expr_stmt|;
+block|}
+return|return
+name|confs
 return|;
 block|}
 comment|/**    * This is used only by tests at the moment.    * @return true if the NN should allow read operations while in standby mode.    */

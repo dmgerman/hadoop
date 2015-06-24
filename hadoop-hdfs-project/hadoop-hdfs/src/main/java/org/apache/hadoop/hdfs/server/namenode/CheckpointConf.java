@@ -169,6 +169,12 @@ specifier|final
 name|String
 name|legacyOivImageDir
 decl_stmt|;
+comment|/**   * multiplier on the checkpoint period to allow other nodes to do the checkpointing, when not the   * 'primary' checkpoint node   */
+DECL|field|quietMultiplier
+specifier|private
+name|double
+name|quietMultiplier
+decl_stmt|;
 DECL|method|CheckpointConf (Configuration conf)
 specifier|public
 name|CheckpointConf
@@ -228,6 +234,17 @@ operator|.
 name|get
 argument_list|(
 name|DFS_NAMENODE_LEGACY_OIV_IMAGE_DIR_KEY
+argument_list|)
+expr_stmt|;
+name|quietMultiplier
+operator|=
+name|conf
+operator|.
+name|getDouble
+argument_list|(
+name|DFS_NAMENODE_CHECKPOINT_QUIET_MULTIPLIER_KEY
+argument_list|,
+name|DFS_NAMENODE_CHECKPOINT_QUIET_MULTIPLIER_DEFAULT
 argument_list|)
 expr_stmt|;
 name|warnForDeprecatedConfigs
@@ -346,6 +363,22 @@ parameter_list|()
 block|{
 return|return
 name|legacyOivImageDir
+return|;
+block|}
+DECL|method|getQuietPeriod ()
+specifier|public
+name|double
+name|getQuietPeriod
+parameter_list|()
+block|{
+return|return
+name|this
+operator|.
+name|checkpointPeriod
+operator|*
+name|this
+operator|.
+name|quietMultiplier
 return|;
 block|}
 block|}

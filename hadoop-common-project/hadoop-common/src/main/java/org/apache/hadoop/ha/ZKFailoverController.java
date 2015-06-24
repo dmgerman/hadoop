@@ -62,6 +62,16 @@ name|java
 operator|.
 name|util
 operator|.
+name|ArrayList
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
 name|Collections
 import|;
 end_import
@@ -886,6 +896,16 @@ specifier|protected
 specifier|abstract
 name|PolicyProvider
 name|getPolicyProvider
+parameter_list|()
+function_decl|;
+DECL|method|getAllOtherNodes ()
+specifier|protected
+specifier|abstract
+name|List
+argument_list|<
+name|HAServiceTarget
+argument_list|>
+name|getAllOtherNodes
 parameter_list|()
 function_decl|;
 comment|/**    * Return the name of a znode inside the configured parent znode in which    * the ZKFC will do all of its work. This is so that multiple federated    * nameservices can run on the same ZK quorum without having to manually    * configure them to separate subdirectories.    */
@@ -2802,7 +2822,7 @@ argument_list|)
 throw|;
 block|}
 block|}
-comment|/**    * Coordinate a graceful failover. This proceeds in several phases:    * 1) Pre-flight checks: ensure that the local node is healthy, and    * thus a candidate for failover.    * 2) Determine the current active node. If it is the local node, no    * need to failover - return success.    * 3) Ask that node to yield from the election for a number of seconds.    * 4) Allow the normal election path to run in other threads. Wait until    * we either become unhealthy or we see an election attempt recorded by    * the normal code path.    * 5) Allow the old active to rejoin the election, so a future    * failback is possible.    */
+comment|/**    * Coordinate a graceful failover. This proceeds in several phases:    * 1) Pre-flight checks: ensure that the local node is healthy, and    * thus a candidate for failover.    * 2a) Determine the current active node. If it is the local node, no    * need to failover - return success.    * 2b) Get the other nodes    * 3a) Ask the other nodes to yield from election for a number of seconds    * 3b) Ask the active node to yield from the election for a number of seconds.    * 4) Allow the normal election path to run in other threads. Wait until    * we either become unhealthy or we see an election attempt recorded by    * the normal code path.    * 5) Allow the old active to rejoin the election, so a future    * failback is possible.    */
 DECL|method|doGracefulFailover ()
 specifier|private
 name|void
@@ -2888,39 +2908,102 @@ argument_list|)
 expr_stmt|;
 return|return;
 block|}
-comment|// Phase 3: ask the old active to yield from the election.
-name|LOG
-operator|.
-name|info
-argument_list|(
-literal|"Asking "
-operator|+
-name|oldActive
-operator|+
-literal|" to cede its active state for "
-operator|+
-name|timeout
-operator|+
-literal|"ms"
-argument_list|)
-expr_stmt|;
-name|ZKFCProtocol
-name|oldZkfc
+comment|// Phase 2b: get the other nodes
+name|List
+argument_list|<
+name|HAServiceTarget
+argument_list|>
+name|otherNodes
 init|=
+name|getAllOtherNodes
+argument_list|()
+decl_stmt|;
+name|List
+argument_list|<
+name|ZKFCProtocol
+argument_list|>
+name|otherZkfcs
+init|=
+operator|new
+name|ArrayList
+argument_list|<
+name|ZKFCProtocol
+argument_list|>
+argument_list|(
+name|otherNodes
+operator|.
+name|size
+argument_list|()
+argument_list|)
+decl_stmt|;
+comment|// Phase 3: ask the other nodes to yield from the election.
+name|HAServiceTarget
+name|activeNode
+init|=
+literal|null
+decl_stmt|;
+for|for
+control|(
+name|HAServiceTarget
+name|remote
+range|:
+name|otherNodes
+control|)
+block|{
+comment|// same location, same node - may not always be == equality
+if|if
+condition|(
+name|remote
+operator|.
+name|getAddress
+argument_list|()
+operator|.
+name|equals
+argument_list|(
 name|oldActive
 operator|.
-name|getZKFCProxy
+name|getAddress
+argument_list|()
+argument_list|)
+condition|)
+block|{
+name|activeNode
+operator|=
+name|remote
+expr_stmt|;
+continue|continue;
+block|}
+name|otherZkfcs
+operator|.
+name|add
 argument_list|(
-name|conf
+name|cedeRemoteActive
+argument_list|(
+name|remote
 argument_list|,
 name|timeout
 argument_list|)
-decl_stmt|;
-name|oldZkfc
+argument_list|)
+expr_stmt|;
+block|}
+assert|assert
+name|activeNode
+operator|!=
+literal|null
+operator|:
+literal|"Active node does not match any known remote node"
+assert|;
+comment|// Phase 3b: ask the old active to yield
+name|otherZkfcs
 operator|.
-name|cedeActive
+name|add
 argument_list|(
+name|cedeRemoteActive
+argument_list|(
+name|activeNode
+argument_list|,
 name|timeout
+argument_list|)
 argument_list|)
 expr_stmt|;
 comment|// Phase 4: wait for the normal election to make the local node
@@ -2983,7 +3066,15 @@ block|}
 comment|// Phase 5. At this point, we made some attempt to become active. So we
 comment|// can tell the old active to rejoin if it wants. This allows a quick
 comment|// fail-back if we immediately crash.
-name|oldZkfc
+for|for
+control|(
+name|ZKFCProtocol
+name|zkfc
+range|:
+name|otherZkfcs
+control|)
+block|{
+name|zkfc
 operator|.
 name|cedeActive
 argument_list|(
@@ -2991,6 +3082,7 @@ operator|-
 literal|1
 argument_list|)
 expr_stmt|;
+block|}
 if|if
 condition|(
 name|attempt
@@ -3030,6 +3122,59 @@ name|msg
 argument_list|)
 throw|;
 block|}
+block|}
+comment|/**    * Ask the remote zkfc to cede its active status and wait for the specified    * timeout before attempting to claim leader status.    * @param remote node to ask    * @param timeout amount of time to cede    * @return the {@link ZKFCProtocol} used to talk to the ndoe    * @throws IOException    */
+DECL|method|cedeRemoteActive (HAServiceTarget remote, int timeout)
+specifier|private
+name|ZKFCProtocol
+name|cedeRemoteActive
+parameter_list|(
+name|HAServiceTarget
+name|remote
+parameter_list|,
+name|int
+name|timeout
+parameter_list|)
+throws|throws
+name|IOException
+block|{
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"Asking "
+operator|+
+name|remote
+operator|+
+literal|" to cede its active state for "
+operator|+
+name|timeout
+operator|+
+literal|"ms"
+argument_list|)
+expr_stmt|;
+name|ZKFCProtocol
+name|oldZkfc
+init|=
+name|remote
+operator|.
+name|getZKFCProxy
+argument_list|(
+name|conf
+argument_list|,
+name|timeout
+argument_list|)
+decl_stmt|;
+name|oldZkfc
+operator|.
+name|cedeActive
+argument_list|(
+name|timeout
+argument_list|)
+expr_stmt|;
+return|return
+name|oldZkfc
+return|;
 block|}
 comment|/**    * Ensure that the local node is in a healthy state, and thus    * eligible for graceful failover.    * @throws ServiceFailedException if the node is unhealthy    */
 DECL|method|checkEligibleForFailover ()

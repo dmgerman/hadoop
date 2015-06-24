@@ -1399,6 +1399,8 @@ name|blockTokenLifetime
 argument_list|,
 literal|0
 argument_list|,
+literal|1
+argument_list|,
 literal|"fake-pool"
 argument_list|,
 literal|null
@@ -1690,6 +1692,8 @@ name|blockTokenLifetime
 argument_list|,
 literal|0
 argument_list|,
+literal|1
+argument_list|,
 literal|"fake-pool"
 argument_list|,
 literal|null
@@ -1979,6 +1983,8 @@ name|blockTokenLifetime
 argument_list|,
 literal|0
 argument_list|,
+literal|1
+argument_list|,
 literal|"fake-pool"
 argument_list|,
 literal|null
@@ -2180,6 +2186,8 @@ argument_list|,
 name|blockTokenLifetime
 argument_list|,
 literal|0
+argument_list|,
+literal|1
 argument_list|,
 literal|"fake-pool"
 argument_list|,
@@ -2542,6 +2550,8 @@ argument_list|,
 name|blockTokenLifetime
 argument_list|,
 literal|0
+argument_list|,
+literal|1
 argument_list|,
 literal|"fake-pool"
 argument_list|,

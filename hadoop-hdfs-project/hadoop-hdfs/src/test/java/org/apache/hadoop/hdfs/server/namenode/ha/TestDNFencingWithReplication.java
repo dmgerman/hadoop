@@ -636,6 +636,13 @@ argument_list|()
 decl_stmt|;
 name|harness
 operator|.
+name|setNumberOfNameNodes
+argument_list|(
+literal|3
+argument_list|)
+expr_stmt|;
+name|harness
+operator|.
 name|conf
 operator|.
 name|setInt

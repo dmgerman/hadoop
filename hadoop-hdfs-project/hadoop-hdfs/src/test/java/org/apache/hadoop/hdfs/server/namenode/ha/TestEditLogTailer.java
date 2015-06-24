@@ -751,6 +751,22 @@ literal|1
 argument_list|)
 expr_stmt|;
 block|}
+annotation|@
+name|Test
+DECL|method|testNN2TriggersLogRolls ()
+specifier|public
+name|void
+name|testNN2TriggersLogRolls
+parameter_list|()
+throws|throws
+name|Exception
+block|{
+name|testStandbyTriggersLogRolls
+argument_list|(
+literal|2
+argument_list|)
+expr_stmt|;
+block|}
 DECL|method|testStandbyTriggersLogRolls (int activeIndex)
 specifier|private
 specifier|static
@@ -840,6 +856,22 @@ operator|.
 name|setIpcPort
 argument_list|(
 literal|10032
+argument_list|)
+argument_list|)
+operator|.
+name|addNN
+argument_list|(
+operator|new
+name|MiniDFSNNTopology
+operator|.
+name|NNConf
+argument_list|(
+literal|"nn3"
+argument_list|)
+operator|.
+name|setIpcPort
+argument_list|(
+literal|10033
 argument_list|)
 argument_list|)
 argument_list|)
@@ -934,7 +966,7 @@ name|getSharedEditsDir
 argument_list|(
 literal|0
 argument_list|,
-literal|1
+literal|2
 argument_list|)
 decl_stmt|;
 name|File
