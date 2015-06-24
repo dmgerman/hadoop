@@ -23439,7 +23439,7 @@ operator|)
 name|storedBlock
 operator|)
 operator|.
-name|getDataBlockNum
+name|getRealDataBlockNum
 argument_list|()
 else|:
 name|safeReplication
