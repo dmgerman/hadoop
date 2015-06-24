@@ -404,6 +404,16 @@ name|COOKIE_PATH
 init|=
 literal|"cookie.path"
 decl_stmt|;
+comment|/**    * Constant for the configuration property    * that indicates the persistence of the HTTP cookie.    */
+DECL|field|COOKIE_PERSISTENT
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|COOKIE_PERSISTENT
+init|=
+literal|"cookie.persistent"
+decl_stmt|;
 comment|/**    * Constant for the configuration property that indicates the name of the    * SignerSecretProvider class to use.    * Possible values are: "string", "random", "zookeeper", or a classname.    * If not specified, the "string" implementation will be used with    * SIGNATURE_SECRET; and if that's not specified, the "random" implementation    * will be used.    */
 DECL|field|SIGNER_SECRET_PROVIDER
 specifier|public
@@ -458,6 +468,11 @@ DECL|field|cookiePath
 specifier|private
 name|String
 name|cookiePath
+decl_stmt|;
+DECL|field|isCookiePersistent
+specifier|private
+name|boolean
+name|isCookiePersistent
 decl_stmt|;
 DECL|field|isInitializedByTomcat
 specifier|private
@@ -670,6 +685,22 @@ argument_list|(
 name|COOKIE_PATH
 argument_list|,
 literal|null
+argument_list|)
+expr_stmt|;
+name|isCookiePersistent
+operator|=
+name|Boolean
+operator|.
+name|parseBoolean
+argument_list|(
+name|config
+operator|.
+name|getProperty
+argument_list|(
+name|COOKIE_PERSISTENT
+argument_list|,
+literal|"false"
+argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
@@ -1189,6 +1220,17 @@ parameter_list|()
 block|{
 return|return
 name|cookiePath
+return|;
+block|}
+comment|/**    * Returns the cookie persistence to use for the HTTP cookie.    *    * @return the cookie persistence to use for the HTTP cookie.    */
+DECL|method|isCookiePersistent ()
+specifier|protected
+name|boolean
+name|isCookiePersistent
+parameter_list|()
+block|{
+return|return
+name|isCookiePersistent
 return|;
 block|}
 comment|/**    * Destroys the filter.    *<p>    * It invokes the {@link AuthenticationHandler#destroy()} method to release any resources it may hold.    */
@@ -1904,6 +1946,9 @@ operator|.
 name|getExpires
 argument_list|()
 argument_list|,
+name|isCookiePersistent
+argument_list|()
+argument_list|,
 name|isHttps
 argument_list|)
 expr_stmt|;
@@ -2011,6 +2056,9 @@ argument_list|()
 argument_list|,
 literal|0
 argument_list|,
+name|isCookiePersistent
+argument_list|()
+argument_list|,
 name|isHttps
 argument_list|)
 expr_stmt|;
@@ -2111,8 +2159,8 @@ name|response
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Creates the Hadoop authentication HTTP cookie.    *    * @param resp the response object.    * @param token authentication token for the cookie.    * @param domain the cookie domain.    * @param path the cokie path.    * @param expires UNIX timestamp that indicates the expire date of the    *                cookie. It has no effect if its value&lt; 0.    * @param isSecure is the cookie secure?    * @param token the token.    * @param expires the cookie expiration time.    *    * XXX the following code duplicate some logic in Jetty / Servlet API,    * because of the fact that Hadoop is stuck at servlet 2.5 and jetty 6    * right now.    */
-DECL|method|createAuthCookie (HttpServletResponse resp, String token, String domain, String path, long expires, boolean isSecure)
+comment|/**    * Creates the Hadoop authentication HTTP cookie.    *    * @param resp the response object.    * @param token authentication token for the cookie.    * @param domain the cookie domain.    * @param path the cokie path.    * @param expires UNIX timestamp that indicates the expire date of the    *                cookie. It has no effect if its value&lt; 0.    * @param isSecure is the cookie secure?    * @param token the token.    * @param expires the cookie expiration time.    * @param isCookiePersistent whether the cookie is persistent or not.    *    * XXX the following code duplicate some logic in Jetty / Servlet API,    * because of the fact that Hadoop is stuck at servlet 2.5 and jetty 6    * right now.    */
+DECL|method|createAuthCookie (HttpServletResponse resp, String token, String domain, String path, long expires, boolean isCookiePersistent, boolean isSecure)
 specifier|public
 specifier|static
 name|void
@@ -2132,6 +2180,9 @@ name|path
 parameter_list|,
 name|long
 name|expires
+parameter_list|,
+name|boolean
+name|isCookiePersistent
 parameter_list|,
 name|boolean
 name|isSecure
@@ -2230,6 +2281,8 @@ condition|(
 name|expires
 operator|>=
 literal|0
+operator|&&
+name|isCookiePersistent
 condition|)
 block|{
 name|Date
