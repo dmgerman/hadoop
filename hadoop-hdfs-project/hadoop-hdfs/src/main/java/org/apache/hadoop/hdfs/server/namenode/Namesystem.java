@@ -152,14 +152,12 @@ name|SafeMode
 block|{
 comment|/** Is this name system running? */
 DECL|method|isRunning ()
-specifier|public
 name|boolean
 name|isRunning
 parameter_list|()
 function_decl|;
 comment|/** Check if the user has superuser privilege. */
 DECL|method|checkSuperuserPrivilege ()
-specifier|public
 name|void
 name|checkSuperuserPrivilege
 parameter_list|()
@@ -168,19 +166,16 @@ name|AccessControlException
 function_decl|;
 comment|/** @return the block pool ID */
 DECL|method|getBlockPoolId ()
-specifier|public
 name|String
 name|getBlockPoolId
 parameter_list|()
 function_decl|;
 DECL|method|isInStandbyState ()
-specifier|public
 name|boolean
 name|isInStandbyState
 parameter_list|()
 function_decl|;
 DECL|method|isGenStampInFuture (Block block)
-specifier|public
 name|boolean
 name|isGenStampInFuture
 parameter_list|(
@@ -189,7 +184,6 @@ name|block
 parameter_list|)
 function_decl|;
 DECL|method|adjustSafeModeBlockTotals (int deltaSafe, int deltaTotal)
-specifier|public
 name|void
 name|adjustSafeModeBlockTotals
 parameter_list|(
@@ -201,7 +195,6 @@ name|deltaTotal
 parameter_list|)
 function_decl|;
 DECL|method|checkOperation (OperationCategory read)
-specifier|public
 name|void
 name|checkOperation
 parameter_list|(
@@ -212,13 +205,17 @@ throws|throws
 name|StandbyException
 function_decl|;
 DECL|method|isInSnapshot (BlockInfoUnderConstruction blockUC)
-specifier|public
 name|boolean
 name|isInSnapshot
 parameter_list|(
 name|BlockInfoUnderConstruction
 name|blockUC
 parameter_list|)
+function_decl|;
+DECL|method|getCacheManager ()
+name|CacheManager
+name|getCacheManager
+parameter_list|()
 function_decl|;
 block|}
 end_interface

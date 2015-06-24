@@ -3034,6 +3034,14 @@ name|heartbeatsDisabledForTests
 init|=
 literal|false
 decl_stmt|;
+DECL|field|cacheReportsDisabledForTests
+specifier|private
+specifier|volatile
+name|boolean
+name|cacheReportsDisabledForTests
+init|=
+literal|false
+decl_stmt|;
 DECL|field|storage
 specifier|private
 name|DataStorage
@@ -6541,6 +6549,8 @@ name|bpos
 return|;
 block|}
 comment|// used only for testing
+annotation|@
+name|VisibleForTesting
 DECL|method|setHeartbeatsDisabledForTests ( boolean heartbeatsDisabledForTests)
 name|void
 name|setHeartbeatsDisabledForTests
@@ -6556,6 +6566,8 @@ operator|=
 name|heartbeatsDisabledForTests
 expr_stmt|;
 block|}
+annotation|@
+name|VisibleForTesting
 DECL|method|areHeartbeatsDisabledForTests ()
 name|boolean
 name|areHeartbeatsDisabledForTests
@@ -6565,6 +6577,36 @@ return|return
 name|this
 operator|.
 name|heartbeatsDisabledForTests
+return|;
+block|}
+annotation|@
+name|VisibleForTesting
+DECL|method|setCacheReportsDisabledForTest (boolean disabled)
+name|void
+name|setCacheReportsDisabledForTest
+parameter_list|(
+name|boolean
+name|disabled
+parameter_list|)
+block|{
+name|this
+operator|.
+name|cacheReportsDisabledForTests
+operator|=
+name|disabled
+expr_stmt|;
+block|}
+annotation|@
+name|VisibleForTesting
+DECL|method|areCacheReportsDisabledForTests ()
+name|boolean
+name|areCacheReportsDisabledForTests
+parameter_list|()
+block|{
+return|return
+name|this
+operator|.
+name|cacheReportsDisabledForTests
 return|;
 block|}
 comment|/**    * This method starts the data node with the specified conf.    *     * @param conf - the configuration    *  if conf's CONFIG_PROPERTY_SIMULATED property is set    *  then a simulated storage based data node is created.    *     * @param dataDirs - only for a non-simulated storage data node    * @throws IOException    */

@@ -3365,6 +3365,15 @@ index|]
 argument_list|)
 argument_list|)
 expr_stmt|;
+if|if
+condition|(
+operator|!
+name|dn
+operator|.
+name|areCacheReportsDisabledForTests
+argument_list|()
+condition|)
+block|{
 name|DatanodeCommand
 name|cmd
 init|=
@@ -3381,6 +3390,7 @@ name|cmd
 block|}
 argument_list|)
 expr_stmt|;
+block|}
 comment|//
 comment|// There is no work to do;  sleep until hearbeat timer elapses,
 comment|// or work arrives, and then iterate again.
