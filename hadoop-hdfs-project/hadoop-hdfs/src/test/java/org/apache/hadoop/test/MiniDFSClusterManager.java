@@ -334,6 +334,11 @@ specifier|private
 name|int
 name|nameNodePort
 decl_stmt|;
+DECL|field|nameNodeHttpPort
+specifier|private
+name|int
+name|nameNodeHttpPort
+decl_stmt|;
 DECL|field|dfsOpts
 specifier|private
 name|StartupOption
@@ -420,6 +425,15 @@ argument_list|,
 literal|true
 argument_list|,
 literal|"NameNode port (default 0--we choose)"
+argument_list|)
+operator|.
+name|addOption
+argument_list|(
+literal|"httpport"
+argument_list|,
+literal|true
+argument_list|,
+literal|"NameNode http port (default 0--we choose)"
 argument_list|)
 operator|.
 name|addOption
@@ -625,6 +639,11 @@ operator|.
 name|nameNodePort
 argument_list|(
 name|nameNodePort
+argument_list|)
+operator|.
+name|nameNodeHttpPort
+argument_list|(
+name|nameNodeHttpPort
 argument_list|)
 operator|.
 name|numDataNodes
@@ -939,6 +958,17 @@ argument_list|(
 name|cli
 argument_list|,
 literal|"nnport"
+argument_list|,
+literal|0
+argument_list|)
+expr_stmt|;
+name|nameNodeHttpPort
+operator|=
+name|intArgument
+argument_list|(
+name|cli
+argument_list|,
+literal|"httpport"
 argument_list|,
 literal|0
 argument_list|)
