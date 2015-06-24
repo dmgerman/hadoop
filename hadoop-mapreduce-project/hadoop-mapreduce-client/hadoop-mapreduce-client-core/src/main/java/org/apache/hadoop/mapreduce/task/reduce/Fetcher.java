@@ -1777,6 +1777,15 @@ name|IOException
 name|e
 parameter_list|)
 block|{
+name|IOUtils
+operator|.
+name|cleanup
+argument_list|(
+name|LOG
+argument_list|,
+name|input
+argument_list|)
+expr_stmt|;
 comment|//
 comment|// Setup connection again if disconnected by NM
 name|connection
