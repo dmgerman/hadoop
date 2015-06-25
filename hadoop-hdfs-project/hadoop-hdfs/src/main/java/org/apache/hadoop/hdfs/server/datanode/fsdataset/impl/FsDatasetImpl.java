@@ -13548,7 +13548,13 @@ specifier|final
 name|long
 name|reservedSpace
 decl_stmt|;
-comment|// size of space reserved for non-HDFS and RBW
+comment|// size of space reserved for non-HDFS
+DECL|field|reservedSpaceForRBW
+specifier|final
+name|long
+name|reservedSpaceForRBW
+decl_stmt|;
+comment|// size of space reserved RBW
 DECL|method|VolumeInfo (FsVolumeImpl v, long usedSpace, long freeSpace)
 name|VolumeInfo
 parameter_list|(
@@ -13590,6 +13596,15 @@ operator|=
 name|v
 operator|.
 name|getReserved
+argument_list|()
+expr_stmt|;
+name|this
+operator|.
+name|reservedSpaceForRBW
+operator|=
+name|v
+operator|.
+name|getReservedForRbw
 argument_list|()
 expr_stmt|;
 block|}
@@ -13813,6 +13828,17 @@ argument_list|,
 name|v
 operator|.
 name|reservedSpace
+argument_list|)
+expr_stmt|;
+name|innerInfo
+operator|.
+name|put
+argument_list|(
+literal|"reservedSpaceForRBW"
+argument_list|,
+name|v
+operator|.
+name|reservedSpaceForRBW
 argument_list|)
 expr_stmt|;
 name|info
