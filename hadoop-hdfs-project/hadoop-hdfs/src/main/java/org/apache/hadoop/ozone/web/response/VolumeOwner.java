@@ -24,6 +24,20 @@ begin_import
 import|import
 name|org
 operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|classification
+operator|.
+name|InterfaceAudience
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
 name|codehaus
 operator|.
 name|jackson
@@ -41,6 +55,10 @@ comment|/**  * Volume Owner represents the owner of a volume.  *  * This is a cl
 end_comment
 
 begin_class
+annotation|@
+name|InterfaceAudience
+operator|.
+name|Private
 DECL|class|VolumeOwner
 specifier|public
 class|class

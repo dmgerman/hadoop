@@ -28,6 +28,20 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|classification
+operator|.
+name|InterfaceAudience
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|ozone
 operator|.
 name|web
@@ -177,6 +191,10 @@ comment|/**  * VolumeInfo Class is the Java class that represents  * Json when V
 end_comment
 
 begin_class
+annotation|@
+name|InterfaceAudience
+operator|.
+name|Private
 DECL|class|VolumeInfo
 specifier|public
 class|class

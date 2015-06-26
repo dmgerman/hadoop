@@ -24,6 +24,20 @@ begin_import
 import|import
 name|org
 operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|classification
+operator|.
+name|InterfaceAudience
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
 name|codehaus
 operator|.
 name|jackson
@@ -77,6 +91,10 @@ comment|/**  * Class the represents various errors returned by the  * Ozone Laye
 end_comment
 
 begin_class
+annotation|@
+name|InterfaceAudience
+operator|.
+name|Private
 DECL|class|OzoneException
 specifier|public
 class|class

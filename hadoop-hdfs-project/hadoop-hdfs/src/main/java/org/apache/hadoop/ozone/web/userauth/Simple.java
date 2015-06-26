@@ -28,6 +28,20 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|classification
+operator|.
+name|InterfaceAudience
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|ozone
 operator|.
 name|web
@@ -157,6 +171,10 @@ comment|/**  * Simple is an UserAuth class that is used in the insecure  * mode 
 end_comment
 
 begin_class
+annotation|@
+name|InterfaceAudience
+operator|.
+name|Private
 DECL|class|Simple
 specifier|public
 class|class

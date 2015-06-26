@@ -20,11 +20,29 @@ name|utils
 package|;
 end_package
 
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|classification
+operator|.
+name|InterfaceAudience
+import|;
+end_import
+
 begin_comment
 comment|/**  * Set of constants used in Ozone implementation.  */
 end_comment
 
 begin_class
+annotation|@
+name|InterfaceAudience
+operator|.
+name|Private
 DECL|class|OzoneConsts
 specifier|public
 specifier|final
@@ -48,6 +66,25 @@ name|String
 name|OZONE_SIMPLE_HDFS_USER
 init|=
 literal|"hdfs"
+decl_stmt|;
+comment|/*    * BucketName length is used for both buckets and volume lengths    */
+DECL|field|OZONE_MIN_BUCKET_NAME_LENGTH
+specifier|public
+specifier|static
+specifier|final
+name|int
+name|OZONE_MIN_BUCKET_NAME_LENGTH
+init|=
+literal|3
+decl_stmt|;
+DECL|field|OZONE_MAX_BUCKET_NAME_LENGTH
+specifier|public
+specifier|static
+specifier|final
+name|int
+name|OZONE_MAX_BUCKET_NAME_LENGTH
+init|=
+literal|63
 decl_stmt|;
 DECL|method|OzoneConsts ()
 specifier|private

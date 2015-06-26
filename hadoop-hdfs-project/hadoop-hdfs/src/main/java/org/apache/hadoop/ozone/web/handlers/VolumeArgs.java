@@ -28,6 +28,20 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|classification
+operator|.
+name|InterfaceAudience
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|ozone
 operator|.
 name|web
@@ -85,6 +99,10 @@ comment|/**  * VolumeArgs is used to package all volume  * related arguments in 
 end_comment
 
 begin_class
+annotation|@
+name|InterfaceAudience
+operator|.
+name|Private
 DECL|class|VolumeArgs
 specifier|public
 class|class
@@ -131,7 +149,7 @@ name|volumeName
 return|;
 block|}
 comment|/**    * Constructs  volume Args.    *    * @param userName - User name    * @param volumeName - volume Name    * @param requestID _ Request ID    * @param hostName - Host Name    * @param request  - Http Request    * @param info - URI info    * @param headers - http headers    */
-DECL|method|VolumeArgs (String userName, String volumeName, long requestID, String hostName, Request request, UriInfo info, HttpHeaders headers)
+DECL|method|VolumeArgs (String userName, String volumeName, String requestID, String hostName, Request request, UriInfo info, HttpHeaders headers)
 specifier|public
 name|VolumeArgs
 parameter_list|(
@@ -141,7 +159,7 @@ parameter_list|,
 name|String
 name|volumeName
 parameter_list|,
-name|long
+name|String
 name|requestID
 parameter_list|,
 name|String
@@ -177,6 +195,74 @@ operator|.
 name|volumeName
 operator|=
 name|volumeName
+expr_stmt|;
+block|}
+comment|/**    * Constructs  volume Args.    *    * @param volumeName - volume Name    * @param userArgs - userArgs    */
+DECL|method|VolumeArgs (String volumeName, UserArgs userArgs)
+specifier|public
+name|VolumeArgs
+parameter_list|(
+name|String
+name|volumeName
+parameter_list|,
+name|UserArgs
+name|userArgs
+parameter_list|)
+block|{
+name|this
+argument_list|(
+name|userArgs
+operator|.
+name|getUserName
+argument_list|()
+argument_list|,
+name|volumeName
+argument_list|,
+name|userArgs
+operator|.
+name|getRequestID
+argument_list|()
+argument_list|,
+name|userArgs
+operator|.
+name|getHostName
+argument_list|()
+argument_list|,
+name|userArgs
+operator|.
+name|getRequest
+argument_list|()
+argument_list|,
+name|userArgs
+operator|.
+name|getUri
+argument_list|()
+argument_list|,
+name|userArgs
+operator|.
+name|getHeaders
+argument_list|()
+argument_list|)
+expr_stmt|;
+block|}
+comment|/**    * Creates VolumeArgs from another VolumeArgs.    */
+DECL|method|VolumeArgs (VolumeArgs volArgs)
+specifier|public
+name|VolumeArgs
+parameter_list|(
+name|VolumeArgs
+name|volArgs
+parameter_list|)
+block|{
+name|this
+argument_list|(
+name|volArgs
+operator|.
+name|getVolumeName
+argument_list|()
+argument_list|,
+name|volArgs
+argument_list|)
 expr_stmt|;
 block|}
 comment|/**    * Sets Quota information.    *    * @param quota - Quota Sting    * @throws IllegalArgumentException    */

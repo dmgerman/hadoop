@@ -22,6 +22,20 @@ end_package
 
 begin_import
 import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|classification
+operator|.
+name|InterfaceAudience
+import|;
+end_import
+
+begin_import
+import|import
 name|javax
 operator|.
 name|ws
@@ -67,6 +81,10 @@ comment|/**  * UserArgs is used to package caller info  * and pass it down to fi
 end_comment
 
 begin_class
+annotation|@
+name|InterfaceAudience
+operator|.
+name|Private
 DECL|class|UserArgs
 specifier|public
 class|class
@@ -80,7 +98,7 @@ decl_stmt|;
 DECL|field|requestID
 specifier|private
 specifier|final
-name|long
+name|String
 name|requestID
 decl_stmt|;
 DECL|field|hostName
@@ -107,15 +125,15 @@ specifier|final
 name|HttpHeaders
 name|headers
 decl_stmt|;
-comment|/**    * Constructs  user args.    *    * @param userName - User name    * @param requestID _ Request ID    * @param hostName - Host Name    * @param req  - Request    * @param info - Uri Info    * @param httpHeaders - http headers    */
-DECL|method|UserArgs (String userName, long requestID, String hostName, Request req, UriInfo info, HttpHeaders httpHeaders)
+comment|/**    * Constructs  user args.    *    * @param userName - User name    * @param requestID - Request ID    * @param hostName - Host Name    * @param req - Request    * @param info - Uri Info    * @param httpHeaders - http headers    */
+DECL|method|UserArgs (String userName, String requestID, String hostName, Request req, UriInfo info, HttpHeaders httpHeaders)
 specifier|public
 name|UserArgs
 parameter_list|(
 name|String
 name|userName
 parameter_list|,
-name|long
+name|String
 name|requestID
 parameter_list|,
 name|String
@@ -168,6 +186,58 @@ operator|=
 name|httpHeaders
 expr_stmt|;
 block|}
+comment|/**    * Constructs  user args when we don't know the user name yet.    *    * @param requestID _ Request ID    * @param hostName - Host Name    * @param req - Request    * @param info - UriInfo    * @param httpHeaders - http headers    */
+DECL|method|UserArgs (String requestID, String hostName, Request req, UriInfo info, HttpHeaders httpHeaders)
+specifier|public
+name|UserArgs
+parameter_list|(
+name|String
+name|requestID
+parameter_list|,
+name|String
+name|hostName
+parameter_list|,
+name|Request
+name|req
+parameter_list|,
+name|UriInfo
+name|info
+parameter_list|,
+name|HttpHeaders
+name|httpHeaders
+parameter_list|)
+block|{
+name|this
+operator|.
+name|hostName
+operator|=
+name|hostName
+expr_stmt|;
+name|this
+operator|.
+name|requestID
+operator|=
+name|requestID
+expr_stmt|;
+name|this
+operator|.
+name|uri
+operator|=
+name|info
+expr_stmt|;
+name|this
+operator|.
+name|request
+operator|=
+name|req
+expr_stmt|;
+name|this
+operator|.
+name|headers
+operator|=
+name|httpHeaders
+expr_stmt|;
+block|}
 comment|/**    * Returns hostname.    *    * @return String    */
 DECL|method|getHostName ()
 specifier|public
@@ -182,7 +252,7 @@ block|}
 comment|/**    * Returns RequestID.    *    * @return Long    */
 DECL|method|getRequestID ()
 specifier|public
-name|long
+name|String
 name|getRequestID
 parameter_list|()
 block|{

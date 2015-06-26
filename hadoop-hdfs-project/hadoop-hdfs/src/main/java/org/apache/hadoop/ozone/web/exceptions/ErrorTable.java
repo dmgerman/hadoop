@@ -28,6 +28,20 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|classification
+operator|.
+name|InterfaceAudience
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|ozone
 operator|.
 name|web
@@ -115,6 +129,10 @@ comment|/**  * Error Table represents the Errors from Ozone Rest API layer.  *  
 end_comment
 
 begin_class
+annotation|@
+name|InterfaceAudience
+operator|.
+name|Private
 DECL|class|ErrorTable
 specifier|public
 specifier|final
@@ -557,7 +575,7 @@ literal|"Internal server error."
 argument_list|)
 decl_stmt|;
 comment|/**    * Create a new instance of Error.    *    * @param e Error Template    * @param requestID Request ID    * @param resource Resource Name    * @param hostID hostID    *    * @return creates a new instance of error based on the template    */
-DECL|method|newError (OzoneException e, long requestID, String resource, String hostID)
+DECL|method|newError (OzoneException e, String requestID, String resource, String hostID)
 specifier|public
 specifier|static
 name|OzoneException
@@ -566,7 +584,7 @@ parameter_list|(
 name|OzoneException
 name|e
 parameter_list|,
-name|long
+name|String
 name|requestID
 parameter_list|,
 name|String
@@ -602,12 +620,7 @@ name|err
 operator|.
 name|setRequestId
 argument_list|(
-name|Long
-operator|.
-name|toString
-argument_list|(
 name|requestID
-argument_list|)
 argument_list|)
 expr_stmt|;
 name|err
@@ -668,15 +681,10 @@ name|err
 operator|.
 name|setRequestId
 argument_list|(
-name|Long
-operator|.
-name|toString
-argument_list|(
 name|args
 operator|.
 name|getRequestID
 argument_list|()
-argument_list|)
 argument_list|)
 expr_stmt|;
 name|err
@@ -743,15 +751,10 @@ name|err
 operator|.
 name|setRequestId
 argument_list|(
-name|Long
-operator|.
-name|toString
-argument_list|(
 name|args
 operator|.
 name|getRequestID
 argument_list|()
-argument_list|)
 argument_list|)
 expr_stmt|;
 name|err

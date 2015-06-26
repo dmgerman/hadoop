@@ -24,6 +24,20 @@ begin_import
 import|import
 name|org
 operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|classification
+operator|.
+name|InterfaceAudience
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
 name|codehaus
 operator|.
 name|jackson
@@ -189,6 +203,10 @@ comment|/**  * List Volume Class is the class that is returned in JSON format to
 end_comment
 
 begin_class
+annotation|@
+name|InterfaceAudience
+operator|.
+name|Private
 DECL|class|ListVolumes
 specifier|public
 class|class
