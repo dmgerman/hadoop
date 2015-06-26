@@ -132,6 +132,15 @@ specifier|public
 class|class
 name|TestOptionsParser
 block|{
+DECL|field|DELTA
+specifier|private
+specifier|static
+specifier|final
+name|float
+name|DELTA
+init|=
+literal|0.001f
+decl_stmt|;
 annotation|@
 name|Test
 DECL|method|testParseIgnoreFailure ()
@@ -467,6 +476,8 @@ argument_list|,
 name|DistCpConstants
 operator|.
 name|DEFAULT_BANDWIDTH_MB
+argument_list|,
+name|DELTA
 argument_list|)
 expr_stmt|;
 name|options
@@ -481,7 +492,7 @@ index|[]
 block|{
 literal|"-bandwidth"
 block|,
-literal|"11"
+literal|"11.2"
 block|,
 literal|"hdfs://localhost:8020/source/first"
 block|,
@@ -498,7 +509,9 @@ operator|.
 name|getMapBandwidth
 argument_list|()
 argument_list|,
-literal|11
+literal|11.2
+argument_list|,
+name|DELTA
 argument_list|)
 expr_stmt|;
 block|}
@@ -3176,7 +3189,7 @@ name|assertEquals
 argument_list|(
 name|conf
 operator|.
-name|getInt
+name|getFloat
 argument_list|(
 name|DistCpOptionSwitch
 operator|.
@@ -3192,6 +3205,8 @@ argument_list|,
 name|DistCpConstants
 operator|.
 name|DEFAULT_BANDWIDTH_MB
+argument_list|,
+name|DELTA
 argument_list|)
 expr_stmt|;
 name|conf
@@ -3275,7 +3290,7 @@ literal|"-pu"
 block|,
 literal|"-bandwidth"
 block|,
-literal|"11"
+literal|"11.2"
 block|,
 literal|"hdfs://localhost:8020/source/first"
 block|,
@@ -3353,7 +3368,7 @@ name|assertEquals
 argument_list|(
 name|conf
 operator|.
-name|getInt
+name|getFloat
 argument_list|(
 name|DistCpOptionSwitch
 operator|.
@@ -3366,7 +3381,9 @@ operator|-
 literal|1
 argument_list|)
 argument_list|,
-literal|11
+literal|11.2
+argument_list|,
+name|DELTA
 argument_list|)
 expr_stmt|;
 block|}

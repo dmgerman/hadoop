@@ -1828,12 +1828,12 @@ argument_list|(
 name|conf
 argument_list|)
 decl_stmt|;
-name|long
+name|float
 name|bandwidthMB
 init|=
 name|conf
 operator|.
-name|getInt
+name|getFloat
 argument_list|(
 name|DistCpConstants
 operator|.

@@ -1471,12 +1471,12 @@ condition|)
 block|{
 try|try
 block|{
-name|Integer
+name|Float
 name|mapBandwidth
 init|=
-name|Integer
+name|Float
 operator|.
-name|parseInt
+name|parseFloat
 argument_list|(
 name|getVal
 argument_list|(

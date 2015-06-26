@@ -376,6 +376,14 @@ DECL|enumConstant|BYTESSKIPPED
 name|BYTESSKIPPED
 block|,
 comment|// Number of bytes that were skipped from copy.
+DECL|enumConstant|SLEEP_TIME_MS
+name|SLEEP_TIME_MS
+block|,
+comment|// Time map slept while trying to honor bandwidth cap.
+DECL|enumConstant|BANDWIDTH_IN_BYTES
+name|BANDWIDTH_IN_BYTES
+block|,
+comment|// Effective transfer rate in B/s.
 block|}
 comment|/**    * Indicate the action for each file    */
 DECL|enum|FileAction
@@ -481,6 +489,18 @@ name|Path
 name|targetWorkPath
 init|=
 literal|null
+decl_stmt|;
+DECL|field|startEpoch
+specifier|private
+name|long
+name|startEpoch
+decl_stmt|;
+DECL|field|totalBytesCopied
+specifier|private
+name|long
+name|totalBytesCopied
+init|=
+literal|0
 decl_stmt|;
 comment|/**    * Implementation of the Mapper::setup() method. This extracts the DistCp-    * options specified in the Job's configuration, to set up the Job.    * @param context Mapper's context.    * @throws IOException On IO failure.    * @throws InterruptedException If the job is interrupted.    */
 annotation|@
@@ -687,6 +707,13 @@ name|context
 argument_list|)
 expr_stmt|;
 block|}
+name|startEpoch
+operator|=
+name|System
+operator|.
+name|currentTimeMillis
+argument_list|()
+expr_stmt|;
 block|}
 comment|/**    * Initialize SSL Config if same is set in conf    *    * @throws IOException - If any    */
 DECL|method|initializeSSLConf (Context context)
@@ -1630,6 +1657,10 @@ argument_list|,
 literal|1
 argument_list|)
 expr_stmt|;
+name|totalBytesCopied
+operator|+=
+name|bytesCopied
+expr_stmt|;
 block|}
 DECL|method|createTargetDirsWithRetry (String description, Path target, Context context)
 specifier|private
@@ -2123,6 +2154,66 @@ return|return
 literal|false
 return|;
 block|}
+block|}
+annotation|@
+name|Override
+DECL|method|cleanup (Context context)
+specifier|protected
+name|void
+name|cleanup
+parameter_list|(
+name|Context
+name|context
+parameter_list|)
+throws|throws
+name|IOException
+throws|,
+name|InterruptedException
+block|{
+name|super
+operator|.
+name|cleanup
+argument_list|(
+name|context
+argument_list|)
+expr_stmt|;
+name|long
+name|secs
+init|=
+operator|(
+name|System
+operator|.
+name|currentTimeMillis
+argument_list|()
+operator|-
+name|startEpoch
+operator|)
+operator|/
+literal|1000
+decl_stmt|;
+name|incrementCounter
+argument_list|(
+name|context
+argument_list|,
+name|Counter
+operator|.
+name|BANDWIDTH_IN_BYTES
+argument_list|,
+name|totalBytesCopied
+operator|/
+operator|(
+operator|(
+name|secs
+operator|==
+literal|0
+condition|?
+literal|1
+else|:
+name|secs
+operator|)
+operator|)
+argument_list|)
+expr_stmt|;
 block|}
 block|}
 end_class
