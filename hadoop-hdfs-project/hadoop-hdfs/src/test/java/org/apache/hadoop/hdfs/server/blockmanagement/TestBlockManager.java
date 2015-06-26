@@ -2354,6 +2354,8 @@ operator|.
 name|addStorage
 argument_list|(
 name|storage
+argument_list|,
+name|blockInfo
 argument_list|)
 expr_stmt|;
 block|}
@@ -2420,6 +2422,8 @@ operator|.
 name|addStorage
 argument_list|(
 name|storage
+argument_list|,
+name|blockInfo
 argument_list|)
 expr_stmt|;
 block|}

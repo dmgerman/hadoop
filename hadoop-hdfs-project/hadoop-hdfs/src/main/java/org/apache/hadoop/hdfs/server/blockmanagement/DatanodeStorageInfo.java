@@ -90,6 +90,22 @@ name|hdfs
 operator|.
 name|protocol
 operator|.
+name|Block
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|protocol
+operator|.
 name|DatanodeInfo
 import|;
 end_import
@@ -934,13 +950,16 @@ return|return
 name|blockPoolUsed
 return|;
 block|}
-DECL|method|addBlock (BlockInfo b)
+DECL|method|addBlock (BlockInfo b, Block reportedBlock)
 specifier|public
 name|AddBlockResult
 name|addBlock
 parameter_list|(
 name|BlockInfo
 name|b
+parameter_list|,
+name|Block
+name|reportedBlock
 parameter_list|)
 block|{
 comment|// First check whether the block belongs to a different storage
@@ -1008,8 +1027,45 @@ operator|.
 name|addStorage
 argument_list|(
 name|this
+argument_list|,
+name|reportedBlock
 argument_list|)
 expr_stmt|;
+name|insertToList
+argument_list|(
+name|b
+argument_list|)
+expr_stmt|;
+return|return
+name|result
+return|;
+block|}
+DECL|method|addBlock (BlockInfo b)
+name|AddBlockResult
+name|addBlock
+parameter_list|(
+name|BlockInfo
+name|b
+parameter_list|)
+block|{
+return|return
+name|addBlock
+argument_list|(
+name|b
+argument_list|,
+name|b
+argument_list|)
+return|;
+block|}
+DECL|method|insertToList (BlockInfo b)
+specifier|public
+name|void
+name|insertToList
+parameter_list|(
+name|BlockInfo
+name|b
+parameter_list|)
+block|{
 name|blockList
 operator|=
 name|b
@@ -1024,9 +1080,6 @@ expr_stmt|;
 name|numBlocks
 operator|++
 expr_stmt|;
-return|return
-name|result
-return|;
 block|}
 DECL|method|removeBlock (BlockInfo b)
 specifier|public

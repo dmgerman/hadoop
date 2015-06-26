@@ -745,14 +745,17 @@ name|int
 name|numNodes
 parameter_list|()
 function_decl|;
-comment|/**    * Add a {@link DatanodeStorageInfo} location for a block.    */
-DECL|method|addStorage (DatanodeStorageInfo storage)
+comment|/**    * Add a {@link DatanodeStorageInfo} location for a block    * @param storage The storage to add    * @param reportedBlock The block reported from the datanode. This is only    *                      used by erasure coded blocks, this block's id contains    *                      information indicating the index of the block in the    *                      corresponding block group.    */
+DECL|method|addStorage (DatanodeStorageInfo storage, Block reportedBlock)
 specifier|abstract
 name|boolean
 name|addStorage
 parameter_list|(
 name|DatanodeStorageInfo
 name|storage
+parameter_list|,
+name|Block
+name|reportedBlock
 parameter_list|)
 function_decl|;
 comment|/**    * Remove {@link DatanodeStorageInfo} location for a block    */
@@ -765,7 +768,7 @@ name|DatanodeStorageInfo
 name|storage
 parameter_list|)
 function_decl|;
-comment|/**    * Replace the current BlockInfo with the new one in corresponding    * DatanodeStorageInfo's linked list    */
+comment|/**    * Replace the current BlockInfo with the new one in corresponding    * DatanodeStorageInfo's linked list.    */
 DECL|method|replaceBlock (BlockInfo newBlock)
 specifier|abstract
 name|void

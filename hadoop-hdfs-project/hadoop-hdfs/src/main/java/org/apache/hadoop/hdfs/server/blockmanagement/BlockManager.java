@@ -1511,21 +1511,14 @@ name|String
 argument_list|,
 name|LightWeightLinkedSet
 argument_list|<
-name|Block
+name|BlockInfo
 argument_list|>
 argument_list|>
 name|excessReplicateMap
 init|=
 operator|new
 name|TreeMap
-argument_list|<
-name|String
-argument_list|,
-name|LightWeightLinkedSet
-argument_list|<
-name|Block
-argument_list|>
-argument_list|>
+argument_list|<>
 argument_list|()
 decl_stmt|;
 comment|/**    * Store set of Blocks that need to be replicated 1 or more times.    * We also store pending replication-orders.    */
@@ -2813,9 +2806,7 @@ name|live
 init|=
 operator|new
 name|ArrayList
-argument_list|<
-name|DatanodeDescriptor
-argument_list|>
+argument_list|<>
 argument_list|()
 decl_stmt|;
 specifier|final
@@ -2827,9 +2818,7 @@ name|dead
 init|=
 operator|new
 name|ArrayList
-argument_list|<
-name|DatanodeDescriptor
-argument_list|>
+argument_list|<>
 argument_list|()
 decl_stmt|;
 name|datanodeManager
@@ -2988,9 +2977,7 @@ name|containingLiveReplicasNodes
 init|=
 operator|new
 name|ArrayList
-argument_list|<
-name|DatanodeStorageInfo
-argument_list|>
+argument_list|<>
 argument_list|()
 decl_stmt|;
 name|NumberReplicas
@@ -3158,8 +3145,6 @@ control|(
 name|DatanodeStorageInfo
 name|storage
 range|:
-name|blocksMap
-operator|.
 name|getStorages
 argument_list|(
 name|block
@@ -3264,18 +3249,47 @@ return|return
 name|maxReplicationStreams
 return|;
 block|}
-comment|/**    * @return true if the block has minimum replicas    */
-DECL|method|checkMinReplication (BlockInfo block)
+DECL|method|getDefaultStorageNum (BlockInfo block)
 specifier|public
-name|boolean
-name|checkMinReplication
+name|int
+name|getDefaultStorageNum
 parameter_list|(
 name|BlockInfo
 name|block
 parameter_list|)
 block|{
 return|return
-operator|(
+name|defaultReplication
+return|;
+block|}
+DECL|method|getMinStorageNum (BlockInfo block)
+specifier|public
+name|short
+name|getMinStorageNum
+parameter_list|(
+name|BlockInfo
+name|block
+parameter_list|)
+block|{
+return|return
+name|minReplication
+return|;
+block|}
+comment|/**    * @return true if the block has minimum stored copies    */
+DECL|method|hasMinStorage (BlockInfo block)
+specifier|public
+name|boolean
+name|hasMinStorage
+parameter_list|(
+name|BlockInfo
+name|block
+parameter_list|)
+block|{
+return|return
+name|hasMinStorage
+argument_list|(
+name|block
+argument_list|,
 name|countNodes
 argument_list|(
 name|block
@@ -3283,9 +3297,28 @@ argument_list|)
 operator|.
 name|liveReplicas
 argument_list|()
+argument_list|)
+return|;
+block|}
+DECL|method|hasMinStorage (BlockInfo block, int liveNum)
+specifier|public
+name|boolean
+name|hasMinStorage
+parameter_list|(
+name|BlockInfo
+name|block
+parameter_list|,
+name|int
+name|liveNum
+parameter_list|)
+block|{
+return|return
+name|liveNum
 operator|>=
-name|minReplication
-operator|)
+name|getMinStorageNum
+argument_list|(
+name|block
+argument_list|)
 return|;
 block|}
 comment|/**    * Commit a block of a file    *     * @param block block to be committed    * @param commitBlock - contains client reported block length and generation    * @return true if the block is changed to committed state.    * @throws IOException if the block does not have at least a minimal number    * of replicas reported from data-nodes.    */
@@ -3317,9 +3350,11 @@ name|BlockUCState
 operator|.
 name|COMMITTED
 condition|)
+block|{
 return|return
 literal|false
 return|;
+block|}
 assert|assert
 name|block
 operator|.
@@ -3377,10 +3412,12 @@ name|commitBlock
 operator|==
 literal|null
 condition|)
+block|{
 return|return
 literal|false
 return|;
 comment|// not committing, this is a block allocation retry
+block|}
 name|BlockInfo
 name|lastBlock
 init|=
@@ -3395,10 +3432,12 @@ name|lastBlock
 operator|==
 literal|null
 condition|)
+block|{
 return|return
 literal|false
 return|;
 comment|// no blocks in file yet
+block|}
 if|if
 condition|(
 name|lastBlock
@@ -3406,10 +3445,12 @@ operator|.
 name|isComplete
 argument_list|()
 condition|)
+block|{
 return|return
 literal|false
 return|;
 comment|// already completed (e.g. by syncBlock)
+block|}
 specifier|final
 name|boolean
 name|b
@@ -3426,16 +3467,12 @@ argument_list|)
 decl_stmt|;
 if|if
 condition|(
-name|countNodes
+name|hasMinStorage
 argument_list|(
 name|lastBlock
 argument_list|)
-operator|.
-name|liveReplicas
-argument_list|()
-operator|>=
-name|minReplication
 condition|)
+block|{
 name|completeBlock
 argument_list|(
 name|bc
@@ -3450,6 +3487,7 @@ argument_list|,
 literal|false
 argument_list|)
 expr_stmt|;
+block|}
 return|return
 name|b
 return|;
@@ -3480,9 +3518,11 @@ name|blkIndex
 operator|<
 literal|0
 condition|)
+block|{
 return|return
 literal|null
 return|;
+block|}
 name|BlockInfo
 name|curBlock
 init|=
@@ -3501,9 +3541,11 @@ operator|.
 name|isComplete
 argument_list|()
 condition|)
+block|{
 return|return
 name|curBlock
 return|;
+block|}
 name|BlockInfoUnderConstruction
 name|ucBlock
 init|=
@@ -3525,10 +3567,15 @@ condition|(
 operator|!
 name|force
 operator|&&
+operator|!
+name|hasMinStorage
+argument_list|(
+name|curBlock
+argument_list|,
 name|numNodes
-operator|<
-name|minReplication
+argument_list|)
 condition|)
+block|{
 throw|throw
 operator|new
 name|IOException
@@ -3538,6 +3585,7 @@ operator|+
 literal|"block does not satisfy minimal replication requirement."
 argument_list|)
 throw|;
+block|}
 if|if
 condition|(
 operator|!
@@ -3552,6 +3600,7 @@ name|BlockUCState
 operator|.
 name|COMMITTED
 condition|)
+block|{
 throw|throw
 operator|new
 name|IOException
@@ -3559,6 +3608,7 @@ argument_list|(
 literal|"Cannot complete block: block has not been COMMITTED by the client"
 argument_list|)
 throw|;
+block|}
 name|BlockInfo
 name|completeBlock
 init|=
@@ -3869,11 +3919,14 @@ operator|.
 name|adjustSafeModeBlockTotals
 argument_list|(
 comment|// decrement safe if we had enough
+name|hasMinStorage
+argument_list|(
+name|oldBlock
+argument_list|,
 name|targets
 operator|.
 name|length
-operator|>=
-name|minReplication
+argument_list|)
 condition|?
 operator|-
 literal|1
@@ -3948,9 +4001,7 @@ name|locations
 init|=
 operator|new
 name|ArrayList
-argument_list|<
-name|DatanodeStorageInfo
-argument_list|>
+argument_list|<>
 argument_list|(
 name|blocksMap
 operator|.
@@ -3965,8 +4016,6 @@ control|(
 name|DatanodeStorageInfo
 name|storage
 range|:
-name|blocksMap
-operator|.
 name|getStorages
 argument_list|(
 name|block
@@ -4037,8 +4086,6 @@ name|IOException
 block|{
 name|int
 name|curBlk
-init|=
-literal|0
 decl_stmt|;
 name|long
 name|curPos
@@ -4131,9 +4178,6 @@ comment|// offset>= end of file
 return|return
 name|Collections
 operator|.
-expr|<
-name|LocatedBlock
-operator|>
 name|emptyList
 argument_list|()
 return|;
@@ -4152,9 +4196,7 @@ name|results
 init|=
 operator|new
 name|ArrayList
-argument_list|<
-name|LocatedBlock
-argument_list|>
+argument_list|<>
 argument_list|(
 name|blocks
 operator|.
@@ -4241,8 +4283,6 @@ name|IOException
 block|{
 name|int
 name|curBlk
-init|=
-literal|0
 decl_stmt|;
 name|long
 name|curPos
@@ -4376,7 +4416,7 @@ name|lb
 return|;
 block|}
 comment|/** @return a LocatedBlock for the given block */
-DECL|method|createLocatedBlock (final BlockInfo blk, final long pos )
+DECL|method|createLocatedBlock (final BlockInfo blk, final long pos)
 specifier|private
 name|LocatedBlock
 name|createLocatedBlock
@@ -4578,8 +4618,6 @@ control|(
 name|DatanodeStorageInfo
 name|storage
 range|:
-name|blocksMap
-operator|.
 name|getStorages
 argument_list|(
 name|blk
@@ -4617,6 +4655,7 @@ operator|!
 name|replicaCorrupt
 operator|)
 condition|)
+block|{
 name|machines
 index|[
 name|j
@@ -4625,6 +4664,7 @@ index|]
 operator|=
 name|storage
 expr_stmt|;
+block|}
 block|}
 block|}
 assert|assert
@@ -5453,9 +5493,7 @@ name|results
 init|=
 operator|new
 name|ArrayList
-argument_list|<
-name|BlockWithLocations
-argument_list|>
+argument_list|<>
 argument_list|()
 decl_stmt|;
 name|long
@@ -5598,9 +5636,7 @@ block|{
 specifier|final
 name|Iterator
 argument_list|<
-name|?
-extends|extends
-name|Block
+name|BlockInfo
 argument_list|>
 name|it
 init|=
@@ -5668,9 +5704,7 @@ assert|;
 specifier|final
 name|Iterator
 argument_list|<
-name|?
-extends|extends
-name|Block
+name|BlockInfo
 argument_list|>
 name|it
 init|=
@@ -5695,7 +5729,7 @@ name|hasNext
 argument_list|()
 condition|)
 block|{
-name|Block
+name|BlockInfo
 name|block
 init|=
 name|it
@@ -5764,13 +5798,13 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|/**    * Adds block to list of blocks which will be invalidated on all its    * datanodes.    */
-DECL|method|addToInvalidates (Block b)
+DECL|method|addToInvalidates (BlockInfo storedBlock)
 specifier|private
 name|void
 name|addToInvalidates
 parameter_list|(
-name|Block
-name|b
+name|BlockInfo
+name|storedBlock
 parameter_list|)
 block|{
 if|if
@@ -5800,7 +5834,7 @@ name|blocksMap
 operator|.
 name|getStorages
 argument_list|(
-name|b
+name|storedBlock
 argument_list|,
 name|State
 operator|.
@@ -5821,7 +5855,7 @@ name|invalidateBlocks
 operator|.
 name|add
 argument_list|(
-name|b
+name|storedBlock
 argument_list|,
 name|node
 argument_list|,
@@ -5857,7 +5891,7 @@ name|info
 argument_list|(
 literal|"BLOCK* addToInvalidates: {} {}"
 argument_list|,
-name|b
+name|storedBlock
 argument_list|,
 name|datanodes
 operator|.
@@ -5926,15 +5960,21 @@ name|hasWriteLock
 argument_list|()
 assert|;
 specifier|final
+name|Block
+name|reportedBlock
+init|=
+name|blk
+operator|.
+name|getLocalBlock
+argument_list|()
+decl_stmt|;
+specifier|final
 name|BlockInfo
 name|storedBlock
 init|=
 name|getStoredBlock
 argument_list|(
-name|blk
-operator|.
-name|getLocalBlock
-argument_list|()
+name|reportedBlock
 argument_list|)
 decl_stmt|;
 if|if
@@ -6005,6 +6045,8 @@ argument_list|(
 operator|new
 name|BlockToMarkCorrupt
 argument_list|(
+name|reportedBlock
+argument_list|,
 name|storedBlock
 argument_list|,
 name|blk
@@ -6058,7 +6100,7 @@ if|if
 condition|(
 name|b
 operator|.
-name|corrupted
+name|stored
 operator|.
 name|isDeleted
 argument_list|()
@@ -6089,15 +6131,19 @@ block|}
 name|short
 name|expectedReplicas
 init|=
+name|getExpectedReplicaNum
+argument_list|(
 name|b
 operator|.
-name|corrupted
+name|stored
 operator|.
 name|getBlockCollection
 argument_list|()
+argument_list|,
+name|b
 operator|.
-name|getPreferredBlockReplication
-argument_list|()
+name|stored
+argument_list|)
 decl_stmt|;
 comment|// Add replica to the data-node if it is not already there
 if|if
@@ -6114,6 +6160,10 @@ argument_list|(
 name|b
 operator|.
 name|stored
+argument_list|,
+name|b
+operator|.
+name|corrupted
 argument_list|)
 expr_stmt|;
 block|}
@@ -6160,12 +6210,17 @@ decl_stmt|;
 name|boolean
 name|minReplicationSatisfied
 init|=
+name|hasMinStorage
+argument_list|(
+name|b
+operator|.
+name|stored
+argument_list|,
 name|numberOfReplicas
 operator|.
 name|liveReplicas
 argument_list|()
-operator|>=
-name|minReplication
+argument_list|)
 decl_stmt|;
 name|boolean
 name|hasMoreCorruptReplicas
@@ -6710,9 +6765,7 @@ name|work
 init|=
 operator|new
 name|LinkedList
-argument_list|<
-name|ReplicationWork
-argument_list|>
+argument_list|<>
 argument_list|()
 decl_stmt|;
 name|namesystem
@@ -6807,19 +6860,19 @@ continue|continue;
 block|}
 name|requiredReplication
 operator|=
+name|getExpectedReplicaNum
+argument_list|(
 name|bc
-operator|.
-name|getPreferredBlockReplication
-argument_list|()
+argument_list|,
+name|block
+argument_list|)
 expr_stmt|;
 comment|// get a source data-node
 name|containingNodes
 operator|=
 operator|new
 name|ArrayList
-argument_list|<
-name|DatanodeDescriptor
-argument_list|>
+argument_list|<>
 argument_list|()
 expr_stmt|;
 name|List
@@ -6830,9 +6883,7 @@ name|liveReplicaNodes
 init|=
 operator|new
 name|ArrayList
-argument_list|<
-name|DatanodeStorageInfo
-argument_list|>
+argument_list|<>
 argument_list|()
 decl_stmt|;
 name|NumberReplicas
@@ -6930,6 +6981,8 @@ operator|(
 name|blockHasEnoughRacks
 argument_list|(
 name|block
+argument_list|,
+name|requiredReplication
 argument_list|)
 operator|)
 condition|)
@@ -7027,9 +7080,7 @@ name|excludedNodes
 init|=
 operator|new
 name|HashSet
-argument_list|<
-name|Node
-argument_list|>
+argument_list|<>
 argument_list|()
 decl_stmt|;
 for|for
@@ -7200,10 +7251,12 @@ continue|continue;
 block|}
 name|requiredReplication
 operator|=
+name|getExpectedReplicaNum
+argument_list|(
 name|bc
-operator|.
-name|getPreferredBlockReplication
-argument_list|()
+argument_list|,
+name|block
+argument_list|)
 expr_stmt|;
 comment|// do not schedule more if enough replicas is already pending
 name|NumberReplicas
@@ -7252,6 +7305,8 @@ operator|(
 name|blockHasEnoughRacks
 argument_list|(
 name|block
+argument_list|,
+name|requiredReplication
 argument_list|)
 operator|)
 condition|)
@@ -7302,6 +7357,8 @@ operator|!
 name|blockHasEnoughRacks
 argument_list|(
 name|block
+argument_list|,
+name|requiredReplication
 argument_list|)
 operator|)
 condition|)
@@ -7862,9 +7919,7 @@ name|datanodeDescriptors
 operator|=
 operator|new
 name|ArrayList
-argument_list|<
-name|DatanodeDescriptor
-argument_list|>
+argument_list|<>
 argument_list|(
 name|nodes
 operator|.
@@ -8013,8 +8068,6 @@ control|(
 name|DatanodeStorageInfo
 name|storage
 range|:
-name|blocksMap
-operator|.
 name|getStorages
 argument_list|(
 name|block
@@ -8032,7 +8085,7 @@ argument_list|()
 decl_stmt|;
 name|LightWeightLinkedSet
 argument_list|<
-name|Block
+name|BlockInfo
 argument_list|>
 name|excessBlocks
 init|=
@@ -8341,8 +8394,6 @@ comment|/*            * Use the blockinfo from the blocksmap to be certain we're
 name|BlockInfo
 name|bi
 init|=
-name|blocksMap
-operator|.
 name|getStoredBlock
 argument_list|(
 name|timedOutItems
@@ -8578,6 +8629,68 @@ name|reportedState
 expr_stmt|;
 block|}
 block|}
+DECL|class|BlockInfoToAdd
+specifier|private
+specifier|static
+class|class
+name|BlockInfoToAdd
+block|{
+DECL|field|stored
+specifier|private
+specifier|final
+name|BlockInfo
+name|stored
+decl_stmt|;
+DECL|field|reported
+specifier|private
+specifier|final
+name|Block
+name|reported
+decl_stmt|;
+DECL|method|BlockInfoToAdd (BlockInfo stored, Block reported)
+name|BlockInfoToAdd
+parameter_list|(
+name|BlockInfo
+name|stored
+parameter_list|,
+name|Block
+name|reported
+parameter_list|)
+block|{
+name|this
+operator|.
+name|stored
+operator|=
+name|stored
+expr_stmt|;
+name|this
+operator|.
+name|reported
+operator|=
+name|reported
+expr_stmt|;
+block|}
+DECL|method|getStored ()
+specifier|public
+name|BlockInfo
+name|getStored
+parameter_list|()
+block|{
+return|return
+name|stored
+return|;
+block|}
+DECL|method|getReported ()
+specifier|public
+name|Block
+name|getReported
+parameter_list|()
+block|{
+return|return
+name|reported
+return|;
+block|}
+block|}
 comment|/**    * BlockToMarkCorrupt is used to build the "toCorrupt" list, which is a    * list of blocks that should be considered corrupt due to a block report.    */
 DECL|class|BlockToMarkCorrupt
 specifier|private
@@ -8585,10 +8698,10 @@ specifier|static
 class|class
 name|BlockToMarkCorrupt
 block|{
-comment|/** The corrupted block in a datanode. */
+comment|/** The corrupted block in a datanode. This is the one reported by the      * datanode.      */
 DECL|field|corrupted
 specifier|final
-name|BlockInfo
+name|Block
 name|corrupted
 decl_stmt|;
 comment|/** The corresponding block stored in the BlockManager. */
@@ -8609,10 +8722,10 @@ specifier|final
 name|Reason
 name|reasonCode
 decl_stmt|;
-DECL|method|BlockToMarkCorrupt (BlockInfo corrupted, BlockInfo stored, String reason, Reason reasonCode)
+DECL|method|BlockToMarkCorrupt (Block corrupted, BlockInfo stored, String reason, Reason reasonCode)
 name|BlockToMarkCorrupt
 parameter_list|(
-name|BlockInfo
+name|Block
 name|corrupted
 parameter_list|,
 name|BlockInfo
@@ -8668,34 +8781,12 @@ operator|=
 name|reasonCode
 expr_stmt|;
 block|}
-DECL|method|BlockToMarkCorrupt (BlockInfo stored, String reason, Reason reasonCode)
+DECL|method|BlockToMarkCorrupt (Block corrupted, BlockInfo stored, long gs, String reason, Reason reasonCode)
 name|BlockToMarkCorrupt
 parameter_list|(
-name|BlockInfo
-name|stored
+name|Block
+name|corrupted
 parameter_list|,
-name|String
-name|reason
-parameter_list|,
-name|Reason
-name|reasonCode
-parameter_list|)
-block|{
-name|this
-argument_list|(
-name|stored
-argument_list|,
-name|stored
-argument_list|,
-name|reason
-argument_list|,
-name|reasonCode
-argument_list|)
-expr_stmt|;
-block|}
-DECL|method|BlockToMarkCorrupt (BlockInfo stored, long gs, String reason, Reason reasonCode)
-name|BlockToMarkCorrupt
-parameter_list|(
 name|BlockInfo
 name|stored
 parameter_list|,
@@ -8711,11 +8802,7 @@ parameter_list|)
 block|{
 name|this
 argument_list|(
-operator|new
-name|BlockInfoContiguous
-argument_list|(
-name|stored
-argument_list|)
+name|corrupted
 argument_list|,
 name|stored
 argument_list|,
@@ -9608,8 +9695,6 @@ block|}
 name|BlockInfo
 name|bi
 init|=
-name|blocksMap
-operator|.
 name|getStoredBlock
 argument_list|(
 name|b
@@ -9782,28 +9867,24 @@ comment|// between the old and new block report.
 comment|//
 name|Collection
 argument_list|<
-name|BlockInfo
+name|BlockInfoToAdd
 argument_list|>
 name|toAdd
 init|=
 operator|new
 name|LinkedList
-argument_list|<
-name|BlockInfo
-argument_list|>
+argument_list|<>
 argument_list|()
 decl_stmt|;
 name|Collection
 argument_list|<
-name|Block
+name|BlockInfo
 argument_list|>
 name|toRemove
 init|=
 operator|new
 name|TreeSet
-argument_list|<
-name|Block
-argument_list|>
+argument_list|<>
 argument_list|()
 decl_stmt|;
 name|Collection
@@ -9814,9 +9895,7 @@ name|toInvalidate
 init|=
 operator|new
 name|LinkedList
-argument_list|<
-name|Block
-argument_list|>
+argument_list|<>
 argument_list|()
 decl_stmt|;
 name|Collection
@@ -9827,9 +9906,7 @@ name|toCorrupt
 init|=
 operator|new
 name|LinkedList
-argument_list|<
-name|BlockToMarkCorrupt
-argument_list|>
+argument_list|<>
 argument_list|()
 decl_stmt|;
 name|Collection
@@ -9840,9 +9917,7 @@ name|toUC
 init|=
 operator|new
 name|LinkedList
-argument_list|<
-name|StatefulBlockInfo
-argument_list|>
+argument_list|<>
 argument_list|()
 decl_stmt|;
 name|reportDiff
@@ -9889,7 +9964,7 @@ expr_stmt|;
 block|}
 for|for
 control|(
-name|Block
+name|BlockInfo
 name|b
 range|:
 name|toRemove
@@ -9910,7 +9985,7 @@ literal|0
 decl_stmt|;
 for|for
 control|(
-name|BlockInfo
+name|BlockInfoToAdd
 name|b
 range|:
 name|toAdd
@@ -9919,6 +9994,14 @@ block|{
 name|addStoredBlock
 argument_list|(
 name|b
+operator|.
+name|getStored
+argument_list|()
+argument_list|,
+name|b
+operator|.
+name|getReported
+argument_list|()
 argument_list|,
 name|storageInfo
 argument_list|,
@@ -9993,11 +10076,14 @@ name|toInvalidate
 return|;
 block|}
 comment|/**    * Mark block replicas as corrupt except those on the storages in     * newStorages list.    */
-DECL|method|markBlockReplicasAsCorrupt (BlockInfo block, long oldGenerationStamp, long oldNumBytes, DatanodeStorageInfo[] newStorages)
+DECL|method|markBlockReplicasAsCorrupt (Block oldBlock, BlockInfo block, long oldGenerationStamp, long oldNumBytes, DatanodeStorageInfo[] newStorages)
 specifier|public
 name|void
 name|markBlockReplicasAsCorrupt
 parameter_list|(
+name|Block
+name|oldBlock
+parameter_list|,
 name|BlockInfo
 name|block
 parameter_list|,
@@ -10040,6 +10126,8 @@ operator|=
 operator|new
 name|BlockToMarkCorrupt
 argument_list|(
+name|oldBlock
+argument_list|,
 name|block
 argument_list|,
 name|oldGenerationStamp
@@ -10077,6 +10165,8 @@ operator|=
 operator|new
 name|BlockToMarkCorrupt
 argument_list|(
+name|oldBlock
+argument_list|,
 name|block
 argument_list|,
 literal|"length does not match "
@@ -10316,8 +10406,6 @@ block|}
 name|BlockInfo
 name|storedBlock
 init|=
-name|blocksMap
-operator|.
 name|getStoredBlock
 argument_list|(
 name|iblk
@@ -10484,13 +10572,15 @@ name|addStoredBlockImmediate
 argument_list|(
 name|storedBlock
 argument_list|,
+name|iblk
+argument_list|,
 name|storageInfo
 argument_list|)
 expr_stmt|;
 block|}
 block|}
 block|}
-DECL|method|reportDiff (DatanodeStorageInfo storageInfo, BlockListAsLongs newReport, Collection<BlockInfo> toAdd, Collection<Block> toRemove, Collection<Block> toInvalidate, Collection<BlockToMarkCorrupt> toCorrupt, Collection<StatefulBlockInfo> toUC)
+DECL|method|reportDiff (DatanodeStorageInfo storageInfo, BlockListAsLongs newReport, Collection<BlockInfoToAdd> toAdd, Collection<BlockInfo> toRemove, Collection<Block> toInvalidate, Collection<BlockToMarkCorrupt> toCorrupt, Collection<StatefulBlockInfo> toUC)
 specifier|private
 name|void
 name|reportDiff
@@ -10503,14 +10593,14 @@ name|newReport
 parameter_list|,
 name|Collection
 argument_list|<
-name|BlockInfo
+name|BlockInfoToAdd
 argument_list|>
 name|toAdd
 parameter_list|,
 comment|// add to DatanodeDescriptor
 name|Collection
 argument_list|<
-name|Block
+name|BlockInfo
 argument_list|>
 name|toRemove
 parameter_list|,
@@ -10539,15 +10629,20 @@ block|{
 comment|// add to under-construction list
 comment|// place a delimiter in the list which separates blocks
 comment|// that have been reported from those that have not
+name|Block
+name|delimiterBlock
+init|=
+operator|new
+name|Block
+argument_list|()
+decl_stmt|;
 name|BlockInfo
 name|delimiter
 init|=
 operator|new
 name|BlockInfoContiguous
 argument_list|(
-operator|new
-name|Block
-argument_list|()
+name|delimiterBlock
 argument_list|,
 operator|(
 name|short
@@ -10563,6 +10658,8 @@ operator|.
 name|addBlock
 argument_list|(
 name|delimiter
+argument_list|,
+name|delimiterBlock
 argument_list|)
 decl_stmt|;
 assert|assert
@@ -10698,6 +10795,7 @@ operator|.
 name|hasNext
 argument_list|()
 condition|)
+block|{
 name|toRemove
 operator|.
 name|add
@@ -10708,6 +10806,7 @@ name|next
 argument_list|()
 argument_list|)
 expr_stmt|;
+block|}
 name|storageInfo
 operator|.
 name|removeBlock
@@ -10717,7 +10816,7 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|/**    * Process a block replica reported by the data-node.    * No side effects except adding to the passed-in Collections.    *     *<ol>    *<li>If the block is not known to the system (not in blocksMap) then the    * data-node should be notified to invalidate this block.</li>    *<li>If the reported replica is valid that is has the same generation stamp    * and length as recorded on the name-node, then the replica location should    * be added to the name-node.</li>    *<li>If the reported replica is not valid, then it is marked as corrupt,    * which triggers replication of the existing valid replicas.    * Corrupt replicas are removed from the system when the block    * is fully replicated.</li>    *<li>If the reported replica is for a block currently marked "under    * construction" in the NN, then it should be added to the     * BlockInfoUnderConstruction's list of replicas.</li>    *</ol>    *     * @param storageInfo DatanodeStorageInfo that sent the report.    * @param block reported block replica    * @param reportedState reported replica state    * @param toAdd add to DatanodeDescriptor    * @param toInvalidate missing blocks (not in the blocks map)    *        should be removed from the data-node    * @param toCorrupt replicas with unexpected length or generation stamp;    *        add to corrupt replicas    * @param toUC replicas of blocks currently under construction    * @return the up-to-date stored block, if it should be kept.    *         Otherwise, null.    */
-DECL|method|processReportedBlock ( final DatanodeStorageInfo storageInfo, final Block block, final ReplicaState reportedState, final Collection<BlockInfo> toAdd, final Collection<Block> toInvalidate, final Collection<BlockToMarkCorrupt> toCorrupt, final Collection<StatefulBlockInfo> toUC)
+DECL|method|processReportedBlock ( final DatanodeStorageInfo storageInfo, final Block block, final ReplicaState reportedState, final Collection<BlockInfoToAdd> toAdd, final Collection<Block> toInvalidate, final Collection<BlockToMarkCorrupt> toCorrupt, final Collection<StatefulBlockInfo> toUC)
 specifier|private
 name|BlockInfo
 name|processReportedBlock
@@ -10737,7 +10836,7 @@ parameter_list|,
 specifier|final
 name|Collection
 argument_list|<
-name|BlockInfo
+name|BlockInfoToAdd
 argument_list|>
 name|toAdd
 parameter_list|,
@@ -10835,8 +10934,6 @@ comment|// find block by blockId
 name|BlockInfo
 name|storedBlock
 init|=
-name|blocksMap
-operator|.
 name|getStoredBlock
 argument_list|(
 name|block
@@ -11045,7 +11142,13 @@ name|toAdd
 operator|.
 name|add
 argument_list|(
+operator|new
+name|BlockInfoToAdd
+argument_list|(
 name|storedBlock
+argument_list|,
+name|block
+argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
@@ -11224,10 +11327,13 @@ argument_list|()
 decl_stmt|;
 name|removeStoredBlock
 argument_list|(
+name|getStoredBlock
+argument_list|(
 name|rbi
 operator|.
 name|getBlock
 argument_list|()
+argument_list|)
 argument_list|,
 name|storageInfo
 operator|.
@@ -11391,6 +11497,12 @@ return|return
 operator|new
 name|BlockToMarkCorrupt
 argument_list|(
+operator|new
+name|Block
+argument_list|(
+name|reported
+argument_list|)
+argument_list|,
 name|storedBlock
 argument_list|,
 name|reportedGS
@@ -11434,6 +11546,12 @@ return|return
 operator|new
 name|BlockToMarkCorrupt
 argument_list|(
+operator|new
+name|Block
+argument_list|(
+name|reported
+argument_list|)
+argument_list|,
 name|storedBlock
 argument_list|,
 literal|"block is "
@@ -11498,6 +11616,12 @@ return|return
 operator|new
 name|BlockToMarkCorrupt
 argument_list|(
+operator|new
+name|Block
+argument_list|(
+name|reported
+argument_list|)
+argument_list|,
 name|storedBlock
 argument_list|,
 name|reportedGS
@@ -11582,6 +11706,12 @@ return|return
 operator|new
 name|BlockToMarkCorrupt
 argument_list|(
+operator|new
+name|Block
+argument_list|(
+name|reported
+argument_list|)
+argument_list|,
 name|storedBlock
 argument_list|,
 name|reportedGS
@@ -11650,6 +11780,12 @@ return|return
 operator|new
 name|BlockToMarkCorrupt
 argument_list|(
+operator|new
+name|Block
+argument_list|(
+name|reported
+argument_list|)
+argument_list|,
 name|storedBlock
 argument_list|,
 literal|"reported replica has invalid state "
@@ -11706,6 +11842,12 @@ return|return
 operator|new
 name|BlockToMarkCorrupt
 argument_list|(
+operator|new
+name|Block
+argument_list|(
+name|reported
+argument_list|)
+argument_list|,
 name|storedBlock
 argument_list|,
 name|msg
@@ -11849,6 +11991,10 @@ name|addStoredBlock
 argument_list|(
 name|block
 argument_list|,
+name|ucBlock
+operator|.
+name|reportedBlock
+argument_list|,
 name|storageInfo
 argument_list|,
 literal|null
@@ -11859,13 +12005,16 @@ expr_stmt|;
 block|}
 block|}
 comment|/**    * Faster version of {@link #addStoredBlock},    * intended for use with initial block report at startup. If not in startup    * safe mode, will call standard addStoredBlock(). Assumes this method is    * called "immediately" so there is no need to refresh the storedBlock from    * blocksMap. Doesn't handle underReplication/overReplication, or worry about    * pendingReplications or corruptReplicas, because it's in startup safe mode.    * Doesn't log every block, because there are typically millions of them.    *     * @throws IOException    */
-DECL|method|addStoredBlockImmediate (BlockInfo storedBlock, DatanodeStorageInfo storageInfo)
+DECL|method|addStoredBlockImmediate (BlockInfo storedBlock, Block reported, DatanodeStorageInfo storageInfo)
 specifier|private
 name|void
 name|addStoredBlockImmediate
 parameter_list|(
 name|BlockInfo
 name|storedBlock
+parameter_list|,
+name|Block
+name|reported
 parameter_list|,
 name|DatanodeStorageInfo
 name|storageInfo
@@ -11903,6 +12052,8 @@ name|addStoredBlock
 argument_list|(
 name|storedBlock
 argument_list|,
+name|reported
+argument_list|,
 name|storageInfo
 argument_list|,
 literal|null
@@ -11921,6 +12072,8 @@ operator|.
 name|addBlock
 argument_list|(
 name|storedBlock
+argument_list|,
+name|reported
 argument_list|)
 decl_stmt|;
 comment|// Now check for completion of blocks and safe block count
@@ -11943,9 +12096,12 @@ name|BlockUCState
 operator|.
 name|COMMITTED
 operator|&&
+name|hasMinStorage
+argument_list|(
+name|storedBlock
+argument_list|,
 name|numCurrentReplica
-operator|>=
-name|minReplication
+argument_list|)
 condition|)
 block|{
 name|completeBlock
@@ -11989,8 +12145,8 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-comment|/**    * Modify (block-->datanode) map. Remove block from set of    * needed replications if this takes care of the problem.    * @return the block that is stored in blockMap.    */
-DECL|method|addStoredBlock (final BlockInfo block, DatanodeStorageInfo storageInfo, DatanodeDescriptor delNodeHint, boolean logEveryBlock)
+comment|/**    * Modify (block-->datanode) map. Remove block from set of    * needed replications if this takes care of the problem.    * @return the block that is stored in blocksMap.    */
+DECL|method|addStoredBlock (final BlockInfo block, final Block reportedBlock, DatanodeStorageInfo storageInfo, DatanodeDescriptor delNodeHint, boolean logEveryBlock)
 specifier|private
 name|Block
 name|addStoredBlock
@@ -11998,6 +12154,10 @@ parameter_list|(
 specifier|final
 name|BlockInfo
 name|block
+parameter_list|,
+specifier|final
+name|Block
+name|reportedBlock
 parameter_list|,
 name|DatanodeStorageInfo
 name|storageInfo
@@ -12042,8 +12202,6 @@ block|{
 comment|//refresh our copy in case the block got completed in another thread
 name|storedBlock
 operator|=
-name|blocksMap
-operator|.
 name|getStoredBlock
 argument_list|(
 name|block
@@ -12102,13 +12260,6 @@ operator|.
 name|getBlockCollection
 argument_list|()
 decl_stmt|;
-assert|assert
-name|bc
-operator|!=
-literal|null
-operator|:
-literal|"Block must belong to a file"
-assert|;
 comment|// add block to the datanode
 name|AddBlockResult
 name|result
@@ -12118,6 +12269,8 @@ operator|.
 name|addBlock
 argument_list|(
 name|storedBlock
+argument_list|,
+name|reportedBlock
 argument_list|)
 decl_stmt|;
 name|int
@@ -12264,9 +12417,12 @@ name|BlockUCState
 operator|.
 name|COMMITTED
 operator|&&
+name|hasMinStorage
+argument_list|(
+name|storedBlock
+argument_list|,
 name|numLiveReplicas
-operator|>=
-name|minReplication
+argument_list|)
 condition|)
 block|{
 name|storedBlock
@@ -12340,10 +12496,12 @@ comment|// handle underReplication/overReplication
 name|short
 name|fileReplication
 init|=
+name|getExpectedReplicaNum
+argument_list|(
 name|bc
-operator|.
-name|getPreferredBlockReplication
-argument_list|()
+argument_list|,
+name|storedBlock
+argument_list|)
 decl_stmt|;
 if|if
 condition|(
@@ -12441,7 +12599,7 @@ literal|"Inconsistent number of corrupt replicas for "
 operator|+
 name|storedBlock
 operator|+
-literal|"blockMap has "
+literal|". blockMap has "
 operator|+
 name|numCorruptNodes
 operator|+
@@ -12465,11 +12623,15 @@ operator|>=
 name|fileReplication
 operator|)
 condition|)
+block|{
 name|invalidateCorruptReplicas
 argument_list|(
 name|storedBlock
+argument_list|,
+name|reportedBlock
 argument_list|)
 expr_stmt|;
+block|}
 return|return
 name|storedBlock
 return|;
@@ -12557,13 +12719,16 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|/**    * Invalidate corrupt replicas.    *<p>    * This will remove the replicas from the block's location list,    * add them to {@link #invalidateBlocks} so that they could be further    * deleted from the respective data-nodes,    * and remove the block from corruptReplicasMap.    *<p>    * This method should be called when the block has sufficient    * number of live replicas.    *    * @param blk Block whose corrupt replicas need to be invalidated    */
-DECL|method|invalidateCorruptReplicas (BlockInfo blk)
+DECL|method|invalidateCorruptReplicas (BlockInfo blk, Block reported)
 specifier|private
 name|void
 name|invalidateCorruptReplicas
 parameter_list|(
 name|BlockInfo
 name|blk
+parameter_list|,
+name|Block
+name|reported
 parameter_list|)
 block|{
 name|Collection
@@ -12626,6 +12791,8 @@ argument_list|(
 operator|new
 name|BlockToMarkCorrupt
 argument_list|(
+name|reported
+argument_list|,
 name|blk
 argument_list|,
 literal|null
@@ -13282,13 +13449,15 @@ comment|// calculate current replication
 name|short
 name|expectedReplication
 init|=
+name|getExpectedReplicaNum
+argument_list|(
 name|block
 operator|.
 name|getBlockCollection
 argument_list|()
-operator|.
-name|getPreferredBlockReplication
-argument_list|()
+argument_list|,
+name|block
+argument_list|)
 decl_stmt|;
 name|NumberReplicas
 name|num
@@ -13520,13 +13689,13 @@ expr_stmt|;
 block|}
 block|}
 comment|/**    * Find how many of the containing nodes are "extra", if any.    * If there are any extras, call chooseExcessReplicates() to    * mark them in the excessReplicateMap.    */
-DECL|method|processOverReplicatedBlock (final Block block, final short replication, final DatanodeDescriptor addedNode, DatanodeDescriptor delNodeHint)
+DECL|method|processOverReplicatedBlock (final BlockInfo block, final short replication, final DatanodeDescriptor addedNode, DatanodeDescriptor delNodeHint)
 specifier|private
 name|void
 name|processOverReplicatedBlock
 parameter_list|(
 specifier|final
-name|Block
+name|BlockInfo
 name|block
 parameter_list|,
 specifier|final
@@ -13567,9 +13736,7 @@ name|nonExcess
 init|=
 operator|new
 name|ArrayList
-argument_list|<
-name|DatanodeStorageInfo
-argument_list|>
+argument_list|<>
 argument_list|()
 decl_stmt|;
 name|Collection
@@ -13651,7 +13818,7 @@ return|return;
 block|}
 name|LightWeightLinkedSet
 argument_list|<
-name|Block
+name|BlockInfo
 argument_list|>
 name|excessBlocks
 init|=
@@ -13739,7 +13906,7 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|/**    * We want "replication" replicates for the block, but we now have too many.      * In this method, copy enough nodes from 'srcNodes' into 'dstNodes' such that:    *    * srcNodes.size() - dstNodes.size() == replication    *    * We pick node that make sure that replicas are spread across racks and    * also try hard to pick one with least free space.    * The algorithm is first to pick a node with least free space from nodes    * that are on a rack holding more than one replicas of the block.    * So removing such a replica won't remove a rack.     * If no such a node is available,    * then pick a node with least free space    */
-DECL|method|chooseExcessReplicates (final Collection<DatanodeStorageInfo> nonExcess, Block b, short replication, DatanodeDescriptor addedNode, DatanodeDescriptor delNodeHint, BlockPlacementPolicy replicator)
+DECL|method|chooseExcessReplicates ( final Collection<DatanodeStorageInfo> nonExcess, BlockInfo storedBlock, short replication, DatanodeDescriptor addedNode, DatanodeDescriptor delNodeHint, BlockPlacementPolicy replicator)
 specifier|private
 name|void
 name|chooseExcessReplicates
@@ -13751,8 +13918,8 @@ name|DatanodeStorageInfo
 argument_list|>
 name|nonExcess
 parameter_list|,
-name|Block
-name|b
+name|BlockInfo
+name|storedBlock
 parameter_list|,
 name|short
 name|replication
@@ -13779,7 +13946,7 @@ name|bc
 init|=
 name|getBlockCollection
 argument_list|(
-name|b
+name|storedBlock
 argument_list|)
 decl_stmt|;
 specifier|final
@@ -13831,14 +13998,7 @@ name|rackMap
 init|=
 operator|new
 name|HashMap
-argument_list|<
-name|String
-argument_list|,
-name|List
-argument_list|<
-name|DatanodeStorageInfo
-argument_list|>
-argument_list|>
+argument_list|<>
 argument_list|()
 decl_stmt|;
 specifier|final
@@ -13850,9 +14010,7 @@ name|moreThanOne
 init|=
 operator|new
 name|ArrayList
-argument_list|<
-name|DatanodeStorageInfo
-argument_list|>
+argument_list|<>
 argument_list|()
 decl_stmt|;
 specifier|final
@@ -13864,9 +14022,7 @@ name|exactlyOne
 init|=
 operator|new
 name|ArrayList
-argument_list|<
-name|DatanodeStorageInfo
-argument_list|>
+argument_list|<>
 argument_list|()
 decl_stmt|;
 comment|// split nodes into two sets
@@ -13967,7 +14123,7 @@ name|chooseReplicaToDelete
 argument_list|(
 name|bc
 argument_list|,
-name|b
+name|storedBlock
 argument_list|,
 name|replication
 argument_list|,
@@ -13997,21 +14153,52 @@ argument_list|,
 name|cur
 argument_list|)
 expr_stmt|;
+name|processChosenExcessReplica
+argument_list|(
+name|nonExcess
+argument_list|,
+name|cur
+argument_list|,
+name|storedBlock
+argument_list|)
+expr_stmt|;
+block|}
+block|}
+DECL|method|processChosenExcessReplica ( final Collection<DatanodeStorageInfo> nonExcess, final DatanodeStorageInfo chosen, BlockInfo storedBlock)
+specifier|private
+name|void
+name|processChosenExcessReplica
+parameter_list|(
+specifier|final
+name|Collection
+argument_list|<
+name|DatanodeStorageInfo
+argument_list|>
+name|nonExcess
+parameter_list|,
+specifier|final
+name|DatanodeStorageInfo
+name|chosen
+parameter_list|,
+name|BlockInfo
+name|storedBlock
+parameter_list|)
+block|{
 name|nonExcess
 operator|.
 name|remove
 argument_list|(
-name|cur
+name|chosen
 argument_list|)
 expr_stmt|;
 name|addToExcessReplicate
 argument_list|(
-name|cur
+name|chosen
 operator|.
 name|getDatanodeDescriptor
 argument_list|()
 argument_list|,
-name|b
+name|storedBlock
 argument_list|)
 expr_stmt|;
 comment|//
@@ -14021,13 +14208,13 @@ comment|// is when we get a "removeBlock" message.
 comment|//
 comment|// The 'invalidate' list is used to inform the datanode the block
 comment|// should be deleted.  Items are removed from the invalidate list
-comment|// upon giving instructions to the namenode.
+comment|// upon giving instructions to the datanodes.
 comment|//
 name|addToInvalidates
 argument_list|(
-name|b
+name|storedBlock
 argument_list|,
-name|cur
+name|chosen
 operator|.
 name|getDatanodeDescriptor
 argument_list|()
@@ -14041,12 +14228,11 @@ literal|"BLOCK* chooseExcessReplicates: "
 operator|+
 literal|"({}, {}) is added to invalidated blocks set"
 argument_list|,
-name|cur
+name|chosen
 argument_list|,
-name|b
+name|storedBlock
 argument_list|)
 expr_stmt|;
-block|}
 block|}
 comment|/** Check if we can use delHint */
 DECL|method|useDelHint (boolean isFirst, DatanodeStorageInfo delHint, DatanodeStorageInfo added, List<DatanodeStorageInfo> moreThan1Racks, List<StorageType> excessTypes)
@@ -14165,7 +14351,7 @@ return|;
 comment|// removing delHint reduces the number of racks;
 block|}
 block|}
-DECL|method|addToExcessReplicate (DatanodeInfo dn, Block block)
+DECL|method|addToExcessReplicate (DatanodeInfo dn, BlockInfo storedBlock)
 specifier|private
 name|void
 name|addToExcessReplicate
@@ -14173,8 +14359,8 @@ parameter_list|(
 name|DatanodeInfo
 name|dn
 parameter_list|,
-name|Block
-name|block
+name|BlockInfo
+name|storedBlock
 parameter_list|)
 block|{
 assert|assert
@@ -14185,7 +14371,7 @@ argument_list|()
 assert|;
 name|LightWeightLinkedSet
 argument_list|<
-name|Block
+name|BlockInfo
 argument_list|>
 name|excessBlocks
 init|=
@@ -14210,9 +14396,7 @@ name|excessBlocks
 operator|=
 operator|new
 name|LightWeightLinkedSet
-argument_list|<
-name|Block
-argument_list|>
+argument_list|<>
 argument_list|()
 expr_stmt|;
 name|excessReplicateMap
@@ -14234,7 +14418,7 @@ name|excessBlocks
 operator|.
 name|add
 argument_list|(
-name|block
+name|storedBlock
 argument_list|)
 condition|)
 block|{
@@ -14253,7 +14437,7 @@ literal|" excessReplicateMap"
 argument_list|,
 name|dn
 argument_list|,
-name|block
+name|storedBlock
 argument_list|)
 expr_stmt|;
 block|}
@@ -14300,20 +14484,23 @@ return|return;
 block|}
 name|removeStoredBlock
 argument_list|(
+name|getStoredBlock
+argument_list|(
 name|block
+argument_list|)
 argument_list|,
 name|node
 argument_list|)
 expr_stmt|;
 block|}
 comment|/**    * Modify (block-->datanode) map. Possibly generate replication tasks, if the    * removed block is still valid.    */
-DECL|method|removeStoredBlock (Block block, DatanodeDescriptor node)
+DECL|method|removeStoredBlock (BlockInfo storedBlock, DatanodeDescriptor node)
 specifier|public
 name|void
 name|removeStoredBlock
 parameter_list|(
-name|Block
-name|block
+name|BlockInfo
+name|storedBlock
 parameter_list|,
 name|DatanodeDescriptor
 name|node
@@ -14325,7 +14512,7 @@ name|debug
 argument_list|(
 literal|"BLOCK* removeStoredBlock: {} from {}"
 argument_list|,
-name|block
+name|storedBlock
 argument_list|,
 name|node
 argument_list|)
@@ -14339,14 +14526,6 @@ argument_list|()
 operator|)
 assert|;
 block|{
-name|BlockInfo
-name|storedBlock
-init|=
-name|getStoredBlock
-argument_list|(
-name|block
-argument_list|)
-decl_stmt|;
 if|if
 condition|(
 name|storedBlock
@@ -14372,7 +14551,7 @@ literal|"BLOCK* removeStoredBlock: {} has already been"
 operator|+
 literal|" removed from node {}"
 argument_list|,
-name|block
+name|storedBlock
 argument_list|,
 name|node
 argument_list|)
@@ -14395,7 +14574,7 @@ argument_list|(
 operator|new
 name|CachedBlock
 argument_list|(
-name|block
+name|storedBlock
 operator|.
 name|getBlockId
 argument_list|()
@@ -14470,7 +14649,7 @@ literal|"BLOCK* removeStoredBlock: {} removed from caching "
 operator|+
 literal|"related lists on node {}"
 argument_list|,
-name|block
+name|storedBlock
 argument_list|,
 name|node
 argument_list|)
@@ -14486,12 +14665,10 @@ comment|//
 name|BlockCollection
 name|bc
 init|=
-name|blocksMap
+name|storedBlock
 operator|.
 name|getBlockCollection
-argument_list|(
-name|block
-argument_list|)
+argument_list|()
 decl_stmt|;
 if|if
 condition|(
@@ -14524,7 +14701,7 @@ comment|// in "excess" there.
 comment|//
 name|LightWeightLinkedSet
 argument_list|<
-name|Block
+name|BlockInfo
 argument_list|>
 name|excessBlocks
 init|=
@@ -14551,7 +14728,7 @@ name|excessBlocks
 operator|.
 name|remove
 argument_list|(
-name|block
+name|storedBlock
 argument_list|)
 condition|)
 block|{
@@ -14568,7 +14745,7 @@ literal|"BLOCK* removeStoredBlock: {} is removed from "
 operator|+
 literal|"excessBlocks"
 argument_list|,
-name|block
+name|storedBlock
 argument_list|)
 expr_stmt|;
 if|if
@@ -14599,7 +14776,7 @@ name|corruptReplicas
 operator|.
 name|removeFromCorruptReplicasMap
 argument_list|(
-name|block
+name|storedBlock
 argument_list|,
 name|node
 argument_list|)
@@ -14607,12 +14784,12 @@ expr_stmt|;
 block|}
 block|}
 comment|/**    * Get all valid locations of the block& add the block to results    * return the length of the added block; 0 if the block is not added    */
-DECL|method|addBlock (Block block, List<BlockWithLocations> results)
+DECL|method|addBlock (BlockInfo block, List<BlockWithLocations> results)
 specifier|private
 name|long
 name|addBlock
 parameter_list|(
-name|Block
+name|BlockInfo
 name|block
 parameter_list|,
 name|List
@@ -14937,15 +15114,13 @@ block|{
 comment|// blockReceived reports a finalized block
 name|Collection
 argument_list|<
-name|BlockInfo
+name|BlockInfoToAdd
 argument_list|>
 name|toAdd
 init|=
 operator|new
 name|LinkedList
-argument_list|<
-name|BlockInfo
-argument_list|>
+argument_list|<>
 argument_list|()
 decl_stmt|;
 name|Collection
@@ -14956,9 +15131,7 @@ name|toInvalidate
 init|=
 operator|new
 name|LinkedList
-argument_list|<
-name|Block
-argument_list|>
+argument_list|<>
 argument_list|()
 decl_stmt|;
 name|Collection
@@ -14969,9 +15142,7 @@ name|toCorrupt
 init|=
 operator|new
 name|LinkedList
-argument_list|<
-name|BlockToMarkCorrupt
-argument_list|>
+argument_list|<>
 argument_list|()
 decl_stmt|;
 name|Collection
@@ -14982,9 +15153,7 @@ name|toUC
 init|=
 operator|new
 name|LinkedList
-argument_list|<
-name|StatefulBlockInfo
-argument_list|>
+argument_list|<>
 argument_list|()
 decl_stmt|;
 specifier|final
@@ -15063,7 +15232,7 @@ literal|0
 decl_stmt|;
 for|for
 control|(
-name|BlockInfo
+name|BlockInfoToAdd
 name|b
 range|:
 name|toAdd
@@ -15072,6 +15241,14 @@ block|{
 name|addStoredBlock
 argument_list|(
 name|b
+operator|.
+name|getStored
+argument_list|()
+argument_list|,
+name|b
+operator|.
+name|getReported
+argument_list|()
 argument_list|,
 name|storageInfo
 argument_list|,
@@ -15558,7 +15735,7 @@ else|else
 block|{
 name|LightWeightLinkedSet
 argument_list|<
-name|Block
+name|BlockInfo
 argument_list|>
 name|blocksExcess
 init|=
@@ -15782,23 +15959,15 @@ operator|.
 name|next
 argument_list|()
 decl_stmt|;
-name|BlockCollection
-name|bc
+name|int
+name|expectedReplication
 init|=
-name|blocksMap
+name|this
 operator|.
-name|getBlockCollection
+name|getReplication
 argument_list|(
 name|block
 argument_list|)
-decl_stmt|;
-name|short
-name|expectedReplication
-init|=
-name|bc
-operator|.
-name|getPreferredBlockReplication
-argument_list|()
 decl_stmt|;
 name|NumberReplicas
 name|num
@@ -15828,6 +15997,9 @@ name|processOverReplicatedBlock
 argument_list|(
 name|block
 argument_list|,
+operator|(
+name|short
+operator|)
 name|expectedReplication
 argument_list|,
 literal|null
@@ -15961,6 +16133,29 @@ name|blocksMap
 operator|.
 name|size
 argument_list|()
+return|;
+block|}
+comment|/** @return an iterator of the datanodes. */
+DECL|method|getStorages (final Block block)
+specifier|public
+name|Iterable
+argument_list|<
+name|DatanodeStorageInfo
+argument_list|>
+name|getStorages
+parameter_list|(
+specifier|final
+name|Block
+name|block
+parameter_list|)
+block|{
+return|return
+name|blocksMap
+operator|.
+name|getStorages
+argument_list|(
+name|block
+argument_list|)
 return|;
 block|}
 DECL|method|getStorages (BlockInfo block)
@@ -16407,6 +16602,24 @@ operator|.
 name|numNodes
 argument_list|()
 decl_stmt|;
+specifier|final
+name|int
+name|min
+init|=
+name|getMinStorageNum
+argument_list|(
+name|b
+argument_list|)
+decl_stmt|;
+specifier|final
+name|BlockUCState
+name|state
+init|=
+name|b
+operator|.
+name|getBlockUCState
+argument_list|()
+decl_stmt|;
 name|LOG
 operator|.
 name|info
@@ -16417,10 +16630,7 @@ name|b
 operator|+
 literal|" is not COMPLETE (ucState = "
 operator|+
-name|uc
-operator|.
-name|getBlockUCState
-argument_list|()
+name|state
 operator|+
 literal|", replication# = "
 operator|+
@@ -16429,7 +16639,7 @@ operator|+
 operator|(
 name|numNodes
 operator|<
-name|minReplication
+name|min
 condition|?
 literal|"< "
 else|:
@@ -16438,7 +16648,7 @@ operator|)
 operator|+
 literal|" minimum = "
 operator|+
-name|minReplication
+name|min
 operator|+
 literal|") in file "
 operator|+
@@ -16455,12 +16665,12 @@ literal|true
 return|;
 block|}
 comment|/**     * @return 0 if the block is not found;    *         otherwise, return the replication factor of the block.    */
-DECL|method|getReplication (Block block)
+DECL|method|getReplication (BlockInfo block)
 specifier|private
 name|int
 name|getReplication
 parameter_list|(
-name|Block
+name|BlockInfo
 name|block
 parameter_list|)
 block|{
@@ -16482,13 +16692,15 @@ literal|null
 condition|?
 literal|0
 else|:
+name|getExpectedReplicaNum
+argument_list|(
 name|bc
-operator|.
-name|getPreferredBlockReplication
-argument_list|()
+argument_list|,
+name|block
+argument_list|)
 return|;
 block|}
-comment|/**    * Get blocks to invalidate for<i>nodeId</i>    * in {@link #invalidateBlocks}.    *    * @return number of blocks scheduled for removal during this iteration.    */
+comment|/**    * Get blocks to invalidate for<i>nodeId</i>.    * in {@link #invalidateBlocks}.boolean blockHasEnoughRacks    *    * @return number of blocks scheduled for removal during this iteration.    */
 DECL|method|invalidateWorkForOneNode (DatanodeInfo dn)
 specifier|private
 name|int
@@ -16644,12 +16856,15 @@ name|size
 argument_list|()
 return|;
 block|}
-DECL|method|blockHasEnoughRacks (Block b)
+DECL|method|blockHasEnoughRacks (BlockInfo storedBlock, int expectedStorageNum)
 name|boolean
 name|blockHasEnoughRacks
 parameter_list|(
-name|Block
-name|b
+name|BlockInfo
+name|storedBlock
+parameter_list|,
+name|int
+name|expectedStorageNum
 parameter_list|)
 block|{
 if|if
@@ -16669,7 +16884,6 @@ name|enoughRacks
 init|=
 literal|false
 decl_stmt|;
-empty_stmt|;
 name|Collection
 argument_list|<
 name|DatanodeDescriptor
@@ -16680,15 +16894,7 @@ name|corruptReplicas
 operator|.
 name|getNodes
 argument_list|(
-name|b
-argument_list|)
-decl_stmt|;
-name|int
-name|numExpectedReplicas
-init|=
-name|getReplication
-argument_list|(
-name|b
+name|storedBlock
 argument_list|)
 decl_stmt|;
 name|String
@@ -16701,11 +16907,9 @@ control|(
 name|DatanodeStorageInfo
 name|storage
 range|:
-name|blocksMap
-operator|.
 name|getStorages
 argument_list|(
-name|b
+name|storedBlock
 argument_list|)
 control|)
 block|{
@@ -16752,12 +16956,12 @@ condition|)
 block|{
 if|if
 condition|(
-name|numExpectedReplicas
+name|expectedStorageNum
 operator|==
 literal|1
 operator|||
 operator|(
-name|numExpectedReplicas
+name|expectedStorageNum
 operator|>
 literal|1
 operator|&&
@@ -16821,12 +17025,12 @@ name|enoughRacks
 return|;
 block|}
 comment|/**    * A block needs replication if the number of replicas is less than expected    * or if it does not have enough racks.    */
-DECL|method|isNeededReplication (Block b, int expected, int current)
+DECL|method|isNeededReplication (BlockInfo storedBlock, int expected, int current)
 name|boolean
 name|isNeededReplication
 parameter_list|(
-name|Block
-name|b
+name|BlockInfo
+name|storedBlock
 parameter_list|,
 name|int
 name|expected
@@ -16843,8 +17047,29 @@ operator|||
 operator|!
 name|blockHasEnoughRacks
 argument_list|(
-name|b
+name|storedBlock
+argument_list|,
+name|expected
 argument_list|)
+return|;
+block|}
+DECL|method|getExpectedReplicaNum (BlockCollection bc, BlockInfo block)
+specifier|public
+name|short
+name|getExpectedReplicaNum
+parameter_list|(
+name|BlockCollection
+name|bc
+parameter_list|,
+name|BlockInfo
+name|block
+parameter_list|)
+block|{
+return|return
+name|bc
+operator|.
+name|getPreferredBlockReplication
+argument_list|()
 return|;
 block|}
 DECL|method|getMissingBlocksCount ()
@@ -16920,29 +17145,6 @@ name|b
 argument_list|)
 return|;
 block|}
-comment|/** @return an iterator of the datanodes. */
-DECL|method|getStorages (final Block block)
-specifier|public
-name|Iterable
-argument_list|<
-name|DatanodeStorageInfo
-argument_list|>
-name|getStorages
-parameter_list|(
-specifier|final
-name|Block
-name|block
-parameter_list|)
-block|{
-return|return
-name|blocksMap
-operator|.
-name|getStorages
-argument_list|(
-name|block
-argument_list|)
-return|;
-block|}
 DECL|method|numCorruptReplicas (Block block)
 specifier|public
 name|int
@@ -17006,8 +17208,6 @@ control|(
 name|DatanodeStorageInfo
 name|info
 range|:
-name|blocksMap
-operator|.
 name|getStorages
 argument_list|(
 name|block
@@ -17027,7 +17227,7 @@ argument_list|()
 decl_stmt|;
 name|LightWeightLinkedSet
 argument_list|<
-name|Block
+name|BlockInfo
 argument_list|>
 name|excessReplicas
 init|=
@@ -17091,31 +17291,6 @@ name|blocksMap
 operator|.
 name|getCapacity
 argument_list|()
-return|;
-block|}
-comment|/**    * Return a range of corrupt replica block ids. Up to numExpectedBlocks     * blocks starting at the next block after startingBlockId are returned    * (fewer if numExpectedBlocks blocks are unavailable). If startingBlockId     * is null, up to numExpectedBlocks blocks are returned from the beginning.    * If startingBlockId cannot be found, null is returned.    *    * @param numExpectedBlocks Number of block ids to return.    *  0<= numExpectedBlocks<= 100    * @param startingBlockId Block id from which to start. If null, start at    *  beginning.    * @return Up to numExpectedBlocks blocks from startingBlockId if it exists    *    */
-DECL|method|getCorruptReplicaBlockIds (int numExpectedBlocks, Long startingBlockId)
-specifier|public
-name|long
-index|[]
-name|getCorruptReplicaBlockIds
-parameter_list|(
-name|int
-name|numExpectedBlocks
-parameter_list|,
-name|Long
-name|startingBlockId
-parameter_list|)
-block|{
-return|return
-name|corruptReplicas
-operator|.
-name|getCorruptReplicaBlockIds
-argument_list|(
-name|numExpectedBlocks
-argument_list|,
-name|startingBlockId
-argument_list|)
 return|;
 block|}
 comment|/**    * Return an iterator over the set of blocks for which there are no replicas.    */
@@ -17766,7 +17941,7 @@ expr_stmt|;
 block|}
 block|}
 block|}
-comment|/**    * A simple result enum for the result of    * {@link BlockManager#processMisReplicatedBlock(BlockInfo)}.    */
+comment|/**    * A simple result enum for the result of    * {@link BlockManager#processMisReplicatedBlock}.    */
 DECL|enum|MisReplicationResult
 enum|enum
 name|MisReplicationResult

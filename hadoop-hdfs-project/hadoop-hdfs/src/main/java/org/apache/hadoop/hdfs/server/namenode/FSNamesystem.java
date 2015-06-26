@@ -1774,20 +1774,6 @@ name|hadoop
 operator|.
 name|fs
 operator|.
-name|FileEncryptionInfo
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|fs
-operator|.
 name|FileStatus
 import|;
 end_import
@@ -16370,7 +16356,7 @@ if|if
 condition|(
 name|blockManager
 operator|.
-name|checkMinReplication
+name|hasMinStorage
 argument_list|(
 name|b
 argument_list|)
@@ -17234,7 +17220,7 @@ break|break;
 assert|assert
 name|blockManager
 operator|.
-name|checkMinReplication
+name|hasMinStorage
 argument_list|(
 name|curBlock
 argument_list|)
@@ -17381,7 +17367,7 @@ literal|true
 else|:
 name|blockManager
 operator|.
-name|checkMinReplication
+name|hasMinStorage
 argument_list|(
 name|penultimateBlock
 argument_list|)
@@ -17410,7 +17396,7 @@ name|penultimateBlockMinReplication
 operator|&&
 name|blockManager
 operator|.
-name|checkMinReplication
+name|hasMinStorage
 argument_list|(
 name|lastBlock
 argument_list|)
@@ -18807,6 +18793,8 @@ operator|.
 name|addBlock
 argument_list|(
 name|truncatedBlock
+argument_list|,
+name|truncatedBlock
 argument_list|)
 expr_stmt|;
 block|}
@@ -18816,6 +18804,8 @@ name|storageInfo
 operator|.
 name|addBlock
 argument_list|(
+name|storedBlock
+argument_list|,
 name|storedBlock
 argument_list|)
 expr_stmt|;
@@ -18899,6 +18889,11 @@ name|blockManager
 operator|.
 name|markBlockReplicasAsCorrupt
 argument_list|(
+name|oldBlock
+operator|.
+name|getLocalBlock
+argument_list|()
+argument_list|,
 name|storedBlock
 argument_list|,
 name|oldGenerationStamp
