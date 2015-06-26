@@ -2551,6 +2551,18 @@ operator|==
 name|res
 condition|)
 block|{
+name|LOG
+operator|.
+name|error
+argument_list|(
+literal|"Unable to acquire file lock on path "
+operator|+
+name|lockF
+operator|.
+name|toString
+argument_list|()
+argument_list|)
+expr_stmt|;
 throw|throw
 operator|new
 name|OverlappingFileLockException
@@ -3418,13 +3430,11 @@ name|writeProperties
 argument_list|(
 name|to
 argument_list|,
-name|sd
-argument_list|,
 name|props
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|writeProperties (File to, StorageDirectory sd, Properties props)
+DECL|method|writeProperties (File to, Properties props)
 specifier|public
 specifier|static
 name|void
@@ -3433,15 +3443,14 @@ parameter_list|(
 name|File
 name|to
 parameter_list|,
-name|StorageDirectory
-name|sd
-parameter_list|,
 name|Properties
 name|props
 parameter_list|)
 throws|throws
 name|IOException
 block|{
+try|try
+init|(
 name|RandomAccessFile
 name|file
 init|=
@@ -3452,21 +3461,8 @@ name|to
 argument_list|,
 literal|"rws"
 argument_list|)
-decl_stmt|;
+init|;
 name|FileOutputStream
-name|out
-init|=
-literal|null
-decl_stmt|;
-try|try
-block|{
-name|file
-operator|.
-name|seek
-argument_list|(
-literal|0
-argument_list|)
-expr_stmt|;
 name|out
 operator|=
 operator|new
@@ -3477,8 +3473,16 @@ operator|.
 name|getFD
 argument_list|()
 argument_list|)
+init|)
+block|{
+name|file
+operator|.
+name|seek
+argument_list|(
+literal|0
+argument_list|)
 expr_stmt|;
-comment|/*        * If server is interrupted before this line,         * the version file will remain unchanged.        */
+comment|/*        * If server is interrupted before this line,        * the version file will remain unchanged.        */
 name|props
 operator|.
 name|store
@@ -3488,7 +3492,7 @@ argument_list|,
 literal|null
 argument_list|)
 expr_stmt|;
-comment|/*        * Now the new fields are flushed to the head of the file, but file         * length can still be larger then required and therefore the file can         * contain whole or corrupted fields from its old contents in the end.        * If server is interrupted here and restarted later these extra fields        * either should not effect server behavior or should be handled        * by the server correctly.        */
+comment|/*        * Now the new fields are flushed to the head of the file, but file        * length can still be larger then required and therefore the file can        * contain whole or corrupted fields from its old contents in the end.        * If server is interrupted here and restarted later these extra fields        * either should not effect server behavior or should be handled        * by the server correctly.        */
 name|file
 operator|.
 name|setLength
@@ -3501,27 +3505,6 @@ operator|.
 name|position
 argument_list|()
 argument_list|)
-expr_stmt|;
-block|}
-finally|finally
-block|{
-if|if
-condition|(
-name|out
-operator|!=
-literal|null
-condition|)
-block|{
-name|out
-operator|.
-name|close
-argument_list|()
-expr_stmt|;
-block|}
-name|file
-operator|.
-name|close
-argument_list|()
 expr_stmt|;
 block|}
 block|}
