@@ -949,6 +949,33 @@ name|getFullDirs
 argument_list|()
 return|;
 block|}
+comment|/**    * Function to get the local dirs which should be considered for reading    * existing files on disk. Contains the good local dirs and the local dirs    * that have reached the disk space limit    *    * @return the local dirs which should be considered for reading    */
+DECL|method|getLocalDirsForRead ()
+specifier|public
+name|List
+argument_list|<
+name|String
+argument_list|>
+name|getLocalDirsForRead
+parameter_list|()
+block|{
+return|return
+name|DirectoryCollection
+operator|.
+name|concat
+argument_list|(
+name|localDirs
+operator|.
+name|getGoodDirs
+argument_list|()
+argument_list|,
+name|localDirs
+operator|.
+name|getFullDirs
+argument_list|()
+argument_list|)
+return|;
+block|}
 comment|/**    * Function to get the local dirs which should be considered when cleaning up    * resources. Contains the good local dirs and the local dirs that have reached    * the disk space limit    *    * @return the local dirs which should be considered for cleaning up    */
 DECL|method|getLocalDirsForCleanup ()
 specifier|public
@@ -970,6 +997,33 @@ name|getGoodDirs
 argument_list|()
 argument_list|,
 name|localDirs
+operator|.
+name|getFullDirs
+argument_list|()
+argument_list|)
+return|;
+block|}
+comment|/**    * Function to get the log dirs which should be considered for reading    * existing files on disk. Contains the good log dirs and the log dirs that    * have reached the disk space limit    *    * @return the log dirs which should be considered for reading    */
+DECL|method|getLogDirsForRead ()
+specifier|public
+name|List
+argument_list|<
+name|String
+argument_list|>
+name|getLogDirsForRead
+parameter_list|()
+block|{
+return|return
+name|DirectoryCollection
+operator|.
+name|concat
+argument_list|(
+name|logDirs
+operator|.
+name|getGoodDirs
+argument_list|()
+argument_list|,
+name|logDirs
 operator|.
 name|getFullDirs
 argument_list|()

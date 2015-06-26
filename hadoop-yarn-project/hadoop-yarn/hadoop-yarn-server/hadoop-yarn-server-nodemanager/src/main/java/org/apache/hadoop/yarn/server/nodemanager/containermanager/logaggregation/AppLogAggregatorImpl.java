@@ -3332,7 +3332,7 @@ literal|","
 argument_list|,
 name|dirsHandler
 operator|.
-name|getLogDirs
+name|getLogDirsForRead
 argument_list|()
 argument_list|)
 argument_list|)
@@ -3356,7 +3356,7 @@ name|LogValue
 argument_list|(
 name|dirsHandler
 operator|.
-name|getLogDirs
+name|getLogDirsForRead
 argument_list|()
 argument_list|,
 name|containerId
