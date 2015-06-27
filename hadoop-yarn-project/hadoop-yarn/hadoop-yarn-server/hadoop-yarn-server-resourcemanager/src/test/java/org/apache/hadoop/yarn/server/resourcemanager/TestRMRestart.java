@@ -64,6 +64,18 @@ name|mockito
 operator|.
 name|Mockito
 operator|.
+name|timeout
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|mockito
+operator|.
+name|Mockito
+operator|.
 name|times
 import|;
 end_import
@@ -6908,7 +6920,8 @@ name|size
 argument_list|()
 argument_list|)
 expr_stmt|;
-comment|// check application summary is logged for the completed apps after RM restart.
+comment|// check application summary is logged for the completed apps with timeout
+comment|// to make sure APP_COMPLETED events are processed, after RM restart.
 name|verify
 argument_list|(
 name|rm2
@@ -6916,6 +6929,11 @@ operator|.
 name|getRMAppManager
 argument_list|()
 argument_list|,
+name|timeout
+argument_list|(
+literal|1000
+argument_list|)
+operator|.
 name|times
 argument_list|(
 literal|3
