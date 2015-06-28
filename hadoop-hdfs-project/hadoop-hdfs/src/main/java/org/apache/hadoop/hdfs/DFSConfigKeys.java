@@ -2713,8 +2713,11 @@ specifier|final
 name|int
 name|DFS_DATANODE_SCAN_PERIOD_HOURS_DEFAULT
 init|=
-literal|0
+literal|21
+operator|*
+literal|24
 decl_stmt|;
+comment|// 3 weeks.
 DECL|field|DFS_BLOCK_SCANNER_VOLUME_BYTES_PER_SECOND
 specifier|public
 specifier|static
