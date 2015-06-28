@@ -4884,7 +4884,7 @@ return|;
 block|}
 block|}
 decl_stmt|;
-comment|/**    * List the statuses of the files/directories in the given path if the path is    * a directory.    *     * @param f given path    * @return the statuses of the files/directories in the given patch    * @throws FileNotFoundException when the path does not exist;    *         IOException see specific implementation    */
+comment|/**    * List the statuses of the files/directories in the given path if the path is    * a directory.    *<p>    * Does not guarantee to return the List of files/directories status in a    * sorted order.    * @param f given path    * @return the statuses of the files/directories in the given patch    * @throws FileNotFoundException when the path does not exist;    *         IOException see specific implementation    */
 DECL|method|listStatus (Path f)
 specifier|public
 specifier|abstract
@@ -5026,7 +5026,7 @@ literal|" listCorruptFileBlocks"
 argument_list|)
 throw|;
 block|}
-comment|/**    * Filter files/directories in the given path using the user-supplied path    * filter.    *     * @param f    *          a path name    * @param filter    *          the user-supplied path filter    * @return an array of FileStatus objects for the files under the given path    *         after applying the filter    * @throws FileNotFoundException when the path does not exist;    *         IOException see specific implementation       */
+comment|/**    * Filter files/directories in the given path using the user-supplied path    * filter.    *<p>    * Does not guarantee to return the List of files/directories status in a    * sorted order.    *     * @param f    *          a path name    * @param filter    *          the user-supplied path filter    * @return an array of FileStatus objects for the files under the given path    *         after applying the filter    * @throws FileNotFoundException when the path does not exist;    *         IOException see specific implementation       */
 DECL|method|listStatus (Path f, PathFilter filter)
 specifier|public
 name|FileStatus
@@ -5082,7 +5082,7 @@ index|]
 argument_list|)
 return|;
 block|}
-comment|/**    * Filter files/directories in the given list of paths using default    * path filter.    *     * @param files    *          a list of paths    * @return a list of statuses for the files under the given paths after    *         applying the filter default Path filter    * @throws FileNotFoundException when the path does not exist;    *         IOException see specific implementation    */
+comment|/**    * Filter files/directories in the given list of paths using default    * path filter.    *<p>    * Does not guarantee to return the List of files/directories status in a    * sorted order.    *     * @param files    *          a list of paths    * @return a list of statuses for the files under the given paths after    *         applying the filter default Path filter    * @throws FileNotFoundException when the path does not exist;    *         IOException see specific implementation    */
 DECL|method|listStatus (Path[] files)
 specifier|public
 name|FileStatus
@@ -5107,7 +5107,7 @@ name|DEFAULT_FILTER
 argument_list|)
 return|;
 block|}
-comment|/**    * Filter files/directories in the given list of paths using user-supplied    * path filter.    *     * @param files    *          a list of paths    * @param filter    *          the user-supplied path filter    * @return a list of statuses for the files under the given paths after    *         applying the filter    * @throws FileNotFoundException when the path does not exist;    *         IOException see specific implementation    */
+comment|/**    * Filter files/directories in the given list of paths using user-supplied    * path filter.    *<p>    * Does not guarantee to return the List of files/directories status in a    * sorted order.    *     * @param files    *          a list of paths    * @param filter    *          the user-supplied path filter    * @return a list of statuses for the files under the given paths after    *         applying the filter    * @throws FileNotFoundException when the path does not exist;    *         IOException see specific implementation    */
 DECL|method|listStatus (Path[] files, PathFilter filter)
 specifier|public
 name|FileStatus
@@ -5409,7 +5409,7 @@ block|}
 block|}
 return|;
 block|}
-comment|/**    * Returns a remote iterator so that followup calls are made on demand    * while consuming the entries. Each file system implementation should    * override this method and provide a more efficient implementation, if    * possible.     *    * @param p target path    * @return remote iterator    */
+comment|/**    * Returns a remote iterator so that followup calls are made on demand    * while consuming the entries. Each file system implementation should    * override this method and provide a more efficient implementation, if    * possible.     * Does not guarantee to return the iterator that traverses statuses    * of the files in a sorted order.    *    * @param p target path    * @return remote iterator    */
 DECL|method|listStatusIterator (final Path p)
 specifier|public
 name|RemoteIterator
@@ -5504,7 +5504,7 @@ block|}
 block|}
 return|;
 block|}
-comment|/**    * List the statuses and block locations of the files in the given path.    *     * If the path is a directory,     *   if recursive is false, returns files in the directory;    *   if recursive is true, return files in the subtree rooted at the path.    * If the path is a file, return the file's status and block locations.    *     * @param f is the path    * @param recursive if the subdirectories need to be traversed recursively    *    * @return an iterator that traverses statuses of the files    *    * @throws FileNotFoundException when the path does not exist;    *         IOException see specific implementation    */
+comment|/**    * List the statuses and block locations of the files in the given path.    * Does not guarantee to return the iterator that traverses statuses    * of the files in a sorted order.    *     * If the path is a directory,     *   if recursive is false, returns files in the directory;    *   if recursive is true, return files in the subtree rooted at the path.    * If the path is a file, return the file's status and block locations.    *     * @param f is the path    * @param recursive if the subdirectories need to be traversed recursively    *    * @return an iterator that traverses statuses of the files    *    * @throws FileNotFoundException when the path does not exist;    *         IOException see specific implementation    */
 DECL|method|listFiles ( final Path f, final boolean recursive)
 specifier|public
 name|RemoteIterator
