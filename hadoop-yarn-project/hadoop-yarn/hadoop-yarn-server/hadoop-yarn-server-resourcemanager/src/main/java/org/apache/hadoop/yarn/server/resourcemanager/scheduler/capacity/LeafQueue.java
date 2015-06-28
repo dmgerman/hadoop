@@ -3513,7 +3513,10 @@ argument_list|()
 operator|+
 literal|" user: "
 operator|+
-name|user
+name|application
+operator|.
+name|getUser
+argument_list|()
 operator|+
 literal|","
 operator|+
