@@ -2323,6 +2323,13 @@ operator|&&
 name|localMachine
 operator|instanceof
 name|DatanodeDescriptor
+operator|&&
+name|clusterMap
+operator|.
+name|contains
+argument_list|(
+name|localMachine
+argument_list|)
 condition|)
 block|{
 name|DatanodeDescriptor
