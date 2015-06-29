@@ -548,7 +548,7 @@ else|else
 block|{
 name|classType
 operator|=
-name|Exception
+name|Throwable
 operator|.
 name|class
 expr_stmt|;
