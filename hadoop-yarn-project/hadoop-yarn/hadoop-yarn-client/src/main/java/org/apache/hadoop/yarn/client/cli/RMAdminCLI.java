@@ -4630,6 +4630,31 @@ argument_list|)
 throw|;
 block|}
 block|}
+comment|/**    * returns the list of all resourcemanager ids for the given configuration.    */
+annotation|@
+name|Override
+DECL|method|getTargetIds (String targetNodeToActivate)
+specifier|protected
+name|Collection
+argument_list|<
+name|String
+argument_list|>
+name|getTargetIds
+parameter_list|(
+name|String
+name|targetNodeToActivate
+parameter_list|)
+block|{
+return|return
+name|HAUtil
+operator|.
+name|getRMHAIds
+argument_list|(
+name|getConf
+argument_list|()
+argument_list|)
+return|;
+block|}
 annotation|@
 name|Override
 DECL|method|getUsageString ()
