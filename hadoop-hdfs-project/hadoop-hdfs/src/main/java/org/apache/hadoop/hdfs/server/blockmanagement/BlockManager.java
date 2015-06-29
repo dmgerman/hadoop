@@ -240,6 +240,16 @@ end_import
 
 begin_import
 import|import
+name|javax
+operator|.
+name|management
+operator|.
+name|ObjectName
+import|;
+end_import
+
+begin_import
+import|import
 name|org
 operator|.
 name|apache
@@ -1046,6 +1056,22 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|metrics2
+operator|.
+name|util
+operator|.
+name|MBeans
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|net
 operator|.
 name|Node
@@ -1183,6 +1209,8 @@ DECL|class|BlockManager
 specifier|public
 class|class
 name|BlockManager
+implements|implements
+name|BlockStatsMXBean
 block|{
 DECL|field|LOG
 specifier|public
@@ -1330,6 +1358,11 @@ specifier|private
 specifier|final
 name|BlockReportLeaseManager
 name|blockReportLeaseManager
+decl_stmt|;
+DECL|field|mxBeanName
+specifier|private
+name|ObjectName
+name|mxBeanName
 decl_stmt|;
 comment|/** Used by metrics */
 DECL|method|getPendingReplicationBlocksCount ()
@@ -2681,6 +2714,19 @@ name|replicationThread
 operator|.
 name|start
 argument_list|()
+expr_stmt|;
+name|mxBeanName
+operator|=
+name|MBeans
+operator|.
+name|register
+argument_list|(
+literal|"NameNode"
+argument_list|,
+literal|"BlockStats"
+argument_list|,
+name|this
+argument_list|)
 expr_stmt|;
 block|}
 DECL|method|close ()
@@ -17984,6 +18030,17 @@ operator|.
 name|close
 argument_list|()
 expr_stmt|;
+name|MBeans
+operator|.
+name|unregister
+argument_list|(
+name|mxBeanName
+argument_list|)
+expr_stmt|;
+name|mxBeanName
+operator|=
+literal|null
+expr_stmt|;
 block|}
 DECL|method|clear ()
 specifier|public
@@ -18008,6 +18065,30 @@ parameter_list|()
 block|{
 return|return
 name|blockReportLeaseManager
+return|;
+block|}
+annotation|@
+name|Override
+comment|// BlockStatsMXBean
+DECL|method|getStorageTypeStats ()
+specifier|public
+name|Map
+argument_list|<
+name|StorageType
+argument_list|,
+name|StorageTypeStats
+argument_list|>
+name|getStorageTypeStats
+parameter_list|()
+block|{
+return|return
+name|datanodeManager
+operator|.
+name|getDatanodeStatistics
+argument_list|()
+operator|.
+name|getStorageTypeStats
+argument_list|()
 return|;
 block|}
 block|}

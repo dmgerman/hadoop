@@ -22,6 +22,30 @@ end_package
 
 begin_import
 import|import
+name|java
+operator|.
+name|util
+operator|.
+name|Map
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|fs
+operator|.
+name|StorageType
+import|;
+end_import
+
+begin_import
+import|import
 name|org
 operator|.
 name|apache
@@ -150,6 +174,17 @@ DECL|method|getExpiredHeartbeats ()
 specifier|public
 name|int
 name|getExpiredHeartbeats
+parameter_list|()
+function_decl|;
+comment|/** @return Storage Tier statistics*/
+DECL|method|getStorageTypeStats ()
+name|Map
+argument_list|<
+name|StorageType
+argument_list|,
+name|StorageTypeStats
+argument_list|>
+name|getStorageTypeStats
 parameter_list|()
 function_decl|;
 block|}
