@@ -6569,10 +6569,12 @@ decl_stmt|;
 name|Block
 name|truncateBlock
 init|=
-name|fsn
+name|FSDirTruncateOp
 operator|.
 name|prepareFileForTruncate
 argument_list|(
+name|fsn
+argument_list|,
 name|iip
 argument_list|,
 name|client
@@ -6830,10 +6832,12 @@ decl_stmt|;
 name|Block
 name|truncateBlock
 init|=
-name|fsn
+name|FSDirTruncateOp
 operator|.
 name|prepareFileForTruncate
 argument_list|(
+name|fsn
+argument_list|,
 name|iip
 argument_list|,
 name|client

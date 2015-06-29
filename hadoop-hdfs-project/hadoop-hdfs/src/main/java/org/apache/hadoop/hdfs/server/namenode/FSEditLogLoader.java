@@ -6013,10 +6013,12 @@ name|TruncateOp
 operator|)
 name|op
 decl_stmt|;
-name|fsDir
+name|FSDirTruncateOp
 operator|.
 name|unprotectedTruncate
 argument_list|(
+name|fsNamesys
+argument_list|,
 name|truncateOp
 operator|.
 name|src
