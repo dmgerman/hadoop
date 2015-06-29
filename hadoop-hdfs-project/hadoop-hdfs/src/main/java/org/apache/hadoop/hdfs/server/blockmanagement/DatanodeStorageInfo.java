@@ -186,7 +186,7 @@ name|EMPTY_ARRAY
 init|=
 block|{}
 decl_stmt|;
-DECL|method|toDatanodeInfos (DatanodeStorageInfo[] storages)
+DECL|method|toDatanodeInfos ( DatanodeStorageInfo[] storages)
 specifier|public
 specifier|static
 name|DatanodeInfo
@@ -199,6 +199,12 @@ name|storages
 parameter_list|)
 block|{
 return|return
+name|storages
+operator|==
+literal|null
+condition|?
+literal|null
+else|:
 name|toDatanodeInfos
 argument_list|(
 name|Arrays
@@ -345,6 +351,17 @@ index|[]
 name|storages
 parameter_list|)
 block|{
+if|if
+condition|(
+name|storages
+operator|==
+literal|null
+condition|)
+block|{
+return|return
+literal|null
+return|;
+block|}
 name|String
 index|[]
 name|storageIDs
@@ -404,6 +421,17 @@ index|[]
 name|storages
 parameter_list|)
 block|{
+if|if
+condition|(
+name|storages
+operator|==
+literal|null
+condition|)
+block|{
+return|return
+literal|null
+return|;
+block|}
 name|StorageType
 index|[]
 name|storageTypes
@@ -1586,7 +1614,7 @@ block|,
 name|REPLACED
 block|,
 name|ALREADY_EXIST
-block|;   }
+block|}
 block|}
 end_class
 

@@ -575,11 +575,7 @@ name|datanodeMap
 init|=
 operator|new
 name|HashMap
-argument_list|<
-name|String
-argument_list|,
-name|DatanodeDescriptor
-argument_list|>
+argument_list|<>
 argument_list|()
 decl_stmt|;
 comment|/** Cluster network topology */
@@ -743,11 +739,7 @@ name|datanodesSoftwareVersions
 init|=
 operator|new
 name|HashMap
-argument_list|<
-name|String
-argument_list|,
-name|Integer
-argument_list|>
+argument_list|<>
 argument_list|(
 literal|4
 argument_list|,
@@ -1047,9 +1039,7 @@ name|locations
 init|=
 operator|new
 name|ArrayList
-argument_list|<
-name|String
-argument_list|>
+argument_list|<>
 argument_list|()
 decl_stmt|;
 for|for
@@ -1700,9 +1690,7 @@ name|hosts
 init|=
 operator|new
 name|ArrayList
-argument_list|<
-name|String
-argument_list|>
+argument_list|<>
 argument_list|(
 literal|1
 argument_list|)
@@ -2382,11 +2370,7 @@ name|sortedDatanodeMap
 init|=
 operator|new
 name|TreeMap
-argument_list|<
-name|String
-argument_list|,
-name|DatanodeDescriptor
-argument_list|>
+argument_list|<>
 argument_list|(
 name|datanodeMap
 argument_list|)
@@ -3032,11 +3016,7 @@ name|versionCount
 init|=
 operator|new
 name|HashMap
-argument_list|<
-name|String
-argument_list|,
-name|Integer
-argument_list|>
+argument_list|<>
 argument_list|()
 decl_stmt|;
 for|for
@@ -3126,11 +3106,7 @@ block|{
 return|return
 operator|new
 name|HashMap
-argument_list|<
-name|String
-argument_list|,
-name|Integer
-argument_list|>
+argument_list|<>
 argument_list|(
 name|this
 operator|.
@@ -3217,9 +3193,7 @@ name|names
 init|=
 operator|new
 name|ArrayList
-argument_list|<
-name|String
-argument_list|>
+argument_list|<>
 argument_list|(
 literal|1
 argument_list|)
@@ -4249,9 +4223,7 @@ name|invalidNodeNames
 init|=
 operator|new
 name|ArrayList
-argument_list|<
-name|String
-argument_list|>
+argument_list|<>
 argument_list|(
 literal|3
 argument_list|)
@@ -5206,9 +5178,7 @@ name|nodes
 operator|=
 operator|new
 name|ArrayList
-argument_list|<
-name|DatanodeDescriptor
-argument_list|>
+argument_list|<>
 argument_list|(
 name|datanodeMap
 operator|.
@@ -5558,8 +5528,6 @@ init|)
 block|{
 name|DatanodeDescriptor
 name|nodeinfo
-init|=
-literal|null
 decl_stmt|;
 try|try
 block|{
@@ -5734,9 +5702,7 @@ name|recoveryLocations
 init|=
 operator|new
 name|ArrayList
-argument_list|<
-name|DatanodeStorageInfo
-argument_list|>
+argument_list|<>
 argument_list|(
 name|storages
 operator|.
@@ -5991,9 +5957,7 @@ name|cmds
 init|=
 operator|new
 name|ArrayList
-argument_list|<
-name|DatanodeCommand
-argument_list|>
+argument_list|<>
 argument_list|()
 decl_stmt|;
 comment|//check pending replication

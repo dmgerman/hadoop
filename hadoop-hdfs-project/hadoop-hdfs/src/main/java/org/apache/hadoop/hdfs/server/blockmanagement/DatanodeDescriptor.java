@@ -727,9 +727,7 @@ name|results
 init|=
 operator|new
 name|ArrayList
-argument_list|<
-name|E
-argument_list|>
+argument_list|<>
 argument_list|()
 decl_stmt|;
 for|for
@@ -808,11 +806,7 @@ name|storageMap
 init|=
 operator|new
 name|HashMap
-argument_list|<
-name|String
-argument_list|,
-name|DatanodeStorageInfo
-argument_list|>
+argument_list|<>
 argument_list|()
 decl_stmt|;
 comment|/**    * A list of CachedBlock objects on this datanode.    */
@@ -1029,9 +1023,7 @@ name|replicateBlocks
 init|=
 operator|new
 name|BlockQueue
-argument_list|<
-name|BlockTargetPair
-argument_list|>
+argument_list|<>
 argument_list|()
 decl_stmt|;
 comment|/** A queue of blocks to be recovered by this datanode */
@@ -1046,9 +1038,7 @@ name|recoverBlocks
 init|=
 operator|new
 name|BlockQueue
-argument_list|<
-name|BlockInfoUnderConstruction
-argument_list|>
+argument_list|<>
 argument_list|()
 decl_stmt|;
 comment|/** A set of blocks to be invalidated by this datanode */
@@ -1063,9 +1053,7 @@ name|invalidateBlocks
 init|=
 operator|new
 name|LightWeightHashSet
-argument_list|<
-name|Block
-argument_list|>
+argument_list|<>
 argument_list|()
 decl_stmt|;
 comment|/* Variables for maintaining number of blocks scheduled to be written to    * this storage. This count is approximate and might be slightly bigger    * in case of errors (e.g. datanode does not report if an error occurs    * while writing the block).    */
@@ -1079,9 +1067,7 @@ name|currApproxBlocksScheduled
 init|=
 operator|new
 name|EnumCounters
-argument_list|<
-name|StorageType
-argument_list|>
+argument_list|<>
 argument_list|(
 name|StorageType
 operator|.
@@ -1098,9 +1084,7 @@ name|prevApproxBlocksScheduled
 init|=
 operator|new
 name|EnumCounters
-argument_list|<
-name|StorageType
-argument_list|>
+argument_list|<>
 argument_list|(
 name|StorageType
 operator|.
@@ -1546,9 +1530,7 @@ name|zombies
 operator|=
 operator|new
 name|LinkedList
-argument_list|<
-name|DatanodeStorageInfo
-argument_list|>
+argument_list|<>
 argument_list|()
 expr_stmt|;
 block|}
@@ -1640,24 +1622,17 @@ argument_list|(
 name|storageID
 argument_list|)
 decl_stmt|;
-if|if
-condition|(
+return|return
 name|s
 operator|!=
 literal|null
-condition|)
-block|{
-return|return
+operator|&&
 name|s
 operator|.
 name|removeBlock
 argument_list|(
 name|b
 argument_list|)
-return|;
-block|}
-return|return
-literal|false
 return|;
 block|}
 DECL|method|resetBlocks ()
@@ -2014,9 +1989,7 @@ name|failedStorageInfos
 operator|=
 operator|new
 name|HashSet
-argument_list|<
-name|DatanodeStorageInfo
-argument_list|>
+argument_list|<>
 argument_list|(
 name|storageMap
 operator|.
@@ -2264,11 +2237,7 @@ name|excessStorages
 operator|=
 operator|new
 name|HashMap
-argument_list|<
-name|String
-argument_list|,
-name|DatanodeStorageInfo
-argument_list|>
+argument_list|<>
 argument_list|(
 name|storageMap
 argument_list|)
@@ -2485,12 +2454,7 @@ name|iterators
 init|=
 operator|new
 name|ArrayList
-argument_list|<
-name|Iterator
-argument_list|<
-name|BlockInfo
-argument_list|>
-argument_list|>
+argument_list|<>
 argument_list|()
 decl_stmt|;
 for|for
