@@ -2099,15 +2099,6 @@ operator|.
 name|err
 argument_list|)
 expr_stmt|;
-name|ToolRunner
-operator|.
-name|printGenericCommandUsage
-argument_list|(
-name|System
-operator|.
-name|err
-argument_list|)
-expr_stmt|;
 block|}
 elseif|else
 if|if
