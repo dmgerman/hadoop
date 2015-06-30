@@ -789,6 +789,8 @@ argument_list|,
 name|reduceAttempt
 argument_list|,
 name|mapAttempt1
+argument_list|,
+literal|"host"
 argument_list|)
 expr_stmt|;
 name|sendFetchFailure
@@ -798,6 +800,8 @@ argument_list|,
 name|reduceAttempt
 argument_list|,
 name|mapAttempt1
+argument_list|,
+literal|"host"
 argument_list|)
 expr_stmt|;
 name|sendFetchFailure
@@ -807,6 +811,8 @@ argument_list|,
 name|reduceAttempt
 argument_list|,
 name|mapAttempt1
+argument_list|,
+literal|"host"
 argument_list|)
 expr_stmt|;
 comment|//wait for map Task state move back to RUNNING
@@ -1572,6 +1578,8 @@ argument_list|,
 name|reduceAttempt
 argument_list|,
 name|mapAttempt1
+argument_list|,
+literal|"host"
 argument_list|)
 expr_stmt|;
 name|sendFetchFailure
@@ -1581,6 +1589,8 @@ argument_list|,
 name|reduceAttempt
 argument_list|,
 name|mapAttempt1
+argument_list|,
+literal|"host"
 argument_list|)
 expr_stmt|;
 name|sendFetchFailure
@@ -1590,6 +1600,8 @@ argument_list|,
 name|reduceAttempt
 argument_list|,
 name|mapAttempt1
+argument_list|,
+literal|"host"
 argument_list|)
 expr_stmt|;
 comment|//wait for map Task state move back to RUNNING
@@ -2304,15 +2316,19 @@ argument_list|,
 name|reduceAttempt
 argument_list|,
 name|mapAttempt1
+argument_list|,
+literal|"host1"
 argument_list|)
 expr_stmt|;
 name|sendFetchFailure
 argument_list|(
 name|app
 argument_list|,
-name|reduceAttempt
+name|reduceAttempt2
 argument_list|,
 name|mapAttempt1
+argument_list|,
+literal|"host2"
 argument_list|)
 expr_stmt|;
 comment|//We should not re-launch the map task yet
@@ -2355,9 +2371,11 @@ name|sendFetchFailure
 argument_list|(
 name|app
 argument_list|,
-name|reduceAttempt
+name|reduceAttempt3
 argument_list|,
 name|mapAttempt1
+argument_list|,
+literal|"host3"
 argument_list|)
 expr_stmt|;
 comment|//wait for map Task state move back to RUNNING
@@ -2387,6 +2405,35 @@ name|mapAttempt1
 operator|.
 name|getState
 argument_list|()
+argument_list|)
+expr_stmt|;
+name|Assert
+operator|.
+name|assertEquals
+argument_list|(
+name|mapAttempt1
+operator|.
+name|getDiagnostics
+argument_list|()
+operator|.
+name|get
+argument_list|(
+literal|0
+argument_list|)
+argument_list|,
+literal|"Too many fetch failures. Failing the attempt. "
+operator|+
+literal|"Last failure reported by "
+operator|+
+name|reduceAttempt3
+operator|.
+name|getID
+argument_list|()
+operator|.
+name|toString
+argument_list|()
+operator|+
+literal|" from host host3"
 argument_list|)
 expr_stmt|;
 name|Assert
@@ -2996,7 +3043,7 @@ name|event
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|sendFetchFailure (MRApp app, TaskAttempt reduceAttempt, TaskAttempt mapAttempt)
+DECL|method|sendFetchFailure (MRApp app, TaskAttempt reduceAttempt, TaskAttempt mapAttempt, String hostname)
 specifier|private
 name|void
 name|sendFetchFailure
@@ -3009,6 +3056,9 @@ name|reduceAttempt
 parameter_list|,
 name|TaskAttempt
 name|mapAttempt
+parameter_list|,
+name|String
+name|hostname
 parameter_list|)
 block|{
 name|app
@@ -3043,6 +3093,8 @@ name|getID
 argument_list|()
 block|}
 argument_list|)
+argument_list|,
+name|hostname
 argument_list|)
 argument_list|)
 expr_stmt|;
