@@ -10787,6 +10787,19 @@ name|iip
 argument_list|)
 decl_stmt|;
 specifier|final
+name|ErasureCodingZone
+name|ecZone
+init|=
+name|FSDirErasureCodingOp
+operator|.
+name|getErasureCodingZone
+argument_list|(
+name|this
+argument_list|,
+name|iip
+argument_list|)
+decl_stmt|;
+specifier|final
 name|LocatedBlocks
 name|blocks
 init|=
@@ -10820,6 +10833,8 @@ name|isSnapshot
 argument_list|()
 argument_list|,
 name|feInfo
+argument_list|,
+name|ecZone
 argument_list|)
 decl_stmt|;
 comment|// Set caching information for the located blocks.

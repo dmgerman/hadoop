@@ -4955,7 +4955,7 @@ argument_list|)
 return|;
 block|}
 comment|/** Create a LocatedBlocks. */
-DECL|method|createLocatedBlocks (final BlockInfo[] blocks, final long fileSizeExcludeBlocksUnderConstruction, final boolean isFileUnderConstruction, final long offset, final long length, final boolean needBlockToken, final boolean inSnapshot, FileEncryptionInfo feInfo)
+DECL|method|createLocatedBlocks (final BlockInfo[] blocks, final long fileSizeExcludeBlocksUnderConstruction, final boolean isFileUnderConstruction, final long offset, final long length, final boolean needBlockToken, final boolean inSnapshot, FileEncryptionInfo feInfo, ErasureCodingZone ecZone)
 specifier|public
 name|LocatedBlocks
 name|createLocatedBlocks
@@ -4991,6 +4991,9 @@ name|inSnapshot
 parameter_list|,
 name|FileEncryptionInfo
 name|feInfo
+parameter_list|,
+name|ErasureCodingZone
+name|ecZone
 parameter_list|)
 throws|throws
 name|IOException
@@ -5001,6 +5004,36 @@ operator|.
 name|hasReadLock
 argument_list|()
 assert|;
+specifier|final
+name|ECSchema
+name|schema
+init|=
+name|ecZone
+operator|!=
+literal|null
+condition|?
+name|ecZone
+operator|.
+name|getSchema
+argument_list|()
+else|:
+literal|null
+decl_stmt|;
+specifier|final
+name|int
+name|cellSize
+init|=
+name|ecZone
+operator|!=
+literal|null
+condition|?
+name|ecZone
+operator|.
+name|getCellSize
+argument_list|()
+else|:
+literal|0
+decl_stmt|;
 if|if
 condition|(
 name|blocks
@@ -5043,6 +5076,10 @@ argument_list|,
 literal|false
 argument_list|,
 name|feInfo
+argument_list|,
+name|schema
+argument_list|,
+name|cellSize
 argument_list|)
 return|;
 block|}
@@ -5208,6 +5245,10 @@ argument_list|,
 name|isComplete
 argument_list|,
 name|feInfo
+argument_list|,
+name|schema
+argument_list|,
+name|cellSize
 argument_list|)
 return|;
 block|}

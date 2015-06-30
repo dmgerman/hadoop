@@ -1403,7 +1403,7 @@ name|dnInfo
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|DFSInputStream (DFSClient dfsClient, String src, boolean verifyChecksum )
+DECL|method|DFSInputStream (DFSClient dfsClient, String src, boolean verifyChecksum, LocatedBlocks locatedBlocks)
 name|DFSInputStream
 parameter_list|(
 name|DFSClient
@@ -1414,6 +1414,9 @@ name|src
 parameter_list|,
 name|boolean
 name|verifyChecksum
+parameter_list|,
+name|LocatedBlocks
+name|locatedBlocks
 parameter_list|)
 throws|throws
 name|IOException
@@ -1453,15 +1456,26 @@ name|getDefaultReadCachingStrategy
 argument_list|()
 expr_stmt|;
 block|}
+name|this
+operator|.
+name|locatedBlocks
+operator|=
+name|locatedBlocks
+expr_stmt|;
 name|openInfo
-argument_list|()
+argument_list|(
+literal|false
+argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Grab the open-file info from namenode    */
-DECL|method|openInfo ()
+comment|/**    * Grab the open-file info from namenode    * @param refreshLocatedBlocks whether to re-fetch locatedblocks    */
+DECL|method|openInfo (boolean refreshLocatedBlocks)
 name|void
 name|openInfo
-parameter_list|()
+parameter_list|(
+name|boolean
+name|refreshLocatedBlocks
+parameter_list|)
 throws|throws
 name|IOException
 throws|,
@@ -1484,7 +1498,9 @@ block|{
 name|lastBlockBeingWrittenLength
 operator|=
 name|fetchLocatedBlocksAndGetLastBlockLength
-argument_list|()
+argument_list|(
+name|refreshLocatedBlocks
+argument_list|)
 expr_stmt|;
 name|int
 name|retriesForLastBlockLength
@@ -1541,7 +1557,9 @@ expr_stmt|;
 name|lastBlockBeingWrittenLength
 operator|=
 name|fetchLocatedBlocksAndGetLastBlockLength
-argument_list|()
+argument_list|(
+literal|true
+argument_list|)
 expr_stmt|;
 block|}
 else|else
@@ -1605,18 +1623,33 @@ argument_list|)
 throw|;
 block|}
 block|}
-DECL|method|fetchLocatedBlocksAndGetLastBlockLength ()
+DECL|method|fetchLocatedBlocksAndGetLastBlockLength (boolean refresh)
 specifier|private
 name|long
 name|fetchLocatedBlocksAndGetLastBlockLength
-parameter_list|()
+parameter_list|(
+name|boolean
+name|refresh
+parameter_list|)
 throws|throws
 name|IOException
 block|{
-specifier|final
 name|LocatedBlocks
 name|newInfo
 init|=
+name|locatedBlocks
+decl_stmt|;
+if|if
+condition|(
+name|locatedBlocks
+operator|==
+literal|null
+operator|||
+name|refresh
+condition|)
+block|{
+name|newInfo
+operator|=
 name|dfsClient
 operator|.
 name|getLocatedBlocks
@@ -1625,7 +1658,8 @@ name|src
 argument_list|,
 literal|0
 argument_list|)
-decl_stmt|;
+expr_stmt|;
+block|}
 if|if
 condition|(
 name|DFSClient
@@ -4902,7 +4936,9 @@ argument_list|()
 expr_stmt|;
 comment|//2nd option is to remove only nodes[blockId]
 name|openInfo
-argument_list|()
+argument_list|(
+literal|true
+argument_list|)
 expr_stmt|;
 name|block
 operator|=

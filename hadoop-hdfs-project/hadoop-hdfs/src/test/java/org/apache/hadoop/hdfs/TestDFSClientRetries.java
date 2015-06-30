@@ -2523,7 +2523,9 @@ expr_stmt|;
 name|is
 operator|.
 name|openInfo
-argument_list|()
+argument_list|(
+literal|true
+argument_list|)
 expr_stmt|;
 comment|// Seek to beginning forces a reopen of the BlockReader - otherwise it'll
 comment|// just keep reading on the existing stream and the fact that we've poisoned
@@ -3407,6 +3409,10 @@ argument_list|,
 literal|true
 argument_list|,
 literal|null
+argument_list|,
+literal|null
+argument_list|,
+literal|0
 argument_list|)
 return|;
 block|}

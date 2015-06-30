@@ -799,6 +799,8 @@ argument_list|,
 name|schema
 argument_list|,
 name|CELLSIZE
+argument_list|,
+literal|null
 argument_list|)
 decl_stmt|;
 name|List
@@ -1246,6 +1248,8 @@ argument_list|,
 name|schema
 argument_list|,
 name|CELLSIZE
+argument_list|,
+literal|null
 argument_list|)
 decl_stmt|;
 name|int
@@ -1604,6 +1608,8 @@ name|getSystemDefaultSchema
 argument_list|()
 argument_list|,
 name|CELLSIZE
+argument_list|,
+literal|null
 argument_list|)
 decl_stmt|;
 name|int
@@ -2356,6 +2362,8 @@ argument_list|,
 name|schema
 argument_list|,
 name|CELLSIZE
+argument_list|,
+literal|null
 argument_list|)
 decl_stmt|;
 name|byte

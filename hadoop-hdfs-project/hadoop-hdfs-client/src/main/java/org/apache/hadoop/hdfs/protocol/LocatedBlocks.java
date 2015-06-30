@@ -90,6 +90,22 @@ name|FileEncryptionInfo
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|io
+operator|.
+name|erasurecode
+operator|.
+name|ECSchema
+import|;
+end_import
+
 begin_comment
 comment|/**  * Collection of blocks with their locations and the file length.  */
 end_comment
@@ -148,6 +164,18 @@ specifier|final
 name|FileEncryptionInfo
 name|fileEncryptionInfo
 decl_stmt|;
+DECL|field|ecSchema
+specifier|private
+specifier|final
+name|ECSchema
+name|ecSchema
+decl_stmt|;
+DECL|field|stripeCellSize
+specifier|private
+specifier|final
+name|int
+name|stripeCellSize
+decl_stmt|;
 DECL|method|LocatedBlocks ()
 specifier|public
 name|LocatedBlocks
@@ -177,8 +205,16 @@ name|fileEncryptionInfo
 operator|=
 literal|null
 expr_stmt|;
+name|ecSchema
+operator|=
+literal|null
+expr_stmt|;
+name|stripeCellSize
+operator|=
+literal|0
+expr_stmt|;
 block|}
-DECL|method|LocatedBlocks (long flength, boolean isUnderConstuction, List<LocatedBlock> blks, LocatedBlock lastBlock, boolean isLastBlockCompleted, FileEncryptionInfo feInfo)
+DECL|method|LocatedBlocks (long flength, boolean isUnderConstuction, List<LocatedBlock> blks, LocatedBlock lastBlock, boolean isLastBlockCompleted, FileEncryptionInfo feInfo, ECSchema ecSchema, int stripeCellSize)
 specifier|public
 name|LocatedBlocks
 parameter_list|(
@@ -202,6 +238,12 @@ name|isLastBlockCompleted
 parameter_list|,
 name|FileEncryptionInfo
 name|feInfo
+parameter_list|,
+name|ECSchema
+name|ecSchema
+parameter_list|,
+name|int
+name|stripeCellSize
 parameter_list|)
 block|{
 name|fileLength
@@ -233,6 +275,18 @@ operator|.
 name|fileEncryptionInfo
 operator|=
 name|feInfo
+expr_stmt|;
+name|this
+operator|.
+name|ecSchema
+operator|=
+name|ecSchema
+expr_stmt|;
+name|this
+operator|.
+name|stripeCellSize
+operator|=
+name|stripeCellSize
 expr_stmt|;
 block|}
 comment|/**    * Get located blocks.    */
@@ -343,6 +397,28 @@ parameter_list|()
 block|{
 return|return
 name|fileEncryptionInfo
+return|;
+block|}
+comment|/**    * @return The ECSchema for ErasureCoded file, null otherwise.    */
+DECL|method|getECSchema ()
+specifier|public
+name|ECSchema
+name|getECSchema
+parameter_list|()
+block|{
+return|return
+name|ecSchema
+return|;
+block|}
+comment|/**    * @return Stripe Cell size for ErasureCoded file, 0 otherwise.    */
+DECL|method|getStripeCellSize ()
+specifier|public
+name|int
+name|getStripeCellSize
+parameter_list|()
+block|{
+return|return
+name|stripeCellSize
 return|;
 block|}
 comment|/**    * Find block containing specified offset.    *    * @return block if found, or null otherwise.    */

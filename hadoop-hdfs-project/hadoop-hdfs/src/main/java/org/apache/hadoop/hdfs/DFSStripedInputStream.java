@@ -132,6 +132,22 @@ name|hdfs
 operator|.
 name|protocol
 operator|.
+name|LocatedBlocks
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|protocol
+operator|.
 name|LocatedStripedBlock
 import|;
 end_import
@@ -903,7 +919,7 @@ specifier|private
 name|ReaderRetryPolicy
 name|retry
 decl_stmt|;
-DECL|method|DFSStripedInputStream (DFSClient dfsClient, String src, boolean verifyChecksum, ECSchema schema, int cellSize)
+DECL|method|DFSStripedInputStream (DFSClient dfsClient, String src, boolean verifyChecksum, ECSchema schema, int cellSize, LocatedBlocks locatedBlocks)
 name|DFSStripedInputStream
 parameter_list|(
 name|DFSClient
@@ -920,6 +936,9 @@ name|schema
 parameter_list|,
 name|int
 name|cellSize
+parameter_list|,
+name|LocatedBlocks
+name|locatedBlocks
 parameter_list|)
 throws|throws
 name|IOException
@@ -931,6 +950,8 @@ argument_list|,
 name|src
 argument_list|,
 name|verifyChecksum
+argument_list|,
+name|locatedBlocks
 argument_list|)
 expr_stmt|;
 assert|assert
