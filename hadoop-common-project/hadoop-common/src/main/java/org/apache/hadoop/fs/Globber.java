@@ -52,6 +52,16 @@ name|java
 operator|.
 name|util
 operator|.
+name|Arrays
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
 name|List
 import|;
 end_import
@@ -1324,7 +1334,11 @@ return|return
 literal|null
 return|;
 block|}
-return|return
+comment|/*      * In general, the results list will already be sorted, since listStatus      * returns results in sorted order for many Hadoop filesystems.  However,      * not all Hadoop filesystems have this property.  So we sort here in order      * to get consistent results.  See HADOOP-10798 for details.      */
+name|FileStatus
+name|ret
+index|[]
+init|=
 name|results
 operator|.
 name|toArray
@@ -1335,6 +1349,16 @@ index|[
 literal|0
 index|]
 argument_list|)
+decl_stmt|;
+name|Arrays
+operator|.
+name|sort
+argument_list|(
+name|ret
+argument_list|)
+expr_stmt|;
+return|return
+name|ret
 return|;
 block|}
 block|}
