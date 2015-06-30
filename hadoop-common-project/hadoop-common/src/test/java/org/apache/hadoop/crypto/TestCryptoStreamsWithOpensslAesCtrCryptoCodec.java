@@ -50,17 +50,31 @@ name|org
 operator|.
 name|junit
 operator|.
-name|Assert
+name|BeforeClass
 import|;
 end_import
 
 begin_import
-import|import
+import|import static
 name|org
 operator|.
 name|junit
 operator|.
-name|BeforeClass
+name|Assert
+operator|.
+name|assertEquals
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|junit
+operator|.
+name|Assert
+operator|.
+name|assertNotNull
 import|;
 end_import
 
@@ -115,8 +129,24 @@ argument_list|(
 name|conf
 argument_list|)
 expr_stmt|;
-name|Assert
+name|assertNotNull
+argument_list|(
+literal|"Unable to instantiate codec "
+operator|+
+name|OpensslAesCtrCryptoCodec
 operator|.
+name|class
+operator|.
+name|getName
+argument_list|()
+operator|+
+literal|", is the required "
+operator|+
+literal|"version of OpenSSL installed?"
+argument_list|,
+name|codec
+argument_list|)
+expr_stmt|;
 name|assertEquals
 argument_list|(
 name|OpensslAesCtrCryptoCodec
