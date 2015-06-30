@@ -1171,6 +1171,13 @@ argument_list|(
 name|renewer
 argument_list|)
 decl_stmt|;
+if|if
+condition|(
+literal|null
+operator|!=
+name|token
+condition|)
+block|{
 name|Credentials
 name|cred
 init|=
@@ -1228,6 +1235,24 @@ operator|+
 literal|" into "
 operator|+
 name|tokenFile
+argument_list|)
+expr_stmt|;
+block|}
+block|}
+else|else
+block|{
+name|System
+operator|.
+name|err
+operator|.
+name|println
+argument_list|(
+literal|"ERROR: Failed to fetch token from "
+operator|+
+name|fs
+operator|.
+name|getUri
+argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
