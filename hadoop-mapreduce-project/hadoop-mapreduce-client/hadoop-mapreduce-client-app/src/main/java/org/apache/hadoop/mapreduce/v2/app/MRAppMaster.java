@@ -6625,6 +6625,20 @@ argument_list|()
 expr_stmt|;
 block|}
 block|}
+DECL|method|shutdownTaskLog ()
+specifier|protected
+name|void
+name|shutdownTaskLog
+parameter_list|()
+block|{
+name|TaskLog
+operator|.
+name|syncLogsShutdown
+argument_list|(
+name|logSyncer
+argument_list|)
+expr_stmt|;
+block|}
 annotation|@
 name|Override
 DECL|method|stop ()
@@ -6638,12 +6652,8 @@ operator|.
 name|stop
 argument_list|()
 expr_stmt|;
-name|TaskLog
-operator|.
-name|syncLogsShutdown
-argument_list|(
-name|logSyncer
-argument_list|)
+name|shutdownTaskLog
+argument_list|()
 expr_stmt|;
 block|}
 DECL|method|isRecoverySupported ()
@@ -9003,6 +9013,18 @@ throws|throws
 name|Exception
 function_decl|;
 block|}
+DECL|method|shutdownLogManager ()
+specifier|protected
+name|void
+name|shutdownLogManager
+parameter_list|()
+block|{
+name|LogManager
+operator|.
+name|shutdown
+argument_list|()
+expr_stmt|;
+block|}
 annotation|@
 name|Override
 DECL|method|serviceStop ()
@@ -9018,9 +9040,7 @@ operator|.
 name|serviceStop
 argument_list|()
 expr_stmt|;
-name|LogManager
-operator|.
-name|shutdown
+name|shutdownLogManager
 argument_list|()
 expr_stmt|;
 block|}
