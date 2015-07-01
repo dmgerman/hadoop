@@ -718,6 +718,14 @@ name|MoveCommands
 operator|.
 name|Rename
 block|{
+DECL|field|NAME
+specifier|public
+specifier|static
+name|String
+name|NAME
+init|=
+literal|"InstrumentedRename"
+decl_stmt|;
 DECL|field|error
 specifier|private
 name|Exception
