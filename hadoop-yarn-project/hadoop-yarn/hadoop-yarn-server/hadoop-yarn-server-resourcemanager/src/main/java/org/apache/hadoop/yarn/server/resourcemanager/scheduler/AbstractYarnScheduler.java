@@ -832,6 +832,20 @@ name|google
 operator|.
 name|common
 operator|.
+name|annotations
+operator|.
+name|VisibleForTesting
+import|;
+end_import
+
+begin_import
+import|import
+name|com
+operator|.
+name|google
+operator|.
+name|common
+operator|.
 name|util
 operator|.
 name|concurrent
@@ -2666,6 +2680,31 @@ name|void
 name|run
 parameter_list|()
 block|{
+name|clearPendingContainerCache
+argument_list|()
+expr_stmt|;
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"Release request cache is cleaned up"
+argument_list|)
+expr_stmt|;
+block|}
+block|}
+argument_list|,
+name|nmExpireInterval
+argument_list|)
+expr_stmt|;
+block|}
+annotation|@
+name|VisibleForTesting
+DECL|method|clearPendingContainerCache ()
+specifier|public
+name|void
+name|clearPendingContainerCache
+parameter_list|()
+block|{
 for|for
 control|(
 name|SchedulerApplication
@@ -2688,6 +2727,13 @@ operator|.
 name|getCurrentAppAttempt
 argument_list|()
 decl_stmt|;
+if|if
+condition|(
+name|attempt
+operator|!=
+literal|null
+condition|)
+block|{
 synchronized|synchronized
 init|(
 name|attempt
@@ -2721,7 +2767,9 @@ literal|"Unauthorized access or invalid container"
 argument_list|,
 literal|"Scheduler"
 argument_list|,
-literal|"Trying to release container not owned by app or with invalid id."
+literal|"Trying to release container not owned by app "
+operator|+
+literal|"or with invalid id."
 argument_list|,
 name|attempt
 operator|.
@@ -2742,19 +2790,7 @@ argument_list|()
 expr_stmt|;
 block|}
 block|}
-name|LOG
-operator|.
-name|info
-argument_list|(
-literal|"Release request cache is cleaned up"
-argument_list|)
-expr_stmt|;
 block|}
-block|}
-argument_list|,
-name|nmExpireInterval
-argument_list|)
-expr_stmt|;
 block|}
 comment|// clean up a completed container
 DECL|method|completedContainer (RMContainer rmContainer, ContainerStatus containerStatus, RMContainerEventType event)
