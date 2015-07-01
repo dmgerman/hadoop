@@ -1293,6 +1293,12 @@ operator|new
 name|EventWriter
 argument_list|(
 name|fsOutput
+argument_list|,
+name|EventWriter
+operator|.
+name|WriteMode
+operator|.
+name|JSON
 argument_list|)
 decl_stmt|;
 name|writer

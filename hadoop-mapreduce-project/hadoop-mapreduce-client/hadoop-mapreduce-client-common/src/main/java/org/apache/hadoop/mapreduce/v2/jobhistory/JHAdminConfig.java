@@ -718,6 +718,27 @@ name|DEFAULT_MR_HS_JOBNAME_LIMIT
 init|=
 literal|50
 decl_stmt|;
+comment|/**    * Settings for .jhist file format.    */
+DECL|field|MR_HS_JHIST_FORMAT
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|MR_HS_JHIST_FORMAT
+init|=
+name|MR_HISTORY_PREFIX
+operator|+
+literal|"jhist.format"
+decl_stmt|;
+DECL|field|DEFAULT_MR_HS_JHIST_FORMAT
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|DEFAULT_MR_HS_JHIST_FORMAT
+init|=
+literal|"json"
+decl_stmt|;
 block|}
 end_class
 
