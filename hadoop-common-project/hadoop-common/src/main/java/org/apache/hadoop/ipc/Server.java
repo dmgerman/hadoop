@@ -9489,10 +9489,15 @@ name|Trace
 operator|.
 name|startSpan
 argument_list|(
+name|RpcClientUtil
+operator|.
+name|toTraceName
+argument_list|(
 name|rpcRequest
 operator|.
 name|toString
 argument_list|()
+argument_list|)
 argument_list|,
 name|parentSpan
 argument_list|)
