@@ -302,6 +302,20 @@ end_import
 
 begin_import
 import|import
+name|com
+operator|.
+name|google
+operator|.
+name|common
+operator|.
+name|base
+operator|.
+name|Preconditions
+import|;
+end_import
+
+begin_import
+import|import
 name|org
 operator|.
 name|apache
@@ -902,13 +916,13 @@ init|=
 literal|0
 decl_stmt|;
 DECL|field|dfsClient
-specifier|private
+specifier|protected
 specifier|final
 name|DFSClient
 name|dfsClient
 decl_stmt|;
 DECL|field|closed
-specifier|private
+specifier|protected
 name|AtomicBoolean
 name|closed
 init|=
@@ -919,13 +933,13 @@ literal|false
 argument_list|)
 decl_stmt|;
 DECL|field|src
-specifier|private
+specifier|protected
 specifier|final
 name|String
 name|src
 decl_stmt|;
 DECL|field|verifyChecksum
-specifier|private
+specifier|protected
 specifier|final
 name|boolean
 name|verifyChecksum
@@ -941,21 +955,21 @@ init|=
 literal|null
 decl_stmt|;
 DECL|field|currentLocatedBlock
-specifier|private
+specifier|protected
 name|LocatedBlock
 name|currentLocatedBlock
 init|=
 literal|null
 decl_stmt|;
 DECL|field|pos
-specifier|private
+specifier|protected
 name|long
 name|pos
 init|=
 literal|0
 decl_stmt|;
 DECL|field|blockEnd
-specifier|private
+specifier|protected
 name|long
 name|blockEnd
 init|=
@@ -974,7 +988,7 @@ comment|// state shared by stateful and positional read:
 comment|// (protected by lock on infoLock)
 comment|////
 DECL|field|locatedBlocks
-specifier|private
+specifier|protected
 name|LocatedBlocks
 name|locatedBlocks
 init|=
@@ -995,13 +1009,13 @@ init|=
 literal|null
 decl_stmt|;
 DECL|field|cachingStrategy
-specifier|private
+specifier|protected
 name|CachingStrategy
 name|cachingStrategy
 decl_stmt|;
 comment|////
 DECL|field|readStatistics
-specifier|private
+specifier|protected
 specifier|final
 name|ReadStatistics
 name|readStatistics
@@ -1014,7 +1028,7 @@ comment|// lock for state shared between read and pread
 comment|// Note: Never acquire a lock on<this> with this lock held to avoid deadlocks
 comment|//       (it's OK to acquire this lock when the lock on<this> is held)
 DECL|field|infoLock
-specifier|private
+specifier|protected
 specifier|final
 name|Object
 name|infoLock
@@ -1337,7 +1351,7 @@ decl_stmt|;
 block|}
 comment|/**    * This variable tracks the number of failures since the start of the    * most recent user-facing operation. That is to say, it should be reset    * whenever the user makes a call on this stream, and if at any point    * during the retry logic, the failure count exceeds a threshold,    * the errors will be thrown back to the operation.    *    * Specifically this counts the number of times the client has gone    * back to the namenode to get a new list of block locations, and is    * capped at maxBlockAcquireFailures    */
 DECL|field|failures
-specifier|private
+specifier|protected
 name|int
 name|failures
 init|=
@@ -1389,7 +1403,7 @@ name|dnInfo
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|DFSInputStream (DFSClient dfsClient, String src, boolean verifyChecksum )
+DECL|method|DFSInputStream (DFSClient dfsClient, String src, boolean verifyChecksum, LocatedBlocks locatedBlocks)
 name|DFSInputStream
 parameter_list|(
 name|DFSClient
@@ -1400,6 +1414,9 @@ name|src
 parameter_list|,
 name|boolean
 name|verifyChecksum
+parameter_list|,
+name|LocatedBlocks
+name|locatedBlocks
 parameter_list|)
 throws|throws
 name|IOException
@@ -1439,15 +1456,26 @@ name|getDefaultReadCachingStrategy
 argument_list|()
 expr_stmt|;
 block|}
+name|this
+operator|.
+name|locatedBlocks
+operator|=
+name|locatedBlocks
+expr_stmt|;
 name|openInfo
-argument_list|()
+argument_list|(
+literal|false
+argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Grab the open-file info from namenode    */
-DECL|method|openInfo ()
+comment|/**    * Grab the open-file info from namenode    * @param refreshLocatedBlocks whether to re-fetch locatedblocks    */
+DECL|method|openInfo (boolean refreshLocatedBlocks)
 name|void
 name|openInfo
-parameter_list|()
+parameter_list|(
+name|boolean
+name|refreshLocatedBlocks
+parameter_list|)
 throws|throws
 name|IOException
 throws|,
@@ -1470,7 +1498,9 @@ block|{
 name|lastBlockBeingWrittenLength
 operator|=
 name|fetchLocatedBlocksAndGetLastBlockLength
-argument_list|()
+argument_list|(
+name|refreshLocatedBlocks
+argument_list|)
 expr_stmt|;
 name|int
 name|retriesForLastBlockLength
@@ -1527,7 +1557,9 @@ expr_stmt|;
 name|lastBlockBeingWrittenLength
 operator|=
 name|fetchLocatedBlocksAndGetLastBlockLength
-argument_list|()
+argument_list|(
+literal|true
+argument_list|)
 expr_stmt|;
 block|}
 else|else
@@ -1591,18 +1623,33 @@ argument_list|)
 throw|;
 block|}
 block|}
-DECL|method|fetchLocatedBlocksAndGetLastBlockLength ()
+DECL|method|fetchLocatedBlocksAndGetLastBlockLength (boolean refresh)
 specifier|private
 name|long
 name|fetchLocatedBlocksAndGetLastBlockLength
-parameter_list|()
+parameter_list|(
+name|boolean
+name|refresh
+parameter_list|)
 throws|throws
 name|IOException
 block|{
-specifier|final
 name|LocatedBlocks
 name|newInfo
 init|=
+name|locatedBlocks
+decl_stmt|;
+if|if
+condition|(
+name|locatedBlocks
+operator|==
+literal|null
+operator|||
+name|refresh
+condition|)
+block|{
+name|newInfo
+operator|=
 name|dfsClient
 operator|.
 name|getLocatedBlocks
@@ -1611,7 +1658,8 @@ name|src
 argument_list|,
 literal|0
 argument_list|)
-decl_stmt|;
+expr_stmt|;
+block|}
 if|if
 condition|(
 name|DFSClient
@@ -2164,7 +2212,7 @@ return|;
 block|}
 comment|/**    * Get block at the specified position.    * Fetch it from the namenode if not cached.    *     * @param offset block corresponding to this offset in file is returned    * @return located block    * @throws IOException    */
 DECL|method|getBlockAt (long offset)
-specifier|private
+specifier|protected
 name|LocatedBlock
 name|getBlockAt
 parameter_list|(
@@ -2326,7 +2374,7 @@ block|}
 block|}
 comment|/** Fetch a block from namenode and cache it */
 DECL|method|fetchBlockAt (long offset)
-specifier|private
+specifier|protected
 name|void
 name|fetchBlockAt
 parameter_list|(
@@ -2794,7 +2842,7 @@ argument_list|)
 throw|;
 block|}
 comment|// Will be getting a new BlockReader.
-name|closeCurrentBlockReader
+name|closeCurrentBlockReaders
 argument_list|()
 expr_stmt|;
 comment|//
@@ -3043,12 +3091,7 @@ literal|"Failed to connect to "
 operator|+
 name|targetAddr
 operator|+
-literal|" for block "
-operator|+
-name|targetBlock
-operator|.
-name|getBlock
-argument_list|()
+literal|" for block"
 operator|+
 literal|", add to deadNodes and continue. "
 operator|+
@@ -3383,7 +3426,7 @@ literal|"."
 argument_list|)
 expr_stmt|;
 block|}
-name|closeCurrentBlockReader
+name|closeCurrentBlockReaders
 argument_list|()
 expr_stmt|;
 name|super
@@ -3453,7 +3496,6 @@ return|;
 block|}
 comment|/**    * Wraps different possible read implementations so that readBuffer can be    * strategy-agnostic.    */
 DECL|interface|ReaderStrategy
-specifier|private
 interface|interface
 name|ReaderStrategy
 block|{
@@ -3476,9 +3518,25 @@ name|ChecksumException
 throws|,
 name|IOException
 function_decl|;
+comment|/**      * Copy data from the src ByteBuffer into the read buffer.      * @param src The src buffer where the data is copied from      * @param offset Useful only when the ReadStrategy is based on a byte array.      *               Indicate the offset of the byte array for copy.      * @param length Useful only when the ReadStrategy is based on a byte array.      *               Indicate the length of the data to copy.      */
+DECL|method|copyFrom (ByteBuffer src, int offset, int length)
+specifier|public
+name|int
+name|copyFrom
+parameter_list|(
+name|ByteBuffer
+name|src
+parameter_list|,
+name|int
+name|offset
+parameter_list|,
+name|int
+name|length
+parameter_list|)
+function_decl|;
 block|}
 DECL|method|updateReadStatistics (ReadStatistics readStatistics, int nRead, BlockReader blockReader)
-specifier|private
+specifier|protected
 name|void
 name|updateReadStatistics
 parameter_list|(
@@ -3627,10 +3685,50 @@ return|return
 name|nRead
 return|;
 block|}
+annotation|@
+name|Override
+DECL|method|copyFrom (ByteBuffer src, int offset, int length)
+specifier|public
+name|int
+name|copyFrom
+parameter_list|(
+name|ByteBuffer
+name|src
+parameter_list|,
+name|int
+name|offset
+parameter_list|,
+name|int
+name|length
+parameter_list|)
+block|{
+name|ByteBuffer
+name|writeSlice
+init|=
+name|src
+operator|.
+name|duplicate
+argument_list|()
+decl_stmt|;
+name|writeSlice
+operator|.
+name|get
+argument_list|(
+name|buf
+argument_list|,
+name|offset
+argument_list|,
+name|length
+argument_list|)
+expr_stmt|;
+return|return
+name|length
+return|;
+block|}
 block|}
 comment|/**    * Used to read bytes into a user-supplied ByteBuffer    */
 DECL|class|ByteBufferStrategy
-specifier|private
+specifier|protected
 class|class
 name|ByteBufferStrategy
 implements|implements
@@ -3722,6 +3820,23 @@ argument_list|,
 name|blockReader
 argument_list|)
 expr_stmt|;
+if|if
+condition|(
+name|ret
+operator|==
+literal|0
+condition|)
+block|{
+name|DFSClient
+operator|.
+name|LOG
+operator|.
+name|warn
+argument_list|(
+literal|"zero"
+argument_list|)
+expr_stmt|;
+block|}
 return|return
 name|ret
 return|;
@@ -3751,6 +3866,72 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
+block|}
+annotation|@
+name|Override
+DECL|method|copyFrom (ByteBuffer src, int offset, int length)
+specifier|public
+name|int
+name|copyFrom
+parameter_list|(
+name|ByteBuffer
+name|src
+parameter_list|,
+name|int
+name|offset
+parameter_list|,
+name|int
+name|length
+parameter_list|)
+block|{
+name|ByteBuffer
+name|writeSlice
+init|=
+name|src
+operator|.
+name|duplicate
+argument_list|()
+decl_stmt|;
+name|int
+name|remaining
+init|=
+name|Math
+operator|.
+name|min
+argument_list|(
+name|buf
+operator|.
+name|remaining
+argument_list|()
+argument_list|,
+name|writeSlice
+operator|.
+name|remaining
+argument_list|()
+argument_list|)
+decl_stmt|;
+name|writeSlice
+operator|.
+name|limit
+argument_list|(
+name|writeSlice
+operator|.
+name|position
+argument_list|()
+operator|+
+name|remaining
+argument_list|)
+expr_stmt|;
+name|buf
+operator|.
+name|put
+argument_list|(
+name|writeSlice
+argument_list|)
+expr_stmt|;
+return|return
+name|remaining
+return|;
 block|}
 block|}
 comment|/* This is a used by regular read() and handles ChecksumExceptions.    * name readBuffer() is chosen to imply similarity to readBuffer() in    * ChecksumFileSystem    */
@@ -3953,7 +4134,7 @@ expr_stmt|;
 block|}
 block|}
 DECL|method|readWithStrategy (ReaderStrategy strategy, int off, int len)
-specifier|private
+specifier|protected
 specifier|synchronized
 name|int
 name|readWithStrategy
@@ -4395,7 +4576,7 @@ block|}
 block|}
 comment|/**    * Add corrupted block replica into map.    */
 DECL|method|addIntoCorruptedBlockMap (ExtendedBlock blk, DatanodeInfo node, Map<ExtendedBlock, Set<DatanodeInfo>> corruptedBlockMap)
-specifier|private
+specifier|protected
 name|void
 name|addIntoCorruptedBlockMap
 parameter_list|(
@@ -4755,16 +4936,15 @@ argument_list|()
 expr_stmt|;
 comment|//2nd option is to remove only nodes[blockId]
 name|openInfo
-argument_list|()
+argument_list|(
+literal|true
+argument_list|)
 expr_stmt|;
 name|block
 operator|=
-name|getBlockAt
+name|refreshLocatedBlock
 argument_list|(
 name|block
-operator|.
-name|getStartOffset
-argument_list|()
 argument_list|)
 expr_stmt|;
 name|failures
@@ -4775,7 +4955,7 @@ block|}
 block|}
 comment|/**    * Get the best node from which to stream the data.    * @param block LocatedBlock, containing nodes in priority order.    * @param ignoredNodes Do not choose nodes in this array (may be null)    * @return The DNAddrPair of the best node. Null if no node can be chosen.    */
 DECL|method|getBestNodeDNAddrPair (LocatedBlock block, Collection<DatanodeInfo> ignoredNodes)
-specifier|private
+specifier|protected
 name|DNAddrPair
 name|getBestNodeDNAddrPair
 parameter_list|(
@@ -5156,13 +5336,13 @@ name|toString
 argument_list|()
 return|;
 block|}
-DECL|method|fetchBlockByteRange (long blockStartOffset, long start, long end, byte[] buf, int offset, Map<ExtendedBlock, Set<DatanodeInfo>> corruptedBlockMap)
-specifier|private
+DECL|method|fetchBlockByteRange (LocatedBlock block, long start, long end, byte[] buf, int offset, Map<ExtendedBlock, Set<DatanodeInfo>> corruptedBlockMap)
+specifier|protected
 name|void
 name|fetchBlockByteRange
 parameter_list|(
-name|long
-name|blockStartOffset
+name|LocatedBlock
+name|block
 parameter_list|,
 name|long
 name|start
@@ -5191,14 +5371,13 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
-name|LocatedBlock
 name|block
-init|=
-name|getBlockAt
+operator|=
+name|refreshLocatedBlock
 argument_list|(
-name|blockStartOffset
+name|block
 argument_list|)
-decl_stmt|;
+expr_stmt|;
 while|while
 condition|(
 literal|true
@@ -5220,7 +5399,7 @@ name|actualGetFromOneDataNode
 argument_list|(
 name|addressPair
 argument_list|,
-name|blockStartOffset
+name|block
 argument_list|,
 name|start
 argument_list|,
@@ -5246,7 +5425,7 @@ comment|// Loop through to try the next node.
 block|}
 block|}
 block|}
-DECL|method|getFromOneDataNode (final DNAddrPair datanode, final long blockStartOffset, final long start, final long end, final ByteBuffer bb, final Map<ExtendedBlock, Set<DatanodeInfo>> corruptedBlockMap, final int hedgedReadId)
+DECL|method|getFromOneDataNode (final DNAddrPair datanode, final LocatedBlock block, final long start, final long end, final ByteBuffer bb, final Map<ExtendedBlock, Set<DatanodeInfo>> corruptedBlockMap, final int hedgedReadId)
 specifier|private
 name|Callable
 argument_list|<
@@ -5259,8 +5438,8 @@ name|DNAddrPair
 name|datanode
 parameter_list|,
 specifier|final
-name|long
-name|blockStartOffset
+name|LocatedBlock
+name|block
 parameter_list|,
 specifier|final
 name|long
@@ -5354,7 +5533,7 @@ name|actualGetFromOneDataNode
 argument_list|(
 name|datanode
 argument_list|,
-name|blockStartOffset
+name|block
 argument_list|,
 name|start
 argument_list|,
@@ -5383,7 +5562,8 @@ block|}
 block|}
 return|;
 block|}
-DECL|method|actualGetFromOneDataNode (final DNAddrPair datanode, long blockStartOffset, final long start, final long end, byte[] buf, int offset, Map<ExtendedBlock, Set<DatanodeInfo>> corruptedBlockMap)
+comment|/**    * Used when reading contiguous blocks    */
+DECL|method|actualGetFromOneDataNode (final DNAddrPair datanode, LocatedBlock block, final long start, final long end, byte[] buf, int offset, Map<ExtendedBlock, Set<DatanodeInfo>> corruptedBlockMap)
 specifier|private
 name|void
 name|actualGetFromOneDataNode
@@ -5392,8 +5572,8 @@ specifier|final
 name|DNAddrPair
 name|datanode
 parameter_list|,
-name|long
-name|blockStartOffset
+name|LocatedBlock
+name|block
 parameter_list|,
 specifier|final
 name|long
@@ -5409,6 +5589,97 @@ name|buf
 parameter_list|,
 name|int
 name|offset
+parameter_list|,
+name|Map
+argument_list|<
+name|ExtendedBlock
+argument_list|,
+name|Set
+argument_list|<
+name|DatanodeInfo
+argument_list|>
+argument_list|>
+name|corruptedBlockMap
+parameter_list|)
+throws|throws
+name|IOException
+block|{
+specifier|final
+name|int
+name|length
+init|=
+call|(
+name|int
+call|)
+argument_list|(
+name|end
+operator|-
+name|start
+operator|+
+literal|1
+argument_list|)
+decl_stmt|;
+name|actualGetFromOneDataNode
+argument_list|(
+name|datanode
+argument_list|,
+name|block
+argument_list|,
+name|start
+argument_list|,
+name|end
+argument_list|,
+name|buf
+argument_list|,
+operator|new
+name|int
+index|[]
+block|{
+name|offset
+block|}
+argument_list|,
+operator|new
+name|int
+index|[]
+block|{
+name|length
+block|}
+argument_list|,
+name|corruptedBlockMap
+argument_list|)
+expr_stmt|;
+block|}
+comment|/**    * Read data from one DataNode.    * @param datanode the datanode from which to read data    * @param block the located block containing the requested data    * @param startInBlk the startInBlk offset of the block    * @param endInBlk the endInBlk offset of the block    * @param buf the given byte array into which the data is read    * @param offsets the data may be read into multiple segments of the buf    *                (when reading a striped block). this array indicates the    *                offset of each buf segment.    * @param lengths the length of each buf segment    * @param corruptedBlockMap map recording list of datanodes with corrupted    *                          block replica    */
+DECL|method|actualGetFromOneDataNode (final DNAddrPair datanode, LocatedBlock block, final long startInBlk, final long endInBlk, byte[] buf, int[] offsets, int[] lengths, Map<ExtendedBlock, Set<DatanodeInfo>> corruptedBlockMap)
+name|void
+name|actualGetFromOneDataNode
+parameter_list|(
+specifier|final
+name|DNAddrPair
+name|datanode
+parameter_list|,
+name|LocatedBlock
+name|block
+parameter_list|,
+specifier|final
+name|long
+name|startInBlk
+parameter_list|,
+specifier|final
+name|long
+name|endInBlk
+parameter_list|,
+name|byte
+index|[]
+name|buf
+parameter_list|,
+name|int
+index|[]
+name|offsets
+parameter_list|,
+name|int
+index|[]
+name|lengths
 parameter_list|,
 name|Map
 argument_list|<
@@ -5444,6 +5715,30 @@ init|=
 literal|1
 decl_stmt|;
 comment|// only need to get a new encryption key once
+specifier|final
+name|int
+name|len
+init|=
+call|(
+name|int
+call|)
+argument_list|(
+name|endInBlk
+operator|-
+name|startInBlk
+operator|+
+literal|1
+argument_list|)
+decl_stmt|;
+name|checkReadPortions
+argument_list|(
+name|offsets
+argument_list|,
+name|lengths
+argument_list|,
+name|len
+argument_list|)
+expr_stmt|;
 while|while
 condition|(
 literal|true
@@ -5452,14 +5747,13 @@ block|{
 comment|// cached block locations may have been updated by chooseDataNode()
 comment|// or fetchBlockAt(). Always get the latest list of locations at the
 comment|// start of the loop.
-name|LocatedBlock
 name|block
-init|=
-name|getBlockAt
+operator|=
+name|refreshLocatedBlock
 argument_list|(
-name|blockStartOffset
+name|block
 argument_list|)
-decl_stmt|;
+expr_stmt|;
 name|BlockReader
 name|reader
 init|=
@@ -5475,27 +5769,13 @@ operator|.
 name|fetchFromDatanodeException
 argument_list|()
 expr_stmt|;
-name|int
-name|len
-init|=
-call|(
-name|int
-call|)
-argument_list|(
-name|end
-operator|-
-name|start
-operator|+
-literal|1
-argument_list|)
-decl_stmt|;
 name|reader
 operator|=
 name|getBlockReader
 argument_list|(
 name|block
 argument_list|,
-name|start
+name|startInBlk
 argument_list|,
 name|len
 argument_list|,
@@ -5512,6 +5792,23 @@ operator|.
 name|info
 argument_list|)
 expr_stmt|;
+for|for
+control|(
+name|int
+name|i
+init|=
+literal|0
+init|;
+name|i
+operator|<
+name|offsets
+operator|.
+name|length
+condition|;
+name|i
+operator|++
+control|)
+block|{
 name|int
 name|nread
 init|=
@@ -5521,9 +5818,15 @@ name|readAll
 argument_list|(
 name|buf
 argument_list|,
-name|offset
+name|offsets
+index|[
+name|i
+index|]
 argument_list|,
-name|len
+name|lengths
+index|[
+name|i
+index|]
 argument_list|)
 decl_stmt|;
 name|updateReadStatistics
@@ -5539,7 +5842,10 @@ if|if
 condition|(
 name|nread
 operator|!=
-name|len
+name|lengths
+index|[
+name|i
+index|]
 condition|)
 block|{
 throw|throw
@@ -5550,13 +5856,17 @@ literal|"truncated return from reader.read(): "
 operator|+
 literal|"excpected "
 operator|+
-name|len
+name|lengths
+index|[
+name|i
+index|]
 operator|+
 literal|", got "
 operator|+
 name|nread
 argument_list|)
 throw|;
+block|}
 block|}
 name|DFSClientFaultInjector
 operator|.
@@ -5799,14 +6109,151 @@ block|}
 block|}
 block|}
 block|}
-comment|/**    * Like {@link #fetchBlockByteRange} except we start up a second, parallel,    * 'hedged' read if the first read is taking longer than configured amount of    * time. We then wait on which ever read returns first.    */
-DECL|method|hedgedFetchBlockByteRange (long blockStartOffset, long start, long end, byte[] buf, int offset, Map<ExtendedBlock, Set<DatanodeInfo>> corruptedBlockMap)
+comment|/**    * Refresh cached block locations.    * @param block The currently cached block locations    * @return Refreshed block locations    * @throws IOException    */
+DECL|method|refreshLocatedBlock (LocatedBlock block)
+specifier|protected
+name|LocatedBlock
+name|refreshLocatedBlock
+parameter_list|(
+name|LocatedBlock
+name|block
+parameter_list|)
+throws|throws
+name|IOException
+block|{
+return|return
+name|getBlockAt
+argument_list|(
+name|block
+operator|.
+name|getStartOffset
+argument_list|()
+argument_list|)
+return|;
+block|}
+comment|/**    * This method verifies that the read portions are valid and do not overlap    * with each other.    */
+DECL|method|checkReadPortions (int[] offsets, int[] lengths, int totalLen)
+specifier|private
+name|void
+name|checkReadPortions
+parameter_list|(
+name|int
+index|[]
+name|offsets
+parameter_list|,
+name|int
+index|[]
+name|lengths
+parameter_list|,
+name|int
+name|totalLen
+parameter_list|)
+block|{
+name|Preconditions
+operator|.
+name|checkArgument
+argument_list|(
+name|offsets
+operator|.
+name|length
+operator|==
+name|lengths
+operator|.
+name|length
+operator|&&
+name|offsets
+operator|.
+name|length
+operator|>
+literal|0
+argument_list|)
+expr_stmt|;
+name|int
+name|sum
+init|=
+literal|0
+decl_stmt|;
+for|for
+control|(
+name|int
+name|i
+init|=
+literal|0
+init|;
+name|i
+operator|<
+name|lengths
+operator|.
+name|length
+condition|;
+name|i
+operator|++
+control|)
+block|{
+if|if
+condition|(
+name|i
+operator|>
+literal|0
+condition|)
+block|{
+name|int
+name|gap
+init|=
+name|offsets
+index|[
+name|i
+index|]
+operator|-
+name|offsets
+index|[
+name|i
+operator|-
+literal|1
+index|]
+decl_stmt|;
+comment|// make sure read portions do not overlap with each other
+name|Preconditions
+operator|.
+name|checkArgument
+argument_list|(
+name|gap
+operator|>=
+name|lengths
+index|[
+name|i
+operator|-
+literal|1
+index|]
+argument_list|)
+expr_stmt|;
+block|}
+name|sum
+operator|+=
+name|lengths
+index|[
+name|i
+index|]
+expr_stmt|;
+block|}
+name|Preconditions
+operator|.
+name|checkArgument
+argument_list|(
+name|sum
+operator|==
+name|totalLen
+argument_list|)
+expr_stmt|;
+block|}
+comment|/**    * Like {@link #fetchBlockByteRange}except we start up a second, parallel,    * 'hedged' read if the first read is taking longer than configured amount of    * time. We then wait on which ever read returns first.    */
+DECL|method|hedgedFetchBlockByteRange (LocatedBlock block, long start, long end, byte[] buf, int offset, Map<ExtendedBlock, Set<DatanodeInfo>> corruptedBlockMap)
 specifier|private
 name|void
 name|hedgedFetchBlockByteRange
 parameter_list|(
-name|long
-name|blockStartOffset
+name|LocatedBlock
+name|block
 parameter_list|,
 name|long
 name|start
@@ -5918,14 +6365,13 @@ name|hedgedReadId
 init|=
 literal|0
 decl_stmt|;
-name|LocatedBlock
 name|block
-init|=
-name|getBlockAt
+operator|=
+name|refreshLocatedBlock
 argument_list|(
-name|blockStartOffset
+name|block
 argument_list|)
-decl_stmt|;
+expr_stmt|;
 while|while
 condition|(
 literal|true
@@ -5984,9 +6430,6 @@ argument_list|(
 name|chosenNode
 argument_list|,
 name|block
-operator|.
-name|getStartOffset
-argument_list|()
 argument_list|,
 name|start
 argument_list|,
@@ -6180,9 +6623,6 @@ argument_list|(
 name|chosenNode
 argument_list|,
 name|block
-operator|.
-name|getStartOffset
-argument_list|()
 argument_list|,
 name|start
 argument_list|,
@@ -6526,7 +6966,7 @@ block|}
 block|}
 comment|/**    * Should the block access token be refetched on an exception    *     * @param ex Exception received    * @param targetAddr Target datanode address from where exception was received    * @return true if block access token has expired or invalid and it should be    *         refetched    */
 DECL|method|tokenRefetchNeeded (IOException ex, InetSocketAddress targetAddr)
-specifier|private
+specifier|protected
 specifier|static
 name|boolean
 name|tokenRefetchNeeded
@@ -6825,9 +7265,6 @@ block|{
 name|hedgedFetchBlockByteRange
 argument_list|(
 name|blk
-operator|.
-name|getStartOffset
-argument_list|()
 argument_list|,
 name|targetStart
 argument_list|,
@@ -6850,9 +7287,6 @@ block|{
 name|fetchBlockByteRange
 argument_list|(
 name|blk
-operator|.
-name|getStartOffset
-argument_list|()
 argument_list|,
 name|targetStart
 argument_list|,
@@ -6934,7 +7368,7 @@ return|;
 block|}
 comment|/**    * DFSInputStream reports checksum failure.    * Case I : client has tried multiple data nodes and at least one of the    * attempts has succeeded. We report the other failures as corrupted block to    * namenode.     * Case II: client has tried out all data nodes, but all failed. We    * only report if the total number of replica is 1. We do not    * report otherwise since this maybe due to the client is a handicapped client    * (who can not read).    * @param corruptedBlockMap map of corrupted blocks    * @param dataNodeCount number of data nodes who contains the block replicas    */
 DECL|method|reportCheckSumFailure ( Map<ExtendedBlock, Set<DatanodeInfo>> corruptedBlockMap, int dataNodeCount)
-specifier|private
+specifier|protected
 name|void
 name|reportCheckSumFailure
 parameter_list|(
@@ -7559,8 +7993,6 @@ specifier|synchronized
 name|long
 name|getPos
 parameter_list|()
-throws|throws
-name|IOException
 block|{
 return|return
 name|pos
@@ -7664,7 +8096,6 @@ throw|;
 block|}
 comment|/** Utility class to encapsulate data node info and its address. */
 DECL|class|DNAddrPair
-specifier|private
 specifier|static
 specifier|final
 class|class
@@ -7774,10 +8205,10 @@ name|fileEncryptionInfo
 return|;
 block|}
 block|}
-DECL|method|closeCurrentBlockReader ()
-specifier|private
+DECL|method|closeCurrentBlockReaders ()
+specifier|protected
 name|void
-name|closeCurrentBlockReader
+name|closeCurrentBlockReaders
 parameter_list|()
 block|{
 if|if
@@ -7867,7 +8298,7 @@ name|build
 argument_list|()
 expr_stmt|;
 block|}
-name|closeCurrentBlockReader
+name|closeCurrentBlockReaders
 argument_list|()
 expr_stmt|;
 block|}
@@ -7913,7 +8344,7 @@ name|build
 argument_list|()
 expr_stmt|;
 block|}
-name|closeCurrentBlockReader
+name|closeCurrentBlockReaders
 argument_list|()
 expr_stmt|;
 block|}
@@ -8718,7 +9149,7 @@ name|void
 name|unbuffer
 parameter_list|()
 block|{
-name|closeCurrentBlockReader
+name|closeCurrentBlockReaders
 argument_list|()
 expr_stmt|;
 block|}
