@@ -242,11 +242,6 @@ return|return
 name|scheduleEditPolicy
 return|;
 block|}
-annotation|@
-name|SuppressWarnings
-argument_list|(
-literal|"unchecked"
-argument_list|)
 DECL|method|serviceInit (Configuration conf)
 specifier|public
 name|void
@@ -265,12 +260,6 @@ argument_list|(
 name|conf
 argument_list|,
 name|rmContext
-operator|.
-name|getDispatcher
-argument_list|()
-operator|.
-name|getEventHandler
-argument_list|()
 argument_list|,
 operator|(
 name|PreemptableResourceScheduler

@@ -46,9 +46,11 @@ name|hadoop
 operator|.
 name|yarn
 operator|.
-name|event
+name|server
 operator|.
-name|EventHandler
+name|resourcemanager
+operator|.
+name|RMContext
 import|;
 end_import
 
@@ -72,33 +74,13 @@ name|PreemptableResourceScheduler
 import|;
 end_import
 
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|yarn
-operator|.
-name|server
-operator|.
-name|resourcemanager
-operator|.
-name|scheduler
-operator|.
-name|ContainerPreemptEvent
-import|;
-end_import
-
 begin_interface
 DECL|interface|SchedulingEditPolicy
 specifier|public
 interface|interface
 name|SchedulingEditPolicy
 block|{
-DECL|method|init (Configuration config, EventHandler<ContainerPreemptEvent> dispatcher, PreemptableResourceScheduler scheduler)
+DECL|method|init (Configuration config, RMContext context, PreemptableResourceScheduler scheduler)
 specifier|public
 name|void
 name|init
@@ -106,11 +88,8 @@ parameter_list|(
 name|Configuration
 name|config
 parameter_list|,
-name|EventHandler
-argument_list|<
-name|ContainerPreemptEvent
-argument_list|>
-name|dispatcher
+name|RMContext
+name|context
 parameter_list|,
 name|PreemptableResourceScheduler
 name|scheduler

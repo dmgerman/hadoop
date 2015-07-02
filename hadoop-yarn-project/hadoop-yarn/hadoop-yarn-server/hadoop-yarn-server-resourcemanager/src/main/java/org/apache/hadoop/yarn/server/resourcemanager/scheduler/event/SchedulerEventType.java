@@ -63,6 +63,16 @@ block|,
 comment|// Source: ContainerAllocationExpirer
 DECL|enumConstant|CONTAINER_EXPIRED
 name|CONTAINER_EXPIRED
+block|,
+comment|// Source: SchedulingEditPolicy
+DECL|enumConstant|DROP_RESERVATION
+name|DROP_RESERVATION
+block|,
+DECL|enumConstant|PREEMPT_CONTAINER
+name|PREEMPT_CONTAINER
+block|,
+DECL|enumConstant|KILL_CONTAINER
+name|KILL_CONTAINER
 block|}
 end_enum
 
