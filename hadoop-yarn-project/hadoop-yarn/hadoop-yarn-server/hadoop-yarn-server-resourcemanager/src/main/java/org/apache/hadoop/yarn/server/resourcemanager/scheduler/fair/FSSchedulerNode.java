@@ -415,6 +415,9 @@ operator|+
 literal|" for application "
 operator|+
 name|application
+operator|.
+name|getApplicationId
+argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
@@ -441,6 +444,9 @@ operator|+
 literal|" for application "
 operator|+
 name|application
+operator|.
+name|getApplicationId
+argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
