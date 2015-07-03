@@ -1758,14 +1758,6 @@ argument_list|()
 expr_stmt|;
 try|try
 block|{
-name|String
-name|oldTopoStr
-init|=
-name|this
-operator|.
-name|toString
-argument_list|()
-decl_stmt|;
 if|if
 condition|(
 name|node
@@ -1823,7 +1815,10 @@ name|newDepth
 operator|+
 literal|" to topology:\n"
 operator|+
-name|oldTopoStr
+name|this
+operator|.
+name|toString
+argument_list|()
 argument_list|)
 expr_stmt|;
 throw|throw
