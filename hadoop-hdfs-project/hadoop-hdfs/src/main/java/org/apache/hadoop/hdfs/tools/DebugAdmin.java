@@ -44,6 +44,16 @@ name|java
 operator|.
 name|io
 operator|.
+name|FileNotFoundException
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|io
+operator|.
 name|IOException
 import|;
 end_import
@@ -1400,6 +1410,43 @@ expr_stmt|;
 block|}
 catch|catch
 parameter_list|(
+name|FileNotFoundException
+name|e
+parameter_list|)
+block|{
+name|System
+operator|.
+name|err
+operator|.
+name|println
+argument_list|(
+literal|"recoverLease got exception: "
+operator|+
+name|e
+operator|.
+name|getMessage
+argument_list|()
+argument_list|)
+expr_stmt|;
+name|System
+operator|.
+name|err
+operator|.
+name|println
+argument_list|(
+literal|"Giving up on recoverLease for "
+operator|+
+name|pathStr
+operator|+
+literal|" after 1 try"
+argument_list|)
+expr_stmt|;
+return|return
+literal|1
+return|;
+block|}
+catch|catch
+parameter_list|(
 name|IOException
 name|e
 parameter_list|)
@@ -1443,12 +1490,12 @@ operator|.
 name|println
 argument_list|(
 literal|"recoverLease got exception: "
-argument_list|)
-expr_stmt|;
+operator|+
 name|ioe
 operator|.
-name|printStackTrace
+name|getMessage
 argument_list|()
+argument_list|)
 expr_stmt|;
 block|}
 else|else
