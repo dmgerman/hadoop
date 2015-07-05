@@ -2928,11 +2928,17 @@ operator|.
 name|Scanner
 name|ownerScanner
 init|=
+literal|null
+decl_stmt|;
+try|try
+block|{
+name|ownerScanner
+operator|=
 name|reader
 operator|.
 name|createScanner
 argument_list|()
-decl_stmt|;
+expr_stmt|;
 name|LogKey
 name|key
 init|=
@@ -3014,6 +3020,19 @@ return|return
 literal|null
 return|;
 block|}
+finally|finally
+block|{
+name|IOUtils
+operator|.
+name|cleanup
+argument_list|(
+name|LOG
+argument_list|,
+name|ownerScanner
+argument_list|)
+expr_stmt|;
+block|}
+block|}
 comment|/**      * Returns ACLs for the application. An empty map is returned if no ACLs are      * found.      *       * @return a map of the Application ACLs.      * @throws IOException      */
 DECL|method|getApplicationAcls ()
 specifier|public
@@ -3036,11 +3055,17 @@ operator|.
 name|Scanner
 name|aclScanner
 init|=
+literal|null
+decl_stmt|;
+try|try
+block|{
+name|aclScanner
+operator|=
 name|reader
 operator|.
 name|createScanner
 argument_list|()
-decl_stmt|;
+expr_stmt|;
 name|LogKey
 name|key
 init|=
@@ -3207,6 +3232,19 @@ block|}
 return|return
 name|acls
 return|;
+block|}
+finally|finally
+block|{
+name|IOUtils
+operator|.
+name|cleanup
+argument_list|(
+name|LOG
+argument_list|,
+name|aclScanner
+argument_list|)
+expr_stmt|;
+block|}
 block|}
 comment|/**      * Read the next key and return the value-stream.      *       * @param key      * @return the valueStream if there are more keys or null otherwise.      * @throws IOException      */
 DECL|method|next (LogKey key)
