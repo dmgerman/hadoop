@@ -5320,6 +5320,8 @@ operator|=
 name|getMapOutputInfo
 argument_list|(
 name|outputBasePathStr
+operator|+
+name|mapId
 argument_list|,
 name|mapId
 argument_list|,
