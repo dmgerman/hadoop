@@ -638,6 +638,18 @@ specifier|private
 name|boolean
 name|wantToBeInElection
 decl_stmt|;
+DECL|field|monitorLockNodePending
+specifier|private
+name|boolean
+name|monitorLockNodePending
+init|=
+literal|false
+decl_stmt|;
+DECL|field|monitorLockNodeClient
+specifier|private
+name|ZooKeeper
+name|monitorLockNodeClient
+decl_stmt|;
 comment|/**    * Create a new ActiveStandbyElector object<br/>    * The elector is created by providing to it the Zookeeper configuration, the    * parent znode under which to create the znode and a reference to the    * callback interface.<br/>    * The parent znode name must be the same for all service instances and    * different across services.<br/>    * After the leader has been lost, a new leader will be elected after the    * session timeout expires. Hence, the app must set this parameter based on    * its needs for failure response time. The session timeout must be greater    * than the Zookeeper disconnect timeout and is recommended to be 3X that    * value to enable Zookeeper to retry transient disconnections. Setting a very    * short session timeout may result in frequent transitions between active and    * standby states during issues like network outages/GS pauses.    *     * @param zookeeperHostPorts    *          ZooKeeper hostPort for all ZooKeeper servers    * @param zookeeperSessionTimeout    *          ZooKeeper session timeout    * @param parentZnodeName    *          znode under which to create the lock    * @param acl    *          ZooKeeper ACL's    * @param authInfo a list of authentication credentials to add to the    *                 ZK connection    * @param app    *          reference to callback interface object    * @throws IOException    * @throws HadoopIllegalArgumentException    */
 DECL|method|ActiveStandbyElector (String zookeeperHostPorts, int zookeeperSessionTimeout, String parentZnodeName, List<ACL> acl, List<ZKAuthInfo> authInfo, ActiveStandbyElectorCallback app, int maxRetryNum)
 specifier|public
@@ -1579,6 +1591,10 @@ name|ctx
 argument_list|)
 condition|)
 return|return;
+name|monitorLockNodePending
+operator|=
+literal|false
+expr_stmt|;
 assert|assert
 name|wantToBeInElection
 operator|:
@@ -2437,6 +2453,18 @@ return|return
 name|state
 return|;
 block|}
+annotation|@
+name|VisibleForTesting
+DECL|method|isMonitorLockNodePending ()
+specifier|synchronized
+name|boolean
+name|isMonitorLockNodePending
+parameter_list|()
+block|{
+return|return
+name|monitorLockNodePending
+return|;
+block|}
 DECL|method|reEstablishSession ()
 specifier|private
 name|boolean
@@ -3283,6 +3311,32 @@ name|void
 name|monitorLockNodeAsync
 parameter_list|()
 block|{
+if|if
+condition|(
+name|monitorLockNodePending
+operator|&&
+name|monitorLockNodeClient
+operator|==
+name|zkClient
+condition|)
+block|{
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"Ignore duplicate monitor lock-node request."
+argument_list|)
+expr_stmt|;
+return|return;
+block|}
+name|monitorLockNodePending
+operator|=
+literal|true
+expr_stmt|;
+name|monitorLockNodeClient
+operator|=
+name|zkClient
+expr_stmt|;
 name|zkClient
 operator|.
 name|exists
