@@ -85,7 +85,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * Keep prioritized queues of under replicated blocks.  * Blocks have replication priority, with priority {@link #QUEUE_HIGHEST_PRIORITY}  * indicating the highest priority.  *</p>  * Having a prioritised queue allows the {@link BlockManager} to select  * which blocks to replicate first -it tries to give priority to data  * that is most at risk or considered most valuable.  *  *<p/>  * The policy for choosing which priority to give added blocks  * is implemented in {@link #getPriority(int, int, int)}.  *</p>  *<p>The queue order is as follows:</p>  *<ol>  *<li>{@link #QUEUE_HIGHEST_PRIORITY}: the blocks that must be replicated  *   first. That is blocks with only one copy, or blocks with zero live  *   copies but a copy in a node being decommissioned. These blocks  *   are at risk of loss if the disk or server on which they  *   remain fails.</li>  *<li>{@link #QUEUE_VERY_UNDER_REPLICATED}: blocks that are very  *   under-replicated compared to their expected values. Currently  *   that means the ratio of the ratio of actual:expected means that  *   there is<i>less than</i> 1:3.</li>. These blocks may not be at risk,  *   but they are clearly considered "important".  *<li>{@link #QUEUE_UNDER_REPLICATED}: blocks that are also under  *   replicated, and the ratio of actual:expected is good enough that  *   they do not need to go into the {@link #QUEUE_VERY_UNDER_REPLICATED}  *   queue.</li>  *<li>{@link #QUEUE_REPLICAS_BADLY_DISTRIBUTED}: there are as least as  *   many copies of a block as required, but the blocks are not adequately  *   distributed. Loss of a rack/switch could take all copies off-line.</li>  *<li>{@link #QUEUE_WITH_CORRUPT_BLOCKS} This is for blocks that are corrupt  *   and for which there are no-non-corrupt copies (currently) available.  *   The policy here is to keep those corrupt blocks replicated, but give  *   blocks that are not corrupt higher priority.</li>  *</ol>  */
+comment|/**  * Keep prioritized queues of under replicated blocks.  * Blocks have replication priority, with priority {@link #QUEUE_HIGHEST_PRIORITY}  * indicating the highest priority.  *</p>  * Having a prioritised queue allows the {@link BlockManager} to select  * which blocks to replicate first -it tries to give priority to data  * that is most at risk or considered most valuable.  *  *<p/>  * The policy for choosing which priority to give added blocks  * is implemented in {@link #getPriority(BlockInfo, int, int, int)}.  *</p>  *<p>The queue order is as follows:</p>  *<ol>  *<li>{@link #QUEUE_HIGHEST_PRIORITY}: the blocks that must be replicated  *   first. That is blocks with only one copy, or blocks with zero live  *   copies but a copy in a node being decommissioned. These blocks  *   are at risk of loss if the disk or server on which they  *   remain fails.</li>  *<li>{@link #QUEUE_VERY_UNDER_REPLICATED}: blocks that are very  *   under-replicated compared to their expected values. Currently  *   that means the ratio of the ratio of actual:expected means that  *   there is<i>less than</i> 1:3.</li>. These blocks may not be at risk,  *   but they are clearly considered "important".  *<li>{@link #QUEUE_UNDER_REPLICATED}: blocks that are also under  *   replicated, and the ratio of actual:expected is good enough that  *   they do not need to go into the {@link #QUEUE_VERY_UNDER_REPLICATED}  *   queue.</li>  *<li>{@link #QUEUE_REPLICAS_BADLY_DISTRIBUTED}: there are as least as  *   many copies of a block as required, but the blocks are not adequately  *   distributed. Loss of a rack/switch could take all copies off-line.</li>  *<li>{@link #QUEUE_WITH_CORRUPT_BLOCKS} This is for blocks that are corrupt  *   and for which there are no-non-corrupt copies (currently) available.  *   The policy here is to keep those corrupt blocks replicated, but give  *   blocks that are not corrupt higher priority.</li>  *</ol>  */
 end_comment
 
 begin_class
@@ -414,11 +414,14 @@ literal|false
 return|;
 block|}
 comment|/** Return the priority of a block    * @param curReplicas current number of replicas of the block    * @param expectedReplicas expected number of replicas of the block    * @return the priority for the blocks, between 0 and ({@link #LEVEL}-1)    */
-DECL|method|getPriority (int curReplicas, int decommissionedReplicas, int expectedReplicas)
+DECL|method|getPriority (BlockInfo block, int curReplicas, int decommissionedReplicas, int expectedReplicas)
 specifier|private
 name|int
 name|getPriority
 parameter_list|(
+name|BlockInfo
+name|block
+parameter_list|,
 name|int
 name|curReplicas
 parameter_list|,
@@ -448,7 +451,70 @@ return|return
 name|QUEUE_REPLICAS_BADLY_DISTRIBUTED
 return|;
 block|}
-elseif|else
+if|if
+condition|(
+name|block
+operator|.
+name|isStriped
+argument_list|()
+condition|)
+block|{
+name|BlockInfoStriped
+name|sblk
+init|=
+operator|(
+name|BlockInfoStriped
+operator|)
+name|block
+decl_stmt|;
+return|return
+name|getPriorityStriped
+argument_list|(
+name|curReplicas
+argument_list|,
+name|decommissionedReplicas
+argument_list|,
+name|sblk
+operator|.
+name|getRealDataBlockNum
+argument_list|()
+argument_list|,
+name|sblk
+operator|.
+name|getParityBlockNum
+argument_list|()
+argument_list|)
+return|;
+block|}
+else|else
+block|{
+return|return
+name|getPriorityContiguous
+argument_list|(
+name|curReplicas
+argument_list|,
+name|decommissionedReplicas
+argument_list|,
+name|expectedReplicas
+argument_list|)
+return|;
+block|}
+block|}
+DECL|method|getPriorityContiguous (int curReplicas, int decommissionedReplicas, int expectedReplicas)
+specifier|private
+name|int
+name|getPriorityContiguous
+parameter_list|(
+name|int
+name|curReplicas
+parameter_list|,
+name|int
+name|decommissionedReplicas
+parameter_list|,
+name|int
+name|expectedReplicas
+parameter_list|)
+block|{
 if|if
 condition|(
 name|curReplicas
@@ -482,7 +548,7 @@ operator|==
 literal|1
 condition|)
 block|{
-comment|//only on replica -risk of loss
+comment|// only one replica, highest risk of loss
 comment|// highest priority
 return|return
 name|QUEUE_HIGHEST_PRIORITY
@@ -509,6 +575,92 @@ block|}
 else|else
 block|{
 comment|//add to the normal queue for under replicated blocks
+return|return
+name|QUEUE_UNDER_REPLICATED
+return|;
+block|}
+block|}
+DECL|method|getPriorityStriped (int curReplicas, int decommissionedReplicas, short dataBlkNum, short parityBlkNum)
+specifier|private
+name|int
+name|getPriorityStriped
+parameter_list|(
+name|int
+name|curReplicas
+parameter_list|,
+name|int
+name|decommissionedReplicas
+parameter_list|,
+name|short
+name|dataBlkNum
+parameter_list|,
+name|short
+name|parityBlkNum
+parameter_list|)
+block|{
+if|if
+condition|(
+name|curReplicas
+operator|<
+name|dataBlkNum
+condition|)
+block|{
+comment|// There are some replicas on decommissioned nodes so it's not corrupted
+if|if
+condition|(
+name|curReplicas
+operator|+
+name|decommissionedReplicas
+operator|>=
+name|dataBlkNum
+condition|)
+block|{
+return|return
+name|QUEUE_HIGHEST_PRIORITY
+return|;
+block|}
+return|return
+name|QUEUE_WITH_CORRUPT_BLOCKS
+return|;
+block|}
+elseif|else
+if|if
+condition|(
+name|curReplicas
+operator|==
+name|dataBlkNum
+condition|)
+block|{
+comment|// highest risk of loss, highest priority
+return|return
+name|QUEUE_HIGHEST_PRIORITY
+return|;
+block|}
+elseif|else
+if|if
+condition|(
+operator|(
+name|curReplicas
+operator|-
+name|dataBlkNum
+operator|)
+operator|*
+literal|3
+operator|<
+name|parityBlkNum
+operator|+
+literal|1
+condition|)
+block|{
+comment|// can only afford one replica loss
+comment|// this is considered very under-replicated
+return|return
+name|QUEUE_VERY_UNDER_REPLICATED
+return|;
+block|}
+else|else
+block|{
+comment|// add to the normal queue for under replicated blocks
 return|return
 name|QUEUE_UNDER_REPLICATED
 return|;
@@ -545,6 +697,8 @@ name|priLevel
 init|=
 name|getPriority
 argument_list|(
+name|block
+argument_list|,
 name|curReplicas
 argument_list|,
 name|decomissionedReplicas
@@ -635,6 +789,8 @@ name|priLevel
 init|=
 name|getPriority
 argument_list|(
+name|block
+argument_list|,
 name|oldReplicas
 argument_list|,
 name|decommissionedReplicas
@@ -839,6 +995,8 @@ name|curPri
 init|=
 name|getPriority
 argument_list|(
+name|block
+argument_list|,
 name|curReplicas
 argument_list|,
 name|decommissionedReplicas
@@ -851,6 +1009,8 @@ name|oldPri
 init|=
 name|getPriority
 argument_list|(
+name|block
+argument_list|,
 name|oldReplicas
 argument_list|,
 name|decommissionedReplicas

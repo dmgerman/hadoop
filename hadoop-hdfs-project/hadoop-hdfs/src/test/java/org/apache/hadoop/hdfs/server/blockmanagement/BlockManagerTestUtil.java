@@ -1336,6 +1336,34 @@ name|runMonitor
 argument_list|()
 expr_stmt|;
 block|}
+comment|/**    * add block to the replicateBlocks queue of the Datanode    */
+DECL|method|addBlockToBeReplicated (DatanodeDescriptor node, Block block, DatanodeStorageInfo[] targets)
+specifier|public
+specifier|static
+name|void
+name|addBlockToBeReplicated
+parameter_list|(
+name|DatanodeDescriptor
+name|node
+parameter_list|,
+name|Block
+name|block
+parameter_list|,
+name|DatanodeStorageInfo
+index|[]
+name|targets
+parameter_list|)
+block|{
+name|node
+operator|.
+name|addBlockToBeReplicated
+argument_list|(
+name|block
+argument_list|,
+name|targets
+argument_list|)
+expr_stmt|;
+block|}
 block|}
 end_class
 
