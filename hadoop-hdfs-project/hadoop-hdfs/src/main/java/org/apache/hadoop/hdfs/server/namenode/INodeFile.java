@@ -4021,10 +4021,6 @@ condition|(
 name|usePreferredBlockSize4LastUcBlock
 condition|)
 block|{
-comment|// Striped blocks keeps block group which counts
-comment|// (data blocks num + parity blocks num). When you
-comment|// count actual used size by BlockInfoStripedUC must
-comment|// be multiplied by these blocks number.
 name|BlockInfoStripedUnderConstruction
 name|blockInfoStripedUC
 init|=
@@ -4043,7 +4039,7 @@ argument_list|()
 operator|*
 name|blockInfoStripedUC
 operator|.
-name|getTotalBlockNum
+name|getDataBlockNum
 argument_list|()
 expr_stmt|;
 block|}
